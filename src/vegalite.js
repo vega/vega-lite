@@ -345,7 +345,7 @@ function template() {
   return {
     width: 300,
     height: 300,
-    padding: 50,
+    padding: "auto",
     data: [{name: TABLE}],
     marks: [groupdef()]
   };
@@ -393,74 +393,48 @@ marks.text = {
 function bar_props(e) {
   var p = {};
 
-  // // x
-  // if (e.has(X)) {
-  //   p.x = {scale: X, field: e.field(X)};
-  // } else if (!e.has(X)) {
-  //   p.x = {value: 0};
-  // }
-  // // x2
-  // if (e.isType(X,Q|T)) {
-  //   p.x2 = {scale: X, value: 0};
-  // }
+  // x
   if (e.isType(X,Q|T)) {
-    if (e.has(X)) {
-      p.x = {scale: X, field: e.field(X)};
-    } else if (!e.has(X)) {
-      p.x = {value: 0};
+    p.x = {scale: X, field: e.field(X)};
+    if (!e.isType(Y,Q|T) && e.has(Y)) {
+      p.x2 = {scale: X, value: 0};
     }
-    p.x2 = {scale: X, value: 0};
+  } else if (e.has(X)) {
+    p.xc = {scale: X, field: e.field(X)};
   } else {
-    if (e.has(X)) {
-      p.xc = {scale: X, field: e.field(X)};
-    } else if (!e.has(X)) {
-      p.xc = {value: 0};
-    } 
+    p.xc = {value: 0}; 
   }
 
-  // // y
-  // if (e.has(Y)) {
-  //   p.y = {scale: Y, field: e.field(Y)};
-  // } else if (!e.has(Y)) {
-  //   p.y = {group: "height"};
-  // }
-  // // y2
-  // if (e.isType(Y,Q|T)) {
-  //   p.y2 = {scale: Y, value: 0};
-  // }
+  // y
   if (e.isType(Y,Q|T)) {
-    if (e.has(Y)) {
-      p.y = {scale: Y, field: e.field(Y)};
-    } else if (!e.has(Y)) {
-      p.y = {group: "height"};
-    }
+    p.y = {scale: Y, field: e.field(Y)};
     p.y2 = {scale: Y, value: 0};
+  } else if (e.has(Y)) {
+    p.yc = {scale: Y, field: e.field(Y)};
   } else {
-    if (e.has(Y)) {
-      p.yc = {scale: Y, field: e.field(Y)};
-    } else if (!e.has(Y)) {
-      p.yc = {group: "height"};
-    }
+    p.yc = {group: "height"};
   }
 
   // width
-  if (!e.isType(X,Q|T) && e.has(SIZE)) {
-    p.width = {scale: SIZE, field: e.field(SIZE)};
-  } else if (e.isType(X,O) && !e.has(SIZE)) {
-//    p.width = {scale: X, band: true, offset: -1};
+  if (!e.isType(X,Q|T)) {
+    if (e.has(SIZE)) {
+      p.width = {scale: SIZE, field: e.field(SIZE)};
+    } else {
+      // p.width = {scale: X, band: true, offset: -1};
+      p.width = {value: e.config("bandSize"), offset: -1};
+    }
+  } else if (!e.isType(Y,O)) {
     p.width = {value: e.config("bandSize"), offset: -1};
-  } else if (!e.isType(X,Q|T) && !e.has(SIZE)) {
-    p.width = {value: e.config("barSize")};
   }
 
   // height
-  if (!e.isType(Y,Q|T) && e.has(SIZE)) {
-    p.height = {scale: SIZE, field: e.field(SIZE)};
-  } else if (e.isType(Y,O) && !e.has(SIZE)) {
-//    p.height = {scale: Y, band: true, offset: -1};
-    p.height = {value: e.config("bandSize"), offset: -1};
-  } else if (!e.isType(Y,Q|T) && !e.has(SIZE)) {
-    p.height = {value: e.config("barSize")};
+  if (!e.isType(Y,Q|T)) {
+    if (e.has(SIZE)) {
+      p.height = {scale: SIZE, field: e.field(SIZE)};
+    } else {
+      // p.height = {scale: Y, band: true, offset: -1};
+      p.height = {value: e.config("bandSize"), offset: -1};
+    }
   }
 
   // fill

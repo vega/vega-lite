@@ -106,7 +106,7 @@ function init() {
 
   // controls for each visual encoding variable
   var ctrl = root.selectAll("div.enc")
-      .data(["x","y","size","shape","color","alpha","text"])
+      .data(["x","y","size","color","alpha","shape","text"])
     .enter().append("div").attr("class", "enc");
 
   ctrl.append("span").text(function(d) { return d; });
@@ -159,7 +159,6 @@ function update() {
   var enc = encodings();
   self.enc = enc; // DEBUG
   var s = toVegaSpec(enc, data);
-  s.padding = {left: 100, bottom: 100, top: 20, right: 20};
   parse(s, data);
 }
 
