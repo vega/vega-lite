@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="lib/d3.v3.min.js"></script>
+  <script src="lib/vega.js"></script>
+  <script src="src/aggregate.js"></script>
+  <script src="src/bin.js"></script>
+  <script src="src/vegalite.js"></script>
+  <style>
+* {
+  font-family: Helvetica Neue;
+}
+.mark {
+  margin-bottom: 0.3em;
+}
+
+#ctrl {
+  background-color: #eee;
+  padding: 0.5em;
+  margin-bottom: 1em;
+}
+#ctrl span {
+  display: inline-block;
+  font-weight: 500;
+  font-size: 14px;
+  width: 60px;
+}
+#ctrl select {
+  width: 80px;
+}
+#ctrl select.type {
+  width: 50px;
+}
+#ctrl select.data {
+  width: 210px;
+}
+#ctrl span.header { width: 80px; }
+#ctrl span.header.h0 { width: 60px; }
+#ctrl span.header.h3 { width: 50px; }
+  </style>
+</head>
+<body>
+  <div id="ctrl">
+  </div>
+  <div id="vis"></div>
+<script type="text/javascript">
+var datasets = [
+  "-",
+  "data/barley.json",
+  "data/cars.json",
+  "data/crimea.json",
+  "data/driving.json",
+  "data/iris.json",
+  "data/jobs.json",
+  "data/population.json"
+];
+
+function load(url) {
+  d3.json(url, function(err, data) {
+    var schema = {};
+    for (var k in data[0]) {
+      schema[k] = (typeof data[0][k] === "number") ? Q : O;
+    }
+    run(data, schema);
+  });
+}
+
+// ------
+
+function init() {
+  var root = d3.select("#ctrl");
+
+  // data set selector
+  var dsel = root.append("div");
+  dsel.append("span").text("data");
+  dsel.append("select")
+    .attr("class", "data")
+    .on("change", function() {
+        var url = this.options[this.selectedIndex].value;
+        load(url);
+      })
+    .selectAll("option")
+      .data(datasets)
+    .enter().append("option")
+      .attr("value", function(d) { return d; })
+      .text(function(d) { return d; });
+
+  // choose mark type
+  var mark = root.append("div").attr("class", "mark");
+  mark.append("span").text("mark");
+  mark.append("select")
+    .attr("class", "mark")
+    .on("change", update)
+    .selectAll("option")
+      .data(["point", "bar", "line", "area", "circle", "square", "text"])
+    .enter().append("option")
+      .attr("value", function(d) { return d; })
+      .text(function(d) { return d; });
+
+  // header labels
+  var head = root.append("div").selectAll("span.header")
+      .data(["","function","data","type"])
+    .enter().append("span")
+      .attr("class", function(d,i) { return "header h"+i; })
+      .text(function(d) { return d; });
+
+  // controls for each visual encoding variable
+  var ctrl = root.selectAll("div.enc")
+      .data(["x","y","size","shape","color","alpha","text"])
+    .enter().append("div").attr("class", "enc");
+
+  ctrl.append("span").text(function(d) { return d; });
+
+  // aggregation function
+  ctrl.append("select")
+    .attr("class", "aggr")
+    .on("change", update)
+    .selectAll("option")
+      .data(["-", "avg", "sum", "min", "max", "count", "bin"])
+    .enter().append("option")
+      .attr("value", function(d) { return d; })
+      .text(function(d) { return d; });
+
+  // data variable
+  ctrl.append("select")
+    .attr("class", "shelf")
+    .on("change", update)
+    .selectAll("option")
+      .data(["-"], function(d) { return d; })
+    .enter().append("option")
+      .attr("value", function(d) { return d; })
+      .text(function(d) { return d; });
+
+  // data type (ordinal, quantitative or time)
+  ctrl.append("select")
+    .attr("class", "type")
+    .on("change", update)
+    .selectAll("option")
+      .data(["-", "O", "Q", "T"])
+    .enter().append("option")
+      .attr("value", function(d) { return d; })
+      .text(function(d) { return d; });
+}
+
+function run(data, schema) {
+  // CURRENTLY EXPECTED AS GLOBAL VARS...
+  self.data = data;
+  self.schema = schema;
+
+  var s = d3.selectAll("select.shelf").selectAll("option")
+    .data(["-"].concat(d3.keys(schema)), function(d) { return d; });
+  s.enter().append("option")
+    .attr("value", function(d) { return d; })
+    .text(function(d) { return d; })
+  s.exit().remove();
+}
+
+function update() {
+  var enc = encodings();
+  self.enc = enc; // DEBUG
+  var s = toVegaSpec(enc, data);
+  s.padding = {left: 100, bottom: 100, top: 20, right: 20};
+  parse(s, data);
+}
+
+function encodings() {
+  var marktype = "bar",
+      bin = null,
+      enc = {};
+
+  var types = {"O": O, "Q": Q, "T": T};
+
+  var s = d3.select("select.mark").node();
+  marktype = s.options[s.selectedIndex].value;
+
+  d3.selectAll("#ctrl div.enc").each(function(d) {
+    var x = d;      
+    var s = d3.select(this).select("select.shelf").node();
+    var v = s.options[s.selectedIndex].value;
+    
+    var s = d3.select(this).select("select.type").node();
+    var t = s.options[s.selectedIndex].value;
+    
+    if (v !== "-") {
+      enc[x] = {
+        name: v,
+        type: (t === "-" ? schema[v] : types[t])
+      };
+
+      var s = d3.select(this).select("select.aggr").node();
+      var a = s.options[s.selectedIndex].value;
+      if (a === "bin") {
+        enc[x].bin = true;
+      } else if (a !== "-") {
+        enc[x].aggr = a;
+      }
+    }
+  });
+
+  return new Encoding(marktype, enc);
+}
+
+function parse(spec, data) {
+  console.log(JSON.stringify(spec, null, 2));
+  var vis;
+  vg.parse.spec(spec, function(chart) {
+    vis = chart({el:"#vis", renderer: "svg"});
+    vis.data({table: data}).update();
+  });
+}
+
+init();
+</script>
+</body>
+</html>
