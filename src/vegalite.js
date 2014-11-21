@@ -149,20 +149,26 @@ function toVegaSpec(enc, data) {
   
   binning(spec.data[0], enc);
   
+  var lineType = enc.marktype() === "line" || enc.marktype() === "area";
+  
   // handle aggregates
   var dims = aggregates(spec.data[0], enc);
-  if (dims.length) {
+  if ((dims && dims.length) || (lineType && enc.has(COLOR))) {
     var m = group.marks;
     group.marks = [groupdef()];
     var g = group.marks[0];
     g.marks = m;
     g.from = mdef.from;
+    
+    if (!(dims && dims.length)) {
+      dims = [enc.field(COLOR)];
+    }
     g.from.transform = [{type: "facet", keys: dims}];
     delete mdef.from;
   }
 
   // auto-sort line/area values
-  if (enc.marktype() === "line" || enc.marktype() === "area") {
+  if (lineType) {
     var f = (enc.isType(X,Q|T) && enc.isType(Y,O)) ? Y : X;
     if (!mdef.from) mdef.from = {};
     mdef.from.transform = [{type: "sort", by: enc.field(f)}];    
