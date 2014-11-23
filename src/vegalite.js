@@ -32,7 +32,10 @@ var Q = 2;
 var T = 4;
 
 vl.dataTypes = {"O": O, "Q": Q, "T": T};
-  
+
+// inverse mapping e.g., 1=>O
+vl.dataTypeNames = ["O","Q","T"].reduce(function(r, x){ r[x] = vl.dataTypes[x]; return r;},{});
+
 var DEFAULTS = {
   barSize: 10,
   bandSize: 21,
@@ -78,6 +81,10 @@ function uniq(data, field) {
   return count;
 }
 
+function duplicate(obj) {
+  return JSON.parse(JSON.stringify(obj));
+};
+
 // ----
 vl.Encoding = (function() {
 
@@ -103,10 +110,12 @@ vl.Encoding = (function() {
     return this._enc[x] !== undefined;
   };
 
+  // get "field" property for vega
   proto.field = function(x, pure) {
     if (!this.has(x)) return null;
     
     var f = (pure ? "" : "data.");
+
     if (this._enc[x].aggr === "count") {
       return f + "count";
     } else if (this._enc[x].bin) {
@@ -138,6 +147,32 @@ vl.Encoding = (function() {
   proto.config = function(name) {
     return this._cfg[name];
   };
+
+  proto.toJSON = function(){
+    var enc = duplicate(this._enc);
+
+    // convert type's bitcode to type name
+    for(var e in enc){
+      enc[e].type = vl.dataTypeNames[enc[e].type];
+    }
+
+    return JSON.stringify({
+      marktype: this._marktype,
+      enc: enc,
+      cfg: this._cfg
+    });
+  };
+
+  Encoding.parseJSON = function(json){
+    var enc = duplicate(json.enc);
+
+    //convert type from string to bitcode (e.g, O=1)
+    for(var e in enc){
+      enc[e].type = vl.dataTypes[enc[e].type];
+    }
+
+    return new Encoding(json.marktype, enc, json.cfg);
+  }
   
   return Encoding;
 
