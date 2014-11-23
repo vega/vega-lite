@@ -12,8 +12,10 @@
     root.vl = factory();
   }
 }(this, function () {
-  var vl = {};
 
+// BEGINNING OF THIS MODULE
+
+var vl = {};
 var TABLE = "table";
 var INDEX = "index";
 
@@ -724,5 +726,9 @@ function text_props(e) {
   
   return p;
 }
-  return vl;
+
+return vl;
+
+// END OF THIS MODULE
+
 }));
