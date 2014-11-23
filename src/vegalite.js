@@ -77,7 +77,7 @@ function uniq(data, field) {
 }
 
 // ----
-  vl.Encoding = (function() {
+vl.Encoding = (function() {
 
   function Encoding(marktype, enc, config) {
     this._marktype = marktype;
