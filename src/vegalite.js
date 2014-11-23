@@ -31,8 +31,8 @@ var O = 1;
 var Q = 2;
 var T = 4;
 
-  vl.dataTypes = {"O": O, "Q": Q, "T": T};
-
+vl.dataTypes = {"O": O, "Q": Q, "T": T};
+  
 var DEFAULTS = {
   barSize: 10,
   bandSize: 21,
