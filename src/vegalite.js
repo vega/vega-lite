@@ -34,7 +34,7 @@ var T = 4;
 var DEFAULTS = {
   barSize: 10,
   bandSize: 21,
-  pointSize: 10,
+  pointSize: 50,
   pointShape: "circle",
   strokeWidth: 2,
   color: "steelblue",
@@ -45,7 +45,11 @@ var DEFAULTS = {
   font: "Helvetica Neue",
   fontSize: "12",
   fontWeight: "normal",
-  fontStyle: "normal"
+  fontStyle: "normal",
+  xZero: true,
+  xReverse: false,
+  yZero: true,
+  yReverse: false
 };
 
 function keys(obj) {
@@ -139,19 +143,21 @@ function uniq(data, field) {
 
 // ----
 
-  vl.toVegaSpec = function(enc, data) {
-  var mark = marks[enc.marktype()];
-  var spec = template();
-  var group = spec.marks[0];
-  
-  var mdef = markdef(mark, enc);
+
+vl.toVegaSpec = function(enc, data) {
+  var spec = template(),
+      group = spec.marks[0],
+      mark = marks[enc.marktype()],
+      mdef = markdef(mark, enc);
 
   group.marks.push(mdef);
-  
   group.scales = scales(scale_names(mdef.properties.update), enc);
-  
   group.axes = axes(axis_names(mdef.properties.update), enc);
   
+  // HACK to set chart size
+  // NOTE: this fails for plots driven by derived values (e.g., aggregates)
+  // One solution is to update Vega to support auto-sizing
+  // In the meantime, auto-padding (mostly) does the trick
   group.scales.forEach(function(s) {
     if (s.name === X && s.range !== "width") {
       spec.width = uniq(data, enc.field(X,1)) * s.bandWidth;
@@ -162,18 +168,31 @@ function uniq(data, field) {
   
   binning(spec.data[0], enc);
   
+  var lineType = enc.marktype() === "line" || enc.marktype() === "area";
+  
   // handle aggregates
   var dims = aggregates(spec.data[0], enc);
-  if (dims.length) {
+  if ((dims && dims.length) || (lineType && enc.has(COLOR))) {
     var m = group.marks;
     group.marks = [groupdef()];
     var g = group.marks[0];
     g.marks = m;
     g.from = mdef.from;
+    
+    if (!(dims && dims.length)) {
+      dims = [enc.field(COLOR)];
+    }
     g.from.transform = [{type: "facet", keys: dims}];
     delete mdef.from;
   }
-  
+
+  // auto-sort line/area values
+  if (lineType) {
+    var f = (enc.isType(X,Q|T) && enc.isType(Y,O)) ? Y : X;
+    if (!mdef.from) mdef.from = {};
+    mdef.from.transform = [{type: "sort", by: enc.field(f)}];    
+  }
+
   return spec;
 }
 
@@ -285,6 +304,8 @@ function scale_range(s, enc) {
         s.bandWidth = enc.config("bandSize");
       } else {
         s.range = "width";
+        s.zero = enc.config("xZero");
+        s.reverse = enc.config("xReverse");
       }
       s.round = true;
       s.nice = true;
@@ -294,6 +315,8 @@ function scale_range(s, enc) {
         s.bandWidth = enc.config("bandSize");
       } else {
         s.range = "height";
+        s.zero = enc.config("yZero");
+        s.reverse = enc.config("yReverse");
       }
       s.round = true;
       s.nice = true;
@@ -307,6 +330,7 @@ function scale_range(s, enc) {
         s.range = [10, 1000];
       }
       s.round = true;
+      s.zero = false;
       break;
     case SHAPE:
       s.range = "shapes";
@@ -315,7 +339,8 @@ function scale_range(s, enc) {
       if (enc.isType(s.name, O)) {
         s.range = "category10";
       } else {
-        s.range = ["#aae", "#328"];
+        s.range = ["#ddf", "steelblue"];
+        s.zero = false;
       }
       break;
     case ALPHA:
@@ -325,10 +350,7 @@ function scale_range(s, enc) {
       throw new Error("Unknown encoding name: "+s.name);
   }
 
-  if (s.name === SIZE) {
-    s.zero = false;
-  }
-  if (/* !enc.is("bar") && */enc.isType(s.name, O)) {
+  if (enc.isType(s.name, O)) {
     s.points = true;
     s.padding = 1.0;
   }
@@ -556,28 +578,28 @@ function area_props(e) {
   var p = {};
 
   // x
-  if (e.has(X)) {
+  if (e.isType(X,Q|T)) {
     p.x = {scale: X, field: e.field(X)};
-  } else if (!e.has(X)) {
-    p.x = {value: 0};
-  }
-  // x2
-  if (e.isType(X,Q)) {
-    p.x2 = {scale: X, value: 0};
-    p.orient = {value: "horizontal"};
-  }
-
-  // y
-  if (e.has(Y)) {
-    p.y = {scale: Y, field: e.field(Y)};
-  } else if (!e.has(Y)) {
-    p.y = {group: "height"};
-  }
-  // y2
-  if (e.isType(Y,Q)) {
-    p.y2 = {scale: Y, value: 0};
+    if (!e.isType(Y,Q|T) && e.has(Y)) {
+      p.x2 = {scale: X, value: 0};
+      p.orient = {value: "horizontal"};
+    }
+  } else if (e.has(X)) {
+    p.x = {scale: X, field: e.field(X)};
+  } else {
+    p.x = {value: 0}; 
   }
   
+  // y
+  if (e.isType(Y,Q|T)) {
+    p.y = {scale: Y, field: e.field(Y)};
+    p.y2 = {scale: Y, value: 0};
+  } else if (e.has(Y)) {
+    p.y = {scale: Y, field: e.field(Y)};
+  } else {
+    p.y = {group: "height"};
+  }
+
   // stroke
   if (e.has(COLOR)) {
     p.fill = {scale: COLOR, field: e.field(COLOR)};
