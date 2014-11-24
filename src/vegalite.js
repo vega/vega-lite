@@ -34,7 +34,7 @@ var T = 4;
 vl.dataTypes = {"O": O, "Q": Q, "T": T};
 
 // inverse mapping e.g., 1=>O
-vl.dataTypeNames = ["O","Q","T"].reduce(function(r, x){ r[x] = vl.dataTypes[x]; return r;},{});
+vl.dataTypeNames = ["O","Q","T"].reduce(function(r, x){ r[vl.dataTypes[x]] = x; return r;},{});
 
 var DEFAULTS = {
   barSize: 10,
