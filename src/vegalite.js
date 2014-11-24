@@ -1,3 +1,21 @@
+(function (root, factory) {
+  if (typeof define === 'function' && define.amd) {
+    // AMD. Register as an anonymous module.
+    define([], factory);
+  } else if (typeof exports === 'object') {
+    // Node. Does not work with strict CommonJS, but
+    // only CommonJS-like environments that support module.exports,
+    // like Node.
+    module.exports = factory();
+  } else {
+    // Browser globals (root is window)
+    root.vl = factory();
+  }
+}(this, function () {
+
+// BEGINNING OF THIS MODULE
+
+var vl = {};
 var TABLE = "table";
 var INDEX = "index";
 
@@ -13,6 +31,8 @@ var O = 1;
 var Q = 2;
 var T = 4;
 
+vl.dataTypes = {"O": O, "Q": Q, "T": T};
+  
 var DEFAULTS = {
   barSize: 10,
   bandSize: 21,
@@ -59,7 +79,7 @@ function uniq(data, field) {
 }
 
 // ----
-var Encoding = (function() {
+vl.Encoding = (function() {
 
   function Encoding(marktype, enc, config) {
     this._marktype = marktype;
@@ -125,7 +145,8 @@ var Encoding = (function() {
 
 // ----
 
-function toVegaSpec(enc, data) {
+
+vl.toVegaSpec = function(enc, data) {
   var spec = template(),
       group = spec.marks[0],
       mark = marks[enc.marktype()],
@@ -705,3 +726,9 @@ function text_props(e) {
   
   return p;
 }
+
+return vl;
+
+// END OF THIS MODULE
+
+}));

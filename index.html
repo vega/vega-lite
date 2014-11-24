@@ -59,7 +59,8 @@ function load(url) {
   d3.json(url, function(err, data) {
     var schema = {};
     for (var k in data[0]) {
-      schema[k] = (typeof data[0][k] === "number") ? Q : O;
+      //TODO(kanitw): better type inference here
+      schema[k] = (typeof data[0][k] === "number") ? vl.dataTypes.Q : vl.dataTypes.O;
     }
     run(data, schema);
   });
@@ -158,7 +159,7 @@ function run(data, schema) {
 function update() {
   var enc = encodings();
   self.enc = enc; // DEBUG
-  var s = toVegaSpec(enc, data);
+  var s = vl.toVegaSpec(enc, data);
   parse(s, data);
 }
 
@@ -167,7 +168,7 @@ function encodings() {
       bin = null,
       enc = {};
 
-  var types = {"O": O, "Q": Q, "T": T};
+  var types = vl.dataTypes;
 
   var s = d3.select("select.mark").node();
   marktype = s.options[s.selectedIndex].value;
@@ -196,7 +197,7 @@ function encodings() {
     }
   });
 
-  return new Encoding(marktype, enc);
+  return new vl.Encoding(marktype, enc);
 }
 
 function parse(spec, data) {
