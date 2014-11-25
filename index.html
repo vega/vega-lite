@@ -180,15 +180,16 @@ function encodings() {
     
     var s = d3.select(this).select("select.type").node();
     var t = s.options[s.selectedIndex].value;
+
+    var s = d3.select(this).select("select.aggr").node();
+    var a = s.options[s.selectedIndex].value;
     
-    if (v !== "-") {
+    if (v !== "-" || a === "count") {
       enc[x] = {
         name: v,
-        type: (t === "-" ? schema[v] : types[t])
+        type: (a==="count" ? types.Q : t==="-" ? schema[v] : types[t])
       };
 
-      var s = d3.select(this).select("select.aggr").node();
-      var a = s.options[s.selectedIndex].value;
       if (a === "bin") {
         enc[x].bin = true;
       } else if (a !== "-") {
@@ -202,9 +203,9 @@ function encodings() {
 
 function parse(spec, data) {
   console.log(JSON.stringify(spec, null, 2));
-  var vis;
+  self.vis = null; // DEBUG
   vg.parse.spec(spec, function(chart) {
-    vis = chart({el:"#vis", renderer: "svg"});
+    self.vis = chart({el:"#vis", renderer: "svg"});
     vis.data({table: data}).update();
   });
 }

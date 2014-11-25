@@ -1,4 +1,4 @@
-(function (root, factory) {
+(function(root, factory) {
   if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
     define([], factory);
@@ -11,12 +11,13 @@
     // Browser globals (root is window)
     root.vl = factory();
   }
-}(this, function () {
+}(this, function() {
 
 // BEGINNING OF THIS MODULE
 
 var vl = {};
 var TABLE = "table";
+var STACKED = "stacked";
 var INDEX = "index";
 
 var X = "x";
@@ -34,7 +35,9 @@ var T = 4;
 vl.dataTypes = {"O": O, "Q": Q, "T": T};
 
 // inverse mapping e.g., 1=>O
-vl.dataTypeNames = ["O","Q","T"].reduce(function(r, x){ r[vl.dataTypes[x]] = x; return r;},{});
+vl.dataTypeNames = ["O","Q","T"].reduce(function(r,x) {
+  r[vl.dataTypes[x]] = x; return r;
+},{});
 
 var DEFAULTS = {
   barSize: 10,
@@ -67,6 +70,13 @@ function vals(obj) {
   var v = [], x;
   for (x in obj) v.push(obj[x]);
   return v;
+}
+
+function find(list, pattern) {
+  var l = list.filter(function(x) {
+    return x[pattern.name] === pattern.value;
+  });
+  return l.length && l[0] || null;
 }
 
 function uniq(data, field) {
@@ -202,24 +212,25 @@ vl.toVegaSpec = function(enc, data) {
       spec.height = uniq(data, enc.field(Y,1)) * s.bandWidth;
     }
   });
-  
+
   binning(spec.data[0], enc);
   
-  var lineType = enc.marktype() === "line" || enc.marktype() === "area";
+  var lineType = marks[enc.marktype()].line;
   
   // handle aggregates
   var dims = aggregates(spec.data[0], enc);
-  if ((dims && dims.length) || (lineType && enc.has(COLOR))) {
+  if (dims || (lineType && enc.has(COLOR))) {
+    if (dims) stacking(spec, enc, mdef);
+
     var m = group.marks;
     group.marks = [groupdef()];
     var g = group.marks[0];
     g.marks = m;
     g.from = mdef.from;
     
-    if (!(dims && dims.length)) {
-      dims = [enc.field(COLOR)];
-    }
-    g.from.transform = [{type: "facet", keys: dims}];
+    if (!dims) dims = [enc.field(COLOR)];
+    (g.from.transform || (g.from.transform=[]))
+      .unshift({type: "facet", keys: dims});
     delete mdef.from;
   }
 
@@ -277,6 +288,50 @@ function aggregates(spec, enc) {
     fields: meas
   });
   return vals(detail);
+}
+
+function stacking(spec, enc, mdef) {
+  if (!marks[enc.marktype()].stack) return;
+
+  var dim = X, val = Y, idx = 1;
+  if (enc.isType(X,Q|T) && !enc.isType(Y,Q|T) && enc.has(Y)) {
+    dim = Y;
+    val = X;
+    idx = 0;
+  }
+
+  // add transform to compute sums for scale
+  spec.data.push({
+    name: STACKED,
+    source: TABLE,
+    transform: [{
+      type: "aggregate",
+      groupby: [enc.field(dim)],
+      fields: [{op: "sum", field: enc.field(val)}]
+    }]
+  });
+
+  // update scale mapping
+  var s = find(spec.marks[0].scales, {name:"name", value:val});
+  s.domain = {
+    data: STACKED,
+    field: "data.sum_" + enc.field(val, true)
+  };
+
+  // add stack transform to mark
+  mdef.from.transform = [{
+    type: "stack",
+    point: enc.field(dim),
+    height: enc.field(val),
+    output: {y1: val, y0: val+"2"}
+  }];
+
+  // super hack-ish
+  // consolidate into modular mark properties?
+  mdef.properties.enter[val] = {scale: val, field: val};
+  mdef.properties.enter[val+"2"] = {scale: val, field: val+"2"};
+  mdef.properties.update[val] = mdef.properties.enter[val];
+  mdef.properties.update[val+"2"] = mdef.properties.enter[val+"2"];
 }
 
 function axis_names(props) {
@@ -434,16 +489,20 @@ var marks = {};
 
 marks.bar = {
   type: "rect",
+  stack: true,
   prop: bar_props
 };
 
 marks.line = {
   type: "line",
+  line: true,
   prop: line_props
 };
 
 marks.area = {
   type: "area",
+  stack: true,
+  line: true,
   prop: area_props
 };
 
