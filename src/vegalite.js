@@ -220,18 +220,21 @@ vl.toVegaSpec = function(enc, data) {
   // handle aggregates
   var dims = aggregates(spec.data[0], enc);
   if (dims || (lineType && enc.has(COLOR))) {
-    if (dims) stacking(spec, enc, mdef);
+    var stack = dims && stacking(spec, enc, mdef);
 
     var m = group.marks;
     group.marks = [groupdef()];
     var g = group.marks[0];
     g.marks = m;
     g.from = mdef.from;
-    
-    if (!dims) dims = [enc.field(COLOR)];
-    (g.from.transform || (g.from.transform=[]))
-      .unshift({type: "facet", keys: dims});
     delete mdef.from;
+
+    var trans = (g.from.transform || (g.from.transform=[]));
+    if (!dims) dims = [enc.field(COLOR)];
+    trans.unshift({type: "facet", keys: dims});
+    if (stack && enc.has(COLOR)) {
+      trans.unshift({type: "sort", by: enc.field(COLOR)});
+    }
   }
 
   // auto-sort line/area values
@@ -291,7 +294,7 @@ function aggregates(spec, enc) {
 }
 
 function stacking(spec, enc, mdef) {
-  if (!marks[enc.marktype()].stack) return;
+  if (!marks[enc.marktype()].stack) return false;
 
   var dim = X, val = Y, idx = 1;
   if (enc.isType(X,Q|T) && !enc.isType(Y,Q|T) && enc.has(Y)) {
@@ -332,6 +335,7 @@ function stacking(spec, enc, mdef) {
   mdef.properties.enter[val+"2"] = {scale: val, field: val+"2"};
   mdef.properties.update[val] = mdef.properties.enter[val];
   mdef.properties.update[val+"2"] = mdef.properties.enter[val+"2"];
+  return true;
 }
 
 function axis_names(props) {
