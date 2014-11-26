@@ -211,16 +211,17 @@ function init() {
 
 
   // Config Pane
+  config.append("input").attr("type","button").attr("value","Update Config")
+    .on("click", update);
 
   var configs = config.selectAll("div")
     .data(vl.keys(vl.DEFAULTS))
-    .enter().append("div").attr("class", "config")
-      .append("label")
+    .enter().append("div").attr("class", "cfg")
+      .append("label");
 
   configs.append("span").text(function(d){return d;});
-  configs.append("input").attr("placeholder", function(d){
-    return vl.DEFAULTS[d];
-  });
+  configs.append("input")
+    .attr("placeholder", function(d){return vl.DEFAULTS[d];});
 
 
 }
@@ -241,15 +242,16 @@ function run(data, schema) {
 function update() {
   var enc = encodings();
   self.enc = enc; // DEBUG
-  self.s = vl.toVegaSpec(enc, data);
+  self.spec = vl.toVegaSpec(enc, data);
   d3.select("textarea.code").text(self.enc.toJSON("  "));
-  parse(self.s, data);
+  parse(self.spec, data);
 }
 
 function encodings() {
   var marktype = "bar",
       bin = null,
-      enc = {};
+      enc = {},
+      cfg = {};
 
   var types = vl.dataTypes;
 
@@ -281,11 +283,16 @@ function encodings() {
     }
   });
 
-  return new vl.Encoding(marktype, enc);
+  d3.selectAll("#ctrl div.cfg input").each(function(d){
+    var val = this.value;
+    if(val && val.length > 0){
+      cfg[d] = {value: val};
+    }
+  });
+  return new vl.Encoding(marktype, enc, cfg);
 }
 
 function parse(spec, data) {
-  console.log(JSON.stringify(spec, null, 2));
   self.vis = null; // DEBUG
   vg.parse.spec(spec, function(chart) {
     self.vis = chart({el:"#vis", renderer: "svg"});
