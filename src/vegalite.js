@@ -40,6 +40,12 @@ vl.dataTypeNames = ["O","Q","T"].reduce(function(r,x) {
 },{});
 
 var DEFAULTS = {
+  // template
+  dataUrl: undefined, //for easier export
+  width: 300,
+  height: 300,
+
+  // marks
   barSize: 10,
   bandSize: 21,
   pointSize: 50,
@@ -54,6 +60,8 @@ var DEFAULTS = {
   fontSize: "12",
   fontWeight: "normal",
   fontStyle: "normal",
+
+  // scales
   xZero: true,
   xReverse: false,
   yZero: true,
@@ -197,7 +205,7 @@ vl.Encoding = (function() {
 
 
 vl.toVegaSpec = function(enc, data) {
-  var spec = template(),
+  var spec = template(enc),
       group = spec.marks[0],
       mark = marks[enc.marktype()],
       mdef = markdef(mark, enc);
@@ -482,12 +490,16 @@ function groupdef() {
   };
 }
 
-function template() {
+function template(enc) {
+  var data = {name:TABLE},
+    dataUrl = enc.config("dataUrl");
+  if(dataUrl) data.url = dataUrl;
+
   return {
-    width: 300,
-    height: 300,
+    width: enc.config("width"),
+    height: enc.config("height"),
     padding: "auto",
-    data: [{name: TABLE}],
+    data: [data],
     marks: [groupdef()]
   };
 }
