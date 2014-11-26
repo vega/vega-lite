@@ -123,7 +123,7 @@ vl.Encoding = (function() {
   // get "field" property for vega
   proto.field = function(x, pure) {
     if (!this.has(x)) return null;
-    
+
     var f = (pure ? "" : "data.");
 
     if (this._enc[x].aggr === "count") {
@@ -136,7 +136,7 @@ vl.Encoding = (function() {
       return f + this._enc[x].name;
     }
   };
-  
+
   proto.forEach = function(f) {
     var i=0, k;
     for (k in this._enc) {
@@ -153,24 +153,29 @@ vl.Encoding = (function() {
     if (xt == null) return false;
     return (xt & t) > 0;
   };
-  
+
   proto.config = function(name) {
     return this._cfg[name];
   };
 
-  proto.toJSON = function(){
-    var enc = duplicate(this._enc);
+  proto.toJSON = function(space, excludeConfig){
+    var enc = duplicate(this._enc), json;
 
     // convert type's bitcode to type name
     for(var e in enc){
       enc[e].type = vl.dataTypeNames[enc[e].type];
     }
 
-    return JSON.stringify({
+    json = {
       marktype: this._marktype,
-      enc: enc,
-      cfg: this._cfg
-    });
+      enc: enc
+    }
+
+    if(!excludeConfig){
+      json.cfg = this._cfg
+    }
+
+    return JSON.stringify(json, null, space);
   };
 
   Encoding.parseJSON = function(json){
@@ -183,7 +188,7 @@ vl.Encoding = (function() {
 
     return new Encoding(json.marktype, enc, json.cfg);
   }
-  
+
   return Encoding;
 
 })();
@@ -200,7 +205,7 @@ vl.toVegaSpec = function(enc, data) {
   group.marks.push(mdef);
   group.scales = scales(scale_names(mdef.properties.update), enc);
   group.axes = axes(axis_names(mdef.properties.update), enc);
-  
+
   // HACK to set chart size
   // NOTE: this fails for plots driven by derived values (e.g., aggregates)
   // One solution is to update Vega to support auto-sizing
@@ -214,9 +219,9 @@ vl.toVegaSpec = function(enc, data) {
   });
 
   binning(spec.data[0], enc);
-  
+
   var lineType = marks[enc.marktype()].line;
-  
+
   // handle aggregates
   var dims = aggregates(spec.data[0], enc);
   if (dims || (lineType && enc.has(COLOR))) {
@@ -241,7 +246,7 @@ vl.toVegaSpec = function(enc, data) {
   if (lineType) {
     var f = (enc.isType(X,Q|T) && enc.isType(Y,O)) ? Y : X;
     if (!mdef.from) mdef.from = {};
-    mdef.from.transform = [{type: "sort", by: enc.field(f)}];    
+    mdef.from.transform = [{type: "sort", by: enc.field(f)}];
   }
 
   return spec;
@@ -253,7 +258,7 @@ function binning(spec, enc) {
     if (d.bin) bins[d.name] = d.name;
   });
   bins = keys(bins);
-  
+
   if (bins.length === 0) return false;
 
   if (!spec.transform) spec.transform = [];
@@ -281,7 +286,7 @@ function aggregates(spec, enc) {
   });
   dims = vals(dims);
   meas = vals(meas);
-  
+
   if (meas.length === 0) return false;
 
   if (!spec.transform) spec.transform = [];
@@ -375,7 +380,7 @@ function scales(names, enc) {
     }
 
     scale_range(s, enc);
-    
+
     return (a.push(s), a);
   }, []);
 }
@@ -542,7 +547,7 @@ function bar_props(e) {
   } else if (e.has(X)) {
     p.xc = {scale: X, field: e.field(X)};
   } else {
-    p.xc = {value: 0}; 
+    p.xc = {value: 0};
   }
 
   // y
@@ -583,7 +588,7 @@ function bar_props(e) {
   } else if (!e.has(COLOR)) {
     p.fill = {value: e.config("color")};
   }
-  
+
   // alpha
   if (e.has(ALPHA)) {
     p.opacity = {scale: ALPHA, field: e.field(ALPHA)};
@@ -615,7 +620,7 @@ function point_props(e) {
   } else if (!e.has(SIZE)) {
     p.size = {value: e.config("pointSize")};
   }
-  
+
   // shape
   if (e.has(SHAPE)) {
     p.shape = {scale: SHAPE, field: e.field(SHAPE)};
@@ -629,12 +634,12 @@ function point_props(e) {
   } else if (!e.has(COLOR)) {
     p.stroke = {value: e.config("color")};
   }
-  
+
   // alpha
   if (e.has(ALPHA)) {
     p.opacity = {scale: ALPHA, field: e.field(ALPHA)};
   }
-  
+
   p.strokeWidth = {value: e.config("strokeWidth")};
 
   return p;
@@ -656,19 +661,19 @@ function line_props(e) {
   } else if (!e.has(Y)) {
     p.y = {group: "height"};
   }
-  
+
   // stroke
   if (e.has(COLOR)) {
     p.stroke = {scale: COLOR, field: e.field(COLOR)};
   } else if (!e.has(COLOR)) {
     p.stroke = {value: e.config("color")};
   }
-  
+
   // alpha
   if (e.has(ALPHA)) {
     p.opacity = {scale: ALPHA, field: e.field(ALPHA)};
   }
-  
+
   p.strokeWidth = {value: e.config("strokeWidth")};
 
   return p;
@@ -687,9 +692,9 @@ function area_props(e) {
   } else if (e.has(X)) {
     p.x = {scale: X, field: e.field(X)};
   } else {
-    p.x = {value: 0}; 
+    p.x = {value: 0};
   }
-  
+
   // y
   if (e.isType(Y,Q|T)) {
     p.y = {scale: Y, field: e.field(Y)};
@@ -706,7 +711,7 @@ function area_props(e) {
   } else if (!e.has(COLOR)) {
     p.fill = {value: e.config("color")};
   }
-  
+
   // alpha
   if (e.has(ALPHA)) {
     p.opacity = {scale: ALPHA, field: e.field(ALPHA)};
@@ -739,7 +744,7 @@ function filled_point_props(shape) {
     } else if (!e.has(X)) {
       p.size = {value: e.config("pointSize")};
     }
-  
+
     // shape
     p.shape = {value: shape};
 
@@ -749,7 +754,7 @@ function filled_point_props(shape) {
     } else if (!e.has(COLOR)) {
       p.fill = {value: e.config("color")};
     }
-  
+
     // alpha
     if (e.has(ALPHA)) {
       p.opacity = {scale: ALPHA, field: e.field(ALPHA)};
@@ -801,12 +806,12 @@ function text_props(e) {
   } else {
     p.text = {value: "Abc"};
   }
-  
+
   p.font = {value: e.config("font")};
   p.fontWeight = {value: e.config("fontWeight")};
   p.fontStyle = {value: e.config("fontStyle")};
   p.baseline = {value: e.config("textBaseline")};
-  
+
   // align
   if (e.has(X)) {
     if (e.isType(X,O)) {
@@ -821,7 +826,7 @@ function text_props(e) {
   } else {
     p.align = {value: e.config("textAlign")};
   }
-  
+
   return p;
 }
 
