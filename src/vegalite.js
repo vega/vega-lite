@@ -39,7 +39,7 @@ vl.dataTypeNames = ["O","Q","T"].reduce(function(r,x) {
   r[vl.dataTypes[x]] = x; return r;
 },{});
 
-var DEFAULTS = {
+vl.DEFAULTS = {
   // template
   dataUrl: undefined, //for easier export
   width: 300,
@@ -68,13 +68,13 @@ var DEFAULTS = {
   yReverse: false
 };
 
-function keys(obj) {
+vl.keys = function (obj) {
   var k = [], x;
   for (x in obj) k.push(x);
   return k;
 }
 
-function vals(obj) {
+vl.vals = function (obj) {
   var v = [], x;
   for (x in obj) v.push(obj[x]);
   return v;
@@ -110,8 +110,8 @@ vl.Encoding = (function() {
     this._marktype = marktype;
     this._enc = enc;
     this._cfg = config
-      ? Object.create(DEFAULTS, config)
-      : DEFAULTS;
+      ? Object.create(vl.DEFAULTS, config)
+      : vl.DEFAULTS;
   }
 
   var proto = Encoding.prototype;
@@ -265,7 +265,7 @@ function binning(spec, enc) {
   enc.forEach(function(vv, d) {
     if (d.bin) bins[d.name] = d.name;
   });
-  bins = keys(bins);
+  bins = vl.keys(bins);
 
   if (bins.length === 0) return false;
 
@@ -292,8 +292,8 @@ function aggregates(spec, enc) {
       }
     }
   });
-  dims = vals(dims);
-  meas = vals(meas);
+  dims = vl.vals(dims);
+  meas = vl.vals(meas);
 
   if (meas.length === 0) return false;
 
@@ -303,7 +303,7 @@ function aggregates(spec, enc) {
     groupby: dims,
     fields: meas
   });
-  return vals(detail);
+  return vl.vals(detail);
 }
 
 function stacking(spec, enc, mdef) {
@@ -352,7 +352,7 @@ function stacking(spec, enc, mdef) {
 }
 
 function axis_names(props) {
-  return keys(keys(props).reduce(function(a, x) {
+  return vl.keys(vl.keys(props).reduce(function(a, x) {
     var s = props[x].scale;
     if (s===X || s===Y) a[props[x].scale] = 1;
     return a;
@@ -370,7 +370,7 @@ function axes(names, enc) {
 }
 
 function scale_names(props) {
-  return keys(keys(props).reduce(function(a, x) {
+  return vl.keys(vl.keys(props).reduce(function(a, x) {
     if (props[x].scale) a[props[x].scale] = 1;
     return a;
   }, {}));
