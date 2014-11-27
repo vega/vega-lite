@@ -4,6 +4,7 @@
   <title>Vegalite UI</title>
   <script src="lib/d3.v3.min.js"></script>
   <script src="lib/vega.js"></script>
+  <script src="lib/json3-nicestringify.js"></script>
   <script src="src/aggregate.js"></script>
   <script src="src/bin.js"></script>
   <script src="src/vegalite.js"></script>
@@ -254,7 +255,7 @@ function update() {
   self.enc = enc; // DEBUG
   self.spec = vl.toVegaSpec(enc, data);
   d3.select("textarea.vlcode").text(self.enc.toJSON("  "));
-  d3.select("textarea.vgcode").text(JSON.stringify(self.spec, null, "  "));
+  d3.select("textarea.vgcode").text(JSON.stringify(self.spec, null, "  ", 60));
   parse(self.spec, data);
 }
 
