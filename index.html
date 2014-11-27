@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <title>Vegalite UI</title>
   <script src="lib/d3.v3.min.js"></script>
   <script src="lib/vega.js"></script>
   <script src="src/aggregate.js"></script>
@@ -10,21 +11,44 @@
 * {
   font-family: Helvetica Neue;
 }
-.mark {
-  margin-bottom: 0.3em;
-}
 
 #ctrl {
   background-color: #eee;
   padding: 0.5em;
   margin-bottom: 1em;
+  float:left;
+  width: 300px;
 }
+
+#ctrl .mark {
+  margin-bottom: 0.3em;
+}
+#ctrl .toggles {
+  margin-top: 0.3em;
+}
+
+#ctrl .main{
+  margin-bottom: 1em;
+}
+
+#ctrl textarea.code{
+  width: 290px;
+  height: 400px;
+  padding-right: 0.3em;
+}
+
 #ctrl span {
   display: inline-block;
   font-weight: 500;
   font-size: 14px;
   width: 60px;
 }
+
+#ctrl label span{
+  font-size: 12px;
+  width: 100px;
+}
+
 #ctrl select {
   width: 80px;
 }
@@ -37,7 +61,12 @@
 #ctrl span.header { width: 80px; }
 #ctrl span.header.h0 { width: 60px; }
 #ctrl span.header.h3 { width: 50px; }
-  </style>
+
+#vis {
+  margin-left: 320px;
+}
+</style>
+
 </head>
 <body>
   <div id="ctrl">
@@ -71,8 +100,15 @@ function load(url) {
 function init() {
   var root = d3.select("#ctrl");
 
+  var main = root.append("div").attr("class","main");
+  var inspect = root.append("div").attr("class", "main")
+    .style("display","none");
+  var config = root.append("div").attr("class","main")
+    .style("display","none");
+
+
   // data set selector
-  var dsel = root.append("div");
+  var dsel = main.append("div");
   dsel.append("span").text("data");
   dsel.append("select")
     .attr("class", "data")
@@ -87,7 +123,7 @@ function init() {
       .text(function(d) { return d; });
 
   // choose mark type
-  var mark = root.append("div").attr("class", "mark");
+  var mark = main.append("div").attr("class", "mark");
   mark.append("span").text("mark");
   mark.append("select")
     .attr("class", "mark")
@@ -99,14 +135,14 @@ function init() {
       .text(function(d) { return d; });
 
   // header labels
-  var head = root.append("div").selectAll("span.header")
+  var head = main.append("div").selectAll("span.header")
       .data(["","function","data","type"])
     .enter().append("span")
       .attr("class", function(d,i) { return "header h"+i; })
       .text(function(d) { return d; });
 
   // controls for each visual encoding variable
-  var ctrl = root.selectAll("div.enc")
+  var ctrl = main.selectAll("div.enc")
       .data(["x","y","size","color","alpha","shape","text"])
     .enter().append("div").attr("class", "enc");
 
@@ -141,6 +177,53 @@ function init() {
     .enter().append("option")
       .attr("value", function(d) { return d; })
       .text(function(d) { return d; });
+
+  // Toggle Inspect / Config Form
+  var toggles = main.append("div").attr("class","toggles");
+
+  var inspectToggle = toggles.append("label");
+  inspectToggle.append("input").attr("type", "checkbox")
+    .on("change", function(){
+      inspect.style("display", this.checked ? "block" : "none");
+    });
+  inspectToggle.append("span").text("Export");
+
+  var configToggle = toggles.append("label");
+  configToggle.append("input").attr("type", "checkbox")
+    .on("change", function(){
+      config.style("display", this.checked ? "block" : "none");
+    });
+  configToggle.append("span").text("Config");
+
+  // Inspect Pane
+
+  var textarea = inspect.append("textarea").attr("class", "code");
+  var cmd = inspect.append("div");
+  cmd.append("input").attr("type","button").attr("value","Export Encoding")
+    .on("click", function(){
+      textarea.text(self.enc.toJSON("  "));
+    });
+
+  cmd.append("input").attr("type","button").attr("value","Export Vega")
+    .on("click", function(){
+      textarea.text(JSON.stringify(self.s, null, "  "));
+    });
+
+
+  // Config Pane
+  config.append("input").attr("type","button").attr("value","Update Config")
+    .on("click", update);
+
+  var configs = config.selectAll("div")
+    .data(vl.keys(vl.DEFAULTS))
+    .enter().append("div").attr("class", "cfg")
+      .append("label");
+
+  configs.append("span").text(function(d){return d;});
+  configs.append("input")
+    .attr("placeholder", function(d){return vl.DEFAULTS[d];});
+
+
 }
 
 function run(data, schema) {
@@ -159,14 +242,16 @@ function run(data, schema) {
 function update() {
   var enc = encodings();
   self.enc = enc; // DEBUG
-  var s = vl.toVegaSpec(enc, data);
-  parse(s, data);
+  self.spec = vl.toVegaSpec(enc, data);
+  d3.select("textarea.code").text(self.enc.toJSON("  "));
+  parse(self.spec, data);
 }
 
 function encodings() {
   var marktype = "bar",
       bin = null,
-      enc = {};
+      enc = {},
+      cfg = {};
 
   var types = vl.dataTypes;
 
@@ -174,16 +259,16 @@ function encodings() {
   marktype = s.options[s.selectedIndex].value;
 
   d3.selectAll("#ctrl div.enc").each(function(d) {
-    var x = d;      
+    var x = d;
     var s = d3.select(this).select("select.shelf").node();
     var v = s.options[s.selectedIndex].value;
-    
+
     var s = d3.select(this).select("select.type").node();
     var t = s.options[s.selectedIndex].value;
 
     var s = d3.select(this).select("select.aggr").node();
     var a = s.options[s.selectedIndex].value;
-    
+
     if (v !== "-" || a === "count") {
       enc[x] = {
         name: v,
@@ -198,11 +283,16 @@ function encodings() {
     }
   });
 
-  return new vl.Encoding(marktype, enc);
+  d3.selectAll("#ctrl div.cfg input").each(function(d){
+    var val = this.value;
+    if(val && val.length > 0){
+      cfg[d] = {value: val};
+    }
+  });
+  return new vl.Encoding(marktype, enc, cfg);
 }
 
 function parse(spec, data) {
-  console.log(JSON.stringify(spec, null, 2));
   self.vis = null; // DEBUG
   vg.parse.spec(spec, function(chart) {
     self.vis = chart({el:"#vis", renderer: "svg"});
