@@ -244,7 +244,8 @@ function init() {
   var inclDiv = toggles.append("div");
   inclDiv.append("span").attr("class","label");
   var inclData = inclDiv.append("label");
-  inclData.append("input").attr({"type": "checkbox", "id":"inclData"});
+  inclData.append("input").attr({"type": "checkbox", "id":"inclData"})
+    .on("change", update);
   inclData.append("span").text("include data url in code");
 
   // Code Pane
