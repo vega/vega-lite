@@ -107,7 +107,19 @@ function load(url) {
 
 // ------
 
+
+function getParams() {
+  return location.search.slice(1)
+    .split("&")
+    .map(function(x) { return x.split("="); })
+    .reduce(function(a, b) {
+      a[b[0]] = b[1]; return a;
+    }, {});
+};
+
 function init() {
+  var params = getParams();
+
   var root = d3.select("#ctrl");
 
   var main = root.append("div").attr("class","main");
@@ -132,6 +144,7 @@ function init() {
       .data(datasets)
     .enter().append("option")
       .attr("value", function(d) { return d; })
+      .attr("selected", function(d){ return d==params.data;})
       .text(function(d) { return d; });
 
   // choose mark type
@@ -235,6 +248,10 @@ function init() {
   configs.append("span").attr("class","label").text(function(d){return d;});
   configs.append("input")
     .attr("placeholder", function(d){return vl.DEFAULTS[d];});
+
+  if(params.data){
+    load(params.data);
+  }
 }
 
 function run(data, schema) {
