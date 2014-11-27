@@ -27,6 +27,10 @@
 #ctrl .toggles {
   margin-top: 0.8em;
 }
+#ctrl .shorthand {
+  margin-bottom: 0.5em;
+  width:290px;
+}
 
 #ctrl .main{
   margin-bottom: 1em;
@@ -240,8 +244,8 @@ function init() {
 
   // Code Pane
   code.append("span").text("Shorthand");
-  code.append("div").style("margin-bottom","10px")
-    .append("small").attr("class", "shorthand");
+  code.append("div")
+    .append("input").attr({"class": "shorthand", "type": "text", "readonly": "true"});
 
   code.append("span").text("Vegalite");
   var vlTextarea = code.append("textarea").attr("class", "vlcode");
@@ -292,7 +296,7 @@ function update() {
     enc = encodings({dataUrl: {value:self.dataUrl}});
     spec = vl.toVegaSpec(enc, data);
   }
-  d3.select(".shorthand").text(enc.toShorthand());
+  d3.select(".shorthand").attr("value", enc.toShorthand());
   d3.select("textarea.vlcode").text(enc.toJSON("  "));
   d3.select("textarea.vgcode").text(JSON.stringify(spec, null, "  ", 60));
   parse(self.spec, data);
