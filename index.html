@@ -150,7 +150,6 @@ function init() {
     .enter().append("option")
       .attr("value", function(d) { return d; })
       .attr("selected", function(d){
-        console.log("params.data:", params.data, "d:", d );
         return d==params.data ? true : undefined;
       })
       .text(function(d) { return d; });
@@ -240,6 +239,9 @@ function init() {
 
 
   // Code Pane
+  code.append("span").text("Shorthand");
+  code.append("div").style("margin-bottom","10px")
+    .append("small").attr("class", "shorthand");
 
   code.append("span").text("Vegalite");
   var vlTextarea = code.append("textarea").attr("class", "vlcode");
@@ -290,6 +292,7 @@ function update() {
     enc = encodings({dataUrl: {value:self.dataUrl}});
     spec = vl.toVegaSpec(enc, data);
   }
+  d3.select(".shorthand").text(enc.toShorthand());
   d3.select("textarea.vlcode").text(enc.toJSON("  "));
   d3.select("textarea.vgcode").text(JSON.stringify(spec, null, "  ", 60));
   parse(self.spec, data);

@@ -186,6 +186,18 @@ vl.Encoding = (function() {
     return JSON.stringify(json, null, space);
   };
 
+  proto.toShorthand = function(){
+    var enc = this._enc;
+    return this._marktype + "__" + vl.keys(enc).map(function(e){
+      var v = enc[e];
+        return e + "-" +
+          (v.aggr ? v.aggr+"_" : "") +
+          (v.bin ? "bin_" : "") +
+          v.name + "-" + vl.dataTypeNames[v.type];
+      }
+    ).join("__");
+  }
+
   Encoding.parseJSON = function(json){
     var enc = duplicate(json.enc);
 
