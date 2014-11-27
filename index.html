@@ -31,16 +31,25 @@
   margin-bottom: 1em;
 }
 
-#ctrl textarea.code{
+#ctrl textarea.vlcode{
   width: 290px;
-  height: 400px;
+  height: 175px;
   padding-right: 0.3em;
 }
 
-#ctrl span {
-  display: inline-block;
+#ctrl textarea.vgcode{
+  width: 290px;
+  height: 350px;
+  padding-right: 0.3em;
+}
+
+#ctrl span{
   font-weight: 500;
   font-size: 14px;
+}
+
+#ctrl span.label {
+  display: inline-block;
   width: 60px;
 }
 
@@ -101,15 +110,17 @@ function init() {
   var root = d3.select("#ctrl");
 
   var main = root.append("div").attr("class","main");
-  var inspect = root.append("div").attr("class", "main")
+  var vlcode = root.append("div").attr("class", "main")
+    .style("display","none");
+  var vgcode = root.append("div").attr("class", "main")
     .style("display","none");
   var config = root.append("div").attr("class","main")
     .style("display","none");
 
 
   // data set selector
-  var dsel = main.append("div");
-  dsel.append("span").text("data");
+  var dsel = main.append("div").attr("class","dsel");
+  dsel.append("span").attr("class","label").text("data");
   dsel.append("select")
     .attr("class", "data")
     .on("change", function() {
@@ -124,7 +135,7 @@ function init() {
 
   // choose mark type
   var mark = main.append("div").attr("class", "mark");
-  mark.append("span").text("mark");
+  mark.append("span").attr("class","label").text("mark");
   mark.append("select")
     .attr("class", "mark")
     .on("change", update)
@@ -138,7 +149,7 @@ function init() {
   var head = main.append("div").selectAll("span.header")
       .data(["","function","data","type"])
     .enter().append("span")
-      .attr("class", function(d,i) { return "header h"+i; })
+      .attr("class", function(d,i) { return "header label h"+i; })
       .text(function(d) { return d; });
 
   // controls for each visual encoding variable
@@ -146,7 +157,7 @@ function init() {
       .data(["x","y","size","color","alpha","shape","text"])
     .enter().append("div").attr("class", "enc");
 
-  ctrl.append("span").text(function(d) { return d; });
+  ctrl.append("span").attr("class","label").text(function(d) { return d; });
 
   // aggregation function
   ctrl.append("select")
@@ -181,12 +192,20 @@ function init() {
   // Toggle Inspect / Config Form
   var toggles = main.append("div").attr("class","toggles");
 
-  var inspectToggle = toggles.append("label");
-  inspectToggle.append("input").attr("type", "checkbox")
+  var vlcodeToggle = toggles.append("label");
+  vlcodeToggle.append("input").attr("type", "checkbox")
     .on("change", function(){
-      inspect.style("display", this.checked ? "block" : "none");
+      vlcode.style("display", this.checked ? "block" : "none");
     });
-  inspectToggle.append("span").text("Export");
+  vlcodeToggle.append("span").text("Vegalite Code");
+
+
+  var vgcodeToggle = toggles.append("label");
+  vgcodeToggle.append("input").attr("type", "checkbox")
+    .on("change", function(){
+      vgcode.style("display", this.checked ? "block" : "none");
+    });
+  vgcodeToggle.append("span").text("Vega Code");
 
   var configToggle = toggles.append("label");
   configToggle.append("input").attr("type", "checkbox")
@@ -195,20 +214,13 @@ function init() {
     });
   configToggle.append("span").text("Config");
 
-  // Inspect Pane
+  // Code Pane
 
-  var textarea = inspect.append("textarea").attr("class", "code");
-  var cmd = inspect.append("div");
-  cmd.append("input").attr("type","button").attr("value","Export Encoding")
-    .on("click", function(){
-      textarea.text(self.enc.toJSON("  "));
-    });
+  vlcode.append("span").text("Vegalite");
+  var vlTextarea = vlcode.append("textarea").attr("class", "vlcode");
 
-  cmd.append("input").attr("type","button").attr("value","Export Vega")
-    .on("click", function(){
-      textarea.text(JSON.stringify(self.s, null, "  "));
-    });
-
+  vgcode.append("span").text("Vega")
+  var vgTextarea = vgcode.append("textarea").attr("class", "vgcode");
 
   // Config Pane
   config.append("input").attr("type","button").attr("value","Update Config")
@@ -219,11 +231,9 @@ function init() {
     .enter().append("div").attr("class", "cfg")
       .append("label");
 
-  configs.append("span").text(function(d){return d;});
+  configs.append("span").attr("class","label").text(function(d){return d;});
   configs.append("input")
     .attr("placeholder", function(d){return vl.DEFAULTS[d];});
-
-
 }
 
 function run(data, schema) {
@@ -243,7 +253,8 @@ function update() {
   var enc = encodings();
   self.enc = enc; // DEBUG
   self.spec = vl.toVegaSpec(enc, data);
-  d3.select("textarea.code").text(self.enc.toJSON("  "));
+  d3.select("textarea.vlcode").text(self.enc.toJSON("  "));
+  d3.select("textarea.vgcode").text(JSON.stringify(self.spec, null, "  "));
   parse(self.spec, data);
 }
 
