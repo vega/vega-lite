@@ -130,9 +130,7 @@ function init() {
   var root = d3.select("#ctrl");
 
   var main = root.append("div").attr("class","main");
-  var vlcode = root.append("div").attr("class", "main")
-    .style("display","none");
-  var vgcode = root.append("div").attr("class", "main")
+  var code = root.append("div").attr("class", "main")
     .style("display","none");
   var config = root.append("div").attr("class","main")
     .style("display","none");
@@ -219,20 +217,19 @@ function init() {
   var showDiv = toggles.append("div").attr("class","show");
   showDiv.append("span").attr("class","label").text("show");
 
-  var vlcodeToggle = showDiv.append("label");
-  vlcodeToggle.append("input").attr("type", "checkbox")
+  var codeToggle = showDiv.append("label");
+  codeToggle.append("input").attr("type", "checkbox")
     .on("change", function(){
-      vlcode.style("display", this.checked ? "block" : "none");
+      code.style("display", this.checked ? "block" : "none");
     });
-  vlcodeToggle.append("span").text("vegalite code");
+  codeToggle.append("span").text("code");
 
-  var vgcodeToggle = showDiv.append("label");
-  vgcodeToggle.append("input").attr("type", "checkbox")
-    .on("change", function(){
-      vgcode.style("display", this.checked ? "block" : "none");
-    });
-  vgcodeToggle.append("span").text("vega spec");
-
+  showDiv.append("span").text(" (")
+  var inclData = showDiv.append("label");
+  inclData.append("input").attr({"type": "checkbox", "id":"inclData"})
+    .on("change", update);
+  inclData.append("span").text("include data");
+  showDiv.append("span").text(") ").style("margin-right","12px");
 
   var configToggle = showDiv.append("label");
   configToggle.append("input").attr("type", "checkbox")
@@ -241,20 +238,14 @@ function init() {
     });
   configToggle.append("span").text("config");
 
-  var inclDiv = toggles.append("div");
-  inclDiv.append("span").attr("class","label");
-  var inclData = inclDiv.append("label");
-  inclData.append("input").attr({"type": "checkbox", "id":"inclData"})
-    .on("change", update);
-  inclData.append("span").text("include data url in code");
 
   // Code Pane
 
-  vlcode.append("span").text("Vegalite");
-  var vlTextarea = vlcode.append("textarea").attr("class", "vlcode");
+  code.append("span").text("Vegalite");
+  var vlTextarea = code.append("textarea").attr("class", "vlcode");
 
-  vgcode.append("span").text("Vega")
-  var vgTextarea = vgcode.append("textarea").attr("class", "vgcode");
+  code.append("span").text("Vega")
+  var vgTextarea = code.append("textarea").attr("class", "vgcode");
 
   // Config Pane
   config.append("input").attr("type","button").attr("value","Update Config")
