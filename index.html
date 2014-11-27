@@ -25,7 +25,7 @@
   margin-bottom: 0.3em;
 }
 #ctrl .toggles {
-  margin-top: 0.3em;
+  margin-top: 0.8em;
 }
 
 #ctrl .main{
@@ -93,10 +93,11 @@ var datasets = [
   "data/jobs.json",
   "data/population.json",
   "data/movies.json",
-  "data/birdstrike.jsons"
+  "data/birdstrikes.json"
 ];
 
 function load(url) {
+  self.dataUrl = url;
   d3.json(url, function(err, data) {
     var schema = {};
     for (var k in data[0]) {
@@ -111,8 +112,12 @@ function load(url) {
 
 
 function getParams() {
-  return location.search.slice(1)
-    .split("&")
+  var params = location.search.slice(1);
+
+  // remove trailing slash that chrome adds automatically
+  if(params[params.length-1] == "/") params = params.substring(0, params.length-1);
+
+  return params.split("&")
     .map(function(x) { return x.split("="); })
     .reduce(function(a, b) {
       a[b[0]] = b[1]; return a;
@@ -146,7 +151,10 @@ function init() {
       .data(datasets)
     .enter().append("option")
       .attr("value", function(d) { return d; })
-      .attr("selected", function(d){ return d==params.data;})
+      .attr("selected", function(d){
+        console.log("params.data:", params.data, "d:", d );
+        return d==params.data ? true : undefined;
+      })
       .text(function(d) { return d; });
 
   // choose mark type
@@ -208,27 +216,36 @@ function init() {
   // Toggle Inspect / Config Form
   var toggles = main.append("div").attr("class","toggles");
 
-  var vlcodeToggle = toggles.append("label");
+  var showDiv = toggles.append("div").attr("class","show");
+  showDiv.append("span").attr("class","label").text("show");
+
+  var vlcodeToggle = showDiv.append("label");
   vlcodeToggle.append("input").attr("type", "checkbox")
     .on("change", function(){
       vlcode.style("display", this.checked ? "block" : "none");
     });
-  vlcodeToggle.append("span").text("Vegalite Code");
+  vlcodeToggle.append("span").text("vegalite code");
 
-
-  var vgcodeToggle = toggles.append("label");
+  var vgcodeToggle = showDiv.append("label");
   vgcodeToggle.append("input").attr("type", "checkbox")
     .on("change", function(){
       vgcode.style("display", this.checked ? "block" : "none");
     });
-  vgcodeToggle.append("span").text("Vega Code");
+  vgcodeToggle.append("span").text("vega spec");
 
-  var configToggle = toggles.append("label");
+
+  var configToggle = showDiv.append("label");
   configToggle.append("input").attr("type", "checkbox")
     .on("change", function(){
       config.style("display", this.checked ? "block" : "none");
     });
-  configToggle.append("span").text("Config");
+  configToggle.append("span").text("config");
+
+  var inclDiv = toggles.append("div");
+  inclDiv.append("span").attr("class","label");
+  var inclData = inclDiv.append("label");
+  inclData.append("input").attr({"type": "checkbox", "id":"inclData"});
+  inclData.append("span").text("include data url in code");
 
   // Code Pane
 
@@ -270,19 +287,27 @@ function run(data, schema) {
 }
 
 function update() {
-  var enc = encodings();
+  var enc = encodings(),
+    spec = vl.toVegaSpec(enc, data);
   self.enc = enc; // DEBUG
-  self.spec = vl.toVegaSpec(enc, data);
-  d3.select("textarea.vlcode").text(self.enc.toJSON("  "));
-  d3.select("textarea.vgcode").text(JSON.stringify(self.spec, null, "  ", 60));
+  self.spec = spec;
+
+  var inclData = d3.select("#inclData").node().checked;
+
+  if(inclData){ // if "include data" is checked, include data url in the output
+    enc = encodings({dataUrl: {value:self.dataUrl}});
+    spec = vl.toVegaSpec(enc, data);
+  }
+  d3.select("textarea.vlcode").text(enc.toJSON("  "));
+  d3.select("textarea.vgcode").text(JSON.stringify(spec, null, "  ", 60));
   parse(self.spec, data);
 }
 
-function encodings() {
+function encodings(cfg) {
   var marktype = "bar",
       bin = null,
-      enc = {},
-      cfg = {};
+      enc = {};
+  cfg = cfg || {};
 
   var types = vl.dataTypes;
 
