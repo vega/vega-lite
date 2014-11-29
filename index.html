@@ -135,7 +135,7 @@ function init() {
 
   var main = root.append("div").attr("class","main");
   var code = root.append("div").attr("class", "main")
-    .style("display","none");
+    .style("display","block");
   var config = root.append("div").attr("class","main")
     .style("display","none");
 
@@ -221,7 +221,7 @@ function init() {
   showDiv.append("span").attr("class","label").text("show");
 
   var codeToggle = showDiv.append("label");
-  codeToggle.append("input").attr("type", "checkbox")
+  codeToggle.append("input").attr("type", "checkbox").attr("checked", true)
     .on("change", function(){
       code.style("display", this.checked ? "block" : "none");
     });
@@ -229,7 +229,7 @@ function init() {
 
   showDiv.append("span").text(" (")
   var inclData = showDiv.append("label");
-  inclData.append("input").attr({"type": "checkbox", "id":"inclData"})
+  inclData.append("input").attr({"type": "checkbox", "id":"inclData", "checked": true})
     .on("change", update);
   inclData.append("span").text("include data");
   showDiv.append("span").text(") ").style("margin-right","12px");
