@@ -47,6 +47,10 @@ vl.DEFAULTS = {
   width: 300,
   height: 300,
 
+  //small multiples
+  cellHeight: 200, // will be overwritten by bandWidth
+  cellWidth: 200, // will be overwritten by bandWidth
+
   // marks
   barSize: 10,
   bandSize: 21,
@@ -223,12 +227,17 @@ vl.Encoding = (function() {
 
 // ----
 
+vl.error = function(msg){
+  console.error("[VL Error]", msg);
+}
 
 vl.toVegaSpec = function(enc, data) {
   var spec = template(enc),
       group = spec.marks[0],
       mark = marks[enc.marktype()],
       mdef = markdef(mark, enc);
+
+  var hasRow = enc.has(ROW), hasCol=enc.has(COL);
 
   group.marks.push(mdef);
   group.scales = scales(scale_names(mdef.properties.update), enc);
@@ -238,11 +247,18 @@ vl.toVegaSpec = function(enc, data) {
   // NOTE: this fails for plots driven by derived values (e.g., aggregates)
   // One solution is to update Vega to support auto-sizing
   // In the meantime, auto-padding (mostly) does the trick
+  var cellWidth = enc.config("cellWidth"),
+    cellHeight = enc.config("cellHeight"),
+    colCardinality= hasCol ? uniq(data, enc.field(COL,1)) : 1,
+    rowCardinality= hasRow ? uniq(data, enc.field(ROW,1)) : 1;
+
   group.scales.forEach(function(s) {
     if (s.name === X && s.range !== "width") {
-      spec.width = uniq(data, enc.field(X,1)) * s.bandWidth;
+      cellWidth = uniq(data, enc.field(X,1)) * s.bandWidth;
+      spec.width = cellWidth * colCardinality;
     } else if (s.name === Y && s.range !== "height") {
-      spec.height = uniq(data, enc.field(Y,1)) * s.bandWidth;
+      cellHeight = uniq(data, enc.field(Y,1)) * s.bandWidth;
+      spec.height = cellHeight * rowCardinality;
     }
   });
 
@@ -250,31 +266,76 @@ vl.toVegaSpec = function(enc, data) {
 
   var lineType = marks[enc.marktype()].line;
 
-  // handle aggregates
-  var dims = aggregates(spec.data[0], enc);
-  if (dims || (lineType && enc.has(COLOR))) {
-    var stack = dims && stacking(spec, enc, mdef);
+  var aggResult = aggregates(spec.data[0], enc)
 
+  // handle aggregates
+  //TODO: rename this to details / check if it's really used and remove / refactor aggregates()
+  var dims = aggResult.details,
+    hasDims = dims && dims.length > 0,
+    stack = hasDims && stacking(spec, enc, mdef);
+  //TODO(kanitw): see if I can move stack down below
+
+  if (lineType && enc.has(COLOR)) {
     var m = group.marks;
-    group.marks = [groupdef("aggregate")];
+    group.marks = [groupdef("line-facet")];
     var g = group.marks[0];
     g.marks = m;
     g.from = mdef.from;
     delete mdef.from;
 
     var trans = (g.from.transform || (g.from.transform=[]));
-    if (!dims) dims = [enc.field(COLOR)];
-    trans.unshift({type: "facet", keys: dims});
-    if (stack && enc.has(COLOR)) {
-      trans.unshift({type: "sort", by: enc.field(COLOR)});
-    }
+    trans.unshift({type: "facet", keys: [enc.field(COLOR)]});
+  }
+
+  // sort stack
+  if (stack && enc.has(COLOR)) {
+    trans.unshift({type: "sort", by: enc.field(COLOR)});
   }
 
   // auto-sort line/area values
+  //TODO(kanitw): have some config to turn off auto-sort for line (for line chart that encodes temporal information)
   if (lineType) {
     var f = (enc.isType(X,Q|T) && enc.isType(Y,O)) ? Y : X;
     if (!mdef.from) mdef.from = {};
     mdef.from.transform = [{type: "sort", by: enc.field(f)}];
+  }
+
+  // Small Multiples
+  if(hasRow || hasCol){
+    var enter = group.properties.enter;
+    var facetKeys = [];
+
+    // smgroup = groupdef("smgroup");
+    if(hasRow){
+      if(!enc.isType(ROW, O)){
+        vl.error("Row encoding should be ordinal.");
+      }
+
+      enter.y = {scale: ROW, field: "keys."+ facetKeys.length};
+      enter.height = {"value": cellHeight}; // HACK
+
+      facetKeys.push(enc.field(ROW));
+    }
+    if(hasCol){
+      if(!enc.isType(COL, O)){
+        vl.error("Col encoding should be ordinal.");
+      }
+      enter.x = {scale: COL, field: "keys."+ facetKeys.length};
+      enter.width = {"value": cellWidth}; // HACK
+
+      facetKeys.push(enc.field(COL));
+    }
+
+    spec.scales = scales(scale_names(enter), enc, {
+      cellWidth: cellWidth, cellHeight: cellHeight
+    });
+    //TODO(kanitw): axes
+
+    group.from = group.marks[0].from;
+    delete group.marks[0].from;
+
+    var trans = (group.from.transform || (group.from.transform=[]));
+    trans.unshift({type: "facet", keys: facetKeys});
   }
 
   return spec;
@@ -315,15 +376,18 @@ function aggregates(spec, enc) {
   dims = vl.vals(dims);
   meas = vl.vals(meas);
 
-  if (meas.length === 0) return false;
-
-  if (!spec.transform) spec.transform = [];
-  spec.transform.push({
-    type: "aggregate",
-    groupby: dims,
-    fields: meas
-  });
-  return vl.vals(detail);
+  if(meas.length > 0){
+    if (!spec.transform) spec.transform = [];
+    spec.transform.push({
+      type: "aggregate",
+      groupby: dims,
+      fields: meas
+    });
+  }
+  return {
+    details: vl.vals(detail),
+    aggregated: meas.length > 0
+  }
 }
 
 function stacking(spec, enc, mdef) {
@@ -362,12 +426,9 @@ function stacking(spec, enc, mdef) {
     output: {y1: val, y0: val+"2"}
   }];
 
-  // super hack-ish
-  // consolidate into modular mark properties?
-  mdef.properties.enter[val] = {scale: val, field: val};
-  mdef.properties.enter[val+"2"] = {scale: val, field: val+"2"};
-  mdef.properties.update[val] = mdef.properties.enter[val];
-  mdef.properties.update[val+"2"] = mdef.properties.enter[val+"2"];
+  // TODO: This is super hack-ish -- consolidate into modular mark properties?
+  mdef.properties.update[val] = mdef.properties.enter[val] = {scale: val, field: val};
+  mdef.properties.update[val+"2"] = mdef.properties.enter[val+"2"] = {scale: val, field: val+"2"};
   return true;
 }
 
@@ -396,7 +457,7 @@ function scale_names(props) {
   }, {}));
 }
 
-function scales(names, enc) {
+function scales(names, enc, opt) {
   return names.reduce(function(a, name) {
     var s = {
       name: name,
@@ -407,7 +468,7 @@ function scales(names, enc) {
       s.sort = true;
     }
 
-    scale_range(s, enc);
+    scale_range(s, enc, opt);
 
     return (a.push(s), a);
   }, []);
@@ -426,7 +487,7 @@ function scale_domain(name, enc) {
   return {data: TABLE, field: enc.field(name)};
 }
 
-function scale_range(s, enc) {
+function scale_range(s, enc, opt) {
   switch (s.name) {
     case X:
       if (enc.isType(s.name, O)) {
@@ -451,12 +512,12 @@ function scale_range(s, enc) {
       s.nice = true;
       break;
     case ROW:
-      s.bandWidth = enc.config("rowHeight");
+      s.bandWidth = (opt && opt.cellHeight) || enc.config("cellHeight");
       s.round = true;
       s.nice = true;
       break;
     case COL:
-      s.bandWidth = enc.config("colWidth");
+      s.bandWidth = (opt && opt.cellWidth) || enc.config("cellWidth");
       s.round = true;
       s.nice = true;
       break;
