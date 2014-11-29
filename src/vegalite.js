@@ -22,6 +22,8 @@ var INDEX = "index";
 
 var X = "x";
 var Y = "y";
+var ROW = "row";
+var COL = "col";
 var SIZE = "size";
 var SHAPE = "shape";
 var COLOR = "color";
@@ -442,6 +444,16 @@ function scale_range(s, enc) {
       s.round = true;
       s.nice = true;
       break;
+    case ROW:
+      s.bandWidth = enc.config("rowHeight");
+      s.round = true;
+      s.nice = true;
+      break;
+    case COL:
+      s.bandWidth = enc.config("colWidth");
+      s.round = true;
+      s.nice = true;
+      break;
     case SIZE:
       if (enc.is("bar")) {
         s.range = [3, enc.config("bandSize")];
@@ -489,7 +501,7 @@ function markdef(mark, enc) {
 
 function groupdef(name) {
   return {
-    name: name,
+    _name: name,
     type: "group",
     properties: {
       enter: {
@@ -513,7 +525,7 @@ function template(enc) {
     height: enc.config("height"),
     padding: "auto",
     data: [data],
-    marks: [groupdef("root")]
+    marks: [groupdef("cell")]
   };
 }
 

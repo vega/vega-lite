@@ -179,7 +179,7 @@ function init() {
 
   // controls for each visual encoding variable
   var ctrl = main.selectAll("div.enc")
-      .data(["x","y","size","color","alpha","shape","text"])
+      .data(["x","y","row","col","size","color","alpha","shape","text"])
     .enter().append("div").attr("class", "enc");
 
   ctrl.append("span").attr("class","label").text(function(d) { return d; });
