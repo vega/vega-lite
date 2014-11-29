@@ -53,6 +53,11 @@
   font-size: 14px;
 }
 
+#ctrl .swap{
+  font-size: 10px;
+  margin-left: 3px;
+}
+
 #ctrl span.label {
   display: inline-block;
   width: 60px;
@@ -214,6 +219,11 @@ function init() {
       .attr("value", function(d) { return d; })
       .text(function(d) { return d; });
 
+  // swap btn
+  ctrl.selectAll(function(d){ return d==="x" ? [this] : []; })
+    .append("a").attr({"class":"swap", "href":"#"}).text("swap")
+    .on('click', swapXY);
+
   // Toggle Inspect / Config Form
   var toggles = main.append("div").attr("class","toggles");
 
@@ -302,6 +312,59 @@ function update() {
   parse(self.spec, data);
 }
 
+function swapXY(){
+  var o = {};
+  var encXY = d3.selectAll("#ctrl div.enc").selectAll(function(d){
+    return d==="x" || d==="y" ? [this] : [];
+  });
+  encXY.each(function(d) {
+    o[d] = readEnc(this);
+  });
+  encXY.each(function(d){
+    var e = o[d==="x" ? "y": "x"];
+    loadEnc(this, e.shelf, e.aggr, e.type);
+  })
+
+  update();
+}
+
+function loadEncoding(encoding){
+  var dataUrl = encoding.config("dataUrl");
+  if(dataUrl) d3.select("select.dsel").node().value = dataUrl;
+
+  d3.select("select.mark").node().value = encoding.marktype();
+
+  d3.selectAll("#ctrl div.enc").each(function(d) {
+    if(encoding.has(d)){
+      var e = encoding._enc[d];
+      loadEnc(this, e.name, e.type, e.bin ? "bin" : e.aggr)
+    }else{
+      loadEnc(this, "-", "-", "-");
+    }
+  });
+}
+
+function loadEnc(dom, v, a ,t){
+  var s = d3.select(dom);
+  s.select("select.shelf").node().value = v;
+  s.select("select.type").node().value = t;
+  s.select("select.aggr").node().value = a;
+}
+
+function readEnc(dom){
+  //read encoding from the UI
+  var s = d3.select(dom).select("select.shelf").node();
+  var v = s.options[s.selectedIndex].value;
+
+  var s = d3.select(dom).select("select.type").node();
+  var t = s.options[s.selectedIndex].value;
+
+  var s = d3.select(dom).select("select.aggr").node();
+  var a = s.options[s.selectedIndex].value;
+
+  return {shelf:v, type:t, aggr:a};
+}
+
 function encodings(cfg) {
   var marktype = "bar",
       bin = null,
@@ -314,15 +377,8 @@ function encodings(cfg) {
   marktype = s.options[s.selectedIndex].value;
 
   d3.selectAll("#ctrl div.enc").each(function(d) {
-    var x = d;
-    var s = d3.select(this).select("select.shelf").node();
-    var v = s.options[s.selectedIndex].value;
-
-    var s = d3.select(this).select("select.type").node();
-    var t = s.options[s.selectedIndex].value;
-
-    var s = d3.select(this).select("select.aggr").node();
-    var a = s.options[s.selectedIndex].value;
+    var x = d, e=readEnc(this),
+      v=e.shelf, a=e.aggr, t=e.type;
 
     if (v !== "-" || a === "count") {
       enc[x] = {
