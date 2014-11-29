@@ -11,7 +11,7 @@ var datasets = [
   "data/birdstrikes.json"
 ];
 
-function load(url) {
+function load(url, callback) {
   self.dataUrl = url;
   d3.json(url, function(err, data) {
     var schema = {};
@@ -20,6 +20,8 @@ function load(url) {
       schema[k] = (typeof data[0][k] === "number") ? vl.dataTypes.Q : vl.dataTypes.O;
     }
     run(data, schema);
+
+    if(callback) callback();
   });
 }
 
@@ -127,7 +129,7 @@ function init() {
 
   // swap btn
   ctrl.selectAll(function(d){ return d==="x" ? [this] : []; })
-    .append("a").attr({"class":"swap", "href":"#"}).text("swap")
+    .append("a").attr({"class":"action", "href":"#"}).text("swap")
     .on('click', swapXY);
 
   // Toggle Inspect / Config Form
@@ -164,6 +166,13 @@ function init() {
     .append("input").attr({"class": "shorthand", "type": "text", "readonly": "true"});
 
   code.append("span").text("Vegalite");
+  code.append("a").attr({"class": "right action", "href":"#"}).text("load")
+    .on("click", function (){
+      var s = d3.select("textarea.vlcode").node().value,
+        json = JSON.parse(s);
+      e = vl.Encoding.parseJSON(json);
+      loadEncoding(e, update);
+    })
   var vlTextarea = code.append("textarea").attr("class", "vlcode");
 
   code.append("span").text("Vega")
@@ -202,6 +211,7 @@ function run(data, schema) {
 
 function update() {
   var enc = encodings(),
+    data = self.data,
     spec = vl.toVegaSpec(enc, data);
   self.enc = enc; // DEBUG
   self.spec = spec;
@@ -213,8 +223,8 @@ function update() {
     spec = vl.toVegaSpec(enc, data);
   }
   d3.select(".shorthand").attr("value", enc.toShorthand());
-  d3.select("textarea.vlcode").text(JSON.stringify(enc.toJSON(), null, "  ", 80));
-  d3.select("textarea.vgcode").text(JSON.stringify(spec, null, "  ", 80));
+  d3.select("textarea.vlcode").node().value = JSON.stringify(enc.toJSON(), null, "  ", 80);
+  d3.select("textarea.vgcode").node().value = JSON.stringify(spec, null, "  ", 80);
   parse(self.spec, data);
 }
 
@@ -234,20 +244,29 @@ function swapXY(){
   update();
 }
 
-function loadEncoding(encoding){
+function loadEncoding(encoding, callback){
   var dataUrl = encoding.config("dataUrl");
-  if(dataUrl) d3.select("select.dsel").node().value = dataUrl;
+  var _load = function(){
+    d3.select("select.mark").node().value = encoding.marktype();
 
-  d3.select("select.mark").node().value = encoding.marktype();
-
-  d3.selectAll("#ctrl div.enc").each(function(d) {
-    if(encoding.has(d)){
-      var e = encoding._enc[d];
-      loadEnc(this, e.name, e.type, e.bin ? "bin" : e.aggr)
-    }else{
-      loadEnc(this, "-", "-", "-");
-    }
-  });
+    d3.selectAll("#ctrl div.enc").each(function(d) {
+      if(encoding.has(d)){
+        var e = encoding._enc[d];
+        loadEnc(this, e.name || "-",
+          e.bin ? "bin" : e.aggr || "-",
+          vl.dataTypeNames[e.type] || "-");
+      }else{
+        loadEnc(this, "-", "-", "-");
+      }
+    });
+    if (callback) callback();
+  }
+  if(dataUrl){
+    d3.select("select.data").node().value = dataUrl;
+    load(dataUrl, _load); //need to load data first!
+  }else{
+    _load();
+  }
 }
 
 function loadEnc(dom, v, a ,t){
