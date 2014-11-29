@@ -240,8 +240,7 @@ vl.toVegaSpec = function(enc, data) {
   var hasRow = enc.has(ROW), hasCol=enc.has(COL);
 
   group.marks.push(mdef);
-  group.scales = scales(scale_names(mdef.properties.update), enc);
-  group.axes = axes(axis_names(mdef.properties.update), enc);
+  var scales = vl.scales(scale_names(mdef.properties.update), enc);
 
   // HACK to set chart size
   // NOTE: this fails for plots driven by derived values (e.g., aggregates)
@@ -252,7 +251,7 @@ vl.toVegaSpec = function(enc, data) {
     colCardinality= hasCol ? uniq(data, enc.field(COL,1)) : 1,
     rowCardinality= hasRow ? uniq(data, enc.field(ROW,1)) : 1;
 
-  group.scales.forEach(function(s) {
+  scales.forEach(function(s) {
     if (s.name === X && s.range !== "width") {
       cellWidth = uniq(data, enc.field(X,1)) * s.bandWidth;
       spec.width = cellWidth * colCardinality;
@@ -326,9 +325,9 @@ vl.toVegaSpec = function(enc, data) {
       facetKeys.push(enc.field(COL));
     }
 
-    spec.scales = scales(scale_names(enter), enc, {
+    spec.scales = vl.scales(scale_names(enter), enc, {
       cellWidth: cellWidth, cellHeight: cellHeight
-    });
+    }).concat(scales);
     //TODO(kanitw): axes
 
     group.from = group.marks[0].from;
@@ -336,6 +335,9 @@ vl.toVegaSpec = function(enc, data) {
 
     var trans = (group.from.transform || (group.from.transform=[]));
     trans.unshift({type: "facet", keys: facetKeys});
+  }else{
+    group.scales = scales;
+    group.axes = vl.axes(axis_names(mdef.properties.update), enc);
   }
 
   return spec;
@@ -440,7 +442,7 @@ function axis_names(props) {
   }, {}));
 }
 
-function axes(names, enc) {
+vl.axes = function(names, enc) {
   return names.reduce(function(a, name) {
     a.push({
       type: name,
@@ -457,7 +459,7 @@ function scale_names(props) {
   }, {}));
 }
 
-function scales(names, enc, opt) {
+vl.scales = function (names, enc, opt) {
   return names.reduce(function(a, name) {
     var s = {
       name: name,
