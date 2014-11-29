@@ -248,7 +248,7 @@ vl.toVegaSpec = function(enc, data) {
     var stack = dims && stacking(spec, enc, mdef);
 
     var m = group.marks;
-    group.marks = [groupdef()];
+    group.marks = [groupdef("aggregate")];
     var g = group.marks[0];
     g.marks = m;
     g.from = mdef.from;
@@ -487,8 +487,9 @@ function markdef(mark, enc) {
   };
 }
 
-function groupdef() {
+function groupdef(name) {
   return {
+    name: name,
     type: "group",
     properties: {
       enter: {
@@ -512,7 +513,7 @@ function template(enc) {
     height: enc.config("height"),
     padding: "auto",
     data: [data],
-    marks: [groupdef()]
+    marks: [groupdef("root")]
   };
 }
 
