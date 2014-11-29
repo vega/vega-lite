@@ -412,7 +412,7 @@ function stacking(spec, enc, mdef) {
   });
 
   // update scale mapping
-  var s = find(spec.marks[0].scales, {name:"name", value:val});
+  var s = find(spec.marks[0].scales ||[], {name:"name", value:val});
   s.domain = {
     data: STACKED,
     field: "data.sum_" + enc.field(val, true)
@@ -576,8 +576,6 @@ function groupdef(name) {
         height: {group: "height"}
       }
     },
-    scales: [],
-    axes: [],
     marks: []
   };
 }
