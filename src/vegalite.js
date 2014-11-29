@@ -201,14 +201,20 @@ vl.Encoding = (function() {
   }
 
   Encoding.parseJSON = function(json){
-    var enc = duplicate(json.enc);
+    var enc = duplicate(json.enc),
+      cfg = vl.keys(json.cfg).reduce(function(o, k){
+          o[k] = {value: json.cfg[k]};
+          return o;
+        }, {});
 
     //convert type from string to bitcode (e.g, O=1)
     for(var e in enc){
       enc[e].type = vl.dataTypes[enc[e].type];
     }
 
-    return new Encoding(json.marktype, enc, json.cfg);
+
+
+    return new Encoding(json.marktype, enc, cfg);
   }
 
   return Encoding;
