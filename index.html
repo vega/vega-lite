@@ -297,8 +297,8 @@ function update() {
     spec = vl.toVegaSpec(enc, data);
   }
   d3.select(".shorthand").attr("value", enc.toShorthand());
-  d3.select("textarea.vlcode").text(enc.toJSON("  "));
-  d3.select("textarea.vgcode").text(JSON.stringify(spec, null, "  ", 60));
+  d3.select("textarea.vlcode").text(JSON.stringify(enc.toJSON(), null, "  ", 80));
+  d3.select("textarea.vgcode").text(JSON.stringify(spec, null, "  ", 80));
   parse(self.spec, data);
 }
 

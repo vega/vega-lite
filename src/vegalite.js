@@ -183,7 +183,7 @@ vl.Encoding = (function() {
       json.cfg = this._cfg
     }
 
-    return JSON.stringify(json, null, space);
+    return json;
   };
 
   proto.toShorthand = function(){
