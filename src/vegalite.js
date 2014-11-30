@@ -307,6 +307,8 @@ vl.toVegaSpec = function(enc, data) {
     var enter = group.properties.enter;
     var facetKeys = [], cellAxes=[], yAxesGrp, xAxesGrp;
 
+    enter.fill = {value: enc.config("cellBackgroundColor")};
+
     // smgroup = groupdef("smgroup");
     if(hasRow){
       if(!enc.isType(ROW, O)){
@@ -587,11 +589,17 @@ function scale_range(s, enc, opt) {
       throw new Error("Unknown encoding name: "+s.name);
   }
 
-      if (enc.isType(s.name, O)) {
+  switch(s.name){
+    case ROW:
+    case COL:
+      s.padding = 0.1;
+      break;
+    default:
+      if (enc.isType(s.name, O) ) { //&& !s.bandWidth
         s.points = true;
         s.padding = 1.0;
       }
-
+  }
 }
 
 // END: SCALE
