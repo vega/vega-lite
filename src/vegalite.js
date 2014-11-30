@@ -242,7 +242,7 @@ vl.toVegaSpec = function(enc, data) {
   var hasRow = enc.has(ROW), hasCol=enc.has(COL);
 
   group.marks.push(mdef);
-  var scales = vl.scale.defs(scale_names(mdef.properties.update), enc);
+
 
   // HACK to set chart size
   // NOTE: this fails for plots driven by derived values (e.g., aggregates)
@@ -271,11 +271,10 @@ vl.toVegaSpec = function(enc, data) {
   // handle subfacets
   var aggResult = aggregates(spec.data[0], enc),
     details = aggResult.details,
-    hasDetails = details && details.length > 0;
+    hasDetails = details && details.length > 0,
+    stack = hasDetails && stacking(spec, enc, mdef);
 
   if (hasDetails){
-    var stack = hasDetails && stacking(spec, enc, mdef, scales);
-
     if(stack || lineType){
       var m = group.marks;
       group.marks = [groupdef("subfacet")];
@@ -345,10 +344,10 @@ vl.toVegaSpec = function(enc, data) {
     // assuming equal cellWidth here
     // TODO: support heterogenous cellWidth (maybe by using multiple scales?)
     spec.scales = vl.scale.defs(
-      scale_names(enter),
+      scale_names(enter).concat(scale_names(mdef.properties.update)),
       enc,
-      {cellWidth: cellWidth, cellHeight: cellHeight}
-    ).concat(scales); // row/col scales + cell scales
+      {cellWidth: cellWidth, cellHeight: cellHeight, stack: stack}
+    ); // row/col scales + cell scales
 
     group.axes = cellAxes;
 
@@ -360,7 +359,8 @@ vl.toVegaSpec = function(enc, data) {
     trans.unshift({type: "facet", keys: facetKeys});
 
   }else{
-    group.scales = scales;
+    group.scales = vl.scale.defs(scale_names(mdef.properties.update), enc,
+      {stack: stack});
     group.axes = vl.axis.defs(axis_names(mdef.properties.update), enc);
   }
 
@@ -437,15 +437,14 @@ function stacking(spec, enc, mdef, scales) {
       fields: [{op: "sum", field: enc.field(val)}]
     }]
   });
+  // TODO: for small multiple we might need to calculate max of all facet?
 
   // update scale mapping
-  var s = find(scales ||[], {name:"name", value:val});
-
-  // TODO: for small multiple we might need to calculate max? for each facet
-  s.domain = {
-    data: STACKED,
-    field: "data.sum_" + enc.field(val, true)
-  };
+  // var s = find(scales ||[], {name:"name", value:val});
+  // s.domain = {
+  //   data: STACKED,
+  //   field: "data.sum_" + enc.field(val, true)
+  // };
 
   // add stack transform to mark
   mdef.from.transform = [{
@@ -458,7 +457,8 @@ function stacking(spec, enc, mdef, scales) {
   // TODO: This is super hack-ish -- consolidate into modular mark properties?
   mdef.properties.update[val] = mdef.properties.enter[val] = {scale: val, field: val};
   mdef.properties.update[val+"2"] = mdef.properties.enter[val+"2"] = {scale: val, field: val+"2"};
-  return true;
+
+  return val; //return stack encoding
 }
 
 function axis_names(props) {
@@ -476,7 +476,8 @@ vl.axis.defs = function(names, enc) {
   return names.reduce(function(a, name) {
     a.push({
       type: name,
-      scale: name
+      scale: name,
+      ticks: 3 //TODO(kanitw): better determine # of ticks
     });
     return a;
   }, []);
@@ -501,7 +502,7 @@ vl.scale.defs = function (names, enc, opt) {
     var s = {
       name: name,
       type: scale_type(name, enc),
-      domain: scale_domain(name, enc)
+      domain: scale_domain(name, enc, opt)
     };
     if (s.type === "ordinal") {
       s.sort = true;
@@ -522,8 +523,10 @@ function scale_type(name, enc) {
   return t;
 }
 
-function scale_domain(name, enc) {
-  return {data: TABLE, field: enc.field(name)};
+function scale_domain(name, enc, opt) {
+  return name == opt.stack ?
+    {data: STACKED, field: "data.sum_" + enc.field(name, true)}:
+    {data: TABLE, field: enc.field(name)};
 }
 
 function scale_range(s, enc, opt) {
