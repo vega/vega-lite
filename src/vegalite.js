@@ -469,6 +469,8 @@ function scale_names(props) {
 }
 
 vl.scale.defs = function (names, enc, opt) {
+  opt = opt || {};
+
   return names.reduce(function(a, name) {
     var s = {
       name: name,
@@ -504,7 +506,7 @@ function scale_range(s, enc, opt) {
       if (enc.isType(s.name, O)) {
         s.bandWidth = enc.config("bandSize");
       } else {
-        s.range = "width";
+        s.range = opt.cellWidth ? [0, opt.cellWidth] : "width";
         s.zero = enc.config("xZero");
         s.reverse = enc.config("xReverse");
       }
@@ -515,7 +517,7 @@ function scale_range(s, enc, opt) {
       if (enc.isType(s.name, O)) {
         s.bandWidth = enc.config("bandSize");
       } else {
-        s.range = "height";
+        s.range = opt.cellHeight ? [0, opt.cellHeight] : "height";
         s.zero = enc.config("yZero");
         s.reverse = enc.config("yReverse");
       }
@@ -523,12 +525,12 @@ function scale_range(s, enc, opt) {
       s.nice = true;
       break;
     case ROW:
-      s.bandWidth = (opt && opt.cellHeight) || enc.config("cellHeight");
+      s.bandWidth = opt.cellHeight || enc.config("cellHeight");
       s.round = true;
       s.nice = true;
       break;
     case COL:
-      s.bandWidth = (opt && opt.cellWidth) || enc.config("cellWidth");
+      s.bandWidth = opt.cellWidth || enc.config("cellWidth");
       s.round = true;
       s.nice = true;
       break;
