@@ -246,20 +246,21 @@ vl.toVegaSpec = function(enc, data) {
   // NOTE: this fails for plots driven by derived values (e.g., aggregates)
   // One solution is to update Vega to support auto-sizing
   // In the meantime, auto-padding (mostly) does the trick
-  var cellWidth = enc.config("cellWidth"),
-    cellHeight = enc.config("cellHeight"),
-    colCardinality= hasCol ? uniq(data, enc.field(COL,1)) : 1,
+  var colCardinality= hasCol ? uniq(data, enc.field(COL,1)) : 1,
     rowCardinality= hasRow ? uniq(data, enc.field(ROW,1)) : 1;
 
-  scales.forEach(function(s) {
-    if (s.name === X && s.range !== "width") {
-      cellWidth = uniq(data, enc.field(X,1)) * s.bandWidth;
+  var cellWidth = enc.config("cellWidth") || enc.config("width") * 1.0 /colCardinality,
+    cellHeight = enc.config("cellHeight") || enc.config("height") * 1.0 / rowCardinality;
+
+  if(enc.has(X) && enc.isType(X, O)){ //ordinal field will override parent
+    cellWidth = uniq(data, enc.field(X,1)) * enc.config("bandSize");
       spec.width = cellWidth * colCardinality;
-    } else if (s.name === Y && s.range !== "height") {
-      cellHeight = uniq(data, enc.field(Y,1)) * s.bandWidth;
+  }
+
+  if(enc.has(Y) && enc.isType(Y, O)){
+    cellHeight = uniq(data, enc.field(Y,1)) * enc.config("bandSize");
       spec.height = cellHeight * rowCardinality;
     }
-  });
 
   binning(spec.data[0], enc);
 
@@ -335,9 +336,9 @@ vl.toVegaSpec = function(enc, data) {
 
     var trans = (group.from.transform || (group.from.transform=[]));
     trans.unshift({type: "facet", keys: facetKeys});
+
   }else{
     group.scales = scales;
-
     group.axes = vl.axis.defs(axis_names(mdef.properties.update), enc);
   }
 
