@@ -50,6 +50,8 @@ vl.DEFAULTS = {
   //small multiples
   cellHeight: 200, // will be overwritten by bandWidth
   cellWidth: 200, // will be overwritten by bandWidth
+  cellPadding: 10,
+  cellBackgroundColor: "#fafafa",
 
   // marks
   barSize: 10,
@@ -254,42 +256,42 @@ vl.toVegaSpec = function(enc, data) {
 
   if(enc.has(X) && enc.isType(X, O)){ //ordinal field will override parent
     cellWidth = uniq(data, enc.field(X,1)) * enc.config("bandSize");
-      spec.width = cellWidth * colCardinality;
+    spec.width = cellWidth * colCardinality;
   }
 
   if(enc.has(Y) && enc.isType(Y, O)){
     cellHeight = uniq(data, enc.field(Y,1)) * enc.config("bandSize");
-      spec.height = cellHeight * rowCardinality;
-    }
+    spec.height = cellHeight * rowCardinality;
+  }
 
   binning(spec.data[0], enc);
 
   var lineType = marks[enc.marktype()].line;
 
-  var aggResult = aggregates(spec.data[0], enc)
+  // handle subfacets
+  var aggResult = aggregates(spec.data[0], enc),
+    details = aggResult.details,
+    hasDetails = details && details.length > 0;
 
-  // handle aggregates
-  //TODO: rename this to details / check if it's really used and remove / refactor aggregates()
-  var dims = aggResult.details,
-    hasDims = dims && dims.length > 0,
-    stack = hasDims && stacking(spec, enc, mdef);
-  //TODO(kanitw): see if I can move stack down below
+  if (hasDetails){
+    var stack = hasDetails && stacking(spec, enc, mdef, scales);
 
-  if (lineType && enc.has(COLOR)) {
-    var m = group.marks;
-    group.marks = [groupdef("line-facet")];
-    var g = group.marks[0];
-    g.marks = m;
-    g.from = mdef.from;
-    delete mdef.from;
+    if(stack || lineType){
+      var m = group.marks;
+      group.marks = [groupdef("subfacet")];
+      var g = group.marks[0];
+      g.marks = m;
+      g.from = mdef.from;
+      delete mdef.from;
 
-    var trans = (g.from.transform || (g.from.transform=[]));
-    trans.unshift({type: "facet", keys: [enc.field(COLOR)]});
-  }
+      //TODO test LOD -- we should support stack / line without color (LOD) field
+      var trans = (g.from.transform || (g.from.transform=[]));
+      trans.unshift({type: "facet", keys: details});
 
-  // sort stack
-  if (stack && enc.has(COLOR)) {
-    trans.unshift({type: "sort", by: enc.field(COLOR)});
+      if(stack && enc.has(COLOR)){
+        trans.unshift({type: "sort", by: enc.field(COLOR)});
+      }
+    }
   }
 
   // auto-sort line/area values
@@ -303,19 +305,26 @@ vl.toVegaSpec = function(enc, data) {
   // Small Multiples
   if(hasRow || hasCol){
     var enter = group.properties.enter;
-    var facetKeys = [];
+    var facetKeys = [], cellAxes=[], yAxesGrp, xAxesGrp;
 
     // smgroup = groupdef("smgroup");
     if(hasRow){
       if(!enc.isType(ROW, O)){
         vl.error("Row encoding should be ordinal.");
       }
-
       enter.y = {scale: ROW, field: "keys."+ facetKeys.length};
       enter.height = {"value": cellHeight}; // HACK
 
       facetKeys.push(enc.field(ROW));
+
+      yAxesGrp = groupdef("y-axes");
+      spec.marks.push(yAxesGrp);
+
+    }else{ // doesn't have row
+      //keep x axis in the cell
+      cellAxes.push.apply(cellAxes,vl.axis.defs(["x"], enc));
     }
+
     if(hasCol){
       if(!enc.isType(COL, O)){
         vl.error("Col encoding should be ordinal.");
@@ -324,13 +333,24 @@ vl.toVegaSpec = function(enc, data) {
       enter.width = {"value": cellWidth}; // HACK
 
       facetKeys.push(enc.field(COL));
+
+      xAxesGrp = groupdef("x-axes");
+      spec.marks.push(xAxesGrp);
+    }else{ // doesn't have col
+      cellAxes.push.apply(cellAxes,vl.axis.defs(["y"], enc));
     }
 
-    spec.scales = vl.scale.defs(scale_names(enter), enc, {
-      cellWidth: cellWidth, cellHeight: cellHeight
-    }).concat(scales);
-    //TODO(kanitw): axes
+    // assuming equal cellWidth here
+    // TODO: support heterogenous cellWidth (maybe by using multiple scales?)
+    spec.scales = vl.scale.defs(
+      scale_names(enter),
+      enc,
+      {cellWidth: cellWidth, cellHeight: cellHeight}
+    ).concat(scales); // row/col scales + cell scales
 
+    group.axes = cellAxes;
+
+    //move "from" to cell level and add facet transform
     group.from = group.marks[0].from;
     delete group.marks[0].from;
 
@@ -372,7 +392,7 @@ function aggregates(spec, enc) {
       meas[d.aggr+"|"+d.name] = {op:d.aggr, field:"data."+d.name};
     } else {
       dims[d.name] = enc.field(vv);
-      if (vv !== X && vv !== Y) {
+      if (vv !== X && vv !== Y && vv !== ROW && vv !== COL) {
         detail[d.name] = dims[d.name];
       }
     }
@@ -394,8 +414,9 @@ function aggregates(spec, enc) {
   }
 }
 
-function stacking(spec, enc, mdef) {
+function stacking(spec, enc, mdef, scales) {
   if (!marks[enc.marktype()].stack) return false;
+  if (!enc.has(COLOR)) return false;
 
   var dim = X, val = Y, idx = 1;
   if (enc.isType(X,Q|T) && !enc.isType(Y,Q|T) && enc.has(Y)) {
@@ -410,13 +431,15 @@ function stacking(spec, enc, mdef) {
     source: TABLE,
     transform: [{
       type: "aggregate",
-      groupby: [enc.field(dim)],
+      groupby: [enc.field(dim)], //TODO: group by outer facet too?
       fields: [{op: "sum", field: enc.field(val)}]
     }]
   });
 
   // update scale mapping
-  var s = find(spec.marks[0].scales ||[], {name:"name", value:val});
+  var s = find(scales ||[], {name:"name", value:val});
+
+  // TODO: for small multiple we might need to calculate max? for each facet
   s.domain = {
     data: STACKED,
     field: "data.sum_" + enc.field(val, true)
@@ -564,10 +587,10 @@ function scale_range(s, enc, opt) {
       throw new Error("Unknown encoding name: "+s.name);
   }
 
-  if (enc.isType(s.name, O)) {
-    s.points = true;
-    s.padding = 1.0;
-  }
+      if (enc.isType(s.name, O)) {
+        s.points = true;
+        s.padding = 1.0;
+      }
 
 }
 
