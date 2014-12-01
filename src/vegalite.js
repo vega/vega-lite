@@ -305,11 +305,13 @@ vl.toVegaSpec = function(enc, data) {
   // Small Multiples
   if(hasRow || hasCol){
     var enter = group.properties.enter;
-    var facetKeys = [], cellAxes=[], yAxesGrp, xAxesGrp;
+    var facetKeys = [], cellAxes=[];
 
     enter.fill = {value: enc.config("cellBackgroundColor")};
 
-    // smgroup = groupdef("smgroup");
+    //move "from" to cell level and add facet transform
+    group.from = group.marks[0].from;
+    delete group.marks[0].from;
     if(hasRow){
       if(!enc.isType(ROW, O)){
         vl.error("Row encoding should be ordinal.");
@@ -319,9 +321,21 @@ vl.toVegaSpec = function(enc, data) {
 
       facetKeys.push(enc.field(ROW));
 
-      yAxesGrp = groupdef("y-axes");
-      spec.marks.push(yAxesGrp);
+      var from;
+      if(hasCol){
+        from = duplicate(group.from);
+        from.transform = from.transform || [];
+        from.transform.unshift({type: "facet", keys: [enc.field(COL)]});
+      }
 
+      var axesGrp = groupdef("x-axes", {
+        axes: vl.axis.defs(["x"], enc),
+        x: hasCol && {scale: COL, field: "keys.0"},
+        width: hasCol && {"value": cellWidth}, //HACK?
+        from: from
+      });
+
+      spec.marks.push(axesGrp);
     }else{ // doesn't have row
       //keep x axis in the cell
       cellAxes.push.apply(cellAxes,vl.axis.defs(["x"], enc));
@@ -336,8 +350,21 @@ vl.toVegaSpec = function(enc, data) {
 
       facetKeys.push(enc.field(COL));
 
-      xAxesGrp = groupdef("x-axes");
-      spec.marks.push(xAxesGrp);
+      var from;
+      if(hasRow){
+        from = duplicate(group.from);
+        from.transform = from.transform || [];
+        from.transform.unshift({type: "facet", keys: [enc.field(ROW)]});
+      }
+
+      var axesGrp = groupdef("y-axes", {
+        axes: vl.axis.defs(["y"], enc),
+        y: hasRow && {scale: ROW, field: "keys.0"},
+        height: hasRow && {"value": cellHeight}, //HACK?
+        from: from
+      });
+
+      spec.marks.push(axesGrp);
     }else{ // doesn't have col
       cellAxes.push.apply(cellAxes,vl.axis.defs(["y"], enc));
     }
@@ -352,10 +379,7 @@ vl.toVegaSpec = function(enc, data) {
 
     group.axes = cellAxes;
 
-    //move "from" to cell level and add facet transform
-    group.from = group.marks[0].from;
-    delete group.marks[0].from;
-
+    // add facet transform
     var trans = (group.from.transform || (group.from.transform=[]));
     trans.unshift({type: "facet", keys: facetKeys});
 
@@ -618,16 +642,22 @@ function markdef(mark, enc) {
   };
 }
 
-function groupdef(name) {
+function groupdef(name, opt) {
+  opt = opt || {};
   return {
-    _name: name,
+    _name: name || undefined,
     type: "group",
+    from: opt.from,
     properties: {
       enter: {
-        width: {group: "width"},
-        height: {group: "height"}
+        x: opt.x || undefined,
+        y: opt.y || undefined,
+        width: opt.width || {group: "width"},
+        height: opt.height || {group: "height"}
       }
     },
+    scales: opt.scales || undefined,
+    axes: opt.axes || undefined,
     marks: []
   };
 }
