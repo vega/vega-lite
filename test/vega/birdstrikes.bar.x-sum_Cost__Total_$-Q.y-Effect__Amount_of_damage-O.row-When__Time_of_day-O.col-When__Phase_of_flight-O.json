@@ -1,0 +1,145 @@
+{
+  "width": 300,
+  "height": 564,
+  "padding": "auto",
+  "data": [
+    {
+      "name": "table",
+      "url": "data/birdstrikes.json",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": [
+            "data.Effect__Amount_of_damage",
+            "data.When__Time_of_day",
+            "data.When__Phase_of_flight"
+          ],
+          "fields": [{"op": "sum","field": "data.Cost__Total_$"}]
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "_name": "cell",
+      "type": "group",
+      "from": {
+        "data": "table",
+        "transform": [
+          {
+            "type": "facet",
+            "keys": ["data.When__Time_of_day","data.When__Phase_of_flight"]
+          }
+        ]
+      },
+      "properties": {
+        "enter": {
+          "x": {"scale": "col","field": "keys.1"},
+          "y": {"scale": "row","field": "keys.0"},
+          "width": {"value": 200},
+          "height": {"value": 126},
+          "fill": {"value": "#fafafa"}
+        }
+      },
+      "axes": [],
+      "marks": [
+        {
+          "type": "rect",
+          "properties": {
+            "enter": {
+              "x": {"scale": "x","field": "data.sum_Cost__Total_$"},
+              "x2": {"scale": "x","value": 0},
+              "yc": {"scale": "y","field": "data.Effect__Amount_of_damage"},
+              "height": {"value": 21,"offset": -1},
+              "fill": {"value": "steelblue"}
+            },
+            "update": {
+              "x": {"scale": "x","field": "data.sum_Cost__Total_$"},
+              "x2": {"scale": "x","value": 0},
+              "yc": {"scale": "y","field": "data.Effect__Amount_of_damage"},
+              "height": {"value": 21,"offset": -1},
+              "fill": {"value": "steelblue"}
+            }
+          }
+        }
+      ]
+    },
+    {
+      "_name": "x-axes",
+      "type": "group",
+      "from": {
+        "data": "table",
+        "transform": [{"type": "facet","keys": ["data.When__Phase_of_flight"]}]
+      },
+      "properties": {
+        "enter": {
+          "x": {"scale": "col","field": "keys.0"},
+          "width": {"value": 200},
+          "height": {"group": "height"}
+        }
+      },
+      "axes": [{"type": "x","scale": "x","ticks": 3}],
+      "marks": []
+    },
+    {
+      "_name": "y-axes",
+      "type": "group",
+      "from": {
+        "data": "table",
+        "transform": [{"type": "facet","keys": ["data.When__Time_of_day"]}]
+      },
+      "properties": {
+        "enter": {
+          "y": {"scale": "row","field": "keys.0"},
+          "width": {"group": "width"},
+          "height": {"value": 126}
+        }
+      },
+      "axes": [{"type": "y","scale": "y","ticks": 3}],
+      "marks": []
+    }
+  ],
+  "scales": [
+    {
+      "name": "col",
+      "type": "ordinal",
+      "domain": {"data": "table","field": "data.When__Phase_of_flight"},
+      "sort": true,
+      "bandWidth": 200,
+      "round": true,
+      "nice": true,
+      "padding": 0.1
+    },
+    {
+      "name": "row",
+      "type": "ordinal",
+      "domain": {"data": "table","field": "data.When__Time_of_day"},
+      "sort": true,
+      "bandWidth": 126,
+      "round": true,
+      "nice": true,
+      "padding": 0.1
+    },
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": {"data": "table","field": "data.sum_Cost__Total_$"},
+      "range": [0,200],
+      "zero": true,
+      "reverse": false,
+      "round": true,
+      "nice": true
+    },
+    {
+      "name": "y",
+      "type": "ordinal",
+      "domain": {"data": "table","field": "data.Effect__Amount_of_damage"},
+      "sort": true,
+      "bandWidth": 21,
+      "round": true,
+      "nice": true,
+      "points": true,
+      "padding": 1
+    }
+  ]
+}
