@@ -31,47 +31,6 @@
       "_name": "cell",
       "type": "group",
       "properties": {"enter": {"width": {"group": "width"},"height": {"group": "height"}}},
-      "marks": [
-        {
-          "_name": "subfacet",
-          "type": "group",
-          "properties": {"enter": {"width": {"group": "width"},"height": {"group": "height"}}},
-          "marks": [
-            {
-              "type": "rect",
-              "properties": {
-                "enter": {
-                  "x": {"scale": "x","field": "x"},
-                  "x2": {"scale": "x","field": "x2"},
-                  "yc": {"scale": "y","field": "data.Effect__Amount_of_damage"},
-                  "height": {"value": 21,"offset": -1},
-                  "fill": {"scale": "color","field": "data.When__Phase_of_flight"}
-                },
-                "update": {
-                  "x": {"scale": "x","field": "x"},
-                  "x2": {"scale": "x","field": "x2"},
-                  "yc": {"scale": "y","field": "data.Effect__Amount_of_damage"},
-                  "height": {"value": 21,"offset": -1},
-                  "fill": {"scale": "color","field": "data.When__Phase_of_flight"}
-                }
-              }
-            }
-          ],
-          "from": {
-            "data": "table",
-            "transform": [
-              {"type": "sort","by": "data.When__Phase_of_flight"},
-              {"type": "facet","keys": ["data.When__Phase_of_flight"]},
-              {
-                "type": "stack",
-                "point": "data.Effect__Amount_of_damage",
-                "height": "data.sum_Cost__Total_$",
-                "output": {"y1": "x","y0": "x2"}
-              }
-            ]
-          }
-        }
-      ],
       "scales": [
         {
           "name": "x",
@@ -107,6 +66,47 @@
       "axes": [
         {"type": "x","scale": "x","ticks": 3},
         {"type": "y","scale": "y","ticks": 3}
+      ],
+      "marks": [
+        {
+          "_name": "subfacet",
+          "type": "group",
+          "from": {
+            "data": "table",
+            "transform": [
+              {"type": "sort","by": "data.When__Phase_of_flight"},
+              {"type": "facet","keys": ["data.When__Phase_of_flight"]},
+              {
+                "type": "stack",
+                "point": "data.Effect__Amount_of_damage",
+                "height": "data.sum_Cost__Total_$",
+                "output": {"y1": "x","y0": "x2"}
+              }
+            ]
+          },
+          "properties": {"enter": {"width": {"group": "width"},"height": {"group": "height"}}},
+          "marks": [
+            {
+              "type": "rect",
+              "properties": {
+                "enter": {
+                  "x": {"scale": "x","field": "x"},
+                  "x2": {"scale": "x","field": "x2"},
+                  "yc": {"scale": "y","field": "data.Effect__Amount_of_damage"},
+                  "height": {"value": 21,"offset": -1},
+                  "fill": {"scale": "color","field": "data.When__Phase_of_flight"}
+                },
+                "update": {
+                  "x": {"scale": "x","field": "x"},
+                  "x2": {"scale": "x","field": "x2"},
+                  "yc": {"scale": "y","field": "data.Effect__Amount_of_damage"},
+                  "height": {"value": 21,"offset": -1},
+                  "fill": {"scale": "color","field": "data.When__Phase_of_flight"}
+                }
+              }
+            }
+          ]
+        }
       ]
     }
   ]

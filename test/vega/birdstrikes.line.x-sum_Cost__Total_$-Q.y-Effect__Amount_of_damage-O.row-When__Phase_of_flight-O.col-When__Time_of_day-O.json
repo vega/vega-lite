@@ -1,6 +1,6 @@
 {
   "width": 300,
-  "height": 564,
+  "height": 912,
   "padding": "auto",
   "data": [
     {
@@ -11,8 +11,8 @@
           "type": "aggregate",
           "groupby": [
             "data.Effect__Amount_of_damage",
-            "data.When__Time_of_day",
-            "data.When__Phase_of_flight"
+            "data.When__Phase_of_flight",
+            "data.When__Time_of_day"
           ],
           "fields": [{"op": "sum","field": "data.Cost__Total_$"}]
         }
@@ -28,7 +28,7 @@
         "transform": [
           {
             "type": "facet",
-            "keys": ["data.When__Time_of_day","data.When__Phase_of_flight"]
+            "keys": ["data.When__Phase_of_flight","data.When__Time_of_day"]
           }
         ]
       },
@@ -43,21 +43,22 @@
       },
       "marks": [
         {
-          "type": "rect",
+          "type": "line",
+          "from": {
+            "transform": [{"type": "sort","by": "data.Effect__Amount_of_damage"}]
+          },
           "properties": {
             "enter": {
               "x": {"scale": "x","field": "data.sum_Cost__Total_$"},
-              "x2": {"scale": "x","value": 0},
-              "yc": {"scale": "y","field": "data.Effect__Amount_of_damage"},
-              "height": {"value": 21,"offset": -1},
-              "fill": {"value": "steelblue"}
+              "y": {"scale": "y","field": "data.Effect__Amount_of_damage"},
+              "stroke": {"value": "steelblue"},
+              "strokeWidth": {"value": 2}
             },
             "update": {
               "x": {"scale": "x","field": "data.sum_Cost__Total_$"},
-              "x2": {"scale": "x","value": 0},
-              "yc": {"scale": "y","field": "data.Effect__Amount_of_damage"},
-              "height": {"value": 21,"offset": -1},
-              "fill": {"value": "steelblue"}
+              "y": {"scale": "y","field": "data.Effect__Amount_of_damage"},
+              "stroke": {"value": "steelblue"},
+              "strokeWidth": {"value": 2}
             }
           }
         }
@@ -68,7 +69,7 @@
       "type": "group",
       "from": {
         "data": "table",
-        "transform": [{"type": "facet","keys": ["data.When__Phase_of_flight"]}]
+        "transform": [{"type": "facet","keys": ["data.When__Time_of_day"]}]
       },
       "properties": {
         "enter": {
@@ -85,7 +86,7 @@
       "type": "group",
       "from": {
         "data": "table",
-        "transform": [{"type": "facet","keys": ["data.When__Time_of_day"]}]
+        "transform": [{"type": "facet","keys": ["data.When__Phase_of_flight"]}]
       },
       "properties": {
         "enter": {
@@ -102,7 +103,7 @@
     {
       "name": "col",
       "type": "ordinal",
-      "domain": {"data": "table","field": "data.When__Phase_of_flight"},
+      "domain": {"data": "table","field": "data.When__Time_of_day"},
       "sort": true,
       "bandWidth": 200,
       "round": true,
@@ -112,7 +113,7 @@
     {
       "name": "row",
       "type": "ordinal",
-      "domain": {"data": "table","field": "data.When__Time_of_day"},
+      "domain": {"data": "table","field": "data.When__Phase_of_flight"},
       "sort": true,
       "bandWidth": 126,
       "round": true,

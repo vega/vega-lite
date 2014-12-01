@@ -20,28 +20,6 @@
       "_name": "cell",
       "type": "group",
       "properties": {"enter": {"width": {"group": "width"},"height": {"group": "height"}}},
-      "marks": [
-        {
-          "type": "rect",
-          "from": {"data": "table"},
-          "properties": {
-            "enter": {
-              "x": {"scale": "x","field": "data.sum_Cost__Total_$"},
-              "x2": {"scale": "x","value": 0},
-              "yc": {"scale": "y","field": "data.Effect__Amount_of_damage"},
-              "height": {"value": 21,"offset": -1},
-              "fill": {"value": "steelblue"}
-            },
-            "update": {
-              "x": {"scale": "x","field": "data.sum_Cost__Total_$"},
-              "x2": {"scale": "x","value": 0},
-              "yc": {"scale": "y","field": "data.Effect__Amount_of_damage"},
-              "height": {"value": 21,"offset": -1},
-              "fill": {"value": "steelblue"}
-            }
-          }
-        }
-      ],
       "scales": [
         {
           "name": "x",
@@ -68,6 +46,28 @@
       "axes": [
         {"type": "x","scale": "x","ticks": 3},
         {"type": "y","scale": "y","ticks": 3}
+      ],
+      "marks": [
+        {
+          "type": "rect",
+          "from": {"data": "table"},
+          "properties": {
+            "enter": {
+              "x": {"scale": "x","field": "data.sum_Cost__Total_$"},
+              "x2": {"scale": "x","value": 0},
+              "yc": {"scale": "y","field": "data.Effect__Amount_of_damage"},
+              "height": {"value": 21,"offset": -1},
+              "fill": {"value": "steelblue"}
+            },
+            "update": {
+              "x": {"scale": "x","field": "data.sum_Cost__Total_$"},
+              "x2": {"scale": "x","value": 0},
+              "yc": {"scale": "y","field": "data.Effect__Amount_of_damage"},
+              "height": {"value": 21,"offset": -1},
+              "fill": {"value": "steelblue"}
+            }
+          }
+        }
       ]
     }
   ]
