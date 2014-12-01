@@ -5,7 +5,7 @@ var VEGA_DIR = "vega", VEGALITE_DIR = "vegalite";
 var program = require('commander');
 program.version('0.0.1')
   .description("Generate Vega specs from Vegalite object in"+VEGALITE_DIR+"/ and compare output with testcases in "+ VEGA_DIR)
-  .option('-f, --filename [path]', 'Test specific files (Use comma to separate filename', null)
+  .option('-f, --files [path]', 'Test specific files (Use comma to separate filename', null)
   .parse(process.argv);
 
 var  fs = require('fs'),
@@ -15,8 +15,11 @@ var  fs = require('fs'),
   assert = require('chai').assert,
   diff = require('deep-diff').diff;
 
-if(program.files){
+var badList = [], goodList = [];
 
+if(program.files){
+  program.files.split(",").forEach(test);
+  log();
 }else{
   fs.readdir(VEGALITE_DIR, function(err, files){
     files.filter(function(f){
@@ -26,8 +29,6 @@ if(program.files){
     log();
   });
 }
-
-var badList = [], goodList = [];
 
 function test(filename){
   var json = require("./"+VEGALITE_DIR+"/"+filename),
@@ -44,7 +45,6 @@ function test(filename){
       spec: spec
     });
   }else{
-    var d = d
     console.log("Bad:", filename, diff(spec, testSpec));
     badList.push({
       filename: filename,
