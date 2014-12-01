@@ -577,7 +577,7 @@ function scale_range(s, enc, opt) {
       if (enc.isType(s.name, O)) {
         s.bandWidth = enc.config("bandSize");
       } else {
-        s.range = opt.cellHeight ? [0, opt.cellHeight] : "height";
+        s.range = opt.cellHeight ? [opt.cellHeight, 0] : "height";
         s.zero = enc.config("yZero");
         s.reverse = enc.config("yReverse");
       }
