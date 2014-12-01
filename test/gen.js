@@ -1,13 +1,15 @@
 #!/usr/bin/env node
 
-var VEGA_DIR = "vega", VEGALITE_DIR = "vegalite";
+var VEGA_DIR = "vega", VEGALITE_DIR = "vegalite", ISSUE_DIR = "issues";
 
 var program = require('commander');
 program.version('0.0.1')
   .description('Generate Test Cases. Regenerate all testcases in '+ VEGA_DIR + ' by default.  Use -f or -j to generate single test case.')
-  .option('-j, --json [path]', 'Create test from json strings [null]', null)
+  .option('-i, --issue [JSON String]', 'Just save the vegalite encoding in '+ISSUE_DIR, null)
+  .option('-j, --json [JSON String]', 'Create test from json strings [null]', null)
   .option('-f, --file [path]', 'Create test from file [null]', null)
   .option('-d, --data [path]', 'Data file path (otherwise, path will be parsed from dataUrl config.) [null]', null)
+  .option('-n, --note [String]', 'Add _note property to the vegalite json file.', null)
   .parse(process.argv);
 
 
@@ -15,13 +17,17 @@ var fs = require('fs'),
   vl = require('../src/vegalite.js'),
   stringify = require('../lib/json3-compactstringify').stringify;
 
-
 var jsons, dataUrl, data, dataname, encoding, filename, spec;
 
-if(program.file){
+if(program.issue || program.json){
+  var json;
+  if(!program.json){
+    generate(JSON.parse(program.issue), true);
+  }else{
+    generate(JSON.parse(program.json), true);
+  }
+} else if(program.file){
   generate(require(file), true);
-}else if(program.json){
-  generate(JSON.parse(program.json), true);
 }else {
   fs.readdir(VEGALITE_DIR, function(err, files){
     files.filter(function(f){
@@ -43,6 +49,10 @@ function writeErrorHandler(path){
 }
 
 function generate(json, genVl){
+  if(program.note){
+    json._note = program.note;
+  }
+
   encoding = vl.Encoding.parseJSON(json);
 
   dataUrl = program.data || (encoding.config("dataUrl") ? '../'+encoding.config("dataUrl") : null);
@@ -60,11 +70,16 @@ function generate(json, genVl){
   filename = encoding.toShorthand();
   spec = vl.toVegaSpec(encoding, data);
 
-  var vlPath = VEGALITE_DIR+"/"+dataname+"."+filename+'.json',
+  if(program.issue){
+    var path  = ISSUE_DIR +"/"+dataname+"."+filename+'.json';
+    fs.writeFile(path, stringify(json, null, '  ', 80), writeErrorHandler(path));
+  }else{
+    var vlPath = VEGALITE_DIR+"/"+dataname+"."+filename+'.json',
     vgPath = VEGA_DIR+"/"+dataname+"."+filename+'.json';
 
-  if(genVl){
-    fs.writeFile(vlPath, stringify(json, null, '  ', 80), writeErrorHandler(vlPath));
+    if(genVl){
+      fs.writeFile(vlPath, stringify(json, null, '  ', 80), writeErrorHandler(vlPath));
+    }
+    fs.writeFile(vgPath, stringify(spec, null, '  ', 80), writeErrorHandler(vgPath))
   }
-  fs.writeFile(vgPath, stringify(spec, null, '  ', 80), writeErrorHandler(vgPath))
 }
