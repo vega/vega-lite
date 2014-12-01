@@ -243,7 +243,6 @@ vl.toVegaSpec = function(enc, data) {
 
   group.marks.push(mdef);
 
-
   // HACK to set chart size
   // NOTE: this fails for plots driven by derived values (e.g., aggregates)
   // One solution is to update Vega to support auto-sizing
@@ -277,10 +276,10 @@ vl.toVegaSpec = function(enc, data) {
 
   if (hasDetails){
     if(stack || lineType){
-      var m = group.marks;
-      group.marks = [groupdef("subfacet")];
-      var g = group.marks[0];
-      g.marks = m;
+      var m = group.marks,
+        g = groupdef("subfacet", {marks: m});
+
+      group.marks = [g];
       g.from = mdef.from;
       delete mdef.from;
 
@@ -310,8 +309,13 @@ vl.toVegaSpec = function(enc, data) {
     enter.fill = {value: enc.config("cellBackgroundColor")};
 
     //move "from" to cell level and add facet transform
-    group.from = group.marks[0].from;
-    delete group.marks[0].from;
+    group.from = {data: group.marks[0].from.data};
+
+    if(group.marks[0].from.transform){
+      delete group.marks[0].from.data;
+    }else{
+      delete group.marks[0].from;
+    }
     if(hasRow){
       if(!enc.isType(ROW, O)){
         vl.error("Row encoding should be ordinal.");
@@ -377,7 +381,9 @@ vl.toVegaSpec = function(enc, data) {
       {cellWidth: cellWidth, cellHeight: cellHeight, stack: stack}
     ); // row/col scales + cell scales
 
-    group.axes = cellAxes;
+    if(cellAxes.length > 0){
+      group.axes = cellAxes;
+    }
 
     // add facet transform
     var trans = (group.from.transform || (group.from.transform=[]));
@@ -515,7 +521,7 @@ vl.scale = {};
 
 function scale_names(props) {
   return vl.keys(vl.keys(props).reduce(function(a, x) {
-    if (props[x].scale) a[props[x].scale] = 1;
+    if (props[x] && props[x].scale) a[props[x].scale] = 1;
     return a;
   }, {}));
 }
@@ -658,7 +664,7 @@ function groupdef(name, opt) {
     },
     scales: opt.scales || undefined,
     axes: opt.axes || undefined,
-    marks: []
+    marks: opt.marks || []
   };
 }
 
