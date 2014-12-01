@@ -183,7 +183,7 @@ function init() {
     .on("click", update);
 
   var configs = config.selectAll("div")
-    .data(vl.keys(vl.DEFAULTS))
+    .data(vl.keys(vl.DEFAULTS).filter(function(k){ return k[0] != "_";}))
     .enter().append("div").attr("class", "cfg")
       .append("label");
 

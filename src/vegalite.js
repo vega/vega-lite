@@ -44,8 +44,10 @@ vl.dataTypeNames = ["O","Q","T"].reduce(function(r,x) {
 vl.DEFAULTS = {
   // template
   dataUrl: undefined, //for easier export
-  width: 300,
-  height: 300,
+  width: undefined,
+  height: undefined,
+  _minWidth: 20,
+  _minHeight: 20,
 
   //small multiples
   cellHeight: 200, // will be overwritten by bandWidth
@@ -233,37 +235,52 @@ vl.error = function(msg){
   console.error("[VL Error]", msg);
 }
 
-vl.toVegaSpec = function(enc, data) {
-  var spec = template(enc),
-      group = spec.marks[0],
-      mark = marks[enc.marktype()],
-      mdef = markdef(mark, enc);
-
-  var hasRow = enc.has(ROW), hasCol=enc.has(COL);
-
-  group.marks.push(mdef);
+function setSize(enc, data, spec) {
+  var hasRow = enc.has(ROW), hasCol = enc.has(COL);
 
   // HACK to set chart size
   // NOTE: this fails for plots driven by derived values (e.g., aggregates)
   // One solution is to update Vega to support auto-sizing
   // In the meantime, auto-padding (mostly) does the trick
-  var colCardinality= hasCol ? uniq(data, enc.field(COL,1)) : 1,
-    rowCardinality= hasRow ? uniq(data, enc.field(ROW,1)) : 1;
+  var colCardinality = hasCol ? uniq(data, enc.field(COL, 1)) : 1,
+    rowCardinality = hasRow ? uniq(data, enc.field(ROW, 1)) : 1;
 
-  var cellWidth = enc.config("cellWidth") || enc.config("width") * 1.0 /colCardinality,
+  var cellWidth = enc.config("cellWidth") || enc.config("width") * 1.0 / colCardinality,
     cellHeight = enc.config("cellHeight") || enc.config("height") * 1.0 / rowCardinality,
-    cellPadding = enc.config("cellPadding");
+    cellPadding = enc.config("cellPadding"),
+    width = enc.config("_minWidth"),
+    height = enc.config("_minHeight");
 
-  if(enc.has(X) && enc.isType(X, O)){ //ordinal field will override parent
-    cellWidth = uniq(data, enc.field(X,1)) * enc.config("bandSize");
-    spec.width = cellWidth * colCardinality + cellPadding * (colCardinality-1);
+  if (enc.has(X) && enc.isType(X, O)) { //ordinal field will override parent
+    cellWidth = uniq(data, enc.field(X, 1)) * enc.config("bandSize");
   }
+  width = cellWidth * colCardinality + cellPadding * (colCardinality - 1);
 
-  if(enc.has(Y) && enc.isType(Y, O)){
-    cellHeight = uniq(data, enc.field(Y,1)) * enc.config("bandSize");
-    spec.height = cellHeight * rowCardinality + cellPadding * (colCardinality-1);
+  if (enc.has(Y) && enc.isType(Y, O)) {
+    cellHeight = uniq(data, enc.field(Y, 1)) * enc.config("bandSize");
   }
+  height = cellHeight * rowCardinality + cellPadding * (colCardinality - 1);
+  return {
+    cellWidth: cellWidth,
+    cellHeight: cellHeight,
+    width: width,
+    height:height
+  };
+}
 
+vl.toVegaSpec = function(enc, data) {
+  var size = setSize(enc, data),
+    cellWidth = size.cellWidth,
+    cellHeight = size.cellHeight;
+
+  var spec = template(enc, size),
+    group = spec.marks[0],
+    mark = marks[enc.marktype()],
+    mdef = markdef(mark, enc);
+
+  var hasRow = enc.has(ROW), hasCol = enc.has(COL);
+
+  group.marks.push(mdef);
   binning(spec.data[0], enc);
 
   var lineType = marks[enc.marktype()].line;
@@ -274,8 +291,8 @@ vl.toVegaSpec = function(enc, data) {
     hasDetails = details && details.length > 0,
     stack = hasDetails && stacking(spec, enc, mdef);
 
-  if (hasDetails){
-    if(stack || lineType){
+  if (hasDetails) {
+    if (stack || lineType) {
       var m = group.marks,
         g = groupdef("subfacet", {marks: m});
 
@@ -284,10 +301,10 @@ vl.toVegaSpec = function(enc, data) {
       delete mdef.from;
 
       //TODO test LOD -- we should support stack / line without color (LOD) field
-      var trans = (g.from.transform || (g.from.transform=[]));
+      var trans = (g.from.transform || (g.from.transform = []));
       trans.unshift({type: "facet", keys: details});
 
-      if(stack && enc.has(COLOR)){
+      if (stack && enc.has(COLOR)) {
         trans.unshift({type: "sort", by: enc.field(COLOR)});
       }
     }
@@ -296,37 +313,37 @@ vl.toVegaSpec = function(enc, data) {
   // auto-sort line/area values
   //TODO(kanitw): have some config to turn off auto-sort for line (for line chart that encodes temporal information)
   if (lineType) {
-    var f = (enc.isType(X,Q|T) && enc.isType(Y,O)) ? Y : X;
+    var f = (enc.isType(X, Q | T) && enc.isType(Y, O)) ? Y : X;
     if (!mdef.from) mdef.from = {};
     mdef.from.transform = [{type: "sort", by: enc.field(f)}];
   }
 
   // Small Multiples
-  if(hasRow || hasCol){
+  if (hasRow || hasCol) {
     var enter = group.properties.enter;
-    var facetKeys = [], cellAxes=[];
+    var facetKeys = [], cellAxes = [];
 
     enter.fill = {value: enc.config("cellBackgroundColor")};
 
     //move "from" to cell level and add facet transform
     group.from = {data: group.marks[0].from.data};
 
-    if(group.marks[0].from.transform){
+    if (group.marks[0].from.transform) {
       delete group.marks[0].from.data;
-    }else{
+    } else {
       delete group.marks[0].from;
     }
-    if(hasRow){
-      if(!enc.isType(ROW, O)){
+    if (hasRow) {
+      if (!enc.isType(ROW, O)) {
         vl.error("Row encoding should be ordinal.");
       }
-      enter.y = {scale: ROW, field: "keys."+ facetKeys.length};
+      enter.y = {scale: ROW, field: "keys." + facetKeys.length};
       enter.height = {"value": cellHeight}; // HACK
 
       facetKeys.push(enc.field(ROW));
 
       var from;
-      if(hasCol){
+      if (hasCol) {
         from = duplicate(group.from);
         from.transform = from.transform || [];
         from.transform.unshift({type: "facet", keys: [enc.field(COL)]});
@@ -340,22 +357,22 @@ vl.toVegaSpec = function(enc, data) {
       });
 
       spec.marks.push(axesGrp);
-    }else{ // doesn't have row
+    } else { // doesn't have row
       //keep x axis in the cell
-      cellAxes.push.apply(cellAxes,vl.axis.defs(["x"], enc));
+      cellAxes.push.apply(cellAxes, vl.axis.defs(["x"], enc));
     }
 
-    if(hasCol){
-      if(!enc.isType(COL, O)){
+    if (hasCol) {
+      if (!enc.isType(COL, O)) {
         vl.error("Col encoding should be ordinal.");
       }
-      enter.x = {scale: COL, field: "keys."+ facetKeys.length};
+      enter.x = {scale: COL, field: "keys." + facetKeys.length};
       enter.width = {"value": cellWidth}; // HACK
 
       facetKeys.push(enc.field(COL));
 
       var from;
-      if(hasRow){
+      if (hasRow) {
         from = duplicate(group.from);
         from.transform = from.transform || [];
         from.transform.unshift({type: "facet", keys: [enc.field(ROW)]});
@@ -369,8 +386,8 @@ vl.toVegaSpec = function(enc, data) {
       });
 
       spec.marks.push(axesGrp);
-    }else{ // doesn't have col
-      cellAxes.push.apply(cellAxes,vl.axis.defs(["y"], enc));
+    } else { // doesn't have col
+      cellAxes.push.apply(cellAxes, vl.axis.defs(["y"], enc));
     }
 
     // assuming equal cellWidth here
@@ -381,15 +398,15 @@ vl.toVegaSpec = function(enc, data) {
       {cellWidth: cellWidth, cellHeight: cellHeight, stack: stack}
     ); // row/col scales + cell scales
 
-    if(cellAxes.length > 0){
+    if (cellAxes.length > 0) {
       group.axes = cellAxes;
     }
 
     // add facet transform
-    var trans = (group.from.transform || (group.from.transform=[]));
+    var trans = (group.from.transform || (group.from.transform = []));
     trans.unshift({type: "facet", keys: facetKeys});
 
-  }else{
+  } else {
     group.scales = vl.scale.defs(scale_names(mdef.properties.update), enc,
       {stack: stack});
     group.axes = vl.axis.defs(axis_names(mdef.properties.update), enc);
@@ -668,17 +685,20 @@ function groupdef(name, opt) {
   };
 }
 
-function template(enc) {
+function template(enc, size) {
   var data = {name:TABLE},
     dataUrl = enc.config("dataUrl");
   if(dataUrl) data.url = dataUrl;
 
   return {
-    width: enc.config("width"),
-    height: enc.config("height"),
+    width: size.width,
+    height: size.height,
     padding: "auto",
     data: [data],
-    marks: [groupdef("cell")]
+    marks: [groupdef("cell", {
+      width: size.cellWidth ? {value: size.cellWidth}: undefined,
+      height: size.cellHeight ? {value: size.cellHeight} : undefined
+    })]
   };
 }
 
