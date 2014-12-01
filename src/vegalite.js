@@ -252,16 +252,17 @@ vl.toVegaSpec = function(enc, data) {
     rowCardinality= hasRow ? uniq(data, enc.field(ROW,1)) : 1;
 
   var cellWidth = enc.config("cellWidth") || enc.config("width") * 1.0 /colCardinality,
-    cellHeight = enc.config("cellHeight") || enc.config("height") * 1.0 / rowCardinality;
+    cellHeight = enc.config("cellHeight") || enc.config("height") * 1.0 / rowCardinality,
+    cellPadding = enc.config("cellPadding");
 
   if(enc.has(X) && enc.isType(X, O)){ //ordinal field will override parent
     cellWidth = uniq(data, enc.field(X,1)) * enc.config("bandSize");
-    spec.width = cellWidth * colCardinality;
+    spec.width = cellWidth * colCardinality + cellPadding * (colCardinality-1);
   }
 
   if(enc.has(Y) && enc.isType(Y, O)){
     cellHeight = uniq(data, enc.field(Y,1)) * enc.config("bandSize");
-    spec.height = cellHeight * rowCardinality;
+    spec.height = cellHeight * rowCardinality + cellPadding * (colCardinality-1);
   }
 
   binning(spec.data[0], enc);
