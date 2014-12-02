@@ -55,6 +55,7 @@ vl.DEFAULTS = {
   cellPadding: 10,
   cellBackgroundColor: "#fafafa",
   xAxisMargin: 80,
+  yAxisMargin: 30,
 
   // marks
   barSize: 10,
@@ -360,7 +361,7 @@ vl.toVegaSpec = function(enc, data) {
 
       spec.marks.push(axesGrp);
       (spec.axes = spec.axes || [])
-      spec.axes.push.apply(spec.axes, vl.axis.defs(["row"]));
+      spec.axes.push.apply(spec.axes, vl.axis.defs(["row"], enc));
     } else { // doesn't have row
       //keep x axis in the cell
       cellAxes.push.apply(cellAxes, vl.axis.defs(["x"], enc));
@@ -385,13 +386,14 @@ vl.toVegaSpec = function(enc, data) {
       var axesGrp = groupdef("y-axes", {
         axes: vl.axis.defs(["y"], enc),
         y: hasRow && {scale: ROW, field: "keys.0"},
+        x: hasRow && {value: xAxisMargin},
         height: hasRow && {"value": cellHeight}, //HACK?
         from: from
       });
 
       spec.marks.push(axesGrp);
       (spec.axes = spec.axes || [])
-      cellAxes.push.apply(cellAxes, vl.axis.defs(["col"]));
+      spec.axes.push.apply(spec.axes, vl.axis.defs(["col"], enc));
     } else { // doesn't have col
       cellAxes.push.apply(cellAxes, vl.axis.defs(["y"], enc));
     }
@@ -558,6 +560,9 @@ function axis_def(name, enc){
       majorTicks: { opacity: {"value": 0} },
       axis: { opacity: {"value": 0} }
     };
+  }
+  if(name==COL){
+    axis.offset = enc.config("yAxisMargin");
   }
 
   return axis;
