@@ -54,6 +54,7 @@ vl.DEFAULTS = {
   cellWidth: 200, // will be overwritten by bandWidth
   cellPadding: 10,
   cellBackgroundColor: "#fafafa",
+  xAxisMargin: 80,
 
   // marks
   barSize: 10,
@@ -349,14 +350,17 @@ vl.toVegaSpec = function(enc, data) {
         from.transform.unshift({type: "facet", keys: [enc.field(COL)]});
       }
 
-      var axesGrp = groupdef("x-axes", {
-        axes: vl.axis.defs(["x"], enc),
-        x: hasCol && {scale: COL, field: "keys.0"},
-        width: hasCol && {"value": cellWidth}, //HACK?
-        from: from
-      });
+      var xAxisMargin = enc.config("xAxisMargin"),
+        axesGrp = groupdef("x-axes", {
+          axes: vl.axis.defs(["x"], enc),
+          x: hasCol ? {scale: COL, field: "keys.0", offset: xAxisMargin} : {value: xAxisMargin},
+          width: hasCol && {"value": cellWidth}, //HACK?
+          from: from
+        });
 
       spec.marks.push(axesGrp);
+      (spec.axes = spec.axes || [])
+      spec.axes.push.apply(spec.axes, vl.axis.defs(["row"]));
     } else { // doesn't have row
       //keep x axis in the cell
       cellAxes.push.apply(cellAxes, vl.axis.defs(["x"], enc));
@@ -386,8 +390,18 @@ vl.toVegaSpec = function(enc, data) {
       });
 
       spec.marks.push(axesGrp);
+      (spec.axes = spec.axes || [])
+      cellAxes.push.apply(cellAxes, vl.axis.defs(["col"]));
     } else { // doesn't have col
       cellAxes.push.apply(cellAxes, vl.axis.defs(["y"], enc));
+    }
+
+    if(hasRow){
+      if(enter.x) enter.x.offset= enc.config("xAxisMargin");
+      else enter.x = {value: enc.config("xAxisMargin")};
+    }
+    if(hasCol){
+      //TODO fill here..
     }
 
     // assuming equal cellWidth here
@@ -522,13 +536,31 @@ function axis_names(props) {
 vl.axis = {};
 vl.axis.defs = function(names, enc) {
   return names.reduce(function(a, name) {
-    a.push({
-      type: name,
-      scale: name,
-      ticks: 3 //TODO(kanitw): better determine # of ticks
-    });
+    a.push(axis_def(name, enc));
     return a;
   }, []);
+}
+
+function axis_def(name, enc){
+  var type = name, axis;
+  if(name==COL) type = "x";
+  if(name==ROW) type = "y";
+
+  var axis = {
+    type: type,
+    scale: name,
+    ticks: 3 //TODO(kanitw): better determine # of ticks
+  };
+
+  if(name==COL || name ==ROW){
+    axis.properties = {
+      ticks: { opacity: {"value": 0} },
+      majorTicks: { opacity: {"value": 0} },
+      axis: { opacity: {"value": 0} }
+    };
+  }
+
+  return axis;
 }
 
 // END: AXES
