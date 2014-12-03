@@ -121,9 +121,10 @@ vl.Encoding = (function() {
   function Encoding(marktype, enc, config) {
     this._marktype = marktype;
     this._enc = enc;
-    this._cfg = config
-      ? Object.create(vl.DEFAULTS, config)
-      : vl.DEFAULTS;
+    this._cfg = vl.keys(config).reduce(function(c, k){
+      c[k] = config[k];
+      return c;
+    }, Object.create(vl.DEFAULTS));
   }
 
   var proto = Encoding.prototype;
@@ -192,7 +193,7 @@ vl.Encoding = (function() {
     }
 
     if(!excludeConfig){
-      json.cfg = this._cfg
+      json.cfg = duplicate(this._cfg)
     }
 
     return json;
@@ -211,20 +212,14 @@ vl.Encoding = (function() {
   }
 
   Encoding.parseJSON = function(json){
-    var enc = duplicate(json.enc),
-      cfg = vl.keys(json.cfg).reduce(function(o, k){
-          o[k] = {value: json.cfg[k]};
-          return o;
-        }, {});
+    var enc = duplicate(json.enc);
 
     //convert type from string to bitcode (e.g, O=1)
     for(var e in enc){
       enc[e].type = vl.dataTypes[enc[e].type];
     }
 
-
-
-    return new Encoding(json.marktype, enc, cfg);
+    return new Encoding(json.marktype, enc, json.cfg);
   }
 
   return Encoding;

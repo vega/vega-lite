@@ -219,7 +219,7 @@ function update() {
   var inclData = d3.select("#inclData").node().checked;
 
   if(inclData){ // if "include data" is checked, include data url in the output
-    enc = encodings({dataUrl: {value:self.dataUrl}});
+    enc = encodings({dataUrl: self.dataUrl});
     spec = vl.toVegaSpec(enc, data);
   }
   d3.select(".shorthand").attr("value", enc.toShorthand());
@@ -247,8 +247,10 @@ function swapXY(){
 function loadEncoding(encoding, callback){
   var dataUrl = encoding.config("dataUrl");
   var _load = function(){
+    //update marktype
     d3.select("select.mark").node().value = encoding.marktype();
 
+    //update encoding UI
     d3.selectAll("#ctrl div.enc").each(function(d) {
       if(encoding.has(d)){
         var e = encoding._enc[d];
@@ -259,6 +261,15 @@ function loadEncoding(encoding, callback){
         loadEnc(this, "-", "-", "-");
       }
     });
+
+    //update configs
+    d3.selectAll("#ctrl div.cfg input").each(function(d){
+      if(encoding._cfg.hasOwnProperty(d)){
+        this.value = encoding.config(d);
+      }
+    })
+
+
     if (callback) callback();
   }
   if(dataUrl){
@@ -275,6 +286,7 @@ function loadEnc(dom, v, a ,t){
   s.select("select.type").node().value = t;
   s.select("select.aggr").node().value = a;
 }
+
 
 function readEnc(dom){
   //read encoding from the UI
@@ -322,7 +334,8 @@ function encodings(cfg) {
   d3.selectAll("#ctrl div.cfg input").each(function(d){
     var val = this.value;
     if(val && val.length > 0){
-      cfg[d] = {value: val};
+      cfg[d] = val == "true" ? true :
+        val == "false" ? false : val;
     }
   });
   return new vl.Encoding(marktype, enc, cfg);
