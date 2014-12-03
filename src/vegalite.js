@@ -52,7 +52,7 @@ vl.DEFAULTS = {
   //small multiples
   cellHeight: 200, // will be overwritten by bandWidth
   cellWidth: 200, // will be overwritten by bandWidth
-  cellPadding: 10,
+  cellPadding: 0.1,
   cellBackgroundColor: "#fafafa",
   xAxisMargin: 80,
   yAxisMargin: 30,
@@ -60,6 +60,7 @@ vl.DEFAULTS = {
   // marks
   barSize: 10,
   bandSize: 21,
+  bandPadding: 1,
   pointSize: 50,
   pointShape: "circle",
   strokeWidth: 2,
@@ -245,18 +246,23 @@ function setSize(enc, data, spec) {
   var cellWidth = enc.config("cellWidth") || enc.config("width") * 1.0 / colCardinality,
     cellHeight = enc.config("cellHeight") || enc.config("height") * 1.0 / rowCardinality,
     cellPadding = enc.config("cellPadding"),
+    bandPadding = enc.config("bandPadding"),
     width = enc.config("_minWidth"),
     height = enc.config("_minHeight");
 
   if (enc.has(X) && enc.isType(X, O)) { //ordinal field will override parent
-    cellWidth = uniq(data, enc.field(X, 1)) * enc.config("bandSize");
+    // bands within cell use rangePoints()
+    cellWidth = (uniq(data, enc.field(X, 1)) + bandPadding) * enc.config("bandSize");
   }
-  width = cellWidth * colCardinality + cellPadding * (colCardinality - 1);
+  // Cell bands use rangeBands(). There are n-1 padding.  Outerpadding = 0 for cells
+  width = cellWidth * ((1 + cellPadding) * colCardinality - cellPadding);
 
   if (enc.has(Y) && enc.isType(Y, O)) {
-    cellHeight = uniq(data, enc.field(Y, 1)) * enc.config("bandSize");
+    // bands within celll use rangePoint()
+    cellHeight = (uniq(data, enc.field(Y, 1)) + bandPadding) *  enc.config("bandSize");
   }
-  height = cellHeight * rowCardinality + cellPadding * (colCardinality - 1);
+  // Cell bands use rangeBands(). There are n-1 padding.  Outerpadding = 0 for cells
+  height = cellHeight * ((1 + cellPadding) * rowCardinality - cellPadding);
   return {
     cellWidth: cellWidth,
     cellHeight: cellHeight,
@@ -676,12 +682,13 @@ function scale_range(s, enc, opt) {
   switch(s.name){
     case ROW:
     case COL:
-      s.padding = 0.1;
+      s.padding = enc.config("cellPadding");
+      s.outerPadding = 0;
       break;
     default:
       if (enc.isType(s.name, O) ) { //&& !s.bandWidth
         s.points = true;
-        s.padding = 1.0;
+        s.padding = enc.config("bandPadding");
       }
   }
 }
