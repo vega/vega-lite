@@ -1,0 +1,9 @@
+{
+  "marktype": "bar",
+  "enc": {
+    "x": {"name": "Cost__Total_$","type": "Q","aggr": "sum"},
+    "y": {"name": "Effect__Amount_of_damage","type": "O"},
+    "row": {"name": "Wildlife__Size","type": "O"}
+  },
+  "cfg": {"dataUrl": "data/birdstrikes.json"}
+}
