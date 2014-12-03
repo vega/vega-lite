@@ -540,8 +540,9 @@ vl.axis.defs = function(names, enc) {
 
 function axis_def(name, enc){
   var type = name, axis;
-  if(name==COL) type = "x";
-  if(name==ROW) type = "y";
+  var isCol = name==COL, isRow = name==ROW;
+  if(isCol) type = "x";
+  if(isRow) type = "y";
 
   var axis = {
     type: type,
@@ -549,14 +550,14 @@ function axis_def(name, enc){
     ticks: 3 //TODO(kanitw): better determine # of ticks
   };
 
-  if(name==COL || name ==ROW){
+  if(isRow || isCol){
     axis.properties = {
       ticks: { opacity: {"value": 0} },
       majorTicks: { opacity: {"value": 0} },
       axis: { opacity: {"value": 0} }
     };
   }
-  if(name==COL){
+  if(isCol){
     axis.offset = enc.config("yAxisMargin");
   }
 
