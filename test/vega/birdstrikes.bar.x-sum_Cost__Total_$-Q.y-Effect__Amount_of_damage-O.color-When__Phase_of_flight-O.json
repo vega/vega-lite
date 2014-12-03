@@ -1,5 +1,5 @@
 {
-  "width": 300,
+  "width": 200,
   "height": 126,
   "padding": "auto",
   "data": [
@@ -30,7 +30,7 @@
     {
       "_name": "cell",
       "type": "group",
-      "properties": {"enter": {"width": {"group": "width"},"height": {"group": "height"}}},
+      "properties": {"enter": {"width": {"value": 200},"height": {"value": 126}}},
       "scales": [
         {
           "name": "x",
