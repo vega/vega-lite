@@ -292,25 +292,11 @@ vl.toVegaSpec = function(enc, data) {
   var aggResult = aggregates(spec.data[0], enc),
     details = aggResult.details,
     hasDetails = details && details.length > 0,
-    stack = hasDetails && stacking(spec, enc, mdef);
+    stack = hasDetails && stacking(spec, enc, mdef, aggResult.facets);
 
-  if (hasDetails) {
-    if (stack || lineType) {
-      var m = group.marks,
-        g = groupdef("subfacet", {marks: m});
-
-      group.marks = [g];
-      g.from = mdef.from;
-      delete mdef.from;
-
-      //TODO test LOD -- we should support stack / line without color (LOD) field
-      var trans = (g.from.transform || (g.from.transform = []));
-      trans.unshift({type: "facet", keys: details});
-
-      if (stack && enc.has(COLOR)) {
-        trans.unshift({type: "sort", by: enc.field(COLOR)});
-      }
-    }
+  if (hasDetails && (stack || lineType)) {
+    //subfacet to group stack / line together in one group
+    subfacet(group, mdef, details, stack, enc);
   }
 
   // auto-sort line/area values
@@ -323,8 +309,21 @@ vl.toVegaSpec = function(enc, data) {
 
   // Small Multiples
   if (hasRow || hasCol) {
+    spec = facet(group, enc, cellHeight, cellWidth, spec, mdef, stack);
+  } else {
+    group.scales = vl.scale.defs(scale_names(mdef.properties.update), enc,
+      {stack: stack});
+    group.axes = vl.axis.defs(axis_names(mdef.properties.update), enc);
+  }
+
+  return spec;
+}
+
+function facet(group, enc, cellHeight, cellWidth, spec, mdef, stack) {
     var enter = group.properties.enter;
     var facetKeys = [], cellAxes = [];
+
+  var hasRow = enc.has(ROW), hasCol = enc.has(COL);
 
     enter.fill = {value: enc.config("cellBackgroundColor")};
 
@@ -332,7 +331,7 @@ vl.toVegaSpec = function(enc, data) {
     group.from = {data: group.marks[0].from.data};
 
     if (group.marks[0].from.transform) {
-      delete group.marks[0].from.data;
+    delete group.marks[0].from.data; //need to keep transform for subfaceting case
     } else {
       delete group.marks[0].from;
     }
@@ -412,7 +411,7 @@ vl.toVegaSpec = function(enc, data) {
     spec.scales = vl.scale.defs(
       scale_names(enter).concat(scale_names(mdef.properties.update)),
       enc,
-      {cellWidth: cellWidth, cellHeight: cellHeight, stack: stack}
+    {cellWidth: cellWidth, cellHeight: cellHeight, stack: stack, facet:true}
     ); // row/col scales + cell scales
 
     if (cellAxes.length > 0) {
@@ -423,13 +422,24 @@ vl.toVegaSpec = function(enc, data) {
     var trans = (group.from.transform || (group.from.transform = []));
     trans.unshift({type: "facet", keys: facetKeys});
 
-  } else {
-    group.scales = vl.scale.defs(scale_names(mdef.properties.update), enc,
-      {stack: stack});
-    group.axes = vl.axis.defs(axis_names(mdef.properties.update), enc);
+  return spec;
   }
 
-  return spec;
+function subfacet(group, mdef, details, stack, enc) {
+  var m = group.marks,
+    g = groupdef("subfacet", {marks: m});
+
+  group.marks = [g];
+  g.from = mdef.from;
+  delete mdef.from;
+
+  //TODO test LOD -- we should support stack / line without color (LOD) field
+  var trans = (g.from.transform || (g.from.transform = []));
+  trans.unshift({type: "facet", keys: details});
+
+  if (stack && enc.has(COLOR)) {
+    trans.unshift({type: "sort", by: enc.field(COLOR)});
+  }
 }
 
 function binning(spec, enc) {
@@ -453,13 +463,15 @@ function binning(spec, enc) {
 }
 
 function aggregates(spec, enc) {
-  var dims = {}, meas = {}, detail = {};
+  var dims = {}, meas = {}, detail = {}, facets={};
   enc.forEach(function(vv, d) {
     if (d.aggr) {
       meas[d.aggr+"|"+d.name] = {op:d.aggr, field:"data."+d.name};
     } else {
       dims[d.name] = enc.field(vv);
-      if (vv !== X && vv !== Y && vv !== ROW && vv !== COL) {
+      if (vv==ROW || vv == COL){
+        facets[d.name] = dims[d.name];
+      }else if (vv !== X && vv !== Y) {
         detail[d.name] = dims[d.name];
       }
     }
@@ -477,11 +489,13 @@ function aggregates(spec, enc) {
   }
   return {
     details: vl.vals(detail),
+    dims: dims,
+    facets: vl.vals(facets),
     aggregated: meas.length > 0
   }
 }
 
-function stacking(spec, enc, mdef, scales) {
+function stacking(spec, enc, mdef, facets) {
   if (!marks[enc.marktype()].stack) return false;
   if (!enc.has(COLOR)) return false;
 
@@ -493,23 +507,23 @@ function stacking(spec, enc, mdef, scales) {
   }
 
   // add transform to compute sums for scale
-  spec.data.push({
+  var stacked = {
     name: STACKED,
     source: TABLE,
     transform: [{
       type: "aggregate",
-      groupby: [enc.field(dim)], //TODO: group by outer facet too?
-      fields: [{op: "sum", field: enc.field(val)}]
+      groupby: [enc.field(dim)].concat(facets), // dim and other facets
+      fields: [{op: "sum", field: enc.field(val)}] // TODO check if field with aggr is correct?
     }]
-  });
-  // TODO: for small multiple we might need to calculate max of all facet?
+  };
 
-  // update scale mapping
-  // var s = find(scales ||[], {name:"name", value:val});
-  // s.domain = {
-  //   data: STACKED,
-  //   field: "data.sum_" + enc.field(val, true)
-  // };
+  stacked.transform.push({ //calculate max for each facet
+    type: "aggregate",
+    groupby: facets,
+    fields: [{op: "max", field: "data.sum_" + enc.field(val, true)}]
+  });
+
+  spec.data.push(stacked);
 
   // add stack transform to mark
   mdef.from.transform = [{
@@ -612,7 +626,10 @@ function scale_type(name, enc) {
 
 function scale_domain(name, enc, opt) {
   return name == opt.stack ?
-    {data: STACKED, field: "data.sum_" + enc.field(name, true)}:
+    {
+      data: STACKED,
+      field: "data." + (opt.facet ? "max_" :"") + "sum_" + enc.field(name, true)
+    }:
     {data: TABLE, field: enc.field(name)};
 }
 
