@@ -517,11 +517,13 @@ function stacking(spec, enc, mdef, facets) {
     }]
   };
 
-  stacked.transform.push({ //calculate max for each facet
-    type: "aggregate",
-    groupby: facets,
-    fields: [{op: "max", field: "data.sum_" + enc.field(val, true)}]
-  });
+  if(facets && facets.length > 0){
+    stacked.transform.push({ //calculate max for each facet
+      type: "aggregate",
+      groupby: facets,
+      fields: [{op: "max", field: "data.sum_" + enc.field(val, true)}]
+    });
+  }
 
   spec.data.push(stacked);
 
