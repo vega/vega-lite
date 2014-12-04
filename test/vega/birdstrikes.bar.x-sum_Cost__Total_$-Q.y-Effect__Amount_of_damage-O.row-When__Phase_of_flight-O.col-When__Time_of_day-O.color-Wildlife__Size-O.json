@@ -1,6 +1,6 @@
 {
-  "width": 830,
-  "height": 912,
+  "width": 860.0000000000001,
+  "height": 1117.2000000000003,
   "padding": "auto",
   "data": [
     {
@@ -25,8 +25,17 @@
       "transform": [
         {
           "type": "aggregate",
-          "groupby": ["data.Effect__Amount_of_damage"],
+          "groupby": [
+            "data.Effect__Amount_of_damage",
+            "data.When__Phase_of_flight",
+            "data.When__Time_of_day"
+          ],
           "fields": [{"op": "sum","field": "data.sum_Cost__Total_$"}]
+        },
+        {
+          "type": "aggregate",
+          "groupby": ["data.When__Phase_of_flight","data.When__Time_of_day"],
+          "fields": [{"op": "max","field": "data.sum_sum_Cost__Total_$"}]
         }
       ]
     }
@@ -49,7 +58,7 @@
           "x": {"scale": "col","field": "keys.1","offset": 80},
           "y": {"scale": "row","field": "keys.0"},
           "width": {"value": 200},
-          "height": {"value": 126},
+          "height": {"value": 147},
           "fill": {"value": "#fafafa"}
         }
       },
@@ -123,7 +132,7 @@
           "x": {"value": 80},
           "y": {"scale": "row","field": "keys.0"},
           "width": {"group": "width"},
-          "height": {"value": 126}
+          "height": {"value": 147}
         }
       },
       "axes": [{"type": "y","scale": "y","ticks": 3}],
@@ -162,22 +171,24 @@
       "bandWidth": 200,
       "round": true,
       "nice": true,
-      "padding": 0.1
+      "padding": 0.1,
+      "outerPadding": 0
     },
     {
       "name": "row",
       "type": "ordinal",
       "domain": {"data": "table","field": "data.When__Phase_of_flight"},
       "sort": true,
-      "bandWidth": 126,
+      "bandWidth": 147,
       "round": true,
       "nice": true,
-      "padding": 0.1
+      "padding": 0.1,
+      "outerPadding": 0
     },
     {
       "name": "x",
       "type": "linear",
-      "domain": {"data": "stacked","field": "data.sum_sum_Cost__Total_$"},
+      "domain": {"data": "stacked","field": "data.max_sum_sum_Cost__Total_$"},
       "range": [0,200],
       "zero": true,
       "reverse": false,

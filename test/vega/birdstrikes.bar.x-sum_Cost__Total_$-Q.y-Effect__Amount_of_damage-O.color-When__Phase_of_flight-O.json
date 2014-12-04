@@ -1,6 +1,6 @@
 {
   "width": 200,
-  "height": 126,
+  "height": 147,
   "padding": "auto",
   "data": [
     {
@@ -22,6 +22,11 @@
           "type": "aggregate",
           "groupby": ["data.Effect__Amount_of_damage"],
           "fields": [{"op": "sum","field": "data.sum_Cost__Total_$"}]
+        },
+        {
+          "type": "aggregate",
+          "groupby": [],
+          "fields": [{"op": "max","field": "data.sum_sum_Cost__Total_$"}]
         }
       ]
     }
@@ -30,7 +35,7 @@
     {
       "_name": "cell",
       "type": "group",
-      "properties": {"enter": {"width": {"value": 200},"height": {"value": 126}}},
+      "properties": {"enter": {"width": {"value": 200},"height": {"value": 147}}},
       "scales": [
         {
           "name": "x",
