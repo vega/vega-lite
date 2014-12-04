@@ -11,9 +11,8 @@ program.version('0.0.1')
 var  fs = require('fs'),
   vl = require('../src/vegalite.js'),
   stringify = require('../lib/json3-compactstringify').stringify,
-  equal = require('deep-equal'),
   assert = require('chai').assert,
-  diff = require('deep-diff').diff;
+  deepDiff = require('deep-diff').diff;
 
 var badList = [], goodList = [];
 
@@ -38,18 +37,20 @@ function test(filename){
     spec = vl.toVegaSpec(encoding, data),
     testSpec = require("./"+VEGA_DIR+"/"+filename);
 
-  if(equal(spec, testSpec)){
-    console.log("Good:", filename);
-    goodList.push({
-      filename: filename,
-      spec: spec
-    });
-  }else{
-    console.log("Bad:", filename, diff(spec, testSpec));
+  var diff = deepDiff(spec, testSpec);
+
+  if(diff){
+    console.log("Bad:", filename, diff);
     badList.push({
       filename: filename,
       spec: spec,
       testSpec: testSpec
+    });
+  }else{
+    console.log("Good:", filename);
+    goodList.push({
+      filename: filename,
+      spec: spec
     });
   }
 }
