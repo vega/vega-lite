@@ -73,6 +73,9 @@ vl.DEFAULTS = {
   fontSize: "12",
   fontWeight: "normal",
   fontStyle: "normal",
+  opacity: null,
+  _thickOpacity: 0.5,
+  _thinOpacity: 0.1,
 
   // scales
   xZero: true,
@@ -158,6 +161,30 @@ vl.Encoding = (function() {
       return f + this._enc[x].name;
     }
   };
+
+  proto.any = function(f){
+    var i=0, k;
+    for (k in this._enc) {
+      if(f(k, this._enc[k], i++)) return true;
+    }
+    return false;
+  }
+
+  proto.all = function(f){
+    var i=0, k;
+    for (k in this._enc) {
+      if(!f(k, this._enc[k], i++)) return false;
+    }
+    return true;
+  }
+
+  proto.reduce = function(f, init){
+    var r = init, i=0;
+    for (k in this._enc){
+      r = f(r, this._enc[k], k, this._enc);
+    }
+    return r;
+  }
 
   proto.forEach = function(f) {
     var i=0, k;
@@ -276,10 +303,16 @@ vl.toVegaSpec = function(enc, data) {
     cellWidth = size.cellWidth,
     cellHeight = size.cellHeight;
 
+  var hasAgg = enc.any(function(k, v){
+    return v.aggr !== undefined;
+  });
+
   var spec = template(enc, size),
     group = spec.marks[0],
     mark = marks[enc.marktype()],
-    mdef = markdef(mark, enc);
+    mdef = markdef(mark, enc, {
+      hasAggregate: hasAgg
+    });
 
   var hasRow = enc.has(ROW), hasCol = enc.has(COL);
 
@@ -715,8 +748,8 @@ function scale_range(s, enc, opt) {
 // END: SCALE
 
 // BEGIN: MARKS
-function markdef(mark, enc) {
-  var p = mark.prop(enc)
+function markdef(mark, enc, opt) {
+  var p = mark.prop(enc, opt)
   return {
     type: mark.type,
     from: {data: TABLE},
@@ -866,8 +899,9 @@ function bar_props(e) {
   return p;
 }
 
-function point_props(e) {
+function point_props(e, opt) {
   var p = {};
+  opt = opt || {};
 
   // x
   if (e.has(X)) {
@@ -907,6 +941,10 @@ function point_props(e) {
   // alpha
   if (e.has(ALPHA)) {
     p.opacity = {scale: ALPHA, field: e.field(ALPHA)};
+  }else{
+    p.opacity = {
+      value: e.config("opacity") || e.config(opt.hasAggregate ? "_thickOpacity" : "_thinOpacity")
+    };
   }
 
   p.strokeWidth = {value: e.config("strokeWidth")};
@@ -990,8 +1028,9 @@ function area_props(e) {
 }
 
 function filled_point_props(shape) {
-  return function(e) {
+  return function(e, opt) {
     var p = {};
+    opt = opt || {};
 
     // x
     if (e.has(X)) {
@@ -1027,6 +1066,10 @@ function filled_point_props(shape) {
     // alpha
     if (e.has(ALPHA)) {
       p.opacity = {scale: ALPHA, field: e.field(ALPHA)};
+    }else {
+      p.opacity = {
+        value: e.config("opacity") || e.config(opt.hasAggregate ? "_thickOpacity" : "_thinOpacity")
+      };
     }
 
     return p;
@@ -1102,7 +1145,5 @@ function text_props(e) {
 return vl;
 
 // END MARKS
-
 // END OF THIS MODULE
-
 }));
