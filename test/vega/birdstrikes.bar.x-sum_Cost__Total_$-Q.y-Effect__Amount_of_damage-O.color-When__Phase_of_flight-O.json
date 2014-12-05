@@ -22,11 +22,6 @@
           "type": "aggregate",
           "groupby": ["data.Effect__Amount_of_damage"],
           "fields": [{"op": "sum","field": "data.sum_Cost__Total_$"}]
-        },
-        {
-          "type": "aggregate",
-          "groupby": [],
-          "fields": [{"op": "max","field": "data.sum_sum_Cost__Total_$"}]
         }
       ]
     }
