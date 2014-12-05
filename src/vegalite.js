@@ -616,6 +616,16 @@ function axis_def(name, enc){
     axis.offset = enc.config("yAxisMargin");
   }
 
+  if(name=="x" && enc.isType(name, O)){
+    axis.properties = {
+      labels: {
+        angle: {value: 270},
+        align: {value: "right"},
+        baseline: {"value": "middle"}
+      }
+    }
+  }
+
   return axis;
 }
 
