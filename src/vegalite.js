@@ -55,7 +55,7 @@ vl.DEFAULTS = {
   cellHeight: 200, // will be overwritten by bandWidth
   cellWidth: 200, // will be overwritten by bandWidth
   cellPadding: 0.1,
-  cellBackgroundColor: "#fafafa",
+  cellBackgroundColor: "#fdfdfd",
   xAxisMargin: 80,
   yAxisMargin: 0,
 
