@@ -41,6 +41,8 @@ vl.dataTypeNames = ["O","Q","T"].reduce(function(r,x) {
   r[vl.dataTypes[x]] = x; return r;
 },{});
 
+vl.quantAggTypes = ["avg", "sum", "min", "max", "count"];
+
 vl.DEFAULTS = {
   // template
   dataUrl: undefined, //for easier export
@@ -234,9 +236,42 @@ vl.Encoding = (function() {
         return e + "-" +
           (v.aggr ? v.aggr+"_" : "") +
           (v.bin ? "bin_" : "") +
-          v.name + "-" + vl.dataTypeNames[v.type];
+          v.name + "-" +
+          vl.dataTypeNames[v.type];
       }
     ).join(".");
+  }
+
+  Encoding.parseShorthand = function(shorthand){
+    var enc = shorthand.split("."),
+      marktype = enc.shift();
+
+    enc = enc.reduce(function(m, e){
+      var split = e.split("-"),
+        enctype = split[0],
+        o = {name: split[1], type: vl.dataTypes[split[2]]};
+
+      // check aggregate type
+      for(var i in vl.quantAggTypes){
+        var a = vl.quantAggTypes[i];
+        if(o.name.indexOf(a+"_") == 0){
+          o.name = o.name.substr(a.length+1);
+          o.aggr = a;
+          break;
+        }
+      }
+
+      // check bin
+      if(o.name.indexOf("bin_") == 0){
+        o.name = o.name.substr(4);
+        o.bin = true;
+      }
+
+      m[enctype] = o;
+      return m;
+    }, {});
+
+    return new Encoding(marktype, enc);
   }
 
   Encoding.parseJSON = function(json){

@@ -162,8 +162,14 @@ function init() {
 
   // Code Pane
   code.append("span").text("Shorthand");
+  code.append("a").attr({"class": "right action", "href":"#"}).text("load")
+    .on("click", function (){
+      var s = d3.select("input.shorthand").node().value;
+      e = vl.Encoding.parseShorthand(s);
+      loadEncoding(e, update);
+    });
   code.append("div")
-    .append("input").attr({"class": "shorthand", "type": "text", "readonly": "true"});
+    .append("input").attr({"class": "shorthand", "type": "text"});
 
   code.append("span").text("Vegalite");
   code.append("a").attr({"class": "right action", "href":"#"}).text("load")
