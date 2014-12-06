@@ -317,14 +317,14 @@ function setSize(enc, data, spec) {
     cellWidth = (uniq(data, enc.field(X, 1)) + bandPadding) * enc.config("bandSize");
   }
   // Cell bands use rangeBands(). There are n-1 padding.  Outerpadding = 0 for cells
-  width = cellWidth * ((1 + cellPadding) * colCardinality - cellPadding);
+  width = cellWidth * ((1 + cellPadding) * (colCardinality-1) + 1);
 
   if (enc.has(Y) && enc.isType(Y, O)) {
     // bands within celll use rangePoint()
     cellHeight = (uniq(data, enc.field(Y, 1)) + bandPadding) *  enc.config("bandSize");
   }
   // Cell bands use rangeBands(). There are n-1 padding.  Outerpadding = 0 for cells
-  height = cellHeight * ((1 + cellPadding) * rowCardinality - cellPadding);
+  height = cellHeight * ((1 + cellPadding) * (rowCardinality-1) + 1);
   return {
     cellWidth: cellWidth,
     cellHeight: cellHeight,
