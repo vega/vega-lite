@@ -256,13 +256,14 @@ vl.Encoding = (function() {
         var a = vl.quantAggTypes[i];
         if(o.name.indexOf(a+"_") == 0){
           o.name = o.name.substr(a.length+1);
+          if(a=="count" && o.name.length === 0) delete o.name;
           o.aggr = a;
           break;
         }
       }
 
       // check bin
-      if(o.name.indexOf("bin_") == 0){
+      if(o.name && o.name.indexOf("bin_") == 0){
         o.name = o.name.substr(4);
         o.bin = true;
       }
