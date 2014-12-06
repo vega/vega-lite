@@ -1,0 +1,75 @@
+* {
+  font-family: Helvetica Neue;
+}
+
+#ctrl {
+  background-color: #eee;
+  padding: 0.5em;
+  margin-bottom: 1em;
+  float:left;
+  width: 300px;
+}
+
+#ctrl .mark {
+  margin-bottom: 0.3em;
+}
+#ctrl .toggles {
+  margin-top: 0.8em;
+}
+#ctrl .shorthand {
+  margin-bottom: 0.5em;
+  width:290px;
+}
+
+#ctrl .main{
+  margin-bottom: 1em;
+}
+
+#ctrl textarea.vlcode{
+  width: 290px;
+  height: 175px;
+  padding-right: 0.3em;
+}
+
+#ctrl textarea.vgcode{
+  width: 290px;
+  height: 350px;
+  padding-right: 0.3em;
+}
+
+#ctrl span{
+  font-weight: 500;
+  font-size: 14px;
+}
+
+#ctrl .action{
+  font-size: 10px;
+  margin-left: 3px;
+}
+
+#ctrl span.label {
+  display: inline-block;
+  width: 60px;
+}
+
+#ctrl label span{
+  font-size: 12px;
+  width: 100px;
+}
+
+#ctrl select {
+  width: 80px;
+}
+#ctrl select.type {
+  width: 50px;
+}
+#ctrl select.data {
+  width: 210px;
+}
+#ctrl span.header { width: 80px; }
+#ctrl span.header.h0 { width: 60px; }
+#ctrl span.header.h3 { width: 50px; }
+
+#vis {
+  margin-left: 320px;
+}

@@ -22,6 +22,8 @@ var INDEX = "index";
 
 var X = "x";
 var Y = "y";
+var ROW = "row";
+var COL = "col";
 var SIZE = "size";
 var SHAPE = "shape";
 var COLOR = "color";
@@ -42,12 +44,23 @@ vl.dataTypeNames = ["O","Q","T"].reduce(function(r,x) {
 vl.DEFAULTS = {
   // template
   dataUrl: undefined, //for easier export
-  width: 300,
-  height: 300,
+  width: undefined,
+  height: undefined,
+  _minWidth: 20,
+  _minHeight: 20,
+
+  //small multiples
+  cellHeight: 200, // will be overwritten by bandWidth
+  cellWidth: 200, // will be overwritten by bandWidth
+  cellPadding: 0.1,
+  cellBackgroundColor: "#fafafa",
+  xAxisMargin: 80,
+  yAxisMargin: 30,
 
   // marks
   barSize: 10,
   bandSize: 21,
+  bandPadding: 1,
   pointSize: 50,
   pointShape: "circle",
   strokeWidth: 2,
@@ -109,9 +122,10 @@ vl.Encoding = (function() {
   function Encoding(marktype, enc, config) {
     this._marktype = marktype;
     this._enc = enc;
-    this._cfg = config
-      ? Object.create(vl.DEFAULTS, config)
-      : vl.DEFAULTS;
+    this._cfg = vl.keys(config).reduce(function(c, k){
+      c[k] = config[k];
+      return c;
+    }, Object.create(vl.DEFAULTS));
   }
 
   var proto = Encoding.prototype;
@@ -180,22 +194,22 @@ vl.Encoding = (function() {
     }
 
     if(!excludeConfig){
-      json.cfg = this._cfg
+      json.cfg = duplicate(this._cfg)
     }
 
-    return JSON.stringify(json, null, space);
+    return json;
   };
 
   proto.toShorthand = function(){
     var enc = this._enc;
-    return this._marktype + "__" + vl.keys(enc).map(function(e){
+    return this._marktype + "." + vl.keys(enc).map(function(e){
       var v = enc[e];
         return e + "-" +
           (v.aggr ? v.aggr+"_" : "") +
           (v.bin ? "bin_" : "") +
           v.name + "-" + vl.dataTypeNames[v.type];
       }
-    ).join("__");
+    ).join(".");
   }
 
   Encoding.parseJSON = function(json){
@@ -215,61 +229,217 @@ vl.Encoding = (function() {
 
 // ----
 
+vl.error = function(msg){
+  console.error("[VL Error]", msg);
+}
 
-vl.toVegaSpec = function(enc, data) {
-  var spec = template(enc),
-      group = spec.marks[0],
-      mark = marks[enc.marktype()],
-      mdef = markdef(mark, enc);
-
-  group.marks.push(mdef);
-  group.scales = scales(scale_names(mdef.properties.update), enc);
-  group.axes = axes(axis_names(mdef.properties.update), enc);
+function setSize(enc, data, spec) {
+  var hasRow = enc.has(ROW), hasCol = enc.has(COL);
 
   // HACK to set chart size
   // NOTE: this fails for plots driven by derived values (e.g., aggregates)
   // One solution is to update Vega to support auto-sizing
   // In the meantime, auto-padding (mostly) does the trick
-  group.scales.forEach(function(s) {
-    if (s.name === X && s.range !== "width") {
-      spec.width = uniq(data, enc.field(X,1)) * s.bandWidth;
-    } else if (s.name === Y && s.range !== "height") {
-      spec.height = uniq(data, enc.field(Y,1)) * s.bandWidth;
-    }
-  });
+  var colCardinality = hasCol ? uniq(data, enc.field(COL, 1)) : 1,
+    rowCardinality = hasRow ? uniq(data, enc.field(ROW, 1)) : 1;
 
+  var cellWidth = enc.config("cellWidth") || enc.config("width") * 1.0 / colCardinality,
+    cellHeight = enc.config("cellHeight") || enc.config("height") * 1.0 / rowCardinality,
+    cellPadding = enc.config("cellPadding"),
+    bandPadding = enc.config("bandPadding"),
+    width = enc.config("_minWidth"),
+    height = enc.config("_minHeight");
+
+  if (enc.has(X) && enc.isType(X, O)) { //ordinal field will override parent
+    // bands within cell use rangePoints()
+    cellWidth = (uniq(data, enc.field(X, 1)) + bandPadding) * enc.config("bandSize");
+  }
+  // Cell bands use rangeBands(). There are n-1 padding.  Outerpadding = 0 for cells
+  width = cellWidth * ((1 + cellPadding) * colCardinality - cellPadding);
+
+  if (enc.has(Y) && enc.isType(Y, O)) {
+    // bands within celll use rangePoint()
+    cellHeight = (uniq(data, enc.field(Y, 1)) + bandPadding) *  enc.config("bandSize");
+  }
+  // Cell bands use rangeBands(). There are n-1 padding.  Outerpadding = 0 for cells
+  height = cellHeight * ((1 + cellPadding) * rowCardinality - cellPadding);
+  return {
+    cellWidth: cellWidth,
+    cellHeight: cellHeight,
+    width: width,
+    height:height
+  };
+}
+
+vl.toVegaSpec = function(enc, data) {
+  var size = setSize(enc, data),
+    cellWidth = size.cellWidth,
+    cellHeight = size.cellHeight;
+
+  var spec = template(enc, size),
+    group = spec.marks[0],
+    mark = marks[enc.marktype()],
+    mdef = markdef(mark, enc);
+
+  var hasRow = enc.has(ROW), hasCol = enc.has(COL);
+
+  group.marks.push(mdef);
   binning(spec.data[0], enc);
 
   var lineType = marks[enc.marktype()].line;
 
-  // handle aggregates
-  var dims = aggregates(spec.data[0], enc);
-  if (dims || (lineType && enc.has(COLOR))) {
-    var stack = dims && stacking(spec, enc, mdef);
+  // handle subfacets
+  var aggResult = aggregates(spec.data[0], enc),
+    details = aggResult.details,
+    hasDetails = details && details.length > 0,
+    stack = hasDetails && stacking(spec, enc, mdef, aggResult.facets);
 
-    var m = group.marks;
-    group.marks = [groupdef()];
-    var g = group.marks[0];
-    g.marks = m;
-    g.from = mdef.from;
-    delete mdef.from;
-
-    var trans = (g.from.transform || (g.from.transform=[]));
-    if (!dims) dims = [enc.field(COLOR)];
-    trans.unshift({type: "facet", keys: dims});
-    if (stack && enc.has(COLOR)) {
-      trans.unshift({type: "sort", by: enc.field(COLOR)});
-    }
+  if (hasDetails && (stack || lineType)) {
+    //subfacet to group stack / line together in one group
+    subfacet(group, mdef, details, stack, enc);
   }
 
   // auto-sort line/area values
+  //TODO(kanitw): have some config to turn off auto-sort for line (for line chart that encodes temporal information)
   if (lineType) {
-    var f = (enc.isType(X,Q|T) && enc.isType(Y,O)) ? Y : X;
+    var f = (enc.isType(X, Q | T) && enc.isType(Y, O)) ? Y : X;
     if (!mdef.from) mdef.from = {};
     mdef.from.transform = [{type: "sort", by: enc.field(f)}];
   }
 
+  // Small Multiples
+  if (hasRow || hasCol) {
+    spec = facet(group, enc, cellHeight, cellWidth, spec, mdef, stack);
+  } else {
+    group.scales = vl.scale.defs(scale_names(mdef.properties.update), enc,
+      {stack: stack});
+    group.axes = vl.axis.defs(axis_names(mdef.properties.update), enc);
+  }
+
   return spec;
+}
+
+function facet(group, enc, cellHeight, cellWidth, spec, mdef, stack) {
+    var enter = group.properties.enter;
+    var facetKeys = [], cellAxes = [];
+
+  var hasRow = enc.has(ROW), hasCol = enc.has(COL);
+
+    enter.fill = {value: enc.config("cellBackgroundColor")};
+
+    //move "from" to cell level and add facet transform
+    group.from = {data: group.marks[0].from.data};
+
+    if (group.marks[0].from.transform) {
+    delete group.marks[0].from.data; //need to keep transform for subfaceting case
+    } else {
+      delete group.marks[0].from;
+    }
+    if (hasRow) {
+      if (!enc.isType(ROW, O)) {
+        vl.error("Row encoding should be ordinal.");
+      }
+      enter.y = {scale: ROW, field: "keys." + facetKeys.length};
+      enter.height = {"value": cellHeight}; // HACK
+
+      facetKeys.push(enc.field(ROW));
+
+      var from;
+      if (hasCol) {
+        from = duplicate(group.from);
+        from.transform = from.transform || [];
+        from.transform.unshift({type: "facet", keys: [enc.field(COL)]});
+      }
+
+      var xAxisMargin = enc.config("xAxisMargin"),
+        axesGrp = groupdef("x-axes", {
+          axes: vl.axis.defs(["x"], enc),
+          x: hasCol ? {scale: COL, field: "keys.0", offset: xAxisMargin} : {value: xAxisMargin},
+          width: hasCol && {"value": cellWidth}, //HACK?
+          from: from
+        });
+
+      spec.marks.push(axesGrp);
+      (spec.axes = spec.axes || [])
+      spec.axes.push.apply(spec.axes, vl.axis.defs(["row"], enc));
+    } else { // doesn't have row
+      //keep x axis in the cell
+      cellAxes.push.apply(cellAxes, vl.axis.defs(["x"], enc));
+    }
+
+    if (hasCol) {
+      if (!enc.isType(COL, O)) {
+        vl.error("Col encoding should be ordinal.");
+      }
+      enter.x = {scale: COL, field: "keys." + facetKeys.length};
+      enter.width = {"value": cellWidth}; // HACK
+
+      facetKeys.push(enc.field(COL));
+
+      var from;
+      if (hasRow) {
+        from = duplicate(group.from);
+        from.transform = from.transform || [];
+        from.transform.unshift({type: "facet", keys: [enc.field(ROW)]});
+      }
+
+      var axesGrp = groupdef("y-axes", {
+        axes: vl.axis.defs(["y"], enc),
+        y: hasRow && {scale: ROW, field: "keys.0"},
+        x: hasRow && {value: xAxisMargin},
+        height: hasRow && {"value": cellHeight}, //HACK?
+        from: from
+      });
+
+      spec.marks.push(axesGrp);
+      (spec.axes = spec.axes || [])
+      spec.axes.push.apply(spec.axes, vl.axis.defs(["col"], enc));
+    } else { // doesn't have col
+      cellAxes.push.apply(cellAxes, vl.axis.defs(["y"], enc));
+    }
+
+    if(hasRow){
+      if(enter.x) enter.x.offset= enc.config("xAxisMargin");
+      else enter.x = {value: enc.config("xAxisMargin")};
+    }
+    if(hasCol){
+      //TODO fill here..
+    }
+
+    // assuming equal cellWidth here
+    // TODO: support heterogenous cellWidth (maybe by using multiple scales?)
+    spec.scales = vl.scale.defs(
+      scale_names(enter).concat(scale_names(mdef.properties.update)),
+      enc,
+    {cellWidth: cellWidth, cellHeight: cellHeight, stack: stack, facet:true}
+    ); // row/col scales + cell scales
+
+    if (cellAxes.length > 0) {
+      group.axes = cellAxes;
+    }
+
+    // add facet transform
+    var trans = (group.from.transform || (group.from.transform = []));
+    trans.unshift({type: "facet", keys: facetKeys});
+
+  return spec;
+  }
+
+function subfacet(group, mdef, details, stack, enc) {
+  var m = group.marks,
+    g = groupdef("subfacet", {marks: m});
+
+  group.marks = [g];
+  g.from = mdef.from;
+  delete mdef.from;
+
+  //TODO test LOD -- we should support stack / line without color (LOD) field
+  var trans = (g.from.transform || (g.from.transform = []));
+  trans.unshift({type: "facet", keys: details});
+
+  if (stack && enc.has(COLOR)) {
+    trans.unshift({type: "sort", by: enc.field(COLOR)});
+  }
 }
 
 function binning(spec, enc) {
@@ -293,13 +463,15 @@ function binning(spec, enc) {
 }
 
 function aggregates(spec, enc) {
-  var dims = {}, meas = {}, detail = {};
+  var dims = {}, meas = {}, detail = {}, facets={};
   enc.forEach(function(vv, d) {
     if (d.aggr) {
       meas[d.aggr+"|"+d.name] = {op:d.aggr, field:"data."+d.name};
     } else {
       dims[d.name] = enc.field(vv);
-      if (vv !== X && vv !== Y) {
+      if (vv==ROW || vv == COL){
+        facets[d.name] = dims[d.name];
+      }else if (vv !== X && vv !== Y) {
         detail[d.name] = dims[d.name];
       }
     }
@@ -307,19 +479,25 @@ function aggregates(spec, enc) {
   dims = vl.vals(dims);
   meas = vl.vals(meas);
 
-  if (meas.length === 0) return false;
-
-  if (!spec.transform) spec.transform = [];
-  spec.transform.push({
-    type: "aggregate",
-    groupby: dims,
-    fields: meas
-  });
-  return vl.vals(detail);
+  if(meas.length > 0){
+    if (!spec.transform) spec.transform = [];
+    spec.transform.push({
+      type: "aggregate",
+      groupby: dims,
+      fields: meas
+    });
+  }
+  return {
+    details: vl.vals(detail),
+    dims: dims,
+    facets: vl.vals(facets),
+    aggregated: meas.length > 0
+  }
 }
 
-function stacking(spec, enc, mdef) {
+function stacking(spec, enc, mdef, facets) {
   if (!marks[enc.marktype()].stack) return false;
+  if (!enc.has(COLOR)) return false;
 
   var dim = X, val = Y, idx = 1;
   if (enc.isType(X,Q|T) && !enc.isType(Y,Q|T) && enc.has(Y)) {
@@ -329,22 +507,25 @@ function stacking(spec, enc, mdef) {
   }
 
   // add transform to compute sums for scale
-  spec.data.push({
+  var stacked = {
     name: STACKED,
     source: TABLE,
     transform: [{
       type: "aggregate",
-      groupby: [enc.field(dim)],
-      fields: [{op: "sum", field: enc.field(val)}]
+      groupby: [enc.field(dim)].concat(facets), // dim and other facets
+      fields: [{op: "sum", field: enc.field(val)}] // TODO check if field with aggr is correct?
     }]
-  });
-
-  // update scale mapping
-  var s = find(spec.marks[0].scales, {name:"name", value:val});
-  s.domain = {
-    data: STACKED,
-    field: "data.sum_" + enc.field(val, true)
   };
+
+  if(facets && facets.length > 0){
+    stacked.transform.push({ //calculate max for each facet
+      type: "aggregate",
+      groupby: facets,
+      fields: [{op: "max", field: "data.sum_" + enc.field(val, true)}]
+    });
+  }
+
+  spec.data.push(stacked);
 
   // add stack transform to mark
   mdef.from.transform = [{
@@ -354,13 +535,11 @@ function stacking(spec, enc, mdef) {
     output: {y1: val, y0: val+"2"}
   }];
 
-  // super hack-ish
-  // consolidate into modular mark properties?
-  mdef.properties.enter[val] = {scale: val, field: val};
-  mdef.properties.enter[val+"2"] = {scale: val, field: val+"2"};
-  mdef.properties.update[val] = mdef.properties.enter[val];
-  mdef.properties.update[val+"2"] = mdef.properties.enter[val+"2"];
-  return true;
+  // TODO: This is super hack-ish -- consolidate into modular mark properties?
+  mdef.properties.update[val] = mdef.properties.enter[val] = {scale: val, field: val};
+  mdef.properties.update[val+"2"] = mdef.properties.enter[val+"2"] = {scale: val, field: val+"2"};
+
+  return val; //return stack encoding
 }
 
 function axis_names(props) {
@@ -371,35 +550,68 @@ function axis_names(props) {
   }, {}));
 }
 
-function axes(names, enc) {
+// BEGIN: AXES
+
+vl.axis = {};
+vl.axis.defs = function(names, enc) {
   return names.reduce(function(a, name) {
-    a.push({
-      type: name,
-      scale: name
-    });
+    a.push(axis_def(name, enc));
     return a;
   }, []);
 }
 
+function axis_def(name, enc){
+  var type = name, axis;
+  var isCol = name==COL, isRow = name==ROW;
+  if(isCol) type = "x";
+  if(isRow) type = "y";
+
+  var axis = {
+    type: type,
+    scale: name,
+    ticks: 3 //TODO(kanitw): better determine # of ticks
+  };
+
+  if(isRow || isCol){
+    axis.properties = {
+      ticks: { opacity: {"value": 0} },
+      majorTicks: { opacity: {"value": 0} },
+      axis: { opacity: {"value": 0} }
+    };
+  }
+  if(isCol){
+    axis.offset = enc.config("yAxisMargin");
+  }
+
+  return axis;
+}
+
+// END: AXES
+
+// BEGIN: SCALE
+vl.scale = {};
+
 function scale_names(props) {
   return vl.keys(vl.keys(props).reduce(function(a, x) {
-    if (props[x].scale) a[props[x].scale] = 1;
+    if (props[x] && props[x].scale) a[props[x].scale] = 1;
     return a;
   }, {}));
 }
 
-function scales(names, enc) {
+vl.scale.defs = function (names, enc, opt) {
+  opt = opt || {};
+
   return names.reduce(function(a, name) {
     var s = {
       name: name,
       type: scale_type(name, enc),
-      domain: scale_domain(name, enc)
+      domain: scale_domain(name, enc, opt)
     };
     if (s.type === "ordinal") {
       s.sort = true;
     }
 
-    scale_range(s, enc);
+    scale_range(s, enc, opt);
 
     return (a.push(s), a);
   }, []);
@@ -414,17 +626,22 @@ function scale_type(name, enc) {
   return t;
 }
 
-function scale_domain(name, enc) {
-  return {data: TABLE, field: enc.field(name)};
+function scale_domain(name, enc, opt) {
+  return name == opt.stack ?
+    {
+      data: STACKED,
+      field: "data." + (opt.facet ? "max_" :"") + "sum_" + enc.field(name, true)
+    }:
+    {data: TABLE, field: enc.field(name)};
 }
 
-function scale_range(s, enc) {
+function scale_range(s, enc, opt) {
   switch (s.name) {
     case X:
       if (enc.isType(s.name, O)) {
         s.bandWidth = enc.config("bandSize");
       } else {
-        s.range = "width";
+        s.range = opt.cellWidth ? [0, opt.cellWidth] : "width";
         s.zero = enc.config("xZero");
         s.reverse = enc.config("xReverse");
       }
@@ -435,10 +652,20 @@ function scale_range(s, enc) {
       if (enc.isType(s.name, O)) {
         s.bandWidth = enc.config("bandSize");
       } else {
-        s.range = "height";
+        s.range = opt.cellHeight ? [opt.cellHeight, 0] : "height";
         s.zero = enc.config("yZero");
         s.reverse = enc.config("yReverse");
       }
+      s.round = true;
+      s.nice = true;
+      break;
+    case ROW:
+      s.bandWidth = opt.cellHeight || enc.config("cellHeight");
+      s.round = true;
+      s.nice = true;
+      break;
+    case COL:
+      s.bandWidth = opt.cellWidth || enc.config("cellWidth");
       s.round = true;
       s.nice = true;
       break;
@@ -471,13 +698,23 @@ function scale_range(s, enc) {
       throw new Error("Unknown encoding name: "+s.name);
   }
 
-  if (enc.isType(s.name, O)) {
-    s.points = true;
-    s.padding = 1.0;
+  switch(s.name){
+    case ROW:
+    case COL:
+      s.padding = enc.config("cellPadding");
+      s.outerPadding = 0;
+      break;
+    default:
+      if (enc.isType(s.name, O) ) { //&& !s.bandWidth
+        s.points = true;
+        s.padding = enc.config("bandPadding");
+      }
   }
-
 }
 
+// END: SCALE
+
+// BEGIN: MARKS
 function markdef(mark, enc) {
   var p = mark.prop(enc)
   return {
@@ -487,32 +724,40 @@ function markdef(mark, enc) {
   };
 }
 
-function groupdef() {
+function groupdef(name, opt) {
+  opt = opt || {};
   return {
+    _name: name || undefined,
     type: "group",
+    from: opt.from,
     properties: {
       enter: {
-        width: {group: "width"},
-        height: {group: "height"}
+        x: opt.x || undefined,
+        y: opt.y || undefined,
+        width: opt.width || {group: "width"},
+        height: opt.height || {group: "height"}
       }
     },
-    scales: [],
-    axes: [],
-    marks: []
+    scales: opt.scales || undefined,
+    axes: opt.axes || undefined,
+    marks: opt.marks || []
   };
 }
 
-function template(enc) {
+function template(enc, size) {
   var data = {name:TABLE},
     dataUrl = enc.config("dataUrl");
   if(dataUrl) data.url = dataUrl;
 
   return {
-    width: enc.config("width"),
-    height: enc.config("height"),
+    width: size.width,
+    height: size.height,
     padding: "auto",
     data: [data],
-    marks: [groupdef()]
+    marks: [groupdef("cell", {
+      width: size.cellWidth ? {value: size.cellWidth}: undefined,
+      height: size.cellHeight ? {value: size.cellHeight} : undefined
+    })]
   };
 }
 
@@ -855,6 +1100,8 @@ function text_props(e) {
 }
 
 return vl;
+
+// END MARKS
 
 // END OF THIS MODULE
 
