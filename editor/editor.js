@@ -331,7 +331,10 @@ function encodings(cfg) {
     if (v !== "-" || a === "count") {
       enc[x] = {
         name: v,
-        type: (a==="count" ? types.Q : t==="-" ? schema[v] : types[t])
+        type: (a==="count" ? types.Q :
+          t==="-" ?
+            (x==="row" || x==="col" ? types.O : schema[v])
+          : types[t])
       };
 
       if (a === "bin") {
