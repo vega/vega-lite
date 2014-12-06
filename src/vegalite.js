@@ -75,7 +75,7 @@ vl.DEFAULTS = {
   fontSize: "12",
   fontWeight: "normal",
   fontStyle: "normal",
-  opacity: null,
+  opacity: 1,
   _thickOpacity: 0.5,
   _thinOpacity: 0.2,
 
