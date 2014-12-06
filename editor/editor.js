@@ -164,7 +164,12 @@ function init() {
   code.append("span").text("Shorthand");
   code.append("a").attr({"class": "right action", "href":"#"}).text("load")
     .on("click", function (){
+      if(d3.select("select.data").node().value=="-"){
+        alert("Please select dataset first.  (Shorthand doesn't contain data info)")
+        return;
+      }
       var s = d3.select("input.shorthand").node().value;
+
       e = vl.Encoding.parseShorthand(s);
       loadEncoding(e, update);
     });
