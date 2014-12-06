@@ -55,7 +55,7 @@ vl.DEFAULTS = {
   cellPadding: 0.1,
   cellBackgroundColor: "#fafafa",
   xAxisMargin: 80,
-  yAxisMargin: 30,
+  yAxisMargin: 0,
 
   // marks
   barSize: 10,
@@ -426,7 +426,9 @@ function facet(group, enc, cellHeight, cellWidth, spec, mdef, stack) {
 
       spec.marks.push(axesGrp);
       (spec.axes = spec.axes || [])
-      spec.axes.push.apply(spec.axes, vl.axis.defs(["col"], enc));
+      spec.axes.push.apply(spec.axes, vl.axis.defs(["col"], enc, {
+        xAxisMargin: xAxisMargin
+      }));
     } else { // doesn't have col
       cellAxes.push.apply(cellAxes, vl.axis.defs(["y"], enc));
     }
@@ -586,14 +588,14 @@ function axis_names(props) {
 // BEGIN: AXES
 
 vl.axis = {};
-vl.axis.defs = function(names, enc) {
+vl.axis.defs = function(names, enc, opt) {
   return names.reduce(function(a, name) {
-    a.push(axis_def(name, enc));
+    a.push(axis_def(name, enc, opt));
     return a;
   }, []);
 }
 
-function axis_def(name, enc){
+function axis_def(name, enc, opt){
   var type = name, axis;
   var isCol = name==COL, isRow = name==ROW;
   if(isCol) type = "x";
@@ -613,7 +615,7 @@ function axis_def(name, enc){
     };
   }
   if(isCol){
-    axis.offset = enc.config("yAxisMargin");
+    axis.offset = [opt.xAxisMargin || 0, enc.config("yAxisMargin")];
     axis.orient = "top";
   }
 
