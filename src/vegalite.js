@@ -30,6 +30,8 @@ var COLOR = "color";
 var ALPHA = "alpha";
 var TEXT = "text";
 
+vl.encodings = {X:X, Y:Y, ROW:ROW, COL:COL, SIZE:SIZE, SHAPE:SHAPE, COLOR:COLOR, ALPHA:ALPHA, TEXT:TEXT};
+
 var O = 1;
 var Q = 2;
 var T = 4;
@@ -48,6 +50,7 @@ vl.DEFAULTS = {
   dataUrl: undefined, //for easier export
   width: undefined,
   height: undefined,
+  viewport: undefined,
   _minWidth: 20,
   _minHeight: 20,
 
