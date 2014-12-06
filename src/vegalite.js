@@ -75,7 +75,7 @@ vl.DEFAULTS = {
   fontStyle: "normal",
   opacity: null,
   _thickOpacity: 0.5,
-  _thinOpacity: 0.1,
+  _thinOpacity: 0.2,
 
   // scales
   xZero: true,
@@ -614,6 +614,7 @@ function axis_def(name, enc){
   }
   if(isCol){
     axis.offset = enc.config("yAxisMargin");
+    axis.orient = "top";
   }
 
   if(name=="x" && enc.isType(name, O)){
