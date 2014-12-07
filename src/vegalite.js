@@ -120,7 +120,7 @@ function uniq(data, field) {
   return count;
 }
 
-function duplicate(obj) {
+vl.duplicate = function (obj) {
   return JSON.parse(JSON.stringify(obj));
 };
 
@@ -213,7 +213,7 @@ vl.Encoding = (function() {
   };
 
   proto.toJSON = function(space, excludeConfig){
-    var enc = duplicate(this._enc), json;
+    var enc = vl.duplicate(this._enc), json;
 
     // convert type's bitcode to type name
     for(var e in enc){
@@ -226,7 +226,7 @@ vl.Encoding = (function() {
     }
 
     if(!excludeConfig){
-      json.cfg = duplicate(this._cfg)
+      json.cfg = vl.duplicate(this._cfg)
     }
 
     return json;
@@ -279,7 +279,7 @@ vl.Encoding = (function() {
   }
 
   Encoding.parseJSON = function(json){
-    var enc = duplicate(json.enc);
+    var enc = vl.duplicate(json.enc);
 
     //convert type from string to bitcode (e.g, O=1)
     for(var e in enc){
@@ -420,7 +420,7 @@ function facet(group, enc, cellHeight, cellWidth, spec, mdef, stack) {
 
       var from;
       if (hasCol) {
-        from = duplicate(group.from);
+        from = vl.duplicate(group.from);
         from.transform = from.transform || [];
         from.transform.unshift({type: "facet", keys: [enc.field(COL)]});
       }
@@ -452,7 +452,7 @@ function facet(group, enc, cellHeight, cellWidth, spec, mdef, stack) {
 
       var from;
       if (hasRow) {
-        from = duplicate(group.from);
+        from = vl.duplicate(group.from);
         from.transform = from.transform || [];
         from.transform.unshift({type: "facet", keys: [enc.field(ROW)]});
       }
