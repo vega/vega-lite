@@ -309,8 +309,8 @@ function setSize(enc, data, spec) {
   var colCardinality = hasCol ? uniq(data, enc.field(COL, 1)) : 1,
     rowCardinality = hasRow ? uniq(data, enc.field(ROW, 1)) : 1;
 
-  var cellWidth = enc.config("cellWidth") || enc.config("width") * 1.0 / colCardinality,
-    cellHeight = enc.config("cellHeight") || enc.config("height") * 1.0 / rowCardinality,
+  var cellWidth = +enc.config("cellWidth") || enc.config("width") * 1.0 / colCardinality,
+    cellHeight = +enc.config("cellHeight") || enc.config("height") * 1.0 / rowCardinality,
     cellPadding = enc.config("cellPadding"),
     bandPadding = enc.config("bandPadding"),
     width = enc.config("_minWidth"),
