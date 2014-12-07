@@ -300,7 +300,7 @@ vl.error = function(msg){
 }
 
 function setSize(enc, data, spec) {
-  var hasRow = enc.has(ROW), hasCol = enc.has(COL);
+  var hasRow = enc.has(ROW), hasCol = enc.has(COL), hasX = enc.has(X), hasY = enc.has(Y);
 
   // HACK to set chart size
   // NOTE: this fails for plots driven by derived values (e.g., aggregates)
@@ -309,21 +309,23 @@ function setSize(enc, data, spec) {
   var colCardinality = hasCol ? uniq(data, enc.field(COL, 1)) : 1,
     rowCardinality = hasRow ? uniq(data, enc.field(ROW, 1)) : 1;
 
-  var cellWidth = +enc.config("cellWidth") || enc.config("width") * 1.0 / colCardinality,
-    cellHeight = +enc.config("cellHeight") || enc.config("height") * 1.0 / rowCardinality,
+  var cellWidth = !hasX ? +enc.config("bandSize") :
+      +enc.config("cellWidth") || enc.config("width") * 1.0 / colCardinality,
+    cellHeight = !hasY ? +enc.config("bandSize"):
+      +enc.config("cellHeight") || enc.config("height") * 1.0 / rowCardinality,
     cellPadding = enc.config("cellPadding"),
     bandPadding = enc.config("bandPadding"),
     width = enc.config("_minWidth"),
     height = enc.config("_minHeight");
 
-  if (enc.has(X) && enc.isType(X, O)) { //ordinal field will override parent
+  if (hasX && enc.isType(X, O)) { //ordinal field will override parent
     // bands within cell use rangePoints()
     cellWidth = (uniq(data, enc.field(X, 1)) + bandPadding) * enc.config("bandSize");
   }
   // Cell bands use rangeBands(). There are n-1 padding.  Outerpadding = 0 for cells
   width = cellWidth * ((1 + cellPadding) * (colCardinality-1) + 1);
 
-  if (enc.has(Y) && enc.isType(Y, O)) {
+  if (hasY && enc.isType(Y, O)) {
     // bands within celll use rangePoint()
     cellHeight = (uniq(data, enc.field(Y, 1)) + bandPadding) *  enc.config("bandSize");
   }
@@ -755,9 +757,9 @@ function scale_range(s, enc, opt) {
       s.nice = true;
       break;
     case SIZE:
-      if (enc.is("bar")) {
+      if (enc.is(BAR)) {
         s.range = [3, enc.config("bandSize")];
-      } else if (enc.is("text")) {
+      } else if (enc.is(TEXT)) {
         s.range = [8, 40];
       } else {
         s.range = [10, 1000];
