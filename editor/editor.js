@@ -45,13 +45,11 @@ function init() {
   var params = getParams();
 
   var root = d3.select("#ctrl");
-
   var main = root.append("div").attr("class","main");
   var code = root.append("div").attr("class", "main")
     .style("display","block");
   var config = root.append("div").attr("class","main")
     .style("display","none");
-
 
   // data set selector
   var dsel = main.append("div").attr("class","dsel");

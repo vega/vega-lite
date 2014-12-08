@@ -542,7 +542,11 @@ function aggregates(spec, enc) {
   var dims = {}, meas = {}, detail = {}, facets={};
   enc.forEach(function(vv, d) {
     if (d.aggr) {
-      meas[d.aggr+"|"+d.name] = {op:d.aggr, field:"data."+d.name};
+      if(d.aggr==="count"){
+        meas["count"] = {op:"count"}; //count shouldn't have field
+      }else{
+        meas[d.aggr+"|"+d.name] = {op:d.aggr, field:"data."+d.name};
+      }
     } else {
       dims[d.name] = enc.field(vv);
       if (vv==ROW || vv == COL){
