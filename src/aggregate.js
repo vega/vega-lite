@@ -17,7 +17,7 @@ vg.data.aggregate = function() {
 	function fkey(x) {
 		return x.op + "_" + x.field;
 	}
-	
+
 	var cells = {};
 
   function cell(x) {
@@ -72,6 +72,9 @@ vg.data.aggregate = function() {
     fields = vg.array(f);
     faccess = fields.map(function(x,i) {
       var xf = x.field;
+
+      if (xf===undefined) return OPS.count;
+
       if (xf.indexOf("data.") === 0) {
         fields[i] = {op:x.op, field:xf.slice(5)};
       }
@@ -79,7 +82,7 @@ vg.data.aggregate = function() {
     });
     return aggregate;
   };
-  
+
   aggregate.groupby = function(f) {
     groupby = vg.array(f);
     gaccess = groupby.map(function(x,i) {
