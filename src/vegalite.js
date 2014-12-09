@@ -101,6 +101,15 @@ vl.vals = function (obj) {
   return v;
 }
 
+/** make a membership map from the input array */
+vl.memberdict = function (arr){
+  var o={};
+  for(var i in arr){
+    o[arr[i]] = true;
+  }
+  return o;
+}
+
 function find(list, pattern) {
   var l = list.filter(function(x) {
     return x[pattern.name] === pattern.value;
@@ -854,45 +863,66 @@ function template(enc, size) {
 
 // --------------------------------------------------------
 
-var marks = {};
+var marks = vl.marks = {};
 
 marks.bar = {
   type: "rect",
   stack: true,
-  prop: bar_props
+  prop: bar_props,
+  requiredEncoding: ["x", "y"],
+  supportedEncoding: vl.memberdict(
+    ["row", "col", "x", "y", "size", "color", "alpha"]
+  )
 };
 
 marks.line = {
   type: "line",
   line: true,
-  prop: line_props
+  prop: line_props,
+  requiredEncoding: ["x", "y"],
+  supportedEncoding: vl.memberdict(
+    ["row", "col", "x", "y", "color", "alpha"]
+  )
 };
 
 marks.area = {
   type: "area",
   stack: true,
   line: true,
-  prop: area_props
+  requiredEncoding: ["x", "y"],
+  prop: area_props,
+  supportedEncoding: marks.line.supportedEncoding
 };
 
 marks.circle = {
   type: "symbol",
-  prop: filled_point_props("circle")
+  prop: filled_point_props("circle"),
+  supportedEncoding: vl.memberdict(
+    ["row", "col", "x", "y", "size", "color", "alpha"]
+  )
 };
 
 marks.square = {
   type: "symbol",
-  prop: filled_point_props("square")
+  prop: filled_point_props("square"),
+  supportedEncoding: marks.circle.supportedEncoding
 };
 
 marks.point = {
   type: "symbol",
-  prop: point_props
+  prop: point_props,
+  supportedEncoding: vl.memberdict(
+    ["row", "col", "x", "y", "size", "color", "alpha","shape"]
+  )
 };
 
 marks.text = {
   type: "text",
-  prop: text_props
+  prop: text_props,
+  requiredEncoding: ["text"],
+  supportedEncoding: vl.memberdict(
+    ["row", "col", "x", "y", "size", "color", "alpha", "text"]
+  )
 };
 
 function bar_props(e) {
