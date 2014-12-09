@@ -133,6 +133,22 @@ vl.duplicate = function (obj) {
   return JSON.parse(JSON.stringify(obj));
 };
 
+vl.any = function(arr, f){
+  var i=0, k;
+  for (k in arr) {
+    if(f(arr[k], k, i++)) return true;
+  }
+  return false;
+}
+
+vl.all = function(arr, f){
+  var i=0, k;
+  for (k in arr) {
+    if(!f(arr[k], k, i++)) return false;
+  }
+  return true;
+}
+
 // ----
 vl.Encoding = (function() {
 
@@ -177,19 +193,11 @@ vl.Encoding = (function() {
   };
 
   proto.any = function(f){
-    var i=0, k;
-    for (k in this._enc) {
-      if(f(k, this._enc[k], i++)) return true;
-    }
-    return false;
+    return vl.any(this._enc, f);
   }
 
   proto.all = function(f){
-    var i=0, k;
-    for (k in this._enc) {
-      if(!f(k, this._enc[k], i++)) return false;
-    }
-    return true;
+    return vl.all(this._enc, f);
   }
 
   proto.reduce = function(f, init){
@@ -353,7 +361,7 @@ vl.toVegaSpec = function(enc, data) {
     cellWidth = size.cellWidth,
     cellHeight = size.cellHeight;
 
-  var hasAgg = enc.any(function(k, v){
+  var hasAgg = enc.any(function(v, k){
     return v.aggr !== undefined;
   });
 
