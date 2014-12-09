@@ -709,12 +709,11 @@ vl.scale.defs = function (names, enc, opt) {
 }
 
 function scale_type(name, enc) {
-  var t = "ordinal";
   switch (enc.type(name)) {
-    case T: t = "time"; break;
-    case Q: t = "linear"; break;
+    case O: return "ordinal";
+    case T: return "time";
+    case Q: return "linear";
   }
-  return t;
 }
 
 function scale_domain(name, enc, opt) {
