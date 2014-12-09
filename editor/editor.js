@@ -151,12 +151,16 @@ function init() {
   inclData.append("span").text("include data");
   showDiv.append("span").text(") ").style("margin-right","12px");
 
-  var configToggle = showDiv.append("label");
-  configToggle.append("input").attr("type", "checkbox")
-    .on("change", function(){
-      config.style("display", this.checked ? "block" : "none");
+  var configToggle = showDiv.append("a");
+  configToggle
+    .text("show config")
+    .attr("href", "#")
+    .attr("class", "action")
+    .on("click", function(){
+      var expanded = config.style("display") === "block";
+      config.style("display", expanded ? "none" : "block");
+      this.innerText = expanded ? "show config" : "hide config";
     });
-  configToggle.append("span").text("config");
 
 
   // Code Pane
