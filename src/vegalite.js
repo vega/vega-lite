@@ -654,9 +654,9 @@ function axis_def(name, enc, opt){
 
   if(isRow || isCol){
     axis.properties = {
-      ticks: { opacity: {"value": 0} },
-      majorTicks: { opacity: {"value": 0} },
-      axis: { opacity: {"value": 0} }
+      ticks: { opacity: {value: 0} },
+      majorTicks: { opacity: {value: 0} },
+      axis: { opacity: {value: 0} }
     };
   }
   if(isCol){
@@ -669,7 +669,7 @@ function axis_def(name, enc, opt){
       labels: {
         angle: {value: 270},
         align: {value: "right"},
-        baseline: {"value": "middle"}
+        baseline: {value: "middle"}
       }
     }
   }
