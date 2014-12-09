@@ -83,7 +83,7 @@ function init() {
 
   // header labels
   var head = main.append("div").selectAll("span.header")
-      .data(["","function","data","type"])
+      .data(["","data","function","type"])
     .enter().append("span")
       .attr("class", function(d,i) { return "header label h"+i; })
       .text(function(d) { return d; });
@@ -95,22 +95,22 @@ function init() {
 
   ctrl.append("span").attr("class","label").text(function(d) { return d; });
 
-  // aggregation function
-  ctrl.append("select")
-    .attr("class", "aggr")
-    .on("change", update)
-    .selectAll("option")
-      .data(["-", "avg", "sum", "min", "max", "count", "bin"])
-    .enter().append("option")
-      .attr("value", function(d) { return d; })
-      .text(function(d) { return d; });
-
   // data variable
   ctrl.append("select")
     .attr("class", "shelf")
     .on("change", update)
     .selectAll("option")
       .data(["-"], function(d) { return d; })
+    .enter().append("option")
+      .attr("value", function(d) { return d; })
+      .text(function(d) { return d; });
+
+  // aggregation function
+  ctrl.append("select")
+    .attr("class", "aggr")
+    .on("change", update)
+    .selectAll("option")
+      .data(["-", "avg", "sum", "min", "max", "count", "bin"])
     .enter().append("option")
       .attr("value", function(d) { return d; })
       .text(function(d) { return d; });
