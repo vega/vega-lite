@@ -14,6 +14,7 @@ var datasets = [
 function load(url, callback) {
   self.dataUrl = url;
   d3.json(url, function(err, data) {
+    if (err) return alert("Error loading data " + err.statusText);
     var schema = {};
     for (var k in data[0]) {
       //TODO(kanitw): better type inference here
