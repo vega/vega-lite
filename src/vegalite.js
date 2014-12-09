@@ -770,7 +770,7 @@ function scale_range(s, enc, opt) {
       s.nice = true;
       break;
     case SIZE:
-      if (enc.is(BAR)) {
+      if (enc.is("bar")) {
         s.range = [3, enc.config("bandSize")];
       } else if (enc.is(TEXT)) {
         s.range = [8, 40];
