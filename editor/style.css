@@ -60,14 +60,18 @@
 #ctrl select {
   width: 80px;
 }
+#ctrl select.aggr {
+  width: 60px;
+}
 #ctrl select.type {
-  width: 50px;
+  width: 40px;
 }
 #ctrl select.data {
   width: 210px;
 }
 #ctrl span.header { width: 80px; }
 #ctrl span.header.h0 { width: 60px; }
+#ctrl span.header.h1 { width: 60px; }
 #ctrl span.header.h3 { width: 50px; }
 
 #vis {

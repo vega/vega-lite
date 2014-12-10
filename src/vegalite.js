@@ -101,14 +101,6 @@ vl.vals = function (obj) {
   return v;
 }
 
-/** make a membership map from the input array */
-vl.memberdict = function (arr){
-  var o={};
-  for(var i in arr){
-    o[arr[i]] = true;
-  }
-  return o;
-}
 
 function find(list, pattern) {
   var l = list.filter(function(x) {
@@ -256,7 +248,7 @@ vl.Encoding = (function() {
         return e + "-" +
           (v.aggr ? v.aggr+"_" : "") +
           (v.bin ? "bin_" : "") +
-          v.name + "-" +
+          (v.name || "") + "-" +
           vl.dataTypeNames[v.type];
       }
     ).join(".");
@@ -877,9 +869,7 @@ marks.bar = {
   stack: true,
   prop: bar_props,
   requiredEncoding: ["x", "y"],
-  supportedEncoding: vl.memberdict(
-    ["row", "col", "x", "y", "size", "color", "alpha"]
-  )
+  supportedEncoding: {row:1, col:1, x:1, y:1, size:1, color:1, alpha:1}
 };
 
 marks.line = {
@@ -887,9 +877,7 @@ marks.line = {
   line: true,
   prop: line_props,
   requiredEncoding: ["x", "y"],
-  supportedEncoding: vl.memberdict(
-    ["row", "col", "x", "y", "color", "alpha"]
-  )
+  supportedEncoding: {row:1, col:1, x:1, y:1, color:1, alpha:1}
 };
 
 marks.area = {
@@ -904,9 +892,7 @@ marks.area = {
 marks.circle = {
   type: "symbol",
   prop: filled_point_props("circle"),
-  supportedEncoding: vl.memberdict(
-    ["row", "col", "x", "y", "size", "color", "alpha"]
-  )
+  supportedEncoding: {row:1, col:1, x:1, y:1, size:1, color:1, alpha:1}
 };
 
 marks.square = {
@@ -918,18 +904,14 @@ marks.square = {
 marks.point = {
   type: "symbol",
   prop: point_props,
-  supportedEncoding: vl.memberdict(
-    ["row", "col", "x", "y", "size", "color", "alpha","shape"]
-  )
+  supportedEncoding: {row:1, col:1, x:1, y:1, size:1, color:1, alpha:1, shape:1}
 };
 
 marks.text = {
   type: "text",
   prop: text_props,
   requiredEncoding: ["text"],
-  supportedEncoding: vl.memberdict(
-    ["row", "col", "x", "y", "size", "color", "alpha", "text"]
-  )
+  supportedEncoding: {row:1, col:1, x:1, y:1, size:1, color:1, alpha:1, text:1}
 };
 
 function bar_props(e) {
