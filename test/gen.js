@@ -48,7 +48,7 @@ function generate(json, genVl){
     json._note = program.note;
   }
 
-  encoding = vl.Encoding.parseJSON(json);
+  encoding = vl.Spec.parseJSON(json);
 
   dataUrl = program.data || (encoding.config("dataUrl") ? '../'+encoding.config("dataUrl") : null);
 

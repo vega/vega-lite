@@ -142,9 +142,9 @@ vl.all = function(arr, f){
 }
 
 // ----
-vl.Encoding = (function() {
+vl.Spec = (function() {
 
-  function Encoding(marktype, enc, config) {
+  function Spec(marktype, enc, config) {
     this._marktype = marktype;
     this._enc = enc;
     this._cfg = vl.keys(config).reduce(function(c, k){
@@ -153,7 +153,7 @@ vl.Encoding = (function() {
     }, Object.create(vl.DEFAULTS));
   }
 
-  var proto = Encoding.prototype;
+  var proto = Spec.prototype;
 
   proto.marktype = function() {
     return this._marktype;
@@ -166,6 +166,10 @@ vl.Encoding = (function() {
   proto.has = function(x) {
     return this._enc[x] !== undefined;
   };
+
+  proto.enc = function(x){
+    return this._enc[x];
+  }
 
   // get "field" property for vega
   proto.field = function(x, pure) {
@@ -254,7 +258,7 @@ vl.Encoding = (function() {
     ).join(".");
   }
 
-  Encoding.parseShorthand = function(shorthand){
+  Spec.parseShorthand = function(shorthand){
     var enc = shorthand.split("."),
       marktype = enc.shift();
 
@@ -284,10 +288,10 @@ vl.Encoding = (function() {
       return m;
     }, {});
 
-    return new Encoding(marktype, enc);
+    return new Spec(marktype, enc);
   }
 
-  Encoding.parseJSON = function(json){
+  Spec.parseJSON = function(json){
     var enc = vl.duplicate(json.enc);
 
     //convert type from string to bitcode (e.g, O=1)
@@ -295,10 +299,10 @@ vl.Encoding = (function() {
       enc[e].type = vl.dataTypes[enc[e].type];
     }
 
-    return new Encoding(json.marktype, enc, json.cfg);
+    return new Spec(json.marktype, enc, json.cfg);
   }
 
-  return Encoding;
+  return Spec;
 
 })();
 

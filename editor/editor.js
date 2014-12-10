@@ -169,8 +169,8 @@ function init() {
       }
       var s = d3.select("input.shorthand").node().value;
 
-      e = vl.Encoding.parseShorthand(s);
-      loadEncoding(e, update);
+      var spec = vl.Spec.parseShorthand(s);
+      loadEncoding(spec, update);
     });
   code.append("div")
     .append("input").attr({"class": "shorthand", "type": "text"});
@@ -180,8 +180,8 @@ function init() {
     .on("click", function (){
       var s = d3.select("textarea.vlcode").node().value,
         json = JSON.parse(s);
-      e = vl.Encoding.parseJSON(json);
-      loadEncoding(e, update);
+      var spec = vl.Spec.parseJSON(json);
+      loadEncoding(spec, update);
     })
   var vlTextarea = code.append("textarea").attr("class", "vlcode");
 
@@ -254,16 +254,16 @@ function swapXY(){
   update();
 }
 
-function loadEncoding(encoding, callback){
-  var dataUrl = encoding.config("dataUrl");
+function loadEncoding(spec, callback){
+  var dataUrl = spec.config("dataUrl");
   var _load = function(){
     //update marktype
-    d3.select("select.mark").node().value = encoding.marktype();
+    d3.select("select.mark").node().value = spec.marktype();
 
     //update encoding UI
     d3.selectAll("#ctrl div.enc").each(function(d) {
-      if(encoding.has(d)){
-        var e = encoding._enc[d];
+      if(spec.has(d)){
+        var e = spec.enc(d);
         loadEnc(this, e.name || "-",
           e.bin ? "bin" : e.aggr || "-",
           vl.dataTypeNames[e.type] || "-");
@@ -274,8 +274,8 @@ function loadEncoding(encoding, callback){
 
     //update configs
     d3.selectAll("#ctrl div.cfg input").each(function(d){
-      if(encoding._cfg.hasOwnProperty(d)){
-        this.value = encoding.config(d);
+      if(spec._cfg.hasOwnProperty(d)){
+        this.value = spec.config(d);
       }
     })
 
@@ -351,7 +351,7 @@ function encodings(cfg) {
         val == "false" ? false : val;
     }
   });
-  return new vl.Encoding(marktype, enc, cfg);
+  return new vl.Spec(marktype, enc, cfg);
 }
 
 function parse(spec, data) {

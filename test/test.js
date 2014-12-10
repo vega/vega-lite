@@ -31,7 +31,7 @@ if(program.files){
 
 function test(filename){
   var json = require("./"+VEGALITE_DIR+"/"+filename),
-    encoding = vl.Encoding.parseJSON(json),
+    encoding = vl.Spec.parseJSON(json),
     dataUrl = '../'+encoding.config("dataUrl"),
     data = require(dataUrl),
     spec = vl.toVegaSpec(encoding, data),
