@@ -4,6 +4,7 @@ vg.data.bin = function() {
       accessor,
       output = "bin";
 
+
   function compare(a, b) {
     return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
   }
@@ -76,7 +77,7 @@ vg.data.bin = function() {
       unit: precision
     };
   }
-  
+
   function bin(input) {
     var stats = {min: +Infinity, max: -Infinity};
     input.forEach(function(d) {
@@ -91,17 +92,36 @@ vg.data.bin = function() {
     });
     return input;
   }
-  
+
+  // HACK for setting visualization size
+  bin.numbins = function(input){
+    var stats = {min: +Infinity, max: -Infinity};
+    input.forEach(function(d) {
+      var v = accessor(d);
+      if (v > stats.max) stats.max = v;
+      if (v < stats.min) stats.min = v;
+    });
+    var b = bins(stats, {maxbins: 20});
+    var uniqueBins = {}; // reset (HACK)
+    input.forEach(function(d) {
+      var v = accessor(d);
+      var vbin = b.start + b.step * ~~((v - b.start) / b.step);
+      uniqueBins[vbin] = 1;
+    });
+    return vg.keys(uniqueBins).length;
+  }
+
   bin.field = function(f) {
     field = f;
     accessor = vg.accessor(f);
     return bin;
   };
-  
+
   bin.output = function(f) {
     output = f;
     return bin;
   };
-  
+
+
   return bin;
 }

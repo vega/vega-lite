@@ -167,17 +167,23 @@ vl.Encoding = (function() {
     return this._enc[x] !== undefined;
   };
 
+  proto.enc = function(x){
+    return this._enc[x];
+  };
+
+
+
   // get "field" property for vega
-  proto.field = function(x, pure) {
+  proto.field = function(x, nodata, nofn) {
     if (!this.has(x)) return null;
 
-    var f = (pure ? "" : "data.");
+    var f = (nodata ? "" : "data.");
 
     if (this._enc[x].aggr === "count") {
       return f + "count";
-    } else if (this._enc[x].bin) {
+    } else if (!nofn && this._enc[x].bin) {
       return f + "bin_" + this._enc[x].name;
-    } else if (this._enc[x].aggr) {
+    } else if (!nofn && this._enc[x].aggr) {
       return f + this._enc[x].aggr + "_" + this._enc[x].name;
     } else {
       return f + this._enc[x].name;
@@ -329,14 +335,29 @@ function setSize(encoding, data) {
 
   if (hasX && encoding.isType(X, O)) { //ordinal field will override parent
     // bands within cell use rangePoints()
-    cellWidth = (uniq(data, encoding.field(X, 1)) + bandPadding) * encoding.config("bandSize");
+    var xCardinality = 1;
+    if(encoding.enc("x").bin){
+      //HACK
+      var field = encoding.field(X,1,1);
+      xCardinality = vg.data.bin().field(field).numbins(data);
+    }else{
+      xCardinality = uniq(data, encoding.field(X, 1));
+    }
+    cellWidth = (xCardinality + bandPadding) * encoding.config("bandSize");
   }
   // Cell bands use rangeBands(). There are n-1 padding.  Outerpadding = 0 for cells
   width = cellWidth * ((1 + cellPadding) * (colCardinality-1) + 1);
 
   if (hasY && encoding.isType(Y, O)) {
     // bands within celll use rangePoint()
-    cellHeight = (uniq(data, encoding.field(Y, 1)) + bandPadding) *  encoding.config("bandSize");
+    var yCardinality = 1;
+    if(encoding.enc("y").bin){ //HACK
+      var field = encoding.field(Y,1,1);
+      yCardinality = vg.data.bin().field(field).numbins(data);
+    }else{
+      yCardinality = uniq(data, encoding.field(Y, 1));
+    }
+    cellHeight = (yCardinality + bandPadding) *  encoding.config("bandSize");
   }
   // Cell bands use rangeBands(). There are n-1 padding.  Outerpadding = 0 for cells
   height = cellHeight * ((1 + cellPadding) * (rowCardinality-1) + 1);
