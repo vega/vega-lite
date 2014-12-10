@@ -171,8 +171,6 @@ vl.Encoding = (function() {
     return this._enc[x];
   };
 
-
-
   // get "field" property for vega
   proto.field = function(x, nodata, nofn) {
     if (!this.has(x)) return null;
@@ -321,8 +319,25 @@ function setSize(encoding, data) {
   // NOTE: this fails for plots driven by derived values (e.g., aggregates)
   // One solution is to update Vega to support auto-sizing
   // In the meantime, auto-padding (mostly) does the trick
-  var colCardinality = hasCol ? uniq(data, encoding.field(COL, 1)) : 1,
-    rowCardinality = hasRow ? uniq(data, encoding.field(ROW, 1)) : 1;
+  var colCardinality = 1, rowCardinality = 1;
+
+  if(hasCol){
+    if(encoding.enc(COL).bin){
+      var field = encoding.field(COL,1,1);
+      colCardinality = vg.data.bin().field(field).numbins(data);
+    }else {
+      colCardinality = uniq(data, encoding.field(COL, 1))
+    }
+  }
+
+  if(hasRow){
+    if(encoding.enc(ROW).bin){
+      var field = encoding.field(ROW,1,1);
+      rowCardinality = vg.data.bin().field(field).numbins(data);
+    } else {
+      rowCardinality = uniq(data, encoding.field(ROW, 1));
+    }
+  }
 
   var cellWidth = !hasX ? +encoding.config("bandSize") :
       +encoding.config("cellWidth") || encoding.config("width") * 1.0 / colCardinality,
