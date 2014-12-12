@@ -99,6 +99,7 @@ function init() {
   // aggregation function
   ctrl.append("select")
     .attr("class", "aggr")
+    .attr("id", function(d){ return "aggr-"+d;})
     .on("change", update)
     .selectAll("option")
       .data(["-", "avg", "sum", "min", "max", "count", "bin"])
@@ -109,6 +110,7 @@ function init() {
   // data variable
   ctrl.append("select")
     .attr("class", "shelf")
+    .attr("id", function(d){ return "shelf-"+d;})
     .on("change", update)
     .selectAll("option")
       .data(["-"], function(d) { return d; })
@@ -119,12 +121,17 @@ function init() {
   // data type (ordinal, quantitative or time)
   ctrl.append("select")
     .attr("class", "type")
+    .attr("id", function(d){ return "type-"+d;})
     .on("change", update)
     .selectAll("option")
       .data(["-", "O", "Q", "T"])
     .enter().append("option")
       .attr("value", function(d) { return d; })
       .text(function(d) { return d; });
+
+  // x btn
+  ctrl.append("a").attr({"class":"action", "href":"#"}).text("x")
+    .on('click', removeEnc)
 
   // swap btn
   ctrl.selectAll(function(d){ return d==="x" ? [this] : []; })
@@ -204,6 +211,13 @@ function init() {
   if(params.data){
     load(params.data);
   }
+}
+
+function removeEnc(d){
+  d3.select("#aggr-"+d).node().value = "-";
+  d3.select("#shelf-"+d).node().value = "-";
+  d3.select("#type-"+d).node().value = "-";
+  update();
 }
 
 function run(data, schema) {

@@ -2,6 +2,10 @@
   font-family: Helvetica Neue;
 }
 
+a, a:visited{
+  color: #1a4183;
+}
+
 #ctrl {
   background-color: #eee;
   padding: 0.5em;
@@ -45,6 +49,10 @@
 #ctrl .action{
   font-size: 10px;
   margin-left: 3px;
+}
+
+#ctrl a.action{
+  text-decoration: none;
 }
 
 #ctrl span.label {
