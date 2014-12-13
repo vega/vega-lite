@@ -144,12 +144,16 @@ function init() {
   var showDiv = toggles.append("div").attr("class","show");
   showDiv.append("span").attr("class","label").text("show");
 
-  var codeToggle = showDiv.append("label");
-  codeToggle.append("input").attr("type", "checkbox").attr("checked", true)
-    .on("change", function(){
-      code.style("display", this.checked ? "block" : "none");
+  var codeToggle = showDiv.append("a");
+  codeToggle
+    .text("hide code")
+    .attr("href", "#")
+    .attr("class", "action")
+    .on("click", function(){
+      var expanded = code.style("display") === "block";
+      code.style("display", expanded ? "none" : "block");
+      this.innerText = expanded ? "show code" : "hide code";
     });
-  codeToggle.append("span").text("code");
 
   showDiv.append("span").text(" (")
   var inclData = showDiv.append("label");
@@ -158,12 +162,16 @@ function init() {
   inclData.append("span").text("include data");
   showDiv.append("span").text(") ").style("margin-right","12px");
 
-  var configToggle = showDiv.append("label");
-  configToggle.append("input").attr("type", "checkbox")
-    .on("change", function(){
-      config.style("display", this.checked ? "block" : "none");
+  var configToggle = showDiv.append("a");
+  configToggle
+    .text("show config")
+    .attr("href", "#")
+    .attr("class", "action")
+    .on("click", function(){
+      var expanded = config.style("display") === "block";
+      config.style("display", expanded ? "none" : "block");
+      this.innerText = expanded ? "show config" : "hide config";
     });
-  configToggle.append("span").text("config");
 
 
   // Code Pane
