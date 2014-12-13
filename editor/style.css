@@ -47,6 +47,11 @@
   margin-left: 3px;
 }
 
+#ctrl .toggle{
+  display: inline-block;
+  width: 55px;
+}
+
 #ctrl span.label {
   display: inline-block;
   width: 60px;
