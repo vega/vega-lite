@@ -142,31 +142,24 @@ function init() {
   var toggles = main.append("div").attr("class","toggles");
 
   var showDiv = toggles.append("div").attr("class","show");
-  showDiv.append("span").attr("class","label").text("show");
 
   var codeToggle = showDiv.append("a");
   codeToggle
     .text("hide code")
     .attr("href", "#")
-    .attr("class", "action")
+    .attr("class", "action toggle")
     .on("click", function(){
       var expanded = code.style("display") === "block";
       code.style("display", expanded ? "none" : "block");
       this.innerText = expanded ? "show code" : "hide code";
     });
 
-  showDiv.append("span").text(" (")
-  var inclData = showDiv.append("label");
-  inclData.append("input").attr({"type": "checkbox", "id":"inclData", "checked": true})
-    .on("change", update);
-  inclData.append("span").text("include data");
-  showDiv.append("span").text(") ").style("margin-right","12px");
 
   var configToggle = showDiv.append("a");
   configToggle
     .text("show config")
     .attr("href", "#")
-    .attr("class", "action")
+    .attr("class", "action toggle")
     .on("click", function(){
       var expanded = config.style("display") === "block";
       config.style("display", expanded ? "none" : "block");
@@ -198,6 +191,17 @@ function init() {
       e = vl.Encoding.parseJSON(json);
       loadEncoding(e, update);
     })
+
+  var inclDataGrp = code.append("span").attr("class", "right");
+
+  inclDataGrp.append("span").text(" (")
+  var inclData = inclDataGrp.append("label");
+  inclData.append("input").attr({"type": "checkbox", "id":"inclData", "checked": true})
+    .on("change", update);
+  inclData.append("span").text("include data");
+  inclDataGrp.append("span").text(") ").style("margin-right","12px");
+
+
   var vlTextarea = code.append("textarea").attr("class", "vlcode");
 
   code.append("span").text("Vega")

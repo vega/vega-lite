@@ -55,6 +55,11 @@ a, a:visited{
   text-decoration: none;
 }
 
+#ctrl .toggle{
+  display: inline-block;
+  width: 55px;
+}
+
 #ctrl span.label {
   display: inline-block;
   width: 60px;
