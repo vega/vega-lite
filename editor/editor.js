@@ -120,6 +120,7 @@ function init() {
       var field = d3.select(this).node().value;
       shelfUpdated(d, field);
       typeUpdated(d);
+      fnUpdated(d);
       update();
     })
     .selectAll("option")
@@ -134,6 +135,7 @@ function init() {
     .attr("id", function(d){ return "type-"+d;})
     .on("change", function(d){
       typeUpdated(d);
+      fnUpdated(d);
       update();
     })
     .selectAll("option")
@@ -252,6 +254,8 @@ function datasetUpdated(url, callback) {
   if(url==="-"){
     return;
   }
+  if(LOG_UI) console.log("datasetUpdated", url);
+
   self.dataUrl = url;
   d3.json(url, function(err, data) {
     if (err) return alert("Error loading data " + err.statusText);
@@ -300,9 +304,19 @@ function fnUpdated(encType, fn){
   fn = fn || d3.select("select#aggr-"+encType).node().value;
   if(LOG_UI) console.log("fnUpdated", encType, fn);
 
-  if(fn === "count"){ //reset shelf, type
-    d3.select("select#shelf-"+encType).node().value = "-";
-    shelfUpdated(encType, "-");
+  if(fn === "count"){ // disable shelf, type
+    d3.select("select#shelf-"+encType).attr("disabled", true);
+    d3.select("select#type-"+encType).attr("disabled", true);
+  }else{
+    // enable shelf, type if it's supported by the marktype
+    var marktype = d3.select("select.mark").node().value,
+      supportedEncoding = vl.marks[marktype].supportedEncoding,
+      disabled =  function(d){
+        return supportedEncoding[d] ? undefined : "true";
+      };
+
+    d3.select("select#shelf-"+encType).attr("disabled", disabled);
+    d3.select("select#type-"+encType).attr("disabled", disabled);
   }
 }
 
@@ -327,7 +341,14 @@ function typeUpdated(encType, type){
   if(LOG_UI) console.log("typeUpdated", encType, type);
 
   var fns = FN_LIST[type],
+    fnsel = d3.select("select#aggr-"+encType).node(),
     s = d3.select("select#aggr-"+encType).selectAll("option").data(fns);
+
+  if(fns.indexOf(fnsel.value) === -1){
+    // if new type doesn't support pre-selected function
+    // reset fn to "-"
+    fnsel.value = "-";
+  }
 
   s.enter().append("option");
   s.attr("value", function(d) { return d; })
@@ -424,14 +445,14 @@ function loadEnc(dom, e, v, a ,t){
 
 function readEnc(dom){
   //read encoding from the UI
-  var s = d3.select(dom).select("select.shelf").node();
-  var v = s.options[s.selectedIndex].value;
+  var s = d3.select(dom).select("select.shelf");
+  var v = s.attr("disabled") ? "-" : s.node().value; // return "-"
 
-  var s = d3.select(dom).select("select.type").node();
-  var t = s.options[s.selectedIndex].value;
+  var s = d3.select(dom).select("select.type");
+  var t = s.attr("disabled") ? undefined : s.node().value;
 
-  var s = d3.select(dom).select("select.aggr").node();
-  var a = s.options[s.selectedIndex].value;
+  var s = d3.select(dom).select("select.aggr");
+  var a = s.attr("disabled") ? undefined : s.node().value;
 
   return {shelf:v, type:t, aggr:a};
 }
