@@ -53,6 +53,7 @@ vl.DEFAULTS = {
   viewport: undefined,
   _minWidth: 20,
   _minHeight: 20,
+  dataFormatType: "json",
 
   //small multiples
   cellHeight: 200, // will be overwritten by bandWidth
@@ -86,7 +87,8 @@ vl.DEFAULTS = {
   xZero: true,
   xReverse: false,
   yZero: true,
-  yReverse: false
+  yReverse: false,
+  timeScaleNice: "day"
 };
 
 vl.keys = function (obj) {
@@ -789,7 +791,11 @@ function scale_range(s, encoding, opt) {
         s.reverse = encoding.config("xReverse");
       }
       s.round = true;
+      if (encoding.isType(s.name, T)){
+        s.nice = encoding.aggr(s.name) || encoding.config("timeScaleNice");
+      }else{
       s.nice = true;
+      }
       break;
     case Y:
       if (encoding.isType(s.name, O)) {
@@ -799,8 +805,14 @@ function scale_range(s, encoding, opt) {
         s.zero = encoding.config("yZero");
         s.reverse = encoding.config("yReverse");
       }
+
       s.round = true;
+
+      if (encoding.isType(s.name, T)){
+        s.nice = encoding.aggr(s.name);
+      }else{
       s.nice = true;
+      }
       break;
     case ROW:
       s.bandWidth = opt.cellHeight || encoding.config("cellHeight");
@@ -888,9 +900,19 @@ function groupdef(name, opt) {
 }
 
 function template(encoding, size) {
-  var data = {name:TABLE},
+  var data = {name:TABLE, format: {type: encoding.config("dataFormatType")}},
     dataUrl = encoding.config("dataUrl");
   if(dataUrl) data.url = dataUrl;
+
+  encoding.forEach(function(encType, field){
+    if(field.type == T){
+      data.format.parse = data.format.parse || {};
+      data.format.parse[field.name] = "date";
+    }else if(field.type == Q){
+      data.format.parse = data.format.parse || {};
+      data.format.parse[field.name] = "number";
+    }
+  });
 
   return {
     width: size.width,
