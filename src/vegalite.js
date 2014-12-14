@@ -331,7 +331,7 @@ vl.getStats = function(encoding, data){ // hack
       var fieldProp = encoding.field(encType,1,1);
       stats["bin_"+field.name] = {
         cardinality: vg.data.bin().field(fieldProp).numbins(data)
-      }  
+      }
     }else if(field.aggr){
       // DO NOTHING (for now)
     }else {
@@ -356,8 +356,8 @@ function setSize(encoding, stats) {
   // NOTE: this fails for plots driven by derived values (e.g., aggregates)
   // One solution is to update Vega to support auto-sizing
   // In the meantime, auto-padding (mostly) does the trick
-  // 
-  var colCardinality = hasCol ? getCardinality(encoding, COL, stats) : 1, 
+  //
+  var colCardinality = hasCol ? getCardinality(encoding, COL, stats) : 1,
     rowCardinality = hasRow ? getCardinality(encoding, ROW, stats) : 1;
 
   var cellWidth = !hasX ? +encoding.config("bandSize") :
@@ -375,7 +375,7 @@ function setSize(encoding, stats) {
     cellWidth = (xCardinality + bandPadding) * encoding.config("bandSize");
   }
   // Cell bands use rangeBands(). There are n-1 padding.  Outerpadding = 0 for cells
-  width = cellWidth * ((1 + cellPadding) * (colCardinality-2) + 2);
+  width = cellWidth * ((1 + cellPadding) * (colCardinality-1) + 1);
 
   if (hasY && encoding.isType(Y, O)) {
     // bands within celll use rangePoint()
@@ -383,7 +383,7 @@ function setSize(encoding, stats) {
     cellHeight = (yCardinality + bandPadding) *  encoding.config("bandSize");
   }
   // Cell bands use rangeBands(). There are n-1 padding.  Outerpadding = 0 for cells
-  height = cellHeight * ((1 + cellPadding) * (rowCardinality-2) + 2);
+  height = cellHeight * ((1 + cellPadding) * (rowCardinality-1) + 1);
   return {
     cellWidth: cellWidth,
     cellHeight: cellHeight,
@@ -540,7 +540,7 @@ function facet(group, encoding, cellHeight, cellWidth, spec, mdef, stack) {
     spec.scales = vl.scale.defs(
       scale_names(enter).concat(scale_names(mdef.properties.update)),
       encoding,
-    {cellWidth: cellWidth, cellHeight: cellHeight, stack: stack, facet:true}
+      {cellWidth: cellWidth, cellHeight: cellHeight, stack: stack, facet:true}
     ); // row/col scales + cell scales
 
     if (cellAxes.length > 0) {
