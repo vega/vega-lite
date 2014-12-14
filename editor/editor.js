@@ -119,6 +119,8 @@ function init() {
     .on("change", function(d){
       var field = d3.select(this).node().value;
       shelfUpdated(d, field);
+      typeUpdated(d);
+      fnUpdated(d);
       update();
     })
     .selectAll("option")
@@ -134,6 +136,7 @@ function init() {
     .on("change", function(d){
       var type = d3.select(this).node().value;
       typeUpdated(d, type);
+      fnUpdated(d);
       update();
     })
     .selectAll("option")
@@ -252,6 +255,8 @@ function datasetUpdated(url, callback) {
   if(url==="-"){
     return;
   }
+  if(LOG_UI) console.log("datasetUpdated", url);
+
   self.dataUrl = url;
   d3.json(url, function(err, data) {
     if (err) return alert("Error loading data " + err.statusText);
@@ -274,6 +279,12 @@ function datasetUpdated(url, callback) {
       .text(function(d) { return d; })
     s.exit().remove();
 
+    d3.selectAll("select.shelf").each(function(d){
+      shelfUpdated(d);
+      typeUpdated(d);
+      fnUpdated(d);
+    })
+
     if(callback) callback();
   });
 }
@@ -291,15 +302,28 @@ function marktypeUpdated(marktype){
 }
 
 function fnUpdated(encType, fn){
+
+  fn = fn || d3.select("select#aggr-"+encType).node().value;
   if(LOG_UI) console.log("fnUpdated", encType, fn);
 
-  if(fn === "count"){ //reset shelf, type
-    d3.select("select#shelf-"+encType).node().value = "-";
-    shelfUpdated(encType, "-");
+  if(fn === "count"){ // disable shelf, type
+    d3.select("select#shelf-"+encType).attr("disabled", true);
+    d3.select("select#type-"+encType).attr("disabled", true);
+  }else{
+    // enable shelf, type if it's supported by the marktype
+    var marktype = d3.select("select.mark").node().value,
+      supportedEncoding = vl.marks[marktype].supportedEncoding,
+      disabled =  function(d){
+        return supportedEncoding[d] ? undefined : "true";
+      };
+
+    d3.select("select#shelf-"+encType).attr("disabled", disabled);
+    d3.select("select#type-"+encType).attr("disabled", disabled);
   }
 }
 
 function shelfUpdated(encType, field){
+  field = field || d3.select("select#aggr-"+encType).node().value;
   if(LOG_UI) console.log("shelfUpdated", encType, field);
 
   var type = field !== "-" ? vl.dataTypeNames[self.schema[field]] : "-";
@@ -314,10 +338,19 @@ function shelfUpdated(encType, field){
 }
 
 function typeUpdated(encType, type){
+  type = type || d3.select("select#type-"+encType).node().value;
   if(LOG_UI) console.log("typeUpdated", encType, type);
-  var fns = FN_LIST[type];
 
-  var s = d3.select("select#aggr-"+encType).selectAll("option").data(fns);
+  var fns = FN_LIST[type],
+    fnsel = d3.select("select#aggr-"+encType).node(),
+    s = d3.select("select#aggr-"+encType).selectAll("option").data(fns);
+
+  if(fns.indexOf(fnsel.value) === -1){
+    // if new type doesn't support pre-selected function
+    // reset fn to "-"
+    fnsel.value = "-";
+  }
+
   s.enter().append("option");
   s.attr("value", function(d) { return d; })
     .text(function(d) { return d; });
@@ -413,14 +446,14 @@ function loadEnc(dom, e, v, a ,t){
 
 function readEnc(dom){
   //read encoding from the UI
-  var s = d3.select(dom).select("select.shelf").node();
-  var v = s.options[s.selectedIndex].value;
+  var s = d3.select(dom).select("select.shelf");
+  var v = s.attr("disabled") ? "-" : s.node().value; // return "-"
 
-  var s = d3.select(dom).select("select.type").node();
-  var t = s.options[s.selectedIndex].value;
+  var s = d3.select(dom).select("select.type");
+  var t = s.attr("disabled") ? undefined : s.node().value;
 
-  var s = d3.select(dom).select("select.aggr").node();
-  var a = s.options[s.selectedIndex].value;
+  var s = d3.select(dom).select("select.aggr");
+  var a = s.attr("disabled") ? undefined : s.node().value;
 
   return {shelf:v, type:t, aggr:a};
 }
