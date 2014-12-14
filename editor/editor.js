@@ -248,7 +248,9 @@ function run(data, schema) {
 function update() {
   var enc = encodings(),
     data = self.data,
-    spec = vl.toVegaSpec(enc, data);
+    stats = vl.getStats(enc, data),
+    spec = vl.toVegaSpec(enc, stats);
+
   self.enc = enc; // DEBUG
   self.spec = spec;
 

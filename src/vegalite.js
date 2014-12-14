@@ -188,6 +188,18 @@ vl.Encoding = (function() {
     }
   };
 
+  proto.fieldName = function(x){
+    return this._enc[x].name;
+  }
+
+  proto.aggr = function(x){
+    return this._enc[x].aggr;
+  }
+
+  proto.bin = function(x){
+    return this._enc[x].bin;
+  }
+
   proto.any = function(f){
     return vl.any(this._enc, f);
   }
@@ -312,32 +324,41 @@ vl.error = function(msg){
   console.error("[VL Error]", msg);
 }
 
-function setSize(encoding, data) {
+vl.getStats = function(encoding, data){ // hack
+  var stats = {};
+  encoding.forEach(function(encType, field){
+    if(field.bin){
+      var fieldProp = encoding.field(encType,1,1);
+      stats["bin_"+field.name] = {
+        cardinality: vg.data.bin().field(fieldProp).numbins(data)
+      }  
+    }else if(field.aggr){
+      // DO NOTHING (for now)
+    }else {
+      stats[field.name] = {
+        cardinality: uniq(data, encoding.field(encType, 1))
+      }
+    }
+  });
+  return stats;
+}
+
+function getCardinality(encoding, encType, stats){
+  var fieldName = encoding.fieldName(encType),
+    field = (encoding.bin(encType) ? "bin_" : "") +fieldName;
+  return stats[field].cardinality;
+}
+
+function setSize(encoding, stats) {
   var hasRow = encoding.has(ROW), hasCol = encoding.has(COL), hasX = encoding.has(X), hasY = encoding.has(Y);
 
   // HACK to set chart size
   // NOTE: this fails for plots driven by derived values (e.g., aggregates)
   // One solution is to update Vega to support auto-sizing
   // In the meantime, auto-padding (mostly) does the trick
-  var colCardinality = 1, rowCardinality = 1;
-
-  if(hasCol){
-    if(encoding.enc(COL).bin){
-      var field = encoding.field(COL,1,1);
-      colCardinality = vg.data.bin().field(field).numbins(data);
-    }else {
-      colCardinality = uniq(data, encoding.field(COL, 1))
-    }
-  }
-
-  if(hasRow){
-    if(encoding.enc(ROW).bin){
-      var field = encoding.field(ROW,1,1);
-      rowCardinality = vg.data.bin().field(field).numbins(data);
-    } else {
-      rowCardinality = uniq(data, encoding.field(ROW, 1));
-    }
-  }
+  // 
+  var colCardinality = hasCol ? getCardinality(encoding, COL, stats) : 1, 
+    rowCardinality = hasRow ? getCardinality(encoding, ROW, stats) : 1;
 
   var cellWidth = !hasX ? +encoding.config("bandSize") :
       +encoding.config("cellWidth") || encoding.config("width") * 1.0 / colCardinality,
@@ -350,32 +371,19 @@ function setSize(encoding, data) {
 
   if (hasX && encoding.isType(X, O)) { //ordinal field will override parent
     // bands within cell use rangePoints()
-    var xCardinality = 1;
-    if(encoding.enc("x").bin){
-      //HACK
-      var field = encoding.field(X,1,1);
-      xCardinality = vg.data.bin().field(field).numbins(data);
-    }else{
-      xCardinality = uniq(data, encoding.field(X, 1));
-    }
+    var xCardinality = getCardinality(encoding, X, stats);
     cellWidth = (xCardinality + bandPadding) * encoding.config("bandSize");
   }
   // Cell bands use rangeBands(). There are n-1 padding.  Outerpadding = 0 for cells
-  width = cellWidth * ((1 + cellPadding) * (colCardinality-1) + 1);
+  width = cellWidth * ((1 + cellPadding) * (colCardinality-2) + 2);
 
   if (hasY && encoding.isType(Y, O)) {
     // bands within celll use rangePoint()
-    var yCardinality = 1;
-    if(encoding.enc("y").bin){ //HACK
-      var field = encoding.field(Y,1,1);
-      yCardinality = vg.data.bin().field(field).numbins(data);
-    }else{
-      yCardinality = uniq(data, encoding.field(Y, 1));
-    }
+    var yCardinality = getCardinality(encoding, Y, stats);
     cellHeight = (yCardinality + bandPadding) *  encoding.config("bandSize");
   }
   // Cell bands use rangeBands(). There are n-1 padding.  Outerpadding = 0 for cells
-  height = cellHeight * ((1 + cellPadding) * (rowCardinality-1) + 1);
+  height = cellHeight * ((1 + cellPadding) * (rowCardinality-2) + 2);
   return {
     cellWidth: cellWidth,
     cellHeight: cellHeight,
@@ -384,8 +392,8 @@ function setSize(encoding, data) {
   };
 }
 
-vl.toVegaSpec = function(encoding, data) {
-  var size = setSize(encoding, data),
+vl.toVegaSpec = function(encoding, stats) {
+  var size = setSize(encoding, stats),
     cellWidth = size.cellWidth,
     cellHeight = size.cellHeight;
 
