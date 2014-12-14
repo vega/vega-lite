@@ -119,6 +119,7 @@ function init() {
     .on("change", function(d){
       var field = d3.select(this).node().value;
       shelfUpdated(d, field);
+      typeUpdated(d);
       update();
     })
     .selectAll("option")
@@ -132,8 +133,7 @@ function init() {
     .attr("class", "type")
     .attr("id", function(d){ return "type-"+d;})
     .on("change", function(d){
-      var type = d3.select(this).node().value;
-      typeUpdated(d, type);
+      typeUpdated(d);
       update();
     })
     .selectAll("option")
@@ -262,17 +262,23 @@ function datasetUpdated(url, callback) {
         isNaN(Date.parse(data[0][k])) ? vl.dataTypes.O : vl.dataTypes.T;
     }
 
-  // CURRENTLY EXPECTED AS GLOBAL VARS...
-  self.data = data;
-  self.schema = schema;
+    // CURRENTLY EXPECTED AS GLOBAL VARS...
+    self.data = data;
+    self.schema = schema;
 
-    // update available data field in the each shelf
-  var s = d3.selectAll("select.shelf").selectAll("option")
-    .data(["-"].concat(d3.keys(schema)), function(d) { return d; });
+      // update available data field in the each shelf
+    var s = d3.selectAll("select.shelf").selectAll("option")
+      .data(["-"].concat(d3.keys(schema)), function(d) { return d; });
     s.enter().append("option");
     s.attr("value", function(d) { return d; })
     .text(function(d) { return d; })
-  s.exit().remove();
+    s.exit().remove();
+
+    d3.selectAll("select.shelf").each(function(d){
+      shelfUpdated(d);
+      typeUpdated(d);
+      fnUpdated(d);
+    })
 
     if(callback) callback();
   });
@@ -291,6 +297,7 @@ function marktypeUpdated(marktype){
 }
 
 function fnUpdated(encType, fn){
+  fn = fn || d3.select("select#aggr-"+encType).node().value;
   if(LOG_UI) console.log("fnUpdated", encType, fn);
 
   if(fn === "count"){ //reset shelf, type
@@ -300,10 +307,12 @@ function fnUpdated(encType, fn){
 }
 
 function shelfUpdated(encType, field){
+  field = field || d3.select("select#aggr-"+encType).node().value;
   if(LOG_UI) console.log("shelfUpdated", encType, field);
 
   var type = field !== "-" ? vl.dataTypeNames[self.schema[field]] : "-";
     types = TYPE_LIST[type];
+
 
   // update available type!
   var s = d3.select("select#type-"+encType).selectAll("option").data(types);
@@ -314,10 +323,12 @@ function shelfUpdated(encType, field){
 }
 
 function typeUpdated(encType, type){
+  type = type || d3.select("select#type-"+encType).node().value;
   if(LOG_UI) console.log("typeUpdated", encType, type);
-  var fns = FN_LIST[type];
 
-  var s = d3.select("select#aggr-"+encType).selectAll("option").data(fns);
+  var fns = FN_LIST[type],
+    s = d3.select("select#aggr-"+encType).selectAll("option").data(fns);
+
   s.enter().append("option");
   s.attr("value", function(d) { return d; })
     .text(function(d) { return d; });
