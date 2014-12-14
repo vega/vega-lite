@@ -185,6 +185,8 @@ vl.Encoding = (function() {
       return f + "bin_" + this._enc[x].name;
     } else if (!nofn && this._enc[x].aggr) {
       return f + this._enc[x].aggr + "_" + this._enc[x].name;
+    } else if (!nofn && this._enc[x].fn){
+      return f + this._enc[x].fn + "_" + this._enc[x].name;
     } else {
       return f + this._enc[x].name;
     }
@@ -200,6 +202,10 @@ vl.Encoding = (function() {
 
   proto.bin = function(x){
     return this._enc[x].bin;
+  }
+
+  proto.fn = function(x){
+    return this.enc[x].fn;
   }
 
   proto.any = function(f){
@@ -460,7 +466,7 @@ function facet(group, encoding, cellHeight, cellWidth, spec, mdef, stack) {
     group.from = {data: group.marks[0].from.data};
 
     if (group.marks[0].from.transform) {
-    delete group.marks[0].from.data; //need to keep transform for subfaceting case
+      delete group.marks[0].from.data; //need to keep transform for subfaceting case
     } else {
       delete group.marks[0].from;
     }
@@ -571,6 +577,33 @@ function subfacet(group, mdef, details, stack, encoding) {
   if (stack && encoding.has(COLOR)) {
     trans.unshift({type: "sort", by: encoding.field(COLOR)});
   }
+}
+
+function getTimeFn(fn){
+  switch(fn){
+    case "second": return "getUTCSeconds";
+    case "minute": return "getUTCMinutes";
+    case "hour": return "getUTCHours";
+    case "day": return "getUTCDay";
+    case "date": return "getUTCDate";
+    case "month": return "getUTCMonth";
+    case "year": return "getUTCFullYear";
+  }
+  console.error("no function specified for date");
+}
+
+function timefn(spec, encoding){
+  encoding.forEach(function(encType, field){
+    if(field.type === T && field.fn){
+      var func = getTimeFn(field.fn);
+      spec.transform.push({
+        type: "formula",
+        field: field.fn+"_"+field.name,
+        expr: "d.data."+field.name+"."+func+"()"
+      });
+    }
+  })
+  return spec;
 }
 
 function binning(spec, encoding) {
@@ -794,7 +827,7 @@ function scale_range(s, encoding, opt) {
       if (encoding.isType(s.name, T)){
         s.nice = encoding.aggr(s.name) || encoding.config("timeScaleNice");
       }else{
-      s.nice = true;
+        s.nice = true;
       }
       break;
     case Y:
@@ -811,7 +844,7 @@ function scale_range(s, encoding, opt) {
       if (encoding.isType(s.name, T)){
         s.nice = encoding.aggr(s.name);
       }else{
-      s.nice = true;
+        s.nice = true;
       }
       break;
     case ROW:

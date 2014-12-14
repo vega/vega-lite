@@ -262,17 +262,17 @@ function datasetUpdated(url, callback) {
         isNaN(Date.parse(data[0][k])) ? vl.dataTypes.O : vl.dataTypes.T;
     }
 
-  // CURRENTLY EXPECTED AS GLOBAL VARS...
-  self.data = data;
-  self.schema = schema;
+    // CURRENTLY EXPECTED AS GLOBAL VARS...
+    self.data = data;
+    self.schema = schema;
 
     // update available data field in the each shelf
-  var s = d3.selectAll("select.shelf").selectAll("option")
-    .data(["-"].concat(d3.keys(schema)), function(d) { return d; });
+    var s = d3.selectAll("select.shelf").selectAll("option")
+      .data(["-"].concat(d3.keys(schema)), function(d) { return d; });
     s.enter().append("option");
     s.attr("value", function(d) { return d; })
-    .text(function(d) { return d; })
-  s.exit().remove();
+      .text(function(d) { return d; })
+    s.exit().remove();
 
     if(callback) callback();
   });
@@ -452,12 +452,12 @@ function encodings(cfg) {
       if( t==="T"){
         enc[x].fn = a;
       }else{
-      if (a === "bin") {
-        enc[x].bin = true;
-      } else if (a !== "-") {
-        enc[x].aggr = a;
+        if (a === "bin") {
+          enc[x].bin = true;
+        } else if (a !== "-") {
+          enc[x].aggr = a;
+        }
       }
-    }
     }
   });
 
@@ -475,7 +475,15 @@ function parse(spec, data) {
   self.vis = null; // DEBUG
   vg.parse.spec(spec, function(chart) {
     self.vis = chart({el:"#vis", renderer: "svg"});
-    vis.data({table: data}).update();
+
+    if(!spec.data[0].url){
+      // FIXME still need to load data this way without dataUrl
+      // but the problem is they we need to make sure that the data get parsed.
+      vis.data({table: data});
+    }
+
+    vis.update();
+    vis.on('mouseover', function(event, item) { console.log(item); });
   });
 }
 
