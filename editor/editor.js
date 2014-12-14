@@ -11,23 +11,20 @@ var datasets = [
   "data/birdstrikes.json"
 ];
 
-function load(url, callback) {
-  self.dataUrl = url;
-  d3.json(url, function(err, data) {
-    if (err) return alert("Error loading data " + err.statusText);
-    var schema = {};
-    for (var k in data[0]) {
-      //TODO(kanitw): better type inference here
-      schema[k] = (typeof data[0][k] === "number") ? vl.dataTypes.Q : vl.dataTypes.O;
+var TYPE_LIST = {
+      Q: ["Q", "O", "T"],
+      O: ["O"],
+      T: ["T", "O"],
+      "-": ["-"]
+    },
+    FN_LIST = {
+      O: ["-", "count"],
+      Q: ["-", "avg", "sum", "min", "max", "count", "bin"],
+      T: ["month", "year", "day", "date", "hour", "minute", "second"],
+      "-": ["-", "count"]
     }
-    run(data, schema);
 
-    if(callback) callback();
-  });
-}
-
-// ------
-
+var LOG_UI = true;
 
 function getParams() {
   var params = location.search.slice(1);
@@ -59,7 +56,7 @@ function init() {
     .attr("class", "data")
     .on("change", function() {
         var url = this.options[this.selectedIndex].value;
-        load(url);
+        datasetUpdated(url);
       })
     .selectAll("option")
       .data(datasets)
@@ -75,7 +72,11 @@ function init() {
   mark.append("span").attr("class","label").text("mark");
   mark.append("select")
     .attr("class", "mark")
-    .on("change", update)
+    .on("change", function(){
+      var marktype = d3.select(this).node().value;
+      marktypeUpdated(marktype);
+      update();
+    })
     .selectAll("option")
       .data(["point", "bar", "line", "area", "circle", "square", "text"])
     .enter().append("option")
@@ -100,7 +101,11 @@ function init() {
   ctrl.append("select")
     .attr("class", "aggr")
     .attr("id", function(d){ return "aggr-"+d;})
-    .on("change", update)
+    .on("change", function(d){
+      var fn = d3.select(this).node().value;
+      fnUpdated(d, fn);
+      update();
+    })
     .selectAll("option")
       .data(["-", "avg", "sum", "min", "max", "count", "bin"])
     .enter().append("option")
@@ -111,7 +116,11 @@ function init() {
   ctrl.append("select")
     .attr("class", "shelf")
     .attr("id", function(d){ return "shelf-"+d;})
-    .on("change", update)
+    .on("change", function(d){
+      var field = d3.select(this).node().value;
+      shelfUpdated(d, field);
+      update();
+    })
     .selectAll("option")
       .data(["-"], function(d) { return d; })
     .enter().append("option")
@@ -122,7 +131,11 @@ function init() {
   ctrl.append("select")
     .attr("class", "type")
     .attr("id", function(d){ return "type-"+d;})
-    .on("change", update)
+    .on("change", function(d){
+      var type = d3.select(this).node().value;
+      typeUpdated(d, type);
+      update();
+    })
     .selectAll("option")
       .data(["-", "O", "Q", "T"])
     .enter().append("option")
@@ -221,27 +234,93 @@ function init() {
     .attr("placeholder", function(d){return vl.DEFAULTS[d];});
 
   if(params.data){
-    load(params.data);
+    datasetUpdated(params.data);
   }
 }
 
 function removeEnc(d){
-  d3.select("#aggr-"+d).node().value = "-";
   d3.select("#shelf-"+d).node().value = "-";
+  shelfUpdated(d, "-");
   d3.select("#type-"+d).node().value = "-";
+  typeUpdated(d, "-");
+  d3.select("#aggr-"+d).node().value = "-";
+  fnUpdated(d, "-");
   update();
 }
 
-function run(data, schema) {
+function datasetUpdated(url, callback) {
+  if(url==="-"){
+    return;
+  }
+  self.dataUrl = url;
+  d3.json(url, function(err, data) {
+    if (err) return alert("Error loading data " + err.statusText);
+    var schema = {};
+    for (var k in data[0]) {
+      //TODO(kanitw): better type inference here
+      schema[k] = (typeof data[0][k] === "number") ? vl.dataTypes.Q :
+        isNaN(Date.parse(data[0][k])) ? vl.dataTypes.O : vl.dataTypes.T;
+    }
+
   // CURRENTLY EXPECTED AS GLOBAL VARS...
   self.data = data;
   self.schema = schema;
 
+    // update available data field in the each shelf
   var s = d3.selectAll("select.shelf").selectAll("option")
     .data(["-"].concat(d3.keys(schema)), function(d) { return d; });
-  s.enter().append("option")
-    .attr("value", function(d) { return d; })
+    s.enter().append("option");
+    s.attr("value", function(d) { return d; })
     .text(function(d) { return d; })
+  s.exit().remove();
+
+    if(callback) callback();
+  });
+}
+
+function marktypeUpdated(marktype){
+  if(LOG_UI) console.log("marktypeUpdated", marktype);
+  var supportedEncoding = vl.marks[marktype].supportedEncoding,
+    disabled =  function(d){
+      return supportedEncoding[d] ? undefined : "true";
+    };
+
+  d3.selectAll("select.aggr").attr("disabled", disabled);
+  d3.selectAll("select.shelf").attr("disabled", disabled);
+  d3.selectAll("select.type").attr("disabled", disabled);
+}
+
+function fnUpdated(encType, fn){
+  if(LOG_UI) console.log("fnUpdated", encType, fn);
+
+  if(fn === "count"){ //reset shelf, type
+    d3.select("select#shelf-"+encType).node().value = "-";
+    shelfUpdated(encType, "-");
+  }
+}
+
+function shelfUpdated(encType, field){
+  if(LOG_UI) console.log("shelfUpdated", encType, field);
+
+  var type = field !== "-" ? vl.dataTypeNames[self.schema[field]] : "-";
+    types = TYPE_LIST[type];
+
+  // update available type!
+  var s = d3.select("select#type-"+encType).selectAll("option").data(types);
+  s.enter().append("option");
+  s.attr("value", function(d) { return d; })
+    .text(function(d) { return d; });
+  s.exit().remove();
+}
+
+function typeUpdated(encType, type){
+  if(LOG_UI) console.log("typeUpdated", encType, type);
+  var fns = FN_LIST[type];
+
+  var s = d3.select("select#aggr-"+encType).selectAll("option").data(fns);
+  s.enter().append("option");
+  s.attr("value", function(d) { return d; })
+    .text(function(d) { return d; });
   s.exit().remove();
 }
 
@@ -276,7 +355,7 @@ function swapXY(){
   });
   encXY.each(function(d){
     var e = o[d==="x" ? "y": "x"];
-    loadEnc(this, e.shelf, e.aggr, e.type);
+    loadEnc(this, d, e.shelf, e.aggr, e.type);
   })
 
   update();
@@ -287,16 +366,20 @@ function loadEncoding(encoding, callback){
   var _load = function(){
     //update marktype
     d3.select("select.mark").node().value = encoding.marktype();
+    marktypeUpdated(encoding.marktype());
 
     //update encoding UI
     d3.selectAll("#ctrl div.enc").each(function(d) {
       if(encoding.has(d)){
         var e = encoding._enc[d];
-        loadEnc(this, e.name || "-",
+        loadEnc(
+          this, d,
+          e.name || "-",
           e.bin ? "bin" : e.aggr || "-",
-          vl.dataTypeNames[e.type] || "-");
+          vl.dataTypeNames[e.type] || "-"
+        );
       }else{
-        loadEnc(this, "-", "-", "-");
+        loadEnc(this, d, "-", "-", "-");
       }
     });
 
@@ -307,22 +390,24 @@ function loadEncoding(encoding, callback){
       }
     })
 
-
     if (callback) callback();
   }
   if(dataUrl){
     d3.select("select.data").node().value = dataUrl;
-    load(dataUrl, _load); //need to load data first!
+    datasetUpdated(dataUrl, _load); //need to load data first!
   }else{
     _load();
   }
 }
 
-function loadEnc(dom, v, a ,t){
+function loadEnc(dom, e, v, a ,t){
   var s = d3.select(dom);
   s.select("select.shelf").node().value = v;
+  shelfUpdated(e, v);
   s.select("select.type").node().value = t;
+  typeUpdated(e, t);
   s.select("select.aggr").node().value = a;
+  fnUpdated(e, a);
 }
 
 
@@ -364,11 +449,15 @@ function encodings(cfg) {
           : types[t])
       };
 
+      if( t==="T"){
+        enc[x].fn = a;
+      }else{
       if (a === "bin") {
         enc[x].bin = true;
       } else if (a !== "-") {
         enc[x].aggr = a;
       }
+    }
     }
   });
 
