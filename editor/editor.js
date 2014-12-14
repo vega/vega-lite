@@ -56,7 +56,7 @@ function init() {
     .attr("class", "data")
     .on("change", function() {
         var url = this.options[this.selectedIndex].value;
-        datasetUpdated(url);
+        datasetUpdated(url, update);
       })
     .selectAll("option")
       .data(datasets)
@@ -323,11 +323,16 @@ function fnUpdated(encType, fn){
 }
 
 function shelfUpdated(encType, field){
-  field = field || d3.select("select#aggr-"+encType).node().value;
+  field = field || d3.select("select#shelf-"+encType).node().value;
   if(LOG_UI) console.log("shelfUpdated", encType, field);
 
-  var type = field !== "-" ? vl.dataTypeNames[self.schema[field]] : "-";
-    types = TYPE_LIST[type];
+  var type = vl.dataTypeNames[self.schema[field]] || "-";
+    types = TYPE_LIST[type],
+    typesel = d3.select("select#type-"+encType).node()
+
+  if(types.indexOf(typesel.value) === -1){
+    typesel.value = types[0];
+  }
 
   // update available type!
   var s = d3.select("select#type-"+encType).selectAll("option").data(types);
@@ -341,7 +346,7 @@ function typeUpdated(encType, type){
   type = type || d3.select("select#type-"+encType).node().value;
   if(LOG_UI) console.log("typeUpdated", encType, type);
 
-  var fns = FN_LIST[type],
+  var fns = FN_LIST[type] || FN_LIST["-"],
     fnsel = d3.select("select#aggr-"+encType).node(),
     s = d3.select("select#aggr-"+encType).selectAll("option").data(fns);
 
