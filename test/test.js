@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
-var VEGA_DIR = "vega", VEGALITE_DIR = "vegalite";
+var VEGA_DIR = "shorthand2vg";
 
 var program = require('commander');
 program.version('0.0.1')
-  .description("Generate Vega specs from Vegalite object in"+VEGALITE_DIR+"/ and compare output with testcases in "+ VEGA_DIR)
-  .option('-f, --files [path]', 'Test specific files (Use comma to separate filename', null)
+  .description("Generate Vega specs from Vegalite object in testcases.js and compare output with testcases in "+ VEGA_DIR)
+  // .option('-f, --files [path]', 'Test specific files (Use comma to separate filename', null)
   .parse(process.argv);
 
 var  fs = require('fs'),
@@ -16,26 +16,34 @@ var  fs = require('fs'),
 
 var badList = [], goodList = [];
 
-if(program.files){
-  program.files.split(",").forEach(test);
-  log();
-}else{
-  fs.readdir(VEGALITE_DIR, function(err, files){
-    files.filter(function(f){
-      return f.lastIndexOf(".json") == f.length - 5; //filter .DSStore and other unrelated files
-    }).forEach(test);
+// if(program.files){
+//   program.files.split(",").forEach(function(filename){
+//     var json = require("./"+VEGALITE_DIR+"/"+filename),
+//       encoding = vl.Encoding.parseJSON(json);
+//     test(filename, encoding);
+//   });
+//   log();
+// }else{
+  var testcases =  require('./testcases');
+  vl.keys(testcases).forEach(function(dataUrl){
+    testcases[dataUrl].forEach(function(tc){
+      var encoding = vl.Encoding.parseShorthand(tc.e, {dataUrl: dataUrl}),
+        filename = encoding.toShorthand();
+      test(filename, encoding);
+    })
+  })
+// }
 
-    log();
-  });
-}
-
-function test(filename){
-  var json = require("./"+VEGALITE_DIR+"/"+filename),
-    encoding = vl.Encoding.parseJSON(json),
-    dataUrl = '../'+encoding.config("dataUrl"),
+function test(filename, encoding){
+  var dataUrl = '../'+encoding.config("dataUrl"),
     data = require(dataUrl),
-    spec = vl.toVegaSpec(encoding, data),
-    testSpec = require("./"+VEGA_DIR+"/"+filename);
+    stats = vl.getStats(encoding, data),
+    spec = vl.toVegaSpec(encoding, stats);
+
+  var dataname = dataUrl.split("/").pop().split(".");
+  dataname = dataname.slice(0, dataname.length -1).join(".");
+  var vgPath = VEGA_DIR+"/"+dataname+"."+filename+'.json',
+    testSpec = require(vgPath);
 
   var diff = deepDiff(spec, testSpec);
 

@@ -280,7 +280,7 @@ vl.Encoding = (function() {
     ).join(".");
   }
 
-  Encoding.parseShorthand = function(shorthand){
+  Encoding.parseShorthand = function(shorthand, cfg){
     var enc = shorthand.split("."),
       marktype = enc.shift();
 
@@ -319,7 +319,7 @@ vl.Encoding = (function() {
       return m;
     }, {});
 
-    return new Encoding(marktype, enc);
+    return new Encoding(marktype, enc, cfg);
   }
 
   Encoding.parseJSON = function(json){
