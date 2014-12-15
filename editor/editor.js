@@ -284,6 +284,8 @@ function datasetUpdated(item, callback) {
   if(LOG_UI) console.log("datasetUpdated", item);
 
   if (USE_VEGA_SERVER && item.table !== undefined) {
+    self.table = item.table;
+
     var url = "http://localhost:3001/stats/?name=" + item.table;
 
     d3.csv(url, function(err, data) {
@@ -302,7 +304,9 @@ function datasetUpdated(item, callback) {
       console.log(stats);
 
       self.stats = stats;
-      self.data = []
+      self.data = [];
+
+      updateShelves();
 
       if(callback) callback();
     });
@@ -319,7 +323,7 @@ function datasetUpdated(item, callback) {
 
       console.log(stats);
 
-      updateShelves()
+      updateShelves();
 
       if(callback) callback();
     });
@@ -398,6 +402,32 @@ function shelfUpdated(encType, field){
   s.exit().remove();
 }
 
+function getDataUrl(encoding) {
+  if (!USE_VEGA_SERVER) {
+    return self.dataUrl;
+  }
+
+  if (d3.keys(encoding._enc).length === 0) {
+    // no fields
+    return;
+  }
+
+  var fields = []
+  d3.keys(encoding._enc).forEach(function(k) {
+    var v = encoding._enc[k];
+    fields.push({
+      name: k,
+      field: v.name
+    });
+  });
+
+  var query = {
+    table: self.table,
+    fields: fields
+  }
+  return "http://localhost:3001/query/?q=" + JSON.stringify(query)
+}
+
 function typeUpdated(encType, type){
   type = type || d3.select("select#type-"+encType).node().value;
   if(LOG_UI) console.log("typeUpdated", encType, type);
@@ -419,7 +449,7 @@ function typeUpdated(encType, type){
 }
 
 function update() {
-  var enc = encodings({dataUrl: self.dataUrl}),
+  var enc = encodings({dataFormatType: USE_VEGA_SERVER ? "csv" : "json"}),
     stats = self.stats,
     spec = vl.toVegaSpec(enc, stats);
 
@@ -429,8 +459,9 @@ function update() {
   var inclData = d3.select("#inclData").node().checked;
 
   if(inclData){ // if "include data" is checked, include data url in the output
-    enc = encodings({dataUrl: self.dataUrl});
-    spec = vl.toVegaSpec(enc, stats);
+    var url = getDataUrl(enc)
+    enc = encodings(url ? {dataFormatType: "csv", dataUrl: getDataUrl(enc)} : {});
+    self.spec = vl.toVegaSpec(enc, stats);
   }
   d3.select(".shorthand").attr("value", enc.toShorthand());
   d3.select("textarea.vlcode").node().value = JSON.stringify(enc.toJSON(), null, "  ", 80);
