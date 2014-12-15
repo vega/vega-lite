@@ -272,6 +272,7 @@ vl.Encoding = (function() {
       var v = enc[e];
         return e + "-" +
           (v.aggr ? v.aggr+"_" : "") +
+          (v.fn ? v.fn+"_" : "") +
           (v.bin ? "bin_" : "") +
           (v.name || "") + "-" +
           vl.dataTypeNames[v.type];
@@ -295,6 +296,15 @@ vl.Encoding = (function() {
           o.name = o.name.substr(a.length+1);
           if(a=="count" && o.name.length === 0) delete o.name;
           o.aggr = a;
+          break;
+        }
+      }
+      // check time fn
+      for(var i in vl.timeFuncs){
+        var f = vl.timeFuncs[i];
+        if(o.name.indexOf(f+"_") == 0){
+          o.name = o.name.substr(o.length+1);
+          o.fn = f;
           break;
         }
       }
@@ -430,7 +440,7 @@ vl.toVegaSpec = function(encoding, stats) {
     }
   })
 
-  // handle subfacets
+  // handle subfacetst
   var aggResult = aggregates(spec.data[0], encoding),
     details = aggResult.details,
     hasDetails = details && details.length > 0,
