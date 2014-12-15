@@ -373,9 +373,8 @@ function update() {
 
   var inclData = d3.select("#inclData").node().checked;
 
-  if(inclData){ // if "include data" is checked, include data url in the output
-    enc = encodings({dataUrl: self.dataUrl});
   if(!inclData){ // if "include data" is checked, include data url in the output
+    enc = encodings();
     spec = vl.toVegaSpec(enc, stats);
   }
   d3.select(".shorthand").attr("value", enc.toShorthand());
