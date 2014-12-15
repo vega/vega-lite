@@ -19,8 +19,8 @@ var TYPE_LIST = {
     },
     FN_LIST = {
       O: ["-", "count"],
-      Q: ["-", "avg", "sum", "min", "max", "count", "bin"],
-      T: ["month", "year", "day", "date", "hour", "minute", "second"],
+      Q: ["-"].concat(vl.quantAggTypes).concat(["bin"]),
+      T: vl.timeFuncs,
       "-": ["-", "count"]
     }
 
