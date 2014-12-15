@@ -22,7 +22,7 @@ var TYPE_LIST = {
       Q: ["-"].concat(vl.quantAggTypes).concat(["bin"]),
       T: vl.timeFuncs,
       "-": ["-", "count"]
-    }
+    };
 
 var LOG_UI = true;
 
@@ -363,7 +363,7 @@ function typeUpdated(encType, type){
 }
 
 function update() {
-  var enc = encodings(),
+  var enc = encodings({dataUrl: self.dataUrl}),
     data = self.data,
     stats = vl.getStats(enc, data),
     spec = vl.toVegaSpec(enc, stats);
@@ -375,6 +375,7 @@ function update() {
 
   if(inclData){ // if "include data" is checked, include data url in the output
     enc = encodings({dataUrl: self.dataUrl});
+  if(!inclData){ // if "include data" is checked, include data url in the output
     spec = vl.toVegaSpec(enc, stats);
   }
   d3.select(".shorthand").attr("value", enc.toShorthand());
