@@ -206,7 +206,7 @@ vl.Encoding = (function() {
   }
 
   proto.fn = function(x){
-    return this.enc[x].fn;
+    return this._enc[x].fn;
   }
 
   proto.any = function(f){
@@ -424,6 +424,12 @@ vl.toVegaSpec = function(encoding, stats) {
 
   var lineType = marks[encoding.marktype()].line;
 
+  encoding.forEach(function(encType, field){
+    if(field.type === T && field.fn){
+      timeTransform(spec.data[0], encoding, encType, field);
+    }
+  })
+
   // handle subfacets
   var aggResult = aggregates(spec.data[0], encoding),
     details = aggResult.details,
@@ -593,17 +599,15 @@ function getTimeFn(fn){
   console.error("no function specified for date");
 }
 
-function timefn(spec, encoding){
-  encoding.forEach(function(encType, field){
-    if(field.type === T && field.fn){
-      var func = getTimeFn(field.fn);
-      spec.transform.push({
-        type: "formula",
-        field: field.fn+"_"+field.name,
-        expr: "d.data."+field.name+"."+func+"()"
-      });
-    }
-  })
+function timeTransform(spec, encoding, encType, field){
+  var func = getTimeFn(field.fn);
+
+  spec.transform = spec.transform || [];
+  spec.transform.push({
+    type: "formula",
+    field: encoding.field(encType),
+    expr: "new Date(d.data."+field.name+")."+func+"()"
+  });
   return spec;
 }
 
@@ -629,19 +633,19 @@ function binning(spec, encoding) {
 
 function aggregates(spec, encoding) {
   var dims = {}, meas = {}, detail = {}, facets={};
-  encoding.forEach(function(vv, d) {
-    if (d.aggr) {
-      if(d.aggr==="count"){
+  encoding.forEach(function(encType, field) {
+    if (field.aggr) {
+      if(field.aggr==="count"){
         meas["count"] = {op:"count"}; //count shouldn't have field
       }else{
-        meas[d.aggr+"|"+d.name] = {op:d.aggr, field:"data."+d.name};
+        meas[field.aggr+"|"+field.name] = {op:field.aggr, field:"data."+field.name};
       }
     } else {
-      dims[d.name] = encoding.field(vv);
-      if (vv==ROW || vv == COL){
-        facets[d.name] = dims[d.name];
-      }else if (vv !== X && vv !== Y) {
-        detail[d.name] = dims[d.name];
+      dims[field.name] = encoding.field(encType);
+      if (encType==ROW || encType == COL){
+        facets[field.name] = dims[field.name];
+      }else if (encType !== X && encType !== Y) {
+        detail[field.name] = dims[field.name];
       }
     }
   });
@@ -800,12 +804,27 @@ vl.scale.defs = function (names, encoding, opt) {
 function scale_type(name, encoding) {
   switch (encoding.type(name)) {
     case O: return "ordinal";
-    case T: return "time";
+    case T:
+      if(encoding.fn(name)){
+        return "linear";
+      }
+      return "time;"
     case Q: return "linear";
   }
 }
 
 function scale_domain(name, encoding, opt) {
+  if (encoding.type(name) === T){
+    switch(encoding.fn(name)){
+      case "second":
+      case "minute": return [0, 59];
+      case "hour": return [0, 23];
+      case "day": return [0, 6];
+      case "date": return [1, 31];
+      case "month": return [0, 11];
+    }
+  }
+
   return name == opt.stack ?
     {
       data: STACKED,

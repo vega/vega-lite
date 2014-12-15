@@ -413,7 +413,7 @@ function loadEncoding(encoding, callback){
         loadEnc(
           this, d,
           e.name || "-",
-          e.bin ? "bin" : e.aggr || "-",
+          e.bin ? "bin" : e.aggr || e.fn || "-",
           vl.dataTypeNames[e.type] || "-"
         );
       }else{
@@ -517,7 +517,7 @@ function parse(spec, data) {
     if(!spec.data[0].url){
       // FIXME still need to load data this way without dataUrl
       // but the problem is they we need to make sure that the data get parsed.
-      vis.data({table: data});
+      //vis.data({table: data});
     }
 
     vis.update();
