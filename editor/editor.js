@@ -1,14 +1,43 @@
 var datasets = [
-  "-",
-  "data/barley.json",
-  "data/cars.json",
-  "data/crimea.json",
-  "data/driving.json",
-  "data/iris.json",
-  "data/jobs.json",
-  "data/population.json",
-  "data/movies.json",
-  "data/birdstrikes.json"
+  {
+    name: "-"
+  },{
+    name: "Barley",
+    url: "data/barley.json",
+    table: "barley_json"
+  },{
+    name: "Cars",
+    url: "data/cars.json",
+    table: "cars_json"
+  },{
+    name: "Crimea",
+    url: "data/crimea.json",
+    table: "crimea"
+  },{
+    name: "Driving",
+    url: "data/driving.json",
+    table: "driving_json"
+  },{
+    name: "Iris",
+    url: "data/iris.json",
+    table: "iris_json"
+  },{
+    name: "Jobs",
+    url: "data/jobs.json",
+    table: "jobs_json"
+  },{
+    name: "Population",
+    url: "data/population.json",
+    table: "population_json"
+  },{
+    name: "Movies",
+    url: "data/movies.json",
+    table: "movies_json"
+  },{
+    name: "Birdstrikes",
+    url: "data/birdstrikes.json",
+    table: "birdstrikes_json"
+  }
 ];
 
 var TYPE_LIST = {
@@ -25,6 +54,7 @@ var TYPE_LIST = {
     };
 
 var LOG_UI = true;
+var USE_VEGA_SERVER = true;
 
 function getParams() {
   var params = location.search.slice(1);
@@ -55,17 +85,16 @@ function init() {
   dsel.append("select")
     .attr("class", "data")
     .on("change", function() {
-        var url = this.options[this.selectedIndex].value;
-        datasetUpdated(url, update);
-      })
+      var item = this.options[this.selectedIndex].__data__;
+      datasetUpdated(item, update);
+    })
     .selectAll("option")
       .data(datasets)
     .enter().append("option")
-      .attr("value", function(d) { return d; })
       .attr("selected", function(d){
         return d==params.data ? true : undefined;
       })
-      .text(function(d) { return d; });
+      .text(function(d) { return d.name; });
 
   // choose mark type
   var mark = main.append("div").attr("class", "mark");
@@ -237,7 +266,7 @@ function init() {
     .attr("placeholder", function(d){return vl.DEFAULTS[d];});
 
   if(params.data){
-    datasetUpdated(params.data);
+    datasetUpdated({url: params.data});
   }
 }
 
@@ -251,42 +280,69 @@ function removeEnc(d){
   update();
 }
 
-function datasetUpdated(url, callback) {
-  if(url==="-"){
+function datasetUpdated(item, callback) {
+  if(LOG_UI) console.log("datasetUpdated", item);
+
+  if (USE_VEGA_SERVER && item.table !== undefined) {
+    var url = "http://localhost:3001/stats/?name=" + item.table;
+
+    d3.csv(url, function(err, data) {
+      if (err) return alert("Error loading stats " + err.statusText);
+      var stats = {};
+
+      data.forEach(function(row) {
+        var stat = {}
+        stat.min = +row.min;
+        stat.max = +row.max;
+        stat.cardinality = +row.cardinality;
+        stat.type = row.type === "integer" || row.type === "real" ? vl.dataTypes.Q : vl.dataTypes.O;
+        stats[row.name] = stat;
+      });
+
+      console.log(stats);
+
+      self.stats = stats;
+      self.data = []
+
+      if(callback) callback();
+    });
+  } else if (item.url !== undefined) {
+    self.dataUrl = item.url;
+    var url = item.url;
+
+    d3.json(url, function(err, data) {
+      if (err) return alert("Error loading data " + err.statusText);
+
+      // CURRENTLY EXPECTED AS GLOBAL VARS...
+      self.data = data;
+      self.stats = vl.getStats(data);
+
+      console.log(stats);
+
+      updateShelves()
+
+      if(callback) callback();
+    });
+  } else {
+    // this may initially be the case
     return;
   }
-  if(LOG_UI) console.log("datasetUpdated", url);
+}
 
-  self.dataUrl = url;
-  d3.json(url, function(err, data) {
-    if (err) return alert("Error loading data " + err.statusText);
-    var schema = {};
-    for (var k in data[0]) {
-      //TODO(kanitw): better type inference here
-      schema[k] = (typeof data[0][k] === "number") ? vl.dataTypes.Q :
-        isNaN(Date.parse(data[0][k])) ? vl.dataTypes.O : vl.dataTypes.T;
-    }
+function updateShelves() {
+  // update available data field in the each shelf
+  var s = d3.selectAll("select.shelf").selectAll("option")
+    .data(["-"].concat(d3.keys(self.stats)), function(d) { return d; });
+  s.enter().append("option");
+  s.attr("value", function(d) { return d; })
+    .text(function(d) { return d; })
+  s.exit().remove();
 
-    // CURRENTLY EXPECTED AS GLOBAL VARS...
-    self.data = data;
-    self.schema = schema;
-
-    // update available data field in the each shelf
-    var s = d3.selectAll("select.shelf").selectAll("option")
-      .data(["-"].concat(d3.keys(schema)), function(d) { return d; });
-    s.enter().append("option");
-    s.attr("value", function(d) { return d; })
-      .text(function(d) { return d; })
-    s.exit().remove();
-
-    d3.selectAll("select.shelf").each(function(d){
-      shelfUpdated(d);
-      typeUpdated(d);
-      fnUpdated(d);
-    })
-
-    if(callback) callback();
-  });
+  d3.selectAll("select.shelf").each(function(d){
+    shelfUpdated(d);
+    typeUpdated(d);
+    fnUpdated(d);
+  })
 }
 
 function marktypeUpdated(marktype){
@@ -326,7 +382,7 @@ function shelfUpdated(encType, field){
   field = field || d3.select("select#shelf-"+encType).node().value;
   if(LOG_UI) console.log("shelfUpdated", encType, field);
 
-  var type = vl.dataTypeNames[self.schema[field]] || "-";
+  var type = field === "-" ? "-" : vl.dataTypeNames[self.stats[field].type];
     types = TYPE_LIST[type],
     typesel = d3.select("select#type-"+encType).node()
 
@@ -364,8 +420,7 @@ function typeUpdated(encType, type){
 
 function update() {
   var enc = encodings({dataUrl: self.dataUrl}),
-    data = self.data,
-    stats = vl.getStats(enc, data),
+    stats = self.stats,
     spec = vl.toVegaSpec(enc, stats);
 
   self.enc = enc; // DEBUG
@@ -380,7 +435,7 @@ function update() {
   d3.select(".shorthand").attr("value", enc.toShorthand());
   d3.select("textarea.vlcode").node().value = JSON.stringify(enc.toJSON(), null, "  ", 80);
   d3.select("textarea.vgcode").node().value = JSON.stringify(spec, null, "  ", 80);
-  parse(self.spec, data);
+  parse(self.spec);
 }
 
 function swapXY(){
@@ -483,7 +538,7 @@ function encodings(cfg) {
         name: v,
         type: (a==="count" ? types.Q :
           t==="-" ?
-            (x==="row" || x==="col" ? types.O : schema[v])
+            (x==="row" || x==="col" ? types.O : stats[v].type)
           : types[t])
       };
 
@@ -509,7 +564,7 @@ function encodings(cfg) {
   return new vl.Encoding(marktype, enc, cfg);
 }
 
-function parse(spec, data) {
+function parse(spec) {
   self.vis = null; // DEBUG
   vg.parse.spec(spec, function(chart) {
     self.vis = chart({el:"#vis", renderer: "svg"});

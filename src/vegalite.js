@@ -124,6 +124,16 @@ function uniq(data, field) {
   return count;
 }
 
+function minmax(data, field) {
+  var stats = {min: +Infinity, max: -Infinity};
+  for (i=0; i<data.length; ++i) {
+    var v = data[i][field];
+    if (v > stats.max) stats.max = v;
+    if (v < stats.min) stats.min = v;
+  }
+  return stats;
+}
+
 vl.duplicate = function (obj) {
   return JSON.parse(JSON.stringify(obj));
 };
@@ -343,28 +353,26 @@ vl.error = function(msg){
   console.error("[VL Error]", msg);
 }
 
-vl.getStats = function(encoding, data){ // hack
+// Returns the stats for the dataset.
+// Stats is a map from each field name to an object with min, max, count, cardinality and type.
+vl.getStats = function(data){ // hack
   var stats = {};
-  encoding.forEach(function(encType, field){
-    if(field.bin){
-      var fieldProp = encoding.field(encType,1,1);
-      stats["bin_"+field.name] = {
-        cardinality: vg.data.bin().field(fieldProp).numbins(data)
-      }
-    }else if(field.aggr){
-      // DO NOTHING (for now)
-    }else {
-      stats[field.name] = {
-        cardinality: uniq(data, encoding.field(encType, 1))
-      }
-    }
+  var fields = Object.keys(data[0]);
+
+  fields.forEach(function(k) {
+    var stat = minmax(data, k);
+    stat.cardinality = uniq(data, k);
+    //TODO(kanitw): better type inference here
+    stat.type = (typeof data[0][k] === "number") ? vl.dataTypes.Q :
+      isNaN(Date.parse(data[0][k])) ? vl.dataTypes.O : vl.dataTypes.T;
+    stat.count = data.length;
+    stats[k] = stat;
   });
   return stats;
 }
 
 function getCardinality(encoding, encType, stats){
-  var fieldName = encoding.fieldName(encType),
-    field = (encoding.bin(encType) ? "bin_" : "") +fieldName;
+  var field = encoding.fieldName(encType);
   return stats[field].cardinality;
 }
 
