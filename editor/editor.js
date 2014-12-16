@@ -264,6 +264,7 @@ function init() {
   configs.append("input")
     .attr("placeholder", function(d){return vl.DEFAULTS[d];});
 
+  marktypeUpdated("point");
   if(params.data){
     datasets.forEach(function(item) {
       if (params.data == item.name) {
@@ -570,7 +571,7 @@ function encodings(cfg) {
     var x = d, e=readEnc(this),
       v=e.shelf, a=e.aggr, t=e.type;
 
-    if (v !== "-" || a === "count") {
+    if ((v && v !== "-") || a === "count") {
       enc[x] = {
         name: v,
         type: (a==="count" ? types.Q :
