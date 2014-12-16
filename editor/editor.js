@@ -442,16 +442,16 @@ function vegaServerConfig() {
 function update() {
   var useVegaServer = vegaServerConfig()[0];
 
-  var obj = {
+  var cfg = {
     dataFormatType: useVegaServer ? "csv" : "json",
   }
   if (useVegaServer) {
-    obj.vegaServerTable = self.table;
+    cfg.vegaServerTable = self.table;
   } else {
-    obj.dataUrl = self.dataUrl;
+    cfg.dataUrl = self.dataUrl;
   }
 
-  var enc = encodings(obj),
+  var enc = encodings(cfg),
     stats = self.stats,
     // TODO: why convert to spec twice if data has to be included?
     spec = vl.toVegaSpec(enc, stats);
