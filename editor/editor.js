@@ -470,7 +470,7 @@ function update() {
     enc = encodings();
     spec = vl.toVegaSpec(enc, stats);
   }
-  d3.select(".shorthand").attr("value", enc.toShorthand());
+  d3.select(".shorthand").node().value = enc.toShorthand();
   d3.select("textarea.vlcode").node().value = JSON.stringify(enc.toJSON(), null, "  ", 80);
   d3.select("textarea.vgcode").node().value = JSON.stringify(spec, null, "  ", 80);
   parse(self.spec);
