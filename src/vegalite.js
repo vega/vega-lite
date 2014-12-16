@@ -366,7 +366,7 @@ vl.error = function(msg){
 // Stats is a map from each field name to an object with min, max, count, cardinality and type.
 vl.getStats = function(data){ // hack
   var stats = {};
-  var fields = Object.keys(data[0]);
+  var fields = vl.keys(data[0]);
 
   fields.forEach(function(k) {
     var stat = minmax(data, k);
