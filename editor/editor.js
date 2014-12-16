@@ -53,8 +53,10 @@ var TYPE_LIST = {
       "-": ["-", "count"]
     };
 
-var LOG_UI = true;
+var LOG_UI = false;
 var USE_VEGA_SERVER = true;
+
+var VEGA_SERVER_URL = "http://localhost:3001"
 
 function getParams() {
   var params = location.search.slice(1);
@@ -286,7 +288,7 @@ function datasetUpdated(item, callback) {
   if (USE_VEGA_SERVER && item.table !== undefined) {
     self.table = item.table;
 
-    var url = "http://localhost:3001/stats/?name=" + item.table;
+    var url = VEGA_SERVER_URL + "/stats/?name=" + item.table;
 
     d3.csv(url, function(err, data) {
       if (err) return alert("Error loading stats " + err.statusText);
@@ -300,8 +302,6 @@ function datasetUpdated(item, callback) {
         stat.type = row.type === "integer" || row.type === "real" ? vl.dataTypes.Q : vl.dataTypes.O;
         stats[row.name] = stat;
       });
-
-      console.log(stats);
 
       self.stats = stats;
       self.data = [];
@@ -320,8 +320,6 @@ function datasetUpdated(item, callback) {
       // CURRENTLY EXPECTED AS GLOBAL VARS...
       self.data = data;
       self.stats = vl.getStats(data);
-
-      console.log(stats);
 
       updateShelves();
 
@@ -402,32 +400,6 @@ function shelfUpdated(encType, field){
   s.exit().remove();
 }
 
-function getDataUrl(encoding) {
-  if (!USE_VEGA_SERVER) {
-    return self.dataUrl;
-  }
-
-  if (d3.keys(encoding._enc).length === 0) {
-    // no fields
-    return;
-  }
-
-  var fields = []
-  d3.keys(encoding._enc).forEach(function(k) {
-    var v = encoding._enc[k];
-    fields.push({
-      name: k,
-      field: v.name
-    });
-  });
-
-  var query = {
-    table: self.table,
-    fields: fields
-  }
-  return "http://localhost:3001/query/?q=" + JSON.stringify(query)
-}
-
 function typeUpdated(encType, type){
   type = type || d3.select("select#type-"+encType).node().value;
   if(LOG_UI) console.log("typeUpdated", encType, type);
@@ -449,8 +421,19 @@ function typeUpdated(encType, type){
 }
 
 function update() {
-  var enc = encodings({dataFormatType: USE_VEGA_SERVER ? "csv" : "json"}),
+  var obj = {
+    dataFormatType: USE_VEGA_SERVER ? "csv" : "json",
+  }
+  if (USE_VEGA_SERVER) {
+    obj.vegaServerTable = self.table;
+    obj.vegaServerUrl = VEGA_SERVER_URL;
+  } else {
+    obj.dataUrl = self.dataUrl;
+  }
+
+  var enc = encodings(obj),
     stats = self.stats,
+    // TODO: why convert to spec twice if data has to be included?
     spec = vl.toVegaSpec(enc, stats);
 
   self.enc = enc; // DEBUG
@@ -458,10 +441,9 @@ function update() {
 
   var inclData = d3.select("#inclData").node().checked;
 
-  if(inclData){ // if "include data" is checked, include data url in the output
-    var url = getDataUrl(enc)
-    enc = encodings(url ? {dataFormatType: "csv", dataUrl: getDataUrl(enc)} : {});
-    self.spec = vl.toVegaSpec(enc, stats);
+  if(!inclData){ // if "include data" is checked, include data url in the output
+    enc = encodings();
+    spec = vl.toVegaSpec(enc, stats);
   }
   d3.select(".shorthand").attr("value", enc.toShorthand());
   d3.select("textarea.vlcode").node().value = JSON.stringify(enc.toJSON(), null, "  ", 80);

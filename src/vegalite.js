@@ -48,12 +48,18 @@ vl.timeFuncs = ["month", "year", "day", "date", "hour", "minute", "second"];
 
 vl.DEFAULTS = {
   // template
-  dataUrl: undefined, //for easier export
   width: undefined,
   height: undefined,
   viewport: undefined,
   _minWidth: 20,
   _minHeight: 20,
+
+  // data source
+  dataUrl: undefined, //for easier export
+  // database server
+  vegaServerUrl: undefined,
+  // table in the database
+  vegaServerTable: undefined,
   dataFormatType: "json",
 
   //small multiples
@@ -159,7 +165,7 @@ vl.Encoding = (function() {
 
   function Encoding(marktype, enc, config) {
     this._marktype = marktype;
-    this._enc = enc;
+    this._enc = enc; // {encType1:field1, ...}
     this._cfg = vl.keys(config).reduce(function(c, k){
       c[k] = config[k];
       return c;
@@ -225,6 +231,10 @@ vl.Encoding = (function() {
 
   proto.all = function(f){
     return vl.all(this._enc, f);
+  }
+
+  proto.length = function(){
+    return d3.keys(this._enc).length;
   }
 
   proto.reduce = function(f, init){
@@ -373,11 +383,17 @@ vl.getStats = function(data){ // hack
 
 function getCardinality(encoding, encType, stats){
   var field = encoding.fieldName(encType);
+  // console.log(encoding.bin(encType))
+  // console.log(encoding.aggr(encType))
   return stats[field].cardinality;
 }
 
 function setSize(encoding, stats) {
-  var hasRow = encoding.has(ROW), hasCol = encoding.has(COL), hasX = encoding.has(X), hasY = encoding.has(Y);
+  console.log(encoding)
+  var hasRow = encoding.has(ROW),
+    hasCol = encoding.has(COL),
+    hasX = encoding.has(X),
+    hasY = encoding.has(Y);
 
   // HACK to set chart size
   // NOTE: this fails for plots driven by derived values (e.g., aggregates)
@@ -405,7 +421,7 @@ function setSize(encoding, stats) {
   width = cellWidth * ((1 + cellPadding) * (colCardinality-1) + 1);
 
   if (hasY && encoding.isType(Y, O)) {
-    // bands within celll use rangePoint()
+    // bands within cell use rangePoint()
     var yCardinality = getCardinality(encoding, Y, stats);
     cellHeight = (yCardinality + bandPadding) *  encoding.config("bandSize");
   }
@@ -419,6 +435,39 @@ function setSize(encoding, stats) {
   };
 }
 
+vl.getDataUrl = function getDataUrl(encoding, stats) {
+  if (!encoding.config("vegaServerUrl")) {
+    // don't use vega server
+    return self.dataUrl;
+  }
+
+  if (encoding.length() === 0) {
+    // no fields
+    return;
+  }
+
+  var fields = []
+  encoding.forEach(function(encType, field){
+    var obj = {
+      name: encoding.field(encType, true),
+      field: field.name
+    }
+    if (field.aggr) {
+      obj.aggr = field.aggr
+    }
+    if (field.bin) {
+      obj.binSize = vg.data.bin().bins(stats[field.name], {maxbins: 20}).step;
+    }
+    fields.push(obj);
+  });
+
+  var query = {
+    table: encoding.config("vegaServerTable"),
+    fields: fields
+  }
+  return encoding.config("vegaServerUrl") + "/query/?q=" + JSON.stringify(query)
+}
+
 vl.toVegaSpec = function(encoding, stats) {
   var size = setSize(encoding, stats),
     cellWidth = size.cellWidth,
@@ -428,7 +477,7 @@ vl.toVegaSpec = function(encoding, stats) {
     return v.aggr !== undefined;
   });
 
-  var spec = template(encoding, size),
+  var spec = template(encoding, size, stats),
     group = spec.marks[0],
     mark = marks[encoding.marktype()],
     mdef = markdef(mark, encoding, {
@@ -437,19 +486,24 @@ vl.toVegaSpec = function(encoding, stats) {
 
   var hasRow = encoding.has(ROW), hasCol = encoding.has(COL);
 
+  var preaggregatedData = !!encoding.config("vegaServerUrl");
+
   group.marks.push(mdef);
-  binning(spec.data[0], encoding);
+  // TODO: return value not used
+  binning(spec.data[0], encoding, {preaggregatedData: preaggregatedData});
 
   var lineType = marks[encoding.marktype()].line;
 
-  encoding.forEach(function(encType, field){
-    if(field.type === T && field.fn){
-      timeTransform(spec.data[0], encoding, encType, field);
-    }
-  })
+  if(!preaggregatedData){
+    encoding.forEach(function(encType, field){
+      if(field.type === T && field.fn){
+        timeTransform(spec.data[0], encoding, encType, field);
+      }
+    });
+  }
 
-  // handle subfacetst
-  var aggResult = aggregates(spec.data[0], encoding),
+  // handle subfacets
+  var aggResult = aggregates(spec.data[0], encoding, {preaggregatedData: preaggregatedData}),
     details = aggResult.details,
     hasDetails = details && details.length > 0,
     stack = hasDetails && stacking(spec, encoding, mdef, aggResult.facets);
@@ -491,7 +545,7 @@ function facet(group, encoding, cellHeight, cellWidth, spec, mdef, stack) {
     group.from = {data: group.marks[0].from.data};
 
     if (group.marks[0].from.transform) {
-      delete group.marks[0].from.data; //need to keep transform for subfaceting case
+      delete group.marks[0].from.data; //need to keep transform for subfacetting case
     } else {
       delete group.marks[0].from;
     }
@@ -629,14 +683,15 @@ function timeTransform(spec, encoding, encType, field){
   return spec;
 }
 
-function binning(spec, encoding) {
+function binning(spec, encoding, opt) {
+  opt = opt || {};
   var bins = {};
   encoding.forEach(function(vv, d) {
     if (d.bin) bins[d.name] = d.name;
   });
   bins = vl.keys(bins);
 
-  if (bins.length === 0) return false;
+  if (bins.length === 0 || opt.preaggregatedData) return false;
 
   if (!spec.transform) spec.transform = [];
   bins.forEach(function(d) {
@@ -649,7 +704,8 @@ function binning(spec, encoding) {
   return bins;
 }
 
-function aggregates(spec, encoding) {
+function aggregates(spec, encoding, opt) {
+  opt = opt || {};
   var dims = {}, meas = {}, detail = {}, facets={};
   encoding.forEach(function(encType, field) {
     if (field.aggr) {
@@ -670,7 +726,7 @@ function aggregates(spec, encoding) {
   dims = vl.vals(dims);
   meas = vl.vals(meas);
 
-  if(meas.length > 0){
+  if(meas.length > 0 && !opt.preaggregatedData){
     if (!spec.transform) spec.transform = [];
     spec.transform.push({
       type: "aggregate",
@@ -970,9 +1026,9 @@ function groupdef(name, opt) {
   };
 }
 
-function template(encoding, size) {
+function template(encoding, size, stats) {
   var data = {name:TABLE, format: {type: encoding.config("dataFormatType")}},
-    dataUrl = encoding.config("dataUrl");
+    dataUrl = vl.getDataUrl(encoding, stats);
   if(dataUrl) data.url = dataUrl;
 
   encoding.forEach(function(encType, field){
