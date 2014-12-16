@@ -233,7 +233,7 @@ vl.Encoding = (function() {
   }
 
   proto.length = function(){
-    return d3.keys(this._enc).length;
+    return vl.keys(this._enc).length;
   }
 
   proto.reduce = function(f, init){
