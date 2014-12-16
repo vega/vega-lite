@@ -56,9 +56,8 @@ vl.DEFAULTS = {
 
   // data source
   dataUrl: undefined, //for easier export
-  // database server
-  vegaServerUrl: undefined,
-  // table in the database
+  useVegaServer: false,
+  vegaServerUrl: "http://localhost:3001",
   vegaServerTable: undefined,
   dataFormatType: "json",
 
@@ -383,8 +382,6 @@ vl.getStats = function(data){ // hack
 
 function getCardinality(encoding, encType, stats){
   var field = encoding.fieldName(encType);
-  // console.log(encoding.bin(encType))
-  // console.log(encoding.aggr(encType))
   return stats[field].cardinality;
 }
 
@@ -436,7 +433,7 @@ function setSize(encoding, stats) {
 }
 
 vl.getDataUrl = function getDataUrl(encoding, stats) {
-  if (!encoding.config("vegaServerUrl")) {
+  if (!encoding.config("useVegaServer")) {
     // don't use vega server
     return self.dataUrl;
   }
@@ -465,6 +462,9 @@ vl.getDataUrl = function getDataUrl(encoding, stats) {
     table: encoding.config("vegaServerTable"),
     fields: fields
   }
+
+  console.log(query)
+
   return encoding.config("vegaServerUrl") + "/query/?q=" + JSON.stringify(query)
 }
 
@@ -486,7 +486,7 @@ vl.toVegaSpec = function(encoding, stats) {
 
   var hasRow = encoding.has(ROW), hasCol = encoding.has(COL);
 
-  var preaggregatedData = !!encoding.config("vegaServerUrl");
+  var preaggregatedData = !encoding.config("useVegaServer");
 
   group.marks.push(mdef);
   // TODO: return value not used

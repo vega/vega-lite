@@ -54,9 +54,6 @@ var TYPE_LIST = {
     };
 
 var LOG_UI = false;
-var USE_VEGA_SERVER = true;
-
-var VEGA_SERVER_URL = "http://localhost:3001"
 
 function getParams() {
   var params = location.search.slice(1);
@@ -285,10 +282,16 @@ function removeEnc(d){
 function datasetUpdated(item, callback) {
   if(LOG_UI) console.log("datasetUpdated", item);
 
-  if (USE_VEGA_SERVER && item.table !== undefined) {
+  var vscfg = vegaServerConfig(),
+    useVegaServer = vscfg[0],
+    vegaServerUrl = vscfg[1];
+
+  console.log(vscfg)
+
+  if (useVegaServer && item.table !== undefined) {
     self.table = item.table;
 
-    var url = VEGA_SERVER_URL + "/stats/?name=" + item.table;
+    var url = vegaServerUrl + "/stats/?name=" + item.table;
 
     d3.csv(url, function(err, data) {
       if (err) return alert("Error loading stats " + err.statusText);
@@ -303,6 +306,7 @@ function datasetUpdated(item, callback) {
         stats[row.name] = stat;
       });
 
+      // CURRENTLY EXPECTED AS GLOBAL VARS...
       self.stats = stats;
       self.data = [];
 
@@ -420,13 +424,29 @@ function typeUpdated(encType, type){
   s.exit().remove();
 }
 
+// HACK because config is in DOM
+function vegaServerConfig() {
+  var useVegaServer = vl.DEFAULTS.useVegaServer,
+    vegaServerUrl = vl.DEFAULTS.vegaServerUrl;
+  d3.selectAll("#ctrl div.cfg input").each(function(d){
+    if (d == "useVegaServer" && this.value) {
+      useVegaServer = this.value == "true";
+    } else if (d == "vegaServerUrl" && this.value) {
+      vegaServerUrl = this.value;
+    }
+  });
+
+  return [useVegaServer, vegaServerUrl];
+}
+
 function update() {
+  var useVegaServer = vegaServerConfig()[0];
+
   var obj = {
-    dataFormatType: USE_VEGA_SERVER ? "csv" : "json",
+    dataFormatType: useVegaServer ? "csv" : "json",
   }
-  if (USE_VEGA_SERVER) {
+  if (useVegaServer) {
     obj.vegaServerTable = self.table;
-    obj.vegaServerUrl = VEGA_SERVER_URL;
   } else {
     obj.dataUrl = self.dataUrl;
   }
