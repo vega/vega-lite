@@ -486,7 +486,7 @@ vl.toVegaSpec = function(encoding, stats) {
 
   var hasRow = encoding.has(ROW), hasCol = encoding.has(COL);
 
-  var preaggregatedData = !encoding.config("useVegaServer");
+  var preaggregatedData = encoding.config("useVegaServer");
 
   group.marks.push(mdef);
   // TODO: return value not used
