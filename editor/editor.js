@@ -90,8 +90,8 @@ function init() {
     .selectAll("option")
       .data(datasets)
     .enter().append("option")
-      .attr("selected", function(d){
-        return d==params.data ? true : undefined;
+      .attr("selected", function(d){ //FIXME: domoritz should pay his price
+        return d.name==params.data ? true : undefined;
       })
       .text(function(d) { return d.name; });
 
@@ -265,7 +265,11 @@ function init() {
     .attr("placeholder", function(d){return vl.DEFAULTS[d];});
 
   if(params.data){
-    datasetUpdated({url: params.data});
+    datasets.forEach(function(item) {
+      if (params.data == item.name) {
+        datasetUpdated(item);
+      }
+    });
   }
 }
 
