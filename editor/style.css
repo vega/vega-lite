@@ -65,6 +65,10 @@ a, a:visited{
   width: 60px;
 }
 
+#ctrl .cfg span.label {
+  width: 120px;
+}
+
 #ctrl label span{
   font-size: 12px;
   width: 100px;
