@@ -540,7 +540,7 @@ function loadEnc(dom, e, v, a ,t){
 function readEnc(dom){
   //read encoding from the UI
   var s = d3.select(dom).select("select.shelf");
-  var v = s.attr("disabled") ? "-" : s.node().value; // return "-"
+  var v = s.attr("disabled") ? undefined : s.node().value; // return "-"
 
   var s = d3.select(dom).select("select.type");
   var t = s.attr("disabled") ? undefined : s.node().value;
