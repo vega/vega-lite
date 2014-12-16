@@ -6,19 +6,19 @@ vg.data.aggregate = function() {
 
   var OPS = {
     "count": function() {},
-		"sum": function(c, s, x) { return s + x; },
-		"avg": function(c, s, x) { return s + (x-s)/c.count; },
-		"min": function(c, s, x) { return x < s ? x : s; },
-		"max": function(c, s, x) { return x > s ? x : s; }
-	};
-	OPS.min.init = function() { return +Infinity; }
-	OPS.max.init = function() { return -Infinity; }
+    "sum": function(c, s, x) { return s + x; },
+    "avg": function(c, s, x) { return s + (x-s)/c.count; },
+    "min": function(c, s, x) { return x < s ? x : s; },
+    "max": function(c, s, x) { return x > s ? x : s; }
+  };
+  OPS.min.init = function() { return +Infinity; }
+  OPS.max.init = function() { return -Infinity; }
 
-	function fkey(x) {
-		return x.op + "_" + x.field;
-	}
+  function fkey(x) {
+    return x.op + "_" + x.field;
+  }
 
-	var cells = {};
+  var cells = {};
 
   function cell(x) {
     // consider other key constructions...
@@ -36,28 +36,29 @@ vg.data.aggregate = function() {
     }
     // measures
     o.count = 0;
-		for (i=0; i<fields.length; ++i) {
-		  if (fields[i].op === "count") continue;
-		  var op = OPS[fields[i].op];
-			o[fkey(fields[i])] = op.init ? op.init() : 0;
-		}
+    for (i=0; i<fields.length; ++i) {
+      if (fields[i].op === "count") continue;
+      var op = OPS[fields[i].op];
+      o[fkey(fields[i])] = op.init ? op.init() : 0;
+    }
     return o;
   }
 
   function aggregate(input) {
     var output = [], k;
-		var keys = fields.map(fkey);
-		var ops = fields.map(function(x) { return OPS[x.op]; });
+    var keys = fields.map(fkey);
+    var ops = fields.map(function(x) { return OPS[x.op]; });
 
     // compute aggregates
     input.forEach(function(x) {
       var c = cell(x);
 
-			// compute aggregates...
+      // compute aggregates...
       c.count += 1;
-			for (var i=0; i<fields.length; ++i) {
-				c[keys[i]] = ops[i](c, c[keys[i]], faccess[i](x));
-			}
+      for (var i=0; i<fields.length; ++i) {
+        if(fields[i].op === "count") continue;
+        c[keys[i]] = ops[i](c, c[keys[i]], faccess[i](x));
+      }
     });
     // collect output tuples
     var index = 0;
