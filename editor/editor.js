@@ -55,6 +55,11 @@ var TYPE_LIST = {
 
 var LOG_UI = false;
 
+// http://stackoverflow.com/a/1830844
+function isNumber(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
 function getParams() {
   var params = location.search.slice(1);
 
@@ -70,6 +75,14 @@ function getParams() {
 
 function init() {
   var params = getParams();
+
+  // Hack to override vl config
+  for(param in params) {
+    if (param in vl.DEFAULTS) {
+      var value = params[param];
+      vl.DEFAULTS[param] = value == "true" ? true : (isNumber(value) ? parseFloat(value) : value);
+    }
+  }
 
   var root = d3.select("#ctrl");
   var main = root.append("div").attr("class","main");
@@ -90,7 +103,7 @@ function init() {
     .selectAll("option")
       .data(datasets)
     .enter().append("option")
-      .attr("selected", function(d){ //FIXME: domoritz should pay his price
+      .attr("selected", function(d){
         return d.name==params.data ? true : undefined;
       })
       .text(function(d) { return d.name; });
