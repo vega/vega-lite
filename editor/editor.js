@@ -285,6 +285,11 @@ function init() {
       }
     });
   }
+
+  if (params.shortHand) {
+    e = vl.Encoding.parseShorthand(params.shortHand);
+    loadEncoding(e, update);
+  }
 }
 
 function removeEnc(d){
