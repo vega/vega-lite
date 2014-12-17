@@ -427,7 +427,8 @@ function typeUpdated(encType, type){
   s.exit().remove();
 }
 
-// HACK because config is in DOM
+// Load config from DOM.
+// These properties will be updated in loadEncoding before this function is called.
 function vegaServerConfig() {
   var useVegaServer = vl.DEFAULTS.useVegaServer,
     vegaServerUrl = vl.DEFAULTS.vegaServerUrl;
@@ -491,7 +492,8 @@ function swapXY(){
 }
 
 function loadEncoding(encoding, callback){
-  var dataUrl = encoding.config("dataUrl");
+  var dataUrl = encoding.config("dataUrl"),
+    useVegaServer = encoding.config("useVegaServer");
   var _load = function(){
     //update marktype
     d3.select("select.mark").node().value = encoding.marktype();
@@ -512,15 +514,16 @@ function loadEncoding(encoding, callback){
       }
     });
 
-    //update configs
-    d3.selectAll("#ctrl div.cfg input").each(function(d){
-      if(encoding._cfg.hasOwnProperty(d)){
-        this.value = encoding.config(d);
-      }
-    })
-
     if (callback) callback();
-  }
+  };
+
+  // update configs first -- so useVegaServer in the DOM is correctly updated
+  d3.selectAll("#ctrl div.cfg input").each(function(d){
+    if(encoding._cfg.hasOwnProperty(d)){
+      this.value = encoding.config(d);
+    }
+  });
+
   if(dataUrl){
     var dataset = null;
     for(var i=0; i<datasets.length ; i++){
@@ -531,7 +534,17 @@ function loadEncoding(encoding, callback){
     }
     d3.select("select.data").node().value = dataset.name;
     datasetUpdated(dataset, _load); //need to load data first!
-  }else{
+  }else if(useVegaServer){
+    var dataset = null, table = encoding.config("vegaServerTable");
+    for(var i=0; i<datasets.length ; i++){
+      if(datasets[i].table == table){
+        dataset = datasets[i];
+        break;
+      }
+    }
+    d3.select("select.data").node().value = dataset.name;
+    datasetUpdated(dataset, _load); //need to load data first!
+  } else{
     _load();
   }
 }
