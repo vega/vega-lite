@@ -547,13 +547,20 @@ function loadEncoding(encoding, callback){
     datasetUpdated(dataset, _load); //need to load data first!
   }else if(useVegaServer){
     var dataset = null, table = encoding.config("vegaServerTable");
-    for(var i=0; i<datasets.length ; i++){
-      if(datasets[i].table == table){
-        dataset = datasets[i];
-        break;
+    if (table) {
+      // the table was defined in the config
+      for(var i=0; i<datasets.length ; i++){
+        if(datasets[i].table == table){
+          dataset = datasets[i];
+          break;
+        }
       }
+      d3.select("select.data").node().value = dataset.name;
+    } else {
+      //dataset is the one that's selected
+      var sel = d3.select("select.data").node();
+      dataset = sel.options[sel.selectedIndex].__data__;
     }
-    d3.select("select.data").node().value = dataset.name;
     datasetUpdated(dataset, _load); //need to load data first!
   } else{
     _load();
