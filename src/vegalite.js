@@ -386,7 +386,6 @@ function getCardinality(encoding, encType, stats){
 }
 
 function setSize(encoding, stats) {
-  console.log(encoding)
   var hasRow = encoding.has(ROW),
     hasCol = encoding.has(COL),
     hasX = encoding.has(X),
@@ -462,8 +461,6 @@ vl.getDataUrl = function getDataUrl(encoding, stats) {
     table: encoding.config("vegaServerTable"),
     fields: fields
   }
-
-  console.log(query)
 
   return encoding.config("vegaServerUrl") + "/query/?q=" + JSON.stringify(query)
 }

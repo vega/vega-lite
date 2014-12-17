@@ -304,8 +304,6 @@ function datasetUpdated(dataset, callback) {
     useVegaServer = vscfg[0],
     vegaServerUrl = vscfg[1];
 
-  console.log(vscfg)
-
   if (useVegaServer && dataset.table !== undefined) {
     self.table = dataset.table;
 
