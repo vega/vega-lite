@@ -313,7 +313,6 @@ function datasetUpdated(dataset, callback) {
 
       // CURRENTLY EXPECTED AS GLOBAL VARS...
       self.stats = stats;
-      self.data = [];
 
       updateShelves();
 
@@ -328,7 +327,6 @@ function datasetUpdated(dataset, callback) {
 
       // CURRENTLY EXPECTED AS GLOBAL VARS...
       self.stats = vl.getStats(data);
-      self.data = data;
 
       updateShelves();
 
