@@ -524,8 +524,15 @@ function loadEncoding(encoding, callback){
     if (callback) callback();
   }
   if(dataUrl){
-    d3.select("select.data").node().value = dataUrl;
-    datasetUpdated(dataUrl, _load); //need to load data first!
+    var dataset = null;
+    for(var i=0; i<datasets.length ; i++){
+      if(datasets[i].url == dataUrl){
+        dataset = datasets[i];
+        break;
+      }
+    }
+    d3.select("select.data").node().value = dataset.name;
+    datasetUpdated(dataset, _load); //need to load data first!
   }else{
     _load();
   }
