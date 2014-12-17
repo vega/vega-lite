@@ -284,8 +284,8 @@ function removeEnc(d){
   update();
 }
 
-function datasetUpdated(item, callback) {
-  if(LOG_UI) console.log("datasetUpdated", item);
+function datasetUpdated(dataset, callback) {
+  if(LOG_UI) console.log("datasetUpdated", dataset);
 
   var vscfg = vegaServerConfig(),
     useVegaServer = vscfg[0],
@@ -293,10 +293,10 @@ function datasetUpdated(item, callback) {
 
   console.log(vscfg)
 
-  if (useVegaServer && item.table !== undefined) {
-    self.table = item.table;
+  if (useVegaServer && dataset.table !== undefined) {
+    self.table = dataset.table;
 
-    var url = vegaServerUrl + "/stats/?name=" + item.table;
+    var url = vegaServerUrl + "/stats/?name=" + dataset.table;
 
     d3.csv(url, function(err, data) {
       if (err) return alert("Error loading stats " + err.statusText);
@@ -319,16 +319,16 @@ function datasetUpdated(item, callback) {
 
       if(callback) callback();
     });
-  } else if (item.url !== undefined) {
-    self.dataUrl = item.url;
-    var url = item.url;
+  } else if (dataset.url !== undefined) {
+    self.dataUrl = dataset.url;
+    var url = dataset.url;
 
     d3.json(url, function(err, data) {
       if (err) return alert("Error loading data " + err.statusText);
 
       // CURRENTLY EXPECTED AS GLOBAL VARS...
-      self.data = data;
       self.stats = vl.getStats(data);
+      self.data = data;
 
       updateShelves();
 
