@@ -48,12 +48,17 @@ vl.timeFuncs = ["month", "year", "day", "date", "hour", "minute", "second"];
 
 vl.DEFAULTS = {
   // template
-  dataUrl: undefined, //for easier export
   width: undefined,
   height: undefined,
   viewport: undefined,
   _minWidth: 20,
   _minHeight: 20,
+
+  // data source
+  dataUrl: undefined, //for easier export
+  useVegaServer: false,
+  vegaServerUrl: "http://localhost:3001",
+  vegaServerTable: undefined,
   dataFormatType: "json",
 
   //small multiples
@@ -124,6 +129,16 @@ function uniq(data, field) {
   return count;
 }
 
+function minmax(data, field) {
+  var stats = {min: +Infinity, max: -Infinity};
+  for (i=0; i<data.length; ++i) {
+    var v = data[i][field];
+    if (v > stats.max) stats.max = v;
+    if (v < stats.min) stats.min = v;
+  }
+  return stats;
+}
+
 vl.duplicate = function (obj) {
   return JSON.parse(JSON.stringify(obj));
 };
@@ -149,7 +164,7 @@ vl.Encoding = (function() {
 
   function Encoding(marktype, enc, config) {
     this._marktype = marktype;
-    this._enc = enc;
+    this._enc = enc; // {encType1:field1, ...}
     this._cfg = vl.keys(config).reduce(function(c, k){
       c[k] = config[k];
       return c;
@@ -215,6 +230,10 @@ vl.Encoding = (function() {
 
   proto.all = function(f){
     return vl.all(this._enc, f);
+  }
+
+  proto.length = function(){
+    return vl.keys(this._enc).length;
   }
 
   proto.reduce = function(f, init){
@@ -302,7 +321,7 @@ vl.Encoding = (function() {
       // check time fn
       for(var i in vl.timeFuncs){
         var f = vl.timeFuncs[i];
-        if(o.name.indexOf(f+"_") == 0){
+        if(o.name && o.name.indexOf(f+"_") == 0){
           o.name = o.name.substr(o.length+1);
           o.fn = f;
           break;
@@ -343,33 +362,34 @@ vl.error = function(msg){
   console.error("[VL Error]", msg);
 }
 
-vl.getStats = function(encoding, data){ // hack
+// Returns the stats for the dataset.
+// Stats is a map from each field name to an object with min, max, count, cardinality and type.
+vl.getStats = function(data){ // hack
   var stats = {};
-  encoding.forEach(function(encType, field){
-    if(field.bin){
-      var fieldProp = encoding.field(encType,1,1);
-      stats["bin_"+field.name] = {
-        cardinality: vg.data.bin().field(fieldProp).numbins(data)
-      }
-    }else if(field.aggr){
-      // DO NOTHING (for now)
-    }else {
-      stats[field.name] = {
-        cardinality: uniq(data, encoding.field(encType, 1))
-      }
-    }
+  var fields = vl.keys(data[0]);
+
+  fields.forEach(function(k) {
+    var stat = minmax(data, k);
+    stat.cardinality = uniq(data, k);
+    //TODO(kanitw): better type inference here
+    stat.type = (typeof data[0][k] === "number") ? vl.dataTypes.Q :
+      isNaN(Date.parse(data[0][k])) ? vl.dataTypes.O : vl.dataTypes.T;
+    stat.count = data.length;
+    stats[k] = stat;
   });
   return stats;
 }
 
 function getCardinality(encoding, encType, stats){
-  var fieldName = encoding.fieldName(encType),
-    field = (encoding.bin(encType) ? "bin_" : "") +fieldName;
+  var field = encoding.fieldName(encType);
   return stats[field].cardinality;
 }
 
 function setSize(encoding, stats) {
-  var hasRow = encoding.has(ROW), hasCol = encoding.has(COL), hasX = encoding.has(X), hasY = encoding.has(Y);
+  var hasRow = encoding.has(ROW),
+    hasCol = encoding.has(COL),
+    hasX = encoding.has(X),
+    hasY = encoding.has(Y);
 
   // HACK to set chart size
   // NOTE: this fails for plots driven by derived values (e.g., aggregates)
@@ -397,7 +417,7 @@ function setSize(encoding, stats) {
   width = cellWidth * ((1 + cellPadding) * (colCardinality-1) + 1);
 
   if (hasY && encoding.isType(Y, O)) {
-    // bands within celll use rangePoint()
+    // bands within cell use rangePoint()
     var yCardinality = getCardinality(encoding, Y, stats);
     cellHeight = (yCardinality + bandPadding) *  encoding.config("bandSize");
   }
@@ -411,6 +431,40 @@ function setSize(encoding, stats) {
   };
 }
 
+vl.getDataUrl = function getDataUrl(encoding, stats) {
+  if (!encoding.config("useVegaServer")) {
+    // don't use vega server
+    return self.dataUrl;
+  }
+
+  if (encoding.length() === 0) {
+    // no fields
+    return;
+  }
+
+  var fields = []
+  encoding.forEach(function(encType, field){
+    var obj = {
+      name: encoding.field(encType, true),
+      field: field.name
+    }
+    if (field.aggr) {
+      obj.aggr = field.aggr
+    }
+    if (field.bin) {
+      obj.binSize = vg.data.bin().bins(stats[field.name], {maxbins: 20}).step;
+    }
+    fields.push(obj);
+  });
+
+  var query = {
+    table: encoding.config("vegaServerTable"),
+    fields: fields
+  }
+
+  return encoding.config("vegaServerUrl") + "/query/?q=" + JSON.stringify(query)
+}
+
 vl.toVegaSpec = function(encoding, stats) {
   var size = setSize(encoding, stats),
     cellWidth = size.cellWidth,
@@ -420,7 +474,7 @@ vl.toVegaSpec = function(encoding, stats) {
     return v.aggr !== undefined;
   });
 
-  var spec = template(encoding, size),
+  var spec = template(encoding, size, stats),
     group = spec.marks[0],
     mark = marks[encoding.marktype()],
     mdef = markdef(mark, encoding, {
@@ -429,19 +483,24 @@ vl.toVegaSpec = function(encoding, stats) {
 
   var hasRow = encoding.has(ROW), hasCol = encoding.has(COL);
 
+  var preaggregatedData = encoding.config("useVegaServer");
+
   group.marks.push(mdef);
-  binning(spec.data[0], encoding);
+  // TODO: return value not used
+  binning(spec.data[0], encoding, {preaggregatedData: preaggregatedData});
 
   var lineType = marks[encoding.marktype()].line;
 
-  encoding.forEach(function(encType, field){
-    if(field.type === T && field.fn){
-      timeTransform(spec.data[0], encoding, encType, field);
-    }
-  })
+  if(!preaggregatedData){
+    encoding.forEach(function(encType, field){
+      if(field.type === T && field.fn){
+        timeTransform(spec.data[0], encoding, encType, field);
+      }
+    });
+  }
 
-  // handle subfacetst
-  var aggResult = aggregates(spec.data[0], encoding),
+  // handle subfacets
+  var aggResult = aggregates(spec.data[0], encoding, {preaggregatedData: preaggregatedData}),
     details = aggResult.details,
     hasDetails = details && details.length > 0,
     stack = hasDetails && stacking(spec, encoding, mdef, aggResult.facets);
@@ -483,7 +542,7 @@ function facet(group, encoding, cellHeight, cellWidth, spec, mdef, stack) {
     group.from = {data: group.marks[0].from.data};
 
     if (group.marks[0].from.transform) {
-      delete group.marks[0].from.data; //need to keep transform for subfaceting case
+      delete group.marks[0].from.data; //need to keep transform for subfacetting case
     } else {
       delete group.marks[0].from;
     }
@@ -621,14 +680,15 @@ function timeTransform(spec, encoding, encType, field){
   return spec;
 }
 
-function binning(spec, encoding) {
+function binning(spec, encoding, opt) {
+  opt = opt || {};
   var bins = {};
   encoding.forEach(function(vv, d) {
     if (d.bin) bins[d.name] = d.name;
   });
   bins = vl.keys(bins);
 
-  if (bins.length === 0) return false;
+  if (bins.length === 0 || opt.preaggregatedData) return false;
 
   if (!spec.transform) spec.transform = [];
   bins.forEach(function(d) {
@@ -641,7 +701,8 @@ function binning(spec, encoding) {
   return bins;
 }
 
-function aggregates(spec, encoding) {
+function aggregates(spec, encoding, opt) {
+  opt = opt || {};
   var dims = {}, meas = {}, detail = {}, facets={};
   encoding.forEach(function(encType, field) {
     if (field.aggr) {
@@ -662,7 +723,7 @@ function aggregates(spec, encoding) {
   dims = vl.vals(dims);
   meas = vl.vals(meas);
 
-  if(meas.length > 0){
+  if(meas.length > 0 && !opt.preaggregatedData){
     if (!spec.transform) spec.transform = [];
     spec.transform.push({
       type: "aggregate",
@@ -962,10 +1023,12 @@ function groupdef(name, opt) {
   };
 }
 
-function template(encoding, size) {
+function template(encoding, size, stats) {
   var data = {name:TABLE, format: {type: encoding.config("dataFormatType")}},
-    dataUrl = encoding.config("dataUrl");
+    dataUrl = vl.getDataUrl(encoding, stats);
   if(dataUrl) data.url = dataUrl;
+
+  var preaggregatedData = encoding.config("useVegaServer");
 
   encoding.forEach(function(encType, field){
     if(field.type == T){
@@ -973,7 +1036,16 @@ function template(encoding, size) {
       data.format.parse[field.name] = "date";
     }else if(field.type == Q){
       data.format.parse = data.format.parse || {};
-      data.format.parse[field.name] = "number";
+      if (field.aggr === "count") {
+        var name = "count";
+      } else if(preaggregatedData && field.bin){
+        var name = "bin_" + field.name;
+      } else if(preaggregatedData && field.aggr){
+        var name = field.aggr + "_" + field.name;
+      } else{
+        var name = field.name;
+      }
+      data.format.parse[name] = "number";
     }
   });
 
