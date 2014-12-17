@@ -321,7 +321,7 @@ vl.Encoding = (function() {
       // check time fn
       for(var i in vl.timeFuncs){
         var f = vl.timeFuncs[i];
-        if(o.name.indexOf(f+"_") == 0){
+        if(o.name && o.name.indexOf(f+"_") == 0){
           o.name = o.name.substr(o.length+1);
           o.fn = f;
           break;
@@ -1037,7 +1037,7 @@ function template(encoding, size, stats) {
       data.format.parse[field.name] = "date";
     }else if(field.type == Q){
       data.format.parse = data.format.parse || {};
-      data.format.parse[field.name] = "number";
+      data.format.parse[field.aggr === "count" ? "count" : field.name] = "number";
     }
   });
 
