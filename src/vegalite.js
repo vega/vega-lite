@@ -434,7 +434,7 @@ function setSize(encoding, stats) {
 vl.getDataUrl = function getDataUrl(encoding, stats) {
   if (!encoding.config("useVegaServer")) {
     // don't use vega server
-    return self.dataUrl;
+    return encoding.config("dataUrl");
   }
 
   if (encoding.length() === 0) {
@@ -1023,7 +1023,8 @@ function groupdef(name, opt) {
   };
 }
 
-function template(encoding, size, stats) {
+function template(encoding, size, stats) { //hack use stats
+
   var data = {name:TABLE, format: {type: encoding.config("dataFormatType")}},
     dataUrl = vl.getDataUrl(encoding, stats);
   if(dataUrl) data.url = dataUrl;
