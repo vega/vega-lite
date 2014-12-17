@@ -328,7 +328,7 @@ function shelfUpdated(encType, field){
   if(LOG_UI) console.log("shelfUpdated", encType, field);
 
   var type = vl.dataTypeNames[self.schema[field]] || "-";
-    types = TYPE_LIST[type],
+    types = type !== "-" && (encType == "row" || encType == "col") ? TYPE_LIST.O : TYPE_LIST[type],
     typesel = d3.select("select#type-"+encType).node()
 
   if(types.indexOf(typesel.value) === -1){
