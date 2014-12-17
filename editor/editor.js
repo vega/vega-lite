@@ -470,7 +470,7 @@ function update() {
 
   var enc = encodings(cfg),
     stats = self.stats,
-    // TODO: why convert to spec twice if data has to be included?
+    // TODO: why convert to spec twice if data is not included?
     spec = vl.toVegaSpec(enc, stats);
 
   self.enc = enc; // DEBUG
