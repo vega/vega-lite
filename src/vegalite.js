@@ -1031,6 +1031,8 @@ function template(encoding, size, stats) {
     dataUrl = vl.getDataUrl(encoding, stats);
   if(dataUrl) data.url = dataUrl;
 
+  var preaggregatedData = encoding.config("useVegaServer");
+
   encoding.forEach(function(encType, field){
     if(field.type == T){
       data.format.parse = data.format.parse || {};
@@ -1039,8 +1041,10 @@ function template(encoding, size, stats) {
       data.format.parse = data.format.parse || {};
       if (field.aggr === "count") {
         var name = "count";
-      } else if(encoding.config("useVegaServer") && field.bin){
+      } else if(preaggregatedData && field.bin){
         var name = "bin_" + field.name;
+      } else if(preaggregatedData && field.aggr){
+        var name = field.aggr + "_" + field.name;
       } else{
         var name = field.name;
       }
