@@ -1037,7 +1037,14 @@ function template(encoding, size, stats) {
       data.format.parse[field.name] = "date";
     }else if(field.type == Q){
       data.format.parse = data.format.parse || {};
-      data.format.parse[field.aggr === "count" ? "count" : field.name] = "number";
+      if (field.aggr === "count") {
+        var name = "count";
+      } else if(encoding.config("useVegaServer") && field.bin){
+        var name = "bin_" + field.name;
+      } else{
+        var name = field.name;
+      }
+      data.format.parse[name] = "number";
     }
   });
 
