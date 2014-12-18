@@ -122,6 +122,7 @@ vg.data.bin = function() {
     return bin;
   };
 
+  bin.bins = bins;
 
   return bin;
 }
