@@ -47,9 +47,9 @@ var TYPE_LIST = {
       "-": ["-"]
     },
     FN_LIST = {
-      O: ["-", "count"],
+      O: ["-", "count", "bin"],
       Q: ["-"].concat(vl.quantAggTypes).concat(["bin"]),
-      T: vl.timeFuncs,
+      T: vl.timeFuncs.concat["count"],
       "-": ["-", "count"]
     };
 
