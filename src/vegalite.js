@@ -255,18 +255,18 @@ vl.Encoding = (function() {
         o = {name: split[1], type: vl.dataTypes[split[2]]};
 
       // check aggregate type
-      for(var i in vl.quantAggTypes){
+      for (var i in vl.quantAggTypes) {
         var a = vl.quantAggTypes[i];
-        if(o.name.indexOf(a+"_") == 0){
+        if (o.name.indexOf(a+"_") == 0) {
           o.name = o.name.substr(a.length+1);
-          if(a=="count" && o.name.length === 0) delete o.name;
+          if (a=="count" && o.name.length === 0) o.name = "*";
           o.aggr = a;
           break;
         }
       }
 
       // check bin
-      if(o.name && o.name.indexOf("bin_") == 0){
+      if (o.name && o.name.indexOf("bin_") == 0) {
         o.name = o.name.substr(4);
         o.bin = true;
       }
@@ -532,7 +532,7 @@ function binning(spec, enc) {
     spec.transform.push({
       type: "bin",
       field: "data." + d,
-      output: "bin_" + d
+      output: "data.bin_" + d // hack, fix upon update to Vega 2.0
     });
   });
   return bins;
@@ -542,16 +542,17 @@ function aggregates(spec, enc) {
   var dims = {}, meas = {}, detail = {}, facets={};
   enc.forEach(function(vv, d) {
     if (d.aggr) {
-      if(d.aggr==="count"){
-        meas["count"] = {op:"count"}; //count shouldn't have field
-      }else{
+      if (d.aggr==="count") {
+        // count is not field specific
+        meas["count"] = {op:"count", field:"*"};
+      } else {
         meas[d.aggr+"|"+d.name] = {op:d.aggr, field:"data."+d.name};
       }
     } else {
       dims[d.name] = enc.field(vv);
-      if (vv==ROW || vv == COL){
+      if (vv==ROW || vv == COL) {
         facets[d.name] = dims[d.name];
-      }else if (vv !== X && vv !== Y) {
+      } else if (vv !== X && vv !== Y) {
         detail[d.name] = dims[d.name];
       }
     }
