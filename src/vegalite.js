@@ -101,6 +101,7 @@ vl.vals = function (obj) {
   return v;
 }
 
+
 function find(list, pattern) {
   var l = list.filter(function(x) {
     return x[pattern.name] === pattern.value;
@@ -123,6 +124,22 @@ function uniq(data, field) {
 vl.duplicate = function (obj) {
   return JSON.parse(JSON.stringify(obj));
 };
+
+vl.any = function(arr, f){
+  var i=0, k;
+  for (k in arr) {
+    if(f(arr[k], k, i++)) return true;
+  }
+  return false;
+}
+
+vl.all = function(arr, f){
+  var i=0, k;
+  for (k in arr) {
+    if(!f(arr[k], k, i++)) return false;
+  }
+  return true;
+}
 
 // ----
 vl.Encoding = (function() {
@@ -168,19 +185,11 @@ vl.Encoding = (function() {
   };
 
   proto.any = function(f){
-    var i=0, k;
-    for (k in this._enc) {
-      if(f(k, this._enc[k], i++)) return true;
-    }
-    return false;
+    return vl.any(this._enc, f);
   }
 
   proto.all = function(f){
-    var i=0, k;
-    for (k in this._enc) {
-      if(!f(k, this._enc[k], i++)) return false;
-    }
-    return true;
+    return vl.all(this._enc, f);
   }
 
   proto.reduce = function(f, init){
@@ -239,7 +248,7 @@ vl.Encoding = (function() {
         return e + "-" +
           (v.aggr ? v.aggr+"_" : "") +
           (v.bin ? "bin_" : "") +
-          v.name + "-" +
+          (v.name || "") + "-" +
           vl.dataTypeNames[v.type];
       }
     ).join(".");
@@ -344,7 +353,7 @@ vl.toVegaSpec = function(enc, data) {
     cellWidth = size.cellWidth,
     cellHeight = size.cellHeight;
 
-  var hasAgg = enc.any(function(k, v){
+  var hasAgg = enc.any(function(v, k){
     return v.aggr !== undefined;
   });
 
@@ -761,7 +770,7 @@ function scale_range(s, enc, opt) {
       s.nice = true;
       break;
     case SIZE:
-      if (enc.is(BAR)) {
+      if (enc.is("bar")) {
         s.range = [3, enc.config("bandSize")];
       } else if (enc.is(TEXT)) {
         s.range = [8, 40];
@@ -854,45 +863,56 @@ function template(enc, size) {
 
 // --------------------------------------------------------
 
-var marks = {};
+var marks = vl.marks = {};
 
 marks.bar = {
   type: "rect",
   stack: true,
-  prop: bar_props
+  prop: bar_props,
+  requiredEncoding: ["x", "y"],
+  supportedEncoding: {row:1, col:1, x:1, y:1, size:1, color:1, alpha:1}
 };
 
 marks.line = {
   type: "line",
   line: true,
-  prop: line_props
+  prop: line_props,
+  requiredEncoding: ["x", "y"],
+  supportedEncoding: {row:1, col:1, x:1, y:1, color:1, alpha:1}
 };
 
 marks.area = {
   type: "area",
   stack: true,
   line: true,
-  prop: area_props
+  requiredEncoding: ["x", "y"],
+  prop: area_props,
+  supportedEncoding: marks.line.supportedEncoding
 };
 
 marks.circle = {
   type: "symbol",
-  prop: filled_point_props("circle")
+  prop: filled_point_props("circle"),
+  supportedEncoding: {row:1, col:1, x:1, y:1, size:1, color:1, alpha:1}
 };
 
 marks.square = {
   type: "symbol",
-  prop: filled_point_props("square")
+  prop: filled_point_props("square"),
+  supportedEncoding: marks.circle.supportedEncoding
 };
 
 marks.point = {
   type: "symbol",
-  prop: point_props
+  prop: point_props,
+  supportedEncoding: {row:1, col:1, x:1, y:1, size:1, color:1, alpha:1, shape:1}
 };
 
 marks.text = {
   type: "text",
-  prop: text_props
+  prop: text_props,
+  requiredEncoding: ["text"],
+  supportedEncoding: {row:1, col:1, x:1, y:1, size:1, color:1, alpha:1, text:1}
 };
 
 function bar_props(e) {
