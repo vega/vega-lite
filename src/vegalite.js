@@ -707,7 +707,7 @@ function aggregates(spec, encoding, opt) {
   encoding.forEach(function(encType, field) {
     if (field.aggr) {
       if(field.aggr==="count"){
-        meas["count"] = {op:"count"}; //count shouldn't have field
+        meas["count"] = {op:"count", field:"*"};
       }else{
         meas[field.aggr+"|"+field.name] = {op:field.aggr, field:"data."+field.name};
       }
