@@ -54,6 +54,7 @@ vl.DEFAULTS = {
   viewport: undefined,
   _minWidth: 20,
   _minHeight: 20,
+  dataFormatType: "json",
 
   //small multiples
   cellHeight: 200, // will be overwritten by bandWidth
@@ -87,7 +88,8 @@ vl.DEFAULTS = {
   xZero: true,
   xReverse: false,
   yZero: true,
-  yReverse: false
+  yReverse: false,
+  timeScaleNice: "day"
 };
 
 vl.keys = function (obj) {
@@ -184,6 +186,8 @@ vl.Encoding = (function() {
       return f + "bin_" + this._enc[x].name;
     } else if (!nofn && this._enc[x].aggr) {
       return f + this._enc[x].aggr + "_" + this._enc[x].name;
+    } else if (!nofn && this._enc[x].fn){
+      return f + this._enc[x].fn + "_" + this._enc[x].name;
     } else {
       return f + this._enc[x].name;
     }
@@ -199,6 +203,10 @@ vl.Encoding = (function() {
 
   proto.bin = function(x){
     return this._enc[x].bin;
+  }
+
+  proto.fn = function(x){
+    return this._enc[x].fn;
   }
 
   proto.any = function(f){
@@ -264,6 +272,7 @@ vl.Encoding = (function() {
       var v = enc[e];
         return e + "-" +
           (v.aggr ? v.aggr+"_" : "") +
+          (v.fn ? v.fn+"_" : "") +
           (v.bin ? "bin_" : "") +
           (v.name || "") + "-" +
           vl.dataTypeNames[v.type];
@@ -287,6 +296,15 @@ vl.Encoding = (function() {
           o.name = o.name.substr(a.length+1);
           if (a=="count" && o.name.length === 0) o.name = "*";
           o.aggr = a;
+          break;
+        }
+      }
+      // check time fn
+      for(var i in vl.timeFuncs){
+        var f = vl.timeFuncs[i];
+        if(o.name.indexOf(f+"_") == 0){
+          o.name = o.name.substr(o.length+1);
+          o.fn = f;
           break;
         }
       }
@@ -416,7 +434,13 @@ vl.toVegaSpec = function(encoding, stats) {
 
   var lineType = marks[encoding.marktype()].line;
 
-  // handle subfacets
+  encoding.forEach(function(encType, field){
+    if(field.type === T && field.fn){
+      timeTransform(spec.data[0], encoding, encType, field);
+    }
+  })
+
+  // handle subfacetst
   var aggResult = aggregates(spec.data[0], encoding),
     details = aggResult.details,
     hasDetails = details && details.length > 0,
@@ -459,7 +483,7 @@ function facet(group, encoding, cellHeight, cellWidth, spec, mdef, stack) {
     group.from = {data: group.marks[0].from.data};
 
     if (group.marks[0].from.transform) {
-    delete group.marks[0].from.data; //need to keep transform for subfaceting case
+      delete group.marks[0].from.data; //need to keep transform for subfaceting case
     } else {
       delete group.marks[0].from;
     }
@@ -572,6 +596,31 @@ function subfacet(group, mdef, details, stack, encoding) {
   }
 }
 
+function getTimeFn(fn){
+  switch(fn){
+    case "second": return "getUTCSeconds";
+    case "minute": return "getUTCMinutes";
+    case "hour": return "getUTCHours";
+    case "day": return "getUTCDay";
+    case "date": return "getUTCDate";
+    case "month": return "getUTCMonth";
+    case "year": return "getUTCFullYear";
+  }
+  console.error("no function specified for date");
+}
+
+function timeTransform(spec, encoding, encType, field){
+  var func = getTimeFn(field.fn);
+
+  spec.transform = spec.transform || [];
+  spec.transform.push({
+    type: "formula",
+    field: encoding.field(encType),
+    expr: "new Date(d.data."+field.name+")."+func+"()"
+  });
+  return spec;
+}
+
 function binning(spec, encoding) {
   var bins = {};
   encoding.forEach(function(vv, d) {
@@ -594,19 +643,19 @@ function binning(spec, encoding) {
 
 function aggregates(spec, encoding) {
   var dims = {}, meas = {}, detail = {}, facets={};
-  encoding.forEach(function(vv, d) {
-    if (d.aggr) {
-      if(d.aggr==="count"){
+  encoding.forEach(function(encType, field) {
+    if (field.aggr) {
+      if(field.aggr==="count"){
         meas["count"] = {op:"count"}; //count shouldn't have field
       }else{
-        meas[d.aggr+"|"+d.name] = {op:d.aggr, field:"data."+d.name};
+        meas[field.aggr+"|"+field.name] = {op:field.aggr, field:"data."+field.name};
       }
     } else {
-      dims[d.name] = encoding.field(vv);
-      if (vv==ROW || vv == COL){
-        facets[d.name] = dims[d.name];
-      }else if (vv !== X && vv !== Y) {
-        detail[d.name] = dims[d.name];
+      dims[field.name] = encoding.field(encType);
+      if (encType==ROW || encType == COL){
+        facets[field.name] = dims[field.name];
+      }else if (encType !== X && encType !== Y) {
+        detail[field.name] = dims[field.name];
       }
     }
   });
@@ -765,12 +814,27 @@ vl.scale.defs = function (names, encoding, opt) {
 function scale_type(name, encoding) {
   switch (encoding.type(name)) {
     case O: return "ordinal";
-    case T: return "time";
+    case T:
+      if(encoding.fn(name)){
+        return "linear";
+      }
+      return "time;"
     case Q: return "linear";
   }
 }
 
 function scale_domain(name, encoding, opt) {
+  if (encoding.type(name) === T){
+    switch(encoding.fn(name)){
+      case "second":
+      case "minute": return [0, 59];
+      case "hour": return [0, 23];
+      case "day": return [0, 6];
+      case "date": return [1, 31];
+      case "month": return [0, 11];
+    }
+  }
+
   return name == opt.stack ?
     {
       data: STACKED,
@@ -790,7 +854,11 @@ function scale_range(s, encoding, opt) {
         s.reverse = encoding.config("xReverse");
       }
       s.round = true;
-      s.nice = true;
+      if (encoding.isType(s.name, T)){
+        s.nice = encoding.aggr(s.name) || encoding.config("timeScaleNice");
+      }else{
+        s.nice = true;
+      }
       break;
     case Y:
       if (encoding.isType(s.name, O)) {
@@ -800,8 +868,14 @@ function scale_range(s, encoding, opt) {
         s.zero = encoding.config("yZero");
         s.reverse = encoding.config("yReverse");
       }
+
       s.round = true;
-      s.nice = true;
+
+      if (encoding.isType(s.name, T)){
+        s.nice = encoding.aggr(s.name);
+      }else{
+        s.nice = true;
+      }
       break;
     case ROW:
       s.bandWidth = opt.cellHeight || encoding.config("cellHeight");
@@ -889,9 +963,19 @@ function groupdef(name, opt) {
 }
 
 function template(encoding, size) {
-  var data = {name:TABLE},
+  var data = {name:TABLE, format: {type: encoding.config("dataFormatType")}},
     dataUrl = encoding.config("dataUrl");
   if(dataUrl) data.url = dataUrl;
+
+  encoding.forEach(function(encType, field){
+    if(field.type == T){
+      data.format.parse = data.format.parse || {};
+      data.format.parse[field.name] = "date";
+    }else if(field.type == Q){
+      data.format.parse = data.format.parse || {};
+      data.format.parse[field.name] = "number";
+    }
+  });
 
   return {
     width: size.width,

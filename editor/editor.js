@@ -134,7 +134,8 @@ function init() {
     .attr("class", "type")
     .attr("id", function(d){ return "type-"+d;})
     .on("change", function(d){
-      typeUpdated(d);
+      var type = d3.select(this).node().value;
+      typeUpdated(d, type);
       fnUpdated(d);
       update();
     })
@@ -270,12 +271,12 @@ function datasetUpdated(url, callback) {
     self.data = data;
     self.schema = schema;
 
-      // update available data field in the each shelf
+    // update available data field in the each shelf
     var s = d3.selectAll("select.shelf").selectAll("option")
       .data(["-"].concat(d3.keys(schema)), function(d) { return d; });
     s.enter().append("option");
     s.attr("value", function(d) { return d; })
-    .text(function(d) { return d; })
+      .text(function(d) { return d; })
     s.exit().remove();
 
     d3.selectAll("select.shelf").each(function(d){
@@ -301,6 +302,7 @@ function marktypeUpdated(marktype){
 }
 
 function fnUpdated(encType, fn){
+
   fn = fn || d3.select("select#aggr-"+encType).node().value;
   if(LOG_UI) console.log("fnUpdated", encType, fn);
 
@@ -331,7 +333,6 @@ function shelfUpdated(encType, field){
   if(types.indexOf(typesel.value) === -1){
     typesel.value = types[0];
   }
-
 
   // update available type!
   var s = d3.select("select#type-"+encType).selectAll("option").data(types);
@@ -412,7 +413,7 @@ function loadEncoding(encoding, callback){
         loadEnc(
           this, d,
           e.name || "-",
-          e.bin ? "bin" : e.aggr || "-",
+          e.bin ? "bin" : e.aggr || e.fn || "-",
           vl.dataTypeNames[e.type] || "-"
         );
       }else{
@@ -489,12 +490,12 @@ function encodings(cfg) {
       if( t==="T"){
         enc[x].fn = a;
       }else{
-      if (a === "bin") {
-        enc[x].bin = true;
-      } else if (a !== "-") {
-        enc[x].aggr = a;
+        if (a === "bin") {
+          enc[x].bin = true;
+        } else if (a !== "-") {
+          enc[x].aggr = a;
+        }
       }
-    }
     }
   });
 
@@ -512,7 +513,15 @@ function parse(spec, data) {
   self.vis = null; // DEBUG
   vg.parse.spec(spec, function(chart) {
     self.vis = chart({el:"#vis", renderer: "svg"});
-    vis.data({table: data}).update();
+
+    if(!spec.data[0].url){
+      // FIXME still need to load data this way without dataUrl
+      // but the problem is they we need to make sure that the data get parsed.
+      //vis.data({table: data});
+    }
+
+    vis.update();
+    vis.on('mouseover', function(event, item) { console.log(item); });
   });
 }
 
