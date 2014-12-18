@@ -222,7 +222,9 @@ function run(data, schema) {
 function update() {
   var enc = encodings(),
     data = self.data,
-    spec = vl.toVegaSpec(enc, data);
+    stats = vl.getStats(enc, data),
+    spec = vl.toVegaSpec(enc, stats);
+
   self.enc = enc; // DEBUG
   self.spec = spec;
 
@@ -230,7 +232,7 @@ function update() {
 
   if(inclData){ // if "include data" is checked, include data url in the output
     enc = encodings({dataUrl: self.dataUrl});
-    spec = vl.toVegaSpec(enc, data);
+    spec = vl.toVegaSpec(enc, stats);
   }
   d3.select(".shorthand").attr("value", enc.toShorthand());
   d3.select("textarea.vlcode").node().value = JSON.stringify(enc.toJSON(), null, "  ", 80);
