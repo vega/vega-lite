@@ -520,17 +520,17 @@ vl.toVegaSpec = function(encoding, stats) {
 
   // Small Multiples
   if (hasRow || hasCol) {
-    spec = facet(group, encoding, cellHeight, cellWidth, spec, mdef, stack);
+    spec = facet(group, encoding, cellHeight, cellWidth, spec, mdef, stack, stats);
   } else {
     group.scales = vl.scale.defs(scale_names(mdef.properties.update), encoding,
-      {stack: stack});
+      {stack: stack, stats: stats});
     group.axes = vl.axis.defs(axis_names(mdef.properties.update), encoding);
   }
 
   return spec;
 }
 
-function facet(group, encoding, cellHeight, cellWidth, spec, mdef, stack) {
+function facet(group, encoding, cellHeight, cellWidth, spec, mdef, stack, stats) {
     var enter = group.properties.enter;
     var facetKeys = [], cellAxes = [];
 
@@ -624,7 +624,7 @@ function facet(group, encoding, cellHeight, cellWidth, spec, mdef, stack) {
     spec.scales = vl.scale.defs(
       scale_names(enter).concat(scale_names(mdef.properties.update)),
       encoding,
-      {cellWidth: cellWidth, cellHeight: cellHeight, stack: stack, facet:true}
+      {cellWidth: cellWidth, cellHeight: cellHeight, stack: stack, facet:true, stats: stats}
     ); // row/col scales + cell scales
 
     if (cellAxes.length > 0) {
@@ -893,6 +893,18 @@ function scale_domain(name, encoding, opt) {
       case "day": return [0, 6];
       case "date": return [1, 31];
       case "month": return [0, 11];
+    }
+  }
+
+  if (encoding.bin(name) && encoding.type(name) == O) {
+    if (opt.stats) {
+      var bins = vg.data.bin().bins(opt.stats[encoding.fieldName(name)], {maxbins: 20});
+      var r = [];
+      console.log(bins)
+      for (var i = bins.start; i < bins.stop; i+=bins.step) {
+        r.push(i);
+      }
+      return r;
     }
   }
 
