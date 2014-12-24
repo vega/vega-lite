@@ -899,12 +899,12 @@ function scale_domain(name, encoding, opt) {
   if (encoding.bin(name) && encoding.type(name) == O) {
     if (opt.stats) {
       var bins = vg.data.bin().bins(opt.stats[encoding.fieldName(name)], {maxbins: 20});
-      var r = [];
+      var domain = [];
       console.log(bins)
       for (var i = bins.start; i < bins.stop; i+=bins.step) {
-        r.push(i);
+        domain.push(i);
       }
-      return r;
+      return domain;
     }
   }
 
