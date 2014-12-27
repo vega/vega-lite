@@ -253,7 +253,7 @@ function init() {
   code.append("div")
     .append("input").attr({"class": "shorthand", "type": "text"});
 
-  code.append("span").text("Vegalite");
+  code.append("div").append("span").text("Vegalite");
   code.append("a").attr({"class": "right action", "href":"#"}).text("load")
     .on("click", function (){
       var s = d3.select("textarea.vlcode").node().value,
@@ -274,7 +274,7 @@ function init() {
 
   var vlTextarea = code.append("textarea").attr("class", "vlcode");
 
-  code.append("span").text("Vega")
+  code.append("div").append("span").text("Vega")
   var vgTextarea = code.append("textarea").attr("class", "vgcode");
 
   // Config Pane

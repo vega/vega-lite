@@ -11,7 +11,7 @@ a, a:visited{
   padding: 0.5em;
   margin-bottom: 1em;
   float:left;
-  width: 320px;
+  width: 330px;
 }
 
 #ctrl .mark {
@@ -81,7 +81,7 @@ a, a:visited{
   width: 60px;
 }
 #ctrl select.type {
-  width: 35px;
+  width: 40px;
 }
 #ctrl select.data {
   width: 210px;
