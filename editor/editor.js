@@ -126,7 +126,7 @@ function init() {
 
   // header labels
   var head = main.append("div").selectAll("span.header")
-      .data(["","function","data","type"])
+      .data(["", "function", "data", "type", "scale"])
     .enter().append("span")
       .attr("class", function(d,i) { return "header label h"+i; })
       .text(function(d) { return d; });
@@ -185,6 +185,19 @@ function init() {
     .enter().append("option")
       .attr("value", function(d) { return d; })
       .text(function(d) { return d; });
+
+  // scale
+  ctrl.append("select")
+    .attr("class", "scale")
+    .attr("id", function(d){ return "scale-"+d;})
+    .on("change", function(d){
+      update();
+    })
+    .selectAll("option")
+      .data(["-"])
+    .enter().append("option")
+      .attr("value", function(d){ return d;})
+      .text(function(d){ return d;});
 
   // x btn
   ctrl.append("a").attr({"class":"action", "href":"#"}).text("x")
@@ -261,7 +274,7 @@ function init() {
 
   var vlTextarea = code.append("textarea").attr("class", "vlcode");
 
-  code.append("span").text("Vega")
+  code.append("div").append("span").text("Vega")
   var vgTextarea = code.append("textarea").attr("class", "vgcode");
 
   // Config Pane
@@ -380,6 +393,7 @@ function marktypeUpdated(marktype){
   d3.selectAll("select.aggr").attr("disabled", disabled);
   d3.selectAll("select.shelf").attr("disabled", disabled);
   d3.selectAll("select.type").attr("disabled", disabled);
+  d3.selectAll("select.scale").attr("disabled", disabled);
 }
 
 function fnUpdated(encType, fn){
@@ -390,6 +404,7 @@ function fnUpdated(encType, fn){
   if(fn === "count"){ // disable shelf, type
     d3.select("select#shelf-"+encType).attr("disabled", true);
     d3.select("select#type-"+encType).attr("disabled", true);
+    d3.select("select#scale-"+encType).attr("disabled", true);
   }else{
     // enable shelf, type if it's supported by the marktype
     var marktype = d3.select("select.mark").node().value,
@@ -400,6 +415,7 @@ function fnUpdated(encType, fn){
 
     d3.select("select#shelf-"+encType).attr("disabled", disabled);
     d3.select("select#type-"+encType).attr("disabled", disabled);
+    d3.select("select#scale-"+encType).attr("disabled", disabled);
   }
 }
 
@@ -427,6 +443,8 @@ function typeUpdated(encType, type){
   type = type || d3.select("select#type-"+encType).node().value;
   if(LOG_UI) console.log("typeUpdated", encType, type);
 
+
+  //update supported functions
   var fns = FN_LIST[type] || FN_LIST["-"],
     fnsel = d3.select("select#aggr-"+encType).node(),
     s = d3.select("select#aggr-"+encType).selectAll("option").data(fns);
@@ -440,6 +458,22 @@ function typeUpdated(encType, type){
   s.enter().append("option");
   s.attr("value", function(d) { return d; })
     .text(function(d) { return d; });
+  s.exit().remove();
+
+  //update supported scale
+  var scales = type=="Q" ? vl.quantScales : ["-"],
+    scalesel = d3.select("select#scale-"+encType).node(),
+    s = d3.select("select#scale-"+encType).selectAll("option").data(scales);
+
+  if(scales.indexOf(fnsel.value) === -1){
+    // if new type doesn't support pre-selected function
+    // reset fn to "-"
+    scalesel.value = "-";
+  }
+
+  s.enter().append("option");
+  s.attr("value", function(d){ return d;})
+    .text(function(d){ return d;});
   s.exit().remove();
 }
 
@@ -523,10 +557,11 @@ function loadEncoding(encoding, callback){
           this, d,
           e.name || "-",
           e.bin ? "bin" : e.aggr || e.fn || "-",
-          vl.dataTypeNames[e.type] || "-"
+          vl.dataTypeNames[e.type] || "-",
+          e.scale || "-"
         );
       }else{
-        loadEnc(this, d, "-", "-", "-");
+        loadEnc(this, d, "-", "-", "-", "-");
       }
     });
 
@@ -572,7 +607,7 @@ function loadEncoding(encoding, callback){
   }
 }
 
-function loadEnc(dom, e, v, a ,t){
+function loadEnc(dom, e, v, a ,t, scale){
   var s = d3.select(dom);
   s.select("select.shelf").node().value = v;
   shelfUpdated(e, v);
@@ -580,6 +615,7 @@ function loadEnc(dom, e, v, a ,t){
   typeUpdated(e, t);
   s.select("select.aggr").node().value = a;
   fnUpdated(e, a);
+  s.select("select.scale").node().value = scale;
 }
 
 
@@ -594,7 +630,10 @@ function readEnc(dom){
   var s = d3.select(dom).select("select.aggr");
   var a = s.attr("disabled") ? undefined : s.node().value;
 
-  return {shelf:v, type:t, aggr:a};
+  var s = d3.select(dom).select("select.scale");
+  var scale = s.attr("disabled") ? undefined : s.node().value;
+
+  return {shelf:v, type:t, aggr:a, scale: scale};
 }
 
 function encodings(cfg) {
@@ -629,6 +668,10 @@ function encodings(cfg) {
         } else if (a !== "-") {
           enc[x].aggr = a;
         }
+      }
+
+      if(e.scale !== "-"){
+        enc[x].scale = e.scale;
       }
     }
   });

@@ -11,7 +11,7 @@ a, a:visited{
   padding: 0.5em;
   margin-bottom: 1em;
   float:left;
-  width: 300px;
+  width: 330px;
 }
 
 #ctrl .mark {
@@ -86,11 +86,15 @@ a, a:visited{
 #ctrl select.data {
   width: 210px;
 }
+#ctrl select.scale{
+  width: 45px;
+}
 #ctrl span.header { width: 80px; }
 #ctrl span.header.h0 { width: 60px; }
 #ctrl span.header.h1 { width: 60px; }
-#ctrl span.header.h3 { width: 50px; }
+#ctrl span.header.h3 { width: 40px; }
+#ctrl span.header.h4 { width: 45px; }
 
 #vis {
-  margin-left: 320px;
+  margin-left: 350px;
 }

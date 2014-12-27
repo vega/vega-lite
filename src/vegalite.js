@@ -45,6 +45,7 @@ vl.dataTypeNames = ["O","Q","T"].reduce(function(r,x) {
 
 vl.quantAggTypes = ["avg", "sum", "min", "max", "count"];
 vl.timeFuncs = ["month", "year", "day", "date", "hour", "minute", "second"];
+vl.quantScales = ["-", "log","pow", "sqrt", "quantile"];
 
 vl.DEFAULTS = {
   // template
@@ -210,6 +211,10 @@ vl.Encoding = (function() {
 
   proto.fieldName = function(x){
     return this._enc[x].name;
+  }
+
+  proto.scale = function(x){
+    return this._enc[x].scale;
   }
 
   proto.aggr = function(x){
@@ -879,8 +884,9 @@ function scale_type(name, encoding) {
       if(encoding.fn(name)){
         return "linear";
       }
-      return "time;"
-    case Q: return "linear";
+      return "time";
+    case Q:
+      return encoding.scale(name) || "linear";
   }
 }
 
