@@ -734,8 +734,7 @@ function aggregates(spec, encoding, opt) {
       }else{
         meas[field.aggr+"|"+field.name] = {
           op:field.aggr,
-          field:"data."+field.name,
-          fieldName: field.name
+          field:"data."+field.name
         };
       }
     } else {
@@ -760,7 +759,8 @@ function aggregates(spec, encoding, opt) {
 
     if (encoding.marktype() === TEXT) {
       meas.forEach( function (m) {
-        var field = "data." + (m.op ? m.op + "_" : "") + m.fieldName;
+        var fieldName = m.field.substr(5), //remove "data."
+          field = "data." + (m.op ? m.op + "_" : "") + fieldName;
         spec.transform.push({
           type: "formula",
           field: field,
