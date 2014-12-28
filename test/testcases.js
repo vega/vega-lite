@@ -3,8 +3,11 @@ var testcases = {
     n: "Bar",
     e: "bar.x-sum_Cost__Total_$-Q.y-Effect__Amount_of_damage-O"
   },{
-    n: "Bar Chart of bin(Q)xQ",
+    n: "Bar Chart of bin(Q) x avg(Q)",
     e: "bar.x-bin_Cost__Total_$-Q.y-avg_Speed_IAS_in_knots-Q"
+  },{
+    n: "Bar Chart of bin(Q) x Q",
+    e: "point.x-Cost__Total_$-Q.y-bin_Speed_IAS_in_knots-Q"
   },{
     n: "Stack Bar",
     e: "bar.x-sum_Cost__Total_$-Q.y-Effect__Amount_of_damage-O.color-When__Phase_of_flight-O"

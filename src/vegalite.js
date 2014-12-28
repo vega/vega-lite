@@ -392,6 +392,10 @@ vl.getStats = function(data) { // hack
 
 function getCardinality(encoding, encType, stats) {
   var field = encoding.fieldName(encType);
+  if (encoding.bin(encType)) {
+    var bins = vg.data.bin().bins(stats[field], {maxbins: 20});
+    return (bins.stop-bins.start)/bins.step;
+  }
   return stats[field].cardinality;
 }
 
@@ -422,7 +426,7 @@ function setSize(encoding, stats) {
     width = encoding.config("_minWidth"),
     height = encoding.config("_minHeight");
 
-  if (hasX && encoding.isType(X, O)) { //ordinal field will override parent
+  if (hasX && (encoding.isType(X, O) || encoding.bin(X))) { //ordinal field will override parent
     // bands within cell use rangePoints()
     var xCardinality = getCardinality(encoding, X, stats);
     cellWidth = (xCardinality + bandPadding) * encoding.config("bandSize");
@@ -430,7 +434,7 @@ function setSize(encoding, stats) {
   // Cell bands use rangeBands(). There are n-1 padding.  Outerpadding = 0 for cells
   width = cellWidth * ((1 + cellPadding) * (colCardinality-1) + 1);
 
-  if (hasY && encoding.isType(Y, O)) {
+  if (hasY && (encoding.isType(Y, O) || encoding.bin(Y))) {
     // bands within cell use rangePoint()
     var yCardinality = getCardinality(encoding, Y, stats);
     cellHeight = (yCardinality + bandPadding) *  encoding.config("bandSize");
