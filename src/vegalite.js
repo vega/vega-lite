@@ -1391,14 +1391,14 @@ function text_props(e) {
   if (e.has(X)) {
     p.x = {scale: X, field: e.field(X)};
   } else if (!e.has(X)) {
-    p.x = {value: 0};
+    p.x = {value: e.config("bandSize")/2};
   }
 
   // y
   if (e.has(Y)) {
     p.y = {scale: Y, field: e.field(Y)};
   } else if (!e.has(Y)) {
-    p.y = {group: "height"};
+    p.y = {value: e.config("bandSize")/2};
   }
 
   // size
