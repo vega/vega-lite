@@ -539,7 +539,9 @@ function facet(group, encoding, cellHeight, cellWidth, spec, mdef, stack, stats)
     var enter = group.properties.enter;
     var facetKeys = [], cellAxes = [];
 
-  var hasRow = encoding.has(ROW), hasCol = encoding.has(COL);
+    var hasRow = encoding.has(ROW), hasCol = encoding.has(COL);
+
+    var xAxisMargin = encoding.has(Y) ? encoding.config("xAxisMargin") : undefined;
 
     enter.fill = {value: encoding.config("cellBackgroundColor")};
 
@@ -567,9 +569,8 @@ function facet(group, encoding, cellHeight, cellWidth, spec, mdef, stack, stats)
         from.transform.unshift({type: "facet", keys: [encoding.field(COL)]});
       }
 
-      var xAxisMargin = encoding.config("xAxisMargin"),
-        axesGrp = groupdef("x-axes", {
-          axes: vl.axis.defs(["x"], encoding),
+      var axesGrp = groupdef("x-axes", {
+          axes: encoding.has(X) ?  vl.axis.defs(["x"], encoding) : undefined,
           x: hasCol ? {scale: COL, field: "keys.0", offset: xAxisMargin} : {value: xAxisMargin},
           width: hasCol && {"value": cellWidth}, //HACK?
           from: from
@@ -579,8 +580,10 @@ function facet(group, encoding, cellHeight, cellWidth, spec, mdef, stack, stats)
       (spec.axes = spec.axes || [])
       spec.axes.push.apply(spec.axes, vl.axis.defs(["row"], encoding));
     } else { // doesn't have row
-      //keep x axis in the cell
-      cellAxes.push.apply(cellAxes, vl.axis.defs(["x"], encoding));
+      if(encoding.has(X)){
+        //keep x axis in the cell
+        cellAxes.push.apply(cellAxes, vl.axis.defs(["x"], encoding));
+      }
     }
 
     if (hasCol) {
@@ -600,7 +603,7 @@ function facet(group, encoding, cellHeight, cellWidth, spec, mdef, stack, stats)
       }
 
       var axesGrp = groupdef("y-axes", {
-        axes: vl.axis.defs(["y"], encoding),
+        axes: encoding.has(Y) ? vl.axis.defs(["y"], encoding) : undefined,
         y: hasRow && {scale: ROW, field: "keys.0"},
         x: hasRow && {value: xAxisMargin},
         height: hasRow && {"value": cellHeight}, //HACK?
@@ -613,12 +616,14 @@ function facet(group, encoding, cellHeight, cellWidth, spec, mdef, stack, stats)
         xAxisMargin: xAxisMargin
       }));
     } else { // doesn't have col
-      cellAxes.push.apply(cellAxes, vl.axis.defs(["y"], encoding));
+      if(encoding.has(Y)){
+        cellAxes.push.apply(cellAxes, vl.axis.defs(["y"], encoding));
+      }
     }
 
     if(hasRow){
-      if(enter.x) enter.x.offset= encoding.config("xAxisMargin");
-      else enter.x = {value: encoding.config("xAxisMargin")};
+      if(enter.x) enter.x.offset= xAxisMargin;
+      else enter.x = {value: xAxisMargin};
     }
     if(hasCol){
       //TODO fill here..
