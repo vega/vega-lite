@@ -429,7 +429,7 @@ function setSize(encoding, stats) {
   if (hasX && (encoding.isType(X, O) || encoding.bin(X))) { //ordinal field will override parent
     // bands within cell use rangePoints()
     var xCardinality = getCardinality(encoding, X, stats);
-    cellWidth = (xCardinality + bandPadding) * encoding.config("bandSize");
+    cellWidth = (xCardinality + bandPadding) * +encoding.config("bandSize");
   }
   // Cell bands use rangeBands(). There are n-1 padding.  Outerpadding = 0 for cells
   width = cellWidth * ((1 + cellPadding) * (colCardinality-1) + 1);
@@ -437,7 +437,7 @@ function setSize(encoding, stats) {
   if (hasY && (encoding.isType(Y, O) || encoding.bin(Y))) {
     // bands within cell use rangePoint()
     var yCardinality = getCardinality(encoding, Y, stats);
-    cellHeight = (yCardinality + bandPadding) *  encoding.config("bandSize");
+    cellHeight = (yCardinality + bandPadding) * +encoding.config("bandSize");
   }
   // Cell bands use rangeBands(). There are n-1 padding.  Outerpadding = 0 for cells
   height = cellHeight * ((1 + cellPadding) * (rowCardinality-1) + 1);
@@ -963,7 +963,7 @@ function scale_range(s, encoding, opt) {
   switch (s.name) {
     case X:
       if (encoding.isType(s.name, O) || encoding.bin(s.name)) {
-        s.bandWidth = encoding.config("bandSize");
+        s.bandWidth = +encoding.config("bandSize");
       } else {
         s.range = opt.cellWidth ? [0, opt.cellWidth] : "width";
         s.zero = encoding.config("xZero");
@@ -978,7 +978,7 @@ function scale_range(s, encoding, opt) {
       break;
     case Y:
       if (encoding.isType(s.name, O) || encoding.bin(s.name)) {
-        s.bandWidth = encoding.config("bandSize");
+        s.bandWidth = +encoding.config("bandSize");
       } else {
         s.range = opt.cellHeight ? [opt.cellHeight, 0] : "height";
         s.zero = encoding.config("yZero");
@@ -1005,7 +1005,7 @@ function scale_range(s, encoding, opt) {
       break;
     case SIZE:
       if (encoding.is("bar")) {
-        s.range = [3, encoding.config("bandSize")];
+        s.range = [3, +encoding.config("bandSize")];
       } else if (encoding.is(TEXT)) {
         s.range = [8, 40];
       } else {
@@ -1204,10 +1204,10 @@ function bar_props(e) {
       p.width = {scale: SIZE, field: e.field(SIZE)};
     } else {
       // p.width = {scale: X, band: true, offset: -1};
-      p.width = {value: e.config("bandSize"), offset: -1};
+      p.width = {value: +e.config("bandSize"), offset: -1};
     }
   } else if (!e.isType(Y,O) && !e.bin(Y)) {
-    p.width = {value: e.config("bandSize"), offset: -1};
+    p.width = {value: +e.config("bandSize"), offset: -1};
   }
 
   // height
@@ -1216,10 +1216,10 @@ function bar_props(e) {
       p.height = {scale: SIZE, field: e.field(SIZE)};
     } else {
       // p.height = {scale: Y, band: true, offset: -1};
-      p.height = {value: e.config("bandSize"), offset: -1};
+      p.height = {value: +e.config("bandSize"), offset: -1};
     }
   } else if (!e.isType(X,O) && !e.bin(X)) {
-    p.height = {value: e.config("bandSize"), offset: -1};
+    p.height = {value: +e.config("bandSize"), offset: -1};
   }
 
   // fill
