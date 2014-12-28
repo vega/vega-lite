@@ -1,15 +1,20 @@
 {
-  "width": 200,
-  "height": 470.40000000000003,
+  "width": 640,
+  "height": 1117.2,
   "padding": "auto",
   "data": [
     {
       "name": "table",
+      "format": {"type": "json","parse": {"Cost__Total_$": "number"}},
       "url": "data/birdstrikes.json",
       "transform": [
         {
           "type": "aggregate",
-          "groupby": ["data.Effect__Amount_of_damage","data.Wildlife__Size"],
+          "groupby": [
+            "data.Effect__Amount_of_damage",
+            "data.When__Phase_of_flight",
+            "data.Wildlife__Size"
+          ],
           "fields": [{"op": "sum","field": "data.Cost__Total_$"}]
         }
       ]
@@ -21,18 +26,22 @@
       "type": "group",
       "from": {
         "data": "table",
-        "transform": [{"type": "facet","keys": ["data.Wildlife__Size"]}]
+        "transform": [
+          {
+            "type": "facet",
+            "keys": ["data.When__Phase_of_flight","data.Wildlife__Size"]
+          }
+        ]
       },
       "properties": {
         "enter": {
-          "x": {"value": 80},
+          "x": {"scale": "col","field": "keys.1","offset": 80},
           "y": {"scale": "row","field": "keys.0"},
           "width": {"value": 200},
           "height": {"value": 147},
-          "fill": {"value": "#fafafa"}
+          "fill": {"value": "#fdfdfd"}
         }
       },
-      "axes": [{"type": "y","scale": "y","ticks": 3}],
       "marks": [
         {
           "type": "rect",
@@ -58,14 +67,36 @@
     {
       "_name": "x-axes",
       "type": "group",
+      "from": {
+        "data": "table",
+        "transform": [{"type": "facet","keys": ["data.Wildlife__Size"]}]
+      },
       "properties": {
         "enter": {
-          "x": {"value": 80},
-          "width": {"group": "width"},
+          "x": {"scale": "col","field": "keys.0","offset": 80},
+          "width": {"value": 200},
           "height": {"group": "height"}
         }
       },
       "axes": [{"type": "x","scale": "x","ticks": 3}],
+      "marks": []
+    },
+    {
+      "_name": "y-axes",
+      "type": "group",
+      "from": {
+        "data": "table",
+        "transform": [{"type": "facet","keys": ["data.When__Phase_of_flight"]}]
+      },
+      "properties": {
+        "enter": {
+          "x": {"value": 80},
+          "y": {"scale": "row","field": "keys.0"},
+          "width": {"group": "width"},
+          "height": {"value": 147}
+        }
+      },
+      "axes": [{"type": "y","scale": "y","ticks": 3}],
       "marks": []
     }
   ],
@@ -79,13 +110,36 @@
         "majorTicks": {"opacity": {"value": 0}},
         "axis": {"opacity": {"value": 0}}
       }
+    },
+    {
+      "type": "x",
+      "scale": "col",
+      "ticks": 3,
+      "properties": {
+        "ticks": {"opacity": {"value": 0}},
+        "majorTicks": {"opacity": {"value": 0}},
+        "axis": {"opacity": {"value": 0}}
+      },
+      "offset": [80,0],
+      "orient": "top"
     }
   ],
   "scales": [
     {
-      "name": "row",
+      "name": "col",
       "type": "ordinal",
       "domain": {"data": "table","field": "data.Wildlife__Size"},
+      "sort": true,
+      "bandWidth": 200,
+      "round": true,
+      "nice": true,
+      "padding": 0.1,
+      "outerPadding": 0
+    },
+    {
+      "name": "row",
+      "type": "ordinal",
+      "domain": {"data": "table","field": "data.When__Phase_of_flight"},
       "sort": true,
       "bandWidth": 147,
       "round": true,

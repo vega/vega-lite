@@ -304,7 +304,7 @@ vl.Encoding = (function() {
     ).join(".");
   }
 
-  Encoding.parseShorthand = function(shorthand){
+  Encoding.parseShorthand = function(shorthand, cfg){
     var enc = shorthand.split("."),
       marktype = enc.shift();
 
@@ -343,7 +343,7 @@ vl.Encoding = (function() {
       return m;
     }, {});
 
-    return new Encoding(marktype, enc);
+    return new Encoding(marktype, enc, cfg);
   }
 
   Encoding.parseJSON = function(json){
@@ -1064,6 +1064,7 @@ function template(encoding, size, stats) { //hack use stats
       data.format.parse[field.name] = "date";
     }else if(field.type == Q){
       data.format.parse = data.format.parse || {};
+
       if (field.aggr === "count") {
         var name = "count";
       } else if(preaggregatedData && field.bin){
