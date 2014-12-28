@@ -724,7 +724,11 @@ function aggregates(spec, encoding, opt) {
       if(field.aggr==="count"){
         meas["count"] = {op:"count", field:"*"};
       }else{
-        meas[field.aggr+"|"+field.name] = {op:field.aggr, field:"data."+field.name};
+        meas[field.aggr+"|"+field.name] = {
+          op:field.aggr,
+          field:"data."+field.name,
+          fieldName: field.name
+        };
       }
     } else {
       dims[field.name] = encoding.field(encType);
@@ -738,13 +742,24 @@ function aggregates(spec, encoding, opt) {
   dims = vl.vals(dims);
   meas = vl.vals(meas);
 
-  if(meas.length > 0 && !opt.preaggregatedData){
+  if (meas.length > 0 && !opt.preaggregatedData) {
     if (!spec.transform) spec.transform = [];
     spec.transform.push({
       type: "aggregate",
       groupby: dims,
       fields: meas
     });
+
+    if (encoding.marktype() === TEXT) {
+      meas.forEach( function (m) {
+        var field = "data." + (m.op ? m.op + "_" : "") + m.fieldName;
+        spec.transform.push({
+          type: "formula",
+          field: field,
+          expr: "d3.format('.2f')(d."+field+")"
+        });
+      });
+    }
   }
   return {
     details: vl.vals(detail),
