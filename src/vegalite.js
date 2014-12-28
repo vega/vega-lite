@@ -1179,7 +1179,7 @@ function bar_props(e) {
   // x
   if (e.isType(X,Q|T) && !e.bin(X)) {
     p.x = {scale: X, field: e.field(X)};
-    if (!e.isType(Y,Q|T) && e.has(Y)) {
+    if (e.has(Y) && (!e.isType(Y,Q|T) || e.bin(Y))) {
       p.x2 = {scale: X, value: 0};
     }
   } else if (e.has(X)) {
@@ -1206,7 +1206,7 @@ function bar_props(e) {
       // p.width = {scale: X, band: true, offset: -1};
       p.width = {value: e.config("bandSize"), offset: -1};
     }
-  } else if (!e.isType(Y,O)) {
+  } else if (!e.isType(Y,O) && !e.bin(Y)) {
     p.width = {value: e.config("bandSize"), offset: -1};
   }
 
@@ -1218,6 +1218,8 @@ function bar_props(e) {
       // p.height = {scale: Y, band: true, offset: -1};
       p.height = {value: e.config("bandSize"), offset: -1};
     }
+  } else if (!e.isType(X,O) && !e.bin(X)) {
+    p.height = {value: e.config("bandSize"), offset: -1};
   }
 
   // fill
