@@ -886,12 +886,12 @@ function scale_type(name, encoding) {
   switch (encoding.type(name)) {
     case O: return "ordinal";
     case T:
-      if(encoding.fn(name)){
+      if (encoding.fn(name)) {
         return "linear";
       }
       return "time";
     case Q:
-      if(encoding.bin(name)){
+      if (encoding.bin(name)) {
         return "ordinal";
       }
       return encoding.scale(name) || "linear";
@@ -1010,7 +1010,8 @@ function scale_range(s, encoding, opt) {
       s.padding = encoding.config("cellPadding");
       s.outerPadding = 0;
       break;
-    default:
+    case X:
+    case Y:
       if (encoding.isType(s.name, O) || encoding.bin(s.name) ) { //&& !s.bandWidth
         s.points = true;
         s.padding = encoding.config("bandPadding");
@@ -1214,14 +1215,14 @@ function point_props(e, opt) {
   if (e.has(X)) {
     p.x = {scale: X, field: e.field(X)};
   } else if (!e.has(X)) {
-    p.x = {value: 0};
+    p.x = {value: e.config("bandSize")/2};
   }
 
   // y
   if (e.has(Y)) {
     p.y = {scale: Y, field: e.field(Y)};
   } else if (!e.has(Y)) {
-    p.y = {group: "height"};
+    p.y = {value: e.config("bandSize")/2};
   }
 
   // size
@@ -1343,14 +1344,14 @@ function filled_point_props(shape) {
     if (e.has(X)) {
       p.x = {scale: X, field: e.field(X)};
     } else if (!e.has(X)) {
-      p.x = {value: 0};
+      p.x = {value: e.config("bandSize")/2};
     }
 
     // y
     if (e.has(Y)) {
       p.y = {scale: Y, field: e.field(Y)};
     } else if (!e.has(Y)) {
-      p.y = {group: "height"};
+      p.y = {value: e.config("bandSize")/2};
     }
 
     // size
