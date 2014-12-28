@@ -958,7 +958,7 @@ function scale_domain(name, encoding, opt) {
 function scale_range(s, encoding, opt) {
   switch (s.name) {
     case X:
-      if (encoding.isType(s.name, O)) {
+      if (encoding.isType(s.name, O) || encoding.bin(s.name)) {
         s.bandWidth = encoding.config("bandSize");
       } else {
         s.range = opt.cellWidth ? [0, opt.cellWidth] : "width";
@@ -973,7 +973,7 @@ function scale_range(s, encoding, opt) {
       }
       break;
     case Y:
-      if (encoding.isType(s.name, O)) {
+      if (encoding.isType(s.name, O) || encoding.bin(s.name)) {
         s.bandWidth = encoding.config("bandSize");
       } else {
         s.range = opt.cellHeight ? [opt.cellHeight, 0] : "height";
@@ -1173,7 +1173,7 @@ function bar_props(e) {
   var p = {};
 
   // x
-  if (e.isType(X,Q|T)) {
+  if (e.isType(X,Q|T) && !e.bin(X)) {
     p.x = {scale: X, field: e.field(X)};
     if (!e.isType(Y,Q|T) && e.has(Y)) {
       p.x2 = {scale: X, value: 0};
@@ -1185,7 +1185,7 @@ function bar_props(e) {
   }
 
   // y
-  if (e.isType(Y,Q|T)) {
+  if (e.isType(Y,Q|T) && !e.bin(Y)) {
     p.y = {scale: Y, field: e.field(Y)};
     p.y2 = {scale: Y, value: 0};
   } else if (e.has(Y)) {
