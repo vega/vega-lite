@@ -1,14 +1,43 @@
 var datasets = [
-  "-",
-  "data/barley.json",
-  "data/cars.json",
-  "data/crimea.json",
-  "data/driving.json",
-  "data/iris.json",
-  "data/jobs.json",
-  "data/population.json",
-  "data/movies.json",
-  "data/birdstrikes.json"
+  {
+    name: "-"
+  },{
+    name: "Barley",
+    url: "data/barley.json",
+    table: "barley_json"
+  },{
+    name: "Cars",
+    url: "data/cars.json",
+    table: "cars_json"
+  },{
+    name: "Crimea",
+    url: "data/crimea.json",
+    table: "crimea"
+  },{
+    name: "Driving",
+    url: "data/driving.json",
+    table: "driving_json"
+  },{
+    name: "Iris",
+    url: "data/iris.json",
+    table: "iris_json"
+  },{
+    name: "Jobs",
+    url: "data/jobs.json",
+    table: "jobs_json"
+  },{
+    name: "Population",
+    url: "data/population.json",
+    table: "population_json"
+  },{
+    name: "Movies",
+    url: "data/movies.json",
+    table: "movies_json"
+  },{
+    name: "Birdstrikes",
+    url: "data/birdstrikes.json",
+    table: "birdstrikes_json"
+  }
 ];
 
 var TYPE_LIST = {
@@ -18,13 +47,18 @@ var TYPE_LIST = {
       "-": ["-"]
     },
     FN_LIST = {
-      O: ["-", "count"],
+      O: ["-", "count", "bin"],
       Q: ["-"].concat(vl.quantAggTypes).concat(["bin"]),
-      T: vl.timeFuncs,
+      T: vl.timeFuncs.concat["count"],
       "-": ["-", "count"]
     };
 
-var LOG_UI = true;
+var LOG_UI = false;
+
+// http://stackoverflow.com/a/1830844
+function isNumber(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+}
 
 function getParams() {
   var params = location.search.slice(1);
@@ -42,6 +76,14 @@ function getParams() {
 function init() {
   var params = getParams();
 
+  // Hack to override vl config
+  for(param in params) {
+    if (param in vl.DEFAULTS) {
+      var value = params[param];
+      vl.DEFAULTS[param] = value == "true" ? true : (isNumber(value) ? parseFloat(value) : value);
+    }
+  }
+
   var root = d3.select("#ctrl");
   var main = root.append("div").attr("class","main");
   var code = root.append("div").attr("class", "main")
@@ -55,17 +97,16 @@ function init() {
   dsel.append("select")
     .attr("class", "data")
     .on("change", function() {
-        var url = this.options[this.selectedIndex].value;
-        datasetUpdated(url, update);
-      })
+      var item = this.options[this.selectedIndex].__data__;
+      datasetUpdated(item, update);
+    })
     .selectAll("option")
       .data(datasets)
     .enter().append("option")
-      .attr("value", function(d) { return d; })
       .attr("selected", function(d){
-        return d==params.data ? true : undefined;
+        return d.name==params.data ? true : undefined;
       })
-      .text(function(d) { return d; });
+      .text(function(d) { return d.name; });
 
   // choose mark type
   var mark = main.append("div").attr("class", "mark");
@@ -85,7 +126,7 @@ function init() {
 
   // header labels
   var head = main.append("div").selectAll("span.header")
-      .data(["","function","data","type"])
+      .data(["", "function", "data", "type", "scale"])
     .enter().append("span")
       .attr("class", function(d,i) { return "header label h"+i; })
       .text(function(d) { return d; });
@@ -144,6 +185,19 @@ function init() {
     .enter().append("option")
       .attr("value", function(d) { return d; })
       .text(function(d) { return d; });
+
+  // scale
+  ctrl.append("select")
+    .attr("class", "scale")
+    .attr("id", function(d){ return "scale-"+d;})
+    .on("change", function(d){
+      update();
+    })
+    .selectAll("option")
+      .data(["-"])
+    .enter().append("option")
+      .attr("value", function(d){ return d;})
+      .text(function(d){ return d;});
 
   // x btn
   ctrl.append("a").attr({"class":"action", "href":"#"}).text("x")
@@ -220,7 +274,7 @@ function init() {
 
   var vlTextarea = code.append("textarea").attr("class", "vlcode");
 
-  code.append("span").text("Vega")
+  code.append("div").append("span").text("Vega")
   var vgTextarea = code.append("textarea").attr("class", "vgcode");
 
   // Config Pane
@@ -238,7 +292,16 @@ function init() {
 
   marktypeUpdated("point");
   if(params.data){
-    datasetUpdated(params.data);
+    datasets.forEach(function(item) {
+      if (params.data == item.name) {
+        datasetUpdated(item);
+      }
+    });
+  }
+
+  if (params.shortHand) {
+    e = vl.Encoding.parseShorthand(params.shortHand);
+    loadEncoding(e, update);
   }
 }
 
@@ -252,42 +315,72 @@ function removeEnc(d){
   update();
 }
 
-function datasetUpdated(url, callback) {
-  if(url==="-"){
+function datasetUpdated(dataset, callback) {
+  if(LOG_UI) console.log("datasetUpdated", dataset);
+
+  var vscfg = vegaServerConfig(),
+    useVegaServer = vscfg[0],
+    vegaServerUrl = vscfg[1];
+
+  if (useVegaServer && dataset.table !== undefined) {
+    self.table = dataset.table;
+
+    var url = vegaServerUrl + "/stats/?name=" + dataset.table;
+
+    d3.csv(url, function(err, data) {
+      if (err) return alert("Error loading stats " + err.statusText);
+      var stats = {};
+
+      data.forEach(function(row) {
+        var stat = {}
+        stat.min = +row.min;
+        stat.max = +row.max;
+        stat.cardinality = +row.cardinality;
+        stat.type = row.type === "integer" || row.type === "real" ? vl.dataTypes.Q : vl.dataTypes.O;
+        stats[row.name] = stat;
+      });
+
+      // CURRENTLY EXPECTED AS GLOBAL VARS...
+      self.stats = stats;
+
+      updateShelves();
+
+      if(callback) callback();
+    });
+  } else if (dataset.url !== undefined) {
+    self.dataUrl = dataset.url;
+    var url = dataset.url;
+
+    d3.json(url, function(err, data) {
+      if (err) return alert("Error loading data " + err.statusText);
+
+      // CURRENTLY EXPECTED AS GLOBAL VARS...
+      self.stats = vl.getStats(data);
+
+      updateShelves();
+
+      if(callback) callback();
+    });
+  } else {
+    // this may initially be the case
     return;
   }
-  if(LOG_UI) console.log("datasetUpdated", url);
+}
 
-  self.dataUrl = url;
-  d3.json(url, function(err, data) {
-    if (err) return alert("Error loading data " + err.statusText);
-    var schema = {};
-    for (var k in data[0]) {
-      //TODO(kanitw): better type inference here
-      schema[k] = (typeof data[0][k] === "number") ? vl.dataTypes.Q :
-        isNaN(Date.parse(data[0][k])) ? vl.dataTypes.O : vl.dataTypes.T;
-    }
+function updateShelves() {
+  // update available data field in the each shelf
+  var s = d3.selectAll("select.shelf").selectAll("option")
+    .data(["-"].concat(d3.keys(self.stats)), function(d) { return d; });
+  s.enter().append("option");
+  s.attr("value", function(d) { return d; })
+    .text(function(d) { return d; })
+  s.exit().remove();
 
-    // CURRENTLY EXPECTED AS GLOBAL VARS...
-    self.data = data;
-    self.schema = schema;
-
-    // update available data field in the each shelf
-    var s = d3.selectAll("select.shelf").selectAll("option")
-      .data(["-"].concat(d3.keys(schema)), function(d) { return d; });
-    s.enter().append("option");
-    s.attr("value", function(d) { return d; })
-      .text(function(d) { return d; })
-    s.exit().remove();
-
-    d3.selectAll("select.shelf").each(function(d){
-      shelfUpdated(d);
-      typeUpdated(d);
-      fnUpdated(d);
-    })
-
-    if(callback) callback();
-  });
+  d3.selectAll("select.shelf").each(function(d){
+    shelfUpdated(d);
+    typeUpdated(d);
+    fnUpdated(d);
+  })
 }
 
 function marktypeUpdated(marktype){
@@ -300,6 +393,7 @@ function marktypeUpdated(marktype){
   d3.selectAll("select.aggr").attr("disabled", disabled);
   d3.selectAll("select.shelf").attr("disabled", disabled);
   d3.selectAll("select.type").attr("disabled", disabled);
+  d3.selectAll("select.scale").attr("disabled", disabled);
 }
 
 function fnUpdated(encType, fn){
@@ -310,6 +404,7 @@ function fnUpdated(encType, fn){
   if(fn === "count"){ // disable shelf, type
     d3.select("select#shelf-"+encType).attr("disabled", true);
     d3.select("select#type-"+encType).attr("disabled", true);
+    d3.select("select#scale-"+encType).attr("disabled", true);
   }else{
     // enable shelf, type if it's supported by the marktype
     var marktype = d3.select("select.mark").node().value,
@@ -320,6 +415,7 @@ function fnUpdated(encType, fn){
 
     d3.select("select#shelf-"+encType).attr("disabled", disabled);
     d3.select("select#type-"+encType).attr("disabled", disabled);
+    d3.select("select#scale-"+encType).attr("disabled", disabled);
   }
 }
 
@@ -327,13 +423,10 @@ function shelfUpdated(encType, field){
   field = field || d3.select("select#shelf-"+encType).node().value;
   if(LOG_UI) console.log("shelfUpdated", encType, field);
 
-  var type = vl.dataTypeNames[self.schema[field]] || "-";
+  var type = field === "-" ? "-" : vl.dataTypeNames[self.stats[field].type],
     types = type !== "-" && (encType == "row" || encType == "col") ? TYPE_LIST.O : TYPE_LIST[type],
-    typesel = d3.select("select#type-"+encType).node()
-
-  if(types.indexOf(typesel.value) === -1){
-    typesel.value = types[0];
-  }
+    typesel = d3.select("select#type-"+encType).node(),
+    typeval = types.indexOf(typesel.value) === -1 ? types[0] : typesel.value;
 
   // update available type!
   var s = d3.select("select#type-"+encType).selectAll("option").data(types);
@@ -341,32 +434,73 @@ function shelfUpdated(encType, field){
   s.attr("value", function(d) { return d; })
     .text(function(d) { return d; });
   s.exit().remove();
+
+  typesel.value = typeval;
 }
 
 function typeUpdated(encType, type){
   type = type || d3.select("select#type-"+encType).node().value;
   if(LOG_UI) console.log("typeUpdated", encType, type);
 
+
+  //update supported functions
   var fns = FN_LIST[type] || FN_LIST["-"],
     fnsel = d3.select("select#aggr-"+encType).node(),
+    fnval = fns.indexOf(fnsel.value) === -1 ? "-" : fnsel.value,
     s = d3.select("select#aggr-"+encType).selectAll("option").data(fns);
-
-  if(fns.indexOf(fnsel.value) === -1){
-    // if new type doesn't support pre-selected function
-    // reset fn to "-"
-    fnsel.value = "-";
-  }
 
   s.enter().append("option");
   s.attr("value", function(d) { return d; })
     .text(function(d) { return d; });
   s.exit().remove();
+
+  fnsel.value = fnval;
+
+  //update supported scale
+  var scales = type=="Q" ? vl.quantScales : ["-"],
+    scalesel = d3.select("select#scale-"+encType).node(),
+    scaleval = scales.indexOf(scalesel.value) === -1 ? "-" : scalesel.value;
+    s = d3.select("select#scale-"+encType).selectAll("option").data(scales);
+
+  s.enter().append("option");
+  s.attr("value", function(d){ return d;})
+    .text(function(d){ return d;});
+  s.exit().remove();
+
+  scalesel.value = scaleval;
+}
+
+// Load config from DOM.
+// These properties will be updated in loadEncoding before this function is called.
+function vegaServerConfig() {
+  var useVegaServer = vl.DEFAULTS.useVegaServer,
+    vegaServerUrl = vl.DEFAULTS.vegaServerUrl;
+  d3.selectAll("#ctrl div.cfg input").each(function(d){
+    if (d == "useVegaServer" && this.value) {
+      useVegaServer = this.value == "true";
+    } else if (d == "vegaServerUrl" && this.value) {
+      vegaServerUrl = this.value;
+    }
+  });
+
+  return [useVegaServer, vegaServerUrl];
 }
 
 function update() {
-  var enc = encodings({dataUrl: self.dataUrl}),
-    data = self.data,
-    stats = vl.getStats(enc, data),
+  var useVegaServer = vegaServerConfig()[0];
+
+  var cfg = {
+    dataFormatType: useVegaServer ? "csv" : "json",
+  }
+  if (useVegaServer) {
+    cfg.vegaServerTable = self.table;
+  } else {
+    cfg.dataUrl = self.dataUrl;
+  }
+
+  var enc = encodings(cfg),
+    stats = self.stats,
+    // TODO: why convert to spec twice if data is not included?
     spec = vl.toVegaSpec(enc, stats);
 
   self.enc = enc; // DEBUG
@@ -381,7 +515,7 @@ function update() {
   d3.select(".shorthand").node().value = enc.toShorthand();
   d3.select("textarea.vlcode").node().value = JSON.stringify(enc.toJSON(), null, "  ", 80);
   d3.select("textarea.vgcode").node().value = JSON.stringify(spec, null, "  ", 80);
-  parse(self.spec, data);
+  parse(self.spec);
 }
 
 function swapXY(){
@@ -401,7 +535,8 @@ function swapXY(){
 }
 
 function loadEncoding(encoding, callback){
-  var dataUrl = encoding.config("dataUrl");
+  var dataUrl = encoding.config("dataUrl"),
+    useVegaServer = encoding.config("useVegaServer");
   var _load = function(){
     //update marktype
     d3.select("select.mark").node().value = encoding.marktype();
@@ -415,31 +550,57 @@ function loadEncoding(encoding, callback){
           this, d,
           e.name || "-",
           e.bin ? "bin" : e.aggr || e.fn || "-",
-          vl.dataTypeNames[e.type] || "-"
+          vl.dataTypeNames[e.type] || "-",
+          e.scale || "-"
         );
       }else{
-        loadEnc(this, d, "-", "-", "-");
+        loadEnc(this, d, "-", "-", "-", "-");
       }
     });
 
-    //update configs
-    d3.selectAll("#ctrl div.cfg input").each(function(d){
-      if(encoding._cfg.hasOwnProperty(d)){
-        this.value = encoding.config(d);
-      }
-    })
-
     if (callback) callback();
-  }
+  };
+
+  // update configs first -- so useVegaServer in the DOM is correctly updated
+  d3.selectAll("#ctrl div.cfg input").each(function(d){
+    if(encoding._cfg.hasOwnProperty(d)){
+      this.value = encoding.config(d);
+    }
+  });
+
   if(dataUrl){
-    d3.select("select.data").node().value = dataUrl;
-    datasetUpdated(dataUrl, _load); //need to load data first!
-  }else{
+    var dataset = null;
+    for(var i=0; i<datasets.length ; i++){
+      if(datasets[i].url == dataUrl){
+        dataset = datasets[i];
+        break;
+      }
+    }
+    d3.select("select.data").node().value = dataset.name;
+    datasetUpdated(dataset, _load); //need to load data first!
+  }else if(useVegaServer){
+    var dataset = null, table = encoding.config("vegaServerTable");
+    if (table) {
+      // the table was defined in the config
+      for(var i=0; i<datasets.length ; i++){
+        if(datasets[i].table == table){
+          dataset = datasets[i];
+          break;
+        }
+      }
+      d3.select("select.data").node().value = dataset.name;
+    } else {
+      //dataset is the one that's selected
+      var sel = d3.select("select.data").node();
+      dataset = sel.options[sel.selectedIndex].__data__;
+    }
+    datasetUpdated(dataset, _load); //need to load data first!
+  } else{
     _load();
   }
 }
 
-function loadEnc(dom, e, v, a ,t){
+function loadEnc(dom, e, v, a ,t, scale){
   var s = d3.select(dom);
   s.select("select.shelf").node().value = v;
   shelfUpdated(e, v);
@@ -447,13 +608,14 @@ function loadEnc(dom, e, v, a ,t){
   typeUpdated(e, t);
   s.select("select.aggr").node().value = a;
   fnUpdated(e, a);
+  s.select("select.scale").node().value = scale;
 }
 
 
 function readEnc(dom){
   //read encoding from the UI
   var s = d3.select(dom).select("select.shelf");
-  var v = s.attr("disabled") ? "-" : s.node().value; // return "-"
+  var v = s.attr("disabled") ? undefined : s.node().value; // return "-"
 
   var s = d3.select(dom).select("select.type");
   var t = s.attr("disabled") ? undefined : s.node().value;
@@ -461,7 +623,10 @@ function readEnc(dom){
   var s = d3.select(dom).select("select.aggr");
   var a = s.attr("disabled") ? undefined : s.node().value;
 
-  return {shelf:v, type:t, aggr:a};
+  var s = d3.select(dom).select("select.scale");
+  var scale = s.attr("disabled") ? undefined : s.node().value;
+
+  return {shelf:v, type:t, aggr:a, scale: scale};
 }
 
 function encodings(cfg) {
@@ -484,7 +649,7 @@ function encodings(cfg) {
         name: v,
         type: (a==="count" ? types.Q :
           t==="-" ?
-            (x==="row" || x==="col" ? types.O : schema[v])
+            (x==="row" || x==="col" ? types.O : stats[v].type)
           : types[t])
       };
 
@@ -496,6 +661,10 @@ function encodings(cfg) {
         } else if (a !== "-") {
           enc[x].aggr = a;
         }
+      }
+
+      if(e.scale !== "-"){
+        enc[x].scale = e.scale;
       }
     }
   });
@@ -510,7 +679,7 @@ function encodings(cfg) {
   return new vl.Encoding(marktype, enc, cfg);
 }
 
-function parse(spec, data) {
+function parse(spec) {
   self.vis = null; // DEBUG
   vg.parse.spec(spec, function(chart) {
     self.vis = chart({el:"#vis", renderer: "svg"});
