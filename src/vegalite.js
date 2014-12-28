@@ -161,16 +161,20 @@ vl.all = function(arr, f) {
   return true;
 }
 
+vl.merge = function(dest, src){
+  return vl.keys(src).reduce(function(c, k){
+    c[k] = src[k];
+    return c;
+  }, dest);
+};
+
 // ----
 vl.Encoding = (function() {
 
   function Encoding(marktype, enc, config) {
     this._marktype = marktype;
     this._enc = enc; // {encType1:field1, ...}
-    this._cfg = vl.keys(config).reduce(function(c, k) {
-      c[k] = config[k];
-      return c;
-    }, Object.create(vl.DEFAULTS));
+    this._cfg = vl.merge(Object.create(vl.DEFAULTS), config);
   }
 
   var proto = Encoding.prototype;
@@ -347,7 +351,7 @@ vl.Encoding = (function() {
     return new Encoding(marktype, enc, cfg);
   }
 
-  Encoding.parseJSON = function(json) {
+  Encoding.parseJSON = function(json, extraCfg) {
     var enc = vl.duplicate(json.enc);
 
     //convert type from string to bitcode (e.g, O=1)
@@ -355,7 +359,7 @@ vl.Encoding = (function() {
       enc[e].type = vl.dataTypes[enc[e].type];
     }
 
-    return new Encoding(json.marktype, enc, json.cfg);
+    return new Encoding(json.marktype, enc, vl.merge(json.cfg, extraCfg || {}));
   }
 
   return Encoding;
