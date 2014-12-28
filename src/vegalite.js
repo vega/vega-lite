@@ -69,7 +69,7 @@ vl.DEFAULTS = {
   cellBackgroundColor: "#fdfdfd",
   xAxisMargin: 80,
   yAxisMargin: 0,
-  textCellWidth: 80,
+  textCellWidth: 90,
 
   // marks
   barSize: 10,
@@ -1162,7 +1162,7 @@ marks.text = {
   type: "text",
   prop: text_props,
   requiredEncoding: ["text"],
-  supportedEncoding: {row:1, col:1, x:1, y:1, size:1, color:1, alpha:1, text:1}
+  supportedEncoding: {row:1, col:1, size:1, color:1, alpha:1, text:1}
 };
 
 function bar_props(e) {
