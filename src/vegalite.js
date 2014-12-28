@@ -69,6 +69,7 @@ vl.DEFAULTS = {
   cellBackgroundColor: "#fdfdfd",
   xAxisMargin: 80,
   yAxisMargin: 0,
+  textCellWidth: 80,
 
   // marks
   barSize: 10,
@@ -404,10 +405,14 @@ function setSize(encoding, stats) {
   var colCardinality = hasCol ? getCardinality(encoding, COL, stats) : 1,
     rowCardinality = hasRow ? getCardinality(encoding, ROW, stats) : 1;
 
-  var cellWidth = !hasX ? +encoding.config("bandSize") :
-      +encoding.config("cellWidth") || encoding.config("width") * 1.0 / colCardinality,
-    cellHeight = !hasY ? +encoding.config("bandSize"):
-      +encoding.config("cellHeight") || encoding.config("height") * 1.0 / rowCardinality,
+  var cellWidth = hasX ?
+      +encoding.config("cellWidth") || encoding.config("width") * 1.0 / colCardinality :
+      encoding.marktype() === "text" ?
+        +encoding.config("textCellWidth") :
+        +encoding.config("bandSize"),
+    cellHeight = hasY ?
+      +encoding.config("cellHeight") || encoding.config("height") * 1.0 / rowCardinality :
+      +encoding.config("bandSize"),
     cellPadding = encoding.config("cellPadding"),
     bandPadding = encoding.config("bandPadding"),
     width = encoding.config("_minWidth"),
