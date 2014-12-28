@@ -425,11 +425,8 @@ function shelfUpdated(encType, field){
 
   var type = field === "-" ? "-" : vl.dataTypeNames[self.stats[field].type],
     types = type !== "-" && (encType == "row" || encType == "col") ? TYPE_LIST.O : TYPE_LIST[type],
-    typesel = d3.select("select#type-"+encType).node()
-
-  if(types.indexOf(typesel.value) === -1){
-    typesel.value = types[0];
-  }
+    typesel = d3.select("select#type-"+encType).node(),
+    typeval = types.indexOf(typesel.value) === -1 ? types[0] : typesel.value;
 
   // update available type!
   var s = d3.select("select#type-"+encType).selectAll("option").data(types);
@@ -437,6 +434,8 @@ function shelfUpdated(encType, field){
   s.attr("value", function(d) { return d; })
     .text(function(d) { return d; });
   s.exit().remove();
+
+  typesel.value = typeval;
 }
 
 function typeUpdated(encType, type){
@@ -447,34 +446,28 @@ function typeUpdated(encType, type){
   //update supported functions
   var fns = FN_LIST[type] || FN_LIST["-"],
     fnsel = d3.select("select#aggr-"+encType).node(),
+    fnval = fns.indexOf(fnsel.value) === -1 ? "-" : fnsel.value,
     s = d3.select("select#aggr-"+encType).selectAll("option").data(fns);
-
-  if(fns.indexOf(fnsel.value) === -1){
-    // if new type doesn't support pre-selected function
-    // reset fn to "-"
-    fnsel.value = "-";
-  }
 
   s.enter().append("option");
   s.attr("value", function(d) { return d; })
     .text(function(d) { return d; });
   s.exit().remove();
 
+  fnsel.value = fnval;
+
   //update supported scale
   var scales = type=="Q" ? vl.quantScales : ["-"],
     scalesel = d3.select("select#scale-"+encType).node(),
+    scaleval = scales.indexOf(scalesel.value) === -1 ? "-" : scalesel.value;
     s = d3.select("select#scale-"+encType).selectAll("option").data(scales);
-
-  if(scales.indexOf(fnsel.value) === -1){
-    // if new type doesn't support pre-selected function
-    // reset fn to "-"
-    scalesel.value = "-";
-  }
 
   s.enter().append("option");
   s.attr("value", function(d){ return d;})
     .text(function(d){ return d;});
   s.exit().remove();
+
+  scalesel.value = scaleval;
 }
 
 // Load config from DOM.
