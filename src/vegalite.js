@@ -833,7 +833,7 @@ function axis_def(name, encoding, opt){
     axis.orient = "top";
   }
 
-  if(name=="x" && encoding.isType(name, O)){
+  if (name=="x" && (encoding.isType(name, O) || encoding.bin(name))) {
     axis.properties = {
       labels: {
         angle: {value: 270},
