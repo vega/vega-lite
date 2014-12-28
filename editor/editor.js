@@ -64,7 +64,7 @@ function getParams() {
   var params = location.search.slice(1);
 
   // remove trailing slash that chrome adds automatically
-  if(params[params.length-1] == "/") params = params.substring(0, params.length-1);
+  if (params[params.length-1] == "/") params = params.substring(0, params.length-1);
 
   return params.split("&")
     .map(function(x) { return x.split("="); })
@@ -77,7 +77,7 @@ function init() {
   var params = getParams();
 
   // Hack to override vl config
-  for(param in params) {
+  for (param in params) {
     if (param in vl.DEFAULTS) {
       var value = params[param];
       vl.DEFAULTS[param] = value == "true" ? true : (isNumber(value) ? parseFloat(value) : value);
@@ -103,7 +103,7 @@ function init() {
     .selectAll("option")
       .data(datasets)
     .enter().append("option")
-      .attr("selected", function(d){
+      .attr("selected", function(d) {
         return d.name==params.data ? true : undefined;
       })
       .text(function(d) { return d.name; });
@@ -113,7 +113,7 @@ function init() {
   mark.append("span").attr("class","label").text("mark");
   mark.append("select")
     .attr("class", "mark")
-    .on("change", function(){
+    .on("change", function() {
       var marktype = d3.select(this).node().value;
       marktypeUpdated(marktype);
       update();
@@ -141,8 +141,8 @@ function init() {
   // aggregation function
   ctrl.append("select")
     .attr("class", "aggr")
-    .attr("id", function(d){ return "aggr-"+d;})
-    .on("change", function(d){
+    .attr("id", function(d) { return "aggr-"+d;})
+    .on("change", function(d) {
       var fn = d3.select(this).node().value;
       fnUpdated(d, fn);
       update();
@@ -156,8 +156,8 @@ function init() {
   // data variable
   ctrl.append("select")
     .attr("class", "shelf")
-    .attr("id", function(d){ return "shelf-"+d;})
-    .on("change", function(d){
+    .attr("id", function(d) { return "shelf-"+d;})
+    .on("change", function(d) {
       var field = d3.select(this).node().value;
       shelfUpdated(d, field);
       typeUpdated(d);
@@ -173,8 +173,8 @@ function init() {
   // data type (ordinal, quantitative or time)
   ctrl.append("select")
     .attr("class", "type")
-    .attr("id", function(d){ return "type-"+d;})
-    .on("change", function(d){
+    .attr("id", function(d) { return "type-"+d;})
+    .on("change", function(d) {
       var type = d3.select(this).node().value;
       typeUpdated(d, type);
       fnUpdated(d);
@@ -189,22 +189,22 @@ function init() {
   // scale
   ctrl.append("select")
     .attr("class", "scale")
-    .attr("id", function(d){ return "scale-"+d;})
-    .on("change", function(d){
+    .attr("id", function(d) { return "scale-"+d;})
+    .on("change", function(d) {
       update();
     })
     .selectAll("option")
       .data(["-"])
     .enter().append("option")
-      .attr("value", function(d){ return d;})
-      .text(function(d){ return d;});
+      .attr("value", function(d) { return d;})
+      .text(function(d) { return d;});
 
   // x btn
   ctrl.append("a").attr({"class":"action", "href":"#"}).text("x")
     .on('click', removeEnc)
 
   // swap btn
-  ctrl.selectAll(function(d){ return d==="x" ? [this] : []; })
+  ctrl.selectAll(function(d) { return d==="x" ? [this] : []; })
     .append("a").attr({"class":"action", "href":"#"}).text("swap")
     .on('click', swapXY);
 
@@ -218,7 +218,7 @@ function init() {
     .text("hide code")
     .attr("href", "#")
     .attr("class", "action toggle")
-    .on("click", function(){
+    .on("click", function() {
       var expanded = code.style("display") === "block";
       code.style("display", expanded ? "none" : "block");
       this.innerText = expanded ? "show code" : "hide code";
@@ -230,7 +230,7 @@ function init() {
     .text("show config")
     .attr("href", "#")
     .attr("class", "action toggle")
-    .on("click", function(){
+    .on("click", function() {
       var expanded = config.style("display") === "block";
       config.style("display", expanded ? "none" : "block");
       this.innerText = expanded ? "show config" : "hide config";
@@ -240,8 +240,8 @@ function init() {
   // Code Pane
   code.append("span").text("Shorthand");
   code.append("a").attr({"class": "right action", "href":"#"}).text("load")
-    .on("click", function (){
-      if(d3.select("select.data").node().value=="-"){
+    .on("click", function() {
+      if (d3.select("select.data").node().value=="-") {
         alert("Please select dataset first.  (Shorthand doesn't contain data info)")
         return;
       }
@@ -255,7 +255,7 @@ function init() {
 
   code.append("span").text("Vegalite");
   code.append("a").attr({"class": "right action", "href":"#"}).text("load")
-    .on("click", function (){
+    .on("click", function() {
       var s = d3.select("textarea.vlcode").node().value,
         json = JSON.parse(s);
       e = vl.Encoding.parseJSON(json);
@@ -282,16 +282,16 @@ function init() {
     .on("click", update);
 
   var configs = config.selectAll("div")
-    .data(vl.keys(vl.DEFAULTS).filter(function(k){ return k[0] != "_";}))
+    .data(vl.keys(vl.DEFAULTS).filter(function(k) { return k[0] != "_";}))
     .enter().append("div").attr("class", "cfg")
       .append("label");
 
-  configs.append("span").attr("class","label").text(function(d){return d;});
+  configs.append("span").attr("class","label").text(function(d) {return d;});
   configs.append("input")
-    .attr("placeholder", function(d){return vl.DEFAULTS[d];});
+    .attr("placeholder", function(d) {return vl.DEFAULTS[d];});
 
   marktypeUpdated("point");
-  if(params.data){
+  if (params.data) {
     datasets.forEach(function(item) {
       if (params.data == item.name) {
         datasetUpdated(item);
@@ -305,7 +305,7 @@ function init() {
   }
 }
 
-function removeEnc(d){
+function removeEnc(d) {
   d3.select("#shelf-"+d).node().value = "-";
   shelfUpdated(d, "-");
   d3.select("#type-"+d).node().value = "-";
@@ -316,7 +316,7 @@ function removeEnc(d){
 }
 
 function datasetUpdated(dataset, callback) {
-  if(LOG_UI) console.log("datasetUpdated", dataset);
+  if (LOG_UI) console.log("datasetUpdated", dataset);
 
   var vscfg = vegaServerConfig(),
     useVegaServer = vscfg[0],
@@ -345,7 +345,7 @@ function datasetUpdated(dataset, callback) {
 
       updateShelves();
 
-      if(callback) callback();
+      if (callback) callback();
     });
   } else if (dataset.url !== undefined) {
     self.dataUrl = dataset.url;
@@ -359,7 +359,7 @@ function datasetUpdated(dataset, callback) {
 
       updateShelves();
 
-      if(callback) callback();
+      if (callback) callback();
     });
   } else {
     // this may initially be the case
@@ -376,17 +376,17 @@ function updateShelves() {
     .text(function(d) { return d; })
   s.exit().remove();
 
-  d3.selectAll("select.shelf").each(function(d){
+  d3.selectAll("select.shelf").each(function(d) {
     shelfUpdated(d);
     typeUpdated(d);
     fnUpdated(d);
   })
 }
 
-function marktypeUpdated(marktype){
-  if(LOG_UI) console.log("marktypeUpdated", marktype);
+function marktypeUpdated(marktype) {
+  if (LOG_UI) console.log("marktypeUpdated", marktype);
   var supportedEncoding = vl.marks[marktype].supportedEncoding,
-    disabled =  function(d){
+    disabled =  function(d) {
       return supportedEncoding[d] ? undefined : "true";
     };
 
@@ -396,12 +396,12 @@ function marktypeUpdated(marktype){
   d3.selectAll("select.scale").attr("disabled", disabled);
 }
 
-function fnUpdated(encType, fn){
+function fnUpdated(encType, fn) {
 
   fn = fn || d3.select("select#aggr-"+encType).node().value;
-  if(LOG_UI) console.log("fnUpdated", encType, fn);
+  if (LOG_UI) console.log("fnUpdated", encType, fn);
 
-  if(fn === "count"){ // disable shelf, type
+  if (fn === "count") { // disable shelf, type
     d3.select("select#shelf-"+encType).attr("disabled", true);
     d3.select("select#type-"+encType).attr("disabled", true);
     d3.select("select#scale-"+encType).attr("disabled", true);
@@ -409,7 +409,7 @@ function fnUpdated(encType, fn){
     // enable shelf, type if it's supported by the marktype
     var marktype = d3.select("select.mark").node().value,
       supportedEncoding = vl.marks[marktype].supportedEncoding,
-      disabled =  function(d){
+      disabled =  function(d) {
         return supportedEncoding[d] ? undefined : "true";
       };
 
@@ -419,9 +419,9 @@ function fnUpdated(encType, fn){
   }
 }
 
-function shelfUpdated(encType, field){
+function shelfUpdated(encType, field) {
   field = field || d3.select("select#shelf-"+encType).node().value;
-  if(LOG_UI) console.log("shelfUpdated", encType, field);
+  if (LOG_UI) console.log("shelfUpdated", encType, field);
 
   var type = field === "-" ? "-" : vl.dataTypeNames[self.stats[field].type],
     types = type !== "-" && (encType == "row" || encType == "col") ? TYPE_LIST.O : TYPE_LIST[type],
@@ -438,9 +438,9 @@ function shelfUpdated(encType, field){
   typesel.value = typeval;
 }
 
-function typeUpdated(encType, type){
+function typeUpdated(encType, type) {
   type = type || d3.select("select#type-"+encType).node().value;
-  if(LOG_UI) console.log("typeUpdated", encType, type);
+  if (LOG_UI) console.log("typeUpdated", encType, type);
 
 
   //update supported functions
@@ -463,8 +463,8 @@ function typeUpdated(encType, type){
     s = d3.select("select#scale-"+encType).selectAll("option").data(scales);
 
   s.enter().append("option");
-  s.attr("value", function(d){ return d;})
-    .text(function(d){ return d;});
+  s.attr("value", function(d) { return d;})
+    .text(function(d) { return d;});
   s.exit().remove();
 
   scalesel.value = scaleval;
@@ -475,7 +475,7 @@ function typeUpdated(encType, type){
 function vegaServerConfig() {
   var useVegaServer = vl.DEFAULTS.useVegaServer,
     vegaServerUrl = vl.DEFAULTS.vegaServerUrl;
-  d3.selectAll("#ctrl div.cfg input").each(function(d){
+  d3.selectAll("#ctrl div.cfg input").each(function(d) {
     if (d == "useVegaServer" && this.value) {
       useVegaServer = this.value == "true";
     } else if (d == "vegaServerUrl" && this.value) {
@@ -508,7 +508,7 @@ function update() {
 
   var inclData = d3.select("#inclData").node().checked;
 
-  if(!inclData){ // if "include data" is checked, include data url in the output
+  if (!inclData) { // if "include data" is checked, include data url in the output
     enc = encodings();
     spec = vl.toVegaSpec(enc, stats);
   }
@@ -518,15 +518,15 @@ function update() {
   parse(self.spec);
 }
 
-function swapXY(){
+function swapXY() {
   var o = {};
-  var encXY = d3.selectAll("#ctrl div.enc").selectAll(function(d){
+  var encXY = d3.selectAll("#ctrl div.enc").selectAll(function(d) {
     return d==="x" || d==="y" ? [this] : [];
   });
   encXY.each(function(d) {
     o[d] = readEnc(this);
   });
-  encXY.each(function(d){
+  encXY.each(function(d) {
     var e = o[d==="x" ? "y": "x"];
     loadEnc(this, d, e.shelf, e.aggr, e.type);
   })
@@ -534,17 +534,17 @@ function swapXY(){
   update();
 }
 
-function loadEncoding(encoding, callback){
+function loadEncoding(encoding, callback) {
   var dataUrl = encoding.config("dataUrl"),
     useVegaServer = encoding.config("useVegaServer");
-  var _load = function(){
+  var _load = function() {
     //update marktype
     d3.select("select.mark").node().value = encoding.marktype();
     marktypeUpdated(encoding.marktype());
 
     //update encoding UI
     d3.selectAll("#ctrl div.enc").each(function(d) {
-      if(encoding.has(d)){
+      if (encoding.has(d)) {
         var e = encoding._enc[d];
         loadEnc(
           this, d,
@@ -562,28 +562,28 @@ function loadEncoding(encoding, callback){
   };
 
   // update configs first -- so useVegaServer in the DOM is correctly updated
-  d3.selectAll("#ctrl div.cfg input").each(function(d){
-    if(encoding._cfg.hasOwnProperty(d)){
+  d3.selectAll("#ctrl div.cfg input").each(function(d) {
+    if (encoding._cfg.hasOwnProperty(d)) {
       this.value = encoding.config(d);
     }
   });
 
-  if(dataUrl){
+  if (dataUrl) {
     var dataset = null;
-    for(var i=0; i<datasets.length ; i++){
-      if(datasets[i].url == dataUrl){
+    for (var i=0; i<datasets.length ; i++) {
+      if (datasets[i].url == dataUrl) {
         dataset = datasets[i];
         break;
       }
     }
     d3.select("select.data").node().value = dataset.name;
     datasetUpdated(dataset, _load); //need to load data first!
-  }else if(useVegaServer){
+  }else if (useVegaServer) {
     var dataset = null, table = encoding.config("vegaServerTable");
     if (table) {
       // the table was defined in the config
-      for(var i=0; i<datasets.length ; i++){
-        if(datasets[i].table == table){
+      for (var i=0; i<datasets.length ; i++) {
+        if (datasets[i].table == table) {
           dataset = datasets[i];
           break;
         }
@@ -600,7 +600,7 @@ function loadEncoding(encoding, callback){
   }
 }
 
-function loadEnc(dom, e, v, a ,t, scale){
+function loadEnc(dom, e, v, a ,t, scale) {
   var s = d3.select(dom);
   s.select("select.shelf").node().value = v;
   shelfUpdated(e, v);
@@ -612,7 +612,7 @@ function loadEnc(dom, e, v, a ,t, scale){
 }
 
 
-function readEnc(dom){
+function readEnc(dom) {
   //read encoding from the UI
   var s = d3.select(dom).select("select.shelf");
   var v = s.attr("disabled") ? undefined : s.node().value; // return "-"
@@ -653,7 +653,7 @@ function encodings(cfg) {
           : types[t])
       };
 
-      if( t==="T"){
+      if ( t==="T") {
         enc[x].fn = a;
       }else{
         if (a === "bin") {
@@ -663,15 +663,15 @@ function encodings(cfg) {
         }
       }
 
-      if(e.scale !== "-"){
+      if (e.scale !== "-") {
         enc[x].scale = e.scale;
       }
     }
   });
 
-  d3.selectAll("#ctrl div.cfg input").each(function(d){
+  d3.selectAll("#ctrl div.cfg input").each(function(d) {
     var val = this.value;
-    if(val && val.length > 0){
+    if (val && val.length > 0) {
       cfg[d] = val == "true" ? true :
         val == "false" ? false : val;
     }
@@ -684,7 +684,7 @@ function parse(spec) {
   vg.parse.spec(spec, function(chart) {
     self.vis = chart({el:"#vis", renderer: "svg"});
 
-    if(!spec.data[0].url){
+    if (!spec.data[0].url) {
       // FIXME still need to load data this way without dataUrl
       // but the problem is they we need to make sure that the data get parsed.
       //vis.data({table: data});
