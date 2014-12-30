@@ -2,15 +2,33 @@ var _ = require("lodash");
 
 var encType = {
   type: "object",
-  required: ["name", "type"],
+  required: ["field", "type"],
   properties: {
-    name: {
-      type: "string"
+    field: {
+      type: "object",
+      required: ["name"],
+      properties: {
+        name: {
+          type: "string"
+        },
+        min: {
+          type: "integer"
+        },
+        max :{
+          type: "integer"
+        },
+        avg: {
+          type: "integer"
+        },
+        count: {
+          type: "integer"
+        }
+      }
     }
   }
 }
 
-var typicalEncType = _.assign(encType, {
+var typicalEncType = _.merge(encType, {
   type: "object",
   properties: {
     type: {

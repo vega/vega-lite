@@ -12,8 +12,19 @@
    "properties": {
     "x": {
      "type": "object",
-     "required": ["name","type"],
+     "required": ["field","type"],
      "properties": {
+      "field": {
+       "type": "object",
+       "required": ["name"],
+       "properties": {
+        "name": {"type": "string"},
+        "min": {"type": "integer"},
+        "max": {"type": "integer"},
+        "avg": {"type": "integer"},
+        "count": {"type": "integer"}
+       }
+      },
       "type": {"type": "string","enum": ["O","Q","T"]},
       "bin": {"type": "boolean","supportedTypes": ["Q","O"]},
       "aggr": {
@@ -60,8 +71,19 @@
     },
     "y": {
      "type": "object",
-     "required": ["name","type"],
+     "required": ["field","type"],
      "properties": {
+      "field": {
+       "type": "object",
+       "required": ["name"],
+       "properties": {
+        "name": {"type": "string"},
+        "min": {"type": "integer"},
+        "max": {"type": "integer"},
+        "avg": {"type": "integer"},
+        "count": {"type": "integer"}
+       }
+      },
       "type": {"type": "string","enum": ["O","Q","T"]},
       "bin": {"type": "boolean","supportedTypes": ["Q","O"]},
       "aggr": {
@@ -100,8 +122,19 @@
     },
     "row": {
      "type": "object",
-     "required": ["name","type"],
+     "required": ["field","type"],
      "properties": {
+      "field": {
+       "type": "object",
+       "required": ["name"],
+       "properties": {
+        "name": {"type": "string"},
+        "min": {"type": "integer"},
+        "max": {"type": "integer"},
+        "avg": {"type": "integer"},
+        "count": {"type": "integer"}
+       }
+      },
       "type": {"type": "string","enum": ["O","Q","T"]},
       "bin": {"type": "boolean","supportedTypes": ["Q","O"]},
       "aggr": {
@@ -148,8 +181,19 @@
     },
     "col": {
      "type": "object",
-     "required": ["name","type"],
+     "required": ["field","type"],
      "properties": {
+      "field": {
+       "type": "object",
+       "required": ["name"],
+       "properties": {
+        "name": {"type": "string"},
+        "min": {"type": "integer"},
+        "max": {"type": "integer"},
+        "avg": {"type": "integer"},
+        "count": {"type": "integer"}
+       }
+      },
       "type": {"type": "string","enum": ["O","Q","T"]},
       "bin": {"type": "boolean","supportedTypes": ["Q","O"]},
       "aggr": {
@@ -188,8 +232,19 @@
     },
     "size": {
      "type": "object",
-     "required": ["name","type"],
+     "required": ["field","type"],
      "properties": {
+      "field": {
+       "type": "object",
+       "required": ["name"],
+       "properties": {
+        "name": {"type": "string"},
+        "min": {"type": "integer"},
+        "max": {"type": "integer"},
+        "avg": {"type": "integer"},
+        "count": {"type": "integer"}
+       }
+      },
       "type": {"type": "string","enum": ["O","Q","T"]},
       "bin": {"type": "boolean","supportedTypes": ["Q","O"]},
       "aggr": {
@@ -228,8 +283,19 @@
     },
     "color": {
      "type": "object",
-     "required": ["name","type"],
+     "required": ["field","type"],
      "properties": {
+      "field": {
+       "type": "object",
+       "required": ["name"],
+       "properties": {
+        "name": {"type": "string"},
+        "min": {"type": "integer"},
+        "max": {"type": "integer"},
+        "avg": {"type": "integer"},
+        "count": {"type": "integer"}
+       }
+      },
       "type": {"type": "string","enum": ["O","Q","T"]},
       "bin": {"type": "boolean","supportedTypes": ["Q","O"]},
       "aggr": {
@@ -268,8 +334,19 @@
     },
     "alpha": {
      "type": "object",
-     "required": ["name","type"],
+     "required": ["field","type"],
      "properties": {
+      "field": {
+       "type": "object",
+       "required": ["name"],
+       "properties": {
+        "name": {"type": "string"},
+        "min": {"type": "integer"},
+        "max": {"type": "integer"},
+        "avg": {"type": "integer"},
+        "count": {"type": "integer"}
+       }
+      },
       "type": {"type": "string","enum": ["O","Q","T"]},
       "bin": {"type": "boolean","supportedTypes": ["Q","O"]},
       "aggr": {
@@ -308,8 +385,19 @@
     },
     "shape": {
      "type": "object",
-     "required": ["name","type"],
+     "required": ["field","type"],
      "properties": {
+      "field": {
+       "type": "object",
+       "required": ["name"],
+       "properties": {
+        "name": {"type": "string"},
+        "min": {"type": "integer"},
+        "max": {"type": "integer"},
+        "avg": {"type": "integer"},
+        "count": {"type": "integer"}
+       }
+      },
       "type": {"type": "string","enum": ["O","Q","T"]},
       "bin": {"type": "boolean","supportedTypes": ["Q","O"]},
       "aggr": {
@@ -348,8 +436,19 @@
     },
     "text": {
      "type": "object",
-     "required": ["name","type"],
+     "required": ["field","type"],
      "properties": {
+      "field": {
+       "type": "object",
+       "required": ["name"],
+       "properties": {
+        "name": {"type": "string"},
+        "min": {"type": "integer"},
+        "max": {"type": "integer"},
+        "avg": {"type": "integer"},
+        "count": {"type": "integer"}
+       }
+      },
       "type": {"type": "string","enum": ["O","Q","T"]},
       "bin": {"type": "boolean","supportedTypes": ["Q","O"]},
       "aggr": {
