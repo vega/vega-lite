@@ -69,6 +69,7 @@ vl.DEFAULTS = {
   cellBackgroundColor: "#fdfdfd",
   xAxisMargin: 80,
   yAxisMargin: 0,
+  textCellWidth: 90,
 
   // marks
   barSize: 10,
@@ -144,18 +145,18 @@ vl.duplicate = function (obj) {
   return JSON.parse(JSON.stringify(obj));
 };
 
-vl.any = function(arr, f){
+vl.any = function(arr, f) {
   var i=0, k;
   for (k in arr) {
-    if(f(arr[k], k, i++)) return true;
+    if (f(arr[k], k, i++)) return true;
   }
   return false;
 }
 
-vl.all = function(arr, f){
+vl.all = function(arr, f) {
   var i=0, k;
   for (k in arr) {
-    if(!f(arr[k], k, i++)) return false;
+    if (!f(arr[k], k, i++)) return false;
   }
   return true;
 }
@@ -166,7 +167,7 @@ vl.Encoding = (function() {
   function Encoding(marktype, enc, config) {
     this._marktype = marktype;
     this._enc = enc; // {encType1:field1, ...}
-    this._cfg = vl.keys(config).reduce(function(c, k){
+    this._cfg = vl.keys(config).reduce(function(c, k) {
       c[k] = config[k];
       return c;
     }, Object.create(vl.DEFAULTS));
@@ -186,7 +187,7 @@ vl.Encoding = (function() {
     return this._enc[x] !== undefined;
   };
 
-  proto.enc = function(x){
+  proto.enc = function(x) {
     return this._enc[x];
   };
 
@@ -202,30 +203,30 @@ vl.Encoding = (function() {
       return f + "bin_" + this._enc[x].name;
     } else if (!nofn && this._enc[x].aggr) {
       return f + this._enc[x].aggr + "_" + this._enc[x].name;
-    } else if (!nofn && this._enc[x].fn){
+    } else if (!nofn && this._enc[x].fn) {
       return f + this._enc[x].fn + "_" + this._enc[x].name;
     } else {
       return f + this._enc[x].name;
     }
   };
 
-  proto.fieldName = function(x){
+  proto.fieldName = function(x) {
     return this._enc[x].name;
   }
 
-  proto.scale = function(x){
+  proto.scale = function(x) {
     return this._enc[x].scale;
   }
 
-  proto.aggr = function(x){
+  proto.aggr = function(x) {
     return this._enc[x].aggr;
   }
 
-  proto.bin = function(x){
+  proto.bin = function(x) {
     return this._enc[x].bin;
   }
 
-  proto.fn = function(x){
+  proto.fn = function(x) {
     return this._enc[x].fn;
   }
 
@@ -242,21 +243,21 @@ vl.Encoding = (function() {
     return this._enc[x].max;
   }
 
-  proto.any = function(f){
+  proto.any = function(f) {
     return vl.any(this._enc, f);
   }
 
-  proto.all = function(f){
+  proto.all = function(f) {
     return vl.all(this._enc, f);
   }
 
-  proto.length = function(){
+  proto.length = function() {
     return vl.keys(this._enc).length;
   }
 
-  proto.reduce = function(f, init){
+  proto.reduce = function(f, init) {
     var r = init, i=0;
-    for (k in this._enc){
+    for (k in this._enc) {
       r = f(r, this._enc[k], k, this._enc);
     }
     return r;
@@ -283,11 +284,11 @@ vl.Encoding = (function() {
     return this._cfg[name];
   };
 
-  proto.toJSON = function(space, excludeConfig){
+  proto.toJSON = function(space, excludeConfig) {
     var enc = vl.duplicate(this._enc), json;
 
     // convert type's bitcode to type name
-    for(var e in enc){
+    for (var e in enc) {
       enc[e].type = vl.dataTypeNames[enc[e].type];
     }
 
@@ -296,16 +297,16 @@ vl.Encoding = (function() {
       enc: enc
     }
 
-    if(!excludeConfig){
+    if (!excludeConfig) {
       json.cfg = vl.duplicate(this._cfg)
     }
 
     return json;
   };
 
-  proto.toShorthand = function(){
+  proto.toShorthand = function() {
     var enc = this._enc;
-    return this._marktype + "." + vl.keys(enc).map(function(e){
+    return this._marktype + "." + vl.keys(enc).map(function(e) {
       var v = enc[e];
         return e + "-" +
           (v.aggr ? v.aggr+"_" : "") +
@@ -317,19 +318,19 @@ vl.Encoding = (function() {
     ).join(".");
   }
 
-  Encoding.parseShorthand = function(shorthand){
+  Encoding.parseShorthand = function(shorthand, cfg) {
     var enc = shorthand.split("."),
       marktype = enc.shift();
 
-    enc = enc.reduce(function(m, e){
+    enc = enc.reduce(function(m, e) {
       var split = e.split("-"),
         enctype = split[0],
         o = {name: split[1], type: vl.dataTypes[split[2]]};
 
       // check aggregate type
-      for(var i in vl.quantAggTypes){
+      for (var i in vl.quantAggTypes) {
         var a = vl.quantAggTypes[i];
-        if(o.name.indexOf(a+"_") == 0){
+        if (o.name.indexOf(a+"_") == 0) {
           o.name = o.name.substr(a.length+1);
           if (a=="count" && o.name.length === 0) o.name = "*";
           o.aggr = a;
@@ -337,9 +338,9 @@ vl.Encoding = (function() {
         }
       }
       // check time fn
-      for(var i in vl.timeFuncs){
+      for (var i in vl.timeFuncs) {
         var f = vl.timeFuncs[i];
-        if(o.name && o.name.indexOf(f+"_") == 0){
+        if (o.name && o.name.indexOf(f+"_") == 0) {
           o.name = o.name.substr(o.length+1);
           o.fn = f;
           break;
@@ -347,7 +348,7 @@ vl.Encoding = (function() {
       }
 
       // check bin
-      if(o.name && o.name.indexOf("bin_") == 0){
+      if (o.name && o.name.indexOf("bin_") == 0) {
         o.name = o.name.substr(4);
         o.bin = true;
       }
@@ -356,14 +357,14 @@ vl.Encoding = (function() {
       return m;
     }, {});
 
-    return new Encoding(marktype, enc);
+    return new Encoding(marktype, enc, cfg);
   }
 
-  Encoding.parseJSON = function(json){
+  Encoding.parseJSON = function(json) {
     var enc = vl.duplicate(json.enc);
 
     //convert type from string to bitcode (e.g, O=1)
-    for(var e in enc){
+    for (var e in enc) {
       enc[e].type = vl.dataTypes[enc[e].type];
     }
 
@@ -376,13 +377,13 @@ vl.Encoding = (function() {
 
 // ----
 
-vl.error = function(msg){
+vl.error = function(msg) {
   console.error("[VL Error]", msg);
 }
 
 // Returns the schema with stats for the dataset.
 // Stats is an array with field name and min, max, count, cardinality and type.
-vl.schemaWithStats = function(data){ // hack
+vl.schemaWithStats = function(data) { // hack
   var schema = [];
   var fields = vl.keys(data[0]);
 
@@ -413,10 +414,14 @@ function setSize(encoding) {
   var colCardinality = hasCol ? encoding.cardinality(COL) : 1,
     rowCardinality = hasRow ? encoding.cardinality(ROW) : 1;
 
-  var cellWidth = !hasX ? +encoding.config("bandSize") :
-      +encoding.config("cellWidth") || encoding.config("width") * 1.0 / colCardinality,
-    cellHeight = !hasY ? +encoding.config("bandSize"):
-      +encoding.config("cellHeight") || encoding.config("height") * 1.0 / rowCardinality,
+  var cellWidth = hasX ?
+      +encoding.config("cellWidth") || encoding.config("width") * 1.0 / colCardinality :
+      encoding.marktype() === "text" ?
+        +encoding.config("textCellWidth") :
+        +encoding.config("bandSize"),
+    cellHeight = hasY ?
+      +encoding.config("cellHeight") || encoding.config("height") * 1.0 / rowCardinality :
+      +encoding.config("bandSize"),
     cellPadding = encoding.config("cellPadding"),
     bandPadding = encoding.config("bandPadding"),
     width = encoding.config("_minWidth"),
@@ -457,7 +462,7 @@ vl.getDataUrl = function getDataUrl(encoding) {
   }
 
   var fields = []
-  encoding.forEach(function(encType, field){
+  encoding.forEach(function(encType, field) {
     var obj = {
       name: encoding.field(encType, true),
       field: field.name
@@ -488,7 +493,7 @@ vl.toVegaSpec = function(encoding) {
     cellWidth = size.cellWidth,
     cellHeight = size.cellHeight;
 
-  var hasAgg = encoding.any(function(v, k){
+  var hasAgg = encoding.any(function(v, k) {
     return v.aggr !== undefined;
   });
 
@@ -509,9 +514,9 @@ vl.toVegaSpec = function(encoding) {
 
   var lineType = marks[encoding.marktype()].line;
 
-  if(!preaggregatedData){
-    encoding.forEach(function(encType, field){
-      if(field.type === T && field.fn){
+  if (!preaggregatedData) {
+    encoding.forEach(function(encType, field) {
+      if (field.type === T && field.fn) {
         timeTransform(spec.data[0], encoding, encType, field);
       }
     });
@@ -552,7 +557,9 @@ function facet(group, encoding, cellHeight, cellWidth, spec, mdef, stack) {
     var enter = group.properties.enter;
     var facetKeys = [], cellAxes = [];
 
-  var hasRow = encoding.has(ROW), hasCol = encoding.has(COL);
+    var hasRow = encoding.has(ROW), hasCol = encoding.has(COL);
+
+    var xAxisMargin = encoding.has(Y) ? encoding.config("xAxisMargin") : undefined;
 
     enter.fill = {value: encoding.config("cellBackgroundColor")};
 
@@ -580,9 +587,8 @@ function facet(group, encoding, cellHeight, cellWidth, spec, mdef, stack) {
         from.transform.unshift({type: "facet", keys: [encoding.field(COL)]});
       }
 
-      var xAxisMargin = encoding.config("xAxisMargin"),
-        axesGrp = groupdef("x-axes", {
-          axes: vl.axis.defs(["x"], encoding),
+      var axesGrp = groupdef("x-axes", {
+          axes: encoding.has(X) ?  vl.axis.defs(["x"], encoding) : undefined,
           x: hasCol ? {scale: COL, field: "keys.0", offset: xAxisMargin} : {value: xAxisMargin},
           width: hasCol && {"value": cellWidth}, //HACK?
           from: from
@@ -592,8 +598,10 @@ function facet(group, encoding, cellHeight, cellWidth, spec, mdef, stack) {
       (spec.axes = spec.axes || [])
       spec.axes.push.apply(spec.axes, vl.axis.defs(["row"], encoding));
     } else { // doesn't have row
-      //keep x axis in the cell
-      cellAxes.push.apply(cellAxes, vl.axis.defs(["x"], encoding));
+      if (encoding.has(X)) {
+        //keep x axis in the cell
+        cellAxes.push.apply(cellAxes, vl.axis.defs(["x"], encoding));
+      }
     }
 
     if (hasCol) {
@@ -613,7 +621,7 @@ function facet(group, encoding, cellHeight, cellWidth, spec, mdef, stack) {
       }
 
       var axesGrp = groupdef("y-axes", {
-        axes: vl.axis.defs(["y"], encoding),
+        axes: encoding.has(Y) ? vl.axis.defs(["y"], encoding) : undefined,
         y: hasRow && {scale: ROW, field: "keys.0"},
         x: hasRow && {value: xAxisMargin},
         height: hasRow && {"value": cellHeight}, //HACK?
@@ -626,14 +634,16 @@ function facet(group, encoding, cellHeight, cellWidth, spec, mdef, stack) {
         xAxisMargin: xAxisMargin
       }));
     } else { // doesn't have col
-      cellAxes.push.apply(cellAxes, vl.axis.defs(["y"], encoding));
+      if (encoding.has(Y)) {
+        cellAxes.push.apply(cellAxes, vl.axis.defs(["y"], encoding));
+      }
     }
 
-    if(hasRow){
-      if(enter.x) enter.x.offset= encoding.config("xAxisMargin");
-      else enter.x = {value: encoding.config("xAxisMargin")};
+    if (hasRow) {
+      if (enter.x) enter.x.offset= xAxisMargin;
+      else enter.x = {value: xAxisMargin};
     }
-    if(hasCol){
+    if (hasCol) {
       //TODO fill here..
     }
 
@@ -673,8 +683,8 @@ function subfacet(group, mdef, details, stack, encoding) {
   }
 }
 
-function getTimeFn(fn){
-  switch(fn){
+function getTimeFn(fn) {
+  switch(fn) {
     case "second": return "getUTCSeconds";
     case "minute": return "getUTCMinutes";
     case "hour": return "getUTCHours";
@@ -686,7 +696,7 @@ function getTimeFn(fn){
   console.error("no function specified for date");
 }
 
-function timeTransform(spec, encoding, encType, field){
+function timeTransform(spec, encoding, encType, field) {
   var func = getTimeFn(field.fn);
 
   spec.transform = spec.transform || [];
@@ -724,14 +734,18 @@ function aggregates(spec, encoding, opt) {
   var dims = {}, meas = {}, detail = {}, facets={};
   encoding.forEach(function(encType, field) {
     if (field.aggr) {
-      if(field.aggr==="count"){
+      if (field.aggr==="count") {
         meas["count"] = {op:"count", field:"*"};
       }else{
-        meas[field.aggr+"|"+field.name] = {op:field.aggr, field:"data."+field.name};
+        meas[field.aggr+"|"+field.name] = {
+          op:field.aggr,
+          field:"data."+field.name,
+          fieldName: field.name
+        };
       }
     } else {
       dims[field.name] = encoding.field(encType);
-      if (encType==ROW || encType == COL){
+      if (encType==ROW || encType == COL) {
         facets[field.name] = dims[field.name];
       }else if (encType !== X && encType !== Y) {
         detail[field.name] = dims[field.name];
@@ -741,13 +755,24 @@ function aggregates(spec, encoding, opt) {
   dims = vl.vals(dims);
   meas = vl.vals(meas);
 
-  if(meas.length > 0 && !opt.preaggregatedData){
+  if (meas.length > 0 && !opt.preaggregatedData) {
     if (!spec.transform) spec.transform = [];
     spec.transform.push({
       type: "aggregate",
       groupby: dims,
       fields: meas
     });
+
+    if (encoding.marktype() === TEXT) {
+      meas.forEach( function (m) {
+        var field = "data." + (m.op ? m.op + "_" : "") + m.fieldName;
+        spec.transform.push({
+          type: "formula",
+          field: field,
+          expr: "d3.format('.2f')(d."+field+")"
+        });
+      });
+    }
   }
   return {
     details: vl.vals(detail),
@@ -779,7 +804,7 @@ function stacking(spec, encoding, mdef, facets) {
     }]
   };
 
-  if(facets && facets.length > 0){
+  if (facets && facets.length > 0) {
     stacked.transform.push({ //calculate max for each facet
       type: "aggregate",
       groupby: facets,
@@ -822,11 +847,11 @@ vl.axis.defs = function(names, encoding, opt) {
   }, []);
 }
 
-function axis_def(name, encoding, opt){
+function axis_def(name, encoding, opt) {
   var type = name, axis;
   var isCol = name==COL, isRow = name==ROW;
-  if(isCol) type = "x";
-  if(isRow) type = "y";
+  if (isCol) type = "x";
+  if (isRow) type = "y";
 
   var axis = {
     type: type,
@@ -834,19 +859,19 @@ function axis_def(name, encoding, opt){
     ticks: 3 //TODO(kanitw): better determine # of ticks
   };
 
-  if(isRow || isCol){
+  if (isRow || isCol) {
     axis.properties = {
       ticks: { opacity: {value: 0} },
       majorTicks: { opacity: {value: 0} },
       axis: { opacity: {value: 0} }
     };
   }
-  if(isCol){
+  if (isCol) {
     axis.offset = [opt.xAxisMargin || 0, encoding.config("yAxisMargin")];
     axis.orient = "top";
   }
 
-  if(name=="x" && encoding.isType(name, O)){
+  if (name=="x" && encoding.isType(name, O)) {
     axis.properties = {
       labels: {
         angle: {value: 270},
@@ -894,12 +919,12 @@ function scale_type(name, encoding) {
   switch (encoding.type(name)) {
     case O: return "ordinal";
     case T:
-      if(encoding.fn(name)){
+      if (encoding.fn(name)) {
         return "linear";
       }
       return "time";
     case Q:
-      if(encoding.bin(name)){
+      if (encoding.bin(name)) {
         return "ordinal";
       }
       return encoding.scale(name) || "linear";
@@ -907,8 +932,8 @@ function scale_type(name, encoding) {
 }
 
 function scale_domain(name, encoding, opt) {
-  if (encoding.type(name) === T){
-    switch(encoding.fn(name)){
+  if (encoding.type(name) === T) {
+    switch(encoding.fn(name)) {
       case "second":
       case "minute": return [0, 59];
       case "hour": return [0, 23];
@@ -951,7 +976,7 @@ function scale_range(s, encoding, opt) {
         s.reverse = encoding.config("xReverse");
       }
       s.round = true;
-      if (encoding.isType(s.name, T)){
+      if (encoding.isType(s.name, T)) {
         s.nice = encoding.aggr(s.name) || encoding.config("timeScaleNice");
       }else{
         s.nice = true;
@@ -968,7 +993,7 @@ function scale_range(s, encoding, opt) {
 
       s.round = true;
 
-      if (encoding.isType(s.name, T)){
+      if (encoding.isType(s.name, T)) {
         s.nice = encoding.aggr(s.name);
       }else{
         s.nice = true;
@@ -1013,13 +1038,14 @@ function scale_range(s, encoding, opt) {
       throw new Error("Unknown encoding name: "+s.name);
   }
 
-  switch(s.name){
+  switch(s.name) {
     case ROW:
     case COL:
       s.padding = encoding.config("cellPadding");
       s.outerPadding = 0;
       break;
-    default:
+    case X:
+    case Y:
       if (encoding.isType(s.name, O) || encoding.bin(s.name) ) { //&& !s.bandWidth
         s.points = true;
         s.padding = encoding.config("bandPadding");
@@ -1063,21 +1089,22 @@ function template(encoding, size) {
 
   var data = {name:TABLE, format: {type: encoding.config("dataFormatType")}},
     dataUrl = vl.getDataUrl(encoding);
-  if(dataUrl) data.url = dataUrl;
+  if (dataUrl) data.url = dataUrl;
 
   var preaggregatedData = encoding.config("useVegaServer");
 
-  encoding.forEach(function(encType, field){
-    if(field.type == T){
+  encoding.forEach(function(encType, field) {
+    if (field.type == T) {
       data.format.parse = data.format.parse || {};
       data.format.parse[field.name] = "date";
-    }else if(field.type == Q){
+    }else if (field.type == Q) {
       data.format.parse = data.format.parse || {};
+
       if (field.aggr === "count") {
         var name = "count";
-      } else if(preaggregatedData && field.bin){
+      } else if (preaggregatedData && field.bin) {
         var name = "bin_" + field.name;
-      } else if(preaggregatedData && field.aggr){
+      } else if (preaggregatedData && field.aggr) {
         var name = field.aggr + "_" + field.name;
       } else{
         var name = field.name;
@@ -1149,7 +1176,7 @@ marks.text = {
   type: "text",
   prop: text_props,
   requiredEncoding: ["text"],
-  supportedEncoding: {row:1, col:1, x:1, y:1, size:1, color:1, alpha:1, text:1}
+  supportedEncoding: {row:1, col:1, size:1, color:1, alpha:1, text:1}
 };
 
 function bar_props(e) {
@@ -1222,14 +1249,14 @@ function point_props(e, opt) {
   if (e.has(X)) {
     p.x = {scale: X, field: e.field(X)};
   } else if (!e.has(X)) {
-    p.x = {value: 0};
+    p.x = {value: e.config("bandSize")/2};
   }
 
   // y
   if (e.has(Y)) {
     p.y = {scale: Y, field: e.field(Y)};
   } else if (!e.has(Y)) {
-    p.y = {group: "height"};
+    p.y = {value: e.config("bandSize")/2};
   }
 
   // size
@@ -1351,14 +1378,14 @@ function filled_point_props(shape) {
     if (e.has(X)) {
       p.x = {scale: X, field: e.field(X)};
     } else if (!e.has(X)) {
-      p.x = {value: 0};
+      p.x = {value: e.config("bandSize")/2};
     }
 
     // y
     if (e.has(Y)) {
       p.y = {scale: Y, field: e.field(Y)};
     } else if (!e.has(Y)) {
-      p.y = {group: "height"};
+      p.y = {value: e.config("bandSize")/2};
     }
 
     // size
@@ -1398,14 +1425,14 @@ function text_props(e) {
   if (e.has(X)) {
     p.x = {scale: X, field: e.field(X)};
   } else if (!e.has(X)) {
-    p.x = {value: 0};
+    p.x = {value: e.config("bandSize")/2};
   }
 
   // y
   if (e.has(Y)) {
     p.y = {scale: Y, field: e.field(Y)};
   } else if (!e.has(Y)) {
-    p.y = {group: "height"};
+    p.y = {value: e.config("bandSize")/2};
   }
 
   // size
