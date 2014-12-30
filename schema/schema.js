@@ -127,7 +127,7 @@ exports.encoding = {
   properties: {
     marktype: {
       type: "string",
-      enum: [null, "point", "bar", "line", "area", "circle", "square", "text"]
+      enum: ["point", "bar", "line", "area", "circle", "square", "text"]
     },
     enc: {
       type: "object",
