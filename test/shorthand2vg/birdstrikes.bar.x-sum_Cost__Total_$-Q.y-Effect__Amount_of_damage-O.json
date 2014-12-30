@@ -5,6 +5,7 @@
   "data": [
     {
       "name": "table",
+      "format": {"type": "json","parse": {"Cost__Total_$": "number"}},
       "url": "data/birdstrikes.json",
       "transform": [
         {
