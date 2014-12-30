@@ -833,7 +833,7 @@ function axis_def(name, encoding, opt){
     axis.orient = "top";
   }
 
-  if(name=="x" && encoding.isType(name, O)){
+  if (name=="x" && (encoding.isType(name, O) || encoding.bin(name))) {
     axis.properties = {
       labels: {
         angle: {value: 270},
@@ -886,6 +886,9 @@ function scale_type(name, encoding) {
       }
       return "time";
     case Q:
+      if(encoding.bin(name)){
+        return "ordinal";
+      }
       return encoding.scale(name) || "linear";
   }
 }
@@ -902,7 +905,8 @@ function scale_domain(name, encoding, opt) {
     }
   }
 
-  if (encoding.bin(name) && encoding.type(name) == O) {
+  if (encoding.bin(name)) {
+    // TODO: add includeEmptyConfig here
     if (opt.stats) {
       var bins = vg.data.bin().bins(opt.stats[encoding.fieldName(name)], {maxbins: 20});
       var domain = [];
@@ -1002,7 +1006,7 @@ function scale_range(s, encoding, opt) {
       s.outerPadding = 0;
       break;
     default:
-      if (encoding.isType(s.name, O) ) { //&& !s.bandWidth
+      if (encoding.isType(s.name, O) || encoding.bin(s.name) ) { //&& !s.bandWidth
         s.points = true;
         s.padding = encoding.config("bandPadding");
       }
