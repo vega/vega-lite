@@ -45,7 +45,7 @@ vl.dataTypeNames = ["O","Q","T"].reduce(function(r,x) {
 
 vl.quantAggTypes = ["avg", "sum", "min", "max", "count"];
 vl.timeFuncs = ["month", "year", "day", "date", "hour", "minute", "second"];
-vl.quantScales = ["-", "log","pow", "sqrt", "quantile"];
+vl.quantScales = ["log","pow", "sqrt", "quantile"];
 
 vl.DEFAULTS = {
   // template
