@@ -46,13 +46,13 @@
       },
       "axis": {
        "type": "object",
-       "properties": {"margin": {"type": "integer","default": 80}}
+       "properties": {"margin": {"type": "integer","default": 80,"minimum": 0}}
       },
       "text": {
        "type": "object",
        "properties": {
         "weight": {"type": "string","enum": ["normal","bold"],"default": "normal"},
-        "size": {"type": "integer","default": 10},
+        "size": {"type": "integer","default": 10,"minimum": 0},
         "font": {"type": "string","default": "Halvetica Neue"}
        }
       }
@@ -94,7 +94,7 @@
       },
       "axis": {
        "type": "object",
-       "properties": {"margin": {"type": "integer","default": 80}}
+       "properties": {"margin": {"type": "integer","default": 80,"minimum": 0}}
       }
      }
     },
@@ -134,13 +134,13 @@
       },
       "axis": {
        "type": "object",
-       "properties": {"margin": {"type": "integer","default": 80}}
+       "properties": {"margin": {"type": "integer","default": 80,"minimum": 0}}
       },
       "text": {
        "type": "object",
        "properties": {
         "weight": {"type": "string","enum": ["normal","bold"],"default": "normal"},
-        "size": {"type": "integer","default": 10},
+        "size": {"type": "integer","default": 10,"minimum": 0},
         "font": {"type": "string","default": "Halvetica Neue"}
        }
       }
@@ -182,7 +182,7 @@
       },
       "axis": {
        "type": "object",
-       "properties": {"margin": {"type": "integer","default": 80}}
+       "properties": {"margin": {"type": "integer","default": 80,"minimum": 0}}
       }
      }
     },
@@ -222,7 +222,7 @@
       },
       "axis": {
        "type": "object",
-       "properties": {"margin": {"type": "integer","default": 80}}
+       "properties": {"margin": {"type": "integer","default": 80,"minimum": 0}}
       }
      }
     },
@@ -262,7 +262,7 @@
       },
       "axis": {
        "type": "object",
-       "properties": {"margin": {"type": "integer","default": 80}}
+       "properties": {"margin": {"type": "integer","default": 80,"minimum": 0}}
       }
      }
     },
@@ -302,7 +302,7 @@
       },
       "axis": {
        "type": "object",
-       "properties": {"margin": {"type": "integer","default": 80}}
+       "properties": {"margin": {"type": "integer","default": 80,"minimum": 0}}
       }
      }
     },
@@ -342,7 +342,7 @@
       },
       "axis": {
        "type": "object",
-       "properties": {"margin": {"type": "integer","default": 80}}
+       "properties": {"margin": {"type": "integer","default": 80,"minimum": 0}}
       }
      }
     },
@@ -382,13 +382,13 @@
       },
       "axis": {
        "type": "object",
-       "properties": {"margin": {"type": "integer","default": 80}}
+       "properties": {"margin": {"type": "integer","default": 80,"minimum": 0}}
       },
       "text": {
        "type": "object",
        "properties": {
         "weight": {"type": "string","enum": ["normal","bold"],"default": "normal"},
-        "size": {"type": "integer","default": 10},
+        "size": {"type": "integer","default": 10,"minimum": 0},
         "font": {"type": "string","default": "Halvetica Neue"}
        }
       }
@@ -401,7 +401,8 @@
    "properties": {
     "dataFormatType": {"type": "string","enum": ["json","csv"]},
     "useVegaServer": {"type": "boolean"},
-    "dataUrl": {"type": "string"}
+    "dataUrl": {"type": "string"},
+    "vegaServerTable": {"type": "string"}
    }
   }
  }

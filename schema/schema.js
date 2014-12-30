@@ -63,7 +63,8 @@ var x = _.merge(typicalEncType, {
       properties: {
         margin: {
           type: "integer",
-          default: 80
+          default: 80,
+          minimum: 0
         }
       }
     },
@@ -107,7 +108,8 @@ var text = _.merge(typicalEncType, {
         },
         size: {
           type: "integer",
-          default: 10
+          default: 10,
+          minimum: 0
         },
         font: {
           type: "string",
@@ -152,6 +154,9 @@ exports.encoding = {
           type: "boolean"
         },
         dataUrl: {
+          type: "string"
+        },
+        vegaServerTable: {
           type: "string"
         }
       }
