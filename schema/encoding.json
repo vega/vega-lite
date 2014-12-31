@@ -26,18 +26,31 @@
         "T": [null,"avg","min","max","count"]
        }
       },
+      "fn": {
+       "type": "string",
+       "enum": [null,"month","year","day","date","hour","minute","second"],
+       "supportedTypes": {
+        "month": {"T": 1},
+        "year": {"T": 1},
+        "day": {"T": 1},
+        "date": {"T": 1},
+        "hour": {"T": 1},
+        "minute": {"T": 1},
+        "second": {"T": 1}
+       }
+      },
       "scale": {
        "type": "object",
        "properties": {
         "type": {
          "type": "string",
-         "enum": [null,"linear","log","pow","sqrt","quantile"],
-         "supportedTypes": ["Q","T"]
+         "enum": ["linear","log","pow","sqrt","quantile"],
+         "supportedTypes": ["Q"]
         },
         "reverse": {"type": "boolean","default": false},
         "zero": {
          "type": "boolean",
-         "description": "include zero",
+         "description": "Include zero",
          "default": false,
          "supportedTypes": ["Q"]
         }
@@ -61,18 +74,31 @@
         "T": [null,"avg","min","max","count"]
        }
       },
+      "fn": {
+       "type": "string",
+       "enum": [null,"month","year","day","date","hour","minute","second"],
+       "supportedTypes": {
+        "month": {"T": 1},
+        "year": {"T": 1},
+        "day": {"T": 1},
+        "date": {"T": 1},
+        "hour": {"T": 1},
+        "minute": {"T": 1},
+        "second": {"T": 1}
+       }
+      },
       "scale": {
        "type": "object",
        "properties": {
         "type": {
          "type": "string",
-         "enum": [null,"linear","log","pow","sqrt","quantile"],
-         "supportedTypes": ["Q","T"]
+         "enum": ["linear","log","pow","sqrt","quantile"],
+         "supportedTypes": ["Q"]
         },
         "reverse": {"type": "boolean","default": false},
         "zero": {
          "type": "boolean",
-         "description": "include zero",
+         "description": "Include zero",
          "default": false,
          "supportedTypes": ["Q"]
         }
@@ -116,18 +142,31 @@
         "T": [null,"avg","min","max","count"]
        }
       },
+      "fn": {
+       "type": "string",
+       "enum": [null,"month","year","day","date","hour","minute","second"],
+       "supportedTypes": {
+        "month": {"T": 1},
+        "year": {"T": 1},
+        "day": {"T": 1},
+        "date": {"T": 1},
+        "hour": {"T": 1},
+        "minute": {"T": 1},
+        "second": {"T": 1}
+       }
+      },
       "scale": {
        "type": "object",
        "properties": {
         "type": {
          "type": "string",
-         "enum": [null,"linear","log","pow","sqrt","quantile"],
-         "supportedTypes": ["Q","T"]
+         "enum": ["linear","log","pow","sqrt","quantile"],
+         "supportedTypes": ["Q"]
         },
         "reverse": {"type": "boolean","default": false},
         "zero": {
          "type": "boolean",
-         "description": "include zero",
+         "description": "Include zero",
          "default": false,
          "supportedTypes": ["Q"]
         }
@@ -151,18 +190,31 @@
         "T": [null,"avg","min","max","count"]
        }
       },
+      "fn": {
+       "type": "string",
+       "enum": [null,"month","year","day","date","hour","minute","second"],
+       "supportedTypes": {
+        "month": {"T": 1},
+        "year": {"T": 1},
+        "day": {"T": 1},
+        "date": {"T": 1},
+        "hour": {"T": 1},
+        "minute": {"T": 1},
+        "second": {"T": 1}
+       }
+      },
       "scale": {
        "type": "object",
        "properties": {
         "type": {
          "type": "string",
-         "enum": [null,"linear","log","pow","sqrt","quantile"],
-         "supportedTypes": ["Q","T"]
+         "enum": ["linear","log","pow","sqrt","quantile"],
+         "supportedTypes": ["Q"]
         },
         "reverse": {"type": "boolean","default": false},
         "zero": {
          "type": "boolean",
-         "description": "include zero",
+         "description": "Include zero",
          "default": false,
          "supportedTypes": ["Q"]
         }
@@ -186,18 +238,31 @@
         "T": [null,"avg","min","max","count"]
        }
       },
+      "fn": {
+       "type": "string",
+       "enum": [null,"month","year","day","date","hour","minute","second"],
+       "supportedTypes": {
+        "month": {"T": 1},
+        "year": {"T": 1},
+        "day": {"T": 1},
+        "date": {"T": 1},
+        "hour": {"T": 1},
+        "minute": {"T": 1},
+        "second": {"T": 1}
+       }
+      },
       "scale": {
        "type": "object",
        "properties": {
         "type": {
          "type": "string",
-         "enum": [null,"linear","log","pow","sqrt","quantile"],
-         "supportedTypes": ["Q","T"]
+         "enum": ["linear","log","pow","sqrt","quantile"],
+         "supportedTypes": ["Q"]
         },
         "reverse": {"type": "boolean","default": false},
         "zero": {
          "type": "boolean",
-         "description": "include zero",
+         "description": "Include zero",
          "default": false,
          "supportedTypes": ["Q"]
         }
@@ -231,18 +296,31 @@
         "T": [null,"avg","min","max","count"]
        }
       },
+      "fn": {
+       "type": "string",
+       "enum": [null,"month","year","day","date","hour","minute","second"],
+       "supportedTypes": {
+        "month": {"T": 1},
+        "year": {"T": 1},
+        "day": {"T": 1},
+        "date": {"T": 1},
+        "hour": {"T": 1},
+        "minute": {"T": 1},
+        "second": {"T": 1}
+       }
+      },
       "scale": {
        "type": "object",
        "properties": {
         "type": {
          "type": "string",
-         "enum": [null,"linear","log","pow","sqrt","quantile"],
-         "supportedTypes": ["Q","T"]
+         "enum": ["linear","log","pow","sqrt","quantile"],
+         "supportedTypes": ["Q"]
         },
         "reverse": {"type": "boolean","default": false},
         "zero": {
          "type": "boolean",
-         "description": "include zero",
+         "description": "Include zero",
          "default": false,
          "supportedTypes": ["Q"]
         }
