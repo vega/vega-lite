@@ -12,19 +12,9 @@
    "properties": {
     "x": {
      "type": "object",
-     "required": ["field","type"],
+     "required": ["name","type"],
      "properties": {
-      "field": {
-       "type": "object",
-       "required": ["name"],
-       "properties": {
-        "name": {"type": "string"},
-        "min": {"type": "integer"},
-        "max": {"type": "integer"},
-        "avg": {"type": "integer"},
-        "count": {"type": "integer"}
-       }
-      },
+      "name": {"type": "string"},
       "type": {"type": "string","enum": ["O","Q","T"]},
       "bin": {"type": "boolean","supportedTypes": ["Q","O"]},
       "aggr": {
@@ -58,32 +48,14 @@
       "axis": {
        "type": "object",
        "properties": {"margin": {"type": "integer","default": 80,"minimum": 0}}
-      },
-      "text": {
-       "type": "object",
-       "properties": {
-        "weight": {"type": "string","enum": ["normal","bold"],"default": "normal"},
-        "size": {"type": "integer","default": 10,"minimum": 0},
-        "font": {"type": "string","default": "Halvetica Neue"}
-       }
       }
      }
     },
     "y": {
      "type": "object",
-     "required": ["field","type"],
+     "required": ["name","type"],
      "properties": {
-      "field": {
-       "type": "object",
-       "required": ["name"],
-       "properties": {
-        "name": {"type": "string"},
-        "min": {"type": "integer"},
-        "max": {"type": "integer"},
-        "avg": {"type": "integer"},
-        "count": {"type": "integer"}
-       }
-      },
+      "name": {"type": "string"},
       "type": {"type": "string","enum": ["O","Q","T"]},
       "bin": {"type": "boolean","supportedTypes": ["Q","O"]},
       "aggr": {
@@ -122,129 +94,27 @@
     },
     "row": {
      "type": "object",
-     "required": ["field","type"],
+     "required": ["name","type"],
      "properties": {
-      "field": {
-       "type": "object",
-       "required": ["name"],
-       "properties": {
-        "name": {"type": "string"},
-        "min": {"type": "integer"},
-        "max": {"type": "integer"},
-        "avg": {"type": "integer"},
-        "count": {"type": "integer"}
-       }
-      },
-      "type": {"type": "string","enum": ["O","Q","T"]},
-      "bin": {"type": "boolean","supportedTypes": ["Q","O"]},
-      "aggr": {
-       "type": "string",
-       "enum": [null,"count","sum","min","max","count"],
-       "supportedTypes": {
-        "avg": {"Q": 1,"T": 1},
-        "sum": {"Q": 1},
-        "min": {"Q": 1,"T": 1},
-        "max": {"Q": 1,"T": 1},
-        "count": {"Q": 1,"O": 1,"T": 1}
-       }
-      },
-      "scale": {
-       "type": "object",
-       "properties": {
-        "type": {
-         "type": "string",
-         "enum": [null,"linear","log","pow","sqrt","quantile"],
-         "supportedTypes": ["Q","T"]
-        },
-        "reverse": {"type": "boolean","default": false},
-        "zero": {
-         "type": "boolean",
-         "description": "include zero",
-         "default": false,
-         "supportedTypes": ["Q"]
-        }
-       }
-      },
-      "axis": {
-       "type": "object",
-       "properties": {"margin": {"type": "integer","default": 80,"minimum": 0}}
-      },
-      "text": {
-       "type": "object",
-       "properties": {
-        "weight": {"type": "string","enum": ["normal","bold"],"default": "normal"},
-        "size": {"type": "integer","default": 10,"minimum": 0},
-        "font": {"type": "string","default": "Halvetica Neue"}
-       }
-      }
+      "name": {"type": "string"},
+      "bin": {"type": "boolean"},
+      "aggr": {"type": "string","enum": [null,"count"]}
      }
     },
     "col": {
      "type": "object",
-     "required": ["field","type"],
+     "required": ["name","type"],
      "properties": {
-      "field": {
-       "type": "object",
-       "required": ["name"],
-       "properties": {
-        "name": {"type": "string"},
-        "min": {"type": "integer"},
-        "max": {"type": "integer"},
-        "avg": {"type": "integer"},
-        "count": {"type": "integer"}
-       }
-      },
-      "type": {"type": "string","enum": ["O","Q","T"]},
-      "bin": {"type": "boolean","supportedTypes": ["Q","O"]},
-      "aggr": {
-       "type": "string",
-       "enum": [null,"count","sum","min","max","count"],
-       "supportedTypes": {
-        "avg": {"Q": 1,"T": 1},
-        "sum": {"Q": 1},
-        "min": {"Q": 1,"T": 1},
-        "max": {"Q": 1,"T": 1},
-        "count": {"Q": 1,"O": 1,"T": 1}
-       }
-      },
-      "scale": {
-       "type": "object",
-       "properties": {
-        "type": {
-         "type": "string",
-         "enum": [null,"linear","log","pow","sqrt","quantile"],
-         "supportedTypes": ["Q","T"]
-        },
-        "reverse": {"type": "boolean","default": false},
-        "zero": {
-         "type": "boolean",
-         "description": "include zero",
-         "default": false,
-         "supportedTypes": ["Q"]
-        }
-       }
-      },
-      "axis": {
-       "type": "object",
-       "properties": {"margin": {"type": "integer","default": 80,"minimum": 0}}
-      }
+      "name": {"type": "string"},
+      "bin": {"type": "boolean"},
+      "aggr": {"type": "string","enum": [null,"count"]}
      }
     },
     "size": {
      "type": "object",
-     "required": ["field","type"],
+     "required": ["name","type"],
      "properties": {
-      "field": {
-       "type": "object",
-       "required": ["name"],
-       "properties": {
-        "name": {"type": "string"},
-        "min": {"type": "integer"},
-        "max": {"type": "integer"},
-        "avg": {"type": "integer"},
-        "count": {"type": "integer"}
-       }
-      },
+      "name": {"type": "string"},
       "type": {"type": "string","enum": ["O","Q","T"]},
       "bin": {"type": "boolean","supportedTypes": ["Q","O"]},
       "aggr": {
@@ -274,28 +144,14 @@
          "supportedTypes": ["Q"]
         }
        }
-      },
-      "axis": {
-       "type": "object",
-       "properties": {"margin": {"type": "integer","default": 80,"minimum": 0}}
       }
      }
     },
     "color": {
      "type": "object",
-     "required": ["field","type"],
+     "required": ["name","type"],
      "properties": {
-      "field": {
-       "type": "object",
-       "required": ["name"],
-       "properties": {
-        "name": {"type": "string"},
-        "min": {"type": "integer"},
-        "max": {"type": "integer"},
-        "avg": {"type": "integer"},
-        "count": {"type": "integer"}
-       }
-      },
+      "name": {"type": "string"},
       "type": {"type": "string","enum": ["O","Q","T"]},
       "bin": {"type": "boolean","supportedTypes": ["Q","O"]},
       "aggr": {
@@ -325,28 +181,14 @@
          "supportedTypes": ["Q"]
         }
        }
-      },
-      "axis": {
-       "type": "object",
-       "properties": {"margin": {"type": "integer","default": 80,"minimum": 0}}
       }
      }
     },
     "alpha": {
      "type": "object",
-     "required": ["field","type"],
+     "required": ["name","type"],
      "properties": {
-      "field": {
-       "type": "object",
-       "required": ["name"],
-       "properties": {
-        "name": {"type": "string"},
-        "min": {"type": "integer"},
-        "max": {"type": "integer"},
-        "avg": {"type": "integer"},
-        "count": {"type": "integer"}
-       }
-      },
+      "name": {"type": "string"},
       "type": {"type": "string","enum": ["O","Q","T"]},
       "bin": {"type": "boolean","supportedTypes": ["Q","O"]},
       "aggr": {
@@ -376,28 +218,14 @@
          "supportedTypes": ["Q"]
         }
        }
-      },
-      "axis": {
-       "type": "object",
-       "properties": {"margin": {"type": "integer","default": 80,"minimum": 0}}
       }
      }
     },
     "shape": {
      "type": "object",
-     "required": ["field","type"],
+     "required": ["name","type"],
      "properties": {
-      "field": {
-       "type": "object",
-       "required": ["name"],
-       "properties": {
-        "name": {"type": "string"},
-        "min": {"type": "integer"},
-        "max": {"type": "integer"},
-        "avg": {"type": "integer"},
-        "count": {"type": "integer"}
-       }
-      },
+      "name": {"type": "string"},
       "type": {"type": "string","enum": ["O","Q","T"]},
       "bin": {"type": "boolean","supportedTypes": ["Q","O"]},
       "aggr": {
@@ -427,28 +255,14 @@
          "supportedTypes": ["Q"]
         }
        }
-      },
-      "axis": {
-       "type": "object",
-       "properties": {"margin": {"type": "integer","default": 80,"minimum": 0}}
       }
      }
     },
     "text": {
      "type": "object",
-     "required": ["field","type"],
+     "required": ["name","type"],
      "properties": {
-      "field": {
-       "type": "object",
-       "required": ["name"],
-       "properties": {
-        "name": {"type": "string"},
-        "min": {"type": "integer"},
-        "max": {"type": "integer"},
-        "avg": {"type": "integer"},
-        "count": {"type": "integer"}
-       }
-      },
+      "name": {"type": "string"},
       "type": {"type": "string","enum": ["O","Q","T"]},
       "bin": {"type": "boolean","supportedTypes": ["Q","O"]},
       "aggr": {
@@ -478,10 +292,6 @@
          "supportedTypes": ["Q"]
         }
        }
-      },
-      "axis": {
-       "type": "object",
-       "properties": {"margin": {"type": "integer","default": 80,"minimum": 0}}
       },
       "text": {
        "type": "object",
