@@ -2,7 +2,9 @@
 
 var _ = require("lodash");
 
-var encType = {
+var schema = {};
+
+var field = schema.field = {
   type: "object",
   required: ["name", "type"],
   properties: {
@@ -12,7 +14,7 @@ var encType = {
   }
 }
 
-var typicalEncType = _.chain(encType).cloneDeep().merge({
+var typicalField = _.chain(field).cloneDeep().merge({
   type: "object",
   properties: {
     type: {
@@ -57,7 +59,7 @@ var typicalEncType = _.chain(encType).cloneDeep().merge({
   }
 }).value();
 
-var onlyOrdinalEncType = _.chain(encType).cloneDeep().merge({
+var onlyOrdinalField = _.chain(field).cloneDeep().merge({
   type: "object",
   properties: {
     type: {
@@ -74,18 +76,18 @@ var onlyOrdinalEncType = _.chain(encType).cloneDeep().merge({
   }
 }).value();
 
-var x = _.cloneDeep(typicalEncType);
+var x = _.cloneDeep(typicalField);
 var y = _.cloneDeep(x);
 
-var row = _.cloneDeep(onlyOrdinalEncType);
+var row = _.cloneDeep(onlyOrdinalField);
 var col = _.cloneDeep(row);
 
-var size = _.cloneDeep(typicalEncType);
-var color = _.cloneDeep(typicalEncType);
-var alpha = _.cloneDeep(typicalEncType);
-var shape = _.cloneDeep(onlyOrdinalEncType)
+var size = _.cloneDeep(typicalField);
+var color = _.cloneDeep(typicalField);
+var alpha = _.cloneDeep(typicalField);
+var shape = _.cloneDeep(onlyOrdinalField)
 
-var text = _.chain(typicalEncType).cloneDeep().merge({
+var text = _.chain(typicalField).cloneDeep().merge({
   type: "object",
   properties: {
     text: {
