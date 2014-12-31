@@ -72,7 +72,6 @@ vl.DEFAULTS = {
   textCellWidth: 90,
 
   // marks
-  barSize: 10,
   bandSize: 21,
   bandPadding: 1,
   pointSize: 50,
@@ -393,6 +392,10 @@ vl.getStats = function(data){ // hack
 
 function getCardinality(encoding, encType, stats){
   var field = encoding.fieldName(encType);
+  if (encoding.bin(encType)) {
+    var bins = vg.data.bin().bins(stats[field], {maxbins: 20});
+    return (bins.stop-bins.start)/bins.step;
+  }
   return stats[field].cardinality;
 }
 
@@ -423,18 +426,18 @@ function setSize(encoding, stats) {
     width = encoding.config("_minWidth"),
     height = encoding.config("_minHeight");
 
-  if (hasX && encoding.isType(X, O)) { //ordinal field will override parent
+  if (hasX && (encoding.isType(X, O) || encoding.bin(X))) { //ordinal field will override parent
     // bands within cell use rangePoints()
     var xCardinality = getCardinality(encoding, X, stats);
-    cellWidth = (xCardinality + bandPadding) * encoding.config("bandSize");
+    cellWidth = (xCardinality + bandPadding) * +encoding.config("bandSize");
   }
   // Cell bands use rangeBands(). There are n-1 padding.  Outerpadding = 0 for cells
   width = cellWidth * ((1 + cellPadding) * (colCardinality-1) + 1);
 
-  if (hasY && encoding.isType(Y, O)) {
+  if (hasY && (encoding.isType(Y, O) || encoding.bin(Y))) {
     // bands within cell use rangePoint()
     var yCardinality = getCardinality(encoding, Y, stats);
-    cellHeight = (yCardinality + bandPadding) *  encoding.config("bandSize");
+    cellHeight = (yCardinality + bandPadding) * +encoding.config("bandSize");
   }
   // Cell bands use rangeBands(). There are n-1 padding.  Outerpadding = 0 for cells
   height = cellHeight * ((1 + cellPadding) * (rowCardinality-1) + 1);
@@ -731,8 +734,7 @@ function aggregates(spec, encoding, opt) {
       }else{
         meas[field.aggr+"|"+field.name] = {
           op:field.aggr,
-          field:"data."+field.name,
-          fieldName: field.name
+          field:"data."+field.name
         };
       }
     } else {
@@ -757,7 +759,8 @@ function aggregates(spec, encoding, opt) {
 
     if (encoding.marktype() === TEXT) {
       meas.forEach( function (m) {
-        var field = "data." + (m.op ? m.op + "_" : "") + m.fieldName;
+        var fieldName = m.field.substr(5), //remove "data."
+          field = "data." + (m.op ? m.op + "_" : "") + fieldName;
         spec.transform.push({
           type: "formula",
           field: field,
@@ -959,8 +962,8 @@ function scale_domain(name, encoding, opt) {
 function scale_range(s, encoding, opt) {
   switch (s.name) {
     case X:
-      if (encoding.isType(s.name, O)) {
-        s.bandWidth = encoding.config("bandSize");
+      if (encoding.isType(s.name, O) || encoding.bin(s.name)) {
+        s.bandWidth = +encoding.config("bandSize");
       } else {
         s.range = opt.cellWidth ? [0, opt.cellWidth] : "width";
         s.zero = encoding.config("xZero");
@@ -974,8 +977,8 @@ function scale_range(s, encoding, opt) {
       }
       break;
     case Y:
-      if (encoding.isType(s.name, O)) {
-        s.bandWidth = encoding.config("bandSize");
+      if (encoding.isType(s.name, O) || encoding.bin(s.name)) {
+        s.bandWidth = +encoding.config("bandSize");
       } else {
         s.range = opt.cellHeight ? [opt.cellHeight, 0] : "height";
         s.zero = encoding.config("yZero");
@@ -1002,7 +1005,7 @@ function scale_range(s, encoding, opt) {
       break;
     case SIZE:
       if (encoding.is("bar")) {
-        s.range = [3, encoding.config("bandSize")];
+        s.range = [3, +encoding.config("bandSize")];
       } else if (encoding.is(TEXT)) {
         s.range = [8, 40];
       } else {
@@ -1173,9 +1176,9 @@ function bar_props(e) {
   var p = {};
 
   // x
-  if (e.isType(X,Q|T)) {
+  if (e.isType(X,Q|T) && !e.bin(X)) {
     p.x = {scale: X, field: e.field(X)};
-    if (!e.isType(Y,Q|T) && e.has(Y)) {
+    if (e.has(Y) && (!e.isType(Y,Q|T) || e.bin(Y))) {
       p.x2 = {scale: X, value: 0};
     }
   } else if (e.has(X)) {
@@ -1185,7 +1188,7 @@ function bar_props(e) {
   }
 
   // y
-  if (e.isType(Y,Q|T)) {
+  if (e.isType(Y,Q|T) && !e.bin(Y)) {
     p.y = {scale: Y, field: e.field(Y)};
     p.y2 = {scale: Y, value: 0};
   } else if (e.has(Y)) {
@@ -1200,10 +1203,10 @@ function bar_props(e) {
       p.width = {scale: SIZE, field: e.field(SIZE)};
     } else {
       // p.width = {scale: X, band: true, offset: -1};
-      p.width = {value: e.config("bandSize"), offset: -1};
+      p.width = {value: +e.config("bandSize"), offset: -1};
     }
-  } else if (!e.isType(Y,O)) {
-    p.width = {value: e.config("bandSize"), offset: -1};
+  } else if (!e.isType(Y,O) && !e.bin(Y)) {
+    p.width = {value: +e.config("bandSize"), offset: -1};
   }
 
   // height
@@ -1212,8 +1215,10 @@ function bar_props(e) {
       p.height = {scale: SIZE, field: e.field(SIZE)};
     } else {
       // p.height = {scale: Y, band: true, offset: -1};
-      p.height = {value: e.config("bandSize"), offset: -1};
+      p.height = {value: +e.config("bandSize"), offset: -1};
     }
+  } else if (!e.isType(X,O) && !e.bin(X)) {
+    p.height = {value: +e.config("bandSize"), offset: -1};
   }
 
   // fill
