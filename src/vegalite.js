@@ -72,7 +72,6 @@ vl.DEFAULTS = {
   textCellWidth: 90,
 
   // marks
-  barSize: 10,
   bandSize: 21,
   bandPadding: 1,
   pointSize: 50,
