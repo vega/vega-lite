@@ -89,6 +89,7 @@
      "required": ["name","type"],
      "properties": {
       "name": {"type": "string"},
+      "type": {"type": "string","enum": ["O"]},
       "bin": {"type": "boolean"},
       "aggr": {"type": "string","enum": [null,"count"]}
      }
@@ -98,6 +99,7 @@
      "required": ["name","type"],
      "properties": {
       "name": {"type": "string"},
+      "type": {"type": "string","enum": ["O"]},
       "bin": {"type": "boolean"},
       "aggr": {"type": "string","enum": [null,"count"]}
      }
@@ -218,36 +220,9 @@
      "required": ["name","type"],
      "properties": {
       "name": {"type": "string"},
-      "type": {"type": "string","enum": ["O","Q","T"]},
-      "bin": {"type": "boolean","supportedTypes": ["Q","O"]},
-      "aggr": {
-       "type": "string",
-       "enum": [null,"avg","sum","min","max","count"],
-       "supportedTypes": {
-        "avg": {"Q": 1,"T": 1},
-        "sum": {"Q": 1},
-        "min": {"Q": 1,"T": 1},
-        "max": {"Q": 1,"T": 1},
-        "count": {"Q": 1,"O": 1,"T": 1}
-       }
-      },
-      "scale": {
-       "type": "object",
-       "properties": {
-        "type": {
-         "type": "string",
-         "enum": [null,"linear","log","pow","sqrt","quantile"],
-         "supportedTypes": ["Q","T"]
-        },
-        "reverse": {"type": "boolean","default": false},
-        "zero": {
-         "type": "boolean",
-         "description": "include zero",
-         "default": false,
-         "supportedTypes": ["Q"]
-        }
-       }
-      }
+      "type": {"type": "string","enum": ["O"]},
+      "bin": {"type": "boolean"},
+      "aggr": {"type": "string","enum": [null,"count"]}
      }
     },
     "text": {
