@@ -858,7 +858,7 @@ function axis_def(name, encoding, opt){
     axis.orient = "top";
   }
 
-  if(name=="x" && encoding.isType(name, O)){
+  if (name=="x" && (encoding.isType(name, O) || encoding.bin(name))) {
     axis.properties = {
       labels: {
         angle: {value: 270},
@@ -1085,7 +1085,6 @@ function template(encoding, size, stats) { //hack use stats
       data.format.parse[field.name] = "date";
     }else if(field.type == Q){
       data.format.parse = data.format.parse || {};
-
       if (field.aggr === "count") {
         var name = "count";
       } else if(preaggregatedData && field.bin){
