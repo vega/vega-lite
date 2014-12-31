@@ -1,10 +1,51 @@
-// script for generating Encoding's schema (encoding.json)
+// Defining Vegalite Encoding's schema
 
+//
+
+
+// TODO use vl.merge, vl.duplicate instead, move to /src as vl.schema
 var _ = require("lodash");
 
 var schema = {};
 
-var field = schema.field = {
+schema.marktype = {
+  type: "string",
+  enum: ["point", "bar", "line", "area", "circle", "square", "text"]
+};
+
+schema.aggr = {
+  type: "string",
+  enum: [null,"avg", "sum", "min", "max", "count"],
+  supportedTypes: {
+    avg: {Q: 1, T: 1},
+    sum: {Q: 1},
+    min: {Q: 1, T: 1},
+    max: {Q: 1, T: 1},
+    count: {Q: 1, O: 1, T: 1},
+  }
+};
+
+schema.timefns = ["month", "year", "day", "date", "hour", "minute", "second"];
+
+schema.fn = {
+  type: "string",
+  enum: [null].concat(schema.timefns),
+  supportedTypes: {}
+}
+
+schema.timefns.forEach(function(timeFn){
+  schema.fn.supportedTypes[timeFn] = {T:1};
+});
+
+//TODO(kanitw): add other type of function here
+
+schema.scale_type = {
+  type: "string",
+  enum: ["linear", "log","pow", "sqrt", "quantile"],
+  supportedTypes: ["Q"]
+};
+
+schema.field = {
   type: "object",
   required: ["name", "type"],
   properties: {
@@ -12,9 +53,9 @@ var field = schema.field = {
       type: "string"
     }
   }
-}
+};
 
-var typicalField = _.chain(field).cloneDeep().merge({
+var typicalField = _.chain(schema.field).cloneDeep().merge({
   type: "object",
   properties: {
     type: {
@@ -25,32 +66,16 @@ var typicalField = _.chain(field).cloneDeep().merge({
       type: "boolean",
       supportedTypes: ["Q", "O"]
     },
-    aggr: {
-      type: "string",
-      enum: [null, "avg", "sum", "min", "max", "count"],
-      supportedTypes: {
-        avg: {Q: 1, T: 1},
-        sum: {Q: 1},
-        min: {Q: 1, T: 1},
-        max: {Q: 1, T: 1},
-        count: {Q: 1, O: 1, T: 1},
-      }
-    },
+    aggr: schema.aggr,
+    fn: schema.fn,
     scale: {
       type: "object",
       properties: {
-        type: {
-          type: "string",
-          enum: [null, "linear", "log","pow", "sqrt", "quantile"],
-          supportedTypes: ["Q"]
-        },
-        reverse: {
-          type: "boolean",
-          default: false
-        },
+        type: schema.scale_type,
+        reverse: { type: "boolean", default: false },
         zero: {
           type: "boolean",
-          description: "include zero",
+          description: "Include zero",
           default: false,
           supportedTypes: ["Q"]
         }
@@ -59,7 +84,7 @@ var typicalField = _.chain(field).cloneDeep().merge({
   }
 }).value();
 
-var onlyOrdinalField = _.chain(field).cloneDeep().merge({
+var onlyOrdinalField = _.chain(schema.field).cloneDeep().merge({
   type: "object",
   properties: {
     type: {
@@ -112,15 +137,14 @@ var text = _.chain(typicalField).cloneDeep().merge({
   }
 }).value();
 
+exports.schema = schema;
+
 exports.encoding = {
   $schema: "http://json-schema.org/draft-04/schema#",
   type: "object",
   required: ["marktype", "enc", "cfg"],
   properties: {
-    marktype: {
-      type: "string",
-      enum: ["point", "bar", "line", "area", "circle", "square", "text"]
-    },
+    marktype: schema.marktype,
     enc: {
       type: "object",
       properties: {
