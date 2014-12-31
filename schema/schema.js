@@ -1,3 +1,5 @@
+// script for generating Encoding's schema (encoding.json)
+
 var _ = require("lodash");
 
 var encType = {
