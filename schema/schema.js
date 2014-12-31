@@ -57,12 +57,13 @@ var typicalEncType = _.chain(encType).cloneDeep().merge({
   }
 }).value();
 
-var x = _.cloneDeep(typicalEncType);
-var y = _.cloneDeep(x);
-
-var row = _.chain(encType).cloneDeep().merge({
+var onlyOrdinalEncType = _.chain(encType).cloneDeep().merge({
   type: "object",
   properties: {
+    type: {
+      type: "string",
+      enum: ["O"]
+    },
     bin: {
       type: "boolean"
     },
@@ -73,12 +74,16 @@ var row = _.chain(encType).cloneDeep().merge({
   }
 }).value();
 
+var x = _.cloneDeep(typicalEncType);
+var y = _.cloneDeep(x);
+
+var row = _.cloneDeep(onlyOrdinalEncType);
 var col = _.cloneDeep(row);
 
 var size = _.cloneDeep(typicalEncType);
 var color = _.cloneDeep(typicalEncType);
 var alpha = _.cloneDeep(typicalEncType);
-var shape = _.cloneDeep(typicalEncType);
+var shape = _.cloneDeep(onlyOrdinalEncType)
 
 var text = _.chain(typicalEncType).cloneDeep().merge({
   type: "object",
