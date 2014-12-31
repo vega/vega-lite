@@ -42,7 +42,7 @@ var typicalField = _.chain(field).cloneDeep().merge({
         type: {
           type: "string",
           enum: [null, "linear", "log","pow", "sqrt", "quantile"],
-          supportedTypes: ["Q", "T"]
+          supportedTypes: ["Q"]
         },
         reverse: {
           type: "boolean",
