@@ -19,7 +19,7 @@
       "bin": {"type": "boolean","supportedTypes": ["Q","O"]},
       "aggr": {
        "type": "string",
-       "enum": [null,"count","sum","min","max","count"],
+       "enum": [null,"avg","sum","min","max","count"],
        "supportedTypes": {
         "avg": {"Q": 1,"T": 1},
         "sum": {"Q": 1},
@@ -44,10 +44,6 @@
          "supportedTypes": ["Q"]
         }
        }
-      },
-      "axis": {
-       "type": "object",
-       "properties": {"margin": {"type": "integer","default": 80,"minimum": 0}}
       }
      }
     },
@@ -60,7 +56,7 @@
       "bin": {"type": "boolean","supportedTypes": ["Q","O"]},
       "aggr": {
        "type": "string",
-       "enum": [null,"count","sum","min","max","count"],
+       "enum": [null,"avg","sum","min","max","count"],
        "supportedTypes": {
         "avg": {"Q": 1,"T": 1},
         "sum": {"Q": 1},
@@ -85,10 +81,6 @@
          "supportedTypes": ["Q"]
         }
        }
-      },
-      "axis": {
-       "type": "object",
-       "properties": {"margin": {"type": "integer","default": 80,"minimum": 0}}
       }
      }
     },

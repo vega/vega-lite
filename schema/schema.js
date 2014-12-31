@@ -55,26 +55,7 @@ var typicalEncType = _.chain(encType).cloneDeep().merge({
   }
 }).value();
 
-var x = _.chain(typicalEncType).cloneDeep().merge({
-  type: "object",
-  properties: {
-    axis: {
-      type: "object",
-      properties: {
-        margin: {
-          type: "integer",
-          default: 80,
-          minimum: 0
-        }
-      }
-    },
-    aggr: {
-      type: "string",
-      enum: [null, "count"],
-    }
-  }
-}).value();
-
+var x = _.cloneDeep(typicalEncType);
 var y = _.cloneDeep(x);
 
 var row = _.chain(encType).cloneDeep().merge({

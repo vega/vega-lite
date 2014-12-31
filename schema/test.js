@@ -24,7 +24,6 @@ describe("Schema", function () {
     var errors = _.filter(errors, function(err) {
       return !(
         err.code === 0 ||  // https://github.com/geraintluff/tv4/issues/74
-        err.code === 402 ||  // unique items
         err.code === 1000 && err.dataPath.endsWith("supportedTypes"));
     });
 
