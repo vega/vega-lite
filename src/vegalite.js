@@ -43,8 +43,12 @@ vl.dataTypeNames = ["O","Q","T"].reduce(function(r,x) {
   r[vl.dataTypes[x]] = x; return r;
 },{});
 
+// vl.schema.aggr.enum
 vl.quantAggTypes = ["avg", "sum", "min", "max", "count"];
+
+// vl.schema.timefns
 vl.timeFuncs = ["month", "year", "day", "date", "hour", "minute", "second"];
+// vl.schema.scale_type.enum
 vl.quantScales = ["-", "log","pow", "sqrt", "quantile"];
 
 vl.DEFAULTS = {
@@ -91,10 +95,11 @@ vl.DEFAULTS = {
   _thinOpacity: 0.2,
 
   // scales
-  xZero: true,
-  xReverse: false,
-  yZero: true,
-  yReverse: false,
+  // TODO remove _xZero, ...
+  _xZero: true,
+  _xReverse: false,
+  _yZero: true,
+  _yReverse: false,
   timeScaleNice: "day"
 };
 
@@ -219,7 +224,7 @@ vl.Encoding = (function() {
   }
 
   proto.scale = function(x){
-    return this._enc[x].scale;
+    return this._enc[x].scale || {};
   }
 
   proto.aggr = function(x){
@@ -922,7 +927,7 @@ function scale_type(name, encoding) {
       if (encoding.bin(name)) {
         return "ordinal";
       }
-      return encoding.scale(name) || "linear";
+      return encoding.scale(name).type || "linear";
   }
 }
 
@@ -960,14 +965,16 @@ function scale_domain(name, encoding, opt) {
 }
 
 function scale_range(s, encoding, opt) {
+  var spec = encoding.scale(s.name);
   switch (s.name) {
     case X:
       if (encoding.isType(s.name, O) || encoding.bin(s.name)) {
         s.bandWidth = +encoding.config("bandSize");
       } else {
         s.range = opt.cellWidth ? [0, opt.cellWidth] : "width";
-        s.zero = encoding.config("xZero");
-        s.reverse = encoding.config("xReverse");
+        //TODO zero and reverse should become generic, and we just read default from either the schema or the schema generator
+        s.zero = spec.zero || encoding.config("_xZero");
+        s.reverse = spec.reverse || encoding.config("_xReverse");
       }
       s.round = true;
       if (encoding.isType(s.name, T)){
@@ -981,8 +988,9 @@ function scale_range(s, encoding, opt) {
         s.bandWidth = +encoding.config("bandSize");
       } else {
         s.range = opt.cellHeight ? [opt.cellHeight, 0] : "height";
-        s.zero = encoding.config("yZero");
-        s.reverse = encoding.config("yReverse");
+        //TODO zero and reverse should become generic, and we just read default from either the schema or the schema generator
+        s.zero = spec.zero || encoding.config("_yZero");
+        s.reverse = spec.reverse || encoding.config("_yReverse");
       }
 
       s.round = true;
