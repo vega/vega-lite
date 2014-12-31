@@ -10,7 +10,7 @@ var encType = {
   }
 }
 
-var typicalEncType = _.assign(encType, {
+var typicalEncType = _.chain(encType).cloneDeep().merge({
   type: "object",
   properties: {
     type: {
@@ -53,9 +53,9 @@ var typicalEncType = _.assign(encType, {
       }
     }
   }
-});
+}).value();
 
-var x = _.merge(typicalEncType, {
+var x = _.chain(typicalEncType).cloneDeep().merge({
   type: "object",
   properties: {
     axis: {
@@ -63,7 +63,8 @@ var x = _.merge(typicalEncType, {
       properties: {
         margin: {
           type: "integer",
-          default: 80
+          default: 80,
+          minimum: 0
         }
       }
     },
@@ -72,11 +73,11 @@ var x = _.merge(typicalEncType, {
       enum: [null, "count"],
     }
   }
-});
+}).value();
 
 var y = _.cloneDeep(x);
 
-var row = _.merge(encType, {
+var row = _.chain(encType).cloneDeep().merge({
   type: "object",
   properties: {
     bin: {
@@ -87,14 +88,16 @@ var row = _.merge(encType, {
       enum: [null, "count"]
     }
   }
-});
+}).value();
+
 var col = _.cloneDeep(row);
 
 var size = _.cloneDeep(typicalEncType);
 var color = _.cloneDeep(typicalEncType);
 var alpha = _.cloneDeep(typicalEncType);
 var shape = _.cloneDeep(typicalEncType);
-var text = _.merge(typicalEncType, {
+
+var text = _.chain(typicalEncType).cloneDeep().merge({
   type: "object",
   properties: {
     text: {
@@ -107,7 +110,8 @@ var text = _.merge(typicalEncType, {
         },
         size: {
           type: "integer",
-          default: 10
+          default: 10,
+          minimum: 0
         },
         font: {
           type: "string",
@@ -116,7 +120,7 @@ var text = _.merge(typicalEncType, {
       }
     }
   }
-});
+}).value();
 
 exports.encoding = {
   $schema: "http://json-schema.org/draft-04/schema#",
@@ -125,7 +129,7 @@ exports.encoding = {
   properties: {
     marktype: {
       type: "string",
-      enum: [null, "point", "bar", "line", "area", "circle", "square", "text"]
+      enum: ["point", "bar", "line", "area", "circle", "square", "text"]
     },
     enc: {
       type: "object",
@@ -152,6 +156,9 @@ exports.encoding = {
           type: "boolean"
         },
         dataUrl: {
+          type: "string"
+        },
+        vegaServerTable: {
           type: "string"
         }
       }
