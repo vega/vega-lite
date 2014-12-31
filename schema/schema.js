@@ -27,11 +27,9 @@ var typicalEncType = _.chain(encType).cloneDeep().merge({
       type: "string",
       enum: [null, "avg", "sum", "min", "max", "count"],
       supportedTypes: {
-        avg: {Q: 1, T: 1},
-        sum: {Q: 1},
-        min: {Q: 1, T: 1},
-        max: {Q: 1, T: 1},
-        count: {Q: 1, O: 1, T: 1},
+        Q: [null, "avg", "sum", "min", "max", "count"],
+        O: [null, "count"],
+        T: [null, "avg", "min", "max", "count"]
       }
     },
     scale: {
