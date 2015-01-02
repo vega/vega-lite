@@ -257,8 +257,7 @@ function init() {
   code.append("a").attr({"class": "right action", "href":"#"}).text("load")
     .on("click", function() {
       var s = d3.select("textarea.vlcode").node().value,
-        json = JSON.parse(s);
-      e = vl.Encoding.parseJSON(json);
+      e = new vl.Encoding.fromEncoding(JSON.parse(s));
       loadEncoding(e, update);
     })
 

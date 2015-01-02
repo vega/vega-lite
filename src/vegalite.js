@@ -356,7 +356,7 @@ vl.Encoding = (function() {
     return new Encoding(marktype, enc, cfg);
   }
 
-  Encoding.parseJSON = function(json, extraCfg) {
+  Encoding.fromEncoding = function(json, extraCfg) {
     var enc = vl.duplicate(json.enc);
 
     //convert type from string to bitcode (e.g, O=1)
