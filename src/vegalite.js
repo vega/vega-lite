@@ -387,8 +387,8 @@ vl.getStats = function(data){ // hack
     var stat = minmax(data, k);
     stat.cardinality = uniq(data, k);
     //TODO(kanitw): better type inference here
-    stat.type = (typeof data[0][k] === "number") ? vl.dataTypes.Q :
-      isNaN(Date.parse(data[0][k])) ? vl.dataTypes.O : vl.dataTypes.T;
+    stat.type = (typeof data[0][k] === "number") ? "Q" :
+      isNaN(Date.parse(data[0][k])) ? "O" : "T";
     stat.count = data.length;
     stats[k] = stat;
   });
