@@ -1,5 +1,5 @@
 var schema = require("./schema.json"),
-  encoding = require("./schema.js").encoding,
+  encoding = require("../src/schema.js").encoding,
   assert = require('assert'),
   tv4 = require("tv4"),
   _ = require("lodash"),

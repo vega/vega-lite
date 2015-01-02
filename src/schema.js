@@ -1,8 +1,5 @@
 // Defining Vegalite Encoding's schema
 
-//
-
-
 // TODO use vl.merge, vl.duplicate instead, move to /src as vl.schema
 var _ = require("lodash");
 

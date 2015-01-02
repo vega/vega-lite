@@ -123,28 +123,6 @@ function find(list, pattern) {
   return l.length && l[0] || null;
 }
 
-function uniq(data, field) {
-  var map = {}, count = 0, i, k;
-  for (i=0; i<data.length; ++i) {
-    k = data[i][field];
-    if (!map[k]) {
-      map[k] = 1;
-      count += 1;
-    }
-  }
-  return count;
-}
-
-function minmax(data, field) {
-  var stats = {min: +Infinity, max: -Infinity};
-  for (i=0; i<data.length; ++i) {
-    var v = data[i][field];
-    if (v > stats.max) stats.max = v;
-    if (v < stats.min) stats.min = v;
-  }
-  return stats;
-}
-
 vl.duplicate = function (obj) {
   return JSON.parse(JSON.stringify(obj));
 };
@@ -395,6 +373,28 @@ vl.getStats = function(data){ // hack
   return stats;
 }
 
+function uniq(data, field) {
+  var map = {}, count = 0, i, k;
+  for (i=0; i<data.length; ++i) {
+    k = data[i][field];
+    if (!map[k]) {
+      map[k] = 1;
+      count += 1;
+    }
+  }
+  return count;
+}
+
+function minmax(data, field) {
+  var stats = {min: +Infinity, max: -Infinity};
+  for (i=0; i<data.length; ++i) {
+    var v = data[i][field];
+    if (v > stats.max) stats.max = v;
+    if (v < stats.min) stats.min = v;
+  }
+  return stats;
+}
+
 function getCardinality(encoding, encType, stats){
   var field = encoding.fieldName(encType);
   if (encoding.bin(encType)) {
@@ -545,9 +545,9 @@ vl.toVegaSpec = function(encoding, stats) {
   if (hasRow || hasCol) {
     spec = facet(group, encoding, cellHeight, cellWidth, spec, mdef, stack, stats);
   } else {
-    group.scales = vl.scale.defs(scale_names(mdef.properties.update), encoding,
+    group.scales = vl.scale.defs(vl.scale.names(mdef.properties.update), encoding,
       {stack: stack, stats: stats});
-    group.axes = vl.axis.defs(axis_names(mdef.properties.update), encoding);
+    group.axes = vl.axis.defs(vl.axis.names(mdef.properties.update), encoding);
   }
 
   return spec;
@@ -650,7 +650,7 @@ function facet(group, encoding, cellHeight, cellWidth, spec, mdef, stack, stats)
     // assuming equal cellWidth here
     // TODO: support heterogenous cellWidth (maybe by using multiple scales?)
     spec.scales = vl.scale.defs(
-      scale_names(enter).concat(scale_names(mdef.properties.update)),
+      vl.scale.names(enter).concat(vl.scale.names(mdef.properties.update)),
       encoding,
       {cellWidth: cellWidth, cellHeight: cellHeight, stack: stack, facet:true, stats: stats}
     ); // row/col scales + cell scales
@@ -829,22 +829,25 @@ function stacking(spec, encoding, mdef, facets) {
   return val; //return stack encoding
 }
 
-function axis_names(props) {
-  return vl.keys(vl.keys(props).reduce(function(a, x) {
-    var s = props[x].scale;
-    if (s===X || s===Y) a[props[x].scale] = 1;
-    return a;
-  }, {}));
-}
 
 // BEGIN: AXES
 
 vl.axis = {};
+
 vl.axis.defs = function(names, encoding, opt) {
   return names.reduce(function(a, name) {
     a.push(axis_def(name, encoding, opt));
     return a;
   }, []);
+}
+
+
+vl.axis.names = function (props) {
+  return vl.keys(vl.keys(props).reduce(function(a, x) {
+    var s = props[x].scale;
+    if (s===X || s===Y) a[props[x].scale] = 1;
+    return a;
+  }, {}));
 }
 
 function axis_def(name, encoding, opt){
@@ -889,7 +892,7 @@ function axis_def(name, encoding, opt){
 // BEGIN: SCALE
 vl.scale = {};
 
-function scale_names(props) {
+vl.scale.names = function (props) {
   return vl.keys(vl.keys(props).reduce(function(a, x) {
     if (props[x] && props[x].scale) a[props[x].scale] = 1;
     return a;
