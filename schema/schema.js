@@ -19,7 +19,8 @@ schema.aggr = {
   supportedEnums: {
     Q: [null, "avg", "sum", "min", "max", "count"],
     O: [null, "count"],
-    T: [null, "avg", "min", "max", "count"]
+    T: [null, "avg", "min", "max", "count"],
+    "": [null, "count"]
   }
 };
 
