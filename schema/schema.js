@@ -15,33 +15,30 @@ schema.marktype = {
 
 schema.aggr = {
   type: "string",
-  enum: [null, "avg", "sum", "min", "max", "count"],
+  enum: ["avg", "sum", "min", "max", "count"],
   supportedEnums: {
-    Q: [null, "avg", "sum", "min", "max", "count"],
-    O: [null, "count"],
-    T: [null, "avg", "min", "max", "count"],
-    "": [null, "count"]
-  }
+    Q: ["avg", "sum", "min", "max", "count"],
+    O: ["count"],
+    T: ["avg", "min", "max", "count"],
+    "": ["count"],
+  },
+  supportedTypes: {"Q": true, "O": true, "T": true, "": true}
 };
 
 schema.timefns = ["month", "year", "day", "date", "hour", "minute", "second"];
 
 schema.fn = {
   type: "string",
-  enum: [null].concat(schema.timefns),
-  supportedTypes: {}
+  enum: schema.timefns,
+  supportedTypes: {"T": true}
 }
-
-schema.timefns.forEach(function(timeFn){
-  schema.fn.supportedTypes[timeFn] = {T:1};
-});
 
 //TODO(kanitw): add other type of function here
 
 schema.scale_type = {
   type: "string",
   enum: ["linear", "log","pow", "sqrt", "quantile"],
-  supportedTypes: ["Q"]
+  supportedTypes: {"Q": true}
 };
 
 schema.field = {
@@ -63,7 +60,7 @@ var typicalField = _.chain(schema.field).cloneDeep().merge({
     },
     bin: {
       type: "boolean",
-      supportedTypes: ["Q", "O"]
+      supportedTypes: {"Q": true, "O": true}
     },
     aggr: schema.aggr,
     fn: schema.fn,
@@ -76,7 +73,7 @@ var typicalField = _.chain(schema.field).cloneDeep().merge({
           type: "boolean",
           description: "Include zero",
           default: false,
-          supportedTypes: ["Q"]
+          supportedTypes: {"Q": true}
         }
       }
     }
@@ -91,11 +88,13 @@ var onlyOrdinalField = _.chain(schema.field).cloneDeep().merge({
       enum: ["O"]
     },
     bin: {
-      type: "boolean"
+      type: "boolean",
+      supportedTypes: {"O": true}
     },
     aggr: {
       type: "string",
-      enum: [null, "count"]
+      enum: ["count"],
+      supportedTypes: {"O": true}
     }
   }
 }).value();
@@ -120,16 +119,19 @@ var text = _.chain(typicalField).cloneDeep().merge({
         weight: {
           type: "string",
           enum: ["normal", "bold"],
-          default: "normal"
+          default: "normal",
+          supportedTypes: {"T": true}
         },
         size: {
           type: "integer",
           default: 10,
-          minimum: 0
+          minimum: 0,
+          supportedTypes: {"T": true}
         },
         font: {
           type: "string",
-          default: "Halvetica Neue"
+          default: "Halvetica Neue",
+          supportedTypes: {"T": true}
         }
       }
     }
