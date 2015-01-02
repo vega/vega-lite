@@ -356,15 +356,15 @@ vl.Encoding = (function() {
     return new Encoding(marktype, enc, cfg);
   }
 
-  Encoding.fromEncoding = function(json, extraCfg) {
-    var enc = vl.duplicate(json.enc);
+  Encoding.fromEncoding = function(encoding, extraCfg) {
+    var enc = vl.duplicate(encoding.enc);
 
     //convert type from string to bitcode (e.g, O=1)
     for(var e in enc){
       enc[e].type = vl.dataTypes[enc[e].type];
     }
 
-    return new Encoding(json.marktype, enc, vl.merge(json.cfg, extraCfg || {}));
+    return new Encoding(encoding.marktype, enc, vl.merge(encoding.cfg, extraCfg || {}));
   }
 
   return Encoding;
