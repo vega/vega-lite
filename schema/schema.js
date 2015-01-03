@@ -138,7 +138,7 @@ var text = _.chain(typicalField).cloneDeep().merge({
 
 exports.schema = schema;
 
-exports.encoding = {
+exports.spec = {
   $schema: "http://json-schema.org/draft-04/schema#",
   type: "object",
   required: ["marktype", "enc", "cfg"],
