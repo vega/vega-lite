@@ -10,6 +10,7 @@ var schema = {};
 
 schema.marktype = {
   type: "string",
+  default: "point",
   enum: ["point", "bar", "line", "area", "circle", "square", "text"]
 };
 
