@@ -140,11 +140,11 @@ var text = _.chain(typicalField).cloneDeep().merge({
 
 var cfg = {
   type: "object",
+  required: ["dataFormatType"],
   properties: {
     dataFormatType: {
       type: "string",
-      enum: ["json", "csv"],
-      default: "json"
+      enum: ["json", "csv"]
     },
     useVegaServer: {
       type: "boolean",
