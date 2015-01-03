@@ -257,7 +257,7 @@ function init() {
   code.append("a").attr({"class": "right action", "href":"#"}).text("load")
     .on("click", function() {
       var s = d3.select("textarea.vlcode").node().value,
-      e = new vl.Encoding.fromEncoding(JSON.parse(s));
+      e = new vl.Encoding.fromSpec(JSON.parse(s));
       loadEncoding(e, update);
     })
 
@@ -512,7 +512,7 @@ function update() {
     spec = vl.toVegaSpec(enc, stats);
   }
   d3.select(".shorthand").node().value = enc.toShorthand();
-  d3.select("textarea.vlcode").node().value = JSON.stringify(enc.toJSON(), null, "  ", 80);
+  d3.select("textarea.vlcode").node().value = JSON.stringify(enc.toSpec(), null, "  ", 80);
   d3.select("textarea.vgcode").node().value = JSON.stringify(spec, null, "  ", 80);
   parse(self.spec);
 }

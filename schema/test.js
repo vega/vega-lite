@@ -1,5 +1,5 @@
 var schema = require("./schema.json"),
-  encoding = require("./schema.js").encoding,
+  specSchema = require("./schema.js").spec,
   assert = require('assert'),
   tv4 = require("tv4"),
   _ = require("lodash"),
@@ -15,7 +15,7 @@ describe("Schema", function () {
     // validate schema against meta schema
     tv4.addSchema("http://json-schema.org/draft-04/schema", schema);
 
-    var result = tv4.validateMultiple(encoding, schema, true, true);
+    var result = tv4.validateMultiple(specSchema, schema, true, true);
     var errors = result.errors;
 
     console.log("Before:", errors.length);

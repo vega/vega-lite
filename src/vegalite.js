@@ -280,24 +280,25 @@ vl.Encoding = (function() {
     return this._cfg[name];
   };
 
-  proto.toJSON = function(space, excludeConfig){
-    var enc = vl.duplicate(this._enc), json;
+  proto.toSpec = function(excludeConfig){
+    var enc = vl.duplicate(this._enc),
+      spec;
 
     // convert type's bitcode to type name
     for(var e in enc){
       enc[e].type = vl.dataTypeNames[enc[e].type];
     }
 
-    json = {
+    spec = {
       marktype: this._marktype,
       enc: enc
     }
 
     if(!excludeConfig){
-      json.cfg = vl.duplicate(this._cfg)
+      spec.cfg = vl.duplicate(this._cfg)
     }
 
-    return json;
+    return spec;
   };
 
   proto.toShorthand = function(){
@@ -356,15 +357,15 @@ vl.Encoding = (function() {
     return new Encoding(marktype, enc, cfg);
   }
 
-  Encoding.fromEncoding = function(json, extraCfg) {
-    var enc = vl.duplicate(json.enc);
+  Encoding.fromSpec = function(spec, extraCfg) {
+    var enc = vl.duplicate(spec.enc);
 
     //convert type from string to bitcode (e.g, O=1)
     for(var e in enc){
       enc[e].type = vl.dataTypes[enc[e].type];
     }
 
-    return new Encoding(json.marktype, enc, vl.merge(json.cfg, extraCfg || {}));
+    return new Encoding(spec.marktype, enc, vl.merge(spec.cfg, extraCfg || {}));
   }
 
   return Encoding;
