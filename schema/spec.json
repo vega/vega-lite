@@ -5,6 +5,7 @@
  "properties": {
   "marktype": {
    "type": "string",
+   "default": "point",
    "enum": ["point","bar","line","area","circle","square","text"]
   },
   "enc": {
@@ -319,10 +320,11 @@
   "cfg": {
    "type": "object",
    "properties": {
-    "dataFormatType": {"type": "string","enum": ["json","csv"]},
-    "useVegaServer": {"type": "boolean"},
+    "dataFormatType": {"type": "string","enum": ["json","csv"],"default": "json"},
+    "useVegaServer": {"type": "boolean","default": false},
     "dataUrl": {"type": "string"},
-    "vegaServerTable": {"type": "string"}
+    "vegaServerTable": {"type": "string"},
+    "vegaServerUrl": {"type": "string","default": "http://localhost:3001"}
    }
   }
  }
