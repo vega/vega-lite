@@ -138,6 +138,30 @@ var text = _.chain(typicalField).cloneDeep().merge({
   }
 }).value();
 
+var cfg = {
+  type: "object",
+  properties: {
+    dataFormatType: {
+      type: "string",
+      enum: ["json", "csv"]
+    },
+    useVegaServer: {
+      type: "boolean",
+      default: false
+    },
+    dataUrl: {
+      type: "string"
+    },
+    vegaServerTable: {
+      type: "string"
+    },
+    vegaServerUrl: {
+      type: "string",
+      default: "http://localhost:3001"
+    }
+  }
+}
+
 exports.schema = schema;
 
 exports.encoding = {
@@ -160,23 +184,6 @@ exports.encoding = {
         text: text
       }
     },
-    cfg: {
-      type: "object",
-      properties: {
-        dataFormatType: {
-          type: "string",
-          enum: ["json", "csv"]
-        },
-        useVegaServer: {
-          type: "boolean"
-        },
-        dataUrl: {
-          type: "string"
-        },
-        vegaServerTable: {
-          type: "string"
-        }
-      }
-    }
+    cfg: cfg
   }
 };
