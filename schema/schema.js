@@ -10,7 +10,6 @@ var schema = {};
 
 schema.marktype = {
   type: "string",
-  default: "point",
   enum: ["point", "bar", "line", "area", "circle", "square", "text"]
 };
 
@@ -142,8 +141,7 @@ var cfg = {
   properties: {
     dataFormatType: {
       type: "string",
-      enum: ["json", "csv"],
-      default: "json"
+      enum: ["json", "csv"]
     },
     useVegaServer: {
       type: "boolean",
