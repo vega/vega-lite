@@ -865,7 +865,7 @@ function axis_def(name, encoding, opt){
 
   if (encoding.axis(name).grid) {
     axis.grid = true;
-    axis.layer = "background";
+    axis.layer = "back";
   }
 
   if(isRow || isCol){
