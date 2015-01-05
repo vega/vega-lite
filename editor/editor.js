@@ -80,7 +80,7 @@ function init() {
   for (param in params) {
     if (param in vl.DEFAULTS) {
       var value = params[param];
-      vl.DEFAULTS[param] = value == "true" ? true : (isNumber(value) ? parseFloat(value) : value);
+      vl.DEFAULTS[param] = parseConfigValue(value);
     }
   }
 
@@ -672,11 +672,17 @@ function encodings(cfg) {
   d3.selectAll("#ctrl div.cfg input").each(function(d) {
     var val = this.value;
     if (val && val.length > 0) {
-      cfg[d] = val == "true" ? true :
-        val == "false" ? false : val;
+      cfg[d] = parseConfigValue(val);
     }
   });
   return new vl.Encoding(marktype, enc, cfg);
+}
+
+function parseConfigValue(value) {
+  return value === "true" ? true
+    : value === "false" ? false
+    : isNumber(value) ? parseFloat(value)
+    : value;
 }
 
 function parse(spec) {
