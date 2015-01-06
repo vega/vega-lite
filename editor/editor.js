@@ -34,6 +34,19 @@ var vled = {
   spec: {}
 }
 
+function getParams() {
+  var params = location.search.slice(1);
+
+  // remove trailing slash that chrome adds automatically
+  if (params[params.length-1] == "/") params = params.substring(0, params.length-1);
+
+  return params.split("&")
+    .map(function(x) { return x.split("="); })
+    .reduce(function(a, b) {
+      a[b[0]] = b[1]; return a;
+    }, {});
+};
+
 vled.format = function() {
   var el = d3.select("#vlspec"),
       spec = JSON.parse(el.property("value")),
@@ -98,6 +111,7 @@ vled.datasetChanged = function(dataset, callback) {
 }
 
 vled.init = function() {
+  var params = getParams();
 
   // Specification drop-down menu
   var sel = d3.select("#sel_spec");
@@ -119,7 +133,9 @@ vled.init = function() {
   d3.select("#btn_spec_parse").on("click", vled.parse);
   d3.select("#btn_shorthand_parse").on("click", vled.parseShorthand);
 
-  document.getElementById("shorthand").value = "point.x-bin_yield-Q.y-variety-O.size-count_-Q.color-year-O";
+  var initialShortHand = params.shortHand ? params.shortHand : "point.x-bin_yield-Q.y-variety-O.size-count_-Q.color-year-O";
+
+  document.getElementById("shorthand").value = initialShortHand;
   vled.datasetChanged(DATASETS[0], function() {
     vled.parseShorthand();
   });
