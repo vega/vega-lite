@@ -1,100 +1,96 @@
 * {
-  font-family: Helvetica Neue;
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-size: 11pt;
 }
 
-a, a:visited{
-  color: #1a4183;
+html, body {
+  height: 100%;
 }
 
-#ctrl {
-  background-color: #eee;
-  padding: 0.5em;
-  margin-bottom: 1em;
-  float:left;
-  width: 330px;
+body {
+  margin: 0px;
 }
 
-#ctrl .mark {
-  margin-bottom: 0.3em;
-}
-#ctrl .toggles {
-  margin-top: 0.8em;
-}
-#ctrl .shorthand {
-  margin-bottom: 0.5em;
-  width:290px;
+#content {
+  height: 100%;
+  vertical-align: bottom;
 }
 
-#ctrl .main{
-  margin-bottom: 1em;
-}
-
-#ctrl textarea.vlcode{
-  width: 290px;
-  height: 175px;
-  padding-right: 0.3em;
-}
-
-#ctrl textarea.vgcode{
-  width: 290px;
-  height: 350px;
-  padding-right: 0.3em;
-}
-
-#ctrl span{
-  font-weight: 500;
-  font-size: 14px;
-}
-
-#ctrl .action{
+.pre {
+  font-family: Monaco, Courier New;
   font-size: 10px;
-  margin-left: 3px;
+  white-space: pre;
+  overflow: hidden;
+  resize: none;
+  width: 477px;
+  /* margin: 8px; */
 }
 
-#ctrl a.action{
-  text-decoration: none;
+.mod {
+  position: relative;
+  vertical-align: top;
+  /* height: 100%; */
 }
 
-#ctrl .toggle{
-  display: inline-block;
-  width: 55px;
+.mod_header {
+  padding: 4px;
+  background-color: #444;
+  color: #fff;
 }
 
-#ctrl span.label {
-  display: inline-block;
-  width: 60px;
+.mod_title {
+  line-height: 14pt;
 }
 
-#ctrl .cfg span.label {
-  width: 120px;
+.mod_title a {
+  color: #fff;
+  cursor: pointer;
+  margin-right: 5px;
+}
+.mod_title a.active {
+  color: #fff;
+}
+.mod_title a:hover {
+  color: #fff;
 }
 
-#ctrl label span{
-  font-size: 12px;
-  width: 100px;
+.mod_ctrls {
+  position: absolute;
+  right: 8px;
+  top: 2px;
 }
 
-#ctrl select {
-  width: 80px;
+.panel_header {
+  margin: 12px 0 4px 0;
+  padding: 4px;
+  position: relative;
 }
-#ctrl select.aggr {
-  width: 60px;
-}
-#ctrl select.type {
-  width: 40px;
-}
-#ctrl select.data {
-  width: 210px;
-}
-#ctrl select.scale{
-  width: 45px;
-}
-#ctrl span.header { width: 80px; }
-#ctrl span.header.h0 { width: 60px; }
-#ctrl span.header.h1 { width: 60px; }
-#ctrl span.header.h3 { width: 40px; }
-#ctrl span.header.h4 { width: 45px; }
 
-#vis {
-  margin-left: 350px;
+.panel_header h2 {
+  margin: 0;
+}
+
+#mod_vis {
+  margin-left: 515px;
+}
+
+#mod_spec {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 500px;
+  background-color: #eee;
+}
+
+#spec {
+  width: 498px;
+  min-height: 200px;
+}
+
+#vis div {
+  border: 1px dashed #ccc;
+}
+
+.mod_content {
+  padding: 0 8px 8px 8px;
 }
