@@ -22,7 +22,7 @@ body {
   white-space: pre;
   overflow: hidden;
   resize: none;
-  width: 477px;
+  width: 478px;
   /* margin: 8px; */
 }
 
@@ -93,4 +93,12 @@ body {
 
 .mod_content {
   padding: 0 8px 8px 8px;
+}
+
+input {
+  font-size: 10px;
+}
+
+#shorthand {
+  width: 478px;
 }
