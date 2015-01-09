@@ -98,6 +98,8 @@ vl.DEFAULTS = {
   timeScaleNice: "day"
 };
 
+var MAX_BINS = 20;
+
 vl.keys = function (obj) {
   var k = [], x;
   for (x in obj) k.push(x);
@@ -110,6 +112,20 @@ vl.vals = function (obj) {
   return v;
 }
 
+function range(start, stop, step) {
+  if (arguments.length < 3) {
+    step = 1;
+    if (arguments.length < 2) {
+      stop = start;
+      start = 0;
+    }
+  }
+  if ((stop - start) / step == Infinity) throw new Error("infinite range");
+  var range = [], i = -1, j;
+  if (step < 0) while ((j = start + step * ++i) > stop) range.push(j);
+  else while ((j = start + step * ++i) < stop) range.push(j);
+  return range;
+}
 
 function find(list, pattern) {
   var l = list.filter(function(x) {
@@ -166,6 +182,14 @@ vl.merge = function(dest, src){
     return c;
   }, dest);
 };
+
+function getbins(stats) {
+  return vg.bins({
+    min: stats.min,
+    max: stats.max,
+    maxbins: MAX_BINS
+  });
+}
 
 // ----
 vl.Encoding = (function() {
@@ -393,17 +417,17 @@ vl.getStats = function(data){ // hack
 function getCardinality(encoding, encType, stats){
   var field = encoding.fieldName(encType);
   if (encoding.bin(encType)) {
-    var bins = vg.data.bin().bins(stats[field], {maxbins: 20});
-    return (bins.stop-bins.start)/bins.step;
+    var bins = getbins(stats[field]);
+    return (bins.stop - bins.start) / bins.step;
   }
   return stats[field].cardinality;
 }
 
 function setSize(encoding, stats) {
   var hasRow = encoding.has(ROW),
-    hasCol = encoding.has(COL),
-    hasX = encoding.has(X),
-    hasY = encoding.has(Y);
+      hasCol = encoding.has(COL),
+      hasX = encoding.has(X),
+      hasY = encoding.has(Y);
 
   // HACK to set chart size
   // NOTE: this fails for plots driven by derived values (e.g., aggregates)
@@ -441,6 +465,7 @@ function setSize(encoding, stats) {
   }
   // Cell bands use rangeBands(). There are n-1 padding.  Outerpadding = 0 for cells
   height = cellHeight * ((1 + cellPadding) * (rowCardinality-1) + 1);
+
   return {
     cellWidth: cellWidth,
     cellHeight: cellHeight,
@@ -470,7 +495,7 @@ vl.getDataUrl = function getDataUrl(encoding, stats) {
       obj.aggr = field.aggr
     }
     if (field.bin) {
-      obj.binSize = vg.data.bin().bins(stats[field.name], {maxbins: 20}).step;
+      obj.binSize = getbins(stats[field.name]).step;
     }
     fields.push(obj);
   });
@@ -718,7 +743,8 @@ function binning(spec, encoding, opt) {
     spec.transform.push({
       type: "bin",
       field: "data." + d,
-      output: "bin_" + d
+      output: "data.bin_" + d,
+      maxbins: MAX_BINS
     });
   });
   return bins;
@@ -900,7 +926,7 @@ vl.scale.defs = function (names, encoding, opt) {
       type: scale_type(name, encoding),
       domain: scale_domain(name, encoding, opt)
     };
-    if (s.type === "ordinal") {
+    if (s.type === "ordinal" && !encoding.bin(name)) {
       s.sort = true;
     }
 
@@ -941,13 +967,9 @@ function scale_domain(name, encoding, opt) {
   if (encoding.bin(name)) {
     // TODO: add includeEmptyConfig here
     if (opt.stats) {
-      var bins = vg.data.bin().bins(opt.stats[encoding.fieldName(name)], {maxbins: 20});
-      var domain = [];
-      console.log(bins)
-      for (var i = bins.start; i < bins.stop; i+=bins.step) {
-        domain.push(i);
-      }
-      return domain;
+      var bins = getbins(opt.stats[encoding.fieldName(name)]);
+      var domain = range(bins.start, bins.stop, bins.step);
+      return name===Y ? domain.reverse() : domain;
     }
   }
 
