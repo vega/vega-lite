@@ -11,9 +11,56 @@
 
 </head>
 <body>
-  <div id="ctrl">
+  <div id="content">
+    <div id="mod_spec" class="mod">
+      <div class="mod_header">
+        <div class="mod_ctrls">
+            <select id="sel_spec"></select>
+          </div>
+        <div class="mod_title">
+          <a id="link_spec" class="active">Vegalite</a>
+        </div>
+      </div>
+      <div class="mod_content">
+        <div class="panel_header">
+          <h2>Shorthand</h2>
+          <div class="mod_ctrls">
+            <input type="button" id="btn_shorthand_parse" value="Parse"</input>
+          </div>
+        </div>
+        <input id="shorthand" type="text">
+
+        <div class="panel_header">
+          <h2>Vegalite spec</h2>
+          <div class="mod_ctrls">
+            <input type="button" id="btn_spec_format" value="Format"</input>
+            <input type="button" id="btn_spec_parse" value="Parse"</input>
+          </div>
+        </div>
+        <textarea id="vlspec" class="pre" spellcheck="false"></textarea>
+
+        <div class="panel_header">
+          <h2>Vega spec</h2>
+        </div>
+        <textarea id="vgspec" class="pre" spellcheck="false"></textarea>
+      </div>
+    </div>
+    <div id="mod_vis" class="mod">
+      <div class="mod_header">
+        <div class="mod_title">Visualization</div>
+      </div>
+      <div id="vis"></div>
+    </div>
+    <br clear="all"/>
   </div>
-  <div id="vis"></div>
   <script src="editor/editor.js"></script>
+  <script src="editor/jquery-2.1.3.min.js"></script>
+  <script src="editor/jquery.autosize.js"></script>
+
+  <script>
+    $(document).ready(function(){
+      $('textarea').autosize();    
+    });
+  </script>
 </body>
 </html>

@@ -227,6 +227,10 @@ vl.Encoding = (function() {
     return this._enc[x].scale || {};
   }
 
+  proto.axis = function(x){
+    return this._enc[x].axis || {};
+  }
+
   proto.aggr = function(x){
     return this._enc[x].aggr;
   }
@@ -859,6 +863,11 @@ function axis_def(name, encoding, opt){
     scale: name,
     ticks: 3 //TODO(kanitw): better determine # of ticks
   };
+
+  if (encoding.axis(name).grid) {
+    axis.grid = true;
+    axis.layer = "back";
+  }
 
   if(isRow || isCol){
     axis.properties = {

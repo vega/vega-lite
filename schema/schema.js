@@ -99,7 +99,18 @@ var onlyOrdinalField = _.chain(schema.field).cloneDeep().merge({
   }
 }).value();
 
-var x = _.cloneDeep(typicalField);
+var fieldWithAxis = _.chain(typicalField).cloneDeep().merge({
+  properties: {
+    axis: {
+      type: "object",
+      properties: {
+        grid: { type: "boolean", default: false }
+      }
+    }
+  }
+}).value();
+
+var x = _.cloneDeep(fieldWithAxis);
 var y = _.cloneDeep(x);
 
 var row = _.cloneDeep(onlyOrdinalField);
