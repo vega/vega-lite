@@ -4,7 +4,7 @@
   "description": "Vegalite Schema and Schema Generator.",
   "main": "schema.js",
   "scripts": {
-    "generate": "node schemagen.js > encoding.json",
+    "generate": "node schemagen.js > spec.json",
     "test": "mocha -R spec test.js"
   },
   "author": "Dominik Moritz",
