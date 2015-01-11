@@ -16,29 +16,22 @@
      "properties": {
       "name": {"type": "string"},
       "type": {"type": "string","enum": ["O","Q","T"]},
-      "bin": {"type": "boolean","supportedTypes": ["Q","O"]},
+      "bin": {"type": "boolean","supportedTypes": {"Q": true,"O": true}},
       "aggr": {
        "type": "string",
-       "enum": [null,"avg","sum","min","max","count"],
+       "enum": ["avg","sum","min","max","count"],
        "supportedEnums": {
-        "Q": [null,"avg","sum","min","max","count"],
-        "O": [null,"count"],
-        "T": [null,"avg","min","max","count"],
-        "": [null,"count"]
-       }
+        "Q": ["avg","sum","min","max","count"],
+        "O": ["count"],
+        "T": ["avg","min","max","count"],
+        "": ["count"]
+       },
+       "supportedTypes": {"Q": true,"O": true,"T": true,"": true}
       },
       "fn": {
        "type": "string",
-       "enum": [null,"month","year","day","date","hour","minute","second"],
-       "supportedTypes": {
-        "month": {"T": 1},
-        "year": {"T": 1},
-        "day": {"T": 1},
-        "date": {"T": 1},
-        "hour": {"T": 1},
-        "minute": {"T": 1},
-        "second": {"T": 1}
-       }
+       "enum": ["month","year","day","date","hour","minute","second"],
+       "supportedTypes": {"T": true}
       },
       "scale": {
        "type": "object",
@@ -46,14 +39,14 @@
         "type": {
          "type": "string",
          "enum": ["linear","log","pow","sqrt","quantile"],
-         "supportedTypes": ["Q"]
+         "supportedTypes": {"Q": true}
         },
         "reverse": {"type": "boolean","default": false},
         "zero": {
          "type": "boolean",
          "description": "Include zero",
          "default": false,
-         "supportedTypes": ["Q"]
+         "supportedTypes": {"Q": true}
         }
        }
       }
@@ -65,29 +58,22 @@
      "properties": {
       "name": {"type": "string"},
       "type": {"type": "string","enum": ["O","Q","T"]},
-      "bin": {"type": "boolean","supportedTypes": ["Q","O"]},
+      "bin": {"type": "boolean","supportedTypes": {"Q": true,"O": true}},
       "aggr": {
        "type": "string",
-       "enum": [null,"avg","sum","min","max","count"],
+       "enum": ["avg","sum","min","max","count"],
        "supportedEnums": {
-        "Q": [null,"avg","sum","min","max","count"],
-        "O": [null,"count"],
-        "T": [null,"avg","min","max","count"],
-        "": [null,"count"]
-       }
+        "Q": ["avg","sum","min","max","count"],
+        "O": ["count"],
+        "T": ["avg","min","max","count"],
+        "": ["count"]
+       },
+       "supportedTypes": {"Q": true,"O": true,"T": true,"": true}
       },
       "fn": {
        "type": "string",
-       "enum": [null,"month","year","day","date","hour","minute","second"],
-       "supportedTypes": {
-        "month": {"T": 1},
-        "year": {"T": 1},
-        "day": {"T": 1},
-        "date": {"T": 1},
-        "hour": {"T": 1},
-        "minute": {"T": 1},
-        "second": {"T": 1}
-       }
+       "enum": ["month","year","day","date","hour","minute","second"],
+       "supportedTypes": {"T": true}
       },
       "scale": {
        "type": "object",
@@ -95,14 +81,14 @@
         "type": {
          "type": "string",
          "enum": ["linear","log","pow","sqrt","quantile"],
-         "supportedTypes": ["Q"]
+         "supportedTypes": {"Q": true}
         },
         "reverse": {"type": "boolean","default": false},
         "zero": {
          "type": "boolean",
          "description": "Include zero",
          "default": false,
-         "supportedTypes": ["Q"]
+         "supportedTypes": {"Q": true}
         }
        }
       }
@@ -114,8 +100,8 @@
      "properties": {
       "name": {"type": "string"},
       "type": {"type": "string","enum": ["O"]},
-      "bin": {"type": "boolean"},
-      "aggr": {"type": "string","enum": [null,"count"]}
+      "bin": {"type": "boolean","supportedTypes": {"O": true}},
+      "aggr": {"type": "string","enum": ["count"],"supportedTypes": {"O": true}}
      }
     },
     "col": {
@@ -124,8 +110,8 @@
      "properties": {
       "name": {"type": "string"},
       "type": {"type": "string","enum": ["O"]},
-      "bin": {"type": "boolean"},
-      "aggr": {"type": "string","enum": [null,"count"]}
+      "bin": {"type": "boolean","supportedTypes": {"O": true}},
+      "aggr": {"type": "string","enum": ["count"],"supportedTypes": {"O": true}}
      }
     },
     "size": {
@@ -134,29 +120,22 @@
      "properties": {
       "name": {"type": "string"},
       "type": {"type": "string","enum": ["O","Q","T"]},
-      "bin": {"type": "boolean","supportedTypes": ["Q","O"]},
+      "bin": {"type": "boolean","supportedTypes": {"Q": true,"O": true}},
       "aggr": {
        "type": "string",
-       "enum": [null,"avg","sum","min","max","count"],
+       "enum": ["avg","sum","min","max","count"],
        "supportedEnums": {
-        "Q": [null,"avg","sum","min","max","count"],
-        "O": [null,"count"],
-        "T": [null,"avg","min","max","count"],
-        "": [null,"count"]
-       }
+        "Q": ["avg","sum","min","max","count"],
+        "O": ["count"],
+        "T": ["avg","min","max","count"],
+        "": ["count"]
+       },
+       "supportedTypes": {"Q": true,"O": true,"T": true,"": true}
       },
       "fn": {
        "type": "string",
-       "enum": [null,"month","year","day","date","hour","minute","second"],
-       "supportedTypes": {
-        "month": {"T": 1},
-        "year": {"T": 1},
-        "day": {"T": 1},
-        "date": {"T": 1},
-        "hour": {"T": 1},
-        "minute": {"T": 1},
-        "second": {"T": 1}
-       }
+       "enum": ["month","year","day","date","hour","minute","second"],
+       "supportedTypes": {"T": true}
       },
       "scale": {
        "type": "object",
@@ -164,14 +143,14 @@
         "type": {
          "type": "string",
          "enum": ["linear","log","pow","sqrt","quantile"],
-         "supportedTypes": ["Q"]
+         "supportedTypes": {"Q": true}
         },
         "reverse": {"type": "boolean","default": false},
         "zero": {
          "type": "boolean",
          "description": "Include zero",
          "default": false,
-         "supportedTypes": ["Q"]
+         "supportedTypes": {"Q": true}
         }
        }
       }
@@ -183,29 +162,22 @@
      "properties": {
       "name": {"type": "string"},
       "type": {"type": "string","enum": ["O","Q","T"]},
-      "bin": {"type": "boolean","supportedTypes": ["Q","O"]},
+      "bin": {"type": "boolean","supportedTypes": {"Q": true,"O": true}},
       "aggr": {
        "type": "string",
-       "enum": [null,"avg","sum","min","max","count"],
+       "enum": ["avg","sum","min","max","count"],
        "supportedEnums": {
-        "Q": [null,"avg","sum","min","max","count"],
-        "O": [null,"count"],
-        "T": [null,"avg","min","max","count"],
-        "": [null,"count"]
-       }
+        "Q": ["avg","sum","min","max","count"],
+        "O": ["count"],
+        "T": ["avg","min","max","count"],
+        "": ["count"]
+       },
+       "supportedTypes": {"Q": true,"O": true,"T": true,"": true}
       },
       "fn": {
        "type": "string",
-       "enum": [null,"month","year","day","date","hour","minute","second"],
-       "supportedTypes": {
-        "month": {"T": 1},
-        "year": {"T": 1},
-        "day": {"T": 1},
-        "date": {"T": 1},
-        "hour": {"T": 1},
-        "minute": {"T": 1},
-        "second": {"T": 1}
-       }
+       "enum": ["month","year","day","date","hour","minute","second"],
+       "supportedTypes": {"T": true}
       },
       "scale": {
        "type": "object",
@@ -213,14 +185,14 @@
         "type": {
          "type": "string",
          "enum": ["linear","log","pow","sqrt","quantile"],
-         "supportedTypes": ["Q"]
+         "supportedTypes": {"Q": true}
         },
         "reverse": {"type": "boolean","default": false},
         "zero": {
          "type": "boolean",
          "description": "Include zero",
          "default": false,
-         "supportedTypes": ["Q"]
+         "supportedTypes": {"Q": true}
         }
        }
       }
@@ -232,29 +204,22 @@
      "properties": {
       "name": {"type": "string"},
       "type": {"type": "string","enum": ["O","Q","T"]},
-      "bin": {"type": "boolean","supportedTypes": ["Q","O"]},
+      "bin": {"type": "boolean","supportedTypes": {"Q": true,"O": true}},
       "aggr": {
        "type": "string",
-       "enum": [null,"avg","sum","min","max","count"],
+       "enum": ["avg","sum","min","max","count"],
        "supportedEnums": {
-        "Q": [null,"avg","sum","min","max","count"],
-        "O": [null,"count"],
-        "T": [null,"avg","min","max","count"],
-        "": [null,"count"]
-       }
+        "Q": ["avg","sum","min","max","count"],
+        "O": ["count"],
+        "T": ["avg","min","max","count"],
+        "": ["count"]
+       },
+       "supportedTypes": {"Q": true,"O": true,"T": true,"": true}
       },
       "fn": {
        "type": "string",
-       "enum": [null,"month","year","day","date","hour","minute","second"],
-       "supportedTypes": {
-        "month": {"T": 1},
-        "year": {"T": 1},
-        "day": {"T": 1},
-        "date": {"T": 1},
-        "hour": {"T": 1},
-        "minute": {"T": 1},
-        "second": {"T": 1}
-       }
+       "enum": ["month","year","day","date","hour","minute","second"],
+       "supportedTypes": {"T": true}
       },
       "scale": {
        "type": "object",
@@ -262,14 +227,14 @@
         "type": {
          "type": "string",
          "enum": ["linear","log","pow","sqrt","quantile"],
-         "supportedTypes": ["Q"]
+         "supportedTypes": {"Q": true}
         },
         "reverse": {"type": "boolean","default": false},
         "zero": {
          "type": "boolean",
          "description": "Include zero",
          "default": false,
-         "supportedTypes": ["Q"]
+         "supportedTypes": {"Q": true}
         }
        }
       }
@@ -281,8 +246,8 @@
      "properties": {
       "name": {"type": "string"},
       "type": {"type": "string","enum": ["O"]},
-      "bin": {"type": "boolean"},
-      "aggr": {"type": "string","enum": [null,"count"]}
+      "bin": {"type": "boolean","supportedTypes": {"O": true}},
+      "aggr": {"type": "string","enum": ["count"],"supportedTypes": {"O": true}}
      }
     },
     "text": {
@@ -291,29 +256,22 @@
      "properties": {
       "name": {"type": "string"},
       "type": {"type": "string","enum": ["O","Q","T"]},
-      "bin": {"type": "boolean","supportedTypes": ["Q","O"]},
+      "bin": {"type": "boolean","supportedTypes": {"Q": true,"O": true}},
       "aggr": {
        "type": "string",
-       "enum": [null,"avg","sum","min","max","count"],
+       "enum": ["avg","sum","min","max","count"],
        "supportedEnums": {
-        "Q": [null,"avg","sum","min","max","count"],
-        "O": [null,"count"],
-        "T": [null,"avg","min","max","count"],
-        "": [null,"count"]
-       }
+        "Q": ["avg","sum","min","max","count"],
+        "O": ["count"],
+        "T": ["avg","min","max","count"],
+        "": ["count"]
+       },
+       "supportedTypes": {"Q": true,"O": true,"T": true,"": true}
       },
       "fn": {
        "type": "string",
-       "enum": [null,"month","year","day","date","hour","minute","second"],
-       "supportedTypes": {
-        "month": {"T": 1},
-        "year": {"T": 1},
-        "day": {"T": 1},
-        "date": {"T": 1},
-        "hour": {"T": 1},
-        "minute": {"T": 1},
-        "second": {"T": 1}
-       }
+       "enum": ["month","year","day","date","hour","minute","second"],
+       "supportedTypes": {"T": true}
       },
       "scale": {
        "type": "object",
@@ -321,23 +279,37 @@
         "type": {
          "type": "string",
          "enum": ["linear","log","pow","sqrt","quantile"],
-         "supportedTypes": ["Q"]
+         "supportedTypes": {"Q": true}
         },
         "reverse": {"type": "boolean","default": false},
         "zero": {
          "type": "boolean",
          "description": "Include zero",
          "default": false,
-         "supportedTypes": ["Q"]
+         "supportedTypes": {"Q": true}
         }
        }
       },
       "text": {
        "type": "object",
        "properties": {
-        "weight": {"type": "string","enum": ["normal","bold"],"default": "normal"},
-        "size": {"type": "integer","default": 10,"minimum": 0},
-        "font": {"type": "string","default": "Halvetica Neue"}
+        "weight": {
+         "type": "string",
+         "enum": ["normal","bold"],
+         "default": "normal",
+         "supportedTypes": {"T": true}
+        },
+        "size": {
+         "type": "integer",
+         "default": 10,
+         "minimum": 0,
+         "supportedTypes": {"T": true}
+        },
+        "font": {
+         "type": "string",
+         "default": "Halvetica Neue",
+         "supportedTypes": {"T": true}
+        }
        }
       }
      }
