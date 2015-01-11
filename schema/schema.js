@@ -75,6 +75,11 @@ var typicalField = _.chain(schema.field).cloneDeep().merge({
           description: "Include zero",
           default: false,
           supportedTypes: {"Q": true}
+        },
+        nice: {
+          type: "string",
+          enum: ["second", "minute", "hour", "day", "week", "month", "year"],
+          supportedTypes: {"T": true}
         }
       }
     }
