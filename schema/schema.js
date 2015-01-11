@@ -38,6 +38,7 @@ schema.fn = {
 schema.scale_type = {
   type: "string",
   enum: ["linear", "log","pow", "sqrt", "quantile"],
+  default: "linear",
   supportedTypes: {"Q": true}
 };
 
