@@ -67,8 +67,8 @@ vl.DEFAULTS = {
   cellWidth: 200, // will be overwritten by bandWidth
   cellPadding: 0.1,
   cellBackgroundColor: "#fdfdfd",
-  xAxisMargin: 80,
-  yAxisMargin: 0,
+  xAxisMargin: 80, //TODO rename
+  yAxisMargin: 0,//TODO rename
   textCellWidth: 90,
 
   // marks
