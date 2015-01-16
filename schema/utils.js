@@ -1,7 +1,3 @@
-var schema = require("./schema.js").spec,
-  util = require('util'),
-  _ = require("lodash");
-
 var isEmpty = function(obj) {
   return Object.keys(obj).length === 0
 }
@@ -10,10 +6,13 @@ var isEmpty = function(obj) {
 exports.instantiate = function(schema, required) {
   if (schema.type === 'object') {
     schema.required = schema.required ? schema.required : [];
-    return _.mapValues(schema.properties, function(child, name) {
-      return exports.instantiate(child, _.contains(schema.required , name));
-    });
-  } else if (_.has(schema, 'default')) {
+    var instance = {};
+    for (var name in schema.properties) {
+      var child = schema.properties[name];
+      instance[name] = exports.instantiate(child, schema.required.indexOf(name) != -1);
+    };
+    return instance;
+  } else if ('default' in schema) {
     return schema.default;
   } else if (schema.enum && required) {
     return schema.enum[0];
