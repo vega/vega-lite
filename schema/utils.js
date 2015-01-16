@@ -36,3 +36,24 @@ exports.difference = function(defaults, instance) {
   }
   return changes;
 };
+
+exports.merge = function (dst, src) {
+    if (typeof src!=='object' || src===null) {
+      return dst;
+    }
+
+    for (var p in src) {
+      if (!src.hasOwnProperty(p))
+        continue;
+      if (src[p]===undefined )
+        continue;
+      if (typeof src[p] !== 'object' || src[p] === null) {
+        dst[p] = src[p];
+      } else if (typeof dst[p] !== 'object' || dst[p] === null) {
+        dst[p] = exports.merge(src[p].constructor === Array ? [] : {}, src[p]);
+      } else {
+        exports.merge(dst[p], src[p]);
+      }
+    }
+    return dst;
+  }

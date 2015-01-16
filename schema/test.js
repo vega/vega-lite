@@ -47,8 +47,7 @@ describe("Utils", function() {
         fooBaz: {type: 'string', enum: ['a', 'b']}}};
     assert.deepEqual(
       utils.instantiate(simpleSchema),
-      {fooBar: 'baz', fooBaz: 'a'}
-    );
+      {fooBar: 'baz', fooBaz: 'a'});
   });
 
   it("remove defaults", function() {
@@ -81,5 +80,23 @@ describe("Utils", function() {
 
     var actual = utils.difference(utils.instantiate(specSchema), spec);
     assert.deepEqual(actual, expected);
+  });
+
+  it("merge objects", function() {
+     var a = {a: "foo", b: {"bar": 0, "baz": [], "qux": [1, 2, 3]}};
+    var b = {a: "fuu"};
+
+    assert.deepEqual(
+      utils.merge(a, b),
+      {a: "fuu", b: {"bar": 0, "baz": [], "qux": [1, 2, 3]}});
+  });
+
+  it("merge objects reversed", function() {
+    var a = {a: "foo", b: {"bar": 0, "baz": [], "qux": [1, 2, 3]}};
+    var b = {a: "fuu"};
+
+    assert.deepEqual(
+      utils.merge(b, a),
+      {a: "foo", b: {"bar": 0, "baz": [], "qux": [1, 2, 3]}});
   });
 });
