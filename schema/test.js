@@ -1,4 +1,5 @@
 var schema = require("./schema.json"),
+  utils = require("./utils.js"),
   specSchema = require("./schema.js").spec,
   assert = require('assert'),
   tv4 = require("tv4"),
@@ -34,5 +35,51 @@ describe("Schema", function () {
       console.log(inspect(errors, true, 5));
     }
     assert.equal(0, errors.length);
+  });
+});
+
+describe("Utils", function() {
+  it("instantiate simple schema", function() {
+    var simpleSchema = {
+      type: 'object', required: ['fooBaz'],
+      properties: {
+        fooBar: {type: 'string', default: 'baz'},
+        fooBaz: {type: 'string', enum: ['a', 'b']}}};
+    assert.deepEqual(
+      utils.instantiate(simpleSchema),
+      {fooBar: 'baz', fooBaz: 'a'}
+    );
+  });
+
+  it("remove defaults", function() {
+    var spec = {
+      marktype: 'point',
+      enc:
+       { x: { name: 'dsp', type: 'Q', scale: {type: "linear"}
+     },
+       color: { name: 'cyl', type: 'O' }
+     },
+      cfg: {
+        useVegaServer: false,
+        vegaServerUrl: 'http://localhost:3001',
+        dataFormatType: null,
+        dataUrl: 'data/cars.json',
+        vegaServerTable: 'cars_json'
+      }
+    }
+
+    var expected = {
+      enc: {
+        x: { name: 'dsp', type: 'Q' },
+        color: { name: 'cyl' }
+      },
+      cfg: {
+        dataUrl: 'data/cars.json',
+        vegaServerTable: 'cars_json'
+      }
+    };
+
+    var actual = utils.difference(utils.instantiate(specSchema), spec);
+    assert.deepEqual(actual, expected);
   });
 });
