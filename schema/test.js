@@ -54,8 +54,8 @@ describe("Utils", function() {
   it("remove defaults", function() {
     var spec = {
       marktype: 'point',
-      enc:
-       { x: { name: 'dsp', type: 'Q', scale: {type: "linear"}
+      enc: {
+        x: { name: 'dsp', type: 'Q', scale: {type: "linear"}
      },
        color: { name: 'cyl', type: 'O' }
      },

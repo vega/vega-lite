@@ -6,6 +6,7 @@ var isEmpty = function(obj) {
   return Object.keys(obj).length === 0
 }
 
+// instantiate a schema
 exports.instantiate = function(schema, required) {
   if (schema.type === 'object') {
     schema.required = schema.required ? schema.required : [];
@@ -20,16 +21,17 @@ exports.instantiate = function(schema, required) {
   return undefined;
 };
 
-exports.difference = function(defaults, schema) {
+// remove all defaults from an instance
+exports.difference = function(defaults, instance) {
   var changes = {};
-  for (var prop in schema) {
-    if (!defaults || defaults[prop] !== schema[prop]) {
-      if (typeof schema[prop] == "object") {
-        var c = exports.difference(defaults[prop], schema[prop]);
+  for (var prop in instance) {
+    if (!defaults || defaults[prop] !== instance[prop]) {
+      if (typeof instance[prop] == "object") {
+        var c = exports.difference(defaults[prop], instance[prop]);
         if (!isEmpty(c))
           changes[prop] = c;
       } else {
-        changes[prop] = schema[prop];
+        changes[prop] = instance[prop];
       }
     }
   }
