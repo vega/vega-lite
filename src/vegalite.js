@@ -247,6 +247,14 @@ vl.Encoding = (function() {
     return this._enc[x].name;
   }
 
+  proto.fieldTitle = function(x){
+    if (this._enc[x].aggr) {
+      return this._enc[x].aggr + "(" + this._enc[x].name + ")";
+    } else {
+      return this._enc[x].name;
+    }
+  }
+
   proto.scale = function(x){
     return this._enc[x].scale || {};
   }
@@ -1543,7 +1551,7 @@ vl.legends.defs = function(encoding) {
   if (encoding.has("color") && encoding.legend("color")) {
     legends.push({
       fill: "color",
-      title: encoding.fieldName("color"),
+      title: encoding.fieldTitle("color"),
       orient: "right"
     });
   }
@@ -1551,7 +1559,7 @@ vl.legends.defs = function(encoding) {
   if (encoding.has("size") && encoding.legend("size")) {
     legends.push({
       size: "size",
-      title: encoding.fieldName("size"),
+      title: encoding.fieldTitle("size"),
       orient: legends.length === 1 ? "left" : "right"
     });
   }
@@ -1564,7 +1572,7 @@ vl.legends.defs = function(encoding) {
     }
     legends.push({
       shape: "shape",
-      title: encoding.fieldName("shape"),
+      title: encoding.fieldTitle("shape"),
       orient: legends.length === 1 ? "left" : "right"
     });
   }
