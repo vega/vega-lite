@@ -117,16 +117,22 @@ var fieldWithAxis = _.chain(typicalField).cloneDeep().merge({
   }
 }).value();
 
+var legendMixin = {
+  properties: {
+    legend: { type: "boolean", default: true }
+  }
+}
+
 var x = _.cloneDeep(fieldWithAxis);
 var y = _.cloneDeep(x);
 
 var row = _.cloneDeep(onlyOrdinalField);
 var col = _.cloneDeep(row);
 
-var size = _.cloneDeep(typicalField);
-var color = _.cloneDeep(typicalField);
-var alpha = _.cloneDeep(typicalField);
-var shape = _.cloneDeep(onlyOrdinalField)
+var size = _.chain(typicalField).cloneDeep().merge(legendMixin).value();
+var color = _.chain(typicalField).cloneDeep().merge(legendMixin).value();
+var alpha = _.chain(typicalField).cloneDeep().merge(legendMixin).value();
+var shape = _.chain(onlyOrdinalField).cloneDeep().merge(legendMixin).value();
 
 var text = _.chain(typicalField).cloneDeep().merge({
   type: "object",
