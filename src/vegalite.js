@@ -1538,6 +1538,8 @@ vl.legends = {};
 vl.legends.defs = function(encoding) {
   var legends = [];
 
+  // TODO: support alpha
+
   if (encoding.has("color") && encoding.legend("color")) {
     legends.push({
       fill: "color",
@@ -1556,6 +1558,7 @@ vl.legends.defs = function(encoding) {
 
   if (encoding.has("shape") && encoding.legend("shape")) {
     if (legends.length === 2) {
+      // TODO: fix this
       console.error("Vegalite currently only supports two legends");
       return legends;
     }
