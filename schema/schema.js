@@ -110,7 +110,8 @@ var fieldWithAxis = _.chain(typicalField).cloneDeep().merge({
     axis: {
       type: "object",
       properties: {
-        grid: { type: "boolean", default: false }
+        grid: { type: "boolean", default: false },
+        label: { type: "string", default: "" }
       }
     }
   }
