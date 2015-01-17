@@ -263,6 +263,10 @@ vl.Encoding = (function() {
     return this._enc[x].bin;
   }
 
+  proto.legend = function(x){
+    return this._enc[x].legend;
+  }
+
   proto.fn = function(x){
     return this._enc[x].fn;
   }
@@ -578,6 +582,7 @@ vl.toVegaSpec = function(encoding, stats) {
     group.scales = vl.scale.defs(scale_names(mdef.properties.update), encoding,
       {stack: stack, stats: stats});
     group.axes = vl.axis.defs(axis_names(mdef.properties.update), encoding);
+    group.legends = vl.legends.defs(encoding);
   }
 
   return spec;
@@ -893,6 +898,12 @@ function axis_def(name, encoding, opt){
   if (encoding.axis(name).grid) {
     axis.grid = true;
     axis.layer = "back";
+  }
+
+  if (encoding.axis(name).title) {
+    axis.title = name;
+    // TODO: set appropriate titleOffset
+    // maybe based on some string length from stats
   }
 
   if(isRow || isCol){
@@ -1519,8 +1530,50 @@ function text_props(e) {
   return p;
 }
 
-return vl;
-
 // END MARKS
+
+// BEGIN LEGENDS
+
+vl.legends = {};
+vl.legends.defs = function(encoding) {
+  var legends = [];
+
+  // TODO: support alpha
+
+  if (encoding.has("color") && encoding.legend("color")) {
+    legends.push({
+      fill: "color",
+      title: encoding.fieldName("color"),
+      orient: "right"
+    });
+  }
+
+  if (encoding.has("size") && encoding.legend("size")) {
+    legends.push({
+      size: "size",
+      title: encoding.fieldName("size"),
+      orient: legends.length === 1 ? "left" : "right"
+    });
+  }
+
+  if (encoding.has("shape") && encoding.legend("shape")) {
+    if (legends.length === 2) {
+      // TODO: fix this
+      console.error("Vegalite currently only supports two legends");
+      return legends;
+    }
+    legends.push({
+      shape: "shape",
+      title: encoding.fieldName("shape"),
+      orient: legends.length === 1 ? "left" : "right"
+    });
+  }
+
+  return legends;
+}
+
+// END LEGENDS
+
+return vl;
 // END OF THIS MODULE
 }));

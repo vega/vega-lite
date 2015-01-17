@@ -52,6 +52,8 @@ schema.field = {
   }
 };
 
+/* building blocks for fields */
+
 var typicalField = _.chain(schema.field).cloneDeep().merge({
   type: "object",
   properties: {
@@ -84,7 +86,7 @@ var typicalField = _.chain(schema.field).cloneDeep().merge({
       }
     }
   }
-}).value();
+}); // no value()
 
 var onlyOrdinalField = _.chain(schema.field).cloneDeep().merge({
   type: "object",
@@ -103,31 +105,29 @@ var onlyOrdinalField = _.chain(schema.field).cloneDeep().merge({
       supportedTypes: {"O": true}
     }
   }
-}).value();
+});  // no value()
 
-var fieldWithAxis = _.chain(typicalField).cloneDeep().merge({
+var axisMixin = {
+  type: "object",
   properties: {
     axis: {
       type: "object",
       properties: {
-        grid: { type: "boolean", default: false }
+        grid: { type: "boolean", default: false },
+        title: { type: "boolean", default: true }
       }
     }
   }
-}).value();
+}
 
-var x = _.cloneDeep(fieldWithAxis);
-var y = _.cloneDeep(x);
+var legendMixin = {
+  type: "object",
+  properties: {
+    legend: { type: "boolean", default: true }
+  }
+}
 
-var row = _.cloneDeep(onlyOrdinalField);
-var col = _.cloneDeep(row);
-
-var size = _.cloneDeep(typicalField);
-var color = _.cloneDeep(typicalField);
-var alpha = _.cloneDeep(typicalField);
-var shape = _.cloneDeep(onlyOrdinalField)
-
-var text = _.chain(typicalField).cloneDeep().merge({
+var textMixin = {
   type: "object",
   properties: {
     text: {
@@ -153,7 +153,20 @@ var text = _.chain(typicalField).cloneDeep().merge({
       }
     }
   }
-}).value();
+}
+
+var x = typicalField.cloneDeep().merge(axisMixin).value();
+var y = _.cloneDeep(x);
+
+var row = onlyOrdinalField.cloneDeep().value();
+var col = _.cloneDeep(row);
+
+var size = typicalField.cloneDeep().merge(legendMixin).value();
+var color = typicalField.cloneDeep().merge(legendMixin).value();
+var alpha = typicalField.cloneDeep().value();
+var shape = onlyOrdinalField.cloneDeep().merge(legendMixin).value();
+
+var text = typicalField.cloneDeep().merge(textMixin).value();
 
 var cfg = {
   type: "object",
