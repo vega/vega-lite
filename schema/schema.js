@@ -163,7 +163,7 @@ var col = _.cloneDeep(row);
 
 var size = typicalField.cloneDeep().merge(legendMixin).value();
 var color = typicalField.cloneDeep().merge(legendMixin).value();
-var alpha = typicalField.cloneDeep().merge(legendMixin).value();
+var alpha = typicalField.cloneDeep().value();
 var shape = onlyOrdinalField.cloneDeep().merge(legendMixin).value();
 
 var text = typicalField.cloneDeep().merge(textMixin).value();
