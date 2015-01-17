@@ -67,7 +67,7 @@ vled.parse = function() {
     dataUrl: vled.dataset.url
   }
 
-  encoding = vl.Encoding.parseJSON(spec, cfg);
+  encoding = vl.Encoding.fromSpec(spec, cfg);
   vled.loadEncoding(encoding);
 }
 
@@ -75,7 +75,7 @@ vled.parseShorthand = function() {
   var shorthand = d3.select("#shorthand").property("value");
 
   var encoding = vl.Encoding.parseShorthand(shorthand);
-  d3.select("#vlspec").node().value = JSON.stringify(encoding.toJSON(), null, "  ", 80);
+  d3.select("#vlspec").node().value = JSON.stringify(encoding.toSpec(), null, "  ", 80);
   vled.parse();
 }
 
@@ -83,7 +83,7 @@ vled.loadEncoding = function(encoding) {
   var spec = vl.toVegaSpec(encoding, vled.dataset.stats);
 
   d3.select("#shorthand").node().value = encoding.toShorthand();
-  d3.select("#vlspec").node().value = JSON.stringify(encoding.toJSON(), null, "  ", 80);
+  d3.select("#vlspec").node().value = JSON.stringify(encoding.toSpec(), null, "  ", 80);
   d3.select("#vgspec").node().value = JSON.stringify(spec, null, "  ", 80);
 
   $('textarea').trigger('autosize.resize');
