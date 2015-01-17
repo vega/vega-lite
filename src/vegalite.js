@@ -895,6 +895,12 @@ function axis_def(name, encoding, opt){
     axis.layer = "back";
   }
 
+  if (encoding.axis(name).title) {
+    axis.title = name;
+    // TODO: set appropriate titleOffset
+    // maybe based on some string length from stats
+  }
+
   if(isRow || isCol){
     axis.properties = {
       ticks: { opacity: {value: 0} },
