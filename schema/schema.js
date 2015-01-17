@@ -114,7 +114,7 @@ var axisMixin = {
       type: "object",
       properties: {
         grid: { type: "boolean", default: false },
-        label: { type: "string", default: "" }
+        title: { type: "string", default: none }
       }
     }
   }
