@@ -80,7 +80,7 @@ vled.parseShorthand = function() {
 }
 
 vled.loadEncoding = function(encoding) {
-  var spec = vl.toVegaSpec(encoding, vled.dataset.stats);
+  var spec = vl.compile(encoding, vled.dataset.stats);
 
   d3.select("#shorthand").node().value = encoding.toShorthand();
   d3.select("#vlspec").node().value = JSON.stringify(encoding.toSpec(), null, "  ", 80);
@@ -105,7 +105,7 @@ vled.datasetChanged = function(dataset, callback) {
   d3.json(dataset.url, function(err, data) {
     if (err) return alert("Error loading data " + err.statusText);
 
-    dataset.stats = vl.getStats(data);
+    dataset.stats = vl.data.getStats(data);
     callback();
   });
 }
