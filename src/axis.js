@@ -35,10 +35,10 @@ function axis_def(name, encoding, opt){
     axis.layer = "back";
   }
 
-  if (encoding.axis(name).title) {
-    axis.title = name;
-    // TODO: set appropriate titleOffset
-    // maybe based on some string length from stats
+  if (encoding.axis(name).title !== false) {
+    //show title by default
+
+    axis = axis_title(axis, name, encoding, opt);
   }
 
   if(isRow || isCol){
@@ -63,5 +63,15 @@ function axis_def(name, encoding, opt){
     }
   }
 
+  return axis;
+}
+
+function axis_title(axis, name, encoding, opt){
+  axis.title = encoding.fieldTitle(name);
+  if(name==Y){
+    axis.titleOffset = 60;
+    // TODO: set appropriate titleOffset
+    // maybe based on some string length from stats
+  }
   return axis;
 }
