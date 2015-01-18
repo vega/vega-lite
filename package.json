@@ -20,6 +20,8 @@
   },
   "homepage": "https://github.com/uwdata/vegalite",
   "devDependencies": {
-    "grunt": "~0.4.5"
+    "grunt": "~0.4.5",
+    "lodash": "^2.4.1",
+    "watchify": "^2.2.1"
   }
 }

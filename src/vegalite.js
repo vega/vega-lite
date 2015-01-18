@@ -30,28 +30,23 @@ var COLOR = "color";
 var ALPHA = "alpha";
 var TEXT = "text";
 
-vl.encodings = {X:X, Y:Y, ROW:ROW, COL:COL, SIZE:SIZE, SHAPE:SHAPE, COLOR:COLOR, ALPHA:ALPHA, TEXT:TEXT};
-
 var O = 1;
 var Q = 2;
 var T = 4;
 
-vl.dataTypes = {"O": O, "Q": Q, "T": T};
+
+var consts = {};
+
+
+consts.encodings = {X:X, Y:Y, ROW:ROW, COL:COL, SIZE:SIZE, SHAPE:SHAPE, COLOR:COLOR, ALPHA:ALPHA, TEXT:TEXT};
+consts.dataTypes = {"O": O, "Q": Q, "T": T};
 
 // inverse mapping e.g., 1=>O
-vl.dataTypeNames = ["O","Q","T"].reduce(function(r,x) {
-  r[vl.dataTypes[x]] = x; return r;
+consts.dataTypeNames = ["O","Q","T"].reduce(function(r,x) {
+  r[consts.dataTypes[x]] = x; return r;
 },{});
 
-// vl.schema.aggr.enum
-vl.quantAggTypes = ["avg", "sum", "min", "max", "count"];
-
-// vl.schema.timefns
-vl.timeFuncs = ["month", "year", "day", "date", "hour", "minute", "second"];
-// vl.schema.scale_type.enum
-vl.quantScales = ["-", "log","pow", "sqrt", "quantile"];
-
-vl.DEFAULTS = {
+consts.DEFAULTS = {
   // template
   width: undefined,
   height: undefined,
@@ -103,21 +98,49 @@ vl.DEFAULTS = {
   timeScaleNice: "day"
 };
 
+
+var schema = {};
+schema.aggr = {
+  type: "string",
+  enum: ["avg", "sum", "min", "max", "count"],
+  supportedEnums: {
+    Q: ["avg", "sum", "min", "max", "count"],
+    O: ["count"],
+    T: ["avg", "min", "max", "count"],
+    "": ["count"],
+  },
+  supportedTypes: {"Q": true, "O": true, "T": true, "": true}
+};
+
+schema.timefns = ["month", "year", "day", "date", "hour", "minute", "second"];
+
+// vl.schema.aggr.enum
+schema.aggr.enum = ["avg", "sum", "min", "max", "count"];
+
+// vl.schema.timefns
+schema.timefns = ["month", "year", "day", "date", "hour", "minute", "second"];
+// vl.schema.scale_type.enum
+schema.scale_type = {};
+schema.scale_type.enum = ["-", "log","pow", "sqrt", "quantile"];
+
+
 var MAX_BINS = 20;
 
-vl.keys = function (obj) {
+var util = {};
+
+util.keys = function (obj) {
   var k = [], x;
   for (x in obj) k.push(x);
   return k;
 }
 
-vl.vals = function (obj) {
+util.vals = function (obj) {
   var v = [], x;
   for (x in obj) v.push(obj[x]);
   return v;
 }
 
-function range(start, stop, step) {
+util.range = function (start, stop, step) {
   if (arguments.length < 3) {
     step = 1;
     if (arguments.length < 2) {
@@ -132,14 +155,14 @@ function range(start, stop, step) {
   return range;
 }
 
-function find(list, pattern) {
+util.find = function (list, pattern) {
   var l = list.filter(function(x) {
     return x[pattern.name] === pattern.value;
   });
   return l.length && l[0] || null;
 }
 
-function uniq(data, field) {
+util.uniq = function (data, field) {
   var map = {}, count = 0, i, k;
   for (i=0; i<data.length; ++i) {
     k = data[i][field];
@@ -151,7 +174,7 @@ function uniq(data, field) {
   return count;
 }
 
-function minmax(data, field) {
+util.minmax = function (data, field) {
   var stats = {min: +Infinity, max: -Infinity};
   for (i=0; i<data.length; ++i) {
     var v = data[i][field];
@@ -161,11 +184,11 @@ function minmax(data, field) {
   return stats;
 }
 
-vl.duplicate = function (obj) {
+util.duplicate = function (obj) {
   return JSON.parse(JSON.stringify(obj));
 };
 
-vl.any = function(arr, f){
+util.any = function(arr, f){
   var i=0, k;
   for (k in arr) {
     if(f(arr[k], k, i++)) return true;
@@ -173,7 +196,7 @@ vl.any = function(arr, f){
   return false;
 }
 
-vl.all = function(arr, f){
+util.all = function(arr, f){
   var i=0, k;
   for (k in arr) {
     if(!f(arr[k], k, i++)) return false;
@@ -181,19 +204,23 @@ vl.all = function(arr, f){
   return true;
 }
 
-vl.merge = function(dest, src){
-  return vl.keys(src).reduce(function(c, k){
+util.merge = function(dest, src){
+  return util.keys(src).reduce(function(c, k){
     c[k] = src[k];
     return c;
   }, dest);
 };
 
-function getbins(stats) {
+util.getbins = function (stats) {
   return vg.bins({
     min: stats.min,
     max: stats.max,
     maxbins: MAX_BINS
   });
+}
+
+util.error = function(msg){
+  console.error("[VL Error]", msg);
 }
 
 // ----
@@ -202,8 +229,7 @@ vl.Encoding = (function() {
   function Encoding(marktype, enc, config) {
     this._marktype = marktype;
     this._enc = enc; // {encType1:field1, ...}
-
-    this._cfg = vl.merge(Object.create(vl.DEFAULTS), config);
+    this._cfg = util.merge(Object.create(consts.DEFAULTS), config);
   }
 
   var proto = Encoding.prototype;
@@ -272,15 +298,15 @@ vl.Encoding = (function() {
   }
 
   proto.any = function(f){
-    return vl.any(this._enc, f);
+    return util.any(this._enc, f);
   }
 
   proto.all = function(f){
-    return vl.all(this._enc, f);
+    return util.all(this._enc, f);
   }
 
   proto.length = function(){
-    return vl.keys(this._enc).length;
+    return util.keys(this._enc).length;
   }
 
   proto.reduce = function(f, init){
@@ -313,12 +339,12 @@ vl.Encoding = (function() {
   };
 
   proto.toSpec = function(excludeConfig){
-    var enc = vl.duplicate(this._enc),
+    var enc = util.duplicate(this._enc),
       spec;
 
     // convert type's bitcode to type name
     for(var e in enc){
-      enc[e].type = vl.dataTypeNames[enc[e].type];
+      enc[e].type = consts.dataTypeNames[enc[e].type];
     }
 
     spec = {
@@ -327,7 +353,7 @@ vl.Encoding = (function() {
     }
 
     if(!excludeConfig){
-      spec.cfg = vl.duplicate(this._cfg)
+      spec.cfg = util.duplicate(this._cfg)
     }
 
     return spec;
@@ -335,14 +361,14 @@ vl.Encoding = (function() {
 
   proto.toShorthand = function(){
     var enc = this._enc;
-    return this._marktype + "." + vl.keys(enc).map(function(e){
+    return this._marktype + "." + util.keys(enc).map(function(e){
       var v = enc[e];
         return e + "-" +
           (v.aggr ? v.aggr+"_" : "") +
           (v.fn ? v.fn+"_" : "") +
           (v.bin ? "bin_" : "") +
           (v.name || "") + "-" +
-          vl.dataTypeNames[v.type];
+          consts.dataTypeNames[v.type];
       }
     ).join(".");
   }
@@ -354,11 +380,11 @@ vl.Encoding = (function() {
     enc = enc.reduce(function(m, e){
       var split = e.split("-"),
         enctype = split[0],
-        o = {name: split[1], type: vl.dataTypes[split[2]]};
+        o = {name: split[1], type: consts.dataTypes[split[2]]};
 
       // check aggregate type
-      for(var i in vl.quantAggTypes){
-        var a = vl.quantAggTypes[i];
+      for(var i in schema.aggr.enum){
+        var a = schema.aggr.enum[i];
         if(o.name.indexOf(a+"_") == 0){
           o.name = o.name.substr(a.length+1);
           if (a=="count" && o.name.length === 0) o.name = "*";
@@ -367,8 +393,8 @@ vl.Encoding = (function() {
         }
       }
       // check time fn
-      for(var i in vl.timeFuncs){
-        var f = vl.timeFuncs[i];
+      for(var i in schema.timefns){
+        var f = schema.timefns[i];
         if(o.name && o.name.indexOf(f+"_") == 0){
           o.name = o.name.substr(o.length+1);
           o.fn = f;
@@ -390,14 +416,14 @@ vl.Encoding = (function() {
   }
 
   Encoding.fromSpec = function(spec, extraCfg) {
-    var enc = vl.duplicate(spec.enc);
+    var enc = util.duplicate(spec.enc);
 
     //convert type from string to bitcode (e.g, O=1)
     for(var e in enc){
-      enc[e].type = vl.dataTypes[enc[e].type];
+      enc[e].type = consts.dataTypes[enc[e].type];
     }
 
-    return new Encoding(spec.marktype, enc, vl.merge(spec.cfg, extraCfg || {}));
+    return new Encoding(spec.marktype, enc, util.merge(spec.cfg, extraCfg || {}));
   }
 
   return Encoding;
@@ -406,19 +432,49 @@ vl.Encoding = (function() {
 
 // ----
 
-vl.error = function(msg){
-  console.error("[VL Error]", msg);
+vl.getDataUrl = function getDataUrl(encoding, stats) {
+  if (!encoding.config("useVegaServer")) {
+    // don't use vega server
+    return encoding.config("dataUrl");
+  }
+
+  if (encoding.length() === 0) {
+    // no fields
+    return;
+  }
+
+  var fields = []
+  encoding.forEach(function(encType, field){
+    var obj = {
+      name: encoding.field(encType, true),
+      field: field.name
+    }
+    if (field.aggr) {
+      obj.aggr = field.aggr
+    }
+    if (field.bin) {
+      obj.binSize = util.getbins(stats[field.name]).step;
+    }
+    fields.push(obj);
+  });
+
+  var query = {
+    table: encoding.config("vegaServerTable"),
+    fields: fields
+  }
+
+  return encoding.config("vegaServerUrl") + "/query/?q=" + JSON.stringify(query)
 }
 
 // Returns the stats for the dataset.
 // Stats is a map from each field name to an object with min, max, count, cardinality and type.
 vl.getStats = function(data){ // hack
   var stats = {};
-  var fields = vl.keys(data[0]);
+  var fields = util.keys(data[0]);
 
   fields.forEach(function(k) {
-    var stat = minmax(data, k);
-    stat.cardinality = uniq(data, k);
+    var stat = util.minmax(data, k);
+    stat.cardinality = util.uniq(data, k);
     //TODO(kanitw): better type inference here
     stat.type = (typeof data[0][k] === "number") ? "Q" :
       isNaN(Date.parse(data[0][k])) ? "O" : "T";
@@ -431,7 +487,7 @@ vl.getStats = function(data){ // hack
 function getCardinality(encoding, encType, stats){
   var field = encoding.fieldName(encType);
   if (encoding.bin(encType)) {
-    var bins = getbins(stats[field]);
+    var bins = util.getbins(stats[field]);
     return (bins.stop - bins.start) / bins.step;
   }
   return stats[field].cardinality;
@@ -486,40 +542,6 @@ function setSize(encoding, stats) {
     width: width,
     height:height
   };
-}
-
-vl.getDataUrl = function getDataUrl(encoding, stats) {
-  if (!encoding.config("useVegaServer")) {
-    // don't use vega server
-    return encoding.config("dataUrl");
-  }
-
-  if (encoding.length() === 0) {
-    // no fields
-    return;
-  }
-
-  var fields = []
-  encoding.forEach(function(encType, field){
-    var obj = {
-      name: encoding.field(encType, true),
-      field: field.name
-    }
-    if (field.aggr) {
-      obj.aggr = field.aggr
-    }
-    if (field.bin) {
-      obj.binSize = getbins(stats[field.name]).step;
-    }
-    fields.push(obj);
-  });
-
-  var query = {
-    table: encoding.config("vegaServerTable"),
-    fields: fields
-  }
-
-  return encoding.config("vegaServerUrl") + "/query/?q=" + JSON.stringify(query)
 }
 
 vl.toVegaSpec = function(encoding, stats) {
@@ -579,10 +601,10 @@ vl.toVegaSpec = function(encoding, stats) {
   if (hasRow || hasCol) {
     spec = facet(group, encoding, cellHeight, cellWidth, spec, mdef, stack, stats);
   } else {
-    group.scales = vl.scale.defs(scale_names(mdef.properties.update), encoding,
+    group.scales = scale.defs(scale.names(mdef.properties.update), encoding,
       {stack: stack, stats: stats});
-    group.axes = vl.axis.defs(axis_names(mdef.properties.update), encoding);
-    group.legends = vl.legends.defs(encoding);
+    group.axes = axis.defs(axis.names(mdef.properties.update), encoding);
+    group.legends = legends.defs(encoding);
   }
 
   return spec;
@@ -608,7 +630,7 @@ function facet(group, encoding, cellHeight, cellWidth, spec, mdef, stack, stats)
     }
     if (hasRow) {
       if (!encoding.isType(ROW, O)) {
-        vl.error("Row encoding should be ordinal.");
+        util.error("Row encoding should be ordinal.");
       }
       enter.y = {scale: ROW, field: "keys." + facetKeys.length};
       enter.height = {"value": cellHeight}; // HACK
@@ -617,13 +639,13 @@ function facet(group, encoding, cellHeight, cellWidth, spec, mdef, stack, stats)
 
       var from;
       if (hasCol) {
-        from = vl.duplicate(group.from);
+        from = util.duplicate(group.from);
         from.transform = from.transform || [];
         from.transform.unshift({type: "facet", keys: [encoding.field(COL)]});
       }
 
       var axesGrp = groupdef("x-axes", {
-          axes: encoding.has(X) ?  vl.axis.defs(["x"], encoding) : undefined,
+          axes: encoding.has(X) ?  axis.defs(["x"], encoding) : undefined,
           x: hasCol ? {scale: COL, field: "keys.0", offset: xAxisMargin} : {value: xAxisMargin},
           width: hasCol && {"value": cellWidth}, //HACK?
           from: from
@@ -631,17 +653,17 @@ function facet(group, encoding, cellHeight, cellWidth, spec, mdef, stack, stats)
 
       spec.marks.push(axesGrp);
       (spec.axes = spec.axes || [])
-      spec.axes.push.apply(spec.axes, vl.axis.defs(["row"], encoding));
+      spec.axes.push.apply(spec.axes, axis.defs(["row"], encoding));
     } else { // doesn't have row
       if(encoding.has(X)){
         //keep x axis in the cell
-        cellAxes.push.apply(cellAxes, vl.axis.defs(["x"], encoding));
+        cellAxes.push.apply(cellAxes, axis.defs(["x"], encoding));
       }
     }
 
     if (hasCol) {
       if (!encoding.isType(COL, O)) {
-        vl.error("Col encoding should be ordinal.");
+        util.error("Col encoding should be ordinal.");
       }
       enter.x = {scale: COL, field: "keys." + facetKeys.length};
       enter.width = {"value": cellWidth}; // HACK
@@ -650,13 +672,13 @@ function facet(group, encoding, cellHeight, cellWidth, spec, mdef, stack, stats)
 
       var from;
       if (hasRow) {
-        from = vl.duplicate(group.from);
+        from = util.duplicate(group.from);
         from.transform = from.transform || [];
         from.transform.unshift({type: "facet", keys: [encoding.field(ROW)]});
       }
 
       var axesGrp = groupdef("y-axes", {
-        axes: encoding.has(Y) ? vl.axis.defs(["y"], encoding) : undefined,
+        axes: encoding.has(Y) ? axis.defs(["y"], encoding) : undefined,
         y: hasRow && {scale: ROW, field: "keys.0"},
         x: hasRow && {value: xAxisMargin},
         height: hasRow && {"value": cellHeight}, //HACK?
@@ -665,12 +687,12 @@ function facet(group, encoding, cellHeight, cellWidth, spec, mdef, stack, stats)
 
       spec.marks.push(axesGrp);
       (spec.axes = spec.axes || [])
-      spec.axes.push.apply(spec.axes, vl.axis.defs(["col"], encoding, {
+      spec.axes.push.apply(spec.axes, axis.defs(["col"], encoding, {
         xAxisMargin: xAxisMargin
       }));
     } else { // doesn't have col
       if(encoding.has(Y)){
-        cellAxes.push.apply(cellAxes, vl.axis.defs(["y"], encoding));
+        cellAxes.push.apply(cellAxes, axis.defs(["y"], encoding));
       }
     }
 
@@ -684,8 +706,8 @@ function facet(group, encoding, cellHeight, cellWidth, spec, mdef, stack, stats)
 
     // assuming equal cellWidth here
     // TODO: support heterogenous cellWidth (maybe by using multiple scales?)
-    spec.scales = vl.scale.defs(
-      scale_names(enter).concat(scale_names(mdef.properties.update)),
+    spec.scales = scale.defs(
+      scale.names(enter).concat(scale.names(mdef.properties.update)),
       encoding,
       {cellWidth: cellWidth, cellHeight: cellHeight, stack: stack, facet:true, stats: stats}
     ); // row/col scales + cell scales
@@ -749,7 +771,7 @@ function binning(spec, encoding, opt) {
   encoding.forEach(function(vv, d) {
     if (d.bin) bins[d.name] = d.name;
   });
-  bins = vl.keys(bins);
+  bins = util.keys(bins);
 
   if (bins.length === 0 || opt.preaggregatedData) return false;
 
@@ -787,8 +809,8 @@ function aggregates(spec, encoding, opt) {
       }
     }
   });
-  dims = vl.vals(dims);
-  meas = vl.vals(meas);
+  dims = util.vals(dims);
+  meas = util.vals(meas);
 
   if (meas.length > 0 && !opt.preaggregatedData) {
     if (!spec.transform) spec.transform = [];
@@ -811,9 +833,9 @@ function aggregates(spec, encoding, opt) {
     }
   }
   return {
-    details: vl.vals(detail),
+    details: util.vals(detail),
     dims: dims,
-    facets: vl.vals(facets),
+    facets: util.vals(facets),
     aggregated: meas.length > 0
   }
 }
@@ -865,18 +887,20 @@ function stacking(spec, encoding, mdef, facets) {
   return val; //return stack encoding
 }
 
-function axis_names(props) {
-  return vl.keys(vl.keys(props).reduce(function(a, x) {
+
+// BEGIN: AXES
+
+var axis = {};
+
+axis.names = function (props) {
+  return util.keys(util.keys(props).reduce(function(a, x) {
     var s = props[x].scale;
     if (s===X || s===Y) a[props[x].scale] = 1;
     return a;
   }, {}));
 }
 
-// BEGIN: AXES
-
-vl.axis = {};
-vl.axis.defs = function(names, encoding, opt) {
+axis.defs = function(names, encoding, opt) {
   return names.reduce(function(a, name) {
     a.push(axis_def(name, encoding, opt));
     return a;
@@ -934,16 +958,16 @@ function axis_def(name, encoding, opt){
 // END: AXES
 
 // BEGIN: SCALE
-vl.scale = {};
+var scale = {};
 
-function scale_names(props) {
-  return vl.keys(vl.keys(props).reduce(function(a, x) {
+scale.names = function (props) {
+  return util.keys(util.keys(props).reduce(function(a, x) {
     if (props[x] && props[x].scale) a[props[x].scale] = 1;
     return a;
   }, {}));
 }
 
-vl.scale.defs = function (names, encoding, opt) {
+scale.defs = function (names, encoding, opt) {
   opt = opt || {};
 
   return names.reduce(function(a, name) {
@@ -993,8 +1017,8 @@ function scale_domain(name, encoding, opt) {
   if (encoding.bin(name)) {
     // TODO: add includeEmptyConfig here
     if (opt.stats) {
-      var bins = getbins(opt.stats[encoding.fieldName(name)]);
-      var domain = range(bins.start, bins.stop, bins.step);
+      var bins = util.getbins(opt.stats[encoding.fieldName(name)]);
+      var domain = util.range(bins.start, bins.stop, bins.step);
       return name===Y ? domain.reverse() : domain;
     }
   }
@@ -1534,8 +1558,8 @@ function text_props(e) {
 
 // BEGIN LEGENDS
 
-vl.legends = {};
-vl.legends.defs = function(encoding) {
+var legends = {};
+legends.defs = function(encoding) {
   var legends = [];
 
   // TODO: support alpha
