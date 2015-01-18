@@ -54,6 +54,14 @@ var Encoding = module.exports = (function() {
     return this._enc[x].name;
   }
 
+  proto.fieldTitle = function(x){
+    if (this._enc[x].aggr) {
+      return this._enc[x].aggr + "(" + this._enc[x].name + ")";
+    } else {
+      return this._enc[x].name;
+    }
+  }
+
   proto.scale = function(x){
     return this._enc[x].scale || {};
   }

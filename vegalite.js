@@ -92,6 +92,14 @@ var Encoding = module.exports = (function() {
     return this._enc[x].name;
   }
 
+  proto.fieldTitle = function(x){
+    if (this._enc[x].aggr) {
+      return this._enc[x].aggr + "(" + this._enc[x].name + ")";
+    } else {
+      return this._enc[x].name;
+    }
+  }
+
   proto.scale = function(x){
     return this._enc[x].scale || {};
   }
@@ -469,6 +477,7 @@ g.MAX_BINS = 20;
 var global = require('./globals');
 
 var legends = module.exports = {};
+
 legends.defs = function(encoding) {
   var legends = [];
 
@@ -477,7 +486,7 @@ legends.defs = function(encoding) {
   if (encoding.has(COLOR) && encoding.legend(COLOR)) {
     legends.push({
       fill: COLOR,
-      title: encoding.fieldName(COLOR),
+      title: encoding.fieldTitle(COLOR),
       orient: "right"
     });
   }
@@ -485,7 +494,7 @@ legends.defs = function(encoding) {
   if (encoding.has(SIZE) && encoding.legend(SIZE)) {
     legends.push({
       size: SIZE,
-      title: encoding.fieldName(SIZE),
+      title: encoding.fieldTitle(SIZE),
       orient: legends.length === 1 ? "left" : "right"
     });
   }
@@ -498,7 +507,7 @@ legends.defs = function(encoding) {
     }
     legends.push({
       shape: SHAPE,
-      title: encoding.fieldName(SHAPE),
+      title: encoding.fieldTitle(SHAPE),
       orient: legends.length === 1 ? "left" : "right"
     });
   }
