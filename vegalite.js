@@ -816,7 +816,7 @@ var globals = require('./globals');
 
 var consts = module.exports = {};
 
-consts.encodings = {X:X, Y:Y, ROW:ROW, COL:COL, SIZE:SIZE, SHAPE:SHAPE, COLOR:COLOR, ALPHA:ALPHA, TEXT:TEXT};
+consts.encodingTypes = [X, Y, ROW, COL, SIZE, SHAPE, COLOR, ALPHA, TEXT];
 
 consts.dataTypes = {"O": O, "Q": Q, "T": T};
 
