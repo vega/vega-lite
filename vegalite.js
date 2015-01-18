@@ -113,7 +113,7 @@ var Encoding = module.exports = (function() {
   }
 
   proto.legend = function(x){
-    return this._enc[x].legend;
+    return this._enc[x].legend !== false;
   }
 
   proto.fn = function(x){
@@ -290,10 +290,10 @@ function axis_def(name, encoding, opt){
     axis.layer = "back";
   }
 
-  if (encoding.axis(name).title) {
-    axis.title = name;
-    // TODO: set appropriate titleOffset
-    // maybe based on some string length from stats
+  if (encoding.axis(name).title !== false) {
+    //show title by default
+
+    axis = axis_title(axis, name, encoding, opt);
   }
 
   if(isRow || isCol){
@@ -318,6 +318,16 @@ function axis_def(name, encoding, opt){
     }
   }
 
+  return axis;
+}
+
+function axis_title(axis, name, encoding, opt){
+  axis.title = encoding.fieldTitle(name);
+  if(name==Y){
+    axis.titleOffset = 60;
+    // TODO: set appropriate titleOffset
+    // maybe based on some string length from stats
+  }
   return axis;
 }
 },{"./globals":7,"./util":12}],4:[function(require,module,exports){
@@ -806,7 +816,7 @@ var globals = require('./globals');
 
 var consts = module.exports = {};
 
-consts.encodings = {X:X, Y:Y, ROW:ROW, COL:COL, SIZE:SIZE, SHAPE:SHAPE, COLOR:COLOR, ALPHA:ALPHA, TEXT:TEXT};
+consts.encodingTypes = [X, Y, ROW, COL, SIZE, SHAPE, COLOR, ALPHA, TEXT];
 
 consts.dataTypes = {"O": O, "Q": Q, "T": T};
 
