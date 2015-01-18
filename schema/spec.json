@@ -39,6 +39,7 @@
         "type": {
          "type": "string",
          "enum": ["linear","log","pow","sqrt","quantile"],
+         "default": "linear",
          "supportedTypes": {"Q": true}
         },
         "reverse": {"type": "boolean","default": false},
@@ -47,12 +48,20 @@
          "description": "Include zero",
          "default": false,
          "supportedTypes": {"Q": true}
+        },
+        "nice": {
+         "type": "string",
+         "enum": ["second","minute","hour","day","week","month","year"],
+         "supportedTypes": {"T": true}
         }
        }
       },
       "axis": {
        "type": "object",
-       "properties": {"grid": {"type": "boolean","default": false}}
+       "properties": {
+        "grid": {"type": "boolean","default": false},
+        "title": {"type": "boolean","default": true}
+       }
       }
      }
     },
@@ -85,6 +94,7 @@
         "type": {
          "type": "string",
          "enum": ["linear","log","pow","sqrt","quantile"],
+         "default": "linear",
          "supportedTypes": {"Q": true}
         },
         "reverse": {"type": "boolean","default": false},
@@ -93,12 +103,20 @@
          "description": "Include zero",
          "default": false,
          "supportedTypes": {"Q": true}
+        },
+        "nice": {
+         "type": "string",
+         "enum": ["second","minute","hour","day","week","month","year"],
+         "supportedTypes": {"T": true}
         }
        }
       },
       "axis": {
        "type": "object",
-       "properties": {"grid": {"type": "boolean","default": false}}
+       "properties": {
+        "grid": {"type": "boolean","default": false},
+        "title": {"type": "boolean","default": true}
+       }
       }
      }
     },
@@ -151,6 +169,7 @@
         "type": {
          "type": "string",
          "enum": ["linear","log","pow","sqrt","quantile"],
+         "default": "linear",
          "supportedTypes": {"Q": true}
         },
         "reverse": {"type": "boolean","default": false},
@@ -159,9 +178,15 @@
          "description": "Include zero",
          "default": false,
          "supportedTypes": {"Q": true}
+        },
+        "nice": {
+         "type": "string",
+         "enum": ["second","minute","hour","day","week","month","year"],
+         "supportedTypes": {"T": true}
         }
        }
-      }
+      },
+      "legend": {"type": "boolean","default": true}
      }
     },
     "color": {
@@ -193,6 +218,7 @@
         "type": {
          "type": "string",
          "enum": ["linear","log","pow","sqrt","quantile"],
+         "default": "linear",
          "supportedTypes": {"Q": true}
         },
         "reverse": {"type": "boolean","default": false},
@@ -201,9 +227,15 @@
          "description": "Include zero",
          "default": false,
          "supportedTypes": {"Q": true}
+        },
+        "nice": {
+         "type": "string",
+         "enum": ["second","minute","hour","day","week","month","year"],
+         "supportedTypes": {"T": true}
         }
        }
-      }
+      },
+      "legend": {"type": "boolean","default": true}
      }
     },
     "alpha": {
@@ -235,6 +267,7 @@
         "type": {
          "type": "string",
          "enum": ["linear","log","pow","sqrt","quantile"],
+         "default": "linear",
          "supportedTypes": {"Q": true}
         },
         "reverse": {"type": "boolean","default": false},
@@ -243,6 +276,11 @@
          "description": "Include zero",
          "default": false,
          "supportedTypes": {"Q": true}
+        },
+        "nice": {
+         "type": "string",
+         "enum": ["second","minute","hour","day","week","month","year"],
+         "supportedTypes": {"T": true}
         }
        }
       }
@@ -255,7 +293,8 @@
       "name": {"type": "string"},
       "type": {"type": "string","enum": ["O"]},
       "bin": {"type": "boolean","supportedTypes": {"O": true}},
-      "aggr": {"type": "string","enum": ["count"],"supportedTypes": {"O": true}}
+      "aggr": {"type": "string","enum": ["count"],"supportedTypes": {"O": true}},
+      "legend": {"type": "boolean","default": true}
      }
     },
     "text": {
@@ -287,6 +326,7 @@
         "type": {
          "type": "string",
          "enum": ["linear","log","pow","sqrt","quantile"],
+         "default": "linear",
          "supportedTypes": {"Q": true}
         },
         "reverse": {"type": "boolean","default": false},
@@ -295,6 +335,11 @@
          "description": "Include zero",
          "default": false,
          "supportedTypes": {"Q": true}
+        },
+        "nice": {
+         "type": "string",
+         "enum": ["second","minute","hour","day","week","month","year"],
+         "supportedTypes": {"T": true}
         }
        }
       },

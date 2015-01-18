@@ -921,9 +921,15 @@ module.exports.getStats = function(data){ // hack
   fields.forEach(function(k) {
     var stat = util.minmax(data, k);
     stat.cardinality = util.uniq(data, k);
+
+    var i=0, datum = data[i][k];
+    while(datum === "" || datum === null || datum === undefined){
+      datum = data[++i][k];
+    }
+
     //TODO(kanitw): better type inference here
-    stat.type = (typeof data[0][k] === "number") ? "Q" :
-      isNaN(Date.parse(data[0][k])) ? "O" : "T";
+    stat.type = (typeof datum === "number") ? "Q" :
+      isNaN(Date.parse(datum)) ? "O" : "T";
     stat.count = data.length;
     stats[k] = stat;
   });
