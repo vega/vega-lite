@@ -113,7 +113,7 @@ var Encoding = module.exports = (function() {
   }
 
   proto.legend = function(x){
-    return this._enc[x].legend !== false;
+    return this._enc[x].legend;
   }
 
   proto.fn = function(x){
@@ -290,7 +290,7 @@ function axis_def(name, encoding, opt){
     axis.layer = "back";
   }
 
-  if (encoding.axis(name).title !== false) {
+  if (encoding.axis(name).title) {
     //show title by default
 
     axis = axis_title(axis, name, encoding, opt);
