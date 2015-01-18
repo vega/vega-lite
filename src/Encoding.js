@@ -79,7 +79,7 @@ var Encoding = module.exports = (function() {
   }
 
   proto.legend = function(x){
-    return this._enc[x].legend !== false;
+    return this._enc[x].legend;
   }
 
   proto.fn = function(x){
