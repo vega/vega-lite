@@ -2,7 +2,7 @@
 
 var util = require('./util');
 
-var getDataUrl = module.exports = function getDataUrl(encoding, stats) {
+module.exports.getUrl = function getDataUrl(encoding, stats) {
   if (!encoding.config("useVegaServer")) {
     // don't use vega server
     return encoding.config("dataUrl");
@@ -34,4 +34,20 @@ var getDataUrl = module.exports = function getDataUrl(encoding, stats) {
   }
 
   return encoding.config("vegaServerUrl") + "/query/?q=" + JSON.stringify(query)
-}
+};
+
+module.exports.getStats = function(data){ // hack
+  var stats = {};
+  var fields = util.keys(data[0]);
+
+  fields.forEach(function(k) {
+    var stat = util.minmax(data, k);
+    stat.cardinality = util.uniq(data, k);
+    //TODO(kanitw): better type inference here
+    stat.type = (typeof data[0][k] === "number") ? "Q" :
+      isNaN(Date.parse(data[0][k])) ? "O" : "T";
+    stat.count = data.length;
+    stats[k] = stat;
+  });
+  return stats;
+};

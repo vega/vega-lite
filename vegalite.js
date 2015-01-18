@@ -1,20 +1,18 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-(function(root, factory) {
-  if (typeof define === 'function' && define.amd) {
-    // AMD. Register as an anonymous module.
-    define([], factory);
-  } else if (typeof exports === 'object') {
-    // Node. Does not work with strict CommonJS, but
-    // only CommonJS-like environments that support module.exports,
-    // like Node.
-    module.exports = factory();
-  } else {
-    // Browser globals (root is window)
-    root.vl = factory();
-  }
-}(this, function() {
-
-
+// (function(root, factory) {
+//   if (typeof define === 'function' && define.amd) {
+//     // AMD. Register as an anonymous module.
+//     define([], factory);
+//   } else if (typeof exports === 'object') {
+//     // Node. Does not work with strict CommonJS, but
+//     // only CommonJS-like environments that support module.exports,
+//     // like Node.
+//     module.exports = factory();
+//   } else {
+//     // Browser globals (root is window)
+//     root.vl = factory();
+//   }
+// }(this, function() {
   var globals = require("./globals"),
     util = require("./util"),
     consts = require('./consts');
@@ -23,19 +21,17 @@
 
   vl.Encoding = require('./Encoding');
   vl.axis = require('./axis');
-  vl.getDataUrl = require('./getDataUrl');
-  vl.getStats = require('./getStats');
+  vl.compile = require('./compile');
+  vl.data = require('./data');
   vl.legends = require('./legends');
   vl.marks = require('./marks')
   vl.scale = require('./scale');
   vl.schema = require('./schema');
-  vl.toVegaSpec = require('./toVegaSpec');
 
   if(window) window.vl = vl;
   module.exports = vl;
-
-}));
-},{"./Encoding":2,"./axis":3,"./consts":4,"./getDataUrl":5,"./getStats":6,"./globals":7,"./legends":8,"./marks":9,"./scale":10,"./schema":11,"./toVegaSpec":12,"./util":13}],2:[function(require,module,exports){
+// }));
+},{"./Encoding":2,"./axis":3,"./compile":4,"./consts":5,"./data":6,"./globals":7,"./legends":8,"./marks":9,"./scale":10,"./schema":11,"./util":12}],2:[function(require,module,exports){
 "use strict";
 
 var global = require('./globals'),
@@ -256,7 +252,7 @@ var Encoding = module.exports = (function() {
   return Encoding;
 
 })();
-},{"./consts":4,"./globals":7,"./schema":11,"./util":13}],3:[function(require,module,exports){
+},{"./consts":5,"./globals":7,"./schema":11,"./util":12}],3:[function(require,module,exports){
 var globals = require('./globals'),
   util = require('./util');
 
@@ -324,775 +320,7 @@ function axis_def(name, encoding, opt){
 
   return axis;
 }
-},{"./globals":7,"./util":13}],4:[function(require,module,exports){
-
-var globals = require('./globals');
-
-var consts = module.exports = {};
-
-consts.encodings = {X:X, Y:Y, ROW:ROW, COL:COL, SIZE:SIZE, SHAPE:SHAPE, COLOR:COLOR, ALPHA:ALPHA, TEXT:TEXT};
-
-consts.dataTypes = {"O": O, "Q": Q, "T": T};
-
-consts.dataTypeNames = ["O","Q","T"].reduce(function(r,x) {
-  r[consts.dataTypes[x]] = x; return r;
-},{});
-
-consts.DEFAULTS = {
-  // template
-  width: undefined,
-  height: undefined,
-  viewport: undefined,
-  _minWidth: 20,
-  _minHeight: 20,
-
-  // data source
-  dataUrl: undefined, //for easier export
-  useVegaServer: false,
-  vegaServerUrl: "http://localhost:3001",
-  vegaServerTable: undefined,
-  dataFormatType: "json",
-
-  //small multiples
-  cellHeight: 200, // will be overwritten by bandWidth
-  cellWidth: 200, // will be overwritten by bandWidth
-  cellPadding: 0.1,
-  cellBackgroundColor: "#fdfdfd",
-  xAxisMargin: 80,
-  yAxisMargin: 0,
-  textCellWidth: 90,
-
-  // marks
-  bandSize: 21,
-  bandPadding: 1,
-  pointSize: 50,
-  pointShape: "circle",
-  strokeWidth: 2,
-  color: "steelblue",
-  textColor: "black",
-  textAlign: "left",
-  textBaseline: "middle",
-  textMargin: 4,
-  font: "Helvetica Neue",
-  fontSize: "12",
-  fontWeight: "normal",
-  fontStyle: "normal",
-  opacity: 1,
-  _thickOpacity: 0.5,
-  _thinOpacity: 0.2,
-
-  // scales
-  // TODO remove _xZero, ...
-  _xZero: true,
-  _xReverse: false,
-  _yZero: true,
-  _yReverse: false,
-  timeScaleNice: "day"
-};
-},{"./globals":7}],5:[function(require,module,exports){
-// TODO rename getDataUrl to vl.data.getUrl() ?
-
-var util = require('./util');
-
-var getDataUrl = module.exports = function getDataUrl(encoding, stats) {
-  if (!encoding.config("useVegaServer")) {
-    // don't use vega server
-    return encoding.config("dataUrl");
-  }
-
-  if (encoding.length() === 0) {
-    // no fields
-    return;
-  }
-
-  var fields = []
-  encoding.forEach(function(encType, field){
-    var obj = {
-      name: encoding.field(encType, true),
-      field: field.name
-    }
-    if (field.aggr) {
-      obj.aggr = field.aggr
-    }
-    if (field.bin) {
-      obj.binSize = util.getbins(stats[field.name]).step;
-    }
-    fields.push(obj);
-  });
-
-  var query = {
-    table: encoding.config("vegaServerTable"),
-    fields: fields
-  }
-
-  return encoding.config("vegaServerUrl") + "/query/?q=" + JSON.stringify(query)
-}
-},{"./util":13}],6:[function(require,module,exports){
-var util = require('./util');
-
-var getStats = module.exports = function(data){ // hack
-  var stats = {};
-  var fields = util.keys(data[0]);
-
-  fields.forEach(function(k) {
-    var stat = util.minmax(data, k);
-    stat.cardinality = util.uniq(data, k);
-    //TODO(kanitw): better type inference here
-    stat.type = (typeof data[0][k] === "number") ? "Q" :
-      isNaN(Date.parse(data[0][k])) ? "O" : "T";
-    stat.count = data.length;
-    stats[k] = stat;
-  });
-  return stats;
-}
-
-},{"./util":13}],7:[function(require,module,exports){
-(function (global){
-// declare global constant
-var g = global || window;
-
-g.TABLE = "table";
-g.STACKED = "stacked";
-g.INDEX = "index";
-
-g.X = "x";
-g.Y = "y";
-g.ROW = "row";
-g.COL = "col";
-g.SIZE = "size";
-g.SHAPE = "shape";
-g.COLOR = "color";
-g.ALPHA = "alpha";
-g.TEXT = "text";
-
-g.O = 1;
-g.Q = 2;
-g.T = 4;
-
-//TODO refactor this to be config?
-g.MAX_BINS = 20;
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-
-},{}],8:[function(require,module,exports){
-var global = require('./globals');
-
-var legends = module.exports = {};
-
-legends.defs = function(encoding) {
-  var legends = [];
-
-  // TODO: support alpha
-
-  if (encoding.has(COLOR) && encoding.legend(COLOR)) {
-    legends.push({
-      fill: COLOR,
-      title: encoding.fieldTitle(COLOR),
-      orient: "right"
-    });
-  }
-
-  if (encoding.has(SIZE) && encoding.legend(SIZE)) {
-    legends.push({
-      size: SIZE,
-      title: encoding.fieldTitle(SIZE),
-      orient: legends.length === 1 ? "left" : "right"
-    });
-  }
-
-  if (encoding.has(SHAPE) && encoding.legend(SHAPE)) {
-    if (legends.length === 2) {
-      // TODO: fix this
-      console.error("Vegalite currently only supports two legends");
-      return legends;
-    }
-    legends.push({
-      shape: SHAPE,
-      title: encoding.fieldTitle(SHAPE),
-      orient: legends.length === 1 ? "left" : "right"
-    });
-  }
-
-  return legends;
-}
-},{"./globals":7}],9:[function(require,module,exports){
-var globals = require("./globals"),
-  util = require("./util");
-
-var marks = module.exports = {};
-
-marks.bar = {
-  type: "rect",
-  stack: true,
-  prop: bar_props,
-  requiredEncoding: ["x", "y"],
-  supportedEncoding: {row:1, col:1, x:1, y:1, size:1, color:1, alpha:1}
-};
-
-marks.line = {
-  type: "line",
-  line: true,
-  prop: line_props,
-  requiredEncoding: ["x", "y"],
-  supportedEncoding: {row:1, col:1, x:1, y:1, color:1, alpha:1}
-};
-
-marks.area = {
-  type: "area",
-  stack: true,
-  line: true,
-  requiredEncoding: ["x", "y"],
-  prop: area_props,
-  supportedEncoding: marks.line.supportedEncoding
-};
-
-marks.circle = {
-  type: "symbol",
-  prop: filled_point_props("circle"),
-  supportedEncoding: {row:1, col:1, x:1, y:1, size:1, color:1, alpha:1}
-};
-
-marks.square = {
-  type: "symbol",
-  prop: filled_point_props("square"),
-  supportedEncoding: marks.circle.supportedEncoding
-};
-
-marks.point = {
-  type: "symbol",
-  prop: point_props,
-  supportedEncoding: {row:1, col:1, x:1, y:1, size:1, color:1, alpha:1, shape:1}
-};
-
-marks.text = {
-  type: "text",
-  prop: text_props,
-  requiredEncoding: ["text"],
-  supportedEncoding: {row:1, col:1, size:1, color:1, alpha:1, text:1}
-};
-
-function bar_props(e) {
-  var p = {};
-
-  // x
-  if (e.isType(X,Q|T) && !e.bin(X)) {
-    p.x = {scale: X, field: e.field(X)};
-    if (e.has(Y) && (!e.isType(Y,Q|T) || e.bin(Y))) {
-      p.x2 = {scale: X, value: 0};
-    }
-  } else if (e.has(X)) {
-    p.xc = {scale: X, field: e.field(X)};
-  } else {
-    p.xc = {value: 0};
-  }
-
-  // y
-  if (e.isType(Y,Q|T) && !e.bin(Y)) {
-    p.y = {scale: Y, field: e.field(Y)};
-    p.y2 = {scale: Y, value: 0};
-  } else if (e.has(Y)) {
-    p.yc = {scale: Y, field: e.field(Y)};
-  } else {
-    p.yc = {group: "height"};
-  }
-
-  // width
-  if (!e.isType(X,Q|T)) {
-    if (e.has(SIZE)) {
-      p.width = {scale: SIZE, field: e.field(SIZE)};
-    } else {
-      // p.width = {scale: X, band: true, offset: -1};
-      p.width = {value: +e.config("bandSize"), offset: -1};
-    }
-  } else if (!e.isType(Y,O) && !e.bin(Y)) {
-    p.width = {value: +e.config("bandSize"), offset: -1};
-  }
-
-  // height
-  if (!e.isType(Y,Q|T)) {
-    if (e.has(SIZE)) {
-      p.height = {scale: SIZE, field: e.field(SIZE)};
-    } else {
-      // p.height = {scale: Y, band: true, offset: -1};
-      p.height = {value: +e.config("bandSize"), offset: -1};
-    }
-  } else if (!e.isType(X,O) && !e.bin(X)) {
-    p.height = {value: +e.config("bandSize"), offset: -1};
-  }
-
-  // fill
-  if (e.has(COLOR)) {
-    p.fill = {scale: COLOR, field: e.field(COLOR)};
-  } else if (!e.has(COLOR)) {
-    p.fill = {value: e.config("color")};
-  }
-
-  // alpha
-  if (e.has(ALPHA)) {
-    p.opacity = {scale: ALPHA, field: e.field(ALPHA)};
-  }
-
-  return p;
-}
-
-function point_props(e, opt) {
-  var p = {};
-  opt = opt || {};
-
-  // x
-  if (e.has(X)) {
-    p.x = {scale: X, field: e.field(X)};
-  } else if (!e.has(X)) {
-    p.x = {value: e.config("bandSize")/2};
-  }
-
-  // y
-  if (e.has(Y)) {
-    p.y = {scale: Y, field: e.field(Y)};
-  } else if (!e.has(Y)) {
-    p.y = {value: e.config("bandSize")/2};
-  }
-
-  // size
-  if (e.has(SIZE)) {
-    p.size = {scale: SIZE, field: e.field(SIZE)};
-  } else if (!e.has(SIZE)) {
-    p.size = {value: e.config("pointSize")};
-  }
-
-  // shape
-  if (e.has(SHAPE)) {
-    p.shape = {scale: SHAPE, field: e.field(SHAPE)};
-  } else if (!e.has(SHAPE)) {
-    p.shape = {value: e.config("pointShape")};
-  }
-
-  // stroke
-  if (e.has(COLOR)) {
-    p.stroke = {scale: COLOR, field: e.field(COLOR)};
-  } else if (!e.has(COLOR)) {
-    p.stroke = {value: e.config("color")};
-  }
-
-  // alpha
-  if (e.has(ALPHA)) {
-    p.opacity = {scale: ALPHA, field: e.field(ALPHA)};
-  }else{
-    p.opacity = {
-      value: e.config("opacity") || e.config(opt.hasAggregate ? "_thickOpacity" : "_thinOpacity")
-    };
-  }
-
-  p.strokeWidth = {value: e.config("strokeWidth")};
-
-  return p;
-}
-
-function line_props(e) {
-  var p = {};
-
-  // x
-  if (e.has(X)) {
-    p.x = {scale: X, field: e.field(X)};
-  } else if (!e.has(X)) {
-    p.x = {value: 0};
-  }
-
-  // y
-  if (e.has(Y)) {
-    p.y = {scale: Y, field: e.field(Y)};
-  } else if (!e.has(Y)) {
-    p.y = {group: "height"};
-  }
-
-  // stroke
-  if (e.has(COLOR)) {
-    p.stroke = {scale: COLOR, field: e.field(COLOR)};
-  } else if (!e.has(COLOR)) {
-    p.stroke = {value: e.config("color")};
-  }
-
-  // alpha
-  if (e.has(ALPHA)) {
-    p.opacity = {scale: ALPHA, field: e.field(ALPHA)};
-  }
-
-  p.strokeWidth = {value: e.config("strokeWidth")};
-
-  return p;
-}
-
-function area_props(e) {
-  var p = {};
-
-  // x
-  if (e.isType(X,Q|T)) {
-    p.x = {scale: X, field: e.field(X)};
-    if (!e.isType(Y,Q|T) && e.has(Y)) {
-      p.x2 = {scale: X, value: 0};
-      p.orient = {value: "horizontal"};
-    }
-  } else if (e.has(X)) {
-    p.x = {scale: X, field: e.field(X)};
-  } else {
-    p.x = {value: 0};
-  }
-
-  // y
-  if (e.isType(Y,Q|T)) {
-    p.y = {scale: Y, field: e.field(Y)};
-    p.y2 = {scale: Y, value: 0};
-  } else if (e.has(Y)) {
-    p.y = {scale: Y, field: e.field(Y)};
-  } else {
-    p.y = {group: "height"};
-  }
-
-  // stroke
-  if (e.has(COLOR)) {
-    p.fill = {scale: COLOR, field: e.field(COLOR)};
-  } else if (!e.has(COLOR)) {
-    p.fill = {value: e.config("color")};
-  }
-
-  // alpha
-  if (e.has(ALPHA)) {
-    p.opacity = {scale: ALPHA, field: e.field(ALPHA)};
-  }
-
-  return p;
-}
-
-function filled_point_props(shape) {
-  return function(e, opt) {
-    var p = {};
-    opt = opt || {};
-
-    // x
-    if (e.has(X)) {
-      p.x = {scale: X, field: e.field(X)};
-    } else if (!e.has(X)) {
-      p.x = {value: e.config("bandSize")/2};
-    }
-
-    // y
-    if (e.has(Y)) {
-      p.y = {scale: Y, field: e.field(Y)};
-    } else if (!e.has(Y)) {
-      p.y = {value: e.config("bandSize")/2};
-    }
-
-    // size
-    if (e.has(SIZE)) {
-      p.size = {scale: SIZE, field: e.field(SIZE)};
-    } else if (!e.has(X)) {
-      p.size = {value: e.config("pointSize")};
-    }
-
-    // shape
-    p.shape = {value: shape};
-
-    // fill
-    if (e.has(COLOR)) {
-      p.fill = {scale: COLOR, field: e.field(COLOR)};
-    } else if (!e.has(COLOR)) {
-      p.fill = {value: e.config("color")};
-    }
-
-    // alpha
-    if (e.has(ALPHA)) {
-      p.opacity = {scale: ALPHA, field: e.field(ALPHA)};
-    }else {
-      p.opacity = {
-        value: e.config("opacity") || e.config(opt.hasAggregate ? "_thickOpacity" : "_thinOpacity")
-      };
-    }
-
-    return p;
-  };
-}
-
-function text_props(e) {
-  var p = {};
-
-  // x
-  if (e.has(X)) {
-    p.x = {scale: X, field: e.field(X)};
-  } else if (!e.has(X)) {
-    p.x = {value: e.config("bandSize")/2};
-  }
-
-  // y
-  if (e.has(Y)) {
-    p.y = {scale: Y, field: e.field(Y)};
-  } else if (!e.has(Y)) {
-    p.y = {value: e.config("bandSize")/2};
-  }
-
-  // size
-  if (e.has(SIZE)) {
-    p.fontSize = {scale: SIZE, field: e.field(SIZE)};
-  } else if (!e.has(X)) {
-    p.fontSize = {value: e.config("fontSize")};
-  }
-
-  // fill
-  if (e.has(COLOR)) {
-    p.fill = {scale: COLOR, field: e.field(COLOR)};
-  } else if (!e.has(COLOR)) {
-    p.fill = {value: e.config("textColor")};
-  }
-
-  // alpha
-  if (e.has(ALPHA)) {
-    p.opacity = {scale: ALPHA, field: e.field(ALPHA)};
-  }
-
-  // text
-  if (e.has(TEXT)) {
-    p.text = {field: e.field(TEXT)};
-  } else {
-    p.text = {value: "Abc"};
-  }
-
-  p.font = {value: e.config("font")};
-  p.fontWeight = {value: e.config("fontWeight")};
-  p.fontStyle = {value: e.config("fontStyle")};
-  p.baseline = {value: e.config("textBaseline")};
-
-  // align
-  if (e.has(X)) {
-    if (e.isType(X,O)) {
-      p.align = {value: "left"};
-      p.dx = {value: e.config("textMargin")};
-    } else {
-      p.align = {value: "center"}
-    }
-  } else if (e.has(Y)) {
-    p.align = {value: "left"};
-    p.dx = {value: e.config("textMargin")};
-  } else {
-    p.align = {value: e.config("textAlign")};
-  }
-
-  return p;
-}
-},{"./globals":7,"./util":13}],10:[function(require,module,exports){
-var globals = require("./globals"),
-  util = require("./util");
-
-var scale = module.exports = {};
-
-
-scale.names = function (props) {
-  return util.keys(util.keys(props).reduce(function(a, x) {
-    if (props[x] && props[x].scale) a[props[x].scale] = 1;
-    return a;
-  }, {}));
-}
-
-scale.defs = function (names, encoding, opt) {
-  opt = opt || {};
-
-  return names.reduce(function(a, name) {
-    var s = {
-      name: name,
-      type: scale_type(name, encoding),
-      domain: scale_domain(name, encoding, opt)
-    };
-    if (s.type === "ordinal" && !encoding.bin(name)) {
-      s.sort = true;
-    }
-
-    scale_range(s, encoding, opt);
-
-    return (a.push(s), a);
-  }, []);
-}
-
-function scale_type(name, encoding) {
-  switch (encoding.type(name)) {
-    case O: return "ordinal";
-    case T:
-      if (encoding.fn(name)) {
-        return "linear";
-      }
-      return "time";
-    case Q:
-      if (encoding.bin(name)) {
-        return "ordinal";
-      }
-      return encoding.scale(name).type || "linear";
-  }
-}
-
-function scale_domain(name, encoding, opt) {
-  if (encoding.type(name) === T){
-    switch(encoding.fn(name)){
-      case "second":
-      case "minute": return [0, 59];
-      case "hour": return [0, 23];
-      case "day": return [0, 6];
-      case "date": return [1, 31];
-      case "month": return [0, 11];
-    }
-  }
-
-  if (encoding.bin(name)) {
-    // TODO: add includeEmptyConfig here
-    if (opt.stats) {
-      var bins = util.getbins(opt.stats[encoding.fieldName(name)]);
-      var domain = util.range(bins.start, bins.stop, bins.step);
-      return name===Y ? domain.reverse() : domain;
-    }
-  }
-
-  return name == opt.stack ?
-    {
-      data: STACKED,
-      field: "data." + (opt.facet ? "max_" :"") + "sum_" + encoding.field(name, true)
-    }:
-    {data: TABLE, field: encoding.field(name)};
-}
-
-function scale_range(s, encoding, opt) {
-  var spec = encoding.scale(s.name);
-  switch (s.name) {
-    case X:
-      if (encoding.isType(s.name, O) || encoding.bin(s.name)) {
-        s.bandWidth = +encoding.config("bandSize");
-      } else {
-        s.range = opt.cellWidth ? [0, opt.cellWidth] : "width";
-        //TODO zero and reverse should become generic, and we just read default from either the schema or the schema generator
-        s.zero = spec.zero || encoding.config("_xZero");
-        s.reverse = spec.reverse || encoding.config("_xReverse");
-      }
-      s.round = true;
-      if (encoding.isType(s.name, T)){
-        s.nice = encoding.aggr(s.name) || encoding.config("timeScaleNice");
-      }else{
-        s.nice = true;
-      }
-      break;
-    case Y:
-      if (encoding.isType(s.name, O) || encoding.bin(s.name)) {
-        s.bandWidth = +encoding.config("bandSize");
-      } else {
-        s.range = opt.cellHeight ? [opt.cellHeight, 0] : "height";
-        //TODO zero and reverse should become generic, and we just read default from either the schema or the schema generator
-        s.zero = spec.zero || encoding.config("_yZero");
-        s.reverse = spec.reverse || encoding.config("_yReverse");
-      }
-
-      s.round = true;
-
-      if (encoding.isType(s.name, T)){
-        s.nice = encoding.aggr(s.name);
-      }else{
-        s.nice = true;
-      }
-      break;
-    case ROW:
-      s.bandWidth = opt.cellHeight || encoding.config("cellHeight");
-      s.round = true;
-      s.nice = true;
-      break;
-    case COL:
-      s.bandWidth = opt.cellWidth || encoding.config("cellWidth");
-      s.round = true;
-      s.nice = true;
-      break;
-    case SIZE:
-      if (encoding.is("bar")) {
-        s.range = [3, +encoding.config("bandSize")];
-      } else if (encoding.is(TEXT)) {
-        s.range = [8, 40];
-      } else {
-        s.range = [10, 1000];
-      }
-      s.round = true;
-      s.zero = false;
-      break;
-    case SHAPE:
-      s.range = "shapes";
-      break;
-    case COLOR:
-      if (encoding.isType(s.name, O)) {
-        s.range = "category10";
-      } else {
-        s.range = ["#ddf", "steelblue"];
-        s.zero = false;
-      }
-      break;
-    case ALPHA:
-      s.range = [0.2, 1.0];
-      break;
-    default:
-      throw new Error("Unknown encoding name: "+s.name);
-  }
-
-  switch(s.name){
-    case ROW:
-    case COL:
-      s.padding = encoding.config("cellPadding");
-      s.outerPadding = 0;
-      break;
-    case X:
-    case Y:
-      if (encoding.isType(s.name, O) || encoding.bin(s.name) ) { //&& !s.bandWidth
-        s.points = true;
-        s.padding = encoding.config("bandPadding");
-      }
-  }
-}
-},{"./globals":7,"./util":13}],11:[function(require,module,exports){
-// Defining Vegalite Encoding's schema
-var schema = module.exports = {};
-
-schema.marktype = {
-  type: "string",
-  enum: ["point", "bar", "line", "area", "circle", "square", "text"]
-};
-
-schema.aggr = {
-  type: "string",
-  enum: ["avg", "sum", "min", "max", "count"],
-  supportedEnums: {
-    Q: ["avg", "sum", "min", "max", "count"],
-    O: ["count"],
-    T: ["avg", "min", "max", "count"],
-    "": ["count"],
-  },
-  supportedTypes: {"Q": true, "O": true, "T": true, "": true}
-};
-
-schema.timefns = ["month", "year", "day", "date", "hour", "minute", "second"];
-
-schema.fn = {
-  type: "string",
-  enum: schema.timefns,
-  supportedTypes: {"T": true}
-}
-
-//TODO(kanitw): add other type of function here
-
-schema.scale_type = {
-  type: "string",
-  enum: ["linear", "log","pow", "sqrt", "quantile"],
-  default: "linear",
-  supportedTypes: {"Q": true}
-};
-
-schema.field = {
-  type: "object",
-  required: ["name", "type"],
-  properties: {
-    name: {
-      type: "string"
-    }
-  }
-};
-
-},{}],12:[function(require,module,exports){
+},{"./globals":7,"./util":12}],4:[function(require,module,exports){
 var globals = require('./globals'),
   util = require('./util'),
   axis = require('./axis'),
@@ -1100,10 +328,7 @@ var globals = require('./globals'),
   marks = require('./marks'),
   scale = require('./scale');
 
-console.log(scale);
-
-
-var toVegaSpec = module.exports = function(encoding, stats) {
+var compile = module.exports = function(encoding, stats) {
   var size = setSize(encoding, stats),
     cellWidth = size.cellWidth,
     cellHeight = size.cellHeight;
@@ -1539,7 +764,7 @@ function groupdef(name, opt) {
 function template(encoding, size, stats) { //hack use stats
 
   var data = {name:TABLE, format: {type: encoding.config("dataFormatType")}},
-    dataUrl = vl.getDataUrl(encoding, stats);
+    dataUrl = vl.data.getUrl(encoding, stats);
   if(dataUrl) data.url = dataUrl;
 
   var preaggregatedData = encoding.config("useVegaServer");
@@ -1575,7 +800,772 @@ function template(encoding, size, stats) { //hack use stats
   };
 }
 
-},{"./axis":3,"./globals":7,"./legends":8,"./marks":9,"./scale":10,"./util":13}],13:[function(require,module,exports){
+},{"./axis":3,"./globals":7,"./legends":8,"./marks":9,"./scale":10,"./util":12}],5:[function(require,module,exports){
+
+var globals = require('./globals');
+
+var consts = module.exports = {};
+
+consts.encodings = {X:X, Y:Y, ROW:ROW, COL:COL, SIZE:SIZE, SHAPE:SHAPE, COLOR:COLOR, ALPHA:ALPHA, TEXT:TEXT};
+
+consts.dataTypes = {"O": O, "Q": Q, "T": T};
+
+consts.dataTypeNames = ["O","Q","T"].reduce(function(r,x) {
+  r[consts.dataTypes[x]] = x; return r;
+},{});
+
+consts.DEFAULTS = {
+  // template
+  width: undefined,
+  height: undefined,
+  viewport: undefined,
+  _minWidth: 20,
+  _minHeight: 20,
+
+  // data source
+  dataUrl: undefined, //for easier export
+  useVegaServer: false,
+  vegaServerUrl: "http://localhost:3001",
+  vegaServerTable: undefined,
+  dataFormatType: "json",
+
+  //small multiples
+  cellHeight: 200, // will be overwritten by bandWidth
+  cellWidth: 200, // will be overwritten by bandWidth
+  cellPadding: 0.1,
+  cellBackgroundColor: "#fdfdfd",
+  xAxisMargin: 80,
+  yAxisMargin: 0,
+  textCellWidth: 90,
+
+  // marks
+  bandSize: 21,
+  bandPadding: 1,
+  pointSize: 50,
+  pointShape: "circle",
+  strokeWidth: 2,
+  color: "steelblue",
+  textColor: "black",
+  textAlign: "left",
+  textBaseline: "middle",
+  textMargin: 4,
+  font: "Helvetica Neue",
+  fontSize: "12",
+  fontWeight: "normal",
+  fontStyle: "normal",
+  opacity: 1,
+  _thickOpacity: 0.5,
+  _thinOpacity: 0.2,
+
+  // scales
+  // TODO remove _xZero, ...
+  _xZero: true,
+  _xReverse: false,
+  _yZero: true,
+  _yReverse: false,
+  timeScaleNice: "day"
+};
+},{"./globals":7}],6:[function(require,module,exports){
+// TODO rename getDataUrl to vl.data.getUrl() ?
+
+var util = require('./util');
+
+module.exports.getUrl = function getDataUrl(encoding, stats) {
+  if (!encoding.config("useVegaServer")) {
+    // don't use vega server
+    return encoding.config("dataUrl");
+  }
+
+  if (encoding.length() === 0) {
+    // no fields
+    return;
+  }
+
+  var fields = []
+  encoding.forEach(function(encType, field){
+    var obj = {
+      name: encoding.field(encType, true),
+      field: field.name
+    }
+    if (field.aggr) {
+      obj.aggr = field.aggr
+    }
+    if (field.bin) {
+      obj.binSize = util.getbins(stats[field.name]).step;
+    }
+    fields.push(obj);
+  });
+
+  var query = {
+    table: encoding.config("vegaServerTable"),
+    fields: fields
+  }
+
+  return encoding.config("vegaServerUrl") + "/query/?q=" + JSON.stringify(query)
+};
+
+module.exports.getStats = function(data){ // hack
+  var stats = {};
+  var fields = util.keys(data[0]);
+
+  fields.forEach(function(k) {
+    var stat = util.minmax(data, k);
+    stat.cardinality = util.uniq(data, k);
+    //TODO(kanitw): better type inference here
+    stat.type = (typeof data[0][k] === "number") ? "Q" :
+      isNaN(Date.parse(data[0][k])) ? "O" : "T";
+    stat.count = data.length;
+    stats[k] = stat;
+  });
+  return stats;
+};
+
+},{"./util":12}],7:[function(require,module,exports){
+(function (global){
+// declare global constant
+var g = global || window;
+
+g.TABLE = "table";
+g.STACKED = "stacked";
+g.INDEX = "index";
+
+g.X = "x";
+g.Y = "y";
+g.ROW = "row";
+g.COL = "col";
+g.SIZE = "size";
+g.SHAPE = "shape";
+g.COLOR = "color";
+g.ALPHA = "alpha";
+g.TEXT = "text";
+
+g.O = 1;
+g.Q = 2;
+g.T = 4;
+
+//TODO refactor this to be config?
+g.MAX_BINS = 20;
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+
+},{}],8:[function(require,module,exports){
+var global = require('./globals');
+
+var legends = module.exports = {};
+
+legends.defs = function(encoding) {
+  var legends = [];
+
+  // TODO: support alpha
+
+  if (encoding.has(COLOR) && encoding.legend(COLOR)) {
+    legends.push({
+      fill: COLOR,
+      title: encoding.fieldTitle(COLOR),
+      orient: "right"
+    });
+  }
+
+  if (encoding.has(SIZE) && encoding.legend(SIZE)) {
+    legends.push({
+      size: SIZE,
+      title: encoding.fieldTitle(SIZE),
+      orient: legends.length === 1 ? "left" : "right"
+    });
+  }
+
+  if (encoding.has(SHAPE) && encoding.legend(SHAPE)) {
+    if (legends.length === 2) {
+      // TODO: fix this
+      console.error("Vegalite currently only supports two legends");
+      return legends;
+    }
+    legends.push({
+      shape: SHAPE,
+      title: encoding.fieldTitle(SHAPE),
+      orient: legends.length === 1 ? "left" : "right"
+    });
+  }
+
+  return legends;
+}
+},{"./globals":7}],9:[function(require,module,exports){
+var globals = require("./globals"),
+  util = require("./util");
+
+var marks = module.exports = {};
+
+marks.bar = {
+  type: "rect",
+  stack: true,
+  prop: bar_props,
+  requiredEncoding: ["x", "y"],
+  supportedEncoding: {row:1, col:1, x:1, y:1, size:1, color:1, alpha:1}
+};
+
+marks.line = {
+  type: "line",
+  line: true,
+  prop: line_props,
+  requiredEncoding: ["x", "y"],
+  supportedEncoding: {row:1, col:1, x:1, y:1, color:1, alpha:1}
+};
+
+marks.area = {
+  type: "area",
+  stack: true,
+  line: true,
+  requiredEncoding: ["x", "y"],
+  prop: area_props,
+  supportedEncoding: marks.line.supportedEncoding
+};
+
+marks.circle = {
+  type: "symbol",
+  prop: filled_point_props("circle"),
+  supportedEncoding: {row:1, col:1, x:1, y:1, size:1, color:1, alpha:1}
+};
+
+marks.square = {
+  type: "symbol",
+  prop: filled_point_props("square"),
+  supportedEncoding: marks.circle.supportedEncoding
+};
+
+marks.point = {
+  type: "symbol",
+  prop: point_props,
+  supportedEncoding: {row:1, col:1, x:1, y:1, size:1, color:1, alpha:1, shape:1}
+};
+
+marks.text = {
+  type: "text",
+  prop: text_props,
+  requiredEncoding: ["text"],
+  supportedEncoding: {row:1, col:1, size:1, color:1, alpha:1, text:1}
+};
+
+function bar_props(e) {
+  var p = {};
+
+  // x
+  if (e.isType(X,Q|T) && !e.bin(X)) {
+    p.x = {scale: X, field: e.field(X)};
+    if (e.has(Y) && (!e.isType(Y,Q|T) || e.bin(Y))) {
+      p.x2 = {scale: X, value: 0};
+    }
+  } else if (e.has(X)) {
+    p.xc = {scale: X, field: e.field(X)};
+  } else {
+    p.xc = {value: 0};
+  }
+
+  // y
+  if (e.isType(Y,Q|T) && !e.bin(Y)) {
+    p.y = {scale: Y, field: e.field(Y)};
+    p.y2 = {scale: Y, value: 0};
+  } else if (e.has(Y)) {
+    p.yc = {scale: Y, field: e.field(Y)};
+  } else {
+    p.yc = {group: "height"};
+  }
+
+  // width
+  if (!e.isType(X,Q|T)) {
+    if (e.has(SIZE)) {
+      p.width = {scale: SIZE, field: e.field(SIZE)};
+    } else {
+      // p.width = {scale: X, band: true, offset: -1};
+      p.width = {value: +e.config("bandSize"), offset: -1};
+    }
+  } else if (!e.isType(Y,O) && !e.bin(Y)) {
+    p.width = {value: +e.config("bandSize"), offset: -1};
+  }
+
+  // height
+  if (!e.isType(Y,Q|T)) {
+    if (e.has(SIZE)) {
+      p.height = {scale: SIZE, field: e.field(SIZE)};
+    } else {
+      // p.height = {scale: Y, band: true, offset: -1};
+      p.height = {value: +e.config("bandSize"), offset: -1};
+    }
+  } else if (!e.isType(X,O) && !e.bin(X)) {
+    p.height = {value: +e.config("bandSize"), offset: -1};
+  }
+
+  // fill
+  if (e.has(COLOR)) {
+    p.fill = {scale: COLOR, field: e.field(COLOR)};
+  } else if (!e.has(COLOR)) {
+    p.fill = {value: e.config("color")};
+  }
+
+  // alpha
+  if (e.has(ALPHA)) {
+    p.opacity = {scale: ALPHA, field: e.field(ALPHA)};
+  }
+
+  return p;
+}
+
+function point_props(e, opt) {
+  var p = {};
+  opt = opt || {};
+
+  // x
+  if (e.has(X)) {
+    p.x = {scale: X, field: e.field(X)};
+  } else if (!e.has(X)) {
+    p.x = {value: e.config("bandSize")/2};
+  }
+
+  // y
+  if (e.has(Y)) {
+    p.y = {scale: Y, field: e.field(Y)};
+  } else if (!e.has(Y)) {
+    p.y = {value: e.config("bandSize")/2};
+  }
+
+  // size
+  if (e.has(SIZE)) {
+    p.size = {scale: SIZE, field: e.field(SIZE)};
+  } else if (!e.has(SIZE)) {
+    p.size = {value: e.config("pointSize")};
+  }
+
+  // shape
+  if (e.has(SHAPE)) {
+    p.shape = {scale: SHAPE, field: e.field(SHAPE)};
+  } else if (!e.has(SHAPE)) {
+    p.shape = {value: e.config("pointShape")};
+  }
+
+  // stroke
+  if (e.has(COLOR)) {
+    p.stroke = {scale: COLOR, field: e.field(COLOR)};
+  } else if (!e.has(COLOR)) {
+    p.stroke = {value: e.config("color")};
+  }
+
+  // alpha
+  if (e.has(ALPHA)) {
+    p.opacity = {scale: ALPHA, field: e.field(ALPHA)};
+  }else{
+    p.opacity = {
+      value: e.config("opacity") || e.config(opt.hasAggregate ? "_thickOpacity" : "_thinOpacity")
+    };
+  }
+
+  p.strokeWidth = {value: e.config("strokeWidth")};
+
+  return p;
+}
+
+function line_props(e) {
+  var p = {};
+
+  // x
+  if (e.has(X)) {
+    p.x = {scale: X, field: e.field(X)};
+  } else if (!e.has(X)) {
+    p.x = {value: 0};
+  }
+
+  // y
+  if (e.has(Y)) {
+    p.y = {scale: Y, field: e.field(Y)};
+  } else if (!e.has(Y)) {
+    p.y = {group: "height"};
+  }
+
+  // stroke
+  if (e.has(COLOR)) {
+    p.stroke = {scale: COLOR, field: e.field(COLOR)};
+  } else if (!e.has(COLOR)) {
+    p.stroke = {value: e.config("color")};
+  }
+
+  // alpha
+  if (e.has(ALPHA)) {
+    p.opacity = {scale: ALPHA, field: e.field(ALPHA)};
+  }
+
+  p.strokeWidth = {value: e.config("strokeWidth")};
+
+  return p;
+}
+
+function area_props(e) {
+  var p = {};
+
+  // x
+  if (e.isType(X,Q|T)) {
+    p.x = {scale: X, field: e.field(X)};
+    if (!e.isType(Y,Q|T) && e.has(Y)) {
+      p.x2 = {scale: X, value: 0};
+      p.orient = {value: "horizontal"};
+    }
+  } else if (e.has(X)) {
+    p.x = {scale: X, field: e.field(X)};
+  } else {
+    p.x = {value: 0};
+  }
+
+  // y
+  if (e.isType(Y,Q|T)) {
+    p.y = {scale: Y, field: e.field(Y)};
+    p.y2 = {scale: Y, value: 0};
+  } else if (e.has(Y)) {
+    p.y = {scale: Y, field: e.field(Y)};
+  } else {
+    p.y = {group: "height"};
+  }
+
+  // stroke
+  if (e.has(COLOR)) {
+    p.fill = {scale: COLOR, field: e.field(COLOR)};
+  } else if (!e.has(COLOR)) {
+    p.fill = {value: e.config("color")};
+  }
+
+  // alpha
+  if (e.has(ALPHA)) {
+    p.opacity = {scale: ALPHA, field: e.field(ALPHA)};
+  }
+
+  return p;
+}
+
+function filled_point_props(shape) {
+  return function(e, opt) {
+    var p = {};
+    opt = opt || {};
+
+    // x
+    if (e.has(X)) {
+      p.x = {scale: X, field: e.field(X)};
+    } else if (!e.has(X)) {
+      p.x = {value: e.config("bandSize")/2};
+    }
+
+    // y
+    if (e.has(Y)) {
+      p.y = {scale: Y, field: e.field(Y)};
+    } else if (!e.has(Y)) {
+      p.y = {value: e.config("bandSize")/2};
+    }
+
+    // size
+    if (e.has(SIZE)) {
+      p.size = {scale: SIZE, field: e.field(SIZE)};
+    } else if (!e.has(X)) {
+      p.size = {value: e.config("pointSize")};
+    }
+
+    // shape
+    p.shape = {value: shape};
+
+    // fill
+    if (e.has(COLOR)) {
+      p.fill = {scale: COLOR, field: e.field(COLOR)};
+    } else if (!e.has(COLOR)) {
+      p.fill = {value: e.config("color")};
+    }
+
+    // alpha
+    if (e.has(ALPHA)) {
+      p.opacity = {scale: ALPHA, field: e.field(ALPHA)};
+    }else {
+      p.opacity = {
+        value: e.config("opacity") || e.config(opt.hasAggregate ? "_thickOpacity" : "_thinOpacity")
+      };
+    }
+
+    return p;
+  };
+}
+
+function text_props(e) {
+  var p = {};
+
+  // x
+  if (e.has(X)) {
+    p.x = {scale: X, field: e.field(X)};
+  } else if (!e.has(X)) {
+    p.x = {value: e.config("bandSize")/2};
+  }
+
+  // y
+  if (e.has(Y)) {
+    p.y = {scale: Y, field: e.field(Y)};
+  } else if (!e.has(Y)) {
+    p.y = {value: e.config("bandSize")/2};
+  }
+
+  // size
+  if (e.has(SIZE)) {
+    p.fontSize = {scale: SIZE, field: e.field(SIZE)};
+  } else if (!e.has(X)) {
+    p.fontSize = {value: e.config("fontSize")};
+  }
+
+  // fill
+  if (e.has(COLOR)) {
+    p.fill = {scale: COLOR, field: e.field(COLOR)};
+  } else if (!e.has(COLOR)) {
+    p.fill = {value: e.config("textColor")};
+  }
+
+  // alpha
+  if (e.has(ALPHA)) {
+    p.opacity = {scale: ALPHA, field: e.field(ALPHA)};
+  }
+
+  // text
+  if (e.has(TEXT)) {
+    p.text = {field: e.field(TEXT)};
+  } else {
+    p.text = {value: "Abc"};
+  }
+
+  p.font = {value: e.config("font")};
+  p.fontWeight = {value: e.config("fontWeight")};
+  p.fontStyle = {value: e.config("fontStyle")};
+  p.baseline = {value: e.config("textBaseline")};
+
+  // align
+  if (e.has(X)) {
+    if (e.isType(X,O)) {
+      p.align = {value: "left"};
+      p.dx = {value: e.config("textMargin")};
+    } else {
+      p.align = {value: "center"}
+    }
+  } else if (e.has(Y)) {
+    p.align = {value: "left"};
+    p.dx = {value: e.config("textMargin")};
+  } else {
+    p.align = {value: e.config("textAlign")};
+  }
+
+  return p;
+}
+},{"./globals":7,"./util":12}],10:[function(require,module,exports){
+var globals = require("./globals"),
+  util = require("./util");
+
+var scale = module.exports = {};
+
+scale.names = function (props) {
+  return util.keys(util.keys(props).reduce(function(a, x) {
+    if (props[x] && props[x].scale) a[props[x].scale] = 1;
+    return a;
+  }, {}));
+}
+
+scale.defs = function (names, encoding, opt) {
+  opt = opt || {};
+
+  return names.reduce(function(a, name) {
+    var s = {
+      name: name,
+      type: scale_type(name, encoding),
+      domain: scale_domain(name, encoding, opt)
+    };
+    if (s.type === "ordinal" && !encoding.bin(name)) {
+      s.sort = true;
+    }
+
+    scale_range(s, encoding, opt);
+
+    return (a.push(s), a);
+  }, []);
+}
+
+function scale_type(name, encoding) {
+  switch (encoding.type(name)) {
+    case O: return "ordinal";
+    case T:
+      if (encoding.fn(name)) {
+        return "linear";
+      }
+      return "time";
+    case Q:
+      if (encoding.bin(name)) {
+        return "ordinal";
+      }
+      return encoding.scale(name).type || "linear";
+  }
+}
+
+function scale_domain(name, encoding, opt) {
+  if (encoding.type(name) === T){
+    switch(encoding.fn(name)){
+      case "second":
+      case "minute": return [0, 59];
+      case "hour": return [0, 23];
+      case "day": return [0, 6];
+      case "date": return [1, 31];
+      case "month": return [0, 11];
+    }
+  }
+
+  if (encoding.bin(name)) {
+    // TODO: add includeEmptyConfig here
+    if (opt.stats) {
+      var bins = util.getbins(opt.stats[encoding.fieldName(name)]);
+      var domain = util.range(bins.start, bins.stop, bins.step);
+      return name===Y ? domain.reverse() : domain;
+    }
+  }
+
+  return name == opt.stack ?
+    {
+      data: STACKED,
+      field: "data." + (opt.facet ? "max_" :"") + "sum_" + encoding.field(name, true)
+    }:
+    {data: TABLE, field: encoding.field(name)};
+}
+
+function scale_range(s, encoding, opt) {
+  var spec = encoding.scale(s.name);
+  switch (s.name) {
+    case X:
+      if (encoding.isType(s.name, O) || encoding.bin(s.name)) {
+        s.bandWidth = +encoding.config("bandSize");
+      } else {
+        s.range = opt.cellWidth ? [0, opt.cellWidth] : "width";
+        //TODO zero and reverse should become generic, and we just read default from either the schema or the schema generator
+        s.zero = spec.zero || encoding.config("_xZero");
+        s.reverse = spec.reverse || encoding.config("_xReverse");
+      }
+      s.round = true;
+      if (encoding.isType(s.name, T)){
+        s.nice = encoding.aggr(s.name) || encoding.config("timeScaleNice");
+      }else{
+        s.nice = true;
+      }
+      break;
+    case Y:
+      if (encoding.isType(s.name, O) || encoding.bin(s.name)) {
+        s.bandWidth = +encoding.config("bandSize");
+      } else {
+        s.range = opt.cellHeight ? [opt.cellHeight, 0] : "height";
+        //TODO zero and reverse should become generic, and we just read default from either the schema or the schema generator
+        s.zero = spec.zero || encoding.config("_yZero");
+        s.reverse = spec.reverse || encoding.config("_yReverse");
+      }
+
+      s.round = true;
+
+      if (encoding.isType(s.name, T)){
+        s.nice = encoding.aggr(s.name);
+      }else{
+        s.nice = true;
+      }
+      break;
+    case ROW:
+      s.bandWidth = opt.cellHeight || encoding.config("cellHeight");
+      s.round = true;
+      s.nice = true;
+      break;
+    case COL:
+      s.bandWidth = opt.cellWidth || encoding.config("cellWidth");
+      s.round = true;
+      s.nice = true;
+      break;
+    case SIZE:
+      if (encoding.is("bar")) {
+        s.range = [3, +encoding.config("bandSize")];
+      } else if (encoding.is(TEXT)) {
+        s.range = [8, 40];
+      } else {
+        s.range = [10, 1000];
+      }
+      s.round = true;
+      s.zero = false;
+      break;
+    case SHAPE:
+      s.range = "shapes";
+      break;
+    case COLOR:
+      if (encoding.isType(s.name, O)) {
+        s.range = "category10";
+      } else {
+        s.range = ["#ddf", "steelblue"];
+        s.zero = false;
+      }
+      break;
+    case ALPHA:
+      s.range = [0.2, 1.0];
+      break;
+    default:
+      throw new Error("Unknown encoding name: "+s.name);
+  }
+
+  switch(s.name){
+    case ROW:
+    case COL:
+      s.padding = encoding.config("cellPadding");
+      s.outerPadding = 0;
+      break;
+    case X:
+    case Y:
+      if (encoding.isType(s.name, O) || encoding.bin(s.name) ) { //&& !s.bandWidth
+        s.points = true;
+        s.padding = encoding.config("bandPadding");
+      }
+  }
+}
+},{"./globals":7,"./util":12}],11:[function(require,module,exports){
+// Defining Vegalite Encoding's schema
+var schema = module.exports = {};
+
+schema.marktype = {
+  type: "string",
+  enum: ["point", "bar", "line", "area", "circle", "square", "text"]
+};
+
+schema.aggr = {
+  type: "string",
+  enum: ["avg", "sum", "min", "max", "count"],
+  supportedEnums: {
+    Q: ["avg", "sum", "min", "max", "count"],
+    O: ["count"],
+    T: ["avg", "min", "max", "count"],
+    "": ["count"],
+  },
+  supportedTypes: {"Q": true, "O": true, "T": true, "": true}
+};
+
+schema.timefns = ["month", "year", "day", "date", "hour", "minute", "second"];
+
+schema.fn = {
+  type: "string",
+  enum: schema.timefns,
+  supportedTypes: {"T": true}
+}
+
+//TODO(kanitw): add other type of function here
+
+schema.scale_type = {
+  type: "string",
+  enum: ["linear", "log","pow", "sqrt", "quantile"],
+  default: "linear",
+  supportedTypes: {"Q": true}
+};
+
+schema.field = {
+  type: "object",
+  required: ["name", "type"],
+  properties: {
+    name: {
+      type: "string"
+    }
+  }
+};
+
+},{}],12:[function(require,module,exports){
 var util = module.exports = {};
 
 util.keys = function (obj) {

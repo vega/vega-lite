@@ -3,7 +3,6 @@ var globals = require("./globals"),
 
 var scale = module.exports = {};
 
-
 scale.names = function (props) {
   return util.keys(util.keys(props).reduce(function(a, x) {
     if (props[x] && props[x].scale) a[props[x].scale] = 1;

@@ -5,10 +5,7 @@ var globals = require('./globals'),
   marks = require('./marks'),
   scale = require('./scale');
 
-console.log(scale);
-
-
-var toVegaSpec = module.exports = function(encoding, stats) {
+var compile = module.exports = function(encoding, stats) {
   var size = setSize(encoding, stats),
     cellWidth = size.cellWidth,
     cellHeight = size.cellHeight;
@@ -444,7 +441,7 @@ function groupdef(name, opt) {
 function template(encoding, size, stats) { //hack use stats
 
   var data = {name:TABLE, format: {type: encoding.config("dataFormatType")}},
-    dataUrl = vl.getDataUrl(encoding, stats);
+    dataUrl = vl.data.getUrl(encoding, stats);
   if(dataUrl) data.url = dataUrl;
 
   var preaggregatedData = encoding.config("useVegaServer");
