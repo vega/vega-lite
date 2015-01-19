@@ -12,8 +12,10 @@ var gutil = require('gulp-util');
 var bundler = watchify(browserify({
     entries: ['./src/vl'],
     exclude: ['d3','topojson', 'lodash', '../lib/vega'],
+    standalone: 'vl',
     debug: true
   }));
+
 
 function bundle() {
   return bundler
