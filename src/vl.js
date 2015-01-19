@@ -13,5 +13,4 @@ vl.marks = require('./marks')
 vl.scale = require('./scale');
 vl.schema = require('./schema');
 
-if(window) window.vl = vl;
 module.exports = vl;

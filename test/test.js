@@ -9,7 +9,7 @@ program.version('0.0.1')
   .parse(process.argv);
 
 var  fs = require('fs'),
-  vl = require('../src/vegalite.js'),
+  vl = require('../src/vl'),
   stringify = require('../lib/json3-compactstringify').stringify,
   assert = require('chai').assert,
   deepDiff = require('deep-diff').diff;
