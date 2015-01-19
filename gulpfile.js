@@ -28,7 +28,7 @@ function bundle() {
 }
 
 gulp.task('mocha', function() {
-    return gulp.src(['test/test.js'], { read: false })
+    return gulp.src(['test/test-schema.js'], { read: false })  // TODO: add 'test/test.js'
         .pipe(mocha({ reporter: 'list' }))
         .on('error', gutil.log);
 });
@@ -41,4 +41,4 @@ bundler.on('update', bundle);
 
 gulp.task('build', bundle);
 
-gulp.task('default', ['build']); // TODO: add 'watch-mocha'
+gulp.task('default', ['build', 'watch-mocha']);

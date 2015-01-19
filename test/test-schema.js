@@ -1,10 +1,11 @@
-var schema = require("./schema.json"),
-  utils = require("./utils.js"),
-  specSchema = require("./schema.js").spec,
-  assert = require('assert'),
+var assert = require('assert'),
   tv4 = require("tv4"),
   _ = require("lodash"),
   inspect = require('util').inspect;
+
+var schema = require("../schema/schema.json"),
+  util = require("../src/schemautil.js"),
+  specSchema = require("../schema/schema.js").spec;
 
 String.prototype.endsWith = function(suffix) {
     return this.indexOf(suffix, this.length - suffix.length) !== -1;
@@ -38,7 +39,7 @@ describe("Schema", function () {
   });
 });
 
-describe("Utils", function() {
+describe("Util", function() {
   it("instantiate simple schema", function() {
     var simpleSchema = {
       type: 'object', required: ['fooBaz'],
@@ -46,7 +47,7 @@ describe("Utils", function() {
         fooBar: {type: 'string', default: 'baz'},
         fooBaz: {type: 'string', enum: ['a', 'b']}}};
     assert.deepEqual(
-      utils.instantiate(simpleSchema),
+      util.instantiate(simpleSchema),
       {fooBar: 'baz', fooBaz: 'a'});
   });
 
@@ -78,7 +79,7 @@ describe("Utils", function() {
       }
     };
 
-    var actual = utils.difference(utils.instantiate(specSchema), spec);
+    var actual = util.difference(util.instantiate(specSchema), spec);
     assert.deepEqual(actual, expected);
   });
 
@@ -87,7 +88,7 @@ describe("Utils", function() {
     var b = {a: "fuu"};
 
     assert.deepEqual(
-      utils.merge(a, b),
+      util.merge(a, b),
       {a: "fuu", b: {"bar": 0, "baz": [], "qux": [1, 2, 3]}});
   });
 
@@ -96,7 +97,7 @@ describe("Utils", function() {
     var b = {a: "fuu"};
 
     assert.deepEqual(
-      utils.merge(b, a),
+      util.merge(b, a),
       {a: "foo", b: {"bar": 0, "baz": [], "qux": [1, 2, 3]}});
   });
 });
