@@ -48,7 +48,10 @@ schema.field = {
   }
 };
 
-var typicalField = _.chain(schema.field).cloneDeep().merge({
+var clone = util.duplicate;
+var merge = schema.util.merge;
+
+var typicalField = merge(clone(schema.field), {
   type: "object",
   properties: {
     type: {
@@ -80,9 +83,9 @@ var typicalField = _.chain(schema.field).cloneDeep().merge({
       }
     }
   }
-}); // no value()
+});
 
-var onlyOrdinalField = _.chain(schema.field).cloneDeep().merge({
+var onlyOrdinalField = merge(clone(schema.field), {
   type: "object",
   properties: {
     type: {
@@ -99,7 +102,7 @@ var onlyOrdinalField = _.chain(schema.field).cloneDeep().merge({
       supportedTypes: {"O": true}
     }
   }
-});  // no value()
+});
 
 var axisMixin = {
   type: "object",
@@ -149,18 +152,18 @@ var textMixin = {
   }
 }
 
-var x = typicalField.cloneDeep().merge(axisMixin).value();
-var y = _.cloneDeep(x);
+var x = merge(clone(typicalField), axisMixin);
+var y = clone(x);
 
-var row = onlyOrdinalField.cloneDeep().value();
-var col = _.cloneDeep(row);
+var row = clone(onlyOrdinalField);
+var col = clone(row);
 
-var size = typicalField.cloneDeep().merge(legendMixin).value();
-var color = typicalField.cloneDeep().merge(legendMixin).value();
-var alpha = typicalField.cloneDeep().value();
-var shape = onlyOrdinalField.cloneDeep().merge(legendMixin).value();
+var size = merge(clone(typicalField), legendMixin);
+var color = merge(clone(typicalField), legendMixin);
+var alpha = clone(typicalField);
+var shape = merge(clone(onlyOrdinalField), legendMixin);
 
-var text = typicalField.cloneDeep().merge(textMixin).value();
+var text = merge(clone(typicalField), textMixin);
 
 var cfg = {
   type: "object",

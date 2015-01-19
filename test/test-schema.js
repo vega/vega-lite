@@ -3,9 +3,9 @@ var assert = require('assert'),
   _ = require("lodash"),
   inspect = require('util').inspect;
 
-var schema = require("../schema/schema.json"),
+var schema = require("../lib/schema.json"),
   util = require("../src/schemautil.js"),
-  specSchema = require("../schema/schema.js").spec;
+  specSchema = require("../src/schema.js").spec;
 
 String.prototype.endsWith = function(suffix) {
     return this.indexOf(suffix, this.length - suffix.length) !== -1;
