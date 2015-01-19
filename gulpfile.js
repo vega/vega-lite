@@ -8,10 +8,10 @@ var sourcemaps = require('gulp-sourcemaps');
 var watchify = require('watchify');
 var mocha = require('gulp-mocha');
 var gutil = require('gulp-util');
+var rename = require('gulp-rename');
 
 var bundler = watchify(browserify({
     entries: ['./src/vl'],
-    exclude: ['d3','topojson', 'lodash', '../lib/vega'],
     standalone: 'vl',
     debug: true
   }));
@@ -22,9 +22,11 @@ function bundle() {
     .bundle()
     .pipe(source('vegalite.js'))
     .pipe(buffer())
-      .pipe(sourcemaps.init({loadMaps: true}))
-      // Add transformation tasks to the pipeline here.
-      // .pipe(uglify())
+    .pipe(gulp.dest('.'))
+    .pipe(sourcemaps.init({loadMaps: true}))
+    // This will minify and rename to vegalite.min.js
+    .pipe(uglify())
+    .pipe(rename({ extname: '.min.js' }))
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('.'));
 }
