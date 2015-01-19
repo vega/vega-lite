@@ -12,11 +12,10 @@ var uglify = require('gulp-uglify');
 var watchify = require('watchify');
 
 var bundler = watchify(browserify({
-    entries: ['./src/vl'],
-    standalone: 'vl',
-    debug: true
-  }));
-
+  entries: ['./src/vl'],
+  standalone: 'vl',
+  debug: true
+}));
 
 // builds vegalite
 function bundle() {
@@ -48,14 +47,14 @@ gulp.task('watch-schema', function() {
 
 // runs the tests
 gulp.task('mocha', function() {
-    return gulp.src(['test/test-schema.js'], { read: false })  // TODO: add 'test/test.js'
-        .pipe(mocha({ reporter: 'list' }))
-        .on('error', gutil.log);
+  return gulp.src(['test/test-schema.js'], { read: false })  // TODO: add 'test/test.js'
+    .pipe(mocha({ reporter: 'list' }))
+    .on('error', gutil.log);
 });
 
 // watches directories and runs tests if things change
 gulp.task('watch-mocha', function() {
-    gulp.watch(['src/**', 'test/**'], ['mocha']);
+  gulp.watch(['src/**', 'test/**'], ['mocha']);
 });
 
 bundler.on('update', bundle);
