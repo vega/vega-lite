@@ -41,4 +41,4 @@ bundler.on('update', bundle);
 
 gulp.task('build', bundle);
 
-gulp.task('default', ['build', 'watch-mocha']);
+gulp.task('default', ['build']); // TODO: add 'watch-mocha'
