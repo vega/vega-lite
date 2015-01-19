@@ -6,7 +6,8 @@ var buffer = require('vinyl-buffer');
 var uglify = require('gulp-uglify');
 var sourcemaps = require('gulp-sourcemaps');
 var watchify = require('watchify');
-
+var mocha = require('gulp-mocha');
+var gutil = require('gulp-util');
 
 var bundler = watchify(browserify({
     entries: ['./src/vl'],
@@ -26,7 +27,18 @@ function bundle() {
     .pipe(gulp.dest('.'));
 }
 
-gulp.task('watch', bundle);
+gulp.task('mocha', function() {
+    return gulp.src(['test/test.js'], { read: false })
+        .pipe(mocha({ reporter: 'list' }))
+        .on('error', gutil.log);
+});
+
+gulp.task('watch-mocha', function() {
+    gulp.watch(['src/**', 'test/**'], ['mocha']);
+});
+
 bundler.on('update', bundle);
 
+gulp.task('build', bundle);
 
+gulp.task('default', ['build', 'watch-mocha']);
