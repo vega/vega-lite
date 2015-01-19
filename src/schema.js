@@ -1,6 +1,8 @@
 // Defining Vegalite Encoding's schema
 var schema = module.exports = {};
 
+schema.util = require('./schemautil');
+
 schema.marktype = {
   type: "string",
   enum: ["point", "bar", "line", "area", "circle", "square", "text"]
