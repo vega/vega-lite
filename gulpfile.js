@@ -26,7 +26,7 @@ function bundle() {
     .pipe(gulp.dest('.'));
 }
 
-gulp.task('watch', bundle);
 bundler.on('update', bundle);
 
-
+gulp.task('watch', bundle);
+gulp.task('default', ['watch'])
