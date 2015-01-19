@@ -5,7 +5,6 @@ var VEGA_DIR = "shorthand2vg";
 var program = require('commander');
 program.version('0.0.1')
   .description("Generate Vega specs from Vegalite object in testcases.js and compare output with testcases in "+ VEGA_DIR)
-  // .option('-f, --files [path]', 'Test specific files (Use comma to separate filename', null)
   .parse(process.argv);
 
 var  fs = require('fs'),
@@ -16,14 +15,6 @@ var  fs = require('fs'),
 
 var badList = [], goodList = [];
 
-// if(program.files){
-//   program.files.split(",").forEach(function(filename){
-//     var json = require("./"+VEGALITE_DIR+"/"+filename),
-//       encoding = vl.Encoding.parseJSON(json);
-//     test(filename, encoding);
-//   });
-//   log();
-// }else{
   var testcases =  require('./testcases');
   vl.keys(testcases).forEach(function(dataUrl){
     testcases[dataUrl].forEach(function(tc){
@@ -32,7 +23,6 @@ var badList = [], goodList = [];
       test(filename, encoding);
     })
   })
-// }
 
 function test(filename, encoding){
   var dataUrl = '../'+encoding.config("dataUrl"),
