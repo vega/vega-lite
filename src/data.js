@@ -2,7 +2,9 @@
 
 var util = require('./util');
 
-module.exports.getUrl = function getDataUrl(encoding, stats) {
+var data = module.exports = {};
+
+data.getUrl = function getDataUrl(encoding, stats) {
   if (!encoding.config("useVegaServer")) {
     // don't use vega server
     return encoding.config("dataUrl");
@@ -36,7 +38,11 @@ module.exports.getUrl = function getDataUrl(encoding, stats) {
   return encoding.config("vegaServerUrl") + "/query/?q=" + JSON.stringify(query)
 };
 
-module.exports.getStats = function(data){ // hack
+data.getDataTypes = function(data){
+
+}
+
+data.getStats = function(data){ // hack
   var stats = {};
   var fields = util.keys(data[0]);
 
