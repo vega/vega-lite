@@ -47,7 +47,7 @@ gulp.task('watch-schema', function() {
 
 // runs the tests
 gulp.task('mocha', function() {
-  return gulp.src(['test/*.spec.js'], { read: false })  // TODO: add 'test/test.js'
+  return gulp.src(['test/*.spec.js'], { read: false })
     .pipe(mocha({ reporter: 'list' }))
     .on('error', gutil.log);
 });

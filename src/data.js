@@ -38,26 +38,39 @@ data.getUrl = function getDataUrl(encoding, stats) {
   return encoding.config("vegaServerUrl") + "/query/?q=" + JSON.stringify(query)
 };
 
-data.getDataTypes = function(data){
+/**
+ * [getSchema description]
+ * @param  {Object} data data in JSON/javascript object format
+ * @return Array of {name: __name__, type: "number|text|time|location"}
+ */
+data.getSchema = function(data){
+  var schema = [],
+    fields = util.keys(data[0]);
 
-}
-
-data.getStats = function(data){ // hack
-  var stats = {};
-  var fields = util.keys(data[0]);
-
-  fields.forEach(function(k) {
-    var stat = util.minmax(data, k);
-    stat.cardinality = util.uniq(data, k);
-
+  fields.forEach(function(k){
+    // find non-null data
     var i=0, datum = data[i][k];
     while(datum === "" || datum === null || datum === undefined){
       datum = data[++i][k];
     }
 
     //TODO(kanitw): better type inference here
-    stat.type = (typeof datum === "number") ? "Q" :
-      isNaN(Date.parse(datum)) ? "O" : "T";
+    var type = (typeof datum === "number") ? "number" :
+      isNaN(Date.parse(datum)) ? "text" : "time";
+
+    schema.push({name: k, type: type});
+  });
+
+  return schema;
+};
+
+data.getStats = function(data){ // hack
+  var stats = {},
+    fields = util.keys(data[0]);
+
+  fields.forEach(function(k) {
+    var stat = util.minmax(data, k);
+    stat.cardinality = util.uniq(data, k);
     stat.count = data.length;
     stats[k] = stat;
   });
