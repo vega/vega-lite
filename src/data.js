@@ -39,7 +39,6 @@ data.getUrl = function getDataUrl(encoding, stats) {
 };
 
 /**
- * [getSchema description]
  * @param  {Object} data data in JSON/javascript object format
  * @return Array of {name: __name__, type: "number|text|time|location"}
  */
