@@ -1,4 +1,5 @@
-// Defining Vegalite Encoding's schema
+// Package of defining Vegalite Specification's json schema
+//
 var schema = module.exports = {},
   util = require('./util');
 
@@ -189,7 +190,8 @@ var cfg = {
   }
 }
 
-schema.spec = {
+/** @type Object Schema of a vegalite specification */
+schema.schema = {
   $schema: "http://json-schema.org/draft-04/schema#",
   type: "object",
   required: ["marktype", "enc", "cfg"],
@@ -212,3 +214,8 @@ schema.spec = {
     cfg: cfg
   }
 };
+
+/** Instantiate a verbose vl spec from the schema */
+schema.instantiate = function(){
+  return schema.util.instantiate(schema.schema);
+}
