@@ -67,9 +67,8 @@ var compile = module.exports = function(encoding, stats) {
     group.axes = axis.defs(axis.names(mdef.properties.update), encoding);
     group.legends = legends.defs(encoding);
   }
-
   return spec;
-}
+};
 
 function getCardinality(encoding, encType, stats){
   var field = encoding.fieldName(encType);
@@ -173,7 +172,7 @@ function facet(group, encoding, cellHeight, cellWidth, spec, mdef, stack, stats)
         });
 
       spec.marks.push(axesGrp);
-      (spec.axes = spec.axes || [])
+      (spec.axes = spec.axes || []);
       spec.axes.push.apply(spec.axes, axis.defs(["row"], encoding));
     } else { // doesn't have row
       if(encoding.has(X)){
@@ -227,11 +226,11 @@ function facet(group, encoding, cellHeight, cellWidth, spec, mdef, stack, stats)
 
     // assuming equal cellWidth here
     // TODO: support heterogenous cellWidth (maybe by using multiple scales?)
-    spec.scales = scale.defs(
+    spec.scales = (spec.scales ||[]).concat(scale.defs(
       scale.names(enter).concat(scale.names(mdef.properties.update)),
       encoding,
       {cellWidth: cellWidth, cellHeight: cellHeight, stack: stack, facet:true, stats: stats}
-    ); // row/col scales + cell scales
+    )); // row/col scales + cell scales
 
     if (cellAxes.length > 0) {
       group.axes = cellAxes;
