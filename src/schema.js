@@ -152,16 +152,58 @@ var textMixin = {
   }
 }
 
+var sizeMixin = {
+  type: "object",
+  properties: {
+    value : {
+      type: "integer",
+      default: 10
+    }
+  }
+}
+
+var colorMixin = {
+  type: "object",
+  properties: {
+    value : {
+      type: "string",
+      default: "steelblue"
+    }
+  }
+}
+
+var alphaMixin = {
+  type: "object",
+  properties: {
+    value: {
+      type: "number",
+      default: 1,
+      minimum: 0,
+      maximum: 1
+    }
+  }
+}
+
+var shapeMixin = {
+  type: "object",
+  properties: {
+    value : {
+      type: "integer",
+      default: 10
+    }
+  }
+}
+
 var x = merge(clone(typicalField), axisMixin);
 var y = clone(x);
 
 var row = clone(onlyOrdinalField);
 var col = clone(row);
 
-var size = merge(clone(typicalField), legendMixin);
-var color = merge(clone(typicalField), legendMixin);
-var alpha = clone(typicalField);
-var shape = merge(clone(onlyOrdinalField), legendMixin);
+var size = merge(merge(clone(typicalField), legendMixin), sizeMixin);
+var color = merge(merge(clone(typicalField), legendMixin), colorMixin);
+var alpha = merge(clone(typicalField), alphaMixin);
+var shape = merge(merge(clone(onlyOrdinalField), legendMixin), shapeMixin);
 
 var text = merge(clone(typicalField), textMixin);
 
