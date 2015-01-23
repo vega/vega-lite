@@ -12,15 +12,13 @@ String.prototype.endsWith = function(suffix) {
 };
 
 describe("Schema", function () {
-  it("schema should be valid", function () {
+  it("should be valid", function () {
 
     // validate schema against meta schema
     tv4.addSchema("http://json-schema.org/draft-04/schema", schema);
 
     var result = tv4.validateMultiple(specSchema, schema, true, true);
     var errors = result.errors;
-
-    console.log("Before:", errors.length);
 
     // ignore our own special properties
     var errors = _.filter(errors, function(err) {
@@ -29,8 +27,6 @@ describe("Schema", function () {
         err.code === 1000 && (err.dataPath.endsWith("supportedTypes")
                               || err.dataPath.endsWith("supportedEnums")));
     });
-
-    console.log("After:", errors.length);
 
     if (errors.length) {
       console.log(inspect(errors, true, 5));
