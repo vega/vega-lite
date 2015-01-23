@@ -16,11 +16,11 @@ describe('getSchema', function () {
 
     assert.equal(s.length, 3);
     assert.equal(s[0].name, "a");
-    assert.equal(s[0].type, "number");
+    assert.equal(s[0].type, "Q");
     assert.equal(s[1].name, "b");
-    assert.equal(s[1].type, "text");
+    assert.equal(s[1].type, "O");
     assert.equal(s[2].name, "d");
-    assert.equal(s[2].type, "time");
+    assert.equal(s[2].type, "T");
   });
 });
 
