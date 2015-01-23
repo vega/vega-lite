@@ -40,7 +40,6 @@ schema.scale_type = {
 
 schema.field = {
   type: "object",
-  required: ["name", "type"],
   properties: {
     name: {
       type: "string"
@@ -194,10 +193,14 @@ var shapeMixin = {
   }
 }
 
-var x = merge(clone(typicalField), axisMixin);
+var requiredNameType = {
+  required: ["name", "type"]
+}
+
+var x = merge(merge(clone(typicalField), axisMixin), requiredNameType);
 var y = clone(x);
 
-var row = clone(onlyOrdinalField);
+var row = merge(clone(onlyOrdinalField), requiredNameType);
 var col = clone(row);
 
 var size = merge(merge(clone(typicalField), legendMixin), sizeMixin);

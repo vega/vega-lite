@@ -71,7 +71,7 @@ describe("Util", function() {
     var expected = {
       enc: {
         x: { name: 'dsp', type: 'Q' },
-        color: { name: 'cyl' }
+        color: { name: 'cyl', type: 'O' }
       },
       cfg: {
         dataUrl: 'data/cars.json',
