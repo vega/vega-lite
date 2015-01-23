@@ -39,7 +39,6 @@ data.getUrl = function getDataUrl(encoding, stats) {
 };
 
 /**
- * [getSchema description]
  * @param  {Object} data data in JSON/javascript object format
  * @return Array of {name: __name__, type: "number|text|time|location"}
  */
@@ -55,8 +54,8 @@ data.getSchema = function(data){
     }
 
     //TODO(kanitw): better type inference here
-    var type = (typeof datum === "number") ? "number" :
-      isNaN(Date.parse(datum)) ? "text" : "time";
+    var type = (typeof datum === "number") ? "Q":
+      isNaN(Date.parse(datum)) ? "O" : "T";
 
     schema.push({name: k, type: type});
   });

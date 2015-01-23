@@ -1,15 +1,17 @@
+var gulp = require('gulp');
 
 var browserify = require('browserify');
 var buffer = require('vinyl-buffer');
-var gulp = require('gulp');
-var gutil = require('gulp-util');
-var mocha = require('gulp-mocha');
 var rename = require('gulp-rename');
 var run = require('gulp-run');
 var source = require('vinyl-source-stream');
 var sourcemaps = require('gulp-sourcemaps');
 var uglify = require('gulp-uglify');
 var watchify = require('watchify');
+
+
+var gutil = require('gulp-util');
+var mocha = require('gulp-mocha');
 
 var bundler = watchify(browserify({
   entries: ['./src/vl'],
