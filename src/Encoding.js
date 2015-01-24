@@ -8,25 +8,36 @@ var global = require('./globals'),
 var Encoding = module.exports = (function() {
 
   function Encoding(marktype, enc, config) {
-    // TODO: caching
-    var encDefaults = schema.util.instantiate(schema.schema.properties.enc);
-    var cfgDefaults = schema.util.instantiate(schema.schema.properties.cfg);
+    var defaults = schema.instantiate();
 
-    // Hack
+    var spec = {
+      marktype: marktype,
+      enc: enc,
+      cfg: config
+    };
+
+    // Hack to add default constants that are not in the schema
     for (var k in consts.DEFAULTS) {
-      cfgDefaults[k] = consts.DEFAULTS[k];
+      defaults.cfg[k] = consts.DEFAULTS[k];
     }
 
     // remove field defs that we don't use in encoding
-    for (var k in encDefaults) {
+    for (var k in defaults.enc) {
       if (!enc[k]) {
-        delete encDefaults[k];
+        delete defaults.enc[k];
       }
     }
 
-    this._marktype = marktype;
-    this._enc = schema.util.merge(encDefaults, enc);
-    this._cfg = schema.util.merge(cfgDefaults, config);
+    // type to bitcode
+    for (var e in defaults.enc){
+      defaults.enc[e].type = consts.dataTypes[defaults.enc[e].type];
+    }
+
+    var specExtended = schema.util.merge(defaults, spec);
+
+    this._marktype = specExtended.marktype;
+    this._enc = specExtended.enc;
+    this._cfg = specExtended.cfg;
   }
 
   var proto = Encoding.prototype;
@@ -162,13 +173,10 @@ var Encoding = module.exports = (function() {
     }
 
     // remove defaults
-    var defaults = schema.util.instantiate(schema.schema);
+    var defaults = schema.instantiate();
+    var smallSpec = schema.util.subtract(defaults, spec);
 
-    var smallSpec = schema.util.difference(defaults, spec);
-
-    console.log(smallSpec);
-
-    return spec;
+    return smallSpec;
   };
 
   proto.toShorthand = function(){
