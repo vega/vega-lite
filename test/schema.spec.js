@@ -52,9 +52,9 @@ describe("Util", function() {
       marktype: 'point',
       enc: {
         x: { name: 'dsp', type: 'Q', scale: {type: "linear"}
-     },
-       color: { name: 'cyl', type: 'O' }
-     },
+      },
+        color: { name: 'cyl', type: 'O' }
+      },
       cfg: {
         useVegaServer: false,
         vegaServerUrl: 'http://localhost:3001',
@@ -75,7 +75,7 @@ describe("Util", function() {
       }
     };
 
-    var actual = util.difference(util.instantiate(specSchema), spec);
+    var actual = util.subtract(util.instantiate(specSchema), spec);
     assert.deepEqual(actual, expected);
   });
 

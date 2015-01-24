@@ -23,12 +23,12 @@ util.instantiate = function(schema, required) {
 };
 
 // remove all defaults from an instance
-util.difference = function(defaults, instance) {
+util.subtract = function(defaults, instance) {
   var changes = {};
   for (var prop in instance) {
     if (!defaults || defaults[prop] !== instance[prop]) {
       if (typeof instance[prop] == "object") {
-        var c = util.difference(defaults[prop], instance[prop]);
+        var c = util.subtract(defaults[prop], instance[prop]);
         if (!isEmpty(c))
           changes[prop] = c;
       } else {
