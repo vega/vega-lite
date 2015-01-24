@@ -8,9 +8,25 @@ var global = require('./globals'),
 var Encoding = module.exports = (function() {
 
   function Encoding(marktype, enc, config) {
+    // TODO: caching
+    var encDefaults = schema.util.instantiate(schema.schema.properties.enc);
+    var cfgDefaults = schema.util.instantiate(schema.schema.properties.cfg);
+
+    // Hack
+    for (var k in consts.DEFAULTS) {
+      cfgDefaults[k] = consts.DEFAULTS[k];
+    }
+
+    // remove field defs that we don't use in encoding
+    for (var k in encDefaults) {
+      if (!enc[k]) {
+        delete encDefaults[k];
+      }
+    }
+
     this._marktype = marktype;
-    this._enc = enc; // {encType1:field1, ...}
-    this._cfg = util.merge(Object.create(consts.DEFAULTS), config);
+    this._enc = schema.util.merge(encDefaults, enc);
+    this._cfg = schema.util.merge(cfgDefaults, config);
   }
 
   var proto = Encoding.prototype;
