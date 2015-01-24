@@ -63,6 +63,15 @@ function axis_def(name, encoding, opt){
     }
   }
 
+  if (encoding.isType(name, T)) {
+    var fn = encoding.fn(name);
+    switch (fn) {
+      case "day":
+      case "month":
+        axis.scale = "time-"+fn;
+    }
+  }
+
   return axis;
 }
 
