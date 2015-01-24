@@ -11,20 +11,6 @@ consts.dataTypeNames = ["O","Q","T"].reduce(function(r,x) {
 },{});
 
 consts.DEFAULTS = {
-  // template
-  width: undefined,
-  height: undefined,
-  viewport: undefined,
-  _minWidth: 20,
-  _minHeight: 20,
-
-  // data source
-  dataUrl: undefined, //for easier export
-  useVegaServer: false,
-  vegaServerUrl: "http://localhost:3001",
-  vegaServerTable: undefined,
-  dataFormatType: "json",
-
   //small multiples
   cellHeight: 200, // will be overwritten by bandWidth
   cellWidth: 200, // will be overwritten by bandWidth

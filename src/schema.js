@@ -60,6 +60,7 @@ var typicalField = merge(clone(schema.field), {
     },
     bin: {
       type: "boolean",
+      default: false,
       supportedTypes: {"Q": true, "O": true}
     },
     aggr: schema.aggr,
@@ -94,6 +95,7 @@ var onlyOrdinalField = merge(clone(schema.field), {
     },
     bin: {
       type: "boolean",
+      default: false,
       supportedTypes: {"O": true}
     },
     aggr: {
@@ -214,19 +216,48 @@ var text = merge(clone(typicalField), textMixin);
 var cfg = {
   type: "object",
   properties: {
+    // template
+    width: {
+      type: "integer",
+      default: undefined
+    },
+    height: {
+      type: "integer",
+      default: undefined
+    },
+    viewport: {
+      type: "array",
+      items: {
+        type: ["integer"]
+      },
+      default: undefined
+    },
+    _minWidth: {
+      type: "integer",
+      default: 20
+    },
+    _minHeight: {
+      type: "integer",
+      default: 20
+    },
+
+    // data source
     dataFormatType: {
       type: "string",
-      enum: ["json", "csv"]
+      enum: ["json", "csv"],
+      default: "json"
     },
     useVegaServer: {
       type: "boolean",
       default: false
     },
     dataUrl: {
-      type: "string"
+      type: "string",
+      default: undefined
     },
     vegaServerTable: {
-      type: "string"
+      type: "string",
+      default: undefined
     },
     vegaServerUrl: {
       type: "string",
