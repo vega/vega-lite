@@ -3,7 +3,8 @@ var globals = require('./globals'),
   axis = require('./axis'),
   legends = require('./legends'),
   marks = require('./marks'),
-  scale = require('./scale');
+  scale = require('./scale'),
+  time = require('./time');
 
 var compile = module.exports = function(encoding, stats) {
   var size = setSize(encoding, stats),
@@ -32,7 +33,7 @@ var compile = module.exports = function(encoding, stats) {
   var lineType = marks[encoding.marktype()].line;
 
   if(!preaggregatedData){
-    spec = timeField(spec, encoding);
+    spec = time(spec, encoding);
   }
 
   // handle subfacets
@@ -255,72 +256,6 @@ function subfacet(group, mdef, details, stack, encoding) {
     trans.unshift({type: "sort", by: encoding.field(COLOR)});
   }
 }
-
-function getTimeFn(fn){
-  switch(fn){
-    case "second": return "getUTCSeconds";
-    case "minute": return "getUTCMinutes";
-    case "hour": return "getUTCHours";
-    case "day": return "getUTCDay";
-    case "date": return "getUTCDate";
-    case "month": return "getUTCMonth";
-    case "year": return "getUTCFullYear";
-  }
-  console.error("no function specified for date");
-}
-
-compile.timeField = function (spec, encoding, opt){
-  var timeFields = {}, timeFn = {},
-    scales = spec.scales = spec.scales || [];
-  encoding.forEach(function(encType, field){
-    if(field.type === T && field.fn){
-      timeFields[encoding.field(encType)] = {
-        field: field,
-        encType: encType
-      };
-      timeFn[field.fn] = true;
-    }
-  });
-
-  for (var f in timeFields) {
-    var tf = timeFields[f];
-    timeTransform(spec.data[0], encoding, tf.encType, tf.field);
-  }
-
-  for (var fn in timeFn) {
-    switch(fn){
-      case "day":
-        scales.push({
-          name: "time-day",
-          type: "ordinal",
-          domain: util.range(0,7),
-          range: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-        });
-        break;
-      case "month":
-        scales.push({
-          name: "time-month",
-          type: "ordinal",
-          domain: util.range(0,12),
-          range: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-        });
-        break;
-    }
-  }
-  return spec;
-}
-
-function timeTransform(spec, encoding, encType, field) {
-  var func = getTimeFn(field.fn);
-
-  spec.transform = spec.transform || [];
-  spec.transform.push({
-    type: "formula",
-    field: encoding.field(encType),
-    expr: "new Date(d.data."+field.name+")."+func+"()"
-  });
-  return spec;
-};
 
 function binning(spec, encoding, opt) {
   opt = opt || {};

@@ -45,5 +45,6 @@ consts.DEFAULTS = {
   _xReverse: false,
   _yZero: true,
   _yReverse: false,
-  timeScaleNice: "day"
+  timeScaleNice: "day",
+  timeScaleLabelLength: 3
 };
