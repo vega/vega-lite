@@ -3,7 +3,8 @@ var globals = require('./globals'),
   axis = require('./axis'),
   legends = require('./legends'),
   marks = require('./marks'),
-  scale = require('./scale');
+  scale = require('./scale'),
+  time = require('./time');
 
 var compile = module.exports = function(encoding, stats) {
   var size = setSize(encoding, stats),
@@ -32,11 +33,7 @@ var compile = module.exports = function(encoding, stats) {
   var lineType = marks[encoding.marktype()].line;
 
   if(!preaggregatedData){
-    encoding.forEach(function(encType, field){
-      if(field.type === T && field.fn){
-        timeTransform(spec.data[0], encoding, encType, field);
-      }
-    });
+    spec = time(spec, encoding);
   }
 
   // handle subfacets
@@ -67,9 +64,8 @@ var compile = module.exports = function(encoding, stats) {
     group.axes = axis.defs(axis.names(mdef.properties.update), encoding);
     group.legends = legends.defs(encoding);
   }
-
   return spec;
-}
+};
 
 function getCardinality(encoding, encType, stats){
   var field = encoding.fieldName(encType);
@@ -173,7 +169,7 @@ function facet(group, encoding, cellHeight, cellWidth, spec, mdef, stack, stats)
         });
 
       spec.marks.push(axesGrp);
-      (spec.axes = spec.axes || [])
+      (spec.axes = spec.axes || []);
       spec.axes.push.apply(spec.axes, axis.defs(["row"], encoding));
     } else { // doesn't have row
       if(encoding.has(X)){
@@ -227,11 +223,11 @@ function facet(group, encoding, cellHeight, cellWidth, spec, mdef, stack, stats)
 
     // assuming equal cellWidth here
     // TODO: support heterogenous cellWidth (maybe by using multiple scales?)
-    spec.scales = scale.defs(
+    spec.scales = (spec.scales ||[]).concat(scale.defs(
       scale.names(enter).concat(scale.names(mdef.properties.update)),
       encoding,
       {cellWidth: cellWidth, cellHeight: cellHeight, stack: stack, facet:true, stats: stats}
-    ); // row/col scales + cell scales
+    )); // row/col scales + cell scales
 
     if (cellAxes.length > 0) {
       group.axes = cellAxes;
@@ -259,31 +255,6 @@ function subfacet(group, mdef, details, stack, encoding) {
   if (stack && encoding.has(COLOR)) {
     trans.unshift({type: "sort", by: encoding.field(COLOR)});
   }
-}
-
-function getTimeFn(fn){
-  switch(fn){
-    case "second": return "getUTCSeconds";
-    case "minute": return "getUTCMinutes";
-    case "hour": return "getUTCHours";
-    case "day": return "getUTCDay";
-    case "date": return "getUTCDate";
-    case "month": return "getUTCMonth";
-    case "year": return "getUTCFullYear";
-  }
-  console.error("no function specified for date");
-}
-
-function timeTransform(spec, encoding, encType, field){
-  var func = getTimeFn(field.fn);
-
-  spec.transform = spec.transform || [];
-  spec.transform.push({
-    type: "formula",
-    field: encoding.field(encType),
-    expr: "new Date(d.data."+field.name+")."+func+"()"
-  });
-  return spec;
 }
 
 function binning(spec, encoding, opt) {

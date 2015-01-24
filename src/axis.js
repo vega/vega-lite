@@ -9,17 +9,17 @@ axis.names = function (props) {
     if (s===X || s===Y) a[props[x].scale] = 1;
     return a;
   }, {}));
-}
+};
 
 axis.defs = function(names, encoding, opt) {
   return names.reduce(function(a, name) {
-    a.push(axis_def(name, encoding, opt));
+    a.push(axis.def(name, encoding, opt));
     return a;
   }, []);
-}
+};
 
-function axis_def(name, encoding, opt){
-  var type = name, axis;
+axis.def = function (name, encoding, opt){
+  var type = name;
   var isCol = name==COL, isRow = name==ROW;
   if(isCol) type = "x";
   if(isRow) type = "y";
@@ -27,8 +27,12 @@ function axis_def(name, encoding, opt){
   var axis = {
     type: type,
     scale: name,
-    ticks: 3 //TODO(kanitw): better determine # of ticks
   };
+
+  if (encoding.isType(name, Q)) {
+    //TODO(kanitw): better determine # of ticks
+    axis.ticks = 3;
+  }
 
   if (encoding.axis(name).grid) {
     axis.grid = true;
@@ -53,18 +57,33 @@ function axis_def(name, encoding, opt){
     axis.orient = "top";
   }
 
-  if (name=="x" && (encoding.isType(name, O) || encoding.bin(name))) {
+  if (name=="x" && (encoding.isType(name, O|T) || encoding.bin(name))) {
     axis.properties = {
       labels: {
         angle: {value: 270},
         align: {value: "right"},
         baseline: {value: "middle"}
       }
+    };
+  }
+
+  // add custom label for time type
+  if (encoding.isType(name, T)) {
+    var fn = encoding.fn(name),
+      properties = axis.properties = axis.properties || {},
+      labels = properties.labels = properties.labels || {},
+      text = labels.text = labels.text || {};
+
+    switch (fn) {
+      case "day":
+      case "month":
+        text.scale = "time-"+fn;
+        break;
     }
   }
 
   return axis;
-}
+};
 
 function axis_title(axis, name, encoding, opt){
   axis.title = encoding.fieldTitle(name);
