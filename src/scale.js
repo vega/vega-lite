@@ -8,7 +8,7 @@ scale.names = function (props) {
     if (props[x] && props[x].scale) a[props[x].scale] = 1;
     return a;
   }, {}));
-}
+};
 
 scale.defs = function (names, encoding, opt) {
   opt = opt || {};
@@ -16,7 +16,7 @@ scale.defs = function (names, encoding, opt) {
   return names.reduce(function(a, name) {
     var s = {
       name: name,
-      type: scale_type(name, encoding),
+      type: scale.type(name, encoding),
       domain: scale_domain(name, encoding, opt)
     };
     if (s.type === "ordinal" && !encoding.bin(name)) {
@@ -27,14 +27,23 @@ scale.defs = function (names, encoding, opt) {
 
     return (a.push(s), a);
   }, []);
-}
+};
 
-function scale_type(name, encoding) {
+scale.type = function (name, encoding) {
+  var fn;
   switch (encoding.type(name)) {
     case O: return "ordinal";
     case T:
-      if (encoding.fn(name)) {
-        return "linear";
+      switch(encoding.fn(name)){
+        case "second":
+        case "minute":
+        case "hour":
+        case "day":
+        case "date":
+        case "month":
+          return "ordinal";
+        case "year":
+          return "linear";
       }
       return "time";
     case Q:
@@ -43,17 +52,17 @@ function scale_type(name, encoding) {
       }
       return encoding.scale(name).type || "linear";
   }
-}
+};
 
 function scale_domain(name, encoding, opt) {
   if (encoding.type(name) === T){
     switch(encoding.fn(name)){
       case "second":
-      case "minute": return [0, 59];
-      case "hour": return [0, 23];
-      case "day": return [0, 6];
-      case "date": return [1, 31];
-      case "month": return [0, 11];
+      case "minute":  return util.range(0, 60);
+      case "hour":    return util.range(0, 24);
+      case "day":     return util.range(0, 7);
+      case "date":    return util.range(0, 32);
+      case "month":   return util.range(0, 12);
     }
   }
 
@@ -78,7 +87,7 @@ function scale_range(s, encoding, opt) {
   var spec = encoding.scale(s.name);
   switch (s.name) {
     case X:
-      if (encoding.isType(s.name, O) || encoding.bin(s.name)) {
+      if (s.type==="ordinal") {
         s.bandWidth = +encoding.config("bandSize");
       } else {
         s.range = opt.cellWidth ? [0, opt.cellWidth] : "width";
@@ -87,14 +96,14 @@ function scale_range(s, encoding, opt) {
         s.reverse = spec.reverse || encoding.config("_xReverse");
       }
       s.round = true;
-      if (encoding.isType(s.name, T)){
-        s.nice = encoding.aggr(s.name) || encoding.config("timeScaleNice");
+      if (s.type==="time"){
+        s.nice = encoding.fn(s.name) || encoding.config("timeScaleNice");
       }else{
         s.nice = true;
       }
       break;
     case Y:
-      if (encoding.isType(s.name, O) || encoding.bin(s.name)) {
+      if (s.type==="ordinal") {
         s.bandWidth = +encoding.config("bandSize");
       } else {
         s.range = opt.cellHeight ? [opt.cellHeight, 0] : "height";
@@ -105,18 +114,18 @@ function scale_range(s, encoding, opt) {
 
       s.round = true;
 
-      if (encoding.isType(s.name, T)){
-        s.nice = encoding.aggr(s.name);
+      if (s.type==="time"){
+        s.nice = encoding.fn(s.name) || encoding.config("timeScaleNice");
       }else{
         s.nice = true;
       }
       break;
-    case ROW:
+    case ROW: // support only ordinal
       s.bandWidth = opt.cellHeight || encoding.config("cellHeight");
       s.round = true;
       s.nice = true;
       break;
-    case COL:
+    case COL: // support only ordinal
       s.bandWidth = opt.cellWidth || encoding.config("cellWidth");
       s.round = true;
       s.nice = true;
@@ -136,7 +145,7 @@ function scale_range(s, encoding, opt) {
       s.range = "shapes";
       break;
     case COLOR:
-      if (encoding.isType(s.name, O)) {
+      if (s.type === "ordinal") {
         s.range = "category10";
       } else {
         s.range = ["#ddf", "steelblue"];
@@ -158,7 +167,7 @@ function scale_range(s, encoding, opt) {
       break;
     case X:
     case Y:
-      if (encoding.isType(s.name, O) || encoding.bin(s.name) ) { //&& !s.bandWidth
+      if (s.type === "ordinal") { //&& !s.bandWidth
         s.points = true;
         s.padding = encoding.config("bandPadding");
       }
