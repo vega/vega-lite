@@ -106,7 +106,7 @@ function bar_props(e) {
   if (e.has(COLOR)) {
     p.fill = {scale: COLOR, field: e.field(COLOR)};
   } else if (!e.has(COLOR)) {
-    p.fill = {value: e.config("color")};
+    p.fill = {value: e.value(COLOR)};
   }
 
   // alpha
@@ -153,7 +153,7 @@ function point_props(e, opt) {
   if (e.has(COLOR)) {
     p.stroke = {scale: COLOR, field: e.field(COLOR)};
   } else if (!e.has(COLOR)) {
-    p.stroke = {value: e.config("color")};
+    p.stroke = {value: e.value(COLOR)};
   }
 
   // alpha
@@ -161,7 +161,7 @@ function point_props(e, opt) {
     p.opacity = {scale: ALPHA, field: e.field(ALPHA)};
   }else{
     p.opacity = {
-      value: e.config("opacity") || e.config(opt.hasAggregate ? "_thickOpacity" : "_thinOpacity")
+      value: e.value(ALPHA)
     };
   }
 
@@ -191,7 +191,7 @@ function line_props(e) {
   if (e.has(COLOR)) {
     p.stroke = {scale: COLOR, field: e.field(COLOR)};
   } else if (!e.has(COLOR)) {
-    p.stroke = {value: e.config("color")};
+    p.stroke = {value: e.value(COLOR)};
   }
 
   // alpha
@@ -234,7 +234,7 @@ function area_props(e) {
   if (e.has(COLOR)) {
     p.fill = {scale: COLOR, field: e.field(COLOR)};
   } else if (!e.has(COLOR)) {
-    p.fill = {value: e.config("color")};
+    p.fill = {value: e.value(COLOR)};
   }
 
   // alpha
@@ -278,7 +278,7 @@ function filled_point_props(shape) {
     if (e.has(COLOR)) {
       p.fill = {scale: COLOR, field: e.field(COLOR)};
     } else if (!e.has(COLOR)) {
-      p.fill = {value: e.config("color")};
+      p.fill = {value: e.value(COLOR)};
     }
 
     // alpha
@@ -286,7 +286,7 @@ function filled_point_props(shape) {
       p.opacity = {scale: ALPHA, field: e.field(ALPHA)};
     }else {
       p.opacity = {
-        value: e.config("opacity") || e.config(opt.hasAggregate ? "_thickOpacity" : "_thinOpacity")
+        value: e.value(ALPHA)
       };
     }
 

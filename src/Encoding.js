@@ -21,13 +21,6 @@ var Encoding = module.exports = (function() {
       defaults.cfg[k] = consts.DEFAULTS[k];
     }
 
-    // remove field defs that we don't use in encoding
-    for (var k in defaults.enc) {
-      if (!enc[k]) {
-        delete defaults.enc[k];
-      }
-    }
-
     // type to bitcode
     for (var e in defaults.enc){
       defaults.enc[e].type = consts.dataTypes[defaults.enc[e].type];
@@ -51,7 +44,7 @@ var Encoding = module.exports = (function() {
   };
 
   proto.has = function(x) {
-    return this._enc[x] !== undefined;
+    return this._enc[x].name !== undefined;
   };
 
   proto.enc = function(x){
@@ -109,6 +102,10 @@ var Encoding = module.exports = (function() {
     return this._enc[x].legend;
   }
 
+  proto.value = function(x){
+    return this._enc[x].value;
+  }
+
   proto.fn = function(x){
     return this._enc[x].fn;
   }
@@ -136,7 +133,9 @@ var Encoding = module.exports = (function() {
   proto.forEach = function(f) {
     var i=0, k;
     for (k in this._enc) {
-      f(k, this._enc[k], i++);
+      if (this.has(k)) {
+        f(k, this._enc[k], i++);
+      }
     }
   };
 

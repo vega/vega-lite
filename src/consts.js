@@ -26,17 +26,8 @@ consts.DEFAULTS = {
   pointSize: 50,
   pointShape: "circle",
   strokeWidth: 2,
-  color: "steelblue",
-  opacity: 1,
-  _thickOpacity: 0.5,
-  _thinOpacity: 0.2,
 
   // scales
-  // TODO remove _xZero, ...
-  _xZero: true,
-  _xReverse: false,
-  _yZero: true,
-  _yReverse: false,
   timeScaleNice: "day",
   timeScaleLabelLength: 3
 };
