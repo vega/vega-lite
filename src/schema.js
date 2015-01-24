@@ -132,40 +132,50 @@ var textMixin = {
     text: {
       type: "object",
       properties: {
-        color: {
-          type: "string",
-          default: "black"
-        },
-        align: {
-          type: "string",
-          default: "left"
-        },
-        baseline: {
-          type: "string",
-          default: "middle"
-        },
-        margin: {
-          type: "integer",
-          default: 4
-        },
-        weight: {
-          type: "string",
-          enum: ["normal", "bold"],
-          default: "normal"
-        },
-        size: {
-          type: "integer",
-          default: 10,
-          minimum: 0
+        text: {
+          type: "object",
+          properties: {
+            color: {
+              type: "string",
+              default: "black"
+            },
+            align: {
+              type: "string",
+              default: "left"
+            },
+            baseline: {
+              type: "string",
+              default: "middle"
+            },
+            margin: {
+              type: "integer",
+              default: 4
+            }
+          }
         },
         font: {
-          type: "string",
-          default: "Helvetica Neue"
-        },
-        style: {
-          type: "string",
-          default: "normal",
-          enum: ["normal", "italic"]
+          type: "object",
+          properties: {
+            weight: {
+              type: "string",
+              enum: ["normal", "bold"],
+              default: "normal"
+            },
+            size: {
+              type: "integer",
+              default: 10,
+              minimum: 0
+            },
+            font: {
+              type: "string",
+              default: "Helvetica Neue"
+            },
+            style: {
+              type: "string",
+              default: "normal",
+              enum: ["normal", "italic"]
+            }
+          }
         }
       }
     }
@@ -208,8 +218,9 @@ var shapeMixin = {
   type: "object",
   properties: {
     value : {
-      type: "integer",
-      default: 10
+      type: "string",
+      enum: ["circle", "square", "cross", "diamond", "triangle-up", "triangle-down"],
+      default: "circle"
     }
   }
 }

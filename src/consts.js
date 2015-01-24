@@ -23,8 +23,6 @@ consts.DEFAULTS = {
   // marks
   bandSize: 21,
   bandPadding: 1,
-  pointSize: 50,
-  pointShape: "circle",
   strokeWidth: 2,
 
   // scales

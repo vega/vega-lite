@@ -139,14 +139,14 @@ function point_props(e, opt) {
   if (e.has(SIZE)) {
     p.size = {scale: SIZE, field: e.field(SIZE)};
   } else if (!e.has(SIZE)) {
-    p.size = {value: e.config("pointSize")};
+    p.size = {value: e.value(SIZE)};
   }
 
   // shape
   if (e.has(SHAPE)) {
     p.shape = {scale: SHAPE, field: e.field(SHAPE)};
   } else if (!e.has(SHAPE)) {
-    p.shape = {value: e.config("pointShape")};
+    p.shape = {value: e.value(SHAPE)};
   }
 
   // stroke
