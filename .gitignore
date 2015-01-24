@@ -3,4 +3,4 @@ test/log/difflist.json
 node_modules
 vegalite*.js
 vegalite*.map
-schema.json
+spec.json
