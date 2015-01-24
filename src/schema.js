@@ -160,7 +160,7 @@ var textMixin = {
         },
         font: {
           type: "string",
-          default: "Halvetica Neue"
+          default: "Helvetica Neue"
         },
         style: {
           type: "string",
