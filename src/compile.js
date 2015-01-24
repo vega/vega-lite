@@ -32,11 +32,7 @@ var compile = module.exports = function(encoding, stats) {
   var lineType = marks[encoding.marktype()].line;
 
   if(!preaggregatedData){
-    encoding.forEach(function(encType, field){
-      if(field.type === T && field.fn){
-        timeTransform(spec.data[0], encoding, encType, field);
-      }
-    });
+    spec = timeField(spec, encoding);
   }
 
   // handle subfacets
@@ -273,7 +269,48 @@ function getTimeFn(fn){
   console.error("no function specified for date");
 }
 
-function timeTransform(spec, encoding, encType, field){
+compile.timeField = function (spec, encoding, opt){
+  var timeFields = {}, timeFn = {},
+    scales = spec.scales = spec.scales || [];
+  encoding.forEach(function(encType, field){
+    if(field.type === T && field.fn){
+      timeFields[encoding.field(encType)] = {
+        field: field,
+        encType: encType
+      };
+      timeFn[field.fn] = true;
+    }
+  });
+
+  for (var f in timeFields) {
+    var tf = timeFields[f];
+    timeTransform(spec.data[0], encoding, tf.encType, tf.field);
+  }
+
+  for (var fn in timeFn) {
+    switch(fn){
+      case "day":
+        scales.push({
+          name: "time-day",
+          type: "ordinal",
+          domain: util.range(0,7),
+          range: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+        });
+        break;
+      case "month":
+        scales.push({
+          name: "time-month",
+          type: "ordinal",
+          domain: util.range(0,12),
+          range: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+        });
+        break;
+    }
+  }
+  return spec;
+}
+
+function timeTransform(spec, encoding, encType, field) {
   var func = getTimeFn(field.fn);
 
   spec.transform = spec.transform || [];
@@ -283,7 +320,7 @@ function timeTransform(spec, encoding, encType, field){
     expr: "new Date(d.data."+field.name+")."+func+"()"
   });
   return spec;
-}
+};
 
 function binning(spec, encoding, opt) {
   opt = opt || {};

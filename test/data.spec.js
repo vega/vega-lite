@@ -1,5 +1,4 @@
 var assert = require('assert');
-
 var data = require('../src/data');
 
 describe('getUrl', function () {
