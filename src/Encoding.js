@@ -161,6 +161,13 @@ var Encoding = module.exports = (function() {
       spec.cfg = util.duplicate(this._cfg)
     }
 
+    // remove defaults
+    var defaults = schema.util.instantiate(schema.schema);
+
+    var smallSpec = schema.util.difference(defaults, spec);
+
+    console.log(smallSpec);
+
     return spec;
   };
 
