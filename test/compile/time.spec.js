@@ -1,8 +1,8 @@
 var expect = require('chai').expect,
   _ = require('lodash');
 
-var time = require('../src/time'),
-  Encoding = require('../src/Encoding');
+var time = require('../../src/compile/time'),
+  Encoding = require('../../src/Encoding');
 
 describe('Time', function () {
   var fieldName = 'a',

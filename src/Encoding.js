@@ -3,7 +3,7 @@
 var global = require('./globals'),
   consts = require('./consts'),
   util = require('./util'),
-  schema = require('./schema');
+  schema = require('./schema/schema');
 
 var Encoding = module.exports = (function() {
 

@@ -4,8 +4,8 @@ var assert = require('assert'),
   inspect = require('util').inspect;
 
 var schema = require("../lib/schema.json"),
-  util = require("../src/schemautil.js"),
-  specSchema = require("../src/schema.js").schema;
+  util = require("../src/schema/schemautil.js"),
+  specSchema = require("../src/schema/schema.js").schema;
 
 String.prototype.endsWith = function(suffix) {
     return this.indexOf(suffix, this.length - suffix.length) !== -1;

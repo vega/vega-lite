@@ -1,4 +1,4 @@
-var global = require('./globals');
+var global = require('../globals');
 
 var legends = module.exports = {};
 

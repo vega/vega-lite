@@ -1,7 +1,7 @@
 // Package of defining Vegalite Specification's json schema
-//
+
 var schema = module.exports = {},
-  util = require('./util');
+  util = require('../util');
 
 schema.util = require('./schemautil');
 
@@ -28,7 +28,7 @@ schema.fn = {
   type: "string",
   enum: schema.timefns,
   supportedTypes: {"T": true}
-}
+};
 
 //TODO(kanitw): add other type of function here
 
