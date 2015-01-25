@@ -88,7 +88,7 @@ function scale_range(s, encoding, opt) {
   switch (s.name) {
     case X:
       if (s.type==="ordinal") {
-        s.bandWidth = +encoding.config("bandSize");
+        s.bandWidth = encoding.band(X).size;
       } else {
         s.range = opt.cellWidth ? [0, opt.cellWidth] : "width";
         s.zero = spec.zero;
@@ -103,7 +103,7 @@ function scale_range(s, encoding, opt) {
       break;
     case Y:
       if (s.type==="ordinal") {
-        s.bandWidth = +encoding.config("bandSize");
+        s.bandWidth = encoding.band(Y).size;
       } else {
         s.range = opt.cellHeight ? [opt.cellHeight, 0] : "height";
         s.zero = spec.zero;
@@ -130,7 +130,7 @@ function scale_range(s, encoding, opt) {
       break;
     case SIZE:
       if (encoding.is("bar")) {
-        s.range = [3, +encoding.config("bandSize")];
+        s.range = [3, Math.max(encoding.band(X).size, encoding.band(Y).size)];
       } else if (encoding.is(TEXT)) {
         s.range = [8, 40];
       } else {

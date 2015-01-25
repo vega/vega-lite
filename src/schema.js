@@ -113,19 +113,27 @@ var axisMixin = {
       type: "object",
       properties: {
         grid: { type: "boolean", default: false },
-        title: { type: "boolean", default: true },
-        band: {
-          type: "object",
-          properties: {
-            size: {
-              type: "integer",
-              default: 21
-            },
-            padding: {
-              type: "integer",
-              default: 1
-            }
-          }
+        title: { type: "boolean", default: true }
+      }
+    }
+  }
+}
+
+var bandMixin = {
+  type: "object",
+  properties: {
+    band: {
+      type: "object",
+      properties: {
+        size: {
+          type: "integer",
+          minimum: 0,
+          default: 21
+        },
+        padding: {
+          type: "integer",
+          minimum: 0,
+          default: 1
         }
       }
     }
@@ -162,7 +170,8 @@ var textMixin = {
             },
             margin: {
               type: "integer",
-              default: 4
+              default: 4,
+              minimum: 0
             }
           }
         },
@@ -200,7 +209,8 @@ var sizeMixin = {
   properties: {
     value : {
       type: "integer",
-      default: 10
+      default: 10,
+      minimum: 0
     }
   }
 }
@@ -242,7 +252,7 @@ var requiredNameType = {
   required: ["name", "type"]
 }
 
-var x = merge(merge(clone(typicalField), axisMixin), requiredNameType);
+var x = merge(merge(merge(clone(typicalField), axisMixin), bandMixin), requiredNameType);
 var y = clone(x);
 
 var row = merge(clone(onlyOrdinalField), requiredNameType);
@@ -276,11 +286,13 @@ var cfg = {
     },
     _minWidth: {
       type: "integer",
-      default: 20
+      default: 20,
+      minimum: 0
     },
     _minHeight: {
       type: "integer",
-      default: 20
+      default: 20,
+      minimum: 0
     },
 
     // data source
