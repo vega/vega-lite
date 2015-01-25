@@ -1,5 +1,7 @@
 var global = require('./globals');
 
+var groupdef = require('group').def;
+
 module.exports = subfaceting;
 
 function subfaceting(group, mdef, details, stack, encoding) {

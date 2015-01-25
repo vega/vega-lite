@@ -5,6 +5,7 @@ var globals = require('../globals'),
 module.exports = compile;
 
 var axis      = compile.axis        = require('./axis'),
+  group       = compile.group       = require('./group'),
   legends     = compile.legends     = require('./legends'),
   marks       = compile.marks       = require('./marks'),
   scale       = compile.scale       = require('./scale'),
@@ -137,36 +138,12 @@ function setSize(encoding, stats) {
   };
 }
 
-
-
-
-
 function markdef(mark, encoding, opt) {
   var p = mark.prop(encoding, opt);
   return {
     type: mark.type,
     from: {data: TABLE},
     properties: {enter: p, update: p}
-  };
-}
-
-function groupdef(name, opt) {
-  opt = opt || {};
-  return {
-    _name: name || undefined,
-    type: "group",
-    from: opt.from,
-    properties: {
-      enter: {
-        x: opt.x || undefined,
-        y: opt.y || undefined,
-        width: opt.width || {group: "width"},
-        height: opt.height || {group: "height"}
-      }
-    },
-    scales: opt.scales || undefined,
-    axes: opt.axes || undefined,
-    marks: opt.marks || []
   };
 }
 
