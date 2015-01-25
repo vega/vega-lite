@@ -36,15 +36,15 @@ function bundle() {
 
 // generates spec.json
 gulp.task('schema', function () {
-  gulp.src('src/schemagen.js')
+  gulp.src('src/schema/schemagen.js')
     .pipe(run('node', {silent: true, cwd: 'src'}))
     .pipe(rename("spec.json"))
-    .pipe(gulp.dest('.'))
+    .pipe(gulp.dest('.'));
 });
 
 // watches for spec schema changes
 gulp.task('watch-schema', function() {
-    gulp.watch(['src/schema.js'], ['schema']);
+    gulp.watch(['src/schema/schema.js'], ['schema']);
 });
 
 // runs the tests
