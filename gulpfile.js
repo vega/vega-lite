@@ -37,7 +37,7 @@ function bundle() {
 // generates spec.json
 gulp.task('schema', function () {
   gulp.src('src/schema/schemagen.js')
-    .pipe(run('node', {silent: true, cwd: 'src'}))
+    .pipe(run('node', {silent: true, cwd: 'src/schema'}))
     .pipe(rename("spec.json"))
     .pipe(gulp.dest('.'));
 });
