@@ -315,14 +315,14 @@ function text_props(e) {
   if (e.has(SIZE)) {
     p.fontSize = {scale: SIZE, field: e.field(SIZE)};
   } else if (!e.has(X)) {
-    p.fontSize = {value: e.font()["size"]};
+    p.fontSize = {value: e.font("size")};
   }
 
   // fill
   if (e.has(COLOR)) {
     p.fill = {scale: COLOR, field: e.field(COLOR)};
   } else if (!e.has(COLOR)) {
-    p.fill = {value:e.text()["color"]};
+    p.fill = {value:e.text("color")};
   }
 
   // alpha
@@ -337,24 +337,24 @@ function text_props(e) {
     p.text = {value: "Abc"};
   }
 
-  p.font = {value: e.font()["font"]};
-  p.fontWeight = {value: e.font()["weight"]};
-  p.fontStyle = {value: e.font()["style"]};
-  p.baseline = {value: e.text()["baseline"]};
+  p.font = {value: e.font("family")};
+  p.fontWeight = {value: e.font("weight")};
+  p.fontStyle = {value: e.font("style")};
+  p.baseline = {value: e.text("baseline")};
 
   // align
   if (e.has(X)) {
     if (e.isType(X,O)) {
       p.align = {value: "left"};
-      p.dx = {value: e.text()["margin"]};
+      p.dx = {value: e.text("margin")};
     } else {
       p.align = {value: "center"}
     }
   } else if (e.has(Y)) {
     p.align = {value: "left"};
-    p.dx = {value: e.text()["margin"]};
+    p.dx = {value: e.text("margin")};
   } else {
-    p.align = {value: e.text()["align"]};
+    p.align = {value: e.text("align")};
   }
 
   return p;

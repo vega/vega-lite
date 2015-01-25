@@ -166,7 +166,7 @@ var textMixin = {
               default: 10,
               minimum: 0
             },
-            font: {
+            family: {
               type: "string",
               default: "Helvetica Neue"
             },
