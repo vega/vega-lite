@@ -1,10 +1,10 @@
-var globals = require("./globals"),
-  util = require("./util");
+var globals = require('../globals'),
+  util = require('../util');
 
 var marks = module.exports = {};
 
 marks.bar = {
-  type: "rect",
+  type: 'rect',
   stack: true,
   prop: bar_props,
   requiredEncoding: ["x", "y"],
@@ -348,7 +348,7 @@ function text_props(e) {
       p.align = {value: "left"};
       p.dx = {value: e.text("margin")};
     } else {
-      p.align = {value: "center"}
+      p.align = {value: "center"};
     }
   } else if (e.has(Y)) {
     p.align = {value: "left"};

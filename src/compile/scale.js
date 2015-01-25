@@ -1,5 +1,5 @@
-var globals = require("./globals"),
-  util = require("./util");
+var globals = require("../globals"),
+  util = require("../util");
 
 var scale = module.exports = {};
 
