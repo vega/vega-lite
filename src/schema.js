@@ -156,10 +156,6 @@ var textMixin = {
         text: {
           type: "object",
           properties: {
-            color: {
-              type: "string",
-              default: "black"
-            },
             align: {
               type: "string",
               default: "left"

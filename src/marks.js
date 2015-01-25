@@ -322,7 +322,7 @@ function text_props(e) {
   if (e.has(COLOR)) {
     p.fill = {scale: COLOR, field: e.field(COLOR)};
   } else if (!e.has(COLOR)) {
-    p.fill = {value: e.text("color")};
+    p.fill = {value: e.value(COLOR)};
   }
 
   // alpha
