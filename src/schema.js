@@ -41,7 +41,6 @@ schema.scale_type = {
 
 schema.field = {
   type: "object",
-  required: ["name", "type"],
   properties: {
     name: {
       type: "string"
@@ -120,6 +119,27 @@ var axisMixin = {
   }
 }
 
+var bandMixin = {
+  type: "object",
+  properties: {
+    band: {
+      type: "object",
+      properties: {
+        size: {
+          type: "integer",
+          minimum: 0,
+          default: 21
+        },
+        padding: {
+          type: "integer",
+          minimum: 0,
+          default: 1
+        }
+      }
+    }
+  }
+}
+
 var legendMixin = {
   type: "object",
   properties: {
@@ -133,38 +153,111 @@ var textMixin = {
     text: {
       type: "object",
       properties: {
-        weight: {
-          type: "string",
-          enum: ["normal", "bold"],
-          default: "normal",
-          supportedTypes: {"T": true}
-        },
-        size: {
-          type: "integer",
-          default: 10,
-          minimum: 0,
-          supportedTypes: {"T": true}
+        text: {
+          type: "object",
+          properties: {
+            align: {
+              type: "string",
+              default: "left"
+            },
+            baseline: {
+              type: "string",
+              default: "middle"
+            },
+            margin: {
+              type: "integer",
+              default: 4,
+              minimum: 0
+            }
+          }
         },
         font: {
-          type: "string",
-          default: "Halvetica Neue",
-          supportedTypes: {"T": true}
+          type: "object",
+          properties: {
+            weight: {
+              type: "string",
+              enum: ["normal", "bold"],
+              default: "normal"
+            },
+            size: {
+              type: "integer",
+              default: 10,
+              minimum: 0
+            },
+            family: {
+              type: "string",
+              default: "Helvetica Neue"
+            },
+            style: {
+              type: "string",
+              default: "normal",
+              enum: ["normal", "italic"]
+            }
+          }
         }
       }
     }
   }
 }
 
-var x = merge(clone(typicalField), axisMixin);
+var sizeMixin = {
+  type: "object",
+  properties: {
+    value : {
+      type: "integer",
+      default: 10,
+      minimum: 0
+    }
+  }
+}
+
+var colorMixin = {
+  type: "object",
+  properties: {
+    value : {
+      type: "string",
+      default: "steelblue"
+    }
+  }
+}
+
+var alphaMixin = {
+  type: "object",
+  properties: {
+    value: {
+      type: "number",
+      default: 1,
+      minimum: 0,
+      maximum: 1
+    }
+  }
+}
+
+var shapeMixin = {
+  type: "object",
+  properties: {
+    value : {
+      type: "string",
+      enum: ["circle", "square", "cross", "diamond", "triangle-up", "triangle-down"],
+      default: "circle"
+    }
+  }
+}
+
+var requiredNameType = {
+  required: ["name", "type"]
+}
+
+var x = merge(merge(merge(clone(typicalField), axisMixin), bandMixin), requiredNameType);
 var y = clone(x);
 
-var row = clone(onlyOrdinalField);
+var row = merge(clone(onlyOrdinalField), requiredNameType);
 var col = clone(row);
 
-var size = merge(clone(typicalField), legendMixin);
-var color = merge(clone(typicalField), legendMixin);
-var alpha = clone(typicalField);
-var shape = merge(clone(onlyOrdinalField), legendMixin);
+var size = merge(merge(clone(typicalField), legendMixin), sizeMixin);
+var color = merge(merge(clone(typicalField), legendMixin), colorMixin);
+var alpha = merge(clone(typicalField), alphaMixin);
+var shape = merge(merge(clone(onlyOrdinalField), legendMixin), shapeMixin);
 
 var text = merge(clone(typicalField), textMixin);
 
@@ -189,11 +282,13 @@ var cfg = {
     },
     _minWidth: {
       type: "integer",
-      default: 20
+      default: 20,
+      minimum: 0
     },
     _minHeight: {
       type: "integer",
-      default: 20
+      default: 20,
+      minimum: 0
     },
 
     // data source

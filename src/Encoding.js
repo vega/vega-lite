@@ -8,25 +8,29 @@ var global = require('./globals'),
 var Encoding = module.exports = (function() {
 
   function Encoding(marktype, enc, config) {
-    // TODO: caching
-    var encDefaults = schema.util.instantiate(schema.schema.properties.enc);
-    var cfgDefaults = schema.util.instantiate(schema.schema.properties.cfg);
+    var defaults = schema.instantiate();
 
-    // Hack
+    var spec = {
+      marktype: marktype,
+      enc: enc,
+      cfg: config
+    };
+
+    // Hack to add default constants that are not in the schema
     for (var k in consts.DEFAULTS) {
-      cfgDefaults[k] = consts.DEFAULTS[k];
+      defaults.cfg[k] = consts.DEFAULTS[k];
     }
 
-    // remove field defs that we don't use in encoding
-    for (var k in encDefaults) {
-      if (!enc[k]) {
-        delete encDefaults[k];
-      }
+    // type to bitcode
+    for (var e in defaults.enc){
+      defaults.enc[e].type = consts.dataTypes[defaults.enc[e].type];
     }
 
-    this._marktype = marktype;
-    this._enc = schema.util.merge(encDefaults, enc);
-    this._cfg = schema.util.merge(cfgDefaults, config);
+    var specExtended = schema.util.merge(defaults, spec);
+
+    this._marktype = specExtended.marktype;
+    this._enc = specExtended.enc;
+    this._cfg = specExtended.cfg;
   }
 
   var proto = Encoding.prototype;
@@ -40,7 +44,7 @@ var Encoding = module.exports = (function() {
   };
 
   proto.has = function(x) {
-    return this._enc[x] !== undefined;
+    return this._enc[x].name !== undefined;
   };
 
   proto.enc = function(x){
@@ -86,6 +90,10 @@ var Encoding = module.exports = (function() {
     return this._enc[x].axis || {};
   }
 
+  proto.band = function(x){
+    return this._enc[x].band || {};
+  }
+
   proto.aggr = function(x){
     return this._enc[x].aggr;
   }
@@ -96,6 +104,10 @@ var Encoding = module.exports = (function() {
 
   proto.legend = function(x){
     return this._enc[x].legend;
+  }
+
+  proto.value = function(x){
+    return this._enc[x].value;
   }
 
   proto.fn = function(x){
@@ -125,13 +137,25 @@ var Encoding = module.exports = (function() {
   proto.forEach = function(f) {
     var i=0, k;
     for (k in this._enc) {
-      f(k, this._enc[k], i++);
+      if (this.has(k)) {
+        f(k, this._enc[k], i++);
+      }
     }
   };
 
   proto.type = function(x) {
     return this.has(x) ? this._enc[x].type : null;
   };
+
+  proto.text = function(prop) {
+    var text = this._enc[TEXT].text;
+    return prop ? text[prop] : text;
+  }
+
+  proto.font = function(prop) {
+    var font = this._enc[TEXT].text;
+    return prop ? font[prop] : font;
+  }
 
   proto.isType = function(x, t) {
     var xt = this.type(x);
@@ -161,7 +185,9 @@ var Encoding = module.exports = (function() {
       spec.cfg = util.duplicate(this._cfg)
     }
 
-    return spec;
+    // remove defaults
+    var defaults = schema.instantiate();
+    return schema.util.subtract(defaults, spec);
   };
 
   proto.toShorthand = function(){

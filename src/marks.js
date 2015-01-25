@@ -84,10 +84,10 @@ function bar_props(e) {
       p.width = {scale: SIZE, field: e.field(SIZE)};
     } else {
       // p.width = {scale: X, band: true, offset: -1};
-      p.width = {value: +e.config("bandSize"), offset: -1};
+      p.width = {value: e.band(X).size, offset: -1};
     }
   } else if (!e.isType(Y,O) && !e.bin(Y)) {
-    p.width = {value: +e.config("bandSize"), offset: -1};
+    p.width = {value: e.band(X).size, offset: -1};
   }
 
   // height
@@ -96,17 +96,17 @@ function bar_props(e) {
       p.height = {scale: SIZE, field: e.field(SIZE)};
     } else {
       // p.height = {scale: Y, band: true, offset: -1};
-      p.height = {value: +e.config("bandSize"), offset: -1};
+      p.height = {value: e.band(Y).size, offset: -1};
     }
   } else if (!e.isType(X,O) && !e.bin(X)) {
-    p.height = {value: +e.config("bandSize"), offset: -1};
+    p.height = {value: e.band(Y).size, offset: -1};
   }
 
   // fill
   if (e.has(COLOR)) {
     p.fill = {scale: COLOR, field: e.field(COLOR)};
   } else if (!e.has(COLOR)) {
-    p.fill = {value: e.config("color")};
+    p.fill = {value: e.value(COLOR)};
   }
 
   // alpha
@@ -125,35 +125,35 @@ function point_props(e, opt) {
   if (e.has(X)) {
     p.x = {scale: X, field: e.field(X)};
   } else if (!e.has(X)) {
-    p.x = {value: e.config("bandSize")/2};
+    p.x = {value: e.band(X).size/2};
   }
 
   // y
   if (e.has(Y)) {
     p.y = {scale: Y, field: e.field(Y)};
   } else if (!e.has(Y)) {
-    p.y = {value: e.config("bandSize")/2};
+    p.y = {value: e.band(Y).size/2};
   }
 
   // size
   if (e.has(SIZE)) {
     p.size = {scale: SIZE, field: e.field(SIZE)};
   } else if (!e.has(SIZE)) {
-    p.size = {value: e.config("pointSize")};
+    p.size = {value: e.value(SIZE)};
   }
 
   // shape
   if (e.has(SHAPE)) {
     p.shape = {scale: SHAPE, field: e.field(SHAPE)};
   } else if (!e.has(SHAPE)) {
-    p.shape = {value: e.config("pointShape")};
+    p.shape = {value: e.value(SHAPE)};
   }
 
   // stroke
   if (e.has(COLOR)) {
     p.stroke = {scale: COLOR, field: e.field(COLOR)};
   } else if (!e.has(COLOR)) {
-    p.stroke = {value: e.config("color")};
+    p.stroke = {value: e.value(COLOR)};
   }
 
   // alpha
@@ -161,7 +161,7 @@ function point_props(e, opt) {
     p.opacity = {scale: ALPHA, field: e.field(ALPHA)};
   }else{
     p.opacity = {
-      value: e.config("opacity") || e.config(opt.hasAggregate ? "_thickOpacity" : "_thinOpacity")
+      value: e.value(ALPHA)
     };
   }
 
@@ -191,7 +191,7 @@ function line_props(e) {
   if (e.has(COLOR)) {
     p.stroke = {scale: COLOR, field: e.field(COLOR)};
   } else if (!e.has(COLOR)) {
-    p.stroke = {value: e.config("color")};
+    p.stroke = {value: e.value(COLOR)};
   }
 
   // alpha
@@ -234,7 +234,7 @@ function area_props(e) {
   if (e.has(COLOR)) {
     p.fill = {scale: COLOR, field: e.field(COLOR)};
   } else if (!e.has(COLOR)) {
-    p.fill = {value: e.config("color")};
+    p.fill = {value: e.value(COLOR)};
   }
 
   // alpha
@@ -254,21 +254,21 @@ function filled_point_props(shape) {
     if (e.has(X)) {
       p.x = {scale: X, field: e.field(X)};
     } else if (!e.has(X)) {
-      p.x = {value: e.config("bandSize")/2};
+      p.x = {value: e.band(X).size/2};
     }
 
     // y
     if (e.has(Y)) {
       p.y = {scale: Y, field: e.field(Y)};
     } else if (!e.has(Y)) {
-      p.y = {value: e.config("bandSize")/2};
+      p.y = {value: e.band(Y).size/2};
     }
 
     // size
     if (e.has(SIZE)) {
       p.size = {scale: SIZE, field: e.field(SIZE)};
     } else if (!e.has(X)) {
-      p.size = {value: e.config("pointSize")};
+      p.size = {value: e.value(SIZE)};
     }
 
     // shape
@@ -278,7 +278,7 @@ function filled_point_props(shape) {
     if (e.has(COLOR)) {
       p.fill = {scale: COLOR, field: e.field(COLOR)};
     } else if (!e.has(COLOR)) {
-      p.fill = {value: e.config("color")};
+      p.fill = {value: e.value(COLOR)};
     }
 
     // alpha
@@ -286,7 +286,7 @@ function filled_point_props(shape) {
       p.opacity = {scale: ALPHA, field: e.field(ALPHA)};
     }else {
       p.opacity = {
-        value: e.config("opacity") || e.config(opt.hasAggregate ? "_thickOpacity" : "_thinOpacity")
+        value: e.value(ALPHA)
       };
     }
 
@@ -301,28 +301,28 @@ function text_props(e) {
   if (e.has(X)) {
     p.x = {scale: X, field: e.field(X)};
   } else if (!e.has(X)) {
-    p.x = {value: e.config("bandSize")/2};
+    p.x = {value: e.band(X).size/2};
   }
 
   // y
   if (e.has(Y)) {
     p.y = {scale: Y, field: e.field(Y)};
   } else if (!e.has(Y)) {
-    p.y = {value: e.config("bandSize")/2};
+    p.y = {value: e.band(Y).size/2};
   }
 
   // size
   if (e.has(SIZE)) {
     p.fontSize = {scale: SIZE, field: e.field(SIZE)};
   } else if (!e.has(X)) {
-    p.fontSize = {value: e.config("fontSize")};
+    p.fontSize = {value: e.font("size")};
   }
 
   // fill
   if (e.has(COLOR)) {
     p.fill = {scale: COLOR, field: e.field(COLOR)};
   } else if (!e.has(COLOR)) {
-    p.fill = {value: e.config("textColor")};
+    p.fill = {value: e.value(COLOR)};
   }
 
   // alpha
@@ -337,24 +337,24 @@ function text_props(e) {
     p.text = {value: "Abc"};
   }
 
-  p.font = {value: e.config("font")};
-  p.fontWeight = {value: e.config("fontWeight")};
-  p.fontStyle = {value: e.config("fontStyle")};
-  p.baseline = {value: e.config("textBaseline")};
+  p.font = {value: e.font("family")};
+  p.fontWeight = {value: e.font("weight")};
+  p.fontStyle = {value: e.font("style")};
+  p.baseline = {value: e.text("baseline")};
 
   // align
   if (e.has(X)) {
     if (e.isType(X,O)) {
       p.align = {value: "left"};
-      p.dx = {value: e.config("textMargin")};
+      p.dx = {value: e.text("margin")};
     } else {
       p.align = {value: "center"}
     }
   } else if (e.has(Y)) {
     p.align = {value: "left"};
-    p.dx = {value: e.config("textMargin")};
+    p.dx = {value: e.text("margin")};
   } else {
-    p.align = {value: e.config("textAlign")};
+    p.align = {value: e.text("align")};
   }
 
   return p;

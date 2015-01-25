@@ -50,7 +50,7 @@ scale.type = function (name, encoding) {
       if (encoding.bin(name)) {
         return "ordinal";
       }
-      return encoding.scale(name).type || "linear";
+      return encoding.scale(name).type;
   }
 };
 
@@ -88,28 +88,26 @@ function scale_range(s, encoding, opt) {
   switch (s.name) {
     case X:
       if (s.type==="ordinal") {
-        s.bandWidth = +encoding.config("bandSize");
+        s.bandWidth = encoding.band(X).size;
       } else {
         s.range = opt.cellWidth ? [0, opt.cellWidth] : "width";
-        //TODO zero and reverse should become generic, and we just read default from either the schema or the schema generator
-        s.zero = spec.zero || encoding.config("_xZero");
-        s.reverse = spec.reverse || encoding.config("_xReverse");
+        s.zero = spec.zero;
+        s.reverse = spec.reverse;
       }
       s.round = true;
       if (s.type==="time"){
-        s.nice = encoding.fn(s.name) || encoding.config("timeScaleNice");
+        s.nice = encoding.fn(s.name);
       }else{
         s.nice = true;
       }
       break;
     case Y:
       if (s.type==="ordinal") {
-        s.bandWidth = +encoding.config("bandSize");
+        s.bandWidth = encoding.band(Y).size;
       } else {
         s.range = opt.cellHeight ? [opt.cellHeight, 0] : "height";
-        //TODO zero and reverse should become generic, and we just read default from either the schema or the schema generator
-        s.zero = spec.zero || encoding.config("_yZero");
-        s.reverse = spec.reverse || encoding.config("_yReverse");
+        s.zero = spec.zero;
+        s.reverse = spec.reverse;
       }
 
       s.round = true;
@@ -132,7 +130,7 @@ function scale_range(s, encoding, opt) {
       break;
     case SIZE:
       if (encoding.is("bar")) {
-        s.range = [3, +encoding.config("bandSize")];
+        s.range = [3, Math.max(encoding.band(X).size, encoding.band(Y).size)];
       } else if (encoding.is(TEXT)) {
         s.range = [8, 40];
       } else {
