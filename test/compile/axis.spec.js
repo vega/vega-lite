@@ -1,7 +1,7 @@
 var expect = require('chai').expect;
 
-var axis = require('../src/axis'),
-  Encoding = require('../src/Encoding');
+var axis = require('../../src/compile/axis'),
+  Encoding = require('../../src/Encoding');
 
 describe('Axis', function () {
   describe('(X) for Time Data', function () {
