@@ -26,6 +26,5 @@ consts.DEFAULTS = {
   strokeWidth: 2,
 
   // scales
-  timeScaleNice: "day",
   timeScaleLabelLength: 3
 };
