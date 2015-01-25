@@ -28,7 +28,7 @@ schema.fn = {
   type: "string",
   enum: schema.timefns,
   supportedTypes: {"T": true}
-}
+};
 
 //TODO(kanitw): add other type of function here
 
