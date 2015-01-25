@@ -96,7 +96,7 @@ function scale_range(s, encoding, opt) {
       }
       s.round = true;
       if (s.type==="time"){
-        s.nice = encoding.fn(s.name) || encoding.config("timeScaleNice");
+        s.nice = encoding.fn(s.name);
       }else{
         s.nice = true;
       }
