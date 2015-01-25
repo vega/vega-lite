@@ -3,6 +3,15 @@ var globals = require('../globals'),
 
 var marks = module.exports = {};
 
+marks.def = function (mark, encoding, opt) {
+  var p = mark.prop(encoding, opt);
+  return {
+    type: mark.type,
+    from: {data: TABLE},
+    properties: {enter: p, update: p}
+  };
+};
+
 marks.bar = {
   type: 'rect',
   stack: true,

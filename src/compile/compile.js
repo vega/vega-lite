@@ -30,7 +30,7 @@ function compile (encoding, stats) {
   var spec = template(encoding, size, stats),
     group = spec.marks[0],
     mark = marks[encoding.marktype()],
-    mdef = markdef(mark, encoding, {
+    mdef = marks.def(mark, encoding, {
       hasAggregate: hasAgg
     });
 
@@ -139,13 +139,5 @@ function setSize(encoding, stats) {
   };
 }
 
-function markdef(mark, encoding, opt) {
-  var p = mark.prop(encoding, opt);
-  return {
-    type: mark.type,
-    from: {data: TABLE},
-    properties: {enter: p, update: p}
-  };
-}
 
 
