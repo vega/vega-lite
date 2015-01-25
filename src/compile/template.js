@@ -3,6 +3,7 @@ var globals = require('../globals');
 var groupdef = require('./group').def,
   vldata = require('../data');
 
+module.exports = template;
 
 function template(encoding, size, stats) { //hack use stats
 
