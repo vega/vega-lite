@@ -13,6 +13,7 @@ var axis      = compile.axis        = require('./axis'),
   binning     = compile.binning     = require('./binning'),
   faceting    = compile.faceting    = require('./faceting'),
   stacking    = compile.stacking    = require('./stacking');
+  subfaceting = compile.subfaceting = require('./subfaceting');
 
 
 function compile (encoding, stats) {
@@ -53,7 +54,7 @@ function compile (encoding, stats) {
 
   if (hasDetails && (stack || lineType)) {
     //subfacet to group stack / line together in one group
-    subfacet(group, mdef, details, stack, encoding);
+    subfaceting(group, mdef, details, stack, encoding);
   }
 
   // auto-sort line/area values
@@ -138,25 +139,10 @@ function setSize(encoding, stats) {
 
 
 
-function subfacet(group, mdef, details, stack, encoding) {
-  var m = group.marks,
-    g = groupdef("subfacet", {marks: m});
 
-  group.marks = [g];
-  g.from = mdef.from;
-  delete mdef.from;
-
-  //TODO test LOD -- we should support stack / line without color (LOD) field
-  var trans = (g.from.transform || (g.from.transform = []));
-  trans.unshift({type: "facet", keys: details});
-
-  if (stack && encoding.has(COLOR)) {
-    trans.unshift({type: "sort", by: encoding.field(COLOR)});
-  }
-}
 
 function markdef(mark, encoding, opt) {
-  var p = mark.prop(encoding, opt)
+  var p = mark.prop(encoding, opt);
   return {
     type: mark.type,
     from: {data: TABLE},
