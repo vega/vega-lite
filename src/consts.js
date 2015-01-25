@@ -4,9 +4,9 @@ var consts = module.exports = {};
 
 consts.encodingTypes = [X, Y, ROW, COL, SIZE, SHAPE, COLOR, ALPHA, TEXT];
 
-consts.dataTypes = {"O": O, "Q": Q, "T": T};
+consts.dataTypes = {'O': O, 'Q': Q, 'T': T};
 
-consts.dataTypeNames = ["O","Q","T"].reduce(function(r,x) {
+consts.dataTypeNames = ['O', 'Q', 'T'].reduce(function(r, x) {
   r[consts.dataTypes[x]] = x; return r;
 },{});
 
@@ -15,7 +15,7 @@ consts.DEFAULTS = {
   cellHeight: 200, // will be overwritten by bandWidth
   cellWidth: 200, // will be overwritten by bandWidth
   cellPadding: 0.1,
-  cellBackgroundColor: "#fdfdfd",
+  cellBackgroundColor: '#fdfdfd',
   xAxisMargin: 80,
   yAxisMargin: 0,
   textCellWidth: 90,

@@ -1,5 +1,5 @@
-var globals = require("./globals"),
-    util = require("./util"),
+var globals = require('./globals'),
+    util = require('./util'),
     consts = require('./consts');
 
 var vl = util.merge(consts, util);

@@ -5,9 +5,9 @@ var util = require('./util');
 var data = module.exports = {};
 
 data.getUrl = function getDataUrl(encoding, stats) {
-  if (!encoding.config("useVegaServer")) {
+  if (!encoding.config('useVegaServer')) {
     // don't use vega server
-    return encoding.config("dataUrl");
+    return encoding.config('dataUrl');
   }
 
   if (encoding.length() === 0) {
@@ -15,14 +15,14 @@ data.getUrl = function getDataUrl(encoding, stats) {
     return;
   }
 
-  var fields = []
-  encoding.forEach(function(encType, field){
+  var fields = [];
+  encoding.forEach(function(encType, field) {
     var obj = {
       name: encoding.field(encType, true),
       field: field.name
-    }
+    };
     if (field.aggr) {
-      obj.aggr = field.aggr
+      obj.aggr = field.aggr;
     }
     if (field.bin) {
       obj.binSize = util.getbins(stats[field.name]).step;
@@ -31,31 +31,31 @@ data.getUrl = function getDataUrl(encoding, stats) {
   });
 
   var query = {
-    table: encoding.config("vegaServerTable"),
+    table: encoding.config('vegaServerTable'),
     fields: fields
-  }
+  };
 
-  return encoding.config("vegaServerUrl") + "/query/?q=" + JSON.stringify(query)
+  return encoding.config('vegaServerUrl') + '/query/?q=' + JSON.stringify(query);
 };
 
 /**
  * @param  {Object} data data in JSON/javascript object format
  * @return Array of {name: __name__, type: "number|text|time|location"}
  */
-data.getSchema = function(data){
+data.getSchema = function(data) {
   var schema = [],
     fields = util.keys(data[0]);
 
-  fields.forEach(function(k){
+  fields.forEach(function(k) {
     // find non-null data
-    var i=0, datum = data[i][k];
-    while(datum === "" || datum === null || datum === undefined){
+    var i = 0, datum = data[i][k];
+    while (datum === '' || datum === null || datum === undefined) {
       datum = data[++i][k];
     }
 
     //TODO(kanitw): better type inference here
-    var type = (typeof datum === "number") ? "Q":
-      isNaN(Date.parse(datum)) ? "O" : "T";
+    var type = (typeof datum === 'number') ? 'Q':
+      isNaN(Date.parse(datum)) ? 'O' : 'T';
 
     schema.push({name: k, type: type});
   });
@@ -63,7 +63,7 @@ data.getSchema = function(data){
   return schema;
 };
 
-data.getStats = function(data){ // hack
+data.getStats = function(data) { // hack
   var stats = {},
     fields = util.keys(data[0]);
 
