@@ -268,7 +268,7 @@ function filled_point_props(shape) {
     if (e.has(SIZE)) {
       p.size = {scale: SIZE, field: e.field(SIZE)};
     } else if (!e.has(X)) {
-      p.size = {value: e.config("pointSize")};
+      p.size = {value: e.value(SIZE)};
     }
 
     // shape
