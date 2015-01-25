@@ -21,8 +21,6 @@ consts.DEFAULTS = {
   textCellWidth: 90,
 
   // marks
-  bandSize: 21,
-  bandPadding: 1,
   strokeWidth: 2,
 
   // scales

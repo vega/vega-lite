@@ -90,6 +90,10 @@ var Encoding = module.exports = (function() {
     return this._enc[x].axis || {};
   }
 
+  proto.band = function(x){
+    return this._enc[x].band || {};
+  }
+
   proto.aggr = function(x){
     return this._enc[x].aggr;
   }

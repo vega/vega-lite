@@ -113,7 +113,20 @@ var axisMixin = {
       type: "object",
       properties: {
         grid: { type: "boolean", default: false },
-        title: { type: "boolean", default: true }
+        title: { type: "boolean", default: true },
+        band: {
+          type: "object",
+          properties: {
+            size: {
+              type: "integer",
+              default: 21
+            },
+            padding: {
+              type: "integer",
+              default: 1
+            }
+          }
+        }
       }
     }
   }
