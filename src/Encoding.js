@@ -143,12 +143,14 @@ var Encoding = module.exports = (function() {
     return this.has(x) ? this._enc[x].type : null;
   };
 
-  proto.text = function(p){
-    return this._enc[consts.encodingTypes.TEXT].text[p];
+  proto.text = function(prop) {
+    var text = this._enc[TEXT].text;
+    return prop ? text[prop] : text;
   }
 
-  proto.font = function(p){
-    return this._enc[consts.encodingTypes.TEXT].font[p];
+  proto.font = function(prop) {
+    var font = this._enc[TEXT].text;
+    return prop ? font[prop] : font;
   }
 
   proto.isType = function(x, t) {
