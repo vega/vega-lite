@@ -1,12 +1,17 @@
-var globals = require('./globals'),
-  util = require('./util'),
-  axis = require('./axis'),
-  legends = require('./legends'),
-  marks = require('./marks'),
-  scale = require('./scale'),
-  time = require('./time');
+var globals = require('../globals'),
+  util = require('../util');
 
-var compile = module.exports = function(encoding, stats) {
+
+module.exports = compile;
+
+var axis  = compile.axis    = require('./axis'),
+  legends = compile.legends = require('./legends'),
+  marks   = compile.marks   = require('./marks'),
+  scale   = compile.scale   = require('./scale'),
+  time    = compile.time    = require('./time');
+
+
+function compile (encoding, stats) {
   var size = setSize(encoding, stats),
     cellWidth = size.cellWidth,
     cellHeight = size.cellHeight;
@@ -65,7 +70,7 @@ var compile = module.exports = function(encoding, stats) {
     group.legends = legends.defs(encoding);
   }
   return spec;
-};
+}
 
 function getCardinality(encoding, encType, stats){
   var field = encoding.fieldName(encType);
