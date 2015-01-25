@@ -50,7 +50,7 @@ scale.type = function (name, encoding) {
       if (encoding.bin(name)) {
         return "ordinal";
       }
-      return encoding.scale(name).type || "linear";
+      return encoding.scale(name).type;
   }
 };
 
