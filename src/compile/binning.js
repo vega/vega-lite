@@ -16,9 +16,9 @@ function binning(spec, encoding, opt) {
   if (!spec.transform) spec.transform = [];
   bins.forEach(function(d) {
     spec.transform.push({
-      type: "bin",
-      field: "data." + d,
-      output: "data.bin_" + d,
+      type: 'bin',
+      field: 'data.' + d,
+      output: 'data.bin_' + d,
       maxbins: MAX_BINS
     });
   });

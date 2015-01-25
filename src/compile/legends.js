@@ -10,33 +10,33 @@ legends.defs = function(encoding) {
   if (encoding.has(COLOR) && encoding.legend(COLOR)) {
     _legends.push(legends.def(COLOR, encoding, {
       fill: COLOR,
-      orient: "right"
+      orient: 'right'
     }));
   }
 
   if (encoding.has(SIZE) && encoding.legend(SIZE)) {
     _legends.push(legends.def(SIZE, encoding, {
       size: SIZE,
-      orient: _legends.length === 1 ? "left" : "right"
+      orient: _legends.length === 1 ? 'left' : 'right'
     }));
   }
 
   if (encoding.has(SHAPE) && encoding.legend(SHAPE)) {
     if (_legends.length === 2) {
       // TODO: fix this
-      console.error("Vegalite currently only supports two _legends");
+      console.error('Vegalite currently only supports two _legends');
       return _legends;
     }
     _legends.push(legends.def(SHAPE, encoding, {
       shape: SHAPE,
-      orient: _legends.length === 1 ? "left" : "right"
+      orient: _legends.length === 1 ? 'left' : 'right'
     }));
   }
 
   return _legends;
 };
 
-legends.def = function(name, encoding, props){
+legends.def = function(name, encoding, props) {
   var _legend = props;
 
   _legend.title = encoding.fieldTitle(name);
@@ -48,9 +48,9 @@ legends.def = function(name, encoding, props){
       text = labels.text = labels.text || {};
 
     switch (fn) {
-      case "day":
-      case "month":
-        text.scale = "time-"+fn;
+      case 'day':
+      case 'month':
+        text.scale = 'time-'+ fn;
         break;
     }
   }

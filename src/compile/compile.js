@@ -3,27 +3,27 @@ var globals = require('../globals'),
 
 module.exports = compile;
 
-var template  = compile.template    = require('./template'),
-  layout      = compile.layout      = require('./layout'),
-  axis        = compile.axis        = require('./axis'),
-  group       = compile.group       = require('./group'),
-  legends     = compile.legends     = require('./legends'),
-  marks       = compile.marks       = require('./marks'),
-  scale       = compile.scale       = require('./scale'),
-  time        = compile.time        = require('./time'),
-  aggregates  = compile.aggregates  = require('./aggregates'),
-  binning     = compile.binning     = require('./binning'),
-  faceting    = compile.faceting    = require('./faceting'),
-  stacking    = compile.stacking    = require('./stacking');
+var template = compile.template = require('./template'),
+  layout = compile.layout = require('./layout'),
+  axis = compile.axis = require('./axis'),
+  group = compile.group = require('./group'),
+  legends = compile.legends = require('./legends'),
+  marks = compile.marks = require('./marks'),
+  scale = compile.scale = require('./scale'),
+  time = compile.time = require('./time'),
+  aggregates = compile.aggregates = require('./aggregates'),
+  binning = compile.binning = require('./binning'),
+  faceting = compile.faceting = require('./faceting'),
+  stacking = compile.stacking = require('./stacking');
   subfaceting = compile.subfaceting = require('./subfaceting');
 
 
-function compile (encoding, stats) {
+function compile(encoding, stats) {
   var size = layout.setSize(encoding, stats),
     cellWidth = size.cellWidth,
     cellHeight = size.cellHeight;
 
-  var hasAgg = encoding.any(function(v, k){
+  var hasAgg = encoding.any(function(v, k) {
     return v.aggr !== undefined;
   });
 
@@ -36,7 +36,7 @@ function compile (encoding, stats) {
 
   var hasRow = encoding.has(ROW), hasCol = encoding.has(COL);
 
-  var preaggregatedData = encoding.config("useVegaServer");
+  var preaggregatedData = encoding.config('useVegaServer');
 
   group.marks.push(mdef);
   // TODO: return value not used
@@ -44,7 +44,7 @@ function compile (encoding, stats) {
 
   var lineType = marks[encoding.marktype()].line;
 
-  if(!preaggregatedData){
+  if (!preaggregatedData) {
     spec = time(spec, encoding);
   }
 
@@ -64,7 +64,7 @@ function compile (encoding, stats) {
   if (lineType) {
     var f = (encoding.isType(X, Q | T) && encoding.isType(Y, O)) ? Y : X;
     if (!mdef.from) mdef.from = {};
-    mdef.from.transform = [{type: "sort", by: encoding.field(f)}];
+    mdef.from.transform = [{type: 'sort', by: encoding.field(f)}];
   }
 
   // Small Multiples

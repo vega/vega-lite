@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 var global = require('./globals'),
   consts = require('./consts'),
@@ -22,7 +22,7 @@ var Encoding = module.exports = (function() {
     }
 
     // type to bitcode
-    for (var e in defaults.enc){
+    for (var e in defaults.enc) {
       defaults.enc[e].type = consts.dataTypes[defaults.enc[e].type];
     }
 
@@ -47,7 +47,7 @@ var Encoding = module.exports = (function() {
     return this._enc[x].name !== undefined;
   };
 
-  proto.enc = function(x){
+  proto.enc = function(x) {
     return this._enc[x];
   };
 
@@ -55,87 +55,87 @@ var Encoding = module.exports = (function() {
   proto.field = function(x, nodata, nofn) {
     if (!this.has(x)) return null;
 
-    var f = (nodata ? "" : "data.");
+    var f = (nodata ? '' : 'data.');
 
-    if (this._enc[x].aggr === "count") {
-      return f + "count";
+    if (this._enc[x].aggr === 'count') {
+      return f + 'count';
     } else if (!nofn && this._enc[x].bin) {
-      return f + "bin_" + this._enc[x].name;
+      return f + 'bin_' + this._enc[x].name;
     } else if (!nofn && this._enc[x].aggr) {
-      return f + this._enc[x].aggr + "_" + this._enc[x].name;
-    } else if (!nofn && this._enc[x].fn){
-      return f + this._enc[x].fn + "_" + this._enc[x].name;
+      return f + this._enc[x].aggr + '_' + this._enc[x].name;
+    } else if (!nofn && this._enc[x].fn) {
+      return f + this._enc[x].fn + '_' + this._enc[x].name;
     } else {
       return f + this._enc[x].name;
     }
   };
 
-  proto.fieldName = function(x){
+  proto.fieldName = function(x) {
     return this._enc[x].name;
-  }
+  };
 
-  proto.fieldTitle = function(x){
+  proto.fieldTitle = function(x) {
     if (this._enc[x].aggr) {
-      return this._enc[x].aggr + "(" + this._enc[x].name + ")";
+      return this._enc[x].aggr + '(' + this._enc[x].name + ')';
     } else {
       return this._enc[x].name;
     }
-  }
+  };
 
-  proto.scale = function(x){
+  proto.scale = function(x) {
     return this._enc[x].scale || {};
-  }
+  };
 
-  proto.axis = function(x){
+  proto.axis = function(x) {
     return this._enc[x].axis || {};
-  }
+  };
 
-  proto.band = function(x){
+  proto.band = function(x) {
     return this._enc[x].band || {};
-  }
+  };
 
-  proto.aggr = function(x){
+  proto.aggr = function(x) {
     return this._enc[x].aggr;
-  }
+  };
 
-  proto.bin = function(x){
+  proto.bin = function(x) {
     return this._enc[x].bin;
-  }
+  };
 
-  proto.legend = function(x){
+  proto.legend = function(x) {
     return this._enc[x].legend;
-  }
+  };
 
-  proto.value = function(x){
+  proto.value = function(x) {
     return this._enc[x].value;
-  }
+  };
 
-  proto.fn = function(x){
+  proto.fn = function(x) {
     return this._enc[x].fn;
-  }
+  };
 
-  proto.any = function(f){
+  proto.any = function(f) {
     return util.any(this._enc, f);
-  }
+  };
 
-  proto.all = function(f){
+  proto.all = function(f) {
     return util.all(this._enc, f);
-  }
+  };
 
-  proto.length = function(){
+  proto.length = function() {
     return util.keys(this._enc).length;
-  }
+  };
 
-  proto.reduce = function(f, init){
-    var r = init, i=0;
-    for (k in this._enc){
+  proto.reduce = function(f, init) {
+    var r = init, i = 0;
+    for (k in this._enc) {
       r = f(r, this._enc[k], k, this._enc);
     }
     return r;
-  }
+  };
 
   proto.forEach = function(f) {
-    var i=0, k;
+    var i = 0, k;
     for (k in this._enc) {
       if (this.has(k)) {
         f(k, this._enc[k], i++);
@@ -150,12 +150,12 @@ var Encoding = module.exports = (function() {
   proto.text = function(prop) {
     var text = this._enc[TEXT].text;
     return prop ? text[prop] : text;
-  }
+  };
 
   proto.font = function(prop) {
     var font = this._enc[TEXT].text;
     return prop ? font[prop] : font;
-  }
+  };
 
   proto.isType = function(x, t) {
     var xt = this.type(x);
@@ -167,22 +167,22 @@ var Encoding = module.exports = (function() {
     return this._cfg[name];
   };
 
-  proto.toSpec = function(excludeConfig){
+  proto.toSpec = function(excludeConfig) {
     var enc = util.duplicate(this._enc),
       spec;
 
     // convert type's bitcode to type name
-    for(var e in enc){
+    for (var e in enc) {
       enc[e].type = consts.dataTypeNames[enc[e].type];
     }
 
     spec = {
       marktype: this._marktype,
       enc: enc
-    }
+    };
 
-    if(!excludeConfig){
-      spec.cfg = util.duplicate(this._cfg)
+    if (!excludeConfig) {
+      spec.cfg = util.duplicate(this._cfg);
     }
 
     // remove defaults
@@ -190,51 +190,51 @@ var Encoding = module.exports = (function() {
     return schema.util.subtract(defaults, spec);
   };
 
-  proto.toShorthand = function(){
+  proto.toShorthand = function() {
     var enc = this._enc;
-    return this._marktype + "." + util.keys(enc).map(function(e){
+    return this._marktype + '.' + util.keys(enc).map(function(e) {
       var v = enc[e];
-        return e + "-" +
-          (v.aggr ? v.aggr+"_" : "") +
-          (v.fn ? v.fn+"_" : "") +
-          (v.bin ? "bin_" : "") +
-          (v.name || "") + "-" +
+        return e + '-' +
+          (v.aggr ? v.aggr + '_' : '') +
+          (v.fn ? v.fn + '_' : '') +
+          (v.bin ? 'bin_' : '') +
+          (v.name || '') + '-' +
           consts.dataTypeNames[v.type];
       }
-    ).join(".");
-  }
+    ).join('.');
+  };
 
-  Encoding.parseShorthand = function(shorthand, cfg){
-    var enc = shorthand.split("."),
+  Encoding.parseShorthand = function(shorthand, cfg) {
+    var enc = shorthand.split('.'),
       marktype = enc.shift();
 
-    enc = enc.reduce(function(m, e){
-      var split = e.split("-"),
+    enc = enc.reduce(function(m, e) {
+      var split = e.split('-'),
         enctype = split[0],
         o = {name: split[1], type: consts.dataTypes[split[2]]};
 
       // check aggregate type
-      for(var i in schema.aggr.enum){
+      for (var i in schema.aggr.enum) {
         var a = schema.aggr.enum[i];
-        if(o.name.indexOf(a+"_") == 0){
-          o.name = o.name.substr(a.length+1);
-          if (a=="count" && o.name.length === 0) o.name = "*";
+        if (o.name.indexOf(a + '_') == 0) {
+          o.name = o.name.substr(a.length + 1);
+          if (a == 'count' && o.name.length === 0) o.name = '*';
           o.aggr = a;
           break;
         }
       }
       // check time fn
-      for(var i in schema.timefns){
+      for (var i in schema.timefns) {
         var f = schema.timefns[i];
-        if(o.name && o.name.indexOf(f+"_") == 0){
-          o.name = o.name.substr(o.length+1);
+        if (o.name && o.name.indexOf(f + '_') == 0) {
+          o.name = o.name.substr(o.length + 1);
           o.fn = f;
           break;
         }
       }
 
       // check bin
-      if(o.name && o.name.indexOf("bin_") == 0){
+      if (o.name && o.name.indexOf('bin_') == 0) {
         o.name = o.name.substr(4);
         o.bin = true;
       }
@@ -244,18 +244,18 @@ var Encoding = module.exports = (function() {
     }, {});
 
     return new Encoding(marktype, enc, cfg);
-  }
+  };
 
   Encoding.fromSpec = function(spec, extraCfg) {
     var enc = util.duplicate(spec.enc);
 
     //convert type from string to bitcode (e.g, O=1)
-    for(var e in enc){
+    for (var e in enc) {
       enc[e].type = consts.dataTypes[enc[e].type];
     }
 
     return new Encoding(spec.marktype, enc, util.merge(spec.cfg, extraCfg || {}));
-  }
+  };
 
   return Encoding;
 

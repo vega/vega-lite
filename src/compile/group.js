@@ -6,14 +6,14 @@ function groupdef(name, opt) {
   opt = opt || {};
   return {
     _name: name || undefined,
-    type: "group",
+    type: 'group',
     from: opt.from,
     properties: {
       enter: {
         x: opt.x || undefined,
         y: opt.y || undefined,
-        width: opt.width || {group: "width"},
-        height: opt.height || {group: "height"}
+        width: opt.width || {group: 'width'},
+        height: opt.height || {group: 'height'}
       }
     },
     scales: opt.scales || undefined,

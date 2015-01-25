@@ -6,7 +6,7 @@ module.exports = subfaceting;
 
 function subfaceting(group, mdef, details, stack, encoding) {
   var m = group.marks,
-    g = groupdef("subfacet", {marks: m});
+    g = groupdef('subfacet', {marks: m});
 
   group.marks = [g];
   g.from = mdef.from;
@@ -14,9 +14,9 @@ function subfaceting(group, mdef, details, stack, encoding) {
 
   //TODO test LOD -- we should support stack / line without color (LOD) field
   var trans = (g.from.transform || (g.from.transform = []));
-  trans.unshift({type: "facet", keys: details});
+  trans.unshift({type: 'facet', keys: details});
 
   if (stack && encoding.has(COLOR)) {
-    trans.unshift({type: "sort", by: encoding.field(COLOR)});
+    trans.unshift({type: 'sort', by: encoding.field(COLOR)});
   }
 }

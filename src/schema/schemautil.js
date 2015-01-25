@@ -1,8 +1,8 @@
 var util = module.exports = {};
 
 var isEmpty = function(obj) {
-  return Object.keys(obj).length === 0
-}
+  return Object.keys(obj).length === 0;
+};
 
 // instantiate a schema
 util.instantiate = function(schema, required) {
@@ -12,7 +12,7 @@ util.instantiate = function(schema, required) {
     for (var name in schema.properties) {
       var child = schema.properties[name];
       instance[name] = util.instantiate(child, required.indexOf(name) != -1);
-    };
+    }
     return instance;
   } else if ('default' in schema) {
     return schema.default;
@@ -27,7 +27,7 @@ util.subtract = function(defaults, instance) {
   var changes = {};
   for (var prop in instance) {
     if (!defaults || defaults[prop] !== instance[prop]) {
-      if (typeof instance[prop] == "object") {
+      if (typeof instance[prop] == 'object') {
         var c = util.subtract(defaults[prop], instance[prop]);
         if (!isEmpty(c))
           changes[prop] = c;
@@ -40,15 +40,15 @@ util.subtract = function(defaults, instance) {
 };
 
 // recursively merges instance into defaults
-util.merge = function (defaults, instance) {
-  if (typeof instance!=='object' || instance===null) {
+util.merge = function(defaults, instance) {
+  if (typeof instance !== 'object' || instance === null) {
     return defaults;
   }
 
   for (var p in instance) {
     if (!instance.hasOwnProperty(p))
       continue;
-    if (instance[p]===undefined )
+    if (instance[p] === undefined)
       continue;
     if (typeof instance[p] !== 'object' || instance[p] === null) {
       defaults[p] = instance[p];
@@ -59,4 +59,4 @@ util.merge = function (defaults, instance) {
     }
   }
   return defaults;
-}
+};
