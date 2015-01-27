@@ -1,5 +1,6 @@
 var globals = require('../globals'),
-  util = require('../util');
+  util = require('../util'),
+  schema = require('../schema/schema');
 
 module.exports = {
   setSize: setSize
@@ -32,10 +33,10 @@ function setSize(encoding, stats) {
       +encoding.config('cellWidth') || encoding.config('width') * 1.0 / colCardinality :
       encoding.marktype() === 'text' ?
         +encoding.config('textCellWidth') :
-        +encoding.config('bandSize'),
+        schema.band.properties.size.default,
     cellHeight = hasY ?
       +encoding.config('cellHeight') || encoding.config('height') * 1.0 / rowCardinality :
-      +encoding.config('bandSize'),
+      schema.band.properties.size.default,
     cellPadding = encoding.config('cellPadding'),
     bandPadding = encoding.config('bandPadding'),
     width = encoding.config('_minWidth'),
