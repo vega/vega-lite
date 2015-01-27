@@ -24,41 +24,41 @@ axis.def = function(name, encoding, opt) {
   if (isCol) type = 'x';
   if (isRow) type = 'y';
 
-  var axis = {
+  var def = {
     type: type,
     scale: name
   };
 
   if (encoding.isType(name, Q)) {
     //TODO(kanitw): better determine # of ticks
-    axis.ticks = 3;
+    def.ticks = 3;
   }
 
   if (encoding.axis(name).grid) {
-    axis.grid = true;
-    axis.layer = 'back';
+    def.grid = true;
+    def.layer = 'back';
   }
 
   if (encoding.axis(name).title) {
     //show title by default
 
-    axis = axis_title(axis, name, encoding, opt);
+    def = axis_title(def, name, encoding, opt);
   }
 
   if (isRow || isCol) {
-    axis.properties = {
+    def.properties = {
       ticks: { opacity: {value: 0} },
       majorTicks: { opacity: {value: 0} },
       axis: { opacity: {value: 0} }
     };
   }
   if (isCol) {
-    axis.offset = [opt.xAxisMargin || 0, encoding.config('yAxisMargin')];
-    axis.orient = 'top';
+    def.offset = [opt.xAxisMargin || 0, encoding.config('yAxisMargin')];
+    def.orient = 'top';
   }
 
   if (name == 'x' && (encoding.isType(name, O | T) || encoding.bin(name))) {
-    axis.properties = {
+    def.properties = {
       labels: {
         angle: {value: 270},
         align: {value: 'right'},
@@ -70,7 +70,7 @@ axis.def = function(name, encoding, opt) {
   // add custom label for time type
   if (encoding.isType(name, T)) {
     var fn = encoding.fn(name),
-      properties = axis.properties = axis.properties || {},
+      properties = def.properties = def.properties || {},
       labels = properties.labels = properties.labels || {},
       text = labels.text = labels.text || {};
 
@@ -82,7 +82,7 @@ axis.def = function(name, encoding, opt) {
     }
   }
 
-  return axis;
+  return def;
 };
 
 function axis_title(axis, name, encoding, opt) {

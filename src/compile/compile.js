@@ -7,7 +7,7 @@ var template = compile.template = require('./template'),
   layout = compile.layout = require('./layout'),
   axis = compile.axis = require('./axis'),
   group = compile.group = require('./group'),
-  legends = compile.legends = require('./legends'),
+  legend = compile.legend = require('./legend'),
   marks = compile.marks = require('./marks'),
   scale = compile.scale = require('./scale'),
   time = compile.time = require('./time'),
@@ -74,7 +74,7 @@ function compile(encoding, stats) {
     group.scales = scale.defs(scale.names(mdef.properties.update), encoding,
       {stack: stack, stats: stats});
     group.axes = axis.defs(axis.names(mdef.properties.update), encoding);
-    group.legends = legends.defs(encoding);
+    group.legends = legend.defs(encoding);
   }
   return spec;
 }
