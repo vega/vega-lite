@@ -1,5 +1,8 @@
+"use strict";
+
 var globals = require('../globals'),
-  util = require('../util');
+  util = require('../util'),
+  marks = require('./marks');
 
 module.exports = stacking;
 
