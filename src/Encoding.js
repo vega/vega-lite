@@ -126,10 +126,22 @@ var Encoding = module.exports = (function() {
     return util.keys(this._enc).length;
   };
 
-  proto.reduce = function(f, init) {
-    var r = init, i = 0;
+  proto.map = function(f) {
+    var arr = [], k;
     for (k in this._enc) {
+      if(this.has(k)){
+        arr.push(f(this._enc[k], k, this._enc));
+      }
+    }
+    return arr;
+  };
+
+  proto.reduce = function(f, init) {
+    var r = init, i = 0, k;
+    for (k in this._enc) {
+      if (this.has(k)) {
       r = f(r, this._enc[k], k, this._enc);
+    }
     }
     return r;
   };
@@ -192,8 +204,7 @@ var Encoding = module.exports = (function() {
 
   proto.toShorthand = function() {
     var enc = this._enc;
-    return this._marktype + '.' + util.keys(enc).map(function(e) {
-      var v = enc[e];
+    return this._marktype + '.' + this.map(function(v, e) {
         return e + '-' +
           (v.aggr ? v.aggr + '_' : '') +
           (v.fn ? v.fn + '_' : '') +
