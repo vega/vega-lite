@@ -126,10 +126,22 @@ var Encoding = module.exports = (function() {
     return util.keys(this._enc).length;
   };
 
-  proto.reduce = function(f, init) {
-    var r = init, i = 0;
+  proto.map = function(f) {
+    var arr = [], k;
     for (k in this._enc) {
-      r = f(r, this._enc[k], k, this._enc);
+      if(this.has(k)){
+        arr.push(f(this._enc[k], k, this._enc));
+      }
+    }
+    return arr;
+  };
+
+  proto.reduce = function(f, init) {
+    var r = init, i = 0, k;
+    for (k in this._enc) {
+      if (this.has(k)) {
+        r = f(r, this._enc[k], k, this._enc);
+      }
     }
     return r;
   };
@@ -159,7 +171,7 @@ var Encoding = module.exports = (function() {
 
   proto.isType = function(x, t) {
     var xt = this.type(x);
-    if (xt == null) return false;
+    if (xt === null) return false;
     return (xt & t) > 0;
   };
 
@@ -192,8 +204,7 @@ var Encoding = module.exports = (function() {
 
   proto.toShorthand = function() {
     var enc = this._enc;
-    return this._marktype + '.' + util.keys(enc).map(function(e) {
-      var v = enc[e];
+    return this._marktype + '.' + this.map(function(v, e) {
         return e + '-' +
           (v.aggr ? v.aggr + '_' : '') +
           (v.fn ? v.fn + '_' : '') +
@@ -216,7 +227,7 @@ var Encoding = module.exports = (function() {
       // check aggregate type
       for (var i in schema.aggr.enum) {
         var a = schema.aggr.enum[i];
-        if (o.name.indexOf(a + '_') == 0) {
+        if (o.name.indexOf(a + '_') === 0) {
           o.name = o.name.substr(a.length + 1);
           if (a == 'count' && o.name.length === 0) o.name = '*';
           o.aggr = a;
@@ -226,7 +237,7 @@ var Encoding = module.exports = (function() {
       // check time fn
       for (var i in schema.timefns) {
         var f = schema.timefns[i];
-        if (o.name && o.name.indexOf(f + '_') == 0) {
+        if (o.name && o.name.indexOf(f + '_') === 0) {
           o.name = o.name.substr(o.length + 1);
           o.fn = f;
           break;
@@ -234,7 +245,7 @@ var Encoding = module.exports = (function() {
       }
 
       // check bin
-      if (o.name && o.name.indexOf('bin_') == 0) {
+      if (o.name && o.name.indexOf('bin_') === 0) {
         o.name = o.name.substr(4);
         o.bin = true;
       }
