@@ -22,6 +22,22 @@ schema.aggr = {
   supportedTypes: {'Q': true, 'O': true, 'T': true, '': true}
 };
 
+schema.band = {
+  type: 'object',
+  properties: {
+    size: {
+      type: 'integer',
+      minimum: 0,
+      default: 21
+    },
+    padding: {
+      type: 'integer',
+      minimum: 0,
+      default: 1
+    }
+  }
+};
+
 schema.timefns = ['month', 'year', 'day', 'date', 'hour', 'minute', 'second'];
 
 schema.fn = {
@@ -122,21 +138,7 @@ var axisMixin = {
 var bandMixin = {
   type: 'object',
   properties: {
-    band: {
-      type: 'object',
-      properties: {
-        size: {
-          type: 'integer',
-          minimum: 0,
-          default: 21
-        },
-        padding: {
-          type: 'integer',
-          minimum: 0,
-          default: 1
-        }
-      }
-    }
+    band: schema.band
   }
 };
 
