@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/uwdata/vegalite",
   "devDependencies": {
+    "browser-sync": "^1.9.1",
     "browserify": "^8.1.1",
     "chai": "^1.10.0",
     "commander": "^2.6.0",
