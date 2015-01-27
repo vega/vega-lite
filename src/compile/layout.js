@@ -33,10 +33,10 @@ function setSize(encoding, stats) {
       +encoding.config('cellWidth') || encoding.config('width') * 1.0 / colCardinality :
       encoding.marktype() === 'text' ?
         +encoding.config('textCellWidth') :
-        schema.band.properties.size.default,
+        encoding.band(X).size,
     cellHeight = hasY ?
       +encoding.config('cellHeight') || encoding.config('height') * 1.0 / rowCardinality :
-      schema.band.properties.size.default,
+      encoding.band(Y).size,
     cellPadding = encoding.config('cellPadding'),
     bandPadding = encoding.config('bandPadding');
 
