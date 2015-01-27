@@ -38,9 +38,7 @@ function setSize(encoding, stats) {
       +encoding.config('cellHeight') || encoding.config('height') * 1.0 / rowCardinality :
       schema.band.properties.size.default,
     cellPadding = encoding.config('cellPadding'),
-    bandPadding = encoding.config('bandPadding'),
-    width = encoding.config('_minWidth'),
-    height = encoding.config('_minHeight');
+    bandPadding = encoding.config('bandPadding');
 
   if (hasX && (encoding.isType(X, O) || encoding.bin(X))) { //ordinal field will override parent
     // bands within cell use rangePoints()
@@ -48,7 +46,7 @@ function setSize(encoding, stats) {
     cellWidth = (xCardinality + bandPadding) * +encoding.config('bandSize');
   }
   // Cell bands use rangeBands(). There are n-1 padding.  Outerpadding = 0 for cells
-  width = cellWidth * ((1 + cellPadding) * (colCardinality - 1) + 1);
+  var width = cellWidth * ((1 + cellPadding) * (colCardinality - 1) + 1);
 
   if (hasY && (encoding.isType(Y, O) || encoding.bin(Y))) {
     // bands within cell use rangePoint()
@@ -56,7 +54,7 @@ function setSize(encoding, stats) {
     cellHeight = (yCardinality + bandPadding) * +encoding.config('bandSize');
   }
   // Cell bands use rangeBands(). There are n-1 padding.  Outerpadding = 0 for cells
-  height = cellHeight * ((1 + cellPadding) * (rowCardinality - 1) + 1);
+  var height = cellHeight * ((1 + cellPadding) * (rowCardinality - 1) + 1);
 
   return {
     cellWidth: cellWidth,
