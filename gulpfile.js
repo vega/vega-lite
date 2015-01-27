@@ -8,6 +8,7 @@ var source = require('vinyl-source-stream');
 var sourcemaps = require('gulp-sourcemaps');
 var uglify = require('gulp-uglify');
 var watchify = require('watchify');
+var browserSync = require('browser-sync');
 
 
 var gutil = require('gulp-util');
@@ -31,14 +32,15 @@ function bundle() {
     .pipe(uglify())
     .pipe(rename({ extname: '.min.js' }))
     .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest('.'));
+    .pipe(gulp.dest('.'))
+    .pipe(browserSync.reload({stream:true}));
 }
 
 // generates spec.json
 gulp.task('schema', function () {
   gulp.src('src/schema/schemagen.js')
     .pipe(run('node', {silent: true, cwd: 'src/schema'}))
-    .pipe(rename("spec.json"))
+    .pipe(rename('spec.json'))
     .pipe(gulp.dest('.'));
 });
 
@@ -57,6 +59,14 @@ gulp.task('mocha', function() {
 // watches directories and runs tests if things change
 gulp.task('watch-mocha', function() {
   gulp.watch(['src/**', 'test/**'], ['mocha']);
+});
+
+gulp.task('serve', ['build', 'watch-mocha', 'watch-schema'], function() {
+    browserSync({
+        server: {
+            baseDir: './'
+        }
+    });
 });
 
 bundler.on('update', bundle);
