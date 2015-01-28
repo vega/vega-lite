@@ -130,6 +130,8 @@ function scale_range(s, encoding, opt) {
       break;
     case SIZE:
       if (encoding.is('bar')) {
+        // FIXME this is definitely incorrect
+        // but let's fix it later since bar size is a bad encoding anyway
         s.range = [3, Math.max(encoding.band(X).size, encoding.band(Y).size)];
       } else if (encoding.is(TEXT)) {
         s.range = [8, 40];
@@ -167,7 +169,7 @@ function scale_range(s, encoding, opt) {
     case Y:
       if (s.type === 'ordinal') { //&& !s.bandWidth
         s.points = true;
-        s.padding = encoding.config('bandPadding');
+        s.padding = encoding.band(s.name).padding;
       }
   }
 }
