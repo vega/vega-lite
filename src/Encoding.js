@@ -199,7 +199,7 @@ var Encoding = module.exports = (function() {
 
     // remove defaults
     var defaults = schema.instantiate();
-    return schema.util.subtract(defaults, spec);
+    return schema.util.subtract(spec, defaults);
   };
 
   proto.toShorthand = function() {
