@@ -145,12 +145,16 @@ function scale_range(s, encoding, opt) {
       s.range = 'shapes';
       break;
     case COLOR:
-      if (s.type === 'ordinal') {
-        s.range = 'category10';
-      } else {
-        s.range = ['#ddf', 'steelblue'];
-        s.zero = false;
+      var range = encoding.scale(COLOR).range;
+      if (range === 'auto') {
+        if (s.type === 'ordinal') {
+          range = 'category10';
+        } else {
+          range = ['#ddf', 'steelblue'];
+          s.zero = false;
+        }
       }
+      s.range = range;
       break;
     case ALPHA:
       s.range = [0.2, 1.0];

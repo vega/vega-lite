@@ -219,6 +219,15 @@ var colorMixin = {
     value: {
       type: 'string',
       default: 'steelblue'
+    },
+    scale: {
+      type: 'object',
+      properties: {
+        range: {
+          type: 'string',
+          default: 'auto'  // choose color range based on type
+        }
+      }
     }
   }
 };
