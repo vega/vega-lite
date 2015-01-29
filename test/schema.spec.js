@@ -65,6 +65,7 @@ describe('Util', function() {
     };
 
     var expected = {
+      marktype: 'point',
       enc: {
         x: { name: 'dsp', type: 'Q' },
         color: { name: 'cyl', type: 'O' }
