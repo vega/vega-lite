@@ -7,8 +7,7 @@ schema.util = require('./schemautil');
 
 schema.marktype = {
   type: 'string',
-  enum: ['point', 'bar', 'line', 'area', 'circle', 'square', 'text'],
-  default: 'point'
+  enum: ['point', 'bar', 'line', 'area', 'circle', 'square', 'text']
 };
 
 schema.aggr = {
