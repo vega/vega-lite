@@ -219,6 +219,14 @@ var colorMixin = {
     value: {
       type: 'string',
       default: 'steelblue'
+    },
+    scale: {
+      type: 'object',
+      properties: {
+        range: {
+          type: ['string', 'array']
+        }
+      }
     }
   }
 };
