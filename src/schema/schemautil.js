@@ -11,13 +11,14 @@ util.instantiate = function(schema, required) {
     var instance = {};
     for (var name in schema.properties) {
       var child = schema.properties[name];
-      instance[name] = util.instantiate(child, required.indexOf(name) != -1);
+      var val = util.instantiate(child, required.indexOf(name) != -1);
+      if (val !== undefined) {
+        instance[name] = val;
+      }
     }
     return instance;
   } else if ('default' in schema) {
     return schema.default;
-  } else if (schema.enum && required) {
-    return schema.enum[0];
   }
   return undefined;
 };
