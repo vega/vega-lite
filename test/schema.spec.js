@@ -75,7 +75,7 @@ describe('Util', function() {
       }
     };
 
-    var actual = util.subtract(util.instantiate(specSchema), spec);
+    var actual = util.subtract(spec, util.instantiate(specSchema));
     assert.deepEqual(actual, expected);
   });
 
