@@ -128,8 +128,14 @@ var axisMixin = {
     axis: {
       type: 'object',
       properties: {
-        grid: { type: 'boolean', default: false },
-        title: { type: 'boolean', default: true }
+        grid: {
+          type: 'boolean',
+          default: false
+        },
+        title: {
+          type: 'boolean',
+          default: true
+        }
       }
     }
   }
@@ -145,7 +151,10 @@ var bandMixin = {
 var legendMixin = {
   type: 'object',
   properties: {
-    legend: { type: 'boolean', default: true }
+    legend: {
+      type: 'boolean',
+      default: true
+    }
   }
 };
 
