@@ -79,6 +79,17 @@ describe('Util', function() {
     assert.deepEqual(actual, expected);
   });
 
+  it('subtract with different types', function() {
+    var a = {a: 'foo', b: 'bar', 'baz': [1, 2, 3]};
+    var b = {a: 'foo', b: 'hi', 'baz': 'hi'};
+
+    assert.deepEqual(
+      util.subtract(a, b),
+      {b: 'bar', baz: [1, 2, 3]});
+
+    assert.equal(util.subtract(a, b).baz instanceof Array, true);
+  });
+
   it('merge objects', function() {
      var a = {a: 'foo', b: {'bar': 0, 'baz': [], 'qux': [1, 2, 3]}};
     var b = {a: 'fuu'};

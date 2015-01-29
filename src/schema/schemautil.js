@@ -27,7 +27,7 @@ util.subtract = function(instance, defaults) {
   var changes = {};
   for (var prop in instance) {
     if (!defaults || defaults[prop] !== instance[prop]) {
-      if (typeof instance[prop] == 'object') {
+      if (typeof instance[prop] === 'object' && !(instance[prop] instanceof Array)) {
         var c = util.subtract(instance[prop], defaults[prop]);
         if (!isEmpty(c))
           changes[prop] = c;
