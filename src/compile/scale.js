@@ -146,7 +146,7 @@ function scale_range(s, encoding, opt) {
       break;
     case COLOR:
       var range = encoding.scale(COLOR).range;
-      if (range === 'auto') {
+      if (range === undefined) {
         if (s.type === 'ordinal') {
           range = 'category10';
         } else {

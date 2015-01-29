@@ -224,8 +224,7 @@ var colorMixin = {
       type: 'object',
       properties: {
         range: {
-          type: ['string', 'array'],
-          default: 'auto'  // choose color range based on type
+          type: ['string', 'array']
         }
       }
     }
