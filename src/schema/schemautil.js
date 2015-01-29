@@ -5,13 +5,11 @@ var isEmpty = function(obj) {
 };
 
 // instantiate a schema
-util.instantiate = function(schema, required) {
+util.instantiate = function(schema) {
   if (schema.type === 'object') {
-    var required = schema.required ? schema.required : [];
     var instance = {};
     for (var name in schema.properties) {
-      var child = schema.properties[name];
-      var val = util.instantiate(child, required.indexOf(name) != -1);
+      var val = util.instantiate(schema.properties[name]);
       if (val !== undefined) {
         instance[name] = val;
       }
