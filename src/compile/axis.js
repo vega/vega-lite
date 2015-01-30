@@ -67,8 +67,16 @@ axis.def = function(name, encoding, opt) {
     };
   }
 
+  if (encoding.axis(X).format) {
+    def.format = encoding.axis(X).format;
+  } else if (encoding.isType(name, Q)) {
+    def.format = "s";
+  } else if (encoding.isType(name, T)) {
+    def.format = "%Y-%m-%d";
+  }
+
   // add custom label for time type
-  if (encoding.isType(name, T)) {
+  if (encoding.isType(name, T) && encoding.fn(name)) {
     var fn = encoding.fn(name),
       properties = def.properties = def.properties || {},
       labels = properties.labels = properties.labels || {},

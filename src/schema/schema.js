@@ -130,11 +130,17 @@ var axisMixin = {
       properties: {
         grid: {
           type: 'boolean',
-          default: false
+          default: false,
+          description: 'A flag indicate if gridlines should be created in addition to ticks.'
         },
         title: {
           type: 'boolean',
-          default: true
+          default: true,
+          description: 'A title for the axis.'
+        },
+        format: {
+          type: 'string',
+          description: 'The formatting pattern for axis labels.'
         }
       }
     }
