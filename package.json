@@ -2,7 +2,7 @@
   "name": "vegalite",
   "version": "0.0.0",
   "description": "vegalite ========",
-  "main": "vegalite.js",
+  "main": "src/vl.js",
   "directories": {
     "test": "test"
   },

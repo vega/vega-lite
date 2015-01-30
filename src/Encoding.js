@@ -3,6 +3,7 @@
 var global = require('./globals'),
   consts = require('./consts'),
   util = require('./util'),
+  field = require('./field'),
   schema = require('./schema/schema');
 
 var Encoding = module.exports = (function() {
@@ -204,15 +205,10 @@ var Encoding = module.exports = (function() {
 
   proto.toShorthand = function() {
     var enc = this._enc;
-    return this._marktype + '.' + this.map(function(v, e) {
-        return e + '-' +
-          (v.aggr ? v.aggr + '_' : '') +
-          (v.fn ? v.fn + '_' : '') +
-          (v.bin ? 'bin_' : '') +
-          (v.name || '') + '-' +
-          consts.dataTypeNames[v.type];
-      }
-    ).join('.');
+    return this._marktype + '.' +
+      this.map(function(v, e) {
+        return e + '-' + field.shorthand(v);
+      }).join('.');
   };
 
   Encoding.parseShorthand = function(shorthand, cfg) {
