@@ -15,8 +15,8 @@ schema.aggr = {
   enum: ['avg', 'sum', 'min', 'max', 'count'],
   supportedEnums: {
     Q: ['avg', 'sum', 'min', 'max', 'count'],
-    O: ['count'],
-    T: ['avg', 'min', 'max', 'count'],
+    O: [],
+    T: ['avg', 'min', 'max'],
     '': ['count']
   },
   supportedTypes: {'Q': true, 'O': true, 'T': true, '': true}
