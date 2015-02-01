@@ -70,6 +70,7 @@ function compile(encoding, stats) {
   // Small Multiples
   if (hasRow || hasCol) {
     spec = faceting(group, encoding, cellHeight, cellWidth, spec, mdef, stack, stats);
+    spec.legends = legend.defs(encoding);
   } else {
     group.scales = scale.defs(scale.names(mdef.properties.update), encoding,
       {stack: stack, stats: stats});
