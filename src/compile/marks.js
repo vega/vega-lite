@@ -69,7 +69,7 @@ function bar_props(e) {
   if (e.isQuantScale(X)) {
     p.x = {scale: X, field: e.field(X)};
     if (e.isOrdinalScale(Y)) {
-      p.x2 = {value: 0};
+      p.x2 = {scale: X, value: 0};
     }
   } else if (e.has(X)) { // is ordinal
     p.xc = {scale: X, field: e.field(X)};
@@ -81,7 +81,7 @@ function bar_props(e) {
   // y
   if (e.isQuantScale(Y)) {
     p.y = {scale: Y, field: e.field(Y)};
-    p.y2 = {value: 0};
+    p.y2 = {scale: Y, value: 0};
   } else if (e.has(Y)) { // is ordinal
     p.yc = {scale: Y, field: e.field(Y)};
   } else {
@@ -222,7 +222,7 @@ function area_props(e) {
   if (e.isQuantScale(X)) {
     p.x = {scale: X, field: e.field(X)};
     if (e.isOrdinalScale(Y)) {
-      p.x2 = {value: 0};
+      p.x2 = {scale: X, value: 0};
       p.orient = {value: 'horizontal'};
     }
   } else if (e.has(X)) {
@@ -234,7 +234,7 @@ function area_props(e) {
   // y
   if (e.isQuantScale(Y)) {
     p.y = {scale: Y, field: e.field(Y)};
-    p.y2 = {value: 0};
+    p.y2 = {scale: Y, value: 0};
   } else if (e.has(Y)) {
     p.y = {scale: Y, field: e.field(Y)};
   } else {
