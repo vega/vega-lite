@@ -176,6 +176,16 @@ var Encoding = module.exports = (function() {
     return (xt & t) > 0;
   };
 
+  proto.isDimension = function(encType) {
+    if(!this.has(encType)) return false;
+    return this.isType(encType, O) || this.bin(encType);
+  };
+
+  proto.isMeasure = function(encType) {
+    if(!this.has(encType)) return false;
+    return this.isType(encType, Q | T) && ! this.bin(encType);
+  };
+
   proto.config = function(name) {
     return this._cfg[name];
   };
