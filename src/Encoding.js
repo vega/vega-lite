@@ -176,14 +176,43 @@ var Encoding = module.exports = (function() {
     return (xt & t) > 0;
   };
 
+  function isOrdinalScale(encoding, encType){
+    return encoding.isType(encType, O) || encoding.bin(encType) ||
+      (encoding.isType(encType, T) && encoding.fn(encType));
+  }
+
+  proto.isOrdinalScale = function(encType) {
+    if(!this.has(encType)) return false;
+    return isOrdinalScale(this, encType);
+  };
+
+  proto.isQuantScale = function(encType) {
+    if(!this.has(encType)) return false;
+    return !isOrdinalScale(this, encType);
+  };
+
+  proto.isAggregate = function() {
+    var i = 0, k;
+    for (k in this._enc) {
+      if (this.has(k) && this.aggr(k)) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  proto.isRaw = function() {
+    return !this.isAggregate();
+  };
+
   proto.isDimension = function(encType) {
     if(!this.has(encType)) return false;
-    return this.isType(encType, O) || this.bin(encType);
+    return this.isAggregate() && isOrdinalScale(this, encType);
   };
 
   proto.isMeasure = function(encType) {
     if(!this.has(encType)) return false;
-    return this.isType(encType, Q | T) && ! this.bin(encType);
+    return this.isAggregate() && !isOrdinalScale(this, encType);
   };
 
   proto.config = function(name) {
