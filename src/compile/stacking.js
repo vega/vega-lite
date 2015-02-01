@@ -8,13 +8,24 @@ module.exports = stacking;
 
 function stacking(spec, encoding, mdef, facets) {
   if (!marks[encoding.marktype()].stack) return false;
+
+  // TODO: add || encoding.has(LOD) here once LOD is implemented
   if (!encoding.has(COLOR)) return false;
 
-  var dim = X, val = Y, idx = 1;
-  if (encoding.isType(X, Q | T) && !encoding.isType(Y, Q | T) && encoding.has(Y)) {
+  var dim=null, val=null, idx =null,
+    isXMeasure = encoding.isMeasure(X),
+    isYMeasure = encoding.isMeasure(Y);
+
+  if (isXMeasure && !isYMeasure) {
     dim = Y;
     val = X;
     idx = 0;
+  } else if (isYMeasure && !isXMeasure) {
+    dim = X;
+    val = Y;
+    idx = 1;
+  } else {
+    return null; // no stack encoding
   }
 
   // add transform to compute sums for scale
