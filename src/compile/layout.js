@@ -39,7 +39,8 @@ function setSize(encoding, stats) {
       encoding.band(Y).size,
     cellPadding = encoding.config('cellPadding');
 
-  if (hasX && (encoding.isType(X, O) || encoding.bin(X))) { //ordinal field will override parent
+  if (hasX && encoding.isOrdinalScale(X)) {
+    // ordinal field will override parent
     // bands within cell use rangePoints()
     var xCardinality = getCardinality(encoding, X, stats);
     cellWidth = (xCardinality + encoding.band(X).padding) * encoding.band(X).size;
@@ -47,7 +48,7 @@ function setSize(encoding, stats) {
   // Cell bands use rangeBands(). There are n-1 padding.  Outerpadding = 0 for cells
   var width = cellWidth * ((1 + cellPadding) * (colCardinality - 1) + 1);
 
-  if (hasY && (encoding.isType(Y, O) || encoding.bin(Y))) {
+  if (hasY && encoding.isOrdinalScale(Y)) {
     // bands within cell use rangePoint()
     var yCardinality = getCardinality(encoding, Y, stats);
     cellHeight = (yCardinality + encoding.band(Y).padding) * encoding.band(Y).size;
