@@ -100,6 +100,7 @@ var Encoding = module.exports = (function() {
       (encType === Y && this.has(ROW) && this.has(Y)) ||
       (encType === X && this.has(COL) && this.has(X));
 
+    // if band.size is explicitly specified, follow the specification, otherwise draw value from config.
     return this.band(encType).size ||
       this.config(isBandInSmallMultiples ? 'multipleBandSize' : 'singleBandSize');
   };
