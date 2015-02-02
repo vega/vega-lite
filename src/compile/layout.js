@@ -15,46 +15,62 @@ function getCardinality(encoding, encType, stats) {
   return stats[field].cardinality;
 }
 
+/*
+  HACK to set chart size
+  NOTE: this fails for plots driven by derived values (e.g., aggregates)
+  One solution is to update Vega to support auto-sizing
+  In the meantime, auto-padding (mostly) does the trick
+ */
 function setSize(encoding, stats) {
   var hasRow = encoding.has(ROW),
       hasCol = encoding.has(COL),
-      hasX = encoding.has(X),
-      hasY = encoding.has(Y);
+      marktype = encoding.marktype();
 
-  // HACK to set chart size
-  // NOTE: this fails for plots driven by derived values (e.g., aggregates)
-  // One solution is to update Vega to support auto-sizing
-  // In the meantime, auto-padding (mostly) does the trick
-  //
-  var colCardinality = hasCol ? getCardinality(encoding, COL, stats) : 1,
-    rowCardinality = hasRow ? getCardinality(encoding, ROW, stats) : 1;
+  var cellWidth, cellHeight, cellPadding = encoding.config('cellPadding');
 
-  var cellWidth = hasX ?
-      +encoding.config('cellWidth') || encoding.config('width') * 1.0 / colCardinality :
-      encoding.marktype() === 'text' ?
-        +encoding.config('textCellWidth') :
-        encoding.band(X).size,
-    cellHeight = hasY ?
-      +encoding.config('cellHeight') || encoding.config('height') * 1.0 / rowCardinality :
-      encoding.band(Y).size,
-    cellPadding = encoding.config('cellPadding');
-
-  if (hasX && encoding.isOrdinalScale(X)) {
-    // ordinal field will override parent
-    // bands within cell use rangePoints()
-    var xCardinality = getCardinality(encoding, X, stats);
-    cellWidth = (xCardinality + encoding.band(X).padding) * encoding.band(X).size;
+  // set cellWidth
+  if (encoding.has(X)) {
+    if (encoding.isOrdinalScale(X)) {
+      // for ordinal, hasCol or not doesn't matter -- we scale based on cardinality
+      var xCardinality = getCardinality(encoding, X, stats);
+      cellWidth = (xCardinality + encoding.band(X).padding) * encoding.bandSize(X);
+    } else {
+      cellWidth = hasCol ? encoding.enc(COL).width :  encoding.config("singleWidth");
+    }
+  } else {
+    if (marktype === TEXT) {
+      cellWidth = encoding.config('textCellWidth');
+    } else {
+      cellWidth = encoding.bandSize(X);
+    }
   }
-  // Cell bands use rangeBands(). There are n-1 padding.  Outerpadding = 0 for cells
-  var width = cellWidth * ((1 + cellPadding) * (colCardinality - 1) + 1);
 
-  if (hasY && encoding.isOrdinalScale(Y)) {
-    // bands within cell use rangePoint()
-    var yCardinality = getCardinality(encoding, Y, stats);
-    cellHeight = (yCardinality + encoding.band(Y).padding) * encoding.band(Y).size;
+  // set cellHeight
+  if (encoding.has(Y)) {
+    if (encoding.isOrdinalScale(Y)) {
+      // for ordinal, hasCol or not doesn't matter -- we scale based on cardinality
+      var yCardinality = getCardinality(encoding, Y, stats);
+      cellHeight = (yCardinality + encoding.band(Y).padding) * encoding.bandSize(Y);
+    } else {
+      cellHeight = hasRow ? encoding.enc(ROW).height :  encoding.config("singleHeight");
+    }
+  } else {
+    cellHeight = encoding.bandSize(Y);
   }
+
   // Cell bands use rangeBands(). There are n-1 padding.  Outerpadding = 0 for cells
-  var height = cellHeight * ((1 + cellPadding) * (rowCardinality - 1) + 1);
+
+  var width = cellWidth, height = cellHeight;
+
+  if (hasCol) {
+    var colCardinality = getCardinality(encoding, COL, stats);
+    width = cellWidth * ((1 + cellPadding) * (colCardinality - 1) + 1);
+  }
+
+  if (hasRow) {
+    var rowCardinality = getCardinality(encoding, ROW, stats);
+    height = cellHeight * ((1 + cellPadding) * (rowCardinality - 1) + 1);
+  }
 
   return {
     cellWidth: cellWidth,
