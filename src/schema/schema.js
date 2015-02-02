@@ -15,8 +15,8 @@ schema.aggr = {
   enum: ['avg', 'sum', 'min', 'max', 'count'],
   supportedEnums: {
     Q: ['avg', 'sum', 'min', 'max', 'count'],
-    O: ['count'],
-    T: ['avg', 'min', 'max', 'count'],
+    O: [],
+    T: ['avg', 'min', 'max'],
     '': ['count']
   },
   supportedTypes: {'Q': true, 'O': true, 'T': true, '': true}
@@ -77,7 +77,7 @@ var typicalField = merge(clone(schema.field), {
     bin: {
       type: 'boolean',
       default: false,
-      supportedTypes: {'Q': true, 'O': true}
+      supportedTypes: {'Q': true} // TODO: add 'O' after finishing #81
     },
     aggr: schema.aggr,
     fn: schema.fn,
@@ -107,12 +107,12 @@ var onlyOrdinalField = merge(clone(schema.field), {
   properties: {
     type: {
       type: 'string',
-      enum: ['O']
+      enum: ['O','Q'] // ordinal-only field supports Q when bin is applied
     },
     bin: {
       type: 'boolean',
       default: false,
-      supportedTypes: {'O': true}
+      supportedTypes: {'Q': true} // TODO: add 'O' after finishing #81
     },
     aggr: {
       type: 'string',
