@@ -29,7 +29,7 @@ axis.def = function(name, encoding, opt) {
     scale: name
   };
 
-  if (encoding.isType(name, Q)) {
+  if (encoding.isQuantScale(name)) {
     //TODO(kanitw): better determine # of ticks
     def.ticks = 3;
   }
@@ -57,7 +57,7 @@ axis.def = function(name, encoding, opt) {
     def.orient = 'top';
   }
 
-  if (name == 'x' && (encoding.isType(name, O | T) || encoding.bin(name))) {
+  if (name == 'x' && encoding.isOrdinalScale(X)) {
     def.properties = {
       labels: {
         angle: {value: 270},

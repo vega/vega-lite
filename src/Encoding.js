@@ -176,6 +176,43 @@ var Encoding = module.exports = (function() {
     return (xt & t) > 0;
   };
 
+  function isOrdinalScale(encoding, encType){
+    return encoding.isType(encType, O) || encoding.bin(encType) ||
+      (encoding.isType(encType, T) && encoding.fn(encType));
+  }
+
+  proto.isOrdinalScale = function(encType) {
+    return this.has(encType) && isOrdinalScale(this, encType);
+  };
+
+  proto.isQuantScale = function(encType) {
+    return this.has(encType) && !isOrdinalScale(this, encType);
+  };
+
+  proto.isAggregate = function() {
+    var i = 0, k;
+    for (k in this._enc) {
+      if (this.has(k) && this.aggr(k)) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  proto.isRaw = function() {
+    return !this.isAggregate();
+  };
+
+  proto.isDimension = function(encType) {
+    return this.has(encType) && this.isAggregate() &&
+      isOrdinalScale(this, encType);
+  };
+
+  proto.isMeasure = function(encType) {
+    return this.has(encType) && this.isAggregate() &&
+      !isOrdinalScale(this, encType);
+  };
+
   proto.config = function(name) {
     return this._cfg[name];
   };

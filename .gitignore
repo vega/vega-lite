@@ -4,3 +4,4 @@ node_modules
 vegalite*.js
 vegalite*.map
 spec.json
+npm-debug.log

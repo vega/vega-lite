@@ -37,13 +37,12 @@ legend.defs = function(encoding) {
 };
 
 legend.def = function(name, encoding, props) {
-  var def = props;
+  var def = props, fn;
 
   def.title = encoding.fieldTitle(name);
 
-  if (encoding.isType(name, T)) {
-    var fn = encoding.fn(name),
-      properties = def.properties = def.properties || {},
+  if (encoding.isType(name, T) && (fn = encoding.fn(name))) {
+    var properties = def.properties = def.properties || {},
       labels = properties.labels = properties.labels || {},
       text = labels.text = labels.text || {};
 

@@ -26,7 +26,7 @@ function faceting(group, encoding, cellHeight, cellWidth, spec, mdef, stack, sta
     delete group.marks[0].from;
   }
   if (hasRow) {
-    if (!encoding.isType(ROW, O)) {
+    if (!encoding.isOrdinalScale(ROW)) {
       util.error('Row encoding should be ordinal.');
     }
     enter.y = {scale: ROW, field: 'keys.' + facetKeys.length};
@@ -59,7 +59,7 @@ function faceting(group, encoding, cellHeight, cellWidth, spec, mdef, stack, sta
   }
 
   if (hasCol) {
-    if (!encoding.isType(COL, O)) {
+    if (!encoding.isOrdinalScale(COL)) {
       util.error('Col encoding should be ordinal.');
     }
     enter.x = {scale: COL, field: 'keys.' + facetKeys.length};

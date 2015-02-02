@@ -66,48 +66,50 @@ function bar_props(e) {
   var p = {};
 
   // x
-  if (e.isType(X, Q | T) && !e.bin(X)) {
+  if (e.isQuantScale(X)) {
     p.x = {scale: X, field: e.field(X)};
-    if (e.has(Y) && (!e.isType(Y, Q | T) || e.bin(Y))) {
+    if (e.isOrdinalScale(Y)) {
       p.x2 = {scale: X, value: 0};
     }
-  } else if (e.has(X)) {
+  } else if (e.has(X)) { // is ordinal
     p.xc = {scale: X, field: e.field(X)};
   } else {
+    // TODO add single bar offset
     p.xc = {value: 0};
   }
 
   // y
-  if (e.isType(Y, Q | T) && !e.bin(Y)) {
+  if (e.isQuantScale(Y)) {
     p.y = {scale: Y, field: e.field(Y)};
     p.y2 = {scale: Y, value: 0};
-  } else if (e.has(Y)) {
+  } else if (e.has(Y)) { // is ordinal
     p.yc = {scale: Y, field: e.field(Y)};
   } else {
+    // TODO add single bar offset
     p.yc = {group: 'height'};
   }
 
   // width
-  if (!e.isType(X, Q | T)) {
+  if (!e.isQuantScale(X)) { // no X or X is ordinal
     if (e.has(SIZE)) {
       p.width = {scale: SIZE, field: e.field(SIZE)};
     } else {
       // p.width = {scale: X, band: true, offset: -1};
       p.width = {value: e.band(X).size, offset: -1};
     }
-  } else if (!e.isType(Y, O) && !e.bin(Y)) {
+  } else { // X is Quant
     p.width = {value: e.band(X).size, offset: -1};
   }
 
   // height
-  if (!e.isType(Y, Q | T)) {
+  if (!e.isQuantScale(Y)) { // no Y or Y is ordinal
     if (e.has(SIZE)) {
       p.height = {scale: SIZE, field: e.field(SIZE)};
     } else {
       // p.height = {scale: Y, band: true, offset: -1};
       p.height = {value: e.band(Y).size, offset: -1};
     }
-  } else if (!e.isType(X, O) && !e.bin(X)) {
+  } else { // Y is Quant
     p.height = {value: e.band(Y).size, offset: -1};
   }
 
@@ -217,9 +219,9 @@ function area_props(e) {
   var p = {};
 
   // x
-  if (e.isType(X, Q | T)) {
+  if (e.isQuantScale(X)) {
     p.x = {scale: X, field: e.field(X)};
-    if (!e.isType(Y, Q | T) && e.has(Y)) {
+    if (e.isOrdinalScale(Y)) {
       p.x2 = {scale: X, value: 0};
       p.orient = {value: 'horizontal'};
     }
@@ -230,7 +232,7 @@ function area_props(e) {
   }
 
   // y
-  if (e.isType(Y, Q | T)) {
+  if (e.isQuantScale(Y)) {
     p.y = {scale: Y, field: e.field(Y)};
     p.y2 = {scale: Y, value: 0};
   } else if (e.has(Y)) {
@@ -353,7 +355,7 @@ function text_props(e) {
 
   // align
   if (e.has(X)) {
-    if (e.isType(X, O)) {
+    if (e.isOrdinalScale(X)) {
       p.align = {value: 'left'};
       p.dx = {value: e.text('margin')};
     } else {
