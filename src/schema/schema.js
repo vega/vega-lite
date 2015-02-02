@@ -269,6 +269,38 @@ var shapeMixin = {
   }
 };
 
+var rowMixin = {
+  properties: {
+    height: {
+      type: 'number',
+      minimum: 0,
+      default: 150
+    },
+    padding: {
+      type: 'number',
+      minimum: 0,
+      maximum: 1,
+      default: 0.1
+    }
+  }
+};
+
+var colMixin = {
+  properties: {
+    width: {
+      type: 'number',
+      minimum: 0,
+      default: 150
+    },
+    padding: {
+      type: 'number',
+      minimum: 0,
+      maximum: 1,
+      default: 0.1
+    }
+  }
+};
+
 var requiredNameType = {
   required: ['name', 'type']
 };
@@ -276,8 +308,9 @@ var requiredNameType = {
 var x = merge(merge(merge(clone(typicalField), axisMixin), bandMixin), requiredNameType);
 var y = clone(x);
 
-var row = merge(clone(onlyOrdinalField), requiredNameType);
-var col = clone(row);
+var facet = merge(clone(onlyOrdinalField), requiredNameType);
+var row = merge(clone(facet), rowMixin);
+var col = merge(clone(facet), colMixin);
 
 var size = merge(merge(clone(typicalField), legendMixin), sizeMixin);
 var color = merge(merge(clone(typicalField), legendMixin), colorMixin);
