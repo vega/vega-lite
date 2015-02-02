@@ -21,7 +21,7 @@ consts.DEFAULTS = {
 
   cellPadding: 0.1,
   cellBackgroundColor: '#fdfdfd',
-  xAxisMargin: 80,
+  xAxisMargin: 0,
   yAxisMargin: 0,
   textCellWidth: 90,
 
