@@ -27,8 +27,7 @@ schema.band = {
   properties: {
     size: {
       type: 'integer',
-      minimum: 0,
-      default: 21
+      minimum: 0
     },
     padding: {
       type: 'integer',

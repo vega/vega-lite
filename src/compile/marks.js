@@ -95,10 +95,10 @@ function bar_props(e) {
       p.width = {scale: SIZE, field: e.field(SIZE)};
     } else {
       // p.width = {scale: X, band: true, offset: -1};
-      p.width = {value: e.band(X).size, offset: -1};
+      p.width = {value: e.bandSize(X), offset: -1};
     }
   } else { // X is Quant
-    p.width = {value: e.band(X).size, offset: -1};
+    p.width = {value: e.bandSize(X), offset: -1};
   }
 
   // height
@@ -107,10 +107,10 @@ function bar_props(e) {
       p.height = {scale: SIZE, field: e.field(SIZE)};
     } else {
       // p.height = {scale: Y, band: true, offset: -1};
-      p.height = {value: e.band(Y).size, offset: -1};
+      p.height = {value: e.bandSize(Y), offset: -1};
     }
   } else { // Y is Quant
-    p.height = {value: e.band(Y).size, offset: -1};
+    p.height = {value: e.bandSize(Y), offset: -1};
   }
 
   // fill
@@ -136,14 +136,14 @@ function point_props(e, opt) {
   if (e.has(X)) {
     p.x = {scale: X, field: e.field(X)};
   } else if (!e.has(X)) {
-    p.x = {value: e.band(X).size / 2};
+    p.x = {value: e.bandSize(X) / 2};
   }
 
   // y
   if (e.has(Y)) {
     p.y = {scale: Y, field: e.field(Y)};
   } else if (!e.has(Y)) {
-    p.y = {value: e.band(Y).size / 2};
+    p.y = {value: e.bandSize(Y) / 2};
   }
 
   // size
@@ -265,14 +265,14 @@ function filled_point_props(shape) {
     if (e.has(X)) {
       p.x = {scale: X, field: e.field(X)};
     } else if (!e.has(X)) {
-      p.x = {value: e.band(X).size / 2};
+      p.x = {value: e.bandSize(X) / 2};
     }
 
     // y
     if (e.has(Y)) {
       p.y = {scale: Y, field: e.field(Y)};
     } else if (!e.has(Y)) {
-      p.y = {value: e.band(Y).size / 2};
+      p.y = {value: e.bandSize(Y) / 2};
     }
 
     // size
@@ -312,14 +312,14 @@ function text_props(e) {
   if (e.has(X)) {
     p.x = {scale: X, field: e.field(X)};
   } else if (!e.has(X)) {
-    p.x = {value: e.band(X).size / 2};
+    p.x = {value: e.bandSize(X) / 2};
   }
 
   // y
   if (e.has(Y)) {
     p.y = {scale: Y, field: e.field(Y)};
   } else if (!e.has(Y)) {
-    p.y = {value: e.band(Y).size / 2};
+    p.y = {value: e.bandSize(Y) / 2};
   }
 
   // size

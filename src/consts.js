@@ -11,9 +11,14 @@ consts.dataTypeNames = ['O', 'Q', 'T'].reduce(function(r, x) {
 },{});
 
 consts.DEFAULTS = {
+  // single plot
+  singleHeight: 200, // will be overwritten by bandWidth * (cardinality + padding)
+  singleWidth: 200, // will be overwritten by bandWidth * (cardinality + padding)
+  singleBandSize: 21,
+
   //small multiples
-  cellHeight: 200, // will be overwritten by bandWidth
-  cellWidth: 200, // will be overwritten by bandWidth
+  multipleBandSize: 13,
+
   cellPadding: 0.1,
   cellBackgroundColor: '#fdfdfd',
   xAxisMargin: 80,
