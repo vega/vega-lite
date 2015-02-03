@@ -67,8 +67,8 @@ axis.def = function(name, encoding, opt) {
     };
   }
 
-  if (encoding.axis(X).format) {
-    def.format = encoding.axis(X).format;
+  if (encoding.axis(name).format) {
+    def.format = encoding.axis(name).format;
   } else if (encoding.isType(name, Q)) {
     def.format = "s";
   } else if (encoding.isType(name, T)) {
