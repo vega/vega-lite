@@ -13,9 +13,6 @@ function faceting(group, encoding, layout, spec, mdef, stack, stats) {
 
   var hasRow = encoding.has(ROW), hasCol = encoding.has(COL);
 
-  // FIXME remove xAxisMargin
-  var xAxisMargin = encoding.has(Y) ? encoding.config('xAxisMargin') : undefined;
-
   enter.fill = {value: encoding.config('cellBackgroundColor')};
 
   //move "from" to cell level and add facet transform
@@ -43,7 +40,7 @@ function faceting(group, encoding, layout, spec, mdef, stack, stats) {
 
     axesGrp = groupdef('x-axes', {
         axes: encoding.has(X) ? axis.defs(['x'], encoding, layout) : undefined,
-        x: hasCol ? {scale: COL, field: 'keys.0', offset: xAxisMargin} : {value: xAxisMargin},
+        x: hasCol ? {scale: COL, field: 'keys.0'} : {value: 0},
         width: hasCol && {'value': layout.cellWidth}, //HACK?
         from: from
       });
@@ -76,28 +73,18 @@ function faceting(group, encoding, layout, spec, mdef, stack, stats) {
     axesGrp = groupdef('y-axes', {
       axes: encoding.has(Y) ? axis.defs(['y'], encoding, layout) : undefined,
       y: hasRow && {scale: ROW, field: 'keys.0'},
-      x: hasRow && {value: xAxisMargin},
+      x: hasRow && {value: 0},
       height: hasRow && {'value': layout.cellHeight}, //HACK?
       from: from
     });
 
     spec.marks.push(axesGrp);
     (spec.axes = spec.axes || []);
-    spec.axes.push.apply(spec.axes, axis.defs(['col'], encoding, layout, {
-      xAxisMargin: xAxisMargin
-    }));
+    spec.axes.push.apply(spec.axes, axis.defs(['col'], encoding, layout));
   } else { // doesn't have col
     if (encoding.has(Y)) {
       cellAxes.push.apply(cellAxes, axis.defs(['y'], encoding, layout));
     }
-  }
-
-  if (hasRow) {
-    if (enter.x) enter.x.offset = xAxisMargin;
-    else enter.x = {value: xAxisMargin};
-  }
-  if (hasCol) {
-    //TODO fill here..
   }
 
   // assuming equal cellWidth here
