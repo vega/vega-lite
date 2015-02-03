@@ -63,7 +63,7 @@ vldata.getSchema = function(data) {
   return schema;
 };
 
-vldata.getStats = function(data, schema) { // hack
+vldata.getStats = function(data) { // hack
   var stats = {},
     fields = util.keys(data[0]);
 
