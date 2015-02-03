@@ -91,6 +91,58 @@ util.getbins = function(stats) {
   });
 };
 
+/**
+ * x[p[0]]...[p[n]] = val
+ * @param noaugment determine whether new object should be added f
+ * or non-existing properties along the path
+ */
+util.setter = function(x, p, val, noaugment) {
+  for (var i=0; i<p.length-1; ++i) {
+    if (!noaugment && !(p[i] in x)){
+      x = x[p[i]] = {};
+    } else {
+      x = x[p[i]];
+    }
+  }
+  x[p[i]] = val;
+};
+
+
+/**
+ * returns x[p[0]]...[p[n]]
+ * @param augment determine whether new object should be added f
+ * or non-existing properties along the path
+ */
+util.getter = function(x, p, noaugment) {
+  for (var i=0; i<p.length; ++i) {
+    if (!noaugment && !(p[i] in x)){
+      x = x[p[i]] = {};
+    } else {
+      x = x[p[i]];
+    }
+  }
+  return x;
+};
+
+// copied from vega
+util.truncate = function(s, length, pos, word, ellipsis) {
+  var len = s.length;
+  if (len <= length) return s;
+  ellipsis = ellipsis || "...";
+  var l = Math.max(0, length - ellipsis.length);
+
+  switch (pos) {
+    case "left":
+      return ellipsis + (word ? vg_truncateOnWord(s,l,1) : s.slice(len-l));
+    case "middle":
+    case "center":
+      var l1 = Math.ceil(l/2), l2 = Math.floor(l/2);
+      return (word ? vg_truncateOnWord(s,l1) : s.slice(0,l1)) + ellipsis +
+        (word ? vg_truncateOnWord(s,l2,1) : s.slice(len-l2));
+    default:
+      return (word ? vg_truncateOnWord(s,l) : s.slice(0,l)) + ellipsis;
+  }
+};
 
 util.error = function(msg) {
   console.error('[VL Error]', msg);

@@ -1,5 +1,6 @@
 var globals = require('../globals'),
   util = require('../util'),
+  setter = util.setter,
   time = require('./time');
 
 var axis = module.exports = {};
@@ -12,14 +13,14 @@ axis.names = function(props) {
   }, {}));
 };
 
-axis.defs = function(names, encoding, opt) {
+axis.defs = function(names, encoding, layout, opt) {
   return names.reduce(function(a, name) {
-    a.push(axis.def(name, encoding, opt));
+    a.push(axis.def(name, encoding, layout, opt));
     return a;
   }, []);
 };
 
-axis.def = function(name, encoding, opt) {
+axis.def = function(name, encoding, layout, opt) {
   var type = name;
   var isCol = name == COL, isRow = name == ROW;
   if (isCol) type = 'x';
@@ -30,20 +31,13 @@ axis.def = function(name, encoding, opt) {
     scale: name
   };
 
-  if (encoding.isQuantScale(name)) {
-    //TODO(kanitw): better determine # of ticks
-    def.ticks = 3;
-  }
-
   if (encoding.axis(name).grid) {
     def.grid = true;
     def.layer = 'back';
   }
 
   if (encoding.axis(name).title) {
-    //show title by default
-
-    def = axis_title(def, name, encoding, opt);
+    def = axis_title(def, name, encoding, layout, opt);
   }
 
   if (isRow || isCol) {
@@ -53,19 +47,21 @@ axis.def = function(name, encoding, opt) {
       axis: { opacity: {value: 0} }
     };
   }
+
   if (isCol) {
-    def.offset = [opt.xAxisMargin || 0, encoding.config('yAxisMargin')];
     def.orient = 'top';
   }
 
-  if (name == 'x' && encoding.isOrdinalScale(X)) {
-    def.properties = {
-      labels: {
-        angle: {value: 270},
-        align: {value: 'right'},
-        baseline: {value: 'middle'}
-      }
-    };
+  if (isRow) {
+    def.offset = axisTitleOffset(encoding, layout, Y) + 20;
+  }
+
+  if (name == X && encoding.isOrdinalScale(X)) {
+    setter(def, ['properties','labels'], {
+      angle: {value: 270},
+      align: {value: 'right'},
+      baseline: {value: 'middle'}
+    });
   }
 
   if (encoding.axis(name).format) {
@@ -79,22 +75,30 @@ axis.def = function(name, encoding, opt) {
   var fn;
   // add custom label for time type
   if (encoding.isType(name, T) && (fn = encoding.fn(name)) && (time.hasScale(fn))) {
-    var properties = def.properties = def.properties || {},
-      labels = properties.labels = properties.labels || {},
-      text = labels.text = labels.text || {};
-
-        text.scale = 'time-'+ fn;
+    setter(def, ['properties','labels','text','scale'], 'time-'+ fn);
   }
 
   return def;
 };
 
-function axis_title(axis, name, encoding, opt) {
-  axis.title = encoding.fieldTitle(name);
-  if (name == Y) {
-    axis.titleOffset = 60;
-    // TODO: set appropriate titleOffset
-    // maybe based on some string length from stats
+function axis_title(axis, name, encoding, layout, opt) {
+  var maxLength = null,
+    fieldTitle = encoding.fieldTitle(name);
+  if (name===X) {
+    maxlength = layout.cellWidth / layout.characterWidth;
+  } else if (name === Y) {
+    maxlength = layout.cellHeight / layout.characterWidth;
+  }
+
+  axis.title = maxlength ? util.truncate(fieldTitle, maxlength) : fieldTitle;
+
+  if (encoding.isOrdinalScale(name)) {
+    axis.titleOffset = axisTitleOffset(encoding, layout, name);
   }
   return axis;
+}
+
+function axisTitleOffset(encoding, layout, name) {
+  return encoding.axis(name).titleOffset ||
+      layout[name].axisTitleOffset;
 }
