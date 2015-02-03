@@ -76,7 +76,8 @@ function scale_range(s, encoding, opt) {
         s.bandWidth = encoding.bandSize(X);
       } else {
         s.range = opt.cellWidth ? [0, opt.cellWidth] : 'width';
-        s.zero = spec.zero;
+        s.zero = spec.zero ||
+          ( encoding.isType(s.name,T) && encoding.fn(s.name) === 'year' ? false : true );
         s.reverse = spec.reverse;
       }
       s.round = true;
@@ -91,7 +92,8 @@ function scale_range(s, encoding, opt) {
         s.bandWidth = encoding.bandSize(Y);
       } else {
         s.range = opt.cellHeight ? [opt.cellHeight, 0] : 'height';
-        s.zero = spec.zero;
+        s.zero = spec.zero ||
+          ( encoding.isType(s.name, T) && encoding.fn(s.name) === 'year' ? false : true );
         s.reverse = spec.reverse;
       }
 
