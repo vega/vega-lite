@@ -49,8 +49,11 @@ axis.def = function(name, encoding, layout, opt) {
   }
 
   if (isCol) {
-    def.offset = [opt.xAxisMargin || 0, encoding.config('yAxisMargin')];
     def.orient = 'top';
+  }
+
+  if (isRow) {
+    def.offset = axisTitleOffset(encoding, layout, Y) + 20;
   }
 
   if (name == X && encoding.isOrdinalScale(X)) {
@@ -81,11 +84,12 @@ axis.def = function(name, encoding, layout, opt) {
 function axis_title(axis, name, encoding, layout, opt) {
   axis.title = encoding.fieldTitle(name);
   if (encoding.isOrdinalScale(name)) {
-    axis.titleOffset = encoding.axis(name).titleOffset ||
-      layout[name].axisTitleOffset;
-
-    // TODO: set appropriate titleOffset
-    // maybe based on some string length from stats
+    axis.titleOffset = axisTitleOffset(encoding, layout, name);
   }
   return axis;
+}
+
+function axisTitleOffset(encoding, layout, name) {
+  return encoding.axis(name).titleOffset ||
+      layout[name].axisTitleOffset;
 }
