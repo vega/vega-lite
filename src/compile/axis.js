@@ -30,11 +30,6 @@ axis.def = function(name, encoding, opt) {
     scale: name
   };
 
-  if (encoding.isQuantScale(name)) {
-    //TODO(kanitw): better determine # of ticks
-    // def.ticks = 3;
-  }
-
   if (encoding.axis(name).grid) {
     def.grid = true;
     def.layer = 'back';
