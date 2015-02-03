@@ -12,7 +12,18 @@ describe('Axis', function() {
           x: {name: fieldName, type: 'T', fn: fn}
         }
       });
-    var _axis = axis.def('x', encoding);
+    var _axis = axis.def('x', encoding, {
+      width: 200,
+      height: 200,
+      cellWidth: 200,
+      cellHeight: 200,
+      x: {
+        axisTitleOffset: 60
+      },
+      y: {
+        axisTitleOffset: 60
+      }
+    });
     it('should use custom label', function() {
       expect(_axis.properties.labels.text.scale).to.equal('time-'+ fn);
     });
