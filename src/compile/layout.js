@@ -4,10 +4,12 @@ var globals = require('../globals'),
   time = require('./time');
 
 module.exports = vllayout;
+var CHARACTER_WIDTH = 6;
 
 function vllayout(encoding, stats) {
   var layout = box(encoding, stats);
   layout = offset(encoding, stats, layout);
+  layout.characterWidth = CHARACTER_WIDTH;
   return layout;
 }
 
@@ -85,8 +87,6 @@ function box(encoding, stats) {
     height: height
   };
 }
-
-var CHARACTER_WIDTH = 6;
 
 function offset(encoding, stats, layout) {
   [X, Y].forEach(function (x) {

@@ -124,6 +124,26 @@ util.getter = function(x, p, noaugment) {
   return x;
 };
 
+// copied from vega
+util.truncate = function(s, length, pos, word, ellipsis) {
+  var len = s.length;
+  if (len <= length) return s;
+  ellipsis = ellipsis || "...";
+  var l = Math.max(0, length - ellipsis.length);
+
+  switch (pos) {
+    case "left":
+      return ellipsis + (word ? vg_truncateOnWord(s,l,1) : s.slice(len-l));
+    case "middle":
+    case "center":
+      var l1 = Math.ceil(l/2), l2 = Math.floor(l/2);
+      return (word ? vg_truncateOnWord(s,l1) : s.slice(0,l1)) + ellipsis +
+        (word ? vg_truncateOnWord(s,l2,1) : s.slice(len-l2));
+    default:
+      return (word ? vg_truncateOnWord(s,l) : s.slice(0,l)) + ellipsis;
+  }
+};
+
 util.error = function(msg) {
   console.error('[VL Error]', msg);
 };

@@ -82,7 +82,16 @@ axis.def = function(name, encoding, layout, opt) {
 };
 
 function axis_title(axis, name, encoding, layout, opt) {
-  axis.title = encoding.fieldTitle(name);
+  var maxLength = null,
+    fieldTitle = encoding.fieldTitle(name);
+  if (name===X) {
+    maxlength = layout.cellWidth / layout.characterWidth;
+  } else if (name === Y) {
+    maxlength = layout.cellHeight / layout.characterWidth;
+  }
+
+  axis.title = maxlength ? util.truncate(fieldTitle, maxlength) : fieldTitle;
+
   if (encoding.isOrdinalScale(name)) {
     axis.titleOffset = axisTitleOffset(encoding, layout, name);
   }
