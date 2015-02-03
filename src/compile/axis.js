@@ -54,15 +54,13 @@ axis.def = function(name, encoding, opt) {
     def.orient = 'top';
   }
 
+
   if (name == X && encoding.isOrdinalScale(X)) {
     def.properties = {
       labels: {
         angle: {value: 270},
         align: {value: 'right'},
         baseline: {value: 'middle'}
-      },
-      title: {
-        dy: {value: 30}
       }
     };
   }
@@ -90,8 +88,9 @@ axis.def = function(name, encoding, opt) {
 
 function axis_title(axis, name, encoding, opt) {
   axis.title = encoding.fieldTitle(name);
-  if (name == Y) {
-    axis.titleOffset = 60;
+  if (encoding.isOrdinalScale(name)) {
+    axis.titleOffset = encoding.axis(name).titleOffset;
+
     // TODO: set appropriate titleOffset
     // maybe based on some string length from stats
   }

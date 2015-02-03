@@ -136,6 +136,11 @@ var axisMixin = {
           default: true,
           description: 'A title for the axis.'
         },
+        titleOffset: {
+          type: 'integer',
+          default: 120,
+          description: 'A title offset value for the axis.'
+        },
         format: {
           type: 'string',
           description: 'The formatting pattern for axis labels.'
