@@ -1,5 +1,6 @@
 var globals = require('../globals'),
-  util = require('../util');
+  util = require('../util'),
+  time = require('./time');
 
 var axis = module.exports = {};
 
@@ -75,19 +76,14 @@ axis.def = function(name, encoding, opt) {
     def.format = "%Y-%m-%d";
   }
 
+  var fn;
   // add custom label for time type
-  if (encoding.isType(name, T) && encoding.fn(name)) {
-    var fn = encoding.fn(name),
-      properties = def.properties = def.properties || {},
+  if (encoding.isType(name, T) && (fn = encoding.fn(name)) && (time.hasScale(fn))) {
+    var properties = def.properties = def.properties || {},
       labels = properties.labels = properties.labels || {},
       text = labels.text = labels.text || {};
 
-    switch (fn) {
-      case 'day':
-      case 'month':
         text.scale = 'time-'+ fn;
-        break;
-    }
   }
 
   return def;

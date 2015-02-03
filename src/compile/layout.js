@@ -1,6 +1,7 @@
 var globals = require('../globals'),
   util = require('../util'),
-  schema = require('../schema/schema');
+  schema = require('../schema/schema'),
+  time = require('./time');
 
 module.exports = {
   setSize: setSize
@@ -11,6 +12,9 @@ function getCardinality(encoding, encType, stats) {
   if (encoding.bin(encType)) {
     var bins = util.getbins(stats[field]);
     return (bins.stop - bins.start) / bins.step;
+  }
+  if (encoding.isType(encType, T)) {
+    return time.cardinality(encoding, encType, stats);
   }
   return stats[field].cardinality;
 }
