@@ -1,6 +1,7 @@
 var globals = require('../globals'),
   util = require('../util'),
   setter = util.setter,
+  getter = util.getter,
   time = require('./time');
 
 var axis = module.exports = {};
@@ -100,5 +101,5 @@ function axis_title(axis, name, encoding, layout, opt) {
 
 function axisTitleOffset(encoding, layout, name) {
   return encoding.axis(name).titleOffset ||
-      layout[name].axisTitleOffset;
+    getter(layout, [name, 'axisTitleOffset']);
 }
