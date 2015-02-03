@@ -70,6 +70,10 @@ vldata.getStats = function(data, schema) { // hack
   fields.forEach(function(k) {
     var stat = util.minmax(data, k);
     stat.cardinality = util.uniq(data, k);
+    stat.maxlength = data.reduce(function(max,row) {
+      var len = row[k].toString().length;
+      return len > max ? len : max;
+    }, 0);
     stat.count = data.length;
     stats[k] = stat;
   });

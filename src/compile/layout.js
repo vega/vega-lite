@@ -7,6 +7,7 @@ module.exports = vllayout;
 
 function vllayout(encoding, stats) {
   var layout = box(encoding, stats);
+  layout = offset(encoding, stats, layout);
   return layout;
 }
 
@@ -83,4 +84,28 @@ function box(encoding, stats) {
     width: width,
     height: height
   };
+}
+
+var CHARACTER_WIDTH = 6;
+
+function offset(encoding, stats, layout) {
+  [X, Y].forEach(function (x) {
+    if (encoding.isOrdinalScale(x)) {
+      var maxLength = stats[encoding.fieldName(x)].maxlength;
+      layout[x] = {
+        axisTitleOffset: CHARACTER_WIDTH *  maxLength + 20
+      };
+      console.log('layout', x, layout[x])
+    }
+  });
+
+  if (encoding.has(ROW)) {
+
+  }
+
+  if (encoding.has(COL)) {
+
+  }
+
+  return layout;
 }

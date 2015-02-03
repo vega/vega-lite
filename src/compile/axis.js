@@ -81,7 +81,8 @@ axis.def = function(name, encoding, layout, opt) {
 function axis_title(axis, name, encoding, layout, opt) {
   axis.title = encoding.fieldTitle(name);
   if (encoding.isOrdinalScale(name)) {
-    axis.titleOffset = encoding.axis(name).titleOffset;
+    axis.titleOffset = encoding.axis(name).titleOffset ||
+      layout[name].axisTitleOffset;
 
     // TODO: set appropriate titleOffset
     // maybe based on some string length from stats

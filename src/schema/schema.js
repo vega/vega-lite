@@ -138,7 +138,6 @@ var axisMixin = {
         },
         titleOffset: {
           type: 'integer',
-          default: 120,
           description: 'A title offset value for the axis.'
         },
         format: {
