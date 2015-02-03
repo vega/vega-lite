@@ -2,9 +2,9 @@
 
 var util = require('./util');
 
-var data = module.exports = {};
+var vldata = module.exports = {};
 
-data.getUrl = function getDataUrl(encoding, stats) {
+vldata.getUrl = function getDataUrl(encoding, stats) {
   if (!encoding.config('useVegaServer')) {
     // don't use vega server
     return encoding.config('dataUrl');
@@ -42,7 +42,7 @@ data.getUrl = function getDataUrl(encoding, stats) {
  * @param  {Object} data data in JSON/javascript object format
  * @return Array of {name: __name__, type: "number|text|time|location"}
  */
-data.getSchema = function(data) {
+vldata.getSchema = function(data) {
   var schema = [],
     fields = util.keys(data[0]);
 
@@ -63,7 +63,7 @@ data.getSchema = function(data) {
   return schema;
 };
 
-data.getStats = function(data) { // hack
+vldata.getStats = function(data, schema) { // hack
   var stats = {},
     fields = util.keys(data[0]);
 
