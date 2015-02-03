@@ -95,17 +95,7 @@ function offset(encoding, stats, layout) {
       layout[x] = {
         axisTitleOffset: CHARACTER_WIDTH *  maxLength + 20
       };
-      console.log('layout', x, layout[x])
     }
   });
-
-  if (encoding.has(ROW)) {
-
-  }
-
-  if (encoding.has(COL)) {
-
-  }
-
   return layout;
 }
