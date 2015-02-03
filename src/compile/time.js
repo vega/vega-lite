@@ -34,6 +34,22 @@ function time(spec, encoding, opt) {
   return spec;
 }
 
+time.cardinality = function(encoding, encType, stats) {
+  var fn = encoding.fn(encType);
+  switch (fn) {
+    case 'second': return 60;
+    case 'minute': return 60;
+    case 'hour': return 24;
+    case 'dayofweek': return 7;
+    case 'date': return 31;
+    case 'month': return 12;
+    // case 'year':  -- need real cardinality
+  }
+
+  var field = encoding.field(encType, /*nodata*/ true); // fn_fieldname
+  return stats[field].cardinality;
+};
+
 /**
  * @return {String} date binning formula of the given field
  */
@@ -43,7 +59,7 @@ time.formula = function(field) {
     case 'second': return date + '.getUTCSeconds()';
     case 'minute': return date + '.getUTCMinutes()';
     case 'hour': return date + '.getUTCHours()';
-    case 'day': return date + '.getUTCDay()';
+    case 'dayofweek': return date + '.getUTCDay()';
     case 'date': return date + '.getUTCDate()';
     case 'month': return date + '.getUTCMonth()';
     case 'year': return date + '.getUTCFullYear()';
@@ -61,13 +77,14 @@ time.transform = function(transform, encoding, encType, field) {
   });
 };
 
+/** append custom time scales for axis label */
 time.scale = function(scales, fn, encoding) {
   var labelLength = encoding.config('timeScaleLabelLength');
   // TODO add option for shorter scale / custom range
   switch (fn) {
-    case 'day':
+    case 'dayofweek':
       scales.push({
-        name: 'time-day',
+        name: 'time-'+fn,
         type: 'ordinal',
         domain: util.range(0, 7),
         range: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map(
@@ -77,7 +94,7 @@ time.scale = function(scales, fn, encoding) {
       break;
     case 'month':
       scales.push({
-        name: 'time-month',
+        name: 'time-'+fn,
         type: 'ordinal',
         domain: util.range(0, 12),
         range: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].map(
@@ -87,3 +104,44 @@ time.scale = function(scales, fn, encoding) {
       break;
   }
 };
+
+time.isOrdinalFn = function(fn) {
+  switch (fn) {
+    case 'second':
+    case 'minute':
+    case 'hour':
+    case 'dayofweek':
+    case 'date':
+    case 'month':
+      return true;
+  }
+  return false;
+};
+
+time.scale.type = function(fn) {
+  return time.isOrdinalFn(fn) ? 'ordinal' : 'linear';
+};
+
+time.scale.domain = function(fn) {
+  switch (fn) {
+    case 'second':
+    case 'minute': return util.range(0, 60);
+    case 'hour': return util.range(0, 24);
+    case 'dayofweek': return util.range(0, 7);
+    case 'date': return util.range(0, 32);
+    case 'month': return util.range(0, 12);
+  }
+  return null;
+};
+
+/** whether a particular time function has custom scale for labels implemented in time.scale */
+time.hasScale = function(fn) {
+  switch (fn) {
+    case 'dayofweek':
+    case 'month':
+      return true;
+  }
+  return false;
+};
+
+

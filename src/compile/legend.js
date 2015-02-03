@@ -1,4 +1,5 @@
-var global = require('../globals');
+var global = require('../globals'),
+  time = require('./time');
 
 var legend = module.exports = {};
 
@@ -41,17 +42,13 @@ legend.def = function(name, encoding, props) {
 
   def.title = encoding.fieldTitle(name);
 
-  if (encoding.isType(name, T) && (fn = encoding.fn(name))) {
+  if (encoding.isType(name, T) && (fn = encoding.fn(name)) &&
+    time.hasScale(fn)) {
     var properties = def.properties = def.properties || {},
       labels = properties.labels = properties.labels || {},
       text = labels.text = labels.text || {};
 
-    switch (fn) {
-      case 'day':
-      case 'month':
-        text.scale = 'time-'+ fn;
-        break;
-    }
+    text.scale = 'time-'+ fn;
   }
 
   return def;

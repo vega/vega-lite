@@ -1,5 +1,6 @@
 var globals = require('../globals'),
-  util = require('../util');
+  util = require('../util'),
+  time = require('./time');
 
 var scale = module.exports = {};
 
@@ -30,22 +31,12 @@ scale.defs = function(names, encoding, opt) {
 };
 
 scale.type = function(name, encoding) {
-  var fn;
+
   switch (encoding.type(name)) {
     case O: return 'ordinal';
     case T:
-      switch (encoding.fn(name)) {
-        case 'second':
-        case 'minute':
-        case 'hour':
-        case 'day':
-        case 'date':
-        case 'month':
-          return 'ordinal';
-        case 'year':
-          return 'linear';
-      }
-      return 'time';
+      var fn = encoding.fn(name);
+      return (fn && time.scale.type(fn)) || 'time';
     case Q:
       if (encoding.bin(name)) {
         return 'ordinal';
@@ -55,15 +46,9 @@ scale.type = function(name, encoding) {
 };
 
 function scale_domain(name, encoding, opt) {
-  if (encoding.type(name) === T) {
-    switch (encoding.fn(name)) {
-      case 'second':
-      case 'minute': return util.range(0, 60);
-      case 'hour': return util.range(0, 24);
-      case 'day': return util.range(0, 7);
-      case 'date': return util.range(0, 32);
-      case 'month': return util.range(0, 12);
-    }
+  if (encoding.isType(name, T)) {
+    var range = time.scale.domain(encoding.fn(name));
+    if(range) return range;
   }
 
   if (encoding.bin(name)) {

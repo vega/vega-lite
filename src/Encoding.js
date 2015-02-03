@@ -4,7 +4,8 @@ var global = require('./globals'),
   consts = require('./consts'),
   util = require('./util'),
   field = require('./field'),
-  schema = require('./schema/schema');
+  schema = require('./schema/schema'),
+  time = require('./compile/time');
 
 var Encoding = module.exports = (function() {
 
@@ -187,8 +188,11 @@ var Encoding = module.exports = (function() {
   };
 
   function isOrdinalScale(encoding, encType){
+    var fn;
     return encoding.isType(encType, O) || encoding.bin(encType) ||
-      (encoding.isType(encType, T) && encoding.fn(encType));
+      ( encoding.isType(encType, T) &&
+        (fn = encoding.fn(encType)) &&
+        time.isOrdinalFn(fn));
   }
 
   proto.isOrdinalScale = function(encType) {
