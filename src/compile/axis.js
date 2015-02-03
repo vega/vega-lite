@@ -53,17 +53,21 @@ axis.def = function(name, encoding, opt) {
       axis: { opacity: {value: 0} }
     };
   }
+
   if (isCol) {
     def.offset = [opt.xAxisMargin || 0, encoding.config('yAxisMargin')];
     def.orient = 'top';
   }
 
-  if (name == 'x' && encoding.isOrdinalScale(X)) {
+  if (name == X && encoding.isOrdinalScale(X)) {
     def.properties = {
       labels: {
         angle: {value: 270},
         align: {value: 'right'},
         baseline: {value: 'middle'}
+      },
+      title: {
+        dy: {value: 30}
       }
     };
   }
@@ -83,7 +87,7 @@ axis.def = function(name, encoding, opt) {
       labels = properties.labels = properties.labels || {},
       text = labels.text = labels.text || {};
 
-        text.scale = 'time-'+ fn;
+    text.scale = 'time-'+ fn;
   }
 
   return def;
