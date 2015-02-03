@@ -72,7 +72,7 @@ axis.def = function(name, encoding, opt) {
     def.format = encoding.axis(name).format;
   } else if (encoding.isType(name, Q)) {
     def.format = "s";
-  } else if (encoding.isType(name, T)) {
+  } else if (encoding.isType(name, T) && !encoding.fn(name)) {
     def.format = "%Y-%m-%d";
   }
 
