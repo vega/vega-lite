@@ -32,7 +32,7 @@ axis.def = function(name, encoding, opt) {
 
   if (encoding.isQuantScale(name)) {
     //TODO(kanitw): better determine # of ticks
-    def.ticks = 3;
+    // def.ticks = 3;
   }
 
   if (encoding.axis(name).grid) {
