@@ -3,9 +3,12 @@ var globals = require('../globals'),
   schema = require('../schema/schema'),
   time = require('./time');
 
-module.exports = {
-  setSize: setSize
-};
+module.exports = vllayout;
+
+function vllayout(encoding, stats) {
+  var layout = box(encoding, stats);
+  return layout;
+}
 
 function getCardinality(encoding, encType, stats) {
   var field = encoding.fieldName(encType);
@@ -25,7 +28,7 @@ function getCardinality(encoding, encType, stats) {
   One solution is to update Vega to support auto-sizing
   In the meantime, auto-padding (mostly) does the trick
  */
-function setSize(encoding, stats) {
+function box(encoding, stats) {
   var hasRow = encoding.has(ROW),
       hasCol = encoding.has(COL),
       marktype = encoding.marktype();
@@ -65,12 +68,10 @@ function setSize(encoding, stats) {
   // Cell bands use rangeBands(). There are n-1 padding.  Outerpadding = 0 for cells
 
   var width = cellWidth, height = cellHeight;
-
   if (hasCol) {
     var colCardinality = getCardinality(encoding, COL, stats);
     width = cellWidth * ((1 + cellPadding) * (colCardinality - 1) + 1);
   }
-
   if (hasRow) {
     var rowCardinality = getCardinality(encoding, ROW, stats);
     height = cellHeight * ((1 + cellPadding) * (rowCardinality - 1) + 1);

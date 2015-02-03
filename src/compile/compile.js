@@ -4,9 +4,7 @@ var globals = require('../globals'),
 module.exports = compile;
 
 var template = compile.template = require('./template'),
-  layout = compile.layout = require('./layout'),
   axis = compile.axis = require('./axis'),
-  group = compile.group = require('./group'),
   legend = compile.legend = require('./legend'),
   marks = compile.marks = require('./marks'),
   scale = compile.scale = require('./scale'),
@@ -17,22 +15,16 @@ var template = compile.template = require('./template'),
   stacking = compile.stacking = require('./stacking');
   subfaceting = compile.subfaceting = require('./subfaceting');
 
+compile.layout = require('./layout');
+compile.group = require('./group');
 
 function compile(encoding, stats) {
-  var size = layout.setSize(encoding, stats),
-    cellWidth = size.cellWidth,
-    cellHeight = size.cellHeight;
+  var layout = compile.layout(encoding, stats);
 
-  var hasAgg = encoding.any(function(v, k) {
-    return v.aggr !== undefined;
-  });
-
-  var spec = template(encoding, size, stats),
+  var spec = template(encoding, layout, stats),
     group = spec.marks[0],
     mark = marks[encoding.marktype()],
-    mdef = marks.def(mark, encoding, {
-      hasAggregate: hasAgg
-    });
+    mdef = marks.def(mark, encoding);
 
   var hasRow = encoding.has(ROW), hasCol = encoding.has(COL);
 
@@ -69,12 +61,12 @@ function compile(encoding, stats) {
 
   // Small Multiples
   if (hasRow || hasCol) {
-    spec = faceting(group, encoding, cellHeight, cellWidth, spec, mdef, stack, stats);
+    spec = faceting(group, encoding, layout, spec, mdef, stack, stats);
     spec.legends = legend.defs(encoding);
   } else {
     group.scales = scale.defs(scale.names(mdef.properties.update), encoding,
       {stack: stack, stats: stats});
-    group.axes = axis.defs(axis.names(mdef.properties.update), encoding);
+    group.axes = axis.defs(axis.names(mdef.properties.update), encoding, layout);
     group.legends = legend.defs(encoding);
   }
   return spec;

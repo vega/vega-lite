@@ -13,14 +13,14 @@ axis.names = function(props) {
   }, {}));
 };
 
-axis.defs = function(names, encoding, opt) {
+axis.defs = function(names, encoding, layout, opt) {
   return names.reduce(function(a, name) {
-    a.push(axis.def(name, encoding, opt));
+    a.push(axis.def(name, encoding, layout, opt));
     return a;
   }, []);
 };
 
-axis.def = function(name, encoding, opt) {
+axis.def = function(name, encoding, layout, opt) {
   var type = name;
   var isCol = name == COL, isRow = name == ROW;
   if (isCol) type = 'x';
@@ -37,7 +37,7 @@ axis.def = function(name, encoding, opt) {
   }
 
   if (encoding.axis(name).title) {
-    def = axis_title(def, name, encoding, opt);
+    def = axis_title(def, name, encoding, layout, opt);
   }
 
   if (isRow || isCol) {
@@ -78,7 +78,7 @@ axis.def = function(name, encoding, opt) {
   return def;
 };
 
-function axis_title(axis, name, encoding, opt) {
+function axis_title(axis, name, encoding, layout, opt) {
   axis.title = encoding.fieldTitle(name);
   if (encoding.isOrdinalScale(name)) {
     axis.titleOffset = encoding.axis(name).titleOffset;
