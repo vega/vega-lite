@@ -1,5 +1,6 @@
 var globals = require('../globals'),
   util = require('../util'),
+  setter = util.setter,
   time = require('./time');
 
 var axis = module.exports = {};
@@ -36,8 +37,6 @@ axis.def = function(name, encoding, opt) {
   }
 
   if (encoding.axis(name).title) {
-    //show title by default
-
     def = axis_title(def, name, encoding, opt);
   }
 
@@ -54,15 +53,12 @@ axis.def = function(name, encoding, opt) {
     def.orient = 'top';
   }
 
-
   if (name == X && encoding.isOrdinalScale(X)) {
-    def.properties = {
-      labels: {
-        angle: {value: 270},
-        align: {value: 'right'},
-        baseline: {value: 'middle'}
-      }
-    };
+    setter(def, ['properties','labels'], {
+      angle: {value: 270},
+      align: {value: 'right'},
+      baseline: {value: 'middle'}
+    });
   }
 
   if (encoding.axis(name).format) {
@@ -76,11 +72,7 @@ axis.def = function(name, encoding, opt) {
   var fn;
   // add custom label for time type
   if (encoding.isType(name, T) && (fn = encoding.fn(name)) && (time.hasScale(fn))) {
-    var properties = def.properties = def.properties || {},
-      labels = properties.labels = properties.labels || {},
-      text = labels.text = labels.text || {};
-
-    text.scale = 'time-'+ fn;
+    setter(def, ['properties','labels','text','scale'], 'time-'+ fn);
   }
 
   return def;

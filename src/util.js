@@ -91,6 +91,38 @@ util.getbins = function(stats) {
   });
 };
 
+/**
+ * x[p[0]]...[p[n]] = val
+ * @param noaugment determine whether new object should be added f
+ * or non-existing properties along the path
+ */
+util.setter = function(x, p, val, noaugment) {
+  for (var i=0; i<p.length-1; ++i) {
+    if (!noaugment && !(p[i] in x)){
+      x = x[p[i]] = {};
+    } else {
+      x = x[p[i]];
+    }
+  }
+  x[p[i]] = val;
+};
+
+
+/**
+ * returns x[p[0]]...[p[n]]
+ * @param augment determine whether new object should be added f
+ * or non-existing properties along the path
+ */
+util.getter = function(x, p, noaugment) {
+  for (var i=0; i<p.length; ++i) {
+    if (!noaugment && !(p[i] in x)){
+      x = x[p[i]] = {};
+    } else {
+      x = x[p[i]];
+    }
+  }
+  return x;
+};
 
 util.error = function(msg) {
   console.error('[VL Error]', msg);
