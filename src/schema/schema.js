@@ -340,17 +340,7 @@ var cfg = {
       },
       default: undefined
     },
-    _minWidth: {
-      type: 'integer',
-      default: 20,
-      minimum: 0
-    },
-    _minHeight: {
-      type: 'integer',
-      default: 20,
-      minimum: 0
-    },
-
+    
     // single plot
     singleHeight: {
       // will be overwritten by bandWidth * (cardinality + padding)
