@@ -64,7 +64,7 @@ function compile(encoding, stats) {
     spec = faceting(group, encoding, layout, spec, mdef, stack, stats);
     spec.legends = legend.defs(encoding);
   } else {
-    group.scales = scale.defs(scale.names(mdef.properties.update), encoding,
+    group.scales = scale.defs(scale.names(mdef.properties.update), encoding, layout,
       {stack: stack, stats: stats});
     group.axes = axis.defs(axis.names(mdef.properties.update), encoding, layout);
     group.legends = legend.defs(encoding);

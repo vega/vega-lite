@@ -11,7 +11,7 @@ scale.names = function(props) {
   }, {}));
 };
 
-scale.defs = function(names, encoding, opt) {
+scale.defs = function(names, encoding, layout, opt) {
   opt = opt || {};
 
   return names.reduce(function(a, name) {
@@ -24,7 +24,7 @@ scale.defs = function(names, encoding, opt) {
       s.sort = true;
     }
 
-    scale_range(s, encoding, opt);
+    scale_range(s, encoding, layout, opt);
 
     return (a.push(s), a);
   }, []);
@@ -68,14 +68,14 @@ function scale_domain(name, encoding, opt) {
     {data: TABLE, field: encoding.field(name)};
 }
 
-function scale_range(s, encoding, opt) {
+function scale_range(s, encoding, layout, opt) {
   var spec = encoding.scale(s.name);
   switch (s.name) {
     case X:
       if (s.type === 'ordinal') {
         s.bandWidth = encoding.bandSize(X);
       } else {
-        s.range = opt.cellWidth ? [0, opt.cellWidth] : 'width';
+        s.range = layout.cellWidth ? [0, layout.cellWidth] : 'width';
         s.zero = spec.zero ||
           ( encoding.isType(s.name,T) && encoding.fn(s.name) === 'year' ? false : true );
         s.reverse = spec.reverse;
@@ -91,7 +91,7 @@ function scale_range(s, encoding, opt) {
       if (s.type === 'ordinal') {
         s.bandWidth = encoding.bandSize(Y);
       } else {
-        s.range = opt.cellHeight ? [opt.cellHeight, 0] : 'height';
+        s.range = layout.cellHeight ? [layout.cellHeight, 0] : 'height';
         s.zero = spec.zero ||
           ( encoding.isType(s.name, T) && encoding.fn(s.name) === 'year' ? false : true );
         s.reverse = spec.reverse;
@@ -106,12 +106,12 @@ function scale_range(s, encoding, opt) {
       }
       break;
     case ROW: // support only ordinal
-      s.bandWidth = opt.cellHeight || encoding.config('cellHeight');
+      s.bandWidth = layout.cellHeight;
       s.round = true;
       s.nice = true;
       break;
     case COL: // support only ordinal
-      s.bandWidth = opt.cellWidth || encoding.config('cellWidth');
+      s.bandWidth = layout.cellWidth;
       s.round = true;
       s.nice = true;
       break;

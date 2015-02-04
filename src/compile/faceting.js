@@ -92,7 +92,8 @@ function faceting(group, encoding, layout, spec, mdef, stack, stats) {
   spec.scales = (spec.scales || []).concat(scale.defs(
     scale.names(enter).concat(scale.names(mdef.properties.update)),
     encoding,
-    {cellWidth: layout.cellWidth, cellHeight: layout.cellHeight, stack: stack, facet: true, stats: stats}
+    layout,
+    {stack: stack, facet: true, stats: stats}
   )); // row/col scales + cell scales
 
   if (cellAxes.length > 0) {
