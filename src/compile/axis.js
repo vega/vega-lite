@@ -57,12 +57,16 @@ axis.def = function(name, encoding, layout, opt) {
     def.offset = axisTitleOffset(encoding, layout, Y) + 20;
   }
 
-  if (name == X && encoding.isOrdinalScale(X)) {
-    setter(def, ['properties','labels'], {
-      angle: {value: 270},
-      align: {value: 'right'},
-      baseline: {value: 'middle'}
-    });
+  if (name == X) {
+    if (encoding.isOrdinalScale(X) || encoding.isType(X, T)) {
+      setter(def, ['properties','labels'], {
+        angle: {value: 270},
+        align: {value: 'right'},
+        baseline: {value: 'middle'}
+      });
+    } else { // Q
+      def.ticks = 5;
+    }
   }
 
   if (encoding.axis(name).format) {
@@ -92,10 +96,8 @@ function axis_title(axis, name, encoding, layout, opt) {
   }
 
   axis.title = maxlength ? util.truncate(fieldTitle, maxlength) : fieldTitle;
+  axis.titleOffset = axisTitleOffset(encoding, layout, name);
 
-  if (encoding.isOrdinalScale(name)) {
-    axis.titleOffset = axisTitleOffset(encoding, layout, name);
-  }
   return axis;
 }
 
