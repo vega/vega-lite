@@ -42,7 +42,18 @@ var spec_stackBinX = {
 var stats = {
   'Cost__Total_$': {
     min: 0,
-    max: 100
+    max: 100,
+    maxlength: 5
+  },
+  'Cost__Other': {
+    min: 0,
+    max: 100,
+    maxlength: 5
+  },
+  'Effect__Amount_of_damage': {
+    min: 0,
+    max: 100,
+    maxlength: 5
   }
 };
 
