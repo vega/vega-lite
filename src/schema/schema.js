@@ -224,7 +224,7 @@ var sizeMixin = {
   properties: {
     value: {
       type: 'integer',
-      default: 10,
+      default: 30,
       minimum: 0
     }
   }
@@ -356,7 +356,7 @@ var cfg = {
     },
     largeBandSize: {
       type: 'integer',
-      default: 21,
+      default: 19,
       minimum: 0
     },
     smallBandSize: {
