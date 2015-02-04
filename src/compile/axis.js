@@ -96,10 +96,8 @@ function axis_title(axis, name, encoding, layout, opt) {
   }
 
   axis.title = maxlength ? util.truncate(fieldTitle, maxlength) : fieldTitle;
-
-  if (encoding.isOrdinalScale(name)) {
   axis.titleOffset = axisTitleOffset(encoding, layout, name);
-  }
+
   return axis;
 }
 

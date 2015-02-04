@@ -90,12 +90,16 @@ function box(encoding, stats) {
 
 function offset(encoding, stats, layout) {
   [X, Y].forEach(function (x) {
-    if (encoding.isOrdinalScale(x)) {
-      var maxLength = stats[encoding.fieldName(x)].maxlength;
-      layout[x] = {
-        axisTitleOffset: CHARACTER_WIDTH *  maxLength + 20
-      };
+    var maxLength;
+    if (encoding.isOrdinalScale(x) || encoding.isType(x, T)) {
+      maxLength = stats[encoding.fieldName(x)].maxlength;
+    } else if (encoding.isType(x, Q)) {
+      maxLength = Math.min(stats[encoding.fieldName(x)].maxlength, 7);
     }
+
+    layout[x] = {
+      axisTitleOffset: CHARACTER_WIDTH *  maxLength + 20
+    };
   });
   return layout;
 }
