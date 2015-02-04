@@ -73,7 +73,7 @@ function scale_range(s, encoding, layout, opt) {
   switch (s.name) {
     case X:
       if (s.type === 'ordinal') {
-        s.bandWidth = encoding.bandSize(X);
+        s.bandWidth = encoding.bandSize(X, layout.x.useSmallBand);
       } else {
         s.range = layout.cellWidth ? [0, layout.cellWidth] : 'width';
         s.zero = spec.zero ||
@@ -89,7 +89,7 @@ function scale_range(s, encoding, layout, opt) {
       break;
     case Y:
       if (s.type === 'ordinal') {
-        s.bandWidth = encoding.bandSize(Y);
+        s.bandWidth = encoding.bandSize(Y, layout.y.useSmallBand);
       } else {
         s.range = layout.cellHeight ? [layout.cellHeight, 0] : 'height';
         s.zero = spec.zero ||

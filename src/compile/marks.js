@@ -3,8 +3,8 @@ var globals = require('../globals'),
 
 var marks = module.exports = {};
 
-marks.def = function(mark, encoding, opt) {
-  var p = mark.prop(encoding, opt);
+marks.def = function(mark, encoding, layout, opt) {
+  var p = mark.prop(encoding, layout, opt);
   return {
     type: mark.type,
     from: {data: TABLE},
@@ -62,7 +62,7 @@ marks.text = {
   supportedEncoding: {row: 1, col: 1, size: 1, color: 1, alpha: 1, text: 1}
 };
 
-function bar_props(e) {
+function bar_props(e, layout) {
   var p = {};
 
   // x
@@ -95,10 +95,10 @@ function bar_props(e) {
       p.width = {scale: SIZE, field: e.field(SIZE)};
     } else {
       // p.width = {scale: X, band: true, offset: -1};
-      p.width = {value: e.bandSize(X), offset: -1};
+      p.width = {value: e.bandSize(X, layout.x.useSmallBand), offset: -1};
     }
   } else { // X is Quant
-    p.width = {value: e.bandSize(X), offset: -1};
+    p.width = {value: e.bandSize(X, layout.x.useSmallBand), offset: -1};
   }
 
   // height
@@ -107,10 +107,10 @@ function bar_props(e) {
       p.height = {scale: SIZE, field: e.field(SIZE)};
     } else {
       // p.height = {scale: Y, band: true, offset: -1};
-      p.height = {value: e.bandSize(Y), offset: -1};
+      p.height = {value: e.bandSize(Y, layout.x.useSmallBand), offset: -1};
     }
   } else { // Y is Quant
-    p.height = {value: e.bandSize(Y), offset: -1};
+    p.height = {value: e.bandSize(Y, layout.x.useSmallBand), offset: -1};
   }
 
   // fill
@@ -128,7 +128,7 @@ function bar_props(e) {
   return p;
 }
 
-function point_props(e, opt) {
+function point_props(e, layout, opt) {
   var p = {};
   opt = opt || {};
 
@@ -136,14 +136,14 @@ function point_props(e, opt) {
   if (e.has(X)) {
     p.x = {scale: X, field: e.field(X)};
   } else if (!e.has(X)) {
-    p.x = {value: e.bandSize(X) / 2};
+    p.x = {value: e.bandSize(X, layout.x.useSmallBand) / 2};
   }
 
   // y
   if (e.has(Y)) {
     p.y = {scale: Y, field: e.field(Y)};
   } else if (!e.has(Y)) {
-    p.y = {value: e.bandSize(Y) / 2};
+    p.y = {value: e.bandSize(Y, layout.x.useSmallBand) / 2};
   }
 
   // size
@@ -181,8 +181,9 @@ function point_props(e, opt) {
   return p;
 }
 
-function line_props(e) {
+function line_props(e, layout, opt) {
   var p = {};
+  opt = opt || {};
 
   // x
   if (e.has(X)) {
@@ -215,8 +216,9 @@ function line_props(e) {
   return p;
 }
 
-function area_props(e) {
+function area_props(e, layout, opt) {
   var p = {};
+  opt = opt || {};
 
   // x
   if (e.isQuantScale(X)) {
@@ -265,14 +267,14 @@ function filled_point_props(shape) {
     if (e.has(X)) {
       p.x = {scale: X, field: e.field(X)};
     } else if (!e.has(X)) {
-      p.x = {value: e.bandSize(X) / 2};
+      p.x = {value: e.bandSize(X, layout.x.useSmallBand) / 2};
     }
 
     // y
     if (e.has(Y)) {
       p.y = {scale: Y, field: e.field(Y)};
     } else if (!e.has(Y)) {
-      p.y = {value: e.bandSize(Y) / 2};
+      p.y = {value: e.bandSize(Y, layout.x.useSmallBand) / 2};
     }
 
     // size
@@ -305,21 +307,22 @@ function filled_point_props(shape) {
   };
 }
 
-function text_props(e) {
+function text_props(e, layout, opt) {
   var p = {};
+  opt = opt || {};
 
   // x
   if (e.has(X)) {
     p.x = {scale: X, field: e.field(X)};
   } else if (!e.has(X)) {
-    p.x = {value: e.bandSize(X) / 2};
+    p.x = {value: e.bandSize(X, layout.x.useSmallBand) / 2};
   }
 
   // y
   if (e.has(Y)) {
     p.y = {scale: Y, field: e.field(Y)};
   } else if (!e.has(Y)) {
-    p.y = {value: e.bandSize(Y) / 2};
+    p.y = {value: e.bandSize(Y, layout.x.useSmallBand) / 2};
   }
 
   // size
