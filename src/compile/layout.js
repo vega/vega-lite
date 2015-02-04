@@ -103,7 +103,11 @@ function offset(encoding, stats, layout) {
     var maxLength;
     if (encoding.isOrdinalScale(x) || encoding.isType(x, T)) {
       maxLength = stats[encoding.fieldName(x)].maxlength;
+    } else if (encoding.aggr(x) === 'count') {
+      //assign default value for count as it won't have stats
+      maxLength =  4;
     } else if (encoding.isType(x, Q)) {
+      //assume that default formating is always shorter than 7
       maxLength = Math.min(stats[encoding.fieldName(x)].maxlength, 7);
     }
     setter(layout,[x, 'axisTitleOffset'], CHARACTER_WIDTH *  maxLength + 20);
