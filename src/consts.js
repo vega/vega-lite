@@ -14,11 +14,11 @@ consts.DEFAULTS = {
   // single plot
   singleHeight: 200, // will be overwritten by bandWidth * (cardinality + padding)
   singleWidth: 200, // will be overwritten by bandWidth * (cardinality + padding)
-  singleBandSize: 21,
+  largeBandSize: 21,
 
-  //small multiples
-  multipleBandSize: 13,
+  smallBandSize: 13, //small multiples or single plot with high cardinality
 
+  // small multiples
   cellPadding: 0.1,
   cellBackgroundColor: '#fdfdfd',
   textCellWidth: 90,

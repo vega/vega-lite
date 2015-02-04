@@ -24,7 +24,7 @@ function compile(encoding, stats) {
   var spec = template(encoding, layout, stats),
     group = spec.marks[0],
     mark = marks[encoding.marktype()],
-    mdef = marks.def(mark, encoding);
+    mdef = marks.def(mark, encoding, layout);
 
   var hasRow = encoding.has(ROW), hasCol = encoding.has(COL);
 
@@ -64,7 +64,7 @@ function compile(encoding, stats) {
     spec = faceting(group, encoding, layout, spec, mdef, stack, stats);
     spec.legends = legend.defs(encoding);
   } else {
-    group.scales = scale.defs(scale.names(mdef.properties.update), encoding,
+    group.scales = scale.defs(scale.names(mdef.properties.update), encoding, layout,
       {stack: stack, stats: stats});
     group.axes = axis.defs(axis.names(mdef.properties.update), encoding, layout);
     group.legends = legend.defs(encoding);

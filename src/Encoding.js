@@ -96,14 +96,15 @@ var Encoding = module.exports = (function() {
     return this._enc[x].band || {};
   };
 
-  proto.bandSize = function(encType) {
-    var isBandInSmallMultiples =
+  proto.bandSize = function(encType, useSmallBand) {
+    useSmallBand = useSmallBand ||
+      //isBandInSmallMultiples
       (encType === Y && this.has(ROW) && this.has(Y)) ||
       (encType === X && this.has(COL) && this.has(X));
 
     // if band.size is explicitly specified, follow the specification, otherwise draw value from config.
     return this.band(encType).size ||
-      this.config(isBandInSmallMultiples ? 'multipleBandSize' : 'singleBandSize');
+      this.config(useSmallBand ? 'smallBandSize' : 'largeBandSize');
   };
 
   proto.aggr = function(x) {
