@@ -224,7 +224,7 @@ var sizeMixin = {
   properties: {
     value: {
       type: 'integer',
-      default: 10,
+      default: 30,
       minimum: 0
     }
   }
@@ -340,14 +340,58 @@ var cfg = {
       },
       default: undefined
     },
-    _minWidth: {
+    
+    // single plot
+    singleHeight: {
+      // will be overwritten by bandWidth * (cardinality + padding)
       type: 'integer',
-      default: 20,
+      default: 200,
       minimum: 0
     },
-    _minHeight: {
+    singleWidth: {
+      // will be overwritten by bandWidth * (cardinality + padding)
       type: 'integer',
-      default: 20,
+      default: 200,
+      minimum: 0
+    },
+    largeBandSize: {
+      type: 'integer',
+      default: 19,
+      minimum: 0
+    },
+    smallBandSize: {
+      //small multiples or single plot with high cardinality
+      type: 'integer',
+      default: 12,
+      minimum: 0
+    },
+
+    // small multiples
+    cellPadding: {
+      type: 'number',
+      default: 0.1
+    },
+    cellBackgroundColor: {
+      type: 'string',
+      default: '#fdfdfd'
+    },
+    textCellWidth: {
+      type: 'integer',
+      default: 90,
+      minimum: 0
+    },
+
+    // marks
+    strokeWidth: {
+      type: 'integer',
+      default: 2,
+      minimum: 0
+    },
+
+    // scales
+    timeScaleLabelLength: {
+      type: 'integer',
+      default: 3,
       minimum: 0
     },
 

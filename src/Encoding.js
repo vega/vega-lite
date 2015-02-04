@@ -18,11 +18,6 @@ var Encoding = module.exports = (function() {
       cfg: config
     };
 
-    // Hack to add default constants that are not in the schema
-    for (var k in consts.DEFAULTS) {
-      defaults.cfg[k] = consts.DEFAULTS[k];
-    }
-
     // type to bitcode
     for (var e in defaults.enc) {
       defaults.enc[e].type = consts.dataTypes[defaults.enc[e].type];
