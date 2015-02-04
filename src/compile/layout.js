@@ -1,10 +1,11 @@
 var globals = require('../globals'),
   util = require('../util'),
+  setter = util.setter,
   schema = require('../schema/schema'),
   time = require('./time');
 
 module.exports = vllayout;
-var CHARACTER_WIDTH = 6;
+var CHARACTER_WIDTH = 6, SMALL_BAND_CARDINALITY = 20;
 
 function vllayout(encoding, stats) {
   var layout = box(encoding, stats);
@@ -36,14 +37,18 @@ function box(encoding, stats) {
       hasCol = encoding.has(COL),
       marktype = encoding.marktype();
 
-  var cellWidth, cellHeight, cellPadding = encoding.config('cellPadding');
+  var cellWidth, cellHeight, cellPadding = encoding.config('cellPadding'),
+    xUseSmallBand = false, yUseSmallBand = false;
 
   // set cellWidth
   if (encoding.has(X)) {
     if (encoding.isOrdinalScale(X)) {
       // for ordinal, hasCol or not doesn't matter -- we scale based on cardinality
       var xCardinality = getCardinality(encoding, X, stats);
-      cellWidth = (xCardinality + encoding.band(X).padding) * encoding.bandSize(X);
+      if (xCardinality >= SMALL_BAND_CARDINALITY) {
+        xUseSmallBand = true;
+      }
+      cellWidth = (xCardinality + encoding.band(X).padding) * encoding.bandSize(X, xUseSmallBand);
     } else {
       cellWidth = hasCol ? encoding.enc(COL).width :  encoding.config("singleWidth");
     }
@@ -60,7 +65,10 @@ function box(encoding, stats) {
     if (encoding.isOrdinalScale(Y)) {
       // for ordinal, hasCol or not doesn't matter -- we scale based on cardinality
       var yCardinality = getCardinality(encoding, Y, stats);
-      cellHeight = (yCardinality + encoding.band(Y).padding) * encoding.bandSize(Y);
+      if (yCardinality >= SMALL_BAND_CARDINALITY) {
+        yUseSmallBand = true;
+      }
+      cellHeight = (yCardinality + encoding.band(Y).padding) * encoding.bandSize(Y, yUseSmallBand);
     } else {
       cellHeight = hasRow ? encoding.enc(ROW).height :  encoding.config("singleHeight");
     }
@@ -84,7 +92,9 @@ function box(encoding, stats) {
     cellWidth: cellWidth,
     cellHeight: cellHeight,
     width: width,
-    height: height
+    height: height,
+    x: {useSmallBand: xUseSmallBand},
+    y: {useSmallBand: yUseSmallBand}
   };
 }
 
@@ -96,10 +106,7 @@ function offset(encoding, stats, layout) {
     } else if (encoding.isType(x, Q)) {
       maxLength = Math.min(stats[encoding.fieldName(x)].maxlength, 7);
     }
-
-    layout[x] = {
-      axisTitleOffset: CHARACTER_WIDTH *  maxLength + 20
-    };
+    setter(layout,[x, 'axisTitleOffset'], CHARACTER_WIDTH *  maxLength + 20);
   });
   return layout;
 }
