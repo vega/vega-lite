@@ -1,6 +1,7 @@
 // utility for field
 
-var consts = require('./consts');
+var consts = require('./consts'),
+  time = require('./compile/time');
 
 var field = module.exports = {};
 
@@ -40,4 +41,14 @@ field.order.name = function(field) {
 
 field.order.typeThenCardinality = function(field, stats){
   return stats[field.name].cardinality;
+};
+
+field.isOrdinalScale = function(field, isType /*optional*/) {
+  isType = isType || function(field, type) {
+    return field.type === consts.dataTypeNames[type];
+  };
+
+  var fn;
+  return  isType(field, O) || field.bin ||
+    ( isType(field, T) && field.fn && time.isOrdinalFn(field.fn) );
 };
