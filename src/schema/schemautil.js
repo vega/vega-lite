@@ -4,6 +4,10 @@ var isEmpty = function(obj) {
   return Object.keys(obj).length === 0;
 };
 
+util.extend = function(instance, schema) {
+  return util.merge(util.instantiate(schema), instance);
+};
+
 // instantiate a schema
 util.instantiate = function(schema) {
   if (schema.type === 'object') {
