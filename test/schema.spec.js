@@ -26,7 +26,7 @@ describe('Schema', function() {
         err.code === 0 ||  // https://github.com/geraintluff/tv4/issues/74
         err.code === 1000 && (err.dataPath.endsWith('supportedTypes')
                               || err.dataPath.endsWith('supportedEnums')
-                              || err.dataPath.endsWith('detailedType')));
+                              || err.dataPath.endsWith('role')));
     });
 
     if (errors.length) {
