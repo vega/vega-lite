@@ -3,13 +3,13 @@
 var global = require('./globals'),
   consts = require('./consts'),
   util = require('./util'),
-  field = require('./field'),
+  vlfield = require('./field'),
   schema = require('./schema/schema'),
   time = require('./compile/time');
 
 var Encoding = module.exports = (function() {
 
-  function Encoding(marktype, enc, config) {
+  function Encoding(marktype, enc, config, theme) {
     var defaults = schema.instantiate();
 
     var spec = {
@@ -177,18 +177,17 @@ var Encoding = module.exports = (function() {
     return prop ? font[prop] : font;
   };
 
-  proto.isType = function(x, t) {
-    var xt = this.type(x);
-    if (xt === null) return false;
-    return (xt & t) > 0;
+  proto.isType = function(x, type) {
+    var field = this.enc(x);
+    return field && isType(field, type);
   };
 
+  function isType(fieldDef, type) {
+    return (fieldDef.type & type) > 0;
+  }
+
   function isOrdinalScale(encoding, encType){
-    var fn;
-    return encoding.isType(encType, O) || encoding.bin(encType) ||
-      ( encoding.isType(encType, T) &&
-        (fn = encoding.fn(encType)) &&
-        time.isOrdinalFn(fn));
+    return vlfield.isOrdinalScale(encoding.enc(encType), isType);
   }
 
   proto.isOrdinalScale = function(encType) {
@@ -254,7 +253,7 @@ var Encoding = module.exports = (function() {
     var enc = this._enc;
     return this._marktype + '.' +
       this.map(function(v, e) {
-        return e + '-' + field.shorthand(v);
+        return e + '-' + vlfield.shorthand(v);
       }).join('.');
   };
 
