@@ -59,8 +59,10 @@ vlfield.isOrdinalScale = function(field, isType /*optional*/) {
 };
 
 vlfield.count = function() {
-  return {name:'*', aggr: 'count', type:'Q', displayName:'Number of Records'};
+  return {name:'*', aggr: 'count', type:'Q', displayName: vlfield.count.displayName};
 };
+
+vlfield.count.displayName = 'Number of Records';
 
 vlfield.isCount = function(field) {
   return field.aggr === 'count';
