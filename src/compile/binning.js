@@ -19,7 +19,7 @@ function binning(spec, encoding, opt) {
       type: 'bin',
       field: 'data.' + d,
       output: 'data.bin_' + d,
-      maxbins: MAX_BINS
+      maxbins: encoding.config('maxbins')
     });
   });
   return bins;

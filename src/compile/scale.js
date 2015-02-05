@@ -54,7 +54,7 @@ function scale_domain(name, encoding, opt) {
   if (encoding.bin(name)) {
     // TODO: add includeEmptyConfig here
     if (opt.stats) {
-      var bins = util.getbins(opt.stats[encoding.fieldName(name)]);
+      var bins = util.getbins(opt.stats[encoding.fieldName(name)], encoding.config('maxbins'));
       var domain = util.range(bins.start, bins.stop, bins.step);
       return name === Y ? domain.reverse() : domain;
     }

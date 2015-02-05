@@ -17,7 +17,7 @@ function vllayout(encoding, stats) {
 function getCardinality(encoding, encType, stats) {
   var field = encoding.fieldName(encType);
   if (encoding.bin(encType)) {
-    var bins = util.getbins(stats[field]);
+    var bins = util.getbins(stats[field], encoding.config('maxbins'));
     return (bins.stop - bins.start) / bins.step;
   }
   if (encoding.isType(encType, T)) {

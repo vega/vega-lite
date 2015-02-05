@@ -340,6 +340,12 @@ var cfg = {
       },
       default: undefined
     },
+    //binning
+    maxbins: {
+      type: 'integer',
+      default: 10,
+      minimum: 2
+    },
     
     // single plot
     singleHeight: {

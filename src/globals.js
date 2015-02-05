@@ -18,6 +18,3 @@ g.TEXT = 'text';
 g.O = 1;
 g.Q = 2;
 g.T = 4;
-
-//TODO refactor this to be config?
-g.MAX_BINS = 20;

@@ -83,11 +83,11 @@ util.merge = function(dest, src) {
   }, dest);
 };
 
-util.getbins = function(stats) {
+util.getbins = function(stats, maxbins) {
   return vg.bins({
     min: stats.min,
     max: stats.max,
-    maxbins: MAX_BINS
+    maxbins: maxbins
   });
 };
 
