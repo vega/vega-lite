@@ -212,6 +212,16 @@ var Encoding = module.exports = (function() {
     return false;
   };
 
+  Encoding.isAggregate = function(spec) {
+    var i = 0, k, enc= spec.enc;
+    for (k in enc) {
+      if (enc[k] && enc[k].aggr) {
+        return true;
+      }
+    }
+    return false;
+  };
+
   proto.isRaw = function() {
     return !this.isAggregate();
   };
