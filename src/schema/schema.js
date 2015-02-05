@@ -235,6 +235,7 @@ var colorMixin = {
   properties: {
     value: {
       type: 'string',
+      detailedType: 'color',
       default: 'steelblue'
     },
     scale: {
@@ -383,6 +384,7 @@ var cfg = {
     },
     cellBackgroundColor: {
       type: 'string',
+      detailedType: 'color',
       default: '#fdfdfd'
     },
     textCellWidth: {
