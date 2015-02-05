@@ -346,7 +346,7 @@ var cfg = {
       default: 10,
       minimum: 2
     },
-    
+
     // single plot
     singleHeight: {
       // will be overwritten by bandWidth * (cardinality + padding)
@@ -360,6 +360,7 @@ var cfg = {
       default: 200,
       minimum: 0
     },
+    // band size
     largeBandSize: {
       type: 'integer',
       default: 19,
@@ -371,7 +372,10 @@ var cfg = {
       default: 12,
       minimum: 0
     },
-
+    largeBandMaxCardinality: {
+      type: 'integer',
+      default: 10
+    },
     // small multiples
     cellPadding: {
       type: 'number',
@@ -399,6 +403,11 @@ var cfg = {
       type: 'integer',
       default: 3,
       minimum: 0
+    },
+    // other
+    characterWidth: {
+      type: 'integer',
+      default: 6
     },
 
     // data source

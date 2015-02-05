@@ -5,12 +5,10 @@ var globals = require('../globals'),
   time = require('./time');
 
 module.exports = vllayout;
-var CHARACTER_WIDTH = 6, SMALL_BAND_CARDINALITY = 20;
 
 function vllayout(encoding, stats) {
   var layout = box(encoding, stats);
   layout = offset(encoding, stats, layout);
-  layout.characterWidth = CHARACTER_WIDTH;
   return layout;
 }
 
@@ -45,7 +43,7 @@ function box(encoding, stats) {
     if (encoding.isOrdinalScale(X)) {
       // for ordinal, hasCol or not doesn't matter -- we scale based on cardinality
       var xCardinality = getCardinality(encoding, X, stats);
-      if (xCardinality >= SMALL_BAND_CARDINALITY) {
+      if (xCardinality > encoding.config('largeBandMaxCardinality')) {
         xUseSmallBand = true;
       }
       cellWidth = (xCardinality + encoding.band(X).padding) * encoding.bandSize(X, xUseSmallBand);
@@ -65,7 +63,7 @@ function box(encoding, stats) {
     if (encoding.isOrdinalScale(Y)) {
       // for ordinal, hasCol or not doesn't matter -- we scale based on cardinality
       var yCardinality = getCardinality(encoding, Y, stats);
-      if (yCardinality >= SMALL_BAND_CARDINALITY) {
+      if (yCardinality > encoding.config('largeBandMaxCardinality')) {
         yUseSmallBand = true;
       }
       cellHeight = (yCardinality + encoding.band(Y).padding) * encoding.bandSize(Y, yUseSmallBand);
@@ -105,16 +103,16 @@ function offset(encoding, stats, layout) {
       maxLength = stats[encoding.fieldName(x)].maxlength;
     } else if (encoding.aggr(x) === 'count') {
       //assign default value for count as it won't have stats
-      maxLength =  4;
+      maxLength =  2;
     } else if (encoding.isType(x, Q)) {
       if (x===X) {
-        maxLength = 3;
+        maxLength = 2;
       } else { // Y
         //assume that default formating is always shorter than 7
         maxLength = Math.min(stats[encoding.fieldName(x)].maxlength, 7);
       }
     }
-    setter(layout,[x, 'axisTitleOffset'], CHARACTER_WIDTH *  maxLength + 20);
+    setter(layout,[x, 'axisTitleOffset'], encoding.config('characterWidth') *  maxLength + 20);
   });
   return layout;
 }

@@ -90,9 +90,9 @@ function axis_title(axis, name, encoding, layout, opt) {
   var maxLength = null,
     fieldTitle = encoding.fieldTitle(name);
   if (name===X) {
-    maxlength = layout.cellWidth / layout.characterWidth;
+    maxlength = layout.cellWidth / encoding.config('characterWidth');
   } else if (name === Y) {
-    maxlength = layout.cellHeight / layout.characterWidth;
+    maxlength = layout.cellHeight / encoding.config('characterWidth');
   }
 
   axis.title = maxlength ? util.truncate(fieldTitle, maxlength) : fieldTitle;
