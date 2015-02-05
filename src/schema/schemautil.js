@@ -38,24 +38,32 @@ util.subtract = function(instance, defaults) {
   return changes;
 };
 
-// recursively merges instance into defaults
-util.merge = function(defaults, instance) {
-  if (typeof instance !== 'object' || instance === null) {
-    return defaults;
+util.merge = function(/*dest*, src0, src1, ...*/){
+  var dest = arguments[0];
+  for (var i=1 ; i<arguments.length; i++) {
+    dest = merge(dest, arguments[i]);
+  }
+  return dest;
+};
+
+// recursively merges src into dest
+merge = function(dest, src) {
+  if (typeof src !== 'object' || src === null) {
+    return dest;
   }
 
-  for (var p in instance) {
-    if (!instance.hasOwnProperty(p))
+  for (var p in src) {
+    if (!src.hasOwnProperty(p))
       continue;
-    if (instance[p] === undefined)
+    if (src[p] === undefined)
       continue;
-    if (typeof instance[p] !== 'object' || instance[p] === null) {
-      defaults[p] = instance[p];
-    } else if (typeof defaults[p] !== 'object' || defaults[p] === null) {
-      defaults[p] = util.merge(instance[p].constructor === Array ? [] : {}, instance[p]);
+    if (typeof src[p] !== 'object' || src[p] === null) {
+      dest[p] = src[p];
+    } else if (typeof dest[p] !== 'object' || dest[p] === null) {
+      dest[p] = merge(src[p].constructor === Array ? [] : {}, src[p]);
     } else {
-      util.merge(defaults[p], instance[p]);
+      merge(dest[p], src[p]);
     }
   }
-  return defaults;
+  return dest;
 };
