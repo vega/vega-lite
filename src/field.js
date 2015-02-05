@@ -1,6 +1,7 @@
 // utility for field
 
-var consts = require('./consts');
+var consts = require('./consts'),
+  time = require('./compile/time');
 
 var field = module.exports = {};
 
