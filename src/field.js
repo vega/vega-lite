@@ -42,8 +42,11 @@ field.order.typeThenCardinality = function(field, stats){
   return stats[field.name].cardinality;
 };
 
-field.isOrdinalScale = function(field, isType) {
-  isType = isType || function(field, type) { return field.type === dataTypeNames[type]; };
+field.isOrdinalScale = function(field, isType /*optional*/) {
+  isType = isType || function(field, type) {
+    return field.type === consts.dataTypeNames[type];
+  };
+
   var fn;
   return  isType(field, O) || field.bin ||
     ( isType(field, T) && field.fn && time.isOrdinalFn(field.fn) );
