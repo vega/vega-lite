@@ -23,7 +23,7 @@ var Encoding = module.exports = (function() {
       defaults.enc[e].type = consts.dataTypes[defaults.enc[e].type];
     }
 
-    var specExtended = schema.util.merge(defaults, spec);
+    var specExtended = schema.util.merge(defaults, theme || {}, spec) ;
 
     this._marktype = specExtended.marktype;
     this._enc = specExtended.enc;
@@ -299,7 +299,7 @@ var Encoding = module.exports = (function() {
     return new Encoding(marktype, enc, cfg);
   };
 
-  Encoding.fromSpec = function(spec, extraCfg) {
+  Encoding.fromSpec = function(spec, theme, extraCfg) {
     var enc = util.duplicate(spec.enc);
 
     //convert type from string to bitcode (e.g, O=1)
@@ -307,7 +307,7 @@ var Encoding = module.exports = (function() {
       enc[e].type = consts.dataTypes[enc[e].type];
     }
 
-    return new Encoding(spec.marktype, enc, util.merge(spec.cfg, extraCfg || {}));
+    return new Encoding(spec.marktype, enc, util.merge(spec.cfg, extraCfg || {}), theme);
   };
 
   return Encoding;
