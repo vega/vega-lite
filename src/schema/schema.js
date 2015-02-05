@@ -136,6 +136,10 @@ var axisMixin = {
           default: true,
           description: 'A title for the axis.'
         },
+        titleAlign: {
+          type: 'string',
+          enum: ['left', 'right', 'center']
+        },
         titleOffset: {
           type: 'integer',
           description: 'A title offset value for the axis.'
@@ -344,7 +348,7 @@ var cfg = {
     //binning
     maxbins: {
       type: 'integer',
-      default: 10,
+      default: 15,
       minimum: 2
     },
 
