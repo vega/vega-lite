@@ -27,8 +27,13 @@ var typeOrder = {
 
 vlfield.order = {};
 
+vlfield.order.type = function(field) {
+  if (field.aggr==='count') return 4;
+  return typeOrder[field.type];
+};
+
 vlfield.order.typeThenName = function(field) {
-  return typeOrder[field.type] + '_' + field.name;
+  return vlfield.order.type(field) + '_' + field.name;
 };
 
 vlfield.order.original = function() {
@@ -54,8 +59,10 @@ vlfield.isOrdinalScale = function(field, isType /*optional*/) {
 };
 
 vlfield.count = function() {
-  return {name:'*', aggr: 'count', type:'Q', displayName:'COUNT'};
+  return {name:'*', aggr: 'count', type:'Q', displayName: vlfield.count.displayName};
 };
+
+vlfield.count.displayName = 'Number of Records';
 
 vlfield.isCount = function(field) {
   return field.aggr === 'count';

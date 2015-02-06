@@ -72,8 +72,12 @@ var Encoding = module.exports = (function() {
   };
 
   proto.fieldTitle = function(x) {
-    if (this._enc[x].aggr) {
-      return this._enc[x].aggr + '(' + this._enc[x].name + ')';
+    if (vlfield.isCount(this._enc[x])) {
+      return vlfield.count.displayName;
+    }
+    var fn = this._enc[x].aggr || this._enc[x].fn || (this._enc[x].bin && "bin");
+    if (fn) {
+      return fn.toUpperCase() + '(' + this._enc[x].name + ')';
     } else {
       return this._enc[x].name;
     }
