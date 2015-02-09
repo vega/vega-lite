@@ -311,7 +311,7 @@ var Encoding = module.exports = (function() {
       enc[e].type = consts.dataTypes[enc[e].type];
     }
 
-    return new Encoding(spec.marktype, enc, util.merge(spec.cfg, extraCfg || {}), theme);
+    return new Encoding(spec.marktype, enc, util.merge(spec.cfg || {}, extraCfg || {}), theme);
   };
 
   return Encoding;
