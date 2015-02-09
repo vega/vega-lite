@@ -258,7 +258,7 @@ var alphaMixin = {
   properties: {
     value: {
       type: 'number',
-      default: 1,
+      default: undefined,  // auto
       minimum: 0,
       maximum: 1
     }
