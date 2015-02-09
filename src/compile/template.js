@@ -18,7 +18,7 @@ function template(encoding, layout, stats) { //hack use stats
     if (field.type == T) {
       data.format.parse = data.format.parse || {};
       data.format.parse[field.name] = 'date';
-    }else if (field.type == Q) {
+    } else if (field.type == Q) {
       data.format.parse = data.format.parse || {};
       if (field.aggr === 'count') {
         name = 'count';

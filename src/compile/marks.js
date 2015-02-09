@@ -3,8 +3,8 @@ var globals = require('../globals'),
 
 var marks = module.exports = {};
 
-marks.def = function(mark, encoding, layout, opt) {
-  var p = mark.prop(encoding, layout, opt);
+marks.def = function(mark, encoding, layout, style) {
+  var p = mark.prop(encoding, layout, style);
   return {
     type: mark.type,
     from: {data: TABLE},
@@ -116,21 +116,22 @@ function bar_props(e, layout) {
   // fill
   if (e.has(COLOR)) {
     p.fill = {scale: COLOR, field: e.field(COLOR)};
-  } else if (!e.has(COLOR)) {
+  } else {
     p.fill = {value: e.value(COLOR)};
   }
 
   // alpha
   if (e.has(ALPHA)) {
     p.opacity = {scale: ALPHA, field: e.field(ALPHA)};
+  } else if (e.value(ALPHA) !== undefined) {
+    p.opacity = {value: e.value(ALPHA)};
   }
 
   return p;
 }
 
-function point_props(e, layout, opt) {
+function point_props(e, layout, style) {
   var p = {};
-  opt = opt || {};
 
   // x
   if (e.has(X)) {
@@ -170,10 +171,10 @@ function point_props(e, layout, opt) {
   // alpha
   if (e.has(ALPHA)) {
     p.opacity = {scale: ALPHA, field: e.field(ALPHA)};
-  }else {
-    p.opacity = {
-      value: e.value(ALPHA)
-    };
+  } else if (e.value(ALPHA) !== undefined) {
+    p.opacity = {value: e.value(ALPHA)};
+  } else {
+    p.opacity = {value: style.opacity};
   }
 
   p.strokeWidth = {value: e.config('strokeWidth')};
@@ -181,9 +182,8 @@ function point_props(e, layout, opt) {
   return p;
 }
 
-function line_props(e, layout, opt) {
+function line_props(e, layout, style) {
   var p = {};
-  opt = opt || {};
 
   // x
   if (e.has(X)) {
@@ -209,6 +209,8 @@ function line_props(e, layout, opt) {
   // alpha
   if (e.has(ALPHA)) {
     p.opacity = {scale: ALPHA, field: e.field(ALPHA)};
+  } else if (e.value(ALPHA) !== undefined) {
+    p.opacity = {value: e.value(ALPHA)};
   }
 
   p.strokeWidth = {value: e.config('strokeWidth')};
@@ -216,9 +218,8 @@ function line_props(e, layout, opt) {
   return p;
 }
 
-function area_props(e, layout, opt) {
+function area_props(e, layout, style) {
   var p = {};
-  opt = opt || {};
 
   // x
   if (e.isQuantScale(X)) {
@@ -253,15 +254,16 @@ function area_props(e, layout, opt) {
   // alpha
   if (e.has(ALPHA)) {
     p.opacity = {scale: ALPHA, field: e.field(ALPHA)};
+  } else if (e.value(ALPHA) !== undefined) {
+    p.opacity = {value: e.value(ALPHA)};
   }
 
   return p;
 }
 
 function filled_point_props(shape) {
-  return function(e, opt) {
+  return function(e, style) {
     var p = {};
-    opt = opt || {};
 
     // x
     if (e.has(X)) {
@@ -297,19 +299,18 @@ function filled_point_props(shape) {
     // alpha
     if (e.has(ALPHA)) {
       p.opacity = {scale: ALPHA, field: e.field(ALPHA)};
-    }else {
-      p.opacity = {
-        value: e.value(ALPHA)
-      };
+    } else if (e.value(ALPHA) !== undefined) {
+      p.opacity = {value: e.value(ALPHA)};
+    } else {
+      p.opacity = {value: style.opacity};
     }
 
     return p;
   };
 }
 
-function text_props(e, layout, opt) {
+function text_props(e, layout, style) {
   var p = {};
-  opt = opt || {};
 
   // x
   if (e.has(X)) {
@@ -342,6 +343,10 @@ function text_props(e, layout, opt) {
   // alpha
   if (e.has(ALPHA)) {
     p.opacity = {scale: ALPHA, field: e.field(ALPHA)};
+  } else if (e.value(ALPHA) !== undefined) {
+    p.opacity = {value: e.value(ALPHA)};
+  } else {
+    p.opacity = {value: style.opacity};
   }
 
   // text

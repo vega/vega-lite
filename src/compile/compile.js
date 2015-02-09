@@ -8,6 +8,7 @@ var template = compile.template = require('./template'),
   legend = compile.legend = require('./legend'),
   marks = compile.marks = require('./marks'),
   scale = compile.scale = require('./scale'),
+  vlstyle = compile.style = require('./style'),
   time = compile.time = require('./time'),
   aggregates = compile.aggregates = require('./aggregates'),
   binning = compile.binning = require('./binning'),
@@ -19,12 +20,12 @@ compile.layout = require('./layout');
 compile.group = require('./group');
 
 function compile(encoding, stats) {
-  var layout = compile.layout(encoding, stats);
-
-  var spec = template(encoding, layout, stats),
+  var layout = compile.layout(encoding, stats),
+    style = vlstyle(encoding, stats),
+    spec = template(encoding, layout, stats),
     group = spec.marks[0],
     mark = marks[encoding.marktype()],
-    mdef = marks.def(mark, encoding, layout);
+    mdef = marks.def(mark, encoding, layout, style);
 
   var hasRow = encoding.has(ROW), hasCol = encoding.has(COL);
 
