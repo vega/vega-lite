@@ -103,10 +103,10 @@ function offset(encoding, stats, layout) {
       maxLength = stats[encoding.fieldName(x)].maxlength;
     } else if (encoding.aggr(x) === 'count') {
       //assign default value for count as it won't have stats
-      maxLength =  2;
+      maxLength =  3;
     } else if (encoding.isType(x, Q)) {
       if (x===X) {
-        maxLength = 2;
+        maxLength = 3;
       } else { // Y
         //assume that default formating is always shorter than 7
         maxLength = Math.min(stats[encoding.fieldName(x)].maxlength, 7);
