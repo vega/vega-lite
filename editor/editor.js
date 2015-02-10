@@ -133,7 +133,7 @@ vled.init = function() {
   d3.select("#btn_spec_parse").on("click", vled.parse);
   d3.select("#btn_shorthand_parse").on("click", vled.parseShorthand);
 
-  var initialShortHand = params.shortHand ? params.shortHand : "point.x-bin_yield-Q.y-variety-O.size-count_-Q.color-year-O";
+  var initialShortHand = params.shortHand ? params.shortHand : "point.x-max_yield-Q.y-variety-O.row-site-O.color-year-O";
 
   document.getElementById("shorthand").value = initialShortHand;
   vled.datasetChanged(DATASETS[0], function() {
