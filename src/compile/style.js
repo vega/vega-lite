@@ -46,10 +46,11 @@ module.exports = function(encoding, stats) {
   var numMultiples = 1;
   if (encoding.has(ROW)) {
     // 0.8  because of skew
-    numMultiples *= multipleSkewFactor * stats[encoding.fieldName(ROW)].cardinality;
+    numMultiples *= multipleSkewFactor * vlfield.cardinality(encoding.enc(ROW), stats);
   }
+
   if (encoding.has(COL)) {
-    numMultiples *= multipleSkewFactor * stats[encoding.fieldName(COL)].cardinality;
+    numMultiples *= multipleSkewFactor * vlfield.cardinality(encoding.enc(COL), stats);
   }
   numPoints /= numMultiples;
 
