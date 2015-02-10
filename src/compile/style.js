@@ -16,6 +16,7 @@ module.exports = function(encoding, stats) {
 
   var numPoints = 0;
   var multipleSkewFactor;
+  var maxbins = encoding.config('maxbins');
 
   if (encoding.isAggregate()) { // aggregate plot
     numPoints = 1;
@@ -31,7 +32,7 @@ module.exports = function(encoding, stats) {
           !((encType === X || encType === Y) &&
           vlfield.isOrdinalScale(field, Encoding.isType))
         ) {
-        numPoints *= vlfield.cardinality(field, stats);
+        numPoints *= vlfield.cardinality(field, stats, maxbins);
       }
     });
 
@@ -46,13 +47,15 @@ module.exports = function(encoding, stats) {
   var numMultiples = 1;
   if (encoding.has(ROW)) {
     // 0.8  because of skew
-    numMultiples *= multipleSkewFactor * vlfield.cardinality(encoding.enc(ROW), stats);
+    numMultiples *= multipleSkewFactor * vlfield.cardinality(encoding.enc(ROW), stats, maxbins);
   }
 
   if (encoding.has(COL)) {
-    numMultiples *= multipleSkewFactor * vlfield.cardinality(encoding.enc(COL), stats);
+    numMultiples *= multipleSkewFactor * vlfield.cardinality(encoding.enc(COL), stats, maxbins);
   }
   numPoints /= numMultiples;
+
+  // console.log('numPoints', numPoints, numMultiples);
 
   var opacity = 0;
   if (numPoints < 20) {

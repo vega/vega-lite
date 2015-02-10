@@ -71,6 +71,7 @@ vlfield.isCount = function(field) {
 
 vlfield.cardinality = function(field, stats, maxbins) {
   if (field.bin) {
+    if(!maxbins) console.error('vlfield.cardinality not included maxbins');
     var bins = util.getbins(stats[field.name], maxbins);
     return (bins.stop - bins.start) / bins.step;
   }
