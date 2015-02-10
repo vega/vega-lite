@@ -186,7 +186,7 @@ var Encoding = module.exports = (function() {
     return field && isType(field, type);
   };
 
-  function isType(fieldDef, type) {
+  var isType = Encoding.isType = function (fieldDef, type) {
     return (fieldDef.type & type) > 0;
   }
 
