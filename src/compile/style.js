@@ -16,7 +16,6 @@ function estimateOpacity(encoding,stats) {
   }
 
   var numPoints = 0;
-  var multipleSkewFactor;
   var maxbins = encoding.config('maxbins');
 
   if (encoding.isAggregate()) { // aggregate plot
@@ -37,26 +36,19 @@ function estimateOpacity(encoding,stats) {
       }
     });
 
-    multipleSkewFactor = 0.2; // aggregated plot should have less skew
-
   } else { // raw plot
     numPoints = stats.count;
-    multipleSkewFactor = 0.8;
-  }
 
-  // small multiples divide number of points
-  var numMultiples = 1;
-  if (encoding.has(ROW)) {
-    // 0.8  because of skew
-    numMultiples *= multipleSkewFactor * encoding.cardinality(ROW, stats);
+    // small multiples divide number of points
+    var numMultiples = 1;
+    if (encoding.has(ROW)) {
+      numMultiples *= encoding.cardinality(ROW, stats);
+    }
+    if (encoding.has(COL)) {
+      numMultiples *= encoding.cardinality(COL, stats);
+    }
+    numPoints /= numMultiples;
   }
-
-  if (encoding.has(COL)) {
-    numMultiples *= multipleSkewFactor * encoding.cardinality(COL, stats);
-  }
-  numPoints /= numMultiples;
-
-  // console.log('numPoints', numPoints, numMultiples);
 
   var opacity = 0;
   if (numPoints < 20) {
