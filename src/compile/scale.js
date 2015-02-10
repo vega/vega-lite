@@ -123,7 +123,7 @@ function scale_range(s, encoding, layout, opt) {
       } else if (encoding.is(TEXT)) {
         s.range = [8, 40];
       } else {
-        s.range = [10, 1000];
+        s.range = [10, 400];
       }
       s.round = true;
       s.zero = false;
