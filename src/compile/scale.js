@@ -11,7 +11,7 @@ scale.names = function(props) {
   }, {}));
 };
 
-scale.defs = function(names, encoding, layout, opt) {
+scale.defs = function(names, encoding, layout, style, opt) {
   opt = opt || {};
 
   return names.reduce(function(a, name) {
@@ -24,7 +24,7 @@ scale.defs = function(names, encoding, layout, opt) {
       s.sort = true;
     }
 
-    scale_range(s, encoding, layout, opt);
+    scale_range(s, encoding, layout, style, opt);
 
     return (a.push(s), a);
   }, []);
@@ -68,7 +68,7 @@ function scale_domain(name, encoding, opt) {
     {data: TABLE, field: encoding.field(name)};
 }
 
-function scale_range(s, encoding, layout, opt) {
+function scale_range(s, encoding, layout, style, opt) {
   var spec = encoding.scale(s.name);
   switch (s.name) {
     case X:
@@ -135,7 +135,7 @@ function scale_range(s, encoding, layout, opt) {
       var range = encoding.scale(COLOR).range;
       if (range === undefined) {
         if (s.type === 'ordinal') {
-          range = 'category10';
+          range = style.colorRange;
         } else {
           range = ['#ddf', 'steelblue'];
           s.zero = false;

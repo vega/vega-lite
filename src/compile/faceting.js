@@ -7,7 +7,7 @@ var axis = require('./axis'),
 
 module.exports = faceting;
 
-function faceting(group, encoding, layout, spec, mdef, stack, stats) {
+function faceting(group, encoding, layout, style, spec, mdef, stack, stats) {
   var enter = group.properties.enter;
   var facetKeys = [], cellAxes = [], from, axesGrp;
 
@@ -93,6 +93,7 @@ function faceting(group, encoding, layout, spec, mdef, stack, stats) {
     scale.names(enter).concat(scale.names(mdef.properties.update)),
     encoding,
     layout,
+    style,
     {stack: stack, facet: true, stats: stats}
   )); // row/col scales + cell scales
 
