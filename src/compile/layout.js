@@ -2,7 +2,8 @@ var globals = require('../globals'),
   util = require('../util'),
   setter = util.setter,
   schema = require('../schema/schema'),
-  time = require('./time');
+  time = require('./time'),
+  vlfield = require('../field');
 
 module.exports = vllayout;
 
@@ -10,18 +11,6 @@ function vllayout(encoding, stats) {
   var layout = box(encoding, stats);
   layout = offset(encoding, stats, layout);
   return layout;
-}
-
-function getCardinality(encoding, encType, stats) {
-  var field = encoding.fieldName(encType);
-  if (encoding.bin(encType)) {
-    var bins = util.getbins(stats[field], encoding.config('maxbins'));
-    return (bins.stop - bins.start) / bins.step;
-  }
-  if (encoding.isType(encType, T)) {
-    return time.cardinality(encoding, encType, stats);
-  }
-  return stats[field].cardinality;
 }
 
 /*
@@ -42,7 +31,7 @@ function box(encoding, stats) {
   if (encoding.has(X)) {
     if (encoding.isOrdinalScale(X)) {
       // for ordinal, hasCol or not doesn't matter -- we scale based on cardinality
-      var xCardinality = getCardinality(encoding, X, stats);
+      var xCardinality =  encoding.cardinality(X, stats);
       if (xCardinality > encoding.config('largeBandMaxCardinality')) {
         xUseSmallBand = true;
       }
@@ -62,7 +51,7 @@ function box(encoding, stats) {
   if (encoding.has(Y)) {
     if (encoding.isOrdinalScale(Y)) {
       // for ordinal, hasCol or not doesn't matter -- we scale based on cardinality
-      var yCardinality = getCardinality(encoding, Y, stats);
+      var yCardinality =  encoding.cardinality(Y, stats);
       if (yCardinality > encoding.config('largeBandMaxCardinality')) {
         yUseSmallBand = true;
       }
@@ -78,11 +67,11 @@ function box(encoding, stats) {
 
   var width = cellWidth, height = cellHeight;
   if (hasCol) {
-    var colCardinality = getCardinality(encoding, COL, stats);
+    var colCardinality = encoding.cardinality(COL, stats);
     width = cellWidth * ((1 + cellPadding) * (colCardinality - 1) + 1);
   }
   if (hasRow) {
-    var rowCardinality = getCardinality(encoding, ROW, stats);
+    var rowCardinality =  encoding.cardinality(ROW, stats);
     height = cellHeight * ((1 + cellPadding) * (rowCardinality - 1) + 1);
   }
 

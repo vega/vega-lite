@@ -34,8 +34,8 @@ function time(spec, encoding, opt) {
   return spec;
 }
 
-time.cardinality = function(encoding, encType, stats) {
-  var fn = encoding.fn(encType);
+time.cardinality = function(field, stats) {
+  var fn = field.fn;
   switch (fn) {
     case 'second': return 60;
     case 'minute': return 60;
@@ -46,8 +46,7 @@ time.cardinality = function(encoding, encType, stats) {
     // case 'year':  -- need real cardinality
   }
 
-  var field = encoding.field(encType, /*nodata*/ true); // fn_fieldname
-  return stats[field].cardinality;
+  return stats[field.name].cardinality;
 };
 
 /**

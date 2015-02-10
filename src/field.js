@@ -1,7 +1,8 @@
 // utility for field
 
 var consts = require('./consts'),
-  time = require('./compile/time');
+  time = require('./compile/time'),
+  util = require('./util');
 
 var vlfield = module.exports = {};
 
@@ -48,10 +49,17 @@ vlfield.order.typeThenCardinality = function(field, stats){
   return stats[field.name].cardinality;
 };
 
+function isTypeName(field, type) {
+  return field.type === consts.dataTypeNames[type];
+}
+
+/**
+ * For encoding, use encoding.isOrdinalScale() to avoid confusion.
+ * Or use Encoding.isType if your field is from Encoding (and thus have numeric data type).
+ * otherwise, do not specific isType so we can use the default isTypeName here.
+ */
 vlfield.isOrdinalScale = function(field, isType /*optional*/) {
-  isType = isType || function(field, type) {
-    return field.type === consts.dataTypeNames[type];
-  };
+  isType = isType || isTypeName;
 
   var fn;
   return  isType(field, O) || field.bin ||
@@ -66,4 +74,25 @@ vlfield.count.displayName = 'Number of Records';
 
 vlfield.isCount = function(field) {
   return field.aggr === 'count';
+};
+
+/**
+ * For encoding, use encoding.cardinality() to avoid confusion.  Or use Encoding.isType if your field is from Encoding (and thus have numeric data type).
+ * otherwise, do not specific isType so we can use the default isTypeName here.
+ */
+vlfield.cardinality = function(field, stats, maxbins, isType) {
+  isType = isType || isTypeName;
+
+  if (field.bin) {
+    if(!maxbins) console.error('vlfield.cardinality not included maxbins');
+    var bins = util.getbins(stats[field.name], maxbins);
+    return (bins.stop - bins.start) / bins.step;
+  }
+  if (isType(field, T)) {
+    return time.cardinality(field, stats);
+  }
+  if (field.aggr) {
+    return 1;
+  }
+  return stats[field.name].cardinality;
 };
