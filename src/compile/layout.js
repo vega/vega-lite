@@ -31,7 +31,7 @@ function box(encoding, stats) {
   if (encoding.has(X)) {
     if (encoding.isOrdinalScale(X)) {
       // for ordinal, hasCol or not doesn't matter -- we scale based on cardinality
-      var xCardinality = vlfield.cardinality(encoding.enc(X), stats, encoding.config('maxbins'));
+      var xCardinality =  encoding.cardinality(X, stats);
       if (xCardinality > encoding.config('largeBandMaxCardinality')) {
         xUseSmallBand = true;
       }
@@ -51,7 +51,7 @@ function box(encoding, stats) {
   if (encoding.has(Y)) {
     if (encoding.isOrdinalScale(Y)) {
       // for ordinal, hasCol or not doesn't matter -- we scale based on cardinality
-      var yCardinality = vlfield.cardinality(encoding.enc(Y), stats, encoding.config('maxbins'));
+      var yCardinality =  encoding.cardinality(Y, stats);
       if (yCardinality > encoding.config('largeBandMaxCardinality')) {
         yUseSmallBand = true;
       }
@@ -67,11 +67,11 @@ function box(encoding, stats) {
 
   var width = cellWidth, height = cellHeight;
   if (hasCol) {
-    var colCardinality = vlfield.cardinality(encoding.enc(COL), stats, encoding.config('maxbins'));
+    var colCardinality = encoding.cardinality(COL, stats);
     width = cellWidth * ((1 + cellPadding) * (colCardinality - 1) + 1);
   }
   if (hasRow) {
-    var rowCardinality = vlfield.cardinality(encoding.enc(ROW), stats, encoding.config('maxbins'));
+    var rowCardinality =  encoding.cardinality(ROW, stats);
     height = cellHeight * ((1 + cellPadding) * (rowCardinality - 1) + 1);
   }
 

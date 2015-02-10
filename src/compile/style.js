@@ -5,11 +5,12 @@ var globals = require('../globals'),
 
 module.exports = function(encoding, stats) {
   return {
-    opacity: estimateOpacity(encoding, stats)
+    opacity: estimateOpacity(encoding, stats),
+    // colorRange: colorRange(encoding, stats)
   };
 };
 
- function estimateOpacity(encoding,stats) {
+function estimateOpacity(encoding,stats) {
   if (!stats) {
     return 1;
   }
@@ -32,7 +33,7 @@ module.exports = function(encoding, stats) {
           !((encType === X || encType === Y) &&
           vlfield.isOrdinalScale(field, Encoding.isType))
         ) {
-        numPoints *= vlfield.cardinality(field, stats, maxbins);
+        numPoints *= encoding.cardinality(encType, stats);
       }
     });
 
@@ -47,11 +48,11 @@ module.exports = function(encoding, stats) {
   var numMultiples = 1;
   if (encoding.has(ROW)) {
     // 0.8  because of skew
-    numMultiples *= multipleSkewFactor * vlfield.cardinality(encoding.enc(ROW), stats, maxbins);
+    numMultiples *= multipleSkewFactor * encoding.cardinality(ROW, stats);
   }
 
   if (encoding.has(COL)) {
-    numMultiples *= multipleSkewFactor * vlfield.cardinality(encoding.enc(COL), stats, maxbins);
+    numMultiples *= multipleSkewFactor * encoding.cardinality(COL, stats);
   }
   numPoints /= numMultiples;
 

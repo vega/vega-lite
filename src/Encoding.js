@@ -188,9 +188,9 @@ var Encoding = module.exports = (function() {
 
   var isType = Encoding.isType = function (fieldDef, type) {
     return (fieldDef.type & type) > 0;
-  }
+  };
 
-  function isOrdinalScale(encoding, encType){
+  var isOrdinalScale = Encoding.isOrdinalScale = function (encoding, encType){
     return vlfield.isOrdinalScale(encoding.enc(encType), isType);
   }
 
@@ -220,6 +220,10 @@ var Encoding = module.exports = (function() {
       }
     }
     return false;
+  };
+
+  proto.cardinality = function(encType, stats) {
+    return vlfield.cardinality(this._enc[encType], stats, this.config('maxbins'), isType);
   };
 
   proto.isRaw = function() {
