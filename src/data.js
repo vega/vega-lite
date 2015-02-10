@@ -77,5 +77,6 @@ vldata.getStats = function(data) { // hack
     stat.count = data.length;
     stats[k] = stat;
   });
+  stats.count = data.length;
   return stats;
 };

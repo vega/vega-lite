@@ -1,7 +1,8 @@
 // utility for field
 
 var consts = require('./consts'),
-  time = require('./compile/time');
+  time = require('./compile/time'),
+  util = require('./util');
 
 var vlfield = module.exports = {};
 
@@ -66,4 +67,18 @@ vlfield.count.displayName = 'Number of Records';
 
 vlfield.isCount = function(field) {
   return field.aggr === 'count';
+};
+
+vlfield.cardinality = function(field, stats, maxbins) {
+  if (field.bin) {
+    var bins = util.getbins(stats[field.name], maxbins);
+    return (bins.stop - bins.start) / bins.step;
+  }
+  if (field.type===T) {
+    return time.cardinality(field, stats);
+  }
+  if (field.aggr) {
+    return 1;
+  }
+  return stats[field.name].cardinality;
 };
