@@ -132,7 +132,7 @@ var axisMixin = {
       properties: {
         grid: {
           type: 'boolean',
-          default: false,
+          default: true,
           description: 'A flag indicate if gridlines should be created in addition to ticks.'
         },
         title: {
