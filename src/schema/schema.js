@@ -84,7 +84,11 @@ var typicalField = merge(clone(schema.field), {
       type: 'object',
       properties: {
         type: schema.scale_type,
-        reverse: { type: 'boolean', default: false },
+        reverse: {
+          type: 'boolean',
+          default: false,
+          supportedTypes: {'Q': true, 'O': true, 'T': true}
+        },
         zero: {
           type: 'boolean',
           description: 'Include zero',
