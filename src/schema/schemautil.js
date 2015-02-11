@@ -21,6 +21,8 @@ util.instantiate = function(schema) {
     return instance;
   } else if ('default' in schema) {
     return schema.default;
+  } else if (schema.type === 'array') {
+    return [];
   }
   return undefined;
 };
@@ -29,13 +31,16 @@ util.instantiate = function(schema) {
 util.subtract = function(instance, defaults) {
   var changes = {};
   for (var prop in instance) {
-    if (!defaults || defaults[prop] !== instance[prop]) {
-      if (typeof instance[prop] === 'object' && !(instance[prop] instanceof Array)) {
-        var c = util.subtract(instance[prop], defaults[prop]);
+    var def = defaults[prop];
+    var ins = instance[prop];
+    // Note: does not properly subtract arrays
+    if (!defaults || def !== ins) {
+      if (typeof ins === 'object' && !Array.isArray(ins)) {
+        var c = util.subtract(ins, def);
         if (!isEmpty(c))
           changes[prop] = c;
-      } else {
-        changes[prop] = instance[prop];
+      } else if (!Array.isArray(ins) || ins.length > 0) {
+        changes[prop] = ins;
       }
     }
   }

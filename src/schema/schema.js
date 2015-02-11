@@ -334,7 +334,7 @@ var filter = {
       operands: {
         type: 'array',
         items: {
-          type: 'string'
+          type: ['string', 'boolean', 'integer', 'number']
         }
       },
       operator: {
