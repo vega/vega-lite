@@ -151,7 +151,7 @@ vled.init = function() {
 
   var initialShortHand = params.shortHand
     ? params.shortHand
-    : "mark=point|x=bin_yield,Q|y=variety,O|size=count_*,Q|color=year,O";
+    : "mark=point|x=avg_yield,Q|y=variety,O|row=site,O|color=year,O";
 
   document.getElementById("shorthand").value = initialShortHand;
   vled.datasetChanged(DATASETS[0], function() {
