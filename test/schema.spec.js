@@ -1,5 +1,5 @@
 var assert = require('assert'),
-  tv4 = require('tv4'),
+  Themis = require('themis'),
   _ = require('lodash'),
   inspect = require('util').inspect;
 
@@ -13,26 +13,15 @@ String.prototype.endsWith = function(suffix) {
 
 describe('Schema', function() {
   it('should be valid', function() {
+    var validator = Themis.validator(schema);
 
-    // validate schema against meta schema
-    tv4.addSchema('http://json-schema.org/draft-04/schema', schema);
+    // now validate our data against the schema
+    var report = validator(specSchema, 'http://json-schema.org/draft-04/schema#');
 
-    var result = tv4.validateMultiple(specSchema, schema, true, true);
-    var errors = result.errors;
-
-    // ignore our own special properties
-    var errors = _.filter(errors, function(err) {
-      return !(
-        err.code === 0 ||  // https://github.com/geraintluff/tv4/issues/74
-        err.code === 1000 && (err.dataPath.endsWith('supportedTypes')
-                              || err.dataPath.endsWith('supportedEnums')
-                              || err.dataPath.endsWith('role')));
-    });
-
-    if (errors.length) {
-      console.log(inspect(errors, true, 5));
+    if (report.errors.length > 0) {
+      console.log(inspect(report.errors, { depth: 10, colors: true }));
     }
-    assert.equal(0, errors.length);
+    assert.equal(0, report.errors.length);
   });
 });
 
