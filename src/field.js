@@ -7,14 +7,15 @@ var consts = require('./consts'),
 var vlfield = module.exports = {};
 
 vlfield.shorthand = function(f) {
-  return (f.aggr ? f.aggr + '_' : '') +
-    (f.fn ? f.fn + '_' : '') +
-    (f.bin ? 'bin_' : '') +
-    (f.name || '') + '-' +
+  var c = consts.shorthand;
+  return (f.aggr ? f.aggr + c.func : '') +
+    (f.fn ? f.fn + c.func : '') +
+    (f.bin ? 'bin' + c.func : '') +
+    (f.name || '') + c.type +
     (consts.dataTypeNames[f.type] || f.type);
 };
 
-vlfield.shorthands = function(fields, delim){
+vlfield.shorthands = function(fields, delim) {
   delim = delim || ',';
   return fields.map(vlfield.shorthand).join(delim);
 };

@@ -41,7 +41,11 @@ function getParams() {
   if (params[params.length-1] == "/") params = params.substring(0, params.length-1);
 
   return params.split("&")
-    .map(function(x) { return x.split("="); })
+    .map(function(x) {
+      // don't gobble up any equals within the query value
+      var idx = x.indexOf("=");
+      return [x.slice(0,idx), x.slice(idx+1)];
+    })
     .reduce(function(a, b) {
       a[b[0]] = b[1]; return a;
     }, {});
@@ -133,7 +137,9 @@ vled.init = function() {
   d3.select("#btn_spec_parse").on("click", vled.parse);
   d3.select("#btn_shorthand_parse").on("click", vled.parseShorthand);
 
-  var initialShortHand = params.shortHand ? params.shortHand : "point.x-bin_yield-Q.y-variety-O.size-count_-Q.color-year-O";
+  var initialShortHand = params.shortHand
+    ? params.shortHand
+    : "mark=point|x=bin_yield,Q|y=variety,O|size=count_*,Q|color=year,O";
 
   document.getElementById("shorthand").value = initialShortHand;
   vled.datasetChanged(DATASETS[0], function() {
