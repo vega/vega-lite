@@ -26,6 +26,18 @@ var DATASETS = [
   },{
     name: "Birdstrikes",
     url: "data/birdstrikes.json"
+  },{
+    name: "Burtin",
+    url: "data/burtin.json"
+  },{
+    name: "Budget 2016",
+    url: "data/budget.json"
+  },{
+    name: "Climate Normals",
+    url: "data/climate.json"
+  },{
+    name: "Campaigns",
+    url: "data/weball26.json"
   }
 ];
 
