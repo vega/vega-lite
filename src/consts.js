@@ -9,3 +9,10 @@ consts.dataTypes = {'O': O, 'Q': Q, 'T': T};
 consts.dataTypeNames = ['O', 'Q', 'T'].reduce(function(r, x) {
   r[consts.dataTypes[x]] = x; return r;
 },{});
+
+consts.shorthand = {
+  delim:  '|',
+  assign: '=',
+  type:   ',',
+  func:   '_'
+};

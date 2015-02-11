@@ -269,20 +269,27 @@ var Encoding = module.exports = (function() {
 
   proto.toShorthand = function() {
     var enc = this._enc;
-    return this._marktype + '.' +
+    var c = consts.shorthand;
+    return 'mark' + c.assign + this._marktype + c.delim +
       this.map(function(v, e) {
-        return e + '-' + vlfield.shorthand(v);
-      }).join('.');
+        return e + c.assign + vlfield.shorthand(v);
+      }).join(c.delim);
   };
 
   Encoding.parseShorthand = function(shorthand, cfg) {
-    var enc = shorthand.split('.'),
-      marktype = enc.shift();
+    var c = consts.shorthand,
+        enc = shorthand.split(c.delim),
+        marktype = enc.shift().split(c.assign)[1].trim();
 
     enc = enc.reduce(function(m, e) {
-      var split = e.split('-'),
-        enctype = split[0],
-        o = {name: split[1], type: consts.dataTypes[split[2]]};
+      var split = e.split(c.assign),
+          enctype = split[0].trim(), o;
+
+      split = split[1].split(c.type);
+      o = {
+        name: split[0].trim(),
+        type: consts.dataTypes[split[1].trim()]
+      };
 
       // check aggregate type
       for (var i in schema.aggr.enum) {
@@ -294,6 +301,7 @@ var Encoding = module.exports = (function() {
           break;
         }
       }
+
       // check time fn
       for (var i in schema.timefns) {
         var f = schema.timefns[i];
