@@ -16,7 +16,7 @@ module.exports = function(spec, encoding) {
     spec.data[0].transform = [];
 
   // add custom filters
-	for (i in filters) {
+  for (i in filters) {
     var filter = filters[i];
 
     var condition = '';
@@ -48,7 +48,7 @@ module.exports = function(spec, encoding) {
       type: 'filter',
       test: condition
     });
-	};
+  };
 
   // remove 0 values if we use log function
   encoding.forEach(function(encType, field) {
