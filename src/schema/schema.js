@@ -330,6 +330,25 @@ var shape = merge(merge(clone(onlyOrdinalField), legendMixin), shapeMixin);
 
 var text = merge(clone(typicalField), textMixin);
 
+var filter = {
+  type: 'array',
+  items: {
+    type: 'object',
+    properties: {
+      operands: {
+        type: 'array',
+        items: {
+          type: ['string', 'boolean', 'integer', 'number']
+        }
+      },
+      operator: {
+        type: 'string',
+        enum: ['>', '>=', '=', '!=', '<', '<=', 'notNull']
+      }
+    }
+  }
+};
+
 var cfg = {
   type: 'object',
   properties: {
@@ -448,6 +467,7 @@ var cfg = {
 /** @type Object Schema of a vegalite specification */
 schema.schema = {
   $schema: 'http://json-schema.org/draft-04/schema#',
+  Description: 'Schema for vegalite specification',
   type: 'object',
   required: ['marktype', 'enc', 'cfg'],
   properties: {
@@ -466,6 +486,7 @@ schema.schema = {
         text: text
       }
     },
+    filter: filter,
     cfg: cfg
   }
 };

@@ -5,6 +5,7 @@ module.exports = compile;
 
 var template = compile.template = require('./template'),
   axis = compile.axis = require('./axis'),
+  filter = compile.filter = require('./filter'),
   legend = compile.legend = require('./legend'),
   marks = compile.marks = require('./marks'),
   scale = compile.scale = require('./scale'),
@@ -26,6 +27,8 @@ function compile(encoding, stats) {
     group = spec.marks[0],
     mark = marks[encoding.marktype()],
     mdef = marks.def(mark, encoding, layout, style);
+
+  filter(spec, encoding);
 
   var hasRow = encoding.has(ROW), hasCol = encoding.has(COL);
 

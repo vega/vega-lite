@@ -9,13 +9,14 @@ var global = require('./globals'),
 
 var Encoding = module.exports = (function() {
 
-  function Encoding(marktype, enc, config, theme) {
+  function Encoding(marktype, enc, config, filter, theme) {
     var defaults = schema.instantiate();
 
     var spec = {
       marktype: marktype,
       enc: enc,
-      cfg: config
+      cfg: config,
+      filter: filter || []
     };
 
     // type to bitcode
@@ -28,6 +29,7 @@ var Encoding = module.exports = (function() {
     this._marktype = specExtended.marktype;
     this._enc = specExtended.enc;
     this._cfg = specExtended.cfg;
+    this._filter = specExtended.filter;
   }
 
   var proto = Encoding.prototype;
@@ -46,6 +48,10 @@ var Encoding = module.exports = (function() {
 
   proto.enc = function(x) {
     return this._enc[x];
+  };
+
+  proto.filter = function() {
+    return this._filter;
   };
 
   // get "field" property for vega
@@ -255,7 +261,8 @@ var Encoding = module.exports = (function() {
 
     spec = {
       marktype: this._marktype,
-      enc: enc
+      enc: enc,
+      filter: this._filter
     };
 
     if (!excludeConfig) {
@@ -333,7 +340,7 @@ var Encoding = module.exports = (function() {
       enc[e].type = consts.dataTypes[enc[e].type];
     }
 
-    return new Encoding(spec.marktype, enc, util.merge(spec.cfg || {}, extraCfg || {}), theme);
+    return new Encoding(spec.marktype, enc, util.merge(spec.cfg || {}, extraCfg || {}), spec.filter, theme);
   };
 
   return Encoding;
