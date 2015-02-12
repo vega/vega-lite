@@ -142,10 +142,12 @@ var axisMixin = {
         },
         titleOffset: {
           type: 'integer',
+          default: undefined,  // auto
           description: 'A title offset value for the axis.'
         },
         format: {
           type: 'string',
+          default: undefined,  // auto
           description: 'The formatting pattern for axis labels.'
         }
       }
