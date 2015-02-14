@@ -76,6 +76,12 @@ vldata.getStats = function(data) { // hack
     }, 0);
     stat.count = data.length;
     stats[k] = stat;
+    var sample = {};
+    for (; Object.keys(sample).length < Math.min(stat.cardinality, 10); i++) {
+      var value = data[Math.floor(Math.random() * data.length)][k];
+      sample[value] = true;
+    };
+    stats[k].sample = Object.keys(sample);
   });
   stats.count = data.length;
   return stats;
