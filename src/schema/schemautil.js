@@ -62,10 +62,12 @@ merge = function(dest, src) {
   }
 
   for (var p in src) {
-    if (!src.hasOwnProperty(p))
+    if (!src.hasOwnProperty(p)) {
       continue;
-    if (src[p] === undefined)
+    }
+    if (src[p] === undefined) {
       continue;
+    }
     if (typeof src[p] !== 'object' || src[p] === null) {
       dest[p] = src[p];
     } else if (typeof dest[p] !== 'object' || dest[p] === null) {
