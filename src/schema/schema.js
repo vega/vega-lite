@@ -126,6 +126,7 @@ var onlyOrdinalField = merge(clone(schema.field), {
 
 var axisMixin = {
   type: 'object',
+  supportedMarktypes: {'point': true, 'bar': true, 'line': true, 'area': true, 'circle': true, 'square': true, 'text': true},
   properties: {
     axis: {
       type: 'object',
@@ -176,6 +177,7 @@ var legendMixin = {
 
 var textMixin = {
   type: 'object',
+  supportedMarktypes: {'text': true},
   properties: {
     text: {
       type: 'object',
@@ -229,6 +231,7 @@ var textMixin = {
 
 var sizeMixin = {
   type: 'object',
+  supportedMarktypes: {'point': true, 'bar': true, 'circle': true, 'square': true, 'text': true},
   properties: {
     value: {
       type: 'integer',
@@ -240,6 +243,7 @@ var sizeMixin = {
 
 var colorMixin = {
   type: 'object',
+  supportedMarktypes: {'point': true, 'bar': true, 'line': true, 'area': true, 'circle': true, 'square': true, 'text': true},
   properties: {
     value: {
       type: 'string',
@@ -259,6 +263,7 @@ var colorMixin = {
 
 var alphaMixin = {
   type: 'object',
+  supportedMarktypes: {'point': true, 'bar': true, 'line': true, 'area': true, 'circle': true, 'square': true, 'text': true},
   properties: {
     value: {
       type: 'number',
@@ -271,6 +276,7 @@ var alphaMixin = {
 
 var shapeMixin = {
   type: 'object',
+  supportedMarktypes: {'point': true, 'circle': true, 'square': true},
   properties: {
     value: {
       type: 'string',
@@ -286,12 +292,6 @@ var rowMixin = {
       type: 'number',
       minimum: 0,
       default: 150
-    },
-    padding: {
-      type: 'number',
-      minimum: 0,
-      maximum: 1,
-      default: 0.1
     }
   }
 };
@@ -302,7 +302,14 @@ var colMixin = {
       type: 'number',
       minimum: 0,
       default: 150
-    },
+    }
+  }
+};
+
+var facetMixin = {
+  type: 'object',
+  supportedMarktypes: {'point': true, 'bar': true, 'line': true, 'area': true, 'circle': true, 'square': true, 'text': true},
+  properties: {
     padding: {
       type: 'number',
       minimum: 0,
@@ -310,23 +317,23 @@ var colMixin = {
       default: 0.1
     }
   }
-};
+}
 
 var requiredNameType = {
   required: ['name', 'type']
 };
 
-var x = merge(merge(merge(clone(typicalField), axisMixin), bandMixin), requiredNameType);
+var x = merge(clone(typicalField), axisMixin, bandMixin, requiredNameType);
 var y = clone(x);
 
-var facet = merge(clone(onlyOrdinalField), requiredNameType);
+var facet = merge(clone(onlyOrdinalField), requiredNameType, facetMixin);
 var row = merge(clone(facet), rowMixin);
 var col = merge(clone(facet), colMixin);
 
-var size = merge(merge(clone(typicalField), legendMixin), sizeMixin);
-var color = merge(merge(clone(typicalField), legendMixin), colorMixin);
+var size = merge(clone(typicalField), legendMixin, sizeMixin);
+var color = merge(clone(typicalField), legendMixin, colorMixin);
 var alpha = merge(clone(typicalField), alphaMixin);
-var shape = merge(merge(clone(onlyOrdinalField), legendMixin), shapeMixin);
+var shape = merge(clone(onlyOrdinalField), legendMixin, shapeMixin);
 
 var text = merge(clone(typicalField), textMixin);
 

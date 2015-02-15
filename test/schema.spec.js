@@ -23,6 +23,13 @@ describe('Schema', function() {
     }
     assert.equal(0, report.errors.length);
   });
+
+  it('field def should have supportedMarktypes', function() {
+    var encProps = specSchema.properties.enc.properties;
+    for (k in encProps) {
+      assert.notEqual(encProps[k].supportedMarktypes, undefined);
+    }
+  });
 });
 
 describe('Util', function() {
