@@ -22,22 +22,25 @@ function vllayout(encoding, stats) {
 function box(encoding, stats) {
   var hasRow = encoding.has(ROW),
       hasCol = encoding.has(COL),
+      hasX = encoding.has(X),
+      hasY = encoding.has(Y),
       marktype = encoding.marktype();
 
-  var cellWidth, cellHeight, cellPadding = encoding.config('cellPadding'),
-    xUseSmallBand = false, yUseSmallBand = false;
+  var xCardinality = hasX && encoding.isOrdinalScale(X) ? encoding.cardinality(X, stats) : 1,
+    yCardinality = hasY && encoding.isOrdinalScale(Y) ? encoding.cardinality(Y, stats) : 1;
+
+  var useSmallBand = xCardinality > encoding.config('largeBandMaxCardinality') ||
+    yCardinality > encoding.config('largeBandMaxCardinality');
+
+  var cellWidth, cellHeight, cellPadding = encoding.config('cellPadding');
 
   // set cellWidth
-  if (encoding.has(X)) {
+  if (hasX) {
     if (encoding.isOrdinalScale(X)) {
       // for ordinal, hasCol or not doesn't matter -- we scale based on cardinality
-      var xCardinality =  encoding.cardinality(X, stats);
-      if (xCardinality > encoding.config('largeBandMaxCardinality')) {
-        xUseSmallBand = true;
-      }
-      cellWidth = (xCardinality + encoding.band(X).padding) * encoding.bandSize(X, xUseSmallBand);
+      cellWidth = (xCardinality + encoding.band(X).padding) * encoding.bandSize(X, useSmallBand);
     } else {
-      cellWidth = hasCol ? encoding.enc(COL).width :  encoding.config("singleWidth");
+      cellWidth = hasCol || hasRow ? encoding.enc(COL).width :  encoding.config("singleWidth");
     }
   } else {
     if (marktype === TEXT) {
@@ -48,16 +51,12 @@ function box(encoding, stats) {
   }
 
   // set cellHeight
-  if (encoding.has(Y)) {
+  if (hasY) {
     if (encoding.isOrdinalScale(Y)) {
       // for ordinal, hasCol or not doesn't matter -- we scale based on cardinality
-      var yCardinality =  encoding.cardinality(Y, stats);
-      if (yCardinality > encoding.config('largeBandMaxCardinality')) {
-        yUseSmallBand = true;
-      }
-      cellHeight = (yCardinality + encoding.band(Y).padding) * encoding.bandSize(Y, yUseSmallBand);
+      cellHeight = (yCardinality + encoding.band(Y).padding) * encoding.bandSize(Y, useSmallBand);
     } else {
-      cellHeight = hasRow ? encoding.enc(ROW).height :  encoding.config("singleHeight");
+      cellHeight = hasCol || hasRow ? encoding.enc(ROW).height :  encoding.config("singleHeight");
     }
   } else {
     cellHeight = encoding.bandSize(Y);
@@ -80,8 +79,8 @@ function box(encoding, stats) {
     cellHeight: cellHeight,
     width: width,
     height: height,
-    x: {useSmallBand: xUseSmallBand},
-    y: {useSmallBand: yUseSmallBand}
+    x: {useSmallBand: useSmallBand},
+    y: {useSmallBand: useSmallBand}
   };
 }
 
