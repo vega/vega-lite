@@ -42,11 +42,15 @@ axis.def = function(name, encoding, layout, opt) {
   }
 
   if (isRow || isCol) {
-    def.properties = {
-      ticks: { opacity: {value: 0} },
-      majorTicks: { opacity: {value: 0} },
-      axis: { opacity: {value: 0} }
-    };
+    setter(def, ['properties', 'ticks'], {
+      opacity: {value: 0}
+    });
+    setter(def, ['properties', 'majorTicks'], {
+      opacity: {value: 0}
+    });
+    setter(def, ['properties', 'axis'], {
+      opacity: {value: 0}
+    });
   }
 
   if (isCol) {
@@ -79,7 +83,6 @@ axis.def = function(name, encoding, layout, opt) {
     } else {
       def.format = "d";
     }
-
   }
 
   var fn;
@@ -91,7 +94,7 @@ axis.def = function(name, encoding, layout, opt) {
   return def;
 };
 
-function axis_title(axis, name, encoding, layout, opt) {
+function axis_title(def, name, encoding, layout, opt) {
   var maxLength = null,
     fieldTitle = encoding.fieldTitle(name);
   if (name===X) {
@@ -100,13 +103,28 @@ function axis_title(axis, name, encoding, layout, opt) {
     maxlength = layout.cellHeight / encoding.config('characterWidth');
   }
 
-  axis.title = maxlength ? util.truncate(fieldTitle, maxlength) : fieldTitle;
-  axis.titleOffset = axisTitleOffset(encoding, layout, name);
+  def.title = maxlength ? util.truncate(fieldTitle, maxlength) : fieldTitle;
 
-  return axis;
+  if (name === ROW) {
+    setter(def, ['properties','title'], {
+      angle: {value: 0},
+      align: {value: 'right'},
+      baseline: {value: 'middle'},
+      dy: {value: (-layout.height/2) -20}
+    });
+  }
+  def.titleOffset = axisTitleOffset(encoding, layout, name);
+  return def;
 }
 
 function axisTitleOffset(encoding, layout, name) {
-  return encoding.axis(name).titleOffset ||
-    getter(layout, [name, 'axisTitleOffset']);
+  var value = encoding.axis(name).titleOffset;
+  if (value) {
+    return value;
+  }
+  switch (name) {
+    case ROW: return 0;
+    case COL: return 35;
+  }
+  return getter(layout, [name, 'axisTitleOffset']);
 }
