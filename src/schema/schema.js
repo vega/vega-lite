@@ -141,16 +141,14 @@ var axisMixin = {
           default: true,
           description: 'A title for the axis.'
         },
-        titleAlign: {
-          type: 'string',
-          enum: ['left', 'right', 'center']
-        },
         titleOffset: {
           type: 'integer',
+          default: undefined,  // auto
           description: 'A title offset value for the axis.'
         },
         format: {
           type: 'string',
+          default: undefined,  // auto
           description: 'The formatting pattern for axis labels.'
         }
       }
