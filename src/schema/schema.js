@@ -315,7 +315,7 @@ var facetMixin = {
       default: 0.1
     }
   }
-}
+};
 
 var requiredNameType = {
   required: ['name', 'type']
@@ -325,8 +325,8 @@ var x = merge(clone(typicalField), axisMixin, bandMixin, requiredNameType);
 var y = clone(x);
 
 var facet = merge(clone(onlyOrdinalField), requiredNameType, facetMixin);
-var row = merge(clone(facet), rowMixin);
-var col = merge(clone(facet), colMixin);
+var row = merge(clone(facet), axisMixin, rowMixin);
+var col = merge(clone(facet), axisMixin, colMixin);
 
 var size = merge(clone(typicalField), legendMixin, sizeMixin);
 var color = merge(clone(typicalField), legendMixin, colorMixin);
