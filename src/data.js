@@ -53,6 +53,13 @@ vldata.getSchema = function(data) {
       datum = data[++i][k];
     }
 
+    try {
+      var number = JSON.parse(datum);
+      datum = number;
+    } catch(e) {
+      // do nothing
+    }
+
     //TODO(kanitw): better type inference here
     var type = (typeof datum === 'number') ? 'Q':
       isNaN(Date.parse(datum)) ? 'O' : 'T';
