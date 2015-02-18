@@ -285,6 +285,11 @@ var shapeMixin = {
   }
 };
 
+var detailMixin = {
+  type: 'object',
+  supportedMarktypes: {'point': true, 'bar': true, 'line': true, 'area': true, 'circle': true, 'square': true, 'text': true}
+};
+
 var rowMixin = {
   properties: {
     height: {
@@ -333,7 +338,7 @@ var size = merge(clone(typicalField), legendMixin, sizeMixin);
 var color = merge(clone(typicalField), legendMixin, colorMixin);
 var alpha = merge(clone(typicalField), alphaMixin);
 var shape = merge(clone(onlyOrdinalField), legendMixin, shapeMixin);
-var detail = clone(onlyOrdinalField);
+var detail = merge(clone(onlyOrdinalField), detailMixin);
 
 var text = merge(clone(typicalField), textMixin);
 
