@@ -109,8 +109,9 @@ var onlyOrdinalField = merge(clone(schema.field), {
   properties: {
     type: {
       type: 'string',
-      enum: ['O','Q'] // ordinal-only field supports Q when bin is applied
+      enum: ['O','Q', 'T'] // ordinal-only field supports Q when bin is applied and T when fn is applied.
     },
+    fn: schema.fn,
     bin: {
       type: 'boolean',
       default: false,
@@ -284,6 +285,11 @@ var shapeMixin = {
   }
 };
 
+var detailMixin = {
+  type: 'object',
+  supportedMarktypes: {'point': true, 'line': true, 'circle': true, 'square': true, 'text': true}
+};
+
 var rowMixin = {
   properties: {
     height: {
@@ -332,6 +338,7 @@ var size = merge(clone(typicalField), legendMixin, sizeMixin);
 var color = merge(clone(typicalField), legendMixin, colorMixin);
 var alpha = merge(clone(typicalField), alphaMixin);
 var shape = merge(clone(onlyOrdinalField), legendMixin, shapeMixin);
+var detail = merge(clone(onlyOrdinalField), detailMixin);
 
 var text = merge(clone(typicalField), textMixin);
 
@@ -488,7 +495,8 @@ schema.schema = {
         color: color,
         alpha: alpha,
         shape: shape,
-        text: text
+        text: text,
+        detail: detail
       }
     },
     filter: filter,

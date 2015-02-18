@@ -14,6 +14,7 @@ g.SHAPE = 'shape';
 g.COLOR = 'color';
 g.ALPHA = 'alpha';
 g.TEXT = 'text';
+g.DETAIL = 'detail';
 
 g.O = 1;
 g.Q = 2;
