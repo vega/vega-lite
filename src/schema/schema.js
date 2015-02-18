@@ -287,7 +287,7 @@ var shapeMixin = {
 
 var detailMixin = {
   type: 'object',
-  supportedMarktypes: {'point': true, 'bar': true, 'line': true, 'area': true, 'circle': true, 'square': true, 'text': true}
+  supportedMarktypes: {'point': true, 'line': true, 'circle': true, 'square': true, 'text': true}
 };
 
 var rowMixin = {
