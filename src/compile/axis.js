@@ -95,7 +95,7 @@ axis.def = function(name, encoding, layout, opt) {
 };
 
 function axis_title(def, name, encoding, layout, opt) {
-  var maxLength = null,
+  var maxlength = null,
     fieldTitle = encoding.fieldTitle(name);
   if (name===X) {
     maxlength = layout.cellWidth / encoding.config('characterWidth');
