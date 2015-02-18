@@ -333,6 +333,7 @@ var size = merge(clone(typicalField), legendMixin, sizeMixin);
 var color = merge(clone(typicalField), legendMixin, colorMixin);
 var alpha = merge(clone(typicalField), alphaMixin);
 var shape = merge(clone(onlyOrdinalField), legendMixin, shapeMixin);
+var detail = clone(onlyOrdinalField);
 
 var text = merge(clone(typicalField), textMixin);
 
@@ -489,7 +490,8 @@ schema.schema = {
         color: color,
         alpha: alpha,
         shape: shape,
-        text: text
+        text: text,
+        detail: detail
       }
     },
     filter: filter,

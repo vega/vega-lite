@@ -2,7 +2,7 @@ var globals = require('./globals');
 
 var consts = module.exports = {};
 
-consts.encodingTypes = [X, Y, ROW, COL, SIZE, SHAPE, COLOR, ALPHA, TEXT];
+consts.encodingTypes = [X, Y, ROW, COL, SIZE, SHAPE, COLOR, ALPHA, TEXT, DETAIL];
 
 consts.dataTypes = {'O': O, 'Q': Q, 'T': T};
 
