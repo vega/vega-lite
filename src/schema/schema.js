@@ -109,8 +109,9 @@ var onlyOrdinalField = merge(clone(schema.field), {
   properties: {
     type: {
       type: 'string',
-      enum: ['O','Q'] // ordinal-only field supports Q when bin is applied
+      enum: ['O','Q', 'T'] // ordinal-only field supports Q when bin is applied and T when fn is applied.
     },
+    fn: schema.fn,
     bin: {
       type: 'boolean',
       default: false,
