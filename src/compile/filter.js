@@ -16,7 +16,7 @@ module.exports = function(spec, encoding) {
     spec.data[0].transform = [];
 
   // add custom filters
-  for (i in filters) {
+  for (var i in filters) {
     var filter = filters[i];
 
     var condition = '';
@@ -34,10 +34,10 @@ module.exports = function(spec, encoding) {
       condition = 'd.data.' + op1 + operator + op2;
     } else if (operator === 'notNull') {
       // expects a number of fields
-      for (j in operands) {
-        condition += 'd.data.' + operands[j] + '!=null'
+      for (var j in operands) {
+        condition += 'd.data.' + operands[j] + '!=null';
         if (j < operands.length - 1) {
-          condition += ' && '
+          condition += ' && ';
         }
       }
     } else {
@@ -48,7 +48,7 @@ module.exports = function(spec, encoding) {
       type: 'filter',
       test: condition
     });
-  };
+  }
 
   // remove 0 values if we use log function
   encoding.forEach(function(encType, field) {
