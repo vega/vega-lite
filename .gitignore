@@ -5,3 +5,4 @@ vegalite*.js
 vegalite*.map
 spec.json
 npm-debug.log
+instance.json

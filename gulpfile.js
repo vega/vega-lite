@@ -14,16 +14,23 @@ var browserSync = require('browser-sync');
 var gutil = require('gulp-util');
 var mocha = require('gulp-mocha');
 
-var bundler = watchify(browserify({
+var bundleDef = {
   entries: ['./src/vl'],
   standalone: 'vl',
   debug: true
-}));
+}
 
-// builds vegalite
+var browserBundler = browserify(bundleDef)
+var watchBundler = watchify(browserify(bundleDef));
+
+// builds vegalite with watcher
 function bundle() {
-  return bundler
-    .bundle()
+  return build(watchBundler.bundle());
+}
+
+// runs build on the bundle
+function build(bundle) {
+  return bundle
     .pipe(source('vegalite.js'))
     .pipe(buffer())
     .pipe(gulp.dest('.'))
@@ -36,11 +43,23 @@ function bundle() {
     .pipe(browserSync.reload({stream:true}));
 }
 
+// builds vegalite and schema
+gulp.task('build', ['schema'], function() {
+  build(browserBundler.bundle());
+})
+
 // generates spec.json
 gulp.task('schema', function () {
   gulp.src('src/schema/schemagen.js')
     .pipe(run('node', {silent: true, cwd: 'src/schema'}))
     .pipe(rename('spec.json'))
+    .pipe(gulp.dest('.'));
+});
+
+gulp.task('instance', ['schema'], function () {
+  gulp.src('src/schema/instancegen.js')
+    .pipe(run('node', {silent: true, cwd: 'src/schema'}))
+    .pipe(rename('instance.json'))
     .pipe(gulp.dest('.'));
 });
 
@@ -61,7 +80,7 @@ gulp.task('watch-mocha', function() {
   gulp.watch(['src/**', 'test/**'], ['mocha']);
 });
 
-gulp.task('serve', ['build', 'watch-mocha', 'watch-schema'], function() {
+gulp.task('serve', ['bundle', 'watch-schema', 'watch-mocha'], function() {
     browserSync({
         server: {
             baseDir: './'
@@ -69,8 +88,8 @@ gulp.task('serve', ['build', 'watch-mocha', 'watch-schema'], function() {
     });
 });
 
-bundler.on('update', bundle);
+watchBundler.on('update', bundle);
 
-gulp.task('build', bundle);
+gulp.task('bundle', bundle);
 
-gulp.task('default', ['build', 'watch-mocha', 'watch-schema']);
+gulp.task('default', ['bundle', 'schema', 'watch-schema', 'watch-mocha']);
