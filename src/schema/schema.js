@@ -376,7 +376,7 @@ var cfg = {
     viewport: {
       type: 'array',
       items: {
-        type: ['integer']
+        type: 'integer'
       },
       default: undefined
     },
