@@ -34,9 +34,9 @@
     "gulp-util": "^3.0.2",
     "lodash": "^2.4.1",
     "mocha": "^2.1.0",
-    "themis": "^1.1.5",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.0.0",
-    "watchify": "^2.2.1"
+    "watchify": "^2.2.1",
+    "z-schema": "^3.4.3"
   }
 }
