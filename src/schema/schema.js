@@ -157,6 +157,32 @@ var axisMixin = {
   }
 };
 
+var sortMixin = {
+  type: 'object',
+  properties: {
+    sort: {
+      type: 'array',
+      default: [],
+      items: {
+        type: 'object',
+        supportedTypes: {'O': true},
+        required: ['name', 'aggr'],
+        name: {
+          type: 'string'
+        },
+        aggr: {
+          type: 'string',
+          enum: ['avg', 'sum', 'min', 'max', 'count']
+        },
+        reverse: {
+          type: 'boolean',
+          default: false
+        }
+      }
+    }
+  }
+}
+
 var bandMixin = {
   type: 'object',
   properties: {
@@ -327,20 +353,20 @@ var requiredNameType = {
   required: ['name', 'type']
 };
 
-var x = merge(clone(typicalField), axisMixin, bandMixin, requiredNameType);
+var x = merge(clone(typicalField), axisMixin, bandMixin, requiredNameType, sortMixin);
 var y = clone(x);
 
-var facet = merge(clone(onlyOrdinalField), requiredNameType, facetMixin);
+var facet = merge(clone(onlyOrdinalField), requiredNameType, facetMixin, sortMixin);
 var row = merge(clone(facet), axisMixin, rowMixin);
 var col = merge(clone(facet), axisMixin, colMixin);
 
-var size = merge(clone(typicalField), legendMixin, sizeMixin);
-var color = merge(clone(typicalField), legendMixin, colorMixin);
-var alpha = merge(clone(typicalField), alphaMixin);
-var shape = merge(clone(onlyOrdinalField), legendMixin, shapeMixin);
-var detail = merge(clone(onlyOrdinalField), detailMixin);
+var size = merge(clone(typicalField), legendMixin, sizeMixin, sortMixin);
+var color = merge(clone(typicalField), legendMixin, colorMixin, sortMixin);
+var alpha = merge(clone(typicalField), alphaMixin, sortMixin);
+var shape = merge(clone(onlyOrdinalField), legendMixin, shapeMixin, sortMixin);
+var detail = merge(clone(onlyOrdinalField), detailMixin, sortMixin);
 
-var text = merge(clone(typicalField), textMixin);
+var text = merge(clone(typicalField), textMixin, sortMixin);
 
 var filter = {
   type: 'array',
