@@ -1,5 +1,5 @@
 var assert = require('assert'),
-  Themis = require('themis'),
+  ZSchema = require("z-schema"),
   _ = require('lodash'),
   inspect = require('util').inspect;
 
@@ -13,15 +13,16 @@ String.prototype.endsWith = function(suffix) {
 
 describe('Schema', function() {
   it('should be valid', function() {
-    var validator = Themis.validator(schema);
+    var validator = new ZSchema();
 
     // now validate our data against the schema
-    var report = validator(specSchema, 'http://json-schema.org/draft-04/schema#');
+    var valid = validator.validate(specSchema, schema);
 
-    if (report.errors.length > 0) {
-      console.log(inspect(report.errors, { depth: 10, colors: true }));
+    if (!valid) {
+      var errors = validator.getLastErrors();
+      console.log(inspect(errors, { depth: 10, colors: true }));
     }
-    assert.equal(0, report.errors.length);
+    assert.equal(valid, true);
   });
 
   it('field def should have supportedMarktypes', function() {

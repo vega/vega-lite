@@ -479,7 +479,7 @@ var cfg = {
 /** @type Object Schema of a vegalite specification */
 schema.schema = {
   $schema: 'http://json-schema.org/draft-04/schema#',
-  Description: 'Schema for vegalite specification',
+  description: 'Schema for vegalite specification',
   type: 'object',
   required: ['marktype', 'enc', 'cfg'],
   properties: {
