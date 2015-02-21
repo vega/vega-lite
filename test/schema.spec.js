@@ -38,11 +38,12 @@ describe('Util', function() {
     var simpleSchema = {
       type: 'object', required: ['fooBaz'],
       properties: {
+        foo: {type: 'array'},
         fooBar: {type: 'string', default: 'baz'},
         fooBaz: {type: 'string', enum: ['a', 'b']}}};
     assert.deepEqual(
       util.instantiate(simpleSchema),
-      {fooBar: 'baz'});
+      {foo: [], fooBar: 'baz'});
   });
 
   it('remove defaults', function() {
