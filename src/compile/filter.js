@@ -35,7 +35,7 @@ module.exports = function(spec, encoding) {
     } else if (operator === 'notNull') {
       // expects a number of fields
       for (var j in operands) {
-        condition += '(!!d.data.' + operands[j] + '&& d.data. != "null")';
+        condition += '(!!d.data.' + operands[j] + '&& d.data.' + operands[j] + ' != "null")';
         if (j < operands.length - 1) {
           condition += ' && ';
         }
