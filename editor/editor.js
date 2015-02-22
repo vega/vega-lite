@@ -75,7 +75,7 @@ vled.parse = function() {
   try {
     spec = JSON.parse(d3.select("#vlspec").property("value"));
   } catch (e) {
-    console.log(e);
+    console.warn(e);
     return;
   }
 
