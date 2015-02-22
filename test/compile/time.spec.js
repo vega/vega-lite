@@ -12,10 +12,10 @@ describe('Time', function() {
         x: {name: fieldName, type: 'T', fn: fn}
       }
     }),
-    spec = time({data: [{name: TABLE}]}, encoding, {});
+    spec = time({data: [{name: RAW}, {name: TABLE}]}, encoding, {});
 
   it('should add formula transform', function() {
-    var data = spec.data[0];
+    var data = spec.data[1];
     expect(data.transform).to.be.ok();
 
     expect(data.transform.filter(function(t) {

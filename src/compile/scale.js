@@ -11,16 +11,16 @@ scale.names = function(props) {
   }, {}));
 };
 
-scale.defs = function(names, encoding, layout, style, opt) {
+scale.defs = function(names, encoding, layout, style, sorting, opt) {
   opt = opt || {};
 
   return names.reduce(function(a, name) {
     var s = {
       name: name,
       type: scale.type(name, encoding),
-      domain: scale_domain(name, encoding, opt)
+      domain: scale_domain(name, encoding, sorting, opt)
     };
-    if (s.type === 'ordinal' && !encoding.bin(name)) {
+    if (s.type === 'ordinal' && !encoding.bin(name) && !sorting.isSorted(name)) {
       s.sort = true;
     }
 
@@ -45,7 +45,7 @@ scale.type = function(name, encoding) {
   }
 };
 
-function scale_domain(name, encoding, opt) {
+function scale_domain(name, encoding, sorting, opt) {
   if (encoding.isType(name, T)) {
     var range = time.scale.domain(encoding.fn(name));
     if(range) return range;
@@ -65,7 +65,7 @@ function scale_domain(name, encoding, opt) {
       data: STACKED,
       field: 'data.' + (opt.facet ? 'max_' : '') + 'sum_' + encoding.field(name, true)
     } :
-    {data: TABLE, field: encoding.field(name)};
+    {data: sorting.getDataset(name), field: encoding.field(name)};
 }
 
 function scale_range(s, encoding, layout, style, opt) {

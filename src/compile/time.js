@@ -18,7 +18,7 @@ function time(spec, encoding, opt) {
   });
 
   // add formula transform
-  var data = spec.data[0],
+  var data = spec.data[1],
     transform = data.transform = data.transform || [];
 
   for (var f in timeFields) {

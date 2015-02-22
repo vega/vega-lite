@@ -10,10 +10,11 @@ var BINARY = {
 };
 
 module.exports = function(spec, encoding) {
-  var filters = encoding.filter();
+  var filters = encoding.filter(),
+    data = spec.data[0];  // apply filters to raw data before aggregation
 
-  if (!spec.data[0].transform)
-    spec.data[0].transform = [];
+  if (!data.transform)
+    data.transform = [];
 
   // add custom filters
   for (var i in filters) {
@@ -44,7 +45,7 @@ module.exports = function(spec, encoding) {
       console.warn('Unsupported operator: ', operator);
     }
 
-    spec.data[0].transform.push({
+    data.transform.push({
       type: 'filter',
       test: condition
     });
@@ -53,7 +54,7 @@ module.exports = function(spec, encoding) {
   // remove 0 values if we use log function
   encoding.forEach(function(encType, field) {
     if (encoding.scale(encType).type === 'log') {
-      spec.data[0].transform.push({
+      data.transform.push({
         type: 'filter',
         test: 'd.data.' + field.name + '>0'
       });
