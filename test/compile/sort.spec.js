@@ -53,6 +53,8 @@ describe('Sort', function() {
   });
 
   it('should set correct mapping', function() {
-    expect(sorting._mapping).to.deep.equal({ x: 'sorted0', color: 'sorted1' });
+    expect(sorting.getDataset('x')).to.equal('sorted0');
+    expect(sorting.getDataset('color')).to.equal('sorted1');
+    expect(sorting.getDataset('y')).to.equal('table');
   });
 });

@@ -20,7 +20,7 @@ scale.defs = function(names, encoding, layout, style, sorting, opt) {
       type: scale.type(name, encoding),
       domain: scale_domain(name, encoding, sorting, opt)
     };
-    if (s.type === 'ordinal' && !encoding.bin(name) && !sorting.hasOrderedSource(name)) {
+    if (s.type === 'ordinal' && !encoding.bin(name) && encoding.sort(name).length === 0) {
       s.sort = true;
     }
 

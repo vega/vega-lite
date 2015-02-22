@@ -45,16 +45,12 @@ function addSortTransforms(spec, encoding, opt) {
 
   return {
     spec: spec,
-    _mapping: datasetMapping,
     getDataset: function(encType) {
       var data = datasetMapping[encType];
       if (!data) {
         return TABLE;
       }
       return data;
-    },
-    hasOrderedSource: function(encType) {
-      return encType in datasetMapping;
     }
   };
 }
