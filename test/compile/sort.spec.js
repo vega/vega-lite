@@ -13,6 +13,8 @@ describe('Sort', function() {
           y: {name: 'bar', type: 'Q'},
           color: {name: 'baz', type: 'O', sort: [{
             name: 'bar', aggr: 'sum'
+          }, {
+            name: 'foo', aggr: 'max', reverse: true
           }]}
         }
       }),
@@ -41,9 +43,12 @@ describe('Sort', function() {
         fields: [{
           field: 'data.bar',
           op: 'sum'
+        }, {
+          field: 'data.foo',
+          op: 'max'
         }]
       },
-      { type: 'sort', by: [ 'data.sum_bar' ] }
+      { type: 'sort', by: [ 'data.sum_bar', '-data.max_foo' ] }
     ]);
   });
 
