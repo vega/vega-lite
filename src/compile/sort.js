@@ -7,19 +7,17 @@ function addSortTransforms(spec, encoding, opt) {
   var datasetMapping = {};
   var counter = 0;
 
-  // TODO: collapse data sources
-
   encoding.forEach(function(encType, field) {
-    var orderBy = encoding.sort(encType);
-    if (orderBy.length > 0) {
-      var fields = orderBy.map(function(d) {
+    var sortBy = encoding.sort(encType);
+    if (sortBy.length > 0) {
+      var fields = sortBy.map(function(d) {
         return {
           op: d.aggr,
           field: 'data.' + d.name
         };
       });
 
-      var byClause = orderBy.map(function(d) {
+      var byClause = sortBy.map(function(d) {
         return (d.reverse ? '-' : '') + 'data.' + d.aggr + '_' + d.name;
       });
 
