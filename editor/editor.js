@@ -109,7 +109,6 @@ vled.loadEncoding = function(encoding) {
     vled.vis = chart({el:"#vis", renderer: "svg"});
 
     vled.vis.update();
-    vled.vis.on('mouseover', function(event, item) { console.log(item); });
   });
 }
 
