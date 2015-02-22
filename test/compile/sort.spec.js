@@ -48,6 +48,6 @@ describe('Sort', function() {
   });
 
   it('should set correct mapping', function() {
-    expect(sorting.mapping).to.deep.equal({ x: 'sorted0', color: 'sorted1' });
+    expect(sorting._mapping).to.deep.equal({ x: 'sorted0', color: 'sorted1' });
   });
 });

@@ -45,7 +45,7 @@ function addSortTransforms(spec, encoding, opt) {
 
   return {
     spec: spec,
-    mapping: datasetMapping,
+    _mapping: datasetMapping,
     getDataset: function(encType) {
       var data = datasetMapping[encType];
       if (!data) {
