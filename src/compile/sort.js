@@ -53,7 +53,7 @@ function addSortTransforms(spec, encoding, opt) {
       }
       return data;
     },
-    isSorted: function(encType) {
+    hasOrderedSource: function(encType) {
       return encType in datasetMapping;
     }
   };
