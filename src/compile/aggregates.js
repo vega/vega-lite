@@ -7,7 +7,7 @@ function aggregates(spec, encoding, opt) {
   opt = opt || {};
 
   var dims = {}, meas = {}, detail = {}, facets = {},
-    data = spec.data[1];
+    data = spec.data[1]; // currently data[0] is raw and data[1] is table
 
   encoding.forEach(function(encType, field) {
     if (field.aggr) {
