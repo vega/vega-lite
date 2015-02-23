@@ -320,6 +320,10 @@ var Encoding = module.exports = (function() {
     return new Encoding(marktype, enc, cfg);
   };
 
+  Encoding.shorthandFromSpec = function() {
+    return Encoding.fromSpec.apply(null, arguments).toShorthand();
+  };
+
   Encoding.fromSpec = function(spec, theme, extraCfg) {
     var enc = util.duplicate(spec.enc);
 
@@ -330,6 +334,7 @@ var Encoding = module.exports = (function() {
 
     return new Encoding(spec.marktype, enc, util.merge(spec.cfg || {}, extraCfg || {}), spec.filter, theme);
   };
+
 
   return Encoding;
 
