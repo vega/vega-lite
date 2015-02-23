@@ -2,6 +2,7 @@
 var g = global || window;
 
 g.TABLE = 'table';
+g.RAW = 'raw';
 g.STACKED = 'stacked';
 g.INDEX = 'index';
 

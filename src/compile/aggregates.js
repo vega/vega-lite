@@ -5,7 +5,10 @@ module.exports = aggregates;
 
 function aggregates(spec, encoding, opt) {
   opt = opt || {};
-  var dims = {}, meas = {}, detail = {}, facets = {};
+
+  var dims = {}, meas = {}, detail = {}, facets = {},
+    data = spec.data[1]; // currently data[0] is raw and data[1] is table
+
   encoding.forEach(function(encType, field) {
     if (field.aggr) {
       if (field.aggr === 'count') {
@@ -29,8 +32,8 @@ function aggregates(spec, encoding, opt) {
   meas = util.vals(meas);
 
   if (meas.length > 0 && !opt.preaggregatedData) {
-    if (!spec.transform) spec.transform = [];
-    spec.transform.push({
+    if (!data.transform) data.transform = [];
+    data.transform.push({
       type: 'aggregate',
       groupby: dims,
       fields: meas
@@ -40,7 +43,7 @@ function aggregates(spec, encoding, opt) {
       meas.forEach(function(m) {
         var fieldName = m.field.substr(5), //remove "data."
           field = 'data.' + (m.op ? m.op + '_' : '') + fieldName;
-        spec.transform.push({
+        data.transform.push({
           type: 'formula',
           field: field,
           expr: "d3.format('.2f')(d." + field + ')'

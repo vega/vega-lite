@@ -7,7 +7,8 @@ module.exports = template;
 
 function template(encoding, layout, stats) { //hack use stats
 
-  var data = {name: TABLE, format: {type: encoding.config('dataFormatType')}},
+  var data = {name: RAW, format: {type: encoding.config('dataFormatType')}},
+    table = {name: TABLE, source: RAW},
     dataUrl = vldata.getUrl(encoding, stats);
   if (dataUrl) data.url = dataUrl;
 
@@ -37,7 +38,7 @@ function template(encoding, layout, stats) { //hack use stats
     width: layout.width,
     height: layout.height,
     padding: 'auto',
-    data: [data],
+    data: [data, table],
     marks: [groupdef('cell', {
       width: layout.cellWidth ? {value: layout.cellWidth} : undefined,
       height: layout.cellHeight ? {value: layout.cellHeight} : undefined

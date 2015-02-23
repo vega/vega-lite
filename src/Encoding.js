@@ -132,6 +132,10 @@ var Encoding = module.exports = (function() {
     return this._enc[x].fn;
   };
 
+   proto.sort = function(x) {
+    return this._enc[x].sort;
+  };
+
   proto.any = function(f) {
     return util.any(this._enc, f);
   };

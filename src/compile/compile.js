@@ -9,6 +9,7 @@ var template = compile.template = require('./template'),
   legend = compile.legend = require('./legend'),
   marks = compile.marks = require('./marks'),
   scale = compile.scale = require('./scale'),
+  vlsort = compile.sort = require('./sort'),
   vlstyle = compile.style = require('./style'),
   time = compile.time = require('./time'),
   aggregates = compile.aggregates = require('./aggregates'),
@@ -29,6 +30,7 @@ function compile(encoding, stats) {
     mdef = marks.def(mark, encoding, layout, style);
 
   filter(spec, encoding);
+  var sorting = vlsort(spec, encoding);
 
   var hasRow = encoding.has(ROW), hasCol = encoding.has(COL);
 
@@ -36,7 +38,7 @@ function compile(encoding, stats) {
 
   group.marks.push(mdef);
   // TODO: return value not used
-  binning(spec.data[0], encoding, {preaggregatedData: preaggregatedData});
+  binning(spec.data[1], encoding, {preaggregatedData: preaggregatedData});
 
   var lineType = marks[encoding.marktype()].line;
 
@@ -45,7 +47,7 @@ function compile(encoding, stats) {
   }
 
   // handle subfacets
-  var aggResult = aggregates(spec.data[0], encoding, {preaggregatedData: preaggregatedData}),
+  var aggResult = aggregates(spec, encoding, {preaggregatedData: preaggregatedData}),
     details = aggResult.details,
     hasDetails = details && details.length > 0,
     stack = hasDetails && stacking(spec, encoding, mdef, aggResult.facets);
@@ -65,10 +67,10 @@ function compile(encoding, stats) {
 
   // Small Multiples
   if (hasRow || hasCol) {
-    spec = faceting(group, encoding, layout, style, spec, mdef, stack, stats);
+    spec = faceting(group, encoding, layout, style, sorting, spec, mdef, stack, stats);
     spec.legends = legend.defs(encoding);
   } else {
-    group.scales = scale.defs(scale.names(mdef.properties.update), encoding, layout, style,
+    group.scales = scale.defs(scale.names(mdef.properties.update), encoding, layout, style, sorting,
       {stack: stack, stats: stats});
     group.axes = axis.defs(axis.names(mdef.properties.update), encoding, layout);
     group.legends = legend.defs(encoding);

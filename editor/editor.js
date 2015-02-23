@@ -66,7 +66,7 @@ function getParams() {
 vled.format = function() {
   var el = d3.select("#vlspec"),
       spec = JSON.parse(el.property("value")),
-      text = JSON.stringify(spec, null, "  ", 80);
+      text = JSON.stringify(spec, null, "  ", 60);
   el.property("value", text);
 };
 
@@ -75,7 +75,7 @@ vled.parse = function() {
   try {
     spec = JSON.parse(d3.select("#vlspec").property("value"));
   } catch (e) {
-    console.log(e);
+    console.warn(e);
     return;
   }
 
@@ -91,7 +91,7 @@ vled.parseShorthand = function() {
   var shorthand = d3.select("#shorthand").property("value");
 
   var encoding = vl.Encoding.parseShorthand(shorthand);
-  d3.select("#vlspec").node().value = JSON.stringify(encoding.toSpec(), null, "  ", 80);
+  d3.select("#vlspec").node().value = JSON.stringify(encoding.toSpec(), null, "  ", 60);
   vled.parse();
 }
 
@@ -99,8 +99,8 @@ vled.loadEncoding = function(encoding) {
   var spec = vl.compile(encoding, vled.dataset.stats);
 
   d3.select("#shorthand").node().value = encoding.toShorthand();
-  d3.select("#vlspec").node().value = JSON.stringify(encoding.toSpec(), null, "  ", 80);
-  d3.select("#vgspec").node().value = JSON.stringify(spec, null, "  ", 80);
+  d3.select("#vlspec").node().value = JSON.stringify(encoding.toSpec(), null, "  ", 60);
+  d3.select("#vgspec").node().value = JSON.stringify(spec, null, "  ", 60);
 
   $('textarea').trigger('autosize.resize');
 
@@ -109,7 +109,6 @@ vled.loadEncoding = function(encoding) {
     vled.vis = chart({el:"#vis", renderer: "svg"});
 
     vled.vis.update();
-    vled.vis.on('mouseover', function(event, item) { console.log(item); });
   });
 }
 
