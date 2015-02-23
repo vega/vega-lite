@@ -268,7 +268,7 @@ var Encoding = module.exports = (function() {
     var c = consts.shorthand;
     return 'mark' + c.assign + this._marktype +
       c.delim +
-      vlenc.shorthand(this_.enc);
+      vlenc.shorthand(this._enc);
   };
 
   Encoding.parseShorthand = function(shorthand, cfg) {
