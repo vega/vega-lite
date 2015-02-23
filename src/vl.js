@@ -8,6 +8,7 @@ vl.Encoding = require('./Encoding');
 vl.compile = require('./compile/compile');
 vl.data = require('./data');
 vl.field = require('./field');
+vl.enc = require('./enc');
 vl.schema = require('./schema/schema');
 
 
