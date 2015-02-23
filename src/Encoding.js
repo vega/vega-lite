@@ -4,6 +4,7 @@ var global = require('./globals'),
   consts = require('./consts'),
   util = require('./util'),
   vlfield = require('./field'),
+  vlenc = require('./enc'),
   schema = require('./schema/schema'),
   time = require('./compile/time');
 
@@ -42,8 +43,9 @@ var Encoding = module.exports = (function() {
     return this._marktype === m;
   };
 
-  proto.has = function(x) {
-    return this._enc[x].name !== undefined;
+  proto.has = function(encType) {
+    // equivalent to calling vlenc.has(this._enc, encType)
+    return this._enc[encType].name !== undefined;
   };
 
   proto.enc = function(x) {
@@ -149,32 +151,15 @@ var Encoding = module.exports = (function() {
   };
 
   proto.map = function(f) {
-    var arr = [], k;
-    for (k in this._enc) {
-      if(this.has(k)){
-        arr.push(f(this._enc[k], k, this._enc));
-      }
-    }
-    return arr;
+    return vlenc.map(this._enc, f);
   };
 
   proto.reduce = function(f, init) {
-    var r = init, i = 0, k;
-    for (k in this._enc) {
-      if (this.has(k)) {
-        r = f(r, this._enc[k], k, this._enc);
-      }
-    }
-    return r;
+    return vlenc.reduce(this._enc, f, init);
   };
 
   proto.forEach = function(f) {
-    var i = 0, k;
-    for (k in this._enc) {
-      if (this.has(k)) {
-        f(k, this._enc[k], i++);
-      }
-    }
+    return vlenc.forEach(this._enc, f);
   };
 
   proto.type = function(x) {
@@ -281,10 +266,9 @@ var Encoding = module.exports = (function() {
   proto.toShorthand = function() {
     var enc = this._enc;
     var c = consts.shorthand;
-    return 'mark' + c.assign + this._marktype + c.delim +
-      this.map(function(v, e) {
-        return e + c.assign + vlfield.shorthand(v);
-      }).join(c.delim);
+    return 'mark' + c.assign + this._marktype +
+      c.delim +
+      vlenc.shorthand(this_.enc);
   };
 
   Encoding.parseShorthand = function(shorthand, cfg) {
