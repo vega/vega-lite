@@ -29,7 +29,7 @@ function compile(encoding, stats) {
     mark = marks[encoding.marktype()],
     mdef = marks.def(mark, encoding, layout, style);
 
-  filter(spec, encoding);
+  filter.addFilters(spec, encoding);
   var sorting = vlsort(spec, encoding);
 
   var hasRow = encoding.has(ROW), hasCol = encoding.has(COL);
@@ -75,6 +75,9 @@ function compile(encoding, stats) {
     group.axes = axis.defs(axis.names(mdef.properties.update), encoding, layout);
     group.legends = legend.defs(encoding);
   }
+
+  filter.filterLessThanZero(spec, encoding);
+
   return spec;
 }
 

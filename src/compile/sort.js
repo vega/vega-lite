@@ -23,20 +23,22 @@ function addSortTransforms(spec, encoding, opt) {
 
       var dataName = 'sorted' + counter++;
 
+      var transforms = [
+        {
+          type: 'aggregate',
+          groupby: ['data.' + field.name],
+          fields: fields
+        },
+        {
+          type: 'sort',
+          by: byClause
+        }
+      ];
+
       spec.data.push({
         name: dataName,
         source: RAW,
-        transform: [
-          {
-            type: 'aggregate',
-            groupby: ['data.' + field.name],
-            fields: fields
-          },
-          {
-            type: 'sort',
-            by: byClause
-          }
-        ]
+        transform: transforms
       });
 
       datasetMapping[encType] = dataName;
