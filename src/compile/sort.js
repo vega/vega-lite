@@ -9,7 +9,7 @@ function addSortTransforms(spec, encoding, opt) {
 
   encoding.forEach(function(encType, field) {
     var sortBy = encoding.sort(encType);
-    if (sortBy && sortBy.length > 0) {
+    if (sortBy.length > 0) {
       var fields = sortBy.map(function(d) {
         return {
           op: d.aggr,
