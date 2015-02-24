@@ -26,8 +26,8 @@ function box(encoding, stats) {
       hasY = encoding.has(Y),
       marktype = encoding.marktype();
 
-  var xCardinality = hasX && encoding.isOrdinalScale(X) ? encoding.cardinality(X, stats) : 1,
-    yCardinality = hasY && encoding.isOrdinalScale(Y) ? encoding.cardinality(Y, stats) : 1;
+  var xCardinality = hasX && encoding.isDimension(X) ? encoding.cardinality(X, stats) : 1,
+    yCardinality = hasY && encoding.isDimension(Y) ? encoding.cardinality(Y, stats) : 1;
 
   var useSmallBand = xCardinality > encoding.config('largeBandMaxCardinality') ||
     yCardinality > encoding.config('largeBandMaxCardinality');
@@ -36,7 +36,7 @@ function box(encoding, stats) {
 
   // set cellWidth
   if (hasX) {
-    if (encoding.isOrdinalScale(X)) {
+    if (encoding.isDimension(X)) {
       // for ordinal, hasCol or not doesn't matter -- we scale based on cardinality
       cellWidth = (xCardinality + encoding.band(X).padding) * encoding.bandSize(X, useSmallBand);
     } else {
@@ -52,7 +52,7 @@ function box(encoding, stats) {
 
   // set cellHeight
   if (hasY) {
-    if (encoding.isOrdinalScale(Y)) {
+    if (encoding.isDimension(Y)) {
       // for ordinal, hasCol or not doesn't matter -- we scale based on cardinality
       cellHeight = (yCardinality + encoding.band(Y).padding) * encoding.bandSize(Y, useSmallBand);
     } else {
@@ -87,7 +87,7 @@ function box(encoding, stats) {
 function offset(encoding, stats, layout) {
   [X, Y].forEach(function (x) {
     var maxLength;
-    if (encoding.isOrdinalScale(x) || encoding.isType(x, T)) {
+    if (encoding.isDimension(x) || encoding.isType(x, T)) {
       maxLength = stats[encoding.fieldName(x)].maxlength;
     } else if (encoding.aggr(x) === 'count') {
       //assign default value for count as it won't have stats

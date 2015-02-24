@@ -60,7 +60,7 @@ function compile(encoding, stats) {
   // auto-sort line/area values
   //TODO(kanitw): have some config to turn off auto-sort for line (for line chart that encodes temporal information)
   if (lineType) {
-    var f = (encoding.isQuantScale(X) && encoding.isOrdinalScale(Y)) ? Y : X;
+    var f = (encoding.isMeasure(X) && encoding.isDimension(Y)) ? Y : X;
     if (!mdef.from) mdef.from = {};
     mdef.from.transform = [{type: 'sort', by: encoding.field(f)}];
   }

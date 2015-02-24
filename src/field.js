@@ -89,21 +89,36 @@ vlfield.order.typeThenCardinality = function(field, stats){
   return stats[field.name].cardinality;
 };
 
-function isTypeName(field, type) {
+
+vlfield.isType = function (fieldDef, type) {
+  return (fieldDef.type & type) > 0;
+};
+
+vlfield.isType.byName = function (field, type) {
   return field.type === consts.dataTypeNames[type];
+};
+
+function getIsType(useTypeCode) {
+  return useTypeCode ? vlfield.isType : vlfield.isType.byName;
+}
+
+function isDimension(field, useTypeCode /*optional*/) {
+  var isType = getIsType(useTypeCode);
+  return  isType(field, O) || field.bin ||
+    ( isType(field, T) && field.fn && time.isOrdinalFn(field.fn) );
 }
 
 /**
- * For encoding, use encoding.isOrdinalScale() to avoid confusion.
+ * For encoding, use encoding.isDimension() to avoid confusion.
  * Or use Encoding.isType if your field is from Encoding (and thus have numeric data type).
  * otherwise, do not specific isType so we can use the default isTypeName here.
  */
-vlfield.isOrdinalScale = function(field, isType /*optional*/) {
-  isType = isType || isTypeName;
+vlfield.isDimension = function(field, useTypeCode /*optional*/) {
+  return field && isDimension(field, useTypeCode);
+};
 
-  var fn;
-  return  isType(field, O) || field.bin ||
-    ( isType(field, T) && field.fn && time.isOrdinalFn(field.fn) );
+vlfield.isMeasure = function(field, useTypeCode) {
+  return field && !isDimension(field, useTypeCode);
 };
 
 vlfield.count = function() {
@@ -120,8 +135,8 @@ vlfield.isCount = function(field) {
  * For encoding, use encoding.cardinality() to avoid confusion.  Or use Encoding.isType if your field is from Encoding (and thus have numeric data type).
  * otherwise, do not specific isType so we can use the default isTypeName here.
  */
-vlfield.cardinality = function(field, stats, maxbins, isType) {
-  isType = isType || isTypeName;
+vlfield.cardinality = function(field, stats, maxbins, useTypeCode) {
+  var isType = getIsType(useTypeCode);
 
   if (field.bin) {
     if(!maxbins) console.error('vlfield.cardinality not included maxbins');

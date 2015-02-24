@@ -11,7 +11,7 @@ module.exports = function(encoding, stats) {
 };
 
 function colorRange(encoding, stats){
-  if (encoding.has(COLOR) && encoding.isOrdinalScale(COLOR)) {
+  if (encoding.has(COLOR) && encoding.isDimension(COLOR)) {
     var cardinality = encoding.cardinality(COLOR, stats);
     if (cardinality <= 10) {
       return "category10";
@@ -43,7 +43,7 @@ function estimateOpacity(encoding,stats) {
 
       if (encType !== ROW && encType !== COL &&
           !((encType === X || encType === Y) &&
-          vlfield.isOrdinalScale(field, Encoding.isType))
+          vlfield.isDimension(field, true))
         ) {
         numPoints *= encoding.cardinality(encType, stats);
       }
