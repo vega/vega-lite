@@ -1,5 +1,7 @@
 var globals = require('../globals');
 
+var filter = module.exports = {};
+
 var BINARY = {
   '>':  true,
   '>=': true,
@@ -9,7 +11,7 @@ var BINARY = {
   '<=': true
 };
 
-module.exports = function(spec, encoding) {
+filter.addFilters = function(spec, encoding) {
   var filters = encoding.filter(),
     data = spec.data[0];  // apply filters to raw data before aggregation
 
@@ -50,15 +52,17 @@ module.exports = function(spec, encoding) {
       test: condition
     });
   }
+};
 
-  // remove 0 values if we use log function
+// remove less than 0 values if we use log function
+filter.filterLessThanZero = function(spec, encoding) {
   encoding.forEach(function(encType, field) {
     if (encoding.scale(encType).type === 'log') {
-      data.transform.push({
+      spec.data[0].transform.push({
         type: 'filter',
-        test: 'd.data.' + field.name + '>0'
+        test: 'd.' + encoding.field(encType) + '>0'
       });
     }
   });
-};
+}
 
