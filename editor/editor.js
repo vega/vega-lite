@@ -148,14 +148,31 @@ vled.init = function() {
   d3.select("#btn_spec_parse").on("click", vled.parse);
   d3.select("#btn_shorthand_parse").on("click", vled.parseShorthand);
 
-  var initialShortHand = params.shortHand
-    ? params.shortHand
-    : "mark=point|x=avg_yield,Q|y=variety,O|row=site,O|color=year,O";
+  var shorthand = params.shortHand;
+  if (shorthand) {
+    document.getElementById("shorthand").value = shorthand;
+    vled.datasetChanged(DATASETS[0], function() {
+      vled.parseShorthand();
+    });
+  } else {
+    document.getElementById("vlspec").value = JSON.stringify({
+      marktype: "point",
+      enc: {
+        x: {type: "Q",name: "yield",aggr: "avg"},
+        y: {
+          sort: [{name: "yield", aggr: "avg", reverse: false}],
+          type: "O",
+          name: "variety"
+        },
+        row: {type: "O", name: "site"},
+        color: {type: "O", name: "year"}
+      }
+    });
 
-  document.getElementById("shorthand").value = initialShortHand;
-  vled.datasetChanged(DATASETS[0], function() {
-    vled.parseShorthand();
-  });
+    vled.datasetChanged(DATASETS[0], function() {
+      vled.parse();
+    });
+  }
 };
 
 window.onload = vled.init;
