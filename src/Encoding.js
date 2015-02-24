@@ -187,7 +187,7 @@ var Encoding = module.exports = (function() {
 
   var isOrdinalScale = Encoding.isOrdinalScale = function (encoding, encType){
     return vlfield.isOrdinalScale(encoding.enc(encType), isType);
-  }
+  };
 
   proto.isOrdinalScale = function(encType) {
     return this.has(encType) && isOrdinalScale(this, encType);
@@ -273,55 +273,19 @@ var Encoding = module.exports = (function() {
 
   Encoding.parseShorthand = function(shorthand, cfg) {
     var c = consts.shorthand,
-        enc = shorthand.split(c.delim),
-        marktype = enc.shift().split(c.assign)[1].trim();
-
-    enc = enc.reduce(function(m, e) {
-      var split = e.split(c.assign),
-          enctype = split[0].trim(), o;
-
-      split = split[1].split(c.type);
-      o = {
-        name: split[0].trim(),
-        type: consts.dataTypes[split[1].trim()]
-      };
-
-      // check aggregate type
-      for (var i in schema.aggr.enum) {
-        var a = schema.aggr.enum[i];
-        if (o.name.indexOf(a + '_') === 0) {
-          o.name = o.name.substr(a.length + 1);
-          if (a == 'count' && o.name.length === 0) o.name = '*';
-          o.aggr = a;
-          break;
-        }
-      }
-
-      // check time fn
-      for (var i in schema.timefns) {
-        var f = schema.timefns[i];
-        if (o.name && o.name.indexOf(f + '_') === 0) {
-          o.name = o.name.substr(o.length + 1);
-          o.fn = f;
-          break;
-        }
-      }
-
-      // check bin
-      if (o.name && o.name.indexOf('bin_') === 0) {
-        o.name = o.name.substr(4);
-        o.bin = true;
-      }
-
-      m[enctype] = o;
-      return m;
-    }, {});
+        split = shorthand.split(c.delim, 1),
+        marktype = split[0].split(c.assign)[1].trim(),
+        enc = vlenc.parseShorthand(split[1], true);
 
     return new Encoding(marktype, enc, cfg);
   };
 
   Encoding.shorthandFromSpec = function() {
     return Encoding.fromSpec.apply(null, arguments).toShorthand();
+  };
+
+  Encoding.specFromShorthand = function(shorthand, cfg, excludeConfig) {
+    return Encoding.parseShorthand(shorthand, cfg).toSpec(excludeConfig);
   };
 
   Encoding.fromSpec = function(spec, theme, extraCfg) {

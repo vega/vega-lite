@@ -46,3 +46,15 @@ vlenc.shorthand = function(enc) {
     return e + c.assign + vlfield.shorthand(v);
   }).join(c.delim);
 };
+
+vlenc.parseShorthand = function(shorthand, convertType) {
+  var enc = shorthand.split(c.delim);
+  return enc.reduce(function(m, e) {
+    var split = e.split(c.assign),
+        enctype = split[0].trim(),
+        field = split[1];
+
+    m[enctype] = vlfield.parseShorthand(field, convertType);
+    return m;
+  }, {});
+};

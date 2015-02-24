@@ -1,8 +1,10 @@
 // utility for field
 
 var consts = require('./consts'),
+  c = consts.shorthand,
   time = require('./compile/time'),
-  util = require('./util');
+  util = require('./util'),
+  schema = require('./schema/schema');
 
 var vlfield = module.exports = {};
 
@@ -18,6 +20,43 @@ vlfield.shorthand = function(f) {
 vlfield.shorthands = function(fields, delim) {
   delim = delim || ',';
   return fields.map(vlfield.shorthand).join(delim);
+};
+
+vlfield.parseShorthand = function(shorthand, convertType) {
+  var split = shorthand.split(c.type), i;
+  var o = {
+    name: split[0].trim(),
+    type: convertType ? consts.dataTypes[split[1].trim()] : split[1].trim()
+  };
+
+  // check aggregate type
+  for (i in schema.aggr.enum) {
+    var a = schema.aggr.enum[i];
+    if (o.name.indexOf(a + '_') === 0) {
+      o.name = o.name.substr(a.length + 1);
+      if (a == 'count' && o.name.length === 0) o.name = '*';
+      o.aggr = a;
+      break;
+    }
+  }
+
+  // check time fn
+  for (i in schema.timefns) {
+    var f = schema.timefns[i];
+    if (o.name && o.name.indexOf(f + '_') === 0) {
+      o.name = o.name.substr(o.length + 1);
+      o.fn = f;
+      break;
+    }
+  }
+
+  // check bin
+  if (o.name && o.name.indexOf('bin_') === 0) {
+    o.name = o.name.substr(4);
+    o.bin = true;
+  }
+
+  return o;
 };
 
 var typeOrder = {
