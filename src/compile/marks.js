@@ -66,9 +66,9 @@ function bar_props(e, layout) {
   var p = {};
 
   // x
-  if (e.isQuantScale(X)) {
+  if (e.isMeasure(X)) {
     p.x = {scale: X, field: e.field(X)};
-    if (e.isOrdinalScale(Y)) {
+    if (e.isDimension(Y)) {
       p.x2 = {scale: X, value: 0};
     }
   } else if (e.has(X)) { // is ordinal
@@ -79,7 +79,7 @@ function bar_props(e, layout) {
   }
 
   // y
-  if (e.isQuantScale(Y)) {
+  if (e.isMeasure(Y)) {
     p.y = {scale: Y, field: e.field(Y)};
     p.y2 = {scale: Y, value: 0};
   } else if (e.has(Y)) { // is ordinal
@@ -90,7 +90,7 @@ function bar_props(e, layout) {
   }
 
   // width
-  if (!e.isQuantScale(X)) { // no X or X is ordinal
+  if (!e.isMeasure(X)) { // no X or X is ordinal
     if (e.has(SIZE)) {
       p.width = {scale: SIZE, field: e.field(SIZE)};
     } else {
@@ -102,7 +102,7 @@ function bar_props(e, layout) {
   }
 
   // height
-  if (!e.isQuantScale(Y)) { // no Y or Y is ordinal
+  if (!e.isMeasure(Y)) { // no Y or Y is ordinal
     if (e.has(SIZE)) {
       p.height = {scale: SIZE, field: e.field(SIZE)};
     } else {
@@ -222,9 +222,9 @@ function area_props(e, layout, style) {
   var p = {};
 
   // x
-  if (e.isQuantScale(X)) {
+  if (e.isMeasure(X)) {
     p.x = {scale: X, field: e.field(X)};
-    if (e.isOrdinalScale(Y)) {
+    if (e.isDimension(Y)) {
       p.x2 = {scale: X, value: 0};
       p.orient = {value: 'horizontal'};
     }
@@ -235,7 +235,7 @@ function area_props(e, layout, style) {
   }
 
   // y
-  if (e.isQuantScale(Y)) {
+  if (e.isMeasure(Y)) {
     p.y = {scale: Y, field: e.field(Y)};
     p.y2 = {scale: Y, value: 0};
   } else if (e.has(Y)) {
@@ -363,7 +363,7 @@ function text_props(e, layout, style) {
 
   // align
   if (e.has(X)) {
-    if (e.isOrdinalScale(X)) {
+    if (e.isDimension(X)) {
       p.align = {value: 'left'};
       p.dx = {value: e.text('margin')};
     } else {

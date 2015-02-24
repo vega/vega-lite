@@ -178,23 +178,27 @@ var Encoding = module.exports = (function() {
 
   proto.isType = function(x, type) {
     var field = this.enc(x);
-    return field && isType(field, type);
+    return field && Encoding.isType(field, type);
   };
 
-  var isType = Encoding.isType = function (fieldDef, type) {
+  Encoding.isType = function (fieldDef, type) {
     return (fieldDef.type & type) > 0;
   };
 
-  var isOrdinalScale = Encoding.isOrdinalScale = function (encoding, encType){
-    return vlfield.isOrdinalScale(encoding.enc(encType), isType);
+  Encoding.isDimension = function(encoding, encType) {
+    return vlfield.isDimension(encoding.enc(encType), true);
   };
 
-  proto.isOrdinalScale = function(encType) {
-    return this.has(encType) && isOrdinalScale(this, encType);
+  Encoding.isMeasure = function(encoding, encType) {
+    return vlfield.isMeasure(encoding.enc(encType), true);
   };
 
-  proto.isQuantScale = function(encType) {
-    return this.has(encType) && !isOrdinalScale(this, encType);
+  proto.isDimension = function(encType) {
+    return this.has(encType) && Encoding.isDimension(this, encType);
+  };
+
+  proto.isMeasure = function(encType) {
+    return this.has(encType) && Encoding.isMeasure(this, encType);
   };
 
   proto.isAggregate = function() {
@@ -218,21 +222,11 @@ var Encoding = module.exports = (function() {
   };
 
   proto.cardinality = function(encType, stats) {
-    return vlfield.cardinality(this._enc[encType], stats, this.config('maxbins'), isType);
+    return vlfield.cardinality(this._enc[encType], stats, this.config('maxbins'), true);
   };
 
   proto.isRaw = function() {
     return !this.isAggregate();
-  };
-
-  proto.isDimension = function(encType) {
-    return this.has(encType) && this.isAggregate() &&
-      isOrdinalScale(this, encType);
-  };
-
-  proto.isMeasure = function(encType) {
-    return this.has(encType) && this.isAggregate() &&
-      !isOrdinalScale(this, encType);
   };
 
   proto.config = function(name) {

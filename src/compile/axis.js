@@ -62,7 +62,7 @@ axis.def = function(name, encoding, layout, opt) {
   }
 
   if (name == X) {
-    if (encoding.isOrdinalScale(X) || encoding.isType(X, T)) {
+    if (encoding.isDimension(X) || encoding.isType(X, T)) {
       setter(def, ['properties','labels'], {
         angle: {value: 270},
         align: {value: 'right'},
