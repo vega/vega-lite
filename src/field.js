@@ -96,10 +96,16 @@ vlfield.isType = function (fieldDef, type) {
 
 vlfield.isType.byName = function (field, type) {
   return field.type === consts.dataTypeNames[type];
-}
+};
 
 function getIsType(useTypeCode) {
   return useTypeCode ? vlfield.isType : vlfield.isType.byName;
+}
+
+function isDimension(field, useTypeCode /*optional*/) {
+  var isType = getIsType(useTypeCode);
+  return  isType(field, O) || field.bin ||
+    ( isType(field, T) && field.fn && time.isOrdinalFn(field.fn) );
 }
 
 /**
@@ -108,13 +114,11 @@ function getIsType(useTypeCode) {
  * otherwise, do not specific isType so we can use the default isTypeName here.
  */
 vlfield.isDimension = function(field, useTypeCode /*optional*/) {
-  var isType = getIsType(useTypeCode);
-  return  isType(field, O) || field.bin ||
-    ( isType(field, T) && field.fn && time.isOrdinalFn(field.fn) );
+  return field && isDimension(field, useTypeCode);
 };
 
 vlfield.isMeasure = function(field, useTypeCode) {
-  return !vlfield.isDimension(field, useTypeCode);
+  return field && !isDimension(field, useTypeCode);
 };
 
 vlfield.count = function() {
