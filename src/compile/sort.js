@@ -35,13 +35,6 @@ function addSortTransforms(spec, encoding, opt) {
         }
       ];
 
-      if (encoding.scale(encType).type === 'log') {
-        transforms.push({
-          type: 'filter',
-          test: 'd.' + encoding.field(encType) + '>0'
-        });
-      }
-
       spec.data.push({
         name: dataName,
         source: RAW,
