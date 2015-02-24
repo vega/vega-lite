@@ -58,7 +58,7 @@ filter.addFilters = function(spec, encoding) {
 filter.filterLessThanZero = function(spec, encoding) {
   encoding.forEach(function(encType, field) {
     if (encoding.scale(encType).type === 'log') {
-      spec.data[0].transform.push({
+      spec.data[1].transform.push({
         type: 'filter',
         test: 'd.' + encoding.field(encType) + '>0'
       });
