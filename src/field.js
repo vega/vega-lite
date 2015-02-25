@@ -121,6 +121,10 @@ vlfield.isMeasure = function(field, useTypeCode) {
   return field && !isDimension(field, useTypeCode);
 };
 
+vlfield.role = function(field) {
+  return isDimension(field) ? 'dimension' : 'measure';
+};
+
 vlfield.count = function() {
   return {name:'*', aggr: 'count', type:'Q', displayName: vlfield.count.displayName};
 };
