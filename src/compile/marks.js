@@ -4,12 +4,33 @@ var globals = require('../globals'),
 var marks = module.exports = {};
 
 marks.def = function(mark, encoding, layout, style) {
+  var defs = [];
+
+  // to add a background to text, we need to add it before the text
+  if (encoding.marktype() === TEXT && encoding.has(COLOR)) {
+    var p = {
+      x: {value: 0},
+      y: {value: 1},
+      x2: {value: 90},
+      y2: {value: 17},
+      fill: {scale: COLOR, field: encoding.field(COLOR)}
+    };
+    defs.push({
+      type: 'rect',
+      from: {data: TABLE},
+      properties: {enter: p, update: p}
+    });
+  }
+
+  // add the mark def for the main thing
   var p = mark.prop(encoding, layout, style);
-  return {
+  defs.push({
     type: mark.type,
     from: {data: TABLE},
     properties: {enter: p, update: p}
-  };
+  });
+
+  return defs;
 };
 
 marks.bar = {
@@ -334,11 +355,8 @@ function text_props(e, layout, style) {
   }
 
   // fill
-  if (e.has(COLOR)) {
-    p.fill = {scale: COLOR, field: e.field(COLOR)};
-  } else if (!e.has(COLOR)) {
-    p.fill = {value: e.value(COLOR)};
-  }
+  // color should be set to background
+  p.fill = {value: 'black'};
 
   // alpha
   if (e.has(ALPHA)) {
