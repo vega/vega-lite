@@ -352,6 +352,7 @@ function text_props(e, layout, style) {
   // text
   if (e.has(TEXT)) {
     p.text = {field: e.field(TEXT)};
+    p.align = {value: 'right'};
   } else {
     p.text = {value: 'Abc'};
   }
@@ -360,21 +361,6 @@ function text_props(e, layout, style) {
   p.fontWeight = {value: e.font('weight')};
   p.fontStyle = {value: e.font('style')};
   p.baseline = {value: e.text('baseline')};
-
-  // align
-  if (e.has(X)) {
-    if (e.isDimension(X)) {
-      p.align = {value: 'left'};
-      p.dx = {value: e.text('margin')};
-    } else {
-      p.align = {value: 'center'};
-    }
-  } else if (e.has(Y)) {
-    p.align = {value: 'left'};
-    p.dx = {value: e.text('margin')};
-  } else {
-    p.align = {value: e.text('align')};
-  }
 
   return p;
 }
