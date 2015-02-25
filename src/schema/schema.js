@@ -313,7 +313,7 @@ var shapeMixin = {
 
 var detailMixin = {
   type: 'object',
-  supportedMarktypes: {'point': true, 'line': true, 'circle': true, 'square': true, 'text': true}
+  supportedMarktypes: {'point': true, 'line': true, 'circle': true, 'square': true}
 };
 
 var rowMixin = {
