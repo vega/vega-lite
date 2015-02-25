@@ -181,7 +181,7 @@ var sortMixin = {
       }
     }
   }
-}
+};
 
 var bandMixin = {
   type: 'object',
@@ -313,7 +313,7 @@ var shapeMixin = {
 
 var detailMixin = {
   type: 'object',
-  supportedMarktypes: {'point': true, 'line': true, 'circle': true, 'square': true, 'text': true}
+  supportedMarktypes: {'point': true, 'line': true, 'circle': true, 'square': true}
 };
 
 var rowMixin = {
@@ -529,6 +529,8 @@ schema.schema = {
     cfg: cfg
   }
 };
+
+schema.encTypes = util.keys(schema.schema.properties.enc.properties);
 
 /** Instantiate a verbose vl spec from the schema */
 schema.instantiate = function() {
