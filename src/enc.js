@@ -4,40 +4,43 @@ var consts = require('./consts'),
   c = consts.shorthand,
   time = require('./compile/time'),
   vlfield = require('./field'),
-  util = require('./util');
+  util = require('./util'),
+  schema = require('./schema/schema'),
+  encTypes = schema.encTypes;
 
 var vlenc = module.exports = {};
 
 vlenc.has = function(enc, encType) {
-  return enc[encType].name !== undefined;
+  var fieldDef = enc[encType];
+  return fieldDef && fieldDef.name;
 };
 
 vlenc.forEach = function(enc, f) {
   var i = 0, k;
-  for (k in enc) {
+  encTypes.forEach(function(k) {
     if (vlenc.has(enc, k)) {
       f(k, enc[k], i++);
     }
-  }
+  });
 };
 
 vlenc.map = function(enc, f) {
   var arr = [], k;
-  for (k in enc) {
+  encTypes.forEach(function(k) {
     if (vlenc.has(enc, k)) {
       arr.push(f(enc[k], k, enc));
     }
-  }
+  });
   return arr;
 };
 
 vlenc.reduce = function(enc, f, init) {
   var r = init, i = 0, k;
-  for (k in enc) {
+  encTypes.forEach(function(k) {
     if (vlenc.has(enc, k)) {
       r = f(r, enc[k], k, enc);
     }
-  }
+  });
   return r;
 };
 

@@ -181,7 +181,7 @@ var sortMixin = {
       }
     }
   }
-}
+};
 
 var bandMixin = {
   type: 'object',
@@ -529,6 +529,8 @@ schema.schema = {
     cfg: cfg
   }
 };
+
+schema.encTypes = util.keys(schema.schema.properties.enc.properties);
 
 /** Instantiate a verbose vl spec from the schema */
 schema.instantiate = function() {
