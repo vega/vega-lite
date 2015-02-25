@@ -41,7 +41,7 @@ filter.addFilters = function(spec, encoding) {
         var field = 'd.data.' + operands[j];
         condition += '(' +
           '(!!' + field + ' && ' + field + ' != "null")' +
-          ' || ' + field + ' !== 0 ' +
+          ' || ' + field + ' === 0 ' +
           ')';
         if (j < operands.length - 1) {
           condition += ' && ';
