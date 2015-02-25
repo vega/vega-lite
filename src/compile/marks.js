@@ -262,7 +262,7 @@ function area_props(e, layout, style) {
 }
 
 function filled_point_props(shape) {
-  return function(e, style) {
+  return function(e, layout, style) {
     var p = {};
 
     // x
