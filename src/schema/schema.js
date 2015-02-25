@@ -127,7 +127,7 @@ var onlyOrdinalField = merge(clone(schema.field), {
 
 var axisMixin = {
   type: 'object',
-  supportedMarktypes: {'point': true, 'bar': true, 'line': true, 'area': true, 'circle': true, 'square': true, 'text': true},
+  supportedMarktypes: {'point': true, 'bar': true, 'line': true, 'area': true, 'circle': true, 'square': true},
   properties: {
     axis: {
       type: 'object',
