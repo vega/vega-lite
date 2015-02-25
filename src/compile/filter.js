@@ -38,7 +38,11 @@ filter.addFilters = function(spec, encoding) {
     } else if (operator === 'notNull') {
       // expects a number of fields
       for (var j in operands) {
-        condition += '(!!d.data.' + operands[j] + '&& d.data.' + operands[j] + ' != "null")';
+        var field = 'd.data.' + operands[j];
+        condition += '(' +
+          '(!!' + field + ' && ' + field + ' != "null")' +
+          ' || ' + field + ' !== 0 ' +
+          ')';
         if (j < operands.length - 1) {
           condition += ' && ';
         }
@@ -64,5 +68,5 @@ filter.filterLessThanZero = function(spec, encoding) {
       });
     }
   });
-}
+};
 
