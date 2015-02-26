@@ -350,7 +350,7 @@ function text_props(e, layout, style) {
   // size
   if (e.has(SIZE)) {
     p.fontSize = {scale: SIZE, field: e.field(SIZE)};
-  } else if (!e.has(X)) {
+  } else if (!e.has(SIZE)) {
     p.fontSize = {value: e.font('size')};
   }
 
