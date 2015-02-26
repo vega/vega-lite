@@ -11,7 +11,7 @@ var consts = require('./consts'),
 var vlenc = module.exports = {};
 
 vlenc.has = function(enc, encType) {
-  var fieldDef = enc[encType];
+  var fieldDef = enc && enc[encType];
   return fieldDef && fieldDef.name;
 };
 
