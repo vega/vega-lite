@@ -103,7 +103,7 @@ function axis_title(def, name, encoding, layout, opt) {
 }
 
 function axis_labels(def, name, encoding, layout, opt) {
-  var fn;
+  var fn, textTemplatePath = ['properties','labels','text','template'];
   // add custom label for time type
   if (encoding.isType(name, T) && (fn = encoding.fn(name)) && (time.hasScale(fn))) {
     setter(def, ['properties','labels','text','scale'], 'time-'+ fn);
@@ -112,13 +112,13 @@ function axis_labels(def, name, encoding, layout, opt) {
   if (encoding.axis(name).format) {
     def.format = encoding.axis(name).format;
   } else if (encoding.isType(name, Q)) {
-    setter(def, ['properties','labels','text','template'], "{{data | number:'.3s'}}");
+    setter(def, textTemplatePath, "{{data | number:'.3s'}}");
   } else if (encoding.isType(name, T) && !encoding.fn(name)) {
-    setter(def, ['properties','labels','text','template'], "{{data | time:'%Y-%m-%d'}}");
+    setter(def, textTemplatePath, "{{data | time:'%Y-%m-%d'}}");
   } else if (encoding.isType(name, T) && encoding.fn(name) === 'year') {
-    setter(def, ['properties','labels','text','template'], "{{data | number:'d'}}");
+    setter(def, textTemplatePath, "{{data | number:'d'}}");
   } else if (encoding.isType(name, O)) {
-    setter(def, ['properties','labels','text','template'], '{{data | truncate:25}}');
+    setter(def, textTemplatePath, '{{data | truncate:25}}');
   }
 
   return def;
