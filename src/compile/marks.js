@@ -340,6 +340,11 @@ function text_props(e, layout, style) {
     p.x = {value: e.bandSize(X, layout.x.useSmallBand) / 2};
   }
 
+  // Layout hack, add a few pixels so that text is in the box
+  if (e.marktype() === TEXT && e.has(COLOR)) {
+    p.x.value = p.x.value + 2;
+  }
+
   // y
   if (e.has(Y)) {
     p.y = {scale: Y, field: e.field(Y)};
