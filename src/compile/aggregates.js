@@ -38,18 +38,6 @@ function aggregates(spec, encoding, opt) {
       groupby: dims,
       fields: meas
     });
-
-    if (encoding.marktype() === TEXT) {
-      meas.forEach(function(m) {
-        var fieldName = m.field.substr(5), //remove "data."
-          field = 'data.' + (m.op ? m.op + '_' : '') + fieldName;
-        data.transform.push({
-          type: 'formula',
-          field: field,
-          expr: "d3.format('.2f')(d." + field + ')'
-        });
-      });
-    }
   }
   return {
     details: util.vals(detail),
