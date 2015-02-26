@@ -10,9 +10,9 @@ marks.def = function(mark, encoding, layout, style) {
   if (encoding.marktype() === TEXT && encoding.has(COLOR)) {
     var p = {
       x: {value: 0},
-      y: {value: 1},
-      x2: {value: 90},
-      y2: {value: 17},
+      y: {value: 0},
+      x2: {value: layout.cellWidth},
+      y2: {value: layout.cellHeight},
       fill: {scale: COLOR, field: encoding.field(COLOR)}
     };
     defs.push({
