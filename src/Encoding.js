@@ -189,12 +189,20 @@ var Encoding = module.exports = (function() {
     return (fieldDef.type & type) > 0;
   };
 
+  Encoding.isOrdinalScale = function(encoding, encType) {
+    return vlfield.isOrdinalScale(encoding.enc(encType), true);
+  };
+
   Encoding.isDimension = function(encoding, encType) {
     return vlfield.isDimension(encoding.enc(encType), true);
   };
 
   Encoding.isMeasure = function(encoding, encType) {
     return vlfield.isMeasure(encoding.enc(encType), true);
+  };
+
+  proto.isOrdinalScale = function(encType) {
+    return this.has(encType) && Encoding.isOrdinalScale(this, encType);
   };
 
   proto.isDimension = function(encType) {
