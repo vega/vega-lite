@@ -73,23 +73,7 @@ axis.def = function(name, encoding, layout, opt) {
     }
   }
 
-  if (encoding.axis(name).format) {
-    def.format = encoding.axis(name).format;
-  } else if (encoding.isType(name, Q)) {
-    def.format = "s";
-  } else if (encoding.isType(name, T)) {
-    if (!encoding.fn(name)) {
-      def.format = "%Y-%m-%d";
-    } else {
-      def.format = "d";
-    }
-  }
-
-  var fn;
-  // add custom label for time type
-  if (encoding.isType(name, T) && (fn = encoding.fn(name)) && (time.hasScale(fn))) {
-    setter(def, ['properties','labels','text','scale'], 'time-'+ fn);
-  }
+  def = axis_labels(def, name, encoding, layout, opt);
 
   return def;
 };
@@ -113,7 +97,30 @@ function axis_title(def, name, encoding, layout, opt) {
       dy: {value: (-layout.height/2) -20}
     });
   }
+
   def.titleOffset = axisTitleOffset(encoding, layout, name);
+  return def;
+}
+
+function axis_labels(def, name, encoding, layout, opt) {
+  var fn;
+  // add custom label for time type
+  if (encoding.isType(name, T) && (fn = encoding.fn(name)) && (time.hasScale(fn))) {
+    setter(def, ['properties','labels','text','scale'], 'time-'+ fn);
+  }
+
+  if (encoding.axis(name).format) {
+    def.format = encoding.axis(name).format;
+  } else if (encoding.isType(name, Q)) {
+    setter(def, ['properties','labels','text','template'], "{{data | number:'.3s'}}");
+  } else if (encoding.isType(name, T) && !encoding.fn(name)) {
+    setter(def, ['properties','labels','text','template'], "{{data | time:'%Y-%m-%d'}}");
+  } else if (encoding.isType(name, T) && encoding.fn(name) === 'year') {
+    setter(def, ['properties','labels','text','template'], "{{data | number:'d'}}");
+  } else if (encoding.isType(name, O)) {
+    setter(def, ['properties','labels','text','template'], '{{data | truncate:25}}');
+  }
+
   return def;
 }
 
