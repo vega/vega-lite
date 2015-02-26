@@ -85,7 +85,7 @@ vled.parse = function() {
       datasetIndex = i;
       break;
     }
-  };
+  }
 
   var done = function() {
     cfg = {
@@ -101,6 +101,7 @@ vled.parse = function() {
   }
 
   if (datasetIndex !== undefined) {
+    document.getElementById("sel_spec").selectedIndex = datasetIndex;
     vled.datasetChanged(DATASETS[datasetIndex], function() {
       done();
     });
@@ -137,18 +138,12 @@ vled.loadEncoding = function(encoding) {
 }
 
 vled.datasetChanged = function(dataset, callback) {
-  if (vled.dataset !== dataset) {
-    for (var i = 0; i < DATASETS.length; i++) {
-      if (DATASETS[i].url === dataset.url) {
-        document.getElementById("sel_spec").selectedIndex = i;
-        break;
-      }
-    };
-  }
-
   vled.dataset = dataset;
 
-  if (dataset.stats) return;
+  if (dataset.stats) {
+    callback();
+    return;
+  }
 
   d3.json(dataset.url, function(err, data) {
     if (err) return alert("Error loading data " + err.statusText);
