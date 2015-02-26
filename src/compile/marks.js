@@ -369,7 +369,11 @@ function text_props(e, layout, style) {
 
   // text
   if (e.has(TEXT)) {
-    p.text = {field: e.field(TEXT)};
+    if (e.isType(TEXT, Q)) {
+      p.text = {template: "{{" + e.field(TEXT) + " | number:'.3s'}}"};
+    } else {
+      p.text = {field: e.field(TEXT)};
+    }
     p.align = {value: 'left'};
   } else {
     p.text = {value: 'Abc'};
