@@ -103,12 +103,13 @@ function axis_title(def, name, encoding, layout, opt) {
 }
 
 function axis_labels(def, name, encoding, layout, opt) {
-  var fn, textTemplatePath = ['properties','labels','text','template'];
+  var fn;
   // add custom label for time type
   if (encoding.isType(name, T) && (fn = encoding.fn(name)) && (time.hasScale(fn))) {
     setter(def, ['properties','labels','text','scale'], 'time-'+ fn);
   }
 
+  var textTemplatePath = ['properties','labels','text','template'];
   if (encoding.axis(name).format) {
     def.format = encoding.axis(name).format;
   } else if (encoding.isType(name, Q)) {
