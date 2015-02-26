@@ -162,8 +162,12 @@ var Encoding = module.exports = (function() {
     return vlenc.forEach(this._enc, f);
   };
 
-  proto.type = function(x) {
-    return this.has(x) ? this._enc[x].type : null;
+  proto.type = function(et) {
+    return this.has(et) ? this._enc[et].type : null;
+  };
+
+  proto.role = function(et) {
+    return this.has(et) ? vlfield.role(this._enc[et]) : null;
   };
 
   proto.text = function(prop) {
