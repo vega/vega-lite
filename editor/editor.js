@@ -99,7 +99,6 @@ vled.loadEncoding = function(encoding) {
   var spec = vl.compile(encoding, vled.dataset.stats);
 
   d3.select("#shorthand").node().value = encoding.toShorthand();
-  d3.select("#vlspec").node().value = JSON.stringify(encoding.toSpec(), null, "  ", 60);
   d3.select("#vgspec").node().value = JSON.stringify(spec, null, "  ", 60);
 
   $('textarea').trigger('autosize.resize');
@@ -168,6 +167,8 @@ vled.init = function() {
         color: {type: "O", name: "year"}
       }
     });
+
+    vled.format();
 
     vled.datasetChanged(DATASETS[0], function() {
       vled.parse();

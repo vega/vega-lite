@@ -18,11 +18,15 @@ function faceting(group, encoding, layout, style, sorting, spec, mdef, stack, st
   //move "from" to cell level and add facet transform
   group.from = {data: group.marks[0].from.data};
 
-  if (group.marks[0].from.transform) {
-    delete group.marks[0].from.data; //need to keep transform for subfacetting case
-  } else {
-    delete group.marks[0].from;
-  }
+  // Hack, this needs to be refactored
+  for (var i = 0; i < group.marks.length; i++) {
+    var mark = group.marks[i];
+    if (mark.from.transform) {
+      delete mark.from.data; //need to keep transform for subfacetting case
+    } else {
+      delete mark.from;
+    }
+  };
   if (hasRow) {
     if (!encoding.isDimension(ROW)) {
       util.error('Row encoding should be ordinal.');

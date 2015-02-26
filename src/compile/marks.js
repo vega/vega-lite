@@ -4,12 +4,33 @@ var globals = require('../globals'),
 var marks = module.exports = {};
 
 marks.def = function(mark, encoding, layout, style) {
+  var defs = [];
+
+  // to add a background to text, we need to add it before the text
+  if (encoding.marktype() === TEXT && encoding.has(COLOR)) {
+    var p = {
+      x: {value: 0},
+      y: {value: 0},
+      x2: {value: layout.cellWidth},
+      y2: {value: layout.cellHeight},
+      fill: {scale: COLOR, field: encoding.field(COLOR)}
+    };
+    defs.push({
+      type: 'rect',
+      from: {data: TABLE},
+      properties: {enter: p, update: p}
+    });
+  }
+
+  // add the mark def for the main thing
   var p = mark.prop(encoding, layout, style);
-  return {
+  defs.push({
     type: mark.type,
     from: {data: TABLE},
     properties: {enter: p, update: p}
-  };
+  });
+
+  return defs;
 };
 
 marks.bar = {
@@ -262,7 +283,7 @@ function area_props(e, layout, style) {
 }
 
 function filled_point_props(shape) {
-  return function(e, style) {
+  return function(e, layout, style) {
     var p = {};
 
     // x
@@ -319,6 +340,11 @@ function text_props(e, layout, style) {
     p.x = {value: e.bandSize(X, layout.x.useSmallBand) / 2};
   }
 
+  // Layout hack, add a few pixels so that text is in the box
+  if (e.marktype() === TEXT && e.has(COLOR)) {
+    p.x.value = p.x.value + 2;
+  }
+
   // y
   if (e.has(Y)) {
     p.y = {scale: Y, field: e.field(Y)};
@@ -329,16 +355,13 @@ function text_props(e, layout, style) {
   // size
   if (e.has(SIZE)) {
     p.fontSize = {scale: SIZE, field: e.field(SIZE)};
-  } else if (!e.has(X)) {
+  } else if (!e.has(SIZE)) {
     p.fontSize = {value: e.font('size')};
   }
 
   // fill
-  if (e.has(COLOR)) {
-    p.fill = {scale: COLOR, field: e.field(COLOR)};
-  } else if (!e.has(COLOR)) {
-    p.fill = {value: e.value(COLOR)};
-  }
+  // color should be set to background
+  p.fill = {value: 'black'};
 
   // alpha
   if (e.has(ALPHA)) {

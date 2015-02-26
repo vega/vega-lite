@@ -207,47 +207,42 @@ var textMixin = {
     text: {
       type: 'object',
       properties: {
-        text: {
-          type: 'object',
-          properties: {
-            align: {
-              type: 'string',
-              default: 'left'
-            },
-            baseline: {
-              type: 'string',
-              default: 'middle'
-            },
-            margin: {
-              type: 'integer',
-              default: 4,
-              minimum: 0
-            }
-          }
+        align: {
+          type: 'string',
+          default: 'left'
         },
-        font: {
-          type: 'object',
-          properties: {
-            weight: {
-              type: 'string',
-              enum: ['normal', 'bold'],
-              default: 'normal'
-            },
-            size: {
-              type: 'integer',
-              default: 10,
-              minimum: 0
-            },
-            family: {
-              type: 'string',
-              default: 'Helvetica Neue'
-            },
-            style: {
-              type: 'string',
-              default: 'normal',
-              enum: ['normal', 'italic']
-            }
-          }
+        baseline: {
+          type: 'string',
+          default: 'middle'
+        },
+        margin: {
+          type: 'integer',
+          default: 4,
+          minimum: 0
+        }
+      }
+    },
+    font: {
+      type: 'object',
+      properties: {
+        weight: {
+          type: 'string',
+          enum: ['normal', 'bold'],
+          default: 'normal'
+        },
+        size: {
+          type: 'integer',
+          default: 10,
+          minimum: 0
+        },
+        family: {
+          type: 'string',
+          default: 'Helvetica Neue'
+        },
+        style: {
+          type: 'string',
+          default: 'normal',
+          enum: ['normal', 'italic']
         }
       }
     }

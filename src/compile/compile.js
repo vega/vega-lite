@@ -27,7 +27,8 @@ function compile(encoding, stats) {
     spec = template(encoding, layout, stats),
     group = spec.marks[0],
     mark = marks[encoding.marktype()],
-    mdef = marks.def(mark, encoding, layout, style);
+    mdefs = marks.def(mark, encoding, layout, style),
+    mdef = mdefs[0];  // TODO: remove this dirty hack by refactoring the whole flow
 
   filter.addFilters(spec, encoding);
   var sorting = vlsort(spec, encoding);
@@ -36,7 +37,10 @@ function compile(encoding, stats) {
 
   var preaggregatedData = encoding.config('useVegaServer');
 
-  group.marks.push(mdef);
+  for (var i = 0; i < mdefs.length; i++) {
+    group.marks.push(mdefs[i]);
+  }
+
   // TODO: return value not used
   binning(spec.data[1], encoding, {preaggregatedData: preaggregatedData});
 
