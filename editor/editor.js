@@ -79,12 +79,30 @@ vled.parse = function() {
     return;
   }
 
-  cfg = {
-    dataUrl: vled.dataset.url
+  var datasetIndex;
+  for (var i = 0; spec.cfg && i < DATASETS.length; i++) {
+    if (DATASETS[i].url === spec.cfg.dataUrl) {
+      datasetIndex = i;
+      break;
+    }
+  };
+
+  var done = function() {
+    cfg = {
+      dataUrl: vled.dataset.url
+    }
+
+    encoding = vl.Encoding.fromSpec(spec, {}, cfg);
+    vled.loadEncoding(encoding);
   }
 
-  encoding = vl.Encoding.fromSpec(spec, {}, cfg);
-  vled.loadEncoding(encoding);
+  if (datasetIndex !== undefined) {
+    vled.datasetChanged(DATASETS[datasetIndex], function() {
+      done();
+    });
+  } else {
+    done();
+  }
 }
 
 vled.parseShorthand = function() {
@@ -101,6 +119,9 @@ vled.loadEncoding = function(encoding) {
   d3.select("#shorthand").node().value = encoding.toShorthand();
   d3.select("#vgspec").node().value = JSON.stringify(spec, null, "  ", 60);
 
+  // store spec in cookie for a day
+  docCookies.setItem("vlspec", JSON.stringify(encoding.toSpec()), 86400);
+
   $('textarea').trigger('autosize.resize');
 
   vled.vis = null; // DEBUG
@@ -112,6 +133,15 @@ vled.loadEncoding = function(encoding) {
 }
 
 vled.datasetChanged = function(dataset, callback) {
+  if (vled.dataset !== dataset) {
+    for (var i = 0; i < DATASETS.length; i++) {
+      if (DATASETS[i].url === dataset.url) {
+        document.getElementById("sel_spec").selectedIndex = i;
+        break;
+      }
+    };
+  }
+
   vled.dataset = dataset;
 
   if (dataset.stats) return;
@@ -153,6 +183,11 @@ vled.init = function() {
     vled.datasetChanged(DATASETS[0], function() {
       vled.parseShorthand();
     });
+  } else if (docCookies.hasItem("vlspec")) {
+    document.getElementById("vlspec").value = docCookies.getItem("vlspec");
+
+    vled.format();
+    vled.parse();
   } else {
     document.getElementById("vlspec").value = JSON.stringify({
       marktype: "point",
@@ -169,10 +204,7 @@ vled.init = function() {
     });
 
     vled.format();
-
-    vled.datasetChanged(DATASETS[0], function() {
-      vled.parse();
-    });
+    vled.parse();
   }
 };
 
