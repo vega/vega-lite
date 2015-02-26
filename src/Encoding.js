@@ -176,7 +176,7 @@ var Encoding = module.exports = (function() {
   };
 
   proto.font = function(prop) {
-    var font = this._enc[TEXT].text;
+    var font = this._enc[TEXT].font;
     return prop ? font[prop] : font;
   };
 
