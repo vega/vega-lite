@@ -151,6 +151,12 @@ var axisMixin = {
           type: 'string',
           default: undefined,  // auto
           description: 'The formatting pattern for axis labels.'
+        },
+        maxLabelLength: {
+          type: 'integer',
+          default: 50,
+          minimum: 0,
+          description: 'Truncate labels that are too long.'
         }
       }
     }
