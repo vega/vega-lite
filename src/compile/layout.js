@@ -36,7 +36,7 @@ function box(encoding, stats) {
 
   // set cellWidth
   if (hasX) {
-    if (encoding.isDimension(X)) {
+    if (encoding.isOrdinalScale(X)) {
       // for ordinal, hasCol or not doesn't matter -- we scale based on cardinality
       cellWidth = (xCardinality + encoding.band(X).padding) * encoding.bandSize(X, useSmallBand);
     } else {
@@ -52,7 +52,7 @@ function box(encoding, stats) {
 
   // set cellHeight
   if (hasY) {
-    if (encoding.isDimension(Y)) {
+    if (encoding.isOrdinalScale(Y)) {
       // for ordinal, hasCol or not doesn't matter -- we scale based on cardinality
       cellHeight = (yCardinality + encoding.band(Y).padding) * encoding.bandSize(Y, useSmallBand);
     } else {

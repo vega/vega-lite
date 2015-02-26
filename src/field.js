@@ -102,10 +102,20 @@ function getIsType(useTypeCode) {
   return useTypeCode ? vlfield.isType : vlfield.isType.byName;
 }
 
-function isDimension(field, useTypeCode /*optional*/) {
+/*
+ * Most fields that use ordinal scale are dimensions.
+ * However, YEAR(T), YEARMONTH(T) use time scale, not ordinal but are dimensions too.
+ */
+vlfield.isOrdinalScale = function(field, useTypeCode /*optional*/) {
   var isType = getIsType(useTypeCode);
   return  isType(field, O) || field.bin ||
     ( isType(field, T) && field.fn && time.isOrdinalFn(field.fn) );
+};
+
+function isDimension(field, useTypeCode /*optional*/) {
+  var isType = getIsType(useTypeCode);
+  return  isType(field, O) || field.bin ||
+    ( isType(field, T) && field.fn );
 }
 
 /**

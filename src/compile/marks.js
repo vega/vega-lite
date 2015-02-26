@@ -111,26 +111,26 @@ function bar_props(e, layout) {
   }
 
   // width
-  if (!e.isMeasure(X)) { // no X or X is ordinal
+  if (!e.has(X) || e.isOrdinalScale(X)) { // no X or X is ordinal
     if (e.has(SIZE)) {
       p.width = {scale: SIZE, field: e.field(SIZE)};
     } else {
       // p.width = {scale: X, band: true, offset: -1};
       p.width = {value: e.bandSize(X, layout.x.useSmallBand), offset: -1};
     }
-  } else { // X is Quant
+  } else { // X is Quant or Time Scale
     p.width = {value: e.bandSize(X, layout.x.useSmallBand), offset: -1};
   }
 
   // height
-  if (!e.isMeasure(Y)) { // no Y or Y is ordinal
+  if (!e.has(Y) || e.isOrdinalScale(Y)) { // no Y or Y is ordinal
     if (e.has(SIZE)) {
       p.height = {scale: SIZE, field: e.field(SIZE)};
     } else {
       // p.height = {scale: Y, band: true, offset: -1};
       p.height = {value: e.bandSize(Y, layout.y.useSmallBand), offset: -1};
     }
-  } else { // Y is Quant
+  } else { // Y is Quant or Time Scale
     p.height = {value: e.bandSize(Y, layout.y.useSmallBand), offset: -1};
   }
 
