@@ -96,7 +96,7 @@ vled.parse = function() {
     vled.loadEncoding(encoding);
   }
 
-  if (!vled.dataset) {
+  if (!vled.dataset && !datasetIndex) {
     datasetIndex = 0;
   }
 
@@ -189,9 +189,8 @@ vled.init = function() {
     });
   } else if (docCookies.hasItem("vlspec")) {
     document.getElementById("vlspec").value = docCookies.getItem("vlspec");
-
-    vled.format();
     vled.parse();
+    vled.format();
   } else {
     document.getElementById("vlspec").value = JSON.stringify({
       marktype: "point",
@@ -207,8 +206,8 @@ vled.init = function() {
       }
     });
 
-    vled.format();
     vled.parse();
+    vled.format();
   }
 };
 
