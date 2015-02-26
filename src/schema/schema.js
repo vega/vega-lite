@@ -154,7 +154,7 @@ var axisMixin = {
         },
         maxLabelLength: {
           type: 'integer',
-          default: undefined,  // do not truncate
+          default: 50,
           minimum: 0,
           description: 'Truncate labels that are too long.'
         }
