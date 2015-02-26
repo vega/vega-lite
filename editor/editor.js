@@ -96,6 +96,10 @@ vled.parse = function() {
     vled.loadEncoding(encoding);
   }
 
+  if (!vled.dataset) {
+    datasetIndex = 0;
+  }
+
   if (datasetIndex !== undefined) {
     vled.datasetChanged(DATASETS[datasetIndex], function() {
       done();
