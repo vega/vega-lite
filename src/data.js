@@ -78,6 +78,9 @@ vldata.getStats = function(data) { // hack
     var stat = util.minmax(data, k);
     stat.cardinality = util.uniq(data, k);
     stat.maxlength = data.reduce(function(max,row) {
+      if (row[k] === null) {
+        return max;
+      }
       var len = row[k].toString().length;
       return len > max ? len : max;
     }, 0);
