@@ -29,7 +29,6 @@ function estimateOpacity(encoding,stats) {
   }
 
   var numPoints = 0;
-  var maxbins = encoding.config('maxbins');
 
   if (encoding.isAggregate()) { // aggregate plot
     numPoints = 1;

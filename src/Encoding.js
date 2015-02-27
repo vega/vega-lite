@@ -118,8 +118,16 @@ var Encoding = module.exports = (function() {
     return this._enc[x].aggr;
   };
 
+  // returns false if binning is disabled, otherwise an object with binning properties
   proto.bin = function(x) {
-    return this._enc[x].bin;
+    var bin = this._enc[x].bin;
+    if (bin === {})
+      return false;
+    if (bin === true)
+      return {
+        schema.MAXBINS_DEFAULT;
+      }
+    return bin;
   };
 
   proto.legend = function(x) {

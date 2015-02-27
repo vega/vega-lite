@@ -66,18 +66,22 @@ schema.field = {
 var clone = util.duplicate;
 var merge = schema.util.merge;
 
+var MAXBINS_DEFAULT = 15;
+
 var binningMixin = {
   type: 'object',
   properties: {
     bin: {
-      type: 'boolean',
+      type: ['boolean', 'object'],
       default: false,
+      properties: {
+        maxbins: {
+          type: 'integer',
+          default: MAXBINS_DEFAULT,
+          minimum: 2
+        }
+      },
       supportedTypes: {'Q': true} // TODO: add 'O' after finishing #81
-    },
-    maxbins: {
-      type: 'integer',
-      default: 15,
-      minimum: 2
     }
   }
 }
