@@ -46,10 +46,13 @@ util.uniq = function(data, field) {
   return count;
 };
 
-util.minmax = function(data, field) {
+util.minmax = function(data, field, excludeNulls) {
+  var excludeNulls = excludeNulls === undefined ? false : excludeNulls;
   var stats = {min: +Infinity, max: -Infinity};
   for (i = 0; i < data.length; ++i) {
     var v = data[i][field];
+    if (excludeNulls && v === null)
+      continue;
     if (v > stats.max) stats.max = v;
     if (v < stats.min) stats.min = v;
   }
