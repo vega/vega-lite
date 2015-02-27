@@ -125,8 +125,8 @@ var Encoding = module.exports = (function() {
       return false;
     if (bin === true)
       return {
-        schema.MAXBINS_DEFAULT;
-      }
+        maxbins: schema.MAXBINS_DEFAULT
+      };
     return bin;
   };
 
@@ -242,7 +242,7 @@ var Encoding = module.exports = (function() {
   };
 
   proto.cardinality = function(encType, stats) {
-    return vlfield.cardinality(this._enc[encType], stats, true);
+    return vlfield.cardinality(this, encType, stats, true);
   };
 
   proto.isRaw = function() {

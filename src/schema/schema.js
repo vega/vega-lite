@@ -66,7 +66,7 @@ schema.field = {
 var clone = util.duplicate;
 var merge = schema.util.merge;
 
-var MAXBINS_DEFAULT = 15;
+schema.MAXBINS_DEFAULT = 15;
 
 var binningMixin = {
   type: 'object',
@@ -77,7 +77,7 @@ var binningMixin = {
       properties: {
         maxbins: {
           type: 'integer',
-          default: MAXBINS_DEFAULT,
+          default: schema.MAXBINS_DEFAULT,
           minimum: 2
         }
       },
