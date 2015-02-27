@@ -119,7 +119,7 @@ function axis_labels(def, name, encoding, layout, opt) {
   } else if (encoding.isType(name, T) && encoding.fn(name) === 'year') {
     setter(def, textTemplatePath, "{{data | number:'d'}}");
   } else if (encoding.isType(name, O) && encoding.axis(name).maxLabelLength) {
-    setter(def, textTemplatePath, '{{data | to-string | truncate:' + encoding.axis(name).maxLabelLength + '}}');
+    setter(def, textTemplatePath, '{{data | truncate:' + encoding.axis(name).maxLabelLength + '}}');
   }
 
   return def;
