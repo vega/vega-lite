@@ -58,6 +58,12 @@ marks.area = {
   supportedEncoding: marks.line.supportedEncoding
 };
 
+marks.tick = {
+  type: 'rect',
+  line: true,
+  prop: tick_props
+};
+
 marks.circle = {
   type: 'symbol',
   prop: filled_point_props('circle'),
@@ -83,7 +89,7 @@ marks.text = {
   supportedEncoding: {row: 1, col: 1, size: 1, color: 1, alpha: 1, text: 1}
 };
 
-function bar_props(e, layout) {
+function bar_props(e, layout, style) {
   var p = {};
 
   // x
@@ -277,6 +283,51 @@ function area_props(e, layout, style) {
     p.opacity = {scale: ALPHA, field: e.field(ALPHA)};
   } else if (e.value(ALPHA) !== undefined) {
     p.opacity = {value: e.value(ALPHA)};
+  }
+
+  return p;
+}
+
+function tick_props(e, layout, style) {
+  var p = {};
+
+  // x
+  if (e.has(X)) {
+    p.x = {scale: X, field: e.field(X)};
+  } else if (!e.has(X)) {
+    p.x = {value: e.bandSize(X, layout.x.useSmallBand) / 2};
+  }
+
+  // y
+  if (e.has(Y)) {
+    p.y = {scale: Y, field: e.field(Y)};
+  } else if (!e.has(Y)) {
+    p.y = {value: e.bandSize(Y, layout.y.useSmallBand) / 2};
+  }
+
+  p.width = {value: 1};
+
+  // height
+  if (e.has(SIZE)) {
+    p.height = {scale: SIZE, field: e.field(SIZE)};
+  } else {
+    p.height = {value: e.bandSize(Y, layout.y.useSmallBand) / 2};
+  }
+
+  // fill
+  if (e.has(COLOR)) {
+    p.fill = {scale: COLOR, field: e.field(COLOR)};
+  } else {
+    p.fill = {value: e.value(COLOR)};
+  }
+
+  // alpha
+  if (e.has(ALPHA)) {
+    p.opacity = {scale: ALPHA, field: e.field(ALPHA)};
+  } else if (e.value(ALPHA) !== undefined) {
+    p.opacity = {value: e.value(ALPHA)};
+  } else {
+    p.opacity = {value: style.opacity};
   }
 
   return p;
