@@ -13,13 +13,13 @@ function binning(spec, encoding, opt) {
 
   if (!spec.transform) spec.transform = [];
 
-  encoding.forEach(function(vv, d) {
-    if (d.bin) {
+  encoding.forEach(function(encType, field) {
+    if (field.bin) {
       spec.transform.push({
         type: 'bin',
-        field: 'data.' + d.name,
-        output: 'data.bin_' + d.name,
-        maxbins: encoding.enc(vv).maxbins
+        field: 'data.' + field.name,
+        output: 'data.bin_' + field.name,
+        maxbins: encoding.enc(encType).maxbins
       });
     }
   });
