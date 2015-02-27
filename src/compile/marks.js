@@ -294,24 +294,35 @@ function tick_props(e, layout, style) {
   // x
   if (e.has(X)) {
     p.x = {scale: X, field: e.field(X)};
+    if (e.isDimension(X)) {
+      p.x.offset = -e.bandSize(X, layout.x.useSmallBand) / 3;
+    }
   } else if (!e.has(X)) {
-    p.x = {value: e.bandSize(X, layout.x.useSmallBand) / 2};
+    p.x = {value: 0};
   }
 
   // y
   if (e.has(Y)) {
     p.y = {scale: Y, field: e.field(Y)};
+    if (e.isDimension(Y)) {
+      p.y.offset = -e.bandSize(Y, layout.y.useSmallBand) / 3;
+    }
   } else if (!e.has(Y)) {
-    p.y = {value: e.bandSize(Y, layout.y.useSmallBand) / 2};
+    p.y = {value: 0};
   }
 
-  p.width = {value: 1};
+  // width
+  if (!e.has(X) || e.isDimension(X)) {
+    p.width = {value: e.bandSize(X, layout.y.useSmallBand) / 1.5};
+  } else {
+    p.width = {value: 1};
+  }
 
   // height
-  if (e.has(SIZE)) {
-    p.height = {scale: SIZE, field: e.field(SIZE)};
+  if (!e.has(Y) || e.isDimension(Y)) {
+    p.height = {value: e.bandSize(Y, layout.y.useSmallBand) / 1.5};
   } else {
-    p.height = {value: e.bandSize(Y, layout.y.useSmallBand) / 2};
+    p.height = {value: 1};
   }
 
   // fill
