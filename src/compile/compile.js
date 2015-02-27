@@ -41,7 +41,6 @@ function compile(encoding, stats) {
     group.marks.push(mdefs[i]);
   }
 
-  // TODO: return value not used
   binning(spec.data[1], encoding, {preaggregatedData: preaggregatedData});
 
   var lineType = marks[encoding.marktype()].line;
