@@ -68,6 +68,10 @@ var merge = schema.util.merge;
 
 var typicalField = merge(clone(schema.field), {
   type: 'object',
+  supportedRole: {
+    measure: true,
+    dimension: true
+  },
   properties: {
     type: {
       type: 'string',
@@ -106,6 +110,9 @@ var typicalField = merge(clone(schema.field), {
 
 var onlyOrdinalField = merge(clone(schema.field), {
   type: 'object',
+  supportedRole: {
+    dimension: true
+  },
   properties: {
     type: {
       type: 'string',
