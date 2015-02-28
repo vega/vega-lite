@@ -68,22 +68,17 @@ var merge = schema.util.merge;
 
 schema.MAXBINS_DEFAULT = 15;
 
-var binningMixin = {
-  type: 'object',
+var bin = {
+  type: ['boolean', 'object'],
+  default: false,
   properties: {
-    bin: {
-      type: ['boolean', 'object'],
-      default: false,
-      properties: {
-        maxbins: {
-          type: 'integer',
-          default: schema.MAXBINS_DEFAULT,
-          minimum: 2
-        }
-      },
-      supportedTypes: {'Q': true} // TODO: add 'O' after finishing #81
+    maxbins: {
+      type: 'integer',
+      default: schema.MAXBINS_DEFAULT,
+      minimum: 2
     }
-  }
+  },
+  supportedTypes: {'Q': true} // TODO: add 'O' after finishing #81
 }
 
 var typicalField = merge(clone(schema.field), {
@@ -95,6 +90,7 @@ var typicalField = merge(clone(schema.field), {
     },
     aggr: schema.aggr,
     fn: schema.fn,
+    bin: bin,
     scale: {
       type: 'object',
       properties: {
@@ -117,23 +113,27 @@ var typicalField = merge(clone(schema.field), {
       }
     }
   }
-}, binningMixin);
+});
 
 var onlyOrdinalField = merge(clone(schema.field), {
   type: 'object',
+  supportedRole: {
+    dimension: true
+  },
   properties: {
     type: {
       type: 'string',
       enum: ['O','Q', 'T'] // ordinal-only field supports Q when bin is applied and T when fn is applied.
     },
     fn: schema.fn,
+    bin: bin,
     aggr: {
       type: 'string',
       enum: ['count'],
       supportedTypes: {'O': true}
     }
   }
-}, binningMixin);
+});
 
 var axisMixin = {
   type: 'object',
@@ -364,20 +364,43 @@ var requiredNameType = {
   required: ['name', 'type']
 };
 
-var x = merge(clone(typicalField), axisMixin, bandMixin, requiredNameType, sortMixin);
+var multiRoleField = merge(clone(typicalField), {
+  supportedRole: {
+    measure: true,
+    dimension: true
+  }
+});
+
+var quantitativeField = merge(clone(typicalField), {
+  supportedRole: {
+    measure: true,
+    dimension: 'ordinal-only' // using alpha / size to encoding category lead to order interpretation
+  }
+});
+
+var onlyQuantitativeField = merge(clone(typicalField), {
+  supportedRole: {
+    measure: true
+  }
+});
+
+var x = merge(clone(multiRoleField), axisMixin, bandMixin, requiredNameType, sortMixin);
 var y = clone(x);
 
 var facet = merge(clone(onlyOrdinalField), requiredNameType, facetMixin, sortMixin);
 var row = merge(clone(facet), axisMixin, rowMixin);
 var col = merge(clone(facet), axisMixin, colMixin);
 
-var size = merge(clone(typicalField), legendMixin, sizeMixin, sortMixin);
-var color = merge(clone(typicalField), legendMixin, colorMixin, sortMixin);
-var alpha = merge(clone(typicalField), alphaMixin, sortMixin);
+var size = merge(clone(quantitativeField), legendMixin, sizeMixin, sortMixin);
+var color = merge(clone(multiRoleField), legendMixin, colorMixin, sortMixin);
+var alpha = merge(clone(quantitativeField), alphaMixin, sortMixin);
 var shape = merge(clone(onlyOrdinalField), legendMixin, shapeMixin, sortMixin);
 var detail = merge(clone(onlyOrdinalField), detailMixin, sortMixin);
 
-var text = merge(clone(typicalField), textMixin, sortMixin);
+// we only put aggregated measure in pivot table
+var text = merge(clone(onlyQuantitativeField), textMixin, sortMixin);
+
+// TODO add label
 
 var filter = {
   type: 'array',
