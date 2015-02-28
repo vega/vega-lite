@@ -77,6 +77,9 @@ vldata.getStats = function(data) { // hack
   fields.forEach(function(k) {
     var stat = util.minmax(data, k, true);
     stat.cardinality = util.uniq(data, k);
+    stat.count = data.length;
+    stat.skew = util.skew(data.map(function(d) {return d[k];}));
+
     stat.maxlength = data.reduce(function(max,row) {
       if (row[k] === null) {
         return max;
@@ -89,7 +92,6 @@ vldata.getStats = function(data) { // hack
       return row[k] === null ? count + 1 : count;
     }, 0);
 
-    stat.count = data.length;
     stats[k] = stat;
 
     var sample = {};

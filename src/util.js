@@ -46,6 +46,55 @@ util.uniq = function(data, field) {
   return count;
 };
 
+var isNumber = function(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
+var numbers = function(values) {
+  var nums = [];
+  for (var i = 0; i < values.length; i++) {
+    if (isNumber(values[i])) {
+      nums.push(+values[i]);
+    }
+  }
+  return nums;
+}
+
+var median = function(values) {
+  values.sort(function(a, b) {return a - b;});
+  var half = Math.floor(values.length/2);
+  if (values.length % 2) {
+    return values[half];
+  } else {
+    return (values[half-1] + values[half]) / 2.0;
+  }
+}
+
+var mean = function(values) {
+  return values.reduce(function(v, r) {return v + r;}, 0) / values.length;
+}
+
+var variance = function(values) {
+  var avg = mean(values);
+  var diffs = [];
+  for (var i = 0; i < values.length; i++) {
+    diffs.push(Math.pow((values[i] - avg), 2));
+  }
+  return mean(diffs);
+}
+
+var stdev = function(values) {
+  return Math.sqrt(variance(values));
+}
+
+util.skew = function(values) {
+  values = numbers(values);
+  var avg = mean(values),
+    med = median(values),
+    std = stdev(values);
+  return 1.0 * (avg - med) / std;
+}
+
 util.minmax = function(data, field, excludeNulls) {
   var excludeNulls = excludeNulls === undefined ? false : excludeNulls;
   var stats = {min: +Infinity, max: -Infinity};
