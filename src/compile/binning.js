@@ -6,21 +6,21 @@ module.exports = binning;
 function binning(spec, encoding, opt) {
   opt = opt || {};
   var bins = {};
-  encoding.forEach(function(vv, d) {
-    if (d.bin) bins[d.name] = d.name;
-  });
-  bins = util.keys(bins);
 
-  if (bins.length === 0 || opt.preaggregatedData) return false;
+  if (opt.preaggregatedData) {
+    return;
+  }
 
   if (!spec.transform) spec.transform = [];
-  bins.forEach(function(d) {
-    spec.transform.push({
-      type: 'bin',
-      field: 'data.' + d,
-      output: 'data.bin_' + d,
-      maxbins: encoding.config('maxbins')
-    });
+
+  encoding.forEach(function(encType, field) {
+    if (encoding.bin(encType)) {
+      spec.transform.push({
+        type: 'bin',
+        field: 'data.' + field.name,
+        output: 'data.bin_' + field.name,
+        maxbins: encoding.bin(encType).maxbins
+      });
+    }
   });
-  return bins;
 }

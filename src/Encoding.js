@@ -118,8 +118,16 @@ var Encoding = module.exports = (function() {
     return this._enc[x].aggr;
   };
 
+  // returns false if binning is disabled, otherwise an object with binning properties
   proto.bin = function(x) {
-    return this._enc[x].bin;
+    var bin = this._enc[x].bin;
+    if (bin === {})
+      return false;
+    if (bin === true)
+      return {
+        maxbins: schema.MAXBINS_DEFAULT
+      };
+    return bin;
   };
 
   proto.legend = function(x) {
@@ -234,7 +242,7 @@ var Encoding = module.exports = (function() {
   };
 
   proto.cardinality = function(encType, stats) {
-    return vlfield.cardinality(this._enc[encType], stats, this.config('maxbins'), true);
+    return vlfield.cardinality(this, encType, stats, true);
   };
 
   proto.isRaw = function() {

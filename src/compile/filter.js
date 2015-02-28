@@ -38,11 +38,7 @@ filter.addFilters = function(spec, encoding) {
     } else if (operator === 'notNull') {
       // expects a number of fields
       for (var j in operands) {
-        var field = 'd.data.' + operands[j];
-        condition += '(' +
-          '(!!' + field + ' && ' + field + ' != "null")' +
-          ' || ' + field + ' === 0 ' +
-          ')';
+        condition += 'd.data.' + operands[j] + '!==null';
         if (j < operands.length - 1) {
           condition += ' && ';
         }

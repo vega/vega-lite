@@ -66,17 +66,32 @@ schema.field = {
 var clone = util.duplicate;
 var merge = schema.util.merge;
 
+schema.MAXBINS_DEFAULT = 15;
+
+var binningMixin = {
+  type: 'object',
+  properties: {
+    bin: {
+      type: ['boolean', 'object'],
+      default: false,
+      properties: {
+        maxbins: {
+          type: 'integer',
+          default: schema.MAXBINS_DEFAULT,
+          minimum: 2
+        }
+      },
+      supportedTypes: {'Q': true} // TODO: add 'O' after finishing #81
+    }
+  }
+}
+
 var typicalField = merge(clone(schema.field), {
   type: 'object',
   properties: {
     type: {
       type: 'string',
       enum: ['O', 'Q', 'T']
-    },
-    bin: {
-      type: 'boolean',
-      default: false,
-      supportedTypes: {'Q': true} // TODO: add 'O' after finishing #81
     },
     aggr: schema.aggr,
     fn: schema.fn,
@@ -102,7 +117,7 @@ var typicalField = merge(clone(schema.field), {
       }
     }
   }
-});
+}, binningMixin);
 
 var onlyOrdinalField = merge(clone(schema.field), {
   type: 'object',
@@ -112,18 +127,13 @@ var onlyOrdinalField = merge(clone(schema.field), {
       enum: ['O','Q', 'T'] // ordinal-only field supports Q when bin is applied and T when fn is applied.
     },
     fn: schema.fn,
-    bin: {
-      type: 'boolean',
-      default: false,
-      supportedTypes: {'Q': true} // TODO: add 'O' after finishing #81
-    },
     aggr: {
       type: 'string',
       enum: ['count'],
       supportedTypes: {'O': true}
     }
   }
-});
+}, binningMixin);
 
 var axisMixin = {
   type: 'object',
@@ -406,12 +416,6 @@ var cfg = {
         type: 'integer'
       },
       default: undefined
-    },
-    //binning
-    maxbins: {
-      type: 'integer',
-      default: 15,
-      minimum: 2
     },
 
     // single plot
