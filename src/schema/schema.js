@@ -7,7 +7,7 @@ schema.util = require('./schemautil');
 
 schema.marktype = {
   type: 'string',
-  enum: ['point', 'bar', 'line', 'area', 'circle', 'square', 'text']
+  enum: ['point', 'tick', 'bar', 'line', 'area', 'circle', 'square', 'text']
 };
 
 schema.aggr = {
@@ -137,7 +137,7 @@ var onlyOrdinalField = merge(clone(schema.field), {
 
 var axisMixin = {
   type: 'object',
-  supportedMarktypes: {'point': true, 'bar': true, 'line': true, 'area': true, 'circle': true, 'square': true},
+  supportedMarktypes: {point: true, tick: true, bar: true, line: true, area: true, circle: true, square: true},
   properties: {
     axis: {
       type: 'object',
@@ -267,7 +267,7 @@ var textMixin = {
 
 var sizeMixin = {
   type: 'object',
-  supportedMarktypes: {'point': true, 'bar': true, 'circle': true, 'square': true, 'text': true},
+  supportedMarktypes: {point: true, bar: true, circle: true, square: true, text: true},
   properties: {
     value: {
       type: 'integer',
@@ -279,7 +279,7 @@ var sizeMixin = {
 
 var colorMixin = {
   type: 'object',
-  supportedMarktypes: {'point': true, 'bar': true, 'line': true, 'area': true, 'circle': true, 'square': true, 'text': true},
+  supportedMarktypes: {point: true, tick: true, bar: true, line: true, area: true, circle: true, square: true, 'text': true},
   properties: {
     value: {
       type: 'string',
@@ -299,7 +299,7 @@ var colorMixin = {
 
 var alphaMixin = {
   type: 'object',
-  supportedMarktypes: {'point': true, 'bar': true, 'line': true, 'area': true, 'circle': true, 'square': true, 'text': true},
+  supportedMarktypes: {point: true, tick: true, bar: true, line: true, area: true, circle: true, square: true, 'text': true},
   properties: {
     value: {
       type: 'number',
@@ -312,7 +312,7 @@ var alphaMixin = {
 
 var shapeMixin = {
   type: 'object',
-  supportedMarktypes: {'point': true, 'circle': true, 'square': true},
+  supportedMarktypes: {point: true, circle: true, square: true},
   properties: {
     value: {
       type: 'string',
@@ -324,7 +324,7 @@ var shapeMixin = {
 
 var detailMixin = {
   type: 'object',
-  supportedMarktypes: {'point': true, 'line': true, 'circle': true, 'square': true}
+  supportedMarktypes: {point: true, tick: true, line: true, circle: true, square: true}
 };
 
 var rowMixin = {
@@ -349,7 +349,7 @@ var colMixin = {
 
 var facetMixin = {
   type: 'object',
-  supportedMarktypes: {'point': true, 'bar': true, 'line': true, 'area': true, 'circle': true, 'square': true, 'text': true},
+  supportedMarktypes: {point: true, tick: true, bar: true, line: true, area: true, circle: true, square: true, text: true},
   properties: {
     padding: {
       type: 'number',

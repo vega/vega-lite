@@ -58,6 +58,11 @@ marks.area = {
   supportedEncoding: marks.line.supportedEncoding
 };
 
+marks.tick = {
+  type: 'rect',
+  prop: tick_props
+};
+
 marks.circle = {
   type: 'symbol',
   prop: filled_point_props('circle'),
@@ -83,7 +88,7 @@ marks.text = {
   supportedEncoding: {row: 1, col: 1, size: 1, color: 1, alpha: 1, text: 1}
 };
 
-function bar_props(e, layout) {
+function bar_props(e, layout, style) {
   var p = {};
 
   // x
@@ -277,6 +282,62 @@ function area_props(e, layout, style) {
     p.opacity = {scale: ALPHA, field: e.field(ALPHA)};
   } else if (e.value(ALPHA) !== undefined) {
     p.opacity = {value: e.value(ALPHA)};
+  }
+
+  return p;
+}
+
+function tick_props(e, layout, style) {
+  var p = {};
+
+  // x
+  if (e.has(X)) {
+    p.x = {scale: X, field: e.field(X)};
+    if (e.isDimension(X)) {
+      p.x.offset = -e.bandSize(X, layout.x.useSmallBand) / 3;
+    }
+  } else if (!e.has(X)) {
+    p.x = {value: 0};
+  }
+
+  // y
+  if (e.has(Y)) {
+    p.y = {scale: Y, field: e.field(Y)};
+    if (e.isDimension(Y)) {
+      p.y.offset = -e.bandSize(Y, layout.y.useSmallBand) / 3;
+    }
+  } else if (!e.has(Y)) {
+    p.y = {value: 0};
+  }
+
+  // width
+  if (!e.has(X) || e.isDimension(X)) {
+    p.width = {value: e.bandSize(X, layout.y.useSmallBand) / 1.5};
+  } else {
+    p.width = {value: 1};
+  }
+
+  // height
+  if (!e.has(Y) || e.isDimension(Y)) {
+    p.height = {value: e.bandSize(Y, layout.y.useSmallBand) / 1.5};
+  } else {
+    p.height = {value: 1};
+  }
+
+  // fill
+  if (e.has(COLOR)) {
+    p.fill = {scale: COLOR, field: e.field(COLOR)};
+  } else {
+    p.fill = {value: e.value(COLOR)};
+  }
+
+  // alpha
+  if (e.has(ALPHA)) {
+    p.opacity = {scale: ALPHA, field: e.field(ALPHA)};
+  } else if (e.value(ALPHA) !== undefined) {
+    p.opacity = {value: e.value(ALPHA)};
+  } else {
+    p.opacity = {value: style.opacity};
   }
 
   return p;
