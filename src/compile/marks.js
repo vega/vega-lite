@@ -60,7 +60,6 @@ marks.area = {
 
 marks.tick = {
   type: 'rect',
-  line: true,
   prop: tick_props
 };
 
