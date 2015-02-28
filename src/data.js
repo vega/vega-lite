@@ -75,26 +75,39 @@ vldata.getStats = function(data) { // hack
     fields = util.keys(data[0]);
 
   fields.forEach(function(k) {
-    var stat = util.minmax(data, k);
+    var stat = util.minmax(data, k, true);
     stat.cardinality = util.uniq(data, k);
+    stat.count = data.length;
+
     stat.maxlength = data.reduce(function(max,row) {
+      if (row[k] === null) {
+        return max;
+      }
       var len = row[k].toString().length;
       return len > max ? len : max;
     }, 0);
-    stat.hasNull = util.any(data, function(row) {
-      var val = row[k];
-      return (!!val && val !== 'null') || val === 0;
-    });
 
-    stat.count = data.length;
-    stats[k] = stat;
+    stat.numNulls = data.reduce(function(count, row) {
+      return row[k] === null ? count + 1 : count;
+    }, 0);
+
+    var numbers = util.numbers(data.map(function(d) {return d[k];}));
+
+    if (numbers.length > 0) {
+      stat.skew = util.skew(numbers);
+      stat.stdev = util.stdev(numbers);
+      stat.mean = util.mean(numbers);
+      stat.median = util.median(numbers);
+    }
 
     var sample = {};
     for (; Object.keys(sample).length < Math.min(stat.cardinality, 10); i++) {
       var value = data[Math.floor(Math.random() * data.length)][k];
       sample[value] = true;
     }
-    stats[k].sample = Object.keys(sample);
+    stat.sample = Object.keys(sample);
+
+    stats[k] = stat;
   });
   stats.count = data.length;
   return stats;

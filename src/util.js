@@ -46,10 +46,61 @@ util.uniq = function(data, field) {
   return count;
 };
 
-util.minmax = function(data, field) {
+var isNumber = function(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
+util.numbers = function(values) {
+  var nums = [];
+  for (var i = 0; i < values.length; i++) {
+    if (isNumber(values[i])) {
+      nums.push(+values[i]);
+    }
+  }
+  return nums;
+}
+
+util.median = function(values) {
+  values.sort(function(a, b) {return a - b;});
+  var half = Math.floor(values.length/2);
+  if (values.length % 2) {
+    return values[half];
+  } else {
+    return (values[half-1] + values[half]) / 2.0;
+  }
+}
+
+util.mean = function(values) {
+  return values.reduce(function(v, r) {return v + r;}, 0) / values.length;
+}
+
+util.variance = function(values) {
+  var avg = util.mean(values);
+  var diffs = [];
+  for (var i = 0; i < values.length; i++) {
+    diffs.push(Math.pow((values[i] - avg), 2));
+  }
+  return util.mean(diffs);
+}
+
+util.stdev = function(values) {
+  return Math.sqrt(util.variance(values));
+}
+
+util.skew = function(values) {
+  var avg = util.mean(values),
+    med = util.median(values),
+    std = util.stdev(values);
+  return 1.0 * (avg - med) / std;
+}
+
+util.minmax = function(data, field, excludeNulls) {
+  var excludeNulls = excludeNulls === undefined ? false : excludeNulls;
   var stats = {min: +Infinity, max: -Infinity};
   for (i = 0; i < data.length; ++i) {
     var v = data[i][field];
+    if (excludeNulls && v === null)
+      continue;
     if (v > stats.max) stats.max = v;
     if (v < stats.min) stats.min = v;
   }
@@ -132,7 +183,6 @@ util.getter = function(x, p, noaugment) {
   return x;
 };
 
-// copied from vega
 util.truncate = function(s, length, pos, word, ellipsis) {
   var len = s.length;
   if (len <= length) return s;

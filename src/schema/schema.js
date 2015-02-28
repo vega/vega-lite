@@ -7,7 +7,7 @@ schema.util = require('./schemautil');
 
 schema.marktype = {
   type: 'string',
-  enum: ['point', 'bar', 'line', 'area', 'circle', 'square', 'text']
+  enum: ['point', 'tick', 'bar', 'line', 'area', 'circle', 'square', 'text']
 };
 
 schema.aggr = {
@@ -66,6 +66,21 @@ schema.field = {
 var clone = util.duplicate;
 var merge = schema.util.merge;
 
+schema.MAXBINS_DEFAULT = 15;
+
+var bin = {
+  type: ['boolean', 'object'],
+  default: false,
+  properties: {
+    maxbins: {
+      type: 'integer',
+      default: schema.MAXBINS_DEFAULT,
+      minimum: 2
+    }
+  },
+  supportedTypes: {'Q': true} // TODO: add 'O' after finishing #81
+}
+
 var typicalField = merge(clone(schema.field), {
   type: 'object',
   properties: {
@@ -73,13 +88,9 @@ var typicalField = merge(clone(schema.field), {
       type: 'string',
       enum: ['O', 'Q', 'T']
     },
-    bin: {
-      type: 'boolean',
-      default: false,
-      supportedTypes: {'Q': true} // TODO: add 'O' after finishing #81
-    },
     aggr: schema.aggr,
     fn: schema.fn,
+    bin: bin,
     scale: {
       type: 'object',
       properties: {
@@ -115,11 +126,7 @@ var onlyOrdinalField = merge(clone(schema.field), {
       enum: ['O','Q', 'T'] // ordinal-only field supports Q when bin is applied and T when fn is applied.
     },
     fn: schema.fn,
-    bin: {
-      type: 'boolean',
-      default: false,
-      supportedTypes: {'Q': true} // TODO: add 'O' after finishing #81
-    },
+    bin: bin,
     aggr: {
       type: 'string',
       enum: ['count'],
@@ -130,7 +137,7 @@ var onlyOrdinalField = merge(clone(schema.field), {
 
 var axisMixin = {
   type: 'object',
-  supportedMarktypes: {'point': true, 'bar': true, 'line': true, 'area': true, 'circle': true, 'square': true},
+  supportedMarktypes: {point: true, tick: true, bar: true, line: true, area: true, circle: true, square: true},
   properties: {
     axis: {
       type: 'object',
@@ -260,7 +267,7 @@ var textMixin = {
 
 var sizeMixin = {
   type: 'object',
-  supportedMarktypes: {'point': true, 'bar': true, 'circle': true, 'square': true, 'text': true},
+  supportedMarktypes: {point: true, bar: true, circle: true, square: true, text: true},
   properties: {
     value: {
       type: 'integer',
@@ -272,7 +279,7 @@ var sizeMixin = {
 
 var colorMixin = {
   type: 'object',
-  supportedMarktypes: {'point': true, 'bar': true, 'line': true, 'area': true, 'circle': true, 'square': true, 'text': true},
+  supportedMarktypes: {point: true, tick: true, bar: true, line: true, area: true, circle: true, square: true, 'text': true},
   properties: {
     value: {
       type: 'string',
@@ -292,7 +299,7 @@ var colorMixin = {
 
 var alphaMixin = {
   type: 'object',
-  supportedMarktypes: {'point': true, 'bar': true, 'line': true, 'area': true, 'circle': true, 'square': true, 'text': true},
+  supportedMarktypes: {point: true, tick: true, bar: true, line: true, area: true, circle: true, square: true, 'text': true},
   properties: {
     value: {
       type: 'number',
@@ -305,7 +312,7 @@ var alphaMixin = {
 
 var shapeMixin = {
   type: 'object',
-  supportedMarktypes: {'point': true, 'circle': true, 'square': true},
+  supportedMarktypes: {point: true, circle: true, square: true},
   properties: {
     value: {
       type: 'string',
@@ -317,7 +324,7 @@ var shapeMixin = {
 
 var detailMixin = {
   type: 'object',
-  supportedMarktypes: {'point': true, 'line': true, 'circle': true, 'square': true}
+  supportedMarktypes: {point: true, tick: true, line: true, circle: true, square: true}
 };
 
 var rowMixin = {
@@ -342,7 +349,7 @@ var colMixin = {
 
 var facetMixin = {
   type: 'object',
-  supportedMarktypes: {'point': true, 'bar': true, 'line': true, 'area': true, 'circle': true, 'square': true, 'text': true},
+  supportedMarktypes: {point: true, tick: true, bar: true, line: true, area: true, circle: true, square: true, text: true},
   properties: {
     padding: {
       type: 'number',
@@ -432,12 +439,6 @@ var cfg = {
         type: 'integer'
       },
       default: undefined
-    },
-    //binning
-    maxbins: {
-      type: 'integer',
-      default: 15,
-      minimum: 2
     },
 
     // single plot

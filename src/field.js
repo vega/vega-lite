@@ -153,7 +153,8 @@ vlfield.cardinality = function(field, stats, maxbins, useTypeCode) {
   var isType = getIsType(useTypeCode);
 
   if (field.bin) {
-    if(!maxbins) console.error('vlfield.cardinality not included maxbins');
+    if (!maxbins)
+      console.error('vlfield.cardinality not included maxbins');
     var bins = util.getbins(stats[field.name], maxbins);
     return (bins.stop - bins.start) / bins.step;
   }
