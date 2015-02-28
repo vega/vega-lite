@@ -127,11 +127,19 @@ util.all = function(arr, f) {
   return true;
 };
 
-util.merge = function(dest, src) {
+var merge = function(dest, src) {
   return util.keys(src).reduce(function(c, k) {
     c[k] = src[k];
     return c;
   }, dest);
+};
+
+util.merge = function(/*dest*, src0, src1, ...*/){
+  var dest = arguments[0];
+  for (var i=1 ; i<arguments.length; i++) {
+    dest = merge(dest, arguments[i]);
+  }
+  return dest;
 };
 
 util.getbins = function(stats, maxbins) {
