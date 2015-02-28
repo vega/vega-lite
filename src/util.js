@@ -50,7 +50,7 @@ var isNumber = function(n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
 }
 
-var numbers = function(values) {
+util.numbers = function(values) {
   var nums = [];
   for (var i = 0; i < values.length; i++) {
     if (isNumber(values[i])) {
@@ -60,7 +60,7 @@ var numbers = function(values) {
   return nums;
 }
 
-var median = function(values) {
+util.median = function(values) {
   values.sort(function(a, b) {return a - b;});
   var half = Math.floor(values.length/2);
   if (values.length % 2) {
@@ -70,28 +70,27 @@ var median = function(values) {
   }
 }
 
-var mean = function(values) {
+util.mean = function(values) {
   return values.reduce(function(v, r) {return v + r;}, 0) / values.length;
 }
 
-var variance = function(values) {
-  var avg = mean(values);
+util.variance = function(values) {
+  var avg = util.mean(values);
   var diffs = [];
   for (var i = 0; i < values.length; i++) {
     diffs.push(Math.pow((values[i] - avg), 2));
   }
-  return mean(diffs);
+  return util.mean(diffs);
 }
 
-var stdev = function(values) {
-  return Math.sqrt(variance(values));
+util.stdev = function(values) {
+  return Math.sqrt(util.variance(values));
 }
 
 util.skew = function(values) {
-  values = numbers(values);
-  var avg = mean(values),
-    med = median(values),
-    std = stdev(values);
+  var avg = util.mean(values),
+    med = util.median(values),
+    std = util.stdev(values);
   return 1.0 * (avg - med) / std;
 }
 
