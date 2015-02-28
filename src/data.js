@@ -77,6 +77,8 @@ vldata.getStats = function(data) { // hack
   fields.forEach(function(k) {
     var stat = util.minmax(data, k, true);
     stat.cardinality = util.uniq(data, k);
+    stat.count = data.length;
+
     stat.maxlength = data.reduce(function(max,row) {
       if (row[k] === null) {
         return max;
@@ -89,15 +91,23 @@ vldata.getStats = function(data) { // hack
       return row[k] === null ? count + 1 : count;
     }, 0);
 
-    stat.count = data.length;
-    stats[k] = stat;
+    var numbers = util.numbers(data.map(function(d) {return d[k];}));
+
+    if (numbers.length > 0) {
+      stat.skew = util.skew(numbers);
+      stat.stdev = util.stdev(numbers);
+      stat.mean = util.mean(numbers);
+      stat.median = util.median(numbers);
+    }
 
     var sample = {};
     for (; Object.keys(sample).length < Math.min(stat.cardinality, 10); i++) {
       var value = data[Math.floor(Math.random() * data.length)][k];
       sample[value] = true;
     }
-    stats[k].sample = Object.keys(sample);
+    stat.sample = Object.keys(sample);
+
+    stats[k] = stat;
   });
   stats.count = data.length;
   return stats;
