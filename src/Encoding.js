@@ -253,7 +253,7 @@ var Encoding = module.exports = (function() {
   };
 
   proto.cardinality = function(encType, stats) {
-    return vlfield.cardinality(this._enc[encType], stats, this.bin(encType).maxbins, true);
+    return vlfield.cardinality(this._enc[encType], stats, true);
   };
 
   proto.isRaw = function() {

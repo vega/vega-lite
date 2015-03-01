@@ -8,7 +8,7 @@ marks.def = function(mark, encoding, layout, style) {
 
   // to add a background to text, we need to add it before the text
   if (encoding.marktype() === TEXT && encoding.has(COLOR)) {
-    var p = {
+    var bg = {
       x: {value: 0},
       y: {value: 0},
       x2: {value: layout.cellWidth},
@@ -18,7 +18,7 @@ marks.def = function(mark, encoding, layout, style) {
     defs.push({
       type: 'rect',
       from: {data: TABLE},
-      properties: {enter: p, update: p}
+      properties: {enter: bg, update: bg}
     });
   }
 
@@ -46,7 +46,7 @@ marks.line = {
   line: true,
   prop: line_props,
   requiredEncoding: ['x', 'y'],
-  supportedEncoding: {row: 1, col: 1, x: 1, y: 1, color: 1, alpha: 1}
+  supportedEncoding: {row: 1, col: 1, x: 1, y: 1, color: 1, alpha: 1, detail:1}
 };
 
 marks.area = {
@@ -55,18 +55,19 @@ marks.area = {
   line: true,
   requiredEncoding: ['x', 'y'],
   prop: area_props,
-  supportedEncoding: marks.line.supportedEncoding
+  supportedEncoding: {row: 1, col: 1, x: 1, y: 1, color: 1, alpha: 1}
 };
 
 marks.tick = {
   type: 'rect',
-  prop: tick_props
+  prop: tick_props,
+  supportedEncoding: {row: 1, col: 1, x: 1, y: 1, color: 1, alpha: 1, detail: 1}
 };
 
 marks.circle = {
   type: 'symbol',
   prop: filled_point_props('circle'),
-  supportedEncoding: {row: 1, col: 1, x: 1, y: 1, size: 1, color: 1, alpha: 1}
+  supportedEncoding: {row: 1, col: 1, x: 1, y: 1, size: 1, color: 1, alpha: 1, detail: 1}
 };
 
 marks.square = {
@@ -78,7 +79,7 @@ marks.square = {
 marks.point = {
   type: 'symbol',
   prop: point_props,
-  supportedEncoding: {row: 1, col: 1, x: 1, y: 1, size: 1, color: 1, alpha: 1, shape: 1}
+  supportedEncoding: {row: 1, col: 1, x: 1, y: 1, size: 1, color: 1, alpha: 1, shape: 1, detail: 1}
 };
 
 marks.text = {
