@@ -241,6 +241,17 @@ var Encoding = module.exports = (function() {
     return false;
   };
 
+  Encoding.isStack = function(spec) {
+    // FIXME update this once we have control for stack ...
+    return (spec.marktype === 'bar' || spec.marktype === 'area') &&
+      spec.enc.color;
+  };
+
+  proto.isStack = function() {
+    // FIXME update this once we have control for stack ...
+    return (this.is('bar') || this.is('area')) && this.has('color');
+  };
+
   proto.cardinality = function(encType, stats) {
     return vlfield.cardinality(this._enc[encType], stats, this.bin(encType).maxbins, true);
   };
