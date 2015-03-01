@@ -114,8 +114,8 @@ vlfield.isOrdinalScale = function(field, useTypeCode /*optional*/) {
 
 function isDimension(field, useTypeCode /*optional*/) {
   var isType = getIsType(useTypeCode);
-  return  isType(field, O) || field.bin ||
-    ( isType(field, T) && field.fn );
+  return  isType(field, O) || !!field.bin ||
+    ( isType(field, T) && !!field.fn );
 }
 
 /**
