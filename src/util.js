@@ -48,7 +48,7 @@ util.uniq = function(data, field) {
 
 var isNumber = function(n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
-}
+};
 
 util.numbers = function(values) {
   var nums = [];
@@ -58,7 +58,7 @@ util.numbers = function(values) {
     }
   }
   return nums;
-}
+};
 
 util.median = function(values) {
   values.sort(function(a, b) {return a - b;});
@@ -68,11 +68,11 @@ util.median = function(values) {
   } else {
     return (values[half-1] + values[half]) / 2.0;
   }
-}
+};
 
 util.mean = function(values) {
   return values.reduce(function(v, r) {return v + r;}, 0) / values.length;
-}
+};
 
 util.variance = function(values) {
   var avg = util.mean(values);
@@ -81,21 +81,21 @@ util.variance = function(values) {
     diffs.push(Math.pow((values[i] - avg), 2));
   }
   return util.mean(diffs);
-}
+};
 
 util.stdev = function(values) {
   return Math.sqrt(util.variance(values));
-}
+};
 
 util.skew = function(values) {
   var avg = util.mean(values),
     med = util.median(values),
     std = util.stdev(values);
   return 1.0 * (avg - med) / std;
-}
+};
 
 util.minmax = function(data, field, excludeNulls) {
-  var excludeNulls = excludeNulls === undefined ? false : excludeNulls;
+  excludeNulls = excludeNulls === undefined ? false : excludeNulls;
   var stats = {min: +Infinity, max: -Infinity};
   for (i = 0; i < data.length; ++i) {
     var v = data[i][field];
@@ -143,12 +143,81 @@ util.merge = function(/*dest*, src0, src1, ...*/){
 };
 
 util.getbins = function(stats, maxbins) {
-  return vg.bins({
+  console.log('stats', stats);
+  return getbins({
     min: stats.min,
     max: stats.max,
     maxbins: maxbins
   });
 };
+
+//copied from vega
+function getbins(opt) {
+  opt = opt || {};
+
+  // determine range
+  var maxb = opt.maxbins || 1024,
+      base = opt.base || 10,
+      div = opt.div || [5, 2],
+      mins = opt.minstep || 0,
+      logb = Math.log(base),
+      level = Math.ceil(Math.log(maxb) / logb),
+      min = opt.min,
+      max = opt.max,
+      span = max - min,
+      step = Math.max(mins, Math.pow(base, Math.round(Math.log(span) / logb) - level)),
+      nbins = Math.ceil(span / step),
+      precision, v, i, eps;
+
+  if (opt.step !== null) {
+    step = opt.step;
+  } else if (opt.steps) {
+    // if provided, limit choice to acceptable step sizes
+    step = opt.steps[Math.min(
+        opt.steps.length - 1,
+        vg_bisectLeft(opt.steps, span / maxb, 0, opt.steps.length)
+    )];
+  } else {
+    // increase step size if too many bins
+    do {
+      step *= base;
+      nbins = Math.ceil(span / step);
+    } while (nbins > maxb);
+
+    // decrease step size if allowed
+    for (i = 0; i < div.length; ++i) {
+      v = step / div[i];
+      if (v >= mins && span / v <= maxb) {
+        step = v;
+        nbins = Math.ceil(span / step);
+      }
+    }
+  }
+
+  // update precision, min and max
+  v = Math.log(step);
+  precision = v >= 0 ? 0 : ~~(-v / logb) + 1;
+  eps = (min<0 ? -1 : 1) * Math.pow(base, -precision - 1);
+  min = Math.min(min, Math.floor(min / step + eps) * step);
+  max = Math.ceil(max / step) * step;
+
+  return {
+    start: min,
+    stop: max,
+    step: step,
+    unit: precision
+  };
+}
+
+function vg_bisectLeft(a, x, lo, hi) {
+  while (lo < hi) {
+    var mid = lo + hi >>> 1;
+    if (vg.cmp(a[mid], x) < 0) { lo = mid + 1; }
+    else { hi = mid; }
+  }
+  return lo;
+}
+
 
 /**
  * x[p[0]]...[p[n]] = val
@@ -201,6 +270,21 @@ util.truncate = function(s, length, pos, word, ellipsis) {
       return (word ? vg_truncateOnWord(s,l) : s.slice(0,l)) + ellipsis;
   }
 };
+
+function vg_truncateOnWord(s, len, rev) {
+  var cnt = 0, tok = s.split(vg_truncate_word_re);
+  if (rev) {
+    s = (tok = tok.reverse())
+      .filter(function(w) { cnt += w.length; return cnt <= len; })
+      .reverse();
+  } else {
+    s = tok.filter(function(w) { cnt += w.length; return cnt <= len; });
+  }
+  return s.length ? s.join("").trim() : tok[0].slice(0, len);
+}
+
+var vg_truncate_word_re = /([\u0009\u000A\u000B\u000C\u000D\u0020\u00A0\u1680\u180E\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u2028\u2029\u3000\uFEFF])/;
+
 
 util.error = function(msg) {
   console.error('[VL Error]', msg);
