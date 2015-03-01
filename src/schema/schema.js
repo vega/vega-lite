@@ -79,7 +79,7 @@ var bin = {
     }
   },
   supportedTypes: {'Q': true} // TODO: add 'O' after finishing #81
-}
+};
 
 var typicalField = merge(clone(schema.field), {
   type: 'object',
@@ -164,7 +164,7 @@ var axisMixin = {
         },
         maxLabelLength: {
           type: 'integer',
-          default: 50,
+          default: 25,
           minimum: 0,
           description: 'Truncate labels that are too long.'
         }
