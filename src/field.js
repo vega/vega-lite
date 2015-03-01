@@ -149,13 +149,11 @@ vlfield.isCount = function(field) {
  * For encoding, use encoding.cardinality() to avoid confusion.  Or use Encoding.isType if your field is from Encoding (and thus have numeric data type).
  * otherwise, do not specific isType so we can use the default isTypeName here.
  */
-vlfield.cardinality = function(field, stats, maxbins, useTypeCode) {
+vlfield.cardinality = function(field, stats, useTypeCode) {
   var isType = getIsType(useTypeCode);
 
   if (field.bin) {
-    if (!maxbins)
-      console.error('vlfield.cardinality not included maxbins');
-    var bins = util.getbins(stats[field.name], maxbins);
+    var bins = util.getbins(stats[field.name], field.bin.maxbins);
     return (bins.stop - bins.start) / bins.step;
   }
   if (isType(field, T)) {
