@@ -127,6 +127,8 @@ util.all = function(arr, f) {
   return true;
 };
 
+util.cmp = function(a, b) { return a<b ? -1 : a>b ? 1 : a>=b ? 0 : NaN; };
+
 var merge = function(dest, src) {
   return util.keys(src).reduce(function(c, k) {
     c[k] = src[k];
@@ -143,7 +145,6 @@ util.merge = function(/*dest*, src0, src1, ...*/){
 };
 
 util.getbins = function(stats, maxbins) {
-  console.log('stats', stats);
   return getbins({
     min: stats.min,
     max: stats.max,
@@ -212,12 +213,11 @@ function getbins(opt) {
 function vg_bisectLeft(a, x, lo, hi) {
   while (lo < hi) {
     var mid = lo + hi >>> 1;
-    if (vg.cmp(a[mid], x) < 0) { lo = mid + 1; }
+    if (util.cmp(a[mid], x) < 0) { lo = mid + 1; }
     else { hi = mid; }
   }
   return lo;
 }
-
 
 /**
  * x[p[0]]...[p[n]] = val
