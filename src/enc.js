@@ -10,10 +10,28 @@ var consts = require('./consts'),
 
 var vlenc = module.exports = {};
 
+vlenc.countRetinal = function(enc) {
+  var count = 0;
+  if (enc.color) count++;
+  if (enc.alpha) count++;
+  if (enc.size) count++;
+  if (enc.shape) count++;
+  return count;
+};
+
 vlenc.has = function(enc, encType) {
   var fieldDef = enc && enc[encType];
   return fieldDef && fieldDef.name;
 };
+
+vlenc.isAggregate = function(enc) {
+  for (var k in enc) {
+    if (vlenc.has(k) && enc[k].aggr) {
+      return true;
+    }
+  }
+  return false;
+}
 
 vlenc.forEach = function(enc, f) {
   var i = 0, k;
