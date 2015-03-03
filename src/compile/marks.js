@@ -400,6 +400,9 @@ function text_props(e, layout, style) {
     p.x = {scale: X, field: e.field(X)};
   } else if (!e.has(X)) {
     p.x = {value: e.bandSize(X, layout.x.useSmallBand) / 2};
+    if (e.has(TEXT) && e.isType(TEXT, Q)) {
+      p.x.offset = layout.cellWidth;
+    }
   }
 
   // y
@@ -433,10 +436,10 @@ function text_props(e, layout, style) {
   if (e.has(TEXT)) {
     if (e.isType(TEXT, Q)) {
       p.text = {template: "{{" + e.field(TEXT) + " | number:'.3s'}}"};
+      p.align = {value: 'right'};
     } else {
       p.text = {field: e.field(TEXT)};
     }
-    p.align = {value: 'left'};
   } else {
     p.text = {value: 'Abc'};
   }
