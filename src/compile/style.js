@@ -67,7 +67,7 @@ function estimateOpacity(encoding,stats) {
     opacity = 1;
   } else if (numPoints < 200) {
     opacity = 0.7;
-  } else if (numPoints < 1000) {
+  } else if (numPoints < 1000 || encoding.is('tick')) {
     opacity = 0.6;
   } else {
     opacity = 0.3;
