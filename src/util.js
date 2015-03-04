@@ -145,7 +145,7 @@ util.merge = function(/*dest*, src0, src1, ...*/){
 };
 
 util.getbins = function(stats, maxbins) {
-  return getbins({
+  return vg.bins({
     min: stats.min,
     max: stats.max,
     maxbins: maxbins
