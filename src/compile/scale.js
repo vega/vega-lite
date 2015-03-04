@@ -122,8 +122,9 @@ function scale_range(s, encoding, layout, style, opt) {
         s.range = [3, Math.max(encoding.bandSize(X), encoding.bandSize(Y))];
       } else if (encoding.is(TEXT)) {
         s.range = [8, 40];
-      } else {
-        s.range = [10, 400];
+      } else { //point
+        var bandSize = Math.min(encoding.bandSize(X), encoding.bandSize(Y)) - 1;
+        s.range = [10, 0.8 * bandSize*bandSize];
       }
       s.round = true;
       s.zero = false;
