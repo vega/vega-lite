@@ -222,11 +222,11 @@ var Encoding = module.exports = (function() {
   };
 
   proto.isAggregate = function() {
-    return vl.enc.isAggregate(this._enc);
+    return vlenc.isAggregate(this._enc);
   };
 
   Encoding.isAggregate = function(spec) {
-    return vl.enc.isAggregate(spec.enc);
+    return vlenc.isAggregate(spec.enc);
   };
 
   Encoding.isStack = function(spec) {
