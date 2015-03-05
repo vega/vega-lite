@@ -31,10 +31,10 @@ vlenc.isAggregate = function(enc) {
     }
   }
   return false;
-}
+};
 
 vlenc.forEach = function(enc, f) {
-  var i = 0, k;
+  var i = 0;
   encTypes.forEach(function(k) {
     if (vlenc.has(enc, k)) {
       f(k, enc[k], i++);
@@ -43,10 +43,10 @@ vlenc.forEach = function(enc, f) {
 };
 
 vlenc.map = function(enc, f) {
-  var arr = [], k;
+  var arr = [];
   encTypes.forEach(function(k) {
     if (vlenc.has(enc, k)) {
-      arr.push(f(enc[k], k, enc));
+      arr.push(f(k, enc[k], enc));
     }
   });
   return arr;
@@ -56,15 +56,15 @@ vlenc.reduce = function(enc, f, init) {
   var r = init, i = 0, k;
   encTypes.forEach(function(k) {
     if (vlenc.has(enc, k)) {
-      r = f(r, enc[k], k, enc);
+      r = f(r, k, enc[k], enc);
     }
   });
   return r;
 };
 
 vlenc.shorthand = function(enc) {
-  return vlenc.map(enc, function(v, e) {
-    return e + c.assign + vlfield.shorthand(v);
+  return vlenc.map(enc, function(et, field) {
+    return et + c.assign + vlfield.shorthand(field);
   }).join(c.delim);
 };
 
