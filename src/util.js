@@ -34,6 +34,10 @@ util.find = function(list, pattern) {
   return l.length && l[0] || null;
 };
 
+util.isin = function(item, array) {
+  return array.indexOf(item) !== -1;
+};
+
 util.uniq = function(data, field) {
   var map = {}, count = 0, i, k;
   for (i = 0; i < data.length; ++i) {
@@ -127,7 +131,23 @@ util.all = function(arr, f) {
   return true;
 };
 
-util.cmp = function(a, b) { return a<b ? -1 : a>b ? 1 : a>=b ? 0 : NaN; };
+
+util.cmp = function(a, b) {
+  if (a < b) {
+    return -1;
+  } else if (a > b) {
+    return 1;
+  } else if (a >= b) {
+    return 0;
+  } else if (a === null && b === null) {
+    return 0;
+  } else if (a === null) {
+    return -1;
+  } else if (b === null) {
+    return 1;
+  }
+  return NaN;
+};
 
 var merge = function(dest, src) {
   return util.keys(src).reduce(function(c, k) {
@@ -145,15 +165,15 @@ util.merge = function(/*dest*, src0, src1, ...*/){
 };
 
 util.getbins = function(stats, maxbins) {
-  return vg.bins({
+  return util.bins({
     min: stats.min,
     max: stats.max,
     maxbins: maxbins
   });
 };
 
-//copied from vega
-function getbins(opt) {
+
+util.bins = function(opt) {
   opt = opt || {};
 
   // determine range
@@ -170,13 +190,13 @@ function getbins(opt) {
       nbins = Math.ceil(span / step),
       precision, v, i, eps;
 
-  if (opt.step !== null) {
+  if (opt.step) {
     step = opt.step;
   } else if (opt.steps) {
     // if provided, limit choice to acceptable step sizes
     step = opt.steps[Math.min(
         opt.steps.length - 1,
-        vg_bisectLeft(opt.steps, span / maxb, 0, opt.steps.length)
+        util_bisectLeft(opt.steps, span / maxb, 0, opt.steps.length)
     )];
   } else {
     // increase step size if too many bins
@@ -208,9 +228,9 @@ function getbins(opt) {
     step: step,
     unit: precision
   };
-}
+};
 
-function vg_bisectLeft(a, x, lo, hi) {
+function util_bisectLeft(a, x, lo, hi) {
   while (lo < hi) {
     var mid = lo + hi >>> 1;
     if (util.cmp(a[mid], x) < 0) { lo = mid + 1; }

@@ -25,7 +25,7 @@ vldata.getUrl = function getDataUrl(encoding, stats) {
       obj.aggr = field.aggr;
     }
     if (field.bin) {
-      obj.binSize = util.getbins(stats[field.name], encoding.config('maxbins')).step;
+      obj.binSize = util.getbins(stats[field.name], encoding.bin(encType).maxbins).step;
     }
     fields.push(obj);
   });
