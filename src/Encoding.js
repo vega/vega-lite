@@ -277,11 +277,15 @@ var Encoding = module.exports = (function() {
   };
 
   proto.toShorthand = function() {
-    var enc = this._enc;
     var c = consts.shorthand;
     return 'mark' + c.assign + this._marktype +
-      c.delim +
-      vlenc.shorthand(this._enc);
+      c.delim + vlenc.shorthand(this._enc);
+  };
+
+  Encoding.shorthand = function (spec) {
+    var c = consts.shorthand;
+    return 'mark' + c.assign + spec.marktype +
+      c.delim + vlenc.shorthand(spec.enc);
   };
 
   Encoding.parseShorthand = function(shorthand, cfg) {
@@ -293,7 +297,8 @@ var Encoding = module.exports = (function() {
     return new Encoding(marktype, enc, cfg);
   };
 
-  Encoding.shorthandFromSpec = function() {
+  // FIXME remove this -- simply use Encoding.shorthand
+  Encoding.shorthandFromSpec = function(/*spec, theme, extraCfg*/) {
     return Encoding.fromSpec.apply(null, arguments).toShorthand();
   };
 
