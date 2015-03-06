@@ -26,7 +26,7 @@ vlenc.has = function(enc, encType) {
 
 vlenc.isAggregate = function(enc) {
   for (var k in enc) {
-    if (vlenc.has(k) && enc[k].aggr) {
+    if (vlenc.has(enc, k) && enc[k].aggr) {
       return true;
     }
   }
