@@ -119,6 +119,10 @@ util.isArray = Array.isArray || function(obj) {
   return toString.call(obj) == '[object Array]';
 };
 
+util.array = function(x) {
+  return x != null ? (util.isArray(x) ? x : [x]) : [];
+};
+
 util.forEach = function(obj, f, thisArg) {
   if (obj.forEach) {
     obj.forEach.call(thisArg, f);
