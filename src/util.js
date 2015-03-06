@@ -115,6 +115,42 @@ util.duplicate = function(obj) {
   return JSON.parse(JSON.stringify(obj));
 };
 
+util.isArray = Array.isArray || function(obj) {
+  return toString.call(obj) == '[object Array]';
+};
+
+util.forEach = function(obj, f, thisArg) {
+  if (obj.forEach) {
+    obj.forEach.call(thisArg, f);
+  } else {
+    for (var k in obj) {
+      f.call(thisArg, obj[k], k , obj);
+    }
+  }
+};
+
+util.reduce = function(obj, f, init, thisArg) {
+  if (obj.reduce) {
+    return obj.reduce.call(thisArg, f, init);
+  } else {
+    for (var k in obj) {
+      init = f.call(thisArg, init, obj[k], k, obj);
+    }
+    return init;
+  }
+};
+
+util.map = function(obj, f, thisArg) {
+  if (obj.map) {
+    return obj.map.call(thisArg, f);
+  } else {
+    var output = [];
+    for (var k in obj) {
+      output.push( f.call(thisArg, obj[k], k, obj));
+    }
+  }
+};
+
 util.any = function(arr, f) {
   var i = 0, k;
   for (k in arr) {
