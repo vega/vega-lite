@@ -329,7 +329,7 @@ var Encoding = module.exports = (function() {
   };
 
   Encoding.fromSpec = function(spec, theme) {
-    var enc = util.duplicate(spec.enc);
+    var enc = util.duplicate(spec.enc || {});
 
     //convert type from string to bitcode (e.g, O=1)
     for (var e in enc) {
