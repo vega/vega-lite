@@ -1,3 +1,5 @@
+'use strict';
+
 var util = module.exports = {};
 
 var isEmpty = function(obj) {
@@ -35,7 +37,7 @@ util.subtract = function(instance, defaults) {
     var ins = instance[prop];
     // Note: does not properly subtract arrays
     if (!defaults || def !== ins) {
-      if (typeof ins === 'object' && !Array.isArray(ins)) {
+      if (typeof ins === 'object' && !Array.isArray(ins) && def) {
         var c = util.subtract(ins, def);
         if (!isEmpty(c))
           changes[prop] = c;
@@ -56,7 +58,7 @@ util.merge = function(/*dest*, src0, src1, ...*/){
 };
 
 // recursively merges src into dest
-merge = function(dest, src) {
+function merge(dest, src) {
   if (typeof src !== 'object' || src === null) {
     return dest;
   }
@@ -77,4 +79,4 @@ merge = function(dest, src) {
     }
   }
   return dest;
-};
+}
