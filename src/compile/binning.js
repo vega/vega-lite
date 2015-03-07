@@ -1,3 +1,5 @@
+'use strict';
+
 var globals = require('../globals'),
   util = require('../util');
 
@@ -13,7 +15,7 @@ function binning(spec, encoding, opt) {
 
   if (!spec.transform) spec.transform = [];
 
-  encoding.forEach(function(encType, field) {
+  encoding.forEach(function(field, encType) {
     if (encoding.bin(encType)) {
       spec.transform.push({
         type: 'bin',

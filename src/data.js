@@ -1,3 +1,5 @@
+'use strict';
+
 // TODO rename getDataUrl to vl.data.getUrl() ?
 
 var util = require('./util');
@@ -16,7 +18,7 @@ vldata.getUrl = function getDataUrl(encoding, stats) {
   }
 
   var fields = [];
-  encoding.forEach(function(encType, field) {
+  encoding.forEach(function(field, encType) {
     var obj = {
       name: encoding.field(encType, true),
       field: field.name
@@ -101,7 +103,7 @@ vldata.getStats = function(data) { // hack
     }
 
     var sample = {};
-    for (; Object.keys(sample).length < Math.min(stat.cardinality, 10); i++) {
+    while(Object.keys(sample).length < Math.min(stat.cardinality, 10)) {
       var value = data[Math.floor(Math.random() * data.length)][k];
       sample[value] = true;
     }

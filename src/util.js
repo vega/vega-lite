@@ -1,3 +1,5 @@
+'use strict';
+
 var util = module.exports = {};
 
 util.keys = function(obj) {
@@ -101,7 +103,7 @@ util.skew = function(values) {
 util.minmax = function(data, field, excludeNulls) {
   excludeNulls = excludeNulls === undefined ? false : excludeNulls;
   var stats = {min: +Infinity, max: -Infinity};
-  for (i = 0; i < data.length; ++i) {
+  for (var i = 0; i < data.length; ++i) {
     var v = data[i][field];
     if (excludeNulls && v === null)
       continue;
@@ -120,7 +122,7 @@ util.isArray = Array.isArray || function(obj) {
 };
 
 util.array = function(x) {
-  return x != null ? (util.isArray(x) ? x : [x]) : [];
+  return x ? (util.isArray(x) ? x : [x]) : [];
 };
 
 util.forEach = function(obj, f, thisArg) {

@@ -1,3 +1,5 @@
+'use strict';
+
 // declare global constant
 var g = global || window;
 
