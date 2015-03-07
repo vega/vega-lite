@@ -28,6 +28,7 @@ function box(encoding, stats) {
       hasY = encoding.has(Y),
       marktype = encoding.marktype();
 
+  // FIXME/HACK we need to take filter into account
   var xCardinality = hasX && encoding.isDimension(X) ? encoding.cardinality(X, stats) : 1,
     yCardinality = hasY && encoding.isDimension(Y) ? encoding.cardinality(Y, stats) : 1;
 
