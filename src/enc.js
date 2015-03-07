@@ -1,5 +1,7 @@
 // utility for enc
 
+'use strict';
+
 var consts = require('./consts'),
   c = consts.shorthand,
   time = require('./compile/time'),
@@ -60,6 +62,23 @@ vlenc.reduce = function(enc, f, init) {
     }
   });
   return r;
+};
+
+/*
+ * return key-value pairs of field name and list of fields of that field name
+ */
+vlenc.fields = function(enc) {
+  return vlenc.reduce(enc, function (m, field, encType) {
+    var fieldList = m[field.name] = m[field.name] || [],
+      containsType = fieldList.containsType = fieldList.containsType || {};
+
+    if (fieldList.indexOf(field) === -1) {
+      fieldList.push(field);
+      // augment the array with containsType.Q / O / T
+      containsType[field.type] = true;
+    }
+    return m;
+  }, {});
 };
 
 vlenc.shorthand = function(enc) {
