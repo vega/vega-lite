@@ -1,5 +1,5 @@
 {
-  "predef": ["require", "module", "TABLE", "RAW", "STACKED", "INDEX", "X", "Y", "ROW", "COL", "SIZE", "SHAPE", "COLOR", "ALPHA", "TEXT", "DETAIL", "O", "Q", "T"],
+  "predef": ["require", "module", "it", "describe", "TABLE", "RAW", "STACKED", "INDEX", "X", "Y", "ROW", "COL", "SIZE", "SHAPE", "COLOR", "ALPHA", "TEXT", "DETAIL", "O", "Q", "T"],
   "globalstrict": true
 }
 
