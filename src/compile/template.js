@@ -1,3 +1,5 @@
+'use strict';
+
 var globals = require('../globals');
 
 var groupdef = require('./group').def,
@@ -14,7 +16,7 @@ function template(encoding, layout, stats) { //hack use stats
 
   var preaggregatedData = encoding.config('useVegaServer');
 
-  encoding.forEach(function(encType, field) {
+  encoding.forEach(function(field, encType) {
     var name;
     if (field.type == T) {
       data.format.parse = data.format.parse || {};

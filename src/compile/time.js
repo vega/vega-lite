@@ -1,3 +1,5 @@
+'use strict';
+
 var globals = require('../globals'),
   util = require('../util');
 
@@ -7,7 +9,7 @@ function time(spec, encoding, opt) {
   var timeFields = {}, timeFn = {};
 
   // find unique formula transformation and bin function
-  encoding.forEach(function(encType, field) {
+  encoding.forEach(function(field, encType) {
     if (field.type === T && field.fn) {
       timeFields[encoding.field(encType)] = {
         field: field,
@@ -34,37 +36,30 @@ function time(spec, encoding, opt) {
   return spec;
 }
 
-time.cardinality = function(field, stats) {
+time.cardinality = function(field, stats, filterNull) {
   var fn = field.fn;
   switch (fn) {
-    case 'second': return 60;
-    case 'minute': return 60;
-    case 'hour': return 24;
-    case 'dayofweek': return 7;
+    case 'seconds': return 60;
+    case 'minutes': return 60;
+    case 'hours': return 24;
+    case 'day': return 7;
     case 'date': return 31;
     case 'month': return 12;
     // case 'year':  -- need real cardinality
   }
 
-  return stats[field.name].cardinality;
+  return null;
 };
+
+function fieldFn(func, field) {
+  return func + '(d.data.'+ field.name +')';
+}
 
 /**
  * @return {String} date binning formula of the given field
  */
 time.formula = function(field) {
-  var date = 'new Date(d.data.'+ field.name + ')';
-  switch (field.fn) {
-    case 'second': return date + '.getUTCSeconds()';
-    case 'minute': return date + '.getUTCMinutes()';
-    case 'hour': return date + '.getUTCHours()';
-    case 'dayofweek': return date + '.getUTCDay()';
-    case 'date': return date + '.getUTCDate()';
-    case 'month': return date + '.getUTCMonth()';
-    case 'year': return date + '.getUTCFullYear()';
-  }
-  // TODO add continuous binning
-  console.error('no function specified for date');
+  return fieldFn(field.fn, field);
 };
 
 /** add formula transforms to data */
@@ -81,7 +76,7 @@ time.scale = function(scales, fn, encoding) {
   var labelLength = encoding.config('timeScaleLabelLength');
   // TODO add option for shorter scale / custom range
   switch (fn) {
-    case 'dayofweek':
+    case 'day':
       scales.push({
         name: 'time-'+fn,
         type: 'ordinal',
@@ -106,10 +101,10 @@ time.scale = function(scales, fn, encoding) {
 
 time.isOrdinalFn = function(fn) {
   switch (fn) {
-    case 'second':
-    case 'minute':
-    case 'hour':
-    case 'dayofweek':
+    case 'seconds':
+    case 'minutes':
+    case 'hours':
+    case 'day':
     case 'date':
     case 'month':
       return true;
@@ -123,10 +118,10 @@ time.scale.type = function(fn) {
 
 time.scale.domain = function(fn) {
   switch (fn) {
-    case 'second':
-    case 'minute': return util.range(0, 60);
-    case 'hour': return util.range(0, 24);
-    case 'dayofweek': return util.range(0, 7);
+    case 'seconds':
+    case 'minutes': return util.range(0, 60);
+    case 'hours': return util.range(0, 24);
+    case 'day': return util.range(0, 7);
     case 'date': return util.range(0, 32);
     case 'month': return util.range(0, 12);
   }
@@ -136,7 +131,7 @@ time.scale.domain = function(fn) {
 /** whether a particular time function has custom scale for labels implemented in time.scale */
 time.hasScale = function(fn) {
   switch (fn) {
-    case 'dayofweek':
+    case 'day':
     case 'month':
       return true;
   }

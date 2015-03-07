@@ -1,0 +1,12 @@
+{
+  "predef": ["require", "module", "it", "describe", "console", "process", "global", "window",
+    "toString",
+    "TABLE", "RAW", "STACKED", "INDEX",
+    "X", "Y", "ROW", "COL", "SIZE", "SHAPE", "COLOR", "ALPHA", "TEXT", "DETAIL",
+    "O", "Q", "T"],
+  "globalstrict": true
+}
+
+
+
+

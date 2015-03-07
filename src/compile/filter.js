@@ -1,3 +1,5 @@
+'use strict';
+
 var globals = require('../globals');
 
 var filter = module.exports = {};
@@ -56,7 +58,7 @@ filter.addFilters = function(spec, encoding) {
 
 // remove less than 0 values if we use log function
 filter.filterLessThanZero = function(spec, encoding) {
-  encoding.forEach(function(encType, field) {
+  encoding.forEach(function(field, encType) {
     if (encoding.scale(encType).type === 'log') {
       spec.data[1].transform.push({
         type: 'filter',

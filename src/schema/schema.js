@@ -1,4 +1,5 @@
 // Package of defining Vegalite Specification's json schema
+"use strict";
 
 var schema = module.exports = {},
   util = require('../util');
@@ -37,7 +38,7 @@ schema.band = {
   }
 };
 
-schema.timefns = ['month', 'year', 'dayofweek', 'date', 'hour', 'minute', 'second'];
+schema.timefns = ['year', 'month', 'day', 'date', 'hours', 'minutes', 'seconds'];
 
 schema.fn = {
   type: 'string',
@@ -439,6 +440,16 @@ var cfg = {
         type: 'integer'
       },
       default: undefined
+    },
+
+    // filter null
+    filterNull: {
+      type: 'object',
+      properties: {
+        O: {type:'boolean', default: false},
+        Q: {type:'boolean', default: true},
+        T: {type:'boolean', default: true}
+      }
     },
 
     // single plot

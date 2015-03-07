@@ -1,6 +1,6 @@
 'use strict';
 
-var global = require('./globals'),
+var globals = require('./globals'),
   consts = require('./consts'),
   util = require('./util'),
   vlfield = require('./field'),
@@ -53,7 +53,22 @@ var Encoding = module.exports = (function() {
   };
 
   proto.filter = function() {
-    return this._filter;
+    var filterNull = [],
+      fields = this.fields(),
+      self = this;
+
+    util.forEach(fields, function(fieldList, fieldName) {
+      if ((self.config('filterNull').Q && fieldList.containsType[Q]) ||
+          (self.config('filterNull').T && fieldList.containsType[T]) ||
+          (self.config('filterNull').O && fieldList.containsType[O])) {
+        filterNull.push({
+          operands: [fieldName],
+          operator: 'notNull'
+        });
+      }
+    });
+
+    return filterNull.concat(this._filter);
   };
 
   // get "field" property for vega
@@ -77,6 +92,13 @@ var Encoding = module.exports = (function() {
 
   proto.fieldName = function(x) {
     return this._enc[x].name;
+  };
+
+  /*
+   * return key-value pairs of field name and list of fields of that field name
+   */
+  proto.fields = function() {
+    return vlenc.fields(this._enc);
   };
 
   proto.fieldTitle = function(x) {
@@ -241,7 +263,7 @@ var Encoding = module.exports = (function() {
   };
 
   proto.cardinality = function(encType, stats) {
-    return vlfield.cardinality(this._enc[encType], stats, true);
+    return vlfield.cardinality(this.enc(encType), stats, this.config('filterNull'), true);
   };
 
   proto.isRaw = function() {

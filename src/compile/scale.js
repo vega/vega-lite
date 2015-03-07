@@ -1,3 +1,5 @@
+'use strict';
+
 var globals = require('../globals'),
   util = require('../util'),
   time = require('./time');

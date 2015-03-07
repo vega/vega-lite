@@ -1,3 +1,5 @@
+'use strict';
+
 var globals = require('../globals'),
   util = require('../util');
 
@@ -26,7 +28,8 @@ function faceting(group, encoding, layout, style, sorting, spec, mdef, stack, st
     } else {
       delete mark.from;
     }
-  };
+  }
+
   if (hasRow) {
     if (!encoding.isDimension(ROW)) {
       util.error('Row encoding should be ordinal.');

@@ -1,3 +1,5 @@
+'use strict';
+
 var globals = require('../globals'),
   util = require('../util'),
   vlfield = require('../field'),
@@ -38,7 +40,7 @@ function estimateOpacity(encoding,stats) {
     //  for each non faceting and non-ordinal X / Y fields
     //  note that ordinal x,y are not include since we can
     //  consider that ordinal x are subdividing the cell into subcells anyway
-    encoding.forEach(function(encType, field) {
+    encoding.forEach(function(field, encType) {
 
       if (encType !== ROW && encType !== COL &&
           !((encType === X || encType === Y) &&
