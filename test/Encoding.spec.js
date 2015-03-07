@@ -22,7 +22,7 @@ describe('encoding.filter()', function () {
 
   it('should add filterNull for O when specified', function () {
     var encoding = Encoding.fromSpec(spec, null, {
-      filterNullO: true
+      filterNull: {O: true}
     }),
       filter = encoding.filter();
     expect(filter.length).to.equal(3);

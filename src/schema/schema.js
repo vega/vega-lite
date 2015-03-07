@@ -443,9 +443,14 @@ var cfg = {
     },
 
     // filter null
-    filterNullO: {type:'boolean', default: false},
-    filterNullQ: {type:'boolean', default: true},
-    filterNullT: {type:'boolean', default: true},
+    filterNull: {
+      type: 'object',
+      properties: {
+        O: {type:'boolean', default: false},
+        Q: {type:'boolean', default: true},
+        T: {type:'boolean', default: true}
+      }
+    },
 
     // single plot
     singleHeight: {
