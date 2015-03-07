@@ -1,0 +1,8 @@
+{
+  "predef": ["require", "module", "TABLE", "RAW", "STACKED", "INDEX", "X", "Y", "ROW", "COL", "SIZE", "SHAPE", "COLOR", "ALPHA", "TEXT", "DETAIL", "O", "Q", "T"],
+  "globalstrict": true
+}
+
+
+
+
