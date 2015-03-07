@@ -7,7 +7,7 @@ function addSortTransforms(spec, encoding, opt) {
   var datasetMapping = {};
   var counter = 0;
 
-  encoding.forEach(function(encType, field) {
+  encoding.forEach(function(field, encType) {
     var sortBy = encoding.sort(encType);
     if (sortBy.length > 0) {
       var fields = sortBy.map(function(d) {

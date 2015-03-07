@@ -7,7 +7,7 @@ function time(spec, encoding, opt) {
   var timeFields = {}, timeFn = {};
 
   // find unique formula transformation and bin function
-  encoding.forEach(function(encType, field) {
+  encoding.forEach(function(field, encType) {
     if (field.type === T && field.fn) {
       timeFields[encoding.field(encType)] = {
         field: field,
