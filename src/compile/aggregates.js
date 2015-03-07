@@ -9,7 +9,7 @@ function aggregates(spec, encoding, opt) {
   var dims = {}, meas = {}, detail = {}, facets = {},
     data = spec.data[1]; // currently data[0] is raw and data[1] is table
 
-  encoding.forEach(function(encType, field) {
+  encoding.forEach(function(field, encType) {
     if (field.aggr) {
       if (field.aggr === 'count') {
         meas['count'] = {op: 'count', field: '*'};

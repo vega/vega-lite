@@ -1,7 +1,8 @@
+'use strict';
+
 var expect = require('chai').expect;
 
 var vlfield = require('../src/field');
-
 
 describe('vl.field.cardinality()', function () {
   describe('for Q', function () {
