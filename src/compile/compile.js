@@ -1,3 +1,5 @@
+'use strict';
+
 var globals = require('../globals'),
   util = require('../util');
 
@@ -15,7 +17,7 @@ var template = compile.template = require('./template'),
   aggregates = compile.aggregates = require('./aggregates'),
   binning = compile.binning = require('./binning'),
   faceting = compile.faceting = require('./faceting'),
-  stacking = compile.stacking = require('./stacking');
+  stacking = compile.stacking = require('./stacking'),
   subfaceting = compile.subfaceting = require('./subfaceting');
 
 compile.layout = require('./layout');

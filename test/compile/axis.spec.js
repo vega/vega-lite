@@ -1,3 +1,5 @@
+'use strict';
+
 var expect = require('chai').expect;
 
 var axis = require('../../src/compile/axis'),

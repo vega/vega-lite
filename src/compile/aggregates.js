@@ -1,3 +1,5 @@
+'use strict';
+
 var globals = require('../globals'),
   util = require('../util');
 
@@ -12,7 +14,7 @@ function aggregates(spec, encoding, opt) {
   encoding.forEach(function(field, encType) {
     if (field.aggr) {
       if (field.aggr === 'count') {
-        meas['count'] = {op: 'count', field: '*'};
+        meas.count = {op: 'count', field: '*'};
       }else {
         meas[field.aggr + '|'+ field.name] = {
           op: field.aggr,

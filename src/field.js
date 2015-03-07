@@ -1,3 +1,5 @@
+'use strict';
+
 // utility for field
 
 var consts = require('./consts'),

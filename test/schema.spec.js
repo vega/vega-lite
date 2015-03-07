@@ -1,3 +1,5 @@
+'use strict';
+
 var assert = require('assert'),
   ZSchema = require("z-schema"),
   _ = require('lodash'),
@@ -27,7 +29,7 @@ describe('Schema', function() {
 
   it('field def should have supportedMarktypes', function() {
     var encProps = specSchema.properties.enc.properties;
-    for (k in encProps) {
+    for (var k in encProps) {
       assert.notEqual(encProps[k].supportedMarktypes, undefined);
     }
   });
