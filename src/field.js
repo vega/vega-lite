@@ -151,18 +151,27 @@ vlfield.isCount = function(field) {
  * For encoding, use encoding.cardinality() to avoid confusion.  Or use Encoding.isType if your field is from Encoding (and thus have numeric data type).
  * otherwise, do not specific isType so we can use the default isTypeName here.
  */
-vlfield.cardinality = function(field, stats, useTypeCode) {
-  var isType = getIsType(useTypeCode);
+vlfield.cardinality = function(field, stats, filterNull, useTypeCode) {
+  // FIXME need to take filter into account
+  var isType = getIsType(useTypeCode),
+    type = useTypeCode ? consts.dataTypeNames[field.type] : field.type;
 
   if (field.bin) {
     var bins = util.getbins(stats[field.name], field.bin.maxbins || schema.MAXBINS_DEFAULT);
     return (bins.stop - bins.start) / bins.step;
   }
   if (isType(field, T)) {
-    return time.cardinality(field, stats);
+    var cardinality = time.cardinality(field, stats, filterNull);
+    if(cardinality !== null) return cardinality;
+    //otherwise use calculation below
   }
   if (field.aggr) {
     return 1;
   }
-  return stats[field.name].cardinality;
+
+  // remove null
+  var stat = stats[field.name];
+  console.log('cardinality', field.name, stat.numNulls, filterNull[field.type]);
+  return stat.cardinality -
+    (stat.numNulls > 0 && filterNull[type] ? 1 : 0);
 };

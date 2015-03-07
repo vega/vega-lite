@@ -1,6 +1,6 @@
 'use strict';
 
-var global = require('./globals'),
+var globals = require('./globals'),
   consts = require('./consts'),
   util = require('./util'),
   vlfield = require('./field'),
@@ -263,7 +263,7 @@ var Encoding = module.exports = (function() {
   };
 
   proto.cardinality = function(encType, stats) {
-    return vlfield.cardinality(this._enc[encType], stats, true);
+    return vlfield.cardinality(this.enc(encType), stats, this.config('filterNull'), true);
   };
 
   proto.isRaw = function() {
