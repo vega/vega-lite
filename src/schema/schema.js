@@ -37,7 +37,7 @@ schema.band = {
   }
 };
 
-schema.timefns = ['month', 'year', 'dayofweek', 'date', 'hour', 'minute', 'second'];
+schema.timefns = ['year', 'month', 'day', 'date', 'hours', 'minutes', 'seconds'];
 
 schema.fn = {
   type: 'string',
