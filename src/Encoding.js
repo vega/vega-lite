@@ -320,7 +320,7 @@ var Encoding = module.exports = (function() {
   };
 
   // FIXME remove this -- simply use Encoding.shorthand
-  Encoding.shorthandFromSpec = function(/*spec, theme, extraCfg*/) {
+  Encoding.shorthandFromSpec = function(/*spec, theme*/) {
     return Encoding.fromSpec.apply(null, arguments).toShorthand();
   };
 
@@ -328,7 +328,7 @@ var Encoding = module.exports = (function() {
     return Encoding.parseShorthand(shorthand, cfg).toSpec(excludeConfig);
   };
 
-  Encoding.fromSpec = function(spec, theme, extraCfg) {
+  Encoding.fromSpec = function(spec, theme) {
     var enc = util.duplicate(spec.enc);
 
     //convert type from string to bitcode (e.g, O=1)
@@ -336,7 +336,7 @@ var Encoding = module.exports = (function() {
       enc[e].type = consts.dataTypes[enc[e].type];
     }
 
-    return new Encoding(spec.marktype, enc, util.merge(spec.cfg || {}, extraCfg || {}), spec.filter, theme);
+    return new Encoding(spec.marktype, enc, spec.cfg, spec.filter, theme);
   };
 
 
