@@ -314,8 +314,8 @@ var Encoding = module.exports = (function() {
 
   Encoding.parseShorthand = function(shorthand, cfg) {
     var c = consts.shorthand,
-        split = shorthand.split(c.delim, 1),
-        marktype = split[0].split(c.assign)[1].trim(),
+        split = shorthand.split(c.delim),
+        marktype = split.shift().split(c.assign)[1].trim(),
         enc = vlenc.parseShorthand(split[1], true);
 
     return new Encoding(marktype, enc, cfg);
