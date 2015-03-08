@@ -22,7 +22,6 @@ schema.aggr = {
   },
   supportedTypes: {'Q': true, 'O': true, 'T': true, '': true}
 };
-
 schema.band = {
   type: 'object',
   properties: {
@@ -38,7 +37,13 @@ schema.band = {
   }
 };
 
+schema.getSupportedRole = function(encType) {
+  return schema.schema.properties.enc.properties[encType].supportedRole;
+};
+
 schema.timefns = ['year', 'month', 'day', 'date', 'hours', 'minutes', 'seconds'];
+
+schema.defaultTimeFn = 'month';
 
 schema.fn = {
   type: 'string',
