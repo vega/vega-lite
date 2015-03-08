@@ -349,6 +349,16 @@ var colMixin = {
       type: 'number',
       minimum: 0,
       default: 150
+    },
+    axis: {
+      properties: {
+        maxLabelLength: {
+          type: 'integer',
+          default: 12,
+          minimum: 0,
+          description: 'Truncate labels that are too long.'
+        }
+      }
     }
   }
 };
