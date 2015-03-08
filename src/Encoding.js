@@ -58,6 +58,8 @@ var Encoding = module.exports = (function() {
       self = this;
 
     util.forEach(fields, function(fieldList, fieldName) {
+      if (fieldName === '*') return; //count
+
       if ((self.config('filterNull').Q && fieldList.containsType[Q]) ||
           (self.config('filterNull').T && fieldList.containsType[T]) ||
           (self.config('filterNull').O && fieldList.containsType[O])) {
