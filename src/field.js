@@ -171,7 +171,6 @@ vlfield.cardinality = function(field, stats, filterNull, useTypeCode) {
 
   // remove null
   var stat = stats[field.name];
-  console.log('cardinality', field.name, stat.numNulls, filterNull[field.type]);
   return stat.cardinality -
     (stat.numNulls > 0 && filterNull[type] ? 1 : 0);
 };
