@@ -156,6 +156,8 @@ vlfield.cardinality = function(field, stats, filterNull, useTypeCode) {
   var isType = getIsType(useTypeCode),
     type = useTypeCode ? consts.dataTypeNames[field.type] : field.type;
 
+  filterNull = filterNull || {};
+
   if (field.bin) {
     var bins = util.getbins(stats[field.name], field.bin.maxbins || schema.MAXBINS_DEFAULT);
     return (bins.stop - bins.start) / bins.step;
