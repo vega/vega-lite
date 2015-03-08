@@ -1,28 +1,31 @@
 'use strict';
 
-var util = module.exports = {};
+var schemautil = module.exports = {},
+  util = require('../util');
 
 var isEmpty = function(obj) {
   return Object.keys(obj).length === 0;
 };
 
-util.extend = function(instance, schema) {
-  return util.merge(util.instantiate(schema), instance);
+schemautil.extend = function(instance, schema) {
+  return schemautil.merge(schemautil.instantiate(schema), instance);
 };
 
 // instantiate a schema
-util.instantiate = function(schema) {
+schemautil.instantiate = function(schema) {
+  var val;
   if (schema.type === 'object') {
     var instance = {};
     for (var name in schema.properties) {
-      var val = util.instantiate(schema.properties[name]);
+      val = schemautil.instantiate(schema.properties[name]);
       if (val !== undefined) {
         instance[name] = val;
       }
     }
     return instance;
   } else if ('default' in schema) {
-    return schema.default;
+    val = schema.default;
+    return util.isObject(val) ? util.duplicate(val) : val;
   } else if (schema.type === 'array') {
     return [];
   }
@@ -30,18 +33,18 @@ util.instantiate = function(schema) {
 };
 
 // remove all defaults from an instance
-util.subtract = function(instance, defaults) {
+schemautil.subtract = function(instance, defaults) {
   var changes = {};
   for (var prop in instance) {
     var def = defaults[prop];
     var ins = instance[prop];
     // Note: does not properly subtract arrays
     if (!defaults || def !== ins) {
-      if (typeof ins === 'object' && !Array.isArray(ins) && def) {
-        var c = util.subtract(ins, def);
+      if (typeof ins === 'object' && !util.isArray(ins) && def) {
+        var c = schemautil.subtract(ins, def);
         if (!isEmpty(c))
           changes[prop] = c;
-      } else if (!Array.isArray(ins) || ins.length > 0) {
+      } else if (!util.isArray(ins) || ins.length > 0) {
         changes[prop] = ins;
       }
     }
@@ -49,7 +52,7 @@ util.subtract = function(instance, defaults) {
   return changes;
 };
 
-util.merge = function(/*dest*, src0, src1, ...*/){
+schemautil.merge = function(/*dest*, src0, src1, ...*/){
   var dest = arguments[0];
   for (var i=1 ; i<arguments.length; i++) {
     dest = merge(dest, arguments[i]);
