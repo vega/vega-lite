@@ -371,7 +371,8 @@ var Encoding = module.exports = (function() {
       oField.sort = [{
         name: qField.name,
         aggr: qField.aggr,
-        type: qField.type
+        type: qField.type,
+        reverse: true
       }];
     }
 
@@ -379,6 +380,12 @@ var Encoding = module.exports = (function() {
     return spec;
   };
 
+
+  Encoding.toggleSort.direction = function(spec) {
+    if (!Encoding.toggleSort.support(spec)) { return; }
+    var enc = spec.enc;
+    return enc.x.type === 'O' ? 'x' :  'y';
+  };
 
   Encoding.toggleSort.mode = function(spec) {
     if (!Encoding.toggleSort.support(spec)) { return; }
