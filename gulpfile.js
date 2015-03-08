@@ -12,7 +12,7 @@ var browserSync = require('browser-sync');
 
 
 var gutil = require('gulp-util');
-var mocha = require('gulp-mocha');
+var mocha = require('gulp-spawn-mocha');
 
 var bundleDef = {
   entries: ['./src/vl'],
@@ -46,7 +46,7 @@ function build(bundle) {
 // builds vegalite and schema
 gulp.task('build', ['schema'], function() {
   build(browserBundler.bundle());
-})
+});
 
 // generates spec.json
 gulp.task('schema', function () {
@@ -71,7 +71,9 @@ gulp.task('watch-schema', function() {
 // runs the tests
 gulp.task('mocha', function() {
   return gulp.src(['test/**/*.spec.js'], { read: false })
-    .pipe(mocha({ reporter: 'list' }))
+    .pipe(mocha({
+      R: 'list'
+    }))
     .on('error', gutil.log);
 });
 
