@@ -341,6 +341,16 @@ var Encoding = module.exports = (function() {
     return new Encoding(spec.marktype, enc, spec.cfg, spec.filter, theme);
   };
 
+  Encoding.transpose = function(spec) {
+    var oldenc = spec.enc,
+      enc = util.duplicate(spec.enc);
+    enc.x = oldenc.y;
+    enc.y = oldenc.x;
+    enc.row = oldenc.col;
+    enc.col = oldenc.row;
+    spec.enc = enc;
+    return spec;
+  };
 
   return Encoding;
 
