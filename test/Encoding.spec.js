@@ -21,10 +21,10 @@ describe('encoding.filter()', function () {
   });
 
   it('should add filterNull for O when specified', function () {
-    var encoding = Encoding.fromSpec(spec, null, {
+    var encoding = Encoding.fromSpec(spec, {
       filterNull: {O: true}
-    }),
-      filter = encoding.filter();
+    });
+    var filter = encoding.filter();
     expect(filter.length).to.equal(3);
   });
 });
