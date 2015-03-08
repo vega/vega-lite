@@ -4,6 +4,16 @@ var expect = require('chai').expect;
 
 var Encoding = require('../src/Encoding');
 
+describe('Encoding.parseShorthand()', function () {
+  it('should parse shorthand correctly', function () {
+    var shorthand = 'mark=point|x=Effect__Amount_of_damage,O|y=avg_Cost__Total_$,Q';
+    var encoding = Encoding.parseShorthand(shorthand);
+    expect(encoding.has('y')).ok();
+    expect(encoding.has('x')).ok();
+
+  });
+});
+
 describe('encoding.filter()', function () {
   var spec = {
       marktype: 'point',
