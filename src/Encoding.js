@@ -316,7 +316,7 @@ var Encoding = module.exports = (function() {
     var c = consts.shorthand,
         split = shorthand.split(c.delim),
         marktype = split.shift().split(c.assign)[1].trim(),
-        enc = vlenc.parseShorthand(split[1], true);
+        enc = vlenc.parseShorthand(split, true);
 
     return new Encoding(marktype, enc, cfg);
   };
@@ -341,6 +341,16 @@ var Encoding = module.exports = (function() {
     return new Encoding(spec.marktype, enc, spec.cfg, spec.filter, theme);
   };
 
+  Encoding.transpose = function(spec) {
+    var oldenc = spec.enc,
+      enc = util.duplicate(spec.enc);
+    enc.x = oldenc.y;
+    enc.y = oldenc.x;
+    enc.row = oldenc.col;
+    enc.col = oldenc.row;
+    spec.enc = enc;
+    return spec;
+  };
 
   return Encoding;
 

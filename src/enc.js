@@ -88,7 +88,7 @@ vlenc.shorthand = function(enc) {
 };
 
 vlenc.parseShorthand = function(shorthand, convertType) {
-  var enc = shorthand.split(c.delim);
+  var enc = util.isArray(shorthand) ? shorthand : shorthand.split(c.delim);
   return enc.reduce(function(m, e) {
     var split = e.split(c.assign),
         enctype = split[0].trim(),
