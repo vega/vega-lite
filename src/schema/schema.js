@@ -473,7 +473,7 @@ var cfg = {
     // band size
     largeBandSize: {
       type: 'integer',
-      default: 19,
+      default: 21,
       minimum: 0
     },
     smallBandSize: {
