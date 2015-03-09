@@ -253,6 +253,11 @@ var Encoding = module.exports = (function() {
     return vlenc.isAggregate(spec.enc);
   };
 
+  Encoding.alwaysNoOcclusion = function(spec, stats) {
+    // FIXME raw OxQ with # of rows = # of O
+    return vlenc.isAggregate(spec.enc);
+  };
+
   Encoding.isStack = function(spec) {
     // FIXME update this once we have control for stack ...
     return (spec.marktype === 'bar' || spec.marktype === 'area') &&
@@ -352,6 +357,78 @@ var Encoding = module.exports = (function() {
     return spec;
   };
 
-  return Encoding;
+  Encoding.toggleSort = function(spec) {
+    if (!Encoding.toggleSort.support(spec)) { return; }
+    var enc = spec.enc;
 
+    var oField = enc.x.type === 'O' ? enc.x : enc.y,
+      qField = enc.x.type === 'O' ? enc.y : enc.x;
+
+    // FIXME add ascending / descending
+    if (oField.sort && oField.sort.length > 0) {
+      oField.sort = [];
+    } else {
+      oField.sort = [{
+        name: qField.name,
+        aggr: qField.aggr,
+        type: qField.type,
+        reverse: true
+      }];
+    }
+
+    spec.enc = enc;
+    return spec;
+  };
+
+
+  Encoding.toggleSort.direction = function(spec) {
+    if (!Encoding.toggleSort.support(spec)) { return; }
+    var enc = spec.enc;
+    return enc.x.type === 'O' ? 'x' :  'y';
+  };
+
+  Encoding.toggleSort.mode = function(spec) {
+    if (!Encoding.toggleSort.support(spec)) { return; }
+    var enc = spec.enc;
+
+    var oField = enc.x.type === 'O' ? enc.x : enc.y,
+      qField = enc.x.type === 'O' ? enc.y : enc.x;
+
+    // FIXME add ascending / descending
+    if (oField.sort && oField.sort.length > 0) {
+      return 'Q';
+    } else {
+      return 'O';
+    }
+  };
+
+  Encoding.toggleSort.support = function(spec, stats) {
+    var enc = spec.enc;
+    if (vlenc.has(enc, ROW) || vlenc.has(enc, COL) ||
+      !vlenc.has(enc, X) || !vlenc.has(enc, Y) ||
+      !Encoding.alwaysNoOcclusion(spec, stats)) {
+      return false;
+    }
+    return (enc.x.type === 'O' && vlfield.isMeasure(enc.y)) ? 'x' :
+      (enc.y.type === 'O' && vlfield.isMeasure(enc.x)) ? 'y' : false;
+  };
+
+  Encoding.toggleFilterNullO = function(spec) {
+    spec.cfg.filterNull.O = !spec.cfg.filterNull.O;
+    return spec;
+  };
+
+  Encoding.toggleFilterNullO.support = function(spec, stats) {
+    var fields = vlenc.fields(spec.enc);
+    console.log('fields', fields);
+    for (var fieldName in fields) {
+      var fieldList = fields[fieldName];
+      if (fieldList.containsType.O && stats[fieldName].numNulls > 0) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  return Encoding;
 })();

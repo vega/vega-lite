@@ -401,9 +401,10 @@ function text_props(e, layout, style) {
   if (e.has(X)) {
     p.x = {scale: X, field: e.field(X)};
   } else if (!e.has(X)) {
-    p.x = {value: e.bandSize(X, layout.x.useSmallBand) / 2};
     if (e.has(TEXT) && e.isType(TEXT, Q)) {
-      p.x.offset = layout.cellWidth;
+      p.x = {value: layout.cellWidth-5};
+    } else {
+      p.x = {value: e.bandSize(X, layout.x.useSmallBand) / 2};
     }
   }
 

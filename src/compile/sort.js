@@ -20,7 +20,8 @@ function addSortTransforms(spec, encoding, opt) {
       });
 
       var byClause = sortBy.map(function(d) {
-        return (d.reverse ? '-' : '') + 'data.' + d.aggr + '_' + d.name;
+        var reverse = (d.reverse ? '-' : '');
+        return reverse + 'data.' + (d.aggr==='count' ? 'count' : (d.aggr + '_' + d.name));
       });
 
       var dataName = 'sorted' + counter++;

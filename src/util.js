@@ -117,6 +117,10 @@ util.duplicate = function(obj) {
   return JSON.parse(JSON.stringify(obj));
 };
 
+util.isObject = function(obj) {
+  return obj === Object(obj);
+};
+
 util.isArray = Array.isArray || function(obj) {
   return toString.call(obj) == '[object Array]';
 };
