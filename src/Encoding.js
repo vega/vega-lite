@@ -402,11 +402,11 @@ var Encoding = module.exports = (function() {
     }
   };
 
-  Encoding.toggleSort.support = function(spec) {
+  Encoding.toggleSort.support = function(spec, stats) {
     var enc = spec.enc;
     if (vlenc.has(enc, ROW) || vlenc.has(enc, COL) ||
       !vlenc.has(enc, X) || !vlenc.has(enc, Y) ||
-      !Encoding.alwaysNoOcclusion(spec)) {
+      !Encoding.alwaysNoOcclusion(spec, stats)) {
       return false;
     }
     return (enc.x.type === 'O' && vlfield.isMeasure(enc.y)) ? 'x' :
@@ -416,6 +416,18 @@ var Encoding = module.exports = (function() {
   Encoding.toggleFilterNullO = function(spec) {
     spec.cfg.filterNull.O = !spec.cfg.filterNull.O;
     return spec;
+  };
+
+  Encoding.toggleFilterNullO.support = function(spec, stats) {
+    var fields = vlenc.fields(spec.enc);
+    console.log('fields', fields);
+    for (var fieldName in fields) {
+      var fieldList = fields[fieldName];
+      if (fieldList.containsType.O && stats[fieldName].numNulls > 0) {
+        return true;
+      }
+    }
+    return false;
   };
 
   return Encoding;
