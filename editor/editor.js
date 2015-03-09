@@ -92,7 +92,7 @@ vled.parse = function() {
       dataUrl: vled.dataset.url
     }
 
-    encoding = vl.Encoding.fromSpec(spec, {}, cfg);
+    encoding = vl.Encoding.fromSpec(spec, {cfg: cfg});
     vled.loadEncoding(encoding);
   }
 
