@@ -80,12 +80,14 @@ function scale_range(s, encoding, layout, style, opt) {
         s.range = layout.cellWidth ? [0, layout.cellWidth] : 'width';
         s.zero = spec.zero ||
           ( encoding.isType(s.name,T) && encoding.fn(s.name) === 'year' ? false : true );
-        s.reverse = spec.reverse;
       }
+
+      if (spec.reverse) s.reverse = true;
       s.round = true;
+
       if (s.type === 'time') {
         s.nice = encoding.fn(s.name);
-      }else {
+      } else {
         s.nice = true;
       }
       break;
@@ -96,14 +98,14 @@ function scale_range(s, encoding, layout, style, opt) {
         s.range = layout.cellHeight ? [layout.cellHeight, 0] : 'height';
         s.zero = spec.zero ||
           ( encoding.isType(s.name, T) && encoding.fn(s.name) === 'year' ? false : true );
-        s.reverse = spec.reverse;
       }
 
+      if (spec.reverse) s.reverse = true;
       s.round = true;
 
       if (s.type === 'time') {
         s.nice = encoding.fn(s.name) || encoding.config('timeScaleNice');
-      }else {
+      } else {
         s.nice = true;
       }
       break;
