@@ -4,7 +4,7 @@
     "Penicilin":870,
     "Streptomycin":1,
     "Neomycin":1.6,
-    "Gram Staining":"negative",
+    "Gram_Staining":"negative",
     "Genus": "other"
   },
   {
@@ -12,7 +12,7 @@
     "Penicilin":1,
     "Streptomycin":2,
     "Neomycin":0.02,
-    "Gram Staining":"negative",
+    "Gram_Staining":"negative",
     "Genus": "other"
   },
   {
@@ -20,7 +20,7 @@
     "Penicilin":0.001,
     "Streptomycin":0.01,
     "Neomycin":0.007,
-    "Gram Staining":"positive",
+    "Gram_Staining":"positive",
     "Genus": "other"
   },
   {
@@ -28,7 +28,7 @@
     "Penicilin":0.005,
     "Streptomycin":11,
     "Neomycin":10,
-    "Gram Staining":"positive",
+    "Gram_Staining":"positive",
     "Genus": "other"
   },
   {
@@ -36,7 +36,7 @@
     "Penicilin":100,
     "Streptomycin":0.4,
     "Neomycin":0.1,
-    "Gram Staining":"negative",
+    "Gram_Staining":"negative",
     "Genus": "other"
   },
   {
@@ -44,7 +44,7 @@
     "Penicilin":850,
     "Streptomycin":1.2,
     "Neomycin":1,
-    "Gram Staining":"negative",
+    "Gram_Staining":"negative",
     "Genus": "other"
   },
   {
@@ -52,7 +52,7 @@
     "Penicilin":800,
     "Streptomycin":5,
     "Neomycin":2,
-    "Gram Staining":"negative",
+    "Gram_Staining":"negative",
     "Genus": "other"
   },
   {
@@ -60,7 +60,7 @@
     "Penicilin":3,
     "Streptomycin":0.1,
     "Neomycin":0.1,
-    "Gram Staining":"negative",
+    "Gram_Staining":"negative",
     "Genus": "other"
   },
   {
@@ -68,7 +68,7 @@
     "Penicilin":850,
     "Streptomycin":2,
     "Neomycin":0.4,
-    "Gram Staining":"negative",
+    "Gram_Staining":"negative",
     "Genus": "other"
   },
   {
@@ -76,7 +76,7 @@
     "Penicilin":1,
     "Streptomycin":0.4,
     "Neomycin":0.008,
-    "Gram Staining":"negative",
+    "Gram_Staining":"negative",
     "Genus": "Salmonella"
   },
   {
@@ -84,7 +84,7 @@
     "Penicilin":10,
     "Streptomycin":0.8,
     "Neomycin":0.09,
-    "Gram Staining":"negative",
+    "Gram_Staining":"negative",
     "Genus": "Salmonella"
   },
   {
@@ -92,7 +92,7 @@
     "Penicilin":0.007,
     "Streptomycin":0.1,
     "Neomycin":0.001,
-    "Gram Staining":"positive",
+    "Gram_Staining":"positive",
     "Genus": "Staphylococcus"
   },
   {
@@ -100,7 +100,7 @@
     "Penicilin":0.03,
     "Streptomycin":0.03,
     "Neomycin":0.001,
-    "Gram Staining":"positive",
+    "Gram_Staining":"positive",
     "Genus": "Staphylococcus"
   },
   {
@@ -108,7 +108,7 @@
     "Penicilin":1,
     "Streptomycin":1,
     "Neomycin":0.1,
-    "Gram Staining":"positive",
+    "Gram_Staining":"positive",
     "Genus": "Streptococcus"
   },
   {
@@ -116,7 +116,7 @@
     "Penicilin":0.001,
     "Streptomycin":14,
     "Neomycin":10,
-    "Gram Staining":"positive",
+    "Gram_Staining":"positive",
     "Genus": "Streptococcus"
   },
   {
@@ -124,7 +124,7 @@
     "Penicilin":0.005,
     "Streptomycin":10,
     "Neomycin":40,
-    "Gram Staining":"positive",
+    "Gram_Staining":"positive",
     "Genus": "Streptococcus"
   }
 ]
