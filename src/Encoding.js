@@ -420,7 +420,6 @@ var Encoding = module.exports = (function() {
 
   Encoding.toggleFilterNullO.support = function(spec, stats) {
     var fields = vlenc.fields(spec.enc);
-    console.log('fields', fields);
     for (var fieldName in fields) {
       var fieldList = fields[fieldName];
       if (fieldList.containsType.O && fieldName in stats && stats[fieldName].numNulls > 0) {
