@@ -423,7 +423,7 @@ var Encoding = module.exports = (function() {
     console.log('fields', fields);
     for (var fieldName in fields) {
       var fieldList = fields[fieldName];
-      if (fieldList.containsType.O && stats[fieldName].numNulls > 0) {
+      if (fieldList.containsType.O && fieldName in stats && stats[fieldName].numNulls > 0) {
         return true;
       }
     }
