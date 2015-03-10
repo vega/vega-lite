@@ -77,19 +77,20 @@ var Encoding = module.exports = (function() {
   proto.field = function(x, nodata, nofn) {
     if (!this.has(x)) return null;
 
-    var f = (nodata ? '' : 'data.');
+    var f = (nodata ? '' : "data['");
 
     if (this._enc[x].aggr === 'count') {
-      return f + 'count';
+      f += 'count';
     } else if (!nofn && this._enc[x].bin) {
-      return f + 'bin_' + this._enc[x].name;
+      f += 'bin_' + this._enc[x].name;
     } else if (!nofn && this._enc[x].aggr) {
-      return f + this._enc[x].aggr + '_' + this._enc[x].name;
+      f += this._enc[x].aggr + '_' + this._enc[x].name;
     } else if (!nofn && this._enc[x].fn) {
-      return f + this._enc[x].fn + '_' + this._enc[x].name;
+      f += this._enc[x].fn + '_' + this._enc[x].name;
     } else {
-      return f + this._enc[x].name;
+      f += this._enc[x].name;
     }
+    return f + "']"
   };
 
   proto.fieldName = function(x) {

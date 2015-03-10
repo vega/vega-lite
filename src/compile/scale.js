@@ -65,7 +65,7 @@ function scale_domain(name, encoding, sorting, opt) {
   return name == opt.stack ?
     {
       data: STACKED,
-      field: 'data.' + (opt.facet ? 'max_' : '') + 'sum_' + encoding.field(name, true)
+      field: "data['" + (opt.facet ? 'max_' : '') + 'sum_' + encoding.field(name, true) + "']"
     } :
     {data: sorting.getDataset(name), field: encoding.field(name)};
 }
