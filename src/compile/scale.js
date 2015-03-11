@@ -78,8 +78,13 @@ function scale_range(s, encoding, layout, style, opt) {
         s.bandWidth = encoding.bandSize(X, layout.x.useSmallBand);
       } else {
         s.range = layout.cellWidth ? [0, layout.cellWidth] : 'width';
-        s.zero = spec.zero ||
-          ( encoding.isType(s.name,T) && encoding.fn(s.name) === 'year' ? false : true );
+
+        if (spec.zero === undefined) {
+          s.zero = encoding.isType(s.name,T) && encoding.fn(s.name) === 'year' ? false : true;
+        } else {
+          s.zero = spec.zero;
+        }
+
         s.reverse = spec.reverse;
       }
       s.round = true;
@@ -94,8 +99,13 @@ function scale_range(s, encoding, layout, style, opt) {
         s.bandWidth = encoding.bandSize(Y, layout.y.useSmallBand);
       } else {
         s.range = layout.cellHeight ? [layout.cellHeight, 0] : 'height';
-        s.zero = spec.zero ||
-          ( encoding.isType(s.name, T) && encoding.fn(s.name) === 'year' ? false : true );
+
+        if (spec.zero === undefined) {
+          s.zero = encoding.isType(s.name,T) && encoding.fn(s.name) === 'year' ? false : true;
+        } else {
+          s.zero = spec.zero;
+        }
+
         s.reverse = spec.reverse;
       }
 
