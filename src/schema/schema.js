@@ -109,6 +109,7 @@ var typicalField = merge(clone(schema.field), {
         zero: {
           type: 'boolean',
           description: 'Include zero',
+          default: true,
           supportedTypes: {'Q': true}
         },
         nice: {
