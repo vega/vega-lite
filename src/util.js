@@ -100,7 +100,6 @@ util.stablesort = function(array, sortBy, keyFn) {
     var sa = sortBy(a),
       sb = sortBy(b);
 
-    console.log(keyFn(a), keyFn(b), sa<sb, sa>sb, indices[keyFn(a)] - indices[keyFn(b)]);
     return sa<sb ? -1 : sa>sb ? 1 : (indices[keyFn(a)] - indices[keyFn(b)]);
   });
   return array;
