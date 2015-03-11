@@ -166,8 +166,31 @@ var Encoding = module.exports = (function() {
     return this._enc[x].fn;
   };
 
-   proto.sort = function(x) {
-    return this._enc[x].sort;
+  proto.sort = function(et, stats) {
+    var sort = this._enc[et].sort,
+      enc = this._enc,
+      isType = vlfield.isType.byCode;
+
+    // console.log('sort:', sort, 'support:', Encoding.toggleSort.support({enc:this._enc}, stats) , 'toggle:', this.config('toggleSort'))
+
+    if ((!sort || sort.length===0) &&
+        Encoding.toggleSort.support({enc:this._enc}, stats, true) && //HACK
+        this.config('toggleSort') === 'Q'
+      ) {
+      var qField = isType(enc.x, O) ? enc.y : enc.x;
+
+      if (isType(enc[et], O)) {
+        sort = [{
+          name: qField.name,
+          aggr: qField.aggr,
+          type: qField.type,
+          reverse: true
+        }];
+      }
+
+    }
+
+    return sort;
   };
 
   proto.any = function(f) {
@@ -218,6 +241,7 @@ var Encoding = module.exports = (function() {
   };
 
   Encoding.isType = function (fieldDef, type) {
+    // FIXME vlfield.isType
     return (fieldDef.type & type) > 0;
   };
 
@@ -358,59 +382,34 @@ var Encoding = module.exports = (function() {
   };
 
   Encoding.toggleSort = function(spec) {
-    if (!Encoding.toggleSort.support(spec)) { return; }
-    var enc = spec.enc;
-
-    var oField = enc.x.type === 'O' ? enc.x : enc.y,
-      qField = enc.x.type === 'O' ? enc.y : enc.x;
-
-    // FIXME add ascending / descending
-    if (oField.sort && oField.sort.length > 0) {
-      oField.sort = [];
-    } else {
-      oField.sort = [{
-        name: qField.name,
-        aggr: qField.aggr,
-        type: qField.type,
-        reverse: true
-      }];
-    }
-
-    spec.enc = enc;
+    spec.cfg = spec.cfg || {};
+    spec.cfg.toggleSort = spec.cfg.toggleSort === 'Q' ? 'O' :'Q';
     return spec;
   };
 
 
-  Encoding.toggleSort.direction = function(spec) {
-    if (!Encoding.toggleSort.support(spec)) { return; }
+  Encoding.toggleSort.direction = function(spec, useTypeCode) {
+    if (!Encoding.toggleSort.support(spec, useTypeCode)) { return; }
     var enc = spec.enc;
     return enc.x.type === 'O' ? 'x' :  'y';
   };
 
   Encoding.toggleSort.mode = function(spec) {
-    if (!Encoding.toggleSort.support(spec)) { return; }
-    var enc = spec.enc;
-
-    var oField = enc.x.type === 'O' ? enc.x : enc.y,
-      qField = enc.x.type === 'O' ? enc.y : enc.x;
-
-    // FIXME add ascending / descending
-    if (oField.sort && oField.sort.length > 0) {
-      return 'Q';
-    } else {
-      return 'O';
-    }
+    return spec.cfg.toggleSort;
   };
 
-  Encoding.toggleSort.support = function(spec, stats) {
-    var enc = spec.enc;
+  Encoding.toggleSort.support = function(spec, stats, useTypeCode) {
+    var enc = spec.enc,
+      isType = vlfield.isType.get(useTypeCode);
+
     if (vlenc.has(enc, ROW) || vlenc.has(enc, COL) ||
       !vlenc.has(enc, X) || !vlenc.has(enc, Y) ||
       !Encoding.alwaysNoOcclusion(spec, stats)) {
       return false;
     }
-    return (enc.x.type === 'O' && vlfield.isMeasure(enc.y)) ? 'x' :
-      (enc.y.type === 'O' && vlfield.isMeasure(enc.x)) ? 'y' : false;
+
+    return ( isType(enc.x, O) && vlfield.isMeasure(enc.y, useTypeCode)) ? 'x' :
+      ( isType(enc.y, O) && vlfield.isMeasure(enc.x, useTypeCode)) ? 'y' : false;
   };
 
   Encoding.toggleFilterNullO = function(spec) {
@@ -422,7 +421,7 @@ var Encoding = module.exports = (function() {
     var fields = vlenc.fields(spec.enc);
     for (var fieldName in fields) {
       var fieldList = fields[fieldName];
-      if (fieldList.containsType.O && fieldName in stats && stats[fieldName].numNulls > 0) {
+      if (fieldList.containsType.O && stats[fieldName].numNulls > 0) {
         return true;
       }
     }

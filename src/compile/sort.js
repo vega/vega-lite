@@ -5,12 +5,12 @@ var globals = require('../globals');
 module.exports = addSortTransforms;
 
 // adds new transforms that produce sorted fields
-function addSortTransforms(spec, encoding, opt) {
+function addSortTransforms(spec, encoding, stats, opt) {
   var datasetMapping = {};
   var counter = 0;
 
   encoding.forEach(function(field, encType) {
-    var sortBy = encoding.sort(encType);
+    var sortBy = encoding.sort(encType, stats);
     if (sortBy.length > 0) {
       var fields = sortBy.map(function(d) {
         return {

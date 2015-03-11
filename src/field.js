@@ -91,18 +91,23 @@ vlfield.order.typeThenCardinality = function(field, stats){
   return stats[field.name].cardinality;
 };
 
-
+// FIXME refactor
 vlfield.isType = function (fieldDef, type) {
   return (fieldDef.type & type) > 0;
 };
+
+vlfield.isType.byCode = vlfield.isType;
 
 vlfield.isType.byName = function (field, type) {
   return field.type === consts.dataTypeNames[type];
 };
 
+
 function getIsType(useTypeCode) {
-  return useTypeCode ? vlfield.isType : vlfield.isType.byName;
+  return useTypeCode ? vlfield.isType.byCode : vlfield.isType.byName;
 }
+
+vlfield.isType.get = getIsType; //FIXME
 
 /*
  * Most fields that use ordinal scale are dimensions.

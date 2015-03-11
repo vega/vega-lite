@@ -466,6 +466,10 @@ var cfg = {
         T: {type:'boolean', default: true}
       }
     },
+    toggleSort: {
+      type: 'string',
+      default: 'O'
+    },
 
     // single plot
     singleHeight: {
