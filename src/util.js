@@ -89,6 +89,22 @@ util.variance = function(values) {
   return util.mean(diffs);
 };
 
+util.stablesort = function(array, sortBy, keyFn) {
+  var indices = {};
+
+  array.forEach(function(v, i) {
+    indices[keyFn(v)] = i;
+  });
+
+  array.sort(function(a, b) {
+    var sa = sortBy(a),
+      sb = sortBy(b);
+
+    return sa<sb ? -1 : sa>sb ? 1 : (indices[keyFn(a)] - indices[keyFn(b)]);
+  });
+  return array;
+};
+
 util.stdev = function(values) {
   return Math.sqrt(util.variance(values));
 };
