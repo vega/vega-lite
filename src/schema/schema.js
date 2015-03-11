@@ -104,7 +104,7 @@ var typicalField = merge(clone(schema.field), {
         reverse: {
           type: 'boolean',
           default: false,
-          supportedTypes: {'Q': true, 'O': true, 'T': true}
+          supportedTypes: {'Q': true, 'T': true}
         },
         zero: {
           type: 'boolean',
