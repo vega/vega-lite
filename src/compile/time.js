@@ -52,7 +52,7 @@ time.cardinality = function(field, stats, filterNull) {
 };
 
 function fieldFn(func, field) {
-  return func + '(d.data.'+ field.name +')';
+  return 'utc' + func + '(d.data.'+ field.name +')';
 }
 
 /**
