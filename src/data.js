@@ -4,7 +4,8 @@
 
 var util = require('./util');
 
-var vldata = module.exports = {};
+var vldata = module.exports = {},
+  vlfield = require('./field');
 
 vldata.getUrl = function getDataUrl(encoding, stats) {
   if (!encoding.config('useVegaServer')) {
@@ -44,7 +45,7 @@ vldata.getUrl = function getDataUrl(encoding, stats) {
  * @param  {Object} data data in JSON/javascript object format
  * @return Array of {name: __name__, type: "number|text|time|location"}
  */
-vldata.getSchema = function(data) {
+vldata.getSchema = function(data, order) {
   var schema = [],
     fields = util.keys(data[0]);
 
@@ -68,6 +69,8 @@ vldata.getSchema = function(data) {
 
     schema.push({name: k, type: type});
   });
+
+  schema = util.stablesort(schema, order || vlfield.order.typeThenName, vlfield.order.name);
 
   return schema;
 };
