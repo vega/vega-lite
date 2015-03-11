@@ -33,7 +33,7 @@ function compile(encoding, stats) {
     mdef = mdefs[0];  // TODO: remove this dirty hack by refactoring the whole flow
 
   filter.addFilters(spec, encoding);
-  var sorting = vlsort(spec, encoding);
+  var sorting = vlsort(spec, encoding, stats);
 
   var hasRow = encoding.has(ROW), hasCol = encoding.has(COL);
 
