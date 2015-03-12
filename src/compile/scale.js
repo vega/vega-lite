@@ -79,10 +79,10 @@ function scale_range(s, encoding, layout, style, opt) {
       } else {
         s.range = layout.cellWidth ? [0, layout.cellWidth] : 'width';
 
-        if (spec.zero === undefined) {
-          s.zero = encoding.isType(s.name,T) && encoding.fn(s.name) === 'year' ? false : true;
+        if (encoding.isType(s.name,T) && encoding.fn(s.name) === 'year') {
+          s.zero = false;
         } else {
-          s.zero = spec.zero;
+          s.zero = spec.zero === undefined ? true : spec.zero;
         }
 
         s.reverse = spec.reverse;
@@ -100,10 +100,10 @@ function scale_range(s, encoding, layout, style, opt) {
       } else {
         s.range = layout.cellHeight ? [layout.cellHeight, 0] : 'height';
 
-        if (spec.zero === undefined) {
-          s.zero = encoding.isType(s.name,T) && encoding.fn(s.name) === 'year' ? false : true;
+        if (encoding.isType(s.name,T) && encoding.fn(s.name) === 'year') {
+          s.zero = false;
         } else {
-          s.zero = spec.zero;
+          s.zero = spec.zero === undefined ? true : spec.zero;
         }
 
         s.reverse = spec.reverse;
