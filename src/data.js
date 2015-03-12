@@ -57,10 +57,8 @@ vldata.getSchema = function(data, order) {
     }
 
     datum = util.parse(datum);
-
-    //TODO(kanitw): better type inference here
     var type = (typeof datum === 'number') ? 'Q':
-      (datum instanceof Date) ? 'O' : 'T';
+      (datum instanceof Date) ? 'T' : 'O';
 
     schema.push({name: k, type: type});
   });
