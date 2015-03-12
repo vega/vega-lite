@@ -413,6 +413,8 @@ var Encoding = module.exports = (function() {
   };
 
   Encoding.toggleFilterNullO = function(spec) {
+    spec.cfg = spec.cfg || {};
+    spec.cfg.filterNull = spec.cfg.filterNull || {};
     spec.cfg.filterNull.O = !spec.cfg.filterNull.O;
     return spec;
   };
@@ -421,7 +423,7 @@ var Encoding = module.exports = (function() {
     var fields = vlenc.fields(spec.enc);
     for (var fieldName in fields) {
       var fieldList = fields[fieldName];
-      if (fieldList.containsType.O && stats[fieldName].numNulls > 0) {
+      if (fieldList.containsType.O && fieldName in stats && stats[fieldName].numNulls > 0) {
         return true;
       }
     }
