@@ -414,7 +414,10 @@ var Encoding = module.exports = (function() {
 
   Encoding.toggleFilterNullO = function(spec) {
     spec.cfg = spec.cfg || {};
-    spec.cfg.filterNull = spec.cfg.filterNull || {};
+    spec.cfg.filterNull = spec.cfg.filterNull || { //FIXME
+      T: true,
+      Q: true
+    };
     spec.cfg.filterNull.O = !spec.cfg.filterNull.O;
     return spec;
   };
