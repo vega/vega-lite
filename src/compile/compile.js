@@ -67,7 +67,8 @@ function compile(encoding, stats) {
   if (lineType) {
     var f = (encoding.isMeasure(X) && encoding.isDimension(Y)) ? Y : X;
     if (!mdef.from) mdef.from = {};
-    mdef.from.transform = [{type: 'sort', by: encoding.field(f)}];
+    // TODO: why - ?
+    mdef.from.transform = [{type: 'sort', by: '-' + encoding.field(f)}];
   }
 
   // Small Multiples
