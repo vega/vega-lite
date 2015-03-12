@@ -56,16 +56,9 @@ vldata.getSchema = function(data, order) {
       datum = data[++i][k];
     }
 
-    try {
-      var number = JSON.parse(datum);
-      datum = number;
-    } catch(e) {
-      // do nothing
-    }
-
-    //TODO(kanitw): better type inference here
+    datum = util.parse(datum);
     var type = (typeof datum === 'number') ? 'Q':
-      isNaN(Date.parse(datum)) ? 'O' : 'T';
+      (datum instanceof Date) ? 'T' : 'O';
 
     schema.push({name: k, type: type});
   });
@@ -80,7 +73,7 @@ vldata.getStats = function(data) { // hack
     fields = util.keys(data[0]);
 
   fields.forEach(function(k) {
-    var stat = util.minmax(data, k, true);
+    var stat = util.minmax(data, k);
     stat.cardinality = util.uniq(data, k);
     stat.count = data.length;
 

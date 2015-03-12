@@ -116,15 +116,29 @@ util.skew = function(values) {
   return 1.0 * (avg - med) / std;
 };
 
-util.minmax = function(data, field, excludeNulls) {
-  excludeNulls = excludeNulls === undefined ? false : excludeNulls;
+// parses a string to date or number
+util.parse = function(value) {
+  try {
+    return JSON.parse(value);
+  } catch(e) {
+    // do nothing
+  }
+
+  var date = Date.parse(value);
+  if (!isNaN(date)) {
+    return (new Date(date));
+  }
+  return value;
+};
+
+util.minmax = function(data, field) {
   var stats = {min: +Infinity, max: -Infinity};
   for (var i = 0; i < data.length; ++i) {
-    var v = data[i][field];
-    if (excludeNulls && v === null)
-      continue;
-    if (v > stats.max) stats.max = v;
-    if (v < stats.min) stats.min = v;
+    var v = util.parse(data[i][field]);
+    if (v !== null) {
+      if (v > stats.max) stats.max = v;
+      if (v < stats.min) stats.min = v;
+    }
   }
   return stats;
 };
