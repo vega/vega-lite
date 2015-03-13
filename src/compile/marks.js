@@ -98,7 +98,7 @@ function bar_props(e, layout, style) {
   if (e.isMeasure(X)) {
     p.x = {scale: X, field: e.field(X)};
     if (e.isDimension(Y)) {
-      p.x2 = {scale: X, value: 0};
+      p.x2 = {scale: X, value: e.scale(X).type === 'log' ? 1 : 0};
     }
   } else if (e.has(X)) { // is ordinal
     p.xc = {scale: X, field: e.field(X)};
@@ -110,7 +110,7 @@ function bar_props(e, layout, style) {
   // y
   if (e.isMeasure(Y)) {
     p.y = {scale: Y, field: e.field(Y)};
-    p.y2 = {scale: Y, value: 0};
+    p.y2 = {scale: Y, value: e.scale(Y).type === 'log' ? 1 : 0};
   } else if (e.has(Y)) { // is ordinal
     p.yc = {scale: Y, field: e.field(Y)};
   } else {
