@@ -120,17 +120,22 @@ time.isOrdinalFn = function(fn) {
 };
 
 time.scale.type = function(fn, name) {
+  if (name === COLOR) {
+    return 'linear'; // this has order
+  }
+
   return time.isOrdinalFn(fn) || name === COL || name === ROW ? 'ordinal' : 'linear';
 };
 
-time.scale.domain = function(fn) {
+time.scale.domain = function(fn, name) {
+  var isColor = name === COLOR;
   switch (fn) {
     case 'seconds':
-    case 'minutes': return util.range(0, 60);
-    case 'hours': return util.range(0, 24);
-    case 'day': return util.range(0, 7);
-    case 'date': return util.range(1, 32);
-    case 'month': return util.range(0, 12);
+    case 'minutes': return isColor ? [0,59] : util.range(0, 60);
+    case 'hours': return isColor ? [0,23] : util.range(0, 24);
+    case 'day': return isColor ? [0,7] : util.range(0, 7);
+    case 'date': return isColor ? [1,31] : util.range(1, 32);
+    case 'month': return isColor ? [0,11] : util.range(0, 12);
   }
   return null;
 };
