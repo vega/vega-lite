@@ -1,3 +1,7 @@
+'use strict';
+
+/*global location, d3, vl, vg, docCookies, document, $, alert */
+
 var DATASETS = [
   {
     name: "Barley",
@@ -44,7 +48,7 @@ var DATASETS = [
 var vled = {
   version: 0.1,
   spec: {}
-}
+};
 
 function getParams() {
   var params = location.search.slice(1);
@@ -61,7 +65,7 @@ function getParams() {
     .reduce(function(a, b) {
       a[b[0]] = b[1]; return a;
     }, {});
-};
+}
 
 vled.format = function() {
   var el = d3.select("#vlspec"),
@@ -90,11 +94,11 @@ vled.parse = function() {
   var done = function() {
     cfg = {
       dataUrl: vled.dataset.url
-    }
+    };
 
     encoding = vl.Encoding.fromSpec(spec, {cfg: cfg});
     vled.loadEncoding(encoding);
-  }
+  };
 
   if (!vled.dataset && !datasetIndex) {
     datasetIndex = 0;
@@ -108,7 +112,7 @@ vled.parse = function() {
   } else {
     done();
   }
-}
+};
 
 vled.parseShorthand = function() {
   var shorthand = d3.select("#shorthand").property("value");
@@ -116,7 +120,7 @@ vled.parseShorthand = function() {
   var encoding = vl.Encoding.parseShorthand(shorthand);
   d3.select("#vlspec").node().value = JSON.stringify(encoding.toSpec(), null, "  ", 60);
   vled.parse();
-}
+};
 
 vled.loadEncoding = function(encoding) {
   var spec = vl.compile(encoding, vled.dataset.stats);
@@ -134,8 +138,11 @@ vled.loadEncoding = function(encoding) {
     vled.vis = chart({el:"#vis", renderer: "svg"});
 
     vled.vis.update();
+    vled.vis.on('mouseover', function(ev, item) {
+      console.log(item);
+    });
   });
-}
+};
 
 vled.datasetChanged = function(dataset, callback) {
   vled.dataset = dataset;
@@ -151,7 +158,7 @@ vled.datasetChanged = function(dataset, callback) {
     dataset.stats = vl.data.getStats(data);
     callback();
   });
-}
+};
 
 vled.init = function() {
   var params = getParams();
