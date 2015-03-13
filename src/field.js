@@ -168,7 +168,7 @@ vlfield.cardinality = function(field, stats, filterNull, useTypeCode) {
     return (bins.stop - bins.start) / bins.step;
   }
   if (isType(field, T)) {
-    var cardinality = time.cardinality(field, stats, filterNull);
+    var cardinality = time.cardinality(field, stats, filterNull, type);
     if(cardinality !== null) return cardinality;
     //otherwise use calculation below
   }

@@ -38,10 +38,10 @@ scale.type = function(name, encoding) {
     case O: return 'ordinal';
     case T:
       var fn = encoding.fn(name);
-      return (fn && time.scale.type(fn)) || 'time';
+      return (fn && time.scale.type(fn, name)) || 'time';
     case Q:
       if (encoding.bin(name)) {
-        return 'ordinal';
+        return name === COLOR ? 'linear' : 'ordinal';
       }
       return encoding.scale(name).type;
   }
@@ -49,7 +49,7 @@ scale.type = function(name, encoding) {
 
 function scale_domain(name, encoding, sorting, opt) {
   if (encoding.isType(name, T)) {
-    var range = time.scale.domain(encoding.fn(name));
+    var range = time.scale.domain(encoding.fn(name), name);
     if(range) return range;
   }
 
@@ -148,9 +148,10 @@ function scale_range(s, encoding, layout, style, opt) {
       var range = encoding.scale(COLOR).range;
       if (range === undefined) {
         if (s.type === 'ordinal') {
+          // FIXME
           range = style.colorRange;
         } else {
-          range = ['#ddf', 'steelblue'];
+          range = ['#A9DB9F', '#0D5C21'];
           s.zero = false;
         }
       }
