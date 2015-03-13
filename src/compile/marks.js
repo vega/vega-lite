@@ -1,7 +1,8 @@
 'use strict';
 
 var globals = require('../globals'),
-  util = require('../util');
+  util = require('../util'),
+  vlscale = require('./scale');
 
 var marks = module.exports = {};
 
@@ -206,7 +207,7 @@ function point_props(e, layout, style) {
     p.opacity = {scale: ALPHA, field: e.field(ALPHA)};
   } else if (e.value(ALPHA) !== undefined) {
     p.opacity = {value: e.value(ALPHA)};
-  } else {
+  } else if (!e.has(COLOR) || vlscale.type(COLOR, e) !== 'linear') {
     p.opacity = {value: style.opacity};
   }
 
@@ -343,7 +344,7 @@ function tick_props(e, layout, style) {
     p.opacity = {scale: ALPHA, field: e.field(ALPHA)};
   } else if (e.value(ALPHA) !== undefined) {
     p.opacity = {value: e.value(ALPHA)};
-  } else {
+  } else if (!e.has(COLOR) || vlscale.type(COLOR, e) !== 'linear') {
     p.opacity = {value: style.opacity};
   }
 
@@ -390,7 +391,7 @@ function filled_point_props(shape) {
       p.opacity = {scale: ALPHA, field: e.field(ALPHA)};
     } else if (e.value(ALPHA) !== undefined) {
       p.opacity = {value: e.value(ALPHA)};
-    } else {
+    } else if (!e.has(COLOR) || vlscale.type(COLOR, e) !== 'linear') {
       p.opacity = {value: style.opacity};
     }
 
