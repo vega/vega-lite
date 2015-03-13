@@ -78,10 +78,13 @@ function box(encoding, stats) {
   }
 
   return {
+    // width and height of the whole cell
     cellWidth: cellWidth,
     cellHeight: cellHeight,
+    // width and height of the chart
     width: width,
     height: height,
+    // information about x and y, such as band size
     x: {useSmallBand: useSmallBand},
     y: {useSmallBand: useSmallBand}
   };

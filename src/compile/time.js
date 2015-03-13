@@ -122,7 +122,7 @@ time.scale.domain = function(fn) {
     case 'minutes': return util.range(0, 60);
     case 'hours': return util.range(0, 24);
     case 'day': return util.range(0, 7);
-    case 'date': return util.range(0, 32);
+    case 'date': return util.range(1, 32);
     case 'month': return util.range(0, 12);
   }
   return null;

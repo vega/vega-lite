@@ -123,11 +123,13 @@ function bar_props(e, layout, style) {
     if (e.has(SIZE)) {
       p.width = {scale: SIZE, field: e.field(SIZE)};
     } else {
-      // p.width = {scale: X, band: true, offset: -1};
-      p.width = {value: e.bandSize(X, layout.x.useSmallBand), offset: -1};
+      p.width = {
+        value: e.bandSize(X, layout.x.useSmallBand),
+        offset: -1
+      };
     }
   } else { // X is Quant or Time Scale
-    p.width = {value: e.bandSize(X, layout.x.useSmallBand), offset: -1};
+    p.width = {value: 2};
   }
 
   // height
@@ -135,11 +137,13 @@ function bar_props(e, layout, style) {
     if (e.has(SIZE)) {
       p.height = {scale: SIZE, field: e.field(SIZE)};
     } else {
-      // p.height = {scale: Y, band: true, offset: -1};
-      p.height = {value: e.bandSize(Y, layout.y.useSmallBand), offset: -1};
+      p.height = {
+        value: e.bandSize(Y, layout.y.useSmallBand),
+        offset: -1
+      };
     }
   } else { // Y is Quant or Time Scale
-    p.height = {value: e.bandSize(Y, layout.y.useSmallBand), offset: -1};
+    p.height = {value: 2};
   }
 
   // fill
