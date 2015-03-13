@@ -36,7 +36,7 @@ function time(spec, encoding, opt) {
   return spec;
 }
 
-time.cardinality = function(field, stats, filterNull) {
+time.cardinality = function(field, stats, filterNull, type) {
   var fn = field.fn;
   switch (fn) {
     case 'seconds': return 60;
@@ -45,7 +45,14 @@ time.cardinality = function(field, stats, filterNull) {
     case 'day': return 7;
     case 'date': return 31;
     case 'month': return 12;
-    // case 'year':  -- need real cardinality
+    case 'year':
+      var stat = stats[field.name],
+        yearstat = stats['year_'+field.name];
+
+      if (!yearstat) { return null; }
+
+      return yearstat.cardinality -
+        (stat.numNulls > 0 && filterNull[type] ? 1 : 0);
   }
 
   return null;
