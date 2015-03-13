@@ -52,7 +52,7 @@ function faceting(group, encoding, layout, style, sorting, spec, mdef, stack, st
         from: from
       });
 
-    spec.marks.push(axesGrp);
+    spec.marks.unshift(axesGrp); // need to prepend so it appears under the plots
     (spec.axes = spec.axes || []);
     spec.axes.push.apply(spec.axes, axis.defs(['row'], encoding, layout));
   } else { // doesn't have row
@@ -85,7 +85,7 @@ function faceting(group, encoding, layout, style, sorting, spec, mdef, stack, st
       from: from
     });
 
-    spec.marks.push(axesGrp);
+    spec.marks.unshift(axesGrp); // need to prepend so it appears under the plots
     (spec.axes = spec.axes || []);
     spec.axes.push.apply(spec.axes, axis.defs(['col'], encoding, layout));
   } else { // doesn't have col

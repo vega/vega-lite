@@ -81,6 +81,7 @@ function box(encoding, stats) {
     // width and height of the whole cell
     cellWidth: cellWidth,
     cellHeight: cellHeight,
+    cellPadding: cellPadding,
     // width and height of the chart
     width: width,
     height: height,

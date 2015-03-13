@@ -26,6 +26,10 @@ axis.defs = function(names, encoding, layout, opt) {
 axis.def = function(name, encoding, layout, opt) {
   var type = name;
   var isCol = name == COL, isRow = name == ROW;
+  var rowOffset = axisTitleOffset(encoding, layout, Y) + 20,
+    cellPadding = layout.cellPadding;
+
+
   if (isCol) type = 'x';
   if (isRow) type = 'y';
 
@@ -36,7 +40,45 @@ axis.def = function(name, encoding, layout, opt) {
 
   if (encoding.axis(name).grid) {
     def.grid = true;
-    def.layer = 'back';
+    def.layer = (isRow || isCol) ? 'front' :  'back';
+
+    if (isCol) {
+      // set grid property -- put the lines on the right the cell
+      setter(def, ['properties', 'grid'], {
+        x: {
+          offset: layout.cellWidth * (1+ cellPadding/2.0),
+          // default value(s) -- vega doesn't do recursive merge
+          scale: 'col'
+        },
+        y: {
+          value: -layout.cellHeight * (cellPadding/2),
+        },
+        stroke: { value: encoding.config('cellGridColor') }
+      });
+    } else if (isRow) {
+      // set grid property -- put the lines on the top
+      setter(def, ['properties', 'grid'], {
+        y: {
+          offset: -layout.cellHeight * (cellPadding/2),
+          // default value(s) -- vega doesn't do recursive merge
+          scale: 'row'
+        },
+        x: {
+          value: rowOffset
+        },
+        x2: {
+          offset: rowOffset + (layout.cellWidth * 0.05),
+          // default value(s) -- vega doesn't do recursive merge
+          group: "mark.group.width",
+          mult: 1
+        },
+        stroke: { value: encoding.config('cellGridColor') }
+      });
+    } else {
+      setter(def, ['properties', 'grid', 'stroke'], {
+        value: encoding.config('gridColor')
+      });
+    }
   }
 
   if (encoding.axis(name).title) {
@@ -60,7 +102,7 @@ axis.def = function(name, encoding, layout, opt) {
   }
 
   if (isRow) {
-    def.offset = axisTitleOffset(encoding, layout, Y) + 20;
+    def.offset = rowOffset;
   }
 
   if (name == X) {
