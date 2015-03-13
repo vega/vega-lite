@@ -89,8 +89,6 @@ vldata.getStats = function(data) { // hack
       stat = util.minmax(column);
     }
 
-    console.log(column, stat);
-
     stat.cardinality = util.uniq(data, k);
     stat.count = data.length;
 
