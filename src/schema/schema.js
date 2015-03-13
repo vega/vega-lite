@@ -151,7 +151,7 @@ var axisMixin = {
       properties: {
         grid: {
           type: 'boolean',
-          default: false,
+          default: true,
           description: 'A flag indicate if gridlines should be created in addition to ticks.'
         },
         title: {
@@ -340,7 +340,12 @@ var rowMixin = {
       type: 'number',
       minimum: 0,
       default: 150
-    }
+    },
+    grid: {
+      type: 'boolean',
+      default: true,
+      description: 'A flag indicate if gridlines should be created in addition to ticks.'
+    },
   }
 };
 
@@ -509,7 +514,7 @@ var cfg = {
     cellBackgroundColor: {
       type: 'string',
       role: 'color',
-      default: '#fdfdfd'
+      default: 'transparent'
     },
     textCellWidth: {
       type: 'integer',

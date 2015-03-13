@@ -26,6 +26,9 @@ axis.defs = function(names, encoding, layout, opt) {
 axis.def = function(name, encoding, layout, opt) {
   var type = name;
   var isCol = name == COL, isRow = name == ROW;
+  var rowOffset = axisTitleOffset(encoding, layout, Y) + 20;
+
+
   if (isCol) type = 'x';
   if (isRow) type = 'y';
 
@@ -36,7 +39,35 @@ axis.def = function(name, encoding, layout, opt) {
 
   if (encoding.axis(name).grid) {
     def.grid = true;
-    def.layer = 'back';
+    def.layer = (isRow || isCol) ? 'front' :  'back';
+
+    if (isCol) {
+      setter(def, ['properties', 'grid', 'x'], {
+        offset: layout.cellWidth * 1.05,
+        scale: 'col'
+      });
+      setter(def, ['properties', 'grid', 'y'], {
+        value: -layout.cellHeight * 0.05,
+      });
+      setter(def, ['properties', 'grid', 'stroke'], {value: '#aaaaaa'});
+    } else if (isRow) {
+      setter(def, ['properties', 'grid', 'y'], {
+        offset: - layout.cellHeight * 0.05, //layout.cellHeight * 1.05
+        scale: 'row'
+
+      });
+      setter(def, ['properties', 'grid', 'x'], {
+        value: rowOffset
+      });
+      setter(def, ['properties', 'grid', 'x2'], {
+        offset: rowOffset + layout.cellWidth * 0.05,
+        group: "mark.group.width",
+        mult: 1
+      });
+      setter(def, ['properties', 'grid', 'stroke'], {value: '#aaaaaa'});
+    } else {
+      setter(def, ['properties', 'grid', 'stroke'], {value: '#eeeeee'});
+    }
   }
 
   if (encoding.axis(name).title) {
@@ -60,7 +91,7 @@ axis.def = function(name, encoding, layout, opt) {
   }
 
   if (isRow) {
-    def.offset = axisTitleOffset(encoding, layout, Y) + 20;
+    def.offset = rowOffset;
   }
 
   if (name == X) {
