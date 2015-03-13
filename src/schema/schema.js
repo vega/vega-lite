@@ -462,6 +462,11 @@ var cfg = {
       },
       default: undefined
     },
+    gridColor: {
+      type: 'string',
+      role: 'color',
+      default: '#eeeeee'
+    },
 
     // filter null
     filterNull: {
@@ -510,6 +515,11 @@ var cfg = {
     cellPadding: {
       type: 'number',
       default: 0.1
+    },
+    cellGridColor: {
+      type: 'string',
+      role: 'color',
+      default: '#aaaaaa'
     },
     cellBackgroundColor: {
       type: 'string',

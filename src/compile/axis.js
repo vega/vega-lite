@@ -26,7 +26,8 @@ axis.defs = function(names, encoding, layout, opt) {
 axis.def = function(name, encoding, layout, opt) {
   var type = name;
   var isCol = name == COL, isRow = name == ROW;
-  var rowOffset = axisTitleOffset(encoding, layout, Y) + 20;
+  var rowOffset = axisTitleOffset(encoding, layout, Y) + 20,
+    cellPadding = layout.cellPadding;
 
 
   if (isCol) type = 'x';
@@ -42,31 +43,41 @@ axis.def = function(name, encoding, layout, opt) {
     def.layer = (isRow || isCol) ? 'front' :  'back';
 
     if (isCol) {
-      setter(def, ['properties', 'grid', 'x'], {
-        offset: layout.cellWidth * 1.05,
-        scale: 'col'
+      // set grid property -- put the lines on the right the cell
+      setter(def, ['properties', 'grid'], {
+        x: {
+          offset: layout.cellWidth * (1+ cellPadding/2.0),
+          // default value(s) -- vega doesn't do recursive merge
+          scale: 'col'
+        },
+        y: {
+          value: -layout.cellHeight * (cellPadding/2),
+        },
+        stroke: { value: encoding.config('cellGridColor') }
       });
-      setter(def, ['properties', 'grid', 'y'], {
-        value: -layout.cellHeight * 0.05,
-      });
-      setter(def, ['properties', 'grid', 'stroke'], {value: '#aaaaaa'});
     } else if (isRow) {
-      setter(def, ['properties', 'grid', 'y'], {
-        offset: - layout.cellHeight * 0.05, //layout.cellHeight * 1.05
-        scale: 'row'
-
+      // set grid property -- put the lines on the top
+      setter(def, ['properties', 'grid'], {
+        y: {
+          offset: -layout.cellHeight * (cellPadding/2),
+          // default value(s) -- vega doesn't do recursive merge
+          scale: 'row'
+        },
+        x: {
+          value: rowOffset
+        },
+        x2: {
+          offset: rowOffset + (layout.cellWidth * 0.05),
+          // default value(s) -- vega doesn't do recursive merge
+          group: "mark.group.width",
+          mult: 1
+        },
+        stroke: { value: encoding.config('cellGridColor') }
       });
-      setter(def, ['properties', 'grid', 'x'], {
-        value: rowOffset
-      });
-      setter(def, ['properties', 'grid', 'x2'], {
-        offset: rowOffset + layout.cellWidth * 0.05,
-        group: "mark.group.width",
-        mult: 1
-      });
-      setter(def, ['properties', 'grid', 'stroke'], {value: '#aaaaaa'});
     } else {
-      setter(def, ['properties', 'grid', 'stroke'], {value: '#eeeeee'});
+      setter(def, ['properties', 'grid', 'stroke'], {
+        value: encoding.config('gridColor')
+      });
     }
   }
 
