@@ -112,8 +112,8 @@ time.isOrdinalFn = function(fn) {
   return false;
 };
 
-time.scale.type = function(fn) {
-  return time.isOrdinalFn(fn) ? 'ordinal' : 'linear';
+time.scale.type = function(fn, name) {
+  return time.isOrdinalFn(fn) || name === COL || name === ROW ? 'ordinal' : 'linear';
 };
 
 time.scale.domain = function(fn) {

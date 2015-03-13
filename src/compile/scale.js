@@ -38,7 +38,7 @@ scale.type = function(name, encoding) {
     case O: return 'ordinal';
     case T:
       var fn = encoding.fn(name);
-      return (fn && time.scale.type(fn)) || 'time';
+      return (fn && time.scale.type(fn, name)) || 'time';
     case Q:
       if (encoding.bin(name)) {
         return 'ordinal';
