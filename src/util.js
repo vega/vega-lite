@@ -56,6 +56,7 @@ var isNumber = function(n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
 };
 
+// try parsing to number
 util.numbers = function(values) {
   var nums = [];
   for (var i = 0; i < values.length; i++) {
@@ -64,6 +65,18 @@ util.numbers = function(values) {
     }
   }
   return nums;
+};
+
+// try to parse as date
+util.dates = function(values) {
+  var dates = [];
+  for (var i = 0; i < values.length; i++) {
+    var date = Date.parse(values[i]);
+    if (!isNaN(date)) {
+      dates.push(new Date(date));
+    }
+  }
+  return dates;
 };
 
 util.median = function(values) {
@@ -118,10 +131,8 @@ util.skew = function(values) {
 
 // parses a string to date or number
 util.parse = function(value) {
-  try {
-    return JSON.parse(value);
-  } catch(e) {
-    // do nothing
+  if (isNumber(value)) {
+    return +value;
   }
 
   var date = Date.parse(value);
@@ -131,10 +142,16 @@ util.parse = function(value) {
   return value;
 };
 
-util.minmax = function(data, field) {
-  var stats = {min: +Infinity, max: -Infinity};
+util.minmax = function(data) {
+  if (data.length === 0) {
+    return {
+      min: +Infinity, max: -Infinity
+    };
+  }
+
+  var stats = {min: data[0], max: data[0]};
   for (var i = 0; i < data.length; ++i) {
-    var v = util.parse(data[i][field]);
+    var v = data[i];
     if (v !== null) {
       if (v > stats.max) stats.max = v;
       if (v < stats.min) stats.min = v;

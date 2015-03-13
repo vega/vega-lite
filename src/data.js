@@ -1,6 +1,6 @@
 'use strict';
 
-// TODO rename getDataUrl to vl.data.getUrl() ?
+// TODO: rename getDataUrl to vl.data.getUrl() ?
 
 var util = require('./util');
 
@@ -73,7 +73,24 @@ vldata.getStats = function(data) { // hack
     fields = util.keys(data[0]);
 
   fields.forEach(function(k) {
-    var stat = util.minmax(data, k);
+    var column = data.map(function(d) {return d[k];});
+
+    // Hack
+    var val = util.parse(data[0][k]);
+    var type = (typeof val === 'number') ? 'Q':
+      (val instanceof Date) ? 'T' : 'O';
+
+    var stat = {};
+    if (typeof val === 'number') {
+      stat = util.minmax(util.numbers(column));
+    } else if (val instanceof Date) {
+      stat = util.minmax(util.dates(column));
+    } else {
+      stat = util.minmax(column);
+    }
+
+    console.log(column, stat);
+
     stat.cardinality = util.uniq(data, k);
     stat.count = data.length;
 
@@ -89,7 +106,7 @@ vldata.getStats = function(data) { // hack
       return row[k] === null ? count + 1 : count;
     }, 0);
 
-    var numbers = util.numbers(data.map(function(d) {return d[k];}));
+    var numbers = util.numbers(column);
 
     if (numbers.length > 0) {
       stat.skew = util.skew(numbers);
