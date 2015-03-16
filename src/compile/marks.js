@@ -207,7 +207,7 @@ function point_props(e, layout, style) {
     p.opacity = {scale: ALPHA, field: e.field(ALPHA)};
   } else if (e.value(ALPHA) !== undefined) {
     p.opacity = {value: e.value(ALPHA)};
-  } else if (!e.has(COLOR) || vlscale.type(COLOR, e) !== 'linear') {
+  } else if (!e.has(COLOR)) {
     p.opacity = {value: style.opacity};
   }
 
@@ -344,7 +344,7 @@ function tick_props(e, layout, style) {
     p.opacity = {scale: ALPHA, field: e.field(ALPHA)};
   } else if (e.value(ALPHA) !== undefined) {
     p.opacity = {value: e.value(ALPHA)};
-  } else if (!e.has(COLOR) || vlscale.type(COLOR, e) !== 'linear') {
+  } else if (!e.has(COLOR)) {
     p.opacity = {value: style.opacity};
   }
 
@@ -391,7 +391,7 @@ function filled_point_props(shape) {
       p.opacity = {scale: ALPHA, field: e.field(ALPHA)};
     } else if (e.value(ALPHA) !== undefined) {
       p.opacity = {value: e.value(ALPHA)};
-    } else if (!e.has(COLOR) || vlscale.type(COLOR, e) !== 'linear') {
+    } else if (!e.has(COLOR)) {
       p.opacity = {value: style.opacity};
     }
 
