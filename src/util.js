@@ -143,18 +143,12 @@ util.parse = function(value) {
 };
 
 util.minmax = function(data) {
-  if (data.length === 0) {
-    return {
-      min: +Infinity, max: -Infinity
-    };
-  }
-
-  var stats = {min: data[0], max: data[0]};
+  var stats = {min: +Infinity, max: -Infinity};
   for (var i = 0; i < data.length; ++i) {
     var v = data[i];
     if (v !== null) {
-      if (v > stats.max) stats.max = v;
-      if (v < stats.min) stats.min = v;
+      if (v > stats.max || stats.max === -Infinity) stats.max = v;
+      if (v < stats.min || stats.min === +Infinity) stats.min = v;
     }
   }
   return stats;
