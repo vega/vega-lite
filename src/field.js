@@ -20,7 +20,7 @@ vlfield.shorthand = function(f) {
 };
 
 vlfield.shorthands = function(fields, delim) {
-  delim = delim || ',';
+  delim = delim || c.delim;
   return fields.map(vlfield.shorthand).join(delim);
 };
 
