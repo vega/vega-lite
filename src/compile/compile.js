@@ -78,7 +78,7 @@ function compile(encoding, stats) {
   } else {
     group.scales = scale.defs(scale.names(mdef.properties.update), encoding, layout, style, sorting,
       {stack: stack, stats: stats});
-    group.axes = axis.defs(axis.names(mdef.properties.update), encoding, layout);
+    group.axes = axis.defs(axis.names(mdef.properties.update), encoding, layout, stats);
     group.legends = legend.defs(encoding);
   }
 

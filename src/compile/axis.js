@@ -16,14 +16,14 @@ axis.names = function(props) {
   }, {}));
 };
 
-axis.defs = function(names, encoding, layout, opt) {
+axis.defs = function(names, encoding, layout, stats, opt) {
   return names.reduce(function(a, name) {
-    a.push(axis.def(name, encoding, layout, opt));
+    a.push(axis.def(name, encoding, layout, stats, opt));
     return a;
   }, []);
 };
 
-axis.def = function(name, encoding, layout, opt) {
+axis.def = function(name, encoding, layout, stats, opt) {
   var type = name;
   var isCol = name == COL, isRow = name == ROW;
   var rowOffset = axisTitleOffset(encoding, layout, Y) + 20,
@@ -106,6 +106,10 @@ axis.def = function(name, encoding, layout, opt) {
   }
 
   if (name == X) {
+    if (encoding.has(Y) && encoding.isOrdinalScale(Y) && encoding.cardinality(Y, stats) > 30) {
+      def.orient = 'top';
+    }
+
     if (encoding.isDimension(X) || encoding.isType(X, T)) {
       setter(def, ['properties','labels'], {
         angle: {value: 270},
