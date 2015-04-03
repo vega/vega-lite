@@ -41,15 +41,14 @@ util.isin = function(item, array) {
 };
 
 util.uniq = function(data, field) {
-  var map = {}, count = 0, i, k;
+  var map = {}, i, k;
   for (i = 0; i < data.length; ++i) {
     k = data[i][field];
     if (!map[k]) {
-      map[k] = 1;
-      count += 1;
+      map[k] = true;
     }
   }
-  return count;
+  return Object.keys(map);
 };
 
 var isNumber = function(n) {

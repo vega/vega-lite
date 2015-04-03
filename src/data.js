@@ -89,7 +89,7 @@ vldata.getStats = function(data) { // hack
       stat = util.minmax(column);
     }
 
-    stat.cardinality = util.uniq(data, k);
+    stat.cardinality = util.uniq(data, k).length;
     stat.count = data.length;
 
     stat.maxlength = data.reduce(function(max,row) {
@@ -113,12 +113,20 @@ vldata.getStats = function(data) { // hack
       stat.median = util.median(numbers);
     }
 
-    var sample = {};
-    while(Object.keys(sample).length < Math.min(stat.cardinality, 10)) {
-      var value = data[Math.floor(Math.random() * data.length)][k];
-      sample[value] = true;
+    var sample = [];
+    var indexes = {};
+    if (stat.cardinality < 10) {
+      sample = util.uniq(data, k);
+    } else {
+      while(Object.keys(sample).length < 10) {
+        var index = Math.floor(Math.random() * data.length);
+        if (!indexes[index]) {
+          indexes[index] = true;
+          sample.push(data[index][k]);
+        }
+      }
     }
-    stat.sample = Object.keys(sample);
+    stat.sample = sample;
 
     stats[k] = stat;
   });
