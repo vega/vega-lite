@@ -24,3 +24,12 @@ The complete schema for specifications as [JSON schema](http://json-schema.org/)
   "cfg": {"dataUrl": "data/barley.json"}
 }
 ```
+
+## Deployment
+
+```sh
+gitsha=$(git rev-parse HEAD)
+git add vegalite* -f
+git add spec.json -f
+git commit -am "release $gitsha"
+```
