@@ -1,3 +1,5 @@
+'use strict';
+
 var gulp = require('gulp');
 
 var browserify = require('browserify');
@@ -18,9 +20,9 @@ var bundleDef = {
   entries: ['./src/vl'],
   standalone: 'vl',
   debug: true
-}
+};
 
-var browserBundler = browserify(bundleDef)
+var browserBundler = browserify(bundleDef);
 var watchBundler = watchify(browserify(bundleDef));
 
 // builds vegalite with watcher
