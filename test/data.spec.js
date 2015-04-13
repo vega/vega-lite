@@ -15,6 +15,10 @@ describe('getSchema', function() {
     ];
     var s = data.getSchema(d);
 
+    s.sort(function(a, b) {
+      return a.name > b.name;
+    });
+
     assert.equal(s.length, 3);
     assert.equal(s[0].name, 'a');
     assert.equal(s[0].type, 'Q');
