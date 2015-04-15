@@ -54,6 +54,10 @@ vldata.getSchema = function(data, order) {
     var i = 0, datum = data[i][k];
     while (datum === '' || datum === null || datum === undefined) {
       datum = data[++i][k];
+      if (i >= data.length) {
+        datum = '';
+        break;
+      }
     }
 
     datum = util.parse(datum);
