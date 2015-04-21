@@ -443,7 +443,52 @@ var filter = {
   }
 };
 
-var cfg = {
+var data = {
+  type: 'object',
+  properties: {
+    // data source
+    formatType: {
+      type: 'string',
+      enum: ['json', 'csv'],
+      default: 'json'
+    },
+    url: {
+      type: 'string',
+      default: undefined
+    },
+    vegaServer: {
+      type: 'object',
+      default: null,
+      properties: {
+        table: {
+          type: 'string',
+          default: undefined
+        },
+        url: {
+          type: 'string',
+          default: 'http://localhost:3001'
+        }
+      }
+    }
+    // ,
+    // useVegaServer: {
+    //   type: 'boolean',
+    //   default: false
+    // },
+    // vegaServerTable: {
+    //   type: 'string',
+    //   default: undefined
+    // },
+    // vegaServerUrl: {
+    //   type: 'string',
+    //   default: 'http://localhost:3001'
+    // }
+  }
+};
+
+console.log(schema.util.instantiate(data));
+
+var config = {
   type: 'object',
   properties: {
     // template
@@ -549,29 +594,6 @@ var cfg = {
     characterWidth: {
       type: 'integer',
       default: 6
-    },
-
-    // data source
-    dataFormatType: {
-      type: 'string',
-      enum: ['json', 'csv'],
-      default: 'json'
-    },
-    useVegaServer: {
-      type: 'boolean',
-      default: false
-    },
-    dataUrl: {
-      type: 'string',
-      default: undefined
-    },
-    vegaServerTable: {
-      type: 'string',
-      default: undefined
-    },
-    vegaServerUrl: {
-      type: 'string',
-      default: 'http://localhost:3001'
     }
   }
 };
@@ -581,8 +603,9 @@ schema.schema = {
   $schema: 'http://json-schema.org/draft-04/schema#',
   description: 'Schema for vegalite specification',
   type: 'object',
-  required: ['marktype', 'enc', 'cfg'],
+  required: ['marktype', 'enc', 'data', 'config'],
   properties: {
+    data: data,
     marktype: schema.marktype,
     enc: {
       type: 'object',
@@ -600,7 +623,7 @@ schema.schema = {
       }
     },
     filter: filter,
-    cfg: cfg
+    config: config
   }
 };
 

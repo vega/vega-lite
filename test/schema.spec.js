@@ -56,12 +56,9 @@ describe('Util', function() {
       },
         color: { name: 'cyl', type: 'O' }
       },
-      cfg: {
-        useVegaServer: false,
-        vegaServerUrl: 'http://localhost:3001',
-        dataFormatType: null,
-        dataUrl: 'data/cars.json',
-        vegaServerTable: 'cars_json'
+      data: {
+        formatType: null,
+        url: 'data/cars.json'
       }
     };
 
@@ -71,9 +68,8 @@ describe('Util', function() {
         x: { name: 'dsp', type: 'Q' },
         color: { name: 'cyl', type: 'O' }
       },
-      cfg: {
-        dataUrl: 'data/cars.json',
-        vegaServerTable: 'cars_json'
+      data: {
+        url: 'data/cars.json'
       }
     };
 

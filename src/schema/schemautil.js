@@ -14,7 +14,10 @@ schemautil.extend = function(instance, schema) {
 // instantiate a schema
 schemautil.instantiate = function(schema) {
   var val;
-  if (schema.type === 'object') {
+  if ('default' in schema) {
+    val = schema.default;
+    return util.isObject(val) ? util.duplicate(val) : val;
+  } else if (schema.type === 'object') {
     var instance = {};
     for (var name in schema.properties) {
       val = schemautil.instantiate(schema.properties[name]);
@@ -23,9 +26,6 @@ schemautil.instantiate = function(schema) {
       }
     }
     return instance;
-  } else if ('default' in schema) {
-    val = schema.default;
-    return util.isObject(val) ? util.duplicate(val) : val;
   } else if (schema.type === 'array') {
     return [];
   }
