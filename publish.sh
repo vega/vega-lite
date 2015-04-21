@@ -3,6 +3,8 @@ npm publish
 gitsha=$(git rev-parse HEAD)
 version=$(npm view vegalite -j | jq .version)
 
+git tag "v$version"
+
 rm vegalite* -f
 rm spec.json
 
