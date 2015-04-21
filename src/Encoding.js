@@ -349,11 +349,6 @@ var Encoding = module.exports = (function() {
     return new Encoding(marktype, enc, cfg);
   };
 
-  // FIXME remove this -- simply use Encoding.shorthand
-  Encoding.shorthandFromSpec = function(/*spec, theme*/) {
-    return Encoding.fromSpec.apply(null, arguments).toShorthand();
-  };
-
   Encoding.specFromShorthand = function(shorthand, cfg, excludeConfig) {
     return Encoding.parseShorthand(shorthand, cfg).toSpec(excludeConfig);
   };
