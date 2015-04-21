@@ -24,7 +24,7 @@ vlfield.shorthands = function(fields, delim) {
   return fields.map(vlfield.shorthand).join(delim);
 };
 
-vlfield.parseShorthand = function(shorthand, convertType) {
+vlfield.fromShorthand = function(shorthand, convertType) {
   var split = shorthand.split(c.type), i;
   var o = {
     name: split[0].trim(),
