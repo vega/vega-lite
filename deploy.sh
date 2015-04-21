@@ -9,5 +9,6 @@ gulp build
 git add vegalite* -f
 git add spec.json -f
 git commit -m "release $gitsha"
+git push
 
 git checkout master
