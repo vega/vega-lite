@@ -123,7 +123,7 @@ vled.parseShorthand = function() {
 };
 
 vled.loadEncoding = function(encoding) {
-  var spec = vl.compile(encoding, vled.dataset.stats);
+  var spec = vl.compile.encoding(encoding, vled.dataset.stats);
 
   d3.select("#shorthand").node().value = encoding.toShorthand();
   d3.select("#vgspec").node().value = JSON.stringify(spec, null, "  ", 60);
