@@ -340,13 +340,13 @@ var Encoding = module.exports = (function() {
       c.delim + vlenc.shorthand(spec.enc);
   };
 
-  Encoding.fromShorthand = function(shorthand, cfg) {
+  Encoding.fromShorthand = function(shorthand, cfg, theme) {
     var c = consts.shorthand,
         split = shorthand.split(c.delim),
         marktype = split.shift().split(c.assign)[1].trim(),
         enc = vlenc.fromShorthand(split, true);
 
-    return new Encoding(marktype, enc, cfg);
+    return new Encoding(marktype, enc, cfg, null, theme);
   };
 
   Encoding.specFromShorthand = function(shorthand, cfg, excludeConfig) {

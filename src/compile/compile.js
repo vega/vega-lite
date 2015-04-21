@@ -5,7 +5,8 @@ var globals = require('../globals'),
 
 module.exports = compile;
 
-var template = compile.template = require('./template'),
+var Encoding = require('../Encoding'),
+  template = compile.template = require('./template'),
   axis = compile.axis = require('./axis'),
   filter = compile.filter = require('./filter'),
   legend = compile.legend = require('./legend'),
@@ -23,7 +24,15 @@ var template = compile.template = require('./template'),
 compile.layout = require('./layout');
 compile.group = require('./group');
 
-function compile(encoding, stats) {
+function compile(spec, stats, theme) {
+  return compile.encoding(Encoding.fromSpec(spec, theme), stats);
+}
+
+compile.shorthand = function (shorthand, stats, cfg, theme) {
+  return compile.encoding(Encoding.fromShorthand(shorthand, cfg, theme), stats);
+};
+
+compile.encoding = function (encoding, stats) {
   var layout = compile.layout(encoding, stats),
     style = vlstyle(encoding, stats),
     spec = template(encoding, layout, stats),
@@ -85,5 +94,5 @@ function compile(encoding, stats) {
   filter.filterLessThanZero(spec, encoding);
 
   return spec;
-}
+};
 

@@ -63,8 +63,7 @@ describe('vl.compile.stacking()', function () {
 
   describe('bin-x', function () {
     it('should put stack on y', function () {
-      var encoding = Encoding.fromSpec(spec_stackBinX);
-      var vgSpec = compile(encoding, stats);
+      var vgSpec = compile(spec_stackBinX, stats);
 
       var tableData = vgSpec.data.filter(function(data) {
         return data.name === 'table';
@@ -88,8 +87,7 @@ describe('vl.compile.stacking()', function () {
 
   describe('bin-y', function () {
     it('should put stack on x', function () {
-      var encoding = Encoding.fromSpec(spec_stackBinY);
-      var vgSpec = compile(encoding, stats);
+      var vgSpec = compile(spec_stackBinY, stats);
 
       var tableData = vgSpec.data.filter(function(data) {
         return data.name === 'table';
