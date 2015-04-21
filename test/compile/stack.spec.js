@@ -59,7 +59,7 @@ var stats = {
   }
 };
 
-describe('vl.compile.stacking()', function () {
+describe('vl.compile.stack()', function () {
 
   describe('bin-x', function () {
     it('should put stack on y', function () {
