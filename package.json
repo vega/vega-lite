@@ -1,7 +1,7 @@
 {
   "name": "vegalite",
   "version": "0.0.0",
-  "description": "vegalite ========",
+  "description": "Vegalite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications.",
   "main": "src/vl.js",
   "directories": {
     "test": "test"
