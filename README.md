@@ -1,4 +1,4 @@
-# Vegalite
+# Vegalite  [![Build Status](https://travis-ci.org/uwdata/vegalite.svg)](https://travis-ci.org/uwdata/vegalite)
 
 **Vegalite is work in progress and we are working on improving the code and documentation.**
 
