@@ -48,8 +48,8 @@ var Encoding = module.exports = (function() {
     return this._enc[encType].name !== undefined;
   };
 
-  proto.enc = function(x) {
-    return this._enc[x];
+  proto.enc = function(et) {
+    return this._enc[et];
   };
 
   proto.filter = function() {
@@ -74,26 +74,26 @@ var Encoding = module.exports = (function() {
   };
 
   // get "field" property for vega
-  proto.field = function(x, nodata, nofn) {
-    if (!this.has(x)) return null;
+  proto.field = function(et, nodata, nofn) {
+    if (!this.has(et)) return null;
 
     var f = (nodata ? '' : 'data.');
 
-    if (this._enc[x].aggr === 'count') {
+    if (this._enc[et].aggr === 'count') {
       return f + 'count';
-    } else if (!nofn && this._enc[x].bin) {
-      return f + 'bin_' + this._enc[x].name;
-    } else if (!nofn && this._enc[x].aggr) {
-      return f + this._enc[x].aggr + '_' + this._enc[x].name;
-    } else if (!nofn && this._enc[x].fn) {
-      return f + this._enc[x].fn + '_' + this._enc[x].name;
+    } else if (!nofn && this._enc[et].bin) {
+      return f + 'bin_' + this._enc[et].name;
+    } else if (!nofn && this._enc[et].aggr) {
+      return f + this._enc[et].aggr + '_' + this._enc[et].name;
+    } else if (!nofn && this._enc[et].fn) {
+      return f + this._enc[et].fn + '_' + this._enc[et].name;
     } else {
-      return f + this._enc[x].name;
+      return f + this._enc[et].name;
     }
   };
 
-  proto.fieldName = function(x) {
-    return this._enc[x].name;
+  proto.fieldName = function(et) {
+    return this._enc[et].name;
   };
 
   /*
@@ -103,28 +103,28 @@ var Encoding = module.exports = (function() {
     return vlenc.fields(this._enc);
   };
 
-  proto.fieldTitle = function(x) {
-    if (vlfield.isCount(this._enc[x])) {
+  proto.fieldTitle = function(et) {
+    if (vlfield.isCount(this._enc[et])) {
       return vlfield.count.displayName;
     }
-    var fn = this._enc[x].aggr || this._enc[x].fn || (this._enc[x].bin && "bin");
+    var fn = this._enc[et].aggr || this._enc[et].fn || (this._enc[et].bin && "bin");
     if (fn) {
-      return fn.toUpperCase() + '(' + this._enc[x].name + ')';
+      return fn.toUpperCase() + '(' + this._enc[et].name + ')';
     } else {
-      return this._enc[x].name;
+      return this._enc[et].name;
     }
   };
 
-  proto.scale = function(x) {
-    return this._enc[x].scale || {};
+  proto.scale = function(et) {
+    return this._enc[et].scale || {};
   };
 
-  proto.axis = function(x) {
-    return this._enc[x].axis || {};
+  proto.axis = function(et) {
+    return this._enc[et].axis || {};
   };
 
-  proto.band = function(x) {
-    return this._enc[x].band || {};
+  proto.band = function(et) {
+    return this._enc[et].band || {};
   };
 
   proto.bandSize = function(encType, useSmallBand) {
@@ -138,13 +138,13 @@ var Encoding = module.exports = (function() {
       this.config(useSmallBand ? 'smallBandSize' : 'largeBandSize');
   };
 
-  proto.aggr = function(x) {
-    return this._enc[x].aggr;
+  proto.aggr = function(et) {
+    return this._enc[et].aggr;
   };
 
   // returns false if binning is disabled, otherwise an object with binning properties
-  proto.bin = function(x) {
-    var bin = this._enc[x].bin;
+  proto.bin = function(et) {
+    var bin = this._enc[et].bin;
     if (bin === {})
       return false;
     if (bin === true)
@@ -154,16 +154,16 @@ var Encoding = module.exports = (function() {
     return bin;
   };
 
-  proto.legend = function(x) {
-    return this._enc[x].legend;
+  proto.legend = function(et) {
+    return this._enc[et].legend;
   };
 
-  proto.value = function(x) {
-    return this._enc[x].value;
+  proto.value = function(et) {
+    return this._enc[et].value;
   };
 
-  proto.fn = function(x) {
-    return this._enc[x].fn;
+  proto.fn = function(et) {
+    return this._enc[et].fn;
   };
 
   proto.sort = function(et, stats) {
@@ -234,8 +234,8 @@ var Encoding = module.exports = (function() {
     return prop ? font[prop] : font;
   };
 
-  proto.isType = function(x, type) {
-    var field = this.enc(x);
+  proto.isType = function(et, type) {
+    var field = this.enc(et);
     return field && Encoding.isType(field, type);
   };
 
