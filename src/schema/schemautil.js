@@ -14,7 +14,9 @@ schemautil.extend = function(instance, schema) {
 // instantiate a schema
 schemautil.instantiate = function(schema) {
   var val;
-  if ('default' in schema) {
+  if (schema === undefined) {
+    return undefined;
+  } else if ('default' in schema) {
     val = schema.default;
     return util.isObject(val) ? util.duplicate(val) : val;
   } else if (schema.type === 'object') {
