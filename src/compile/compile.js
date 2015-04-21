@@ -15,11 +15,11 @@ var Encoding = require('../Encoding'),
   vlsort = compile.sort = require('./sort'),
   vlstyle = compile.style = require('./style'),
   time = compile.time = require('./time'),
-  aggregates = compile.aggregates = require('./aggregates'),
-  binning = compile.binning = require('./binning'),
-  faceting = compile.faceting = require('./faceting'),
-  stacking = compile.stacking = require('./stacking'),
-  subfaceting = compile.subfaceting = require('./subfaceting');
+  aggregate = compile.aggregate = require('./aggregate'),
+  bin = compile.bin = require('./bin'),
+  facet = compile.facet = require('./facet'),
+  vlstack = compile.stack = require('./stack'),
+  subfacet = compile.subfacet = require('./subfacet');
 
 compile.layout = require('./layout');
 compile.group = require('./group');
@@ -52,7 +52,7 @@ compile.encoding = function (encoding, stats) {
     group.marks.push(mdefs[i]);
   }
 
-  binning(spec.data[1], encoding, {preaggregatedData: preaggregatedData});
+  bin(spec.data[1], encoding, {preaggregatedData: preaggregatedData});
 
   var lineType = marks[encoding.marktype()].line;
 
@@ -61,14 +61,14 @@ compile.encoding = function (encoding, stats) {
   }
 
   // handle subfacets
-  var aggResult = aggregates(spec, encoding, {preaggregatedData: preaggregatedData}),
+  var aggResult = aggregate(spec, encoding, {preaggregatedData: preaggregatedData}),
     details = aggResult.details,
     hasDetails = details && details.length > 0,
-    stack = hasDetails && stacking(spec, encoding, mdef, aggResult.facets);
+    stack = hasDetails && vlstack(spec, encoding, mdef, aggResult.facets);
 
   if (hasDetails && (stack || lineType)) {
     //subfacet to group stack / line together in one group
-    subfaceting(group, mdef, details, stack, encoding);
+    subfacet(group, mdef, details, stack, encoding);
   }
 
   // auto-sort line/area values
@@ -82,7 +82,7 @@ compile.encoding = function (encoding, stats) {
 
   // Small Multiples
   if (hasRow || hasCol) {
-    spec = faceting(group, encoding, layout, style, sorting, spec, mdef, stack, stats);
+    spec = facet(group, encoding, layout, style, sorting, spec, mdef, stack, stats);
     spec.legends = legend.defs(encoding);
   } else {
     group.scales = scale.defs(scale.names(mdef.properties.update), encoding, layout, style, sorting,
