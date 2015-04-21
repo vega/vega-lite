@@ -187,7 +187,6 @@ var Encoding = module.exports = (function() {
           reverse: true
         }];
       }
-
     }
 
     return sort;
