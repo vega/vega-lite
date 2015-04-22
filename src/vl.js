@@ -9,6 +9,8 @@ var vl = {};  // util.merge(consts, util);
 vl.consts = consts;
 vl.util = util;
 
+vl.version = "0.6.2";
+
 vl.Encoding = require('./Encoding');
 vl.compile = require('./compile/compile');
 vl.data = require('./data');
