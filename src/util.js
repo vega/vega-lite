@@ -1,18 +1,11 @@
 'use strict';
 
-var util = module.exports = {};
-
-util.keys = function(obj) {
-  var k = [], x;
-  for (x in obj) k.push(x);
-  return k;
+var dl = {
+  bin: require('datalib/src/bin'),
+  util: require('datalib/src/util')
 };
 
-util.vals = function(obj) {
-  var v = [], x;
-  for (x in obj) v.push(obj[x]);
-  return v;
-};
+var util = module.exports = dl.util;
 
 util.range = function(start, stop, step) {
   if (arguments.length < 3) {
@@ -52,86 +45,20 @@ util.uniq = function(data, field) {
   return count;
 };
 
-var isNumber = function(n) {
-  return !isNaN(parseFloat(n)) && isFinite(n);
-};
-
 // try parsing to number
 util.numbers = function(values) {
   var nums = [];
   for (var i = 0; i < values.length; i++) {
-    if (isNumber(values[i])) {
+    if (util.isNumber(values[i])) {
       nums.push(+values[i]);
     }
   }
   return nums;
 };
 
-// try to parse as date
-util.dates = function(values) {
-  var dates = [];
-  for (var i = 0; i < values.length; i++) {
-    var date = Date.parse(values[i]);
-    if (!isNaN(date)) {
-      dates.push(new Date(date));
-    }
-  }
-  return dates;
-};
-
-util.median = function(values) {
-  values.sort(function(a, b) {return a - b;});
-  var half = Math.floor(values.length/2);
-  if (values.length % 2) {
-    return values[half];
-  } else {
-    return (values[half-1] + values[half]) / 2.0;
-  }
-};
-
-util.mean = function(values) {
-  return values.reduce(function(v, r) {return v + r;}, 0) / values.length;
-};
-
-util.variance = function(values) {
-  var avg = util.mean(values);
-  var diffs = [];
-  for (var i = 0; i < values.length; i++) {
-    diffs.push(Math.pow((values[i] - avg), 2));
-  }
-  return util.mean(diffs);
-};
-
-util.stablesort = function(array, sortBy, keyFn) {
-  var indices = {};
-
-  array.forEach(function(v, i) {
-    indices[keyFn(v)] = i;
-  });
-
-  array.sort(function(a, b) {
-    var sa = sortBy(a),
-      sb = sortBy(b);
-
-    return sa<sb ? -1 : sa>sb ? 1 : (indices[keyFn(a)] - indices[keyFn(b)]);
-  });
-  return array;
-};
-
-util.stdev = function(values) {
-  return Math.sqrt(util.variance(values));
-};
-
-util.skew = function(values) {
-  var avg = util.mean(values),
-    med = util.median(values),
-    std = util.stdev(values);
-  return 1.0 * (avg - med) / std;
-};
-
 // parses a string to date or number
 util.parse = function(value) {
-  if (isNumber(value)) {
+  if (util.isNumber(value)) {
     return +value;
   }
 
@@ -140,34 +67,6 @@ util.parse = function(value) {
     return (new Date(date));
   }
   return value;
-};
-
-util.minmax = function(data) {
-  var stats = {min: +Infinity, max: -Infinity};
-  for (var i = 0; i < data.length; ++i) {
-    var v = data[i];
-    if (v !== null) {
-      if (v > stats.max || stats.max === -Infinity) stats.max = v;
-      if (v < stats.min || stats.min === +Infinity) stats.min = v;
-    }
-  }
-  return stats;
-};
-
-util.duplicate = function(obj) {
-  return JSON.parse(JSON.stringify(obj));
-};
-
-util.isObject = function(obj) {
-  return obj === Object(obj);
-};
-
-util.isArray = Array.isArray || function(obj) {
-  return toString.call(obj) == '[object Array]';
-};
-
-util.array = function(x) {
-  return x ? (util.isArray(x) ? x : [x]) : [];
 };
 
 util.forEach = function(obj, f, thisArg) {
@@ -218,24 +117,6 @@ util.all = function(arr, f) {
   return true;
 };
 
-
-util.cmp = function(a, b) {
-  if (a < b) {
-    return -1;
-  } else if (a > b) {
-    return 1;
-  } else if (a >= b) {
-    return 0;
-  } else if (a === null && b === null) {
-    return 0;
-  } else if (a === null) {
-    return -1;
-  } else if (b === null) {
-    return 1;
-  }
-  return NaN;
-};
-
 var merge = function(dest, src) {
   return util.keys(src).reduce(function(c, k) {
     c[k] = src[k];
@@ -252,69 +133,11 @@ util.merge = function(/*dest*, src0, src1, ...*/){
 };
 
 util.getbins = function(stats, maxbins) {
-  return util.bins({
+  return dl.bin({
     min: stats.min,
     max: stats.max,
     maxbins: maxbins
   });
-};
-
-
-util.bins = function(opt) {
-  opt = opt || {};
-
-  // determine range
-  var maxb = opt.maxbins || 1024,
-      base = opt.base || 10,
-      div = opt.div || [5, 2],
-      mins = opt.minstep || 0,
-      logb = Math.log(base),
-      level = Math.ceil(Math.log(maxb) / logb),
-      min = opt.min,
-      max = opt.max,
-      span = max - min,
-      step = Math.max(mins, Math.pow(base, Math.round(Math.log(span) / logb) - level)),
-      nbins = Math.ceil(span / step),
-      precision, v, i, eps;
-
-  if (opt.step) {
-    step = opt.step;
-  } else if (opt.steps) {
-    // if provided, limit choice to acceptable step sizes
-    step = opt.steps[Math.min(
-        opt.steps.length - 1,
-        util_bisectLeft(opt.steps, span / maxb, 0, opt.steps.length)
-    )];
-  } else {
-    // increase step size if too many bins
-    do {
-      step *= base;
-      nbins = Math.ceil(span / step);
-    } while (nbins > maxb);
-
-    // decrease step size if allowed
-    for (i = 0; i < div.length; ++i) {
-      v = step / div[i];
-      if (v >= mins && span / v <= maxb) {
-        step = v;
-        nbins = Math.ceil(span / step);
-      }
-    }
-  }
-
-  // update precision, min and max
-  v = Math.log(step);
-  precision = v >= 0 ? 0 : ~~(-v / logb) + 1;
-  eps = (min<0 ? -1 : 1) * Math.pow(base, -precision - 1);
-  min = Math.min(min, Math.floor(min / step + eps) * step);
-  max = Math.ceil(max / step) * step;
-
-  return {
-    start: min,
-    stop: max,
-    step: step,
-    unit: precision
-  };
 };
 
 function util_bisectLeft(a, x, lo, hi) {
