@@ -8,9 +8,9 @@ var vldata = module.exports = {},
   vlfield = require('./field');
 
 vldata.getUrl = function getDataUrl(encoding, stats) {
-  if (!encoding.config('useVegaServer')) {
+  if (!encoding.data('vegaServer')) {
     // don't use vega server
-    return encoding.config('dataUrl');
+    return encoding.data('url');
   }
 
   if (encoding.length() === 0) {
@@ -34,11 +34,11 @@ vldata.getUrl = function getDataUrl(encoding, stats) {
   });
 
   var query = {
-    table: encoding.config('vegaServerTable'),
+    table: encoding.data('vegaServer').table,
     fields: fields
   };
 
-  return encoding.config('vegaServerUrl') + '/query/?q=' + JSON.stringify(query);
+  return encoding.data('vegaServer').url + '/query/?q=' + JSON.stringify(query);
 };
 
 /**

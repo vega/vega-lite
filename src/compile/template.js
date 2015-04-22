@@ -9,12 +9,12 @@ module.exports = template;
 
 function template(encoding, layout, stats) { //hack use stats
 
-  var data = {name: RAW, format: {type: encoding.config('dataFormatType')}},
+  var data = {name: RAW, format: {type: encoding.data('formatType')}},
     table = {name: TABLE, source: RAW},
     dataUrl = vldata.getUrl(encoding, stats);
   if (dataUrl) data.url = dataUrl;
 
-  var preaggregatedData = encoding.config('useVegaServer');
+  var preaggregatedData = !!encoding.data('vegaServer');
 
   encoding.forEach(function(field, encType) {
     var name;

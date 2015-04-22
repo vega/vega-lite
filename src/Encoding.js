@@ -10,13 +10,14 @@ var globals = require('./globals'),
 
 var Encoding = module.exports = (function() {
 
-  function Encoding(marktype, enc, config, filter, theme) {
+  function Encoding(marktype, enc, data, config, filter, theme) {
     var defaults = schema.instantiate();
 
     var spec = {
+      data: data,
       marktype: marktype,
       enc: enc,
-      cfg: config,
+      config: config,
       filter: filter || []
     };
 
@@ -27,9 +28,10 @@ var Encoding = module.exports = (function() {
 
     var specExtended = schema.util.merge(defaults, theme || {}, spec) ;
 
+    this._data = specExtended.data;
     this._marktype = specExtended.marktype;
     this._enc = specExtended.enc;
-    this._cfg = specExtended.cfg;
+    this._config = specExtended.config;
     this._filter = specExtended.filter;
   }
 
@@ -300,8 +302,12 @@ var Encoding = module.exports = (function() {
     return !this.isAggregate();
   };
 
+  proto.data = function(name) {
+    return this._data[name];
+  };
+
   proto.config = function(name) {
-    return this._cfg[name];
+    return this._config[name];
   };
 
   proto.toSpec = function(excludeConfig) {
@@ -320,7 +326,7 @@ var Encoding = module.exports = (function() {
     };
 
     if (!excludeConfig) {
-      spec.cfg = util.duplicate(this._cfg);
+      spec.config = util.duplicate(this._config);
     }
 
     // remove defaults
@@ -340,17 +346,17 @@ var Encoding = module.exports = (function() {
       c.delim + vlenc.shorthand(spec.enc);
   };
 
-  Encoding.fromShorthand = function(shorthand, cfg, theme) {
+  Encoding.fromShorthand = function(shorthand, data, config, theme) {
     var c = consts.shorthand,
         split = shorthand.split(c.delim),
         marktype = split.shift().split(c.assign)[1].trim(),
         enc = vlenc.fromShorthand(split, true);
 
-    return new Encoding(marktype, enc, cfg, null, theme);
+    return new Encoding(marktype, enc, data, config, null, theme);
   };
 
-  Encoding.specFromShorthand = function(shorthand, cfg, excludeConfig) {
-    return Encoding.fromShorthand(shorthand, cfg).toSpec(excludeConfig);
+  Encoding.specFromShorthand = function(shorthand, data, config, excludeConfig) {
+    return Encoding.fromShorthand(shorthand, data, config).toSpec(excludeConfig);
   };
 
   Encoding.fromSpec = function(spec, theme) {
@@ -361,7 +367,7 @@ var Encoding = module.exports = (function() {
       enc[e].type = consts.dataTypes[enc[e].type];
     }
 
-    return new Encoding(spec.marktype, enc, spec.cfg, spec.filter, theme);
+    return new Encoding(spec.marktype, enc, spec.data, spec.config, spec.filter, theme);
   };
 
   Encoding.transpose = function(spec) {
@@ -376,8 +382,8 @@ var Encoding = module.exports = (function() {
   };
 
   Encoding.toggleSort = function(spec) {
-    spec.cfg = spec.cfg || {};
-    spec.cfg.toggleSort = spec.cfg.toggleSort === 'Q' ? 'O' :'Q';
+    spec.config = spec.config || {};
+    spec.config.toggleSort = spec.config.toggleSort === 'Q' ? 'O' :'Q';
     return spec;
   };
 
@@ -389,7 +395,7 @@ var Encoding = module.exports = (function() {
   };
 
   Encoding.toggleSort.mode = function(spec) {
-    return spec.cfg.toggleSort;
+    return spec.config.toggleSort;
   };
 
   Encoding.toggleSort.support = function(spec, stats, useTypeCode) {
@@ -407,12 +413,12 @@ var Encoding = module.exports = (function() {
   };
 
   Encoding.toggleFilterNullO = function(spec) {
-    spec.cfg = spec.cfg || {};
-    spec.cfg.filterNull = spec.cfg.filterNull || { //FIXME
+    spec.config = spec.config || {};
+    spec.config.filterNull = spec.config.filterNull || { //FIXME
       T: true,
       Q: true
     };
-    spec.cfg.filterNull.O = !spec.cfg.filterNull.O;
+    spec.config.filterNull.O = !spec.config.filterNull.O;
     return spec;
   };
 
