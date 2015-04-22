@@ -75,7 +75,7 @@ vled.format = function() {
 };
 
 vled.parse = function() {
-  var spec, encoding, source, cfg;
+  var spec, encoding, source;
   try {
     spec = JSON.parse(d3.select("#vlspec").property("value"));
   } catch (e) {
@@ -84,19 +84,19 @@ vled.parse = function() {
   }
 
   var datasetIndex;
-  for (var i = 0; spec.cfg && i < DATASETS.length; i++) {
-    if (DATASETS[i].url === spec.cfg.dataUrl) {
+  for (var i = 0; spec.data && i < DATASETS.length; i++) {
+    if (DATASETS[i].url === spec.data.url) {
       datasetIndex = i;
       break;
     }
   }
 
   var done = function() {
-    cfg = {
-      dataUrl: vled.dataset.url
-    };
-
-    encoding = vl.Encoding.fromSpec(spec, {cfg: cfg});
+    encoding = vl.Encoding.fromSpec(spec, {
+      data: {
+        url:  vled.dataset.url
+      }
+    });
     vled.loadEncoding(encoding);
   };
 
