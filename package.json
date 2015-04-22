@@ -51,5 +51,12 @@
   },
   "dependencies": {
     "datalib": "^1.0.4"
+  },
+  "browserify": {
+    "transform": [
+      "browserify-shim"
+    ]
+  },
+  "browserify-shim": {
   }
 }

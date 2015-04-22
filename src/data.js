@@ -76,7 +76,7 @@ vldata.getStats = function(data) {
     fields = util.keys(data[0]);
 
   fields.forEach(function(k) {
-    var stat = dl.stats.profile(data, function(d) {
+    var stat = dl.profile(data, function(d) {
       return d[k];
     });
 

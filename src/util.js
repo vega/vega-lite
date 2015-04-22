@@ -2,7 +2,7 @@
 
 var dl = require('datalib');
 
-var util = module.exports = dl.util;
+var util = module.exports = dl;
 
 util.range = function(start, stop, step) {
   if (arguments.length < 3) {
