@@ -470,19 +470,6 @@ var data = {
         }
       }
     }
-    // ,
-    // useVegaServer: {
-    //   type: 'boolean',
-    //   default: false
-    // },
-    // vegaServerTable: {
-    //   type: 'string',
-    //   default: undefined
-    // },
-    // vegaServerUrl: {
-    //   type: 'string',
-    //   default: 'http://localhost:3001'
-    // }
   }
 };
 
