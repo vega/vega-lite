@@ -33,29 +33,6 @@ util.isin = function(item, array) {
   return array.indexOf(item) !== -1;
 };
 
-util.uniq = function(data, field) {
-  var map = {}, count = 0, i, k;
-  for (i = 0; i < data.length; ++i) {
-    k = data[i][field];
-    if (!map[k]) {
-      map[k] = 1;
-      count += 1;
-    }
-  }
-  return count;
-};
-
-// try parsing to number
-util.numbers = function(values) {
-  var nums = [];
-  for (var i = 0; i < values.length; i++) {
-    if (util.isNumber(values[i])) {
-      nums.push(+values[i]);
-    }
-  }
-  return nums;
-};
-
 // parses a string to date or number
 util.parse = function(value) {
   if (util.isNumber(value)) {
