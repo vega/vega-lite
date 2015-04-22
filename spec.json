@@ -1,9 +1,25 @@
+{ formatType: 'json', vegaServer: null }
 {
  "$schema": "http://json-schema.org/draft-04/schema#",
  "description": "Schema for vegalite specification",
  "type": "object",
- "required": ["marktype","enc","cfg"],
+ "required": ["marktype","enc","data","config"],
  "properties": {
+  "data": {
+   "type": "object",
+   "properties": {
+    "formatType": {"type": "string","enum": ["json","csv"],"default": "json"},
+    "url": {"type": "string"},
+    "vegaServer": {
+     "type": "object",
+     "default": null,
+     "properties": {
+      "table": {"type": "string"},
+      "url": {"type": "string","default": "http://localhost:3001"}
+     }
+    }
+   }
+  },
   "marktype": {
    "type": "string",
    "enum": ["point","tick","bar","line","area","circle","square","text"]
@@ -787,7 +803,7 @@
     }
    }
   },
-  "cfg": {
+  "config": {
    "type": "object",
    "properties": {
     "width": {"type": "integer"},
@@ -814,12 +830,7 @@
     "textCellWidth": {"type": "integer","default": 90,"minimum": 0},
     "strokeWidth": {"type": "integer","default": 2,"minimum": 0},
     "timeScaleLabelLength": {"type": "integer","default": 3,"minimum": 0},
-    "characterWidth": {"type": "integer","default": 6},
-    "dataFormatType": {"type": "string","enum": ["json","csv"],"default": "json"},
-    "useVegaServer": {"type": "boolean","default": false},
-    "dataUrl": {"type": "string"},
-    "vegaServerTable": {"type": "string"},
-    "vegaServerUrl": {"type": "string","default": "http://localhost:3001"}
+    "characterWidth": {"type": "integer","default": 6}
    }
   }
  }
