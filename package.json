@@ -22,6 +22,7 @@
   "devDependencies": {
     "browser-sync": "^1.9.1",
     "browserify": "^8.1.1",
+    "browserify-shim": "^3.8.5",
     "chai": "^1.10.0",
     "commander": "^2.6.0",
     "deep-diff": "^0.3.0",
@@ -40,6 +41,6 @@
     "z-schema": "^3.4.3"
   },
   "dependencies": {
-    "datalib": "^1.0.2"
+    "datalib": "^1.0.4"
   }
 }

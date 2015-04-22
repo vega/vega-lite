@@ -1,9 +1,6 @@
 'use strict';
 
-var dl = {
-  bin: require('datalib/src/bin'),
-  util: require('datalib/src/util')
-};
+var dl = require('datalib');
 
 var util = module.exports = dl.util;
 

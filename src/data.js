@@ -1,9 +1,6 @@
 'use strict';
 
-var dl = {
-  infer: require('datalib/src/import/infer-types'),
-  stats: require('datalib/src/stats')
-};
+var dl = require('datalib');
 
 // TODO: rename getDataUrl to vl.data.getUrl() ?
 
@@ -62,7 +59,7 @@ vldata.getSchema = function(data, order) {
   };
 
   fields.forEach(function(k) {
-    var type = dl.infer(data, function(d) {
+    var type = dl.read.infer(data, function(d) {
       return d[k];
     });
 
