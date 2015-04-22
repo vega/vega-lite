@@ -89,7 +89,7 @@ vldata.getStats = function(data) {
     }, 0);
 
     var sample = {};
-    while(Object.keys(sample).length < Math.min(stat.cardinality, 10)) {
+    while(Object.keys(sample).length < Math.min(stat.distinct, 10)) {
       var value = data[Math.floor(Math.random() * data.length)][k];
       sample[value] = true;
     }

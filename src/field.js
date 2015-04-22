@@ -88,7 +88,7 @@ vlfield.order.name = function(field) {
 };
 
 vlfield.order.typeThenCardinality = function(field, stats){
-  return stats[field.name].cardinality;
+  return stats[field.name].distinct;
 };
 
 // FIXME refactor
@@ -158,13 +158,15 @@ vlfield.isCount = function(field) {
  */
 vlfield.cardinality = function(field, stats, filterNull, useTypeCode) {
   // FIXME need to take filter into account
+
+  var stat = stats[field.name];
   var isType = getIsType(useTypeCode),
     type = useTypeCode ? consts.dataTypeNames[field.type] : field.type;
 
   filterNull = filterNull || {};
 
   if (field.bin) {
-    var bins = util.getbins(stats[field.name], field.bin.maxbins || schema.MAXBINS_DEFAULT);
+    var bins = util.getbins(stat, field.bin.maxbins || schema.MAXBINS_DEFAULT);
     return (bins.stop - bins.start) / bins.step;
   }
   if (isType(field, T)) {
@@ -177,7 +179,6 @@ vlfield.cardinality = function(field, stats, filterNull, useTypeCode) {
   }
 
   // remove null
-  var stat = stats[field.name];
-  return stat.cardinality -
-    (stat.numNulls > 0 && filterNull[type] ? 1 : 0);
+  return stat.distinct -
+    (stat.nulls > 0 && filterNull[type] ? 1 : 0);
 };

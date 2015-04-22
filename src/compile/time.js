@@ -51,8 +51,8 @@ time.cardinality = function(field, stats, filterNull, type) {
 
       if (!yearstat) { return null; }
 
-      return yearstat.cardinality -
-        (stat.numNulls > 0 && filterNull[type] ? 1 : 0);
+      return yearstat.distinct -
+        (stat.nulls > 0 && filterNull[type] ? 1 : 0);
   }
 
   return null;
