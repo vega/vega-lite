@@ -28,8 +28,8 @@ function compile(spec, stats, theme) {
   return compile.encoding(Encoding.fromSpec(spec, theme), stats);
 }
 
-compile.shorthand = function (shorthand, stats, cfg, theme) {
-  return compile.encoding(Encoding.fromShorthand(shorthand, cfg, theme), stats);
+compile.shorthand = function (shorthand, stats, config, theme) {
+  return compile.encoding(Encoding.fromShorthand(shorthand, config, theme), stats);
 };
 
 compile.encoding = function (encoding, stats) {
@@ -46,7 +46,7 @@ compile.encoding = function (encoding, stats) {
 
   var hasRow = encoding.has(ROW), hasCol = encoding.has(COL);
 
-  var preaggregatedData = encoding.config('useVegaServer');
+  var preaggregatedData = !!encoding.data('vegaServer');
 
   for (var i = 0; i < mdefs.length; i++) {
     group.marks.push(mdefs[i]);
