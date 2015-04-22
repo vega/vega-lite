@@ -32,7 +32,7 @@ describe('encoding.filter()', function () {
 
   it('should add filterNull for O when specified', function () {
     var encoding = Encoding.fromSpec(spec, {
-      cfg: {
+      config: {
         filterNull: {O: true}
       }
     });
