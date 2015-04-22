@@ -4,7 +4,10 @@ var globals = require('./globals'),
     util = require('./util'),
     consts = require('./consts');
 
-var vl = util.merge(consts, util);
+var vl = {};  // util.merge(consts, util);
+
+vl.consts = consts;
+vl.util = util;
 
 vl.Encoding = require('./Encoding');
 vl.compile = require('./compile/compile');
