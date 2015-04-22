@@ -57,7 +57,7 @@ describe('Util', function() {
         color: { name: 'cyl', type: 'O' }
       },
       data: {
-        formatType: null,
+        formatType: 'json',
         url: 'data/cars.json'
       }
     };
