@@ -194,14 +194,6 @@ var Encoding = module.exports = (function() {
     return sort;
   };
 
-  proto.any = function(f) {
-    return util.any(this._enc, f);
-  };
-
-  proto.all = function(f) {
-    return util.all(this._enc, f);
-  };
-
   proto.length = function() {
     return util.keys(this._enc).length;
   };
@@ -426,7 +418,7 @@ var Encoding = module.exports = (function() {
     var fields = vlenc.fields(spec.enc);
     for (var fieldName in fields) {
       var fieldList = fields[fieldName];
-      if (fieldList.containsType.O && fieldName in stats && stats[fieldName].numNulls > 0) {
+      if (fieldList.containsType.O && fieldName in stats && stats[fieldName].nulls > 0) {
         return true;
       }
     }
