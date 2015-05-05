@@ -42,3 +42,5 @@ Then install all the npm dependencies:
 ```bash
 npm install
 ```
+
+You can run `gulp` to compile vegalite or run `gulp serve` to open the live vegalite editor. 
