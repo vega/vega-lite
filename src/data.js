@@ -1,7 +1,5 @@
 'use strict';
 
-// TODO: rename getDataUrl to vl.data.getUrl() ?
-
 var util = require('./util');
 
 var vldata = module.exports = {},
