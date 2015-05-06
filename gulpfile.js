@@ -71,7 +71,7 @@ gulp.task('watch-schema', function() {
 });
 
 // runs the tests
-gulp.task('mocha', function() {
+gulp.task('test', function() {
   return gulp.src(['test/**/*.spec.js'], { read: false })
     .pipe(mocha({
       R: 'list'
@@ -80,11 +80,11 @@ gulp.task('mocha', function() {
 });
 
 // watches directories and runs tests if things change
-gulp.task('watch-mocha', function() {
-  gulp.watch(['src/**', 'test/**'], ['mocha']);
+gulp.task('watch-test', function() {
+  gulp.watch(['src/**', 'test/**'], ['test']);
 });
 
-gulp.task('serve', ['bundle', 'watch-schema', 'watch-mocha'], function() {
+gulp.task('serve', ['bundle', 'watch-schema', 'watch-test'], function() {
     browserSync({
         server: {
             baseDir: './'
@@ -96,4 +96,4 @@ watchBundler.on('update', bundle);
 
 gulp.task('bundle', bundle);
 
-gulp.task('default', ['bundle', 'schema', 'watch-schema', 'watch-mocha']);
+gulp.task('default', ['bundle', 'schema', 'watch-schema', 'watch-test']);

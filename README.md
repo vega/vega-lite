@@ -26,3 +26,21 @@ The complete schema for specifications as [JSON schema](http://json-schema.org/)
   "cfg": {"dataUrl": "data/barley.json"}
 }
 ```
+
+## Setup Instructions
+
+Make sure you have node.js. (We recommend using [homebrew](http://brew.sh) and simply run `brew install node`.)
+
+Install gulp  globally by running
+
+```sh
+npm install -g gulp
+```
+
+Then install all the npm dependencies:
+
+```bash
+npm install
+```
+
+You can run `gulp` to compile vegalite or run `gulp serve` to open the live vegalite editor. 
