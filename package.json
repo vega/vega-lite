@@ -50,13 +50,12 @@
     "z-schema": "^3.4.3"
   },
   "dependencies": {
-    "datalib": "^1.0.4"
+    "datalib": "^1.0.11"
   },
   "browserify": {
     "transform": [
       "browserify-shim"
     ]
   },
-  "browserify-shim": {
-  }
+  "browserify-shim": {}
 }
