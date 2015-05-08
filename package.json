@@ -1,10 +1,10 @@
 {
   "name": "vegalite",
-  "version": "0.6.3",
   "author": {
     "name": "UW Interactive Data Lab",
     "url": "http://idl.cs.washington.edu"
   },
+  "version": "0.6.4",
   "collaborators": [
     "Kanit Wongsuphasawat <kanitw@gmail.com> (http://kanitw.yellowpigz.com)",
     "Dominik Moritz <domoritz@cs.washington.edu> (http://domoritz.de)",
