@@ -469,6 +469,13 @@ var data = {
           default: 'http://localhost:3001'
         }
       }
+    },
+    values: {
+      type: 'array',
+      items: {
+        type: 'object',
+        additionalProperties: true
+      }
     }
   }
 };
