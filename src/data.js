@@ -1,11 +1,10 @@
 'use strict';
 
-// TODO: rename getDataUrl to vl.data.getUrl() ?
-
-var util = require('./util');
+var dl = require('datalib');
 
 var vldata = module.exports = {},
-  vlfield = require('./field');
+  vlfield = require('./field'),
+  util = require('./util');
 
 vldata.getUrl = function getDataUrl(encoding, stats) {
   if (!encoding.data('vegaServer')) {
@@ -41,84 +40,26 @@ vldata.getUrl = function getDataUrl(encoding, stats) {
   return encoding.data('vegaServer').url + '/query/?q=' + JSON.stringify(query);
 };
 
-/**
- * @param  {Object} data data in JSON/javascript object format
- * @return Array of {name: __name__, type: "number|text|time|location"}
- */
-vldata.getSchema = function(data, order) {
-  var schema = [],
-    fields = util.keys(data[0]);
-
-  fields.forEach(function(k) {
-    // find non-null data
-    var i = 0, datum = data[i][k];
-    while (datum === '' || datum === null || datum === undefined) {
-      datum = data[++i][k];
-      if (i >= data.length) {
-        datum = '';
-        break;
-      }
-    }
-
-    datum = util.parse(datum);
-    var type = (typeof datum === 'number') ? 'Q':
-      (datum instanceof Date) ? 'T' : 'O';
-
-    schema.push({name: k, type: type});
-  });
-
-  schema = util.stablesort(schema, order || vlfield.order.typeThenName, vlfield.order.name);
-
-  return schema;
+/** Mapping from datalib's inferred type to vegalite's type */
+vldata.types = {
+  'boolean': 'O',
+  'number': 'Q',
+  'integer': 'Q',
+  'date': 'T',
+  'string': 'O'
 };
 
-vldata.getStats = function(data) { // hack
+vldata.getStats = function(data) {
   var stats = {},
     fields = util.keys(data[0]);
 
   fields.forEach(function(k) {
-    var column = data.map(function(d) {return d[k];});
-
-    // Hack
-    var val = util.parse(data[0][k]);
-    var type = (typeof val === 'number') ? 'Q':
-      (val instanceof Date) ? 'T' : 'O';
-
-    var stat = {};
-    if (typeof val === 'number') {
-      stat = util.minmax(util.numbers(column));
-    } else if (val instanceof Date) {
-      stat = util.minmax(util.dates(column));
-    } else {
-      stat = util.minmax(column);
-    }
-
-    stat.cardinality = util.uniq(data, k);
-    stat.count = data.length;
-
-    stat.maxlength = data.reduce(function(max,row) {
-      if (row[k] === null) {
-        return max;
-      }
-      var len = row[k].toString().length;
-      return len > max ? len : max;
-    }, 0);
-
-    stat.numNulls = data.reduce(function(count, row) {
-      return row[k] === null ? count + 1 : count;
-    }, 0);
-
-    var numbers = util.numbers(column);
-
-    if (numbers.length > 0) {
-      stat.skew = util.skew(numbers);
-      stat.stdev = util.stdev(numbers);
-      stat.mean = util.mean(numbers);
-      stat.median = util.median(numbers);
-    }
+    var stat = dl.profile(data, function(d) {
+      return d[k];
+    });
 
     var sample = {};
-    while(Object.keys(sample).length < Math.min(stat.cardinality, 10)) {
+    while(Object.keys(sample).length < Math.min(stat.distinct, 10)) {
       var value = data[Math.floor(Math.random() * data.length)][k];
       sample[value] = true;
     }
@@ -126,6 +67,7 @@ vldata.getStats = function(data) { // hack
 
     stats[k] = stat;
   });
+
   stats.count = data.length;
   return stats;
 };

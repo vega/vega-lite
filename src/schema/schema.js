@@ -473,8 +473,6 @@ var data = {
   }
 };
 
-console.log(schema.util.instantiate(data));
-
 var config = {
   type: 'object',
   properties: {
