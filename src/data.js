@@ -58,14 +58,6 @@ vldata.getStats = function(data) {
       return d[k];
     });
 
-    stat.maxlength = data.reduce(function(max,row) {
-      if (row[k] === null) {
-        return max;
-      }
-      var len = row[k].toString().length;
-      return len > max ? len : max;
-    }, 0);
-
     var sample = {};
     while(Object.keys(sample).length < Math.min(stat.distinct, 10)) {
       var value = data[Math.floor(Math.random() * data.length)][k];

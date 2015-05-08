@@ -95,7 +95,7 @@ function offset(encoding, stats, layout) {
   [X, Y].forEach(function (x) {
     var maxLength;
     if (encoding.isDimension(x) || encoding.isType(x, T)) {
-      maxLength = stats[encoding.fieldName(x)].maxlength;
+      maxLength = stats[encoding.fieldName(x)].length.max;
     } else if (encoding.aggr(x) === 'count') {
       //assign default value for count as it won't have stats
       maxLength =  3;
@@ -104,7 +104,7 @@ function offset(encoding, stats, layout) {
         maxLength = 3;
       } else { // Y
         //assume that default formating is always shorter than 7
-        maxLength = Math.min(stats[encoding.fieldName(x)].maxlength, 7);
+        maxLength = Math.min(stats[encoding.fieldName(x)].length.max, 7);
       }
     }
     setter(layout,[x, 'axisTitleOffset'], encoding.config('characterWidth') *  maxLength + 20);
