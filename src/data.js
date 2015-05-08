@@ -40,32 +40,13 @@ vldata.getUrl = function getDataUrl(encoding, stats) {
   return encoding.data('vegaServer').url + '/query/?q=' + JSON.stringify(query);
 };
 
-/**
- * @param  {Object} data data in JSON/javascript object format
- * @return Array of {name: __name__, type: "number|text|time|location"}
- */
-vldata.getSchema = function(data, order) {
-  var schema = [],
-    fields = util.keys(data[0]);
-
-  var typeMapping = {
-    'boolean': 'O',
-    'number': 'Q',
-    'date': 'T',
-    'string': 'O'
-  };
-
-  fields.forEach(function(k) {
-    var type = dl.read.infer(data, function(d) {
-      return d[k];
-    });
-
-    schema.push({name: k, type: typeMapping[type]});
-  });
-
-  schema = util.stablesort(schema, order || vlfield.order.typeThenName, vlfield.order.name);
-
-  return schema;
+/** Mapping from datalib's inferred type to vegalite's type */
+vldata.types = {
+  'boolean': 'O',
+  'number': 'Q',
+  'integer': 'Q',
+  'date': 'T',
+  'string': 'O'
 };
 
 vldata.getStats = function(data) {
