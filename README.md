@@ -39,7 +39,7 @@ npm install -g gulp
 
 Then install all the npm dependencies:
 
-```bash
+```sh
 npm install
 ```
 
