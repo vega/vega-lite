@@ -40,6 +40,7 @@ vldata.getUrl = function getDataUrl(encoding, stats) {
   return encoding.data('vegaServer').url + '/query/?q=' + JSON.stringify(query);
 };
 
+/** Mapping from datalib's inferred type to vegalite's type */
 vldata.types = {
   'boolean': 'O',
   'number': 'Q',
