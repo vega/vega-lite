@@ -1,8 +1,9 @@
 'use strict';
 
-var dl = require('datalib');
+var util = module.exports = require('datalib/src/util');
 
-var util = module.exports = dl;
+util.extend(util, require('datalib/src/generate'));
+util.bin = require('datalib/src/bin');
 
 util.isin = function(item, array) {
   return array.indexOf(item) !== -1;
@@ -18,23 +19,8 @@ util.forEach = function(obj, f, thisArg) {
   }
 };
 
-var merge = function(dest, src) {
-  return util.keys(src).reduce(function(c, k) {
-    c[k] = src[k];
-    return c;
-  }, dest);
-};
-
-util.merge = function(/*dest*, src0, src1, ...*/){
-  var dest = arguments[0];
-  for (var i=1 ; i<arguments.length; i++) {
-    dest = merge(dest, arguments[i]);
-  }
-  return dest;
-};
-
 util.getbins = function(stats, maxbins) {
-  return dl.bin({
+  return util.bin({
     min: stats.min,
     max: stats.max,
     maxbins: maxbins
