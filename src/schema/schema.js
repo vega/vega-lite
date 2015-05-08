@@ -588,7 +588,7 @@ schema.schema = {
   $schema: 'http://json-schema.org/draft-04/schema#',
   description: 'Schema for vegalite specification',
   type: 'object',
-  required: ['marktype', 'enc', 'data', 'config'],
+  required: ['marktype', 'enc', 'data'],
   properties: {
     data: data,
     marktype: schema.marktype,
