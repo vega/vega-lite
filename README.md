@@ -12,6 +12,8 @@ The complete schema for specifications as [JSON schema](http://json-schema.org/)
 
 ```json
 {
+  "data": {"url": "data/barley.json"},
+  "format": "json",
   "marktype": "point",
   "enc": {
     "x": {"type": "Q","name": "yield","aggr": "avg"},
@@ -22,8 +24,7 @@ The complete schema for specifications as [JSON schema](http://json-schema.org/)
     },
     "row": {"type": "O","name": "site"},
     "color": {"type": "O","name": "year"}
-  },
-  "cfg": {"dataUrl": "data/barley.json"}
+  }
 }
 ```
 
