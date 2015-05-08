@@ -9,10 +9,6 @@ function binning(spec, encoding, opt) {
   opt = opt || {};
   var bins = {};
 
-  if (opt.preaggregatedData) {
-    return;
-  }
-
   if (!spec.transform) spec.transform = [];
 
   encoding.forEach(function(field, encType) {

@@ -14,8 +14,6 @@ function template(encoding, layout, stats) { //hack use stats
     dataUrl = vldata.getUrl(encoding, stats);
   if (dataUrl) data.url = dataUrl;
 
-  var preaggregatedData = !!encoding.data('vegaServer');
-
   encoding.forEach(function(field, encType) {
     var name;
     if (field.type == T) {
@@ -25,10 +23,6 @@ function template(encoding, layout, stats) { //hack use stats
       data.format.parse = data.format.parse || {};
       if (field.aggr === 'count') {
         name = 'count';
-      } else if (preaggregatedData && field.bin) {
-        name = 'bin_' + field.name;
-      } else if (preaggregatedData && field.aggr) {
-        name = field.aggr + '_' + field.name;
       } else {
         name = field.name;
       }

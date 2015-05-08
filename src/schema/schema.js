@@ -456,22 +456,9 @@ var data = {
       type: 'string',
       default: undefined
     },
-    vegaServer: {
-      type: 'object',
-      default: null,
-      properties: {
-        table: {
-          type: 'string',
-          default: undefined
-        },
-        url: {
-          type: 'string',
-          default: 'http://localhost:3001'
-        }
-      }
-    },
     values: {
       type: 'array',
+      description: 'Pass array of objects instead of a url to a file.',
       items: {
         type: 'object',
         additionalProperties: true
