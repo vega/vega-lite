@@ -3,8 +3,9 @@ npm publish
 
 # read version
 gitsha=$(git rev-parse HEAD)
-version=$(npm view vegalite -j | jq .version)
+version=$(cat package.json | jq .version | sed -e 's/^"//'  -e 's/"$//')
 
+# remove all the compiled files, so we can checkout gh-pages without errors
 rm vegalite* -f
 rm spec.json
 
@@ -13,13 +14,13 @@ git checkout gh-pages
 git merge master
 
 gulp build
+
+# add the compiled files, commit and tag!
 git add vegalite* -f
 git add spec.json -f
+
+# commit, tag and push to gh-pages and swap back to master
 git commit -m "release $version $gitsha"
-git push
-
-# and tag gh-pages, so our release contains compiled file
-git tag "v$version"
+git tag -am "Release v$version." "v$version"
 git push --tags
-
 git checkout master

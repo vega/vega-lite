@@ -1,4 +1,4 @@
-# Vegalite  [![Build Status](https://travis-ci.org/uwdata/vegalite.svg)](https://travis-ci.org/uwdata/vegalite)
+# Vegalite [![Build Status](https://travis-ci.org/uwdata/vegalite.svg)](https://travis-ci.org/uwdata/vegalite)
 
 **Vegalite is work in progress and we are working on improving the code and documentation.**
 
@@ -13,7 +13,10 @@ The complete schema for specifications as [JSON schema](http://json-schema.org/)
 ```json
 {
   "data": {"url": "data/barley.json"},
+<<<<<<< HEAD
   "format": "json",
+=======
+>>>>>>> origin/master
   "marktype": "point",
   "enc": {
     "x": {"type": "Q","name": "yield","aggr": "avg"},
@@ -40,8 +43,18 @@ npm install -g gulp
 
 Then install all the npm dependencies:
 
-```bash
+```sh
 npm install
 ```
 
-You can run `gulp` to compile vegalite or run `gulp serve` to open the live vegalite editor. 
+You can run `gulp` to compile vegalite or run `gulp serve` to open the live vegalite editor.
+
+### Developing Vegalite and Datalib
+
+Vegalite depends on [Datalib](https://github.com/uwdata/datalib).
+If you plan to make changes to datalib and test Vegalite without publishing / copying compiled datalib all the time, use npm's [link](http://justjs.com/posts/npm-link-developing-your-own-npm-modules-without-tears) function.
+
+First, go to your Datalib directory and run `npm link`.
+Then go to your Vegalite directory and run `npm link datalib`.
+Now all the changes you make in Datalib is reflected in your Vegalite automatically.
+
