@@ -157,7 +157,7 @@ vled.datasetChanged = function(dataset, callback) {
     dataset.stats = dl.summary(data).reduce(function(s, p) {
       s[p.field] = p;
       return s;
-    });
+    },{});
     callback();
   });
 };
