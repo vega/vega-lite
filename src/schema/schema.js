@@ -456,18 +456,12 @@ var data = {
       type: 'string',
       default: undefined
     },
-    vegaServer: {
-      type: 'object',
-      default: null,
-      properties: {
-        table: {
-          type: 'string',
-          default: undefined
-        },
-        url: {
-          type: 'string',
-          default: 'http://localhost:3001'
-        }
+    values: {
+      type: 'array',
+      description: 'Pass array of objects instead of a url to a file.',
+      items: {
+        type: 'object',
+        additionalProperties: true
       }
     }
   }
@@ -588,7 +582,7 @@ schema.schema = {
   $schema: 'http://json-schema.org/draft-04/schema#',
   description: 'Schema for vegalite specification',
   type: 'object',
-  required: ['marktype', 'enc', 'data', 'config'],
+  required: ['marktype', 'enc', 'data'],
   properties: {
     data: data,
     marktype: schema.marktype,
