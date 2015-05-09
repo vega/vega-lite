@@ -200,7 +200,6 @@ vled.init = function() {
     vled.format();
   } else {
     document.getElementById("vlspec").value = JSON.stringify({
-      data: 'data/barley.json',
       marktype: "point",
       enc: {
         x: {type: "Q",name: "yield",aggr: "avg"},
