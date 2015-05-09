@@ -1,10 +1,7 @@
 {
   "name": "vegalite",
-  "version": "0.6.3",
-  "author": {
-    "name": "UW Interactive Data Lab",
-    "url": "http://idl.cs.washington.edu"
-  },
+  "author": "Jeffrey Heer, Dominik Moritz, Kanit \"Ham\" Wongsuphasawat",
+  "version": "0.6.5",
   "collaborators": [
     "Kanit Wongsuphasawat <kanitw@gmail.com> (http://kanitw.yellowpigz.com)",
     "Dominik Moritz <domoritz@cs.washington.edu> (http://domoritz.de)",
@@ -22,7 +19,6 @@
     "type": "git",
     "url": "https://github.com/uwdata/vegalite.git"
   },
-  "author": "Jeffrey Heer, Dominik Moritz, Kanit \"Ham\" Wongsuphasawat",
   "license": "BSD",
   "bugs": {
     "url": "https://github.com/uwdata/vegalite/issues"

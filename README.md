@@ -56,5 +56,5 @@ If you plan to make changes to datalib and test Vegalite without publishing / co
 
 First, go to your Datalib directory and run `npm link`.
 Then go to your Vegalite directory and run `npm link datalib`.
-Now all the changes you make in Datalib is reflected in your Vegalite automatically.
+Now all the changes you make in Datalib are reflected in your Vegalite automatically.
 

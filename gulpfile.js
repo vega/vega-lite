@@ -1,6 +1,7 @@
 'use strict';
 
-var gulp = require('gulp');
+var gulp = require('gulp'),
+  bump = require('gulp-bump');
 
 var browserify = require('browserify');
 var buffer = require('vinyl-buffer');
@@ -84,7 +85,7 @@ gulp.task('watch-test', function() {
   gulp.watch(['src/**', 'test/**'], ['test']);
 });
 
-gulp.task('serve', ['bundle', 'watch-schema', 'watch-test'], function() {
+gulp.task('serve', ['copydl', 'bundle', 'watch-schema', 'watch-test'], function() {
     browserSync({
         server: {
             baseDir: './'
@@ -92,8 +93,26 @@ gulp.task('serve', ['bundle', 'watch-schema', 'watch-test'], function() {
     });
 });
 
+gulp.task('copydl', function() {
+  gulp.src('node_modules/datalib/datalib.js')
+    .pipe(gulp.dest('lib/'));
+});
+
 watchBundler.on('update', bundle);
 
 gulp.task('bundle', bundle);
 
 gulp.task('default', ['bundle', 'schema', 'watch-schema', 'watch-test']);
+
+function inc(importance) {
+    // get all the files to bump version in
+    return gulp.src(['./package.json', './bower.json'])
+        // bump the version number in those files
+        .pipe(bump({type: importance}))
+        // save it back to filesystem
+        .pipe(gulp.dest('./'));
+}
+
+gulp.task('patch', function() { return inc('patch'); });
+gulp.task('feature', function() { return inc('minor'); });
+gulp.task('release', function() { return inc('major'); });
