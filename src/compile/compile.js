@@ -1,5 +1,7 @@
 'use strict';
 
+var summary = module.exports = require('datalib/src/summary');
+
 var globals = require('../globals');
 
 module.exports = compile;
@@ -32,6 +34,14 @@ compile.shorthand = function (shorthand, stats, config, theme) {
 };
 
 compile.encoding = function (encoding, stats) {
+  // no need to pass stats if you pass in the data
+  if (!stats && encoding.hasValues()) {
+    stats = summary(encoding.data('values')).reduce(function(s, p) {
+      s[p.field] = p;
+      return s;
+    }, {});
+  }
+
   var layout = compile.layout(encoding, stats),
     style = compile.style(encoding, stats),
     spec = compile.template(encoding, layout, stats),
@@ -45,22 +55,18 @@ compile.encoding = function (encoding, stats) {
 
   var hasRow = encoding.has(ROW), hasCol = encoding.has(COL);
 
-  var preaggregatedData = !!encoding.data('vegaServer');
-
   for (var i = 0; i < mdefs.length; i++) {
     group.marks.push(mdefs[i]);
   }
 
-  compile.bin(spec.data[1], encoding, {preaggregatedData: preaggregatedData});
+  compile.bin(spec.data[1], encoding);
 
   var lineType = marks[encoding.marktype()].line;
 
-  if (!preaggregatedData) {
-    spec = compile.time(spec, encoding);
-  }
+  spec = compile.time(spec, encoding);
 
   // handle subfacets
-  var aggResult = compile.aggregate(spec, encoding, {preaggregatedData: preaggregatedData}),
+  var aggResult = compile.aggregate(spec, encoding),
     details = aggResult.details,
     hasDetails = details && details.length > 0,
     stack = hasDetails && compile.stack(spec, encoding, mdef, aggResult.facets);
