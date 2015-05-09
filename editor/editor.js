@@ -1,6 +1,6 @@
 'use strict';
 
-/*global location, d3, vl, vg, docCookies, document, $, alert */
+/*global location, d3, vl, vg, docCookies, document, $, alert, dl */
 
 var DATASETS = [
   {
@@ -154,8 +154,10 @@ vled.datasetChanged = function(dataset, callback) {
 
   d3.json(dataset.url, function(err, data) {
     if (err) return alert("Error loading data " + err.statusText);
-
-    dataset.stats = vl.data.getStats(data);
+    dataset.stats = dl.summary(data).reduce(function(s, p) {
+      s[p.field] = p;
+      return s;
+    });
     callback();
   });
 };

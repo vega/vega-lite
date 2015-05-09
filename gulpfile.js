@@ -85,12 +85,17 @@ gulp.task('watch-test', function() {
   gulp.watch(['src/**', 'test/**'], ['test']);
 });
 
-gulp.task('serve', ['bundle', 'watch-schema', 'watch-test'], function() {
+gulp.task('serve', ['copydl', 'bundle', 'watch-schema', 'watch-test'], function() {
     browserSync({
         server: {
             baseDir: './'
         }
     });
+});
+
+gulp.task('copydl', function() {
+  gulp.src('node_modules/datalib/datalib.js')
+    .pipe(gulp.dest('lib/'));
 });
 
 watchBundler.on('update', bundle);
