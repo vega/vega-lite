@@ -81,7 +81,7 @@ var Encoding = module.exports = (function() {
 
     var f = (nodata ? '' : 'data.');
 
-    if (this._enc[et].aggr === 'count') {
+    if (vlfield.isCount(this._enc[et])) {
       return f + 'count';
     } else if (!nofn && this._enc[et].bin) {
       return f + 'bin_' + this._enc[et].name;

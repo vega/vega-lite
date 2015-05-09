@@ -3,16 +3,27 @@
 var globals = require('../globals');
 
 var groupdef = require('./group').def,
-  vldata = require('../data');
+  vldata = require('../data'),
+  vlfield = require('../field');
 
 module.exports = template;
 
-function template(encoding, layout, stats) { //hack use stats
+function template(encoding, layout, stats) {
 
-  var data = {name: RAW, format: {type: encoding.data('formatType')}},
+  var data = {name: RAW, format: {}},
     table = {name: TABLE, source: RAW},
-    dataUrl = vldata.getUrl(encoding, stats);
-  if (dataUrl) data.url = dataUrl;
+    dataUrl = encoding.data('url'),
+    dataType = encoding.data('formatType'),
+    values = encoding.data('values');
+
+  if (dataUrl) {
+    // get data from url
+    data.url = dataUrl;
+    data.format.type = dataType;
+  } else {
+    // embedded data
+    data.values = values;
+  }
 
   encoding.forEach(function(field, encType) {
     var name;
@@ -21,7 +32,7 @@ function template(encoding, layout, stats) { //hack use stats
       data.format.parse[field.name] = 'date';
     } else if (field.type == Q) {
       data.format.parse = data.format.parse || {};
-      if (field.aggr === 'count') {
+      if (vlfield.isCount(field)) {
         name = 'count';
       } else {
         name = field.name;
