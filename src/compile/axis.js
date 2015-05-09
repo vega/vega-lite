@@ -75,8 +75,13 @@ axis.def = function(name, encoding, layout, stats, opt) {
         stroke: { value: encoding.config('cellGridColor') }
       });
     } else {
-      setter(def, ['properties', 'grid', 'stroke'], {
-        value: encoding.config('gridColor')
+      setter(def, ['properties', 'grid'], {
+       stroke: {
+         value: encoding.config('gridColor')
+       },
+       opacity: {
+         value: encoding.config('gridOpacity')
+       }
       });
     }
   }

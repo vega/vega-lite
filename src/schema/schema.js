@@ -489,7 +489,13 @@ var config = {
     gridColor: {
       type: 'string',
       role: 'color',
-      default: '#eeeeee'
+      default: '#000'
+    },
+    gridOpacity: {
+      type: 'number',
+      minimum: 0,
+      maximum: 1,
+      default: 0.15
     },
 
     // filter null
