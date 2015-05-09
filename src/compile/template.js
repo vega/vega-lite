@@ -16,13 +16,11 @@ function template(encoding, layout, stats) {
     dataType = encoding.data('formatType'),
     values = encoding.data('values');
 
-  if (dataUrl) {
-    // get data from url
+  if (encoding.hasValues()) {
+    data.values = values;
+  } else {
     data.url = dataUrl;
     data.format.type = dataType;
-  } else {
-    // embedded data
-    data.values = values;
   }
 
   encoding.forEach(function(field, encType) {

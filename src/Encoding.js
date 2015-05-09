@@ -298,6 +298,12 @@ var Encoding = module.exports = (function() {
     return this._data[name];
   };
 
+   // returns whether the encoding has values embedded
+  proto.hasValues = function() {
+    var vals = this.data('values');
+    return vals && vals.length;
+  };
+
   proto.config = function(name) {
     return this._config[name];
   };

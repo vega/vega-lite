@@ -1,5 +1,7 @@
 'use strict';
 
+var summary = module.exports = require('datalib/src/summary');
+
 var globals = require('../globals');
 
 module.exports = compile;
@@ -32,6 +34,14 @@ compile.shorthand = function (shorthand, stats, config, theme) {
 };
 
 compile.encoding = function (encoding, stats) {
+  // no need to pass stats if you pass in the data
+  if (!stats && encoding.hasValues()) {
+    stats = summary(encoding.data('values')).reduce(function(s, p) {
+      s[p.field] = p;
+      return s;
+    });
+  }
+
   var layout = compile.layout(encoding, stats),
     style = compile.style(encoding, stats),
     spec = compile.template(encoding, layout, stats),
