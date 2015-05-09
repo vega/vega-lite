@@ -7,7 +7,3 @@ var data = require('../src/data'),
 describe('getUrl', function() {
   //TODO write tests for getUrl
 });
-
-describe('getStats', function() {
-  //TODO write more tests
-});
