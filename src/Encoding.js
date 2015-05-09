@@ -308,7 +308,7 @@ var Encoding = module.exports = (function() {
     return this._config[name];
   };
 
-  proto.toSpec = function(excludeConfig) {
+  proto.toSpec = function(excludeConfig, excludeData) {
     var enc = util.duplicate(this._enc),
       spec;
 
@@ -325,6 +325,10 @@ var Encoding = module.exports = (function() {
 
     if (!excludeConfig) {
       spec.config = util.duplicate(this._config);
+    }
+
+    if (!excludeData) {
+      spec.data = util.duplicate(this._data);
     }
 
     // remove defaults
