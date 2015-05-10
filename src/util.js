@@ -19,6 +19,44 @@ util.forEach = function(obj, f, thisArg) {
   }
 };
 
+util.reduce = function(obj, f, init, thisArg) {
+  if (obj.reduce) {
+    return obj.reduce.call(thisArg, f, init);
+  } else {
+    for (var k in obj) {
+      init = f.call(thisArg, init, obj[k], k, obj);
+    }
+    return init;
+  }
+};
+
+util.map = function(obj, f, thisArg) {
+  if (obj.map) {
+    return obj.map.call(thisArg, f);
+  } else {
+    var output = [];
+    for (var k in obj) {
+      output.push( f.call(thisArg, obj[k], k, obj));
+    }
+  }
+};
+
+util.any = function(arr, f) {
+  var i = 0, k;
+  for (k in arr) {
+    if (f(arr[k], k, i++)) return true;
+  }
+  return false;
+};
+
+util.all = function(arr, f) {
+  var i = 0, k;
+  for (k in arr) {
+    if (!f(arr[k], k, i++)) return false;
+  }
+  return true;
+};
+
 util.getbins = function(stats, maxbins) {
   return util.bin({
     min: stats.min,
