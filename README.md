@@ -73,7 +73,15 @@ You can run `gulp` to compile vegalite or run `gulp serve` to open the live vega
 Vegalite depends on [Datalib](https://github.com/uwdata/datalib).
 If you plan to make changes to datalib and test Vegalite without publishing / copying compiled datalib all the time, use npm's [link](http://justjs.com/posts/npm-link-developing-your-own-npm-modules-without-tears) function.
 
-First, go to your Datalib directory and run `npm link`.
-Then go to your Vegalite directory and run `npm link datalib`.
+
+```
+# first link datalib to nom's global
+cd path/to/datalib 
+npm link
+# then link vegalite to datalib 
+cd path/to/vegalite
+npm link datalib
+```
+
 Now all the changes you make in Datalib are reflected in your Vegalite automatically.
 
