@@ -75,7 +75,7 @@ If you plan to make changes to datalib and test Vegalite without publishing / co
 
 
 ```
-# first link datalib to nom's global
+# first link datalib global npm
 cd path/to/datalib 
 npm link
 # then link vegalite to datalib 
