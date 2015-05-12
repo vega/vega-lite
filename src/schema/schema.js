@@ -489,7 +489,7 @@ var config = {
     gridColor: {
       type: 'string',
       role: 'color',
-      default: '#000'
+      default: 'black'
     },
     gridOpacity: {
       type: 'number',
@@ -549,7 +549,13 @@ var config = {
     cellGridColor: {
       type: 'string',
       role: 'color',
-      default: '#aaaaaa'
+      default: 'black'
+    },
+    cellGridOpacity: {
+      type: 'number',
+      minimum: 0,
+      maximum: 1,
+      default: 0.15
     },
     cellBackgroundColor: {
       type: 'string',
