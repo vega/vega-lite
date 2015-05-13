@@ -11,7 +11,7 @@ rm spec.json
 
 # update github pages
 git checkout gh-pages
-git merge master
+git merge master --no-edit
 
 gulp build
 

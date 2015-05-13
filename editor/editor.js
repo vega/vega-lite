@@ -1,6 +1,6 @@
 'use strict';
 
-/*global location, d3, vl, vg, docCookies, document, $, alert */
+/*global location, d3, vl, vg, docCookies, document, $, alert, dl */
 
 var DATASETS = [
   {
@@ -92,11 +92,13 @@ vled.parse = function() {
   }
 
   var done = function() {
-    encoding = vl.Encoding.fromSpec(spec, {
+    // only add url if data is not provided explicitly
+    var theme = (spec.data && spec.data.values) ? {} : {
       data: {
         url:  vled.dataset.url
       }
-    });
+    };
+    encoding = vl.Encoding.fromSpec(spec, theme);
     vled.loadEncoding(encoding);
   };
 
@@ -123,7 +125,8 @@ vled.parseShorthand = function() {
 };
 
 vled.loadEncoding = function(encoding) {
-  var spec = vl.compile.encoding(encoding, vled.dataset.stats);
+  var stats = encoding.hasValues() ? null : vled.dataset.stats;
+  var spec = vl.compile.encoding(encoding, stats);
 
   d3.select("#shorthand").node().value = encoding.toShorthand();
   d3.select("#vgspec").node().value = JSON.stringify(spec, null, "  ", 60);
@@ -154,8 +157,10 @@ vled.datasetChanged = function(dataset, callback) {
 
   d3.json(dataset.url, function(err, data) {
     if (err) return alert("Error loading data " + err.statusText);
-
-    dataset.stats = vl.data.getStats(data);
+    dataset.stats = dl.summary(data).reduce(function(s, p) {
+      s[p.field] = p;
+      return s;
+    },{});
     callback();
   });
 };
@@ -195,7 +200,6 @@ vled.init = function() {
     vled.format();
   } else {
     document.getElementById("vlspec").value = JSON.stringify({
-      data: 'data/barley.json',
       marktype: "point",
       enc: {
         x: {type: "Q",name: "yield",aggr: "avg"},

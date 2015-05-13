@@ -10,6 +10,8 @@ The complete schema for specifications as [JSON schema](http://json-schema.org/)
 
 ## Example specification
 
+### Barleys
+
 ```json
 {
   "data": {"url": "data/barley.json"},
@@ -23,6 +25,27 @@ The complete schema for specifications as [JSON schema](http://json-schema.org/)
     },
     "row": {"type": "O","name": "site"},
     "color": {"type": "O","name": "year"}
+  }
+}
+```
+
+### Simple bar chart
+
+This is a similar chart as one of the Vega examples in https://github.com/trifacta/vega/wiki/Tutorial. See how much simpler it is.
+
+```json
+{
+  "data": {
+    "values": [
+      {"x":"A", "y":28}, {"x":"B", "y":55}, {"x":"C", "y":43},
+      {"x":"D", "y":91}, {"x":"E", "y":81}, {"x":"F", "y":53},
+      {"x":"G", "y":19}, {"x":"H", "y":87}, {"x":"I", "y":52}
+    ]
+  },
+  "marktype": "bar",
+  "enc": {
+    "y": {"type": "Q","name": "y"},
+    "x": {"type": "O","name": "x"}
   }
 }
 ```
@@ -50,7 +73,15 @@ You can run `gulp` to compile vegalite or run `gulp serve` to open the live vega
 Vegalite depends on [Datalib](https://github.com/uwdata/datalib).
 If you plan to make changes to datalib and test Vegalite without publishing / copying compiled datalib all the time, use npm's [link](http://justjs.com/posts/npm-link-developing-your-own-npm-modules-without-tears) function.
 
-First, go to your Datalib directory and run `npm link`.
-Then go to your Vegalite directory and run `npm link datalib`.
+
+```
+# first link datalib to nom's global
+cd path/to/datalib 
+npm link
+# then link vegalite to datalib 
+cd path/to/vegalite
+npm link datalib
+```
+
 Now all the changes you make in Datalib are reflected in your Vegalite automatically.
 

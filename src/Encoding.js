@@ -81,7 +81,7 @@ var Encoding = module.exports = (function() {
 
     var f = (nodata ? '' : 'data.');
 
-    if (this._enc[et].aggr === 'count') {
+    if (vlfield.isCount(this._enc[et])) {
       return f + 'count';
     } else if (!nofn && this._enc[et].bin) {
       return f + 'bin_' + this._enc[et].name;
@@ -298,11 +298,17 @@ var Encoding = module.exports = (function() {
     return this._data[name];
   };
 
+   // returns whether the encoding has values embedded
+  proto.hasValues = function() {
+    var vals = this.data('values');
+    return vals && vals.length;
+  };
+
   proto.config = function(name) {
     return this._config[name];
   };
 
-  proto.toSpec = function(excludeConfig) {
+  proto.toSpec = function(excludeConfig, excludeData) {
     var enc = util.duplicate(this._enc),
       spec;
 
@@ -319,6 +325,10 @@ var Encoding = module.exports = (function() {
 
     if (!excludeConfig) {
       spec.config = util.duplicate(this._config);
+    }
+
+    if (!excludeData) {
+      spec.data = util.duplicate(this._data);
     }
 
     // remove defaults
