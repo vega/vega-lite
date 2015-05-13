@@ -1,7 +1,6 @@
 'use strict';
-
-var globals = require('../globals'),
-  util = require('../util'),
+require('../globals');
+var util = require('../util'),
   time = require('./time');
 
 var scale = module.exports = {};
@@ -71,6 +70,7 @@ function scale_domain(name, encoding, sorting, opt) {
 }
 
 function scale_range(s, encoding, layout, style, opt) {
+  // jshint unused:false
   var spec = encoding.scale(s.name);
   switch (s.name) {
     case X:

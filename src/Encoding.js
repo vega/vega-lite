@@ -1,15 +1,14 @@
 'use strict';
 
-var globals = require('./globals'),
-  consts = require('./consts'),
+require('./globals');
+
+var consts = require('./consts'),
   util = require('./util'),
   vlfield = require('./field'),
   vlenc = require('./enc'),
-  schema = require('./schema/schema'),
-  time = require('./compile/time');
+  schema = require('./schema/schema');
 
-var Encoding = module.exports = (function() {
-
+module.exports = (function() {
   function Encoding(marktype, enc, data, config, filter, theme) {
     var defaults = schema.instantiate();
 
@@ -270,7 +269,7 @@ var Encoding = module.exports = (function() {
     return vlenc.isAggregate(spec.enc);
   };
 
-  Encoding.alwaysNoOcclusion = function(spec, stats) {
+  Encoding.alwaysNoOcclusion = function(spec) {
     // FIXME raw OxQ with # of rows = # of O
     return vlenc.isAggregate(spec.enc);
   };

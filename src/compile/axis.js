@@ -1,7 +1,8 @@
 'use strict';
 
-var globals = require('../globals'),
-  util = require('../util'),
+require('../globals');
+
+var util = require('../util'),
   setter = util.setter,
   getter = util.getter,
   time = require('./time');
@@ -130,6 +131,8 @@ axis.def = function(name, encoding, layout, stats, opt) {
 };
 
 function axis_title(def, name, encoding, layout, opt) {
+  // jshint unused:false
+
   var maxlength = null,
     fieldTitle = encoding.fieldTitle(name);
   if (name===X) {
@@ -154,6 +157,8 @@ function axis_title(def, name, encoding, layout, opt) {
 }
 
 function axis_labels(def, name, encoding, layout, opt) {
+  // jshint unused:false
+
   var fn;
   // add custom label for time type
   if (encoding.isType(name, T) && (fn = encoding.fn(name)) && (time.hasScale(fn))) {

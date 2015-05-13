@@ -1,6 +1,6 @@
 'use strict';
 
-var global = require('../globals');
+require('../globals');
 
 var groupdef = require('./group').def;
 

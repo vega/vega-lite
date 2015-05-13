@@ -5,7 +5,7 @@ var gutil = require('gulp-util');
 var mocha = require('gulp-spawn-mocha');
 
 // runs the tests
-gulp.task('test', function() {
+gulp.task('test', ['jshint'], function() {
   return gulp.src(['test/**/*.spec.js'], { read: false })
     .pipe(mocha())
     .on('error', gutil.log);
