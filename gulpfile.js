@@ -1,116 +1,14 @@
 'use strict';
 
-var gulp = require('gulp'),
-  bump = require('gulp-bump');
+var gulp = require('gulp');
 
-var browserify = require('browserify');
-var buffer = require('vinyl-buffer');
-var rename = require('gulp-rename');
-var run = require('gulp-run');
-var source = require('vinyl-source-stream');
-var sourcemaps = require('gulp-sourcemaps');
-var uglify = require('gulp-uglify');
-var watchify = require('watchify');
-var browserSync = require('browser-sync');
-
-
-var gutil = require('gulp-util');
-var mocha = require('gulp-spawn-mocha');
-
-var bundleDef = {
-  entries: ['./src/vl'],
-  standalone: 'vl',
-  debug: true
+gulp.paths = {
+  src: 'src',
+  dist: 'dist',
+  tmp: '.tmp',
+  e2e: 'e2e'
 };
 
-var browserBundler = browserify(bundleDef);
-var watchBundler = watchify(browserify(bundleDef));
-
-// builds Vega-lite with watcher
-function bundle() {
-  return build(watchBundler.bundle());
-}
-
-// runs build on the bundle
-function build(bundle) {
-  return bundle
-    .pipe(source('vega-lite.js'))
-    .pipe(buffer())
-    .pipe(gulp.dest('.'))
-    .pipe(sourcemaps.init({loadMaps: true}))
-    // This will minify and rename to vega-lite.min.js
-    .pipe(uglify())
-    .pipe(rename({ extname: '.min.js' }))
-    .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest('.'))
-    .pipe(browserSync.reload({stream:true}));
-}
-
-// builds Vega-lite and schema
-gulp.task('build', ['schema'], function() {
-  build(browserBundler.bundle());
-});
-
-// generates spec.json
-gulp.task('schema', function () {
-  gulp.src('src/schema/schemagen.js')
-    .pipe(run('node', {silent: true, cwd: 'src/schema'}))
-    .pipe(rename('spec.json'))
-    .pipe(gulp.dest('.'));
-});
-
-gulp.task('instance', ['schema'], function () {
-  gulp.src('src/schema/instancegen.js')
-    .pipe(run('node', {silent: true, cwd: 'src/schema'}))
-    .pipe(rename('instance.json'))
-    .pipe(gulp.dest('.'));
-});
-
-// watches for spec schema changes
-gulp.task('watch-schema', function() {
-    gulp.watch(['src/schema/schema.js'], ['schema']);
-});
-
-// runs the tests
-gulp.task('test', function() {
-  return gulp.src(['test/**/*.spec.js'], { read: false })
-    .pipe(mocha())
-    .on('error', gutil.log);
-});
-
-// watches directories and runs tests if things change
-gulp.task('watch-test', function() {
-  gulp.watch(['src/**', 'test/**'], ['test']);
-});
-
-gulp.task('serve', ['copydl', 'bundle', 'watch-schema', 'watch-test'], function() {
-    browserSync({
-        server: {
-            baseDir: './'
-        }
-    });
-});
-
-gulp.task('copydl', function() {
-  gulp.src('node_modules/datalib/datalib.js')
-    .pipe(gulp.dest('lib/'));
-});
-
-watchBundler.on('update', bundle);
-
-gulp.task('bundle', bundle);
+require('require-dir')('./gulp');
 
 gulp.task('default', ['bundle', 'schema', 'watch-schema', 'watch-test']);
-
-function inc(importance) {
-    // get all the files to bump version in
-    return gulp.src(['./package.json', './bower.json'])
-        // bump the version number in those files
-        .pipe(bump({type: importance}))
-        // save it back to filesystem
-        .pipe(gulp.dest('./'));
-}
-
-gulp.task('patch', function() { return inc('patch'); });
-gulp.task('feature', function() { return inc('minor'); });
-gulp.task('release', function() { return inc('major'); });
