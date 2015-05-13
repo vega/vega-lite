@@ -1,13 +1,13 @@
 'use strict';
 
-var global = require('../globals'),
-  time = require('./time');
+require('../globals');
+
+var time = require('./time');
 
 var legend = module.exports = {};
 
 legend.defs = function(encoding) {
   var defs = [];
-
   // TODO: support alpha
 
   if (encoding.has(COLOR) && encoding.legend(COLOR)) {

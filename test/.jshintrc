@@ -1,0 +1,13 @@
+{
+  "predef": ["_",
+    "TABLE", "RAW", "STACKED", "INDEX",
+    "X", "Y", "ROW", "COL", "SIZE", "SHAPE", "COLOR", "ALPHA", "TEXT", "DETAIL",
+    "O", "Q", "T"],
+  "mocha": true,
+  "undef":   true,
+  "unused":  true,
+  "eqnull":  true,
+  "freeze":  true,
+  "noarg":   true,
+  "node":    true
+}

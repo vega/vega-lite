@@ -1,7 +1,8 @@
 'use strict';
 
-var globals = require('../globals'),
-  util = require('../util');
+require('../globals');
+
+var util = require('../util');
 
 module.exports = aggregates;
 

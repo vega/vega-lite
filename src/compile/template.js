@@ -1,14 +1,14 @@
 'use strict';
 
-var globals = require('../globals');
+require('../globals');
 
 var groupdef = require('./group').def,
-  vldata = require('../data'),
   vlfield = require('../field');
 
 module.exports = template;
 
 function template(encoding, layout, stats) {
+  // jshint unused:false
 
   var data = {name: RAW, format: {}},
     table = {name: TABLE, source: RAW},

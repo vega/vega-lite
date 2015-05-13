@@ -1,11 +1,13 @@
 'use strict';
 
-var globals = require('../globals');
+require('../globals');
 
 module.exports = addSortTransforms;
 
 // adds new transforms that produce sorted fields
 function addSortTransforms(spec, encoding, stats, opt) {
+  // jshint unused:false
+
   var datasetMapping = {};
   var counter = 0;
 

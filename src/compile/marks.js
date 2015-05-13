@@ -1,8 +1,6 @@
 'use strict';
 
-var globals = require('../globals'),
-  util = require('../util'),
-  vlscale = require('./scale');
+require('../globals');
 
 var marks = module.exports = {};
 
@@ -93,6 +91,8 @@ marks.text = {
 };
 
 function bar_props(e, layout, style) {
+  // jshint unused:false
+
   var p = {};
 
   // x
@@ -216,7 +216,8 @@ function point_props(e, layout, style) {
   return p;
 }
 
-function line_props(e, layout, style) {
+function line_props(e,layout, style) {
+  // jshint unused:false
   var p = {};
 
   // x
@@ -253,6 +254,7 @@ function line_props(e, layout, style) {
 }
 
 function area_props(e, layout, style) {
+  // jshint unused:false
   var p = {};
 
   // x

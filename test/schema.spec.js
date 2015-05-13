@@ -2,13 +2,13 @@
 
 var assert = require('assert'),
   ZSchema = require("z-schema"),
-  _ = require('lodash'),
   inspect = require('util').inspect;
 
 var schema = require('../lib/schema.json'),
   util = require('../src/schema/schemautil.js'),
   specSchema = require('../src/schema/schema.js').schema;
 
+/*jshint -W121 */
 String.prototype.endsWith = function(suffix) {
     return this.indexOf(suffix, this.length - suffix.length) !== -1;
 };

@@ -1,11 +1,9 @@
 'use strict';
 
-var globals = require('../globals'),
-  util = require('../util'),
-  setter = util.setter,
-  schema = require('../schema/schema'),
-  time = require('./time'),
-  vlfield = require('../field');
+require('../globals');
+
+var util = require('../util'),
+  setter = util.setter;
 
 module.exports = vllayout;
 

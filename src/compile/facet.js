@@ -1,7 +1,8 @@
 'use strict';
 
-var globals = require('../globals'),
-  util = require('../util');
+require('../globals');
+
+var util = require('../util');
 
 var axis = require('./axis'),
   groupdef = require('./group').def,
