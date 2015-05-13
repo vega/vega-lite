@@ -75,8 +75,8 @@ If you plan to make changes to datalib and test Vega-lite without publishing / c
 
 
 ```
-# first link datalib to nom's global
-cd path/to/datalib
+# first link datalib global npm
+cd path/to/datalib 
 npm link
 # then link vega-lite to datalib
 cd path/to/vega-lite

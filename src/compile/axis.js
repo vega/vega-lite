@@ -53,7 +53,8 @@ axis.def = function(name, encoding, layout, stats, opt) {
         y: {
           value: -layout.cellHeight * (cellPadding/2),
         },
-        stroke: { value: encoding.config('cellGridColor') }
+        stroke: { value: encoding.config('cellGridColor') },
+        opacity: { value: encoding.config('cellGridOpacity') }
       });
     } else if (isRow) {
       // set grid property -- put the lines on the top
@@ -72,16 +73,13 @@ axis.def = function(name, encoding, layout, stats, opt) {
           group: "mark.group.width",
           mult: 1
         },
-        stroke: { value: encoding.config('cellGridColor') }
+        stroke: { value: encoding.config('cellGridColor') },
+        opacity: { value: encoding.config('cellGridOpacity') }
       });
     } else {
       setter(def, ['properties', 'grid'], {
-       stroke: {
-         value: encoding.config('gridColor')
-       },
-       opacity: {
-         value: encoding.config('gridOpacity')
-       }
+        stroke: { value: encoding.config('gridColor') },
+        opacity: { value: encoding.config('gridOpacity') }
       });
     }
   }
