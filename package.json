@@ -1,13 +1,13 @@
 {
-  "name": "vegalite",
+  "name": "vega-lite",
   "author": "Jeffrey Heer, Dominik Moritz, Kanit \"Ham\" Wongsuphasawat",
-  "version": "0.6.5",
+  "version": "0.6.6",
   "collaborators": [
     "Kanit Wongsuphasawat <kanitw@gmail.com> (http://kanitw.yellowpigz.com)",
     "Dominik Moritz <domoritz@cs.washington.edu> (http://domoritz.de)",
     "Jeffrey Heer <jheer@uw.edu> (http://jheer.org)"
   ],
-  "description": "Vegalite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications.",
+  "description": "Vega-lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications.",
   "main": "src/vl.js",
   "directories": {
     "test": "test"
@@ -17,13 +17,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/uwdata/vegalite.git"
+    "url": "https://github.com/uwdata/vega-lite.git"
   },
   "license": "BSD",
   "bugs": {
-    "url": "https://github.com/uwdata/vegalite/issues"
+    "url": "https://github.com/uwdata/vega-lite/issues"
   },
-  "homepage": "https://github.com/uwdata/vegalite",
+  "homepage": "https://github.com/uwdata/vega-lite",
   "devDependencies": {
     "browser-sync": "^1.9.1",
     "browserify": "^8.1.1",

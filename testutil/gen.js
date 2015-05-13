@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var VEGA_DIR = "vega", VEGALITE_DIR = "vegalite";
+var VEGA_DIR = "vega", Vega-lite_DIR = "vega-lite";
 
 var program = require('commander');
 program.version('0.0.1')
@@ -8,11 +8,11 @@ program.version('0.0.1')
   .option('-j, --json [string]', 'Create test from json strings [null]', null)
   .option('-f, --file [path]', 'Create test from file [null]', null)
   .option('-d, --data [path]', 'Data file path (otherwise, path will be parsed from dataUrl config.) [null]', null)
-  .option('-n, --note [String]', 'Add _note property to the vegalite json file.', null)
+  .option('-n, --note [String]', 'Add _note property to the vega-lite json file.', null)
   .parse(process.argv);
 
 var fs = require('fs'),
-  vl = require('../src/vegalite.js'),
+  vl = require('../src/vega-lite.js'),
   stringify = require('../lib/json3-compactstringify').stringify;
 
 if(program.json || program.file){
@@ -31,11 +31,11 @@ if(program.json || program.file){
   });
   //TODO read from testcases.js instead
 
-  // fs.readdir(VEGALITE_DIR, function(err, files){
+  // fs.readdir(Vega-lite_DIR, function(err, files){
   //   files.filter(function(f){
   //     return f.lastIndexOf(".json") == f.length - 5; //filter .DSStore and other unrelated files
   //   }).forEach(function(f){
-  //     generate(require(VEGALITE_DIR+"/"+f));
+  //     generate(require(Vega-lite_DIR+"/"+f));
   //   });
   // });
 }

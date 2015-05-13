@@ -27,7 +27,7 @@ legend.defs = function(encoding) {
   if (encoding.has(SHAPE) && encoding.legend(SHAPE)) {
     if (defs.length === 2) {
       // TODO: fix this
-      console.error('Vegalite currently only supports two legends');
+      console.error('Vega-lite currently only supports two legends');
       return defs;
     }
     defs.push(legend.def(SHAPE, encoding, {

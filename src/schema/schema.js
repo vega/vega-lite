@@ -1,4 +1,4 @@
-// Package of defining Vegalite Specification's json schema
+// Package of defining Vega-lite Specification's json schema
 "use strict";
 
 var schema = module.exports = {},
@@ -583,10 +583,10 @@ var config = {
   }
 };
 
-/** @type Object Schema of a vegalite specification */
+/** @type Object Schema of a vega-lite specification */
 schema.schema = {
   $schema: 'http://json-schema.org/draft-04/schema#',
-  description: 'Schema for vegalite specification',
+  description: 'Schema for Vega-lite specification',
   type: 'object',
   required: ['marktype', 'enc', 'data'],
   properties: {

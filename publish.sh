@@ -6,7 +6,7 @@ gitsha=$(git rev-parse HEAD)
 version=$(cat package.json | jq .version | sed -e 's/^"//'  -e 's/"$//')
 
 # remove all the compiled files, so we can checkout gh-pages without errors
-rm vegalite* -f
+rm vega-lite* -f
 rm spec.json
 
 # update github pages
@@ -16,7 +16,7 @@ git merge master --no-edit
 gulp build
 
 # add the compiled files, commit and tag!
-git add vegalite* -f
+git add vega-lite* -f
 git add spec.json -f
 
 # commit, tag and push to gh-pages and swap back to master

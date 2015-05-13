@@ -26,7 +26,7 @@ var bundleDef = {
 var browserBundler = browserify(bundleDef);
 var watchBundler = watchify(browserify(bundleDef));
 
-// builds vegalite with watcher
+// builds Vega-lite with watcher
 function bundle() {
   return build(watchBundler.bundle());
 }
@@ -34,11 +34,11 @@ function bundle() {
 // runs build on the bundle
 function build(bundle) {
   return bundle
-    .pipe(source('vegalite.js'))
+    .pipe(source('vega-lite.js'))
     .pipe(buffer())
     .pipe(gulp.dest('.'))
     .pipe(sourcemaps.init({loadMaps: true}))
-    // This will minify and rename to vegalite.min.js
+    // This will minify and rename to vega-lite.min.js
     .pipe(uglify())
     .pipe(rename({ extname: '.min.js' }))
     .pipe(sourcemaps.write('./'))
@@ -46,7 +46,7 @@ function build(bundle) {
     .pipe(browserSync.reload({stream:true}));
 }
 
-// builds vegalite and schema
+// builds Vega-lite and schema
 gulp.task('build', ['schema'], function() {
   build(browserBundler.bundle());
 });

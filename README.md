@@ -1,12 +1,12 @@
-# Vegalite [![Build Status](https://travis-ci.org/uwdata/vegalite.svg)](https://travis-ci.org/uwdata/vegalite)
+# Vega-lite [![Build Status](https://travis-ci.org/uwdata/vega-lite.svg)](https://travis-ci.org/uwdata/vega-lite)
 
-**Vegalite is work in progress and we are working on improving the code and documentation.**
+**Vega-lite is work in progress and we are working on improving the code and documentation.**
 
 Provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete [Vega](https://vega.github.io/) specifications.
 
-Vegalite specifications consist of simple mappings of variables in a data set to visual encoding channels such as position (`x`,`y`), `size`, `color` and `shape`. These mappings are then translated into full visualization specifications using the Vega visualization grammar. These resulting visualizations can then be exported or further modified to customize the display.
+Vega-lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as position (`x`,`y`), `size`, `color` and `shape`. These mappings are then translated into full visualization specifications using the Vega visualization grammar. These resulting visualizations can then be exported or further modified to customize the display.
 
-The complete schema for specifications as [JSON schema](http://json-schema.org/) is at [spec.json](https://uwdata.github.io/vegalite/spec.json). Use Vegalite in the [online editor](https://uwdata.github.io/vegalite/).
+The complete schema for specifications as [JSON schema](http://json-schema.org/) is at [spec.json](https://uwdata.github.io/vega-lite/spec.json). Use Vega-lite in the [online editor](https://uwdata.github.io/vega-lite/).
 
 ## Example specification
 
@@ -66,22 +66,22 @@ Then install all the npm dependencies:
 npm install
 ```
 
-You can run `gulp` to compile vegalite or run `gulp serve` to open the live vegalite editor.
+You can run `gulp` to compile vega-lite or run `gulp serve` to open the live vega-lite editor.
 
-### Developing Vegalite and Datalib
+### Developing Vega-lite and Datalib
 
-Vegalite depends on [Datalib](https://github.com/uwdata/datalib).
-If you plan to make changes to datalib and test Vegalite without publishing / copying compiled datalib all the time, use npm's [link](http://justjs.com/posts/npm-link-developing-your-own-npm-modules-without-tears) function.
+Vega-lite depends on [Datalib](https://github.com/uwdata/datalib).
+If you plan to make changes to datalib and test Vega-lite without publishing / copying compiled datalib all the time, use npm's [link](http://justjs.com/posts/npm-link-developing-your-own-npm-modules-without-tears) function.
 
 
 ```
 # first link datalib to nom's global
-cd path/to/datalib 
+cd path/to/datalib
 npm link
-# then link vegalite to datalib 
-cd path/to/vegalite
+# then link vega-lite to datalib
+cd path/to/vega-lite
 npm link datalib
 ```
 
-Now all the changes you make in Datalib are reflected in your Vegalite automatically.
+Now all the changes you make in Datalib are reflected in your Vega-lite automatically.
 
