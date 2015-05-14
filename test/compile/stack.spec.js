@@ -3,7 +3,6 @@
 var expect = require('chai').expect;
 
 var compile = require('../../src/compile/compile'),
-  Encoding = require('../../src/Encoding'),
   util = require('../../src/util');
 
 // mock util.getbins()
@@ -20,14 +19,6 @@ var spec_stackBinY = {
   "enc": {
     "x": {"type": "Q","name": "Cost__Other","aggr": "avg"},
     "y": {"bin": true,"type": "Q","name": "Cost__Total_$"},
-    "color": {"type": "O","name": "Effect__Amount_of_damage"}
-  }
-};
-
-var spec_stackXOnly = {
-  "marktype": "bar",
-  "enc": {
-    "x": {"type": "Q","name": "Cost__Other","aggr": "avg"},
     "color": {"type": "O","name": "Effect__Amount_of_damage"}
   }
 };

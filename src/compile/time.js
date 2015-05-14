@@ -1,11 +1,11 @@
 'use strict';
 
-var globals = require('../globals'),
-  util = require('../util');
+var util = require('../util');
 
 module.exports = time;
 
 function time(spec, encoding, opt) {
+  // jshint unused:false
   var timeFields = {}, timeFn = {};
 
   // find unique formula transformation and bin function

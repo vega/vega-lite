@@ -1,6 +1,6 @@
 'use strict';
 
-var globals = require('./globals');
+require('./globals');
 
 var consts = module.exports = {};
 

@@ -1,6 +1,12 @@
 {
-  "predef": ["require", "module", "it", "describe", "console", "process", "global", "window",
-    "toString",
+  "undef":   true,
+  "unused":  true,
+  "eqnull":  true,
+  "freeze":  true,
+  "noarg":   true,
+  "node":    true,
+  "browser": true,
+  "predef": [
     "TABLE", "RAW", "STACKED", "INDEX",
     "X", "Y", "ROW", "COL", "SIZE", "SHAPE", "COLOR", "ALPHA", "TEXT", "DETAIL",
     "O", "Q", "T"],

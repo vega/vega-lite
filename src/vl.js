@@ -1,7 +1,8 @@
 'use strict';
 
-var globals = require('./globals'),
-    util = require('./util'),
+require('./globals');
+
+var util = require('./util'),
     consts = require('./consts');
 
 var vl = {};
@@ -15,6 +16,5 @@ vl.field = require('./field');
 vl.enc = require('./enc');
 vl.schema = require('./schema/schema');
 vl.toShorthand = vl.Encoding.shorthand;
-
 
 module.exports = vl;

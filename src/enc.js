@@ -4,7 +4,6 @@
 
 var consts = require('./consts'),
   c = consts.shorthand,
-  time = require('./compile/time'),
   vlfield = require('./field'),
   util = require('./util'),
   schema = require('./schema/schema'),
@@ -55,7 +54,7 @@ vlenc.map = function(enc, f) {
 };
 
 vlenc.reduce = function(enc, f, init) {
-  var r = init, i = 0, k;
+  var r = init;
   encTypes.forEach(function(k) {
     if (vlenc.has(enc, k)) {
       r = f(r, enc[k], k,  enc);
@@ -68,7 +67,7 @@ vlenc.reduce = function(enc, f, init) {
  * return key-value pairs of field name and list of fields of that field name
  */
 vlenc.fields = function(enc) {
-  return vlenc.reduce(enc, function (m, field, encType) {
+  return vlenc.reduce(enc, function (m, field) {
     var fieldList = m[field.name] = m[field.name] || [],
       containsType = fieldList.containsType = fieldList.containsType || {};
 

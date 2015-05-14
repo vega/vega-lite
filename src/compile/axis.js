@@ -1,7 +1,8 @@
 'use strict';
 
-var globals = require('../globals'),
-  util = require('../util'),
+require('../globals');
+
+var util = require('../util'),
   setter = util.setter,
   getter = util.getter,
   time = require('./time');
@@ -53,7 +54,8 @@ axis.def = function(name, encoding, layout, stats, opt) {
         y: {
           value: -layout.cellHeight * (cellPadding/2),
         },
-        stroke: { value: encoding.config('cellGridColor') }
+        stroke: { value: encoding.config('cellGridColor') },
+        opacity: { value: encoding.config('cellGridOpacity') }
       });
     } else if (isRow) {
       // set grid property -- put the lines on the top
@@ -72,16 +74,13 @@ axis.def = function(name, encoding, layout, stats, opt) {
           group: "mark.group.width",
           mult: 1
         },
-        stroke: { value: encoding.config('cellGridColor') }
+        stroke: { value: encoding.config('cellGridColor') },
+        opacity: { value: encoding.config('cellGridOpacity') }
       });
     } else {
       setter(def, ['properties', 'grid'], {
-       stroke: {
-         value: encoding.config('gridColor')
-       },
-       opacity: {
-         value: encoding.config('gridOpacity')
-       }
+        stroke: { value: encoding.config('gridColor') },
+        opacity: { value: encoding.config('gridOpacity') }
       });
     }
   }
@@ -132,6 +131,8 @@ axis.def = function(name, encoding, layout, stats, opt) {
 };
 
 function axis_title(def, name, encoding, layout, opt) {
+  // jshint unused:false
+
   var maxlength = null,
     fieldTitle = encoding.fieldTitle(name);
   if (name===X) {
@@ -156,6 +157,8 @@ function axis_title(def, name, encoding, layout, opt) {
 }
 
 function axis_labels(def, name, encoding, layout, opt) {
+  // jshint unused:false
+
   var fn;
   // add custom label for time type
   if (encoding.isType(name, T) && (fn = encoding.fn(name)) && (time.hasScale(fn))) {

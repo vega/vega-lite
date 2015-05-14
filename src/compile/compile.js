@@ -2,7 +2,7 @@
 
 var summary = module.exports = require('datalib/src/summary');
 
-var globals = require('../globals');
+require('../globals');
 
 module.exports = compile;
 

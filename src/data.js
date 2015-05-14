@@ -1,10 +1,8 @@
 'use strict';
 
-var vldata = module.exports = {},
-  vlfield = require('./field'),
-  util = require('./util');
+var vldata = module.exports = {};
 
-/** Mapping from datalib's inferred type to vegalite's type */
+/** Mapping from datalib's inferred type to Vega-lite's type */
 vldata.types = {
   'boolean': 'O',
   'number': 'Q',
