@@ -1,7 +1,7 @@
 {
   "name": "vega-lite",
   "main": "vega-lite.js",
-  "version": "0.6.8",
+  "version": "0.6.9",
   "homepage": "https://github.com/uwdata/vega-lite",
   "authors": [
     "Kanit Wongsuphasawat <kanitw@gmail.com> (http://kanitw.yellowpigz.com)",
