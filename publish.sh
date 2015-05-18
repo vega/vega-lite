@@ -8,7 +8,7 @@ type jq >/dev/null 2>&1 || { echo >&2 "I require jq but it's not installed.  Abo
 
 # 0.2 Check if all files are commmited
 if [ -z "$(git status --porcelain)" ]; then 
-  echo "All files are commited.  Publishing on npm and bower."
+  echo "All tracked files are commited.  Publishing on npm and bower. \n"
 else 
   echo "${RED}There are uncommitted files. Please commit or stash first!${NC} \n\n"
   git status
