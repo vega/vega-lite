@@ -3,7 +3,7 @@
 var util = module.exports = require('datalib/src/util');
 
 util.extend(util, require('datalib/src/generate'));
-util.bin = require('datalib/src/bin');
+util.bin = require('datalib/src/bins/bins');
 
 util.isin = function(item, array) {
   return array.indexOf(item) !== -1;
