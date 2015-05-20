@@ -4,7 +4,7 @@ var VEGA_DIR = "shorthand2vg";
 
 var program = require('commander');
 program.version('0.0.1')
-  .description("Generate Vega specs from Vegalite object in testcases.js and compare output with testcases in "+ VEGA_DIR)
+  .description("Generate Vega specs from Vega-lite object in testcases.js and compare output with testcases in "+ VEGA_DIR)
   .parse(process.argv);
 
 var  fs = require('fs'),

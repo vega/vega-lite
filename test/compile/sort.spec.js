@@ -1,7 +1,6 @@
 'use strict';
 
-var expect = require('chai').expect,
-  _ = require('lodash');
+var expect = require('chai').expect;
 
 var vlsort = require('../../src/compile/sort'),
   Encoding = require('../../src/Encoding');

@@ -1,4 +1,4 @@
-// Package of defining Vegalite Specification's json schema
+// Package of defining Vega-lite Specification's json schema
 "use strict";
 
 var schema = module.exports = {},
@@ -456,18 +456,12 @@ var data = {
       type: 'string',
       default: undefined
     },
-    vegaServer: {
-      type: 'object',
-      default: null,
-      properties: {
-        table: {
-          type: 'string',
-          default: undefined
-        },
-        url: {
-          type: 'string',
-          default: 'http://localhost:3001'
-        }
+    values: {
+      type: 'array',
+      description: 'Pass array of objects instead of a url to a file.',
+      items: {
+        type: 'object',
+        additionalProperties: true
       }
     }
   }
@@ -495,7 +489,13 @@ var config = {
     gridColor: {
       type: 'string',
       role: 'color',
-      default: '#eeeeee'
+      default: 'black'
+    },
+    gridOpacity: {
+      type: 'number',
+      minimum: 0,
+      maximum: 1,
+      default: 0.08
     },
 
     // filter null
@@ -549,7 +549,13 @@ var config = {
     cellGridColor: {
       type: 'string',
       role: 'color',
-      default: '#aaaaaa'
+      default: 'black'
+    },
+    cellGridOpacity: {
+      type: 'number',
+      minimum: 0,
+      maximum: 1,
+      default: 0.15
     },
     cellBackgroundColor: {
       type: 'string',
@@ -583,12 +589,12 @@ var config = {
   }
 };
 
-/** @type Object Schema of a vegalite specification */
+/** @type Object Schema of a vega-lite specification */
 schema.schema = {
   $schema: 'http://json-schema.org/draft-04/schema#',
-  description: 'Schema for vegalite specification',
+  description: 'Schema for Vega-lite specification',
   type: 'object',
-  required: ['marktype', 'enc', 'data', 'config'],
+  required: ['marktype', 'enc', 'data'],
   properties: {
     data: data,
     marktype: schema.marktype,

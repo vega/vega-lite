@@ -1,7 +1,8 @@
 'use strict';
 
-var globals = require('../globals'),
-  util = require('../util');
+require('../globals');
+
+var util = require('../util');
 
 module.exports = aggregates;
 
@@ -33,7 +34,7 @@ function aggregates(spec, encoding, opt) {
   dims = util.vals(dims);
   meas = util.vals(meas);
 
-  if (meas.length > 0 && !opt.preaggregatedData) {
+  if (meas.length > 0) {
     if (!data.transform) data.transform = [];
     data.transform.push({
       type: 'aggregate',

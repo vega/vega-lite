@@ -1,9 +1,8 @@
 'use strict';
 
-var globals = require('../globals'),
-  util = require('../util'),
-  vlfield = require('../field'),
-  Encoding = require('../Encoding');
+require('../globals');
+
+var vlfield = require('../field');
 
 module.exports = function(encoding, stats) {
   return {

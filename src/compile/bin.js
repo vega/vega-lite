@@ -1,17 +1,11 @@
 'use strict';
 
-var globals = require('../globals'),
-  util = require('../util');
+require('../globals');
 
 module.exports = binning;
 
 function binning(spec, encoding, opt) {
   opt = opt || {};
-  var bins = {};
-
-  if (opt.preaggregatedData) {
-    return;
-  }
 
   if (!spec.transform) spec.transform = [];
 
