@@ -1,21 +1,18 @@
 {
  "$schema": "http://json-schema.org/draft-04/schema#",
- "description": "Schema for vegalite specification",
+ "description": "Schema for Vega-lite specification",
  "type": "object",
- "required": ["marktype","enc","data","config"],
+ "required": ["marktype","enc","data"],
  "properties": {
   "data": {
    "type": "object",
    "properties": {
     "formatType": {"type": "string","enum": ["json","csv"],"default": "json"},
     "url": {"type": "string"},
-    "vegaServer": {
-     "type": "object",
-     "default": null,
-     "properties": {
-      "table": {"type": "string"},
-      "url": {"type": "string","default": "http://localhost:3001"}
-     }
+    "values": {
+     "type": "array",
+     "description": "Pass array of objects instead of a url to a file.",
+     "items": {"type": "object","additionalProperties": true}
     }
    }
   },
@@ -808,7 +805,8 @@
     "width": {"type": "integer"},
     "height": {"type": "integer"},
     "viewport": {"type": "array","items": {"type": "integer"}},
-    "gridColor": {"type": "string","role": "color","default": "#eeeeee"},
+    "gridColor": {"type": "string","role": "color","default": "black"},
+    "gridOpacity": {"type": "number","minimum": 0,"maximum": 1,"default": 0.08},
     "filterNull": {
      "type": "object",
      "properties": {
@@ -824,7 +822,8 @@
     "smallBandSize": {"type": "integer","default": 12,"minimum": 0},
     "largeBandMaxCardinality": {"type": "integer","default": 10},
     "cellPadding": {"type": "number","default": 0.1},
-    "cellGridColor": {"type": "string","role": "color","default": "#aaaaaa"},
+    "cellGridColor": {"type": "string","role": "color","default": "black"},
+    "cellGridOpacity": {"type": "number","minimum": 0,"maximum": 1,"default": 0.15},
     "cellBackgroundColor": {"type": "string","role": "color","default": "transparent"},
     "textCellWidth": {"type": "integer","default": 90,"minimum": 0},
     "strokeWidth": {"type": "integer","default": 2,"minimum": 0},
