@@ -98,15 +98,14 @@ function bar_props(e, layout, style) {
   // x's and width 
   if (e.isMeasure(X)) {
     p.x = {scale: X, field: e.field(X)};
-    if (e.isDimension(Y)) {
+    if (!e.has(Y) || e.isDimension(Y)) {
       p.x2 = {value: 0};
     }
   } else {
     if (e.has(X)) { // is ordinal
        p.xc = {scale: X, field: e.field(X)};
     } else {
-       // TODO add single bar offset
-       p.xc = {value: 0};
+       p.x = {value: 0, offset: e.axis(X).singleOffset};
     }
   }
   
@@ -134,8 +133,7 @@ function bar_props(e, layout, style) {
     if (e.has(Y)) { // is ordinal
       p.yc = {scale: Y, field: e.field(Y)};
     } else {
-      // TODO add single bar offset
-      p.yc = {group: 'height'};
+      p.y2 = {group: 'height', offset: -e.axis(Y).singleOffset};
     }
 
     if (e.has(SIZE)) {

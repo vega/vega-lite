@@ -13,8 +13,8 @@ var mockLayout = {
 
 describe('compile.marks', function() {
   describe('bar', function() {
-    describe('of log - vertical', function() {
-      var f = fixtures.log_bar_ver,
+    describe('vertical, with log', function() {
+      var f = fixtures.bars.log_ver,
           e = Encoding.fromSpec(f),
           def = marks.bar.prop(e, mockLayout, {});
       it('should end on axis', function() {
@@ -25,8 +25,8 @@ describe('compile.marks', function() {
       });
     });
 
-    describe('of log - horizontal', function() {
-      var f = fixtures.log_bar_hor,
+    describe('horizontal, with log', function() {
+      var f = fixtures.bars.log_hor,
           e = Encoding.fromSpec(f),
           def = marks.bar.prop(e, mockLayout, {});
       it('should end on axis', function() {
@@ -36,5 +36,39 @@ describe('compile.marks', function() {
         expect(def.width).to.be.undefined;
       });
     });
+
+    describe('1D, vertical', function() {
+      var f = fixtures.bars['1d_ver'],
+          e = Encoding.fromSpec(f),
+          def = marks.bar.prop(e, mockLayout, {});
+      it('should end on axis', function() {
+        expect(def.y2).to.eql({group: 'height'});
+      });
+      it('should has no height', function(){
+        expect(def.height).to.be.undefined;
+      });
+      it('should has x-offset', function(){
+        expect(def.x.offset).to.eql(5); // axis.singleOffset
+      });
+    });
+
+    describe('1D, horizontal', function() {
+      var f = fixtures.bars['1d_hor'],
+          e = Encoding.fromSpec(f),
+          def = marks.bar.prop(e, mockLayout, {});
+      it('should end on axis', function() {
+        expect(def.x2).to.eql({value: 0});
+      });
+      it('should has no width', function(){
+        expect(def.width).to.be.undefined;
+      });
+      it('should has y-offset', function(){
+        expect(def.y2).to.eql({
+          group: 'height',
+          offset: -5 // -axis.singleOffset
+        });
+      });
+    });
+
   });
 });
