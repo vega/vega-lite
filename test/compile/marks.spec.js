@@ -48,7 +48,7 @@ describe('compile.marks', function() {
         expect(def.height).to.be.undefined;
       });
       it('should has x-offset', function(){
-        expect(def.x.offset).to.eql(5); // axis.singleOffset
+        expect(def.x.offset).to.eql(5); // config.singleBarOffset
       });
     });
 
@@ -65,7 +65,7 @@ describe('compile.marks', function() {
       it('should has y-offset', function(){
         expect(def.y2).to.eql({
           group: 'height',
-          offset: -5 // -axis.singleOffset
+          offset: -5 // -config.singleBarOffset
         });
       });
     });

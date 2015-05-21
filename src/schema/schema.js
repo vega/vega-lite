@@ -174,10 +174,6 @@ var axisMixin = {
           default: 25,
           minimum: 0,
           description: 'Truncate labels that are too long.'
-        }, 
-        singleOffset: {
-          type: 'integer',
-          default: 5
         }
       }
     }
@@ -576,6 +572,11 @@ var config = {
     strokeWidth: {
       type: 'integer',
       default: 2,
+      minimum: 0
+    },
+    singleBarOffset: {
+      type: 'integer',
+      default: 5,
       minimum: 0
     },
 
