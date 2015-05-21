@@ -95,46 +95,49 @@ function bar_props(e, layout, style) {
 
   var p = {};
 
-  // x
+  // x's and width 
   if (e.isMeasure(X)) {
     p.x = {scale: X, field: e.field(X)};
     if (e.isDimension(Y)) {
-      p.x2 = {scale: X, value: e.scale(X).type === 'log' ? 1 : 0};
+      p.x2 = {value: 0};
     }
-  } else if (e.has(X)) { // is ordinal
-    p.xc = {scale: X, field: e.field(X)};
   } else {
-    // TODO add single bar offset
-    p.xc = {value: 0};
+    if (e.has(X)) { // is ordinal
+       p.xc = {scale: X, field: e.field(X)};
+    } else {
+       // TODO add single bar offset
+       p.xc = {value: 0};
+    }
+  }
+  
+  // width
+  if (!p.x2) {
+    if (!e.has(X) || e.isOrdinalScale(X)) { // no X or X is ordinal
+      if (e.has(SIZE)) {
+        p.width = {scale: SIZE, field: e.field(SIZE)};
+      } else {
+        p.width = {
+          value: e.bandSize(X, layout.x.useSmallBand),
+          offset: -1
+        };
+      }
+    } else { // X is Quant or Time Scale
+      p.width = {value: 2};
+    }  
   }
 
-  // y
+  // y's & height
   if (e.isMeasure(Y)) {
     p.y = {scale: Y, field: e.field(Y)};
-    p.y2 = {scale: Y, value: e.scale(Y).type === 'log' ? 1 : 0};
-  } else if (e.has(Y)) { // is ordinal
-    p.yc = {scale: Y, field: e.field(Y)};
+    p.y2 = {group: "height"};
   } else {
-    // TODO add single bar offset
-    p.yc = {group: 'height'};
-  }
-
-  // width
-  if (!e.has(X) || e.isOrdinalScale(X)) { // no X or X is ordinal
-    if (e.has(SIZE)) {
-      p.width = {scale: SIZE, field: e.field(SIZE)};
+    if (e.has(Y)) { // is ordinal
+      p.yc = {scale: Y, field: e.field(Y)};
     } else {
-      p.width = {
-        value: e.bandSize(X, layout.x.useSmallBand),
-        offset: -1
-      };
+      // TODO add single bar offset
+      p.yc = {group: 'height'};
     }
-  } else { // X is Quant or Time Scale
-    p.width = {value: 2};
-  }
 
-  // height
-  if (!e.has(Y) || e.isOrdinalScale(Y)) { // no Y or Y is ordinal
     if (e.has(SIZE)) {
       p.height = {scale: SIZE, field: e.field(SIZE)};
     } else {
@@ -143,9 +146,9 @@ function bar_props(e, layout, style) {
         offset: -1
       };
     }
-  } else { // Y is Quant or Time Scale
-    p.height = {value: 2};
   }
+
+
 
   // fill
   if (e.has(COLOR)) {
