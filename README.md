@@ -1,4 +1,4 @@
-# Vega-lite [![Build Status](https://travis-ci.org/uwdata/vega-lite.svg)](https://travis-ci.org/uwdata/vega-lite) [![npm version](https://badge.fury.io/js/vega-lite.svg)](https://www.npmjs.com/package/vega-lite) [![npm version](https://david-dm.org/uwdata/vega-lite.svg)](https://www.npmjs.com/package/vega-lite)
+# Vega-lite [![Build Status](https://travis-ci.org/uwdata/vega-lite.svg)](https://travis-ci.org/uwdata/vega-lite)  [![npm dependencies](https://david-dm.org/uwdata/vega-lite.svg)](https://www.npmjs.com/package/vega-lite) [![npm version](https://img.shields.io/npm/v/vega-lite.svg)](https://www.npmjs.com/package/vega-lite)
 
 **Vega-lite is work in progress and we are working on improving the code and documentation.**
 
