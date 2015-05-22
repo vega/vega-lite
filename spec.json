@@ -30,11 +30,11 @@
       "type": {"type": "string","enum": ["O","Q","T"]},
       "aggr": {
        "type": "string",
-       "enum": ["avg","sum","min","max","count"],
+       "enum": ["avg","sum","median","min","max","count"],
        "supportedEnums": {
-        "Q": ["avg","sum","min","max","count"],
+        "Q": ["avg","median","sum","min","max","count"],
         "O": [],
-        "T": ["avg","min","max"],
+        "T": ["avg","median","min","max"],
         "": ["count"]
        },
        "supportedTypes": {"Q": true,"O": true,"T": true,"": true}
@@ -142,11 +142,11 @@
       "type": {"type": "string","enum": ["O","Q","T"]},
       "aggr": {
        "type": "string",
-       "enum": ["avg","sum","min","max","count"],
+       "enum": ["avg","sum","median","min","max","count"],
        "supportedEnums": {
-        "Q": ["avg","sum","min","max","count"],
+        "Q": ["avg","median","sum","min","max","count"],
         "O": [],
-        "T": ["avg","min","max"],
+        "T": ["avg","median","min","max"],
         "": ["count"]
        },
        "supportedTypes": {"Q": true,"O": true,"T": true,"": true}
@@ -401,11 +401,11 @@
       "type": {"type": "string","enum": ["O","Q","T"]},
       "aggr": {
        "type": "string",
-       "enum": ["avg","sum","min","max","count"],
+       "enum": ["avg","sum","median","min","max","count"],
        "supportedEnums": {
-        "Q": ["avg","sum","min","max","count"],
+        "Q": ["avg","median","sum","min","max","count"],
         "O": [],
-        "T": ["avg","min","max"],
+        "T": ["avg","median","min","max"],
         "": ["count"]
        },
        "supportedTypes": {"Q": true,"O": true,"T": true,"": true}
@@ -473,11 +473,11 @@
       "type": {"type": "string","enum": ["O","Q","T"]},
       "aggr": {
        "type": "string",
-       "enum": ["avg","sum","min","max","count"],
+       "enum": ["avg","sum","median","min","max","count"],
        "supportedEnums": {
-        "Q": ["avg","sum","min","max","count"],
+        "Q": ["avg","median","sum","min","max","count"],
         "O": [],
-        "T": ["avg","min","max"],
+        "T": ["avg","median","min","max"],
         "": ["count"]
        },
        "supportedTypes": {"Q": true,"O": true,"T": true,"": true}
@@ -555,11 +555,11 @@
       "type": {"type": "string","enum": ["O","Q","T"]},
       "aggr": {
        "type": "string",
-       "enum": ["avg","sum","min","max","count"],
+       "enum": ["avg","sum","median","min","max","count"],
        "supportedEnums": {
-        "Q": ["avg","sum","min","max","count"],
+        "Q": ["avg","median","sum","min","max","count"],
         "O": [],
-        "T": ["avg","min","max"],
+        "T": ["avg","median","min","max"],
         "": ["count"]
        },
        "supportedTypes": {"Q": true,"O": true,"T": true,"": true}
@@ -674,11 +674,11 @@
       "type": {"type": "string","enum": ["O","Q","T"]},
       "aggr": {
        "type": "string",
-       "enum": ["avg","sum","min","max","count"],
+       "enum": ["avg","sum","median","min","max","count"],
        "supportedEnums": {
-        "Q": ["avg","sum","min","max","count"],
+        "Q": ["avg","median","sum","min","max","count"],
         "O": [],
-        "T": ["avg","min","max"],
+        "T": ["avg","median","min","max"],
         "": ["count"]
        },
        "supportedTypes": {"Q": true,"O": true,"T": true,"": true}
@@ -827,6 +827,7 @@
     "cellBackgroundColor": {"type": "string","role": "color","default": "transparent"},
     "textCellWidth": {"type": "integer","default": 90,"minimum": 0},
     "strokeWidth": {"type": "integer","default": 2,"minimum": 0},
+    "singleBarOffset": {"type": "integer","default": 5,"minimum": 0},
     "timeScaleLabelLength": {"type": "integer","default": 3,"minimum": 0},
     "characterWidth": {"type": "integer","default": 6}
    }
