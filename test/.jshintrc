@@ -9,5 +9,6 @@
   "eqnull":  true,
   "freeze":  true,
   "noarg":   true,
-  "node":    true
+  "node":    true,
+  "expr": true
 }

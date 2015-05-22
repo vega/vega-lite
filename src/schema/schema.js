@@ -574,6 +574,11 @@ var config = {
       default: 2,
       minimum: 0
     },
+    singleBarOffset: {
+      type: 'integer',
+      default: 5,
+      minimum: 0
+    },
 
     // scales
     timeScaleLabelLength: {
