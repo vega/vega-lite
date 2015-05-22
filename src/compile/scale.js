@@ -52,15 +52,6 @@ function scale_domain(name, encoding, sorting, opt) {
     if(range) return range;
   }
 
-  if (encoding.bin(name)) {
-    // TODO: add includeEmptyConfig here
-    if (opt.stats) {
-      var bins = util.getbins(opt.stats[encoding.fieldName(name)], encoding.bin(name).maxbins);
-      var domain = util.range(bins.start, bins.stop, bins.step);
-      return name === Y ? domain.reverse() : domain;
-    }
-  }
-
   return name == opt.stack ?
     {
       data: STACKED,
