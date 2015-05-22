@@ -20,11 +20,6 @@ module.exports = (function() {
       filter: filter || []
     };
 
-    // type to bitcode
-    for (var e in defaults.enc) {
-      defaults.enc[e].type = consts.dataTypes[defaults.enc[e].type];
-    }
-
     var specExtended = schema.util.merge(defaults, theme || {}, spec) ;
 
     this._data = specExtended.data;
@@ -170,9 +165,7 @@ module.exports = (function() {
   proto.sort = function(et, stats) {
     var sort = this._enc[et].sort,
       enc = this._enc,
-      isType = vlfield.isType.byCode;
-
-    // console.log('sort:', sort, 'support:', Encoding.toggleSort.support({enc:this._enc}, stats) , 'toggle:', this.config('toggleSort'))
+      isType = vlfield.isType;
 
     if ((!sort || sort.length===0) &&
         Encoding.toggleSort.support({enc:this._enc}, stats, true) && //HACK
@@ -232,21 +225,18 @@ module.exports = (function() {
     return field && Encoding.isType(field, type);
   };
 
-  Encoding.isType = function (fieldDef, type) {
-    // FIXME vlfield.isType
-    return (fieldDef.type & type) > 0;
-  };
+  Encoding.isType = vlfield.isType;
 
   Encoding.isOrdinalScale = function(encoding, encType) {
-    return vlfield.isOrdinalScale(encoding.enc(encType), true);
+    return vlfield.isOrdinalScale(encoding.enc(encType));
   };
 
   Encoding.isDimension = function(encoding, encType) {
-    return vlfield.isDimension(encoding.enc(encType), true);
+    return vlfield.isDimension(encoding.enc(encType));
   };
 
   Encoding.isMeasure = function(encoding, encType) {
-    return vlfield.isMeasure(encoding.enc(encType), true);
+    return vlfield.isMeasure(encoding.enc(encType));
   };
 
   proto.isOrdinalScale = function(encType) {
@@ -286,7 +276,7 @@ module.exports = (function() {
   };
 
   proto.cardinality = function(encType, stats) {
-    return vlfield.cardinality(this.enc(encType), stats, this.config('filterNull'), true);
+    return vlfield.cardinality(this.enc(encType), stats, this.config('filterNull'));
   };
 
   proto.isRaw = function() {
@@ -310,11 +300,6 @@ module.exports = (function() {
   proto.toSpec = function(excludeConfig, excludeData) {
     var enc = util.duplicate(this._enc),
       spec;
-
-    // convert type's bitcode to type name
-    for (var e in enc) {
-      enc[e].type = consts.dataTypeNames[enc[e].type];
-    }
 
     spec = {
       marktype: this._marktype,
@@ -351,7 +336,7 @@ module.exports = (function() {
     var c = consts.shorthand,
         split = shorthand.split(c.delim),
         marktype = split.shift().split(c.assign)[1].trim(),
-        enc = vlenc.fromShorthand(split, true);
+        enc = vlenc.fromShorthand(split);
 
     return new Encoding(marktype, enc, data, config, null, theme);
   };
@@ -361,14 +346,7 @@ module.exports = (function() {
   };
 
   Encoding.fromSpec = function(spec, theme) {
-    var enc = util.duplicate(spec.enc || {});
-
-    //convert type from string to bitcode (e.g, O=1)
-    for (var e in enc) {
-      enc[e].type = consts.dataTypes[enc[e].type];
-    }
-
-    return new Encoding(spec.marktype, enc, spec.data, spec.config, spec.filter, theme);
+    return new Encoding(spec.marktype, spec.enc, spec.data, spec.config, spec.filter, theme);
   };
 
   Encoding.transpose = function(spec) {
@@ -389,8 +367,8 @@ module.exports = (function() {
   };
 
 
-  Encoding.toggleSort.direction = function(spec, useTypeCode) {
-    if (!Encoding.toggleSort.support(spec, useTypeCode)) { return; }
+  Encoding.toggleSort.direction = function(spec) {
+    if (!Encoding.toggleSort.support(spec)) { return; }
     var enc = spec.enc;
     return enc.x.type === 'O' ? 'x' :  'y';
   };
@@ -399,9 +377,9 @@ module.exports = (function() {
     return spec.config.toggleSort;
   };
 
-  Encoding.toggleSort.support = function(spec, stats, useTypeCode) {
+  Encoding.toggleSort.support = function(spec, stats) {
     var enc = spec.enc,
-      isType = vlfield.isType.get(useTypeCode);
+      isType = vlfield.isType;
 
     if (vlenc.has(enc, ROW) || vlenc.has(enc, COL) ||
       !vlenc.has(enc, X) || !vlenc.has(enc, Y) ||
@@ -409,8 +387,8 @@ module.exports = (function() {
       return false;
     }
 
-    return ( isType(enc.x, O) && vlfield.isMeasure(enc.y, useTypeCode)) ? 'x' :
-      ( isType(enc.y, O) && vlfield.isMeasure(enc.x, useTypeCode)) ? 'y' : false;
+    return ( isType(enc.x, O) && vlfield.isMeasure(enc.y)) ? 'x' :
+      ( isType(enc.y, O) && vlfield.isMeasure(enc.x)) ? 'y' : false;
   };
 
   Encoding.toggleFilterNullO = function(spec) {

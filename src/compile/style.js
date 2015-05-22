@@ -43,7 +43,7 @@ function estimateOpacity(encoding,stats) {
 
       if (encType !== ROW && encType !== COL &&
           !((encType === X || encType === Y) &&
-          vlfield.isOrdinalScale(field, true))
+          vlfield.isOrdinalScale(field))
         ) {
         numPoints *= encoding.cardinality(encType, stats);
       }
