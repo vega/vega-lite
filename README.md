@@ -6,7 +6,11 @@ Provides a higher-level grammar for visual analysis, comparable to ggplot or Tab
 
 Vega-lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as position (`x`,`y`), `size`, `color` and `shape`. These mappings are then translated into full visualization specifications using the Vega visualization grammar. These resulting visualizations can then be exported or further modified to customize the display.
 
-The complete schema for specifications as [JSON schema](http://json-schema.org/) is at [spec.json](https://uwdata.github.io/vega-lite/spec.json). Use Vega-lite in the [online editor](https://uwdata.github.io/vega-lite/).
+Use Vega-lite in the [online editor](https://uwdata.github.io/vega-lite/).
+
+If you using Vega-lite, please let us know by emailing us at [Vega-lite \[at\] cs.washington.edu](mailto:vega-lite@cs.washington.edu).  
+
+The complete schema for specifications as [JSON schema](http://json-schema.org/) is at [spec.json](https://uwdata.github.io/vega-lite/spec.json). 
 
 ## Example specification
 
