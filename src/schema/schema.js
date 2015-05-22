@@ -13,11 +13,11 @@ schema.marktype = {
 
 schema.aggr = {
   type: 'string',
-  enum: ['avg', 'sum', 'min', 'max', 'count'],
+  enum: ['avg', 'sum', 'median', 'min', 'max', 'count'],
   supportedEnums: {
-    Q: ['avg', 'sum', 'min', 'max', 'count'],
+    Q: ['avg', 'median', 'sum', 'min', 'max', 'count'],
     O: [],
-    T: ['avg', 'min', 'max'],
+    T: ['avg', 'median', 'min', 'max'],
     '': ['count']
   },
   supportedTypes: {'Q': true, 'O': true, 'T': true, '': true}
@@ -572,6 +572,11 @@ var config = {
     strokeWidth: {
       type: 'integer',
       default: 2,
+      minimum: 0
+    },
+    singleBarOffset: {
+      type: 'integer',
+      default: 5,
       minimum: 0
     },
 

@@ -86,14 +86,14 @@ vlenc.shorthand = function(enc) {
   }).join(c.delim);
 };
 
-vlenc.fromShorthand = function(shorthand, convertType) {
+vlenc.fromShorthand = function(shorthand) {
   var enc = util.isArray(shorthand) ? shorthand : shorthand.split(c.delim);
   return enc.reduce(function(m, e) {
     var split = e.split(c.assign),
         enctype = split[0].trim(),
         field = split[1];
 
-    m[enctype] = vlfield.fromShorthand(field, convertType);
+    m[enctype] = vlfield.fromShorthand(field);
     return m;
   }, {});
 };

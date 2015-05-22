@@ -15,8 +15,7 @@ vlfield.shorthand = function(f) {
   return (f.aggr ? f.aggr + c.func : '') +
     (f.fn ? f.fn + c.func : '') +
     (f.bin ? 'bin' + c.func : '') +
-    (f.name || '') + c.type +
-    (consts.dataTypeNames[f.type] || f.type);
+    (f.name || '') + c.type + f.type;
 };
 
 vlfield.shorthands = function(fields, delim) {
@@ -24,11 +23,11 @@ vlfield.shorthands = function(fields, delim) {
   return fields.map(vlfield.shorthand).join(delim);
 };
 
-vlfield.fromShorthand = function(shorthand, convertType) {
+vlfield.fromShorthand = function(shorthand) {
   var split = shorthand.split(c.type), i;
   var o = {
     name: split[0].trim(),
-    type: convertType ? consts.dataTypes[split[1].trim()] : split[1].trim()
+    type: split[1].trim()
   };
 
   // check aggregate type
@@ -91,36 +90,20 @@ vlfield.order.typeThenCardinality = function(field, stats){
   return stats[field.name].distinct;
 };
 
-// FIXME refactor
-vlfield.isType = function (fieldDef, type) {
-  return (fieldDef.type & type) > 0;
+var isType = vlfield.isType = function (fieldDef, type) {
+  return fieldDef.type === type;
 };
-
-vlfield.isType.byCode = vlfield.isType;
-
-vlfield.isType.byName = function (field, type) {
-  return field.type === consts.dataTypeNames[type];
-};
-
-
-function getIsType(useTypeCode) {
-  return useTypeCode ? vlfield.isType.byCode : vlfield.isType.byName;
-}
-
-vlfield.isType.get = getIsType; //FIXME
 
 /*
  * Most fields that use ordinal scale are dimensions.
  * However, YEAR(T), YEARMONTH(T) use time scale, not ordinal but are dimensions too.
  */
-vlfield.isOrdinalScale = function(field, useTypeCode /*optional*/) {
-  var isType = getIsType(useTypeCode);
+vlfield.isOrdinalScale = function(field) {
   return  isType(field, O) || field.bin ||
     ( isType(field, T) && field.fn && time.isOrdinalFn(field.fn) );
 };
 
-function isDimension(field, useTypeCode /*optional*/) {
-  var isType = getIsType(useTypeCode);
+function isDimension(field) {
   return  isType(field, O) || !!field.bin ||
     ( isType(field, T) && !!field.fn );
 }
@@ -130,12 +113,12 @@ function isDimension(field, useTypeCode /*optional*/) {
  * Or use Encoding.isType if your field is from Encoding (and thus have numeric data type).
  * otherwise, do not specific isType so we can use the default isTypeName here.
  */
-vlfield.isDimension = function(field, useTypeCode /*optional*/) {
-  return field && isDimension(field, useTypeCode);
+vlfield.isDimension = function(field) {
+  return field && isDimension(field);
 };
 
-vlfield.isMeasure = function(field, useTypeCode) {
-  return field && !isDimension(field, useTypeCode);
+vlfield.isMeasure = function(field) {
+  return field && !isDimension(field);
 };
 
 vlfield.role = function(field) {
@@ -156,12 +139,11 @@ vlfield.isCount = function(field) {
  * For encoding, use encoding.cardinality() to avoid confusion.  Or use Encoding.isType if your field is from Encoding (and thus have numeric data type).
  * otherwise, do not specific isType so we can use the default isTypeName here.
  */
-vlfield.cardinality = function(field, stats, filterNull, useTypeCode) {
+vlfield.cardinality = function(field, stats, filterNull) {
   // FIXME need to take filter into account
 
   var stat = stats[field.name];
-  var isType = getIsType(useTypeCode),
-    type = useTypeCode ? consts.dataTypeNames[field.type] : field.type;
+  var type = field.type;
 
   filterNull = filterNull || {};
 
