@@ -1,6 +1,6 @@
 'use strict';
 
-var summary = module.exports = require('datalib/src/summary');
+var summary = module.exports = require('datalib/src/stats').summary;
 
 require('../globals');
 
