@@ -15,8 +15,7 @@ vlfield.shorthand = function(f) {
   return (f.aggr ? f.aggr + c.func : '') +
     (f.fn ? f.fn + c.func : '') +
     (f.bin ? 'bin' + c.func : '') +
-    (f.name || '') + c.type +
-    (consts.dataTypeNames[f.type] || f.type);
+    (f.name || '') + c.type + f.type;
 };
 
 vlfield.shorthands = function(fields, delim) {

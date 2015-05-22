@@ -165,9 +165,7 @@ module.exports = (function() {
   proto.sort = function(et, stats) {
     var sort = this._enc[et].sort,
       enc = this._enc,
-      isType = vlfield.isType.byCode;
-
-    // console.log('sort:', sort, 'support:', Encoding.toggleSort.support({enc:this._enc}, stats) , 'toggle:', this.config('toggleSort'))
+      isType = vlfield.isType;
 
     if ((!sort || sort.length===0) &&
         Encoding.toggleSort.support({enc:this._enc}, stats, true) && //HACK
@@ -227,10 +225,7 @@ module.exports = (function() {
     return field && Encoding.isType(field, type);
   };
 
-  Encoding.isType = function (fieldDef, type) {
-    // FIXME vlfield.isType
-    return (fieldDef.type & type) > 0;
-  };
+  Encoding.isType = vlfield.isType;
 
   Encoding.isOrdinalScale = function(encoding, encType) {
     return vlfield.isOrdinalScale(encoding.enc(encType));
