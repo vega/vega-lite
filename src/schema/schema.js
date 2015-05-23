@@ -14,7 +14,7 @@ schema.marktype = {
   enum: ['point', 'tick', 'bar', 'line', 'area', 'circle', 'square', 'text']
 };
 
-schema.aggr = {
+schema.aggregate = {
   type: 'string',
   enum: ['avg', 'sum', 'median', 'min', 'max', 'count'],
   supportedEnums: {
@@ -97,7 +97,7 @@ var typicalField = merge(clone(schema.field), {
       type: 'string',
       enum: [O, Q, T]
     },
-    aggr: schema.aggr,
+    aggregate: schema.aggregate,
     fn: schema.fn,
     bin: bin,
     scale: {
@@ -137,7 +137,7 @@ var onlyOrdinalField = merge(clone(schema.field), {
     },
     fn: schema.fn,
     bin: bin,
-    aggr: {
+    aggregate: {
       type: 'string',
       enum: ['count'],
       supportedTypes: toMap([O])
@@ -192,11 +192,11 @@ var sortMixin = {
       items: {
         type: 'object',
         supportedTypes: toMap([O]),
-        required: ['name', 'aggr'],
+        required: ['name', 'aggregate'],
         name: {
           type: 'string'
         },
-        aggr: {
+        aggregate: {
           type: 'string',
           enum: ['avg', 'sum', 'min', 'max', 'count']
         },

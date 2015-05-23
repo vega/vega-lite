@@ -129,8 +129,8 @@ module.exports = (function() {
       return f + 'count';
     } else if (!nofn && this._enc[et].bin) {
       return f + 'bin_' + this._enc[et].name;
-    } else if (!nofn && this._enc[et].aggr) {
-      return f + this._enc[et].aggr + '_' + this._enc[et].name;
+    } else if (!nofn && this._enc[et].aggregate) {
+      return f + this._enc[et].aggregate + '_' + this._enc[et].name;
     } else if (!nofn && this._enc[et].fn) {
       return f + this._enc[et].fn + '_' + this._enc[et].name;
     } else {
@@ -153,7 +153,7 @@ module.exports = (function() {
     if (vlfield.isCount(this._enc[et])) {
       return vlfield.count.displayName;
     }
-    var fn = this._enc[et].aggr || this._enc[et].fn || (this._enc[et].bin && "bin");
+    var fn = this._enc[et].aggregate || this._enc[et].fn || (this._enc[et].bin && "bin");
     if (fn) {
       return fn.toUpperCase() + '(' + this._enc[et].name + ')';
     } else {
@@ -184,8 +184,8 @@ module.exports = (function() {
       this.config(useSmallBand ? 'smallBandSize' : 'largeBandSize');
   };
 
-  proto.aggr = function(et) {
-    return this._enc[et].aggr;
+  proto.aggregate = function(et) {
+    return this._enc[et].aggregate;
   };
 
   // returns false if binning is disabled, otherwise an object with binning properties
@@ -227,7 +227,7 @@ module.exports = (function() {
       if (isType(enc[et], O)) {
         sort = [{
           name: qField.name,
-          aggr: qField.aggr,
+          aggregate: qField.aggregate,
           type: qField.type,
           reverse: true
         }];

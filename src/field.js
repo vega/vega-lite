@@ -14,7 +14,7 @@ var vlfield = module.exports = {};
 
 vlfield.shorthand = function(f) {
   var c = consts.shorthand;
-  return (f.aggr ? f.aggr + c.func : '') +
+  return (f.aggregate ? f.aggregate + c.func : '') +
     (f.fn ? f.fn + c.func : '') +
     (f.bin ? 'bin' + c.func : '') +
     (f.name || '') + c.type + f.type;
@@ -33,12 +33,12 @@ vlfield.fromShorthand = function(shorthand) {
   };
 
   // check aggregate type
-  for (i in schema.aggr.enum) {
-    var a = schema.aggr.enum[i];
+  for (i in schema.aggregate.enum) {
+    var a = schema.aggregate.enum[i];
     if (o.name.indexOf(a + '_') === 0) {
       o.name = o.name.substr(a.length + 1);
       if (a == 'count' && o.name.length === 0) o.name = '*';
-      o.aggr = a;
+      o.aggregate = a;
       break;
     }
   }
@@ -72,7 +72,7 @@ var typeOrder = {
 vlfield.order = {};
 
 vlfield.order.type = function(field) {
-  if (field.aggr==='count') return 4;
+  if (field.aggregate==='count') return 4;
   return typeOrder[field.type];
 };
 
@@ -128,13 +128,13 @@ vlfield.role = function(field) {
 };
 
 vlfield.count = function() {
-  return {name:'*', aggr: 'count', type: Q, displayName: vlfield.count.displayName};
+  return {name:'*', aggregate: 'count', type: Q, displayName: vlfield.count.displayName};
 };
 
 vlfield.count.displayName = 'Number of Records';
 
 vlfield.isCount = function(field) {
-  return field.aggr === 'count';
+  return field.aggregate === 'count';
 };
 
 /**
@@ -158,7 +158,7 @@ vlfield.cardinality = function(field, stats, filterNull) {
     if(cardinality !== null) return cardinality;
     //otherwise use calculation below
   }
-  if (field.aggr) {
+  if (field.aggregate) {
     return 1;
   }
 
