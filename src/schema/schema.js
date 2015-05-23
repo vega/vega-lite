@@ -1,5 +1,5 @@
 // Package of defining Vega-lite Specification's json schema
-"use strict";
+'use strict';
 
 require('../globals');
 
@@ -602,7 +602,7 @@ schema.schema = {
   $schema: 'http://json-schema.org/draft-04/schema#',
   description: 'Schema for Vega-lite specification',
   type: 'object',
-  required: ['marktype', 'enc', 'data'],
+  required: ['marktype', 'encoding', 'data'],
   properties: {
     data: data,
     marktype: schema.marktype,
