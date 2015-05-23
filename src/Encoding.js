@@ -9,22 +9,13 @@ var consts = require('./consts'),
   schema = require('./schema/schema');
 
 module.exports = (function() {
-  function Encoding(marktype, enc, data, config, filter, theme) {
-    var defaults = schema.instantiate();
-
-    var spec = {
-      data: data,
-      marktype: marktype,
-      enc: enc,
-      config: config,
-      filter: filter || []
-    };
-
-    var specExtended = schema.util.merge(defaults, theme || {}, spec) ;
+  function Encoding(spec, theme) {
+    var defaults = schema.instantiate(),
+      specExtended = schema.util.merge(defaults, theme || {}, spec) ;
 
     this._data = specExtended.data;
     this._marktype = specExtended.marktype;
-    this._enc = specExtended.enc;
+    this._enc = specExtended.encoding;
     this._config = specExtended.config;
     this._filter = specExtended.filter;
   }
@@ -37,11 +28,17 @@ module.exports = (function() {
         marktype = split.shift().split(c.assign)[1].trim(),
         enc = vlenc.fromShorthand(split);
 
-    return new Encoding(marktype, enc, data, config, null, theme);
+    return new Encoding({
+      data: data,
+      marktype: marktype,
+      encoding: enc,
+      config: config,
+      filter: []
+    }, theme);
   };
 
   Encoding.fromSpec = function(spec, theme) {
-    return new Encoding(spec.marktype, spec.enc, spec.data, spec.config, spec.filter, theme);
+    return new Encoding(spec, theme);
   };
 
   proto.toShorthand = function() {
@@ -66,7 +63,7 @@ module.exports = (function() {
 
     spec = {
       marktype: this._marktype,
-      enc: enc,
+      encoding: enc,
       filter: this._filter
     };
 
@@ -82,7 +79,6 @@ module.exports = (function() {
     var defaults = schema.instantiate();
     return schema.util.subtract(spec, defaults);
   };
-
 
 
   proto.marktype = function() {
@@ -222,6 +218,7 @@ module.exports = (function() {
       isType = vlfield.isType;
 
     if ((!sort || sort.length===0) &&
+        // FIXME
         Encoding.toggleSort.support({enc:this._enc}, stats, true) && //HACK
         this.config('toggleSort') === Q
       ) {

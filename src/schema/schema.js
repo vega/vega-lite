@@ -41,7 +41,7 @@ schema.band = {
 };
 
 schema.getSupportedRole = function(encType) {
-  return schema.schema.properties.enc.properties[encType].supportedRole;
+  return schema.schema.properties.encoding.properties[encType].supportedRole;
 };
 
 schema.timefns = ['year', 'month', 'day', 'date', 'hours', 'minutes', 'seconds'];
@@ -606,7 +606,7 @@ schema.schema = {
   properties: {
     data: data,
     marktype: schema.marktype,
-    enc: {
+    encoding: {
       type: 'object',
       properties: {
         x: x,
@@ -626,7 +626,7 @@ schema.schema = {
   }
 };
 
-schema.encTypes = util.keys(schema.schema.properties.enc.properties);
+schema.encTypes = util.keys(schema.schema.properties.encoding.properties);
 
 /** Instantiate a verbose vl spec from the schema */
 schema.instantiate = function() {

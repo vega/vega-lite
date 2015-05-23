@@ -7,7 +7,7 @@ var vlsort = require('../../src/compile/sort'),
 
 describe('Sort', function() {
   var encoding = Encoding.fromSpec({
-        enc: {
+        encoding: {
           x: {name: 'foo', type: 'O', sort: [{
             name: 'bar', aggr: 'avg'
           }]},

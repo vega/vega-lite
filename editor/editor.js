@@ -75,7 +75,7 @@ vled.format = function() {
 };
 
 vled.parse = function() {
-  var spec, encoding, source;
+  var spec, encoding;
   try {
     spec = JSON.parse(d3.select("#vlspec").property("value"));
   } catch (e) {
@@ -201,7 +201,7 @@ vled.init = function() {
   } else {
     document.getElementById("vlspec").value = JSON.stringify({
       marktype: "point",
-      enc: {
+      encoding: {
         x: {type: "Q",name: "yield",aggr: "avg"},
         y: {
           sort: [{name: "yield", aggr: "avg", reverse: false}],
