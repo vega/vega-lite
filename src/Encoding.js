@@ -169,7 +169,7 @@ module.exports = (function() {
 
     if ((!sort || sort.length===0) &&
         Encoding.toggleSort.support({enc:this._enc}, stats, true) && //HACK
-        this.config('toggleSort') === 'Q'
+        this.config('toggleSort') === Q
       ) {
       var qField = isType(enc.x, O) ? enc.y : enc.x;
 
@@ -362,7 +362,7 @@ module.exports = (function() {
 
   Encoding.toggleSort = function(spec) {
     spec.config = spec.config || {};
-    spec.config.toggleSort = spec.config.toggleSort === 'Q' ? 'O' :'Q';
+    spec.config.toggleSort = spec.config.toggleSort === Q ? O : Q;
     return spec;
   };
 
@@ -370,7 +370,7 @@ module.exports = (function() {
   Encoding.toggleSort.direction = function(spec) {
     if (!Encoding.toggleSort.support(spec)) { return; }
     var enc = spec.enc;
-    return enc.x.type === 'O' ? 'x' :  'y';
+    return enc.x.type === O ? 'x' : 'y';
   };
 
   Encoding.toggleSort.mode = function(spec) {

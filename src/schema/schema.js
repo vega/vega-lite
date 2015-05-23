@@ -1,8 +1,11 @@
 // Package of defining Vega-lite Specification's json schema
 "use strict";
 
+require('../globals');
+
 var schema = module.exports = {},
-  util = require('../util');
+  util = require('../util'),
+  toMap = util.toMap;
 
 schema.util = require('./schemautil');
 
@@ -20,7 +23,7 @@ schema.aggr = {
     T: ['avg', 'median', 'min', 'max'],
     '': ['count']
   },
-  supportedTypes: {'Q': true, 'O': true, 'T': true, '': true}
+  supportedTypes: toMap([Q, O, T, ''])
 };
 schema.band = {
   type: 'object',
@@ -48,7 +51,7 @@ schema.defaultTimeFn = 'month';
 schema.fn = {
   type: 'string',
   enum: schema.timefns,
-  supportedTypes: {'T': true}
+  supportedTypes: toMap([T])
 };
 
 //TODO(kanitw): add other type of function here
@@ -57,7 +60,7 @@ schema.scale_type = {
   type: 'string',
   enum: ['linear', 'log', 'pow', 'sqrt', 'quantile'],
   default: 'linear',
-  supportedTypes: {'Q': true}
+  supportedTypes: toMap([Q])
 };
 
 schema.field = {
@@ -84,7 +87,7 @@ var bin = {
       minimum: 2
     }
   },
-  supportedTypes: {'Q': true} // TODO: add 'O' after finishing #81
+  supportedTypes: toMap([Q]) // TODO: add O after finishing #81
 };
 
 var typicalField = merge(clone(schema.field), {
@@ -92,7 +95,7 @@ var typicalField = merge(clone(schema.field), {
   properties: {
     type: {
       type: 'string',
-      enum: ['O', 'Q', 'T']
+      enum: [O, Q, T]
     },
     aggr: schema.aggr,
     fn: schema.fn,
@@ -104,18 +107,18 @@ var typicalField = merge(clone(schema.field), {
         reverse: {
           type: 'boolean',
           default: false,
-          supportedTypes: {'Q': true, 'T': true}
+          supportedTypes: toMap([Q, T])
         },
         zero: {
           type: 'boolean',
           description: 'Include zero',
           default: true,
-          supportedTypes: {'Q': true, 'T': true}
+          supportedTypes: toMap([Q, T])
         },
         nice: {
           type: 'string',
           enum: ['second', 'minute', 'hour', 'day', 'week', 'month', 'year'],
-          supportedTypes: {'T': true}
+          supportedTypes: toMap([T])
         }
       }
     }
@@ -130,14 +133,14 @@ var onlyOrdinalField = merge(clone(schema.field), {
   properties: {
     type: {
       type: 'string',
-      enum: ['O','Q', 'T'] // ordinal-only field supports Q when bin is applied and T when fn is applied.
+      enum: [O, Q, T] // ordinal-only field supports Q when bin is applied and T when fn is applied.
     },
     fn: schema.fn,
     bin: bin,
     aggr: {
       type: 'string',
       enum: ['count'],
-      supportedTypes: {'O': true}
+      supportedTypes: toMap([O])
     }
   }
 });
@@ -188,7 +191,7 @@ var sortMixin = {
       default: [],
       items: {
         type: 'object',
-        supportedTypes: {'O': true},
+        supportedTypes: toMap([O]),
         required: ['name', 'aggr'],
         name: {
           type: 'string'
@@ -509,7 +512,7 @@ var config = {
     },
     toggleSort: {
       type: 'string',
-      default: 'O'
+      default: O
     },
 
     // single plot
