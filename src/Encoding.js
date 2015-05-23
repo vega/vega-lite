@@ -31,6 +31,60 @@ module.exports = (function() {
 
   var proto = Encoding.prototype;
 
+  Encoding.fromShorthand = function(shorthand, data, config, theme) {
+    var c = consts.shorthand,
+        split = shorthand.split(c.delim),
+        marktype = split.shift().split(c.assign)[1].trim(),
+        enc = vlenc.fromShorthand(split);
+
+    return new Encoding(marktype, enc, data, config, null, theme);
+  };
+
+  Encoding.fromSpec = function(spec, theme) {
+    return new Encoding(spec.marktype, spec.enc, spec.data, spec.config, spec.filter, theme);
+  };
+
+  proto.toShorthand = function() {
+    var c = consts.shorthand;
+    return 'mark' + c.assign + this._marktype +
+      c.delim + vlenc.shorthand(this._enc);
+  };
+
+  Encoding.shorthand = function (spec) {
+    var c = consts.shorthand;
+    return 'mark' + c.assign + spec.marktype +
+      c.delim + vlenc.shorthand(spec.enc);
+  };
+
+  Encoding.specFromShorthand = function(shorthand, data, config, excludeConfig) {
+    return Encoding.fromShorthand(shorthand, data, config).toSpec(excludeConfig);
+  };
+
+  proto.toSpec = function(excludeConfig, excludeData) {
+    var enc = util.duplicate(this._enc),
+      spec;
+
+    spec = {
+      marktype: this._marktype,
+      enc: enc,
+      filter: this._filter
+    };
+
+    if (!excludeConfig) {
+      spec.config = util.duplicate(this._config);
+    }
+
+    if (!excludeData) {
+      spec.data = util.duplicate(this._data);
+    }
+
+    // remove defaults
+    var defaults = schema.instantiate();
+    return schema.util.subtract(spec, defaults);
+  };
+
+
+
   proto.marktype = function() {
     return this._marktype;
   };
@@ -295,58 +349,6 @@ module.exports = (function() {
 
   proto.config = function(name) {
     return this._config[name];
-  };
-
-  proto.toSpec = function(excludeConfig, excludeData) {
-    var enc = util.duplicate(this._enc),
-      spec;
-
-    spec = {
-      marktype: this._marktype,
-      enc: enc,
-      filter: this._filter
-    };
-
-    if (!excludeConfig) {
-      spec.config = util.duplicate(this._config);
-    }
-
-    if (!excludeData) {
-      spec.data = util.duplicate(this._data);
-    }
-
-    // remove defaults
-    var defaults = schema.instantiate();
-    return schema.util.subtract(spec, defaults);
-  };
-
-  proto.toShorthand = function() {
-    var c = consts.shorthand;
-    return 'mark' + c.assign + this._marktype +
-      c.delim + vlenc.shorthand(this._enc);
-  };
-
-  Encoding.shorthand = function (spec) {
-    var c = consts.shorthand;
-    return 'mark' + c.assign + spec.marktype +
-      c.delim + vlenc.shorthand(spec.enc);
-  };
-
-  Encoding.fromShorthand = function(shorthand, data, config, theme) {
-    var c = consts.shorthand,
-        split = shorthand.split(c.delim),
-        marktype = split.shift().split(c.assign)[1].trim(),
-        enc = vlenc.fromShorthand(split);
-
-    return new Encoding(marktype, enc, data, config, null, theme);
-  };
-
-  Encoding.specFromShorthand = function(shorthand, data, config, excludeConfig) {
-    return Encoding.fromShorthand(shorthand, data, config).toSpec(excludeConfig);
-  };
-
-  Encoding.fromSpec = function(spec, theme) {
-    return new Encoding(spec.marktype, spec.enc, spec.data, spec.config, spec.filter, theme);
   };
 
   Encoding.transpose = function(spec) {
