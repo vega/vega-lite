@@ -41,7 +41,7 @@ axis.def = function(name, encoding, layout, stats, opt) {
 
   if (encoding.axis(name).grid) {
     def.grid = true;
-    def.layer = (isRow || isCol) ? 'front' :  'back';
+    def.layer = 'back';
 
     if (isCol) {
       // set grid property -- put the lines on the right the cell

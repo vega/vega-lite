@@ -2,6 +2,8 @@
 
 // utility for field
 
+require('./globals');
+
 var consts = require('./consts'),
   c = consts.shorthand,
   time = require('./compile/time'),
@@ -126,7 +128,7 @@ vlfield.role = function(field) {
 };
 
 vlfield.count = function() {
-  return {name:'*', aggr: 'count', type:'Q', displayName: vlfield.count.displayName};
+  return {name:'*', aggr: 'count', type: Q, displayName: vlfield.count.displayName};
 };
 
 vlfield.count.displayName = 'Number of Records';
