@@ -50,7 +50,7 @@ module.exports = (function() {
   Encoding.shorthand = function (spec) {
     var c = consts.shorthand;
     return 'mark' + c.assign + spec.marktype +
-      c.delim + vlenc.shorthand(spec.enc);
+      c.delim + vlenc.shorthand(spec.encoding);
   };
 
   Encoding.specFromShorthand = function(shorthand, data, config, excludeConfig) {
@@ -308,18 +308,18 @@ module.exports = (function() {
   };
 
   Encoding.isAggregate = function(spec) {
-    return vlenc.isAggregate(spec.enc);
+    return vlenc.isAggregate(spec.encoding);
   };
 
   Encoding.alwaysNoOcclusion = function(spec) {
     // FIXME raw OxQ with # of rows = # of O
-    return vlenc.isAggregate(spec.enc);
+    return vlenc.isAggregate(spec.encoding);
   };
 
   Encoding.isStack = function(spec) {
     // FIXME update this once we have control for stack ...
     return (spec.marktype === 'bar' || spec.marktype === 'area') &&
-      spec.enc.color;
+      spec.encoding.color;
   };
 
   proto.isStack = function() {
@@ -350,13 +350,13 @@ module.exports = (function() {
   };
 
   Encoding.transpose = function(spec) {
-    var oldenc = spec.enc,
-      enc = util.duplicate(spec.enc);
+    var oldenc = spec.encoding,
+      enc = util.duplicate(spec.encoding);
     enc.x = oldenc.y;
     enc.y = oldenc.x;
     enc.row = oldenc.col;
     enc.col = oldenc.row;
-    spec.enc = enc;
+    spec.encoding = enc;
     return spec;
   };
 
@@ -371,7 +371,7 @@ module.exports = (function() {
 
   Encoding.toggleSort.direction = function(spec) {
     if (!Encoding.toggleSort.support(spec)) { return; }
-    var enc = spec.enc;
+    var enc = spec.encoding;
     return enc.x.type === N ? 'x' : 'y';
   };
 
@@ -380,7 +380,7 @@ module.exports = (function() {
   };
 
   Encoding.toggleSort.support = function(spec, stats) {
-    var enc = spec.enc,
+    var enc = spec.encoding,
       isTypes = vlfield.isTypes;
 
     if (vlenc.has(enc, ROW) || vlenc.has(enc, COL) ||
@@ -404,7 +404,7 @@ module.exports = (function() {
   };
 
   Encoding.toggleFilterNullO.support = function(spec, stats) {
-    var fields = vlenc.fields(spec.enc);
+    var fields = vlenc.fields(spec.encoding);
     for (var fieldName in fields) {
       var fieldList = fields[fieldName];
       if (fieldList.containsType.O && fieldName in stats && stats[fieldName].nulls > 0) {
