@@ -34,6 +34,7 @@ scale.defs = function(names, encoding, layout, style, sorting, opt) {
 scale.type = function(name, encoding) {
 
   switch (encoding.type(name)) {
+    case N: //fall through
     case O: return 'ordinal';
     case T:
       var fn = encoding.fn(name);

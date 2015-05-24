@@ -19,11 +19,12 @@ schema.aggregate = {
   enum: ['avg', 'sum', 'median', 'min', 'max', 'count'],
   supportedEnums: {
     Q: ['avg', 'median', 'sum', 'min', 'max', 'count'],
-    O: [],
+    O: ['median','min','max'],
+    N: [],
     T: ['avg', 'median', 'min', 'max'],
     '': ['count']
   },
-  supportedTypes: toMap([Q, O, T, ''])
+  supportedTypes: toMap([Q, N, O, T, ''])
 };
 schema.band = {
   type: 'object',
@@ -95,7 +96,7 @@ var typicalField = merge(clone(schema.field), {
   properties: {
     type: {
       type: 'string',
-      enum: [O, Q, T]
+      enum: [N, O, Q, T]
     },
     aggregate: schema.aggregate,
     fn: schema.fn,
@@ -133,14 +134,14 @@ var onlyOrdinalField = merge(clone(schema.field), {
   properties: {
     type: {
       type: 'string',
-      enum: [O, Q, T] // ordinal-only field supports Q when bin is applied and T when fn is applied.
+      enum: [N, O, Q, T] // ordinal-only field supports Q when bin is applied and T when fn is applied.
     },
     fn: schema.fn,
     bin: bin,
     aggregate: {
       type: 'string',
       enum: ['count'],
-      supportedTypes: toMap([O])
+      supportedTypes: toMap([N, O]) // FIXME this looks weird to me
     }
   }
 });
@@ -191,7 +192,7 @@ var sortMixin = {
       default: [],
       items: {
         type: 'object',
-        supportedTypes: toMap([O]),
+        supportedTypes: toMap([O, N]),
         required: ['name', 'aggregate'],
         name: {
           type: 'string'
