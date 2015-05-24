@@ -98,8 +98,8 @@ var isType = vlfield.isType = function (fieldDef, type) {
 };
 
 var isTypes = vlfield.isTypes = function (fieldDef, types) {
-  for (var t in types) {
-    if(fieldDef.type === t) return true;
+  for (var t=0; t<types.length; t++) {
+    if(fieldDef.type === types[t]) return true;
   }
   return false;
 };
