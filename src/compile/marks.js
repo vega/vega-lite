@@ -95,7 +95,7 @@ function bar_props(e, layout, style) {
 
   var p = {};
 
-  // x's and width 
+  // x's and width
   if (e.isMeasure(X)) {
     p.x = {scale: X, field: e.field(X)};
     if (!e.has(Y) || e.isDimension(Y)) {
@@ -108,7 +108,7 @@ function bar_props(e, layout, style) {
        p.x = {value: 0, offset: e.config('singleBarOffset')};
     }
   }
-  
+
   // width
   if (!p.x2) {
     if (!e.has(X) || e.isOrdinalScale(X)) { // no X or X is ordinal
@@ -122,13 +122,13 @@ function bar_props(e, layout, style) {
       }
     } else { // X is Quant or Time Scale
       p.width = {value: 2};
-    }  
+    }
   }
 
   // y's & height
   if (e.isMeasure(Y)) {
     p.y = {scale: Y, field: e.field(Y)};
-    p.y2 = {group: "height"};
+    p.y2 = {group: 'height'};
   } else {
     if (e.has(Y)) { // is ordinal
       p.yc = {scale: Y, field: e.field(Y)};
@@ -446,7 +446,7 @@ function text_props(e, layout, style) {
   // text
   if (e.has(TEXT)) {
     if (e.isType(TEXT, Q)) {
-      p.text = {template: "{{" + e.field(TEXT) + " | number:'.3s'}}"};
+      p.text = {template: '{{' + e.field(TEXT) + ' | number:\'.3s\'}}'};
       p.align = {value: 'right'};
     } else {
       p.text = {field: e.field(TEXT)};

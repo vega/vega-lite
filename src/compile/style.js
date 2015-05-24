@@ -15,9 +15,9 @@ function colorRange(encoding, stats){
   if (encoding.has(COLOR) && encoding.isDimension(COLOR)) {
     var cardinality = encoding.cardinality(COLOR, stats);
     if (cardinality <= 10) {
-      return "category10";
+      return 'category10';
     } else {
-      return "category20";
+      return 'category20';
     }
     // TODO can vega interpolate range for ordinal scale?
   }

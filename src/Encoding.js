@@ -153,7 +153,7 @@ module.exports = (function() {
     if (vlfield.isCount(this._enc[et])) {
       return vlfield.count.displayName;
     }
-    var fn = this._enc[et].aggregate || this._enc[et].fn || (this._enc[et].bin && "bin");
+    var fn = this._enc[et].aggregate || this._enc[et].fn || (this._enc[et].bin && 'bin');
     if (fn) {
       return fn.toUpperCase() + '(' + this._enc[et].name + ')';
     } else {
