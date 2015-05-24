@@ -11,7 +11,7 @@ Use Vega-lite in the [online editor](https://uwdata.github.io/vega-lite/).
 If you are using Vega-lite for your project(s), please let us know by emailing us at [Vega-lite \[at\] cs.washington.edu](mailto:vega-lite@cs.washington.edu).  Feedbacks are also welcomed.
 If you find a bug or have a feature request, please [create an issue](https://github.com/uwdata/vega-lite/issues/new).
 
-The complete schema for specifications as [JSON schema](http://json-schema.org/) is at [spec.json](https://uwdata.github.io/vega-lite/spec.json). 
+The complete schema for specifications as [JSON schema](http://json-schema.org/) is at [spec.json](https://uwdata.github.io/vega-lite/spec.json).
 
 ## Example specification
 
@@ -21,10 +21,10 @@ The complete schema for specifications as [JSON schema](http://json-schema.org/)
 {
   "data": {"url": "data/barley.json"},
   "marktype": "point",
-  "enc": {
-    "x": {"type": "Q","name": "yield","aggr": "avg"},
+  "encoding": {
+    "x": {"type": "Q","name": "yield","aggregate": "avg"},
     "y": {
-      "sort": [{"name": "yield","aggr": "avg","reverse": false}],
+      "sort": [{"name": "yield","aggregate": "avg","reverse": false}],
       "type": "O",
       "name": "variety"
     },
@@ -48,7 +48,7 @@ This is a similar chart as one of the Vega examples in https://github.com/trifac
     ]
   },
   "marktype": "bar",
-  "enc": {
+  "encoding": {
     "y": {"type": "Q","name": "y"},
     "x": {"type": "O","name": "x"}
   }
@@ -81,7 +81,7 @@ If you plan to make changes to datalib and test Vega-lite without publishing / c
 
 ```
 # first link datalib global npm
-cd path/to/datalib 
+cd path/to/datalib
 npm link
 # then link vega-lite to datalib
 cd path/to/vega-lite
