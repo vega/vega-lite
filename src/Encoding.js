@@ -368,8 +368,8 @@ module.exports = (function() {
 
   Encoding.toggleSort.direction = function(spec) {
     if (!Encoding.toggleSort.support(spec)) { return; }
-    var enc = spec.encoding;
-    return enc.x.type === N ? 'x' : 'y';
+    var enc = spec.enc;
+    return enc.x.type === O ? 'x' : 'y';
   };
 
   Encoding.toggleSort.mode = function(spec) {
@@ -378,7 +378,7 @@ module.exports = (function() {
 
   Encoding.toggleSort.support = function(spec, stats) {
     var enc = spec.encoding,
-      isTypes = vlfield.isTypes;
+      isType = vlfield.isType;
 
     if (vlenc.has(enc, ROW) || vlenc.has(enc, COL) ||
       !vlenc.has(enc, X) || !vlenc.has(enc, Y) ||
@@ -386,8 +386,8 @@ module.exports = (function() {
       return false;
     }
 
-    return ( isTypes(enc.x, [N, O]) && vlfield.isMeasure(enc.y)) ? 'x' :
-      ( isTypes(enc.y, [N, O]) && vlfield.isMeasure(enc.x)) ? 'y' : false;
+    return ( isType(enc.x, O) && vlfield.isMeasure(enc.y)) ? 'x' :
+      ( isType(enc.y, O) && vlfield.isMeasure(enc.x)) ? 'y' : false;
   };
 
   Encoding.toggleFilterNullO = function(spec) {
