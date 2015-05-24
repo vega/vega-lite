@@ -223,9 +223,9 @@ module.exports = (function() {
         Encoding.toggleSort.support({enc:this._enc}, stats, true) && //HACK
         this.config('toggleSort') === Q
       ) {
-      var qField = isTypes(enc.x, [O, N]) ? enc.y : enc.x;
+      var qField = isTypes(enc.x, [N, O]) ? enc.y : enc.x;
 
-      if (isTypes(enc[et], [O, N])) {
+      if (isTypes(enc[et], [N, O])) {
         sort = [{
           name: qField.name,
           aggregate: qField.aggregate,

@@ -192,7 +192,7 @@ var sortMixin = {
       default: [],
       items: {
         type: 'object',
-        supportedTypes: toMap([O, N]),
+        supportedTypes: toMap([N, O]),
         required: ['name', 'aggregate'],
         name: {
           type: 'string'
