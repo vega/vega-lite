@@ -2,7 +2,7 @@
   "predef": ["_",
     "TABLE", "RAW", "STACKED", "INDEX",
     "X", "Y", "ROW", "COL", "SIZE", "SHAPE", "COLOR", "ALPHA", "TEXT", "DETAIL",
-    "O", "Q", "T"],
+    "O", "Q", "T", "N"],
   "mocha": true,
   "undef":   true,
   "unused":  true,

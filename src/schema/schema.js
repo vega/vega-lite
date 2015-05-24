@@ -5,7 +5,8 @@ require('../globals');
 
 var schema = module.exports = {},
   util = require('../util'),
-  toMap = util.toMap;
+  toMap = util.toMap,
+  colorbrewer = require('../lib/colorbrewer/colorbrewer');
 
 schema.util = require('./schemautil');
 
@@ -582,6 +583,28 @@ var config = {
       type: 'integer',
       default: 5,
       minimum: 0
+    },
+
+    // color
+    c10palette: {
+      type: 'string',
+      default: 'category10-k',
+      enum: [
+        // Tableau
+        'category10', 'category10-k',
+        // Color Brewer
+        'Pastel1', 'Pastel2', 'Set1', 'Set2', 'Set3'
+      ]
+    },
+    c20palette: {
+      type: 'string',
+      default: 'category20',
+      enum: ['category20', 'category20b', 'category20c']
+    },
+    ordinalPalette: {
+      type: 'string',
+      default: 'BuGn',
+      enum: util.keys(colorbrewer)
     },
 
     // scales

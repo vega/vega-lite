@@ -30,6 +30,7 @@
     "browserify-shim": "^3.8.5",
     "chai": "^1.10.0",
     "commander": "^2.6.0",
+    "d3": "^3.5.5",
     "deep-diff": "^0.3.0",
     "gulp": "^3.8.10",
     "gulp-bump": "^0.3.0",
@@ -53,7 +54,7 @@
     "z-schema": "^3.4.3"
   },
   "dependencies": {
-    "datalib": "^1.1.8"
+    "datalib": "^1.1.12"
   },
   "browserify": {
     "transform": [

@@ -1,7 +1,9 @@
 'use strict';
 require('../globals');
 var util = require('../util'),
-  time = require('./time');
+  time = require('./time'),
+  colorbrewer = require('../lib/colorbrewer/colorbrewer'),
+  interpolateLab = require('../lib/d3-color/interpolate-lab');
 
 var scale = module.exports = {};
 
@@ -12,7 +14,7 @@ scale.names = function(props) {
   }, {}));
 };
 
-scale.defs = function(names, encoding, layout, style, sorting, opt) {
+scale.defs = function(names, encoding, layout, stats, style, sorting, opt) {
   opt = opt || {};
 
   return names.reduce(function(a, name) {
@@ -25,7 +27,7 @@ scale.defs = function(names, encoding, layout, style, sorting, opt) {
       s.sort = true;
     }
 
-    scale_range(s, encoding, layout, style, opt);
+    scale_range(s, encoding, layout, stats, style, opt);
 
     return (a.push(s), a);
   }, []);
@@ -61,7 +63,7 @@ function scale_domain(name, encoding, sorting, opt) {
     {data: sorting.getDataset(name), field: encoding.field(name)};
 }
 
-function scale_range(s, encoding, layout, style, opt) {
+function scale_range(s, encoding, layout, stats, style, opt) {
   // jshint unused:false
   var spec = encoding.scale(s.name);
   switch (s.name) {
@@ -137,17 +139,7 @@ function scale_range(s, encoding, layout, style, opt) {
       s.range = 'shapes';
       break;
     case COLOR:
-      var range = encoding.scale(COLOR).range;
-      if (range === undefined) {
-        if (s.type === 'ordinal') {
-          // FIXME
-          range = style.colorRange;
-        } else {
-          range = ['#A9DB9F', '#0D5C21'];
-          s.zero = false;
-        }
-      }
-      s.range = range;
+      s.range = scale.color(s, encoding, stats);
       break;
     case ALPHA:
       s.range = [0.2, 1.0];
@@ -170,3 +162,80 @@ function scale_range(s, encoding, layout, style, opt) {
       }
   }
 }
+
+scale.color = function(s, encoding, stats) {
+  var range = encoding.scale(COLOR).range,
+    cardinality = encoding.cardinality(COLOR, stats),
+    type = encoding.type(COLOR);
+
+  if (range === undefined) {
+    var ordinalPalette = encoding.config('ordinalPalette');
+    if (s.type === 'ordinal') {
+      if (type === N) {
+        // use categorical color scale
+        if (cardinality <= 10) {
+          range = 'category10-k';
+        } else {
+          range = 'category20';
+        }
+      } else {
+        if (cardinality <= 2) {
+          range = [colorbrewer[ordinalPalette][3][0], colorbrewer[ordinalPalette][3][2]];
+        } else {
+          range = ordinalPalette;
+        }
+      }
+    } else { //time or quantitative
+      var palette = colorbrewer[ordinalPalette][9];
+      range = [palette[0], palette[8]];
+      s.zero = false;
+    }
+  }
+  return scale.color.palette(range, cardinality, type);
+};
+
+scale.color.palette = function(range, cardinality, type) {
+  switch (range) {
+    case 'category10-k':
+      // tableau's category 10, ordered by perceptual kernel study results
+      // https://github.com/uwdata/perceptual-kernels
+      return ['#2ca02c', '#e377c2', '#7f7f7f', '#17becf', '#8c564b', '#d62728', '#bcbd22', '#9467bd', '#ff7f0e', '#1f77b4'];
+
+    // d3/tableau category10/20/20b/20c
+    case 'category10':
+      return ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf'];
+
+    case 'category20':
+      return ['#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5'];
+
+    case 'category20b':
+      return ['#393b79', '#5254a3', '#6b6ecf', '#9c9ede', '#637939', '#8ca252', '#b5cf6b', '#cedb9c', '#8c6d31', '#bd9e39', '#e7ba52', '#e7cb94', '#843c39', '#ad494a', '#d6616b', '#e7969c', '#7b4173', '#a55194', '#ce6dbd', '#de9ed6'];
+
+    case 'category20c':
+      return ['#3182bd', '#6baed6', '#9ecae1', '#c6dbef', '#e6550d', '#fd8d3c', '#fdae6b', '#fdd0a2', '#31a354', '#74c476', '#a1d99b', '#c7e9c0', '#756bb1', '#9e9ac8', '#bcbddc', '#dadaeb', '#636363', '#969696', '#bdbdbd', '#d9d9d9'];
+  }
+
+  if (range in colorbrewer) {
+    var palette = colorbrewer[range],
+      ps = 5;
+
+    // if cardinality pre-defined, use it.
+    if (cardinality in palette) return palette[cardinality];
+
+    // if not, use the highest cardinality one for nominal
+    if (type === N) {
+      return palette[Math.max.apply(null, util.keys(palette))];
+    }
+
+    // otherwise, interpolate
+    return scale.color.interpolate(palette[ps][0], palette[ps][ps-1], cardinality);
+  }
+
+  return range;
+};
+
+scale.color.interpolate = function (start, end, cardinality) {
+  var interpolator = interpolateLab(start, end);
+  return util.range(cardinality).map(function(i) { return interpolator(i*1.0/(cardinality-1)); });
+};
+

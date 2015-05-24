@@ -101,9 +101,10 @@ function faceting(group, encoding, layout, style, sorting, spec, mdef, stack, st
     scale.names(enter).concat(scale.names(mdef.properties.update)),
     encoding,
     layout,
+    stats,
     style,
     sorting,
-    {stack: stack, facet: true, stats: stats}
+    {stack: stack, facet: true}
   )); // row/col scales + cell scales
 
   if (cellAxes.length > 0) {
