@@ -41,7 +41,7 @@ function box(encoding, stats) {
       // for ordinal, hasCol or not doesn't matter -- we scale based on cardinality
       cellWidth = (xCardinality + encoding.band(X).padding) * encoding.bandSize(X, useSmallBand);
     } else {
-      cellWidth = hasCol || hasRow ? encoding.enc(COL).width :  encoding.config("singleWidth");
+      cellWidth = hasCol || hasRow ? encoding.enc(COL).width :  encoding.config('singleWidth');
     }
   } else {
     if (marktype === TEXT) {
@@ -57,7 +57,7 @@ function box(encoding, stats) {
       // for ordinal, hasCol or not doesn't matter -- we scale based on cardinality
       cellHeight = (yCardinality + encoding.band(Y).padding) * encoding.bandSize(Y, useSmallBand);
     } else {
-      cellHeight = hasCol || hasRow ? encoding.enc(ROW).height :  encoding.config("singleHeight");
+      cellHeight = hasCol || hasRow ? encoding.enc(ROW).height :  encoding.config('singleHeight');
     }
   } else {
     cellHeight = encoding.bandSize(Y);
@@ -101,7 +101,7 @@ function offset(encoding, stats, layout) {
     var maxLength;
     if (encoding.isDimension(x) || encoding.isType(x, T)) {
       maxLength =  getMaxLength(encoding, stats, x);
-    } else if (encoding.aggr(x) === 'count') {
+    } else if (encoding.aggregate(x) === 'count') {
       //assign default value for count as it won't have stats
       maxLength =  3;
     } else if (encoding.isType(x, Q)) {

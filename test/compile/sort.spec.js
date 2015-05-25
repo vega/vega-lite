@@ -7,15 +7,15 @@ var vlsort = require('../../src/compile/sort'),
 
 describe('Sort', function() {
   var encoding = Encoding.fromSpec({
-        enc: {
+        encoding: {
           x: {name: 'foo', type: 'O', sort: [{
-            name: 'bar', aggr: 'avg'
+            name: 'bar', aggregate: 'avg'
           }]},
           y: {name: 'bar', type: 'Q'},
           color: {name: 'baz', type: 'O', sort: [{
-            name: 'bar', aggr: 'sum'
+            name: 'bar', aggregate: 'sum'
           }, {
-            name: 'foo', aggr: 'max', reverse: true
+            name: 'foo', aggregate: 'max', reverse: true
           }]}
         }
       }),

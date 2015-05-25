@@ -19,6 +19,7 @@ g.ALPHA = 'alpha';
 g.TEXT = 'text';
 g.DETAIL = 'detail';
 
+g.N = 'N';
 g.O = 'O';
 g.Q = 'Q';
 g.T = 'T';

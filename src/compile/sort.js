@@ -16,14 +16,14 @@ function addSortTransforms(spec, encoding, stats, opt) {
     if (sortBy.length > 0) {
       var fields = sortBy.map(function(d) {
         return {
-          op: d.aggr,
+          op: d.aggregate,
           field: 'data.' + d.name
         };
       });
 
       var byClause = sortBy.map(function(d) {
         var reverse = (d.reverse ? '-' : '');
-        return reverse + 'data.' + (d.aggr==='count' ? 'count' : (d.aggr + '_' + d.name));
+        return reverse + 'data.' + (d.aggregate==='count' ? 'count' : (d.aggregate + '_' + d.name));
       });
 
       var dataName = 'sorted' + counter++;

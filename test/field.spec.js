@@ -1,7 +1,8 @@
 'use strict';
 
-var expect = require('chai').expect;
+require('../src/globals');
 
+var expect = require('chai').expect;
 var vlfield = require('../src/field');
 
 describe('vl.field.cardinality()', function () {
@@ -22,4 +23,17 @@ describe('vl.field.cardinality()', function () {
       expect(cardinality).to.equal(10);
     });
   });
+});
+
+
+describe('vl.field.isTypes', function () {
+  it('should return correct type checking', function() {
+    var qField = {name: 'number', type:'Q'};
+    expect(vlfield.isTypes(qField, [Q])).to.eql(true);
+    expect(vlfield.isTypes(qField, [Q, O])).to.eql(true);
+    expect(vlfield.isTypes(qField, [Q, N])).to.eql(true);
+    expect(vlfield.isTypes(qField, [N])).to.eql(false);
+  });
+
+
 });

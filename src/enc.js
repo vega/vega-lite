@@ -27,7 +27,7 @@ vlenc.has = function(enc, encType) {
 
 vlenc.isAggregate = function(enc) {
   for (var k in enc) {
-    if (vlenc.has(enc, k) && enc[k].aggr) {
+    if (vlenc.has(enc, k) && enc[k].aggregate) {
       return true;
     }
   }
@@ -73,7 +73,7 @@ vlenc.fields = function(enc) {
 
     if (fieldList.indexOf(field) === -1) {
       fieldList.push(field);
-      // augment the array with containsType.Q / O / T
+      // augment the array with containsType.Q / O / N / T
       containsType[field.type] = true;
     }
     return m;

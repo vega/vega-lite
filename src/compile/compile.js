@@ -90,8 +90,7 @@ compile.encoding = function (encoding, stats) {
     spec = compile.facet(group, encoding, layout, style, sorting, spec, mdef, stack, stats);
     spec.legends = legend.defs(encoding);
   } else {
-    group.scales = scale.defs(scale.names(mdef.properties.update), encoding, layout, style, sorting,
-      {stack: stack, stats: stats});
+    group.scales = scale.defs(scale.names(mdef.properties.update), encoding, layout, stats, style, sorting, {stack: stack});
     group.axes = axis.defs(axis.names(mdef.properties.update), encoding, layout, stats);
     group.legends = legend.defs(encoding);
   }

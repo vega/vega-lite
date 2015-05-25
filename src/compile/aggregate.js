@@ -13,12 +13,12 @@ function aggregates(spec, encoding, opt) {
     data = spec.data[1]; // currently data[0] is raw and data[1] is table
 
   encoding.forEach(function(field, encType) {
-    if (field.aggr) {
-      if (field.aggr === 'count') {
+    if (field.aggregate) {
+      if (field.aggregate === 'count') {
         meas.count = {op: 'count', field: '*'};
       }else {
-        meas[field.aggr + '|'+ field.name] = {
-          op: field.aggr,
+        meas[field.aggregate + '|'+ field.name] = {
+          op: field.aggregate,
           field: 'data.'+ field.name
         };
       }
