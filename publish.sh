@@ -52,3 +52,4 @@ git push
 git tag -am "Release v$version." "v$version"
 git push --tags
 git checkout master
+gulp build # rebuild so that vega-lite.js are back  for linked bower/npm
