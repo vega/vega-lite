@@ -28,7 +28,7 @@ describe('Schema', function() {
   });
 
   it('field def should have supportedMarktypes', function() {
-    var encProps = specSchema.properties.enc.properties;
+    var encProps = specSchema.properties.encoding.properties;
     for (var k in encProps) {
       assert.notEqual(encProps[k].supportedMarktypes, undefined);
     }
@@ -51,7 +51,7 @@ describe('Util', function() {
   it('remove defaults', function() {
     var spec = {
       marktype: 'point',
-      enc: {
+      encoding: {
         x: { name: 'dsp', type: 'Q', scale: {type: 'linear'}
       },
         color: { name: 'cyl', type: 'O' }
@@ -64,7 +64,7 @@ describe('Util', function() {
 
     var expected = {
       marktype: 'point',
-      enc: {
+      encoding: {
         x: { name: 'dsp', type: 'Q' },
         color: { name: 'cyl', type: 'O' }
       },

@@ -1,6 +1,7 @@
 'use strict';
 
 var expect = require('chai').expect;
+var fixtures = require('../fixtures').stack;
 
 var compile = require('../../src/compile/compile'),
   util = require('../../src/util');
@@ -14,23 +15,6 @@ util.getbins = function() {
   };
 };
 
-var spec_stackBinY = {
-  "marktype": "bar",
-  "enc": {
-    "x": {"type": "Q","name": "Cost__Other","aggr": "avg"},
-    "y": {"bin": true,"type": "Q","name": "Cost__Total_$"},
-    "color": {"type": "O","name": "Effect__Amount_of_damage"}
-  }
-};
-
-var spec_stackBinX = {
-  "marktype": "bar",
-  "enc": {
-    "y": {"type": "Q","name": "Cost__Other","aggr": "avg"},
-    "x": {"bin": true,"type": "Q","name": "Cost__Total_$"},
-    "color": {"type": "O","name": "Effect__Amount_of_damage"}
-  }
-};
 
 var stats = {
   'Cost__Total_$': {
@@ -54,7 +38,7 @@ describe('vl.compile.stack()', function () {
 
   describe('bin-x', function () {
     it('should put stack on y', function () {
-      var vgSpec = compile(spec_stackBinX, stats);
+      var vgSpec = compile(fixtures.binX, stats);
 
       var tableData = vgSpec.data.filter(function(data) {
         return data.name === 'table';
@@ -78,7 +62,7 @@ describe('vl.compile.stack()', function () {
 
   describe('bin-y', function () {
     it('should put stack on x', function () {
-      var vgSpec = compile(spec_stackBinY, stats);
+      var vgSpec = compile(fixtures.binY, stats);
 
       var tableData = vgSpec.data.filter(function(data) {
         return data.name === 'table';

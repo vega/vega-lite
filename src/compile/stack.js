@@ -35,7 +35,7 @@ function stacking(spec, encoding, mdef, facets) {
     transform: [{
       type: 'aggregate',
       groupby: [encoding.field(dim)].concat(facets), // dim and other facets
-      fields: [{op: 'sum', field: encoding.field(val)}] // TODO check if field with aggr is correct?
+      fields: [{op: 'sum', field: encoding.field(val)}] // TODO check if field with aggregate is correct?
     }]
   };
 

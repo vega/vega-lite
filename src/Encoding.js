@@ -9,27 +9,77 @@ var consts = require('./consts'),
   schema = require('./schema/schema');
 
 module.exports = (function() {
-  function Encoding(marktype, enc, data, config, filter, theme) {
-    var defaults = schema.instantiate();
-
-    var spec = {
-      data: data,
-      marktype: marktype,
-      enc: enc,
-      config: config,
-      filter: filter || []
-    };
-
-    var specExtended = schema.util.merge(defaults, theme || {}, spec) ;
+  function Encoding(spec, theme) {
+    var defaults = schema.instantiate(),
+      specExtended = schema.util.merge(defaults, theme || {}, spec) ;
 
     this._data = specExtended.data;
     this._marktype = specExtended.marktype;
-    this._enc = specExtended.enc;
+    this._enc = specExtended.encoding;
     this._config = specExtended.config;
     this._filter = specExtended.filter;
   }
 
   var proto = Encoding.prototype;
+
+  Encoding.fromShorthand = function(shorthand, data, config, theme) {
+    var c = consts.shorthand,
+        split = shorthand.split(c.delim),
+        marktype = split.shift().split(c.assign)[1].trim(),
+        enc = vlenc.fromShorthand(split);
+
+    return new Encoding({
+      data: data,
+      marktype: marktype,
+      encoding: enc,
+      config: config,
+      filter: []
+    }, theme);
+  };
+
+  Encoding.fromSpec = function(spec, theme) {
+    return new Encoding(spec, theme);
+  };
+
+  proto.toShorthand = function() {
+    var c = consts.shorthand;
+    return 'mark' + c.assign + this._marktype +
+      c.delim + vlenc.shorthand(this._enc);
+  };
+
+  Encoding.shorthand = function (spec) {
+    var c = consts.shorthand;
+    return 'mark' + c.assign + spec.marktype +
+      c.delim + vlenc.shorthand(spec.encoding);
+  };
+
+  Encoding.specFromShorthand = function(shorthand, data, config, excludeConfig) {
+    return Encoding.fromShorthand(shorthand, data, config).toSpec(excludeConfig);
+  };
+
+  proto.toSpec = function(excludeConfig, excludeData) {
+    var enc = util.duplicate(this._enc),
+      spec;
+
+    spec = {
+      marktype: this._marktype,
+      encoding: enc,
+      filter: this._filter
+    };
+
+    if (!excludeConfig) {
+      spec.config = util.duplicate(this._config);
+    }
+
+    if (!excludeData) {
+      spec.data = util.duplicate(this._data);
+    }
+
+    // remove defaults
+    var defaults = schema.instantiate();
+    return schema.util.subtract(spec, defaults);
+  };
+
 
   proto.marktype = function() {
     return this._marktype;
@@ -79,8 +129,8 @@ module.exports = (function() {
       return f + 'count';
     } else if (!nofn && this._enc[et].bin) {
       return f + 'bin_' + this._enc[et].name;
-    } else if (!nofn && this._enc[et].aggr) {
-      return f + this._enc[et].aggr + '_' + this._enc[et].name;
+    } else if (!nofn && this._enc[et].aggregate) {
+      return f + this._enc[et].aggregate + '_' + this._enc[et].name;
     } else if (!nofn && this._enc[et].fn) {
       return f + this._enc[et].fn + '_' + this._enc[et].name;
     } else {
@@ -103,7 +153,7 @@ module.exports = (function() {
     if (vlfield.isCount(this._enc[et])) {
       return vlfield.count.displayName;
     }
-    var fn = this._enc[et].aggr || this._enc[et].fn || (this._enc[et].bin && "bin");
+    var fn = this._enc[et].aggregate || this._enc[et].fn || (this._enc[et].bin && "bin");
     if (fn) {
       return fn.toUpperCase() + '(' + this._enc[et].name + ')';
     } else {
@@ -134,8 +184,8 @@ module.exports = (function() {
       this.config(useSmallBand ? 'smallBandSize' : 'largeBandSize');
   };
 
-  proto.aggr = function(et) {
-    return this._enc[et].aggr;
+  proto.aggregate = function(et) {
+    return this._enc[et].aggregate;
   };
 
   // returns false if binning is disabled, otherwise an object with binning properties
@@ -168,15 +218,16 @@ module.exports = (function() {
       isType = vlfield.isType;
 
     if ((!sort || sort.length===0) &&
+        // FIXME
         Encoding.toggleSort.support({enc:this._enc}, stats, true) && //HACK
-        this.config('toggleSort') === 'Q'
+        this.config('toggleSort') === Q
       ) {
       var qField = isType(enc.x, O) ? enc.y : enc.x;
 
       if (isType(enc[et], O)) {
         sort = [{
           name: qField.name,
-          aggr: qField.aggr,
+          aggregate: qField.aggregate,
           type: qField.type,
           reverse: true
         }];
@@ -256,18 +307,18 @@ module.exports = (function() {
   };
 
   Encoding.isAggregate = function(spec) {
-    return vlenc.isAggregate(spec.enc);
+    return vlenc.isAggregate(spec.encoding);
   };
 
   Encoding.alwaysNoOcclusion = function(spec) {
     // FIXME raw OxQ with # of rows = # of O
-    return vlenc.isAggregate(spec.enc);
+    return vlenc.isAggregate(spec.encoding);
   };
 
   Encoding.isStack = function(spec) {
     // FIXME update this once we have control for stack ...
     return (spec.marktype === 'bar' || spec.marktype === 'area') &&
-      spec.enc.color;
+      spec.encoding.color;
   };
 
   proto.isStack = function() {
@@ -297,72 +348,20 @@ module.exports = (function() {
     return this._config[name];
   };
 
-  proto.toSpec = function(excludeConfig, excludeData) {
-    var enc = util.duplicate(this._enc),
-      spec;
-
-    spec = {
-      marktype: this._marktype,
-      enc: enc,
-      filter: this._filter
-    };
-
-    if (!excludeConfig) {
-      spec.config = util.duplicate(this._config);
-    }
-
-    if (!excludeData) {
-      spec.data = util.duplicate(this._data);
-    }
-
-    // remove defaults
-    var defaults = schema.instantiate();
-    return schema.util.subtract(spec, defaults);
-  };
-
-  proto.toShorthand = function() {
-    var c = consts.shorthand;
-    return 'mark' + c.assign + this._marktype +
-      c.delim + vlenc.shorthand(this._enc);
-  };
-
-  Encoding.shorthand = function (spec) {
-    var c = consts.shorthand;
-    return 'mark' + c.assign + spec.marktype +
-      c.delim + vlenc.shorthand(spec.enc);
-  };
-
-  Encoding.fromShorthand = function(shorthand, data, config, theme) {
-    var c = consts.shorthand,
-        split = shorthand.split(c.delim),
-        marktype = split.shift().split(c.assign)[1].trim(),
-        enc = vlenc.fromShorthand(split);
-
-    return new Encoding(marktype, enc, data, config, null, theme);
-  };
-
-  Encoding.specFromShorthand = function(shorthand, data, config, excludeConfig) {
-    return Encoding.fromShorthand(shorthand, data, config).toSpec(excludeConfig);
-  };
-
-  Encoding.fromSpec = function(spec, theme) {
-    return new Encoding(spec.marktype, spec.enc, spec.data, spec.config, spec.filter, theme);
-  };
-
   Encoding.transpose = function(spec) {
-    var oldenc = spec.enc,
-      enc = util.duplicate(spec.enc);
+    var oldenc = spec.encoding,
+      enc = util.duplicate(spec.encoding);
     enc.x = oldenc.y;
     enc.y = oldenc.x;
     enc.row = oldenc.col;
     enc.col = oldenc.row;
-    spec.enc = enc;
+    spec.encoding = enc;
     return spec;
   };
 
   Encoding.toggleSort = function(spec) {
     spec.config = spec.config || {};
-    spec.config.toggleSort = spec.config.toggleSort === 'Q' ? 'O' :'Q';
+    spec.config.toggleSort = spec.config.toggleSort === Q ? O : Q;
     return spec;
   };
 
@@ -370,7 +369,7 @@ module.exports = (function() {
   Encoding.toggleSort.direction = function(spec) {
     if (!Encoding.toggleSort.support(spec)) { return; }
     var enc = spec.enc;
-    return enc.x.type === 'O' ? 'x' :  'y';
+    return enc.x.type === O ? 'x' : 'y';
   };
 
   Encoding.toggleSort.mode = function(spec) {
@@ -378,7 +377,7 @@ module.exports = (function() {
   };
 
   Encoding.toggleSort.support = function(spec, stats) {
-    var enc = spec.enc,
+    var enc = spec.encoding,
       isType = vlfield.isType;
 
     if (vlenc.has(enc, ROW) || vlenc.has(enc, COL) ||
@@ -402,7 +401,7 @@ module.exports = (function() {
   };
 
   Encoding.toggleFilterNullO.support = function(spec, stats) {
-    var fields = vlenc.fields(spec.enc);
+    var fields = vlenc.fields(spec.encoding);
     for (var fieldName in fields) {
       var fieldList = fields[fieldName];
       if (fieldList.containsType.O && fieldName in stats && stats[fieldName].nulls > 0) {

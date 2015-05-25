@@ -9,7 +9,7 @@ describe('Time', function() {
   var fieldName = 'a',
     fn = 'month',
     encoding = Encoding.fromSpec({
-      enc: {
+      encoding: {
         x: {name: fieldName, type: 'T', fn: fn}
       }
     }),

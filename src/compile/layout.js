@@ -101,7 +101,7 @@ function offset(encoding, stats, layout) {
     var maxLength;
     if (encoding.isDimension(x) || encoding.isType(x, T)) {
       maxLength =  getMaxLength(encoding, stats, x);
-    } else if (encoding.aggr(x) === 'count') {
+    } else if (encoding.aggregate(x) === 'count') {
       //assign default value for count as it won't have stats
       maxLength =  3;
     } else if (encoding.isType(x, Q)) {

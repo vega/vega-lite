@@ -1,8 +1,11 @@
 // Package of defining Vega-lite Specification's json schema
 "use strict";
 
+require('../globals');
+
 var schema = module.exports = {},
-  util = require('../util');
+  util = require('../util'),
+  toMap = util.toMap;
 
 schema.util = require('./schemautil');
 
@@ -11,7 +14,7 @@ schema.marktype = {
   enum: ['point', 'tick', 'bar', 'line', 'area', 'circle', 'square', 'text']
 };
 
-schema.aggr = {
+schema.aggregate = {
   type: 'string',
   enum: ['avg', 'sum', 'median', 'min', 'max', 'count'],
   supportedEnums: {
@@ -20,7 +23,7 @@ schema.aggr = {
     T: ['avg', 'median', 'min', 'max'],
     '': ['count']
   },
-  supportedTypes: {'Q': true, 'O': true, 'T': true, '': true}
+  supportedTypes: toMap([Q, O, T, ''])
 };
 schema.band = {
   type: 'object',
@@ -38,7 +41,7 @@ schema.band = {
 };
 
 schema.getSupportedRole = function(encType) {
-  return schema.schema.properties.enc.properties[encType].supportedRole;
+  return schema.schema.properties.encoding.properties[encType].supportedRole;
 };
 
 schema.timefns = ['year', 'month', 'day', 'date', 'hours', 'minutes', 'seconds'];
@@ -48,7 +51,7 @@ schema.defaultTimeFn = 'month';
 schema.fn = {
   type: 'string',
   enum: schema.timefns,
-  supportedTypes: {'T': true}
+  supportedTypes: toMap([T])
 };
 
 //TODO(kanitw): add other type of function here
@@ -57,7 +60,7 @@ schema.scale_type = {
   type: 'string',
   enum: ['linear', 'log', 'pow', 'sqrt', 'quantile'],
   default: 'linear',
-  supportedTypes: {'Q': true}
+  supportedTypes: toMap([Q])
 };
 
 schema.field = {
@@ -84,7 +87,7 @@ var bin = {
       minimum: 2
     }
   },
-  supportedTypes: {'Q': true} // TODO: add 'O' after finishing #81
+  supportedTypes: toMap([Q]) // TODO: add O after finishing #81
 };
 
 var typicalField = merge(clone(schema.field), {
@@ -92,9 +95,9 @@ var typicalField = merge(clone(schema.field), {
   properties: {
     type: {
       type: 'string',
-      enum: ['O', 'Q', 'T']
+      enum: [O, Q, T]
     },
-    aggr: schema.aggr,
+    aggregate: schema.aggregate,
     fn: schema.fn,
     bin: bin,
     scale: {
@@ -104,18 +107,18 @@ var typicalField = merge(clone(schema.field), {
         reverse: {
           type: 'boolean',
           default: false,
-          supportedTypes: {'Q': true, 'T': true}
+          supportedTypes: toMap([Q, T])
         },
         zero: {
           type: 'boolean',
           description: 'Include zero',
           default: true,
-          supportedTypes: {'Q': true, 'T': true}
+          supportedTypes: toMap([Q, T])
         },
         nice: {
           type: 'string',
           enum: ['second', 'minute', 'hour', 'day', 'week', 'month', 'year'],
-          supportedTypes: {'T': true}
+          supportedTypes: toMap([T])
         }
       }
     }
@@ -130,14 +133,14 @@ var onlyOrdinalField = merge(clone(schema.field), {
   properties: {
     type: {
       type: 'string',
-      enum: ['O','Q', 'T'] // ordinal-only field supports Q when bin is applied and T when fn is applied.
+      enum: [O, Q, T] // ordinal-only field supports Q when bin is applied and T when fn is applied.
     },
     fn: schema.fn,
     bin: bin,
-    aggr: {
+    aggregate: {
       type: 'string',
       enum: ['count'],
-      supportedTypes: {'O': true}
+      supportedTypes: toMap([O])
     }
   }
 });
@@ -188,12 +191,12 @@ var sortMixin = {
       default: [],
       items: {
         type: 'object',
-        supportedTypes: {'O': true},
-        required: ['name', 'aggr'],
+        supportedTypes: toMap([O]),
+        required: ['name', 'aggregate'],
         name: {
           type: 'string'
         },
-        aggr: {
+        aggregate: {
           type: 'string',
           enum: ['avg', 'sum', 'min', 'max', 'count']
         },
@@ -509,7 +512,7 @@ var config = {
     },
     toggleSort: {
       type: 'string',
-      default: 'O'
+      default: O
     },
 
     // single plot
@@ -603,7 +606,7 @@ schema.schema = {
   properties: {
     data: data,
     marktype: schema.marktype,
-    enc: {
+    encoding: {
       type: 'object',
       properties: {
         x: x,
@@ -623,7 +626,7 @@ schema.schema = {
   }
 };
 
-schema.encTypes = util.keys(schema.schema.properties.enc.properties);
+schema.encTypes = util.keys(schema.schema.properties.encoding.properties);
 
 /** Instantiate a verbose vl spec from the schema */
 schema.instantiate = function() {

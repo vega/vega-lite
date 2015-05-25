@@ -17,7 +17,7 @@ describe('Encoding.fromShorthand()', function () {
 describe('encoding.filter()', function () {
   var spec = {
       marktype: 'point',
-      enc: {
+      encoding: {
         y: {name: 'Q', type:'Q'},
         x: {name: 'T', type:'T'},
         color: {name: 'O', type:'O'}
