@@ -1,11 +1,12 @@
 // Package of defining Vega-lite Specification's json schema
-"use strict";
+'use strict';
 
 require('../globals');
 
 var schema = module.exports = {},
   util = require('../util'),
-  toMap = util.toMap;
+  toMap = util.toMap,
+  colorbrewer = require('../lib/colorbrewer/colorbrewer');
 
 schema.util = require('./schemautil');
 
@@ -19,11 +20,12 @@ schema.aggregate = {
   enum: ['avg', 'sum', 'median', 'min', 'max', 'count'],
   supportedEnums: {
     Q: ['avg', 'median', 'sum', 'min', 'max', 'count'],
-    O: [],
+    O: ['median','min','max'],
+    N: [],
     T: ['avg', 'median', 'min', 'max'],
     '': ['count']
   },
-  supportedTypes: toMap([Q, O, T, ''])
+  supportedTypes: toMap([Q, N, O, T, ''])
 };
 schema.band = {
   type: 'object',
@@ -95,7 +97,7 @@ var typicalField = merge(clone(schema.field), {
   properties: {
     type: {
       type: 'string',
-      enum: [O, Q, T]
+      enum: [N, O, Q, T]
     },
     aggregate: schema.aggregate,
     fn: schema.fn,
@@ -133,14 +135,14 @@ var onlyOrdinalField = merge(clone(schema.field), {
   properties: {
     type: {
       type: 'string',
-      enum: [O, Q, T] // ordinal-only field supports Q when bin is applied and T when fn is applied.
+      enum: [N, O, Q, T] // ordinal-only field supports Q when bin is applied and T when fn is applied.
     },
     fn: schema.fn,
     bin: bin,
     aggregate: {
       type: 'string',
       enum: ['count'],
-      supportedTypes: toMap([O])
+      supportedTypes: toMap([N, O]) // FIXME this looks weird to me
     }
   }
 });
@@ -191,7 +193,7 @@ var sortMixin = {
       default: [],
       items: {
         type: 'object',
-        supportedTypes: toMap([O]),
+        supportedTypes: toMap([N, O]),
         required: ['name', 'aggregate'],
         name: {
           type: 'string'
@@ -583,6 +585,28 @@ var config = {
       minimum: 0
     },
 
+    // color
+    c10palette: {
+      type: 'string',
+      default: 'category10-k',
+      enum: [
+        // Tableau
+        'category10', 'category10-k',
+        // Color Brewer
+        'Pastel1', 'Pastel2', 'Set1', 'Set2', 'Set3'
+      ]
+    },
+    c20palette: {
+      type: 'string',
+      default: 'category20',
+      enum: ['category20', 'category20b', 'category20c']
+    },
+    ordinalPalette: {
+      type: 'string',
+      default: 'BuGn',
+      enum: util.keys(colorbrewer)
+    },
+
     // scales
     timeScaleLabelLength: {
       type: 'integer',
@@ -602,7 +626,7 @@ schema.schema = {
   $schema: 'http://json-schema.org/draft-04/schema#',
   description: 'Schema for Vega-lite specification',
   type: 'object',
-  required: ['marktype', 'enc', 'data'],
+  required: ['marktype', 'encoding', 'data'],
   properties: {
     data: data,
     marktype: schema.marktype,

@@ -108,7 +108,8 @@ module.exports = (function() {
 
       if ((self.config('filterNull').Q && fieldList.containsType[Q]) ||
           (self.config('filterNull').T && fieldList.containsType[T]) ||
-          (self.config('filterNull').O && fieldList.containsType[O])) {
+          (self.config('filterNull').O && fieldList.containsType[O]) ||
+          (self.config('filterNull').N && fieldList.containsType[N])) {
         filterNull.push({
           operands: [fieldName],
           operator: 'notNull'
@@ -153,7 +154,7 @@ module.exports = (function() {
     if (vlfield.isCount(this._enc[et])) {
       return vlfield.count.displayName;
     }
-    var fn = this._enc[et].aggregate || this._enc[et].fn || (this._enc[et].bin && "bin");
+    var fn = this._enc[et].aggregate || this._enc[et].fn || (this._enc[et].bin && 'bin');
     if (fn) {
       return fn.toUpperCase() + '(' + this._enc[et].name + ')';
     } else {
@@ -215,16 +216,16 @@ module.exports = (function() {
   proto.sort = function(et, stats) {
     var sort = this._enc[et].sort,
       enc = this._enc,
-      isType = vlfield.isType;
+      isTypes = vlfield.isTypes;
 
     if ((!sort || sort.length===0) &&
         // FIXME
         Encoding.toggleSort.support({enc:this._enc}, stats, true) && //HACK
         this.config('toggleSort') === Q
       ) {
-      var qField = isType(enc.x, O) ? enc.y : enc.x;
+      var qField = isTypes(enc.x, [N, O]) ? enc.y : enc.x;
 
-      if (isType(enc[et], O)) {
+      if (isTypes(enc[et], [N, O])) {
         sort = [{
           name: qField.name,
           aggregate: qField.aggregate,
@@ -359,17 +360,19 @@ module.exports = (function() {
     return spec;
   };
 
+  // FIXME: REMOVE everything below here
+
   Encoding.toggleSort = function(spec) {
     spec.config = spec.config || {};
-    spec.config.toggleSort = spec.config.toggleSort === Q ? O : Q;
+    spec.config.toggleSort = spec.config.toggleSort === Q ? N : Q;
     return spec;
   };
 
 
   Encoding.toggleSort.direction = function(spec) {
     if (!Encoding.toggleSort.support(spec)) { return; }
-    var enc = spec.enc;
-    return enc.x.type === O ? 'x' : 'y';
+    var enc = spec.encoding;
+    return enc.x.type === N ? 'x' : 'y';
   };
 
   Encoding.toggleSort.mode = function(spec) {
@@ -378,7 +381,7 @@ module.exports = (function() {
 
   Encoding.toggleSort.support = function(spec, stats) {
     var enc = spec.encoding,
-      isType = vlfield.isType;
+      isTypes = vlfield.isTypes;
 
     if (vlenc.has(enc, ROW) || vlenc.has(enc, COL) ||
       !vlenc.has(enc, X) || !vlenc.has(enc, Y) ||
@@ -386,8 +389,8 @@ module.exports = (function() {
       return false;
     }
 
-    return ( isType(enc.x, O) && vlfield.isMeasure(enc.y)) ? 'x' :
-      ( isType(enc.y, O) && vlfield.isMeasure(enc.x)) ? 'y' : false;
+    return ( isTypes(enc.x, [N,O]) && vlfield.isMeasure(enc.y)) ? 'x' :
+      ( isTypes(enc.y, [N,O]) && vlfield.isMeasure(enc.x)) ? 'y' : false;
   };
 
   Encoding.toggleFilterNullO = function(spec) {

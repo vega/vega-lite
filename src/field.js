@@ -63,10 +63,11 @@ vlfield.fromShorthand = function(shorthand) {
 };
 
 var typeOrder = {
-  O: 0,
-  G: 1,
-  T: 2,
-  Q: 3
+  N: 0,
+  O: 1,
+  G: 2,
+  T: 3,
+  Q: 4
 };
 
 vlfield.order = {};
@@ -96,17 +97,24 @@ var isType = vlfield.isType = function (fieldDef, type) {
   return fieldDef.type === type;
 };
 
+var isTypes = vlfield.isTypes = function (fieldDef, types) {
+  for (var t=0; t<types.length; t++) {
+    if(fieldDef.type === types[t]) return true;
+  }
+  return false;
+};
+
 /*
  * Most fields that use ordinal scale are dimensions.
  * However, YEAR(T), YEARMONTH(T) use time scale, not ordinal but are dimensions too.
  */
 vlfield.isOrdinalScale = function(field) {
-  return  isType(field, O) || field.bin ||
+  return  isTypes(field, [N, O]) || field.bin ||
     ( isType(field, T) && field.fn && time.isOrdinalFn(field.fn) );
 };
 
 function isDimension(field) {
-  return  isType(field, O) || !!field.bin ||
+  return  isTypes(field, [N, O]) || !!field.bin ||
     ( isType(field, T) && !!field.fn );
 }
 
