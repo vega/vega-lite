@@ -2,7 +2,7 @@
  "$schema": "http://json-schema.org/draft-04/schema#",
  "description": "Schema for Vega-lite specification",
  "type": "object",
- "required": ["marktype","enc","data"],
+ "required": ["marktype","encoding","data"],
  "properties": {
   "data": {
    "type": "object",
@@ -20,24 +20,25 @@
    "type": "string",
    "enum": ["point","tick","bar","line","area","circle","square","text"]
   },
-  "enc": {
+  "encoding": {
    "type": "object",
    "properties": {
     "x": {
      "type": "object",
      "properties": {
       "name": {"type": "string"},
-      "type": {"type": "string","enum": ["O","Q","T"]},
-      "aggr": {
+      "type": {"type": "string","enum": ["N","O","Q","T"]},
+      "aggregate": {
        "type": "string",
        "enum": ["avg","sum","median","min","max","count"],
        "supportedEnums": {
         "Q": ["avg","median","sum","min","max","count"],
-        "O": [],
+        "O": ["median","min","max"],
+        "N": [],
         "T": ["avg","median","min","max"],
         "": ["count"]
        },
-       "supportedTypes": {"Q": 1,"O": 1,"T": 1,"": 1}
+       "supportedTypes": {"Q": 1,"N": 1,"O": 1,"T": 1,"": 1}
       },
       "fn": {
        "type": "string",
@@ -111,10 +112,10 @@
        "default": [],
        "items": {
         "type": "object",
-        "supportedTypes": {"O": 1},
-        "required": ["name","aggr"],
+        "supportedTypes": {"N": 1,"O": 1},
+        "required": ["name","aggregate"],
         "name": {"type": "string"},
-        "aggr": {"type": "string","enum": ["avg","sum","min","max","count"]},
+        "aggregate": {"type": "string","enum": ["avg","sum","min","max","count"]},
         "reverse": {"type": "boolean","default": false}
        }
       }
@@ -135,17 +136,18 @@
      "type": "object",
      "properties": {
       "name": {"type": "string"},
-      "type": {"type": "string","enum": ["O","Q","T"]},
-      "aggr": {
+      "type": {"type": "string","enum": ["N","O","Q","T"]},
+      "aggregate": {
        "type": "string",
        "enum": ["avg","sum","median","min","max","count"],
        "supportedEnums": {
         "Q": ["avg","median","sum","min","max","count"],
-        "O": [],
+        "O": ["median","min","max"],
+        "N": [],
         "T": ["avg","median","min","max"],
         "": ["count"]
        },
-       "supportedTypes": {"Q": 1,"O": 1,"T": 1,"": 1}
+       "supportedTypes": {"Q": 1,"N": 1,"O": 1,"T": 1,"": 1}
       },
       "fn": {
        "type": "string",
@@ -219,10 +221,10 @@
        "default": [],
        "items": {
         "type": "object",
-        "supportedTypes": {"O": 1},
-        "required": ["name","aggr"],
+        "supportedTypes": {"N": 1,"O": 1},
+        "required": ["name","aggregate"],
         "name": {"type": "string"},
-        "aggr": {"type": "string","enum": ["avg","sum","min","max","count"]},
+        "aggregate": {"type": "string","enum": ["avg","sum","min","max","count"]},
         "reverse": {"type": "boolean","default": false}
        }
       }
@@ -243,7 +245,7 @@
      "type": "object",
      "properties": {
       "name": {"type": "string"},
-      "type": {"type": "string","enum": ["O","Q","T"]},
+      "type": {"type": "string","enum": ["N","O","Q","T"]},
       "fn": {
        "type": "string",
        "enum": ["year","month","day","date","hours","minutes","seconds"],
@@ -255,17 +257,17 @@
        "properties": {"maxbins": {"type": "integer","default": 15,"minimum": 2}},
        "supportedTypes": {"Q": 1}
       },
-      "aggr": {"type": "string","enum": ["count"],"supportedTypes": {"O": 1}},
+      "aggregate": {"type": "string","enum": ["count"],"supportedTypes": {"N": 1,"O": 1}},
       "padding": {"type": "number","minimum": 0,"maximum": 1,"default": 0.1},
       "sort": {
        "type": "array",
        "default": [],
        "items": {
         "type": "object",
-        "supportedTypes": {"O": 1},
-        "required": ["name","aggr"],
+        "supportedTypes": {"N": 1,"O": 1},
+        "required": ["name","aggregate"],
         "name": {"type": "string"},
-        "aggr": {"type": "string","enum": ["avg","sum","min","max","count"]},
+        "aggregate": {"type": "string","enum": ["avg","sum","min","max","count"]},
         "reverse": {"type": "boolean","default": false}
        }
       },
@@ -319,7 +321,7 @@
      "type": "object",
      "properties": {
       "name": {"type": "string"},
-      "type": {"type": "string","enum": ["O","Q","T"]},
+      "type": {"type": "string","enum": ["N","O","Q","T"]},
       "fn": {
        "type": "string",
        "enum": ["year","month","day","date","hours","minutes","seconds"],
@@ -331,17 +333,17 @@
        "properties": {"maxbins": {"type": "integer","default": 15,"minimum": 2}},
        "supportedTypes": {"Q": 1}
       },
-      "aggr": {"type": "string","enum": ["count"],"supportedTypes": {"O": 1}},
+      "aggregate": {"type": "string","enum": ["count"],"supportedTypes": {"N": 1,"O": 1}},
       "padding": {"type": "number","minimum": 0,"maximum": 1,"default": 0.1},
       "sort": {
        "type": "array",
        "default": [],
        "items": {
         "type": "object",
-        "supportedTypes": {"O": 1},
-        "required": ["name","aggr"],
+        "supportedTypes": {"N": 1,"O": 1},
+        "required": ["name","aggregate"],
         "name": {"type": "string"},
-        "aggr": {"type": "string","enum": ["avg","sum","min","max","count"]},
+        "aggregate": {"type": "string","enum": ["avg","sum","min","max","count"]},
         "reverse": {"type": "boolean","default": false}
        }
       },
@@ -390,17 +392,18 @@
      "type": "object",
      "properties": {
       "name": {"type": "string"},
-      "type": {"type": "string","enum": ["O","Q","T"]},
-      "aggr": {
+      "type": {"type": "string","enum": ["N","O","Q","T"]},
+      "aggregate": {
        "type": "string",
        "enum": ["avg","sum","median","min","max","count"],
        "supportedEnums": {
         "Q": ["avg","median","sum","min","max","count"],
-        "O": [],
+        "O": ["median","min","max"],
+        "N": [],
         "T": ["avg","median","min","max"],
         "": ["count"]
        },
-       "supportedTypes": {"Q": 1,"O": 1,"T": 1,"": 1}
+       "supportedTypes": {"Q": 1,"N": 1,"O": 1,"T": 1,"": 1}
       },
       "fn": {
        "type": "string",
@@ -443,10 +446,10 @@
        "default": [],
        "items": {
         "type": "object",
-        "supportedTypes": {"O": 1},
-        "required": ["name","aggr"],
+        "supportedTypes": {"N": 1,"O": 1},
+        "required": ["name","aggregate"],
         "name": {"type": "string"},
-        "aggr": {"type": "string","enum": ["avg","sum","min","max","count"]},
+        "aggregate": {"type": "string","enum": ["avg","sum","min","max","count"]},
         "reverse": {"type": "boolean","default": false}
        }
       }
@@ -458,17 +461,18 @@
      "type": "object",
      "properties": {
       "name": {"type": "string"},
-      "type": {"type": "string","enum": ["O","Q","T"]},
-      "aggr": {
+      "type": {"type": "string","enum": ["N","O","Q","T"]},
+      "aggregate": {
        "type": "string",
        "enum": ["avg","sum","median","min","max","count"],
        "supportedEnums": {
         "Q": ["avg","median","sum","min","max","count"],
-        "O": [],
+        "O": ["median","min","max"],
+        "N": [],
         "T": ["avg","median","min","max"],
         "": ["count"]
        },
-       "supportedTypes": {"Q": 1,"O": 1,"T": 1,"": 1}
+       "supportedTypes": {"Q": 1,"N": 1,"O": 1,"T": 1,"": 1}
       },
       "fn": {
        "type": "string",
@@ -512,10 +516,10 @@
        "default": [],
        "items": {
         "type": "object",
-        "supportedTypes": {"O": 1},
-        "required": ["name","aggr"],
+        "supportedTypes": {"N": 1,"O": 1},
+        "required": ["name","aggregate"],
         "name": {"type": "string"},
-        "aggr": {"type": "string","enum": ["avg","sum","min","max","count"]},
+        "aggregate": {"type": "string","enum": ["avg","sum","min","max","count"]},
         "reverse": {"type": "boolean","default": false}
        }
       }
@@ -536,17 +540,18 @@
      "type": "object",
      "properties": {
       "name": {"type": "string"},
-      "type": {"type": "string","enum": ["O","Q","T"]},
-      "aggr": {
+      "type": {"type": "string","enum": ["N","O","Q","T"]},
+      "aggregate": {
        "type": "string",
        "enum": ["avg","sum","median","min","max","count"],
        "supportedEnums": {
         "Q": ["avg","median","sum","min","max","count"],
-        "O": [],
+        "O": ["median","min","max"],
+        "N": [],
         "T": ["avg","median","min","max"],
         "": ["count"]
        },
-       "supportedTypes": {"Q": 1,"O": 1,"T": 1,"": 1}
+       "supportedTypes": {"Q": 1,"N": 1,"O": 1,"T": 1,"": 1}
       },
       "fn": {
        "type": "string",
@@ -588,10 +593,10 @@
        "default": [],
        "items": {
         "type": "object",
-        "supportedTypes": {"O": 1},
-        "required": ["name","aggr"],
+        "supportedTypes": {"N": 1,"O": 1},
+        "required": ["name","aggregate"],
         "name": {"type": "string"},
-        "aggr": {"type": "string","enum": ["avg","sum","min","max","count"]},
+        "aggregate": {"type": "string","enum": ["avg","sum","min","max","count"]},
         "reverse": {"type": "boolean","default": false}
        }
       }
@@ -612,7 +617,7 @@
      "type": "object",
      "properties": {
       "name": {"type": "string"},
-      "type": {"type": "string","enum": ["O","Q","T"]},
+      "type": {"type": "string","enum": ["N","O","Q","T"]},
       "fn": {
        "type": "string",
        "enum": ["year","month","day","date","hours","minutes","seconds"],
@@ -624,7 +629,7 @@
        "properties": {"maxbins": {"type": "integer","default": 15,"minimum": 2}},
        "supportedTypes": {"Q": 1}
       },
-      "aggr": {"type": "string","enum": ["count"],"supportedTypes": {"O": 1}},
+      "aggregate": {"type": "string","enum": ["count"],"supportedTypes": {"N": 1,"O": 1}},
       "legend": {"type": "boolean","default": true},
       "value": {
        "type": "string",
@@ -636,10 +641,10 @@
        "default": [],
        "items": {
         "type": "object",
-        "supportedTypes": {"O": 1},
-        "required": ["name","aggr"],
+        "supportedTypes": {"N": 1,"O": 1},
+        "required": ["name","aggregate"],
         "name": {"type": "string"},
-        "aggr": {"type": "string","enum": ["avg","sum","min","max","count"]},
+        "aggregate": {"type": "string","enum": ["avg","sum","min","max","count"]},
         "reverse": {"type": "boolean","default": false}
        }
       }
@@ -651,17 +656,18 @@
      "type": "object",
      "properties": {
       "name": {"type": "string"},
-      "type": {"type": "string","enum": ["O","Q","T"]},
-      "aggr": {
+      "type": {"type": "string","enum": ["N","O","Q","T"]},
+      "aggregate": {
        "type": "string",
        "enum": ["avg","sum","median","min","max","count"],
        "supportedEnums": {
         "Q": ["avg","median","sum","min","max","count"],
-        "O": [],
+        "O": ["median","min","max"],
+        "N": [],
         "T": ["avg","median","min","max"],
         "": ["count"]
        },
-       "supportedTypes": {"Q": 1,"O": 1,"T": 1,"": 1}
+       "supportedTypes": {"Q": 1,"N": 1,"O": 1,"T": 1,"": 1}
       },
       "fn": {
        "type": "string",
@@ -719,10 +725,10 @@
        "default": [],
        "items": {
         "type": "object",
-        "supportedTypes": {"O": 1},
-        "required": ["name","aggr"],
+        "supportedTypes": {"N": 1,"O": 1},
+        "required": ["name","aggregate"],
         "name": {"type": "string"},
-        "aggr": {"type": "string","enum": ["avg","sum","min","max","count"]},
+        "aggregate": {"type": "string","enum": ["avg","sum","min","max","count"]},
         "reverse": {"type": "boolean","default": false}
        }
       }
@@ -734,7 +740,7 @@
      "type": "object",
      "properties": {
       "name": {"type": "string"},
-      "type": {"type": "string","enum": ["O","Q","T"]},
+      "type": {"type": "string","enum": ["N","O","Q","T"]},
       "fn": {
        "type": "string",
        "enum": ["year","month","day","date","hours","minutes","seconds"],
@@ -746,16 +752,16 @@
        "properties": {"maxbins": {"type": "integer","default": 15,"minimum": 2}},
        "supportedTypes": {"Q": 1}
       },
-      "aggr": {"type": "string","enum": ["count"],"supportedTypes": {"O": 1}},
+      "aggregate": {"type": "string","enum": ["count"],"supportedTypes": {"N": 1,"O": 1}},
       "sort": {
        "type": "array",
        "default": [],
        "items": {
         "type": "object",
-        "supportedTypes": {"O": 1},
-        "required": ["name","aggr"],
+        "supportedTypes": {"N": 1,"O": 1},
+        "required": ["name","aggregate"],
         "name": {"type": "string"},
-        "aggr": {"type": "string","enum": ["avg","sum","min","max","count"]},
+        "aggregate": {"type": "string","enum": ["avg","sum","min","max","count"]},
         "reverse": {"type": "boolean","default": false}
        }
       }
@@ -804,6 +810,57 @@
     "textCellWidth": {"type": "integer","default": 90,"minimum": 0},
     "strokeWidth": {"type": "integer","default": 2,"minimum": 0},
     "singleBarOffset": {"type": "integer","default": 5,"minimum": 0},
+    "c10palette": {
+     "type": "string",
+     "default": "category10-k",
+     "enum": ["category10","category10-k","Pastel1","Pastel2","Set1","Set2","Set3"]
+    },
+    "c20palette": {
+     "type": "string",
+     "default": "category20",
+     "enum": ["category20","category20b","category20c"]
+    },
+    "ordinalPalette": {
+     "type": "string",
+     "default": "BuGn",
+     "enum": [
+      "YlGn",
+      "YlGnBu",
+      "GnBu",
+      "BuGn",
+      "PuBuGn",
+      "PuBu",
+      "BuPu",
+      "RdPu",
+      "PuRd",
+      "OrRd",
+      "YlOrRd",
+      "YlOrBr",
+      "Purples",
+      "Blues",
+      "Greens",
+      "Oranges",
+      "Reds",
+      "Greys",
+      "PuOr",
+      "BrBG",
+      "PRGn",
+      "PiYG",
+      "RdBu",
+      "RdGy",
+      "RdYlBu",
+      "Spectral",
+      "RdYlGn",
+      "Accent",
+      "Dark2",
+      "Paired",
+      "Pastel1",
+      "Pastel2",
+      "Set1",
+      "Set2",
+      "Set3"
+     ]
+    },
     "timeScaleLabelLength": {"type": "integer","default": 3,"minimum": 0},
     "characterWidth": {"type": "integer","default": 6}
    }
