@@ -1,6 +1,7 @@
 test/log
 test/log/difflist.json
 node_modules
+bower_components
 vega-lite*.js
 vega-lite*.map
 spec.json
