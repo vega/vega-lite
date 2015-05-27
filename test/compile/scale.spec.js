@@ -11,7 +11,7 @@ var util = require('../../src/util'),
 
 describe('vl.scale.color.palette', function() {
   it('should return tableau categories', function() {
-    expect(vlscale.color.palette('category10-k')).to.eql(
+    expect(vlscale.color.palette('category10k')).to.eql(
       ['#2ca02c', '#e377c2', '#7f7f7f', '#17becf', '#8c564b', '#d62728', '#bcbd22', '#9467bd', '#ff7f0e', '#1f77b4']
     );
   });
