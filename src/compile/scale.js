@@ -196,7 +196,7 @@ scale.color = function(s, encoding, stats) {
 
 scale.color.palette = function(range, cardinality, type) {
   switch (range) {
-    case 'category10-k':
+    case 'category10k':
       // tableau's category 10, ordered by perceptual kernel study results
       // https://github.com/uwdata/perceptual-kernels
       return ['#2ca02c', '#e377c2', '#7f7f7f', '#17becf', '#8c564b', '#d62728', '#bcbd22', '#9467bd', '#ff7f0e', '#1f77b4'];

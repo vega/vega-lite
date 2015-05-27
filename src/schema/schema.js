@@ -463,6 +463,7 @@ var data = {
     },
     values: {
       type: 'array',
+      default: undefined,
       description: 'Pass array of objects instead of a url to a file.',
       items: {
         type: 'object',
@@ -588,10 +589,10 @@ var config = {
     // color
     c10palette: {
       type: 'string',
-      default: 'category10-k',
+      default: 'category10',
       enum: [
         // Tableau
-        'category10', 'category10-k',
+        'category10', 'category10k',
         // Color Brewer
         'Pastel1', 'Pastel2', 'Set1', 'Set2', 'Set3'
       ]
