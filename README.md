@@ -1,4 +1,9 @@
-# Vega-lite [![Build Status](https://travis-ci.org/uwdata/vega-lite.svg)](https://travis-ci.org/uwdata/vega-lite)  [![npm dependencies](https://david-dm.org/uwdata/vega-lite.svg)](https://www.npmjs.com/package/vega-lite) [![npm version](https://img.shields.io/npm/v/vega-lite.svg)](https://www.npmjs.com/package/vega-lite)
+# Vega-lite 
+
+[![Build Status](https://travis-ci.org/uwdata/vega-lite.svg)](https://travis-ci.org/uwdata/vega-lite) 
+[![npm dependencies](https://david-dm.org/uwdata/vega-lite.svg)](https://www.npmjs.com/package/vega-lite) 
+[![npm version](https://img.shields.io/npm/v/vega-lite.svg)](https://www.npmjs.com/package/vega-lite) 
+[![Coverage Status](https://coveralls.io/repos/uwdata/vega-lite/badge.svg?branch=kw%2Fistanbul)](https://coveralls.io/r/uwdata/vega-lite?branch=kw%2Fistanbul)
 
 **Vega-lite is work in progress and we are working on improving the code and documentation.**
 
