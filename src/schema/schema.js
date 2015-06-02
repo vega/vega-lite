@@ -46,13 +46,13 @@ schema.getSupportedRole = function(encType) {
   return schema.schema.properties.encoding.properties[encType].supportedRole;
 };
 
-schema.timefns = ['year', 'month', 'day', 'date', 'hours', 'minutes', 'seconds'];
+schema.timeUnits = ['year', 'month', 'day', 'date', 'hours', 'minutes', 'seconds'];
 
 schema.defaultTimeFn = 'month';
 
 schema.timeUnit = {
   type: 'string',
-  enum: schema.timefns,
+  enum: schema.timeUnits,
   supportedTypes: toMap([T])
 };
 
