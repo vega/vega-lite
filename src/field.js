@@ -15,7 +15,7 @@ var vlfield = module.exports = {};
 vlfield.shorthand = function(f) {
   var c = consts.shorthand;
   return (f.aggregate ? f.aggregate + c.func : '') +
-    (f.fn ? f.fn + c.func : '') +
+    (f.timeUnit ? f.timeUnit + c.func : '') +
     (f.bin ? 'bin' + c.func : '') +
     (f.name || '') + c.type + f.type;
 };
@@ -43,12 +43,12 @@ vlfield.fromShorthand = function(shorthand) {
     }
   }
 
-  // check time fn
+  // check time timeUnit
   for (i in schema.timefns) {
-    var f = schema.timefns[i];
-    if (o.name && o.name.indexOf(f + '_') === 0) {
+    var tu = schema.timefns[i];
+    if (o.name && o.name.indexOf(tu + '_') === 0) {
       o.name = o.name.substr(o.length + 1);
-      o.fn = f;
+      o.timeUnit = tu;
       break;
     }
   }
@@ -110,12 +110,12 @@ var isTypes = vlfield.isTypes = function (fieldDef, types) {
  */
 vlfield.isOrdinalScale = function(field) {
   return  isTypes(field, [N, O]) || field.bin ||
-    ( isType(field, T) && field.fn && time.isOrdinalFn(field.fn) );
+    ( isType(field, T) && field.timeUnit && time.isOrdinalFn(field.timeUnit) );
 };
 
 function isDimension(field) {
   return  isTypes(field, [N, O]) || !!field.bin ||
-    ( isType(field, T) && !!field.fn );
+    ( isType(field, T) && !!field.timeUnit );
 }
 
 /**

@@ -132,8 +132,8 @@ module.exports = (function() {
       return f + 'bin_' + this._enc[et].name;
     } else if (!nofn && this._enc[et].aggregate) {
       return f + this._enc[et].aggregate + '_' + this._enc[et].name;
-    } else if (!nofn && this._enc[et].fn) {
-      return f + this._enc[et].fn + '_' + this._enc[et].name;
+    } else if (!nofn && this._enc[et].timeUnit) {
+      return f + this._enc[et].timeUnit + '_' + this._enc[et].name;
     } else {
       return f + this._enc[et].name;
     }
@@ -154,9 +154,9 @@ module.exports = (function() {
     if (vlfield.isCount(this._enc[et])) {
       return vlfield.count.displayName;
     }
-    var fn = this._enc[et].aggregate || this._enc[et].fn || (this._enc[et].bin && 'bin');
-    if (fn) {
-      return fn.toUpperCase() + '(' + this._enc[et].name + ')';
+    var timeUnit = this._enc[et].aggregate || this._enc[et].timeUnit || (this._enc[et].bin && 'bin');
+    if (timeUnit) {
+      return timeUnit.toUpperCase() + '(' + this._enc[et].name + ')';
     } else {
       return this._enc[et].name;
     }
@@ -209,8 +209,8 @@ module.exports = (function() {
     return this._enc[et].value;
   };
 
-  proto.fn = function(et) {
-    return this._enc[et].fn;
+  proto.timeUnit = function(et) {
+    return this._enc[et].timeUnit;
   };
 
   proto.sort = function(et, stats) {

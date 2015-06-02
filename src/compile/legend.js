@@ -40,17 +40,17 @@ legend.defs = function(encoding) {
 };
 
 legend.def = function(name, encoding, props) {
-  var def = props, fn;
+  var def = props, timeUnit;
 
   def.title = encoding.fieldTitle(name);
 
-  if (encoding.isType(name, T) && (fn = encoding.fn(name)) &&
-    time.hasScale(fn)) {
+  if (encoding.isType(name, T) && (timeUnit = encoding.timeUnit(name)) &&
+    time.hasScale(timeUnit)) {
     var properties = def.properties = def.properties || {},
       labels = properties.labels = properties.labels || {},
       text = labels.text = labels.text || {};
 
-    text.scale = 'time-'+ fn;
+    text.scale = 'time-'+ timeUnit;
   }
 
   return def;

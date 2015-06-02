@@ -159,10 +159,10 @@ function axis_title(def, name, encoding, layout, opt) {
 function axis_labels(def, name, encoding, layout, opt) {
   // jshint unused:false
 
-  var fn;
+  var timeUnit;
   // add custom label for time type
-  if (encoding.isType(name, T) && (fn = encoding.fn(name)) && (time.hasScale(fn))) {
-    setter(def, ['properties','labels','text','scale'], 'time-'+ fn);
+  if (encoding.isType(name, T) && (timeUnit = encoding.timeUnit(name)) && (time.hasScale(timeUnit))) {
+    setter(def, ['properties','labels','text','scale'], 'time-'+ timeUnit);
   }
 
   var textTemplatePath = ['properties','labels','text','template'];
@@ -171,9 +171,9 @@ function axis_labels(def, name, encoding, layout, opt) {
   } else if (encoding.isType(name, Q)) {
     setter(def, textTemplatePath, '{{data | number:\'.3s\'}}');
   } else if (encoding.isType(name, T)) {
-    if (!encoding.fn(name)) {
+    if (!encoding.timeUnit(name)) {
       setter(def, textTemplatePath, '{{data | time:\'%Y-%m-%d\'}}');
-    } else if (encoding.fn(name) === 'year') {
+    } else if (encoding.timeUnit(name) === 'year') {
       setter(def, textTemplatePath, '{{data | number:\'d\'}}');
     }
   } else if (encoding.isType(name, [N, O]) && encoding.axis(name).maxLabelLength) {
