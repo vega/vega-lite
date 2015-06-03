@@ -18,7 +18,7 @@ function aggregates(dataTable, encoding, opt) {
       }else {
         meas[field.aggregate + '|'+ field.name] = {
           op: field.aggregate,
-          field: encoding.field(encType, false, true)
+          field: encoding.fieldRef(encType, {nofn: true})
         };
       }
     } else {

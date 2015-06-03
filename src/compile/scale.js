@@ -62,7 +62,7 @@ scale.domain = function (name, encoding, sorting, opt) {
   if (name == opt.stack) {
     return {
       data: STACKED,
-      field: encoding.fieldName(name, {
+      field: encoding.fieldRef(name, {
         data: !encoding._vega2,
         fn: (opt.facet ? 'max_' : '') + 'sum'
       })

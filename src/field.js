@@ -16,26 +16,30 @@ var vlfield = module.exports = {};
  * @param field
  * @param opt
  *   opt.nofn -- exclude bin, aggregate, timeUnit
- *   opt.fn - custom function prefix
  *   opt.data - include 'data.'
+ *   opt.fn - custom function prefix
+
  * @return {[type]}       [description]
  */
-vlfield.fieldName = function(field, opt) {
+vlfield.fieldRef = function(field, opt) {
+  opt = opt || {};
+
   var f = (opt.data ? 'data.' : ''),
-    nofn = opt.nofn || opt.fn;
+    nofn = opt.nofn || opt.fn,
+    name = field.name;
 
   if (vlfield.isCount(field)) {
     return f + 'count';
   } else if (!nofn && field.bin) {
-    return f + 'bin_' + field.name;
+    return f + 'bin_' + name;
   } else if (!nofn && field.aggregate) {
-    return f + field.aggregate + '_' + field.name;
+    return f + field.aggregate + '_' + name;
   } else if (!nofn && field.timeUnit) {
-    return f + field.timeUnit + '_' + field.name;
+    return f + field.timeUnit + '_' + name;
   } else if (opt.fn) {
-    return f + opt.fn + '_' + field.name;
+    return f + opt.fn + '_' + name;
   } else {
-    return f + field.name;
+    return f + name;
   }
 };
 

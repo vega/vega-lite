@@ -43,7 +43,10 @@ function stacking(spec, encoding, mdef, facets) {
     stacked.transform.push({ //calculate max for each facet
       type: 'aggregate',
       groupby: facets,
-      fields: [{op: 'max', field: 'data.sum_' + encoding.field(val, true)}]
+      fields: [{
+        op: 'max',
+        field: encoding.fieldName(val, {fn: 'sum'})
+      }]
     });
   }
 
