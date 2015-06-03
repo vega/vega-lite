@@ -124,11 +124,14 @@ module.exports = (function() {
   // get "field" property for vega
   proto.field = function(et, nodata, nofn) {
     if (!this.has(et)) return null;
-    return vlfield.field(this._enc[et], nofn, nodata || this._vega2);
+    return vlfield.fieldName(this._enc[et], {
+      nofn: nofn,
+      data: !this._vega2 && !nodata
+    });
   };
 
-  proto.fieldName = function(et) {
-    return this._enc[et].name;
+  proto.fieldName = function(et, opt) {
+    return vlfield.fieldName(this._enc[et], opt);
   };
 
   /*

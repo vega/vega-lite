@@ -12,16 +12,19 @@ var consts = require('./consts'),
 
 var vlfield = module.exports = {};
 
-vlfield.field = function(field, nofn, nodata) {
-  var f = (nodata || this._vega2 ? '' : 'data.');
+vlfield.fieldName = function(field, opt) {
+  var f = (opt.data ? 'data.' : '');
+
   if (vlfield.isCount(field)) {
     return f + 'count';
-  } else if (!nofn && field.bin) {
+  } else if (!opt.nofn && field.bin) {
     return f + 'bin_' + field.name;
-  } else if (!nofn && field.aggregate) {
+  } else if (!opt.nofn && field.aggregate) {
     return f + field.aggregate + '_' + field.name;
-  } else if (!nofn && field.timeUnit) {
+  } else if (!opt.nofn && field.timeUnit) {
     return f + field.timeUnit + '_' + field.name;
+  } else if (opt.fn) {
+    return f + opt.fn + field.name;
   } else {
     return f + field.name;
   }

@@ -2,6 +2,8 @@
 
 require('../globals');
 
+var vlfield = require('../field');
+
 module.exports = addSortTransforms;
 
 // adds new transforms that produce sorted fields
@@ -17,7 +19,7 @@ function addSortTransforms(spec, encoding, stats, opt) {
       var fields = sortBy.map(function(d) {
         return {
           op: d.aggregate,
-          field: 'data.' + d.name
+          field: vlfield.fieldName(d, {nofn: true, data: !encoding._vega2})
         };
       });
 
