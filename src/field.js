@@ -12,6 +12,21 @@ var consts = require('./consts'),
 
 var vlfield = module.exports = {};
 
+vlfield.field = function(field, nofn, nodata) {
+  var f = (nodata || this._vega2 ? '' : 'data.');
+  if (vlfield.isCount(field)) {
+    return f + 'count';
+  } else if (!nofn && field.bin) {
+    return f + 'bin_' + field.name;
+  } else if (!nofn && field.aggregate) {
+    return f + field.aggregate + '_' + field.name;
+  } else if (!nofn && field.timeUnit) {
+    return f + field.timeUnit + '_' + field.name;
+  } else {
+    return f + field.name;
+  }
+};
+
 vlfield.shorthand = function(f) {
   var c = consts.shorthand;
   return (f.aggregate ? f.aggregate + c.func : '') +
