@@ -55,7 +55,6 @@ compile.encoding = function (encoding, stats) {
   filter.addFilters(rawTable, encoding);
   var sorting = compile.sort(spec.data, encoding, stats);
 
-  var hasRow = encoding.has(ROW), hasCol = encoding.has(COL);
 
   for (var i = 0; i < mdefs.length; i++) {
     group.marks.push(mdefs[i]);
@@ -88,7 +87,7 @@ compile.encoding = function (encoding, stats) {
   }
 
   // Small Multiples
-  if (hasRow || hasCol) {
+  if (encoding.has(ROW) || encoding.has(COL)) {
     spec = compile.facet(group, encoding, layout, style, sorting, spec, mdef, stack, stats);
     spec.legends = legend.defs(encoding);
   } else {
