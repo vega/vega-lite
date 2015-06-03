@@ -19,13 +19,13 @@ describe('Sort', function() {
           }]}
         }
       }),
-    sorting = vlsort({data: [{name: RAW}, {name: TABLE}]}, encoding, {}),
-    spec = sorting.spec;
+    data = [{name: RAW}, {name: TABLE}],
+    sorting = vlsort(data, encoding, {});
 
   it('should add new data and transform', function() {
-    expect(spec.data.length).to.equal(4);
+    expect(data.length).to.equal(4);
 
-    expect(spec.data[2].transform).to.deep.equal([
+    expect(data[2].transform).to.deep.equal([
       {
         type: 'aggregate',
         groupby: [ 'data.foo' ],
@@ -37,7 +37,7 @@ describe('Sort', function() {
       { type: 'sort', by: [ 'data.avg_bar' ] }
     ]);
 
-    expect(spec.data[3].transform).to.deep.equal([
+    expect(data[3].transform).to.deep.equal([
       {
         type: 'aggregate',
         groupby: [ 'data.baz' ],

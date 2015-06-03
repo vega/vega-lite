@@ -52,7 +52,7 @@ compile.encoding = function (encoding, stats) {
     dataTable = spec.data[1];
 
   filter.addFilters(spec, encoding);
-  var sorting = compile.sort(spec, encoding, stats);
+  var sorting = compile.sort(spec.data, encoding, stats);
 
   var hasRow = encoding.has(ROW), hasCol = encoding.has(COL);
 

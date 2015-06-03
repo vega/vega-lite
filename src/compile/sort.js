@@ -4,10 +4,10 @@ require('../globals');
 
 var vlfield = require('../field');
 
-module.exports = addSortTransforms;
+module.exports = addSortTransform;
 
 // adds new transforms that produce sorted fields
-function addSortTransforms(spec, encoding, stats, opt) {
+function addSortTransform(data, encoding, stats, opt) {
   // jshint unused:false
 
   var datasetMapping = {};
@@ -19,13 +19,13 @@ function addSortTransforms(spec, encoding, stats, opt) {
       var fields = sortBy.map(function(d) {
         return {
           op: d.aggregate,
-          field: vlfield.fieldName(d, {nofn: true, data: !encoding._vega2})
+          field: vlfield.fieldRef(d, {nofn: true, data: !encoding._vega2})
         };
       });
 
       var byClause = sortBy.map(function(d) {
         var reverse = (d.reverse ? '-' : '');
-        return reverse + 'data.' + (d.aggregate==='count' ? 'count' : (d.aggregate + '_' + d.name));
+        return reverse + vlfield.fieldRef(d, {data: !encoding._vega2});
       });
 
       var dataName = 'sorted' + counter++;
@@ -33,7 +33,7 @@ function addSortTransforms(spec, encoding, stats, opt) {
       var transforms = [
         {
           type: 'aggregate',
-          groupby: ['data.' + field.name],
+          groupby: [ encoding.fieldRef(encType) ],
           fields: fields
         },
         {
@@ -42,7 +42,7 @@ function addSortTransforms(spec, encoding, stats, opt) {
         }
       ];
 
-      spec.data.push({
+      data.push({
         name: dataName,
         source: RAW,
         transform: transforms
@@ -53,7 +53,6 @@ function addSortTransforms(spec, encoding, stats, opt) {
   });
 
   return {
-    spec: spec,
     getDataset: function(encType) {
       var data = datasetMapping[encType];
       if (!data) {
@@ -63,3 +62,4 @@ function addSortTransforms(spec, encoding, stats, opt) {
     }
   };
 }
+
