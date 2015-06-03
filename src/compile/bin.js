@@ -13,8 +13,8 @@ function binning(dataTable, encoding, opt) {
     if (encoding.bin(encType)) {
       dataTable.transform.push({
         type: 'bin',
-        field: 'data.' + field.name,
-        output: 'data.bin_' + field.name,
+        field: encoding.field(encType, false, /*nofn*/ true),
+        output: encoding.field(encType),
         maxbins: encoding.bin(encType).maxbins
       });
     }
