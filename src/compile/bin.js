@@ -19,4 +19,6 @@ function binning(dataTable, encoding, opt) {
       });
     }
   });
+
+  return dataTable;
 }

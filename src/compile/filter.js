@@ -55,6 +55,8 @@ filter.addFilters = function(rawTable, encoding) {
       test: condition
     });
   }
+
+  return rawTable;
 };
 
 // remove less than 0 values if we use log function

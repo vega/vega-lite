@@ -43,34 +43,36 @@ compile.encoding = function (encoding, stats) {
   }
 
   var layout = compile.layout(encoding, stats),
-    style = compile.style(encoding, stats),
-    spec = compile.template(encoding, layout, stats),
+    spec = compile.template(encoding, layout, stats);
+
+  // .data related stuff
+  var rawTable = spec.data[0],
+    dataTable = spec.data[1];
+
+  rawTable = filter.addFilters(rawTable, encoding); // modify rawTable
+  var sorting = compile.sort(spec.data, encoding, stats); //modify spec.data
+  dataTable = compile.bin(dataTable, encoding); // modify dataTable
+  spec = compile.time(spec, encoding); // modify dataTable and add scales
+  var aggResult = compile.aggregate(dataTable, encoding); //modify dataTable
+
+  // marks
+  var style = compile.style(encoding, stats),
     group = spec.marks[0],
     mark = marks[encoding.marktype()],
     mdefs = marks.def(mark, encoding, layout, style),
-    mdef = mdefs[0],  // TODO: remove this dirty hack by refactoring the whole flow
-    rawTable = spec.data[0],
-    dataTable = spec.data[1];
-
-  filter.addFilters(rawTable, encoding);
-  var sorting = compile.sort(spec.data, encoding, stats);
-
+    mdef = mdefs[0];  // TODO: remove this dirty hack by refactoring the whole flow
 
   for (var i = 0; i < mdefs.length; i++) {
     group.marks.push(mdefs[i]);
   }
 
-  compile.bin(dataTable, encoding);
-
   var lineType = marks[encoding.marktype()].line;
 
-  spec = compile.time(spec, encoding);
-
   // handle subfacets
-  var aggResult = compile.aggregate(dataTable, encoding),
-    details = aggResult.details,
+
+  var details = aggResult.details,
     hasDetails = details && details.length > 0,
-    stack = hasDetails && compile.stack(spec, encoding, mdef, aggResult.facets);
+    stack = hasDetails && compile.stack(spec.data, encoding, mdef, aggResult.facets); // modify spec.data, mdef.{from,properties}
 
   if (hasDetails && (stack || lineType)) {
     //subfacet to group stack / line together in one group
