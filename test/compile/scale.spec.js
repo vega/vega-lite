@@ -26,6 +26,8 @@ describe('vl.compile.scale.domain', function() {
       field: 'data.max_sum_origin'
     });
   });
+
+  // TODO test other cases
 });
 
 describe('vl.compile.scale.color.palette', function() {
