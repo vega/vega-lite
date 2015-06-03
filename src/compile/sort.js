@@ -4,10 +4,10 @@ require('../globals');
 
 var vlfield = require('../field');
 
-module.exports = addSortTransform;
+module.exports = addSortTransforms;
 
 // adds new transforms that produce sorted fields
-function addSortTransform(data, encoding, stats, opt) {
+function addSortTransforms(data, encoding, stats, opt) {
   // jshint unused:false
 
   var datasetMapping = {};
