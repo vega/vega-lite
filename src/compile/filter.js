@@ -28,6 +28,8 @@ filter.addFilters = function(spec, encoding) {
     var operator = filter.operator;
     var operands = filter.operands;
 
+    var d = 'd.data.';
+
     if (BINARY[operator]) {
       // expects a field and a value
       if (operator === '=') {
@@ -36,11 +38,11 @@ filter.addFilters = function(spec, encoding) {
 
       var op1 = operands[0];
       var op2 = operands[1];
-      condition = 'd.data.' + op1 + operator + op2;
+      condition = d + op1 + operator + op2;
     } else if (operator === 'notNull') {
       // expects a number of fields
       for (var j in operands) {
-        condition += 'd.data.' + operands[j] + '!==null';
+        condition += d + operands[j] + '!==null';
         if (j < operands.length - 1) {
           condition += ' && ';
         }
