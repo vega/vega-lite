@@ -23,12 +23,8 @@ scale.defs = function(names, encoding, layout, stats, style, sorting, opt) {
       type: scale.type(name, encoding),
       domain: scale.domain(name, encoding, sorting, opt)
     };
-    if (s.type === 'ordinal' &&  // !encoding.bin(name) &&
-      encoding.sort(name).length === 0) {
+    if (s.type === 'ordinal' && !encoding.bin(name) && encoding.sort(name).length === 0) {
       s.sort = true;
-      if (s.name === 'y') {
-        s.reverse = false;
-      }
     }
 
     scale_range(s, encoding, layout, stats, style, opt);
