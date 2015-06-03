@@ -49,9 +49,10 @@ compile.encoding = function (encoding, stats) {
     mark = marks[encoding.marktype()],
     mdefs = marks.def(mark, encoding, layout, style),
     mdef = mdefs[0],  // TODO: remove this dirty hack by refactoring the whole flow
+    rawTable = spec.data[0],
     dataTable = spec.data[1];
 
-  filter.addFilters(spec, encoding);
+  filter.addFilters(rawTable, encoding);
   var sorting = compile.sort(spec.data, encoding, stats);
 
   var hasRow = encoding.has(ROW), hasCol = encoding.has(COL);
@@ -96,7 +97,7 @@ compile.encoding = function (encoding, stats) {
     group.legends = legend.defs(encoding);
   }
 
-  filter.filterLessThanZero(spec, encoding);
+  filter.filterLessThanZero(dataTable, encoding);
 
   return spec;
 };

@@ -13,12 +13,11 @@ var BINARY = {
   '<=': true
 };
 
-filter.addFilters = function(spec, encoding) {
-  var filters = encoding.filter(),
-    data = spec.data[0];  // apply filters to raw data before aggregation
+filter.addFilters = function(rawTable, encoding) {
+  var filters = encoding.filter();  // apply filters to raw data before aggregation
 
-  if (!data.transform)
-    data.transform = [];
+  if (!rawTable.transform)
+    rawTable.transform = [];
 
   // add custom filters
   for (var i in filters) {
@@ -51,7 +50,7 @@ filter.addFilters = function(spec, encoding) {
       console.warn('Unsupported operator: ', operator);
     }
 
-    data.transform.push({
+    rawTable.transform.push({
       type: 'filter',
       test: condition
     });
@@ -59,10 +58,10 @@ filter.addFilters = function(spec, encoding) {
 };
 
 // remove less than 0 values if we use log function
-filter.filterLessThanZero = function(spec, encoding) {
+filter.filterLessThanZero = function(dataTable, encoding) {
   encoding.forEach(function(field, encType) {
     if (encoding.scale(encType).type === 'log') {
-      spec.data[1].transform.push({
+      dataTable.transform.push({
         type: 'filter',
         test: 'd.' + encoding.field(encType) + '>0'
       });
