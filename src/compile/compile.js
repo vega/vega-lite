@@ -67,7 +67,7 @@ compile.encoding = function (encoding, stats) {
   spec = compile.time(spec, encoding);
 
   // handle subfacets
-  var aggResult = compile.aggregate(spec, encoding),
+  var aggResult = compile.aggregate(dataTable, encoding),
     details = aggResult.details,
     hasDetails = details && details.length > 0,
     stack = hasDetails && compile.stack(spec, encoding, mdef, aggResult.facets);

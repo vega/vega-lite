@@ -6,11 +6,10 @@ var util = require('../util');
 
 module.exports = aggregates;
 
-function aggregates(spec, encoding, opt) {
+function aggregates(dataTable, encoding, opt) {
   opt = opt || {};
 
-  var dims = {}, meas = {}, detail = {}, facets = {},
-    data = spec.data[1]; // currently data[0] is raw and data[1] is table
+  var dims = {}, meas = {}, detail = {}, facets = {};
 
   encoding.forEach(function(field, encType) {
     if (field.aggregate) {
@@ -19,7 +18,7 @@ function aggregates(spec, encoding, opt) {
       }else {
         meas[field.aggregate + '|'+ field.name] = {
           op: field.aggregate,
-          field: 'data.'+ field.name
+          field: encoding.field(encType, false, true)
         };
       }
     } else {
@@ -35,8 +34,8 @@ function aggregates(spec, encoding, opt) {
   meas = util.vals(meas);
 
   if (meas.length > 0) {
-    if (!data.transform) data.transform = [];
-    data.transform.push({
+    if (!dataTable.transform) dataTable.transform = [];
+    dataTable.transform.push({
       type: 'aggregate',
       groupby: dims,
       fields: meas
