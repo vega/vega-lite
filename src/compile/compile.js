@@ -48,7 +48,8 @@ compile.encoding = function (encoding, stats) {
     group = spec.marks[0],
     mark = marks[encoding.marktype()],
     mdefs = marks.def(mark, encoding, layout, style),
-    mdef = mdefs[0];  // TODO: remove this dirty hack by refactoring the whole flow
+    mdef = mdefs[0],  // TODO: remove this dirty hack by refactoring the whole flow
+    dataTable = spec.data[1];
 
   filter.addFilters(spec, encoding);
   var sorting = compile.sort(spec, encoding, stats);
@@ -59,7 +60,7 @@ compile.encoding = function (encoding, stats) {
     group.marks.push(mdefs[i]);
   }
 
-  compile.bin(spec.data[1], encoding);
+  compile.bin(dataTable, encoding);
 
   var lineType = marks[encoding.marktype()].line;
 
