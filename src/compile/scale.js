@@ -21,10 +21,14 @@ scale.defs = function(names, encoding, layout, stats, style, sorting, opt) {
     var s = {
       name: name,
       type: scale.type(name, encoding),
-      domain: scale_domain(name, encoding, sorting, opt)
+      domain: scale.domain(name, encoding, sorting, opt)
     };
-    if (s.type === 'ordinal' && !encoding.bin(name) && encoding.sort(name).length === 0) {
+    if (s.type === 'ordinal' &&  // !encoding.bin(name) &&
+      encoding.sort(name).length === 0) {
       s.sort = true;
+      if (s.name === 'y') {
+        s.reverse = false;
+      }
     }
 
     scale_range(s, encoding, layout, stats, style, opt);
@@ -49,19 +53,24 @@ scale.type = function(name, encoding) {
   }
 };
 
-function scale_domain(name, encoding, sorting, opt) {
+scale.domain = function (name, encoding, sorting, opt) {
   if (encoding.isType(name, T)) {
     var range = time.scale.domain(encoding.timeUnit(name), name);
     if(range) return range;
   }
 
-  return name == opt.stack ?
-    {
+  if (name == opt.stack) {
+    return {
       data: STACKED,
-      field: 'data.' + (opt.facet ? 'max_' : '') + 'sum_' + encoding.field(name, true)
-    } :
-    {data: sorting.getDataset(name), field: encoding.field(name)};
-}
+      field: encoding.fieldName(name, {
+        data: !encoding._vega2,
+        fn: (opt.facet ? 'max_' : '') + 'sum'
+      })
+    };
+  }
+  return {data: sorting.getDataset(name), field: encoding.field(name)};
+};
+
 
 function scale_range(s, encoding, layout, stats, style, opt) {
   // jshint unused:false

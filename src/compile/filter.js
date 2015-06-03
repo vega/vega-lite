@@ -28,7 +28,7 @@ filter.addFilters = function(spec, encoding) {
     var operator = filter.operator;
     var operands = filter.operands;
 
-    var d = 'd.data.';
+    var d = 'd.' + (encoding._vega2 ? '' : 'data.');
 
     if (BINARY[operator]) {
       // expects a field and a value

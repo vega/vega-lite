@@ -12,19 +12,28 @@ var consts = require('./consts'),
 
 var vlfield = module.exports = {};
 
+/**
+ * @param field
+ * @param opt
+ *   opt.nofn -- exclude bin, aggregate, timeUnit
+ *   opt.fn - custom function prefix
+ *   opt.data - include 'data.'
+ * @return {[type]}       [description]
+ */
 vlfield.fieldName = function(field, opt) {
-  var f = (opt.data ? 'data.' : '');
+  var f = (opt.data ? 'data.' : ''),
+    nofn = opt.nofn || opt.fn;
 
   if (vlfield.isCount(field)) {
     return f + 'count';
-  } else if (!opt.nofn && field.bin) {
+  } else if (!nofn && field.bin) {
     return f + 'bin_' + field.name;
-  } else if (!opt.nofn && field.aggregate) {
+  } else if (!nofn && field.aggregate) {
     return f + field.aggregate + '_' + field.name;
-  } else if (!opt.nofn && field.timeUnit) {
+  } else if (!nofn && field.timeUnit) {
     return f + field.timeUnit + '_' + field.name;
   } else if (opt.fn) {
-    return f + opt.fn + field.name;
+    return f + opt.fn + '_' + field.name;
   } else {
     return f + field.name;
   }
