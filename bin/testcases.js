@@ -1,3 +1,5 @@
+'use strict';
+
 var testcases = {
   'data/birdstrikes.json': [{
     n: 'Bar',
