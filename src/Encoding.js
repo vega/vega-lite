@@ -55,10 +55,6 @@ module.exports = (function() {
       c.delim + vlenc.shorthand(spec.encoding);
   };
 
-  Encoding.specFromShorthand = function(shorthand, data, config, excludeConfig) {
-    return Encoding.fromShorthand(shorthand, data, config).toSpec(excludeConfig);
-  };
-
   proto.toSpec = function(excludeConfig, excludeData) {
     var enc = util.duplicate(this._enc),
       spec;
