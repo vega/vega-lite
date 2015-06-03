@@ -3,7 +3,7 @@
 var expect = require('chai').expect;
 var fixtures = require('../fixtures').stack;
 
-var compile = require('../../src/compile/compile'),
+var Encoding = require('../../src/Encoding'),
   util = require('../../src/util');
 
 // mock util.getbins()
@@ -14,7 +14,6 @@ util.getbins = function() {
     step: 1
   };
 };
-
 
 var stats = {
   'Cost__Total_$': {
@@ -39,7 +38,7 @@ describe('vl.compile.stack()', function () {
   describe('bin-x', function () {
     it('should put stack on y', function () {
       // FIXME don't run the whole compile
-      var vgSpec = compile(fixtures.binX, stats);
+      var vgSpec = Encoding.compile(fixtures.binX, stats);
 
       var tableData = vgSpec.data.filter(function(data) {
         return data.name === 'table';
@@ -64,7 +63,7 @@ describe('vl.compile.stack()', function () {
   describe('bin-y', function () {
     it('should put stack on x', function () {
       // FIXME don't run the whole compile
-      var vgSpec = compile(fixtures.binY, stats);
+      var vgSpec = Encoding.compile(fixtures.binY, stats);
 
       var tableData = vgSpec.data.filter(function(data) {
         return data.name === 'table';

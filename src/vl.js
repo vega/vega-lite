@@ -14,6 +14,7 @@ vl.compile = require('./compile/compile');
 vl.data = require('./data');
 vl.enc = require('./enc');
 vl.field = require('./field');
+vl.parse = vl.Encoding.compile;
 vl.schema = require('./schema/schema');
 vl.toShorthand = vl.Encoding.shorthand;
 

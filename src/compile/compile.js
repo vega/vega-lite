@@ -6,8 +6,7 @@ require('../globals');
 
 module.exports = compile;
 
-var Encoding = require('../Encoding'),
-  axis = compile.axis = require('./axis'),
+var axis = compile.axis = require('./axis'),
   filter = compile.filter = require('./filter'),
   legend = compile.legend = require('./legend'),
   marks = compile.marks = require('./marks'),
@@ -25,15 +24,7 @@ compile.subfacet = require('./subfacet');
 compile.template = require('./template');
 compile.time = require('./time');
 
-function compile(spec, stats, theme) {
-  return compile.encoding(Encoding.fromSpec(spec, theme), stats);
-}
-
-compile.shorthand = function (shorthand, stats, config, theme) {
-  return compile.encoding(Encoding.fromShorthand(shorthand, config, theme), stats);
-};
-
-compile.encoding = function (encoding, stats) {
+function compile(encoding, stats) {
   // no need to pass stats if you pass in the data
   if (!stats && encoding.hasValues()) {
     stats = summary(encoding.data('values')).reduce(function(s, p) {
@@ -101,5 +92,5 @@ compile.encoding = function (encoding, stats) {
   filter.filterLessThanZero(dataTable, encoding);
 
   return spec;
-};
+}
 

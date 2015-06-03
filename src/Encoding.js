@@ -83,7 +83,11 @@ module.exports = (function() {
   };
 
   proto.compile = function(stats) {
-    return compile.encoding(this, stats);
+    return compile(this, stats);
+  };
+
+  Encoding.compile = function(spec, stats, theme) {
+    return Encoding.fromSpec(spec, theme).compile(stats);
   };
 
   proto.marktype = function() {
