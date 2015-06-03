@@ -6,6 +6,7 @@ var consts = require('./consts'),
   util = require('./util'),
   vlfield = require('./field'),
   vlenc = require('./enc'),
+  compile = require('./compile/compile'),
   schema = require('./schema/schema');
 
 module.exports = (function() {
@@ -81,6 +82,9 @@ module.exports = (function() {
     return schema.util.subtract(spec, defaults);
   };
 
+  proto.compile = function(stats) {
+    return compile.encoding(this, stats);
+  };
 
   proto.marktype = function() {
     return this._marktype;
@@ -333,7 +337,7 @@ module.exports = (function() {
   };
 
   proto.data = function(name) {
-    return this._data[name];
+    return name ? this._data[name] : this._data;
   };
 
    // returns whether the encoding has values embedded

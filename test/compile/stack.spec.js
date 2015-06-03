@@ -86,9 +86,5 @@ describe('vl.compile.stack()', function () {
       expect(stackedAggrTransform.groupby[0]).to.equal('data.bin_Cost__Total_$');
     });
   });
-
-
-
-
 });
 
