@@ -46,13 +46,13 @@ schema.getSupportedRole = function(encType) {
   return schema.schema.properties.encoding.properties[encType].supportedRole;
 };
 
-schema.timefns = ['year', 'month', 'day', 'date', 'hours', 'minutes', 'seconds'];
+schema.timeUnits = ['year', 'month', 'day', 'date', 'hours', 'minutes', 'seconds'];
 
 schema.defaultTimeFn = 'month';
 
-schema.fn = {
+schema.timeUnit = {
   type: 'string',
-  enum: schema.timefns,
+  enum: schema.timeUnits,
   supportedTypes: toMap([T])
 };
 
@@ -100,7 +100,7 @@ var typicalField = merge(clone(schema.field), {
       enum: [N, O, Q, T]
     },
     aggregate: schema.aggregate,
-    fn: schema.fn,
+    timeUnit: schema.timeUnit,
     bin: bin,
     scale: {
       type: 'object',
@@ -135,9 +135,9 @@ var onlyOrdinalField = merge(clone(schema.field), {
   properties: {
     type: {
       type: 'string',
-      enum: [N, O, Q, T] // ordinal-only field supports Q when bin is applied and T when fn is applied.
+      enum: [N, O, Q, T] // ordinal-only field supports Q when bin is applied and T when time unit is applied.
     },
-    fn: schema.fn,
+    timeUnit: schema.timeUnit,
     bin: bin,
     aggregate: {
       type: 'string',

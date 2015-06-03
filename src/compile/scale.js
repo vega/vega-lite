@@ -39,8 +39,8 @@ scale.type = function(name, encoding) {
     case N: //fall through
     case O: return 'ordinal';
     case T:
-      var fn = encoding.fn(name);
-      return (fn && time.scale.type(fn, name)) || 'time';
+      var timeUnit = encoding.timeUnit(name);
+      return (timeUnit && time.scale.type(timeUnit, name)) || 'time';
     case Q:
       if (encoding.bin(name)) {
         return name === COLOR ? 'linear' : 'ordinal';
@@ -51,7 +51,7 @@ scale.type = function(name, encoding) {
 
 function scale_domain(name, encoding, sorting, opt) {
   if (encoding.isType(name, T)) {
-    var range = time.scale.domain(encoding.fn(name), name);
+    var range = time.scale.domain(encoding.timeUnit(name), name);
     if(range) return range;
   }
 
@@ -73,7 +73,7 @@ function scale_range(s, encoding, layout, stats, style, opt) {
       } else {
         s.range = layout.cellWidth ? [0, layout.cellWidth] : 'width';
 
-        if (encoding.isType(s.name,T) && encoding.fn(s.name) === 'year') {
+        if (encoding.isType(s.name,T) && encoding.timeUnit(s.name) === 'year') {
           s.zero = false;
         } else {
           s.zero = spec.zero === undefined ? true : spec.zero;
@@ -83,7 +83,7 @@ function scale_range(s, encoding, layout, stats, style, opt) {
       }
       s.round = true;
       if (s.type === 'time') {
-        s.nice = encoding.fn(s.name);
+        s.nice = encoding.timeUnit(s.name);
       }else {
         s.nice = true;
       }
@@ -94,7 +94,7 @@ function scale_range(s, encoding, layout, stats, style, opt) {
       } else {
         s.range = layout.cellHeight ? [layout.cellHeight, 0] : 'height';
 
-        if (encoding.isType(s.name,T) && encoding.fn(s.name) === 'year') {
+        if (encoding.isType(s.name,T) && encoding.timeUnit(s.name) === 'year') {
           s.zero = false;
         } else {
           s.zero = spec.zero === undefined ? true : spec.zero;
@@ -106,7 +106,7 @@ function scale_range(s, encoding, layout, stats, style, opt) {
       s.round = true;
 
       if (s.type === 'time') {
-        s.nice = encoding.fn(s.name) || encoding.config('timeScaleNice');
+        s.nice = encoding.timeUnit(s.name) || encoding.config('timeScaleNice');
       }else {
         s.nice = true;
       }

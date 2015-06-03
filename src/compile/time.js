@@ -6,16 +6,16 @@ module.exports = time;
 
 function time(spec, encoding, opt) {
   // jshint unused:false
-  var timeFields = {}, timeFn = {};
+  var timeFields = {}, timeUnits = {};
 
   // find unique formula transformation and bin function
   encoding.forEach(function(field, encType) {
-    if (field.type === T && field.fn) {
+    if (field.type === T && field.timeUnit) {
       timeFields[encoding.field(encType)] = {
         field: field,
         encType: encType
       };
-      timeFn[field.fn] = true;
+      timeUnits[field.timeUnit] = true;
     }
   });
 
@@ -30,15 +30,15 @@ function time(spec, encoding, opt) {
 
   // add scales
   var scales = spec.scales = spec.scales || [];
-  for (var fn in timeFn) {
-    time.scale(scales, fn, encoding);
+  for (var timeUnit in timeUnits) {
+    time.scale(scales, timeUnit, encoding);
   }
   return spec;
 }
 
 time.cardinality = function(field, stats, filterNull, type) {
-  var fn = field.fn;
-  switch (fn) {
+  var timeUnit = field.timeUnit;
+  switch (timeUnit) {
     case 'seconds': return 60;
     case 'minutes': return 60;
     case 'hours': return 24;
@@ -66,7 +66,7 @@ function fieldFn(func, field) {
  * @return {String} date binning formula of the given field
  */
 time.formula = function(field) {
-  return fieldFn(field.fn, field);
+  return fieldFn(field.timeUnit, field);
 };
 
 /** add formula transforms to data */
@@ -79,13 +79,13 @@ time.transform = function(transform, encoding, encType, field) {
 };
 
 /** append custom time scales for axis label */
-time.scale = function(scales, fn, encoding) {
+time.scale = function(scales, timeUnit, encoding) {
   var labelLength = encoding.config('timeScaleLabelLength');
   // TODO add option for shorter scale / custom range
-  switch (fn) {
+  switch (timeUnit) {
     case 'day':
       scales.push({
-        name: 'time-'+fn,
+        name: 'time-'+timeUnit,
         type: 'ordinal',
         domain: util.range(0, 7),
         range: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map(
@@ -95,7 +95,7 @@ time.scale = function(scales, fn, encoding) {
       break;
     case 'month':
       scales.push({
-        name: 'time-'+fn,
+        name: 'time-'+timeUnit,
         type: 'ordinal',
         domain: util.range(0, 12),
         range: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].map(
@@ -106,8 +106,8 @@ time.scale = function(scales, fn, encoding) {
   }
 };
 
-time.isOrdinalFn = function(fn) {
-  switch (fn) {
+time.isOrdinalFn = function(timeUnit) {
+  switch (timeUnit) {
     case 'seconds':
     case 'minutes':
     case 'hours':
@@ -119,17 +119,17 @@ time.isOrdinalFn = function(fn) {
   return false;
 };
 
-time.scale.type = function(fn, name) {
+time.scale.type = function(timeUnit, name) {
   if (name === COLOR) {
     return 'linear'; // this has order
   }
 
-  return time.isOrdinalFn(fn) || name === COL || name === ROW ? 'ordinal' : 'linear';
+  return time.isOrdinalFn(timeUnit) || name === COL || name === ROW ? 'ordinal' : 'linear';
 };
 
-time.scale.domain = function(fn, name) {
+time.scale.domain = function(timeUnit, name) {
   var isColor = name === COLOR;
-  switch (fn) {
+  switch (timeUnit) {
     case 'seconds':
     case 'minutes': return isColor ? [0,59] : util.range(0, 60);
     case 'hours': return isColor ? [0,23] : util.range(0, 24);
@@ -141,8 +141,8 @@ time.scale.domain = function(fn, name) {
 };
 
 /** whether a particular time function has custom scale for labels implemented in time.scale */
-time.hasScale = function(fn) {
-  switch (fn) {
+time.hasScale = function(timeUnit) {
+  switch (timeUnit) {
     case 'day':
     case 'month':
       return true;
