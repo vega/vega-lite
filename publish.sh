@@ -34,8 +34,8 @@ gitsha=$(git rev-parse HEAD)
 version=$(cat package.json | jq .version | sed -e 's/^"//'  -e 's/"$//')
 
 # remove all the compiled files, so we can checkout gh-pages without errors
-rm vega-lite* -f
-rm spec.json
+rm -f vega-lite*
+rm  -f spec.json
 
 # update github pages
 git checkout gh-pages
