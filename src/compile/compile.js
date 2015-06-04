@@ -43,33 +43,36 @@ compile.encoding = function (encoding, stats) {
   }
 
   var layout = compile.layout(encoding, stats),
-    style = compile.style(encoding, stats),
-    spec = compile.template(encoding, layout, stats),
+    spec = compile.template(encoding, layout, stats);
+
+  // .data related stuff
+  var rawTable = spec.data[0],
+    dataTable = spec.data[1];
+
+  rawTable = filter.addFilters(rawTable, encoding); // modify rawTable
+  dataTable = compile.bin(dataTable, encoding);     // modify dataTable
+  spec = compile.time(spec, encoding);              // modify dataTable, add scales
+  var aggResult = compile.aggregate(dataTable, encoding); // modify dataTable
+  var sorting = compile.sort(spec.data, encoding, stats); // append new data
+
+  // marks
+  var style = compile.style(encoding, stats),
     group = spec.marks[0],
     mark = marks[encoding.marktype()],
     mdefs = marks.def(mark, encoding, layout, style),
     mdef = mdefs[0];  // TODO: remove this dirty hack by refactoring the whole flow
 
-  filter.addFilters(spec, encoding);
-  var sorting = compile.sort(spec, encoding, stats);
-
-  var hasRow = encoding.has(ROW), hasCol = encoding.has(COL);
-
   for (var i = 0; i < mdefs.length; i++) {
     group.marks.push(mdefs[i]);
   }
 
-  compile.bin(spec.data[1], encoding);
-
   var lineType = marks[encoding.marktype()].line;
 
-  spec = compile.time(spec, encoding);
-
   // handle subfacets
-  var aggResult = compile.aggregate(spec, encoding),
-    details = aggResult.details,
+
+  var details = aggResult.details,
     hasDetails = details && details.length > 0,
-    stack = hasDetails && compile.stack(spec, encoding, mdef, aggResult.facets);
+    stack = hasDetails && compile.stack(spec.data, encoding, mdef, aggResult.facets); // modify spec.data, mdef.{from,properties}
 
   if (hasDetails && (stack || lineType)) {
     //subfacet to group stack / line together in one group
@@ -86,7 +89,7 @@ compile.encoding = function (encoding, stats) {
   }
 
   // Small Multiples
-  if (hasRow || hasCol) {
+  if (encoding.has(ROW) || encoding.has(COL)) {
     spec = compile.facet(group, encoding, layout, style, sorting, spec, mdef, stack, stats);
     spec.legends = legend.defs(encoding);
   } else {
@@ -95,7 +98,7 @@ compile.encoding = function (encoding, stats) {
     group.legends = legend.defs(encoding);
   }
 
-  filter.filterLessThanZero(spec, encoding);
+  filter.filterLessThanZero(dataTable, encoding);
 
   return spec;
 };

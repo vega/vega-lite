@@ -7,10 +7,10 @@ var time = require('../../src/compile/time'),
 
 describe('Time', function() {
   var fieldName = 'a',
-    fn = 'month',
+    timeUnit = 'month',
     encoding = Encoding.fromSpec({
       encoding: {
-        x: {name: fieldName, type: 'T', fn: fn}
+        x: {name: fieldName, type: 'T', timeUnit: timeUnit}
       }
     }),
     spec = time({data: [{name: RAW}, {name: TABLE}]}, encoding, {});
@@ -27,7 +27,7 @@ describe('Time', function() {
 
   it('should add custom axis scale', function() {
     expect(spec.scales.filter(function(scale) {
-      return scale.name == 'time-'+ fn;
+      return scale.name == 'time-'+ timeUnit;
     }).length).to.equal(1);
   });
 });

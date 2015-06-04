@@ -1,3 +1,5 @@
+set -e
+
 # define color
 RED='\033[0;31m'
 NC='\033[0m' # No Color
@@ -32,8 +34,8 @@ gitsha=$(git rev-parse HEAD)
 version=$(cat package.json | jq .version | sed -e 's/^"//'  -e 's/"$//')
 
 # remove all the compiled files, so we can checkout gh-pages without errors
-rm vega-lite* -f
-rm spec.json
+rm -f vega-lite*
+rm  -f spec.json
 
 # update github pages
 git checkout gh-pages
@@ -52,3 +54,4 @@ git push
 git tag -am "Release v$version." "v$version"
 git push --tags
 git checkout master
+gulp build # rebuild so that vega-lite.js are back  for linked bower/npm

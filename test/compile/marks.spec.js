@@ -69,6 +69,7 @@ describe('compile.marks', function() {
         });
       });
     });
-
   });
+
+  // TODO add other type of marks
 });

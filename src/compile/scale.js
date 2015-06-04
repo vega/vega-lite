@@ -21,7 +21,7 @@ scale.defs = function(names, encoding, layout, stats, style, sorting, opt) {
     var s = {
       name: name,
       type: scale.type(name, encoding),
-      domain: scale_domain(name, encoding, sorting, opt)
+      domain: scale.domain(name, encoding, sorting, opt)
     };
     if (s.type === 'ordinal' && !encoding.bin(name) && encoding.sort(name).length === 0) {
       s.sort = true;
@@ -39,8 +39,8 @@ scale.type = function(name, encoding) {
     case N: //fall through
     case O: return 'ordinal';
     case T:
-      var fn = encoding.fn(name);
-      return (fn && time.scale.type(fn, name)) || 'time';
+      var timeUnit = encoding.timeUnit(name);
+      return (timeUnit && time.scale.type(timeUnit, name)) || 'time';
     case Q:
       if (encoding.bin(name)) {
         return name === COLOR ? 'linear' : 'ordinal';
@@ -49,19 +49,24 @@ scale.type = function(name, encoding) {
   }
 };
 
-function scale_domain(name, encoding, sorting, opt) {
+scale.domain = function (name, encoding, sorting, opt) {
   if (encoding.isType(name, T)) {
-    var range = time.scale.domain(encoding.fn(name), name);
+    var range = time.scale.domain(encoding.timeUnit(name), name);
     if(range) return range;
   }
 
-  return name == opt.stack ?
-    {
+  if (name == opt.stack) {
+    return {
       data: STACKED,
-      field: 'data.' + (opt.facet ? 'max_' : '') + 'sum_' + encoding.field(name, true)
-    } :
-    {data: sorting.getDataset(name), field: encoding.field(name)};
-}
+      field: encoding.fieldRef(name, {
+        data: !encoding._vega2,
+        fn: (opt.facet ? 'max_' : '') + 'sum'
+      })
+    };
+  }
+  return {data: sorting.getDataset(name), field: encoding.field(name)};
+};
+
 
 function scale_range(s, encoding, layout, stats, style, opt) {
   // jshint unused:false
@@ -73,7 +78,7 @@ function scale_range(s, encoding, layout, stats, style, opt) {
       } else {
         s.range = layout.cellWidth ? [0, layout.cellWidth] : 'width';
 
-        if (encoding.isType(s.name,T) && encoding.fn(s.name) === 'year') {
+        if (encoding.isType(s.name,T) && encoding.timeUnit(s.name) === 'year') {
           s.zero = false;
         } else {
           s.zero = spec.zero === undefined ? true : spec.zero;
@@ -83,7 +88,7 @@ function scale_range(s, encoding, layout, stats, style, opt) {
       }
       s.round = true;
       if (s.type === 'time') {
-        s.nice = encoding.fn(s.name);
+        s.nice = encoding.timeUnit(s.name);
       }else {
         s.nice = true;
       }
@@ -94,7 +99,7 @@ function scale_range(s, encoding, layout, stats, style, opt) {
       } else {
         s.range = layout.cellHeight ? [layout.cellHeight, 0] : 'height';
 
-        if (encoding.isType(s.name,T) && encoding.fn(s.name) === 'year') {
+        if (encoding.isType(s.name,T) && encoding.timeUnit(s.name) === 'year') {
           s.zero = false;
         } else {
           s.zero = spec.zero === undefined ? true : spec.zero;
@@ -106,7 +111,7 @@ function scale_range(s, encoding, layout, stats, style, opt) {
       s.round = true;
 
       if (s.type === 'time') {
-        s.nice = encoding.fn(s.name) || encoding.config('timeScaleNice');
+        s.nice = encoding.timeUnit(s.name) || encoding.config('timeScaleNice');
       }else {
         s.nice = true;
       }
@@ -196,7 +201,7 @@ scale.color = function(s, encoding, stats) {
 
 scale.color.palette = function(range, cardinality, type) {
   switch (range) {
-    case 'category10-k':
+    case 'category10k':
       // tableau's category 10, ordered by perceptual kernel study results
       // https://github.com/uwdata/perceptual-kernels
       return ['#2ca02c', '#e377c2', '#7f7f7f', '#17becf', '#8c564b', '#d62728', '#bcbd22', '#9467bd', '#ff7f0e', '#1f77b4'];

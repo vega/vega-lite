@@ -8,10 +8,10 @@ var axis = require('../../src/compile/axis'),
 describe('Axis', function() {
   describe('(X) for Time Data', function() {
     var fieldName = 'a',
-      fn = 'month',
+      timeUnit = 'month',
       encoding = Encoding.fromSpec({
         encoding: {
-          x: {name: fieldName, type: 'T', fn: fn}
+          x: {name: fieldName, type: 'T', timeUnit: timeUnit}
         }
       });
     var _axis = axis.def('x', encoding, {
@@ -26,8 +26,11 @@ describe('Axis', function() {
         axisTitleOffset: 60
       }
     });
+
+    //FIXME decouple the test here
+
     it('should use custom label', function() {
-      expect(_axis.properties.labels.text.scale).to.equal('time-'+ fn);
+      expect(_axis.properties.labels.text.scale).to.equal('time-'+ timeUnit);
     });
     it('should rotate label', function() {
       expect(_axis.properties.labels.angle.value).to.equal(270);

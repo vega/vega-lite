@@ -6,7 +6,7 @@ var  marks = require('./marks');
 
 module.exports = stacking;
 
-function stacking(spec, encoding, mdef, facets) {
+function stacking(data, encoding, mdef, facets) {
   if (!marks[encoding.marktype()].stack) return false;
 
   // TODO: add || encoding.has(LOD) here once LOD is implemented
@@ -43,11 +43,14 @@ function stacking(spec, encoding, mdef, facets) {
     stacked.transform.push({ //calculate max for each facet
       type: 'aggregate',
       groupby: facets,
-      fields: [{op: 'max', field: 'data.sum_' + encoding.field(val, true)}]
+      fields: [{
+        op: 'max',
+        field: encoding.fieldName(val, {fn: 'sum'})
+      }]
     });
   }
 
-  spec.data.push(stacked);
+  data.push(stacked);
 
   // add stack transform to mark
   mdef.from.transform = [{
