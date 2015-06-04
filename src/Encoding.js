@@ -18,6 +18,7 @@ module.exports = (function() {
     this._enc = specExtended.encoding;
     this._config = specExtended.config;
     this._filter = specExtended.filter;
+    // this._vega2 = true;
   }
 
   var proto = Encoding.prototype;
@@ -123,20 +124,16 @@ module.exports = (function() {
   // get "field" property for vega
   proto.field = function(et, nodata, nofn) {
     if (!this.has(et)) return null;
+    return vlfield.fieldRef(this._enc[et], {
+      nofn: nofn,
+      data: !this._vega2 && !nodata
+    });
+  };
 
-    var f = (nodata ? '' : 'data.');
-
-    if (vlfield.isCount(this._enc[et])) {
-      return f + 'count';
-    } else if (!nofn && this._enc[et].bin) {
-      return f + 'bin_' + this._enc[et].name;
-    } else if (!nofn && this._enc[et].aggregate) {
-      return f + this._enc[et].aggregate + '_' + this._enc[et].name;
-    } else if (!nofn && this._enc[et].timeUnit) {
-      return f + this._enc[et].timeUnit + '_' + this._enc[et].name;
-    } else {
-      return f + this._enc[et].name;
-    }
+  proto.fieldRef = function(et, opt) {
+    opt = opt || {};
+    opt.data = !this._vega2 && (opt.data !== false);
+    return vlfield.fieldRef(this._enc[et], opt);
   };
 
   proto.fieldName = function(et) {

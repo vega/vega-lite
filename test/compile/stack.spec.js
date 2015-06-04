@@ -38,6 +38,7 @@ describe('vl.compile.stack()', function () {
 
   describe('bin-x', function () {
     it('should put stack on y', function () {
+      // FIXME don't run the whole compile
       var vgSpec = compile(fixtures.binX, stats);
 
       var tableData = vgSpec.data.filter(function(data) {
@@ -62,6 +63,7 @@ describe('vl.compile.stack()', function () {
 
   describe('bin-y', function () {
     it('should put stack on x', function () {
+      // FIXME don't run the whole compile
       var vgSpec = compile(fixtures.binY, stats);
 
       var tableData = vgSpec.data.filter(function(data) {

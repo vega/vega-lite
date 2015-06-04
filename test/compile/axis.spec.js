@@ -26,6 +26,9 @@ describe('Axis', function() {
         axisTitleOffset: 60
       }
     });
+
+    //FIXME decouple the test here
+
     it('should use custom label', function() {
       expect(_axis.properties.labels.text.scale).to.equal('time-'+ timeUnit);
     });

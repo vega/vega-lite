@@ -4,7 +4,7 @@ var util = require('../util');
 
 module.exports = time;
 
-function time(spec, encoding, opt) {
+function time(spec, encoding, opt) { // FIXME refactor to reduce side effect #276
   // jshint unused:false
   var timeFields = {}, timeUnits = {};
 
@@ -35,6 +35,8 @@ function time(spec, encoding, opt) {
   }
   return spec;
 }
+
+
 
 time.cardinality = function(field, stats, filterNull, type) {
   var timeUnit = field.timeUnit;
