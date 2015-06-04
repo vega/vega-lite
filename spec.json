@@ -40,7 +40,7 @@
        },
        "supportedTypes": {"Q": 1,"N": 1,"O": 1,"T": 1,"": 1}
       },
-      "fn": {
+      "timeUnit": {
        "type": "string",
        "enum": ["year","month","day","date","hours","minutes","seconds"],
        "supportedTypes": {"T": 1}
@@ -149,7 +149,7 @@
        },
        "supportedTypes": {"Q": 1,"N": 1,"O": 1,"T": 1,"": 1}
       },
-      "fn": {
+      "timeUnit": {
        "type": "string",
        "enum": ["year","month","day","date","hours","minutes","seconds"],
        "supportedTypes": {"T": 1}
@@ -246,7 +246,7 @@
      "properties": {
       "name": {"type": "string"},
       "type": {"type": "string","enum": ["N","O","Q","T"]},
-      "fn": {
+      "timeUnit": {
        "type": "string",
        "enum": ["year","month","day","date","hours","minutes","seconds"],
        "supportedTypes": {"T": 1}
@@ -322,7 +322,7 @@
      "properties": {
       "name": {"type": "string"},
       "type": {"type": "string","enum": ["N","O","Q","T"]},
-      "fn": {
+      "timeUnit": {
        "type": "string",
        "enum": ["year","month","day","date","hours","minutes","seconds"],
        "supportedTypes": {"T": 1}
@@ -405,7 +405,7 @@
        },
        "supportedTypes": {"Q": 1,"N": 1,"O": 1,"T": 1,"": 1}
       },
-      "fn": {
+      "timeUnit": {
        "type": "string",
        "enum": ["year","month","day","date","hours","minutes","seconds"],
        "supportedTypes": {"T": 1}
@@ -474,7 +474,7 @@
        },
        "supportedTypes": {"Q": 1,"N": 1,"O": 1,"T": 1,"": 1}
       },
-      "fn": {
+      "timeUnit": {
        "type": "string",
        "enum": ["year","month","day","date","hours","minutes","seconds"],
        "supportedTypes": {"T": 1}
@@ -553,7 +553,7 @@
        },
        "supportedTypes": {"Q": 1,"N": 1,"O": 1,"T": 1,"": 1}
       },
-      "fn": {
+      "timeUnit": {
        "type": "string",
        "enum": ["year","month","day","date","hours","minutes","seconds"],
        "supportedTypes": {"T": 1}
@@ -618,7 +618,7 @@
      "properties": {
       "name": {"type": "string"},
       "type": {"type": "string","enum": ["N","O","Q","T"]},
-      "fn": {
+      "timeUnit": {
        "type": "string",
        "enum": ["year","month","day","date","hours","minutes","seconds"],
        "supportedTypes": {"T": 1}
@@ -669,7 +669,7 @@
        },
        "supportedTypes": {"Q": 1,"N": 1,"O": 1,"T": 1,"": 1}
       },
-      "fn": {
+      "timeUnit": {
        "type": "string",
        "enum": ["year","month","day","date","hours","minutes","seconds"],
        "supportedTypes": {"T": 1}
@@ -741,7 +741,7 @@
      "properties": {
       "name": {"type": "string"},
       "type": {"type": "string","enum": ["N","O","Q","T"]},
-      "fn": {
+      "timeUnit": {
        "type": "string",
        "enum": ["year","month","day","date","hours","minutes","seconds"],
        "supportedTypes": {"T": 1}
@@ -812,8 +812,8 @@
     "singleBarOffset": {"type": "integer","default": 5,"minimum": 0},
     "c10palette": {
      "type": "string",
-     "default": "category10-k",
-     "enum": ["category10","category10-k","Pastel1","Pastel2","Set1","Set2","Set3"]
+     "default": "category10",
+     "enum": ["category10","category10k","Pastel1","Pastel2","Set1","Set2","Set3"]
     },
     "c20palette": {
      "type": "string",
