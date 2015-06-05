@@ -39,7 +39,9 @@ git add vega-lite* -f
 git add spec.json -f
 
 # commit, tag and push to gh-pages and swap back to master
+set +e
 git commit -m "release $version $gitsha"
+set -e
 git push
 git tag -am "Release v$version." "v$version"
 git push --tags
