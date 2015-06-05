@@ -6,6 +6,7 @@ var consts = require('./consts'),
   util = require('./util'),
   vlfield = require('./field'),
   vlenc = require('./enc'),
+  compile = require('./compile/compile'),
   schema = require('./schema/schema');
 
 module.exports = (function() {
@@ -54,10 +55,6 @@ module.exports = (function() {
       c.delim + vlenc.shorthand(spec.encoding);
   };
 
-  Encoding.specFromShorthand = function(shorthand, data, config, excludeConfig) {
-    return Encoding.fromShorthand(shorthand, data, config).toSpec(excludeConfig);
-  };
-
   proto.toSpec = function(excludeConfig, excludeData) {
     var enc = util.duplicate(this._enc),
       spec;
@@ -81,6 +78,13 @@ module.exports = (function() {
     return schema.util.subtract(spec, defaults);
   };
 
+  proto.compile = function(stats) {
+    return compile(this, stats);
+  };
+
+  Encoding.compile = function(spec, stats, theme) {
+    return Encoding.fromSpec(spec, theme).compile(stats);
+  };
 
   proto.marktype = function() {
     return this._marktype;
@@ -333,7 +337,7 @@ module.exports = (function() {
   };
 
   proto.data = function(name) {
-    return this._data[name];
+    return name ? this._data[name] : this._data;
   };
 
    // returns whether the encoding has values embedded
