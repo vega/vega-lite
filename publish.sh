@@ -17,17 +17,7 @@ else
   exit 1
 fi
 
-# 1. NPM PUBLISH
-
-npm publish
-# exit if npm publish failed
-rc=$?
-if [[ $rc != 0 ]]; then
-	echo "${RED} npm publish failed.  Publishing canceled. ${NC} \n\n"
-	exit $rc;
-fi
-
-# 2. BOWER PUBLISH
+# 1. BOWER PUBLISH
 
 # read version
 gitsha=$(git rev-parse HEAD)
@@ -55,3 +45,13 @@ git tag -am "Release v$version." "v$version"
 git push --tags
 git checkout master
 gulp build # rebuild so that vega-lite.js are back  for linked bower/npm
+
+# 2. NPM PUBLISH
+
+npm publish
+# exit if npm publish failed
+rc=$?
+if [[ $rc != 0 ]]; then
+	echo "${RED} npm publish failed.  Publishing canceled. ${NC} \n\n"
+	exit $rc;
+fi
