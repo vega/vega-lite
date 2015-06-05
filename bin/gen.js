@@ -76,9 +76,7 @@ function generate(encoding, vlDir, vgDir) {
   var filename = encoding.toShorthand();
 
   var stats = vl.data.stats(data),
-    spec = encoding.compile(stats);
-
-
+    spec = vl.compile.encoding(encoding, stats);
 
   var vlPath = vlDir + '/'+ dataname + '.'+ filename + '.json',
     vgPath = vgDir + '/'+ dataname + '.'+ filename + '.json';
