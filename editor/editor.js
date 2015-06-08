@@ -205,11 +205,11 @@ vled.init = function() {
         x: {type: "Q",name: "yield",aggr: "avg"},
         y: {
           sort: [{name: "yield", aggr: "avg", reverse: false}],
-          type: "O",
+          type: "N",
           name: "variety"
         },
-        row: {type: "O", name: "site"},
-        color: {type: "O", name: "year"}
+        row: {type: "N", name: "site"},
+        color: {type: "N", name: "year"}
       }
     });
 
