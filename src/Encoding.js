@@ -333,7 +333,7 @@ module.exports = (function() {
   };
 
   proto.data = function(name) {
-    return this._data[name];
+    return name ? this._data[name] : this._data;
   };
 
    // returns whether the encoding has values embedded

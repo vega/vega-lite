@@ -1,6 +1,6 @@
 'use strict';
 
-var VEGA_DIR = 'vega', vegaliteDir = 'vega-lite';
+var VEGA_DIR = 'vega';
 
 var program = require('commander');
 program.version('0.0.1')
@@ -8,24 +8,31 @@ program.version('0.0.1')
   .option('-j, --json [string]', 'Create test from json strings [null]', null)
   .option('-f, --file [path]', 'Create test from file [null]', null)
   .option('-d, --data [path]', 'Data file path (otherwise, path will be parsed from dataUrl config.) [null]', null)
-  .option('-n, --note [String]', 'Add _note property to the vega-lite json file.', null)
+  .option('-n, --note [String]', 'Add _info.description property to the vega-lite json file.', null)
   .parse(process.argv);
 
 var fs = require('fs'),
-  vl = require('../src/vega-lite.js'),
+  vl = require('../src/vl.js'),
   stringify = require('../lib/json3-compactstringify').stringify;
 
 if (program.json || program.file) {
-  var json = program.json || require(program.file),
-    encoding = vl.Encoding.parseJSON(json, 'encoding2vg');
-  generate(encoding);
+  var json = program.json ? JSON.parse(program.json) : require(program.file),
+    encoding = vl.Encoding.fromSpec(json);
+
+  if (program.note) {
+    (encoding._info = encoding._info  || {}).description = program.note;
+  }
+
+  generate(encoding, 'specs');
 }else {
   var testcases = require('./testcases');
 
   vl.keys(testcases).forEach(function(dataUrl) {
     testcases[dataUrl].forEach(function(tc) {
       var encoding = vl.Encoding.parseShorthand(tc.e, {dataUrl: dataUrl});
-      encoding._note = tc.n;
+      encoding._info = {
+        description: tc.n
+      };
       generate(encoding, 'shorthand2vg');
     });
   });
@@ -50,12 +57,11 @@ function writeErrorHandler(path) {
   };
 }
 
-function generate(encoding, vgDir, vlDir) {
+function generate(encoding, vlDir, vgDir) {
   if (program.note) {
     encoding._note = program.note;
   }
-
-  var dataUrl = program.data || (encoding.config('dataUrl') ? '../' + encoding.config('dataUrl') : null);
+  var dataUrl = program.data || (encoding.data('url') ? '../' + encoding.data('url') : null);
 
   if (!dataUrl) {
     console.log('no data provided neither as argument or as dataUrl config.');
@@ -69,8 +75,8 @@ function generate(encoding, vgDir, vlDir) {
 
   var filename = encoding.toShorthand();
 
-  var stats = vl.getStats(encoding, data),
-    spec = vl.toVegaSpec(encoding, stats);
+  var stats = vl.data.stats(data),
+    spec = vl.compile.encoding(encoding, stats);
 
   var vlPath = vlDir + '/'+ dataname + '.'+ filename + '.json',
     vgPath = vgDir + '/'+ dataname + '.'+ filename + '.json';
