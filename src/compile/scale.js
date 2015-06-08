@@ -179,7 +179,7 @@ scale.color = function(s, encoding, stats) {
       if (type === N) {
         // use categorical color scale
         if (cardinality <= 10) {
-          range = 'category10';
+          range = 'category10k';
         } else {
           range = 'category20';
         }
