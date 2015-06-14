@@ -60,7 +60,7 @@ scale.domain = function (name, encoding, sorting, opt) {
       data: STACKED,
       field: encoding.fieldRef(name, {
         data: !encoding._vega2,
-        fn: (opt.facet ? 'max_' : '') + 'sum'
+        prefn: (opt.facet ? 'max_' : '') + 'sum_'
       })
     };
   }
