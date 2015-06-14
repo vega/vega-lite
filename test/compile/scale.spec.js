@@ -27,6 +27,25 @@ describe('vl.compile.scale.domain', function() {
     });
   });
 
+  it('should return correct aggregated stack', function() {
+    var scale = vlscale.domain('y', Encoding.fromSpec({
+      encoding: {
+        y: {
+          aggregate: 'sum',
+          name: 'origin'
+        }
+      }
+    }), {}, {
+      stack: 'y',
+      facet: true
+    });
+
+    expect(scale).to.eql({
+      data: 'stacked',
+      field: 'data.max_sum_sum_origin'
+    });
+  });
+
   // TODO test other cases
 });
 
