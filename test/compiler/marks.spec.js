@@ -3,7 +3,7 @@
 var expect = require('chai').expect;
 var fixtures = require('../fixtures');
 
-var marks = require('../../src/compile/marks'),
+var marks = require('../../src/compiler/marks'),
   Encoding = require('../../src/Encoding');
 
 var mockLayout = {
