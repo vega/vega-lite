@@ -2,7 +2,7 @@
 
 var expect = require('chai').expect;
 
-var vlsort = require('../../src/compile/sort'),
+var vlsort = require('../../src/compiler/sort'),
   Encoding = require('../../src/Encoding');
 
 describe('Sort', function() {

@@ -3,7 +3,7 @@
 var expect = require('chai').expect;
 var fixtures = require('../fixtures').stack;
 
-var compile = require('../../src/compile/compile'),
+var compile = require('../../src/vl').compile,
   util = require('../../src/util');
 
 // mock util.getbins()

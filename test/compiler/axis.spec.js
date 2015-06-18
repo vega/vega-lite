@@ -2,7 +2,7 @@
 
 var expect = require('chai').expect;
 
-var axis = require('../../src/compile/axis'),
+var axis = require('../../src/compiler/axis'),
   Encoding = require('../../src/Encoding');
 
 describe('Axis', function() {
