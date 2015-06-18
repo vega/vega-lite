@@ -6,7 +6,7 @@ require('../globals');
 var schema = module.exports = {},
   util = require('../util'),
   toMap = util.toMap,
-  colorbrewer = require('../lib/colorbrewer/colorbrewer');
+  colorbrewer = require('colorbrewer');
 
 schema.util = require('./schemautil');
 
