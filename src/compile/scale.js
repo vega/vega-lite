@@ -2,7 +2,7 @@
 require('../globals');
 var util = require('../util'),
   time = require('./time'),
-  colorbrewer = require('../lib/colorbrewer/colorbrewer'),
+  colorbrewer = require('colorbrewer'),
   interpolateLab = require('d3-color').interpolateLab;
 
 var scale = module.exports = {};
