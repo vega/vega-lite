@@ -55,6 +55,7 @@
     "z-schema": "^3.4.3"
   },
   "dependencies": {
+    "d3-color": "^0.2.1",
     "datalib": "^1.1.12"
   },
   "browserify": {
