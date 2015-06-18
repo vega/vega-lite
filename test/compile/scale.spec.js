@@ -6,7 +6,7 @@ var expect = require('chai').expect;
 var util = require('../../src/util'),
   Encoding = require('../../src/Encoding'),
   vlscale = require('../../src/compile/scale'),
-  colorbrewer = require('../../src/lib/colorbrewer/colorbrewer');
+  colorbrewer = require('colorbrewer');
 
 describe('vl.compile.scale.domain', function() {
   it('should return correct stack', function() {
