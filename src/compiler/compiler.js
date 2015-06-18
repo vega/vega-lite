@@ -4,36 +4,36 @@ var summary = module.exports = require('datalib/src/stats').summary;
 
 require('../globals');
 
-module.exports = compile;
+var compiler = module.exports = {};
 
 var Encoding = require('../Encoding'),
-  axis = compile.axis = require('./axis'),
-  filter = compile.filter = require('./filter'),
-  legend = compile.legend = require('./legend'),
-  marks = compile.marks = require('./marks'),
-  scale = compile.scale = require('./scale');
+  axis = compiler.axis = require('./axis'),
+  filter = compiler.filter = require('./filter'),
+  legend = compiler.legend = require('./legend'),
+  marks = compiler.marks = require('./marks'),
+  scale = compiler.scale = require('./scale');
 
-compile.aggregate = require('./aggregate');
-compile.bin = require('./bin');
-compile.facet = require('./facet');
-compile.group = require('./group');
-compile.layout = require('./layout');
-compile.sort = require('./sort');
-compile.stack = require('./stack');
-compile.style = require('./style');
-compile.subfacet = require('./subfacet');
-compile.template = require('./template');
-compile.time = require('./time');
+compiler.aggregate = require('./aggregate');
+compiler.bin = require('./bin');
+compiler.facet = require('./facet');
+compiler.group = require('./group');
+compiler.layout = require('./layout');
+compiler.sort = require('./sort');
+compiler.stack = require('./stack');
+compiler.style = require('./style');
+compiler.subfacet = require('./subfacet');
+compiler.template = require('./template');
+compiler.time = require('./time');
 
-function compile(spec, stats, theme) {
-  return compile.encoding(Encoding.fromSpec(spec, theme), stats);
-}
-
-compile.shorthand = function (shorthand, stats, config, theme) {
-  return compile.encoding(Encoding.fromShorthand(shorthand, config, theme), stats);
+compiler.compile = function (spec, stats, theme) {
+  return compiler.compileEncoding(Encoding.fromSpec(spec, theme), stats);
 };
 
-compile.encoding = function (encoding, stats) {
+compiler.shorthand = function (shorthand, stats, config, theme) {
+  return compiler.compileEncoding(Encoding.fromShorthand(shorthand, config, theme), stats);
+};
+
+compiler.compileEncoding = function (encoding, stats) {
   // no need to pass stats if you pass in the data
   if (!stats && encoding.hasValues()) {
     stats = summary(encoding.data('values')).reduce(function(s, p) {
@@ -42,21 +42,21 @@ compile.encoding = function (encoding, stats) {
     }, {});
   }
 
-  var layout = compile.layout(encoding, stats),
-    spec = compile.template(encoding, layout, stats);
+  var layout = compiler.layout(encoding, stats),
+    spec = compiler.template(encoding, layout, stats);
 
   // .data related stuff
   var rawTable = spec.data[0],
     dataTable = spec.data[1];
 
   rawTable = filter.addFilters(rawTable, encoding); // modify rawTable
-  dataTable = compile.bin(dataTable, encoding);     // modify dataTable
-  spec = compile.time(spec, encoding);              // modify dataTable, add scales
-  var aggResult = compile.aggregate(dataTable, encoding); // modify dataTable
-  var sorting = compile.sort(spec.data, encoding, stats); // append new data
+  dataTable = compiler.bin(dataTable, encoding);     // modify dataTable
+  spec = compiler.time(spec, encoding);              // modify dataTable, add scales
+  var aggResult = compiler.aggregate(dataTable, encoding); // modify dataTable
+  var sorting = compiler.sort(spec.data, encoding, stats); // append new data
 
   // marks
-  var style = compile.style(encoding, stats),
+  var style = compiler.style(encoding, stats),
     group = spec.marks[0],
     mark = marks[encoding.marktype()],
     mdefs = marks.def(mark, encoding, layout, style),
@@ -72,11 +72,11 @@ compile.encoding = function (encoding, stats) {
 
   var details = aggResult.details,
     hasDetails = details && details.length > 0,
-    stack = hasDetails && compile.stack(spec.data, encoding, mdef, aggResult.facets); // modify spec.data, mdef.{from,properties}
+    stack = hasDetails && compiler.stack(spec.data, encoding, mdef, aggResult.facets); // modify spec.data, mdef.{from,properties}
 
   if (hasDetails && (stack || lineType)) {
     //subfacet to group stack / line together in one group
-    compile.subfacet(group, mdef, details, stack, encoding);
+    compiler.subfacet(group, mdef, details, stack, encoding);
   }
 
   // auto-sort line/area values
@@ -90,7 +90,7 @@ compile.encoding = function (encoding, stats) {
 
   // Small Multiples
   if (encoding.has(ROW) || encoding.has(COL)) {
-    spec = compile.facet(group, encoding, layout, style, sorting, spec, mdef, stack, stats);
+    spec = compiler.facet(group, encoding, layout, style, sorting, spec, mdef, stack, stats);
     spec.legends = legend.defs(encoding);
   } else {
     group.scales = scale.defs(scale.names(mdef.properties.update), encoding, layout, stats, style, sorting, {stack: stack});

@@ -10,7 +10,8 @@ var vl = {};
 util.extend(vl, consts, util);
 
 vl.Encoding = require('./Encoding');
-vl.compile = require('./compile/compile');
+vl.compiler = require('./compiler/compiler');
+vl.compile = vl.compiler.compile;
 vl.data = require('./data');
 vl.enc = require('./enc');
 vl.field = require('./field');

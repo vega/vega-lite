@@ -2,7 +2,7 @@
 
 var expect = require('chai').expect;
 
-var template = require('../../src/compile/template'),
+var template = require('../../src/compiler/template'),
   Encoding = require('../../src/Encoding');
 
 describe('Template', function() {

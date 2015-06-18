@@ -6,7 +6,7 @@ require('./globals');
 
 var consts = require('./consts'),
   c = consts.shorthand,
-  time = require('./compile/time'),
+  time = require('./compiler/time'),
   util = require('./util'),
   schema = require('./schema/schema');
 

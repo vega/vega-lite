@@ -1,6 +1,6 @@
 var expect = require('chai').expect;
 
-var aggregate = require('../../src/compile/aggregate'),
+var aggregate = require('../../src/compiler/aggregate'),
   Encoding = require('../../src/Encoding');
 
 describe('vl.compile.aggregate', function() {
