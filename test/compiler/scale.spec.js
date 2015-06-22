@@ -5,8 +5,8 @@ var expect = require('chai').expect;
 
 var util = require('../../src/util'),
   Encoding = require('../../src/Encoding'),
-  vlscale = require('../../src/compile/scale'),
-  colorbrewer = require('../../src/lib/colorbrewer/colorbrewer');
+  vlscale = require('../../src/compiler/scale'),
+  colorbrewer = require('colorbrewer');
 
 describe('vl.compile.scale.domain', function() {
   it('should return correct stack', function() {
@@ -24,6 +24,25 @@ describe('vl.compile.scale.domain', function() {
     expect(scale).to.eql({
       data: 'stacked',
       field: 'data.max_sum_origin'
+    });
+  });
+
+  it('should return correct aggregated stack', function() {
+    var scale = vlscale.domain('y', Encoding.fromSpec({
+      encoding: {
+        y: {
+          aggregate: 'sum',
+          name: 'origin'
+        }
+      }
+    }), {}, {
+      stack: 'y',
+      facet: true
+    });
+
+    expect(scale).to.eql({
+      data: 'stacked',
+      field: 'data.max_sum_sum_origin'
     });
   });
 

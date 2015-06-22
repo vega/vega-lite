@@ -1,6 +1,6 @@
 var expect = require('chai').expect;
 
-var bin = require('../../src/compile/bin'),
+var bin = require('../../src/compiler/bin'),
   Encoding = require('../../src/Encoding');
 
 describe('vl.compile.bin', function() {

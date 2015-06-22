@@ -4,44 +4,44 @@
 
 var DATASETS = [
   {
-    name: "Barley",
-    url: "data/barley.json"
+    name: 'Barley',
+    url: 'data/barley.json'
   },{
-    name: "Cars",
-    url: "data/cars.json"
+    name: 'Cars',
+    url: 'data/cars.json'
   },{
-    name: "Crimea",
-    url: "data/crimea.json"
+    name: 'Crimea',
+    url: 'data/crimea.json'
   },{
-    name: "Driving",
-    url: "data/driving.json"
+    name: 'Driving',
+    url: 'data/driving.json'
   },{
-    name: "Iris",
-    url: "data/iris.json"
+    name: 'Iris',
+    url: 'data/iris.json'
   },{
-    name: "Jobs",
-    url: "data/jobs.json"
+    name: 'Jobs',
+    url: 'data/jobs.json'
   },{
-    name: "Population",
-    url: "data/population.json"
+    name: 'Population',
+    url: 'data/population.json'
   },{
-    name: "Movies",
-    url: "data/movies.json"
+    name: 'Movies',
+    url: 'data/movies.json'
   },{
-    name: "Birdstrikes",
-    url: "data/birdstrikes.json"
+    name: 'Birdstrikes',
+    url: 'data/birdstrikes.json'
   },{
-    name: "Burtin",
-    url: "data/burtin.json"
+    name: 'Burtin',
+    url: 'data/burtin.json'
   },{
-    name: "Budget 2016",
-    url: "data/budget.json"
+    name: 'Budget 2016',
+    url: 'data/budget.json'
   },{
-    name: "Climate Normals",
-    url: "data/climate.json"
+    name: 'Climate Normals',
+    url: 'data/climate.json'
   },{
-    name: "Campaigns",
-    url: "data/weball26.json"
+    name: 'Campaigns',
+    url: 'data/weball26.json'
   }
 ];
 
@@ -54,12 +54,12 @@ function getParams() {
   var params = location.search.slice(1);
 
   // remove trailing slash that chrome adds automatically
-  if (params[params.length-1] == "/") params = params.substring(0, params.length-1);
+  if (params[params.length-1] == '/') params = params.substring(0, params.length-1);
 
-  return params.split("&")
+  return params.split('&')
     .map(function(x) {
       // don't gobble up any equals within the query value
-      var idx = x.indexOf("=");
+      var idx = x.indexOf('=');
       return [x.slice(0,idx), x.slice(idx+1)];
     })
     .reduce(function(a, b) {
@@ -68,16 +68,16 @@ function getParams() {
 }
 
 vled.format = function() {
-  var el = d3.select("#vlspec"),
-      spec = JSON.parse(el.property("value")),
-      text = JSON.stringify(spec, null, "  ", 60);
-  el.property("value", text);
+  var el = d3.select('#vlspec'),
+      spec = JSON.parse(el.property('value')),
+      text = JSON.stringify(spec, null, '  ', 60);
+  el.property('value', text);
 };
 
 vled.parse = function() {
   var spec, encoding;
   try {
-    spec = JSON.parse(d3.select("#vlspec").property("value"));
+    spec = JSON.parse(d3.select('#vlspec').property('value'));
   } catch (e) {
     console.warn(e);
     return;
@@ -107,7 +107,7 @@ vled.parse = function() {
   }
 
   if (datasetIndex !== undefined) {
-    document.getElementById("sel_spec").selectedIndex = datasetIndex;
+    document.getElementById('sel_spec').selectedIndex = datasetIndex;
     vled.datasetChanged(DATASETS[datasetIndex], function() {
       done();
     });
@@ -117,10 +117,10 @@ vled.parse = function() {
 };
 
 vled.parseShorthand = function() {
-  var shorthand = d3.select("#shorthand").property("value");
+  var shorthand = d3.select('#shorthand').property('value');
 
   var encoding = vl.Encoding.parseShorthand(shorthand);
-  d3.select("#vlspec").node().value = JSON.stringify(encoding.toSpec(), null, "  ", 60);
+  d3.select('#vlspec').node().value = JSON.stringify(encoding.toSpec(), null, '  ', 60);
   vled.parse();
 };
 
@@ -128,17 +128,17 @@ vled.loadEncoding = function(encoding) {
   var stats = encoding.hasValues() ? null : vled.dataset.stats;
   var spec = vl.compile.encoding(encoding, stats);
 
-  d3.select("#shorthand").node().value = encoding.toShorthand();
-  d3.select("#vgspec").node().value = JSON.stringify(spec, null, "  ", 60);
+  d3.select('#shorthand').node().value = encoding.toShorthand();
+  d3.select('#vgspec').node().value = JSON.stringify(spec, null, '  ', 60);
 
   // store spec in cookie for a day
-  docCookies.setItem("vlspec", JSON.stringify(encoding.toSpec()), 86400);
+  docCookies.setItem('vlspec', JSON.stringify(encoding.toSpec()), 86400);
 
   $('textarea').trigger('autosize.resize');
 
   vled.vis = null; // DEBUG
   vg.parse.spec(spec, function(chart) {
-    vled.vis = chart({el:"#vis", renderer: "svg"});
+    vled.vis = chart({el:'#vis', renderer: 'svg'});
 
     vled.vis.update();
     vled.vis.on('mouseover', function(ev, item) {
@@ -156,8 +156,8 @@ vled.datasetChanged = function(dataset, callback) {
   }
 
   d3.json(dataset.url, function(err, data) {
-    if (err) return alert("Error loading data " + err.statusText);
-    dataset.stats = dl.summary(data).reduce(function(s, p) {
+    if (err) return alert('Error loading data ' + err.statusText);
+    dataset.stats = vl.summary(data).reduce(function(s, p) {
       s[p.field] = p;
       return s;
     },{});
@@ -169,47 +169,47 @@ vled.init = function() {
   var params = getParams();
 
   // Specification drop-down menu
-  var sel = d3.select("#sel_spec");
-  sel.selectAll("option.spec")
+  var sel = d3.select('#sel_spec');
+  sel.selectAll('option.spec')
     .data(DATASETS)
-   .enter().append("option")
+   .enter().append('option')
     .text(function(d) { return d.name; });
 
-  sel.on("change", function() {
+  sel.on('change', function() {
     var item = this.options[this.selectedIndex].__data__;
       vled.datasetChanged(item, function() {
-      d3.select("#vgspec").node().value = "";
-      d3.select("#vis").node().innerHTML = "";
+      d3.select('#vgspec').node().value = '';
+      d3.select('#vis').node().innerHTML = '';
     });
   });
 
   // Initialize application
-  d3.select("#btn_spec_format").on("click", vled.format);
-  d3.select("#btn_spec_parse").on("click", vled.parse);
-  d3.select("#btn_shorthand_parse").on("click", vled.parseShorthand);
+  d3.select('#btn_spec_format').on('click', vled.format);
+  d3.select('#btn_spec_parse').on('click', vled.parse);
+  d3.select('#btn_shorthand_parse').on('click', vled.parseShorthand);
 
   var shorthand = params.shortHand;
   if (shorthand) {
-    document.getElementById("shorthand").value = shorthand;
+    document.getElementById('shorthand').value = shorthand;
     vled.datasetChanged(DATASETS[0], function() {
       vled.parseShorthand();
     });
-  } else if (docCookies.hasItem("vlspec")) {
-    document.getElementById("vlspec").value = docCookies.getItem("vlspec");
+  } else if (docCookies.hasItem('vlspec')) {
+    document.getElementById('vlspec').value = docCookies.getItem('vlspec');
     vled.parse();
     vled.format();
   } else {
-    document.getElementById("vlspec").value = JSON.stringify({
-      marktype: "point",
+    document.getElementById('vlspec').value = JSON.stringify({
+      marktype: 'point',
       encoding: {
-        x: {type: "Q",name: "yield",aggr: "avg"},
+        x: {type: 'Q',name: 'yield',aggr: 'avg'},
         y: {
-          sort: [{name: "yield", aggr: "avg", reverse: false}],
-          type: "O",
-          name: "variety"
+          sort: [{name: 'yield', aggr: 'avg', reverse: false}],
+          type: 'N',
+          name: 'variety'
         },
-        row: {type: "O", name: "site"},
-        color: {type: "O", name: "year"}
+        row: {type: 'N', name: 'site'},
+        color: {type: 'N', name: 'year'}
       }
     });
 

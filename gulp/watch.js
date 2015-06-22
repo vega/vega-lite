@@ -11,8 +11,3 @@ gulp.task('watch-schema', function() {
 gulp.task('watch-test', function() {
   gulp.watch(['src/**', 'test/**'], ['test']);
 });
-
-gulp.task('copydl', function() {
-  gulp.src('node_modules/datalib/datalib.js')
-    .pipe(gulp.dest('lib/'));
-});

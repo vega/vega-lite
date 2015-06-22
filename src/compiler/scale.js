@@ -2,8 +2,8 @@
 require('../globals');
 var util = require('../util'),
   time = require('./time'),
-  colorbrewer = require('../lib/colorbrewer/colorbrewer'),
-  interpolateLab = require('../lib/d3-color/interpolate-lab');
+  colorbrewer = require('colorbrewer'),
+  interpolateLab = require('d3-color').interpolateLab;
 
 var scale = module.exports = {};
 
@@ -60,7 +60,7 @@ scale.domain = function (name, encoding, sorting, opt) {
       data: STACKED,
       field: encoding.fieldRef(name, {
         data: !encoding._vega2,
-        fn: (opt.facet ? 'max_' : '') + 'sum'
+        prefn: (opt.facet ? 'max_' : '') + 'sum_'
       })
     };
   }
@@ -179,7 +179,7 @@ scale.color = function(s, encoding, stats) {
       if (type === N) {
         // use categorical color scale
         if (cardinality <= 10) {
-          range = 'category10-k';
+          range = 'category10k';
         } else {
           range = 'category20';
         }

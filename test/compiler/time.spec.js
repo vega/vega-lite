@@ -2,7 +2,7 @@
 
 var expect = require('chai').expect;
 
-var time = require('../../src/compile/time'),
+var time = require('../../src/compiler/time'),
   Encoding = require('../../src/Encoding');
 
 describe('Time', function() {
