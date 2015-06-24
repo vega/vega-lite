@@ -75,7 +75,7 @@ vled.format = function() {
 };
 
 vled.parse = function() {
-  var spec, encoding;
+  var spec;
   try {
     spec = JSON.parse(d3.select('#vlspec').property('value'));
   } catch (e) {
@@ -98,8 +98,7 @@ vled.parse = function() {
         url:  vled.dataset.url
       }
     };
-    encoding = vl.Encoding.fromSpec(spec, theme);
-    vled.loadEncoding(encoding);
+    vled.loadSpec(spec, theme);
   };
 
   if (!vled.dataset && !datasetIndex) {
@@ -119,20 +118,19 @@ vled.parse = function() {
 vled.parseShorthand = function() {
   var shorthand = d3.select('#shorthand').property('value');
 
-  var encoding = vl.Encoding.parseShorthand(shorthand);
-  d3.select('#vlspec').node().value = JSON.stringify(encoding.toSpec(), null, '  ', 60);
+  var spec = vl.compile(shorthand, vled.dataset.stats);
+  d3.select('#vlspec').node().value = JSON.stringify(spec, null, '  ', 60);
   vled.parse();
 };
 
-vled.loadEncoding = function(encoding) {
-  var stats = encoding.hasValues() ? null : vled.dataset.stats;
-  var spec = vl.compile.encoding(encoding, stats);
+vled.loadSpec = function(vlspec, theme) {
+  var spec = vl.compile(vlspec, vled.dataset.stats, theme);
 
-  d3.select('#shorthand').node().value = encoding.toShorthand();
+  d3.select('#shorthand').node().value = vl.toShorthand(vlspec);
   d3.select('#vgspec').node().value = JSON.stringify(spec, null, '  ', 60);
 
   // store spec in cookie for a day
-  docCookies.setItem('vlspec', JSON.stringify(encoding.toSpec()), 86400);
+  docCookies.setItem('vlspec', JSON.stringify(vlspec), 86400);
 
   $('textarea').trigger('autosize.resize');
 
