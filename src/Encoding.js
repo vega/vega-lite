@@ -217,7 +217,7 @@ module.exports = (function() {
 
     if ((!sort || sort.length===0) &&
         // FIXME
-        Encoding.toggleSort.support({enc:this._enc}, stats, true) && //HACK
+        Encoding.toggleSort.support({encoding:this._enc}, stats, true) && //HACK
         this.config('toggleSort') === Q
       ) {
       var qField = isTypes(enc.x, [N, O]) ? enc.y : enc.x;
