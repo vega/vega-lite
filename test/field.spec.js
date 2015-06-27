@@ -25,15 +25,22 @@ describe('vl.field.cardinality()', function () {
   });
 });
 
+describe('vl.field.isType', function () {
+  it('should return correct type checking', function() {
+    var qField = {name: 'number', type:'Q'};
+    expect(vlfield.isType(qField, Q)).to.eql(true);
+    expect(vlfield.isTypes(qField, N)).to.eql(false);
+  });
+});
 
 describe('vl.field.isTypes', function () {
   it('should return correct type checking', function() {
     var qField = {name: 'number', type:'Q'};
+    expect(vlfield.isType(qField, Q)).to.eql(true);
     expect(vlfield.isTypes(qField, [Q])).to.eql(true);
     expect(vlfield.isTypes(qField, [Q, O])).to.eql(true);
+    expect(vlfield.isTypes(qField, [O, Q])).to.eql(true);
     expect(vlfield.isTypes(qField, [Q, N])).to.eql(true);
     expect(vlfield.isTypes(qField, [N])).to.eql(false);
   });
-
-
 });
