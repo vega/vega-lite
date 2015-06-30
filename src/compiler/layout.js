@@ -91,9 +91,16 @@ function box(encoding, stats) {
 
 function getMaxLength(encoding, stats, et) {
   // FIXME determine constant for Q and T in a nicer way
-  return encoding.isType(et, Q) ? 20 :
-    encoding.isType(et, T) ? 20 :
-    stats[encoding.fieldName(et)].max;
+  if (encoding.bin(et)) {
+    return 5;
+  } else if (encoding.isType(et, Q)) {
+    return 10;
+  } else if (encoding.isType(et, T)) {
+    return 15;
+  } else if (encoding.isTypes(et, [N, O]) && encoding.axis(et).maxLabelLength) {
+    return Math.min(stats[encoding.fieldName(et)].max, encoding.axis(et).maxLabelLength);
+  }
+  return stats[encoding.fieldName(et)].max;
 }
 
 function offset(encoding, stats, layout) {
@@ -111,6 +118,8 @@ function offset(encoding, stats, layout) {
         //assume that default formating is always shorter than 7
         maxLength = Math.min(getMaxLength(encoding, stats, x), 7);
       }
+    } else {
+      // nothing
     }
     setter(layout,[x, 'axisTitleOffset'], encoding.config('characterWidth') *  maxLength + 20);
   });

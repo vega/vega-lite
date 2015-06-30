@@ -271,10 +271,13 @@ module.exports = (function() {
 
   proto.isType = function(et, type) {
     var field = this.enc(et);
-    return field && Encoding.isType(field, type);
+    return field && vlfield.isType(field, type);
   };
 
-  Encoding.isType = vlfield.isType;
+  proto.isTypes = function(et, type) {
+    var field = this.enc(et);
+    return field && vlfield.isTypes(field, type);
+  };
 
   Encoding.isOrdinalScale = function(encoding, encType) {
     return vlfield.isOrdinalScale(encoding.enc(encType));
