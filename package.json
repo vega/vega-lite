@@ -19,7 +19,7 @@
     "type": "git",
     "url": "https://github.com/uwdata/vega-lite.git"
   },
-  "license": "BSD",
+  "license": "BSD-3-Clause",
   "bugs": {
     "url": "https://github.com/uwdata/vega-lite/issues"
   },
