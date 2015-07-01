@@ -1,7 +1,7 @@
 {
   "name": "vega-lite",
   "author": "Jeffrey Heer, Dominik Moritz, Kanit \"Ham\" Wongsuphasawat",
-  "version": "0.7.6",
+  "version": "0.7.7",
   "collaborators": [
     "Kanit Wongsuphasawat <kanitw@gmail.com> (http://kanitw.yellowpigz.com)",
     "Dominik Moritz <domoritz@cs.washington.edu> (http://domoritz.de)",
@@ -19,7 +19,7 @@
     "type": "git",
     "url": "https://github.com/uwdata/vega-lite.git"
   },
-  "license": "BSD",
+  "license": "BSD-3-Clause",
   "bugs": {
     "url": "https://github.com/uwdata/vega-lite/issues"
   },

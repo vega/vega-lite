@@ -176,8 +176,10 @@ function axis_labels(def, name, encoding, layout, opt) {
     } else if (encoding.timeUnit(name) === 'year') {
       setter(def, textTemplatePath, '{{data | number:\'d\'}}');
     }
-  } else if (encoding.isType(name, [N, O]) && encoding.axis(name).maxLabelLength) {
+  } else if (encoding.isTypes(name, [N, O]) && encoding.axis(name).maxLabelLength) {
     setter(def, textTemplatePath, '{{data | truncate:' + encoding.axis(name).maxLabelLength + '}}');
+  } else {
+    // nothing
   }
 
   return def;

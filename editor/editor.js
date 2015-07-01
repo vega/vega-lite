@@ -1,6 +1,6 @@
 'use strict';
 
-/*global location, d3, vl, vg, docCookies, document, $, alert, dl */
+/*global location, d3, vl, vg, docCookies, document, $, alert */
 
 var DATASETS = [
   {

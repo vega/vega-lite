@@ -110,7 +110,9 @@ vlfield.order.type = function(field) {
 };
 
 vlfield.order.typeThenName = function(field) {
-  return vlfield.order.type(field) + '_' + field.name.toLowerCase();
+  return vlfield.order.type(field) + '_' +
+    (field.aggregate === 'count' ? '~' : field.name.toLowerCase());
+    // ~ is the last character in ASCII
 };
 
 vlfield.order.original = function() {

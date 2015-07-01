@@ -217,7 +217,7 @@ module.exports = (function() {
 
     if ((!sort || sort.length===0) &&
         // FIXME
-        Encoding.toggleSort.support({enc:this._enc}, stats, true) && //HACK
+        Encoding.toggleSort.support({encoding:this._enc}, stats, true) && //HACK
         this.config('toggleSort') === Q
       ) {
       var qField = isTypes(enc.x, [N, O]) ? enc.y : enc.x;
@@ -271,10 +271,13 @@ module.exports = (function() {
 
   proto.isType = function(et, type) {
     var field = this.enc(et);
-    return field && Encoding.isType(field, type);
+    return field && vlfield.isType(field, type);
   };
 
-  Encoding.isType = vlfield.isType;
+  proto.isTypes = function(et, type) {
+    var field = this.enc(et);
+    return field && vlfield.isTypes(field, type);
+  };
 
   Encoding.isOrdinalScale = function(encoding, encType) {
     return vlfield.isOrdinalScale(encoding.enc(encType));

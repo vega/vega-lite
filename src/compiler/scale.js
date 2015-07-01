@@ -179,9 +179,9 @@ scale.color = function(s, encoding, stats) {
       if (type === N) {
         // use categorical color scale
         if (cardinality <= 10) {
-          range = 'category10k';
+          range = encoding.config('c10palette');
         } else {
-          range = 'category20';
+          range = encoding.config('c20palette');
         }
       } else {
         if (cardinality <= 2) {
