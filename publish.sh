@@ -38,6 +38,12 @@ gulp build
 git add vega-lite* -f
 git add spec.json -f
 
+# add bower_components for editor
+cd editor
+bower install
+git add bower_components/* -f
+cd ..
+
 # commit, tag and push to gh-pages and swap back to master
 set +e
 git commit -m "release $version $gitsha"

@@ -17,7 +17,8 @@ describe('Time', function() {
 
   it('should add formula transform', function() {
     var data = spec.data[1];
-    expect(data.transform).to.be.ok();
+    console.log(data.transform);
+    expect(data.transform).to.be.ok;
 
     expect(data.transform.filter(function(t) {
       return t.type === 'formula' && t.field === encoding.field('x') &&
