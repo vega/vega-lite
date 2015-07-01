@@ -20,7 +20,7 @@ filter.addFilters = function(rawTable, encoding) {
     rawTable.transform = [];
 
   // add custom filters
-  for (var i in filters) {
+  for (var i=0, l=filters.length; i<l; i++) {
     var filter = filters[i];
 
     var condition = '';
