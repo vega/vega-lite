@@ -27,6 +27,6 @@
     "tests"
   ],
   "dependencies": {
-    "datalib": "~1.1.12"
+    "datalib": "^1.3.0"
   }
 }
