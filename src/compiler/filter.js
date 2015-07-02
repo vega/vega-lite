@@ -20,7 +20,7 @@ filter.addFilters = function(rawTable, encoding) {
     rawTable.transform = [];
 
   // add custom filters
-  for (var i in filters) {
+  for (var i=0, l=filters.length; i<l; i++) {
     var filter = filters[i];
 
     var condition = '';
@@ -40,7 +40,7 @@ filter.addFilters = function(rawTable, encoding) {
       condition = d + op1 + operator + op2;
     } else if (operator === 'notNull') {
       // expects a number of fields
-      for (var j in operands) {
+      for (var j=0; j<operands.length; j++) {
         condition += d + operands[j] + '!==null';
         if (j < operands.length - 1) {
           condition += ' && ';
@@ -70,4 +70,3 @@ filter.filterLessThanZero = function(dataTable, encoding) {
     }
   });
 };
-
