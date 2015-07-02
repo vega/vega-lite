@@ -20,44 +20,40 @@ filter.addFilters = function(rawTable, encoding) {
     rawTable.transform = [];
 
   // add custom filters
-  for (var i in filters) {
-    if(filters.hasOwnProperty(filters[i])) {
-      var filter = filters[i];
+  for (var i=0, l=filters.length; i<l; i++) {
+    var filter = filters[i];
 
-      var condition = '';
-      var operator = filter.operator;
-      var operands = filter.operands;
+    var condition = '';
+    var operator = filter.operator;
+    var operands = filter.operands;
 
-      var d = 'd.' + (encoding._vega2 ? '' : 'data.');
+    var d = 'd.' + (encoding._vega2 ? '' : 'data.');
 
-      if (BINARY[operator]) {
-        // expects a field and a value
-        if (operator === '=') {
-          operator = '==';
-        }
-
-        var op1 = operands[0];
-        var op2 = operands[1];
-        condition = d + op1 + operator + op2;
-      } else if (operator === 'notNull') {
-        // expects a number of fields
-        for (var j in operands) {
-          if(operands.hasOwnProperty(operands[j])) {
-            condition += d + operands[j] + '!==null';
-            if (j < operands.length - 1) {
-              condition += ' && ';
-            }
-          }
-        }
-      } else {
-        console.warn('Unsupported operator: ', operator);
+    if (BINARY[operator]) {
+      // expects a field and a value
+      if (operator === '=') {
+        operator = '==';
       }
 
-      rawTable.transform.push({
-        type: 'filter',
-        test: condition
-      });
+      var op1 = operands[0];
+      var op2 = operands[1];
+      condition = d + op1 + operator + op2;
+    } else if (operator === 'notNull') {
+      // expects a number of fields
+      for (var j=0; j<operands.length; j++) {
+        condition += d + operands[j] + '!==null';
+        if (j < operands.length - 1) {
+          condition += ' && ';
+        }
+      }
+    } else {
+      console.warn('Unsupported operator: ', operator);
     }
+
+    rawTable.transform.push({
+      type: 'filter',
+      test: condition
+    });
   }
 
   return rawTable;
@@ -74,4 +70,3 @@ filter.filterLessThanZero = function(dataTable, encoding) {
     }
   });
 };
-
