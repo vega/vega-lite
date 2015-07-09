@@ -65,13 +65,17 @@ scale.domain = function (name, encoding, sorting, opt) {
     };
   }
 
-  var aggregate = encoding.aggregate(name);
+  var aggregate = encoding.aggregate(name),
+    timeUnit = encoding.timeUnit(name);
+
 
   if (
     encoding.scale(name).useRawDomain &&
-    aggregate && aggregate !=='count' &&
-    !encoding.bin(name) &&
-    encoding.isType(name, Q)
+    (aggregate && aggregate !=='count') &&
+    // Q always use non-ordinal scale except when it's binned and thus uses ordinal scale.
+    (encoding.isType(name, Q) && !encoding.bin(name))
+    // T use non-ordinal scale when there's no unit or when the unit is not ordinal.
+    (encoding.isType(name, T) && (!timeUnit || !time.isOrdinalFn(timeUnit)))
   ) {
     return {data: RAW, field: encoding.fieldRef(name, {nofn: true})};
   }
