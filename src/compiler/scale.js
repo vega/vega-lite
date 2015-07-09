@@ -64,6 +64,17 @@ scale.domain = function (name, encoding, sorting, opt) {
       })
     };
   }
+
+  var aggregate = encoding.aggregate(name);
+
+  if (
+    aggregate && aggregate !=='count' &&
+    !encoding.bin(name) &&
+    encoding.isType(name, Q)
+  ) {
+    return {data: RAW, field: encoding.fieldRef(name, {nofn: true})};
+  }
+
   return {data: sorting.getDataset(name), field: encoding.field(name)};
 };
 

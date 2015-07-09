@@ -179,6 +179,11 @@ var axisMixin = {
           default: 25,
           minimum: 0,
           description: 'Truncate labels that are too long.'
+        },
+        useRawDomain: {
+          type: 'boolean',
+          default: false,
+          description: 'Use the raw data range as scale domain instead of aggregated data for aggregate axis.'
         }
       }
     }
