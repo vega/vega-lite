@@ -68,6 +68,7 @@ scale.domain = function (name, encoding, sorting, opt) {
   var aggregate = encoding.aggregate(name);
 
   if (
+    encoding.scale(name).useRawDomain &&
     aggregate && aggregate !=='count' &&
     !encoding.bin(name) &&
     encoding.isType(name, Q)
