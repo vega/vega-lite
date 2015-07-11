@@ -64,7 +64,7 @@ scale.domain = function (name, encoding, sorting, opt) {
       })
     };
   }
-  return {data: sorting.getDataset(name), field: encoding.field(name)};
+  return {data: sorting.getDataset(name), field: encoding.fieldRef(name)};
 };
 
 

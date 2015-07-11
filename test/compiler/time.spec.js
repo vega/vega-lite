@@ -20,7 +20,7 @@ describe('Time', function() {
     expect(data.transform).to.be.ok();
 
     expect(data.transform.filter(function(t) {
-      return t.type === 'formula' && t.field === encoding.field('x') &&
+      return t.type === 'formula' && t.field === encoding.fieldRef('x') &&
         t.expr === time.formula(encoding._enc.x);
     }).length).to.be.above(0);
   });

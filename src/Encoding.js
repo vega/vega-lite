@@ -121,15 +121,7 @@ module.exports = (function() {
     return filterNull.concat(this._filter);
   };
 
-  // get "field" property for vega
-  proto.field = function(et, nodata, nofn) {
-    if (!this.has(et)) return null;
-    return vlfield.fieldRef(this._enc[et], {
-      nofn: nofn,
-      data: !this._vega2 && !nodata
-    });
-  };
-
+  // get "field" reference for vega
   proto.fieldRef = function(et, opt) {
     opt = opt || {};
     opt.data = !this._vega2 && (opt.data !== false);
