@@ -40,7 +40,7 @@ scale.type = function(name, encoding) {
     case O: return 'ordinal';
     case T:
       var timeUnit = encoding.timeUnit(name);
-      return (timeUnit && time.scale.type(timeUnit, name)) || 'time';
+      return timeUnit ? time.scale.type(timeUnit, name) : 'time';
     case Q:
       if (encoding.bin(name)) {
         return name === COLOR ? 'linear' : 'ordinal';
@@ -243,4 +243,3 @@ scale.color.interpolate = function (start, end, cardinality) {
   var interpolator = interpolateLab(start, end);
   return util.range(cardinality).map(function(i) { return interpolator(i*1.0/(cardinality-1)); });
 };
-
