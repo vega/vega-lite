@@ -190,10 +190,6 @@ module.exports = (function() {
     return this._enc[et].value;
   };
 
-  proto.timeUnit = function(et) {
-    return this._enc[et].timeUnit;
-  };
-
   proto.sort = function(et, stats) {
     var sort = this._enc[et].sort,
       enc = this._enc,
