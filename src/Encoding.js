@@ -143,9 +143,9 @@ module.exports = (function() {
     if (vlfield.isCount(this._enc[et])) {
       return vlfield.count.displayName;
     }
-    var timeUnit = this._enc[et].aggregate || this._enc[et].timeUnit || (this._enc[et].bin && 'bin');
-    if (timeUnit) {
-      return timeUnit.toUpperCase() + '(' + this._enc[et].name + ')';
+    var fn = this._enc[et].aggregate || this._enc[et].timeUnit || (this._enc[et].bin && 'bin');
+    if (fn) {
+      return fn.toUpperCase() + '(' + this._enc[et].name + ')';
     } else {
       return this._enc[et].name;
     }
