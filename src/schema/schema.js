@@ -205,7 +205,8 @@ var bandMixin = {
       properties: {
         size: {
           type: 'integer',
-          minimum: 0
+          minimum: 0,
+          default: undefined
         },
         padding: {
           type: 'integer',
