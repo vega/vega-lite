@@ -56,10 +56,9 @@ schema.timeUnit = {
   supportedTypes: toMap([T])
 };
 
-//TODO(kanitw): add other type of function here
-
 schema.scale_type = {
   type: 'string',
+  // TODO(kanitw) read vega's schema here, add description
   enum: ['linear', 'log', 'pow', 'sqrt', 'quantile'],
   default: 'linear',
   supportedTypes: toMap([Q])
@@ -86,7 +85,8 @@ var bin = {
     maxbins: {
       type: 'integer',
       default: schema.MAXBINS_DEFAULT,
-      minimum: 2
+      minimum: 2,
+      description: 'Maximum number of bin allowed for the binning algorithm.'
     }
   },
   supportedTypes: toMap([Q]) // TODO: add O after finishing #81
@@ -589,6 +589,7 @@ var config = {
     // color
     c10palette: {
       type: 'string',
+      role: 'palette',
       default: 'category10',
       enum: [
         // Tableau
@@ -599,11 +600,13 @@ var config = {
     },
     c20palette: {
       type: 'string',
+      role: 'palette',
       default: 'category20',
       enum: ['category20', 'category20b', 'category20c']
     },
     ordinalPalette: {
       type: 'string',
+      role: 'palette',
       default: 'BuGn',
       enum: util.keys(colorbrewer)
     },
