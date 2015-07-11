@@ -123,7 +123,7 @@ time.isOrdinalFn = function(timeUnit) {
 
 time.scale.type = function(timeUnit, name) {
   if (name === COLOR) {
-    return 'linear'; // this has order
+    return 'linear'; // time has order, so use interpolated ordinal color scale. 
   }
 
   return time.isOrdinalFn(timeUnit) || name === COL || name === ROW ? 'ordinal' : 'linear';
@@ -151,5 +151,3 @@ time.hasScale = function(timeUnit) {
   }
   return false;
 };
-
-
