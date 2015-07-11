@@ -163,7 +163,7 @@ function scale_range(s, encoding, layout, stats, style, opt) {
     case Y:
       if (s.type === 'ordinal') { //&& !s.bandWidth
         s.points = true;
-        s.padding = encoding.band(s.name).padding;
+        s.padding = encoding.field(s.name).band.padding;
       }
   }
 }
