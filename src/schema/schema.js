@@ -27,20 +27,6 @@ schema.aggregate = {
   },
   supportedTypes: toMap([Q, N, O, T, ''])
 };
-schema.band = {
-  type: 'object',
-  properties: {
-    size: {
-      type: 'integer',
-      minimum: 0
-    },
-    padding: {
-      type: 'integer',
-      minimum: 0,
-      default: 1
-    }
-  }
-};
 
 schema.getSupportedRole = function(encType) {
   return schema.schema.properties.encoding.properties[encType].supportedRole;
@@ -214,7 +200,20 @@ var sortMixin = {
 var bandMixin = {
   type: 'object',
   properties: {
-    band: schema.band
+    band: {
+      type: 'object',
+      properties: {
+        size: {
+          type: 'integer',
+          minimum: 0
+        },
+        padding: {
+          type: 'integer',
+          minimum: 0,
+          default: 1
+        }
+      }
+    }
   }
 };
 
