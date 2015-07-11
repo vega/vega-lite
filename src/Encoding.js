@@ -227,10 +227,6 @@ module.exports = (function() {
     return sort;
   };
 
-  proto.length = function() {
-    return util.keys(this._enc).length;
-  };
-
   proto.map = function(f) {
     return vlenc.map(this._enc, f);
   };
