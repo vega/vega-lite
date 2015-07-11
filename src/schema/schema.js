@@ -306,7 +306,31 @@ var colorMixin = {
       type: 'object',
       properties: {
         range: {
-          type: ['string', 'array']
+          type: ['string', 'array'],
+          default: undefined,
+          description:
+            'color palette, if undefined vega-lite will use data property' +
+            'to pick one from c10palette, c20palette, or ordinalPalette'
+        },
+        c10palette: {
+          type: 'string',
+          default: 'category10',
+          enum: [
+            // Tableau
+            'category10', 'category10k',
+            // Color Brewer
+            'Pastel1', 'Pastel2', 'Set1', 'Set2', 'Set3'
+          ]
+        },
+        c20palette: {
+          type: 'string',
+          default: 'category20',
+          enum: ['category20', 'category20b', 'category20c']
+        },
+        ordinalPalette: {
+          type: 'string',
+          default: 'BuGn',
+          enum: util.keys(colorbrewer)
         }
       }
     }
@@ -588,28 +612,6 @@ var config = {
       type: 'integer',
       default: 5,
       minimum: 0
-    },
-
-    // color
-    c10palette: {
-      type: 'string',
-      default: 'category10',
-      enum: [
-        // Tableau
-        'category10', 'category10k',
-        // Color Brewer
-        'Pastel1', 'Pastel2', 'Set1', 'Set2', 'Set3'
-      ]
-    },
-    c20palette: {
-      type: 'string',
-      default: 'category20',
-      enum: ['category20', 'category20b', 'category20c']
-    },
-    ordinalPalette: {
-      type: 'string',
-      default: 'BuGn',
-      enum: util.keys(colorbrewer)
     },
 
     // scales
