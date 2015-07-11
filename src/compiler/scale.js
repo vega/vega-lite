@@ -169,7 +169,7 @@ function scale_range(s, encoding, layout, stats, style, opt) {
 }
 
 scale.color = function(s, encoding, stats) {
-  var colorScale = encoding.scale(COLOR)
+  var colorScale = encoding.scale(COLOR),
     range = colorScale.range,
     cardinality = encoding.cardinality(COLOR, stats),
     type = encoding.type(COLOR);
