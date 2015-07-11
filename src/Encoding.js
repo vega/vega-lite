@@ -190,10 +190,6 @@ module.exports = (function() {
     return bin;
   };
 
-  proto.legend = function(et) {
-    return this._enc[et].legend;
-  };
-
   proto.value = function(et) {
     return this._enc[et].value;
   };
@@ -249,16 +245,6 @@ module.exports = (function() {
 
   proto.role = function(et) {
     return this.has(et) ? vlfield.role(this._enc[et]) : null;
-  };
-
-  proto.text = function(prop) {
-    var text = this._enc[TEXT].text;
-    return prop ? text[prop] : text;
-  };
-
-  proto.font = function(prop) {
-    var font = this._enc[TEXT].font;
-    return prop ? font[prop] : font;
   };
 
   proto.isType = function(et, type) {

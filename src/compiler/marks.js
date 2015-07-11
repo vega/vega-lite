@@ -403,7 +403,8 @@ function filled_point_props(shape) {
 }
 
 function text_props(e, layout, style) {
-  var p = {};
+  var p = {},
+    textField = e.field(TEXT);
 
   // x
   if (e.has(X)) {
@@ -427,7 +428,7 @@ function text_props(e, layout, style) {
   if (e.has(SIZE)) {
     p.fontSize = {scale: SIZE, field: e.fieldRef(SIZE)};
   } else if (!e.has(SIZE)) {
-    p.fontSize = {value: e.font('size')};
+    p.fontSize = {value: textField.font.size};
   }
 
   // fill
@@ -455,10 +456,10 @@ function text_props(e, layout, style) {
     p.text = {value: 'Abc'};
   }
 
-  p.font = {value: e.font('family')};
-  p.fontWeight = {value: e.font('weight')};
-  p.fontStyle = {value: e.font('style')};
-  p.baseline = {value: e.text('baseline')};
+  p.font = {value: textField.font.family};
+  p.fontWeight = {value: textField.font.weight};
+  p.fontStyle = {value: textField.font.style};
+  p.baseline = {value: textField.baseline};
 
   return p;
 }
