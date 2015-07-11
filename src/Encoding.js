@@ -95,7 +95,7 @@ module.exports = (function() {
     return this._enc[encType].name !== undefined;
   };
 
-  proto.enc = function(et) {
+  proto.field = function(et) {
     return this._enc[et];
   };
 
@@ -262,25 +262,25 @@ module.exports = (function() {
   };
 
   proto.isType = function(et, type) {
-    var field = this.enc(et);
+    var field = this.field(et);
     return field && vlfield.isType(field, type);
   };
 
   proto.isTypes = function(et, type) {
-    var field = this.enc(et);
+    var field = this.field(et);
     return field && vlfield.isTypes(field, type);
   };
 
   Encoding.isOrdinalScale = function(encoding, encType) {
-    return vlfield.isOrdinalScale(encoding.enc(encType));
+    return vlfield.isOrdinalScale(encoding.field(encType));
   };
 
   Encoding.isDimension = function(encoding, encType) {
-    return vlfield.isDimension(encoding.enc(encType));
+    return vlfield.isDimension(encoding.field(encType));
   };
 
   Encoding.isMeasure = function(encoding, encType) {
-    return vlfield.isMeasure(encoding.enc(encType));
+    return vlfield.isMeasure(encoding.field(encType));
   };
 
   proto.isOrdinalScale = function(encType) {
@@ -320,7 +320,7 @@ module.exports = (function() {
   };
 
   proto.cardinality = function(encType, stats) {
-    return vlfield.cardinality(this.enc(encType), stats, this.config('filterNull'));
+    return vlfield.cardinality(this.field(encType), stats, this.config('filterNull'));
   };
 
   proto.isRaw = function() {
