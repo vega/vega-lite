@@ -433,7 +433,7 @@ function text_props(e, layout, style) {
 
   // fill
   // color should be set to background
-  p.fill = {value: 'black'};
+  p.fill = {value: textField.text.color};
 
   // alpha
   if (e.has(ALPHA)) {
@@ -448,12 +448,12 @@ function text_props(e, layout, style) {
   if (e.has(TEXT)) {
     if (e.isType(TEXT, Q)) {
       p.text = {template: '{{' + e.fieldRef(TEXT) + ' | number:\'.3s\'}}'};
-      p.align = {value: 'right'};
+      p.align = {value: textField.align};
     } else {
       p.text = {field: e.fieldRef(TEXT)};
     }
   } else {
-    p.text = {value: 'Abc'};
+    p.text = {value: textField.placeholder};
   }
 
   p.font = {value: textField.font.family};
