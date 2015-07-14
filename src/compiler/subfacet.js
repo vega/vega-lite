@@ -19,6 +19,6 @@ function subfaceting(group, mdef, details, stack, encoding) {
   trans.unshift({type: 'facet', keys: details});
 
   if (stack && encoding.has(COLOR)) {
-    trans.unshift({type: 'sort', by: encoding.field(COLOR)});
+    trans.unshift({type: 'sort', by: encoding.fieldRef(COLOR)});
   }
 }

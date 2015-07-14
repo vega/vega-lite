@@ -90,6 +90,7 @@ axis.def = function(name, encoding, layout, stats, opt) {
   }
 
   if (isRow || isCol) {
+    // hide axis and ticks for row / col
     setter(def, ['properties', 'ticks'], {
       opacity: {value: 0}
     });
