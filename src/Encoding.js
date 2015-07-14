@@ -243,10 +243,6 @@ module.exports = (function() {
     return this.has(et) ? this._enc[et].type : null;
   };
 
-  proto.role = function(et) {
-    return this.has(et) ? vlfield.role(this._enc[et]) : null;
-  };
-
   proto.isType = function(et, type) {
     var field = this.field(et);
     return field && vlfield.isType(field, type);

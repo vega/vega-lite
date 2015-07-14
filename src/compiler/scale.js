@@ -169,19 +169,20 @@ function scale_range(s, encoding, layout, stats, style, opt) {
 }
 
 scale.color = function(s, encoding, stats) {
-  var range = encoding.scale(COLOR).range,
+  var colorScale = encoding.scale(COLOR),
+    range = colorScale.range,
     cardinality = encoding.cardinality(COLOR, stats),
     type = encoding.type(COLOR);
 
   if (range === undefined) {
-    var ordinalPalette = encoding.config('ordinalPalette');
+    var ordinalPalette = colorScale.ordinalPalette;
     if (s.type === 'ordinal') {
       if (type === N) {
         // use categorical color scale
         if (cardinality <= 10) {
-          range = encoding.config('c10palette');
+          range = colorScale.c10palette;
         } else {
-          range = encoding.config('c20palette');
+          range = colorScale.c20palette;
         }
       } else {
         if (cardinality <= 2) {
