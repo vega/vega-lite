@@ -334,7 +334,7 @@ var shapeMixin = {
     filled: {
       type: 'boolean',
       default: false,
-      description: 'whether the shape\'s color should be apply on stroke or on fill properties'
+      description: 'whether the shape\'s color should be used as fill color instead of stroke color'
     }
   }
 };
