@@ -85,7 +85,7 @@ compiler.compileEncoding = function (encoding, stats) {
     var f = (encoding.isMeasure(X) && encoding.isDimension(Y)) ? Y : X;
     if (!mdef.from) mdef.from = {};
     // TODO: why - ?
-    mdef.from.transform = [{type: 'sort', by: '-' + encoding.field(f)}];
+    mdef.from.transform = [{type: 'sort', by: '-' + encoding.fieldRef(f)}];
   }
 
   // Small Multiples

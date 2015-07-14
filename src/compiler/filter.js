@@ -65,7 +65,7 @@ filter.filterLessThanZero = function(dataTable, encoding) {
     if (encoding.scale(encType).type === 'log') {
       dataTable.transform.push({
         type: 'filter',
-        test: 'd.' + encoding.field(encType) + '>0'
+        test: 'd.' + encoding.fieldRef(encType) + '>0'
       });
     }
   });

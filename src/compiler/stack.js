@@ -34,8 +34,8 @@ function stacking(data, encoding, mdef, facets) {
     source: TABLE,
     transform: [{
       type: 'aggregate',
-      groupby: [encoding.field(dim)].concat(facets), // dim and other facets
-      fields: [{op: 'sum', field: encoding.field(val)}] // TODO check if field with aggregate is correct?
+      groupby: [encoding.fieldRef(dim)].concat(facets), // dim and other facets
+      fields: [{op: 'sum', field: encoding.fieldRef(val)}] // TODO check if field with aggregate is correct?
     }]
   };
 
@@ -55,8 +55,8 @@ function stacking(data, encoding, mdef, facets) {
   // add stack transform to mark
   mdef.from.transform = [{
     type: 'stack',
-    point: encoding.field(dim),
-    height: encoding.field(val),
+    point: encoding.fieldRef(dim),
+    height: encoding.fieldRef(val),
     output: {y1: val, y0: val + '2'}
   }];
 
