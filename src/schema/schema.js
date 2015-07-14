@@ -86,7 +86,7 @@ var bin = {
       type: 'integer',
       default: schema.MAXBINS_DEFAULT,
       minimum: 2,
-      description: 'Maximum number of bin allowed for the binning algorithm.'
+      description: 'Maximum number of bins.'
     }
   },
   supportedTypes: toMap([Q]) // TODO: add O after finishing #81
