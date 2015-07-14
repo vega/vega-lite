@@ -197,10 +197,19 @@ function point_props(e, layout, style) {
   }
 
   // stroke
-  if (e.has(COLOR)) {
-    p.stroke = {scale: COLOR, field: e.field(COLOR)};
-  } else if (!e.has(COLOR)) {
-    p.stroke = {value: e.value(COLOR)};
+  if (e.enc(SHAPE).filled) {
+    if (e.has(COLOR)) {
+      p.fill = {scale: COLOR, field: e.field(COLOR)};
+    } else if (!e.has(COLOR)) {
+      p.fill = {value: e.value(COLOR)};
+    }
+  } else {
+    if (e.has(COLOR)) {
+      p.stroke = {scale: COLOR, field: e.field(COLOR)};
+    } else if (!e.has(COLOR)) {
+      p.stroke = {value: e.value(COLOR)};
+    }
+    p.strokeWidth = {value: e.config('strokeWidth')};
   }
 
   // alpha
@@ -212,7 +221,7 @@ function point_props(e, layout, style) {
     p.opacity = {value: style.opacity};
   }
 
-  p.strokeWidth = {value: e.config('strokeWidth')};
+
 
   return p;
 }
@@ -281,7 +290,7 @@ function area_props(e, layout, style) {
     p.y = {group: 'height'};
   }
 
-  // stroke
+  // fill
   if (e.has(COLOR)) {
     p.fill = {scale: COLOR, field: e.field(COLOR)};
   } else if (!e.has(COLOR)) {

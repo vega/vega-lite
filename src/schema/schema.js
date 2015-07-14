@@ -331,6 +331,11 @@ var shapeMixin = {
       type: 'string',
       enum: ['circle', 'square', 'cross', 'diamond', 'triangle-up', 'triangle-down'],
       default: 'circle'
+    },
+    filled: {
+      type: 'boolean',
+      default: false,
+      description: 'whether the shape\'s color should be used as fill color instead of stroke color'
     }
   }
 };
