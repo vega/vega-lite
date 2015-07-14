@@ -22,7 +22,7 @@ function aggregates(dataTable, encoding, opt) {
         };
       }
     } else {
-      dims[field.name] = encoding.field(encType);
+      dims[field.name] = encoding.fieldRef(encType);
       if (encType == ROW || encType == COL) {
         facets[field.name] = dims[field.name];
       }else if (encType !== X && encType !== Y) {
