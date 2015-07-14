@@ -4,7 +4,7 @@ require('../globals');
 
 var marks = module.exports = {};
 
-marks.def = function(mark, encoding, layout, style) {
+marks.def = function(mark, encoding, layout, style, stats) {
   var defs = [];
 
   // to add a background to text, we need to add it before the text
@@ -24,7 +24,7 @@ marks.def = function(mark, encoding, layout, style) {
   }
 
   // add the mark def for the main thing
-  var p = mark.prop(encoding, layout, style);
+  var p = mark.prop(encoding, layout, style, stats);
   defs.push({
     type: mark.type,
     from: {data: TABLE},
@@ -411,7 +411,7 @@ function filled_point_props(shape) {
   };
 }
 
-function text_props(e, layout, style) {
+function text_props(e, layout, style, stats) {
   var p = {};
 
   // x
@@ -455,8 +455,11 @@ function text_props(e, layout, style) {
   // text
   if (e.has(TEXT)) {
     if (e.isType(TEXT, Q)) {
-      p.text = {template: '{{' + e.field(TEXT) + ' | number:\'.3s\'}}'};
-      p.align = {value: 'right'};
+      var fieldStats = stats[e.fieldName(name)],
+        numberFormat = e.numberFormat(name, fieldStats);
+      p.text = {template: '{{' + e.fieldRef(TEXT) + ' | number:\'' +
+        numberFormat +'\'}}'};
+      p.align = {value: e.field(TEXT).align};
     } else {
       p.text = {field: e.field(TEXT)};
     }

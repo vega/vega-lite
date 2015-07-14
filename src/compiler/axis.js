@@ -125,7 +125,7 @@ axis.def = function(name, encoding, layout, stats, opt) {
     }
   }
 
-  def = axis_labels(def, name, encoding, layout, opt);
+  def = axis.labels(def, name, encoding, layout, stats, opt);
 
   return def;
 };
@@ -156,10 +156,11 @@ function axis_title(def, name, encoding, layout, opt) {
   return def;
 }
 
-function axis_labels(def, name, encoding, layout, opt) {
+axis.labels = function (def, name, encoding, layout, stats, opt) {
   // jshint unused:false
 
   var timeUnit;
+
   // add custom label for time type
   if (encoding.isType(name, T) && (timeUnit = encoding.timeUnit(name)) && (time.hasScale(timeUnit))) {
     setter(def, ['properties','labels','text','scale'], 'time-'+ timeUnit);
@@ -169,10 +170,14 @@ function axis_labels(def, name, encoding, layout, opt) {
   if (encoding.axis(name).format) {
     def.format = encoding.axis(name).format;
   } else if (encoding.isType(name, Q)) {
-    setter(def, textTemplatePath, '{{data | number:\'.3s\'}}');
+    var fieldStats = stats[encoding.fieldName(name)],
+      numberFormat = encoding.numberFormat(name, fieldStats);
+
+    setter(def, textTemplatePath, '{{data | number:\'' + numberFormat + '\'}}');
   } else if (encoding.isType(name, T)) {
     if (!encoding.timeUnit(name)) {
-      setter(def, textTemplatePath, '{{data | time:\'%Y-%m-%d\'}}');
+      setter(def, textTemplatePath, '{{data | time:\'' +
+             encoding.config('timeFormat') + '\'}}');
     } else if (encoding.timeUnit(name) === 'year') {
       setter(def, textTemplatePath, '{{data | number:\'d\'}}');
     }
@@ -183,7 +188,7 @@ function axis_labels(def, name, encoding, layout, opt) {
   }
 
   return def;
-}
+};
 
 function axisTitleOffset(encoding, layout, name) {
   var value = encoding.axis(name).titleOffset;

@@ -210,6 +210,14 @@ module.exports = (function() {
     return this._enc[et].timeUnit;
   };
 
+  proto.numberFormat = function(et, fieldStats) {
+    return this._enc[et].axis.numberFormat ||
+      this.config(
+        fieldStats && fieldStats.max > this.config('maxSmallNumber') ?
+        'largeNumberFormat' : 'smallNumberFormat'
+      );
+  };
+
   proto.sort = function(et, stats) {
     var sort = this._enc[et].sort,
       enc = this._enc,

@@ -165,6 +165,13 @@ var axisMixin = {
           default: 25,
           minimum: 0,
           description: 'Truncate labels that are too long.'
+        },
+        numberFormat: {
+          type: 'string',
+          default: undefined,
+          description: 'Number format for the axis.  If not undefined, this will ' +
+                       'be determined by small/largeNumberFormat and the max value ' +
+                       'of the field.'
         }
       }
     }
@@ -622,6 +629,28 @@ var config = {
     characterWidth: {
       type: 'integer',
       default: 6
+    },
+    maxSmallNumber: {
+      type: 'number',
+      default: 1000,
+      description: 'maximum number that a field will be considered smallNumber'
+    },
+    smallNumberFormat: {
+      type: 'string',
+      default: ',g',
+      description: 'Number format for axis labels and text tables '+
+                   'for number <= maxSmallNumber'
+    },
+    largeNumberFormat: {
+      type: 'string',
+      default: '.3s',
+      description: 'Number format for axis labels and text tables ' +
+                   'for number > maxSmallNumber'
+    },
+    timeFormat: {
+      type: 'string',
+      default: '%Y-%m-%d',
+      description: 'Date format for axis labels.'
     }
   }
 };
