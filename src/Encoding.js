@@ -95,7 +95,7 @@ module.exports = (function() {
     return this._enc[encType].name !== undefined;
   };
 
-  proto.enc = function(et) {
+  proto.field = function(et) {
     return this._enc[et];
   };
 
@@ -121,15 +121,7 @@ module.exports = (function() {
     return filterNull.concat(this._filter);
   };
 
-  // get "field" property for vega
-  proto.field = function(et, nodata, nofn) {
-    if (!this.has(et)) return null;
-    return vlfield.fieldRef(this._enc[et], {
-      nofn: nofn,
-      data: !this._vega2 && !nodata
-    });
-  };
-
+  // get "field" reference for vega
   proto.fieldRef = function(et, opt) {
     opt = opt || {};
     opt.data = !this._vega2 && (opt.data !== false);
@@ -198,10 +190,6 @@ module.exports = (function() {
     return bin;
   };
 
-  proto.legend = function(et) {
-    return this._enc[et].legend;
-  };
-
   proto.value = function(et) {
     return this._enc[et].value;
   };
@@ -255,40 +243,26 @@ module.exports = (function() {
     return this.has(et) ? this._enc[et].type : null;
   };
 
-  proto.role = function(et) {
-    return this.has(et) ? vlfield.role(this._enc[et]) : null;
-  };
-
-  proto.text = function(prop) {
-    var text = this._enc[TEXT].text;
-    return prop ? text[prop] : text;
-  };
-
-  proto.font = function(prop) {
-    var font = this._enc[TEXT].font;
-    return prop ? font[prop] : font;
-  };
-
   proto.isType = function(et, type) {
-    var field = this.enc(et);
+    var field = this.field(et);
     return field && vlfield.isType(field, type);
   };
 
   proto.isTypes = function(et, type) {
-    var field = this.enc(et);
+    var field = this.field(et);
     return field && vlfield.isTypes(field, type);
   };
 
   Encoding.isOrdinalScale = function(encoding, encType) {
-    return vlfield.isOrdinalScale(encoding.enc(encType));
+    return vlfield.isOrdinalScale(encoding.field(encType));
   };
 
   Encoding.isDimension = function(encoding, encType) {
-    return vlfield.isDimension(encoding.enc(encType));
+    return vlfield.isDimension(encoding.field(encType));
   };
 
   Encoding.isMeasure = function(encoding, encType) {
-    return vlfield.isMeasure(encoding.enc(encType));
+    return vlfield.isMeasure(encoding.field(encType));
   };
 
   proto.isOrdinalScale = function(encType) {
@@ -328,7 +302,7 @@ module.exports = (function() {
   };
 
   proto.cardinality = function(encType, stats) {
-    return vlfield.cardinality(this.enc(encType), stats, this.config('filterNull'));
+    return vlfield.cardinality(this.field(encType), stats, this.config('filterNull'));
   };
 
   proto.isRaw = function() {

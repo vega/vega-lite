@@ -165,10 +165,6 @@ vlfield.isMeasure = function(field) {
   return field && !isDimension(field);
 };
 
-vlfield.role = function(field) {
-  return isDimension(field) ? 'dimension' : 'measure';
-};
-
 vlfield.count = function() {
   return {name:'*', aggregate: 'count', type: Q, displayName: vlfield.count.displayName};
 };

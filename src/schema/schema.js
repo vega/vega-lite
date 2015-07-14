@@ -207,7 +207,8 @@ var bandMixin = {
       properties: {
         size: {
           type: 'integer',
-          minimum: 0
+          minimum: 0,
+          default: undefined
         },
         padding: {
           type: 'integer',
@@ -233,23 +234,27 @@ var textMixin = {
   type: 'object',
   supportedMarktypes: {'text': true},
   properties: {
-    text: {
-      type: 'object',
-      properties: {
-        align: {
-          type: 'string',
-          default: 'left'
-        },
-        baseline: {
-          type: 'string',
-          default: 'middle'
-        },
-        margin: {
-          type: 'integer',
-          default: 4,
-          minimum: 0
-        }
-      }
+    align: {
+      type: 'string',
+      default: 'right'
+    },
+    baseline: {
+      type: 'string',
+      default: 'middle'
+    },
+    color: {
+      type: 'string',
+      role: 'color',
+      default: '#000000'
+    },
+    margin: {
+      type: 'integer',
+      default: 4,
+      minimum: 0
+    },
+    placeholder: {
+      type: 'string',
+      default: 'Abc'
     },
     font: {
       type: 'object',
@@ -303,7 +308,31 @@ var colorMixin = {
       type: 'object',
       properties: {
         range: {
-          type: ['string', 'array']
+          type: ['string', 'array'],
+          default: undefined,
+          description:
+            'color palette, if undefined vega-lite will use data property' +
+            'to pick one from c10palette, c20palette, or ordinalPalette'
+        },
+        c10palette: {
+          type: 'string',
+          default: 'category10',
+          enum: [
+            // Tableau
+            'category10', 'category10k',
+            // Color Brewer
+            'Pastel1', 'Pastel2', 'Set1', 'Set2', 'Set3'
+          ]
+        },
+        c20palette: {
+          type: 'string',
+          default: 'category20',
+          enum: ['category20', 'category20b', 'category20c']
+        },
+        ordinalPalette: {
+          type: 'string',
+          default: 'BuGn',
+          enum: util.keys(colorbrewer)
         }
       }
     }
@@ -586,32 +615,6 @@ var config = {
       default: 5,
       minimum: 0
     },
-
-    // color
-    c10palette: {
-      type: 'string',
-      role: 'palette',
-      default: 'category10',
-      enum: [
-        // Tableau
-        'category10', 'category10k',
-        // Color Brewer
-        'Pastel1', 'Pastel2', 'Set1', 'Set2', 'Set3'
-      ]
-    },
-    c20palette: {
-      type: 'string',
-      role: 'palette',
-      default: 'category20',
-      enum: ['category20', 'category20b', 'category20c']
-    },
-    ordinalPalette: {
-      type: 'string',
-      role: 'palette',
-      default: 'BuGn',
-      enum: util.keys(colorbrewer)
-    },
-
     // scales
     timeScaleLabelLength: {
       type: 'integer',
