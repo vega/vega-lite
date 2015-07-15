@@ -27,20 +27,6 @@ schema.aggregate = {
   },
   supportedTypes: toMap([Q, N, O, T, ''])
 };
-schema.band = {
-  type: 'object',
-  properties: {
-    size: {
-      type: 'integer',
-      minimum: 0
-    },
-    padding: {
-      type: 'integer',
-      minimum: 0,
-      default: 1
-    }
-  }
-};
 
 schema.getSupportedRole = function(encType) {
   return schema.schema.properties.encoding.properties[encType].supportedRole;
@@ -56,10 +42,9 @@ schema.timeUnit = {
   supportedTypes: toMap([T])
 };
 
-//TODO(kanitw): add other type of function here
-
 schema.scale_type = {
   type: 'string',
+  // TODO(kanitw) read vega's schema here, add description
   enum: ['linear', 'log', 'pow', 'sqrt', 'quantile'],
   default: 'linear',
   supportedTypes: toMap([Q])
@@ -86,7 +71,8 @@ var bin = {
     maxbins: {
       type: 'integer',
       default: schema.MAXBINS_DEFAULT,
-      minimum: 2
+      minimum: 2,
+      description: 'Maximum number of bins.'
     }
   },
   supportedTypes: toMap([Q]) // TODO: add O after finishing #81
@@ -200,16 +186,18 @@ var sortMixin = {
         type: 'object',
         supportedTypes: toMap([N, O]),
         required: ['name', 'aggregate'],
-        name: {
-          type: 'string'
-        },
-        aggregate: {
-          type: 'string',
-          enum: ['avg', 'sum', 'min', 'max', 'count']
-        },
-        reverse: {
-          type: 'boolean',
-          default: false
+        properties: {
+          name: {
+            type: 'string'
+          },
+          aggregate: {
+            type: 'string',
+            enum: ['avg', 'sum', 'min', 'max', 'count']
+          },
+          reverse: {
+            type: 'boolean',
+            default: false
+          }
         }
       }
     }
@@ -219,7 +207,21 @@ var sortMixin = {
 var bandMixin = {
   type: 'object',
   properties: {
-    band: schema.band
+    band: {
+      type: 'object',
+      properties: {
+        size: {
+          type: 'integer',
+          minimum: 0,
+          default: undefined
+        },
+        padding: {
+          type: 'integer',
+          minimum: 0,
+          default: 1
+        }
+      }
+    }
   }
 };
 
@@ -237,23 +239,27 @@ var textMixin = {
   type: 'object',
   supportedMarktypes: {'text': true},
   properties: {
-    text: {
-      type: 'object',
-      properties: {
-        align: {
-          type: 'string',
-          default: 'left'
-        },
-        baseline: {
-          type: 'string',
-          default: 'middle'
-        },
-        margin: {
-          type: 'integer',
-          default: 4,
-          minimum: 0
-        }
-      }
+    align: {
+      type: 'string',
+      default: 'right'
+    },
+    baseline: {
+      type: 'string',
+      default: 'middle'
+    },
+    color: {
+      type: 'string',
+      role: 'color',
+      default: '#000000'
+    },
+    margin: {
+      type: 'integer',
+      default: 4,
+      minimum: 0
+    },
+    placeholder: {
+      type: 'string',
+      default: 'Abc'
     },
     font: {
       type: 'object',
@@ -307,7 +313,31 @@ var colorMixin = {
       type: 'object',
       properties: {
         range: {
-          type: ['string', 'array']
+          type: ['string', 'array'],
+          default: undefined,
+          description:
+            'color palette, if undefined vega-lite will use data property' +
+            'to pick one from c10palette, c20palette, or ordinalPalette'
+        },
+        c10palette: {
+          type: 'string',
+          default: 'category10',
+          enum: [
+            // Tableau
+            'category10', 'category10k',
+            // Color Brewer
+            'Pastel1', 'Pastel2', 'Set1', 'Set2', 'Set3'
+          ]
+        },
+        c20palette: {
+          type: 'string',
+          default: 'category20',
+          enum: ['category20', 'category20b', 'category20c']
+        },
+        ordinalPalette: {
+          type: 'string',
+          default: 'BuGn',
+          enum: util.keys(colorbrewer)
         }
       }
     }
@@ -335,6 +365,11 @@ var shapeMixin = {
       type: 'string',
       enum: ['circle', 'square', 'cross', 'diamond', 'triangle-up', 'triangle-down'],
       default: 'circle'
+    },
+    filled: {
+      type: 'boolean',
+      default: false,
+      description: 'whether the shape\'s color should be used as fill color instead of stroke color'
     }
   }
 };
@@ -585,29 +620,6 @@ var config = {
       default: 5,
       minimum: 0
     },
-
-    // color
-    c10palette: {
-      type: 'string',
-      default: 'category10',
-      enum: [
-        // Tableau
-        'category10', 'category10k',
-        // Color Brewer
-        'Pastel1', 'Pastel2', 'Set1', 'Set2', 'Set3'
-      ]
-    },
-    c20palette: {
-      type: 'string',
-      default: 'category20',
-      enum: ['category20', 'category20b', 'category20c']
-    },
-    ordinalPalette: {
-      type: 'string',
-      default: 'BuGn',
-      enum: util.keys(colorbrewer)
-    },
-
     // scales
     timeScaleLabelLength: {
       type: 'integer',

@@ -11,7 +11,7 @@ function time(spec, encoding, opt) { // FIXME refactor to reduce side effect #27
   // find unique formula transformation and bin function
   encoding.forEach(function(field, encType) {
     if (field.type === T && field.timeUnit) {
-      timeFields[encoding.field(encType)] = {
+      timeFields[encoding.fieldRef(encType)] = {
         field: field,
         encType: encType
       };
@@ -75,7 +75,7 @@ time.formula = function(field) {
 time.transform = function(transform, encoding, encType, field) {
   transform.push({
     type: 'formula',
-    field: encoding.field(encType),
+    field: encoding.fieldRef(encType),
     expr: time.formula(field)
   });
 };
@@ -123,7 +123,7 @@ time.isOrdinalFn = function(timeUnit) {
 
 time.scale.type = function(timeUnit, name) {
   if (name === COLOR) {
-    return 'linear'; // this has order
+    return 'linear'; // time has order, so use interpolated ordinal color scale.
   }
 
   return time.isOrdinalFn(timeUnit) || name === COL || name === ROW ? 'ordinal' : 'linear';
@@ -151,5 +151,3 @@ time.hasScale = function(timeUnit) {
   }
   return false;
 };
-
-

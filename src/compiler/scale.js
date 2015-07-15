@@ -39,8 +39,8 @@ scale.type = function(name, encoding) {
     case N: //fall through
     case O: return 'ordinal';
     case T:
-      var timeUnit = encoding.timeUnit(name);
-      return (timeUnit && time.scale.type(timeUnit, name)) || 'time';
+      var timeUnit = encoding.field(name).timeUnit;
+      return timeUnit ? time.scale.type(timeUnit, name) : 'time';
     case Q:
       if (encoding.bin(name)) {
         return name === COLOR ? 'linear' : 'ordinal';
@@ -51,7 +51,7 @@ scale.type = function(name, encoding) {
 
 scale.domain = function (name, encoding, sorting, opt) {
   if (encoding.isType(name, T)) {
-    var range = time.scale.domain(encoding.timeUnit(name), name);
+    var range = time.scale.domain(encoding.field(name).timeUnit, name);
     if(range) return range;
   }
 
@@ -64,9 +64,8 @@ scale.domain = function (name, encoding, sorting, opt) {
       })
     };
   }
-
   var aggregate = encoding.aggregate(name),
-    timeUnit = encoding.timeUnit(name),
+    timeUnit = encoding.field(name).timeUnit,
     useRawDomain = encoding.scale(name).useRawDomain,
     notCount = !aggregate || (aggregate !=='count');
 
@@ -80,13 +79,15 @@ scale.domain = function (name, encoding, sorting, opt) {
     return {data: RAW, field: encoding.fieldRef(name, {nofn: true})};
   }
 
-  return {data: sorting.getDataset(name), field: encoding.field(name)};
+  return {data: sorting.getDataset(name), field: encoding.fieldRef(name)};
 };
 
 
 function scale_range(s, encoding, layout, stats, style, opt) {
   // jshint unused:false
-  var spec = encoding.scale(s.name);
+  var spec = encoding.scale(s.name),
+    timeUnit = encoding.field(s.name).timeUnit;
+
   switch (s.name) {
     case X:
       if (s.type === 'ordinal') {
@@ -94,7 +95,7 @@ function scale_range(s, encoding, layout, stats, style, opt) {
       } else {
         s.range = layout.cellWidth ? [0, layout.cellWidth] : 'width';
 
-        if (encoding.isType(s.name,T) && encoding.timeUnit(s.name) === 'year') {
+        if (encoding.isType(s.name,T) && timeUnit === 'year') {
           s.zero = false;
         } else {
           s.zero = spec.zero === undefined ? true : spec.zero;
@@ -104,7 +105,7 @@ function scale_range(s, encoding, layout, stats, style, opt) {
       }
       s.round = true;
       if (s.type === 'time') {
-        s.nice = encoding.timeUnit(s.name);
+        s.nice = timeUnit;
       }else {
         s.nice = true;
       }
@@ -115,7 +116,7 @@ function scale_range(s, encoding, layout, stats, style, opt) {
       } else {
         s.range = layout.cellHeight ? [layout.cellHeight, 0] : 'height';
 
-        if (encoding.isType(s.name,T) && encoding.timeUnit(s.name) === 'year') {
+        if (encoding.isType(s.name,T) && timeUnit === 'year') {
           s.zero = false;
         } else {
           s.zero = spec.zero === undefined ? true : spec.zero;
@@ -127,7 +128,7 @@ function scale_range(s, encoding, layout, stats, style, opt) {
       s.round = true;
 
       if (s.type === 'time') {
-        s.nice = encoding.timeUnit(s.name) || encoding.config('timeScaleNice');
+        s.nice = timeUnit || encoding.config('timeScaleNice');
       }else {
         s.nice = true;
       }
@@ -179,25 +180,26 @@ function scale_range(s, encoding, layout, stats, style, opt) {
     case Y:
       if (s.type === 'ordinal') { //&& !s.bandWidth
         s.points = true;
-        s.padding = encoding.band(s.name).padding;
+        s.padding = encoding.field(s.name).band.padding;
       }
   }
 }
 
 scale.color = function(s, encoding, stats) {
-  var range = encoding.scale(COLOR).range,
+  var colorScale = encoding.scale(COLOR),
+    range = colorScale.range,
     cardinality = encoding.cardinality(COLOR, stats),
     type = encoding.type(COLOR);
 
   if (range === undefined) {
-    var ordinalPalette = encoding.config('ordinalPalette');
+    var ordinalPalette = colorScale.ordinalPalette;
     if (s.type === 'ordinal') {
       if (type === N) {
         // use categorical color scale
         if (cardinality <= 10) {
-          range = encoding.config('c10palette');
+          range = colorScale.c10palette;
         } else {
-          range = encoding.config('c20palette');
+          range = colorScale.c20palette;
         }
       } else {
         if (cardinality <= 2) {
@@ -259,4 +261,3 @@ scale.color.interpolate = function (start, end, cardinality) {
   var interpolator = interpolateLab(start, end);
   return util.range(cardinality).map(function(i) { return interpolator(i*1.0/(cardinality-1)); });
 };
-

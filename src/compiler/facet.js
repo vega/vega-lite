@@ -38,12 +38,12 @@ function faceting(group, encoding, layout, style, sorting, spec, mdef, stack, st
     enter.y = {scale: ROW, field: 'keys.' + facetKeys.length};
     enter.height = {'value': layout.cellHeight}; // HACK
 
-    facetKeys.push(encoding.field(ROW));
+    facetKeys.push(encoding.fieldRef(ROW));
 
     if (hasCol) {
       from = util.duplicate(group.from);
       from.transform = from.transform || [];
-      from.transform.unshift({type: 'facet', keys: [encoding.field(COL)]});
+      from.transform.unshift({type: 'facet', keys: [encoding.fieldRef(COL)]});
     }
 
     axesGrp = groupdef('x-axes', {
@@ -70,12 +70,12 @@ function faceting(group, encoding, layout, style, sorting, spec, mdef, stack, st
     enter.x = {scale: COL, field: 'keys.' + facetKeys.length};
     enter.width = {'value': layout.cellWidth}; // HACK
 
-    facetKeys.push(encoding.field(COL));
+    facetKeys.push(encoding.fieldRef(COL));
 
     if (hasRow) {
       from = util.duplicate(group.from);
       from.transform = from.transform || [];
-      from.transform.unshift({type: 'facet', keys: [encoding.field(ROW)]});
+      from.transform.unshift({type: 'facet', keys: [encoding.fieldRef(ROW)]});
     }
 
     axesGrp = groupdef('y-axes', {
