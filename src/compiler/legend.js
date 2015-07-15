@@ -40,12 +40,15 @@ legend.defs = function(encoding) {
 };
 
 legend.def = function(name, encoding, props) {
-  var def = props, timeUnit;
+  var def = props,
+    timeUnit = encoding.field(name).timeUnit;
 
   def.title = encoding.fieldTitle(name);
 
-  if (encoding.isType(name, T) && (timeUnit = encoding.timeUnit(name)) &&
-    time.hasScale(timeUnit)) {
+  if (encoding.isType(name, T) &&
+    timeUnit &&
+    time.hasScale(timeUnit)
+  ) {
     var properties = def.properties = def.properties || {},
       labels = properties.labels = properties.labels || {},
       text = labels.text = labels.text || {};
