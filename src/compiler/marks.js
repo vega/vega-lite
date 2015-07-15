@@ -221,8 +221,6 @@ function point_props(e, layout, style) {
     p.opacity = {value: style.opacity};
   }
 
-
-
   return p;
 }
 
