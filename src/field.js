@@ -102,31 +102,6 @@ var typeOrder = {
   Q: 4
 };
 
-vlfield.order = {};
-
-vlfield.order.type = function(field) {
-  if (field.aggregate==='count') return 4;
-  return typeOrder[field.type];
-};
-
-vlfield.order.typeThenName = function(field) {
-  return vlfield.order.type(field) + '_' +
-    (field.aggregate === 'count' ? '~' : field.name.toLowerCase());
-    // ~ is the last character in ASCII
-};
-
-vlfield.order.original = function() {
-  return 0; // no swap will occur
-};
-
-vlfield.order.name = function(field) {
-  return field.name;
-};
-
-vlfield.order.typeThenCardinality = function(field, stats){
-  return stats[field.name].distinct;
-};
-
 var isType = vlfield.isType = function (fieldDef, type) {
   return fieldDef.type === type;
 };
