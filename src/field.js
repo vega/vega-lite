@@ -94,14 +94,6 @@ vlfield.fromShorthand = function(shorthand) {
   return o;
 };
 
-var typeOrder = {
-  N: 0,
-  O: 1,
-  G: 2,
-  T: 3,
-  Q: 4
-};
-
 var isType = vlfield.isType = function (fieldDef, type) {
   return fieldDef.type === type;
 };
