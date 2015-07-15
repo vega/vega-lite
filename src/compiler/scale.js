@@ -67,9 +67,9 @@ scale.domain = function (name, encoding, sorting, opt) {
   var aggregate = encoding.aggregate(name),
     timeUnit = encoding.field(name).timeUnit,
     useRawDomain = encoding.scale(name).useRawDomain,
-    notCount = !aggregate || (aggregate !=='count');
+    notCountOrSum = !aggregate || (aggregate !=='count' && aggregate !== 'sum');
 
-  if ( useRawDomain && notCount && (
+  if ( useRawDomain && notCountOrSum && (
       // Q always use non-ordinal scale except when it's binned and thus uses ordinal scale.
       (encoding.isType(name, Q) && !encoding.bin(name)) ||
       // T use non-ordinal scale when there's no unit or when the unit is not ordinal.

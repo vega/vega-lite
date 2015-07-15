@@ -67,8 +67,23 @@ describe('vl.compile.scale.domain()', function() {
       expect(domain.data).to.eql(sortingReturn);
     });
 
+  it('should return the raw domain if useRawDomain is true for non-bin, non-sum Q',
+    function() {
+      var domain = vlscale.domain('y', Encoding.fromSpec({
+        encoding: {
+          y: {
+            aggregate: 'mean',
+            name: 'origin',
+            scale: {useRawDomain: true},
+            type: Q
+          }
+        }
+      }), {}, {});
 
-  it('should return the raw domain if useRawDomain is true for non-binned Q',
+      expect(domain.data).to.eql(RAW);
+    });
+
+  it('should return the aggregate domain for sum Q',
     function() {
       var domain = vlscale.domain('y', Encoding.fromSpec({
         encoding: {
@@ -79,9 +94,9 @@ describe('vl.compile.scale.domain()', function() {
             type: Q
           }
         }
-      }), {}, {});
+      }), sorting, {});
 
-      expect(domain.data).to.eql(RAW);
+      expect(domain.data).to.eql(sortingReturn);
     });
 
   it('should return the raw domain if useRawDomain is true for raw T',
@@ -98,7 +113,6 @@ describe('vl.compile.scale.domain()', function() {
 
       expect(domain.data).to.eql(RAW);
     });
-
 
   it('should return the raw domain if useRawDomain is true for year T',
     function() {
@@ -136,7 +150,7 @@ describe('vl.compile.scale.domain()', function() {
     var domain = vlscale.domain('y', Encoding.fromSpec({
       encoding: {
         y: {
-          aggregate: 'sum',
+          aggregate: 'min',
           name: 'origin',
           scale: {useRawDomain: false},
           type: Q
