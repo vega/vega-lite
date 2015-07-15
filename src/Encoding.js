@@ -159,10 +159,6 @@ module.exports = (function() {
     return this._enc[et].axis || {};
   };
 
-  proto.band = function(et) {
-    return this._enc[et].band || {};
-  };
-
   proto.bandSize = function(encType, useSmallBand) {
     useSmallBand = useSmallBand ||
       //isBandInSmallMultiples
@@ -170,7 +166,7 @@ module.exports = (function() {
       (encType === X && this.has(COL) && this.has(X));
 
     // if band.size is explicitly specified, follow the specification, otherwise draw value from config.
-    return this.band(encType).size ||
+    return this.field(encType).band.size ||
       this.config(useSmallBand ? 'smallBandSize' : 'largeBandSize');
   };
 
@@ -192,10 +188,6 @@ module.exports = (function() {
 
   proto.value = function(et) {
     return this._enc[et].value;
-  };
-
-  proto.timeUnit = function(et) {
-    return this._enc[et].timeUnit;
   };
 
   proto.sort = function(et, stats) {

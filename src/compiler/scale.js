@@ -39,7 +39,7 @@ scale.type = function(name, encoding) {
     case N: //fall through
     case O: return 'ordinal';
     case T:
-      var timeUnit = encoding.timeUnit(name);
+      var timeUnit = encoding.field(name).timeUnit;
       return timeUnit ? time.scale.type(timeUnit, name) : 'time';
     case Q:
       if (encoding.bin(name)) {
@@ -51,7 +51,7 @@ scale.type = function(name, encoding) {
 
 scale.domain = function (name, encoding, sorting, opt) {
   if (encoding.isType(name, T)) {
-    var range = time.scale.domain(encoding.timeUnit(name), name);
+    var range = time.scale.domain(encoding.field(name).timeUnit, name);
     if(range) return range;
   }
 
@@ -70,7 +70,9 @@ scale.domain = function (name, encoding, sorting, opt) {
 
 function scale_range(s, encoding, layout, stats, style, opt) {
   // jshint unused:false
-  var spec = encoding.scale(s.name);
+  var spec = encoding.scale(s.name),
+    timeUnit = encoding.field(s.name).timeUnit;
+
   switch (s.name) {
     case X:
       if (s.type === 'ordinal') {
@@ -78,7 +80,7 @@ function scale_range(s, encoding, layout, stats, style, opt) {
       } else {
         s.range = layout.cellWidth ? [0, layout.cellWidth] : 'width';
 
-        if (encoding.isType(s.name,T) && encoding.timeUnit(s.name) === 'year') {
+        if (encoding.isType(s.name,T) && timeUnit === 'year') {
           s.zero = false;
         } else {
           s.zero = spec.zero === undefined ? true : spec.zero;
@@ -88,7 +90,7 @@ function scale_range(s, encoding, layout, stats, style, opt) {
       }
       s.round = true;
       if (s.type === 'time') {
-        s.nice = encoding.timeUnit(s.name);
+        s.nice = timeUnit;
       }else {
         s.nice = true;
       }
@@ -99,7 +101,7 @@ function scale_range(s, encoding, layout, stats, style, opt) {
       } else {
         s.range = layout.cellHeight ? [layout.cellHeight, 0] : 'height';
 
-        if (encoding.isType(s.name,T) && encoding.timeUnit(s.name) === 'year') {
+        if (encoding.isType(s.name,T) && timeUnit === 'year') {
           s.zero = false;
         } else {
           s.zero = spec.zero === undefined ? true : spec.zero;
@@ -111,7 +113,7 @@ function scale_range(s, encoding, layout, stats, style, opt) {
       s.round = true;
 
       if (s.type === 'time') {
-        s.nice = encoding.timeUnit(s.name) || encoding.config('timeScaleNice');
+        s.nice = timeUnit || encoding.config('timeScaleNice');
       }else {
         s.nice = true;
       }
@@ -163,7 +165,7 @@ function scale_range(s, encoding, layout, stats, style, opt) {
     case Y:
       if (s.type === 'ordinal') { //&& !s.bandWidth
         s.points = true;
-        s.padding = encoding.band(s.name).padding;
+        s.padding = encoding.field(s.name).band.padding;
       }
   }
 }
