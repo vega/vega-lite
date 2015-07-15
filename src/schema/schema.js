@@ -114,7 +114,7 @@ var typicalField = merge(clone(schema.field), {
           description: 'Use the raw data range as scale domain instead of ' +
                        'aggregated data for aggregate axis. ' +
                        'This option does not work with sum or count aggregate' +
-                       'as they might have substantially large scale range.'
+                       'as they might have a substantially larger scale range.'
         }
       }
     }
