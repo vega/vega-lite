@@ -636,19 +636,20 @@ var config = {
     maxSmallNumber: {
       type: 'number',
       default: 1000,
-      description: 'maximum number that a field will be considered smallNumber'
+      description: 'maximum number that a field will be considered smallNumber.'+
+                   'Used for axis labelling.'
     },
     smallNumberFormat: {
       type: 'string',
       default: ',g',
       description: 'Number format for axis labels and text tables '+
-                   'for number <= maxSmallNumber'
+                   'for number <= maxSmallNumber. Used for axis labelling.'
     },
     largeNumberFormat: {
       type: 'string',
       default: '.3s',
       description: 'Number format for axis labels and text tables ' +
-                   'for number > maxSmallNumber'
+                   'for number > maxSmallNumber.'
     },
     timeFormat: {
       type: 'string',
