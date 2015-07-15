@@ -197,7 +197,7 @@ function point_props(e, layout, style) {
   }
 
   // stroke
-  if (e.enc(SHAPE).filled) {
+  if (e.field(SHAPE).filled) {
     if (e.has(COLOR)) {
       p.fill = {scale: COLOR, field: e.field(COLOR)};
     } else if (!e.has(COLOR)) {
