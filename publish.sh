@@ -44,6 +44,12 @@ bower install
 git add bower_components/* -f
 cd ..
 
+# add bower_components for gallery
+cd gallery
+bower install
+git add bower_components/* -f
+cd ..
+
 # commit, tag and push to gh-pages and swap back to master
 set +e
 git commit -m "release $version $gitsha"
