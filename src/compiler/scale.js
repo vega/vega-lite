@@ -24,13 +24,19 @@ scale.defs = function(names, encoding, layout, stats, style, sorting, opt) {
       domain: scale.domain(name, encoding, sorting, opt)
     };
 
-    s.sort = s.type === 'ordinal' && (
-        encoding.bin(name) ||
-        encoding.sort(name).length === 0
-      );
+    s.sort = scale.sort(s, encoding, name) || undefined;
+
+    scale.range(s, encoding, layout, stats, style, opt);
 
     return (a.push(s), a);
   }, []);
+};
+
+scale.sort = function(s, encoding, name) {
+  return s.type === 'ordinal' && (
+    !!encoding.bin(name) ||
+    encoding.sort(name).length === 0
+  );
 };
 
 scale.type = function(name, encoding) {
@@ -83,7 +89,7 @@ scale.domain = function (name, encoding, sorting, opt) {
 };
 
 
-function scale_range(s, encoding, layout, stats, style, opt) {
+scale.range = function (s, encoding, layout, stats, style, opt) {
   // jshint unused:false
   var spec = encoding.scale(s.name),
     timeUnit = encoding.field(s.name).timeUnit;
@@ -181,7 +187,7 @@ function scale_range(s, encoding, layout, stats, style, opt) {
         s.padding = encoding.field(s.name).band.padding;
       }
   }
-}
+};
 
 scale.color = function(s, encoding, stats) {
   var colorScale = encoding.scale(COLOR),
