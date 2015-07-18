@@ -199,13 +199,13 @@ function point_props(e, layout, style) {
   // stroke
   if (e.field(SHAPE).filled) {
     if (e.has(COLOR)) {
-      p.fill = {scale: COLOR, field: e.field(COLOR)};
+      p.fill = {scale: COLOR, field: e.fieldRef(COLOR)};
     } else if (!e.has(COLOR)) {
       p.fill = {value: e.value(COLOR)};
     }
   } else {
     if (e.has(COLOR)) {
-      p.stroke = {scale: COLOR, field: e.field(COLOR)};
+      p.stroke = {scale: COLOR, field: e.fieldRef(COLOR)};
     } else if (!e.has(COLOR)) {
       p.stroke = {value: e.value(COLOR)};
     }
