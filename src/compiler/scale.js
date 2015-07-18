@@ -3,7 +3,8 @@ require('../globals');
 var util = require('../util'),
   time = require('./time'),
   colorbrewer = require('colorbrewer'),
-  interpolateLab = require('d3-color').interpolateLab;
+  interpolateLab = require('d3-color').interpolateLab,
+  schema = require('../schema/schema');
 
 var scale = module.exports = {};
 
@@ -21,7 +22,7 @@ scale.defs = function(names, encoding, layout, stats, style, sorting, opt) {
     var s = {
       name: name,
       type: scale.type(name, encoding),
-      domain: scale.domain(name, encoding, sorting, opt)
+      domain: scale.domain(name, encoding, stats, sorting, opt)
     };
 
     s.sort = scale.sort(s, encoding, name) || undefined;
@@ -55,10 +56,22 @@ scale.type = function(name, encoding) {
   }
 };
 
-scale.domain = function (name, encoding, sorting, opt) {
+scale.domain = function (name, encoding, stats, sorting, opt) {
+  var field = encoding.field(name);
+
   if (encoding.isType(name, T)) {
-    var range = time.scale.domain(encoding.field(name).timeUnit, name);
+    var range = time.scale.domain(field.timeUnit, name);
     if(range) return range;
+  }
+
+  if (field.bin) {
+    // TODO(kanitw): this must be changed in vg2
+    var fieldStat = stats[field.name],
+      bins = util.getbins(fieldStat, field.bin.maxbins || schema.MAXBINS_DEFAULT),
+      numbins = (bins.stop - bins.start) / bins.step;
+    return util.range(numbins).map(function(i) {
+      return bins.start + bins.step * i;
+    });
   }
 
   if (name == opt.stack) {
@@ -71,13 +84,13 @@ scale.domain = function (name, encoding, sorting, opt) {
     };
   }
   var aggregate = encoding.aggregate(name),
-    timeUnit = encoding.field(name).timeUnit,
+    timeUnit = field.timeUnit,
     useRawDomain = encoding.scale(name).useRawDomain,
     notCountOrSum = !aggregate || (aggregate !=='count' && aggregate !== 'sum');
 
   if ( useRawDomain && notCountOrSum && (
       // Q always uses non-ordinal scale except when it's binned and thus uses ordinal scale.
-      (encoding.isType(name, Q) && !encoding.bin(name)) ||
+      (encoding.isType(name, Q) && !field.bin) ||
       // T uses non-ordinal scale when there's no unit or when the unit is not ordinal.
       (encoding.isType(name, T) && (!timeUnit || !time.isOrdinalFn(timeUnit)))
     )
