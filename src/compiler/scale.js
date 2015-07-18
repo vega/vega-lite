@@ -23,11 +23,11 @@ scale.defs = function(names, encoding, layout, stats, style, sorting, opt) {
       type: scale.type(name, encoding),
       domain: scale.domain(name, encoding, sorting, opt)
     };
-    if (s.type === 'ordinal' && !encoding.bin(name) && encoding.sort(name).length === 0) {
-      s.sort = true;
-    }
 
-    scale_range(s, encoding, layout, stats, style, opt);
+    s.sort = s.type === 'ordinal' && (
+        encoding.bin(name) ||
+        encoding.sort(name).length === 0
+      );
 
     return (a.push(s), a);
   }, []);
@@ -90,11 +90,10 @@ function scale_range(s, encoding, layout, stats, style, opt) {
 
   switch (s.name) {
     case X:
+      s.range = layout.cellWidth ? [0, layout.cellWidth] : 'width';
       if (s.type === 'ordinal') {
         s.bandWidth = encoding.bandSize(X, layout.x.useSmallBand);
       } else {
-        s.range = layout.cellWidth ? [0, layout.cellWidth] : 'width';
-
         if (encoding.isType(s.name,T) && timeUnit === 'year') {
           s.zero = false;
         } else {
@@ -111,11 +110,10 @@ function scale_range(s, encoding, layout, stats, style, opt) {
       }
       break;
     case Y:
+      s.range = layout.cellHeight ? [layout.cellHeight, 0] : 'height';
       if (s.type === 'ordinal') {
         s.bandWidth = encoding.bandSize(Y, layout.y.useSmallBand);
       } else {
-        s.range = layout.cellHeight ? [layout.cellHeight, 0] : 'height';
-
         if (encoding.isType(s.name,T) && timeUnit === 'year') {
           s.zero = false;
         } else {
