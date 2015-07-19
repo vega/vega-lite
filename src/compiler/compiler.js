@@ -50,8 +50,8 @@ compiler.compileEncoding = function (encoding, stats) {
     dataTable = spec.data[1];
 
   rawTable = filter.addFilters(rawTable, encoding); // modify rawTable
+  spec = compiler.time(spec, encoding);              // modify rawTable, add scales
   dataTable = compiler.bin(dataTable, encoding);     // modify dataTable
-  spec = compiler.time(spec, encoding);              // modify dataTable, add scales
   var aggResult = compiler.aggregate(dataTable, encoding); // modify dataTable
   var sorting = compiler.sort(spec.data, encoding, stats); // append new data
 
