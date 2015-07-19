@@ -43,6 +43,11 @@ describe('Axis', function() {
     });
   });
 
+
+  describe('grid()', function () {
+    // FIXME(kanitw): Jul 19, 2015 - write test
+  });
+
   describe('hideTicks()', function () {
     var def = axis.hideTicks({properties:{}});
     it('should adjust ticks', function () {
@@ -54,6 +59,18 @@ describe('Axis', function() {
     it('should adjust axis', function () {
       expect(def.properties.axis).to.eql({opacity: {value: 0}});
     });
+  });
+
+  describe('labels.scale()', function () {
+    // FIXME(kanitw): Jul 19, 2015 - write test
+  });
+
+  describe('labels.format()', function () {
+    // FIXME(kanitw): Jul 19, 2015 - write test
+  });
+
+  describe('labels.rotate()', function () {
+    // FIXME(kanitw): Jul 19, 2015 - write test
   });
 
   describe('orient()', function () {
@@ -150,5 +167,9 @@ describe('Axis', function() {
       var def = axis.title({}, 'x', encoding, layout);
       expect(def.title).to.eql('abcdefghi…');
     });
+  });
+
+  describe('titleOffset()', function () {
+    // FIXME(kanitw): Jul 19, 2015 - write test
   });
 });
