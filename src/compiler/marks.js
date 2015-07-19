@@ -217,7 +217,7 @@ function point_props(e, layout, style) {
     p.opacity = {scale: ALPHA, field: e.fieldRef(ALPHA)};
   } else if (e.value(ALPHA) !== undefined) {
     p.opacity = {value: e.value(ALPHA)};
-  } else if (!e.has(COLOR)) {
+  } else {
     p.opacity = {value: style.opacity};
   }
 

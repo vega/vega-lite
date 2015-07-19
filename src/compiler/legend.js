@@ -2,26 +2,27 @@
 
 require('../globals');
 
-var time = require('./time');
+var time = require('./time'),
+  util = require('../util'),
+  setter = util.setter;
 
 var legend = module.exports = {};
 
-legend.defs = function(encoding) {
+legend.defs = function(encoding, style) {
   var defs = [];
-  // TODO: support alpha
 
   if (encoding.has(COLOR) && encoding.field(COLOR).legend) {
     defs.push(legend.def(COLOR, encoding, {
       fill: COLOR,
       orient: 'right'
-    }));
+    }, style));
   }
 
   if (encoding.has(SIZE) && encoding.field(SIZE).legend) {
     defs.push(legend.def(SIZE, encoding, {
       size: SIZE,
       orient: defs.length === 1 ? 'left' : 'right'
-    }));
+    }, style));
   }
 
   if (encoding.has(SHAPE) && encoding.field(SHAPE).legend) {
@@ -33,27 +34,25 @@ legend.defs = function(encoding) {
     defs.push(legend.def(SHAPE, encoding, {
       shape: SHAPE,
       orient: defs.length === 1 ? 'left' : 'right'
-    }));
+    }, style));
   }
-
   return defs;
 };
 
-legend.def = function(name, encoding, props) {
-  var def = props,
-    timeUnit = encoding.field(name).timeUnit;
+legend.def = function(name, encoding, def, style) {
+  var timeUnit = encoding.field(name).timeUnit;
 
   def.title = encoding.fieldTitle(name);
+
+  if (style.opacity) {
+    setter(def, ['properties', 'symbols', 'opacity', 'value'], style.opacity);
+  }
 
   if (encoding.isType(name, T) &&
     timeUnit &&
     time.hasScale(timeUnit)
   ) {
-    var properties = def.properties = def.properties || {},
-      labels = properties.labels = properties.labels || {},
-      text = labels.text = labels.text || {};
-
-    text.scale = 'time-'+ timeUnit;
+    setter(def, ['properties', 'labels', 'text', 'scale'], 'time-'+ timeUnit);
   }
 
   return def;

@@ -91,11 +91,11 @@ compiler.compileEncoding = function (encoding, stats) {
   // Small Multiples
   if (encoding.has(ROW) || encoding.has(COL)) {
     spec = compiler.facet(group, encoding, layout, style, sorting, spec, mdef, stack, stats);
-    spec.legends = legend.defs(encoding);
+    spec.legends = legend.defs(encoding, style);
   } else {
     group.scales = scale.defs(scale.names(mdef.properties.update), encoding, layout, stats, style, sorting, {stack: stack});
     group.axes = axis.defs(axis.names(mdef.properties.update), encoding, layout, stats);
-    group.legends = legend.defs(encoding);
+    group.legends = legend.defs(encoding, style);
   }
 
   filter.filterLessThanZero(dataTable, encoding);
