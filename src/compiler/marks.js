@@ -39,7 +39,7 @@ marks.bar = {
   stack: true,
   prop: bar_props,
   requiredEncoding: ['x', 'y'],
-  supportedEncoding: {row: 1, col: 1, x: 1, y: 1, size: 1, color: 1, alpha: 1}
+  supportedEncoding: {row: 1, col: 1, x: 1, y: 1, size: 1, color: 1}
 };
 
 marks.line = {
@@ -47,7 +47,7 @@ marks.line = {
   line: true,
   prop: line_props,
   requiredEncoding: ['x', 'y'],
-  supportedEncoding: {row: 1, col: 1, x: 1, y: 1, color: 1, alpha: 1, detail:1}
+  supportedEncoding: {row: 1, col: 1, x: 1, y: 1, color: 1, detail:1}
 };
 
 marks.area = {
@@ -56,19 +56,19 @@ marks.area = {
   line: true,
   requiredEncoding: ['x', 'y'],
   prop: area_props,
-  supportedEncoding: {row: 1, col: 1, x: 1, y: 1, color: 1, alpha: 1}
+  supportedEncoding: {row: 1, col: 1, x: 1, y: 1, color: 1}
 };
 
 marks.tick = {
   type: 'rect',
   prop: tick_props,
-  supportedEncoding: {row: 1, col: 1, x: 1, y: 1, color: 1, alpha: 1, detail: 1}
+  supportedEncoding: {row: 1, col: 1, x: 1, y: 1, color: 1, detail: 1}
 };
 
 marks.circle = {
   type: 'symbol',
   prop: filled_point_props('circle'),
-  supportedEncoding: {row: 1, col: 1, x: 1, y: 1, size: 1, color: 1, alpha: 1, detail: 1}
+  supportedEncoding: {row: 1, col: 1, x: 1, y: 1, size: 1, color: 1, detail: 1}
 };
 
 marks.square = {
@@ -80,14 +80,14 @@ marks.square = {
 marks.point = {
   type: 'symbol',
   prop: point_props,
-  supportedEncoding: {row: 1, col: 1, x: 1, y: 1, size: 1, color: 1, alpha: 1, shape: 1, detail: 1}
+  supportedEncoding: {row: 1, col: 1, x: 1, y: 1, size: 1, color: 1, shape: 1, detail: 1}
 };
 
 marks.text = {
   type: 'text',
   prop: text_props,
   requiredEncoding: ['text'],
-  supportedEncoding: {row: 1, col: 1, size: 1, color: 1, alpha: 1, text: 1}
+  supportedEncoding: {row: 1, col: 1, size: 1, color: 1, text: 1}
 };
 
 function bar_props(e, layout, style) {
@@ -146,8 +146,6 @@ function bar_props(e, layout, style) {
     }
   }
 
-
-
   // fill
   if (e.has(COLOR)) {
     p.fill = {scale: COLOR, field: e.fieldRef(COLOR)};
@@ -155,12 +153,9 @@ function bar_props(e, layout, style) {
     p.fill = {value: e.value(COLOR)};
   }
 
-  // alpha
-  if (e.has(ALPHA)) {
-    p.opacity = {scale: ALPHA, field: e.fieldRef(ALPHA)};
-  } else if (e.value(ALPHA) !== undefined) {
-    p.opacity = {value: e.value(ALPHA)};
-  }
+  // opacity
+  var opacity = e.field(COLOR).opacity;
+  if (opacity) p.opacity = {value: opacity};
 
   return p;
 }
@@ -212,14 +207,8 @@ function point_props(e, layout, style) {
     p.strokeWidth = {value: e.config('strokeWidth')};
   }
 
-  // alpha
-  if (e.has(ALPHA)) {
-    p.opacity = {scale: ALPHA, field: e.fieldRef(ALPHA)};
-  } else if (e.value(ALPHA) !== undefined) {
-    p.opacity = {value: e.value(ALPHA)};
-  } else {
-    p.opacity = {value: style.opacity};
-  }
+  // opacity
+  p.opacity = {value:  e.field(COLOR).opacity || style.opacity};
 
   return p;
 }
@@ -249,12 +238,8 @@ function line_props(e,layout, style) {
     p.stroke = {value: e.value(COLOR)};
   }
 
-  // alpha
-  if (e.has(ALPHA)) {
-    p.opacity = {scale: ALPHA, field: e.fieldRef(ALPHA)};
-  } else if (e.value(ALPHA) !== undefined) {
-    p.opacity = {value: e.value(ALPHA)};
-  }
+  var opacity = e.field(COLOR).opacity;
+  if (opacity) p.opacity = {value: opacity};
 
   p.strokeWidth = {value: e.config('strokeWidth')};
 
@@ -295,12 +280,8 @@ function area_props(e, layout, style) {
     p.fill = {value: e.value(COLOR)};
   }
 
-  // alpha
-  if (e.has(ALPHA)) {
-    p.opacity = {scale: ALPHA, field: e.fieldRef(ALPHA)};
-  } else if (e.value(ALPHA) !== undefined) {
-    p.opacity = {value: e.value(ALPHA)};
-  }
+  var opacity = e.field(COLOR).opacity;
+  if (opacity) p.opacity = {value: opacity};
 
   return p;
 }
@@ -349,14 +330,8 @@ function tick_props(e, layout, style) {
     p.fill = {value: e.value(COLOR)};
   }
 
-  // alpha
-  if (e.has(ALPHA)) {
-    p.opacity = {scale: ALPHA, field: e.fieldRef(ALPHA)};
-  } else if (e.value(ALPHA) !== undefined) {
-    p.opacity = {value: e.value(ALPHA)};
-  } else if (!e.has(COLOR)) {
-    p.opacity = {value: style.opacity};
-  }
+  var opacity = e.field(COLOR).opacity  || style.opacity;
+  if(opacity) p.opacity = {value: opacity};
 
   return p;
 }
@@ -396,14 +371,8 @@ function filled_point_props(shape) {
       p.fill = {value: e.value(COLOR)};
     }
 
-    // alpha
-    if (e.has(ALPHA)) {
-      p.opacity = {scale: ALPHA, field: e.fieldRef(ALPHA)};
-    } else if (e.value(ALPHA) !== undefined) {
-      p.opacity = {value: e.value(ALPHA)};
-    } else if (!e.has(COLOR)) {
-      p.opacity = {value: style.opacity};
-    }
+    var opacity = e.field(COLOR).opacity  || style.opacity;
+    if(opacity) p.opacity = {value: opacity};
 
     return p;
   };
@@ -442,14 +411,8 @@ function text_props(e, layout, style, stats) {
   // color should be set to background
   p.fill = {value: field.text.color};
 
-  // alpha
-  if (e.has(ALPHA)) {
-    p.opacity = {scale: ALPHA, field: e.fieldRef(ALPHA)};
-  } else if (e.value(ALPHA) !== undefined) {
-    p.opacity = {value: e.value(ALPHA)};
-  } else {
-    p.opacity = {value: style.opacity};
-  }
+  var opacity = e.field(COLOR).opacity  || style.opacity;
+  if(opacity) p.opacity = {value: opacity};
 
   // text
   if (e.has(TEXT)) {

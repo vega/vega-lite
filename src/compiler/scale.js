@@ -185,9 +185,6 @@ scale.range = function (s, encoding, layout, stats) {
     case COLOR:
       s.range = scale.color(s, encoding, stats);
       break;
-    case ALPHA:
-      s.range = [0.2, 1.0];
-      break;
     default:
       throw new Error('Unknown encoding name: '+ s.name);
   }

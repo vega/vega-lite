@@ -345,6 +345,12 @@ var colorMixin = {
       role: 'color',
       default: 'steelblue'
     },
+    opacity: {
+      type: 'number',
+      default: undefined,  // auto
+      minimum: 0,
+      maximum: 1
+    },
     scale: {
       type: 'object',
       properties: {
@@ -376,19 +382,6 @@ var colorMixin = {
           enum: util.keys(colorbrewer)
         }
       }
-    }
-  }
-};
-
-var alphaMixin = {
-  type: 'object',
-  supportedMarktypes: {point: true, tick: true, bar: true, line: true, area: true, circle: true, square: true, 'text': true},
-  properties: {
-    value: {
-      type: 'number',
-      default: undefined,  // auto
-      minimum: 0,
-      maximum: 1
     }
   }
 };
@@ -472,7 +465,7 @@ var multiRoleField = merge(clone(typicalField), {
 var quantitativeField = merge(clone(typicalField), {
   supportedRole: {
     measure: true,
-    dimension: 'ordinal-only' // using alpha / size to encoding category lead to order interpretation
+    dimension: 'ordinal-only' // using size to encoding category lead to order interpretation
   }
 });
 
@@ -491,7 +484,7 @@ var col = merge(clone(facet), axisMixin, colMixin);
 
 var size = merge(clone(quantitativeField), legendMixin, sizeMixin, sortMixin);
 var color = merge(clone(multiRoleField), legendMixin, colorMixin, sortMixin);
-var alpha = merge(clone(quantitativeField), alphaMixin, sortMixin);
+
 var shape = merge(clone(onlyOrdinalField), legendMixin, shapeMixin, sortMixin);
 var detail = merge(clone(onlyOrdinalField), detailMixin, sortMixin);
 
@@ -738,7 +731,6 @@ schema.schema = {
         col: col,
         size: size,
         color: color,
-        alpha: alpha,
         shape: shape,
         text: text,
         detail: detail
