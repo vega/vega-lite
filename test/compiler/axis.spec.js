@@ -6,6 +6,8 @@ var axis = require('../../src/compiler/axis'),
   Encoding = require('../../src/Encoding');
 
 describe('Axis', function() {
+  var stats = {a: {distinct: 5}, b: {distinct: 32}};
+
   describe('(X) for Time Data', function() {
     var fieldName = 'a',
       timeUnit = 'month',
@@ -25,7 +27,7 @@ describe('Axis', function() {
       y: {
         axisTitleOffset: 60
       }
-    }, {a: {}});
+    }, stats);
 
     //FIXME decouple the test here
 
@@ -34,6 +36,46 @@ describe('Axis', function() {
     });
     it('should rotate label', function() {
       expect(_axis.properties.labels.angle.value).to.equal(270);
+    });
+  });
+
+  describe('orient', function () {
+    it('should return specified orient', function () {
+      var orient = axis.orient('x', Encoding.fromSpec({
+          encoding: {
+            x: {name: 'a', axis:{orient: 'bottom'}}
+          }
+        }), stats);
+      expect(orient).to.eql('bottom');
+    });
+
+    it('should return undefined by default', function () {
+      var orient = axis.orient('x', Encoding.fromSpec({
+          encoding: {
+            x: {name: 'a'}
+          }
+        }), stats);
+      expect(orient).to.eql(undefined);
+    });
+
+    it('should return top for COL', function () {
+      var orient = axis.orient('col', Encoding.fromSpec({
+          encoding: {
+            x: {name: 'a'},
+            col: {name: 'a'}
+          }
+        }), stats);
+      expect(orient).to.eql('top');
+    });
+
+    it('should return top for X with high cardinality, ordinal Y', function () {
+      var orient = axis.orient('x', Encoding.fromSpec({
+          encoding: {
+            x: {name: 'a'},
+            y: {name: 'b', type: 'O'}
+          }
+        }), stats);
+      expect(orient).to.eql('top');
     });
   });
 });
