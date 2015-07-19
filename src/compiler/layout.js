@@ -3,7 +3,8 @@
 require('../globals');
 
 var util = require('../util'),
-  setter = util.setter;
+  setter = util.setter,
+  time = require('./time');
 
 module.exports = vllayout;
 
@@ -96,7 +97,8 @@ function getMaxLength(encoding, stats, et) {
   } else if (encoding.isType(et, Q)) {
     return 10;
   } else if (encoding.isType(et, T)) {
-    return 15;
+    return time.maxLength(encoding.field(et).timeUnit,
+                          encoding.config('timeFormat'));
   } else if (encoding.isTypes(et, [N, O]) && encoding.axis(et).maxLabelLength) {
     return Math.min(stats[encoding.fieldName(et)].max, encoding.axis(et).maxLabelLength);
   }

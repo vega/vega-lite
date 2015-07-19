@@ -1,8 +1,11 @@
 'use strict';
 
-var util = require('../util');
+var util = require('../util'),
+  d3_time_format = require('d3-time-format');
 
 module.exports = time;
+
+var LONG_DATE = new Date(2014, 8, 17);
 
 function time(spec, encoding) { // FIXME refactor to reduce side effect #276
   // jshint unused:false
@@ -58,6 +61,22 @@ time.cardinality = function(field, stats, filterNull, type) {
   }
 
   return null;
+};
+
+time.maxLength = function(timeUnit, timeFormat) {
+  switch (timeUnit) {
+    case 'seconds':
+    case 'minutes':
+    case 'hours':
+    case 'date':
+      return 2;
+    case 'month':
+    case 'day':
+      return 9; // September / Wednesday
+    case 'year':
+      return 4; //'1998'
+  }
+  return d3_time_format.utcFormat(timeFormat)(LONG_DATE).length;
 };
 
 function fieldFn(func, field) {

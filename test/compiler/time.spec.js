@@ -5,7 +5,7 @@ var expect = require('chai').expect;
 var time = require('../../src/compiler/time'),
   Encoding = require('../../src/Encoding');
 
-describe('Time', function() {
+describe('time', function() {
   var fieldName = 'a',
     timeUnit = 'month',
     encoding = Encoding.fromSpec({
@@ -29,5 +29,12 @@ describe('Time', function() {
     expect(spec.scales.filter(function(scale) {
       return scale.name == 'time-'+ timeUnit;
     }).length).to.equal(1);
+  });
+
+  describe('maxLength', function(){
+    it('should return max length based on time format', function () {
+      expect(time.maxLength(undefined, '%A %B %e %H:%M:%S %Y'))
+        .to.eql('Wednesday September 17 04:00:00 2014'.length);
+    });
   });
 });
