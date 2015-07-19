@@ -178,7 +178,7 @@ var axisMixin = {
         titleMaxLength: {
           type: 'integer',
           default: undefined,
-          description: 'Max length for axis title if the title is automatically generated from the field\' description'
+          description: 'Max length for axis title if the title is automatically generated from the field\'s description'
         },
         titleOffset: {
           type: 'integer',
