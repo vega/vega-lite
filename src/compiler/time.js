@@ -34,12 +34,11 @@ function time(spec, encoding) { // FIXME refactor to reduce side effect #276
   // add scales
   var scales = spec.scales = spec.scales || [];
   for (var timeUnit in timeUnits) {
-    time.scale(scales, timeUnit, encoding);
+    var scale = time.scale.def(timeUnit, encoding);
+    if (scale) scales.push(scale);
   }
   return spec;
 }
-
-
 
 time.cardinality = function(field, stats, filterNull, type) {
   var timeUnit = field.timeUnit;
@@ -63,7 +62,7 @@ time.cardinality = function(field, stats, filterNull, type) {
   return null;
 };
 
-time.maxLength = function(timeUnit, timeFormat) {
+time.maxLength = function(timeUnit, encoding) {
   switch (timeUnit) {
     case 'seconds':
     case 'minutes':
@@ -72,10 +71,17 @@ time.maxLength = function(timeUnit, timeFormat) {
       return 2;
     case 'month':
     case 'day':
-      return 9; // September / Wednesday
+      var range = time.range(timeUnit, encoding);
+      if (range) {
+        // return the longest name in the range
+        return Math.max.apply(null, range.map(function(r) {return r.length;}));
+      }
+      return 2;
     case 'year':
       return 4; //'1998'
   }
+  // no time unit
+  var timeFormat = encoding.config('timeFormat');
   return d3_time_format.utcFormat(timeFormat)(LONG_DATE).length;
 };
 
@@ -99,32 +105,41 @@ time.transform = function(transform, encoding, encType, field) {
   });
 };
 
-/** append custom time scales for axis label */
-time.scale = function(scales, timeUnit, encoding) {
-  var labelLength = encoding.config('timeScaleLabelLength');
-  // TODO add option for shorter scale / custom range
+time.range = function(timeUnit, encoding) {
+  var labelLength = encoding.config('timeScaleLabelLength'),
+    scaleLabel;
   switch (timeUnit) {
     case 'day':
-      scales.push({
-        name: 'time-'+timeUnit,
-        type: 'ordinal',
-        domain: util.range(0, 7),
-        range: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map(
-          function(s) { return s.substr(0, labelLength);}
-        )
-      });
+      scaleLabel = encoding.config('dayScaleLabel');
       break;
     case 'month':
-      scales.push({
-        name: 'time-'+timeUnit,
-        type: 'ordinal',
-        domain: util.range(0, 12),
-        range: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].map(
-            function(s) { return s.substr(0, labelLength);}
-          )
-      });
+      scaleLabel = encoding.config('monthScaleLabel');
       break;
   }
+  if (scaleLabel) {
+    return labelLength ? scaleLabel.map(
+        function(s) { return s.substr(0, labelLength);}
+      ) : scaleLabel;
+  }
+  return;
+};
+
+
+time.scale = {};
+
+/** append custom time scales for axis label */
+time.scale.def = function(timeUnit, encoding) {
+  var range = time.range(timeUnit, encoding);
+
+  if (range) {
+    return {
+      name: 'time-'+timeUnit,
+      type: 'ordinal',
+      domain: time.scale.domain(timeUnit),
+      range: range
+    };
+  }
+  return null;
 };
 
 time.isOrdinalFn = function(timeUnit) {

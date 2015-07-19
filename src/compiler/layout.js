@@ -97,8 +97,7 @@ function getMaxLength(encoding, stats, et) {
   } else if (encoding.isType(et, Q)) {
     return 10;
   } else if (encoding.isType(et, T)) {
-    return time.maxLength(encoding.field(et).timeUnit,
-                          encoding.config('timeFormat'));
+    return time.maxLength(encoding.field(et).timeUnit, encoding);
   } else if (encoding.isTypes(et, [N, O]) && encoding.axis(et).maxLabelLength) {
     return Math.min(stats[encoding.fieldName(et)].max, encoding.axis(et).maxLabelLength);
   }

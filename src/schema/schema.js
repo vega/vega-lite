@@ -635,7 +635,24 @@ var config = {
     timeScaleLabelLength: {
       type: 'integer',
       default: 3,
-      minimum: 0
+      minimum: 0,
+      description: 'Max length for values in dayScaleLabel and monthScaleLabel.  Zero means using full names in dayScaleLabel/monthScaleLabel.'
+    },
+    dayScaleLabel: {
+      type: 'array',
+      items: {
+        type: 'string'
+      },
+      default: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+      description: 'Axis labels for day of week, starting from Monday.'
+    },
+    monthScaleLabel: {
+      type: 'array',
+      items: {
+        type: 'string'
+      },
+      default: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+      description: 'Axis labels for month.'
     },
     // other
     characterWidth: {
