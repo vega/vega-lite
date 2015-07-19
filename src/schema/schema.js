@@ -663,8 +663,9 @@ var config = {
       items: {
         type: 'string'
       },
-      default: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-      description: 'Axis labels for day of week, starting from Monday.'
+      default: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+      description: 'Axis labels for day of week, starting from Sunday.' +
+        '(Consistent with Javascript -- See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getDay.'
     },
     monthScaleLabel: {
       type: 'array',
