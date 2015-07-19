@@ -4,7 +4,8 @@ require('../globals');
 
 var util = require('../util'),
   setter = util.setter,
-  time = require('./time');
+  time = require('./time'),
+  d3_format = require('d3-format');
 
 module.exports = vllayout;
 
@@ -90,39 +91,62 @@ function box(encoding, stats) {
   };
 }
 
+
+// FIXME fieldStats.max isn't always the longest
+function getMaxNumberLength(encoding, et, fieldStats) {
+  var format = encoding.numberFormat(et, fieldStats);
+
+  return d3_format.format(format)(fieldStats.max).length;
+}
+
 function getMaxLength(encoding, stats, et) {
-  // FIXME determine constant for Q and T in a nicer way
-  if (encoding.bin(et)) {
-    return 5;
-  } else if (encoding.isType(et, Q)) {
-    return 10;
+  var field = encoding.field(et),
+    fieldStats = stats[field.name];
+
+  if (field.bin) {
+    // TODO once bin support range, need to update this
+    return getMaxNumberLength(encoding, et, fieldStats);
+  } if (encoding.isType(et, Q)) {
+    return getMaxNumberLength(encoding, et, fieldStats);
   } else if (encoding.isType(et, T)) {
     return time.maxLength(encoding.field(et).timeUnit, encoding);
-  } else if (encoding.isTypes(et, [N, O]) && encoding.axis(et).maxLabelLength) {
-    return Math.min(stats[encoding.fieldName(et)].max, encoding.axis(et).maxLabelLength);
+  } else if (encoding.isTypes(et, [N, O])) {
+    if(fieldStats.type === 'number') {
+      return getMaxNumberLength(encoding, et, fieldStats);
+    } else {
+      return Math.min(fieldStats.max, encoding.axis(et).maxLabelLength || Infinity);
+    }
   }
-  return stats[encoding.fieldName(et)].max;
 }
 
 function offset(encoding, stats, layout) {
   [X, Y].forEach(function (et) {
     var maxLength;
     if (encoding.isDimension(et) || encoding.isType(et, T)) {
-      maxLength =  getMaxLength(encoding, stats, et);
-    } else if (encoding.aggregate(et) === 'count') {
-      //assign default value for count as it won't have stats
-      maxLength =  3; //FIXME
-    } else if (encoding.isType(et, Q)) {
-      if (et===X) {
-        maxLength = 3;
-      } else { // Y
-        //assume that default formating is always shorter than 7
-        maxLength = Math.min(getMaxLength(encoding, stats, et), 7);
+      maxLength = getMaxLength(encoding, stats, et);
+    } else if (
+      // TODO once we have #512 (allow using inferred type)
+      // Need to adjust condition here.
+      encoding.isType(et, Q) ||
+      encoding.aggregate(et) === 'count'
+    ) {
+      if (
+        et===Y ||
+        // FIXME some times might not rotate, but need to move this to axis.js first
+        (et===X && false)
+      ) {
+        maxLength = getMaxLength(encoding, stats, et);
       }
     } else {
       // nothing
     }
-    setter(layout,[et, 'axisTitleOffset'], encoding.config('characterWidth') *  maxLength + 20);
+
+    if (maxLength) {
+      setter(layout,[et, 'axisTitleOffset'], encoding.config('characterWidth') *  maxLength + 20);
+    } else {
+      setter(layout,[et, 'axisTitleOffset'], encoding.config('characterWidth') * 3 + 20);
+    }
+
   });
   return layout;
 }
