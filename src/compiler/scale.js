@@ -3,7 +3,8 @@ require('../globals');
 var util = require('../util'),
   time = require('./time'),
   colorbrewer = require('colorbrewer'),
-  interpolateLab = require('d3-color').interpolateLab;
+  interpolateLab = require('d3-color').interpolateLab,
+  schema = require('../schema/schema');
 
 var scale = module.exports = {};
 
@@ -21,16 +22,22 @@ scale.defs = function(names, encoding, layout, stats, style, sorting, opt) {
     var s = {
       name: name,
       type: scale.type(name, encoding),
-      domain: scale.domain(name, encoding, sorting, opt)
+      domain: scale.domain(name, encoding, stats, sorting, opt)
     };
-    if (s.type === 'ordinal' && !encoding.bin(name) && encoding.sort(name).length === 0) {
-      s.sort = true;
-    }
 
-    scale_range(s, encoding, layout, stats, style, opt);
+    s.sort = scale.sort(s, encoding, name) || undefined;
+
+    scale.range(s, encoding, layout, stats, opt);
 
     return (a.push(s), a);
   }, []);
+};
+
+scale.sort = function(s, encoding, name) {
+  return s.type === 'ordinal' && (
+    !!encoding.bin(name) ||
+    encoding.sort(name).length === 0
+  );
 };
 
 scale.type = function(name, encoding) {
@@ -39,8 +46,8 @@ scale.type = function(name, encoding) {
     case N: //fall through
     case O: return 'ordinal';
     case T:
-      var timeUnit = encoding.timeUnit(name);
-      return (timeUnit && time.scale.type(timeUnit, name)) || 'time';
+      var timeUnit = encoding.field(name).timeUnit;
+      return timeUnit ? time.scale.type(timeUnit, name) : 'time';
     case Q:
       if (encoding.bin(name)) {
         return name === COLOR ? 'linear' : 'ordinal';
@@ -49,10 +56,22 @@ scale.type = function(name, encoding) {
   }
 };
 
-scale.domain = function (name, encoding, sorting, opt) {
+scale.domain = function (name, encoding, stats, sorting, opt) {
+  var field = encoding.field(name);
+
   if (encoding.isType(name, T)) {
-    var range = time.scale.domain(encoding.timeUnit(name), name);
+    var range = time.scale.domain(field.timeUnit, name);
     if(range) return range;
+  }
+
+  if (field.bin) {
+    // TODO(kanitw): this must be changed in vg2
+    var fieldStat = stats[field.name],
+      bins = util.getbins(fieldStat, field.bin.maxbins || schema.MAXBINS_DEFAULT),
+      numbins = (bins.stop - bins.start) / bins.step;
+    return util.range(numbins).map(function(i) {
+      return bins.start + bins.step * i;
+    });
   }
 
   if (name == opt.stack) {
@@ -64,21 +83,39 @@ scale.domain = function (name, encoding, sorting, opt) {
       })
     };
   }
-  return {data: sorting.getDataset(name), field: encoding.field(name)};
+  var aggregate = encoding.aggregate(name),
+    timeUnit = field.timeUnit,
+    scaleUseRawDomain = encoding.scale(name).useRawDomain,
+    useRawDomain = scaleUseRawDomain !== undefined ?
+      scaleUseRawDomain : encoding.config('useRawDomain'),
+    notCountOrSum = !aggregate || (aggregate !=='count' && aggregate !== 'sum');
+
+  if ( useRawDomain && notCountOrSum && (
+      // Q always uses non-ordinal scale except when it's binned and thus uses ordinal scale.
+      (encoding.isType(name, Q) && !field.bin) ||
+      // T uses non-ordinal scale when there's no unit or when the unit is not ordinal.
+      (encoding.isType(name, T) && (!timeUnit || !time.isOrdinalFn(timeUnit)))
+    )
+  ) {
+    return {data: RAW, field: encoding.fieldRef(name, {nofn: !timeUnit})};
+  }
+
+  return {data: sorting.getDataset(name), field: encoding.fieldRef(name)};
 };
 
 
-function scale_range(s, encoding, layout, stats, style, opt) {
-  // jshint unused:false
-  var spec = encoding.scale(s.name);
+scale.range = function (s, encoding, layout, stats) {
+  var spec = encoding.scale(s.name),
+    field = encoding.field(s.name),
+    timeUnit = field.timeUnit;
+
   switch (s.name) {
     case X:
+      s.range = layout.cellWidth ? [0, layout.cellWidth] : 'width';
       if (s.type === 'ordinal') {
         s.bandWidth = encoding.bandSize(X, layout.x.useSmallBand);
       } else {
-        s.range = layout.cellWidth ? [0, layout.cellWidth] : 'width';
-
-        if (encoding.isType(s.name,T) && encoding.timeUnit(s.name) === 'year') {
+        if (encoding.isType(s.name,T) && timeUnit === 'year') {
           s.zero = false;
         } else {
           s.zero = spec.zero === undefined ? true : spec.zero;
@@ -88,18 +125,20 @@ function scale_range(s, encoding, layout, stats, style, opt) {
       }
       s.round = true;
       if (s.type === 'time') {
-        s.nice = encoding.timeUnit(s.name);
+        s.nice = timeUnit || encoding.config('timeScaleNice');
       }else {
         s.nice = true;
       }
       break;
     case Y:
       if (s.type === 'ordinal') {
+        s.range = layout.cellHeight ?
+          (field.bin ? [layout.cellHeight, 0] : [0, layout.cellHeight]) :
+          'height';
         s.bandWidth = encoding.bandSize(Y, layout.y.useSmallBand);
       } else {
         s.range = layout.cellHeight ? [layout.cellHeight, 0] : 'height';
-
-        if (encoding.isType(s.name,T) && encoding.timeUnit(s.name) === 'year') {
+        if (encoding.isType(s.name,T) && timeUnit === 'year') {
           s.zero = false;
         } else {
           s.zero = spec.zero === undefined ? true : spec.zero;
@@ -111,7 +150,7 @@ function scale_range(s, encoding, layout, stats, style, opt) {
       s.round = true;
 
       if (s.type === 'time') {
-        s.nice = encoding.timeUnit(s.name) || encoding.config('timeScaleNice');
+        s.nice = timeUnit || encoding.config('timeScaleNice');
       }else {
         s.nice = true;
       }
@@ -163,25 +202,26 @@ function scale_range(s, encoding, layout, stats, style, opt) {
     case Y:
       if (s.type === 'ordinal') { //&& !s.bandWidth
         s.points = true;
-        s.padding = encoding.band(s.name).padding;
+        s.padding = encoding.field(s.name).band.padding;
       }
   }
-}
+};
 
 scale.color = function(s, encoding, stats) {
-  var range = encoding.scale(COLOR).range,
+  var colorScale = encoding.scale(COLOR),
+    range = colorScale.range,
     cardinality = encoding.cardinality(COLOR, stats),
     type = encoding.type(COLOR);
 
   if (range === undefined) {
-    var ordinalPalette = encoding.config('ordinalPalette');
+    var ordinalPalette = colorScale.ordinalPalette;
     if (s.type === 'ordinal') {
       if (type === N) {
         // use categorical color scale
         if (cardinality <= 10) {
-          range = encoding.config('c10palette');
+          range = colorScale.c10palette;
         } else {
-          range = encoding.config('c20palette');
+          range = colorScale.c20palette;
         }
       } else {
         if (cardinality <= 2) {
@@ -243,4 +283,3 @@ scale.color.interpolate = function (start, end, cardinality) {
   var interpolator = interpolateLab(start, end);
   return util.range(cardinality).map(function(i) { return interpolator(i*1.0/(cardinality-1)); });
 };
-

@@ -50,8 +50,8 @@ compiler.compileEncoding = function (encoding, stats) {
     dataTable = spec.data[1];
 
   rawTable = filter.addFilters(rawTable, encoding); // modify rawTable
+  spec = compiler.time(spec, encoding);              // modify rawTable, add scales
   dataTable = compiler.bin(dataTable, encoding);     // modify dataTable
-  spec = compiler.time(spec, encoding);              // modify dataTable, add scales
   var aggResult = compiler.aggregate(dataTable, encoding); // modify dataTable
   var sorting = compiler.sort(spec.data, encoding, stats); // append new data
 
@@ -59,7 +59,7 @@ compiler.compileEncoding = function (encoding, stats) {
   var style = compiler.style(encoding, stats),
     group = spec.marks[0],
     mark = marks[encoding.marktype()],
-    mdefs = marks.def(mark, encoding, layout, style),
+    mdefs = marks.def(mark, encoding, layout, style, stats),
     mdef = mdefs[0];  // TODO: remove this dirty hack by refactoring the whole flow
 
   for (var i = 0; i < mdefs.length; i++) {
@@ -85,7 +85,7 @@ compiler.compileEncoding = function (encoding, stats) {
     var f = (encoding.isMeasure(X) && encoding.isDimension(Y)) ? Y : X;
     if (!mdef.from) mdef.from = {};
     // TODO: why - ?
-    mdef.from.transform = [{type: 'sort', by: '-' + encoding.field(f)}];
+    mdef.from.transform = [{type: 'sort', by: '-' + encoding.fieldRef(f)}];
   }
 
   // Small Multiples

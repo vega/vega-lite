@@ -1,17 +1,20 @@
 'use strict';
 
-var util = require('../util');
+var util = require('../util'),
+  d3_time_format = require('d3-time-format');
 
 module.exports = time;
 
-function time(spec, encoding, opt) { // FIXME refactor to reduce side effect #276
+var LONG_DATE = new Date(2014, 8, 17);
+
+function time(spec, encoding) { // FIXME refactor to reduce side effect #276
   // jshint unused:false
   var timeFields = {}, timeUnits = {};
 
   // find unique formula transformation and bin function
   encoding.forEach(function(field, encType) {
     if (field.type === T && field.timeUnit) {
-      timeFields[encoding.field(encType)] = {
+      timeFields[encoding.fieldRef(encType)] = {
         field: field,
         encType: encType
       };
@@ -20,7 +23,7 @@ function time(spec, encoding, opt) { // FIXME refactor to reduce side effect #27
   });
 
   // add formula transform
-  var data = spec.data[1],
+  var data = spec.data[0],
     transform = data.transform = data.transform || [];
 
   for (var f in timeFields) {
@@ -31,12 +34,11 @@ function time(spec, encoding, opt) { // FIXME refactor to reduce side effect #27
   // add scales
   var scales = spec.scales = spec.scales || [];
   for (var timeUnit in timeUnits) {
-    time.scale(scales, timeUnit, encoding);
+    var scale = time.scale.def(timeUnit, encoding);
+    if (scale) scales.push(scale);
   }
   return spec;
 }
-
-
 
 time.cardinality = function(field, stats, filterNull, type) {
   var timeUnit = field.timeUnit;
@@ -60,6 +62,29 @@ time.cardinality = function(field, stats, filterNull, type) {
   return null;
 };
 
+time.maxLength = function(timeUnit, encoding) {
+  switch (timeUnit) {
+    case 'seconds':
+    case 'minutes':
+    case 'hours':
+    case 'date':
+      return 2;
+    case 'month':
+    case 'day':
+      var range = time.range(timeUnit, encoding);
+      if (range) {
+        // return the longest name in the range
+        return Math.max.apply(null, range.map(function(r) {return r.length;}));
+      }
+      return 2;
+    case 'year':
+      return 4; //'1998'
+  }
+  // no time unit
+  var timeFormat = encoding.config('timeFormat');
+  return d3_time_format.utcFormat(timeFormat)(LONG_DATE).length;
+};
+
 function fieldFn(func, field) {
   return 'utc' + func + '(d.data.'+ field.name +')';
 }
@@ -75,37 +100,46 @@ time.formula = function(field) {
 time.transform = function(transform, encoding, encType, field) {
   transform.push({
     type: 'formula',
-    field: encoding.field(encType),
+    field: encoding.fieldRef(encType),
     expr: time.formula(field)
   });
 };
 
-/** append custom time scales for axis label */
-time.scale = function(scales, timeUnit, encoding) {
-  var labelLength = encoding.config('timeScaleLabelLength');
-  // TODO add option for shorter scale / custom range
+time.range = function(timeUnit, encoding) {
+  var labelLength = encoding.config('timeScaleLabelLength'),
+    scaleLabel;
   switch (timeUnit) {
     case 'day':
-      scales.push({
-        name: 'time-'+timeUnit,
-        type: 'ordinal',
-        domain: util.range(0, 7),
-        range: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map(
-          function(s) { return s.substr(0, labelLength);}
-        )
-      });
+      scaleLabel = encoding.config('dayScaleLabel');
       break;
     case 'month':
-      scales.push({
-        name: 'time-'+timeUnit,
-        type: 'ordinal',
-        domain: util.range(0, 12),
-        range: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].map(
-            function(s) { return s.substr(0, labelLength);}
-          )
-      });
+      scaleLabel = encoding.config('monthScaleLabel');
       break;
   }
+  if (scaleLabel) {
+    return labelLength ? scaleLabel.map(
+        function(s) { return s.substr(0, labelLength);}
+      ) : scaleLabel;
+  }
+  return;
+};
+
+
+time.scale = {};
+
+/** append custom time scales for axis label */
+time.scale.def = function(timeUnit, encoding) {
+  var range = time.range(timeUnit, encoding);
+
+  if (range) {
+    return {
+      name: 'time-'+timeUnit,
+      type: 'ordinal',
+      domain: time.scale.domain(timeUnit),
+      range: range
+    };
+  }
+  return null;
 };
 
 time.isOrdinalFn = function(timeUnit) {
@@ -123,7 +157,7 @@ time.isOrdinalFn = function(timeUnit) {
 
 time.scale.type = function(timeUnit, name) {
   if (name === COLOR) {
-    return 'linear'; // this has order
+    return 'linear'; // time has order, so use interpolated ordinal color scale.
   }
 
   return time.isOrdinalFn(timeUnit) || name === COL || name === ROW ? 'ordinal' : 'linear';
@@ -151,5 +185,3 @@ time.hasScale = function(timeUnit) {
   }
   return false;
 };
-
-

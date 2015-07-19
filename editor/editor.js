@@ -155,10 +155,7 @@ vled.datasetChanged = function(dataset, callback) {
 
   d3.json(dataset.url, function(err, data) {
     if (err) return alert('Error loading data ' + err.statusText);
-    dataset.stats = vl.summary(data).reduce(function(s, p) {
-      s[p.field] = p;
-      return s;
-    },{});
+    dataset.stats = vl.data.stats(data);
     callback();
   });
 };

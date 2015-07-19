@@ -1,0 +1,20 @@
+{
+  "name": "vl-editor",
+  "main": "editor.js",
+  "version": "0.0.0",
+  "authors": [
+    "Dominik Moritz <domoritz@gmail.com>"
+  ],
+  "description": "Vega-lite editor",
+  "license": "BSD-3-Clause",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "vega": "^1.5.4"
+  }
+}
