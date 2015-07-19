@@ -160,6 +160,11 @@ var axisMixin = {
           enum: ['top', 'right', 'left', 'bottom'],
           description: 'The orientation of the axis. One of top, bottom, left or right. The orientation can be used to further specialize the axis type (e.g., a y axis oriented for the right edge of the chart).'
         },
+        ticks :{
+          type: 'integer',
+          default: undefined,
+          description: 'A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are "nice" (multiples of 2, 5, 10) and lie within the underlying scale\'s range.'
+        },
         title: {
           type: 'boolean',
           default: true,

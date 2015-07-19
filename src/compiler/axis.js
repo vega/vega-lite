@@ -62,7 +62,7 @@ axis.def = function(name, encoding, layout, stats, opt) {
 
       setter(def, ['properties','labels'], labelProps);
     } else { // Q
-      def.ticks = 5;
+      def.ticks = encoding.field(name).axis.ticks;
     }
   }
 
