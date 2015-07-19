@@ -6,7 +6,11 @@ var axis = require('../../src/compiler/axis'),
   Encoding = require('../../src/Encoding');
 
 describe('Axis', function() {
-  var stats = {a: {distinct: 5}, b: {distinct: 32}};
+  var stats = {a: {distinct: 5}, b: {distinct: 32}},
+    layout = {
+      cellWidth: 60,  // default characterWidth = 6
+      cellHeight: 60
+    };
 
   describe('(X) for Time Data', function() {
     var fieldName = 'a',
@@ -89,6 +93,62 @@ describe('Axis', function() {
           }
         }), stats);
       expect(orient).to.eql('top');
+    });
+  });
+
+  describe('title()', function () {
+    it('should add explicitly specified title', function () {
+      var def = axis.title({}, 'x', Encoding.fromSpec({
+          encoding: {
+            x: {name: 'a', axis: {title: 'Custom'}}
+          }
+        }), stats, layout);
+      expect(def.title).to.eql('Custom');
+    });
+
+    it('should add return fieldTitle by default', function () {
+      var encoding = Encoding.fromSpec({
+          encoding: {
+            x: {name: 'a', axis: {titleMaxLength: '3'}}
+          }
+        });
+
+      var def = axis.title({}, 'x', encoding, layout);
+      expect(def.title).to.eql('a');
+    });
+
+    it('should add return fieldTitle by default', function () {
+      var encoding = Encoding.fromSpec({
+          encoding: {
+            x: {name: 'a', aggregate: 'sum', axis: {titleMaxLength: '10'}}
+          }
+        });
+
+      var def = axis.title({}, 'x', encoding, layout);
+      expect(def.title).to.eql('SUM(a)');
+    });
+
+    it('should add return fieldTitle by default and truncate', function () {
+      var encoding = Encoding.fromSpec({
+          encoding: {
+            x: {name: 'a', aggregate: 'sum', axis: {titleMaxLength: '3'}}
+          }
+        });
+
+      var def = axis.title({}, 'x', encoding, layout);
+      expect(def.title).to.eql('SU…');
+    });
+
+
+    it('should add return fieldTitle by default and truncate', function () {
+      var encoding = Encoding.fromSpec({
+          encoding: {
+            x: {name: 'abcdefghijkl'}
+          }
+        });
+
+      var def = axis.title({}, 'x', encoding, layout);
+      expect(def.title).to.eql('abcdefghi…');
     });
   });
 });

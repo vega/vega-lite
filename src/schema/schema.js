@@ -166,9 +166,14 @@ var axisMixin = {
           description: 'A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are "nice" (multiples of 2, 5, 10) and lie within the underlying scale\'s range.'
         },
         title: {
-          type: 'boolean',
-          default: true,
-          description: 'A title for the axis.'
+          type: 'string',
+          default: undefined,
+          description: 'A title for the axis. (Shows field name and its function by default.)'
+        },
+        titleMaxLength: {
+          type: 'integer',
+          default: undefined,
+          description: 'Max length for axis title if the title is automatically generated from the field\' description'
         },
         titleOffset: {
           type: 'integer',

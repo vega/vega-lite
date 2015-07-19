@@ -140,17 +140,25 @@ axis.hideTicks = function(def) {
 };
 
 axis.title = function (def, name, encoding, layout) {
-  if (!encoding.axis(name).title) return def;
+  var ax = encoding.field(name).axis;
 
-  var maxlength = null,
-    fieldTitle = encoding.fieldTitle(name);
-  if (name===X) {
-    maxlength = layout.cellWidth / encoding.config('characterWidth');
-  } else if (name === Y) {
-    maxlength = layout.cellHeight / encoding.config('characterWidth');
+  if (ax.title) {
+    def.title = ax.title;
+  } else {
+    // if not defined, automatically determine axis title from field def
+    var fieldTitle = encoding.fieldTitle(name),
+      maxLength;
+
+    if (ax.titleMaxLength) {
+      maxLength = ax.titleMaxLength;
+    } else if (name===X) {
+      maxLength = layout.cellWidth / encoding.config('characterWidth');
+    } else if (name === Y) {
+      maxLength = layout.cellHeight / encoding.config('characterWidth');
+    }
+
+    def.title = maxLength ? util.truncate(fieldTitle, maxLength) : fieldTitle;
   }
-
-  def.title = maxlength ? util.truncate(fieldTitle, maxlength) : fieldTitle;
 
   if (name === ROW) {
     def.properties.title = {
