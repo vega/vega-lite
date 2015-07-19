@@ -12,3 +12,12 @@ gulp.task('test', function() {
     }))
     .on('error', gutil.log);
 });
+
+// quick test
+gulp.task('t', function() {
+  return gulp.src(['test/**/*.spec.js'], { read: false })
+    .pipe(mocha({
+      istanbul: false
+    }))
+    .on('error', gutil.log);
+});
