@@ -48,7 +48,14 @@
       "bin": {
        "type": ["boolean","object"],
        "default": false,
-       "properties": {"maxbins": {"type": "integer","default": 15,"minimum": 2}},
+       "properties": {
+        "maxbins": {
+         "type": "integer",
+         "default": 15,
+         "minimum": 2,
+         "description": "Maximum number of bins."
+        }
+       },
        "supportedTypes": {"Q": 1}
       },
       "scale": {
@@ -71,6 +78,10 @@
          "type": "string",
          "enum": ["second","minute","hour","day","week","month","year"],
          "supportedTypes": {"T": 1}
+        },
+        "useRawDomain": {
+         "type": "boolean",
+         "description": "Use the raw data range as scale domain instead of aggregated data for aggregate axis. This option does not work with sum or count aggregateas they might have a substantially larger scale range.By default, use value from config.useRawDomain."
         }
        }
       },
@@ -82,15 +93,33 @@
          "default": true,
          "description": "A flag indicate if gridlines should be created in addition to ticks."
         },
+        "layer": {
+         "type": "string",
+         "default": "back",
+         "description": "A string indicating if the axis (and any gridlines) should be placed above or below the data marks."
+        },
+        "orient": {
+         "type": "string",
+         "enum": ["top","right","left","bottom"],
+         "description": "The orientation of the axis. One of top, bottom, left or right. The orientation can be used to further specialize the axis type (e.g., a y axis oriented for the right edge of the chart)."
+        },
+        "ticks": {
+         "type": "integer",
+         "default": 5,
+         "description": "A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are \"nice\" (multiples of 2, 5, 10) and lie within the underlying scale's range."
+        },
         "title": {
-         "type": "boolean",
-         "default": true,
-         "description": "A title for the axis."
+         "type": "string",
+         "description": "A title for the axis. (Shows field name and its function by default.)"
+        },
+        "titleMaxLength": {
+         "type": "integer",
+         "description": "Max length for axis title if the title is automatically generated from the field's description"
         },
         "titleOffset": {"type": "integer","description": "A title offset value for the axis."},
         "format": {
          "type": "string",
-         "description": "The formatting pattern for axis labels."
+         "description": "The formatting pattern for axis labels. If not undefined, this will be determined by small/largeNumberFormat and the max value of the field."
         },
         "maxLabelLength": {
          "type": "integer",
@@ -114,9 +143,11 @@
         "type": "object",
         "supportedTypes": {"N": 1,"O": 1},
         "required": ["name","aggregate"],
-        "name": {"type": "string"},
-        "aggregate": {"type": "string","enum": ["avg","sum","min","max","count"]},
-        "reverse": {"type": "boolean","default": false}
+        "properties": {
+         "name": {"type": "string"},
+         "aggregate": {"type": "string","enum": ["avg","sum","min","max","count"]},
+         "reverse": {"type": "boolean","default": false}
+        }
        }
       }
      },
@@ -157,7 +188,14 @@
       "bin": {
        "type": ["boolean","object"],
        "default": false,
-       "properties": {"maxbins": {"type": "integer","default": 15,"minimum": 2}},
+       "properties": {
+        "maxbins": {
+         "type": "integer",
+         "default": 15,
+         "minimum": 2,
+         "description": "Maximum number of bins."
+        }
+       },
        "supportedTypes": {"Q": 1}
       },
       "scale": {
@@ -180,6 +218,10 @@
          "type": "string",
          "enum": ["second","minute","hour","day","week","month","year"],
          "supportedTypes": {"T": 1}
+        },
+        "useRawDomain": {
+         "type": "boolean",
+         "description": "Use the raw data range as scale domain instead of aggregated data for aggregate axis. This option does not work with sum or count aggregateas they might have a substantially larger scale range.By default, use value from config.useRawDomain."
         }
        }
       },
@@ -191,15 +233,33 @@
          "default": true,
          "description": "A flag indicate if gridlines should be created in addition to ticks."
         },
+        "layer": {
+         "type": "string",
+         "default": "back",
+         "description": "A string indicating if the axis (and any gridlines) should be placed above or below the data marks."
+        },
+        "orient": {
+         "type": "string",
+         "enum": ["top","right","left","bottom"],
+         "description": "The orientation of the axis. One of top, bottom, left or right. The orientation can be used to further specialize the axis type (e.g., a y axis oriented for the right edge of the chart)."
+        },
+        "ticks": {
+         "type": "integer",
+         "default": 5,
+         "description": "A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are \"nice\" (multiples of 2, 5, 10) and lie within the underlying scale's range."
+        },
         "title": {
-         "type": "boolean",
-         "default": true,
-         "description": "A title for the axis."
+         "type": "string",
+         "description": "A title for the axis. (Shows field name and its function by default.)"
+        },
+        "titleMaxLength": {
+         "type": "integer",
+         "description": "Max length for axis title if the title is automatically generated from the field's description"
         },
         "titleOffset": {"type": "integer","description": "A title offset value for the axis."},
         "format": {
          "type": "string",
-         "description": "The formatting pattern for axis labels."
+         "description": "The formatting pattern for axis labels. If not undefined, this will be determined by small/largeNumberFormat and the max value of the field."
         },
         "maxLabelLength": {
          "type": "integer",
@@ -223,9 +283,11 @@
         "type": "object",
         "supportedTypes": {"N": 1,"O": 1},
         "required": ["name","aggregate"],
-        "name": {"type": "string"},
-        "aggregate": {"type": "string","enum": ["avg","sum","min","max","count"]},
-        "reverse": {"type": "boolean","default": false}
+        "properties": {
+         "name": {"type": "string"},
+         "aggregate": {"type": "string","enum": ["avg","sum","min","max","count"]},
+         "reverse": {"type": "boolean","default": false}
+        }
        }
       }
      },
@@ -254,7 +316,14 @@
       "bin": {
        "type": ["boolean","object"],
        "default": false,
-       "properties": {"maxbins": {"type": "integer","default": 15,"minimum": 2}},
+       "properties": {
+        "maxbins": {
+         "type": "integer",
+         "default": 15,
+         "minimum": 2,
+         "description": "Maximum number of bins."
+        }
+       },
        "supportedTypes": {"Q": 1}
       },
       "aggregate": {"type": "string","enum": ["count"],"supportedTypes": {"N": 1,"O": 1}},
@@ -266,9 +335,11 @@
         "type": "object",
         "supportedTypes": {"N": 1,"O": 1},
         "required": ["name","aggregate"],
-        "name": {"type": "string"},
-        "aggregate": {"type": "string","enum": ["avg","sum","min","max","count"]},
-        "reverse": {"type": "boolean","default": false}
+        "properties": {
+         "name": {"type": "string"},
+         "aggregate": {"type": "string","enum": ["avg","sum","min","max","count"]},
+         "reverse": {"type": "boolean","default": false}
+        }
        }
       },
       "axis": {
@@ -279,15 +350,33 @@
          "default": true,
          "description": "A flag indicate if gridlines should be created in addition to ticks."
         },
+        "layer": {
+         "type": "string",
+         "default": "back",
+         "description": "A string indicating if the axis (and any gridlines) should be placed above or below the data marks."
+        },
+        "orient": {
+         "type": "string",
+         "enum": ["top","right","left","bottom"],
+         "description": "The orientation of the axis. One of top, bottom, left or right. The orientation can be used to further specialize the axis type (e.g., a y axis oriented for the right edge of the chart)."
+        },
+        "ticks": {
+         "type": "integer",
+         "default": 5,
+         "description": "A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are \"nice\" (multiples of 2, 5, 10) and lie within the underlying scale's range."
+        },
         "title": {
-         "type": "boolean",
-         "default": true,
-         "description": "A title for the axis."
+         "type": "string",
+         "description": "A title for the axis. (Shows field name and its function by default.)"
+        },
+        "titleMaxLength": {
+         "type": "integer",
+         "description": "Max length for axis title if the title is automatically generated from the field's description"
         },
         "titleOffset": {"type": "integer","description": "A title offset value for the axis."},
         "format": {
          "type": "string",
-         "description": "The formatting pattern for axis labels."
+         "description": "The formatting pattern for axis labels. If not undefined, this will be determined by small/largeNumberFormat and the max value of the field."
         },
         "maxLabelLength": {
          "type": "integer",
@@ -297,12 +386,7 @@
         }
        }
       },
-      "height": {"type": "number","minimum": 0,"default": 150},
-      "grid": {
-       "type": "boolean",
-       "default": true,
-       "description": "A flag indicate if gridlines should be created in addition to ticks."
-      }
+      "height": {"type": "number","minimum": 0,"default": 150}
      },
      "supportedRole": {"dimension": true},
      "required": ["name","type"],
@@ -330,7 +414,14 @@
       "bin": {
        "type": ["boolean","object"],
        "default": false,
-       "properties": {"maxbins": {"type": "integer","default": 15,"minimum": 2}},
+       "properties": {
+        "maxbins": {
+         "type": "integer",
+         "default": 15,
+         "minimum": 2,
+         "description": "Maximum number of bins."
+        }
+       },
        "supportedTypes": {"Q": 1}
       },
       "aggregate": {"type": "string","enum": ["count"],"supportedTypes": {"N": 1,"O": 1}},
@@ -342,9 +433,11 @@
         "type": "object",
         "supportedTypes": {"N": 1,"O": 1},
         "required": ["name","aggregate"],
-        "name": {"type": "string"},
-        "aggregate": {"type": "string","enum": ["avg","sum","min","max","count"]},
-        "reverse": {"type": "boolean","default": false}
+        "properties": {
+         "name": {"type": "string"},
+         "aggregate": {"type": "string","enum": ["avg","sum","min","max","count"]},
+         "reverse": {"type": "boolean","default": false}
+        }
        }
       },
       "axis": {
@@ -355,15 +448,33 @@
          "default": true,
          "description": "A flag indicate if gridlines should be created in addition to ticks."
         },
+        "layer": {
+         "type": "string",
+         "default": "back",
+         "description": "A string indicating if the axis (and any gridlines) should be placed above or below the data marks."
+        },
+        "orient": {
+         "type": "string",
+         "enum": ["top","right","left","bottom"],
+         "description": "The orientation of the axis. One of top, bottom, left or right. The orientation can be used to further specialize the axis type (e.g., a y axis oriented for the right edge of the chart)."
+        },
+        "ticks": {
+         "type": "integer",
+         "default": 5,
+         "description": "A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are \"nice\" (multiples of 2, 5, 10) and lie within the underlying scale's range."
+        },
         "title": {
-         "type": "boolean",
-         "default": true,
-         "description": "A title for the axis."
+         "type": "string",
+         "description": "A title for the axis. (Shows field name and its function by default.)"
+        },
+        "titleMaxLength": {
+         "type": "integer",
+         "description": "Max length for axis title if the title is automatically generated from the field's description"
         },
         "titleOffset": {"type": "integer","description": "A title offset value for the axis."},
         "format": {
          "type": "string",
-         "description": "The formatting pattern for axis labels."
+         "description": "The formatting pattern for axis labels. If not undefined, this will be determined by small/largeNumberFormat and the max value of the field."
         },
         "maxLabelLength": {
          "type": "integer",
@@ -413,7 +524,14 @@
       "bin": {
        "type": ["boolean","object"],
        "default": false,
-       "properties": {"maxbins": {"type": "integer","default": 15,"minimum": 2}},
+       "properties": {
+        "maxbins": {
+         "type": "integer",
+         "default": 15,
+         "minimum": 2,
+         "description": "Maximum number of bins."
+        }
+       },
        "supportedTypes": {"Q": 1}
       },
       "scale": {
@@ -436,6 +554,10 @@
          "type": "string",
          "enum": ["second","minute","hour","day","week","month","year"],
          "supportedTypes": {"T": 1}
+        },
+        "useRawDomain": {
+         "type": "boolean",
+         "description": "Use the raw data range as scale domain instead of aggregated data for aggregate axis. This option does not work with sum or count aggregateas they might have a substantially larger scale range.By default, use value from config.useRawDomain."
         }
        }
       },
@@ -448,9 +570,11 @@
         "type": "object",
         "supportedTypes": {"N": 1,"O": 1},
         "required": ["name","aggregate"],
-        "name": {"type": "string"},
-        "aggregate": {"type": "string","enum": ["avg","sum","min","max","count"]},
-        "reverse": {"type": "boolean","default": false}
+        "properties": {
+         "name": {"type": "string"},
+         "aggregate": {"type": "string","enum": ["avg","sum","min","max","count"]},
+         "reverse": {"type": "boolean","default": false}
+        }
        }
       }
      },
@@ -482,7 +606,14 @@
       "bin": {
        "type": ["boolean","object"],
        "default": false,
-       "properties": {"maxbins": {"type": "integer","default": 15,"minimum": 2}},
+       "properties": {
+        "maxbins": {
+         "type": "integer",
+         "default": 15,
+         "minimum": 2,
+         "description": "Maximum number of bins."
+        }
+       },
        "supportedTypes": {"Q": 1}
       },
       "scale": {
@@ -506,7 +637,65 @@
          "enum": ["second","minute","hour","day","week","month","year"],
          "supportedTypes": {"T": 1}
         },
-        "range": {"type": ["string","array"]}
+        "useRawDomain": {
+         "type": "boolean",
+         "description": "Use the raw data range as scale domain instead of aggregated data for aggregate axis. This option does not work with sum or count aggregateas they might have a substantially larger scale range.By default, use value from config.useRawDomain."
+        },
+        "range": {
+         "type": ["string","array"],
+         "description": "color palette, if undefined vega-lite will use data propertyto pick one from c10palette, c20palette, or ordinalPalette"
+        },
+        "c10palette": {
+         "type": "string",
+         "default": "category10",
+         "enum": ["category10","category10k","Pastel1","Pastel2","Set1","Set2","Set3"]
+        },
+        "c20palette": {
+         "type": "string",
+         "default": "category20",
+         "enum": ["category20","category20b","category20c"]
+        },
+        "ordinalPalette": {
+         "type": "string",
+         "default": "BuGn",
+         "enum": [
+          "YlGn",
+          "YlGnBu",
+          "GnBu",
+          "BuGn",
+          "PuBuGn",
+          "PuBu",
+          "BuPu",
+          "RdPu",
+          "PuRd",
+          "OrRd",
+          "YlOrRd",
+          "YlOrBr",
+          "Purples",
+          "Blues",
+          "Greens",
+          "Oranges",
+          "Reds",
+          "Greys",
+          "PuOr",
+          "BrBG",
+          "PRGn",
+          "PiYG",
+          "RdBu",
+          "RdGy",
+          "RdYlBu",
+          "Spectral",
+          "RdYlGn",
+          "Accent",
+          "Dark2",
+          "Paired",
+          "Pastel1",
+          "Pastel2",
+          "Set1",
+          "Set2",
+          "Set3"
+         ]
+        }
        }
       },
       "legend": {"type": "boolean","default": true},
@@ -518,9 +707,11 @@
         "type": "object",
         "supportedTypes": {"N": 1,"O": 1},
         "required": ["name","aggregate"],
-        "name": {"type": "string"},
-        "aggregate": {"type": "string","enum": ["avg","sum","min","max","count"]},
-        "reverse": {"type": "boolean","default": false}
+        "properties": {
+         "name": {"type": "string"},
+         "aggregate": {"type": "string","enum": ["avg","sum","min","max","count"]},
+         "reverse": {"type": "boolean","default": false}
+        }
        }
       }
      },
@@ -561,7 +752,14 @@
       "bin": {
        "type": ["boolean","object"],
        "default": false,
-       "properties": {"maxbins": {"type": "integer","default": 15,"minimum": 2}},
+       "properties": {
+        "maxbins": {
+         "type": "integer",
+         "default": 15,
+         "minimum": 2,
+         "description": "Maximum number of bins."
+        }
+       },
        "supportedTypes": {"Q": 1}
       },
       "scale": {
@@ -584,6 +782,10 @@
          "type": "string",
          "enum": ["second","minute","hour","day","week","month","year"],
          "supportedTypes": {"T": 1}
+        },
+        "useRawDomain": {
+         "type": "boolean",
+         "description": "Use the raw data range as scale domain instead of aggregated data for aggregate axis. This option does not work with sum or count aggregateas they might have a substantially larger scale range.By default, use value from config.useRawDomain."
         }
        }
       },
@@ -595,9 +797,11 @@
         "type": "object",
         "supportedTypes": {"N": 1,"O": 1},
         "required": ["name","aggregate"],
-        "name": {"type": "string"},
-        "aggregate": {"type": "string","enum": ["avg","sum","min","max","count"]},
-        "reverse": {"type": "boolean","default": false}
+        "properties": {
+         "name": {"type": "string"},
+         "aggregate": {"type": "string","enum": ["avg","sum","min","max","count"]},
+         "reverse": {"type": "boolean","default": false}
+        }
        }
       }
      },
@@ -626,7 +830,14 @@
       "bin": {
        "type": ["boolean","object"],
        "default": false,
-       "properties": {"maxbins": {"type": "integer","default": 15,"minimum": 2}},
+       "properties": {
+        "maxbins": {
+         "type": "integer",
+         "default": 15,
+         "minimum": 2,
+         "description": "Maximum number of bins."
+        }
+       },
        "supportedTypes": {"Q": 1}
       },
       "aggregate": {"type": "string","enum": ["count"],"supportedTypes": {"N": 1,"O": 1}},
@@ -636,6 +847,11 @@
        "enum": ["circle","square","cross","diamond","triangle-up","triangle-down"],
        "default": "circle"
       },
+      "filled": {
+       "type": "boolean",
+       "default": false,
+       "description": "whether the shape's color should be used as fill color instead of stroke color"
+      },
       "sort": {
        "type": "array",
        "default": [],
@@ -643,9 +859,11 @@
         "type": "object",
         "supportedTypes": {"N": 1,"O": 1},
         "required": ["name","aggregate"],
-        "name": {"type": "string"},
-        "aggregate": {"type": "string","enum": ["avg","sum","min","max","count"]},
-        "reverse": {"type": "boolean","default": false}
+        "properties": {
+         "name": {"type": "string"},
+         "aggregate": {"type": "string","enum": ["avg","sum","min","max","count"]},
+         "reverse": {"type": "boolean","default": false}
+        }
        }
       }
      },
@@ -677,7 +895,14 @@
       "bin": {
        "type": ["boolean","object"],
        "default": false,
-       "properties": {"maxbins": {"type": "integer","default": 15,"minimum": 2}},
+       "properties": {
+        "maxbins": {
+         "type": "integer",
+         "default": 15,
+         "minimum": 2,
+         "description": "Maximum number of bins."
+        }
+       },
        "supportedTypes": {"Q": 1}
       },
       "scale": {
@@ -700,17 +925,18 @@
          "type": "string",
          "enum": ["second","minute","hour","day","week","month","year"],
          "supportedTypes": {"T": 1}
+        },
+        "useRawDomain": {
+         "type": "boolean",
+         "description": "Use the raw data range as scale domain instead of aggregated data for aggregate axis. This option does not work with sum or count aggregateas they might have a substantially larger scale range.By default, use value from config.useRawDomain."
         }
        }
       },
-      "text": {
-       "type": "object",
-       "properties": {
-        "align": {"type": "string","default": "left"},
-        "baseline": {"type": "string","default": "middle"},
-        "margin": {"type": "integer","default": 4,"minimum": 0}
-       }
-      },
+      "align": {"type": "string","default": "right"},
+      "baseline": {"type": "string","default": "middle"},
+      "color": {"type": "string","role": "color","default": "#000000"},
+      "margin": {"type": "integer","default": 4,"minimum": 0},
+      "placeholder": {"type": "string","default": "Abc"},
       "font": {
        "type": "object",
        "properties": {
@@ -720,6 +946,10 @@
         "style": {"type": "string","default": "normal","enum": ["normal","italic"]}
        }
       },
+      "format": {
+       "type": "string",
+       "description": "The formatting pattern for text value. If not undefined, this will be determined by small/largeNumberFormat and the max value of the field."
+      },
       "sort": {
        "type": "array",
        "default": [],
@@ -727,9 +957,11 @@
         "type": "object",
         "supportedTypes": {"N": 1,"O": 1},
         "required": ["name","aggregate"],
-        "name": {"type": "string"},
-        "aggregate": {"type": "string","enum": ["avg","sum","min","max","count"]},
-        "reverse": {"type": "boolean","default": false}
+        "properties": {
+         "name": {"type": "string"},
+         "aggregate": {"type": "string","enum": ["avg","sum","min","max","count"]},
+         "reverse": {"type": "boolean","default": false}
+        }
        }
       }
      },
@@ -749,7 +981,14 @@
       "bin": {
        "type": ["boolean","object"],
        "default": false,
-       "properties": {"maxbins": {"type": "integer","default": 15,"minimum": 2}},
+       "properties": {
+        "maxbins": {
+         "type": "integer",
+         "default": 15,
+         "minimum": 2,
+         "description": "Maximum number of bins."
+        }
+       },
        "supportedTypes": {"Q": 1}
       },
       "aggregate": {"type": "string","enum": ["count"],"supportedTypes": {"N": 1,"O": 1}},
@@ -760,9 +999,11 @@
         "type": "object",
         "supportedTypes": {"N": 1,"O": 1},
         "required": ["name","aggregate"],
-        "name": {"type": "string"},
-        "aggregate": {"type": "string","enum": ["avg","sum","min","max","count"]},
-        "reverse": {"type": "boolean","default": false}
+        "properties": {
+         "name": {"type": "string"},
+         "aggregate": {"type": "string","enum": ["avg","sum","min","max","count"]},
+         "reverse": {"type": "boolean","default": false}
+        }
        }
       }
      },
@@ -810,59 +1051,63 @@
     "textCellWidth": {"type": "integer","default": 90,"minimum": 0},
     "strokeWidth": {"type": "integer","default": 2,"minimum": 0},
     "singleBarOffset": {"type": "integer","default": 5,"minimum": 0},
-    "c10palette": {
-     "type": "string",
-     "default": "category10",
-     "enum": ["category10","category10k","Pastel1","Pastel2","Set1","Set2","Set3"]
+    "timeScaleLabelLength": {
+     "type": "integer",
+     "default": 3,
+     "minimum": 0,
+     "description": "Max length for values in dayScaleLabel and monthScaleLabel.  Zero means using full names in dayScaleLabel/monthScaleLabel."
     },
-    "c20palette": {
-     "type": "string",
-     "default": "category20",
-     "enum": ["category20","category20b","category20c"]
+    "dayScaleLabel": {
+     "type": "array",
+     "items": {"type": "string"},
+     "default": ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+     "description": "Axis labels for day of week, starting from Sunday.(Consistent with Javascript -- See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getDay."
     },
-    "ordinalPalette": {
-     "type": "string",
-     "default": "BuGn",
-     "enum": [
-      "YlGn",
-      "YlGnBu",
-      "GnBu",
-      "BuGn",
-      "PuBuGn",
-      "PuBu",
-      "BuPu",
-      "RdPu",
-      "PuRd",
-      "OrRd",
-      "YlOrRd",
-      "YlOrBr",
-      "Purples",
-      "Blues",
-      "Greens",
-      "Oranges",
-      "Reds",
-      "Greys",
-      "PuOr",
-      "BrBG",
-      "PRGn",
-      "PiYG",
-      "RdBu",
-      "RdGy",
-      "RdYlBu",
-      "Spectral",
-      "RdYlGn",
-      "Accent",
-      "Dark2",
-      "Paired",
-      "Pastel1",
-      "Pastel2",
-      "Set1",
-      "Set2",
-      "Set3"
-     ]
+    "monthScaleLabel": {
+     "type": "array",
+     "items": {"type": "string"},
+     "default": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December"
+     ],
+     "description": "Axis labels for month."
     },
-    "timeScaleLabelLength": {"type": "integer","default": 3,"minimum": 0},
-    "characterWidth": {"type": "integer","default": 6}
+    "characterWidth": {"type": "integer","default": 6},
+    "maxSmallNumber": {
+     "type": "number",
+     "default": 10000,
+     "description": "maximum number that a field will be considered smallNumber.Used for axis labelling."
+    },
+    "smallNumberFormat": {
+     "type": "string",
+     "default": "",
+     "description": "D3 Number format for axis labels and text tables for number <= maxSmallNumber. Used for axis labelling."
+    },
+    "largeNumberFormat": {
+     "type": "string",
+     "default": ".3s",
+     "description": "D3 Number format for axis labels and text tables for number > maxSmallNumber."
+    },
+    "timeFormat": {
+     "type": "string",
+     "default": "%Y-%m-%d",
+     "description": "Date format for axis labels."
+    },
+    "useRawDomain": {
+     "type": "boolean",
+     "default": false,
+     "description": "Use the raw data range as scale domain instead of aggregated data for aggregate axis. This option does not work with sum or count aggregateas they might have a substantially larger scale range.By default, use value from config.useRawDomain."
+    }
    }
   }
  }
