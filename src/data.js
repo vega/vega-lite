@@ -21,5 +21,10 @@ vldata.stats = function(data) {
   return summary.reduce(function(s, profile) {
     s[profile.field] = profile;
     return s;
-  }, {count: data.length});
+  }, {
+    '*': {
+      max: data.length,
+      min: 0
+    }
+  });
 };

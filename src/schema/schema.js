@@ -167,20 +167,16 @@ var axisMixin = {
         format: {
           type: 'string',
           default: undefined,  // auto
-          description: 'The formatting pattern for axis labels.'
+          description: 'The formatting pattern for axis labels. '+
+                       'If not undefined, this will be determined by ' +
+                       'small/largeNumberFormat and the max value ' +
+                       'of the field.'
         },
         maxLabelLength: {
           type: 'integer',
           default: 25,
           minimum: 0,
           description: 'Truncate labels that are too long.'
-        },
-        numberFormat: {
-          type: 'string',
-          default: undefined,
-          description: 'Number format for the axis.  If not undefined, this will ' +
-                       'be determined by small/largeNumberFormat and the max value ' +
-                       'of the field.'
         }
       }
     }
@@ -295,7 +291,15 @@ var textMixin = {
           enum: ['normal', 'italic']
         }
       }
-    }
+    },
+    format: {
+      type: 'string',
+      default: undefined,  // auto
+      description: 'The formatting pattern for text value. '+
+                   'If not undefined, this will be determined by ' +
+                   'small/largeNumberFormat and the max value ' +
+                   'of the field.'
+    },
   }
 };
 
@@ -635,7 +639,25 @@ var config = {
     timeScaleLabelLength: {
       type: 'integer',
       default: 3,
-      minimum: 0
+      minimum: 0,
+      description: 'Max length for values in dayScaleLabel and monthScaleLabel.  Zero means using full names in dayScaleLabel/monthScaleLabel.'
+    },
+    dayScaleLabel: {
+      type: 'array',
+      items: {
+        type: 'string'
+      },
+      default: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+      description: 'Axis labels for day of week, starting from Sunday.' +
+        '(Consistent with Javascript -- See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getDay.'
+    },
+    monthScaleLabel: {
+      type: 'array',
+      items: {
+        type: 'string'
+      },
+      default: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+      description: 'Axis labels for month.'
     },
     // other
     characterWidth: {
@@ -644,20 +666,20 @@ var config = {
     },
     maxSmallNumber: {
       type: 'number',
-      default: 1000,
+      default: 10000,
       description: 'maximum number that a field will be considered smallNumber.'+
                    'Used for axis labelling.'
     },
     smallNumberFormat: {
       type: 'string',
-      default: ',g',
-      description: 'Number format for axis labels and text tables '+
+      default: '',
+      description: 'D3 Number format for axis labels and text tables '+
                    'for number <= maxSmallNumber. Used for axis labelling.'
     },
     largeNumberFormat: {
       type: 'string',
       default: '.3s',
-      description: 'Number format for axis labels and text tables ' +
+      description: 'D3 Number format for axis labels and text tables ' +
                    'for number > maxSmallNumber.'
     },
     timeFormat: {

@@ -411,7 +411,7 @@ function filled_point_props(shape) {
 
 function text_props(e, layout, style, stats) {
   var p = {},
-    textField = e.field(TEXT);
+    field = e.field(TEXT);
 
   // x
   if (e.has(X)) {
@@ -435,12 +435,12 @@ function text_props(e, layout, style, stats) {
   if (e.has(SIZE)) {
     p.fontSize = {scale: SIZE, field: e.fieldRef(SIZE)};
   } else if (!e.has(SIZE)) {
-    p.fontSize = {value: textField.font.size};
+    p.fontSize = {value: field.font.size};
   }
 
   // fill
   // color should be set to background
-  p.fill = {value: textField.text.color};
+  p.fill = {value: field.text.color};
 
   // alpha
   if (e.has(ALPHA)) {
@@ -455,22 +455,22 @@ function text_props(e, layout, style, stats) {
   if (e.has(TEXT)) {
     if (e.isType(TEXT, Q)) {
       var fieldStats = stats[e.fieldName(name)],
-        numberFormat = e.numberFormat(name, fieldStats);
+        numberFormat = field.format || e.numberFormat(fieldStats);
 
       p.text = {template: '{{' + e.fieldRef(TEXT) + ' | number:\'' +
         numberFormat +'\'}}'};
-      p.align = {value: textField.align};
+      p.align = {value: field.align};
     } else {
       p.text = {field: e.fieldRef(TEXT)};
     }
   } else {
-    p.text = {value: textField.placeholder};
+    p.text = {value: field.placeholder};
   }
 
-  p.font = {value: textField.font.family};
-  p.fontWeight = {value: textField.font.weight};
-  p.fontStyle = {value: textField.font.style};
-  p.baseline = {value: textField.baseline};
+  p.font = {value: field.font.family};
+  p.fontWeight = {value: field.font.weight};
+  p.fontStyle = {value: field.font.style};
+  p.baseline = {value: field.baseline};
 
   return p;
 }
