@@ -35,7 +35,7 @@ axis.def = function(name, encoding, layout, stats, opt) {
     properties: {}
   };
 
-
+  //set offset first because it's used in axis.grid
   if(isRow) def.offset = axis.titleOffset(encoding, layout, Y) + 20;
 
   def = axis.grid(def, name, encoding, layout);
@@ -198,8 +198,10 @@ axis.labels = function (def, name, encoding, layout, stats, opt) {
       def.format = 'd';
     }
   } else if (encoding.isTypes(name, [N, O]) && encoding.axis(name).maxLabelLength) {
-    var textTemplatePath = ['properties','labels','text','template'];
-    setter(def, textTemplatePath, '{{data | truncate:' + encoding.axis(name).maxLabelLength + '}}');
+    setter(def,
+      ['properties','labels','text','template'],
+      '{{data | truncate:' + encoding.axis(name).maxLabelLength + '}}'
+      );
   } else {
     // nothing
   }
