@@ -25,7 +25,7 @@ describe('Axis', function() {
       y: {
         axisTitleOffset: 60
       }
-    });
+    }, {a: {}});
 
     //FIXME decouple the test here
 
