@@ -25,14 +25,10 @@ axis.defs = function(names, encoding, layout, stats, opt) {
 };
 
 axis.def = function(name, encoding, layout, stats, opt) {
-  var type = name;
-  var isCol = name == COL, isRow = name == ROW;
-  var rowOffset = axisTitleOffset(encoding, layout, Y) + 20,
-    cellPadding = layout.cellPadding;
-
-
-  if (isCol) type = 'x';
-  if (isRow) type = 'y';
+  var isCol = name == COL,
+    isRow = name == ROW,
+    type = isCol ? 'x' : isRow ? 'y' : name,
+    rowOffset = axis.titleOffset(encoding, layout, Y) + 20;
 
   var def = {
     type: type,
