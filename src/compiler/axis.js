@@ -32,18 +32,10 @@ axis.def = function(name, encoding, layout, stats, opt) {
   var def = {
     type: type,
     scale: name,
-    properties: {}
+    properties: {},
+    layer: encoding.field(name).axis.layer,
+    orient: axis.orient(name, encoding, stats)
   };
-
-  //set offset first because it's used in axis.grid
-  if(isRow) def.offset = axis.titleOffset(encoding, layout, Y) + 20;
-
-  def = axis.grid(def, name, encoding, layout);
-  def = axis.title(def, name, encoding, layout, opt);
-
-  def.orient = axis.orient(name, encoding, stats);
-
-  if (isRow || isCol) def = axis.hideTicks(def);
 
   // Add axis label custom scale (for bin / time)
   def = axis.labels.scale(def, encoding, name);
@@ -52,7 +44,7 @@ axis.def = function(name, encoding, layout, stats, opt) {
   // for x-axis, set ticks for Q or rotate scale for ordinal scale
   if (name == X) {
     if (encoding.isDimension(X) || encoding.isType(X, T)) {
-      // TODO(kanitw): Jul 19, 2015 - add condition for rotation
+      // TODO(kanitw): Jul 19, 2015 - #506 add condition for rotation
       def = axis.labels.rotate(def);
     } else { // Q
       def.ticks = encoding.field(name).axis.ticks;
@@ -61,6 +53,15 @@ axis.def = function(name, encoding, layout, stats, opt) {
 
   // TitleOffset depends on labels rotation
   def.titleOffset = axis.titleOffset(encoding, layout, name);
+
+  //def.offset is used in axis.grid
+  if(isRow) def.offset = axis.titleOffset(encoding, layout, Y) + 20;
+  // FIXME(kanitw): Jul 19, 2015 - offset for column when x is put on top
+
+  def = axis.grid(def, name, encoding, layout);
+  def = axis.title(def, name, encoding, layout, opt);
+
+  if (isRow || isCol) def = axis.hideTicks(def);
 
   return def;
 };
@@ -86,7 +87,6 @@ axis.grid = function(def, name, encoding, layout) {
 
   if (encoding.axis(name).grid) {
     def.grid = true;
-    def.layer = 'back';
 
     if (isCol) {
       // set grid property -- put the lines on the right the cell

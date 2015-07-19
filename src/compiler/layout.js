@@ -135,7 +135,7 @@ function offset(encoding, stats, layout) {
       if (
         et===Y
         // || (et===X && false)
-        // FIXME determine when X would rotate, but should move this to axis.js first
+        // FIXME determine when X would rotate, but should move this to axis.js first #506
       ) {
         maxLength = getMaxLength(encoding, stats, et);
       }

@@ -154,6 +154,11 @@ var axisMixin = {
           default: true,
           description: 'A flag indicate if gridlines should be created in addition to ticks.'
         },
+        layer: {
+          type: 'string',
+          default: 'back',
+          description: 'A string indicating if the axis (and any gridlines) should be placed above or below the data marks.'
+        },
         orient: {
           type: 'string',
           default: undefined,
