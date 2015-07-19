@@ -20,7 +20,7 @@ describe('vl.field.cardinality()', function () {
       var field = {name:2, type:'Q', bin: {maxbins: 15}};
       var stats = {2:{distinct: 10, min:0, max:150}};
       var cardinality = vlfield.cardinality(field, stats);
-      expect(cardinality).to.equal(10);
+      expect(cardinality).to.equal(15);
     });
   });
 });

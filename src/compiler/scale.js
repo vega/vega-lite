@@ -3,7 +3,8 @@ require('../globals');
 var util = require('../util'),
   time = require('./time'),
   colorbrewer = require('colorbrewer'),
-  interpolateLab = require('d3-color').interpolateLab;
+  interpolateLab = require('d3-color').interpolateLab,
+  schema = require('../schema/schema');
 
 var scale = module.exports = {};
 
@@ -21,16 +22,22 @@ scale.defs = function(names, encoding, layout, stats, style, sorting, opt) {
     var s = {
       name: name,
       type: scale.type(name, encoding),
-      domain: scale.domain(name, encoding, sorting, opt)
+      domain: scale.domain(name, encoding, stats, sorting, opt)
     };
-    if (s.type === 'ordinal' && !encoding.bin(name) && encoding.sort(name).length === 0) {
-      s.sort = true;
-    }
 
-    scale_range(s, encoding, layout, stats, style, opt);
+    s.sort = scale.sort(s, encoding, name) || undefined;
+
+    scale.range(s, encoding, layout, stats, style, opt);
 
     return (a.push(s), a);
   }, []);
+};
+
+scale.sort = function(s, encoding, name) {
+  return s.type === 'ordinal' && (
+    !!encoding.bin(name) ||
+    encoding.sort(name).length === 0
+  );
 };
 
 scale.type = function(name, encoding) {
@@ -49,10 +56,22 @@ scale.type = function(name, encoding) {
   }
 };
 
-scale.domain = function (name, encoding, sorting, opt) {
+scale.domain = function (name, encoding, stats, sorting, opt) {
+  var field = encoding.field(name);
+
   if (encoding.isType(name, T)) {
-    var range = time.scale.domain(encoding.field(name).timeUnit, name);
+    var range = time.scale.domain(field.timeUnit, name);
     if(range) return range;
+  }
+
+  if (field.bin) {
+    // TODO(kanitw): this must be changed in vg2
+    var fieldStat = stats[field.name],
+      bins = util.getbins(fieldStat, field.bin.maxbins || schema.MAXBINS_DEFAULT),
+      numbins = (bins.stop - bins.start) / bins.step;
+    return util.range(numbins).map(function(i) {
+      return bins.start + bins.step * i;
+    });
   }
 
   if (name == opt.stack) {
@@ -65,13 +84,13 @@ scale.domain = function (name, encoding, sorting, opt) {
     };
   }
   var aggregate = encoding.aggregate(name),
-    timeUnit = encoding.field(name).timeUnit,
+    timeUnit = field.timeUnit,
     useRawDomain = encoding.scale(name).useRawDomain,
     notCountOrSum = !aggregate || (aggregate !=='count' && aggregate !== 'sum');
 
   if ( useRawDomain && notCountOrSum && (
       // Q always uses non-ordinal scale except when it's binned and thus uses ordinal scale.
-      (encoding.isType(name, Q) && !encoding.bin(name)) ||
+      (encoding.isType(name, Q) && !field.bin) ||
       // T uses non-ordinal scale when there's no unit or when the unit is not ordinal.
       (encoding.isType(name, T) && (!timeUnit || !time.isOrdinalFn(timeUnit)))
     )
@@ -83,18 +102,17 @@ scale.domain = function (name, encoding, sorting, opt) {
 };
 
 
-function scale_range(s, encoding, layout, stats, style, opt) {
+scale.range = function (s, encoding, layout, stats, style, opt) {
   // jshint unused:false
   var spec = encoding.scale(s.name),
     timeUnit = encoding.field(s.name).timeUnit;
 
   switch (s.name) {
     case X:
+      s.range = layout.cellWidth ? [0, layout.cellWidth] : 'width';
       if (s.type === 'ordinal') {
         s.bandWidth = encoding.bandSize(X, layout.x.useSmallBand);
       } else {
-        s.range = layout.cellWidth ? [0, layout.cellWidth] : 'width';
-
         if (encoding.isType(s.name,T) && timeUnit === 'year') {
           s.zero = false;
         } else {
@@ -111,11 +129,10 @@ function scale_range(s, encoding, layout, stats, style, opt) {
       }
       break;
     case Y:
+      s.range = layout.cellHeight ? [layout.cellHeight, 0] : 'height';
       if (s.type === 'ordinal') {
         s.bandWidth = encoding.bandSize(Y, layout.y.useSmallBand);
       } else {
-        s.range = layout.cellHeight ? [layout.cellHeight, 0] : 'height';
-
         if (encoding.isType(s.name,T) && timeUnit === 'year') {
           s.zero = false;
         } else {
@@ -183,7 +200,7 @@ function scale_range(s, encoding, layout, stats, style, opt) {
         s.padding = encoding.field(s.name).band.padding;
       }
   }
-}
+};
 
 scale.color = function(s, encoding, stats) {
   var colorScale = encoding.scale(COLOR),

@@ -67,6 +67,22 @@ var EXAMPLES = [
         color: {type: 'O',name: 'year'}
       }
     }
+  },{
+    title: 'Binned plots',
+    spec: {
+      'marktype': 'point',
+      'encoding': {
+        'x': {'bin': true,'name': 'Displacement','type': 'Q'},
+        'y': {'bin': true,'name': 'Miles_per_Gallon','type': 'Q'},
+        'size': {
+          'name': '*',
+          'aggregate': 'count',
+          'type': 'Q',
+          'displayName': 'Number of Records'
+        }
+      },
+      'data': {'url': 'data/cars.json'}
+    }
   }
 ];
 
