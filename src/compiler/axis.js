@@ -139,15 +139,9 @@ axis.grid = function(def, name, encoding, layout) {
 };
 
 axis.hideTicks = function(def) {
-  setter(def, ['properties', 'ticks'], {
-    opacity: {value: 0}
-  });
-  setter(def, ['properties', 'majorTicks'], {
-    opacity: {value: 0}
-  });
-  setter(def, ['properties', 'axis'], {
-    opacity: {value: 0}
-  });
+  def.properties.ticks = {opacity: {value: 0}};
+  def.properties.majorTicks = {opacity: {value: 0}};
+  def.properties.axis = {opacity: {value: 0}};
   return def;
 };
 

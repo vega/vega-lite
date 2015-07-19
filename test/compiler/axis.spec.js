@@ -39,7 +39,20 @@ describe('Axis', function() {
     });
   });
 
-  describe('orient', function () {
+  describe('hideTicks()', function () {
+    var def = axis.hideTicks({properties:{}});
+    it('should adjust ticks', function () {
+      expect(def.properties.ticks).to.eql({opacity: {value: 0}});
+    });
+    it('should adjust majorTicks', function () {
+      expect(def.properties.majorTicks).to.eql({opacity: {value: 0}});
+    });
+    it('should adjust axis', function () {
+      expect(def.properties.axis).to.eql({opacity: {value: 0}});
+    });
+  });
+
+  describe('orient()', function () {
     it('should return specified orient', function () {
       var orient = axis.orient('x', Encoding.fromSpec({
           encoding: {
