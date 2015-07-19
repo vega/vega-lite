@@ -143,10 +143,7 @@ app.directive('vlPlot', function() {
       if (!scope.vlSpec.data.values) {
         d3.json(scope.vlSpec.data.url, function(err, data) {
           if (err) return alert('Error loading data ' + err.statusText);
-          var stats = vl.summary(data).reduce(function(s, p) {
-            s[p.field] = p;
-            return s;
-          },{});
+          var stats = vl.data.stats(data);
           callback(stats);
         });
       } else {
