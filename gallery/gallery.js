@@ -83,6 +83,29 @@ var EXAMPLES = [
       },
       'data': {'url': 'data/cars.json'}
     }
+  },{
+    title: 'small multiples',
+    spec: {
+      'marktype': 'point',
+      'encoding': {
+        'x': {'name': 'Worldwide_Gross','type': 'Q'},
+        'y': {'name': 'US_DVD_Sales','type': 'Q'},
+        'col': {'axis': {'maxLabelLength': 25},'name': 'MPAA_Rating','type': 'O'}
+      },
+      'config': {'singleHeight': 400,'singleWidth': 400,'largeBandMaxCardinality': 20},
+      'data': {'url': 'data/movies.json'}
+    }
+  },{
+    title: 'ordinal on top',
+    spec: {
+      'marktype': 'point',
+      'encoding': {
+        'x': {'name': 'MPAA_Rating','type': 'N'},
+        'y': {'name': 'Release_Date','type': 'N'}
+      },
+      'config': {'singleHeight': 400,'singleWidth': 400,'largeBandMaxCardinality': 20},
+      'data': {'url': 'data/movies.json'}
+    }
   }
 ];
 

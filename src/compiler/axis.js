@@ -43,30 +43,24 @@ axis.def = function(name, encoding, layout, stats, opt) {
 
   def.orient = axis.orient(name, encoding, stats);
 
-  def.titleOffset = axis.titleOffset(encoding, layout, name);
-
   if (isRow || isCol) def = axis.hideTicks(def);
 
+  // Add axis label custom scale (for bin / time)
+  def = axis.labels.scale(def, encoding, name);
+  def = axis.labels.format(def, name, encoding, stats);
+
+  // for x-axis, set ticks for Q or rotate scale for ordinal scale
   if (name == X) {
     if (encoding.isDimension(X) || encoding.isType(X, T)) {
-      var isTop = def.orient ==='top',
-        labelProps = isTop ? {
-            angle: {value: 90},
-            align: {value: 'left'},
-            baseline: {value: 'middle'}
-          } : {
-            angle: {value: 270},
-            align: {value: 'right'},
-            baseline: {value: 'middle'}
-          };
-
-      setter(def, ['properties','labels'], labelProps);
+      // TODO(kanitw): Jul 19, 2015 - add condition for rotation
+      def = axis.labels.rotate(def);
     } else { // Q
       def.ticks = encoding.field(name).axis.ticks;
     }
   }
 
-  def = axis.labels(def, name, encoding, layout, stats, opt);
+  // TitleOffset depends on labels rotation
+  def.titleOffset = axis.titleOffset(encoding, layout, name);
 
   return def;
 };
@@ -159,33 +153,42 @@ axis.title = function (def, name, encoding, layout) {
   def.title = maxlength ? util.truncate(fieldTitle, maxlength) : fieldTitle;
 
   if (name === ROW) {
-    setter(def, ['properties','title'], {
+    def.properties.title = {
       angle: {value: 0},
       align: {value: 'right'},
       baseline: {value: 'middle'},
       dy: {value: (-layout.height/2) -20}
-    });
+    };
   }
 
   return def;
 };
 
-axis.labels = function (def, name, encoding, layout, stats, opt) {
-  // jshint unused:false
+axis.labels = {};
 
-  var timeUnit = encoding.field(name).timeUnit,
-    fieldStats = stats[encoding.field(name).name];
-
-  // add custom label for time type
+/** add custom label for time type and bin */
+axis.labels.scale = function(def, encoding, name) {
+  // time
+  var timeUnit = encoding.field(name).timeUnit;
   if (encoding.isType(name, T) && timeUnit && (time.hasScale(timeUnit))) {
     setter(def, ['properties','labels','text','scale'], 'time-'+ timeUnit);
   }
+  // FIXME bin
+  return def;
+};
+
+/**
+ * Determine number format or truncate if maxLabel length is presented.
+ */
+axis.labels.format = function (def, name, encoding, stats) {
+  var fieldStats = stats[encoding.field(name).name];
 
   if (encoding.axis(name).format) {
     def.format = encoding.axis(name).format;
   } else if (encoding.isType(name, Q) || fieldStats.type === 'number') {
     def.format = encoding.numberFormat(fieldStats);
   } else if (encoding.isType(name, T)) {
+    var timeUnit = encoding.field(name).timeUnit;
     if (!timeUnit) {
       def.format = encoding.config('timeFormat');
     } else if (timeUnit === 'year') {
@@ -196,18 +199,24 @@ axis.labels = function (def, name, encoding, layout, stats, opt) {
       ['properties','labels','text','template'],
       '{{data | truncate:' + encoding.axis(name).maxLabelLength + '}}'
       );
-  } else {
-    // nothing
   }
 
   return def;
 };
 
+axis.labels.rotate = function(def) {
+ var align = def.orient ==='top' ? 'left' : 'right';
+ setter(def, ['properties','labels', 'angle', 'value'], 270);
+ setter(def, ['properties','labels', 'align', 'value'], align);
+ setter(def, ['properties','labels', 'baseline', 'value'], 'middle');
+ return def;
+};
+
 axis.titleOffset = function (encoding, layout, name) {
+  // return specified value if specified
   var value = encoding.axis(name).titleOffset;
-  if (value) {
-    return value;
-  }
+  if (value)  return value;
+
   switch (name) {
     //FIXME make this adjustable
     case ROW: return 0;
