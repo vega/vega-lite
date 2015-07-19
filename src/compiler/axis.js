@@ -27,8 +27,7 @@ axis.defs = function(names, encoding, layout, stats, opt) {
 axis.def = function(name, encoding, layout, stats, opt) {
   var isCol = name == COL,
     isRow = name == ROW,
-    type = isCol ? 'x' : isRow ? 'y' : name,
-    rowOffset = axis.titleOffset(encoding, layout, Y) + 20;
+    type = isCol ? 'x' : isRow ? 'y' : name;
 
   var def = {
     type: type,
@@ -36,21 +35,18 @@ axis.def = function(name, encoding, layout, stats, opt) {
     properties: {}
   };
 
-  def = axis.grid(def, name, encoding, layout, rowOffset);
+
+  if(isRow) def.offset = axis.titleOffset(encoding, layout, Y) + 20;
+
+  def = axis.grid(def, name, encoding, layout);
   def = axis.title(def, name, encoding, layout, opt);
 
   def.titleOffset = axis.titleOffset(encoding, layout, name);
 
-  if (isRow || isCol) {
-    def = axis.hideTicks(def);
-  }
+  if (isRow || isCol) def = axis.hideTicks(def);
 
   if (isCol) {
     def.orient = 'top';
-  }
-
-  if (isRow) {
-    def.offset = rowOffset;
   }
 
   if (name == X) {
@@ -81,7 +77,7 @@ axis.def = function(name, encoding, layout, stats, opt) {
   return def;
 };
 
-axis.grid = function(def, name, encoding, layout, rowOffset) {
+axis.grid = function(def, name, encoding, layout) {
   var cellPadding = layout.cellPadding,
     isCol = name == COL,
     isRow = name == ROW;
@@ -113,10 +109,10 @@ axis.grid = function(def, name, encoding, layout, rowOffset) {
           scale: 'row'
         },
         x: {
-          value: rowOffset
+          value: def.offset
         },
         x2: {
-          offset: rowOffset + (layout.cellWidth * 0.05),
+          offset: def.offset + (layout.cellWidth * 0.05),
           // default value(s) -- vega doesn't do recursive merge
           group: 'mark.group.width',
           mult: 1
