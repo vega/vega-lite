@@ -160,29 +160,26 @@ function axis_title(def, name, encoding, layout, opt) {
 axis.labels = function (def, name, encoding, layout, stats, opt) {
   // jshint unused:false
 
-  var timeUnit = encoding.field(name).timeUnit;
+  var timeUnit = encoding.field(name).timeUnit,
+    fieldStats = stats[encoding.field(name).name];
 
   // add custom label for time type
   if (encoding.isType(name, T) && timeUnit && (time.hasScale(timeUnit))) {
     setter(def, ['properties','labels','text','scale'], 'time-'+ timeUnit);
   }
 
-  var textTemplatePath = ['properties','labels','text','template'];
   if (encoding.axis(name).format) {
     def.format = encoding.axis(name).format;
-  } else if (encoding.isType(name, Q)) {
-    var fieldStats = stats[encoding.fieldName(name)],
-      numberFormat = encoding.numberFormat(name, fieldStats);
-
-    setter(def, textTemplatePath, '{{data | number:\'' + numberFormat + '\'}}');
+  } else if (encoding.isType(name, Q) || fieldStats.type === 'number') {
+    def.format = encoding.numberFormat(fieldStats);
   } else if (encoding.isType(name, T)) {
     if (!timeUnit) {
-      setter(def, textTemplatePath, '{{data | time:\'' +
-             encoding.config('timeFormat') + '\'}}');
+      def.format = encoding.config('timeFormat');
     } else if (timeUnit === 'year') {
-      setter(def, textTemplatePath, '{{data | number:\'d\'}}');
+      def.format = '';
     }
   } else if (encoding.isTypes(name, [N, O]) && encoding.axis(name).maxLabelLength) {
+    var textTemplatePath = ['properties','labels','text','template'];
     setter(def, textTemplatePath, '{{data | truncate:' + encoding.axis(name).maxLabelLength + '}}');
   } else {
     // nothing

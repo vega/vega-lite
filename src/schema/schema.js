@@ -167,20 +167,16 @@ var axisMixin = {
         format: {
           type: 'string',
           default: undefined,  // auto
-          description: 'The formatting pattern for axis labels.'
+          description: 'The formatting pattern for axis labels. '+
+                       'If not undefined, this will be determined by ' +
+                       'small/largeNumberFormat and the max value ' +
+                       'of the field.'
         },
         maxLabelLength: {
           type: 'integer',
           default: 25,
           minimum: 0,
           description: 'Truncate labels that are too long.'
-        },
-        numberFormat: {
-          type: 'string',
-          default: undefined,
-          description: 'Number format for the axis.  If not undefined, this will ' +
-                       'be determined by small/largeNumberFormat and the max value ' +
-                       'of the field.'
         }
       }
     }
@@ -295,7 +291,15 @@ var textMixin = {
           enum: ['normal', 'italic']
         }
       }
-    }
+    },
+    format: {
+      type: 'string',
+      default: undefined,  // auto
+      description: 'The formatting pattern for text value. '+
+                   'If not undefined, this will be determined by ' +
+                   'small/largeNumberFormat and the max value ' +
+                   'of the field.'
+    },
   }
 };
 

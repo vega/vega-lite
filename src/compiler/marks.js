@@ -455,7 +455,7 @@ function text_props(e, layout, style, stats) {
   if (e.has(TEXT)) {
     if (e.isType(TEXT, Q)) {
       var fieldStats = stats[e.fieldName(name)],
-        numberFormat = e.numberFormat(name, fieldStats);
+        numberFormat = textField.format || e.numberFormat(fieldStats);
 
       p.text = {template: '{{' + e.fieldRef(TEXT) + ' | number:\'' +
         numberFormat +'\'}}'};
