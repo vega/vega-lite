@@ -32,7 +32,8 @@ axis.def = function(name, encoding, layout, stats, opt) {
 
   var def = {
     type: type,
-    scale: name
+    scale: name,
+    properties: {}
   };
 
   if (encoding.axis(name).grid) {
@@ -41,7 +42,7 @@ axis.def = function(name, encoding, layout, stats, opt) {
 
     if (isCol) {
       // set grid property -- put the lines on the right the cell
-      setter(def, ['properties', 'grid'], {
+      def.properties.grid = {
         x: {
           offset: layout.cellWidth * (1+ cellPadding/2.0),
           // default value(s) -- vega doesn't do recursive merge
@@ -52,10 +53,10 @@ axis.def = function(name, encoding, layout, stats, opt) {
         },
         stroke: { value: encoding.config('cellGridColor') },
         opacity: { value: encoding.config('cellGridOpacity') }
-      });
+      };
     } else if (isRow) {
       // set grid property -- put the lines on the top
-      setter(def, ['properties', 'grid'], {
+      def.properties.grid = {
         y: {
           offset: -layout.cellHeight * (cellPadding/2),
           // default value(s) -- vega doesn't do recursive merge
@@ -72,12 +73,12 @@ axis.def = function(name, encoding, layout, stats, opt) {
         },
         stroke: { value: encoding.config('cellGridColor') },
         opacity: { value: encoding.config('cellGridOpacity') }
-      });
+      };
     } else {
-      setter(def, ['properties', 'grid'], {
+      def.properties.grid = {
         stroke: { value: encoding.config('gridColor') },
         opacity: { value: encoding.config('gridOpacity') }
-      });
+      };
     }
   }
 
