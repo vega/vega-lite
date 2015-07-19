@@ -36,6 +36,56 @@ axis.def = function(name, encoding, layout, stats, opt) {
     properties: {}
   };
 
+  def = axis.grid(def, name, encoding, layout, rowOffset);
+  def = axis.title(def, name, encoding, layout, opt);
+
+  def.titleOffset = axis.titleOffset(encoding, layout, name);
+
+  if (isRow || isCol) {
+    def = axis.hideTicks(def);
+  }
+
+  if (isCol) {
+    def.orient = 'top';
+  }
+
+  if (isRow) {
+    def.offset = rowOffset;
+  }
+
+  if (name == X) {
+    if (encoding.has(Y) && encoding.isOrdinalScale(Y) && encoding.cardinality(Y, stats) > 30) {
+      def.orient = 'top';
+    }
+
+    if (encoding.isDimension(X) || encoding.isType(X, T)) {
+      var isTop = def.orient ==='top',
+        labelProps = isTop ? {
+            angle: {value: 90},
+            align: {value: 'left'},
+            baseline: {value: 'middle'}
+          } : {
+            angle: {value: 270},
+            align: {value: 'right'},
+            baseline: {value: 'middle'}
+          };
+
+      setter(def, ['properties','labels'], labelProps);
+    } else { // Q
+      def.ticks = 5;
+    }
+  }
+
+  def = axis.labels(def, name, encoding, layout, stats, opt);
+
+  return def;
+};
+
+axis.grid = function(def, name, encoding, layout, rowOffset) {
+  var cellPadding = layout.cellPadding,
+    isCol = name == COL,
+    isRow = name == ROW;
+
   if (encoding.axis(name).grid) {
     def.grid = true;
     def.layer = 'back';
@@ -81,55 +131,24 @@ axis.def = function(name, encoding, layout, stats, opt) {
       };
     }
   }
-
-  if (encoding.axis(name).title) {
-    def = axis_title(def, name, encoding, layout, opt);
-  }
-
-  if (isRow || isCol) {
-    // hide axis and ticks for row / col
-    setter(def, ['properties', 'ticks'], {
-      opacity: {value: 0}
-    });
-    setter(def, ['properties', 'majorTicks'], {
-      opacity: {value: 0}
-    });
-    setter(def, ['properties', 'axis'], {
-      opacity: {value: 0}
-    });
-  }
-
-  if (isCol) {
-    def.orient = 'top';
-  }
-
-  if (isRow) {
-    def.offset = rowOffset;
-  }
-
-  if (name == X) {
-    if (encoding.has(Y) && encoding.isOrdinalScale(Y) && encoding.cardinality(Y, stats) > 30) {
-      def.orient = 'top';
-    }
-
-    if (encoding.isDimension(X) || encoding.isType(X, T)) {
-      setter(def, ['properties','labels'], {
-        angle: {value: 270},
-        align: {value: 'right'},
-        baseline: {value: 'middle'}
-      });
-    } else { // Q
-      def.ticks = 5;
-    }
-  }
-
-  def = axis.labels(def, name, encoding, layout, stats, opt);
-
   return def;
 };
 
-function axis_title(def, name, encoding, layout, opt) {
-  // jshint unused:false
+axis.hideTicks = function(def) {
+  setter(def, ['properties', 'ticks'], {
+    opacity: {value: 0}
+  });
+  setter(def, ['properties', 'majorTicks'], {
+    opacity: {value: 0}
+  });
+  setter(def, ['properties', 'axis'], {
+    opacity: {value: 0}
+  });
+  return def;
+};
+
+axis.title = function (def, name, encoding, layout) {
+  if (!encoding.axis(name).title) return def;
 
   var maxlength = null,
     fieldTitle = encoding.fieldTitle(name);
@@ -150,9 +169,8 @@ function axis_title(def, name, encoding, layout, opt) {
     });
   }
 
-  def.titleOffset = axisTitleOffset(encoding, layout, name);
   return def;
-}
+};
 
 axis.labels = function (def, name, encoding, layout, stats, opt) {
   // jshint unused:false
@@ -185,14 +203,15 @@ axis.labels = function (def, name, encoding, layout, stats, opt) {
   return def;
 };
 
-function axisTitleOffset(encoding, layout, name) {
+axis.titleOffset = function (encoding, layout, name) {
   var value = encoding.axis(name).titleOffset;
   if (value) {
     return value;
   }
   switch (name) {
+    //FIXME make this adjustable
     case ROW: return 0;
     case COL: return 35;
   }
   return getter(layout, [name, 'axisTitleOffset']);
-}
+};
