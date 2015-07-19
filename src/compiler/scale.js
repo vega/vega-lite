@@ -27,7 +27,7 @@ scale.defs = function(names, encoding, layout, stats, style, sorting, opt) {
 
     s.sort = scale.sort(s, encoding, name) || undefined;
 
-    scale.range(s, encoding, layout, stats, style, opt);
+    scale.range(s, encoding, layout, stats, opt);
 
     return (a.push(s), a);
   }, []);
@@ -104,10 +104,10 @@ scale.domain = function (name, encoding, stats, sorting, opt) {
 };
 
 
-scale.range = function (s, encoding, layout, stats, style, opt) {
-  // jshint unused:false
+scale.range = function (s, encoding, layout, stats) {
   var spec = encoding.scale(s.name),
-    timeUnit = encoding.field(s.name).timeUnit;
+    field = encoding.field(s.name),
+    timeUnit = field.timeUnit;
 
   switch (s.name) {
     case X:
@@ -125,16 +125,19 @@ scale.range = function (s, encoding, layout, stats, style, opt) {
       }
       s.round = true;
       if (s.type === 'time') {
-        s.nice = timeUnit;
+        s.nice = timeUnit || encoding.config('timeScaleNice');
       }else {
         s.nice = true;
       }
       break;
     case Y:
-      s.range = layout.cellHeight ? [layout.cellHeight, 0] : 'height';
       if (s.type === 'ordinal') {
+        s.range = layout.cellHeight ?
+          (field.bin ? [layout.cellHeight, 0] : [0, layout.cellHeight]) :
+          'height';
         s.bandWidth = encoding.bandSize(Y, layout.y.useSmallBand);
       } else {
+        s.range = layout.cellHeight ? [layout.cellHeight, 0] : 'height';
         if (encoding.isType(s.name,T) && timeUnit === 'year') {
           s.zero = false;
         } else {
