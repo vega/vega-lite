@@ -38,6 +38,8 @@ a:hover {
 	border: 1px solid #CECECE;
 	padding: 10px;
 	margin: 10px;
+	max-height: 500px;
+	overflow: scroll;
 }
 
 .viz > div {
@@ -50,4 +52,5 @@ a:hover {
 
 .viz p {
 	color: gray;
+	max-width: 400px;
 }
