@@ -121,7 +121,9 @@ function getMaxLength(encoding, stats, et) {
 
 function offset(encoding, stats, layout) {
   [X, Y].forEach(function (et) {
-    var maxLength;
+    // TODO(kanitw): Jul 19, 2015 - create a set of visual test for extraOffset
+    var extraOffset = et === X ? 20 : 22,
+      maxLength;
     if (encoding.isDimension(et) || encoding.isType(et, T)) {
       maxLength = getMaxLength(encoding, stats, et);
     } else if (
@@ -131,9 +133,9 @@ function offset(encoding, stats, layout) {
       encoding.aggregate(et) === 'count'
     ) {
       if (
-        et===Y ||
-        // FIXME some times might not rotate, but need to move this to axis.js first
-        (et===X && false)
+        et===Y
+        // || (et===X && false)
+        // FIXME determine when X would rotate, but should move this to axis.js first
       ) {
         maxLength = getMaxLength(encoding, stats, et);
       }
@@ -142,9 +144,10 @@ function offset(encoding, stats, layout) {
     }
 
     if (maxLength) {
-      setter(layout,[et, 'axisTitleOffset'], encoding.config('characterWidth') *  maxLength + 20);
+      setter(layout,[et, 'axisTitleOffset'], encoding.config('characterWidth') *  maxLength + extraOffset);
     } else {
-      setter(layout,[et, 'axisTitleOffset'], encoding.config('characterWidth') * 3 + 20);
+      // if no max length (no rotation case), use maxLength = 3
+      setter(layout,[et, 'axisTitleOffset'], encoding.config('characterWidth') * 3 + extraOffset);
     }
 
   });

@@ -176,7 +176,7 @@ axis.labels = function (def, name, encoding, layout, stats, opt) {
     if (!timeUnit) {
       def.format = encoding.config('timeFormat');
     } else if (timeUnit === 'year') {
-      def.format = '';
+      def.format = 'd';
     }
   } else if (encoding.isTypes(name, [N, O]) && encoding.axis(name).maxLabelLength) {
     var textTemplatePath = ['properties','labels','text','template'];
