@@ -49,7 +49,7 @@ describe('time', function() {
         .to.eql(3);
     });
 
-    it.only('should return max length of the month custom scale', function () {
+    it('should return max length of the month custom scale', function () {
       expect(time.maxLength('month', Encoding.fromSpec({
         mark: 'point',
         config: {
