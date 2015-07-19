@@ -104,24 +104,24 @@ function getMaxLength(encoding, stats, et) {
 }
 
 function offset(encoding, stats, layout) {
-  [X, Y].forEach(function (x) {
+  [X, Y].forEach(function (et) {
     var maxLength;
-    if (encoding.isDimension(x) || encoding.isType(x, T)) {
-      maxLength =  getMaxLength(encoding, stats, x);
-    } else if (encoding.aggregate(x) === 'count') {
+    if (encoding.isDimension(et) || encoding.isType(et, T)) {
+      maxLength =  getMaxLength(encoding, stats, et);
+    } else if (encoding.aggregate(et) === 'count') {
       //assign default value for count as it won't have stats
-      maxLength =  3;
-    } else if (encoding.isType(x, Q)) {
-      if (x===X) {
+      maxLength =  3; //FIXME
+    } else if (encoding.isType(et, Q)) {
+      if (et===X) {
         maxLength = 3;
       } else { // Y
         //assume that default formating is always shorter than 7
-        maxLength = Math.min(getMaxLength(encoding, stats, x), 7);
+        maxLength = Math.min(getMaxLength(encoding, stats, et), 7);
       }
     } else {
       // nothing
     }
-    setter(layout,[x, 'axisTitleOffset'], encoding.config('characterWidth') *  maxLength + 20);
+    setter(layout,[et, 'axisTitleOffset'], encoding.config('characterWidth') *  maxLength + 20);
   });
   return layout;
 }
