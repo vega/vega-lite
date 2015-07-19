@@ -85,7 +85,9 @@ scale.domain = function (name, encoding, stats, sorting, opt) {
   }
   var aggregate = encoding.aggregate(name),
     timeUnit = field.timeUnit,
-    useRawDomain = encoding.scale(name).useRawDomain,
+    scaleUseRawDomain = encoding.scale(name).useRawDomain,
+    useRawDomain = scaleUseRawDomain !== undefined ?
+      scaleUseRawDomain : encoding.config('useRawDomain'),
     notCountOrSum = !aggregate || (aggregate !=='count' && aggregate !== 'sum');
 
   if ( useRawDomain && notCountOrSum && (
