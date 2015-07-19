@@ -4,7 +4,7 @@ var util = require('../util');
 
 module.exports = time;
 
-function time(spec, encoding, opt) { // FIXME refactor to reduce side effect #276
+function time(spec, encoding) { // FIXME refactor to reduce side effect #276
   // jshint unused:false
   var timeFields = {}, timeUnits = {};
 
@@ -20,7 +20,7 @@ function time(spec, encoding, opt) { // FIXME refactor to reduce side effect #27
   });
 
   // add formula transform
-  var data = spec.data[1],
+  var data = spec.data[0],
     transform = data.transform = data.transform || [];
 
   for (var f in timeFields) {

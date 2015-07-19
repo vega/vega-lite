@@ -146,6 +146,7 @@ describe('vl.compile.scale', function() {
         }), {}, {}, {});
 
         expect(domain.data).to.eql(RAW);
+        expect(domain.field.indexOf('year')).to.gt(-1);
       });
 
     it('should return the correct domain for month T',
