@@ -39,7 +39,7 @@ describe('vl.compile.scale', function() {
             name: 'origin'
           }
         }
-      }), {}, {
+      }), {}, {}, {
         stack: 'y',
         facet: true
       });
@@ -58,7 +58,7 @@ describe('vl.compile.scale', function() {
             name: 'origin'
           }
         }
-      }), {}, {
+      }), {}, {}, {
         stack: 'y',
         facet: true
       });
@@ -74,15 +74,15 @@ describe('vl.compile.scale', function() {
         var domain = vlscale.domain('y', Encoding.fromSpec({
           encoding: {
             y: {
-              bin: true,
+              bin: {maxbins: 15},
               name: 'origin',
               scale: {useRawDomain: true},
               type: Q
             }
           }
-        }), sorting, {});
+        }), {origin: {min: -5, max:48}}, sorting, {});
 
-        expect(domain.data).to.eql(sortingReturn);
+        expect(domain).to.eql([-5, 0, 5, 10, 15, 20, 25, 30, 35, 40, 45]);
       });
 
     it('should return the raw domain if useRawDomain is true for non-bin, non-sum Q',
@@ -96,7 +96,7 @@ describe('vl.compile.scale', function() {
               type: Q
             }
           }
-        }), {}, {});
+        }), {}, {}, {});
 
         expect(domain.data).to.eql(RAW);
       });
@@ -112,7 +112,7 @@ describe('vl.compile.scale', function() {
               type: Q
             }
           }
-        }), sorting, {});
+        }), {}, sorting, {});
 
         expect(domain.data).to.eql(sortingReturn);
       });
@@ -127,7 +127,7 @@ describe('vl.compile.scale', function() {
               type: T
             }
           }
-        }), {}, {});
+        }), {}, {}, {});
 
         expect(domain.data).to.eql(RAW);
       });
@@ -143,7 +143,7 @@ describe('vl.compile.scale', function() {
               timeUnit: 'year'
             }
           }
-        }), {}, {});
+        }), {}, {}, {});
 
         expect(domain.data).to.eql(RAW);
       });
@@ -159,7 +159,7 @@ describe('vl.compile.scale', function() {
               timeUnit: 'month'
             }
           }
-        }), sorting, {});
+        }), {}, sorting, {});
 
         expect(domain).to.eql([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]);
       });
@@ -174,7 +174,7 @@ describe('vl.compile.scale', function() {
             type: Q
           }
         }
-      }), sorting, {});
+      }),  {}, sorting, {});
 
       expect(domain.data).to.eql(sortingReturn);
     });

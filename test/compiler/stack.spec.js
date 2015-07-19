@@ -3,18 +3,7 @@
 var expect = require('chai').expect;
 var fixtures = require('../fixtures').stack;
 
-var compile = require('../../src/vl').compile,
-  util = require('../../src/util');
-
-// mock util.getbins()
-util.getbins = function() {
-  return {
-    start: 0,
-    stop: 10,
-    step: 1
-  };
-};
-
+var compile = require('../../src/vl').compile;
 
 var stats = {
   'Cost__Total_$': {
