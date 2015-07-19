@@ -155,7 +155,7 @@ var axisMixin = {
           description: 'A flag indicate if gridlines should be created in addition to ticks.'
         },
         orient: {
-          type: 'String',
+          type: 'string',
           default: undefined,
           enum: ['top', 'right', 'left', 'bottom'],
           description: 'The orientation of the axis. One of top, bottom, left or right. The orientation can be used to further specialize the axis type (e.g., a y axis oriented for the right edge of the chart).'
