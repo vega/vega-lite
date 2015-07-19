@@ -41,19 +41,13 @@ axis.def = function(name, encoding, layout, stats, opt) {
   def = axis.grid(def, name, encoding, layout);
   def = axis.title(def, name, encoding, layout, opt);
 
+  def.orient = axis.orient(name, encoding, stats);
+
   def.titleOffset = axis.titleOffset(encoding, layout, name);
 
   if (isRow || isCol) def = axis.hideTicks(def);
 
-  if (isCol) {
-    def.orient = 'top';
-  }
-
   if (name == X) {
-    if (encoding.has(Y) && encoding.isOrdinalScale(Y) && encoding.cardinality(Y, stats) > 30) {
-      def.orient = 'top';
-    }
-
     if (encoding.isDimension(X) || encoding.isType(X, T)) {
       var isTop = def.orient ==='top',
         labelProps = isTop ? {
@@ -75,6 +69,20 @@ axis.def = function(name, encoding, layout, stats, opt) {
   def = axis.labels(def, name, encoding, layout, stats, opt);
 
   return def;
+};
+
+axis.orient = function(name, encoding, stats) {
+  var orient = encoding.field(name).axis.orient;
+  if (orient) return orient;
+
+  if (name===COL) return 'top';
+
+  // x-axis for long y - put on top
+  if (name===X && encoding.has(Y) && encoding.isOrdinalScale(Y) && encoding.cardinality(Y, stats) > 30) {
+    return 'top';
+  }
+
+  return undefined;
 };
 
 axis.grid = function(def, name, encoding, layout) {
