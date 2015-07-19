@@ -115,7 +115,7 @@ var typicalField = merge(clone(schema.field), {
                        'aggregated data for aggregate axis. ' +
                        'This option does not work with sum or count aggregate' +
                        'as they might have a substantially larger scale range.' +
-                       'By default, use value in the config.useRawDomain.'
+                       'By default, use value from config.useRawDomain.'
         }
       }
     }
@@ -672,7 +672,7 @@ var config = {
                    'aggregated data for aggregate axis. ' +
                    'This option does not work with sum or count aggregate' +
                    'as they might have a substantially larger scale range.' +
-                   'By default, use value in the config.useRawDomain.'
+                   'By default, use value from config.useRawDomain.'
     }
   }
 };
