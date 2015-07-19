@@ -27,9 +27,7 @@ legend.defs = function(encoding, style) {
 
   if (encoding.has(SHAPE) && encoding.field(SHAPE).legend) {
     if (defs.length === 2) {
-      // TODO: fix this
       console.error('Vega-lite currently only supports two legends');
-      return defs;
     }
     defs.push(legend.def(SHAPE, encoding, {
       shape: SHAPE,
@@ -43,6 +41,8 @@ legend.def = function(name, encoding, def, style) {
   var timeUnit = encoding.field(name).timeUnit;
 
   def.title = encoding.fieldTitle(name);
+
+  setter(def, ['properties', 'symbols', 'stroke', 'value'], '#000');
 
   if (style.opacity) {
     setter(def, ['properties', 'symbols', 'opacity', 'value'], style.opacity);
