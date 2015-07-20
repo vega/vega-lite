@@ -38,8 +38,7 @@ marks.bar = {
   type: 'rect',
   stack: true,
   prop: bar_props,
-  requiredEncoding: ['x', 'y'],
-  supportedEncoding: {row: 1, col: 1, x: 1, y: 1, size: 1, color: 1, alpha: 1}
+  supportedEncoding: {row: 1, col: 1, x: 1, y: 1, size: 1, color: 1}
 };
 
 marks.line = {
