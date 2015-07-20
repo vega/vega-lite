@@ -42,7 +42,7 @@ legend.def = function(name, encoding, def, style) {
 
   def.title = encoding.fieldTitle(name);
 
-  setter(def, ['properties', 'symbols', 'stroke', 'value'], '#000');
+  // setter(def, ['properties', 'symbols', 'stroke', 'value'], '#000');
 
   if (style.opacity) {
     setter(def, ['properties', 'symbols', 'opacity', 'value'], style.opacity);
