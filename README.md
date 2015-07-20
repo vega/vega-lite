@@ -1,8 +1,8 @@
-# Vega-lite 
+# Vega-lite
 
-[![Build Status](https://travis-ci.org/uwdata/vega-lite.svg)](https://travis-ci.org/uwdata/vega-lite) 
-[![npm dependencies](https://david-dm.org/uwdata/vega-lite.svg)](https://www.npmjs.com/package/vega-lite) 
-[![npm version](https://img.shields.io/npm/v/vega-lite.svg)](https://www.npmjs.com/package/vega-lite) 
+[![Build Status](https://travis-ci.org/uwdata/vega-lite.svg)](https://travis-ci.org/uwdata/vega-lite)
+[![npm dependencies](https://david-dm.org/uwdata/vega-lite.svg)](https://www.npmjs.com/package/vega-lite)
+[![npm version](https://img.shields.io/npm/v/vega-lite.svg)](https://www.npmjs.com/package/vega-lite)
 [![Coverage Status](https://coveralls.io/repos/uwdata/vega-lite/badge.svg)](https://coveralls.io/r/uwdata/vega-lite)
 
 **Vega-lite is work in progress and we are working on improving the code and documentation.**
@@ -19,6 +19,8 @@ If you find a bug or have a feature request, please [create an issue](https://gi
 The complete schema for specifications as [JSON schema](http://json-schema.org/) is at [spec.json](https://uwdata.github.io/vega-lite/spec.json).
 
 ## Example specification
+
+We have more example visualizations in our [gallery](https://uwdata.github.io/vega-lite/gallery.html).
 
 ### Barleys
 

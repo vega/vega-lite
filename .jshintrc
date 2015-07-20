@@ -9,7 +9,7 @@
   "quotmark": "single",
   "predef": [
     "TABLE", "RAW", "STACKED", "INDEX",
-    "X", "Y", "ROW", "COL", "SIZE", "SHAPE", "COLOR", "ALPHA", "TEXT", "DETAIL",
+    "X", "Y", "ROW", "COL", "SIZE", "SHAPE", "COLOR", "TEXT", "DETAIL",
     "O", "Q", "T", "N"],
   "globalstrict": true
 }
