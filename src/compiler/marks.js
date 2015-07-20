@@ -207,7 +207,8 @@ function point_props(e, layout, style) {
   }
 
   // opacity
-  p.opacity = {value:  e.field(COLOR).opacity || style.opacity};
+  var opacity = e.field(COLOR).opacity  || style.opacity;
+  if (opacity) p.opacity = {value: opacity};
 
   return p;
 }
