@@ -36,7 +36,12 @@ function estimateOpacity(encoding,stats) {
     });
 
   } else { // raw plot
-    numPoints = stats.count;
+
+    // TODO: error handling
+    if (!stats['*'])
+      return 1;
+
+    numPoints = stats['*'].max;  // count
 
     // small multiples divide number of points
     var numMultiples = 1;
@@ -50,12 +55,12 @@ function estimateOpacity(encoding,stats) {
   }
 
   var opacity = 0;
-  if (numPoints < 20) {
+  if (numPoints <= 25) {
     opacity = 1;
   } else if (numPoints < 200) {
-    opacity = 0.7;
+    opacity = 0.8;
   } else if (numPoints < 1000 || encoding.is('tick')) {
-    opacity = 0.6;
+    opacity = 0.7;
   } else {
     opacity = 0.3;
   }
