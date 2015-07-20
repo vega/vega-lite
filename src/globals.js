@@ -15,7 +15,6 @@ g.COL = 'col';
 g.SIZE = 'size';
 g.SHAPE = 'shape';
 g.COLOR = 'color';
-g.ALPHA = 'alpha';
 g.TEXT = 'text';
 g.DETAIL = 'detail';
 

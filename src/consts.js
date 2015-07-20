@@ -4,7 +4,7 @@ require('./globals');
 
 var consts = module.exports = {};
 
-consts.encodingTypes = [X, Y, ROW, COL, SIZE, SHAPE, COLOR, ALPHA, TEXT, DETAIL];
+consts.encodingTypes = [X, Y, ROW, COL, SIZE, SHAPE, COLOR, TEXT, DETAIL];
 
 consts.shorthand = {
   delim:  '|',
