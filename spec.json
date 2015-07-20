@@ -700,6 +700,7 @@
       },
       "legend": {"type": "boolean","default": true},
       "value": {"type": "string","role": "color","default": "steelblue"},
+      "opacity": {"type": "number","minimum": 0,"maximum": 1},
       "sort": {
        "type": "array",
        "default": [],
@@ -716,96 +717,6 @@
       }
      },
      "supportedRole": {"measure": true,"dimension": true},
-     "supportedMarktypes": {
-      "point": true,
-      "tick": true,
-      "bar": true,
-      "line": true,
-      "area": true,
-      "circle": true,
-      "square": true,
-      "text": true
-     }
-    },
-    "alpha": {
-     "type": "object",
-     "properties": {
-      "name": {"type": "string"},
-      "type": {"type": "string","enum": ["N","O","Q","T"]},
-      "aggregate": {
-       "type": "string",
-       "enum": ["avg","sum","median","min","max","count"],
-       "supportedEnums": {
-        "Q": ["avg","median","sum","min","max","count"],
-        "O": ["median","min","max"],
-        "N": [],
-        "T": ["avg","median","min","max"],
-        "": ["count"]
-       },
-       "supportedTypes": {"Q": 1,"N": 1,"O": 1,"T": 1,"": 1}
-      },
-      "timeUnit": {
-       "type": "string",
-       "enum": ["year","month","day","date","hours","minutes","seconds"],
-       "supportedTypes": {"T": 1}
-      },
-      "bin": {
-       "type": ["boolean","object"],
-       "default": false,
-       "properties": {
-        "maxbins": {
-         "type": "integer",
-         "default": 15,
-         "minimum": 2,
-         "description": "Maximum number of bins."
-        }
-       },
-       "supportedTypes": {"Q": 1}
-      },
-      "scale": {
-       "type": "object",
-       "properties": {
-        "type": {
-         "type": "string",
-         "enum": ["linear","log","pow","sqrt","quantile"],
-         "default": "linear",
-         "supportedTypes": {"Q": 1}
-        },
-        "reverse": {"type": "boolean","default": false,"supportedTypes": {"Q": 1,"T": 1}},
-        "zero": {
-         "type": "boolean",
-         "description": "Include zero",
-         "default": true,
-         "supportedTypes": {"Q": 1,"T": 1}
-        },
-        "nice": {
-         "type": "string",
-         "enum": ["second","minute","hour","day","week","month","year"],
-         "supportedTypes": {"T": 1}
-        },
-        "useRawDomain": {
-         "type": "boolean",
-         "description": "Use the raw data range as scale domain instead of aggregated data for aggregate axis. This option does not work with sum or count aggregateas they might have a substantially larger scale range.By default, use value from config.useRawDomain."
-        }
-       }
-      },
-      "value": {"type": "number","minimum": 0,"maximum": 1},
-      "sort": {
-       "type": "array",
-       "default": [],
-       "items": {
-        "type": "object",
-        "supportedTypes": {"N": 1,"O": 1},
-        "required": ["name","aggregate"],
-        "properties": {
-         "name": {"type": "string"},
-         "aggregate": {"type": "string","enum": ["avg","sum","min","max","count"]},
-         "reverse": {"type": "boolean","default": false}
-        }
-       }
-      }
-     },
-     "supportedRole": {"measure": true,"dimension": "ordinal-only"},
      "supportedMarktypes": {
       "point": true,
       "tick": true,
