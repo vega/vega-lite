@@ -190,7 +190,7 @@ function point_props(e, layout, style) {
     p.shape = {value: e.value(SHAPE)};
   }
 
-  // stroke
+  // fill or stroke
   if (e.field(SHAPE).filled) {
     if (e.has(COLOR)) {
       p.fill = {scale: COLOR, field: e.fieldRef(COLOR)};
@@ -207,7 +207,7 @@ function point_props(e, layout, style) {
   }
 
   // opacity
-  var opacity = e.field(COLOR).opacity  || style.opacity;
+  var opacity = e.field(COLOR).opacity || style.opacity;
   if (opacity) p.opacity = {value: opacity};
 
   return p;
