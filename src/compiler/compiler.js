@@ -60,7 +60,7 @@ compiler.compileEncoding = function (encoding, stats) {
     group = spec.marks[0],
     mark = marks[encoding.marktype()],
     mdefs = marks.def(mark, encoding, layout, style, stats),
-    mdef = mdefs[0];  // TODO: remove this dirty hack by refactoring the whole flow
+    mdef = mdefs[mdefs.length - 1];  // TODO: remove this dirty hack by refactoring the whole flow
 
   for (var i = 0; i < mdefs.length; i++) {
     group.marks.push(mdefs[i]);
