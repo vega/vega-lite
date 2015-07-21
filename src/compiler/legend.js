@@ -55,7 +55,46 @@ legend.def = function(name, encoding, def, style) {
 };
 
 legend.style = function(name, e, def, style) {
-  var symbols = getter(def, ['properties', 'symbols']);
+  var symbols = getter(def, ['properties', 'symbols']),
+    marktype = e.marktype();
+
+  switch (marktype) {
+    case 'bar':
+    case 'tick':
+    case 'text':
+      symbols.stroke = {value: 'transparent'};
+      symbols.shape = {value: 'square'};
+      break;
+
+    case 'circle':
+    case 'square':
+      symbols.shape = {value: marktype};
+      /* fall through */
+    case 'point':
+
+      // fill or stroke
+      if (e.field(SHAPE).filled) {
+        if (e.has(COLOR) && name === COLOR) {
+          symbols.fill = {scale: COLOR, field: 'data'};
+        } else {
+          symbols.fill = {value: e.value(COLOR)};
+        }
+        symbols.stroke = {value: 'transparent'};
+      } else {
+        if (e.has(COLOR) && name === COLOR) {
+          symbols.fill = {scale: COLOR, field: 'data'};
+        } else {
+          symbols.stroke = {value: e.value(COLOR)};
+        }
+        symbols.fill = {value: 'transparent'};
+        symbols.strokeWidth = {value: e.config('strokeWidth')};
+      }
+
+      break;
+    case 'line':
+    case 'area':
+      break;
+  }
 
   var opacity = e.field(COLOR).opacity || style.opacity;
   if (opacity) {
