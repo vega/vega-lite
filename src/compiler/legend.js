@@ -4,7 +4,8 @@ require('../globals');
 
 var time = require('./time'),
   util = require('../util'),
-  setter = util.setter;
+  setter = util.setter,
+  getter = util.getter;
 
 var legend = module.exports = {};
 
@@ -41,12 +42,7 @@ legend.def = function(name, encoding, def, style) {
   var timeUnit = encoding.field(name).timeUnit;
 
   def.title = encoding.fieldTitle(name);
-
-  // setter(def, ['properties', 'symbols', 'stroke', 'value'], '#000');
-
-  if (style.opacity) {
-    setter(def, ['properties', 'symbols', 'opacity', 'value'], style.opacity);
-  }
+  def = legend.style(name, encoding, def, style);
 
   if (encoding.isType(name, T) &&
     timeUnit &&
@@ -55,5 +51,15 @@ legend.def = function(name, encoding, def, style) {
     setter(def, ['properties', 'labels', 'text', 'scale'], 'time-'+ timeUnit);
   }
 
+  return def;
+};
+
+legend.style = function(name, e, def, style) {
+  var symbols = getter(def, ['properties', 'symbols']);
+
+  var opacity = e.field(COLOR).opacity || style.opacity;
+  if (opacity) {
+    symbols.opacity = {value: opacity};
+  }
   return def;
 };
