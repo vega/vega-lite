@@ -106,6 +106,18 @@ var EXAMPLES = [
       },
       'data': {'url': 'data/movies.json'}
     }
+  },{
+    title: 'Text heatmap',
+    spec: {
+      'marktype': 'text',
+      'encoding': {
+        'row': {'name': 'Origin','type': 'O'},
+        'col': {'axis': {'maxLabelLength': 25},'name': 'Cylinders','type': 'O'},
+        'color': {'name': 'Horsepower','type': 'Q','aggregate': 'avg'},
+        'text': {'name': '*','type': 'Q','aggregate': 'count'}
+      },
+      'data': {'url': 'data/cars.json'}
+    }
   }
 ];
 
