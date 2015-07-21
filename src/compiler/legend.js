@@ -71,7 +71,6 @@ legend.style = function(name, e, def, style) {
       symbols.shape = {value: marktype};
       /* fall through */
     case 'point':
-
       // fill or stroke
       if (e.field(SHAPE).filled) {
         if (e.has(COLOR) && name === COLOR) {
@@ -82,7 +81,7 @@ legend.style = function(name, e, def, style) {
         symbols.stroke = {value: 'transparent'};
       } else {
         if (e.has(COLOR) && name === COLOR) {
-          symbols.fill = {scale: COLOR, field: 'data'};
+          symbols.stroke = {scale: COLOR, field: 'data'};
         } else {
           symbols.stroke = {value: e.value(COLOR)};
         }
@@ -93,6 +92,7 @@ legend.style = function(name, e, def, style) {
       break;
     case 'line':
     case 'area':
+      // TODO use shape here after implementing #508
       break;
   }
 
