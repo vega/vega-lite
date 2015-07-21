@@ -409,7 +409,7 @@ function text_props(e, layout, style, stats) {
 
   // fill
   // color should be set to background
-  p.fill = {value: field.text.color};
+  p.fill = {value: field.color};
 
   var opacity = e.field(COLOR).opacity  || style.opacity;
   if(opacity) p.opacity = {value: opacity};
