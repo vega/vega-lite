@@ -4,8 +4,10 @@ require('../globals');
 
 var marks = module.exports = {};
 
-marks.def = function(mark, encoding, layout, style, stats) {
-  var defs = [];
+marks.def = function(encoding, layout, style, stats) {
+
+  var defs = [],
+    mark = marks[encoding.marktype()];
 
   // to add a background to text, we need to add it before the text
   if (encoding.marktype() === TEXT && encoding.has(COLOR)) {

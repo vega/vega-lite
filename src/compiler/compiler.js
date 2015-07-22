@@ -58,8 +58,7 @@ compiler.compileEncoding = function (encoding, stats) {
   // marks
   var style = compiler.style(encoding, stats),
     group = spec.marks[0],
-    mark = marks[encoding.marktype()],
-    mdefs = marks.def(mark, encoding, layout, style, stats),
+    mdefs = marks.def(encoding, layout, style, stats),
     mdef = mdefs[mdefs.length - 1];  // TODO: remove this dirty hack by refactoring the whole flow
 
   for (var i = 0; i < mdefs.length; i++) {
