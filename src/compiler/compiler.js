@@ -88,12 +88,16 @@ compiler.compileEncoding = function (encoding, stats) {
     mdef.from.transform = [{type: 'sort', by: '-' + encoding.fieldRef(f)}];
   }
 
+  var singleScaleNames = [].concat.apply([], mdefs.map(function(markProps) {
+    return scale.names(markProps.properties.update);
+  }));
+
   // Small Multiples
   if (encoding.has(ROW) || encoding.has(COL)) {
-    spec = compiler.facet(group, encoding, layout, style, sorting, spec, mdef, stack, stats);
+    spec = compiler.facet(group, encoding, layout, style, sorting, spec, singleScaleNames, stack, stats);
     spec.legends = legend.defs(encoding, style);
   } else {
-    group.scales = scale.defs(scale.names(mdef.properties.update), encoding, layout, stats, style, sorting, {stack: stack});
+    group.scales = scale.defs(singleScaleNames, encoding, layout, stats, style, sorting, {stack: stack});
     group.axes = axis.defs(axis.names(mdef.properties.update), encoding, layout, stats);
     group.legends = legend.defs(encoding, style);
   }

@@ -10,7 +10,7 @@ var axis = require('./axis'),
 
 module.exports = faceting;
 
-function faceting(group, encoding, layout, style, sorting, spec, mdef, stack, stats) {
+function faceting(group, encoding, layout, style, sorting, spec, singleScaleNames, stack, stats) {
   var enter = group.properties.enter;
   var facetKeys = [], cellAxes = [], from, axesGrp;
 
@@ -98,7 +98,7 @@ function faceting(group, encoding, layout, style, sorting, spec, mdef, stack, st
   // assuming equal cellWidth here
   // TODO: support heterogenous cellWidth (maybe by using multiple scales?)
   spec.scales = (spec.scales || []).concat(scale.defs(
-    scale.names(enter).concat(scale.names(mdef.properties.update)),
+    scale.names(enter).concat(singleScaleNames),
     encoding,
     layout,
     stats,
