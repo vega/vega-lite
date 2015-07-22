@@ -10,6 +10,7 @@ module.exports = template;
 function template(encoding, layout, stats) {
   // jshint unused:false
 
+  // TODO(kanitw): Jul 22, 2015 - split this file into data and template
   var data = {name: RAW, format: {}},
     table = {name: TABLE, source: RAW},
     dataUrl = encoding.data('url'),
