@@ -87,6 +87,7 @@ compiler.compileEncoding = function (encoding, stats) {
     mdef.from.transform = [{type: 'sort', by: '-' + encoding.fieldRef(f)}];
   }
 
+  // get a flattened list of all scale names that are used in the vl spec
   var singleScaleNames = [].concat.apply([], mdefs.map(function(markProps) {
     return scale.names(markProps.properties.update);
   }));
