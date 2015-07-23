@@ -97,7 +97,7 @@ compiler.compileEncoding = function (encoding, stats) {
     spec.legends = legend.defs(encoding, style);
   } else {
     group.scales = scale.defs(singleScaleNames, encoding, layout, stats, style, sorting, {stack: stack});
-    group.axes = axis.defs(axis.names(mdef.properties.update), encoding, layout, stats);
+    group.axes = axis.defs(encoding, layout, stats);
     group.legends = legend.defs(encoding, style);
   }
 
