@@ -66,7 +66,7 @@ var EXAMPLES = [
           name: 'variety'
         },
         row: {type: 'O',name: 'site'},
-        color: {type: 'O',name: 'year'}
+        color: {type: 'N',name: 'year'}
       }
     }
   },{
@@ -107,7 +107,7 @@ var EXAMPLES = [
       'data': {'url': 'data/movies.json'}
     }
   },{
-    title: 'Text heatmap',
+    title: 'Text Heatmap',
     spec: {
       'marktype': 'text',
       'encoding': {
