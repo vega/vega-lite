@@ -9,21 +9,6 @@ var util = require('../util'),
 
 var axis = module.exports = {};
 
-axis.names = function(props) {
-  return util.keys(util.keys(props).reduce(function(a, x) {
-    var s = props[x].scale;
-    if (s === X || s === Y) a[props[x].scale] = 1;
-    return a;
-  }, {}));
-};
-
-axis.defs = function(names, encoding, layout, stats, opt) {
-  return names.reduce(function(a, name) {
-    a.push(axis.def(name, encoding, layout, stats, opt));
-    return a;
-  }, []);
-};
-
 axis.def = function(name, encoding, layout, stats, opt) {
   var isCol = name == COL,
     isRow = name == ROW,
