@@ -47,7 +47,7 @@ function faceting(group, encoding, layout, style, sorting, spec, singleScaleName
     }
 
     axesGrp = groupdef('x-axes', {
-        axes: encoding.has(X) ? axis.defs(['x'], encoding, layout, stats) : undefined,
+        axes: encoding.has(X) ? [axis.def(X, encoding, layout, stats)] : undefined,
         x: hasCol ? {scale: COL, field: 'keys.0'} : {value: 0},
         width: hasCol && {'value': layout.cellWidth}, //HACK?
         from: from
@@ -55,11 +55,11 @@ function faceting(group, encoding, layout, style, sorting, spec, singleScaleName
 
     spec.marks.unshift(axesGrp); // need to prepend so it appears under the plots
     (spec.axes = spec.axes || []);
-    spec.axes.push.apply(spec.axes, axis.defs(['row'], encoding, layout, stats));
+    spec.axes.push(axis.def(ROW, encoding, layout, stats));
   } else { // doesn't have row
     if (encoding.has(X)) {
       //keep x axis in the cell
-      cellAxes.push.apply(cellAxes, axis.defs(['x'], encoding, layout, stats));
+      cellAxes.push(axis.def(X, encoding, layout, stats));
     }
   }
 
@@ -79,7 +79,7 @@ function faceting(group, encoding, layout, style, sorting, spec, singleScaleName
     }
 
     axesGrp = groupdef('y-axes', {
-      axes: encoding.has(Y) ? axis.defs(['y'], encoding, layout, stats) : undefined,
+      axes: encoding.has(Y) ? [axis.def(Y, encoding, layout, stats)] : undefined,
       y: hasRow && {scale: ROW, field: 'keys.0'},
       x: hasRow && {value: 0},
       height: hasRow && {'value': layout.cellHeight}, //HACK?
@@ -88,10 +88,10 @@ function faceting(group, encoding, layout, style, sorting, spec, singleScaleName
 
     spec.marks.unshift(axesGrp); // need to prepend so it appears under the plots
     (spec.axes = spec.axes || []);
-    spec.axes.push.apply(spec.axes, axis.defs(['col'], encoding, layout, stats));
+    spec.axes.push(axis.def(COL, encoding, layout, stats));
   } else { // doesn't have col
     if (encoding.has(Y)) {
-      cellAxes.push.apply(cellAxes, axis.defs(['y'], encoding, layout, stats));
+      cellAxes.push(axis.def(Y, encoding, layout, stats));
     }
   }
 

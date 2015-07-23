@@ -9,14 +9,6 @@ var util = require('../util'),
 
 var axis = module.exports = {};
 
-axis.defs = function(encoding, layout, stats, opt) {
-  var names = encoding.axes();
-  return names.reduce(function(a, name) {
-    a.push(axis.def(name, encoding, layout, stats, opt));
-    return a;
-  }, []);
-};
-
 axis.def = function(name, encoding, layout, stats, opt) {
   var isCol = name == COL,
     isRow = name == ROW,
