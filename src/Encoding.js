@@ -155,15 +155,10 @@ module.exports = (function() {
     return this._enc[et].scale || {};
   };
 
-  proto.axis = function(et) {
-    return this._enc[et].axis || {};
   };
 
-  proto.axes = function() {
-    var axes = [];
-    if (this.has(X)) axes.push('x');
-    if (this.has(Y)) axes.push('y');
-    return axes;
+  proto.axis = function(et) {
+    return this._enc[et].axis || {};
   };
 
   proto.bandSize = function(encType, useSmallBand) {
