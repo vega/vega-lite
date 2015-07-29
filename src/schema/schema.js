@@ -6,7 +6,8 @@ require('../globals');
 var schema = module.exports = {},
   util = require('../util'),
   toMap = util.toMap,
-  colorbrewer = require('colorbrewer');
+  colorbrewer = require('colorbrewer'),
+  d3_color = require('d3-color');
 
 schema.util = require('./schemautil');
 
@@ -378,13 +379,25 @@ var colorMixin = {
         },
         ordinalPalette: {
           type: 'string',
-          default: 'BuGn',
+          default: undefined, //'BuGn',// 'Greens', //'BuGn', //undefined, //
           enum: util.keys(colorbrewer)
+        },
+        ordinalRange: {
+          type: 'array',
+          default: [d3_color.hcl(169, 35, 80).toString(), d3_color.hcl(169, 43, 32).toString()],
+          // default: ['#F2ED7C', '#25303A'],
+          // default: ['#99d8c9', '#00441b'],
+          items: {
+            type: 'string',
+            role: 'color'
+          }
         }
       }
     }
   }
 };
+
+//  console.log(d3_color.hcl('#005824'));
 
 var shapeMixin = {
   type: 'object',

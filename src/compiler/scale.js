@@ -3,7 +3,7 @@ require('../globals');
 var util = require('../util'),
   time = require('./time'),
   colorbrewer = require('colorbrewer'),
-  interpolateLab = require('d3-color').interpolateLab,
+  interpolate = require('d3-color').interpolateHcl,
   schema = require('../schema/schema');
 
 var scale = module.exports = {};
@@ -211,26 +211,32 @@ scale.color = function(s, encoding, stats) {
     type = encoding.type(COLOR);
 
   if (range === undefined) {
-    var ordinalPalette = colorScale.ordinalPalette;
-    if (s.type === 'ordinal') {
-      if (type === N) {
-        // use categorical color scale
-        if (cardinality <= 10) {
-          range = colorScale.c10palette;
+    var ordinalPalette = colorScale.ordinalPalette,
+      ordinalRange = colorScale.ordinalRange;
+
+    if (ordinalPalette) {
+      if (s.type === 'ordinal') {
+        if (type === N) {
+          // use categorical color scale
+          if (cardinality <= 10) {
+            range = colorScale.c10palette;
+          } else {
+            range = colorScale.c20palette;
+          }
         } else {
-          range = colorScale.c20palette;
+          if (cardinality <= 2) {
+            range = [colorbrewer[ordinalPalette][3][0], colorbrewer[ordinalPalette][3][2]];
+          } else {
+            range = ordinalPalette;
+          }
         }
-      } else {
-        if (cardinality <= 2) {
-          range = [colorbrewer[ordinalPalette][3][0], colorbrewer[ordinalPalette][3][2]];
-        } else {
-          range = ordinalPalette;
-        }
+      } else { //time or quantitative
+        var palette = colorbrewer[ordinalPalette][9];
+        range = [palette[0], palette[8]];
+        s.zero = false;
       }
-    } else { //time or quantitative
-      var palette = colorbrewer[ordinalPalette][9];
-      range = [palette[0], palette[8]];
-      s.zero = false;
+    } else if (ordinalRange) {
+      range = scale.color.interpolate(ordinalRange[0], ordinalRange[1], cardinality);
     }
   }
   return scale.color.palette(range, cardinality, type);
@@ -258,25 +264,28 @@ scale.color.palette = function(range, cardinality, type) {
   }
 
   if (range in colorbrewer) {
-    var palette = colorbrewer[range],
-      ps = 5;
+    var palette = colorbrewer[range];
 
-    // if cardinality pre-defined, use it.
-    if (cardinality in palette) return palette[cardinality];
+    // FIXME add config
+    // // if cardinality pre-defined, use it.
+    // if (cardinality in palette) return palette[cardinality];
 
     // if not, use the highest cardinality one for nominal
-    if (type === N) {
-      return palette[Math.max.apply(null, util.keys(palette))];
-    }
+    var ps = 7; // Math.max.apply(null, util.keys(palette));
+    // if (type === N) {
+    //   return palette[Math.max.apply(null, util.keys(palette))];
+    // }
 
     // otherwise, interpolate
-    return scale.color.interpolate(palette[ps][0], palette[ps][ps-1], cardinality);
+    console.log('interpolate brewer');
+    return scale.color.interpolate(palette[ps][3], palette[ps][ps-1], cardinality);
   }
 
   return range;
 };
 
 scale.color.interpolate = function (start, end, cardinality) {
-  var interpolator = interpolateLab(start, end);
+
+  var interpolator = interpolate(start, end);
   return util.range(cardinality).map(function(i) { return interpolator(i*1.0/(cardinality-1)); });
 };
