@@ -17,5 +17,6 @@ vl.enc = require('./enc');
 vl.field = require('./field');
 vl.schema = require('./schema/schema');
 vl.toShorthand = vl.Encoding.shorthand;
+vl.format = require('d3-format').format;
 
 module.exports = vl;
