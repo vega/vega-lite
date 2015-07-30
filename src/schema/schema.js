@@ -385,11 +385,7 @@ var colorMixin = {
         ordinalRange: {
           type: 'array',
           default: ['#AFC6A3', '#09622A'], // tableau greens
-          // default: ['#99d8c9', '#005824'], // BuGn.7 [2-6]
           // default: ['#ccece6', '#00441b'], // BuGn.9 [2-8]
-          // default: ['#a1d99b', '#005a32'], // Greens.7 [2-6]
-          // default: ['#c7e9c0', '#00441b'], // Greens.9 [2-8]
-          // default: [d3_color.hcl(169, 35, 80).toString(), d3_color.hcl(169, 43, 32).toString()]
           items: {
             type: 'string',
             role: 'color'
@@ -399,8 +395,6 @@ var colorMixin = {
     }
   }
 };
-
-//  console.log(d3_color.hcl('#005824'));
 
 var shapeMixin = {
   type: 'object',

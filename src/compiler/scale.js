@@ -279,7 +279,7 @@ scale.color.palette = function(range, cardinality, type) {
     // otherwise, interpolate
     var ps = Math.max.apply(null, util.keys(palette)),
       from = 0 , to = ps -1;
-    // var ps = 7, from = 3, to = ps - 1;
+    // FIXME add config for from / to
 
     return scale.color.interpolate(palette[ps][from], palette[ps][to], cardinality);
   }
