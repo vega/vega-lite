@@ -3,7 +3,7 @@ require('../globals');
 var util = require('../util'),
   time = require('./time'),
   colorbrewer = require('colorbrewer'),
-  interpolate = require('d3-color').interpolateHcl,
+  interpolate = require('d3-color').interpolateLab,
   schema = require('../schema/schema');
 
 var scale = module.exports = {};
@@ -214,29 +214,29 @@ scale.color = function(s, encoding, stats) {
     var ordinalPalette = colorScale.ordinalPalette,
       ordinalRange = colorScale.ordinalRange;
 
-    if (ordinalPalette) {
-      if (s.type === 'ordinal') {
-        if (type === N) {
-          // use categorical color scale
-          if (cardinality <= 10) {
-            range = colorScale.c10palette;
-          } else {
-            range = colorScale.c20palette;
-          }
+
+    if (s.type === 'ordinal') {
+      if (type === N) {
+        // use categorical color scale
+        if (cardinality <= 10) {
+          range = colorScale.c10palette;
         } else {
-          if (cardinality <= 2) {
-            range = [colorbrewer[ordinalPalette][3][0], colorbrewer[ordinalPalette][3][2]];
-          } else {
-            range = ordinalPalette;
-          }
+          range = colorScale.c20palette;
         }
-      } else { //time or quantitative
-        var palette = colorbrewer[ordinalPalette][9];
-        range = [palette[0], palette[8]];
-        s.zero = false;
+      } else if (ordinalPalette) {
+        if (cardinality <= 2) {
+          range = [colorbrewer[ordinalPalette][3][0], colorbrewer[ordinalPalette][3][2]];
+        } else {
+          range = ordinalPalette;
+        }
+      } else {
+        range = scale.color.interpolate(ordinalRange[0], ordinalRange[1], cardinality);
       }
-    } else if (ordinalRange) {
-      range = scale.color.interpolate(ordinalRange[0], ordinalRange[1], cardinality);
+    } else { //time or quantitative
+      // FIXME
+      var palette = colorbrewer[ordinalPalette][9];
+      range = [palette[0], palette[8]];
+      s.zero = false;
     }
   }
   return scale.color.palette(range, cardinality, type);
