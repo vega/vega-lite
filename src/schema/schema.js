@@ -6,8 +6,7 @@ require('../globals');
 var schema = module.exports = {},
   util = require('../util'),
   toMap = util.toMap,
-  colorbrewer = require('colorbrewer'),
-  d3_color = require('d3-color');
+  colorbrewer = require('colorbrewer');
 
 schema.util = require('./schemautil');
 
@@ -361,6 +360,7 @@ var colorMixin = {
           description:
             'color palette, if undefined vega-lite will use data property' +
             'to pick one from c10palette, c20palette, or ordinalPalette'
+            //FIXME
         },
         c10palette: {
           type: 'string',
@@ -379,14 +379,17 @@ var colorMixin = {
         },
         ordinalPalette: {
           type: 'string',
-          default: undefined, //'BuGn',// 'Greens', //'BuGn', //undefined, //
+          default: undefined,
           enum: util.keys(colorbrewer)
         },
         ordinalRange: {
           type: 'array',
-          default: [d3_color.hcl(169, 35, 80).toString(), d3_color.hcl(169, 43, 32).toString()],
-          // default: ['#F2ED7C', '#25303A'],
-          // default: ['#99d8c9', '#00441b'],
+          default: ['#AFC6A3', '#09622A'], // tableau greens
+          // default: ['#99d8c9', '#005824'], // BuGn.7 [2-6]
+          // default: ['#ccece6', '#00441b'], // BuGn.9 [2-8]
+          // default: ['#a1d99b', '#005a32'], // Greens.7 [2-6]
+          // default: ['#c7e9c0', '#00441b'], // Greens.9 [2-8]
+          // default: [d3_color.hcl(169, 35, 80).toString(), d3_color.hcl(169, 43, 32).toString()]
           items: {
             type: 'string',
             role: 'color'

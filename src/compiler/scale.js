@@ -3,7 +3,7 @@ require('../globals');
 var util = require('../util'),
   time = require('./time'),
   colorbrewer = require('colorbrewer'),
-  interpolate = require('d3-color').interpolateLab,
+  interpolate = require('d3-color').interpolateHsl,
   schema = require('../schema/schema');
 
 var scale = module.exports = {};
@@ -184,11 +184,13 @@ scale.range = function (s, encoding, layout, stats) {
       break;
     case COLOR:
       s.range = scale.color(s, encoding, stats);
+      if (s.type !== 'ordinal') s.zero = false;
       break;
     default:
       throw new Error('Unknown encoding name: '+ s.name);
   }
 
+  // FIXME(kanitw): Jul 29, 2015 - consolidate this with above
   switch (s.name) {
     case ROW:
     case COL:
@@ -232,17 +234,17 @@ scale.color = function(s, encoding, stats) {
       } else {
         range = scale.color.interpolate(ordinalRange[0], ordinalRange[1], cardinality);
       }
+      return scale.color.palette(range, cardinality, type);
     } else { //time or quantitative
       // FIXME
       var palette = colorbrewer[ordinalPalette][9];
-      range = [palette[0], palette[8]];
-      s.zero = false;
+      return [palette[0], palette[8]];
     }
   }
-  return scale.color.palette(range, cardinality, type);
 };
 
 scale.color.palette = function(range, cardinality, type) {
+  // FIXME(kanitw): Jul 29, 2015 - check range is string
   switch (range) {
     case 'category10k':
       // tableau's category 10, ordered by perceptual kernel study results
@@ -266,19 +268,20 @@ scale.color.palette = function(range, cardinality, type) {
   if (range in colorbrewer) {
     var palette = colorbrewer[range];
 
-    // FIXME add config
-    // // if cardinality pre-defined, use it.
-    // if (cardinality in palette) return palette[cardinality];
+    // if cardinality pre-defined, use it.
+    if (cardinality in palette) return palette[cardinality];
 
     // if not, use the highest cardinality one for nominal
-    var ps = 7; // Math.max.apply(null, util.keys(palette));
-    // if (type === N) {
-    //   return palette[Math.max.apply(null, util.keys(palette))];
-    // }
+    if (type === N) {
+      return palette[Math.max.apply(null, util.keys(palette))];
+    }
 
     // otherwise, interpolate
-    console.log('interpolate brewer');
-    return scale.color.interpolate(palette[ps][3], palette[ps][ps-1], cardinality);
+    var ps = Math.max.apply(null, util.keys(palette)),
+      from = 0 , to = ps -1;
+    // var ps = 7, from = 3, to = ps - 1;
+
+    return scale.color.interpolate(palette[ps][from], palette[ps][to], cardinality);
   }
 
   return range;
