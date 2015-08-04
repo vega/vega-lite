@@ -214,8 +214,7 @@ scale.color = function(s, encoding, stats) {
 
   if (range === undefined) {
     var ordinalPalette = colorScale.ordinalPalette,
-      ordinalRange = colorScale.ordinalRange;
-
+      quantitativeRange = colorScale.quantitativeRange;
 
     if (s.type === 'ordinal') {
       if (type === N) {
@@ -225,20 +224,15 @@ scale.color = function(s, encoding, stats) {
         } else {
           range = colorScale.c20palette;
         }
-      } else if (ordinalPalette) {
-        if (cardinality <= 2) {
-          range = [colorbrewer[ordinalPalette][3][0], colorbrewer[ordinalPalette][3][2]];
-        } else {
-          range = ordinalPalette;
-        }
+        return scale.color.palette(range, cardinality, type);
       } else {
-        range = scale.color.interpolate(ordinalRange[0], ordinalRange[1], cardinality);
+        if (ordinalPalette) {
+          return scale.color.palette(ordinalPalette, cardinality, type);
+        }
+        return scale.color.interpolate(quantitativeRange[0], quantitativeRange[1], cardinality);
       }
-      return scale.color.palette(range, cardinality, type);
     } else { //time or quantitative
-      // FIXME
-      var palette = colorbrewer[ordinalPalette][9];
-      return [palette[0], palette[8]];
+      return [quantitativeRange[0], quantitativeRange[1]];
     }
   }
 };
@@ -265,6 +259,8 @@ scale.color.palette = function(range, cardinality, type) {
       return ['#3182bd', '#6baed6', '#9ecae1', '#c6dbef', '#e6550d', '#fd8d3c', '#fdae6b', '#fdd0a2', '#31a354', '#74c476', '#a1d99b', '#c7e9c0', '#756bb1', '#9e9ac8', '#bcbddc', '#dadaeb', '#636363', '#969696', '#bdbdbd', '#d9d9d9'];
   }
 
+  // TODO add our own set of custom ordinal color palette
+
   if (range in colorbrewer) {
     var palette = colorbrewer[range];
 
@@ -277,8 +273,8 @@ scale.color.palette = function(range, cardinality, type) {
     }
 
     // otherwise, interpolate
-    var ps = Math.max.apply(null, util.keys(palette)),
-      from = 0 , to = ps -1;
+    var ps = cardinality < 3 ? 3 : Math.max.apply(null, util.keys(palette)),
+      from = 0 , to = ps - 1;
     // FIXME add config for from / to
 
     return scale.color.interpolate(palette[ps][from], palette[ps][to], cardinality);

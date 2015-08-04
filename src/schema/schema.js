@@ -382,7 +382,7 @@ var colorMixin = {
           default: undefined,
           enum: util.keys(colorbrewer)
         },
-        ordinalRange: {
+        quantitativeRange: {
           type: 'array',
           default: ['#AFC6A3', '#09622A'], // tableau greens
           // default: ['#ccece6', '#00441b'], // BuGn.9 [2-8]
