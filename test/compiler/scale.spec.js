@@ -217,9 +217,9 @@ describe('vl.compile.scale', function() {
       var brewerPalettes = util.keys(colorbrewer);
       brewerPalettes.forEach(function(palette) {
         var cardinality = 20,
-          ps = 5,
           p = colorbrewer[palette],
-          interpolator = d3.interpolateLab(p[ps][0], p[ps][ps - 1]);
+          ps = Math.max.apply(null, util.keys(p)),
+          interpolator = d3.interpolateHsl(p[ps][0], p[ps][ps - 1]);
         expect(vlscale.color.palette(palette, cardinality, 'O')).to.eql(
           util.range(cardinality).map(function(i) {
             return interpolator(i * 1.0 / (cardinality - 1));
@@ -230,8 +230,8 @@ describe('vl.compile.scale', function() {
   });
 
   describe('color.interpolate', function() {
-    it('should interpolate color along the lab space', function() {
-      var interpolator = d3.interpolateLab('#ffffff', '#000000'),
+    it('should interpolate color along the hsl space', function() {
+      var interpolator = d3.interpolateHsl('#ffffff', '#000000'),
         cardinality = 8;
 
       expect(vlscale.color.interpolate('#ffffff', '#000000', cardinality))

@@ -360,6 +360,7 @@ var colorMixin = {
           description:
             'color palette, if undefined vega-lite will use data property' +
             'to pick one from c10palette, c20palette, or ordinalPalette'
+            //FIXME
         },
         c10palette: {
           type: 'string',
@@ -378,8 +379,17 @@ var colorMixin = {
         },
         ordinalPalette: {
           type: 'string',
-          default: 'BuGn',
+          default: undefined,
           enum: util.keys(colorbrewer)
+        },
+        quantitativeRange: {
+          type: 'array',
+          default: ['#AFC6A3', '#09622A'], // tableau greens
+          // default: ['#ccece6', '#00441b'], // BuGn.9 [2-8]
+          items: {
+            type: 'string',
+            role: 'color'
+          }
         }
       }
     }

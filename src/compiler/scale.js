@@ -3,7 +3,7 @@ require('../globals');
 var util = require('../util'),
   time = require('./time'),
   colorbrewer = require('colorbrewer'),
-  interpolateLab = require('d3-color').interpolateLab,
+  interpolate = require('d3-color').interpolateHsl,
   schema = require('../schema/schema');
 
 var scale = module.exports = {};
@@ -184,11 +184,13 @@ scale.range = function (s, encoding, layout, stats) {
       break;
     case COLOR:
       s.range = scale.color(s, encoding, stats);
+      if (s.type !== 'ordinal') s.zero = false;
       break;
     default:
       throw new Error('Unknown encoding name: '+ s.name);
   }
 
+  // FIXME(kanitw): Jul 29, 2015 - consolidate this with above
   switch (s.name) {
     case ROW:
     case COL:
@@ -211,7 +213,9 @@ scale.color = function(s, encoding, stats) {
     type = encoding.type(COLOR);
 
   if (range === undefined) {
-    var ordinalPalette = colorScale.ordinalPalette;
+    var ordinalPalette = colorScale.ordinalPalette,
+      quantitativeRange = colorScale.quantitativeRange;
+
     if (s.type === 'ordinal') {
       if (type === N) {
         // use categorical color scale
@@ -220,23 +224,21 @@ scale.color = function(s, encoding, stats) {
         } else {
           range = colorScale.c20palette;
         }
+        return scale.color.palette(range, cardinality, type);
       } else {
-        if (cardinality <= 2) {
-          range = [colorbrewer[ordinalPalette][3][0], colorbrewer[ordinalPalette][3][2]];
-        } else {
-          range = ordinalPalette;
+        if (ordinalPalette) {
+          return scale.color.palette(ordinalPalette, cardinality, type);
         }
+        return scale.color.interpolate(quantitativeRange[0], quantitativeRange[1], cardinality);
       }
     } else { //time or quantitative
-      var palette = colorbrewer[ordinalPalette][9];
-      range = [palette[0], palette[8]];
-      s.zero = false;
+      return [quantitativeRange[0], quantitativeRange[1]];
     }
   }
-  return scale.color.palette(range, cardinality, type);
 };
 
 scale.color.palette = function(range, cardinality, type) {
+  // FIXME(kanitw): Jul 29, 2015 - check range is string
   switch (range) {
     case 'category10k':
       // tableau's category 10, ordered by perceptual kernel study results
@@ -257,9 +259,10 @@ scale.color.palette = function(range, cardinality, type) {
       return ['#3182bd', '#6baed6', '#9ecae1', '#c6dbef', '#e6550d', '#fd8d3c', '#fdae6b', '#fdd0a2', '#31a354', '#74c476', '#a1d99b', '#c7e9c0', '#756bb1', '#9e9ac8', '#bcbddc', '#dadaeb', '#636363', '#969696', '#bdbdbd', '#d9d9d9'];
   }
 
+  // TODO add our own set of custom ordinal color palette
+
   if (range in colorbrewer) {
-    var palette = colorbrewer[range],
-      ps = 5;
+    var palette = colorbrewer[range];
 
     // if cardinality pre-defined, use it.
     if (cardinality in palette) return palette[cardinality];
@@ -270,13 +273,18 @@ scale.color.palette = function(range, cardinality, type) {
     }
 
     // otherwise, interpolate
-    return scale.color.interpolate(palette[ps][0], palette[ps][ps-1], cardinality);
+    var ps = cardinality < 3 ? 3 : Math.max.apply(null, util.keys(palette)),
+      from = 0 , to = ps - 1;
+    // FIXME add config for from / to
+
+    return scale.color.interpolate(palette[ps][from], palette[ps][to], cardinality);
   }
 
   return range;
 };
 
 scale.color.interpolate = function (start, end, cardinality) {
-  var interpolator = interpolateLab(start, end);
+
+  var interpolator = interpolate(start, end);
   return util.range(cardinality).map(function(i) { return interpolator(i*1.0/(cardinality-1)); });
 };

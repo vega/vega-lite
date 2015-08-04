@@ -4,8 +4,10 @@ require('../globals');
 
 var marks = module.exports = {};
 
-marks.def = function(mark, encoding, layout, style, stats) {
-  var defs = [];
+marks.def = function(encoding, layout, style, stats) {
+
+  var defs = [],
+    mark = marks[encoding.marktype()];
 
   // to add a background to text, we need to add it before the text
   if (encoding.marktype() === TEXT && encoding.has(COLOR)) {
@@ -190,7 +192,7 @@ function point_props(e, layout, style) {
     p.shape = {value: e.value(SHAPE)};
   }
 
-  // stroke
+  // fill or stroke
   if (e.field(SHAPE).filled) {
     if (e.has(COLOR)) {
       p.fill = {scale: COLOR, field: e.fieldRef(COLOR)};
@@ -207,7 +209,7 @@ function point_props(e, layout, style) {
   }
 
   // opacity
-  var opacity = e.field(COLOR).opacity  || style.opacity;
+  var opacity = e.field(COLOR).opacity || style.opacity;
   if (opacity) p.opacity = {value: opacity};
 
   return p;
@@ -409,7 +411,7 @@ function text_props(e, layout, style, stats) {
 
   // fill
   // color should be set to background
-  p.fill = {value: field.text.color};
+  p.fill = {value: field.color};
 
   var opacity = e.field(COLOR).opacity  || style.opacity;
   if(opacity) p.opacity = {value: opacity};
@@ -417,7 +419,7 @@ function text_props(e, layout, style, stats) {
   // text
   if (e.has(TEXT)) {
     if (e.isType(TEXT, Q)) {
-      var fieldStats = stats[e.fieldName(name)],
+      var fieldStats = stats[e.fieldName(TEXT)],
         numberFormat = field.format || e.numberFormat(fieldStats);
 
       p.text = {template: '{{' + e.fieldRef(TEXT) + ' | number:\'' +

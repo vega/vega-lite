@@ -66,7 +66,7 @@ var EXAMPLES = [
           name: 'variety'
         },
         row: {type: 'O',name: 'site'},
-        color: {type: 'O',name: 'year'}
+        color: {type: 'N',name: 'year'}
       }
     }
   },{
@@ -105,6 +105,18 @@ var EXAMPLES = [
         'y': {'name': 'Release_Date','type': 'N'}
       },
       'data': {'url': 'data/movies.json'}
+    }
+  },{
+    title: 'Text Heatmap',
+    spec: {
+      'marktype': 'text',
+      'encoding': {
+        'row': {'name': 'Origin','type': 'O'},
+        'col': {'axis': {'maxLabelLength': 25},'name': 'Cylinders','type': 'O'},
+        'color': {'name': 'Horsepower','type': 'Q','aggregate': 'avg'},
+        'text': {'name': '*','type': 'Q','aggregate': 'count'}
+      },
+      'data': {'url': 'data/cars.json'}
     }
   }
 ];

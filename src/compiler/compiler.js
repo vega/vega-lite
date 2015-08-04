@@ -58,9 +58,8 @@ compiler.compileEncoding = function (encoding, stats) {
   // marks
   var style = compiler.style(encoding, stats),
     group = spec.marks[0],
-    mark = marks[encoding.marktype()],
-    mdefs = marks.def(mark, encoding, layout, style, stats),
-    mdef = mdefs[0];  // TODO: remove this dirty hack by refactoring the whole flow
+    mdefs = marks.def(encoding, layout, style, stats),
+    mdef = mdefs[mdefs.length - 1];  // TODO: remove this dirty hack by refactoring the whole flow
 
   for (var i = 0; i < mdefs.length; i++) {
     group.marks.push(mdefs[i]);
@@ -88,14 +87,23 @@ compiler.compileEncoding = function (encoding, stats) {
     mdef.from.transform = [{type: 'sort', by: '-' + encoding.fieldRef(f)}];
   }
 
+  // get a flattened list of all scale names that are used in the vl spec
+  var singleScaleNames = [].concat.apply([], mdefs.map(function(markProps) {
+    return scale.names(markProps.properties.update);
+  }));
+
   // Small Multiples
   if (encoding.has(ROW) || encoding.has(COL)) {
-    spec = compiler.facet(group, encoding, layout, style, sorting, spec, mdef, stack, stats);
-    spec.legends = legend.defs(encoding);
+    spec = compiler.facet(group, encoding, layout, style, sorting, spec, singleScaleNames, stack, stats);
+    spec.legends = legend.defs(encoding, style);
   } else {
-    group.scales = scale.defs(scale.names(mdef.properties.update), encoding, layout, stats, style, sorting, {stack: stack});
-    group.axes = axis.defs(axis.names(mdef.properties.update), encoding, layout, stats);
-    group.legends = legend.defs(encoding);
+    group.scales = scale.defs(singleScaleNames, encoding, layout, stats, style, sorting, {stack: stack});
+
+    group.axes = [];
+    if (encoding.has(X)) group.axes.push(axis.def(X, encoding, layout, stats));
+    if (encoding.has(Y)) group.axes.push(axis.def(Y, encoding, layout, stats));
+
+    group.legends = legend.defs(encoding, style);
   }
 
   filter.filterLessThanZero(dataTable, encoding);
