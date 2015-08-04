@@ -230,8 +230,8 @@ describe('vl.compile.scale', function() {
   });
 
   describe('color.interpolate', function() {
-    it('should interpolate color along the lab space', function() {
-      var interpolator = d3.interpolateLab('#ffffff', '#000000'),
+    it('should interpolate color along the hsl space', function() {
+      var interpolator = d3.interpolateHsl('#ffffff', '#000000'),
         cardinality = 8;
 
       expect(vlscale.color.interpolate('#ffffff', '#000000', cardinality))
