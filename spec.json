@@ -657,7 +657,6 @@
         },
         "ordinalPalette": {
          "type": "string",
-         "default": "BuGn",
          "enum": [
           "YlGn",
           "YlGnBu",
@@ -695,6 +694,11 @@
           "Set2",
           "Set3"
          ]
+        },
+        "quantitativeRange": {
+         "type": "array",
+         "default": ["#AFC6A3","#09622A"],
+         "items": {"type": "string","role": "color"}
         }
        }
       },
