@@ -257,8 +257,14 @@ var legendMixin = {
   type: 'object',
   properties: {
     legend: {
-      type: 'boolean',
-      default: true
+      type: 'object',
+      properties: {
+        title: {
+          type: 'string',
+          default: undefined,
+          description: 'A title for the legend. (Shows field name and its function by default.)'
+        }
+      }
     }
   }
 };

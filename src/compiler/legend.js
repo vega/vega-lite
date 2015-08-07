@@ -41,7 +41,7 @@ legend.defs = function(encoding, style) {
 legend.def = function(name, encoding, def, style) {
   var timeUnit = encoding.field(name).timeUnit;
 
-  def.title = encoding.fieldTitle(name);
+  def.title = legend.title(name, encoding);
   def = legend.style(name, encoding, def, style);
 
   if (encoding.isType(name, T) &&
@@ -101,4 +101,12 @@ legend.style = function(name, e, def, style) {
     symbols.opacity = {value: opacity};
   }
   return def;
+};
+
+legend.title = function(name, encoding) {
+  var leg = encoding.field(name).legend;
+
+  if (leg.title) return leg.title;
+
+  return encoding.fieldTitle(name);
 };
