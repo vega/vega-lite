@@ -6,3 +6,5 @@ before_install:
   - npm install -g gulp
 install: npm install
 after_success: ./node_modules/.bin/coveralls --verbose < coverage/lcov.info
+notifications:
+  slack: uwdub:Ry6mwlUX1aZevqiqmYLiA3N1
