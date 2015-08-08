@@ -7,4 +7,11 @@ before_install:
 install: npm install
 after_success: ./node_modules/.bin/coveralls --verbose < coverage/lcov.info
 notifications:
-  slack: uwdub:Ry6mwlUX1aZevqiqmYLiA3N1
+  email:
+    on_success: never
+    on_failure: change
+  slack: 
+    rooms:
+      - 'uwdub:Ry6mwlUX1aZevqiqmYLiA3N1'
+    on_success: change
+    on_failure: always
