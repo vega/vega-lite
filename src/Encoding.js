@@ -310,7 +310,7 @@ module.exports = (function() {
 
    // returns whether the encoding has values embedded
   proto.hasValues = function() {
-    var vals = this.data.values;
+    var vals = this.data().values;
     return vals && vals.length;
   };
 
