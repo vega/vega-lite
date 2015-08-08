@@ -1,6 +1,6 @@
 'use strict';
 
-// TODO(kanitw): chat with Vega team and possibly move this to vega-loggger
+// TODO(kanitw): chat with Vega team and possibly move this to vega-logging
 module.exports = function(prefix) {
   // Borrowed some ideas from http://stackoverflow.com/a/15653260/866989
   // and https://github.com/patik/console.log-wrapper/blob/master/consolelog.js
