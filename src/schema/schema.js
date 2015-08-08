@@ -165,7 +165,7 @@ var axisMixin = {
           enum: ['top', 'right', 'left', 'bottom'],
           description: 'The orientation of the axis. One of top, bottom, left or right. The orientation can be used to further specialize the axis type (e.g., a y axis oriented for the right edge of the chart).'
         },
-        ticks :{
+        ticks: {
           type: 'integer',
           default: 5,
           description: 'A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are "nice" (multiples of 2, 5, 10) and lie within the underlying scale\'s range.'
@@ -198,7 +198,12 @@ var axisMixin = {
           default: 25,
           minimum: 0,
           description: 'Truncate labels that are too long.'
-        }
+        },
+        labelAngle: {
+          type: 'integer',
+          default: undefined, // auto
+          description: 'Angle by which to rotate labels. Set to 0 to force horizontal.'
+        },
       }
     }
   }

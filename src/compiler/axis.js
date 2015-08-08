@@ -25,10 +25,12 @@ axis.def = function(name, encoding, layout, stats, opt) {
   // Add axis label custom scale (for bin / time)
   def = axis.labels.scale(def, encoding, name);
   def = axis.labels.format(def, name, encoding, stats);
+  def = axis.labels.angle(def, encoding, name);
 
   // for x-axis, set ticks for Q or rotate scale for ordinal scale
   if (name == X) {
-    if (encoding.isDimension(X) || encoding.isType(X, T)) {
+    if ((encoding.isDimension(X) || encoding.isType(X, T)) &&
+        !('angle' in getter(def, ['properties', 'labels']))) {
       // TODO(kanitw): Jul 19, 2015 - #506 add condition for rotation
       def = axis.labels.rotate(def);
     } else { // Q
@@ -194,6 +196,14 @@ axis.labels.format = function (def, name, encoding, stats) {
       );
   }
 
+  return def;
+};
+
+axis.labels.angle = function(def, encoding, name) {
+  var angle = encoding.axis(name).labelAngle;
+  if (typeof angle === 'undefined') return def;
+
+  setter(def, ['properties', 'labels', 'angle', 'value'], angle);
   return def;
 };
 
