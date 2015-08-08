@@ -15,7 +15,7 @@ scale.names = function(props) {
   }, {}));
 };
 
-scale.defs = function(names, encoding, layout, stats, style, sorting, opt) {
+scale.defs = function(names, encoding, layout, stats, sorting, opt) {
   opt = opt || {};
 
   return names.reduce(function(a, name) {
