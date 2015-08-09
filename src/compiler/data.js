@@ -15,7 +15,6 @@ function data(encoding) {
   return def;
 }
 
-// FIXME test
 data.raw = function(encoding) {
   var raw = {name: RAW};
 
