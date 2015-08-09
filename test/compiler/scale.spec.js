@@ -27,11 +27,6 @@ describe('vl.compile.scale', function() {
   });
 
   describe('domain()', function() {
-    var sortingReturn = 'sorted',
-      sorting = {
-        getDataset: function() {return 'sorted';}
-      };
-
     it('should return correct stack', function() {
       var domain = vlscale.domain('y', Encoding.fromSpec({
         encoding: {
@@ -39,7 +34,7 @@ describe('vl.compile.scale', function() {
             name: 'origin'
           }
         }
-      }), {}, {}, {
+      }), {}, {
         stack: 'y',
         facet: true
       });
@@ -58,7 +53,7 @@ describe('vl.compile.scale', function() {
             name: 'origin'
           }
         }
-      }), {}, {}, {
+      }), {}, {
         stack: 'y',
         facet: true
       });
@@ -80,7 +75,7 @@ describe('vl.compile.scale', function() {
               type: Q
             }
           }
-        }), {origin: {min: -5, max:48}}, sorting, {});
+        }), {origin: {min: -5, max:48}}, {});
 
         expect(domain).to.eql([-5, 0, 5, 10, 15, 20, 25, 30, 35, 40, 45]);
       });
@@ -96,7 +91,7 @@ describe('vl.compile.scale', function() {
               type: Q
             }
           }
-        }), {}, {}, {});
+        }), {}, {});
 
         expect(domain.data).to.eql(RAW);
       });
@@ -112,9 +107,9 @@ describe('vl.compile.scale', function() {
               type: Q
             }
           }
-        }), {}, sorting, {});
+        }), {}, {});
 
-        expect(domain.data).to.eql(sortingReturn);
+        expect(domain.data).to.eql('table');
       });
 
     it('should return the raw domain if useRawDomain is true for raw T',
@@ -127,7 +122,7 @@ describe('vl.compile.scale', function() {
               type: T
             }
           }
-        }), {}, {}, {});
+        }), {}, {});
 
         expect(domain.data).to.eql(RAW);
       });
@@ -143,7 +138,7 @@ describe('vl.compile.scale', function() {
               timeUnit: 'year'
             }
           }
-        }), {}, {}, {});
+        }), {}, {});
 
         expect(domain.data).to.eql(RAW);
         expect(domain.field.indexOf('year')).to.gt(-1);
@@ -160,7 +155,7 @@ describe('vl.compile.scale', function() {
               timeUnit: 'month'
             }
           }
-        }), {}, sorting, {});
+        }), {}, {});
 
         expect(domain).to.eql([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]);
       });
@@ -175,9 +170,9 @@ describe('vl.compile.scale', function() {
             type: Q
           }
         }
-      }),  {}, sorting, {});
+      }), {}, {});
 
-      expect(domain.data).to.eql(sortingReturn);
+      expect(domain.data).to.eql('table');
     });
 
     // TODO test other cases

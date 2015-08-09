@@ -45,6 +45,7 @@ compiler.compileEncoding = function (encoding, stats) {
   var layout = compiler.layout(encoding, stats),
     spec = compiler.template(encoding, layout, stats);
 
+  // TODO: consolidate this into compiler.data
   // .data related stuff
   var rawTable = spec.data[0],
     dataTable = spec.data[1];
@@ -53,7 +54,7 @@ compiler.compileEncoding = function (encoding, stats) {
   spec = compiler.time(spec, encoding);              // modify rawTable, add scales
   dataTable = compiler.bin(dataTable, encoding);     // modify dataTable
   var aggResult = compiler.aggregate(dataTable, encoding); // modify dataTable
-  var sorting = compiler.sort(spec.data, encoding, stats); // append new data
+  spec.data = compiler.sort(spec.data, encoding, stats); // append new data
 
   // marks
   var style = compiler.style(encoding, stats),
@@ -94,10 +95,10 @@ compiler.compileEncoding = function (encoding, stats) {
 
   // Small Multiples
   if (encoding.has(ROW) || encoding.has(COL)) {
-    spec = compiler.facet(group, encoding, layout, sorting, spec, singleScaleNames, stack, stats);
+    spec = compiler.facet(group, encoding, layout, spec, singleScaleNames, stack, stats);
     spec.legends = legend.defs(encoding, style);
   } else {
-    group.scales = scale.defs(singleScaleNames, encoding, layout, stats, sorting, {stack: stack});
+    group.scales = scale.defs(singleScaleNames, encoding, layout, stats, {stack: stack});
 
     group.axes = [];
     if (encoding.has(X)) group.axes.push(axis.def(X, encoding, layout, stats));

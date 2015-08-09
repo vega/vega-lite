@@ -19,8 +19,9 @@ describe('Sort', function() {
           }]}
         }
       }),
-    data = [{name: RAW}, {name: TABLE}],
-    sorting = vlsort(data, encoding, {});
+    data = [{name: RAW}, {name: TABLE}];
+
+  vlsort(data, encoding, {});
 
   it('should add new data and transform', function() {
     expect(data.length).to.equal(4);
@@ -51,11 +52,5 @@ describe('Sort', function() {
       },
       { type: 'sort', by: [ 'data.sum_bar', '-data.max_foo' ] }
     ]);
-  });
-
-  it('should set correct mapping', function() {
-    expect(sorting.getDataset('x')).to.equal('sorted0');
-    expect(sorting.getDataset('color')).to.equal('sorted1');
-    expect(sorting.getDataset('y')).to.equal('table');
   });
 });
