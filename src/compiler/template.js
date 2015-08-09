@@ -13,9 +13,9 @@ function template(encoding, layout, stats) {
   // TODO(kanitw): Jul 22, 2015 - split this file into data and template
   var data = {name: RAW, format: {}},
     table = {name: TABLE, source: RAW},
-    dataUrl = encoding.data('url'),
-    dataType = encoding.data('formatType'),
-    values = encoding.data('values');
+    dataUrl = encoding.data().url,
+    dataType = encoding.data().formatType,
+    values = encoding.data().values;
 
   if (encoding.hasValues()) {
     data.values = values;

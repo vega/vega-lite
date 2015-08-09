@@ -304,13 +304,13 @@ module.exports = (function() {
     return !this.isAggregate();
   };
 
-  proto.data = function(name) {
-    return name ? this._data[name] : this._data;
+  proto.data = function() {
+    return this._data;
   };
 
    // returns whether the encoding has values embedded
   proto.hasValues = function() {
-    var vals = this.data('values');
+    var vals = this.data().values;
     return vals && vals.length;
   };
 
