@@ -17,33 +17,41 @@ function data(encoding) {
 
 // FIXME test
 data.raw = function(encoding) {
-  var raw = {name: RAW},
-    values = encoding.data().values;
+  var raw = {name: RAW};
 
+  // Data source (url or inline)
   if (encoding.hasValues()) {
-    raw.values = values;
+    raw.values = encoding.data().values;
   } else {
     raw.url = encoding.data().url;
-    raw.format.type = encoding.data().formatType;
+    raw.format = {type: encoding.data().formatType};
   }
 
-  raw.format = encoding.reduce(function(format, field) {
-    var name;
-    if (field.type == T) {
-      format.parse = format.parse || {};
-      format.parse[field.name] = 'date';
-    } else if (field.type == Q) {
-      format.parse = format.parse || {};
-      if (vlfield.isCount(field)) {
-        name = 'count';
-      } else {
-        name = field.name;
-      }
-      format.parse[name] = 'number';
-    }
-  }, {});
+  // Set format.parse if needed
+  var parse = data.raw.formatParse(encoding);
+  if (parse) {
+    raw.format = raw.format || {};
+    raw.format.parse = parse;
+  }
 
   return raw;
+};
+
+data.raw.formatParse = function(encoding) {
+  var parse;
+
+  encoding.forEach(function(field) {
+    if (field.type == T) {
+      parse = parse || {};
+      parse[field.name] = 'date';
+    } else if (field.type == Q) {
+      var name = vlfield.isCount(field) ? 'count' : field.name;
+      parse = parse || {};
+      parse[name] = 'number';
+    }
+  });
+
+  return parse;
 };
 
 data.aggregated = function() {
