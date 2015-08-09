@@ -65,6 +65,8 @@ compiler.compileEncoding = function (encoding, stats) {
   spec.data = compiler.sort(spec.data, encoding, stats); // append new data
 
   // marks
+
+  // TODO this line is temporary and should be refactored
   spec.marks = [compiler.group.def('cell', {
     width: layout.cellWidth ? {value: layout.cellWidth} : undefined,
     height: layout.cellHeight ? {value: layout.cellHeight} : undefined
