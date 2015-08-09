@@ -15,6 +15,7 @@ var Encoding = require('../Encoding'),
 
 compiler.aggregate = require('./aggregate');
 compiler.bin = require('./bin');
+compiler.data = require('./data');
 compiler.facet = require('./facet');
 compiler.group = require('./group');
 compiler.layout = require('./layout');
@@ -22,7 +23,6 @@ compiler.sort = require('./sort');
 compiler.stack = require('./stack');
 compiler.style = require('./style');
 compiler.subfacet = require('./subfacet');
-compiler.template = require('./template');
 compiler.time = require('./time');
 
 compiler.compile = function (spec, stats, theme) {
@@ -33,6 +33,7 @@ compiler.shorthand = function (shorthand, stats, config, theme) {
   return compiler.compileEncoding(Encoding.fromShorthand(shorthand, config, theme), stats);
 };
 
+
 compiler.compileEncoding = function (encoding, stats) {
   // no need to pass stats if you pass in the data
   if (!stats && encoding.hasValues()) {
@@ -42,11 +43,18 @@ compiler.compileEncoding = function (encoding, stats) {
     }, {});
   }
 
-  var layout = compiler.layout(encoding, stats),
-    spec = compiler.template(encoding, layout, stats);
+  var layout = compiler.layout(encoding, stats);
+
+  var spec = {
+      width: layout.width,
+      height: layout.height,
+      padding: 'auto'
+    };
 
   // TODO: consolidate this into compiler.data
   // .data related stuff
+  spec.data = compiler.data(encoding);
+
   var rawTable = spec.data[0],
     dataTable = spec.data[1];
 
@@ -57,6 +65,11 @@ compiler.compileEncoding = function (encoding, stats) {
   spec.data = compiler.sort(spec.data, encoding, stats); // append new data
 
   // marks
+  spec.marks = [group.def('cell', {
+    width: layout.cellWidth ? {value: layout.cellWidth} : undefined,
+    height: layout.cellHeight ? {value: layout.cellHeight} : undefined
+  })];
+
   var style = compiler.style(encoding, stats),
     group = spec.marks[0],
     mdefs = marks.def(encoding, layout, style, stats),

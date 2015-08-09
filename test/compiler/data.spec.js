@@ -2,10 +2,10 @@
 
 var expect = require('chai').expect;
 
-var template = require('../../src/compiler/template'),
+var data = require('../../src/compiler/data'),
   Encoding = require('../../src/Encoding');
 
-describe('Template', function() {
+describe('data.raw()', function() {
   describe('with explicit values', function() {
     var encoding = Encoding.fromSpec({
         data: {
@@ -13,11 +13,11 @@ describe('Template', function() {
         }
       });
 
-    var _tmpl = template(encoding, {});
+    var raw = data.raw(encoding, {});
 
     it('should have values', function() {
-      expect(_tmpl.data[0].name).to.equal('raw');
-      expect(_tmpl.data[0].values).to.deep.equal([{a: 1, b:2, c:3}, {a: 4, b:5, c:6}]);
+      expect(raw.name).to.equal('raw');
+      expect(raw.values).to.deep.equal([{a: 1, b:2, c:3}, {a: 4, b:5, c:6}]);
     });
   });
 
@@ -28,14 +28,14 @@ describe('Template', function() {
         }
       });
 
-    var _tmpl = template(encoding, {});
+    var raw = data.raw(encoding);
 
     it('should have format json', function() {
-      expect(_tmpl.data[0].name).to.equal('raw');
-      expect(_tmpl.data[0].format.type).to.equal('json');
+      expect(raw.name).to.equal('raw');
+      expect(raw.format.type).to.equal('json');
     });
     it('should have correct url', function() {
-      expect(_tmpl.data[0].url).to.equal('http://foo.bar');
+      expect(raw.url).to.equal('http://foo.bar');
     });
   });
 });
