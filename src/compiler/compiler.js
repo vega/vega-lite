@@ -94,10 +94,10 @@ compiler.compileEncoding = function (encoding, stats) {
 
   // Small Multiples
   if (encoding.has(ROW) || encoding.has(COL)) {
-    spec = compiler.facet(group, encoding, layout, style, sorting, spec, singleScaleNames, stack, stats);
+    spec = compiler.facet(group, encoding, layout, sorting, spec, singleScaleNames, stack, stats);
     spec.legends = legend.defs(encoding, style);
   } else {
-    group.scales = scale.defs(singleScaleNames, encoding, layout, stats, style, sorting, {stack: stack});
+    group.scales = scale.defs(singleScaleNames, encoding, layout, stats, sorting, {stack: stack});
 
     group.axes = [];
     if (encoding.has(X)) group.axes.push(axis.def(X, encoding, layout, stats));
