@@ -4,6 +4,7 @@ var util = module.exports = require('datalib/src/util');
 
 util.extend(util, require('datalib/src/generate'));
 util.extend(util, require('datalib/src/stats'));
+util.extend(util, require('./logger')('[VL Error]'));
 util.bin = require('datalib/src/bins/bins');
 
 util.isin = function(item, array) {
@@ -97,9 +98,5 @@ util.getter = function(x, p, noaugment) {
     }
   }
   return x;
-};
-
-util.error = function(msg) {
-  console.error('[VL Error]', msg);
 };
 
