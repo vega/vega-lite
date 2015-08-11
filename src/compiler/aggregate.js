@@ -9,7 +9,7 @@ module.exports = aggregates;
 function aggregates(dataTable, encoding, opt) {
   opt = opt || {};
 
-  var dims = {}, meas = {}, detail = {}, facets = {};
+  var dims = {}, meas = {};
 
   encoding.forEach(function(field, encType) {
     if (field.aggregate) {
@@ -23,11 +23,6 @@ function aggregates(dataTable, encoding, opt) {
       }
     } else {
       dims[field.name] = encoding.fieldRef(encType);
-      if (encType == ROW || encType == COL) {
-        facets[field.name] = dims[field.name];
-      }else if (encType !== X && encType !== Y) {
-        detail[field.name] = dims[field.name];
-      }
     }
   });
   dims = util.vals(dims);
@@ -41,10 +36,4 @@ function aggregates(dataTable, encoding, opt) {
       fields: meas
     });
   }
-  return {
-    details: util.vals(detail),
-    dims: dims,
-    facets: util.vals(facets),
-    aggregated: meas.length > 0
-  };
 }

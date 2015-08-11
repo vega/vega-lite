@@ -55,7 +55,7 @@ compiler.compileEncoding = function (encoding, stats) {
   spec.data = compiler.data(encoding);
 
   var dataTable = spec.data[1];
-  var aggResult = compiler.aggregate(dataTable, encoding); // modify dataTable
+  compiler.aggregate(dataTable, encoding); // modify dataTable
   spec.data = compiler.sort(spec.data, encoding, stats); // append new data
 
   spec = compiler.time(spec, encoding); //add scales
@@ -80,11 +80,10 @@ compiler.compileEncoding = function (encoding, stats) {
 
   // handle subfacets
 
-  var details = aggResult.details,
-    hasDetails = details && details.length > 0,
-    stack = aggResult.aggregated && hasDetails && compiler.stack(spec.data, encoding, mdef, aggResult.facets); // modify spec.data, mdef.{from,properties}
+  var details = encoding.details(),
+    stack = encoding.isAggregate() && details.length > 0 && compiler.stack(spec.data, encoding, mdef); // modify spec.data, mdef.{from,properties}
 
-  if (hasDetails && (stack || lineType)) {
+  if (details.length > 0 && (stack || lineType)) {
     //subfacet to group stack / line together in one group
     compiler.subfacet(group, mdef, details, stack, encoding);
   }

@@ -6,7 +6,7 @@ var  marks = require('./marks');
 
 module.exports = stacking;
 
-function stacking(data, encoding, mdef, facets) {
+function stacking(data, encoding, mdef) {
   if (!marks[encoding.marktype()].stack) return false;
 
   // TODO: add || encoding.has(LOD) here once LOD is implemented
@@ -14,7 +14,8 @@ function stacking(data, encoding, mdef, facets) {
 
   var dim=null, val=null, idx =null,
     isXMeasure = encoding.isMeasure(X),
-    isYMeasure = encoding.isMeasure(Y);
+    isYMeasure = encoding.isMeasure(Y),
+    facets = encoding.facets();
 
   if (isXMeasure && !isYMeasure) {
     dim = Y;

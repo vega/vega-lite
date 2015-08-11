@@ -243,6 +243,7 @@ module.exports = (function() {
     return field && vlfield.isType(field, type);
   };
 
+
   proto.isTypes = function(et, type) {
     var field = this.field(et);
     return field && vlfield.isTypes(field, type);
@@ -294,6 +295,26 @@ module.exports = (function() {
   proto.isStack = function() {
     // FIXME update this once we have control for stack ...
     return (this.is('bar') || this.is('area')) && this.has('color');
+  };
+
+  proto.details = function() {
+    var encoding = this;
+    return this.reduce(function(refs, field, encType) {
+      if (!field.aggregate && (encType !== X && encType !== Y)) {
+        refs.push(encoding.fieldRef(encType));
+      }
+      return refs;
+    }, []);
+  };
+
+  proto.facets = function() {
+    var encoding = this;
+    return this.reduce(function(refs, field, encType) {
+      if (!field.aggregate && (encType == ROW || encType == COL)) {
+        refs.push(encoding.fieldRef(encType));
+      }
+      return refs;
+    }, []);
   };
 
   proto.cardinality = function(encType, stats) {
