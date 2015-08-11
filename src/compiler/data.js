@@ -11,9 +11,9 @@ var vlfield = require('../field'),
 function data(encoding) {
   var def = [data.raw(encoding)];
 
-  // TODO(kanitw): Aug 8, 2015 - if aggregate add TABLE
-  def.push(data.aggregated(encoding));
-  // TODO(kanitw): Aug 8, 2015 - for each et, if sorted add sorted-et
+  var aggregate = data.aggregate(encoding);
+  if (aggregate) def.push(data.aggregate(encoding));
+
   return def;
 }
 
@@ -141,8 +141,39 @@ data.raw.transform.filter = function(encoding) {
   }];
 };
 
-data.aggregated = function() {
-  var aggregated = {name: TABLE, source: RAW};
-  return aggregated;
+data.aggregate = function(encoding) {
+  var dims = {}, meas = {};
+
+  encoding.forEach(function(field, encType) {
+    if (field.aggregate) {
+      if (field.aggregate === 'count') {
+        meas.count = {op: 'count', field: '*'};
+      }else {
+        meas[field.aggregate + '|' + field.name] = {
+          op: field.aggregate,
+          field: encoding.fieldRef(encType, {nofn: true})
+        };
+      }
+    } else {
+      dims[field.name] = encoding.fieldRef(encType);
+    }
+  });
+
+  dims = util.vals(dims);
+  meas = util.vals(meas);
+
+  if (meas.length > 0) {
+    return {
+      name: TABLE,
+      source: RAW,
+      transform: [{
+        type: 'aggregate',
+        groupby: dims,
+        fields: meas
+      }]
+    };
+  }
+
+  return null;
 };
 

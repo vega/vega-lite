@@ -13,7 +13,6 @@ var Encoding = require('../Encoding'),
   marks = compiler.marks = require('./marks'),
   scale = compiler.scale = require('./scale');
 
-compiler.aggregate = require('./aggregate');
 compiler.data = require('./data');
 compiler.facet = require('./facet');
 compiler.group = require('./group');
@@ -50,14 +49,11 @@ compiler.compileEncoding = function (encoding, stats) {
       padding: 'auto'
     };
 
-  // TODO: consolidate this into compiler.data
-  // .data related stuff
+
   spec.data = compiler.data(encoding);
-
-  var dataTable = spec.data[1];
-  compiler.aggregate(dataTable, encoding); // modify dataTable
+  // FIXME remove compiler.sort after migrating to vega 2.
   spec.data = compiler.sort(spec.data, encoding, stats); // append new data
-
+  filter.filterLessThanZero(spec.data[spec.data.length - 1], encoding);
   spec = compiler.time(spec, encoding); //add scales
   // marks
 
@@ -116,7 +112,7 @@ compiler.compileEncoding = function (encoding, stats) {
     group.legends = legend.defs(encoding, style);
   }
 
-  filter.filterLessThanZero(dataTable, encoding);
+
 
   return spec;
 };

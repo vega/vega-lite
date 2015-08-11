@@ -136,3 +136,36 @@ describe('data.raw', function() {
 
   });
 });
+
+
+describe('data.aggregated', function () {
+  it('should return correct aggregation', function() {
+    var encoding = Encoding.fromSpec({
+        encoding: {
+          'y': {
+            'aggregate': 'sum',
+            'name': 'Acceleration',
+            'type': 'Q'
+          },
+          'x': {
+            'name': 'origin',
+            "type": "O"
+          },
+        }
+      });
+
+    var aggregated = data.aggregate(encoding);
+    expect(aggregated ).to.eql({
+      "name": "table",
+      "source": "raw",
+      "transform": [{
+        "type": "aggregate",
+        "groupby": ["data.origin"],
+        "fields": [{
+          "op": "sum",
+          "field": "data.Acceleration"
+        }]
+      }]
+    });
+  });
+});
