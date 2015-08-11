@@ -5,7 +5,7 @@ var gutil = require('gulp-util');
 var mocha = require('gulp-spawn-mocha');
 
 // runs the tests
-gulp.task('test', function() {
+gulp.task('coverage', function() {
   return gulp.src(['test/**/*.spec.js'], { read: false })
     .pipe(mocha({
       istanbul: true
@@ -14,7 +14,7 @@ gulp.task('test', function() {
 });
 
 // quick test
-gulp.task('t', function() {
+gulp.task('test', function() {
   return gulp.src(['test/**/*.spec.js'], { read: false })
     .pipe(mocha({
       istanbul: false

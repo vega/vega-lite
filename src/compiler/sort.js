@@ -4,14 +4,13 @@ require('../globals');
 
 var vlfield = require('../field');
 
-module.exports = addSortTransforms;
+module.exports = sort;
 
 // adds new transforms that produce sorted fields
-function addSortTransforms(data, encoding, stats, opt) {
+function sort(data, encoding, stats, opt) {
   // jshint unused:false
 
   var datasetMapping = {};
-  var counter = 0;
 
   encoding.forEach(function(field, encType) {
     var sortBy = encoding.sort(encType, stats);
@@ -28,7 +27,7 @@ function addSortTransforms(data, encoding, stats, opt) {
         return reverse + vlfield.fieldRef(d, {data: !encoding._vega2});
       });
 
-      var dataName = 'sorted' + counter++;
+      var dataName = sort.getDataName(encType);
 
       var transforms = [
         {
@@ -52,14 +51,10 @@ function addSortTransforms(data, encoding, stats, opt) {
     }
   });
 
-  return {
-    getDataset: function(encType) {
-      var data = datasetMapping[encType];
-      if (!data) {
-        return TABLE;
-      }
-      return data;
-    }
-  };
+  return data;
 }
+
+sort.getDataName = function(encType) {
+  return 'sorted-' + encType;
+};
 

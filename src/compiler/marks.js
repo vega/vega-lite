@@ -7,7 +7,8 @@ var marks = module.exports = {};
 marks.def = function(encoding, layout, style, stats) {
 
   var defs = [],
-    mark = marks[encoding.marktype()];
+    mark = marks[encoding.marktype()],
+    from = encoding.dataTable();
 
   // to add a background to text, we need to add it before the text
   if (encoding.marktype() === TEXT && encoding.has(COLOR)) {
@@ -20,7 +21,7 @@ marks.def = function(encoding, layout, style, stats) {
     };
     defs.push({
       type: 'rect',
-      from: {data: TABLE},
+      from: {data: from},
       properties: {enter: bg, update: bg}
     });
   }
@@ -29,7 +30,7 @@ marks.def = function(encoding, layout, style, stats) {
   var p = mark.prop(encoding, layout, style, stats);
   defs.push({
     type: mark.type,
-    from: {data: TABLE},
+    from: {data: from},
     properties: {enter: p, update: p}
   });
 

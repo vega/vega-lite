@@ -8,13 +8,11 @@ var compiler = module.exports = {};
 
 var Encoding = require('../Encoding'),
   axis = compiler.axis = require('./axis'),
-  filter = compiler.filter = require('./filter'),
   legend = compiler.legend = require('./legend'),
   marks = compiler.marks = require('./marks'),
   scale = compiler.scale = require('./scale');
 
-compiler.aggregate = require('./aggregate');
-compiler.bin = require('./bin');
+compiler.data = require('./data');
 compiler.facet = require('./facet');
 compiler.group = require('./group');
 compiler.layout = require('./layout');
@@ -22,7 +20,6 @@ compiler.sort = require('./sort');
 compiler.stack = require('./stack');
 compiler.style = require('./style');
 compiler.subfacet = require('./subfacet');
-compiler.template = require('./template');
 compiler.time = require('./time');
 
 compiler.compile = function (spec, stats, theme) {
@@ -33,29 +30,38 @@ compiler.shorthand = function (shorthand, stats, config, theme) {
   return compiler.compileEncoding(Encoding.fromShorthand(shorthand, config, theme), stats);
 };
 
+
 compiler.compileEncoding = function (encoding, stats) {
   // no need to pass stats if you pass in the data
   if (!stats && encoding.hasValues()) {
-    stats = summary(encoding.data('values')).reduce(function(s, p) {
+    stats = summary(encoding.data().values).reduce(function(s, p) {
       s[p.field] = p;
       return s;
     }, {});
   }
 
-  var layout = compiler.layout(encoding, stats),
-    spec = compiler.template(encoding, layout, stats);
+  var layout = compiler.layout(encoding, stats);
 
-  // .data related stuff
-  var rawTable = spec.data[0],
-    dataTable = spec.data[1];
+  var spec = {
+      width: layout.width,
+      height: layout.height,
+      padding: 'auto',
+      data: compiler.data(encoding),
+      // global scales contains only time unit scales
+      scales: compiler.time.scales(encoding)
+    };
 
-  rawTable = filter.addFilters(rawTable, encoding); // modify rawTable
-  spec = compiler.time(spec, encoding);              // modify rawTable, add scales
-  dataTable = compiler.bin(dataTable, encoding);     // modify dataTable
-  var aggResult = compiler.aggregate(dataTable, encoding); // modify dataTable
-  var sorting = compiler.sort(spec.data, encoding, stats); // append new data
+  // FIXME remove compiler.sort after migrating to vega 2.
+  spec.data = compiler.sort(spec.data, encoding, stats); // append new data
 
   // marks
+
+  // TODO this line is temporary and should be refactored
+  spec.marks = [compiler.group.def('cell', {
+    width: layout.cellWidth ? {value: layout.cellWidth} : undefined,
+    height: layout.cellHeight ? {value: layout.cellHeight} : undefined
+  })];
+
   var style = compiler.style(encoding, stats),
     group = spec.marks[0],
     mdefs = marks.def(encoding, layout, style, stats),
@@ -69,11 +75,10 @@ compiler.compileEncoding = function (encoding, stats) {
 
   // handle subfacets
 
-  var details = aggResult.details,
-    hasDetails = details && details.length > 0,
-    stack = hasDetails && compiler.stack(spec.data, encoding, mdef, aggResult.facets); // modify spec.data, mdef.{from,properties}
+  var details = encoding.details(),
+    stack = encoding.isAggregate() && details.length > 0 && compiler.stack(spec.data, encoding, mdef); // modify spec.data, mdef.{from,properties}
 
-  if (hasDetails && (stack || lineType)) {
+  if (details.length > 0 && (stack || lineType)) {
     //subfacet to group stack / line together in one group
     compiler.subfacet(group, mdef, details, stack, encoding);
   }
@@ -94,10 +99,10 @@ compiler.compileEncoding = function (encoding, stats) {
 
   // Small Multiples
   if (encoding.has(ROW) || encoding.has(COL)) {
-    spec = compiler.facet(group, encoding, layout, style, sorting, spec, singleScaleNames, stack, stats);
+    spec = compiler.facet(group, encoding, layout, spec, singleScaleNames, stack, stats);
     spec.legends = legend.defs(encoding, style);
   } else {
-    group.scales = scale.defs(singleScaleNames, encoding, layout, stats, style, sorting, {stack: stack});
+    group.scales = scale.defs(singleScaleNames, encoding, layout, stats, {stack: stack});
 
     group.axes = [];
     if (encoding.has(X)) group.axes.push(axis.def(X, encoding, layout, stats));
@@ -106,7 +111,7 @@ compiler.compileEncoding = function (encoding, stats) {
     group.legends = legend.defs(encoding, style);
   }
 
-  filter.filterLessThanZero(dataTable, encoding);
+
 
   return spec;
 };

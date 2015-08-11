@@ -243,6 +243,7 @@ module.exports = (function() {
     return field && vlfield.isType(field, type);
   };
 
+
   proto.isTypes = function(et, type) {
     var field = this.field(et);
     return field && vlfield.isTypes(field, type);
@@ -276,6 +277,10 @@ module.exports = (function() {
     return vlenc.isAggregate(this._enc);
   };
 
+  proto.dataTable = function() {
+    return this.isAggregate() ? AGGREGATE : RAW;
+  };
+
   Encoding.isAggregate = function(spec) {
     return vlenc.isAggregate(spec.encoding);
   };
@@ -296,6 +301,26 @@ module.exports = (function() {
     return (this.is('bar') || this.is('area')) && this.has('color');
   };
 
+  proto.details = function() {
+    var encoding = this;
+    return this.reduce(function(refs, field, encType) {
+      if (!field.aggregate && (encType !== X && encType !== Y)) {
+        refs.push(encoding.fieldRef(encType));
+      }
+      return refs;
+    }, []);
+  };
+
+  proto.facets = function() {
+    var encoding = this;
+    return this.reduce(function(refs, field, encType) {
+      if (!field.aggregate && (encType == ROW || encType == COL)) {
+        refs.push(encoding.fieldRef(encType));
+      }
+      return refs;
+    }, []);
+  };
+
   proto.cardinality = function(encType, stats) {
     return vlfield.cardinality(this.field(encType), stats, this.config('filterNull'));
   };
@@ -304,13 +329,13 @@ module.exports = (function() {
     return !this.isAggregate();
   };
 
-  proto.data = function(name) {
-    return name ? this._data[name] : this._data;
+  proto.data = function() {
+    return this._data;
   };
 
    // returns whether the encoding has values embedded
   proto.hasValues = function() {
-    var vals = this.data('values');
+    var vals = this.data().values;
     return vals && vals.length;
   };
 

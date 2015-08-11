@@ -13,20 +13,11 @@ describe('time', function() {
         x: {name: fieldName, type: 'T', timeUnit: timeUnit}
       }
     }),
-    spec = time({data: [{name: RAW}, {name: TABLE}]}, encoding, {});
+    scales = time.scales(encoding);
 
-  it('should add formula transform', function() {
-    var data = spec.data[0];
-    expect(data.transform).to.be.ok;
-
-    expect(data.transform.filter(function(t) {
-      return t.type === 'formula' && t.field === encoding.fieldRef('x') &&
-        t.expr === time.formula(encoding._enc.x);
-    }).length).to.be.above(0);
-  });
 
   it('should add custom axis scale', function() {
-    expect(spec.scales.filter(function(scale) {
+    expect(scales.filter(function(scale) {
       return scale.name == 'time-'+ timeUnit;
     }).length).to.equal(1);
   });
