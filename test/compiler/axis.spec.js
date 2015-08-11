@@ -69,6 +69,17 @@ describe('Axis', function() {
     // FIXME(kanitw): Jul 19, 2015 - write test
   });
 
+  describe('labels.angle()', function () {
+    it('should set explicitly specified angle', function () {
+      var def = axis.labels.angle({}, Encoding.fromSpec({
+        encoding: {
+          x: {name: 'a', type: 'T', axis:{labelAngle: 90}}
+        }
+      }), 'x');
+      expect(def.properties.labels.angle).to.eql({value: 90});
+    });
+  });
+
   describe('labels.rotate()', function () {
     // FIXME(kanitw): Jul 19, 2015 - write test
   });
