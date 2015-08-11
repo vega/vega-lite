@@ -13,11 +13,11 @@ describe('time', function() {
         x: {name: fieldName, type: 'T', timeUnit: timeUnit}
       }
     }),
-    spec = time({data: [{name: RAW}, {name: AGGREGATE}]}, encoding, {});
+    scales = time.scales(encoding);
 
 
   it('should add custom axis scale', function() {
-    expect(spec.scales.filter(function(scale) {
+    expect(scales.filter(function(scale) {
       return scale.name == 'time-'+ timeUnit;
     }).length).to.equal(1);
   });

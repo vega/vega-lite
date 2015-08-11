@@ -45,14 +45,15 @@ compiler.compileEncoding = function (encoding, stats) {
   var spec = {
       width: layout.width,
       height: layout.height,
-      padding: 'auto'
+      padding: 'auto',
+      data: compiler.data(encoding),
+      // global scales contains only time unit scales
+      scales: compiler.time.scales(encoding)
     };
 
-
-  spec.data = compiler.data(encoding);
   // FIXME remove compiler.sort after migrating to vega 2.
   spec.data = compiler.sort(spec.data, encoding, stats); // append new data
-  spec = compiler.time(spec, encoding); //add scales
+
   // marks
 
   // TODO this line is temporary and should be refactored
