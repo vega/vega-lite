@@ -55,10 +55,8 @@ compiler.compileEncoding = function (encoding, stats) {
   // .data related stuff
   spec.data = compiler.data(encoding);
 
-  var rawTable = spec.data[0],
-    dataTable = spec.data[1];
+  var dataTable = spec.data[1];
 
-  rawTable = filter.addFilters(rawTable, encoding); // modify rawTable
   spec = compiler.time(spec, encoding);              // modify rawTable, add scales
   dataTable = compiler.bin(dataTable, encoding);     // modify dataTable
   var aggResult = compiler.aggregate(dataTable, encoding); // modify dataTable
