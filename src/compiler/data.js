@@ -85,11 +85,6 @@ data.raw.transform.time = function(encoding) {
   }, []);
 };
 
-data.raw.transform.time.fn = function(field) {
-  // Add other time unit
-  return 'utc' + field.timeUnit;
-
-};
 
 data.raw.transform.filter = function(encoding) {
   var filters = encoding.filter().reduce(function(f, filter) {
