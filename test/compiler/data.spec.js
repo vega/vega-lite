@@ -63,7 +63,12 @@ describe('data.raw', function() {
   describe('transform', function () {
     var encoding = Encoding.fromSpec({
       encoding: {
-        x: {name: 'a', type:'T', timeUnit: 'year'}
+        x: {name: 'a', type:'T', timeUnit: 'year'},
+        y: {
+          'bin': {'maxbins': 15},
+          'name': 'Acceleration',
+          'type': 'Q'
+        }
       },
       filter: [{
         operator: '>',
@@ -74,13 +79,26 @@ describe('data.raw', function() {
       }]
     });
 
+    describe('bin', function() {
+      it('should add bin transform', function() {
+        var transform = data.raw.transform.bin(encoding);
+        expect(transform[0]).to.eql({
+          type: 'bin',
+          field: 'data.Acceleration',
+          output: 'data.bin_Acceleration',
+          maxbins: 15
+        });
+      });
+    });
+
     describe('filter', function () {
       it('should return filter transform that include filter null', function () {
         var transform = data.raw.transform.filter(encoding);
 
         expect(transform[0]).to.eql({
           type: 'filter',
-          test: '(d.data.a!==null) && (d.data.a > b) && (d.data.c < d)'
+          test: '(d.data.a!==null) && (d.data.Acceleration!==null)' +
+          ' && (d.data.a > b) && (d.data.c < d)'
         });
       });
 
@@ -109,10 +127,11 @@ describe('data.raw', function() {
       });
     });
 
-    it('should put time before filter', function () {
+    it('should time and bin before filter', function () {
       var transform = data.raw.transform(encoding);
       expect(transform[0].type).to.eql('formula');
-      expect(transform[1].type).to.eql('filter');
+      expect(transform[1].type).to.eql('bin');
+      expect(transform[2].type).to.eql('filter');
     });
 
   });

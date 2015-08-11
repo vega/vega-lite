@@ -57,8 +57,10 @@ data.raw.formatParse = function(encoding) {
 };
 
 data.raw.transform = function(encoding) {
-  // time should come before filter so we can filter by time
+  // time and bin should come before filter so we can filter by time and bin
   return data.raw.transform.time(encoding).concat(
+    data.raw.transform.bin(encoding)
+  ).concat(
     data.raw.transform.filter(encoding)
   );
 };
@@ -85,6 +87,19 @@ data.raw.transform.time = function(encoding) {
   }, []);
 };
 
+data.raw.transform.bin = function(encoding) {
+  return encoding.reduce(function(transform, field, encType) {
+    if (encoding.bin(encType)) {
+      transform.push({
+        type: 'bin',
+        field: encoding.fieldRef(encType, {nofn: true}),
+        output: encoding.fieldRef(encType),
+        maxbins: encoding.bin(encType).maxbins
+      });
+    }
+    return transform;
+  }, []);
+};
 
 data.raw.transform.filter = function(encoding) {
   var filters = encoding.filter().reduce(function(f, filter) {
@@ -127,5 +142,7 @@ data.raw.transform.filter = function(encoding) {
 };
 
 data.aggregated = function() {
-  return {name: TABLE, source: RAW};
+  var aggregated = {name: TABLE, source: RAW};
+  return aggregated;
 };
+

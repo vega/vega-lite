@@ -14,7 +14,6 @@ var Encoding = require('../Encoding'),
   scale = compiler.scale = require('./scale');
 
 compiler.aggregate = require('./aggregate');
-compiler.bin = require('./bin');
 compiler.data = require('./data');
 compiler.facet = require('./facet');
 compiler.group = require('./group');
@@ -56,7 +55,6 @@ compiler.compileEncoding = function (encoding, stats) {
   spec.data = compiler.data(encoding);
 
   var dataTable = spec.data[1];
-  dataTable = compiler.bin(dataTable, encoding); // modify dataTable
   var aggResult = compiler.aggregate(dataTable, encoding); // modify dataTable
   spec.data = compiler.sort(spec.data, encoding, stats); // append new data
 
