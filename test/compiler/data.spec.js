@@ -195,7 +195,7 @@ describe('data.aggregated', function () {
 
     var aggregated = data.aggregate(encoding);
     expect(aggregated ).to.eql({
-      "name": "table",
+      "name": AGGREGATE,
       "source": "raw",
       "transform": [{
         "type": "aggregate",
