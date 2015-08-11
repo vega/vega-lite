@@ -5,7 +5,8 @@ require('../globals');
 module.exports = data;
 
 var vlfield = require('../field'),
-  util = require('../util');
+  util = require('../util'),
+  time = require('./time');
 
 function data(encoding) {
   var def = [data.raw(encoding)];
@@ -77,8 +78,7 @@ data.raw.transform.time = function(encoding) {
       transform.push({
         type: 'formula',
         field: encoding.fieldRef(encType),
-        expr: data.raw.transform.time.fn(field) +
-          '(' + encoding.fieldRef(encType, {nofn: true, d: true}) + ')'
+        expr: time.formula(field.timeUnit, encoding.fieldRef(encType, {nofn: true, d: true}))
       });
     }
     return transform;

@@ -52,6 +52,12 @@ time.cardinality = function(field, stats, filterNull, type) {
   return null;
 };
 
+time.formula = function(timeUnit, fieldRef) {
+  // TODO(kanitw): add formula to other time format
+  var fn = 'utc' + timeUnit;
+  return fn + '(' + fieldRef + ')';
+};
+
 time.maxLength = function(timeUnit, encoding) {
   switch (timeUnit) {
     case 'seconds':
