@@ -85,7 +85,8 @@ describe('data.raw', function() {
       var encoding = Encoding.fromSpec({
           encoding: {
             x: {name: 'a', type: 'T'},
-            y: {name: 'b', type: 'Q'}
+            y: {name: 'b', type: 'Q'},
+            color: {name: '*', type: 'Q', aggregate: 'count'}
           }
         });
 
@@ -111,7 +112,7 @@ describe('data.raw', function() {
         operator: '>',
         operands: ['a', 'b']
       },{
-        operator: '<',
+        operator: '=',
         operands: ['c', 'd']
       }]
     });
@@ -135,7 +136,7 @@ describe('data.raw', function() {
         expect(transform[0]).to.eql({
           type: 'filter',
           test: '(d.data.a!==null) && (d.data.Acceleration!==null)' +
-          ' && (d.data.a > b) && (d.data.c < d)'
+          ' && (d.data.a > b) && (d.data.c == d)'
         });
       });
 
@@ -188,6 +189,7 @@ describe('data.aggregated', function () {
             'name': 'origin',
             "type": "O"
           },
+          color: {name: '*', type: 'Q', aggregate: 'count'}
         }
       });
 
@@ -201,6 +203,9 @@ describe('data.aggregated', function () {
         "fields": [{
           "op": "sum",
           "field": "data.Acceleration"
+        },{
+          "op": "count",
+          "field": "*"
         }]
       }]
     });
