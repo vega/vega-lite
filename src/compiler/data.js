@@ -64,8 +64,7 @@ data.raw.formatParse = function(encoding) {
 data.raw.transform = function(encoding) {
   // time and bin should come before filter so we can filter by time and bin
   return data.raw.transform.time(encoding).concat(
-    data.raw.transform.bin(encoding)
-  ).concat(
+    data.raw.transform.bin(encoding),
     data.raw.transform.filter(encoding)
   );
 };
