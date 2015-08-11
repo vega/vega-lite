@@ -61,48 +61,45 @@ describe('data.raw', function() {
   });
 
   describe('transform', function () {
-    describe('filter', function () {
-      it('should return filter transform', function () {
-        var encoding = Encoding.fromSpec({
-          filter: [{
-            operator: '>',
-            operands: ['a', 'b']
-          },{
-            operator: '<',
-            operands: ['c', 'd']
-          }]
-        });
+    var encoding = Encoding.fromSpec({
+      encoding: {
+        x: {name: 'a', type:'T', timeUnit: 'year'}
+      },
+      filter: [{
+        operator: '>',
+        operands: ['a', 'b']
+      },{
+        operator: '<',
+        operands: ['c', 'd']
+      }]
+    });
 
+    describe('filter', function () {
+      it('should return filter transform that include filter null', function () {
         var transform = data.raw.transform.filter(encoding);
 
         expect(transform[0]).to.eql({
           type: 'filter',
-          test: '(d.data.a > b) && (d.data.c < d)'
+          test: '(d.data.a!==null) && (d.data.a > b) && (d.data.c < d)'
         });
       });
-    });
 
-    it('should exclude unsupported operator', function () {
-      var encoding = Encoding.fromSpec({
-        filter: [{
-          operator: '*',
-          operands: ['a', 'b']
-        }]
+      it('should exclude unsupported operator', function () {
+        var badEncoding = Encoding.fromSpec({
+          filter: [{
+            operator: '*',
+            operands: ['a', 'b']
+          }]
+        });
+
+        var transform = data.raw.transform.filter(badEncoding);
+
+        expect(transform.length).to.equal(0);
       });
-
-      var transform = data.raw.transform.filter(encoding);
-
-      expect(transform.length).to.equal(0);
     });
 
     describe('time', function() {
       it('should add formula transform', function() {
-        var encoding = Encoding.fromSpec({
-          encoding: {
-            x: {name: 'a', type:'T', timeUnit: 'year'}
-          }
-        });
-
         var transform = data.raw.transform.time(encoding);
         expect(transform[0]).to.eql({
           type: 'formula',
@@ -110,6 +107,12 @@ describe('data.raw', function() {
           expr: 'utcyear(d.data.a)'
         });
       });
+    });
+
+    it('should put time before filter', function () {
+      var transform = data.raw.transform(encoding);
+      expect(transform[0].type).to.eql('formula');
+      expect(transform[1].type).to.eql('filter');
     });
 
   });

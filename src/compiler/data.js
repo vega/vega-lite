@@ -56,6 +56,7 @@ data.raw.formatParse = function(encoding) {
 };
 
 data.raw.transform = function(encoding) {
+  // time should come before filter so we can filter by time
   return data.raw.transform.time(encoding).concat(
     data.raw.transform.filter(encoding)
   );
