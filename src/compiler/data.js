@@ -52,9 +52,9 @@ data.raw.formatParse = function(encoding) {
       parse = parse || {};
       parse[field.name] = 'date';
     } else if (field.type == Q) {
-      var name = vlfield.isCount(field) ? 'count' : field.name;
+      if (vlfield.isCount(field)) return;
       parse = parse || {};
-      parse[name] = 'number';
+      parse[field.name] = 'number';
     }
   });
 
@@ -187,7 +187,7 @@ data.filterNonZeroForLog = function(dataTable, encoding) {
     if (encoding.scale(encType).type === 'log') {
       dataTable.transform.push({
         type: 'filter',
-        test: encoding.fieldRef(encType, {d: 1}) + '> 0'
+        test: encoding.fieldRef(encType, {d: 1}) + ' > 0'
       });
     }
   });
