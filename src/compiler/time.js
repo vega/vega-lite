@@ -3,32 +3,9 @@
 var util = require('../util'),
   d3_time_format = require('d3-time-format');
 
-module.exports = time;
+var time = module.exports = {};
 
 var LONG_DATE = new Date(2014, 8, 17);
-
-function time(spec, encoding) { // FIXME refactor to reduce side effect #276
-  // jshint unused:false
-  var timeFields = {}, timeUnits = {};
-
-  // find unique formula transformation and bin function
-  encoding.forEach(function(field, encType) {
-    if (field.type === T && field.timeUnit) {
-      timeUnits[field.timeUnit] = true;
-    }
-  });
-
-  // add formula transform
-  var data = spec.data[0];
-
-  // add scales
-  var scales = spec.scales = spec.scales || [];
-  for (var timeUnit in timeUnits) {
-    var scale = time.scale.def(timeUnit, encoding);
-    if (scale) scales.push(scale);
-  }
-  return spec;
-}
 
 time.cardinality = function(field, stats, filterNull, type) {
   var timeUnit = field.timeUnit;
@@ -98,6 +75,24 @@ time.range = function(timeUnit, encoding) {
       ) : scaleLabel;
   }
   return;
+};
+
+
+/**
+ * @param  {Object} encoding
+ * @return {Array}  scales for time unit names
+ */
+time.scales = function(encoding) {
+  var scales = encoding.reduce(function(scales, field) {
+    var timeUnit = field.timeUnit;
+    if (field.type === T && timeUnit && !scales[timeUnit]) {
+      var scale = time.scale.def(field.timeUnit, encoding);
+      if (scale) scales[timeUnit] = scale;
+    }
+    return scales;
+  }, {});
+
+  return util.vals(scales);
 };
 
 
