@@ -32,7 +32,7 @@ describe('data', function () {
     it('should contains one table', function() {
       expect(_data.length).to.equal(1);
     });
-    it('should  have filter zero in raw', function(){
+    it('should have filter non-positive in raw', function() {
       var rawTransform = _data[0].transform;
       expect(rawTransform[rawTransform.length - 1]).to.eql({
         type: 'filter',

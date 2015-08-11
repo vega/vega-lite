@@ -16,7 +16,7 @@ function data(encoding) {
 
   // TODO add "having" filter here
 
-  // append non-zero filter at the end for the data table
+  // append non-positive filter at the end for the data table
   data.filterNonPositive(def[def.length - 1], encoding);
 
   return def;
