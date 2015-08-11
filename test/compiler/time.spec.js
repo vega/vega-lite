@@ -15,15 +15,6 @@ describe('time', function() {
     }),
     spec = time({data: [{name: RAW}, {name: TABLE}]}, encoding, {});
 
-  it('should add formula transform', function() {
-    var data = spec.data[0];
-    expect(data.transform).to.be.ok;
-
-    expect(data.transform.filter(function(t) {
-      return t.type === 'formula' && t.field === encoding.fieldRef('x') &&
-        t.expr === time.formula(encoding._enc.x);
-    }).length).to.be.above(0);
-  });
 
   it('should add custom axis scale', function() {
     expect(spec.scales.filter(function(scale) {

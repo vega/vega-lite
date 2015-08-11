@@ -56,8 +56,8 @@ data.raw.formatParse = function(encoding) {
 };
 
 data.raw.transform = function(encoding) {
-  return data.raw.transform.filter(encoding).concat(
-    [] // TODO move a part of compiler.time() here
+  return data.raw.transform.time(encoding).concat(
+    data.raw.transform.filter(encoding)
   );
 };
 
@@ -68,6 +68,26 @@ var BINARY = {
   '!=': true,
   '<':  true,
   '<=': true
+};
+
+data.raw.transform.time = function(encoding) {
+  return encoding.reduce(function(transform, field, encType) {
+    if (field.type === T && field.timeUnit) {
+      transform.push({
+        type: 'formula',
+        field: encoding.fieldRef(encType),
+        expr: data.raw.transform.time.fn(field) +
+          '(' + encoding.fieldRef(encType, {nofn: true, d: true}) + ')'
+      });
+    }
+    return transform;
+  }, []);
+};
+
+data.raw.transform.time.fn = function(field) {
+  // Add other time unit
+  return 'utc' + field.timeUnit;
+
 };
 
 data.raw.transform.filter = function(encoding) {

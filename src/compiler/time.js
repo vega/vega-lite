@@ -14,22 +14,12 @@ function time(spec, encoding) { // FIXME refactor to reduce side effect #276
   // find unique formula transformation and bin function
   encoding.forEach(function(field, encType) {
     if (field.type === T && field.timeUnit) {
-      timeFields[encoding.fieldRef(encType)] = {
-        field: field,
-        encType: encType
-      };
       timeUnits[field.timeUnit] = true;
     }
   });
 
   // add formula transform
-  var data = spec.data[0],
-    transform = data.transform = data.transform || [];
-
-  for (var f in timeFields) {
-    var tf = timeFields[f];
-    time.transform(transform, encoding, tf.encType, tf.field);
-  }
+  var data = spec.data[0];
 
   // add scales
   var scales = spec.scales = spec.scales || [];
@@ -83,26 +73,6 @@ time.maxLength = function(timeUnit, encoding) {
   // no time unit
   var timeFormat = encoding.config('timeFormat');
   return d3_time_format.utcFormat(timeFormat)(LONG_DATE).length;
-};
-
-function fieldFn(func, field) {
-  return 'utc' + func + '(d.data.'+ field.name +')';
-}
-
-/**
- * @return {String} date binning formula of the given field
- */
-time.formula = function(field) {
-  return fieldFn(field.timeUnit, field);
-};
-
-/** add formula transforms to data */
-time.transform = function(transform, encoding, encType, field) {
-  transform.push({
-    type: 'formula',
-    field: encoding.fieldRef(encType),
-    expr: time.formula(field)
-  });
 };
 
 time.range = function(timeUnit, encoding) {

@@ -95,5 +95,22 @@ describe('data.raw', function() {
       expect(transform.length).to.equal(0);
     });
 
+    describe('time', function() {
+      it('should add formula transform', function() {
+        var encoding = Encoding.fromSpec({
+          encoding: {
+            x: {name: 'a', type:'T', timeUnit: 'year'}
+          }
+        });
+
+        var transform = data.raw.transform.time(encoding);
+        expect(transform[0]).to.eql({
+          type: 'formula',
+          field: 'data.year_a',
+          expr: 'utcyear(d.data.a)'
+        });
+      });
+    });
+
   });
 });
