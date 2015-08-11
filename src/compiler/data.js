@@ -14,6 +14,11 @@ function data(encoding) {
   var aggregate = data.aggregate(encoding);
   if (aggregate) def.push(data.aggregate(encoding));
 
+  // TODO add "having" filter here ()
+
+  // append non-zero filter at the end for the data table
+  data.filterNonZeroForLog(def[def.length - 1], encoding);
+
   return def;
 }
 
@@ -177,3 +182,13 @@ data.aggregate = function(encoding) {
   return null;
 };
 
+data.filterNonZeroForLog = function(dataTable, encoding) {
+  encoding.forEach(function(field, encType) {
+    if (encoding.scale(encType).type === 'log') {
+      dataTable.transform.push({
+        type: 'filter',
+        test: encoding.fieldRef(encType, {d: 1}) + '> 0'
+      });
+    }
+  });
+};

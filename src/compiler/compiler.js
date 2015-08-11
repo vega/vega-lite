@@ -8,7 +8,6 @@ var compiler = module.exports = {};
 
 var Encoding = require('../Encoding'),
   axis = compiler.axis = require('./axis'),
-  filter = compiler.filter = require('./filter'),
   legend = compiler.legend = require('./legend'),
   marks = compiler.marks = require('./marks'),
   scale = compiler.scale = require('./scale');
@@ -53,7 +52,6 @@ compiler.compileEncoding = function (encoding, stats) {
   spec.data = compiler.data(encoding);
   // FIXME remove compiler.sort after migrating to vega 2.
   spec.data = compiler.sort(spec.data, encoding, stats); // append new data
-  filter.filterLessThanZero(spec.data[spec.data.length - 1], encoding);
   spec = compiler.time(spec, encoding); //add scales
   // marks
 
