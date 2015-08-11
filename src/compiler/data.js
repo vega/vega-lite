@@ -4,7 +4,8 @@ require('../globals');
 
 module.exports = data;
 
-var vlfield = require('../field');
+var vlfield = require('../field'),
+  util = require('../util');
 
 function data(encoding) {
   var def = [data.raw(encoding)];
@@ -33,6 +34,7 @@ data.raw = function(encoding) {
     raw.format.parse = parse;
   }
 
+  raw.transform = data.raw.transform(encoding);
   return raw;
 };
 
@@ -51,6 +53,61 @@ data.raw.formatParse = function(encoding) {
   });
 
   return parse;
+};
+
+data.raw.transform = function(encoding) {
+  return data.raw.transform.filter(encoding).concat(
+    [] // TODO move a part of compiler.time() here
+  );
+};
+
+var BINARY = {
+  '>':  true,
+  '>=': true,
+  '=':  true,
+  '!=': true,
+  '<':  true,
+  '<=': true
+};
+
+data.raw.transform.filter = function(encoding) {
+  var filters = encoding.filter().reduce(function(f, filter) {
+    var condition = '';
+    var operator = filter.operator;
+    var operands = filter.operands;
+
+    var d = 'd.' + (encoding._vega2 ? '' : 'data.');
+
+    if (BINARY[operator]) {
+      // expects a field and a value
+      if (operator === '=') {
+        operator = '==';
+      }
+
+      var op1 = operands[0];
+      var op2 = operands[1];
+      condition = d + op1 + ' ' + operator + ' ' + op2;
+    } else if (operator === 'notNull') {
+      // expects a number of fields
+      for (var j=0; j<operands.length; j++) {
+        condition += d + operands[j] + '!==null';
+        if (j < operands.length - 1) {
+          condition += ' && ';
+        }
+      }
+    } else {
+      util.warn('Unsupported operator: ', operator);
+      return f;
+    }
+    f.push('(' + condition + ')');
+    return f;
+  }, []);
+  if (filters.length === 0) return [];
+
+  return [{
+      type: 'filter',
+      test: filters.join(' && ')
+  }];
 };
 
 data.aggregated = function() {

@@ -59,4 +59,41 @@ describe('data.raw', function() {
       });
     });
   });
+
+  describe('transform', function () {
+    describe('filter', function () {
+      it('should return filter transform', function () {
+        var encoding = Encoding.fromSpec({
+          filter: [{
+            operator: '>',
+            operands: ['a', 'b']
+          },{
+            operator: '<',
+            operands: ['c', 'd']
+          }]
+        });
+
+        var transform = data.raw.transform.filter(encoding);
+
+        expect(transform[0]).to.eql({
+          type: 'filter',
+          test: '(d.data.a > b) && (d.data.c < d)'
+        });
+      });
+    });
+
+    it('should exclude unsupported operator', function () {
+      var encoding = Encoding.fromSpec({
+        filter: [{
+          operator: '*',
+          operands: ['a', 'b']
+        }]
+      });
+
+      var transform = data.raw.transform.filter(encoding);
+
+      expect(transform.length).to.equal(0);
+    });
+
+  });
 });
