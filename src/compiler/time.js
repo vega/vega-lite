@@ -80,7 +80,7 @@ time.range = function(timeUnit, encoding) {
 
 /**
  * @param  {Object} encoding
- * @return {Array}  scales for time unit name
+ * @return {Array}  scales for time unit names
  */
 time.scales = function(encoding) {
   var scales = encoding.reduce(function(scales, field) {
