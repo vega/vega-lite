@@ -109,7 +109,7 @@ describe('vl.compile.scale', function() {
           }
         }), {}, {});
 
-        expect(domain.data).to.eql('table');
+        expect(domain.data).to.eql(AGGREGATE);
       });
 
     it('should return the raw domain if useRawDomain is true for raw T',
@@ -172,7 +172,7 @@ describe('vl.compile.scale', function() {
         }
       }), {}, {});
 
-      expect(domain.data).to.eql('table');
+      expect(domain.data).to.eql(AGGREGATE);
     });
 
     // TODO test other cases

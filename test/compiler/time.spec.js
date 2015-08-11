@@ -13,7 +13,7 @@ describe('time', function() {
         x: {name: fieldName, type: 'T', timeUnit: timeUnit}
       }
     }),
-    spec = time({data: [{name: RAW}, {name: TABLE}]}, encoding, {});
+    spec = time({data: [{name: RAW}, {name: AGGREGATE}]}, encoding, {});
 
 
   it('should add custom axis scale', function() {

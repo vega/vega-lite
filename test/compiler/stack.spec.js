@@ -31,7 +31,7 @@ describe('vl.compile.stack()', function () {
       var vgSpec = compile(fixtures.binX, stats);
 
       var tableData = vgSpec.data.filter(function(data) {
-        return data.name === 'table';
+        return data.name === 'aggregate';
       });
       expect(tableData.length).to.equal(1);
 
@@ -56,7 +56,7 @@ describe('vl.compile.stack()', function () {
       var vgSpec = compile(fixtures.binY, stats);
 
       var tableData = vgSpec.data.filter(function(data) {
-        return data.name === 'table';
+        return data.name === 'aggregate';
       });
       expect(tableData.length).to.equal(1);
 

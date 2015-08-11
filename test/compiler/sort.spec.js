@@ -19,7 +19,7 @@ describe('Sort', function() {
           }]}
         }
       }),
-    data = [{name: RAW}, {name: TABLE}];
+    data = [{name: RAW}, {name: AGGREGATE}];
 
   vlsort(data, encoding, {});
 

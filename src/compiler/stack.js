@@ -32,7 +32,7 @@ function stacking(data, encoding, mdef) {
   // add transform to compute sums for scale
   var stacked = {
     name: STACKED,
-    source: TABLE,
+    source: encoding.dataTable(),
     transform: [{
       type: 'aggregate',
       groupby: [encoding.fieldRef(dim)].concat(facets), // dim and other facets

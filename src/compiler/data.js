@@ -11,9 +11,14 @@ var vlfield = require('../field'),
 function data(encoding) {
   var def = [data.raw(encoding)];
 
-  // TODO(kanitw): Aug 8, 2015 - if aggregate add TABLE
-  def.push(data.aggregated(encoding));
-  // TODO(kanitw): Aug 8, 2015 - for each et, if sorted add sorted-et
+  var aggregate = data.aggregate(encoding);
+  if (aggregate) def.push(data.aggregate(encoding));
+
+  // TODO add "having" filter here ()
+
+  // append non-zero filter at the end for the data table
+  data.filterNonZeroForLog(def[def.length - 1], encoding);
+
   return def;
 }
 
@@ -47,9 +52,9 @@ data.raw.formatParse = function(encoding) {
       parse = parse || {};
       parse[field.name] = 'date';
     } else if (field.type == Q) {
-      var name = vlfield.isCount(field) ? 'count' : field.name;
+      if (vlfield.isCount(field)) return;
       parse = parse || {};
-      parse[name] = 'number';
+      parse[field.name] = 'number';
     }
   });
 
@@ -141,8 +146,49 @@ data.raw.transform.filter = function(encoding) {
   }];
 };
 
-data.aggregated = function() {
-  var aggregated = {name: TABLE, source: RAW};
-  return aggregated;
+data.aggregate = function(encoding) {
+  var dims = {}, meas = {};
+
+  encoding.forEach(function(field, encType) {
+    if (field.aggregate) {
+      if (field.aggregate === 'count') {
+        meas.count = {op: 'count', field: '*'};
+      }else {
+        meas[field.aggregate + '|' + field.name] = {
+          op: field.aggregate,
+          field: encoding.fieldRef(encType, {nofn: true})
+        };
+      }
+    } else {
+      dims[field.name] = encoding.fieldRef(encType);
+    }
+  });
+
+  dims = util.vals(dims);
+  meas = util.vals(meas);
+
+  if (meas.length > 0) {
+    return {
+      name: AGGREGATE,
+      source: RAW,
+      transform: [{
+        type: 'aggregate',
+        groupby: dims,
+        fields: meas
+      }]
+    };
+  }
+
+  return null;
 };
 
+data.filterNonZeroForLog = function(dataTable, encoding) {
+  encoding.forEach(function(field, encType) {
+    if (encoding.scale(encType).type === 'log') {
+      dataTable.transform.push({
+        type: 'filter',
+        test: encoding.fieldRef(encType, {d: 1}) + ' > 0'
+      });
+    }
+  });
+};

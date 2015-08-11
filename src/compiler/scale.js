@@ -105,7 +105,7 @@ scale.domain = function (name, encoding, stats, opt) {
 
   var data = encoding.sort(name, stats).length > 0 ?
     vlsort.getDataName(name):
-    TABLE;
+    encoding.dataTable();
 
   return {data: data, field: encoding.fieldRef(name)};
 };
