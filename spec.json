@@ -126,6 +126,10 @@
          "default": 25,
          "minimum": 0,
          "description": "Truncate labels that are too long."
+        },
+        "labelAngle": {
+         "type": "integer",
+         "description": "Angle by which to rotate labels. Set to 0 to force horizontal."
         }
        }
       },
@@ -266,6 +270,10 @@
          "default": 25,
          "minimum": 0,
          "description": "Truncate labels that are too long."
+        },
+        "labelAngle": {
+         "type": "integer",
+         "description": "Angle by which to rotate labels. Set to 0 to force horizontal."
         }
        }
       },
@@ -383,6 +391,10 @@
          "default": 25,
          "minimum": 0,
          "description": "Truncate labels that are too long."
+        },
+        "labelAngle": {
+         "type": "integer",
+         "description": "Angle by which to rotate labels. Set to 0 to force horizontal."
         }
        }
       },
@@ -481,6 +493,10 @@
          "default": 12,
          "minimum": 0,
          "description": "Truncate labels that are too long."
+        },
+        "labelAngle": {
+         "type": "integer",
+         "description": "Angle by which to rotate labels. Set to 0 to force horizontal."
         }
        }
       },
@@ -561,7 +577,15 @@
         }
        }
       },
-      "legend": {"type": "boolean","default": true},
+      "legend": {
+       "type": "object",
+       "properties": {
+        "title": {
+         "type": "string",
+         "description": "A title for the legend. (Shows field name and its function by default.)"
+        }
+       }
+      },
       "value": {"type": "integer","default": 30,"minimum": 0},
       "sort": {
        "type": "array",
@@ -702,7 +726,15 @@
         }
        }
       },
-      "legend": {"type": "boolean","default": true},
+      "legend": {
+       "type": "object",
+       "properties": {
+        "title": {
+         "type": "string",
+         "description": "A title for the legend. (Shows field name and its function by default.)"
+        }
+       }
+      },
       "value": {"type": "string","role": "color","default": "steelblue"},
       "opacity": {"type": "number","minimum": 0,"maximum": 1},
       "sort": {
@@ -756,7 +788,15 @@
        "supportedTypes": {"Q": 1}
       },
       "aggregate": {"type": "string","enum": ["count"],"supportedTypes": {"N": 1,"O": 1}},
-      "legend": {"type": "boolean","default": true},
+      "legend": {
+       "type": "object",
+       "properties": {
+        "title": {
+         "type": "string",
+         "description": "A title for the legend. (Shows field name and its function by default.)"
+        }
+       }
+      },
       "value": {
        "type": "string",
        "enum": ["circle","square","cross","diamond","triangle-up","triangle-down"],
