@@ -80,7 +80,19 @@ describe('data.raw', function() {
           test: '(d.data.a > b) && (d.data.c < d)'
         });
       });
+    });
 
+    it('should exclude unsupported operator', function () {
+      var encoding = Encoding.fromSpec({
+        filter: [{
+          operator: '*',
+          operands: ['a', 'b']
+        }]
+      });
+
+      var transform = data.raw.transform.filter(encoding);
+
+      expect(transform.length).to.equal(0);
     });
 
   });

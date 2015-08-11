@@ -71,10 +71,7 @@ var BINARY = {
 };
 
 data.raw.transform.filter = function(encoding) {
-  var filter = encoding.filter();
-  if (filter.length === 0) return [];
-
-  var test = filter.map(function(filter) {
+  var filters = encoding.filter().reduce(function(f, filter) {
     var condition = '';
     var operator = filter.operator;
     var operands = filter.operands;
@@ -100,13 +97,16 @@ data.raw.transform.filter = function(encoding) {
       }
     } else {
       util.warn('Unsupported operator: ', operator);
+      return f;
     }
-    return '(' + condition + ')';
-  }).join(' && ');
+    f.push('(' + condition + ')');
+    return f;
+  }, []);
+  if (filters.length === 0) return [];
 
   return [{
       type: 'filter',
-      test: test
+      test: filters.join(' && ')
   }];
 };
 
