@@ -169,7 +169,7 @@ data.aggregate = function(encoding) {
 
   if (meas.length > 0) {
     return {
-      name: TABLE,
+      name: AGGREGATE,
       source: RAW,
       transform: [{
         type: 'aggregate',

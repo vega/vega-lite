@@ -1,6 +1,6 @@
 {
   "predef": ["_",
-    "TABLE", "RAW", "STACKED", "INDEX",
+    "AGGREGATE", "RAW", "STACKED", "INDEX",
     "X", "Y", "ROW", "COL", "SIZE", "SHAPE", "COLOR", "TEXT", "DETAIL",
     "O", "Q", "T", "N"],
   "mocha": true,

@@ -3,7 +3,7 @@
 // declare global constant
 var g = global || window;
 
-g.TABLE = 'table';
+g.AGGREGATE = 'aggregate';
 g.RAW = 'raw';
 g.STACKED = 'stacked';
 g.INDEX = 'index';

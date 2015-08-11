@@ -277,6 +277,10 @@ module.exports = (function() {
     return vlenc.isAggregate(this._enc);
   };
 
+  proto.dataTable = function() {
+    return this.isAggregate() ? AGGREGATE : RAW;
+  };
+
   Encoding.isAggregate = function(spec) {
     return vlenc.isAggregate(spec.encoding);
   };
