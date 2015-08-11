@@ -61,38 +61,77 @@ describe('data.raw', function() {
   });
 
   describe('transform', function () {
-    describe('filter', function () {
-      it('should return filter transform', function () {
-        var encoding = Encoding.fromSpec({
-          filter: [{
-            operator: '>',
-            operands: ['a', 'b']
-          },{
-            operator: '<',
-            operands: ['c', 'd']
-          }]
-        });
+    var encoding = Encoding.fromSpec({
+      encoding: {
+        x: {name: 'a', type:'T', timeUnit: 'year'},
+        y: {
+          'bin': {'maxbins': 15},
+          'name': 'Acceleration',
+          'type': 'Q'
+        }
+      },
+      filter: [{
+        operator: '>',
+        operands: ['a', 'b']
+      },{
+        operator: '<',
+        operands: ['c', 'd']
+      }]
+    });
 
-        var transform = data.raw.transform.filter(encoding);
-
+    describe('bin', function() {
+      it('should add bin transform', function() {
+        var transform = data.raw.transform.bin(encoding);
         expect(transform[0]).to.eql({
-          type: 'filter',
-          test: '(d.data.a > b) && (d.data.c < d)'
+          type: 'bin',
+          field: 'data.Acceleration',
+          output: 'data.bin_Acceleration',
+          maxbins: 15
         });
       });
     });
 
-    it('should exclude unsupported operator', function () {
-      var encoding = Encoding.fromSpec({
-        filter: [{
-          operator: '*',
-          operands: ['a', 'b']
-        }]
+    describe('filter', function () {
+      it('should return filter transform that include filter null', function () {
+        var transform = data.raw.transform.filter(encoding);
+
+        expect(transform[0]).to.eql({
+          type: 'filter',
+          test: '(d.data.a!==null) && (d.data.Acceleration!==null)' +
+          ' && (d.data.a > b) && (d.data.c < d)'
+        });
       });
 
-      var transform = data.raw.transform.filter(encoding);
+      it('should exclude unsupported operator', function () {
+        var badEncoding = Encoding.fromSpec({
+          filter: [{
+            operator: '*',
+            operands: ['a', 'b']
+          }]
+        });
 
-      expect(transform.length).to.equal(0);
+        var transform = data.raw.transform.filter(badEncoding);
+
+        expect(transform.length).to.equal(0);
+      });
+    });
+
+    describe('time', function() {
+      it('should add formula transform', function() {
+        var transform = data.raw.transform.time(encoding);
+        expect(transform[0]).to.eql({
+          type: 'formula',
+          field: 'data.year_a',
+          expr: 'utcyear(d.data.a)'
+        });
+      });
+    });
+
+    it('should time and bin before filter', function () {
+      var transform = data.raw.transform(encoding);
+      expect(transform[0].type).to.eql('formula');
+      expect(transform[1].type).to.eql('bin');
+      expect(transform[2].type).to.eql('filter');
     });
 
   });
