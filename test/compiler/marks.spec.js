@@ -76,8 +76,6 @@ describe('compile.marks', function() {
       var f = fixtures.points['1d_hor'],
           e = Encoding.fromSpec(f),
           def = marks.point.prop(e, mockLayout, {});
-      console.log("def: ");
-      console.log(def);
       it('should end on y axis', function() {
         expect(def.y).to.eql({value: e.bandSize(Y, mockLayout.y.useSmallBand) / 2});
       });
@@ -90,8 +88,6 @@ describe('compile.marks', function() {
       var f = fixtures.points['1d_ver'],
           e = Encoding.fromSpec(f),
           def = marks.point.prop(e, mockLayout, {});
-      console.log("def: ");
-      console.log(def);
       it('should end on x axis', function() {
         expect(def.x).to.eql({value: e.bandSize(X, mockLayout.x.useSmallBand) / 2});
       });
@@ -104,8 +100,6 @@ describe('compile.marks', function() {
       var f = fixtures.points['x_and_y'],
           e = Encoding.fromSpec(f),
           def = marks.point.prop(e, mockLayout, {});
-      console.log("def: ");
-      console.log(def);
       it('should scale on x', function() {
         expect(def.x).to.eql({scale: X, field: "data.year"});
       });
@@ -119,8 +113,6 @@ describe('compile.marks', function() {
         var f = fixtures.points.size,
             e = Encoding.fromSpec(f),
             def = marks.point.prop(e, mockLayout, {});
-        console.log("def: ");
-        console.log(def);
         it('should have scale for size', function () {
           expect(def.size).to.eql({scale: SIZE, field: "data.count"});
         });
@@ -130,8 +122,6 @@ describe('compile.marks', function() {
         var f = fixtures.points.stroke,
             e = Encoding.fromSpec(f),
             def = marks.point.prop(e, mockLayout, {});
-        console.log("def: ");
-        console.log(def);
         it('should have scale for color', function () {
           expect(def.stroke).to.eql({scale: COLOR, field: "data.yield"});
         });
@@ -141,8 +131,6 @@ describe('compile.marks', function() {
         var f = fixtures.points.shape,
             e = Encoding.fromSpec(f),
             def = marks.point.prop(e, mockLayout, {});
-        console.log("def: ");
-        console.log(def);
         it('should have scale for shape', function () {
           expect(def.shape).to.eql({scale: SHAPE, field: "data.bin_yield"});
         });
@@ -155,8 +143,6 @@ describe('compile.marks', function() {
       var f = fixtures.lines['1d_hor'],
           e = Encoding.fromSpec(f),
           def = marks.line.prop(e, mockLayout, {});
-      console.log("def: ");
-      console.log(def);
       it('should end on y axis', function() {
         expect(def.y).to.eql({group: 'height'});
       });
@@ -169,8 +155,6 @@ describe('compile.marks', function() {
       var f = fixtures.lines['1d_ver'],
           e = Encoding.fromSpec(f),
           def = marks.line.prop(e, mockLayout, {});
-      console.log("def: ");
-      console.log(def);
       it('should end on x axis', function() {
         expect(def.x).to.eql({value: 0});
       });
@@ -183,8 +167,6 @@ describe('compile.marks', function() {
       var f = fixtures.lines['x_and_y'],
           e = Encoding.fromSpec(f),
           def = marks.line.prop(e, mockLayout, {});
-      console.log("def: ");
-      console.log(def);
       it('should have scale for x', function() {
         expect(def.x).to.eql({scale: X, field: "data.year"});
       });
@@ -198,8 +180,6 @@ describe('compile.marks', function() {
         var f = fixtures.lines.stroke,
             e = Encoding.fromSpec(f),
             def = marks.line.prop(e, mockLayout, {});
-        console.log("def: ");
-        console.log(def);
         it('should have scale for color', function () {
           expect(def.stroke).to.eql({scale: COLOR, field: "data.Acceleration"});
         });
