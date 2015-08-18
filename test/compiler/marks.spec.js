@@ -76,7 +76,7 @@ describe('compile.marks', function() {
       var f = fixtures.points['1d_hor'],
           e = Encoding.fromSpec(f),
           def = marks.point.prop(e, mockLayout, {});
-      it('should end on y axis', function() {
+      it('should be centered', function() {
         expect(def.y).to.eql({value: e.bandSize(Y, mockLayout.y.useSmallBand) / 2});
       });
       it('should scale on x', function() {
@@ -88,7 +88,7 @@ describe('compile.marks', function() {
       var f = fixtures.points['1d_ver'],
           e = Encoding.fromSpec(f),
           def = marks.point.prop(e, mockLayout, {});
-      it('should end on x axis', function() {
+      it('should be centered', function() {
         expect(def.x).to.eql({value: e.bandSize(X, mockLayout.x.useSmallBand) / 2});
       });
       it('should scale on y', function() {
@@ -97,7 +97,7 @@ describe('compile.marks', function() {
     });
 
     describe('2D, x and y', function() {
-      var f = fixtures.points['x_and_y'],
+      var f = fixtures.points['x,y'],
           e = Encoding.fromSpec(f),
           def = marks.point.prop(e, mockLayout, {});
       it('should scale on x', function() {
@@ -109,8 +109,8 @@ describe('compile.marks', function() {
     });
 
     describe('3D', function() {
-      describe('size', function () {
-        var f = fixtures.points.size,
+      describe('x,y,size', function () {
+        var f = fixtures.points['x,y,size'],
             e = Encoding.fromSpec(f),
             def = marks.point.prop(e, mockLayout, {});
         it('should have scale for size', function () {
@@ -118,8 +118,8 @@ describe('compile.marks', function() {
         });
       });
 
-      describe('color', function () {
-        var f = fixtures.points.stroke,
+      describe('x,y,color', function () {
+        var f = fixtures.points['x,y,stroke'],
             e = Encoding.fromSpec(f),
             def = marks.point.prop(e, mockLayout, {});
         it('should have scale for color', function () {
@@ -127,8 +127,8 @@ describe('compile.marks', function() {
         });
       });
 
-      describe('shape', function () {
-        var f = fixtures.points.shape,
+      describe('x,y,shape', function () {
+        var f = fixtures.points['x,y,shape'],
             e = Encoding.fromSpec(f),
             def = marks.point.prop(e, mockLayout, {});
         it('should have scale for shape', function () {
@@ -139,32 +139,8 @@ describe('compile.marks', function() {
   });
 
   describe('line', function() {
-    describe('1D, horizontal', function() {
-      var f = fixtures.lines['1d_hor'],
-          e = Encoding.fromSpec(f),
-          def = marks.line.prop(e, mockLayout, {});
-      it('should end on y axis', function() {
-        expect(def.y).to.eql({group: 'height'});
-      });
-      it('should scale on x', function() {
-        expect(def.x).to.eql({scale: X, field: "data.year"});
-      });
-    });
-
-    describe('1D, vertical', function() {
-      var f = fixtures.lines['1d_ver'],
-          e = Encoding.fromSpec(f),
-          def = marks.line.prop(e, mockLayout, {});
-      it('should end on x axis', function() {
-        expect(def.x).to.eql({value: 0});
-      });
-      it('should scale on y', function() {
-        expect(def.y).to.eql({scale: Y, field: "data.year"});
-      });
-    });
-
     describe('2D, x and y', function() {
-      var f = fixtures.lines['x_and_y'],
+      var f = fixtures.lines['x,y'],
           e = Encoding.fromSpec(f),
           def = marks.line.prop(e, mockLayout, {});
       it('should have scale for x', function() {
@@ -176,8 +152,8 @@ describe('compile.marks', function() {
     });
 
     describe('3D', function() {
-      describe('color', function () {
-        var f = fixtures.lines.stroke,
+      describe('x,y,color', function () {
+        var f = fixtures.lines['x,y,stroke'],
             e = Encoding.fromSpec(f),
             def = marks.line.prop(e, mockLayout, {});
         it('should have scale for color', function () {
@@ -186,5 +162,31 @@ describe('compile.marks', function() {
       });
     });
   });
+
+  describe('area', function() {
+    describe('2D, x and y', function() {
+      var f = fixtures.area['x,y'],
+          e = Encoding.fromSpec(f),
+          def = marks.area.prop(e, mockLayout, {});
+      it('should have scale for x', function() {
+        expect(def.x).to.eql({scale: X, field: "data.Displacement"});
+      });
+      it('should have scale for y', function(){
+        expect(def.y).to.eql({scale: Y, field: "data.Acceleration"});
+      });
+    });
+
+    describe('3D', function() {
+      describe('x,y,color', function () {
+        var f = fixtures.area['x,y,stroke'],
+            e = Encoding.fromSpec(f),
+            def = marks.area.prop(e, mockLayout, {});
+        it('should have scale for color', function () {
+          expect(def.fill).to.eql({scale: COLOR, field: "data.Miles_per_Gallon"});
+        });
+      });
+    });
+  });
+
   // TODO add other type of marks
 });
