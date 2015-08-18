@@ -203,6 +203,8 @@ module.exports = (function() {
       isTypes = vlfield.isTypes;
 
     if ((!sort || sort.length===0) &&
+        // If sort is explicitly disabled in encoding, don't sort.
+        (sort !== false) &&
         // FIXME
         Encoding.toggleSort.support({encoding:this._enc}, stats, true) && //HACK
         this.config('toggleSort') === Q
