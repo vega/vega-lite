@@ -84,12 +84,13 @@ compiler.compileEncoding = function (encoding, stats) {
   }
 
   // auto-sort line/area values
-  //TODO(kanitw): have some config to turn off auto-sort for line (for line chart that encodes temporal information)
   if (lineType) {
     var f = (encoding.isMeasure(X) && encoding.isDimension(Y)) ? Y : X;
-    if (!mdef.from) mdef.from = {};
-    // TODO: why - ?
-    mdef.from.transform = [{type: 'sort', by: '-' + encoding.fieldRef(f)}];
+    if (encoding.field(f).sort !== false) {
+      if (!mdef.from) mdef.from = {};
+      // TODO: why - ?
+      mdef.from.transform = [{type: 'sort', by: '-' + encoding.fieldRef(f)}];
+    }
   }
 
   // get a flattened list of all scale names that are used in the vl spec
