@@ -602,6 +602,10 @@ var config = {
       type: 'string',
       default: O
     },
+    autoSortLine: {
+      type: 'boolean',
+      default: true
+    },
 
     // single plot
     singleHeight: {
