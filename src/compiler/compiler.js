@@ -84,8 +84,7 @@ compiler.compileEncoding = function (encoding, stats) {
   }
 
   // auto-sort line/area values
-  //TODO(kanitw): have some config to turn off auto-sort for line (for line chart that encodes temporal information)
-  if (lineType) {
+  if (lineType && encoding.config('autoSortLine')) {
     var f = (encoding.isMeasure(X) && encoding.isDimension(Y)) ? Y : X;
     if (!mdef.from) mdef.from = {};
     // TODO: why - ?
