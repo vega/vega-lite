@@ -71,5 +71,122 @@ describe('compile.marks', function() {
     });
   });
 
+  describe('point', function() {
+    describe('1D, horizontal', function() {
+      var f = fixtures.points['1d_hor'],
+          e = Encoding.fromSpec(f),
+          def = marks.point.prop(e, mockLayout, {});
+      it('should be centered', function() {
+        expect(def.y).to.eql({value: e.bandSize(Y, mockLayout.y.useSmallBand) / 2});
+      });
+      it('should scale on x', function() {
+        expect(def.x).to.eql({scale: X, field: "data.year"});
+      });
+    });
+
+    describe('1D, vertical', function() {
+      var f = fixtures.points['1d_ver'],
+          e = Encoding.fromSpec(f),
+          def = marks.point.prop(e, mockLayout, {});
+      it('should be centered', function() {
+        expect(def.x).to.eql({value: e.bandSize(X, mockLayout.x.useSmallBand) / 2});
+      });
+      it('should scale on y', function() {
+        expect(def.y).to.eql({scale: Y, field: "data.year"});
+      });
+    });
+
+    describe('2D, x and y', function() {
+      var f = fixtures.points['x,y'],
+          e = Encoding.fromSpec(f),
+          def = marks.point.prop(e, mockLayout, {});
+      it('should scale on x', function() {
+        expect(def.x).to.eql({scale: X, field: "data.year"});
+      });
+      it('should scale on y', function(){
+        expect(def.y).to.eql({scale: Y, field: "data.yield"});
+      });
+    });
+
+    describe('3D', function() {
+      describe('x,y,size', function () {
+        var f = fixtures.points['x,y,size'],
+            e = Encoding.fromSpec(f),
+            def = marks.point.prop(e, mockLayout, {});
+        it('should have scale for size', function () {
+          expect(def.size).to.eql({scale: SIZE, field: "data.count"});
+        });
+      });
+
+      describe('x,y,color', function () {
+        var f = fixtures.points['x,y,stroke'],
+            e = Encoding.fromSpec(f),
+            def = marks.point.prop(e, mockLayout, {});
+        it('should have scale for color', function () {
+          expect(def.stroke).to.eql({scale: COLOR, field: "data.yield"});
+        });
+      });
+
+      describe('x,y,shape', function () {
+        var f = fixtures.points['x,y,shape'],
+            e = Encoding.fromSpec(f),
+            def = marks.point.prop(e, mockLayout, {});
+        it('should have scale for shape', function () {
+          expect(def.shape).to.eql({scale: SHAPE, field: "data.bin_yield"});
+        });
+      });
+    });
+  });
+
+  describe('line', function() {
+    describe('2D, x and y', function() {
+      var f = fixtures.lines['x,y'],
+          e = Encoding.fromSpec(f),
+          def = marks.line.prop(e, mockLayout, {});
+      it('should have scale for x', function() {
+        expect(def.x).to.eql({scale: X, field: "data.year"});
+      });
+      it('should have scale for y', function(){
+        expect(def.y).to.eql({scale: Y, field: "data.yield"});
+      });
+    });
+
+    describe('3D', function() {
+      describe('x,y,color', function () {
+        var f = fixtures.lines['x,y,stroke'],
+            e = Encoding.fromSpec(f),
+            def = marks.line.prop(e, mockLayout, {});
+        it('should have scale for color', function () {
+          expect(def.stroke).to.eql({scale: COLOR, field: "data.Acceleration"});
+        });
+      });
+    });
+  });
+
+  describe('area', function() {
+    describe('2D, x and y', function() {
+      var f = fixtures.area['x,y'],
+          e = Encoding.fromSpec(f),
+          def = marks.area.prop(e, mockLayout, {});
+      it('should have scale for x', function() {
+        expect(def.x).to.eql({scale: X, field: "data.Displacement"});
+      });
+      it('should have scale for y', function(){
+        expect(def.y).to.eql({scale: Y, field: "data.Acceleration"});
+      });
+    });
+
+    describe('3D', function() {
+      describe('x,y,color', function () {
+        var f = fixtures.area['x,y,stroke'],
+            e = Encoding.fromSpec(f),
+            def = marks.area.prop(e, mockLayout, {});
+        it('should have scale for color', function () {
+          expect(def.fill).to.eql({scale: COLOR, field: "data.Miles_per_Gallon"});
+        });
+      });
+    });
+  });
+
   // TODO add other type of marks
 });
