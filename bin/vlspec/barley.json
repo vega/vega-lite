@@ -1,0 +1,14 @@
+{
+  "data": {"url": "data/barley.json"},
+  "marktype": "point",
+  "encoding": {
+    "x": {"type": "Q","name": "yield","aggregate": "avg"},
+    "y": {
+      "sort": [{"name": "yield","aggregate": "avg","reverse": false}],
+      "type": "O",
+      "name": "variety"
+    },
+    "row": {"type": "O","name": "site"},
+    "color": {"type": "O","name": "year"}
+  }
+}

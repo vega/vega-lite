@@ -1,0 +1,44 @@
+#!/usr/bin/env node
+// Compile a vegalite spec to vega
+
+'use strict';
+
+var helpText =
+  'Compile a vega-lite spec to vega.\n\n' +
+  'Usage: vl2vg vega_lite_json_file [data_stats]\n\n' +
+  'data_stats only has to be set if the data is not embedded in the vega-lite json file.';
+
+// import required libraries
+var fs = require('fs'),
+    vl = require('../src/vl');
+
+// arguments
+var args = require('yargs')
+  .usage(helpText)
+  .demand(1)
+  .argv;
+
+// input files
+var specFile = args._[0],
+    statsFile = args._[1] || null;
+
+// load spec, compile vg spec
+fs.readFile(specFile, 'utf8', function(err, text) {
+  if (err) throw err;
+  var spec = JSON.parse(text);
+  // load stats if exists
+  if (statsFile) {
+  	fs.readFile(statsFile, 'utf8', function(err, text) {
+  		if (err) throw err;
+  		var stats = JSON.parse(text);
+  		compile(spec, stats);
+  	});
+  } else {
+  	compile(spec, null);
+  }
+});
+
+function compile(vlSpec, stats) {
+  var vgSpec = vl.compile(vlSpec, stats);
+  process.stdout.write(JSON.stringify(vgSpec));
+}
