@@ -168,6 +168,7 @@ var axisMixin = {
         ticks: {
           type: 'integer',
           default: 5,
+          minimum: 0,
           description: 'A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are "nice" (multiples of 2, 5, 10) and lie within the underlying scale\'s range.'
         },
         title: {
@@ -178,6 +179,7 @@ var axisMixin = {
         titleMaxLength: {
           type: 'integer',
           default: undefined,
+          minimum: 0,
           description: 'Max length for axis title if the title is automatically generated from the field\'s description'
         },
         titleOffset: {
@@ -202,6 +204,8 @@ var axisMixin = {
         labelAngle: {
           type: 'integer',
           default: undefined, // auto
+          minimum: 0,
+          maximum: 360,
           description: 'Angle by which to rotate labels. Set to 0 to force horizontal.'
         },
       }
@@ -263,6 +267,7 @@ var legendMixin = {
   properties: {
     legend: {
       type: 'object',
+      description: 'Properties of a legend.',
       properties: {
         title: {
           type: 'string',
@@ -342,7 +347,8 @@ var sizeMixin = {
     value: {
       type: 'integer',
       default: 30,
-      minimum: 0
+      minimum: 0,
+      description: 'Size of marks.'
     }
   }
 };
@@ -354,7 +360,8 @@ var colorMixin = {
     value: {
       type: 'string',
       role: 'color',
-      default: 'steelblue'
+      default: '#4682b4',
+      description: 'Color to be used for marks.'
     },
     opacity: {
       type: 'number',
@@ -369,8 +376,8 @@ var colorMixin = {
           type: ['string', 'array'],
           default: undefined,
           description:
-            'color palette, if undefined vega-lite will use data property' +
-            'to pick one from c10palette, c20palette, or ordinalPalette'
+            'Color palette, if undefined vega-lite will use data property' +
+            'to pick one from c10palette, c20palette, or ordinalPalette.'
             //FIXME
         },
         c10palette: {
@@ -391,12 +398,16 @@ var colorMixin = {
         ordinalPalette: {
           type: 'string',
           default: undefined,
+          description: 'Color palette to encode ordinal variables.',
           enum: util.keys(colorbrewer)
         },
         quantitativeRange: {
           type: 'array',
           default: ['#AFC6A3', '#09622A'], // tableau greens
           // default: ['#ccece6', '#00441b'], // BuGn.9 [2-8]
+          description: 'Color range to encode quantitative variables.',
+          minItems: 2,
+          maxItems: 2,
           items: {
             type: 'string',
             role: 'color'
@@ -414,12 +425,13 @@ var shapeMixin = {
     value: {
       type: 'string',
       enum: ['circle', 'square', 'cross', 'diamond', 'triangle-up', 'triangle-down'],
-      default: 'circle'
+      default: 'circle',
+      description: 'Mark to be used.'
     },
     filled: {
       type: 'boolean',
       default: false,
-      description: 'whether the shape\'s color should be used as fill color instead of stroke color'
+      description: 'Whether the shape\'s color should be used as fill color instead of stroke color.'
     }
   }
 };
@@ -580,7 +592,7 @@ var config = {
     gridColor: {
       type: 'string',
       role: 'color',
-      default: 'black'
+      default: '#000000'
     },
     gridOpacity: {
       type: 'number',
@@ -644,7 +656,7 @@ var config = {
     cellGridColor: {
       type: 'string',
       role: 'color',
-      default: 'black'
+      default: '#000000'
     },
     cellGridOpacity: {
       type: 'number',
@@ -655,7 +667,7 @@ var config = {
     cellBackgroundColor: {
       type: 'string',
       role: 'color',
-      default: 'transparent'
+      default: 'rgba(0,0,0,0)'
     },
     textCellWidth: {
       type: 'integer',
