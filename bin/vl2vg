@@ -7,7 +7,7 @@ var helpText =
   'Compile a vega-lite spec to vega.\n\n' +
   'Usage: vl2vg vega_lite_json_file [data_stats] [-p]\n\n' +
   'data_stats only has to be set if the data is not embedded in the vega-lite json file. '+
-  // TODO(kantiw): make stats optional (https://github.com/uwdata/vega-lite/issues/465) and remove
+  // TODO(kanitw): make stats optional (https://github.com/uwdata/vega-lite/issues/465) and remove
   // the following line
   'You will get an error if you forget to provide statistics and do not embed data into the spec.';
 
