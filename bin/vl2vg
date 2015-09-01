@@ -21,7 +21,7 @@ var args = require('yargs')
   .describe('p', 'Output human readable/pretty spec.')
   .string('s').alias('s', 'stats')
   .default('s', null)
-  .describe('s', 'Filename of a json file with data statistics. '+
+  .describe('s', 'Filename of a json file with data statistics or JSON of the statistics. '+
     'Only has to be set if the data is not embedded in the vega-lite json file.'+
     // TODO(kanitw): make stats optional (https://github.com/uwdata/vega-lite/issues/465) and remove
     // the following line
@@ -35,15 +35,19 @@ var specFile = args._[0] || '/dev/stdin';
 fs.readFile(specFile, 'utf8', function(err, text) {
   if (err) throw err;
   var spec = JSON.parse(text);
-  // load stats if exists
-  if (args.s) {
+  // args.s can be path to stats file or json string
+  if (args.s && fs.existsSync(args.s)) {
   	fs.readFile(args.s, 'utf8', function(err, text) {
   		if (err) throw err;
   		var stats = JSON.parse(text);
   		compile(spec, stats);
   	});
   } else {
-  	compile(spec, null);
+    var stats = null;
+    if (args.s) {
+      stats = JSON.parse(args.s);
+    }
+  	compile(spec, stats);
   }
 });
 
