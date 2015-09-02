@@ -106,6 +106,7 @@
         "ticks": {
          "type": "integer",
          "default": 5,
+         "minimum": 0,
          "description": "A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are \"nice\" (multiples of 2, 5, 10) and lie within the underlying scale's range."
         },
         "title": {
@@ -114,6 +115,7 @@
         },
         "titleMaxLength": {
          "type": "integer",
+         "minimum": 0,
          "description": "Max length for axis title if the title is automatically generated from the field's description"
         },
         "titleOffset": {"type": "integer","description": "A title offset value for the axis."},
@@ -129,6 +131,8 @@
         },
         "labelAngle": {
          "type": "integer",
+         "minimum": 0,
+         "maximum": 360,
          "description": "Angle by which to rotate labels. Set to 0 to force horizontal."
         }
        }
@@ -250,6 +254,7 @@
         "ticks": {
          "type": "integer",
          "default": 5,
+         "minimum": 0,
          "description": "A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are \"nice\" (multiples of 2, 5, 10) and lie within the underlying scale's range."
         },
         "title": {
@@ -258,6 +263,7 @@
         },
         "titleMaxLength": {
          "type": "integer",
+         "minimum": 0,
          "description": "Max length for axis title if the title is automatically generated from the field's description"
         },
         "titleOffset": {"type": "integer","description": "A title offset value for the axis."},
@@ -273,6 +279,8 @@
         },
         "labelAngle": {
          "type": "integer",
+         "minimum": 0,
+         "maximum": 360,
          "description": "Angle by which to rotate labels. Set to 0 to force horizontal."
         }
        }
@@ -371,6 +379,7 @@
         "ticks": {
          "type": "integer",
          "default": 5,
+         "minimum": 0,
          "description": "A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are \"nice\" (multiples of 2, 5, 10) and lie within the underlying scale's range."
         },
         "title": {
@@ -379,6 +388,7 @@
         },
         "titleMaxLength": {
          "type": "integer",
+         "minimum": 0,
          "description": "Max length for axis title if the title is automatically generated from the field's description"
         },
         "titleOffset": {"type": "integer","description": "A title offset value for the axis."},
@@ -394,6 +404,8 @@
         },
         "labelAngle": {
          "type": "integer",
+         "minimum": 0,
+         "maximum": 360,
          "description": "Angle by which to rotate labels. Set to 0 to force horizontal."
         }
        }
@@ -473,6 +485,7 @@
         "ticks": {
          "type": "integer",
          "default": 5,
+         "minimum": 0,
          "description": "A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are \"nice\" (multiples of 2, 5, 10) and lie within the underlying scale's range."
         },
         "title": {
@@ -481,6 +494,7 @@
         },
         "titleMaxLength": {
          "type": "integer",
+         "minimum": 0,
          "description": "Max length for axis title if the title is automatically generated from the field's description"
         },
         "titleOffset": {"type": "integer","description": "A title offset value for the axis."},
@@ -496,6 +510,8 @@
         },
         "labelAngle": {
          "type": "integer",
+         "minimum": 0,
+         "maximum": 360,
          "description": "Angle by which to rotate labels. Set to 0 to force horizontal."
         }
        }
@@ -579,6 +595,7 @@
       },
       "legend": {
        "type": "object",
+       "description": "Properties of a legend.",
        "properties": {
         "title": {
          "type": "string",
@@ -586,7 +603,12 @@
         }
        }
       },
-      "value": {"type": "integer","default": 30,"minimum": 0},
+      "value": {
+       "type": "integer",
+       "default": 30,
+       "minimum": 0,
+       "description": "Size of marks."
+      },
       "sort": {
        "type": "array",
        "default": [],
@@ -667,7 +689,7 @@
         },
         "range": {
          "type": ["string","array"],
-         "description": "color palette, if undefined vega-lite will use data propertyto pick one from c10palette, c20palette, or ordinalPalette"
+         "description": "Color palette, if undefined vega-lite will use data propertyto pick one from c10palette, c20palette, or ordinalPalette."
         },
         "c10palette": {
          "type": "string",
@@ -681,6 +703,7 @@
         },
         "ordinalPalette": {
          "type": "string",
+         "description": "Color palette to encode ordinal variables.",
          "enum": [
           "YlGn",
           "YlGnBu",
@@ -722,12 +745,16 @@
         "quantitativeRange": {
          "type": "array",
          "default": ["#AFC6A3","#09622A"],
+         "description": "Color range to encode quantitative variables.",
+         "minItems": 2,
+         "maxItems": 2,
          "items": {"type": "string","role": "color"}
         }
        }
       },
       "legend": {
        "type": "object",
+       "description": "Properties of a legend.",
        "properties": {
         "title": {
          "type": "string",
@@ -735,7 +762,12 @@
         }
        }
       },
-      "value": {"type": "string","role": "color","default": "steelblue"},
+      "value": {
+       "type": "string",
+       "role": "color",
+       "default": "#4682b4",
+       "description": "Color to be used for marks."
+      },
       "opacity": {"type": "number","minimum": 0,"maximum": 1},
       "sort": {
        "type": "array",
@@ -790,6 +822,7 @@
       "aggregate": {"type": "string","enum": ["count"],"supportedTypes": {"N": 1,"O": 1}},
       "legend": {
        "type": "object",
+       "description": "Properties of a legend.",
        "properties": {
         "title": {
          "type": "string",
@@ -800,12 +833,13 @@
       "value": {
        "type": "string",
        "enum": ["circle","square","cross","diamond","triangle-up","triangle-down"],
-       "default": "circle"
+       "default": "circle",
+       "description": "Mark to be used."
       },
       "filled": {
        "type": "boolean",
        "default": false,
-       "description": "whether the shape's color should be used as fill color instead of stroke color"
+       "description": "Whether the shape's color should be used as fill color instead of stroke color."
       },
       "sort": {
        "type": "array",
@@ -983,7 +1017,7 @@
     "width": {"type": "integer"},
     "height": {"type": "integer"},
     "viewport": {"type": "array","items": {"type": "integer"}},
-    "gridColor": {"type": "string","role": "color","default": "black"},
+    "gridColor": {"type": "string","role": "color","default": "#000000"},
     "gridOpacity": {"type": "number","minimum": 0,"maximum": 1,"default": 0.08},
     "filterNull": {
      "type": "object",
@@ -994,15 +1028,16 @@
      }
     },
     "toggleSort": {"type": "string","default": "O"},
+    "autoSortLine": {"type": "boolean","default": true},
     "singleHeight": {"type": "integer","default": 200,"minimum": 0},
     "singleWidth": {"type": "integer","default": 200,"minimum": 0},
     "largeBandSize": {"type": "integer","default": 21,"minimum": 0},
     "smallBandSize": {"type": "integer","default": 12,"minimum": 0},
     "largeBandMaxCardinality": {"type": "integer","default": 10},
     "cellPadding": {"type": "number","default": 0.1},
-    "cellGridColor": {"type": "string","role": "color","default": "black"},
+    "cellGridColor": {"type": "string","role": "color","default": "#000000"},
     "cellGridOpacity": {"type": "number","minimum": 0,"maximum": 1,"default": 0.15},
-    "cellBackgroundColor": {"type": "string","role": "color","default": "transparent"},
+    "cellBackgroundColor": {"type": "string","role": "color","default": "rgba(0,0,0,0)"},
     "textCellWidth": {"type": "integer","default": 90,"minimum": 0},
     "strokeWidth": {"type": "integer","default": 2,"minimum": 0},
     "singleBarOffset": {"type": "integer","default": 5,"minimum": 0},
