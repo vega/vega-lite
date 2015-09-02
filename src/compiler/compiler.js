@@ -33,11 +33,15 @@ compiler.shorthand = function (shorthand, stats, config, theme) {
 
 compiler.compileEncoding = function (encoding, stats) {
   // no need to pass stats if you pass in the data
-  if (!stats && encoding.hasValues()) {
-    stats = summary(encoding.data().values).reduce(function(s, p) {
-      s[p.field] = p;
-      return s;
-    }, {});
+  if (!stats) {
+    if (encoding.hasValues()) {
+        stats = summary(encoding.data().values).reduce(function(s, p) {
+        s[p.field] = p;
+        return s;
+      }, {});
+    } else {
+      console.error('No stats provided and data is not embedded.');
+    }
   }
 
   var layout = compiler.layout(encoding, stats);
