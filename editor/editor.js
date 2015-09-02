@@ -124,7 +124,14 @@ vled.parseShorthand = function() {
 };
 
 vled.loadSpec = function(vlspec, theme) {
-  var spec = vl.compile(vlspec, vled.dataset.stats, theme);
+  var stats = null;
+
+  // use dataset stats only if the spec does not have embedded stats
+  if (!vlspec.data  || vlspec.data.values === undefined) {
+    stats = vled.dataset.stats;
+  }
+
+  var spec = vl.compile(vlspec, stats, theme);
 
   d3.select('#shorthand').node().value = vl.toShorthand(vlspec);
   d3.select('#vgspec').node().value = JSON.stringify(spec, null, '  ', 60);
