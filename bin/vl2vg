@@ -1,0 +1,61 @@
+#!/usr/bin/env node
+// Compile a vegalite spec to vega
+
+'use strict';
+
+var helpText =
+  'Compile a vega-lite spec to vega.\n\n' +
+  'Usage: vl2vg [vega_lite_json_file]\n\n';
+
+// import required libraries
+var fs = require('fs'),
+    vl = require('../src/vl'),
+    // TODO(kanitw): extract this to another library
+    json3 = require('../lib/json3-compactstringify.js');
+
+// arguments
+var args = require('yargs')
+  .usage(helpText)
+  .demand(0)
+  .boolean('p').alias('p', 'pretty')
+  .describe('p', 'Output human readable/pretty spec.')
+  .string('s').alias('s', 'stats')
+  .default('s', null)
+  .describe('s', 'Filename of a json file with data statistics or JSON of the statistics. '+
+    'Only has to be set if the data is not embedded in the vega-lite json file.'+
+    // TODO(kanitw): make stats optional (https://github.com/uwdata/vega-lite/issues/465) and remove
+    // the following line
+    'You will get an error if you forget to provide statistics and do not embed data into the spec.')
+  .argv;
+
+// input file
+var specFile = args._[0] || '/dev/stdin';
+
+// load spec, compile vg spec
+fs.readFile(specFile, 'utf8', function(err, text) {
+  if (err) throw err;
+  var spec = JSON.parse(text);
+  // args.s can be path to stats file or json string
+  if (args.s && fs.existsSync(args.s)) {
+  	fs.readFile(args.s, 'utf8', function(err, text) {
+  		if (err) throw err;
+  		var stats = JSON.parse(text);
+  		compile(spec, stats);
+  	});
+  } else {
+    var stats = null;
+    if (args.s) {
+      stats = JSON.parse(args.s);
+    }
+  	compile(spec, stats);
+  }
+});
+
+function compile(vlSpec, stats) {
+  var vgSpec = vl.compile(vlSpec, stats);
+  if (args.p) {
+  	process.stdout.write(json3.stringify(vgSpec, null, 1, 80));
+  } else {
+  	process.stdout.write(JSON.stringify(vgSpec));
+  }
+}

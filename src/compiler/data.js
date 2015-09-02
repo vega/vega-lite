@@ -14,10 +14,10 @@ function data(encoding) {
   var aggregate = data.aggregate(encoding);
   if (aggregate) def.push(data.aggregate(encoding));
 
-  // TODO add "having" filter here ()
+  // TODO add "having" filter here
 
-  // append non-zero filter at the end for the data table
-  data.filterNonZeroForLog(def[def.length - 1], encoding);
+  // append non-positive filter at the end for the data table
+  data.filterNonPositive(def[def.length - 1], encoding);
 
   return def;
 }
@@ -64,8 +64,7 @@ data.raw.formatParse = function(encoding) {
 data.raw.transform = function(encoding) {
   // time and bin should come before filter so we can filter by time and bin
   return data.raw.transform.time(encoding).concat(
-    data.raw.transform.bin(encoding)
-  ).concat(
+    data.raw.transform.bin(encoding),
     data.raw.transform.filter(encoding)
   );
 };
@@ -182,7 +181,7 @@ data.aggregate = function(encoding) {
   return null;
 };
 
-data.filterNonZeroForLog = function(dataTable, encoding) {
+data.filterNonPositive = function(dataTable, encoding) {
   encoding.forEach(function(field, encType) {
     if (encoding.scale(encType).type === 'log') {
       dataTable.transform.push({

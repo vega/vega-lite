@@ -118,6 +118,21 @@ var EXAMPLES = [
       },
       'data': {'url': 'data/cars.json'}
     }
+  },{
+    title: 'Area chart',
+    spec: {
+      'marktype': 'area',
+      'encoding': {
+        'x': {'name': 'Year','type': 'T','timeUnit': 'year'},
+        'y': {'name': 'Weight_in_lbs','type': 'Q','aggregate': 'sum'},
+        'color': {
+          'scale': {'quantitativeRange': ['#AFC6A3','#09622A']},
+          'name': 'Cylinders',
+          'type': 'O'
+        }
+      },
+      'data': {'url': 'data/cars.json'}
+    }
   }
 ];
 
