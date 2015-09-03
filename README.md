@@ -5,7 +5,8 @@
 [![npm version](https://img.shields.io/npm/v/vega-lite.svg)](https://www.npmjs.com/package/vega-lite)
 [![Coverage Status](https://coveralls.io/repos/uwdata/vega-lite/badge.svg)](https://coveralls.io/r/uwdata/vega-lite)
 
-**Vega-lite is work in progress and we are working on improving the code and documentation.**
+**Vega-lite is still in alpha phase and we are working on improving the code and documentation.
+Note that our syntax might change slight before we release 1.0.**
 
 Provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete [Vega](https://vega.github.io/) specifications.
 
