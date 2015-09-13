@@ -19,13 +19,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/uwdata/vega-lite.git"
+    "url": "https://github.com/vega/vega-lite.git"
   },
   "license": "BSD-3-Clause",
   "bugs": {
-    "url": "https://github.com/uwdata/vega-lite/issues"
+    "url": "https://github.com/vega/vega-lite/issues"
   },
-  "homepage": "https://github.com/uwdata/vega-lite",
+  "homepage": "https://github.com/vega/vega-lite",
   "devDependencies": {
     "browser-sync": "^2.8.2",
     "browserify": "^11.0.1",
