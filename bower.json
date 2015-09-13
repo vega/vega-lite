@@ -2,7 +2,7 @@
   "name": "vega-lite",
   "main": "vega-lite.js",
   "version": "0.7.15",
-  "homepage": "https://github.com/uwdata/vega-lite",
+  "homepage": "https://github.com/vega/vega-lite",
   "authors": [
     "Kanit Wongsuphasawat <kanitw@gmail.com> (http://kanitw.yellowpigz.com)",
     "Dominik Moritz <domoritz@cs.washington.edu> (http://domoritz.de)",
