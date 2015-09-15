@@ -73,9 +73,10 @@ Install gulp  globally by running
 npm install -g gulp
 ```
 
-Then install all the npm dependencies:
+Then, cd into your local clone of the repository, and install all the npm dependencies:
 
 ```sh
+cd vega-lite
 npm install
 ```
 
