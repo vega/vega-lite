@@ -14,7 +14,6 @@ var Encoding = require('../Encoding'),
 
 compiler.data = require('./data');
 compiler.facet = require('./facet');
-compiler.group = require('./group');
 compiler.layout = require('./layout');
 compiler.sort = require('./sort');
 compiler.stack = require('./stack');
@@ -52,28 +51,28 @@ compiler.compileEncoding = function (encoding, stats) {
       padding: 'auto',
       data: compiler.data(encoding),
       // global scales contains only time unit scales
-      scales: compiler.time.scales(encoding)
+      scales: compiler.time.scales(encoding),
+      marks: [{
+        _name: 'cell',
+        type: 'group',
+        properties: {
+          enter: {
+            width: layout.cellWidth ? {value: layout.cellWidth} : {group: 'width'},
+            height: layout.cellHeight ? {value: layout.cellHeight} : {group: 'height'}
+          }
+        }
+      }]
     };
+
+  var group = spec.marks[0];
 
   // FIXME remove compiler.sort after migrating to vega 2.
   spec.data = compiler.sort(spec.data, encoding, stats); // append new data
 
   // marks
-
-  // TODO this line is temporary and should be refactored
-  spec.marks = [compiler.group.def('cell', {
-    width: layout.cellWidth ? {value: layout.cellWidth} : undefined,
-    height: layout.cellHeight ? {value: layout.cellHeight} : undefined
-  })];
-
   var style = compiler.style(encoding, stats),
-    group = spec.marks[0],
-    mdefs = marks.def(encoding, layout, style, stats),
+    mdefs = group.marks = marks.def(encoding, layout, style, stats),
     mdef = mdefs[mdefs.length - 1];  // TODO: remove this dirty hack by refactoring the whole flow
-
-  for (var i = 0; i < mdefs.length; i++) {
-    group.marks.push(mdefs[i]);
-  }
 
   var lineType = marks[encoding.marktype()].line;
 
