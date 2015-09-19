@@ -114,8 +114,6 @@ compiler.compileEncoding = function (encoding, stats) {
     group.legends = legend.defs(encoding, style);
   }
 
-
-
   return spec;
 };
 
