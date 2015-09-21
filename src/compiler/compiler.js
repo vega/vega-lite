@@ -4,6 +4,9 @@ var summary = module.exports = require('datalib/src/stats').summary;
 
 require('../globals');
 
+/**
+ * Module for compiling Vega-lite spec into Vega spec.
+ */
 var compiler = module.exports = {};
 
 var Encoding = require('../Encoding'),
@@ -30,7 +33,9 @@ compiler.shorthand = function (shorthand, stats, config, theme) {
   return compiler.compileEncoding(Encoding.fromShorthand(shorthand, config, theme), stats);
 };
 
-
+/**
+ * Create a Vega specification from a Vega-lite Encoding object.
+ */
 compiler.compileEncoding = function (encoding, stats) {
   // no need to pass stats if you pass in the data
   if (!stats) {

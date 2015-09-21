@@ -8,6 +8,15 @@ var vlfield = require('../field'),
   util = require('../util'),
   time = require('./time');
 
+/**
+ * Create Vega's data array from a given encoding.
+ *
+ * @param  {Encoding} encoding
+ * @return {Array} Array of Vega data.
+ *                 This always includes a "raw" data table.
+ *                 If the encoding contains aggregate value, this will also create
+ *                 aggregate table as well.
+ */
 function data(encoding) {
   var def = [data.raw(encoding)];
 
@@ -33,7 +42,7 @@ data.raw = function(encoding) {
     raw.format = {type: encoding.data().formatType};
   }
 
-  // Set format.parse if needed
+  // Set data's format.parse if needed
   var parse = data.raw.formatParse(encoding);
   if (parse) {
     raw.format = raw.format || {};
@@ -61,6 +70,10 @@ data.raw.formatParse = function(encoding) {
   return parse;
 };
 
+/**
+ * Generate Vega transforms for the raw data table.  This can include
+ * transforms for time unit, binning and filtering.
+ */
 data.raw.transform = function(encoding) {
   // time and bin should come before filter so we can filter by time and bin
   return data.raw.transform.time(encoding).concat(
@@ -84,7 +97,9 @@ data.raw.transform.time = function(encoding) {
       transform.push({
         type: 'formula',
         field: encoding.fieldRef(encType),
-        expr: time.formula(field.timeUnit, encoding.fieldRef(encType, {nofn: true, d: true}))
+        expr: time.formula(field.timeUnit,
+                           encoding.fieldRef(encType, {nofn: true, d: true})
+                          )
       });
     }
     return transform;
