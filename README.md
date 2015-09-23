@@ -67,12 +67,6 @@ This is a similar chart as one of the Vega examples in https://github.com/trifac
 
 Make sure you have node.js. (We recommend using [homebrew](http://brew.sh) and simply run `brew install node`.)
 
-Install gulp  globally by running
-
-```sh
-npm install -g gulp
-```
-
 Then, cd into your local clone of the repository, and install all the npm dependencies:
 
 ```sh
@@ -80,7 +74,16 @@ cd vega-lite
 npm install
 ```
 
-You can run `gulp` to compile vega-lite or run `gulp serve` to open the live vega-lite editor.
+### Commands
+
+You can run `npm run build` to compile vega-lite or run `npm start` to open the live vega-lite editor.
+
+You can `npm run watch` to start a watcher task that regenerate the `spec.json` file whenever `schema.js` changes, and lints and tests all JS files when any `.js` file in `test/` or `src/` changes.
+
+Note: These commands use [Gulp](http://gulpjs.com) internally; to run them directly (instead of through the `npm run` aliases), install gulp globally with
+```sh
+npm install -g gulp
+```
 
 ### Developing Vega-lite and Datalib
 
