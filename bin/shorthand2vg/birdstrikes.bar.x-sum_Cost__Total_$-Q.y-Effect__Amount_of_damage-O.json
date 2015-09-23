@@ -1,0 +1,75 @@
+{
+  "width": 200,
+  "height": 147,
+  "padding": "auto",
+  "data": [
+    {
+      "name": "table",
+      "format": {"type": "json","parse": {"Cost__Total_$": "number"}},
+      "url": "data/birdstrikes.json",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": ["data.Effect__Amount_of_damage"],
+          "fields": [{"op": "sum","field": "data.Cost__Total_$"}]
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "_name": "cell",
+      "type": "group",
+      "properties": {"enter": {"width": {"value": 200},"height": {"value": 147}}},
+      "scales": [
+        {
+          "name": "x",
+          "type": "linear",
+          "domain": {"data": "table","field": "data.sum_Cost__Total_$"},
+          "range": "width",
+          "zero": true,
+          "reverse": false,
+          "round": true,
+          "nice": true
+        },
+        {
+          "name": "y",
+          "type": "ordinal",
+          "domain": {"data": "table","field": "data.Effect__Amount_of_damage"},
+          "sort": true,
+          "bandWidth": 21,
+          "round": true,
+          "nice": true,
+          "points": true,
+          "padding": 1
+        }
+      ],
+      "axes": [
+        {"type": "x","scale": "x","ticks": 3},
+        {"type": "y","scale": "y","ticks": 3}
+      ],
+      "marks": [
+        {
+          "type": "rect",
+          "from": {"data": "table"},
+          "properties": {
+            "enter": {
+              "x": {"scale": "x","field": "data.sum_Cost__Total_$"},
+              "x2": {"scale": "x","value": 0},
+              "yc": {"scale": "y","field": "data.Effect__Amount_of_damage"},
+              "height": {"value": 21,"offset": -1},
+              "fill": {"value": "steelblue"}
+            },
+            "update": {
+              "x": {"scale": "x","field": "data.sum_Cost__Total_$"},
+              "x2": {"scale": "x","value": 0},
+              "yc": {"scale": "y","field": "data.Effect__Amount_of_damage"},
+              "height": {"value": 21,"offset": -1},
+              "fill": {"value": "steelblue"}
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

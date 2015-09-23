@@ -1,0 +1,104 @@
+* {
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-size: 11pt;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0px;
+}
+
+#content {
+  height: 100%;
+  vertical-align: bottom;
+}
+
+.pre {
+  font-family: Monaco, Courier New;
+  font-size: 10px;
+  white-space: pre;
+  overflow: hidden;
+  resize: none;
+  width: 478px;
+  /* margin: 8px; */
+}
+
+.mod {
+  position: relative;
+  vertical-align: top;
+  /* height: 100%; */
+}
+
+.mod_header {
+  padding: 4px;
+  background-color: #444;
+  color: #fff;
+}
+
+.mod_title {
+  line-height: 14pt;
+}
+
+.mod_title a {
+  color: #fff;
+  cursor: pointer;
+  margin-right: 5px;
+}
+.mod_title a.active {
+  color: #fff;
+}
+.mod_title a:hover {
+  color: #fff;
+}
+
+.mod_ctrls {
+  position: absolute;
+  right: 8px;
+  top: 2px;
+}
+
+.panel_header {
+  margin: 12px 0 4px 0;
+  padding: 4px;
+  position: relative;
+}
+
+.panel_header h2 {
+  margin: 0;
+}
+
+#mod_vis {
+  margin-left: 515px;
+}
+
+#mod_spec {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 500px;
+  background-color: #eee;
+}
+
+#spec {
+  width: 498px;
+  min-height: 200px;
+}
+
+#vis div {
+  border: 1px dashed #ccc;
+}
+
+.mod_content {
+  padding: 0 8px 8px 8px;
+}
+
+input {
+  font-size: 10px;
+}
+
+#shorthand {
+  width: 478px;
+}

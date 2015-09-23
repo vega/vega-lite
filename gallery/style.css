@@ -1,0 +1,56 @@
+body {
+  margin: 20px;
+  padding: 15px;
+  font-family: Avenir, Helvetica Neue, Helvetica, Arial;
+}
+
+strong {
+  font-weight: 400;
+}
+
+a {
+  color: #8A5ED3;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+a:hover {
+  color: #d5a928;
+}
+
+.logo {
+  font-weight: 600;
+  font-size: 60px;
+  line-height: 72px;
+  margin-bottom: 20px;
+  margin-top: 0;
+}
+
+.visualizations {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  align-items: stretch;
+}
+
+.viz {
+	border: 1px solid #CECECE;
+	padding: 10px;
+	margin: 10px;
+	max-height: 500px;
+	overflow: scroll;
+}
+
+.viz > div {
+	display: flex;
+}
+
+.viz h3 {
+	margin: 0;
+}
+
+.viz p {
+	color: gray;
+	max-width: 400px;
+}

@@ -1,0 +1,19 @@
+{
+  "undef":   true,
+  "unused":  true,
+  "eqnull":  true,
+  "freeze":  true,
+  "noarg":   true,
+  "node":    true,
+  "browser": true,
+  "quotmark": "single",
+  "predef": [
+    "AGGREGATE", "RAW", "STACKED", "INDEX",
+    "X", "Y", "ROW", "COL", "SIZE", "SHAPE", "COLOR", "TEXT", "DETAIL",
+    "O", "Q", "T", "N"],
+  "globalstrict": true
+}
+
+
+
+

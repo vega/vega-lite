@@ -1,0 +1,221 @@
+{
+  "width": 860.0000000000001,
+  "height": 1117.2,
+  "padding": "auto",
+  "data": [
+    {
+      "name": "table",
+      "format": {"type": "json","parse": {"Cost__Total_$": "number"}},
+      "url": "data/birdstrikes.json",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": [
+            "data.Effect__Amount_of_damage",
+            "data.When__Phase_of_flight",
+            "data.When__Time_of_day",
+            "data.Wildlife__Size"
+          ],
+          "fields": [{"op": "sum","field": "data.Cost__Total_$"}]
+        }
+      ]
+    },
+    {
+      "name": "stacked",
+      "source": "table",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": [
+            "data.Effect__Amount_of_damage",
+            "data.When__Phase_of_flight",
+            "data.When__Time_of_day"
+          ],
+          "fields": [{"op": "sum","field": "data.sum_Cost__Total_$"}]
+        },
+        {
+          "type": "aggregate",
+          "groupby": ["data.When__Phase_of_flight","data.When__Time_of_day"],
+          "fields": [{"op": "max","field": "data.sum_sum_Cost__Total_$"}]
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "_name": "cell",
+      "type": "group",
+      "from": {
+        "data": "table",
+        "transform": [
+          {
+            "type": "facet",
+            "keys": ["data.When__Phase_of_flight","data.When__Time_of_day"]
+          }
+        ]
+      },
+      "properties": {
+        "enter": {
+          "x": {"scale": "col","field": "keys.1","offset": 80},
+          "y": {"scale": "row","field": "keys.0"},
+          "width": {"value": 200},
+          "height": {"value": 147},
+          "fill": {"value": "#fdfdfd"}
+        }
+      },
+      "marks": [
+        {
+          "_name": "subfacet",
+          "type": "group",
+          "from": {
+            "transform": [
+              {"type": "sort","by": "data.Wildlife__Size"},
+              {"type": "facet","keys": ["data.Wildlife__Size"]},
+              {
+                "type": "stack",
+                "point": "data.Effect__Amount_of_damage",
+                "height": "data.sum_Cost__Total_$",
+                "output": {"y1": "x","y0": "x2"}
+              }
+            ]
+          },
+          "properties": {"enter": {"width": {"group": "width"},"height": {"group": "height"}}},
+          "marks": [
+            {
+              "type": "rect",
+              "properties": {
+                "enter": {
+                  "x": {"scale": "x","field": "x"},
+                  "x2": {"scale": "x","field": "x2"},
+                  "yc": {"scale": "y","field": "data.Effect__Amount_of_damage"},
+                  "height": {"value": 21,"offset": -1},
+                  "fill": {"scale": "color","field": "data.Wildlife__Size"}
+                },
+                "update": {
+                  "x": {"scale": "x","field": "x"},
+                  "x2": {"scale": "x","field": "x2"},
+                  "yc": {"scale": "y","field": "data.Effect__Amount_of_damage"},
+                  "height": {"value": 21,"offset": -1},
+                  "fill": {"scale": "color","field": "data.Wildlife__Size"}
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "_name": "x-axes",
+      "type": "group",
+      "from": {
+        "data": "table",
+        "transform": [{"type": "facet","keys": ["data.When__Time_of_day"]}]
+      },
+      "properties": {
+        "enter": {
+          "x": {"scale": "col","field": "keys.0","offset": 80},
+          "width": {"value": 200},
+          "height": {"group": "height"}
+        }
+      },
+      "axes": [{"type": "x","scale": "x","ticks": 3}],
+      "marks": []
+    },
+    {
+      "_name": "y-axes",
+      "type": "group",
+      "from": {
+        "data": "table",
+        "transform": [{"type": "facet","keys": ["data.When__Phase_of_flight"]}]
+      },
+      "properties": {
+        "enter": {
+          "x": {"value": 80},
+          "y": {"scale": "row","field": "keys.0"},
+          "width": {"group": "width"},
+          "height": {"value": 147}
+        }
+      },
+      "axes": [{"type": "y","scale": "y","ticks": 3}],
+      "marks": []
+    }
+  ],
+  "axes": [
+    {
+      "type": "y",
+      "scale": "row",
+      "ticks": 3,
+      "properties": {
+        "ticks": {"opacity": {"value": 0}},
+        "majorTicks": {"opacity": {"value": 0}},
+        "axis": {"opacity": {"value": 0}}
+      }
+    },
+    {
+      "type": "x",
+      "scale": "col",
+      "ticks": 3,
+      "properties": {
+        "ticks": {"opacity": {"value": 0}},
+        "majorTicks": {"opacity": {"value": 0}},
+        "axis": {"opacity": {"value": 0}}
+      },
+      "offset": [80,0],
+      "orient": "top"
+    }
+  ],
+  "scales": [
+    {
+      "name": "col",
+      "type": "ordinal",
+      "domain": {"data": "table","field": "data.When__Time_of_day"},
+      "sort": true,
+      "bandWidth": 200,
+      "round": true,
+      "nice": true,
+      "padding": 0.1,
+      "outerPadding": 0
+    },
+    {
+      "name": "row",
+      "type": "ordinal",
+      "domain": {"data": "table","field": "data.When__Phase_of_flight"},
+      "sort": true,
+      "bandWidth": 147,
+      "round": true,
+      "nice": true,
+      "padding": 0.1,
+      "outerPadding": 0
+    },
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": {"data": "stacked","field": "data.max_sum_sum_Cost__Total_$"},
+      "range": [0,200],
+      "zero": true,
+      "reverse": false,
+      "round": true,
+      "nice": true
+    },
+    {
+      "name": "y",
+      "type": "ordinal",
+      "domain": {"data": "table","field": "data.Effect__Amount_of_damage"},
+      "sort": true,
+      "bandWidth": 21,
+      "round": true,
+      "nice": true,
+      "points": true,
+      "padding": 1
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "table","field": "data.Wildlife__Size"},
+      "sort": true,
+      "range": "category10",
+      "points": true,
+      "padding": 1
+    }
+  ]
+}
