@@ -14,7 +14,7 @@
   },
   "scripts": {
     "deploy": "npm run lint && npm run test && scripts/deploy.sh",
-    "build": "gulp bundle schema",
+    "build": "gulp build",
     "watch": "gulp watch-schema watch-test",
     "start": "gulp serve",
     "lint": "gulp jshint",
