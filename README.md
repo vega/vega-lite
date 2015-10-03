@@ -5,6 +5,7 @@
 [![npm version](https://img.shields.io/npm/v/vega-lite.svg)](https://www.npmjs.com/package/vega-lite)
 [![Coverage Status](https://coveralls.io/repos/vega/vega-lite/badge.svg)](https://coveralls.io/r/vega/vega-lite)
 
+
 **Vega-lite is still in alpha phase and we are working on improving the code and documentation.
 Note that our syntax might change slightly before we release 1.0.**
 
@@ -50,15 +51,15 @@ This is a similar chart as one of the Vega examples in https://github.com/trifac
 {
   "data": {
     "values": [
-      {"x":"A", "y":28}, {"x":"B", "y":55}, {"x":"C", "y":43},
-      {"x":"D", "y":91}, {"x":"E", "y":81}, {"x":"F", "y":53},
-      {"x":"G", "y":19}, {"x":"H", "y":87}, {"x":"I", "y":52}
+      {"a":"A", "b":28}, {"a":"B", "b":55}, {"a":"C", "b":43},
+      {"a":"D", "b":91}, {"a":"E", "b":81}, {"a":"F", "b":53},
+      {"a":"G", "b":19}, {"a":"H", "b":87}, {"a":"I", "b":52}
     ]
   },
   "marktype": "bar",
   "encoding": {
-    "y": {"type": "Q","name": "y"},
-    "x": {"type": "O","name": "x"}
+    "x": {"type": "O","name": "a"},
+    "y": {"type": "Q","name": "b"}
   }
 }
 ```
@@ -67,12 +68,6 @@ This is a similar chart as one of the Vega examples in https://github.com/trifac
 
 Make sure you have node.js. (We recommend using [homebrew](http://brew.sh) and simply run `brew install node`.)
 
-Install gulp  globally by running
-
-```sh
-npm install -g gulp
-```
-
 Then, cd into your local clone of the repository, and install all the npm dependencies:
 
 ```sh
@@ -80,7 +75,16 @@ cd vega-lite
 npm install
 ```
 
-You can run `gulp` to compile vega-lite or run `gulp serve` to open the live vega-lite editor.
+### Commands
+
+You can run `npm run build` to compile vega-lite or run `npm start` to open the live vega-lite editor.
+
+You can `npm run watch` to start a watcher task that regenerate the `spec.json` file whenever `schema.js` changes, and lints and tests all JS files when any `.js` file in `test/` or `src/` changes.
+
+Note: These commands use [Gulp](http://gulpjs.com) internally; to run them directly (instead of through the `npm run` aliases), install gulp globally with
+```sh
+npm install -g gulp
+```
 
 ### Developing Vega-lite and Datalib
 

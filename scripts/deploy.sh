@@ -38,7 +38,7 @@ git checkout gh-pages
 git pull
 git merge master --no-edit
 
-gulp build
+npm run build
 
 # add the compiled files, commit and tag!
 git add vega-lite* -f
@@ -64,7 +64,7 @@ git push
 git tag -am "Release v$version." "v$version"
 git push --tags
 git checkout master
-gulp build # rebuild so that vega-lite.js are back  for linked bower/npm
+npm run build # rebuild so that vega-lite.js are back  for linked bower/npm
 
 # 2. NPM PUBLISH
 
