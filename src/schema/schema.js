@@ -91,11 +91,19 @@ var typicalField = merge(clone(schema.field), {
     scale: {
       type: 'object',
       properties: {
+        /* Common Scale Properties */
         type: schema.scale_type,
         reverse: {
           type: 'boolean',
           default: false,
           supportedTypes: toMap([Q, T])
+        },
+
+        /* Quantitative Scale Properties */
+        nice: {
+          type: 'string',
+          enum: ['second', 'minute', 'hour', 'day', 'week', 'month', 'year'],
+          supportedTypes: toMap([T])
         },
         zero: {
           type: 'boolean',
@@ -103,11 +111,8 @@ var typicalField = merge(clone(schema.field), {
           default: true,
           supportedTypes: toMap([Q, T])
         },
-        nice: {
-          type: 'string',
-          enum: ['second', 'minute', 'hour', 'day', 'week', 'month', 'year'],
-          supportedTypes: toMap([T])
-        },
+
+        /* Vega-lite only Properties */
         useRawDomain: {
           type: 'boolean',
           default: undefined,
@@ -149,6 +154,15 @@ var axisMixin = {
     axis: {
       type: 'object',
       properties: {
+        /* Vega Axis Properties */
+        format: {
+          type: 'string',
+          default: undefined,  // auto
+          description: 'The formatting pattern for axis labels. '+
+                       'If not undefined, this will be determined by ' +
+                       'small/largeNumberFormat and the max value ' +
+                       'of the field.'
+        },
         grid: {
           type: 'boolean',
           default: true,
@@ -157,7 +171,7 @@ var axisMixin = {
         layer: {
           type: 'string',
           default: 'back',
-          description: 'A string indicating if the axis (and any gridlines) should be placed above or below the data marks.'
+          description: 'A string indicating if the axis (and any gridlines) should be placed above or below the data marks. One of "front" (default) or "back".'
         },
         orient: {
           type: 'string',
@@ -171,30 +185,13 @@ var axisMixin = {
           minimum: 0,
           description: 'A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are "nice" (multiples of 2, 5, 10) and lie within the underlying scale\'s range.'
         },
+        /* Vega Axis Properties that are automatically populated by Vega-lite */
         title: {
           type: 'string',
           default: undefined,
           description: 'A title for the axis. (Shows field name and its function by default.)'
         },
-        titleMaxLength: {
-          type: 'integer',
-          default: undefined,
-          minimum: 0,
-          description: 'Max length for axis title if the title is automatically generated from the field\'s description'
-        },
-        titleOffset: {
-          type: 'integer',
-          default: undefined,  // auto
-          description: 'A title offset value for the axis.'
-        },
-        format: {
-          type: 'string',
-          default: undefined,  // auto
-          description: 'The formatting pattern for axis labels. '+
-                       'If not undefined, this will be determined by ' +
-                       'small/largeNumberFormat and the max value ' +
-                       'of the field.'
-        },
+        /* Vega-lite only */
         maxLabelLength: {
           type: 'integer',
           default: 25,
@@ -207,6 +204,17 @@ var axisMixin = {
           minimum: 0,
           maximum: 360,
           description: 'Angle by which to rotate labels. Set to 0 to force horizontal.'
+        },
+        titleMaxLength: {
+          type: 'integer',
+          default: undefined,
+          minimum: 0,
+          description: 'Max length for axis title if the title is automatically generated from the field\'s description'
+        },
+        titleOffset: {
+          type: 'integer',
+          default: undefined,  // auto
+          description: 'A title offset value for the axis.'
         },
       }
     }
