@@ -2,17 +2,25 @@
 
 require('../globals');
 
-var groupdef = require('./group').def;
-
 module.exports = subfaceting;
 
 function subfaceting(group, mdef, details, stack, encoding) {
-  var m = group.marks,
-    g = groupdef('subfacet', {marks: m});
+  var m = group.marks;
+  var g = {
+    _name: 'subfacet',
+    type: 'group',
+    from: mdef.from,
+    properties: {
+      enter: {
+        width: {group: 'width'},
+        height: {group: 'height'}
+      }
+    },
+    marks: m
+  };
 
   group.marks = [g];
-  g.from = mdef.from;
-  delete mdef.from;
+  delete mdef.from; // (move to the new g)
 
   //TODO test LOD -- we should support stack / line without color (LOD) field
   var trans = (g.from.transform || (g.from.transform = []));
