@@ -6,7 +6,7 @@
 [![Coverage Status](https://coveralls.io/repos/vega/vega-lite/badge.svg)](https://coveralls.io/r/vega/vega-lite)
 
 
-**Vega-lite is still in alpha phase and we are working on improving the code and documentation.
+**Vega-lite is still in alpha phase and we are working on improving the code and [documentation](Documentation).
 Note that our syntax might change slightly before we release 1.0.**
 
 Vega-lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete [Vega](https://vega.github.io/) specifications.
