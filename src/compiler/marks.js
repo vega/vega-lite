@@ -130,12 +130,15 @@ function bar_props(e, layout, style) {
   // y's & height
   if (e.isMeasure(Y)) {
     p.y = {scale: Y, field: e.fieldRef(Y)};
-    p.y2 = {group: 'height'};
+    p.y2 = {field: {group: 'height'}};
   } else {
     if (e.has(Y)) { // is ordinal
       p.yc = {scale: Y, field: e.fieldRef(Y)};
     } else {
-      p.y2 = {group: 'height', offset: -e.config('singleBarOffset')};
+      p.y2 = {
+        field: {group: 'height'},
+        offset: -e.config('singleBarOffset')
+      };
     }
 
     if (e.has(SIZE)) {
@@ -231,7 +234,7 @@ function line_props(e,layout, style) {
   if (e.has(Y)) {
     p.y = {scale: Y, field: e.fieldRef(Y)};
   } else if (!e.has(Y)) {
-    p.y = {group: 'height'};
+    p.y = {field: {group: 'height'}};
   }
 
   // stroke
@@ -273,7 +276,7 @@ function area_props(e, layout, style) {
   } else if (e.has(Y)) {
     p.y = {scale: Y, field: e.fieldRef(Y)};
   } else {
-    p.y = {group: 'height'};
+    p.y = {field: {group: 'height'}};
   }
 
   // fill

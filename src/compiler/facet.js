@@ -19,8 +19,8 @@ function groupdef(name, opt) {
       enter: {
         x: opt.x || undefined,
         y: opt.y || undefined,
-        width: opt.width || {group: 'width'},
-        height: opt.height || {group: 'height'}
+        width: opt.width || {field: {group: 'width'}},
+        height: opt.height || {field: {group: 'height'}}
       }
     },
     scales: opt.scales || undefined,
