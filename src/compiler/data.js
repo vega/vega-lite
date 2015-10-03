@@ -111,7 +111,7 @@ data.raw.transform.bin = function(encoding) {
     if (encoding.bin(encType)) {
       transform.push({
         type: 'bin',
-        field: encoding.fieldRef(encType, {nofn: true}),
+        field: field.name,
         output: encoding.fieldRef(encType),
         maxbins: encoding.bin(encType).maxbins
       });
@@ -170,7 +170,7 @@ data.aggregate = function(encoding) {
       }else {
         meas[field.aggregate + '|' + field.name] = {
           op: field.aggregate,
-          field: encoding.fieldRef(encType, {nofn: true})
+          field: field.name
         };
       }
     } else {
