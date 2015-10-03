@@ -18,7 +18,7 @@ describe('compile.marks', function() {
           e = Encoding.fromSpec(f),
           def = marks.bar.prop(e, mockLayout, {});
       it('should end on axis', function() {
-        expect(def.y2).to.eql({group: 'height'});
+        expect(def.y2).to.eql({field: {group: 'height'}});
       });
       it('should has no height', function(){
         expect(def.height).to.be.undefined;
@@ -42,7 +42,7 @@ describe('compile.marks', function() {
           e = Encoding.fromSpec(f),
           def = marks.bar.prop(e, mockLayout, {});
       it('should end on axis', function() {
-        expect(def.y2).to.eql({group: 'height'});
+        expect(def.y2).to.eql({field: {group: 'height'}});
       });
       it('should have no height', function(){
         expect(def.height).to.be.undefined;
@@ -64,7 +64,7 @@ describe('compile.marks', function() {
       });
       it('should have y-offset', function(){
         expect(def.y2).to.eql({
-          group: 'height',
+          field: {group: 'height'},
           offset: -5 // -config.singleBarOffset
         });
       });
