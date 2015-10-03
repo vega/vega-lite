@@ -101,9 +101,9 @@ axis.grid = function(def, name, encoding, layout) {
           value: def.offset
         },
         x2: {
+          field: {group: 'mark.group.width'},
           offset: def.offset + (layout.cellWidth * 0.05),
           // default value(s) -- vega doesn't do recursive merge
-          group: 'mark.group.width',
           mult: 1
         },
         stroke: { value: encoding.config('cellGridColor') },
