@@ -5,7 +5,7 @@ var util = require('../util'),
 
 var time = module.exports = {};
 
-var LONG_DATE = new Date(2014, 8, 17);
+var LONG_DATE = new Date(Date.UTC(2014, 8, 17));
 
 time.cardinality = function(field, stats, filterNull, type) {
   var timeUnit = field.timeUnit;
