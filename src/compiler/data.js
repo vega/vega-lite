@@ -94,12 +94,12 @@ var BINARY = {
 data.raw.transform.time = function(encoding) {
   return encoding.reduce(function(transform, field, encType) {
     if (field.type === T && field.timeUnit) {
+      var fieldRef = encoding.fieldRef(encType, {nofn: true, d: !encoding._vega2, datum: encoding._vega2});
+
       transform.push({
         type: 'formula',
         field: encoding.fieldRef(encType),
-        expr: time.formula(field.timeUnit,
-                           encoding.fieldRef(encType, {nofn: true, d: true})
-                          )
+        expr: time.formula(field.timeUnit, fieldRef)
       });
     }
     return transform;
@@ -201,7 +201,7 @@ data.filterNonPositive = function(dataTable, encoding) {
     if (encoding.scale(encType).type === 'log') {
       dataTable.transform.push({
         type: 'filter',
-        test: encoding.fieldRef(encType, {d: 1}) + ' > 0'
+        test: encoding.fieldRef(encType, encoding._vega2 ? {datum: 1} : {d: 1}) + ' > 0'
       });
     }
   });
