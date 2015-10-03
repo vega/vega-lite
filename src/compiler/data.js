@@ -126,7 +126,7 @@ data.raw.transform.filter = function(encoding) {
     var operator = filter.operator;
     var operands = filter.operands;
 
-    var d = 'd.' + (encoding._vega2 ? '' : 'data.');
+    var d = encoding._vega2 ? 'datum.' : 'd.data.';
 
     if (BINARY[operator]) {
       // expects a field and a value
