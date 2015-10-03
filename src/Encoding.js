@@ -18,7 +18,7 @@ module.exports = (function() {
     this._enc = specExtended.encoding;
     this._config = specExtended.config;
     this._filter = specExtended.filter;
-    // this._vega2 = true;
+    this._vega2 = true;
   }
 
   var proto = Encoding.prototype;
