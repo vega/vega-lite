@@ -12,7 +12,7 @@ module.exports = faceting;
 function groupdef(name, opt) {
   opt = opt || {};
   return {
-    _name: name || undefined,
+    name: name || undefined,
     type: 'group',
     from: opt.from,
     properties: {

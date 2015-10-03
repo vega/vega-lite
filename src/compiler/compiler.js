@@ -58,7 +58,7 @@ compiler.compileEncoding = function (encoding, stats) {
       // global scales contains only time unit scales
       scales: compiler.time.scales(encoding),
       marks: [{
-        _name: 'cell',
+        name: 'cell',
         type: 'group',
         properties: {
           enter: {
