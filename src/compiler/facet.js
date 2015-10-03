@@ -5,10 +5,29 @@ require('../globals');
 var util = require('../util');
 
 var axis = require('./axis'),
-  groupdef = require('./group').def,
   scale = require('./scale');
 
 module.exports = faceting;
+
+function groupdef(name, opt) {
+  opt = opt || {};
+  return {
+    _name: name || undefined,
+    type: 'group',
+    from: opt.from,
+    properties: {
+      enter: {
+        x: opt.x || undefined,
+        y: opt.y || undefined,
+        width: opt.width || {group: 'width'},
+        height: opt.height || {group: 'height'}
+      }
+    },
+    scales: opt.scales || undefined,
+    axes: opt.axes || undefined,
+    marks: opt.marks || []
+  };
+}
 
 function faceting(group, encoding, layout, spec, singleScaleNames, stack, stats) {
   var enter = group.properties.enter;
