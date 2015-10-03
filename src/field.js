@@ -16,8 +16,7 @@ var vlfield = module.exports = {};
  * @param field
  * @param opt
  *   opt.nofn -- exclude bin, aggregate, timeUnit
- *   opt.data - include 'data.'
- *   opt.d - include 'd.'
+ *   opt.datum - include 'datum.'
  *   opt.fn - replace fn with custom function prefix
  *   opt.prefn - prepend fn with custom function prefix
 
@@ -26,8 +25,7 @@ var vlfield = module.exports = {};
 vlfield.fieldRef = function(field, opt) {
   opt = opt || {};
 
-  var f = (opt.d ? 'd.' : '') +
-          (opt.data ? 'data.' : '') +
+  var f = (opt.datum ? 'datum.' : '') +
           (opt.prefn || ''),
     nofn = opt.nofn || opt.fn,
     name = field.name;

@@ -41,7 +41,7 @@ describe('vl.compile.scale', function() {
 
       expect(domain).to.eql({
         data: 'stacked',
-        field: 'data.max_sum_origin'
+        field: 'max_sum_origin'
       });
     });
 
@@ -60,7 +60,7 @@ describe('vl.compile.scale', function() {
 
       expect(domain).to.eql({
         data: 'stacked',
-        field: 'data.max_sum_sum_origin'
+        field: 'max_sum_sum_origin'
       });
     });
 

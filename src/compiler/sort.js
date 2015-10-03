@@ -18,13 +18,13 @@ function sort(data, encoding, stats, opt) {
       var fields = sortBy.map(function(d) {
         return {
           op: d.aggregate,
-          field: vlfield.fieldRef(d, {nofn: true, data: !encoding._vega2})
+          field: vlfield.fieldRef(d, {nofn: true})
         };
       });
 
       var byClause = sortBy.map(function(d) {
         var reverse = (d.reverse ? '-' : '');
-        return reverse + vlfield.fieldRef(d, {data: !encoding._vega2});
+        return reverse + vlfield.fieldRef(d);
       });
 
       var dataName = sort.getDataName(encType);
