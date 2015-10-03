@@ -161,34 +161,46 @@ data.raw.transform.filter = function(encoding) {
 };
 
 data.aggregate = function(encoding) {
-  var dims = {}, meas = {};
+  /* dict set for dimensions */
+  var dims = {};
+
+  /* dictionary mapping field name => dict set of aggregation functions */
+  var meas = {};
+
+  var hasAggregate = false;
 
   encoding.forEach(function(field, encType) {
     if (field.aggregate) {
+      hasAggregate = true;
       if (field.aggregate === 'count') {
-        meas.count = {op: 'count', field: '*'};
-      }else {
-        meas[field.aggregate + '|' + field.name] = {
-          op: field.aggregate,
-          field: encoding.fieldRef(encType, {nofn: true})
-        };
+        meas['*'] = meas['*'] || {};
+        meas['*'].count = true;
+      } else {
+        meas[field.name] = meas[field.name] || {};
+        meas[field.name][field.aggregate] = true;
       }
     } else {
       dims[field.name] = encoding.fieldRef(encType);
     }
   });
 
-  dims = util.vals(dims);
-  meas = util.vals(meas);
+  var groupby = util.vals(dims);
 
-  if (meas.length > 0) {
+  // short-format summarize object for Vega's aggregate transform
+  // https://github.com/vega/vega/wiki/Data-Transforms#-aggregate
+  var summary = util.reduce(meas, function(summary, fnDictSet, fieldName) {
+    summary[fieldName] = util.keys(fnDictSet);
+    return summary;
+  }, {});
+
+  if (hasAggregate) {
     return {
       name: AGGREGATE,
       source: RAW,
       transform: [{
         type: 'aggregate',
-        groupby: dims,
-        fields: meas
+        groupby: groupby,
+        summary: summary
       }]
     };
   }
