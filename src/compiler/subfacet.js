@@ -12,8 +12,8 @@ function subfaceting(group, mdef, details, stack, encoding) {
     from: mdef.from,
     properties: {
       enter: {
-        width: {group: 'width'},
-        height: {group: 'height'}
+        width: {field: {group: 'width'}},
+        height: {field: {group: 'height'}}
       }
     },
     marks: m

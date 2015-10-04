@@ -62,8 +62,12 @@ compiler.compileEncoding = function (encoding, stats) {
         type: 'group',
         properties: {
           enter: {
-            width: layout.cellWidth ? {value: layout.cellWidth} : {group: 'width'},
-            height: layout.cellHeight ? {value: layout.cellHeight} : {group: 'height'}
+            width: layout.cellWidth ?
+                     {value: layout.cellWidth} :
+                     {field: {group: 'width'}},
+            height: layout.cellHeight ?
+                    {value: layout.cellHeight} :
+                    {field: {group: 'height'}}
           }
         }
       }]
