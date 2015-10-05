@@ -114,7 +114,7 @@ data.raw.transform.bin = function(encoding) {
 };
 
 /**
- * @return {Object} An array that might contain a filter transform for filtering null value based on filterNul config
+ * @return {Array} An array that might contain a filter transform for filtering null value based on filterNul config
  */
 data.raw.transform.nullFilter = function(encoding) {
   var filteredFields = util.reduce(encoding.fields(),
