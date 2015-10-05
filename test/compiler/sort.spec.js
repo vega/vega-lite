@@ -29,28 +29,28 @@ describe('Sort', function() {
     expect(data[2].transform).to.deep.equal([
       {
         type: 'aggregate',
-        groupby: [ 'data.foo' ],
+        groupby: [ 'foo' ],
         fields: [{
-          field: 'data.bar',
+          field: 'bar',
           op: 'avg'
         }]
       },
-      { type: 'sort', by: [ 'data.avg_bar' ] }
+      { type: 'sort', by: [ 'avg_bar' ] }
     ]);
 
     expect(data[3].transform).to.deep.equal([
       {
         type: 'aggregate',
-        groupby: [ 'data.baz' ],
+        groupby: [ 'baz' ],
         fields: [{
-          field: 'data.bar',
+          field: 'bar',
           op: 'sum'
         }, {
-          field: 'data.foo',
+          field: 'foo',
           op: 'max'
         }]
       },
-      { type: 'sort', by: [ 'data.sum_bar', '-data.max_foo' ] }
+      { type: 'sort', by: [ 'sum_bar', '-max_foo' ] }
     ]);
   });
 });
