@@ -99,6 +99,7 @@ function getMaxNumberLength(encoding, et, fieldStats) {
   return d3_format.format(format)(fieldStats.max).length;
 }
 
+// TODO(#600) revise this
 function getMaxLength(encoding, stats, et) {
   var field = encoding.field(et),
     fieldStats = stats[field.name];

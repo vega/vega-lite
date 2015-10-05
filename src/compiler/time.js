@@ -5,6 +5,9 @@ var util = require('../util'),
 
 var time = module.exports = {};
 
+// 'Wednesday September 17 04:00:00 2014'
+// Wednesday is the longest date
+// September is the longest month (8 in javascript as it is zero-indexed).
 var LONG_DATE = new Date(Date.UTC(2014, 8, 17));
 
 time.cardinality = function(field, stats, filterNull, type) {
@@ -53,6 +56,7 @@ time.maxLength = function(timeUnit, encoding) {
     case 'year':
       return 4; //'1998'
   }
+  // TODO(#600) revise this
   // no time unit
   var timeFormat = encoding.config('timeFormat');
   return d3_time_format.utcFormat(timeFormat)(LONG_DATE).length;
