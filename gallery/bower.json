@@ -15,7 +15,7 @@
     "tests"
   ],
   "dependencies": {
-    "vega": "^1.0.0",
+    "vega": "^2.2.6",
     "angular": "^1.4.3"
   }
 }

@@ -36,7 +36,7 @@ describe('data', function () {
       var rawTransform = _data[0].transform;
       expect(rawTransform[rawTransform.length - 1]).to.eql({
         type: 'filter',
-        test: 'd.data.b > 0'
+        test: 'datum.b > 0'
       });
     });
   });
@@ -122,8 +122,8 @@ describe('data.raw', function() {
         var transform = data.raw.transform.bin(encoding);
         expect(transform[0]).to.eql({
           type: 'bin',
-          field: 'data.Acceleration',
-          output: 'data.bin_Acceleration',
+          field: 'Acceleration',
+          output: 'bin_Acceleration',
           maxbins: 15
         });
       });
@@ -135,8 +135,8 @@ describe('data.raw', function() {
 
         expect(transform[0]).to.eql({
           type: 'filter',
-          test: '(d.data.a!==null) && (d.data.Acceleration!==null)' +
-          ' && (d.data.a > b) && (d.data.c == d)'
+          test: '(datum.a!==null) && (datum.Acceleration!==null)' +
+          ' && (datum.a > b) && (datum.c == d)'
         });
       });
 
@@ -159,8 +159,8 @@ describe('data.raw', function() {
         var transform = data.raw.transform.time(encoding);
         expect(transform[0]).to.eql({
           type: 'formula',
-          field: 'data.year_a',
-          expr: 'utcyear(d.data.a)'
+          field: 'year_a',
+          expr: 'utcyear(datum.a)'
         });
       });
     });
@@ -199,10 +199,10 @@ describe('data.aggregated', function () {
       "source": "raw",
       "transform": [{
         "type": "aggregate",
-        "groupby": ["data.origin"],
+        "groupby": ["origin"],
         "fields": [{
           "op": "sum",
-          "field": "data.Acceleration"
+          "field": "Acceleration"
         },{
           "op": "count",
           "field": "*"
