@@ -610,6 +610,7 @@ var config = {
     },
 
     // filter null
+    // TODO(#597) revise this config
     filterNull: {
       type: 'object',
       properties: {
