@@ -99,25 +99,7 @@ module.exports = (function() {
   };
 
   proto.filter = function() {
-    var filterNull = [],
-      fields = this.fields(),
-      self = this;
-
-    util.forEach(fields, function(fieldList, fieldName) {
-      if (fieldName === '*') return; //count
-
-      if ((self.config('filterNull').Q && fieldList.containsType[Q]) ||
-          (self.config('filterNull').T && fieldList.containsType[T]) ||
-          (self.config('filterNull').O && fieldList.containsType[O]) ||
-          (self.config('filterNull').N && fieldList.containsType[N])) {
-        filterNull.push({
-          operands: [fieldName],
-          operator: 'notNull'
-        });
-      }
-    });
-
-    return filterNull.concat(this._filter);
+    return this._filter;
   };
 
   // get "field" reference for vega
