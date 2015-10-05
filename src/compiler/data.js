@@ -87,12 +87,12 @@ data.raw.transform = function(encoding) {
 data.raw.transform.time = function(encoding) {
   return encoding.reduce(function(transform, field, encType) {
     if (field.type === T && field.timeUnit) {
+      var fieldRef = encoding.fieldRef(encType, {nofn: true, datum: true});
+
       transform.push({
         type: 'formula',
         field: encoding.fieldRef(encType),
-        expr: time.formula(field.timeUnit,
-                           encoding.fieldRef(encType, {nofn: true, d: true})
-                          )
+        expr: time.formula(field.timeUnit, fieldRef)
       });
     }
     return transform;
@@ -104,7 +104,7 @@ data.raw.transform.bin = function(encoding) {
     if (encoding.bin(encType)) {
       transform.push({
         type: 'bin',
-        field: encoding.fieldRef(encType, {nofn: true}),
+        field: field.name,
         output: encoding.fieldRef(encType),
         maxbins: encoding.bin(encType).maxbins
       });
@@ -114,7 +114,7 @@ data.raw.transform.bin = function(encoding) {
 };
 
 /**
- * @return {Object} An array that might contain a filter transform for filtering null value based on filterNul config
+ * @return {Array} An array that might contain a filter transform for filtering null value based on filterNul config
  */
 data.raw.transform.nullFilter = function(encoding) {
   var filteredFields = util.reduce(encoding.fields(),
@@ -158,7 +158,7 @@ data.aggregate = function(encoding) {
       }else {
         meas[field.aggregate + '|' + field.name] = {
           op: field.aggregate,
-          field: encoding.fieldRef(encType, {nofn: true})
+          field: field.name
         };
       }
     } else {
@@ -189,7 +189,7 @@ data.filterNonPositive = function(dataTable, encoding) {
     if (encoding.scale(encType).type === 'log') {
       dataTable.transform.push({
         type: 'filter',
-        test: encoding.fieldRef(encType, {d: 1}) + ' > 0'
+        test: encoding.fieldRef(encType, {datum: 1}) + ' > 0'
       });
     }
   });

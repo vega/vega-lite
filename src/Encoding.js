@@ -18,7 +18,6 @@ module.exports = (function() {
     this._enc = specExtended.encoding;
     this._config = specExtended.config;
     this._filter = specExtended.filter;
-    // this._vega2 = true;
   }
 
   var proto = Encoding.prototype;
@@ -106,7 +105,6 @@ module.exports = (function() {
   // get "field" reference for vega
   proto.fieldRef = function(et, opt) {
     opt = opt || {};
-    opt.data = !this._vega2 && (opt.data !== false);
     return vlfield.fieldRef(this._enc[et], opt);
   };
 
