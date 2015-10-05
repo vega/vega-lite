@@ -10,8 +10,6 @@ module.exports = sort;
 function sort(data, encoding, stats, opt) {
   // jshint unused:false
 
-  var datasetMapping = {};
-
   encoding.forEach(function(field, encType) {
     var sortBy = encoding.sort(encType, stats);
     if (sortBy.length > 0) {
@@ -46,8 +44,6 @@ function sort(data, encoding, stats, opt) {
         source: RAW,
         transform: transforms
       });
-
-      datasetMapping[encType] = dataName;
     }
   });
 
