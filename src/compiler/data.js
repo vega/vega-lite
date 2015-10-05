@@ -135,7 +135,7 @@ data.raw.transform.nullFilter = function(encoding) {
     [{
       type: 'filter',
       test: filteredFields.map(function(fieldName) {
-        return fieldName + '!==null';
+        return 'datum.' + fieldName + '!==null';
       }).join(' && ')
     }] : [];
 };
