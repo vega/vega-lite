@@ -75,8 +75,10 @@ data.raw.formatParse = function(encoding) {
  * transforms for time unit, binning and filtering.
  */
 data.raw.transform = function(encoding) {
+  // null filter comes first so transforms are not performed on null values
   // time and bin should come before filter so we can filter by time and bin
-  return data.raw.transform.time(encoding).concat(
+  return data.raw.transform.nullFilter(encoding).concat(
+    data.raw.transform.time(encoding),
     data.raw.transform.bin(encoding),
     data.raw.transform.filter(encoding)
   );
@@ -120,6 +122,33 @@ data.raw.transform.bin = function(encoding) {
   }, []);
 };
 
+/**
+ * @return {Object} An array that might contain a filter transform for filtering null value based on filterNul config
+ */
+data.raw.transform.nullFilter = function(encoding) {
+  var filteredFields = util.reduce(encoding.fields(),
+    function(filteredFields, fieldList, fieldName) {
+      if (fieldName === '*') return filteredFields; //count
+
+      // TODO(#597) revise how filterNull is structured.
+      if ((encoding.config('filterNull').Q && fieldList.containsType[Q]) ||
+          (encoding.config('filterNull').T && fieldList.containsType[T]) ||
+          (encoding.config('filterNull').O && fieldList.containsType[O]) ||
+          (encoding.config('filterNull').N && fieldList.containsType[N])) {
+        filteredFields.push(fieldName);
+      }
+      return filteredFields;
+    }, []);
+
+  return filteredFields.length > 0 ?
+    [{
+      type: 'filter',
+      test: filteredFields.map(function(fieldName) {
+        return fieldName + '!==null';
+      }).join(' && ')
+    }] : [];
+};
+
 data.raw.transform.filter = function(encoding) {
   var filters = encoding.filter().reduce(function(f, filter) {
     var condition = '';
@@ -137,14 +166,6 @@ data.raw.transform.filter = function(encoding) {
       var op1 = operands[0];
       var op2 = operands[1];
       condition = d + op1 + ' ' + operator + ' ' + op2;
-    } else if (operator === 'notNull') {
-      // expects a number of fields
-      for (var j=0; j<operands.length; j++) {
-        condition += d + operands[j] + '!==null';
-        if (j < operands.length - 1) {
-          condition += ' && ';
-        }
-      }
     } else {
       util.warn('Unsupported operator: ', operator);
       return f;
