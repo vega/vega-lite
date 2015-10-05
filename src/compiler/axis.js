@@ -192,8 +192,8 @@ axis.labels.format = function (def, name, encoding, stats) {
   } else if (encoding.isTypes(name, [N, O]) && encoding.axis(name).maxLabelLength) {
     setter(def,
       ['properties','labels','text','template'],
-      '{{' + (encoding._vega2 ?  'datum.data': 'data') +
-      ' | truncate:' + encoding.axis(name).maxLabelLength + '}}'
+      '{{ datum.data | truncate:' +
+      encoding.axis(name).maxLabelLength + '}}'
     );
   }
 

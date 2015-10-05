@@ -94,7 +94,7 @@ var BINARY = {
 data.raw.transform.time = function(encoding) {
   return encoding.reduce(function(transform, field, encType) {
     if (field.type === T && field.timeUnit) {
-      var fieldRef = encoding.fieldRef(encType, {nofn: true, d: !encoding._vega2, datum: encoding._vega2});
+      var fieldRef = encoding.fieldRef(encType, {nofn: true, datum: true});
 
       transform.push({
         type: 'formula',
@@ -111,8 +111,8 @@ data.raw.transform.bin = function(encoding) {
     if (encoding.bin(encType)) {
       transform.push({
         type: 'bin',
-        field: encoding.fieldRef(encType, {nofn: true}),
-        output: encoding.fieldRef(encType),
+        field: field.name,
+        output: {bin: encoding.fieldRef(encType)},
         maxbins: encoding.bin(encType).maxbins
       });
     }
@@ -126,7 +126,7 @@ data.raw.transform.filter = function(encoding) {
     var operator = filter.operator;
     var operands = filter.operands;
 
-    var d = encoding._vega2 ? 'datum.' : 'd.data.';
+    var d = 'datum.';
 
     if (BINARY[operator]) {
       // expects a field and a value
@@ -213,7 +213,7 @@ data.filterNonPositive = function(dataTable, encoding) {
     if (encoding.scale(encType).type === 'log') {
       dataTable.transform.push({
         type: 'filter',
-        test: encoding.fieldRef(encType, encoding._vega2 ? {datum: 1} : {d: 1}) + ' > 0'
+        test: encoding.fieldRef(encType, {datum: 1}) + ' > 0'
       });
     }
   });

@@ -79,7 +79,6 @@ scale.domain = function (name, encoding, stats, opt) {
     return {
       data: STACKED,
       field: encoding.fieldRef(name, {
-        data: !encoding._vega2,
         prefn: (opt.facet ? 'max_' : '') + 'sum_'
       })
     };
@@ -100,7 +99,8 @@ scale.domain = function (name, encoding, stats, opt) {
       (encoding.isType(name, T) && (!timeUnit || !time.isOrdinalFn(timeUnit)))
     )
   ) {
-    return {data: RAW, field: encoding.fieldRef(name, {nofn: !timeUnit})};
+
+    return {data: RAW, field: encoding.fieldRef(name)};
   }
 
   var data = encoding.sort(name, stats).length > 0 ?
