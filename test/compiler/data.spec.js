@@ -144,7 +144,7 @@ describe('data.raw', function() {
         expect(data.raw.transform.nullFilter(encoding))
           .to.eql([{
             type: 'filter',
-            test: 'T!==null && Q!==null'
+            test: 'datum.T!==null && datum.Q!==null'
           }]);
       });
 
@@ -157,7 +157,7 @@ describe('data.raw', function() {
         expect(data.raw.transform.nullFilter(encoding))
           .to.eql([{
             type: 'filter',
-            test:'T!==null && Q!==null && O!==null'
+            test:'datum.T!==null && datum.Q!==null && datum.O!==null'
           }]);
       });
       // });
@@ -168,7 +168,7 @@ describe('data.raw', function() {
         expect(data.raw.transform.filter(encoding))
           .to.eql([{
             type: 'filter',
-            test: '(d.data.a > b) && (d.data.c == d)'
+            test: '(datum.a > b) && (datum.c == d)'
           }]);
       });
 
