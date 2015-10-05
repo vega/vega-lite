@@ -216,7 +216,7 @@ describe('data.aggregated', function () {
       "transform": [{
         "type": "aggregate",
         "groupby": ["origin"],
-        "summary": {
+        "summarize": {
           '*': ['count'],
           'Acceleration': ['sum']
         }
