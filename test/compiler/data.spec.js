@@ -36,7 +36,7 @@ describe('data', function () {
       var rawTransform = _data[0].transform;
       expect(rawTransform[rawTransform.length - 1]).to.eql({
         type: 'filter',
-        test: 'd.data.b > 0'
+        test: 'datum.b > 0'
       });
     });
   });
@@ -122,22 +122,54 @@ describe('data.raw', function() {
         var transform = data.raw.transform.bin(encoding);
         expect(transform[0]).to.eql({
           type: 'bin',
-          field: 'data.Acceleration',
-          output: 'data.bin_Acceleration',
+          field: 'Acceleration',
+          output: 'bin_Acceleration',
           maxbins: 15
         });
       });
     });
 
-    describe('filter', function () {
-      it('should return filter transform that include filter null', function () {
-        var transform = data.raw.transform.filter(encoding);
+    describe('nullFilter', function() {
+      var spec = {
+          marktype: 'point',
+          encoding: {
+            y: {name: 'Q', type:'Q'},
+            x: {name: 'T', type:'T'},
+            color: {name: 'O', type:'O'}
+          }
+        };
 
-        expect(transform[0]).to.eql({
-          type: 'filter',
-          test: '(d.data.a!==null) && (d.data.Acceleration!==null)' +
-          ' && (d.data.a > b) && (d.data.c == d)'
+      it('should add filterNull for Q and T by default', function () {
+        var encoding = Encoding.fromSpec(spec);
+        expect(data.raw.transform.nullFilter(encoding))
+          .to.eql([{
+            type: 'filter',
+            test: 'T!==null && Q!==null'
+          }]);
+      });
+
+      it('should add filterNull for O when specified', function () {
+        var encoding = Encoding.fromSpec(spec, {
+          config: {
+            filterNull: {O: true}
+          }
         });
+        expect(data.raw.transform.nullFilter(encoding))
+          .to.eql([{
+            type: 'filter',
+            test:'T!==null && Q!==null && O!==null'
+          }]);
+      });
+      // });
+    });
+
+    describe('filter', function () {
+      it('should return array that contains a filter transform', function () {
+        expect(data.raw.transform.filter(encoding))
+          .to.eql([{
+            type: 'filter',
+            test: '(d.data.a > b) && (d.data.c == d)'
+          }]);
       });
 
       it('should exclude unsupported operator', function () {
@@ -159,17 +191,18 @@ describe('data.raw', function() {
         var transform = data.raw.transform.time(encoding);
         expect(transform[0]).to.eql({
           type: 'formula',
-          field: 'data.year_a',
-          expr: 'utcyear(d.data.a)'
+          field: 'year_a',
+          expr: 'utcyear(datum.a)'
         });
       });
     });
 
-    it('should time and bin before filter', function () {
+    it('should have null filter, timeUnit, bin then filter', function () {
       var transform = data.raw.transform(encoding);
-      expect(transform[0].type).to.eql('formula');
-      expect(transform[1].type).to.eql('bin');
-      expect(transform[2].type).to.eql('filter');
+      expect(transform[0].type).to.eql('filter');
+      expect(transform[1].type).to.eql('formula');
+      expect(transform[2].type).to.eql('bin');
+      expect(transform[3].type).to.eql('filter');
     });
 
   });
@@ -199,10 +232,10 @@ describe('data.aggregated', function () {
       "source": "raw",
       "transform": [{
         "type": "aggregate",
-        "groupby": ["data.origin"],
+        "groupby": ["origin"],
         "fields": [{
           "op": "sum",
-          "field": "data.Acceleration"
+          "field": "Acceleration"
         },{
           "op": "count",
           "field": "*"
