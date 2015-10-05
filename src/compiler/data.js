@@ -112,7 +112,7 @@ data.raw.transform.bin = function(encoding) {
       transform.push({
         type: 'bin',
         field: field.name,
-        output: {bin: encoding.fieldRef(encType)},
+        output: encoding.fieldRef(encType),
         maxbins: encoding.bin(encType).maxbins
       });
     }
