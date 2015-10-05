@@ -56,12 +56,12 @@ var EXAMPLES = [
   },{
     title: 'Aggregate Bar Chart',
     spec: {
-      "marktype": "bar",
-      "encoding": {
-        "x": {"name": "Cylinders","type": "O"},
-        "y": {"name": "Acceleration","type": "Q","aggregate": "mean"}
+      'marktype': 'bar',
+      'encoding': {
+        'x': {'name': 'Cylinders','type': 'O'},
+        'y': {'name': 'Acceleration','type': 'Q','aggregate': 'mean'}
       },
-      "data": {"url": "data/cars.json"}
+      'data': {'url': 'data/cars.json'}
     }
   },{
     title: 'Barleys',
