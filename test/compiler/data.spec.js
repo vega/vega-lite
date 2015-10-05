@@ -100,6 +100,9 @@ describe('data.raw', function() {
 
   describe('transform', function () {
     var encoding = Encoding.fromSpec({
+      data: {
+        filter: 'datum.a > datum.b && datum.c === datum.d'
+      },
       encoding: {
         x: {name: 'a', type:'T', timeUnit: 'year'},
         y: {
@@ -107,14 +110,7 @@ describe('data.raw', function() {
           'name': 'Acceleration',
           'type': 'Q'
         }
-      },
-      filter: [{
-        operator: '>',
-        operands: ['a', 'b']
-      },{
-        operator: '=',
-        operands: ['c', 'd']
-      }]
+      }
     });
 
     describe('bin', function() {
@@ -129,28 +125,47 @@ describe('data.raw', function() {
       });
     });
 
-    describe('filter', function () {
-      it('should return filter transform that include filter null', function () {
-        var transform = data.raw.transform.filter(encoding);
+    describe('nullFilter', function() {
+      var spec = {
+          marktype: 'point',
+          encoding: {
+            y: {name: 'Q', type:'Q'},
+            x: {name: 'T', type:'T'},
+            color: {name: 'O', type:'O'}
+          }
+        };
 
-        expect(transform[0]).to.eql({
-          type: 'filter',
-          test: '(d.data.a!==null) && (d.data.Acceleration!==null)' +
-          ' && (d.data.a > b) && (d.data.c == d)'
-        });
+      it('should add filterNull for Q and T by default', function () {
+        var encoding = Encoding.fromSpec(spec);
+        expect(data.raw.transform.nullFilter(encoding))
+          .to.eql([{
+            type: 'filter',
+            test: 'T!==null && Q!==null'
+          }]);
       });
 
-      it('should exclude unsupported operator', function () {
-        var badEncoding = Encoding.fromSpec({
-          filter: [{
-            operator: '*',
-            operands: ['a', 'b']
-          }]
+      it('should add filterNull for O when specified', function () {
+        var encoding = Encoding.fromSpec(spec, {
+          config: {
+            filterNull: {O: true}
+          }
         });
+        expect(data.raw.transform.nullFilter(encoding))
+          .to.eql([{
+            type: 'filter',
+            test:'T!==null && Q!==null && O!==null'
+          }]);
+      });
+      // });
+    });
 
-        var transform = data.raw.transform.filter(badEncoding);
-
-        expect(transform.length).to.equal(0);
+    describe('filter', function () {
+      it('should return array that contains a filter transform', function () {
+        expect(data.raw.transform.filter(encoding))
+          .to.eql([{
+            type: 'filter',
+            test: 'datum.a > datum.b && datum.c === datum.d'
+          }]);
       });
     });
 
@@ -165,11 +180,12 @@ describe('data.raw', function() {
       });
     });
 
-    it('should time and bin before filter', function () {
+    it('should have null filter, timeUnit, bin then filter', function () {
       var transform = data.raw.transform(encoding);
-      expect(transform[0].type).to.eql('formula');
-      expect(transform[1].type).to.eql('bin');
-      expect(transform[2].type).to.eql('filter');
+      expect(transform[0].type).to.eql('filter');
+      expect(transform[1].type).to.eql('formula');
+      expect(transform[2].type).to.eql('bin');
+      expect(transform[3].type).to.eql('filter');
     });
 
   });

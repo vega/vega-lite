@@ -534,25 +534,6 @@ var text = merge(clone(onlyQuantitativeField), textMixin, sortMixin);
 
 // TODO add label
 
-var filter = {
-  type: 'array',
-  items: {
-    type: 'object',
-    properties: {
-      operands: {
-        type: 'array',
-        items: {
-          type: ['string', 'boolean', 'integer', 'number']
-        }
-      },
-      operator: {
-        type: 'string',
-        enum: ['>', '>=', '=', '!=', '<', '<=', 'notNull']
-      }
-    }
-  }
-};
-
 var data = {
   type: 'object',
   properties: {
@@ -574,6 +555,11 @@ var data = {
         type: 'object',
         additionalProperties: true
       }
+    },
+    // filter
+    filter: {
+      type: 'string',
+      default: undefined
     }
   }
 };
@@ -610,9 +596,11 @@ var config = {
     },
 
     // filter null
+    // TODO(#597) revise this config
     filterNull: {
       type: 'object',
       properties: {
+        N: {type:'boolean', default: false},
         O: {type:'boolean', default: false},
         Q: {type:'boolean', default: true},
         T: {type:'boolean', default: true}
@@ -781,7 +769,6 @@ schema.schema = {
         detail: detail
       }
     },
-    filter: filter,
     config: config
   }
 };
