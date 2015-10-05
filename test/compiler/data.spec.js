@@ -233,13 +233,10 @@ describe('data.aggregated', function () {
       "transform": [{
         "type": "aggregate",
         "groupby": ["origin"],
-        "fields": [{
-          "op": "sum",
-          "field": "Acceleration"
-        },{
-          "op": "count",
-          "field": "*"
-        }]
+        "summary": {
+          '*': ['count'],
+          'Acceleration': ['sum']
+        }
       }]
     });
   });
