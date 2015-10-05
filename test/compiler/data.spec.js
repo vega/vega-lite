@@ -100,6 +100,9 @@ describe('data.raw', function() {
 
   describe('transform', function () {
     var encoding = Encoding.fromSpec({
+      data: {
+        filter: ['datum.a > datum.b', 'datum.c === datum.d']
+      },
       encoding: {
         x: {name: 'a', type:'T', timeUnit: 'year'},
         y: {
@@ -107,14 +110,7 @@ describe('data.raw', function() {
           'name': 'Acceleration',
           'type': 'Q'
         }
-      },
-      filter: [{
-        operator: '>',
-        operands: ['a', 'b']
-      },{
-        operator: '=',
-        operands: ['c', 'd']
-      }]
+      }
     });
 
     describe('bin', function() {
@@ -168,7 +164,7 @@ describe('data.raw', function() {
         expect(data.raw.transform.filter(encoding))
           .to.eql([{
             type: 'filter',
-            test: '(d.data.a > b) && (d.data.c == d)'
+            test: '(datum.a > datum.b) && (datum.c === datum.d)'
           }]);
       });
 
