@@ -99,7 +99,8 @@ scale.domain = function (name, encoding, stats, opt) {
       (encoding.isType(name, T) && (!timeUnit || !time.isOrdinalFn(timeUnit)))
     )
   ) {
-    return {data: RAW, field: encoding.fieldRef(name, {nofn: !timeUnit})};
+
+    return {data: RAW, field: encoding.fieldRef(name)};
   }
 
   var data = encoding.sort(name, stats).length > 0 ?
