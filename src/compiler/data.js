@@ -141,13 +141,11 @@ data.raw.transform.nullFilter = function(encoding) {
 };
 
 data.raw.transform.filter = function(encoding) {
-  var filters = encoding.data().filter;
-  if (filters.length === 0) return [];
-
-  return [{
+  var filter = encoding.data().filter;
+  return filter ? [{
       type: 'filter',
-      test: '(' + filters.join(') && (') + ')'
-  }];
+      test: filter
+  }] : [];
 };
 
 data.aggregate = function(encoding) {

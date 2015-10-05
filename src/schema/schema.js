@@ -558,11 +558,8 @@ var data = {
     },
     // filter
     filter: {
-      type: 'array',
-      default: [],
-      items: {
-        type: 'string'
-      }
+      type: 'string',
+      default: undefined
     }
   }
 };
