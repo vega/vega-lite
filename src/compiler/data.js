@@ -123,12 +123,12 @@ data.raw.transform.bin = function(encoding) {
 };
 
 /**
- * @return {Object} filter transform for filtering null value based on filterNul config
+ * @return {Object} An array that might contain a filter transform for filtering null value based on filterNul config
  */
 data.raw.transform.nullFilter = function(encoding) {
   var filteredFields = util.reduce(encoding.fields(),
     function(filteredFields, fieldList, fieldName) {
-      if (fieldName === '*') return; //count
+      if (fieldName === '*') return filteredFields; //count
 
       // TODO(#597) revise how filterNull is structured.
       if ((encoding.config('filterNull').Q && fieldList.containsType[Q]) ||
@@ -138,14 +138,15 @@ data.raw.transform.nullFilter = function(encoding) {
         filteredFields.push(fieldName);
       }
       return filteredFields;
-    });
+    }, []);
 
-  return {
-    type: 'filter',
-    test: filteredFields.map(function(fieldName) {
-      return fieldName + '!==null';
-    }).join(' && ')
-  };
+  return filteredFields.length > 0 ?
+    [{
+      type: 'filter',
+      test: filteredFields.map(function(fieldName) {
+        return fieldName + '!==null';
+      }).join(' && ')
+    }] : [];
 };
 
 data.raw.transform.filter = function(encoding) {
