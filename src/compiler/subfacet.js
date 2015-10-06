@@ -7,7 +7,7 @@ module.exports = subfaceting;
 function subfaceting(group, mdef, details, stack, encoding) {
   var m = group.marks;
   var g = {
-    _name: 'subfacet',
+    name: 'subfacet',
     type: 'group',
     from: mdef.from,
     properties: {
