@@ -54,7 +54,7 @@ function faceting(group, encoding, layout, spec, singleScaleNames, stack, stats)
     if (!encoding.isDimension(ROW)) {
       util.error('Row encoding should be ordinal.');
     }
-    enter.y = {scale: ROW, field: 'keys.' + facetKeys.length};
+    enter.y = {scale: ROW, field: encoding.fieldName(ROW)};
     enter.height = {'value': layout.cellHeight}; // HACK
 
     facetKeys.push(encoding.fieldRef(ROW));
@@ -62,7 +62,7 @@ function faceting(group, encoding, layout, spec, singleScaleNames, stack, stats)
     if (hasCol) {
       from = util.duplicate(group.from);
       from.transform = from.transform || [];
-      from.transform.unshift({type: 'facet', keys: [encoding.fieldRef(COL)]});
+      from.transform.unshift({type: 'facet', groupby: [encoding.fieldRef(COL)]});
     }
 
     axesGrp = groupdef('x-axes', {
@@ -86,7 +86,7 @@ function faceting(group, encoding, layout, spec, singleScaleNames, stack, stats)
     if (!encoding.isDimension(COL)) {
       util.error('Col encoding should be ordinal.');
     }
-    enter.x = {scale: COL, field: 'keys.' + facetKeys.length};
+    enter.x = {scale: COL, field: encoding.fieldName(COL)};
     enter.width = {'value': layout.cellWidth}; // HACK
 
     facetKeys.push(encoding.fieldRef(COL));
@@ -94,7 +94,7 @@ function faceting(group, encoding, layout, spec, singleScaleNames, stack, stats)
     if (hasRow) {
       from = util.duplicate(group.from);
       from.transform = from.transform || [];
-      from.transform.unshift({type: 'facet', keys: [encoding.fieldRef(ROW)]});
+      from.transform.unshift({type: 'facet', groupby: [encoding.fieldRef(ROW)]});
     }
 
     axesGrp = groupdef('y-axes', {
@@ -130,7 +130,7 @@ function faceting(group, encoding, layout, spec, singleScaleNames, stack, stats)
 
   // add facet transform
   var trans = (group.from.transform || (group.from.transform = []));
-  trans.unshift({type: 'facet', keys: facetKeys});
+  trans.unshift({type: 'facet', groupby: facetKeys});
 
   return spec;
 }
