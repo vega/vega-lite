@@ -187,10 +187,10 @@ data.aggregate = function(encoding) {
   encoding.forEach(function(field, encType) {
     if (field.aggregate) {
       if (field.aggregate === 'count') {
-        meas.count = {op: 'count', field: '*'};
+        meas.count = {ops: ['count'], field: '*'};
       }else {
         meas[field.aggregate + '|' + field.name] = {
-          op: field.aggregate,
+          ops: [field.aggregate],
           field: field.name
         };
       }
@@ -209,7 +209,7 @@ data.aggregate = function(encoding) {
       transform: [{
         type: 'aggregate',
         groupby: dims,
-        fields: meas
+        summarize: meas
       }]
     };
   }
