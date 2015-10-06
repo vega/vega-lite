@@ -36,7 +36,7 @@ function stacking(data, encoding, mdef) {
     transform: [{
       type: 'aggregate',
       groupby: [encoding.fieldRef(dim)].concat(facets), // dim and other facets
-      fields: [{op: 'sum', field: encoding.fieldRef(val)}] // TODO check if field with aggregate is correct?
+      summarize: [{ops: ['sum'], field: encoding.fieldRef(val)}] // TODO check if field with aggregate is correct?
     }]
   };
 
@@ -44,8 +44,8 @@ function stacking(data, encoding, mdef) {
     stacked.transform.push({ //calculate max for each facet
       type: 'aggregate',
       groupby: facets,
-      fields: [{
-        op: 'max',
+      summarize: [{
+        ops: ['max'],
         field: encoding.fieldName(val, {fn: 'sum'})
       }]
     });
