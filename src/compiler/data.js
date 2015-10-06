@@ -84,15 +84,6 @@ data.raw.transform = function(encoding) {
   );
 };
 
-var BINARY = {
-  '>':  true,
-  '>=': true,
-  '=':  true,
-  '!=': true,
-  '<':  true,
-  '<=': true
-};
-
 data.raw.transform.time = function(encoding) {
   return encoding.reduce(function(transform, field, encType) {
     if (field.type === T && field.timeUnit) {
@@ -123,7 +114,7 @@ data.raw.transform.bin = function(encoding) {
 };
 
 /**
- * @return {Object} An array that might contain a filter transform for filtering null value based on filterNul config
+ * @return {Array} An array that might contain a filter transform for filtering null value based on filterNul config
  */
 data.raw.transform.nullFilter = function(encoding) {
   var filteredFields = util.reduce(encoding.fields(),
@@ -150,35 +141,11 @@ data.raw.transform.nullFilter = function(encoding) {
 };
 
 data.raw.transform.filter = function(encoding) {
-  var filters = encoding.filter().reduce(function(f, filter) {
-    var condition = '';
-    var operator = filter.operator;
-    var operands = filter.operands;
-
-    var d = 'datum.';
-
-    if (BINARY[operator]) {
-      // expects a field and a value
-      if (operator === '=') {
-        operator = '==';
-      }
-
-      var op1 = operands[0];
-      var op2 = operands[1];
-      condition = d + op1 + ' ' + operator + ' ' + op2;
-    } else {
-      util.warn('Unsupported operator: ', operator);
-      return f;
-    }
-    f.push('(' + condition + ')');
-    return f;
-  }, []);
-  if (filters.length === 0) return [];
-
-  return [{
+  var filter = encoding.data().filter;
+  return filter ? [{
       type: 'filter',
-      test: filters.join(' && ')
-  }];
+      test: filter
+  }] : [];
 };
 
 data.aggregate = function(encoding) {
