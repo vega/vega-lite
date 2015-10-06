@@ -14,22 +14,19 @@ legend.defs = function(encoding, style) {
 
   if (encoding.has(COLOR) && encoding.field(COLOR).legend) {
     defs.push(legend.def(COLOR, encoding, {
-      fill: COLOR,
-      orient: 'right'
+      fill: COLOR
     }, style));
   }
 
   if (encoding.has(SIZE) && encoding.field(SIZE).legend) {
     defs.push(legend.def(SIZE, encoding, {
-      size: SIZE,
-      orient: defs.length === 1 ? 'left' : 'right'
+      size: SIZE
     }, style));
   }
 
   if (encoding.has(SHAPE) && encoding.field(SHAPE).legend) {
     defs.push(legend.def(SHAPE, encoding, {
-      shape: SHAPE,
-      orient: defs.length === 1 ? 'left' : 'right'
+      shape: SHAPE
     }, style));
   }
   return defs;
@@ -39,6 +36,8 @@ legend.def = function(name, encoding, def, style) {
   var timeUnit = encoding.field(name).timeUnit;
 
   def.title = legend.title(name, encoding);
+  def.orient = encoding.field(name).legend.orient;
+
   def = legend.style(name, encoding, def, style);
 
   if (encoding.isType(name, T) &&
