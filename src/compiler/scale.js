@@ -4,8 +4,7 @@ var util = require('../util'),
   time = require('./time'),
   colorbrewer = require('colorbrewer'),
   interpolate = require('d3-color').interpolateHsl,
-  schema = require('../schema/schema'),
-  vlsort = require('./sort');
+  schema = require('../schema/schema');
 
 var scale = module.exports = {};
 
@@ -35,10 +34,15 @@ scale.defs = function(names, encoding, layout, stats, opt) {
 };
 
 scale.sort = function(s, encoding, name) {
-  return s.type === 'ordinal' && (
-    !!encoding.bin(name) ||
-    encoding.sort(name).length === 0
-  );
+  if (s.type === 'ordinal') {
+    var sort = encoding.sort(name);
+    if (sort) {
+      return sort;
+    } else {
+      return !encoding.bin(name) || undefined;
+    }
+  }
+  return undefined;
 };
 
 scale.type = function(name, encoding) {
@@ -103,11 +107,7 @@ scale.domain = function (name, encoding, stats, opt) {
     return {data: RAW, field: encoding.fieldRef(name)};
   }
 
-  var data = encoding.sort(name, stats).length > 0 ?
-    vlsort.getDataName(name):
-    encoding.dataTable();
-
-  return {data: data, field: encoding.fieldRef(name)};
+  return {data: encoding.dataTable(), field: encoding.fieldRef(name)};
 };
 
 

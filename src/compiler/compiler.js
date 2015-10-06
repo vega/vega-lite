@@ -18,7 +18,6 @@ var Encoding = require('../Encoding'),
 compiler.data = require('./data');
 compiler.facet = require('./facet');
 compiler.layout = require('./layout');
-compiler.sort = require('./sort');
 compiler.stack = require('./stack');
 compiler.style = require('./style');
 compiler.subfacet = require('./subfacet');
@@ -74,9 +73,6 @@ compiler.compileEncoding = function (encoding, stats) {
     };
 
   var group = spec.marks[0];
-
-  // FIXME remove compiler.sort after migrating to vega 2.
-  spec.data = compiler.sort(spec.data, encoding, stats); // append new data
 
   // marks
   var style = compiler.style(encoding, stats),
