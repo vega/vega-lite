@@ -27,9 +27,6 @@ legend.defs = function(encoding, style) {
   }
 
   if (encoding.has(SHAPE) && encoding.field(SHAPE).legend) {
-    if (defs.length === 2) {
-      console.error('Vega-lite currently only supports two legends');
-    }
     defs.push(legend.def(SHAPE, encoding, {
       shape: SHAPE,
       orient: defs.length === 1 ? 'left' : 'right'
