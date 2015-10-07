@@ -53,17 +53,32 @@ function stacking(data, encoding, mdef) {
 
   data.push(stacked);
 
+  var valName = encoding.fieldName(val);
+  var startField = valName + '_start';
+  var endField = valName + '_end';
+
   // add stack transform to mark
   mdef.from.transform = [{
     type: 'stack',
-    point: encoding.fieldRef(dim),
-    height: encoding.fieldRef(val),
-    output: {y1: val, y0: val + '2'}
+    groupby: encoding.fieldRef(dim),
+    field: encoding.fieldRef(val),
+    // TODO consider adding sortby
+    // FIXME: figure out why renamed output does not work
+    output: {layout_start: startField, layout_end: endField}
   }];
 
   // TODO: This is super hack-ish -- consolidate into modular mark properties?
-  mdef.properties.update[val] = mdef.properties.enter[val] = {scale: val, field: val};
-  mdef.properties.update[val + '2'] = mdef.properties.enter[val + '2'] = {scale: val, field: val + '2'};
+  mdef.properties.update[val] = mdef.properties.enter[val] = {
+    scale: val,
+    // field: startField
+    field: 'layout_start'
+  };
+  mdef.properties.update[val + '2'] = mdef.properties.enter[val + '2'] = {
+    scale: val,
+    // TODO: use renamed output
+    // field: endField
+    field: 'layout_end'
+  };
 
   return val; //return stack encoding
 }
