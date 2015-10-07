@@ -4,7 +4,7 @@ require('./globals');
 
 var consts = require('./consts'),
   util = require('./util'),
-  vlfield = require('./field'),
+  vlEncDef = require('./encdef'),
   vlenc = require('./enc'),
   schema = require('./schema/schema');
 
@@ -94,7 +94,7 @@ module.exports = (function() {
     return this._enc[encType].name !== undefined;
   };
 
-  proto.field = function(et) {
+  proto.encDef = function(et) {
     return this._enc[et];
   };
 
@@ -105,11 +105,7 @@ module.exports = (function() {
   // get "field" reference for vega
   proto.fieldRef = function(et, opt) {
     opt = opt || {};
-    return vlfield.fieldRef(this._enc[et], opt);
-  };
-
-  proto.fieldName = function(et) {
-    return this._enc[et].name;
+    return vlEncDef.fieldRef(this._enc[et], opt);
   };
 
   /*
@@ -120,8 +116,8 @@ module.exports = (function() {
   };
 
   proto.fieldTitle = function(et) {
-    if (vlfield.isCount(this._enc[et])) {
-      return vlfield.count.displayName;
+    if (vlEncDef.isCount(this._enc[et])) {
+      return vlEncDef.count.displayName;
     }
     var fn = this._enc[et].aggregate || this._enc[et].timeUnit || (this._enc[et].bin && 'bin');
     if (fn) {
@@ -146,7 +142,7 @@ module.exports = (function() {
       (encType === X && this.has(COL) && this.has(X));
 
     // if band.size is explicitly specified, follow the specification, otherwise draw value from config.
-    return this.field(encType).band.size ||
+    return this.encDef(encType).band.size ||
       this.config(useSmallBand ? 'smallBandSize' : 'largeBandSize');
   };
 
@@ -179,7 +175,7 @@ module.exports = (function() {
   proto.sort = function(et, stats) {
     var sort = this._enc[et].sort,
       enc = this._enc,
-      isTypes = vlfield.isTypes;
+      isTypes = vlEncDef.isTypes;
 
     if ((!sort || sort.length===0) &&
         // FIXME
@@ -218,26 +214,26 @@ module.exports = (function() {
   };
 
   proto.isType = function(et, type) {
-    var field = this.field(et);
-    return field && vlfield.isType(field, type);
+    var encDef = this.encDef(et);
+    return encDef && vlEncDef.isType(encDef, type);
   };
 
 
   proto.isTypes = function(et, type) {
-    var field = this.field(et);
-    return field && vlfield.isTypes(field, type);
+    var encDef = this.encDef(et);
+    return encDef && vlEncDef.isTypes(encDef, type);
   };
 
   Encoding.isOrdinalScale = function(encoding, encType) {
-    return vlfield.isOrdinalScale(encoding.field(encType));
+    return vlEncDef.isOrdinalScale(encoding.encDef(encType));
   };
 
   Encoding.isDimension = function(encoding, encType) {
-    return vlfield.isDimension(encoding.field(encType));
+    return vlEncDef.isDimension(encoding.encDef(encType));
   };
 
   Encoding.isMeasure = function(encoding, encType) {
-    return vlfield.isMeasure(encoding.field(encType));
+    return vlEncDef.isMeasure(encoding.encDef(encType));
   };
 
   proto.isOrdinalScale = function(encType) {
@@ -301,7 +297,7 @@ module.exports = (function() {
   };
 
   proto.cardinality = function(encType, stats) {
-    return vlfield.cardinality(this.field(encType), stats, this.config('filterNull'));
+    return vlEncDef.cardinality(this.encDef(encType), stats, this.config('filterNull'));
   };
 
   proto.isRaw = function() {
@@ -354,7 +350,7 @@ module.exports = (function() {
 
   Encoding.toggleSort.support = function(spec, stats) {
     var enc = spec.encoding,
-      isTypes = vlfield.isTypes;
+      isTypes = vlEncDef.isTypes;
 
     if (vlenc.has(enc, ROW) || vlenc.has(enc, COL) ||
       !vlenc.has(enc, X) || !vlenc.has(enc, Y) ||
@@ -362,8 +358,8 @@ module.exports = (function() {
       return false;
     }
 
-    return ( isTypes(enc.x, [N,O]) && vlfield.isMeasure(enc.y)) ? 'x' :
-      ( isTypes(enc.y, [N,O]) && vlfield.isMeasure(enc.x)) ? 'y' : false;
+    return ( isTypes(enc.x, [N,O]) && vlEncDef.isMeasure(enc.y)) ? 'x' :
+      ( isTypes(enc.y, [N,O]) && vlEncDef.isMeasure(enc.x)) ? 'y' : false;
   };
 
   Encoding.toggleFilterNullO = function(spec) {

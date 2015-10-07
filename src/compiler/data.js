@@ -4,7 +4,7 @@ require('../globals');
 
 module.exports = data;
 
-var vlfield = require('../field'),
+var vlEncDef = require('../encdef'),
   util = require('../util'),
   time = require('./time');
 
@@ -58,14 +58,14 @@ data.raw = function(encoding, stats) {
 data.raw.formatParse = function(encoding) {
   var parse;
 
-  encoding.forEach(function(field) {
-    if (field.type == T) {
+  encoding.forEach(function(encDef) {
+    if (encDef.type == T) {
       parse = parse || {};
-      parse[field.name] = 'date';
-    } else if (field.type == Q) {
-      if (vlfield.isCount(field)) return;
+      parse[encDef.name] = 'date';
+    } else if (encDef.type == Q) {
+      if (vlEncDef.isCount(encDef)) return;
       parse = parse || {};
-      parse[field.name] = 'number';
+      parse[encDef.name] = 'number';
     }
   });
 
@@ -88,14 +88,14 @@ data.raw.transform = function(encoding, stats) {
 };
 
 data.raw.transform.time = function(encoding) {
-  return encoding.reduce(function(transform, field, encType) {
-    if (field.type === T && field.timeUnit) {
+  return encoding.reduce(function(transform, encDef, encType) {
+    if (encDef.type === T && encDef.timeUnit) {
       var fieldRef = encoding.fieldRef(encType, {nofn: true, datum: true});
 
       transform.push({
         type: 'formula',
         field: encoding.fieldRef(encType),
-        expr: time.formula(field.timeUnit, fieldRef)
+        expr: time.formula(encDef.timeUnit, fieldRef)
       });
     }
     return transform;
@@ -104,15 +104,15 @@ data.raw.transform.time = function(encoding) {
 
 // FIXME(#514): eliminate stats
 data.raw.transform.bin = function(encoding, stats) {
-  return encoding.reduce(function(transform, field, encType) {
+  return encoding.reduce(function(transform, encDef, encType) {
     if (encoding.bin(encType)) {
       transform.push({
         type: 'bin',
-        field: field.name,
+        field: encDef.name,
         output: {bin: encoding.fieldRef(encType)},
         maxbins: encoding.bin(encType).maxbins,
-        min: stats[field.name].min,
-        max: stats[field.name].max
+        min: stats[encDef.name].min,
+        max: stats[encDef.name].max
       });
     }
     return transform;
@@ -163,18 +163,18 @@ data.aggregate = function(encoding) {
 
   var hasAggregate = false;
 
-  encoding.forEach(function(field, encType) {
-    if (field.aggregate) {
+  encoding.forEach(function(encDef, encType) {
+    if (encDef.aggregate) {
       hasAggregate = true;
-      if (field.aggregate === 'count') {
+      if (encDef.aggregate === 'count') {
         meas['*'] = meas['*'] || {};
         meas['*'].count = true;
       } else {
-        meas[field.name] = meas[field.name] || {};
-        meas[field.name][field.aggregate] = true;
+        meas[encDef.name] = meas[encDef.name] || {};
+        meas[encDef.name][encDef.aggregate] = true;
       }
     } else {
-      dims[field.name] = encoding.fieldRef(encType);
+      dims[encDef.name] = encoding.fieldRef(encType);
     }
   });
 
@@ -182,8 +182,8 @@ data.aggregate = function(encoding) {
 
   // short-format summarize object for Vega's aggregate transform
   // https://github.com/vega/vega/wiki/Data-Transforms#-aggregate
-  var summarize = util.reduce(meas, function(summarize, fnDictSet, fieldName) {
-    summarize[fieldName] = util.keys(fnDictSet);
+  var summarize = util.reduce(meas, function(summarize, fnDictSet, field) {
+    summarize[field] = util.keys(fnDictSet);
     return summarize;
   }, {});
 
@@ -203,7 +203,7 @@ data.aggregate = function(encoding) {
 };
 
 data.filterNonPositive = function(dataTable, encoding) {
-  encoding.forEach(function(field, encType) {
+  encoding.forEach(function(encDef, encType) {
     if (encoding.scale(encType).type === 'log') {
       dataTable.transform.push({
         type: 'filter',

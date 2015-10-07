@@ -12,19 +12,19 @@ var legend = module.exports = {};
 legend.defs = function(encoding, style) {
   var defs = [];
 
-  if (encoding.has(COLOR) && encoding.field(COLOR).legend) {
+  if (encoding.has(COLOR) && encoding.encDef(COLOR).legend) {
     defs.push(legend.def(COLOR, encoding, {
       fill: COLOR
     }, style));
   }
 
-  if (encoding.has(SIZE) && encoding.field(SIZE).legend) {
+  if (encoding.has(SIZE) && encoding.encDef(SIZE).legend) {
     defs.push(legend.def(SIZE, encoding, {
       size: SIZE
     }, style));
   }
 
-  if (encoding.has(SHAPE) && encoding.field(SHAPE).legend) {
+  if (encoding.has(SHAPE) && encoding.encDef(SHAPE).legend) {
     defs.push(legend.def(SHAPE, encoding, {
       shape: SHAPE
     }, style));
@@ -33,10 +33,10 @@ legend.defs = function(encoding, style) {
 };
 
 legend.def = function(name, encoding, def, style) {
-  var timeUnit = encoding.field(name).timeUnit;
+  var timeUnit = encoding.encDef(name).timeUnit;
 
   def.title = legend.title(name, encoding);
-  def.orient = encoding.field(name).legend.orient;
+  def.orient = encoding.encDef(name).legend.orient;
 
   def = legend.style(name, encoding, def, style);
 
@@ -68,7 +68,7 @@ legend.style = function(name, e, def, style) {
       /* fall through */
     case 'point':
       // fill or stroke
-      if (e.field(SHAPE).filled) {
+      if (e.encDef(SHAPE).filled) {
         if (e.has(COLOR) && name === COLOR) {
           symbols.fill = {scale: COLOR, field: 'data'};
         } else {
@@ -92,7 +92,7 @@ legend.style = function(name, e, def, style) {
       break;
   }
 
-  var opacity = e.field(COLOR).opacity || style.opacity;
+  var opacity = e.encDef(COLOR).opacity || style.opacity;
   if (opacity) {
     symbols.opacity = {value: opacity};
   }
@@ -100,7 +100,7 @@ legend.style = function(name, e, def, style) {
 };
 
 legend.title = function(name, encoding) {
-  var leg = encoding.field(name).legend;
+  var leg = encoding.encDef(name).legend;
 
   if (leg.title) return leg.title;
 

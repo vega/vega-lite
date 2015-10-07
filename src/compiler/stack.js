@@ -46,14 +46,14 @@ function stacking(data, encoding, mdef) {
       groupby: facets,
       summarize: [{
         ops: ['max'],
-        field: encoding.fieldName(val, {fn: 'sum'})
+        field: encoding.fieldRef(val, {prefn: 'sum_'})
       }]
     });
   }
 
   data.push(stacked);
 
-  var valName = encoding.fieldName(val);
+  var valName = encoding.encDef(val).name;
   var startField = valName + '_start';
   var endField = valName + '_end';
 
