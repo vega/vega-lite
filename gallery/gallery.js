@@ -69,9 +69,9 @@ var EXAMPLES = [
       data: {url: 'data/barley.json'},
       marktype: 'point',
       encoding: {
-        x: {type: 'Q',name: 'yield',aggregate: 'avg'},
+        x: {type: 'Q',name: 'yield', aggregate: 'mean'},
         y: {
-          sort: [{name: 'yield',aggregate: 'avg',reverse: false}],
+          sort: {field: 'yield', op: 'mean'},
           type: 'O',
           name: 'variety'
         },

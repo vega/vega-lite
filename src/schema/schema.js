@@ -228,14 +228,16 @@ var sortMixin = {
       type: ['object', 'boolean'],
       default: true,
       supportedTypes: toMap([N, O]),
-      required: ['name', 'aggregate'],
+      required: ['field', 'op'],
       properties: {
-        name: {
-          type: 'string'
-        },
-        aggregate: {
+        field: {
           type: 'string',
-          enum: ['avg', 'sum', 'min', 'max', 'count']
+          description: 'The field name to aggregate over.'
+        },
+        op: {
+          type: 'string',
+          enum: ['avg', 'sum', 'min', 'max', 'count'],
+          description: 'The field name to aggregate over.'
         }
       }
     }
