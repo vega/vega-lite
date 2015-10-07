@@ -62,7 +62,7 @@ function stacking(data, encoding, mdef) {
     type: 'stack',
     groupby: encoding.fieldRef(dim),
     field: encoding.fieldRef(val),
-    // TODO consider adding sortby
+    // TODO(#39) add sort by
     output: {start: startField, end: endField}
   }];
 
