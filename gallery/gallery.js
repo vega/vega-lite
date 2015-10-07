@@ -75,6 +75,22 @@ var EXAMPLES = [
       'data': {'url': 'data/barley.json'}
     }
   },{
+    title: 'Grouped bar chart',
+    spec: {
+      marktype: 'bar',
+      encoding: {
+        x: {name: 'Origin', type: 'N'},
+        y: {name: 'Acceleration',type: 'Q', aggregate: 'mean'},
+        col: { axis: {maxLabelLength: 25}, name: 'Cylinders',type: 'O'},
+        color: {
+          scale: {quantitativeRange: ['#AFC6A3','#09622A']},
+          name: 'Origin',
+          type: 'N'
+        }
+      },
+      data: {url: 'data/cars.json'}
+    }
+  },{
     title: 'Barleys',
     spec: {
       data: {url: 'data/barley.json'},
