@@ -54,7 +54,8 @@ compiler.compileEncoding = function (encoding, stats) {
       width: layout.width,
       height: layout.height,
       padding: 'auto',
-      data: compiler.data(encoding),
+      // FIXME(#514): eliminate stats
+      data: compiler.data(encoding, stats),
       // global scales contains only time unit scales
       scales: compiler.time.scales(encoding),
       marks: [{
