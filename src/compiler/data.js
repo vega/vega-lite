@@ -4,7 +4,7 @@ require('../globals');
 
 module.exports = data;
 
-var vlEncDef = require('../field'),
+var vlEncDef = require('../encdef'),
   util = require('../util'),
   time = require('./time');
 

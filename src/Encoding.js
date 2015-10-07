@@ -4,7 +4,7 @@ require('./globals');
 
 var consts = require('./consts'),
   util = require('./util'),
-  vlEncDef = require('./field'),
+  vlEncDef = require('./encdef'),
   vlenc = require('./enc'),
   schema = require('./schema/schema');
 

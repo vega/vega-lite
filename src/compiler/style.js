@@ -2,7 +2,7 @@
 
 require('../globals');
 
-var vlEncDef = require('../field');
+var vlEncDef = require('../encdef');
 
 module.exports = function(encoding, stats) {
   return {

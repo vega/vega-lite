@@ -4,7 +4,7 @@
 
 var consts = require('./consts'),
   c = consts.shorthand,
-  vlEncDef = require('./field'),
+  vlEncDef = require('./encdef'),
   util = require('./util'),
   schema = require('./schema/schema'),
   encTypes = schema.encTypes;

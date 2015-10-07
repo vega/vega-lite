@@ -3,7 +3,7 @@
 require('../src/globals');
 
 var expect = require('chai').expect;
-var vlEncDef = require('../src/field');
+var vlEncDef = require('../src/encdef');
 
 describe('vl.field.cardinality()', function () {
   describe('for Q', function () {
