@@ -66,7 +66,7 @@ function stacking(data, encoding, mdef) {
     output: {start: startField, end: endField}
   }];
 
-  // TODO: This is super hack-ish -- consolidate into modular mark properties?
+  // TODO(#276): This is super hack-ish -- consolidate into modular mark properties?
   mdef.properties.update[val] = mdef.properties.enter[val] = {
     scale: val,
     field: startField
