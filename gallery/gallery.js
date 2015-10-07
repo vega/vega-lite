@@ -64,6 +64,17 @@ var EXAMPLES = [
       'data': {'url': 'data/cars.json'}
     }
   },{
+    title: 'Stacked Bar Chart',
+    spec: {
+      'marktype': 'bar',
+      'encoding': {
+        'x': {'name': 'variety','type': 'N'},
+        'y': {'name': 'yield','type': 'Q','aggregate': 'sum'},
+        'color': {'name': 'site', 'type': 'N'}
+      },
+      'data': {'url': 'data/barley.json'}
+    }
+  },{
     title: 'Barleys',
     spec: {
       data: {url: 'data/barley.json'},
