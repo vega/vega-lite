@@ -108,10 +108,6 @@ module.exports = (function() {
     return vlEncDef.fieldRef(this._enc[et], opt);
   };
 
-  proto.fieldName = function(et) {
-    return this._enc[et].name;
-  };
-
   /*
    * return key-value pairs of field name and list of fields of that field name
    */

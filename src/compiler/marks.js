@@ -423,7 +423,7 @@ function text_props(e, layout, style, stats) {
   // text
   if (e.has(TEXT)) {
     if (e.isType(TEXT, Q)) {
-      var fieldStats = stats[e.fieldName(TEXT)],
+      var fieldStats = stats[e.encDef(TEXT).name],
         numberFormat = encDef.format || e.numberFormat(fieldStats);
 
       p.text = {template: '{{' + e.fieldRef(TEXT) + ' | number:\'' +
