@@ -22,7 +22,7 @@
     "release": "gulp release",
     "start": "gulp serve",
     "test": "gulp test",
-    "watch": "gulp watch-schema watch-test"
+    "watch": "gulp bundle watch-schema watch-test"
   },
   "repository": {
     "type": "git",
