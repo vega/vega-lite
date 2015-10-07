@@ -113,14 +113,24 @@ describe('data.raw', function() {
       }
     });
 
+    var stats = {
+      Acceleration: {
+        min: 0,
+        max: 100
+      }
+    };
+
     describe('bin', function() {
       it('should add bin transform', function() {
-        var transform = data.raw.transform.bin(encoding);
+        var transform = data.raw.transform.bin(encoding, stats);
+
         expect(transform[0]).to.eql({
           type: 'bin',
           field: 'Acceleration',
           output: {bin: 'bin_Acceleration'},
-          maxbins: 15
+          maxbins: 15,
+          min: 0,
+          max: 100
         });
       });
     });
@@ -181,7 +191,7 @@ describe('data.raw', function() {
     });
 
     it('should have null filter, timeUnit, bin then filter', function () {
-      var transform = data.raw.transform(encoding);
+      var transform = data.raw.transform(encoding, stats);
       expect(transform[0].type).to.eql('filter');
       expect(transform[1].type).to.eql('formula');
       expect(transform[2].type).to.eql('bin');

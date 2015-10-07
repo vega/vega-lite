@@ -17,8 +17,9 @@ var vlfield = require('../field'),
  *                 If the encoding contains aggregate value, this will also create
  *                 aggregate table as well.
  */
-function data(encoding) {
-  var def = [data.raw(encoding)];
+// FIXME(#514): eliminate stats
+function data(encoding, stats) {
+  var def = [data.raw(encoding, stats)];
 
   var aggregate = data.aggregate(encoding);
   if (aggregate) def.push(data.aggregate(encoding));
@@ -31,7 +32,8 @@ function data(encoding) {
   return def;
 }
 
-data.raw = function(encoding) {
+// FIXME(#514): eliminate stats
+data.raw = function(encoding, stats) {
   var raw = {name: RAW};
 
   // Data source (url or inline)
@@ -49,7 +51,7 @@ data.raw = function(encoding) {
     raw.format.parse = parse;
   }
 
-  raw.transform = data.raw.transform(encoding);
+  raw.transform = data.raw.transform(encoding, stats);
   return raw;
 };
 
@@ -74,12 +76,13 @@ data.raw.formatParse = function(encoding) {
  * Generate Vega transforms for the raw data table.  This can include
  * transforms for time unit, binning and filtering.
  */
-data.raw.transform = function(encoding) {
+// FIXME(#514): eliminate stats
+data.raw.transform = function(encoding, stats) {
   // null filter comes first so transforms are not performed on null values
   // time and bin should come before filter so we can filter by time and bin
   return data.raw.transform.nullFilter(encoding).concat(
     data.raw.transform.time(encoding),
-    data.raw.transform.bin(encoding),
+    data.raw.transform.bin(encoding, stats),
     data.raw.transform.filter(encoding)
   );
 };
@@ -99,14 +102,17 @@ data.raw.transform.time = function(encoding) {
   }, []);
 };
 
-data.raw.transform.bin = function(encoding) {
+// FIXME(#514): eliminate stats
+data.raw.transform.bin = function(encoding, stats) {
   return encoding.reduce(function(transform, field, encType) {
     if (encoding.bin(encType)) {
       transform.push({
         type: 'bin',
         field: field.name,
         output: {bin: encoding.fieldRef(encType)},
-        maxbins: encoding.bin(encType).maxbins
+        maxbins: encoding.bin(encType).maxbins,
+        min: stats[field.name].min,
+        max: stats[field.name].max
       });
     }
     return transform;
