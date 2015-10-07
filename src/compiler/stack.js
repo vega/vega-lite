@@ -63,21 +63,17 @@ function stacking(data, encoding, mdef) {
     groupby: encoding.fieldRef(dim),
     field: encoding.fieldRef(val),
     // TODO consider adding sortby
-    // FIXME: figure out why renamed output does not work
-    output: {layout_start: startField, layout_end: endField}
+    output: {start: startField, end: endField}
   }];
 
   // TODO: This is super hack-ish -- consolidate into modular mark properties?
   mdef.properties.update[val] = mdef.properties.enter[val] = {
     scale: val,
-    // field: startField
-    field: 'layout_start'
+    field: startField
   };
   mdef.properties.update[val + '2'] = mdef.properties.enter[val + '2'] = {
     scale: val,
-    // TODO: use renamed output
-    // field: endField
-    field: 'layout_end'
+    field: endField
   };
 
   return val; //return stack encoding
