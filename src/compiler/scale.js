@@ -56,6 +56,7 @@ scale.type = function(name, encoding) {
       return timeUnit ? time.scale.type(timeUnit, name) : 'time';
     case Q:
       if (encoding.bin(name)) {
+        // TODO: revise this
         return name === COLOR ? 'linear' : 'ordinal';
       }
       return encoding.scale(name).type;
