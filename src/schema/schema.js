@@ -228,7 +228,7 @@ var sortMixin = {
       type: ['object', 'boolean'],
       default: true,
       supportedTypes: toMap([N, O]),
-      required: ['name', 'aggregate'],
+      required: ['field', 'op'],
       properties: {
         field: {
           type: 'string',
