@@ -37,7 +37,7 @@ var EXAMPLES = [
       marktype: 'line',
       encoding: {
         x: {'name': 'Year','type': 'T','timeUnit': 'year'},
-        y: {'name': 'Horsepower','type': 'Q','aggregate': 'avg'}
+        y: {'name': 'Horsepower','type': 'Q','aggregate': 'mean'}
       },
       data: {'url': 'data/cars.json'}
     }
@@ -62,6 +62,17 @@ var EXAMPLES = [
         'y': {'name': 'Acceleration','type': 'Q','aggregate': 'mean'}
       },
       'data': {'url': 'data/cars.json'}
+    }
+  },{
+    title: 'Stacked Bar Chart',
+    spec: {
+      'marktype': 'bar',
+      'encoding': {
+        'x': {'name': 'variety','type': 'N'},
+        'y': {'name': 'yield','type': 'Q','aggregate': 'sum'},
+        'color': {'name': 'site', 'type': 'N'}
+      },
+      'data': {'url': 'data/barley.json'}
     }
   },{
     title: 'Barleys',
@@ -122,8 +133,8 @@ var EXAMPLES = [
       'marktype': 'text',
       'encoding': {
         'row': {'name': 'Origin','type': 'O'},
-        'col': {'axis': {'maxLabelLength': 25},'name': 'Cylinders','type': 'O'},
-        'color': {'name': 'Horsepower','type': 'Q','aggregate': 'avg'},
+        'col': {'name': 'Cylinders','type': 'O'},
+        'color': {'name': 'Horsepower','type': 'Q','aggregate': 'mean'},
         'text': {'name': '*','type': 'Q','aggregate': 'count'}
       },
       'data': {'url': 'data/cars.json'}
@@ -135,11 +146,7 @@ var EXAMPLES = [
       'encoding': {
         'x': {'name': 'Year','type': 'T','timeUnit': 'year'},
         'y': {'name': 'Weight_in_lbs','type': 'Q','aggregate': 'sum'},
-        'color': {
-          'scale': {'quantitativeRange': ['#AFC6A3','#09622A']},
-          'name': 'Cylinders',
-          'type': 'O'
-        }
+        'color': {'name': 'Cylinders', 'type': 'O'}
       },
       'data': {'url': 'data/cars.json'}
     }

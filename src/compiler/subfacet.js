@@ -24,8 +24,9 @@ function subfaceting(group, mdef, details, stack, encoding) {
 
   //TODO test LOD -- we should support stack / line without color (LOD) field
   var trans = (g.from.transform || (g.from.transform = []));
-  trans.unshift({type: 'facet', groupby: details});
+  trans.push({type: 'facet', groupby: details});
 
+  // TODO: understand why we need this sort transform and write comment
   if (stack && encoding.has(COLOR)) {
     trans.unshift({type: 'sort', by: encoding.fieldRef(COLOR)});
   }

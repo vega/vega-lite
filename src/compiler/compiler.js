@@ -87,7 +87,7 @@ compiler.compileEncoding = function (encoding, stats) {
   var details = encoding.details(),
     stack = encoding.isAggregate() && details.length > 0 && compiler.stack(spec.data, encoding, mdef); // modify spec.data, mdef.{from,properties}
 
-  if (details.length > 0 && (stack || lineType)) {
+  if (details.length > 0 && lineType) {
     //subfacet to group stack / line together in one group
     compiler.subfacet(group, mdef, details, stack, encoding);
   }

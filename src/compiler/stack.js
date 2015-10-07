@@ -53,17 +53,28 @@ function stacking(data, encoding, mdef) {
 
   data.push(stacked);
 
+  var valName = encoding.fieldName(val);
+  var startField = valName + '_start';
+  var endField = valName + '_end';
+
   // add stack transform to mark
   mdef.from.transform = [{
     type: 'stack',
-    point: encoding.fieldRef(dim),
-    height: encoding.fieldRef(val),
-    output: {y1: val, y0: val + '2'}
+    groupby: encoding.fieldRef(dim),
+    field: encoding.fieldRef(val),
+    // TODO(#39) add sort by
+    output: {start: startField, end: endField}
   }];
 
-  // TODO: This is super hack-ish -- consolidate into modular mark properties?
-  mdef.properties.update[val] = mdef.properties.enter[val] = {scale: val, field: val};
-  mdef.properties.update[val + '2'] = mdef.properties.enter[val + '2'] = {scale: val, field: val + '2'};
+  // TODO(#276): This is super hack-ish -- consolidate into modular mark properties?
+  mdef.properties.update[val] = mdef.properties.enter[val] = {
+    scale: val,
+    field: startField
+  };
+  mdef.properties.update[val + '2'] = mdef.properties.enter[val + '2'] = {
+    scale: val,
+    field: endField
+  };
 
   return val; //return stack encoding
 }
