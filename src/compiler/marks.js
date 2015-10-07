@@ -386,7 +386,7 @@ function filled_point_props(shape) {
 
 function text_props(e, layout, style, stats) {
   var p = {},
-    field = e.encDef(TEXT);
+    encDef = e.encDef(TEXT);
 
   // x
   if (e.has(X)) {
@@ -410,12 +410,12 @@ function text_props(e, layout, style, stats) {
   if (e.has(SIZE)) {
     p.fontSize = {scale: SIZE, field: e.fieldRef(SIZE)};
   } else if (!e.has(SIZE)) {
-    p.fontSize = {value: field.font.size};
+    p.fontSize = {value: encDef.font.size};
   }
 
   // fill
   // color should be set to background
-  p.fill = {value: field.color};
+  p.fill = {value: encDef.color};
 
   var opacity = e.encDef(COLOR).opacity  || style.opacity;
   if(opacity) p.opacity = {value: opacity};
@@ -424,22 +424,22 @@ function text_props(e, layout, style, stats) {
   if (e.has(TEXT)) {
     if (e.isType(TEXT, Q)) {
       var fieldStats = stats[e.fieldName(TEXT)],
-        numberFormat = field.format || e.numberFormat(fieldStats);
+        numberFormat = encDef.format || e.numberFormat(fieldStats);
 
       p.text = {template: '{{' + e.fieldRef(TEXT) + ' | number:\'' +
         numberFormat +'\'}}'};
-      p.align = {value: field.align};
+      p.align = {value: encDef.align};
     } else {
       p.text = {field: e.fieldRef(TEXT)};
     }
   } else {
-    p.text = {value: field.placeholder};
+    p.text = {value: encDef.placeholder};
   }
 
-  p.font = {value: field.font.family};
-  p.fontWeight = {value: field.font.weight};
-  p.fontStyle = {value: field.font.style};
-  p.baseline = {value: field.baseline};
+  p.font = {value: encDef.font.family};
+  p.fontWeight = {value: encDef.font.weight};
+  p.fontStyle = {value: encDef.font.style};
+  p.baseline = {value: encDef.baseline};
 
   return p;
 }
