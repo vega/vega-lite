@@ -133,6 +133,25 @@ var EXAMPLES = [
       },
       'data': {'url': 'data/cars.json'}
     }
+  },{
+    title: 'Grouped Bar Chart',
+    spec: {
+      'marktype': 'bar',
+      'encoding': {
+        'x': {
+          'name': 'Acceleration',
+          'type': 'Q',
+          'aggregate': 'median'
+        },
+        'y': {'name': 'Origin','type': 'N'},
+        'row': {
+          'axis': {'maxLabelLength': 12},
+          'name': 'Cylinders',
+          'type': 'O'
+        }
+      },
+      'data': {'url': 'data/cars.json'}
+    }
   }
 ];
 
