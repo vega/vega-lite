@@ -25,7 +25,7 @@ scale.defs = function(names, encoding, layout, stats, opt) {
     };
 
     s.domain = scale.domain(s, encoding, stats, opt);
-    scale.range(s, encoding, layout, stats, opt);
+    s = scale.range(s, encoding, layout, stats, opt);
 
     return (a.push(s), a);
   }, []);
@@ -55,13 +55,16 @@ scale.domain = function (s, encoding, stats, opt) {
 
   var field = encoding.field(name);
 
+  // special case for temporal scale
   if (encoding.isType(name, T)) {
     var range = time.scale.domain(field.timeUnit, name);
-    if(range) return range;
+    if (range) return range;
   }
 
+  // For binned, produce fixed stepped domain.
+  // TODO(#614): this must be changed in vg2
   if (field.bin) {
-    // TODO(kanitw): this must be changed in vg2
+
     var fieldStat = stats[field.name],
       bins = util.getbins(fieldStat, field.bin.maxbins || schema.MAXBINS_DEFAULT),
       numbins = (bins.stop - bins.start) / bins.step;
@@ -70,6 +73,8 @@ scale.domain = function (s, encoding, stats, opt) {
     });
   }
 
+  // For stack, use STACKED data.
+  // TODO(#412) revise this
   if (name == opt.stack) {
     return {
       data: STACKED,
@@ -78,9 +83,12 @@ scale.domain = function (s, encoding, stats, opt) {
       })
     };
   }
+
   var aggregate = encoding.aggregate(name),
-    timeUnit = field.timeUnit,
-    scaleUseRawDomain = encoding.scale(name).useRawDomain,
+    timeUnit = field.timeUnit;
+
+  // determine useRawDomain value
+  var scaleUseRawDomain = encoding.scale(name).useRawDomain,
     useRawDomain = scaleUseRawDomain !== undefined ?
       scaleUseRawDomain : encoding.config('useRawDomain'),
     notCountOrSum = !aggregate || (aggregate !=='count' && aggregate !== 'sum');
@@ -209,6 +217,8 @@ scale.range = function (s, encoding, layout, stats) {
         s.padding = encoding.field(s.name).band.padding;
       }
   }
+
+  return s;
 };
 
 scale.color = function(s, encoding, stats) {
