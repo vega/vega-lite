@@ -4,8 +4,7 @@ var util = require('../util'),
   time = require('./time'),
   colorbrewer = require('colorbrewer'),
   interpolate = require('d3-color').interpolateHsl,
-  schema = require('../schema/schema'),
-  vlsort = require('./sort');
+  schema = require('../schema/schema');
 
 var scale = module.exports = {};
 
@@ -22,23 +21,14 @@ scale.defs = function(names, encoding, layout, stats, opt) {
   return names.reduce(function(a, name) {
     var s = {
       name: name,
-      type: scale.type(name, encoding),
-      domain: scale.domain(name, encoding, stats, opt)
+      type: scale.type(name, encoding)
     };
 
-    s.sort = scale.sort(s, encoding, name) || undefined;
-
+    s.domain = scale.domain(s, encoding, stats, opt);
     scale.range(s, encoding, layout, stats, opt);
 
     return (a.push(s), a);
   }, []);
-};
-
-scale.sort = function(s, encoding, name) {
-  return s.type === 'ordinal' && (
-    !!encoding.bin(name) ||
-    encoding.sort(name).length === 0
-  );
 };
 
 scale.type = function(name, encoding) {
@@ -51,13 +41,18 @@ scale.type = function(name, encoding) {
       return timeUnit ? time.scale.type(timeUnit, name) : 'time';
     case Q:
       if (encoding.bin(name)) {
+        // TODO: revise this
         return name === COLOR ? 'linear' : 'ordinal';
       }
       return encoding.scale(name).type;
   }
 };
 
-scale.domain = function (name, encoding, stats, opt) {
+scale.domain = function (s, encoding, stats, opt) {
+  opt = opt || {};
+
+  var name = s.name;
+
   var field = encoding.field(name);
 
   if (encoding.isType(name, T)) {
@@ -90,8 +85,7 @@ scale.domain = function (name, encoding, stats, opt) {
       scaleUseRawDomain : encoding.config('useRawDomain'),
     notCountOrSum = !aggregate || (aggregate !=='count' && aggregate !== 'sum');
 
-  // FIXME revise this part
-
+  var dataTable = encoding.dataTable();
   if ( useRawDomain && notCountOrSum && (
       // Q always uses non-ordinal scale except when it's binned and thus uses ordinal scale.
       (encoding.isType(name, Q) && !field.bin) ||
@@ -99,15 +93,19 @@ scale.domain = function (name, encoding, stats, opt) {
       (encoding.isType(name, T) && (!timeUnit || !time.isOrdinalFn(timeUnit)))
     )
   ) {
-
-    return {data: RAW, field: encoding.fieldRef(name)};
+    dataTable = RAW;
   }
 
-  var data = encoding.sort(name, stats).length > 0 ?
-    vlsort.getDataName(name):
-    encoding.dataTable();
+  var domain = {
+    data: dataTable,
+    field: encoding.fieldRef(name)
+  };
 
-  return {data: data, field: encoding.fieldRef(name)};
+  // For ordinal scale, add domain's property if provided.
+  var sort = s.type === 'ordinal' && encoding.sort(name);
+  if (sort) { domain.sort = sort; }
+
+  return domain;
 };
 
 

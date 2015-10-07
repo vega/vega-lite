@@ -10,8 +10,8 @@ var EXAMPLES = [
       data: {
         values: [
           {'x':'A', 'y':28}, {'x':'B', 'y':55}, {'x':'C', 'y':43},
-          {'x':'D', 'y':91}, {'x':'E', 'y':81}, {'x':'F', 'y':53},
-          {'x':'G', 'y':19}, {'x':'H', 'y':87}, {'x':'I', 'y':52}
+          {'x':'G', 'y':19}, {'x':'H', 'y':87}, {'x':'I', 'y':52},
+          {'x':'D', 'y':91}, {'x':'E', 'y':81}, {'x':'F', 'y':53}
         ]
       },
       marktype: 'bar',
@@ -69,9 +69,9 @@ var EXAMPLES = [
       data: {url: 'data/barley.json'},
       marktype: 'point',
       encoding: {
-        x: {type: 'Q',name: 'yield',aggregate: 'avg'},
+        x: {type: 'Q',name: 'yield', aggregate: 'mean'},
         y: {
-          sort: [{name: 'yield',aggregate: 'avg',reverse: false}],
+          sort: {field: 'yield', op: 'mean'},
           type: 'O',
           name: 'variety'
         },
