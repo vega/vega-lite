@@ -13,15 +13,16 @@
     "test": "test"
   },
   "scripts": {
-    "deploy": "npm run lint && npm run test && scripts/deploy.sh",
-    "patch": "gulp patch",
-    "feature": "gulp feature",
-    "release": "gulp release",
     "build": "gulp build",
-    "watch": "gulp watch-schema watch-test",
-    "start": "gulp serve",
+    "cover": "gulp coverage",
+    "deploy": "npm run lint && npm run test && scripts/deploy.sh",
+    "feature": "gulp feature",
     "lint": "gulp jshint",
-    "test": "gulp test"
+    "patch": "gulp patch",
+    "release": "gulp release",
+    "start": "gulp serve",
+    "test": "gulp test",
+    "watch": "gulp watch-schema watch-test"
   },
   "repository": {
     "type": "git",
