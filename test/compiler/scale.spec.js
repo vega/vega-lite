@@ -10,6 +10,19 @@ var util = require('../../src/util'),
 
 describe('vl.compile.scale', function() {
   describe('sort()', function() {
+    it('should return the provided sort property', function() {
+      var sortDef = {aggregate: 'min', field:'Acceleration'};
+      var encoding = Encoding.fromSpec({
+          encoding: {
+            x: { name: 'origin', type: O, sort: sortDef},
+            y: { bin: true, name: 'origin', type: Q}
+          }
+        });
+
+      expect(vlscale.sort('ordinal', encoding, 'x'))
+        .to.eql(sortDef);
+    });
+
     it('should return true for any ordinal or binned field', function() {
       var encoding = Encoding.fromSpec({
           encoding: {
@@ -18,10 +31,24 @@ describe('vl.compile.scale', function() {
           }
         });
 
-      expect(vlscale.sort({type: 'ordinal'}, encoding, 'x'))
+      expect(vlscale.sort('ordinal', encoding, 'x'))
         .to.eql(true);
-      expect(vlscale.sort({type: 'ordinal'}, encoding, 'y'))
+      expect(vlscale.sort('ordinal', encoding, 'y'))
         .to.eql(true);
+    });
+
+    it('should return undefined for any quantitative or temporal field', function() {
+      var encoding = Encoding.fromSpec({
+          encoding: {
+            x: { name: 'Q', type: Q},
+            y: { name: 'T', type: T}
+          }
+        });
+
+      expect(vlscale.sort('linear', encoding, 'x'))
+        .to.eql(undefined);
+      expect(vlscale.sort('time', encoding, 'y'))
+        .to.eql(undefined);
     });
 
   });
