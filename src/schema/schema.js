@@ -24,7 +24,7 @@ schema.aggregate = {
     Q: VALID_OPS,
     O: ['median','min','max'],
     N: [],
-    T: ['avg', 'median', 'min', 'max'],
+    T: ['mean', 'median', 'min', 'max'],
     '': ['count']
   },
   supportedTypes: toMap([Q, N, O, T, ''])

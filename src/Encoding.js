@@ -125,8 +125,7 @@ module.exports = (function() {
     }
     var fn = this._enc[et].aggregate || this._enc[et].timeUnit || (this._enc[et].bin && 'bin');
     if (fn) {
-      var uppercase = fn === 'avg' ? 'MEAN' :fn.toUpperCase();
-      return uppercase + '(' + this._enc[et].name + ')';
+      return fn.toUpperCase() + '(' + this._enc[et].name + ')';
     } else {
       return this._enc[et].name;
     }

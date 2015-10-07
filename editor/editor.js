@@ -204,9 +204,9 @@ vled.init = function() {
     document.getElementById('vlspec').value = JSON.stringify({
       marktype: 'point',
       encoding: {
-        x: {type: 'Q',name: 'yield',aggr: 'avg'},
+        x: {type: 'Q',name: 'yield',aggr: 'mean'},
         y: {
-          sort: [{name: 'yield', aggr: 'avg', reverse: false}],
+          sort: [{name: 'yield', aggr: 'mean', reverse: false}],
           type: 'N',
           name: 'variety'
         },
