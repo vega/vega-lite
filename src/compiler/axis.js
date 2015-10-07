@@ -18,7 +18,7 @@ axis.def = function(name, encoding, layout, stats, opt) {
     type: type,
     scale: name,
     properties: {},
-    layer: encoding.field(name).axis.layer,
+    layer: encoding.encDef(name).axis.layer,
     orient: axis.orient(name, encoding, stats)
   };
 
@@ -34,7 +34,7 @@ axis.def = function(name, encoding, layout, stats, opt) {
       // TODO(kanitw): Jul 19, 2015 - #506 add condition for rotation
       def = axis.labels.rotate(def);
     } else { // Q
-      def.ticks = encoding.field(name).axis.ticks;
+      def.ticks = encoding.encDef(name).axis.ticks;
     }
   }
 
@@ -54,7 +54,7 @@ axis.def = function(name, encoding, layout, stats, opt) {
 };
 
 axis.orient = function(name, encoding, stats) {
-  var orient = encoding.field(name).axis.orient;
+  var orient = encoding.encDef(name).axis.orient;
   if (orient) return orient;
 
   if (name === COL) return 'top';
@@ -127,7 +127,7 @@ axis.hideTicks = function(def) {
 };
 
 axis.title = function (def, name, encoding, layout) {
-  var ax = encoding.field(name).axis;
+  var ax = encoding.encDef(name).axis;
 
   if (ax.title) {
     def.title = ax.title;
@@ -164,7 +164,7 @@ axis.labels = {};
 /** add custom label for time type and bin */
 axis.labels.scale = function(def, encoding, name) {
   // time
-  var timeUnit = encoding.field(name).timeUnit;
+  var timeUnit = encoding.encDef(name).timeUnit;
   if (encoding.isType(name, T) && timeUnit && (time.hasScale(timeUnit))) {
     setter(def, ['properties','labels','text','scale'], 'time-'+ timeUnit);
   }
@@ -176,14 +176,14 @@ axis.labels.scale = function(def, encoding, name) {
  * Determine number format or truncate if maxLabel length is presented.
  */
 axis.labels.format = function (def, name, encoding, stats) {
-  var fieldStats = stats[encoding.field(name).name];
+  var fieldStats = stats[encoding.encDef(name).name];
 
   if (encoding.axis(name).format) {
     def.format = encoding.axis(name).format;
   } else if (encoding.isType(name, Q) || fieldStats.type === 'number') {
     def.format = encoding.numberFormat(fieldStats);
   } else if (encoding.isType(name, T)) {
-    var timeUnit = encoding.field(name).timeUnit;
+    var timeUnit = encoding.encDef(name).timeUnit;
     if (!timeUnit) {
       def.format = encoding.config('timeFormat');
     } else if (timeUnit === 'year') {

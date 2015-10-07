@@ -4,7 +4,7 @@ require('../globals');
 
 module.exports = data;
 
-var vlfield = require('../field'),
+var vlEncDef = require('../field'),
   util = require('../util'),
   time = require('./time');
 
@@ -63,7 +63,7 @@ data.raw.formatParse = function(encoding) {
       parse = parse || {};
       parse[encDef.name] = 'date';
     } else if (encDef.type == Q) {
-      if (vlfield.isCount(encDef)) return;
+      if (vlEncDef.isCount(encDef)) return;
       parse = parse || {};
       parse[encDef.name] = 'number';
     }

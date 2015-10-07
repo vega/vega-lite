@@ -4,7 +4,7 @@
 
 var consts = require('./consts'),
   c = consts.shorthand,
-  vlfield = require('./field'),
+  vlEncDef = require('./field'),
   util = require('./util'),
   schema = require('./schema/schema'),
   encTypes = schema.encTypes;
@@ -81,7 +81,7 @@ vlenc.fields = function(enc) {
 
 vlenc.shorthand = function(enc) {
   return vlenc.map(enc, function(field, et) {
-    return et + c.assign + vlfield.shorthand(field);
+    return et + c.assign + vlEncDef.shorthand(field);
   }).join(c.delim);
 };
 
@@ -92,7 +92,7 @@ vlenc.fromShorthand = function(shorthand) {
         enctype = split[0].trim(),
         field = split[1];
 
-    m[enctype] = vlfield.fromShorthand(field);
+    m[enctype] = vlEncDef.fromShorthand(field);
     return m;
   }, {});
 };

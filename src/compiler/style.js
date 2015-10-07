@@ -2,7 +2,7 @@
 
 require('../globals');
 
-var vlfield = require('../field');
+var vlEncDef = require('../field');
 
 module.exports = function(encoding, stats) {
   return {
@@ -29,7 +29,7 @@ function estimateOpacity(encoding,stats) {
 
       if (encType !== ROW && encType !== COL &&
           !((encType === X || encType === Y) &&
-          vlfield.isOrdinalScale(encDef))
+          vlEncDef.isOrdinalScale(encDef))
         ) {
         numPoints *= encoding.cardinality(encType, stats);
       }
