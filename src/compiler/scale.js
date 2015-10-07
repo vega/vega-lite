@@ -25,7 +25,7 @@ scale.defs = function(names, encoding, layout, stats, opt) {
       domain: scale.domain(name, encoding, stats, opt)
     };
 
-    s.sort = scale.sort(s, encoding, name) || undefined;
+    s.sort = scale.sort(s.type, encoding, name) || undefined;
 
     scale.range(s, encoding, layout, stats, opt);
 
@@ -33,14 +33,15 @@ scale.defs = function(names, encoding, layout, stats, opt) {
   }, []);
 };
 
-scale.sort = function(s, encoding, name) {
-  if (s.type === 'ordinal') {
-    var sort = encoding.sort(name);
-    if (sort) {
-      return sort;
-    } else {
-      return !encoding.bin(name) || undefined;
-    }
+/**
+ * Produce vega's scale `sort` property.
+ * @return {Boolean|Object} Return undefined if the scale is not an ordinal scale.
+ * For an ordinal scale, return the sort object if provided,
+ * or return true otherwise.
+ */
+scale.sort = function(type, encoding, name) {
+  if (type === 'ordinal') {
+    return encoding.sort(name) || undefined;
   }
   return undefined;
 };
