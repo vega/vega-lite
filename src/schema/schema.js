@@ -8,6 +8,16 @@ var schema = module.exports = {},
   toMap = util.toMap,
   colorbrewer = require('colorbrewer');
 
+
+var VALID_OPS = [
+  'values', 'count', 'valid', 'missing', 'distinct',
+  'sum', 'mean', 'average', 'variance', 'variancep', 'stdev',
+  'stdevp', 'median', 'q1', 'q3', 'modeskew', 'min', 'max',
+  'argmin', 'argmax'
+];
+// TODO(#620): refer to VALID_OPS in Vega schema instead
+// var VALID_OPS = require('vega/src/transforms/Aggregate').VALID_OPS;
+
 schema.util = require('./schemautil');
 
 schema.marktype = {
@@ -17,12 +27,12 @@ schema.marktype = {
 
 schema.aggregate = {
   type: 'string',
-  enum: ['avg', 'sum', 'median', 'min', 'max', 'count'],
+  enum: VALID_OPS,
   supportedEnums: {
-    Q: ['avg', 'median', 'sum', 'min', 'max', 'count'],
+    Q: VALID_OPS,
     O: ['median','min','max'],
     N: [],
-    T: ['avg', 'median', 'min', 'max'],
+    T: ['mean', 'median', 'min', 'max'],
     '': ['count']
   },
   supportedTypes: toMap([Q, N, O, T, ''])
@@ -236,7 +246,7 @@ var sortMixin = {
         },
         op: {
           type: 'string',
-          enum: ['avg', 'sum', 'min', 'max', 'count'],
+          enum: VALID_OPS,
           description: 'The field name to aggregate over.'
         }
       }
