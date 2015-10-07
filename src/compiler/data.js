@@ -182,8 +182,8 @@ data.aggregate = function(encoding) {
 
   // short-format summarize object for Vega's aggregate transform
   // https://github.com/vega/vega/wiki/Data-Transforms#-aggregate
-  var summarize = util.reduce(meas, function(summarize, fnDictSet, fieldName) {
-    summarize[fieldName] = util.keys(fnDictSet);
+  var summarize = util.reduce(meas, function(summarize, fnDictSet, field) {
+    summarize[field] = util.keys(fnDictSet);
     return summarize;
   }, {});
 
