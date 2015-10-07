@@ -146,7 +146,7 @@ module.exports = (function() {
       (encType === X && this.has(COL) && this.has(X));
 
     // if band.size is explicitly specified, follow the specification, otherwise draw value from config.
-    return this.field(encType).band.size ||
+    return this.encDef(encType).band.size ||
       this.config(useSmallBand ? 'smallBandSize' : 'largeBandSize');
   };
 
@@ -218,26 +218,26 @@ module.exports = (function() {
   };
 
   proto.isType = function(et, type) {
-    var field = this.field(et);
-    return field && vlfield.isType(field, type);
+    var encDef = this.encDef(et);
+    return encDef && vlfield.isType(encDef, type);
   };
 
 
   proto.isTypes = function(et, type) {
-    var field = this.field(et);
-    return field && vlfield.isTypes(field, type);
+    var encDef = this.encDef(et);
+    return encDef && vlfield.isTypes(encDef, type);
   };
 
   Encoding.isOrdinalScale = function(encoding, encType) {
-    return vlfield.isOrdinalScale(encoding.field(encType));
+    return vlfield.isOrdinalScale(encoding.encDef(encType));
   };
 
   Encoding.isDimension = function(encoding, encType) {
-    return vlfield.isDimension(encoding.field(encType));
+    return vlfield.isDimension(encoding.encDef(encType));
   };
 
   Encoding.isMeasure = function(encoding, encType) {
-    return vlfield.isMeasure(encoding.field(encType));
+    return vlfield.isMeasure(encoding.encDef(encType));
   };
 
   proto.isOrdinalScale = function(encType) {
@@ -301,7 +301,7 @@ module.exports = (function() {
   };
 
   proto.cardinality = function(encType, stats) {
-    return vlfield.cardinality(this.field(encType), stats, this.config('filterNull'));
+    return vlfield.cardinality(this.encDef(encType), stats, this.config('filterNull'));
   };
 
   proto.isRaw = function() {

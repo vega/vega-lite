@@ -37,7 +37,7 @@ scale.type = function(name, encoding) {
     case N: //fall through
     case O: return 'ordinal';
     case T:
-      var timeUnit = encoding.field(name).timeUnit;
+      var timeUnit = encoding.encDef(name).timeUnit;
       return timeUnit ? time.scale.type(timeUnit, name) : 'time';
     case Q:
       if (encoding.bin(name)) {
@@ -53,20 +53,20 @@ scale.domain = function (scaleDef, encoding, stats, opt) {
 
   var name = scaleDef.name;
 
-  var field = encoding.field(name);
+  var encDef = encoding.encDef(name);
 
   // special case for temporal scale
   if (encoding.isType(name, T)) {
-    var range = time.scale.domain(field.timeUnit, name);
+    var range = time.scale.domain(encDef.timeUnit, name);
     if (range) return range;
   }
 
   // For binned, produce fixed stepped domain.
   // TODO(#614): this must be changed in vg2
-  if (field.bin) {
+  if (encDef.bin) {
 
-    var fieldStat = stats[field.name],
-      bins = util.getbins(fieldStat, field.bin.maxbins || schema.MAXBINS_DEFAULT),
+    var fieldStat = stats[encDef.name],
+      bins = util.getbins(fieldStat, encDef.bin.maxbins || schema.MAXBINS_DEFAULT),
       numbins = (bins.stop - bins.start) / bins.step;
     return util.range(numbins).map(function(i) {
       return bins.start + bins.step * i;
@@ -85,7 +85,7 @@ scale.domain = function (scaleDef, encoding, stats, opt) {
   }
 
   var aggregate = encoding.aggregate(name),
-    timeUnit = field.timeUnit;
+    timeUnit = encDef.timeUnit;
 
   // determine useRawDomain value
   var scaleUseRawDomain = encoding.scale(name).useRawDomain,
@@ -96,7 +96,7 @@ scale.domain = function (scaleDef, encoding, stats, opt) {
   var dataTable = encoding.dataTable();
   if ( useRawDomain && notCountOrSum && (
       // Q always uses non-ordinal scale except when it's binned and thus uses ordinal scale.
-      (encoding.isType(name, Q) && !field.bin) ||
+      (encoding.isType(name, Q) && !encDef.bin) ||
       // T uses non-ordinal scale when there's no unit or when the unit is not ordinal.
       (encoding.isType(name, T) && (!timeUnit || !time.isOrdinalFn(timeUnit)))
     )
@@ -119,7 +119,7 @@ scale.domain = function (scaleDef, encoding, stats, opt) {
 
 scale.range = function (scaleDef, encoding, layout, stats) {
   var spec = encoding.scale(scaleDef.name),
-    field = encoding.field(scaleDef.name),
+    field = encoding.encDef(scaleDef.name),
     timeUnit = field.timeUnit;
 
   switch (scaleDef.name) {
@@ -214,7 +214,7 @@ scale.range = function (scaleDef, encoding, layout, stats) {
     case Y:
       if (scaleDef.type === 'ordinal') { //&& !s.bandWidth
         scaleDef.points = true;
-        scaleDef.padding = encoding.field(scaleDef.name).band.padding;
+        scaleDef.padding = encoding.encDef(scaleDef.name).band.padding;
       }
   }
 

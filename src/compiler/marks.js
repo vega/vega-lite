@@ -159,7 +159,7 @@ function bar_props(e, layout, style) {
   }
 
   // opacity
-  var opacity = e.field(COLOR).opacity;
+  var opacity = e.encDef(COLOR).opacity;
   if (opacity) p.opacity = {value: opacity};
 
   return p;
@@ -197,7 +197,7 @@ function point_props(e, layout, style) {
   }
 
   // fill or stroke
-  if (e.field(SHAPE).filled) {
+  if (e.encDef(SHAPE).filled) {
     if (e.has(COLOR)) {
       p.fill = {scale: COLOR, field: e.fieldRef(COLOR)};
     } else if (!e.has(COLOR)) {
@@ -213,7 +213,7 @@ function point_props(e, layout, style) {
   }
 
   // opacity
-  var opacity = e.field(COLOR).opacity || style.opacity;
+  var opacity = e.encDef(COLOR).opacity || style.opacity;
   if (opacity) p.opacity = {value: opacity};
 
   return p;
@@ -244,7 +244,7 @@ function line_props(e,layout, style) {
     p.stroke = {value: e.value(COLOR)};
   }
 
-  var opacity = e.field(COLOR).opacity;
+  var opacity = e.encDef(COLOR).opacity;
   if (opacity) p.opacity = {value: opacity};
 
   p.strokeWidth = {value: e.config('strokeWidth')};
@@ -286,7 +286,7 @@ function area_props(e, layout, style) {
     p.fill = {value: e.value(COLOR)};
   }
 
-  var opacity = e.field(COLOR).opacity;
+  var opacity = e.encDef(COLOR).opacity;
   if (opacity) p.opacity = {value: opacity};
 
   return p;
@@ -336,7 +336,7 @@ function tick_props(e, layout, style) {
     p.fill = {value: e.value(COLOR)};
   }
 
-  var opacity = e.field(COLOR).opacity  || style.opacity;
+  var opacity = e.encDef(COLOR).opacity  || style.opacity;
   if(opacity) p.opacity = {value: opacity};
 
   return p;
@@ -377,7 +377,7 @@ function filled_point_props(shape) {
       p.fill = {value: e.value(COLOR)};
     }
 
-    var opacity = e.field(COLOR).opacity  || style.opacity;
+    var opacity = e.encDef(COLOR).opacity  || style.opacity;
     if(opacity) p.opacity = {value: opacity};
 
     return p;
@@ -386,7 +386,7 @@ function filled_point_props(shape) {
 
 function text_props(e, layout, style, stats) {
   var p = {},
-    field = e.field(TEXT);
+    field = e.encDef(TEXT);
 
   // x
   if (e.has(X)) {
@@ -417,7 +417,7 @@ function text_props(e, layout, style, stats) {
   // color should be set to background
   p.fill = {value: field.color};
 
-  var opacity = e.field(COLOR).opacity  || style.opacity;
+  var opacity = e.encDef(COLOR).opacity  || style.opacity;
   if(opacity) p.opacity = {value: opacity};
 
   // text
