@@ -19,15 +19,15 @@ scale.defs = function(names, encoding, layout, stats, opt) {
   opt = opt || {};
 
   return names.reduce(function(a, name) {
-    var s = {
+    var scaleDef = {
       name: name,
       type: scale.type(name, encoding)
     };
 
-    s.domain = scale.domain(s, encoding, stats, opt);
-    s = scale.range(s, encoding, layout, stats, opt);
+    scaleDef.domain = scale.domain(scaleDef, encoding, stats, opt);
+    scaleDef = scale.range(scaleDef, encoding, layout, stats, opt);
 
-    return (a.push(s), a);
+    return (a.push(scaleDef), a);
   }, []);
 };
 
@@ -48,10 +48,10 @@ scale.type = function(name, encoding) {
   }
 };
 
-scale.domain = function (s, encoding, stats, opt) {
+scale.domain = function (scaleDef, encoding, stats, opt) {
   opt = opt || {};
 
-  var name = s.name;
+  var name = scaleDef.name;
 
   var field = encoding.field(name);
 
@@ -110,115 +110,115 @@ scale.domain = function (s, encoding, stats, opt) {
   };
 
   // For ordinal scale, add domain's property if provided.
-  var sort = s.type === 'ordinal' && encoding.sort(name);
+  var sort = scaleDef.type === 'ordinal' && encoding.sort(name);
   if (sort) { domain.sort = sort; }
 
   return domain;
 };
 
 
-scale.range = function (s, encoding, layout, stats) {
-  var spec = encoding.scale(s.name),
-    field = encoding.field(s.name),
+scale.range = function (scaleDef, encoding, layout, stats) {
+  var spec = encoding.scale(scaleDef.name),
+    field = encoding.field(scaleDef.name),
     timeUnit = field.timeUnit;
 
-  switch (s.name) {
+  switch (scaleDef.name) {
     case X:
-      s.range = layout.cellWidth ? [0, layout.cellWidth] : 'width';
-      if (s.type === 'ordinal') {
-        s.bandWidth = encoding.bandSize(X, layout.x.useSmallBand);
+      scaleDef.range = layout.cellWidth ? [0, layout.cellWidth] : 'width';
+      if (scaleDef.type === 'ordinal') {
+        scaleDef.bandWidth = encoding.bandSize(X, layout.x.useSmallBand);
       } else {
-        if (encoding.isType(s.name,T) && timeUnit === 'year') {
-          s.zero = false;
+        if (encoding.isType(scaleDef.name,T) && timeUnit === 'year') {
+          scaleDef.zero = false;
         } else {
-          s.zero = spec.zero === undefined ? true : spec.zero;
+          scaleDef.zero = spec.zero === undefined ? true : spec.zero;
         }
 
-        s.reverse = spec.reverse;
+        scaleDef.reverse = spec.reverse;
       }
-      s.round = true;
-      if (s.type === 'time') {
-        s.nice = timeUnit || encoding.config('timeScaleNice');
+      scaleDef.round = true;
+      if (scaleDef.type === 'time') {
+        scaleDef.nice = timeUnit || encoding.config('timeScaleNice');
       }else {
-        s.nice = true;
+        scaleDef.nice = true;
       }
       break;
     case Y:
-      if (s.type === 'ordinal') {
-        s.range = layout.cellHeight ?
+      if (scaleDef.type === 'ordinal') {
+        scaleDef.range = layout.cellHeight ?
           (field.bin ? [layout.cellHeight, 0] : [0, layout.cellHeight]) :
           'height';
-        s.bandWidth = encoding.bandSize(Y, layout.y.useSmallBand);
+        scaleDef.bandWidth = encoding.bandSize(Y, layout.y.useSmallBand);
       } else {
-        s.range = layout.cellHeight ? [layout.cellHeight, 0] : 'height';
-        if (encoding.isType(s.name,T) && timeUnit === 'year') {
-          s.zero = false;
+        scaleDef.range = layout.cellHeight ? [layout.cellHeight, 0] : 'height';
+        if (encoding.isType(scaleDef.name,T) && timeUnit === 'year') {
+          scaleDef.zero = false;
         } else {
-          s.zero = spec.zero === undefined ? true : spec.zero;
+          scaleDef.zero = spec.zero === undefined ? true : spec.zero;
         }
 
-        s.reverse = spec.reverse;
+        scaleDef.reverse = spec.reverse;
       }
 
-      s.round = true;
+      scaleDef.round = true;
 
-      if (s.type === 'time') {
-        s.nice = timeUnit || encoding.config('timeScaleNice');
+      if (scaleDef.type === 'time') {
+        scaleDef.nice = timeUnit || encoding.config('timeScaleNice');
       }else {
-        s.nice = true;
+        scaleDef.nice = true;
       }
       break;
     case ROW: // support only ordinal
-      s.bandWidth = layout.cellHeight;
-      s.round = true;
-      s.nice = true;
+      scaleDef.bandWidth = layout.cellHeight;
+      scaleDef.round = true;
+      scaleDef.nice = true;
       break;
     case COL: // support only ordinal
-      s.bandWidth = layout.cellWidth;
-      s.round = true;
-      s.nice = true;
+      scaleDef.bandWidth = layout.cellWidth;
+      scaleDef.round = true;
+      scaleDef.nice = true;
       break;
     case SIZE:
       if (encoding.is('bar')) {
         // FIXME this is definitely incorrect
         // but let's fix it later since bar size is a bad encoding anyway
-        s.range = [3, Math.max(encoding.bandSize(X), encoding.bandSize(Y))];
+        scaleDef.range = [3, Math.max(encoding.bandSize(X), encoding.bandSize(Y))];
       } else if (encoding.is(TEXT)) {
-        s.range = [8, 40];
+        scaleDef.range = [8, 40];
       } else { //point
         var bandSize = Math.min(encoding.bandSize(X), encoding.bandSize(Y)) - 1;
-        s.range = [10, 0.8 * bandSize*bandSize];
+        scaleDef.range = [10, 0.8 * bandSize*bandSize];
       }
-      s.round = true;
-      s.zero = false;
+      scaleDef.round = true;
+      scaleDef.zero = false;
       break;
     case SHAPE:
-      s.range = 'shapes';
+      scaleDef.range = 'shapes';
       break;
     case COLOR:
-      s.range = scale.color(s, encoding, stats);
-      if (s.type !== 'ordinal') s.zero = false;
+      scaleDef.range = scale.color(scaleDef, encoding, stats);
+      if (scaleDef.type !== 'ordinal') scaleDef.zero = false;
       break;
     default:
-      throw new Error('Unknown encoding name: '+ s.name);
+      throw new Error('Unknown encoding name: '+ scaleDef.name);
   }
 
   // FIXME(kanitw): Jul 29, 2015 - consolidate this with above
-  switch (s.name) {
+  switch (scaleDef.name) {
     case ROW:
     case COL:
-      s.padding = encoding.config('cellPadding');
-      s.outerPadding = 0;
+      scaleDef.padding = encoding.config('cellPadding');
+      scaleDef.outerPadding = 0;
       break;
     case X:
     case Y:
-      if (s.type === 'ordinal') { //&& !s.bandWidth
-        s.points = true;
-        s.padding = encoding.field(s.name).band.padding;
+      if (scaleDef.type === 'ordinal') { //&& !s.bandWidth
+        scaleDef.points = true;
+        scaleDef.padding = encoding.field(scaleDef.name).band.padding;
       }
   }
 
-  return s;
+  return scaleDef;
 };
 
 scale.color = function(s, encoding, stats) {
