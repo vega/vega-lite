@@ -133,7 +133,7 @@ var EXAMPLES = [
       'marktype': 'text',
       'encoding': {
         'row': {'name': 'Origin','type': 'O'},
-        'col': {'axis': {'maxLabelLength': 25},'name': 'Cylinders','type': 'O'},
+        'col': {'name': 'Cylinders','type': 'O'},
         'color': {'name': 'Horsepower','type': 'Q','aggregate': 'mean'},
         'text': {'name': '*','type': 'Q','aggregate': 'count'}
       },
@@ -146,11 +146,7 @@ var EXAMPLES = [
       'encoding': {
         'x': {'name': 'Year','type': 'T','timeUnit': 'year'},
         'y': {'name': 'Weight_in_lbs','type': 'Q','aggregate': 'sum'},
-        'color': {
-          'scale': {'quantitativeRange': ['#AFC6A3','#09622A']},
-          'name': 'Cylinders',
-          'type': 'O'
-        }
+        'color': {'name': 'Cylinders', 'type': 'O'}
       },
       'data': {'url': 'data/cars.json'}
     }
