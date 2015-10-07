@@ -26,6 +26,7 @@ function subfaceting(group, mdef, details, stack, encoding) {
   var trans = (g.from.transform || (g.from.transform = []));
   trans.push({type: 'facet', groupby: details});
 
+  // TODO: understand why we need this sort transform and write comment
   if (stack && encoding.has(COLOR)) {
     trans.unshift({type: 'sort', by: encoding.fieldRef(COLOR)});
   }
