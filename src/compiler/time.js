@@ -10,8 +10,8 @@ var time = module.exports = {};
 // September is the longest month (8 in javascript as it is zero-indexed).
 var LONG_DATE = new Date(Date.UTC(2014, 8, 17));
 
-time.cardinality = function(field, stats, filterNull, type) {
-  var timeUnit = field.timeUnit;
+time.cardinality = function(encDef, stats, filterNull, type) {
+  var timeUnit = encDef.timeUnit;
   switch (timeUnit) {
     case 'seconds': return 60;
     case 'minutes': return 60;
@@ -20,8 +20,8 @@ time.cardinality = function(field, stats, filterNull, type) {
     case 'date': return 31;
     case 'month': return 12;
     case 'year':
-      var stat = stats[field.name],
-        yearstat = stats['year_'+field.name];
+      var stat = stats[encDef.name],
+        yearstat = stats['year_' + encDef.name];
 
       if (!yearstat) { return null; }
 
@@ -87,10 +87,10 @@ time.range = function(timeUnit, encoding) {
  * @return {Array}  scales for time unit names
  */
 time.scales = function(encoding) {
-  var scales = encoding.reduce(function(scales, field) {
-    var timeUnit = field.timeUnit;
-    if (field.type === T && timeUnit && !scales[timeUnit]) {
-      var scale = time.scale.def(field.timeUnit, encoding);
+  var scales = encoding.reduce(function(scales, encDef) {
+    var timeUnit = encDef.timeUnit;
+    if (encDef.type === T && timeUnit && !scales[timeUnit]) {
+      var scale = time.scale.def(encDef.timeUnit, encoding);
       if (scale) scales[timeUnit] = scale;
     }
     return scales;

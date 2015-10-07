@@ -119,8 +119,8 @@ scale.domain = function (scaleDef, encoding, stats, opt) {
 
 scale.range = function (scaleDef, encoding, layout, stats) {
   var spec = encoding.scale(scaleDef.name),
-    field = encoding.encDef(scaleDef.name),
-    timeUnit = field.timeUnit;
+    encDef = encoding.encDef(scaleDef.name),
+    timeUnit = encDef.timeUnit;
 
   switch (scaleDef.name) {
     case X:
@@ -146,7 +146,7 @@ scale.range = function (scaleDef, encoding, layout, stats) {
     case Y:
       if (scaleDef.type === 'ordinal') {
         scaleDef.range = layout.cellHeight ?
-          (field.bin ? [layout.cellHeight, 0] : [0, layout.cellHeight]) :
+          (encDef.bin ? [layout.cellHeight, 0] : [0, layout.cellHeight]) :
           'height';
         scaleDef.bandWidth = encoding.bandSize(Y, layout.y.useSmallBand);
       } else {
