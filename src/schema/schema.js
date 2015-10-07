@@ -8,7 +8,15 @@ var schema = module.exports = {},
   toMap = util.toMap,
   colorbrewer = require('colorbrewer');
 
-var VALID_OPS = require('vega/src/transforms/Aggregate').VALID_OPS;
+
+var VALID_OPS = [
+  'values', 'count', 'valid', 'missing', 'distinct',
+  'sum', 'mean', 'average', 'variance', 'variancep', 'stdev',
+  'stdevp', 'median', 'q1', 'q3', 'modeskew', 'min', 'max',
+  'argmin', 'argmax'
+];
+// TODO(#620): refer to VALID_OPS in Vega schema instead
+// var VALID_OPS = require('vega/src/transforms/Aggregate').VALID_OPS;
 
 schema.util = require('./schemautil');
 
