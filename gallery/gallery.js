@@ -75,6 +75,18 @@ var EXAMPLES = [
       'data': {'url': 'data/barley.json'}
     }
   },{
+    title: 'Trellis Stacked Bar Chart',
+    spec: {
+      'marktype': 'bar',
+      'encoding': {
+        'x': {'name': 'variety','type': 'N'},
+        'y': {'name': 'yield','type': 'Q','aggregate': 'sum'},
+        'col': {'name': 'year','type': 'O'},
+        'color': {'name': 'site', 'type': 'N'}
+      },
+      'data': {'url': 'data/barley.json'}
+    }
+  },{
     title: 'Grouped bar chart',
     spec: {
       marktype: 'bar',
