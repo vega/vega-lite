@@ -1,6 +1,6 @@
 'use strict';
 
-/*global location, d3, vl, vg, docCookies, document, $, alert */
+/*global location, d3, vl, vg, docCookies, document, $, alert, ZSchema */
 
 var DATASETS = [
   {
@@ -49,6 +49,14 @@ var vled = {
   version: 0.1,
   spec: {}
 };
+
+var vgSchema = null;
+
+// load vega schema
+d3.json('editor/bower_components/vega/vega-schema.json', function(error, json) {
+  if (error) return console.warn(error);
+  vgSchema = json;
+});
 
 function getParams() {
   var params = location.search.slice(1);
@@ -131,7 +139,9 @@ vled.loadSpec = function(vlspec, theme) {
     stats = vled.dataset.stats;
   }
 
+  vled.validateVl(vlspec);
   var spec = vl.compile(vlspec, stats, theme);
+  vled.validateVg(spec);
 
   d3.select('#shorthand').node().value = vl.toShorthand(vlspec);
   d3.select('#vgspec').node().value = JSON.stringify(spec, null, '  ', 60);
@@ -150,6 +160,24 @@ vled.loadSpec = function(vlspec, theme) {
       console.log(item);
     });
   });
+};
+
+vled.validateVl = function(vlspec) {
+  var validator = new ZSchema();
+  var valid = validator.validate(vlspec, vl.schema.schema);
+
+  if (!valid) {
+    console.error(validator.getLastErrors());
+  }
+};
+
+vled.validateVg = function(vgspec) {
+  var validator = new ZSchema();
+  var valid = validator.validate(vgspec, vgSchema);
+
+  if (!valid) {
+    console.error(validator.getLastErrors());
+  }
 };
 
 vled.datasetChanged = function(dataset, callback) {
