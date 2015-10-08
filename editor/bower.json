@@ -16,5 +16,6 @@
   ],
   "dependencies": {
     "vega": "^2.2.6"
+    "jquery": "~2.1.4",
   }
 }
