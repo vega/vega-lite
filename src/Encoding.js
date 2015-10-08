@@ -120,10 +120,6 @@ module.exports = (function() {
     }
   };
 
-  proto.scale = function(et) {
-    return this._enc[et].scale || {};
-  };
-
   proto.axis = function(et) {
     return this._enc[et].axis || {};
   };
