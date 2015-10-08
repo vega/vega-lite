@@ -216,6 +216,7 @@ data.aggregate = function(encoding) {
 data.stack = function(encoding, stack) {
   var dim = stack.dimension;
   var val = stack.value;
+  var facets = encoding.facets();
 
   var stacked = {
     name: STACKED,
@@ -226,8 +227,6 @@ data.stack = function(encoding, stack) {
       summarize: [{ops: ['sum'], field: encoding.fieldRef(val)}]
     }]
   };
-
-  var facets = encoding.facets();
 
   if (facets && facets.length > 0) {
     stacked.transform.push({ //calculate max for each facet
@@ -240,6 +239,7 @@ data.stack = function(encoding, stack) {
       }]
     });
   }
+  return stacked;
 };
 
 data.filterNonPositive = function(dataTable, encoding) {
