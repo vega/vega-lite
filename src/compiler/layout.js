@@ -131,7 +131,7 @@ function offset(encoding, stats, layout) {
       // TODO once we have #512 (allow using inferred type)
       // Need to adjust condition here.
       encoding.isType(et, Q) ||
-      encoding.aggregate(et) === 'count'
+      encoding.encDef(et).aggregate === 'count'
     ) {
       if (
         et===Y

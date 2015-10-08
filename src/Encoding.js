@@ -140,10 +140,6 @@ module.exports = (function() {
       this.config(useSmallBand ? 'smallBandSize' : 'largeBandSize');
   };
 
-  proto.aggregate = function(et) {
-    return this._enc[et].aggregate;
-  };
-
   // returns false if binning is disabled, otherwise an object with binning properties
   proto.bin = function(et) {
     var bin = this._enc[et].bin;

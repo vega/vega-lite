@@ -84,7 +84,7 @@ scale.domain = function (scaleDef, encoding, stats, opt) {
     };
   }
 
-  var aggregate = encoding.aggregate(name),
+  var aggregate = encoding.encDef(name).aggregate,
     timeUnit = encDef.timeUnit;
 
   // determine useRawDomain value
