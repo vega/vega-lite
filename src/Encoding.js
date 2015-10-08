@@ -31,8 +31,7 @@ module.exports = (function() {
       data: data,
       marktype: marktype,
       encoding: enc,
-      config: config,
-      filter: []
+      config: config
     }, theme);
   };
 
