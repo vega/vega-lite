@@ -176,14 +176,14 @@ vled.validateVg = function(vgspec) {
     }
   };
 
-  if (!vgSchema) {
+  if (vgSchema) {
+    cb();
+  } else {
     d3.json('editor/bower_components/vega/vega-schema.json', function(error, json) {
       if (error) return console.warn(error);
       vgSchema = json;
       cb();
     });
-  } else {
-    cb();
   }
 };
 
