@@ -74,6 +74,16 @@ var EXAMPLES = [
       'marktype': 'area',
       'encoding': {
         'x': {'name': 'Year','type': 'T','timeUnit': 'year'},
+        'y': {'name': 'Weight_in_lbs','type': 'Q','aggregate': 'sum'}
+      },
+      'data': {'url': 'data/cars.json'}
+    }
+  },{
+    title: 'Stacked Area chart',
+    spec: {
+      'marktype': 'area',
+      'encoding': {
+        'x': {'name': 'Year','type': 'T','timeUnit': 'year'},
         'y': {'name': 'Weight_in_lbs','type': 'Q','aggregate': 'sum'},
         'color': {'name': 'Cylinders', 'type': 'O'}
       },
