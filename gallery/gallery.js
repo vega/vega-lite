@@ -21,8 +21,34 @@ var EXAMPLES = [
       }
     }
   },{
-    title: 'Horse power and miles per gallon',
-    description: 'A scatter plot.',
+    title: 'Aggregate Bar Chart',
+    spec: {
+      'marktype': 'bar',
+      'encoding': {
+        'x': {'name': 'Cylinders','type': 'O'},
+        'y': {'name': 'Acceleration','type': 'Q','aggregate': 'mean'}
+      },
+      'data': {'url': 'data/cars.json'}
+    }
+  },{
+    title: 'Grouped bar chart',
+    spec: {
+      marktype: 'bar',
+      encoding: {
+        x: {name: 'Origin', type: 'N'},
+        y: {name: 'Acceleration',type: 'Q', aggregate: 'mean'},
+        col: { axis: {maxLabelLength: 25}, name: 'Cylinders',type: 'O'},
+        color: {
+          scale: {quantitativeRange: ['#AFC6A3','#09622A']},
+          name: 'Origin',
+          type: 'N'
+        }
+      },
+      data: {url: 'data/cars.json'}
+    }
+  },{
+    title: 'Scatter plot.',
+    description: 'Horse power and miles per gallon',
     spec: {
       marktype: 'point',
       encoding: {
@@ -32,7 +58,8 @@ var EXAMPLES = [
       data: {'url': 'data/cars.json'}
     }
   },{
-    title: 'Horse power over time',
+    title: 'Line Chart',
+    description: 'Horse power over time',
     spec: {
       marktype: 'line',
       encoding: {
@@ -42,7 +69,18 @@ var EXAMPLES = [
       data: {'url': 'data/cars.json'}
     }
   },{
-    title: 'Horse power histogram',
+    title: 'Area chart',
+    spec: {
+      'marktype': 'area',
+      'encoding': {
+        'x': {'name': 'Year','type': 'T','timeUnit': 'year'},
+        'y': {'name': 'Weight_in_lbs','type': 'Q','aggregate': 'sum'},
+        'color': {'name': 'Cylinders', 'type': 'O'}
+      },
+      'data': {'url': 'data/cars.json'}
+    }
+  },{
+    title: 'Stacked Histogram',
     description: 'Simple histogram with bars broken down by the number of cylinders. Also has a legend.',
     spec: {
       marktype: 'bar',
@@ -54,14 +92,14 @@ var EXAMPLES = [
       data: {'url': 'data/cars.json'}
     }
   },{
-    title: 'Aggregate Bar Chart',
+    title: 'Histogram',
     spec: {
-      'marktype': 'bar',
-      'encoding': {
-        'x': {'name': 'Cylinders','type': 'O'},
-        'y': {'name': 'Acceleration','type': 'Q','aggregate': 'mean'}
+      marktype: 'bar',
+      encoding: {
+        x: {'bin': {'maxbins': 15},'name': 'Horsepower','type': 'Q'},
+        y: {'name': '*','type': 'Q','aggregate': 'count'}
       },
-      'data': {'url': 'data/cars.json'}
+      data: {'url': 'data/cars.json'}
     }
   },{
     title: 'Stacked Bar Chart',
@@ -87,23 +125,20 @@ var EXAMPLES = [
       'data': {'url': 'data/barley.json'}
     }
   },{
-    title: 'Grouped bar chart',
+    title: 'Trellis Plot',
     spec: {
-      marktype: 'bar',
-      encoding: {
-        x: {name: 'Origin', type: 'N'},
-        y: {name: 'Acceleration',type: 'Q', aggregate: 'mean'},
-        col: { axis: {maxLabelLength: 25}, name: 'Cylinders',type: 'O'},
-        color: {
-          scale: {quantitativeRange: ['#AFC6A3','#09622A']},
-          name: 'Origin',
-          type: 'N'
-        }
+      'marktype': 'point',
+      'encoding': {
+        'x': {'name': 'Worldwide_Gross','type': 'Q'},
+        'y': {'name': 'US_DVD_Sales','type': 'Q'},
+        'col': {'axis': {'maxLabelLength': 25},'name': 'MPAA_Rating','type': 'O'}
       },
-      data: {url: 'data/cars.json'}
+      'data': {'url': 'data/movies.json'}
     }
   },{
-    title: 'Barleys',
+    title: 'Trellis Plot, sorted by mean yield.',
+    // TODO: find source of this example and write better description
+    description: 'Classic Barley Example',
     spec: {
       data: {url: 'data/barley.json'},
       marktype: 'point',
@@ -135,17 +170,6 @@ var EXAMPLES = [
       'data': {'url': 'data/cars.json'}
     }
   },{
-    title: 'Small Multiples',
-    spec: {
-      'marktype': 'point',
-      'encoding': {
-        'x': {'name': 'Worldwide_Gross','type': 'Q'},
-        'y': {'name': 'US_DVD_Sales','type': 'Q'},
-        'col': {'axis': {'maxLabelLength': 25},'name': 'MPAA_Rating','type': 'O'}
-      },
-      'data': {'url': 'data/movies.json'}
-    }
-  },{
     title: 'Ordinal on Top',
     spec: {
       'marktype': 'point',
@@ -164,17 +188,6 @@ var EXAMPLES = [
         'col': {'name': 'Cylinders','type': 'O'},
         'color': {'name': 'Horsepower','type': 'Q','aggregate': 'mean'},
         'text': {'name': '*','type': 'Q','aggregate': 'count'}
-      },
-      'data': {'url': 'data/cars.json'}
-    }
-  },{
-    title: 'Area chart',
-    spec: {
-      'marktype': 'area',
-      'encoding': {
-        'x': {'name': 'Year','type': 'T','timeUnit': 'year'},
-        'y': {'name': 'Weight_in_lbs','type': 'Q','aggregate': 'sum'},
-        'color': {'name': 'Cylinders', 'type': 'O'}
       },
       'data': {'url': 'data/cars.json'}
     }
