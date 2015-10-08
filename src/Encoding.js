@@ -17,7 +17,6 @@ module.exports = (function() {
     this._marktype = specExtended.marktype;
     this._enc = specExtended.encoding;
     this._config = specExtended.config;
-    this._filter = specExtended.filter;
   }
 
   var proto = Encoding.prototype;
@@ -63,8 +62,7 @@ module.exports = (function() {
 
     spec = {
       marktype: this._marktype,
-      encoding: enc,
-      filter: this._filter
+      encoding: enc
     };
 
     if (!excludeConfig) {
@@ -96,10 +94,6 @@ module.exports = (function() {
 
   proto.encDef = function(et) {
     return this._enc[et];
-  };
-
-  proto.filter = function() {
-    return this._filter;
   };
 
   // get "field" reference for vega
