@@ -13,11 +13,11 @@ describe('Axis', function() {
     };
 
   describe('(X) for Time Data', function() {
-    var fieldName = 'a',
+    var field = 'a',
       timeUnit = 'month',
       encoding = Encoding.fromSpec({
         encoding: {
-          x: {name: fieldName, type: 'T', timeUnit: timeUnit}
+          x: {name: field, type: 'T', timeUnit: timeUnit}
         }
       });
     var _axis = axis.def('x', encoding, {

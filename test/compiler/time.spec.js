@@ -6,11 +6,11 @@ var time = require('../../src/compiler/time'),
   Encoding = require('../../src/Encoding');
 
 describe('time', function() {
-  var fieldName = 'a',
+  var field = 'a',
     timeUnit = 'month',
     encoding = Encoding.fromSpec({
       encoding: {
-        x: {name: fieldName, type: 'T', timeUnit: timeUnit}
+        x: {name: field, type: 'T', timeUnit: timeUnit}
       }
     }),
     scales = time.scales(encoding);
