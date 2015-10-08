@@ -22,12 +22,20 @@ function data(encoding, stats) {
   var def = [data.raw(encoding, stats)];
 
   var aggregate = data.aggregate(encoding);
-  if (aggregate) def.push(data.aggregate(encoding));
+  if (aggregate) {
+    def.push(data.aggregate(encoding));
+  }
 
   // TODO add "having" filter here
 
   // append non-positive filter at the end for the data table
   data.filterNonPositive(def[def.length - 1], encoding);
+
+  // Stack
+  var stack = encoding.stack();
+  if (stack) {
+    def.push(data.stack(encoding, stack));
+  }
 
   return def;
 }
@@ -200,6 +208,38 @@ data.aggregate = function(encoding) {
   }
 
   return null;
+};
+
+/**
+ * Add stacked data source, for feeding the shared scale.
+ */
+data.stack = function(encoding, stack) {
+  var dim = stack.dimension;
+  var val = stack.value;
+  var facets = encoding.facets();
+
+  var stacked = {
+    name: STACKED,
+    source: encoding.dataTable(),
+    transform: [{
+      type: 'aggregate',
+      groupby: [encoding.fieldRef(dim)].concat(facets), // dim and other facets
+      summarize: [{ops: ['sum'], field: encoding.fieldRef(val)}]
+    }]
+  };
+
+  if (facets && facets.length > 0) {
+    stacked.transform.push({ //calculate max for each facet
+      type: 'aggregate',
+      groupby: facets,
+      summarize: [{
+        ops: ['max'],
+        // we want max of sum from above transform
+        field: encoding.fieldRef(val, {prefn: 'sum_'})
+      }]
+    });
+  }
+  return stacked;
 };
 
 data.filterNonPositive = function(dataTable, encoding) {

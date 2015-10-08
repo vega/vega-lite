@@ -27,34 +27,35 @@ describe('vl.compile.scale', function() {
     describe('for stack', function() {
       it('should return correct stack', function() {
         var domain = vlscale.domain(linearScaleDef, Encoding.fromSpec({
+          marktype: 'bar',
           encoding: {
             y: {
+              aggregate: 'sum',
               name: 'origin'
-            }
+            },
+            x: {name: 'x', type: 'O'},
+            color: {name: 'color', type: 'O'}
           }
-        }), {}, {
-          stack: 'y',
-          facet: true
-        });
+        }), {}, true);
 
         expect(domain).to.eql({
           data: 'stacked',
-          field: 'max_sum_origin'
+          field: 'max_sum_sum_origin'
         });
       });
 
       it('should return correct aggregated stack', function() {
         var domain = vlscale.domain(linearScaleDef, Encoding.fromSpec({
+          marktype: 'bar',
           encoding: {
             y: {
               aggregate: 'sum',
               name: 'origin'
-            }
+            },
+            x: {name: 'x', type: 'O'},
+            color: {name: 'color', type: 'O'}
           }
-        }), {}, {
-          stack: 'y',
-          facet: true
-        });
+        }), {}, true);
 
         expect(domain).to.eql({
           data: 'stacked',

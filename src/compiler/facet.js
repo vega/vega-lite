@@ -29,7 +29,7 @@ function groupdef(name, opt) {
   };
 }
 
-function faceting(group, encoding, layout, spec, singleScaleNames, stack, stats) {
+function faceting(group, encoding, layout, spec, singleScaleNames, stats) {
   var enter = group.properties.enter;
   var facetKeys = [], cellAxes = [], from, axesGrp;
 
@@ -121,7 +121,7 @@ function faceting(group, encoding, layout, spec, singleScaleNames, stack, stats)
     encoding,
     layout,
     stats,
-    {stack: stack, facet: true}
+    true
   )); // row/col scales + cell scales
 
   if (cellAxes.length > 0) {
