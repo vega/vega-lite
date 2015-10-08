@@ -74,11 +74,11 @@ scale.domain = function (scaleDef, encoding, stats, opt) {
   }
 
   // For stack, use STACKED data.
-  // TODO(#412) revise this
   if (name == opt.stack) {
     return {
       data: STACKED,
       field: encoding.fieldRef(name, {
+        // If faceted, scale is determined by the max of sum in each facet.
         prefn: (opt.facet ? 'max_' : '') + 'sum_'
       })
     };
