@@ -99,7 +99,9 @@ compiler.compileEncoding = function (encoding, stats) {
   // auto-sort line/area values
   if (lineType && encoding.config('autoSortLine')) {
     var f = (encoding.isMeasure(X) && encoding.isDimension(Y)) ? Y : X;
-    if (!mdef.from) mdef.from = {};
+    if (!mdef.from) {
+      mdef.from = {};
+    }
     // TODO: why - ?
     mdef.from.transform = [{type: 'sort', by: '-' + encoding.fieldRef(f)}];
   }
@@ -115,10 +117,13 @@ compiler.compileEncoding = function (encoding, stats) {
     spec.legends = legend.defs(encoding, style);
   } else {
     group.scales = scale.defs(singleScaleNames, encoding, layout, stats);
-
     group.axes = [];
-    if (encoding.has(X)) group.axes.push(axis.def(X, encoding, layout, stats));
-    if (encoding.has(Y)) group.axes.push(axis.def(Y, encoding, layout, stats));
+    if (encoding.has(X)) {
+      group.axes.push(axis.def(X, encoding, layout, stats));
+    }
+    if (encoding.has(Y)) {
+      group.axes.push(axis.def(Y, encoding, layout, stats));
+    }
 
     group.legends = legend.defs(encoding, style);
   }
