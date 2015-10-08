@@ -260,10 +260,37 @@ module.exports = (function() {
       spec.encoding.color;
   };
 
-  proto.isStack = function() {
-    // FIXME update this once we have control for stack ...
-    return (this.is('bar') || this.is('area')) && this.has('color');
+  /**
+   * Check if the encoding should be stacked and return the stack dimenstion and value fields.
+   * @return {Object} An object containing two properties:
+   * - dimension - the dimension field
+   * - value - the value field
+   */
+  proto.stack = function() {
+    if ((this.is('bar') || this.is('area')) &&
+        (this.has('color') || this.has('detail')) &&
+        // TODO(#) update this once we have control for stack ...
+        this.isAggregate()) {
+
+      var isXMeasure = this.isMeasure(X);
+      var isYMeasure = this.isMeasure(Y);
+
+      if (isXMeasure && !isYMeasure) {
+        return {
+          dimension: Y,
+          value: X
+        };
+      } else if (isYMeasure && !isXMeasure) {
+        return {
+          dimension: X,
+          value: Y
+        };
+      }
+    }
+    return null; // no stack encoding
   };
+
+
 
   proto.details = function() {
     var encoding = this;

@@ -80,16 +80,20 @@ compiler.compileEncoding = function (encoding, stats) {
     mdefs = group.marks = marks.def(encoding, layout, style, stats),
     mdef = mdefs[mdefs.length - 1];  // TODO: remove this dirty hack by refactoring the whole flow
 
+  var stack = encoding.stack();
+  if (stack) {
+    // modify mdef.{from,properties}
+    compiler.stack(encoding, mdef, stack);
+  }
+
   var lineType = marks[encoding.marktype()].line;
 
   // handle subfacets
-
-  var details = encoding.details(),
-    stack = encoding.isAggregate() && details.length > 0 && compiler.stack(spec.data, encoding, mdef); // modify spec.data, mdef.{from,properties}
+  var details = encoding.details();
 
   if (details.length > 0 && lineType) {
     //subfacet to group stack / line together in one group
-    compiler.subfacet(group, mdef, details, stack, encoding);
+    compiler.subfacet(group, mdef, details, encoding);
   }
 
   // auto-sort line/area values
@@ -107,10 +111,10 @@ compiler.compileEncoding = function (encoding, stats) {
 
   // Small Multiples
   if (encoding.has(ROW) || encoding.has(COL)) {
-    spec = compiler.facet(group, encoding, layout, spec, singleScaleNames, stack, stats);
+    spec = compiler.facet(group, encoding, layout, spec, singleScaleNames, stats);
     spec.legends = legend.defs(encoding, style);
   } else {
-    group.scales = scale.defs(singleScaleNames, encoding, layout, stats, {stack: stack});
+    group.scales = scale.defs(singleScaleNames, encoding, layout, stats);
 
     group.axes = [];
     if (encoding.has(X)) group.axes.push(axis.def(X, encoding, layout, stats));

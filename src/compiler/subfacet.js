@@ -4,7 +4,7 @@ require('../globals');
 
 module.exports = subfaceting;
 
-function subfaceting(group, mdef, details, stack, encoding) {
+function subfaceting(group, mdef, details, encoding) {
   var m = group.marks;
   var g = {
     name: 'subfacet',
@@ -27,6 +27,7 @@ function subfaceting(group, mdef, details, stack, encoding) {
   trans.push({type: 'facet', groupby: details});
 
   // TODO: understand why we need this sort transform and write comment
+  var stack = encoding.stack();
   if (stack && encoding.has(COLOR)) {
     trans.unshift({type: 'sort', by: encoding.fieldRef(COLOR)});
   }

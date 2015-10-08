@@ -74,7 +74,8 @@ scale.domain = function (scaleDef, encoding, stats, opt) {
   }
 
   // For stack, use STACKED data.
-  if (name == opt.stack) {
+  var stack = encoding.stack();
+  if (stack && name === stack.value) {
     return {
       data: STACKED,
       field: encoding.fieldRef(name, {
