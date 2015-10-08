@@ -18,13 +18,14 @@ axis.def = function(name, encoding, layout, stats, opt) {
     type: type,
     scale: name,
     properties: {},
-    layer: encoding.encDef(name).axis.layer,
-    orient: axis.orient(name, encoding, stats)
+    layer: encoding.encDef(name).axis.layer
   };
+
+  def = axis.orient(def, encoding, name, stats);
 
   // Add axis label custom scale (for bin / time)
   def = axis.labels.scale(def, encoding, name);
-  def = axis.labels.format(def, name, encoding, stats);
+  def = axis.labels.format(def, encoding, name, stats);
   def = axis.labels.angle(def, encoding, name);
 
   // for x-axis, set ticks for Q or rotate scale for ordinal scale
@@ -45,29 +46,30 @@ axis.def = function(name, encoding, layout, stats, opt) {
   if(isRow) def.offset = axis.titleOffset(encoding, layout, Y) + 20;
   // FIXME(kanitw): Jul 19, 2015 - offset for column when x is put on top
 
-  def = axis.grid(def, name, encoding, layout);
-  def = axis.title(def, name, encoding, layout, opt);
+  def = axis.grid(def, encoding, name, layout);
+  def = axis.title(def, encoding, name, layout, opt);
 
   if (isRow || isCol) def = axis.hideTicks(def);
 
   return def;
 };
 
-axis.orient = function(name, encoding, stats) {
+axis.orient = function(def, encoding, name, stats) {
   var orient = encoding.encDef(name).axis.orient;
-  if (orient) return orient;
-
-  if (name === COL) return 'top';
-
+  if (orient) {
+    def.orient = orient;
+  } else if (name === COL) {
+    def.orient = 'top';
+  }
   // x-axis for long y - put on top
-  if (name === X && encoding.has(Y) && encoding.isOrdinalScale(Y) && encoding.cardinality(Y, stats) > 30) {
-    return 'top';
+  else if (name === X && encoding.has(Y) && encoding.isOrdinalScale(Y) && encoding.cardinality(Y, stats) > 30) {
+    def.orient = 'top';
   }
 
-  return undefined;
+  return def;
 };
 
-axis.grid = function(def, name, encoding, layout) {
+axis.grid = function(def, encoding, name, layout) {
   var cellPadding = layout.cellPadding,
     isCol = name == COL,
     isRow = name == ROW;
@@ -126,7 +128,7 @@ axis.hideTicks = function(def) {
   return def;
 };
 
-axis.title = function (def, name, encoding, layout) {
+axis.title = function (def, encoding, name, layout) {
   var ax = encoding.encDef(name).axis;
 
   if (ax.title) {
@@ -175,7 +177,7 @@ axis.labels.scale = function(def, encoding, name) {
 /**
  * Determine number format or truncate if maxLabel length is presented.
  */
-axis.labels.format = function (def, name, encoding, stats) {
+axis.labels.format = function (def, encoding, name, stats) {
   var fieldStats = stats[encoding.encDef(name).name];
 
   if (encoding.axis(name).format) {
