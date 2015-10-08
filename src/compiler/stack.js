@@ -8,7 +8,7 @@ function stacking(encoding, mdef, stack) {
   var dim = stack.dimension;
   var val = stack.value;
 
-  var valName = encoding.encDef(val).name;
+  var valName = encoding.fieldRef(val);
   var startField = valName + '_start';
   var endField = valName + '_end';
 
