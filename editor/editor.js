@@ -52,12 +52,6 @@ var vled = {
 
 var vgSchema = null;
 
-// load vega schema
-d3.json('editor/bower_components/vega/vega-schema.json', function(error, json) {
-  if (error) return console.warn(error);
-  vgSchema = json;
-});
-
 function getParams() {
   var params = location.search.slice(1);
 
@@ -173,10 +167,23 @@ vled.validateVl = function(vlspec) {
 
 vled.validateVg = function(vgspec) {
   var validator = new ZSchema();
-  var valid = validator.validate(vgspec, vgSchema);
 
-  if (!valid) {
-    console.error(validator.getLastErrors());
+  var cb = function() {
+    var valid = validator.validate(vgspec, vgSchema);
+
+    if (!valid) {
+      console.error(validator.getLastErrors());
+    }
+  };
+
+  if (!vgSchema) {
+    d3.json('editor/bower_components/vega/vega-schema.json', function(error, json) {
+      if (error) return console.warn(error);
+      vgSchema = json;
+      cb();
+    });
+  } else {
+    cb();
   }
 };
 
