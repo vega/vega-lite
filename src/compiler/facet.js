@@ -121,7 +121,7 @@ function faceting(group, encoding, layout, spec, singleScaleNames, stats) {
     encoding,
     layout,
     stats,
-    {facet: true}
+    true
   )); // row/col scales + cell scales
 
   if (cellAxes.length > 0) {

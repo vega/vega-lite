@@ -15,17 +15,15 @@ scale.names = function(props) {
   }, {}));
 };
 
-scale.defs = function(names, encoding, layout, stats, opt) {
-  opt = opt || {};
-
+scale.defs = function(names, encoding, layout, stats, facet) {
   return names.reduce(function(a, name) {
     var scaleDef = {
       name: name,
       type: scale.type(name, encoding)
     };
 
-    scaleDef.domain = scale.domain(scaleDef, encoding, stats, opt);
-    scaleDef = scale.range(scaleDef, encoding, layout, stats, opt);
+    scaleDef.domain = scale.domain(scaleDef, encoding, stats, facet);
+    scaleDef = scale.range(scaleDef, encoding, layout, stats);
 
     return (a.push(scaleDef), a);
   }, []);
@@ -48,9 +46,7 @@ scale.type = function(name, encoding) {
   }
 };
 
-scale.domain = function (scaleDef, encoding, stats, opt) {
-  opt = opt || {};
-
+scale.domain = function (scaleDef, encoding, stats, facet) {
   var name = scaleDef.name;
 
   var encDef = encoding.encDef(name);
@@ -80,7 +76,7 @@ scale.domain = function (scaleDef, encoding, stats, opt) {
       data: STACKED,
       field: encoding.fieldRef(name, {
         // If faceted, scale is determined by the max of sum in each facet.
-        prefn: (opt.facet ? 'max_' : '') + 'sum_'
+        prefn: (facet ? 'max_' : '') + 'sum_'
       })
     };
   }
