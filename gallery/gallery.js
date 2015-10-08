@@ -58,6 +58,32 @@ var EXAMPLES = [
       data: {'url': 'data/cars.json'}
     }
   },{
+    title: 'Binned Scatter plots',
+    spec: {
+      'marktype': 'point',
+      'encoding': {
+        'x': {'bin': true,'name': 'Displacement','type': 'Q'},
+        'y': {'bin': true,'name': 'Miles_per_Gallon','type': 'Q'},
+        'size': {
+          'name': '*',
+          'aggregate': 'count',
+          'type': 'Q',
+          'displayName': 'Number of Records'
+        }
+      },
+      'data': {'url': 'data/cars.json'}
+    }
+  },{
+    title: 'Scatter Plot with Ordinal on Top',
+    spec: {
+      'marktype': 'point',
+      'encoding': {
+        'x': {'name': 'MPAA_Rating','type': 'N'},
+        'y': {'name': 'Release_Date','type': 'N'}
+      },
+      'data': {'url': 'data/movies.json'}
+    }
+  },{
     title: 'Line Chart',
     description: 'Horse power over time',
     spec: {
@@ -65,6 +91,28 @@ var EXAMPLES = [
       encoding: {
         x: {'name': 'Year','type': 'T','timeUnit': 'year'},
         y: {'name': 'Horsepower','type': 'Q','aggregate': 'mean'}
+      },
+      data: {'url': 'data/cars.json'}
+    }
+  },{
+    title: 'Histogram',
+    spec: {
+      marktype: 'bar',
+      encoding: {
+        x: {'bin': {'maxbins': 15},'name': 'Horsepower','type': 'Q'},
+        y: {'name': '*','type': 'Q','aggregate': 'count'}
+      },
+      data: {'url': 'data/cars.json'}
+    }
+  },{
+    title: 'Stacked Histogram',
+    description: 'Simple histogram with bars broken down by the number of cylinders. Also has a legend.',
+    spec: {
+      marktype: 'bar',
+      encoding: {
+        x: {'bin': {'maxbins': 15},'name': 'Horsepower','type': 'Q'},
+        y: {'name': '*','type': 'Q','aggregate': 'count'},
+        color: {'name': 'Cylinders','type': 'N'}
       },
       data: {'url': 'data/cars.json'}
     }
@@ -90,26 +138,15 @@ var EXAMPLES = [
       'data': {'url': 'data/cars.json'}
     }
   },{
-    title: 'Stacked Histogram',
-    description: 'Simple histogram with bars broken down by the number of cylinders. Also has a legend.',
+    title: 'Trellis Area chart',
     spec: {
-      marktype: 'bar',
-      encoding: {
-        x: {'bin': {'maxbins': 15},'name': 'Horsepower','type': 'Q'},
-        y: {'name': '*','type': 'Q','aggregate': 'count'},
-        color: {'name': 'Cylinders','type': 'N'}
+      'marktype': 'area',
+      'encoding': {
+        'x': {'name': 'Year','type': 'T','timeUnit': 'year'},
+        'y': {'name': 'Weight_in_lbs','type': 'Q','aggregate': 'sum'},
+        'col': {'name': 'Cylinders', 'type': 'O'}
       },
-      data: {'url': 'data/cars.json'}
-    }
-  },{
-    title: 'Histogram',
-    spec: {
-      marktype: 'bar',
-      encoding: {
-        x: {'bin': {'maxbins': 15},'name': 'Horsepower','type': 'Q'},
-        y: {'name': '*','type': 'Q','aggregate': 'count'}
-      },
-      data: {'url': 'data/cars.json'}
+      'data': {'url': 'data/cars.json'}
     }
   },{
     title: 'Stacked Bar Chart',
@@ -162,32 +199,6 @@ var EXAMPLES = [
         row: {type: 'O',name: 'site'},
         color: {type: 'N',name: 'year'}
       }
-    }
-  },{
-    title: 'Binned plots',
-    spec: {
-      'marktype': 'point',
-      'encoding': {
-        'x': {'bin': true,'name': 'Displacement','type': 'Q'},
-        'y': {'bin': true,'name': 'Miles_per_Gallon','type': 'Q'},
-        'size': {
-          'name': '*',
-          'aggregate': 'count',
-          'type': 'Q',
-          'displayName': 'Number of Records'
-        }
-      },
-      'data': {'url': 'data/cars.json'}
-    }
-  },{
-    title: 'Ordinal on Top',
-    spec: {
-      'marktype': 'point',
-      'encoding': {
-        'x': {'name': 'MPAA_Rating','type': 'N'},
-        'y': {'name': 'Release_Date','type': 'N'}
-      },
-      'data': {'url': 'data/movies.json'}
     }
   },{
     title: 'Text Heatmap',
