@@ -44,7 +44,7 @@ scale.type = function(name, encoding) {
         // TODO: revise this
         return name === COLOR ? 'linear' : 'ordinal';
       }
-      return encoding.encDef(name).scale.type;
+      return encoding.scale(name).type;
   }
 };
 
@@ -88,7 +88,7 @@ scale.domain = function (scaleDef, encoding, stats, opt) {
     timeUnit = encDef.timeUnit;
 
   // determine useRawDomain value
-  var scaleUseRawDomain = encoding.encDef(name).scale.useRawDomain,
+  var scaleUseRawDomain = encoding.scale(name).useRawDomain,
     useRawDomain = scaleUseRawDomain !== undefined ?
       scaleUseRawDomain : encoding.config('useRawDomain'),
     notCountOrSum = !aggregate || (aggregate !=='count' && aggregate !== 'sum');
@@ -118,7 +118,7 @@ scale.domain = function (scaleDef, encoding, stats, opt) {
 
 
 scale.range = function (scaleDef, encoding, layout, stats) {
-  var spec = encoding.encDef(scaleDef.name).scale,
+  var spec = encoding.scale(scaleDef.name),
     encDef = encoding.encDef(scaleDef.name),
     timeUnit = encDef.timeUnit;
 
@@ -222,7 +222,7 @@ scale.range = function (scaleDef, encoding, layout, stats) {
 };
 
 scale.color = function(s, encoding, stats) {
-  var colorScale = encoding.encDef(COLOR).scale,
+  var colorScale = encoding.scale(COLOR),
     range = colorScale.range,
     cardinality = encoding.cardinality(COLOR, stats),
     type = encoding.type(COLOR);

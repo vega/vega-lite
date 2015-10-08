@@ -204,7 +204,7 @@ data.aggregate = function(encoding) {
 
 data.filterNonPositive = function(dataTable, encoding) {
   encoding.forEach(function(encDef, encType) {
-    if (encoding.encDef(encType).scale.type === 'log') {
+    if (encoding.scale(encType).type === 'log') {
       dataTable.transform.push({
         type: 'filter',
         test: encoding.fieldRef(encType, {datum: 1}) + ' > 0'
