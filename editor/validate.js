@@ -16,7 +16,7 @@ var validateVl = function(vlspec) {
 var validateVg = function(vgspec) {
   var validator = new ZSchema();
 
-  var cb = function() {
+  var callback = function() {
     var valid = validator.validate(vgspec, vgSchema);
 
     if (!valid) {
@@ -25,12 +25,12 @@ var validateVg = function(vgspec) {
   };
 
   if (vgSchema) {
-    cb();
+    callback();
   } else {
     d3.json('editor/bower_components/vega/vega-schema.json', function(error, json) {
       if (error) return console.warn(error);
       vgSchema = json;
-      cb();
+      callback();
     });
   }
 };
