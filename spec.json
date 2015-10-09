@@ -68,16 +68,16 @@
          "supportedTypes": {"Q": 1}
         },
         "reverse": {"type": "boolean","default": false,"supportedTypes": {"Q": 1,"T": 1}},
+        "nice": {
+         "type": "string",
+         "enum": ["second","minute","hour","day","week","month","year"],
+         "supportedTypes": {"T": 1}
+        },
         "zero": {
          "type": "boolean",
          "description": "Include zero",
          "default": true,
          "supportedTypes": {"Q": 1,"T": 1}
-        },
-        "nice": {
-         "type": "string",
-         "enum": ["second","minute","hour","day","week","month","year"],
-         "supportedTypes": {"T": 1}
         },
         "useRawDomain": {
          "type": "boolean",
@@ -88,6 +88,10 @@
       "axis": {
        "type": "object",
        "properties": {
+        "format": {
+         "type": "string",
+         "description": "The formatting pattern for axis labels. If not undefined, this will be determined by small/largeNumberFormat and the max value of the field."
+        },
         "grid": {
          "type": "boolean",
          "default": true,
@@ -96,7 +100,7 @@
         "layer": {
          "type": "string",
          "default": "back",
-         "description": "A string indicating if the axis (and any gridlines) should be placed above or below the data marks."
+         "description": "A string indicating if the axis (and any gridlines) should be placed above or below the data marks. One of \"front\" (default) or \"back\"."
         },
         "orient": {
          "type": "string",
@@ -113,16 +117,6 @@
          "type": "string",
          "description": "A title for the axis. (Shows field name and its function by default.)"
         },
-        "titleMaxLength": {
-         "type": "integer",
-         "minimum": 0,
-         "description": "Max length for axis title if the title is automatically generated from the field's description"
-        },
-        "titleOffset": {"type": "integer","description": "A title offset value for the axis."},
-        "format": {
-         "type": "string",
-         "description": "The formatting pattern for axis labels. If not undefined, this will be determined by small/largeNumberFormat and the max value of the field."
-        },
         "maxLabelLength": {
          "type": "integer",
          "default": 25,
@@ -134,7 +128,13 @@
          "minimum": 0,
          "maximum": 360,
          "description": "Angle by which to rotate labels. Set to 0 to force horizontal."
-        }
+        },
+        "titleMaxLength": {
+         "type": "integer",
+         "minimum": 0,
+         "description": "Max length for axis title if the title is automatically generated from the field's description"
+        },
+        "titleOffset": {"type": "integer","description": "A title offset value for the axis."}
        }
       },
       "band": {
@@ -216,16 +216,16 @@
          "supportedTypes": {"Q": 1}
         },
         "reverse": {"type": "boolean","default": false,"supportedTypes": {"Q": 1,"T": 1}},
+        "nice": {
+         "type": "string",
+         "enum": ["second","minute","hour","day","week","month","year"],
+         "supportedTypes": {"T": 1}
+        },
         "zero": {
          "type": "boolean",
          "description": "Include zero",
          "default": true,
          "supportedTypes": {"Q": 1,"T": 1}
-        },
-        "nice": {
-         "type": "string",
-         "enum": ["second","minute","hour","day","week","month","year"],
-         "supportedTypes": {"T": 1}
         },
         "useRawDomain": {
          "type": "boolean",
@@ -236,6 +236,10 @@
       "axis": {
        "type": "object",
        "properties": {
+        "format": {
+         "type": "string",
+         "description": "The formatting pattern for axis labels. If not undefined, this will be determined by small/largeNumberFormat and the max value of the field."
+        },
         "grid": {
          "type": "boolean",
          "default": true,
@@ -244,7 +248,7 @@
         "layer": {
          "type": "string",
          "default": "back",
-         "description": "A string indicating if the axis (and any gridlines) should be placed above or below the data marks."
+         "description": "A string indicating if the axis (and any gridlines) should be placed above or below the data marks. One of \"front\" (default) or \"back\"."
         },
         "orient": {
          "type": "string",
@@ -261,16 +265,6 @@
          "type": "string",
          "description": "A title for the axis. (Shows field name and its function by default.)"
         },
-        "titleMaxLength": {
-         "type": "integer",
-         "minimum": 0,
-         "description": "Max length for axis title if the title is automatically generated from the field's description"
-        },
-        "titleOffset": {"type": "integer","description": "A title offset value for the axis."},
-        "format": {
-         "type": "string",
-         "description": "The formatting pattern for axis labels. If not undefined, this will be determined by small/largeNumberFormat and the max value of the field."
-        },
         "maxLabelLength": {
          "type": "integer",
          "default": 25,
@@ -282,7 +276,13 @@
          "minimum": 0,
          "maximum": 360,
          "description": "Angle by which to rotate labels. Set to 0 to force horizontal."
-        }
+        },
+        "titleMaxLength": {
+         "type": "integer",
+         "minimum": 0,
+         "description": "Max length for axis title if the title is automatically generated from the field's description"
+        },
+        "titleOffset": {"type": "integer","description": "A title offset value for the axis."}
        }
       },
       "band": {
@@ -361,6 +361,10 @@
       "axis": {
        "type": "object",
        "properties": {
+        "format": {
+         "type": "string",
+         "description": "The formatting pattern for axis labels. If not undefined, this will be determined by small/largeNumberFormat and the max value of the field."
+        },
         "grid": {
          "type": "boolean",
          "default": true,
@@ -369,7 +373,7 @@
         "layer": {
          "type": "string",
          "default": "back",
-         "description": "A string indicating if the axis (and any gridlines) should be placed above or below the data marks."
+         "description": "A string indicating if the axis (and any gridlines) should be placed above or below the data marks. One of \"front\" (default) or \"back\"."
         },
         "orient": {
          "type": "string",
@@ -386,16 +390,6 @@
          "type": "string",
          "description": "A title for the axis. (Shows field name and its function by default.)"
         },
-        "titleMaxLength": {
-         "type": "integer",
-         "minimum": 0,
-         "description": "Max length for axis title if the title is automatically generated from the field's description"
-        },
-        "titleOffset": {"type": "integer","description": "A title offset value for the axis."},
-        "format": {
-         "type": "string",
-         "description": "The formatting pattern for axis labels. If not undefined, this will be determined by small/largeNumberFormat and the max value of the field."
-        },
         "maxLabelLength": {
          "type": "integer",
          "default": 25,
@@ -407,7 +401,13 @@
          "minimum": 0,
          "maximum": 360,
          "description": "Angle by which to rotate labels. Set to 0 to force horizontal."
-        }
+        },
+        "titleMaxLength": {
+         "type": "integer",
+         "minimum": 0,
+         "description": "Max length for axis title if the title is automatically generated from the field's description"
+        },
+        "titleOffset": {"type": "integer","description": "A title offset value for the axis."}
        }
       },
       "height": {"type": "number","minimum": 0,"default": 150}
@@ -467,6 +467,10 @@
       "axis": {
        "type": "object",
        "properties": {
+        "format": {
+         "type": "string",
+         "description": "The formatting pattern for axis labels. If not undefined, this will be determined by small/largeNumberFormat and the max value of the field."
+        },
         "grid": {
          "type": "boolean",
          "default": true,
@@ -475,7 +479,7 @@
         "layer": {
          "type": "string",
          "default": "back",
-         "description": "A string indicating if the axis (and any gridlines) should be placed above or below the data marks."
+         "description": "A string indicating if the axis (and any gridlines) should be placed above or below the data marks. One of \"front\" (default) or \"back\"."
         },
         "orient": {
          "type": "string",
@@ -492,16 +496,6 @@
          "type": "string",
          "description": "A title for the axis. (Shows field name and its function by default.)"
         },
-        "titleMaxLength": {
-         "type": "integer",
-         "minimum": 0,
-         "description": "Max length for axis title if the title is automatically generated from the field's description"
-        },
-        "titleOffset": {"type": "integer","description": "A title offset value for the axis."},
-        "format": {
-         "type": "string",
-         "description": "The formatting pattern for axis labels. If not undefined, this will be determined by small/largeNumberFormat and the max value of the field."
-        },
         "maxLabelLength": {
          "type": "integer",
          "default": 12,
@@ -513,7 +507,13 @@
          "minimum": 0,
          "maximum": 360,
          "description": "Angle by which to rotate labels. Set to 0 to force horizontal."
-        }
+        },
+        "titleMaxLength": {
+         "type": "integer",
+         "minimum": 0,
+         "description": "Max length for axis title if the title is automatically generated from the field's description"
+        },
+        "titleOffset": {"type": "integer","description": "A title offset value for the axis."}
        }
       },
       "width": {"type": "number","minimum": 0,"default": 150}
@@ -576,16 +576,16 @@
          "supportedTypes": {"Q": 1}
         },
         "reverse": {"type": "boolean","default": false,"supportedTypes": {"Q": 1,"T": 1}},
+        "nice": {
+         "type": "string",
+         "enum": ["second","minute","hour","day","week","month","year"],
+         "supportedTypes": {"T": 1}
+        },
         "zero": {
          "type": "boolean",
          "description": "Include zero",
          "default": true,
          "supportedTypes": {"Q": 1,"T": 1}
-        },
-        "nice": {
-         "type": "string",
-         "enum": ["second","minute","hour","day","week","month","year"],
-         "supportedTypes": {"T": 1}
         },
         "useRawDomain": {
          "type": "boolean",
@@ -672,16 +672,16 @@
          "supportedTypes": {"Q": 1}
         },
         "reverse": {"type": "boolean","default": false,"supportedTypes": {"Q": 1,"T": 1}},
+        "nice": {
+         "type": "string",
+         "enum": ["second","minute","hour","day","week","month","year"],
+         "supportedTypes": {"T": 1}
+        },
         "zero": {
          "type": "boolean",
          "description": "Include zero",
          "default": true,
          "supportedTypes": {"Q": 1,"T": 1}
-        },
-        "nice": {
-         "type": "string",
-         "enum": ["second","minute","hour","day","week","month","year"],
-         "supportedTypes": {"T": 1}
         },
         "useRawDomain": {
          "type": "boolean",
@@ -904,16 +904,16 @@
          "supportedTypes": {"Q": 1}
         },
         "reverse": {"type": "boolean","default": false,"supportedTypes": {"Q": 1,"T": 1}},
+        "nice": {
+         "type": "string",
+         "enum": ["second","minute","hour","day","week","month","year"],
+         "supportedTypes": {"T": 1}
+        },
         "zero": {
          "type": "boolean",
          "description": "Include zero",
          "default": true,
          "supportedTypes": {"Q": 1,"T": 1}
-        },
-        "nice": {
-         "type": "string",
-         "enum": ["second","minute","hour","day","week","month","year"],
-         "supportedTypes": {"T": 1}
         },
         "useRawDomain": {
          "type": "boolean",
@@ -1022,6 +1022,7 @@
     "filterNull": {
      "type": "object",
      "properties": {
+      "N": {"type": "boolean","default": false},
       "O": {"type": "boolean","default": false},
       "Q": {"type": "boolean","default": true},
       "T": {"type": "boolean","default": true}
