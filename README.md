@@ -5,10 +5,11 @@
 [![npm version](https://img.shields.io/npm/v/vega-lite.svg)](https://www.npmjs.com/package/vega-lite)
 [![Coverage Status](https://coveralls.io/repos/vega/vega-lite/badge.svg)](https://coveralls.io/r/vega/vega-lite)
 
-**Vega-lite is still in alpha phase and we are working on improving the code and documentation.
-Note that our syntax might change slight before we release 1.0.**
 
-Provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete [Vega](https://vega.github.io/) specifications.
+**Vega-lite is still in alpha phase and we are working on improving the code and [documentation](Documentation).
+Note that our syntax might change slightly before we release 1.0.**
+
+Vega-lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete [Vega](https://vega.github.io/) specifications.
 
 Vega-lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as position (`x`,`y`), `size`, `color` and `shape`. These mappings are then translated into full visualization specifications using the Vega visualization grammar. These resulting visualizations can then be exported or further modified to customize the display.
 
@@ -50,15 +51,15 @@ This is a similar chart as one of the Vega examples in https://github.com/trifac
 {
   "data": {
     "values": [
-      {"x":"A", "y":28}, {"x":"B", "y":55}, {"x":"C", "y":43},
-      {"x":"D", "y":91}, {"x":"E", "y":81}, {"x":"F", "y":53},
-      {"x":"G", "y":19}, {"x":"H", "y":87}, {"x":"I", "y":52}
+      {"a":"A", "b":28}, {"a":"B", "b":55}, {"a":"C", "b":43},
+      {"a":"D", "b":91}, {"a":"E", "b":81}, {"a":"F", "b":53},
+      {"a":"G", "b":19}, {"a":"H", "b":87}, {"a":"I", "b":52}
     ]
   },
   "marktype": "bar",
   "encoding": {
-    "y": {"type": "Q","name": "y"},
-    "x": {"type": "O","name": "x"}
+    "x": {"type": "O","name": "a"},
+    "y": {"type": "Q","name": "b"}
   }
 }
 ```

@@ -57,10 +57,10 @@ axis.orient = function(name, encoding, stats) {
   var orient = encoding.field(name).axis.orient;
   if (orient) return orient;
 
-  if (name===COL) return 'top';
+  if (name === COL) return 'top';
 
   // x-axis for long y - put on top
-  if (name===X && encoding.has(Y) && encoding.isOrdinalScale(Y) && encoding.cardinality(Y, stats) > 30) {
+  if (name === X && encoding.has(Y) && encoding.isOrdinalScale(Y) && encoding.cardinality(Y, stats) > 30) {
     return 'top';
   }
 
