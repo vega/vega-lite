@@ -1,6 +1,6 @@
 'use strict';
 
-/*global location, d3, vl, vg, docCookies, document, $, alert */
+/*global location, d3, vl, vg, docCookies, document, $, alert, validateVl, validateVg */
 
 var DATASETS = [
   {
@@ -131,7 +131,9 @@ vled.loadSpec = function(vlspec, theme) {
     stats = vled.dataset.stats;
   }
 
+  validateVl(vlspec);
   var spec = vl.compile(vlspec, stats, theme);
+  validateVg(spec);
 
   d3.select('#shorthand').node().value = vl.toShorthand(vlspec);
   d3.select('#vgspec').node().value = JSON.stringify(spec, null, '  ', 60);

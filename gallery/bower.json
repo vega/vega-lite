@@ -16,6 +16,7 @@
   ],
   "dependencies": {
     "vega": "^2.2.6",
-    "angular": "^1.4.3"
+    "angular": "^1.4.3",
+    "z-schema": "~3.15.3"
   }
 }
