@@ -267,23 +267,25 @@ module.exports = (function() {
    * - value - the value field
    */
   proto.stack = function() {
-    if ((this.is('bar') || this.is('area')) &&
-        (this.has('color') || this.has('detail')) &&
-        // TODO(#) update this once we have control for stack ...
-        this.isAggregate()) {
+    var stack = (this.has(COLOR) && this.encDef(COLOR).stack) ? COLOR :
+          (this.has(DETAIL) && this.encDef(DETAIL).stack) ? DETAIL : null;
+
+    if ((this.is('bar') || this.is('area')) && stack && this.isAggregate()) {
 
       var isXMeasure = this.isMeasure(X);
       var isYMeasure = this.isMeasure(Y);
 
       if (isXMeasure && !isYMeasure) {
         return {
-          dimension: Y,
-          value: X
+          groupby: Y,
+          value: X,
+          stack: stack
         };
       } else if (isYMeasure && !isXMeasure) {
         return {
-          dimension: X,
-          value: Y
+          groupby: X,
+          value: Y,
+          stack: stack
         };
       }
     }
