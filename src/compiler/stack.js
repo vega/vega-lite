@@ -5,31 +5,31 @@ require('../globals');
 module.exports = stacking;
 
 function stacking(encoding, mdef, stack) {
-  var dim = stack.dimension;
-  var val = stack.value;
+  var groupby = stack.groupby;
+  var field = stack.value;
 
-  var valName = encoding.fieldRef(val);
+  var valName = encoding.fieldRef(field);
   var startField = valName + '_start';
   var endField = valName + '_end';
 
   // add stack transform to mark
   mdef.from.transform = [{
     type: 'stack',
-    groupby: encoding.fieldRef(dim),
-    field: encoding.fieldRef(val),
-    // TODO(#39) add sort by
+    groupby: encoding.fieldRef(groupby),
+    field: encoding.fieldRef(field),
+    sortby: '-' + encoding.fieldRef(stack.stack),
     output: {start: startField, end: endField}
   }];
 
   // TODO(#276): This is super hack-ish -- consolidate into modular mark properties?
-  mdef.properties.update[val] = mdef.properties.enter[val] = {
-    scale: val,
+  mdef.properties.update[field] = mdef.properties.enter[field] = {
+    scale: field,
     field: startField
   };
-  mdef.properties.update[val + '2'] = mdef.properties.enter[val + '2'] = {
-    scale: val,
+  mdef.properties.update[field + '2'] = mdef.properties.enter[field + '2'] = {
+    scale: field,
     field: endField
   };
 
-  return val; //return stack encoding
+  return field; //return stack encoding
 }
