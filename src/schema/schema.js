@@ -428,6 +428,17 @@ var colorMixin = {
   }
 };
 
+var stackMixin = {
+  type: 'object',
+  properties: {
+    stack: {
+      type: 'boolean',
+      default: true,
+      description: 'Enable stacking (for bar and area marks only).'
+    }
+  }
+};
+
 var shapeMixin = {
   type: 'object',
   supportedMarktypes: {point: true, circle: true, square: true},
@@ -526,10 +537,10 @@ var row = merge(clone(facet), axisMixin, rowMixin);
 var col = merge(clone(facet), axisMixin, colMixin);
 
 var size = merge(clone(quantitativeField), legendMixin, sizeMixin, sortMixin);
-var color = merge(clone(multiRoleField), legendMixin, colorMixin, sortMixin);
+var color = merge(clone(multiRoleField), legendMixin, colorMixin, stackMixin, sortMixin);
 
 var shape = merge(clone(onlyOrdinalField), legendMixin, shapeMixin, sortMixin);
-var detail = merge(clone(onlyOrdinalField), detailMixin, sortMixin);
+var detail = merge(clone(onlyOrdinalField), detailMixin, stackMixin, sortMixin);
 
 // we only put aggregated measure in pivot table
 var text = merge(clone(onlyQuantitativeField), textMixin, sortMixin);

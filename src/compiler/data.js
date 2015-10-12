@@ -214,7 +214,7 @@ data.aggregate = function(encoding) {
  * Add stacked data source, for feeding the shared scale.
  */
 data.stack = function(encoding, stack) {
-  var dim = stack.dimension;
+  var dim = stack.groupby;
   var val = stack.value;
   var facets = encoding.facets();
 
