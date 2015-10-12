@@ -434,7 +434,7 @@ var stackMixin = {
     stack: {
       type: 'boolean',
       default: true,
-      description: 'Enable stack (for bar and area marks only).'
+      description: 'Enable stacking (for bar and area marks only).'
     }
   }
 };
