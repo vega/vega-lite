@@ -127,7 +127,7 @@ vled.loadSpec = function(vlspec, theme) {
   var stats = null;
 
   // use dataset stats only if the spec does not have embedded stats
-  if (!vlspec.data  || vlspec.data.values === undefined) {
+  if (!vlspec.data || vlspec.data.values === undefined) {
     stats = vled.dataset.stats;
   }
 
