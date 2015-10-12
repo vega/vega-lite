@@ -267,10 +267,11 @@ module.exports = (function() {
    * - value - the value field
    */
   proto.stack = function() {
-    if ((this.is('bar') || this.is('area')) &&
-        (this.has('color') || this.has('detail')) &&
-        // TODO(#) update this once we have control for stack ...
-        this.isAggregate()) {
+    if ( (this.is('bar') || this.is('area')) &&
+         ( (this.has(COLOR) && this.encDef(COLOR).stack) ||
+           (this.has(DETAIL) && this.encDef(DETAIL).stack) ) &&
+         this.isAggregate()
+       ) {
 
       var isXMeasure = this.isMeasure(X);
       var isYMeasure = this.isMeasure(Y);
