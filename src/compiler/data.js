@@ -89,6 +89,7 @@ data.raw.transform = function(encoding, stats) {
   // null filter comes first so transforms are not performed on null values
   // time and bin should come before filter so we can filter by time and bin
   return data.raw.transform.nullFilter(encoding).concat(
+    data.raw.transform.formula(encoding),
     data.raw.transform.time(encoding),
     data.raw.transform.bin(encoding, stats),
     data.raw.transform.filter(encoding)
@@ -160,6 +161,19 @@ data.raw.transform.filter = function(encoding) {
       type: 'filter',
       test: filter
   }] : [];
+};
+
+data.raw.transform.formula = function(encoding) {
+  var formulas = encoding.data().formulas;
+  if (formulas === undefined) {
+    return [];
+  }
+
+  return formulas.reduce(function(transform, formula) {
+    formula.type = 'formula';
+    transform.push(formula);
+    return transform;
+  }, []);
 };
 
 data.aggregate = function(encoding) {
