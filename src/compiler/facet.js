@@ -67,7 +67,7 @@ function faceting(group, encoding, layout, spec, singleScaleNames, stats) {
 
     axesGrp = groupdef('x-axes', {
         axes: encoding.has(X) ? [axis.def(X, encoding, layout, stats)] : undefined,
-        x: hasCol ? {scale: COL, field: 'keys.0'} : {value: 0},
+        x: hasCol ? {scale: COL, field: encoding.fieldRef(COL)} : {value: 0},
         width: hasCol && {'value': layout.cellWidth}, //HACK?
         from: from
       });
@@ -99,7 +99,7 @@ function faceting(group, encoding, layout, spec, singleScaleNames, stats) {
 
     axesGrp = groupdef('y-axes', {
       axes: encoding.has(Y) ? [axis.def(Y, encoding, layout, stats)] : undefined,
-      y: hasRow && {scale: ROW, field: 'keys.0'},
+      y: hasRow && {scale: ROW, field: encoding.fieldRef(ROW)},
       x: hasRow && {value: 0},
       height: hasRow && {'value': layout.cellHeight}, //HACK?
       from: from
