@@ -10,8 +10,6 @@ var schema = module.exports = {},
 
 var VALID_AGG_OPS = require('vega/src/transforms/Aggregate').VALID_OPS;
 
-var vgStackSchema = require('vega/src/transforms/Stack').schema;
-
 schema.util = require('./schemautil');
 
 schema.marktype = {
@@ -434,21 +432,9 @@ var stackMixin = {
   type: 'object',
   properties: {
     stack: {
-      type: ['boolean', 'object'],
+      type: 'boolean',
       default: true,
-      description: 'Enable stacking (for bar and area marks only).',
-      properties: {
-        reverse: {
-          type: 'boolean',
-          default: false,
-          description: 'Whether to reverse the stack\'s sortby.'
-        },
-        offset: {
-          type: 'string',
-          default: undefined,
-          enum: vgStackSchema.properties.offset.oneOf[0].enum
-        }
-      }
+      description: 'Enable stacking (for bar and area marks only).'
     }
   }
 };
