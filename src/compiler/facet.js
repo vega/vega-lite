@@ -11,22 +11,31 @@ module.exports = faceting;
 
 function groupdef(name, opt) {
   opt = opt || {};
-  return {
+  var group = {
     name: name || undefined,
     type: 'group',
-    from: opt.from,
     properties: {
       enter: {
-        x: opt.x || undefined,
-        y: opt.y || undefined,
         width: opt.width || {field: {group: 'width'}},
         height: opt.height || {field: {group: 'height'}}
       }
-    },
-    scales: opt.scales || undefined,
-    axes: opt.axes || undefined,
-    marks: opt.marks || []
+    }
   };
+
+  if (opt.from) {
+    group.from = opt.from;
+  }
+  if (opt.x) {
+    group.properties.enter.x = opt.x;
+  }
+  if (opt.y) {
+    group.properties.enter.y = opt.y;
+  }
+  if (opt.axes) {
+    group.axes = opt.axes;
+  }
+
+  return group;
 }
 
 function faceting(group, encoding, layout, spec, singleScaleNames, stats) {
