@@ -20,8 +20,6 @@ e = e.concat(addTitles(__.values(f.bars), 'bars'));
 e = e.concat(addTitles(__.values(f.points), 'points'));
 e = e.concat(addTitles(__.values(f.lines), 'lines'));
 e = e.concat(addTitles(__.values(f.area), 'area'));
-
-// TODO(#640): fix validation errors
-// e = e.concat(galleryExamples);
+e = e.concat(galleryExamples);
 
 module.exports = e;
