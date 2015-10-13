@@ -15,9 +15,9 @@ function stacking(encoding, mdef, stack) {
   // add stack transform to mark
   mdef.from.transform = [{
     type: 'stack',
-    groupby: encoding.fieldRef(groupby),
+    groupby: [encoding.fieldRef(groupby)],
     field: encoding.fieldRef(field),
-    sortby: '-' + encoding.fieldRef(stack.stack),
+    sortby: ['-' + encoding.fieldRef(stack.stack)],
     output: {start: startField, end: endField}
   }];
 

@@ -82,6 +82,7 @@ axis.grid = function(def, encoding, name, layout) {
       def.properties.grid = {
         x: {
           offset: layout.cellWidth * (1+ cellPadding/2.0),
+          band: true,
           // default value(s) -- vega doesn't do recursive merge
           scale: 'col'
         },
@@ -96,6 +97,7 @@ axis.grid = function(def, encoding, name, layout) {
       def.properties.grid = {
         y: {
           offset: -layout.cellHeight * (cellPadding/2),
+          band: true,
           // default value(s) -- vega doesn't do recursive merge
           scale: 'row'
         },
