@@ -10,7 +10,9 @@ var schema = module.exports = {},
 
 var VALID_AGG_OPS = require('vega/src/transforms/Aggregate').VALID_OPS;
 
-var vgStackSchema = require('vega/src/transforms/Stack').schema;
+// TODO(#620) refer to vega schema
+// var vgStackSchema = require('vega/src/transforms/Stack').schema;
+
 
 schema.util = require('./schemautil');
 
@@ -446,7 +448,9 @@ var stackMixin = {
         offset: {
           type: 'string',
           default: undefined,
-          enum: vgStackSchema.properties.offset.oneOf[0].enum
+          enum: ['zero', 'silhouette', 'wiggle', 'expand']
+          // TODO(#620) refer to Vega spec once it doesn't throw error
+          // enum: vgStackSchema.properties.offset.oneOf[0].enum
         }
       }
     }
