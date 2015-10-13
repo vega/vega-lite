@@ -13,13 +13,19 @@ function stacking(encoding, mdef, stack) {
   var endField = valName + '_end';
 
   // add stack transform to mark
-  mdef.from.transform = [{
+  var transform = {
     type: 'stack',
     groupby: [encoding.fieldRef(groupby)],
     field: encoding.fieldRef(field),
-    sortby: ['-' + encoding.fieldRef(stack.stack)],
+    sortby: [(stack.properties.reverse ? '' : '-') + encoding.fieldRef(stack.stack)],
     output: {start: startField, end: endField}
-  }];
+  };
+
+  if (stack.properties.offset) {
+    transform.offset = stack.properties.offset;
+  }
+
+  mdef.from.transform = [transform];
 
   // TODO(#276): This is super hack-ish -- consolidate into modular mark properties?
   mdef.properties.update[field] = mdef.properties.enter[field] = {
