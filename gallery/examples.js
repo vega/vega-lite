@@ -19,6 +19,25 @@ var EXAMPLES = [
       }
     }
   },{
+    title: 'Formula transform and filter',
+    description: 'A simple bar chart with embedded data and uses a filter and formulas.',
+    spec: {
+      data: {
+        values: [
+          {'x':'A', 'y':28}, {'x':'B', 'y':55}, {'x':'C', 'y':43},
+          {'x':'G', 'y':19}, {'x':'H', 'y':87}, {'x':'I', 'y':52},
+          {'x':'D', 'y':91}, {'x':'E', 'y':81}, {'x':'F', 'y':53}
+        ],
+        'filter': 'datum.y > 60',
+        'formulas': [{'field': 'y','expr': '2*datum.y'}]
+      },
+      marktype: 'bar',
+      encoding: {
+        y: {type: 'Q', name: 'y'},
+        x: {type: 'O', name: 'x'}
+      }
+    }
+  },{
     title: 'Aggregate Bar Chart',
     spec: {
       'marktype': 'bar',
