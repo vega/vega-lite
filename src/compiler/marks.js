@@ -424,7 +424,7 @@ function text_props(e, layout, style, stats) {
       var fieldStats = stats[e.encDef(TEXT).name],
         numberFormat = encDef.format || e.numberFormat(fieldStats);
 
-      p.text = {template: '{{' + e.fieldRef(TEXT) + ' | number:\'' +
+      p.text = {template: '{{' + e.fieldRef(TEXT, {datum: true}) + ' | number:\'' +
         numberFormat +'\'}}'};
       p.align = {value: encDef.align};
     } else {

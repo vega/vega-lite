@@ -1,6 +1,6 @@
 'use strict';
 
-/*global vl, d3, ZSchema */
+/*global vl, d3, ZSchema, validateVl, validateVg */
 
 var vgSchema = null;
 

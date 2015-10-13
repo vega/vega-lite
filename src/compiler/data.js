@@ -47,6 +47,7 @@ data.raw = function(encoding, stats) {
   // Data source (url or inline)
   if (encoding.hasValues()) {
     raw.values = encoding.data().values;
+    raw.format = {type: 'json'};
   } else {
     raw.url = encoding.data().url;
     raw.format = {type: encoding.data().formatType};
@@ -55,7 +56,6 @@ data.raw = function(encoding, stats) {
   // Set data's format.parse if needed
   var parse = data.raw.formatParse(encoding);
   if (parse) {
-    raw.format = raw.format || {};
     raw.format.parse = parse;
   }
 

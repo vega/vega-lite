@@ -1,12 +1,12 @@
 'use strict';
 
 var assert = require('assert'),
-  ZSchema = require("z-schema"),
+  ZSchema = require('z-schema'),
   inspect = require('util').inspect;
 
 var schema = require('../lib/schema.json'),
-  util = require('../src/schema/schemautil.js'),
-  specSchema = require('../src/schema/schema.js').schema;
+  util = require('../src/schema/schemautil'),
+  specSchema = require('../src/schema/schema').schema;
 
 /*jshint -W121 */
 String.prototype.endsWith = function(suffix) {
