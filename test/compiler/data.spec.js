@@ -57,8 +57,8 @@ describe('data.raw', function() {
       expect(raw.values).to.deep.equal([{a: 1, b:2, c:3}, {a: 4, b:5, c:6}]);
     });
 
-    it('should have raw.format if not required', function(){
-      expect(raw.format).to.eql(undefined);
+    it('should have raw.format', function(){
+      expect(raw.format).to.eql({type: 'json'});
     });
   });
 
