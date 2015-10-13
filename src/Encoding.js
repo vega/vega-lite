@@ -268,12 +268,7 @@ module.exports = (function() {
    */
   proto.stack = function() {
     var stack = (this.has(COLOR) && this.encDef(COLOR).stack) ? COLOR :
-          (this.has(DETAIL) && this.encDef(DETAIL).stack) ? DETAIL :
-          null;
-
-    var properties = stack && this.encDef(stack).stack !== true ?
-                       this.encDef(stack).stack :
-                       {};
+          (this.has(DETAIL) && this.encDef(DETAIL).stack) ? DETAIL : null;
 
     if ((this.is('bar') || this.is('area')) && stack && this.isAggregate()) {
 
@@ -284,15 +279,13 @@ module.exports = (function() {
         return {
           groupby: Y,
           value: X,
-          stack: stack,
-          properties: properties
+          stack: stack
         };
       } else if (isYMeasure && !isXMeasure) {
         return {
           groupby: X,
           value: Y,
-          stack: stack,
-          properties: properties
+          stack: stack
         };
       }
     }
