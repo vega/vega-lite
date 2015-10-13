@@ -121,7 +121,7 @@ f.lines['x,y'] = {
 f.lines['x,y,stroke'] = {
   "marktype": "line",
   "encoding": {
-    "x": {"name": "name","type": "N"},
+    "x": {"name": "Name","type": "N"},
     "y": {"name": "Cylinders","type": "O"},
     "color": {"name": "Acceleration","type": "Q"}
   },
@@ -150,5 +150,6 @@ f.area['x,y,stroke'] = {
   },
   "data": {"url": "data/cars.json"}
 };
+
 
 module.exports = f;
