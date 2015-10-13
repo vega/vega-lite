@@ -614,6 +614,7 @@ var config = {
     filterNull: {
       type: 'object',
       properties: {
+        N: {type:'boolean', default: false},
         O: {type:'boolean', default: false},
         Q: {type:'boolean', default: true},
         T: {type:'boolean', default: true}
