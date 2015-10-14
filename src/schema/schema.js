@@ -448,7 +448,7 @@ var stackMixin = {
         offset: {
           type: 'string',
           default: undefined,
-          enum: ['zero', 'silhouette', 'wiggle', 'expand']
+          enum: ['zero', 'center', 'normalize']
           // TODO(#620) refer to Vega spec once it doesn't throw error
           // enum: vgStackSchema.properties.offset.oneOf[0].enum
         }
