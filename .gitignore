@@ -7,4 +7,3 @@ vega-lite*.map
 spec.json
 npm-debug.log
 instance.json
-coverage
