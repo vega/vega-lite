@@ -591,7 +591,7 @@ var data = {
     filter: {
       type: 'string',
       default: undefined,
-      description: 'A string containing the filter expression. Use `datum` to refer to the current data object.'
+      description: 'A string containing the filter Vega expression. Use `datum` to refer to the current data object.'
     },
     // we generate a vega formula transform
     formulas: {
