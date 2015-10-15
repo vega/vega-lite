@@ -5,7 +5,7 @@ require('../src/globals');
 var expect = require('chai').expect;
 var vlEncDef = require('../src/encdef');
 
-describe('vl.field.cardinality()', function () {
+describe('vl.encDef.cardinality()', function () {
   describe('for Q', function () {
     it('should return cardinality', function() {
       var encDef = {name:2, type:'Q'};
@@ -25,7 +25,7 @@ describe('vl.field.cardinality()', function () {
   });
 });
 
-describe('vl.field.isType', function () {
+describe('vl.encDef.isType', function () {
   it('should return correct type checking', function() {
     var qDef = {name: 'number', type:'Q'};
     expect(vlEncDef.isType(qDef, Q)).to.eql(true);
@@ -33,7 +33,7 @@ describe('vl.field.isType', function () {
   });
 });
 
-describe('vl.field.isTypes', function () {
+describe('vl.encDef.isTypes', function () {
   it('should return correct type checking', function() {
     var qDef = {name: 'number', type:'Q'};
     expect(vlEncDef.isType(qDef, Q)).to.eql(true);
