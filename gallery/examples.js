@@ -177,6 +177,19 @@ var EXAMPLES = [
       'data': {'url': 'data/barley.json'}
     }
   },{
+    title: '1D Stack Bar Chart',
+    spec: {
+      'marktype': 'bar',
+      'encoding': {
+        'y': {'name': 'Acceleration','type': 'Q','aggregate': 'sum'},
+        'color': {
+          'name': 'Origin',
+          'type': 'N'
+        }
+      },
+      'data': {'url': 'data/cars.json'}
+    }
+  },{
     title: 'Trellis Stacked Bar Chart',
     spec: {
       'marktype': 'bar',
