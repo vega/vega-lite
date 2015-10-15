@@ -63,9 +63,6 @@
     "vinyl-source-stream": "^1.1.0",
     "watchify": "~3.4.0",
     "z-schema": "^3.12.4",
-
-    "browserify-shim": "^3.8.9",
-    "browserify-versionify": "^1.0.4",
     "jstransform": "^11.0.2",
     "through": "^2.3.8"
   },
