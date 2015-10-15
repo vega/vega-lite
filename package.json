@@ -40,7 +40,6 @@
     "browserify-versionify": "^1.0.6",
     "chai": "^3.2.0",
     "commander": "^2.8.1",
-    "coveralls": "^2.11.4",
     "d3": "^3.5.6",
     "deep-diff": "^0.3.2",
     "gulp": "^3.9.0",

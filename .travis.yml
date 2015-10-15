@@ -5,12 +5,11 @@ node_js:
 before_install:
   - npm install -g gulp
 install: npm install
-after_success: ./node_modules/.bin/coveralls --verbose < coverage/lcov.info
 notifications:
   email:
     on_success: never
     on_failure: change
-  slack: 
+  slack:
     rooms:
       - 'uwdub:Ry6mwlUX1aZevqiqmYLiA3N1'
     on_success: change

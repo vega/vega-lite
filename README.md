@@ -3,8 +3,6 @@
 [![Build Status](https://travis-ci.org/vega/vega-lite.svg)](https://travis-ci.org/vega/vega-lite)
 [![npm dependencies](https://david-dm.org/vega/vega-lite.svg)](https://www.npmjs.com/package/vega-lite)
 [![npm version](https://img.shields.io/npm/v/vega-lite.svg)](https://www.npmjs.com/package/vega-lite)
-[![Coverage Status](https://coveralls.io/repos/vega/vega-lite/badge.svg)](https://coveralls.io/r/vega/vega-lite)
-
 
 **Vega-lite is still in alpha phase and we are working on improving the code and [documentation](Documentation).
 Note that our syntax might change slightly before we release 1.0.**
