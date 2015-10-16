@@ -168,8 +168,8 @@ var EXAMPLES = [
     spec: {
       'marktype': 'bar',
       'encoding': {
-        'x': {'name': 'variety','type': 'N'},
-        'y': {'name': 'yield','type': 'Q','aggregate': 'sum'},
+        'x': {'name': 'yield','type': 'Q','aggregate': 'sum'},
+        'y': {'name': 'variety','type': 'N'},
         'color': {'name': 'site', 'type': 'N'}
       },
       'data': {'url': 'data/barley.json'}
@@ -179,7 +179,7 @@ var EXAMPLES = [
     spec: {
       'marktype': 'bar',
       'encoding': {
-        'y': {'name': 'Acceleration','type': 'Q','aggregate': 'sum'},
+        'x': {'name': 'Acceleration','type': 'Q','aggregate': 'sum'},
         'color': {
           'name': 'Origin',
           'type': 'N'
@@ -192,8 +192,8 @@ var EXAMPLES = [
     spec: {
       'marktype': 'bar',
       'encoding': {
-        'x': {'name': 'variety','type': 'N'},
-        'y': {'name': 'yield','type': 'Q','aggregate': 'sum'},
+        'x': {'name': 'yield','type': 'Q','aggregate': 'sum'},
+        'y': {'name': 'variety','type': 'N'},
         'col': {'name': 'year','type': 'O'},
         'color': {'name': 'site', 'type': 'N'}
       },
