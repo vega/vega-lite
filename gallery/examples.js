@@ -54,9 +54,7 @@ var EXAMPLES = [
       encoding: {
         x: {name: 'Origin', type: 'N'},
         y: {name: 'Acceleration',type: 'Q', aggregate: 'mean'},
-        col: { axis: {maxLabelLength: 25}, name: 'Cylinders',type: 'O'},
         color: {
-          scale: {quantitativeRange: ['#AFC6A3','#09622A']},
           name: 'Origin',
           type: 'N'
         }
