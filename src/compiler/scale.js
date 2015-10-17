@@ -109,14 +109,22 @@ scale._useRawDomain = function (encoding, name) {
   var useRawDomainEnabled = scaleUseRawDomain !== undefined ?
       scaleUseRawDomain : encoding.config('useRawDomain');
 
-  var notCountOrSum = !encDef.aggregate || (encDef.aggregate !=='count' && encDef.aggregate !== 'sum');
+  var notCountOrSum = !encDef.aggregate ||
+    (encDef.aggregate !=='count' && encDef.aggregate !== 'sum');
 
   return  useRawDomainEnabled &&
     notCountOrSum && (
       // Q always uses non-ordinal scale except when it's binned and thus uses ordinal scale.
-            (encoding.isType(name, Q) && !encDef.bin) ||
+      (
+        encoding.isType(name, Q) &&
+        !encDef.bin // TODO(#614): this must be changed once bin is reimplemented
+      ) ||
+      // TODO: revise this
       // T uses non-ordinal scale when there's no unit or when the unit is not ordinal.
-            (encoding.isType(name, T) && (!encDef.timeUnit || !time.isOrdinalFn(encDef.timeUnit)))
+      (
+        encoding.isType(name, T) &&
+        (!encDef.timeUnit || !time.isOrdinalFn(encDef.timeUnit))
+      )
     );
 };
 
