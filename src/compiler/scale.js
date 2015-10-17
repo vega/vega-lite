@@ -82,8 +82,13 @@ scale.domain = function (scaleDef, encoding, stats, facet) {
   }
 
   var domain = scale._useRawDomain(encoding, name) ?
-                { data: RAW, field: encDef.name } :
-                { data: encoding.dataTable(), field: encoding.fieldRef(name) };
+    {
+      data: RAW,
+      field: encoding.fieldRef(name, {noAggregate:true})
+    } : {
+      data: encoding.dataTable(),
+      field: encoding.fieldRef(name)
+    };
 
   // For ordinal scale, add domain's property if provided.
   var sort = scaleDef.type === 'ordinal' && encoding.sort(name);
@@ -107,12 +112,12 @@ scale._useRawDomain = function (encoding, name) {
   var notCountOrSum = !encDef.aggregate || (encDef.aggregate !=='count' && encDef.aggregate !== 'sum');
 
   return  useRawDomainEnabled &&
-          notCountOrSum && (
-            // Q always uses non-ordinal scale except when it's binned and thus uses ordinal scale.
+    notCountOrSum && (
+      // Q always uses non-ordinal scale except when it's binned and thus uses ordinal scale.
             (encoding.isType(name, Q) && !encDef.bin) ||
-            // T uses non-ordinal scale when there's no unit or when the unit is not ordinal.
+      // T uses non-ordinal scale when there's no unit or when the unit is not ordinal.
             (encoding.isType(name, T) && (!encDef.timeUnit || !time.isOrdinalFn(encDef.timeUnit)))
-          );
+    );
 };
 
 
