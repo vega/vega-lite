@@ -35,7 +35,7 @@ vlfield.fieldRef = function(field, opt) {
     return f + opt.fn + '_' + name;
   } else if (!opt.nofn && field.bin) {
     return f + 'bin_' + name;
-  } else if (!opt.nofn && field.aggregate) {
+  } else if (!opt.nofn && !opt.noAggregate && field.aggregate) {
     return f + field.aggregate + '_' + name;
   } else if (!opt.nofn && field.timeUnit) {
     return f + field.timeUnit + '_' + name;
