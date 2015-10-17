@@ -81,36 +81,38 @@ scale.domain = function (scaleDef, encoding, stats, facet) {
     };
   }
 
-  var aggregate = encoding.encDef(name).aggregate,
-    timeUnit = encDef.timeUnit;
-
-  // determine useRawDomain value
-  var scaleUseRawDomain = encoding.scale(name).useRawDomain,
-    useRawDomain = scaleUseRawDomain !== undefined ?
-      scaleUseRawDomain : encoding.config('useRawDomain'),
-    notCountOrSum = !aggregate || (aggregate !=='count' && aggregate !== 'sum');
-
-  var dataTable = encoding.dataTable();
-  if ( useRawDomain && notCountOrSum && (
-      // Q always uses non-ordinal scale except when it's binned and thus uses ordinal scale.
-      (encoding.isType(name, Q) && !encDef.bin) ||
-      // T uses non-ordinal scale when there's no unit or when the unit is not ordinal.
-      (encoding.isType(name, T) && (!timeUnit || !time.isOrdinalFn(timeUnit)))
-    )
-  ) {
-    dataTable = RAW;
-  }
-
-  var domain = {
-    data: dataTable,
-    field: encoding.fieldRef(name)
-  };
+  var domain = scale._useRawDomain(encoding, name) ?
+                { data: RAW, field: encDef.name } :
+                { data: encoding.dataTable(), field: encoding.fieldRef(name) };
 
   // For ordinal scale, add domain's property if provided.
   var sort = scaleDef.type === 'ordinal' && encoding.sort(name);
   if (sort) { domain.sort = sort; }
 
   return domain;
+};
+
+/** Determine if useRawDomain should be activated for this scale. */
+scale._useRawDomain = function (encoding, name) {
+  var encDef = encoding.encDef(name);
+
+  // scale value
+  var scaleUseRawDomain = encoding.scale(name).useRawDomain;
+
+  // Determine if useRawDomain is enabled. If scale value is specified, use scale value.
+  // Otherwise, use config value.
+  var useRawDomainEnabled = scaleUseRawDomain !== undefined ?
+      scaleUseRawDomain : encoding.config('useRawDomain');
+
+  var notCountOrSum = !encDef.aggregate || (encDef.aggregate !=='count' && encDef.aggregate !== 'sum');
+
+  return  useRawDomainEnabled &&
+          notCountOrSum && (
+            // Q always uses non-ordinal scale except when it's binned and thus uses ordinal scale.
+            (encoding.isType(name, Q) && !encDef.bin) ||
+            // T uses non-ordinal scale when there's no unit or when the unit is not ordinal.
+            (encoding.isType(name, T) && (!encDef.timeUnit || !time.isOrdinalFn(encDef.timeUnit)))
+          );
 };
 
 
