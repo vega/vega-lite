@@ -97,7 +97,13 @@ scale.domain = function (scaleDef, encoding, stats, facet) {
   return domain;
 };
 
-/** Determine if useRawDomain should be activated for this scale. */
+/**
+ * Determine if useRawDomain should be activated for this scale.
+ * @return {Boolean} Returns true if all of the following conditons applies:
+ * 1. `useRawDomain` is enabled either through scale or config
+ * 2. Aggregation function is not `count` or `sum`
+ * 3. The scale is quantitative or time scale.
+ */
 scale._useRawDomain = function (encoding, name) {
   var encDef = encoding.encDef(name);
 
@@ -114,7 +120,7 @@ scale._useRawDomain = function (encoding, name) {
 
   return  useRawDomainEnabled &&
     notCountOrSum && (
-      // Q always uses non-ordinal scale except when it's binned and thus uses ordinal scale.
+      // Q always uses quantitative scale except when it's binned and thus uses ordinal scale.
       (
         encoding.isType(name, Q) &&
         !encDef.bin // TODO(#614): this must be changed once bin is reimplemented
