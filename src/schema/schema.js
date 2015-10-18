@@ -665,10 +665,6 @@ var config = {
         T: {type:'boolean', default: true}
       }
     },
-    toggleSort: {
-      type: 'string',
-      default: O
-    },
     autoSortLine: {
       type: 'boolean',
       default: true
