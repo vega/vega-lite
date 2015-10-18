@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Jasmine Spec Runner v2.0.1</title>
+
+  <link rel="shortcut icon" type="image/png" href="lib/jasmine-2.0.1/jasmine_favicon.png">
+  <link rel="stylesheet" type="text/css" href="lib/jasmine-2.0.1/jasmine.css">
+
+  <script type="text/javascript" src="../dist/ZSchema-browser-min.js"></script>
+  <script type="text/javascript">
+    /* save global instance which should be available now for later testing and delete it */
+    window.originalZSchema = ZSchema;
+    delete window.ZSchema;
+  </script>
+
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.15/require.min.js"></script>
+  <script type="text/javascript">
+    /* save current value of require to make sure it wasn't overridden by anything else later */
+    window.originalRequire = require;
+  </script>
+
+  <script type="text/javascript" src="lib/jasmine-2.0.1/jasmine.js"></script>
+  <script type="text/javascript" src="lib/jasmine-2.0.1/jasmine-html.js"></script>
+  <script type="text/javascript" src="lib/jasmine-2.0.1/boot.js"></script>
+  <script type="text/javascript" src="lib/jasmine-2.0.1/tap_reporter.js"></script>
+  <script type="text/javascript" src="Runner.js"></script>
+
+  <!-- include source files here... -->
+  <script type="text/javascript" src="../dist/ZSchema-browser-min.js"></script>
+
+  <!-- include spec files here... -->
+  <script type="text/javascript" src="../dist/ZSchema-browser-test.js"></script>
+
+  <!-- issue https://github.com/zaggino/z-schema/issues/70 -->
+  <script type="text/javascript">
+    describe("requirejs", function () {
+
+        it("should not be overridden by anything", function () {
+            expect(require).toBeDefined();
+            expect(window.originalRequire).toBeDefined();
+            expect(window.originalRequire).toBe(require);
+        });
+
+        it("there should be global ZSchema when require is not available", function () {
+            expect(window.originalZSchema).toBeDefined();
+            expect(window.originalZSchema.registerFormat).toBeDefined();
+        });
+
+        it("there should be no global ZSchema when require is available", function () {
+            expect(window.ZSchema).toBeUndefined();
+        });
+
+    });
+  </script>
+
+</head>
+
+<body>
+</body>
+</html>

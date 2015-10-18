@@ -1,0 +1,25 @@
+{
+  "name": "benchmark",
+  "main": "benchmark.js",
+  "license": "MIT",
+  "dependencies": {
+    "ajv": "latest",
+    "benchmark": "latest",
+    "is-my-json-valid": "latest",
+    "jassi": "latest",
+    "jayschema": "latest",
+    "jjv": "latest",
+    "jsck": "latest",
+    "jsen": "latest",
+    "json-model": "latest",
+    "jsonschema": "latest",
+    "lodash": "latest",
+    "mustache": "latest",
+    "request-validator": "latest",
+    "schemasaurus": "latest",
+    "skeemas": "latest",
+    "themis": "^1.1.4",
+    "tv4": "latest",
+    "z-schema": "2.x"
+  }
+}

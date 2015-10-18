@@ -1,35 +1,50 @@
 {
   "name": "vega",
   "main": "vega.js",
-  "scripts": [
-    "vega.js"
+  "homepage": "http://vega.github.io/vega/",
+  "description": "The Vega visualization grammar.",
+  "keywords": [
+    "vega",
+    "visualization",
+    "interaction",
+    "dataflow",
+    "grammar",
+    "data",
+    "d3"
   ],
+  "authors": [
+    "Arvind Satyanarayan (http://arvindsatya.com)",
+    "Jeffrey Heer (http://idl.cs.washington.edu)"
+  ],
+  "license": "BSD-3-Clause",
+  "dependencies": {
+    "d3": "^3.5.6"
+  },
   "ignore": [
     ".DS_Store",
     ".git",
     ".gitignore",
     ".npmignore",
-    "Makefile",
+    ".jshintrc",
+    ".travis.yml",
     "bin",
+    "coverage",
     "examples",
     "index.js",
     "node_modules",
-    "package.json",
+    "output",
+    "scripts",
     "src",
     "test"
   ],
-  "dependencies": {
-    "d3": "^3.5.5"
-  },
-  "homepage": "https://github.com/trifacta/vega",
-  "version": "1.5.4",
-  "_release": "1.5.4",
+  "version": "2.2.6",
+  "_release": "2.2.6",
   "_resolution": {
     "type": "version",
-    "tag": "v1.5.4",
-    "commit": "db3ad34ce770d12e4e8ca8beedc0f2aa5ab0e5f7"
+    "tag": "v2.2.6",
+    "commit": "006d941b0c96f4f6f6ef8f78ca7336b02385c6c0"
   },
   "_source": "git://github.com/trifacta/vega.git",
-  "_target": "^1.5.4",
+  "_target": "^2.2.6",
   "_originalSource": "vega"
 }

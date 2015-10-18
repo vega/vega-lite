@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <style type="text/css">
+        table {
+            border: 1px solid black;
+        }
+        td {
+            border: 1px solid black;
+            text-align: left;
+            padding: 3px 10px;
+        }
+        .failed {
+            background-color: #ff6e6e;
+        }
+        .fastest {
+            background-color: #6eff79;
+        }
+        .green {
+            color: green;
+        }
+        .red {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+Generated on {{currentDate}} in {{totalTime}} minutes
+<ul>
+    {{#validators}}
+    <li>
+        {{name}}
+        <ul>
+            <li class="green">passed: {{testsPassed}}</li>
+            <li {{#testsFailed}}class="red"{{/testsFailed}}>failed: {{testsFailed}}</li>
+            <li>times fastest: {{timesFastest}}</li>
+        </ul>
+    </li>
+    {{/validators}}
+</ul>
+<table>
+    <tr>
+        <th></th>
+        {{#validators}}    
+        <th>
+            {{name}}
+        </th>
+        {{/validators}}
+    </tr>
+    {{#results}}
+    <tr>
+        <td>{{name}}</td>
+        {{#results}}
+        <td {{#title}}title="{{title}}"{{/title}}
+            {{#failed}}class="failed"{{/failed}}
+            {{#fastest}}class="fastest"{{/fastest}}>
+            {{percentage}}% ({{hz}})
+        </td>
+        {{/results}}
+    </tr>
+    {{/results}}
+</table>
+</body>
+</html>

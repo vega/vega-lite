@@ -13,6 +13,27 @@
      "type": "array",
      "description": "Pass array of objects instead of a url to a file.",
      "items": {"type": "object","additionalProperties": true}
+    },
+    "filter": {
+     "type": "string",
+     "description": "A string containing the filter Vega expression. Use `datum` to refer to the current data object."
+    },
+    "formulas": {
+     "type": "array",
+     "description": "Array of formula transforms. Formulas are applied before filter.",
+     "items": {
+      "type": "object",
+      "properties": {
+       "field": {
+        "type": "string",
+        "description": "The property name in which to store the computed formula value."
+       },
+       "expr": {
+        "type": "string",
+        "description": "A string containing an expression for the formula. Use the variable `datum` to to refer to the current data object."
+       }
+      }
+     }
     }
    }
   },
@@ -30,12 +51,54 @@
       "type": {"type": "string","enum": ["N","O","Q","T"]},
       "aggregate": {
        "type": "string",
-       "enum": ["avg","sum","median","min","max","count"],
+       "enum": [
+        "values",
+        "count",
+        "valid",
+        "missing",
+        "distinct",
+        "sum",
+        "mean",
+        "average",
+        "variance",
+        "variancep",
+        "stdev",
+        "stdevp",
+        "median",
+        "q1",
+        "q3",
+        "modeskew",
+        "min",
+        "max",
+        "argmin",
+        "argmax"
+       ],
        "supportedEnums": {
-        "Q": ["avg","median","sum","min","max","count"],
+        "Q": [
+         "values",
+         "count",
+         "valid",
+         "missing",
+         "distinct",
+         "sum",
+         "mean",
+         "average",
+         "variance",
+         "variancep",
+         "stdev",
+         "stdevp",
+         "median",
+         "q1",
+         "q3",
+         "modeskew",
+         "min",
+         "max",
+         "argmin",
+         "argmax"
+        ],
         "O": ["median","min","max"],
         "N": [],
-        "T": ["avg","median","min","max"],
+        "T": ["mean","median","min","max"],
         "": ["count"]
        },
        "supportedTypes": {"Q": 1,"N": 1,"O": 1,"T": 1,"": 1}
@@ -67,7 +130,6 @@
          "default": "linear",
          "supportedTypes": {"Q": 1}
         },
-        "reverse": {"type": "boolean","default": false,"supportedTypes": {"Q": 1,"T": 1}},
         "nice": {
          "type": "string",
          "enum": ["second","minute","hour","day","week","month","year"],
@@ -145,18 +207,44 @@
        }
       },
       "sort": {
-       "type": "array",
-       "default": [],
-       "items": {
-        "type": "object",
-        "supportedTypes": {"N": 1,"O": 1},
-        "required": ["name","aggregate"],
-        "properties": {
-         "name": {"type": "string"},
-         "aggregate": {"type": "string","enum": ["avg","sum","min","max","count"]},
-         "reverse": {"type": "boolean","default": false}
+       "supportedTypes": {"N": 1,"O": 1},
+       "oneOf": [
+        {"type": "string","enum": ["ascending","descending"]},
+        {
+         "type": "object",
+         "required": ["field","op"],
+         "properties": {
+          "field": {"type": "string","description": "The field name to aggregate over."},
+          "op": {
+           "type": "string",
+           "enum": [
+            "values",
+            "count",
+            "valid",
+            "missing",
+            "distinct",
+            "sum",
+            "mean",
+            "average",
+            "variance",
+            "variancep",
+            "stdev",
+            "stdevp",
+            "median",
+            "q1",
+            "q3",
+            "modeskew",
+            "min",
+            "max",
+            "argmin",
+            "argmax"
+           ],
+           "description": "The field name to aggregate over."
+          },
+          "order": {"type": "string","enum": ["ascending","descending"]}
+         }
         }
-       }
+       ]
       }
      },
      "supportedRole": {"measure": true,"dimension": true},
@@ -178,12 +266,54 @@
       "type": {"type": "string","enum": ["N","O","Q","T"]},
       "aggregate": {
        "type": "string",
-       "enum": ["avg","sum","median","min","max","count"],
+       "enum": [
+        "values",
+        "count",
+        "valid",
+        "missing",
+        "distinct",
+        "sum",
+        "mean",
+        "average",
+        "variance",
+        "variancep",
+        "stdev",
+        "stdevp",
+        "median",
+        "q1",
+        "q3",
+        "modeskew",
+        "min",
+        "max",
+        "argmin",
+        "argmax"
+       ],
        "supportedEnums": {
-        "Q": ["avg","median","sum","min","max","count"],
+        "Q": [
+         "values",
+         "count",
+         "valid",
+         "missing",
+         "distinct",
+         "sum",
+         "mean",
+         "average",
+         "variance",
+         "variancep",
+         "stdev",
+         "stdevp",
+         "median",
+         "q1",
+         "q3",
+         "modeskew",
+         "min",
+         "max",
+         "argmin",
+         "argmax"
+        ],
         "O": ["median","min","max"],
         "N": [],
-        "T": ["avg","median","min","max"],
+        "T": ["mean","median","min","max"],
         "": ["count"]
        },
        "supportedTypes": {"Q": 1,"N": 1,"O": 1,"T": 1,"": 1}
@@ -215,7 +345,6 @@
          "default": "linear",
          "supportedTypes": {"Q": 1}
         },
-        "reverse": {"type": "boolean","default": false,"supportedTypes": {"Q": 1,"T": 1}},
         "nice": {
          "type": "string",
          "enum": ["second","minute","hour","day","week","month","year"],
@@ -293,18 +422,44 @@
        }
       },
       "sort": {
-       "type": "array",
-       "default": [],
-       "items": {
-        "type": "object",
-        "supportedTypes": {"N": 1,"O": 1},
-        "required": ["name","aggregate"],
-        "properties": {
-         "name": {"type": "string"},
-         "aggregate": {"type": "string","enum": ["avg","sum","min","max","count"]},
-         "reverse": {"type": "boolean","default": false}
+       "supportedTypes": {"N": 1,"O": 1},
+       "oneOf": [
+        {"type": "string","enum": ["ascending","descending"]},
+        {
+         "type": "object",
+         "required": ["field","op"],
+         "properties": {
+          "field": {"type": "string","description": "The field name to aggregate over."},
+          "op": {
+           "type": "string",
+           "enum": [
+            "values",
+            "count",
+            "valid",
+            "missing",
+            "distinct",
+            "sum",
+            "mean",
+            "average",
+            "variance",
+            "variancep",
+            "stdev",
+            "stdevp",
+            "median",
+            "q1",
+            "q3",
+            "modeskew",
+            "min",
+            "max",
+            "argmin",
+            "argmax"
+           ],
+           "description": "The field name to aggregate over."
+          },
+          "order": {"type": "string","enum": ["ascending","descending"]}
+         }
         }
-       }
+       ]
       }
      },
      "supportedRole": {"measure": true,"dimension": true},
@@ -345,18 +500,44 @@
       "aggregate": {"type": "string","enum": ["count"],"supportedTypes": {"N": 1,"O": 1}},
       "padding": {"type": "number","minimum": 0,"maximum": 1,"default": 0.1},
       "sort": {
-       "type": "array",
-       "default": [],
-       "items": {
-        "type": "object",
-        "supportedTypes": {"N": 1,"O": 1},
-        "required": ["name","aggregate"],
-        "properties": {
-         "name": {"type": "string"},
-         "aggregate": {"type": "string","enum": ["avg","sum","min","max","count"]},
-         "reverse": {"type": "boolean","default": false}
+       "supportedTypes": {"N": 1,"O": 1},
+       "oneOf": [
+        {"type": "string","enum": ["ascending","descending"]},
+        {
+         "type": "object",
+         "required": ["field","op"],
+         "properties": {
+          "field": {"type": "string","description": "The field name to aggregate over."},
+          "op": {
+           "type": "string",
+           "enum": [
+            "values",
+            "count",
+            "valid",
+            "missing",
+            "distinct",
+            "sum",
+            "mean",
+            "average",
+            "variance",
+            "variancep",
+            "stdev",
+            "stdevp",
+            "median",
+            "q1",
+            "q3",
+            "modeskew",
+            "min",
+            "max",
+            "argmin",
+            "argmax"
+           ],
+           "description": "The field name to aggregate over."
+          },
+          "order": {"type": "string","enum": ["ascending","descending"]}
+         }
         }
-       }
+       ]
       },
       "axis": {
        "type": "object",
@@ -451,18 +632,44 @@
       "aggregate": {"type": "string","enum": ["count"],"supportedTypes": {"N": 1,"O": 1}},
       "padding": {"type": "number","minimum": 0,"maximum": 1,"default": 0.1},
       "sort": {
-       "type": "array",
-       "default": [],
-       "items": {
-        "type": "object",
-        "supportedTypes": {"N": 1,"O": 1},
-        "required": ["name","aggregate"],
-        "properties": {
-         "name": {"type": "string"},
-         "aggregate": {"type": "string","enum": ["avg","sum","min","max","count"]},
-         "reverse": {"type": "boolean","default": false}
+       "supportedTypes": {"N": 1,"O": 1},
+       "oneOf": [
+        {"type": "string","enum": ["ascending","descending"]},
+        {
+         "type": "object",
+         "required": ["field","op"],
+         "properties": {
+          "field": {"type": "string","description": "The field name to aggregate over."},
+          "op": {
+           "type": "string",
+           "enum": [
+            "values",
+            "count",
+            "valid",
+            "missing",
+            "distinct",
+            "sum",
+            "mean",
+            "average",
+            "variance",
+            "variancep",
+            "stdev",
+            "stdevp",
+            "median",
+            "q1",
+            "q3",
+            "modeskew",
+            "min",
+            "max",
+            "argmin",
+            "argmax"
+           ],
+           "description": "The field name to aggregate over."
+          },
+          "order": {"type": "string","enum": ["ascending","descending"]}
+         }
         }
-       }
+       ]
       },
       "axis": {
        "type": "object",
@@ -538,12 +745,54 @@
       "type": {"type": "string","enum": ["N","O","Q","T"]},
       "aggregate": {
        "type": "string",
-       "enum": ["avg","sum","median","min","max","count"],
+       "enum": [
+        "values",
+        "count",
+        "valid",
+        "missing",
+        "distinct",
+        "sum",
+        "mean",
+        "average",
+        "variance",
+        "variancep",
+        "stdev",
+        "stdevp",
+        "median",
+        "q1",
+        "q3",
+        "modeskew",
+        "min",
+        "max",
+        "argmin",
+        "argmax"
+       ],
        "supportedEnums": {
-        "Q": ["avg","median","sum","min","max","count"],
+        "Q": [
+         "values",
+         "count",
+         "valid",
+         "missing",
+         "distinct",
+         "sum",
+         "mean",
+         "average",
+         "variance",
+         "variancep",
+         "stdev",
+         "stdevp",
+         "median",
+         "q1",
+         "q3",
+         "modeskew",
+         "min",
+         "max",
+         "argmin",
+         "argmax"
+        ],
         "O": ["median","min","max"],
         "N": [],
-        "T": ["avg","median","min","max"],
+        "T": ["mean","median","min","max"],
         "": ["count"]
        },
        "supportedTypes": {"Q": 1,"N": 1,"O": 1,"T": 1,"": 1}
@@ -575,7 +824,6 @@
          "default": "linear",
          "supportedTypes": {"Q": 1}
         },
-        "reverse": {"type": "boolean","default": false,"supportedTypes": {"Q": 1,"T": 1}},
         "nice": {
          "type": "string",
          "enum": ["second","minute","hour","day","week","month","year"],
@@ -600,6 +848,11 @@
         "title": {
          "type": "string",
          "description": "A title for the legend. (Shows field name and its function by default.)"
+        },
+        "orient": {
+         "type": "string",
+         "default": "right",
+         "description": "The orientation of the legend. One of \"left\" or \"right\". This determines how the legend is positioned within the scene. The default is \"right\"."
         }
        }
       },
@@ -610,18 +863,44 @@
        "description": "Size of marks."
       },
       "sort": {
-       "type": "array",
-       "default": [],
-       "items": {
-        "type": "object",
-        "supportedTypes": {"N": 1,"O": 1},
-        "required": ["name","aggregate"],
-        "properties": {
-         "name": {"type": "string"},
-         "aggregate": {"type": "string","enum": ["avg","sum","min","max","count"]},
-         "reverse": {"type": "boolean","default": false}
+       "supportedTypes": {"N": 1,"O": 1},
+       "oneOf": [
+        {"type": "string","enum": ["ascending","descending"]},
+        {
+         "type": "object",
+         "required": ["field","op"],
+         "properties": {
+          "field": {"type": "string","description": "The field name to aggregate over."},
+          "op": {
+           "type": "string",
+           "enum": [
+            "values",
+            "count",
+            "valid",
+            "missing",
+            "distinct",
+            "sum",
+            "mean",
+            "average",
+            "variance",
+            "variancep",
+            "stdev",
+            "stdevp",
+            "median",
+            "q1",
+            "q3",
+            "modeskew",
+            "min",
+            "max",
+            "argmin",
+            "argmax"
+           ],
+           "description": "The field name to aggregate over."
+          },
+          "order": {"type": "string","enum": ["ascending","descending"]}
+         }
         }
-       }
+       ]
       }
      },
      "supportedRole": {"measure": true,"dimension": "ordinal-only"},
@@ -634,12 +913,54 @@
       "type": {"type": "string","enum": ["N","O","Q","T"]},
       "aggregate": {
        "type": "string",
-       "enum": ["avg","sum","median","min","max","count"],
+       "enum": [
+        "values",
+        "count",
+        "valid",
+        "missing",
+        "distinct",
+        "sum",
+        "mean",
+        "average",
+        "variance",
+        "variancep",
+        "stdev",
+        "stdevp",
+        "median",
+        "q1",
+        "q3",
+        "modeskew",
+        "min",
+        "max",
+        "argmin",
+        "argmax"
+       ],
        "supportedEnums": {
-        "Q": ["avg","median","sum","min","max","count"],
+        "Q": [
+         "values",
+         "count",
+         "valid",
+         "missing",
+         "distinct",
+         "sum",
+         "mean",
+         "average",
+         "variance",
+         "variancep",
+         "stdev",
+         "stdevp",
+         "median",
+         "q1",
+         "q3",
+         "modeskew",
+         "min",
+         "max",
+         "argmin",
+         "argmax"
+        ],
         "O": ["median","min","max"],
         "N": [],
-        "T": ["avg","median","min","max"],
+        "T": ["mean","median","min","max"],
         "": ["count"]
        },
        "supportedTypes": {"Q": 1,"N": 1,"O": 1,"T": 1,"": 1}
@@ -671,7 +992,6 @@
          "default": "linear",
          "supportedTypes": {"Q": 1}
         },
-        "reverse": {"type": "boolean","default": false,"supportedTypes": {"Q": 1,"T": 1}},
         "nice": {
          "type": "string",
          "enum": ["second","minute","hour","day","week","month","year"],
@@ -759,6 +1079,11 @@
         "title": {
          "type": "string",
          "description": "A title for the legend. (Shows field name and its function by default.)"
+        },
+        "orient": {
+         "type": "string",
+         "default": "right",
+         "description": "The orientation of the legend. One of \"left\" or \"right\". This determines how the legend is positioned within the scene. The default is \"right\"."
         }
        }
       },
@@ -769,19 +1094,58 @@
        "description": "Color to be used for marks."
       },
       "opacity": {"type": "number","minimum": 0,"maximum": 1},
-      "sort": {
-       "type": "array",
-       "default": [],
-       "items": {
-        "type": "object",
-        "supportedTypes": {"N": 1,"O": 1},
-        "required": ["name","aggregate"],
-        "properties": {
-         "name": {"type": "string"},
-         "aggregate": {"type": "string","enum": ["avg","sum","min","max","count"]},
-         "reverse": {"type": "boolean","default": false}
-        }
+      "stack": {
+       "type": ["boolean","object"],
+       "default": true,
+       "description": "Enable stacking (for bar and area marks only).",
+       "properties": {
+        "reverse": {
+         "type": "boolean",
+         "default": false,
+         "description": "Whether to reverse the stack's sortby."
+        },
+        "offset": {"type": "string","enum": ["zero","center","normalize"]}
        }
+      },
+      "sort": {
+       "supportedTypes": {"N": 1,"O": 1},
+       "oneOf": [
+        {"type": "string","enum": ["ascending","descending"]},
+        {
+         "type": "object",
+         "required": ["field","op"],
+         "properties": {
+          "field": {"type": "string","description": "The field name to aggregate over."},
+          "op": {
+           "type": "string",
+           "enum": [
+            "values",
+            "count",
+            "valid",
+            "missing",
+            "distinct",
+            "sum",
+            "mean",
+            "average",
+            "variance",
+            "variancep",
+            "stdev",
+            "stdevp",
+            "median",
+            "q1",
+            "q3",
+            "modeskew",
+            "min",
+            "max",
+            "argmin",
+            "argmax"
+           ],
+           "description": "The field name to aggregate over."
+          },
+          "order": {"type": "string","enum": ["ascending","descending"]}
+         }
+        }
+       ]
       }
      },
      "supportedRole": {"measure": true,"dimension": true},
@@ -827,6 +1191,11 @@
         "title": {
          "type": "string",
          "description": "A title for the legend. (Shows field name and its function by default.)"
+        },
+        "orient": {
+         "type": "string",
+         "default": "right",
+         "description": "The orientation of the legend. One of \"left\" or \"right\". This determines how the legend is positioned within the scene. The default is \"right\"."
         }
        }
       },
@@ -842,18 +1211,44 @@
        "description": "Whether the shape's color should be used as fill color instead of stroke color."
       },
       "sort": {
-       "type": "array",
-       "default": [],
-       "items": {
-        "type": "object",
-        "supportedTypes": {"N": 1,"O": 1},
-        "required": ["name","aggregate"],
-        "properties": {
-         "name": {"type": "string"},
-         "aggregate": {"type": "string","enum": ["avg","sum","min","max","count"]},
-         "reverse": {"type": "boolean","default": false}
+       "supportedTypes": {"N": 1,"O": 1},
+       "oneOf": [
+        {"type": "string","enum": ["ascending","descending"]},
+        {
+         "type": "object",
+         "required": ["field","op"],
+         "properties": {
+          "field": {"type": "string","description": "The field name to aggregate over."},
+          "op": {
+           "type": "string",
+           "enum": [
+            "values",
+            "count",
+            "valid",
+            "missing",
+            "distinct",
+            "sum",
+            "mean",
+            "average",
+            "variance",
+            "variancep",
+            "stdev",
+            "stdevp",
+            "median",
+            "q1",
+            "q3",
+            "modeskew",
+            "min",
+            "max",
+            "argmin",
+            "argmax"
+           ],
+           "description": "The field name to aggregate over."
+          },
+          "order": {"type": "string","enum": ["ascending","descending"]}
+         }
         }
-       }
+       ]
       }
      },
      "supportedRole": {"dimension": true},
@@ -866,12 +1261,54 @@
       "type": {"type": "string","enum": ["N","O","Q","T"]},
       "aggregate": {
        "type": "string",
-       "enum": ["avg","sum","median","min","max","count"],
+       "enum": [
+        "values",
+        "count",
+        "valid",
+        "missing",
+        "distinct",
+        "sum",
+        "mean",
+        "average",
+        "variance",
+        "variancep",
+        "stdev",
+        "stdevp",
+        "median",
+        "q1",
+        "q3",
+        "modeskew",
+        "min",
+        "max",
+        "argmin",
+        "argmax"
+       ],
        "supportedEnums": {
-        "Q": ["avg","median","sum","min","max","count"],
+        "Q": [
+         "values",
+         "count",
+         "valid",
+         "missing",
+         "distinct",
+         "sum",
+         "mean",
+         "average",
+         "variance",
+         "variancep",
+         "stdev",
+         "stdevp",
+         "median",
+         "q1",
+         "q3",
+         "modeskew",
+         "min",
+         "max",
+         "argmin",
+         "argmax"
+        ],
         "O": ["median","min","max"],
         "N": [],
-        "T": ["avg","median","min","max"],
+        "T": ["mean","median","min","max"],
         "": ["count"]
        },
        "supportedTypes": {"Q": 1,"N": 1,"O": 1,"T": 1,"": 1}
@@ -903,7 +1340,6 @@
          "default": "linear",
          "supportedTypes": {"Q": 1}
         },
-        "reverse": {"type": "boolean","default": false,"supportedTypes": {"Q": 1,"T": 1}},
         "nice": {
          "type": "string",
          "enum": ["second","minute","hour","day","week","month","year"],
@@ -940,18 +1376,44 @@
        "description": "The formatting pattern for text value. If not undefined, this will be determined by small/largeNumberFormat and the max value of the field."
       },
       "sort": {
-       "type": "array",
-       "default": [],
-       "items": {
-        "type": "object",
-        "supportedTypes": {"N": 1,"O": 1},
-        "required": ["name","aggregate"],
-        "properties": {
-         "name": {"type": "string"},
-         "aggregate": {"type": "string","enum": ["avg","sum","min","max","count"]},
-         "reverse": {"type": "boolean","default": false}
+       "supportedTypes": {"N": 1,"O": 1},
+       "oneOf": [
+        {"type": "string","enum": ["ascending","descending"]},
+        {
+         "type": "object",
+         "required": ["field","op"],
+         "properties": {
+          "field": {"type": "string","description": "The field name to aggregate over."},
+          "op": {
+           "type": "string",
+           "enum": [
+            "values",
+            "count",
+            "valid",
+            "missing",
+            "distinct",
+            "sum",
+            "mean",
+            "average",
+            "variance",
+            "variancep",
+            "stdev",
+            "stdevp",
+            "median",
+            "q1",
+            "q3",
+            "modeskew",
+            "min",
+            "max",
+            "argmin",
+            "argmax"
+           ],
+           "description": "The field name to aggregate over."
+          },
+          "order": {"type": "string","enum": ["ascending","descending"]}
+         }
         }
-       }
+       ]
       }
      },
      "supportedRole": {"measure": true},
@@ -981,33 +1443,62 @@
        "supportedTypes": {"Q": 1}
       },
       "aggregate": {"type": "string","enum": ["count"],"supportedTypes": {"N": 1,"O": 1}},
-      "sort": {
-       "type": "array",
-       "default": [],
-       "items": {
-        "type": "object",
-        "supportedTypes": {"N": 1,"O": 1},
-        "required": ["name","aggregate"],
-        "properties": {
-         "name": {"type": "string"},
-         "aggregate": {"type": "string","enum": ["avg","sum","min","max","count"]},
-         "reverse": {"type": "boolean","default": false}
-        }
+      "stack": {
+       "type": ["boolean","object"],
+       "default": true,
+       "description": "Enable stacking (for bar and area marks only).",
+       "properties": {
+        "reverse": {
+         "type": "boolean",
+         "default": false,
+         "description": "Whether to reverse the stack's sortby."
+        },
+        "offset": {"type": "string","enum": ["zero","center","normalize"]}
        }
+      },
+      "sort": {
+       "supportedTypes": {"N": 1,"O": 1},
+       "oneOf": [
+        {"type": "string","enum": ["ascending","descending"]},
+        {
+         "type": "object",
+         "required": ["field","op"],
+         "properties": {
+          "field": {"type": "string","description": "The field name to aggregate over."},
+          "op": {
+           "type": "string",
+           "enum": [
+            "values",
+            "count",
+            "valid",
+            "missing",
+            "distinct",
+            "sum",
+            "mean",
+            "average",
+            "variance",
+            "variancep",
+            "stdev",
+            "stdevp",
+            "median",
+            "q1",
+            "q3",
+            "modeskew",
+            "min",
+            "max",
+            "argmin",
+            "argmax"
+           ],
+           "description": "The field name to aggregate over."
+          },
+          "order": {"type": "string","enum": ["ascending","descending"]}
+         }
+        }
+       ]
       }
      },
      "supportedRole": {"dimension": true},
      "supportedMarktypes": {"point": true,"tick": true,"line": true,"circle": true,"square": true}
-    }
-   }
-  },
-  "filter": {
-   "type": "array",
-   "items": {
-    "type": "object",
-    "properties": {
-     "operands": {"type": "array","items": {"type": ["string","boolean","integer","number"]}},
-     "operator": {"type": "string","enum": [">",">=","=","!=","<","<=","notNull"]}
     }
    }
   },
@@ -1022,12 +1513,12 @@
     "filterNull": {
      "type": "object",
      "properties": {
+      "N": {"type": "boolean","default": false},
       "O": {"type": "boolean","default": false},
       "Q": {"type": "boolean","default": true},
       "T": {"type": "boolean","default": true}
      }
     },
-    "toggleSort": {"type": "string","default": "O"},
     "autoSortLine": {"type": "boolean","default": true},
     "singleHeight": {"type": "integer","default": 200,"minimum": 0},
     "singleWidth": {"type": "integer","default": 200,"minimum": 0},
@@ -1036,7 +1527,8 @@
     "largeBandMaxCardinality": {"type": "integer","default": 10},
     "cellPadding": {"type": "number","default": 0.1},
     "cellGridColor": {"type": "string","role": "color","default": "#000000"},
-    "cellGridOpacity": {"type": "number","minimum": 0,"maximum": 1,"default": 0.15},
+    "cellGridOpacity": {"type": "number","minimum": 0,"maximum": 1,"default": 0.25},
+    "cellGridOffset": {"type": "number","default": 6},
     "cellBackgroundColor": {"type": "string","role": "color","default": "rgba(0,0,0,0)"},
     "textCellWidth": {"type": "integer","default": 90,"minimum": 0},
     "strokeWidth": {"type": "integer","default": 2,"minimum": 0},

@@ -1,0 +1,178 @@
+"use strict";
+
+module.exports = {
+    description: "Issue #43 - maximum call stack size exceeded error",
+    tests: [
+        {
+            description: "should compile both schemas",
+            schema: [
+                {
+                    "id": "schemaA",
+                    "$schema": "http://json-schema.org/draft-04/schema#",
+                    "description": "Data type fields (section 4.3.3)",
+                    "type": "object",
+                    "oneOf": [
+                        {
+                            "required": ["type"]
+                        },
+                        {
+                            "required": ["$ref"]
+                        }
+                    ],
+                    "properties": {
+                        "type": {
+                            "type": "string"
+                        },
+                        "$ref": {
+                            "type": "string"
+                        },
+                        "format": {
+                            "type": "string"
+                        },
+                        "defaultValue": {
+                            "not": {
+                                "type": ["array", "object", "null"]
+                            }
+                        },
+                        "enum": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            },
+                            "uniqueItems": true,
+                            "minItems": 1
+                        },
+                        "minimum": {
+                            "type": "string"
+                        },
+                        "maximum": {
+                            "type": "string"
+                        },
+                        "items": {
+                            "$ref": "#/definitions/itemsObject"
+                        },
+                        "uniqueItems": {
+                            "type": "boolean"
+                        }
+                    },
+                    "dependencies": {
+                        "format": {
+                            "oneOf": [
+                                {
+                                    "properties": {
+                                        "type": {
+                                            "enum": ["integer"]
+                                        },
+                                        "format": {
+                                            "enum": ["int32", "int64"]
+                                        }
+                                    }
+                                },
+                                {
+                                    "properties": {
+                                        "type": {
+                                            "enum": ["number"]
+                                        },
+                                        "format": {
+                                            "enum": ["float", "double"]
+                                        }
+                                    }
+                                },
+                                {
+                                    "properties": {
+                                        "type": {
+                                            "enum": ["string"]
+                                        },
+                                        "format": {
+                                            "enum": ["byte", "date", "date-time"]
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "definitions": {
+                        "itemsObject": {
+                            "oneOf": [
+                                {
+                                    "type": "object",
+                                    "required": ["$ref"],
+                                    "properties": {
+                                        "$ref": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "additionalProperties": false
+                                },
+                                {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#"
+                                        },
+                                        {
+                                            "required": ["type"],
+                                            "properties": {
+                                                "type": {},
+                                                "format": {}
+                                            },
+                                            "additionalProperties": false
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "id": "schemaB",
+                    "$schema": "http://json-schema.org/draft-04/schema#",
+                    "type": "object",
+                    "required": ["id", "properties"],
+                    "properties": {
+                        "id": {
+                            "type": "string"
+                        },
+                        "description": {
+                            "type": "string"
+                        },
+                        "properties": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "$ref": "#/definitions/propertyObject"
+                            }
+                        },
+                        "subTypes": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            },
+                            "uniqueItems": true
+                        },
+                        "discriminator": {
+                            "type": "string"
+                        }
+                    },
+                    "dependencies": {
+                        "subTypes": ["discriminator"]
+                    },
+                    "definitions": {
+                        "propertyObject": {
+                            "allOf": [
+                                {
+                                    "not": {
+                                        "$ref": "#"
+                                    }
+                                },
+                                {
+                                    "$ref": "schemaA"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ],
+            validateSchemaOnly: true,
+            valid: true
+        }
+    ]
+};

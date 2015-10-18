@@ -1,0 +1,11 @@
+{
+    "smartIndent": true,
+    "spaceUnits": 4,
+    "useTabChar": false,
+    "language": {
+        "javascript": {
+            "linting.prefer": ["JSHint", "JSCS"],
+            "linting.usePreferredOnly": true
+        }
+    }
+}

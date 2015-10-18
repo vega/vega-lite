@@ -1,0 +1,85 @@
+{
+  "name": "z-schema",
+  "version": "3.15.3",
+  "description": "JSON schema validator",
+  "homepage": "https://github.com/zaggino/z-schema",
+  "authors": [
+    "Martin Zagora <zaggino@gmail.com>"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "JSON",
+    "Schema",
+    "Validator"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zaggino/z-schema.git"
+  },
+  "bugs": {
+    "url": "https://github.com/zaggino/z-schema/issues"
+  },
+  "main": "src/ZSchema.js",
+  "bin": {
+    "z-schema": "./bin/z-schema"
+  },
+  "files": [
+    "bin",
+    "src",
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "prepublish": "grunt",
+    "test": "grunt test"
+  },
+  "testling": {
+    "scripts": [
+      "test/lib/jasmine-2.0.1/jasmine.js",
+      "test/lib/jasmine-2.0.1/jasmine-html.js",
+      "test/lib/jasmine-2.0.1/boot.js",
+      "test/lib/jasmine-2.0.1/tap_reporter.js",
+      "test/Runner.js",
+      "dist/ZSchema-browser-min.js",
+      "dist/ZSchema-browser-test.js"
+    ],
+    "browsers": [
+      "iexplore/9..latest",
+      "chrome/4",
+      "chrome/28..latest",
+      "firefox/3.5",
+      "firefox/23..latest",
+      "safari/5.1..latest",
+      "opera/12..latest",
+      "iphone/6..latest",
+      "ipad/6..latest",
+      "android-browser/4.2..latest"
+    ]
+  },
+  "dependencies": {
+    "lodash.get": "^3.7.0",
+    "validator": "^4.0.5"
+  },
+  "optionalDependencies": {
+    "commander": "^2.7.1",
+    "request": "^2.54.0"
+  },
+  "devDependencies": {
+    "coveralls": "latest",
+    "grunt": "latest",
+    "grunt-cli": "latest",
+    "grunt-browserify": "~3.2.1",
+    "grunt-contrib-copy": "latest",
+    "grunt-contrib-jasmine": "latest",
+    "grunt-contrib-jshint": "latest",
+    "grunt-contrib-uglify": "latest",
+    "grunt-jasmine-node": "latest",
+    "grunt-jasmine-node-coverage": "latest",
+    "grunt-jscs": "latest",
+    "grunt-lineending": "latest",
+    "jasmine-node": "latest",
+    "jasmine-reporters": "latest",
+    "remapify": "latest"
+  }
+}
