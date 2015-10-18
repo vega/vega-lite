@@ -52,6 +52,7 @@ scale.type = function(name, encoding) {
   }
 };
 
+// TODO: change scaleDef to name, type
 scale.domain = function (scaleDef, encoding, stats, facet) {
   var name = scaleDef.name;
 
