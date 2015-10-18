@@ -53,7 +53,8 @@ var EXAMPLES = [
       marktype: 'bar',
       encoding: {
         x: {name: 'Origin', type: 'N'},
-        y: {name: 'Acceleration',type: 'Q', aggregate: 'mean'},
+        y: {name: 'Acceleration', type: 'Q', aggregate: 'mean'},
+        col: {name: 'Cylinders', type: 'O'},
         color: {
           name: 'Origin',
           type: 'N'
