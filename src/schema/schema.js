@@ -231,9 +231,15 @@ var sortMixin = {
   type: 'object',
   properties: {
     sort: {
-      type: ['object', 'boolean'],
-      default: true,
+      default: undefined,
       supportedTypes: toMap([N, O]),
+      oneOf: [
+        {
+          type: 'string',
+          enum: ['ascending', 'descending']
+        },
+        { // sort by aggregation of another field
+          type: 'object',
       required: ['field', 'op'],
       properties: {
         field: {
@@ -244,8 +250,15 @@ var sortMixin = {
           type: 'string',
           enum: VALID_AGG_OPS,
           description: 'The field name to aggregate over.'
+            },
+            order: {
+              type: 'string',
+              enum: ['ascending', 'descending']
         }
       }
+    }
+      ]
+
     }
   }
 };
