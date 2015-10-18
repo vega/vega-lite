@@ -93,7 +93,7 @@ axis.grid = function(def, encoding, name, layout) {
           value: -yOffset,
         },
         y2: {
-          field: {group: 'height', level: 2},
+          field: {group: 'mark.group.height'},
           offset: yOffset
         },
         stroke: { value: encoding.config('cellGridColor') },
