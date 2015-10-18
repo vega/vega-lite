@@ -63,7 +63,7 @@ function faceting(group, encoding, layout, spec, singleScaleNames, stats) {
     if (!encoding.isDimension(ROW)) {
       util.error('Row encoding should be ordinal.');
     }
-    enter.y = {scale: ROW, field: encoding.encDef(ROW).name};
+    enter.y = {scale: ROW, field: encoding.fieldRef(ROW)};
     enter.height = {'value': layout.cellHeight}; // HACK
 
     facetKeys.push(encoding.fieldRef(ROW));
@@ -95,7 +95,7 @@ function faceting(group, encoding, layout, spec, singleScaleNames, stats) {
     if (!encoding.isDimension(COL)) {
       util.error('Col encoding should be ordinal.');
     }
-    enter.x = {scale: COL, field: encoding.encDef(COL).name};
+    enter.x = {scale: COL, field: encoding.fieldRef(COL)};
     enter.width = {'value': layout.cellWidth}; // HACK
 
     facetKeys.push(encoding.fieldRef(COL));
