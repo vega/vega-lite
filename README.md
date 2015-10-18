@@ -16,7 +16,7 @@ If you find a bug or have a feature request, please [create an issue](https://gi
 
 Use Vega-lite in the [online editor](https://vega.github.io/vega-lite/).
 
-The complete schema for specifications as [JSON schema](http://json-schema.org/) is at [spec.json](https://vega.github.io/vega-lite/spec.json).
+The complete schema for specifications as [JSON schema](http://json-schema.org/) is at [vega-lite-spec.json](https://vega.github.io/vega-lite/vega-lite-spec.json).
 
 ## Example specification
 
@@ -77,7 +77,7 @@ npm install
 
 You can run `npm run build` to compile vega-lite or run `npm start` to open the live vega-lite editor.
 
-You can `npm run watch` to start a watcher task that regenerate the `spec.json` file whenever `schema.js` changes, and lints and tests all JS files when any `.js` file in `test/` or `src/` changes.
+You can `npm run watch` to start a watcher task that regenerate the `vega-lite-spec.json` file whenever `schema.js` changes, and lints and tests all JS files when any `.js` file in `test/` or `src/` changes.
 
 Note: These commands use [Gulp](http://gulpjs.com) internally; to run them directly (instead of through the `npm run` aliases), install gulp globally with
 ```sh
@@ -100,4 +100,3 @@ npm link datalib
 ```
 
 Now all the changes you make in Datalib are reflected in your Vega-lite automatically.
-
