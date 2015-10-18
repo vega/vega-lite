@@ -31,7 +31,7 @@ version=$(cat package.json | jq .version | sed -e 's/^"//'  -e 's/"$//')
 
 # remove all the compiled files, so we can checkout gh-pages without errors
 rm -f vega-lite*
-rm  -f vega-lite-spec.json
+rm  -f vega-lite-schema.json
 
 # update github pages
 git checkout gh-pages
@@ -42,7 +42,7 @@ npm run build
 
 # add the compiled files, commit and tag!
 git add vega-lite* -f
-git add vega-lite-spec.json -f
+git add vega-lite-schema.json -f
 
 # add bower_components for editor
 cd editor

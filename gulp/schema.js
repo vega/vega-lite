@@ -3,11 +3,11 @@
 var gulp = require('gulp');
 var $ = require('gulp-load-plugins')();
 
-// generates vega-lite-spec.json
+// generates vega-lite-schema.json
 gulp.task('schema', function () {
   gulp.src('src/schema/schemagen.js')
     .pipe($.run('node', {silent: true, cwd: 'src/schema'}))
-    .pipe($.rename('vega-lite-spec.json'))
+    .pipe($.rename('vega-lite-schema.json'))
     .pipe(gulp.dest('.'));
 });
 
