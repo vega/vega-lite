@@ -120,12 +120,11 @@ If `grid` is unspecified, the default value is `true` for ROW and COL. For X
 and Y, the default value is `true` for quantitative fields and `false`
 otherwise.
 
-
 <sup>2</sup>
-If unspecified, axis's `title` is generated from the field's name and transformation function applied e.g, "field_name", "SUM(field_name)", "BIN(field_name)", "YEAR(field_name)".
+If `title` is unspecified, the default value is produced from the field's name and transformation function applied e.g, "field_name", "SUM(field_name)", "BIN(field_name)", "YEAR(field_name)".
 
 <sup>3</sup>
-If unspecified, `titleOffset` is automatically determined.
+If `titleOffset` is unspecified, the default value is automatically determined.
 __TODO: add detail about default behavior__
 
 <sup>4</sup> __In Roadmap__:
