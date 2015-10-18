@@ -96,7 +96,7 @@ axis.grid = function(def, encoding, name, layout) {
           offset: yOffset
         },
         stroke: { value: encoding.config('cellGridColor') },
-        opacity: { value: encoding.config('cellGridOpacity') }
+        strokeOpacity: { value: encoding.config('cellGridOpacity') }
       };
     } else if (isRow) {
       var xOffset = encoding.config('cellGridOffset');
