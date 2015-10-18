@@ -13,11 +13,11 @@ describe('Axis', function() {
     };
 
   describe('(X) for Time Data', function() {
-    var fieldName = 'a',
+    var field = 'a',
       timeUnit = 'month',
       encoding = Encoding.fromSpec({
         encoding: {
-          x: {name: fieldName, type: 'T', timeUnit: timeUnit}
+          x: {name: field, type: 'T', timeUnit: timeUnit}
         }
       });
     var _axis = axis.def('x', encoding, {
@@ -86,96 +86,88 @@ describe('Axis', function() {
 
   describe('orient()', function () {
     it('should return specified orient', function () {
-      var orient = axis.orient('x', Encoding.fromSpec({
+      var def = axis.orient({}, Encoding.fromSpec({
           encoding: {
             x: {name: 'a', axis:{orient: 'bottom'}}
           }
-        }), stats);
-      expect(orient).to.eql('bottom');
+        }), 'x', stats);
+      expect(def.orient).to.eql('bottom');
     });
 
     it('should return undefined by default', function () {
-      var orient = axis.orient('x', Encoding.fromSpec({
+      var def = axis.orient({}, Encoding.fromSpec({
           encoding: {
             x: {name: 'a'}
           }
-        }), stats);
-      expect(orient).to.eql(undefined);
+        }), 'x', stats);
+      expect(def.orient).to.eql(undefined);
     });
 
     it('should return top for COL', function () {
-      var orient = axis.orient('col', Encoding.fromSpec({
+      var def = axis.orient({}, Encoding.fromSpec({
           encoding: {
             x: {name: 'a'},
             col: {name: 'a'}
           }
-        }), stats);
-      expect(orient).to.eql('top');
+        }), 'col', stats);
+      expect(def.orient).to.eql('top');
     });
 
     it('should return top for X with high cardinality, ordinal Y', function () {
-      var orient = axis.orient('x', Encoding.fromSpec({
+      var def = axis.orient({}, Encoding.fromSpec({
           encoding: {
             x: {name: 'a'},
             y: {name: 'b', type: 'O'}
           }
-        }), stats);
-      expect(orient).to.eql('top');
+        }), 'x', stats);
+      expect(def.orient).to.eql('top');
     });
   });
 
   describe('title()', function () {
     it('should add explicitly specified title', function () {
-      var def = axis.title({}, 'x', Encoding.fromSpec({
+      var def = axis.title({}, Encoding.fromSpec({
           encoding: {
             x: {name: 'a', axis: {title: 'Custom'}}
           }
-        }), stats, layout);
+        }), 'x', stats, layout);
       expect(def.title).to.eql('Custom');
     });
 
     it('should add return fieldTitle by default', function () {
-      var encoding = Encoding.fromSpec({
+      var def = axis.title({}, Encoding.fromSpec({
           encoding: {
             x: {name: 'a', axis: {titleMaxLength: '3'}}
           }
-        });
-
-      var def = axis.title({}, 'x', encoding, layout);
+        }), 'x', layout);
       expect(def.title).to.eql('a');
     });
 
     it('should add return fieldTitle by default', function () {
-      var encoding = Encoding.fromSpec({
+      var def = axis.title({}, Encoding.fromSpec({
           encoding: {
             x: {name: 'a', aggregate: 'sum', axis: {titleMaxLength: '10'}}
           }
-        });
-
-      var def = axis.title({}, 'x', encoding, layout);
+        }), 'x', layout);
       expect(def.title).to.eql('SUM(a)');
     });
 
     it('should add return fieldTitle by default and truncate', function () {
-      var encoding = Encoding.fromSpec({
+      var def = axis.title({}, Encoding.fromSpec({
           encoding: {
             x: {name: 'a', aggregate: 'sum', axis: {titleMaxLength: '3'}}
           }
-        });
-
-      var def = axis.title({}, 'x', encoding, layout);
+        }), 'x', layout);
       expect(def.title).to.eql('SU…');
     });
 
 
     it('should add return fieldTitle by default and truncate', function () {
-      var encoding = Encoding.fromSpec({
+      var def = axis.title({}, Encoding.fromSpec({
           encoding: {
             x: {name: 'abcdefghijkl'}
           }
-        });
-
-      var def = axis.title({}, 'x', encoding, layout);
+        }), 'x', layout);
       expect(def.title).to.eql('abcdefghi…');
     });
   });

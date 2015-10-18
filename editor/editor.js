@@ -1,6 +1,6 @@
 'use strict';
 
-/*global location, d3, vl, vg, docCookies, document, $, alert */
+/*global location, d3, vl, vg, docCookies, document, $, alert, validateVl, validateVg */
 
 var DATASETS = [
   {
@@ -127,11 +127,13 @@ vled.loadSpec = function(vlspec, theme) {
   var stats = null;
 
   // use dataset stats only if the spec does not have embedded stats
-  if (!vlspec.data  || vlspec.data.values === undefined) {
+  if (!vlspec.data || vlspec.data.values === undefined) {
     stats = vled.dataset.stats;
   }
 
+  validateVl(vlspec);
   var spec = vl.compile(vlspec, stats, theme);
+  validateVg(spec);
 
   d3.select('#shorthand').node().value = vl.toShorthand(vlspec);
   d3.select('#vgspec').node().value = JSON.stringify(spec, null, '  ', 60);
@@ -204,9 +206,9 @@ vled.init = function() {
     document.getElementById('vlspec').value = JSON.stringify({
       marktype: 'point',
       encoding: {
-        x: {type: 'Q',name: 'yield',aggr: 'avg'},
+        x: {type: 'Q',name: 'yield',aggr: 'mean'},
         y: {
-          sort: [{name: 'yield', aggr: 'avg', reverse: false}],
+          sort: [{name: 'yield', aggr: 'mean', reverse: false}],
           type: 'N',
           name: 'variety'
         },

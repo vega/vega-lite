@@ -39,7 +39,6 @@ marks.def = function(encoding, layout, style, stats) {
 
 marks.bar = {
   type: 'rect',
-  stack: true,
   prop: bar_props,
   supportedEncoding: {row: 1, col: 1, x: 1, y: 1, size: 1, color: 1}
 };
@@ -54,7 +53,6 @@ marks.line = {
 
 marks.area = {
   type: 'area',
-  stack: true,
   line: true,
   requiredEncoding: ['x', 'y'],
   prop: area_props,
@@ -130,12 +128,15 @@ function bar_props(e, layout, style) {
   // y's & height
   if (e.isMeasure(Y)) {
     p.y = {scale: Y, field: e.fieldRef(Y)};
-    p.y2 = {group: 'height'};
+    p.y2 = {field: {group: 'height'}};
   } else {
     if (e.has(Y)) { // is ordinal
       p.yc = {scale: Y, field: e.fieldRef(Y)};
     } else {
-      p.y2 = {group: 'height', offset: -e.config('singleBarOffset')};
+      p.y2 = {
+        field: {group: 'height'},
+        offset: -e.config('singleBarOffset')
+      };
     }
 
     if (e.has(SIZE)) {
@@ -156,7 +157,7 @@ function bar_props(e, layout, style) {
   }
 
   // opacity
-  var opacity = e.field(COLOR).opacity;
+  var opacity = e.encDef(COLOR).opacity;
   if (opacity) p.opacity = {value: opacity};
 
   return p;
@@ -194,7 +195,7 @@ function point_props(e, layout, style) {
   }
 
   // fill or stroke
-  if (e.field(SHAPE).filled) {
+  if (e.encDef(SHAPE).filled) {
     if (e.has(COLOR)) {
       p.fill = {scale: COLOR, field: e.fieldRef(COLOR)};
     } else if (!e.has(COLOR)) {
@@ -210,7 +211,7 @@ function point_props(e, layout, style) {
   }
 
   // opacity
-  var opacity = e.field(COLOR).opacity || style.opacity;
+  var opacity = e.encDef(COLOR).opacity || style.opacity;
   if (opacity) p.opacity = {value: opacity};
 
   return p;
@@ -231,7 +232,7 @@ function line_props(e,layout, style) {
   if (e.has(Y)) {
     p.y = {scale: Y, field: e.fieldRef(Y)};
   } else if (!e.has(Y)) {
-    p.y = {group: 'height'};
+    p.y = {field: {group: 'height'}};
   }
 
   // stroke
@@ -241,7 +242,7 @@ function line_props(e,layout, style) {
     p.stroke = {value: e.value(COLOR)};
   }
 
-  var opacity = e.field(COLOR).opacity;
+  var opacity = e.encDef(COLOR).opacity;
   if (opacity) p.opacity = {value: opacity};
 
   p.strokeWidth = {value: e.config('strokeWidth')};
@@ -273,7 +274,7 @@ function area_props(e, layout, style) {
   } else if (e.has(Y)) {
     p.y = {scale: Y, field: e.fieldRef(Y)};
   } else {
-    p.y = {group: 'height'};
+    p.y = {field: {group: 'height'}};
   }
 
   // fill
@@ -283,7 +284,7 @@ function area_props(e, layout, style) {
     p.fill = {value: e.value(COLOR)};
   }
 
-  var opacity = e.field(COLOR).opacity;
+  var opacity = e.encDef(COLOR).opacity;
   if (opacity) p.opacity = {value: opacity};
 
   return p;
@@ -333,7 +334,7 @@ function tick_props(e, layout, style) {
     p.fill = {value: e.value(COLOR)};
   }
 
-  var opacity = e.field(COLOR).opacity  || style.opacity;
+  var opacity = e.encDef(COLOR).opacity  || style.opacity;
   if(opacity) p.opacity = {value: opacity};
 
   return p;
@@ -374,7 +375,7 @@ function filled_point_props(shape) {
       p.fill = {value: e.value(COLOR)};
     }
 
-    var opacity = e.field(COLOR).opacity  || style.opacity;
+    var opacity = e.encDef(COLOR).opacity  || style.opacity;
     if(opacity) p.opacity = {value: opacity};
 
     return p;
@@ -383,7 +384,7 @@ function filled_point_props(shape) {
 
 function text_props(e, layout, style, stats) {
   var p = {},
-    field = e.field(TEXT);
+    encDef = e.encDef(TEXT);
 
   // x
   if (e.has(X)) {
@@ -407,36 +408,36 @@ function text_props(e, layout, style, stats) {
   if (e.has(SIZE)) {
     p.fontSize = {scale: SIZE, field: e.fieldRef(SIZE)};
   } else if (!e.has(SIZE)) {
-    p.fontSize = {value: field.font.size};
+    p.fontSize = {value: encDef.font.size};
   }
 
   // fill
   // color should be set to background
-  p.fill = {value: field.color};
+  p.fill = {value: encDef.color};
 
-  var opacity = e.field(COLOR).opacity  || style.opacity;
+  var opacity = e.encDef(COLOR).opacity  || style.opacity;
   if(opacity) p.opacity = {value: opacity};
 
   // text
   if (e.has(TEXT)) {
     if (e.isType(TEXT, Q)) {
-      var fieldStats = stats[e.fieldName(TEXT)],
-        numberFormat = field.format || e.numberFormat(fieldStats);
+      var fieldStats = stats[e.encDef(TEXT).name],
+        numberFormat = encDef.format || e.numberFormat(fieldStats);
 
-      p.text = {template: '{{' + e.fieldRef(TEXT) + ' | number:\'' +
+      p.text = {template: '{{' + e.fieldRef(TEXT, {datum: true}) + ' | number:\'' +
         numberFormat +'\'}}'};
-      p.align = {value: field.align};
+      p.align = {value: encDef.align};
     } else {
       p.text = {field: e.fieldRef(TEXT)};
     }
   } else {
-    p.text = {value: field.placeholder};
+    p.text = {value: encDef.placeholder};
   }
 
-  p.font = {value: field.font.family};
-  p.fontWeight = {value: field.font.weight};
-  p.fontStyle = {value: field.font.style};
-  p.baseline = {value: field.baseline};
+  p.font = {value: encDef.font.family};
+  p.fontWeight = {value: encDef.font.weight};
+  p.fontStyle = {value: encDef.font.style};
+  p.baseline = {value: encDef.baseline};
 
   return p;
 }

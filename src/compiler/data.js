@@ -4,7 +4,7 @@ require('../globals');
 
 module.exports = data;
 
-var vlfield = require('../field'),
+var vlEncDef = require('../encdef'),
   util = require('../util'),
   time = require('./time');
 
@@ -17,26 +17,37 @@ var vlfield = require('../field'),
  *                 If the encoding contains aggregate value, this will also create
  *                 aggregate table as well.
  */
-function data(encoding) {
-  var def = [data.raw(encoding)];
+// FIXME(#514): eliminate stats
+function data(encoding, stats) {
+  var def = [data.raw(encoding, stats)];
 
   var aggregate = data.aggregate(encoding);
-  if (aggregate) def.push(data.aggregate(encoding));
+  if (aggregate) {
+    def.push(data.aggregate(encoding));
+  }
 
   // TODO add "having" filter here
 
   // append non-positive filter at the end for the data table
   data.filterNonPositive(def[def.length - 1], encoding);
 
+  // Stack
+  var stack = encoding.stack();
+  if (stack) {
+    def.push(data.stack(encoding, stack));
+  }
+
   return def;
 }
 
-data.raw = function(encoding) {
+// FIXME(#514): eliminate stats
+data.raw = function(encoding, stats) {
   var raw = {name: RAW};
 
   // Data source (url or inline)
   if (encoding.hasValues()) {
     raw.values = encoding.data().values;
+    raw.format = {type: 'json'};
   } else {
     raw.url = encoding.data().url;
     raw.format = {type: encoding.data().formatType};
@@ -45,25 +56,24 @@ data.raw = function(encoding) {
   // Set data's format.parse if needed
   var parse = data.raw.formatParse(encoding);
   if (parse) {
-    raw.format = raw.format || {};
     raw.format.parse = parse;
   }
 
-  raw.transform = data.raw.transform(encoding);
+  raw.transform = data.raw.transform(encoding, stats);
   return raw;
 };
 
 data.raw.formatParse = function(encoding) {
   var parse;
 
-  encoding.forEach(function(field) {
-    if (field.type == T) {
+  encoding.forEach(function(encDef) {
+    if (encDef.type == T) {
       parse = parse || {};
-      parse[field.name] = 'date';
-    } else if (field.type == Q) {
-      if (vlfield.isCount(field)) return;
+      parse[encDef.name] = 'date';
+    } else if (encDef.type == Q) {
+      if (vlEncDef.isCount(encDef)) return;
       parse = parse || {};
-      parse[field.name] = 'number';
+      parse[encDef.name] = 'number';
     }
   });
 
@@ -74,121 +84,139 @@ data.raw.formatParse = function(encoding) {
  * Generate Vega transforms for the raw data table.  This can include
  * transforms for time unit, binning and filtering.
  */
-data.raw.transform = function(encoding) {
+// FIXME(#514): eliminate stats
+data.raw.transform = function(encoding, stats) {
+  // null filter comes first so transforms are not performed on null values
   // time and bin should come before filter so we can filter by time and bin
-  return data.raw.transform.time(encoding).concat(
-    data.raw.transform.bin(encoding),
+  return data.raw.transform.nullFilter(encoding).concat(
+    data.raw.transform.formula(encoding),
+    data.raw.transform.time(encoding),
+    data.raw.transform.bin(encoding, stats),
     data.raw.transform.filter(encoding)
   );
 };
 
-var BINARY = {
-  '>':  true,
-  '>=': true,
-  '=':  true,
-  '!=': true,
-  '<':  true,
-  '<=': true
-};
-
 data.raw.transform.time = function(encoding) {
-  return encoding.reduce(function(transform, field, encType) {
-    if (field.type === T && field.timeUnit) {
+  return encoding.reduce(function(transform, encDef, encType) {
+    if (encDef.type === T && encDef.timeUnit) {
+      var fieldRef = encoding.fieldRef(encType, {nofn: true, datum: true});
+
       transform.push({
         type: 'formula',
         field: encoding.fieldRef(encType),
-        expr: time.formula(field.timeUnit,
-                           encoding.fieldRef(encType, {nofn: true, d: true})
-                          )
+        expr: time.formula(encDef.timeUnit, fieldRef)
       });
     }
     return transform;
   }, []);
 };
 
-data.raw.transform.bin = function(encoding) {
-  return encoding.reduce(function(transform, field, encType) {
+// FIXME(#514): eliminate stats
+data.raw.transform.bin = function(encoding, stats) {
+  return encoding.reduce(function(transform, encDef, encType) {
     if (encoding.bin(encType)) {
       transform.push({
         type: 'bin',
-        field: encoding.fieldRef(encType, {nofn: true}),
-        output: encoding.fieldRef(encType),
-        maxbins: encoding.bin(encType).maxbins
+        field: encDef.name,
+        output: {bin: encoding.fieldRef(encType)},
+        maxbins: encoding.bin(encType).maxbins,
+        min: stats[encDef.name].min,
+        max: stats[encDef.name].max
       });
     }
     return transform;
   }, []);
 };
 
-data.raw.transform.filter = function(encoding) {
-  var filters = encoding.filter().reduce(function(f, filter) {
-    var condition = '';
-    var operator = filter.operator;
-    var operands = filter.operands;
+/**
+ * @return {Array} An array that might contain a filter transform for filtering null value based on filterNul config
+ */
+data.raw.transform.nullFilter = function(encoding) {
+  var filteredFields = util.reduce(encoding.fields(),
+    function(filteredFields, fieldList, fieldName) {
+      if (fieldName === '*') return filteredFields; //count
 
-    var d = 'd.' + (encoding._vega2 ? '' : 'data.');
-
-    if (BINARY[operator]) {
-      // expects a field and a value
-      if (operator === '=') {
-        operator = '==';
+      // TODO(#597) revise how filterNull is structured.
+      if ((encoding.config('filterNull').Q && fieldList.containsType[Q]) ||
+          (encoding.config('filterNull').T && fieldList.containsType[T]) ||
+          (encoding.config('filterNull').O && fieldList.containsType[O]) ||
+          (encoding.config('filterNull').N && fieldList.containsType[N])) {
+        filteredFields.push(fieldName);
       }
+      return filteredFields;
+    }, []);
 
-      var op1 = operands[0];
-      var op2 = operands[1];
-      condition = d + op1 + ' ' + operator + ' ' + op2;
-    } else if (operator === 'notNull') {
-      // expects a number of fields
-      for (var j=0; j<operands.length; j++) {
-        condition += d + operands[j] + '!==null';
-        if (j < operands.length - 1) {
-          condition += ' && ';
-        }
-      }
-    } else {
-      util.warn('Unsupported operator: ', operator);
-      return f;
-    }
-    f.push('(' + condition + ')');
-    return f;
-  }, []);
-  if (filters.length === 0) return [];
-
-  return [{
+  return filteredFields.length > 0 ?
+    [{
       type: 'filter',
-      test: filters.join(' && ')
-  }];
+      test: filteredFields.map(function(fieldName) {
+        return 'datum.' + fieldName + '!==null';
+      }).join(' && ')
+    }] : [];
+};
+
+data.raw.transform.filter = function(encoding) {
+  var filter = encoding.data().filter;
+  return filter ? [{
+      type: 'filter',
+      test: filter
+  }] : [];
+};
+
+data.raw.transform.formula = function(encoding) {
+  var formulas = encoding.data().formulas;
+  if (formulas === undefined) {
+    return [];
+  }
+
+  return formulas.reduce(function(transform, formula) {
+    formula.type = 'formula';
+    transform.push(formula);
+    return transform;
+  }, []);
 };
 
 data.aggregate = function(encoding) {
-  var dims = {}, meas = {};
+  /* dict set for dimensions */
+  var dims = {};
 
-  encoding.forEach(function(field, encType) {
-    if (field.aggregate) {
-      if (field.aggregate === 'count') {
-        meas.count = {op: 'count', field: '*'};
-      }else {
-        meas[field.aggregate + '|' + field.name] = {
-          op: field.aggregate,
-          field: encoding.fieldRef(encType, {nofn: true})
-        };
+  /* dictionary mapping field name => dict set of aggregation functions */
+  var meas = {};
+
+  var hasAggregate = false;
+
+  encoding.forEach(function(encDef, encType) {
+    if (encDef.aggregate) {
+      hasAggregate = true;
+      if (encDef.aggregate === 'count') {
+        meas['*'] = meas['*'] || {};
+        meas['*'].count = true;
+      } else {
+        meas[encDef.name] = meas[encDef.name] || {};
+        meas[encDef.name][encDef.aggregate] = true;
       }
     } else {
-      dims[field.name] = encoding.fieldRef(encType);
+      dims[encDef.name] = encoding.fieldRef(encType);
     }
   });
 
-  dims = util.vals(dims);
-  meas = util.vals(meas);
+  var groupby = util.vals(dims);
 
-  if (meas.length > 0) {
+  // short-format summarize object for Vega's aggregate transform
+  // https://github.com/vega/vega/wiki/Data-Transforms#-aggregate
+  var summarize = util.reduce(meas, function(summarize, fnDictSet, field) {
+    summarize[field] = util.keys(fnDictSet);
+    return summarize;
+  }, {});
+
+  if (hasAggregate) {
     return {
       name: AGGREGATE,
       source: RAW,
       transform: [{
         type: 'aggregate',
-        groupby: dims,
-        fields: meas
+        groupby: groupby,
+        summarize: summarize
       }]
     };
   }
@@ -196,12 +224,44 @@ data.aggregate = function(encoding) {
   return null;
 };
 
+/**
+ * Add stacked data source, for feeding the shared scale.
+ */
+data.stack = function(encoding, stack) {
+  var dim = stack.groupby;
+  var val = stack.value;
+  var facets = encoding.facets();
+
+  var stacked = {
+    name: STACKED,
+    source: encoding.dataTable(),
+    transform: [{
+      type: 'aggregate',
+      groupby: [encoding.fieldRef(dim)].concat(facets), // dim and other facets
+      summarize: [{ops: ['sum'], field: encoding.fieldRef(val)}]
+    }]
+  };
+
+  if (facets && facets.length > 0) {
+    stacked.transform.push({ //calculate max for each facet
+      type: 'aggregate',
+      groupby: facets,
+      summarize: [{
+        ops: ['max'],
+        // we want max of sum from above transform
+        field: encoding.fieldRef(val, {prefn: 'sum_'})
+      }]
+    });
+  }
+  return stacked;
+};
+
 data.filterNonPositive = function(dataTable, encoding) {
-  encoding.forEach(function(field, encType) {
+  encoding.forEach(function(encDef, encType) {
     if (encoding.scale(encType).type === 'log') {
       dataTable.transform.push({
         type: 'filter',
-        test: encoding.fieldRef(encType, {d: 1}) + ' > 0'
+        test: encoding.fieldRef(encType, {datum: 1}) + ' > 0'
       });
     }
   });
