@@ -354,38 +354,5 @@ module.exports = (function() {
     return spec;
   };
 
-  // FIXME: REMOVE everything below here
-
-  Encoding.toggleSort = function(spec) {
-    spec.config = spec.config || {};
-    spec.config.toggleSort = spec.config.toggleSort === Q ? N : Q;
-    return spec;
-  };
-
-
-  Encoding.toggleSort.direction = function(spec) {
-    if (!Encoding.toggleSort.support(spec)) { return; }
-    var enc = spec.encoding;
-    return enc.x.type === N ? 'x' : 'y';
-  };
-
-  Encoding.toggleSort.mode = function(spec) {
-    return spec.config.toggleSort;
-  };
-
-  Encoding.toggleSort.support = function(spec, stats) {
-    var enc = spec.encoding,
-      isTypes = vlEncDef.isTypes;
-
-    if (vlenc.has(enc, ROW) || vlenc.has(enc, COL) ||
-      !vlenc.has(enc, X) || !vlenc.has(enc, Y) ||
-      !Encoding.alwaysNoOcclusion(spec, stats)) {
-      return false;
-    }
-
-    return ( isTypes(enc.x, [N,O]) && vlEncDef.isMeasure(enc.y)) ? 'x' :
-      ( isTypes(enc.y, [N,O]) && vlEncDef.isMeasure(enc.x)) ? 'y' : false;
-  };
-
   return Encoding;
 })();

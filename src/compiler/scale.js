@@ -25,7 +25,7 @@ scale.defs = function(names, encoding, layout, stats, facet) {
 
     // add `reverse` if applicable
     var reverse = scale.reverse(encoding, name);
-    if (reverse !== undefined) {
+    if (reverse) {
       scaleDef.reverse = reverse;
     }
 
@@ -84,22 +84,28 @@ scale.domain = function (encoding, name, type, stats, facet) {
     };
   }
 
-  var domain = scale._useRawDomain(encoding, name) ?
-    {
+  var useRawDomain = scale._useRawDomain(encoding, name);
+  var sort = scale.sort(encoding, name, type);
+
+  if (useRawDomain) {
+    return {
       data: RAW,
       field: encoding.fieldRef(name, {noAggregate:true})
-    } : {
+    };
+  } else if (sort) { // have sort
+    return {
+      // If sort by aggregation of a specified sort field, we need to use RAW table,
+      // so we can aggregate values for the scale independently from the main aggregation.
+      data: sort.op ? RAW : encoding.dataTable(),
+      field: encoding.fieldRef(name),
+      sort: sort
+    };
+  } else {
+    return {
       data: encoding.dataTable(),
       field: encoding.fieldRef(name)
     };
-
-  // Add `sort` if applicable
-  var sort = scale.sort(encoding, name, type);
-  if (sort) {
-    domain.sort = sort;
   }
-
-  return domain;
 };
 
 scale.sort = function(encoding, name, type) {
