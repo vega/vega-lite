@@ -17,13 +17,13 @@ scale.names = function(props) {
 
 scale.defs = function(names, encoding, layout, stats, facet) {
   return names.reduce(function(a, name) {
-    var scaleDef = {
-      name: name,
-      type: scale.type(name, encoding)
-    };
+    var scaleDef = {};
 
-    scaleDef.domain = scale.domain(scaleDef, encoding, stats, facet);
+    scaleDef.name = name;
+    scaleDef.type = scale.type(name, encoding);
+    scaleDef.domain = scale.domain(encoding, name, scaleDef.type, stats, facet);
 
+    // add `reverse` if applicable
     var reverse = scale.reverse(encoding, name);
     if (reverse !== undefined) {
       scaleDef.reverse = reverse;
@@ -36,7 +36,6 @@ scale.defs = function(names, encoding, layout, stats, facet) {
 };
 
 scale.type = function(name, encoding) {
-
   switch (encoding.type(name)) {
     case N: //fall through
     case O: return 'ordinal';
@@ -52,10 +51,7 @@ scale.type = function(name, encoding) {
   }
 };
 
-// TODO: change scaleDef to name, type
-scale.domain = function (scaleDef, encoding, stats, facet) {
-  var name = scaleDef.name;
-
+scale.domain = function (encoding, name, type, stats, facet) {
   var encDef = encoding.encDef(name);
 
   // special case for temporal scale
@@ -97,8 +93,8 @@ scale.domain = function (scaleDef, encoding, stats, facet) {
       field: encoding.fieldRef(name)
     };
 
-  // Add sort if applicable
-  var sort = scale.sort(encoding, name, scaleDef.type);
+  // Add `sort` if applicable
+  var sort = scale.sort(encoding, name, type);
   if (sort) {
     domain.sort = sort;
   }

@@ -10,23 +10,9 @@ var util = require('../../src/util'),
 
 describe('vl.compile.scale', function() {
   describe('domain()', function() {
-    var linearScaleDef = {
-      name: 'y',
-      type: 'linear'
-    };
-
-    var ordinalScaleDef = {
-      name: 'y',
-      type: 'ordinal'
-    };
-    var timeScaleDef = {
-      name: 'y',
-      type: 'time'
-    };
-
     describe('for stack', function() {
       it('should return correct stack', function() {
-        var domain = vlscale.domain(linearScaleDef, Encoding.fromSpec({
+        var domain = vlscale.domain(Encoding.fromSpec({
           marktype: 'bar',
           encoding: {
             y: {
@@ -36,7 +22,7 @@ describe('vl.compile.scale', function() {
             x: {name: 'x', type: 'O'},
             color: {name: 'color', type: 'O'}
           }
-        }), {}, true);
+        }), 'y', 'linear', {}, true);
 
         expect(domain).to.eql({
           data: 'stacked',
@@ -45,7 +31,7 @@ describe('vl.compile.scale', function() {
       });
 
       it('should return correct aggregated stack', function() {
-        var domain = vlscale.domain(linearScaleDef, Encoding.fromSpec({
+        var domain = vlscale.domain(Encoding.fromSpec({
           marktype: 'bar',
           encoding: {
             y: {
@@ -55,7 +41,7 @@ describe('vl.compile.scale', function() {
             x: {name: 'x', type: 'O'},
             color: {name: 'color', type: 'O'}
           }
-        }), {}, true);
+        }), 'y', 'linear', {}, true);
 
         expect(domain).to.eql({
           data: 'stacked',
@@ -67,7 +53,7 @@ describe('vl.compile.scale', function() {
     describe('for quantitative', function() {
       it('should return the right domain if binned Q',
         function() {
-          var domain = vlscale.domain(ordinalScaleDef, Encoding.fromSpec({
+          var domain = vlscale.domain(Encoding.fromSpec({
             encoding: {
               y: {
                 bin: {maxbins: 15},
@@ -76,14 +62,14 @@ describe('vl.compile.scale', function() {
                 type: Q
               }
             }
-          }), {origin: {min: -5, max:48}}, {});
+          }), 'y', 'ordinal', {origin: {min: -5, max:48}}, {});
 
           expect(domain).to.eql([-5, 0, 5, 10, 15, 20, 25, 30, 35, 40, 45]);
         });
 
       it('should return the raw domain if useRawDomain is true for non-bin, non-sum Q',
         function() {
-          var domain = vlscale.domain(linearScaleDef, Encoding.fromSpec({
+          var domain = vlscale.domain(Encoding.fromSpec({
             encoding: {
               y: {
                 aggregate: 'mean',
@@ -92,14 +78,14 @@ describe('vl.compile.scale', function() {
                 type: Q
               }
             }
-          }), {}, {});
+          }), 'y', 'linear', {}, {});
 
           expect(domain.data).to.eql(RAW);
         });
 
       it('should return the aggregate domain for sum Q',
         function() {
-          var domain = vlscale.domain(linearScaleDef, Encoding.fromSpec({
+          var domain = vlscale.domain(Encoding.fromSpec({
             encoding: {
               y: {
                 aggregate: 'sum',
@@ -108,14 +94,14 @@ describe('vl.compile.scale', function() {
                 type: Q
               }
             }
-          }), {}, {});
+          }), 'y', 'linear', {}, {});
 
           expect(domain.data).to.eql(AGGREGATE);
         });
 
 
       it('should return the aggregated domain if useRawDomain is false', function() {
-          var domain = vlscale.domain(linearScaleDef, Encoding.fromSpec({
+          var domain = vlscale.domain(Encoding.fromSpec({
             encoding: {
               y: {
                 aggregate: 'min',
@@ -124,7 +110,7 @@ describe('vl.compile.scale', function() {
                 type: Q
               }
             }
-          }), {}, {});
+          }), 'y', 'linear', {}, {});
 
           expect(domain.data).to.eql(AGGREGATE);
         });
@@ -133,7 +119,7 @@ describe('vl.compile.scale', function() {
     describe('for time', function() {
       it('should return the raw domain if useRawDomain is true for raw T',
         function() {
-          var domain = vlscale.domain(timeScaleDef, Encoding.fromSpec({
+          var domain = vlscale.domain(Encoding.fromSpec({
             encoding: {
               y: {
                 name: 'origin',
@@ -141,14 +127,14 @@ describe('vl.compile.scale', function() {
                 type: T
               }
             }
-          }), {}, {});
+          }), 'y', 'time', {}, {});
 
           expect(domain.data).to.eql(RAW);
         });
 
       it('should return the raw domain if useRawDomain is true for year T',
         function() {
-          var domain = vlscale.domain(ordinalScaleDef, Encoding.fromSpec({
+          var domain = vlscale.domain(Encoding.fromSpec({
             encoding: {
               y: {
                 name: 'origin',
@@ -157,7 +143,7 @@ describe('vl.compile.scale', function() {
                 timeUnit: 'year'
               }
             }
-          }), {}, {});
+          }), 'y', 'ordinal', {}, {});
 
           expect(domain.data).to.eql(RAW);
           expect(domain.field.indexOf('year')).to.gt(-1);
@@ -165,7 +151,7 @@ describe('vl.compile.scale', function() {
 
       it('should return the correct domain for month T',
         function() {
-          var domain = vlscale.domain(ordinalScaleDef, Encoding.fromSpec({
+          var domain = vlscale.domain(Encoding.fromSpec({
             encoding: {
               y: {
                 name: 'origin',
@@ -174,7 +160,7 @@ describe('vl.compile.scale', function() {
                 timeUnit: 'month'
               }
             }
-          }), {}, {});
+          }), 'y', 'ordinal', {}, {});
 
           expect(domain).to.eql([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]);
         });
@@ -189,7 +175,7 @@ describe('vl.compile.scale', function() {
             }
           });
 
-        expect(vlscale.domain(ordinalScaleDef, encoding))
+        expect(vlscale.domain(encoding, 'y', 'ordinal'))
           .to.eql({
             data: RAW,
             field: 'origin',
@@ -204,7 +190,7 @@ describe('vl.compile.scale', function() {
             }
           });
 
-        expect(vlscale.domain(ordinalScaleDef, encoding))
+        expect(vlscale.domain(encoding, 'y', 'ordinal'))
           .to.eql({
             data: RAW,
             field: 'origin'
