@@ -4,7 +4,7 @@ require('./globals');
 
 var consts = require('./consts'),
   util = require('./util'),
-  vlfield = require('./field'),
+  vlEncDef = require('./encdef'),
   vlenc = require('./enc'),
   schema = require('./schema/schema');
 
@@ -17,8 +17,6 @@ module.exports = (function() {
     this._marktype = specExtended.marktype;
     this._enc = specExtended.encoding;
     this._config = specExtended.config;
-    this._filter = specExtended.filter;
-    // this._vega2 = true;
   }
 
   var proto = Encoding.prototype;
@@ -33,8 +31,7 @@ module.exports = (function() {
       data: data,
       marktype: marktype,
       encoding: enc,
-      config: config,
-      filter: []
+      config: config
     }, theme);
   };
 
@@ -64,8 +61,7 @@ module.exports = (function() {
 
     spec = {
       marktype: this._marktype,
-      encoding: enc,
-      filter: this._filter
+      encoding: enc
     };
 
     if (!excludeConfig) {
@@ -95,41 +91,14 @@ module.exports = (function() {
     return this._enc[encType].name !== undefined;
   };
 
-  proto.field = function(et) {
+  proto.encDef = function(et) {
     return this._enc[et];
-  };
-
-  proto.filter = function() {
-    var filterNull = [],
-      fields = this.fields(),
-      self = this;
-
-    util.forEach(fields, function(fieldList, fieldName) {
-      if (fieldName === '*') return; //count
-
-      if ((self.config('filterNull').Q && fieldList.containsType[Q]) ||
-          (self.config('filterNull').T && fieldList.containsType[T]) ||
-          (self.config('filterNull').O && fieldList.containsType[O]) ||
-          (self.config('filterNull').N && fieldList.containsType[N])) {
-        filterNull.push({
-          operands: [fieldName],
-          operator: 'notNull'
-        });
-      }
-    });
-
-    return filterNull.concat(this._filter);
   };
 
   // get "field" reference for vega
   proto.fieldRef = function(et, opt) {
     opt = opt || {};
-    opt.data = !this._vega2 && (opt.data !== false);
-    return vlfield.fieldRef(this._enc[et], opt);
-  };
-
-  proto.fieldName = function(et) {
-    return this._enc[et].name;
+    return vlEncDef.fieldRef(this._enc[et], opt);
   };
 
   /*
@@ -140,13 +109,12 @@ module.exports = (function() {
   };
 
   proto.fieldTitle = function(et) {
-    if (vlfield.isCount(this._enc[et])) {
-      return vlfield.count.displayName;
+    if (vlEncDef.isCount(this._enc[et])) {
+      return vlEncDef.count.displayName;
     }
     var fn = this._enc[et].aggregate || this._enc[et].timeUnit || (this._enc[et].bin && 'bin');
     if (fn) {
-      var uppercase = fn === 'avg' ? 'MEAN' :fn.toUpperCase();
-      return uppercase + '(' + this._enc[et].name + ')';
+      return fn.toUpperCase() + '(' + this._enc[et].name + ')';
     } else {
       return this._enc[et].name;
     }
@@ -167,12 +135,8 @@ module.exports = (function() {
       (encType === X && this.has(COL) && this.has(X));
 
     // if band.size is explicitly specified, follow the specification, otherwise draw value from config.
-    return this.field(encType).band.size ||
+    return this.encDef(encType).band.size ||
       this.config(useSmallBand ? 'smallBandSize' : 'largeBandSize');
-  };
-
-  proto.aggregate = function(et) {
-    return this._enc[et].aggregate;
   };
 
   // returns false if binning is disabled, otherwise an object with binning properties
@@ -200,7 +164,7 @@ module.exports = (function() {
   proto.sort = function(et, stats) {
     var sort = this._enc[et].sort,
       enc = this._enc,
-      isTypes = vlfield.isTypes;
+      isTypes = vlEncDef.isTypes;
 
     if ((!sort || sort.length===0) &&
         // FIXME
@@ -239,26 +203,26 @@ module.exports = (function() {
   };
 
   proto.isType = function(et, type) {
-    var field = this.field(et);
-    return field && vlfield.isType(field, type);
+    var encDef = this.encDef(et);
+    return encDef && vlEncDef.isType(encDef, type);
   };
 
 
   proto.isTypes = function(et, type) {
-    var field = this.field(et);
-    return field && vlfield.isTypes(field, type);
+    var encDef = this.encDef(et);
+    return encDef && vlEncDef.isTypes(encDef, type);
   };
 
   Encoding.isOrdinalScale = function(encoding, encType) {
-    return vlfield.isOrdinalScale(encoding.field(encType));
+    return vlEncDef.isOrdinalScale(encoding.encDef(encType));
   };
 
   Encoding.isDimension = function(encoding, encType) {
-    return vlfield.isDimension(encoding.field(encType));
+    return vlEncDef.isDimension(encoding.encDef(encType));
   };
 
   Encoding.isMeasure = function(encoding, encType) {
-    return vlfield.isMeasure(encoding.field(encType));
+    return vlEncDef.isMeasure(encoding.encDef(encType));
   };
 
   proto.isOrdinalScale = function(encType) {
@@ -296,10 +260,46 @@ module.exports = (function() {
       spec.encoding.color;
   };
 
-  proto.isStack = function() {
-    // FIXME update this once we have control for stack ...
-    return (this.is('bar') || this.is('area')) && this.has('color');
+  /**
+   * Check if the encoding should be stacked and return the stack dimenstion and value fields.
+   * @return {Object} An object containing two properties:
+   * - dimension - the dimension field
+   * - value - the value field
+   */
+  proto.stack = function() {
+    var stack = (this.has(COLOR) && this.encDef(COLOR).stack) ? COLOR :
+          (this.has(DETAIL) && this.encDef(DETAIL).stack) ? DETAIL :
+          null;
+
+    var properties = stack && this.encDef(stack).stack !== true ?
+                       this.encDef(stack).stack :
+                       {};
+
+    if ((this.is('bar') || this.is('area')) && stack && this.isAggregate()) {
+
+      var isXMeasure = this.isMeasure(X);
+      var isYMeasure = this.isMeasure(Y);
+
+      if (isXMeasure && !isYMeasure) {
+        return {
+          groupby: Y,
+          value: X,
+          stack: stack,
+          properties: properties
+        };
+      } else if (isYMeasure && !isXMeasure) {
+        return {
+          groupby: X,
+          value: Y,
+          stack: stack,
+          properties: properties
+        };
+      }
+    }
+    return null; // no stack encoding
   };
+
+
 
   proto.details = function() {
     var encoding = this;
@@ -322,7 +322,7 @@ module.exports = (function() {
   };
 
   proto.cardinality = function(encType, stats) {
-    return vlfield.cardinality(this.field(encType), stats, this.config('filterNull'));
+    return vlEncDef.cardinality(this.encDef(encType), stats, this.config('filterNull'));
   };
 
   proto.isRaw = function() {
@@ -352,60 +352,6 @@ module.exports = (function() {
     enc.col = oldenc.row;
     spec.encoding = enc;
     return spec;
-  };
-
-  // FIXME: REMOVE everything below here
-
-  Encoding.toggleSort = function(spec) {
-    spec.config = spec.config || {};
-    spec.config.toggleSort = spec.config.toggleSort === Q ? N : Q;
-    return spec;
-  };
-
-
-  Encoding.toggleSort.direction = function(spec) {
-    if (!Encoding.toggleSort.support(spec)) { return; }
-    var enc = spec.encoding;
-    return enc.x.type === N ? 'x' : 'y';
-  };
-
-  Encoding.toggleSort.mode = function(spec) {
-    return spec.config.toggleSort;
-  };
-
-  Encoding.toggleSort.support = function(spec, stats) {
-    var enc = spec.encoding,
-      isTypes = vlfield.isTypes;
-
-    if (vlenc.has(enc, ROW) || vlenc.has(enc, COL) ||
-      !vlenc.has(enc, X) || !vlenc.has(enc, Y) ||
-      !Encoding.alwaysNoOcclusion(spec, stats)) {
-      return false;
-    }
-
-    return ( isTypes(enc.x, [N,O]) && vlfield.isMeasure(enc.y)) ? 'x' :
-      ( isTypes(enc.y, [N,O]) && vlfield.isMeasure(enc.x)) ? 'y' : false;
-  };
-
-  Encoding.toggleFilterNullO = function(spec) {
-    spec.config = spec.config || {};
-    spec.config.filterNull = spec.config.filterNull || { //FIXME
-      T: true,
-      Q: true
-    };
-    spec.config.filterNull.O = !spec.config.filterNull.O;
-    return spec;
-  };
-
-  Encoding.toggleFilterNullO.support = function(spec, stats) {
-    var fields = vlenc.fields(spec.encoding);
-    for (var fieldName in fields) {
-      var fieldList = fields[fieldName];
-      if (fieldList.containsType.O && fieldName in stats && stats[fieldName].nulls > 0) {
-        return true;
-      }
-    }
-    return false;
   };
 
   return Encoding;

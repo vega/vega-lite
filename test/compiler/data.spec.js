@@ -36,7 +36,7 @@ describe('data', function () {
       var rawTransform = _data[0].transform;
       expect(rawTransform[rawTransform.length - 1]).to.eql({
         type: 'filter',
-        test: 'd.data.b > 0'
+        test: 'datum.b > 0'
       });
     });
   });
@@ -57,8 +57,8 @@ describe('data.raw', function() {
       expect(raw.values).to.deep.equal([{a: 1, b:2, c:3}, {a: 4, b:5, c:6}]);
     });
 
-    it('should have raw.format if not required', function(){
-      expect(raw.format).to.eql(undefined);
+    it('should have raw.format', function(){
+      expect(raw.format).to.eql({type: 'json'});
     });
   });
 
@@ -100,6 +100,9 @@ describe('data.raw', function() {
 
   describe('transform', function () {
     var encoding = Encoding.fromSpec({
+      data: {
+        filter: 'datum.a > datum.b && datum.c === datum.d'
+      },
       encoding: {
         x: {name: 'a', type:'T', timeUnit: 'year'},
         y: {
@@ -107,50 +110,72 @@ describe('data.raw', function() {
           'name': 'Acceleration',
           'type': 'Q'
         }
-      },
-      filter: [{
-        operator: '>',
-        operands: ['a', 'b']
-      },{
-        operator: '=',
-        operands: ['c', 'd']
-      }]
+      }
     });
+
+    var stats = {
+      Acceleration: {
+        min: 0,
+        max: 100
+      }
+    };
 
     describe('bin', function() {
       it('should add bin transform', function() {
-        var transform = data.raw.transform.bin(encoding);
+        var transform = data.raw.transform.bin(encoding, stats);
+
         expect(transform[0]).to.eql({
           type: 'bin',
-          field: 'data.Acceleration',
-          output: 'data.bin_Acceleration',
-          maxbins: 15
+          field: 'Acceleration',
+          output: {bin: 'bin_Acceleration'},
+          maxbins: 15,
+          min: 0,
+          max: 100
         });
       });
     });
 
-    describe('filter', function () {
-      it('should return filter transform that include filter null', function () {
-        var transform = data.raw.transform.filter(encoding);
+    describe('nullFilter', function() {
+      var spec = {
+          marktype: 'point',
+          encoding: {
+            y: {name: 'Q', type:'Q'},
+            x: {name: 'T', type:'T'},
+            color: {name: 'O', type:'O'}
+          }
+        };
 
-        expect(transform[0]).to.eql({
-          type: 'filter',
-          test: '(d.data.a!==null) && (d.data.Acceleration!==null)' +
-          ' && (d.data.a > b) && (d.data.c == d)'
-        });
+      it('should add filterNull for Q and T by default', function () {
+        var encoding = Encoding.fromSpec(spec);
+        expect(data.raw.transform.nullFilter(encoding))
+          .to.eql([{
+            type: 'filter',
+            test: 'datum.T!==null && datum.Q!==null'
+          }]);
       });
 
-      it('should exclude unsupported operator', function () {
-        var badEncoding = Encoding.fromSpec({
-          filter: [{
-            operator: '*',
-            operands: ['a', 'b']
-          }]
+      it('should add filterNull for O when specified', function () {
+        var encoding = Encoding.fromSpec(spec, {
+          config: {
+            filterNull: {O: true}
+          }
         });
+        expect(data.raw.transform.nullFilter(encoding))
+          .to.eql([{
+            type: 'filter',
+            test:'datum.T!==null && datum.Q!==null && datum.O!==null'
+          }]);
+      });
+      // });
+    });
 
-        var transform = data.raw.transform.filter(badEncoding);
-
-        expect(transform.length).to.equal(0);
+    describe('filter', function () {
+      it('should return array that contains a filter transform', function () {
+        expect(data.raw.transform.filter(encoding))
+          .to.eql([{
+            type: 'filter',
+            test: 'datum.a > datum.b && datum.c === datum.d'
+          }]);
       });
     });
 
@@ -159,17 +184,18 @@ describe('data.raw', function() {
         var transform = data.raw.transform.time(encoding);
         expect(transform[0]).to.eql({
           type: 'formula',
-          field: 'data.year_a',
-          expr: 'utcyear(d.data.a)'
+          field: 'year_a',
+          expr: 'utcyear(datum.a)'
         });
       });
     });
 
-    it('should time and bin before filter', function () {
-      var transform = data.raw.transform(encoding);
-      expect(transform[0].type).to.eql('formula');
-      expect(transform[1].type).to.eql('bin');
-      expect(transform[2].type).to.eql('filter');
+    it('should have null filter, timeUnit, bin then filter', function () {
+      var transform = data.raw.transform(encoding, stats);
+      expect(transform[0].type).to.eql('filter');
+      expect(transform[1].type).to.eql('formula');
+      expect(transform[2].type).to.eql('bin');
+      expect(transform[3].type).to.eql('filter');
     });
 
   });
@@ -199,14 +225,11 @@ describe('data.aggregated', function () {
       "source": "raw",
       "transform": [{
         "type": "aggregate",
-        "groupby": ["data.origin"],
-        "fields": [{
-          "op": "sum",
-          "field": "data.Acceleration"
-        },{
-          "op": "count",
-          "field": "*"
-        }]
+        "groupby": ["origin"],
+        "summarize": {
+          '*': ['count'],
+          'Acceleration': ['sum']
+        }
       }]
     });
   });

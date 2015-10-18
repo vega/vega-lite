@@ -12,36 +12,32 @@ var legend = module.exports = {};
 legend.defs = function(encoding, style) {
   var defs = [];
 
-  if (encoding.has(COLOR) && encoding.field(COLOR).legend) {
+  if (encoding.has(COLOR) && encoding.encDef(COLOR).legend) {
     defs.push(legend.def(COLOR, encoding, {
-      fill: COLOR,
-      orient: 'right'
+      fill: COLOR
     }, style));
   }
 
-  if (encoding.has(SIZE) && encoding.field(SIZE).legend) {
+  if (encoding.has(SIZE) && encoding.encDef(SIZE).legend) {
     defs.push(legend.def(SIZE, encoding, {
-      size: SIZE,
-      orient: defs.length === 1 ? 'left' : 'right'
+      size: SIZE
     }, style));
   }
 
-  if (encoding.has(SHAPE) && encoding.field(SHAPE).legend) {
-    if (defs.length === 2) {
-      console.error('Vega-lite currently only supports two legends');
-    }
+  if (encoding.has(SHAPE) && encoding.encDef(SHAPE).legend) {
     defs.push(legend.def(SHAPE, encoding, {
-      shape: SHAPE,
-      orient: defs.length === 1 ? 'left' : 'right'
+      shape: SHAPE
     }, style));
   }
   return defs;
 };
 
 legend.def = function(name, encoding, def, style) {
-  var timeUnit = encoding.field(name).timeUnit;
+  var timeUnit = encoding.encDef(name).timeUnit;
 
   def.title = legend.title(name, encoding);
+  def.orient = encoding.encDef(name).legend.orient;
+
   def = legend.style(name, encoding, def, style);
 
   if (encoding.isType(name, T) &&
@@ -72,7 +68,7 @@ legend.style = function(name, e, def, style) {
       /* fall through */
     case 'point':
       // fill or stroke
-      if (e.field(SHAPE).filled) {
+      if (e.encDef(SHAPE).filled) {
         if (e.has(COLOR) && name === COLOR) {
           symbols.fill = {scale: COLOR, field: 'data'};
         } else {
@@ -96,7 +92,7 @@ legend.style = function(name, e, def, style) {
       break;
   }
 
-  var opacity = e.field(COLOR).opacity || style.opacity;
+  var opacity = e.encDef(COLOR).opacity || style.opacity;
   if (opacity) {
     symbols.opacity = {value: opacity};
   }
@@ -104,7 +100,7 @@ legend.style = function(name, e, def, style) {
 };
 
 legend.title = function(name, encoding) {
-  var leg = encoding.field(name).legend;
+  var leg = encoding.encDef(name).legend;
 
   if (leg.title) return leg.title;
 

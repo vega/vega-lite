@@ -1,7 +1,7 @@
 {
   "name": "vega-lite",
   "author": "Jeffrey Heer, Dominik Moritz, Kanit \"Ham\" Wongsuphasawat",
-  "version": "0.7.18",
+  "version": "0.8.0",
   "collaborators": [
     "Kanit Wongsuphasawat <kanitw@gmail.com> (http://kanitw.yellowpigz.com)",
     "Dominik Moritz <domoritz@cs.washington.edu> (http://domoritz.de)",
@@ -22,7 +22,7 @@
     "release": "gulp release",
     "start": "gulp serve",
     "test": "gulp test",
-    "watch": "gulp watch-schema watch-test"
+    "watch": "gulp bundle watch-schema watch-test"
   },
   "repository": {
     "type": "git",
@@ -61,7 +61,9 @@
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "~3.4.0",
-    "z-schema": "^3.12.4"
+    "z-schema": "^3.12.4",
+    "jstransform": "^11.0.2",
+    "through": "^2.3.8"
   },
   "dependencies": {
     "colorbrewer": "0.0.2",
@@ -69,7 +71,8 @@
     "d3-format": "^0.3.0",
     "d3-time-format": "0.1.0",
     "datalib": "^1.4.5",
-    "yargs": "^3.23.0"
+    "yargs": "^3.23.0",
+    "vega": "2.2.6"
   },
   "browserify": {
     "transform": [

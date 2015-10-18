@@ -16,8 +16,8 @@ var vlfield = module.exports = {};
  * @param field
  * @param opt
  *   opt.nofn -- exclude bin, aggregate, timeUnit
- *   opt.data - include 'data.'
- *   opt.d - include 'd.'
+ *   opt.noAggregate -- exclude aggregation function
+ *   opt.datum - include 'datum.'
  *   opt.fn - replace fn with custom function prefix
  *   opt.prefn - prepend fn with custom function prefix
 
@@ -26,23 +26,20 @@ var vlfield = module.exports = {};
 vlfield.fieldRef = function(field, opt) {
   opt = opt || {};
 
-  var f = (opt.d ? 'd.' : '') +
-          (opt.data ? 'data.' : '') +
-          (opt.prefn || ''),
-    nofn = opt.nofn || opt.fn,
+  var f = (opt.datum ? 'datum.' : '') + (opt.prefn || ''),
     name = field.name;
 
   if (vlfield.isCount(field)) {
     return f + 'count';
-  } else if (!nofn && field.bin) {
-    return f + 'bin_' + name;
-  } else if (!nofn && field.aggregate) {
-    return f + field.aggregate + '_' + name;
-  } else if (!nofn && field.timeUnit) {
-    return f + field.timeUnit + '_' + name;
   } else if (opt.fn) {
     return f + opt.fn + '_' + name;
-  } else {
+  } else if (!opt.nofn && field.bin) {
+    return f + 'bin_' + name;
+  } else if (!opt.nofn && !opt.noAggregate && field.aggregate) {
+    return f + field.aggregate + '_' + name;
+  } else if (!opt.nofn && field.timeUnit) {
+    return f + field.timeUnit + '_' + name;
+  }  else {
     return f + name;
   }
 };
@@ -172,5 +169,5 @@ vlfield.cardinality = function(field, stats, filterNull) {
 
   // remove null
   return stat.distinct -
-    (stat.nulls > 0 && filterNull[type] ? 1 : 0);
+    (stat.missing > 0 && filterNull[type] ? 1 : 0);
 };

@@ -8,7 +8,7 @@ f.bars.log_ver = {
   "marktype": "bar",
   "encoding": {
     "x": {"bin": {"maxbins": 15},"type": "Q","name": "IMDB_Rating"},
-    "y": {"scale": {"type": "log"},"type": "Q","name": "US_Gross","aggregate": "avg"}
+    "y": {"scale": {"type": "log"},"type": "Q","name": "US_Gross","aggregate": "mean"}
   },
   "data": {"url": "data/movies.json"}
 };
@@ -17,7 +17,7 @@ f.bars.log_hor = {
   "marktype": "bar",
   "encoding": {
     "y": {"bin": {"maxbins": 15},"type": "Q","name": "IMDB_Rating"},
-    "x": {"scale": {"type": "log"},"type": "Q","name": "US_Gross","aggregate": "avg"}
+    "x": {"scale": {"type": "log"},"type": "Q","name": "US_Gross","aggregate": "mean"}
   },
   "data": {"url": "data/movies.json"}
 };
@@ -42,7 +42,7 @@ f.stack = {};
 f.stack.binY = {
   "marktype": "bar",
   "encoding": {
-    "x": {"type": "Q","name": "Cost__Other","aggregate": "avg"},
+    "x": {"type": "Q","name": "Cost__Other","aggregate": "mean"},
     "y": {"bin": true,"type": "Q","name": "Cost__Total_$"},
     "color": {"type": "O","name": "Effect__Amount_of_damage"}
   }
@@ -50,7 +50,7 @@ f.stack.binY = {
 f.stack.binX = {
   "marktype": "bar",
   "encoding": {
-    "y": {"type": "Q","name": "Cost__Other","aggregate": "avg"},
+    "y": {"type": "Q","name": "Cost__Other","aggregate": "mean"},
     "x": {"bin": true,"type": "Q","name": "Cost__Total_$"},
     "color": {"type": "O","name": "Effect__Amount_of_damage"}
   }
@@ -121,7 +121,7 @@ f.lines['x,y'] = {
 f.lines['x,y,stroke'] = {
   "marktype": "line",
   "encoding": {
-    "x": {"name": "name","type": "N"},
+    "x": {"name": "Name","type": "N"},
     "y": {"name": "Cylinders","type": "O"},
     "color": {"name": "Acceleration","type": "Q"}
   },
@@ -150,5 +150,6 @@ f.area['x,y,stroke'] = {
   },
   "data": {"url": "data/cars.json"}
 };
+
 
 module.exports = f;

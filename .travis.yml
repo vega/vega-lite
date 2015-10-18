@@ -12,5 +12,5 @@ notifications:
   slack:
     rooms:
       - 'uwdub:Ry6mwlUX1aZevqiqmYLiA3N1'
-    on_success: change
-    on_failure: always
+    on_success: never
+    on_failure: change

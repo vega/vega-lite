@@ -41,9 +41,9 @@ function box(encoding, stats) {
   if (hasX) {
     if (encoding.isOrdinalScale(X)) {
       // for ordinal, hasCol or not doesn't matter -- we scale based on cardinality
-      cellWidth = (xCardinality + encoding.field(X).band.padding) * encoding.bandSize(X, useSmallBand);
+      cellWidth = (xCardinality + encoding.encDef(X).band.padding) * encoding.bandSize(X, useSmallBand);
     } else {
-      cellWidth = hasCol || hasRow ? encoding.field(COL).width :  encoding.config('singleWidth');
+      cellWidth = hasCol || hasRow ? encoding.encDef(COL).width :  encoding.config('singleWidth');
     }
   } else {
     if (marktype === TEXT) {
@@ -57,9 +57,9 @@ function box(encoding, stats) {
   if (hasY) {
     if (encoding.isOrdinalScale(Y)) {
       // for ordinal, hasCol or not doesn't matter -- we scale based on cardinality
-      cellHeight = (yCardinality + encoding.field(Y).band.padding) * encoding.bandSize(Y, useSmallBand);
+      cellHeight = (yCardinality + encoding.encDef(Y).band.padding) * encoding.bandSize(Y, useSmallBand);
     } else {
-      cellHeight = hasCol || hasRow ? encoding.field(ROW).height :  encoding.config('singleHeight');
+      cellHeight = hasCol || hasRow ? encoding.encDef(ROW).height :  encoding.config('singleHeight');
     }
   } else {
     cellHeight = encoding.bandSize(Y);
@@ -101,16 +101,16 @@ function getMaxNumberLength(encoding, et, fieldStats) {
 
 // TODO(#600) revise this
 function getMaxLength(encoding, stats, et) {
-  var field = encoding.field(et),
-    fieldStats = stats[field.name];
+  var encDef = encoding.encDef(et),
+    fieldStats = stats[encDef.name];
 
-  if (field.bin) {
+  if (encDef.bin) {
     // TODO once bin support range, need to update this
     return getMaxNumberLength(encoding, et, fieldStats);
   } if (encoding.isType(et, Q)) {
     return getMaxNumberLength(encoding, et, fieldStats);
   } else if (encoding.isType(et, T)) {
-    return time.maxLength(encoding.field(et).timeUnit, encoding);
+    return time.maxLength(encoding.encDef(et).timeUnit, encoding);
   } else if (encoding.isTypes(et, [N, O])) {
     if(fieldStats.type === 'number') {
       return getMaxNumberLength(encoding, et, fieldStats);
@@ -131,7 +131,7 @@ function offset(encoding, stats, layout) {
       // TODO once we have #512 (allow using inferred type)
       // Need to adjust condition here.
       encoding.isType(et, Q) ||
-      encoding.aggregate(et) === 'count'
+      encoding.encDef(et).aggregate === 'count'
     ) {
       if (
         et===Y

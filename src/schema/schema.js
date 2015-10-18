@@ -8,6 +8,12 @@ var schema = module.exports = {},
   toMap = util.toMap,
   colorbrewer = require('colorbrewer');
 
+var VALID_AGG_OPS = require('vega/src/transforms/Aggregate').VALID_OPS;
+
+// TODO(#620) refer to vega schema
+// var vgStackSchema = require('vega/src/transforms/Stack').schema;
+
+
 schema.util = require('./schemautil');
 
 schema.marktype = {
@@ -17,12 +23,12 @@ schema.marktype = {
 
 schema.aggregate = {
   type: 'string',
-  enum: ['avg', 'sum', 'median', 'min', 'max', 'count'],
+  enum: VALID_AGG_OPS,
   supportedEnums: {
-    Q: ['avg', 'median', 'sum', 'min', 'max', 'count'],
+    Q: VALID_AGG_OPS,
     O: ['median','min','max'],
     N: [],
-    T: ['avg', 'median', 'min', 'max'],
+    T: ['mean', 'median', 'min', 'max'],
     '': ['count']
   },
   supportedTypes: toMap([Q, N, O, T, ''])
@@ -93,11 +99,6 @@ var typicalField = merge(clone(schema.field), {
       properties: {
         /* Common Scale Properties */
         type: schema.scale_type,
-        reverse: {
-          type: 'boolean',
-          default: false,
-          supportedTypes: toMap([Q, T])
-        },
 
         /* Quantitative Scale Properties */
         nice: {
@@ -225,26 +226,34 @@ var sortMixin = {
   type: 'object',
   properties: {
     sort: {
-      type: 'array',
-      default: [],
-      items: {
-        type: 'object',
-        supportedTypes: toMap([N, O]),
-        required: ['name', 'aggregate'],
-        properties: {
-          name: {
-            type: 'string'
-          },
-          aggregate: {
-            type: 'string',
-            enum: ['avg', 'sum', 'min', 'max', 'count']
-          },
-          reverse: {
-            type: 'boolean',
-            default: false
+      default: undefined,
+      supportedTypes: toMap([N, O]),
+      oneOf: [
+        {
+          type: 'string',
+          enum: ['ascending', 'descending']
+        },
+        { // sort by aggregation of another field
+          type: 'object',
+          required: ['field', 'op'],
+          properties: {
+            field: {
+              type: 'string',
+              description: 'The field name to aggregate over.'
+            },
+            op: {
+              type: 'string',
+              enum: VALID_AGG_OPS,
+              description: 'The field name to aggregate over.'
+            },
+            order: {
+              type: 'string',
+              enum: ['ascending', 'descending']
+            }
           }
         }
-      }
+      ]
+
     }
   }
 };
@@ -281,6 +290,11 @@ var legendMixin = {
           type: 'string',
           default: undefined,
           description: 'A title for the legend. (Shows field name and its function by default.)'
+        },
+        orient: {
+          type: 'string',
+          default: 'right',
+          description: 'The orientation of the legend. One of "left" or "right". This determines how the legend is positioned within the scene. The default is "right".'
         }
       }
     }
@@ -426,6 +440,31 @@ var colorMixin = {
   }
 };
 
+var stackMixin = {
+  type: 'object',
+  properties: {
+    stack: {
+      type: ['boolean', 'object'],
+      default: true,
+      description: 'Enable stacking (for bar and area marks only).',
+      properties: {
+        reverse: {
+          type: 'boolean',
+          default: false,
+          description: 'Whether to reverse the stack\'s sortby.'
+        },
+        offset: {
+          type: 'string',
+          default: undefined,
+          enum: ['zero', 'center', 'normalize']
+          // TODO(#620) refer to Vega spec once it doesn't throw error
+          // enum: vgStackSchema.properties.offset.oneOf[0].enum
+        }
+      }
+    }
+  }
+};
+
 var shapeMixin = {
   type: 'object',
   supportedMarktypes: {point: true, circle: true, square: true},
@@ -524,34 +563,15 @@ var row = merge(clone(facet), axisMixin, rowMixin);
 var col = merge(clone(facet), axisMixin, colMixin);
 
 var size = merge(clone(quantitativeField), legendMixin, sizeMixin, sortMixin);
-var color = merge(clone(multiRoleField), legendMixin, colorMixin, sortMixin);
+var color = merge(clone(multiRoleField), legendMixin, colorMixin, stackMixin, sortMixin);
 
 var shape = merge(clone(onlyOrdinalField), legendMixin, shapeMixin, sortMixin);
-var detail = merge(clone(onlyOrdinalField), detailMixin, sortMixin);
+var detail = merge(clone(onlyOrdinalField), detailMixin, stackMixin, sortMixin);
 
 // we only put aggregated measure in pivot table
 var text = merge(clone(onlyQuantitativeField), textMixin, sortMixin);
 
 // TODO add label
-
-var filter = {
-  type: 'array',
-  items: {
-    type: 'object',
-    properties: {
-      operands: {
-        type: 'array',
-        items: {
-          type: ['string', 'boolean', 'integer', 'number']
-        }
-      },
-      operator: {
-        type: 'string',
-        enum: ['>', '>=', '=', '!=', '<', '<=', 'notNull']
-      }
-    }
-  }
-};
 
 var data = {
   type: 'object',
@@ -573,6 +593,31 @@ var data = {
       items: {
         type: 'object',
         additionalProperties: true
+      }
+    },
+    // we generate a vega filter transform
+    filter: {
+      type: 'string',
+      default: undefined,
+      description: 'A string containing the filter Vega expression. Use `datum` to refer to the current data object.'
+    },
+    // we generate a vega formula transform
+    formulas: {
+      type: 'array',
+      default: undefined,
+      description: 'Array of formula transforms. Formulas are applied before filter.',
+      items: {
+        type: 'object',
+        properties: {
+          field: {
+            type: 'string',
+            description: 'The property name in which to store the computed formula value.'
+          },
+          expr: {
+            type: 'string',
+            description: 'A string containing an expression for the formula. Use the variable `datum` to to refer to the current data object.'
+          }
+        }
       }
     }
   }
@@ -614,14 +659,11 @@ var config = {
     filterNull: {
       type: 'object',
       properties: {
+        N: {type:'boolean', default: false},
         O: {type:'boolean', default: false},
         Q: {type:'boolean', default: true},
         T: {type:'boolean', default: true}
       }
-    },
-    toggleSort: {
-      type: 'string',
-      default: O
     },
     autoSortLine: {
       type: 'boolean',
@@ -671,7 +713,11 @@ var config = {
       type: 'number',
       minimum: 0,
       maximum: 1,
-      default: 0.15
+      default: 0.25
+    },
+    cellGridOffset: {
+      type: 'number',
+      default: 6 // equal to tickSize
     },
     cellBackgroundColor: {
       type: 'string',
@@ -782,7 +828,6 @@ schema.schema = {
         detail: detail
       }
     },
-    filter: filter,
     config: config
   }
 };

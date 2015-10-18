@@ -11,25 +11,34 @@ module.exports = faceting;
 
 function groupdef(name, opt) {
   opt = opt || {};
-  return {
-    _name: name || undefined,
+  var group = {
+    name: name || undefined,
     type: 'group',
-    from: opt.from,
     properties: {
       enter: {
-        x: opt.x || undefined,
-        y: opt.y || undefined,
-        width: opt.width || {group: 'width'},
-        height: opt.height || {group: 'height'}
+        width: opt.width || {field: {group: 'width'}},
+        height: opt.height || {field: {group: 'height'}}
       }
-    },
-    scales: opt.scales || undefined,
-    axes: opt.axes || undefined,
-    marks: opt.marks || []
+    }
   };
+
+  if (opt.from) {
+    group.from = opt.from;
+  }
+  if (opt.x) {
+    group.properties.enter.x = opt.x;
+  }
+  if (opt.y) {
+    group.properties.enter.y = opt.y;
+  }
+  if (opt.axes) {
+    group.axes = opt.axes;
+  }
+
+  return group;
 }
 
-function faceting(group, encoding, layout, spec, singleScaleNames, stack, stats) {
+function faceting(group, encoding, layout, spec, singleScaleNames, stats) {
   var enter = group.properties.enter;
   var facetKeys = [], cellAxes = [], from, axesGrp;
 
@@ -54,7 +63,7 @@ function faceting(group, encoding, layout, spec, singleScaleNames, stack, stats)
     if (!encoding.isDimension(ROW)) {
       util.error('Row encoding should be ordinal.');
     }
-    enter.y = {scale: ROW, field: 'keys.' + facetKeys.length};
+    enter.y = {scale: ROW, field: encoding.fieldRef(ROW)};
     enter.height = {'value': layout.cellHeight}; // HACK
 
     facetKeys.push(encoding.fieldRef(ROW));
@@ -62,12 +71,12 @@ function faceting(group, encoding, layout, spec, singleScaleNames, stack, stats)
     if (hasCol) {
       from = util.duplicate(group.from);
       from.transform = from.transform || [];
-      from.transform.unshift({type: 'facet', keys: [encoding.fieldRef(COL)]});
+      from.transform.unshift({type: 'facet', groupby: [encoding.fieldRef(COL)]});
     }
 
     axesGrp = groupdef('x-axes', {
         axes: encoding.has(X) ? [axis.def(X, encoding, layout, stats)] : undefined,
-        x: hasCol ? {scale: COL, field: 'keys.0'} : {value: 0},
+        x: hasCol ? {scale: COL, field: encoding.fieldRef(COL)} : {value: 0},
         width: hasCol && {'value': layout.cellWidth}, //HACK?
         from: from
       });
@@ -86,7 +95,7 @@ function faceting(group, encoding, layout, spec, singleScaleNames, stack, stats)
     if (!encoding.isDimension(COL)) {
       util.error('Col encoding should be ordinal.');
     }
-    enter.x = {scale: COL, field: 'keys.' + facetKeys.length};
+    enter.x = {scale: COL, field: encoding.fieldRef(COL)};
     enter.width = {'value': layout.cellWidth}; // HACK
 
     facetKeys.push(encoding.fieldRef(COL));
@@ -94,12 +103,12 @@ function faceting(group, encoding, layout, spec, singleScaleNames, stack, stats)
     if (hasRow) {
       from = util.duplicate(group.from);
       from.transform = from.transform || [];
-      from.transform.unshift({type: 'facet', keys: [encoding.fieldRef(ROW)]});
+      from.transform.unshift({type: 'facet', groupby: [encoding.fieldRef(ROW)]});
     }
 
     axesGrp = groupdef('y-axes', {
       axes: encoding.has(Y) ? [axis.def(Y, encoding, layout, stats)] : undefined,
-      y: hasRow && {scale: ROW, field: 'keys.0'},
+      y: hasRow && {scale: ROW, field: encoding.fieldRef(ROW)},
       x: hasRow && {value: 0},
       height: hasRow && {'value': layout.cellHeight}, //HACK?
       from: from
@@ -121,7 +130,7 @@ function faceting(group, encoding, layout, spec, singleScaleNames, stack, stats)
     encoding,
     layout,
     stats,
-    {stack: stack, facet: true}
+    true
   )); // row/col scales + cell scales
 
   if (cellAxes.length > 0) {
@@ -130,7 +139,7 @@ function faceting(group, encoding, layout, spec, singleScaleNames, stack, stats)
 
   // add facet transform
   var trans = (group.from.transform || (group.from.transform = []));
-  trans.unshift({type: 'facet', keys: facetKeys});
+  trans.unshift({type: 'facet', groupby: facetKeys});
 
   return spec;
 }
