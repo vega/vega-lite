@@ -86,41 +86,41 @@ describe('Axis', function() {
 
   describe('orient()', function () {
     it('should return specified orient', function () {
-      var def = axis.orient({}, Encoding.fromSpec({
+      var orient = axis.orient(Encoding.fromSpec({
           encoding: {
             x: {name: 'a', axis:{orient: 'bottom'}}
           }
         }), 'x', stats);
-      expect(def.orient).to.eql('bottom');
+      expect(orient).to.eql('bottom');
     });
 
     it('should return undefined by default', function () {
-      var def = axis.orient({}, Encoding.fromSpec({
+      var orient = axis.orient(Encoding.fromSpec({
           encoding: {
             x: {name: 'a'}
           }
         }), 'x', stats);
-      expect(def.orient).to.eql(undefined);
+      expect(orient).to.eql(undefined);
     });
 
     it('should return top for COL', function () {
-      var def = axis.orient({}, Encoding.fromSpec({
+      var orient = axis.orient(Encoding.fromSpec({
           encoding: {
             x: {name: 'a'},
             col: {name: 'a'}
           }
         }), 'col', stats);
-      expect(def.orient).to.eql('top');
+      expect(orient).to.eql('top');
     });
 
     it('should return top for X with high cardinality, ordinal Y', function () {
-      var def = axis.orient({}, Encoding.fromSpec({
+      var orient = axis.orient(Encoding.fromSpec({
           encoding: {
             x: {name: 'a'},
             y: {name: 'b', type: 'O'}
           }
         }), 'x', stats);
-      expect(def.orient).to.eql('top');
+      expect(orient).to.eql('top');
     });
   });
 

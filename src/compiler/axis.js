@@ -14,6 +14,8 @@ axis.def = function(name, encoding, layout, stats, opt) {
     isRow = name == ROW,
     type = isCol ? 'x' : isRow ? 'y' : name;
 
+  // TODO: rename def to axisDef and avoid side effects where possible.
+
   var def = {
     type: type,
     scale: name,
@@ -21,7 +23,10 @@ axis.def = function(name, encoding, layout, stats, opt) {
     layer: encoding.encDef(name).axis.layer
   };
 
-  def = axis.orient(def, encoding, name, stats);
+  var orient = axis.orient(encoding, name, stats);
+  if (orient) {
+    def.orient = orient;
+  }
 
   // Add axis label custom scale (for bin / time)
   def = axis.labels.scale(def, encoding, name);
@@ -49,24 +54,24 @@ axis.def = function(name, encoding, layout, stats, opt) {
   def = axis.grid(def, encoding, name, layout);
   def = axis.title(def, encoding, name, layout, opt);
 
-  if (isRow || isCol) def = axis.hideTicks(def);
+  if (isRow || isCol) {
+    def = axis.hideTicks(def);
+  }
 
   return def;
 };
 
-axis.orient = function(def, encoding, name, stats) {
+axis.orient = function(encoding, name, stats) {
   var orient = encoding.encDef(name).axis.orient;
   if (orient) {
-    def.orient = orient;
+    return orient;
   } else if (name === COL) {
-    def.orient = 'top';
+    return 'top';
+  } else if (name === X && encoding.has(Y) && encoding.isOrdinalScale(Y) && encoding.cardinality(Y, stats) > 30) {
+    // x-axis for long y - put on top
+    return 'top';
   }
-  // x-axis for long y - put on top
-  else if (name === X && encoding.has(Y) && encoding.isOrdinalScale(Y) && encoding.cardinality(Y, stats) > 30) {
-    def.orient = 'top';
-  }
-
-  return def;
+  return undefined;
 };
 
 axis.grid = function(def, encoding, name, layout) {
