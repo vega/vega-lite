@@ -137,12 +137,11 @@ For now please see [legends json schema in schema.js](https://github.com/uwdata/
 
 ## sort
 
-A field value can be ordered in the scale in multiple ways:
+`sort` property can be specify for sorting the field's values in multiple ways:
 
-- Unsorted – when the `sort` property is `undefined. 
-- Sort by the field's value in ascending or descending order – when the `sort` property is `'ascending'` or `'descending'`.
-- Sort by an aggregate calculation over a specified sort field - when the `sort` property is an object with the following properties:
-
+- `undefined` - the field is unsorted.
+- `'ascending'` or `'descending'` – the field is sort by the field's value in ascending or descending order.
+- A sort field object - for sorting the field by an aggregate calculation over a specified sort field.  A sort field object has the following properties:
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
