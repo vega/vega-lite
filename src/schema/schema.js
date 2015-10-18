@@ -167,7 +167,7 @@ var axisMixin = {
         grid: {
           type: 'boolean',
           default: undefined,
-          description: 'A flag indicate if gridlines should be created in addition to ticks. If `grid` is unspecified, the default value is `true` for ROW and COL. For X and Y, the default value is `true` for quantitative fields and `false` otherwise.'
+          description: 'A flag indicate if gridlines should be created in addition to ticks. If `grid` is unspecified, the default value is `true` for ROW and COL. For X and Y, the default value is `true` for quantitative and time fields and `false` otherwise.'
         },
         layer: {
           type: 'string',

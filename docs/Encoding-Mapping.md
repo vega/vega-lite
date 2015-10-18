@@ -117,7 +117,7 @@ Moreover, Vega-lite supports the following additional axis properties.
 
 <sup>1</sup>
 If `grid` is unspecified, the default value is `true` for ROW and COL. For X
-and Y, the default value is `true` for quantitative fields and `false`
+and Y, the default value is `true` for quantitative and time fields and `false`
 otherwise.
 
 <sup>2</sup>
