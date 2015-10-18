@@ -23,6 +23,12 @@ scale.defs = function(names, encoding, layout, stats, facet) {
     };
 
     scaleDef.domain = scale.domain(scaleDef, encoding, stats, facet);
+
+    var reverse = scale.reverse(encoding, name);
+    if (reverse !== undefined) {
+      scaleDef.reverse = reverse;
+    }
+
     scaleDef = scale.range(scaleDef, encoding, layout, stats);
 
     return (a.push(scaleDef), a);
@@ -114,6 +120,12 @@ scale.sort = function(encoding, name, type) {
   }
   return undefined;
 };
+
+scale.reverse = function(encoding, name) {
+  var sort = encoding.sort(name);
+  return sort && (sort === 'descending' || (sort.order === 'descending'));
+};
+
 /**
  * Determine if useRawDomain should be activated for this scale.
  * @return {Boolean} Returns true if all of the following conditons applies:
@@ -168,8 +180,6 @@ scale.range = function (scaleDef, encoding, layout, stats) {
         } else {
           scaleDef.zero = spec.zero === undefined ? true : spec.zero;
         }
-
-        scaleDef.reverse = spec.reverse;
       }
       scaleDef.round = true;
       if (scaleDef.type === 'time') {
@@ -191,8 +201,6 @@ scale.range = function (scaleDef, encoding, layout, stats) {
         } else {
           scaleDef.zero = spec.zero === undefined ? true : spec.zero;
         }
-
-        scaleDef.reverse = spec.reverse;
       }
 
       scaleDef.round = true;

@@ -99,11 +99,6 @@ var typicalField = merge(clone(schema.field), {
       properties: {
         /* Common Scale Properties */
         type: schema.scale_type,
-        reverse: {
-          type: 'boolean',
-          default: false,
-          supportedTypes: toMap([Q, T])
-        },
 
         /* Quantitative Scale Properties */
         nice: {
