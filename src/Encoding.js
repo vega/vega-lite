@@ -387,26 +387,5 @@ module.exports = (function() {
       ( isTypes(enc.y, [N,O]) && vlEncDef.isMeasure(enc.x)) ? 'y' : false;
   };
 
-  Encoding.toggleFilterNullO = function(spec) {
-    spec.config = spec.config || {};
-    spec.config.filterNull = spec.config.filterNull || { //FIXME
-      T: true,
-      Q: true
-    };
-    spec.config.filterNull.O = !spec.config.filterNull.O;
-    return spec;
-  };
-
-  Encoding.toggleFilterNullO.support = function(spec, stats) {
-    var fields = vlenc.fields(spec.encoding);
-    for (var fieldName in fields) {
-      var fieldList = fields[fieldName];
-      if (fieldList.containsType.O && fieldName in stats && stats[fieldName].nulls > 0) {
-        return true;
-      }
-    }
-    return false;
-  };
-
   return Encoding;
 })();
