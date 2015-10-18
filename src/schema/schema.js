@@ -99,11 +99,6 @@ var typicalField = merge(clone(schema.field), {
       properties: {
         /* Common Scale Properties */
         type: schema.scale_type,
-        reverse: {
-          type: 'boolean',
-          default: false,
-          supportedTypes: toMap([Q, T])
-        },
 
         /* Quantitative Scale Properties */
         nice: {
@@ -231,21 +226,34 @@ var sortMixin = {
   type: 'object',
   properties: {
     sort: {
-      type: ['object', 'boolean'],
-      default: true,
+      default: undefined,
       supportedTypes: toMap([N, O]),
-      required: ['field', 'op'],
-      properties: {
-        field: {
+      oneOf: [
+        {
           type: 'string',
-          description: 'The field name to aggregate over.'
+          enum: ['ascending', 'descending']
         },
-        op: {
-          type: 'string',
-          enum: VALID_AGG_OPS,
-          description: 'The field name to aggregate over.'
+        { // sort by aggregation of another field
+          type: 'object',
+          required: ['field', 'op'],
+          properties: {
+            field: {
+              type: 'string',
+              description: 'The field name to aggregate over.'
+            },
+            op: {
+              type: 'string',
+              enum: VALID_AGG_OPS,
+              description: 'The field name to aggregate over.'
+            },
+            order: {
+              type: 'string',
+              enum: ['ascending', 'descending']
+            }
+          }
         }
-      }
+      ]
+
     }
   }
 };

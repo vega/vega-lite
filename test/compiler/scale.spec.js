@@ -182,7 +182,7 @@ describe('vl.compile.scale', function() {
 
     describe('for ordinal', function() {
       it('should return correct domain with the provided sort property', function() {
-        var sortDef = {aggregate: 'min', field:'Acceleration'};
+        var sortDef = {op: 'min', field:'Acceleration'};
         var encoding = Encoding.fromSpec({
             encoding: {
               y: { name: 'origin', type: O, sort: sortDef}
@@ -197,7 +197,7 @@ describe('vl.compile.scale', function() {
           });
       });
 
-      it('should return correct domain with sort=true if sort is not provided', function() {
+      it('should return correct domain without sort if sort is not provided', function() {
         var encoding = Encoding.fromSpec({
             encoding: {
               y: { name: 'origin', type: O}
@@ -207,8 +207,7 @@ describe('vl.compile.scale', function() {
         expect(vlscale.domain(ordinalScaleDef, encoding))
           .to.eql({
             data: RAW,
-            field: 'origin',
-            sort: true
+            field: 'origin'
           });
       });
     });

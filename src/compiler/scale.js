@@ -23,6 +23,12 @@ scale.defs = function(names, encoding, layout, stats, facet) {
     };
 
     scaleDef.domain = scale.domain(scaleDef, encoding, stats, facet);
+
+    var reverse = scale.reverse(encoding, name);
+    if (reverse !== undefined) {
+      scaleDef.reverse = reverse;
+    }
+
     scaleDef = scale.range(scaleDef, encoding, layout, stats);
 
     return (a.push(scaleDef), a);
@@ -46,6 +52,7 @@ scale.type = function(name, encoding) {
   }
 };
 
+// TODO: change scaleDef to name, type
 scale.domain = function (scaleDef, encoding, stats, facet) {
   var name = scaleDef.name;
 
@@ -90,11 +97,34 @@ scale.domain = function (scaleDef, encoding, stats, facet) {
       field: encoding.fieldRef(name)
     };
 
-  // For ordinal scale, add domain's property if provided.
-  var sort = scaleDef.type === 'ordinal' && encoding.sort(name);
-  if (sort) { domain.sort = sort; }
+  // Add sort if applicable
+  var sort = scale.sort(encoding, name, scaleDef.type);
+  if (sort) {
+    domain.sort = sort;
+  }
 
   return domain;
+};
+
+scale.sort = function(encoding, name, type) {
+  var sort = encoding.encDef(name).sort;
+  if (sort === 'ascending' || sort === 'descending') {
+    return true;
+  }
+
+  // Sorted based on an aggregate calculation over a specified sort field (only for ordinal scale)
+  if (type === 'ordinal' && util.isObject(sort)) {
+    return {
+      op: sort.op,
+      field: sort.field
+    };
+  }
+  return undefined;
+};
+
+scale.reverse = function(encoding, name) {
+  var sort = encoding.encDef(name).sort;
+  return sort && (sort === 'descending' || (sort.order === 'descending'));
 };
 
 /**
@@ -151,8 +181,6 @@ scale.range = function (scaleDef, encoding, layout, stats) {
         } else {
           scaleDef.zero = spec.zero === undefined ? true : spec.zero;
         }
-
-        scaleDef.reverse = spec.reverse;
       }
       scaleDef.round = true;
       if (scaleDef.type === 'time') {
@@ -174,8 +202,6 @@ scale.range = function (scaleDef, encoding, layout, stats) {
         } else {
           scaleDef.zero = spec.zero === undefined ? true : spec.zero;
         }
-
-        scaleDef.reverse = spec.reverse;
       }
 
       scaleDef.round = true;

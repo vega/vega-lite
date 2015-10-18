@@ -20,14 +20,14 @@ Here are the list of common properties of the encoding property definition objec
 | name          | String        | A field/variable from which to pull a data value.  __<sup>1</sup>__  |
 | value         | String,Integer |                                            |
 | type          | String        | Data Type (`Q` for quantitative, `O` for ordinal, `T` for temporal, and `N` for nominal).  __<sup>2</sup>__ |
-| [axis](#axis)           | Object        | Configuration object for the encoding's axis    |
-| [legends](#legends)     | Object        | Configuration object for the encoding's legends |
-| [scale](#scale)         | Object        | Configuration object for the encoding's scale   |
-| [sort](#sort)           | Object        | Configuration object for the encoding's order   |
+| [axis](#axis)        | Object        | Configuration object for the encoding's axis    |
+| [legends](#legends)  | Object        | Configuration object for the encoding's legends |
+| [scale](#scale)      | Object        | Configuration object for the encoding's scale   |
+| [sort](#sort)        | String \| Object        | For all types of fields, if specified to `ascending` or `descending`, the domain values are sorted in based on the field's value in ascending or descending order. For nominal and ordinal fields, if set to an object, the values in the scale domain will be sorted based on an aggregate calculation over a specified sort field.  <!--  TODO say what happen when sort is unspecified. -->  See [Sort](#sort) section for more information.  |
 | [aggregate](#aggregate) | String        | Aggregation function for the field (`mean`, `sum`, `median`, `min`, `max`, `count`)  |
 
-| [bin](#bin)             | Object        | Binning properties.  See [Binning](#Binning) |
-| [timeUnit](#timeunit)   | String        | Property for converting time unit            |
+| [bin](#bin)          | Object        | Binning properties.  See [Binning](#Binning) |
+| [timeUnit](#timeunit)| String        | Property for converting time unit            |
 
 
 __<sup>1</sup>__ __Pending Revision__
@@ -71,10 +71,10 @@ If none of the specified encoding channel contains aggregation, no additional da
 Vega-lite's `scale` object supports the following Vega scale properties:
 
 
-- [Vega Common Scale Properties](https://github.com/vega/vega/wiki/Scales#common-scale-properties)__<sup>2</sup>__: `type`__<sup>1</sup>__ and `reverse`
+- [Vega Common Scale Properties](https://github.com/vega/vega/wiki/Scales#common-scale-properties)__<sup>2</sup>__: `type`__<sup>1,2</sup>__.
 
 
-- [Vega Quantitative Scale Properties](https://github.com/vega/vega/wiki/Scales#quantitative-scale-properties)__<sup>2</sup>__: `nice` and `zero`
+- [Vega Quantitative Scale Properties](https://github.com/vega/vega/wiki/Scales#quantitative-scale-properties)__<sup>3</sup>__: `nice` and `zero`
 
 
 See [Vega's documentation](https://github.com/vega/vega/wiki/Scales#common-scale-properties) for more information about these properties.
@@ -86,11 +86,13 @@ Moreover, Vega-lite has the following additional scale properties:
 | :------------ |:-------------:| :------------- |
 | useRawDomain  | Boolean       | Use the raw data instead of summary data for scale domain (Only for aggregated field).  Note that this option does not work with sum or count aggregate as they could have a substantially larger scale range. |
 
-__<sup>1</sup>__ __In Roadmap__:
+
+__<sup>1</sup>__ `reverse` is excluded from Vega-lite's `scale` to avoid conflicting with `sort` property.  Please use `sort='descending'` instead.
+
+__<sup>2</sup>__ __In Roadmap__:
 Other applicable Vega scale properties will be added. [#181](../../issues/181)
 
-
-__<sup>2</sup>__
+__<sup>3</sup>__
 Vega-lite automatically determines scale's `type` based on the field's data type.
 By default, scales of nominal and ordinal fields are ordinal scales.
 Scales of time fields are time scales if time unit conversion is not applied.
@@ -135,7 +137,20 @@ For now please see [legends json schema in schema.js](https://github.com/uwdata/
 
 ## sort
 
-_(Coming Soon)_
+`sort` property can be specify for sorting the field's values in multiple ways:
+
+- `undefined` - the field is unsorted.
+- (as __String__) `'ascending'` or `'descending'` – the field is sort by the field's value in ascending or descending order.
+- (as __Object__) A sort field object - for sorting the field by an aggregate calculation over a specified sort field.  A sort field object has the following properties:
+
+| Property      | Type          | Description    |
+| :------------ |:-------------:| :------------- |
+| _sort.field_  | Field         | The field name to aggregate over.|
+| _sort.op_     | String        | A valid [aggregation operation](Data-Transforms#-aggregate) (e.g., `mean`, `median`, etc.).|
+| _sort.order_  | String        | (Optional) `'ascending'` or `'descending'` order. |
+
+
+
 
 # Channel Specific Properties
 
