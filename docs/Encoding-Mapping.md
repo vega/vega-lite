@@ -102,8 +102,8 @@ Scales of quantitative fields are linear scales by default, but users can specif
 
 ## axis
 
-Vega-lite's `axis` object supports the following [Vega axis properties](https://github.com/vega/vega/wiki/Axes#axis-properties)<sup>1</sup>:
-`format`, `grid`, `layer`, `orient`, `ticks`, `title`<sup>2</sup>, and `titleOffset`<sup>3</sup>.
+Vega-lite's `axis` object supports the following [Vega axis properties](https://github.com/vega/vega/wiki/Axes#axis-properties):
+`format`, `grid`<sup>1</sup>, `layer`, `orient`, `ticks`, `title` <sup>2</sup>, and `titleOffset`<sup>3,4</sup>.
 See [Vega documentation](https://github.com/vega/vega/wiki/Axes#axis-properties) for more information.
 
 Moreover, Vega-lite supports the following additional axis properties.
@@ -115,9 +115,11 @@ Moreover, Vega-lite supports the following additional axis properties.
 | titleMaxLength  | Integer       | Max length for axis title when the title is automatically generated from the field\'s description.  If the   |
 | titleOffset     | Integer       | Offset between the axis title and the axis.  |
 
+<sup>1</sup>
+If `grid` is unspecified, the default value is `true` for ROW and COL. For X
+and Y, the default value is `true` for quantitative fields and `false`
+otherwise.
 
-<sup>1</sup> __In Roadmap__:
-Other applicable Vega axis properties will be added. [#181](../../issues/181)
 
 <sup>2</sup>
 If unspecified, axis's `title` is generated from the field's name and transformation function applied e.g, "field_name", "SUM(field_name)", "BIN(field_name)", "YEAR(field_name)".
@@ -125,6 +127,10 @@ If unspecified, axis's `title` is generated from the field's name and transforma
 <sup>3</sup>
 If unspecified, `titleOffset` is automatically determined.
 __TODO: add detail about default behavior__
+
+<sup>4</sup> __In Roadmap__:
+Other applicable Vega axis properties will be added. [#181](../../issues/181)
+
 
 ## legends
 
