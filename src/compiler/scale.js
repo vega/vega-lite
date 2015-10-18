@@ -123,7 +123,7 @@ scale.sort = function(encoding, name, type) {
 };
 
 scale.reverse = function(encoding, name) {
-  var sort = encoding.sort(name);
+  var sort = encoding.encDef(name).sort;
   return sort && (sort === 'descending' || (sort.order === 'descending'));
 };
 
