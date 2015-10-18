@@ -4,7 +4,7 @@ node_modules
 bower_components
 vega-lite*.js
 vega-lite*.map
-spec.json
+vega-lite-schema.json
 npm-debug.log
 instance.json
 coverage
