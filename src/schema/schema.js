@@ -651,7 +651,7 @@ var config = {
       type: 'number',
       minimum: 0,
       maximum: 1,
-      default: 0.08
+      default: 0.5
     },
 
     // filter null
