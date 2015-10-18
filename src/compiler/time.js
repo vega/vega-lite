@@ -26,7 +26,7 @@ time.cardinality = function(encDef, stats, filterNull, type) {
       if (!yearstat) { return null; }
 
       return yearstat.distinct -
-        (stat.nulls > 0 && filterNull[type] ? 1 : 0);
+        (stat.missing > 0 && filterNull[type] ? 1 : 0);
   }
 
   return null;

@@ -169,5 +169,5 @@ vlfield.cardinality = function(field, stats, filterNull) {
 
   // remove null
   return stat.distinct -
-    (stat.nulls > 0 && filterNull[type] ? 1 : 0);
+    (stat.missing > 0 && filterNull[type] ? 1 : 0);
 };
