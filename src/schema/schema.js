@@ -719,6 +719,10 @@ var config = {
       maximum: 1,
       default: 0.15
     },
+    cellGridOffset: {
+      type: 'number',
+      default: 6 // equal to tickSize
+    },
     cellBackgroundColor: {
       type: 'string',
       role: 'color',

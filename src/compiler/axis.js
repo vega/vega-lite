@@ -79,6 +79,8 @@ axis.grid = function(def, encoding, name, layout) {
 
     if (isCol) {
       // set grid property -- put the lines on the right the cell
+      var yOffset = encoding.config('cellGridOffset');
+
       def.properties.grid = {
         x: {
           offset: layout.cellWidth * (1+ cellPadding/2.0),
@@ -87,12 +89,18 @@ axis.grid = function(def, encoding, name, layout) {
           field: 'data'
         },
         y: {
-          value: -layout.cellHeight * (cellPadding/2),
+          value: -yOffset,
+        },
+        y2: {
+          field: {group: 'height', level: 2},
+          offset: yOffset
         },
         stroke: { value: encoding.config('cellGridColor') },
         opacity: { value: encoding.config('cellGridOpacity') }
       };
     } else if (isRow) {
+      var xOffset = encoding.config('cellGridOffset');
+
       // set grid property -- put the lines on the top
       def.properties.grid = {
         y: {
@@ -102,21 +110,21 @@ axis.grid = function(def, encoding, name, layout) {
           field: 'data'
         },
         x: {
-          value: def.offset
+          value: def.offset - xOffset
         },
         x2: {
           field: {group: 'mark.group.width'},
-          offset: def.offset + (layout.cellWidth * 0.05),
+          offset: def.offset + xOffset,
           // default value(s) -- vega doesn't do recursive merge
           mult: 1
         },
         stroke: { value: encoding.config('cellGridColor') },
-        opacity: { value: encoding.config('cellGridOpacity') }
+        strokeOpacity: { value: encoding.config('cellGridOpacity') }
       };
     } else {
       def.properties.grid = {
         stroke: { value: encoding.config('gridColor') },
-        opacity: { value: encoding.config('gridOpacity') }
+        strokeOpacity: { value: encoding.config('gridOpacity') }
       };
     }
   }
