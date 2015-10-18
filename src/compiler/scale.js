@@ -25,7 +25,7 @@ scale.defs = function(names, encoding, layout, stats, facet) {
 
     // add `reverse` if applicable
     var reverse = scale.reverse(encoding, name);
-    if (reverse !== undefined) {
+    if (reverse) {
       scaleDef.reverse = reverse;
     }
 
