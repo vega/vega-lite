@@ -81,6 +81,7 @@ axis.grid = function(def, encoding, name, layout) {
       // set grid property -- put the lines on the right the cell
       var yOffset = encoding.config('cellGridOffset');
 
+      // TODO(#677): this should depend on orient
       def.properties.grid = {
         x: {
           offset: layout.cellWidth * (1+ cellPadding/2.0),
@@ -101,6 +102,7 @@ axis.grid = function(def, encoding, name, layout) {
     } else if (isRow) {
       var xOffset = encoding.config('cellGridOffset');
 
+      // TODO(#677): this should depend on orient
       // set grid property -- put the lines on the top
       def.properties.grid = {
         y: {
