@@ -1,20 +1,20 @@
-# Vega-lite
+# Vega-Lite
 
 [![Build Status](https://travis-ci.org/vega/vega-lite.svg)](https://travis-ci.org/vega/vega-lite)
 [![npm dependencies](https://david-dm.org/vega/vega-lite.svg)](https://www.npmjs.com/package/vega-lite)
 [![npm version](https://img.shields.io/npm/v/vega-lite.svg)](https://www.npmjs.com/package/vega-lite)
 
-**Vega-lite is still in alpha phase and we are working on improving the code and [documentation](Documentation).
+**Vega-Lite is still in alpha phase and we are working on improving the code and [documentation](Documentation).
 Note that our syntax might change slightly before we release 1.0.**
 
-Vega-lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete [Vega](https://vega.github.io/) specifications.
+Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete [Vega](https://vega.github.io/) specifications.
 
-Vega-lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as position (`x`,`y`), `size`, `color` and `shape`. These mappings are then translated into full visualization specifications using the Vega visualization grammar. These resulting visualizations can then be exported or further modified to customize the display.
+Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as position (`x`,`y`), `size`, `color` and `shape`. These mappings are then translated into full visualization specifications using the Vega visualization grammar. These resulting visualizations can then be exported or further modified to customize the display.
 
-If you are using Vega-lite for your project(s), please let us know by emailing us at [Vega-lite \[at\] cs.washington.edu](mailto:vega-lite@cs.washington.edu).  Feedbacks are also welcomed.
+If you are using Vega-Lite for your project(s), please let us know by emailing us at [Vega-Lite \[at\] cs.washington.edu](mailto:vega-lite@cs.washington.edu).  Feedbacks are also welcomed.
 If you find a bug or have a feature request, please [create an issue](https://github.com/vega/vega-lite/issues/new).
 
-Use Vega-lite in the [online editor](https://vega.github.io/vega-lite/).
+Use Vega-Lite in the [online editor](https://vega.github.io/vega-lite/).
 
 The complete schema for specifications as [JSON schema](http://json-schema.org/) is at [vega-lite-schema.json](https://vega.github.io/vega-lite/vega-lite-schema.json).
 
@@ -84,10 +84,10 @@ Note: These commands use [Gulp](http://gulpjs.com) internally; to run them direc
 npm install -g gulp
 ```
 
-### Developing Vega-lite and Datalib
+### Developing Vega-Lite and Datalib
 
-Vega-lite depends on [Datalib](https://github.com/vega/datalib).
-If you plan to make changes to datalib and test Vega-lite without publishing / copying compiled datalib all the time, use npm's [link](http://justjs.com/posts/npm-link-developing-your-own-npm-modules-without-tears) function.
+Vega-Lite depends on [Datalib](https://github.com/vega/datalib).
+If you plan to make changes to datalib and test Vega-Lite without publishing / copying compiled datalib all the time, use npm's [link](http://justjs.com/posts/npm-link-developing-your-own-npm-modules-without-tears) function.
 
 
 ```
@@ -99,4 +99,4 @@ cd path/to/vega-lite
 npm link datalib
 ```
 
-Now all the changes you make in Datalib are reflected in your Vega-lite automatically.
+Now all the changes you make in Datalib are reflected in your Vega-Lite automatically.
