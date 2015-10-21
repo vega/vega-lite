@@ -17,7 +17,7 @@ function stacking(encoding, mdef, stack) {
     type: 'stack',
     groupby: [encoding.fieldRef(groupby)],
     field: encoding.fieldRef(field),
-    sortby: [(stack.properties.reverse ? '' : '-') + encoding.fieldRef(stack.stack)],
+    sortby: [(stack.properties.reverse ? '-' : '') + encoding.fieldRef(stack.stack)],
     output: {start: startField, end: endField}
   };
 
