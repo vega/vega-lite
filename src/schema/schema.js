@@ -226,12 +226,12 @@ var sortMixin = {
   type: 'object',
   properties: {
     sort: {
-      default: undefined,
+      default: 'ascending',
       supportedTypes: toMap([N, O]),
       oneOf: [
         {
           type: 'string',
-          enum: ['ascending', 'descending']
+          enum: ['ascending', 'descending', 'unsorted']
         },
         { // sort by aggregation of another field
           type: 'object',

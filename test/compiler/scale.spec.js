@@ -193,7 +193,8 @@ describe('vl.compile.scale', function() {
         expect(vlscale.domain(encoding, 'y', 'ordinal'))
           .to.eql({
             data: RAW,
-            field: 'origin'
+            field: 'origin',
+            sort: true
           });
       });
     });
