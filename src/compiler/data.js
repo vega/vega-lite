@@ -118,10 +118,8 @@ data.raw.transform.bin = function(encoding, stats) {
       transform.push({
         type: 'bin',
         field: encDef.name,
-        output: {bin: encoding.fieldRef(encType)},
-        maxbins: encoding.bin(encType).maxbins,
-        min: stats[encDef.name].min,
-        max: stats[encDef.name].max
+        output: {start: encoding.fieldRef(encType)},
+        maxbins: encoding.bin(encType).maxbins
       });
     }
     return transform;
