@@ -17,9 +17,8 @@ var vlEncDef = require('../encdef'),
  *                 If the encoding contains aggregate value, this will also create
  *                 aggregate table as well.
  */
-// FIXME(#514): eliminate stats
-function data(encoding, stats) {
-  var def = [data.raw(encoding, stats)];
+function data(encoding) {
+  var def = [data.raw(encoding)];
 
   var aggregate = data.aggregate(encoding);
   if (aggregate) {
@@ -40,8 +39,7 @@ function data(encoding, stats) {
   return def;
 }
 
-// FIXME(#514): eliminate stats
-data.raw = function(encoding, stats) {
+data.raw = function(encoding) {
   var raw = {name: RAW};
 
   // Data source (url or inline)
@@ -59,7 +57,7 @@ data.raw = function(encoding, stats) {
     raw.format.parse = parse;
   }
 
-  raw.transform = data.raw.transform(encoding, stats);
+  raw.transform = data.raw.transform(encoding);
   return raw;
 };
 
@@ -84,14 +82,13 @@ data.raw.formatParse = function(encoding) {
  * Generate Vega transforms for the raw data table.  This can include
  * transforms for time unit, binning and filtering.
  */
-// FIXME(#514): eliminate stats
-data.raw.transform = function(encoding, stats) {
+data.raw.transform = function(encoding) {
   // null filter comes first so transforms are not performed on null values
   // time and bin should come before filter so we can filter by time and bin
   return data.raw.transform.nullFilter(encoding).concat(
     data.raw.transform.formula(encoding),
     data.raw.transform.time(encoding),
-    data.raw.transform.bin(encoding, stats),
+    data.raw.transform.bin(encoding),
     data.raw.transform.filter(encoding)
   );
 };
@@ -111,8 +108,7 @@ data.raw.transform.time = function(encoding) {
   }, []);
 };
 
-// FIXME(#514): eliminate stats
-data.raw.transform.bin = function(encoding, stats) {
+data.raw.transform.bin = function(encoding) {
   return encoding.reduce(function(transform, encDef, encType) {
     if (encoding.bin(encType)) {
       transform.push({
