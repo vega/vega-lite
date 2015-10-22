@@ -165,12 +165,23 @@ var EXAMPLES = [
       'data': {'url': 'data/cars.json'}
     }
   },{
-    title: 'Stacked Bar Chart',
+    title: 'Horizontal Stacked Bar Chart',
     spec: {
       'marktype': 'bar',
       'encoding': {
         'x': {'name': 'yield','type': 'Q','aggregate': 'sum'},
         'y': {'name': 'variety','type': 'N'},
+        'color': {'name': 'site', 'type': 'N'}
+      },
+      'data': {'url': 'data/barley.json'}
+    }
+  },{
+    title: 'Vertical Stacked Bar Chart',
+    spec: {
+      'marktype': 'bar',
+      'encoding': {
+        'y': {'name': 'yield','type': 'Q','aggregate': 'sum'},
+        'x': {'name': 'variety','type': 'N'},
         'color': {'name': 'site', 'type': 'N'}
       },
       'data': {'url': 'data/barley.json'}
