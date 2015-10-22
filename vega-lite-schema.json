@@ -206,9 +206,10 @@
        }
       },
       "sort": {
+       "default": "ascending",
        "supportedTypes": {"N": 1,"O": 1},
        "oneOf": [
-        {"type": "string","enum": ["ascending","descending"]},
+        {"type": "string","enum": ["ascending","descending","unsorted"]},
         {
          "type": "object",
          "required": ["field","op"],
@@ -420,9 +421,10 @@
        }
       },
       "sort": {
+       "default": "ascending",
        "supportedTypes": {"N": 1,"O": 1},
        "oneOf": [
-        {"type": "string","enum": ["ascending","descending"]},
+        {"type": "string","enum": ["ascending","descending","unsorted"]},
         {
          "type": "object",
          "required": ["field","op"],
@@ -498,9 +500,10 @@
       "aggregate": {"type": "string","enum": ["count"],"supportedTypes": {"N": 1,"O": 1}},
       "padding": {"type": "number","minimum": 0,"maximum": 1,"default": 0.1},
       "sort": {
+       "default": "ascending",
        "supportedTypes": {"N": 1,"O": 1},
        "oneOf": [
-        {"type": "string","enum": ["ascending","descending"]},
+        {"type": "string","enum": ["ascending","descending","unsorted"]},
         {
          "type": "object",
          "required": ["field","op"],
@@ -629,9 +632,10 @@
       "aggregate": {"type": "string","enum": ["count"],"supportedTypes": {"N": 1,"O": 1}},
       "padding": {"type": "number","minimum": 0,"maximum": 1,"default": 0.1},
       "sort": {
+       "default": "ascending",
        "supportedTypes": {"N": 1,"O": 1},
        "oneOf": [
-        {"type": "string","enum": ["ascending","descending"]},
+        {"type": "string","enum": ["ascending","descending","unsorted"]},
         {
          "type": "object",
          "required": ["field","op"],
@@ -859,9 +863,10 @@
        "description": "Size of marks."
       },
       "sort": {
+       "default": "ascending",
        "supportedTypes": {"N": 1,"O": 1},
        "oneOf": [
-        {"type": "string","enum": ["ascending","descending"]},
+        {"type": "string","enum": ["ascending","descending","unsorted"]},
         {
          "type": "object",
          "required": ["field","op"],
@@ -1104,9 +1109,10 @@
        }
       },
       "sort": {
+       "default": "ascending",
        "supportedTypes": {"N": 1,"O": 1},
        "oneOf": [
-        {"type": "string","enum": ["ascending","descending"]},
+        {"type": "string","enum": ["ascending","descending","unsorted"]},
         {
          "type": "object",
          "required": ["field","op"],
@@ -1207,9 +1213,10 @@
        "description": "Whether the shape's color should be used as fill color instead of stroke color."
       },
       "sort": {
+       "default": "ascending",
        "supportedTypes": {"N": 1,"O": 1},
        "oneOf": [
-        {"type": "string","enum": ["ascending","descending"]},
+        {"type": "string","enum": ["ascending","descending","unsorted"]},
         {
          "type": "object",
          "required": ["field","op"],
@@ -1372,9 +1379,10 @@
        "description": "The formatting pattern for text value. If not undefined, this will be determined by small/largeNumberFormat and the max value of the field."
       },
       "sort": {
+       "default": "ascending",
        "supportedTypes": {"N": 1,"O": 1},
        "oneOf": [
-        {"type": "string","enum": ["ascending","descending"]},
+        {"type": "string","enum": ["ascending","descending","unsorted"]},
         {
          "type": "object",
          "required": ["field","op"],
@@ -1453,9 +1461,10 @@
        }
       },
       "sort": {
+       "default": "ascending",
        "supportedTypes": {"N": 1,"O": 1},
        "oneOf": [
-        {"type": "string","enum": ["ascending","descending"]},
+        {"type": "string","enum": ["ascending","descending","unsorted"]},
         {
          "type": "object",
          "required": ["field","op"],

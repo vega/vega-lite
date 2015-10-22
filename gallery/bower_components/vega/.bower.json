@@ -37,14 +37,14 @@
     "src",
     "test"
   ],
-  "version": "2.2.6",
-  "_release": "2.2.6",
+  "version": "2.3.0",
+  "_release": "2.3.0",
   "_resolution": {
     "type": "version",
-    "tag": "v2.2.6",
-    "commit": "006d941b0c96f4f6f6ef8f78ca7336b02385c6c0"
+    "tag": "v2.3.0",
+    "commit": "84c4cad5fa0d06fceb2845a6427b232ce7bbf8b1"
   },
   "_source": "git://github.com/trifacta/vega.git",
-  "_target": "^2.2.6",
+  "_target": "^2.3.0",
   "_originalSource": "vega"
 }
