@@ -9,9 +9,9 @@ Note that our syntax might change slightly before we release 1.0.**
 
 Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete [Vega](https://vega.github.io/) specifications.
 
-Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as position (`x`,`y`), `size`, `color` and `shape`. These mappings are then translated into full visualization specifications using the Vega visualization grammar. These resulting visualizations can then be exported or further modified to customize the display.
+Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as position (`x`,`y`), `size`, `color` and `shape`. These mappings are then translated into a full visualization specifications. These resulting visualizations can then be exported or further modified to customize the display.
 
-If you are using Vega-Lite for your project(s), please let us know by emailing us at [Vega-Lite \[at\] cs.washington.edu](mailto:vega-lite@cs.washington.edu).  Feedbacks are also welcomed.
+If you are using Vega-Lite for your project(s), please let us know by emailing us at [Vega-Lite \[at\] cs.washington.edu](mailto:vega-lite@cs.washington.edu).  Feedback is also welcome.
 If you find a bug or have a feature request, please [create an issue](https://github.com/vega/vega-lite/issues/new).
 
 Use Vega-Lite in the [online editor](https://vega.github.io/vega-lite/).
