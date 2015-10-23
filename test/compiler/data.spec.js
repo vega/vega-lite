@@ -120,7 +120,7 @@ describe('data.raw', function() {
         expect(transform[0]).to.eql({
           type: 'bin',
           field: 'Acceleration',
-          output: {start: 'bin_Acceleration'},
+          output: {start: 'bin_Acceleration_start', end: 'bin_Acceleration_end'},
           maxbins: 15
         });
       });
