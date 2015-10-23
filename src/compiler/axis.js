@@ -81,11 +81,13 @@ axis.grid = function(def, encoding, name, layout) {
 
   var _grid = encoding.axis(name).grid;
 
-  // If `grid` is unspecified, the default value is `true` for ROW and COL. For X
-  // and Y, the default value is `true` for quantitative and time fields and `false` otherwise.
+  // If `grid` is unspecified, the default value is `true` for ROW and COL.
+  // For X and Y, the default value is `true` for (1) quantitative fields that are not binned and (2) time fields.
+  // Otherwise, the default value is `false`.
   var grid = _grid === undefined ?
-    (name === ROW || name === COL || encoding.isTypes(name, [Q, T])) :
-    _grid;
+    ( name === ROW || name === COL ||
+      (encoding.isTypes(name, [Q, T]) && !encoding.encDef(name).bin)
+    ) : _grid;
 
   if (grid) {
     def.grid = true;
