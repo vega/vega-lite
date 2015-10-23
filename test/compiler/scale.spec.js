@@ -64,7 +64,10 @@ describe('vl.compile.scale', function() {
             }
           }), 'y', 'ordinal', {origin: {min: -5, max:48}}, {});
 
-          expect(domain).to.eql([-5, 0, 5, 10, 15, 20, 25, 30, 35, 40, 45]);
+          expect(domain).to.eql({
+            data: RAW,
+            field: ['bin_origin_start', 'bin_origin_end']
+          });
         });
 
       it('should return the raw domain if useRawDomain is true for non-bin, non-sum Q',
