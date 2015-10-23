@@ -17,16 +17,15 @@ Here are the list of common properties of the encoding property definition objec
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| name          | String        | A field/variable from which to pull a data value.  __<sup>1</sup>__  |
-| value         | String,Integer |                                            |
+| name __<sup>1</sup>__ | String        | A field/variable from which to pull a data value.    |
+| value         | String,Integer | A constant value |
 | type          | String        | Data Type (`Q` for quantitative, `O` for ordinal, `T` for temporal, and `N` for nominal).  __<sup>2</sup>__ |
 | [axis](#axis)        | Object        | Configuration object for the encoding's axis    |
 | [legends](#legends)  | Object        | Configuration object for the encoding's legends |
 | [scale](#scale)      | Object        | Configuration object for the encoding's scale   |
-| [sort](#sort)        | String \| Object        | For all types of fields, if specified to `ascending` or `descending`, the domain values are sorted in based on the field's value in ascending or descending order. For nominal and ordinal fields, if set to an object, the values in the scale domain will be sorted based on an aggregate calculation over a specified sort field.  <!--  TODO say what happen when sort is unspecified. -->  See [Sort](#sort) section for more information.  |
-| [aggregate](#aggregate) | String        | Aggregation function for the field (`mean`, `sum`, `median`, `min`, `max`, `count`)  |
-
-| [bin](#bin)          | Object        | Binning properties.  See [Binning](#Binning) |
+| [sort](#sort)        | String \| Object        | Sort order for a particular field.  This can be string (`'ascending'`, `'descending'`, or `'unsorted'`) or a sort field definition object for sorting by an aggregate calculation of a specified sort field.  If unspecified, the default value is `ascending`.  See [Sort](#sort) section for more information. |
+| [aggregate](#aggregate) | String        | Aggregation function for the field (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`)  |
+| [bin](#bin)          | Boolean \| Object        | Binning properties.  See [Binning](#Binning) |
 | [timeUnit](#timeunit)| String        | Property for converting time unit            |
 
 
@@ -36,6 +35,14 @@ __<sup>1</sup>__ __Pending Revision__
 __<sup>2</sup>__ __Pending Revision__
 We are considering other properties of variables including specifying primitive type.
 
+## field
+
+__TODO__
+
+
+## type
+
+__TODO__
 
 ## bin
 
@@ -60,7 +67,7 @@ __Pending Revision__: Time Unit Conversion might be consolidated with "calculate
 
 ## aggregate
 
-Vega-lite supports all [Vega aggregation operations](https://github.com/vega/vega/wiki/Data-Transforms#-aggregate).
+Vega-lite supports all [Vega aggregation operations](https://github.com/vega/vega/wiki/Data-Transforms#-aggregate) (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).
 
 If at least one of the specified encoding channel contains aggregation, a summary data table (`aggregate`) will be computed from the source data table (after binning and time unit have been derived) and the resulting visualization shows data from this summary table.  In this case, all fields without aggregation function specified are treated as dimensions.  The summary statistics are grouped by these dimensions.
 
@@ -142,17 +149,20 @@ For now please see [legends json schema in schema.js](https://github.com/uwdata/
 
 ## sort
 
-`sort` property can be specify for sorting the field's values in multiple ways:
+`sort` property can be specify for sorting the field's values in two ways:
 
-- `undefined` - the field is unsorted.
-- (as __String__) `'ascending'` or `'descending'` – the field is sort by the field's value in ascending or descending order.
-- (as __Object__) A sort field object - for sorting the field by an aggregate calculation over a specified sort field.  A sort field object has the following properties:
+1. (Supported by all types of fields) as __String__ with the following values: 
+    - `'ascending'` –  the field is sort by the field's value in ascending order.  This is the default value when `sort` is not specified. 
+    - `'descending'` –  the field is sort by the field's value in descending order.
+    - `'unsorted`' – The field is not sorted. (This is equivalent to specifying `sort:false` in [Vega's scales](https://github.com/vega/vega/wiki/Scales).)
+
+2. (Supported by nominal and ordinal fields only) as a __sort field definition object__ - for sorting the field by an aggregate calculation over another sort field.  A sort field object has the following properties:
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | _sort.field_  | Field         | The field name to aggregate over.|
 | _sort.op_     | String        | A valid [aggregation operation](Data-Transforms#-aggregate) (e.g., `mean`, `median`, etc.).|
-| _sort.order_  | String        | (Optional) `'ascending'` or `'descending'` order. |
+| _sort.order_  | String        | `'ascending'` or `'descending'` order. |
 
 
 
