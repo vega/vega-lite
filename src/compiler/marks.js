@@ -96,7 +96,10 @@ function bar_props(e, layout, style) {
   var p = {};
 
   // x's and width
-  if (e.isMeasure(X)) {
+  if (e.encDef(X).bin) {
+    p.x = {scale: X, field: e.fieldRef(X, {bin_suffix: '_start'}), offset: 1};
+    p.x2 = {scale: X, field: e.fieldRef(X, {bin_suffix: '_end'})};
+  } else if (e.isMeasure(X)) {
     p.x = {scale: X, field: e.fieldRef(X)};
     if (!e.has(Y) || e.isDimension(Y)) {
       p.x2 = {value: 0};
@@ -126,7 +129,10 @@ function bar_props(e, layout, style) {
   }
 
   // y's & height
-  if (e.isMeasure(Y)) {
+  if (e.encDef(Y).bin) {
+    p.y = {scale: Y, field: e.fieldRef(Y, {bin_suffix: '_start'})};
+    p.y2 = {scale: Y, field: e.fieldRef(Y, {bin_suffix: '_end'}), offset: 1};
+  } else if (e.isMeasure(Y)) {
     p.y = {scale: Y, field: e.fieldRef(Y)};
     p.y2 = {field: {group: 'height'}};
   } else {
@@ -168,14 +174,14 @@ function point_props(e, layout, style) {
 
   // x
   if (e.has(X)) {
-    p.x = {scale: X, field: e.fieldRef(X)};
+    p.x = {scale: X, field: e.fieldRef(X, {bin_suffix: '_mid'})};
   } else if (!e.has(X)) {
     p.x = {value: e.bandSize(X, layout.x.useSmallBand) / 2};
   }
 
   // y
   if (e.has(Y)) {
-    p.y = {scale: Y, field: e.fieldRef(Y)};
+    p.y = {scale: Y, field: e.fieldRef(Y, {bin_suffix: '_mid'})};
   } else if (!e.has(Y)) {
     p.y = {value: e.bandSize(Y, layout.y.useSmallBand) / 2};
   }
@@ -223,14 +229,14 @@ function line_props(e,layout, style) {
 
   // x
   if (e.has(X)) {
-    p.x = {scale: X, field: e.fieldRef(X)};
+    p.x = {scale: X, field: e.fieldRef(X, {bin_suffix: '_mid'})};
   } else if (!e.has(X)) {
     p.x = {value: 0};
   }
 
   // y
   if (e.has(Y)) {
-    p.y = {scale: Y, field: e.fieldRef(Y)};
+    p.y = {scale: Y, field: e.fieldRef(Y, {bin_suffix: '_mid'})};
   } else if (!e.has(Y)) {
     p.y = {field: {group: 'height'}};
   }
@@ -250,6 +256,7 @@ function line_props(e,layout, style) {
   return p;
 }
 
+// TODO(#694): optimize area's usage with bin
 function area_props(e, layout, style) {
   // jshint unused:false
   var p = {};
@@ -262,7 +269,7 @@ function area_props(e, layout, style) {
       p.orient = {value: 'horizontal'};
     }
   } else if (e.has(X)) {
-    p.x = {scale: X, field: e.fieldRef(X)};
+    p.x = {scale: X, field: e.fieldRef(X, {bin_suffix: '_mid'})};
   } else {
     p.x = {value: 0};
   }
@@ -272,7 +279,7 @@ function area_props(e, layout, style) {
     p.y = {scale: Y, field: e.fieldRef(Y)};
     p.y2 = {scale: Y, value: 0};
   } else if (e.has(Y)) {
-    p.y = {scale: Y, field: e.fieldRef(Y)};
+    p.y = {scale: Y, field: e.fieldRef(Y, {bin_suffix: '_mid'})};
   } else {
     p.y = {field: {group: 'height'}};
   }
@@ -295,7 +302,7 @@ function tick_props(e, layout, style) {
 
   // x
   if (e.has(X)) {
-    p.x = {scale: X, field: e.fieldRef(X)};
+    p.x = {scale: X, field: e.fieldRef(X, {bin_suffix: '_mid'})};
     if (e.isDimension(X)) {
       p.x.offset = -e.bandSize(X, layout.x.useSmallBand) / 3;
     }
@@ -305,7 +312,7 @@ function tick_props(e, layout, style) {
 
   // y
   if (e.has(Y)) {
-    p.y = {scale: Y, field: e.fieldRef(Y)};
+    p.y = {scale: Y, field: e.fieldRef(Y, {bin_suffix: '_mid'})};
     if (e.isDimension(Y)) {
       p.y.offset = -e.bandSize(Y, layout.y.useSmallBand) / 3;
     }
@@ -315,6 +322,7 @@ function tick_props(e, layout, style) {
 
   // width
   if (!e.has(X) || e.isDimension(X)) {
+    // TODO(#694): optimize tick's width for bin
     p.width = {value: e.bandSize(X, layout.y.useSmallBand) / 1.5};
   } else {
     p.width = {value: 1};
@@ -322,6 +330,7 @@ function tick_props(e, layout, style) {
 
   // height
   if (!e.has(Y) || e.isDimension(Y)) {
+    // TODO(#694): optimize tick's height for bin
     p.height = {value: e.bandSize(Y, layout.y.useSmallBand) / 1.5};
   } else {
     p.height = {value: 1};
@@ -346,14 +355,14 @@ function filled_point_props(shape) {
 
     // x
     if (e.has(X)) {
-      p.x = {scale: X, field: e.fieldRef(X)};
+      p.x = {scale: X, field: e.fieldRef(X, {bin_suffix: '_mid'})};
     } else if (!e.has(X)) {
       p.x = {value: e.bandSize(X, layout.x.useSmallBand) / 2};
     }
 
     // y
     if (e.has(Y)) {
-      p.y = {scale: Y, field: e.fieldRef(Y)};
+      p.y = {scale: Y, field: e.fieldRef(Y, {bin_suffix: '_mid'})};
     } else if (!e.has(Y)) {
       p.y = {value: e.bandSize(Y, layout.y.useSmallBand) / 2};
     }
@@ -388,7 +397,7 @@ function text_props(e, layout, style, stats) {
 
   // x
   if (e.has(X)) {
-    p.x = {scale: X, field: e.fieldRef(X)};
+    p.x = {scale: X, field: e.fieldRef(X, {bin_suffix: '_mid'})};
   } else if (!e.has(X)) {
     if (e.has(TEXT) && e.isType(TEXT, Q)) {
       p.x = {value: layout.cellWidth-5};
@@ -399,7 +408,7 @@ function text_props(e, layout, style, stats) {
 
   // y
   if (e.has(Y)) {
-    p.y = {scale: Y, field: e.fieldRef(Y)};
+    p.y = {scale: Y, field: e.fieldRef(Y, {bin_suffix: '_mid'})};
   } else if (!e.has(Y)) {
     p.y = {value: e.bandSize(Y, layout.y.useSmallBand) / 2};
   }

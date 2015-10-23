@@ -38,7 +38,7 @@ describe('vl.compile.stack()', function () {
       var tableAggrTransform = tableData[0].transform.filter(function(t) {
         return t.type === 'aggregate';
       })[0];
-      expect(tableAggrTransform.groupby.length).to.equal(2);
+      expect(tableAggrTransform.groupby.length).to.equal(4);
       expect(tableAggrTransform.groupby.indexOf('bin_Cost__Total_$_start')).to.gt(-1);
 
       var stackedData = vgSpec.data.filter(function(data) {
@@ -63,7 +63,7 @@ describe('vl.compile.stack()', function () {
       var tableAggrTransform = tableData[0].transform.filter(function(t) {
         return t.type === 'aggregate';
       })[0];
-      expect(tableAggrTransform.groupby.length).to.equal(2);
+      expect(tableAggrTransform.groupby.length).to.equal(4);
       expect(tableAggrTransform.groupby.indexOf('bin_Cost__Total_$_start')).to.gt(-1);
 
       var stackedData = vgSpec.data.filter(function(data) {

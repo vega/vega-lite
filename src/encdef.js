@@ -112,7 +112,7 @@ var isTypes = vlfield.isTypes = function (fieldDef, types) {
  * However, YEAR(T), YEARMONTH(T) use time scale, not ordinal but are dimensions too.
  */
 vlfield.isOrdinalScale = function(field) {
-  return  isTypes(field, [N, O]) || field.bin ||
+  return  isTypes(field, [N, O]) ||
     ( isType(field, T) && field.timeUnit && time.isOrdinalFn(field.timeUnit) );
 };
 

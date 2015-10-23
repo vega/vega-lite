@@ -120,6 +120,12 @@ data.raw.transform.bin = function(encoding) {
         },
         maxbins: encoding.bin(encType).maxbins
       });
+      // temporary fix for adding missing `bin_mid` from the bin transform
+      transform.push({
+        type: 'formula',
+        field: encoding.fieldRef(encType, {bin_suffix: '_mid'}),
+        expr: '(' + encoding.fieldRef(encType, {datum:1, bin_suffix: '_start'}) + '+' + encoding.fieldRef(encType, {datum:1, bin_suffix: '_end'}) + ')/2'
+      });
     }
     return transform;
   }, []);
@@ -193,7 +199,15 @@ data.aggregate = function(encoding) {
         meas[encDef.name][encDef.aggregate] = true;
       }
     } else {
-      dims[encDef.name] = encoding.fieldRef(encType);
+      if (encDef.bin) {
+        // TODO(#694) only add dimension for the required ones.
+        dims[encoding.fieldRef(encType, {bin_suffix: '_start'})] = encoding.fieldRef(encType, {bin_suffix: '_start'});
+        dims[encoding.fieldRef(encType, {bin_suffix: '_mid'})] = encoding.fieldRef(encType, {bin_suffix: '_mid'});
+        dims[encoding.fieldRef(encType, {bin_suffix: '_end'})] = encoding.fieldRef(encType, {bin_suffix: '_end'});
+      } else {
+        dims[encDef.name] = encoding.fieldRef(encType);
+      }
+
     }
   });
 
