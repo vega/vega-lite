@@ -4,7 +4,7 @@
 [![npm dependencies](https://david-dm.org/vega/vega-lite.svg)](https://www.npmjs.com/package/vega-lite)
 [![npm version](https://img.shields.io/npm/v/vega-lite.svg)](https://www.npmjs.com/package/vega-lite)
 
-**Vega-Lite is still in alpha phase and we are working on improving the code and [documentation](Documentation).
+**Vega-Lite is still in alpha phase and we are working on improving the code and [documentation](docs/Documentation.md).
 Note that our syntax might change slightly before we release 1.0.**
 
 Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete [Vega](https://vega.github.io/) specifications.
@@ -14,7 +14,7 @@ Vega-Lite specifications consist of simple mappings of variables in a data set t
 If you are using Vega-Lite for your project(s), please let us know by emailing us at [Vega-Lite \[at\] cs.washington.edu](mailto:vega-lite@cs.washington.edu).  Feedback is also welcome.
 If you find a bug or have a feature request, please [create an issue](https://github.com/vega/vega-lite/issues/new).
 
-Use Vega-Lite in the [online editor](https://vega.github.io/vega-lite/).
+__Try using Vega-lite in the online [Vega Editor](http://vega.github.io/vega-editor/?mode=vega-lite)__. 
 
 The complete schema for specifications as [JSON schema](http://json-schema.org/) is at [vega-lite-schema.json](https://vega.github.io/vega-lite/vega-lite-schema.json).
 
@@ -29,9 +29,9 @@ We have more example visualizations in our [gallery](https://vega.github.io/vega
   "data": {"url": "data/barley.json"},
   "marktype": "point",
   "encoding": {
-    "x": {"type": "Q","name": "yield","aggregate": "avg"},
+    "x": {"type": "Q","name": "yield","aggregate": "mean"},
     "y": {
-      "sort": [{"name": "yield","aggregate": "avg","reverse": false}],
+      "sort": {"name": "yield","aggregate": "mean","reverse": false},
       "type": "O",
       "name": "variety"
     },
