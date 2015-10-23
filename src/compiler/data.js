@@ -115,8 +115,8 @@ data.raw.transform.bin = function(encoding) {
         type: 'bin',
         field: encDef.name,
         output: {
-          start: encoding.fieldRef(encType) + '_start',
-          end: encoding.fieldRef(encType) + '_end'
+          start: encoding.fieldRef(encType, {bin_suffix: '_start'}),
+          end: encoding.fieldRef(encType, {bin_suffix: '_end'})
         },
         maxbins: encoding.bin(encType).maxbins
       });

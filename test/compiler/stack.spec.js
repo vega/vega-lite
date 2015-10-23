@@ -39,14 +39,14 @@ describe('vl.compile.stack()', function () {
         return t.type === 'aggregate';
       })[0];
       expect(tableAggrTransform.groupby.length).to.equal(2);
-      expect(tableAggrTransform.groupby.indexOf('bin_Cost__Total_$')).to.gt(-1);
+      expect(tableAggrTransform.groupby.indexOf('bin_Cost__Total_$_start')).to.gt(-1);
 
       var stackedData = vgSpec.data.filter(function(data) {
         return data.name === 'stacked';
       });
       expect(stackedData.length).to.equal(1);
       var stackedAggrTransform = stackedData[0].transform[0];
-      expect(stackedAggrTransform.groupby[0]).to.equal('bin_Cost__Total_$');
+      expect(stackedAggrTransform.groupby[0]).to.equal('bin_Cost__Total_$_start');
     });
   });
 
@@ -64,7 +64,7 @@ describe('vl.compile.stack()', function () {
         return t.type === 'aggregate';
       })[0];
       expect(tableAggrTransform.groupby.length).to.equal(2);
-      expect(tableAggrTransform.groupby.indexOf('bin_Cost__Total_$')).to.gt(-1);
+      expect(tableAggrTransform.groupby.indexOf('bin_Cost__Total_$_start')).to.gt(-1);
 
       var stackedData = vgSpec.data.filter(function(data) {
         return data.name === 'stacked';
@@ -72,7 +72,7 @@ describe('vl.compile.stack()', function () {
 
       expect(stackedData.length).to.equal(1);
       var stackedAggrTransform = stackedData[0].transform[0];
-      expect(stackedAggrTransform.groupby[0]).to.equal('bin_Cost__Total_$');
+      expect(stackedAggrTransform.groupby[0]).to.equal('bin_Cost__Total_$_start');
     });
   });
 
