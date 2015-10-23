@@ -1,4 +1,5 @@
 'use strict';
+// jshint quotmark: false
 
 var EXAMPLES = [
   {
@@ -251,6 +252,81 @@ var EXAMPLES = [
         'text': {'name': '*','type': 'Q','aggregate': 'count'}
       },
       'data': {'url': 'data/cars.json'}
+    }
+  },{
+    title: 'Histogram',
+    spec: {
+      "marktype": "bar",
+      "encoding": {
+        "x": {"bin": true,"name": "Acceleration","type": "Q"},
+        "y": {
+          "name": "*",
+          "aggregate": "count",
+          "type": "Q",
+          "displayName": "Number of Records"
+        }
+      },
+      "data": {"url": "data/cars.json"}
+    }
+  },{
+    title: 'Horizontal Histogram',
+    spec: {
+      "marktype": "bar",
+      "encoding": {
+        "y": {"bin": true,"name": "Acceleration","type": "Q"},
+        "x": {
+          "name": "*",
+          "aggregate": "count",
+          "type": "Q",
+          "displayName": "Number of Records"
+        }
+      },
+      "data": {"url": "data/cars.json"}
+    }
+  },{
+    title: 'Histogram with point instead',
+    spec: {
+      "marktype": "point",
+      "encoding": {
+        "x": {"bin": true,"name": "Acceleration","type": "Q"},
+        "y": {
+          "name": "*",
+          "aggregate": "count",
+          "type": "Q",
+          "displayName": "Number of Records"
+        }
+      },
+      "data": {"url": "data/cars.json"}
+    }
+  },{
+    title: 'Histogram with line instead',
+    spec: {
+      "marktype": "line",
+      "encoding": {
+        "x": {"bin": true,"name": "Acceleration","type": "Q"},
+        "y": {
+          "name": "*",
+          "aggregate": "count",
+          "type": "Q",
+          "displayName": "Number of Records"
+        }
+      },
+      "data": {"url": "data/cars.json"}
+    }
+  },{
+    title: 'Histogram with area instead',
+    spec: {
+      "marktype": "area",
+      "encoding": {
+        "x": {"bin": true,"name": "Acceleration","type": "Q"},
+        "y": {
+          "name": "*",
+          "aggregate": "count",
+          "type": "Q",
+          "displayName": "Number of Records"
+        }
+      },
+      "data": {"url": "data/cars.json"}
     }
   }
 ];

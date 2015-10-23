@@ -3,8 +3,7 @@ require('../globals');
 var util = require('../util'),
   time = require('./time'),
   colorbrewer = require('colorbrewer'),
-  interpolate = require('d3-color').interpolateHsl,
-  schema = require('../schema/schema');
+  interpolate = require('d3-color').interpolateHsl;
 
 var scale = module.exports = {};
 
@@ -21,14 +20,20 @@ scale.defs = function(names, encoding, layout, stats, facet) {
 
     scaleDef.name = name;
     scaleDef.type = scale.type(name, encoding);
-    scaleDef.domain = scale.domain(encoding, name, scaleDef.type, stats, facet);
+    scaleDef.domain = scale.domain(encoding, name, scaleDef.type, facet);
 
-    // add `reverse` if applicable
+    // Add optional properties
     var reverse = scale.reverse(encoding, name);
     if (reverse) {
       scaleDef.reverse = reverse;
     }
 
+    var zero = scale.zero(encoding, name);
+    if (zero !== undefined) {
+      scaleDef.zero = zero;
+    }
+
+    // TODO split scale.range into methods for each properties
     scaleDef = scale.range(scaleDef, encoding, layout, stats);
 
     return (a.push(scaleDef), a);
@@ -44,32 +49,19 @@ scale.type = function(name, encoding) {
       return timeUnit ? time.scale.type(timeUnit, name) : 'time';
     case Q:
       if (encoding.bin(name)) {
-        // TODO: revise this
-        return name === COLOR ? 'linear' : 'ordinal';
+        return 'linear';
       }
       return encoding.scale(name).type;
   }
 };
 
-scale.domain = function (encoding, name, type, stats, facet) {
+scale.domain = function (encoding, name, type, facet) {
   var encDef = encoding.encDef(name);
 
   // special case for temporal scale
   if (encoding.isType(name, T)) {
     var range = time.scale.domain(encDef.timeUnit, name);
     if (range) return range;
-  }
-
-  // For binned, produce fixed stepped domain.
-  // TODO(#614): this must be changed in vg2
-  if (encDef.bin) {
-
-    var fieldStat = stats[encDef.name],
-      bins = util.getbins(fieldStat, encDef.bin.maxbins || schema.MAXBINS_DEFAULT),
-      numbins = (bins.stop - bins.start) / bins.step;
-    return util.range(numbins).map(function(i) {
-      return bins.start + bins.step * i;
-    });
   }
 
   // For stack, use STACKED data.
@@ -87,12 +79,20 @@ scale.domain = function (encoding, name, type, stats, facet) {
   var useRawDomain = scale._useRawDomain(encoding, name);
   var sort = scale.sort(encoding, name, type);
 
-  if (useRawDomain) {
+  if (useRawDomain) { // useRawDomain - only Q/T
     return {
       data: RAW,
       field: encoding.fieldRef(name, {noAggregate:true})
     };
-  } else if (sort) { // have sort
+  } else if (encDef.bin) { // bin -- need to merge both bin_start and bin_end
+    return {
+      data: encoding.dataTable(),
+      field: [
+        encoding.fieldRef(name, {bin_suffix:'_start'}),
+        encoding.fieldRef(name, {bin_suffix:'_end'})
+      ]
+    };
+  } else if (sort) { // have sort -- only for ordinal
     return {
       // If sort by aggregation of a specified sort field, we need to use RAW table,
       // so we can aggregate values for the scale independently from the main aggregation.
@@ -166,23 +166,38 @@ scale._useRawDomain = function (encoding, name) {
     );
 };
 
+// FIXME revise if we should produce undefined for shorter spec (and just use vega's default value.)
+// However, let's ignore it for now as it is unclear what is Vega's default value.
+scale.zero = function(encoding, name) {
+  var spec = encoding.scale(name);
+  var encDef = encoding.encDef(name);
+  var timeUnit = encDef.timeUnit;
+
+  if (spec.zero) {
+    return spec.zero; // return explicit value if defined
+  }
+
+  if (encoding.isType(name, T) && (!timeUnit || timeUnit === 'year')) { // FIXME revise this
+    // Returns false (undefined)  by default for time scale
+    return false;
+  }
+  if (encDef.bin) {
+    // Returns false (undefined) by default of bin
+    return false;
+  }
+  // if not bin / temporal, returns true by default
+  return name === X || name === Y || name === SIZE;
+};
 
 scale.range = function (scaleDef, encoding, layout, stats) {
-  var spec = encoding.scale(scaleDef.name),
-    encDef = encoding.encDef(scaleDef.name),
-    timeUnit = encDef.timeUnit;
+  var encDef = encoding.encDef(scaleDef.name);
+  var timeUnit = encDef.timeUnit;
 
   switch (scaleDef.name) {
     case X:
       scaleDef.range = layout.cellWidth ? [0, layout.cellWidth] : 'width';
       if (scaleDef.type === 'ordinal') {
         scaleDef.bandWidth = encoding.bandSize(X, layout.x.useSmallBand);
-      } else {
-        if (encoding.isType(scaleDef.name,T) && timeUnit === 'year') {
-          scaleDef.zero = false;
-        } else {
-          scaleDef.zero = spec.zero === undefined ? true : spec.zero;
-        }
       }
       scaleDef.round = true;
       if (scaleDef.type === 'time') {
@@ -199,11 +214,6 @@ scale.range = function (scaleDef, encoding, layout, stats) {
         scaleDef.bandWidth = encoding.bandSize(Y, layout.y.useSmallBand);
       } else {
         scaleDef.range = layout.cellHeight ? [layout.cellHeight, 0] : 'height';
-        if (encoding.isType(scaleDef.name,T) && timeUnit === 'year') {
-          scaleDef.zero = false;
-        } else {
-          scaleDef.zero = spec.zero === undefined ? true : spec.zero;
-        }
       }
 
       scaleDef.round = true;
@@ -236,14 +246,12 @@ scale.range = function (scaleDef, encoding, layout, stats) {
         scaleDef.range = [10, 0.8 * bandSize*bandSize];
       }
       scaleDef.round = true;
-      scaleDef.zero = false;
       break;
     case SHAPE:
       scaleDef.range = 'shapes';
       break;
     case COLOR:
       scaleDef.range = scale.color(scaleDef, encoding, stats);
-      if (scaleDef.type !== 'ordinal') scaleDef.zero = false;
       break;
     default:
       throw new Error('Unknown encoding name: '+ scaleDef.name);
