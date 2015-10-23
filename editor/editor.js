@@ -204,16 +204,16 @@ vled.init = function() {
     vled.format();
   } else {
     document.getElementById('vlspec').value = JSON.stringify({
-      marktype: 'point',
-      encoding: {
-        x: {type: 'Q',name: 'yield',aggr: 'mean'},
-        y: {
-          sort: [{name: 'yield', aggr: 'mean', reverse: false}],
-          type: 'N',
-          name: 'variety'
+      "marktype": "point",
+      "encoding": {
+        "x": {"type": "Q","name": "yield","aggregate": "mean"},
+        "y": {
+          "sort": {"name": "yield","op": "mean","reverse": false},
+          "type": "N",
+          "name": "variety"
         },
-        row: {type: 'N', name: 'site'},
-        color: {type: 'N', name: 'year'}
+        "row": {"type": "N","name": "site"},
+        "color": {"type": "N","name": "year"}
       }
     });
 
