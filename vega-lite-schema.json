@@ -138,7 +138,6 @@
         "zero": {
          "type": "boolean",
          "description": "Include zero",
-         "default": true,
          "supportedTypes": {"Q": 1,"T": 1}
         },
         "useRawDomain": {
@@ -353,7 +352,6 @@
         "zero": {
          "type": "boolean",
          "description": "Include zero",
-         "default": true,
          "supportedTypes": {"Q": 1,"T": 1}
         },
         "useRawDomain": {
@@ -832,7 +830,6 @@
         "zero": {
          "type": "boolean",
          "description": "Include zero",
-         "default": true,
          "supportedTypes": {"Q": 1,"T": 1}
         },
         "useRawDomain": {
@@ -1001,7 +998,6 @@
         "zero": {
          "type": "boolean",
          "description": "Include zero",
-         "default": true,
          "supportedTypes": {"Q": 1,"T": 1}
         },
         "useRawDomain": {
@@ -1351,7 +1347,6 @@
         "zero": {
          "type": "boolean",
          "description": "Include zero",
-         "default": true,
          "supportedTypes": {"Q": 1,"T": 1}
         },
         "useRawDomain": {
