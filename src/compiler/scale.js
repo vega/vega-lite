@@ -185,8 +185,8 @@ scale.zero = function(encoding, name) {
     // Returns false (undefined) by default of bin
     return false;
   }
-  // if not bin / temporal, returns true by default
-  return name === X || name === Y || name === SIZE;
+  // if not bin / temporal, returns true for X and Y encoding.
+  return name === X || name === Y;
 };
 
 scale.range = function (scaleDef, encoding, layout, stats) {
