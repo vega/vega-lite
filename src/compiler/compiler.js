@@ -91,8 +91,8 @@ compiler.compileEncoding = function (encoding, stats) {
   var details = encoding.details();
 
   if (details.length > 0 && lineType) {
-    //subfacet to group stack / line together in one group
-    compiler.subfacet(group, mdef, details, encoding);
+    //subfacet to group area / line together in one group
+    compiler.subfacet(group, mdef, details);
   }
 
   // auto-sort line/area values
