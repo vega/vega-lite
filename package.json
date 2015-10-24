@@ -16,10 +16,7 @@
     "build": "gulp build",
     "cover": "gulp coverage",
     "deploy": "npm run lint && npm run test && scripts/deploy.sh",
-    "feature": "gulp feature",
     "lint": "gulp jshint",
-    "patch": "gulp patch",
-    "release": "gulp release",
     "start": "gulp serve",
     "test": "gulp test",
     "watch": "gulp bundle watch-schema watch-test"
@@ -43,7 +40,6 @@
     "d3": "^3.5.6",
     "deep-diff": "^0.3.3",
     "gulp": "^3.9.0",
-    "gulp-bump": "^1.0.0",
     "gulp-git": "^1.6.0",
     "gulp-jshint": "^1.11.2",
     "gulp-load-plugins": "^1.0.0",
