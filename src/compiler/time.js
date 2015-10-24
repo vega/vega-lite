@@ -135,6 +135,7 @@ time.scale.type = function(timeUnit, name) {
     return 'linear'; // time has order, so use interpolated ordinal color scale.
   }
 
+  // FIXME revise this -- should 'year' be linear too?
   return time.isOrdinalFn(timeUnit) || name === COL || name === ROW ? 'ordinal' : 'linear';
 };
 

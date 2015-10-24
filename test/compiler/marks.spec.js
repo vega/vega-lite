@@ -132,7 +132,7 @@ describe('compile.marks', function() {
             e = Encoding.fromSpec(f),
             def = marks.point.prop(e, mockLayout, {});
         it('should have scale for shape', function () {
-          expect(def.shape).to.eql({scale: SHAPE, field: "bin_yield"});
+          expect(def.shape).to.eql({scale: SHAPE, field: "bin_yield_start"});
         });
       });
     });

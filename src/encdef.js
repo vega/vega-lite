@@ -20,6 +20,7 @@ var vlfield = module.exports = {};
  *   opt.datum - include 'datum.'
  *   opt.fn - replace fn with custom function prefix
  *   opt.prefn - prepend fn with custom function prefix
+ *   opt.bin_suffix - append suffix to the field ref for bin (default='_start')
 
  * @return {[type]}       [description]
  */
@@ -34,7 +35,8 @@ vlfield.fieldRef = function(field, opt) {
   } else if (opt.fn) {
     return f + opt.fn + '_' + name;
   } else if (!opt.nofn && field.bin) {
-    return f + 'bin_' + name;
+    var bin_suffix = opt.bin_suffix || '_start';
+    return f + 'bin_' + name + bin_suffix;
   } else if (!opt.nofn && !opt.noAggregate && field.aggregate) {
     return f + field.aggregate + '_' + name;
   } else if (!opt.nofn && field.timeUnit) {
@@ -110,7 +112,7 @@ var isTypes = vlfield.isTypes = function (fieldDef, types) {
  * However, YEAR(T), YEARMONTH(T) use time scale, not ordinal but are dimensions too.
  */
 vlfield.isOrdinalScale = function(field) {
-  return  isTypes(field, [N, O]) || field.bin ||
+  return  isTypes(field, [N, O]) ||
     ( isType(field, T) && field.timeUnit && time.isOrdinalFn(field.timeUnit) );
 };
 
