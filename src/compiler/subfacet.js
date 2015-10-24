@@ -4,7 +4,7 @@ require('../globals');
 
 module.exports = subfaceting;
 
-function subfaceting(group, mdef, details, encoding) {
+function subfaceting(group, mdef, details) {
   var m = group.marks;
   var g = {
     name: 'subfacet',
