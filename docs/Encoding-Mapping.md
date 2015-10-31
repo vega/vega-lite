@@ -1,19 +1,19 @@
 Vega-lite's top-level `encoding` property is a key-value mapping between
 encoding channels (`x`,`y`, `row`, `col`, `color`, `size`, `shape`, `text`,
-`detail`) and encoding property definitions.
+`detail`) and encoding definitions.
 
-Each encoding property definition object contains:
+Each encoding definition object contains:
 - a field reference to the variable by `name` or a constant value `value`
 - the variable's data `type`
 - its inline transformation including aggregation (`aggregate`), binning (`bin`), and time unit conversion (`timeUnit`).
-- optional configuration properties for `scale`, `axis`, and `legends` of the encoding channel.
+- optional configuration properties for `scale`, `axis`, and `legends`, `stack` of the encoding channel.
 
 __TODO: add missing parameters (band, channel specific properties)__
 
 
-# Common Encoding Properties
+# Encoding Properties
 
-Here are the list of common properties of the encoding property definition object:
+Here are the list of properties of the encoding property definition object:
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
@@ -23,9 +23,10 @@ Here are the list of common properties of the encoding property definition objec
 | [axis](#axis)        | Object        | Configuration object for the encoding's axis    |
 | [legends](#legends)  | Object        | Configuration object for the encoding's legends |
 | [scale](#scale)      | Object        | Configuration object for the encoding's scale   |
+| [stack](#stack)      | Boolean \| Object        | Boolean flag / configuration object for stacking (only for bar and area marks). See [Stack](#stack).  |
 | [sort](#sort)        | String \| Object        | Sort order for a particular field.  This can be string (`'ascending'`, `'descending'`, or `'unsorted'`) or a sort field definition object for sorting by an aggregate calculation of a specified sort field.  If unspecified, the default value is `ascending`.  See [Sort](#sort) section for more information. |
 | [aggregate](#aggregate) | String        | Aggregation function for the field (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`)  |
-| [bin](#bin)          | Boolean \| Object        | Binning properties.  See [Binning](#Binning) |
+| [bin](#bin)          | Boolean \| Object        | Boolean flag / configuration object for binning.  See [Binning](#Binning) |
 | [timeUnit](#timeunit)| String        | Property for converting time unit            |
 
 
@@ -149,7 +150,12 @@ For now please see [legends json schema in schema.js](https://github.com/uwdata/
 
 ## sort
 
-`sort` property can be specify for sorting the field's values in two ways:
+Each encoding channel's values can be sorted using the `'sort'` property.  For
+`x`, `y`, `row` and `col`, this determines the order of each value's position.
+For `color`, `shape`, `size` and `detail`, this determines the layer order
+(z-position) of each value.
+
+`sort` property can be specified for sorting the field's values in two ways:
 
 1. (Supported by all types of fields) as __String__ with the following values: 
     - `'ascending'` –  the field is sort by the field's value in ascending order.  This is the default value when `sort` is not specified. 
@@ -168,5 +174,28 @@ For now please see [legends json schema in schema.js](https://github.com/uwdata/
 
 
 # Channel Specific Properties
+
+## Stack
+
+Stacked bar chart and stacked area chart can be specified using `'stack'`
+property in the `'color'` encoding channel.
+Stack is only applicable only for bar and area marks.  Otherwise, stack property is
+ignored.
+
+When applicable, `'stack'` property can be either boolean or a definition
+object.  When specified as `'boolean'`, default properties are applied.
+`'stack'` definition object has the following properties:
+
+
+
+| Property      | Type          | Description    |
+| :------------ |:-------------:| :------------- |
+| _stack.offset_| String        | The baseline offset style. One of `"zero"` (default), `"center"`, or `"normalize"`. The `"center"` offset will center the stacks. The `"normalize"` offset will compute percentage values for each stack point; the output values will be in the range [0,1].|
+
+__TODO: order or reverse?__
+
+
+
+## Other
 
 _(Coming Soon)_
