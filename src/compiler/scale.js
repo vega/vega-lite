@@ -23,20 +23,13 @@ scale.defs = function(names, encoding, layout, stats, facet) {
     scaleDef.domain = scale.domain(encoding, name, scaleDef.type, facet);
 
     // Add optional properties
-    var bandWidth = scale.bandWidth(encoding, name, scaleDef.type, layout);
-    if (bandWidth) {
-      scaleDef.bandWidth = bandWidth;
-    }
-
-    var reverse = scale.reverse(encoding, name);
-    if (reverse) {
-      scaleDef.reverse = reverse;
-    }
-
-    var zero = scale.zero(encoding, name);
-    if (zero !== undefined) {
-      scaleDef.zero = zero;
-    }
+    var properties = ['bandWidth', 'reverse', 'round', 'zero'];
+    properties.forEach(function(property) {
+      var value = scale[property](encoding, name, scaleDef.type, layout);
+      if (value !== undefined) {
+        scaleDef[property] = value;
+      }
+    });
 
     // TODO split scale.range into methods for each properties
     scaleDef = scale.range(scaleDef, encoding, layout, stats);
@@ -131,7 +124,7 @@ scale.domain.sort = function(encoding, name, type) {
 
 scale.reverse = function(encoding, name) {
   var sort = encoding.encDef(name).sort;
-  return sort && (sort === 'descending' || (sort.order === 'descending'));
+  return sort && (sort === 'descending' || (sort.order === 'descending')) ? true : undefined;
 };
 
 /**
@@ -173,6 +166,8 @@ scale._useRawDomain = function (encoding, name) {
 
 
 scale.bandWidth = function(encoding, name, type, layout) {
+  // TODO(#181) support explicit value
+
   switch (name) {
     case X: /* fall through */
     case Y:
@@ -188,6 +183,19 @@ scale.bandWidth = function(encoding, name, type, layout) {
   return undefined;
 };
 
+scale.round = function(encoding, name) {
+  // TODO(#181) support explicit value
+
+  switch (name) {
+    case X: /* fall through */
+    case Y:
+    case ROW:
+    case COL:
+    case SIZE:
+      return true;
+  }
+  return undefined;
+};
 
 // FIXME revise if we should produce undefined for shorter spec (and just use vega's default value.)
 // However, let's ignore it for now as it is unclear what is Vega's default value.
@@ -220,7 +228,6 @@ scale.range = function (scaleDef, encoding, layout, stats) {
     case X:
       scaleDef.range = layout.cellWidth ? [0, layout.cellWidth] : 'width';
 
-      scaleDef.round = true;
       if (scaleDef.type === 'time') {
         scaleDef.nice = timeUnit || encoding.config('timeScaleNice');
       }else {
@@ -236,7 +243,6 @@ scale.range = function (scaleDef, encoding, layout, stats) {
         scaleDef.range = layout.cellHeight ? [layout.cellHeight, 0] : 'height';
       }
 
-      scaleDef.round = true;
 
       if (scaleDef.type === 'time') {
         scaleDef.nice = timeUnit || encoding.config('timeScaleNice');
@@ -245,11 +251,9 @@ scale.range = function (scaleDef, encoding, layout, stats) {
       }
       break;
     case ROW: // support only ordinal
-      scaleDef.round = true;
       scaleDef.nice = true;
       break;
     case COL: // support only ordinal
-      scaleDef.round = true;
       scaleDef.nice = true;
       break;
     case SIZE:
@@ -263,7 +267,6 @@ scale.range = function (scaleDef, encoding, layout, stats) {
         var bandSize = Math.min(encoding.bandSize(X), encoding.bandSize(Y)) - 1;
         scaleDef.range = [10, 0.8 * bandSize*bandSize];
       }
-      scaleDef.round = true;
       break;
     case SHAPE:
       scaleDef.range = 'shapes';
