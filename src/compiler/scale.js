@@ -82,7 +82,7 @@ scale.domain = function (encoding, name, type, facet) {
   }
 
   var useRawDomain = scale._useRawDomain(encoding, name);
-  var sort = scale.sort(encoding, name, type);
+  var sort = scale.domain.sort(encoding, name, type);
 
   if (useRawDomain) { // useRawDomain - only Q/T
     return {
@@ -113,7 +113,7 @@ scale.domain = function (encoding, name, type, facet) {
   }
 };
 
-scale.sort = function(encoding, name, type) {
+scale.domain.sort = function(encoding, name, type) {
   var sort = encoding.encDef(name).sort;
   if (sort === 'ascending' || sort === 'descending') {
     return true;
