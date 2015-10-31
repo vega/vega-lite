@@ -23,16 +23,13 @@ scale.defs = function(names, encoding, layout, stats, facet) {
     scaleDef.domain = scale.domain(encoding, name, scaleDef.type, facet);
 
     // Add optional properties
-    var properties = ['bandWidth', 'nice', 'reverse', 'round', 'zero'];
+    var properties = ['bandWidth', 'nice', 'padding', 'points', 'range', 'reverse', 'round', 'zero'];
     properties.forEach(function(property) {
-      var value = scale[property](encoding, name, scaleDef.type, layout);
+      var value = scale[property](encoding, name, scaleDef.type, layout, stats);
       if (value !== undefined) {
         scaleDef[property] = value;
       }
     });
-
-    // TODO split scale.range into methods for each properties
-    scaleDef = scale.range(scaleDef, encoding, layout, stats);
 
     return (a.push(scaleDef), a);
   }, []);
@@ -200,6 +197,67 @@ scale.nice = function(encoding, name, type) {
   return undefined;
 };
 
+scale.padding = function(encoding, name, type) {
+  // TODO(#181) support explicit value
+
+  switch (name) {
+    case ROW:
+    case COL:
+      return encoding.config('cellPadding');
+    case X:
+    case Y:
+      if (type === 'ordinal') {
+        return encoding.encDef(name).band.padding;
+      }
+  }
+  return undefined;
+};
+
+scale.points = function(encoding, name, type) {
+  switch (name) {
+    case X:
+    case Y:
+      if (type === 'ordinal') {
+        return true;
+      }
+  }
+  return undefined;
+};
+
+
+scale.range = function (encoding, name, type, layout, stats) {
+  var encDef = encoding.encDef(name);
+
+  switch (name) {
+    case X:
+      return layout.cellWidth ? [0, layout.cellWidth] : 'width';
+    case Y:
+      if (type === 'ordinal') {
+        return layout.cellHeight ?
+          (encDef.bin ? [layout.cellHeight, 0] : [0, layout.cellHeight]) :
+          'height';
+      }
+      return layout.cellHeight ? [layout.cellHeight, 0] : 'height';
+    case SIZE:
+      if (encoding.is('bar')) {
+        // FIXME this is definitely incorrect
+        // but let's fix it later since bar size is a bad encoding anyway
+        return [3, Math.max(encoding.bandSize(X), encoding.bandSize(Y))];
+      } else if (encoding.is(TEXT)) {
+        return [8, 40];
+      }
+      // else -- point
+      var bandSize = Math.min(encoding.bandSize(X), encoding.bandSize(Y)) - 1;
+      return [10, 0.8 * bandSize*bandSize];
+    case SHAPE:
+      return 'shapes';
+    case COLOR:
+      return scale.color(encoding, name, type, stats);
+  }
+
+  return undefined;
+};
+
 scale.round = function(encoding, name) {
   // TODO(#181) support explicit value
 
@@ -237,64 +295,8 @@ scale.zero = function(encoding, name) {
   return name === X || name === Y;
 };
 
-scale.range = function (scaleDef, encoding, layout, stats) {
-  var encDef = encoding.encDef(scaleDef.name);
 
-  switch (scaleDef.name) {
-    case X:
-      scaleDef.range = layout.cellWidth ? [0, layout.cellWidth] : 'width';
-      break;
-    case Y:
-      if (scaleDef.type === 'ordinal') {
-        scaleDef.range = layout.cellHeight ?
-          (encDef.bin ? [layout.cellHeight, 0] : [0, layout.cellHeight]) :
-          'height';
-      } else {
-        scaleDef.range = layout.cellHeight ? [layout.cellHeight, 0] : 'height';
-      }
-
-      break;
-    case SIZE:
-      if (encoding.is('bar')) {
-        // FIXME this is definitely incorrect
-        // but let's fix it later since bar size is a bad encoding anyway
-        scaleDef.range = [3, Math.max(encoding.bandSize(X), encoding.bandSize(Y))];
-      } else if (encoding.is(TEXT)) {
-        scaleDef.range = [8, 40];
-      } else { //point
-        var bandSize = Math.min(encoding.bandSize(X), encoding.bandSize(Y)) - 1;
-        scaleDef.range = [10, 0.8 * bandSize*bandSize];
-      }
-      break;
-    case SHAPE:
-      scaleDef.range = 'shapes';
-      break;
-    case COLOR:
-      scaleDef.range = scale.color(scaleDef, encoding, stats);
-      break;
-    default:
-      throw new Error('Unknown encoding name: '+ scaleDef.name);
-  }
-
-  // FIXME(kanitw): Jul 29, 2015 - consolidate this with above
-  switch (scaleDef.name) {
-    case ROW:
-    case COL:
-      scaleDef.padding = encoding.config('cellPadding');
-      scaleDef.outerPadding = 0;
-      break;
-    case X:
-    case Y:
-      if (scaleDef.type === 'ordinal') {
-        scaleDef.points = true;
-        scaleDef.padding = encoding.encDef(scaleDef.name).band.padding;
-      }
-  }
-
-  return scaleDef;
-};
-
-scale.color = function(s, encoding, stats) {
+scale.color = function(encoding, name, scaleType, stats) {
   var colorScale = encoding.scale(COLOR),
     range = colorScale.range,
     cardinality = encoding.cardinality(COLOR, stats),
@@ -304,7 +306,7 @@ scale.color = function(s, encoding, stats) {
     var ordinalPalette = colorScale.ordinalPalette,
       quantitativeRange = colorScale.quantitativeRange;
 
-    if (s.type === 'ordinal') {
+    if (scaleType === 'ordinal') {
       if (type === N) {
         // use categorical color scale
         if (cardinality <= 10) {
