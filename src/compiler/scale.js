@@ -23,7 +23,7 @@ scale.defs = function(names, encoding, layout, stats, facet) {
     scaleDef.domain = scale.domain(encoding, name, scaleDef.type, facet);
 
     // Add optional properties
-    var properties = ['bandWidth', 'reverse', 'round', 'zero'];
+    var properties = ['bandWidth', 'nice', 'reverse', 'round', 'zero'];
     properties.forEach(function(property) {
       var value = scale[property](encoding, name, scaleDef.type, layout);
       if (value !== undefined) {
@@ -183,6 +183,23 @@ scale.bandWidth = function(encoding, name, type, layout) {
   return undefined;
 };
 
+scale.nice = function(encoding, name, type) {
+  var timeUnit = encoding.encDef(name).timeUnit;
+  switch (name) {
+    case X: /* fall through */
+    case Y:
+      if (type === 'time') {
+        return timeUnit || encoding.config('timeScaleNice');
+      }
+      return true;
+
+    case ROW: /* fall through */
+    case COL:
+      return true;
+  }
+  return undefined;
+};
+
 scale.round = function(encoding, name) {
   // TODO(#181) support explicit value
 
@@ -222,17 +239,10 @@ scale.zero = function(encoding, name) {
 
 scale.range = function (scaleDef, encoding, layout, stats) {
   var encDef = encoding.encDef(scaleDef.name);
-  var timeUnit = encDef.timeUnit;
 
   switch (scaleDef.name) {
     case X:
       scaleDef.range = layout.cellWidth ? [0, layout.cellWidth] : 'width';
-
-      if (scaleDef.type === 'time') {
-        scaleDef.nice = timeUnit || encoding.config('timeScaleNice');
-      }else {
-        scaleDef.nice = true;
-      }
       break;
     case Y:
       if (scaleDef.type === 'ordinal') {
@@ -243,18 +253,6 @@ scale.range = function (scaleDef, encoding, layout, stats) {
         scaleDef.range = layout.cellHeight ? [layout.cellHeight, 0] : 'height';
       }
 
-
-      if (scaleDef.type === 'time') {
-        scaleDef.nice = timeUnit || encoding.config('timeScaleNice');
-      }else {
-        scaleDef.nice = true;
-      }
-      break;
-    case ROW: // support only ordinal
-      scaleDef.nice = true;
-      break;
-    case COL: // support only ordinal
-      scaleDef.nice = true;
       break;
     case SIZE:
       if (encoding.is('bar')) {
