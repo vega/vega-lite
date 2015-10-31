@@ -171,6 +171,24 @@ scale._useRawDomain = function (encoding, name) {
     );
 };
 
+
+scale.bandWidth = function(encoding, name, type, layout) {
+  switch (name) {
+    case X: /* fall through */
+    case Y:
+      if (type === 'ordinal') {
+        return encoding.bandSize(name, layout[name].useSmallBand);
+      }
+      break;
+    case ROW: // support only ordinal
+      return layout.cellHeight;
+    case COL: // support only ordinal
+      return layout.cellWidth;
+  }
+  return undefined;
+};
+
+
 // FIXME revise if we should produce undefined for shorter spec (and just use vega's default value.)
 // However, let's ignore it for now as it is unclear what is Vega's default value.
 scale.zero = function(encoding, name) {
@@ -192,22 +210,6 @@ scale.zero = function(encoding, name) {
   }
   // if not bin / temporal, returns true for X and Y encoding.
   return name === X || name === Y;
-};
-
-scale.bandWidth = function(encoding, name, type, layout) {
-  switch (name) {
-    case X: /* fall through */
-    case Y:
-      if (type === 'ordinal') {
-        return encoding.bandSize(name, layout[name].useSmallBand);
-      }
-      break;
-    case ROW: // support only ordinal
-      return layout.cellHeight;
-    case COL: // support only ordinal
-      return layout.cellWidth;
-  }
-  return undefined;
 };
 
 scale.range = function (scaleDef, encoding, layout, stats) {
