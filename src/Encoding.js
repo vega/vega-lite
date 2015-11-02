@@ -128,7 +128,7 @@ module.exports = (function() {
     return this._enc[et].axis || {};
   };
 
-  proto.bandSize = function(encType, useSmallBand) {
+  proto.bandWidth = function(encType, useSmallBand) {
     if (this.encDef(encType).scale.bandWidth !== undefined) {
       // explicit value
       return this.encDef(encType).scale.bandWidth;
@@ -141,7 +141,7 @@ module.exports = (function() {
       (encType === Y && this.has(ROW) && this.has(Y)) ||
       (encType === X && this.has(COL) && this.has(X));
 
-    return this.config(useSmallBand ? 'smallBandSize' : 'largeBandSize');
+    return this.config(useSmallBand ? 'smallBandWidth' : 'largeBandWidth');
   };
 
   proto.padding = function(encType) {

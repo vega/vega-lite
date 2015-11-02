@@ -41,7 +41,7 @@ function box(encoding, stats) {
   if (hasX) {
     if (encoding.isOrdinalScale(X)) {
       // for ordinal, hasCol or not doesn't matter -- we scale based on cardinality
-      cellWidth = (xCardinality + encoding.padding(X)) * encoding.bandSize(X, useSmallBand);
+      cellWidth = (xCardinality + encoding.padding(X)) * encoding.bandWidth(X, useSmallBand);
     } else {
       cellWidth = hasCol || hasRow ? encoding.encDef(COL).width :  encoding.config('singleWidth');
     }
@@ -49,7 +49,7 @@ function box(encoding, stats) {
     if (marktype === TEXT) {
       cellWidth = encoding.config('textCellWidth');
     } else {
-      cellWidth = encoding.bandSize(X);
+      cellWidth = encoding.bandWidth(X);
     }
   }
 
@@ -57,12 +57,12 @@ function box(encoding, stats) {
   if (hasY) {
     if (encoding.isOrdinalScale(Y)) {
       // for ordinal, hasCol or not doesn't matter -- we scale based on cardinality
-      cellHeight = (yCardinality + encoding.padding(Y)) * encoding.bandSize(Y, useSmallBand);
+      cellHeight = (yCardinality + encoding.padding(Y)) * encoding.bandWidth(Y, useSmallBand);
     } else {
       cellHeight = hasCol || hasRow ? encoding.encDef(ROW).height :  encoding.config('singleHeight');
     }
   } else {
-    cellHeight = encoding.bandSize(Y);
+    cellHeight = encoding.bandWidth(Y);
   }
 
   // Cell bands use rangeBands(). There are n-1 padding.  Outerpadding = 0 for cells

@@ -733,12 +733,12 @@ var config = {
       minimum: 0
     },
     // band size
-    largeBandSize: {
+    largeBandWidth: {
       type: 'integer',
       default: 21,
       minimum: 0
     },
-    smallBandSize: {
+    smallBandWidth: {
       //small multiples or single plot with high cardinality
       type: 'integer',
       default: 12,

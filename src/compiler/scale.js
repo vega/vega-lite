@@ -179,7 +179,7 @@ scale.bandWidth = function(encoding, name, type, layout) {
     case X: /* fall through */
     case Y:
       if (type === 'ordinal') {
-        return encoding.bandSize(name, layout[name].useSmallBand);
+        return encoding.bandWidth(name, layout[name].useSmallBand);
       }
       break;
     case ROW: // support only ordinal
@@ -268,13 +268,13 @@ scale.range = function (encoding, name, type, layout, stats) {
       if (encoding.is('bar')) {
         // FIXME this is definitely incorrect
         // but let's fix it later since bar size is a bad encoding anyway
-        return [3, Math.max(encoding.bandSize(X), encoding.bandSize(Y))];
+        return [3, Math.max(encoding.bandWidth(X), encoding.bandWidth(Y))];
       } else if (encoding.is(TEXT)) {
         return [8, 40];
       }
       // else -- point
-      var bandSize = Math.min(encoding.bandSize(X), encoding.bandSize(Y)) - 1;
-      return [10, 0.8 * bandSize*bandSize];
+      var bandWidth = Math.min(encoding.bandWidth(X), encoding.bandWidth(Y)) - 1;
+      return [10, 0.8 * bandWidth*bandWidth];
     case SHAPE:
       return 'shapes';
     case COLOR:
