@@ -19,13 +19,18 @@ scale.defs = function(names, encoding, layout, stats, facet) {
     var scaleDef = {};
 
     scaleDef.name = name;
-    scaleDef.type = scale.type(name, encoding);
-    scaleDef.domain = scale.domain(encoding, name, scaleDef.type, facet);
+    var type = scaleDef.type = scale.type(name, encoding);
+    scaleDef.domain = scale.domain(encoding, name, type, facet);
 
     // Add optional properties
-    var properties = ['bandWidth', 'nice', 'padding', 'points', 'range', 'reverse', 'round', 'zero'];
+    var properties = ['range', 'reverse', 'round',
+        'clamp', 'nice', // quantitative / time
+        'exponent', 'zero', // quantitative
+        'padding', 'points' // ordinal
+      ];
+
     properties.forEach(function(property) {
-      var value = scale[property](encoding, name, scaleDef.type, layout, stats);
+      var value = scale[property](encoding, name, type, layout, stats);
       if (value !== undefined) {
         scaleDef[property] = value;
       }
@@ -38,7 +43,8 @@ scale.defs = function(names, encoding, layout, stats, facet) {
 scale.type = function(name, encoding) {
   switch (encoding.type(name)) {
     case N: //fall through
-    case O: return 'ordinal';
+    case O:
+      return 'ordinal';
     case T:
       var timeUnit = encoding.encDef(name).timeUnit;
       return timeUnit ? time.scale.type(timeUnit, name) : 'time';
@@ -52,6 +58,10 @@ scale.type = function(name, encoding) {
 
 scale.domain = function (encoding, name, type, facet) {
   var encDef = encoding.encDef(name);
+
+  if (encDef.scale.domain) { // explicit value
+    return encDef.scale.domain;
+  }
 
   // special case for temporal scale
   if (encoding.isType(name, T)) {
@@ -180,7 +190,22 @@ scale.bandWidth = function(encoding, name, type, layout) {
   return undefined;
 };
 
+scale.clamp = function(encoding, name) {
+  // only return value if explicit value is specified.
+  return encoding.encDef(name).scale.clamp;
+};
+
+scale.exponent = function(encoding, name) {
+  // only return value if explicit value is specified.
+  return encoding.encDef(name).scale.exponent;
+};
+
 scale.nice = function(encoding, name, type) {
+  if (encoding.encDef(name).scale.nice !== undefined) {
+    // explicit value
+    return encoding.encDef(name).scale.nice;
+  }
+
   var timeUnit = encoding.encDef(name).timeUnit;
   switch (name) {
     case X: /* fall through */
@@ -188,7 +213,7 @@ scale.nice = function(encoding, name, type) {
       if (type === 'time') {
         return timeUnit || encoding.config('timeScaleNice');
       }
-      return true;
+      return true; // FIXME revise if true do anything for time scale's nice
 
     case ROW: /* fall through */
     case COL:
@@ -198,28 +223,40 @@ scale.nice = function(encoding, name, type) {
 };
 
 scale.padding = function(encoding, name, type) {
-  // TODO(#181) support explicit value
+  if (type === 'ordinal') {
+    if (encoding.encDef(name).band.padding !== undefined) {
+      // explicit value via band
+      // TODO: revise if we should keep band property
+      return encoding.encDef(name).band.padding;
+    }
 
-  switch (name) {
-    case ROW:
-    case COL:
-      return encoding.config('cellPadding');
-    case X:
-    case Y:
-      if (type === 'ordinal') {
+    switch (name) {
+      case ROW:
+      case COL:
+        return encoding.config('cellPadding');
+      case X:
+      case Y:
+
         return encoding.encDef(name).band.padding;
-      }
+
+    }
   }
   return undefined;
 };
 
 scale.points = function(encoding, name, type) {
-  switch (name) {
-    case X:
-    case Y:
-      if (type === 'ordinal') {
+  if (type === 'ordinal') {
+    if (encoding.encDef(name).scale.points !== undefined) {
+      // explicit value
+      return encoding.encDef(name).scale.points;
+    }
+
+    // FIXME: revise if true is already the default value
+    switch (name) {
+      case X:
+      case Y:
         return true;
-      }
+    }
   }
   return undefined;
 };
@@ -227,6 +264,10 @@ scale.points = function(encoding, name, type) {
 
 scale.range = function (encoding, name, type, layout, stats) {
   var encDef = encoding.encDef(name);
+
+  if (encDef.scale.range) { // explicit value
+    return encDef.scale.range;
+  }
 
   switch (name) {
     case X:
@@ -259,8 +300,11 @@ scale.range = function (encoding, name, type, layout, stats) {
 };
 
 scale.round = function(encoding, name) {
-  // TODO(#181) support explicit value
+  if (encoding.encDef(name).scale.round !== undefined) {
+    return encoding.encDef(name).scale.round;
+  }
 
+  // FIXME: revise if round is already the default value
   switch (name) {
     case X: /* fall through */
     case Y:
@@ -272,18 +316,17 @@ scale.round = function(encoding, name) {
   return undefined;
 };
 
-// FIXME revise if we should produce undefined for shorter spec (and just use vega's default value.)
-// However, let's ignore it for now as it is unclear what is Vega's default value.
 scale.zero = function(encoding, name) {
-  var spec = encoding.scale(name);
   var encDef = encoding.encDef(name);
   var timeUnit = encDef.timeUnit;
 
-  if (spec.zero) {
-    return spec.zero; // return explicit value if defined
+  if (encDef.scale.zero !== undefined) {
+    // explicit value
+    return encDef.scale.zero;
   }
 
-  if (encoding.isType(name, T) && (!timeUnit || timeUnit === 'year')) { // FIXME revise this
+  if (encoding.isType(name, T) && (!timeUnit || timeUnit === 'year')) {
+    // FIXME revise this
     // Returns false (undefined)  by default for time scale
     return false;
   }
@@ -292,6 +335,7 @@ scale.zero = function(encoding, name) {
     return false;
   }
   // if not bin / temporal, returns true for X and Y encoding.
+  // FIXME: revise if true is already the default value
   return name === X || name === Y;
 };
 
