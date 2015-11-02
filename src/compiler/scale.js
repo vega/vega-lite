@@ -224,22 +224,7 @@ scale.nice = function(encoding, name, type) {
 
 scale.padding = function(encoding, name, type) {
   if (type === 'ordinal') {
-    if (encoding.encDef(name).band.padding !== undefined) {
-      // explicit value via band
-      // TODO: revise if we should keep band property
-      return encoding.encDef(name).band.padding;
-    }
-
-    switch (name) {
-      case ROW:
-      case COL:
-        return encoding.config('cellPadding');
-      case X:
-      case Y:
-
-        return encoding.encDef(name).band.padding;
-
-    }
+    return encoding.padding(name);
   }
   return undefined;
 };

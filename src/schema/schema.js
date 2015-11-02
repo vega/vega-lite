@@ -110,6 +110,11 @@ var scale = {
 
 var ordinalScaleMixin = {
   properties: {
+    bandWidth: {
+      type: 'integer',
+      minimum: 0,
+      default: undefined
+    },
     /* Ordinal Scale Properties */
     padding: {
       type: 'number',
@@ -319,27 +324,6 @@ var sortMixin = {
         }
       ]
 
-    }
-  }
-};
-
-var bandMixin = {
-  type: 'object',
-  properties: {
-    band: {
-      type: 'object',
-      properties: {
-        size: {
-          type: 'integer',
-          minimum: 0,
-          default: undefined
-        },
-        padding: {
-          type: 'integer',
-          minimum: 0,
-          default: 1
-        }
-      }
     }
   }
 };
@@ -620,7 +604,7 @@ var onlyQuantitativeField = merge(clone(typicalField), {
   }
 });
 
-var x = merge(clone(multiRoleField), axisMixin, bandMixin, requiredNameType, sortMixin);
+var x = merge(clone(multiRoleField), axisMixin, requiredNameType, sortMixin);
 var y = clone(x);
 
 var facet = merge(clone(onlyOrdinalField), requiredNameType, facetMixin, sortMixin);
@@ -764,10 +748,16 @@ var config = {
       type: 'integer',
       default: 10
     },
+    padding: {
+      type: 'number',
+      default: 1,
+      description: 'default scale padding for ordinal x/y scales.'
+    },
     // small multiples
     cellPadding: {
       type: 'number',
-      default: 0.1
+      default: 0.1,
+      description: 'default scale padding for row/column scales.'
     },
     cellGridColor: {
       type: 'string',

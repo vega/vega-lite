@@ -129,14 +129,30 @@ module.exports = (function() {
   };
 
   proto.bandSize = function(encType, useSmallBand) {
+    if (this.encDef(encType).scale.bandWidth !== undefined) {
+      // explicit value
+      return this.encDef(encType).scale.bandWidth;
+    }
+
+    // If not specified, draw value from config.
+
     useSmallBand = useSmallBand ||
       //isBandInSmallMultiples
       (encType === Y && this.has(ROW) && this.has(Y)) ||
       (encType === X && this.has(COL) && this.has(X));
 
-    // if band.size is explicitly specified, follow the specification, otherwise draw value from config.
-    return this.encDef(encType).band.size ||
-      this.config(useSmallBand ? 'smallBandSize' : 'largeBandSize');
+    return this.config(useSmallBand ? 'smallBandSize' : 'largeBandSize');
+  };
+
+  proto.padding = function(encType) {
+    if (this.encDef(encType).scale.padding !== undefined) {
+      // explicit value
+      return this.encDef(encType).scale.padding;
+    }
+    if (encType === ROW || encType === COL) {
+      return this.config('cellPadding');
+    }
+    return this.config('padding');
   };
 
   // returns false if binning is disabled, otherwise an object with binning properties
