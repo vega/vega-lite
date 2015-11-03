@@ -208,7 +208,6 @@ scale.nice = function(encoding, name, type) {
     return encoding.encDef(name).scale.nice;
   }
 
-  var timeUnit = encoding.encDef(name).timeUnit;
   switch (name) {
     case X: /* fall through */
     case Y:
@@ -314,10 +313,10 @@ scale.zero = function(encoding, name) {
 
   if (encoding.isType(name, T)) {
     if (timeUnit === 'year') {
-      // year is using linear scale, but should only include zero
+      // year is using linear scale, but should not include zero
       return false;
     }
-    // If there is no timeUnit or the timeUnit uses ordinal scale
+    // If there is no timeUnit or the timeUnit uses ordinal scale,
     // zero property is ignored by vega so we should not generate them any way
     return undefined;
   }

@@ -79,7 +79,7 @@ If none of the specified encoding channel contains aggregation, no additional da
 Vega-lite's `scale` object supports the following Vega scale properties:
 
 - [Common Scale Properties](https://github.com/vega/vega/wiki/Scales#common-scale-properties)__<sup>1</sup>__:
-`type`__<sup>3</sup>__, `domain`, `range`, and `round`.
+`type`__<sup>2</sup>__, `domain`, `range`, and `round`.
 
 - [Quantitative Scale Properties](https://github.com/vega/vega/wiki/Scales#quantitative-scale-properties):
 `clamp`, `exponent`, `nice`, and `zero`.
@@ -96,14 +96,14 @@ Moreover, Vega-lite has the following additional scale properties:
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| useRawDomain  | Boolean       | Use the raw data instead of summary data for scale domain (Only for aggregated field).  This property only works with aggregate functions that produces values ranging in the domain of the source data (`'mean'`, `'average'`, `'stdev'`, `'stdevp'`, `'median'`, `'q1'`, `'q3'`, `'min'`, `'max'`).  Otherwise, this property is ignored.  If the scale's `domain` is specified, this property is also ignored. |
+| useRawDomain  | Boolean       | Use the raw data instead of summary data for scale domain (Only for aggregated field).  This property only works with aggregate functions that produce values ranging in the domain of the source data (`'mean'`, `'average'`, `'stdev'`, `'stdevp'`, `'median'`, `'q1'`, `'q3'`, `'min'`, `'max'`).  Otherwise, this property is ignored.  If the scale's `domain` is specified, this property is also ignored. |
 
 __TODO: document default behavior for each properties__
 
 __<sup>1</sup>__ `reverse` is excluded from Vega-lite's `scale` to avoid conflicting with `sort` property.  Please use `sort='descending'` instead.
 
 
-__<sup>3</sup>__
+__<sup>2</sup>__
 Vega-lite automatically determines scale's `type` based on the field's data type.
 By default, scales of nominal and ordinal fields are ordinal scales.
 Scales of time fields are time scales if time unit conversion is not applied.
