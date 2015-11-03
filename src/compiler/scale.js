@@ -202,7 +202,7 @@ scale.exponent = function(encoding, name) {
   return encoding.encDef(name).scale.exponent;
 };
 
-scale.nice = function(encoding, name) {
+scale.nice = function(encoding, name, type) {
   if (encoding.encDef(name).scale.nice !== undefined) {
     // explicit value
     return encoding.encDef(name).scale.nice;
@@ -212,8 +212,8 @@ scale.nice = function(encoding, name) {
   switch (name) {
     case X: /* fall through */
     case Y:
-      if (timeUnit) {
-        return timeUnit;
+      if (type === 'time' || type === 'ordinal') {
+        return undefined;
       }
       return true;
 
