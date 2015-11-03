@@ -213,7 +213,7 @@ scale.nice = function(encoding, name, type) {
       if (type === 'time') {
         return timeUnit || encoding.config('timeScaleNice');
       }
-      return true; // FIXME revise if true do anything for time scale's nice
+      return true;
 
     case ROW: /* fall through */
     case COL:
@@ -236,7 +236,6 @@ scale.points = function(encoding, name, type) {
       return encoding.encDef(name).scale.points;
     }
 
-    // FIXME: revise if true is already the default value
     switch (name) {
       case X:
       case Y:
@@ -310,18 +309,25 @@ scale.zero = function(encoding, name) {
     return encDef.scale.zero;
   }
 
-  if (encoding.isType(name, T) && (!timeUnit || timeUnit === 'year')) {
-    // FIXME revise this
-    // Returns false (undefined)  by default for time scale
-    return false;
+  if (encoding.isType(name, T)) {
+    if (timeUnit === 'year') {
+      // year is using linear scale, but should only include zero
+      return false;
+    }
+    // If there is no timeUnit or the timeUnit uses ordinal scale
+    // zero property is ignored by vega so we should not generate them any way
+    return undefined;
   }
   if (encDef.bin) {
     // Returns false (undefined) by default of bin
     return false;
   }
-  // if not bin / temporal, returns true for X and Y encoding.
-  // FIXME: revise if true is already the default value
-  return name === X || name === Y;
+
+  return name === X || name === Y ?
+    // if not bin / temporal, returns undefined for X and Y encoding
+    // since zero is true by default in vega for linear scale
+    undefined :
+    false;
 };
 
 
