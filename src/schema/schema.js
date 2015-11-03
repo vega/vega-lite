@@ -85,25 +85,25 @@ var bin = {
 };
 
 var scale = {
-      type: 'object',
-      // TODO: refer to Vega's scale schema
-      properties: {
-        /* Common Scale Properties */
-        type: schema.scale_type,
-        domain: {
-          default: undefined,
-          type: ['array', 'object'],
-          description: 'The domain of the scale, representing the set of data values. For quantitative data, this can take the form of a two-element array with minimum and maximum values. For ordinal/categorical data, this may be an array of valid input values. The domain may also be specified by a reference to a data source.'
-        },
-        range: {
-          default: undefined,
-          type: ['array', 'object'],
-          description: 'The range of the scale, representing the set of visual values. For numeric values, the range can take the form of a two-element array with minimum and maximum values. For ordinal or quantized data, the range may by an array of desired output values, which are mapped to elements in the specified domain. For ordinal scales only, the range can be defined using a DataRef: the range values are then drawn dynamically from a backing data set.'
-        },
-        round: {
-          default: undefined, // TODO: revise default
-          type: 'boolean',
-          description: 'If true, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid.'
+  type: 'object',
+  // TODO: refer to Vega's scale schema
+  properties: {
+    /* Common Scale Properties */
+    type: schema.scale_type,
+    domain: {
+      default: undefined,
+      type: ['array', 'object'],
+      description: 'The domain of the scale, representing the set of data values. For quantitative data, this can take the form of a two-element array with minimum and maximum values. For ordinal/categorical data, this may be an array of valid input values. The domain may also be specified by a reference to a data source.'
+    },
+    range: {
+      default: undefined,
+      type: ['array', 'object'],
+      description: 'The range of the scale, representing the set of visual values. For numeric values, the range can take the form of a two-element array with minimum and maximum values. For ordinal or quantized data, the range may by an array of desired output values, which are mapped to elements in the specified domain. For ordinal scales only, the range can be defined using a DataRef: the range values are then drawn dynamically from a backing data set.'
+    },
+    round: {
+      default: undefined, // TODO: revise default
+      type: 'boolean',
+      description: 'If true, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid.'
     }
   }
 };
@@ -131,53 +131,53 @@ var ordinalScaleMixin = {
 
 var typicalScaleMixin = {
   properties: {
-        /* Quantitative and temporal Scale Properties */
-        clamp: {
+    /* Quantitative and temporal Scale Properties */
+    clamp: {
+      type: 'boolean',
+      default: true,
+      description: 'If true, values that exceed the data domain are clamped to either the minimum or maximum range value'
+    },
+    nice: {
+      default: undefined,
+      oneOf: [
+        {
           type: 'boolean',
-          default: true,
-          description: 'If true, values that exceed the data domain are clamped to either the minimum or maximum range value'
-        },
-        nice: {
-          default: undefined,
-          oneOf: [
-            {
-              type: 'boolean',
-              description: 'If true, modifies the scale domain to use a more human-friendly number range (e.g., 7 instead of 6.96).'
-            },{
-          type: 'string',
-          enum: ['second', 'minute', 'hour', 'day', 'week', 'month', 'year'],
-              description: 'If specified, modifies the scale domain to use a more human-friendly value range. For time and utc scale types only, the nice value should be a string indicating the desired time interval; legal values are "second", "minute", "hour", "day", "week", "month", or "year".'
-            }
-          ],
-          // FIXME this part might break polestar
-          supportedTypes: toMap([Q, T]),
-          description: ''
-        },
-
-        /* Quantitative Scale Properties */
-        exponent: {
-          type: 'number',
-          default: undefined,
-          description: 'Sets the exponent of the scale transformation. For pow scale types only, otherwise ignored.'
-        },
-        zero: {
-          type: 'boolean',
-          description: 'If true, ensures that a zero baseline value is included in the scale domain. This option is ignored for non-quantitative scales.',
-          default: undefined,
-          supportedTypes: toMap([Q, T])
-        },
-
-        /* Vega-lite only Properties */
-        useRawDomain: {
-          type: 'boolean',
-          default: undefined,
-          description: 'Use the raw data range as scale domain instead of ' +
-                       'aggregated data for aggregate axis. ' +
-                       'This option does not work with sum or count aggregate' +
-                       'as they might have a substantially larger scale range.' +
-                       'By default, use value from config.useRawDomain.'
+          description: 'If true, modifies the scale domain to use a more human-friendly number range (e.g., 7 instead of 6.96).'
+        },{
+      type: 'string',
+      enum: ['second', 'minute', 'hour', 'day', 'week', 'month', 'year'],
+          description: 'If specified, modifies the scale domain to use a more human-friendly value range. For time and utc scale types only, the nice value should be a string indicating the desired time interval; legal values are "second", "minute", "hour", "day", "week", "month", or "year".'
         }
-      }
+      ],
+      // FIXME this part might break polestar
+      supportedTypes: toMap([Q, T]),
+      description: ''
+    },
+
+    /* Quantitative Scale Properties */
+    exponent: {
+      type: 'number',
+      default: undefined,
+      description: 'Sets the exponent of the scale transformation. For pow scale types only, otherwise ignored.'
+    },
+    zero: {
+      type: 'boolean',
+      description: 'If true, ensures that a zero baseline value is included in the scale domain. This option is ignored for non-quantitative scales.',
+      default: undefined,
+      supportedTypes: toMap([Q, T])
+    },
+
+    /* Vega-lite only Properties */
+    useRawDomain: {
+      type: 'boolean',
+      default: undefined,
+      description: 'Use the raw data range as scale domain instead of ' +
+                   'aggregated data for aggregate axis. ' +
+                   'This option does not work with sum or count aggregate' +
+                   'as they might have a substantially larger scale range.' +
+                   'By default, use value from config.useRawDomain.'
+    }
+  }
 };
 
 var ordinalOnlyScale = merge(clone(scale), ordinalScaleMixin);
