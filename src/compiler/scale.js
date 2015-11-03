@@ -226,6 +226,7 @@ scale.nice = function(encoding, name, type) {
 
 scale.padding = function(encoding, name, type) {
   if (type === 'ordinal') {
+    // Both explicit and non-explicit values are handled by the helper method.
     return encoding.padding(name);
   }
   return undefined;
