@@ -154,13 +154,16 @@ scale._useRawDomain = function (encoding, name) {
 
   var notCountOrSum = !encDef.aggregate ||
     (encDef.aggregate !=='count' && encDef.aggregate !== 'sum');
+    // TODO: revise if there are other agg ops that should not be used with useRawDomain
 
   return  useRawDomainEnabled &&
     notCountOrSum && (
-      // Q always uses quantitative scale except when it's binned and thus uses ordinal scale.
+      // Q always uses quantitative scale except when it's binned.
+      // Binned field has similar values in both the source table and the summary table
+      // but the summary table has fewer values, therefore binned fields draw
+      // domain values from the summary table.
       (
-        encoding.isType(name, Q) &&
-        !encDef.bin // TODO(#614): this must be changed once bin is reimplemented
+        encoding.isType(name, Q) && !encDef.bin
       ) ||
       // TODO: revise this
       // T uses non-ordinal scale when there's no unit or when the unit is not ordinal.
@@ -173,7 +176,7 @@ scale._useRawDomain = function (encoding, name) {
 
 
 scale.bandWidth = function(encoding, name, type, layout) {
-  // TODO(#181) support explicit value
+  // TODO: eliminate layout
 
   switch (name) {
     case X: /* fall through */

@@ -96,7 +96,7 @@ Moreover, Vega-lite has the following additional scale properties:
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| useRawDomain  | Boolean       | Use the raw data instead of summary data for scale domain (Only for aggregated field).  Note that this option does not work with sum or count aggregate as they could have a substantially larger scale range. |
+| useRawDomain  | Boolean       | Use the raw data instead of summary data for scale domain (Only for aggregated field).  This is ignore if the field's `aggregate` is `'sum'` or `'count'` as they could have a substantially larger scale range.  If the scale's `domain` is specified, this option is ignored. |
 
 __TODO: document default behavior for each properties__
 
