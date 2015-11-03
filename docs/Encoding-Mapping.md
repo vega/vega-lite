@@ -88,7 +88,7 @@ Vega-lite's `scale` object supports the following Vega scale properties:
 `clamp` and `nice`.
 
 - [Ordinal Scale Properties](https://github.com/vega/vega/wiki/Scales#ordinal-scale-properties):
-`padding` and `points`.
+`bandWidth`, `padding` and `points`.
 
 See [Vega's documentation](https://github.com/vega/vega/wiki/Scales#common-scale-properties) for more information about these properties.
 

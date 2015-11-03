@@ -26,7 +26,7 @@ scale.defs = function(names, encoding, layout, stats, facet) {
     var properties = ['range', 'reverse', 'round',
         'clamp', 'nice', // quantitative / time
         'exponent', 'zero', // quantitative
-        'padding', 'points' // ordinal
+        'bandWidth', 'padding', 'points' // ordinal
       ];
 
     properties.forEach(function(property) {
