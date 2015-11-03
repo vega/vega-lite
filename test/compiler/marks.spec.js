@@ -77,7 +77,7 @@ describe('compile.marks', function() {
           e = Encoding.fromSpec(f),
           def = marks.point.prop(e, mockLayout, {});
       it('should be centered', function() {
-        expect(def.y).to.eql({value: e.bandSize(Y, mockLayout.y.useSmallBand) / 2});
+        expect(def.y).to.eql({value: e.bandWidth(Y, mockLayout.y.useSmallBand) / 2});
       });
       it('should scale on x', function() {
         expect(def.x).to.eql({scale: X, field: "year"});
@@ -89,7 +89,7 @@ describe('compile.marks', function() {
           e = Encoding.fromSpec(f),
           def = marks.point.prop(e, mockLayout, {});
       it('should be centered', function() {
-        expect(def.x).to.eql({value: e.bandSize(X, mockLayout.x.useSmallBand) / 2});
+        expect(def.x).to.eql({value: e.bandWidth(X, mockLayout.x.useSmallBand) / 2});
       });
       it('should scale on y', function() {
         expect(def.y).to.eql({scale: Y, field: "year"});

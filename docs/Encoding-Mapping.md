@@ -78,29 +78,32 @@ If none of the specified encoding channel contains aggregation, no additional da
 
 Vega-lite's `scale` object supports the following Vega scale properties:
 
+- [Common Scale Properties](https://github.com/vega/vega/wiki/Scales#common-scale-properties)__<sup>1</sup>__:
+`type`__<sup>2</sup>__, `domain`, `range`, and `round`.
 
-- [Vega Common Scale Properties](https://github.com/vega/vega/wiki/Scales#common-scale-properties)__<sup>2</sup>__: `type`__<sup>1,2</sup>__.
+- [Quantitative Scale Properties](https://github.com/vega/vega/wiki/Scales#quantitative-scale-properties):
+`clamp`, `exponent`, `nice`, and `zero`.
 
+- [Time Scale Properties](https://github.com/vega/vega/wiki/Scales#time-scale-properties):
+`clamp` and `nice`.
 
-- [Vega Quantitative Scale Properties](https://github.com/vega/vega/wiki/Scales#quantitative-scale-properties)__<sup>3</sup>__: `nice` and `zero`
-
+- [Ordinal Scale Properties](https://github.com/vega/vega/wiki/Scales#ordinal-scale-properties):
+`bandWidth`, `padding` and `points`.
 
 See [Vega's documentation](https://github.com/vega/vega/wiki/Scales#common-scale-properties) for more information about these properties.
-
 
 Moreover, Vega-lite has the following additional scale properties:
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| useRawDomain  | Boolean       | Use the raw data instead of summary data for scale domain (Only for aggregated field).  Note that this option does not work with sum or count aggregate as they could have a substantially larger scale range. |
+| useRawDomain  | Boolean       | Use the raw data instead of summary data for scale domain (Only for aggregated field).  This property only works with aggregate functions that produce values ranging in the domain of the source data (`'mean'`, `'average'`, `'stdev'`, `'stdevp'`, `'median'`, `'q1'`, `'q3'`, `'min'`, `'max'`).  Otherwise, this property is ignored.  If the scale's `domain` is specified, this property is also ignored. |
 
+__TODO: document default behavior for each properties__
 
 __<sup>1</sup>__ `reverse` is excluded from Vega-lite's `scale` to avoid conflicting with `sort` property.  Please use `sort='descending'` instead.
 
-__<sup>2</sup>__ __In Roadmap__:
-Other applicable Vega scale properties will be added. [#181](../../issues/181)
 
-__<sup>3</sup>__
+__<sup>2</sup>__
 Vega-lite automatically determines scale's `type` based on the field's data type.
 By default, scales of nominal and ordinal fields are ordinal scales.
 Scales of time fields are time scales if time unit conversion is not applied.
@@ -157,8 +160,8 @@ For `color`, `shape`, `size` and `detail`, this determines the layer order
 
 `sort` property can be specified for sorting the field's values in two ways:
 
-1. (Supported by all types of fields) as __String__ with the following values: 
-    - `'ascending'` –  the field is sort by the field's value in ascending order.  This is the default value when `sort` is not specified. 
+1. (Supported by all types of fields) as __String__ with the following values:
+    - `'ascending'` –  the field is sort by the field's value in ascending order.  This is the default value when `sort` is not specified.
     - `'descending'` –  the field is sort by the field's value in descending order.
     - `'unsorted`' – The field is not sorted. (This is equivalent to specifying `sort:false` in [Vega's scales](https://github.com/vega/vega/wiki/Scales).)
 

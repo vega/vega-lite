@@ -119,7 +119,7 @@ function bar_props(e, layout, style) {
         p.width = {scale: SIZE, field: e.fieldRef(SIZE)};
       } else {
         p.width = {
-          value: e.bandSize(X, layout.x.useSmallBand),
+          value: e.bandWidth(X, layout.x.useSmallBand),
           offset: -1
         };
       }
@@ -149,7 +149,7 @@ function bar_props(e, layout, style) {
       p.height = {scale: SIZE, field: e.fieldRef(SIZE)};
     } else {
       p.height = {
-        value: e.bandSize(Y, layout.y.useSmallBand),
+        value: e.bandWidth(Y, layout.y.useSmallBand),
         offset: -1
       };
     }
@@ -176,14 +176,14 @@ function point_props(e, layout, style) {
   if (e.has(X)) {
     p.x = {scale: X, field: e.fieldRef(X, {bin_suffix: '_mid'})};
   } else if (!e.has(X)) {
-    p.x = {value: e.bandSize(X, layout.x.useSmallBand) / 2};
+    p.x = {value: e.bandWidth(X, layout.x.useSmallBand) / 2};
   }
 
   // y
   if (e.has(Y)) {
     p.y = {scale: Y, field: e.fieldRef(Y, {bin_suffix: '_mid'})};
   } else if (!e.has(Y)) {
-    p.y = {value: e.bandSize(Y, layout.y.useSmallBand) / 2};
+    p.y = {value: e.bandWidth(Y, layout.y.useSmallBand) / 2};
   }
 
   // size
@@ -304,7 +304,7 @@ function tick_props(e, layout, style) {
   if (e.has(X)) {
     p.x = {scale: X, field: e.fieldRef(X, {bin_suffix: '_mid'})};
     if (e.isDimension(X)) {
-      p.x.offset = -e.bandSize(X, layout.x.useSmallBand) / 3;
+      p.x.offset = -e.bandWidth(X, layout.x.useSmallBand) / 3;
     }
   } else if (!e.has(X)) {
     p.x = {value: 0};
@@ -314,7 +314,7 @@ function tick_props(e, layout, style) {
   if (e.has(Y)) {
     p.y = {scale: Y, field: e.fieldRef(Y, {bin_suffix: '_mid'})};
     if (e.isDimension(Y)) {
-      p.y.offset = -e.bandSize(Y, layout.y.useSmallBand) / 3;
+      p.y.offset = -e.bandWidth(Y, layout.y.useSmallBand) / 3;
     }
   } else if (!e.has(Y)) {
     p.y = {value: 0};
@@ -323,7 +323,7 @@ function tick_props(e, layout, style) {
   // width
   if (!e.has(X) || e.isDimension(X)) {
     // TODO(#694): optimize tick's width for bin
-    p.width = {value: e.bandSize(X, layout.y.useSmallBand) / 1.5};
+    p.width = {value: e.bandWidth(X, layout.y.useSmallBand) / 1.5};
   } else {
     p.width = {value: 1};
   }
@@ -331,7 +331,7 @@ function tick_props(e, layout, style) {
   // height
   if (!e.has(Y) || e.isDimension(Y)) {
     // TODO(#694): optimize tick's height for bin
-    p.height = {value: e.bandSize(Y, layout.y.useSmallBand) / 1.5};
+    p.height = {value: e.bandWidth(Y, layout.y.useSmallBand) / 1.5};
   } else {
     p.height = {value: 1};
   }
@@ -357,14 +357,14 @@ function filled_point_props(shape) {
     if (e.has(X)) {
       p.x = {scale: X, field: e.fieldRef(X, {bin_suffix: '_mid'})};
     } else if (!e.has(X)) {
-      p.x = {value: e.bandSize(X, layout.x.useSmallBand) / 2};
+      p.x = {value: e.bandWidth(X, layout.x.useSmallBand) / 2};
     }
 
     // y
     if (e.has(Y)) {
       p.y = {scale: Y, field: e.fieldRef(Y, {bin_suffix: '_mid'})};
     } else if (!e.has(Y)) {
-      p.y = {value: e.bandSize(Y, layout.y.useSmallBand) / 2};
+      p.y = {value: e.bandWidth(Y, layout.y.useSmallBand) / 2};
     }
 
     // size
@@ -402,7 +402,7 @@ function text_props(e, layout, style, stats) {
     if (e.has(TEXT) && e.isType(TEXT, Q)) {
       p.x = {value: layout.cellWidth-5};
     } else {
-      p.x = {value: e.bandSize(X, layout.x.useSmallBand) / 2};
+      p.x = {value: e.bandWidth(X, layout.x.useSmallBand) / 2};
     }
   }
 
@@ -410,7 +410,7 @@ function text_props(e, layout, style, stats) {
   if (e.has(Y)) {
     p.y = {scale: Y, field: e.fieldRef(Y, {bin_suffix: '_mid'})};
   } else if (!e.has(Y)) {
-    p.y = {value: e.bandSize(Y, layout.y.useSmallBand) / 2};
+    p.y = {value: e.bandWidth(Y, layout.y.useSmallBand) / 2};
   }
 
   // size
