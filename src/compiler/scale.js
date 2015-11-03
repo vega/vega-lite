@@ -134,6 +134,8 @@ scale.reverse = function(encoding, name) {
   return sort && (sort === 'descending' || (sort.order === 'descending')) ? true : undefined;
 };
 
+var sharedDomainAggregate = ['mean', 'average', 'stdev', 'stdevp', 'median', 'q1', 'q3', 'min', 'max'];
+
 /**
  * Determine if useRawDomain should be activated for this scale.
  * @return {Boolean} Returns true if all of the following conditons applies:
@@ -152,20 +154,17 @@ scale._useRawDomain = function (encoding, name) {
   var useRawDomainEnabled = scaleUseRawDomain !== undefined ?
       scaleUseRawDomain : encoding.config('useRawDomain');
 
-  var notCountOrSum = !encDef.aggregate ||
-    (encDef.aggregate !=='count' && encDef.aggregate !== 'sum');
-    // TODO: revise if there are other agg ops that should not be used with useRawDomain
-
   return  useRawDomainEnabled &&
-    notCountOrSum && (
+    // only applied to aggregate table
+    encDef.aggregate &&
+    // only activated if used with aggregate functions that produces values ranging in the domain of the source data
+    sharedDomainAggregate.indexOf(encDef.aggregate) >= 0 &&
+    (
       // Q always uses quantitative scale except when it's binned.
       // Binned field has similar values in both the source table and the summary table
       // but the summary table has fewer values, therefore binned fields draw
       // domain values from the summary table.
-      (
-        encoding.isType(name, Q) && !encDef.bin
-      ) ||
-      // TODO: revise this
+      (encoding.isType(name, Q) && !encDef.bin) ||
       // T uses non-ordinal scale when there's no unit or when the unit is not ordinal.
       (
         encoding.isType(name, T) &&
