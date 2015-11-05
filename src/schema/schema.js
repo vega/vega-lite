@@ -263,7 +263,7 @@ var axisMixin = {
           description: 'A title for the axis. (Shows field name and its function by default.)'
         },
         /* Vega-lite only */
-        maxLabelLength: {
+        labelMaxLength: {
           type: 'integer',
           default: 25,
           minimum: 0,
@@ -556,7 +556,7 @@ var colMixin = {
     },
     axis: {
       properties: {
-        maxLabelLength: {
+        labelMaxLength: {
           type: 'integer',
           default: 12,
           minimum: 0,

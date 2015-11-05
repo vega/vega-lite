@@ -115,7 +115,7 @@ function getMaxLength(encoding, stats, et) {
     if(fieldStats.type === 'number') {
       return getMaxNumberLength(encoding, et, fieldStats);
     } else {
-      return Math.min(fieldStats.max, encoding.axis(et).maxLabelLength || Infinity);
+      return Math.min(fieldStats.max, encoding.axis(et).labelMaxLength || Infinity);
     }
   }
 }

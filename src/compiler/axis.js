@@ -218,11 +218,11 @@ axis.labels.format = function (def, encoding, name, stats) {
     } else if (timeUnit === 'year') {
       def.format = 'd';
     }
-  } else if (encoding.isTypes(name, [N, O]) && encoding.axis(name).maxLabelLength) {
+  } else if (encoding.isTypes(name, [N, O]) && encoding.axis(name).labelMaxLength) {
     setter(def,
       ['properties','labels','text','template'],
       '{{ datum.data | truncate:' +
-      encoding.axis(name).maxLabelLength + '}}'
+      encoding.axis(name).labelMaxLength + '}}'
     );
   }
 
