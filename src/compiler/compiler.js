@@ -49,7 +49,7 @@ compiler.compileEncoding = function (encoding, stats) {
 
   var layout = compiler.layout(encoding, stats);
 
-  var spec = {
+  var output = {
       width: layout.width,
       height: layout.height,
       padding: 'auto',
@@ -72,7 +72,7 @@ compiler.compileEncoding = function (encoding, stats) {
       }]
     };
 
-  var group = spec.marks[0];
+  var group = output.marks[0];
 
   // marks
   var style = compiler.style(encoding, stats),
@@ -112,8 +112,8 @@ compiler.compileEncoding = function (encoding, stats) {
 
   // Small Multiples
   if (encoding.has(ROW) || encoding.has(COL)) {
-    spec = compiler.facet(group, encoding, layout, spec, singleScaleNames, stats);
-    spec.legends = legend.defs(encoding, style);
+    output = compiler.facet(group, encoding, layout, output, singleScaleNames, stats);
+    output.legends = legend.defs(encoding, style);
   } else {
     group.scales = scale.defs(singleScaleNames, encoding, layout, stats);
     group.axes = [];
@@ -127,5 +127,5 @@ compiler.compileEncoding = function (encoding, stats) {
     group.legends = legend.defs(encoding, style);
   }
 
-  return spec;
+  return output;
 };
