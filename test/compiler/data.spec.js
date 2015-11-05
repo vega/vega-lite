@@ -32,9 +32,9 @@ describe('data', function () {
     it('should contains one table', function() {
       expect(_data.length).to.equal(1);
     });
-    it('should have filter non-positive in raw', function() {
-      var rawTransform = _data[0].transform;
-      expect(rawTransform[rawTransform.length - 1]).to.eql({
+    it('should have filter non-positive in source', function() {
+      var sourceTransform = _data[0].transform;
+      expect(sourceTransform[sourceTransform.length - 1]).to.eql({
         type: 'filter',
         test: 'datum.b > 0'
       });
@@ -42,7 +42,7 @@ describe('data', function () {
   });
 });
 
-describe('data.raw', function() {
+describe('data.source', function() {
   describe('with explicit values', function() {
     var encoding = Encoding.fromSpec({
       data: {
@@ -50,15 +50,15 @@ describe('data.raw', function() {
       }
     });
 
-    var raw = data.raw(encoding, {});
+    var source = data.source(encoding, {});
 
     it('should have values', function() {
-      expect(raw.name).to.equal('raw');
-      expect(raw.values).to.deep.equal([{a: 1, b:2, c:3}, {a: 4, b:5, c:6}]);
+      expect(source.name).to.equal('source');
+      expect(source.values).to.deep.equal([{a: 1, b:2, c:3}, {a: 4, b:5, c:6}]);
     });
 
-    it('should have raw.format', function(){
-      expect(raw.format).to.eql({type: 'json'});
+    it('should have source.format', function(){
+      expect(source.format).to.eql({type: 'json'});
     });
   });
 
@@ -69,14 +69,14 @@ describe('data.raw', function() {
         }
       });
 
-    var raw = data.raw(encoding);
+    var source = data.source(encoding);
 
     it('should have format json', function() {
-      expect(raw.name).to.equal('raw');
-      expect(raw.format.type).to.equal('json');
+      expect(source.name).to.equal('source');
+      expect(source.format.type).to.equal('json');
     });
     it('should have correct url', function() {
-      expect(raw.url).to.equal('http://foo.bar');
+      expect(source.url).to.equal('http://foo.bar');
     });
   });
 
@@ -90,8 +90,8 @@ describe('data.raw', function() {
           }
         });
 
-      var raw = data.raw(encoding);
-      expect(raw.format.parse).to.eql({
+      var source = data.source(encoding);
+      expect(source.format.parse).to.eql({
         'a': 'date',
         'b': 'number'
       });
@@ -115,7 +115,7 @@ describe('data.raw', function() {
 
     describe('bin', function() {
       it('should add bin transform', function() {
-        var transform = data.raw.transform.bin(encoding);
+        var transform = data.source.transform.bin(encoding);
 
         expect(transform[0]).to.eql({
           type: 'bin',
@@ -138,7 +138,7 @@ describe('data.raw', function() {
 
       it('should add filterNull for Q and T by default', function () {
         var encoding = Encoding.fromSpec(spec);
-        expect(data.raw.transform.nullFilter(encoding))
+        expect(data.source.transform.nullFilter(encoding))
           .to.eql([{
             type: 'filter',
             test: 'datum.T!==null && datum.Q!==null'
@@ -151,7 +151,7 @@ describe('data.raw', function() {
             filterNull: {O: true}
           }
         });
-        expect(data.raw.transform.nullFilter(encoding))
+        expect(data.source.transform.nullFilter(encoding))
           .to.eql([{
             type: 'filter',
             test:'datum.T!==null && datum.Q!==null && datum.O!==null'
@@ -162,7 +162,7 @@ describe('data.raw', function() {
 
     describe('filter', function () {
       it('should return array that contains a filter transform', function () {
-        expect(data.raw.transform.filter(encoding))
+        expect(data.source.transform.filter(encoding))
           .to.eql([{
             type: 'filter',
             test: 'datum.a > datum.b && datum.c === datum.d'
@@ -172,7 +172,7 @@ describe('data.raw', function() {
 
     describe('time', function() {
       it('should add formula transform', function() {
-        var transform = data.raw.transform.time(encoding);
+        var transform = data.source.transform.time(encoding);
         expect(transform[0]).to.eql({
           type: 'formula',
           field: 'year_a',
@@ -182,7 +182,7 @@ describe('data.raw', function() {
     });
 
     it('should have null filter, timeUnit, bin then filter', function () {
-      var transform = data.raw.transform(encoding);
+      var transform = data.source.transform(encoding);
       expect(transform[0].type).to.eql('filter');
       expect(transform[1].type).to.eql('formula');
       expect(transform[2].type).to.eql('bin');
@@ -194,7 +194,7 @@ describe('data.raw', function() {
 });
 
 
-describe('data.aggregated', function () {
+describe('data.summary', function () {
   it('should return correct aggregation', function() {
     var encoding = Encoding.fromSpec({
         encoding: {
@@ -211,10 +211,10 @@ describe('data.aggregated', function () {
         }
       });
 
-    var aggregated = data.aggregate(encoding);
+    var aggregated = data.summary(encoding);
     expect(aggregated ).to.eql({
-      "name": AGGREGATE,
-      "source": "raw",
+      "name": SUMMARY,
+      "source": "source",
       "transform": [{
         "type": "aggregate",
         "groupby": ["origin"],

@@ -86,7 +86,7 @@ scale.domain = function (encoding, name, type, facet) {
 
   if (useRawDomain) { // useRawDomain - only Q/T
     return {
-      data: RAW,
+      data: SOURCE,
       field: encoding.fieldRef(name, {noAggregate:true})
     };
   } else if (encDef.bin) { // bin -- need to merge both bin_start and bin_end
@@ -99,9 +99,9 @@ scale.domain = function (encoding, name, type, facet) {
     };
   } else if (sort) { // have sort -- only for ordinal
     return {
-      // If sort by aggregation of a specified sort field, we need to use RAW table,
+      // If sort by aggregation of a specified sort field, we need to use SOURCE table,
       // so we can aggregate values for the scale independently from the main aggregation.
-      data: sort.op ? RAW : encoding.dataTable(),
+      data: sort.op ? SOURCE : encoding.dataTable(),
       field: encoding.fieldRef(name),
       sort: sort
     };

@@ -258,7 +258,7 @@ module.exports = (function() {
   };
 
   proto.dataTable = function() {
-    return this.isAggregate() ? AGGREGATE : RAW;
+    return this.isAggregate() ? SUMMARY : SOURCE;
   };
 
   Encoding.isAggregate = function(spec) {
