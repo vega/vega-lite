@@ -171,7 +171,7 @@ var typicalScaleMixin = {
     useRawDomain: {
       type: 'boolean',
       default: undefined,
-      description: 'Uses the raw data range as scale domain instead of ' +
+      description: 'Uses the source data range as scale domain instead of ' +
                    'aggregated data for aggregate axis. ' +
                    'This option does not work with sum or count aggregate' +
                    'as they might have a substantially larger scale range.' +
@@ -851,7 +851,7 @@ var config = {
     useRawDomain: {
       type: 'boolean',
       default: false,
-      description: 'Use the raw data range as scale domain instead of ' +
+      description: 'Use the source data range as scale domain instead of ' +
                    'aggregated data for aggregate axis. ' +
                    'This option does not work with sum or count aggregate' +
                    'as they might have a substantially larger scale range.' +

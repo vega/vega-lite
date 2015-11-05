@@ -258,7 +258,7 @@ module.exports = (function() {
   };
 
   proto.dataTable = function() {
-    return this.isAggregate() ? AGGREGATE : RAW;
+    return this.isAggregate() ? AGGREGATE : SOURCE;
   };
 
   Encoding.isAggregate = function(spec) {
@@ -266,7 +266,7 @@ module.exports = (function() {
   };
 
   Encoding.alwaysNoOcclusion = function(spec) {
-    // FIXME raw OxQ with # of rows = # of O
+    // FIXME source OxQ with # of rows = # of O
     return vlenc.isAggregate(spec.encoding);
   };
 

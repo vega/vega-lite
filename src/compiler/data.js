@@ -13,12 +13,12 @@ var vlEncDef = require('../encdef'),
  *
  * @param  {Encoding} encoding
  * @return {Array} Array of Vega data.
- *                 This always includes a "raw" data table.
+ *                 This always includes a "source" data table.
  *                 If the encoding contains aggregate value, this will also create
  *                 aggregate table as well.
  */
 function data(encoding) {
-  var def = [data.raw(encoding)];
+  var def = [data.source(encoding)];
 
   var aggregate = data.aggregate(encoding);
   if (aggregate) {
@@ -39,29 +39,29 @@ function data(encoding) {
   return def;
 }
 
-data.raw = function(encoding) {
-  var raw = {name: RAW};
+data.source = function(encoding) {
+  var source = {name: SOURCE};
 
   // Data source (url or inline)
   if (encoding.hasValues()) {
-    raw.values = encoding.data().values;
-    raw.format = {type: 'json'};
+    source.values = encoding.data().values;
+    source.format = {type: 'json'};
   } else {
-    raw.url = encoding.data().url;
-    raw.format = {type: encoding.data().formatType};
+    source.url = encoding.data().url;
+    source.format = {type: encoding.data().formatType};
   }
 
   // Set data's format.parse if needed
-  var parse = data.raw.formatParse(encoding);
+  var parse = data.source.formatParse(encoding);
   if (parse) {
-    raw.format.parse = parse;
+    source.format.parse = parse;
   }
 
-  raw.transform = data.raw.transform(encoding);
-  return raw;
+  source.transform = data.source.transform(encoding);
+  return source;
 };
 
-data.raw.formatParse = function(encoding) {
+data.source.formatParse = function(encoding) {
   var parse;
 
   encoding.forEach(function(encDef) {
@@ -79,21 +79,21 @@ data.raw.formatParse = function(encoding) {
 };
 
 /**
- * Generate Vega transforms for the raw data table.  This can include
+ * Generate Vega transforms for the source data table.  This can include
  * transforms for time unit, binning and filtering.
  */
-data.raw.transform = function(encoding) {
+data.source.transform = function(encoding) {
   // null filter comes first so transforms are not performed on null values
   // time and bin should come before filter so we can filter by time and bin
-  return data.raw.transform.nullFilter(encoding).concat(
-    data.raw.transform.formula(encoding),
-    data.raw.transform.time(encoding),
-    data.raw.transform.bin(encoding),
-    data.raw.transform.filter(encoding)
+  return data.source.transform.nullFilter(encoding).concat(
+    data.source.transform.formula(encoding),
+    data.source.transform.time(encoding),
+    data.source.transform.bin(encoding),
+    data.source.transform.filter(encoding)
   );
 };
 
-data.raw.transform.time = function(encoding) {
+data.source.transform.time = function(encoding) {
   return encoding.reduce(function(transform, encDef, encType) {
     if (encDef.type === T && encDef.timeUnit) {
       var fieldRef = encoding.fieldRef(encType, {nofn: true, datum: true});
@@ -108,7 +108,7 @@ data.raw.transform.time = function(encoding) {
   }, []);
 };
 
-data.raw.transform.bin = function(encoding) {
+data.source.transform.bin = function(encoding) {
   return encoding.reduce(function(transform, encDef, encType) {
     if (encoding.bin(encType)) {
       transform.push({
@@ -134,7 +134,7 @@ data.raw.transform.bin = function(encoding) {
 /**
  * @return {Array} An array that might contain a filter transform for filtering null value based on filterNul config
  */
-data.raw.transform.nullFilter = function(encoding) {
+data.source.transform.nullFilter = function(encoding) {
   var filteredFields = util.reduce(encoding.fields(),
     function(filteredFields, fieldList, fieldName) {
       if (fieldName === '*') return filteredFields; //count
@@ -158,7 +158,7 @@ data.raw.transform.nullFilter = function(encoding) {
     }] : [];
 };
 
-data.raw.transform.filter = function(encoding) {
+data.source.transform.filter = function(encoding) {
   var filter = encoding.data().filter;
   return filter ? [{
       type: 'filter',
@@ -166,7 +166,7 @@ data.raw.transform.filter = function(encoding) {
   }] : [];
 };
 
-data.raw.transform.formula = function(encoding) {
+data.source.transform.formula = function(encoding) {
   var formulas = encoding.data().formulas;
   if (formulas === undefined) {
     return [];
@@ -223,7 +223,7 @@ data.aggregate = function(encoding) {
   if (hasAggregate) {
     return {
       name: AGGREGATE,
-      source: RAW,
+      source: SOURCE,
       transform: [{
         type: 'aggregate',
         groupby: groupby,
