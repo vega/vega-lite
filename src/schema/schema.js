@@ -628,7 +628,7 @@ var data = {
     // data source
     formatType: {
       type: 'string',
-      enum: ['json', 'csv'],
+      enum: ['json', 'csv', 'tsv'],
       default: 'json'
     },
     url: {
