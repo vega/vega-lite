@@ -64,7 +64,10 @@ describe('vl.compile.scale', function() {
             }
           }), 'y', 'ordinal', {origin: {min: -5, max:48}}, {});
 
-          expect(domain).to.eql([-5, 0, 5, 10, 15, 20, 25, 30, 35, 40, 45]);
+          expect(domain).to.eql({
+            data: SOURCE,
+            field: ['bin_origin_start', 'bin_origin_end']
+          });
         });
 
       it('should return the raw domain if useRawDomain is true for non-bin, non-sum Q',
@@ -80,7 +83,7 @@ describe('vl.compile.scale', function() {
             }
           }), 'y', 'linear', {}, {});
 
-          expect(domain.data).to.eql(RAW);
+          expect(domain.data).to.eql(SOURCE);
         });
 
       it('should return the aggregate domain for sum Q',
@@ -96,7 +99,7 @@ describe('vl.compile.scale', function() {
             }
           }), 'y', 'linear', {}, {});
 
-          expect(domain.data).to.eql(AGGREGATE);
+          expect(domain.data).to.eql(SUMMARY);
         });
 
 
@@ -112,7 +115,7 @@ describe('vl.compile.scale', function() {
             }
           }), 'y', 'linear', {}, {});
 
-          expect(domain.data).to.eql(AGGREGATE);
+          expect(domain.data).to.eql(SUMMARY);
         });
     });
 
@@ -129,7 +132,7 @@ describe('vl.compile.scale', function() {
             }
           }), 'y', 'time', {}, {});
 
-          expect(domain.data).to.eql(RAW);
+          expect(domain.data).to.eql(SOURCE);
         });
 
       it('should return the raw domain if useRawDomain is true for year T',
@@ -145,7 +148,7 @@ describe('vl.compile.scale', function() {
             }
           }), 'y', 'ordinal', {}, {});
 
-          expect(domain.data).to.eql(RAW);
+          expect(domain.data).to.eql(SOURCE);
           expect(domain.field.indexOf('year')).to.gt(-1);
         });
 
@@ -177,7 +180,7 @@ describe('vl.compile.scale', function() {
 
         expect(vlscale.domain(encoding, 'y', 'ordinal'))
           .to.eql({
-            data: RAW,
+            data: SOURCE,
             field: 'origin',
             sort: sortDef
           });
@@ -192,7 +195,7 @@ describe('vl.compile.scale', function() {
 
         expect(vlscale.domain(encoding, 'y', 'ordinal'))
           .to.eql({
-            data: RAW,
+            data: SOURCE,
             field: 'origin',
             sort: true
           });

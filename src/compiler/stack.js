@@ -12,8 +12,23 @@ function stacking(encoding, mdef, stack) {
   var startField = valName + '_start';
   var endField = valName + '_end';
 
+  var transforms = [];
+
+  if (encoding.marktype() === 'area') {
+    // Add impute transform to ensure we have all values for each series
+    transforms.push({
+      type: 'impute',
+      field: encoding.fieldRef(field),
+      groupby: [encoding.fieldRef(stack.stack)],
+      orderby: [encoding.fieldRef(groupby)],
+      method: 'value',
+      value: 0
+    });
+  }
+
+
   // add stack transform to mark
-  var transform = {
+  var stackTransform = {
     type: 'stack',
     groupby: [encoding.fieldRef(groupby)],
     field: encoding.fieldRef(field),
@@ -22,10 +37,12 @@ function stacking(encoding, mdef, stack) {
   };
 
   if (stack.properties.offset) {
-    transform.offset = stack.properties.offset;
+    stackTransform.offset = stack.properties.offset;
   }
 
-  mdef.from.transform = [transform];
+  transforms.push(stackTransform)
+
+  mdef.from.transform = transforms;
 
   // TODO(#276): This is super hack-ish -- consolidate into modular mark properties?
   mdef.properties.update[field] = mdef.properties.enter[field] = {
