@@ -99,7 +99,7 @@ describe('vl.compile.scale', function() {
             }
           }), 'y', 'linear', {}, {});
 
-          expect(domain.data).to.eql(AGGREGATE);
+          expect(domain.data).to.eql(SUMMARY);
         });
 
 
@@ -115,7 +115,7 @@ describe('vl.compile.scale', function() {
             }
           }), 'y', 'linear', {}, {});
 
-          expect(domain.data).to.eql(AGGREGATE);
+          expect(domain.data).to.eql(SUMMARY);
         });
     });
 

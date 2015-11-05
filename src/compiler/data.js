@@ -222,7 +222,7 @@ data.aggregate = function(encoding) {
 
   if (hasAggregate) {
     return {
-      name: AGGREGATE,
+      name: SUMMARY,
       source: SOURCE,
       transform: [{
         type: 'aggregate',
