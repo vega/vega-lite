@@ -20,9 +20,9 @@ var vlEncDef = require('../encdef'),
 function data(encoding) {
   var def = [data.source(encoding)];
 
-  var aggregate = data.aggregate(encoding);
+  var aggregate = data.summary(encoding);
   if (aggregate) {
-    def.push(data.aggregate(encoding));
+    def.push(data.summary(encoding));
   }
 
   // TODO add "having" filter here
@@ -179,7 +179,7 @@ data.source.transform.formula = function(encoding) {
   }, []);
 };
 
-data.aggregate = function(encoding) {
+data.summary = function(encoding) {
   /* dict set for dimensions */
   var dims = {};
 

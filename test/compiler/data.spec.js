@@ -194,7 +194,7 @@ describe('data.source', function() {
 });
 
 
-describe('data.aggregated', function () {
+describe('data.summary', function () {
   it('should return correct aggregation', function() {
     var encoding = Encoding.fromSpec({
         encoding: {
@@ -211,7 +211,7 @@ describe('data.aggregated', function () {
         }
       });
 
-    var aggregated = data.aggregate(encoding);
+    var aggregated = data.summary(encoding);
     expect(aggregated ).to.eql({
       "name": SUMMARY,
       "source": "source",
