@@ -1,39 +1,39 @@
-Vega-lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications.
+Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications.
 
-Vega-lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as position (x,y), size, color and shape. These mappings are then translated into full visualization specifications using the Vega visualization grammar. These resulting visualizations can then be exported or further modified to customize the display.
+Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as position (x,y), size, color and shape. These mappings are then translated into full visualization specifications using the Vega visualization grammar. These resulting visualizations can then be exported or further modified to customize the display.
 
-This documentation outlines the syntax of Vega-lite specification, and how to
-embed Vega-lite visualizations in your applications.
+This documentation outlines the syntax of Vega-Lite specification, and how to
+embed Vega-Lite visualizations in your applications.
 
-## Vega-lite Specification
+## Vega-Lite Specification
 
-A Vega-lite specification is a JSON object that describes a
+A Vega-Lite specification is a JSON object that describes a
 single data source (`data`), a mark type (`marktype`), key-value
 visual encodings of data variables (`encoding`), and data transformations.
 
-Vega-lite assumes a tabular data model: each data source is a set of records,
+Vega-Lite assumes a tabular data model: each data source is a set of records,
 where each record has values for the same set of variables.
 
-In the current version, Vega-lite specification<sup>1</sup> is a JSON object
+In the current version, Vega-Lite specification<sup>1</sup> is a JSON object
 that contains the following top-level properties:
 
 | Property             | Type          | Description    |
 | :------------        |:-------------:| :------------- |
 | [data](Data)         | Object        | An object describing data source |
-| marktype             | String        | The mark type.  Currently Vega-lite supports `bar`, `line`, `area`, `point`, and `text` (text table). |
+| marktype             | String        | The mark type.  Currently Vega-Lite supports `bar`, `line`, `area`, `point`, and `text` (text table). |
 | [encoding](Encoding Mapping)| Object        | key-value mapping between encoding channels and encoding object |
 | config   | Object        | Configuration object.  (__Documentation Coming Soon__ -- for now please see [config json schema in schema.js](https://github.com/uwdata/vega-lite/blob/master/src/schema/schema.js#L573)) |
 
 <sup>1</sup>
-Vega-lite is currently an alpha software.  The specification syntax is subject
+Vega-Lite is currently an alpha software.  The specification syntax is subject
 to change and will become more stable once we reach 1.0. See our  [[Roadmap]]
 page for our development plan.  We also note in this documentation that are
 likely to change are annotated with  __"Pending Revision"__ notes.
 
-## Using Vega-lite
+## Using Vega-Lite
 
 Here is the bare minimum html file to get vega-lite working in a webpage.
-Basically, Vega-lite compiles a Vega-lite specification into a Vega
+Basically, Vega-Lite compiles a Vega-Lite specification into a Vega
 specification and use Vega Runtime to display visualizations.
 
 ```html
@@ -75,4 +75,4 @@ parse(vgspec);
 ```
 
 __Pending Revision__:
-Vega-lite Compile API is under revision.  A better tutorial is coming soon.
+Vega-Lite Compile API is under revision.  A better tutorial is coming soon.

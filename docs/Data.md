@@ -1,12 +1,12 @@
 # Data
 
-Data in Vega-lite can be specified in the `data` property definition.
+Data in Vega-Lite can be specified in the `data` property definition.
 
 Akin to [Vega](/vega/vega)'s [data model](vega/vega/wiki/Data), the basic data model used by Vega is _tabular_ data, similar to a spreadsheet or database table. Individual data sets are assumed to contain a collection of records (or "rows"), which may contain any number of named data attributes (variables, or "columns").
 
 ## Data Source
 
-Vega-lite currently supports single data source.  The data set can be specified either through including the data inline or providing a URL from which to load the data.
+Vega-Lite currently supports single data source.  The data set can be specified either through including the data inline or providing a URL from which to load the data.
 
 ### Inline Data
 

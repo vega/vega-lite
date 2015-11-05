@@ -1,4 +1,4 @@
-Vega-lite's top-level `encoding` property is a key-value mapping between
+Vega-Lite's top-level `encoding` property is a key-value mapping between
 encoding channels (`x`,`y`, `row`, `col`, `color`, `size`, `shape`, `text`,
 `detail`) and encoding definitions.
 
@@ -56,7 +56,7 @@ A quantitative field's `bin` property object contains the following properties:
 | :------------ |:-------------:| :------------- |
 | maxbins       | Integer       | The maximum number of allowable bins.  See [Datalib's binning documentation](https://github.com/vega/datalib/wiki/Statistics#dl_bins) for more information |
 
-__Pending Revision__: We are revising how binning should be specified in Vega-lite and properties for binning.  Other properties in [Datalib's binning ](https://github.com/vega/datalib/wiki/Statistics#dl_bins) such as `min`, `max`, `maxbins`, `step`, `steps`, `minstep`, `div` will be added once this is revised.
+__Pending Revision__: We are revising how binning should be specified in Vega-Lite and properties for binning.  Other properties in [Datalib's binning ](https://github.com/vega/datalib/wiki/Statistics#dl_bins) such as `min`, `max`, `maxbins`, `step`, `steps`, `minstep`, `div` will be added once this is revised.
 
 ## timeUnit
 
@@ -68,7 +68,7 @@ __Pending Revision__: Time Unit Conversion might be consolidated with "calculate
 
 ## aggregate
 
-Vega-lite supports all [Vega aggregation operations](https://github.com/vega/vega/wiki/Data-Transforms#-aggregate) (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).
+Vega-Lite supports all [Vega aggregation operations](https://github.com/vega/vega/wiki/Data-Transforms#-aggregate) (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).
 
 If at least one of the specified encoding channel contains aggregation, a summary data table (`aggregate`) will be computed from the source data table (after binning and time unit have been derived) and the resulting visualization shows data from this summary table.  In this case, all fields without aggregation function specified are treated as dimensions.  The summary statistics are grouped by these dimensions.
 
@@ -76,7 +76,7 @@ If none of the specified encoding channel contains aggregation, no additional da
 
 ## scale
 
-Vega-lite's `scale` object supports the following Vega scale properties:
+Vega-Lite's `scale` object supports the following Vega scale properties:
 
 - [Common Scale Properties](https://github.com/vega/vega/wiki/Scales#common-scale-properties)__<sup>1</sup>__:
 `type`__<sup>2</sup>__, `domain`, `range`, and `round`.
@@ -92,7 +92,7 @@ Vega-lite's `scale` object supports the following Vega scale properties:
 
 See [Vega's documentation](https://github.com/vega/vega/wiki/Scales#common-scale-properties) for more information about these properties.
 
-Moreover, Vega-lite has the following additional scale properties:
+Moreover, Vega-Lite has the following additional scale properties:
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
@@ -100,11 +100,11 @@ Moreover, Vega-lite has the following additional scale properties:
 
 __TODO: document default behavior for each properties__
 
-__<sup>1</sup>__ `reverse` is excluded from Vega-lite's `scale` to avoid conflicting with `sort` property.  Please use `sort='descending'` instead.
+__<sup>1</sup>__ `reverse` is excluded from Vega-Lite's `scale` to avoid conflicting with `sort` property.  Please use `sort='descending'` instead.
 
 
 __<sup>2</sup>__
-Vega-lite automatically determines scale's `type` based on the field's data type.
+Vega-Lite automatically determines scale's `type` based on the field's data type.
 By default, scales of nominal and ordinal fields are ordinal scales.
 Scales of time fields are time scales if time unit conversion is not applied.
 Scales of quantitative fields are linear scales by default, but users can specify `type` property to use other types of quantitative scale.
@@ -113,11 +113,11 @@ Scales of quantitative fields are linear scales by default, but users can specif
 
 ## axis
 
-Vega-lite's `axis` object supports the following [Vega axis properties](https://github.com/vega/vega/wiki/Axes#axis-properties):
+Vega-Lite's `axis` object supports the following [Vega axis properties](https://github.com/vega/vega/wiki/Axes#axis-properties):
 `format`, `grid`<sup>1</sup>, `layer`, `orient`, `ticks`, `title` <sup>2</sup>, and `titleOffset`<sup>3,4</sup>.
 See [Vega documentation](https://github.com/vega/vega/wiki/Axes#axis-properties) for more information.
 
-Moreover, Vega-lite supports the following additional axis properties.
+Moreover, Vega-Lite supports the following additional axis properties.
 
 | Property        | Type          | Description    |
 | :------------   |:-------------:| :------------- |
