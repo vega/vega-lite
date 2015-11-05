@@ -51,15 +51,15 @@
     "gulp-uglify": "^1.4.2",
     "gulp-util": "^3.0.7",
     "jshint-stylish": "^2.0.1",
+    "jstransform": "^11.0.3",
     "lodash": "^3.10.1",
     "mocha": "^2.3.3",
     "require-dir": "^0.3.0",
+    "through": "^2.3.8",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "~3.4.0",
-    "z-schema": "^3.15.4",
-    "jstransform": "^11.0.3",
-    "through": "^2.3.8"
+    "z-schema": "^3.15.4"
   },
   "dependencies": {
     "colorbrewer": "0.0.2",
@@ -72,7 +72,8 @@
   },
   "browserify": {
     "transform": [
-      "browserify-shim"
+      "browserify-shim",
+      "browserify-versionify"
     ]
   },
   "browserify-shim": {}
