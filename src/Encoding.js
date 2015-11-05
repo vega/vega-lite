@@ -266,7 +266,7 @@ module.exports = (function() {
   };
 
   Encoding.alwaysNoOcclusion = function(spec) {
-    // FIXME source OxQ with # of rows = # of O
+    // FIXME raw OxQ with # of rows = # of O
     return vlenc.isAggregate(spec.encoding);
   };
 
