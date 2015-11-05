@@ -219,7 +219,7 @@ var EXAMPLES = [
       'encoding': {
         'x': {'name': 'Worldwide_Gross','type': 'Q'},
         'y': {'name': 'US_DVD_Sales','type': 'Q'},
-        'col': {'axis': {'maxLabelLength': 25},'name': 'MPAA_Rating','type': 'O'}
+        'col': {'name': 'MPAA_Rating','type': 'O'}
       },
       'data': {'url': 'data/movies.json'}
     }

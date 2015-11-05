@@ -121,7 +121,7 @@ Moreover, Vega-lite supports the following additional axis properties.
 
 | Property        | Type          | Description    |
 | :------------   |:-------------:| :------------- |
-| maxLabelLength  | Integer       | Max length for axis labels. Longer labels are truncated. (25 by default.) |
+| labelMaxLength  | Integer       | Max length for axis labels. Longer labels are truncated. (25 by default.) |
 | labelAngle      | Integer       | Angle by which to rotate labels. Set to 0 to force horizontal.   |
 | titleMaxLength  | Integer       | Max length for axis title when the title is automatically generated from the field\'s description.  If the   |
 | titleOffset     | Integer       | Offset between the axis title and the axis.  |
