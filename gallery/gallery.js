@@ -1,6 +1,6 @@
 'use strict';
 
-/*global vl, d3, vg, angular, alert, validateVl, validateVg, EXAMPLES */
+/*global vl, d3, vg, angular, alert, EXAMPLES */
 
 
 var app = angular.module('app', []);
@@ -28,9 +28,7 @@ app.directive('vlPlot', function() {
       var vlElement = element[0];
 
       var callback = function(stats) {
-        validateVl(scope.vlSpec);
         var spec = vl.compile(scope.vlSpec, stats);
-        validateVg(spec);
 
         vg.parse.spec(spec, function(chart) {
           var view = chart({el: vlElement, renderer: 'svg'});
