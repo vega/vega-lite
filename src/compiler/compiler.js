@@ -54,8 +54,6 @@ compiler.compileEncoding = function (encoding, stats) {
       height: layout.height,
       padding: 'auto',
       data: compiler.data(encoding),
-      // global scales contains only time unit scales
-      scales: compiler.time.scales(encoding),
       marks: [{
         name: 'cell',
         type: 'group',
@@ -71,6 +69,12 @@ compiler.compileEncoding = function (encoding, stats) {
         }
       }]
     };
+
+  // global scales contains only time unit scales
+  var timeScales = compiler.time.scales(encoding);
+  if (timeScales.length > 0) {
+    output.scales = timeScales;
+  }
 
   var group = output.marks[0];
 
@@ -110,21 +114,31 @@ compiler.compileEncoding = function (encoding, stats) {
     return scale.names(markProps.properties.update);
   }));
 
+  var legends = legend.defs(encoding, style);
+
   // Small Multiples
   if (encoding.has(ROW) || encoding.has(COL)) {
     output = compiler.facet(group, encoding, layout, output, singleScaleNames, stats);
-    output.legends = legend.defs(encoding, style);
+    if (legends) {
+      output.legends = legends;
+    }
   } else {
     group.scales = scale.defs(singleScaleNames, encoding, layout, stats);
-    group.axes = [];
+
+    var axes = [];
     if (encoding.has(X)) {
-      group.axes.push(axis.def(X, encoding, layout, stats));
+      axes.push(axis.def(X, encoding, layout, stats));
     }
     if (encoding.has(Y)) {
-      group.axes.push(axis.def(Y, encoding, layout, stats));
+      axes.push(axis.def(Y, encoding, layout, stats));
+    }
+    if (axes) {
+      group.axes = axes;
     }
 
-    group.legends = legend.defs(encoding, style);
+    if (legends) {
+      group.legends = legends;
+    }
   }
 
   return output;
