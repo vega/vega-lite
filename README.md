@@ -14,7 +14,7 @@ Vega-Lite specifications consist of simple mappings of variables in a data set t
 If you are using Vega-Lite for your project(s), please let us know by emailing us at [Vega-Lite \[at\] cs.washington.edu](mailto:vega-lite@cs.washington.edu).  Feedback is also welcome.
 If you find a bug or have a feature request, please [create an issue](https://github.com/vega/vega-lite/issues/new).
 
-__Try using Vega-lite in the online [Vega Editor](http://vega.github.io/vega-editor/?mode=vega-lite)__. 
+__Try using Vega-Lite in the online [Vega Editor](http://vega.github.io/vega-editor/?mode=vega-lite)__.
 
 The complete schema for specifications as [JSON schema](http://json-schema.org/) is at [vega-lite-schema.json](https://vega.github.io/vega-lite/vega-lite-schema.json).
 
@@ -75,7 +75,7 @@ npm install
 
 ### Commands
 
-You can run `npm run build` to compile vega-lite or run `npm start` to open the live vega-lite editor.
+You can run `npm run build` to compile Vega-Lite or run `npm start` to open the live vega-lite editor.
 
 You can `npm run watch` to start a watcher task that regenerate the `vega-lite-schema.json` file whenever `schema.js` changes, and lints and tests all JS files when any `.js` file in `test/` or `src/` changes.
 
