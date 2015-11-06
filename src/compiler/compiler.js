@@ -119,7 +119,7 @@ compiler.compileEncoding = function (encoding, stats) {
   // Small Multiples
   if (encoding.has(ROW) || encoding.has(COL)) {
     output = compiler.facet(group, encoding, layout, output, singleScaleNames, stats);
-    if (legends) {
+    if (legends.length > 0) {
       output.legends = legends;
     }
   } else {
@@ -132,11 +132,11 @@ compiler.compileEncoding = function (encoding, stats) {
     if (encoding.has(Y)) {
       axes.push(axis.def(Y, encoding, layout, stats));
     }
-    if (axes) {
+    if (axes.length > 0) {
       group.axes = axes;
     }
 
-    if (legends) {
+    if (legends.length > 0) {
       group.legends = legends;
     }
   }
