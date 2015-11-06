@@ -8,6 +8,7 @@ var app = angular.module('app', []);
 app.controller('GalleryCtrl', function ($scope) {
   $scope.visualizations = EXAMPLES;
   $scope.vegaVersion = vg.version;
+  $scope.vlVersion = vl.version;
 });
 
 app.filter('compactJSON', function() {

@@ -27,5 +27,10 @@
   ],
   "dependencies": {
     "datalib": "^1.3.0"
+  },
+  "devDependencies": {
+    "vega": "^2.3.0",
+    "angular": "^1.4.3",
+    "z-schema": "~3.16.0"
   }
 }

@@ -27,7 +27,7 @@ var validateVg = function(vgspec) {
   if (vgSchema) {
     callback();
   } else {
-    d3.json('gallery/bower_components/vega/vega-schema.json', function(error, json) {
+    d3.json('bower_components/vega/vega-schema.json', function(error, json) {
       if (error) return console.warn(error);
       vgSchema = json;
       callback();
