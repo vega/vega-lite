@@ -10,7 +10,7 @@ var consts = require('./consts'),
   util = require('./util'),
   schema = require('./schema/schema');
 
-var vlfield = module.exports = {};
+var vlEncDef = module.exports = {};
 
 /**
  * @param field
@@ -24,13 +24,13 @@ var vlfield = module.exports = {};
 
  * @return {[type]}       [description]
  */
-vlfield.fieldRef = function(field, opt) {
+vlEncDef.fieldRef = function(field, opt) {
   opt = opt || {};
 
   var f = (opt.datum ? 'datum.' : '') + (opt.prefn || ''),
     name = field.name;
 
-  if (vlfield.isCount(field)) {
+  if (vlEncDef.isCount(field)) {
     return f + 'count';
   } else if (opt.fn) {
     return f + opt.fn + '_' + name;
@@ -46,7 +46,7 @@ vlfield.fieldRef = function(field, opt) {
   }
 };
 
-vlfield.shorthand = function(f) {
+vlEncDef.shorthand = function(f) {
   var c = consts.shorthand;
   return (f.aggregate ? f.aggregate + c.func : '') +
     (f.timeUnit ? f.timeUnit + c.func : '') +
@@ -54,12 +54,12 @@ vlfield.shorthand = function(f) {
     (f.name || '') + c.type + f.type;
 };
 
-vlfield.shorthands = function(fields, delim) {
+vlEncDef.shorthands = function(fields, delim) {
   delim = delim || c.delim;
-  return fields.map(vlfield.shorthand).join(delim);
+  return fields.map(vlEncDef.shorthand).join(delim);
 };
 
-vlfield.fromShorthand = function(shorthand) {
+vlEncDef.fromShorthand = function(shorthand) {
   var split = shorthand.split(c.type), i;
   var o = {
     name: split[0].trim(),
@@ -96,11 +96,11 @@ vlfield.fromShorthand = function(shorthand) {
   return o;
 };
 
-var isType = vlfield.isType = function (fieldDef, type) {
+var isType = vlEncDef.isType = function (fieldDef, type) {
   return fieldDef.type === type;
 };
 
-var isTypes = vlfield.isTypes = function (fieldDef, types) {
+var isTypes = vlEncDef.isTypes = function (fieldDef, types) {
   for (var t=0; t<types.length; t++) {
     if(fieldDef.type === types[t]) return true;
   }
@@ -111,7 +111,7 @@ var isTypes = vlfield.isTypes = function (fieldDef, types) {
  * Most fields that use ordinal scale are dimensions.
  * However, YEAR(T), YEARMONTH(T) use time scale, not ordinal but are dimensions too.
  */
-vlfield.isOrdinalScale = function(field) {
+vlEncDef.isOrdinalScale = function(field) {
   return  isTypes(field, [N, O]) ||
     ( isType(field, T) && field.timeUnit && time.isOrdinalFn(field.timeUnit) );
 };
@@ -126,21 +126,21 @@ function isDimension(field) {
  * Or use Encoding.isType if your field is from Encoding (and thus have numeric data type).
  * otherwise, do not specific isType so we can use the default isTypeName here.
  */
-vlfield.isDimension = function(field) {
+vlEncDef.isDimension = function(field) {
   return field && isDimension(field);
 };
 
-vlfield.isMeasure = function(field) {
+vlEncDef.isMeasure = function(field) {
   return field && !isDimension(field);
 };
 
-vlfield.count = function() {
-  return {name:'*', aggregate: 'count', type: Q, displayName: vlfield.count.displayName};
+vlEncDef.count = function() {
+  return {name:'*', aggregate: 'count', type: Q, displayName: vlEncDef.count.displayName};
 };
 
-vlfield.count.displayName = 'Number of Records';
+vlEncDef.count.displayName = 'Number of Records';
 
-vlfield.isCount = function(field) {
+vlEncDef.isCount = function(field) {
   return field.aggregate === 'count';
 };
 
@@ -148,7 +148,7 @@ vlfield.isCount = function(field) {
  * For encoding, use encoding.cardinality() to avoid confusion.  Or use Encoding.isType if your field is from Encoding (and thus have numeric data type).
  * otherwise, do not specific isType so we can use the default isTypeName here.
  */
-vlfield.cardinality = function(field, stats, filterNull) {
+vlEncDef.cardinality = function(field, stats, filterNull) {
   // FIXME need to take filter into account
 
   var stat = stats[field.name];
