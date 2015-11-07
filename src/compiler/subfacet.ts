@@ -1,4 +1,4 @@
-export function subfaceting(group, mdef, details) {
+export function def(group, mdef, details) {
   var m = group.marks;
   var g = {
     name: 'subfacet',

@@ -21,6 +21,11 @@
     ],
     "files": [
         "colorbrewer.d.ts",
+        "compiler/axis.ts",
+        "compiler/compiler.ts",
+        "compiler/data.ts",
+        "compiler/facet.ts",
+        "compiler/layout.ts",
         "compiler/legend.ts",
         "compiler/marks.ts",
         "compiler/scale.ts",

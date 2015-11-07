@@ -14,7 +14,7 @@ export function names(props) {
   }, {}));
 };
 
-export function defs(names, encoding, layout, stats, facet) {
+export function defs(names, encoding, layout, stats, facet?) {
   return names.reduce(function(a, name) {
     var scaleDef = {
       name: name,
@@ -30,8 +30,7 @@ export function defs(names, encoding, layout, stats, facet) {
       ];
 
     properties.forEach(function(property) {
-      // TODO: check if this works
-      var value = this[property](encoding, name, type, layout, stats);
+      var value = module[property](encoding, name, scaleDef.type, layout, stats);
       if (value !== undefined) {
         scaleDef[property] = value;
       }

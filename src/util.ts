@@ -19,7 +19,7 @@ export function forEach(obj, f, thisArg) {
   }
 };
 
-export function reduce(obj, f, init, thisArg) {
+export function reduce(obj, f, init, thisArg?) {
   if (obj.reduce) {
     return obj.reduce.call(thisArg, f, init);
   } else {
@@ -70,7 +70,7 @@ export function getbins(stats, maxbins) {
  * @param noaugment determine whether new object should be added f
  * or non-existing properties along the path
  */
-export function setter(x, p, val, noaugment) {
+export function setter(x, p, val, noaugment = false) {
   for (var i=0; i<p.length-1; ++i) {
     if (!noaugment && !(p[i] in x)){
       x = x[p[i]] = {};
@@ -86,7 +86,7 @@ export function setter(x, p, val, noaugment) {
  * @param augment determine whether new object should be added f
  * or non-existing properties along the path
  */
-export function getter(x, p, noaugment) {
+export function getter(x, p, noaugment = false) {
   for (var i=0; i<p.length; ++i) {
     if (!noaugment && !(p[i] in x)){
       x = x[p[i]] = {};

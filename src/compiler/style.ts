@@ -1,6 +1,6 @@
 import * as vlEncDef from '../encdef';
 
-export function style(encoding, stats) {
+export function def(encoding, stats) {
   return {
     opacity: estimateOpacity(encoding, stats),
   };

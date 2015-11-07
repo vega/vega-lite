@@ -1,4 +1,4 @@
-export function stacking(encoding, mdef, stack) {
+export function def(encoding, mdef, stack) {
   var groupby = stack.groupby;
   var field = stack.value;
 

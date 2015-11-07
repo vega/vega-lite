@@ -5,6 +5,7 @@ declare module "datalib/src/util" {
   export function isArray(a);
   export function range(a, b?);
   export function vals(a);
+  export function truncate(a:string, length: number);
 }
 
 declare module "datalib/src/generate" {
