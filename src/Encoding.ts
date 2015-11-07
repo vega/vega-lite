@@ -1,31 +1,31 @@
-'use strict';
+import schema = require('./schema/schema')
 
-require('./globals');
+import * as consts from './consts';
+import * as util from './util';
+import * as vlEncDef from './encdef';
+import * as vlEnc from './enc';
 
-var consts = require('./consts'),
-  util = require('./util'),
-  vlEncDef = require('./encdef'),
-  vlenc = require('./enc'),
-  schema = require('./schema/schema');
+export class Encoding {
+  _data: any;
+  _marktype: any;
+  _enc: any;
+  _config: any;
 
-module.exports = (function() {
-  function Encoding(spec, theme) {
-    var defaults = schema.instantiate(),
-      specExtended = schema.util.merge(defaults, theme || {}, spec) ;
+  constructor(spec: any, theme: any) {
+    var defaults = schema.instantiate();
+    var specExtended = schema.util.merge(defaults, theme || {}, spec);
 
     this._data = specExtended.data;
     this._marktype = specExtended.marktype;
     this._enc = specExtended.encoding;
     this._config = specExtended.config;
-  }
+  };
 
-  var proto = Encoding.prototype;
-
-  Encoding.fromShorthand = function(shorthand, data, config, theme) {
+  static fromShorthand(shorthand, data, config, theme?): Encoding {
     var c = consts.shorthand,
         split = shorthand.split(c.delim),
         marktype = split.shift().split(c.assign)[1].trim(),
-        enc = vlenc.fromShorthand(split);
+        enc = vlEnc.fromShorthand(split);
 
     return new Encoding({
       data: data,
@@ -33,29 +33,29 @@ module.exports = (function() {
       encoding: enc,
       config: config
     }, theme);
-  };
+  }
 
-  Encoding.fromSpec = function(spec, theme) {
+  static fromSpec(spec, theme) {
     return new Encoding(spec, theme);
   };
 
-  proto.toShorthand = function() {
+  toShorthand() {
     var c = consts.shorthand;
     return 'mark' + c.assign + this._marktype +
-      c.delim + vlenc.shorthand(this._enc);
+      c.delim + vlEnc.shorthand(this._enc);
   };
 
-  Encoding.shorthand = function (spec) {
+  static shorthand (spec) {
     var c = consts.shorthand;
     return 'mark' + c.assign + spec.marktype +
-      c.delim + vlenc.shorthand(spec.encoding);
+      c.delim + vlEnc.shorthand(spec.encoding);
   };
 
-  Encoding.specFromShorthand = function(shorthand, data, config, excludeConfig) {
+  static specFromShorthand(shorthand, data, config, excludeConfig) {
     return Encoding.fromShorthand(shorthand, data, config).toSpec(excludeConfig);
   };
 
-  proto.toSpec = function(excludeConfig, excludeData) {
+  toSpec(excludeConfig, excludeData) {
     var enc = util.duplicate(this._enc),
       spec;
 
@@ -77,26 +77,25 @@ module.exports = (function() {
     return schema.util.subtract(spec, defaults);
   };
 
-
-  proto.marktype = function() {
+  marktype() {
     return this._marktype;
   };
 
-  proto.is = function(m) {
+  is(m) {
     return this._marktype === m;
   };
 
-  proto.has = function(encType) {
+  has(encType) {
     // equivalent to calling vlenc.has(this._enc, encType)
     return this._enc[encType].name !== undefined;
   };
 
-  proto.encDef = function(et) {
+  encDef(et) {
     return this._enc[et];
   };
 
   // get "field" reference for vega
-  proto.fieldRef = function(et, opt) {
+  fieldRef(et, opt?) {
     opt = opt || {};
     return vlEncDef.fieldRef(this._enc[et], opt);
   };
@@ -104,13 +103,13 @@ module.exports = (function() {
   /*
    * return key-value pairs of field name and list of fields of that field name
    */
-  proto.fields = function() {
-    return vlenc.fields(this._enc);
+  fields() {
+    return vlEnc.fields(this._enc);
   };
 
-  proto.fieldTitle = function(et) {
+  fieldTitle(et) {
     if (vlEncDef.isCount(this._enc[et])) {
-      return vlEncDef.count.displayName;
+      return vlEncDef.countDisplayName;
     }
     var fn = this._enc[et].aggregate || this._enc[et].timeUnit || (this._enc[et].bin && 'bin');
     if (fn) {
@@ -120,15 +119,15 @@ module.exports = (function() {
     }
   };
 
-  proto.scale = function(et) {
+  scale(et) {
     return this._enc[et].scale || {};
   };
 
-  proto.axis = function(et) {
+  axis(et) {
     return this._enc[et].axis || {};
   };
 
-  proto.bandWidth = function(encType, useSmallBand) {
+  bandWidth(encType, useSmallBand) {
     if (this.encDef(encType).scale.bandWidth !== undefined) {
       // explicit value
       return this.encDef(encType).scale.bandWidth;
@@ -144,7 +143,7 @@ module.exports = (function() {
     return this.config(useSmallBand ? 'smallBandWidth' : 'largeBandWidth');
   };
 
-  proto.padding = function(encType) {
+  padding(encType) {
     if (this.encDef(encType).scale.padding !== undefined) {
       // explicit value
       return this.encDef(encType).scale.padding;
@@ -156,7 +155,7 @@ module.exports = (function() {
   };
 
   // returns false if binning is disabled, otherwise an object with binning properties
-  proto.bin = function(et) {
+  bin(et) {
     var bin = this._enc[et].bin;
     if (bin === {})
       return false;
@@ -167,110 +166,85 @@ module.exports = (function() {
     return bin;
   };
 
-  proto.value = function(et) {
+  value(et) {
     return this._enc[et].value;
   };
 
-  proto.numberFormat = function(fieldStats) {
+  numberFormat(fieldStats) {
     var formatConfig = fieldStats.max > this.config('maxSmallNumber') ?
       'largeNumberFormat': 'smallNumberFormat';
     return this.config(formatConfig);
   };
 
-  proto.sort = function(et, stats) {
-    var sort = this._enc[et].sort,
-      enc = this._enc,
-      isTypes = vlEncDef.isTypes;
-
-    if ((!sort || sort.length===0) &&
-        // FIXME
-        Encoding.toggleSort.support({encoding:this._enc}, stats, true) && //HACK
-        this.config('toggleSort') === Q
-      ) {
-      var qField = isTypes(enc.x, [N, O]) ? enc.y : enc.x;
-
-      if (isTypes(enc[et], [N, O])) {
-        sort = [{
-          name: qField.name,
-          aggregate: qField.aggregate,
-          type: qField.type,
-          reverse: true
-        }];
-      }
-    }
-
-    return sort;
+  map(f) {
+    return vlEnc.map(this._enc, f);
   };
 
-  proto.map = function(f) {
-    return vlenc.map(this._enc, f);
+  reduce(f, init) {
+    return vlEnc.reduce(this._enc, f, init);
   };
 
-  proto.reduce = function(f, init) {
-    return vlenc.reduce(this._enc, f, init);
+  forEach(f) {
+    return vlEnc.forEach(this._enc, f);
   };
 
-  proto.forEach = function(f) {
-    return vlenc.forEach(this._enc, f);
-  };
-
-  proto.type = function(et) {
+  type(et) {
     return this.has(et) ? this._enc[et].type : null;
   };
 
-  proto.isType = function(et, type) {
+  isType(et, type) {
     var encDef = this.encDef(et);
     return encDef && vlEncDef.isType(encDef, type);
   };
 
 
-  proto.isTypes = function(et, type) {
+  isTypes(et, type) {
     var encDef = this.encDef(et);
     return encDef && vlEncDef.isTypes(encDef, type);
   };
 
-  Encoding.isOrdinalScale = function(encoding, encType) {
+  static isOrdinalScale(encoding, encType) {
     return vlEncDef.isOrdinalScale(encoding.encDef(encType));
   };
 
-  Encoding.isDimension = function(encoding, encType) {
+  static isDimension(encoding, encType) {
     return vlEncDef.isDimension(encoding.encDef(encType));
   };
 
-  Encoding.isMeasure = function(encoding, encType) {
+  static isMeasure(encoding, encType) {
     return vlEncDef.isMeasure(encoding.encDef(encType));
   };
 
-  proto.isOrdinalScale = function(encType) {
+  isOrdinalScale(encType) {
     return this.has(encType) && Encoding.isOrdinalScale(this, encType);
   };
 
-  proto.isDimension = function(encType) {
+  isDimension(encType) {
     return this.has(encType) && Encoding.isDimension(this, encType);
   };
 
-  proto.isMeasure = function(encType) {
+  isMeasure(encType) {
     return this.has(encType) && Encoding.isMeasure(this, encType);
   };
 
-  proto.isAggregate = function() {
-    return vlenc.isAggregate(this._enc);
+  isAggregate() {
+    return vlEnc.isAggregate(this._enc);
   };
 
-  proto.dataTable = function() {
+  dataTable() {
     return this.isAggregate() ? SUMMARY : SOURCE;
   };
 
-  Encoding.isAggregate = function(spec) {
-    return vlenc.isAggregate(spec.encoding);
+  static isAggregate(spec) {
+    return vlEnc.isAggregate(spec.encoding);
   };
 
-  Encoding.alwaysNoOcclusion = function(spec) {
+  static alwaysNoOcclusion(spec) {
     // FIXME raw OxQ with # of rows = # of O
-    return vlenc.isAggregate(spec.encoding);
+    return vlEnc.isAggregate(spec.encoding);
   };
 
-  Encoding.isStack = function(spec) {
+  static isStack(spec) {
     // FIXME update this once we have control for stack ...
     return (spec.marktype === 'bar' || spec.marktype === 'area') &&
       spec.encoding.color;
@@ -282,7 +256,7 @@ module.exports = (function() {
    * - dimension - the dimension field
    * - value - the value field
    */
-  proto.stack = function() {
+  stack() {
     var stack = (this.has(COLOR) && this.encDef(COLOR).stack) ? COLOR :
           (this.has(DETAIL) && this.encDef(DETAIL).stack) ? DETAIL :
           null;
@@ -317,7 +291,7 @@ module.exports = (function() {
 
 
 
-  proto.details = function() {
+  details() {
     var encoding = this;
     return this.reduce(function(refs, field, encType) {
       if (!field.aggregate && (encType !== X && encType !== Y)) {
@@ -327,7 +301,7 @@ module.exports = (function() {
     }, []);
   };
 
-  proto.facets = function() {
+  facets() {
     var encoding = this;
     return this.reduce(function(refs, field, encType) {
       if (!field.aggregate && (encType == ROW || encType == COL)) {
@@ -337,29 +311,29 @@ module.exports = (function() {
     }, []);
   };
 
-  proto.cardinality = function(encType, stats) {
+  cardinality(encType, stats) {
     return vlEncDef.cardinality(this.encDef(encType), stats, this.config('filterNull'));
   };
 
-  proto.isRaw = function() {
+  isRaw() {
     return !this.isAggregate();
   };
 
-  proto.data = function() {
+  data() {
     return this._data;
   };
 
    // returns whether the encoding has values embedded
-  proto.hasValues = function() {
+  hasValues() {
     var vals = this.data().values;
     return vals && vals.length;
   };
 
-  proto.config = function(name) {
+  config(name) {
     return this._config[name];
   };
 
-  Encoding.transpose = function(spec) {
+  static transpose(spec) {
     var oldenc = spec.encoding,
       enc = util.duplicate(spec.encoding);
     enc.x = oldenc.y;
@@ -369,6 +343,4 @@ module.exports = (function() {
     spec.encoding = enc;
     return spec;
   };
-
-  return Encoding;
-})();
+}
