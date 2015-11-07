@@ -1,10 +1,4 @@
-'use strict';
-
-require('../globals');
-
-module.exports = stacking;
-
-function stacking(encoding, mdef, stack) {
+export function stacking(encoding, mdef, stack) {
   var groupby = stack.groupby;
   var field = stack.value;
 
@@ -26,9 +20,17 @@ function stacking(encoding, mdef, stack) {
     });
   }
 
+  interface StackTransform {
+    type: string,
+    offset?: any,
+    groupby: any,
+    field: any,
+    sortby: any,
+    output: any
+  }
 
   // add stack transform to mark
-  var stackTransform = {
+  var stackTransform: StackTransform = {
     type: 'stack',
     groupby: [encoding.fieldRef(groupby)],
     field: encoding.fieldRef(field),
