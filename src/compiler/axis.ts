@@ -1,15 +1,8 @@
-'use strict';
+import {getter, setter} from '../util';
+import * as util from '../util';
+import * as time from './time';
 
-require('../globals');
-
-var util = require('../util'),
-  setter = util.setter,
-  getter = util.getter,
-  time = require('./time');
-
-var axis = module.exports = {};
-
-axis.def = function(name, encoding, layout, stats, opt) {
+export function def(name, encoding, layout, stats, opt?) {
   var isCol = name == COL,
     isRow = name == ROW,
     type = isCol ? 'x' : isRow ? 'y' : name;
@@ -23,45 +16,45 @@ axis.def = function(name, encoding, layout, stats, opt) {
     layer: encoding.encDef(name).axis.layer
   };
 
-  var orient = axis.orient(encoding, name, stats);
+  var orient = orient(encoding, name, stats);
   if (orient) {
     def.orient = orient;
   }
 
   // Add axis label custom scale (for bin / time)
-  def = axis.labels.scale(def, encoding, name);
-  def = axis.labels.format(def, encoding, name);
-  def = axis.labels.angle(def, encoding, name);
+  def = labels.scale(def, encoding, name);
+  def = labels.format(def, encoding, name);
+  def = labels.angle(def, encoding, name);
 
   // for x-axis, set ticks for Q or rotate scale for ordinal scale
   if (name == X) {
     if ((encoding.isDimension(X) || encoding.isType(X, T)) &&
         !('angle' in getter(def, ['properties', 'labels']))) {
       // TODO(kanitw): Jul 19, 2015 - #506 add condition for rotation
-      def = axis.labels.rotate(def);
+      def = labels.rotate(def);
     } else { // Q
       def.ticks = encoding.encDef(name).axis.ticks;
     }
   }
 
   // TitleOffset depends on labels rotation
-  def.titleOffset = axis.titleOffset(encoding, layout, name);
+  def.titleOffset = titleOffset(encoding, layout, name);
 
   //def.offset is used in axis.grid
-  if(isRow) def.offset = axis.titleOffset(encoding, layout, Y) + 20;
+  if(isRow) def.offset = titleOffset(encoding, layout, Y) + 20;
   // FIXME(kanitw): Jul 19, 2015 - offset for column when x is put on top
 
-  def = axis.grid(def, encoding, name, layout);
-  def = axis.title(def, encoding, name, layout, opt);
+  def = grid(def, encoding, name, layout);
+  def = title(def, encoding, name, layout);
 
   if (isRow || isCol) {
-    def = axis.hideTicks(def);
+    def = hideTicks(def);
   }
 
   return def;
 };
 
-axis.orient = function(encoding, name, stats) {
+export function orient(encoding, name, stats) {
   var orient = encoding.encDef(name).axis.orient;
   if (orient) {
     return orient;
@@ -74,7 +67,7 @@ axis.orient = function(encoding, name, stats) {
   return undefined;
 };
 
-axis.grid = function(def, encoding, name, layout) {
+export function grid(def, encoding, name, layout) {
   var cellPadding = layout.cellPadding,
     isCol = name == COL,
     isRow = name == ROW;
@@ -148,14 +141,14 @@ axis.grid = function(def, encoding, name, layout) {
   return def;
 };
 
-axis.hideTicks = function(def) {
+export function hideTicks(def) {
   def.properties.ticks = {opacity: {value: 0}};
   def.properties.majorTicks = {opacity: {value: 0}};
   def.properties.axis = {opacity: {value: 0}};
   return def;
 };
 
-axis.title = function (def, encoding, name, layout) {
+export function title(def, encoding, name, layout) {
   var ax = encoding.encDef(name).axis;
 
   if (ax.title) {
@@ -188,62 +181,64 @@ axis.title = function (def, encoding, name, layout) {
   return def;
 };
 
-axis.labels = {};
-
-/** add custom label for time type and bin */
-axis.labels.scale = function(def, encoding, name) {
-  // time
-  var timeUnit = encoding.encDef(name).timeUnit;
-  if (encoding.isType(name, T) && timeUnit && (time.hasScale(timeUnit))) {
-    setter(def, ['properties','labels','text','scale'], 'time-'+ timeUnit);
-  }
-  // FIXME bin
-  return def;
-};
-
-/**
- * Determine number format or truncate if maxLabel length is presented.
- */
-axis.labels.format = function (def, encoding, name) {
-  if (encoding.axis(name).format) {
-    def.format = encoding.axis(name).format;
-  } else if (encoding.isType(name, Q)) {
-    def.format = encoding.numberFormat(name);
-  } else if (encoding.isType(name, T)) {
+export var labels = {
+  /**
+   * add custom label for time type and bin
+   */
+  scale: function(def, encoding, name) {
+    // time
     var timeUnit = encoding.encDef(name).timeUnit;
-    if (!timeUnit) {
-      def.format = encoding.config('timeFormat');
-    } else if (timeUnit === 'year') {
-      def.format = 'd';
+    if (encoding.isType(name, T) && timeUnit && (time.hasScale(timeUnit))) {
+      setter(def, ['properties','labels','text','scale'], 'time-'+ timeUnit);
     }
-  } else if (encoding.isTypes(name, [N, O]) && encoding.axis(name).labelMaxLength) {
-    setter(def,
-      ['properties','labels','text','template'],
-      '{{ datum.data | truncate:' +
-      encoding.axis(name).labelMaxLength + '}}'
-    );
+    // FIXME bin
+    return def;
+  },
+
+  /**
+   * Determine number format or truncate if maxLabel length is presented.
+   */
+  format: function (def, encoding, name) {
+    if (encoding.axis(name).format) {
+      def.format = encoding.axis(name).format;
+    } else if (encoding.isType(name, Q)) {
+      def.format = encoding.numberFormat(name);
+    } else if (encoding.isType(name, T)) {
+      var timeUnit = encoding.encDef(name).timeUnit;
+      if (!timeUnit) {
+        def.format = encoding.config('timeFormat');
+      } else if (timeUnit === 'year') {
+        def.format = 'd';
+      }
+    } else if (encoding.isTypes(name, [N, O]) && encoding.axis(name).labelMaxLength) {
+      setter(def,
+        ['properties','labels','text','template'],
+        '{{ datum.data | truncate:' +
+        encoding.axis(name).labelMaxLength + '}}'
+      );
+    }
+
+    return def;
+  },
+
+  angle: function(def, encoding, name) {
+    var angle = encoding.axis(name).labelAngle;
+    if (typeof angle === 'undefined') return def;
+
+    setter(def, ['properties', 'labels', 'angle', 'value'], angle);
+    return def;
+  },
+
+  rotate: function(def) {
+   var align = def.orient ==='top' ? 'left' : 'right';
+   setter(def, ['properties','labels', 'angle', 'value'], 270);
+   setter(def, ['properties','labels', 'align', 'value'], align);
+   setter(def, ['properties','labels', 'baseline', 'value'], 'middle');
+   return def;
   }
-
-  return def;
 };
 
-axis.labels.angle = function(def, encoding, name) {
-  var angle = encoding.axis(name).labelAngle;
-  if (typeof angle === 'undefined') return def;
-
-  setter(def, ['properties', 'labels', 'angle', 'value'], angle);
-  return def;
-};
-
-axis.labels.rotate = function(def) {
- var align = def.orient ==='top' ? 'left' : 'right';
- setter(def, ['properties','labels', 'angle', 'value'], 270);
- setter(def, ['properties','labels', 'align', 'value'], align);
- setter(def, ['properties','labels', 'baseline', 'value'], 'middle');
- return def;
-};
-
-axis.titleOffset = function (encoding, layout, name) {
+export function titleOffset(encoding, layout, name) {
   // return specified value if specified
   var value = encoding.axis(name).titleOffset;
   if (value)  return value;
