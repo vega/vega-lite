@@ -36,8 +36,13 @@ axis.def = function(name, encoding, layout, stats) {
   // Add properties under axis.properties
   var properties = encoding.encDef(name).axis.properties || {};
 
-  ['axis', 'grid', 'labels', 'title'].forEach(function(property) {
-    var value = axis.properties[property](encoding, name, properties[property], layout, def);
+  [
+    'axis', 'grid', 'labels', 'title', // have special rules
+    'ticks', 'majorTicks', 'minorTicks' // only default values
+  ].forEach(function(property) {
+    var value = axis.properties[property] ?
+      axis.properties[property](encoding, name, properties[property], layout, def) :
+      properties[property];
     if (value !== undefined) {
       def.properties = def.properties || {};
       def.properties[property] = value;
