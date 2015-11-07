@@ -3,7 +3,6 @@
 require('../globals');
 
 var util = require('../util'),
-  getter = util.getter,
   time = require('./time');
 
 var axis = module.exports = {};
@@ -21,7 +20,7 @@ axis.def = function(name, encoding, layout, stats) {
   // Add optional properties
   [
     // properties with special rules (so it has axis[property] methods) -- call rule functions
-    'format', 'grid', 'orient', 'tickSize', 'ticks', 'title', 'titleOffset',
+    'format', 'grid', 'offset', 'orient', 'tickSize', 'ticks', 'title', 'titleOffset',
     // Otherwise, only produce default values in the schema, or explicit value if specified
     'layer', 'tickPadding', 'tickSize', 'tickSizeMajor', 'tickSizeMinor', 'tickSizeEnd',
     'values', 'subdivide'
@@ -33,9 +32,6 @@ axis.def = function(name, encoding, layout, stats) {
       def[property] = value;
     }
   });
-
-  // FIXME move offset to above
-  if(isRow) def.offset = axis.titleOffset(encoding, Y, layout) + 20;
 
   // Add properties under axis.properties
   var properties = encoding.encDef(name).axis.properties || {};
@@ -87,6 +83,18 @@ axis.grid = function(encoding, name) {
   // Otherwise, the default value is `false`.
   return name === ROW || name === COL ||
     (encoding.isTypes(name, [Q, T]) && !encoding.encDef(name).bin);
+};
+
+axis.offset = function(encoding, name, layout) {
+  var offset = encoding.encDef(name).axis.offset;
+  if (offset) {
+    return offset;
+  }
+
+  if(name === ROW) {
+   return layout.y.axisTitleOffset + 20;
+  }
+  return undefined;
 };
 
 axis.orient = function(encoding, name, layout, stats) {
@@ -151,7 +159,7 @@ axis.title = function (encoding, name, layout) {
 };
 
 
-axis.titleOffset = function (encoding, name, layout) {
+axis.titleOffset = function (encoding, name) {
   // return specified value if specified
   var value = encoding.axis(name).titleOffset;
   if (value)  return value;
@@ -160,7 +168,7 @@ axis.titleOffset = function (encoding, name, layout) {
     case ROW: return 0;
     case COL: return 35;
   }
-  return getter(layout, [name, 'axisTitleOffset']);
+  return undefined;
 };
 
 // PROPERTIES
