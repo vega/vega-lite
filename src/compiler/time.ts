@@ -1,16 +1,14 @@
-'use strict';
+/// <reference path="../d3-time-format.d.ts"/>
 
-var util = require('../util'),
-  d3_time_format = require('d3-time-format');
-
-var time = module.exports = {};
+import {utcFormat} from 'd3-time-format';
+import * as util from '../util';
 
 // 'Wednesday September 17 04:00:00 2014'
 // Wednesday is the longest date
 // September is the longest month (8 in javascript as it is zero-indexed).
-var LONG_DATE = new Date(Date.UTC(2014, 8, 17));
+const LONG_DATE = new Date(Date.UTC(2014, 8, 17));
 
-time.cardinality = function(encDef, stats, filterNull, type) {
+export function cardinality(encDef, stats, filterNull, type) {
   var timeUnit = encDef.timeUnit;
   switch (timeUnit) {
     case 'seconds': return 60;
@@ -32,13 +30,13 @@ time.cardinality = function(encDef, stats, filterNull, type) {
   return null;
 };
 
-time.formula = function(timeUnit, fieldRef) {
+export function formula(timeUnit, fieldRef) {
   // TODO(kanitw): add formula to other time format
   var fn = 'utc' + timeUnit;
   return fn + '(' + fieldRef + ')';
 };
 
-time.maxLength = function(timeUnit, encoding) {
+export function maxLength(timeUnit, encoding) {
   switch (timeUnit) {
     case 'seconds':
     case 'minutes':
@@ -47,7 +45,7 @@ time.maxLength = function(timeUnit, encoding) {
       return 2;
     case 'month':
     case 'day':
-      var range = time.range(timeUnit, encoding);
+      var range = range(timeUnit, encoding);
       if (range) {
         // return the longest name in the range
         return Math.max.apply(null, range.map(function(r) {return r.length;}));
@@ -59,10 +57,10 @@ time.maxLength = function(timeUnit, encoding) {
   // TODO(#600) revise this
   // no time unit
   var timeFormat = encoding.config('timeFormat');
-  return d3_time_format.utcFormat(timeFormat)(LONG_DATE).length;
+  return utcFormat(timeFormat)(LONG_DATE).length;
 };
 
-time.range = function(timeUnit, encoding) {
+export function range(timeUnit, encoding) {
   var labelLength = encoding.config('timeScaleLabelLength'),
     scaleLabel;
   switch (timeUnit) {
@@ -86,11 +84,11 @@ time.range = function(timeUnit, encoding) {
  * @param  {Object} encoding
  * @return {Array}  scales for time unit names
  */
-time.scales = function(encoding) {
+export function scales(encoding) {
   var scales = encoding.reduce(function(scales, encDef) {
     var timeUnit = encDef.timeUnit;
     if (encDef.type === T && timeUnit && !scales[timeUnit]) {
-      var scale = time.scale.def(encDef.timeUnit, encoding);
+      var scale = scale.def(encDef.timeUnit, encoding);
       if (scale) scales[timeUnit] = scale;
     }
     return scales;
@@ -99,25 +97,7 @@ time.scales = function(encoding) {
   return util.vals(scales);
 };
 
-
-time.scale = {};
-
-/** append custom time scales for axis label */
-time.scale.def = function(timeUnit, encoding) {
-  var range = time.range(timeUnit, encoding);
-
-  if (range) {
-    return {
-      name: 'time-'+timeUnit,
-      type: 'ordinal',
-      domain: time.scale.domain(timeUnit),
-      range: range
-    };
-  }
-  return null;
-};
-
-time.isOrdinalFn = function(timeUnit) {
+export function isOrdinalFn(timeUnit) {
   switch (timeUnit) {
     case 'seconds':
     case 'minutes':
@@ -130,30 +110,48 @@ time.isOrdinalFn = function(timeUnit) {
   return false;
 };
 
-time.scale.type = function(timeUnit, name) {
-  if (name === COLOR) {
-    return 'linear'; // time has order, so use interpolated ordinal color scale.
-  }
 
-  // FIXME revise this -- should 'year' be linear too?
-  return time.isOrdinalFn(timeUnit) || name === COL || name === ROW ? 'ordinal' : 'linear';
-};
+export var scale = {
+  /** append custom time scales for axis label */
+  def: function(timeUnit, encoding) {
+    var range = range(timeUnit, encoding);
 
-time.scale.domain = function(timeUnit, name) {
-  var isColor = name === COLOR;
-  switch (timeUnit) {
-    case 'seconds':
-    case 'minutes': return isColor ? [0,59] : util.range(0, 60);
-    case 'hours': return isColor ? [0,23] : util.range(0, 24);
-    case 'day': return isColor ? [0,6] : util.range(0, 7);
-    case 'date': return isColor ? [1,31] : util.range(1, 32);
-    case 'month': return isColor ? [0,11] : util.range(0, 12);
+    if (range) {
+      return {
+        name: 'time-'+timeUnit,
+        type: 'ordinal',
+        domain: scale.domain(timeUnit),
+        range: range
+      };
+    }
+    return null;
+  },
+
+  type: function(timeUnit, name) {
+    if (name === COLOR) {
+      return 'linear'; // time has order, so use interpolated ordinal color scale.
+    }
+
+    // FIXME revise this -- should 'year' be linear too?
+    return isOrdinalFn(timeUnit) || name === COL || name === ROW ? 'ordinal' : 'linear';
+  },
+  
+  domain: function(timeUnit, name?) {
+    var isColor = name === COLOR;
+    switch (timeUnit) {
+      case 'seconds':
+      case 'minutes': return isColor ? [0,59] : util.range(0, 60);
+      case 'hours': return isColor ? [0,23] : util.range(0, 24);
+      case 'day': return isColor ? [0,6] : util.range(0, 7);
+      case 'date': return isColor ? [1,31] : util.range(1, 32);
+      case 'month': return isColor ? [0,11] : util.range(0, 12);
+    }
+    return null;
   }
-  return null;
 };
 
 /** whether a particular time function has custom scale for labels implemented in time.scale */
-time.hasScale = function(timeUnit) {
+export function hasScale(timeUnit) {
   switch (timeUnit) {
     case 'day':
     case 'month':
