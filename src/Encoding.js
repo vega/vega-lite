@@ -171,10 +171,9 @@ module.exports = (function() {
     return this._enc[et].value;
   };
 
-  proto.numberFormat = function(fieldStats) {
-    var formatConfig = fieldStats.max > this.config('maxSmallNumber') ?
-      'largeNumberFormat': 'smallNumberFormat';
-    return this.config(formatConfig);
+  proto.numberFormat = function(/*name*/) {
+    // TODO(#497): have different number format based on numberType (discrete/continuous)
+    return this.config('numberFormat');
   };
 
   proto.sort = function(et, stats) {

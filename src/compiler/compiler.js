@@ -80,7 +80,7 @@ compiler.compileEncoding = function (encoding, stats) {
 
   // marks
   var style = compiler.style(encoding, stats),
-    mdefs = group.marks = marks.def(encoding, layout, style, stats),
+    mdefs = group.marks = marks.def(encoding, layout, style),
     mdef = mdefs[mdefs.length - 1];  // TODO: remove this dirty hack by refactoring the whole flow
 
   var stack = encoding.stack();
