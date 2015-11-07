@@ -1,26 +1,26 @@
-'use strict';
-require('../globals');
-var util = require('../util'),
-  time = require('./time'),
-  colorbrewer = require('colorbrewer'),
-  interpolate = require('d3-color').interpolateHsl;
+/// <reference path="../colorbrewer.d.ts"/>
+/// <reference path="../d3-color.d.ts"/>
 
-var scale = module.exports = {};
+import 'colorbrewer';
+import {interpolateHsl} from 'd3-color';
 
-scale.names = function(props) {
+import * as util from '../util';
+import * as time from './time';
+
+export function names(props) {
   return util.keys(util.keys(props).reduce(function(a, x) {
     if (props[x] && props[x].scale) a[props[x].scale] = 1;
     return a;
   }, {}));
 };
 
-scale.defs = function(names, encoding, layout, stats, facet) {
+export function defs(names, encoding, layout, stats, facet) {
   return names.reduce(function(a, name) {
-    var scaleDef = {};
-
-    scaleDef.name = name;
-    var type = scaleDef.type = scale.type(name, encoding);
-    scaleDef.domain = scale.domain(encoding, name, type, facet);
+    var scaleDef = {
+      name: name,
+      type: type(name, encoding),
+      domain: domain(encoding, name, scaleDef.type, facet)
+    };
 
     // Add optional properties
     var properties = ['range', 'reverse', 'round',
@@ -30,7 +30,8 @@ scale.defs = function(names, encoding, layout, stats, facet) {
       ];
 
     properties.forEach(function(property) {
-      var value = scale[property](encoding, name, type, layout, stats);
+      // TODO: check if this works
+      var value = this[property](encoding, name, type, layout, stats);
       if (value !== undefined) {
         scaleDef[property] = value;
       }
@@ -40,7 +41,7 @@ scale.defs = function(names, encoding, layout, stats, facet) {
   }, []);
 };
 
-scale.type = function(name, encoding) {
+export function type(name, encoding) {
   switch (encoding.type(name)) {
     case N: //fall through
     case O:
@@ -56,7 +57,7 @@ scale.type = function(name, encoding) {
   }
 };
 
-scale.domain = function (encoding, name, type, facet) {
+export function domain (encoding, name, type, facet) {
   var encDef = encoding.encDef(name);
 
   if (encDef.scale.domain) { // explicit value
@@ -81,8 +82,8 @@ scale.domain = function (encoding, name, type, facet) {
     };
   }
 
-  var useRawDomain = scale._useRawDomain(encoding, name);
-  var sort = scale.domain.sort(encoding, name, type);
+  var useRawDomain = _useRawDomain(encoding, name);
+  var sort = sortDomain(encoding, name, type);
 
   if (useRawDomain) { // useRawDomain - only Q/T
     return {
@@ -113,7 +114,7 @@ scale.domain = function (encoding, name, type, facet) {
   }
 };
 
-scale.domain.sort = function(encoding, name, type) {
+export function sortDomain(encoding, name, type) {
   var sort = encoding.encDef(name).sort;
   if (sort === 'ascending' || sort === 'descending') {
     return true;
@@ -129,7 +130,7 @@ scale.domain.sort = function(encoding, name, type) {
   return undefined;
 };
 
-scale.reverse = function(encoding, name) {
+export function reverse(encoding, name) {
   var sort = encoding.encDef(name).sort;
   return sort && (sort === 'descending' || (sort.order === 'descending')) ? true : undefined;
 };
@@ -143,7 +144,7 @@ var sharedDomainAggregate = ['mean', 'average', 'stdev', 'stdevp', 'median', 'q1
  * 2. Aggregation function is not `count` or `sum`
  * 3. The scale is quantitative or time scale.
  */
-scale._useRawDomain = function (encoding, name) {
+export function _useRawDomain (encoding, name) {
   var encDef = encoding.encDef(name);
 
   // scale value
@@ -174,7 +175,7 @@ scale._useRawDomain = function (encoding, name) {
 };
 
 
-scale.bandWidth = function(encoding, name, type, layout) {
+export function bandWidth(encoding, name, type, layout) {
   // TODO: eliminate layout
 
   switch (name) {
@@ -192,17 +193,17 @@ scale.bandWidth = function(encoding, name, type, layout) {
   return undefined;
 };
 
-scale.clamp = function(encoding, name) {
+export function clamp(encoding, name) {
   // only return value if explicit value is specified.
   return encoding.encDef(name).scale.clamp;
 };
 
-scale.exponent = function(encoding, name) {
+export function exponent(encoding, name) {
   // only return value if explicit value is specified.
   return encoding.encDef(name).scale.exponent;
 };
 
-scale.nice = function(encoding, name, type) {
+export function nice(encoding, name, type) {
   if (encoding.encDef(name).scale.nice !== undefined) {
     // explicit value
     return encoding.encDef(name).scale.nice;
@@ -223,7 +224,7 @@ scale.nice = function(encoding, name, type) {
   return undefined;
 };
 
-scale.padding = function(encoding, name, type) {
+export function padding(encoding, name, type) {
   if (type === 'ordinal') {
     // Both explicit and non-explicit values are handled by the helper method.
     return encoding.padding(name);
@@ -231,7 +232,7 @@ scale.padding = function(encoding, name, type) {
   return undefined;
 };
 
-scale.points = function(encoding, name, type) {
+export function points(encoding, name, type) {
   if (type === 'ordinal') {
     if (encoding.encDef(name).scale.points !== undefined) {
       // explicit value
@@ -248,7 +249,7 @@ scale.points = function(encoding, name, type) {
 };
 
 
-scale.range = function (encoding, name, type, layout, stats) {
+export function range (encoding, name, type, layout, stats) {
   var encDef = encoding.encDef(name);
 
   if (encDef.scale.range) { // explicit value
@@ -279,13 +280,13 @@ scale.range = function (encoding, name, type, layout, stats) {
     case SHAPE:
       return 'shapes';
     case COLOR:
-      return scale.color(encoding, name, type, stats);
+      return color(encoding, name, type, stats);
   }
 
   return undefined;
 };
 
-scale.round = function(encoding, name) {
+export function round(encoding, name) {
   if (encoding.encDef(name).scale.round !== undefined) {
     return encoding.encDef(name).scale.round;
   }
@@ -302,7 +303,7 @@ scale.round = function(encoding, name) {
   return undefined;
 };
 
-scale.zero = function(encoding, name) {
+export function zero(encoding, name) {
   var encDef = encoding.encDef(name);
   var timeUnit = encDef.timeUnit;
 
@@ -333,7 +334,7 @@ scale.zero = function(encoding, name) {
 };
 
 
-scale.color = function(encoding, name, scaleType, stats) {
+export function color(encoding, name, scaleType, stats) {
   var colorScale = encoding.scale(COLOR),
     range = colorScale.range,
     cardinality = encoding.cardinality(COLOR, stats),
@@ -351,12 +352,12 @@ scale.color = function(encoding, name, scaleType, stats) {
         } else {
           range = colorScale.c20palette;
         }
-        return scale.color.palette(range, cardinality, type);
+        return colors.palette(range, cardinality, type);
       } else {
         if (ordinalPalette) {
-          return scale.color.palette(ordinalPalette, cardinality, type);
+          return colors.palette(ordinalPalette, cardinality, type);
         }
-        return scale.color.interpolate(quantitativeRange[0], quantitativeRange[1], cardinality);
+        return colors.interpolate(quantitativeRange[0], quantitativeRange[1], cardinality);
       }
     } else { //time or quantitative
       return [quantitativeRange[0], quantitativeRange[1]];
@@ -364,54 +365,55 @@ scale.color = function(encoding, name, scaleType, stats) {
   }
 };
 
-scale.color.palette = function(range, cardinality, type) {
-  // FIXME(kanitw): Jul 29, 2015 - check range is string
-  switch (range) {
-    case 'category10k':
-      // tableau's category 10, ordered by perceptual kernel study results
-      // https://github.com/uwdata/perceptual-kernels
-      return ['#2ca02c', '#e377c2', '#7f7f7f', '#17becf', '#8c564b', '#d62728', '#bcbd22', '#9467bd', '#ff7f0e', '#1f77b4'];
+export var colors = {
+  palette: function(range, cardinality, type) {
+    // FIXME(kanitw): Jul 29, 2015 - check range is string
+    switch (range) {
+      case 'category10k':
+        // tableau's category 10, ordered by perceptual kernel study results
+        // https://github.com/uwdata/perceptual-kernels
+        return ['#2ca02c', '#e377c2', '#7f7f7f', '#17becf', '#8c564b', '#d62728', '#bcbd22', '#9467bd', '#ff7f0e', '#1f77b4'];
 
-    // d3/tableau category10/20/20b/20c
-    case 'category10':
-      return ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf'];
+      // d3/tableau category10/20/20b/20c
+      case 'category10':
+        return ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf'];
 
-    case 'category20':
-      return ['#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5'];
+      case 'category20':
+        return ['#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5'];
 
-    case 'category20b':
-      return ['#393b79', '#5254a3', '#6b6ecf', '#9c9ede', '#637939', '#8ca252', '#b5cf6b', '#cedb9c', '#8c6d31', '#bd9e39', '#e7ba52', '#e7cb94', '#843c39', '#ad494a', '#d6616b', '#e7969c', '#7b4173', '#a55194', '#ce6dbd', '#de9ed6'];
+      case 'category20b':
+        return ['#393b79', '#5254a3', '#6b6ecf', '#9c9ede', '#637939', '#8ca252', '#b5cf6b', '#cedb9c', '#8c6d31', '#bd9e39', '#e7ba52', '#e7cb94', '#843c39', '#ad494a', '#d6616b', '#e7969c', '#7b4173', '#a55194', '#ce6dbd', '#de9ed6'];
 
-    case 'category20c':
-      return ['#3182bd', '#6baed6', '#9ecae1', '#c6dbef', '#e6550d', '#fd8d3c', '#fdae6b', '#fdd0a2', '#31a354', '#74c476', '#a1d99b', '#c7e9c0', '#756bb1', '#9e9ac8', '#bcbddc', '#dadaeb', '#636363', '#969696', '#bdbdbd', '#d9d9d9'];
-  }
-
-  // TODO add our own set of custom ordinal color palette
-
-  if (range in colorbrewer) {
-    var palette = colorbrewer[range];
-
-    // if cardinality pre-defined, use it.
-    if (cardinality in palette) return palette[cardinality];
-
-    // if not, use the highest cardinality one for nominal
-    if (type === N) {
-      return palette[Math.max.apply(null, util.keys(palette))];
+      case 'category20c':
+        return ['#3182bd', '#6baed6', '#9ecae1', '#c6dbef', '#e6550d', '#fd8d3c', '#fdae6b', '#fdd0a2', '#31a354', '#74c476', '#a1d99b', '#c7e9c0', '#756bb1', '#9e9ac8', '#bcbddc', '#dadaeb', '#636363', '#969696', '#bdbdbd', '#d9d9d9'];
     }
 
-    // otherwise, interpolate
-    var ps = cardinality < 3 ? 3 : Math.max.apply(null, util.keys(palette)),
-      from = 0 , to = ps - 1;
-    // FIXME add config for from / to
+    // TODO add our own set of custom ordinal color palette
 
-    return scale.color.interpolate(palette[ps][from], palette[ps][to], cardinality);
+    if (range in colorbrewer) {
+      var palette = colorbrewer[range];
+
+      // if cardinality pre-defined, use it.
+      if (cardinality in palette) return palette[cardinality];
+
+      // if not, use the highest cardinality one for nominal
+      if (type === N) {
+        return palette[Math.max.apply(null, util.keys(palette))];
+      }
+
+      // otherwise, interpolate
+      var ps = cardinality < 3 ? 3 : Math.max.apply(null, util.keys(palette)),
+        from = 0 , to = ps - 1;
+      // FIXME add config for from / to
+
+      return colors.interpolate(palette[ps][from], palette[ps][to], cardinality);
+    }
+
+    return range;
+  },
+
+  interpolate: function(start, end, cardinality) {
+    var interpolator = interpolateHsl(start, end);
+    return util.range(cardinality).map(function(i) { return interpolator(i*1.0/(cardinality-1)); });
   }
-
-  return range;
-};
-
-scale.color.interpolate = function (start, end, cardinality) {
-
-  var interpolator = interpolate(start, end);
-  return util.range(cardinality).map(function(i) { return interpolator(i*1.0/(cardinality-1)); });
-};
+}
