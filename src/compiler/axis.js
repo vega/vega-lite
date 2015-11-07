@@ -20,9 +20,9 @@ axis.def = function(name, encoding, layout, stats) {
 
   // Add optional properties
   [
-    // has special rules (so it has axis[property] methods)
+    // properties with special rules (so it has axis[property] methods) -- call rule functions
     'format', 'grid', 'orient', 'tickSize', 'ticks', 'title', 'titleOffset',
-    // only produce default values in the schema, or explicit value if specified
+    // Otherwise, only produce default values in the schema, or explicit value if specified
     'layer', 'tickPadding', 'tickSize', 'tickSizeMajor', 'tickSizeMinor', 'tickSizeEnd',
     'values', 'subdivide'
   ].forEach(function(property) {
@@ -36,7 +36,6 @@ axis.def = function(name, encoding, layout, stats) {
 
   // FIXME move offset to above
   if(isRow) def.offset = axis.titleOffset(encoding, Y, layout) + 20;
-
 
   // Add properties under axis.properties
   var properties = encoding.encDef(name).axis.properties || {};
@@ -97,7 +96,7 @@ axis.orient = function(encoding, name, layout, stats) {
   } else if (name === COL) {
     return 'top';
   } else if (name === X && encoding.has(Y) && encoding.isOrdinalScale(Y) && encoding.cardinality(Y, stats) > 30) {
-    // FIXME remove this case
+    // FIXME remove this case and migrate this logic to vega-lite-ui
     // x-axis for long y - put on top
     return 'top';
   }
@@ -163,6 +162,8 @@ axis.titleOffset = function (encoding, name, layout) {
   }
   return getter(layout, [name, 'axisTitleOffset']);
 };
+
+// PROPERTIES
 
 axis.properties = {};
 
