@@ -91,11 +91,8 @@ function box(encoding, stats) {
   };
 }
 
-
-// FIXME fieldStats.max isn't always the longest
 function getMaxNumberLength(encoding, et, fieldStats) {
-  var format = encoding.numberFormat(et, fieldStats);
-
+  var format = encoding.numberFormat(et);
   return d3_format.format(format)(fieldStats.max).length;
 }
 
