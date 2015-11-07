@@ -2,9 +2,9 @@
 
 import {shorthand as c} from './consts';
 import * as util from './util';
+import * as time from './compiler/time';
 
-var time = require('./compiler/time'),
-  schema = require('./schema/schema');
+var schema = require('./schema/schema');
 
 /**
  * @param field
@@ -41,7 +41,6 @@ export function fieldRef(field, opt) {
 };
 
 export function shorthand(f) {
-  var c = consts.shorthand;
   return (f.aggregate ? f.aggregate + c.func : '') +
     (f.timeUnit ? f.timeUnit + c.func : '') +
     (f.bin ? 'bin' + c.func : '') +

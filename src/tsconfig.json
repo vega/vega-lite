@@ -21,6 +21,8 @@
     ],
     "files": [
         "colorbrewer.d.ts",
+        "compiler/legend.ts",
+        "compiler/marks.ts",
         "compiler/scale.ts",
         "compiler/stack.ts",
         "compiler/style.ts",
