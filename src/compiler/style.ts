@@ -1,10 +1,6 @@
-'use strict';
+import * as vlEncDef from '../encdef';
 
-require('../globals');
-
-var vlEncDef = require('../encdef');
-
-module.exports = function(encoding, stats) {
+export function style(encoding, stats) {
   return {
     opacity: estimateOpacity(encoding, stats),
   };
@@ -67,4 +63,3 @@ function estimateOpacity(encoding,stats) {
 
   return opacity;
 }
-
