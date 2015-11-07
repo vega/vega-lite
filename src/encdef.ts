@@ -1,16 +1,10 @@
-'use strict';
-
 // utility for field
 
-require('./globals');
+import {shorthand as c} from './consts';
+import * as util from './util';
 
-var consts = require('./consts'),
-  c = consts.shorthand,
-  time = require('./compiler/time'),
-  util = require('./util'),
+var time = require('./compiler/time'),
   schema = require('./schema/schema');
-
-var vlfield = module.exports = {};
 
 /**
  * @param field
@@ -24,13 +18,13 @@ var vlfield = module.exports = {};
 
  * @return {[type]}       [description]
  */
-vlfield.fieldRef = function(field, opt) {
+export function fieldRef(field, opt) {
   opt = opt || {};
 
   var f = (opt.datum ? 'datum.' : '') + (opt.prefn || ''),
     name = field.name;
 
-  if (vlfield.isCount(field)) {
+  if (isCount(field)) {
     return f + 'count';
   } else if (opt.fn) {
     return f + opt.fn + '_' + name;
@@ -46,7 +40,7 @@ vlfield.fieldRef = function(field, opt) {
   }
 };
 
-vlfield.shorthand = function(f) {
+export function shorthand(f) {
   var c = consts.shorthand;
   return (f.aggregate ? f.aggregate + c.func : '') +
     (f.timeUnit ? f.timeUnit + c.func : '') +
@@ -54,12 +48,12 @@ vlfield.shorthand = function(f) {
     (f.name || '') + c.type + f.type;
 };
 
-vlfield.shorthands = function(fields, delim) {
+export function shorthands(fields, delim) {
   delim = delim || c.delim;
-  return fields.map(vlfield.shorthand).join(delim);
+  return fields.map(shorthand).join(delim);
 };
 
-vlfield.fromShorthand = function(shorthand) {
+export function fromShorthand(shorthand) {
   var split = shorthand.split(c.type), i;
   var o = {
     name: split[0].trim(),
@@ -96,11 +90,11 @@ vlfield.fromShorthand = function(shorthand) {
   return o;
 };
 
-var isType = vlfield.isType = function (fieldDef, type) {
+export function isType(fieldDef, type) {
   return fieldDef.type === type;
 };
 
-var isTypes = vlfield.isTypes = function (fieldDef, types) {
+export function isTypes(fieldDef, types) {
   for (var t=0; t<types.length; t++) {
     if(fieldDef.type === types[t]) return true;
   }
@@ -111,12 +105,12 @@ var isTypes = vlfield.isTypes = function (fieldDef, types) {
  * Most fields that use ordinal scale are dimensions.
  * However, YEAR(T), YEARMONTH(T) use time scale, not ordinal but are dimensions too.
  */
-vlfield.isOrdinalScale = function(field) {
+export function isOrdinalScale(field) {
   return  isTypes(field, [N, O]) ||
     ( isType(field, T) && field.timeUnit && time.isOrdinalFn(field.timeUnit) );
 };
 
-function isDimension(field) {
+function isFieldDimension(field) {
   return  isTypes(field, [N, O]) || !!field.bin ||
     ( isType(field, T) && !!field.timeUnit );
 }
@@ -126,21 +120,21 @@ function isDimension(field) {
  * Or use Encoding.isType if your field is from Encoding (and thus have numeric data type).
  * otherwise, do not specific isType so we can use the default isTypeName here.
  */
-vlfield.isDimension = function(field) {
-  return field && isDimension(field);
+export function isDimension(field) {
+  return field && isFieldDimension(field);
 };
 
-vlfield.isMeasure = function(field) {
-  return field && !isDimension(field);
+export function isMeasure(field) {
+  return field && !isFieldDimension(field);
 };
 
-vlfield.count = function() {
-  return {name:'*', aggregate: 'count', type: Q, displayName: vlfield.count.displayName};
+export function count() {
+  return {name:'*', aggregate: 'count', type: Q, displayName: countDisplayName};
 };
 
-vlfield.count.displayName = 'Number of Records';
+export var countDisplayName = 'Number of Records';
 
-vlfield.isCount = function(field) {
+export function isCount(field) {
   return field.aggregate === 'count';
 };
 
@@ -148,7 +142,7 @@ vlfield.isCount = function(field) {
  * For encoding, use encoding.cardinality() to avoid confusion.  Or use Encoding.isType if your field is from Encoding (and thus have numeric data type).
  * otherwise, do not specific isType so we can use the default isTypeName here.
  */
-vlfield.cardinality = function(field, stats, filterNull) {
+export function cardinality(field, stats, filterNull) {
   // FIXME need to take filter into account
 
   var stat = stats[field.name];
