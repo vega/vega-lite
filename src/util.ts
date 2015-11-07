@@ -1,17 +1,15 @@
-'use strict';
+///<reference path="datalib.d.ts"/>
 
-var util = module.exports = require('datalib/src/util');
+export * from 'datalib/src/util';
+export * from 'datalib/src/generate';
+export * from 'datalib/src/stats';
+export * from 'datalib/src/bins/bins';
 
-util.extend(util, require('datalib/src/generate'));
-util.extend(util, require('datalib/src/stats'));
-util.extend(util, require('./logger')('[VL Error]'));
-util.bin = require('datalib/src/bins/bins');
-
-util.isin = function(item, array) {
+export function isin(item: number, array: Array<any>):boolean {
   return array.indexOf(item) !== -1;
 };
 
-util.forEach = function(obj, f, thisArg) {
+export function forEach(obj, f, thisArg) {
   if (obj.forEach) {
     obj.forEach.call(thisArg, f);
   } else {
@@ -21,7 +19,7 @@ util.forEach = function(obj, f, thisArg) {
   }
 };
 
-util.reduce = function(obj, f, init, thisArg) {
+export function reduce(obj, f, init, thisArg) {
   if (obj.reduce) {
     return obj.reduce.call(thisArg, f, init);
   } else {
@@ -32,7 +30,7 @@ util.reduce = function(obj, f, init, thisArg) {
   }
 };
 
-util.map = function(obj, f, thisArg) {
+export function map(obj, f, thisArg) {
   if (obj.map) {
     return obj.map.call(thisArg, f);
   } else {
@@ -43,7 +41,7 @@ util.map = function(obj, f, thisArg) {
   }
 };
 
-util.any = function(arr, f) {
+export function any(arr, f) {
   var i = 0, k;
   for (k in arr) {
     if (f(arr[k], k, i++)) return true;
@@ -51,7 +49,7 @@ util.any = function(arr, f) {
   return false;
 };
 
-util.all = function(arr, f) {
+export function all(arr, f) {
   var i = 0, k;
   for (k in arr) {
     if (!f(arr[k], k, i++)) return false;
@@ -59,8 +57,8 @@ util.all = function(arr, f) {
   return true;
 };
 
-util.getbins = function(stats, maxbins) {
-  return util.bin({
+export function getbins(stats, maxbins) {
+  return this.bin({
     min: stats.min,
     max: stats.max,
     maxbins: maxbins
@@ -72,7 +70,7 @@ util.getbins = function(stats, maxbins) {
  * @param noaugment determine whether new object should be added f
  * or non-existing properties along the path
  */
-util.setter = function(x, p, val, noaugment) {
+export function setter(x, p, val, noaugment) {
   for (var i=0; i<p.length-1; ++i) {
     if (!noaugment && !(p[i] in x)){
       x = x[p[i]] = {};
@@ -83,13 +81,12 @@ util.setter = function(x, p, val, noaugment) {
   x[p[i]] = val;
 };
 
-
 /**
  * returns x[p[0]]...[p[n]]
  * @param augment determine whether new object should be added f
  * or non-existing properties along the path
  */
-util.getter = function(x, p, noaugment) {
+export function getter(x, p, noaugment) {
   for (var i=0; i<p.length; ++i) {
     if (!noaugment && !(p[i] in x)){
       x = x[p[i]] = {};
@@ -99,4 +96,3 @@ util.getter = function(x, p, noaugment) {
   }
   return x;
 };
-
