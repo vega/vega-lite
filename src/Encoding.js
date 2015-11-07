@@ -177,31 +177,6 @@ module.exports = (function() {
     return this.config(formatConfig);
   };
 
-  proto.sort = function(et, stats) {
-    var sort = this._enc[et].sort,
-      enc = this._enc,
-      isTypes = vlEncDef.isTypes;
-
-    if ((!sort || sort.length===0) &&
-        // FIXME
-        Encoding.toggleSort.support({encoding:this._enc}, stats, true) && //HACK
-        this.config('toggleSort') === Q
-      ) {
-      var qField = isTypes(enc.x, [N, O]) ? enc.y : enc.x;
-
-      if (isTypes(enc[et], [N, O])) {
-        sort = [{
-          name: qField.name,
-          aggregate: qField.aggregate,
-          type: qField.type,
-          reverse: true
-        }];
-      }
-    }
-
-    return sort;
-  };
-
   proto.map = function(f) {
     return vlenc.map(this._enc, f);
   };
