@@ -48,19 +48,6 @@ describe('Axis', function() {
     // FIXME(kanitw): Jul 19, 2015 - write test
   });
 
-  describe('hideTicks()', function () {
-    var def = axis.hideTicks({properties:{}});
-    it('should adjust ticks', function () {
-      expect(def.properties.ticks).to.eql({opacity: {value: 0}});
-    });
-    it('should adjust majorTicks', function () {
-      expect(def.properties.majorTicks).to.eql({opacity: {value: 0}});
-    });
-    it('should adjust axis', function () {
-      expect(def.properties.axis).to.eql({opacity: {value: 0}});
-    });
-  });
-
   describe('labels.scale()', function () {
     // FIXME(kanitw): Jul 19, 2015 - write test
   });
@@ -90,7 +77,7 @@ describe('Axis', function() {
           encoding: {
             x: {name: 'a', axis:{orient: 'bottom'}}
           }
-        }), 'x', stats);
+        }), 'x', {}, stats);
       expect(orient).to.eql('bottom');
     });
 
@@ -99,7 +86,7 @@ describe('Axis', function() {
           encoding: {
             x: {name: 'a'}
           }
-        }), 'x', stats);
+        }), 'x', {}, stats);
       expect(orient).to.eql(undefined);
     });
 
@@ -109,7 +96,7 @@ describe('Axis', function() {
             x: {name: 'a'},
             col: {name: 'a'}
           }
-        }), 'col', stats);
+        }), 'col', {}, stats);
       expect(orient).to.eql('top');
     });
 
@@ -119,56 +106,56 @@ describe('Axis', function() {
             x: {name: 'a'},
             y: {name: 'b', type: 'O'}
           }
-        }), 'x', stats);
+        }), 'x', {}, stats);
       expect(orient).to.eql('top');
     });
   });
 
   describe('title()', function () {
     it('should add explicitly specified title', function () {
-      var def = axis.title({}, Encoding.fromSpec({
+      var title = axis.title(Encoding.fromSpec({
           encoding: {
             x: {name: 'a', axis: {title: 'Custom'}}
           }
         }), 'x', stats, layout);
-      expect(def.title).to.eql('Custom');
+      expect(title).to.eql('Custom');
     });
 
     it('should add return fieldTitle by default', function () {
-      var def = axis.title({}, Encoding.fromSpec({
+      var title = axis.title(Encoding.fromSpec({
           encoding: {
             x: {name: 'a', axis: {titleMaxLength: '3'}}
           }
         }), 'x', layout);
-      expect(def.title).to.eql('a');
+      expect(title).to.eql('a');
     });
 
     it('should add return fieldTitle by default', function () {
-      var def = axis.title({}, Encoding.fromSpec({
+      var title = axis.title(Encoding.fromSpec({
           encoding: {
             x: {name: 'a', aggregate: 'sum', axis: {titleMaxLength: '10'}}
           }
         }), 'x', layout);
-      expect(def.title).to.eql('SUM(a)');
+      expect(title).to.eql('SUM(a)');
     });
 
     it('should add return fieldTitle by default and truncate', function () {
-      var def = axis.title({}, Encoding.fromSpec({
+      var title = axis.title(Encoding.fromSpec({
           encoding: {
             x: {name: 'a', aggregate: 'sum', axis: {titleMaxLength: '3'}}
           }
         }), 'x', layout);
-      expect(def.title).to.eql('SU…');
+      expect(title).to.eql('SU…');
     });
 
 
     it('should add return fieldTitle by default and truncate', function () {
-      var def = axis.title({}, Encoding.fromSpec({
+      var title = axis.title(Encoding.fromSpec({
           encoding: {
             x: {name: 'abcdefghijkl'}
           }
         }), 'x', layout);
-      expect(def.title).to.eql('abcdefghi…');
+      expect(title).to.eql('abcdefghi…');
     });
   });
 
