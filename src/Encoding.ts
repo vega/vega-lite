@@ -170,10 +170,9 @@ export class Encoding {
     return this._enc[et].value;
   };
 
-  numberFormat(fieldStats) {
-    var formatConfig = fieldStats.max > this.config('maxSmallNumber') ?
-      'largeNumberFormat': 'smallNumberFormat';
-    return this.config(formatConfig);
+  numberFormat = function(/*name*/) {
+    // TODO(#497): have different number format based on numberType (discrete/continuous)
+    return this.config('numberFormat');
   };
 
   map(f) {

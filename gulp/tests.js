@@ -6,7 +6,7 @@ var mocha = require('gulp-spawn-mocha');
 
 // runs the tests
 gulp.task('coverage', function() {
-  return gulp.src(['test/**/*.spec.js'], { read: false })
+  return gulp.src(['test/**/*.test.js'], { read: false })
     .pipe(mocha({
       istanbul: true
     }))
@@ -15,7 +15,7 @@ gulp.task('coverage', function() {
 
 // quick test
 gulp.task('test', function() {
-  return gulp.src(['test/**/*.spec.js'], { read: false })
+  return gulp.src(['test/**/*.test.js'], { read: false })
     .pipe(mocha({
       istanbul: false
     }))

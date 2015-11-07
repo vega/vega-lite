@@ -30,7 +30,7 @@ axis.def = function(name, encoding, layout, stats, opt) {
 
   // Add axis label custom scale (for bin / time)
   def = axis.labels.scale(def, encoding, name);
-  def = axis.labels.format(def, encoding, name, stats);
+  def = axis.labels.format(def, encoding, name);
   def = axis.labels.angle(def, encoding, name);
 
   // for x-axis, set ticks for Q or rotate scale for ordinal scale
@@ -204,13 +204,11 @@ axis.labels.scale = function(def, encoding, name) {
 /**
  * Determine number format or truncate if maxLabel length is presented.
  */
-axis.labels.format = function (def, encoding, name, stats) {
-  var fieldStats = stats[encoding.encDef(name).name];
-
+axis.labels.format = function (def, encoding, name) {
   if (encoding.axis(name).format) {
     def.format = encoding.axis(name).format;
-  } else if (encoding.isType(name, Q) || fieldStats.type === 'number') {
-    def.format = encoding.numberFormat(fieldStats);
+  } else if (encoding.isType(name, Q)) {
+    def.format = encoding.numberFormat(name);
   } else if (encoding.isType(name, T)) {
     var timeUnit = encoding.encDef(name).timeUnit;
     if (!timeUnit) {

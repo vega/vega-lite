@@ -116,6 +116,11 @@ var ordinalScaleMixin = {
       default: undefined
     },
     /* Ordinal Scale Properties */
+    outerPadding: {
+      type: 'number',
+      default: undefined
+      // TODO: add description once it is documented in Vega
+    },
     padding: {
       type: 'number',
       default: undefined,
@@ -825,21 +830,9 @@ var config = {
       type: 'integer',
       default: 6
     },
-    maxSmallNumber: {
-      type: 'number',
-      default: 10000,
-      description: 'maximum number that a field will be considered smallNumber.'+
-                   'Used for axis labelling.'
-    },
-    smallNumberFormat: {
+    numberFormat: {
       type: 'string',
-      default: '',
-      description: 'D3 Number format for axis labels and text tables '+
-                   'for number <= maxSmallNumber. Used for axis labelling.'
-    },
-    largeNumberFormat: {
-      type: 'string',
-      default: '.3s',
+      default: 's',
       description: 'D3 Number format for axis labels and text tables ' +
                    'for number > maxSmallNumber.'
     },

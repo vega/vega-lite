@@ -4,7 +4,7 @@ require('../globals');
 
 var marks = module.exports = {};
 
-marks.def = function(encoding, layout, style, stats) {
+marks.def = function(encoding, layout, style) {
 
   var defs = [],
     mark = marks[encoding.marktype()],
@@ -27,7 +27,7 @@ marks.def = function(encoding, layout, style, stats) {
   }
 
   // add the mark def for the main thing
-  var p = mark.prop(encoding, layout, style, stats);
+  var p = mark.prop(encoding, layout, style);
   defs.push({
     type: mark.type,
     from: {data: from},
@@ -391,7 +391,7 @@ function filled_point_props(shape) {
   };
 }
 
-function text_props(e, layout, style, stats) {
+function text_props(e, layout, style) {
   var p = {},
     encDef = e.encDef(TEXT);
 
@@ -430,8 +430,7 @@ function text_props(e, layout, style, stats) {
   // text
   if (e.has(TEXT)) {
     if (e.isType(TEXT, Q)) {
-      var fieldStats = stats[e.encDef(TEXT).name],
-        numberFormat = encDef.format || e.numberFormat(fieldStats);
+      var numberFormat = encDef.format || e.numberFormat(TEXT);
 
       p.text = {template: '{{' + e.fieldRef(TEXT, {datum: true}) + ' | number:\'' +
         numberFormat +'\'}}'};

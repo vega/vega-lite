@@ -38,7 +38,7 @@ function groupdef(name, opt) {
   return group;
 }
 
-function faceting(group, encoding, layout, spec, singleScaleNames, stats) {
+function faceting(group, encoding, layout, output, singleScaleNames, stats) {
   var enter = group.properties.enter;
   var facetKeys = [], cellAxes = [], from, axesGrp;
 
@@ -81,9 +81,9 @@ function faceting(group, encoding, layout, spec, singleScaleNames, stats) {
         from: from
       });
 
-    spec.marks.unshift(axesGrp); // need to prepend so it appears under the plots
-    (spec.axes = spec.axes || []);
-    spec.axes.push(axis.def(ROW, encoding, layout, stats));
+    output.marks.unshift(axesGrp); // need to prepend so it appears under the plots
+    (output.axes = output.axes || []);
+    output.axes.push(axis.def(ROW, encoding, layout, stats));
   } else { // doesn't have row
     if (encoding.has(X)) {
       //keep x axis in the cell
@@ -114,9 +114,9 @@ function faceting(group, encoding, layout, spec, singleScaleNames, stats) {
       from: from
     });
 
-    spec.marks.unshift(axesGrp); // need to prepend so it appears under the plots
-    (spec.axes = spec.axes || []);
-    spec.axes.push(axis.def(COL, encoding, layout, stats));
+    output.marks.unshift(axesGrp); // need to prepend so it appears under the plots
+    (output.axes = output.axes || []);
+    output.axes.push(axis.def(COL, encoding, layout, stats));
   } else { // doesn't have col
     if (encoding.has(Y)) {
       cellAxes.push(axis.def(Y, encoding, layout, stats));
@@ -125,7 +125,7 @@ function faceting(group, encoding, layout, spec, singleScaleNames, stats) {
 
   // assuming equal cellWidth here
   // TODO: support heterogenous cellWidth (maybe by using multiple scales?)
-  spec.scales = (spec.scales || []).concat(scale.defs(
+  output.scales = (output.scales || []).concat(scale.defs(
     scale.names(enter).concat(singleScaleNames),
     encoding,
     layout,
@@ -141,5 +141,5 @@ function faceting(group, encoding, layout, spec, singleScaleNames, stats) {
   var trans = (group.from.transform || (group.from.transform = []));
   trans.unshift({type: 'facet', groupby: facetKeys});
 
-  return spec;
+  return output;
 }

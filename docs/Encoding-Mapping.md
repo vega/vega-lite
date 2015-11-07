@@ -3,13 +3,13 @@ encoding channels (`x`,`y`, `row`, `col`, `color`, `size`, `shape`, `text`,
 `detail`) and encoding definitions.
 
 Each encoding definition object contains:
-- a field reference to the variable by `name` or a constant value `value`
-- the variable's data `type`
-- its inline transformation including aggregation (`aggregate`), binning (`bin`), and time unit conversion (`timeUnit`).
-- optional configuration properties for `scale`, `axis`, and `legends`, `stack` of the encoding channel.
+- A field's definition
+  - A field reference to the variable by `name` or a constant value `value`
+  - The variable's data `type`
+  - Its inline transformation including aggregation (`aggregate`), binning (`bin`), and time unit conversion (`timeUnit`).
+- Optional configuration properties for `scale`, `axis`, and `legends`, `stack` of the encoding channel.
 
 __TODO: add missing parameters (band, channel specific properties)__
-
 
 # Encoding Properties
 
@@ -20,14 +20,14 @@ Here are the list of properties of the encoding property definition object:
 | name __<sup>1</sup>__ | String        | A field/variable from which to pull a data value.    |
 | value         | String,Integer | A constant value |
 | type          | String        | Data Type (`Q` for quantitative, `O` for ordinal, `T` for temporal, and `N` for nominal).  __<sup>2</sup>__ |
+| [aggregate](#aggregate) | String        | Aggregation function for the field (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`)  |
+| [bin](#bin)          | Boolean \| Object        | Boolean flag / configuration object for binning.  See [Binning](#Binning) |
+| [timeUnit](#timeunit)| String        | Property for converting time unit            |
+| [sort](#sort)        | String \| Object        | Sort order for a particular field.  This can be string (`'ascending'`, `'descending'`, or `'unsorted'`) or a sort field definition object for sorting by an aggregate calculation of a specified sort field.  If unspecified, the default value is `ascending`.  See [Sort](#sort) section for more information. |
 | [axis](#axis)        | Object        | Configuration object for the encoding's axis    |
 | [legends](#legends)  | Object        | Configuration object for the encoding's legends |
 | [scale](#scale)      | Object        | Configuration object for the encoding's scale   |
 | [stack](#stack)      | Boolean \| Object        | Boolean flag / configuration object for stacking (only for bar and area marks). See [Stack](#stack).  |
-| [sort](#sort)        | String \| Object        | Sort order for a particular field.  This can be string (`'ascending'`, `'descending'`, or `'unsorted'`) or a sort field definition object for sorting by an aggregate calculation of a specified sort field.  If unspecified, the default value is `ascending`.  See [Sort](#sort) section for more information. |
-| [aggregate](#aggregate) | String        | Aggregation function for the field (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`)  |
-| [bin](#bin)          | Boolean \| Object        | Boolean flag / configuration object for binning.  See [Binning](#Binning) |
-| [timeUnit](#timeunit)| String        | Property for converting time unit            |
 
 
 __<sup>1</sup>__ __Pending Revision__

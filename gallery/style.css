@@ -40,6 +40,8 @@ a:hover {
 	margin: 10px;
 	max-height: 500px;
 	overflow: auto;
+  /* avoid horizontal scrolling */
+  padding-right: 15px;
 }
 
 .viz > div {

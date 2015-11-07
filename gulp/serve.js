@@ -6,7 +6,8 @@ var browserSync = require('browser-sync');
 gulp.task('serve', ['bundle', 'watch-schema', 'watch-test'], function() {
   browserSync({
     server: {
-        baseDir: './'
+        baseDir: './',
+        index: 'gallery.html'
     },
     browser: 'google chrome'
   });
