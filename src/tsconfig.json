@@ -1,0 +1,42 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "isolatedModules": false,
+        "jsx": "react",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "declaration": false,
+        "noImplicitAny": false,
+        "removeComments": true,
+        "noLib": false,
+        "preserveConstEnums": true,
+        "suppressImplicitAnyIndexErrors": true
+    },
+    "filesGlob": [
+        "**/*.ts",
+        "**/*.tsx",
+        "!node_modules/**"
+    ],
+    "files": [
+        "colorbrewer.d.ts",
+        "compiler/scale.ts",
+        "compiler/stack.ts",
+        "compiler/style.ts",
+        "compiler/subfacet.ts",
+        "compiler/time.ts",
+        "consts.ts",
+        "d3-color.d.ts",
+        "d3-format.d.ts",
+        "d3-time-format.d.ts",
+        "data.ts",
+        "datalib.d.ts",
+        "enc.ts",
+        "encdef.ts",
+        "Encoding.ts",
+        "globals.ts",
+        "util.ts",
+        "vl.ts"
+    ]
+}
