@@ -26,7 +26,7 @@ scale.defs = function(names, encoding, layout, stats, facet) {
     var properties = ['range', 'reverse', 'round',
         'clamp', 'nice', // quantitative / time
         'exponent', 'zero', // quantitative
-        'bandWidth', 'padding', 'points' // ordinal
+        'bandWidth', 'outerPadding', 'padding', 'points' // ordinal
       ];
 
     properties.forEach(function(property) {
@@ -219,6 +219,18 @@ scale.nice = function(encoding, name, type) {
     case ROW: /* fall through */
     case COL:
       return true;
+  }
+  return undefined;
+};
+
+scale.outerPadding = function(encoding, name, type) {
+  if (type === 'ordinal') {
+    if (encoding.encDef(name).scale.outerPadding !== undefined) {
+      return encoding.encDef(name).scale.outerPadding; // explicit value
+    }
+    if (name === ROW || name === COL) {
+      return 0;
+    }
   }
   return undefined;
 };
