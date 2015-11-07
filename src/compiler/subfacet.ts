@@ -1,10 +1,4 @@
-'use strict';
-
-require('../globals');
-
-module.exports = subfaceting;
-
-function subfaceting(group, mdef, details) {
+export function subfaceting(group, mdef, details) {
   var m = group.marks;
   var g = {
     name: 'subfacet',
