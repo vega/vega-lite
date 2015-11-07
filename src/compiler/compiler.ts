@@ -1,40 +1,35 @@
-'use strict';
-
-var summary = module.exports = require('datalib/src/stats').summary;
-
-require('../globals');
-
 /**
  * Module for compiling Vega-lite spec into Vega spec.
  */
-var compiler = module.exports = {};
 
-var Encoding = require('../Encoding'),
-  axis = compiler.axis = require('./axis'),
-  legend = compiler.legend = require('./legend'),
-  marks = compiler.marks = require('./marks'),
-  scale = compiler.scale = require('./scale');
+import {summary} from '../util';
 
-compiler.data = require('./data');
-compiler.facet = require('./facet');
-compiler.layout = require('./layout');
-compiler.stack = require('./stack');
-compiler.style = require('./style');
-compiler.subfacet = require('./subfacet');
-compiler.time = require('./time');
+import {Encoding} from '../Encoding';
+import * as axis from './axis';
+import * as legend from './legend';
+import * as marks from './marks';
+import * as scale from './scale';
 
-compiler.compile = function (spec, stats, theme) {
-  return compiler.compileEncoding(Encoding.fromSpec(spec, theme), stats);
+import * as data from './data';
+import * as facet from './facet';
+import * as layout from './layout';
+import * as stack from './stack';
+import * as style from './style';
+import * as subfacet from './subfacet';
+import * as time from './time';
+
+export function compile(spec, stats, theme) {
+  return compileEncoding(Encoding.fromSpec(spec, theme), stats);
 };
 
-compiler.shorthand = function (shorthand, stats, config, theme) {
-  return compiler.compileEncoding(Encoding.fromShorthand(shorthand, config, theme), stats);
+export function shorthand(shorthand, stats, config, theme) {
+  return compileEncoding(Encoding.fromShorthand(shorthand, config, theme), stats);
 };
 
 /**
  * Create a Vega specification from a Vega-lite Encoding object.
  */
-compiler.compileEncoding = function (encoding, stats) {
+export function compileEncoding(encoding, stats) {
   // no need to pass stats if you pass in the data
   if (!stats) {
     if (encoding.hasValues()) {
@@ -47,13 +42,13 @@ compiler.compileEncoding = function (encoding, stats) {
     }
   }
 
-  var layout = compiler.layout(encoding, stats);
+  var layout = layout(encoding, stats);
 
   var output = {
       width: layout.width,
       height: layout.height,
       padding: 'auto',
-      data: compiler.data(encoding),
+      data: data.def(encoding),
       marks: [{
         name: 'cell',
         type: 'group',
@@ -71,7 +66,7 @@ compiler.compileEncoding = function (encoding, stats) {
     };
 
   // global scales contains only time unit scales
-  var timeScales = compiler.time.scales(encoding);
+  var timeScales = time.scales(encoding);
   if (timeScales.length > 0) {
     output.scales = timeScales;
   }
@@ -79,14 +74,14 @@ compiler.compileEncoding = function (encoding, stats) {
   var group = output.marks[0];
 
   // marks
-  var style = compiler.style(encoding, stats),
+  var style = style(encoding, stats),
     mdefs = group.marks = marks.def(encoding, layout, style),
     mdef = mdefs[mdefs.length - 1];  // TODO: remove this dirty hack by refactoring the whole flow
 
   var stack = encoding.stack();
   if (stack) {
     // modify mdef.{from,properties}
-    compiler.stack(encoding, mdef, stack);
+    stack(encoding, mdef, stack);
   }
 
   var lineType = marks[encoding.marktype()].line;
@@ -96,7 +91,7 @@ compiler.compileEncoding = function (encoding, stats) {
 
   if (details.length > 0 && lineType) {
     //subfacet to group area / line together in one group
-    compiler.subfacet(group, mdef, details);
+    subfacet(group, mdef, details);
   }
 
   // auto-sort line/area values
@@ -118,7 +113,7 @@ compiler.compileEncoding = function (encoding, stats) {
 
   // Small Multiples
   if (encoding.has(ROW) || encoding.has(COL)) {
-    output = compiler.facet(group, encoding, layout, output, singleScaleNames, stats);
+    output = facet.def(group, encoding, layout, output, singleScaleNames, stats);
     if (legends.length > 0) {
       output.legends = legends;
     }
