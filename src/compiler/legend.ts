@@ -1,15 +1,7 @@
-'use strict';
+import {setter, getter} from '../util';
+import * as time from './time';
 
-require('../globals');
-
-var time = require('./time'),
-  util = require('../util'),
-  setter = util.setter,
-  getter = util.getter;
-
-var legend = module.exports = {};
-
-legend.defs = function(encoding, style) {
+export function defs(encoding, style) {
   var defs = [];
 
   if (encoding.has(COLOR) && encoding.encDef(COLOR).legend) {
@@ -32,7 +24,7 @@ legend.defs = function(encoding, style) {
   return defs;
 };
 
-legend.def = function(name, encoding, def, style) {
+export function def(name, encoding, def, style) {
   var timeUnit = encoding.encDef(name).timeUnit;
 
   def.title = legend.title(name, encoding);
@@ -50,7 +42,7 @@ legend.def = function(name, encoding, def, style) {
   return def;
 };
 
-legend.style = function(name, e, def, style) {
+export function style(name, e, def, style) {
   var symbols = getter(def, ['properties', 'symbols']),
     marktype = e.marktype();
 
@@ -99,7 +91,7 @@ legend.style = function(name, e, def, style) {
   return def;
 };
 
-legend.title = function(name, encoding) {
+export function title(name, encoding) {
   var leg = encoding.encDef(name).legend;
 
   if (leg.title) return leg.title;
