@@ -1,13 +1,6 @@
-'use strict';
-
-require('../globals');
-
-var util = require('../util');
-
-var axis = require('./axis'),
-  scale = require('./scale');
-
-module.exports = faceting;
+import * as axis from './axis';
+import * as scale from './scale';
+import * as util from '../util';
 
 function groupdef(name, opt) {
   opt = opt || {};
@@ -38,7 +31,7 @@ function groupdef(name, opt) {
   return group;
 }
 
-function faceting(group, encoding, layout, output, singleScaleNames, stats) {
+export function def(group, encoding, layout, output, singleScaleNames, stats) {
   var enter = group.properties.enter;
   var facetKeys = [], cellAxes = [], from, axesGrp;
 
