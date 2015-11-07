@@ -274,13 +274,6 @@ var axisMixin = {
           minimum: 0,
           description: 'Truncate labels that are too long.'
         },
-        labelAngle: {
-          type: 'integer',
-          default: undefined, // auto
-          minimum: 0,
-          maximum: 360,
-          description: 'Angle by which to rotate labels. Set to 0 to force horizontal.'
-        },
         titleMaxLength: {
           type: 'integer',
           default: undefined,

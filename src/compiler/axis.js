@@ -3,7 +3,6 @@
 require('../globals');
 
 var util = require('../util'),
-  setter = util.setter,
   getter = util.getter,
   time = require('./time');
 
@@ -39,34 +38,21 @@ axis.def = function(name, encoding, layout, stats) {
   if(isRow) def.offset = axis.titleOffset(encoding, Y, layout) + 20;
 
 
-  // axis.properties from the spec
+  // Add properties under axis.properties
   var properties = encoding.encDef(name).axis.properties || {};
   var opt = {
     grid: def.grid,
-    offset: def.offset || 0
+    offset: def.offset || 0,
+    orient: def.orient
   };
 
-  ['axis', 'title'].forEach(function(property) {
+  ['axis', 'grid', 'labels', 'title'].forEach(function(property) {
     var value = axis.properties[property](encoding, name, properties[property], layout, opt);
     if (value !== undefined) {
       def.properties = def.properties || {};
       def.properties[property] = value;
     }
   });
-
-  // Add axis label custom scale (for bin / time)
-  def = axis.labels.scale(def, encoding, name);
-  def = axis.labels.format(def, encoding, name);
-  def = axis.labels.angle(def, encoding, name);
-
-  // for x-axis, set ticks for Q or rotate scale for ordinal scale
-  if (name == X) {
-    if ((encoding.isDimension(X) || encoding.isType(X, T)) &&
-        !('angle' in getter(def, ['properties', 'labels']))) {
-      // TODO(kanitw): Jul 19, 2015 - #506 add condition for rotation
-      def = axis.labels.rotate(def);
-    }
-  }
 
   return def;
 };
@@ -263,52 +249,33 @@ axis.properties.title = function(encoding, name, spec, layout) {
   return spec || undefined;
 };
 
-axis.properties.labels = function(encoding, name, spec) {
-
-};
-
-axis.labels = {};
-
-/** add custom label for time type and bin */
-axis.labels.scale = function(def, encoding, name) {
-  // time
+axis.properties.labels = function(encoding, name, spec, layout, opt) {
   var timeUnit = encoding.encDef(name).timeUnit;
   if (encoding.isType(name, T) && timeUnit && (time.hasScale(timeUnit))) {
-    setter(def, ['properties','labels','text','scale'], 'time-'+ timeUnit);
+    spec = util.extend({
+      text: {scale: 'time-' + timeUnit}
+    }, spec || {});
   }
-  // FIXME bin
-  return def;
-};
 
-
-/**
- * Determine number format or truncate if maxLabel length is presented.
- */
-axis.labels.format = function (def, encoding, name) {
   if (encoding.isTypes(name, [N, O]) && encoding.axis(name).labelMaxLength) {
-    setter(def,
-      ['properties','labels','text','template'],
-      '{{ datum.data | truncate:' +
-      encoding.axis(name).labelMaxLength + '}}'
-    );
+    // TODO replace this with Vega's labelMaxLength once it is introduced
+    spec = util.extend({
+      text: {
+        template: '{{ datum.data | truncate:' + encoding.axis(name).labelMaxLength + '}}'
+      }
+    }, spec || {});
   }
 
-  return def;
+   // for x-axis, set ticks for Q or rotate scale for ordinal scale
+  if (name == X) {
+    if ((encoding.isDimension(X) || encoding.isType(X, T))) {
+      spec = util.extend({
+        angle: {value: 270},
+        align: {value: opt.orient === 'top' ? 'left': 'right'},
+        baseline: {value: 'middle'}
+      }, spec || {});
+    }
+  }
+
+  return spec || undefined;
 };
-
-axis.labels.angle = function(def, encoding, name) {
-  var angle = encoding.axis(name).labelAngle;
-  if (typeof angle === 'undefined') return def;
-
-  setter(def, ['properties', 'labels', 'angle', 'value'], angle);
-  return def;
-};
-
-axis.labels.rotate = function(def) {
- var align = def.orient ==='top' ? 'left' : 'right';
- setter(def, ['properties','labels', 'angle', 'value'], 270);
- setter(def, ['properties','labels', 'align', 'value'], align);
- setter(def, ['properties','labels', 'baseline', 'value'], 'middle');
- return def;
-};
-
