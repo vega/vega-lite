@@ -1,15 +1,10 @@
-'use strict';
+/// <reference path="../d3-format.d.ts"/>
 
-require('../globals');
+import * as d3_format from 'd3-format';
+import {setter} from '../util';
+import * as time from './time';
 
-var util = require('../util'),
-  setter = util.setter,
-  time = require('./time'),
-  d3_format = require('d3-format');
-
-module.exports = vllayout;
-
-function vllayout(encoding, stats) {
+export function def(encoding, stats) {
   var layout = box(encoding, stats);
   layout = offset(encoding, stats, layout);
   return layout;
