@@ -180,7 +180,6 @@ axis.properties.axis = function(encoding, name, spec) {
   return spec || undefined;
 };
 
-
 axis.properties.grid = function(encoding, name, spec, layout, def) {
   var cellPadding = layout.cellPadding;
 
@@ -241,18 +240,6 @@ axis.properties.grid = function(encoding, name, spec, layout, def) {
   return spec || undefined;
 };
 
-axis.properties.title = function(encoding, name, spec, layout) {
-  if (name === ROW) {
-    return util.extend({
-      angle: {value: 0},
-      align: {value: 'right'},
-      baseline: {value: 'middle'},
-      dy: {value: (-layout.height / 2) - 20}
-    }, spec || {});
-  }
-  return spec || undefined;
-};
-
 axis.properties.labels = function(encoding, name, spec, layout, def) {
   var timeUnit = encoding.encDef(name).timeUnit;
   if (encoding.isType(name, T) && timeUnit && (time.hasScale(timeUnit))) {
@@ -280,6 +267,18 @@ axis.properties.labels = function(encoding, name, spec, layout, def) {
       }, spec || {});
     }
   }
-
   return spec || undefined;
 };
+
+axis.properties.title = function(encoding, name, spec, layout) {
+  if (name === ROW) {
+    return util.extend({
+      angle: {value: 0},
+      align: {value: 'right'},
+      baseline: {value: 'middle'},
+      dy: {value: (-layout.height / 2) - 20}
+    }, spec || {});
+  }
+  return spec || undefined;
+};
+
