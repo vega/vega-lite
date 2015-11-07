@@ -1,13 +1,6 @@
-'use strict';
-
-require('../globals');
-
-var marks = module.exports = {};
-
-marks.def = function(encoding, layout, style) {
-
+export function def(encoding, layout, style) {
   var defs = [],
-    mark = marks[encoding.marktype()],
+    mark = module[encoding.marktype()],
     from = encoding.dataTable();
 
   // to add a background to text, we need to add it before the text
@@ -37,13 +30,13 @@ marks.def = function(encoding, layout, style) {
   return defs;
 };
 
-marks.bar = {
+export var bar = {
   type: 'rect',
   prop: bar_props,
   supportedEncoding: {row: 1, col: 1, x: 1, y: 1, size: 1, color: 1}
 };
 
-marks.line = {
+export var line = {
   type: 'line',
   line: true,
   prop: line_props,
@@ -51,7 +44,7 @@ marks.line = {
   supportedEncoding: {row: 1, col: 1, x: 1, y: 1, color: 1, detail:1}
 };
 
-marks.area = {
+export var area = {
   type: 'area',
   line: true,
   requiredEncoding: ['x', 'y'],
@@ -59,31 +52,31 @@ marks.area = {
   supportedEncoding: {row: 1, col: 1, x: 1, y: 1, color: 1}
 };
 
-marks.tick = {
+export var tick = {
   type: 'rect',
   prop: tick_props,
   supportedEncoding: {row: 1, col: 1, x: 1, y: 1, color: 1, detail: 1}
 };
 
-marks.circle = {
+export var circle = {
   type: 'symbol',
   prop: filled_point_props('circle'),
   supportedEncoding: {row: 1, col: 1, x: 1, y: 1, size: 1, color: 1, detail: 1}
 };
 
-marks.square = {
+export var square = {
   type: 'symbol',
   prop: filled_point_props('square'),
-  supportedEncoding: marks.circle.supportedEncoding
+  supportedEncoding: circle.supportedEncoding
 };
 
-marks.point = {
+export var point = {
   type: 'symbol',
   prop: point_props,
   supportedEncoding: {row: 1, col: 1, x: 1, y: 1, size: 1, color: 1, shape: 1, detail: 1}
 };
 
-marks.text = {
+export var text = {
   type: 'text',
   prop: text_props,
   requiredEncoding: ['text'],
