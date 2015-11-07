@@ -35,14 +35,9 @@ axis.def = function(name, encoding, layout, stats) {
 
   // Add properties under axis.properties
   var properties = encoding.encDef(name).axis.properties || {};
-  var opt = {
-    grid: def.grid,
-    offset: def.offset || 0,
-    orient: def.orient
-  };
 
   ['axis', 'grid', 'labels', 'title'].forEach(function(property) {
-    var value = axis.properties[property](encoding, name, properties[property], layout, opt);
+    var value = axis.properties[property](encoding, name, properties[property], layout, def);
     if (value !== undefined) {
       def.properties = def.properties || {};
       def.properties[property] = value;
@@ -186,10 +181,10 @@ axis.properties.axis = function(encoding, name, spec) {
 };
 
 
-axis.properties.grid = function(encoding, name, spec, layout, opt) {
+axis.properties.grid = function(encoding, name, spec, layout, def) {
   var cellPadding = layout.cellPadding;
 
-  if (opt.grid) {
+  if (def.grid) {
     if (name == COL) {
       // set grid property -- put the lines on the right the cell
       var yOffset = encoding.config('cellGridOffset');
@@ -225,11 +220,11 @@ axis.properties.grid = function(encoding, name, spec, layout, opt) {
           field: 'data'
         },
         x: {
-          value: opt.offset - xOffset
+          value: def.offset - xOffset
         },
         x2: {
           field: {group: 'mark.group.width'},
-          offset: opt.offset + xOffset,
+          offset: def.offset + xOffset,
           // default value(s) -- vega doesn't do recursive merge
           mult: 1
         },
@@ -258,7 +253,7 @@ axis.properties.title = function(encoding, name, spec, layout) {
   return spec || undefined;
 };
 
-axis.properties.labels = function(encoding, name, spec, layout, opt) {
+axis.properties.labels = function(encoding, name, spec, layout, def) {
   var timeUnit = encoding.encDef(name).timeUnit;
   if (encoding.isType(name, T) && timeUnit && (time.hasScale(timeUnit))) {
     spec = util.extend({
@@ -280,7 +275,7 @@ axis.properties.labels = function(encoding, name, spec, layout, opt) {
     if ((encoding.isDimension(X) || encoding.isType(X, T))) {
       spec = util.extend({
         angle: {value: 270},
-        align: {value: opt.orient === 'top' ? 'left': 'right'},
+        align: {value: def.orient === 'top' ? 'left': 'right'},
         baseline: {value: 'middle'}
       }, spec || {});
     }
