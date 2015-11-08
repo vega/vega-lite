@@ -9,7 +9,7 @@ var helpText =
 
 // import required libraries
 var fs = require('fs'),
-    vl = require('../src/vl'),
+    vl = require('../vega-lite.js'),
     // TODO(kanitw): extract this to another library
     json3 = require('../lib/json3-compactstringify.js');
 

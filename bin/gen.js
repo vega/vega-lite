@@ -12,7 +12,7 @@ program.version('0.0.1')
   .parse(process.argv);
 
 var fs = require('fs'),
-  vl = require('../src/vl.js'),
+  vl = require('../vega-lite.js'),
   stringify = require('../lib/json3-compactstringify').stringify;
 
 if (program.json || program.file) {
