@@ -18,5 +18,6 @@ declare module "datalib/src/stats" {
 }
 
 declare module "datalib/src/bins/bins" {
-  export default function bin(a);
+  function bin(a);
+  export = bin;
 }

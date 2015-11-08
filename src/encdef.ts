@@ -72,15 +72,16 @@ export function fromShorthand(shorthand: string) {
     }
   }
 
+  // TODO
   // check time timeUnit
-  for (i in schema.timefns) {
-    var tu = schema.timefns[i];
-    if (o.name && o.name.indexOf(tu + '_') === 0) {
-      o.name = o.name.substr(o.name.length + 1);
-      o.timeUnit = tu;
-      break;
-    }
-  }
+  // for (i in schema.timefns) {
+  //   var tu = schema.timefns[i];
+  //   if (o.name && o.name.indexOf(tu + '_') === 0) {
+  //     o.name = o.name.substr(o.name.length + 1);
+  //     o.timeUnit = tu;
+  //     break;
+  //   }
+  // }
 
   // check bin
   if (o.name && o.name.indexOf('bin_') === 0) {
