@@ -16,8 +16,8 @@ var bundleDef = {
   debug: true
 };
 
-var browserBundler = browserify(bundleDef).plugin(tsify, { noImplicitAny: true });
-var watchBundler = watchify(browserify(bundleDef)).plugin(tsify, { noImplicitAny: true });
+var browserBundler = browserify(bundleDef).plugin(tsify);
+var watchBundler = watchify(browserify(bundleDef)).plugin(tsify);
 
 // builds Vega-lite with watcher
 function bundle() {
