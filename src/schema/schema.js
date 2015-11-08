@@ -236,7 +236,7 @@ var axisMixin = {
           default: undefined,  // auto
           description: 'The formatting pattern for axis labels. '+
                        'If not undefined, this will be determined by ' +
-                       'small/largeNumberFormat and the max value ' +
+                       'the max value ' +
                        'of the field.'
         },
         grid: {
@@ -408,10 +408,8 @@ var textMixin = {
     format: {
       type: 'string',
       default: undefined,  // auto
-      description: 'The formatting pattern for text value. '+
-                   'If not undefined, this will be determined by ' +
-                   'small/largeNumberFormat and the max value ' +
-                   'of the field.'
+      description: 'The formatting pattern for text value.'+
+                   'If not defined, this will be determined automatically'
     },
   }
 };
@@ -833,8 +831,7 @@ var config = {
     numberFormat: {
       type: 'string',
       default: 's',
-      description: 'D3 Number format for axis labels and text tables ' +
-                   'for number > maxSmallNumber.'
+      description: 'D3 Number format for axis labels and text tables.'
     },
     timeFormat: {
       type: 'string',
