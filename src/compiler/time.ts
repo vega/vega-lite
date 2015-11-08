@@ -48,7 +48,7 @@ export function maxLength(timeUnit, encoding) {
       return 2;
     case 'month':
     case 'day':
-      var range = range(timeUnit, encoding);
+      var range = exports.range(timeUnit, encoding);
       if (range) {
         // return the longest name in the range
         return Math.max.apply(null, range.map(function(r) {return r.length;}));

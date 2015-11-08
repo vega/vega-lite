@@ -1,7 +1,7 @@
 /// <reference path="../typings/colorbrewer.d.ts"/>
 /// <reference path="../typings/d3-color.d.ts"/>
 
-import 'colorbrewer';
+import * as colorbrewer from 'colorbrewer';
 import {interpolateHsl} from 'd3-color';
 
 import * as util from '../util';

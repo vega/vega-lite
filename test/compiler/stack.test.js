@@ -5,6 +5,10 @@ var fixtures = require('../fixtures').stack;
 
 var compile = require('../../src/vl').compile;
 
+var consts = require('../../src/consts');
+
+var SUMMARY = consts.SUMMARY;
+
 var stats = {
   'Cost__Total_$': {
     min: 0,
@@ -76,4 +80,3 @@ describe('vl.compile.stack()', function () {
     });
   });
 });
-

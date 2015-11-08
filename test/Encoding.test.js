@@ -2,7 +2,7 @@
 
 var expect = require('chai').expect;
 
-var Encoding = require('../src/Encoding');
+var Encoding = require('../src/Encoding').Encoding;
 
 describe('Encoding.fromShorthand()', function () {
   it('should parse shorthand correctly', function () {
@@ -13,4 +13,3 @@ describe('Encoding.fromShorthand()', function () {
 
   });
 });
-

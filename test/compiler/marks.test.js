@@ -4,7 +4,15 @@ var expect = require('chai').expect;
 var fixtures = require('../fixtures');
 
 var marks = require('../../src/compiler/marks'),
-  Encoding = require('../../src/Encoding');
+  Encoding = require('../../src/Encoding').Encoding;
+
+var consts = require('../../src/consts');
+
+var X = consts.X;
+var Y = consts.Y;
+var SIZE = consts.SIZE;
+var SHAPE = consts.SHAPE;
+var COLOR = consts.COLOR;
 
 var mockLayout = {
   x: {useSmallBand: false},

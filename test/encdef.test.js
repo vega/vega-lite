@@ -1,9 +1,12 @@
 'use strict';
 
-require('../src/globals');
-
+var consts = require('../src/consts');
 var expect = require('chai').expect;
 var vlEncDef = require('../src/encdef');
+
+var Q = consts.Q;
+var O = consts.O;
+var N = consts.N;
 
 describe('vl.encDef.cardinality()', function () {
   describe('for Q', function () {

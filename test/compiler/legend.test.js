@@ -3,7 +3,7 @@
 var expect = require('chai').expect;
 
 var legend = require('../../src/compiler/legend'),
-  Encoding = require('../../src/Encoding');
+  Encoding = require('../../src/Encoding').Encoding;
 
 describe('Legend', function() {
   describe('title()', function () {
