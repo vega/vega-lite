@@ -1,0 +1,6 @@
+{
+  "rules": {
+    "indent": [true, "spaces"],
+    "semicolon": true
+  }
+}

@@ -9,5 +9,5 @@ gulp.task('watch-schema', function() {
 
 // watches directories and runs tests if things change
 gulp.task('watch-test', function() {
-  gulp.watch(['src/**', 'test/**'], ['jshint', 'test']);
+  gulp.watch(['src/**', 'test/**'], ['jshint', 'tslint', 'test']);
 });
