@@ -37,7 +37,6 @@
         "src/enc.ts",
         "src/encdef.ts",
         "src/Encoding.ts",
-        "src/node.d.ts",
         "src/schema/instancegen.ts",
         "src/schema/schema.ts",
         "src/schema/schemagen.ts",
@@ -48,6 +47,7 @@
         "src/typings/d3-time-format.d.ts",
         "src/typings/datalib.d.ts",
         "src/typings/json3.d.ts",
+        "src/typings/node.d.ts",
         "src/typings/vega.d.ts",
         "src/util.ts",
         "src/vl.ts"
