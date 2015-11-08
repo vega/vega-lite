@@ -6,6 +6,8 @@ declare module "datalib/src/util" {
   export function range(a, b?);
   export function vals(a);
   export function truncate(a:string, length: number);
+  export function toMap(a);
+  export function isObject(a);
 }
 
 declare module "datalib/src/generate" {
