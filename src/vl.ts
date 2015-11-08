@@ -4,7 +4,7 @@ import * as util from './util';
 import * as consts from './consts';
 import * as data from './data';
 import * as enc from './enc';
-import * as encDef from './encDef';
+import * as encDef from './encdef';
 import * as compiler from './compiler/compiler';
 import * as schema from './schema/schema';
 
