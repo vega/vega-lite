@@ -1,27 +1,27 @@
 // Package of defining Vega-lite Specification's json schema
-'use strict';
 
-require('../globals');
+/// <reference path="../typings/vega.d.ts"/>
+/// <reference path="../typings/colorbrewer.d.ts"/>
 
-var schema = module.exports = {},
-  util = require('../util'),
-  toMap = util.toMap,
-  colorbrewer = require('colorbrewer');
+import * as colorbrewer from 'colorbrewer';
+import * as util from '../util';
+import {toMap} from '../util';
+import * as schemaUtil from './schemautil';
+import {Q, N, O, T} from '../consts';
 
-var VALID_AGG_OPS = require('vega/src/transforms/Aggregate').VALID_OPS;
+
+
+import {VALID_OPS as VALID_AGG_OPS} from 'vega/src/transforms/Aggregate';
 
 // TODO(#620) refer to vega schema
 // var vgStackSchema = require('vega/src/transforms/Stack').schema;
 
-
-schema.util = require('./schemautil');
-
-schema.marktype = {
+export var marktype = {
   type: 'string',
   enum: ['point', 'tick', 'bar', 'line', 'area', 'circle', 'square', 'text']
 };
 
-schema.aggregate = {
+export var aggregate = {
   type: 'string',
   enum: VALID_AGG_OPS,
   supportedEnums: {
@@ -34,21 +34,21 @@ schema.aggregate = {
   supportedTypes: toMap([Q, N, O, T, ''])
 };
 
-schema.getSupportedRole = function(encType) {
-  return schema.schema.properties.encoding.properties[encType].supportedRole;
+export function getSupportedRole(encType) {
+  return schema.properties.encoding.properties[encType].supportedRole;
 };
 
-schema.timeUnits = ['year', 'month', 'day', 'date', 'hours', 'minutes', 'seconds'];
+export var timeUnits = ['year', 'month', 'day', 'date', 'hours', 'minutes', 'seconds'];
 
-schema.defaultTimeFn = 'month';
+export var defaultTimeFn = 'month';
 
-schema.timeUnit = {
+export var timeUnit = {
   type: 'string',
-  enum: schema.timeUnits,
+  enum: timeUnits,
   supportedTypes: toMap([T])
 };
 
-schema.scale_type = {
+export var scale_type = {
   type: 'string',
   // TODO(kanitw) read vega's schema here, add description
   enum: ['linear', 'log', 'pow', 'sqrt', 'quantile'],
@@ -56,7 +56,7 @@ schema.scale_type = {
   supportedTypes: toMap([Q])
 };
 
-schema.field = {
+export var field = {
   type: 'object',
   properties: {
     name: {
@@ -66,9 +66,9 @@ schema.field = {
 };
 
 var clone = util.duplicate;
-var merge = schema.util.merge;
+var merge = schemaUtil.merge;
 
-schema.MAXBINS_DEFAULT = 15;
+export var MAXBINS_DEFAULT = 15;
 
 var bin = {
   type: ['boolean', 'object'],
@@ -76,7 +76,7 @@ var bin = {
   properties: {
     maxbins: {
       type: 'integer',
-      default: schema.MAXBINS_DEFAULT,
+      default: MAXBINS_DEFAULT,
       minimum: 2,
       description: 'Maximum number of bins.'
     }
@@ -89,7 +89,7 @@ var scale = {
   // TODO: refer to Vega's scale schema
   properties: {
     /* Common Scale Properties */
-    type: schema.scale_type,
+    type: scale_type,
     domain: {
       default: undefined,
       type: ['array', 'object'],
@@ -188,21 +188,21 @@ var typicalScaleMixin = {
 var ordinalOnlyScale = merge(clone(scale), ordinalScaleMixin);
 var typicalScale = merge(clone(scale), ordinalScaleMixin, typicalScaleMixin);
 
-var typicalField = merge(clone(schema.field), {
+var typicalField = merge(clone(field), {
   type: 'object',
   properties: {
     type: {
       type: 'string',
       enum: [N, O, Q, T]
     },
-    aggregate: schema.aggregate,
-    timeUnit: schema.timeUnit,
+    aggregate: aggregate,
+    timeUnit: timeUnit,
     bin: bin,
     scale: typicalScale
   }
 });
 
-var onlyOrdinalField = merge(clone(schema.field), {
+var onlyOrdinalField = merge(clone(field), {
   type: 'object',
   supportedRole: {
     dimension: true
@@ -212,7 +212,7 @@ var onlyOrdinalField = merge(clone(schema.field), {
       type: 'string',
       enum: [N, O, Q, T] // ordinal-only field supports Q when bin is applied and T when time unit is applied.
     },
-    timeUnit: schema.timeUnit,
+    timeUnit: timeUnit,
     bin: bin,
     aggregate: {
       type: 'string',
@@ -854,14 +854,14 @@ var config = {
 };
 
 /** @type Object Schema of a vega-lite specification */
-schema.schema = {
+export var schema = {
   $schema: 'http://json-schema.org/draft-04/schema#',
   description: 'Schema for Vega-lite specification',
   type: 'object',
   required: ['marktype', 'encoding', 'data'],
   properties: {
     data: data,
-    marktype: schema.marktype,
+    marktype: marktype,
     encoding: {
       type: 'object',
       properties: {
@@ -880,9 +880,9 @@ schema.schema = {
   }
 };
 
-schema.encTypes = util.keys(schema.schema.properties.encoding.properties);
+export var encTypes = util.keys(schema.properties.encoding.properties);
 
 /** Instantiate a verbose vl spec from the schema */
-schema.instantiate = function() {
-  return schema.util.instantiate(schema.schema);
+export function instantiate() {
+  return schemaUtil.instantiate(schema);
 };

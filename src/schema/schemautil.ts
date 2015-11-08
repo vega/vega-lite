@@ -1,18 +1,15 @@
-'use strict';
-
-var schemautil = module.exports = {},
-  util = require('../util');
+import * as util from '../util';
 
 var isEmpty = function(obj) {
   return Object.keys(obj).length === 0;
 };
 
-schemautil.extend = function(instance, schema) {
-  return schemautil.merge(schemautil.instantiate(schema), instance);
+export function extend(instance, schema) {
+  return merge(instantiate(schema), instance);
 };
 
 // instantiate a schema
-schemautil.instantiate = function(schema) {
+export function instantiate(schema) {
   var val;
   if (schema === undefined) {
     return undefined;
@@ -22,7 +19,7 @@ schemautil.instantiate = function(schema) {
   } else if (schema.type === 'object') {
     var instance = {};
     for (var name in schema.properties) {
-      val = schemautil.instantiate(schema.properties[name]);
+      val = instantiate(schema.properties[name]);
       if (val !== undefined) {
         instance[name] = val;
       }
@@ -35,7 +32,7 @@ schemautil.instantiate = function(schema) {
 };
 
 // remove all defaults from an instance
-schemautil.subtract = function(instance, defaults) {
+export function subtract(instance, defaults) {
   var changes = {};
   for (var prop in instance) {
     var def = defaults[prop];
@@ -43,7 +40,7 @@ schemautil.subtract = function(instance, defaults) {
     // Note: does not properly subtract arrays
     if (!defaults || def !== ins) {
       if (typeof ins === 'object' && !util.isArray(ins) && def) {
-        var c = schemautil.subtract(ins, def);
+        var c = subtract(ins, def);
         if (!isEmpty(c))
           changes[prop] = c;
       } else if (!util.isArray(ins) || ins.length > 0) {
@@ -54,16 +51,15 @@ schemautil.subtract = function(instance, defaults) {
   return changes;
 };
 
-schemautil.merge = function(/*dest*, src0, src1, ...*/){
-  var dest = arguments[0];
-  for (var i=1 ; i<arguments.length; i++) {
-    dest = merge(dest, arguments[i]);
+export function merge(dest, ...src: any[]){
+  for (var i=0 ; i<src.length; i++) {
+    dest = merge_(dest, src[i]);
   }
   return dest;
 };
 
 // recursively merges src into dest
-function merge(dest, src) {
+function merge_(dest, src) {
   if (typeof src !== 'object' || src === null) {
     return dest;
   }
