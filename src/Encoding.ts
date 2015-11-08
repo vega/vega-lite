@@ -1,9 +1,10 @@
-import schema = require('./schema/schema')
-
 import * as consts from './consts';
+import {X, Y, ROW, COL, SUMMARY, SOURCE, COLOR, DETAIL} from './consts';
 import * as util from './util';
 import * as vlEncDef from './encdef';
 import * as vlEnc from './enc';
+import * as schema from './schema/schema';
+import * as schemaUtil from './schema/schemautil';
 
 export class Encoding {
   _data: any;
@@ -13,7 +14,7 @@ export class Encoding {
 
   constructor(spec: any, theme: any) {
     var defaults = schema.instantiate();
-    var specExtended = schema.util.merge(defaults, theme || {}, spec);
+    var specExtended = schemaUtil.merge(defaults, theme || {}, spec);
 
     this._data = specExtended.data;
     this._marktype = specExtended.marktype;
@@ -21,7 +22,7 @@ export class Encoding {
     this._config = specExtended.config;
   };
 
-  static fromShorthand(shorthand, data, config, theme?): Encoding {
+  static fromShorthand(shorthand:string, data, config, theme?) {
     var c = consts.shorthand,
         split = shorthand.split(c.delim),
         marktype = split.shift().split(c.assign)[1].trim(),
@@ -45,17 +46,17 @@ export class Encoding {
       c.delim + vlEnc.shorthand(this._enc);
   };
 
-  static shorthand (spec) {
+  static shorthand(spec) {
     var c = consts.shorthand;
     return 'mark' + c.assign + spec.marktype +
       c.delim + vlEnc.shorthand(spec.encoding);
   };
 
-  static specFromShorthand(shorthand, data, config, excludeConfig) {
+  static specFromShorthand(shorthand:string, data, config, excludeConfig) {
     return Encoding.fromShorthand(shorthand, data, config).toSpec(excludeConfig);
   };
 
-  toSpec(excludeConfig, excludeData) {
+  toSpec(excludeConfig, excludeData?) {
     var enc = util.duplicate(this._enc),
       spec;
 
@@ -74,7 +75,7 @@ export class Encoding {
 
     // remove defaults
     var defaults = schema.instantiate();
-    return schema.util.subtract(spec, defaults);
+    return schemaUtil.subtract(spec, defaults);
   };
 
   marktype() {

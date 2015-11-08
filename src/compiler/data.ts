@@ -1,6 +1,8 @@
 import * as vlEncDef from '../encdef';
 import * as time from './time';
 import * as util from '../util';
+import {SOURCE, SUMMARY, STACKED} from '../consts';
+import {Q, O, N, T} from '../consts';
 
 /**
  * Create Vega's data array from a given encoding.

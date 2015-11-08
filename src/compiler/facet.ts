@@ -1,10 +1,11 @@
 import * as axis from './axis';
 import * as scale from './scale';
 import * as util from '../util';
+import {X, Y, ROW, COL} from '../consts';
 
 function groupdef(name, opt) {
   opt = opt || {};
-  var group = {
+  var group:any = {
     name: name || undefined,
     type: 'group',
     properties: {

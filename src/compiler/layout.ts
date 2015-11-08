@@ -1,8 +1,10 @@
-/// <reference path="../d3-format.d.ts"/>
+/// <reference path="../typings/d3-format.d.ts"/>
 
 import * as d3_format from 'd3-format';
 import {setter} from '../util';
 import * as time from './time';
+import {X, Y, ROW, COL, TEXT} from '../consts';
+import {Q, O, N, T} from '../consts';
 
 export function def(encoding, stats) {
   var layout = box(encoding, stats);

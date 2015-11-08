@@ -1,6 +1,9 @@
+import {X, Y, TEXT, COLOR, SIZE, SHAPE} from '../consts';
+import {Q, O, N, T} from '../consts';
+
 export function def(encoding, layout, style) {
   var defs = [],
-    mark = module[encoding.marktype()],
+    mark = switchMark(encoding.marktype()),
     from = encoding.dataTable();
 
   // to add a background to text, we need to add it before the text
@@ -29,6 +32,28 @@ export function def(encoding, layout, style) {
 
   return defs;
 };
+
+function switchMark(mark: string): any {
+  // TODO: use constants
+  switch (mark) {
+    case 'bar':
+      return bar;
+    case 'line':
+      return line;
+    case 'area':
+      return area;
+    case 'tick':
+      return tick;
+    case 'circle':
+      return circle;
+    case 'square':
+      return square;
+    case 'point':
+      return point;
+    case 'text':
+      return text;
+  }
+}
 
 export var bar = {
   type: 'rect',
@@ -86,7 +111,7 @@ export var text = {
 function bar_props(e, layout, style) {
   // jshint unused:false
 
-  var p = {};
+  var p:any = {};
 
   // x's and width
   if (e.encDef(X).bin) {
@@ -163,7 +188,7 @@ function bar_props(e, layout, style) {
 }
 
 function point_props(e, layout, style) {
-  var p = {};
+  var p:any = {};
 
   // x
   if (e.has(X)) {
@@ -218,7 +243,7 @@ function point_props(e, layout, style) {
 
 function line_props(e,layout, style) {
   // jshint unused:false
-  var p = {};
+  var p:any = {};
 
   // x
   if (e.has(X)) {
@@ -251,8 +276,7 @@ function line_props(e,layout, style) {
 
 // TODO(#694): optimize area's usage with bin
 function area_props(e, layout, style) {
-  // jshint unused:false
-  var p = {};
+  var p:any = {};
 
   // x
   if (e.isMeasure(X)) {
@@ -291,7 +315,7 @@ function area_props(e, layout, style) {
 }
 
 function tick_props(e, layout, style) {
-  var p = {};
+  var p:any = {};
 
   // x
   if (e.has(X)) {
@@ -344,7 +368,7 @@ function tick_props(e, layout, style) {
 
 function filled_point_props(shape) {
   return function(e, layout, style) {
-    var p = {};
+    var p:any = {};
 
     // x
     if (e.has(X)) {
@@ -385,7 +409,7 @@ function filled_point_props(shape) {
 }
 
 function text_props(e, layout, style) {
-  var p = {},
+  var p:any = {},
     encDef = e.encDef(TEXT);
 
   // x

@@ -1,23 +1,25 @@
 import {setter, getter} from '../util';
 import * as time from './time';
+import {COLOR, SHAPE, SIZE} from '../consts';
+import {Q, O, N, T} from '../consts';
 
 export function defs(encoding, style) {
   var defs = [];
 
   if (encoding.has(COLOR) && encoding.encDef(COLOR).legend) {
-    defs.push(legend.def(COLOR, encoding, {
+    defs.push(def(COLOR, encoding, {
       fill: COLOR
     }, style));
   }
 
   if (encoding.has(SIZE) && encoding.encDef(SIZE).legend) {
-    defs.push(legend.def(SIZE, encoding, {
+    defs.push(def(SIZE, encoding, {
       size: SIZE
     }, style));
   }
 
   if (encoding.has(SHAPE) && encoding.encDef(SHAPE).legend) {
-    defs.push(legend.def(SHAPE, encoding, {
+    defs.push(def(SHAPE, encoding, {
       shape: SHAPE
     }, style));
   }
@@ -27,10 +29,10 @@ export function defs(encoding, style) {
 export function def(name, encoding, def, style) {
   var timeUnit = encoding.encDef(name).timeUnit;
 
-  def.title = legend.title(name, encoding);
+  def.title = title(name, encoding);
   def.orient = encoding.encDef(name).legend.orient;
 
-  def = legend.style(name, encoding, def, style);
+  def = style(name, encoding, def, style);
 
   if (encoding.isType(name, T) &&
     timeUnit &&

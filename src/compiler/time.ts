@@ -1,7 +1,10 @@
-/// <reference path="../d3-time-format.d.ts"/>
+/// <reference path="../typings/d3-time-format.d.ts"/>
 
 import {utcFormat} from 'd3-time-format';
 import * as util from '../util';
+
+import {ROW, COL, COLOR} from '../consts';
+import {T} from '../consts';
 
 // 'Wednesday September 17 04:00:00 2014'
 // Wednesday is the longest date
@@ -135,7 +138,7 @@ export var scale = {
     // FIXME revise this -- should 'year' be linear too?
     return isOrdinalFn(timeUnit) || name === COL || name === ROW ? 'ordinal' : 'linear';
   },
-  
+
   domain: function(timeUnit, name?) {
     var isColor = name === COLOR;
     switch (timeUnit) {

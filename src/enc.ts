@@ -3,9 +3,8 @@
 import {shorthand as c} from './consts';
 import * as vlEncDef from './encdef';
 import * as util from './util';
-
-var schema = require('./schema/schema'),
-  encTypes = schema.encTypes;
+import * as schema from './schema/schema';
+import {encTypes} from './schema/schema';
 
 export function countRetinal(enc) {
   var count = 0;

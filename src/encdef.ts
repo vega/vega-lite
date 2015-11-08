@@ -3,8 +3,9 @@
 import {shorthand as c} from './consts';
 import * as util from './util';
 import * as time from './compiler/time';
+import * as schema from './schema/schema';
 
-var schema = require('./schema/schema');
+import {Q, O, N, T} from './consts';
 
 /**
  * @param field
@@ -52,9 +53,10 @@ export function shorthands(fields, delim) {
   return fields.map(shorthand).join(delim);
 };
 
-export function fromShorthand(shorthand) {
+export function fromShorthand(shorthand: string) {
   var split = shorthand.split(c.type), i;
-  var o = {
+
+  var o:any = {
     name: split[0].trim(),
     type: split[1].trim()
   };
@@ -70,15 +72,16 @@ export function fromShorthand(shorthand) {
     }
   }
 
+  // TODO
   // check time timeUnit
-  for (i in schema.timefns) {
-    var tu = schema.timefns[i];
-    if (o.name && o.name.indexOf(tu + '_') === 0) {
-      o.name = o.name.substr(o.length + 1);
-      o.timeUnit = tu;
-      break;
-    }
-  }
+  // for (i in schema.timefns) {
+  //   var tu = schema.timefns[i];
+  //   if (o.name && o.name.indexOf(tu + '_') === 0) {
+  //     o.name = o.name.substr(o.name.length + 1);
+  //     o.timeUnit = tu;
+  //     break;
+  //   }
+  // }
 
   // check bin
   if (o.name && o.name.indexOf('bin_') === 0) {

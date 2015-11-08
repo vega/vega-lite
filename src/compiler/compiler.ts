@@ -3,8 +3,8 @@
  */
 
 import {summary} from '../util';
-
 import {Encoding} from '../Encoding';
+
 import * as axis from './axis';
 import * as legend from './legend';
 import * as marks from './marks';
@@ -17,6 +17,9 @@ import * as stack from './stack';
 import * as style from './style';
 import * as subfacet from './subfacet';
 import * as time from './time';
+
+import {X, Y, ROW, COL, SOURCE} from '../consts';
+import {Q, O, N, T} from '../consts';
 
 export function compile(spec, stats, theme) {
   return compileEncoding(Encoding.fromSpec(spec, theme), stats);
@@ -44,7 +47,7 @@ export function compileEncoding(encoding, stats) {
 
   var layout = layout(encoding, stats);
 
-  var output = {
+  var output:any = {
       width: layout.width,
       height: layout.height,
       padding: 'auto',
@@ -91,7 +94,7 @@ export function compileEncoding(encoding, stats) {
 
   if (details.length > 0 && lineType) {
     //subfacet to group area / line together in one group
-    subfacet(group, mdef, details);
+    subfacet.def(group, mdef, details);
   }
 
   // auto-sort line/area values

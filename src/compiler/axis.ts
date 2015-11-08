@@ -1,6 +1,8 @@
 import {getter, setter} from '../util';
 import * as util from '../util';
 import * as time from './time';
+import {X, Y, COL, ROW} from '../consts';
+import {Q, O, N, T} from '../consts';
 
 export function def(name, encoding, layout, stats, opt?) {
   var isCol = name == COL,
@@ -9,7 +11,7 @@ export function def(name, encoding, layout, stats, opt?) {
 
   // TODO: rename def to axisDef and avoid side effects where possible.
 
-  var def = {
+  var def:any = {
     type: type,
     scale: name,
     properties: {},

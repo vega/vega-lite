@@ -1,11 +1,15 @@
-/// <reference path="../colorbrewer.d.ts"/>
-/// <reference path="../d3-color.d.ts"/>
+/// <reference path="../typings/colorbrewer.d.ts"/>
+/// <reference path="../typings/d3-color.d.ts"/>
 
 import 'colorbrewer';
 import {interpolateHsl} from 'd3-color';
 
 import * as util from '../util';
 import * as time from './time';
+
+import {X, Y, SIZE, SHAPE, COL, ROW, COLOR, TEXT} from '../consts';
+import {STACKED, SOURCE} from '../consts';
+import {Q, O, N, T} from '../consts';
 
 export function names(props) {
   return util.keys(util.keys(props).reduce(function(a, x) {
@@ -23,18 +27,19 @@ export function defs(names, encoding, layout, stats, facet?) {
     };
 
     // Add optional properties
-    var properties = ['range', 'reverse', 'round',
-        'clamp', 'nice', // quantitative / time
-        'exponent', 'zero', // quantitative
-        'bandWidth', 'outerPadding', 'padding', 'points' // ordinal
-      ];
+    var properties = {
+      'range': range, 'reverse': reverse, 'round': round,
+        'clamp': clamp, 'nice': nice, // quantitative / time
+        'exponent': exponent , 'zero': zero, // quantitative
+        'bandWidth': bandWidth, 'outerPadding': outerPadding, 'padding': padding, 'points':points // ordinal
+      };
 
-    properties.forEach(function(property) {
-      var value = module[property](encoding, name, scaleDef.type, layout, stats);
+    for (var property in properties) {
+      var value = properties[property](encoding, name, scaleDef.type, layout, stats);
       if (value !== undefined) {
         scaleDef[property] = value;
       }
-    });
+    }
 
     return (a.push(scaleDef), a);
   }, []);
@@ -56,7 +61,7 @@ export function type(name, encoding) {
   }
 };
 
-export function domain (encoding, name, type, facet) {
+export function domain(encoding, name, type, facet) {
   var encDef = encoding.encDef(name);
 
   if (encDef.scale.domain) { // explicit value
@@ -113,7 +118,7 @@ export function domain (encoding, name, type, facet) {
   }
 };
 
-export function sortDomain(encoding, name, type) {
+export function sortDomain(encoding, name, type):any {
   var sort = encoding.encDef(name).sort;
   if (sort === 'ascending' || sort === 'descending') {
     return true;
@@ -223,7 +228,7 @@ export function nice(encoding, name, type) {
   return undefined;
 };
 
-export function scale.outerPadding(encoding, name, type) {
+export function outerPadding(encoding, name, type) {
   if (type === 'ordinal') {
     if (encoding.encDef(name).scale.outerPadding !== undefined) {
       return encoding.encDef(name).scale.outerPadding; // explicit value

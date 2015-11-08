@@ -1,4 +1,4 @@
-///<reference path="datalib.d.ts"/>
+/// <reference path="./typings/datalib.d.ts"/>
 
 export * from 'datalib/src/util';
 export * from 'datalib/src/generate';
@@ -96,3 +96,7 @@ export function getter(x, p, noaugment = false) {
   }
   return x;
 };
+
+export function error(message) {
+  console.log(message)
+}
