@@ -21,12 +21,12 @@ export function def(encoding, mdef, stack) {
   }
 
   interface StackTransform {
-    type: string,
-    offset?: any,
-    groupby: any,
-    field: any,
-    sortby: any,
-    output: any
+    type: string;
+    offset?: any;
+    groupby: any;
+    field: any;
+    sortby: any;
+    output: any;
   }
 
   // add stack transform to mark
@@ -42,7 +42,7 @@ export function def(encoding, mdef, stack) {
     stackTransform.offset = stack.properties.offset;
   }
 
-  transforms.push(stackTransform)
+  transforms.push(stackTransform);
 
   mdef.from.transform = transforms;
 

@@ -20,11 +20,11 @@ export function names(props) {
 
 export function defs(names, encoding, layout, stats, facet?) {
   return names.reduce(function(a, name) {
-    var scaleDef = {
-      name: name,
-      type: type(name, encoding),
-      domain: domain(encoding, name, scaleDef.type, facet)
-    };
+    var scaleDef: any = {};
+
+    scaleDef.name = name;
+    var type = scaleDef.type = exports.type(name, encoding);
+    scaleDef.domain = domain(encoding, name, type, facet);
 
     // Add optional properties
     var properties = {
@@ -432,4 +432,4 @@ export var colors = {
     var interpolator = interpolateHsl(start, end);
     return util.range(cardinality).map(function(i) { return interpolator(i*1.0/(cardinality-1)); });
   }
-}
+};

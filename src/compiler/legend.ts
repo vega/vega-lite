@@ -32,7 +32,7 @@ export function def(name, encoding, def, style) {
   def.title = title(name, encoding);
   def.orient = encoding.encDef(name).legend.orient;
 
-  def = style(name, encoding, def, style);
+  def = exports.style(name, encoding, def, style);
 
   if (encoding.isType(name, T) &&
     timeUnit &&

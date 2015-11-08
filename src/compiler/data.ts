@@ -29,7 +29,7 @@ export function def(encoding) {
   // Stack
   var stack = encoding.stack();
   if (stack) {
-    def.push(stack(encoding, stack));
+    def.push(exports.stack(encoding, stack));
   }
 
   return def;

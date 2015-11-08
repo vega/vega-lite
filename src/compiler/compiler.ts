@@ -11,10 +11,10 @@ import * as marks from './marks';
 import * as scale from './scale';
 
 import * as data from './data';
-import * as facet from './facet';
-import * as layout from './layout';
-import * as stack from './stack';
-import * as style from './style';
+import * as vlFacet from './facet';
+import * as vlLayout from './layout';
+import * as vlStack from './stack';
+import * as vlStyle from './style';
 import * as subfacet from './subfacet';
 import * as time from './time';
 
@@ -45,7 +45,7 @@ export function compileEncoding(encoding, stats) {
     }
   }
 
-  var layout = layout(encoding, stats);
+  var layout = vlLayout.def(encoding, stats);
 
   var output:any = {
       width: layout.width,
@@ -77,14 +77,14 @@ export function compileEncoding(encoding, stats) {
   var group = output.marks[0];
 
   // marks
-  var style = style(encoding, stats),
+  var style = vlStyle.def(encoding, stats),
     mdefs = group.marks = marks.def(encoding, layout, style),
     mdef = mdefs[mdefs.length - 1];  // TODO: remove this dirty hack by refactoring the whole flow
 
   var stack = encoding.stack();
   if (stack) {
     // modify mdef.{from,properties}
-    stack(encoding, mdef, stack);
+    vlStack.def(encoding, mdef, stack);
   }
 
   var lineType = marks[encoding.marktype()].line;
@@ -116,7 +116,7 @@ export function compileEncoding(encoding, stats) {
 
   // Small Multiples
   if (encoding.has(ROW) || encoding.has(COL)) {
-    output = facet.def(group, encoding, layout, output, singleScaleNames, stats);
+    output = vlFacet.def(group, encoding, layout, output, singleScaleNames, stats);
     if (legends.length > 0) {
       output.legends = legends;
     }

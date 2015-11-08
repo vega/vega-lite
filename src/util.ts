@@ -3,7 +3,11 @@
 export * from 'datalib/src/util';
 export * from 'datalib/src/generate';
 export * from 'datalib/src/stats';
-export * from 'datalib/src/bins/bins';
+
+// https://github.com/Microsoft/TypeScript/issues/3612
+import dlBin = require('datalib/src/bins/bins');
+
+export var bin = dlBin;
 
 export function isin(item: number, array: Array<any>):boolean {
   return array.indexOf(item) !== -1;
@@ -58,7 +62,7 @@ export function all(arr, f) {
 };
 
 export function getbins(stats, maxbins) {
-  return this.bin({
+  return dlBin({
     min: stats.min,
     max: stats.max,
     maxbins: maxbins
@@ -98,5 +102,5 @@ export function getter(x, p, noaugment = false) {
 };
 
 export function error(message) {
-  console.log(message)
+  console.log(message);
 }

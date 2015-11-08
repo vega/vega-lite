@@ -56,7 +56,7 @@ export function shorthands(fields, delim) {
 export function fromShorthand(shorthand: string) {
   var split = shorthand.split(c.type), i;
 
-  var o:any = {
+  var o: any = {
     name: split[0].trim(),
     type: split[1].trim()
   };
@@ -72,16 +72,15 @@ export function fromShorthand(shorthand: string) {
     }
   }
 
-  // TODO
   // check time timeUnit
-  // for (i in schema.timefns) {
-  //   var tu = schema.timefns[i];
-  //   if (o.name && o.name.indexOf(tu + '_') === 0) {
-  //     o.name = o.name.substr(o.name.length + 1);
-  //     o.timeUnit = tu;
-  //     break;
-  //   }
-  // }
+  for (i in schema.timefns) {
+    var tu = schema.timefns[i];
+    if (o.name && o.name.indexOf(tu + '_') === 0) {
+      o.name = o.name.substr(o.name.length + 1);
+      o.timeUnit = tu;
+      break;
+    }
+  }
 
   // check bin
   if (o.name && o.name.indexOf('bin_') === 0) {
@@ -141,7 +140,8 @@ export function isCount(field) {
 };
 
 /**
- * For encoding, use encoding.cardinality() to avoid confusion.  Or use Encoding.isType if your field is from Encoding (and thus have numeric data type).
+ * For encoding, use encoding.cardinality() to avoid confusion.
+ * Or use Encoding.isType if your field is from Encoding (and thus have numeric data type).
  * otherwise, do not specific isType so we can use the default isTypeName here.
  */
 export function cardinality(field, stats, filterNull) {

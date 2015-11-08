@@ -1,5 +1,5 @@
 import {X, Y, TEXT, COLOR, SIZE, SHAPE} from '../consts';
-import {Q, O, N, T} from '../consts';
+import {Q} from '../consts';
 
 export function def(encoding, layout, style) {
   var defs = [],

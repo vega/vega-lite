@@ -91,7 +91,7 @@ export function scales(encoding) {
   var scales = encoding.reduce(function(scales, encDef) {
     var timeUnit = encDef.timeUnit;
     if (encDef.type === T && timeUnit && !scales[timeUnit]) {
-      var scale = scale.def(encDef.timeUnit, encoding);
+      var scale = exports.scale.def(encDef.timeUnit, encoding);
       if (scale) scales[timeUnit] = scale;
     }
     return scales;
@@ -117,7 +117,7 @@ export function isOrdinalFn(timeUnit) {
 export var scale = {
   /** append custom time scales for axis label */
   def: function(timeUnit, encoding) {
-    var range = range(timeUnit, encoding);
+    var range = exports.range(timeUnit, encoding);
 
     if (range) {
       return {

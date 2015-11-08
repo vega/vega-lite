@@ -18,7 +18,7 @@ export function def(name, encoding, layout, stats, opt?) {
     layer: encoding.encDef(name).axis.layer
   };
 
-  var orient = orient(encoding, name, stats);
+  var orient = exports.orient(encoding, name, stats);
   if (orient) {
     def.orient = orient;
   }
