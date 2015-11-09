@@ -1,10 +1,11 @@
 import {getter, setter} from '../util';
+import {Encoding} from '../Encoding';
 import * as util from '../util';
 import * as time from './time';
 import {X, Y, COL, ROW} from '../consts';
 import {Q, O, N, T} from '../consts';
 
-export function def(name, encoding, layout, stats) {
+export function def(name: string, encoding: Encoding, layout, stats) {
   var isCol = name == COL,
     isRow = name == ROW,
     type = isCol ? 'x' : isRow ? 'y' : name;
@@ -16,32 +17,42 @@ export function def(name, encoding, layout, stats) {
     scale: name
   };
 
+  // properties with special rules (so it has axis[property] methods) -- call rule functions
+  var methods = {
+    'format': format, 'grid': grid, 'offset': offset, 'orient': orient,
+    'tickSize': tickSize, 'ticks': ticks, 'title': title, 'titleOffset': titleOffset
+  };
+
   // Add optional properties
+
+  for (var property in methods) {
+    var value = methods[property](encoding, name, layout, stats);
+    if (value !== undefined) {
+      def[property] = value;
+    }
+  }
+
   [
-    // properties with special rules (so it has axis[property] methods) -- call rule functions
-    'format', 'grid', 'offset', 'orient', 'tickSize', 'ticks', 'title', 'titleOffset',
-    // Otherwise, only produce default values in the schema, or explicit value if specified
+    // If we don't have a special function, only produce default values in the schema, or explicit value if specified
     'layer', 'tickPadding', 'tickSize', 'tickSizeMajor', 'tickSizeMinor', 'tickSizeEnd',
     'values', 'subdivide'
   ].forEach(function(property) {
-    var value = exports[property] ?
-          exports[property](encoding, name, layout, stats) :
-          encoding.encDef(name).axis[property];
+    var value = encoding.encDef(name).axis[property];
     if (value !== undefined) {
       def[property] = value;
     }
   });
 
-  // Add properties under axis.properties
-  var properties = encoding.encDef(name).axis.properties || {};
+  // Add properties
+  var props = encoding.encDef(name).axis.properties || {};
 
   [
     'axis', 'grid', 'labels', 'title', // have special rules
     'ticks', 'majorTicks', 'minorTicks' // only default values
   ].forEach(function(property) {
-    var value = exports.properties[property] ?
-      exports.properties[property](encoding, name, properties[property], layout, def) :
-      properties[property];
+    var value = properties[property] ?
+      properties[property](encoding, name, props[property], layout, def) :
+      props[property];
     if (value !== undefined) {
       def.properties = def.properties || {};
       def.properties[property] = value;
@@ -51,7 +62,7 @@ export function def(name, encoding, layout, stats) {
   return def;
 };
 
-function format(encoding, name) {
+export function format(encoding, name) {
   var format = encoding.encDef(name).axis.format;
   if (format !== undefined)  {
     return format;
@@ -70,7 +81,7 @@ function format(encoding, name) {
   return undefined;
 };
 
-function grid(encoding, name) {
+export function grid(encoding, name) {
   var grid = encoding.axis(name).grid;
   if (grid !== undefined) {
     return grid;
@@ -84,7 +95,7 @@ function grid(encoding, name) {
     (encoding.isTypes(name, [Q, T]) && !encoding.encDef(name).bin);
 };
 
-function offset(encoding, name, layout) {
+export function offset(encoding, name, layout) {
   var offset = encoding.encDef(name).axis.offset;
   if (offset) {
     return offset;
@@ -96,7 +107,7 @@ function offset(encoding, name, layout) {
   return undefined;
 };
 
-function orient(encoding, name, layout, stats) {
+export function orient(encoding, name, layout, stats) {
   var orient = encoding.encDef(name).axis.orient;
   if (orient) {
     return orient;
@@ -110,7 +121,7 @@ function orient(encoding, name, layout, stats) {
   return undefined;
 };
 
-function ticks(encoding, name) {
+export function ticks(encoding, name) {
   var ticks = encoding.encDef(name).axis.ticks;
   if (ticks !== undefined) {
     return ticks;
@@ -124,7 +135,7 @@ function ticks(encoding, name) {
   return undefined;
 };
 
-function tickSize(encoding, name) {
+export function tickSize(encoding, name) {
   var tickSize = encoding.encDef(name).axis.tickSize;
   if (tickSize !== undefined) {
     return tickSize;
@@ -136,7 +147,7 @@ function tickSize(encoding, name) {
 };
 
 
-function title(encoding, name, layout) {
+export function title(encoding, name, layout) {
   var axisSpec = encoding.encDef(name).axis;
   if (axisSpec.title !== undefined) {
     return axisSpec.title;
@@ -158,7 +169,7 @@ function title(encoding, name, layout) {
 };
 
 
-function titleOffset(encoding, name) {
+export function titleOffset(encoding, name) {
   // return specified value if specified
   var value = encoding.axis(name).titleOffset;
   if (value)  return value;
