@@ -236,7 +236,7 @@ var axisMixin = {
           default: undefined,  // auto
           description: 'The formatting pattern for axis labels. '+
                        'If not undefined, this will be determined by ' +
-                       'small/largeNumberFormat and the max value ' +
+                       'the max value ' +
                        'of the field.'
         },
         grid: {
@@ -257,7 +257,7 @@ var axisMixin = {
         },
         ticks: {
           type: 'integer',
-          default: 5,
+          default: undefined,
           minimum: 0,
           description: 'A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are "nice" (multiples of 2, 5, 10) and lie within the underlying scale\'s range.'
         },
@@ -273,13 +273,6 @@ var axisMixin = {
           default: 25,
           minimum: 0,
           description: 'Truncate labels that are too long.'
-        },
-        labelAngle: {
-          type: 'integer',
-          default: undefined, // auto
-          minimum: 0,
-          maximum: 360,
-          description: 'Angle by which to rotate labels. Set to 0 to force horizontal.'
         },
         titleMaxLength: {
           type: 'integer',
@@ -408,10 +401,8 @@ var textMixin = {
     format: {
       type: 'string',
       default: undefined,  // auto
-      description: 'The formatting pattern for text value. '+
-                   'If not undefined, this will be determined by ' +
-                   'small/largeNumberFormat and the max value ' +
-                   'of the field.'
+      description: 'The formatting pattern for text value.'+
+                   'If not defined, this will be determined automatically'
     },
   }
 };
@@ -833,8 +824,7 @@ var config = {
     numberFormat: {
       type: 'string',
       default: 's',
-      description: 'D3 Number format for axis labels and text tables ' +
-                   'for number > maxSmallNumber.'
+      description: 'D3 Number format for axis labels and text tables.'
     },
     timeFormat: {
       type: 'string',

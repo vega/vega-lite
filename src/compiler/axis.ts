@@ -4,7 +4,7 @@ import * as time from './time';
 import {X, Y, COL, ROW} from '../consts';
 import {Q, O, N, T} from '../consts';
 
-export function def(name, encoding, layout, stats, opt?) {
+export function def(name, encoding, layout, stats) {
   var isCol = name == COL,
     isRow = name == ROW,
     type = isCol ? 'x' : isRow ? 'y' : name;
@@ -13,86 +13,187 @@ export function def(name, encoding, layout, stats, opt?) {
 
   var def:any = {
     type: type,
-    scale: name,
-    properties: {},
-    layer: encoding.encDef(name).axis.layer
+    scale: name
   };
 
-  var orient = exports.orient(encoding, name, stats);
-  if (orient) {
-    def.orient = orient;
-  }
-
-  // Add axis label custom scale (for bin / time)
-  def = labels.scale(def, encoding, name);
-  def = labels.format(def, encoding, name);
-  def = labels.angle(def, encoding, name);
-
-  // for x-axis, set ticks for Q or rotate scale for ordinal scale
-  if (name == X) {
-    if ((encoding.isDimension(X) || encoding.isType(X, T)) &&
-        !('angle' in getter(def, ['properties', 'labels']))) {
-      // TODO(kanitw): Jul 19, 2015 - #506 add condition for rotation
-      def = labels.rotate(def);
-    } else { // Q
-      def.ticks = encoding.encDef(name).axis.ticks;
+  // Add optional properties
+  [
+    // properties with special rules (so it has axis[property] methods) -- call rule functions
+    'format', 'grid', 'offset', 'orient', 'tickSize', 'ticks', 'title', 'titleOffset',
+    // Otherwise, only produce default values in the schema, or explicit value if specified
+    'layer', 'tickPadding', 'tickSize', 'tickSizeMajor', 'tickSizeMinor', 'tickSizeEnd',
+    'values', 'subdivide'
+  ].forEach(function(property) {
+    var value = axis[property] ?
+          axis[property](encoding, name, layout, stats) :
+          encoding.encDef(name).axis[property];
+    if (value !== undefined) {
+      def[property] = value;
     }
-  }
+  });
 
-  // TitleOffset depends on labels rotation
-  def.titleOffset = titleOffset(encoding, layout, name);
+  // Add properties under axis.properties
+  var properties = encoding.encDef(name).axis.properties || {};
 
-  //def.offset is used in axis.grid
-  if(isRow) def.offset = titleOffset(encoding, layout, Y) + 20;
-  // FIXME(kanitw): Jul 19, 2015 - offset for column when x is put on top
-
-  def = grid(def, encoding, name, layout);
-  def = title(def, encoding, name, layout);
-
-  if (isRow || isCol) {
-    def = hideTicks(def);
-  }
+  [
+    'axis', 'grid', 'labels', 'title', // have special rules
+    'ticks', 'majorTicks', 'minorTicks' // only default values
+  ].forEach(function(property) {
+    var value = axis.properties[property] ?
+      axis.properties[property](encoding, name, properties[property], layout, def) :
+      properties[property];
+    if (value !== undefined) {
+      def.properties = def.properties || {};
+      def.properties[property] = value;
+    }
+  });
 
   return def;
 };
 
-export function orient(encoding, name, stats) {
+axis.format = function(encoding, name) {
+  var format = encoding.encDef(name).axis.format;
+  if (format !== undefined)  {
+    return format;
+  }
+
+  if (encoding.isType(name, Q)) {
+    return encoding.numberFormat(name);
+  } else if (encoding.isType(name, T)) {
+    var timeUnit = encoding.encDef(name).timeUnit;
+    if (!timeUnit) {
+      return encoding.config('timeFormat');
+    } else if (timeUnit === 'year') {
+      return 'd';
+    }
+  }
+  return undefined;
+};
+
+axis.grid = function(encoding, name) {
+  var grid = encoding.axis(name).grid;
+  if (grid !== undefined) {
+    return grid;
+  }
+
+  // If `grid` is unspecified, the default value is `true` for
+  // - ROW and COL.
+  // - X and Y that have (1) quantitative fields that are not binned or (2) time fields.
+  // Otherwise, the default value is `false`.
+  return name === ROW || name === COL ||
+    (encoding.isTypes(name, [Q, T]) && !encoding.encDef(name).bin);
+};
+
+axis.offset = function(encoding, name, layout) {
+  var offset = encoding.encDef(name).axis.offset;
+  if (offset) {
+    return offset;
+  }
+
+  if(name === ROW) {
+   return layout.y.axisTitleOffset + 20;
+  }
+  return undefined;
+};
+
+axis.orient = function(encoding, name, layout, stats) {
   var orient = encoding.encDef(name).axis.orient;
   if (orient) {
     return orient;
   } else if (name === COL) {
     return 'top';
   } else if (name === X && encoding.has(Y) && encoding.isOrdinalScale(Y) && encoding.cardinality(Y, stats) > 30) {
+    // FIXME remove this case and migrate this logic to vega-lite-ui
     // x-axis for long y - put on top
     return 'top';
   }
   return undefined;
 };
 
-export function grid(def, encoding, name, layout) {
-  var cellPadding = layout.cellPadding,
-    isCol = name == COL,
-    isRow = name == ROW;
+axis.ticks = function(encoding, name) {
+  var ticks = encoding.encDef(name).axis.ticks;
+  if (ticks !== undefined) {
+    return ticks;
+  }
 
-  var _grid = encoding.axis(name).grid;
+  // FIXME depends on scale type too
+  if (name === X && !encoding.encDef(name).bin) {
+    return 5;
+  }
 
-  // If `grid` is unspecified, the default value is `true` for ROW and COL.
-  // For X and Y, the default value is `true` for (1) quantitative fields that are not binned and (2) time fields.
-  // Otherwise, the default value is `false`.
-  var grid = _grid === undefined ?
-    ( name === ROW || name === COL ||
-      (encoding.isTypes(name, [Q, T]) && !encoding.encDef(name).bin)
-    ) : _grid;
+  return undefined;
+};
 
-  if (grid) {
-    def.grid = true;
+axis.tickSize = function(encoding, name) {
+  var tickSize = encoding.encDef(name).axis.tickSize;
+  if (tickSize !== undefined) {
+    return tickSize;
+  }
+  if (name === ROW || name === COL) {
+    return 0;
+  }
+  return undefined;
+};
 
-    if (isCol) {
+
+axis.title = function (encoding, name, layout) {
+  var axisSpec = encoding.encDef(name).axis;
+  if (axisSpec.title !== undefined) {
+    return axisSpec.title;
+  }
+
+  // if not defined, automatically determine axis title from field def
+  var fieldTitle = encoding.fieldTitle(name);
+
+  var maxLength;
+  if (axisSpec.titleMaxLength) {
+  maxLength = axisSpec.titleMaxLength;
+  } else if (name === X) {
+    maxLength = layout.cellWidth / encoding.config('characterWidth');
+  } else if (name === Y) {
+    maxLength = layout.cellHeight / encoding.config('characterWidth');
+  }
+
+  return maxLength ? util.truncate(fieldTitle, maxLength) : fieldTitle;
+};
+
+
+axis.titleOffset = function (encoding, name) {
+  // return specified value if specified
+  var value = encoding.axis(name).titleOffset;
+  if (value)  return value;
+
+  switch (name) {
+    case ROW: return 0;
+    case COL: return 35;
+  }
+  return undefined;
+};
+
+// PROPERTIES
+
+axis.properties = {};
+
+axis.properties.axis = function(encoding, name, spec) {
+  if (name === ROW || name === COL) {
+    // hide axis for facets
+    return util.extend({
+      opacity: {value: 0}
+    }, spec || {});
+  }
+  return spec || undefined;
+};
+
+axis.properties.grid = function(encoding, name, spec, layout, def) {
+  var cellPadding = layout.cellPadding;
+
+  if (def.grid) {
+    if (name == COL) {
       // set grid property -- put the lines on the right the cell
       var yOffset = encoding.config('cellGridOffset');
 
       // TODO(#677): this should depend on orient
-      def.properties.grid = {
+      return util.extend({
         x: {
           offset: layout.cellWidth * (1+ cellPadding/2.0),
           // default value(s) -- vega doesn't do recursive merge
@@ -108,13 +209,13 @@ export function grid(def, encoding, name, layout) {
         },
         stroke: { value: encoding.config('cellGridColor') },
         strokeOpacity: { value: encoding.config('cellGridOpacity') }
-      };
-    } else if (isRow) {
+      }, spec || {});
+    } else if (name == ROW) {
       var xOffset = encoding.config('cellGridOffset');
 
       // TODO(#677): this should depend on orient
       // set grid property -- put the lines on the top
-      def.properties.grid = {
+      return util.extend({
         y: {
           offset: -layout.cellHeight * (cellPadding/2),
           // default value(s) -- vega doesn't do recursive merge
@@ -132,123 +233,56 @@ export function grid(def, encoding, name, layout) {
         },
         stroke: { value: encoding.config('cellGridColor') },
         strokeOpacity: { value: encoding.config('cellGridOpacity') }
-      };
+      }, spec || {});
     } else {
-      def.properties.grid = {
+      return util.extend({
         stroke: { value: encoding.config('gridColor') },
         strokeOpacity: { value: encoding.config('gridOpacity') }
-      };
+      }, spec || {});
     }
   }
-  return def;
+  return spec || undefined;
 };
 
-export function hideTicks(def) {
-  def.properties.ticks = {opacity: {value: 0}};
-  def.properties.majorTicks = {opacity: {value: 0}};
-  def.properties.axis = {opacity: {value: 0}};
-  return def;
-};
-
-export function title(def, encoding, name, layout) {
-  var ax = encoding.encDef(name).axis;
-
-  if (ax.title) {
-    def.title = ax.title;
-  } else {
-    // if not defined, automatically determine axis title from field def
-    var fieldTitle = encoding.fieldTitle(name),
-      maxLength;
-
-    if (ax.titleMaxLength) {
-      maxLength = ax.titleMaxLength;
-    } else if (name===X) {
-      maxLength = layout.cellWidth / encoding.config('characterWidth');
-    } else if (name === Y) {
-      maxLength = layout.cellHeight / encoding.config('characterWidth');
-    }
-
-    def.title = maxLength ? util.truncate(fieldTitle, maxLength) : fieldTitle;
+axis.properties.labels = function(encoding, name, spec, layout, def) {
+  var timeUnit = encoding.encDef(name).timeUnit;
+  if (encoding.isType(name, T) && timeUnit && (time.hasScale(timeUnit))) {
+    spec = util.extend({
+      text: {scale: 'time-' + timeUnit}
+    }, spec || {});
   }
 
+  if (encoding.isTypes(name, [N, O]) && encoding.axis(name).labelMaxLength) {
+    // TODO replace this with Vega's labelMaxLength once it is introduced
+    spec = util.extend({
+      text: {
+        template: '{{ datum.data | truncate:' + encoding.axis(name).labelMaxLength + '}}'
+      }
+    }, spec || {});
+  }
+
+   // for x-axis, set ticks for Q or rotate scale for ordinal scale
+  if (name == X) {
+    if ((encoding.isDimension(X) || encoding.isType(X, T))) {
+      spec = util.extend({
+        angle: {value: 270},
+        align: {value: def.orient === 'top' ? 'left': 'right'},
+        baseline: {value: 'middle'}
+      }, spec || {});
+    }
+  }
+  return spec || undefined;
+};
+
+axis.properties.title = function(encoding, name, spec, layout) {
   if (name === ROW) {
-    def.properties.title = {
+    return util.extend({
       angle: {value: 0},
       align: {value: 'right'},
       baseline: {value: 'middle'},
-      dy: {value: (-layout.height/2) -20}
-    };
+      dy: {value: (-layout.height / 2) - 20}
+    }, spec || {});
   }
-
-  return def;
+  return spec || undefined;
 };
 
-export var labels = {
-  /**
-   * add custom label for time type and bin
-   */
-  scale: function(def, encoding, name) {
-    // time
-    var timeUnit = encoding.encDef(name).timeUnit;
-    if (encoding.isType(name, T) && timeUnit && (time.hasScale(timeUnit))) {
-      setter(def, ['properties','labels','text','scale'], 'time-'+ timeUnit);
-    }
-    // FIXME bin
-    return def;
-  },
-
-  /**
-   * Determine number format or truncate if maxLabel length is presented.
-   */
-  format: function (def, encoding, name) {
-    if (encoding.axis(name).format) {
-      def.format = encoding.axis(name).format;
-    } else if (encoding.isType(name, Q)) {
-      def.format = encoding.numberFormat(name);
-    } else if (encoding.isType(name, T)) {
-      var timeUnit = encoding.encDef(name).timeUnit;
-      if (!timeUnit) {
-        def.format = encoding.config('timeFormat');
-      } else if (timeUnit === 'year') {
-        def.format = 'd';
-      }
-    } else if (encoding.isTypes(name, [N, O]) && encoding.axis(name).labelMaxLength) {
-      setter(def,
-        ['properties','labels','text','template'],
-        '{{ datum.data | truncate:' +
-        encoding.axis(name).labelMaxLength + '}}'
-      );
-    }
-
-    return def;
-  },
-
-  angle: function(def, encoding, name) {
-    var angle = encoding.axis(name).labelAngle;
-    if (typeof angle === 'undefined') return def;
-
-    setter(def, ['properties', 'labels', 'angle', 'value'], angle);
-    return def;
-  },
-
-  rotate: function(def) {
-   var align = def.orient ==='top' ? 'left' : 'right';
-   setter(def, ['properties','labels', 'angle', 'value'], 270);
-   setter(def, ['properties','labels', 'align', 'value'], align);
-   setter(def, ['properties','labels', 'baseline', 'value'], 'middle');
-   return def;
-  }
-};
-
-export function titleOffset(encoding, layout, name) {
-  // return specified value if specified
-  var value = encoding.axis(name).titleOffset;
-  if (value)  return value;
-
-  switch (name) {
-    //FIXME make this adjustable
-    case ROW: return 0;
-    case COL: return 35;
-  }
-  return getter(layout, [name, 'axisTitleOffset']);
-};
