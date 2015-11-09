@@ -27,9 +27,9 @@ export function def(encoding) {
   filterNonPositive(def[def.length - 1], encoding);
 
   // Stack
-  var stack = encoding.stack();
-  if (stack) {
-    def.push(exports.stack(encoding, stack));
+  var stackCfg = encoding.stack();
+  if (stackCfg) {
+    def.push(stack(encoding, stackCfg));
   }
 
   return def;
@@ -242,9 +242,9 @@ export function summary(encoding) {
 /**
  * Add stacked data source, for feeding the shared scale.
  */
-export function stack(encoding, stack) {
-  var dim = stack.groupby;
-  var val = stack.value;
+export function stack(encoding, stackCfg) {
+  var dim = stackCfg.groupby;
+  var val = stackCfg.value;
   var facets = encoding.facets();
 
   var stacked = {
