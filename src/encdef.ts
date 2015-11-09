@@ -129,10 +129,10 @@ export function isMeasure(field) {
 };
 
 export function count() {
-  return {name:'*', aggregate: 'count', type: Q, displayName: countDisplayName};
+  return {name:'*', aggregate: 'count', type: Q, displayName: COUNT_DISPLAYNAME};
 };
 
-export var countDisplayName = 'Number of Records';
+export const COUNT_DISPLAYNAME = 'Number of Records';
 
 export function isCount(field) {
   return field.aggregate === 'count';

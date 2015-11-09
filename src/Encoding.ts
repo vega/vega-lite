@@ -110,7 +110,7 @@ export class Encoding {
 
   fieldTitle(et) {
     if (vlEncDef.isCount(this._enc[et])) {
-      return vlEncDef.countDisplayName;
+      return vlEncDef.COUNT_DISPLAYNAME;
     }
     var fn = this._enc[et].aggregate || this._enc[et].timeUnit || (this._enc[et].bin && 'bin');
     if (fn) {
