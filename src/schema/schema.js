@@ -257,7 +257,7 @@ var axisMixin = {
         },
         ticks: {
           type: 'integer',
-          default: 5,
+          default: undefined,
           minimum: 0,
           description: 'A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are "nice" (multiples of 2, 5, 10) and lie within the underlying scale\'s range.'
         },
@@ -273,13 +273,6 @@ var axisMixin = {
           default: 25,
           minimum: 0,
           description: 'Truncate labels that are too long.'
-        },
-        labelAngle: {
-          type: 'integer',
-          default: undefined, // auto
-          minimum: 0,
-          maximum: 360,
-          description: 'Angle by which to rotate labels. Set to 0 to force horizontal.'
         },
         titleMaxLength: {
           type: 'integer',
