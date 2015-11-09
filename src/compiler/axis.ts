@@ -24,8 +24,8 @@ export function def(name, encoding, layout, stats) {
     'layer', 'tickPadding', 'tickSize', 'tickSizeMajor', 'tickSizeMinor', 'tickSizeEnd',
     'values', 'subdivide'
   ].forEach(function(property) {
-    var value = axis[property] ?
-          axis[property](encoding, name, layout, stats) :
+    var value = exports[property] ?
+          exports[property](encoding, name, layout, stats) :
           encoding.encDef(name).axis[property];
     if (value !== undefined) {
       def[property] = value;
@@ -39,8 +39,8 @@ export function def(name, encoding, layout, stats) {
     'axis', 'grid', 'labels', 'title', // have special rules
     'ticks', 'majorTicks', 'minorTicks' // only default values
   ].forEach(function(property) {
-    var value = axis.properties[property] ?
-      axis.properties[property](encoding, name, properties[property], layout, def) :
+    var value = exports.properties[property] ?
+      exports.properties[property](encoding, name, properties[property], layout, def) :
       properties[property];
     if (value !== undefined) {
       def.properties = def.properties || {};
@@ -51,7 +51,7 @@ export function def(name, encoding, layout, stats) {
   return def;
 };
 
-axis.format = function(encoding, name) {
+function format(encoding, name) {
   var format = encoding.encDef(name).axis.format;
   if (format !== undefined)  {
     return format;
@@ -70,7 +70,7 @@ axis.format = function(encoding, name) {
   return undefined;
 };
 
-axis.grid = function(encoding, name) {
+function grid(encoding, name) {
   var grid = encoding.axis(name).grid;
   if (grid !== undefined) {
     return grid;
@@ -84,7 +84,7 @@ axis.grid = function(encoding, name) {
     (encoding.isTypes(name, [Q, T]) && !encoding.encDef(name).bin);
 };
 
-axis.offset = function(encoding, name, layout) {
+function offset(encoding, name, layout) {
   var offset = encoding.encDef(name).axis.offset;
   if (offset) {
     return offset;
@@ -96,7 +96,7 @@ axis.offset = function(encoding, name, layout) {
   return undefined;
 };
 
-axis.orient = function(encoding, name, layout, stats) {
+function orient(encoding, name, layout, stats) {
   var orient = encoding.encDef(name).axis.orient;
   if (orient) {
     return orient;
@@ -110,7 +110,7 @@ axis.orient = function(encoding, name, layout, stats) {
   return undefined;
 };
 
-axis.ticks = function(encoding, name) {
+function ticks(encoding, name) {
   var ticks = encoding.encDef(name).axis.ticks;
   if (ticks !== undefined) {
     return ticks;
@@ -124,7 +124,7 @@ axis.ticks = function(encoding, name) {
   return undefined;
 };
 
-axis.tickSize = function(encoding, name) {
+function tickSize(encoding, name) {
   var tickSize = encoding.encDef(name).axis.tickSize;
   if (tickSize !== undefined) {
     return tickSize;
@@ -136,7 +136,7 @@ axis.tickSize = function(encoding, name) {
 };
 
 
-axis.title = function (encoding, name, layout) {
+function title(encoding, name, layout) {
   var axisSpec = encoding.encDef(name).axis;
   if (axisSpec.title !== undefined) {
     return axisSpec.title;
@@ -158,7 +158,7 @@ axis.title = function (encoding, name, layout) {
 };
 
 
-axis.titleOffset = function (encoding, name) {
+function titleOffset(encoding, name) {
   // return specified value if specified
   var value = encoding.axis(name).titleOffset;
   if (value)  return value;
@@ -172,117 +172,116 @@ axis.titleOffset = function (encoding, name) {
 
 // PROPERTIES
 
-axis.properties = {};
-
-axis.properties.axis = function(encoding, name, spec) {
-  if (name === ROW || name === COL) {
-    // hide axis for facets
-    return util.extend({
-      opacity: {value: 0}
-    }, spec || {});
-  }
-  return spec || undefined;
-};
-
-axis.properties.grid = function(encoding, name, spec, layout, def) {
-  var cellPadding = layout.cellPadding;
-
-  if (def.grid) {
-    if (name == COL) {
-      // set grid property -- put the lines on the right the cell
-      var yOffset = encoding.config('cellGridOffset');
-
-      // TODO(#677): this should depend on orient
+export var properties = {
+  axis: function(encoding, name, spec) {
+    if (name === ROW || name === COL) {
+      // hide axis for facets
       return util.extend({
-        x: {
-          offset: layout.cellWidth * (1+ cellPadding/2.0),
-          // default value(s) -- vega doesn't do recursive merge
-          scale: 'col',
-          field: 'data'
-        },
-        y: {
-          value: -yOffset,
-        },
-        y2: {
-          field: {group: 'mark.group.height'},
-          offset: yOffset
-        },
-        stroke: { value: encoding.config('cellGridColor') },
-        strokeOpacity: { value: encoding.config('cellGridOpacity') }
-      }, spec || {});
-    } else if (name == ROW) {
-      var xOffset = encoding.config('cellGridOffset');
-
-      // TODO(#677): this should depend on orient
-      // set grid property -- put the lines on the top
-      return util.extend({
-        y: {
-          offset: -layout.cellHeight * (cellPadding/2),
-          // default value(s) -- vega doesn't do recursive merge
-          scale: 'row',
-          field: 'data'
-        },
-        x: {
-          value: def.offset - xOffset
-        },
-        x2: {
-          field: {group: 'mark.group.width'},
-          offset: def.offset + xOffset,
-          // default value(s) -- vega doesn't do recursive merge
-          mult: 1
-        },
-        stroke: { value: encoding.config('cellGridColor') },
-        strokeOpacity: { value: encoding.config('cellGridOpacity') }
-      }, spec || {});
-    } else {
-      return util.extend({
-        stroke: { value: encoding.config('gridColor') },
-        strokeOpacity: { value: encoding.config('gridOpacity') }
+        opacity: {value: 0}
       }, spec || {});
     }
-  }
-  return spec || undefined;
-};
+    return spec || undefined;
+  },
 
-axis.properties.labels = function(encoding, name, spec, layout, def) {
-  var timeUnit = encoding.encDef(name).timeUnit;
-  if (encoding.isType(name, T) && timeUnit && (time.hasScale(timeUnit))) {
-    spec = util.extend({
-      text: {scale: 'time-' + timeUnit}
-    }, spec || {});
-  }
+  grid: function(encoding, name, spec, layout, def) {
+    var cellPadding = layout.cellPadding;
 
-  if (encoding.isTypes(name, [N, O]) && encoding.axis(name).labelMaxLength) {
-    // TODO replace this with Vega's labelMaxLength once it is introduced
-    spec = util.extend({
-      text: {
-        template: '{{ datum.data | truncate:' + encoding.axis(name).labelMaxLength + '}}'
+    if (def.grid) {
+      if (name == COL) {
+        // set grid property -- put the lines on the right the cell
+        var yOffset = encoding.config('cellGridOffset');
+
+        // TODO(#677): this should depend on orient
+        return util.extend({
+          x: {
+            offset: layout.cellWidth * (1+ cellPadding/2.0),
+            // default value(s) -- vega doesn't do recursive merge
+            scale: 'col',
+            field: 'data'
+          },
+          y: {
+            value: -yOffset,
+          },
+          y2: {
+            field: {group: 'mark.group.height'},
+            offset: yOffset
+          },
+          stroke: { value: encoding.config('cellGridColor') },
+          strokeOpacity: { value: encoding.config('cellGridOpacity') }
+        }, spec || {});
+      } else if (name == ROW) {
+        var xOffset = encoding.config('cellGridOffset');
+
+        // TODO(#677): this should depend on orient
+        // set grid property -- put the lines on the top
+        return util.extend({
+          y: {
+            offset: -layout.cellHeight * (cellPadding/2),
+            // default value(s) -- vega doesn't do recursive merge
+            scale: 'row',
+            field: 'data'
+          },
+          x: {
+            value: def.offset - xOffset
+          },
+          x2: {
+            field: {group: 'mark.group.width'},
+            offset: def.offset + xOffset,
+            // default value(s) -- vega doesn't do recursive merge
+            mult: 1
+          },
+          stroke: { value: encoding.config('cellGridColor') },
+          strokeOpacity: { value: encoding.config('cellGridOpacity') }
+        }, spec || {});
+      } else {
+        return util.extend({
+          stroke: { value: encoding.config('gridColor') },
+          strokeOpacity: { value: encoding.config('gridOpacity') }
+        }, spec || {});
       }
-    }, spec || {});
-  }
+    }
+    return spec || undefined;
+  },
 
-   // for x-axis, set ticks for Q or rotate scale for ordinal scale
-  if (name == X) {
-    if ((encoding.isDimension(X) || encoding.isType(X, T))) {
+  labels: function(encoding, name, spec, layout, def) {
+    var timeUnit = encoding.encDef(name).timeUnit;
+    if (encoding.isType(name, T) && timeUnit && (time.hasScale(timeUnit))) {
       spec = util.extend({
-        angle: {value: 270},
-        align: {value: def.orient === 'top' ? 'left': 'right'},
-        baseline: {value: 'middle'}
+        text: {scale: 'time-' + timeUnit}
       }, spec || {});
     }
-  }
-  return spec || undefined;
-};
 
-axis.properties.title = function(encoding, name, spec, layout) {
-  if (name === ROW) {
-    return util.extend({
-      angle: {value: 0},
-      align: {value: 'right'},
-      baseline: {value: 'middle'},
-      dy: {value: (-layout.height / 2) - 20}
-    }, spec || {});
-  }
-  return spec || undefined;
-};
+    if (encoding.isTypes(name, [N, O]) && encoding.axis(name).labelMaxLength) {
+      // TODO replace this with Vega's labelMaxLength once it is introduced
+      spec = util.extend({
+        text: {
+          template: '{{ datum.data | truncate:' + encoding.axis(name).labelMaxLength + '}}'
+        }
+      }, spec || {});
+    }
 
+     // for x-axis, set ticks for Q or rotate scale for ordinal scale
+    if (name == X) {
+      if ((encoding.isDimension(X) || encoding.isType(X, T))) {
+        spec = util.extend({
+          angle: {value: 270},
+          align: {value: def.orient === 'top' ? 'left': 'right'},
+          baseline: {value: 'middle'}
+        }, spec || {});
+      }
+    }
+    return spec || undefined;
+  },
+
+  title: function(encoding, name, spec, layout) {
+    if (name === ROW) {
+      return util.extend({
+        angle: {value: 0},
+        align: {value: 'right'},
+        baseline: {value: 'middle'},
+        dy: {value: (-layout.height / 2) - 20}
+      }, spec || {});
+    }
+    return spec || undefined;
+  }
+};
