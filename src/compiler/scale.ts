@@ -23,8 +23,8 @@ export function defs(names, encoding, layout, stats, facet?) {
     var scaleDef: any = {};
 
     scaleDef.name = name;
-    var type = scaleDef.type = exports.type(name, encoding);
-    scaleDef.domain = domain(encoding, name, type, facet);
+    var t = scaleDef.type = type(name, encoding);
+    scaleDef.domain = domain(encoding, name, t, facet);
 
     // Add optional properties
     var properties = {
