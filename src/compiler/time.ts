@@ -91,8 +91,8 @@ export function scales(encoding) {
   var scales = encoding.reduce(function(scales, encDef) {
     var timeUnit = encDef.timeUnit;
     if (encDef.type === T && timeUnit && !scales[timeUnit]) {
-      var scale = exports.scale.def(encDef.timeUnit, encoding);
-      if (scale) scales[timeUnit] = scale;
+      var scaleDef = scale.def(encDef.timeUnit, encoding);
+      if (scaleDef) scales[timeUnit] = scaleDef;
     }
     return scales;
   }, {});
