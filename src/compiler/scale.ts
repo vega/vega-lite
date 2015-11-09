@@ -87,7 +87,7 @@ export function domain(encoding, name, type, facet) {
   }
 
   var useRawDomain = _useRawDomain(encoding, name);
-  var sort = sortDomain(encoding, name, type);
+  var sort = domainSort(encoding, name, type);
 
   if (useRawDomain) { // useRawDomain - only Q/T
     return {
@@ -118,7 +118,7 @@ export function domain(encoding, name, type, facet) {
   }
 };
 
-export function sortDomain(encoding, name, type):any {
+export function domainSort(encoding, name, type):any {
   var sort = encoding.encDef(name).sort;
   if (sort === 'ascending' || sort === 'descending') {
     return true;
