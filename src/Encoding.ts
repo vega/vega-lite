@@ -36,7 +36,7 @@ export class Encoding {
     }, theme);
   }
 
-  static fromSpec(spec, theme) {
+  static fromSpec(spec, theme?) {
     return new Encoding(spec, theme);
   };
 
@@ -52,11 +52,11 @@ export class Encoding {
       c.delim + vlEnc.shorthand(spec.encoding);
   };
 
-  static specFromShorthand(shorthand:string, data, config, excludeConfig) {
+  static specFromShorthand(shorthand:string, data, config, excludeConfig?) {
     return Encoding.fromShorthand(shorthand, data, config).toSpec(excludeConfig);
   };
 
-  toSpec(excludeConfig, excludeData?) {
+  toSpec(excludeConfig?, excludeData?) {
     var enc = util.duplicate(this._enc),
       spec;
 
@@ -128,7 +128,7 @@ export class Encoding {
     return this._enc[et].axis || {};
   };
 
-  bandWidth(encType, useSmallBand) {
+  bandWidth(encType, useSmallBand?) {
     if (this.encDef(encType).scale.bandWidth !== undefined) {
       // explicit value
       return this.encDef(encType).scale.bandWidth;

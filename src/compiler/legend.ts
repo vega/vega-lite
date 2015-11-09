@@ -3,36 +3,36 @@ import * as time from './time';
 import {COLOR, SHAPE, SIZE} from '../consts';
 import {Q, O, N, T} from '../consts';
 
-export function defs(encoding, style) {
+export function defs(encoding, styleCfg) {
   var defs = [];
 
   if (encoding.has(COLOR) && encoding.encDef(COLOR).legend) {
     defs.push(def(COLOR, encoding, {
       fill: COLOR
-    }, style));
+    }, styleCfg));
   }
 
   if (encoding.has(SIZE) && encoding.encDef(SIZE).legend) {
     defs.push(def(SIZE, encoding, {
       size: SIZE
-    }, style));
+    }, styleCfg));
   }
 
   if (encoding.has(SHAPE) && encoding.encDef(SHAPE).legend) {
     defs.push(def(SHAPE, encoding, {
       shape: SHAPE
-    }, style));
+    }, styleCfg));
   }
   return defs;
 };
 
-export function def(name, encoding, def, style) {
+export function def(name, encoding, def, styleCfg) {
   var timeUnit = encoding.encDef(name).timeUnit;
 
   def.title = title(name, encoding);
   def.orient = encoding.encDef(name).legend.orient;
 
-  def = exports.style(name, encoding, def, style);
+  def = style(name, encoding, def, styleCfg);
 
   if (encoding.isType(name, T) &&
     timeUnit &&
@@ -44,7 +44,7 @@ export function def(name, encoding, def, style) {
   return def;
 };
 
-export function style(name, e, def, style) {
+export function style(name, e, def, styleCfg) {
   var symbols = getter(def, ['properties', 'symbols']),
     marktype = e.marktype();
 
@@ -86,7 +86,7 @@ export function style(name, e, def, style) {
       break;
   }
 
-  var opacity = e.encDef(COLOR).opacity || style.opacity;
+  var opacity = e.encDef(COLOR).opacity || styleCfg.opacity;
   if (opacity) {
     symbols.opacity = {value: opacity};
   }

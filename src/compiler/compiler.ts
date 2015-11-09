@@ -77,8 +77,8 @@ export function compileEncoding(encoding, stats) {
   var group = output.marks[0];
 
   // marks
-  var style = vlStyle.def(encoding, stats),
-    mdefs = group.marks = marks.def(encoding, layout, style),
+  var styleCfg = vlStyle.def(encoding, stats),
+    mdefs = group.marks = marks.def(encoding, layout, styleCfg),
     mdef = mdefs[mdefs.length - 1];  // TODO: remove this dirty hack by refactoring the whole flow
 
   var stack = encoding.stack();
@@ -112,7 +112,7 @@ export function compileEncoding(encoding, stats) {
     return scale.names(markProps.properties.update);
   }));
 
-  var legends = legend.defs(encoding, style);
+  var legends = legend.defs(encoding, styleCfg);
 
   // Small Multiples
   if (encoding.has(ROW) || encoding.has(COL)) {

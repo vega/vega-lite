@@ -91,8 +91,8 @@ export function scales(encoding) {
   var scales = encoding.reduce(function(scales, encDef) {
     var timeUnit = encDef.timeUnit;
     if (encDef.type === T && timeUnit && !scales[timeUnit]) {
-      var scale = exports.scale.def(encDef.timeUnit, encoding);
-      if (scale) scales[timeUnit] = scale;
+      var scaleDef = scale.def(encDef.timeUnit, encoding);
+      if (scaleDef) scales[timeUnit] = scaleDef;
     }
     return scales;
   }, {});
@@ -117,14 +117,14 @@ export function isOrdinalFn(timeUnit) {
 export var scale = {
   /** append custom time scales for axis label */
   def: function(timeUnit, encoding) {
-    var range = exports.range(timeUnit, encoding);
+    var rangeDef = range(timeUnit, encoding);
 
-    if (range) {
+    if (rangeDef) {
       return {
         name: 'time-'+timeUnit,
         type: 'ordinal',
         domain: scale.domain(timeUnit),
-        range: range
+        range: rangeDef
       };
     }
     return null;

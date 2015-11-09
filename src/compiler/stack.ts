@@ -20,6 +20,7 @@ export function def(encoding, mdef, stack) {
     });
   }
 
+  // TODO: put all vega interface in one place
   interface StackTransform {
     type: string;
     offset?: any;
