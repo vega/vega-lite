@@ -17,33 +17,22 @@ export default function(name, encoding: Encoding, layout, stats) {
     scale: name
   };
 
-  // properties with special rules (so it has axis[property] methods) -- call rule functions
-  var methods = {
-    'format': format, 'grid': grid, 'offset': offset, 'orient': orient,
-    'tickSize': tickSize, 'ticks': ticks, 'title': title, 'titleOffset': titleOffset
-  };
-
-  // Add optional properties
-
-  for (var property in methods) {
-    var value = methods[property](encoding, name, layout, stats);
-    if (value !== undefined) {
-      def[property] = value;
-    }
-  }
-
+  var axis = exports;
   [
+    // properties with special rules (so it has axis[property] methods) -- call rule functions
+    'format', 'grid', 'offset', 'orient', 'tickSize', 'ticks', 'title', 'titleOffset',
     // If we don't have a special function, only produce default values in the schema, or explicit value if specified
     'layer', 'tickPadding', 'tickSize', 'tickSizeMajor', 'tickSizeMinor', 'tickSizeEnd',
     'values', 'subdivide'
   ].forEach(function(property) {
-    var value = encoding.encDef(name).axis[property];
+    var value = axis[property] ? axis[property](encoding, name, layout, stats) :
+      encoding.encDef(name).axis[property];
     if (value !== undefined) {
       def[property] = value;
     }
   });
 
-  // Add properties
+  // Add properties groups
   var props = encoding.encDef(name).axis.properties || {};
 
   [
@@ -61,6 +50,7 @@ export default function(name, encoding: Encoding, layout, stats) {
 
   return def;
 };
+
 
 export function format(encoding: Encoding, name) {
   var format = encoding.encDef(name).axis.format;
