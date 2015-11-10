@@ -1,5 +1,3 @@
-'use strict';
-
 var assert = require('assert'),
   ZSchema = require('z-schema'),
   inspect = require('util').inspect;
@@ -7,11 +5,6 @@ var assert = require('assert'),
 var schema = require('../lib/schema.json'),
   util = require('../src/schema/schemautil'),
   specSchema = require('../src/schema/schema').schema;
-
-/*jshint -W121 */
-String.prototype.endsWith = function(suffix) {
-    return this.indexOf(suffix, this.length - suffix.length) !== -1;
-};
 
 describe('Schema', function() {
   it('should be valid', function() {

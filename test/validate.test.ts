@@ -5,7 +5,7 @@ var expect = require('chai').expect,
   inspect = require('util').inspect,
   dl = require('datalib');
 
-var vl = require('../src/vl.js'),
+var vl = require('../src/vl'),
   vlSchema = require('../src/schema/schema').schema,
   vgSchema = require('../node_modules/vega/vega-schema.json'),
   examples = require('./examples');
