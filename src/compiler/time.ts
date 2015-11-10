@@ -113,9 +113,9 @@ export function isOrdinalFn(timeUnit) {
 };
 
 
-export var scale = {
+export namespace scale {
   /** append custom time scales for axis label */
-  def: function(timeUnit, encoding) {
+  export function def(timeUnit, encoding) {
     var rangeDef = range(timeUnit, encoding);
 
     if (rangeDef) {
@@ -127,18 +127,18 @@ export var scale = {
       };
     }
     return null;
-  },
+  }
 
-  type: function(timeUnit, name) {
+  export function type(timeUnit, name) {
     if (name === COLOR) {
       return 'linear'; // time has order, so use interpolated ordinal color scale.
     }
 
     // FIXME revise this -- should 'year' be linear too?
     return isOrdinalFn(timeUnit) || name === COL || name === ROW ? 'ordinal' : 'linear';
-  },
+  }
 
-  domain: function(timeUnit, name?) {
+  export function domain(timeUnit, name?) {
     var isColor = name === COLOR;
     switch (timeUnit) {
       case 'seconds':
