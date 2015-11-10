@@ -77,7 +77,7 @@ export function compileEncoding(encoding, stats) {
   var group = output.marks[0];
 
   // marks
-  var styleCfg = vlStyle.def(encoding, stats),
+  var styleCfg = vlStyle.style(encoding, stats),
     mdefs = group.marks = marks.def(encoding, layout, styleCfg),
     mdef = mdefs[mdefs.length - 1];  // TODO: remove this dirty hack by refactoring the whole flow
 

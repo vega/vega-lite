@@ -2,7 +2,7 @@ import * as vlEncDef from '../encdef';
 
 import {X, Y, ROW, COL} from '../consts';
 
-export function def(encoding, stats) {
+export function style(encoding, stats) {
   return {
     opacity: estimateOpacity(encoding, stats),
   };
