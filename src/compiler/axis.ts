@@ -12,7 +12,7 @@ export default function(name, encoding: Encoding, layout, stats) {
     type = isCol ? 'x' : isRow ? 'y': undefined;
 
   // TODO: rename def to axisDef and avoid side effects where possible.
-
+  // TODO: replace any with Vega Axis Interface
   var def:any = {
     type: type,
     scale: name
@@ -182,10 +182,8 @@ export function titleOffset(encoding, name) {
   return undefined;
 };
 
-// PROPERTIES
-
-export var properties = {
-  axis: function(encoding, name, spec) {
+namespace properties {
+  export function axis(encoding, name, spec) {
     if (name === Enctype.ROW || name === Enctype.COL) {
       // hide axis for facets
       return util.extend({
@@ -193,9 +191,9 @@ export var properties = {
       }, spec || {});
     }
     return spec || undefined;
-  },
+  }
 
-  grid: function(encoding, name, spec, layout, def) {
+  export function grid(encoding, name, spec, layout, def) {
     var cellPadding = layout.cellPadding;
 
     if (def.grid) {
@@ -253,9 +251,9 @@ export var properties = {
       }
     }
     return spec || undefined;
-  },
+  }
 
-  labels: function(encoding, name, spec, layout, def) {
+  export function labels(encoding, name, spec, layout, def) {
     var timeUnit = encoding.encDef(name).timeUnit;
     if (encoding.isType(name, Type.T) && timeUnit && (time.hasScale(timeUnit))) {
       spec = util.extend({
@@ -283,9 +281,9 @@ export var properties = {
       }
     }
     return spec || undefined;
-  },
+  }
 
-  title: function(encoding, name, spec, layout) {
+  export function title(encoding, name, spec, layout) {
     if (name === Enctype.ROW) {
       return util.extend({
         angle: {value: 0},

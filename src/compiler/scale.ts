@@ -264,7 +264,7 @@ export function points(encoding, name, type) {
 };
 
 
-export function range (encoding: Encoding, name, type, layout, stats) {
+export function range(encoding: Encoding, name, type, layout, stats) {
   var encDef = encoding.encDef(name);
 
   if (encDef.scale.range) { // explicit value
@@ -380,8 +380,8 @@ export function color(encoding: Encoding, name, scaleType, stats) {
   }
 };
 
-export var colors = {
-  palette: function(range, cardinality, type) {
+export namespace colors {
+  export function palette(range, cardinality, type) {
     // FIXME(kanitw): Jul 29, 2015 - check range is string
     switch (range) {
       case 'category10k':
@@ -425,9 +425,9 @@ export var colors = {
     }
 
     return range;
-  },
+  }
 
-  interpolate: function(start: number, end: number, cardinality: number) {
+  export function interpolate(start, end, cardinality) {
     var interpolator = interpolateHsl(start, end);
     return util.range(cardinality).map(function(i) { return interpolator(i*1.0/(cardinality-1)); });
   }

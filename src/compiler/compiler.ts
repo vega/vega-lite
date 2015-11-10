@@ -45,6 +45,7 @@ export function compileEncoding(encoding: Encoding, stats) {
 
   var layout = vlLayout(encoding, stats);
 
+  // TODO: change type to become VgSpec
   var output:any = {
       width: layout.width,
       height: layout.height,
