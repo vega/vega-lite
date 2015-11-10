@@ -1,8 +1,7 @@
 import * as vlEncDef from '../encdef';
 import * as util from '../util';
 import Encoding from '../Encoding';
-import {SOURCE, SUMMARY, STACKED} from '../consts';
-import {Type} from '../consts';
+import {Table, Type} from '../consts';
 
 import * as time from './time';
 
@@ -48,7 +47,7 @@ interface VgData {
 }
 
 export function source(encoding): VgData {
-  var source:VgData = {name: SOURCE};
+  var source:VgData = {name: Table.SOURCE};
 
   // Data source (url or inline)
   if (encoding.hasValues()) {
@@ -230,8 +229,8 @@ export function summary(encoding):VgData {
 
   if (hasAggregate) {
     return {
-      name: SUMMARY,
-      source: SOURCE,
+      name: Table.SUMMARY,
+      source: Table.SOURCE,
       transform: [{
         type: 'aggregate',
         groupby: groupby,
@@ -252,7 +251,7 @@ function stack(encoding, stackCfg):VgData {
   var facets = encoding.facets();
 
   var stacked:VgData = {
-    name: STACKED,
+    name: Table.STACKED,
     source: encoding.dataTable(),
     transform: [{
       type: 'aggregate',
