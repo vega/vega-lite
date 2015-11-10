@@ -1,6 +1,6 @@
 // utility for field
 
-import {Type, SHORTHAND as c} from './consts';
+import {Type, Shorthand} from './consts';
 import * as util from './util';
 import * as time from './compiler/time';
 import * as schema from './schema/schema';
@@ -40,19 +40,19 @@ export function fieldRef(field, opt) {
 };
 
 export function shorthand(f) {
-  return (f.aggregate ? f.aggregate + c.func : '') +
-    (f.timeUnit ? f.timeUnit + c.func : '') +
-    (f.bin ? 'bin' + c.func : '') +
-    (f.name || '') + c.type + f.type;
+  return (f.aggregate ? f.aggregate + Shorthand.Func : '') +
+    (f.timeUnit ? f.timeUnit + Shorthand.Func : '') +
+    (f.bin ? 'bin' + Shorthand.Func : '') +
+    (f.name || '') + Shorthand.Type + f.type;
 };
 
 export function shorthands(fields, delim) {
-  delim = delim || c.delim;
+  delim = delim || Shorthand.Delim;
   return fields.map(shorthand).join(delim);
 };
 
 export function fromShorthand(shorthand: string) {
-  var split = shorthand.split(c.type), i;
+  var split = shorthand.split(Shorthand.Type), i;
 
   var o: any = {
     name: split[0].trim(),

@@ -39,9 +39,9 @@ export const ENCODING_TYPES = [
   Enctype.SIZE, Enctype.SHAPE, Enctype.COLOR, Enctype.TEXT, Enctype.DETAIL
 ];
 
-export const SHORTHAND = {
-  delim: '|',
-  assign: '=',
-  type: ',',
-  func: '_'
+export const Shorthand = {
+  Delim: '|',
+  Assign: '=',
+  Type: ',',
+  Func: '_'
 };

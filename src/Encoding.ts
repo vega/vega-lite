@@ -1,4 +1,4 @@
-import {Enctype, Type, SHORTHAND, SUMMARY, SOURCE} from './consts';
+import {Enctype, Type, Shorthand, SUMMARY, SOURCE} from './consts';
 import * as util from './util';
 import * as vlEncDef from './encdef';
 import * as vlEnc from './enc';
@@ -22,9 +22,9 @@ export default class Encoding {
   };
 
   static fromShorthand(shorthand: string, data?, config?, theme?) {
-    var c = SHORTHAND,
-      split = shorthand.split(c.delim),
-      marktype = split.shift().split(c.assign)[1].trim(),
+    var c = Shorthand,
+      split = shorthand.split(c.Delim),
+      marktype = split.shift().split(c.Assign)[1].trim(),
       enc = vlEnc.fromShorthand(split);
 
     return new Encoding({
@@ -40,15 +40,15 @@ export default class Encoding {
   };
 
   toShorthand() {
-    var c = SHORTHAND;
-    return 'mark' + c.assign + this._marktype +
-      c.delim + vlEnc.shorthand(this._enc);
+    var c = Shorthand;
+    return 'mark' + c.Assign + this._marktype +
+      c.Delim + vlEnc.shorthand(this._enc);
   };
 
   static shorthand(spec) {
-    var c = SHORTHAND;
-    return 'mark' + c.assign + spec.marktype +
-      c.delim + vlEnc.shorthand(spec.encoding);
+    var c = Shorthand;
+    return 'mark' + c.Assign + spec.marktype +
+      c.Delim + vlEnc.shorthand(spec.encoding);
   };
 
   static specFromShorthand(shorthand: string, data, config, excludeConfig?) {
