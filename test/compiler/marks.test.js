@@ -12,7 +12,7 @@ var X = consts.Enctype.X;
 var Y = consts.Enctype.Y;
 var SIZE = consts.Enctype.SIZE;
 var SHAPE = consts.Enctype.SHAPE;
-var COLOR = consts.CEnctype.OLOR;
+var COLOR = consts.Enctype.COLOR;
 
 var mockLayout = {
   x: {useSmallBand: false},
