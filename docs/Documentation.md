@@ -32,7 +32,9 @@ likely to change are annotated with  __"Pending Revision"__ notes.
 
 ## Using Vega-Lite
 
-Here is the bare minimum html file to get vega-lite working in a webpage.
+### Inline Data
+
+Here is the bare minimum html file to get Vega-Lite with inline values working in a webpage.
 Basically, Vega-Lite compiles a Vega-Lite specification into a Vega
 specification and use Vega Runtime to display visualizations.
 
@@ -41,7 +43,7 @@ specification and use Vega Runtime to display visualizations.
 <meta charset="utf-8">
 
 <script src="../lib/d3.min.js"></script>
-<script src="../lib/vega1.5.js"></script>
+<script src="../lib/vega.js"></script>
 <script src="../lib/vega-lite.js"></script>
 
 <div id="vis"></div>
@@ -70,6 +72,64 @@ var vlspec = {
 
 var vgspec = vl.compile(vlspec);
 parse(vgspec);
+
+</script>
+```
+
+### Data from URL
+
+Here is the bare minimum html file to get Vega-Lite with data from url working in a webpage.
+Currently, Vega-Lite relies on pre-calculating statistics of the underlying data,
+so `vl.data.stats()` must be called beforehand.
+After that, Vega-Lite compiles a Vega-Lite specification into a Vega specification
+(using some knowledge from the stats object) and use Vega Runtime to display visualizations.
+
+Note that the need to call `vl.data.stats()` will be eliminated very soon (before we release 1.0).
+
+```html
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<script src="../lib/d3.min.js"></script>
+<script src="../lib/vega.js"></script>
+<script src="../lib/vega-lite.js"></script>
+
+<div id="vis"></div>
+
+<script>
+
+function render(vlSpec) {
+  var callback = function(stats) {
+    var vgSpec = vl.compile(vlSpec, stats);
+
+    vg.parse.spec(vgSpec, function(chart) {
+      var view = chart({el: '#vis', renderer: 'svg'});
+      view.update();
+    });
+  };
+
+  if (!vlSpec.data.values) {
+    d3.json(vlSpec.data.url, function(err, data) {
+      if (err) return alert('Error loading data ' + err.statusText);
+      var stats = vl.data.stats(data);
+      callback(stats);
+    });
+  } else {
+    callback();
+  }
+}
+
+var vlspec = {
+      "data": {"url": "data/cars.json"},
+      "marktype": "point",
+      "encoding": {
+        "x": {"type": "O","name": "Origin"},
+        "y": {"type": "Q","name": "Acceleration"}
+      }
+    };
+
+
+render(vlSpec);
 
 </script>
 ```
