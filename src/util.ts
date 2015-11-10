@@ -101,6 +101,6 @@ export function getter(x, p, noaugment = false) {
   return x;
 };
 
-export function error(message) {
-  console.log(message);
-}
+export function error(message: any): void {
+  console.error('[VL Error]', message);
+};
