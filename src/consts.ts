@@ -1,7 +1,6 @@
 export const SUMMARY = 'summary';
 export const SOURCE = 'source';
 export const STACKED = 'stacked';
-export const INDEX = 'index';
 
 // export enum Enctype {
 //   X, Y, COL, ROW, SIZE, SHAPE, COLOR, TEXT, DETAIL
@@ -39,9 +38,9 @@ export const ENCODING_TYPES = [
   Enctype.SIZE, Enctype.SHAPE, Enctype.COLOR, Enctype.TEXT, Enctype.DETAIL
 ];
 
-export const SHORTHAND = {
-  delim: '|',
-  assign: '=',
-  type: ',',
-  func: '_'
+export const Shorthand = {
+  Delim: '|',
+  Assign: '=',
+  Type: ',',
+  Func: '_'
 };
