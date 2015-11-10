@@ -10,7 +10,7 @@ describe('vl.encDef.cardinality()', function () {
       var encDef = {name:2, type:'Q'};
       var stats = {2:{distinct: 10, min:0, max:150}};
       var cardinality = vlEncDef.cardinality(encDef, stats);
-      expect(cardinality).to.equal(11);
+      expect(cardinality).to.equal(10);
     });
   });
 
