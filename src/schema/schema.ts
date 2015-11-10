@@ -7,7 +7,13 @@ import * as colorbrewer from 'colorbrewer';
 import * as util from '../util';
 import {toMap} from '../util';
 import * as schemaUtil from './schemautil';
-import {Q, N, O, T} from '../consts';
+import {Type} from '../consts';
+
+// TODO: remove these when we know how to generate a schema
+var Q = Type.Q;
+var O = Type.O;
+var N = Type.N;
+var T = Type.T;
 
 
 

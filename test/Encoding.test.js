@@ -2,7 +2,7 @@
 
 var expect = require('chai').expect;
 
-var Encoding = require('../src/Encoding').Encoding;
+var Encoding = require('../src/Encoding').default;
 
 describe('Encoding.fromShorthand()', function () {
   it('should parse shorthand correctly', function () {

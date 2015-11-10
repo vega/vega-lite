@@ -3,7 +3,7 @@
 var expect = require('chai').expect;
 
 var data = require('../../src/compiler/data'),
-  Encoding = require('../../src/Encoding').Encoding;
+  Encoding = require('../../src/Encoding').default;
 
 var SUMMARY = require('../../src/consts').SUMMARY;
 

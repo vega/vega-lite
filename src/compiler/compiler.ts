@@ -3,7 +3,7 @@
  */
 
 import {summary} from '../util';
-import {Encoding} from '../Encoding';
+import Encoding from '../Encoding';
 
 import * as scale from './scale';
 import * as time from './time';
@@ -17,21 +17,20 @@ import vlStack from './stack';
 import vlStyle from './style';
 import subfacet from './subfacet';
 
-import {X, Y, ROW, COL, SOURCE} from '../consts';
-import {Q, O, N, T} from '../consts';
+import {Enctype, Type} from '../consts';
 
 export function compile(spec, stats, theme) {
   return compileEncoding(Encoding.fromSpec(spec, theme), stats);
 };
 
-export function shorthand(shorthand, stats, config, theme) {
+export function shorthand(shorthand: string, stats, config, theme) {
   return compileEncoding(Encoding.fromShorthand(shorthand, config, theme), stats);
 };
 
 /**
  * Create a Vega specification from a Vega-lite Encoding object.
  */
-export function compileEncoding(encoding, stats) {
+export function compileEncoding(encoding: Encoding, stats) {
   // no need to pass stats if you pass in the data
   if (!stats) {
     if (encoding.hasValues()) {
@@ -99,7 +98,7 @@ export function compileEncoding(encoding, stats) {
 
   // auto-sort line/area values
   if (lineType && encoding.config('autoSortLine')) {
-    var f = (encoding.isMeasure(X) && encoding.isDimension(Y)) ? Y : X;
+    var f = (encoding.isMeasure(Enctype.X) && encoding.isDimension(Enctype.Y)) ? Enctype.Y : Enctype.X;
     if (!mdef.from) {
       mdef.from = {};
     }
@@ -115,7 +114,7 @@ export function compileEncoding(encoding, stats) {
   var legends = vlLegend(encoding, styleCfg);
 
   // Small Multiples
-  if (encoding.has(ROW) || encoding.has(COL)) {
+  if (encoding.has(Enctype.ROW) || encoding.has(Enctype.COL)) {
     output = vlFacet(group, encoding, layout, output, singleScaleNames, stats);
     if (legends.length > 0) {
       output.legends = legends;
@@ -124,11 +123,11 @@ export function compileEncoding(encoding, stats) {
     group.scales = scale.defs(singleScaleNames, encoding, layout, stats);
 
     var axes = [];
-    if (encoding.has(X)) {
-      axes.push(axis(X, encoding, layout, stats));
+    if (encoding.has(Enctype.X)) {
+      axes.push(axis(Enctype.X, encoding, layout, stats));
     }
-    if (encoding.has(Y)) {
-      axes.push(axis(Y, encoding, layout, stats));
+    if (encoding.has(Enctype.Y)) {
+      axes.push(axis(Enctype.Y, encoding, layout, stats));
     }
     if (axes.length > 0) {
       group.axes = axes;

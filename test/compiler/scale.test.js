@@ -4,15 +4,15 @@ var d3 = require('d3');
 var expect = require('chai').expect;
 
 var util = require('../../src/util'),
-  Encoding = require('../../src/Encoding').Encoding,
+  Encoding = require('../../src/Encoding').default,
   vlscale = require('../../src/compiler/scale'),
   colorbrewer = require('colorbrewer');
 
 var consts = require('../../src/consts');
 
-var Q = consts.Q;
-var O = consts.O;
-var T = consts.T;
+var Q = consts.Type.Q;
+var O = consts.Type.O;
+var T = consts.Type.T;
 var SOURCE = consts.SOURCE;
 var SUMMARY = consts.SUMMARY;
 

@@ -4,9 +4,9 @@ var consts = require('../src/consts');
 var expect = require('chai').expect;
 var vlEncDef = require('../src/encdef');
 
-var Q = consts.Q;
-var O = consts.O;
-var N = consts.N;
+var Q = consts.Type.Q;
+var O = consts.Type.O;
+var N = consts.Type.N;
 
 describe('vl.encDef.cardinality()', function () {
   describe('for Q', function () {

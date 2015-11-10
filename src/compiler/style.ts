@@ -1,7 +1,8 @@
+import Encoding from '../Encoding';
 import * as vlEncDef from '../encdef';
-import {X, Y, ROW, COL} from '../consts';
+import {Enctype} from '../consts';
 
-export default function(encoding, stats) {
+export default function(encoding: Encoding, stats) {
   return {
     opacity: estimateOpacity(encoding, stats),
   };
@@ -24,8 +25,8 @@ function estimateOpacity(encoding,stats) {
     //  consider that ordinal x are subdividing the cell into subcells anyway
     encoding.forEach(function(encDef, encType) {
 
-      if (encType !== ROW && encType !== COL &&
-          !((encType === X || encType === Y) &&
+      if (encType !== Enctype.ROW && encType !== Enctype.COL &&
+          !((encType === Enctype.X || encType === Enctype.Y) &&
           vlEncDef.isOrdinalScale(encDef))
         ) {
         numPoints *= encoding.cardinality(encType, stats);
@@ -42,11 +43,11 @@ function estimateOpacity(encoding,stats) {
 
     // small multiples divide number of points
     var numMultiples = 1;
-    if (encoding.has(ROW)) {
-      numMultiples *= encoding.cardinality(ROW, stats);
+    if (encoding.has(Enctype.ROW)) {
+      numMultiples *= encoding.cardinality(Enctype.ROW, stats);
     }
-    if (encoding.has(COL)) {
-      numMultiples *= encoding.cardinality(COL, stats);
+    if (encoding.has(Enctype.COL)) {
+      numMultiples *= encoding.cardinality(Enctype.COL, stats);
     }
     numPoints /= numMultiples;
   }

@@ -1,13 +1,13 @@
 import * as util from './util';
-import {Q, O, N, T} from './consts';
+import {Type} from './consts';
 
 /** Mapping from datalib's inferred type to Vega-lite's type */
-export var types = {
-  'boolean': N,
-  'number': Q,
-  'integer': Q,
-  'date': T,
-  'string': N
+export const Types = {
+  'boolean': Type.N,
+  'number': Type.Q,
+  'integer': Type.Q,
+  'date': Type.T,
+  'string': Type.N
 };
 
 export function stats(data: Array<Array<any>>) {

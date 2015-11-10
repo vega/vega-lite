@@ -1,11 +1,9 @@
 // utility for field
 
-import {shorthand as c} from './consts';
+import {Type, Shorthand} from './consts';
 import * as util from './util';
 import * as time from './compiler/time';
 import * as schema from './schema/schema';
-
-import {Q, O, N, T} from './consts';
 
 /**
  * @param field
@@ -42,19 +40,19 @@ export function fieldRef(field, opt) {
 };
 
 export function shorthand(f) {
-  return (f.aggregate ? f.aggregate + c.func : '') +
-    (f.timeUnit ? f.timeUnit + c.func : '') +
-    (f.bin ? 'bin' + c.func : '') +
-    (f.name || '') + c.type + f.type;
+  return (f.aggregate ? f.aggregate + Shorthand.Func : '') +
+    (f.timeUnit ? f.timeUnit + Shorthand.Func : '') +
+    (f.bin ? 'bin' + Shorthand.Func : '') +
+    (f.name || '') + Shorthand.Type + f.type;
 };
 
 export function shorthands(fields, delim) {
-  delim = delim || c.delim;
+  delim = delim || Shorthand.Delim;
   return fields.map(shorthand).join(delim);
 };
 
 export function fromShorthand(shorthand: string) {
-  var split = shorthand.split(c.type), i;
+  var split = shorthand.split(Shorthand.Type), i;
 
   var o: any = {
     name: split[0].trim(),
@@ -94,7 +92,7 @@ export function isType(fieldDef, type) {
   return fieldDef.type === type;
 };
 
-export function isTypes(fieldDef, types) {
+export function isTypes(fieldDef, types: Array<string>) {
   for (var t=0; t<types.length; t++) {
     if(fieldDef.type === types[t]) return true;
   }
@@ -106,13 +104,13 @@ export function isTypes(fieldDef, types) {
  * However, YEAR(T), YEARMONTH(T) use time scale, not ordinal but are dimensions too.
  */
 export function isOrdinalScale(field) {
-  return  isTypes(field, [N, O]) ||
-    ( isType(field, T) && field.timeUnit && time.isOrdinalFn(field.timeUnit) );
+  return  isTypes(field, [Type.N, Type.O]) ||
+    ( isType(field, Type.T) && field.timeUnit && time.isOrdinalFn(field.timeUnit) );
 };
 
 function isFieldDimension(field) {
-  return  isTypes(field, [N, O]) || !!field.bin ||
-    ( isType(field, T) && !!field.timeUnit );
+  return  isTypes(field, [Type.N, Type.O]) || !!field.bin ||
+    ( isType(field, Type.T) && !!field.timeUnit );
 }
 
 /**
@@ -129,7 +127,7 @@ export function isMeasure(field) {
 };
 
 export function count() {
-  return {name:'*', aggregate: 'count', type: Q, displayName: COUNT_DISPLAYNAME};
+  return {name:'*', aggregate: 'count', type: Type.Q, displayName: COUNT_DISPLAYNAME};
 };
 
 export const COUNT_DISPLAYNAME = 'Number of Records';
@@ -155,7 +153,7 @@ export function cardinality(field, stats, filterNull) {
     var bins = util.getbins(stat, field.bin.maxbins || schema.MAXBINS_DEFAULT);
     return (bins.stop - bins.start) / bins.step;
   }
-  if (isType(field, T)) {
+  if (isType(field, Type.T)) {
     var cardinality = time.cardinality(field, stats, filterNull, type);
     if(cardinality !== null) return cardinality;
     //otherwise use calculation below

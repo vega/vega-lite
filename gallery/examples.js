@@ -329,7 +329,7 @@ var EXAMPLES = [
       "data": {"url": "data/cars.json"}
     }
   },{
-    title: "Bar chart witg log scale and large numbers",
+    title: "Bar chart with log scale and large numbers",
     spec: {
       "marktype": "bar",
       "data": {

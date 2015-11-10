@@ -1,15 +1,14 @@
 import {getter, setter} from '../util';
-import {Encoding} from '../Encoding';
+import Encoding from '../Encoding';
 import * as util from '../util';
-import {X, Y, COL, ROW} from '../consts';
-import {Q, O, N, T} from '../consts';
+import {Type, Enctype} from '../consts';
 
 import * as time from './time';
 
-export default function(name: string, encoding: Encoding, layout, stats) {
-  var isCol = name == COL,
-    isRow = name == ROW,
-    type = isCol ? 'x' : isRow ? 'y' : name;
+export default function(name, encoding: Encoding, layout, stats) {
+  var isCol = name == Enctype.COL,
+    isRow = name == Enctype.ROW,
+    type = isCol ? 'x' : isRow ? 'y': name;
 
   // TODO: rename def to axisDef and avoid side effects where possible.
   // TODO: replace any with Vega Axis Interface
@@ -63,15 +62,15 @@ export default function(name: string, encoding: Encoding, layout, stats) {
   return def;
 };
 
-export function format(encoding, name) {
+export function format(encoding: Encoding, name) {
   var format = encoding.encDef(name).axis.format;
   if (format !== undefined)  {
     return format;
   }
 
-  if (encoding.isType(name, Q)) {
+  if (encoding.isType(name, Type.Q)) {
     return encoding.numberFormat(name);
-  } else if (encoding.isType(name, T)) {
+  } else if (encoding.isType(name, Type.T)) {
     var timeUnit = encoding.encDef(name).timeUnit;
     if (!timeUnit) {
       return encoding.config('timeFormat');
@@ -92,8 +91,8 @@ export function grid(encoding, name) {
   // - ROW and COL.
   // - X and Y that have (1) quantitative fields that are not binned or (2) time fields.
   // Otherwise, the default value is `false`.
-  return name === ROW || name === COL ||
-    (encoding.isTypes(name, [Q, T]) && !encoding.encDef(name).bin);
+  return name === Enctype.ROW || name === Enctype.COL ||
+    (encoding.isTypes(name, [Type.Q, Type.T]) && !encoding.encDef(name).bin);
 };
 
 export function offset(encoding, name, layout) {
@@ -102,7 +101,7 @@ export function offset(encoding, name, layout) {
     return offset;
   }
 
-  if(name === ROW) {
+  if(name === Enctype.ROW) {
    return layout.y.axisTitleOffset + 20;
   }
   return undefined;
@@ -112,9 +111,9 @@ export function orient(encoding, name, layout, stats) {
   var orient = encoding.encDef(name).axis.orient;
   if (orient) {
     return orient;
-  } else if (name === COL) {
+  } else if (name === Enctype.COL) {
     return 'top';
-  } else if (name === X && encoding.has(Y) && encoding.isOrdinalScale(Y) && encoding.cardinality(Y, stats) > 30) {
+  } else if (name === Enctype.X && encoding.has(Enctype.Y) && encoding.isOrdinalScale(Enctype.Y) && encoding.cardinality(Enctype.Y, stats) > 30) {
     // FIXME remove this case and migrate this logic to vega-lite-ui
     // x-axis for long y - put on top
     return 'top';
@@ -129,7 +128,7 @@ export function ticks(encoding, name) {
   }
 
   // FIXME depends on scale type too
-  if (name === X && !encoding.encDef(name).bin) {
+  if (name === Enctype.X && !encoding.encDef(name).bin) {
     return 5;
   }
 
@@ -141,7 +140,7 @@ export function tickSize(encoding, name) {
   if (tickSize !== undefined) {
     return tickSize;
   }
-  if (name === ROW || name === COL) {
+  if (name === Enctype.ROW || name === Enctype.COL) {
     return 0;
   }
   return undefined;
@@ -160,9 +159,9 @@ export function title(encoding, name, layout) {
   var maxLength;
   if (axisSpec.titleMaxLength) {
   maxLength = axisSpec.titleMaxLength;
-  } else if (name === X) {
+  } else if (name === Enctype.X) {
     maxLength = layout.cellWidth / encoding.config('characterWidth');
-  } else if (name === Y) {
+  } else if (name === Enctype.Y) {
     maxLength = layout.cellHeight / encoding.config('characterWidth');
   }
 
@@ -176,15 +175,15 @@ export function titleOffset(encoding, name) {
   if (value)  return value;
 
   switch (name) {
-    case ROW: return 0;
-    case COL: return 35;
+    case Enctype.ROW: return 0;
+    case Enctype.COL: return 35;
   }
   return undefined;
 };
 
 namespace properties {
   export function axis(encoding, name, spec) {
-    if (name === ROW || name === COL) {
+    if (name === Enctype.ROW || name === Enctype.COL) {
       // hide axis for facets
       return util.extend({
         opacity: {value: 0}
@@ -197,7 +196,7 @@ namespace properties {
     var cellPadding = layout.cellPadding;
 
     if (def.grid) {
-      if (name == COL) {
+      if (name == Enctype.COL) {
         // set grid property -- put the lines on the right the cell
         var yOffset = encoding.config('cellGridOffset');
 
@@ -219,7 +218,7 @@ namespace properties {
           stroke: { value: encoding.config('cellGridColor') },
           strokeOpacity: { value: encoding.config('cellGridOpacity') }
         }, spec || {});
-      } else if (name == ROW) {
+      } else if (name == Enctype.ROW) {
         var xOffset = encoding.config('cellGridOffset');
 
         // TODO(#677): this should depend on orient
@@ -255,13 +254,13 @@ namespace properties {
 
   export function labels(encoding, name, spec, layout, def) {
     var timeUnit = encoding.encDef(name).timeUnit;
-    if (encoding.isType(name, T) && timeUnit && (time.hasScale(timeUnit))) {
+    if (encoding.isType(name, Type.T) && timeUnit && (time.hasScale(timeUnit))) {
       spec = util.extend({
         text: {scale: 'time-' + timeUnit}
       }, spec || {});
     }
 
-    if (encoding.isTypes(name, [N, O]) && encoding.axis(name).labelMaxLength) {
+    if (encoding.isTypes(name, [Type.N, Type.O]) && encoding.axis(name).labelMaxLength) {
       // TODO replace this with Vega's labelMaxLength once it is introduced
       spec = util.extend({
         text: {
@@ -271,8 +270,8 @@ namespace properties {
     }
 
      // for x-axis, set ticks for Q or rotate scale for ordinal scale
-    if (name == X) {
-      if ((encoding.isDimension(X) || encoding.isType(X, T))) {
+    if (name == Enctype.X) {
+      if ((encoding.isDimension(Enctype.X) || encoding.isType(Enctype.X, Type.T))) {
         spec = util.extend({
           angle: {value: 270},
           align: {value: def.orient === 'top' ? 'left': 'right'},
@@ -284,7 +283,7 @@ namespace properties {
   }
 
   export function title(encoding, name, spec, layout) {
-    if (name === ROW) {
+    if (name === Enctype.ROW) {
       return util.extend({
         angle: {value: 0},
         align: {value: 'right'},

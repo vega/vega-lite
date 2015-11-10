@@ -1,6 +1,6 @@
 // utility for enc
 
-import {shorthand as c} from './consts';
+import {Shorthand} from './consts';
 import * as vlEncDef from './encdef';
 import * as util from './util';
 import * as schema from './schema/schema';
@@ -76,14 +76,14 @@ export function fields(enc) {
 
 export function shorthand(enc) {
   return map(enc, function(field, et) {
-    return et + c.assign + vlEncDef.shorthand(field);
-  }).join(c.delim);
+    return et + Shorthand.Assign + vlEncDef.shorthand(field);
+  }).join(Shorthand.Delim);
 };
 
 export function fromShorthand(shorthand) {
-  var enc = util.isArray(shorthand) ? shorthand : shorthand.split(c.delim);
+  var enc = util.isArray(shorthand) ? shorthand : shorthand.split(Shorthand.Delim);
   return enc.reduce(function(m, e) {
-    var split = e.split(c.assign),
+    var split = e.split(Shorthand.Assign),
         enctype = split[0].trim(),
         field = split[1];
 
