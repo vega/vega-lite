@@ -1,7 +1,6 @@
 export const SUMMARY = 'summary';
 export const SOURCE = 'source';
 export const STACKED = 'stacked';
-export const INDEX = 'index';
 
 // export enum Enctype {
 //   X, Y, COL, ROW, SIZE, SHAPE, COLOR, TEXT, DETAIL
