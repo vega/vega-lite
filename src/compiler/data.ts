@@ -1,7 +1,8 @@
 import * as vlEncDef from '../encdef';
 import * as util from '../util';
+import Encoding from '../Encoding';
 import {SOURCE, SUMMARY, STACKED} from '../consts';
-import {Q, O, N, T} from '../consts';
+import {Type} from '../consts';
 
 import * as time from './time';
 
@@ -14,7 +15,7 @@ import * as time from './time';
  *                 If the encoding contains aggregate value, this will also create
  *                 aggregate table as well.
  */
-export default function(encoding) {
+export default function(encoding: Encoding) {
   var def = [source(encoding)];
 
   var aggregate = summary(encoding);
@@ -70,10 +71,10 @@ function formatParse(encoding) {
   var parse;
 
   encoding.forEach(function(encDef) {
-    if (encDef.type == T) {
+    if (encDef.type == Type.T) {
       parse = parse || {};
       parse[encDef.name] = 'date';
-    } else if (encDef.type == Q) {
+    } else if (encDef.type == Type.Q) {
       if (vlEncDef.isCount(encDef)) return;
       parse = parse || {};
       parse[encDef.name] = 'number';
@@ -100,7 +101,7 @@ export function transform(encoding) {
 
 export function timeTransform(encoding) {
   return encoding.reduce(function(transform, encDef, encType) {
-    if (encDef.type === T && encDef.timeUnit) {
+    if (encDef.type === Type.T && encDef.timeUnit) {
       var fieldRef = encoding.fieldRef(encType, {nofn: true, datum: true});
 
       transform.push({
@@ -145,10 +146,10 @@ export function nullFilterTransform(encoding) {
       if (fieldName === '*') return filteredFields; //count
 
       // TODO(#597) revise how filterNull is structured.
-      if ((encoding.config('filterNull').Q && fieldList.containsType[Q]) ||
-          (encoding.config('filterNull').T && fieldList.containsType[T]) ||
-          (encoding.config('filterNull').O && fieldList.containsType[O]) ||
-          (encoding.config('filterNull').N && fieldList.containsType[N])) {
+      if ((encoding.config('filterNull').Q && fieldList.containsType[Type.Q]) ||
+          (encoding.config('filterNull').T && fieldList.containsType[Type.T]) ||
+          (encoding.config('filterNull').O && fieldList.containsType[Type.O]) ||
+          (encoding.config('filterNull').N && fieldList.containsType[Type.N])) {
         filteredFields.push(fieldName);
       }
       return filteredFields;

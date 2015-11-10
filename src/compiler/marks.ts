@@ -1,5 +1,4 @@
-import {X, Y, TEXT, COLOR, SIZE, SHAPE} from '../consts';
-import {Q} from '../consts';
+import {Enctype, Type} from '../consts';
 
 export default function(encoding, layout, style) {
   var defs = [],
@@ -7,13 +6,13 @@ export default function(encoding, layout, style) {
     from = encoding.dataTable();
 
   // to add a background to text, we need to add it before the text
-  if (encoding.marktype() === TEXT && encoding.has(COLOR)) {
+  if (encoding.marktype() === Enctype.TEXT && encoding.has(Enctype.COLOR)) {
     var bg = {
       x: {value: 0},
       y: {value: 0},
       x2: {value: layout.cellWidth},
       y2: {value: layout.cellHeight},
-      fill: {scale: COLOR, field: encoding.fieldRef(COLOR)}
+      fill: {scale: Enctype.COLOR, field: encoding.fieldRef(Enctype.COLOR)}
     };
     defs.push({
       type: 'rect',
@@ -114,17 +113,17 @@ function bar_props(e, layout, style) {
   var p:any = {};
 
   // x's and width
-  if (e.encDef(X).bin) {
-    p.x = {scale: X, field: e.fieldRef(X, {bin_suffix: '_start'}), offset: 1};
-    p.x2 = {scale: X, field: e.fieldRef(X, {bin_suffix: '_end'})};
-  } else if (e.isMeasure(X)) {
-    p.x = {scale: X, field: e.fieldRef(X)};
-    if (!e.has(Y) || e.isDimension(Y)) {
+  if (e.encDef(Enctype.X).bin) {
+    p.x = {scale: Enctype.X, field: e.fieldRef(Enctype.X, {bin_suffix: '_start'}), offset: 1};
+    p.x2 = {scale: Enctype.X, field: e.fieldRef(Enctype.X, {bin_suffix: '_end'})};
+  } else if (e.isMeasure(Enctype.X)) {
+    p.x = {scale: Enctype.X, field: e.fieldRef(Enctype.X)};
+    if (!e.has(Enctype.Y) || e.isDimension(Enctype.Y)) {
       p.x2 = {value: 0};
     }
   } else {
-    if (e.has(X)) { // is ordinal
-       p.xc = {scale: X, field: e.fieldRef(X)};
+    if (e.has(Enctype.X)) { // is ordinal
+       p.xc = {scale: Enctype.X, field: e.fieldRef(Enctype.X)};
     } else {
        p.x = {value: 0, offset: e.config('singleBarOffset')};
     }
@@ -132,12 +131,12 @@ function bar_props(e, layout, style) {
 
   // width
   if (!p.x2) {
-    if (!e.has(X) || e.isOrdinalScale(X)) { // no X or X is ordinal
-      if (e.has(SIZE)) {
-        p.width = {scale: SIZE, field: e.fieldRef(SIZE)};
+    if (!e.has(Enctype.X) || e.isOrdinalScale(Enctype.X)) { // no X or X is ordinal
+      if (e.has(Enctype.SIZE)) {
+        p.width = {scale: Enctype.SIZE, field: e.fieldRef(Enctype.SIZE)};
       } else {
         p.width = {
-          value: e.bandWidth(X, layout.x.useSmallBand),
+          value: e.bandWidth(Enctype.X, layout.x.useSmallBand),
           offset: -1
         };
       }
@@ -147,15 +146,15 @@ function bar_props(e, layout, style) {
   }
 
   // y's & height
-  if (e.encDef(Y).bin) {
-    p.y = {scale: Y, field: e.fieldRef(Y, {bin_suffix: '_start'})};
-    p.y2 = {scale: Y, field: e.fieldRef(Y, {bin_suffix: '_end'}), offset: 1};
-  } else if (e.isMeasure(Y)) {
-    p.y = {scale: Y, field: e.fieldRef(Y)};
+  if (e.encDef(Enctype.Y).bin) {
+    p.y = {scale: Enctype.Y, field: e.fieldRef(Enctype.Y, {bin_suffix: '_start'})};
+    p.y2 = {scale: Enctype.Y, field: e.fieldRef(Enctype.Y, {bin_suffix: '_end'}), offset: 1};
+  } else if (e.isMeasure(Enctype.Y)) {
+    p.y = {scale: Enctype.Y, field: e.fieldRef(Enctype.Y)};
     p.y2 = {field: {group: 'height'}};
   } else {
-    if (e.has(Y)) { // is ordinal
-      p.yc = {scale: Y, field: e.fieldRef(Y)};
+    if (e.has(Enctype.Y)) { // is ordinal
+      p.yc = {scale: Enctype.Y, field: e.fieldRef(Enctype.Y)};
     } else {
       p.y2 = {
         field: {group: 'height'},
@@ -163,25 +162,25 @@ function bar_props(e, layout, style) {
       };
     }
 
-    if (e.has(SIZE)) {
-      p.height = {scale: SIZE, field: e.fieldRef(SIZE)};
+    if (e.has(Enctype.SIZE)) {
+      p.height = {scale: Enctype.SIZE, field: e.fieldRef(Enctype.SIZE)};
     } else {
       p.height = {
-        value: e.bandWidth(Y, layout.y.useSmallBand),
+        value: e.bandWidth(Enctype.Y, layout.y.useSmallBand),
         offset: -1
       };
     }
   }
 
   // fill
-  if (e.has(COLOR)) {
-    p.fill = {scale: COLOR, field: e.fieldRef(COLOR)};
+  if (e.has(Enctype.COLOR)) {
+    p.fill = {scale: Enctype.COLOR, field: e.fieldRef(Enctype.COLOR)};
   } else {
-    p.fill = {value: e.value(COLOR)};
+    p.fill = {value: e.value(Enctype.COLOR)};
   }
 
   // opacity
-  var opacity = e.encDef(COLOR).opacity;
+  var opacity = e.encDef(Enctype.COLOR).opacity;
   if (opacity) p.opacity = {value: opacity};
 
   return p;
@@ -191,51 +190,51 @@ function point_props(e, layout, style) {
   var p:any = {};
 
   // x
-  if (e.has(X)) {
-    p.x = {scale: X, field: e.fieldRef(X, {bin_suffix: '_mid'})};
-  } else if (!e.has(X)) {
-    p.x = {value: e.bandWidth(X, layout.x.useSmallBand) / 2};
+  if (e.has(Enctype.X)) {
+    p.x = {scale: Enctype.X, field: e.fieldRef(Enctype.X, {bin_suffix: '_mid'})};
+  } else if (!e.has(Enctype.X)) {
+    p.x = {value: e.bandWidth(Enctype.X, layout.x.useSmallBand) / 2};
   }
 
   // y
-  if (e.has(Y)) {
-    p.y = {scale: Y, field: e.fieldRef(Y, {bin_suffix: '_mid'})};
-  } else if (!e.has(Y)) {
-    p.y = {value: e.bandWidth(Y, layout.y.useSmallBand) / 2};
+  if (e.has(Enctype.Y)) {
+    p.y = {scale: Enctype.Y, field: e.fieldRef(Enctype.Y, {bin_suffix: '_mid'})};
+  } else if (!e.has(Enctype.Y)) {
+    p.y = {value: e.bandWidth(Enctype.Y, layout.y.useSmallBand) / 2};
   }
 
   // size
-  if (e.has(SIZE)) {
-    p.size = {scale: SIZE, field: e.fieldRef(SIZE)};
-  } else if (!e.has(SIZE)) {
-    p.size = {value: e.value(SIZE)};
+  if (e.has(Enctype.SIZE)) {
+    p.size = {scale: Enctype.SIZE, field: e.fieldRef(Enctype.SIZE)};
+  } else if (!e.has(Enctype.SIZE)) {
+    p.size = {value: e.value(Enctype.SIZE)};
   }
 
   // shape
-  if (e.has(SHAPE)) {
-    p.shape = {scale: SHAPE, field: e.fieldRef(SHAPE)};
-  } else if (!e.has(SHAPE)) {
-    p.shape = {value: e.value(SHAPE)};
+  if (e.has(Enctype.SHAPE)) {
+    p.shape = {scale: Enctype.SHAPE, field: e.fieldRef(Enctype.SHAPE)};
+  } else if (!e.has(Enctype.SHAPE)) {
+    p.shape = {value: e.value(Enctype.SHAPE)};
   }
 
   // fill or stroke
-  if (e.encDef(SHAPE).filled) {
-    if (e.has(COLOR)) {
-      p.fill = {scale: COLOR, field: e.fieldRef(COLOR)};
-    } else if (!e.has(COLOR)) {
-      p.fill = {value: e.value(COLOR)};
+  if (e.encDef(Enctype.SHAPE).filled) {
+    if (e.has(Enctype.COLOR)) {
+      p.fill = {scale: Enctype.COLOR, field: e.fieldRef(Enctype.COLOR)};
+    } else if (!e.has(Enctype.COLOR)) {
+      p.fill = {value: e.value(Enctype.COLOR)};
     }
   } else {
-    if (e.has(COLOR)) {
-      p.stroke = {scale: COLOR, field: e.fieldRef(COLOR)};
-    } else if (!e.has(COLOR)) {
-      p.stroke = {value: e.value(COLOR)};
+    if (e.has(Enctype.COLOR)) {
+      p.stroke = {scale: Enctype.COLOR, field: e.fieldRef(Enctype.COLOR)};
+    } else if (!e.has(Enctype.COLOR)) {
+      p.stroke = {value: e.value(Enctype.COLOR)};
     }
     p.strokeWidth = {value: e.config('strokeWidth')};
   }
 
   // opacity
-  var opacity = e.encDef(COLOR).opacity || style.opacity;
+  var opacity = e.encDef(Enctype.COLOR).opacity || style.opacity;
   if (opacity) p.opacity = {value: opacity};
 
   return p;
@@ -246,27 +245,27 @@ function line_props(e,layout, style) {
   var p:any = {};
 
   // x
-  if (e.has(X)) {
-    p.x = {scale: X, field: e.fieldRef(X, {bin_suffix: '_mid'})};
-  } else if (!e.has(X)) {
+  if (e.has(Enctype.X)) {
+    p.x = {scale: Enctype.X, field: e.fieldRef(Enctype.X, {bin_suffix: '_mid'})};
+  } else if (!e.has(Enctype.X)) {
     p.x = {value: 0};
   }
 
   // y
-  if (e.has(Y)) {
-    p.y = {scale: Y, field: e.fieldRef(Y, {bin_suffix: '_mid'})};
-  } else if (!e.has(Y)) {
+  if (e.has(Enctype.Y)) {
+    p.y = {scale: Enctype.Y, field: e.fieldRef(Enctype.Y, {bin_suffix: '_mid'})};
+  } else if (!e.has(Enctype.Y)) {
     p.y = {field: {group: 'height'}};
   }
 
   // stroke
-  if (e.has(COLOR)) {
-    p.stroke = {scale: COLOR, field: e.fieldRef(COLOR)};
-  } else if (!e.has(COLOR)) {
-    p.stroke = {value: e.value(COLOR)};
+  if (e.has(Enctype.COLOR)) {
+    p.stroke = {scale: Enctype.COLOR, field: e.fieldRef(Enctype.COLOR)};
+  } else if (!e.has(Enctype.COLOR)) {
+    p.stroke = {value: e.value(Enctype.COLOR)};
   }
 
-  var opacity = e.encDef(COLOR).opacity;
+  var opacity = e.encDef(Enctype.COLOR).opacity;
   if (opacity) p.opacity = {value: opacity};
 
   p.strokeWidth = {value: e.config('strokeWidth')};
@@ -279,36 +278,36 @@ function area_props(e, layout, style) {
   var p:any = {};
 
   // x
-  if (e.isMeasure(X)) {
-    p.x = {scale: X, field: e.fieldRef(X)};
-    if (e.isDimension(Y)) {
-      p.x2 = {scale: X, value: 0};
+  if (e.isMeasure(Enctype.X)) {
+    p.x = {scale: Enctype.X, field: e.fieldRef(Enctype.X)};
+    if (e.isDimension(Enctype.Y)) {
+      p.x2 = {scale: Enctype.X, value: 0};
       p.orient = {value: 'horizontal'};
     }
-  } else if (e.has(X)) {
-    p.x = {scale: X, field: e.fieldRef(X, {bin_suffix: '_mid'})};
+  } else if (e.has(Enctype.X)) {
+    p.x = {scale: Enctype.X, field: e.fieldRef(Enctype.X, {bin_suffix: '_mid'})};
   } else {
     p.x = {value: 0};
   }
 
   // y
-  if (e.isMeasure(Y)) {
-    p.y = {scale: Y, field: e.fieldRef(Y)};
-    p.y2 = {scale: Y, value: 0};
-  } else if (e.has(Y)) {
-    p.y = {scale: Y, field: e.fieldRef(Y, {bin_suffix: '_mid'})};
+  if (e.isMeasure(Enctype.Y)) {
+    p.y = {scale: Enctype.Y, field: e.fieldRef(Enctype.Y)};
+    p.y2 = {scale: Enctype.Y, value: 0};
+  } else if (e.has(Enctype.Y)) {
+    p.y = {scale: Enctype.Y, field: e.fieldRef(Enctype.Y, {bin_suffix: '_mid'})};
   } else {
     p.y = {field: {group: 'height'}};
   }
 
   // fill
-  if (e.has(COLOR)) {
-    p.fill = {scale: COLOR, field: e.fieldRef(COLOR)};
-  } else if (!e.has(COLOR)) {
-    p.fill = {value: e.value(COLOR)};
+  if (e.has(Enctype.COLOR)) {
+    p.fill = {scale: Enctype.COLOR, field: e.fieldRef(Enctype.COLOR)};
+  } else if (!e.has(Enctype.COLOR)) {
+    p.fill = {value: e.value(Enctype.COLOR)};
   }
 
-  var opacity = e.encDef(COLOR).opacity;
+  var opacity = e.encDef(Enctype.COLOR).opacity;
   if (opacity) p.opacity = {value: opacity};
 
   return p;
@@ -318,49 +317,49 @@ function tick_props(e, layout, style) {
   var p:any = {};
 
   // x
-  if (e.has(X)) {
-    p.x = {scale: X, field: e.fieldRef(X, {bin_suffix: '_mid'})};
-    if (e.isDimension(X)) {
-      p.x.offset = -e.bandWidth(X, layout.x.useSmallBand) / 3;
+  if (e.has(Enctype.X)) {
+    p.x = {scale: Enctype.X, field: e.fieldRef(Enctype.X, {bin_suffix: '_mid'})};
+    if (e.isDimension(Enctype.X)) {
+      p.x.offset = -e.bandWidth(Enctype.X, layout.x.useSmallBand) / 3;
     }
-  } else if (!e.has(X)) {
+  } else if (!e.has(Enctype.X)) {
     p.x = {value: 0};
   }
 
   // y
-  if (e.has(Y)) {
-    p.y = {scale: Y, field: e.fieldRef(Y, {bin_suffix: '_mid'})};
-    if (e.isDimension(Y)) {
-      p.y.offset = -e.bandWidth(Y, layout.y.useSmallBand) / 3;
+  if (e.has(Enctype.Y)) {
+    p.y = {scale: Enctype.Y, field: e.fieldRef(Enctype.Y, {bin_suffix: '_mid'})};
+    if (e.isDimension(Enctype.Y)) {
+      p.y.offset = -e.bandWidth(Enctype.Y, layout.y.useSmallBand) / 3;
     }
-  } else if (!e.has(Y)) {
+  } else if (!e.has(Enctype.Y)) {
     p.y = {value: 0};
   }
 
   // width
-  if (!e.has(X) || e.isDimension(X)) {
+  if (!e.has(Enctype.X) || e.isDimension(Enctype.X)) {
     // TODO(#694): optimize tick's width for bin
-    p.width = {value: e.bandWidth(X, layout.y.useSmallBand) / 1.5};
+    p.width = {value: e.bandWidth(Enctype.X, layout.y.useSmallBand) / 1.5};
   } else {
     p.width = {value: 1};
   }
 
   // height
-  if (!e.has(Y) || e.isDimension(Y)) {
+  if (!e.has(Enctype.Y) || e.isDimension(Enctype.Y)) {
     // TODO(#694): optimize tick's height for bin
-    p.height = {value: e.bandWidth(Y, layout.y.useSmallBand) / 1.5};
+    p.height = {value: e.bandWidth(Enctype.Y, layout.y.useSmallBand) / 1.5};
   } else {
     p.height = {value: 1};
   }
 
   // fill
-  if (e.has(COLOR)) {
-    p.fill = {scale: COLOR, field: e.fieldRef(COLOR)};
+  if (e.has(Enctype.COLOR)) {
+    p.fill = {scale: Enctype.COLOR, field: e.fieldRef(Enctype.COLOR)};
   } else {
-    p.fill = {value: e.value(COLOR)};
+    p.fill = {value: e.value(Enctype.COLOR)};
   }
 
-  var opacity = e.encDef(COLOR).opacity  || style.opacity;
+  var opacity = e.encDef(Enctype.COLOR).opacity  || style.opacity;
   if(opacity) p.opacity = {value: opacity};
 
   return p;
@@ -371,37 +370,37 @@ function filled_point_props(shape) {
     var p:any = {};
 
     // x
-    if (e.has(X)) {
-      p.x = {scale: X, field: e.fieldRef(X, {bin_suffix: '_mid'})};
-    } else if (!e.has(X)) {
-      p.x = {value: e.bandWidth(X, layout.x.useSmallBand) / 2};
+    if (e.has(Enctype.X)) {
+      p.x = {scale: Enctype.X, field: e.fieldRef(Enctype.X, {bin_suffix: '_mid'})};
+    } else if (!e.has(Enctype.X)) {
+      p.x = {value: e.bandWidth(Enctype.X, layout.x.useSmallBand) / 2};
     }
 
     // y
-    if (e.has(Y)) {
-      p.y = {scale: Y, field: e.fieldRef(Y, {bin_suffix: '_mid'})};
-    } else if (!e.has(Y)) {
-      p.y = {value: e.bandWidth(Y, layout.y.useSmallBand) / 2};
+    if (e.has(Enctype.Y)) {
+      p.y = {scale: Enctype.Y, field: e.fieldRef(Enctype.Y, {bin_suffix: '_mid'})};
+    } else if (!e.has(Enctype.Y)) {
+      p.y = {value: e.bandWidth(Enctype.Y, layout.y.useSmallBand) / 2};
     }
 
     // size
-    if (e.has(SIZE)) {
-      p.size = {scale: SIZE, field: e.fieldRef(SIZE)};
-    } else if (!e.has(X)) {
-      p.size = {value: e.value(SIZE)};
+    if (e.has(Enctype.SIZE)) {
+      p.size = {scale: Enctype.SIZE, field: e.fieldRef(Enctype.SIZE)};
+    } else if (!e.has(Enctype.X)) {
+      p.size = {value: e.value(Enctype.SIZE)};
     }
 
     // shape
     p.shape = {value: shape};
 
     // fill
-    if (e.has(COLOR)) {
-      p.fill = {scale: COLOR, field: e.fieldRef(COLOR)};
-    } else if (!e.has(COLOR)) {
-      p.fill = {value: e.value(COLOR)};
+    if (e.has(Enctype.COLOR)) {
+      p.fill = {scale: Enctype.COLOR, field: e.fieldRef(Enctype.COLOR)};
+    } else if (!e.has(Enctype.COLOR)) {
+      p.fill = {value: e.value(Enctype.COLOR)};
     }
 
-    var opacity = e.encDef(COLOR).opacity  || style.opacity;
+    var opacity = e.encDef(Enctype.COLOR).opacity  || style.opacity;
     if(opacity) p.opacity = {value: opacity};
 
     return p;
@@ -410,30 +409,30 @@ function filled_point_props(shape) {
 
 function text_props(e, layout, style) {
   var p:any = {},
-    encDef = e.encDef(TEXT);
+    encDef = e.encDef(Enctype.TEXT);
 
   // x
-  if (e.has(X)) {
-    p.x = {scale: X, field: e.fieldRef(X, {bin_suffix: '_mid'})};
-  } else if (!e.has(X)) {
-    if (e.has(TEXT) && e.isType(TEXT, Q)) {
+  if (e.has(Enctype.X)) {
+    p.x = {scale: Enctype.X, field: e.fieldRef(Enctype.X, {bin_suffix: '_mid'})};
+  } else if (!e.has(Enctype.X)) {
+    if (e.has(Enctype.TEXT) && e.isType(Enctype.TEXT, Type.Q)) {
       p.x = {value: layout.cellWidth-5};
     } else {
-      p.x = {value: e.bandWidth(X, layout.x.useSmallBand) / 2};
+      p.x = {value: e.bandWidth(Enctype.X, layout.x.useSmallBand) / 2};
     }
   }
 
   // y
-  if (e.has(Y)) {
-    p.y = {scale: Y, field: e.fieldRef(Y, {bin_suffix: '_mid'})};
-  } else if (!e.has(Y)) {
-    p.y = {value: e.bandWidth(Y, layout.y.useSmallBand) / 2};
+  if (e.has(Enctype.Y)) {
+    p.y = {scale: Enctype.Y, field: e.fieldRef(Enctype.Y, {bin_suffix: '_mid'})};
+  } else if (!e.has(Enctype.Y)) {
+    p.y = {value: e.bandWidth(Enctype.Y, layout.y.useSmallBand) / 2};
   }
 
   // size
-  if (e.has(SIZE)) {
-    p.fontSize = {scale: SIZE, field: e.fieldRef(SIZE)};
-  } else if (!e.has(SIZE)) {
+  if (e.has(Enctype.SIZE)) {
+    p.fontSize = {scale: Enctype.SIZE, field: e.fieldRef(Enctype.SIZE)};
+  } else if (!e.has(Enctype.SIZE)) {
     p.fontSize = {value: encDef.font.size};
   }
 
@@ -441,19 +440,19 @@ function text_props(e, layout, style) {
   // color should be set to background
   p.fill = {value: encDef.color};
 
-  var opacity = e.encDef(COLOR).opacity  || style.opacity;
+  var opacity = e.encDef(Enctype.COLOR).opacity  || style.opacity;
   if(opacity) p.opacity = {value: opacity};
 
   // text
-  if (e.has(TEXT)) {
-    if (e.isType(TEXT, Q)) {
-      var numberFormat = encDef.format || e.numberFormat(TEXT);
+  if (e.has(Enctype.TEXT)) {
+    if (e.isType(Enctype.TEXT, Type.Q)) {
+      var numberFormat = encDef.format || e.numberFormat(Enctype.TEXT);
 
-      p.text = {template: '{{' + e.fieldRef(TEXT, {datum: true}) + ' | number:\'' +
+      p.text = {template: '{{' + e.fieldRef(Enctype.TEXT, {datum: true}) + ' | number:\'' +
         numberFormat +'\'}}'};
       p.align = {value: encDef.align};
     } else {
-      p.text = {field: e.fieldRef(TEXT)};
+      p.text = {field: e.fieldRef(Enctype.TEXT)};
     }
   } else {
     p.text = {value: encDef.placeholder};

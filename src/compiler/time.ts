@@ -1,9 +1,10 @@
 /// <reference path="../typings/d3-time-format.d.ts"/>
 
 import {utcFormat} from 'd3-time-format';
+
+import Encoding from '../Encoding';
 import * as util from '../util';
-import {ROW, COL, COLOR} from '../consts';
-import {T} from '../consts';
+import {Enctype, Type} from '../consts';
 
 // 'Wednesday September 17 04:00:00 2014'
 // Wednesday is the longest date
@@ -38,7 +39,7 @@ export function formula(timeUnit, fieldRef) {
   return fn + '(' + fieldRef + ')';
 };
 
-export function maxLength(timeUnit, encoding) {
+export function maxLength(timeUnit, encoding: Encoding) {
   switch (timeUnit) {
     case 'seconds':
     case 'minutes':
@@ -62,7 +63,7 @@ export function maxLength(timeUnit, encoding) {
   return utcFormat(timeFormat)(LONG_DATE).length;
 };
 
-export function range(timeUnit, encoding) {
+export function range(timeUnit, encoding: Encoding) {
   var labelLength = encoding.config('timeScaleLabelLength'),
     scaleLabel;
   switch (timeUnit) {
@@ -86,10 +87,10 @@ export function range(timeUnit, encoding) {
  * @param  {Object} encoding
  * @return {Array}  scales for time unit names
  */
-export function scales(encoding) {
+export function scales(encoding: Encoding) {
   var scales = encoding.reduce(function(scales, encDef) {
     var timeUnit = encDef.timeUnit;
-    if (encDef.type === T && timeUnit && !scales[timeUnit]) {
+    if (encDef.type === Type.T && timeUnit && !scales[timeUnit]) {
       var scaleDef = scale.def(encDef.timeUnit, encoding);
       if (scaleDef) scales[timeUnit] = scaleDef;
     }
@@ -130,16 +131,16 @@ export var scale = {
   },
 
   type: function(timeUnit, name) {
-    if (name === COLOR) {
+    if (name === Enctype.COLOR) {
       return 'linear'; // time has order, so use interpolated ordinal color scale.
     }
 
     // FIXME revise this -- should 'year' be linear too?
-    return isOrdinalFn(timeUnit) || name === COL || name === ROW ? 'ordinal' : 'linear';
+    return isOrdinalFn(timeUnit) || name === Enctype.COL || name === Enctype.ROW ? 'ordinal' : 'linear';
   },
 
   domain: function(timeUnit, name?) {
-    var isColor = name === COLOR;
+    var isColor = name === Enctype.COLOR;
     switch (timeUnit) {
       case 'seconds':
       case 'minutes': return isColor ? [0,59] : util.range(0, 60);

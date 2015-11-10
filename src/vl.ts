@@ -1,4 +1,4 @@
-import {Encoding} from './Encoding';
+import Encoding from './Encoding';
 
 import * as util from './util';
 import * as consts from './consts';

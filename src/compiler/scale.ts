@@ -5,9 +5,8 @@ import * as colorbrewer from 'colorbrewer';
 import {interpolateHsl} from 'd3-color';
 
 import * as util from '../util';
-import {X, Y, SIZE, SHAPE, COL, ROW, COLOR, TEXT} from '../consts';
-import {STACKED, SOURCE} from '../consts';
-import {Q, O, N, T} from '../consts';
+import Encoding from '../Encoding';
+import {Enctype, Type, STACKED, SOURCE} from '../consts';
 
 import * as time from './time';
 
@@ -45,15 +44,15 @@ export function defs(names, encoding, layout, stats, facet?) {
   }, []);
 };
 
-export function type(name, encoding) {
+export function type(name: Type, encoding) {
   switch (encoding.type(name)) {
-    case N: //fall through
-    case O:
+    case Type.N: //fall through
+    case Type.O:
       return 'ordinal';
-    case T:
+    case Type.T:
       var timeUnit = encoding.encDef(name).timeUnit;
       return timeUnit ? time.scale.type(timeUnit, name) : 'time';
-    case Q:
+    case Type.Q:
       if (encoding.bin(name)) {
         return 'linear';
       }
@@ -69,7 +68,7 @@ export function domain(encoding, name, type, facet) {
   }
 
   // special case for temporal scale
-  if (encoding.isType(name, T)) {
+  if (encoding.isType(name, Type.T)) {
     var range = time.scale.domain(encDef.timeUnit, name);
     if (range) return range;
   }
@@ -169,29 +168,29 @@ export function _useRawDomain (encoding, name) {
       // Binned field has similar values in both the source table and the summary table
       // but the summary table has fewer values, therefore binned fields draw
       // domain values from the summary table.
-      (encoding.isType(name, Q) && !encDef.bin) ||
+      (encoding.isType(name, Type.Q) && !encDef.bin) ||
       // T uses non-ordinal scale when there's no unit or when the unit is not ordinal.
       (
-        encoding.isType(name, T) &&
+        encoding.isType(name, Type.T) &&
         (!encDef.timeUnit || !time.isOrdinalFn(encDef.timeUnit))
       )
     );
 };
 
 
-export function bandWidth(encoding, name, type, layout) {
+export function bandWidth(encoding, name: Enctype, type, layout) {
   // TODO: eliminate layout
 
   switch (name) {
-    case X: /* fall through */
-    case Y:
+    case Enctype.X: /* fall through */
+    case Enctype.Y:
       if (type === 'ordinal') {
         return encoding.bandWidth(name, layout[name].useSmallBand);
       }
       break;
-    case ROW: // support only ordinal
+    case Enctype.ROW: // support only ordinal
       return layout.cellHeight;
-    case COL: // support only ordinal
+    case Enctype.COL: // support only ordinal
       return layout.cellWidth;
   }
   return undefined;
@@ -207,22 +206,22 @@ export function exponent(encoding, name) {
   return encoding.encDef(name).scale.exponent;
 };
 
-export function nice(encoding, name, type) {
+export function nice(encoding: Encoding, name: Enctype, type) {
   if (encoding.encDef(name).scale.nice !== undefined) {
     // explicit value
     return encoding.encDef(name).scale.nice;
   }
 
   switch (name) {
-    case X: /* fall through */
-    case Y:
+    case Enctype.X: /* fall through */
+    case Enctype.Y:
       if (type === 'time' || type === 'ordinal') {
         return undefined;
       }
       return true;
 
-    case ROW: /* fall through */
-    case COL:
+    case Enctype.ROW: /* fall through */
+    case Enctype.COL:
       return true;
   }
   return undefined;
@@ -233,7 +232,7 @@ export function outerPadding(encoding, name, type) {
     if (encoding.encDef(name).scale.outerPadding !== undefined) {
       return encoding.encDef(name).scale.outerPadding; // explicit value
     }
-    if (name === ROW || name === COL) {
+    if (name === Enctype.ROW || name === Enctype.COL) {
       return 0;
     }
   }
@@ -256,8 +255,8 @@ export function points(encoding, name, type) {
     }
 
     switch (name) {
-      case X:
-      case Y:
+      case Enctype.X:
+      case Enctype.Y:
         return true;
     }
   }
@@ -265,7 +264,7 @@ export function points(encoding, name, type) {
 };
 
 
-export function range (encoding, name, type, layout, stats) {
+export function range (encoding: Encoding, name: Enctype, type, layout, stats) {
   var encDef = encoding.encDef(name);
 
   if (encDef.scale.range) { // explicit value
@@ -273,53 +272,53 @@ export function range (encoding, name, type, layout, stats) {
   }
 
   switch (name) {
-    case X:
+    case Enctype.X:
       return layout.cellWidth ? [0, layout.cellWidth] : 'width';
-    case Y:
+    case Enctype.Y:
       if (type === 'ordinal') {
         return layout.cellHeight ?
           (encDef.bin ? [layout.cellHeight, 0] : [0, layout.cellHeight]) :
           'height';
       }
       return layout.cellHeight ? [layout.cellHeight, 0] : 'height';
-    case SIZE:
+    case Enctype.SIZE:
       if (encoding.is('bar')) {
         // FIXME this is definitely incorrect
         // but let's fix it later since bar size is a bad encoding anyway
-        return [3, Math.max(encoding.bandWidth(X), encoding.bandWidth(Y))];
-      } else if (encoding.is(TEXT)) {
+        return [3, Math.max(encoding.bandWidth(Enctype.X), encoding.bandWidth(Enctype.Y))];
+      } else if (encoding.is(Enctype.TEXT)) {
         return [8, 40];
       }
       // else -- point
-      var bandWidth = Math.min(encoding.bandWidth(X), encoding.bandWidth(Y)) - 1;
+      var bandWidth = Math.min(encoding.bandWidth(Enctype.X), encoding.bandWidth(Enctype.Y)) - 1;
       return [10, 0.8 * bandWidth*bandWidth];
-    case SHAPE:
+    case Enctype.SHAPE:
       return 'shapes';
-    case COLOR:
+    case Enctype.COLOR:
       return color(encoding, name, type, stats);
   }
 
   return undefined;
 };
 
-export function round(encoding, name) {
+export function round(encoding: Encoding, name: Enctype) {
   if (encoding.encDef(name).scale.round !== undefined) {
     return encoding.encDef(name).scale.round;
   }
 
   // FIXME: revise if round is already the default value
   switch (name) {
-    case X: /* fall through */
-    case Y:
-    case ROW:
-    case COL:
-    case SIZE:
+    case Enctype.X: /* fall through */
+    case Enctype.Y:
+    case Enctype.ROW:
+    case Enctype.COL:
+    case Enctype.SIZE:
       return true;
   }
   return undefined;
 };
 
-export function zero(encoding, name) {
+export function zero(encoding, name: Enctype) {
   var encDef = encoding.encDef(name);
   var timeUnit = encDef.timeUnit;
 
@@ -328,7 +327,7 @@ export function zero(encoding, name) {
     return encDef.scale.zero;
   }
 
-  if (encoding.isType(name, T)) {
+  if (encoding.isType(name, Type.T)) {
     if (timeUnit === 'year') {
       // year is using linear scale, but should not include zero
       return false;
@@ -342,7 +341,7 @@ export function zero(encoding, name) {
     return false;
   }
 
-  return name === X || name === Y ?
+  return name === Enctype.X || name === Enctype.Y ?
     // if not bin / temporal, returns undefined for X and Y encoding
     // since zero is true by default in vega for linear scale
     undefined :
@@ -350,18 +349,18 @@ export function zero(encoding, name) {
 };
 
 
-export function color(encoding, name, scaleType, stats) {
-  var colorScale = encoding.scale(COLOR),
+export function color(encoding: Encoding, name: Enctype, scaleType, stats) {
+  var colorScale = encoding.scale(Enctype.COLOR),
     range = colorScale.range,
-    cardinality = encoding.cardinality(COLOR, stats),
-    type = encoding.type(COLOR);
+    cardinality = encoding.cardinality(Enctype.COLOR, stats),
+    type = encoding.type(Enctype.COLOR);
 
   if (range === undefined) {
     var ordinalPalette = colorScale.ordinalPalette,
       quantitativeRange = colorScale.quantitativeRange;
 
     if (scaleType === 'ordinal') {
-      if (type === N) {
+      if (type === Type.N) {
         // use categorical color scale
         if (cardinality <= 10) {
           range = colorScale.c10palette;
@@ -382,7 +381,7 @@ export function color(encoding, name, scaleType, stats) {
 };
 
 export var colors = {
-  palette: function(range, cardinality, type) {
+  palette: function(range, cardinality, type: Type) {
     // FIXME(kanitw): Jul 29, 2015 - check range is string
     switch (range) {
       case 'category10k':
@@ -413,7 +412,7 @@ export var colors = {
       if (cardinality in palette) return palette[cardinality];
 
       // if not, use the highest cardinality one for nominal
-      if (type === N) {
+      if (type === Type.N) {
         return palette[Math.max.apply(null, util.keys(palette))];
       }
 
@@ -428,7 +427,7 @@ export var colors = {
     return range;
   },
 
-  interpolate: function(start, end, cardinality) {
+  interpolate: function(start: number, end: number, cardinality: number) {
     var interpolator = interpolateHsl(start, end);
     return util.range(cardinality).map(function(i) { return interpolator(i*1.0/(cardinality-1)); });
   }

@@ -3,26 +3,26 @@ export const SOURCE = 'source';
 export const STACKED = 'stacked';
 export const INDEX = 'index';
 
-export const X = 'x';
-export const Y = 'y';
-export const ROW = 'row';
-export const COL = 'col';
-export const SIZE = 'size';
-export const SHAPE = 'shape';
-export const COLOR = 'color';
-export const TEXT = 'text';
-export const DETAIL = 'detail';
+export enum Enctype {
+  X, Y, COL, ROW, SIZE, SHAPE, COLOR, TEXT, DETAIL
+}
 
-export const N = 'N';
-export const O = 'O';
-export const Q = 'Q';
-export const T = 'T';
+export enum Type {
+  Q,  // Quantitative
+  O,  // Ordinal
+  N,  // Nominal
+  T,  // Time
+};
 
-export const encodingTypes = [X, Y, ROW, COL, SIZE, SHAPE, COLOR, TEXT, DETAIL];
+export const ENCODING_TYPES = [
+  Enctype.X, Enctype.Y,
+  Enctype.ROW, Enctype.COL,
+  Enctype.SIZE, Enctype.SHAPE, Enctype.COLOR, Enctype.TEXT, Enctype.DETAIL
+];
 
-export const shorthand = {
-  delim:  '|',
+export const SHORTHAND = {
+  delim: '|',
   assign: '=',
-  type:   ',',
-  func:   '_'
+  type: ',',
+  func: '_'
 };

@@ -1,27 +1,26 @@
 import {setter, getter} from '../util';
-import {COLOR, SHAPE, SIZE} from '../consts';
-import {Q, O, N, T} from '../consts';
+import {Enctype, Type} from '../consts';
 
 import * as time from './time';
 
 export default function(encoding, styleCfg) {
   var defs = [];
 
-  if (encoding.has(COLOR) && encoding.encDef(COLOR).legend) {
-    defs.push(def(COLOR, encoding, {
-      fill: COLOR
+  if (encoding.has(Enctype.COLOR) && encoding.encDef(Enctype.COLOR).legend) {
+    defs.push(def(Enctype.COLOR, encoding, {
+      fill: Enctype.COLOR
     }, styleCfg));
   }
 
-  if (encoding.has(SIZE) && encoding.encDef(SIZE).legend) {
-    defs.push(def(SIZE, encoding, {
-      size: SIZE
+  if (encoding.has(Enctype.SIZE) && encoding.encDef(Enctype.SIZE).legend) {
+    defs.push(def(Enctype.SIZE, encoding, {
+      size: Enctype.SIZE
     }, styleCfg));
   }
 
-  if (encoding.has(SHAPE) && encoding.encDef(SHAPE).legend) {
-    defs.push(def(SHAPE, encoding, {
-      shape: SHAPE
+  if (encoding.has(Enctype.SHAPE) && encoding.encDef(Enctype.SHAPE).legend) {
+    defs.push(def(Enctype.SHAPE, encoding, {
+      shape: Enctype.SHAPE
     }, styleCfg));
   }
   return defs;
@@ -35,7 +34,7 @@ export function def(name, encoding, def, styleCfg) {
 
   def = style(name, encoding, def, styleCfg);
 
-  if (encoding.isType(name, T) &&
+  if (encoding.isType(name, Type.T) &&
     timeUnit &&
     time.hasScale(timeUnit)
   ) {
@@ -63,18 +62,18 @@ function style(name, e, def, styleCfg) {
       /* fall through */
     case 'point':
       // fill or stroke
-      if (e.encDef(SHAPE).filled) {
-        if (e.has(COLOR) && name === COLOR) {
-          symbols.fill = {scale: COLOR, field: 'data'};
+      if (e.encDef(Enctype.SHAPE).filled) {
+        if (e.has(Enctype.COLOR) && name === Enctype.COLOR) {
+          symbols.fill = {scale: Enctype.COLOR, field: 'data'};
         } else {
-          symbols.fill = {value: e.value(COLOR)};
+          symbols.fill = {value: e.value(Enctype.COLOR)};
         }
         symbols.stroke = {value: 'transparent'};
       } else {
-        if (e.has(COLOR) && name === COLOR) {
-          symbols.stroke = {scale: COLOR, field: 'data'};
+        if (e.has(Enctype.COLOR) && name === Enctype.COLOR) {
+          symbols.stroke = {scale: Enctype.COLOR, field: 'data'};
         } else {
-          symbols.stroke = {value: e.value(COLOR)};
+          symbols.stroke = {value: e.value(Enctype.COLOR)};
         }
         symbols.fill = {value: 'transparent'};
         symbols.strokeWidth = {value: e.config('strokeWidth')};
@@ -87,7 +86,7 @@ function style(name, e, def, styleCfg) {
       break;
   }
 
-  var opacity = e.encDef(COLOR).opacity || styleCfg.opacity;
+  var opacity = e.encDef(Enctype.COLOR).opacity || styleCfg.opacity;
   if (opacity) {
     symbols.opacity = {value: opacity};
   }

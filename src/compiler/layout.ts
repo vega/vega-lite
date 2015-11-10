@@ -2,8 +2,7 @@
 
 import * as d3_format from 'd3-format';
 import {setter} from '../util';
-import {X, Y, ROW, COL, TEXT} from '../consts';
-import {Q, O, N, T} from '../consts';
+import {Enctype, Type} from '../consts';
 
 import * as time from './time';
 
@@ -20,15 +19,15 @@ export default function(encoding, stats) {
   In the meantime, auto-padding (mostly) does the trick
  */
 function box(encoding, stats) {
-  var hasRow = encoding.has(ROW),
-      hasCol = encoding.has(COL),
-      hasX = encoding.has(X),
-      hasY = encoding.has(Y),
+  var hasRow = encoding.has(Enctype.ROW),
+      hasCol = encoding.has(Enctype.COL),
+      hasX = encoding.has(Enctype.X),
+      hasY = encoding.has(Enctype.Y),
       marktype = encoding.marktype();
 
   // FIXME/HACK we need to take filter into account
-  var xCardinality = hasX && encoding.isDimension(X) ? encoding.cardinality(X, stats) : 1,
-    yCardinality = hasY && encoding.isDimension(Y) ? encoding.cardinality(Y, stats) : 1;
+  var xCardinality = hasX && encoding.isDimension(Enctype.X) ? encoding.cardinality(Enctype.X, stats) : 1,
+    yCardinality = hasY && encoding.isDimension(Enctype.Y) ? encoding.cardinality(Enctype.Y, stats) : 1;
 
   var useSmallBand = xCardinality > encoding.config('largeBandMaxCardinality') ||
     yCardinality > encoding.config('largeBandMaxCardinality');
@@ -37,41 +36,41 @@ function box(encoding, stats) {
 
   // set cellWidth
   if (hasX) {
-    if (encoding.isOrdinalScale(X)) {
+    if (encoding.isOrdinalScale(Enctype.X)) {
       // for ordinal, hasCol or not doesn't matter -- we scale based on cardinality
-      cellWidth = (xCardinality + encoding.padding(X)) * encoding.bandWidth(X, useSmallBand);
+      cellWidth = (xCardinality + encoding.padding(Enctype.X)) * encoding.bandWidth(Enctype.X, useSmallBand);
     } else {
-      cellWidth = hasCol || hasRow ? encoding.encDef(COL).width :  encoding.config('singleWidth');
+      cellWidth = hasCol || hasRow ? encoding.encDef(Enctype.COL).width :  encoding.config('singleWidth');
     }
   } else {
-    if (marktype === TEXT) {
+    if (marktype === Enctype.TEXT) {
       cellWidth = encoding.config('textCellWidth');
     } else {
-      cellWidth = encoding.bandWidth(X);
+      cellWidth = encoding.bandWidth(Enctype.X);
     }
   }
 
   // set cellHeight
   if (hasY) {
-    if (encoding.isOrdinalScale(Y)) {
+    if (encoding.isOrdinalScale(Enctype.Y)) {
       // for ordinal, hasCol or not doesn't matter -- we scale based on cardinality
-      cellHeight = (yCardinality + encoding.padding(Y)) * encoding.bandWidth(Y, useSmallBand);
+      cellHeight = (yCardinality + encoding.padding(Enctype.Y)) * encoding.bandWidth(Enctype.Y, useSmallBand);
     } else {
-      cellHeight = hasCol || hasRow ? encoding.encDef(ROW).height :  encoding.config('singleHeight');
+      cellHeight = hasCol || hasRow ? encoding.encDef(Enctype.ROW).height :  encoding.config('singleHeight');
     }
   } else {
-    cellHeight = encoding.bandWidth(Y);
+    cellHeight = encoding.bandWidth(Enctype.Y);
   }
 
   // Cell bands use rangeBands(). There are n-1 padding.  Outerpadding = 0 for cells
 
   var width = cellWidth, height = cellHeight;
   if (hasCol) {
-    var colCardinality = encoding.cardinality(COL, stats);
+    var colCardinality = encoding.cardinality(Enctype.COL, stats);
     width = cellWidth * ((1 + cellPadding) * (colCardinality - 1) + 1);
   }
   if (hasRow) {
-    var rowCardinality =  encoding.cardinality(ROW, stats);
+    var rowCardinality =  encoding.cardinality(Enctype.ROW, stats);
     height = cellHeight * ((1 + cellPadding) * (rowCardinality - 1) + 1);
   }
 
@@ -102,11 +101,11 @@ function getMaxLength(encoding, stats, et) {
   if (encDef.bin) {
     // TODO once bin support range, need to update this
     return getMaxNumberLength(encoding, et, fieldStats);
-  } if (encoding.isType(et, Q)) {
+  } if (encoding.isType(et, Type.Q)) {
     return getMaxNumberLength(encoding, et, fieldStats);
-  } else if (encoding.isType(et, T)) {
+  } else if (encoding.isType(et, Type.T)) {
     return time.maxLength(encoding.encDef(et).timeUnit, encoding);
-  } else if (encoding.isTypes(et, [N, O])) {
+  } else if (encoding.isTypes(et, [Type.N, Type.O])) {
     if(fieldStats.type === 'number') {
       return getMaxNumberLength(encoding, et, fieldStats);
     } else {
@@ -116,20 +115,20 @@ function getMaxLength(encoding, stats, et) {
 }
 
 function offset(encoding, stats, layout) {
-  [X, Y].forEach(function (et) {
+  [Enctype.X, Enctype.Y].forEach(function (et) {
     // TODO(kanitw): Jul 19, 2015 - create a set of visual test for extraOffset
-    var extraOffset = et === X ? 20 : 22,
+    var extraOffset = et === Enctype.X ? 20 : 22,
       maxLength;
-    if (encoding.isDimension(et) || encoding.isType(et, T)) {
+    if (encoding.isDimension(et) || encoding.isType(et, Type.T)) {
       maxLength = getMaxLength(encoding, stats, et);
     } else if (
       // TODO once we have #512 (allow using inferred type)
       // Need to adjust condition here.
-      encoding.isType(et, Q) ||
+      encoding.isType(et, Type.Q) ||
       encoding.encDef(et).aggregate === 'count'
     ) {
       if (
-        et===Y
+        et===Enctype.Y
         // || (et===X && false)
         // FIXME determine when X would rotate, but should move this to axis.js first #506
       ) {

@@ -1,6 +1,6 @@
 // utility for enc
 
-import {shorthand as c} from './consts';
+import {SHORTHAND as c} from './consts';
 import * as vlEncDef from './encdef';
 import * as util from './util';
 import * as schema from './schema/schema';

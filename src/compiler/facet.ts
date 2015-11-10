@@ -1,5 +1,5 @@
 import * as util from '../util';
-import {X, Y, ROW, COL} from '../consts';
+import {Enctype} from '../consts';
 
 import axis from './axis';
 import * as scale from './scale';
@@ -37,7 +37,7 @@ export default function(group, encoding, layout, output, singleScaleNames, stats
   var enter = group.properties.enter;
   var facetKeys = [], cellAxes = [], from, axesGrp;
 
-  var hasRow = encoding.has(ROW), hasCol = encoding.has(COL);
+  var hasRow = encoding.has(Enctype.ROW), hasCol = encoding.has(Enctype.COL);
 
   enter.fill = {value: encoding.config('cellBackgroundColor')};
 
@@ -55,55 +55,55 @@ export default function(group, encoding, layout, output, singleScaleNames, stats
   }
 
   if (hasRow) {
-    if (!encoding.isDimension(ROW)) {
+    if (!encoding.isDimension(Enctype.ROW)) {
       util.error('Row encoding should be ordinal.');
     }
-    enter.y = {scale: ROW, field: encoding.fieldRef(ROW)};
+    enter.y = {scale: Enctype.ROW, field: encoding.fieldRef(Enctype.ROW)};
     enter.height = {'value': layout.cellHeight}; // HACK
 
-    facetKeys.push(encoding.fieldRef(ROW));
+    facetKeys.push(encoding.fieldRef(Enctype.ROW));
 
     if (hasCol) {
       from = util.duplicate(group.from);
       from.transform = from.transform || [];
-      from.transform.unshift({type: 'facet', groupby: [encoding.fieldRef(COL)]});
+      from.transform.unshift({type: 'facet', groupby: [encoding.fieldRef(Enctype.COL)]});
     }
 
     axesGrp = groupdef('x-axes', {
-        axes: encoding.has(X) ? [axis(X, encoding, layout, stats)] : undefined,
-        x: hasCol ? {scale: COL, field: encoding.fieldRef(COL)} : {value: 0},
+        axes: encoding.has(Enctype.X) ? [axis(Enctype.X, encoding, layout, stats)] : undefined,
+        x: hasCol ? {scale: Enctype.COL, field: encoding.fieldRef(Enctype.COL)} : {value: 0},
         width: hasCol && {'value': layout.cellWidth}, //HACK?
         from: from
       });
 
     output.marks.unshift(axesGrp); // need to prepend so it appears under the plots
     (output.axes = output.axes || []);
-    output.axes.push(axis(ROW, encoding, layout, stats));
+    output.axes.push(axis(Enctype.ROW, encoding, layout, stats));
   } else { // doesn't have row
-    if (encoding.has(X)) {
+    if (encoding.has(Enctype.X)) {
       //keep x axis in the cell
-      cellAxes.push(axis(X, encoding, layout, stats));
+      cellAxes.push(axis(Enctype.X, encoding, layout, stats));
     }
   }
 
   if (hasCol) {
-    if (!encoding.isDimension(COL)) {
+    if (!encoding.isDimension(Enctype.COL)) {
       util.error('Col encoding should be ordinal.');
     }
-    enter.x = {scale: COL, field: encoding.fieldRef(COL)};
+    enter.x = {scale: Enctype.COL, field: encoding.fieldRef(Enctype.COL)};
     enter.width = {'value': layout.cellWidth}; // HACK
 
-    facetKeys.push(encoding.fieldRef(COL));
+    facetKeys.push(encoding.fieldRef(Enctype.COL));
 
     if (hasRow) {
       from = util.duplicate(group.from);
       from.transform = from.transform || [];
-      from.transform.unshift({type: 'facet', groupby: [encoding.fieldRef(ROW)]});
+      from.transform.unshift({type: 'facet', groupby: [encoding.fieldRef(Enctype.ROW)]});
     }
 
     axesGrp = groupdef('y-axes', {
-      axes: encoding.has(Y) ? [axis(Y, encoding, layout, stats)] : undefined,
-      y: hasRow && {scale: ROW, field: encoding.fieldRef(ROW)},
+      axes: encoding.has(Enctype.Y) ? [axis(Enctype.Y, encoding, layout, stats)] : undefined,
+      y: hasRow && {scale: Enctype.ROW, field: encoding.fieldRef(Enctype.ROW)},
       x: hasRow && {value: 0},
       height: hasRow && {'value': layout.cellHeight}, //HACK?
       from: from
@@ -111,10 +111,10 @@ export default function(group, encoding, layout, output, singleScaleNames, stats
 
     output.marks.unshift(axesGrp); // need to prepend so it appears under the plots
     (output.axes = output.axes || []);
-    output.axes.push(axis(COL, encoding, layout, stats));
+    output.axes.push(axis(Enctype.COL, encoding, layout, stats));
   } else { // doesn't have col
-    if (encoding.has(Y)) {
-      cellAxes.push(axis(Y, encoding, layout, stats));
+    if (encoding.has(Enctype.Y)) {
+      cellAxes.push(axis(Enctype.Y, encoding, layout, stats));
     }
   }
 
