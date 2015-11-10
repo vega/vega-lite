@@ -3,7 +3,7 @@
 var expect = require('chai').expect;
 
 var axis = require('../../src/compiler/axis'),
-  Encoding = require('../../src/Encoding').Encoding;
+  Encoding = require('../../src/Encoding').default;
 
 describe('Axis', function() {
   var stats = {a: {distinct: 5}, b: {distinct: 32}},

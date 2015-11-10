@@ -4,7 +4,7 @@ var expect = require('chai').expect;
 var fixtures = require('../fixtures');
 
 var marks = require('../../src/compiler/marks'),
-  Encoding = require('../../src/Encoding').Encoding;
+  Encoding = require('../../src/Encoding').default;
 
 var consts = require('../../src/consts');
 

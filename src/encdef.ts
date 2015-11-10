@@ -88,11 +88,11 @@ export function fromShorthand(shorthand: string) {
   return o;
 };
 
-export function isType(fieldDef, type: Type) {
+export function isType(fieldDef, type) {
   return fieldDef.type === type;
 };
 
-export function isTypes(fieldDef, types: Array<Type>) {
+export function isTypes(fieldDef, types: Array<string>) {
   for (var t=0; t<types.length; t++) {
     if(fieldDef.type === types[t]) return true;
   }

@@ -4,7 +4,7 @@ var d3 = require('d3');
 var expect = require('chai').expect;
 
 var util = require('../../src/util'),
-  Encoding = require('../../src/Encoding').Encoding,
+  Encoding = require('../../src/Encoding').default,
   vlscale = require('../../src/compiler/scale'),
   colorbrewer = require('colorbrewer');
 

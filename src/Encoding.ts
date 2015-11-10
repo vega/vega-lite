@@ -85,17 +85,17 @@ export default class Encoding {
     return this._marktype === m;
   };
 
-  has(encType: Enctype) {
+  has(encType) {
     // equivalent to calling vlenc.has(this._enc, encType)
     return this._enc[encType].name !== undefined;
   };
 
-  encDef(encType: Enctype) {
+  encDef(encType) {
     return this._enc[encType];
   };
 
   // get "field" reference for vega
-  fieldRef(encType: Enctype, opt?) {
+  fieldRef(encType, opt?) {
     opt = opt || {};
     return vlEncDef.fieldRef(this._enc[encType], opt);
   };
@@ -119,15 +119,15 @@ export default class Encoding {
     }
   };
 
-  scale(et: Enctype) {
+  scale(et) {
     return this._enc[et].scale || {};
   };
 
-  axis(et: Enctype) {
+  axis(et) {
     return this._enc[et].axis || {};
   };
 
-  bandWidth(encType: Enctype, useSmallBand?: boolean) {
+  bandWidth(encType, useSmallBand?: boolean) {
     if (this.encDef(encType).scale.bandWidth !== undefined) {
       // explicit value
       return this.encDef(encType).scale.bandWidth;
@@ -143,7 +143,7 @@ export default class Encoding {
     return this.config(useSmallBand ? 'smallBandWidth' : 'largeBandWidth');
   };
 
-  padding(encType: Enctype) {
+  padding(encType) {
     if (this.encDef(encType).scale.padding !== undefined) {
       // explicit value
       return this.encDef(encType).scale.padding;
@@ -170,7 +170,7 @@ export default class Encoding {
     return this._enc[et].value;
   };
 
-  numberFormat = function(et?: Enctype) {
+  numberFormat = function(name?) {
     // TODO(#497): have different number format based on numberType (discrete/continuous)
     return this.config('numberFormat');
   };
@@ -187,29 +187,29 @@ export default class Encoding {
     return vlEnc.forEach(this._enc, f);
   };
 
-  type(et): Type {
+  type(et) {
     return this.has(et) ? this._enc[et].type : null;
   };
 
-  isType(et: Enctype, type: Type) {
+  isType(et, type) {
     var encDef = this.encDef(et);
     return encDef && vlEncDef.isType(encDef, type);
   };
 
-  isTypes(et: Enctype, type: Array<Type>) {
+  isTypes(et, type: Array<any>) {
     var encDef = this.encDef(et);
     return encDef && vlEncDef.isTypes(encDef, type);
   };
 
-  static isOrdinalScale(encoding, encType: Enctype) {
+  static isOrdinalScale(encoding, encType) {
     return vlEncDef.isOrdinalScale(encoding.encDef(encType));
   };
 
-  static isDimension(encoding, encType: Enctype) {
+  static isDimension(encoding, encType) {
     return vlEncDef.isDimension(encoding.encDef(encType));
   };
 
-  static isMeasure(encoding, encType: Enctype) {
+  static isMeasure(encoding, encType) {
     return vlEncDef.isMeasure(encoding.encDef(encType));
   };
 
@@ -289,7 +289,7 @@ export default class Encoding {
 
   details() {
     var encoding = this;
-    return this.reduce(function(refs, field, encType: Enctype) {
+    return this.reduce(function(refs, field, encType) {
       if (!field.aggregate && (encType !== Enctype.X && encType !== Enctype.Y)) {
         refs.push(encoding.fieldRef(encType));
       }
@@ -299,7 +299,7 @@ export default class Encoding {
 
   facets() {
     var encoding = this;
-    return this.reduce(function(refs, field, encType: Enctype) {
+    return this.reduce(function(refs, field, encType) {
       if (!field.aggregate && (encType == Enctype.ROW || encType == Enctype.COL)) {
         refs.push(encoding.fieldRef(encType));
       }

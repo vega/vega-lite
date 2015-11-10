@@ -23,7 +23,7 @@ function estimateOpacity(encoding,stats) {
     //  for each non faceting and non-ordinal X / Y fields
     //  note that ordinal x,y are not include since we can
     //  consider that ordinal x are subdividing the cell into subcells anyway
-    encoding.forEach(function(encDef, encType: Enctype) {
+    encoding.forEach(function(encDef, encType) {
 
       if (encType !== Enctype.ROW && encType !== Enctype.COL &&
           !((encType === Enctype.X || encType === Enctype.Y) &&

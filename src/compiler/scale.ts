@@ -44,7 +44,7 @@ export function defs(names, encoding, layout, stats, facet?) {
   }, []);
 };
 
-export function type(name: Type, encoding) {
+export function type(name, encoding) {
   switch (encoding.type(name)) {
     case Type.N: //fall through
     case Type.O:
@@ -178,7 +178,7 @@ export function _useRawDomain (encoding, name) {
 };
 
 
-export function bandWidth(encoding, name: Enctype, type, layout) {
+export function bandWidth(encoding, name, type, layout) {
   // TODO: eliminate layout
 
   switch (name) {
@@ -206,7 +206,7 @@ export function exponent(encoding, name) {
   return encoding.encDef(name).scale.exponent;
 };
 
-export function nice(encoding: Encoding, name: Enctype, type) {
+export function nice(encoding: Encoding, name, type) {
   if (encoding.encDef(name).scale.nice !== undefined) {
     // explicit value
     return encoding.encDef(name).scale.nice;
@@ -264,7 +264,7 @@ export function points(encoding, name, type) {
 };
 
 
-export function range (encoding: Encoding, name: Enctype, type, layout, stats) {
+export function range (encoding: Encoding, name, type, layout, stats) {
   var encDef = encoding.encDef(name);
 
   if (encDef.scale.range) { // explicit value
@@ -301,7 +301,7 @@ export function range (encoding: Encoding, name: Enctype, type, layout, stats) {
   return undefined;
 };
 
-export function round(encoding: Encoding, name: Enctype) {
+export function round(encoding: Encoding, name) {
   if (encoding.encDef(name).scale.round !== undefined) {
     return encoding.encDef(name).scale.round;
   }
@@ -318,7 +318,7 @@ export function round(encoding: Encoding, name: Enctype) {
   return undefined;
 };
 
-export function zero(encoding, name: Enctype) {
+export function zero(encoding, name) {
   var encDef = encoding.encDef(name);
   var timeUnit = encDef.timeUnit;
 
@@ -349,7 +349,7 @@ export function zero(encoding, name: Enctype) {
 };
 
 
-export function color(encoding: Encoding, name: Enctype, scaleType, stats) {
+export function color(encoding: Encoding, name, scaleType, stats) {
   var colorScale = encoding.scale(Enctype.COLOR),
     range = colorScale.range,
     cardinality = encoding.cardinality(Enctype.COLOR, stats),
@@ -381,7 +381,7 @@ export function color(encoding: Encoding, name: Enctype, scaleType, stats) {
 };
 
 export var colors = {
-  palette: function(range, cardinality, type: Type) {
+  palette: function(range, cardinality, type) {
     // FIXME(kanitw): Jul 29, 2015 - check range is string
     switch (range) {
       case 'category10k':
