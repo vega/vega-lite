@@ -1,7 +1,8 @@
-import * as axis from './axis';
-import * as scale from './scale';
 import * as util from '../util';
 import {X, Y, ROW, COL} from '../consts';
+
+import axis from './axis';
+import * as scale from './scale';
 
 function groupdef(name, opt) {
   opt = opt || {};
@@ -32,7 +33,7 @@ function groupdef(name, opt) {
   return group;
 }
 
-export function def(group, encoding, layout, output, singleScaleNames, stats) {
+export default function(group, encoding, layout, output, singleScaleNames, stats) {
   var enter = group.properties.enter;
   var facetKeys = [], cellAxes = [], from, axesGrp;
 
@@ -69,7 +70,7 @@ export function def(group, encoding, layout, output, singleScaleNames, stats) {
     }
 
     axesGrp = groupdef('x-axes', {
-        axes: encoding.has(X) ? [axis.def(X, encoding, layout, stats)] : undefined,
+        axes: encoding.has(X) ? [axis(X, encoding, layout, stats)] : undefined,
         x: hasCol ? {scale: COL, field: encoding.fieldRef(COL)} : {value: 0},
         width: hasCol && {'value': layout.cellWidth}, //HACK?
         from: from
@@ -77,11 +78,11 @@ export function def(group, encoding, layout, output, singleScaleNames, stats) {
 
     output.marks.unshift(axesGrp); // need to prepend so it appears under the plots
     (output.axes = output.axes || []);
-    output.axes.push(axis.def(ROW, encoding, layout, stats));
+    output.axes.push(axis(ROW, encoding, layout, stats));
   } else { // doesn't have row
     if (encoding.has(X)) {
       //keep x axis in the cell
-      cellAxes.push(axis.def(X, encoding, layout, stats));
+      cellAxes.push(axis(X, encoding, layout, stats));
     }
   }
 
@@ -101,7 +102,7 @@ export function def(group, encoding, layout, output, singleScaleNames, stats) {
     }
 
     axesGrp = groupdef('y-axes', {
-      axes: encoding.has(Y) ? [axis.def(Y, encoding, layout, stats)] : undefined,
+      axes: encoding.has(Y) ? [axis(Y, encoding, layout, stats)] : undefined,
       y: hasRow && {scale: ROW, field: encoding.fieldRef(ROW)},
       x: hasRow && {value: 0},
       height: hasRow && {'value': layout.cellHeight}, //HACK?
@@ -110,10 +111,10 @@ export function def(group, encoding, layout, output, singleScaleNames, stats) {
 
     output.marks.unshift(axesGrp); // need to prepend so it appears under the plots
     (output.axes = output.axes || []);
-    output.axes.push(axis.def(COL, encoding, layout, stats));
+    output.axes.push(axis(COL, encoding, layout, stats));
   } else { // doesn't have col
     if (encoding.has(Y)) {
-      cellAxes.push(axis.def(Y, encoding, layout, stats));
+      cellAxes.push(axis(Y, encoding, layout, stats));
     }
   }
 

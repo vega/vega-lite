@@ -20,7 +20,7 @@ describe('Axis', function() {
           x: {name: field, type: 'T', timeUnit: timeUnit}
         }
       });
-    var _axis = axis.def('x', encoding, {
+    var _axis = axis.default('x', encoding, {
       width: 200,
       height: 200,
       cellWidth: 200,

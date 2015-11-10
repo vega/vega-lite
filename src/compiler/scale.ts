@@ -5,11 +5,11 @@ import * as colorbrewer from 'colorbrewer';
 import {interpolateHsl} from 'd3-color';
 
 import * as util from '../util';
-import * as time from './time';
-
 import {X, Y, SIZE, SHAPE, COL, ROW, COLOR, TEXT} from '../consts';
 import {STACKED, SOURCE} from '../consts';
 import {Q, O, N, T} from '../consts';
+
+import * as time from './time';
 
 export function names(props) {
   return util.keys(util.keys(props).reduce(function(a, x) {

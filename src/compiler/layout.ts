@@ -2,11 +2,12 @@
 
 import * as d3_format from 'd3-format';
 import {setter} from '../util';
-import * as time from './time';
 import {X, Y, ROW, COL, TEXT} from '../consts';
 import {Q, O, N, T} from '../consts';
 
-export function def(encoding, stats) {
+import * as time from './time';
+
+export default function(encoding, stats) {
   var layout = box(encoding, stats);
   layout = offset(encoding, stats, layout);
   return layout;

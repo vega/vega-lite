@@ -1,8 +1,9 @@
 import * as vlEncDef from '../encdef';
-import * as time from './time';
 import * as util from '../util';
 import {SOURCE, SUMMARY, STACKED} from '../consts';
 import {Q, O, N, T} from '../consts';
+
+import * as time from './time';
 
 /**
  * Create Vega's data array from a given encoding.
@@ -13,7 +14,7 @@ import {Q, O, N, T} from '../consts';
  *                 If the encoding contains aggregate value, this will also create
  *                 aggregate table as well.
  */
-export function def(encoding) {
+export default function(encoding) {
   var def = [source(encoding)];
 
   var aggregate = summary(encoding);
@@ -65,7 +66,7 @@ export function source(encoding) {
   return source;
 };
 
-export function formatParse(encoding) {
+function formatParse(encoding) {
   var parse;
 
   encoding.forEach(function(encDef) {
@@ -242,7 +243,7 @@ export function summary(encoding) {
 /**
  * Add stacked data source, for feeding the shared scale.
  */
-export function stack(encoding, stackCfg) {
+function stack(encoding, stackCfg) {
   var dim = stackCfg.groupby;
   var val = stackCfg.value;
   var facets = encoding.facets();
@@ -271,7 +272,7 @@ export function stack(encoding, stackCfg) {
   return stacked;
 };
 
-export function filterNonPositive(dataTable, encoding) {
+function filterNonPositive(dataTable, encoding) {
   encoding.forEach(function(encDef, encType) {
     if (encoding.scale(encType).type === 'log') {
       dataTable.transform.push({

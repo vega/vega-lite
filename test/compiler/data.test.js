@@ -17,7 +17,7 @@ describe('data', function () {
           }
         });
 
-      var _data = data.def(encoding);
+      var _data = data.default(encoding);
       expect(_data.length).to.equal(2);
     });
   });
@@ -30,7 +30,7 @@ describe('data', function () {
         }
       });
 
-    var _data = data.def(rawEncodingWithLog);
+    var _data = data.default(rawEncodingWithLog);
     it('should contains one table', function() {
       expect(_data.length).to.equal(1);
     });

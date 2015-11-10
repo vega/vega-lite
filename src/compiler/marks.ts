@@ -1,9 +1,9 @@
 import {X, Y, TEXT, COLOR, SIZE, SHAPE} from '../consts';
 import {Q} from '../consts';
 
-export function def(encoding, layout, style) {
+export default function(encoding, layout, style) {
   var defs = [],
-    mark = switchMark(encoding.marktype()),
+    mark = getMark(encoding.marktype()),
     from = encoding.dataTable();
 
   // to add a background to text, we need to add it before the text
@@ -33,8 +33,8 @@ export function def(encoding, layout, style) {
   return defs;
 };
 
-function switchMark(mark: string): any {
-  // TODO: use constants
+// TODO: find common return type
+export function getMark(mark: string): any {
   switch (mark) {
     case 'bar':
       return bar;
@@ -55,13 +55,13 @@ function switchMark(mark: string): any {
   }
 }
 
-export var bar = {
+export const bar = {
   type: 'rect',
   prop: bar_props,
   supportedEncoding: {row: 1, col: 1, x: 1, y: 1, size: 1, color: 1}
 };
 
-export var line = {
+export const line = {
   type: 'line',
   line: true,
   prop: line_props,
@@ -69,7 +69,7 @@ export var line = {
   supportedEncoding: {row: 1, col: 1, x: 1, y: 1, color: 1, detail:1}
 };
 
-export var area = {
+export const area = {
   type: 'area',
   line: true,
   requiredEncoding: ['x', 'y'],
@@ -77,31 +77,31 @@ export var area = {
   supportedEncoding: {row: 1, col: 1, x: 1, y: 1, color: 1}
 };
 
-export var tick = {
+export const tick = {
   type: 'rect',
   prop: tick_props,
   supportedEncoding: {row: 1, col: 1, x: 1, y: 1, color: 1, detail: 1}
 };
 
-export var circle = {
+export const circle = {
   type: 'symbol',
   prop: filled_point_props('circle'),
   supportedEncoding: {row: 1, col: 1, x: 1, y: 1, size: 1, color: 1, detail: 1}
 };
 
-export var square = {
+export const square = {
   type: 'symbol',
   prop: filled_point_props('square'),
   supportedEncoding: circle.supportedEncoding
 };
 
-export var point = {
+export const point = {
   type: 'symbol',
   prop: point_props,
   supportedEncoding: {row: 1, col: 1, x: 1, y: 1, size: 1, color: 1, shape: 1, detail: 1}
 };
 
-export var text = {
+export const text = {
   type: 'text',
   prop: text_props,
   requiredEncoding: ['text'],

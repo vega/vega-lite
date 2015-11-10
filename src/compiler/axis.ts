@@ -1,11 +1,12 @@
 import {getter, setter} from '../util';
 import {Encoding} from '../Encoding';
 import * as util from '../util';
-import * as time from './time';
 import {X, Y, COL, ROW} from '../consts';
 import {Q, O, N, T} from '../consts';
 
-export function def(name: string, encoding: Encoding, layout, stats) {
+import * as time from './time';
+
+export default function(name: string, encoding: Encoding, layout, stats) {
   var isCol = name == COL,
     isRow = name == ROW,
     type = isCol ? 'x' : isRow ? 'y' : name;

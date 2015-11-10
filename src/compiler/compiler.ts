@@ -5,18 +5,17 @@
 import {summary} from '../util';
 import {Encoding} from '../Encoding';
 
-import * as axis from './axis';
-import * as legend from './legend';
-import * as marks from './marks';
 import * as scale from './scale';
-
-import * as data from './data';
-import * as vlFacet from './facet';
-import * as vlLayout from './layout';
-import * as vlStack from './stack';
-import * as vlStyle from './style';
-import * as subfacet from './subfacet';
 import * as time from './time';
+import axis from './axis';
+import vlLegend from './legend';
+import vlMarks, {getMark} from './marks';
+import vlData from './data';
+import vlFacet from './facet';
+import vlLayout from './layout';
+import vlStack from './stack';
+import vlStyle from './style';
+import subfacet from './subfacet';
 
 import {X, Y, ROW, COL, SOURCE} from '../consts';
 import {Q, O, N, T} from '../consts';
@@ -45,13 +44,13 @@ export function compileEncoding(encoding, stats) {
     }
   }
 
-  var layout = vlLayout.def(encoding, stats);
+  var layout = vlLayout(encoding, stats);
 
   var output:any = {
       width: layout.width,
       height: layout.height,
       padding: 'auto',
-      data: data.def(encoding),
+      data: vlData(encoding),
       marks: [{
         name: 'cell',
         type: 'group',
@@ -77,24 +76,24 @@ export function compileEncoding(encoding, stats) {
   var group = output.marks[0];
 
   // marks
-  var styleCfg = vlStyle.style(encoding, stats),
-    mdefs = group.marks = marks.def(encoding, layout, styleCfg),
+  var styleCfg = vlStyle(encoding, stats),
+    mdefs = group.marks = vlMarks(encoding, layout, styleCfg),
     mdef = mdefs[mdefs.length - 1];  // TODO: remove this dirty hack by refactoring the whole flow
 
   var stack = encoding.stack();
   if (stack) {
     // modify mdef.{from,properties}
-    vlStack.def(encoding, mdef, stack);
+    vlStack(encoding, mdef, stack);
   }
 
-  var lineType = marks[encoding.marktype()].line;
+  var lineType = getMark(encoding.marktype()).line;
 
   // handle subfacets
   var details = encoding.details();
 
   if (details.length > 0 && lineType) {
     //subfacet to group area / line together in one group
-    subfacet.def(group, mdef, details);
+    subfacet(group, mdef, details);
   }
 
   // auto-sort line/area values
@@ -112,11 +111,11 @@ export function compileEncoding(encoding, stats) {
     return scale.names(markProps.properties.update);
   }));
 
-  var legends = legend.defs(encoding, styleCfg);
+  var legends = vlLegend(encoding, styleCfg);
 
   // Small Multiples
   if (encoding.has(ROW) || encoding.has(COL)) {
-    output = vlFacet.def(group, encoding, layout, output, singleScaleNames, stats);
+    output = vlFacet(group, encoding, layout, output, singleScaleNames, stats);
     if (legends.length > 0) {
       output.legends = legends;
     }
@@ -125,10 +124,10 @@ export function compileEncoding(encoding, stats) {
 
     var axes = [];
     if (encoding.has(X)) {
-      axes.push(axis.def(X, encoding, layout, stats));
+      axes.push(axis(X, encoding, layout, stats));
     }
     if (encoding.has(Y)) {
-      axes.push(axis.def(Y, encoding, layout, stats));
+      axes.push(axis(Y, encoding, layout, stats));
     }
     if (axes.length > 0) {
       group.axes = axes;

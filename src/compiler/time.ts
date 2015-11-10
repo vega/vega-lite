@@ -2,7 +2,6 @@
 
 import {utcFormat} from 'd3-time-format';
 import * as util from '../util';
-
 import {ROW, COL, COLOR} from '../consts';
 import {T} from '../consts';
 

@@ -1,9 +1,10 @@
 import {setter, getter} from '../util';
-import * as time from './time';
 import {COLOR, SHAPE, SIZE} from '../consts';
 import {Q, O, N, T} from '../consts';
 
-export function defs(encoding, styleCfg) {
+import * as time from './time';
+
+export default function(encoding, styleCfg) {
   var defs = [];
 
   if (encoding.has(COLOR) && encoding.encDef(COLOR).legend) {
@@ -44,7 +45,7 @@ export function def(name, encoding, def, styleCfg) {
   return def;
 };
 
-export function style(name, e, def, styleCfg) {
+function style(name, e, def, styleCfg) {
   var symbols = getter(def, ['properties', 'symbols']),
     marktype = e.marktype();
 

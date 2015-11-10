@@ -1,8 +1,7 @@
 import * as vlEncDef from '../encdef';
-
 import {X, Y, ROW, COL} from '../consts';
 
-export function style(encoding, stats) {
+export default function(encoding, stats) {
   return {
     opacity: estimateOpacity(encoding, stats),
   };
