@@ -17,7 +17,8 @@
     "filesGlob": [
         "**/*.ts",
         "**/*.tsx",
-        "!node_modules/**"
+        "!node_modules/**",
+        "!bower_components/**"
     ],
     "files": [
         "src/compiler/axis.ts",
@@ -37,7 +38,6 @@
         "src/enc.ts",
         "src/encdef.ts",
         "src/Encoding.ts",
-        "src/schema/instancegen.ts",
         "src/schema/schema.ts",
         "src/schema/schemagen.ts",
         "src/schema/schemautil.ts",
