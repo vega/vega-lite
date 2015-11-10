@@ -51,7 +51,6 @@
         "src/util.ts",
         "src/vl.ts",
         "test/chai.d.ts",
-        "test/Encoding.test.ts",
         "test/mocha.d.ts"
     ]
 }

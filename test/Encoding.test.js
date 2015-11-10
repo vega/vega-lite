@@ -1,12 +1,15 @@
-import {expect} from 'chai';
-import Encoding from '../src/Encoding';
-import {Enctype} from '../src/consts';
+'use strict';
+
+var expect = require('chai').expect;
+
+var Encoding = require('../src/Encoding').default;
 
 describe('Encoding.fromShorthand()', function () {
   it('should parse shorthand correctly', function () {
     var shorthand = 'mark=point|x=Effect__Amount_of_damage,O|y=mean_Cost__Total_$,Q';
     var encoding = Encoding.fromShorthand(shorthand);
-    expect(encoding.has(Enctype.Y)).ok;
-    expect(encoding.has(Enctype.X)).ok;
+    expect(encoding.has('y')).ok;
+    expect(encoding.has('x')).ok;
+
   });
 });
