@@ -1,6 +1,6 @@
 import * as util from '../util';
 
-var isEmpty = function(obj) {
+function isEmpty(obj) {
   return Object.keys(obj).length === 0;
 };
 

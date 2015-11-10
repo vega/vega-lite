@@ -6,7 +6,6 @@ export * from 'datalib/src/stats';
 
 // https://github.com/Microsoft/TypeScript/issues/3612
 import dlBin = require('datalib/src/bins/bins');
-
 export var bin = dlBin;
 
 export function isin(item: number, array: Array<any>):boolean {
@@ -45,7 +44,7 @@ export function map(obj, f, thisArg) {
   }
 };
 
-export function any(arr, f) {
+export function any(arr: Array<any>, f: (d, k?, i?) => boolean) {
   var i = 0, k;
   for (k in arr) {
     if (f(arr[k], k, i++)) return true;
@@ -53,7 +52,7 @@ export function any(arr, f) {
   return false;
 };
 
-export function all(arr, f) {
+export function all(arr: Array<any>, f: (d, k?, i?) => boolean) {
   var i = 0, k;
   for (k in arr) {
     if (!f(arr[k], k, i++)) return false;

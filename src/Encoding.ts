@@ -8,11 +8,11 @@ import * as schemaUtil from './schema/schemautil';
 
 export class Encoding {
   _data: any;
-  _marktype: any;
+  _marktype: string;
   _enc: any;
   _config: any;
 
-  constructor(spec: any, theme: any) {
+  constructor(spec, theme?) {
     var defaults = schema.instantiate();
     var specExtended = schemaUtil.merge(defaults, theme || {}, spec);
 
@@ -22,11 +22,11 @@ export class Encoding {
     this._config = specExtended.config;
   };
 
-  static fromShorthand(shorthand:string, data, config, theme?) {
+  static fromShorthand(shorthand: string, data, config, theme?) {
     var c = consts.shorthand,
-        split = shorthand.split(c.delim),
-        marktype = split.shift().split(c.assign)[1].trim(),
-        enc = vlEnc.fromShorthand(split);
+      split = shorthand.split(c.delim),
+      marktype = split.shift().split(c.assign)[1].trim(),
+      enc = vlEnc.fromShorthand(split);
 
     return new Encoding({
       data: data,
@@ -52,7 +52,7 @@ export class Encoding {
       c.delim + vlEnc.shorthand(spec.encoding);
   };
 
-  static specFromShorthand(shorthand:string, data, config, excludeConfig?) {
+  static specFromShorthand(shorthand: string, data, config, excludeConfig?) {
     return Encoding.fromShorthand(shorthand, data, config).toSpec(excludeConfig);
   };
 
@@ -96,7 +96,7 @@ export class Encoding {
   };
 
   // get "field" reference for vega
-  fieldRef(et, opt?) {
+  fieldRef(et: string, opt?) {
     opt = opt || {};
     return vlEncDef.fieldRef(this._enc[et], opt);
   };
@@ -120,15 +120,15 @@ export class Encoding {
     }
   };
 
-  scale(et) {
+  scale(et: string) {
     return this._enc[et].scale || {};
   };
 
-  axis(et) {
+  axis(et: string) {
     return this._enc[et].axis || {};
   };
 
-  bandWidth(encType, useSmallBand?) {
+  bandWidth(encType, useSmallBand?: boolean) {
     if (this.encDef(encType).scale.bandWidth !== undefined) {
       // explicit value
       return this.encDef(encType).scale.bandWidth;
@@ -137,9 +137,9 @@ export class Encoding {
     // If not specified, draw value from config.
 
     useSmallBand = useSmallBand ||
-      //isBandInSmallMultiples
-      (encType === Y && this.has(ROW) && this.has(Y)) ||
-      (encType === X && this.has(COL) && this.has(X));
+    //isBandInSmallMultiples
+    (encType === Y && this.has(ROW) && this.has(Y)) ||
+    (encType === X && this.has(COL) && this.has(X));
 
     return this.config(useSmallBand ? 'smallBandWidth' : 'largeBandWidth');
   };
@@ -247,7 +247,7 @@ export class Encoding {
   static isStack(spec) {
     // FIXME update this once we have control for stack ...
     return (spec.marktype === 'bar' || spec.marktype === 'area') &&
-      spec.encoding.color;
+      !!spec.encoding.color;
   };
 
   /**
@@ -258,12 +258,12 @@ export class Encoding {
    */
   stack() {
     var stack = (this.has(COLOR) && this.encDef(COLOR).stack) ? COLOR :
-          (this.has(DETAIL) && this.encDef(DETAIL).stack) ? DETAIL :
-          null;
+      (this.has(DETAIL) && this.encDef(DETAIL).stack) ? DETAIL :
+        null;
 
     var properties = stack && this.encDef(stack).stack !== true ?
-                       this.encDef(stack).stack :
-                       {};
+      this.encDef(stack).stack :
+      {};
 
     if ((this.is('bar') || this.is('area')) && stack && this.isAggregate()) {
 
@@ -288,8 +288,6 @@ export class Encoding {
     }
     return null; // no stack encoding
   };
-
-
 
   details() {
     var encoding = this;
@@ -323,7 +321,7 @@ export class Encoding {
     return this._data;
   };
 
-   // returns whether the encoding has values embedded
+  // returns whether the encoding has values embedded
   hasValues() {
     var vals = this.data().values;
     return vals && vals.length;
