@@ -86,21 +86,18 @@ export default class Encoding {
   };
 
   has(encType: Enctype) {
-    const name = Enctype[encType];
     // equivalent to calling vlenc.has(this._enc, encType)
-    return this._enc[name].name !== undefined;
+    return this._enc[encType].name !== undefined;
   };
 
   encDef(encType: Enctype) {
-    const name = Enctype[encType];
-    return this._enc[name];
+    return this._enc[encType];
   };
 
   // get "field" reference for vega
   fieldRef(encType: Enctype, opt?) {
-    const name = Enctype[encType];
     opt = opt || {};
-    return vlEncDef.fieldRef(this._enc[name], opt);
+    return vlEncDef.fieldRef(this._enc[encType], opt);
   };
 
   /*
@@ -110,27 +107,24 @@ export default class Encoding {
     return vlEnc.fields(this._enc);
   };
 
-  fieldTitle(encType: Enctype) {
-    const name = Enctype[encType];
-    if (vlEncDef.isCount(this._enc[name])) {
+  fieldTitle(et) {
+    if (vlEncDef.isCount(this._enc[et])) {
       return vlEncDef.COUNT_DISPLAYNAME;
     }
-    var fn = this._enc[name].aggregate || this._enc[name].timeUnit || (this._enc[name].bin && 'bin');
+    var fn = this._enc[et].aggregate || this._enc[et].timeUnit || (this._enc[et].bin && 'bin');
     if (fn) {
-      return fn.toUpperCase() + '(' + this._enc[name].name + ')';
+      return fn.toUpperCase() + '(' + this._enc[et].name + ')';
     } else {
-      return this._enc[name].name;
+      return this._enc[et].name;
     }
   };
 
-  scale(encType: Enctype) {
-    const name = Enctype[encType];
-    return this._enc[name].scale || {};
+  scale(et: Enctype) {
+    return this._enc[et].scale || {};
   };
 
-  axis(encType: Enctype) {
-    const name = Enctype[encType];
-    return this._enc[name].axis || {};
+  axis(et: Enctype) {
+    return this._enc[et].axis || {};
   };
 
   bandWidth(encType: Enctype, useSmallBand?: boolean) {
@@ -193,9 +187,8 @@ export default class Encoding {
     return vlEnc.forEach(this._enc, f);
   };
 
-  type(encType: Enctype): Type {
-    const name = Enctype[encType];
-    return this.has(encType) ? this._enc[name].type : null;
+  type(et): Type {
+    return this.has(et) ? this._enc[et].type : null;
   };
 
   isType(et: Enctype, type: Type) {
@@ -220,15 +213,15 @@ export default class Encoding {
     return vlEncDef.isMeasure(encoding.encDef(encType));
   };
 
-  isOrdinalScale(encType: Enctype) {
+  isOrdinalScale(encType) {
     return this.has(encType) && Encoding.isOrdinalScale(this, encType);
   };
 
-  isDimension(encType: Enctype) {
+  isDimension(encType) {
     return this.has(encType) && Encoding.isDimension(this, encType);
   };
 
-  isMeasure(encType: Enctype) {
+  isMeasure(encType) {
     return this.has(encType) && Encoding.isMeasure(this, encType);
   };
 
