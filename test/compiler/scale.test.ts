@@ -1,20 +1,15 @@
-'use strict';
+/// <reference path="../../src/typings/d3-color.d.ts"/>
 
 var d3 = require('d3');
 var expect = require('chai').expect;
 
-var util = require('../../src/util'),
-  Encoding = require('../../src/Encoding').default,
-  vlscale = require('../../src/compiler/scale'),
-  colorbrewer = require('colorbrewer');
+var colorbrewer = require('colorbrewer');
 
-var consts = require('../../src/consts');
 
-var Q = consts.Type.Q;
-var O = consts.Type.O;
-var T = consts.Type.T;
-var SOURCE = consts.SOURCE;
-var SUMMARY = consts.SUMMARY;
+import * as vlscale from '../../src/compiler/scale';
+import {Type, SOURCE, SUMMARY} from '../../src/consts';
+import Encoding from '../../src/Encoding';
+import * as util from '../../src/util';
 
 describe('vl.compile.scale', function() {
   describe('domain()', function() {
@@ -30,7 +25,7 @@ describe('vl.compile.scale', function() {
             x: {name: 'x', type: 'O'},
             color: {name: 'color', type: 'O'}
           }
-        }), 'y', 'linear', {}, true);
+        }), 'y', 'linear', {});
 
         expect(domain).to.eql({
           data: 'stacked',
@@ -49,7 +44,7 @@ describe('vl.compile.scale', function() {
             x: {name: 'x', type: 'O'},
             color: {name: 'color', type: 'O'}
           }
-        }), 'y', 'linear', {}, true);
+        }), 'y', 'linear', {});
 
         expect(domain).to.eql({
           data: 'stacked',
@@ -67,10 +62,10 @@ describe('vl.compile.scale', function() {
                 bin: {maxbins: 15},
                 name: 'origin',
                 scale: {useRawDomain: true},
-                type: Q
+                type: Type.Q
               }
             }
-          }), 'y', 'ordinal', {origin: {min: -5, max:48}}, {});
+          }), 'y', 'ordinal', {origin: {min: -5, max:48}});
 
           expect(domain).to.eql({
             data: SOURCE,
@@ -86,10 +81,10 @@ describe('vl.compile.scale', function() {
                 aggregate: 'mean',
                 name: 'origin',
                 scale: {useRawDomain: true},
-                type: Q
+                type: Type.Q
               }
             }
-          }), 'y', 'linear', {}, {});
+          }), 'y', 'linear', {});
 
           expect(domain.data).to.eql(SOURCE);
         });
@@ -102,10 +97,10 @@ describe('vl.compile.scale', function() {
                 aggregate: 'sum',
                 name: 'origin',
                 scale: {useRawDomain: true},
-                type: Q
+                type: Type.Q
               }
             }
-          }), 'y', 'linear', {}, {});
+          }), 'y', 'linear', {});
 
           expect(domain.data).to.eql(SUMMARY);
         });
@@ -118,10 +113,10 @@ describe('vl.compile.scale', function() {
                 aggregate: 'min',
                 name: 'origin',
                 scale: {useRawDomain: false},
-                type: Q
+                type: Type.Q
               }
             }
-          }), 'y', 'linear', {}, {});
+          }), 'y', 'linear', {});
 
           expect(domain.data).to.eql(SUMMARY);
         });
@@ -135,10 +130,10 @@ describe('vl.compile.scale', function() {
               y: {
                 name: 'origin',
                 scale: {useRawDomain: true},
-                type: T
+                type: Type.T
               }
             }
-          }), 'y', 'time', {}, {});
+          }), 'y', 'time', {});
 
           expect(domain.data).to.eql(SOURCE);
         });
@@ -150,11 +145,11 @@ describe('vl.compile.scale', function() {
               y: {
                 name: 'origin',
                 scale: {useRawDomain: true},
-                type: T,
+                type: Type.T,
                 timeUnit: 'year'
               }
             }
-          }), 'y', 'ordinal', {}, {});
+          }), 'y', 'ordinal', {});
 
           expect(domain.data).to.eql(SOURCE);
           expect(domain.field.indexOf('year')).to.gt(-1);
@@ -167,11 +162,11 @@ describe('vl.compile.scale', function() {
               y: {
                 name: 'origin',
                 scale: {useRawDomain: true},
-                type: T,
+                type: Type.T,
                 timeUnit: 'month'
               }
             }
-          }), 'y', 'ordinal', {}, {});
+          }), 'y', 'ordinal', {});
 
           expect(domain).to.eql([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]);
         });
@@ -182,7 +177,7 @@ describe('vl.compile.scale', function() {
         var sortDef = {op: 'min', field:'Acceleration'};
         var encoding = Encoding.fromSpec({
             encoding: {
-              y: { name: 'origin', type: O, sort: sortDef}
+              y: { name: 'origin', type: Type.O, sort: sortDef}
             }
           });
 
@@ -197,7 +192,7 @@ describe('vl.compile.scale', function() {
       it('should return correct domain without sort if sort is not provided', function() {
         var encoding = Encoding.fromSpec({
             encoding: {
-              y: { name: 'origin', type: O}
+              y: { name: 'origin', type: Type.O}
             }
           });
 

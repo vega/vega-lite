@@ -39,7 +39,7 @@ export function formula(timeUnit, fieldRef) {
   return fn + '(' + fieldRef + ')';
 };
 
-export function maxLength(timeUnit, encoding: Encoding) {
+export function maxLength(timeUnit, encoding: any) {
   switch (timeUnit) {
     case 'seconds':
     case 'minutes':
