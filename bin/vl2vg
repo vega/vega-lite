@@ -9,9 +9,7 @@ var helpText =
 
 // import required libraries
 var fs = require('fs'),
-    vl = require('../vega-lite.js'),
-    // TODO(kanitw): extract this to another library
-    json3 = require('../lib/json3-compactstringify.js');
+    vl = require('../vega-lite.js');
 
 // arguments
 var args = require('yargs')
@@ -54,7 +52,7 @@ fs.readFile(specFile, 'utf8', function(err, text) {
 function compile(vlSpec, stats) {
   var vgSpec = vl.compile(vlSpec, stats);
   if (args.p) {
-  	process.stdout.write(json3.stringify(vgSpec, null, 1, 80));
+  	process.stdout.write(JSON.stringify(vgSpec, null, 4));
   } else {
   	process.stdout.write(JSON.stringify(vgSpec));
   }
