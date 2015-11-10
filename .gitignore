@@ -8,5 +8,8 @@ vega-lite-schema.json
 npm-debug.log
 instance.json
 coverage
+
 src/*.js
 src/**/*.js
+test/*.js
+test/**/*.js
