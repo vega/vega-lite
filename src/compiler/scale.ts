@@ -381,7 +381,7 @@ export function color(encoding, name, scaleType, stats) {
   }
 };
 
-namespace colors {
+export namespace colors {
   export function palette(range, cardinality, type) {
     // FIXME(kanitw): Jul 29, 2015 - check range is string
     switch (range) {
