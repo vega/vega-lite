@@ -36,15 +36,17 @@ export default function(encoding) {
   return def;
 }
 
-export function source(encoding) {
-  interface Table {
-    name: string;
-    values?: any;
-    format?: any;
-    url?: any;
-    transform?: any;
-  }
+// TODO: Consolidate all Vega interface
+interface Table {
+  name: string;
+  source?: string;
+  values?: any;
+  format?: any;
+  url?: any;
+  transform?: any;
+}
 
+export function source(encoding): Table {
   var source:Table = {name: SOURCE};
 
   // Data source (url or inline)
@@ -184,7 +186,7 @@ export function formulaTransform(encoding) {
   }, []);
 };
 
-export function summary(encoding) {
+export function summary(encoding):Table {
   /* dict set for dimensions */
   var dims = {};
 
@@ -243,12 +245,12 @@ export function summary(encoding) {
 /**
  * Add stacked data source, for feeding the shared scale.
  */
-function stack(encoding, stackCfg) {
+function stack(encoding, stackCfg):Table {
   var dim = stackCfg.groupby;
   var val = stackCfg.value;
   var facets = encoding.facets();
 
-  var stacked = {
+  var stacked:Table = {
     name: STACKED,
     source: encoding.dataTable(),
     transform: [{

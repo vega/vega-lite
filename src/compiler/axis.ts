@@ -12,7 +12,7 @@ export default function(name: string, encoding: Encoding, layout, stats) {
     type = isCol ? 'x' : isRow ? 'y' : name;
 
   // TODO: rename def to axisDef and avoid side effects where possible.
-
+  // TODO: replace any with Vega Axis Interface
   var def:any = {
     type: type,
     scale: name
