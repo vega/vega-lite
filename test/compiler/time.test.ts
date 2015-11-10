@@ -21,13 +21,6 @@ describe('time', function() {
   });
 
   describe('maxLength', function() {
-    it('should return max length based on time format', function () {
-      expect(time.maxLength(undefined /*no timeUnit*/, {
-          config: function(){ return '%A %B %e %H:%M:%S %Y';}
-        }))
-        .to.eql('Wednesday September 17 04:00:00 2014'.length);
-    });
-
     it('should return max length of the month custom scale', function () {
       expect(time.maxLength('month', Encoding.fromSpec({mark: 'point'})))
         .to.eql(3);
