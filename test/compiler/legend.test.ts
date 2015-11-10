@@ -1,9 +1,7 @@
-'use strict';
-
 var expect = require('chai').expect;
 
-var legend = require('../../src/compiler/legend'),
-  Encoding = require('../../src/Encoding').default;
+import * as legend from '../../src/compiler/legend';
+import Encoding from '../../src/Encoding';
 
 describe('Legend', function() {
   describe('title()', function () {

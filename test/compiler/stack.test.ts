@@ -1,13 +1,12 @@
 'use strict';
 
 var expect = require('chai').expect;
-var fixtures = require('../fixtures').stack;
 
-var compile = require('../../src/vl').compile;
+import * as fix from '../fixtures';
+import {compile} from '../../src/compiler/compiler';
+import {SUMMARY} from '../../src/consts';
 
-var consts = require('../../src/consts');
-
-var SUMMARY = consts.SUMMARY;
+var fixtures = fix.f.stack;
 
 var stats = {
   'Cost__Total_$': {

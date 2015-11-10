@@ -1,11 +1,8 @@
-'use strict';
-
 var expect = require('chai').expect;
 
-var data = require('../../src/compiler/data'),
-  Encoding = require('../../src/Encoding').default;
-
-var SUMMARY = require('../../src/consts').SUMMARY;
+import * as data from '../../src/compiler/data';
+import {SUMMARY} from '../../src/consts';
+import Encoding from '../../src/Encoding';
 
 describe('data', function () {
   describe('for aggregate encoding', function () {
@@ -52,7 +49,7 @@ describe('data.source', function() {
       }
     });
 
-    var source = data.source(encoding, {});
+    var source = data.source(encoding);
 
     it('should have values', function() {
       expect(source.name).to.equal('source');

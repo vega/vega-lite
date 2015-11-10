@@ -1,8 +1,6 @@
-'use strict';
-
 var expect = require('chai').expect;
 
-var Encoding = require('../src/Encoding').default;
+import Encoding from '../src/Encoding';
 
 describe('Encoding.fromShorthand()', function () {
   it('should parse shorthand correctly', function () {

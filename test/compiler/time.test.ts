@@ -1,9 +1,7 @@
-'use strict';
-
 var expect = require('chai').expect;
 
-var time = require('../../src/compiler/time'),
-  Encoding = require('../../src/Encoding').default;
+import * as time from '../../src/compiler/time';
+import Encoding from '../../src/Encoding';
 
 describe('time', function() {
   var field = 'a',
@@ -22,7 +20,7 @@ describe('time', function() {
     }).length).to.equal(1);
   });
 
-  describe('maxLength', function(){
+  describe('maxLength', function() {
     it('should return max length based on time format', function () {
       expect(time.maxLength(undefined /*no timeUnit*/, {
           config: function(){ return '%A %B %e %H:%M:%S %Y';}

@@ -12,7 +12,8 @@
         "removeComments": true,
         "noLib": false,
         "preserveConstEnums": true,
-        "suppressImplicitAnyIndexErrors": true
+        "suppressImplicitAnyIndexErrors": true,
+        "sourceMap": true
     },
     "filesGlob": [
         "**/*.ts",
@@ -51,6 +52,20 @@
         "src/util.ts",
         "src/vl.ts",
         "test/chai.d.ts",
-        "test/mocha.d.ts"
+        "test/compiler/axis.test.ts",
+        "test/compiler/compiler.test.ts",
+        "test/compiler/data.test.ts",
+        "test/compiler/legend.test.ts",
+        "test/compiler/marks.test.ts",
+        "test/compiler/scale.test.ts",
+        "test/compiler/stack.test.ts",
+        "test/compiler/time.test.ts",
+        "test/encdef.test.ts",
+        "test/Encoding.test.ts",
+        "test/examples.ts",
+        "test/fixtures.ts",
+        "test/mocha.d.ts",
+        "test/schema.test.ts",
+        "test/validate.test.ts"
     ]
 }

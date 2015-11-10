@@ -60,7 +60,7 @@ export function type(name, encoding) {
   }
 };
 
-export function domain(encoding, name, type, facet) {
+export function domain(encoding, name, type, facet?) {
   var encDef = encoding.encDef(name);
 
   if (encDef.scale.domain) { // explicit value
@@ -381,7 +381,7 @@ export function color(encoding: Encoding, name, scaleType, stats) {
 };
 
 export namespace colors {
-  export function palette(range, cardinality, type) {
+  export function palette(range, cardinality?, type?) {
     // FIXME(kanitw): Jul 29, 2015 - check range is string
     switch (range) {
       case 'category10k':
