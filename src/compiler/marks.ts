@@ -109,8 +109,7 @@ export const text = {
 };
 
 function bar_props(e, layout, style) {
-  // jshint unused:false
-
+  // TODO Use Vega's marks properties interface
   var p:any = {};
 
   // x's and width
@@ -188,6 +187,7 @@ function bar_props(e, layout, style) {
 }
 
 function point_props(e, layout, style) {
+  // TODO Use Vega's marks properties interface
   var p:any = {};
 
   // x
@@ -242,7 +242,7 @@ function point_props(e, layout, style) {
 }
 
 function line_props(e,layout, style) {
-  // jshint unused:false
+  // TODO Use Vega's marks properties interface
   var p:any = {};
 
   // x
@@ -276,6 +276,7 @@ function line_props(e,layout, style) {
 
 // TODO(#694): optimize area's usage with bin
 function area_props(e, layout, style) {
+  // TODO Use Vega's marks properties interface
   var p:any = {};
 
   // x
@@ -315,6 +316,7 @@ function area_props(e, layout, style) {
 }
 
 function tick_props(e, layout, style) {
+  // TODO Use Vega's marks properties interface
   var p:any = {};
 
   // x
@@ -368,6 +370,7 @@ function tick_props(e, layout, style) {
 
 function filled_point_props(shape) {
   return function(e, layout, style) {
+    // TODO Use Vega's marks properties interface
     var p:any = {};
 
     // x
@@ -409,6 +412,7 @@ function filled_point_props(shape) {
 }
 
 function text_props(e, layout, style) {
+  // TODO Use Vega's marks properties interface
   var p:any = {},
     encDef = e.encDef(TEXT);
 

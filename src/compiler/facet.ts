@@ -6,6 +6,8 @@ import * as scale from './scale';
 
 function groupdef(name, opt) {
   opt = opt || {};
+
+  // TODO: Vega's Marks interface
   var group:any = {
     name: name || undefined,
     type: 'group',
