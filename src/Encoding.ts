@@ -90,14 +90,14 @@ export default class Encoding {
     return this._enc[encType].name !== undefined;
   };
 
-  encDef(et: Enctype) {
-    return this._enc[et];
+  encDef(encType: Enctype) {
+    return this._enc[encType];
   };
 
   // get "field" reference for vega
-  fieldRef(et: Enctype, opt?) {
+  fieldRef(encType: Enctype, opt?) {
     opt = opt || {};
-    return vlEncDef.fieldRef(this._enc[et], opt);
+    return vlEncDef.fieldRef(this._enc[encType], opt);
   };
 
   /*
