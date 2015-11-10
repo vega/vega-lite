@@ -7,12 +7,14 @@ import * as colorbrewer from 'colorbrewer';
 import * as util from '../util';
 import {toMap} from '../util';
 import * as schemaUtil from './schemautil';
+import {Type} from '../consts';
 
 // TODO: remove these when we know how to generate a schema
-var Q = 'Q';
-var O = 'O';
-var N = 'N';
-var T = 'T';
+var Q = Type.Q;
+var O = Type.O;
+var N = Type.N;
+var T = Type.T;
+
 
 
 import {VALID_OPS as VALID_AGG_OPS} from 'vega/src/transforms/Aggregate';
