@@ -1,6 +1,5 @@
 'use strict';
 
-var schema = require('./schema').schema,
-  json3 = require('../../lib/json3-compactstringify.js');
+var schema = require('./schema').schema;
 
-process.stdout.write(json3.stringify(schema, null, 1, 80) + '\n');
+process.stdout.write(JSON.stringify(schema, null, 4) + '\n');
