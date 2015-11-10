@@ -1,15 +1,11 @@
-'use strict';
-
-var expect = require('chai').expect;
-
-var Encoding = require('../src/Encoding').Encoding;
-
+var chai_1 = require('chai');
+var Encoding_1 = require('../src/Encoding');
+var consts_1 = require('../src/consts');
 describe('Encoding.fromShorthand()', function () {
-  it('should parse shorthand correctly', function () {
-    var shorthand = 'mark=point|x=Effect__Amount_of_damage,O|y=mean_Cost__Total_$,Q';
-    var encoding = Encoding.fromShorthand(shorthand);
-    expect(encoding.has('y')).ok;
-    expect(encoding.has('x')).ok;
-
-  });
+    it('should parse shorthand correctly', function () {
+        var shorthand = 'mark=point|x=Effect__Amount_of_damage,O|y=mean_Cost__Total_$,Q';
+        var encoding = Encoding_1.default.fromShorthand(shorthand);
+        chai_1.expect(encoding.has(consts_1.Enctype.Y)).ok;
+        chai_1.expect(encoding.has(consts_1.Enctype.X)).ok;
+    });
 });

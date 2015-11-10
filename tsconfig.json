@@ -49,6 +49,9 @@
         "src/typings/node.d.ts",
         "src/typings/vega.d.ts",
         "src/util.ts",
-        "src/vl.ts"
+        "src/vl.ts",
+        "test/chai.d.ts",
+        "test/Encoding.test.ts",
+        "test/mocha.d.ts"
     ]
 }

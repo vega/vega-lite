@@ -8,11 +8,11 @@ var marks = require('../../src/compiler/marks'),
 
 var consts = require('../../src/consts');
 
-var X = consts.X;
-var Y = consts.Y;
-var SIZE = consts.SIZE;
-var SHAPE = consts.SHAPE;
-var COLOR = consts.COLOR;
+var X = consts.Enctype.X;
+var Y = consts.Enctype.Y;
+var SIZE = consts.Enctype.SIZE;
+var SHAPE = consts.Enctype.SHAPE;
+var COLOR = consts.CEnctype.OLOR;
 
 var mockLayout = {
   x: {useSmallBand: false},
