@@ -1,7 +1,7 @@
 var expect = require('chai').expect;
 
 import * as data from '../../src/compiler/data';
-import {SUMMARY} from '../../src/consts';
+import {Table} from '../../src/consts';
 import Encoding from '../../src/Encoding';
 
 describe('data', function () {
@@ -212,7 +212,7 @@ describe('data.summary', function () {
 
     var aggregated = data.summary(encoding);
     expect(aggregated ).to.eql({
-      "name": SUMMARY,
+      "name": Table.SUMMARY,
       "source": "source",
       "transform": [{
         "type": "aggregate",

@@ -1,8 +1,7 @@
 import * as vlEncDef from '../encdef';
 import * as util from '../util';
 import Encoding from '../Encoding';
-import {SOURCE, SUMMARY, STACKED} from '../consts';
-import {Type} from '../consts';
+import {Table, Type} from '../consts';
 
 import * as time from './time';
 
@@ -38,7 +37,7 @@ export default function(encoding: Encoding) {
 }
 
 // TODO: Consolidate all Vega interface
-interface Table {
+interface VgData {
   name: string;
   source?: string;
   values?: any;
@@ -47,8 +46,8 @@ interface Table {
   transform?: any;
 }
 
-export function source(encoding): Table {
-  var source:Table = {name: SOURCE};
+export function source(encoding): VgData {
+  var source:VgData = {name: Table.SOURCE};
 
   // Data source (url or inline)
   if (encoding.hasValues()) {
@@ -187,7 +186,7 @@ export function formulaTransform(encoding) {
   }, []);
 };
 
-export function summary(encoding):Table {
+export function summary(encoding):VgData {
   /* dict set for dimensions */
   var dims = {};
 
@@ -230,8 +229,8 @@ export function summary(encoding):Table {
 
   if (hasAggregate) {
     return {
-      name: SUMMARY,
-      source: SOURCE,
+      name: Table.SUMMARY,
+      source: Table.SOURCE,
       transform: [{
         type: 'aggregate',
         groupby: groupby,
@@ -246,13 +245,13 @@ export function summary(encoding):Table {
 /**
  * Add stacked data source, for feeding the shared scale.
  */
-function stack(encoding, stackCfg):Table {
+function stack(encoding, stackCfg):VgData {
   var dim = stackCfg.groupby;
   var val = stackCfg.value;
   var facets = encoding.facets();
 
-  var stacked:Table = {
-    name: STACKED,
+  var stacked:VgData = {
+    name: Table.STACKED,
     source: encoding.dataTable(),
     transform: [{
       type: 'aggregate',
