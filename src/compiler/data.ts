@@ -279,7 +279,6 @@ export namespace stack {
   };
 }
 
-
 export function filterNonPositive(dataTable, encoding) {
   encoding.forEach(function(encDef, encType) {
     if (encoding.scale(encType).type === 'log') {
