@@ -15,7 +15,7 @@ export function names(props) {
     if (props[x] && props[x].scale) a[props[x].scale] = 1;
     return a;
   }, {}));
-};
+}
 
 export function defs(names: Array<string>, encoding: Encoding, layout, stats, facet?) {
   return names.reduce(function(a, name) {
@@ -46,7 +46,7 @@ export function defs(names: Array<string>, encoding: Encoding, layout, stats, fa
 
     return (a.push(scaleDef), a);
   }, []);
-};
+}
 
 export function type(name: string, encoding: Encoding) {
   switch (encoding.type(name)) {
@@ -62,7 +62,7 @@ export function type(name: string, encoding: Encoding) {
       }
       return encoding.scale(name).type;
   }
-};
+}
 
 export function domain(encoding, name, type, facet:boolean = false) {
   var encDef = encoding.encDef(name);
@@ -124,7 +124,7 @@ export function domain(encoding, name, type, facet:boolean = false) {
       field: encoding.fieldRef(name)
     };
   }
-};
+}
 
 export function domainSort(encoding, name, type):any {
   var sort = encoding.encDef(name).sort;
@@ -140,12 +140,12 @@ export function domainSort(encoding, name, type):any {
     };
   }
   return undefined;
-};
+}
 
 export function reverse(encoding, name) {
   var sort = encoding.encDef(name).sort;
   return sort && (sort === 'descending' || (sort.order === 'descending')) ? true : undefined;
-};
+}
 
 var sharedDomainAggregate = ['mean', 'average', 'stdev', 'stdevp', 'median', 'q1', 'q3', 'min', 'max'];
 
@@ -184,8 +184,7 @@ export function _useRawDomain (encoding, name) {
         (!encDef.timeUnit || !time.isOrdinalFn(encDef.timeUnit))
       )
     );
-};
-
+}
 
 export function bandWidth(encoding, name, type, layout) {
   // TODO: eliminate layout
@@ -203,17 +202,17 @@ export function bandWidth(encoding, name, type, layout) {
       return layout.cellWidth;
   }
   return undefined;
-};
+}
 
 export function clamp(encoding, name) {
   // only return value if explicit value is specified.
   return encoding.encDef(name).scale.clamp;
-};
+}
 
 export function exponent(encoding, name) {
   // only return value if explicit value is specified.
   return encoding.encDef(name).scale.exponent;
-};
+}
 
 export function nice(encoding: Encoding, name, type) {
   if (encoding.encDef(name).scale.nice !== undefined) {
@@ -234,7 +233,7 @@ export function nice(encoding: Encoding, name, type) {
       return true;
   }
   return undefined;
-};
+}
 
 export function outerPadding(encoding, name, type) {
   if (type === 'ordinal') {
@@ -246,7 +245,7 @@ export function outerPadding(encoding, name, type) {
     }
   }
   return undefined;
-};
+}
 
 export function padding(encoding, name, type) {
   if (type === 'ordinal') {
@@ -254,7 +253,7 @@ export function padding(encoding, name, type) {
     return encoding.padding(name);
   }
   return undefined;
-};
+}
 
 export function points(encoding, name, type) {
   if (type === 'ordinal') {
@@ -270,7 +269,7 @@ export function points(encoding, name, type) {
     }
   }
   return undefined;
-};
+}
 
 
 export function range(encoding: Encoding, name, type, layout, stats) {
@@ -308,7 +307,7 @@ export function range(encoding: Encoding, name, type, layout, stats) {
   }
 
   return undefined;
-};
+}
 
 export function round(encoding: Encoding, name) {
   if (encoding.encDef(name).scale.round !== undefined) {
@@ -325,7 +324,7 @@ export function round(encoding: Encoding, name) {
       return true;
   }
   return undefined;
-};
+}
 
 export function zero(encoding, name) {
   var encDef = encoding.encDef(name);
@@ -355,8 +354,7 @@ export function zero(encoding, name) {
     // since zero is true by default in vega for linear scale
     undefined :
     false;
-};
-
+}
 
 export function color(encoding: Encoding, name, scaleType, stats) {
   var colorScale = encoding.scale(Enctype.COLOR),
@@ -387,7 +385,7 @@ export function color(encoding: Encoding, name, scaleType, stats) {
       return [quantitativeRange[0], quantitativeRange[1]];
     }
   }
-};
+}
 
 export namespace colors {
   export function palette(range, cardinality?, type?: Type) {
@@ -440,4 +438,4 @@ export namespace colors {
     var interpolator = interpolateHsl(start, end);
     return util.range(cardinality).map(function(i) { return interpolator(i*1.0/(cardinality-1)); });
   }
-};
+}

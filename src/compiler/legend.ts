@@ -24,7 +24,7 @@ export function defs(encoding, styleCfg) {
     }, styleCfg));
   }
   return defs;
-};
+}
 
 export function def(name, encoding, def, styleCfg) {
   var timeUnit = encoding.encDef(name).timeUnit;
@@ -42,7 +42,7 @@ export function def(name, encoding, def, styleCfg) {
   }
 
   return def;
-};
+}
 
 function style(name, e, def, styleCfg) {
   var symbols = getter(def, ['properties', 'symbols']),
@@ -91,7 +91,7 @@ function style(name, e, def, styleCfg) {
     symbols.opacity = {value: opacity};
   }
   return def;
-};
+}
 
 export function title(name, encoding) {
   var leg = encoding.encDef(name).legend;
@@ -99,4 +99,4 @@ export function title(name, encoding) {
   if (leg.title) return leg.title;
 
   return encoding.fieldTitle(name);
-};
+}

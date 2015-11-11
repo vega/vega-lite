@@ -21,11 +21,11 @@ import {Enctype, Type} from '../consts';
 
 export function compile(spec, stats, theme?) {
   return compileEncoding(Encoding.fromSpec(spec, theme), stats);
-};
+}
 
 export function shorthand(shorthand: string, stats, config, theme) {
   return compileEncoding(Encoding.fromShorthand(shorthand, config, theme), stats);
-};
+}
 
 /**
  * Create a Vega specification from a Vega-lite Encoding object.
@@ -139,4 +139,4 @@ export function compileEncoding(encoding: Encoding, stats) {
   }
 
   return output;
-};
+}

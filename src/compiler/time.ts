@@ -32,13 +32,13 @@ export function cardinality(encDef, stats, filterNull, type) {
   }
 
   return null;
-};
+}
 
 export function formula(timeUnit, fieldRef) {
   // TODO(kanitw): add formula to other time format
   var fn = 'utc' + timeUnit;
   return fn + '(' + fieldRef + ')';
-};
+}
 
 export function maxLength(timeUnit, encoding: Encoding) {
   switch (timeUnit) {
@@ -62,7 +62,7 @@ export function maxLength(timeUnit, encoding: Encoding) {
   // no time unit
   var timeFormat = encoding.config('timeFormat');
   return utcFormat(timeFormat)(LONG_DATE).length;
-};
+}
 
 export function range(timeUnit, encoding: Encoding) {
   var labelLength = encoding.config('timeScaleLabelLength'),
@@ -81,7 +81,7 @@ export function range(timeUnit, encoding: Encoding) {
       ) : scaleLabel;
   }
   return;
-};
+}
 
 
 /**
@@ -99,7 +99,7 @@ export function scales(encoding: Encoding) {
   }, {});
 
   return util.vals(scales);
-};
+}
 
 export function isOrdinalFn(timeUnit) {
   switch (timeUnit) {
@@ -112,7 +112,7 @@ export function isOrdinalFn(timeUnit) {
       return true;
   }
   return false;
-};
+}
 
 
 export namespace scale {
@@ -152,7 +152,7 @@ export namespace scale {
     }
     return null;
   }
-};
+}
 
 /** whether a particular time function has custom scale for labels implemented in time.scale */
 export function hasScale(timeUnit) {
@@ -162,4 +162,4 @@ export function hasScale(timeUnit) {
       return true;
   }
   return false;
-};
+}

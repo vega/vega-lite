@@ -53,8 +53,7 @@ export function def(name: string, encoding: Encoding, layout, stats) {
   });
 
   return def;
-};
-
+}
 
 export function format(encoding: Encoding, name: string) {
   var format = encoding.encDef(name).axis.format;
@@ -73,7 +72,7 @@ export function format(encoding: Encoding, name: string) {
     }
   }
   return undefined;
-};
+}
 
 export function grid(encoding: Encoding, name: string) {
   var grid = encoding.axis(name).grid;
@@ -87,7 +86,7 @@ export function grid(encoding: Encoding, name: string) {
   // Otherwise, the default value is `false`.
   return name === Enctype.ROW || name === Enctype.COL ||
     (encoding.isTypes(name, [Type.Q, Type.T]) && !encoding.encDef(name).bin);
-};
+}
 
 export function offset(encoding: Encoding, name: string, layout) {
   var offset = encoding.encDef(name).axis.offset;
@@ -99,7 +98,7 @@ export function offset(encoding: Encoding, name: string, layout) {
    return layout.y.axisTitleOffset + 20;
   }
   return undefined;
-};
+}
 
 export function orient(encoding: Encoding, name: string, layout, stats) {
   var orient = encoding.encDef(name).axis.orient;
@@ -113,7 +112,7 @@ export function orient(encoding: Encoding, name: string, layout, stats) {
     return 'top';
   }
   return undefined;
-};
+}
 
 export function ticks(encoding: Encoding, name: string) {
   var ticks = encoding.encDef(name).axis.ticks;
@@ -127,7 +126,7 @@ export function ticks(encoding: Encoding, name: string) {
   }
 
   return undefined;
-};
+}
 
 export function tickSize(encoding: Encoding, name: string) {
   var tickSize = encoding.encDef(name).axis.tickSize;
@@ -138,7 +137,7 @@ export function tickSize(encoding: Encoding, name: string) {
     return 0;
   }
   return undefined;
-};
+}
 
 
 export function title(encoding: Encoding, name: string, layout) {
@@ -160,7 +159,7 @@ export function title(encoding: Encoding, name: string, layout) {
   }
 
   return maxLength ? util.truncate(fieldTitle, maxLength) : fieldTitle;
-};
+}
 
 
 export function titleOffset(encoding: Encoding, name: string) {
@@ -173,7 +172,7 @@ export function titleOffset(encoding: Encoding, name: string) {
     case Enctype.COL: return 35;
   }
   return undefined;
-};
+}
 
 namespace properties {
   export function axis(encoding: Encoding, name: string, spec) {
@@ -287,4 +286,4 @@ namespace properties {
     }
     return spec || undefined;
   }
-};
+}

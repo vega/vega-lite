@@ -67,7 +67,7 @@ export namespace source {
 
     source.transform = transform(encoding);
     return source;
-  };
+  }
 
   function formatParse(encoding) {
     var parse;
@@ -84,7 +84,7 @@ export namespace source {
     });
 
     return parse;
-  };
+  }
 
   /**
    * Generate Vega transforms for the source data table.  This can include
@@ -99,7 +99,7 @@ export namespace source {
       binTransform(encoding),
       filterTransform(encoding)
     );
-  };
+  }
 
   export function timeTransform(encoding) {
     return encoding.reduce(function(transform, encDef, encType) {
@@ -114,7 +114,7 @@ export namespace source {
       }
       return transform;
     }, []);
-  };
+  }
 
   export function binTransform(encoding) {
     return encoding.reduce(function(transform, encDef, encType) {
@@ -137,7 +137,7 @@ export namespace source {
       }
       return transform;
     }, []);
-  };
+  }
 
   /**
    * @return {Array} An array that might contain a filter transform for filtering null value based on filterNul config
@@ -164,7 +164,7 @@ export namespace source {
           return 'datum.' + fieldName + '!==null';
         }).join(' && ')
       }] : [];
-  };
+  }
 
   export function filterTransform(encoding) {
     var filter = encoding.data().filter;
@@ -172,7 +172,7 @@ export namespace source {
         type: 'filter',
         test: filter
     }] : [];
-  };
+  }
 
   export function formulaTransform(encoding) {
     var formulas = encoding.data().formulas;
@@ -185,8 +185,9 @@ export namespace source {
       transform.push(formula);
       return transform;
     }, []);
-  };
+  }
 }
+
 export namespace summary {
   export function def(encoding):VgData {
     /* dict set for dimensions */
@@ -288,4 +289,4 @@ export function filterNonPositive(dataTable, encoding) {
       });
     }
   });
-};
+}
