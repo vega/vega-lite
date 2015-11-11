@@ -17,10 +17,11 @@ export default function(name, encoding: Encoding, layout, stats) {
     scale: name
   };
 
+  // 1. Add properties
   [
-    // properties with special rules (so it has axis[property] methods) -- call rule functions
+    // a) properties with special rules (so it has axis[property] methods) -- call rule functions
     'format', 'grid', 'offset', 'orient', 'tickSize', 'ticks', 'title', 'titleOffset',
-    // If we don't have a special function, only produce default values in the schema, or explicit value if specified
+    // b) properties without rules, only produce default values in the schema, or explicit value if specified
     'layer', 'tickPadding', 'tickSize', 'tickSizeMajor', 'tickSizeMinor', 'tickSizeEnd',
     'values', 'subdivide'
   ].forEach(function(property) {
@@ -35,7 +36,7 @@ export default function(name, encoding: Encoding, layout, stats) {
     }
   });
 
-  // Add properties groups
+  // 2) Add properties groups
   var props = encoding.encDef(name).axis.properties || {};
 
   [
