@@ -65,7 +65,7 @@ var onlyOrdinalField = merge(clone(field), {
     aggregate: {
       type: 'string',
       enum: ['count'],
-      supportedTypes: toMap([N, O]) // FIXME this looks weird to me
+      supportedTypes: toMap([N, O])
     },
     scale: ordinalOnlyScale
   }
