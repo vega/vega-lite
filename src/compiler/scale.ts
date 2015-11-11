@@ -54,7 +54,7 @@ export function type(name, encoding) {
       return timeUnit ? time.scale.type(timeUnit, name) : 'time';
     case Type.Q:
       if (encoding.bin(name)) {
-        return 'linear';
+        return name === Enctype.ROW || name === Enctype.COL || name === Enctype.SHAPE ? 'ordinal' : 'linear';
       }
       return encoding.scale(name).type;
   }
@@ -96,10 +96,14 @@ export function domain(encoding, name, type, facet:boolean = false) {
   } else if (encDef.bin) { // bin -- need to merge both bin_start and bin_end
     return {
       data: encoding.dataTable(),
-      field: [
-        encoding.fieldRef(name, {bin_suffix:'_start'}),
-        encoding.fieldRef(name, {bin_suffix:'_end'})
-      ]
+      field: type === 'ordinal' ?
+        // ordinal scale only use bin start for now
+        encoding.fieldRef(name, { bin_suffix: '_start' }) :
+        // need to merge both bin_start and bin_end for non-ordinal scale
+        [
+          encoding.fieldRef(name, { bin_suffix: '_start' }),
+          encoding.fieldRef(name, { bin_suffix: '_end' })
+        ]
     };
   } else if (sort) { // have sort -- only for ordinal
     return {
