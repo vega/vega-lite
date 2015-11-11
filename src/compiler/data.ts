@@ -46,7 +46,7 @@ interface VgData {
   transform?: any;
 }
 
-namespace source {
+export namespace source {
   export function def(encoding): VgData {
     var source:VgData = {name: Table.SOURCE};
 
@@ -187,7 +187,7 @@ namespace source {
     }, []);
   };
 }
-namespace summary {
+export namespace summary {
   export function def(encoding):VgData {
     /* dict set for dimensions */
     var dims = {};
@@ -245,7 +245,7 @@ namespace summary {
   };
 }
 
-namespace stack {
+export namespace stack {
   /**
    * Add stacked data source, for feeding the shared scale.
    */

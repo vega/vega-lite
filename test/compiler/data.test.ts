@@ -49,7 +49,7 @@ describe('data.source', function() {
       }
     });
 
-    var source = data.source(encoding);
+    var source = data.source.def(encoding);
 
     it('should have values', function() {
       expect(source.name).to.equal('source');
@@ -68,7 +68,7 @@ describe('data.source', function() {
         }
       });
 
-    var source = data.source(encoding);
+    var source = data.source.def(encoding);
 
     it('should have format json', function() {
       expect(source.name).to.equal('source');
@@ -89,7 +89,7 @@ describe('data.source', function() {
           }
         });
 
-      var source = data.source(encoding);
+      var source = data.source.def(encoding);
       expect(source.format.parse).to.eql({
         'a': 'date',
         'b': 'number'
@@ -114,7 +114,7 @@ describe('data.source', function() {
 
     describe('bin', function() {
       it('should add bin transform', function() {
-        var transform = data.binTransform(encoding);
+        var transform = data.source.binTransform(encoding);
 
         expect(transform[0]).to.eql({
           type: 'bin',
@@ -137,7 +137,7 @@ describe('data.source', function() {
 
       it('should add filterNull for Q and T by default', function () {
         var encoding = Encoding.fromSpec(spec);
-        expect(data.nullFilterTransform(encoding))
+        expect(data.source.nullFilterTransform(encoding))
           .to.eql([{
             type: 'filter',
             test: 'datum.T!==null && datum.Q!==null'
@@ -150,7 +150,7 @@ describe('data.source', function() {
             filterNull: {O: true}
           }
         });
-        expect(data.nullFilterTransform(encoding))
+        expect(data.source.nullFilterTransform(encoding))
           .to.eql([{
             type: 'filter',
             test:'datum.T!==null && datum.Q!==null && datum.O!==null'
@@ -161,7 +161,7 @@ describe('data.source', function() {
 
     describe('filter', function () {
       it('should return array that contains a filter transform', function () {
-        expect(data.filterTransform(encoding))
+        expect(data.source.filterTransform(encoding))
           .to.eql([{
             type: 'filter',
             test: 'datum.a > datum.b && datum.c === datum.d'
@@ -171,7 +171,7 @@ describe('data.source', function() {
 
     describe('time', function() {
       it('should add formula transform', function() {
-        var transform = data.timeTransform(encoding);
+        var transform = data.source.timeTransform(encoding);
         expect(transform[0]).to.eql({
           type: 'formula',
           field: 'year_a',
@@ -181,7 +181,7 @@ describe('data.source', function() {
     });
 
     it('should have null filter, timeUnit, bin then filter', function () {
-      var transform = data.transform(encoding);
+      var transform = data.source.transform(encoding);
       expect(transform[0].type).to.eql('filter');
       expect(transform[1].type).to.eql('formula');
       expect(transform[2].type).to.eql('bin');
@@ -210,7 +210,7 @@ describe('data.summary', function () {
         }
       });
 
-    var aggregated = data.summary(encoding);
+    var aggregated = data.summary.def(encoding);
     expect(aggregated ).to.eql({
       "name": Table.SUMMARY,
       "source": "source",
