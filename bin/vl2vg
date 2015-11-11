@@ -35,25 +35,25 @@ fs.readFile(specFile, 'utf8', function(err, text) {
   var spec = JSON.parse(text);
   // args.s can be path to stats file or json string
   if (args.s && fs.existsSync(args.s)) {
-  	fs.readFile(args.s, 'utf8', function(err, text) {
-  		if (err) throw err;
-  		var stats = JSON.parse(text);
-  		compile(spec, stats);
-  	});
+    fs.readFile(args.s, 'utf8', function(err, text) {
+      if (err) throw err;
+      var stats = JSON.parse(text);
+      compile(spec, stats);
+    });
   } else {
     var stats = null;
     if (args.s) {
       stats = JSON.parse(args.s);
     }
-  	compile(spec, stats);
+    compile(spec, stats);
   }
 });
 
 function compile(vlSpec, stats) {
   var vgSpec = vl.compile(vlSpec, stats);
   if (args.p) {
-  	process.stdout.write(JSON.stringify(vgSpec, null, 4));
+    process.stdout.write(JSON.stringify(vgSpec, null, 4));
   } else {
-  	process.stdout.write(JSON.stringify(vgSpec));
+    process.stdout.write(JSON.stringify(vgSpec));
   }
 }

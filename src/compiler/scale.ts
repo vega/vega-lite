@@ -97,7 +97,8 @@ export function domain(encoding, name, type, facet:boolean = false) {
       data: Table.SOURCE,
       field: encoding.fieldRef(name, {noAggregate:true})
     };
-  } else if (encDef.bin) { // bin -- need to merge both bin_start and bin_end
+  } else if (encDef.bin) { // bin
+
     return {
       data: encoding.dataTable(),
       field: type === 'ordinal' ?
