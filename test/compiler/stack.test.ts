@@ -1,13 +1,10 @@
-'use strict';
+import {expect} from 'chai';
 
-var expect = require('chai').expect;
-var fixtures = require('../fixtures').stack;
+import * as fix from '../fixtures';
+import {compile} from '../../src/compiler/compiler';
+import {Table} from '../../src/consts';
 
-var compile = require('../../src/vl').compile;
-
-var consts = require('../../src/consts');
-
-var SUMMARY = consts.SUMMARY;
+var fixtures = fix.f.stack;
 
 var stats = {
   'Cost__Total_$': {
@@ -35,7 +32,7 @@ describe('vl.compile.stack()', function () {
       var vgSpec = compile(fixtures.binX, stats);
 
       var tableData = vgSpec.data.filter(function(data) {
-        return data.name === SUMMARY;
+        return data.name === Table.SUMMARY;
       });
       expect(tableData.length).to.equal(1);
 
@@ -60,7 +57,7 @@ describe('vl.compile.stack()', function () {
       var vgSpec = compile(fixtures.binY, stats);
 
       var tableData = vgSpec.data.filter(function(data) {
-        return data.name === SUMMARY;
+        return data.name === Table.SUMMARY;
       });
       expect(tableData.length).to.equal(1);
 

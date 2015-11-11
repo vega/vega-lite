@@ -57,6 +57,7 @@
     "lodash": "^3.10.1",
     "mocha": "^2.3.3",
     "require-dir": "^0.3.0",
+    "source-map-support": "^0.3.3",
     "through": "^2.3.8",
     "tsify": "^0.12.2",
     "vinyl-buffer": "^1.0.0",

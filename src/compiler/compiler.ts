@@ -19,7 +19,7 @@ import subfacet from './subfacet';
 
 import {Enctype, Type} from '../consts';
 
-export function compile(spec, stats, theme) {
+export function compile(spec, stats, theme?) {
   return compileEncoding(Encoding.fromSpec(spec, theme), stats);
 };
 

@@ -8,6 +8,7 @@ var mocha = require('gulp-spawn-mocha');
 gulp.task('coverage', function() {
   return gulp.src(['test/**/*.test.js'], { read: false })
     .pipe(mocha({
+      require: 'source-map-support/register',
       istanbul: true
     }))
     .on('error', gutil.log);
@@ -17,6 +18,7 @@ gulp.task('coverage', function() {
 gulp.task('test', function() {
   return gulp.src(['test/**/*.test.js'], { read: false })
     .pipe(mocha({
+      require: 'source-map-support/register',
       istanbul: false
     }))
     .on('error', gutil.log);

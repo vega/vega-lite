@@ -141,13 +141,11 @@ export function isCount(field) {
  * Or use Encoding.isType if your field is from Encoding (and thus have numeric data type).
  * otherwise, do not specific isType so we can use the default isTypeName here.
  */
-export function cardinality(field, stats, filterNull) {
+export function cardinality(field, stats, filterNull = {}) {
   // FIXME need to take filter into account
 
   var stat = stats[field.name];
   var type = field.type;
-
-  filterNull = filterNull || {};
 
   if (field.bin) {
     var bins = util.getbins(stat, field.bin.maxbins || schema.MAXBINS_DEFAULT);
