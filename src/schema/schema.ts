@@ -10,10 +10,10 @@ import * as schemaUtil from './schemautil';
 import {Type} from '../consts';
 
 // TODO: remove these when we know how to generate a schema
-var Q = Type.Q;
-var O = Type.O;
-var N = Type.N;
-var T = Type.T;
+var Q = 'Q';
+var O = 'O';
+var N = 'N';
+var T = 'T';
 
 
 

@@ -80,7 +80,7 @@ describe('vl.compile.scale', function() {
                 aggregate: 'mean',
                 name: 'origin',
                 scale: {useRawDomain: true},
-                type: Type.Q
+                type: 'Q'
               }
             }
           }), 'y', 'linear');
@@ -144,7 +144,7 @@ describe('vl.compile.scale', function() {
               y: {
                 name: 'origin',
                 scale: {useRawDomain: true},
-                type: Type.T,
+                type: 'T',
                 timeUnit: 'year'
               }
             }
@@ -161,7 +161,7 @@ describe('vl.compile.scale', function() {
               y: {
                 name: 'origin',
                 scale: {useRawDomain: true},
-                type: Type.T,
+                type: 'T',
                 timeUnit: 'month'
               }
             }
@@ -229,7 +229,7 @@ describe('vl.compile.scale', function() {
       var brewerPalettes = util.keys(colorbrewer);
       brewerPalettes.forEach(function(palette) {
         var cardinality = 20;
-        expect(vlscale.colors.palette(palette, cardinality, 'N')).to.eql(
+        expect(vlscale.colors.palette(palette, cardinality, Type.N)).to.eql(
           colorbrewer[palette][Math.max.apply(null, util.keys(colorbrewer[palette]))]
         );
       });
@@ -242,7 +242,7 @@ describe('vl.compile.scale', function() {
           p = colorbrewer[palette],
           ps = Math.max.apply(null, util.keys(p)),
           interpolator = d3.interpolateHsl(p[ps][0], p[ps][ps - 1]);
-        expect(vlscale.colors.palette(palette, cardinality, 'O')).to.eql(
+        expect(vlscale.colors.palette(palette, cardinality, Type.O)).to.eql(
           util.range(cardinality).map(function(i) {
             return interpolator(i * 1.0 / (cardinality - 1));
           })

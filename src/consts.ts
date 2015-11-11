@@ -20,19 +20,12 @@ export namespace Enctype {
   export const DETAIL = 'detail';
 }
 
-// export enum Type {
-//   Q,  // Quantitative
-//   O,  // Ordinal
-//   N,  // Nominal
-//   T,  // Time
-// };
-
-export namespace Type {
-  export const O = 'O';
-  export const Q = 'Q';
-  export const N = 'N';
-  export const T = 'T';
-}
+export enum Type {
+  Q,  // Quantitative
+  O,  // Ordinal
+  N,  // Nominal
+  T,  // Time
+};
 
 export const ENCODING_TYPES = [
   Enctype.X, Enctype.Y,

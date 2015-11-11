@@ -17,7 +17,7 @@ export function names(props) {
   }, {}));
 };
 
-export function defs(names, encoding, layout, stats, facet?) {
+export function defs(names: Array<string>, encoding: Encoding, layout, stats, facet?) {
   return names.reduce(function(a, name) {
     var scaleDef: any = {};
 
@@ -48,7 +48,7 @@ export function defs(names, encoding, layout, stats, facet?) {
   }, []);
 };
 
-export function type(name, encoding) {
+export function type(name: string, encoding: Encoding) {
   switch (encoding.type(name)) {
     case Type.N: //fall through
     case Type.O:
@@ -390,7 +390,7 @@ export function color(encoding: Encoding, name, scaleType, stats) {
 };
 
 export namespace colors {
-  export function palette(range, cardinality?, type?) {
+  export function palette(range, cardinality?, type?: Type) {
     // FIXME(kanitw): Jul 29, 2015 - check range is string
     switch (range) {
       case 'category10k':

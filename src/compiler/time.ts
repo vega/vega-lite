@@ -3,6 +3,7 @@
 import {utcFormat} from 'd3-time-format';
 
 import Encoding from '../Encoding';
+import * as vlEncDef from '../encdef';
 import * as util from '../util';
 import {Enctype, Type} from '../consts';
 
@@ -90,7 +91,7 @@ export function range(timeUnit, encoding: Encoding) {
 export function scales(encoding: Encoding) {
   var scales = encoding.reduce(function(scales, encDef) {
     var timeUnit = encDef.timeUnit;
-    if (encDef.type === Type.T && timeUnit && !scales[timeUnit]) {
+    if (vlEncDef.isType(encDef, Type.T) && timeUnit && !scales[timeUnit]) {
       var scaleDef = scale.def(encDef.timeUnit, encoding);
       if (scaleDef) scales[timeUnit] = scaleDef;
     }

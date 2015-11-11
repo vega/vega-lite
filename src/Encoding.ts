@@ -185,16 +185,17 @@ export default class Encoding {
     return vlEnc.forEach(this._enc, f);
   };
 
-  type(et) {
-    return this.has(et) ? this._enc[et].type : null;
+  type(et: string): Type {
+    const t: string = this._enc[et].type;
+    return this.has(et) ? Type[t] : null;
   };
 
-  isType(et, type) {
+  isType(et: string, type: Type) {
     var encDef = this.encDef(et);
     return encDef && vlEncDef.isType(encDef, type);
   };
 
-  isTypes(et, type: Array<any>) {
+  isTypes(et: string, type: Array<any>) {
     var encDef = this.encDef(et);
     return encDef && vlEncDef.isTypes(encDef, type);
   };
