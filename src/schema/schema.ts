@@ -1,7 +1,7 @@
 // Package of defining Vega-lite Specification's json schema
 
-/// <reference path="../typings/vega.d.ts"/>
-/// <reference path="../typings/colorbrewer.d.ts"/>
+/// <reference path="../../typings/vega.d.ts"/>
+/// <reference path="../../typings/colorbrewer.d.ts"/>
 
 import * as colorbrewer from 'colorbrewer';
 import * as util from '../util';

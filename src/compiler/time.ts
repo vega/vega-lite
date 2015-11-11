@@ -1,4 +1,4 @@
-/// <reference path="../typings/d3-time-format.d.ts"/>
+/// <reference path="../../typings/d3-time-format.d.ts"/>
 
 import {utcFormat} from 'd3-time-format';
 

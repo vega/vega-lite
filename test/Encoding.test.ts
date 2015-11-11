@@ -1,4 +1,4 @@
-var expect = require('chai').expect;
+import {expect} from 'chai';
 
 import Encoding from '../src/Encoding';
 
