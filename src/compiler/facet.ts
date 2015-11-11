@@ -1,8 +1,8 @@
 import * as util from '../util';
 import {Enctype} from '../consts';
 
-import axis from './axis';
-import * as scale from './scale';
+import * as vlAxis from './axis';
+import * as vlScale from './scale';
 
 function groupdef(name, opt) {
   opt = opt || {};
@@ -72,7 +72,7 @@ export default function(group, encoding, layout, output, singleScaleNames, stats
     }
 
     axesGrp = groupdef('x-axes', {
-        axes: encoding.has(Enctype.X) ? [axis(Enctype.X, encoding, layout, stats)] : undefined,
+        axes: encoding.has(Enctype.X) ? [vlAxis.def(Enctype.X, encoding, layout, stats)] : undefined,
         x: hasCol ? {scale: Enctype.COL, field: encoding.fieldRef(Enctype.COL)} : {value: 0},
         width: hasCol && {'value': layout.cellWidth}, //HACK?
         from: from
@@ -80,11 +80,11 @@ export default function(group, encoding, layout, output, singleScaleNames, stats
 
     output.marks.unshift(axesGrp); // need to prepend so it appears under the plots
     (output.axes = output.axes || []);
-    output.axes.push(axis(Enctype.ROW, encoding, layout, stats));
+    output.axes.push(vlAxis.def(Enctype.ROW, encoding, layout, stats));
   } else { // doesn't have row
     if (encoding.has(Enctype.X)) {
       //keep x axis in the cell
-      cellAxes.push(axis(Enctype.X, encoding, layout, stats));
+      cellAxes.push(vlAxis.def(Enctype.X, encoding, layout, stats));
     }
   }
 
@@ -104,7 +104,7 @@ export default function(group, encoding, layout, output, singleScaleNames, stats
     }
 
     axesGrp = groupdef('y-axes', {
-      axes: encoding.has(Enctype.Y) ? [axis(Enctype.Y, encoding, layout, stats)] : undefined,
+      axes: encoding.has(Enctype.Y) ? [vlAxis.def(Enctype.Y, encoding, layout, stats)] : undefined,
       y: hasRow && {scale: Enctype.ROW, field: encoding.fieldRef(Enctype.ROW)},
       x: hasRow && {value: 0},
       height: hasRow && {'value': layout.cellHeight}, //HACK?
@@ -113,17 +113,17 @@ export default function(group, encoding, layout, output, singleScaleNames, stats
 
     output.marks.unshift(axesGrp); // need to prepend so it appears under the plots
     (output.axes = output.axes || []);
-    output.axes.push(axis(Enctype.COL, encoding, layout, stats));
+    output.axes.push(vlAxis.def(Enctype.COL, encoding, layout, stats));
   } else { // doesn't have col
     if (encoding.has(Enctype.Y)) {
-      cellAxes.push(axis(Enctype.Y, encoding, layout, stats));
+      cellAxes.push(vlAxis.def(Enctype.Y, encoding, layout, stats));
     }
   }
 
   // assuming equal cellWidth here
   // TODO: support heterogenous cellWidth (maybe by using multiple scales?)
-  output.scales = (output.scales || []).concat(scale.defs(
-    scale.names(enter).concat(singleScaleNames),
+  output.scales = (output.scales || []).concat(vlScale.defs(
+    vlScale.names(enter).concat(singleScaleNames),
     encoding,
     layout,
     stats,

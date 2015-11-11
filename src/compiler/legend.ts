@@ -3,7 +3,7 @@ import {Enctype, Type} from '../consts';
 
 import * as time from './time';
 
-export default function(encoding, styleCfg) {
+export function defs(encoding, styleCfg) {
   var defs = [];
 
   if (encoding.has(Enctype.COLOR) && encoding.encDef(Enctype.COLOR).legend) {

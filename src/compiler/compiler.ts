@@ -5,17 +5,17 @@
 import {summary} from '../util';
 import Encoding from '../Encoding';
 
-import * as scale from './scale';
-import * as time from './time';
-import axis from './axis';
-import vlLegend from './legend';
+import * as vlScale from './scale';
+import * as vlTime from './time';
+import * as vlAxis from './axis';
+import * as vlLegend from './legend';
 import vlMarks, {getMark} from './marks';
 import vlData from './data';
 import vlFacet from './facet';
 import vlLayout from './layout';
 import vlStack from './stack';
 import vlStyle from './style';
-import subfacet from './subfacet';
+import vlSubfacet from './subfacet';
 
 import {Enctype, Type} from '../consts';
 
@@ -68,7 +68,7 @@ export function compileEncoding(encoding: Encoding, stats) {
     };
 
   // global scales contains only time unit scales
-  var timeScales = time.scales(encoding);
+  var timeScales = vlTime.scales(encoding);
   if (timeScales.length > 0) {
     output.scales = timeScales;
   }
@@ -93,7 +93,7 @@ export function compileEncoding(encoding: Encoding, stats) {
 
   if (details.length > 0 && lineType) {
     //subfacet to group area / line together in one group
-    subfacet(group, mdef, details);
+    vlSubfacet(group, mdef, details);
   }
 
   // auto-sort line/area values
@@ -108,10 +108,10 @@ export function compileEncoding(encoding: Encoding, stats) {
 
   // get a flattened list of all scale names that are used in the vl spec
   var singleScaleNames = [].concat.apply([], mdefs.map(function(markProps) {
-    return scale.names(markProps.properties.update);
+    return vlScale.names(markProps.properties.update);
   }));
 
-  var legends = vlLegend(encoding, styleCfg);
+  var legends = vlLegend.defs(encoding, styleCfg);
 
   // Small Multiples
   if (encoding.has(Enctype.ROW) || encoding.has(Enctype.COL)) {
@@ -120,14 +120,14 @@ export function compileEncoding(encoding: Encoding, stats) {
       output.legends = legends;
     }
   } else {
-    group.scales = scale.defs(singleScaleNames, encoding, layout, stats);
+    group.scales = vlScale.defs(singleScaleNames, encoding, layout, stats);
 
     var axes = [];
     if (encoding.has(Enctype.X)) {
-      axes.push(axis(Enctype.X, encoding, layout, stats));
+      axes.push(vlAxis.def(Enctype.X, encoding, layout, stats));
     }
     if (encoding.has(Enctype.Y)) {
-      axes.push(axis(Enctype.Y, encoding, layout, stats));
+      axes.push(vlAxis.def(Enctype.Y, encoding, layout, stats));
     }
     if (axes.length > 0) {
       group.axes = axes;

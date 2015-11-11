@@ -5,7 +5,7 @@ import {Type, Enctype} from '../consts';
 
 import * as time from './time';
 
-export default function(name, encoding: Encoding, layout, stats) {
+export function def(name, encoding: Encoding, layout, stats) {
   var isCol = name == Enctype.COL,
     isRow = name == Enctype.ROW,
     type = isCol ? 'x' : isRow ? 'y': name;
