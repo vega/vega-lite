@@ -1,4 +1,4 @@
-/// <reference path="./typings/datalib.d.ts"/>
+/// <reference path="../typings/datalib.d.ts"/>
 
 export * from 'datalib/src/util';
 export * from 'datalib/src/generate';

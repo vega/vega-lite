@@ -1,4 +1,4 @@
-var f = {};
+export var f: any = {};
 
 // BARS
 
@@ -150,6 +150,3 @@ f.area['x,y,stroke'] = {
   },
   "data": {"url": "data/cars.json"}
 };
-
-
-module.exports = f;

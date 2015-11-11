@@ -12,7 +12,8 @@
         "removeComments": true,
         "noLib": false,
         "preserveConstEnums": true,
-        "suppressImplicitAnyIndexErrors": true
+        "suppressImplicitAnyIndexErrors": true,
+        "sourceMap": true
     },
     "filesGlob": [
         "**/*.ts",
@@ -21,6 +22,7 @@
         "!bower_components/**"
     ],
     "files": [
+        "chai.d.ts",
         "src/compiler/axis.ts",
         "src/compiler/compiler.ts",
         "src/compiler/data.ts",
@@ -41,16 +43,31 @@
         "src/schema/schema.ts",
         "src/schema/schemagen.ts",
         "src/schema/schemautil.ts",
-        "src/typings/colorbrewer.d.ts",
-        "src/typings/d3-color.d.ts",
-        "src/typings/d3-format.d.ts",
-        "src/typings/d3-time-format.d.ts",
-        "src/typings/datalib.d.ts",
-        "src/typings/node.d.ts",
-        "src/typings/vega.d.ts",
         "src/util.ts",
         "src/vl.ts",
-        "test/chai.d.ts",
-        "test/mocha.d.ts"
+        "test/compiler/axis.test.ts",
+        "test/compiler/compiler.test.ts",
+        "test/compiler/data.test.ts",
+        "test/compiler/legend.test.ts",
+        "test/compiler/marks.test.ts",
+        "test/compiler/scale.test.ts",
+        "test/compiler/stack.test.ts",
+        "test/compiler/time.test.ts",
+        "test/encdef.test.ts",
+        "test/Encoding.test.ts",
+        "test/examples.ts",
+        "test/fixtures.ts",
+        "test/schema.test.ts",
+        "test/validate.test.ts",
+        "typings/assertion-error.d.ts",
+        "typings/colorbrewer.d.ts",
+        "typings/d3-color.d.ts",
+        "typings/d3-format.d.ts",
+        "typings/d3-time-format.d.ts",
+        "typings/datalib.d.ts",
+        "typings/lodash.d.ts",
+        "typings/mocha.d.ts",
+        "typings/node.d.ts",
+        "typings/vega.d.ts"
     ]
 }
