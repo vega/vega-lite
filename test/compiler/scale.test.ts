@@ -25,7 +25,7 @@ describe('vl.compile.scale', function() {
             x: {name: 'x', type: 'O'},
             color: {name: 'color', type: 'O'}
           }
-        }), 'y', 'linear', {});
+        }), 'y', 'linear', true);
 
         expect(domain).to.eql({
           data: 'stacked',
@@ -44,7 +44,7 @@ describe('vl.compile.scale', function() {
             x: {name: 'x', type: 'O'},
             color: {name: 'color', type: 'O'}
           }
-        }), 'y', 'linear', {});
+        }), 'y', 'linear', true);
 
         expect(domain).to.eql({
           data: 'stacked',
@@ -65,7 +65,7 @@ describe('vl.compile.scale', function() {
                 type: Type.Q
               }
             }
-          }), 'y', 'ordinal', {origin: {min: -5, max:48}});
+          }), 'y', 'ordinal');
 
           expect(domain).to.eql({
             data: Table.SOURCE,
@@ -84,7 +84,7 @@ describe('vl.compile.scale', function() {
                 type: Type.Q
               }
             }
-          }), 'y', 'linear', {});
+          }), 'y', 'linear');
 
           expect(domain.data).to.eql(Table.SOURCE);
         });
@@ -100,7 +100,7 @@ describe('vl.compile.scale', function() {
                 type: Type.Q
               }
             }
-          }), 'y', 'linear', {});
+          }), 'y', 'linear');
 
           expect(domain.data).to.eql(Table.SUMMARY);
         });
@@ -116,7 +116,7 @@ describe('vl.compile.scale', function() {
                 type: Type.Q
               }
             }
-          }), 'y', 'linear', {});
+          }), 'y', 'linear');
 
           expect(domain.data).to.eql(Table.SUMMARY);
         });
@@ -133,7 +133,7 @@ describe('vl.compile.scale', function() {
                 type: Type.T
               }
             }
-          }), 'y', 'time', {});
+          }), 'y', 'time');
 
           expect(domain.data).to.eql(Table.SOURCE);
         });
@@ -149,7 +149,7 @@ describe('vl.compile.scale', function() {
                 timeUnit: 'year'
               }
             }
-          }), 'y', 'ordinal', {});
+          }), 'y', 'ordinal');
 
           expect(domain.data).to.eql(Table.SOURCE);
           expect(domain.field.indexOf('year')).to.gt(-1);
@@ -166,7 +166,7 @@ describe('vl.compile.scale', function() {
                 timeUnit: 'month'
               }
             }
-          }), 'y', 'ordinal', {});
+          }), 'y', 'ordinal');
 
           expect(domain).to.eql([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]);
         });
