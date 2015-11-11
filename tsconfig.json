@@ -40,6 +40,7 @@
         "src/enc.ts",
         "src/encdef.ts",
         "src/Encoding.ts",
+        "src/schema/marktype.ts",
         "src/schema/schema.ts",
         "src/schema/schemagen.ts",
         "src/schema/schemautil.ts",

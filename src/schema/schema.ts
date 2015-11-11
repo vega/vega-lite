@@ -8,6 +8,7 @@ import * as util from '../util';
 import {toMap} from '../util';
 import * as schemaUtil from './schemautil';
 import {TimeUnits, Type} from '../consts';
+import {marktype} from './marktype';
 
 // TODO: remove these when we know how to generate a schema
 var Q = 'Q';
@@ -15,17 +16,10 @@ var O = 'O';
 var N = 'N';
 var T = 'T';
 
-
-
 import {VALID_OPS as VALID_AGG_OPS} from 'vega/src/transforms/Aggregate';
 
 // TODO(#620) refer to vega schema
 // var vgStackSchema = require('vega/src/transforms/Stack').schema;
-
-export var marktype = {
-  type: 'string',
-  enum: ['point', 'tick', 'bar', 'line', 'area', 'circle', 'square', 'text']
-};
 
 export var aggregate = {
   type: 'string',
