@@ -98,8 +98,8 @@ var onlyQuantitativeField = merge(clone(typicalField), {
 });
 
 var x = merge(clone(multiRoleField), requiredNameType, {
+  supportedMarktypes: {point: true, tick: true, bar: true, line: true, area: true, circle: true, square: true},
   properties: {
-    supportedMarktypes: {point: true, tick: true, bar: true, line: true, area: true, circle: true, square: true},
     axis: axis,
     sort: sort
   }
