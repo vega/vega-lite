@@ -1,6 +1,6 @@
 // utility for enc
 
-import {Shorthand} from './consts';
+import {Type, Shorthand} from './consts';
 import * as vlEncDef from './encdef';
 import * as util from './util';
 import * as schema from './schema/schema';
@@ -62,13 +62,13 @@ export function reduce(enc, f, init) {
  */
 export function fields(enc) {
   return reduce(enc, function (m, field) {
-    var fieldList = m[field.name] = m[field.name] || [],
-      containsType = fieldList.containsType = fieldList.containsType || {};
+    var fieldList = m[field.name] = m[field.name] || [];
+    var containsType = fieldList.containsType = fieldList.containsType || {};
 
     if (fieldList.indexOf(field) === -1) {
       fieldList.push(field);
       // augment the array with containsType.Q / O / N / T
-      containsType[field.type] = true;
+      containsType[Type[field.type]] = true;
     }
     return m;
   }, {});

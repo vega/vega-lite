@@ -73,10 +73,10 @@ export namespace source {
     var parse;
 
     encoding.forEach(function(encDef) {
-      if (encDef.type == Type.T) {
+      if (vlEncDef.isType(encDef, Type.T)) {
         parse = parse || {};
         parse[encDef.name] = 'date';
-      } else if (encDef.type == Type.Q) {
+      } else if (vlEncDef.isType(encDef, Type.Q)) {
         if (vlEncDef.isCount(encDef)) return;
         parse = parse || {};
         parse[encDef.name] = 'number';
@@ -103,7 +103,7 @@ export namespace source {
 
   export function timeTransform(encoding) {
     return encoding.reduce(function(transform, encDef, encType) {
-      if (encDef.type === Type.T && encDef.timeUnit) {
+      if (vlEncDef.isType(encDef, Type.T) && encDef.timeUnit) {
         var fieldRef = encoding.fieldRef(encType, {nofn: true, datum: true});
 
         transform.push({
