@@ -1,9 +1,7 @@
-'use strict';
+import {expect} from 'chai';
 
-var expect = require('chai').expect;
-
-var axis = require('../../src/compiler/axis'),
-  Encoding = require('../../src/Encoding').default;
+import * as axis from '../../src/compiler/axis';
+import Encoding from '../../src/Encoding';
 
 describe('Axis', function() {
   var stats = {a: {distinct: 5}, b: {distinct: 32}},
@@ -94,7 +92,7 @@ describe('Axis', function() {
           encoding: {
             x: {name: 'a', axis: {title: 'Custom'}}
           }
-        }), 'x', stats, layout);
+        }), 'x', layout);
       expect(title).to.eql('Custom');
     });
 

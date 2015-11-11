@@ -1,4 +1,4 @@
-import {Enctype, Type, Shorthand, SUMMARY, SOURCE} from './consts';
+import {Enctype, Type, Shorthand, Table} from './consts';
 import * as util from './util';
 import * as vlEncDef from './encdef';
 import * as vlEnc from './enc';
@@ -230,7 +230,7 @@ export default class Encoding {
   };
 
   dataTable() {
-    return this.isAggregate() ? SUMMARY : SOURCE;
+    return this.isAggregate() ? Table.SUMMARY : Table.SOURCE;
   };
 
   static isAggregate(spec) {
