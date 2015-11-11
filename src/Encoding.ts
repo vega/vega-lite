@@ -1,4 +1,4 @@
-import {Enctype, Type, Shorthand, Table} from './consts';
+import {Enctype, Type, Shorthand, Table, MAXBINS_DEFAULT} from './consts';
 import * as util from './util';
 import * as vlEncDef from './encdef';
 import * as vlEnc from './enc';
@@ -159,7 +159,7 @@ export default class Encoding {
       return false;
     if (bin === true)
       return {
-        maxbins: schema.MAXBINS_DEFAULT
+        maxbins: MAXBINS_DEFAULT
       };
     return bin;
   }
