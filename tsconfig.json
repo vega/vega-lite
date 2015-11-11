@@ -43,6 +43,7 @@
         "src/schema/config.schema.ts",
         "src/schema/data.schema.ts",
         "src/schema/encdef.axis.schema.ts",
+        "src/schema/encdef.legend.schema.ts",
         "src/schema/encdef.scale.schema.ts",
         "src/schema/encdef.schema.ts",
         "src/schema/marktype.schema.ts",

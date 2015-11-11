@@ -15,6 +15,7 @@ import {config} from './config.schema';
 import {aggregate, bin, timeUnit, sort} from './encdef.schema';
 import {axis} from './encdef.axis.schema';
 import {typicalScale, ordinalOnlyScale} from './encdef.scale.schema';
+import {legend} from './encdef.legend.schema';
 
 // TODO: remove these when we know how to generate a schema
 var Q = 'Q';
@@ -96,22 +97,7 @@ var sortMixin = {
 var legendMixin = {
   type: 'object',
   properties: {
-    legend: {
-      type: 'object',
-      description: 'Properties of a legend.',
-      properties: {
-        title: {
-          type: 'string',
-          default: undefined,
-          description: 'A title for the legend. (Shows field name and its function by default.)'
-        },
-        orient: {
-          type: 'string',
-          default: 'right',
-          description: 'The orientation of the legend. One of "left" or "right". This determines how the legend is positioned within the scene. The default is "right".'
-        }
-      }
-    }
+    legend: legend
   }
 };
 
