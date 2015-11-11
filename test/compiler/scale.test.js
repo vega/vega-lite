@@ -66,7 +66,7 @@ describe('vl.compile.scale', function() {
 
           expect(domain).to.eql({
             data: SOURCE,
-            field: ['bin_origin_start', 'bin_origin_end']
+            field: 'bin_origin_start'
           });
         });
 
