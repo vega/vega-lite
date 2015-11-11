@@ -22,4 +22,4 @@ export function stats(data: Array<Array<any>>) {
       min: 0
     }
   });
-};
+}

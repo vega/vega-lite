@@ -10,7 +10,7 @@ export var bin = dlBin;
 
 export function isin(item: number, array: Array<any>):boolean {
   return array.indexOf(item) !== -1;
-};
+}
 
 export function forEach(obj, f, thisArg) {
   if (obj.forEach) {
@@ -20,7 +20,7 @@ export function forEach(obj, f, thisArg) {
       f.call(thisArg, obj[k], k , obj);
     }
   }
-};
+}
 
 export function reduce(obj, f, init, thisArg?) {
   if (obj.reduce) {
@@ -31,7 +31,7 @@ export function reduce(obj, f, init, thisArg?) {
     }
     return init;
   }
-};
+}
 
 export function map(obj, f, thisArg) {
   if (obj.map) {
@@ -42,7 +42,7 @@ export function map(obj, f, thisArg) {
       output.push( f.call(thisArg, obj[k], k, obj));
     }
   }
-};
+}
 
 export function any(arr: Array<any>, f: (d, k?, i?) => boolean) {
   var i = 0, k;
@@ -50,7 +50,7 @@ export function any(arr: Array<any>, f: (d, k?, i?) => boolean) {
     if (f(arr[k], k, i++)) return true;
   }
   return false;
-};
+}
 
 export function all(arr: Array<any>, f: (d, k?, i?) => boolean) {
   var i = 0, k;
@@ -58,7 +58,7 @@ export function all(arr: Array<any>, f: (d, k?, i?) => boolean) {
     if (!f(arr[k], k, i++)) return false;
   }
   return true;
-};
+}
 
 export function getbins(stats, maxbins) {
   return dlBin({
@@ -66,7 +66,7 @@ export function getbins(stats, maxbins) {
     max: stats.max,
     maxbins: maxbins
   });
-};
+}
 
 /**
  * x[p[0]]...[p[n]] = val
@@ -82,7 +82,7 @@ export function setter(x, p, val, noaugment = false) {
     }
   }
   x[p[i]] = val;
-};
+}
 
 /**
  * returns x[p[0]]...[p[n]]
@@ -98,8 +98,8 @@ export function getter(x, p, noaugment = false) {
     }
   }
   return x;
-};
+}
 
 export function error(message: any): void {
   console.error('[VL Error]', message);
-};
+}

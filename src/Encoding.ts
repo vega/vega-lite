@@ -19,7 +19,7 @@ export default class Encoding {
     this._marktype = specExtended.marktype;
     this._enc = specExtended.encoding;
     this._config = specExtended.config;
-  };
+  }
 
   static fromShorthand(shorthand: string, data?, config?, theme?) {
     var c = Shorthand,
@@ -37,21 +37,21 @@ export default class Encoding {
 
   static fromSpec(spec, theme?) {
     return new Encoding(spec, theme);
-  };
+  }
 
   toShorthand() {
     return 'mark' + Shorthand.Assign + this._marktype +
       Shorthand.Delim + vlEnc.shorthand(this._enc);
-  };
+  }
 
   static shorthand(spec) {
     return 'mark' + Shorthand.Assign + spec.marktype +
       Shorthand.Delim + vlEnc.shorthand(spec.encoding);
-  };
+  }
 
   static specFromShorthand(shorthand: string, data, config, excludeConfig?) {
     return Encoding.fromShorthand(shorthand, data, config).toSpec(excludeConfig);
-  };
+  }
 
   toSpec(excludeConfig?, excludeData?) {
     var enc = util.duplicate(this._enc),
@@ -73,37 +73,37 @@ export default class Encoding {
     // remove defaults
     var defaults = schema.instantiate();
     return schemaUtil.subtract(spec, defaults);
-  };
+  }
 
   marktype() {
     return this._marktype;
-  };
+  }
 
   is(m) {
     return this._marktype === m;
-  };
+  }
 
   has(encType) {
     // equivalent to calling vlenc.has(this._enc, encType)
     return this._enc[encType].name !== undefined;
-  };
+  }
 
   encDef(encType) {
     return this._enc[encType];
-  };
+  }
 
   // get "field" reference for vega
   fieldRef(encType, opt?) {
     opt = opt || {};
     return vlEncDef.fieldRef(this._enc[encType], opt);
-  };
+  }
 
   /*
    * return key-value pairs of field name and list of fields of that field name
    */
   fields() {
     return vlEnc.fields(this._enc);
-  };
+  }
 
   fieldTitle(et) {
     if (vlEncDef.isCount(this._enc[et])) {
@@ -115,15 +115,15 @@ export default class Encoding {
     } else {
       return this._enc[et].name;
     }
-  };
+  }
 
   scale(et) {
     return this._enc[et].scale || {};
-  };
+  }
 
   axis(et) {
     return this._enc[et].axis || {};
-  };
+  }
 
   bandWidth(encType, useSmallBand?: boolean) {
     if (this.encDef(encType).scale.bandWidth !== undefined) {
@@ -139,7 +139,7 @@ export default class Encoding {
     (encType === Enctype.X && this.has(Enctype.COL) && this.has(Enctype.X));
 
     return this.config(useSmallBand ? 'smallBandWidth' : 'largeBandWidth');
-  };
+  }
 
   padding(encType) {
     if (this.encDef(encType).scale.padding !== undefined) {
@@ -150,7 +150,7 @@ export default class Encoding {
       return this.config('cellPadding');
     }
     return this.config('padding');
-  };
+  }
 
   // returns false if binning is disabled, otherwise an object with binning properties
   bin(et) {
@@ -162,90 +162,90 @@ export default class Encoding {
         maxbins: schema.MAXBINS_DEFAULT
       };
     return bin;
-  };
+  }
 
   value(et) {
     return this._enc[et].value;
-  };
+  }
 
   numberFormat = function(name?) {
     // TODO(#497): have different number format based on numberType (discrete/continuous)
     return this.config('numberFormat');
-  };
+  }
 
   map(f) {
     return vlEnc.map(this._enc, f);
-  };
+  }
 
   reduce(f, init) {
     return vlEnc.reduce(this._enc, f, init);
-  };
+  }
 
   forEach(f) {
     return vlEnc.forEach(this._enc, f);
-  };
+  }
 
   type(et: string): Type {
     const t: string = this._enc[et].type;
     return this.has(et) ? Type[t] : null;
-  };
+  }
 
   isType(et: string, type: Type) {
     var encDef = this.encDef(et);
     return encDef && vlEncDef.isType(encDef, type);
-  };
+  }
 
   isTypes(et: string, type: Array<any>) {
     var encDef = this.encDef(et);
     return encDef && vlEncDef.isTypes(encDef, type);
-  };
+  }
 
   static isOrdinalScale(encoding, encType) {
     return vlEncDef.isOrdinalScale(encoding.encDef(encType));
-  };
+  }
 
   static isDimension(encoding, encType) {
     return vlEncDef.isDimension(encoding.encDef(encType));
-  };
+  }
 
   static isMeasure(encoding, encType) {
     return vlEncDef.isMeasure(encoding.encDef(encType));
-  };
+  }
 
   isOrdinalScale(encType) {
     return this.has(encType) && Encoding.isOrdinalScale(this, encType);
-  };
+  }
 
   isDimension(encType) {
     return this.has(encType) && Encoding.isDimension(this, encType);
-  };
+  }
 
   isMeasure(encType) {
     return this.has(encType) && Encoding.isMeasure(this, encType);
-  };
+  }
 
   isAggregate() {
     return vlEnc.isAggregate(this._enc);
-  };
+  }
 
   dataTable() {
     return this.isAggregate() ? Table.SUMMARY : Table.SOURCE;
-  };
+  }
 
   static isAggregate(spec) {
     return vlEnc.isAggregate(spec.encoding);
-  };
+  }
 
   static alwaysNoOcclusion(spec) {
     // FIXME raw OxQ with # of rows = # of O
     return vlEnc.isAggregate(spec.encoding);
-  };
+  }
 
   static isStack(spec) {
     // FIXME update this once we have control for stack ...
     return (spec.marktype === 'bar' || spec.marktype === 'area') &&
       !!spec.encoding.color;
-  };
+  }
 
   /**
    * Check if the encoding should be stacked and return the stack dimenstion and value fields.
@@ -284,7 +284,7 @@ export default class Encoding {
       }
     }
     return null; // no stack encoding
-  };
+  }
 
   details() {
     var encoding = this;
@@ -294,7 +294,7 @@ export default class Encoding {
       }
       return refs;
     }, []);
-  };
+  }
 
   facets() {
     var encoding = this;
@@ -304,29 +304,29 @@ export default class Encoding {
       }
       return refs;
     }, []);
-  };
+  }
 
   cardinality(encType, stats) {
     return vlEncDef.cardinality(this.encDef(encType), stats, this.config('filterNull'));
-  };
+  }
 
   isRaw() {
     return !this.isAggregate();
-  };
+  }
 
   data() {
     return this._data;
-  };
+  }
 
   // returns whether the encoding has values embedded
   hasValues() {
     var vals = this.data().values;
     return vals && vals.length;
-  };
+  }
 
   config(name) {
     return this._config[name];
-  };
+  }
 
   static transpose(spec) {
     var oldenc = spec.encoding,
@@ -337,5 +337,5 @@ export default class Encoding {
     enc.col = oldenc.row;
     spec.encoding = enc;
     return spec;
-  };
+  }
 }

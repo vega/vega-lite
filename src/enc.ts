@@ -12,12 +12,12 @@ export function countRetinal(enc) {
   if (enc.size) count++;
   if (enc.shape) count++;
   return count;
-};
+}
 
 export function has(enc, encType) {
   var fieldDef = enc && enc[encType];
   return fieldDef && fieldDef.name;
-};
+}
 
 export function isAggregate(enc) {
   for (var k in enc) {
@@ -26,7 +26,7 @@ export function isAggregate(enc) {
     }
   }
   return false;
-};
+}
 
 export function forEach(enc, f) {
   var i = 0;
@@ -35,7 +35,7 @@ export function forEach(enc, f) {
       f(enc[k], k, i++);
     }
   });
-};
+}
 
 export function map(enc, f) {
   var arr = [];
@@ -45,7 +45,7 @@ export function map(enc, f) {
     }
   });
   return arr;
-};
+}
 
 export function reduce(enc, f, init) {
   var r = init;
@@ -55,7 +55,7 @@ export function reduce(enc, f, init) {
     }
   });
   return r;
-};
+}
 
 /**
  * return key-value pairs of field name and list of fields of that field name
@@ -72,13 +72,13 @@ export function fields(enc) {
     }
     return m;
   }, {});
-};
+}
 
 export function shorthand(enc) {
   return map(enc, function(field, et) {
     return et + Shorthand.Assign + vlEncDef.shorthand(field);
   }).join(Shorthand.Delim);
-};
+}
 
 export function fromShorthand(shorthand) {
   var enc = util.isArray(shorthand) ? shorthand : shorthand.split(Shorthand.Delim);
@@ -90,4 +90,4 @@ export function fromShorthand(shorthand) {
     m[enctype] = vlEncDef.fromShorthand(field);
     return m;
   }, {});
-};
+}

@@ -37,19 +37,19 @@ export function fieldRef(field, opt) {
   }  else {
     return f + name;
   }
-};
+}
 
 export function shorthand(f) {
   return (f.aggregate ? f.aggregate + Shorthand.Func : '') +
     (f.timeUnit ? f.timeUnit + Shorthand.Func : '') +
     (f.bin ? 'bin' + Shorthand.Func : '') +
     (f.name || '') + Shorthand.Type + f.type;
-};
+}
 
 export function shorthands(fields, delim) {
   delim = delim || Shorthand.Delim;
   return fields.map(shorthand).join(delim);
-};
+}
 
 export function fromShorthand(shorthand: string) {
   var split = shorthand.split(Shorthand.Type), i;
@@ -86,19 +86,19 @@ export function fromShorthand(shorthand: string) {
   }
 
   return o;
-};
+}
 
 export function isType(fieldDef, type: Type) {
   var t: string = fieldDef.type;
   return Type[t] === type;
-};
+}
 
 export function isTypes(fieldDef, types: Array<Type>) {
   for (var t=0; t<types.length; t++) {
     if(isType(fieldDef, types[t])) return true;
   }
   return false;
-};
+}
 
 /*
  * Most fields that use ordinal scale are dimensions.
@@ -107,7 +107,7 @@ export function isTypes(fieldDef, types: Array<Type>) {
 export function isOrdinalScale(field) {
   return  isTypes(field, [Type.N, Type.O]) ||
     ( isType(field, Type.T) && field.timeUnit && time.isOrdinalFn(field.timeUnit) );
-};
+}
 
 function isFieldDimension(field) {
   return  isTypes(field, [Type.N, Type.O]) || !!field.bin ||
@@ -121,21 +121,21 @@ function isFieldDimension(field) {
  */
 export function isDimension(field) {
   return field && isFieldDimension(field);
-};
+}
 
 export function isMeasure(field) {
   return field && !isFieldDimension(field);
-};
+}
 
 export function count() {
   return {name:'*', aggregate: 'count', type: Type.Q, displayName: COUNT_DISPLAYNAME};
-};
+}
 
 export const COUNT_DISPLAYNAME = 'Number of Records';
 
 export function isCount(field) {
   return field.aggregate === 'count';
-};
+}
 
 /**
  * For encoding, use encoding.cardinality() to avoid confusion.
@@ -164,4 +164,4 @@ export function cardinality(field, stats, filterNull = {}) {
   // remove null
   return stat.distinct -
     (stat.missing > 0 && filterNull[type] ? 1 : 0);
-};
+}
