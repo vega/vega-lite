@@ -1,4 +1,4 @@
-/// <reference path="../typings/d3-time-format.d.ts"/>
+/// <reference path="../../typings/d3-time-format.d.ts"/>
 
 import {utcFormat} from 'd3-time-format';
 
@@ -39,7 +39,7 @@ export function formula(timeUnit, fieldRef) {
   return fn + '(' + fieldRef + ')';
 };
 
-export function maxLength(timeUnit, encoding: any) {
+export function maxLength(timeUnit, encoding: Encoding) {
   switch (timeUnit) {
     case 'seconds':
     case 'minutes':

@@ -1,7 +1,7 @@
-var __ = require('lodash');
+import * as __ from 'lodash';
+var galleryExamples = require('../gallery/examples');
 
-var f = require('./fixtures'),
-  galleryExamples = require('../gallery/examples');
+import {f} from './fixtures';
 
 var e = [];
 

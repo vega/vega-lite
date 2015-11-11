@@ -1,4 +1,4 @@
-var expect = require('chai').expect;
+import {expect} from 'chai';
 
 import * as vlEncDef from '../src/encdef';
 import {Type} from '../src/consts';

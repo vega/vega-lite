@@ -1,5 +1,5 @@
-/// <reference path="../typings/colorbrewer.d.ts"/>
-/// <reference path="../typings/d3-color.d.ts"/>
+/// <reference path="../../typings/colorbrewer.d.ts"/>
+/// <reference path="../../typings/d3-color.d.ts"/>
 
 import * as colorbrewer from 'colorbrewer';
 import {interpolateHsl} from 'd3-color';
@@ -60,7 +60,7 @@ export function type(name, encoding) {
   }
 };
 
-export function domain(encoding, name, type, facet?) {
+export function domain(encoding, name, type, facet:boolean = false) {
   var encDef = encoding.encDef(name);
 
   if (encDef.scale.domain) { // explicit value

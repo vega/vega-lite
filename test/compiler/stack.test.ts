@@ -1,6 +1,4 @@
-'use strict';
-
-var expect = require('chai').expect;
+import {expect} from 'chai';
 
 import * as fix from '../fixtures';
 import {compile} from '../../src/compiler/compiler';

@@ -1,4 +1,4 @@
-var expect = require('chai').expect;
+import {expect} from 'chai';
 
 import * as axis from '../../src/compiler/axis';
 import Encoding from '../../src/Encoding';
