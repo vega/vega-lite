@@ -10,7 +10,6 @@ import * as vlTime from './time';
 import * as vlAxis from './axis';
 import * as vlLegend from './legend';
 import * as vlMarks from './marks';
-import {getMark} from './marks';
 import vlData from './data';
 import vlFacet from './facet';
 import vlLayout from './layout';
@@ -87,7 +86,7 @@ export function compileEncoding(encoding: Encoding, stats) {
     vlStack(encoding, mdef, stack);
   }
 
-  var lineType = getMark(encoding.marktype()).line;
+  var lineType = vlMarks[encoding.marktype()].line;
 
   // handle subfacets
   var details = encoding.details();

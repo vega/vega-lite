@@ -2,7 +2,7 @@ import {Enctype, Type} from '../consts';
 
 export function defs(encoding, layout, style) {
   var defs = [],
-    mark = getMark(encoding.marktype()),
+    mark = exports[encoding.marktype()],
     from = encoding.dataTable();
 
   // to add a background to text, we need to add it before the text
@@ -30,28 +30,6 @@ export function defs(encoding, layout, style) {
   });
 
   return defs;
-};
-
-// TODO: find common return type
-export function getMark(mark: string): any {
-  switch (mark) {
-    case 'bar':
-      return bar;
-    case 'line':
-      return line;
-    case 'area':
-      return area;
-    case 'tick':
-      return tick;
-    case 'circle':
-      return circle;
-    case 'square':
-      return square;
-    case 'point':
-      return point;
-    case 'text':
-      return text;
-  }
 }
 
 export const bar = {
