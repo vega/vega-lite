@@ -17,11 +17,10 @@ import {axis} from './encdef.axis.schema';
 import {typicalScale, ordinalOnlyScale} from './encdef.scale.schema';
 import {legend} from './encdef.legend.schema';
 
-// TODO: remove these when we know how to generate a schema
-var Q = 'Q';
-var O = 'O';
-var N = 'N';
-var T = 'T';
+var Q = Type[Type.Q];
+var O = Type[Type.O];
+var N = Type[Type.N];
+var T = Type[Type.T];
 
 // TODO(#620) refer to vega schema
 // var vgStackSchema = require('vega/src/transforms/Stack').schema;
