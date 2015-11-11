@@ -38,38 +38,30 @@ export var field = {
   properties: {
     name: {
       type: 'string'
-    }
+    },
+    type: {
+      type: 'string',
+      enum: [N, O, Q, T]
+    },
+    timeUnit: timeUnit,
+    bin: bin,
   }
 };
 
 var clone = util.duplicate;
 
 var typicalField = merge(clone(field), {
-  type: 'object',
   properties: {
-    type: {
-      type: 'string',
-      enum: [N, O, Q, T]
-    },
-    aggregate: aggregate, // TODO: make reference
-    timeUnit: timeUnit, // TODO: make reference
-    bin: bin, // TODO: make reference
+    aggregate: aggregate,
     scale: typicalScale
   }
 });
 
 var onlyOrdinalField = merge(clone(field), {
-  type: 'object',
   supportedRole: {
     dimension: true
   },
   properties: {
-    type: {
-      type: 'string',
-      enum: [N, O, Q, T] // ordinal-only field supports Q when bin is applied and T when time unit is applied.
-    },
-    timeUnit: timeUnit, // TODO: make reference
-    bin: bin, // TODO: make reference
     aggregate: {
       type: 'string',
       enum: ['count'],
@@ -79,91 +71,76 @@ var onlyOrdinalField = merge(clone(field), {
   }
 });
 
-var axisMixin = {
-  type: 'object',
-  supportedMarktypes: {point: true, tick: true, bar: true, line: true, area: true, circle: true, square: true},
-  properties: {
-    axis: axis
-  }
+// TODO: remove if possible
+var requiredNameType = {
+  required: ['name', 'type']
 };
 
-var sortMixin = {
-  type: 'object',
+var multiRoleField = merge(clone(typicalField), {
+  supportedRole: {
+    measure: true,
+    dimension: true
+  }
+});
+
+var quantitativeField = merge(clone(typicalField), {
+  supportedRole: {
+    measure: true,
+    // TODO: revise if this is considered
+    dimension: 'ordinal-only' // using size to encoding category lead to order interpretation
+  }
+});
+
+var onlyQuantitativeField = merge(clone(typicalField), {
+  supportedRole: {
+    measure: true
+  }
+});
+
+var x = merge(clone(multiRoleField), requiredNameType, {
   properties: {
+    supportedMarktypes: {point: true, tick: true, bar: true, line: true, area: true, circle: true, square: true},
+    axis: axis,
     sort: sort
   }
-};
+});
+var y = clone(x);
 
-var legendMixin = {
-  type: 'object',
+var facet = merge(clone(onlyOrdinalField), requiredNameType, {
+  supportedMarktypes: {point: true, tick: true, bar: true, line: true, area: true, circle: true, square: true, text: true},
   properties: {
-    legend: legend
+    axis: axis,
+    sort: sort
   }
-};
+});
 
-var textMixin = {
-  type: 'object',
-  supportedMarktypes: {'text': true},
+var row = merge(clone(facet), {
   properties: {
-    align: {
-      type: 'string',
-      default: 'right'
-    },
-    baseline: {
-      type: 'string',
-      default: 'middle'
-    },
-    color: {
-      type: 'string',
-      role: 'color',
-      default: '#000000'
-    },
-    margin: {
-      type: 'integer',
-      default: 4,
-      minimum: 0
-    },
-    placeholder: {
-      type: 'string',
-      default: 'Abc'
-    },
-    font: {
-      type: 'object',
-      properties: {
-        weight: {
-          type: 'string',
-          enum: ['normal', 'bold'],
-          default: 'normal'
-        },
-        size: {
-          type: 'integer',
-          default: 10,
-          minimum: 0
-        },
-        family: {
-          type: 'string',
-          default: 'Helvetica Neue'
-        },
-        style: {
-          type: 'string',
-          default: 'normal',
-          enum: ['normal', 'italic']
-        }
-      }
-    },
-    format: {
-      type: 'string',
-      default: undefined,  // auto
-      description: 'The formatting pattern for text value.'+
-                   'If not defined, this will be determined automatically'
-    },
+    // FIXME use this over config
+    height: {
+      type: 'number',
+      minimum: 0,
+      default: 150
+    }
   }
-};
+});
 
-var sizeMixin = {
-  type: 'object',
+var col = merge(clone(facet), {
+  properties: {
+    // FIXME use this over config
+    width: {
+      type: 'number',
+      minimum: 0,
+      default: 150
+    }
+  }
+});
+
+var size = merge(clone(quantitativeField), {
   supportedMarktypes: {point: true, bar: true, circle: true, square: true, text: true},
   properties: {
+    legend: legend,
+    sort: sort,
     value: {
       type: 'integer',
       default: 30,
@@ -171,12 +148,14 @@ var sizeMixin = {
       description: 'Size of marks.'
     }
   }
-};
+});
 
-var colorMixin = {
-  type: 'object',
+var color = merge(clone(multiRoleField), {
   supportedMarktypes: {point: true, tick: true, bar: true, line: true, area: true, circle: true, square: true, 'text': true},
   properties: {
+    legend: legend,
+    sort: sort,
+    stack: stack,
     value: {
       type: 'string',
       role: 'color',
@@ -236,19 +215,13 @@ var colorMixin = {
       }
     }
   }
-};
+});
 
-var stackMixin = {
-  type: 'object',
-  properties: {
-    stack: stack
-  }
-};
-
-var shapeMixin = {
-  type: 'object',
+var shape = merge(clone(onlyOrdinalField), {
   supportedMarktypes: {point: true, circle: true, square: true},
   properties: {
+    legend: legend,
+    sort: sort,
     value: {
       type: 'string',
       enum: ['circle', 'square', 'cross', 'diamond', 'triangle-up', 'triangle-down'],
@@ -261,95 +234,77 @@ var shapeMixin = {
       description: 'Whether the shape\'s color should be used as fill color instead of stroke color.'
     }
   }
-};
-
-var detailMixin = {
-  type: 'object',
-  supportedMarktypes: {point: true, tick: true, line: true, circle: true, square: true}
-};
-
-var rowMixin = {
-  properties: {
-    height: {
-      type: 'number',
-      minimum: 0,
-      default: 150
-    }
-  }
-};
-
-var colMixin = {
-  properties: {
-    width: {
-      type: 'number',
-      minimum: 0,
-      default: 150
-    },
-    axis: {
-      properties: {
-        labelMaxLength: {
-          type: 'integer',
-          default: 12,
-          minimum: 0,
-          description: 'Truncate labels that are too long.'
-        }
-      }
-    }
-  }
-};
-
-var facetMixin = {
-  type: 'object',
-  supportedMarktypes: {point: true, tick: true, bar: true, line: true, area: true, circle: true, square: true, text: true},
-  properties: {
-    padding: {
-      type: 'number',
-      minimum: 0,
-      maximum: 1,
-      default: 0.1
-    }
-  }
-};
-
-var requiredNameType = {
-  required: ['name', 'type']
-};
-
-var multiRoleField = merge(clone(typicalField), {
-  supportedRole: {
-    measure: true,
-    dimension: true
-  }
 });
 
-var quantitativeField = merge(clone(typicalField), {
-  supportedRole: {
-    measure: true,
-    dimension: 'ordinal-only' // using size to encoding category lead to order interpretation
+var detail = merge(clone(onlyOrdinalField), {
+  supportedMarktypes: {point: true, tick: true, line: true, circle: true, square: true},
+  properties: {
+    sort: sort,
+    stack: stack
   }
 });
-
-var onlyQuantitativeField = merge(clone(typicalField), {
-  supportedRole: {
-    measure: true
-  }
-});
-
-var x = merge(clone(multiRoleField), axisMixin, requiredNameType, sortMixin);
-var y = clone(x);
-
-var facet = merge(clone(onlyOrdinalField), requiredNameType, facetMixin, sortMixin);
-var row = merge(clone(facet), axisMixin, rowMixin);
-var col = merge(clone(facet), axisMixin, colMixin);
-
-var size = merge(clone(quantitativeField), legendMixin, sizeMixin, sortMixin);
-var color = merge(clone(multiRoleField), legendMixin, colorMixin, stackMixin, sortMixin);
-
-var shape = merge(clone(onlyOrdinalField), legendMixin, shapeMixin, sortMixin);
-var detail = merge(clone(onlyOrdinalField), detailMixin, stackMixin, sortMixin);
 
 // we only put aggregated measure in pivot table
-var text = merge(clone(onlyQuantitativeField), textMixin, sortMixin);
+var text = merge(clone(onlyQuantitativeField), {
+  supportedMarktypes: {'text': true},
+  properties: {
+    sort: sort,
+
+    // TODO: consider if these properties should be under 'marks.'
+    align: {
+      type: 'string',
+      default: 'right'
+    },
+    baseline: {
+      type: 'string',
+      default: 'middle'
+    },
+    color: {
+      type: 'string',
+      role: 'color',
+      default: '#000000'
+    },
+    margin: {
+      type: 'integer',
+      default: 4,
+      minimum: 0
+    },
+    placeholder: {
+      type: 'string',
+      default: 'Abc'
+    },
+    font: {
+      type: 'object',
+      properties: {
+        weight: {
+          type: 'string',
+          enum: ['normal', 'bold'],
+          default: 'normal'
+        },
+        size: {
+          type: 'integer',
+          default: 10,
+          minimum: 0
+        },
+        family: {
+          type: 'string',
+          default: 'Helvetica Neue'
+        },
+        style: {
+          type: 'string',
+          default: 'normal',
+          enum: ['normal', 'italic']
+        }
+      }
+    },
+    format: {
+      type: 'string',
+      default: undefined,  // auto
+      description: 'The formatting pattern for text value.'+
+                   'If not defined, this will be determined automatically'
+    },
+  }
+});
 
 // TODO add label
 
