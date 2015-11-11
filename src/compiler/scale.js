@@ -292,6 +292,8 @@ scale.range = function (encoding, name, type, layout, stats) {
       return 'shapes';
     case COLOR:
       return scale.color(encoding, name, type, stats);
+    case ROW:
+      return [0, layout.height];
   }
 
   return undefined;
