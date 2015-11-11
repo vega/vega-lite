@@ -1,6 +1,6 @@
 import {Enctype, Type} from '../consts';
 
-export default function(encoding, layout, style) {
+export function defs(encoding, layout, style) {
   var defs = [],
     mark = getMark(encoding.marktype()),
     from = encoding.dataTable();

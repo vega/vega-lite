@@ -9,7 +9,8 @@ import * as vlScale from './scale';
 import * as vlTime from './time';
 import * as vlAxis from './axis';
 import * as vlLegend from './legend';
-import vlMarks, {getMark} from './marks';
+import * as vlMarks from './marks';
+import {getMark} from './marks';
 import vlData from './data';
 import vlFacet from './facet';
 import vlLayout from './layout';
@@ -77,7 +78,7 @@ export function compileEncoding(encoding: Encoding, stats) {
 
   // marks
   var styleCfg = vlStyle(encoding, stats),
-    mdefs = group.marks = vlMarks(encoding, layout, styleCfg),
+    mdefs = group.marks = vlMarks.defs(encoding, layout, styleCfg),
     mdef = mdefs[mdefs.length - 1];  // TODO: remove this dirty hack by refactoring the whole flow
 
   var stack = encoding.stack();
