@@ -1,6 +1,6 @@
 // utility for field
 
-import {TimeUnits, Type, Shorthand, ValidAggregateOps, MAXBINS_DEFAULT} from './consts';
+import {TIMEUNITS, Type, Shorthand, AGGREGATE_OPS, MAXBINS_DEFAULT} from './consts';
 import * as util from './util';
 import * as time from './compiler/time';
 
@@ -59,8 +59,8 @@ export function fromShorthand(shorthand: string) {
   };
 
   // check aggregate type
-  for (i in ValidAggregateOps) {
-    var a = ValidAggregateOps[i];
+  for (i in AGGREGATE_OPS) {
+    var a = AGGREGATE_OPS[i];
     if (o.name.indexOf(a + '_') === 0) {
       o.name = o.name.substr(a.length + 1);
       if (a == 'count' && o.name.length === 0) o.name = '*';
@@ -69,8 +69,8 @@ export function fromShorthand(shorthand: string) {
     }
   }
 
-  for (i in TimeUnits) {
-    var tu = TimeUnits[i];
+  for (i in TIMEUNITS) {
+    var tu = TIMEUNITS[i];
     if (o.name && o.name.indexOf(tu + '_') === 0) {
       o.name = o.name.substr(o.name.length + 1);
       o.timeUnit = tu;

@@ -27,12 +27,12 @@ export enum Type {
   T,  // Time
 };
 
-export const TimeUnits = [
+export const TIMEUNITS = [
   'year', 'month', 'day', 'date', 'hours', 'minutes', 'seconds'
 ];
 
 // TODO: see if there is a nice way to import from Vega schema
-export const ValidAggregateOps = [
+export const AGGREGATE_OPS = [
   'values', 'count', 'valid', 'missing', 'distinct',
   'sum', 'mean', 'average', 'variance', 'variancep', 'stdev',
   'stdevp', 'median', 'q1', 'q3', 'modeskew', 'min', 'max',
@@ -45,7 +45,7 @@ export const ENCODING_TYPES = [
   Enctype.SIZE, Enctype.SHAPE, Enctype.COLOR, Enctype.TEXT, Enctype.DETAIL
 ];
 
-// TODO: remove  
+// TODO: remove
 export var MAXBINS_DEFAULT = 15;
 
 export const Shorthand = {

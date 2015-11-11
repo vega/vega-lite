@@ -1,5 +1,5 @@
 import {toMap} from '../util';
-import {TimeUnits, Type, ValidAggregateOps, MAXBINS_DEFAULT} from '../consts';
+import {TIMEUNITS, Type, AGGREGATE_OPS, MAXBINS_DEFAULT} from '../consts';
 
 var Q = Type[Type.Q];
 var O = Type[Type.O];
@@ -8,9 +8,9 @@ var T = Type[Type.T];
 
 export var aggregate = {
   type: 'string',
-  enum: ValidAggregateOps,
+  enum: AGGREGATE_OPS,
   supportedEnums: {
-    Q: ValidAggregateOps,
+    Q: AGGREGATE_OPS,
     O: ['median','min','max'],
     N: [],
     T: ['mean', 'median', 'min', 'max'], // TODO: revise what should time support
@@ -35,7 +35,7 @@ export var bin = {
 
 export var timeUnit = {
   type: 'string',
-  enum: TimeUnits,
+  enum: TIMEUNITS,
   supportedTypes: toMap([T])
 };
 
@@ -57,7 +57,7 @@ export var sort = {
         },
         op: {
           type: 'string',
-          enum: ValidAggregateOps,
+          enum: AGGREGATE_OPS,
           description: 'The field name to aggregate over.'
         },
         order: {

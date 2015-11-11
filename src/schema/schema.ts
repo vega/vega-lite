@@ -8,7 +8,7 @@ import * as util from '../util';
 import {toMap} from '../util';
 import * as schemaUtil from './schemautil';
 import {merge} from './schemautil';
-import {Type, ValidAggregateOps} from '../consts';
+import {Type, AGGREGATE_OPS} from '../consts';
 import {marktype} from './marktype.schema';
 import {data} from './data.schema';
 import {config} from './config.schema';
