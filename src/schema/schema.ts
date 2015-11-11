@@ -12,7 +12,7 @@ import {Type, ValidAggregateOps} from '../consts';
 import {marktype} from './marktype.schema';
 import {data} from './data.schema';
 import {config} from './config.schema';
-import {aggregate, bin, timeUnit, sort} from './encdef.schema';
+import {aggregate, bin, sort, stack, timeUnit} from './encdef.schema';
 import {axis} from './encdef.axis.schema';
 import {typicalScale, ordinalOnlyScale} from './encdef.scale.schema';
 import {legend} from './encdef.legend.schema';
@@ -241,25 +241,7 @@ var colorMixin = {
 var stackMixin = {
   type: 'object',
   properties: {
-    stack: {
-      type: ['boolean', 'object'],
-      default: true,
-      description: 'Enable stacking (for bar and area marks only).',
-      properties: {
-        reverse: {
-          type: 'boolean',
-          default: false,
-          description: 'Whether to reverse the stack\'s sortby.'
-        },
-        offset: {
-          type: 'string',
-          default: undefined,
-          enum: ['zero', 'center', 'normalize']
-          // TODO(#620) refer to Vega spec once it doesn't throw error
-          // enum: vgStackSchema.properties.offset.oneOf[0].enum
-        }
-      }
-    }
+    stack: stack
   }
 };
 
