@@ -27,6 +27,10 @@ export enum Type {
   T,  // Time
 };
 
+export const TimeUnits = [
+  'year', 'month', 'day', 'date', 'hours', 'minutes', 'seconds'
+];
+
 export const ENCODING_TYPES = [
   Enctype.X, Enctype.Y,
   Enctype.ROW, Enctype.COL,

@@ -1,6 +1,6 @@
 // utility for field
 
-import {Type, Shorthand} from './consts';
+import {TimeUnits, Type, Shorthand} from './consts';
 import * as util from './util';
 import * as time from './compiler/time';
 import * as schema from './schema/schema';
@@ -70,8 +70,8 @@ export function fromShorthand(shorthand: string) {
     }
   }
 
-  for (i in schema.timeUnits) {
-    var tu = schema.timeUnits[i];
+  for (i in TimeUnits) {
+    var tu = TimeUnits[i];
     if (o.name && o.name.indexOf(tu + '_') === 0) {
       o.name = o.name.substr(o.name.length + 1);
       o.timeUnit = tu;

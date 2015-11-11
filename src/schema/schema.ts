@@ -7,7 +7,7 @@ import * as colorbrewer from 'colorbrewer';
 import * as util from '../util';
 import {toMap} from '../util';
 import * as schemaUtil from './schemautil';
-import {Type} from '../consts';
+import {TimeUnits, Type} from '../consts';
 
 // TODO: remove these when we know how to generate a schema
 var Q = 'Q';
@@ -44,13 +44,12 @@ export function getSupportedRole(encType) {
   return schema.properties.encoding.properties[encType].supportedRole;
 };
 
-export var timeUnits = ['year', 'month', 'day', 'date', 'hours', 'minutes', 'seconds'];
 
 export var defaultTimeFn = 'month';
 
 export var timeUnit = {
   type: 'string',
-  enum: timeUnits,
+  enum: TimeUnits,
   supportedTypes: toMap([T])
 };
 
