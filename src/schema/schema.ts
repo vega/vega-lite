@@ -12,6 +12,7 @@ import {marktype} from './marktype.schema';
 import {data} from './data.schema';
 import {config} from './config.schema';
 import {aggregate, bin, timeUnit, sort} from './encdef.schema';
+import {axis} from './encdef.axis.schema';
 
 // TODO: remove these when we know how to generate a schema
 var Q = 'Q';
@@ -26,9 +27,7 @@ export function getSupportedRole(encType) {
   return schema.properties.encoding.properties[encType].supportedRole;
 };
 
-
 export var defaultTimeFn = 'month';
-
 
 export var scale_type = {
   type: 'string',
@@ -193,66 +192,7 @@ var axisMixin = {
   type: 'object',
   supportedMarktypes: {point: true, tick: true, bar: true, line: true, area: true, circle: true, square: true},
   properties: {
-    axis: {
-      type: 'object',
-      properties: {
-        /* Vega Axis Properties */
-        format: {
-          type: 'string',
-          default: undefined,  // auto
-          description: 'The formatting pattern for axis labels. '+
-                       'If not undefined, this will be determined by ' +
-                       'the max value ' +
-                       'of the field.'
-        },
-        grid: {
-          type: 'boolean',
-          default: undefined,
-          description: 'A flag indicate if gridlines should be created in addition to ticks. If `grid` is unspecified, the default value is `true` for ROW and COL. For X and Y, the default value is `true` for quantitative and time fields and `false` otherwise.'
-        },
-        layer: {
-          type: 'string',
-          default: 'back',
-          description: 'A string indicating if the axis (and any gridlines) should be placed above or below the data marks. One of "front" (default) or "back".'
-        },
-        orient: {
-          type: 'string',
-          default: undefined,
-          enum: ['top', 'right', 'left', 'bottom'],
-          description: 'The orientation of the axis. One of top, bottom, left or right. The orientation can be used to further specialize the axis type (e.g., a y axis oriented for the right edge of the chart).'
-        },
-        ticks: {
-          type: 'integer',
-          default: undefined,
-          minimum: 0,
-          description: 'A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are "nice" (multiples of 2, 5, 10) and lie within the underlying scale\'s range.'
-        },
-        /* Vega Axis Properties that are automatically populated by Vega-lite */
-        title: {
-          type: 'string',
-          default: undefined,
-          description: 'A title for the axis. (Shows field name and its function by default.)'
-        },
-        /* Vega-lite only */
-        labelMaxLength: {
-          type: 'integer',
-          default: 25,
-          minimum: 0,
-          description: 'Truncate labels that are too long.'
-        },
-        titleMaxLength: {
-          type: 'integer',
-          default: undefined,
-          minimum: 0,
-          description: 'Max length for axis title if the title is automatically generated from the field\'s description'
-        },
-        titleOffset: {
-          type: 'integer',
-          default: undefined,  // auto
-          description: 'A title offset value for the axis.'
-        },
-      }
-    }
+    axis: axis
   }
 };
 

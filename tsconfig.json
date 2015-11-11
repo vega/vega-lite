@@ -42,6 +42,7 @@
         "src/Encoding.ts",
         "src/schema/config.schema.ts",
         "src/schema/data.schema.ts",
+        "src/schema/encdef.axis.schema.ts",
         "src/schema/encdef.schema.ts",
         "src/schema/marktype.schema.ts",
         "src/schema/schema.ts",
