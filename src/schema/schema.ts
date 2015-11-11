@@ -7,10 +7,11 @@ import * as colorbrewer from 'colorbrewer';
 import * as util from '../util';
 import {toMap} from '../util';
 import * as schemaUtil from './schemautil';
-import {TimeUnits, Type} from '../consts';
+import {Type, ValidAggregateOps} from '../consts';
 import {marktype} from './marktype.schema';
 import {data} from './data.schema';
 import {config} from './config.schema';
+import {aggregate, bin, timeUnit, sort} from './encdef.schema';
 
 // TODO: remove these when we know how to generate a schema
 var Q = 'Q';
@@ -18,23 +19,8 @@ var O = 'O';
 var N = 'N';
 var T = 'T';
 
-import {VALID_OPS as VALID_AGG_OPS} from 'vega/src/transforms/Aggregate';
-
 // TODO(#620) refer to vega schema
 // var vgStackSchema = require('vega/src/transforms/Stack').schema;
-
-export var aggregate = {
-  type: 'string',
-  enum: VALID_AGG_OPS,
-  supportedEnums: {
-    Q: VALID_AGG_OPS,
-    O: ['median','min','max'],
-    N: [],
-    T: ['mean', 'median', 'min', 'max'], // TODO: revise what should time support
-    '': ['count']
-  },
-  supportedTypes: toMap([Q, N, O, T, ''])
-};
 
 export function getSupportedRole(encType) {
   return schema.properties.encoding.properties[encType].supportedRole;
@@ -43,11 +29,6 @@ export function getSupportedRole(encType) {
 
 export var defaultTimeFn = 'month';
 
-export var timeUnit = {
-  type: 'string',
-  enum: TimeUnits,
-  supportedTypes: toMap([T])
-};
 
 export var scale_type = {
   type: 'string',
@@ -68,22 +49,6 @@ export var field = {
 
 var clone = util.duplicate;
 var merge = schemaUtil.merge;
-
-export var MAXBINS_DEFAULT = 15;
-
-var bin = {
-  type: ['boolean', 'object'],
-  default: false,
-  properties: {
-    maxbins: {
-      type: 'integer',
-      default: MAXBINS_DEFAULT,
-      minimum: 2,
-      description: 'Maximum number of bins.'
-    }
-  },
-  supportedTypes: toMap([Q]) // TODO: add O after finishing #81
-};
 
 var scale = {
   type: 'object',
@@ -196,9 +161,9 @@ var typicalField = merge(clone(field), {
       type: 'string',
       enum: [N, O, Q, T]
     },
-    aggregate: aggregate,
-    timeUnit: timeUnit,
-    bin: bin,
+    aggregate: aggregate, // TODO: make reference
+    timeUnit: timeUnit, // TODO: make reference
+    bin: bin, // TODO: make reference
     scale: typicalScale
   }
 });
@@ -213,8 +178,8 @@ var onlyOrdinalField = merge(clone(field), {
       type: 'string',
       enum: [N, O, Q, T] // ordinal-only field supports Q when bin is applied and T when time unit is applied.
     },
-    timeUnit: timeUnit,
-    bin: bin,
+    timeUnit: timeUnit, // TODO: make reference
+    bin: bin, // TODO: make reference
     aggregate: {
       type: 'string',
       enum: ['count'],
@@ -294,36 +259,7 @@ var axisMixin = {
 var sortMixin = {
   type: 'object',
   properties: {
-    sort: {
-      default: 'ascending',
-      supportedTypes: toMap([N, O]),
-      oneOf: [
-        {
-          type: 'string',
-          enum: ['ascending', 'descending', 'unsorted']
-        },
-        { // sort by aggregation of another field
-          type: 'object',
-          required: ['field', 'op'],
-          properties: {
-            field: {
-              type: 'string',
-              description: 'The field name to aggregate over.'
-            },
-            op: {
-              type: 'string',
-              enum: VALID_AGG_OPS,
-              description: 'The field name to aggregate over.'
-            },
-            order: {
-              type: 'string',
-              enum: ['ascending', 'descending']
-            }
-          }
-        }
-      ]
-
-    }
+    sort: sort
   }
 };
 

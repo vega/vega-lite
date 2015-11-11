@@ -1,9 +1,8 @@
 // utility for field
 
-import {TimeUnits, Type, Shorthand} from './consts';
+import {TimeUnits, Type, Shorthand, ValidAggregateOps, MAXBINS_DEFAULT} from './consts';
 import * as util from './util';
 import * as time from './compiler/time';
-import * as schema from './schema/schema';
 
 /**
  * @param field
@@ -60,8 +59,8 @@ export function fromShorthand(shorthand: string) {
   };
 
   // check aggregate type
-  for (i in schema.aggregate.enum) {
-    var a = schema.aggregate.enum[i];
+  for (i in ValidAggregateOps) {
+    var a = ValidAggregateOps[i];
     if (o.name.indexOf(a + '_') === 0) {
       o.name = o.name.substr(a.length + 1);
       if (a == 'count' && o.name.length === 0) o.name = '*';
@@ -149,7 +148,7 @@ export function cardinality(field, stats, filterNull = {}) {
   var type = field.type;
 
   if (field.bin) {
-    var bins = util.getbins(stat, field.bin.maxbins || schema.MAXBINS_DEFAULT);
+    var bins = util.getbins(stat, field.bin.maxbins || MAXBINS_DEFAULT);
     return (bins.stop - bins.start) / bins.step;
   }
   if (isType(field, Type.T)) {
