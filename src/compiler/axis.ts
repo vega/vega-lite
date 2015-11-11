@@ -17,7 +17,6 @@ export default function(name, encoding: Encoding, layout, stats) {
     scale: name
   };
 
-  var axis = exports;
   [
     // properties with special rules (so it has axis[property] methods) -- call rule functions
     'format', 'grid', 'offset', 'orient', 'tickSize', 'ticks', 'title', 'titleOffset',
@@ -25,8 +24,12 @@ export default function(name, encoding: Encoding, layout, stats) {
     'layer', 'tickPadding', 'tickSize', 'tickSizeMajor', 'tickSizeMinor', 'tickSizeEnd',
     'values', 'subdivide'
   ].forEach(function(property) {
-    var value = axis[property] ? axis[property](encoding, name, layout, stats) :
-      encoding.encDef(name).axis[property];
+    let method: (encoding:Encoding, name:String, layout:any, stats:any)=>any;
+
+    var value = (method = exports[property]) ?
+                  // calling axis.format, axis.grid, ...
+                  method(encoding, name, layout, stats) :
+                  encoding.encDef(name).axis[property];
     if (value !== undefined) {
       def[property] = value;
     }
@@ -71,7 +74,7 @@ export function format(encoding: Encoding, name) {
   return undefined;
 };
 
-export function grid(encoding, name) {
+export function grid(encoding: Encoding, name) {
   var grid = encoding.axis(name).grid;
   if (grid !== undefined) {
     return grid;
