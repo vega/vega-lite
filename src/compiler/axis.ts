@@ -5,7 +5,7 @@ import {Type, Enctype} from '../consts';
 
 import * as time from './time';
 
-export function def(name, encoding: Encoding, layout, stats) {
+export function def(name: string, encoding: Encoding, layout, stats) {
   var isCol = name == Enctype.COL,
     isRow = name == Enctype.ROW,
     type = isCol ? 'x' : isRow ? 'y': name;
@@ -56,7 +56,7 @@ export function def(name, encoding: Encoding, layout, stats) {
 };
 
 
-export function format(encoding: Encoding, name) {
+export function format(encoding: Encoding, name: string) {
   var format = encoding.encDef(name).axis.format;
   if (format !== undefined)  {
     return format;
@@ -75,7 +75,7 @@ export function format(encoding: Encoding, name) {
   return undefined;
 };
 
-export function grid(encoding: Encoding, name) {
+export function grid(encoding: Encoding, name: string) {
   var grid = encoding.axis(name).grid;
   if (grid !== undefined) {
     return grid;
@@ -89,7 +89,7 @@ export function grid(encoding: Encoding, name) {
     (encoding.isTypes(name, [Type.Q, Type.T]) && !encoding.encDef(name).bin);
 };
 
-export function offset(encoding, name, layout) {
+export function offset(encoding: Encoding, name: string, layout) {
   var offset = encoding.encDef(name).axis.offset;
   if (offset) {
     return offset;
@@ -101,7 +101,7 @@ export function offset(encoding, name, layout) {
   return undefined;
 };
 
-export function orient(encoding, name, layout, stats) {
+export function orient(encoding: Encoding, name: string, layout, stats) {
   var orient = encoding.encDef(name).axis.orient;
   if (orient) {
     return orient;
@@ -115,7 +115,7 @@ export function orient(encoding, name, layout, stats) {
   return undefined;
 };
 
-export function ticks(encoding, name) {
+export function ticks(encoding: Encoding, name: string) {
   var ticks = encoding.encDef(name).axis.ticks;
   if (ticks !== undefined) {
     return ticks;
@@ -129,7 +129,7 @@ export function ticks(encoding, name) {
   return undefined;
 };
 
-export function tickSize(encoding, name) {
+export function tickSize(encoding: Encoding, name: string) {
   var tickSize = encoding.encDef(name).axis.tickSize;
   if (tickSize !== undefined) {
     return tickSize;
@@ -141,7 +141,7 @@ export function tickSize(encoding, name) {
 };
 
 
-export function title(encoding, name, layout) {
+export function title(encoding: Encoding, name: string, layout) {
   var axisSpec = encoding.encDef(name).axis;
   if (axisSpec.title !== undefined) {
     return axisSpec.title;
@@ -163,7 +163,7 @@ export function title(encoding, name, layout) {
 };
 
 
-export function titleOffset(encoding, name) {
+export function titleOffset(encoding: Encoding, name: string) {
   // return specified value if specified
   var value = encoding.axis(name).titleOffset;
   if (value)  return value;
@@ -176,7 +176,7 @@ export function titleOffset(encoding, name) {
 };
 
 namespace properties {
-  export function axis(encoding, name, spec) {
+  export function axis(encoding: Encoding, name: string, spec) {
     if (name === Enctype.ROW || name === Enctype.COL) {
       // hide axis for facets
       return util.extend({
@@ -186,7 +186,7 @@ namespace properties {
     return spec || undefined;
   }
 
-  export function grid(encoding, name, spec, layout, def) {
+  export function grid(encoding: Encoding, name: string, spec, layout, def) {
     var cellPadding = layout.cellPadding;
 
     if (def.grid) {
@@ -246,7 +246,7 @@ namespace properties {
     return spec || undefined;
   }
 
-  export function labels(encoding, name, spec, layout, def) {
+  export function labels(encoding: Encoding, name: string, spec, layout, def) {
     var timeUnit = encoding.encDef(name).timeUnit;
     if (encoding.isType(name, Type.T) && timeUnit && (time.hasScale(timeUnit))) {
       spec = util.extend({
@@ -276,7 +276,7 @@ namespace properties {
     return spec || undefined;
   }
 
-  export function title(encoding, name, spec, layout) {
+  export function title(encoding: Encoding, name: string, spec, layout) {
     if (name === Enctype.ROW) {
       return util.extend({
         angle: {value: 0},
