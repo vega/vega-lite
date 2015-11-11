@@ -40,15 +40,13 @@ export default class Encoding {
   };
 
   toShorthand() {
-    var c = Shorthand;
-    return 'mark' + c.Assign + this._marktype +
-      c.Delim + vlEnc.shorthand(this._enc);
+    return 'mark' + Shorthand.Assign + this._marktype +
+      Shorthand.Delim + vlEnc.shorthand(this._enc);
   };
 
   static shorthand(spec) {
-    var c = Shorthand;
-    return 'mark' + c.Assign + spec.marktype +
-      c.Delim + vlEnc.shorthand(spec.encoding);
+    return 'mark' + Shorthand.Assign + spec.marktype +
+      Shorthand.Delim + vlEnc.shorthand(spec.encoding);
   };
 
   static specFromShorthand(shorthand: string, data, config, excludeConfig?) {
