@@ -1,4 +1,4 @@
-/// <reference path="../typings/d3-format.d.ts"/>
+/// <reference path="../../typings/d3-format.d.ts"/>
 
 import * as d3_format from 'd3-format';
 import {setter} from '../util';

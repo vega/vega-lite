@@ -1,4 +1,4 @@
-var expect = require('chai').expect;
+import {expect} from 'chai';
 
 import {f as fixtures} from '../fixtures';
 import * as marks from '../../src/compiler/marks';

@@ -1,4 +1,4 @@
-var expect = require('chai').expect;
+import {expect} from 'chai';
 
 import * as data from '../../src/compiler/data';
 import {Table} from '../../src/consts';
