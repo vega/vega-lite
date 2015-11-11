@@ -26,23 +26,23 @@ export function defs(names, encoding, layout, stats, facet?) {
     scaleDef.domain = domain(encoding, name, t, facet);
 
     // Add optional properties
-   var properties = [
-       // general properties
-       'range', 'reverse', 'round',
-       // quantitative / time
-       'clamp', 'nice',
-       // quantitative
-       'exponent', 'zero',
-       // ordinal
-       'bandWidth', 'outerPadding', 'padding', 'points'
-     ];
+    var properties = [
+    // general properties
+      'range', 'reverse', 'round',
+    // quantitative / time
+      'clamp', 'nice',
+    // quantitative
+      'exponent', 'zero',
+    // ordinal
+      'bandWidth', 'outerPadding', 'padding', 'points'
+    ];
 
-   properties.forEach(function(property) {
-     var value = exports[property](encoding, name, t, layout, stats);
-     if (value !== undefined) {
-       scaleDef[property] = value;
-     }
-   });
+    properties.forEach(function(property) {
+      var value = exports[property](encoding, name, t, layout, stats);
+      if (value !== undefined) {
+        scaleDef[property] = value;
+      }
+    });
 
     return (a.push(scaleDef), a);
   }, []);
