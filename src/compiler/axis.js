@@ -214,6 +214,8 @@ axis.properties.grid = function(encoding, name, spec, layout, def) {
     } else if (name == ROW) {
       var xOffset = encoding.config('cellGridOffset');
 
+      var sign = encoding.encDef(name).axis.orient === 'right' ? -1 : 1;
+
       // TODO(#677): this should depend on orient
       // set grid property -- put the lines on the top
       return util.extend({
@@ -224,13 +226,13 @@ axis.properties.grid = function(encoding, name, spec, layout, def) {
           field: 'data'
         },
         x: {
-          value: def.offset - xOffset
+          value: sign * (def.offset - xOffset)
         },
         x2: {
           field: {group: 'mark.group.width'},
-          offset: def.offset + xOffset,
+          offset: sign * (def.offset + xOffset),
           // default value(s) -- vega doesn't do recursive merge
-          mult: 1
+          mult: sign
         },
         stroke: { value: encoding.config('cellGridColor') },
         strokeOpacity: { value: encoding.config('cellGridOpacity') }
