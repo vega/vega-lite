@@ -1,5 +1,7 @@
 import {Enctype, Type} from '../consts';
 
+declare var exports;
+
 export function defs(encoding, layout, style) {
   var defs = [],
     mark = exports[encoding.marktype()],
