@@ -4,7 +4,7 @@
 /// <reference path="../../typings/colorbrewer.d.ts"/>
 
 import * as colorbrewer from 'colorbrewer';
-import * as util from '../util';
+import * as vlUtil from '../util';
 import {toMap} from '../util';
 import * as schemaUtil from './schemautil';
 import {merge} from './schemautil';
@@ -29,6 +29,8 @@ export function getSupportedRole(encType) {
   return schema.properties.encoding.properties[encType].supportedRole;
 };
 
+export var util = schemaUtil;
+
 // TODO move to VLUI
 export var defaultTimeFn = 'month';
 
@@ -47,7 +49,7 @@ export var field = {
   }
 };
 
-var clone = util.duplicate;
+var clone = vlUtil.duplicate;
 
 var typicalField = merge(clone(field), {
   properties: {
@@ -197,7 +199,7 @@ var color = merge(clone(multiRoleField), {
           type: 'string',
           default: undefined,
           description: 'Color palette to encode ordinal variables.',
-          enum: util.keys(colorbrewer)
+          enum: vlUtil.keys(colorbrewer)
         },
         quantitativeRange: {
           type: 'array',
@@ -334,7 +336,7 @@ export var schema = {
   }
 };
 
-export var encTypes = util.keys(schema.properties.encoding.properties);
+export var encTypes = vlUtil.keys(schema.properties.encoding.properties);
 
 /** Instantiate a verbose vl spec from the schema */
 export function instantiate() {
