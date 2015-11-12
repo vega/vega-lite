@@ -2,7 +2,8 @@ import * as util from './util';
 import {Type} from './consts';
 
 /** Mapping from datalib's inferred type to Vega-lite's type */
-export const Types = {
+// TODO: ALL_CAPS
+export const types = {
   'boolean': Type.N,
   'number': Type.Q,
   'integer': Type.Q,
