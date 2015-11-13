@@ -4,8 +4,6 @@ node_js:
   - "4.1"
 before_install:
   - npm install -g gulp
-  - npm install -g typescript
-  - tsc
 install: npm install
 notifications:
   email:
