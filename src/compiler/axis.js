@@ -193,6 +193,8 @@ axis.properties.grid = function(encoding, name, spec, layout, def) {
       // set grid property -- put the lines on the right the cell
       var yOffset = encoding.config('cellGridOffset');
 
+      var sign = encoding.encDef(name).axis.orient === 'bottom' ? -1 : 1;
+
       // TODO(#677): this should depend on orient
       return util.extend({
         x: {
@@ -202,11 +204,12 @@ axis.properties.grid = function(encoding, name, spec, layout, def) {
           field: 'data'
         },
         y: {
-          value: -yOffset,
+          value: - sign * yOffset,
         },
         y2: {
           field: {group: 'mark.group.height'},
-          offset: yOffset
+          offset: sign * yOffset,
+          mult: sign
         },
         stroke: { value: encoding.config('cellGridColor') },
         strokeOpacity: { value: encoding.config('cellGridOpacity') }
