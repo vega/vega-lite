@@ -6,9 +6,9 @@ var mocha = require('gulp-spawn-mocha');
 
 // runs the tests
 gulp.task('coverage', function() {
-  return gulp.src(['test/**/*.test.js'], { read: false })
+  return gulp.src(['test/**/*.test.ts'], { read: false })
     .pipe(mocha({
-      require: 'source-map-support/register',
+      require: 'ts-node/register',
       istanbul: true
     }))
     .on('error', gutil.log);
@@ -16,9 +16,9 @@ gulp.task('coverage', function() {
 
 // quick test
 gulp.task('test', function() {
-  return gulp.src(['test/**/*.test.js'], { read: false })
+  return gulp.src(['test/**/*.test.ts'], { read: false })
     .pipe(mocha({
-      require: 'source-map-support/register',
+      require: 'ts-node/register',
       istanbul: false
     }))
     .on('error', gutil.log);
