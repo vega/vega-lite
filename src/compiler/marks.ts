@@ -1,5 +1,6 @@
 import {Enctype, Type} from '../consts';
 
+// https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations
 declare var exports;
 
 export function defs(encoding, layout, style) {

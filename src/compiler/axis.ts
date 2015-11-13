@@ -5,6 +5,7 @@ import {Type, Enctype} from '../consts';
 
 import * as time from './time';
 
+// https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations
 declare var exports;
 
 export function def(name: string, encoding: Encoding, layout, stats) {

@@ -1,6 +1,7 @@
 /// <reference path="../../typings/colorbrewer.d.ts"/>
 /// <reference path="../../typings/d3-color.d.ts"/>
 
+// https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations
 declare var exports;
 
 import * as colorbrewer from 'colorbrewer';
