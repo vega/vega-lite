@@ -1,7 +1,6 @@
-'use strict';
+import {expect} from 'chai';
 
-var expect = require('chai').expect,
-  ZSchema = require('z-schema'),
+var ZSchema = require('z-schema'),
   inspect = require('util').inspect,
   dl = require('datalib');
 
