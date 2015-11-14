@@ -22,7 +22,6 @@
         "!bower_components/**"
     ],
     "files": [
-        "chai.d.ts",
         "src/compiler/axis.ts",
         "src/compiler/compiler.ts",
         "src/compiler/data.ts",
@@ -68,6 +67,7 @@
         "test/schema.test.ts",
         "test/validate.test.ts",
         "typings/assertion-error.d.ts",
+        "typings/chai.d.ts",
         "typings/colorbrewer.d.ts",
         "typings/d3-color.d.ts",
         "typings/d3-format.d.ts",
