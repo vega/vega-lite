@@ -88,6 +88,10 @@ export default class Encoding {
     return this._enc[encType].name !== undefined;
   }
 
+  static has(spec, encType) {
+    return spec.encoding[encType].name !== undefined;
+  }
+
   encDef(encType) {
     return this._enc[encType];
   }
@@ -171,7 +175,7 @@ export default class Encoding {
   numberFormat = function(name?) {
     // TODO(#497): have different number format based on numberType (discrete/continuous)
     return this.config('numberFormat');
-  }
+  };
 
   map(f) {
     return vlEnc.map(this._enc, f);

@@ -2,6 +2,7 @@ import Encoding from './Encoding';
 
 import * as util from './util';
 import * as consts from './consts';
+import * as validate from './validate';
 import * as data from './data';
 import * as enc from './enc';
 import * as encDef from './encdef';
@@ -17,6 +18,7 @@ util.extend(vl, consts, util);
 vl.Encoding = Encoding;
 vl.compiler = compiler;
 vl.compile = vl.compiler.compile;
+vl.validate = validate;
 vl.data = data;
 vl.enc = enc;
 vl.encDef = encDef;

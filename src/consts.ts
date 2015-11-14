@@ -20,6 +20,7 @@ export namespace Enctype {
   export const DETAIL = 'detail';
 }
 
+
 export enum Type {
   Q,  // Quantitative
   O,  // Ordinal
