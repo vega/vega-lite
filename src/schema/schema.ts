@@ -336,8 +336,6 @@ export var schema = {
   }
 };
 
-export var encTypes = vlUtil.keys(schema.properties.encoding.properties);
-
 /** Instantiate a verbose vl spec from the schema */
 export function instantiate() {
   return schemaUtil.instantiate(schema);
