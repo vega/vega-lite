@@ -9,6 +9,7 @@ export function defs(encoding, styleCfg) {
   if (encoding.has(Enctype.COLOR) && encoding.encDef(Enctype.COLOR).legend) {
     defs.push(def(Enctype.COLOR, encoding, {
       fill: Enctype.COLOR
+      // TODO: consider if this should be stroke for line
     }, styleCfg));
   }
 
@@ -31,6 +32,7 @@ export function def(name, encoding, def, styleCfg) {
 
   def.title = title(name, encoding);
   def.orient = encoding.encDef(name).legend.orient;
+  // TODO: add format 
 
   def = style(name, encoding, def, styleCfg);
 
@@ -44,9 +46,17 @@ export function def(name, encoding, def, styleCfg) {
   return def;
 }
 
-function style(name, e, def, styleCfg) {
+export function title(name, encoding) {
+  var leg = encoding.encDef(name).legend;
+
+  if (leg.title) return leg.title;
+
+  return encoding.fieldTitle(name);
+}
+
+function style(name, encoding, def, styleCfg) {
   var symbols = getter(def, ['properties', 'symbols']),
-    marktype = e.marktype();
+    marktype = encoding.marktype();
 
   switch (marktype) {
     case 'bar':
@@ -62,21 +72,21 @@ function style(name, e, def, styleCfg) {
       /* fall through */
     case 'point':
       // fill or stroke
-      if (e.encDef(Enctype.SHAPE).filled) {
-        if (e.has(Enctype.COLOR) && name === Enctype.COLOR) {
+      if (encoding.encDef(Enctype.SHAPE).filled) {
+        if (encoding.has(Enctype.COLOR) && name === Enctype.COLOR) {
           symbols.fill = {scale: Enctype.COLOR, field: 'data'};
         } else {
-          symbols.fill = {value: e.value(Enctype.COLOR)};
+          symbols.fill = {value: encoding.value(Enctype.COLOR)};
         }
         symbols.stroke = {value: 'transparent'};
       } else {
-        if (e.has(Enctype.COLOR) && name === Enctype.COLOR) {
+        if (encoding.has(Enctype.COLOR) && name === Enctype.COLOR) {
           symbols.stroke = {scale: Enctype.COLOR, field: 'data'};
         } else {
-          symbols.stroke = {value: e.value(Enctype.COLOR)};
+          symbols.stroke = {value: encoding.value(Enctype.COLOR)};
         }
         symbols.fill = {value: 'transparent'};
-        symbols.strokeWidth = {value: e.config('strokeWidth')};
+        symbols.strokeWidth = {value: encoding.config('strokeWidth')};
       }
 
       break;
@@ -86,17 +96,9 @@ function style(name, e, def, styleCfg) {
       break;
   }
 
-  var opacity = e.encDef(Enctype.COLOR).opacity || styleCfg.opacity;
+  var opacity = encoding.encDef(Enctype.COLOR).opacity || styleCfg.opacity;
   if (opacity) {
     symbols.opacity = {value: opacity};
   }
   return def;
-}
-
-export function title(name, encoding) {
-  var leg = encoding.encDef(name).legend;
-
-  if (leg.title) return leg.title;
-
-  return encoding.fieldTitle(name);
 }
