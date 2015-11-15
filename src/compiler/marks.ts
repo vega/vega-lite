@@ -389,7 +389,7 @@ function text_props(e, layout, style) {
   if (e.has(Enctype.X)) {
     p.x = {scale: Enctype.X, field: e.fieldRef(Enctype.X, {bin_suffix: '_mid'})};
   } else if (!e.has(Enctype.X)) {
-    if (e.has(Enctype.TEXT) && e.isType(Enctype.TEXT, Type.Q)) {
+    if (e.has(Enctype.TEXT) && e.encDef(Enctype.TEXT).type === Type.Q) {
       p.x = {value: layout.cellWidth-5};
     } else {
       p.x = {value: e.bandWidth(Enctype.X, layout.x.useSmallBand) / 2};
@@ -419,7 +419,7 @@ function text_props(e, layout, style) {
 
   // text
   if (e.has(Enctype.TEXT)) {
-    if (e.isType(Enctype.TEXT, Type.Q)) {
+    if (e.encDef(Enctype.TEXT).type === Type.Q) {
       var numberFormat = encDef.format || e.numberFormat(Enctype.TEXT);
 
       p.text = {template: '{{' + e.fieldRef(Enctype.TEXT, {datum: true}) + ' | number:\'' +

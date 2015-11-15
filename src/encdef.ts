@@ -110,11 +110,6 @@ function _isFieldDimension(encDef) {
     (encDef.type === Type.T && !!encDef.timeUnit );
 }
 
-/**
- * For encoding, use encoding.isDimension() to avoid confusion.
- * Or use Encoding.isType if your field is from Encoding (and thus have numeric data type).
- * otherwise, do not specific isType so we can use the default isTypeName here.
- */
 export function isDimension(encDef) {
   return encDef && _isFieldDimension(encDef);
 }
@@ -133,11 +128,6 @@ export function isCount(field) {
   return field.aggregate === 'count';
 }
 
-/**
- * For encoding, use encoding.cardinality() to avoid confusion.
- * Or use Encoding.isType if your field is from Encoding (and thus have numeric data type).
- * otherwise, do not specific isType so we can use the default isTypeName here.
- */
 export function cardinality(field, stats, filterNull = {}) {
   // FIXME need to take filter into account
 

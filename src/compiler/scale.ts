@@ -74,7 +74,7 @@ export function domain(encoding, name, type, facet:boolean = false) {
   }
 
   // special case for temporal scale
-  if (encoding.isType(name, Type.T)) {
+  if (encDef.type === Type.T) {
     var range = time.scale.domain(encDef.timeUnit, name);
     if (range) return range;
   }
@@ -179,10 +179,9 @@ export function _useRawDomain (encoding, name) {
       // Binned field has similar values in both the source table and the summary table
       // but the summary table has fewer values, therefore binned fields draw
       // domain values from the summary table.
-      (encoding.isType(name, Type.Q) && !encDef.bin) ||
+      (encDef.type === Type.Q && !encDef.bin) ||
       // T uses non-ordinal scale when there's no unit or when the unit is not ordinal.
-      (
-        encoding.isType(name, Type.T) &&
+      (encDef.type === Type.T &&
         (!encDef.timeUnit || !time.isOrdinalFn(encDef.timeUnit))
       )
     );
@@ -337,7 +336,7 @@ export function zero(encoding, name) {
     return encDef.scale.zero;
   }
 
-  if (encoding.isType(name, Type.T)) {
+  if (encDef.type === Type.T) {
     if (timeUnit === 'year') {
       // year is using linear scale, but should not include zero
       return false;
