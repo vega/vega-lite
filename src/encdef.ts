@@ -89,7 +89,7 @@ export function fromShorthand(shorthand: string) {
 
 export function isTypes(encDef, types: Array<String>) {
   for (var t = 0; t < types.length; t++) {
-    if (encDef.type === t) {
+    if (encDef.type === types[t]) {
       return true;
     }
   }
