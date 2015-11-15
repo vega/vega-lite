@@ -37,55 +37,44 @@ export function defs(encoding, layout, style) {
 
 export const bar = {
   type: 'rect',
-  prop: bar_props,
-  supportedEncoding: {row: 1, col: 1, x: 1, y: 1, size: 1, color: 1}
+  prop: bar_props
 };
 
 export const line = {
   type: 'line',
   line: true,
-  prop: line_props,
-  requiredEncoding: ['x', 'y'],
-  supportedEncoding: {row: 1, col: 1, x: 1, y: 1, color: 1, detail:1}
+  prop: line_props
 };
 
 export const area = {
   type: 'area',
   line: true,
-  requiredEncoding: ['x', 'y'],
-  prop: area_props,
-  supportedEncoding: {row: 1, col: 1, x: 1, y: 1, color: 1}
+  prop: area_props
 };
 
 export const tick = {
   type: 'rect',
-  prop: tick_props,
-  supportedEncoding: {row: 1, col: 1, x: 1, y: 1, color: 1, detail: 1}
+  prop: tick_props
 };
 
 export const circle = {
   type: 'symbol',
-  prop: filled_point_props('circle'),
-  supportedEncoding: {row: 1, col: 1, x: 1, y: 1, size: 1, color: 1, detail: 1}
+  prop: filled_point_props('circle')
 };
 
 export const square = {
   type: 'symbol',
-  prop: filled_point_props('square'),
-  supportedEncoding: circle.supportedEncoding
+  prop: filled_point_props('square')
 };
 
 export const point = {
   type: 'symbol',
-  prop: point_props,
-  supportedEncoding: {row: 1, col: 1, x: 1, y: 1, size: 1, color: 1, shape: 1, detail: 1}
+  prop: point_props
 };
 
 export const text = {
   type: 'text',
-  prop: text_props,
-  requiredEncoding: ['text'],
-  supportedEncoding: {row: 1, col: 1, size: 1, color: 1, text: 1}
+  prop: text_props
 };
 
 function bar_props(e, layout, style) {

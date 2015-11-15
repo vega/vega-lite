@@ -1,29 +1,29 @@
-import Encoding from './Encoding';
+import vlEncoding from './Encoding';
+import * as vlData from './data';
+import * as vlEnc from './enc';
+import * as vlEncDef from './encdef';
+import * as vlCompiler from './compiler/compiler';
+import * as vlSchema from './schema/schema';
+import * as vlValidate from './validate';
 
-import * as util from './util';
-import * as consts from './consts';
-import * as data from './data';
-import * as enc from './enc';
-import * as encDef from './encdef';
-import * as compiler from './compiler/compiler';
-import * as schema from './schema/schema';
+// TODO: revise if we can remove this
+import {format as d3Format} from 'd3-format';
 
-import {format} from 'd3-format';
+export * from './util';
+export * from './consts';
 
-var vl:any = {};
+// TODO(#727) split this into two namespace
+export var Encoding = vlEncoding;
+export var compiler = vlCompiler;
+export var compile = vlCompiler.compile;
+export var data = vlData;
+// TODO(#727) rename to encoding
+export var enc = vlEnc;
+export var encDef = vlEncDef;
+export var schema = vlSchema;
+// TODO: revise if we can remove this
+export var toShorthand = vlEncoding.shorthand;
+export var format = d3Format;
+export var validate = vlValidate;
 
-util.extend(vl, consts, util);
-
-vl.Encoding = Encoding;
-vl.compiler = compiler;
-vl.compile = vl.compiler.compile;
-vl.data = data;
-vl.enc = enc;
-vl.encDef = encDef;
-vl.schema = schema;
-vl.toShorthand = vl.Encoding.shorthand;
-vl.format = format;
-vl.version = '__VERSION__';
-
-declare var module;
-module.exports = vl;
+export const version = '__VERSION__';

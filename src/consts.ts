@@ -18,7 +18,15 @@ export namespace Enctype {
   export const COLOR = 'color';
   export const TEXT = 'text';
   export const DETAIL = 'detail';
+
+  export const LIST = [
+    Enctype.X, Enctype.Y,
+    Enctype.ROW, Enctype.COL,
+    Enctype.SIZE, Enctype.SHAPE, Enctype.COLOR,
+    Enctype.TEXT, Enctype.DETAIL
+  ];
 }
+
 
 export enum Type {
   Q,  // Quantitative
@@ -37,12 +45,6 @@ export const AGGREGATE_OPS = [
   'sum', 'mean', 'average', 'variance', 'variancep', 'stdev',
   'stdevp', 'median', 'q1', 'q3', 'modeskew', 'min', 'max',
   'argmin', 'argmax'
-];
-
-export const ENCODING_TYPES = [
-  Enctype.X, Enctype.Y,
-  Enctype.ROW, Enctype.COL,
-  Enctype.SIZE, Enctype.SHAPE, Enctype.COLOR, Enctype.TEXT, Enctype.DETAIL
 ];
 
 // TODO: remove
