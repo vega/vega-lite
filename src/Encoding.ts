@@ -88,10 +88,6 @@ export default class Encoding {
     return this._enc[encType].name !== undefined;
   }
 
-  static has(spec, encType) {
-    return spec.encoding[encType].name !== undefined;
-  }
-
   encDef(encType) {
     return this._enc[encType];
   }
