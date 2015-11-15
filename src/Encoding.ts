@@ -7,7 +7,7 @@ import * as schemaUtil from './schema/schemautil';
 
 export default class Encoding {
   _data: any;
-  _marktype: string;  // TODO: replace with enum
+  _marktype: string;
   _enc: any;
   _config: any;
 
