@@ -6,11 +6,11 @@ import Encoding from '../../src/Encoding';
 describe('Legend', function() {
   describe('title()', function () {
     it('should add explicitly specified title', function () {
-      var title = legend.title('color', Encoding.fromSpec({
+      var title = legend.title(Encoding.fromSpec({
           encoding: {
             color: {name: 'a', legend: {title: 'Custom'}}
           }
-        }));
+        }), 'color');
       expect(title).to.eql('Custom');
     });
 
@@ -21,7 +21,7 @@ describe('Legend', function() {
           }
         });
 
-      var title = legend.title('color', encoding);
+      var title = legend.title(encoding, 'color');
       expect(title).to.eql('a');
     });
   });

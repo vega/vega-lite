@@ -1,4 +1,4 @@
-import {setter, getter} from '../util';
+import * as util from '../util';
 import {Enctype, Type} from '../consts';
 
 import * as time from './time';
@@ -28,77 +28,107 @@ export function defs(encoding, styleCfg) {
 }
 
 export function def(name, encoding, def, styleCfg) {
-  var timeUnit = encoding.encDef(name).timeUnit;
+  let legend = encoding.encDef(name).legend;
 
-  def.title = title(name, encoding);
-  def.orient = encoding.encDef(name).legend.orient;
-  // TODO: add format 
+  // 1.1 Add properties with special rules
+  def.title = title(encoding, name);
 
-  def = style(name, encoding, def, styleCfg);
+  // 1.2 Add properties without rules
+  ['orient', 'format', 'values'].forEach(function(property) {
+    let value = legend[property];
+    if (value !== undefined) {
+      def[property] = value;
+    }
+  });
 
-  if (encoding.isType(name, Type.T) &&
-    timeUnit &&
-    time.hasScale(timeUnit)
-  ) {
-    setter(def, ['properties', 'labels', 'text', 'scale'], 'time-'+ timeUnit);
-  }
+  // 2) Add mark property definition groups
+  let props = legend.properties || {};
+  ['title', 'labels', 'symbols', 'legend'].forEach(function(group) {
+    let value = properties[group] ?
+      properties[group](encoding, name, props[group], styleCfg) : // apply rule
+      props[group]; // no rule -- just default values
+    if (value !== undefined) {
+      def.properties = def.properties || {};
+      def.properties[group] = value;
+    }
+  });
 
   return def;
 }
 
-export function title(name, encoding) {
-  var leg = encoding.encDef(name).legend;
+export function title(encoding, name) {
+  let leg = encoding.encDef(name).legend;
 
   if (leg.title) return leg.title;
 
   return encoding.fieldTitle(name);
 }
 
-function style(name, encoding, def, styleCfg) {
-  var symbols = getter(def, ['properties', 'symbols']),
-    marktype = encoding.marktype();
-
-  switch (marktype) {
-    case 'bar':
-    case 'tick':
-    case 'text':
-      symbols.stroke = {value: 'transparent'};
-      symbols.shape = {value: 'square'};
-      break;
-
-    case 'circle':
-    case 'square':
-      symbols.shape = {value: marktype};
-      /* fall through */
-    case 'point':
-      // fill or stroke
-      if (encoding.encDef(Enctype.SHAPE).filled) {
-        if (encoding.has(Enctype.COLOR) && name === Enctype.COLOR) {
-          symbols.fill = {scale: Enctype.COLOR, field: 'data'};
-        } else {
-          symbols.fill = {value: encoding.value(Enctype.COLOR)};
+namespace properties {
+  export function labels(encoding, name, spec) {
+    var timeUnit = encoding.encDef(name).timeUnit;
+    if (encoding.isType(name, Type.T) &&
+      timeUnit &&
+      time.hasScale(timeUnit)
+    ) {
+      return util.extend({
+        text: {
+          scale: 'time-'+ timeUnit
         }
+      }, spec || {});
+    }
+    return spec;
+  }
+
+  export function symbols(encoding, name, spec, styleCfg) {
+    let symbols:any = {};
+    let marktype = encoding.marktype();
+
+    switch (marktype) {
+      case 'bar':
+      case 'tick':
+      case 'text':
         symbols.stroke = {value: 'transparent'};
-      } else {
-        if (encoding.has(Enctype.COLOR) && name === Enctype.COLOR) {
-          symbols.stroke = {scale: Enctype.COLOR, field: 'data'};
+        symbols.shape = {value: 'square'};
+        break;
+
+      case 'circle':
+      case 'square':
+        symbols.shape = {value: marktype};
+        /* fall through */
+      case 'point':
+        // fill or stroke
+        if (encoding.encDef(Enctype.SHAPE).filled) {
+          if (encoding.has(Enctype.COLOR) && name === Enctype.COLOR) {
+            symbols.fill = {scale: Enctype.COLOR, field: 'data'};
+          } else {
+            symbols.fill = {value: encoding.value(Enctype.COLOR)};
+          }
+          symbols.stroke = {value: 'transparent'};
         } else {
-          symbols.stroke = {value: encoding.value(Enctype.COLOR)};
+          if (encoding.has(Enctype.COLOR) && name === Enctype.COLOR) {
+            symbols.stroke = {scale: Enctype.COLOR, field: 'data'};
+          } else {
+            symbols.stroke = {value: encoding.value(Enctype.COLOR)};
+          }
+          symbols.fill = {value: 'transparent'};
+          symbols.strokeWidth = {value: encoding.config('strokeWidth')};
         }
-        symbols.fill = {value: 'transparent'};
-        symbols.strokeWidth = {value: encoding.config('strokeWidth')};
-      }
 
-      break;
-    case 'line':
-    case 'area':
-      // TODO use shape here after implementing #508
-      break;
-  }
+        break;
+      case 'line':
+      case 'area':
+        // TODO use shape here after implementing #508
+        break;
+    }
 
-  var opacity = encoding.encDef(Enctype.COLOR).opacity || styleCfg.opacity;
-  if (opacity) {
-    symbols.opacity = {value: opacity};
+    var opacity = encoding.encDef(Enctype.COLOR).opacity || styleCfg.opacity;
+    if (opacity) {
+      symbols.opacity = {value: opacity};
+    }
+
+    symbols = util.extend(symbols, spec || {});
+
+    return util.keys(symbols).length > 0 ? symbols : undefined;
   }
-  return def;
 }
