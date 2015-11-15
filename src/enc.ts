@@ -1,10 +1,10 @@
 // utility for enc
 
-import {Type, Shorthand} from './consts';
+import {Enctype, Type, Shorthand} from './consts';
 import * as vlEncDef from './encdef';
 import * as util from './util';
-import * as schema from './schema/schema';
-import {encTypes} from './schema/schema';
+
+let encTypes = Enctype.LIST; 
 
 export function countRetinal(enc) {
   var count = 0;

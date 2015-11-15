@@ -8,10 +8,6 @@ export * from 'datalib/src/stats';
 import dlBin = require('datalib/src/bins/bins');
 export var bin = dlBin;
 
-export function isin(item: number, array: Array<any>):boolean {
-  return array.indexOf(item) !== -1;
-}
-
 export function forEach(obj, f, thisArg) {
   if (obj.forEach) {
     obj.forEach.call(thisArg, f);

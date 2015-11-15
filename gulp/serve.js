@@ -8,7 +8,6 @@ gulp.task('serve', ['bundle', 'watch-schema', 'watch-test'], function() {
     server: {
         baseDir: './',
         index: 'gallery.html'
-    },
-    browser: 'google chrome'
+    }
   });
 });
