@@ -56,5 +56,10 @@ export var axis = {
       default: undefined,  // auto
       description: 'A title offset value for the axis.'
     },
+    properties: {
+      type: 'object',
+      default: undefined,
+      description: 'Optional mark property definitions for custom axis styling.'
+    }
   }
 };
