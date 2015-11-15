@@ -27,13 +27,12 @@ export namespace Enctype {
   ];
 }
 
-
-export enum Type {
-  Q,  // Quantitative
-  O,  // Ordinal
-  N,  // Nominal
-  T,  // Time
-};
+export namespace Type {
+  export const Q = 'Q';
+  export const O = 'O';
+  export const T = 'T';
+  export const N = 'N';
+}
 
 export const TIMEUNITS = [
   'year', 'month', 'day', 'date', 'hours', 'minutes', 'seconds'

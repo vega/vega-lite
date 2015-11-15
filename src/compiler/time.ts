@@ -91,7 +91,7 @@ export function range(timeUnit, encoding: Encoding) {
 export function scales(encoding: Encoding) {
   var scales = encoding.reduce(function(scales, encDef) {
     var timeUnit = encDef.timeUnit;
-    if (vlEncDef.isType(encDef, Type.T) && timeUnit && !scales[timeUnit]) {
+    if (encDef.type === Type.T && timeUnit && !scales[timeUnit]) {
       var scaleDef = scale.def(encDef.timeUnit, encoding);
       if (scaleDef) scales[timeUnit] = scaleDef;
     }

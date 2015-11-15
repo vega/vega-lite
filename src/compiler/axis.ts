@@ -58,14 +58,15 @@ export function def(name: string, encoding: Encoding, layout, stats) {
 }
 
 export function format(encoding: Encoding, name: string) {
-  var format = encoding.encDef(name).axis.format;
+  let encDef = encoding.encDef(name);
+  var format = encDef.axis.format;
   if (format !== undefined)  {
     return format;
   }
 
-  if (encoding.isType(name, Type.Q)) {
+  if (encDef.type === Type.Q) {
     return encoding.numberFormat(name);
-  } else if (encoding.isType(name, Type.T)) {
+  } else if (encDef.type === Type.T) {
     var timeUnit = encoding.encDef(name).timeUnit;
     if (!timeUnit) {
       return encoding.config('timeFormat');
@@ -253,8 +254,9 @@ namespace properties {
   }
 
   export function labels(encoding: Encoding, name: string, spec, layout, def) {
-    var timeUnit = encoding.encDef(name).timeUnit;
-    if (encoding.isType(name, Type.T) && timeUnit && (time.hasScale(timeUnit))) {
+    let encDef = encoding.encDef(name);
+    var timeUnit = encDef.timeUnit;
+    if (encDef.type === Type.T && timeUnit && (time.hasScale(timeUnit))) {
       spec = util.extend({
         text: {scale: 'time-' + timeUnit}
       }, spec || {});
@@ -271,7 +273,7 @@ namespace properties {
 
      // for x-axis, set ticks for Q or rotate scale for ordinal scale
     if (name == Enctype.X) {
-      if ((encoding.isDimension(Enctype.X) || encoding.isType(Enctype.X, Type.T))) {
+      if ((encoding.isDimension(Enctype.X) || encDef.type === Type.T)) {
         spec = util.extend({
           angle: {value: 270},
           align: {value: def.orient === 'top' ? 'left': 'right'},
