@@ -22,16 +22,16 @@ export function def(name: string, encoding: Encoding, layout, stats) {
   // 1. Add properties
   [
     // a) properties with special rules (so it has axis[property] methods) -- call rule functions
-    'format', 'grid', 'offset', 'orient', 'tickSize', 'ticks', 'title', 'titleOffset',
+    'format', 'grid', 'layer', 'offset', 'orient', 'tickSize', 'ticks', 'title', 'titleOffset',
     // b) properties without rules, only produce default values in the schema, or explicit value if specified
-    'layer', 'tickPadding', 'tickSize', 'tickSizeMajor', 'tickSizeMinor', 'tickSizeEnd',
+    'tickPadding', 'tickSize', 'tickSizeMajor', 'tickSizeMinor', 'tickSizeEnd',
     'values', 'subdivide'
   ].forEach(function(property) {
-    let method: (encoding:Encoding, name:String, layout:any, stats:any)=>any;
+    let method: (encoding:Encoding, name:String, layout:any, stats:any, def:any)=>any;
 
     var value = (method = exports[property]) ?
                   // calling axis.format, axis.grid, ...
-                  method(encoding, name, layout, stats) :
+                  method(encoding, name, layout, stats, def) :
                   encoding.encDef(name).axis[property];
     if (value !== undefined) {
       def[property] = value;
@@ -90,6 +90,18 @@ export function grid(encoding: Encoding, name: string) {
   return name === Enctype.ROW || name === Enctype.COL ||
     (encoding.isTypes(name, [Type.Q, Type.T]) && !encoding.encDef(name).bin);
 }
+
+export function layer(encoding: Encoding, name: string, layout, stats, def) {
+  var layer = encoding.axis(name).layer;
+  if (layer !== undefined) {
+    return layer;
+  }
+  if (def.grid) {
+    // if grid is true, need to put layer on the back so that grid is behind marks
+    return 'back';
+  }
+  return undefined; // otherwise return undefined and use Vega's default.
+};
 
 export function offset(encoding: Encoding, name: string, layout) {
   var offset = encoding.encDef(name).axis.offset;
