@@ -26,7 +26,7 @@ export function instantiate(schema) {
     }
     return instance;
   } else if (schema.type === 'array') {
-    return [];
+    return undefined;
   }
   return undefined;
 };
