@@ -75,5 +75,9 @@ export function getEncodingMappingError(spec, //TODO: add ":spec"
     }
   }
 
+  if (marktype == 'bar' && !encoding.x && !encoding.y) {
+    return 'Missing both x and y for bar';
+  }
+
   return null;
 }
