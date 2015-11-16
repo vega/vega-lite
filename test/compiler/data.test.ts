@@ -9,8 +9,8 @@ describe('data', function () {
     it('should contain two tables', function() {
       var encoding = Encoding.fromSpec({
           encoding: {
-            x: {name: 'a', type: 'T'},
-            y: {name: 'b', type: 'Q', scale: {type: 'log'}, aggregate: 'sum'}
+            x: {name: 'a', type: 'temporal'},
+            y: {name: 'b', type: 'quantitative', scale: {type: 'log'}, aggregate: 'sum'}
           }
         });
 
@@ -22,8 +22,8 @@ describe('data', function () {
   describe('when contains log in non-aggregate', function () {
     var rawEncodingWithLog = Encoding.fromSpec({
         encoding: {
-          x: {name: 'a', type: 'T'},
-          y: {name: 'b', type: 'Q', scale: {type: 'log'}}
+          x: {name: 'a', type: 'temporal'},
+          y: {name: 'b', type: 'quantitative', scale: {type: 'log'}}
         }
       });
 
@@ -83,9 +83,9 @@ describe('data.source', function() {
     it('should have correct parse', function() {
       var encoding = Encoding.fromSpec({
           encoding: {
-            x: {name: 'a', type: 'T'},
-            y: {name: 'b', type: 'Q'},
-            color: {name: '*', type: 'Q', aggregate: 'count'}
+            x: {name: 'a', type: 'temporal'},
+            y: {name: 'b', type: 'quantitative'},
+            color: {name: '*', type: 'quantitative', aggregate: 'count'}
           }
         });
 
@@ -103,11 +103,11 @@ describe('data.source', function() {
         filter: 'datum.a > datum.b && datum.c === datum.d'
       },
       encoding: {
-        x: {name: 'a', type:'T', timeUnit: 'year'},
+        x: {name: 'a', type:'temporal', timeUnit: 'year'},
         y: {
           'bin': {'maxbins': 15},
           'name': 'Acceleration',
-          'type': 'Q'
+          'type': 'quantitative'
         }
       }
     });
@@ -129,9 +129,9 @@ describe('data.source', function() {
       var spec = {
           marktype: 'point',
           encoding: {
-            y: {name: 'Q', type:'Q'},
-            x: {name: 'T', type:'T'},
-            color: {name: 'O', type:'O'}
+            y: {name: 'quantitative', type:'quantitative'},
+            x: {name: 'temporal', type:'temporal'},
+            color: {name: 'ordinal', type:'ordinal'}
           }
         };
 
@@ -200,13 +200,13 @@ describe('data.summary', function () {
           'y': {
             'aggregate': 'sum',
             'name': 'Acceleration',
-            'type': 'Q'
+            'type': 'quantitative'
           },
           'x': {
             'name': 'origin',
-            "type": "O"
+            "type": 'ordinal'
           },
-          color: {name: '*', type: 'Q', aggregate: 'count'}
+          color: {name: '*', type: 'quantitative', aggregate: 'count'}
         }
       });
 

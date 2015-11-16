@@ -28,10 +28,10 @@ export namespace Enctype {
 }
 
 export namespace Type {
-  export const Q = 'Q';
-  export const O = 'O';
-  export const T = 'T';
-  export const N = 'N';
+  export const Quantitative = 'quantitative';
+  export const Ordinal = 'ordinal';
+  export const Temporal = 'temporal';
+  export const Nominal = 'nominal';
 }
 
 export const TIMEUNITS = [

@@ -64,9 +64,9 @@ export function format(encoding: Encoding, name: string) {
     return format;
   }
 
-  if (encDef.type === Type.Q) {
+  if (encDef.type === Type.Quantitative) {
     return encoding.numberFormat(name);
-  } else if (encDef.type === Type.T) {
+  } else if (encDef.type === Type.Temporal) {
     var timeUnit = encoding.encDef(name).timeUnit;
     if (!timeUnit) {
       return encoding.config('timeFormat');
@@ -88,7 +88,7 @@ export function grid(encoding: Encoding, name: string) {
   // - X and Y that have (1) quantitative fields that are not binned or (2) time fields.
   // Otherwise, the default value is `false`.
   return name === Enctype.ROW || name === Enctype.COL ||
-    (encoding.isTypes(name, [Type.Q, Type.T]) && !encoding.encDef(name).bin);
+    (encoding.isTypes(name, [Type.Quantitative, Type.Temporal]) && !encoding.encDef(name).bin);
 }
 
 export function layer(encoding: Encoding, name: string, layout, stats, def) {
@@ -268,13 +268,13 @@ namespace properties {
   export function labels(encoding: Encoding, name: string, spec, layout, def) {
     let encDef = encoding.encDef(name);
     var timeUnit = encDef.timeUnit;
-    if (encDef.type === Type.T && timeUnit && (time.hasScale(timeUnit))) {
+    if (encDef.type === Type.Temporal && timeUnit && (time.hasScale(timeUnit))) {
       spec = util.extend({
         text: {scale: 'time-' + timeUnit}
       }, spec || {});
     }
 
-    if (encoding.isTypes(name, [Type.N, Type.O]) && encoding.axis(name).labelMaxLength) {
+    if (encoding.isTypes(name, [Type.Nominal, Type.Ordinal]) && encoding.axis(name).labelMaxLength) {
       // TODO replace this with Vega's labelMaxLength once it is introduced
       spec = util.extend({
         text: {
@@ -285,7 +285,7 @@ namespace properties {
 
      // for x-axis, set ticks for Q or rotate scale for ordinal scale
     if (name == Enctype.X) {
-      if ((encoding.isDimension(Enctype.X) || encDef.type === Type.T)) {
+      if ((encoding.isDimension(Enctype.X) || encDef.type === Type.Temporal)) {
         spec = util.extend({
           angle: {value: 270},
           align: {value: def.orient === 'top' ? 'left': 'right'},

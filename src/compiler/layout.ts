@@ -102,11 +102,11 @@ function getMaxLength(encoding: Encoding, stats, et) {
   if (encDef.bin) {
     // TODO once bin support range, need to update this
     return getMaxNumberLength(encoding, et, fieldStats);
-  } if (encDef.type === Type.Q) {
+  } if (encDef.type === Type.Quantitative) {
     return getMaxNumberLength(encoding, et, fieldStats);
-  } else if (encDef.type === Type.T) {
+  } else if (encDef.type === Type.Temporal) {
     return time.maxLength(encoding.encDef(et).timeUnit, encoding);
-  } else if (encoding.isTypes(et, [Type.N, Type.O])) {
+  } else if (encoding.isTypes(et, [Type.Nominal, Type.Ordinal])) {
     if(fieldStats.type === 'number') {
       return getMaxNumberLength(encoding, et, fieldStats);
     } else {
@@ -122,12 +122,12 @@ function offset(encoding: Encoding, stats, layout) {
     let encDef = encoding.encDef(et);
     let maxLength;
 
-    if (encoding.isDimension(et) || encDef.type === Type.T) {
+    if (encoding.isDimension(et) || encDef.type === Type.Temporal) {
       maxLength = getMaxLength(encoding, stats, et);
     } else if (
       // TODO once we have #512 (allow using inferred type)
       // Need to adjust condition here.
-      encDef.type === Type.Q || encDef.aggregate === 'count'
+      encDef.type === Type.Quantitative || encDef.aggregate === 'count'
     ) {
       if (
         et===Enctype.Y

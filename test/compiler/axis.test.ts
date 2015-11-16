@@ -15,7 +15,7 @@ describe('Axis', function() {
       timeUnit = 'month',
       encoding = Encoding.fromSpec({
         encoding: {
-          x: {name: field, type: 'T', timeUnit: timeUnit}
+          x: {name: field, type: 'temporal', timeUnit: timeUnit}
         }
       });
     var _axis = axis.def('x', encoding, {
@@ -79,7 +79,7 @@ describe('Axis', function() {
       var orient = axis.orient(Encoding.fromSpec({
           encoding: {
             x: {name: 'a'},
-            y: {name: 'b', type: 'O'}
+            y: {name: 'b', type: 'ordinal'}
           }
         }), 'x', {}, stats);
       expect(orient).to.eql('top');

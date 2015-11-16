@@ -101,13 +101,13 @@ export function isTypes(encDef, types: Array<String>) {
  * However, YEAR(T), YEARMONTH(T) use time scale, not ordinal but are dimensions too.
  */
 export function isOrdinalScale(encDef) {
-  return  isTypes(encDef, [Type.N, Type.O]) ||
-    (encDef.type === Type.T && encDef.timeUnit && time.isOrdinalFn(encDef.timeUnit) );
+  return  isTypes(encDef, [Type.Nominal, Type.Ordinal]) ||
+    (encDef.type === Type.Temporal && encDef.timeUnit && time.isOrdinalFn(encDef.timeUnit) );
 }
 
 function _isFieldDimension(encDef) {
-  return  isTypes(encDef, [Type.N, Type.O]) || !!encDef.bin ||
-    (encDef.type === Type.T && !!encDef.timeUnit );
+  return  isTypes(encDef, [Type.Nominal, Type.Ordinal]) || !!encDef.bin ||
+    (encDef.type === Type.Temporal && !!encDef.timeUnit );
 }
 
 export function isDimension(encDef) {
@@ -119,7 +119,7 @@ export function isMeasure(encDef) {
 }
 
 export function count() {
-  return {name:'*', aggregate: 'count', type: Type.Q, displayName: COUNT_DISPLAYNAME};
+  return {name:'*', aggregate: 'count', type: Type.Quantitative, displayName: COUNT_DISPLAYNAME};
 }
 
 export const COUNT_DISPLAYNAME = 'Number of Records';
@@ -138,7 +138,7 @@ export function cardinality(field, stats, filterNull = {}) {
     var bins = util.getbins(stat, field.bin.maxbins || MAXBINS_DEFAULT);
     return (bins.stop - bins.start) / bins.step;
   }
-  if (field.type === Type.T) {
+  if (field.type === Type.Temporal) {
     var cardinality = time.cardinality(field, stats, filterNull, type);
     if(cardinality !== null) return cardinality;
     //otherwise use calculation below

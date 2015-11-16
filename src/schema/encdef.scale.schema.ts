@@ -12,7 +12,7 @@ var scale = {
       // TODO(kanitw) read vega's schema here, add description
       enum: ['linear', 'log', 'pow', 'sqrt', 'quantile'],
       default: 'linear',
-      supportedTypes: toMap([Type.Q])
+      supportedTypes: toMap([Type.Quantitative])
     },
     domain: {
       default: undefined,
@@ -80,7 +80,7 @@ var typicalScaleMixin = {
         }
       ],
       // FIXME this part might break polestar
-      supportedTypes: toMap([Type.Q, Type.T]),
+      supportedTypes: toMap([Type.Quantitative, Type.Temporal]),
       description: ''
     },
 
@@ -94,7 +94,7 @@ var typicalScaleMixin = {
       type: 'boolean',
       description: 'If true, ensures that a zero baseline value is included in the scale domain. This option is ignored for non-quantitative scales.',
       default: undefined,
-      supportedTypes: toMap([Type.Q, Type.T])
+      supportedTypes: toMap([Type.Quantitative, Type.Temporal])
     },
 
     /* Vega-lite only Properties */

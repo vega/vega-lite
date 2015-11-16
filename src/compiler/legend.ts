@@ -68,7 +68,7 @@ namespace properties {
   export function labels(encoding: Encoding, name, spec) {
     var encDef = encoding.encDef(name);
     var timeUnit = encDef.timeUnit;
-    if (encDef.type == Type.T && timeUnit && time.hasScale(timeUnit)) {
+    if (encDef.type == Type.Temporal && timeUnit && time.hasScale(timeUnit)) {
       return util.extend({
         text: {
           scale: 'time-'+ timeUnit

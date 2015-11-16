@@ -1,10 +1,10 @@
 import {toMap} from '../util';
 import {TIMEUNITS, Type, AGGREGATE_OPS, MAXBINS_DEFAULT} from '../consts';
 
-var Q = Type[Type.Q];
-var O = Type[Type.O];
-var N = Type[Type.N];
-var T = Type[Type.T];
+var Q = Type[Type.Quantitative];
+var O = Type[Type.Ordinal];
+var N = Type[Type.Nominal];
+var T = Type[Type.Temporal];
 
 export var aggregate = {
   type: 'string',

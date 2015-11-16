@@ -52,13 +52,13 @@ export function defs(names: Array<string>, encoding: Encoding, layout, stats, fa
 export function type(name: string, encoding: Encoding) {
   var type = encoding.encDef(name).type;
   switch (type) {
-    case Type.N: //fall through
-    case Type.O:
+    case Type.Nominal: //fall through
+    case Type.Ordinal:
       return 'ordinal';
-    case Type.T:
+    case Type.Temporal:
       var timeUnit = encoding.encDef(name).timeUnit;
       return timeUnit ? time.scale.type(timeUnit, name) : 'time';
-    case Type.Q:
+    case Type.Quantitative:
       if (encoding.bin(name)) {
         return name === Enctype.ROW || name === Enctype.COL || name === Enctype.SHAPE ? 'ordinal' : 'linear';
       }
@@ -74,7 +74,7 @@ export function domain(encoding, name, type, facet:boolean = false) {
   }
 
   // special case for temporal scale
-  if (encDef.type === Type.T) {
+  if (encDef.type === Type.Temporal) {
     var range = time.scale.domain(encDef.timeUnit, name);
     if (range) return range;
   }
@@ -179,9 +179,9 @@ export function _useRawDomain (encoding, name) {
       // Binned field has similar values in both the source table and the summary table
       // but the summary table has fewer values, therefore binned fields draw
       // domain values from the summary table.
-      (encDef.type === Type.Q && !encDef.bin) ||
+      (encDef.type === Type.Quantitative && !encDef.bin) ||
       // T uses non-ordinal scale when there's no unit or when the unit is not ordinal.
-      (encDef.type === Type.T &&
+      (encDef.type === Type.Temporal &&
         (!encDef.timeUnit || !time.isOrdinalFn(encDef.timeUnit))
       )
     );
@@ -336,7 +336,7 @@ export function zero(encoding, name) {
     return encDef.scale.zero;
   }
 
-  if (encDef.type === Type.T) {
+  if (encDef.type === Type.Temporal) {
     if (timeUnit === 'year') {
       // year is using linear scale, but should not include zero
       return false;
@@ -368,7 +368,7 @@ export function color(encoding: Encoding, name, scaleType, stats) {
       quantitativeRange = colorScale.quantitativeRange;
 
     if (scaleType === 'ordinal') {
-      if (type === Type.N) {
+      if (type === Type.Nominal) {
         // use categorical color scale
         if (cardinality <= 10) {
           range = colorScale.c10palette;
@@ -420,7 +420,7 @@ export namespace colors {
       if (cardinality in palette) return palette[cardinality];
 
       // if not, use the highest cardinality one for nominal
-      if (type === Type.N) {
+      if (type === Type.Nominal) {
         return palette[Math.max.apply(null, util.keys(palette))];
       }
 
