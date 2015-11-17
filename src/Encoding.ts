@@ -98,7 +98,7 @@ export default class Encoding {
     return this._enc[encType].name !== undefined;
   }
 
-  encDef(encType) {
+  fieldDef(encType) {
     return this._enc[encType];
   }
 
@@ -136,9 +136,9 @@ export default class Encoding {
   }
 
   bandWidth(encType, useSmallBand?: boolean) {
-    if (this.encDef(encType).scale.bandWidth !== undefined) {
+    if (this.fieldDef(encType).scale.bandWidth !== undefined) {
       // explicit value
-      return this.encDef(encType).scale.bandWidth;
+      return this.fieldDef(encType).scale.bandWidth;
     }
 
     // If not specified, draw value from config.
@@ -152,9 +152,9 @@ export default class Encoding {
   }
 
   padding(encType) {
-    if (this.encDef(encType).scale.padding !== undefined) {
+    if (this.fieldDef(encType).scale.padding !== undefined) {
       // explicit value
-      return this.encDef(encType).scale.padding;
+      return this.fieldDef(encType).scale.padding;
     }
     if (encType === Enctype.ROW || encType === Enctype.COL) {
       return this.config('cellPadding');
@@ -196,20 +196,20 @@ export default class Encoding {
   }
 
   isTypes(et: string, type: Array<any>) {
-    var encDef = this.encDef(et);
-    return encDef && vlEncDef.isTypes(encDef, type);
+    var fieldDef = this.fieldDef(et);
+    return fieldDef && vlEncDef.isTypes(fieldDef, type);
   }
 
   static isOrdinalScale(encoding, encType) {
-    return vlEncDef.isOrdinalScale(encoding.encDef(encType));
+    return vlEncDef.isOrdinalScale(encoding.fieldDef(encType));
   }
 
   static isDimension(encoding, encType) {
-    return vlEncDef.isDimension(encoding.encDef(encType));
+    return vlEncDef.isDimension(encoding.fieldDef(encType));
   }
 
   static isMeasure(encoding, encType) {
-    return vlEncDef.isMeasure(encoding.encDef(encType));
+    return vlEncDef.isMeasure(encoding.fieldDef(encType));
   }
 
   isOrdinalScale(encType) {
@@ -254,12 +254,12 @@ export default class Encoding {
    * - value - the value field
    */
   stack() {
-    var stack = (this.has(Enctype.COLOR) && this.encDef(Enctype.COLOR).stack) ? Enctype.COLOR :
-      (this.has(Enctype.DETAIL) && this.encDef(Enctype.DETAIL).stack) ? Enctype.DETAIL :
+    var stack = (this.has(Enctype.COLOR) && this.fieldDef(Enctype.COLOR).stack) ? Enctype.COLOR :
+      (this.has(Enctype.DETAIL) && this.fieldDef(Enctype.DETAIL).stack) ? Enctype.DETAIL :
         null;
 
-    var properties = stack && this.encDef(stack).stack !== true ?
-      this.encDef(stack).stack :
+    var properties = stack && this.fieldDef(stack).stack !== true ?
+      this.fieldDef(stack).stack :
       {};
 
     if ((this.is('bar') || this.is('area')) && stack && this.isAggregate()) {
@@ -307,7 +307,7 @@ export default class Encoding {
   }
 
   cardinality(encType, stats) {
-    return vlEncDef.cardinality(this.encDef(encType), stats, this.config('filterNull'));
+    return vlEncDef.cardinality(this.fieldDef(encType), stats, this.config('filterNull'));
   }
 
   isRaw() {

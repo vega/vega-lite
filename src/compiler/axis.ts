@@ -32,14 +32,14 @@ export function def(name: string, encoding: Encoding, layout, stats) {
     var value = (method = exports[property]) ?
                   // calling axis.format, axis.grid, ...
                   method(encoding, name, layout, stats, def) :
-                  encoding.encDef(name).axis[property];
+                  encoding.fieldDef(name).axis[property];
     if (value !== undefined) {
       def[property] = value;
     }
   });
 
   // 2) Add mark property definition groups
-  var props = encoding.encDef(name).axis.properties || {};
+  var props = encoding.fieldDef(name).axis.properties || {};
 
   [
     'axis', 'grid', 'labels', 'title', // have special rules
@@ -58,16 +58,16 @@ export function def(name: string, encoding: Encoding, layout, stats) {
 }
 
 export function format(encoding: Encoding, name: string) {
-  let encDef = encoding.encDef(name);
-  var format = encDef.axis.format;
+  let fieldDef = encoding.fieldDef(name);
+  var format = fieldDef.axis.format;
   if (format !== undefined)  {
     return format;
   }
 
-  if (encDef.type === Type.Quantitative) {
+  if (fieldDef.type === Type.Quantitative) {
     return encoding.numberFormat(name);
-  } else if (encDef.type === Type.Temporal) {
-    var timeUnit = encoding.encDef(name).timeUnit;
+  } else if (fieldDef.type === Type.Temporal) {
+    var timeUnit = encoding.fieldDef(name).timeUnit;
     if (!timeUnit) {
       return encoding.config('timeFormat');
     } else if (timeUnit === 'year') {
@@ -88,7 +88,7 @@ export function grid(encoding: Encoding, name: string) {
   // - X and Y that have (1) quantitative fields that are not binned or (2) time fields.
   // Otherwise, the default value is `false`.
   return name === Enctype.ROW || name === Enctype.COL ||
-    (encoding.isTypes(name, [Type.Quantitative, Type.Temporal]) && !encoding.encDef(name).bin);
+    (encoding.isTypes(name, [Type.Quantitative, Type.Temporal]) && !encoding.fieldDef(name).bin);
 }
 
 export function layer(encoding: Encoding, name: string, layout, stats, def) {
@@ -104,7 +104,7 @@ export function layer(encoding: Encoding, name: string, layout, stats, def) {
 };
 
 export function offset(encoding: Encoding, name: string, layout) {
-  var offset = encoding.encDef(name).axis.offset;
+  var offset = encoding.fieldDef(name).axis.offset;
   if (offset) {
     return offset;
   }
@@ -116,7 +116,7 @@ export function offset(encoding: Encoding, name: string, layout) {
 }
 
 export function orient(encoding: Encoding, name: string, layout, stats) {
-  var orient = encoding.encDef(name).axis.orient;
+  var orient = encoding.fieldDef(name).axis.orient;
   if (orient) {
     return orient;
   } else if (name === Enctype.COL) {
@@ -130,13 +130,13 @@ export function orient(encoding: Encoding, name: string, layout, stats) {
 }
 
 export function ticks(encoding: Encoding, name: string) {
-  var ticks = encoding.encDef(name).axis.ticks;
+  var ticks = encoding.fieldDef(name).axis.ticks;
   if (ticks !== undefined) {
     return ticks;
   }
 
   // FIXME depends on scale type too
-  if (name === Enctype.X && !encoding.encDef(name).bin) {
+  if (name === Enctype.X && !encoding.fieldDef(name).bin) {
     return 5;
   }
 
@@ -144,7 +144,7 @@ export function ticks(encoding: Encoding, name: string) {
 }
 
 export function tickSize(encoding: Encoding, name: string) {
-  var tickSize = encoding.encDef(name).axis.tickSize;
+  var tickSize = encoding.fieldDef(name).axis.tickSize;
   if (tickSize !== undefined) {
     return tickSize;
   }
@@ -156,7 +156,7 @@ export function tickSize(encoding: Encoding, name: string) {
 
 
 export function title(encoding: Encoding, name: string, layout) {
-  var axisSpec = encoding.encDef(name).axis;
+  var axisSpec = encoding.fieldDef(name).axis;
   if (axisSpec.title !== undefined) {
     return axisSpec.title;
   }
@@ -208,7 +208,7 @@ namespace properties {
         // set grid property -- put the lines on the right the cell
         var yOffset = encoding.config('cellGridOffset');
 
-        var sign = encoding.encDef(name).axis.orient === 'bottom' ? -1 : 1;
+        var sign = encoding.fieldDef(name).axis.orient === 'bottom' ? -1 : 1;
 
         // TODO(#677): this should depend on orient
         return util.extend({
@@ -232,7 +232,7 @@ namespace properties {
       } else if (name == Enctype.ROW) {
         var xOffset = encoding.config('cellGridOffset');
 
-        var sign = encoding.encDef(name).axis.orient === 'right' ? -1 : 1;
+        var sign = encoding.fieldDef(name).axis.orient === 'right' ? -1 : 1;
 
         // TODO(#677): this should depend on orient
         // set grid property -- put the lines on the top
@@ -266,9 +266,9 @@ namespace properties {
   }
 
   export function labels(encoding: Encoding, name: string, spec, layout, def) {
-    let encDef = encoding.encDef(name);
-    var timeUnit = encDef.timeUnit;
-    if (encDef.type === Type.Temporal && timeUnit && (time.hasScale(timeUnit))) {
+    let fieldDef = encoding.fieldDef(name);
+    var timeUnit = fieldDef.timeUnit;
+    if (fieldDef.type === Type.Temporal && timeUnit && (time.hasScale(timeUnit))) {
       spec = util.extend({
         text: {scale: 'time-' + timeUnit}
       }, spec || {});
@@ -285,7 +285,7 @@ namespace properties {
 
      // for x-axis, set ticks for Q or rotate scale for ordinal scale
     if (name == Enctype.X) {
-      if ((encoding.isDimension(Enctype.X) || encDef.type === Type.Temporal)) {
+      if ((encoding.isDimension(Enctype.X) || fieldDef.type === Type.Temporal)) {
         spec = util.extend({
           angle: {value: 270},
           align: {value: def.orient === 'top' ? 'left': 'right'},

@@ -50,13 +50,13 @@ export function defs(names: Array<string>, encoding: Encoding, layout, stats, fa
 }
 
 export function type(name: string, encoding: Encoding) {
-  var type = encoding.encDef(name).type;
+  var type = encoding.fieldDef(name).type;
   switch (type) {
     case Type.Nominal: //fall through
     case Type.Ordinal:
       return 'ordinal';
     case Type.Temporal:
-      var timeUnit = encoding.encDef(name).timeUnit;
+      var timeUnit = encoding.fieldDef(name).timeUnit;
       return timeUnit ? time.scale.type(timeUnit, name) : 'time';
     case Type.Quantitative:
       if (encoding.bin(name)) {
@@ -67,15 +67,15 @@ export function type(name: string, encoding: Encoding) {
 }
 
 export function domain(encoding, name, type, facet:boolean = false) {
-  var encDef = encoding.encDef(name);
+  var fieldDef = encoding.fieldDef(name);
 
-  if (encDef.scale.domain) { // explicit value
-    return encDef.scale.domain;
+  if (fieldDef.scale.domain) { // explicit value
+    return fieldDef.scale.domain;
   }
 
   // special case for temporal scale
-  if (encDef.type === Type.Temporal) {
-    var range = time.scale.domain(encDef.timeUnit, name);
+  if (fieldDef.type === Type.Temporal) {
+    var range = time.scale.domain(fieldDef.timeUnit, name);
     if (range) return range;
   }
 
@@ -99,7 +99,7 @@ export function domain(encoding, name, type, facet:boolean = false) {
       data: Table.SOURCE,
       field: encoding.fieldRef(name, {noAggregate:true})
     };
-  } else if (encDef.bin) { // bin
+  } else if (fieldDef.bin) { // bin
 
     return {
       data: encoding.dataTable(),
@@ -129,7 +129,7 @@ export function domain(encoding, name, type, facet:boolean = false) {
 }
 
 export function domainSort(encoding, name, type):any {
-  var sort = encoding.encDef(name).sort;
+  var sort = encoding.fieldDef(name).sort;
   if (sort === 'ascending' || sort === 'descending') {
     return true;
   }
@@ -145,7 +145,7 @@ export function domainSort(encoding, name, type):any {
 }
 
 export function reverse(encoding, name) {
-  var sort = encoding.encDef(name).sort;
+  var sort = encoding.fieldDef(name).sort;
   return sort && (sort === 'descending' || (sort.order === 'descending')) ? true : undefined;
 }
 
@@ -159,7 +159,7 @@ var sharedDomainAggregate = ['mean', 'average', 'stdev', 'stdevp', 'median', 'q1
  * 3. The scale is quantitative or time scale.
  */
 export function _useRawDomain (encoding, name) {
-  var encDef = encoding.encDef(name);
+  var fieldDef = encoding.fieldDef(name);
 
   // scale value
   var scaleUseRawDomain = encoding.scale(name).useRawDomain;
@@ -171,18 +171,18 @@ export function _useRawDomain (encoding, name) {
 
   return  useRawDomainEnabled &&
     // only applied to aggregate table
-    encDef.aggregate &&
+    fieldDef.aggregate &&
     // only activated if used with aggregate functions that produces values ranging in the domain of the source data
-    sharedDomainAggregate.indexOf(encDef.aggregate) >= 0 &&
+    sharedDomainAggregate.indexOf(fieldDef.aggregate) >= 0 &&
     (
       // Q always uses quantitative scale except when it's binned.
       // Binned field has similar values in both the source table and the summary table
       // but the summary table has fewer values, therefore binned fields draw
       // domain values from the summary table.
-      (encDef.type === Type.Quantitative && !encDef.bin) ||
+      (fieldDef.type === Type.Quantitative && !fieldDef.bin) ||
       // T uses non-ordinal scale when there's no unit or when the unit is not ordinal.
-      (encDef.type === Type.Temporal &&
-        (!encDef.timeUnit || !time.isOrdinalFn(encDef.timeUnit))
+      (fieldDef.type === Type.Temporal &&
+        (!fieldDef.timeUnit || !time.isOrdinalFn(fieldDef.timeUnit))
       )
     );
 }
@@ -207,18 +207,18 @@ export function bandWidth(encoding, name, type, layout) {
 
 export function clamp(encoding, name) {
   // only return value if explicit value is specified.
-  return encoding.encDef(name).scale.clamp;
+  return encoding.fieldDef(name).scale.clamp;
 }
 
 export function exponent(encoding, name) {
   // only return value if explicit value is specified.
-  return encoding.encDef(name).scale.exponent;
+  return encoding.fieldDef(name).scale.exponent;
 }
 
 export function nice(encoding: Encoding, name, type) {
-  if (encoding.encDef(name).scale.nice !== undefined) {
+  if (encoding.fieldDef(name).scale.nice !== undefined) {
     // explicit value
-    return encoding.encDef(name).scale.nice;
+    return encoding.fieldDef(name).scale.nice;
   }
 
   switch (name) {
@@ -238,8 +238,8 @@ export function nice(encoding: Encoding, name, type) {
 
 export function outerPadding(encoding, name, type) {
   if (type === 'ordinal') {
-    if (encoding.encDef(name).scale.outerPadding !== undefined) {
-      return encoding.encDef(name).scale.outerPadding; // explicit value
+    if (encoding.fieldDef(name).scale.outerPadding !== undefined) {
+      return encoding.fieldDef(name).scale.outerPadding; // explicit value
     }
     if (name === Enctype.ROW || name === Enctype.COL) {
       return 0;
@@ -258,9 +258,9 @@ export function padding(encoding, name, type) {
 
 export function points(encoding, name, type) {
   if (type === 'ordinal') {
-    if (encoding.encDef(name).scale.points !== undefined) {
+    if (encoding.fieldDef(name).scale.points !== undefined) {
       // explicit value
-      return encoding.encDef(name).scale.points;
+      return encoding.fieldDef(name).scale.points;
     }
 
     switch (name) {
@@ -274,10 +274,10 @@ export function points(encoding, name, type) {
 
 
 export function range(encoding: Encoding, name, type, layout, stats) {
-  var encDef = encoding.encDef(name);
+  var fieldDef = encoding.fieldDef(name);
 
-  if (encDef.scale.range) { // explicit value
-    return encDef.scale.range;
+  if (fieldDef.scale.range) { // explicit value
+    return fieldDef.scale.range;
   }
 
   switch (name) {
@@ -286,7 +286,7 @@ export function range(encoding: Encoding, name, type, layout, stats) {
     case Enctype.Y:
       if (type === 'ordinal') {
         return layout.cellHeight ?
-          (encDef.bin ? [layout.cellHeight, 0] : [0, layout.cellHeight]) :
+          (fieldDef.bin ? [layout.cellHeight, 0] : [0, layout.cellHeight]) :
           'height';
       }
       return layout.cellHeight ? [layout.cellHeight, 0] : 'height';
@@ -311,8 +311,8 @@ export function range(encoding: Encoding, name, type, layout, stats) {
 }
 
 export function round(encoding: Encoding, name) {
-  if (encoding.encDef(name).scale.round !== undefined) {
-    return encoding.encDef(name).scale.round;
+  if (encoding.fieldDef(name).scale.round !== undefined) {
+    return encoding.fieldDef(name).scale.round;
   }
 
   // FIXME: revise if round is already the default value
@@ -328,15 +328,15 @@ export function round(encoding: Encoding, name) {
 }
 
 export function zero(encoding, name) {
-  var encDef = encoding.encDef(name);
-  var timeUnit = encDef.timeUnit;
+  var fieldDef = encoding.fieldDef(name);
+  var timeUnit = fieldDef.timeUnit;
 
-  if (encDef.scale.zero !== undefined) {
+  if (fieldDef.scale.zero !== undefined) {
     // explicit value
-    return encDef.scale.zero;
+    return fieldDef.scale.zero;
   }
 
-  if (encDef.type === Type.Temporal) {
+  if (fieldDef.type === Type.Temporal) {
     if (timeUnit === 'year') {
       // year is using linear scale, but should not include zero
       return false;
@@ -345,7 +345,7 @@ export function zero(encoding, name) {
     // zero property is ignored by vega so we should not generate them any way
     return undefined;
   }
-  if (encDef.bin) {
+  if (fieldDef.bin) {
     // Returns false (undefined) by default of bin
     return false;
   }
@@ -361,7 +361,7 @@ export function color(encoding: Encoding, name, scaleType, stats) {
   var colorScale = encoding.scale(Enctype.COLOR),
     range = colorScale.range,
     cardinality = encoding.cardinality(Enctype.COLOR, stats),
-    type = encoding.encDef(Enctype.COLOR).type;
+    type = encoding.fieldDef(Enctype.COLOR).type;
 
   if (range === undefined) {
     var ordinalPalette = colorScale.ordinalPalette,
