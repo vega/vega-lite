@@ -39,19 +39,19 @@ export function fieldRef(fieldDef, opt) {
 }
 
 export function shorthand(f) {
-  return (f.aggregate ? f.aggregate + Shorthand.Func : '') +
-    (f.timeUnit ? f.timeUnit + Shorthand.Func : '') +
-    (f.bin ? 'bin' + Shorthand.Func : '') +
-    (f.name || '') + Shorthand.Type + Type.SHORT_TYPE[f.type];
+  return (f.aggregate ? f.aggregate + Shorthand.FUNC : '') +
+    (f.timeUnit ? f.timeUnit + Shorthand.FUNC : '') +
+    (f.bin ? 'bin' + Shorthand.FUNC : '') +
+    (f.name || '') + Shorthand.TYPE + Type.SHORT_TYPE[f.type];
 }
 
 export function shorthands(fieldDefs, delim) {
-  delim = delim || Shorthand.Delim;
+  delim = delim || Shorthand.DELIM;
   return fieldDefs.map(shorthand).join(delim);
 }
 
 export function fromShorthand(shorthand: string) {
-  var split = shorthand.split(Shorthand.Type), i;
+  var split = shorthand.split(Shorthand.TYPE), i;
 
   var fieldDef: any = {
     name: split[0].trim(),

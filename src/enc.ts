@@ -76,14 +76,14 @@ export function fields(enc) {
 
 export function shorthand(enc) {
   return map(enc, function(field, et) {
-    return et + Shorthand.Assign + vlFieldDef.shorthand(field);
-  }).join(Shorthand.Delim);
+    return et + Shorthand.ASSIGN + vlFieldDef.shorthand(field);
+  }).join(Shorthand.DELIM);
 }
 
 export function fromShorthand(shorthand) {
-  var enc = util.isArray(shorthand) ? shorthand : shorthand.split(Shorthand.Delim);
+  var enc = util.isArray(shorthand) ? shorthand : shorthand.split(Shorthand.DELIM);
   return enc.reduce(function(m, e) {
-    var split = e.split(Shorthand.Assign),
+    var split = e.split(Shorthand.ASSIGN),
         enctype = split[0].trim(),
         field = split[1];
 

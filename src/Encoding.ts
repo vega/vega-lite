@@ -33,8 +33,8 @@ export default class Encoding {
 
   static fromShorthand(shorthand: string, data?, config?, theme?) {
     var c = Shorthand,
-      split = shorthand.split(c.Delim),
-      marktype = split.shift().split(c.Assign)[1].trim(),
+      split = shorthand.split(c.DELIM),
+      marktype = split.shift().split(c.ASSIGN)[1].trim(),
       enc = vlEnc.fromShorthand(split);
 
     return new Encoding({
@@ -50,13 +50,13 @@ export default class Encoding {
   }
 
   toShorthand() {
-    return 'mark' + Shorthand.Assign + this._marktype +
-      Shorthand.Delim + vlEnc.shorthand(this._enc);
+    return 'mark' + Shorthand.ASSIGN + this._marktype +
+      Shorthand.DELIM + vlEnc.shorthand(this._enc);
   }
 
   static shorthand(spec) {
-    return 'mark' + Shorthand.Assign + spec.marktype +
-      Shorthand.Delim + vlEnc.shorthand(spec.encoding);
+    return 'mark' + Shorthand.ASSIGN + spec.marktype +
+      Shorthand.DELIM + vlEnc.shorthand(spec.encoding);
   }
 
   static specFromShorthand(shorthand: string, data, config, excludeConfig?) {

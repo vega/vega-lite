@@ -71,8 +71,8 @@ export const AGGREGATE_OPS = [
 export const MAXBINS_DEFAULT = 15;
 
 export namespace Shorthand {
-  export const Delim = '|';
-  export const Assign = '=';
-  export const Type = ',';
-  export const Func = '_';
+  export const DELIM = '|';
+  export const ASSIGN = '=';
+  export const TYPE = ',';
+  export const FUNC = '_';
 }
