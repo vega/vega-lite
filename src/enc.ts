@@ -1,7 +1,7 @@
 // utility for enc
 
 import {Enctype, Type, Shorthand} from './consts';
-import * as vlEncDef from './encdef';
+import * as vlFieldDef from './fielddef';
 import * as util from './util';
 
 let encTypes = Enctype.LIST;
@@ -76,7 +76,7 @@ export function fields(enc) {
 
 export function shorthand(enc) {
   return map(enc, function(field, et) {
-    return et + Shorthand.Assign + vlEncDef.shorthand(field);
+    return et + Shorthand.Assign + vlFieldDef.shorthand(field);
   }).join(Shorthand.Delim);
 }
 
@@ -87,7 +87,7 @@ export function fromShorthand(shorthand) {
         enctype = split[0].trim(),
         field = split[1];
 
-    m[enctype] = vlEncDef.fromShorthand(field);
+    m[enctype] = vlFieldDef.fromShorthand(field);
     return m;
   }, {});
 }

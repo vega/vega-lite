@@ -16,23 +16,23 @@ import * as time from './compiler/time';
 
  * @return {[type]}       [description]
  */
-export function fieldRef(encDef, opt) {
+export function fieldRef(fieldDef, opt) {
   opt = opt || {};
 
   var f = (opt.datum ? 'datum.' : '') + (opt.prefn || ''),
-    name = encDef.name;
+    name = fieldDef.name;
 
-  if (isCount(encDef)) {
+  if (isCount(fieldDef)) {
     return f + 'count';
   } else if (opt.fn) {
     return f + opt.fn + '_' + name;
-  } else if (!opt.nofn && encDef.bin) {
+  } else if (!opt.nofn && fieldDef.bin) {
     var bin_suffix = opt.bin_suffix || '_start';
     return f + 'bin_' + name + bin_suffix;
-  } else if (!opt.nofn && !opt.noAggregate && encDef.aggregate) {
-    return f + encDef.aggregate + '_' + name;
-  } else if (!opt.nofn && encDef.timeUnit) {
-    return f + encDef.timeUnit + '_' + name;
+  } else if (!opt.nofn && !opt.noAggregate && fieldDef.aggregate) {
+    return f + fieldDef.aggregate + '_' + name;
+  } else if (!opt.nofn && fieldDef.timeUnit) {
+    return f + fieldDef.timeUnit + '_' + name;
   }  else {
     return f + name;
   }
@@ -45,15 +45,15 @@ export function shorthand(f) {
     (f.name || '') + Shorthand.Type + Type.ShortType[f.type];
 }
 
-export function shorthands(encDefs, delim) {
+export function shorthands(fieldDefs, delim) {
   delim = delim || Shorthand.Delim;
-  return encDefs.map(shorthand).join(delim);
+  return fieldDefs.map(shorthand).join(delim);
 }
 
 export function fromShorthand(shorthand: string) {
   var split = shorthand.split(Shorthand.Type), i;
 
-  var encDef: any = {
+  var fieldDef: any = {
     name: split[0].trim(),
     type: Type.TypeFromShortType[split[1].trim()]
   };
@@ -61,35 +61,35 @@ export function fromShorthand(shorthand: string) {
   // check aggregate type
   for (i in AGGREGATE_OPS) {
     var a = AGGREGATE_OPS[i];
-    if (encDef.name.indexOf(a + '_') === 0) {
-      encDef.name = encDef.name.substr(a.length + 1);
-      if (a == 'count' && encDef.name.length === 0) encDef.name = '*';
-      encDef.aggregate = a;
+    if (fieldDef.name.indexOf(a + '_') === 0) {
+      fieldDef.name = fieldDef.name.substr(a.length + 1);
+      if (a == 'count' && fieldDef.name.length === 0) fieldDef.name = '*';
+      fieldDef.aggregate = a;
       break;
     }
   }
 
   for (i in TIMEUNITS) {
     var tu = TIMEUNITS[i];
-    if (encDef.name && encDef.name.indexOf(tu + '_') === 0) {
-      encDef.name = encDef.name.substr(encDef.name.length + 1);
-      encDef.timeUnit = tu;
+    if (fieldDef.name && fieldDef.name.indexOf(tu + '_') === 0) {
+      fieldDef.name = fieldDef.name.substr(fieldDef.name.length + 1);
+      fieldDef.timeUnit = tu;
       break;
     }
   }
 
   // check bin
-  if (encDef.name && encDef.name.indexOf('bin_') === 0) {
-    encDef.name = encDef.name.substr(4);
-    encDef.bin = true;
+  if (fieldDef.name && fieldDef.name.indexOf('bin_') === 0) {
+    fieldDef.name = fieldDef.name.substr(4);
+    fieldDef.bin = true;
   }
 
-  return encDef;
+  return fieldDef;
 }
 
-export function isTypes(encDef, types: Array<String>) {
+export function isTypes(fieldDef, types: Array<String>) {
   for (var t = 0; t < types.length; t++) {
-    if (encDef.type === types[t]) {
+    if (fieldDef.type === types[t]) {
       return true;
     }
   }
@@ -100,22 +100,22 @@ export function isTypes(encDef, types: Array<String>) {
  * Most fields that use ordinal scale are dimensions.
  * However, YEAR(T), YEARMONTH(T) use time scale, not ordinal but are dimensions too.
  */
-export function isOrdinalScale(encDef) {
-  return  isTypes(encDef, [Type.Nominal, Type.Ordinal]) ||
-    (encDef.type === Type.Temporal && encDef.timeUnit && time.isOrdinalFn(encDef.timeUnit) );
+export function isOrdinalScale(fieldDef) {
+  return  isTypes(fieldDef, [Type.Nominal, Type.Ordinal]) ||
+    (fieldDef.type === Type.Temporal && fieldDef.timeUnit && time.isOrdinalFn(fieldDef.timeUnit) );
 }
 
-function _isFieldDimension(encDef) {
-  return  isTypes(encDef, [Type.Nominal, Type.Ordinal]) || !!encDef.bin ||
-    (encDef.type === Type.Temporal && !!encDef.timeUnit );
+function _isFieldDimension(fieldDef) {
+  return  isTypes(fieldDef, [Type.Nominal, Type.Ordinal]) || !!fieldDef.bin ||
+    (fieldDef.type === Type.Temporal && !!fieldDef.timeUnit );
 }
 
-export function isDimension(encDef) {
-  return encDef && _isFieldDimension(encDef);
+export function isDimension(fieldDef) {
+  return fieldDef && _isFieldDimension(fieldDef);
 }
 
-export function isMeasure(encDef) {
-  return encDef && !_isFieldDimension(encDef);
+export function isMeasure(fieldDef) {
+  return fieldDef && !_isFieldDimension(fieldDef);
 }
 
 export function count() {

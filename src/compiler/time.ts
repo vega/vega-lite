@@ -3,7 +3,7 @@
 import {utcFormat} from 'd3-time-format';
 
 import Encoding from '../Encoding';
-import * as vlEncDef from '../encdef';
+import * as vlFieldDef from '../fielddef';
 import * as util from '../util';
 import {Enctype, Type} from '../consts';
 
@@ -12,8 +12,8 @@ import {Enctype, Type} from '../consts';
 // September is the longest month (8 in javascript as it is zero-indexed).
 const LONG_DATE = new Date(Date.UTC(2014, 8, 17));
 
-export function cardinality(encDef, stats, filterNull, type) {
-  var timeUnit = encDef.timeUnit;
+export function cardinality(fieldDef, stats, filterNull, type) {
+  var timeUnit = fieldDef.timeUnit;
   switch (timeUnit) {
     case 'seconds': return 60;
     case 'minutes': return 60;
@@ -22,8 +22,8 @@ export function cardinality(encDef, stats, filterNull, type) {
     case 'date': return 31;
     case 'month': return 12;
     case 'year':
-      var stat = stats[encDef.name],
-        yearstat = stats['year_' + encDef.name];
+      var stat = stats[fieldDef.name],
+        yearstat = stats['year_' + fieldDef.name];
 
       if (!yearstat) { return null; }
 
@@ -89,10 +89,10 @@ export function range(timeUnit, encoding: Encoding) {
  * @return {Array}  scales for time unit names
  */
 export function scales(encoding: Encoding) {
-  var scales = encoding.reduce(function(scales, encDef) {
-    var timeUnit = encDef.timeUnit;
-    if (encDef.type === Type.Temporal && timeUnit && !scales[timeUnit]) {
-      var scaleDef = scale.def(encDef.timeUnit, encoding);
+  var scales = encoding.reduce(function(scales, fieldDef) {
+    var timeUnit = fieldDef.timeUnit;
+    if (fieldDef.type === Type.Temporal && timeUnit && !scales[timeUnit]) {
+      var scaleDef = scale.def(fieldDef.timeUnit, encoding);
       if (scaleDef) scales[timeUnit] = scaleDef;
     }
     return scales;

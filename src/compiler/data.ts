@@ -1,4 +1,4 @@
-import * as vlEncDef from '../encdef';
+import * as vlFieldDef from '../fielddef';
 import * as util from '../util';
 import Encoding from '../Encoding';
 import {Table, Type} from '../consts';
@@ -72,14 +72,14 @@ export namespace source {
   function formatParse(encoding) {
     var parse;
 
-    encoding.forEach(function(encDef) {
-      if (encDef.type === Type.Temporal) {
+    encoding.forEach(function(fieldDef) {
+      if (fieldDef.type === Type.Temporal) {
         parse = parse || {};
-        parse[encDef.name] = 'date';
-      } else if (encDef.type === Type.Quantitative) {
-        if (vlEncDef.isCount(encDef)) return;
+        parse[fieldDef.name] = 'date';
+      } else if (fieldDef.type === Type.Quantitative) {
+        if (vlFieldDef.isCount(fieldDef)) return;
         parse = parse || {};
-        parse[encDef.name] = 'number';
+        parse[fieldDef.name] = 'number';
       }
     });
 
@@ -102,14 +102,14 @@ export namespace source {
   }
 
   export function timeTransform(encoding) {
-    return encoding.reduce(function(transform, encDef, encType) {
-      if (encDef.type === Type.Temporal && encDef.timeUnit) {
+    return encoding.reduce(function(transform, fieldDef, encType) {
+      if (fieldDef.type === Type.Temporal && fieldDef.timeUnit) {
         var fieldRef = encoding.fieldRef(encType, {nofn: true, datum: true});
 
         transform.push({
           type: 'formula',
           field: encoding.fieldRef(encType),
-          expr: time.formula(encDef.timeUnit, fieldRef)
+          expr: time.formula(fieldDef.timeUnit, fieldRef)
         });
       }
       return transform;
@@ -117,11 +117,11 @@ export namespace source {
   }
 
   export function binTransform(encoding) {
-    return encoding.reduce(function(transform, encDef, encType) {
+    return encoding.reduce(function(transform, fieldDef, encType) {
       if (encoding.bin(encType)) {
         transform.push({
           type: 'bin',
-          field: encDef.name,
+          field: fieldDef.name,
           output: {
             start: encoding.fieldRef(encType, {bin_suffix: '_start'}),
             end: encoding.fieldRef(encType, {bin_suffix: '_end'})
@@ -198,24 +198,24 @@ export namespace summary {
 
     var hasAggregate = false;
 
-    encoding.forEach(function(encDef, encType) {
-      if (encDef.aggregate) {
+    encoding.forEach(function(fieldDef, encType) {
+      if (fieldDef.aggregate) {
         hasAggregate = true;
-        if (encDef.aggregate === 'count') {
+        if (fieldDef.aggregate === 'count') {
           meas['*'] = meas['*'] || {};
           meas['*'].count = true;
         } else {
-          meas[encDef.name] = meas[encDef.name] || {};
-          meas[encDef.name][encDef.aggregate] = true;
+          meas[fieldDef.name] = meas[fieldDef.name] || {};
+          meas[fieldDef.name][fieldDef.aggregate] = true;
         }
       } else {
-        if (encDef.bin) {
+        if (fieldDef.bin) {
           // TODO(#694) only add dimension for the required ones.
           dims[encoding.fieldRef(encType, {bin_suffix: '_start'})] = encoding.fieldRef(encType, {bin_suffix: '_start'});
           dims[encoding.fieldRef(encType, {bin_suffix: '_mid'})] = encoding.fieldRef(encType, {bin_suffix: '_mid'});
           dims[encoding.fieldRef(encType, {bin_suffix: '_end'})] = encoding.fieldRef(encType, {bin_suffix: '_end'});
         } else {
-          dims[encDef.name] = encoding.fieldRef(encType);
+          dims[fieldDef.name] = encoding.fieldRef(encType);
         }
 
       }
@@ -281,7 +281,7 @@ export namespace stack {
 }
 
 export function filterNonPositive(dataTable, encoding) {
-  encoding.forEach(function(encDef, encType) {
+  encoding.forEach(function(_, encType) {
     if (encoding.scale(encType).type === 'log') {
       dataTable.transform.push({
         type: 'filter',

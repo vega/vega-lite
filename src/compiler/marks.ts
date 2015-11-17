@@ -1,4 +1,5 @@
 import {Enctype, Type} from '../consts';
+import Encoding from '../Encoding';
 
 // https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations
 declare var exports;
@@ -77,12 +78,12 @@ export const text = {
   prop: text_props
 };
 
-function bar_props(e, layout, style) {
+function bar_props(e: Encoding, layout, style) {
   // TODO Use Vega's marks properties interface
   var p:any = {};
 
   // x's and width
-  if (e.encDef(Enctype.X).bin) {
+  if (e.fieldDef(Enctype.X).bin) {
     p.x = {scale: Enctype.X, field: e.fieldRef(Enctype.X, {bin_suffix: '_start'}), offset: 1};
     p.x2 = {scale: Enctype.X, field: e.fieldRef(Enctype.X, {bin_suffix: '_end'})};
   } else if (e.isMeasure(Enctype.X)) {
@@ -115,7 +116,7 @@ function bar_props(e, layout, style) {
   }
 
   // y's & height
-  if (e.encDef(Enctype.Y).bin) {
+  if (e.fieldDef(Enctype.Y).bin) {
     p.y = {scale: Enctype.Y, field: e.fieldRef(Enctype.Y, {bin_suffix: '_start'})};
     p.y2 = {scale: Enctype.Y, field: e.fieldRef(Enctype.Y, {bin_suffix: '_end'}), offset: 1};
   } else if (e.isMeasure(Enctype.Y)) {
@@ -149,7 +150,7 @@ function bar_props(e, layout, style) {
   }
 
   // opacity
-  var opacity = e.encDef(Enctype.COLOR).opacity;
+  var opacity = e.fieldDef(Enctype.COLOR).opacity;
   if (opacity) p.opacity = {value: opacity};
 
   return p;
@@ -188,7 +189,7 @@ function point_props(e, layout, style) {
   }
 
   // fill or stroke
-  if (e.encDef(Enctype.SHAPE).filled) {
+  if (e.fieldDef(Enctype.SHAPE).filled) {
     if (e.has(Enctype.COLOR)) {
       p.fill = {scale: Enctype.COLOR, field: e.fieldRef(Enctype.COLOR)};
     } else if (!e.has(Enctype.COLOR)) {
@@ -204,7 +205,7 @@ function point_props(e, layout, style) {
   }
 
   // opacity
-  var opacity = e.encDef(Enctype.COLOR).opacity || style.opacity;
+  var opacity = e.fieldDef(Enctype.COLOR).opacity || style.opacity;
   if (opacity) p.opacity = {value: opacity};
 
   return p;
@@ -235,7 +236,7 @@ function line_props(e,layout, style) {
     p.stroke = {value: e.value(Enctype.COLOR)};
   }
 
-  var opacity = e.encDef(Enctype.COLOR).opacity;
+  var opacity = e.fieldDef(Enctype.COLOR).opacity;
   if (opacity) p.opacity = {value: opacity};
 
   p.strokeWidth = {value: e.config('strokeWidth')};
@@ -278,7 +279,7 @@ function area_props(e, layout, style) {
     p.fill = {value: e.value(Enctype.COLOR)};
   }
 
-  var opacity = e.encDef(Enctype.COLOR).opacity;
+  var opacity = e.fieldDef(Enctype.COLOR).opacity;
   if (opacity) p.opacity = {value: opacity};
 
   return p;
@@ -331,7 +332,7 @@ function tick_props(e, layout, style) {
     p.fill = {value: e.value(Enctype.COLOR)};
   }
 
-  var opacity = e.encDef(Enctype.COLOR).opacity  || style.opacity;
+  var opacity = e.fieldDef(Enctype.COLOR).opacity  || style.opacity;
   if(opacity) p.opacity = {value: opacity};
 
   return p;
@@ -373,7 +374,7 @@ function filled_point_props(shape) {
       p.fill = {value: e.value(Enctype.COLOR)};
     }
 
-    var opacity = e.encDef(Enctype.COLOR).opacity  || style.opacity;
+    var opacity = e.fieldDef(Enctype.COLOR).opacity  || style.opacity;
     if(opacity) p.opacity = {value: opacity};
 
     return p;
@@ -383,13 +384,13 @@ function filled_point_props(shape) {
 function text_props(e, layout, style) {
   // TODO Use Vega's marks properties interface
   var p:any = {},
-    encDef = e.encDef(Enctype.TEXT);
+    fieldDef = e.fieldDef(Enctype.TEXT);
 
   // x
   if (e.has(Enctype.X)) {
     p.x = {scale: Enctype.X, field: e.fieldRef(Enctype.X, {bin_suffix: '_mid'})};
   } else if (!e.has(Enctype.X)) {
-    if (e.has(Enctype.TEXT) && e.encDef(Enctype.TEXT).type === Type.Quantitative) {
+    if (e.has(Enctype.TEXT) && e.fieldDef(Enctype.TEXT).type === Type.Quantitative) {
       p.x = {value: layout.cellWidth-5};
     } else {
       p.x = {value: e.bandWidth(Enctype.X, layout.x.useSmallBand) / 2};
@@ -407,35 +408,35 @@ function text_props(e, layout, style) {
   if (e.has(Enctype.SIZE)) {
     p.fontSize = {scale: Enctype.SIZE, field: e.fieldRef(Enctype.SIZE)};
   } else if (!e.has(Enctype.SIZE)) {
-    p.fontSize = {value: encDef.font.size};
+    p.fontSize = {value: fieldDef.font.size};
   }
 
   // fill
   // color should be set to background
-  p.fill = {value: encDef.color};
+  p.fill = {value: fieldDef.color};
 
-  var opacity = e.encDef(Enctype.COLOR).opacity  || style.opacity;
+  var opacity = e.fieldDef(Enctype.COLOR).opacity  || style.opacity;
   if(opacity) p.opacity = {value: opacity};
 
   // text
   if (e.has(Enctype.TEXT)) {
-    if (e.encDef(Enctype.TEXT).type === Type.Quantitative) {
-      var numberFormat = encDef.format || e.numberFormat(Enctype.TEXT);
+    if (e.fieldDef(Enctype.TEXT).type === Type.Quantitative) {
+      var numberFormat = fieldDef.format || e.numberFormat(Enctype.TEXT);
 
       p.text = {template: '{{' + e.fieldRef(Enctype.TEXT, {datum: true}) + ' | number:\'' +
         numberFormat +'\'}}'};
-      p.align = {value: encDef.align};
+      p.align = {value: fieldDef.align};
     } else {
       p.text = {field: e.fieldRef(Enctype.TEXT)};
     }
   } else {
-    p.text = {value: encDef.placeholder};
+    p.text = {value: fieldDef.placeholder};
   }
 
-  p.font = {value: encDef.font.family};
-  p.fontWeight = {value: encDef.font.weight};
-  p.fontStyle = {value: encDef.font.style};
-  p.baseline = {value: encDef.baseline};
+  p.font = {value: fieldDef.font.family};
+  p.fontWeight = {value: fieldDef.font.weight};
+  p.fontStyle = {value: fieldDef.font.style};
+  p.baseline = {value: fieldDef.baseline};
 
   return p;
 }
