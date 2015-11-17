@@ -27,6 +27,7 @@ export namespace Enctype {
   ];
 }
 
+
 export enum Type {
   Q,  // Quantitative
   O,  // Ordinal
