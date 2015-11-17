@@ -129,9 +129,9 @@ describe('data.source', function() {
       var spec = {
           marktype: 'point',
           encoding: {
-            y: {name: 'quantitative', type:'quantitative'},
-            x: {name: 'temporal', type:'temporal'},
-            color: {name: 'ordinal', type:'ordinal'}
+            y: {name: 'qq', type:'quantitative'},
+            x: {name: 'tt', type:'temporal'},
+            color: {name: 'oo', type:'ordinal'}
           }
         };
 
@@ -140,20 +140,20 @@ describe('data.source', function() {
         expect(source.nullFilterTransform(encoding))
           .to.eql([{
             type: 'filter',
-            test: 'datum.T!==null && datum.Q!==null'
+            test: 'datum.tt!==null && datum.qq!==null'
           }]);
       });
 
       it('should add filterNull for O when specified', function () {
         var encoding = Encoding.fromSpec(spec, {
           config: {
-            filterNull: {O: true}
+            filterNull: {ordinal: true}
           }
         });
         expect(source.nullFilterTransform(encoding))
           .to.eql([{
             type: 'filter',
-            test:'datum.T!==null && datum.Q!==null && datum.O!==null'
+            test:'datum.tt!==null && datum.qq!==null && datum.oo!==null'
           }]);
       });
       // });

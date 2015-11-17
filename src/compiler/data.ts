@@ -148,10 +148,10 @@ export namespace source {
         if (fieldName === '*') return filteredFields; //count
 
         // TODO(#597) revise how filterNull is structured.
-        if ((encoding.config('filterNull').Q && fieldList.containsType[Type.Quantitative]) ||
-            (encoding.config('filterNull').T && fieldList.containsType[Type.Temporal]) ||
-            (encoding.config('filterNull').O && fieldList.containsType[Type.Ordinal]) ||
-            (encoding.config('filterNull').N && fieldList.containsType[Type.Nominal])) {
+        if ((encoding.config('filterNull').quantitative && fieldList.containsType[Type.Quantitative]) ||
+            (encoding.config('filterNull').temporal && fieldList.containsType[Type.Temporal]) ||
+            (encoding.config('filterNull').ordinal && fieldList.containsType[Type.Ordinal]) ||
+            (encoding.config('filterNull').nominal && fieldList.containsType[Type.Nominal])) {
           filteredFields.push(fieldName);
         }
         return filteredFields;
