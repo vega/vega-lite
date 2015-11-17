@@ -28,10 +28,10 @@ export namespace Enctype {
 }
 
 export namespace Type {
-  export const Quantitative = 'quantitative';
-  export const Ordinal = 'ordinal';
-  export const Temporal = 'temporal';
-  export const Nominal = 'nominal';
+  export const QUANTITATIVE = 'quantitative';
+  export const ORDINAL = 'ordinal';
+  export const TEMPORAL = 'temporal';
+  export const NOMINAL = 'nominal';
 
   /**
    * Mapping from full type names to short type names.
@@ -48,10 +48,10 @@ export namespace Type {
    * @type {Object}
    */
   export const TypeFromShortType = {
-    Q: Quantitative,
-    T: Temporal,
-    O: Ordinal,
-    N: Nominal
+    Q: QUANTITATIVE,
+    T: TEMPORAL,
+    O: ORDINAL,
+    N: NOMINAL
   };
 }
 

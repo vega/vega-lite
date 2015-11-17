@@ -37,7 +37,7 @@ export var field = {
     },
     type: {
       type: 'string',
-      enum: [Type.Nominal, Type.Ordinal, Type.Quantitative, Type.Temporal]
+      enum: [Type.NOMINAL, Type.ORDINAL, Type.QUANTITATIVE, Type.TEMPORAL]
     },
     timeUnit: timeUnit,
     bin: bin,
@@ -61,7 +61,7 @@ var onlyOrdinalField = merge(clone(field), {
     aggregate: {
       type: 'string',
       enum: ['count'],
-      supportedTypes: toMap([Type.Nominal, Type.Ordinal])
+      supportedTypes: toMap([Type.NOMINAL, Type.ORDINAL])
     },
     scale: ordinalOnlyScale
   }

@@ -11,7 +11,7 @@ export var aggregate = {
     temporal: ['mean', 'median', 'min', 'max'], // TODO: revise what should time support
     '': ['count']
   },
-  supportedTypes: toMap([Type.Quantitative, Type.Nominal, Type.Ordinal, Type.Temporal, ''])
+  supportedTypes: toMap([Type.QUANTITATIVE, Type.NOMINAL, Type.ORDINAL, Type.TEMPORAL, ''])
 };
 
 export var bin = {
@@ -25,18 +25,18 @@ export var bin = {
       description: 'Maximum number of bins.'
     }
   },
-  supportedTypes: toMap([Type.Quantitative]) // TODO: add O after finishing #81
+  supportedTypes: toMap([Type.QUANTITATIVE]) // TODO: add O after finishing #81
 };
 
 export var timeUnit = {
   type: 'string',
   enum: TIMEUNITS,
-  supportedTypes: toMap([Type.Temporal])
+  supportedTypes: toMap([Type.TEMPORAL])
 };
 
 export var sort = {
   default: 'ascending',
-  supportedTypes: toMap([Type.Quantitative, Type.Ordinal]),
+  supportedTypes: toMap([Type.QUANTITATIVE, Type.ORDINAL]),
   oneOf: [
     {
       type: 'string',

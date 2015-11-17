@@ -30,9 +30,9 @@ export function isAggregate(enc) {
 
 export function forEach(enc, f) {
   var i = 0;
-  encTypes.forEach(function(k) {
-    if (has(enc, k)) {
-      f(enc[k], k, i++);
+  encTypes.forEach(function(encType) {
+    if (has(enc, encType)) {
+      f(enc[encType], encType, i++);
     }
   });
 }
