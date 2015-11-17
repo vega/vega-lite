@@ -33,13 +33,20 @@ export namespace Type {
   export const Temporal = 'temporal';
   export const Nominal = 'nominal';
 
-
+  /**
+   * Mapping from full type names to short type names.
+   * @type {Object}
+   */
   export const ShortType = {
     quantitative: 'Q',
     temporal: 'T',
     nominal: 'N',
     ordinal: 'O'
   };
+  /**
+   * Mapping from short type names to full type names.
+   * @type {Object}
+   */
   export const TypeFromShortType = {
     Q: Quantitative,
     T: Temporal,
