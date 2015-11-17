@@ -17,11 +17,6 @@ import {axis} from './encdef.axis.schema';
 import {typicalScale, ordinalOnlyScale} from './encdef.scale.schema';
 import {legend} from './encdef.legend.schema';
 
-var Q = Type[Type.Quantitative];
-var O = Type[Type.Ordinal];
-var N = Type[Type.Nominal];
-var T = Type[Type.Temporal];
-
 // TODO(#620) refer to vega schema
 // var vgStackSchema = require('vega/src/transforms/Stack').schema;
 
@@ -42,7 +37,7 @@ export var field = {
     },
     type: {
       type: 'string',
-      enum: [N, O, Q, T]
+      enum: [Type.Nominal, Type.Ordinal, Type.Quantitative, Type.Temporal]
     },
     timeUnit: timeUnit,
     bin: bin,
@@ -66,7 +61,7 @@ var onlyOrdinalField = merge(clone(field), {
     aggregate: {
       type: 'string',
       enum: ['count'],
-      supportedTypes: toMap([N, O])
+      supportedTypes: toMap([Type.Nominal, Type.Ordinal])
     },
     scale: ordinalOnlyScale
   }
