@@ -1,4 +1,4 @@
-import * as vlFieldDef from '../encdef';
+import * as vlFieldDef from '../fielddef';
 import * as util from '../util';
 import Encoding from '../Encoding';
 import {Table, Type} from '../consts';

@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 
-import * as vlFieldDef from '../src/encdef';
+import * as vlFieldDef from '../src/fielddef';
 import {Type} from '../src/consts';
 
 

@@ -12,10 +12,10 @@ import {Type, AGGREGATE_OPS} from '../consts';
 import {marktype} from './marktype.schema';
 import {data} from './data.schema';
 import {config} from './config.schema';
-import {aggregate, bin, sort, stack, timeUnit} from './encdef.schema';
-import {axis} from './encdef.axis.schema';
-import {typicalScale, ordinalOnlyScale} from './encdef.scale.schema';
-import {legend} from './encdef.legend.schema';
+import {aggregate, bin, sort, stack, timeUnit} from './fielddef.schema';
+import {axis} from './fielddef.axis.schema';
+import {typicalScale, ordinalOnlyScale} from './fielddef.scale.schema';
+import {legend} from './fielddef.legend.schema';
 
 // TODO(#620) refer to vega schema
 // var vgStackSchema = require('vega/src/transforms/Stack').schema;

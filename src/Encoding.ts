@@ -1,6 +1,6 @@
 import {Enctype, Type, Shorthand, Table, MAXBINS_DEFAULT} from './consts';
 import * as util from './util';
-import * as vlFieldDef from './encdef';
+import * as vlFieldDef from './fielddef';
 import * as vlEnc from './enc';
 import * as schema from './schema/schema';
 import * as schemaUtil from './schema/schemautil';

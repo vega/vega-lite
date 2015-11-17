@@ -1,7 +1,7 @@
 // utility for enc
 
 import {Enctype, Type, Shorthand} from './consts';
-import * as vlFieldDef from './encdef';
+import * as vlFieldDef from './fielddef';
 import * as util from './util';
 
 let encTypes = Enctype.LIST;

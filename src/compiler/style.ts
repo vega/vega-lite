@@ -1,5 +1,5 @@
 import Encoding from '../Encoding';
-import * as vlFieldDef from '../encdef';
+import * as vlFieldDef from '../fielddef';
 import {Enctype} from '../consts';
 
 export default function(encoding: Encoding, stats) {

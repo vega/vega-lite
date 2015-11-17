@@ -1,7 +1,7 @@
 import vlEncoding from './Encoding';
 import * as vlData from './data';
 import * as vlEnc from './enc';
-import * as vlFieldDef from './encdef';
+import * as vlFieldDef from './fielddef';
 import * as vlCompiler from './compiler/compiler';
 import * as vlSchema from './schema/schema';
 import * as vlValidate from './validate';
@@ -19,7 +19,7 @@ export var compile = vlCompiler.compile;
 export var data = vlData;
 // TODO(#727) rename to encoding
 export var enc = vlEnc;
-export var encDef = vlFieldDef;
+export var fieldDef = vlFieldDef;
 export var schema = vlSchema;
 // TODO: revise if we can remove this
 export var toShorthand = vlEncoding.shorthand;
