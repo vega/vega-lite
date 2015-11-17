@@ -53,5 +53,17 @@ export const Shorthand = {
   Delim: '|',
   Assign: '=',
   Type: ',',
-  Func: '_'
+  Func: '_',
+  ShortType: {
+    quantitative: 'Q',
+    temporal: 'T',
+    nominal: 'N',
+    ordinal: 'O'
+  },
+  TypeFromShortType: {
+    Q: Type.Quantitative,
+    T: Type.Temporal,
+    O: Type.Ordinal,
+    N: Type.Nominal
+  }
 };
