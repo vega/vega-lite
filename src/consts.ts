@@ -32,6 +32,20 @@ export namespace Type {
   export const Ordinal = 'ordinal';
   export const Temporal = 'temporal';
   export const Nominal = 'nominal';
+
+
+  export const ShortType = {
+    quantitative: 'Q',
+    temporal: 'T',
+    nominal: 'N',
+    ordinal: 'O'
+  };
+  export const TypeFromShortType = {
+    Q: Quantitative,
+    T: Temporal,
+    O: Ordinal,
+    N: Nominal
+  };
 }
 
 export const TIMEUNITS = [
@@ -53,17 +67,5 @@ export const Shorthand = {
   Delim: '|',
   Assign: '=',
   Type: ',',
-  Func: '_',
-  ShortType: {
-    quantitative: 'Q',
-    temporal: 'T',
-    nominal: 'N',
-    ordinal: 'O'
-  },
-  TypeFromShortType: {
-    Q: Type.Quantitative,
-    T: Type.Temporal,
-    O: Type.Ordinal,
-    N: Type.Nominal
-  }
+  Func: '_'
 };

@@ -19,8 +19,8 @@ Here are the list of properties of the encoding property definition object:
 | :------------ |:-------------:| :------------- |
 | name __<sup>1</sup>__ | String        | Name of the field/variable from which to pull a data value.    |
 | value         | String,Integer | A constant value |
-| type          | String        | Data Type (`'quantitative'`, `'ordinal'`, `'temporal'`, and `'nominal'`).  __<sup>2</sup>__ |
-| [aggregate](#aggregate) | String        | Aggregation function for the field (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`)  |
+| type          | String        | Data type of the field.  This property accepts both full type names (`'quantitative'`, `'temporal'`, `'ordinal'`,  and `'nominal'`), or an initial character (`'Q'`, `'T'`, `'O'`, `'N'`).  __<sup>2</sup>__ |
+| [aggregate](#aggregate) | String        | Aggregation function for the field (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).  |
 | [bin](#bin)          | Boolean \| Object        | Boolean flag / configuration object for binning.  See [Binning](#Binning) |
 | [timeUnit](#timeunit)| String        | Property for converting time unit            |
 | [sort](#sort)        | String \| Object        | Sort order for a particular field.  This can be string (`'ascending'`, `'descending'`, or `'unsorted'`) or a sort field definition object for sorting by an aggregate calculation of a specified sort field.  If unspecified, the default value is `ascending`.  See [Sort](#sort) section for more information. |

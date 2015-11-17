@@ -19,6 +19,13 @@ export default class Encoding {
     this._marktype = specExtended.marktype;
     this._enc = specExtended.encoding;
     this._config = specExtended.config;
+
+    vlEnc.forEach(this._enc, function(fieldDef) {
+      let fullType = Type.TypeFromShortType[fieldDef.type.toUpperCase()];
+      if (fullType) {
+        fieldDef.type = fullType;
+      }
+    });
   }
 
   static fromShorthand(shorthand: string, data?, config?, theme?) {

@@ -42,7 +42,7 @@ export function shorthand(f) {
   return (f.aggregate ? f.aggregate + Shorthand.Func : '') +
     (f.timeUnit ? f.timeUnit + Shorthand.Func : '') +
     (f.bin ? 'bin' + Shorthand.Func : '') +
-    (f.name || '') + Shorthand.Type + Shorthand.ShortType[f.type];
+    (f.name || '') + Shorthand.Type + Type.ShortType[f.type];
 }
 
 export function shorthands(encDefs, delim) {
@@ -55,7 +55,7 @@ export function fromShorthand(shorthand: string) {
 
   var encDef: any = {
     name: split[0].trim(),
-    type: Shorthand.TypeFromShortType[split[1].trim()]
+    type: Type.TypeFromShortType[split[1].trim()]
   };
 
   // check aggregate type
