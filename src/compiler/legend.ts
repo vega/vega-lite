@@ -1,33 +1,33 @@
 import * as util from '../util';
 import {Enctype, Type} from '../consts';
-
+import Encoding from '../Encoding';
 import * as time from './time';
 
-export function defs(encoding, styleCfg) {
+export function defs(encoding: Encoding, styleCfg) {
   var defs = [];
 
   if (encoding.has(Enctype.COLOR) && encoding.encDef(Enctype.COLOR).legend) {
-    defs.push(def(Enctype.COLOR, encoding, {
+    defs.push(def(encoding, Enctype.COLOR, {
       fill: Enctype.COLOR
       // TODO: consider if this should be stroke for line
     }, styleCfg));
   }
 
   if (encoding.has(Enctype.SIZE) && encoding.encDef(Enctype.SIZE).legend) {
-    defs.push(def(Enctype.SIZE, encoding, {
+    defs.push(def(encoding, Enctype.SIZE, {
       size: Enctype.SIZE
     }, styleCfg));
   }
 
   if (encoding.has(Enctype.SHAPE) && encoding.encDef(Enctype.SHAPE).legend) {
-    defs.push(def(Enctype.SHAPE, encoding, {
+    defs.push(def(encoding, Enctype.SHAPE, {
       shape: Enctype.SHAPE
     }, styleCfg));
   }
   return defs;
 }
 
-export function def(name, encoding, def, styleCfg) {
+export function def(encoding: Encoding, name: String, def, styleCfg) {
   let legend = encoding.encDef(name).legend;
 
   // 1.1 Add properties with special rules
@@ -56,7 +56,7 @@ export function def(name, encoding, def, styleCfg) {
   return def;
 }
 
-export function title(encoding, name) {
+export function title(encoding: Encoding, name: String) {
   let leg = encoding.encDef(name).legend;
 
   if (leg.title) return leg.title;
@@ -65,12 +65,10 @@ export function title(encoding, name) {
 }
 
 namespace properties {
-  export function labels(encoding, name, spec) {
-    var timeUnit = encoding.encDef(name).timeUnit;
-    if (encoding.isType(name, Type.T) &&
-      timeUnit &&
-      time.hasScale(timeUnit)
-    ) {
+  export function labels(encoding: Encoding, name, spec) {
+    var encDef = encoding.encDef(name);
+    var timeUnit = encDef.timeUnit;
+    if (encDef.type == Type.T && timeUnit && time.hasScale(timeUnit)) {
       return util.extend({
         text: {
           scale: 'time-'+ timeUnit
@@ -80,7 +78,7 @@ namespace properties {
     return spec;
   }
 
-  export function symbols(encoding, name, spec, styleCfg) {
+  export function symbols(encoding: Encoding, name, spec, styleCfg) {
     let symbols:any = {};
     let marktype = encoding.marktype();
 

@@ -2,11 +2,6 @@ import {toMap, duplicate as clone} from '../util';
 import {merge} from './schemautil';
 import {Type} from '../consts';
 
-var Q = Type[Type.Q];
-var O = Type[Type.O];
-var N = Type[Type.N];
-var T = Type[Type.T];
-
 var scale = {
   type: 'object',
   // TODO: refer to Vega's scale schema
@@ -17,7 +12,7 @@ var scale = {
       // TODO(kanitw) read vega's schema here, add description
       enum: ['linear', 'log', 'pow', 'sqrt', 'quantile'],
       default: 'linear',
-      supportedTypes: toMap([Q])
+      supportedTypes: toMap([Type.Q])
     },
     domain: {
       default: undefined,
@@ -85,7 +80,7 @@ var typicalScaleMixin = {
         }
       ],
       // FIXME this part might break polestar
-      supportedTypes: toMap([Q, T]),
+      supportedTypes: toMap([Type.Q, Type.T]),
       description: ''
     },
 
@@ -99,7 +94,7 @@ var typicalScaleMixin = {
       type: 'boolean',
       description: 'If true, ensures that a zero baseline value is included in the scale domain. This option is ignored for non-quantitative scales.',
       default: undefined,
-      supportedTypes: toMap([Q, T])
+      supportedTypes: toMap([Type.Q, Type.T])
     },
 
     /* Vega-lite only Properties */

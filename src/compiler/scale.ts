@@ -50,7 +50,8 @@ export function defs(names: Array<string>, encoding: Encoding, layout, stats, fa
 }
 
 export function type(name: string, encoding: Encoding) {
-  switch (encoding.type(name)) {
+  var type = encoding.encDef(name).type;
+  switch (type) {
     case Type.N: //fall through
     case Type.O:
       return 'ordinal';
@@ -73,7 +74,7 @@ export function domain(encoding, name, type, facet:boolean = false) {
   }
 
   // special case for temporal scale
-  if (encoding.isType(name, Type.T)) {
+  if (encDef.type === Type.T) {
     var range = time.scale.domain(encDef.timeUnit, name);
     if (range) return range;
   }
@@ -178,10 +179,9 @@ export function _useRawDomain (encoding, name) {
       // Binned field has similar values in both the source table and the summary table
       // but the summary table has fewer values, therefore binned fields draw
       // domain values from the summary table.
-      (encoding.isType(name, Type.Q) && !encDef.bin) ||
+      (encDef.type === Type.Q && !encDef.bin) ||
       // T uses non-ordinal scale when there's no unit or when the unit is not ordinal.
-      (
-        encoding.isType(name, Type.T) &&
+      (encDef.type === Type.T &&
         (!encDef.timeUnit || !time.isOrdinalFn(encDef.timeUnit))
       )
     );
@@ -336,7 +336,7 @@ export function zero(encoding, name) {
     return encDef.scale.zero;
   }
 
-  if (encoding.isType(name, Type.T)) {
+  if (encDef.type === Type.T) {
     if (timeUnit === 'year') {
       // year is using linear scale, but should not include zero
       return false;
@@ -361,7 +361,7 @@ export function color(encoding: Encoding, name, scaleType, stats) {
   var colorScale = encoding.scale(Enctype.COLOR),
     range = colorScale.range,
     cardinality = encoding.cardinality(Enctype.COLOR, stats),
-    type = encoding.type(Enctype.COLOR);
+    type = encoding.encDef(Enctype.COLOR).type;
 
   if (range === undefined) {
     var ordinalPalette = colorScale.ordinalPalette,
@@ -389,7 +389,7 @@ export function color(encoding: Encoding, name, scaleType, stats) {
 }
 
 export namespace colors {
-  export function palette(range, cardinality?, type?: Type) {
+  export function palette(range, cardinality?, type?: String) {
     // FIXME(kanitw): Jul 29, 2015 - check range is string
     switch (range) {
       case 'category10k':

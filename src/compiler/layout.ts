@@ -3,10 +3,11 @@
 import * as d3_format from 'd3-format';
 import {setter} from '../util';
 import {Enctype, Type} from '../consts';
+import Encoding from '../Encoding';
 
 import * as time from './time';
 
-export default function(encoding, stats) {
+export default function(encoding: Encoding, stats) {
   var layout = box(encoding, stats);
   layout = offset(encoding, stats, layout);
   return layout;
@@ -18,7 +19,7 @@ export default function(encoding, stats) {
   One solution is to update Vega to support auto-sizing
   In the meantime, auto-padding (mostly) does the trick
  */
-function box(encoding, stats) {
+function box(encoding: Encoding, stats) {
   var hasRow = encoding.has(Enctype.ROW),
       hasCol = encoding.has(Enctype.COL),
       hasX = encoding.has(Enctype.X),
@@ -88,22 +89,22 @@ function box(encoding, stats) {
   };
 }
 
-function getMaxNumberLength(encoding, et, fieldStats) {
+function getMaxNumberLength(encoding: Encoding, et, fieldStats) {
   var format = encoding.numberFormat(et);
   return d3_format.format(format)(fieldStats.max).length;
 }
 
 // TODO(#600) revise this
-function getMaxLength(encoding, stats, et) {
+function getMaxLength(encoding: Encoding, stats, et) {
   var encDef = encoding.encDef(et),
     fieldStats = stats[encDef.name];
 
   if (encDef.bin) {
     // TODO once bin support range, need to update this
     return getMaxNumberLength(encoding, et, fieldStats);
-  } if (encoding.isType(et, Type.Q)) {
+  } if (encDef.type === Type.Q) {
     return getMaxNumberLength(encoding, et, fieldStats);
-  } else if (encoding.isType(et, Type.T)) {
+  } else if (encDef.type === Type.T) {
     return time.maxLength(encoding.encDef(et).timeUnit, encoding);
   } else if (encoding.isTypes(et, [Type.N, Type.O])) {
     if(fieldStats.type === 'number') {
@@ -114,18 +115,19 @@ function getMaxLength(encoding, stats, et) {
   }
 }
 
-function offset(encoding, stats, layout) {
+function offset(encoding: Encoding, stats, layout) {
   [Enctype.X, Enctype.Y].forEach(function (et) {
     // TODO(kanitw): Jul 19, 2015 - create a set of visual test for extraOffset
-    var extraOffset = et === Enctype.X ? 20 : 22,
-      maxLength;
-    if (encoding.isDimension(et) || encoding.isType(et, Type.T)) {
+    let extraOffset = et === Enctype.X ? 20 : 22;
+    let encDef = encoding.encDef(et);
+    let maxLength;
+
+    if (encoding.isDimension(et) || encDef.type === Type.T) {
       maxLength = getMaxLength(encoding, stats, et);
     } else if (
       // TODO once we have #512 (allow using inferred type)
       // Need to adjust condition here.
-      encoding.isType(et, Type.Q) ||
-      encoding.encDef(et).aggregate === 'count'
+      encDef.type === Type.Q || encDef.aggregate === 'count'
     ) {
       if (
         et===Enctype.Y

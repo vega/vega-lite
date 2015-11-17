@@ -7,7 +7,7 @@ import * as schemaUtil from './schema/schemautil';
 
 export default class Encoding {
   _data: any;
-  _marktype: string;  // TODO: replace with enum
+  _marktype: string;
   _enc: any;
   _config: any;
 
@@ -183,16 +183,6 @@ export default class Encoding {
 
   forEach(f) {
     return vlEnc.forEach(this._enc, f);
-  }
-
-  type(et: string): Type {
-    const t: string = this._enc[et].type;
-    return this.has(et) ? Type[t] : null;
-  }
-
-  isType(et: string, type: Type) {
-    var encDef = this.encDef(et);
-    return encDef && vlEncDef.isType(encDef, type);
   }
 
   isTypes(et: string, type: Array<any>) {

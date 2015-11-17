@@ -24,18 +24,10 @@ describe('vl.encDef.cardinality()', function () {
   });
 });
 
-describe('vl.encDef.isType', function () {
-  it('should return correct type checking', function() {
-    var qDef = {name: 'number', type:'Q'};
-    expect(vlEncDef.isType(qDef, Type.Q)).to.eql(true);
-    expect(vlEncDef.isType(qDef, Type.N)).to.eql(false);
-  });
-});
-
 describe('vl.encDef.isTypes', function () {
   it('should return correct type checking', function() {
     var qDef = {name: 'number', type:'Q'};
-    expect(vlEncDef.isType(qDef, Type.Q)).to.eql(true);
+    expect(qDef.type === Type.Q).to.eql(true);
     expect(vlEncDef.isTypes(qDef, [Type.Q])).to.eql(true);
     expect(vlEncDef.isTypes(qDef, [Type.Q, Type.O])).to.eql(true);
     expect(vlEncDef.isTypes(qDef, [Type.O, Type.Q])).to.eql(true);
