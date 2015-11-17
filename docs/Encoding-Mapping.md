@@ -17,7 +17,7 @@ Here are the list of properties of the encoding property definition object:
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| name __<sup>1</sup>__ | String        | A field/variable from which to pull a data value.    |
+| name __<sup>1</sup>__ | String        | Name of the field/variable from which to pull a data value.    |
 | value         | String,Integer | A constant value |
 | type          | String        | Data Type (`'quantitative'`, `'ordinal'`, `'temporal'`, and `'nominal'`).  __<sup>2</sup>__ |
 | [aggregate](#aggregate) | String        | Aggregation function for the field (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`)  |
@@ -35,12 +35,6 @@ __<sup>1</sup>__ __Pending Revision__
 
 __<sup>2</sup>__ __Pending Revision__
 We are considering other properties of variables including specifying primitive type.
-
-## field
-
-__TODO__
-
-
 
 ## bin
 
