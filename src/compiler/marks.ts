@@ -421,7 +421,8 @@ function text_props(e, layout, style) {
   // text
   if (e.has(Enctype.TEXT)) {
     if (e.fieldDef(Enctype.TEXT).type === Type.QUANTITATIVE) {
-      var numberFormat = fieldDef.format || e.numberFormat(Enctype.TEXT);
+      var numberFormat = fieldDef.format !== undefined ?
+                         fieldDef.format : e.numberFormat(Enctype.TEXT);
 
       p.text = {template: '{{' + e.fieldRef(Enctype.TEXT, {datum: true}) + ' | number:\'' +
         numberFormat +'\'}}'};
