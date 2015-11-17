@@ -55,7 +55,7 @@ export function fromShorthand(shorthand: string) {
 
   var fieldDef: any = {
     name: split[0].trim(),
-    type: Type.TypeFromShortType[split[1].trim()]
+    type: Type.TYPE_FROM_SHORT_TYPE[split[1].trim()]
   };
 
   // check aggregate type

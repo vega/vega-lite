@@ -23,7 +23,7 @@ export default class Encoding {
     // convert short type to full type
     vlEnc.forEach(this._enc, function(fieldDef) {
       let fullType = fieldDef.type ?
-                      Type.TypeFromShortType[fieldDef.type.toUpperCase()] :
+                      Type.TYPE_FROM_SHORT_TYPE[fieldDef.type.toUpperCase()] :
                       null;
       if (fullType) {
         fieldDef.type = fullType;
