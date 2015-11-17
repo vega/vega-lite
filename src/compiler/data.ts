@@ -1,4 +1,4 @@
-import * as vlEncDef from '../encdef';
+import * as vlFieldDef from '../encdef';
 import * as util from '../util';
 import Encoding from '../Encoding';
 import {Table, Type} from '../consts';
@@ -77,7 +77,7 @@ export namespace source {
         parse = parse || {};
         parse[fieldDef.name] = 'date';
       } else if (fieldDef.type === Type.Quantitative) {
-        if (vlEncDef.isCount(fieldDef)) return;
+        if (vlFieldDef.isCount(fieldDef)) return;
         parse = parse || {};
         parse[fieldDef.name] = 'number';
       }

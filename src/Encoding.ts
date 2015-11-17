@@ -1,6 +1,6 @@
 import {Enctype, Type, Shorthand, Table, MAXBINS_DEFAULT} from './consts';
 import * as util from './util';
-import * as vlEncDef from './encdef';
+import * as vlFieldDef from './encdef';
 import * as vlEnc from './enc';
 import * as schema from './schema/schema';
 import * as schemaUtil from './schema/schemautil';
@@ -105,7 +105,7 @@ export default class Encoding {
   // get "field" reference for vega
   fieldRef(encType, opt?) {
     opt = opt || {};
-    return vlEncDef.fieldRef(this._enc[encType], opt);
+    return vlFieldDef.fieldRef(this._enc[encType], opt);
   }
 
   /*
@@ -116,8 +116,8 @@ export default class Encoding {
   }
 
   fieldTitle(et) {
-    if (vlEncDef.isCount(this._enc[et])) {
-      return vlEncDef.COUNT_DISPLAYNAME;
+    if (vlFieldDef.isCount(this._enc[et])) {
+      return vlFieldDef.COUNT_DISPLAYNAME;
     }
     var fn = this._enc[et].aggregate || this._enc[et].timeUnit || (this._enc[et].bin && 'bin');
     if (fn) {
@@ -197,19 +197,19 @@ export default class Encoding {
 
   isTypes(et: string, type: Array<any>) {
     var fieldDef = this.fieldDef(et);
-    return fieldDef && vlEncDef.isTypes(fieldDef, type);
+    return fieldDef && vlFieldDef.isTypes(fieldDef, type);
   }
 
   static isOrdinalScale(encoding, encType) {
-    return vlEncDef.isOrdinalScale(encoding.fieldDef(encType));
+    return vlFieldDef.isOrdinalScale(encoding.fieldDef(encType));
   }
 
   static isDimension(encoding, encType) {
-    return vlEncDef.isDimension(encoding.fieldDef(encType));
+    return vlFieldDef.isDimension(encoding.fieldDef(encType));
   }
 
   static isMeasure(encoding, encType) {
-    return vlEncDef.isMeasure(encoding.fieldDef(encType));
+    return vlFieldDef.isMeasure(encoding.fieldDef(encType));
   }
 
   isOrdinalScale(encType) {
@@ -307,7 +307,7 @@ export default class Encoding {
   }
 
   cardinality(encType, stats) {
-    return vlEncDef.cardinality(this.fieldDef(encType), stats, this.config('filterNull'));
+    return vlFieldDef.cardinality(this.fieldDef(encType), stats, this.config('filterNull'));
   }
 
   isRaw() {

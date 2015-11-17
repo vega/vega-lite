@@ -3,7 +3,7 @@
 import {utcFormat} from 'd3-time-format';
 
 import Encoding from '../Encoding';
-import * as vlEncDef from '../encdef';
+import * as vlFieldDef from '../encdef';
 import * as util from '../util';
 import {Enctype, Type} from '../consts';
 

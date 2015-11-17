@@ -1,5 +1,5 @@
 import Encoding from '../Encoding';
-import * as vlEncDef from '../encdef';
+import * as vlFieldDef from '../encdef';
 import {Enctype} from '../consts';
 
 export default function(encoding: Encoding, stats) {
@@ -27,7 +27,7 @@ function estimateOpacity(encoding,stats) {
 
       if (encType !== Enctype.ROW && encType !== Enctype.COL &&
           !((encType === Enctype.X || encType === Enctype.Y) &&
-          vlEncDef.isOrdinalScale(fieldDef))
+          vlFieldDef.isOrdinalScale(fieldDef))
         ) {
         numPoints *= encoding.cardinality(encType, stats);
       }
