@@ -68,7 +68,7 @@ export const AGGREGATE_OPS = [
 ];
 
 // TODO: remove
-export var MAXBINS_DEFAULT = 15;
+export const MAXBINS_DEFAULT = 15;
 
 export const SHORTHAND = {
   Delim: '|',
