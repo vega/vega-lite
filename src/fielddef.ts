@@ -42,7 +42,7 @@ export function shorthand(f) {
   return (f.aggregate ? f.aggregate + Shorthand.Func : '') +
     (f.timeUnit ? f.timeUnit + Shorthand.Func : '') +
     (f.bin ? 'bin' + Shorthand.Func : '') +
-    (f.name || '') + Shorthand.Type + Type.ShortType[f.type];
+    (f.name || '') + Shorthand.Type + Type.SHORT_TYPE[f.type];
 }
 
 export function shorthands(fieldDefs, delim) {

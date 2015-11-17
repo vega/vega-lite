@@ -37,7 +37,7 @@ export namespace Type {
    * Mapping from full type names to short type names.
    * @type {Object}
    */
-  export const ShortType = {
+  export const SHORT_TYPE = {
     quantitative: 'Q',
     temporal: 'T',
     nominal: 'N',
