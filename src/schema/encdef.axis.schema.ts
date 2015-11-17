@@ -17,8 +17,8 @@ export var axis = {
     },
     layer: {
       type: 'string',
-      default: 'back',
-      description: 'A string indicating if the axis (and any gridlines) should be placed above or below the data marks. One of "front" (default) or "back".'
+      default: undefined,
+      description: 'A string indicating if the axis (and any gridlines) should be placed above or below the data marks.'
     },
     orient: {
       type: 'string',

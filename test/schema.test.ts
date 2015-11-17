@@ -38,7 +38,7 @@ describe('Util', function() {
         fooBaz: {type: 'string', enum: ['a', 'b']}}};
     assert.deepEqual(
       util.instantiate(simpleSchema),
-      {foo: [], fooBar: 'baz'});
+      {fooBar: 'baz'});
   });
 
   it('remove defaults', function() {
