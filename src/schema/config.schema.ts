@@ -34,10 +34,10 @@ export var config = {
     filterNull: {
       type: 'object',
       properties: {
-        N: {type:'boolean', default: false},
-        O: {type:'boolean', default: false},
-        Q: {type:'boolean', default: true},
-        T: {type:'boolean', default: true}
+        nominal: {type:'boolean', default: false},
+        ordinal: {type:'boolean', default: false},
+        quantitative: {type:'boolean', default: true},
+        type: {type:'boolean', default: true}
       }
     },
     autoSortLine: {
