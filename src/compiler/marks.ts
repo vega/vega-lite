@@ -390,7 +390,7 @@ function text_props(e, layout, style) {
   if (e.has(Enctype.X)) {
     p.x = {scale: Enctype.X, field: e.fieldRef(Enctype.X, {bin_suffix: '_mid'})};
   } else if (!e.has(Enctype.X)) {
-    if (e.has(Enctype.TEXT) && e.fieldDef(Enctype.TEXT).type === Type.Quantitative) {
+    if (e.has(Enctype.TEXT) && e.fieldDef(Enctype.TEXT).type === Type.QUANTITATIVE) {
       p.x = {value: layout.cellWidth-5};
     } else {
       p.x = {value: e.bandWidth(Enctype.X, layout.x.useSmallBand) / 2};
@@ -420,7 +420,7 @@ function text_props(e, layout, style) {
 
   // text
   if (e.has(Enctype.TEXT)) {
-    if (e.fieldDef(Enctype.TEXT).type === Type.Quantitative) {
+    if (e.fieldDef(Enctype.TEXT).type === Type.QUANTITATIVE) {
       var numberFormat = fieldDef.format || e.numberFormat(Enctype.TEXT);
 
       p.text = {template: '{{' + e.fieldRef(Enctype.TEXT, {datum: true}) + ' | number:\'' +

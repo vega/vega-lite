@@ -4,11 +4,11 @@ import {Type} from './consts';
 /** Mapping from datalib's inferred type to Vega-lite's type */
 // TODO: ALL_CAPS
 export const types = {
-  'boolean': Type.Nominal,
-  'number': Type.Quantitative,
-  'integer': Type.Quantitative,
-  'date': Type.Temporal,
-  'string': Type.Nominal
+  'boolean': Type.NOMINAL,
+  'number': Type.QUANTITATIVE,
+  'integer': Type.QUANTITATIVE,
+  'date': Type.TEMPORAL,
+  'string': Type.NOMINAL
 };
 
 export function stats(data: Array<Array<any>>) {

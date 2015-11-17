@@ -27,11 +27,11 @@ describe('vl.fieldDef.cardinality()', function () {
 describe('vl.fieldDef.isTypes', function () {
   it('should return correct type checking', function() {
     var qDef = {name: 'number', type:'quantitative'};
-    expect(qDef.type === Type.Quantitative).to.eql(true);
-    expect(vlFieldDef.isTypes(qDef, [Type.Quantitative])).to.eql(true);
-    expect(vlFieldDef.isTypes(qDef, [Type.Quantitative, Type.Ordinal])).to.eql(true);
-    expect(vlFieldDef.isTypes(qDef, [Type.Ordinal, Type.Quantitative])).to.eql(true);
-    expect(vlFieldDef.isTypes(qDef, [Type.Quantitative, Type.Nominal])).to.eql(true);
-    expect(vlFieldDef.isTypes(qDef, [Type.Nominal])).to.eql(false);
+    expect(qDef.type === Type.QUANTITATIVE).to.eql(true);
+    expect(vlFieldDef.isTypes(qDef, [Type.QUANTITATIVE])).to.eql(true);
+    expect(vlFieldDef.isTypes(qDef, [Type.QUANTITATIVE, Type.ORDINAL])).to.eql(true);
+    expect(vlFieldDef.isTypes(qDef, [Type.ORDINAL, Type.QUANTITATIVE])).to.eql(true);
+    expect(vlFieldDef.isTypes(qDef, [Type.QUANTITATIVE, Type.NOMINAL])).to.eql(true);
+    expect(vlFieldDef.isTypes(qDef, [Type.NOMINAL])).to.eql(false);
   });
 });

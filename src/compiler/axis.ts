@@ -64,9 +64,9 @@ export function format(encoding: Encoding, name: string) {
     return format;
   }
 
-  if (fieldDef.type === Type.Quantitative) {
+  if (fieldDef.type === Type.QUANTITATIVE) {
     return encoding.numberFormat(name);
-  } else if (fieldDef.type === Type.Temporal) {
+  } else if (fieldDef.type === Type.TEMPORAL) {
     var timeUnit = encoding.fieldDef(name).timeUnit;
     if (!timeUnit) {
       return encoding.config('timeFormat');
@@ -88,7 +88,7 @@ export function grid(encoding: Encoding, name: string) {
   // - X and Y that have (1) quantitative fields that are not binned or (2) time fields.
   // Otherwise, the default value is `false`.
   return name === Enctype.ROW || name === Enctype.COL ||
-    (encoding.isTypes(name, [Type.Quantitative, Type.Temporal]) && !encoding.fieldDef(name).bin);
+    (encoding.isTypes(name, [Type.QUANTITATIVE, Type.TEMPORAL]) && !encoding.fieldDef(name).bin);
 }
 
 export function layer(encoding: Encoding, name: string, layout, stats, def) {
@@ -268,13 +268,13 @@ namespace properties {
   export function labels(encoding: Encoding, name: string, spec, layout, def) {
     let fieldDef = encoding.fieldDef(name);
     var timeUnit = fieldDef.timeUnit;
-    if (fieldDef.type === Type.Temporal && timeUnit && (time.hasScale(timeUnit))) {
+    if (fieldDef.type === Type.TEMPORAL && timeUnit && (time.hasScale(timeUnit))) {
       spec = util.extend({
         text: {scale: 'time-' + timeUnit}
       }, spec || {});
     }
 
-    if (encoding.isTypes(name, [Type.Nominal, Type.Ordinal]) && encoding.axis(name).labelMaxLength) {
+    if (encoding.isTypes(name, [Type.NOMINAL, Type.ORDINAL]) && encoding.axis(name).labelMaxLength) {
       // TODO replace this with Vega's labelMaxLength once it is introduced
       spec = util.extend({
         text: {
@@ -285,7 +285,7 @@ namespace properties {
 
      // for x-axis, set ticks for Q or rotate scale for ordinal scale
     if (name == Enctype.X) {
-      if ((encoding.isDimension(Enctype.X) || fieldDef.type === Type.Temporal)) {
+      if ((encoding.isDimension(Enctype.X) || fieldDef.type === Type.TEMPORAL)) {
         spec = util.extend({
           angle: {value: 270},
           align: {value: def.orient === 'top' ? 'left': 'right'},

@@ -73,10 +73,10 @@ export namespace source {
     var parse;
 
     encoding.forEach(function(fieldDef) {
-      if (fieldDef.type === Type.Temporal) {
+      if (fieldDef.type === Type.TEMPORAL) {
         parse = parse || {};
         parse[fieldDef.name] = 'date';
-      } else if (fieldDef.type === Type.Quantitative) {
+      } else if (fieldDef.type === Type.QUANTITATIVE) {
         if (vlFieldDef.isCount(fieldDef)) return;
         parse = parse || {};
         parse[fieldDef.name] = 'number';
@@ -103,7 +103,7 @@ export namespace source {
 
   export function timeTransform(encoding) {
     return encoding.reduce(function(transform, fieldDef, encType) {
-      if (fieldDef.type === Type.Temporal && fieldDef.timeUnit) {
+      if (fieldDef.type === Type.TEMPORAL && fieldDef.timeUnit) {
         var fieldRef = encoding.fieldRef(encType, {nofn: true, datum: true});
 
         transform.push({
@@ -148,10 +148,10 @@ export namespace source {
         if (fieldName === '*') return filteredFields; //count
 
         // TODO(#597) revise how filterNull is structured.
-        if ((encoding.config('filterNull').quantitative && fieldList.containsType[Type.Quantitative]) ||
-            (encoding.config('filterNull').temporal && fieldList.containsType[Type.Temporal]) ||
-            (encoding.config('filterNull').ordinal && fieldList.containsType[Type.Ordinal]) ||
-            (encoding.config('filterNull').nominal && fieldList.containsType[Type.Nominal])) {
+        if ((encoding.config('filterNull').quantitative && fieldList.containsType[Type.QUANTITATIVE]) ||
+            (encoding.config('filterNull').temporal && fieldList.containsType[Type.TEMPORAL]) ||
+            (encoding.config('filterNull').ordinal && fieldList.containsType[Type.ORDINAL]) ||
+            (encoding.config('filterNull').nominal && fieldList.containsType[Type.NOMINAL])) {
           filteredFields.push(fieldName);
         }
         return filteredFields;
