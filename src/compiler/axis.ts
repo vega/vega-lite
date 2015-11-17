@@ -1,4 +1,3 @@
-import {getter, setter} from '../util';
 import Encoding from '../Encoding';
 import * as util from '../util';
 import {Type, Enctype} from '../consts';
@@ -39,19 +38,19 @@ export function def(name: string, encoding: Encoding, layout, stats) {
     }
   });
 
-  // 2) Add properties groups
+  // 2) Add mark property definition groups
   var props = encoding.encDef(name).axis.properties || {};
 
   [
     'axis', 'grid', 'labels', 'title', // have special rules
     'ticks', 'majorTicks', 'minorTicks' // only default values
-  ].forEach(function(property) {
-    var value = properties[property] ?
-      properties[property](encoding, name, props[property], layout, def) :
-      props[property];
+  ].forEach(function(group) {
+    var value = properties[group] ?
+      properties[group](encoding, name, props[group], layout, def) :
+      props[group];
     if (value !== undefined) {
       def.properties = def.properties || {};
-      def.properties[property] = value;
+      def.properties[group] = value;
     }
   });
 
