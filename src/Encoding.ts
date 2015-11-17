@@ -1,4 +1,4 @@
-import {Enctype, Type, SHORTHAND, Table, MAXBINS_DEFAULT} from './consts';
+import {Enctype, Type, Shorthand, Table, MAXBINS_DEFAULT} from './consts';
 import * as util from './util';
 import * as vlFieldDef from './fielddef';
 import * as vlEnc from './enc';
@@ -32,7 +32,7 @@ export default class Encoding {
   }
 
   static fromShorthand(shorthand: string, data?, config?, theme?) {
-    var c = SHORTHAND,
+    var c = Shorthand,
       split = shorthand.split(c.Delim),
       marktype = split.shift().split(c.Assign)[1].trim(),
       enc = vlEnc.fromShorthand(split);
@@ -50,13 +50,13 @@ export default class Encoding {
   }
 
   toShorthand() {
-    return 'mark' + SHORTHAND.Assign + this._marktype +
-      SHORTHAND.Delim + vlEnc.shorthand(this._enc);
+    return 'mark' + Shorthand.Assign + this._marktype +
+      Shorthand.Delim + vlEnc.shorthand(this._enc);
   }
 
   static shorthand(spec) {
-    return 'mark' + SHORTHAND.Assign + spec.marktype +
-      SHORTHAND.Delim + vlEnc.shorthand(spec.encoding);
+    return 'mark' + Shorthand.Assign + spec.marktype +
+      Shorthand.Delim + vlEnc.shorthand(spec.encoding);
   }
 
   static specFromShorthand(shorthand: string, data, config, excludeConfig?) {
