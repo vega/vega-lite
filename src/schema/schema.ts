@@ -29,7 +29,7 @@ export var util = schemaUtil;
 // TODO move to VLUI
 export var defaultTimeFn = 'month';
 
-export var field = {
+export var fieldDef = {
   type: 'object',
   properties: {
     name: {
@@ -46,14 +46,14 @@ export var field = {
 
 var clone = vlUtil.duplicate;
 
-var typicalField = merge(clone(field), {
+var typicalField = merge(clone(fieldDef), {
   properties: {
     aggregate: aggregate,
     scale: typicalScale
   }
 });
 
-var onlyOrdinalField = merge(clone(field), {
+var onlyOrdinalField = merge(clone(fieldDef), {
   supportedRole: {
     dimension: true
   },

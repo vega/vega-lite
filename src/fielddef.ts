@@ -124,26 +124,26 @@ export function count() {
 
 export const COUNT_DISPLAYNAME = 'Number of Records';
 
-export function isCount(field) {
-  return field.aggregate === 'count';
+export function isCount(fieldDef) {
+  return fieldDef.aggregate === 'count';
 }
 
-export function cardinality(field, stats, filterNull = {}) {
+export function cardinality(fieldDef, stats, filterNull = {}) {
   // FIXME need to take filter into account
 
-  var stat = stats[field.name];
-  var type = field.type;
+  var stat = stats[fieldDef.name];
+  var type = fieldDef.type;
 
-  if (field.bin) {
-    var bins = util.getbins(stat, field.bin.maxbins || MAXBINS_DEFAULT);
+  if (fieldDef.bin) {
+    var bins = util.getbins(stat, fieldDef.bin.maxbins || MAXBINS_DEFAULT);
     return (bins.stop - bins.start) / bins.step;
   }
-  if (field.type === Type.TEMPORAL) {
-    var cardinality = time.cardinality(field, stats, filterNull, type);
+  if (fieldDef.type === Type.TEMPORAL) {
+    var cardinality = time.cardinality(fieldDef, stats, filterNull, type);
     if(cardinality !== null) return cardinality;
     //otherwise use calculation below
   }
-  if (field.aggregate) {
+  if (fieldDef.aggregate) {
     return 1;
   }
 
