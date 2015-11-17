@@ -1,5 +1,6 @@
 import * as util from '../util';
 import {Enctype} from '../consts';
+import Encoding from '../Encoding';
 
 import * as vlAxis from './axis';
 import * as vlScale from './scale';
@@ -35,7 +36,7 @@ function groupdef(name, opt) {
   return group;
 }
 
-export default function(group, encoding, layout, output, singleScaleNames, stats) {
+export default function(group, encoding: Encoding, layout, output, singleScaleNames, stats) {
   var enter = group.properties.enter;
   var facetKeys = [], cellAxes = [], from, axesGrp;
 

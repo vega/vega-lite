@@ -47,7 +47,7 @@ interface VgData {
 }
 
 export namespace source {
-  export function def(encoding): VgData {
+  export function def(encoding: Encoding): VgData {
     var source:VgData = {name: Table.SOURCE};
 
     // Data source (url or inline)
@@ -69,7 +69,7 @@ export namespace source {
     return source;
   }
 
-  function formatParse(encoding) {
+  function formatParse(encoding: Encoding) {
     var parse;
 
     encoding.forEach(function(fieldDef) {
@@ -90,7 +90,7 @@ export namespace source {
    * Generate Vega transforms for the source data table.  This can include
    * transforms for time unit, binning and filtering.
    */
-  export function transform(encoding) {
+  export function transform(encoding: Encoding) {
     // null filter comes first so transforms are not performed on null values
     // time and bin should come before filter so we can filter by time and bin
     return nullFilterTransform(encoding).concat(
@@ -101,7 +101,7 @@ export namespace source {
     );
   }
 
-  export function timeTransform(encoding) {
+  export function timeTransform(encoding: Encoding) {
     return encoding.reduce(function(transform, fieldDef, encType) {
       if (fieldDef.type === Type.TEMPORAL && fieldDef.timeUnit) {
         var fieldRef = encoding.fieldRef(encType, {nofn: true, datum: true});
@@ -116,7 +116,7 @@ export namespace source {
     }, []);
   }
 
-  export function binTransform(encoding) {
+  export function binTransform(encoding: Encoding) {
     return encoding.reduce(function(transform, fieldDef, encType) {
       if (encoding.bin(encType)) {
         transform.push({
@@ -142,7 +142,7 @@ export namespace source {
   /**
    * @return {Array} An array that might contain a filter transform for filtering null value based on filterNul config
    */
-  export function nullFilterTransform(encoding) {
+  export function nullFilterTransform(encoding: Encoding) {
     var filteredFields = util.reduce(encoding.fields(),
       function(filteredFields, fieldList, fieldName) {
         if (fieldName === '*') return filteredFields; //count
@@ -166,7 +166,7 @@ export namespace source {
       }] : [];
   }
 
-  export function filterTransform(encoding) {
+  export function filterTransform(encoding: Encoding) {
     var filter = encoding.data().filter;
     return filter ? [{
         type: 'filter',
@@ -174,7 +174,7 @@ export namespace source {
     }] : [];
   }
 
-  export function formulaTransform(encoding) {
+  export function formulaTransform(encoding: Encoding) {
     var formulas = encoding.data().formulas;
     if (formulas === undefined) {
       return [];
@@ -250,7 +250,7 @@ export namespace stack {
   /**
    * Add stacked data source, for feeding the shared scale.
    */
-  export function def(encoding, stackCfg):VgData {
+  export function def(encoding: Encoding, stackCfg):VgData {
     var dim = stackCfg.groupby;
     var val = stackCfg.value;
     var facets = encoding.facets();
@@ -280,7 +280,7 @@ export namespace stack {
   };
 }
 
-export function filterNonPositive(dataTable, encoding) {
+export function filterNonPositive(dataTable, encoding: Encoding) {
   encoding.forEach(function(_, encType) {
     if (encoding.scale(encType).type === 'log') {
       dataTable.transform.push({

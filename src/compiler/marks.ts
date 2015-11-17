@@ -4,7 +4,7 @@ import Encoding from '../Encoding';
 // https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations
 declare var exports;
 
-export function defs(encoding, layout, style) {
+export function defs(encoding: Encoding, layout, style) {
   var defs = [],
     mark = exports[encoding.marktype()],
     from = encoding.dataTable();
@@ -156,7 +156,7 @@ function bar_props(e: Encoding, layout, style) {
   return p;
 }
 
-function point_props(e, layout, style) {
+function point_props(e: Encoding, layout, style) {
   // TODO Use Vega's marks properties interface
   var p:any = {};
 
@@ -211,7 +211,7 @@ function point_props(e, layout, style) {
   return p;
 }
 
-function line_props(e,layout, style) {
+function line_props(e: Encoding,layout, style) {
   // TODO Use Vega's marks properties interface
   var p:any = {};
 
@@ -245,7 +245,7 @@ function line_props(e,layout, style) {
 }
 
 // TODO(#694): optimize area's usage with bin
-function area_props(e, layout, style) {
+function area_props(e: Encoding, layout, style) {
   // TODO Use Vega's marks properties interface
   var p:any = {};
 
@@ -285,7 +285,7 @@ function area_props(e, layout, style) {
   return p;
 }
 
-function tick_props(e, layout, style) {
+function tick_props(e: Encoding, layout, style) {
   // TODO Use Vega's marks properties interface
   var p:any = {};
 
@@ -339,7 +339,7 @@ function tick_props(e, layout, style) {
 }
 
 function filled_point_props(shape) {
-  return function(e, layout, style) {
+  return function(e: Encoding, layout, style) {
     // TODO Use Vega's marks properties interface
     var p:any = {};
 
@@ -381,7 +381,7 @@ function filled_point_props(shape) {
   };
 }
 
-function text_props(e, layout, style) {
+function text_props(e: Encoding, layout, style) {
   // TODO Use Vega's marks properties interface
   var p:any = {},
     fieldDef = e.fieldDef(Enctype.TEXT);

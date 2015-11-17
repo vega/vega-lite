@@ -66,7 +66,7 @@ export function type(name: string, encoding: Encoding) {
   }
 }
 
-export function domain(encoding, name, type, facet:boolean = false) {
+export function domain(encoding: Encoding, name, type, facet:boolean = false) {
   var fieldDef = encoding.fieldDef(name);
 
   if (fieldDef.scale.domain) { // explicit value
@@ -128,7 +128,7 @@ export function domain(encoding, name, type, facet:boolean = false) {
   }
 }
 
-export function domainSort(encoding, name, type):any {
+export function domainSort(encoding: Encoding, name, type):any {
   var sort = encoding.fieldDef(name).sort;
   if (sort === 'ascending' || sort === 'descending') {
     return true;
@@ -144,7 +144,7 @@ export function domainSort(encoding, name, type):any {
   return undefined;
 }
 
-export function reverse(encoding, name) {
+export function reverse(encoding: Encoding, name) {
   var sort = encoding.fieldDef(name).sort;
   return sort && (sort === 'descending' || (sort.order === 'descending')) ? true : undefined;
 }
@@ -158,7 +158,7 @@ var sharedDomainAggregate = ['mean', 'average', 'stdev', 'stdevp', 'median', 'q1
  * 2. Aggregation function is not `count` or `sum`
  * 3. The scale is quantitative or time scale.
  */
-export function _useRawDomain (encoding, name) {
+export function _useRawDomain (encoding: Encoding, name) {
   var fieldDef = encoding.fieldDef(name);
 
   // scale value
@@ -187,7 +187,7 @@ export function _useRawDomain (encoding, name) {
     );
 }
 
-export function bandWidth(encoding, name, type, layout) {
+export function bandWidth(encoding: Encoding, name, type, layout) {
   // TODO: eliminate layout
 
   switch (name) {
@@ -205,12 +205,12 @@ export function bandWidth(encoding, name, type, layout) {
   return undefined;
 }
 
-export function clamp(encoding, name) {
+export function clamp(encoding: Encoding, name) {
   // only return value if explicit value is specified.
   return encoding.fieldDef(name).scale.clamp;
 }
 
-export function exponent(encoding, name) {
+export function exponent(encoding: Encoding, name) {
   // only return value if explicit value is specified.
   return encoding.fieldDef(name).scale.exponent;
 }
@@ -236,7 +236,7 @@ export function nice(encoding: Encoding, name, type) {
   return undefined;
 }
 
-export function outerPadding(encoding, name, type) {
+export function outerPadding(encoding: Encoding, name, type) {
   if (type === 'ordinal') {
     if (encoding.fieldDef(name).scale.outerPadding !== undefined) {
       return encoding.fieldDef(name).scale.outerPadding; // explicit value
@@ -248,7 +248,7 @@ export function outerPadding(encoding, name, type) {
   return undefined;
 }
 
-export function padding(encoding, name, type) {
+export function padding(encoding: Encoding, name, type) {
   if (type === 'ordinal') {
     // Both explicit and non-explicit values are handled by the helper method.
     return encoding.padding(name);
@@ -256,7 +256,7 @@ export function padding(encoding, name, type) {
   return undefined;
 }
 
-export function points(encoding, name, type) {
+export function points(encoding: Encoding, name, type) {
   if (type === 'ordinal') {
     if (encoding.fieldDef(name).scale.points !== undefined) {
       // explicit value
@@ -327,7 +327,7 @@ export function round(encoding: Encoding, name) {
   return undefined;
 }
 
-export function zero(encoding, name) {
+export function zero(encoding: Encoding, name) {
   var fieldDef = encoding.fieldDef(name);
   var timeUnit = fieldDef.timeUnit;
 
