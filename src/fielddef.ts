@@ -1,6 +1,6 @@
 // utility for Encoding Definition
 
-import {TIMEUNITS, Type, Shorthand, AGGREGATE_OPS, MAXBINS_DEFAULT} from './consts';
+import {TIMEUNITS, Type, SHORTHAND, AGGREGATE_OPS, MAXBINS_DEFAULT} from './consts';
 import * as util from './util';
 import * as time from './compiler/time';
 
@@ -39,19 +39,19 @@ export function fieldRef(fieldDef, opt) {
 }
 
 export function shorthand(f) {
-  return (f.aggregate ? f.aggregate + Shorthand.Func : '') +
-    (f.timeUnit ? f.timeUnit + Shorthand.Func : '') +
-    (f.bin ? 'bin' + Shorthand.Func : '') +
-    (f.name || '') + Shorthand.Type + Type.SHORT_TYPE[f.type];
+  return (f.aggregate ? f.aggregate + SHORTHAND.Func : '') +
+    (f.timeUnit ? f.timeUnit + SHORTHAND.Func : '') +
+    (f.bin ? 'bin' + SHORTHAND.Func : '') +
+    (f.name || '') + SHORTHAND.Type + Type.SHORT_TYPE[f.type];
 }
 
 export function shorthands(fieldDefs, delim) {
-  delim = delim || Shorthand.Delim;
+  delim = delim || SHORTHAND.Delim;
   return fieldDefs.map(shorthand).join(delim);
 }
 
 export function fromShorthand(shorthand: string) {
-  var split = shorthand.split(Shorthand.Type), i;
+  var split = shorthand.split(SHORTHAND.Type), i;
 
   var fieldDef: any = {
     name: split[0].trim(),

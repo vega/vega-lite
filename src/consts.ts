@@ -70,7 +70,7 @@ export const AGGREGATE_OPS = [
 // TODO: remove
 export var MAXBINS_DEFAULT = 15;
 
-export const Shorthand = {
+export const SHORTHAND = {
   Delim: '|',
   Assign: '=',
   Type: ',',
