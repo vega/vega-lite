@@ -37,7 +37,7 @@ export var config = {
         nominal: {type:'boolean', default: false},
         ordinal: {type:'boolean', default: false},
         quantitative: {type:'boolean', default: true},
-        type: {type:'boolean', default: true}
+        temporal: {type:'boolean', default: true}
       }
     },
     autoSortLine: {
