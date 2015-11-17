@@ -15,8 +15,8 @@ var EXAMPLES = [
       },
       marktype: 'bar',
       encoding: {
-        y: {type: 'Q', name: 'y'},
-        x: {type: 'O', name: 'x'}
+        y: {type: 'quantitative', name: 'y'},
+        x: {type: 'ordinal', name: 'x'}
       }
     }
   },{
@@ -34,8 +34,8 @@ var EXAMPLES = [
       },
       marktype: 'bar',
       encoding: {
-        y: {type: 'Q', name: 'y'},
-        x: {type: 'O', name: 'x'}
+        y: {type: 'quantitative', name: 'y'},
+        x: {type: 'ordinal', name: 'x'}
       }
     }
   },{
@@ -43,8 +43,8 @@ var EXAMPLES = [
     spec: {
       'marktype': 'bar',
       'encoding': {
-        'x': {'name': 'Cylinders','type': 'O'},
-        'y': {'name': 'Acceleration','type': 'Q','aggregate': 'mean'}
+        'x': {'name': 'Cylinders','type': 'ordinal'},
+        'y': {'name': 'Acceleration','type': 'quantitative','aggregate': 'mean'}
       },
       'data': {'url': 'data/cars.json'}
     }
@@ -53,12 +53,12 @@ var EXAMPLES = [
     spec: {
       marktype: 'bar',
       encoding: {
-        x: {name: 'Origin', type: 'N'},
-        y: {name: 'Acceleration', type: 'Q', aggregate: 'mean'},
-        col: {name: 'Cylinders', type: 'O'},
+        x: {name: 'Origin', type: 'nominal'},
+        y: {name: 'Acceleration', type: 'quantitative', aggregate: 'mean'},
+        col: {name: 'Cylinders', type: 'ordinal'},
         color: {
           name: 'Origin',
-          type: 'N'
+          type: 'nominal'
         }
       },
       data: {url: 'data/cars.json'}
@@ -69,8 +69,8 @@ var EXAMPLES = [
     spec: {
       marktype: 'point',
       encoding: {
-        x: {'name': 'Horsepower','type': 'Q'},
-        y: {'name': 'Miles_per_Gallon','type': 'Q'}
+        x: {'name': 'Horsepower','type': 'quantitative'},
+        y: {'name': 'Miles_per_Gallon','type': 'quantitative'}
       },
       data: {'url': 'data/cars.json'}
     }
@@ -79,12 +79,12 @@ var EXAMPLES = [
     spec: {
       'marktype': 'point',
       'encoding': {
-        'x': {'bin': true,'name': 'Displacement','type': 'Q'},
-        'y': {'bin': true,'name': 'Miles_per_Gallon','type': 'Q'},
+        'x': {'bin': true,'name': 'Displacement','type': 'quantitative'},
+        'y': {'bin': true,'name': 'Miles_per_Gallon','type': 'quantitative'},
         'size': {
           'name': '*',
           'aggregate': 'count',
-          'type': 'Q',
+          'type': 'quantitative',
           'displayName': 'Number of Records'
         }
       },
@@ -95,8 +95,8 @@ var EXAMPLES = [
     spec: {
       'marktype': 'point',
       'encoding': {
-        'x': {'name': 'MPAA_Rating','type': 'N'},
-        'y': {'name': 'Release_Date','type': 'N'}
+        'x': {'name': 'MPAA_Rating','type': 'nominal'},
+        'y': {'name': 'Release_Date','type': 'nominal'}
       },
       'data': {'url': 'data/movies.json'}
     }
@@ -106,8 +106,8 @@ var EXAMPLES = [
     spec: {
       marktype: 'line',
       encoding: {
-        x: {'name': 'Year','type': 'T','timeUnit': 'year'},
-        y: {'name': 'Horsepower','type': 'Q','aggregate': 'mean'}
+        x: {'name': 'Year','type': 'temporal','timeUnit': 'year'},
+        y: {'name': 'Horsepower','type': 'quantitative','aggregate': 'mean'}
       },
       data: {'url': 'data/cars.json'}
     }
@@ -116,8 +116,8 @@ var EXAMPLES = [
     spec: {
       marktype: 'bar',
       encoding: {
-        x: {'bin': {'maxbins': 15},'name': 'Horsepower','type': 'Q'},
-        y: {'name': '*','type': 'Q','aggregate': 'count'}
+        x: {'bin': {'maxbins': 15},'name': 'Horsepower','type': 'quantitative'},
+        y: {'name': '*','type': 'quantitative','aggregate': 'count'}
       },
       data: {'url': 'data/cars.json'}
     }
@@ -127,9 +127,9 @@ var EXAMPLES = [
     spec: {
       marktype: 'bar',
       encoding: {
-        x: {'bin': {'maxbins': 15},'name': 'Horsepower','type': 'Q'},
-        y: {'name': '*','type': 'Q','aggregate': 'count'},
-        color: {'name': 'Cylinders','type': 'N'}
+        x: {'bin': {'maxbins': 15},'name': 'Horsepower','type': 'quantitative'},
+        y: {'name': '*','type': 'quantitative','aggregate': 'count'},
+        color: {'name': 'Cylinders','type': 'nominal'}
       },
       data: {'url': 'data/cars.json'}
     }
@@ -138,8 +138,8 @@ var EXAMPLES = [
     spec: {
       'marktype': 'area',
       'encoding': {
-        'x': {'name': 'Year','type': 'T','timeUnit': 'year'},
-        'y': {'name': 'Weight_in_lbs','type': 'Q','aggregate': 'sum'}
+        'x': {'name': 'Year','type': 'temporal','timeUnit': 'year'},
+        'y': {'name': 'Weight_in_lbs','type': 'quantitative','aggregate': 'sum'}
       },
       'data': {'url': 'data/cars.json'}
     }
@@ -148,9 +148,9 @@ var EXAMPLES = [
     spec: {
       'marktype': 'area',
       'encoding': {
-        'x': {'name': 'Year','type': 'T','timeUnit': 'year'},
-        'y': {'name': 'Weight_in_lbs','type': 'Q','aggregate': 'sum'},
-        'color': {'name': 'Cylinders', 'type': 'O'}
+        'x': {'name': 'Year','type': 'temporal','timeUnit': 'year'},
+        'y': {'name': 'Weight_in_lbs','type': 'quantitative','aggregate': 'sum'},
+        'color': {'name': 'Cylinders', 'type': 'ordinal'}
       },
       'data': {'url': 'data/cars.json'}
     }
@@ -159,9 +159,9 @@ var EXAMPLES = [
     spec: {
       'marktype': 'area',
       'encoding': {
-        'x': {'name': 'Year','type': 'T','timeUnit': 'year'},
-        'y': {'name': 'Weight_in_lbs','type': 'Q','aggregate': 'sum'},
-        'col': {'name': 'Cylinders', 'type': 'O'}
+        'x': {'name': 'Year','type': 'temporal','timeUnit': 'year'},
+        'y': {'name': 'Weight_in_lbs','type': 'quantitative','aggregate': 'sum'},
+        'col': {'name': 'Cylinders', 'type': 'ordinal'}
       },
       'data': {'url': 'data/cars.json'}
     }
@@ -170,9 +170,9 @@ var EXAMPLES = [
     spec: {
       'marktype': 'bar',
       'encoding': {
-        'x': {'name': 'yield','type': 'Q','aggregate': 'sum'},
-        'y': {'name': 'variety','type': 'N'},
-        'color': {'name': 'site', 'type': 'N'}
+        'x': {'name': 'yield','type': 'quantitative','aggregate': 'sum'},
+        'y': {'name': 'variety','type': 'nominal'},
+        'color': {'name': 'site', 'type': 'nominal'}
       },
       'data': {'url': 'data/barley.json'}
     }
@@ -181,9 +181,9 @@ var EXAMPLES = [
     spec: {
       'marktype': 'bar',
       'encoding': {
-        'y': {'name': 'yield','type': 'Q','aggregate': 'sum'},
-        'x': {'name': 'variety','type': 'N'},
-        'color': {'name': 'site', 'type': 'N'}
+        'y': {'name': 'yield','type': 'quantitative','aggregate': 'sum'},
+        'x': {'name': 'variety','type': 'nominal'},
+        'color': {'name': 'site', 'type': 'nominal'}
       },
       'data': {'url': 'data/barley.json'}
     }
@@ -192,10 +192,10 @@ var EXAMPLES = [
     spec: {
       'marktype': 'bar',
       'encoding': {
-        'x': {'name': 'Acceleration','type': 'Q','aggregate': 'sum'},
+        'x': {'name': 'Acceleration','type': 'quantitative','aggregate': 'sum'},
         'color': {
           'name': 'Origin',
-          'type': 'N'
+          'type': 'nominal'
         }
       },
       'data': {'url': 'data/cars.json'}
@@ -205,10 +205,10 @@ var EXAMPLES = [
     spec: {
       'marktype': 'bar',
       'encoding': {
-        'x': {'name': 'yield','type': 'Q','aggregate': 'sum'},
-        'y': {'name': 'variety','type': 'N'},
-        'col': {'name': 'year','type': 'O'},
-        'color': {'name': 'site', 'type': 'N'}
+        'x': {'name': 'yield','type': 'quantitative','aggregate': 'sum'},
+        'y': {'name': 'variety','type': 'nominal'},
+        'col': {'name': 'year','type': 'ordinal'},
+        'color': {'name': 'site', 'type': 'nominal'}
       },
       'data': {'url': 'data/barley.json'}
     }
@@ -217,9 +217,9 @@ var EXAMPLES = [
     spec: {
       'marktype': 'point',
       'encoding': {
-        'x': {'name': 'Worldwide_Gross','type': 'Q'},
-        'y': {'name': 'US_DVD_Sales','type': 'Q'},
-        'col': {'name': 'MPAA_Rating','type': 'O'}
+        'x': {'name': 'Worldwide_Gross','type': 'quantitative'},
+        'y': {'name': 'US_DVD_Sales','type': 'quantitative'},
+        'col': {'name': 'MPAA_Rating','type': 'ordinal'}
       },
       'data': {'url': 'data/movies.json'}
     }
@@ -231,14 +231,14 @@ var EXAMPLES = [
       data: {url: 'data/barley.json'},
       marktype: 'point',
       encoding: {
-        x: {type: 'Q',name: 'yield', aggregate: 'mean'},
+        x: {type: 'quantitative',name: 'yield', aggregate: 'mean'},
         y: {
           sort: {field: 'yield', op: 'mean'},
-          type: 'O',
+          type: 'ordinal',
           name: 'variety'
         },
-        row: {type: 'O',name: 'site'},
-        color: {type: 'N',name: 'year'}
+        row: {type: 'ordinal',name: 'site'},
+        color: {type: 'nominal',name: 'year'}
       }
     }
   },{
@@ -246,10 +246,10 @@ var EXAMPLES = [
     spec: {
       'marktype': 'text',
       'encoding': {
-        'row': {'name': 'Origin','type': 'O'},
-        'col': {'name': 'Cylinders','type': 'O'},
-        'color': {'name': 'Horsepower','type': 'Q','aggregate': 'mean'},
-        'text': {'name': '*','type': 'Q','aggregate': 'count'}
+        'row': {'name': 'Origin','type': 'ordinal'},
+        'col': {'name': 'Cylinders','type': 'ordinal'},
+        'color': {'name': 'Horsepower','type': 'quantitative','aggregate': 'mean'},
+        'text': {'name': '*','type': 'quantitative','aggregate': 'count'}
       },
       'data': {'url': 'data/cars.json'}
     }
@@ -258,11 +258,11 @@ var EXAMPLES = [
     spec: {
       "marktype": "bar",
       "encoding": {
-        "x": {"bin": true,"name": "Acceleration","type": "Q"},
+        "x": {"bin": true,"name": "Acceleration","type": "quantitative"},
         "y": {
           "name": "*",
           "aggregate": "count",
-          "type": "Q",
+          "type": "quantitative",
           "displayName": "Number of Records"
         }
       },
@@ -273,11 +273,11 @@ var EXAMPLES = [
     spec: {
       "marktype": "bar",
       "encoding": {
-        "y": {"bin": true,"name": "Acceleration","type": "Q"},
+        "y": {"bin": true,"name": "Acceleration","type": "quantitative"},
         "x": {
           "name": "*",
           "aggregate": "count",
-          "type": "Q",
+          "type": "quantitative",
           "displayName": "Number of Records"
         }
       },
@@ -288,11 +288,11 @@ var EXAMPLES = [
     spec: {
       "marktype": "point",
       "encoding": {
-        "x": {"bin": true,"name": "Acceleration","type": "Q"},
+        "x": {"bin": true,"name": "Acceleration","type": "quantitative"},
         "y": {
           "name": "*",
           "aggregate": "count",
-          "type": "Q",
+          "type": "quantitative",
           "displayName": "Number of Records"
         }
       },
@@ -303,11 +303,11 @@ var EXAMPLES = [
     spec: {
       "marktype": "line",
       "encoding": {
-        "x": {"bin": true,"name": "Acceleration","type": "Q"},
+        "x": {"bin": true,"name": "Acceleration","type": "quantitative"},
         "y": {
           "name": "*",
           "aggregate": "count",
-          "type": "Q",
+          "type": "quantitative",
           "displayName": "Number of Records"
         }
       },
@@ -318,11 +318,11 @@ var EXAMPLES = [
     spec: {
       "marktype": "area",
       "encoding": {
-        "x": {"bin": true,"name": "Acceleration","type": "Q"},
+        "x": {"bin": true,"name": "Acceleration","type": "quantitative"},
         "y": {
           "name": "*",
           "aggregate": "count",
-          "type": "Q",
+          "type": "quantitative",
           "displayName": "Number of Records"
         }
       },
@@ -374,11 +374,11 @@ var EXAMPLES = [
       "encoding": {
         "y": {
           "scale": {"type": "log"},
-          "type": "Q",
+          "type": "quantitative",
           "name": "m_teps",
           "axis": {"title": "MTEPS"}
         },
-        "x": {"type": "O","name": "dataset"}
+        "x": {"type": "ordinal","name": "dataset"}
       }
     }
   }

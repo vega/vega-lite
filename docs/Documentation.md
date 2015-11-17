@@ -65,8 +65,8 @@ var vlspec = {
       },
       "marktype": "bar",
       "encoding": {
-        "x": {"type": "O","name": "a"},
-        "y": {"type": "Q","name": "b"}
+        "x": {"type": "ordinal","name": "a"},
+        "y": {"type": "quantitative","name": "b"}
       }
     };
 
@@ -123,8 +123,8 @@ var vlspec = {
       "data": {"url": "data/cars.json"},
       "marktype": "point",
       "encoding": {
-        "x": {"type": "O","name": "Origin"},
-        "y": {"type": "Q","name": "Acceleration"}
+        "x": {"type": "ordinal","name": "Origin"},
+        "y": {"type": "quantitative","name": "Acceleration"}
       }
     };
 

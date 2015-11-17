@@ -28,10 +28,10 @@ export namespace Enctype {
 }
 
 export namespace Type {
-  export const Q = 'Q';
-  export const O = 'O';
-  export const T = 'T';
-  export const N = 'N';
+  export const Quantitative = 'quantitative';
+  export const Ordinal = 'ordinal';
+  export const Temporal = 'temporal';
+  export const Nominal = 'nominal';
 }
 
 export const TIMEUNITS = [
@@ -53,5 +53,17 @@ export const Shorthand = {
   Delim: '|',
   Assign: '=',
   Type: ',',
-  Func: '_'
+  Func: '_',
+  ShortType: {
+    quantitative: 'Q',
+    temporal: 'T',
+    nominal: 'N',
+    ordinal: 'O'
+  },
+  TypeFromShortType: {
+    Q: Type.Quantitative,
+    T: Type.Temporal,
+    O: Type.Ordinal,
+    N: Type.Nominal
+  }
 };

@@ -45,9 +45,9 @@ describe('Util', function() {
     var spec = {
       marktype: 'point',
       encoding: {
-        x: { name: 'dsp', type: 'Q', scale: {type: 'linear'}
+        x: { name: 'dsp', type: 'quantitative', scale: {type: 'linear'}
       },
-        color: { name: 'cyl', type: 'O' }
+        color: { name: 'cyl', type: 'ordinal' }
       },
       data: {
         formatType: 'json',
@@ -58,8 +58,8 @@ describe('Util', function() {
     var expected = {
       marktype: 'point',
       encoding: {
-        x: { name: 'dsp', type: 'Q' },
-        color: { name: 'cyl', type: 'O' }
+        x: { name: 'dsp', type: 'quantitative' },
+        color: { name: 'cyl', type: 'ordinal' }
       },
       data: {
         url: 'data/cars.json'

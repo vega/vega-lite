@@ -8,7 +8,7 @@ describe('time', function() {
     timeUnit = 'month',
     encoding = Encoding.fromSpec({
       encoding: {
-        x: {name: field, type: 'T', timeUnit: timeUnit}
+        x: {name: field, type: 'temporal', timeUnit: timeUnit}
       }
     }),
     scales = time.scales(encoding);

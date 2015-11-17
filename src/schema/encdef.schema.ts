@@ -1,22 +1,17 @@
 import {toMap} from '../util';
 import {TIMEUNITS, Type, AGGREGATE_OPS, MAXBINS_DEFAULT} from '../consts';
 
-var Q = Type[Type.Q];
-var O = Type[Type.O];
-var N = Type[Type.N];
-var T = Type[Type.T];
-
 export var aggregate = {
   type: 'string',
   enum: AGGREGATE_OPS,
   supportedEnums: {
-    Q: AGGREGATE_OPS,
-    O: ['median','min','max'],
-    N: [],
-    T: ['mean', 'median', 'min', 'max'], // TODO: revise what should time support
+    quantitative: AGGREGATE_OPS,
+    ordinal: ['median','min','max'],
+    nominal: [],
+    temporal: ['mean', 'median', 'min', 'max'], // TODO: revise what should time support
     '': ['count']
   },
-  supportedTypes: toMap([Q, N, O, T, ''])
+  supportedTypes: toMap([Type.Quantitative, Type.Nominal, Type.Ordinal, Type.Temporal, ''])
 };
 
 export var bin = {
@@ -30,18 +25,18 @@ export var bin = {
       description: 'Maximum number of bins.'
     }
   },
-  supportedTypes: toMap([Q]) // TODO: add O after finishing #81
+  supportedTypes: toMap([Type.Quantitative]) // TODO: add O after finishing #81
 };
 
 export var timeUnit = {
   type: 'string',
   enum: TIMEUNITS,
-  supportedTypes: toMap([T])
+  supportedTypes: toMap([Type.Temporal])
 };
 
 export var sort = {
   default: 'ascending',
-  supportedTypes: toMap([Q, O]),
+  supportedTypes: toMap([Type.Quantitative, Type.Ordinal]),
   oneOf: [
     {
       type: 'string',

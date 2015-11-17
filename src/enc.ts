@@ -4,7 +4,7 @@ import {Enctype, Type, Shorthand} from './consts';
 import * as vlEncDef from './encdef';
 import * as util from './util';
 
-let encTypes = Enctype.LIST; 
+let encTypes = Enctype.LIST;
 
 export function countRetinal(enc) {
   var count = 0;
@@ -68,7 +68,7 @@ export function fields(enc) {
     if (fieldList.indexOf(field) === -1) {
       fieldList.push(field);
       // augment the array with containsType.Q / O / N / T
-      containsType[Type[field.type]] = true;
+      containsType[field.type] = true;
     }
     return m;
   }, {});

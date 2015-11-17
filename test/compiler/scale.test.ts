@@ -21,8 +21,8 @@ describe('vl.compile.scale', function() {
               aggregate: 'sum',
               name: 'origin'
             },
-            x: {name: 'x', type: 'O'},
-            color: {name: 'color', type: 'O'}
+            x: {name: 'x', type: 'ordinal'},
+            color: {name: 'color', type: 'ordinal'}
           }
         }), 'y', 'linear', true);
 
@@ -40,8 +40,8 @@ describe('vl.compile.scale', function() {
               aggregate: 'sum',
               name: 'origin'
             },
-            x: {name: 'x', type: 'O'},
-            color: {name: 'color', type: 'O'}
+            x: {name: 'x', type: 'ordinal'},
+            color: {name: 'color', type: 'ordinal'}
           }
         }), 'y', 'linear', true);
 
@@ -61,7 +61,7 @@ describe('vl.compile.scale', function() {
                 bin: {maxbins: 15},
                 name: 'origin',
                 scale: {useRawDomain: true},
-                type: Type.Q
+                type: Type.Quantitative
               }
             }
           }), 'y', 'ordinal');
@@ -80,7 +80,7 @@ describe('vl.compile.scale', function() {
                 aggregate: 'mean',
                 name: 'origin',
                 scale: {useRawDomain: true},
-                type: 'Q'
+                type: 'quantitative'
               }
             }
           }), 'y', 'linear');
@@ -96,7 +96,7 @@ describe('vl.compile.scale', function() {
                 aggregate: 'sum',
                 name: 'origin',
                 scale: {useRawDomain: true},
-                type: Type.Q
+                type: Type.Quantitative
               }
             }
           }), 'y', 'linear');
@@ -112,7 +112,7 @@ describe('vl.compile.scale', function() {
                 aggregate: 'min',
                 name: 'origin',
                 scale: {useRawDomain: false},
-                type: Type.Q
+                type: Type.Quantitative
               }
             }
           }), 'y', 'linear');
@@ -129,7 +129,7 @@ describe('vl.compile.scale', function() {
               y: {
                 name: 'origin',
                 scale: {useRawDomain: true},
-                type: Type.T
+                type: Type.Temporal
               }
             }
           }), 'y', 'time');
@@ -144,7 +144,7 @@ describe('vl.compile.scale', function() {
               y: {
                 name: 'origin',
                 scale: {useRawDomain: true},
-                type: 'T',
+                type: 'temporal',
                 timeUnit: 'year'
               }
             }
@@ -161,7 +161,7 @@ describe('vl.compile.scale', function() {
               y: {
                 name: 'origin',
                 scale: {useRawDomain: true},
-                type: 'T',
+                type: 'temporal',
                 timeUnit: 'month'
               }
             }
@@ -176,7 +176,7 @@ describe('vl.compile.scale', function() {
         var sortDef = {op: 'min', field:'Acceleration'};
         var encoding = Encoding.fromSpec({
             encoding: {
-              y: { name: 'origin', type: Type.O, sort: sortDef}
+              y: { name: 'origin', type: Type.Ordinal, sort: sortDef}
             }
           });
 
@@ -191,7 +191,7 @@ describe('vl.compile.scale', function() {
       it('should return correct domain without sort if sort is not provided', function() {
         var encoding = Encoding.fromSpec({
             encoding: {
-              y: { name: 'origin', type: Type.O}
+              y: { name: 'origin', type: Type.Ordinal}
             }
           });
 
@@ -229,7 +229,7 @@ describe('vl.compile.scale', function() {
       var brewerPalettes = util.keys(colorbrewer);
       brewerPalettes.forEach(function(palette) {
         var cardinality = 20;
-        expect(vlscale.colors.palette(palette, cardinality, Type.N)).to.eql(
+        expect(vlscale.colors.palette(palette, cardinality, Type.Nominal)).to.eql(
           colorbrewer[palette][Math.max.apply(null, util.keys(colorbrewer[palette]))]
         );
       });
@@ -242,7 +242,7 @@ describe('vl.compile.scale', function() {
           p = colorbrewer[palette],
           ps = Math.max.apply(null, util.keys(p)),
           interpolator = d3.interpolateHsl(p[ps][0], p[ps][ps - 1]);
-        expect(vlscale.colors.palette(palette, cardinality, Type.O)).to.eql(
+        expect(vlscale.colors.palette(palette, cardinality, Type.Ordinal)).to.eql(
           util.range(cardinality).map(function(i) {
             return interpolator(i * 1.0 / (cardinality - 1));
           })

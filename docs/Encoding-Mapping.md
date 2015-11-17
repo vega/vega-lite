@@ -19,7 +19,7 @@ Here are the list of properties of the encoding property definition object:
 | :------------ |:-------------:| :------------- |
 | name __<sup>1</sup>__ | String        | A field/variable from which to pull a data value.    |
 | value         | String,Integer | A constant value |
-| type          | String        | Data Type (`Q` for quantitative, `O` for ordinal, `T` for temporal, and `N` for nominal).  __<sup>2</sup>__ |
+| type          | String        | Data Type (`'quantitative'`, `'ordinal'`, `'temporal'`, and `'nominal'`).  __<sup>2</sup>__ |
 | [aggregate](#aggregate) | String        | Aggregation function for the field (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`)  |
 | [bin](#bin)          | Boolean \| Object        | Boolean flag / configuration object for binning.  See [Binning](#Binning) |
 | [timeUnit](#timeunit)| String        | Property for converting time unit            |
@@ -41,9 +41,6 @@ We are considering other properties of variables including specifying primitive 
 __TODO__
 
 
-## type
-
-__TODO__
 
 ## bin
 
