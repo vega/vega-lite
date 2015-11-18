@@ -30,7 +30,7 @@ export function defs(encoding: Encoding, layout, style) {
   defs.push({
     type: mark.type,
     from: {data: from},
-    properties: {enter: p, update: p}
+    properties: {update: p}
   });
 
   return defs;
