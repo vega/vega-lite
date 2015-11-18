@@ -270,7 +270,7 @@ namespace properties {
     var timeUnit = fieldDef.timeUnit;
     if (fieldDef.type === Type.TEMPORAL && timeUnit && (time.hasScale(timeUnit))) {
       spec = util.extend({
-        text: {scale: 'time-' + timeUnit}
+        text: {scale: 'time-' + timeUnit, field: 'data'}
       }, spec || {});
     }
 

@@ -20,6 +20,7 @@ import {legend} from './fielddef.legend.schema';
 // TODO(#620) refer to vega schema
 // var vgStackSchema = require('vega/src/transforms/Stack').schema;
 
+export {aggregate} from './fielddef.schema';
 
 export var util = schemaUtil;
 

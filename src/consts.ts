@@ -67,7 +67,6 @@ export namespace Enctype {
         };
     }
     throw new Error("Invalid encoding channel" + channel);
-    return null;
   }
 }
 
