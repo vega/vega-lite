@@ -35,7 +35,7 @@ export namespace Enctype {
   export type Type = string;
 
   interface SupportedRole {
-    [role:string]:boolean
+    [role:string]:boolean;
   };
 
   /**
