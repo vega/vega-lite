@@ -50,11 +50,11 @@ export default function(encoding: Encoding, mdef, stack) {
   mdef.from.transform = transforms;
 
   // TODO(#276): This is super hack-ish -- consolidate into modular mark properties?
-  mdef.properties.update[field] = mdef.properties.enter[field] = {
+  mdef.properties.update[field] = {
     scale: field,
     field: startField
   };
-  mdef.properties.update[field + '2'] = mdef.properties.enter[field + '2'] = {
+  mdef.properties.update[field + '2'] = {
     scale: field,
     field: endField
   };
