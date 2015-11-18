@@ -200,28 +200,20 @@ export default class Encoding {
     return fieldDef && vlFieldDef.isTypes(fieldDef, type);
   }
 
-  static isOrdinalScale(encoding, encType) {
-    return vlFieldDef.isOrdinalScale(encoding.fieldDef(encType));
-  }
-
-  static isDimension(encoding, encType) {
-    return vlFieldDef.isDimension(encoding.fieldDef(encType));
-  }
-
-  static isMeasure(encoding, encType) {
-    return vlFieldDef.isMeasure(encoding.fieldDef(encType));
-  }
 
   isOrdinalScale(encType) {
-    return this.has(encType) && Encoding.isOrdinalScale(this, encType);
+    return this.has(encType) &&
+      vlFieldDef.isOrdinalScale(this.fieldDef(encType));
   }
 
   isDimension(encType) {
-    return this.has(encType) && Encoding.isDimension(this, encType);
+    return this.has(encType) &&
+      vlFieldDef.isDimension(this.fieldDef(encType));
   }
 
   isMeasure(encType) {
-    return this.has(encType) && Encoding.isMeasure(this, encType);
+    return this.has(encType) &&
+      vlFieldDef.isMeasure(this.fieldDef(encType));
   }
 
   isAggregate() {
@@ -230,10 +222,6 @@ export default class Encoding {
 
   dataTable() {
     return this.isAggregate() ? Table.SUMMARY : Table.SOURCE;
-  }
-
-  static isAggregate(spec) {
-    return vlEnc.isAggregate(spec.encoding);
   }
 
   static alwaysNoOcclusion(spec) {
