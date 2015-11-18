@@ -20,9 +20,6 @@ import {legend} from './fielddef.legend.schema';
 // TODO(#620) refer to vega schema
 // var vgStackSchema = require('vega/src/transforms/Stack').schema;
 
-export function getSupportedRole(encType) {
-  return schema.properties.encoding.properties[encType].supportedRole;
-};
 
 export var util = schemaUtil;
 
@@ -54,9 +51,6 @@ var typicalField = merge(clone(fieldDef), {
 });
 
 var onlyOrdinalField = merge(clone(fieldDef), {
-  supportedRole: {
-    dimension: true
-  },
   properties: {
     aggregate: {
       type: 'string',
@@ -72,28 +66,7 @@ var requiredNameType = {
   required: ['name', 'type']
 };
 
-var multiRoleField = merge(clone(typicalField), {
-  supportedRole: {
-    measure: true,
-    dimension: true
-  }
-});
-
-var quantitativeField = merge(clone(typicalField), {
-  supportedRole: {
-    measure: true,
-    // TODO: revise if this is considered
-    dimension: 'ordinal-only' // using size to encoding category lead to order interpretation
-  }
-});
-
-var onlyQuantitativeField = merge(clone(typicalField), {
-  supportedRole: {
-    measure: true
-  }
-});
-
-var x = merge(clone(multiRoleField), requiredNameType, {
+var x = merge(clone(typicalField), requiredNameType, {
   supportedMarktypes: {point: true, tick: true, bar: true, line: true, area: true, circle: true, square: true},
   properties: {
     axis: axis,
@@ -132,7 +105,7 @@ var col = merge(clone(facet), {
   }
 });
 
-var size = merge(clone(quantitativeField), {
+var size = merge(clone(typicalField), {
   supportedMarktypes: {point: true, bar: true, circle: true, square: true, text: true},
   properties: {
     legend: legend,
@@ -146,7 +119,7 @@ var size = merge(clone(quantitativeField), {
   }
 });
 
-var color = merge(clone(multiRoleField), {
+var color = merge(clone(typicalField), {
   supportedMarktypes: {point: true, tick: true, bar: true, line: true, area: true, circle: true, square: true, 'text': true},
   properties: {
     legend: legend,
@@ -241,7 +214,7 @@ var detail = merge(clone(onlyOrdinalField), {
 });
 
 // we only put aggregated measure in pivot table
-var text = merge(clone(onlyQuantitativeField), {
+var text = merge(clone(typicalField), {
   supportedMarktypes: {'text': true},
   properties: {
     sort: sort,
