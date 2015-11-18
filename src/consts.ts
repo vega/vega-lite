@@ -1,3 +1,6 @@
+/**
+ * Names for data sources / table for output vega
+ */
 export namespace Table {
   export const SUMMARY = 'summary';
   export const SOURCE = 'source';
@@ -8,6 +11,9 @@ export namespace Table {
 //   X, Y, COL, ROW, SIZE, SHAPE, COLOR, TEXT, DETAIL
 // }
 
+/**
+ * Encoding Channel
+ */
 export namespace Enctype {
   export const X = 'x';
   export const Y = 'y';
@@ -25,6 +31,44 @@ export namespace Enctype {
     Enctype.SIZE, Enctype.SHAPE, Enctype.COLOR,
     Enctype.TEXT, Enctype.DETAIL
   ];
+
+  export type Type = string;
+
+  interface SupportedRole {
+    [role:string]:boolean
+  };
+
+  /**
+   * @param  {Enctype.Type}  channel
+   * @return {SupportedRole} return whether a channel supports dimension / measure role
+   */
+  export function getSupportedRole(channel: Enctype.Type): SupportedRole {
+    switch (channel) {
+      case X:
+      case Y:
+      case COLOR:
+        return {
+          measure: true,
+          dimension: true
+        };
+      case ROW:
+      case COL:
+      case SHAPE:
+      case DETAIL:
+        return {
+          measure: false,
+          dimension: true
+        };
+      case SIZE:
+      case TEXT:
+        return {
+          measure: true,
+          dimension: false
+        };
+    }
+    throw new Error("Invalid encoding channel" + channel);
+    return null;
+  }
 }
 
 export namespace Type {
@@ -55,6 +99,7 @@ export namespace Type {
   };
 }
 
+//TODO this should become TIMEUNIT.LIST
 export const TIMEUNITS = [
   'year', 'month', 'day', 'date', 'hours', 'minutes', 'seconds'
 ];
