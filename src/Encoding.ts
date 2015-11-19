@@ -1,4 +1,4 @@
-import {Type, Shorthand, MAXBINS_DEFAULT} from './consts';
+import {Shorthand, MAXBINS_DEFAULT} from './consts';
 import {COL, ROW, X, Y, COLOR, DETAIL} from './channel';
 import {SOURCE, SUMMARY} from './data';
 import * as util from './util';
@@ -6,6 +6,7 @@ import * as vlFieldDef from './fielddef';
 import * as vlEnc from './enc';
 import * as schema from './schema/schema';
 import * as schemaUtil from './schema/schemautil';
+import {getFullName} from './type';
 
 export default class Encoding {
   _data: any;
@@ -25,7 +26,7 @@ export default class Encoding {
     // convert short type to full type
     vlEnc.forEach(this._enc, function(fieldDef) {
       if (fieldDef.type) {
-        fieldDef.type = Type.getFullName(fieldDef.type);
+        fieldDef.type = getFullName(fieldDef.type);
       }
     });
   }

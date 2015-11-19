@@ -5,6 +5,7 @@ import * as vlEnc from './enc';
 import * as vlFieldDef from './fielddef';
 import * as vlCompiler from './compiler/compiler';
 import * as vlSchema from './schema/schema';
+import * as vlType from './type';
 import * as vlValidate from './validate';
 
 // TODO: revise if we can remove this
@@ -27,6 +28,7 @@ export var fieldDef = vlFieldDef;
 export var schema = vlSchema;
 // TODO: revise if we can remove this
 export var toShorthand = vlEncoding.shorthand;
+export var type = vlType;
 export var format = d3Format;
 export var validate = vlValidate;
 

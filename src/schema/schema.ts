@@ -8,7 +8,9 @@ import * as vlUtil from '../util';
 import {toMap} from '../util';
 import * as schemaUtil from './schemautil';
 import {merge} from './schemautil';
-import {Type, AGGREGATE_OPS} from '../consts';
+import {AGGREGATE_OPS} from '../consts';
+import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
+
 import {marktype} from './marktype.schema';
 import {data} from './data.schema';
 import {config} from './config.schema';
@@ -35,7 +37,7 @@ export var fieldDef = {
     },
     type: {
       type: 'string',
-      enum: [Type.NOMINAL, Type.ORDINAL, Type.QUANTITATIVE, Type.TEMPORAL]
+      enum: [NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL]
     },
     timeUnit: timeUnit,
     bin: bin,
@@ -56,7 +58,7 @@ var onlyOrdinalField = merge(clone(fieldDef), {
     aggregate: {
       type: 'string',
       enum: ['count'],
-      supportedTypes: toMap([Type.NOMINAL, Type.ORDINAL])
+      supportedTypes: toMap([NOMINAL, ORDINAL])
     },
     scale: ordinalOnlyScale
   }

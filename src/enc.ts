@@ -1,6 +1,6 @@
 // utility for enc
 import {CHANNELS} from './channel';
-import {Type, Shorthand} from './consts';
+import {Shorthand} from './consts';
 import * as vlFieldDef from './fielddef';
 import * as util from './util';
 

@@ -1,9 +1,9 @@
 import * as vlFieldDef from '../fielddef';
 import * as util from '../util';
 import Encoding from '../Encoding';
-import {Type} from '../consts';
 import {SOURCE, STACKED, SUMMARY} from '../data';
 import * as time from './time';
+import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 
 /**
  * Create Vega's data array from a given encoding.
@@ -73,10 +73,10 @@ export namespace source {
     var parse;
 
     encoding.forEach(function(fieldDef) {
-      if (fieldDef.type === Type.TEMPORAL) {
+      if (fieldDef.type === TEMPORAL) {
         parse = parse || {};
         parse[fieldDef.name] = 'date';
-      } else if (fieldDef.type === Type.QUANTITATIVE) {
+      } else if (fieldDef.type === QUANTITATIVE) {
         if (vlFieldDef.isCount(fieldDef)) return;
         parse = parse || {};
         parse[fieldDef.name] = 'number';
@@ -103,7 +103,7 @@ export namespace source {
 
   export function timeTransform(encoding: Encoding) {
     return encoding.reduce(function(transform, fieldDef, channel) {
-      if (fieldDef.type === Type.TEMPORAL && fieldDef.timeUnit) {
+      if (fieldDef.type === TEMPORAL && fieldDef.timeUnit) {
         var fieldRef = encoding.fieldRef(channel, {nofn: true, datum: true});
 
         transform.push({
@@ -148,10 +148,10 @@ export namespace source {
         if (fieldName === '*') return filteredFields; //count
 
         // TODO(#597) revise how filterNull is structured.
-        if ((encoding.config('filterNull').quantitative && fieldList.containsType[Type.QUANTITATIVE]) ||
-            (encoding.config('filterNull').temporal && fieldList.containsType[Type.TEMPORAL]) ||
-            (encoding.config('filterNull').ordinal && fieldList.containsType[Type.ORDINAL]) ||
-            (encoding.config('filterNull').nominal && fieldList.containsType[Type.NOMINAL])) {
+        if ((encoding.config('filterNull').quantitative && fieldList.containsType[QUANTITATIVE]) ||
+            (encoding.config('filterNull').temporal && fieldList.containsType[TEMPORAL]) ||
+            (encoding.config('filterNull').ordinal && fieldList.containsType[ORDINAL]) ||
+            (encoding.config('filterNull').nominal && fieldList.containsType[NOMINAL])) {
           filteredFields.push(fieldName);
         }
         return filteredFields;

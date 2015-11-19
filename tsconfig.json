@@ -50,6 +50,7 @@
         "src/schema/schema.ts",
         "src/schema/schemagen.ts",
         "src/schema/schemautil.ts",
+        "src/type.ts",
         "src/util.ts",
         "src/validate.ts",
         "src/vl.ts",

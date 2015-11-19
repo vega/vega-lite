@@ -1,8 +1,9 @@
 // utility for Encoding Definition
 
-import {TIMEUNITS, Type, Shorthand, AGGREGATE_OPS, MAXBINS_DEFAULT} from './consts';
+import {TIMEUNITS, Shorthand, AGGREGATE_OPS, MAXBINS_DEFAULT} from './consts';
 import * as util from './util';
 import * as time from './compiler/time';
+import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL, SHORT_TYPE, TYPE_FROM_SHORT_TYPE} from './type';
 
 /**
  * @param field
@@ -42,7 +43,7 @@ export function shorthand(f) {
   return (f.aggregate ? f.aggregate + Shorthand.FUNC : '') +
     (f.timeUnit ? f.timeUnit + Shorthand.FUNC : '') +
     (f.bin ? 'bin' + Shorthand.FUNC : '') +
-    (f.name || '') + Shorthand.TYPE + Type.SHORT_TYPE[f.type];
+    (f.name || '') + Shorthand.TYPE + SHORT_TYPE[f.type];
 }
 
 export function shorthands(fieldDefs, delim) {
@@ -55,7 +56,7 @@ export function fromShorthand(shorthand: string) {
 
   var fieldDef: any = {
     name: split[0].trim(),
-    type: Type.TYPE_FROM_SHORT_TYPE[split[1].trim()]
+    type: TYPE_FROM_SHORT_TYPE[split[1].trim()]
   };
 
   // check aggregate type
@@ -101,13 +102,13 @@ export function isTypes(fieldDef, types: Array<String>) {
  * However, YEAR(T), YEARMONTH(T) use time scale, not ordinal but are dimensions too.
  */
 export function isOrdinalScale(fieldDef) {
-  return  isTypes(fieldDef, [Type.NOMINAL, Type.ORDINAL]) ||
-    (fieldDef.type === Type.TEMPORAL && fieldDef.timeUnit && time.isOrdinalFn(fieldDef.timeUnit) );
+  return  isTypes(fieldDef, [NOMINAL, ORDINAL]) ||
+    (fieldDef.type === TEMPORAL && fieldDef.timeUnit && time.isOrdinalFn(fieldDef.timeUnit) );
 }
 
 function _isFieldDimension(fieldDef) {
-  return  isTypes(fieldDef, [Type.NOMINAL, Type.ORDINAL]) || !!fieldDef.bin ||
-    (fieldDef.type === Type.TEMPORAL && !!fieldDef.timeUnit );
+  return  isTypes(fieldDef, [NOMINAL, ORDINAL]) || !!fieldDef.bin ||
+    (fieldDef.type === TEMPORAL && !!fieldDef.timeUnit );
 }
 
 export function isDimension(fieldDef) {
@@ -119,7 +120,7 @@ export function isMeasure(fieldDef) {
 }
 
 export function count() {
-  return {name:'*', aggregate: 'count', type: Type.QUANTITATIVE, displayName: COUNT_DISPLAYNAME};
+  return {name:'*', aggregate: 'count', type: QUANTITATIVE, displayName: COUNT_DISPLAYNAME};
 }
 
 export const COUNT_DISPLAYNAME = 'Number of Records';
@@ -138,7 +139,7 @@ export function cardinality(fieldDef, stats, filterNull = {}) {
     var bins = util.getbins(stat, fieldDef.bin.maxbins || MAXBINS_DEFAULT);
     return (bins.stop - bins.start) / bins.step;
   }
-  if (fieldDef.type === Type.TEMPORAL) {
+  if (fieldDef.type === TEMPORAL) {
     var cardinality = time.cardinality(fieldDef, stats, filterNull, type);
     if(cardinality !== null) return cardinality;
     //otherwise use calculation below

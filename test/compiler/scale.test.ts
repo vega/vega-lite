@@ -6,9 +6,9 @@ var d3 = require('d3');
 var colorbrewer = require('colorbrewer');
 
 import * as vlscale from '../../src/compiler/scale';
-import {Type} from '../../src/consts';
 import {SOURCE, SUMMARY} from '../../src/data';
 import Encoding from '../../src/Encoding';
+import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../../src/type';
 import * as util from '../../src/util';
 
 describe('vl.compile.scale', function() {
@@ -62,7 +62,7 @@ describe('vl.compile.scale', function() {
                 bin: {maxbins: 15},
                 name: 'origin',
                 scale: {useRawDomain: true},
-                type: Type.QUANTITATIVE
+                type: QUANTITATIVE
               }
             }
           }), 'y', 'ordinal');
@@ -97,7 +97,7 @@ describe('vl.compile.scale', function() {
                 aggregate: 'sum',
                 name: 'origin',
                 scale: {useRawDomain: true},
-                type: Type.QUANTITATIVE
+                type: QUANTITATIVE
               }
             }
           }), 'y', 'linear');
@@ -113,7 +113,7 @@ describe('vl.compile.scale', function() {
                 aggregate: 'min',
                 name: 'origin',
                 scale: {useRawDomain: false},
-                type: Type.QUANTITATIVE
+                type: QUANTITATIVE
               }
             }
           }), 'y', 'linear');
@@ -130,7 +130,7 @@ describe('vl.compile.scale', function() {
               y: {
                 name: 'origin',
                 scale: {useRawDomain: true},
-                type: Type.TEMPORAL
+                type: TEMPORAL
               }
             }
           }), 'y', 'time');
@@ -177,7 +177,7 @@ describe('vl.compile.scale', function() {
         var sortDef = {op: 'min', field:'Acceleration'};
         var encoding = Encoding.fromSpec({
             encoding: {
-              y: { name: 'origin', type: Type.ORDINAL, sort: sortDef}
+              y: { name: 'origin', type: ORDINAL, sort: sortDef}
             }
           });
 
@@ -192,7 +192,7 @@ describe('vl.compile.scale', function() {
       it('should return correct domain without sort if sort is not provided', function() {
         var encoding = Encoding.fromSpec({
             encoding: {
-              y: { name: 'origin', type: Type.ORDINAL}
+              y: { name: 'origin', type: ORDINAL}
             }
           });
 
@@ -230,7 +230,7 @@ describe('vl.compile.scale', function() {
       var brewerPalettes = util.keys(colorbrewer);
       brewerPalettes.forEach(function(palette) {
         var cardinality = 20;
-        expect(vlscale.colors.palette(palette, cardinality, Type.NOMINAL)).to.eql(
+        expect(vlscale.colors.palette(palette, cardinality, NOMINAL)).to.eql(
           colorbrewer[palette][Math.max.apply(null, util.keys(colorbrewer[palette]))]
         );
       });
@@ -243,7 +243,7 @@ describe('vl.compile.scale', function() {
           p = colorbrewer[palette],
           ps = Math.max.apply(null, util.keys(p)),
           interpolator = d3.interpolateHsl(p[ps][0], p[ps][ps - 1]);
-        expect(vlscale.colors.palette(palette, cardinality, Type.ORDINAL)).to.eql(
+        expect(vlscale.colors.palette(palette, cardinality, ORDINAL)).to.eql(
           util.range(cardinality).map(function(i) {
             return interpolator(i * 1.0 / (cardinality - 1));
           })
