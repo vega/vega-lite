@@ -5,7 +5,8 @@ import {utcFormat} from 'd3-time-format';
 import Encoding from '../Encoding';
 import * as vlFieldDef from '../fielddef';
 import * as util from '../util';
-import {Enctype, Type} from '../consts';
+import {COLOR, COL, ROW} from '../channel';
+import {Type} from '../consts';
 
 // 'Wednesday September 17 04:00:00 2014'
 // Wednesday is the longest date
@@ -132,16 +133,16 @@ export namespace scale {
   }
 
   export function type(timeUnit, name) {
-    if (name === Enctype.COLOR) {
+    if (name === COLOR) {
       return 'linear'; // time has order, so use interpolated ordinal color scale.
     }
 
     // FIXME revise this -- should 'year' be linear too?
-    return isOrdinalFn(timeUnit) || name === Enctype.COL || name === Enctype.ROW ? 'ordinal' : 'linear';
+    return isOrdinalFn(timeUnit) || name === COL || name === ROW ? 'ordinal' : 'linear';
   }
 
   export function domain(timeUnit, name?) {
-    var isColor = name === Enctype.COLOR;
+    var isColor = name === COLOR;
     switch (timeUnit) {
       case 'seconds':
       case 'minutes': return isColor ? [0,59] : util.range(0, 60);

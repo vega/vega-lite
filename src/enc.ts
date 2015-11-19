@@ -1,10 +1,10 @@
 // utility for enc
-
-import {Enctype, Type, Shorthand} from './consts';
+import {CHANNELS} from './channel';
+import {Type, Shorthand} from './consts';
 import * as vlFieldDef from './fielddef';
 import * as util from './util';
 
-let encTypes = Enctype.CHANNELS;
+let encTypes = CHANNELS;
 
 export function countRetinal(enc) {
   var count = 0;

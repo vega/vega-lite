@@ -2,7 +2,8 @@
 
 import * as d3_format from 'd3-format';
 import {setter} from '../util';
-import {Enctype, Type} from '../consts';
+import {Type} from '../consts';
+import {COL, ROW, X, Y, TEXT} from '../channel';
 import Encoding from '../Encoding';
 
 import * as time from './time';
@@ -20,15 +21,15 @@ export default function(encoding: Encoding, stats) {
   In the meantime, auto-padding (mostly) does the trick
  */
 function box(encoding: Encoding, stats) {
-  var hasRow = encoding.has(Enctype.ROW),
-      hasCol = encoding.has(Enctype.COL),
-      hasX = encoding.has(Enctype.X),
-      hasY = encoding.has(Enctype.Y),
+  var hasRow = encoding.has(ROW),
+      hasCol = encoding.has(COL),
+      hasX = encoding.has(X),
+      hasY = encoding.has(Y),
       marktype = encoding.marktype();
 
   // FIXME/HACK we need to take filter into account
-  var xCardinality = hasX && encoding.isDimension(Enctype.X) ? encoding.cardinality(Enctype.X, stats) : 1,
-    yCardinality = hasY && encoding.isDimension(Enctype.Y) ? encoding.cardinality(Enctype.Y, stats) : 1;
+  var xCardinality = hasX && encoding.isDimension(X) ? encoding.cardinality(X, stats) : 1,
+    yCardinality = hasY && encoding.isDimension(Y) ? encoding.cardinality(Y, stats) : 1;
 
   var useSmallBand = xCardinality > encoding.config('largeBandMaxCardinality') ||
     yCardinality > encoding.config('largeBandMaxCardinality');
@@ -37,41 +38,41 @@ function box(encoding: Encoding, stats) {
 
   // set cellWidth
   if (hasX) {
-    if (encoding.isOrdinalScale(Enctype.X)) {
+    if (encoding.isOrdinalScale(X)) {
       // for ordinal, hasCol or not doesn't matter -- we scale based on cardinality
-      cellWidth = (xCardinality + encoding.padding(Enctype.X)) * encoding.bandWidth(Enctype.X, useSmallBand);
+      cellWidth = (xCardinality + encoding.padding(X)) * encoding.bandWidth(X, useSmallBand);
     } else {
-      cellWidth = hasCol || hasRow ? encoding.fieldDef(Enctype.COL).width :  encoding.config('singleWidth');
+      cellWidth = hasCol || hasRow ? encoding.fieldDef(COL).width :  encoding.config('singleWidth');
     }
   } else {
-    if (marktype === Enctype.TEXT) {
+    if (marktype === TEXT) {
       cellWidth = encoding.config('textCellWidth');
     } else {
-      cellWidth = encoding.bandWidth(Enctype.X);
+      cellWidth = encoding.bandWidth(X);
     }
   }
 
   // set cellHeight
   if (hasY) {
-    if (encoding.isOrdinalScale(Enctype.Y)) {
+    if (encoding.isOrdinalScale(Y)) {
       // for ordinal, hasCol or not doesn't matter -- we scale based on cardinality
-      cellHeight = (yCardinality + encoding.padding(Enctype.Y)) * encoding.bandWidth(Enctype.Y, useSmallBand);
+      cellHeight = (yCardinality + encoding.padding(Y)) * encoding.bandWidth(Y, useSmallBand);
     } else {
-      cellHeight = hasCol || hasRow ? encoding.fieldDef(Enctype.ROW).height :  encoding.config('singleHeight');
+      cellHeight = hasCol || hasRow ? encoding.fieldDef(ROW).height :  encoding.config('singleHeight');
     }
   } else {
-    cellHeight = encoding.bandWidth(Enctype.Y);
+    cellHeight = encoding.bandWidth(Y);
   }
 
   // Cell bands use rangeBands(). There are n-1 padding.  Outerpadding = 0 for cells
 
   var width = cellWidth, height = cellHeight;
   if (hasCol) {
-    var colCardinality = encoding.cardinality(Enctype.COL, stats);
+    var colCardinality = encoding.cardinality(COL, stats);
     width = cellWidth * ((1 + cellPadding) * (colCardinality - 1) + 1);
   }
   if (hasRow) {
-    var rowCardinality =  encoding.cardinality(Enctype.ROW, stats);
+    var rowCardinality =  encoding.cardinality(ROW, stats);
     height = cellHeight * ((1 + cellPadding) * (rowCardinality - 1) + 1);
   }
 
@@ -116,9 +117,9 @@ function getMaxLength(encoding: Encoding, stats, et) {
 }
 
 function offset(encoding: Encoding, stats, layout) {
-  [Enctype.X, Enctype.Y].forEach(function (et) {
+  [X, Y].forEach(function (et) {
     // TODO(kanitw): Jul 19, 2015 - create a set of visual test for extraOffset
-    let extraOffset = et === Enctype.X ? 20 : 22;
+    let extraOffset = et === X ? 20 : 22;
     let fieldDef = encoding.fieldDef(et);
     let maxLength;
 
@@ -130,7 +131,7 @@ function offset(encoding: Encoding, stats, layout) {
       fieldDef.type === Type.QUANTITATIVE || fieldDef.aggregate === 'count'
     ) {
       if (
-        et===Enctype.Y
+        et===Y
         // || (et===X && false)
         // FIXME determine when X would rotate, but should move this to axis.js first #506
       ) {

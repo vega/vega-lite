@@ -1,4 +1,5 @@
-import {Enctype, Type, Shorthand, Table, MAXBINS_DEFAULT} from './consts';
+import {Type, Shorthand, Table, MAXBINS_DEFAULT} from './consts';
+import {COL, ROW, X, Y, COLOR, DETAIL} from './channel';
 import * as util from './util';
 import * as vlFieldDef from './fielddef';
 import * as vlEnc from './enc';
@@ -142,8 +143,8 @@ export default class Encoding {
 
     useSmallBand = useSmallBand ||
     //isBandInSmallMultiples
-    (encType === Enctype.Y && this.has(Enctype.ROW) && this.has(Enctype.Y)) ||
-    (encType === Enctype.X && this.has(Enctype.COL) && this.has(Enctype.X));
+    (encType === Y && this.has(ROW) && this.has(Y)) ||
+    (encType === X && this.has(COL) && this.has(X));
 
     return this.config(useSmallBand ? 'smallBandWidth' : 'largeBandWidth');
   }
@@ -153,7 +154,7 @@ export default class Encoding {
       // explicit value
       return this.fieldDef(encType).scale.padding;
     }
-    if (encType === Enctype.ROW || encType === Enctype.COL) {
+    if (encType === ROW || encType === COL) {
       return this.config('cellPadding');
     }
     return this.config('padding');
@@ -239,8 +240,8 @@ export default class Encoding {
    * - value - the value field
    */
   stack() {
-    var stack = (this.has(Enctype.COLOR) && this.fieldDef(Enctype.COLOR).stack) ? Enctype.COLOR :
-      (this.has(Enctype.DETAIL) && this.fieldDef(Enctype.DETAIL).stack) ? Enctype.DETAIL :
+    var stack = (this.has(COLOR) && this.fieldDef(COLOR).stack) ? COLOR :
+      (this.has(DETAIL) && this.fieldDef(DETAIL).stack) ? DETAIL :
         null;
 
     var properties = stack && this.fieldDef(stack).stack !== true ?
@@ -249,20 +250,20 @@ export default class Encoding {
 
     if ((this.is('bar') || this.is('area')) && stack && this.isAggregate()) {
 
-      var isXMeasure = this.isMeasure(Enctype.X);
-      var isYMeasure = this.isMeasure(Enctype.Y);
+      var isXMeasure = this.isMeasure(X);
+      var isYMeasure = this.isMeasure(Y);
 
       if (isXMeasure && !isYMeasure) {
         return {
-          groupby: Enctype.Y,
-          value: Enctype.X,
+          groupby: Y,
+          value: X,
           stack: stack,
           properties: properties
         };
       } else if (isYMeasure && !isXMeasure) {
         return {
-          groupby: Enctype.X,
-          value: Enctype.Y,
+          groupby: X,
+          value: Y,
           stack: stack,
           properties: properties
         };
@@ -274,7 +275,7 @@ export default class Encoding {
   details() {
     var encoding = this;
     return this.reduce(function(refs, field, encType) {
-      if (!field.aggregate && (encType !== Enctype.X && encType !== Enctype.Y)) {
+      if (!field.aggregate && (encType !== X && encType !== Y)) {
         refs.push(encoding.fieldRef(encType));
       }
       return refs;
@@ -284,7 +285,7 @@ export default class Encoding {
   facets() {
     var encoding = this;
     return this.reduce(function(refs, field, encType) {
-      if (!field.aggregate && (encType == Enctype.ROW || encType == Enctype.COL)) {
+      if (!field.aggregate && (encType == ROW || encType == COL)) {
         refs.push(encoding.fieldRef(encType));
       }
       return refs;
