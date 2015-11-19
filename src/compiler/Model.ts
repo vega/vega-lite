@@ -3,7 +3,7 @@ import {COL, ROW, X, Y, COLOR, DETAIL} from '../channel';
 import {SOURCE, SUMMARY} from '../data';
 import * as util from '../util';
 import * as vlFieldDef from '../fielddef';
-import * as vlEnc from '../enc';
+import * as vlEncoding from '../encoding';
 import * as schema from '../schema/schema';
 import * as schemaUtil from '../schema/schemautil';
 import {getFullName} from '../type';
@@ -30,7 +30,7 @@ export class Model {
     this._config = specExtended.config;
 
     // convert short type to full type
-    vlEnc.forEach(this._enc, function(fieldDef) {
+    vlEncoding.forEach(this._enc, function(fieldDef) {
       if (fieldDef.type) {
         fieldDef.type = getFullName(fieldDef.type);
       }
@@ -86,7 +86,7 @@ export class Model {
    * return key-value pairs of field name and list of fields of that field name
    */
   fields() {
-    return vlEnc.fields(this._enc);
+    return vlEncoding.fields(this._enc);
   }
 
   fieldTitle(channel) {
@@ -158,15 +158,15 @@ export class Model {
   };
 
   map(f) {
-    return vlEnc.map(this._enc, f);
+    return vlEncoding.map(this._enc, f);
   }
 
   reduce(f, init) {
-    return vlEnc.reduce(this._enc, f, init);
+    return vlEncoding.reduce(this._enc, f, init);
   }
 
   forEach(f) {
-    return vlEnc.forEach(this._enc, f);
+    return vlEncoding.forEach(this._enc, f);
   }
 
   isTypes(channel: string, type: Array<any>) {
@@ -191,7 +191,7 @@ export class Model {
   }
 
   isAggregate() {
-    return vlEnc.isAggregate(this._enc);
+    return vlEncoding.isAggregate(this._enc);
   }
 
   dataTable() {

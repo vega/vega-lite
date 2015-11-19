@@ -1,7 +1,7 @@
 import * as vlBin from './bin';
 import * as vlChannel from './channel';
 import * as vlData from './data';
-import * as vlEnc from './enc';
+import * as vlEncoding from './encoding';
 import * as vlFieldDef from './fielddef';
 import * as vlCompiler from './compiler/compiler';
 import * as vlSchema from './schema/schema';
@@ -21,7 +21,7 @@ export var compiler = vlCompiler;
 export var compile = vlCompiler.compile;
 export var data = vlData;
 // TODO(#727) rename to encoding
-export var enc = vlEnc;
+export var encoding = vlEncoding;
 export var fieldDef = vlFieldDef;
 export var schema = vlSchema;
 export var shorthand = vlShorthand;

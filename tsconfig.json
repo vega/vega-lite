@@ -39,7 +39,7 @@
         "src/compiler/subfacet.ts",
         "src/compiler/time.ts",
         "src/data.ts",
-        "src/enc.ts",
+        "src/encoding.ts",
         "src/fielddef.ts",
         "src/schema/config.schema.ts",
         "src/schema/data.schema.ts",
