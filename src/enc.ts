@@ -75,8 +75,8 @@ export function fields(enc) {
 }
 
 export function shorthand(enc) {
-  return map(enc, function(field, et) {
-    return et + Shorthand.ASSIGN + vlFieldDef.shorthand(field);
+  return map(enc, function(field, channel) {
+    return channel + Shorthand.ASSIGN + vlFieldDef.shorthand(field);
   }).join(Shorthand.DELIM);
 }
 

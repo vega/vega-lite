@@ -113,24 +113,24 @@ export default class Encoding {
     return vlEnc.fields(this._enc);
   }
 
-  fieldTitle(et) {
-    if (vlFieldDef.isCount(this._enc[et])) {
+  fieldTitle(channel) {
+    if (vlFieldDef.isCount(this._enc[channel])) {
       return vlFieldDef.COUNT_DISPLAYNAME;
     }
-    var fn = this._enc[et].aggregate || this._enc[et].timeUnit || (this._enc[et].bin && 'bin');
+    var fn = this._enc[channel].aggregate || this._enc[channel].timeUnit || (this._enc[channel].bin && 'bin');
     if (fn) {
-      return fn.toUpperCase() + '(' + this._enc[et].name + ')';
+      return fn.toUpperCase() + '(' + this._enc[channel].name + ')';
     } else {
-      return this._enc[et].name;
+      return this._enc[channel].name;
     }
   }
 
-  scale(et) {
-    return this._enc[et].scale || {};
+  scale(channel) {
+    return this._enc[channel].scale || {};
   }
 
-  axis(et) {
-    return this._enc[et].axis || {};
+  axis(channel) {
+    return this._enc[channel].axis || {};
   }
 
   bandWidth(channel, useSmallBand?: boolean) {
@@ -161,8 +161,8 @@ export default class Encoding {
   }
 
   // returns false if binning is disabled, otherwise an object with binning properties
-  bin(et) {
-    var bin = this._enc[et].bin;
+  bin(channel) {
+    var bin = this._enc[channel].bin;
     if (bin === {})
       return false;
     if (bin === true)
@@ -172,8 +172,8 @@ export default class Encoding {
     return bin;
   }
 
-  value(et) {
-    return this._enc[et].value;
+  value(channel) {
+    return this._enc[channel].value;
   }
 
   numberFormat = function(name?) {
@@ -193,8 +193,8 @@ export default class Encoding {
     return vlEnc.forEach(this._enc, f);
   }
 
-  isTypes(et: string, type: Array<any>) {
-    var fieldDef = this.fieldDef(et);
+  isTypes(channel: string, type: Array<any>) {
+    var fieldDef = this.fieldDef(channel);
     return fieldDef && vlFieldDef.isTypes(fieldDef, type);
   }
 

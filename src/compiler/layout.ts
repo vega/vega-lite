@@ -90,62 +90,62 @@ function box(encoding: Encoding, stats) {
   };
 }
 
-function getMaxNumberLength(encoding: Encoding, et, fieldStats) {
-  var format = encoding.numberFormat(et);
+function getMaxNumberLength(encoding: Encoding, channel, fieldStats) {
+  var format = encoding.numberFormat(channel);
   return d3_format.format(format)(fieldStats.max).length;
 }
 
 // TODO(#600) revise this
-function getMaxLength(encoding: Encoding, stats, et) {
-  var fieldDef = encoding.fieldDef(et),
+function getMaxLength(encoding: Encoding, stats, channel) {
+  var fieldDef = encoding.fieldDef(channel),
     fieldStats = stats[fieldDef.name];
 
   if (fieldDef.bin) {
     // TODO once bin support range, need to update this
-    return getMaxNumberLength(encoding, et, fieldStats);
+    return getMaxNumberLength(encoding, channel, fieldStats);
   } if (fieldDef.type === Type.QUANTITATIVE) {
-    return getMaxNumberLength(encoding, et, fieldStats);
+    return getMaxNumberLength(encoding, channel, fieldStats);
   } else if (fieldDef.type === Type.TEMPORAL) {
-    return time.maxLength(encoding.fieldDef(et).timeUnit, encoding);
-  } else if (encoding.isTypes(et, [Type.NOMINAL, Type.ORDINAL])) {
+    return time.maxLength(encoding.fieldDef(channel).timeUnit, encoding);
+  } else if (encoding.isTypes(channel, [Type.NOMINAL, Type.ORDINAL])) {
     if(fieldStats.type === 'number') {
-      return getMaxNumberLength(encoding, et, fieldStats);
+      return getMaxNumberLength(encoding, channel, fieldStats);
     } else {
-      return Math.min(fieldStats.max, encoding.axis(et).labelMaxLength || Infinity);
+      return Math.min(fieldStats.max, encoding.axis(channel).labelMaxLength || Infinity);
     }
   }
 }
 
 function offset(encoding: Encoding, stats, layout) {
-  [X, Y].forEach(function (et) {
+  [X, Y].forEach(function (channel) {
     // TODO(kanitw): Jul 19, 2015 - create a set of visual test for extraOffset
-    let extraOffset = et === X ? 20 : 22;
-    let fieldDef = encoding.fieldDef(et);
+    let extraOffset = channel === X ? 20 : 22;
+    let fieldDef = encoding.fieldDef(channel);
     let maxLength;
 
-    if (encoding.isDimension(et) || fieldDef.type === Type.TEMPORAL) {
-      maxLength = getMaxLength(encoding, stats, et);
+    if (encoding.isDimension(channel) || fieldDef.type === Type.TEMPORAL) {
+      maxLength = getMaxLength(encoding, stats, channel);
     } else if (
       // TODO once we have #512 (allow using inferred type)
       // Need to adjust condition here.
       fieldDef.type === Type.QUANTITATIVE || fieldDef.aggregate === 'count'
     ) {
       if (
-        et===Y
-        // || (et===X && false)
+        channel===Y
+        // || (channel===X && false)
         // FIXME determine when X would rotate, but should move this to axis.js first #506
       ) {
-        maxLength = getMaxLength(encoding, stats, et);
+        maxLength = getMaxLength(encoding, stats, channel);
       }
     } else {
       // nothing
     }
 
     if (maxLength) {
-      setter(layout,[et, 'axisTitleOffset'], encoding.config('characterWidth') *  maxLength + extraOffset);
+      setter(layout,[channel, 'axisTitleOffset'], encoding.config('characterWidth') *  maxLength + extraOffset);
     } else {
       // if no max length (no rotation case), use maxLength = 3
-      setter(layout,[et, 'axisTitleOffset'], encoding.config('characterWidth') * 3 + extraOffset);
+      setter(layout,[channel, 'axisTitleOffset'], encoding.config('characterWidth') * 3 + extraOffset);
     }
 
   });
