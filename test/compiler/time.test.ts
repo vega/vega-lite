@@ -13,23 +13,24 @@ describe('time', function() {
     });
 
   describe('maxLength', function() {
-    it('should return max length of the month custom scale', function () {
-      expect(time.maxLength('month', Encoding.fromSpec({mark: 'point'})))
+    it('should return max length of abbreviated months', function () {
+      expect(time.maxLength({timeUnit: 'month', axis: {abbreviatedTimeNames: true}}, Encoding.fromSpec({mark: 'point'})))
         .to.eql(3);
     });
 
-    it('should return max length of the day custom scale', function () {
-      expect(time.maxLength('day', Encoding.fromSpec({mark: 'point'})))
+    it('should return max length of abbreviated days of the week', function () {
+      expect(time.maxLength({timeUnit: 'day',  axis: {abbreviatedTimeNames: true}}, Encoding.fromSpec({mark: 'point'})))
         .to.eql(3);
     });
 
-    it('should return max length of the month custom scale', function () {
-      expect(time.maxLength('month', Encoding.fromSpec({
-        mark: 'point',
-        config: {
-          timeScaleLabelLength: 0
-        }
-      }))).to.eql(9);
+    it('should return max length of months', function () {
+      expect(time.maxLength({timeUnit: 'month', axis: {abbreviatedTimeNames: false}}, Encoding.fromSpec({mark: 'point'})))
+        .to.eql(10);  // FIXME
+    });
+
+    it('should return max length of days of the week', function () {
+      expect(time.maxLength({timeUnit: 'day',  axis: {abbreviatedTimeNames: false}}, Encoding.fromSpec({mark: 'point'})))
+        .to.eql(10);  // FIXME
     });
   });
 });
