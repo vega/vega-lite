@@ -16,7 +16,7 @@
     "build": "gulp build",
     "cover": "gulp coverage",
     "deploy": "npm run lint && npm run test && scripts/deploy.sh",
-    "lint": "gulp jshint && gulp tslint",
+    "lint": "gulp tslint",
     "start": "gulp serve",
     "test": "gulp test",
     "watch": "gulp bundle watch-schema watch-test"

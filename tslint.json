@@ -1,6 +1,10 @@
 {
   "rules": {
-    "indent": [true, "spaces"],
-    "semicolon": true
+    "indent": "spaces",
+    "semicolon": true,
+    "no-duplicate-key": true,
+    "no-duplicate-variable": true,
+    "no-unreachable": true,
+    "no-conditional-assignment": true
   }
 }
