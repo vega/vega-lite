@@ -81,5 +81,8 @@
         "typings/mocha.d.ts",
         "typings/node.d.ts",
         "typings/vega.d.ts"
-    ]
+    ],
+    "atom": {
+        "rewriteTsconfig": true
+    }
 }
