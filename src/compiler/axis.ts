@@ -1,7 +1,7 @@
 import Encoding from '../Encoding';
 import * as util from '../util';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
-import {COL, ROW, X, Y, Type as Channel} from '../channel';
+import {COL, ROW, X, Y, Channel} from '../channel';
 import * as time from './time';
 
 // https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations
