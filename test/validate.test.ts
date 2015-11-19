@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {getEncodingMappingError} from '../src/validate';
 
-var ZSchema = require('z-schema'),
+var zSchema = require('z-schema'),
   inspect = require('util').inspect,
   dl = require('datalib');
 
@@ -89,7 +89,7 @@ describe('Examples', function() {
     validateAgainstSchemas(example.spec, example.title);
   });
 
-  var validator = new ZSchema();
+  var validator = new zSchema();
   var errors;
 
   function validateAgainstSchemas(vlspec, title) {

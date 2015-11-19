@@ -15,7 +15,7 @@ import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL, SHORT_TYPE, TYPE_FROM_SHORT_TY
  *   opt.datum - include 'datum.'
  *   opt.fn - replace fn with custom function prefix
  *   opt.prefn - prepend fn with custom function prefix
- *   opt.bin_suffix - append suffix to the field ref for bin (default='_start')
+ *   opt.binSuffix - append suffix to the field ref for bin (default='_start')
 
  * @return {[type]}       [description]
  */
@@ -30,8 +30,8 @@ export function fieldRef(fieldDef, opt) {
   } else if (opt.fn) {
     return f + opt.fn + '_' + name;
   } else if (!opt.nofn && fieldDef.bin) {
-    var bin_suffix = opt.bin_suffix || '_start';
-    return f + 'bin_' + name + bin_suffix;
+    var binSuffix = opt.binSuffix || '_start';
+    return f + 'bin_' + name + binSuffix;
   } else if (!opt.nofn && !opt.noAggregate && fieldDef.aggregate) {
     return f + fieldDef.aggregate + '_' + name;
   } else if (!opt.nofn && fieldDef.timeUnit) {
