@@ -14,8 +14,8 @@ import {format as d3Format} from 'd3-format';
 export * from './util';
 export * from './consts';
 
-// TODO() remove this
-export var Model = vlModel;
+// TODO() rename this
+export var Encoding = vlModel;
 
 export var channel = vlChannel;
 export var compiler = vlCompiler;
@@ -26,7 +26,7 @@ export var enc = vlEnc;
 export var fieldDef = vlFieldDef;
 export var schema = vlSchema;
 // TODO: revise if we can remove this
-export var toShorthand = Model.shorthand;
+export var toShorthand = vlModel.shorthand;
 export var type = vlType;
 export var format = d3Format;
 export var validate = vlValidate;
