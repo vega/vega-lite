@@ -2,7 +2,7 @@
 
 import {utcFormat} from 'd3-time-format';
 
-import Encoding from '../Encoding';
+import {Model} from './Model';
 import * as vlFieldDef from '../fielddef';
 import * as util from '../util';
 import {COLOR, COL, ROW, Channel} from '../channel';
@@ -41,7 +41,7 @@ export function formula(timeUnit, fieldRef) {
   return fn + '(' + fieldRef + ')';
 }
 
-export function maxLength(timeUnit, encoding: Encoding) {
+export function maxLength(timeUnit, model: Model) {
   switch (timeUnit) {
     case 'seconds':
     case 'minutes':
@@ -50,7 +50,7 @@ export function maxLength(timeUnit, encoding: Encoding) {
       return 2;
     case 'month':
     case 'day':
-      var rng = range(timeUnit, encoding);
+      var rng = range(timeUnit, model);
       if (rng) {
         // return the longest name in the range
         return Math.max.apply(null, rng.map(function(r) {return r.length;}));
@@ -61,19 +61,19 @@ export function maxLength(timeUnit, encoding: Encoding) {
   }
   // TODO(#600) revise this
   // no time unit
-  var timeFormat = encoding.config('timeFormat');
+  var timeFormat = model.config('timeFormat');
   return utcFormat(timeFormat)(LONG_DATE).length;
 }
 
-export function range(timeUnit, encoding: Encoding) {
-  var labelLength = encoding.config('timeScaleLabelLength'),
+export function range(timeUnit, model: Model) {
+  var labelLength = model.config('timeScaleLabelLength'),
     scaleLabel;
   switch (timeUnit) {
     case 'day':
-      scaleLabel = encoding.config('dayScaleLabel');
+      scaleLabel = model.config('dayScaleLabel');
       break;
     case 'month':
-      scaleLabel = encoding.config('monthScaleLabel');
+      scaleLabel = model.config('monthScaleLabel');
       break;
   }
   if (scaleLabel) {
@@ -86,14 +86,14 @@ export function range(timeUnit, encoding: Encoding) {
 
 
 /**
- * @param  {Object} encoding
+ * @param  {Model} model
  * @return {Array}  scales for time unit names
  */
-export function scales(encoding: Encoding) {
-  var scales = encoding.reduce(function(scales, fieldDef) {
+export function scales(model: Model) {
+  var scales = model.reduce(function(scales, fieldDef) {
     var timeUnit = fieldDef.timeUnit;
     if (fieldDef.type === TEMPORAL && timeUnit && !scales[timeUnit]) {
-      var scaleDef = scale.def(fieldDef.timeUnit, encoding);
+      var scaleDef = scale.def(fieldDef.timeUnit, model);
       if (scaleDef) scales[timeUnit] = scaleDef;
     }
     return scales;
@@ -118,8 +118,8 @@ export function isOrdinalFn(timeUnit) {
 
 export namespace scale {
   /** append custom time scales for axis label */
-  export function def(timeUnit, encoding) {
-    var rangeDef = range(timeUnit, encoding);
+  export function def(timeUnit, model: Model) {
+    var rangeDef = range(timeUnit, model);
 
     if (rangeDef) {
       return {

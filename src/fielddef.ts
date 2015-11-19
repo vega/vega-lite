@@ -1,4 +1,4 @@
-// utility for Encoding Definition
+// utility for a field definition object
 
 import {Shorthand, MAXBINS_DEFAULT} from './consts';
 import {AGGREGATE_OPS} from './aggregate';

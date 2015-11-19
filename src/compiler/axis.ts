@@ -1,4 +1,4 @@
-import Encoding from '../Encoding';
+import {Model} from './Model';
 import * as util from '../util';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 import {COL, ROW, X, Y, Channel} from '../channel';
@@ -7,7 +7,7 @@ import * as time from './time';
 // https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations
 declare var exports;
 
-export function def(channel: Channel, encoding: Encoding, layout, stats) {
+export function def(channel: Channel, model: Model, layout, stats) {
   var isCol = channel === COL,
     isRow = channel === ROW,
     type = isCol ? 'x' : isRow ? 'y': channel;
@@ -27,26 +27,26 @@ export function def(channel: Channel, encoding: Encoding, layout, stats) {
     'tickPadding', 'tickSize', 'tickSizeMajor', 'tickSizeMinor', 'tickSizeEnd',
     'values', 'subdivide'
   ].forEach(function(property) {
-    let method: (encoding:Encoding, channel:Channel, layout:any, stats:any, def:any)=>any;
+    let method: (model: Model, channel: Channel, layout:any, stats:any, def:any)=>any;
 
     var value = (method = exports[property]) ?
                   // calling axis.format, axis.grid, ...
-                  method(encoding, channel, layout, stats, def) :
-                  encoding.fieldDef(channel).axis[property];
+                  method(model, channel, layout, stats, def) :
+                  model.fieldDef(channel).axis[property];
     if (value !== undefined) {
       def[property] = value;
     }
   });
 
   // 2) Add mark property definition groups
-  var props = encoding.fieldDef(channel).axis.properties || {};
+  var props = model.fieldDef(channel).axis.properties || {};
 
   [
     'axis', 'grid', 'labels', 'title', // have special rules
     'ticks', 'majorTicks', 'minorTicks' // only default values
   ].forEach(function(group) {
     var value = properties[group] ?
-      properties[group](encoding, channel, props[group], layout, def) :
+      properties[group](model, channel, props[group], layout, def) :
       props[group];
     if (value !== undefined) {
       def.properties = def.properties || {};
@@ -57,19 +57,19 @@ export function def(channel: Channel, encoding: Encoding, layout, stats) {
   return def;
 }
 
-export function format(encoding: Encoding, channel: Channel) {
-  let fieldDef = encoding.fieldDef(channel);
+export function format(model: Model, channel: Channel) {
+  let fieldDef = model.fieldDef(channel);
   var format = fieldDef.axis.format;
   if (format !== undefined)  {
     return format;
   }
 
   if (fieldDef.type === QUANTITATIVE) {
-    return encoding.numberFormat(channel);
+    return model.numberFormat(channel);
   } else if (fieldDef.type === TEMPORAL) {
-    var timeUnit = encoding.fieldDef(channel).timeUnit;
+    var timeUnit = model.fieldDef(channel).timeUnit;
     if (!timeUnit) {
-      return encoding.config('timeFormat');
+      return model.config('timeFormat');
     } else if (timeUnit === 'year') {
       return 'd';
     }
@@ -77,8 +77,8 @@ export function format(encoding: Encoding, channel: Channel) {
   return undefined;
 }
 
-export function grid(encoding: Encoding, channel: Channel) {
-  var grid = encoding.axis(channel).grid;
+export function grid(model: Model, channel: Channel) {
+  var grid = model.axis(channel).grid;
   if (grid !== undefined) {
     return grid;
   }
@@ -88,11 +88,11 @@ export function grid(encoding: Encoding, channel: Channel) {
   // - X and Y that have (1) quantitative fields that are not binned or (2) time fields.
   // Otherwise, the default value is `false`.
   return channel === ROW || channel === COL ||
-    (encoding.isTypes(channel, [QUANTITATIVE, TEMPORAL]) && !encoding.fieldDef(channel).bin);
+    (model.isTypes(channel, [QUANTITATIVE, TEMPORAL]) && !model.fieldDef(channel).bin);
 }
 
-export function layer(encoding: Encoding, channel: Channel, layout, stats, def) {
-  var layer = encoding.axis(channel).layer;
+export function layer(model: Model, channel: Channel, layout, stats, def) {
+  var layer = model.axis(channel).layer;
   if (layer !== undefined) {
     return layer;
   }
@@ -103,8 +103,8 @@ export function layer(encoding: Encoding, channel: Channel, layout, stats, def) 
   return undefined; // otherwise return undefined and use Vega's default.
 };
 
-export function offset(encoding: Encoding, channel: Channel, layout) {
-  var offset = encoding.fieldDef(channel).axis.offset;
+export function offset(model: Model, channel: Channel, layout) {
+  var offset = model.fieldDef(channel).axis.offset;
   if (offset) {
     return offset;
   }
@@ -115,13 +115,13 @@ export function offset(encoding: Encoding, channel: Channel, layout) {
   return undefined;
 }
 
-export function orient(encoding: Encoding, channel: Channel, layout, stats) {
-  var orient = encoding.fieldDef(channel).axis.orient;
+export function orient(model: Model, channel: Channel, layout, stats) {
+  var orient = model.fieldDef(channel).axis.orient;
   if (orient) {
     return orient;
   } else if (channel === COL) {
     return 'top';
-  } else if (channel === X && encoding.has(Y) && encoding.isOrdinalScale(Y) && encoding.cardinality(Y, stats) > 30) {
+  } else if (channel === X && model.has(Y) && model.isOrdinalScale(Y) && model.cardinality(Y, stats) > 30) {
     // FIXME remove this case and migrate this logic to vega-lite-ui
     // x-axis for long y - put on top
     return 'top';
@@ -129,22 +129,22 @@ export function orient(encoding: Encoding, channel: Channel, layout, stats) {
   return undefined;
 }
 
-export function ticks(encoding: Encoding, channel: Channel) {
-  var ticks = encoding.fieldDef(channel).axis.ticks;
+export function ticks(model: Model, channel: Channel) {
+  var ticks = model.fieldDef(channel).axis.ticks;
   if (ticks !== undefined) {
     return ticks;
   }
 
   // FIXME depends on scale type too
-  if (channel === X && !encoding.fieldDef(channel).bin) {
+  if (channel === X && !model.fieldDef(channel).bin) {
     return 5;
   }
 
   return undefined;
 }
 
-export function tickSize(encoding: Encoding, channel: Channel) {
-  var tickSize = encoding.fieldDef(channel).axis.tickSize;
+export function tickSize(model: Model, channel: Channel) {
+  var tickSize = model.fieldDef(channel).axis.tickSize;
   if (tickSize !== undefined) {
     return tickSize;
   }
@@ -155,31 +155,31 @@ export function tickSize(encoding: Encoding, channel: Channel) {
 }
 
 
-export function title(encoding: Encoding, channel: Channel, layout) {
-  var axisSpec = encoding.fieldDef(channel).axis;
+export function title(model: Model, channel: Channel, layout) {
+  var axisSpec = model.fieldDef(channel).axis;
   if (axisSpec.title !== undefined) {
     return axisSpec.title;
   }
 
   // if not defined, automatically determine axis title from field def
-  var fieldTitle = encoding.fieldTitle(channel);
+  var fieldTitle = model.fieldTitle(channel);
 
   var maxLength;
   if (axisSpec.titleMaxLength) {
   maxLength = axisSpec.titleMaxLength;
   } else if (channel === X) {
-    maxLength = layout.cellWidth / encoding.config('characterWidth');
+    maxLength = layout.cellWidth / model.config('characterWidth');
   } else if (channel === Y) {
-    maxLength = layout.cellHeight / encoding.config('characterWidth');
+    maxLength = layout.cellHeight / model.config('characterWidth');
   }
 
   return maxLength ? util.truncate(fieldTitle, maxLength) : fieldTitle;
 }
 
 
-export function titleOffset(encoding: Encoding, channel: Channel) {
+export function titleOffset(model: Model, channel: Channel) {
   // return specified value if specified
-  var value = encoding.axis(channel).titleOffset;
+  var value = model.axis(channel).titleOffset;
   if (value)  return value;
 
   switch (channel) {
@@ -190,7 +190,7 @@ export function titleOffset(encoding: Encoding, channel: Channel) {
 }
 
 namespace properties {
-  export function axis(encoding: Encoding, channel: Channel, spec) {
+  export function axis(model: Model, channel: Channel, spec) {
     if (channel === ROW || channel === COL) {
       // hide axis for facets
       return util.extend({
@@ -200,15 +200,15 @@ namespace properties {
     return spec || undefined;
   }
 
-  export function grid(encoding: Encoding, channel: Channel, spec, layout, def) {
+  export function grid(model: Model, channel: Channel, spec, layout, def) {
     var cellPadding = layout.cellPadding;
 
     if (def.grid) {
       if (channel === COL) {
         // set grid property -- put the lines on the right the cell
-        var yOffset = encoding.config('cellGridOffset');
+        var yOffset = model.config('cellGridOffset');
 
-        var sign = encoding.fieldDef(channel).axis.orient === 'bottom' ? -1 : 1;
+        var sign = model.fieldDef(channel).axis.orient === 'bottom' ? -1 : 1;
 
         // TODO(#677): this should depend on orient
         return util.extend({
@@ -226,13 +226,13 @@ namespace properties {
             offset: sign * yOffset,
             mult: sign
           },
-          stroke: { value: encoding.config('cellGridColor') },
-          strokeOpacity: { value: encoding.config('cellGridOpacity') }
+          stroke: { value: model.config('cellGridColor') },
+          strokeOpacity: { value: model.config('cellGridOpacity') }
         }, spec || {});
       } else if (channel === ROW) {
-        var xOffset = encoding.config('cellGridOffset');
+        var xOffset = model.config('cellGridOffset');
 
-        var sign = encoding.fieldDef(channel).axis.orient === 'right' ? -1 : 1;
+        var sign = model.fieldDef(channel).axis.orient === 'right' ? -1 : 1;
 
         // TODO(#677): this should depend on orient
         // set grid property -- put the lines on the top
@@ -252,21 +252,21 @@ namespace properties {
             // default value(s) -- vega doesn't do recursive merge
             mult: sign
           },
-          stroke: { value: encoding.config('cellGridColor') },
-          strokeOpacity: { value: encoding.config('cellGridOpacity') }
+          stroke: { value: model.config('cellGridColor') },
+          strokeOpacity: { value: model.config('cellGridOpacity') }
         }, spec || {});
       } else {
         return util.extend({
-          stroke: { value: encoding.config('gridColor') },
-          strokeOpacity: { value: encoding.config('gridOpacity') }
+          stroke: { value: model.config('gridColor') },
+          strokeOpacity: { value: model.config('gridOpacity') }
         }, spec || {});
       }
     }
     return spec || undefined;
   }
 
-  export function labels(encoding: Encoding, channel: Channel, spec, layout, def) {
-    let fieldDef = encoding.fieldDef(channel);
+  export function labels(model: Model, channel: Channel, spec, layout, def) {
+    let fieldDef = model.fieldDef(channel);
     var timeUnit = fieldDef.timeUnit;
     if (fieldDef.type === TEMPORAL && timeUnit && (time.hasScale(timeUnit))) {
       spec = util.extend({
@@ -274,18 +274,18 @@ namespace properties {
       }, spec || {});
     }
 
-    if (encoding.isTypes(channel, [NOMINAL, ORDINAL]) && encoding.axis(channel).labelMaxLength) {
+    if (model.isTypes(channel, [NOMINAL, ORDINAL]) && model.axis(channel).labelMaxLength) {
       // TODO replace this with Vega's labelMaxLength once it is introduced
       spec = util.extend({
         text: {
-          template: '{{ datum.data | truncate:' + encoding.axis(channel).labelMaxLength + '}}'
+          template: '{{ datum.data | truncate:' + model.axis(channel).labelMaxLength + '}}'
         }
       }, spec || {});
     }
 
      // for x-axis, set ticks for Q or rotate scale for ordinal scale
     if (channel === X) {
-      if ((encoding.isDimension(X) || fieldDef.type === TEMPORAL)) {
+      if ((model.isDimension(X) || fieldDef.type === TEMPORAL)) {
         spec = util.extend({
           angle: {value: 270},
           align: {value: def.orient === 'top' ? 'left': 'right'},
@@ -296,7 +296,7 @@ namespace properties {
     return spec || undefined;
   }
 
-  export function title(encoding: Encoding, channel: Channel, spec, layout) {
+  export function title(model: Model, channel: Channel, spec, layout) {
     if (channel === ROW) {
       return util.extend({
         angle: {value: 0},

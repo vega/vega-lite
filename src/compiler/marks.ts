@@ -1,23 +1,23 @@
-import Encoding from '../Encoding';
+import {Model} from './Model';
 import {COL, ROW, X, Y, COLOR, TEXT, SIZE, SHAPE} from '../channel';
 import {QUANTITATIVE} from '../type';
 
 // https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations
 declare var exports;
 
-export function defs(encoding: Encoding, layout, style) {
+export function defs(model: Model, layout, style) {
   var defs = [],
-    mark = exports[encoding.marktype()],
-    from = encoding.dataTable();
+    mark = exports[model.marktype()],
+    from = model.dataTable();
 
   // to add a background to text, we need to add it before the text
-  if (encoding.marktype() === TEXT && encoding.has(COLOR)) {
+  if (model.marktype() === TEXT && model.has(COLOR)) {
     var bg = {
       x: {value: 0},
       y: {value: 0},
       x2: {value: layout.cellWidth},
       y2: {value: layout.cellHeight},
-      fill: {scale: COLOR, field: encoding.fieldRef(COLOR)}
+      fill: {scale: COLOR, field: model.fieldRef(COLOR)}
     };
     defs.push({
       type: 'rect',
@@ -27,7 +27,7 @@ export function defs(encoding: Encoding, layout, style) {
   }
 
   // add the mark def for the main thing
-  var p = mark.prop(encoding, layout, style);
+  var p = mark.prop(model, layout, style);
   defs.push({
     type: mark.type,
     from: {data: from},
@@ -79,7 +79,7 @@ export const text = {
   prop: text_props
 };
 
-function bar_props(e: Encoding, layout, style) {
+function bar_props(e: Model, layout, style) {
   // TODO Use Vega's marks properties interface
   var p:any = {};
 
@@ -157,7 +157,7 @@ function bar_props(e: Encoding, layout, style) {
   return p;
 }
 
-function point_props(e: Encoding, layout, style) {
+function point_props(e: Model, layout, style) {
   // TODO Use Vega's marks properties interface
   var p:any = {};
 
@@ -212,7 +212,7 @@ function point_props(e: Encoding, layout, style) {
   return p;
 }
 
-function line_props(e: Encoding,layout, style) {
+function line_props(e: Model,layout, style) {
   // TODO Use Vega's marks properties interface
   var p:any = {};
 
@@ -246,7 +246,7 @@ function line_props(e: Encoding,layout, style) {
 }
 
 // TODO(#694): optimize area's usage with bin
-function area_props(e: Encoding, layout, style) {
+function area_props(e: Model, layout, style) {
   // TODO Use Vega's marks properties interface
   var p:any = {};
 
@@ -286,7 +286,7 @@ function area_props(e: Encoding, layout, style) {
   return p;
 }
 
-function tick_props(e: Encoding, layout, style) {
+function tick_props(e: Model, layout, style) {
   // TODO Use Vega's marks properties interface
   var p:any = {};
 
@@ -340,7 +340,7 @@ function tick_props(e: Encoding, layout, style) {
 }
 
 function filled_point_props(shape) {
-  return function(e: Encoding, layout, style) {
+  return function(e: Model, layout, style) {
     // TODO Use Vega's marks properties interface
     var p:any = {};
 
@@ -382,7 +382,7 @@ function filled_point_props(shape) {
   };
 }
 
-function text_props(e: Encoding, layout, style) {
+function text_props(e: Model, layout, style) {
   // TODO Use Vega's marks properties interface
   var p:any = {},
     fieldDef = e.fieldDef(TEXT);

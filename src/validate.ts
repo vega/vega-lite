@@ -1,5 +1,4 @@
 import {toMap} from './util';
-import * as Encoding from './Encoding';
 import {schema} from './schema/schema';
 
 interface RequiredChannelMap {

@@ -1,9 +1,10 @@
 import * as vlFieldDef from '../fielddef';
 import * as util from '../util';
-import Encoding from '../Encoding';
+import {Model} from './Model';
 import {SOURCE, STACKED, SUMMARY} from '../data';
 import * as time from './time';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
+import {Channel} from '../channel';
 
 /**
  * Create Vega's data array from a given encoding.
@@ -14,10 +15,10 @@ import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
  *                 If the encoding contains aggregate value, this will also create
  *                 aggregate table as well.
  */
-export default function(encoding: Encoding) {
-  var def = [source.def(encoding)];
+export default function(model: Model) {
+  var def = [source.def(model)];
 
-  var summaryDef = summary.def(encoding);
+  var summaryDef = summary.def(model);
   if (summaryDef) {
     def.push(summaryDef);
   }
@@ -25,12 +26,12 @@ export default function(encoding: Encoding) {
   // TODO add "having" filter here
 
   // append non-positive filter at the end for the data table
-  filterNonPositive(def[def.length - 1], encoding);
+  filterNonPositive(def[def.length - 1], model);
 
   // Stack
-  var stackCfg = encoding.stack();
+  var stackCfg = model.stack();
   if (stackCfg) {
-    def.push(stack.def(encoding, stackCfg));
+    def.push(stack.def(model, stackCfg));
   }
 
   return def;
@@ -47,32 +48,32 @@ interface VgData {
 }
 
 export namespace source {
-  export function def(encoding: Encoding): VgData {
+  export function def(model: Model): VgData {
     var source:VgData = {name: SOURCE};
 
     // Data source (url or inline)
-    if (encoding.hasValues()) {
-      source.values = encoding.data().values;
+    if (model.hasValues()) {
+      source.values = model.data().values;
       source.format = {type: 'json'};
     } else {
-      source.url = encoding.data().url;
-      source.format = {type: encoding.data().formatType};
+      source.url = model.data().url;
+      source.format = {type: model.data().formatType};
     }
 
     // Set data's format.parse if needed
-    var parse = formatParse(encoding);
+    var parse = formatParse(model);
     if (parse) {
       source.format.parse = parse;
     }
 
-    source.transform = transform(encoding);
+    source.transform = transform(model);
     return source;
   }
 
-  function formatParse(encoding: Encoding) {
+  function formatParse(model: Model) {
     var parse;
 
-    encoding.forEach(function(fieldDef) {
+    model.forEach(function(fieldDef) {
       if (fieldDef.type === TEMPORAL) {
         parse = parse || {};
         parse[fieldDef.name] = 'date';
@@ -90,25 +91,25 @@ export namespace source {
    * Generate Vega transforms for the source data table.  This can include
    * transforms for time unit, binning and filtering.
    */
-  export function transform(encoding: Encoding) {
+  export function transform(model: Model) {
     // null filter comes first so transforms are not performed on null values
     // time and bin should come before filter so we can filter by time and bin
-    return nullFilterTransform(encoding).concat(
-      formulaTransform(encoding),
-      timeTransform(encoding),
-      binTransform(encoding),
-      filterTransform(encoding)
+    return nullFilterTransform(model).concat(
+      formulaTransform(model),
+      timeTransform(model),
+      binTransform(model),
+      filterTransform(model)
     );
   }
 
-  export function timeTransform(encoding: Encoding) {
-    return encoding.reduce(function(transform, fieldDef, channel) {
+  export function timeTransform(model: Model) {
+    return model.reduce(function(transform, fieldDef, channel) {
       if (fieldDef.type === TEMPORAL && fieldDef.timeUnit) {
-        var fieldRef = encoding.fieldRef(channel, {nofn: true, datum: true});
+        var fieldRef = model.fieldRef(channel, {nofn: true, datum: true});
 
         transform.push({
           type: 'formula',
-          field: encoding.fieldRef(channel),
+          field: model.fieldRef(channel),
           expr: time.formula(fieldDef.timeUnit, fieldRef)
         });
       }
@@ -116,23 +117,23 @@ export namespace source {
     }, []);
   }
 
-  export function binTransform(encoding: Encoding) {
-    return encoding.reduce(function(transform, fieldDef, channel) {
-      if (encoding.bin(channel)) {
+  export function binTransform(model: Model) {
+    return model.reduce(function(transform, fieldDef, channel) {
+      if (model.bin(channel)) {
         transform.push({
           type: 'bin',
           field: fieldDef.name,
           output: {
-            start: encoding.fieldRef(channel, {binSuffix: '_start'}),
-            end: encoding.fieldRef(channel, {binSuffix: '_end'})
+            start: model.fieldRef(channel, {binSuffix: '_start'}),
+            end: model.fieldRef(channel, {binSuffix: '_end'})
           },
-          maxbins: encoding.bin(channel).maxbins
+          maxbins: model.bin(channel).maxbins
         });
         // temporary fix for adding missing `bin_mid` from the bin transform
         transform.push({
           type: 'formula',
-          field: encoding.fieldRef(channel, {binSuffix: '_mid'}),
-          expr: '(' + encoding.fieldRef(channel, {datum:1, binSuffix: '_start'}) + '+' + encoding.fieldRef(channel, {datum:1, binSuffix: '_end'}) + ')/2'
+          field: model.fieldRef(channel, {binSuffix: '_mid'}),
+          expr: '(' + model.fieldRef(channel, {datum:1, binSuffix: '_start'}) + '+' + model.fieldRef(channel, {datum:1, binSuffix: '_end'}) + ')/2'
         });
       }
       return transform;
@@ -142,16 +143,16 @@ export namespace source {
   /**
    * @return {Array} An array that might contain a filter transform for filtering null value based on filterNul config
    */
-  export function nullFilterTransform(encoding: Encoding) {
-    var filteredFields = util.reduce(encoding.fields(),
+  export function nullFilterTransform(model: Model) {
+    var filteredFields = util.reduce(model.fields(),
       function(filteredFields, fieldList, fieldName) {
         if (fieldName === '*') return filteredFields; //count
 
         // TODO(#597) revise how filterNull is structured.
-        if ((encoding.config('filterNull').quantitative && fieldList.containsType[QUANTITATIVE]) ||
-            (encoding.config('filterNull').temporal && fieldList.containsType[TEMPORAL]) ||
-            (encoding.config('filterNull').ordinal && fieldList.containsType[ORDINAL]) ||
-            (encoding.config('filterNull').nominal && fieldList.containsType[NOMINAL])) {
+        if ((model.config('filterNull').quantitative && fieldList.containsType[QUANTITATIVE]) ||
+            (model.config('filterNull').temporal && fieldList.containsType[TEMPORAL]) ||
+            (model.config('filterNull').ordinal && fieldList.containsType[ORDINAL]) ||
+            (model.config('filterNull').nominal && fieldList.containsType[NOMINAL])) {
           filteredFields.push(fieldName);
         }
         return filteredFields;
@@ -166,16 +167,16 @@ export namespace source {
       }] : [];
   }
 
-  export function filterTransform(encoding: Encoding) {
-    var filter = encoding.data().filter;
+  export function filterTransform(model: Model) {
+    var filter = model.data().filter;
     return filter ? [{
         type: 'filter',
         test: filter
     }] : [];
   }
 
-  export function formulaTransform(encoding: Encoding) {
-    var calculate = encoding.data().calculate;
+  export function formulaTransform(model: Model) {
+    var calculate = model.data().calculate;
     if (calculate === undefined) {
       return [];
     }
@@ -189,7 +190,7 @@ export namespace source {
 }
 
 export namespace summary {
-  export function def(encoding):VgData {
+  export function def(model: Model):VgData {
     /* dict set for dimensions */
     var dims = {};
 
@@ -198,7 +199,7 @@ export namespace summary {
 
     var hasAggregate = false;
 
-    encoding.forEach(function(fieldDef, channel) {
+    model.forEach(function(fieldDef, channel: Channel) {
       if (fieldDef.aggregate) {
         hasAggregate = true;
         if (fieldDef.aggregate === 'count') {
@@ -211,11 +212,11 @@ export namespace summary {
       } else {
         if (fieldDef.bin) {
           // TODO(#694) only add dimension for the required ones.
-          dims[encoding.fieldRef(channel, {binSuffix: '_start'})] = encoding.fieldRef(channel, {binSuffix: '_start'});
-          dims[encoding.fieldRef(channel, {binSuffix: '_mid'})] = encoding.fieldRef(channel, {binSuffix: '_mid'});
-          dims[encoding.fieldRef(channel, {binSuffix: '_end'})] = encoding.fieldRef(channel, {binSuffix: '_end'});
+          dims[model.fieldRef(channel, {binSuffix: '_start'})] = model.fieldRef(channel, {binSuffix: '_start'});
+          dims[model.fieldRef(channel, {binSuffix: '_mid'})] = model.fieldRef(channel, {binSuffix: '_mid'});
+          dims[model.fieldRef(channel, {binSuffix: '_end'})] = model.fieldRef(channel, {binSuffix: '_end'});
         } else {
-          dims[fieldDef.name] = encoding.fieldRef(channel);
+          dims[fieldDef.name] = model.fieldRef(channel);
         }
 
       }
@@ -250,18 +251,18 @@ export namespace stack {
   /**
    * Add stacked data source, for feeding the shared scale.
    */
-  export function def(encoding: Encoding, stackCfg):VgData {
+  export function def(model: Model, stackCfg):VgData {
     var dim = stackCfg.groupby;
     var val = stackCfg.value;
-    var facets = encoding.facets();
+    var facets = model.facets();
 
     var stacked:VgData = {
       name: STACKED,
-      source: encoding.dataTable(),
+      source: model.dataTable(),
       transform: [{
         type: 'aggregate',
-        groupby: [encoding.fieldRef(dim)].concat(facets), // dim and other facets
-        summarize: [{ops: ['sum'], field: encoding.fieldRef(val)}]
+        groupby: [model.fieldRef(dim)].concat(facets), // dim and other facets
+        summarize: [{ops: ['sum'], field: model.fieldRef(val)}]
       }]
     };
 
@@ -272,7 +273,7 @@ export namespace stack {
         summarize: [{
           ops: ['max'],
           // we want max of sum from above transform
-          field: encoding.fieldRef(val, {prefn: 'sum_'})
+          field: model.fieldRef(val, {prefn: 'sum_'})
         }]
       });
     }
@@ -280,12 +281,12 @@ export namespace stack {
   };
 }
 
-export function filterNonPositive(dataTable, encoding: Encoding) {
-  encoding.forEach(function(_, channel) {
-    if (encoding.scale(channel).type === 'log') {
+export function filterNonPositive(dataTable, model: Model) {
+  model.forEach(function(_, channel) {
+    if (model.scale(channel).type === 'log') {
       dataTable.transform.push({
         type: 'filter',
-        test: encoding.fieldRef(channel, {datum: 1}) + ' > 0'
+        test: model.fieldRef(channel, {datum: 1}) + ' > 0'
       });
     }
   });

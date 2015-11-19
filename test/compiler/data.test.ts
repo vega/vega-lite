@@ -2,12 +2,12 @@ import {expect} from 'chai';
 
 import data, {source, summary} from '../../src/compiler/data';
 import {SUMMARY} from '../../src/data';
-import Encoding from '../../src/Encoding';
+import {Model} from '../../src/compiler/Model';
 
 describe('data', function () {
   describe('for aggregate encoding', function () {
     it('should contain two tables', function() {
-      var encoding = Encoding.fromSpec({
+      var encoding = Model.fromSpec({
           encoding: {
             x: {name: 'a', type: 'temporal'},
             y: {name: 'b', type: 'quantitative', scale: {type: 'log'}, aggregate: 'sum'}
@@ -20,7 +20,7 @@ describe('data', function () {
   });
 
   describe('when contains log in non-aggregate', function () {
-    var rawEncodingWithLog = Encoding.fromSpec({
+    var rawEncodingWithLog = Model.fromSpec({
         encoding: {
           x: {name: 'a', type: 'temporal'},
           y: {name: 'b', type: 'quantitative', scale: {type: 'log'}}
@@ -43,7 +43,7 @@ describe('data', function () {
 
 describe('data.source', function() {
   describe('with explicit values', function() {
-    var encoding = Encoding.fromSpec({
+    var encoding = Model.fromSpec({
       data: {
         values: [{a: 1, b:2, c:3}, {a: 4, b:5, c:6}]
       }
@@ -62,7 +62,7 @@ describe('data.source', function() {
   });
 
   describe('with link to url', function() {
-    var encoding = Encoding.fromSpec({
+    var encoding = Model.fromSpec({
         data: {
           url: 'http://foo.bar'
         }
@@ -81,7 +81,7 @@ describe('data.source', function() {
 
   describe('formatParse', function () {
     it('should have correct parse', function() {
-      var encoding = Encoding.fromSpec({
+      var encoding = Model.fromSpec({
           encoding: {
             x: {name: 'a', type: 'temporal'},
             y: {name: 'b', type: 'quantitative'},
@@ -98,7 +98,7 @@ describe('data.source', function() {
   });
 
   describe('transform', function () {
-    var encoding = Encoding.fromSpec({
+    var encoding = Model.fromSpec({
       data: {
         filter: 'datum.a > datum.b && datum.c === datum.d'
       },
@@ -136,7 +136,7 @@ describe('data.source', function() {
         };
 
       it('should add filterNull for Q and T by default', function () {
-        var encoding = Encoding.fromSpec(spec);
+        var encoding = Model.fromSpec(spec);
         expect(source.nullFilterTransform(encoding))
           .to.eql([{
             type: 'filter',
@@ -145,7 +145,7 @@ describe('data.source', function() {
       });
 
       it('should add filterNull for O when specified', function () {
-        var encoding = Encoding.fromSpec(spec, {
+        var encoding = Model.fromSpec(spec, {
           config: {
             filterNull: {ordinal: true}
           }
@@ -195,7 +195,7 @@ describe('data.source', function() {
 
 describe('data.summary', function () {
   it('should return correct aggregation', function() {
-    var encoding = Encoding.fromSpec({
+    var encoding = Model.fromSpec({
         encoding: {
           'y': {
             'aggregate': 'sum',

@@ -1,18 +1,24 @@
-import {Shorthand, MAXBINS_DEFAULT} from './consts';
-import {COL, ROW, X, Y, COLOR, DETAIL} from './channel';
-import {SOURCE, SUMMARY} from './data';
-import * as util from './util';
-import * as vlFieldDef from './fielddef';
-import * as vlEnc from './enc';
-import * as schema from './schema/schema';
-import * as schemaUtil from './schema/schemautil';
-import {getFullName} from './type';
+import {Shorthand, MAXBINS_DEFAULT} from '../consts';
+import {COL, ROW, X, Y, COLOR, DETAIL} from '../channel';
+import {SOURCE, SUMMARY} from '../data';
+import * as util from '../util';
+import * as vlFieldDef from '../fielddef';
+import * as vlEnc from '../enc';
+import * as schema from '../schema/schema';
+import * as schemaUtil from '../schema/schemautil';
+import {getFullName} from '../type';
 
-export default class Encoding {
+/**
+ * Internal model of Vega-Lite specification for the compiler.
+ */
+
+export class Model {
   _data: any;
   _marktype: string;
   _enc: any;
   _config: any;
+
+  // TODO: include _stack, _layout, _style, etc.
 
   constructor(spec, theme?) {
     var defaults = schema.instantiate();
@@ -31,22 +37,9 @@ export default class Encoding {
     });
   }
 
-  static fromShorthand(shorthand: string, data?, config?, theme?) {
-    var c = Shorthand,
-      split = shorthand.split(c.DELIM),
-      marktype = split.shift().split(c.ASSIGN)[1].trim(),
-      enc = vlEnc.fromShorthand(split);
-
-    return new Encoding({
-      data: data,
-      marktype: marktype,
-      encoding: enc,
-      config: config
-    }, theme);
-  }
 
   static fromSpec(spec, theme?) {
-    return new Encoding(spec, theme);
+    return new Model(spec, theme);
   }
 
   toShorthand() {
@@ -57,10 +50,6 @@ export default class Encoding {
   static shorthand(spec) {
     return 'mark' + Shorthand.ASSIGN + spec.marktype +
       Shorthand.DELIM + vlEnc.shorthand(spec.encoding);
-  }
-
-  static specFromShorthand(shorthand: string, data, config, excludeConfig?) {
-    return Encoding.fromShorthand(shorthand, data, config).toSpec(excludeConfig);
   }
 
   toSpec(excludeConfig?, excludeData?) {
@@ -224,17 +213,13 @@ export default class Encoding {
     return this.isAggregate() ? SUMMARY : SOURCE;
   }
 
-  static alwaysNoOcclusion(spec) {
-    // FIXME raw OxQ with # of rows = # of O
-    return vlEnc.isAggregate(spec.encoding);
-  }
-
   static isStack(spec) {
     // FIXME update this once we have control for stack ...
     return (spec.marktype === 'bar' || spec.marktype === 'area') &&
       !!spec.encoding.color;
   }
 
+  // TODO: calculate this and store it in this._stack so it can be called multiple times.
   /**
    * Check if the encoding should be stacked and return the stack dimenstion and value fields.
    * @return {Object} An object containing two properties:
