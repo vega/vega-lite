@@ -15,6 +15,13 @@ export function getCleanSpec(spec) {
   return new Model(spec).toSpec(true);
 }
 
+
+export function isStack(spec) {
+  // FIXME update this once we have control for stack ...
+  return (spec.marktype === 'bar' || spec.marktype === 'area') &&
+    !!spec.encoding.color;
+}
+
 // TODO revise
 export function transpose(spec) {
   var oldenc = spec.encoding,
