@@ -1,6 +1,9 @@
 {
   "rules": {
     "indent": [true, "spaces"],
-    "semicolon": true
+    "semicolon": true,
+    "no-duplicate-key": true,
+    "no-duplicate-variable": true,
+    "no-unreachable": true
   }
 }
