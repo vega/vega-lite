@@ -5,6 +5,7 @@ import * as vlEnc from './enc';
 import * as vlFieldDef from './fielddef';
 import * as vlCompiler from './compiler/compiler';
 import * as vlSchema from './schema/schema';
+import * as vlSpec from './spec';
 import * as vlType from './type';
 import * as vlValidate from './validate';
 
@@ -25,6 +26,7 @@ export var data = vlData;
 export var enc = vlEnc;
 export var fieldDef = vlFieldDef;
 export var schema = vlSchema;
+export var spec = vlSpec;
 // TODO: remove this
 export var toShorthand = Model.shorthand;
 export var type = vlType;

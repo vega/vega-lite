@@ -1,6 +1,8 @@
 import * as vlEnc from './enc';
 import {Model} from './compiler/Model';
 
+// TODO: add vl.spec.validate
+
 
 export function alwaysNoOcclusion(spec) {
   // FIXME raw OxQ with # of rows = # of O

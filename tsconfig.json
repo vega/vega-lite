@@ -52,7 +52,7 @@
         "src/schema/schemagen.ts",
         "src/schema/schemautil.ts",
         "src/shorthand.ts",
-        "src/specification.ts",
+        "src/spec.ts",
         "src/timeunit.ts",
         "src/type.ts",
         "src/util.ts",
