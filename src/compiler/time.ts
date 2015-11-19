@@ -5,7 +5,7 @@ import {utcFormat} from 'd3-time-format';
 import Encoding from '../Encoding';
 import * as vlFieldDef from '../fielddef';
 import * as util from '../util';
-import {COLOR, COL, ROW} from '../channel';
+import {COLOR, COL, ROW, Channel} from '../channel';
 import {TEMPORAL} from '../type';
 
 // 'Wednesday September 17 04:00:00 2014'
@@ -132,17 +132,17 @@ export namespace scale {
     return null;
   }
 
-  export function type(timeUnit, name) {
-    if (name === COLOR) {
+  export function type(timeUnit, channel: Channel) {
+    if (channel === COLOR) {
       return 'linear'; // time has order, so use interpolated ordinal color scale.
     }
 
     // FIXME revise this -- should 'year' be linear too?
-    return isOrdinalFn(timeUnit) || name === COL || name === ROW ? 'ordinal' : 'linear';
+    return isOrdinalFn(timeUnit) || channel === COL || channel === ROW ? 'ordinal' : 'linear';
   }
 
-  export function domain(timeUnit, name?) {
-    var isColor = name === COLOR;
+  export function domain(timeUnit, channel?: Channel) {
+    var isColor = channel === COLOR;
     switch (timeUnit) {
       case 'seconds':
       case 'minutes': return isColor ? [0,59] : util.range(0, 60);
