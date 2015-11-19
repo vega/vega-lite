@@ -10,7 +10,7 @@ interface RequiredChannelMap {
  * Required Encoding Channels for each mark type
  * @type {Object}
  */
-export const DefaultRequiredChannelMap: RequiredChannelMap = {
+export const DEFAULT_REQUIRED_CHANNEL_MAP: RequiredChannelMap = {
   text: ['text'],
   line: ['x', 'y'],
   area: ['x', 'y']
@@ -25,7 +25,7 @@ interface SupportedChannelMap {
 /**
  * Supported Encoding Channel for each mark type
  */
-export const DefaultSupportedChannelMap: SupportedChannelMap = {
+export const DEFAULT_SUPPORTED_CHANNEL_TYPE: SupportedChannelMap = {
   bar: toMap(['row', 'col', 'x', 'y', 'size', 'color']), // TODO(#400) add detail
   line: toMap(['row', 'col', 'x', 'y', 'color', 'detail']), // TODO: add size when Vega supports
   area: toMap(['row', 'col', 'x', 'y', 'color']), // TODO(#400) add detail
@@ -53,8 +53,8 @@ export const DefaultSupportedChannelMap: SupportedChannelMap = {
   *                  or null if the encoding is valid.
   */
 export function getEncodingMappingError(spec, //TODO: add ":spec"
-      requiredChannelMap: RequiredChannelMap = DefaultRequiredChannelMap,
-      supportedChannelMap: SupportedChannelMap = DefaultSupportedChannelMap
+      requiredChannelMap: RequiredChannelMap = DEFAULT_REQUIRED_CHANNEL_MAP,
+      supportedChannelMap: SupportedChannelMap = DEFAULT_SUPPORTED_CHANNEL_TYPE
     ) {
   let marktype = spec.marktype;
   let encoding = spec.encoding;
