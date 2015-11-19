@@ -1,10 +1,17 @@
 {
   "rules": {
-    "indent": "spaces",
+    "class-name": true,
+    "eofline": true,
+    "indent": [true, "spaces"],
+    "label-position": true,
+    "label-undefined": true,
+    "no-arg": true,
     "semicolon": true,
     "no-duplicate-key": true,
     "no-duplicate-variable": true,
     "no-unreachable": true,
-    "no-conditional-assignment": true
+    "no-conditional-assignment": true,
+    "quotemark": [true, "single"],
+    "triple-equals": [true, "allow-null-check"]
   }
 }

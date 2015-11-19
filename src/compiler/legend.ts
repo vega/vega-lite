@@ -69,7 +69,7 @@ namespace properties {
   export function labels(encoding: Encoding, name, spec) {
     var fieldDef = encoding.fieldDef(name);
     var timeUnit = fieldDef.timeUnit;
-    if (fieldDef.type == TEMPORAL && timeUnit && time.labelTemplate(timeUnit)) {
+    if (fieldDef.type === TEMPORAL && timeUnit && time.labelTemplate(timeUnit)) {
       return util.extend({
         text: {template: '{{datum.data | ' + time.labelTemplate(timeUnit) + '}}'}
       }, spec || {});

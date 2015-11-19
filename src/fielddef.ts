@@ -66,7 +66,7 @@ export function fromShorthand(shorthand: string) {
     var a = AGGREGATE_OPS[i];
     if (fieldDef.name.indexOf(a + '_') === 0) {
       fieldDef.name = fieldDef.name.substr(a.length + 1);
-      if (a == 'count' && fieldDef.name.length === 0) fieldDef.name = '*';
+      if (a === 'count' && fieldDef.name.length === 0) fieldDef.name = '*';
       fieldDef.aggregate = a;
       break;
     }

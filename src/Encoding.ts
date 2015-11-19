@@ -287,7 +287,7 @@ export default class Encoding {
   facets() {
     var encoding = this;
     return this.reduce(function(refs, field, channel) {
-      if (!field.aggregate && (channel == ROW || channel == COL)) {
+      if (!field.aggregate && (channel === ROW || channel === COL)) {
         refs.push(encoding.fieldRef(channel));
       }
       return refs;
