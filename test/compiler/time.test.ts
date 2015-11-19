@@ -10,15 +10,7 @@ describe('time', function() {
       encoding: {
         x: {name: field, type: 'temporal', timeUnit: timeUnit}
       }
-    }),
-    scales = time.scales(encoding);
-
-
-  it('should add custom axis scale', function() {
-    expect(scales.filter(function(scale) {
-      return scale.name == 'time-'+ timeUnit;
-    }).length).to.equal(1);
-  });
+    });
 
   describe('maxLength', function() {
     it('should return max length of the month custom scale', function () {
