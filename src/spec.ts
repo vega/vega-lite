@@ -1,8 +1,9 @@
+/* Utilities for a Vega-Lite specificiation */
+
 import * as vlEnc from './enc';
 import {Model} from './compiler/Model';
 
-// TODO: add vl.spec.validate
-
+// TODO: add vl.spec.validate & move stuff from vl.validate to here
 
 export function alwaysNoOcclusion(spec) {
   // FIXME raw OxQ with # of rows = # of O
