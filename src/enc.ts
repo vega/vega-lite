@@ -4,7 +4,7 @@ import {Type, Shorthand} from './consts';
 import * as vlFieldDef from './fielddef';
 import * as util from './util';
 
-let encTypes = CHANNELS;
+let channels = CHANNELS;
 
 export function countRetinal(enc) {
   var count = 0;
@@ -14,8 +14,8 @@ export function countRetinal(enc) {
   return count;
 }
 
-export function has(enc, encType) {
-  var fieldDef = enc && enc[encType];
+export function has(enc, channel) {
+  var fieldDef = enc && enc[channel];
   return fieldDef && fieldDef.name;
 }
 
@@ -30,16 +30,16 @@ export function isAggregate(enc) {
 
 export function forEach(enc, f) {
   var i = 0;
-  encTypes.forEach(function(encType) {
-    if (has(enc, encType)) {
-      f(enc[encType], encType, i++);
+  channels.forEach(function(channel) {
+    if (has(enc, channel)) {
+      f(enc[channel], channel, i++);
     }
   });
 }
 
 export function map(enc, f) {
   var arr = [];
-  encTypes.forEach(function(k) {
+  channels.forEach(function(k) {
     if (has(enc, k)) {
       arr.push(f(enc[k], k, enc));
     }
@@ -49,7 +49,7 @@ export function map(enc, f) {
 
 export function reduce(enc, f, init) {
   var r = init;
-  encTypes.forEach(function(k) {
+  channels.forEach(function(k) {
     if (has(enc, k)) {
       r = f(r, enc[k], k,  enc);
     }

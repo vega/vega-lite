@@ -91,19 +91,19 @@ export default class Encoding {
     return this._marktype === m;
   }
 
-  has(encType) {
-    // equivalent to calling vlenc.has(this._enc, encType)
-    return this._enc[encType].name !== undefined;
+  has(channel) {
+    // equivalent to calling vlenc.has(this._enc, channel)
+    return this._enc[channel].name !== undefined;
   }
 
-  fieldDef(encType) {
-    return this._enc[encType];
+  fieldDef(channel) {
+    return this._enc[channel];
   }
 
   // get "field" reference for vega
-  fieldRef(encType, opt?) {
+  fieldRef(channel, opt?) {
     opt = opt || {};
-    return vlFieldDef.fieldRef(this._enc[encType], opt);
+    return vlFieldDef.fieldRef(this._enc[channel], opt);
   }
 
   /*
@@ -133,28 +133,28 @@ export default class Encoding {
     return this._enc[et].axis || {};
   }
 
-  bandWidth(encType, useSmallBand?: boolean) {
-    if (this.fieldDef(encType).scale.bandWidth !== undefined) {
+  bandWidth(channel, useSmallBand?: boolean) {
+    if (this.fieldDef(channel).scale.bandWidth !== undefined) {
       // explicit value
-      return this.fieldDef(encType).scale.bandWidth;
+      return this.fieldDef(channel).scale.bandWidth;
     }
 
     // If not specified, draw value from config.
 
     useSmallBand = useSmallBand ||
     //isBandInSmallMultiples
-    (encType === Y && this.has(ROW) && this.has(Y)) ||
-    (encType === X && this.has(COL) && this.has(X));
+    (channel === Y && this.has(ROW) && this.has(Y)) ||
+    (channel === X && this.has(COL) && this.has(X));
 
     return this.config(useSmallBand ? 'smallBandWidth' : 'largeBandWidth');
   }
 
-  padding(encType) {
-    if (this.fieldDef(encType).scale.padding !== undefined) {
+  padding(channel) {
+    if (this.fieldDef(channel).scale.padding !== undefined) {
       // explicit value
-      return this.fieldDef(encType).scale.padding;
+      return this.fieldDef(channel).scale.padding;
     }
-    if (encType === ROW || encType === COL) {
+    if (channel === ROW || channel === COL) {
       return this.config('cellPadding');
     }
     return this.config('padding');
@@ -199,19 +199,19 @@ export default class Encoding {
   }
 
 
-  isOrdinalScale(encType) {
-    return this.has(encType) &&
-      vlFieldDef.isOrdinalScale(this.fieldDef(encType));
+  isOrdinalScale(channel) {
+    return this.has(channel) &&
+      vlFieldDef.isOrdinalScale(this.fieldDef(channel));
   }
 
-  isDimension(encType) {
-    return this.has(encType) &&
-      vlFieldDef.isDimension(this.fieldDef(encType));
+  isDimension(channel) {
+    return this.has(channel) &&
+      vlFieldDef.isDimension(this.fieldDef(channel));
   }
 
-  isMeasure(encType) {
-    return this.has(encType) &&
-      vlFieldDef.isMeasure(this.fieldDef(encType));
+  isMeasure(channel) {
+    return this.has(channel) &&
+      vlFieldDef.isMeasure(this.fieldDef(channel));
   }
 
   isAggregate() {
@@ -274,9 +274,9 @@ export default class Encoding {
 
   details() {
     var encoding = this;
-    return this.reduce(function(refs, field, encType) {
-      if (!field.aggregate && (encType !== X && encType !== Y)) {
-        refs.push(encoding.fieldRef(encType));
+    return this.reduce(function(refs, field, channel) {
+      if (!field.aggregate && (channel !== X && channel !== Y)) {
+        refs.push(encoding.fieldRef(channel));
       }
       return refs;
     }, []);
@@ -284,16 +284,16 @@ export default class Encoding {
 
   facets() {
     var encoding = this;
-    return this.reduce(function(refs, field, encType) {
-      if (!field.aggregate && (encType == ROW || encType == COL)) {
-        refs.push(encoding.fieldRef(encType));
+    return this.reduce(function(refs, field, channel) {
+      if (!field.aggregate && (channel == ROW || channel == COL)) {
+        refs.push(encoding.fieldRef(channel));
       }
       return refs;
     }, []);
   }
 
-  cardinality(encType, stats) {
-    return vlFieldDef.cardinality(this.fieldDef(encType), stats, this.config('filterNull'));
+  cardinality(channel, stats) {
+    return vlFieldDef.cardinality(this.fieldDef(channel), stats, this.config('filterNull'));
   }
 
   isRaw() {

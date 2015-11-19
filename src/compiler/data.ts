@@ -102,13 +102,13 @@ export namespace source {
   }
 
   export function timeTransform(encoding: Encoding) {
-    return encoding.reduce(function(transform, fieldDef, encType) {
+    return encoding.reduce(function(transform, fieldDef, channel) {
       if (fieldDef.type === Type.TEMPORAL && fieldDef.timeUnit) {
-        var fieldRef = encoding.fieldRef(encType, {nofn: true, datum: true});
+        var fieldRef = encoding.fieldRef(channel, {nofn: true, datum: true});
 
         transform.push({
           type: 'formula',
-          field: encoding.fieldRef(encType),
+          field: encoding.fieldRef(channel),
           expr: time.formula(fieldDef.timeUnit, fieldRef)
         });
       }
@@ -117,22 +117,22 @@ export namespace source {
   }
 
   export function binTransform(encoding: Encoding) {
-    return encoding.reduce(function(transform, fieldDef, encType) {
-      if (encoding.bin(encType)) {
+    return encoding.reduce(function(transform, fieldDef, channel) {
+      if (encoding.bin(channel)) {
         transform.push({
           type: 'bin',
           field: fieldDef.name,
           output: {
-            start: encoding.fieldRef(encType, {bin_suffix: '_start'}),
-            end: encoding.fieldRef(encType, {bin_suffix: '_end'})
+            start: encoding.fieldRef(channel, {bin_suffix: '_start'}),
+            end: encoding.fieldRef(channel, {bin_suffix: '_end'})
           },
-          maxbins: encoding.bin(encType).maxbins
+          maxbins: encoding.bin(channel).maxbins
         });
         // temporary fix for adding missing `bin_mid` from the bin transform
         transform.push({
           type: 'formula',
-          field: encoding.fieldRef(encType, {bin_suffix: '_mid'}),
-          expr: '(' + encoding.fieldRef(encType, {datum:1, bin_suffix: '_start'}) + '+' + encoding.fieldRef(encType, {datum:1, bin_suffix: '_end'}) + ')/2'
+          field: encoding.fieldRef(channel, {bin_suffix: '_mid'}),
+          expr: '(' + encoding.fieldRef(channel, {datum:1, bin_suffix: '_start'}) + '+' + encoding.fieldRef(channel, {datum:1, bin_suffix: '_end'}) + ')/2'
         });
       }
       return transform;
@@ -198,7 +198,7 @@ export namespace summary {
 
     var hasAggregate = false;
 
-    encoding.forEach(function(fieldDef, encType) {
+    encoding.forEach(function(fieldDef, channel) {
       if (fieldDef.aggregate) {
         hasAggregate = true;
         if (fieldDef.aggregate === 'count') {
@@ -211,11 +211,11 @@ export namespace summary {
       } else {
         if (fieldDef.bin) {
           // TODO(#694) only add dimension for the required ones.
-          dims[encoding.fieldRef(encType, {bin_suffix: '_start'})] = encoding.fieldRef(encType, {bin_suffix: '_start'});
-          dims[encoding.fieldRef(encType, {bin_suffix: '_mid'})] = encoding.fieldRef(encType, {bin_suffix: '_mid'});
-          dims[encoding.fieldRef(encType, {bin_suffix: '_end'})] = encoding.fieldRef(encType, {bin_suffix: '_end'});
+          dims[encoding.fieldRef(channel, {bin_suffix: '_start'})] = encoding.fieldRef(channel, {bin_suffix: '_start'});
+          dims[encoding.fieldRef(channel, {bin_suffix: '_mid'})] = encoding.fieldRef(channel, {bin_suffix: '_mid'});
+          dims[encoding.fieldRef(channel, {bin_suffix: '_end'})] = encoding.fieldRef(channel, {bin_suffix: '_end'});
         } else {
-          dims[fieldDef.name] = encoding.fieldRef(encType);
+          dims[fieldDef.name] = encoding.fieldRef(channel);
         }
 
       }
@@ -281,11 +281,11 @@ export namespace stack {
 }
 
 export function filterNonPositive(dataTable, encoding: Encoding) {
-  encoding.forEach(function(_, encType) {
-    if (encoding.scale(encType).type === 'log') {
+  encoding.forEach(function(_, channel) {
+    if (encoding.scale(channel).type === 'log') {
       dataTable.transform.push({
         type: 'filter',
-        test: encoding.fieldRef(encType, {datum: 1}) + ' > 0'
+        test: encoding.fieldRef(channel, {datum: 1}) + ' > 0'
       });
     }
   });

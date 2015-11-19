@@ -23,13 +23,13 @@ function estimateOpacity(encoding,stats) {
     //  for each non faceting and non-ordinal X / Y fields
     //  note that ordinal x,y are not include since we can
     //  consider that ordinal x are subdividing the cell into subcells anyway
-    encoding.forEach(function(fieldDef, encType) {
+    encoding.forEach(function(fieldDef, channel) {
 
-      if (encType !== ROW && encType !== COL &&
-          !((encType === X || encType === Y) &&
+      if (channel !== ROW && channel !== COL &&
+          !((channel === X || channel === Y) &&
           vlFieldDef.isOrdinalScale(fieldDef))
         ) {
-        numPoints *= encoding.cardinality(encType, stats);
+        numPoints *= encoding.cardinality(channel, stats);
       }
     });
 
