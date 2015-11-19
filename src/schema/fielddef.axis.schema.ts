@@ -59,7 +59,7 @@ export var axis = {
     shortTimeNames: {
       type: 'string',
       default: false,
-      description: 'Whether month names and weekday names should be abbrevaited.'
+      description: 'Whether month names and weekday names should be abbreviated.'
     },
     properties: {
       type: 'object',
