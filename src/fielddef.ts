@@ -1,6 +1,6 @@
 // utility for a field definition object
 
-import {MAXBINS_DEFAULT} from './consts';
+import {MAXBINS_DEFAULT} from './bin';
 import {AGGREGATE_OPS} from './aggregate';
 import * as util from './util';
 import * as time from './compiler/time';

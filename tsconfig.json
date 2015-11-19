@@ -23,6 +23,7 @@
     ],
     "files": [
         "src/aggregate.ts",
+        "src/bin.ts",
         "src/channel.ts",
         "src/compiler/axis.ts",
         "src/compiler/compiler.ts",
@@ -37,7 +38,6 @@
         "src/compiler/style.ts",
         "src/compiler/subfacet.ts",
         "src/compiler/time.ts",
-        "src/consts.ts",
         "src/data.ts",
         "src/enc.ts",
         "src/fielddef.ts",

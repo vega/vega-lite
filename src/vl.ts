@@ -1,4 +1,4 @@
-import {Model} from './compiler/Model';
+import * as vlBin from './bin';
 import * as vlChannel from './channel';
 import * as vlData from './data';
 import * as vlEnc from './enc';
@@ -10,15 +10,12 @@ import * as vlSpec from './spec';
 import * as vlType from './type';
 import * as vlValidate from './validate';
 
-// TODO: revise if we can remove this
+// TODO: remove this
 import {format as d3Format} from 'd3-format';
 
 export * from './util';
-export * from './consts';
 
-// TODO() rename this
-export {Model as Encoding} from './compiler/Model';
-
+export var bin = vlBin;
 export var channel = vlChannel;
 export var compiler = vlCompiler;
 export var compile = vlCompiler.compile;

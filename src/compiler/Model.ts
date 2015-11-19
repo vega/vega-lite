@@ -1,4 +1,4 @@
-import {MAXBINS_DEFAULT} from '../consts';
+import {MAXBINS_DEFAULT} from '../bin';
 import {COL, ROW, X, Y, COLOR, DETAIL} from '../channel';
 import {SOURCE, SUMMARY} from '../data';
 import * as util from '../util';
