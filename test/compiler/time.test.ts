@@ -16,7 +16,7 @@ describe('time', function() {
 
   it('should add custom axis scale', function() {
     expect(scales.filter(function(scale) {
-      return scale.name == 'time-'+ timeUnit;
+      return scale.name === 'time-'+ timeUnit;
     }).length).to.equal(1);
   });
 

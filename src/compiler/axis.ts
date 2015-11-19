@@ -8,8 +8,8 @@ import * as time from './time';
 declare var exports;
 
 export function def(name: string, encoding: Encoding, layout, stats) {
-  var isCol = name == COL,
-    isRow = name == ROW,
+  var isCol = name === COL,
+    isRow = name === ROW,
     type = isCol ? 'x' : isRow ? 'y': name;
 
   // TODO: rename def to axisDef and avoid side effects where possible.
@@ -204,7 +204,7 @@ namespace properties {
     var cellPadding = layout.cellPadding;
 
     if (def.grid) {
-      if (name == COL) {
+      if (name === COL) {
         // set grid property -- put the lines on the right the cell
         var yOffset = encoding.config('cellGridOffset');
 
@@ -229,7 +229,7 @@ namespace properties {
           stroke: { value: encoding.config('cellGridColor') },
           strokeOpacity: { value: encoding.config('cellGridOpacity') }
         }, spec || {});
-      } else if (name == ROW) {
+      } else if (name === ROW) {
         var xOffset = encoding.config('cellGridOffset');
 
         var sign = encoding.fieldDef(name).axis.orient === 'right' ? -1 : 1;
@@ -284,7 +284,7 @@ namespace properties {
     }
 
      // for x-axis, set ticks for Q or rotate scale for ordinal scale
-    if (name == X) {
+    if (name === X) {
       if ((encoding.isDimension(X) || fieldDef.type === TEMPORAL)) {
         spec = util.extend({
           angle: {value: 270},

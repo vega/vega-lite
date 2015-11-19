@@ -6,6 +6,7 @@
     "no-duplicate-variable": true,
     "no-unreachable": true,
     "no-conditional-assignment": true,
-    "quotemark": [true, "single"]
+    "quotemark": [true, "single"],
+    "triple-equals": [true, "allow-null-check"]
   }
 }
