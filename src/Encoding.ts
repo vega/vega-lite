@@ -1,4 +1,5 @@
-import {Enctype, Type, Shorthand, Table, MAXBINS_DEFAULT} from './consts';
+import {Type, Shorthand, Table, MAXBINS_DEFAULT} from './consts';
+import {COL, ROW, X, Y, COLOR, DETAIL} from './channel';
 import * as util from './util';
 import * as vlFieldDef from './fielddef';
 import * as vlEnc from './enc';
@@ -90,19 +91,19 @@ export default class Encoding {
     return this._marktype === m;
   }
 
-  has(encType) {
-    // equivalent to calling vlenc.has(this._enc, encType)
-    return this._enc[encType].name !== undefined;
+  has(channel) {
+    // equivalent to calling vlenc.has(this._enc, channel)
+    return this._enc[channel].name !== undefined;
   }
 
-  fieldDef(encType) {
-    return this._enc[encType];
+  fieldDef(channel) {
+    return this._enc[channel];
   }
 
   // get "field" reference for vega
-  fieldRef(encType, opt?) {
+  fieldRef(channel, opt?) {
     opt = opt || {};
-    return vlFieldDef.fieldRef(this._enc[encType], opt);
+    return vlFieldDef.fieldRef(this._enc[channel], opt);
   }
 
   /*
@@ -112,56 +113,56 @@ export default class Encoding {
     return vlEnc.fields(this._enc);
   }
 
-  fieldTitle(et) {
-    if (vlFieldDef.isCount(this._enc[et])) {
+  fieldTitle(channel) {
+    if (vlFieldDef.isCount(this._enc[channel])) {
       return vlFieldDef.COUNT_DISPLAYNAME;
     }
-    var fn = this._enc[et].aggregate || this._enc[et].timeUnit || (this._enc[et].bin && 'bin');
+    var fn = this._enc[channel].aggregate || this._enc[channel].timeUnit || (this._enc[channel].bin && 'bin');
     if (fn) {
-      return fn.toUpperCase() + '(' + this._enc[et].name + ')';
+      return fn.toUpperCase() + '(' + this._enc[channel].name + ')';
     } else {
-      return this._enc[et].name;
+      return this._enc[channel].name;
     }
   }
 
-  scale(et) {
-    return this._enc[et].scale || {};
+  scale(channel) {
+    return this._enc[channel].scale || {};
   }
 
-  axis(et) {
-    return this._enc[et].axis || {};
+  axis(channel) {
+    return this._enc[channel].axis || {};
   }
 
-  bandWidth(encType, useSmallBand?: boolean) {
-    if (this.fieldDef(encType).scale.bandWidth !== undefined) {
+  bandWidth(channel, useSmallBand?: boolean) {
+    if (this.fieldDef(channel).scale.bandWidth !== undefined) {
       // explicit value
-      return this.fieldDef(encType).scale.bandWidth;
+      return this.fieldDef(channel).scale.bandWidth;
     }
 
     // If not specified, draw value from config.
 
     useSmallBand = useSmallBand ||
     //isBandInSmallMultiples
-    (encType === Enctype.Y && this.has(Enctype.ROW) && this.has(Enctype.Y)) ||
-    (encType === Enctype.X && this.has(Enctype.COL) && this.has(Enctype.X));
+    (channel === Y && this.has(ROW) && this.has(Y)) ||
+    (channel === X && this.has(COL) && this.has(X));
 
     return this.config(useSmallBand ? 'smallBandWidth' : 'largeBandWidth');
   }
 
-  padding(encType) {
-    if (this.fieldDef(encType).scale.padding !== undefined) {
+  padding(channel) {
+    if (this.fieldDef(channel).scale.padding !== undefined) {
       // explicit value
-      return this.fieldDef(encType).scale.padding;
+      return this.fieldDef(channel).scale.padding;
     }
-    if (encType === Enctype.ROW || encType === Enctype.COL) {
+    if (channel === ROW || channel === COL) {
       return this.config('cellPadding');
     }
     return this.config('padding');
   }
 
   // returns false if binning is disabled, otherwise an object with binning properties
-  bin(et) {
-    var bin = this._enc[et].bin;
+  bin(channel) {
+    var bin = this._enc[channel].bin;
     if (bin === {})
       return false;
     if (bin === true)
@@ -171,8 +172,8 @@ export default class Encoding {
     return bin;
   }
 
-  value(et) {
-    return this._enc[et].value;
+  value(channel) {
+    return this._enc[channel].value;
   }
 
   numberFormat = function(name?) {
@@ -192,25 +193,25 @@ export default class Encoding {
     return vlEnc.forEach(this._enc, f);
   }
 
-  isTypes(et: string, type: Array<any>) {
-    var fieldDef = this.fieldDef(et);
+  isTypes(channel: string, type: Array<any>) {
+    var fieldDef = this.fieldDef(channel);
     return fieldDef && vlFieldDef.isTypes(fieldDef, type);
   }
 
 
-  isOrdinalScale(encType) {
-    return this.has(encType) &&
-      vlFieldDef.isOrdinalScale(this.fieldDef(encType));
+  isOrdinalScale(channel) {
+    return this.has(channel) &&
+      vlFieldDef.isOrdinalScale(this.fieldDef(channel));
   }
 
-  isDimension(encType) {
-    return this.has(encType) &&
-      vlFieldDef.isDimension(this.fieldDef(encType));
+  isDimension(channel) {
+    return this.has(channel) &&
+      vlFieldDef.isDimension(this.fieldDef(channel));
   }
 
-  isMeasure(encType) {
-    return this.has(encType) &&
-      vlFieldDef.isMeasure(this.fieldDef(encType));
+  isMeasure(channel) {
+    return this.has(channel) &&
+      vlFieldDef.isMeasure(this.fieldDef(channel));
   }
 
   isAggregate() {
@@ -239,8 +240,8 @@ export default class Encoding {
    * - value - the value field
    */
   stack() {
-    var stack = (this.has(Enctype.COLOR) && this.fieldDef(Enctype.COLOR).stack) ? Enctype.COLOR :
-      (this.has(Enctype.DETAIL) && this.fieldDef(Enctype.DETAIL).stack) ? Enctype.DETAIL :
+    var stack = (this.has(COLOR) && this.fieldDef(COLOR).stack) ? COLOR :
+      (this.has(DETAIL) && this.fieldDef(DETAIL).stack) ? DETAIL :
         null;
 
     var properties = stack && this.fieldDef(stack).stack !== true ?
@@ -249,20 +250,20 @@ export default class Encoding {
 
     if ((this.is('bar') || this.is('area')) && stack && this.isAggregate()) {
 
-      var isXMeasure = this.isMeasure(Enctype.X);
-      var isYMeasure = this.isMeasure(Enctype.Y);
+      var isXMeasure = this.isMeasure(X);
+      var isYMeasure = this.isMeasure(Y);
 
       if (isXMeasure && !isYMeasure) {
         return {
-          groupby: Enctype.Y,
-          value: Enctype.X,
+          groupby: Y,
+          value: X,
           stack: stack,
           properties: properties
         };
       } else if (isYMeasure && !isXMeasure) {
         return {
-          groupby: Enctype.X,
-          value: Enctype.Y,
+          groupby: X,
+          value: Y,
           stack: stack,
           properties: properties
         };
@@ -273,9 +274,9 @@ export default class Encoding {
 
   details() {
     var encoding = this;
-    return this.reduce(function(refs, field, encType) {
-      if (!field.aggregate && (encType !== Enctype.X && encType !== Enctype.Y)) {
-        refs.push(encoding.fieldRef(encType));
+    return this.reduce(function(refs, field, channel) {
+      if (!field.aggregate && (channel !== X && channel !== Y)) {
+        refs.push(encoding.fieldRef(channel));
       }
       return refs;
     }, []);
@@ -283,16 +284,16 @@ export default class Encoding {
 
   facets() {
     var encoding = this;
-    return this.reduce(function(refs, field, encType) {
-      if (!field.aggregate && (encType == Enctype.ROW || encType == Enctype.COL)) {
-        refs.push(encoding.fieldRef(encType));
+    return this.reduce(function(refs, field, channel) {
+      if (!field.aggregate && (channel == ROW || channel == COL)) {
+        refs.push(encoding.fieldRef(channel));
       }
       return refs;
     }, []);
   }
 
-  cardinality(encType, stats) {
-    return vlFieldDef.cardinality(this.fieldDef(encType), stats, this.config('filterNull'));
+  cardinality(channel, stats) {
+    return vlFieldDef.cardinality(this.fieldDef(channel), stats, this.config('filterNull'));
   }
 
   isRaw() {

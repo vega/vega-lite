@@ -1,27 +1,28 @@
 import * as util from '../util';
-import {Enctype, Type} from '../consts';
+import {COLOR, SIZE, SHAPE} from '../channel';
+import {Type} from '../consts';
 import Encoding from '../Encoding';
 import * as time from './time';
 
 export function defs(encoding: Encoding, styleCfg) {
   var defs = [];
 
-  if (encoding.has(Enctype.COLOR) && encoding.fieldDef(Enctype.COLOR).legend) {
-    defs.push(def(encoding, Enctype.COLOR, {
-      fill: Enctype.COLOR
+  if (encoding.has(COLOR) && encoding.fieldDef(COLOR).legend) {
+    defs.push(def(encoding, COLOR, {
+      fill: COLOR
       // TODO: consider if this should be stroke for line
     }, styleCfg));
   }
 
-  if (encoding.has(Enctype.SIZE) && encoding.fieldDef(Enctype.SIZE).legend) {
-    defs.push(def(encoding, Enctype.SIZE, {
-      size: Enctype.SIZE
+  if (encoding.has(SIZE) && encoding.fieldDef(SIZE).legend) {
+    defs.push(def(encoding, SIZE, {
+      size: SIZE
     }, styleCfg));
   }
 
-  if (encoding.has(Enctype.SHAPE) && encoding.fieldDef(Enctype.SHAPE).legend) {
-    defs.push(def(encoding, Enctype.SHAPE, {
-      shape: Enctype.SHAPE
+  if (encoding.has(SHAPE) && encoding.fieldDef(SHAPE).legend) {
+    defs.push(def(encoding, SHAPE, {
+      shape: SHAPE
     }, styleCfg));
   }
   return defs;
@@ -96,18 +97,18 @@ namespace properties {
         /* fall through */
       case 'point':
         // fill or stroke
-        if (encoding.fieldDef(Enctype.SHAPE).filled) {
-          if (encoding.has(Enctype.COLOR) && name === Enctype.COLOR) {
-            symbols.fill = {scale: Enctype.COLOR, field: 'data'};
+        if (encoding.fieldDef(SHAPE).filled) {
+          if (encoding.has(COLOR) && name === COLOR) {
+            symbols.fill = {scale: COLOR, field: 'data'};
           } else {
-            symbols.fill = {value: encoding.value(Enctype.COLOR)};
+            symbols.fill = {value: encoding.value(COLOR)};
           }
           symbols.stroke = {value: 'transparent'};
         } else {
-          if (encoding.has(Enctype.COLOR) && name === Enctype.COLOR) {
-            symbols.stroke = {scale: Enctype.COLOR, field: 'data'};
+          if (encoding.has(COLOR) && name === COLOR) {
+            symbols.stroke = {scale: COLOR, field: 'data'};
           } else {
-            symbols.stroke = {value: encoding.value(Enctype.COLOR)};
+            symbols.stroke = {value: encoding.value(COLOR)};
           }
           symbols.fill = {value: 'transparent'};
           symbols.strokeWidth = {value: encoding.config('strokeWidth')};
@@ -120,7 +121,7 @@ namespace properties {
         break;
     }
 
-    var opacity = encoding.fieldDef(Enctype.COLOR).opacity || styleCfg.opacity;
+    var opacity = encoding.fieldDef(COLOR).opacity || styleCfg.opacity;
     if (opacity) {
       symbols.opacity = {value: opacity};
     }

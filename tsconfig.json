@@ -22,6 +22,7 @@
         "!bower_components/**"
     ],
     "files": [
+        "src/channel.ts",
         "src/compiler/axis.ts",
         "src/compiler/compiler.ts",
         "src/compiler/data.ts",

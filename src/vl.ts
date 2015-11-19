@@ -1,4 +1,5 @@
 import vlEncoding from './Encoding';
+import * as vlChannel from './channel';
 import * as vlData from './data';
 import * as vlEnc from './enc';
 import * as vlFieldDef from './fielddef';
@@ -13,9 +14,12 @@ export * from './util';
 export * from './consts';
 
 // TODO(#727) split this into two namespace
+
 export var Encoding = vlEncoding;
+export var channel = vlChannel;
 export var compiler = vlCompiler;
 export var compile = vlCompiler.compile;
+
 export var data = vlData;
 // TODO(#727) rename to encoding
 export var enc = vlEnc;

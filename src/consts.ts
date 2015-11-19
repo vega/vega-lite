@@ -7,69 +7,6 @@ export namespace Table {
   export const STACKED = 'stacked';
 }
 
-// export enum Enctype {
-//   X, Y, COL, ROW, SIZE, SHAPE, COLOR, TEXT, DETAIL
-// }
-
-/**
- * Constants and Utilities for Encoding Channel
- */
-export namespace Enctype {
-  export const X = 'x';
-  export const Y = 'y';
-  export const ROW = 'row';
-  export const COL = 'col';
-  export const SHAPE = 'shape';
-  export const SIZE = 'size';
-  export const COLOR = 'color';
-  export const TEXT = 'text';
-  export const DETAIL = 'detail';
-
-  export const LIST = [
-    Enctype.X, Enctype.Y,
-    Enctype.ROW, Enctype.COL,
-    Enctype.SIZE, Enctype.SHAPE, Enctype.COLOR,
-    Enctype.TEXT, Enctype.DETAIL
-  ];
-
-  export type Type = string;
-
-  interface SupportedRole {
-    [role:string]:boolean;
-  };
-
-  /**
-   * @param  {Enctype.Type}  channel
-   * @return {SupportedRole} return whether a channel supports dimension / measure role
-   */
-  export function getSupportedRole(channel: Enctype.Type): SupportedRole {
-    switch (channel) {
-      case X:
-      case Y:
-      case COLOR:
-        return {
-          measure: true,
-          dimension: true
-        };
-      case ROW:
-      case COL:
-      case SHAPE:
-      case DETAIL:
-        return {
-          measure: false,
-          dimension: true
-        };
-      case SIZE:
-      case TEXT:
-        return {
-          measure: true,
-          dimension: false
-        };
-    }
-    throw new Error("Invalid encoding channel" + channel);
-  }
-}
-
 /** Constants for data type */
 export namespace Type {
   export const QUANTITATIVE = 'quantitative';

@@ -1,6 +1,6 @@
 import Encoding from '../Encoding';
 import * as vlFieldDef from '../fielddef';
-import {Enctype} from '../consts';
+import {ROW, COL, X, Y} from '../channel';
 
 export default function(encoding: Encoding, stats) {
   return {
@@ -23,13 +23,13 @@ function estimateOpacity(encoding,stats) {
     //  for each non faceting and non-ordinal X / Y fields
     //  note that ordinal x,y are not include since we can
     //  consider that ordinal x are subdividing the cell into subcells anyway
-    encoding.forEach(function(fieldDef, encType) {
+    encoding.forEach(function(fieldDef, channel) {
 
-      if (encType !== Enctype.ROW && encType !== Enctype.COL &&
-          !((encType === Enctype.X || encType === Enctype.Y) &&
+      if (channel !== ROW && channel !== COL &&
+          !((channel === X || channel === Y) &&
           vlFieldDef.isOrdinalScale(fieldDef))
         ) {
-        numPoints *= encoding.cardinality(encType, stats);
+        numPoints *= encoding.cardinality(channel, stats);
       }
     });
 
@@ -43,11 +43,11 @@ function estimateOpacity(encoding,stats) {
 
     // small multiples divide number of points
     var numMultiples = 1;
-    if (encoding.has(Enctype.ROW)) {
-      numMultiples *= encoding.cardinality(Enctype.ROW, stats);
+    if (encoding.has(ROW)) {
+      numMultiples *= encoding.cardinality(ROW, stats);
     }
-    if (encoding.has(Enctype.COL)) {
-      numMultiples *= encoding.cardinality(Enctype.COL, stats);
+    if (encoding.has(COL)) {
+      numMultiples *= encoding.cardinality(COL, stats);
     }
     numPoints /= numMultiples;
   }
