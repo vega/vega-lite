@@ -20,17 +20,13 @@ import {COL, ROW, X, Y} from '../channel';
 
 
 export function compile(spec, stats, theme?) {
-  return compileEncoding(Model.fromSpec(spec, theme), stats);
-}
-
-export function shorthand(shorthand: string, stats, config, theme) {
-  return compileEncoding(Model.fromShorthand(shorthand, config, theme), stats);
+  return compileModel(new Model(spec, theme), stats);
 }
 
 /**
- * Create a Vega specification from a Vega-lite Encoding object.
+ * Create a Vega specification from a Vega-lite Model object.
  */
-export function compileEncoding(model: Model, stats) {
+function compileModel(model: Model, stats) {
   // no need to pass stats if you pass in the data
   if (!stats) {
     if (model.hasValues()) {
