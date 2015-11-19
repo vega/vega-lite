@@ -25,11 +25,11 @@ export function isStack(spec) {
 // TODO revise
 export function transpose(spec) {
   var oldenc = spec.encoding,
-    enc = util.duplicate(spec.encoding);
-  enc.x = oldenc.y;
-  enc.y = oldenc.x;
-  enc.row = oldenc.col;
-  enc.col = oldenc.row;
-  spec.encoding = enc;
+    encoding = util.duplicate(spec.encoding);
+  encoding.x = oldenc.y;
+  encoding.y = oldenc.x;
+  encoding.row = oldenc.col;
+  encoding.col = oldenc.row;
+  spec.encoding = encoding;
   return spec;
 }
