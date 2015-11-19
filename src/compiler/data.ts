@@ -175,12 +175,12 @@ export namespace source {
   }
 
   export function formulaTransform(encoding: Encoding) {
-    var formulas = encoding.data().formulas;
-    if (formulas === undefined) {
+    var calculate = encoding.data().calculate;
+    if (calculate === undefined) {
       return [];
     }
 
-    return formulas.reduce(function(transform, formula) {
+    return calculate.reduce(function(transform, formula) {
       formula.type = 'formula';
       transform.push(formula);
       return transform;
