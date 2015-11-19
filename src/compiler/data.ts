@@ -36,7 +36,7 @@ export default function(encoding: Encoding) {
   return def;
 }
 
-// TODO: Consolidate all Vega interface
+// TODO: Consolidate all Vega interfaces
 interface VgData {
   name: string;
   source?: string;
