@@ -1,6 +1,6 @@
 import Encoding from '../Encoding';
 import * as vlFieldDef from '../fielddef';
-import {ROW, COL, X, Y} from '../channel';
+import {ROW, COL, X, Y, Channel} from '../channel';
 
 export default function(encoding: Encoding, stats) {
   return {
@@ -23,7 +23,7 @@ function estimateOpacity(encoding,stats) {
     //  for each non faceting and non-ordinal X / Y fields
     //  note that ordinal x,y are not include since we can
     //  consider that ordinal x are subdividing the cell into subcells anyway
-    encoding.forEach(function(fieldDef, channel) {
+    encoding.forEach(function(fieldDef, channel: Channel) {
 
       if (channel !== ROW && channel !== COL &&
           !((channel === X || channel === Y) &&

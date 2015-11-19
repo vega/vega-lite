@@ -1,5 +1,5 @@
 import * as util from '../util';
-import {COLOR, SIZE, SHAPE, Type as Channel} from '../channel';
+import {COLOR, SIZE, SHAPE, Channel} from '../channel';
 import Encoding from '../Encoding';
 import * as time from './time';
 import {TEMPORAL} from '../type';

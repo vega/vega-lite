@@ -9,7 +9,7 @@ import {interpolateHsl} from 'd3-color';
 
 import * as util from '../util';
 import Encoding from '../Encoding';
-import {COL, ROW, X, Y, SHAPE, SIZE, COLOR, TEXT} from '../channel';
+import {COL, ROW, X, Y, SHAPE, SIZE, COLOR, TEXT, Channel} from '../channel';
 import {SOURCE, STACKED} from '../data';
 import * as time from './time';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
@@ -22,12 +22,12 @@ export function names(props) {
 }
 
 export function defs(names: Array<string>, encoding: Encoding, layout, stats, facet?) {
-  return names.reduce(function(a, name) {
+  return names.reduce(function(a, channel: Channel) {
     var scaleDef: any = {};
 
-    scaleDef.name = name;
-    var t = scaleDef.type = type(name, encoding);
-    scaleDef.domain = domain(encoding, name, t, facet);
+    scaleDef.name = channel;
+    var t = scaleDef.type = type(channel, encoding);
+    scaleDef.domain = domain(encoding, channel, t, facet);
 
     // Add optional properties
     [
@@ -40,7 +40,7 @@ export function defs(names: Array<string>, encoding: Encoding, layout, stats, fa
       // ordinal
       'bandWidth', 'outerPadding', 'padding', 'points'
     ].forEach(function(property) {
-      var value = exports[property](encoding, name, t, layout, stats);
+      var value = exports[property](encoding, channel, t, layout, stats);
       if (value !== undefined) {
         scaleDef[property] = value;
       }
@@ -50,25 +50,25 @@ export function defs(names: Array<string>, encoding: Encoding, layout, stats, fa
   }, []);
 }
 
-export function type(name: string, encoding: Encoding) {
-  var type = encoding.fieldDef(name).type;
+export function type(channel: Channel, encoding: Encoding) {
+  var type = encoding.fieldDef(channel).type;
   switch (type) {
     case NOMINAL: //fall through
     case ORDINAL:
       return 'ordinal';
     case TEMPORAL:
-      var timeUnit = encoding.fieldDef(name).timeUnit;
-      return timeUnit ? time.scale.type(timeUnit, name) : 'time';
+      var timeUnit = encoding.fieldDef(channel).timeUnit;
+      return timeUnit ? time.scale.type(timeUnit, channel) : 'time';
     case QUANTITATIVE:
-      if (encoding.bin(name)) {
-        return name === ROW || name === COL || name === SHAPE ? 'ordinal' : 'linear';
+      if (encoding.bin(channel)) {
+        return channel === ROW || channel === COL || channel === SHAPE ? 'ordinal' : 'linear';
       }
-      return encoding.scale(name).type;
+      return encoding.scale(channel).type;
   }
 }
 
-export function domain(encoding: Encoding, name, type, facet:boolean = false) {
-  var fieldDef = encoding.fieldDef(name);
+export function domain(encoding: Encoding, channel:Channel, type, facet:boolean = false) {
+  var fieldDef = encoding.fieldDef(channel);
 
   if (fieldDef.scale.domain) { // explicit value
     return fieldDef.scale.domain;
@@ -76,29 +76,29 @@ export function domain(encoding: Encoding, name, type, facet:boolean = false) {
 
   // special case for temporal scale
   if (fieldDef.type === TEMPORAL) {
-    var range = time.scale.domain(fieldDef.timeUnit, name);
+    var range = time.scale.domain(fieldDef.timeUnit, channel);
     if (range) return range;
   }
 
   // For stack, use STACKED data.
   var stack = encoding.stack();
-  if (stack && name === stack.value) {
+  if (stack && channel === stack.value) {
     return {
       data: STACKED,
-      field: encoding.fieldRef(name, {
+      field: encoding.fieldRef(channel, {
         // If faceted, scale is determined by the max of sum in each facet.
         prefn: (facet ? 'max_' : '') + 'sum_'
       })
     };
   }
 
-  var useRawDomain = _useRawDomain(encoding, name);
-  var sort = domainSort(encoding, name, type);
+  var useRawDomain = _useRawDomain(encoding, channel);
+  var sort = domainSort(encoding, channel, type);
 
   if (useRawDomain) { // useRawDomain - only Q/T
     return {
       data: SOURCE,
-      field: encoding.fieldRef(name, {noAggregate:true})
+      field: encoding.fieldRef(channel, {noAggregate:true})
     };
   } else if (fieldDef.bin) { // bin
 
@@ -106,11 +106,11 @@ export function domain(encoding: Encoding, name, type, facet:boolean = false) {
       data: encoding.dataTable(),
       field: type === 'ordinal' ?
         // ordinal scale only use bin start for now
-        encoding.fieldRef(name, { binSuffix: '_start' }) :
+        encoding.fieldRef(channel, { binSuffix: '_start' }) :
         // need to merge both bin_start and bin_end for non-ordinal scale
         [
-          encoding.fieldRef(name, { binSuffix: '_start' }),
-          encoding.fieldRef(name, { binSuffix: '_end' })
+          encoding.fieldRef(channel, { binSuffix: '_start' }),
+          encoding.fieldRef(channel, { binSuffix: '_end' })
         ]
     };
   } else if (sort) { // have sort -- only for ordinal
@@ -118,19 +118,19 @@ export function domain(encoding: Encoding, name, type, facet:boolean = false) {
       // If sort by aggregation of a specified sort field, we need to use SOURCE table,
       // so we can aggregate values for the scale independently from the main aggregation.
       data: sort.op ? SOURCE : encoding.dataTable(),
-      field: encoding.fieldRef(name),
+      field: encoding.fieldRef(channel),
       sort: sort
     };
   } else {
     return {
       data: encoding.dataTable(),
-      field: encoding.fieldRef(name)
+      field: encoding.fieldRef(channel)
     };
   }
 }
 
-export function domainSort(encoding: Encoding, name, type):any {
-  var sort = encoding.fieldDef(name).sort;
+export function domainSort(encoding: Encoding, channel: Channel, type):any {
+  var sort = encoding.fieldDef(channel).sort;
   if (sort === 'ascending' || sort === 'descending') {
     return true;
   }
@@ -145,8 +145,8 @@ export function domainSort(encoding: Encoding, name, type):any {
   return undefined;
 }
 
-export function reverse(encoding: Encoding, name) {
-  var sort = encoding.fieldDef(name).sort;
+export function reverse(encoding: Encoding, channel: Channel) {
+  var sort = encoding.fieldDef(channel).sort;
   return sort && (sort === 'descending' || (sort.order === 'descending')) ? true : undefined;
 }
 
@@ -159,11 +159,11 @@ var sharedDomainAggregate = ['mean', 'average', 'stdev', 'stdevp', 'median', 'q1
  * 2. Aggregation function is not `count` or `sum`
  * 3. The scale is quantitative or time scale.
  */
-export function _useRawDomain (encoding: Encoding, name) {
-  var fieldDef = encoding.fieldDef(name);
+export function _useRawDomain (encoding: Encoding, channel: Channel) {
+  var fieldDef = encoding.fieldDef(channel);
 
   // scale value
-  var scaleUseRawDomain = encoding.scale(name).useRawDomain;
+  var scaleUseRawDomain = encoding.scale(channel).useRawDomain;
 
   // Determine if useRawDomain is enabled. If scale value is specified, use scale value.
   // Otherwise, use config value.
@@ -188,14 +188,14 @@ export function _useRawDomain (encoding: Encoding, name) {
     );
 }
 
-export function bandWidth(encoding: Encoding, name, type, layout) {
+export function bandWidth(encoding: Encoding, channel: Channel, type, layout) {
   // TODO: eliminate layout
 
-  switch (name) {
+  switch (channel) {
     case X: /* fall through */
     case Y:
       if (type === 'ordinal') {
-        return encoding.bandWidth(name, layout[name].useSmallBand);
+        return encoding.bandWidth(channel, layout[channel].useSmallBand);
       }
       break;
     case ROW: // support only ordinal
@@ -206,23 +206,23 @@ export function bandWidth(encoding: Encoding, name, type, layout) {
   return undefined;
 }
 
-export function clamp(encoding: Encoding, name) {
+export function clamp(encoding: Encoding, channel: Channel) {
   // only return value if explicit value is specified.
-  return encoding.fieldDef(name).scale.clamp;
+  return encoding.fieldDef(channel).scale.clamp;
 }
 
-export function exponent(encoding: Encoding, name) {
+export function exponent(encoding: Encoding, channel: Channel) {
   // only return value if explicit value is specified.
-  return encoding.fieldDef(name).scale.exponent;
+  return encoding.fieldDef(channel).scale.exponent;
 }
 
-export function nice(encoding: Encoding, name, type) {
-  if (encoding.fieldDef(name).scale.nice !== undefined) {
+export function nice(encoding: Encoding, channel: Channel, type) {
+  if (encoding.fieldDef(channel).scale.nice !== undefined) {
     // explicit value
-    return encoding.fieldDef(name).scale.nice;
+    return encoding.fieldDef(channel).scale.nice;
   }
 
-  switch (name) {
+  switch (channel) {
     case X: /* fall through */
     case Y:
       if (type === 'time' || type === 'ordinal') {
@@ -237,34 +237,34 @@ export function nice(encoding: Encoding, name, type) {
   return undefined;
 }
 
-export function outerPadding(encoding: Encoding, name, type) {
+export function outerPadding(encoding: Encoding, channel: Channel, type) {
   if (type === 'ordinal') {
-    if (encoding.fieldDef(name).scale.outerPadding !== undefined) {
-      return encoding.fieldDef(name).scale.outerPadding; // explicit value
+    if (encoding.fieldDef(channel).scale.outerPadding !== undefined) {
+      return encoding.fieldDef(channel).scale.outerPadding; // explicit value
     }
-    if (name === ROW || name === COL) {
+    if (channel === ROW || channel === COL) {
       return 0;
     }
   }
   return undefined;
 }
 
-export function padding(encoding: Encoding, name, type) {
+export function padding(encoding: Encoding, channel: Channel, type) {
   if (type === 'ordinal') {
     // Both explicit and non-explicit values are handled by the helper method.
-    return encoding.padding(name);
+    return encoding.padding(channel);
   }
   return undefined;
 }
 
-export function points(encoding: Encoding, name, type) {
+export function points(encoding: Encoding, channel: Channel, type) {
   if (type === 'ordinal') {
-    if (encoding.fieldDef(name).scale.points !== undefined) {
+    if (encoding.fieldDef(channel).scale.points !== undefined) {
       // explicit value
-      return encoding.fieldDef(name).scale.points;
+      return encoding.fieldDef(channel).scale.points;
     }
 
-    switch (name) {
+    switch (channel) {
       case X:
       case Y:
         return true;
@@ -274,14 +274,14 @@ export function points(encoding: Encoding, name, type) {
 }
 
 
-export function range(encoding: Encoding, name, type, layout, stats) {
-  var fieldDef = encoding.fieldDef(name);
+export function range(encoding: Encoding, channel: Channel, type, layout, stats) {
+  var fieldDef = encoding.fieldDef(channel);
 
   if (fieldDef.scale.range) { // explicit value
     return fieldDef.scale.range;
   }
 
-  switch (name) {
+  switch (channel) {
     case X:
       return layout.cellWidth ? [0, layout.cellWidth] : 'width';
     case Y:
@@ -305,19 +305,19 @@ export function range(encoding: Encoding, name, type, layout, stats) {
     case SHAPE:
       return 'shapes';
     case COLOR:
-      return color(encoding, name, type, stats);
+      return color(encoding, channel, type, stats);
   }
 
   return undefined;
 }
 
-export function round(encoding: Encoding, name) {
-  if (encoding.fieldDef(name).scale.round !== undefined) {
-    return encoding.fieldDef(name).scale.round;
+export function round(encoding: Encoding, channel: Channel) {
+  if (encoding.fieldDef(channel).scale.round !== undefined) {
+    return encoding.fieldDef(channel).scale.round;
   }
 
   // FIXME: revise if round is already the default value
-  switch (name) {
+  switch (channel) {
     case X: /* fall through */
     case Y:
     case ROW:
@@ -328,8 +328,8 @@ export function round(encoding: Encoding, name) {
   return undefined;
 }
 
-export function zero(encoding: Encoding, name) {
-  var fieldDef = encoding.fieldDef(name);
+export function zero(encoding: Encoding, channel: Channel) {
+  var fieldDef = encoding.fieldDef(channel);
   var timeUnit = fieldDef.timeUnit;
 
   if (fieldDef.scale.zero !== undefined) {
@@ -351,14 +351,14 @@ export function zero(encoding: Encoding, name) {
     return false;
   }
 
-  return name === X || name === Y ?
+  return channel === X || channel === Y ?
     // if not bin / temporal, returns undefined for X and Y encoding
     // since zero is true by default in vega for linear scale
     undefined :
     false;
 }
 
-export function color(encoding: Encoding, name, scaleType, stats) {
+export function color(encoding: Encoding, channel: Channel, scaleType, stats) {
   var colorScale = encoding.scale(COLOR),
     range = colorScale.range,
     cardinality = encoding.cardinality(COLOR, stats),

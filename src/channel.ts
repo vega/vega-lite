@@ -15,7 +15,7 @@ export const DETAIL = 'detail';
 
 export const CHANNELS = [X, Y, ROW, COL, SIZE, SHAPE, COLOR, TEXT, DETAIL];
 
-export type Type = string;
+export type Channel = string;
 
 interface SupportedRole {
   [role:string]:boolean;
@@ -26,7 +26,7 @@ interface SupportedRole {
  * @param  {Enctype.Type}  channel
  * @return {SupportedRole} A dictionary mapping role to boolean values.
  */
-export function getSupportedRole(channel: Type): SupportedRole {
+export function getSupportedRole(channel: Channel): SupportedRole {
   switch (channel) {
     case X:
     case Y:
