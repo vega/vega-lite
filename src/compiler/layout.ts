@@ -101,12 +101,12 @@ function getMaxLength(encoding: Encoding, stats, channel) {
 
   if (fieldDef.bin) {
     // TODO once bin support range, need to update this
-    return getMaxNumberLength(encoding, et, fieldStats);
+    return getMaxNumberLength(encoding, channel, fieldStats);
   } if (fieldDef.type === QUANTITATIVE) {
-    return getMaxNumberLength(encoding, et, fieldStats);
+    return getMaxNumberLength(encoding, channel, fieldStats);
   } else if (fieldDef.type === TEMPORAL) {
-    return time.maxLength(encoding.fieldDef(et), encoding);
-  } else if (encoding.isTypes(et, [NOMINAL, ORDINAL])) {
+    return time.maxLength(encoding.fieldDef(channel), encoding);
+  } else if (encoding.isTypes(channel, [NOMINAL, ORDINAL])) {
     if(fieldStats.type === 'number') {
       return getMaxNumberLength(encoding, channel, fieldStats);
     } else {
