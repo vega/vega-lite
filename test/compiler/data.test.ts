@@ -204,7 +204,7 @@ describe('data.summary', function () {
           },
           'x': {
             'name': 'origin',
-            "type": 'ordinal'
+            'type': 'ordinal'
           },
           color: {name: '*', type: 'quantitative', aggregate: 'count'}
         }
@@ -212,12 +212,12 @@ describe('data.summary', function () {
 
     var aggregated = summary.def(encoding);
     expect(aggregated ).to.eql({
-      "name": SUMMARY,
-      "source": "source",
-      "transform": [{
-        "type": "aggregate",
-        "groupby": ["origin"],
-        "summarize": {
+      'name': SUMMARY,
+      'source': 'source',
+      'transform': [{
+        'type': 'aggregate',
+        'groupby': ['origin'],
+        'summarize': {
           '*': ['count'],
           'Acceleration': ['sum']
         }

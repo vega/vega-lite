@@ -50,5 +50,5 @@ export function getSupportedRole(channel: Type): SupportedRole {
         dimension: false
       };
   }
-  throw new Error("Invalid encoding channel" + channel);
+  throw new Error('Invalid encoding channel' + channel);
 }

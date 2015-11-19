@@ -1,10 +1,11 @@
 {
   "rules": {
-    "indent": "spaces",
+    "indent": [true, "spaces"],
     "semicolon": true,
     "no-duplicate-key": true,
     "no-duplicate-variable": true,
     "no-unreachable": true,
-    "no-conditional-assignment": true
+    "no-conditional-assignment": true,
+    "quotemark": [true, "single"]
   }
 }
