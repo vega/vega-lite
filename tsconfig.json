@@ -17,9 +17,11 @@
     },
     "filesGlob": [
         "**/*.ts",
-        "**/*.tsx",
-        "!node_modules/**",
-        "!bower_components/**"
+        "**/*.tsx"
+    ],
+    "exclude": [
+        "node_modules",
+        "bower_components"
     ],
     "files": [
         "src/compiler/axis.ts",
@@ -77,5 +79,8 @@
         "typings/mocha.d.ts",
         "typings/node.d.ts",
         "typings/vega.d.ts"
-    ]
+    ],
+    "atom": {
+        "rewriteTsconfig": true
+    }
 }
