@@ -1,4 +1,4 @@
-import {Model as vlModel} from './compiler/Model';
+import {Model} from './compiler/Model';
 import * as vlChannel from './channel';
 import * as vlData from './data';
 import * as vlEnc from './enc';
@@ -15,7 +15,7 @@ export * from './util';
 export * from './consts';
 
 // TODO() rename this
-export var Encoding = vlModel;
+export {Model as Encoding} from './compiler/Model';
 
 export var channel = vlChannel;
 export var compiler = vlCompiler;
@@ -25,8 +25,8 @@ export var data = vlData;
 export var enc = vlEnc;
 export var fieldDef = vlFieldDef;
 export var schema = vlSchema;
-// TODO: revise if we can remove this
-export var toShorthand = vlModel.shorthand;
+// TODO: remove this
+export var toShorthand = Model.shorthand;
 export var type = vlType;
 export var format = d3Format;
 export var validate = vlValidate;
