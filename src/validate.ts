@@ -68,9 +68,9 @@ export function getEncodingMappingError(spec, //TODO: add ":spec"
     }
   }
 
-  for (let encType in encoding) { // all channels in encoding are supported
-    if (!supportedChannels[encType]) {
-      return 'Encoding channel \"' + encType +
+  for (let channel in encoding) { // all channels in encoding are supported
+    if (!supportedChannels[channel]) {
+      return 'Encoding channel \"' + channel +
              '\" is not supported by mark type \"' + marktype + '\"';
     }
   }

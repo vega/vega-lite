@@ -1,9 +1,9 @@
 import * as vlFieldDef from '../fielddef';
 import * as util from '../util';
 import Encoding from '../Encoding';
-import {Table, Type} from '../consts';
-
+import {SOURCE, STACKED, SUMMARY} from '../data';
 import * as time from './time';
+import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 
 /**
  * Create Vega's data array from a given encoding.
@@ -48,7 +48,7 @@ interface VgData {
 
 export namespace source {
   export function def(encoding: Encoding): VgData {
-    var source:VgData = {name: Table.SOURCE};
+    var source:VgData = {name: SOURCE};
 
     // Data source (url or inline)
     if (encoding.hasValues()) {
@@ -73,10 +73,10 @@ export namespace source {
     var parse;
 
     encoding.forEach(function(fieldDef) {
-      if (fieldDef.type === Type.TEMPORAL) {
+      if (fieldDef.type === TEMPORAL) {
         parse = parse || {};
         parse[fieldDef.name] = 'date';
-      } else if (fieldDef.type === Type.QUANTITATIVE) {
+      } else if (fieldDef.type === QUANTITATIVE) {
         if (vlFieldDef.isCount(fieldDef)) return;
         parse = parse || {};
         parse[fieldDef.name] = 'number';
@@ -102,13 +102,13 @@ export namespace source {
   }
 
   export function timeTransform(encoding: Encoding) {
-    return encoding.reduce(function(transform, fieldDef, encType) {
-      if (fieldDef.type === Type.TEMPORAL && fieldDef.timeUnit) {
-        var fieldRef = encoding.fieldRef(encType, {nofn: true, datum: true});
+    return encoding.reduce(function(transform, fieldDef, channel) {
+      if (fieldDef.type === TEMPORAL && fieldDef.timeUnit) {
+        var fieldRef = encoding.fieldRef(channel, {nofn: true, datum: true});
 
         transform.push({
           type: 'formula',
-          field: encoding.fieldRef(encType),
+          field: encoding.fieldRef(channel),
           expr: time.formula(fieldDef.timeUnit, fieldRef)
         });
       }
@@ -117,22 +117,22 @@ export namespace source {
   }
 
   export function binTransform(encoding: Encoding) {
-    return encoding.reduce(function(transform, fieldDef, encType) {
-      if (encoding.bin(encType)) {
+    return encoding.reduce(function(transform, fieldDef, channel) {
+      if (encoding.bin(channel)) {
         transform.push({
           type: 'bin',
           field: fieldDef.name,
           output: {
-            start: encoding.fieldRef(encType, {bin_suffix: '_start'}),
-            end: encoding.fieldRef(encType, {bin_suffix: '_end'})
+            start: encoding.fieldRef(channel, {bin_suffix: '_start'}),
+            end: encoding.fieldRef(channel, {bin_suffix: '_end'})
           },
-          maxbins: encoding.bin(encType).maxbins
+          maxbins: encoding.bin(channel).maxbins
         });
         // temporary fix for adding missing `bin_mid` from the bin transform
         transform.push({
           type: 'formula',
-          field: encoding.fieldRef(encType, {bin_suffix: '_mid'}),
-          expr: '(' + encoding.fieldRef(encType, {datum:1, bin_suffix: '_start'}) + '+' + encoding.fieldRef(encType, {datum:1, bin_suffix: '_end'}) + ')/2'
+          field: encoding.fieldRef(channel, {bin_suffix: '_mid'}),
+          expr: '(' + encoding.fieldRef(channel, {datum:1, bin_suffix: '_start'}) + '+' + encoding.fieldRef(channel, {datum:1, bin_suffix: '_end'}) + ')/2'
         });
       }
       return transform;
@@ -148,10 +148,10 @@ export namespace source {
         if (fieldName === '*') return filteredFields; //count
 
         // TODO(#597) revise how filterNull is structured.
-        if ((encoding.config('filterNull').quantitative && fieldList.containsType[Type.QUANTITATIVE]) ||
-            (encoding.config('filterNull').temporal && fieldList.containsType[Type.TEMPORAL]) ||
-            (encoding.config('filterNull').ordinal && fieldList.containsType[Type.ORDINAL]) ||
-            (encoding.config('filterNull').nominal && fieldList.containsType[Type.NOMINAL])) {
+        if ((encoding.config('filterNull').quantitative && fieldList.containsType[QUANTITATIVE]) ||
+            (encoding.config('filterNull').temporal && fieldList.containsType[TEMPORAL]) ||
+            (encoding.config('filterNull').ordinal && fieldList.containsType[ORDINAL]) ||
+            (encoding.config('filterNull').nominal && fieldList.containsType[NOMINAL])) {
           filteredFields.push(fieldName);
         }
         return filteredFields;
@@ -198,7 +198,7 @@ export namespace summary {
 
     var hasAggregate = false;
 
-    encoding.forEach(function(fieldDef, encType) {
+    encoding.forEach(function(fieldDef, channel) {
       if (fieldDef.aggregate) {
         hasAggregate = true;
         if (fieldDef.aggregate === 'count') {
@@ -211,11 +211,11 @@ export namespace summary {
       } else {
         if (fieldDef.bin) {
           // TODO(#694) only add dimension for the required ones.
-          dims[encoding.fieldRef(encType, {bin_suffix: '_start'})] = encoding.fieldRef(encType, {bin_suffix: '_start'});
-          dims[encoding.fieldRef(encType, {bin_suffix: '_mid'})] = encoding.fieldRef(encType, {bin_suffix: '_mid'});
-          dims[encoding.fieldRef(encType, {bin_suffix: '_end'})] = encoding.fieldRef(encType, {bin_suffix: '_end'});
+          dims[encoding.fieldRef(channel, {bin_suffix: '_start'})] = encoding.fieldRef(channel, {bin_suffix: '_start'});
+          dims[encoding.fieldRef(channel, {bin_suffix: '_mid'})] = encoding.fieldRef(channel, {bin_suffix: '_mid'});
+          dims[encoding.fieldRef(channel, {bin_suffix: '_end'})] = encoding.fieldRef(channel, {bin_suffix: '_end'});
         } else {
-          dims[fieldDef.name] = encoding.fieldRef(encType);
+          dims[fieldDef.name] = encoding.fieldRef(channel);
         }
 
       }
@@ -232,8 +232,8 @@ export namespace summary {
 
     if (hasAggregate) {
       return {
-        name: Table.SUMMARY,
-        source: Table.SOURCE,
+        name: SUMMARY,
+        source: SOURCE,
         transform: [{
           type: 'aggregate',
           groupby: groupby,
@@ -256,7 +256,7 @@ export namespace stack {
     var facets = encoding.facets();
 
     var stacked:VgData = {
-      name: Table.STACKED,
+      name: STACKED,
       source: encoding.dataTable(),
       transform: [{
         type: 'aggregate',
@@ -281,11 +281,11 @@ export namespace stack {
 }
 
 export function filterNonPositive(dataTable, encoding: Encoding) {
-  encoding.forEach(function(_, encType) {
-    if (encoding.scale(encType).type === 'log') {
+  encoding.forEach(function(_, channel) {
+    if (encoding.scale(channel).type === 'log') {
       dataTable.transform.push({
         type: 'filter',
-        test: encoding.fieldRef(encType, {datum: 1}) + ' > 0'
+        test: encoding.fieldRef(channel, {datum: 1}) + ' > 0'
       });
     }
   });

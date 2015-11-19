@@ -9,9 +9,10 @@ import {interpolateHsl} from 'd3-color';
 
 import * as util from '../util';
 import Encoding from '../Encoding';
-import {Enctype, Type, Table} from '../consts';
-
+import {COL, ROW, X, Y, SHAPE, SIZE, COLOR, TEXT} from '../channel';
+import {SOURCE, STACKED} from '../data';
 import * as time from './time';
+import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 
 export function names(props) {
   return util.keys(util.keys(props).reduce(function(a, x) {
@@ -52,15 +53,15 @@ export function defs(names: Array<string>, encoding: Encoding, layout, stats, fa
 export function type(name: string, encoding: Encoding) {
   var type = encoding.fieldDef(name).type;
   switch (type) {
-    case Type.NOMINAL: //fall through
-    case Type.ORDINAL:
+    case NOMINAL: //fall through
+    case ORDINAL:
       return 'ordinal';
-    case Type.TEMPORAL:
+    case TEMPORAL:
       var timeUnit = encoding.fieldDef(name).timeUnit;
       return timeUnit ? time.scale.type(timeUnit, name) : 'time';
-    case Type.QUANTITATIVE:
+    case QUANTITATIVE:
       if (encoding.bin(name)) {
-        return name === Enctype.ROW || name === Enctype.COL || name === Enctype.SHAPE ? 'ordinal' : 'linear';
+        return name === ROW || name === COL || name === SHAPE ? 'ordinal' : 'linear';
       }
       return encoding.scale(name).type;
   }
@@ -74,7 +75,7 @@ export function domain(encoding: Encoding, name, type, facet:boolean = false) {
   }
 
   // special case for temporal scale
-  if (fieldDef.type === Type.TEMPORAL) {
+  if (fieldDef.type === TEMPORAL) {
     var range = time.scale.domain(fieldDef.timeUnit, name);
     if (range) return range;
   }
@@ -83,7 +84,7 @@ export function domain(encoding: Encoding, name, type, facet:boolean = false) {
   var stack = encoding.stack();
   if (stack && name === stack.value) {
     return {
-      data: Table.STACKED,
+      data: STACKED,
       field: encoding.fieldRef(name, {
         // If faceted, scale is determined by the max of sum in each facet.
         prefn: (facet ? 'max_' : '') + 'sum_'
@@ -96,7 +97,7 @@ export function domain(encoding: Encoding, name, type, facet:boolean = false) {
 
   if (useRawDomain) { // useRawDomain - only Q/T
     return {
-      data: Table.SOURCE,
+      data: SOURCE,
       field: encoding.fieldRef(name, {noAggregate:true})
     };
   } else if (fieldDef.bin) { // bin
@@ -116,7 +117,7 @@ export function domain(encoding: Encoding, name, type, facet:boolean = false) {
     return {
       // If sort by aggregation of a specified sort field, we need to use SOURCE table,
       // so we can aggregate values for the scale independently from the main aggregation.
-      data: sort.op ? Table.SOURCE : encoding.dataTable(),
+      data: sort.op ? SOURCE : encoding.dataTable(),
       field: encoding.fieldRef(name),
       sort: sort
     };
@@ -179,9 +180,9 @@ export function _useRawDomain (encoding: Encoding, name) {
       // Binned field has similar values in both the source table and the summary table
       // but the summary table has fewer values, therefore binned fields draw
       // domain values from the summary table.
-      (fieldDef.type === Type.QUANTITATIVE && !fieldDef.bin) ||
+      (fieldDef.type === QUANTITATIVE && !fieldDef.bin) ||
       // T uses non-ordinal scale when there's no unit or when the unit is not ordinal.
-      (fieldDef.type === Type.TEMPORAL &&
+      (fieldDef.type === TEMPORAL &&
         (!fieldDef.timeUnit || !time.isOrdinalFn(fieldDef.timeUnit))
       )
     );
@@ -191,15 +192,15 @@ export function bandWidth(encoding: Encoding, name, type, layout) {
   // TODO: eliminate layout
 
   switch (name) {
-    case Enctype.X: /* fall through */
-    case Enctype.Y:
+    case X: /* fall through */
+    case Y:
       if (type === 'ordinal') {
         return encoding.bandWidth(name, layout[name].useSmallBand);
       }
       break;
-    case Enctype.ROW: // support only ordinal
+    case ROW: // support only ordinal
       return layout.cellHeight;
-    case Enctype.COL: // support only ordinal
+    case COL: // support only ordinal
       return layout.cellWidth;
   }
   return undefined;
@@ -222,15 +223,15 @@ export function nice(encoding: Encoding, name, type) {
   }
 
   switch (name) {
-    case Enctype.X: /* fall through */
-    case Enctype.Y:
+    case X: /* fall through */
+    case Y:
       if (type === 'time' || type === 'ordinal') {
         return undefined;
       }
       return true;
 
-    case Enctype.ROW: /* fall through */
-    case Enctype.COL:
+    case ROW: /* fall through */
+    case COL:
       return true;
   }
   return undefined;
@@ -241,7 +242,7 @@ export function outerPadding(encoding: Encoding, name, type) {
     if (encoding.fieldDef(name).scale.outerPadding !== undefined) {
       return encoding.fieldDef(name).scale.outerPadding; // explicit value
     }
-    if (name === Enctype.ROW || name === Enctype.COL) {
+    if (name === ROW || name === COL) {
       return 0;
     }
   }
@@ -264,8 +265,8 @@ export function points(encoding: Encoding, name, type) {
     }
 
     switch (name) {
-      case Enctype.X:
-      case Enctype.Y:
+      case X:
+      case Y:
         return true;
     }
   }
@@ -281,29 +282,29 @@ export function range(encoding: Encoding, name, type, layout, stats) {
   }
 
   switch (name) {
-    case Enctype.X:
+    case X:
       return layout.cellWidth ? [0, layout.cellWidth] : 'width';
-    case Enctype.Y:
+    case Y:
       if (type === 'ordinal') {
         return layout.cellHeight ?
           (fieldDef.bin ? [layout.cellHeight, 0] : [0, layout.cellHeight]) :
           'height';
       }
       return layout.cellHeight ? [layout.cellHeight, 0] : 'height';
-    case Enctype.SIZE:
+    case SIZE:
       if (encoding.is('bar')) {
         // FIXME this is definitely incorrect
         // but let's fix it later since bar size is a bad encoding anyway
-        return [3, Math.max(encoding.bandWidth(Enctype.X), encoding.bandWidth(Enctype.Y))];
-      } else if (encoding.is(Enctype.TEXT)) {
+        return [3, Math.max(encoding.bandWidth(X), encoding.bandWidth(Y))];
+      } else if (encoding.is(TEXT)) {
         return [8, 40];
       }
       // else -- point
-      var bandWidth = Math.min(encoding.bandWidth(Enctype.X), encoding.bandWidth(Enctype.Y)) - 1;
+      var bandWidth = Math.min(encoding.bandWidth(X), encoding.bandWidth(Y)) - 1;
       return [10, 0.8 * bandWidth*bandWidth];
-    case Enctype.SHAPE:
+    case SHAPE:
       return 'shapes';
-    case Enctype.COLOR:
+    case COLOR:
       return color(encoding, name, type, stats);
   }
 
@@ -317,11 +318,11 @@ export function round(encoding: Encoding, name) {
 
   // FIXME: revise if round is already the default value
   switch (name) {
-    case Enctype.X: /* fall through */
-    case Enctype.Y:
-    case Enctype.ROW:
-    case Enctype.COL:
-    case Enctype.SIZE:
+    case X: /* fall through */
+    case Y:
+    case ROW:
+    case COL:
+    case SIZE:
       return true;
   }
   return undefined;
@@ -336,7 +337,7 @@ export function zero(encoding: Encoding, name) {
     return fieldDef.scale.zero;
   }
 
-  if (fieldDef.type === Type.TEMPORAL) {
+  if (fieldDef.type === TEMPORAL) {
     if (timeUnit === 'year') {
       // year is using linear scale, but should not include zero
       return false;
@@ -350,7 +351,7 @@ export function zero(encoding: Encoding, name) {
     return false;
   }
 
-  return name === Enctype.X || name === Enctype.Y ?
+  return name === X || name === Y ?
     // if not bin / temporal, returns undefined for X and Y encoding
     // since zero is true by default in vega for linear scale
     undefined :
@@ -358,17 +359,17 @@ export function zero(encoding: Encoding, name) {
 }
 
 export function color(encoding: Encoding, name, scaleType, stats) {
-  var colorScale = encoding.scale(Enctype.COLOR),
+  var colorScale = encoding.scale(COLOR),
     range = colorScale.range,
-    cardinality = encoding.cardinality(Enctype.COLOR, stats),
-    type = encoding.fieldDef(Enctype.COLOR).type;
+    cardinality = encoding.cardinality(COLOR, stats),
+    type = encoding.fieldDef(COLOR).type;
 
   if (range === undefined) {
     var ordinalPalette = colorScale.ordinalPalette,
       quantitativeRange = colorScale.quantitativeRange;
 
     if (scaleType === 'ordinal') {
-      if (type === Type.NOMINAL) {
+      if (type === NOMINAL) {
         // use categorical color scale
         if (cardinality <= 10) {
           range = colorScale.c10palette;
@@ -420,7 +421,7 @@ export namespace colors {
       if (cardinality in palette) return palette[cardinality];
 
       // if not, use the highest cardinality one for nominal
-      if (type === Type.NOMINAL) {
+      if (type === NOMINAL) {
         return palette[Math.max.apply(null, util.keys(palette))];
       }
 

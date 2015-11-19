@@ -16,8 +16,8 @@ import vlLayout from './layout';
 import vlStack from './stack';
 import vlStyle from './style';
 import vlSubfacet from './subfacet';
+import {COL, ROW, X, Y} from '../channel';
 
-import {Enctype, Type} from '../consts';
 
 export function compile(spec, stats, theme?) {
   return compileEncoding(Encoding.fromSpec(spec, theme), stats);
@@ -92,7 +92,7 @@ export function compileEncoding(encoding: Encoding, stats) {
 
   // auto-sort line/area values
   if (lineType && encoding.config('autoSortLine')) {
-    var f = (encoding.isMeasure(Enctype.X) && encoding.isDimension(Enctype.Y)) ? Enctype.Y : Enctype.X;
+    var f = (encoding.isMeasure(X) && encoding.isDimension(Y)) ? Y : X;
     if (!mdef.from) {
       mdef.from = {};
     }
@@ -108,7 +108,7 @@ export function compileEncoding(encoding: Encoding, stats) {
   var legends = vlLegend.defs(encoding, styleCfg);
 
   // Small Multiples
-  if (encoding.has(Enctype.ROW) || encoding.has(Enctype.COL)) {
+  if (encoding.has(ROW) || encoding.has(COL)) {
     output = vlFacet(group, encoding, layout, output, singleScaleNames, stats);
     if (legends.length > 0) {
       output.legends = legends;
@@ -117,11 +117,11 @@ export function compileEncoding(encoding: Encoding, stats) {
     group.scales = vlScale.defs(singleScaleNames, encoding, layout, stats);
 
     var axes = [];
-    if (encoding.has(Enctype.X)) {
-      axes.push(vlAxis.def(Enctype.X, encoding, layout, stats));
+    if (encoding.has(X)) {
+      axes.push(vlAxis.def(X, encoding, layout, stats));
     }
-    if (encoding.has(Enctype.Y)) {
-      axes.push(vlAxis.def(Enctype.Y, encoding, layout, stats));
+    if (encoding.has(Y)) {
+      axes.push(vlAxis.def(Y, encoding, layout, stats));
     }
     if (axes.length > 0) {
       group.axes = axes;
