@@ -20,7 +20,7 @@ import {COL, ROW, X, Y} from '../channel';
 
 
 export function compile(spec, stats, theme?) {
-  return compileEncoding(Model.fromSpec(spec, theme), stats);
+  return compileEncoding(new Model(spec, theme), stats);
 }
 
 export function shorthand(shorthand: string, stats, config, theme) {

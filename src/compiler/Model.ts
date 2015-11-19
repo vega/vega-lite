@@ -37,11 +37,6 @@ export class Model {
     });
   }
 
-
-  static fromSpec(spec, theme?) {
-    return new Model(spec, theme);
-  }
-
   toShorthand() {
     return 'mark' + Shorthand.ASSIGN + this._marktype +
       Shorthand.DELIM + vlEnc.shorthand(this._enc);

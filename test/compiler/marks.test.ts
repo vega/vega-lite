@@ -15,7 +15,7 @@ describe('compile.marks', function() {
   describe('bar', function() {
     describe('vertical, with log', function() {
       var f = fixtures.bars.log_ver,
-          e = Model.fromSpec(f),
+          e = new Model(f),
           def = marks.bar.prop(e, mockLayout, {});
       it('should end on axis', function() {
         expect(def.y2).to.eql({field: {group: 'height'}});
@@ -27,7 +27,7 @@ describe('compile.marks', function() {
 
     describe('horizontal, with log', function() {
       var f = fixtures.bars.log_hor,
-          e = Model.fromSpec(f),
+          e = new Model(f),
           def = marks.bar.prop(e, mockLayout, {});
       it('should end on axis', function() {
         expect(def.x2).to.eql({value: 0});
@@ -39,7 +39,7 @@ describe('compile.marks', function() {
 
     describe('1D, vertical', function() {
       var f = fixtures.bars['1d_ver'],
-          e = Model.fromSpec(f),
+          e = new Model(f),
           def = marks.bar.prop(e, mockLayout, {});
       it('should end on axis', function() {
         expect(def.y2).to.eql({field: {group: 'height'}});
@@ -54,7 +54,7 @@ describe('compile.marks', function() {
 
     describe('1D, horizontal', function() {
       var f = fixtures.bars['1d_hor'],
-          e = Model.fromSpec(f),
+          e = new Model(f),
           def = marks.bar.prop(e, mockLayout, {});
       it('should end on axis', function() {
         expect(def.x2).to.eql({value: 0});
@@ -74,7 +74,7 @@ describe('compile.marks', function() {
   describe('point', function() {
     describe('1D, horizontal', function() {
       var f = fixtures.points['1d_hor'],
-          e = Model.fromSpec(f),
+          e = new Model(f),
           def = marks.point.prop(e, mockLayout, {});
       it('should be centered', function() {
         expect(def.y).to.eql({value: e.bandWidth(Y, mockLayout.y.useSmallBand) / 2});
@@ -86,7 +86,7 @@ describe('compile.marks', function() {
 
     describe('1D, vertical', function() {
       var f = fixtures.points['1d_ver'],
-          e = Model.fromSpec(f),
+          e = new Model(f),
           def = marks.point.prop(e, mockLayout, {});
       it('should be centered', function() {
         expect(def.x).to.eql({value: e.bandWidth(X, mockLayout.x.useSmallBand) / 2});
@@ -98,7 +98,7 @@ describe('compile.marks', function() {
 
     describe('2D, x and y', function() {
       var f = fixtures.points['x,y'],
-          e = Model.fromSpec(f),
+          e = new Model(f),
           def = marks.point.prop(e, mockLayout, {});
       it('should scale on x', function() {
         expect(def.x).to.eql({scale: X, field: 'year'});
@@ -111,7 +111,7 @@ describe('compile.marks', function() {
     describe('3D', function() {
       describe('x,y,size', function () {
         var f = fixtures.points['x,y,size'],
-            e = Model.fromSpec(f),
+            e = new Model(f),
             def = marks.point.prop(e, mockLayout, {});
         it('should have scale for size', function () {
           expect(def.size).to.eql({scale: SIZE, field: 'count'});
@@ -120,7 +120,7 @@ describe('compile.marks', function() {
 
       describe('x,y,color', function () {
         var f = fixtures.points['x,y,stroke'],
-            e = Model.fromSpec(f),
+            e = new Model(f),
             def = marks.point.prop(e, mockLayout, {});
         it('should have scale for color', function () {
           expect(def.stroke).to.eql({scale: COLOR, field: 'yield'});
@@ -129,7 +129,7 @@ describe('compile.marks', function() {
 
       describe('x,y,shape', function () {
         var f = fixtures.points['x,y,shape'],
-            e = Model.fromSpec(f),
+            e = new Model(f),
             def = marks.point.prop(e, mockLayout, {});
         it('should have scale for shape', function () {
           expect(def.shape).to.eql({scale: SHAPE, field: 'bin_yield_start'});
@@ -141,7 +141,7 @@ describe('compile.marks', function() {
   describe('line', function() {
     describe('2D, x and y', function() {
       var f = fixtures.lines['x,y'],
-          e = Model.fromSpec(f),
+          e = new Model(f),
           def = marks.line.prop(e, mockLayout, {});
       it('should have scale for x', function() {
         expect(def.x).to.eql({scale: X, field: 'year'});
@@ -154,7 +154,7 @@ describe('compile.marks', function() {
     describe('3D', function() {
       describe('x,y,color', function () {
         var f = fixtures.lines['x,y,stroke'],
-            e = Model.fromSpec(f),
+            e = new Model(f),
             def = marks.line.prop(e, mockLayout, {});
         it('should have scale for color', function () {
           expect(def.stroke).to.eql({scale: COLOR, field: 'Acceleration'});
@@ -166,7 +166,7 @@ describe('compile.marks', function() {
   describe('area', function() {
     describe('2D, x and y', function() {
       var f = fixtures.area['x,y'],
-          e = Model.fromSpec(f),
+          e = new Model(f),
           def = marks.area.prop(e, mockLayout, {});
       it('should have scale for x', function() {
         expect(def.x).to.eql({scale: X, field: 'Displacement'});
@@ -179,7 +179,7 @@ describe('compile.marks', function() {
     describe('3D', function() {
       describe('x,y,color', function () {
         var f = fixtures.area['x,y,stroke'],
-            e = Model.fromSpec(f),
+            e = new Model(f),
             def = marks.area.prop(e, mockLayout, {});
         it('should have scale for color', function () {
           expect(def.fill).to.eql({scale: COLOR, field: 'Miles_per_Gallon'});
