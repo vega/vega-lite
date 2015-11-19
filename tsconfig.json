@@ -22,6 +22,7 @@
         "!bower_components/**"
     ],
     "files": [
+        "src/aggregate.ts",
         "src/channel.ts",
         "src/compiler/axis.ts",
         "src/compiler/compiler.ts",

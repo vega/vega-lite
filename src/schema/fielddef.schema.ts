@@ -1,5 +1,6 @@
+import {AGGREGATE_OPS} from '../aggregate';
 import {toMap} from '../util';
-import {AGGREGATE_OPS, MAXBINS_DEFAULT} from '../consts';
+import {MAXBINS_DEFAULT} from '../consts';
 import {TIMEUNITS} from '../timeunit';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 

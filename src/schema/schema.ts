@@ -3,12 +3,12 @@
 /// <reference path="../../typings/vega.d.ts"/>
 /// <reference path="../../typings/colorbrewer.d.ts"/>
 
+import {AGGREGATE_OPS} from '../aggregate';
 import * as colorbrewer from 'colorbrewer';
 import * as vlUtil from '../util';
 import {toMap} from '../util';
 import * as schemaUtil from './schemautil';
 import {merge} from './schemautil';
-import {AGGREGATE_OPS} from '../consts';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 
 import {marktype} from './marktype.schema';

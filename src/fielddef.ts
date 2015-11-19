@@ -1,6 +1,7 @@
 // utility for Encoding Definition
 
-import {Shorthand, AGGREGATE_OPS, MAXBINS_DEFAULT} from './consts';
+import {Shorthand, MAXBINS_DEFAULT} from './consts';
+import {AGGREGATE_OPS} from './aggregate';
 import * as util from './util';
 import * as time from './compiler/time';
 import {TIMEUNITS} from './timeunit';
