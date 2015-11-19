@@ -268,7 +268,7 @@ var text = merge(clone(typicalField), {
     },
     format: {
       type: 'string',
-      default: undefined,  // auto
+      default: '',  // auto
       description: 'The formatting pattern for text value.'+
                    'If not defined, this will be determined automatically'
     },
