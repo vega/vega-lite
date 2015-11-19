@@ -269,7 +269,7 @@ namespace properties {
     let fieldDef = encoding.fieldDef(name);
     var timeUnit = fieldDef.timeUnit;
     if (fieldDef.type === Type.TEMPORAL && timeUnit && time.labelTemplate(timeUnit)) {
-      var filterName = fieldDef.axis.abbreviatedTimeNames ? 'abbrev-' : '';
+      var filterName = fieldDef.axis.shortTimeNames ? 'abbrev-' : '';
       filterName += time.labelTemplate(timeUnit);
       spec = util.extend({
         text: {template: '{{datum.data | ' + filterName + '}}'}

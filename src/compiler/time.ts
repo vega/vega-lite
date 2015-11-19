@@ -48,13 +48,15 @@ export function maxLength(fieldDef, encoding: Encoding) {
     case 'date':
       return 2;
     case 'month':
-      if (fieldDef.axis.abbreviatedTimeNames)
+      // FIXME: find the actual legth of the longest month
+      if (fieldDef.axis.shortTimeNames)
         return 3;
-      return 10;  // TODO: find the actual legth of the longest month
+      return 9;
     case 'day':
-      if (fieldDef.axis.abbreviatedTimeNames)
+      // FIXME: find the actual length of the longest day of the week
+      if (fieldDef.axis.shortTimeNames)
         return 3;
-      return 10;  // TODO: find the actual length of the longest day of the week
+      return 9;
     case 'year':
       return 4; //'1998'
   }
@@ -122,7 +124,7 @@ export namespace scale {
   }
 }
 
-/** returns the teplate name used for axis labels for a time function */
+/** returns the template name used for axis labels for a time unit */
 export function labelTemplate(timeUnit) : string {
   switch (timeUnit) {
     case 'day':
