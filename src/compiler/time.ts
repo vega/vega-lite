@@ -40,21 +40,21 @@ export function formula(timeUnit, fieldRef) {
   return fn + '(' + fieldRef + ')';
 }
 
-export function maxLength(timeUnit, encoding: Encoding) {
-  switch (timeUnit) {
+export function maxLength(fieldDef, encoding: Encoding) {
+  switch (fieldDef.timeUnit) {
     case 'seconds':
     case 'minutes':
     case 'hours':
     case 'date':
       return 2;
     case 'month':
+      if (fieldDef.axis.abbreviatedTimeNames)
+        return 3;
+      return 10;  // TODO: find the actual legth of the longest month
     case 'day':
-      var rng = range(timeUnit, encoding);
-      if (rng) {
-        // return the longest name in the range
-        return Math.max.apply(null, rng.map(function(r) {return r.length;}));
-      }
-      return 2;
+      if (fieldDef.axis.abbreviatedTimeNames)
+        return 3;
+      return 10;  // TODO: find the actual length of the longest day of the week
     case 'year':
       return 4; //'1998'
   }
@@ -84,23 +84,6 @@ export function range(timeUnit, encoding: Encoding) {
 }
 
 
-/**
- * @param  {Object} encoding
- * @return {Array}  scales for time unit names
- */
-export function scales(encoding: Encoding) {
-  var scales = encoding.reduce(function(scales, fieldDef) {
-    var timeUnit = fieldDef.timeUnit;
-    if (fieldDef.type === Type.TEMPORAL && timeUnit && !scales[timeUnit]) {
-      var scaleDef = scale.def(fieldDef.timeUnit, encoding);
-      if (scaleDef) scales[timeUnit] = scaleDef;
-    }
-    return scales;
-  }, {});
-
-  return util.vals(scales);
-}
-
 export function isOrdinalFn(timeUnit) {
   switch (timeUnit) {
     case 'seconds':
@@ -116,21 +99,6 @@ export function isOrdinalFn(timeUnit) {
 
 
 export namespace scale {
-  /** append custom time scales for axis label */
-  export function def(timeUnit, encoding) {
-    var rangeDef = range(timeUnit, encoding);
-
-    if (rangeDef) {
-      return {
-        name: 'time-'+timeUnit,
-        type: 'ordinal',
-        domain: scale.domain(timeUnit),
-        range: rangeDef
-      };
-    }
-    return null;
-  }
-
   export function type(timeUnit, name) {
     if (name === Enctype.COLOR) {
       return 'linear'; // time has order, so use interpolated ordinal color scale.
@@ -154,12 +122,13 @@ export namespace scale {
   }
 }
 
-/** whether a particular time function has custom scale for labels implemented in time.scale */
-export function hasScale(timeUnit) {
+/** returns the teplate name used for axis labels for a time function */
+export function labelTemplate(timeUnit) : string {
   switch (timeUnit) {
     case 'day':
+      return 'weekday';
     case 'month':
-      return true;
+      return 'month';
   }
-  return false;
+  return null;
 }

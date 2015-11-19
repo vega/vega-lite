@@ -105,7 +105,7 @@ function getMaxLength(encoding: Encoding, stats, et) {
   } if (fieldDef.type === Type.QUANTITATIVE) {
     return getMaxNumberLength(encoding, et, fieldStats);
   } else if (fieldDef.type === Type.TEMPORAL) {
-    return time.maxLength(encoding.fieldDef(et).timeUnit, encoding);
+    return time.maxLength(encoding.fieldDef(et), encoding);
   } else if (encoding.isTypes(et, [Type.NOMINAL, Type.ORDINAL])) {
     if(fieldStats.type === 'number') {
       return getMaxNumberLength(encoding, et, fieldStats);

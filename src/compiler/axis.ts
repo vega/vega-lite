@@ -268,9 +268,11 @@ namespace properties {
   export function labels(encoding: Encoding, name: string, spec, layout, def) {
     let fieldDef = encoding.fieldDef(name);
     var timeUnit = fieldDef.timeUnit;
-    if (fieldDef.type === Type.TEMPORAL && timeUnit && (time.hasScale(timeUnit))) {
+    if (fieldDef.type === Type.TEMPORAL && timeUnit && time.labelTemplate(timeUnit)) {
+      var filterName = fieldDef.axis.abbreviatedTimeNames ? 'abbrev-' : '';
+      filterName += time.labelTemplate(timeUnit);
       spec = util.extend({
-        text: {scale: 'time-' + timeUnit, field: 'data'}
+        text: {template: '{{datum.data | ' + filterName + '}}'}
       }, spec || {});
     }
 
@@ -285,7 +287,7 @@ namespace properties {
 
      // for x-axis, set ticks for Q or rotate scale for ordinal scale
     if (name == Enctype.X) {
-      if ((encoding.isDimension(Enctype.X) || fieldDef.type === Type.TEMPORAL)) {
+      if (encoding.isDimension(Enctype.X) || fieldDef.type === Type.TEMPORAL) {
         spec = util.extend({
           angle: {value: 270},
           align: {value: def.orient === 'top' ? 'left': 'right'},

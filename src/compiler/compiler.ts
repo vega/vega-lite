@@ -67,12 +67,6 @@ export function compileEncoding(encoding: Encoding, stats) {
       }]
     };
 
-  // global scales contains only time unit scales
-  var timeScales = vlTime.scales(encoding);
-  if (timeScales.length > 0) {
-    output.scales = timeScales;
-  }
-
   var group = output.marks[0];
 
   // marks

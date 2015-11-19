@@ -56,6 +56,11 @@ export var axis = {
       default: undefined,  // auto
       description: 'A title offset value for the axis.'
     },
+    abbreviatedTimeNames: {
+      type: 'string',
+      default: false,
+      description: 'Whether month names and weekday names should be abbrevaited.'
+    },
     properties: {
       type: 'object',
       default: undefined,
