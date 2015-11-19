@@ -25,7 +25,7 @@ export namespace Enctype {
   export const TEXT = 'text';
   export const DETAIL = 'detail';
 
-  export const LIST = [
+  export const CHANNELS = [
     Enctype.X, Enctype.Y,
     Enctype.ROW, Enctype.COL,
     Enctype.SIZE, Enctype.SHAPE, Enctype.COLOR,
