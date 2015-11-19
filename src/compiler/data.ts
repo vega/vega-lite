@@ -1,8 +1,8 @@
 import * as vlFieldDef from '../fielddef';
 import * as util from '../util';
 import Encoding from '../Encoding';
-import {Table, Type} from '../consts';
-
+import {Type} from '../consts';
+import {SOURCE, STACKED, SUMMARY} from '../data';
 import * as time from './time';
 
 /**
@@ -48,7 +48,7 @@ interface VgData {
 
 export namespace source {
   export function def(encoding: Encoding): VgData {
-    var source:VgData = {name: Table.SOURCE};
+    var source:VgData = {name: SOURCE};
 
     // Data source (url or inline)
     if (encoding.hasValues()) {
@@ -232,8 +232,8 @@ export namespace summary {
 
     if (hasAggregate) {
       return {
-        name: Table.SUMMARY,
-        source: Table.SOURCE,
+        name: SUMMARY,
+        source: SOURCE,
         transform: [{
           type: 'aggregate',
           groupby: groupby,
@@ -256,7 +256,7 @@ export namespace stack {
     var facets = encoding.facets();
 
     var stacked:VgData = {
-      name: Table.STACKED,
+      name: STACKED,
       source: encoding.dataTable(),
       transform: [{
         type: 'aggregate',

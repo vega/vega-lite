@@ -10,8 +10,8 @@ import {interpolateHsl} from 'd3-color';
 import * as util from '../util';
 import Encoding from '../Encoding';
 import {COL, ROW, X, Y, SHAPE, SIZE, COLOR, TEXT} from '../channel';
-import {Type, Table} from '../consts';
-
+import {Type} from '../consts';
+import {SOURCE, STACKED} from '../data';
 import * as time from './time';
 
 export function names(props) {
@@ -84,7 +84,7 @@ export function domain(encoding: Encoding, name, type, facet:boolean = false) {
   var stack = encoding.stack();
   if (stack && name === stack.value) {
     return {
-      data: Table.STACKED,
+      data: STACKED,
       field: encoding.fieldRef(name, {
         // If faceted, scale is determined by the max of sum in each facet.
         prefn: (facet ? 'max_' : '') + 'sum_'
@@ -97,7 +97,7 @@ export function domain(encoding: Encoding, name, type, facet:boolean = false) {
 
   if (useRawDomain) { // useRawDomain - only Q/T
     return {
-      data: Table.SOURCE,
+      data: SOURCE,
       field: encoding.fieldRef(name, {noAggregate:true})
     };
   } else if (fieldDef.bin) { // bin
@@ -117,7 +117,7 @@ export function domain(encoding: Encoding, name, type, facet:boolean = false) {
     return {
       // If sort by aggregation of a specified sort field, we need to use SOURCE table,
       // so we can aggregate values for the scale independently from the main aggregation.
-      data: sort.op ? Table.SOURCE : encoding.dataTable(),
+      data: sort.op ? SOURCE : encoding.dataTable(),
       field: encoding.fieldRef(name),
       sort: sort
     };

@@ -1,5 +1,15 @@
+/*
+ * Constants and utilities for data. 
+ */
+
 import * as util from './util';
 import {Type} from './consts';
+
+
+
+export const SUMMARY = 'summary';
+export const SOURCE = 'source';
+export const STACKED = 'stacked';
 
 /** Mapping from datalib's inferred type to Vega-lite's type */
 // TODO: ALL_CAPS

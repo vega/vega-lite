@@ -1,12 +1,3 @@
-/**
- * Names for data sources / table for output vega
- */
-export namespace Table {
-  export const SUMMARY = 'summary';
-  export const SOURCE = 'source';
-  export const STACKED = 'stacked';
-}
-
 /** Constants for data type */
 export namespace Type {
   export const QUANTITATIVE = 'quantitative';

@@ -1,5 +1,6 @@
-import {Type, Shorthand, Table, MAXBINS_DEFAULT} from './consts';
+import {Type, Shorthand, MAXBINS_DEFAULT} from './consts';
 import {COL, ROW, X, Y, COLOR, DETAIL} from './channel';
+import {SOURCE, SUMMARY} from './data';
 import * as util from './util';
 import * as vlFieldDef from './fielddef';
 import * as vlEnc from './enc';
@@ -219,7 +220,7 @@ export default class Encoding {
   }
 
   dataTable() {
-    return this.isAggregate() ? Table.SUMMARY : Table.SOURCE;
+    return this.isAggregate() ? SUMMARY : SOURCE;
   }
 
   static alwaysNoOcclusion(spec) {
