@@ -23,10 +23,6 @@ export function compile(spec, stats, theme?) {
   return compileEncoding(new Model(spec, theme), stats);
 }
 
-export function shorthand(shorthand: string, stats, config, theme) {
-  return compileEncoding(Model.fromShorthand(shorthand, config, theme), stats);
-}
-
 /**
  * Create a Vega specification from a Vega-lite Encoding object.
  */
