@@ -26,10 +26,7 @@ export {aggregate} from './fielddef.schema';
 
 export var util = schemaUtil;
 
-// TODO move to VLUI
-export var defaultTimeFn = 'month';
-
-export var fieldDef = {
+var fieldDef = {
   type: 'object',
   properties: {
     name: {

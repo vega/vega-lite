@@ -1,8 +1,9 @@
 // utility for Encoding Definition
 
-import {TIMEUNITS, Shorthand, AGGREGATE_OPS, MAXBINS_DEFAULT} from './consts';
+import {Shorthand, AGGREGATE_OPS, MAXBINS_DEFAULT} from './consts';
 import * as util from './util';
 import * as time from './compiler/time';
+import {TIMEUNITS} from './timeunit';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL, SHORT_TYPE, TYPE_FROM_SHORT_TYPE} from './type';
 
 /**
@@ -106,6 +107,8 @@ export function isOrdinalScale(fieldDef) {
     (fieldDef.type === TEMPORAL && fieldDef.timeUnit && time.isOrdinalFn(fieldDef.timeUnit) );
 }
 
+
+// TODO remove these "isDimension/isMeasure" stuff
 function _isFieldDimension(fieldDef) {
   return  isTypes(fieldDef, [NOMINAL, ORDINAL]) || !!fieldDef.bin ||
     (fieldDef.type === TEMPORAL && !!fieldDef.timeUnit );

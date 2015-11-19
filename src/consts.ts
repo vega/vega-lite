@@ -1,8 +1,3 @@
-//TODO this should become TIMEUNIT.LIST
-export const TIMEUNITS = [
-  'year', 'month', 'day', 'date', 'hours', 'minutes', 'seconds'
-];
-
 // TODO: see if there is a nice way to import from Vega schema
 export const AGGREGATE_OPS = [
   'values', 'count', 'valid', 'missing', 'distinct',

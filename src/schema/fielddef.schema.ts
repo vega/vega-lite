@@ -1,5 +1,6 @@
 import {toMap} from '../util';
-import {TIMEUNITS, AGGREGATE_OPS, MAXBINS_DEFAULT} from '../consts';
+import {AGGREGATE_OPS, MAXBINS_DEFAULT} from '../consts';
+import {TIMEUNITS} from '../timeunit';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 
 export var aggregate = {
