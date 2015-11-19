@@ -1,6 +1,6 @@
 // utility for a field definition object
 
-import {Shorthand, MAXBINS_DEFAULT} from './consts';
+import {MAXBINS_DEFAULT} from './consts';
 import {AGGREGATE_OPS} from './aggregate';
 import * as util from './util';
 import * as time from './compiler/time';
@@ -39,55 +39,6 @@ export function fieldRef(fieldDef, opt) {
   }  else {
     return f + name;
   }
-}
-
-export function shorthand(f) {
-  return (f.aggregate ? f.aggregate + Shorthand.FUNC : '') +
-    (f.timeUnit ? f.timeUnit + Shorthand.FUNC : '') +
-    (f.bin ? 'bin' + Shorthand.FUNC : '') +
-    (f.name || '') + Shorthand.TYPE + SHORT_TYPE[f.type];
-}
-
-export function shorthands(fieldDefs, delim) {
-  delim = delim || Shorthand.DELIM;
-  return fieldDefs.map(shorthand).join(delim);
-}
-
-export function fromShorthand(shorthand: string) {
-  var split = shorthand.split(Shorthand.TYPE), i;
-
-  var fieldDef: any = {
-    name: split[0].trim(),
-    type: TYPE_FROM_SHORT_TYPE[split[1].trim()]
-  };
-
-  // check aggregate type
-  for (i in AGGREGATE_OPS) {
-    var a = AGGREGATE_OPS[i];
-    if (fieldDef.name.indexOf(a + '_') === 0) {
-      fieldDef.name = fieldDef.name.substr(a.length + 1);
-      if (a === 'count' && fieldDef.name.length === 0) fieldDef.name = '*';
-      fieldDef.aggregate = a;
-      break;
-    }
-  }
-
-  for (i in TIMEUNITS) {
-    var tu = TIMEUNITS[i];
-    if (fieldDef.name && fieldDef.name.indexOf(tu + '_') === 0) {
-      fieldDef.name = fieldDef.name.substr(fieldDef.name.length + 1);
-      fieldDef.timeUnit = tu;
-      break;
-    }
-  }
-
-  // check bin
-  if (fieldDef.name && fieldDef.name.indexOf('bin_') === 0) {
-    fieldDef.name = fieldDef.name.substr(4);
-    fieldDef.bin = true;
-  }
-
-  return fieldDef;
 }
 
 export function isTypes(fieldDef, types: Array<String>) {

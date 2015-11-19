@@ -29,7 +29,7 @@ export function reduce(obj, f, init, thisArg?) {
   }
 }
 
-export function map(obj, f, thisArg) {
+export function map(obj, f, thisArg?) {
   if (obj.map) {
     return obj.map.call(thisArg, f);
   } else {
@@ -64,7 +64,7 @@ export function getbins(stats, maxbins) {
   });
 }
 
-//FIXME remove this 
+//FIXME remove this
 /**
  * x[p[0]]...[p[n]] = val
  * @param noaugment determine whether new object should be added f

@@ -1,4 +1,4 @@
-import {Shorthand, MAXBINS_DEFAULT} from '../consts';
+import {MAXBINS_DEFAULT} from '../consts';
 import {COL, ROW, X, Y, COLOR, DETAIL} from '../channel';
 import {SOURCE, SUMMARY} from '../data';
 import * as util from '../util';
@@ -35,16 +35,6 @@ export class Model {
         fieldDef.type = getFullName(fieldDef.type);
       }
     });
-  }
-
-  toShorthand() {
-    return 'mark' + Shorthand.ASSIGN + this._marktype +
-      Shorthand.DELIM + vlEnc.shorthand(this._enc);
-  }
-
-  static shorthand(spec) {
-    return 'mark' + Shorthand.ASSIGN + spec.marktype +
-      Shorthand.DELIM + vlEnc.shorthand(spec.encoding);
   }
 
   toSpec(excludeConfig?, excludeData?) {
@@ -206,12 +196,6 @@ export class Model {
 
   dataTable() {
     return this.isAggregate() ? SUMMARY : SOURCE;
-  }
-
-  static isStack(spec) {
-    // FIXME update this once we have control for stack ...
-    return (spec.marktype === 'bar' || spec.marktype === 'area') &&
-      !!spec.encoding.color;
   }
 
   // TODO: calculate this and store it in this._stack so it can be called multiple times.

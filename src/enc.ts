@@ -1,6 +1,5 @@
 // utility for enc
 import {CHANNELS} from './channel';
-import {Shorthand} from './consts';
 import * as vlFieldDef from './fielddef';
 import * as util from './util';
 
@@ -70,24 +69,6 @@ export function fields(enc) {
       // augment the array with containsType.Q / O / N / T
       containsType[field.type] = true;
     }
-    return m;
-  }, {});
-}
-
-export function shorthand(enc) {
-  return map(enc, function(field, channel) {
-    return channel + Shorthand.ASSIGN + vlFieldDef.shorthand(field);
-  }).join(Shorthand.DELIM);
-}
-
-export function fromShorthand(shorthand) {
-  var enc = util.isArray(shorthand) ? shorthand : shorthand.split(Shorthand.DELIM);
-  return enc.reduce(function(m, e) {
-    var split = e.split(Shorthand.ASSIGN),
-        enctype = split[0].trim(),
-        field = split[1];
-
-    m[enctype] = vlFieldDef.fromShorthand(field);
     return m;
   }, {});
 }
