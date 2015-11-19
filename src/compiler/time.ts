@@ -6,7 +6,7 @@ import Encoding from '../Encoding';
 import * as vlFieldDef from '../fielddef';
 import * as util from '../util';
 import {COLOR, COL, ROW} from '../channel';
-import {Type} from '../consts';
+import {TEMPORAL} from '../type';
 
 // 'Wednesday September 17 04:00:00 2014'
 // Wednesday is the longest date
@@ -92,7 +92,7 @@ export function range(timeUnit, encoding: Encoding) {
 export function scales(encoding: Encoding) {
   var scales = encoding.reduce(function(scales, fieldDef) {
     var timeUnit = fieldDef.timeUnit;
-    if (fieldDef.type === Type.TEMPORAL && timeUnit && !scales[timeUnit]) {
+    if (fieldDef.type === TEMPORAL && timeUnit && !scales[timeUnit]) {
       var scaleDef = scale.def(fieldDef.timeUnit, encoding);
       if (scaleDef) scales[timeUnit] = scaleDef;
     }

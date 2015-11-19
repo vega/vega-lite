@@ -22,6 +22,7 @@
         "!bower_components/**"
     ],
     "files": [
+        "src/aggregate.ts",
         "src/channel.ts",
         "src/compiler/axis.ts",
         "src/compiler/compiler.ts",
@@ -50,6 +51,8 @@
         "src/schema/schema.ts",
         "src/schema/schemagen.ts",
         "src/schema/schemautil.ts",
+        "src/timeunit.ts",
+        "src/type.ts",
         "src/util.ts",
         "src/validate.ts",
         "src/vl.ts",

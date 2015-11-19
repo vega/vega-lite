@@ -2,7 +2,7 @@ import {expect} from 'chai';
 
 import * as fix from '../fixtures';
 import {compile} from '../../src/compiler/compiler';
-import {Table} from '../../src/consts';
+import {SUMMARY} from '../../src/data';
 
 var fixtures = fix.f.stack;
 
@@ -32,7 +32,7 @@ describe('vl.compile.stack()', function () {
       var vgSpec = compile(fixtures.binX, stats);
 
       var tableData = vgSpec.data.filter(function(data) {
-        return data.name === Table.SUMMARY;
+        return data.name === SUMMARY;
       });
       expect(tableData.length).to.equal(1);
 
@@ -57,7 +57,7 @@ describe('vl.compile.stack()', function () {
       var vgSpec = compile(fixtures.binY, stats);
 
       var tableData = vgSpec.data.filter(function(data) {
-        return data.name === Table.SUMMARY;
+        return data.name === SUMMARY;
       });
       expect(tableData.length).to.equal(1);
 

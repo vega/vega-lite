@@ -1,8 +1,8 @@
 import * as util from '../util';
 import {COLOR, SIZE, SHAPE} from '../channel';
-import {Type} from '../consts';
 import Encoding from '../Encoding';
 import * as time from './time';
+import {TEMPORAL} from '../type';
 
 export function defs(encoding: Encoding, styleCfg) {
   var defs = [];
@@ -69,7 +69,7 @@ namespace properties {
   export function labels(encoding: Encoding, name, spec) {
     var fieldDef = encoding.fieldDef(name);
     var timeUnit = fieldDef.timeUnit;
-    if (fieldDef.type == Type.TEMPORAL && timeUnit && time.hasScale(timeUnit)) {
+    if (fieldDef.type == TEMPORAL && timeUnit && time.hasScale(timeUnit)) {
       return util.extend({
         text: {
           scale: 'time-'+ timeUnit

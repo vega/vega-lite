@@ -2,11 +2,10 @@
 
 import * as d3_format from 'd3-format';
 import {setter} from '../util';
-import {Type} from '../consts';
 import {COL, ROW, X, Y, TEXT} from '../channel';
 import Encoding from '../Encoding';
-
 import * as time from './time';
+import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 
 export default function(encoding: Encoding, stats) {
   var layout = box(encoding, stats);
@@ -103,11 +102,11 @@ function getMaxLength(encoding: Encoding, stats, channel) {
   if (fieldDef.bin) {
     // TODO once bin support range, need to update this
     return getMaxNumberLength(encoding, channel, fieldStats);
-  } if (fieldDef.type === Type.QUANTITATIVE) {
+  } if (fieldDef.type === QUANTITATIVE) {
     return getMaxNumberLength(encoding, channel, fieldStats);
-  } else if (fieldDef.type === Type.TEMPORAL) {
+  } else if (fieldDef.type === TEMPORAL) {
     return time.maxLength(encoding.fieldDef(channel).timeUnit, encoding);
-  } else if (encoding.isTypes(channel, [Type.NOMINAL, Type.ORDINAL])) {
+  } else if (encoding.isTypes(channel, [NOMINAL, ORDINAL])) {
     if(fieldStats.type === 'number') {
       return getMaxNumberLength(encoding, channel, fieldStats);
     } else {
@@ -123,12 +122,12 @@ function offset(encoding: Encoding, stats, layout) {
     let fieldDef = encoding.fieldDef(channel);
     let maxLength;
 
-    if (encoding.isDimension(channel) || fieldDef.type === Type.TEMPORAL) {
+    if (encoding.isDimension(channel) || fieldDef.type === TEMPORAL) {
       maxLength = getMaxLength(encoding, stats, channel);
     } else if (
       // TODO once we have #512 (allow using inferred type)
       // Need to adjust condition here.
-      fieldDef.type === Type.QUANTITATIVE || fieldDef.aggregate === 'count'
+      fieldDef.type === QUANTITATIVE || fieldDef.aggregate === 'count'
     ) {
       if (
         channel===Y

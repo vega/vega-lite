@@ -17,7 +17,7 @@ import vlStack from './stack';
 import vlStyle from './style';
 import vlSubfacet from './subfacet';
 import {COL, ROW, X, Y} from '../channel';
-import {Type} from '../consts';
+
 
 export function compile(spec, stats, theme?) {
   return compileEncoding(Encoding.fromSpec(spec, theme), stats);

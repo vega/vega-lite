@@ -1,6 +1,6 @@
-import {Type} from '../consts';
 import Encoding from '../Encoding';
 import {COL, ROW, X, Y, COLOR, TEXT, SIZE, SHAPE} from '../channel';
+import {QUANTITATIVE} from '../type';
 
 // https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations
 declare var exports;
@@ -391,7 +391,7 @@ function text_props(e: Encoding, layout, style) {
   if (e.has(X)) {
     p.x = {scale: X, field: e.fieldRef(X, {bin_suffix: '_mid'})};
   } else if (!e.has(X)) {
-    if (e.has(TEXT) && e.fieldDef(TEXT).type === Type.QUANTITATIVE) {
+    if (e.has(TEXT) && e.fieldDef(TEXT).type === QUANTITATIVE) {
       p.x = {value: layout.cellWidth-5};
     } else {
       p.x = {value: e.bandWidth(X, layout.x.useSmallBand) / 2};
@@ -421,7 +421,7 @@ function text_props(e: Encoding, layout, style) {
 
   // text
   if (e.has(TEXT)) {
-    if (e.fieldDef(TEXT).type === Type.QUANTITATIVE) {
+    if (e.fieldDef(TEXT).type === QUANTITATIVE) {
       var numberFormat = fieldDef.format !== undefined ?
                          fieldDef.format : e.numberFormat(TEXT);
 

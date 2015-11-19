@@ -10,9 +10,9 @@ import {interpolateHsl} from 'd3-color';
 import * as util from '../util';
 import Encoding from '../Encoding';
 import {COL, ROW, X, Y, SHAPE, SIZE, COLOR, TEXT} from '../channel';
-import {Type, Table} from '../consts';
-
+import {SOURCE, STACKED} from '../data';
 import * as time from './time';
+import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 
 export function names(props) {
   return util.keys(util.keys(props).reduce(function(a, x) {
@@ -53,13 +53,13 @@ export function defs(names: Array<string>, encoding: Encoding, layout, stats, fa
 export function type(name: string, encoding: Encoding) {
   var type = encoding.fieldDef(name).type;
   switch (type) {
-    case Type.NOMINAL: //fall through
-    case Type.ORDINAL:
+    case NOMINAL: //fall through
+    case ORDINAL:
       return 'ordinal';
-    case Type.TEMPORAL:
+    case TEMPORAL:
       var timeUnit = encoding.fieldDef(name).timeUnit;
       return timeUnit ? time.scale.type(timeUnit, name) : 'time';
-    case Type.QUANTITATIVE:
+    case QUANTITATIVE:
       if (encoding.bin(name)) {
         return name === ROW || name === COL || name === SHAPE ? 'ordinal' : 'linear';
       }
@@ -75,7 +75,7 @@ export function domain(encoding: Encoding, name, type, facet:boolean = false) {
   }
 
   // special case for temporal scale
-  if (fieldDef.type === Type.TEMPORAL) {
+  if (fieldDef.type === TEMPORAL) {
     var range = time.scale.domain(fieldDef.timeUnit, name);
     if (range) return range;
   }
@@ -84,7 +84,7 @@ export function domain(encoding: Encoding, name, type, facet:boolean = false) {
   var stack = encoding.stack();
   if (stack && name === stack.value) {
     return {
-      data: Table.STACKED,
+      data: STACKED,
       field: encoding.fieldRef(name, {
         // If faceted, scale is determined by the max of sum in each facet.
         prefn: (facet ? 'max_' : '') + 'sum_'
@@ -97,7 +97,7 @@ export function domain(encoding: Encoding, name, type, facet:boolean = false) {
 
   if (useRawDomain) { // useRawDomain - only Q/T
     return {
-      data: Table.SOURCE,
+      data: SOURCE,
       field: encoding.fieldRef(name, {noAggregate:true})
     };
   } else if (fieldDef.bin) { // bin
@@ -117,7 +117,7 @@ export function domain(encoding: Encoding, name, type, facet:boolean = false) {
     return {
       // If sort by aggregation of a specified sort field, we need to use SOURCE table,
       // so we can aggregate values for the scale independently from the main aggregation.
-      data: sort.op ? Table.SOURCE : encoding.dataTable(),
+      data: sort.op ? SOURCE : encoding.dataTable(),
       field: encoding.fieldRef(name),
       sort: sort
     };
@@ -180,9 +180,9 @@ export function _useRawDomain (encoding: Encoding, name) {
       // Binned field has similar values in both the source table and the summary table
       // but the summary table has fewer values, therefore binned fields draw
       // domain values from the summary table.
-      (fieldDef.type === Type.QUANTITATIVE && !fieldDef.bin) ||
+      (fieldDef.type === QUANTITATIVE && !fieldDef.bin) ||
       // T uses non-ordinal scale when there's no unit or when the unit is not ordinal.
-      (fieldDef.type === Type.TEMPORAL &&
+      (fieldDef.type === TEMPORAL &&
         (!fieldDef.timeUnit || !time.isOrdinalFn(fieldDef.timeUnit))
       )
     );
@@ -337,7 +337,7 @@ export function zero(encoding: Encoding, name) {
     return fieldDef.scale.zero;
   }
 
-  if (fieldDef.type === Type.TEMPORAL) {
+  if (fieldDef.type === TEMPORAL) {
     if (timeUnit === 'year') {
       // year is using linear scale, but should not include zero
       return false;
@@ -369,7 +369,7 @@ export function color(encoding: Encoding, name, scaleType, stats) {
       quantitativeRange = colorScale.quantitativeRange;
 
     if (scaleType === 'ordinal') {
-      if (type === Type.NOMINAL) {
+      if (type === NOMINAL) {
         // use categorical color scale
         if (cardinality <= 10) {
           range = colorScale.c10palette;
@@ -421,7 +421,7 @@ export namespace colors {
       if (cardinality in palette) return palette[cardinality];
 
       // if not, use the highest cardinality one for nominal
-      if (type === Type.NOMINAL) {
+      if (type === NOMINAL) {
         return palette[Math.max.apply(null, util.keys(palette))];
       }
 
