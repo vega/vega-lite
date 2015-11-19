@@ -1,5 +1,5 @@
 import * as util from '../util';
-import {COLOR, SIZE, SHAPE} from '../channel';
+import {COLOR, SIZE, SHAPE, Type as Channel} from '../channel';
 import Encoding from '../Encoding';
 import * as time from './time';
 import {TEMPORAL} from '../type';
@@ -28,11 +28,11 @@ export function defs(encoding: Encoding, styleCfg) {
   return defs;
 }
 
-export function def(encoding: Encoding, name: String, def, styleCfg) {
-  let legend = encoding.fieldDef(name).legend;
+export function def(encoding: Encoding, channel: Channel, def, styleCfg) {
+  let legend = encoding.fieldDef(channel).legend;
 
   // 1.1 Add properties with special rules
-  def.title = title(encoding, name);
+  def.title = title(encoding, channel);
 
   // 1.2 Add properties without rules
   ['orient', 'format', 'values'].forEach(function(property) {
@@ -46,7 +46,7 @@ export function def(encoding: Encoding, name: String, def, styleCfg) {
   let props = legend.properties || {};
   ['title', 'labels', 'symbols', 'legend'].forEach(function(group) {
     let value = properties[group] ?
-      properties[group](encoding, name, props[group], styleCfg) : // apply rule
+      properties[group](encoding, channel, props[group], styleCfg) : // apply rule
       props[group]; // no rule -- just default values
     if (value !== undefined) {
       def.properties = def.properties || {};
@@ -57,17 +57,17 @@ export function def(encoding: Encoding, name: String, def, styleCfg) {
   return def;
 }
 
-export function title(encoding: Encoding, name: String) {
-  let leg = encoding.fieldDef(name).legend;
+export function title(encoding: Encoding, channel: Channel) {
+  let leg = encoding.fieldDef(channel).legend;
 
   if (leg.title) return leg.title;
 
-  return encoding.fieldTitle(name);
+  return encoding.fieldTitle(channel);
 }
 
 namespace properties {
-  export function labels(encoding: Encoding, name, spec) {
-    var fieldDef = encoding.fieldDef(name);
+  export function labels(encoding: Encoding, channel: Channel, spec) {
+    var fieldDef = encoding.fieldDef(channel);
     var timeUnit = fieldDef.timeUnit;
     if (fieldDef.type === TEMPORAL && timeUnit && time.hasScale(timeUnit)) {
       return util.extend({
@@ -79,7 +79,7 @@ namespace properties {
     return spec;
   }
 
-  export function symbols(encoding: Encoding, name, spec, styleCfg) {
+  export function symbols(encoding: Encoding, channel: Channel, spec, styleCfg) {
     let symbols:any = {};
     let marktype = encoding.marktype();
 
@@ -98,14 +98,14 @@ namespace properties {
       case 'point':
         // fill or stroke
         if (encoding.fieldDef(SHAPE).filled) {
-          if (encoding.has(COLOR) && name === COLOR) {
+          if (encoding.has(COLOR) && channel === COLOR) {
             symbols.fill = {scale: COLOR, field: 'data'};
           } else {
             symbols.fill = {value: encoding.value(COLOR)};
           }
           symbols.stroke = {value: 'transparent'};
         } else {
-          if (encoding.has(COLOR) && name === COLOR) {
+          if (encoding.has(COLOR) && channel === COLOR) {
             symbols.stroke = {scale: COLOR, field: 'data'};
           } else {
             symbols.stroke = {value: encoding.value(COLOR)};
