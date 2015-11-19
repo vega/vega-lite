@@ -1,12 +1,12 @@
 import {expect} from 'chai';
 
 import * as time from '../../src/compiler/time';
-import Encoding from '../../src/Encoding';
+import {Model} from '../../src/compiler/Model';
 
 describe('time', function() {
   var field = 'a',
     timeUnit = 'month',
-    encoding = Encoding.fromSpec({
+    encoding = Model.fromSpec({
       encoding: {
         x: {name: field, type: 'temporal', timeUnit: timeUnit}
       }
@@ -22,17 +22,17 @@ describe('time', function() {
 
   describe('maxLength', function() {
     it('should return max length of the month custom scale', function () {
-      expect(time.maxLength('month', Encoding.fromSpec({mark: 'point'})))
+      expect(time.maxLength('month', Model.fromSpec({mark: 'point'})))
         .to.eql(3);
     });
 
     it('should return max length of the day custom scale', function () {
-      expect(time.maxLength('day', Encoding.fromSpec({mark: 'point'})))
+      expect(time.maxLength('day', Model.fromSpec({mark: 'point'})))
         .to.eql(3);
     });
 
     it('should return max length of the month custom scale', function () {
-      expect(time.maxLength('month', Encoding.fromSpec({
+      expect(time.maxLength('month', Model.fromSpec({
         mark: 'point',
         config: {
           timeScaleLabelLength: 0

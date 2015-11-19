@@ -1,14 +1,14 @@
-import {Shorthand, MAXBINS_DEFAULT} from './consts';
-import {COL, ROW, X, Y, COLOR, DETAIL} from './channel';
-import {SOURCE, SUMMARY} from './data';
-import * as util from './util';
-import * as vlFieldDef from './fielddef';
-import * as vlEnc from './enc';
-import * as schema from './schema/schema';
-import * as schemaUtil from './schema/schemautil';
-import {getFullName} from './type';
+import {Shorthand, MAXBINS_DEFAULT} from '../consts';
+import {COL, ROW, X, Y, COLOR, DETAIL} from '../channel';
+import {SOURCE, SUMMARY} from '../data';
+import * as util from '../util';
+import * as vlFieldDef from '../fielddef';
+import * as vlEnc from '../enc';
+import * as schema from '../schema/schema';
+import * as schemaUtil from '../schema/schemautil';
+import {getFullName} from '../type';
 
-export default class Encoding {
+export class Model {
   _data: any;
   _marktype: string;
   _enc: any;
@@ -31,22 +31,9 @@ export default class Encoding {
     });
   }
 
-  static fromShorthand(shorthand: string, data?, config?, theme?) {
-    var c = Shorthand,
-      split = shorthand.split(c.DELIM),
-      marktype = split.shift().split(c.ASSIGN)[1].trim(),
-      enc = vlEnc.fromShorthand(split);
-
-    return new Encoding({
-      data: data,
-      marktype: marktype,
-      encoding: enc,
-      config: config
-    }, theme);
-  }
 
   static fromSpec(spec, theme?) {
-    return new Encoding(spec, theme);
+    return new Model(spec, theme);
   }
 
   toShorthand() {
@@ -60,7 +47,7 @@ export default class Encoding {
   }
 
   static specFromShorthand(shorthand: string, data, config, excludeConfig?) {
-    return Encoding.fromShorthand(shorthand, data, config).toSpec(excludeConfig);
+    return Model.fromShorthand(shorthand, data, config).toSpec(excludeConfig);
   }
 
   toSpec(excludeConfig?, excludeData?) {

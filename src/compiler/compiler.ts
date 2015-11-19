@@ -3,7 +3,7 @@
  */
 
 import {summary} from '../util';
-import Encoding from '../Encoding';
+import {Model} from './Model';
 
 import * as vlScale from './scale';
 import * as vlTime from './time';
@@ -20,21 +20,21 @@ import {COL, ROW, X, Y} from '../channel';
 
 
 export function compile(spec, stats, theme?) {
-  return compileEncoding(Encoding.fromSpec(spec, theme), stats);
+  return compileEncoding(Model.fromSpec(spec, theme), stats);
 }
 
 export function shorthand(shorthand: string, stats, config, theme) {
-  return compileEncoding(Encoding.fromShorthand(shorthand, config, theme), stats);
+  return compileEncoding(Model.fromShorthand(shorthand, config, theme), stats);
 }
 
 /**
  * Create a Vega specification from a Vega-lite Encoding object.
  */
-export function compileEncoding(encoding: Encoding, stats) {
+export function compileEncoding(model: Model, stats) {
   // no need to pass stats if you pass in the data
   if (!stats) {
-    if (encoding.hasValues()) {
-        stats = summary(encoding.data().values).reduce(function(s, p) {
+    if (model.hasValues()) {
+        stats = summary(model.data().values).reduce(function(s, p) {
         s[p.field] = p;
         return s;
       }, {});
@@ -43,14 +43,14 @@ export function compileEncoding(encoding: Encoding, stats) {
     }
   }
 
-  var layout = vlLayout(encoding, stats);
+  var layout = vlLayout(model, stats);
 
   // TODO: change type to become VgSpec
   var output:any = {
       width: layout.width,
       height: layout.height,
       padding: 'auto',
-      data: vlData(encoding),
+      data: vlData(model),
       marks: [{
         name: 'cell',
         type: 'group',
@@ -68,7 +68,7 @@ export function compileEncoding(encoding: Encoding, stats) {
     };
 
   // global scales contains only time unit scales
-  var timeScales = vlTime.scales(encoding);
+  var timeScales = vlTime.scales(model);
   if (timeScales.length > 0) {
     output.scales = timeScales;
   }
@@ -76,20 +76,20 @@ export function compileEncoding(encoding: Encoding, stats) {
   var group = output.marks[0];
 
   // marks
-  var styleCfg = vlStyle(encoding, stats),
-    mdefs = group.marks = vlMarks.defs(encoding, layout, styleCfg),
+  var styleCfg = vlStyle(model, stats),
+    mdefs = group.marks = vlMarks.defs(model, layout, styleCfg),
     mdef = mdefs[mdefs.length - 1];  // TODO: remove this dirty hack by refactoring the whole flow
 
-  var stack = encoding.stack();
+  var stack = model.stack();
   if (stack) {
     // modify mdef.{from,properties}
-    vlStack(encoding, mdef, stack);
+    vlStack(model, mdef, stack);
   }
 
-  var lineType = vlMarks[encoding.marktype()].line;
+  var lineType = vlMarks[model.marktype()].line;
 
   // handle subfacets
-  var details = encoding.details();
+  var details = model.details();
 
   if (details.length > 0 && lineType) {
     //subfacet to group area / line together in one group
@@ -97,13 +97,13 @@ export function compileEncoding(encoding: Encoding, stats) {
   }
 
   // auto-sort line/area values
-  if (lineType && encoding.config('autoSortLine')) {
-    var f = (encoding.isMeasure(X) && encoding.isDimension(Y)) ? Y : X;
+  if (lineType && model.config('autoSortLine')) {
+    var f = (model.isMeasure(X) && model.isDimension(Y)) ? Y : X;
     if (!mdef.from) {
       mdef.from = {};
     }
     // TODO: why - ?
-    mdef.from.transform = [{type: 'sort', by: '-' + encoding.fieldRef(f)}];
+    mdef.from.transform = [{type: 'sort', by: '-' + model.fieldRef(f)}];
   }
 
   // get a flattened list of all scale names that are used in the vl spec
@@ -111,23 +111,23 @@ export function compileEncoding(encoding: Encoding, stats) {
     return vlScale.names(markProps.properties.update);
   }));
 
-  var legends = vlLegend.defs(encoding, styleCfg);
+  var legends = vlLegend.defs(model, styleCfg);
 
   // Small Multiples
-  if (encoding.has(ROW) || encoding.has(COL)) {
-    output = vlFacet(group, encoding, layout, output, singleScaleNames, stats);
+  if (model.has(ROW) || model.has(COL)) {
+    output = vlFacet(group, model, layout, output, singleScaleNames, stats);
     if (legends.length > 0) {
       output.legends = legends;
     }
   } else {
-    group.scales = vlScale.defs(singleScaleNames, encoding, layout, stats);
+    group.scales = vlScale.defs(singleScaleNames, model, layout, stats);
 
     var axes = [];
-    if (encoding.has(X)) {
-      axes.push(vlAxis.def(X, encoding, layout, stats));
+    if (model.has(X)) {
+      axes.push(vlAxis.def(X, model, layout, stats));
     }
-    if (encoding.has(Y)) {
-      axes.push(vlAxis.def(Y, encoding, layout, stats));
+    if (model.has(Y)) {
+      axes.push(vlAxis.def(Y, model, layout, stats));
     }
     if (axes.length > 0) {
       group.axes = axes;

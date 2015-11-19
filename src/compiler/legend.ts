@@ -1,38 +1,38 @@
 import * as util from '../util';
 import {COLOR, SIZE, SHAPE, Channel} from '../channel';
-import Encoding from '../Encoding';
+import {Model} from './Model';
 import * as time from './time';
 import {TEMPORAL} from '../type';
 
-export function defs(encoding: Encoding, styleCfg) {
+export function defs(model: Model, styleCfg) {
   var defs = [];
 
-  if (encoding.has(COLOR) && encoding.fieldDef(COLOR).legend) {
-    defs.push(def(encoding, COLOR, {
+  if (model.has(COLOR) && model.fieldDef(COLOR).legend) {
+    defs.push(def(model, COLOR, {
       fill: COLOR
       // TODO: consider if this should be stroke for line
     }, styleCfg));
   }
 
-  if (encoding.has(SIZE) && encoding.fieldDef(SIZE).legend) {
-    defs.push(def(encoding, SIZE, {
+  if (model.has(SIZE) && model.fieldDef(SIZE).legend) {
+    defs.push(def(model, SIZE, {
       size: SIZE
     }, styleCfg));
   }
 
-  if (encoding.has(SHAPE) && encoding.fieldDef(SHAPE).legend) {
-    defs.push(def(encoding, SHAPE, {
+  if (model.has(SHAPE) && model.fieldDef(SHAPE).legend) {
+    defs.push(def(model, SHAPE, {
       shape: SHAPE
     }, styleCfg));
   }
   return defs;
 }
 
-export function def(encoding: Encoding, channel: Channel, def, styleCfg) {
-  let legend = encoding.fieldDef(channel).legend;
+export function def(model: Model, channel: Channel, def, styleCfg) {
+  let legend = model.fieldDef(channel).legend;
 
   // 1.1 Add properties with special rules
-  def.title = title(encoding, channel);
+  def.title = title(model, channel);
 
   // 1.2 Add properties without rules
   ['orient', 'format', 'values'].forEach(function(property) {
@@ -46,7 +46,7 @@ export function def(encoding: Encoding, channel: Channel, def, styleCfg) {
   let props = legend.properties || {};
   ['title', 'labels', 'symbols', 'legend'].forEach(function(group) {
     let value = properties[group] ?
-      properties[group](encoding, channel, props[group], styleCfg) : // apply rule
+      properties[group](model, channel, props[group], styleCfg) : // apply rule
       props[group]; // no rule -- just default values
     if (value !== undefined) {
       def.properties = def.properties || {};
@@ -57,17 +57,17 @@ export function def(encoding: Encoding, channel: Channel, def, styleCfg) {
   return def;
 }
 
-export function title(encoding: Encoding, channel: Channel) {
-  let leg = encoding.fieldDef(channel).legend;
+export function title(model: Model, channel: Channel) {
+  let leg = model.fieldDef(channel).legend;
 
   if (leg.title) return leg.title;
 
-  return encoding.fieldTitle(channel);
+  return model.fieldTitle(channel);
 }
 
 namespace properties {
-  export function labels(encoding: Encoding, channel: Channel, spec) {
-    var fieldDef = encoding.fieldDef(channel);
+  export function labels(model: Model, channel: Channel, spec) {
+    var fieldDef = model.fieldDef(channel);
     var timeUnit = fieldDef.timeUnit;
     if (fieldDef.type === TEMPORAL && timeUnit && time.hasScale(timeUnit)) {
       return util.extend({
@@ -79,9 +79,9 @@ namespace properties {
     return spec;
   }
 
-  export function symbols(encoding: Encoding, channel: Channel, spec, styleCfg) {
+  export function symbols(model: Model, channel: Channel, spec, styleCfg) {
     let symbols:any = {};
-    let marktype = encoding.marktype();
+    let marktype = model.marktype();
 
     switch (marktype) {
       case 'bar':
@@ -97,21 +97,21 @@ namespace properties {
         /* fall through */
       case 'point':
         // fill or stroke
-        if (encoding.fieldDef(SHAPE).filled) {
-          if (encoding.has(COLOR) && channel === COLOR) {
+        if (model.fieldDef(SHAPE).filled) {
+          if (model.has(COLOR) && channel === COLOR) {
             symbols.fill = {scale: COLOR, field: 'data'};
           } else {
-            symbols.fill = {value: encoding.value(COLOR)};
+            symbols.fill = {value: model.value(COLOR)};
           }
           symbols.stroke = {value: 'transparent'};
         } else {
-          if (encoding.has(COLOR) && channel === COLOR) {
+          if (model.has(COLOR) && channel === COLOR) {
             symbols.stroke = {scale: COLOR, field: 'data'};
           } else {
-            symbols.stroke = {value: encoding.value(COLOR)};
+            symbols.stroke = {value: model.value(COLOR)};
           }
           symbols.fill = {value: 'transparent'};
-          symbols.strokeWidth = {value: encoding.config('strokeWidth')};
+          symbols.strokeWidth = {value: model.config('strokeWidth')};
         }
 
         break;
@@ -121,7 +121,7 @@ namespace properties {
         break;
     }
 
-    var opacity = encoding.fieldDef(COLOR).opacity || styleCfg.opacity;
+    var opacity = model.fieldDef(COLOR).opacity || styleCfg.opacity;
     if (opacity) {
       symbols.opacity = {value: opacity};
     }

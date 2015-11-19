@@ -1,21 +1,21 @@
-import Encoding from '../Encoding';
+import {Model} from './Model';
 import * as vlFieldDef from '../fielddef';
 import {ROW, COL, X, Y, Channel} from '../channel';
 
-export default function(encoding: Encoding, stats) {
+export default function(model: Model, stats) {
   return {
-    opacity: estimateOpacity(encoding, stats),
+    opacity: estimateOpacity(model, stats),
   };
 };
 
-function estimateOpacity(encoding,stats) {
+function estimateOpacity(model: Model, stats) {
   if (!stats) {
     return 1;
   }
 
   var numPoints = 0;
 
-  if (encoding.isAggregate()) { // aggregate plot
+  if (model.isAggregate()) { // aggregate plot
     numPoints = 1;
 
     //  get number of points in each "cell"
@@ -23,13 +23,13 @@ function estimateOpacity(encoding,stats) {
     //  for each non faceting and non-ordinal X / Y fields
     //  note that ordinal x,y are not include since we can
     //  consider that ordinal x are subdividing the cell into subcells anyway
-    encoding.forEach(function(fieldDef, channel: Channel) {
+    model.forEach(function(fieldDef, channel: Channel) {
 
       if (channel !== ROW && channel !== COL &&
           !((channel === X || channel === Y) &&
           vlFieldDef.isOrdinalScale(fieldDef))
         ) {
-        numPoints *= encoding.cardinality(channel, stats);
+        numPoints *= model.cardinality(channel, stats);
       }
     });
 
@@ -43,11 +43,11 @@ function estimateOpacity(encoding,stats) {
 
     // small multiples divide number of points
     var numMultiples = 1;
-    if (encoding.has(ROW)) {
-      numMultiples *= encoding.cardinality(ROW, stats);
+    if (model.has(ROW)) {
+      numMultiples *= model.cardinality(ROW, stats);
     }
-    if (encoding.has(COL)) {
-      numMultiples *= encoding.cardinality(COL, stats);
+    if (model.has(COL)) {
+      numMultiples *= model.cardinality(COL, stats);
     }
     numPoints /= numMultiples;
   }
@@ -57,7 +57,7 @@ function estimateOpacity(encoding,stats) {
     opacity = 1;
   } else if (numPoints < 200) {
     opacity = 0.8;
-  } else if (numPoints < 1000 || encoding.is('tick')) {
+  } else if (numPoints < 1000 || model.is('tick')) {
     opacity = 0.7;
   } else {
     opacity = 0.3;
