@@ -1,6 +1,11 @@
 {
   "rules": {
+    "class-name": true,
+    "eofline": true,
     "indent": [true, "spaces"],
+    "label-position": true,
+    "label-undefined": true,
+    "no-arg": true,
     "semicolon": true,
     "no-duplicate-key": true,
     "no-duplicate-variable": true,
