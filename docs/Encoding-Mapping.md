@@ -19,7 +19,7 @@ Here are the list of properties of the encoding property definition object:
 | :------------ |:-------------:| :------------- |
 | name __<sup>1</sup>__ | String        | Name of the field/variable from which to pull a data value.    |
 | value         | String,Integer | A constant value |
-| type          | String        | Data type of the field.  This property accepts both a full type name (`'quantitative'`, `'temporal'`, `'ordinal'`,  and `'nominal'`), or an initial character (`'Q'`, `'T'`, `'O'`, `'N'`).  __<sup>2</sup>__ |
+| type          | String        | Data type of the field.  This property accepts both a full type name (`'quantitative'`, `'temporal'`, `'ordinal'`,  and `'nominal'`), or an initial character of the type name (`'Q'`, `'T'`, `'O'`, `'N'`).  This property is case insensitive.  __<sup>2</sup>__ |
 | [aggregate](#aggregate) | String        | Aggregation function for the field (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).  |
 | [bin](#bin)          | Boolean \| Object        | Boolean flag / configuration object for binning.  See [Binning](#Binning) |
 | [timeUnit](#timeunit)| String        | Property for converting time unit            |

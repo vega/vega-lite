@@ -97,6 +97,16 @@ export namespace Type {
     O: ORDINAL,
     N: NOMINAL
   };
+
+  /**
+   * Get full, lowercase type name for a given type.
+   * @param  {String} type
+   * @return {String} Full type name.
+   */
+  export function getFullName(type: String) {
+    return Type.TYPE_FROM_SHORT_TYPE[type.toUpperCase()] || // short type is uppercase by default
+           type.toLowerCase();
+  }
 }
 
 //TODO this should become TIMEUNIT.LIST
