@@ -1,5 +1,5 @@
 var assert = require('assert'),
-  ZSchema = require('z-schema'),
+  zSchema = require('z-schema'),
   inspect = require('util').inspect;
 
 var schema = require('../lib/schema.json'),
@@ -8,7 +8,7 @@ var schema = require('../lib/schema.json'),
 
 describe('Schema', function() {
   it('should be valid', function() {
-    var validator = new ZSchema();
+    var validator = new zSchema();
 
     // now validate our data against the schema
     var valid = validator.validate(specSchema, schema);

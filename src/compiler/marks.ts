@@ -85,8 +85,8 @@ function bar_props(e: Encoding, layout, style) {
 
   // x's and width
   if (e.fieldDef(X).bin) {
-    p.x = {scale: X, field: e.fieldRef(X, {bin_suffix: '_start'}), offset: 1};
-    p.x2 = {scale: X, field: e.fieldRef(X, {bin_suffix: '_end'})};
+    p.x = {scale: X, field: e.fieldRef(X, {binSuffix: '_start'}), offset: 1};
+    p.x2 = {scale: X, field: e.fieldRef(X, {binSuffix: '_end'})};
   } else if (e.isMeasure(X)) {
     p.x = {scale: X, field: e.fieldRef(X)};
     if (!e.has(Y) || e.isDimension(Y)) {
@@ -118,8 +118,8 @@ function bar_props(e: Encoding, layout, style) {
 
   // y's & height
   if (e.fieldDef(Y).bin) {
-    p.y = {scale: Y, field: e.fieldRef(Y, {bin_suffix: '_start'})};
-    p.y2 = {scale: Y, field: e.fieldRef(Y, {bin_suffix: '_end'}), offset: 1};
+    p.y = {scale: Y, field: e.fieldRef(Y, {binSuffix: '_start'})};
+    p.y2 = {scale: Y, field: e.fieldRef(Y, {binSuffix: '_end'}), offset: 1};
   } else if (e.isMeasure(Y)) {
     p.y = {scale: Y, field: e.fieldRef(Y)};
     p.y2 = {field: {group: 'height'}};
@@ -163,14 +163,14 @@ function point_props(e: Encoding, layout, style) {
 
   // x
   if (e.has(X)) {
-    p.x = {scale: X, field: e.fieldRef(X, {bin_suffix: '_mid'})};
+    p.x = {scale: X, field: e.fieldRef(X, {binSuffix: '_mid'})};
   } else if (!e.has(X)) {
     p.x = {value: e.bandWidth(X, layout.x.useSmallBand) / 2};
   }
 
   // y
   if (e.has(Y)) {
-    p.y = {scale: Y, field: e.fieldRef(Y, {bin_suffix: '_mid'})};
+    p.y = {scale: Y, field: e.fieldRef(Y, {binSuffix: '_mid'})};
   } else if (!e.has(Y)) {
     p.y = {value: e.bandWidth(Y, layout.y.useSmallBand) / 2};
   }
@@ -218,14 +218,14 @@ function line_props(e: Encoding,layout, style) {
 
   // x
   if (e.has(X)) {
-    p.x = {scale: X, field: e.fieldRef(X, {bin_suffix: '_mid'})};
+    p.x = {scale: X, field: e.fieldRef(X, {binSuffix: '_mid'})};
   } else if (!e.has(X)) {
     p.x = {value: 0};
   }
 
   // y
   if (e.has(Y)) {
-    p.y = {scale: Y, field: e.fieldRef(Y, {bin_suffix: '_mid'})};
+    p.y = {scale: Y, field: e.fieldRef(Y, {binSuffix: '_mid'})};
   } else if (!e.has(Y)) {
     p.y = {field: {group: 'height'}};
   }
@@ -258,7 +258,7 @@ function area_props(e: Encoding, layout, style) {
       p.orient = {value: 'horizontal'};
     }
   } else if (e.has(X)) {
-    p.x = {scale: X, field: e.fieldRef(X, {bin_suffix: '_mid'})};
+    p.x = {scale: X, field: e.fieldRef(X, {binSuffix: '_mid'})};
   } else {
     p.x = {value: 0};
   }
@@ -268,7 +268,7 @@ function area_props(e: Encoding, layout, style) {
     p.y = {scale: Y, field: e.fieldRef(Y)};
     p.y2 = {scale: Y, value: 0};
   } else if (e.has(Y)) {
-    p.y = {scale: Y, field: e.fieldRef(Y, {bin_suffix: '_mid'})};
+    p.y = {scale: Y, field: e.fieldRef(Y, {binSuffix: '_mid'})};
   } else {
     p.y = {field: {group: 'height'}};
   }
@@ -292,7 +292,7 @@ function tick_props(e: Encoding, layout, style) {
 
   // x
   if (e.has(X)) {
-    p.x = {scale: X, field: e.fieldRef(X, {bin_suffix: '_mid'})};
+    p.x = {scale: X, field: e.fieldRef(X, {binSuffix: '_mid'})};
     if (e.isDimension(X)) {
       p.x.offset = -e.bandWidth(X, layout.x.useSmallBand) / 3;
     }
@@ -302,7 +302,7 @@ function tick_props(e: Encoding, layout, style) {
 
   // y
   if (e.has(Y)) {
-    p.y = {scale: Y, field: e.fieldRef(Y, {bin_suffix: '_mid'})};
+    p.y = {scale: Y, field: e.fieldRef(Y, {binSuffix: '_mid'})};
     if (e.isDimension(Y)) {
       p.y.offset = -e.bandWidth(Y, layout.y.useSmallBand) / 3;
     }
@@ -346,14 +346,14 @@ function filled_point_props(shape) {
 
     // x
     if (e.has(X)) {
-      p.x = {scale: X, field: e.fieldRef(X, {bin_suffix: '_mid'})};
+      p.x = {scale: X, field: e.fieldRef(X, {binSuffix: '_mid'})};
     } else if (!e.has(X)) {
       p.x = {value: e.bandWidth(X, layout.x.useSmallBand) / 2};
     }
 
     // y
     if (e.has(Y)) {
-      p.y = {scale: Y, field: e.fieldRef(Y, {bin_suffix: '_mid'})};
+      p.y = {scale: Y, field: e.fieldRef(Y, {binSuffix: '_mid'})};
     } else if (!e.has(Y)) {
       p.y = {value: e.bandWidth(Y, layout.y.useSmallBand) / 2};
     }
@@ -389,7 +389,7 @@ function text_props(e: Encoding, layout, style) {
 
   // x
   if (e.has(X)) {
-    p.x = {scale: X, field: e.fieldRef(X, {bin_suffix: '_mid'})};
+    p.x = {scale: X, field: e.fieldRef(X, {binSuffix: '_mid'})};
   } else if (!e.has(X)) {
     if (e.has(TEXT) && e.fieldDef(TEXT).type === QUANTITATIVE) {
       p.x = {value: layout.cellWidth-5};
@@ -400,7 +400,7 @@ function text_props(e: Encoding, layout, style) {
 
   // y
   if (e.has(Y)) {
-    p.y = {scale: Y, field: e.fieldRef(Y, {bin_suffix: '_mid'})};
+    p.y = {scale: Y, field: e.fieldRef(Y, {binSuffix: '_mid'})};
   } else if (!e.has(Y)) {
     p.y = {value: e.bandWidth(Y, layout.y.useSmallBand) / 2};
   }

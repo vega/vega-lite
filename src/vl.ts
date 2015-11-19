@@ -16,7 +16,7 @@ export * from './consts';
 
 // TODO(#727) split this into two namespace
 
-export var Encoding = vlEncoding;
+export {default as Encoding} from './Encoding';
 export var channel = vlChannel;
 export var compiler = vlCompiler;
 export var compile = vlCompiler.compile;

@@ -106,11 +106,11 @@ export function domain(encoding: Encoding, name, type, facet:boolean = false) {
       data: encoding.dataTable(),
       field: type === 'ordinal' ?
         // ordinal scale only use bin start for now
-        encoding.fieldRef(name, { bin_suffix: '_start' }) :
+        encoding.fieldRef(name, { binSuffix: '_start' }) :
         // need to merge both bin_start and bin_end for non-ordinal scale
         [
-          encoding.fieldRef(name, { bin_suffix: '_start' }),
-          encoding.fieldRef(name, { bin_suffix: '_end' })
+          encoding.fieldRef(name, { binSuffix: '_start' }),
+          encoding.fieldRef(name, { binSuffix: '_end' })
         ]
     };
   } else if (sort) { // have sort -- only for ordinal
