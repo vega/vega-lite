@@ -8,11 +8,17 @@ import * as schema from '../schema/schema';
 import * as schemaUtil from '../schema/schemautil';
 import {getFullName} from '../type';
 
+/**
+ * Internal model of Vega-Lite specification for the compiler.
+ */
+
 export class Model {
   _data: any;
   _marktype: string;
   _enc: any;
   _config: any;
+
+  // TODO: include _stack, _layout, _style, etc.
 
   constructor(spec, theme?) {
     var defaults = schema.instantiate();
@@ -44,10 +50,6 @@ export class Model {
   static shorthand(spec) {
     return 'mark' + Shorthand.ASSIGN + spec.marktype +
       Shorthand.DELIM + vlEnc.shorthand(spec.encoding);
-  }
-
-  static specFromShorthand(shorthand: string, data, config, excludeConfig?) {
-    return Model.fromShorthand(shorthand, data, config).toSpec(excludeConfig);
   }
 
   toSpec(excludeConfig?, excludeData?) {
@@ -211,17 +213,13 @@ export class Model {
     return this.isAggregate() ? SUMMARY : SOURCE;
   }
 
-  static alwaysNoOcclusion(spec) {
-    // FIXME raw OxQ with # of rows = # of O
-    return vlEnc.isAggregate(spec.encoding);
-  }
-
   static isStack(spec) {
     // FIXME update this once we have control for stack ...
     return (spec.marktype === 'bar' || spec.marktype === 'area') &&
       !!spec.encoding.color;
   }
 
+  // TODO: calculate this and store it in this._stack so it can be called multiple times.
   /**
    * Check if the encoding should be stacked and return the stack dimenstion and value fields.
    * @return {Object} An object containing two properties:
