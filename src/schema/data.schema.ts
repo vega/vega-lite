@@ -27,10 +27,10 @@ export var data = {
       description: 'A string containing the filter Vega expression. Use `datum` to refer to the current data object.'
     },
     // we generate a vega formula transform
-    formulas: {
+    calculate: {
       type: 'array',
       default: undefined,
-      description: 'Array of formula transforms. Formulas are applied before filter.',
+      description: 'Calculate new field(s) using the provided expresssion(s). Calculation are applied before filter.',
       items: {
         type: 'object',
         properties: {

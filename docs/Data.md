@@ -44,24 +44,22 @@ __Pending Revision__: We are considering to support a subset of Vega transformat
 
 ## Data Transformation
 
-Filter and calculated field can be specified using `filter` and `formula` properties.
+Filter and calculated field can be specified using `filter` and `calculate` properties.
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | filter        | String        | A string containing the filter Vega expression. Use `datum` to refer to the current data object. |
-| formulas       | Array         | Array of [formula object for deriving new calculated field](#calculate-field). |
+| calculate     | Array         | An array of [formula object for deriving new calculated field](#calculate-field).  Calculation are applied before filter. |
 
 ### Calculated Field
 
-Each formula object has two properties:
+Each formula object in the `calculate` array has two properties:
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | field         | String        | The property name in which to store the computed formula value. |
-| expire        | String        | A string containing an expression for the formula. Use the variable `datum` to to refer to the current data object. |
+| expr          | String        | A string containing an expression for the formula. Use the variable `datum` to to refer to the current data object. |
 
 ### Binning, Time Unit Conversion, Aggregation
 
 Some transformation including binning and aggregation are specified as part of [encoding definitions](Encoding-Mapping.md)
-
-
