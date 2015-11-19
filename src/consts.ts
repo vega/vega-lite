@@ -12,7 +12,7 @@ export namespace Table {
 // }
 
 /**
- * Encoding Channel
+ * Constants and Utilities for Encoding Channel
  */
 export namespace Enctype {
   export const X = 'x';
@@ -70,6 +70,7 @@ export namespace Enctype {
   }
 }
 
+/** Constants for data type */
 export namespace Type {
   export const QUANTITATIVE = 'quantitative';
   export const ORDINAL = 'ordinal';
