@@ -4,8 +4,6 @@ import {CHANNELS} from './channel';
 import * as vlFieldDef from './fielddef';
 import * as util from './util';
 
-let channels = CHANNELS;
-
 export function countRetinal(encoding) {
   var count = 0;
   if (encoding.color) count++;
@@ -30,7 +28,7 @@ export function isAggregate(encoding) {
 
 export function forEach(encoding, f) {
   var i = 0;
-  channels.forEach(function(channel) {
+  CHANNELS.forEach(function(channel) {
     if (has(encoding, channel)) {
       f(encoding[channel], channel, i++);
     }
@@ -39,7 +37,7 @@ export function forEach(encoding, f) {
 
 export function map(encoding, f) {
   var arr = [];
-  channels.forEach(function(k) {
+  CHANNELS.forEach(function(k) {
     if (has(encoding, k)) {
       arr.push(f(encoding[k], k, encoding));
     }
@@ -49,7 +47,7 @@ export function map(encoding, f) {
 
 export function reduce(encoding, f, init) {
   var r = init;
-  channels.forEach(function(k) {
+  CHANNELS.forEach(function(k) {
     if (has(encoding, k)) {
       r = f(r, encoding[k], k,  encoding);
     }
@@ -57,6 +55,7 @@ export function reduce(encoding, f, init) {
   return r;
 }
 
+// FIXME: revise this / consider if we should remove
 /**
  * return key-value pairs of field name and list of fields of that field name
  */
