@@ -1,3 +1,5 @@
+// TODO: move to vl.spec.validator?
+
 import {toMap} from './util';
 import {schema} from './schema/schema';
 

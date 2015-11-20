@@ -1,9 +1,9 @@
-import {Shorthand, MAXBINS_DEFAULT} from '../consts';
+import {MAXBINS_DEFAULT} from '../bin';
 import {COL, ROW, X, Y, COLOR, DETAIL} from '../channel';
 import {SOURCE, SUMMARY} from '../data';
 import * as util from '../util';
 import * as vlFieldDef from '../fielddef';
-import * as vlEnc from '../enc';
+import * as vlEncoding from '../encoding';
 import * as schema from '../schema/schema';
 import * as schemaUtil from '../schema/schemautil';
 import {getFullName} from '../type';
@@ -15,7 +15,7 @@ import {getFullName} from '../type';
 export class Model {
   _data: any;
   _marktype: string;
-  _enc: any;
+  _encoding: any;
   _config: any;
 
   // TODO: include _stack, _layout, _style, etc.
@@ -26,39 +26,24 @@ export class Model {
 
     this._data = specExtended.data;
     this._marktype = specExtended.marktype;
-    this._enc = specExtended.encoding;
+    this._encoding = specExtended.encoding;
     this._config = specExtended.config;
 
     // convert short type to full type
-    vlEnc.forEach(this._enc, function(fieldDef) {
+    vlEncoding.forEach(this._encoding, function(fieldDef) {
       if (fieldDef.type) {
         fieldDef.type = getFullName(fieldDef.type);
       }
     });
   }
 
-
-  static fromSpec(spec, theme?) {
-    return new Model(spec, theme);
-  }
-
-  toShorthand() {
-    return 'mark' + Shorthand.ASSIGN + this._marktype +
-      Shorthand.DELIM + vlEnc.shorthand(this._enc);
-  }
-
-  static shorthand(spec) {
-    return 'mark' + Shorthand.ASSIGN + spec.marktype +
-      Shorthand.DELIM + vlEnc.shorthand(spec.encoding);
-  }
-
   toSpec(excludeConfig?, excludeData?) {
-    var enc = util.duplicate(this._enc),
+    var encoding = util.duplicate(this._encoding),
       spec;
 
     spec = {
       marktype: this._marktype,
-      encoding: enc
+      encoding: encoding
     };
 
     if (!excludeConfig) {
@@ -83,45 +68,45 @@ export class Model {
   }
 
   has(channel) {
-    // equivalent to calling vlenc.has(this._enc, channel)
-    return this._enc[channel].name !== undefined;
+    // equivalent to calling vlenc.has(this._encoding, channel)
+    return this._encoding[channel].name !== undefined;
   }
 
   fieldDef(channel) {
-    return this._enc[channel];
+    return this._encoding[channel];
   }
 
   // get "field" reference for vega
   fieldRef(channel, opt?) {
     opt = opt || {};
-    return vlFieldDef.fieldRef(this._enc[channel], opt);
+    return vlFieldDef.fieldRef(this._encoding[channel], opt);
   }
 
   /*
    * return key-value pairs of field name and list of fields of that field name
    */
   fields() {
-    return vlEnc.fields(this._enc);
+    return vlEncoding.fields(this._encoding);
   }
 
   fieldTitle(channel) {
-    if (vlFieldDef.isCount(this._enc[channel])) {
+    if (vlFieldDef.isCount(this._encoding[channel])) {
       return vlFieldDef.COUNT_DISPLAYNAME;
     }
-    var fn = this._enc[channel].aggregate || this._enc[channel].timeUnit || (this._enc[channel].bin && 'bin');
+    var fn = this._encoding[channel].aggregate || this._encoding[channel].timeUnit || (this._encoding[channel].bin && 'bin');
     if (fn) {
-      return fn.toUpperCase() + '(' + this._enc[channel].name + ')';
+      return fn.toUpperCase() + '(' + this._encoding[channel].name + ')';
     } else {
-      return this._enc[channel].name;
+      return this._encoding[channel].name;
     }
   }
 
   scale(channel) {
-    return this._enc[channel].scale || {};
+    return this._encoding[channel].scale || {};
   }
 
   axis(channel) {
-    return this._enc[channel].axis || {};
+    return this._encoding[channel].axis || {};
   }
 
   bandWidth(channel, useSmallBand?: boolean) {
@@ -153,7 +138,7 @@ export class Model {
 
   // returns false if binning is disabled, otherwise an object with binning properties
   bin(channel) {
-    var bin = this._enc[channel].bin;
+    var bin = this._encoding[channel].bin;
     if (bin === {})
       return false;
     if (bin === true)
@@ -164,7 +149,7 @@ export class Model {
   }
 
   value(channel) {
-    return this._enc[channel].value;
+    return this._encoding[channel].value;
   }
 
   numberFormat = function(name?) {
@@ -173,15 +158,15 @@ export class Model {
   };
 
   map(f) {
-    return vlEnc.map(this._enc, f);
+    return vlEncoding.map(this._encoding, f);
   }
 
   reduce(f, init) {
-    return vlEnc.reduce(this._enc, f, init);
+    return vlEncoding.reduce(this._encoding, f, init);
   }
 
   forEach(f) {
-    return vlEnc.forEach(this._enc, f);
+    return vlEncoding.forEach(this._encoding, f);
   }
 
   isTypes(channel: string, type: Array<any>) {
@@ -206,17 +191,11 @@ export class Model {
   }
 
   isAggregate() {
-    return vlEnc.isAggregate(this._enc);
+    return vlEncoding.isAggregate(this._encoding);
   }
 
   dataTable() {
     return this.isAggregate() ? SUMMARY : SOURCE;
-  }
-
-  static isStack(spec) {
-    // FIXME update this once we have control for stack ...
-    return (spec.marktype === 'bar' || spec.marktype === 'area') &&
-      !!spec.encoding.color;
   }
 
   // TODO: calculate this and store it in this._stack so it can be called multiple times.
@@ -299,16 +278,5 @@ export class Model {
 
   config(name) {
     return this._config[name];
-  }
-
-  static transpose(spec) {
-    var oldenc = spec.encoding,
-      enc = util.duplicate(spec.encoding);
-    enc.x = oldenc.y;
-    enc.y = oldenc.x;
-    enc.row = oldenc.col;
-    enc.col = oldenc.row;
-    spec.encoding = enc;
-    return spec;
   }
 }

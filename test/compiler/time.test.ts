@@ -6,7 +6,7 @@ import {Model} from '../../src/compiler/Model';
 describe('time', function() {
   var field = 'a',
     timeUnit = 'month',
-    encoding = Model.fromSpec({
+    encoding = new Model({
       encoding: {
         x: {name: field, type: 'temporal', timeUnit: timeUnit}
       }
@@ -22,17 +22,17 @@ describe('time', function() {
 
   describe('maxLength', function() {
     it('should return max length of the month custom scale', function () {
-      expect(time.maxLength('month', Model.fromSpec({mark: 'point'})))
+      expect(time.maxLength('month', new Model({mark: 'point'})))
         .to.eql(3);
     });
 
     it('should return max length of the day custom scale', function () {
-      expect(time.maxLength('day', Model.fromSpec({mark: 'point'})))
+      expect(time.maxLength('day', new Model({mark: 'point'})))
         .to.eql(3);
     });
 
     it('should return max length of the month custom scale', function () {
-      expect(time.maxLength('month', Model.fromSpec({
+      expect(time.maxLength('month', new Model({
         mark: 'point',
         config: {
           timeScaleLabelLength: 0

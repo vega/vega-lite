@@ -6,7 +6,7 @@ import {Model} from '../../src/compiler/Model';
 describe('Legend', function() {
   describe('title()', function () {
     it('should add explicitly specified title', function () {
-      var title = legend.title(Model.fromSpec({
+      var title = legend.title(new Model({
           encoding: {
             color: {name: 'a', legend: {title: 'Custom'}}
           }
@@ -15,7 +15,7 @@ describe('Legend', function() {
     });
 
     it('should add return fieldTitle by default', function () {
-      var encoding = Model.fromSpec({
+      var encoding = new Model({
           encoding: {
             color: {name: 'a', legend: {}}
           }
