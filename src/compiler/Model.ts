@@ -68,7 +68,7 @@ export class Model {
   }
 
   has(channel) {
-    // equivalent to calling vlenc.has(this._enc, channel)
+    // equivalent to calling vlenc.has(this._encoding, channel)
     return this._encoding[channel].name !== undefined;
   }
 
