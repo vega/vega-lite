@@ -4,6 +4,7 @@ import {AGGREGATE_OPS} from './aggregate';
 import {TIMEUNITS} from './timeunit';
 import {SHORT_TYPE, TYPE_FROM_SHORT_TYPE} from './type';
 import * as util from './util';
+import * as vlEncoding from './encoding';
 
 export const DELIM = '|';
 export const ASSIGN = '=';
@@ -35,9 +36,8 @@ export function parse(shorthand: string, data?, config?) {
   return spec;
 }
 
-
 export function shortenEncoding(encoding): string {
-  return util.map(encoding, function(fieldDef, channel) {
+  return vlEncoding.map(encoding, function(fieldDef, channel) {
     return channel + ASSIGN + shortenFieldDef(fieldDef);
   }).join(DELIM);
 }
