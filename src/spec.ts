@@ -1,6 +1,7 @@
 /* Utilities for a Vega-Lite specificiation */
 
 import * as vlEncoding from './encoding';
+import * as util from './util';
 import {Model} from './compiler/Model';
 
 // TODO: add vl.spec.validate & move stuff from vl.validate to here
