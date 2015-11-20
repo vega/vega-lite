@@ -129,5 +129,8 @@ export function compile(spec, stats, theme?) {
     }
   }
 
-  return output;
+  return {
+    spec: output
+    // TODO: add warning / errors here
+  };
 }
