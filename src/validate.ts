@@ -25,9 +25,9 @@ interface SupportedChannelMap {
  * Supported Encoding Channel for each mark type
  */
 export const DEFAULT_SUPPORTED_CHANNEL_TYPE: SupportedChannelMap = {
-  bar: toMap(['row', 'col', 'x', 'y', 'size', 'color']), // TODO(#400) add detail
+  bar: toMap(['row', 'col', 'x', 'y', 'size', 'color', 'detail']),
   line: toMap(['row', 'col', 'x', 'y', 'color', 'detail']), // TODO: add size when Vega supports
-  area: toMap(['row', 'col', 'x', 'y', 'color']), // TODO(#400) add detail
+  area: toMap(['row', 'col', 'x', 'y', 'color', 'detail']),
   tick: toMap(['row', 'col', 'x', 'y', 'color', 'detail']),
   circle: toMap(['row', 'col', 'x', 'y', 'color', 'size', 'detail']),
   square: toMap(['row', 'col', 'x', 'y', 'color', 'size', 'detail']),
