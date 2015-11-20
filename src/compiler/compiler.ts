@@ -21,13 +21,7 @@ import {COL, ROW, X, Y} from '../channel';
 export {Model} from './Model';
 
 export function compile(spec, stats, theme?) {
-  return compileModel(new Model(spec, theme), stats);
-}
-
-/**
- * Create a Vega specification from a Vega-lite Model object.
- */
-function compileModel(model: Model, stats) {
+  var model = new Model(spec, theme);
   // no need to pass stats if you pass in the data
   if (!stats) {
     if (model.hasValues()) {
