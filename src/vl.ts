@@ -7,6 +7,7 @@ import * as vlCompiler from './compiler/compiler';
 import * as vlSchema from './schema/schema';
 import * as vlShorthand from './shorthand';
 import * as vlSpec from './spec';
+import * as vlTimeUnit from './timeunit';
 import * as vlType from './type';
 import * as vlValidate from './validate';
 
@@ -26,6 +27,7 @@ export var fieldDef = vlFieldDef;
 export var schema = vlSchema;
 export var shorthand = vlShorthand;
 export var spec = vlSpec;
+export var timeUnit = vlTimeUnit;
 export var type = vlType;
 export var format = d3Format;
 export var validate = vlValidate;

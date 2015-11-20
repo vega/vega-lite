@@ -2,6 +2,28 @@ import {toMap, duplicate as clone} from '../util';
 import {merge} from './schemautil';
 import {QUANTITATIVE, TEMPORAL} from '../type';
 
+export interface Scale {
+  type: string;
+  domain: any; // TODO: declare vgDataDomain
+  range: any; // TODO: declare vgRangeDomain
+  round: boolean;
+
+  // ordinal
+  bandWidth: number;
+  outerPadding: number;
+  padding: number;
+  points: boolean;
+
+  // typical
+  clamp: boolean;
+  nice: boolean|string;
+  exponent: number;
+  zero: boolean;
+
+  // Vega-Lite only
+  useRawDomain: boolean;
+}
+
 var scale = {
   type: 'object',
   // TODO: refer to Vega's scale schema
@@ -74,8 +96,8 @@ var typicalScaleMixin = {
           type: 'boolean',
           description: 'If true, modifies the scale domain to use a more human-friendly number range (e.g., 7 instead of 6.96).'
         },{
-      type: 'string',
-      enum: ['second', 'minute', 'hour', 'day', 'week', 'month', 'year'],
+          type: 'string',
+          enum: ['second', 'minute', 'hour', 'day', 'week', 'month', 'year'],
           description: 'If specified, modifies the scale domain to use a more human-friendly value range. For time and utc scale types only, the nice value should be a string indicating the desired time interval; legal values are "second", "minute", "hour", "day", "week", "month", or "year".'
         }
       ],

@@ -1,3 +1,17 @@
+export interface Data {
+  formatType: string;
+  url: string;
+  values: Array<any>;
+  filter: string;
+  calculate: Array<VgFormula>;
+}
+
+// TODO move this to one central position
+export interface VgFormula {
+  field: string;
+  expr: string;
+}
+
 export var data = {
   type: 'object',
   properties: {
