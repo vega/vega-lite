@@ -6,15 +6,16 @@ var d3 = require('d3');
 var colorbrewer = require('colorbrewer');
 
 import * as vlscale from '../../src/compiler/scale';
-import {Type, Table} from '../../src/consts';
-import Encoding from '../../src/Encoding';
+import {SOURCE, SUMMARY} from '../../src/data';
+import {Model} from '../../src/compiler/Model';
+import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../../src/type';
 import * as util from '../../src/util';
 
 describe('vl.compile.scale', function() {
   describe('domain()', function() {
     describe('for stack', function() {
       it('should return correct stack', function() {
-        var domain = vlscale.domain(Encoding.fromSpec({
+        var domain = vlscale.domain(new Model({
           marktype: 'bar',
           encoding: {
             y: {
@@ -33,7 +34,7 @@ describe('vl.compile.scale', function() {
       });
 
       it('should return correct aggregated stack', function() {
-        var domain = vlscale.domain(Encoding.fromSpec({
+        var domain = vlscale.domain(new Model({
           marktype: 'bar',
           encoding: {
             y: {
@@ -55,26 +56,26 @@ describe('vl.compile.scale', function() {
     describe('for quantitative', function() {
       it('should return the right domain if binned Q',
         function() {
-          var domain = vlscale.domain(Encoding.fromSpec({
+          var domain = vlscale.domain(new Model({
             encoding: {
               y: {
                 bin: {maxbins: 15},
                 name: 'origin',
                 scale: {useRawDomain: true},
-                type: Type.Quantitative
+                type: QUANTITATIVE
               }
             }
           }), 'y', 'ordinal');
 
           expect(domain).to.eql({
-            data: Table.SOURCE,
+            data: SOURCE,
             field: 'bin_origin_start'
           });
         });
 
       it('should return the raw domain if useRawDomain is true for non-bin, non-sum Q',
         function() {
-          var domain = vlscale.domain(Encoding.fromSpec({
+          var domain = vlscale.domain(new Model({
             encoding: {
               y: {
                 aggregate: 'mean',
@@ -85,61 +86,61 @@ describe('vl.compile.scale', function() {
             }
           }), 'y', 'linear');
 
-          expect(domain.data).to.eql(Table.SOURCE);
+          expect(domain.data).to.eql(SOURCE);
         });
 
       it('should return the aggregate domain for sum Q',
         function() {
-          var domain = vlscale.domain(Encoding.fromSpec({
+          var domain = vlscale.domain(new Model({
             encoding: {
               y: {
                 aggregate: 'sum',
                 name: 'origin',
                 scale: {useRawDomain: true},
-                type: Type.Quantitative
+                type: QUANTITATIVE
               }
             }
           }), 'y', 'linear');
 
-          expect(domain.data).to.eql(Table.SUMMARY);
+          expect(domain.data).to.eql(SUMMARY);
         });
 
 
       it('should return the aggregated domain if useRawDomain is false', function() {
-          var domain = vlscale.domain(Encoding.fromSpec({
+          var domain = vlscale.domain(new Model({
             encoding: {
               y: {
                 aggregate: 'min',
                 name: 'origin',
                 scale: {useRawDomain: false},
-                type: Type.Quantitative
+                type: QUANTITATIVE
               }
             }
           }), 'y', 'linear');
 
-          expect(domain.data).to.eql(Table.SUMMARY);
+          expect(domain.data).to.eql(SUMMARY);
         });
     });
 
     describe('for time', function() {
       it('should return the raw domain if useRawDomain is true for raw T',
         function() {
-          var domain = vlscale.domain(Encoding.fromSpec({
+          var domain = vlscale.domain(new Model({
             encoding: {
               y: {
                 name: 'origin',
                 scale: {useRawDomain: true},
-                type: Type.Temporal
+                type: TEMPORAL
               }
             }
           }), 'y', 'time');
 
-          expect(domain.data).to.eql(Table.SOURCE);
+          expect(domain.data).to.eql(SOURCE);
         });
 
       it('should return the raw domain if useRawDomain is true for year T',
         function() {
-          var domain = vlscale.domain(Encoding.fromSpec({
+          var domain = vlscale.domain(new Model({
             encoding: {
               y: {
                 name: 'origin',
@@ -150,13 +151,13 @@ describe('vl.compile.scale', function() {
             }
           }), 'y', 'ordinal');
 
-          expect(domain.data).to.eql(Table.SOURCE);
+          expect(domain.data).to.eql(SOURCE);
           expect(domain.field.indexOf('year')).to.gt(-1);
         });
 
       it('should return the correct domain for month T',
         function() {
-          var domain = vlscale.domain(Encoding.fromSpec({
+          var domain = vlscale.domain(new Model({
             encoding: {
               y: {
                 name: 'origin',
@@ -174,30 +175,30 @@ describe('vl.compile.scale', function() {
     describe('for ordinal', function() {
       it('should return correct domain with the provided sort property', function() {
         var sortDef = {op: 'min', field:'Acceleration'};
-        var encoding = Encoding.fromSpec({
+        var encoding = new Model({
             encoding: {
-              y: { name: 'origin', type: Type.Ordinal, sort: sortDef}
+              y: { name: 'origin', type: ORDINAL, sort: sortDef}
             }
           });
 
         expect(vlscale.domain(encoding, 'y', 'ordinal'))
           .to.eql({
-            data: Table.SOURCE,
+            data: SOURCE,
             field: 'origin',
             sort: sortDef
           });
       });
 
       it('should return correct domain without sort if sort is not provided', function() {
-        var encoding = Encoding.fromSpec({
+        var encoding = new Model({
             encoding: {
-              y: { name: 'origin', type: Type.Ordinal}
+              y: { name: 'origin', type: ORDINAL}
             }
           });
 
         expect(vlscale.domain(encoding, 'y', 'ordinal'))
           .to.eql({
-            data: Table.SOURCE,
+            data: SOURCE,
             field: 'origin',
             sort: true
           });
@@ -229,7 +230,7 @@ describe('vl.compile.scale', function() {
       var brewerPalettes = util.keys(colorbrewer);
       brewerPalettes.forEach(function(palette) {
         var cardinality = 20;
-        expect(vlscale.colors.palette(palette, cardinality, Type.Nominal)).to.eql(
+        expect(vlscale.colors.palette(palette, cardinality, NOMINAL)).to.eql(
           colorbrewer[palette][Math.max.apply(null, util.keys(colorbrewer[palette]))]
         );
       });
@@ -242,7 +243,7 @@ describe('vl.compile.scale', function() {
           p = colorbrewer[palette],
           ps = Math.max.apply(null, util.keys(p)),
           interpolator = d3.interpolateHsl(p[ps][0], p[ps][ps - 1]);
-        expect(vlscale.colors.palette(palette, cardinality, Type.Ordinal)).to.eql(
+        expect(vlscale.colors.palette(palette, cardinality, ORDINAL)).to.eql(
           util.range(cardinality).map(function(i) {
             return interpolator(i * 1.0 / (cardinality - 1));
           })

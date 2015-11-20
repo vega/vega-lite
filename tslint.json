@@ -1,6 +1,18 @@
 {
   "rules": {
+    "class-name": true,
+    "eofline": true,
     "indent": [true, "spaces"],
-    "semicolon": true
+    "label-position": true,
+    "label-undefined": true,
+    "no-arg": true,
+    "semicolon": true,
+    "no-duplicate-key": true,
+    "no-duplicate-variable": true,
+    "no-unreachable": true,
+    "no-conditional-assignment": true,
+    "quotemark": [true, "single"],
+    "triple-equals": [true, "allow-null-check"],
+    "variable-name": [true, "check-format", "allow-leading-underscore", "ban-keywords"]
   }
 }

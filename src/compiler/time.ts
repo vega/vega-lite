@@ -2,18 +2,19 @@
 
 import {utcFormat} from 'd3-time-format';
 
-import Encoding from '../Encoding';
-import * as vlEncDef from '../encdef';
+import {Model} from './Model';
+import * as vlFieldDef from '../fielddef';
 import * as util from '../util';
-import {Enctype, Type} from '../consts';
+import {COLOR, COL, ROW, Channel} from '../channel';
+import {TEMPORAL} from '../type';
 
 // 'Wednesday September 17 04:00:00 2014'
 // Wednesday is the longest date
 // September is the longest month (8 in javascript as it is zero-indexed).
 const LONG_DATE = new Date(Date.UTC(2014, 8, 17));
 
-export function cardinality(encDef, stats, filterNull, type) {
-  var timeUnit = encDef.timeUnit;
+export function cardinality(fieldDef, stats, filterNull, type) {
+  var timeUnit = fieldDef.timeUnit;
   switch (timeUnit) {
     case 'seconds': return 60;
     case 'minutes': return 60;
@@ -22,8 +23,8 @@ export function cardinality(encDef, stats, filterNull, type) {
     case 'date': return 31;
     case 'month': return 12;
     case 'year':
-      var stat = stats[encDef.name],
-        yearstat = stats['year_' + encDef.name];
+      var stat = stats[fieldDef.name],
+        yearstat = stats['year_' + fieldDef.name];
 
       if (!yearstat) { return null; }
 
@@ -40,7 +41,7 @@ export function formula(timeUnit, fieldRef) {
   return fn + '(' + fieldRef + ')';
 }
 
-export function maxLength(timeUnit, encoding: Encoding) {
+export function maxLength(timeUnit, model: Model) {
   switch (timeUnit) {
     case 'seconds':
     case 'minutes':
@@ -49,7 +50,7 @@ export function maxLength(timeUnit, encoding: Encoding) {
       return 2;
     case 'month':
     case 'day':
-      var rng = range(timeUnit, encoding);
+      var rng = range(timeUnit, model);
       if (rng) {
         // return the longest name in the range
         return Math.max.apply(null, rng.map(function(r) {return r.length;}));
@@ -60,19 +61,19 @@ export function maxLength(timeUnit, encoding: Encoding) {
   }
   // TODO(#600) revise this
   // no time unit
-  var timeFormat = encoding.config('timeFormat');
+  var timeFormat = model.config('timeFormat');
   return utcFormat(timeFormat)(LONG_DATE).length;
 }
 
-export function range(timeUnit, encoding: Encoding) {
-  var labelLength = encoding.config('timeScaleLabelLength'),
+export function range(timeUnit, model: Model) {
+  var labelLength = model.config('timeScaleLabelLength'),
     scaleLabel;
   switch (timeUnit) {
     case 'day':
-      scaleLabel = encoding.config('dayScaleLabel');
+      scaleLabel = model.config('dayScaleLabel');
       break;
     case 'month':
-      scaleLabel = encoding.config('monthScaleLabel');
+      scaleLabel = model.config('monthScaleLabel');
       break;
   }
   if (scaleLabel) {
@@ -85,14 +86,14 @@ export function range(timeUnit, encoding: Encoding) {
 
 
 /**
- * @param  {Object} encoding
+ * @param  {Model} model
  * @return {Array}  scales for time unit names
  */
-export function scales(encoding: Encoding) {
-  var scales = encoding.reduce(function(scales, encDef) {
-    var timeUnit = encDef.timeUnit;
-    if (encDef.type === Type.Temporal && timeUnit && !scales[timeUnit]) {
-      var scaleDef = scale.def(encDef.timeUnit, encoding);
+export function scales(model: Model) {
+  var scales = model.reduce(function(scales, fieldDef) {
+    var timeUnit = fieldDef.timeUnit;
+    if (fieldDef.type === TEMPORAL && timeUnit && !scales[timeUnit]) {
+      var scaleDef = scale.def(fieldDef.timeUnit, model);
       if (scaleDef) scales[timeUnit] = scaleDef;
     }
     return scales;
@@ -117,8 +118,8 @@ export function isOrdinalFn(timeUnit) {
 
 export namespace scale {
   /** append custom time scales for axis label */
-  export function def(timeUnit, encoding) {
-    var rangeDef = range(timeUnit, encoding);
+  export function def(timeUnit, model: Model) {
+    var rangeDef = range(timeUnit, model);
 
     if (rangeDef) {
       return {
@@ -131,17 +132,17 @@ export namespace scale {
     return null;
   }
 
-  export function type(timeUnit, name) {
-    if (name === Enctype.COLOR) {
+  export function type(timeUnit, channel: Channel) {
+    if (channel === COLOR) {
       return 'linear'; // time has order, so use interpolated ordinal color scale.
     }
 
     // FIXME revise this -- should 'year' be linear too?
-    return isOrdinalFn(timeUnit) || name === Enctype.COL || name === Enctype.ROW ? 'ordinal' : 'linear';
+    return isOrdinalFn(timeUnit) || channel === COL || channel === ROW ? 'ordinal' : 'linear';
   }
 
-  export function domain(timeUnit, name?) {
-    var isColor = name === Enctype.COLOR;
+  export function domain(timeUnit, channel?: Channel) {
+    var isColor = channel === COLOR;
     switch (timeUnit) {
       case 'seconds':
       case 'minutes': return isColor ? [0,59] : util.range(0, 60);

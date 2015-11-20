@@ -1,12 +1,12 @@
 import {expect} from 'chai';
 
 import * as time from '../../src/compiler/time';
-import Encoding from '../../src/Encoding';
+import {Model} from '../../src/compiler/Model';
 
 describe('time', function() {
   var field = 'a',
     timeUnit = 'month',
-    encoding = Encoding.fromSpec({
+    encoding = new Model({
       encoding: {
         x: {name: field, type: 'temporal', timeUnit: timeUnit}
       }
@@ -16,23 +16,23 @@ describe('time', function() {
 
   it('should add custom axis scale', function() {
     expect(scales.filter(function(scale) {
-      return scale.name == 'time-'+ timeUnit;
+      return scale.name === 'time-'+ timeUnit;
     }).length).to.equal(1);
   });
 
   describe('maxLength', function() {
     it('should return max length of the month custom scale', function () {
-      expect(time.maxLength('month', Encoding.fromSpec({mark: 'point'})))
+      expect(time.maxLength('month', new Model({mark: 'point'})))
         .to.eql(3);
     });
 
     it('should return max length of the day custom scale', function () {
-      expect(time.maxLength('day', Encoding.fromSpec({mark: 'point'})))
+      expect(time.maxLength('day', new Model({mark: 'point'})))
         .to.eql(3);
     });
 
     it('should return max length of the month custom scale', function () {
-      expect(time.maxLength('month', Encoding.fromSpec({
+      expect(time.maxLength('month', new Model({
         mark: 'point',
         config: {
           timeScaleLabelLength: 0

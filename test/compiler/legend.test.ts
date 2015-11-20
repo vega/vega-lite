@@ -1,12 +1,12 @@
 import {expect} from 'chai';
 
 import * as legend from '../../src/compiler/legend';
-import Encoding from '../../src/Encoding';
+import {Model} from '../../src/compiler/Model';
 
 describe('Legend', function() {
   describe('title()', function () {
     it('should add explicitly specified title', function () {
-      var title = legend.title(Encoding.fromSpec({
+      var title = legend.title(new Model({
           encoding: {
             color: {name: 'a', legend: {title: 'Custom'}}
           }
@@ -15,7 +15,7 @@ describe('Legend', function() {
     });
 
     it('should add return fieldTitle by default', function () {
-      var encoding = Encoding.fromSpec({
+      var encoding = new Model({
           encoding: {
             color: {name: 'a', legend: {}}
           }

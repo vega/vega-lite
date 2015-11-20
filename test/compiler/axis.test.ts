@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 
 import * as axis from '../../src/compiler/axis';
-import Encoding from '../../src/Encoding';
+import {Model} from '../../src/compiler/Model';
 
 describe('Axis', function() {
   var stats = {a: {distinct: 5}, b: {distinct: 32}},
@@ -13,7 +13,7 @@ describe('Axis', function() {
   describe('(X) for Time Data', function() {
     var field = 'a',
       timeUnit = 'month',
-      encoding = Encoding.fromSpec({
+      encoding = new Model({
         encoding: {
           x: {name: field, type: 'temporal', timeUnit: timeUnit}
         }
@@ -48,7 +48,7 @@ describe('Axis', function() {
 
   describe('orient()', function () {
     it('should return specified orient', function () {
-      var orient = axis.orient(Encoding.fromSpec({
+      var orient = axis.orient(new Model({
           encoding: {
             x: {name: 'a', axis:{orient: 'bottom'}}
           }
@@ -57,7 +57,7 @@ describe('Axis', function() {
     });
 
     it('should return undefined by default', function () {
-      var orient = axis.orient(Encoding.fromSpec({
+      var orient = axis.orient(new Model({
           encoding: {
             x: {name: 'a'}
           }
@@ -66,7 +66,7 @@ describe('Axis', function() {
     });
 
     it('should return top for COL', function () {
-      var orient = axis.orient(Encoding.fromSpec({
+      var orient = axis.orient(new Model({
           encoding: {
             x: {name: 'a'},
             col: {name: 'a'}
@@ -76,7 +76,7 @@ describe('Axis', function() {
     });
 
     it('should return top for X with high cardinality, ordinal Y', function () {
-      var orient = axis.orient(Encoding.fromSpec({
+      var orient = axis.orient(new Model({
           encoding: {
             x: {name: 'a'},
             y: {name: 'b', type: 'ordinal'}
@@ -88,7 +88,7 @@ describe('Axis', function() {
 
   describe('title()', function () {
     it('should add explicitly specified title', function () {
-      var title = axis.title(Encoding.fromSpec({
+      var title = axis.title(new Model({
           encoding: {
             x: {name: 'a', axis: {title: 'Custom'}}
           }
@@ -97,7 +97,7 @@ describe('Axis', function() {
     });
 
     it('should add return fieldTitle by default', function () {
-      var title = axis.title(Encoding.fromSpec({
+      var title = axis.title(new Model({
           encoding: {
             x: {name: 'a', axis: {titleMaxLength: '3'}}
           }
@@ -106,7 +106,7 @@ describe('Axis', function() {
     });
 
     it('should add return fieldTitle by default', function () {
-      var title = axis.title(Encoding.fromSpec({
+      var title = axis.title(new Model({
           encoding: {
             x: {name: 'a', aggregate: 'sum', axis: {titleMaxLength: '10'}}
           }
@@ -115,7 +115,7 @@ describe('Axis', function() {
     });
 
     it('should add return fieldTitle by default and truncate', function () {
-      var title = axis.title(Encoding.fromSpec({
+      var title = axis.title(new Model({
           encoding: {
             x: {name: 'a', aggregate: 'sum', axis: {titleMaxLength: '3'}}
           }
@@ -125,7 +125,7 @@ describe('Axis', function() {
 
 
     it('should add return fieldTitle by default and truncate', function () {
-      var title = axis.title(Encoding.fromSpec({
+      var title = axis.title(new Model({
           encoding: {
             x: {name: 'abcdefghijkl'}
           }

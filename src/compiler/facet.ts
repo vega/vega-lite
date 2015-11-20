@@ -1,5 +1,6 @@
 import * as util from '../util';
-import {Enctype} from '../consts';
+import {COL, ROW, X, Y} from '../channel';
+import {Model} from './Model';
 
 import * as vlAxis from './axis';
 import * as vlScale from './scale';
@@ -35,13 +36,13 @@ function groupdef(name, opt) {
   return group;
 }
 
-export default function(group, encoding, layout, output, singleScaleNames, stats) {
+export default function(group, model: Model, layout, output, singleScaleNames, stats) {
   var enter = group.properties.enter;
   var facetKeys = [], cellAxes = [], from, axesGrp;
 
-  var hasRow = encoding.has(Enctype.ROW), hasCol = encoding.has(Enctype.COL);
+  var hasRow = model.has(ROW), hasCol = model.has(COL);
 
-  enter.fill = {value: encoding.config('cellBackgroundColor')};
+  enter.fill = {value: model.config('cellBackgroundColor')};
 
   //move "from" to cell level and add facet transform
   group.from = {data: group.marks[0].from.data};
@@ -57,55 +58,55 @@ export default function(group, encoding, layout, output, singleScaleNames, stats
   }
 
   if (hasRow) {
-    if (!encoding.isDimension(Enctype.ROW)) {
+    if (!model.isDimension(ROW)) {
       util.error('Row encoding should be ordinal.');
     }
-    enter.y = {scale: Enctype.ROW, field: encoding.fieldRef(Enctype.ROW)};
+    enter.y = {scale: ROW, field: model.fieldRef(ROW)};
     enter.height = {'value': layout.cellHeight}; // HACK
 
-    facetKeys.push(encoding.fieldRef(Enctype.ROW));
+    facetKeys.push(model.fieldRef(ROW));
 
     if (hasCol) {
       from = util.duplicate(group.from);
       from.transform = from.transform || [];
-      from.transform.unshift({type: 'facet', groupby: [encoding.fieldRef(Enctype.COL)]});
+      from.transform.unshift({type: 'facet', groupby: [model.fieldRef(COL)]});
     }
 
     axesGrp = groupdef('x-axes', {
-        axes: encoding.has(Enctype.X) ? [vlAxis.def(Enctype.X, encoding, layout, stats)] : undefined,
-        x: hasCol ? {scale: Enctype.COL, field: encoding.fieldRef(Enctype.COL)} : {value: 0},
+        axes: model.has(X) ? [vlAxis.def(X, model, layout, stats)] : undefined,
+        x: hasCol ? {scale: COL, field: model.fieldRef(COL)} : {value: 0},
         width: hasCol && {'value': layout.cellWidth}, //HACK?
         from: from
       });
 
     output.marks.unshift(axesGrp); // need to prepend so it appears under the plots
     (output.axes = output.axes || []);
-    output.axes.push(vlAxis.def(Enctype.ROW, encoding, layout, stats));
+    output.axes.push(vlAxis.def(ROW, model, layout, stats));
   } else { // doesn't have row
-    if (encoding.has(Enctype.X)) {
+    if (model.has(X)) {
       //keep x axis in the cell
-      cellAxes.push(vlAxis.def(Enctype.X, encoding, layout, stats));
+      cellAxes.push(vlAxis.def(X, model, layout, stats));
     }
   }
 
   if (hasCol) {
-    if (!encoding.isDimension(Enctype.COL)) {
+    if (!model.isDimension(COL)) {
       util.error('Col encoding should be ordinal.');
     }
-    enter.x = {scale: Enctype.COL, field: encoding.fieldRef(Enctype.COL)};
+    enter.x = {scale: COL, field: model.fieldRef(COL)};
     enter.width = {'value': layout.cellWidth}; // HACK
 
-    facetKeys.push(encoding.fieldRef(Enctype.COL));
+    facetKeys.push(model.fieldRef(COL));
 
     if (hasRow) {
       from = util.duplicate(group.from);
       from.transform = from.transform || [];
-      from.transform.unshift({type: 'facet', groupby: [encoding.fieldRef(Enctype.ROW)]});
+      from.transform.unshift({type: 'facet', groupby: [model.fieldRef(ROW)]});
     }
 
     axesGrp = groupdef('y-axes', {
-      axes: encoding.has(Enctype.Y) ? [vlAxis.def(Enctype.Y, encoding, layout, stats)] : undefined,
-      y: hasRow && {scale: Enctype.ROW, field: encoding.fieldRef(Enctype.ROW)},
+      axes: model.has(Y) ? [vlAxis.def(Y, model, layout, stats)] : undefined,
+      y: hasRow && {scale: ROW, field: model.fieldRef(ROW)},
       x: hasRow && {value: 0},
       height: hasRow && {'value': layout.cellHeight}, //HACK?
       from: from
@@ -113,10 +114,10 @@ export default function(group, encoding, layout, output, singleScaleNames, stats
 
     output.marks.unshift(axesGrp); // need to prepend so it appears under the plots
     (output.axes = output.axes || []);
-    output.axes.push(vlAxis.def(Enctype.COL, encoding, layout, stats));
+    output.axes.push(vlAxis.def(COL, model, layout, stats));
   } else { // doesn't have col
-    if (encoding.has(Enctype.Y)) {
-      cellAxes.push(vlAxis.def(Enctype.Y, encoding, layout, stats));
+    if (model.has(Y)) {
+      cellAxes.push(vlAxis.def(Y, model, layout, stats));
     }
   }
 
@@ -124,7 +125,7 @@ export default function(group, encoding, layout, output, singleScaleNames, stats
   // TODO: support heterogenous cellWidth (maybe by using multiple scales?)
   output.scales = (output.scales || []).concat(vlScale.defs(
     vlScale.names(enter).concat(singleScaleNames),
-    encoding,
+    model,
     layout,
     stats,
     true

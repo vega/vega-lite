@@ -3,33 +3,30 @@
 /// <reference path="../../typings/vega.d.ts"/>
 /// <reference path="../../typings/colorbrewer.d.ts"/>
 
+import {AGGREGATE_OPS} from '../aggregate';
 import * as colorbrewer from 'colorbrewer';
 import * as vlUtil from '../util';
 import {toMap} from '../util';
 import * as schemaUtil from './schemautil';
 import {merge} from './schemautil';
-import {Type, AGGREGATE_OPS} from '../consts';
+import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
+
 import {marktype} from './marktype.schema';
 import {data} from './data.schema';
 import {config} from './config.schema';
-import {aggregate, bin, sort, stack, timeUnit} from './encdef.schema';
-import {axis} from './encdef.axis.schema';
-import {typicalScale, ordinalOnlyScale} from './encdef.scale.schema';
-import {legend} from './encdef.legend.schema';
+import {aggregate, bin, sort, stack, timeUnit} from './fielddef.schema';
+import {axis} from './fielddef.axis.schema';
+import {typicalScale, ordinalOnlyScale} from './fielddef.scale.schema';
+import {legend} from './fielddef.legend.schema';
 
 // TODO(#620) refer to vega schema
 // var vgStackSchema = require('vega/src/transforms/Stack').schema;
 
-export function getSupportedRole(encType) {
-  return schema.properties.encoding.properties[encType].supportedRole;
-};
+export {aggregate} from './fielddef.schema';
 
 export var util = schemaUtil;
 
-// TODO move to VLUI
-export var defaultTimeFn = 'month';
-
-export var field = {
+var fieldDef = {
   type: 'object',
   properties: {
     name: {
@@ -37,7 +34,7 @@ export var field = {
     },
     type: {
       type: 'string',
-      enum: [Type.Nominal, Type.Ordinal, Type.Quantitative, Type.Temporal]
+      enum: [NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL]
     },
     timeUnit: timeUnit,
     bin: bin,
@@ -46,22 +43,19 @@ export var field = {
 
 var clone = vlUtil.duplicate;
 
-var typicalField = merge(clone(field), {
+var typicalField = merge(clone(fieldDef), {
   properties: {
     aggregate: aggregate,
     scale: typicalScale
   }
 });
 
-var onlyOrdinalField = merge(clone(field), {
-  supportedRole: {
-    dimension: true
-  },
+var onlyOrdinalField = merge(clone(fieldDef), {
   properties: {
     aggregate: {
       type: 'string',
       enum: ['count'],
-      supportedTypes: toMap([Type.Nominal, Type.Ordinal])
+      supportedTypes: toMap([NOMINAL, ORDINAL])
     },
     scale: ordinalOnlyScale
   }
@@ -72,28 +66,7 @@ var requiredNameType = {
   required: ['name', 'type']
 };
 
-var multiRoleField = merge(clone(typicalField), {
-  supportedRole: {
-    measure: true,
-    dimension: true
-  }
-});
-
-var quantitativeField = merge(clone(typicalField), {
-  supportedRole: {
-    measure: true,
-    // TODO: revise if this is considered
-    dimension: 'ordinal-only' // using size to encoding category lead to order interpretation
-  }
-});
-
-var onlyQuantitativeField = merge(clone(typicalField), {
-  supportedRole: {
-    measure: true
-  }
-});
-
-var x = merge(clone(multiRoleField), requiredNameType, {
+var x = merge(clone(typicalField), requiredNameType, {
   supportedMarktypes: {point: true, tick: true, bar: true, line: true, area: true, circle: true, square: true},
   properties: {
     axis: axis,
@@ -132,7 +105,7 @@ var col = merge(clone(facet), {
   }
 });
 
-var size = merge(clone(quantitativeField), {
+var size = merge(clone(typicalField), {
   supportedMarktypes: {point: true, bar: true, circle: true, square: true, text: true},
   properties: {
     legend: legend,
@@ -146,7 +119,7 @@ var size = merge(clone(quantitativeField), {
   }
 });
 
-var color = merge(clone(multiRoleField), {
+var color = merge(clone(typicalField), {
   supportedMarktypes: {point: true, tick: true, bar: true, line: true, area: true, circle: true, square: true, 'text': true},
   properties: {
     legend: legend,
@@ -241,7 +214,7 @@ var detail = merge(clone(onlyOrdinalField), {
 });
 
 // we only put aggregated measure in pivot table
-var text = merge(clone(onlyQuantitativeField), {
+var text = merge(clone(typicalField), {
   supportedMarktypes: {'text': true},
   properties: {
     sort: sort,
@@ -295,7 +268,7 @@ var text = merge(clone(onlyQuantitativeField), {
     },
     format: {
       type: 'string',
-      default: undefined,  // auto
+      default: '',  // auto
       description: 'The formatting pattern for text value.'+
                    'If not defined, this will be determined automatically'
     },

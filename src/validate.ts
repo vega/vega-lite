@@ -1,5 +1,6 @@
+// TODO: move to vl.spec.validator?
+
 import {toMap} from './util';
-import * as Encoding from './Encoding';
 import {schema} from './schema/schema';
 
 interface RequiredChannelMap {
@@ -10,7 +11,7 @@ interface RequiredChannelMap {
  * Required Encoding Channels for each mark type
  * @type {Object}
  */
-export const DefaultRequiredChannelMap: RequiredChannelMap = {
+export const DEFAULT_REQUIRED_CHANNEL_MAP: RequiredChannelMap = {
   text: ['text'],
   line: ['x', 'y'],
   area: ['x', 'y']
@@ -25,10 +26,10 @@ interface SupportedChannelMap {
 /**
  * Supported Encoding Channel for each mark type
  */
-export const DefaultSupportedChannelMap: SupportedChannelMap = {
-  bar: toMap(['row', 'col', 'x', 'y', 'size', 'color']), // TODO(#400) add detail
+export const DEFAULT_SUPPORTED_CHANNEL_TYPE: SupportedChannelMap = {
+  bar: toMap(['row', 'col', 'x', 'y', 'size', 'color', 'detail']),
   line: toMap(['row', 'col', 'x', 'y', 'color', 'detail']), // TODO: add size when Vega supports
-  area: toMap(['row', 'col', 'x', 'y', 'color']), // TODO(#400) add detail
+  area: toMap(['row', 'col', 'x', 'y', 'color', 'detail']),
   tick: toMap(['row', 'col', 'x', 'y', 'color', 'detail']),
   circle: toMap(['row', 'col', 'x', 'y', 'color', 'size', 'detail']),
   square: toMap(['row', 'col', 'x', 'y', 'color', 'size', 'detail']),
@@ -53,8 +54,8 @@ export const DefaultSupportedChannelMap: SupportedChannelMap = {
   *                  or null if the encoding is valid.
   */
 export function getEncodingMappingError(spec, //TODO: add ":spec"
-      requiredChannelMap: RequiredChannelMap = DefaultRequiredChannelMap,
-      supportedChannelMap: SupportedChannelMap = DefaultSupportedChannelMap
+      requiredChannelMap: RequiredChannelMap = DEFAULT_REQUIRED_CHANNEL_MAP,
+      supportedChannelMap: SupportedChannelMap = DEFAULT_SUPPORTED_CHANNEL_TYPE
     ) {
   let marktype = spec.marktype;
   let encoding = spec.encoding;
@@ -68,11 +69,15 @@ export function getEncodingMappingError(spec, //TODO: add ":spec"
     }
   }
 
-  for (let encType in encoding) { // all channels in encoding are supported
-    if (!supportedChannels[encType]) {
-      return 'Encoding channel \"' + encType +
+  for (let channel in encoding) { // all channels in encoding are supported
+    if (!supportedChannels[channel]) {
+      return 'Encoding channel \"' + channel +
              '\" is not supported by mark type \"' + marktype + '\"';
     }
+  }
+
+  if (marktype === 'bar' && !encoding.x && !encoding.y) {
+    return 'Missing both x and y for bar';
   }
 
   return null;

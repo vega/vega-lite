@@ -1,14 +1,22 @@
+/*
+ * Constants and utilities for data.
+ */
+
 import * as util from './util';
-import {Type} from './consts';
+import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from './type';
+
+export const SUMMARY = 'summary';
+export const SOURCE = 'source';
+export const STACKED = 'stacked';
 
 /** Mapping from datalib's inferred type to Vega-lite's type */
 // TODO: ALL_CAPS
 export const types = {
-  'boolean': Type.Nominal,
-  'number': Type.Quantitative,
-  'integer': Type.Quantitative,
-  'date': Type.Temporal,
-  'string': Type.Nominal
+  'boolean': NOMINAL,
+  'number': QUANTITATIVE,
+  'integer': QUANTITATIVE,
+  'date': TEMPORAL,
+  'string': NOMINAL
 };
 
 export function stats(data: Array<Array<any>>) {

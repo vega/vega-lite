@@ -8,10 +8,11 @@ import * as colorbrewer from 'colorbrewer';
 import {interpolateHsl} from 'd3-color';
 
 import * as util from '../util';
-import Encoding from '../Encoding';
-import {Enctype, Type, Table} from '../consts';
-
+import {Model} from './Model';
+import {COL, ROW, X, Y, SHAPE, SIZE, COLOR, TEXT, Channel} from '../channel';
+import {SOURCE, STACKED} from '../data';
 import * as time from './time';
+import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 
 export function names(props) {
   return util.keys(util.keys(props).reduce(function(a, x) {
@@ -20,13 +21,13 @@ export function names(props) {
   }, {}));
 }
 
-export function defs(names: Array<string>, encoding: Encoding, layout, stats, facet?) {
-  return names.reduce(function(a, name) {
+export function defs(names: Array<string>, model: Model, layout, stats, facet?) {
+  return names.reduce(function(a, channel: Channel) {
     var scaleDef: any = {};
 
-    scaleDef.name = name;
-    var t = scaleDef.type = type(name, encoding);
-    scaleDef.domain = domain(encoding, name, t, facet);
+    scaleDef.name = channel;
+    var t = scaleDef.type = type(channel, model);
+    scaleDef.domain = domain(model, channel, t, facet);
 
     // Add optional properties
     [
@@ -39,7 +40,7 @@ export function defs(names: Array<string>, encoding: Encoding, layout, stats, fa
       // ordinal
       'bandWidth', 'outerPadding', 'padding', 'points'
     ].forEach(function(property) {
-      var value = exports[property](encoding, name, t, layout, stats);
+      var value = exports[property](model, channel, t, layout, stats);
       if (value !== undefined) {
         scaleDef[property] = value;
       }
@@ -49,87 +50,87 @@ export function defs(names: Array<string>, encoding: Encoding, layout, stats, fa
   }, []);
 }
 
-export function type(name: string, encoding: Encoding) {
-  var type = encoding.encDef(name).type;
+export function type(channel: Channel, model: Model) {
+  var type = model.fieldDef(channel).type;
   switch (type) {
-    case Type.Nominal: //fall through
-    case Type.Ordinal:
+    case NOMINAL: //fall through
+    case ORDINAL:
       return 'ordinal';
-    case Type.Temporal:
-      var timeUnit = encoding.encDef(name).timeUnit;
-      return timeUnit ? time.scale.type(timeUnit, name) : 'time';
-    case Type.Quantitative:
-      if (encoding.bin(name)) {
-        return name === Enctype.ROW || name === Enctype.COL || name === Enctype.SHAPE ? 'ordinal' : 'linear';
+    case TEMPORAL:
+      var timeUnit = model.fieldDef(channel).timeUnit;
+      return timeUnit ? time.scale.type(timeUnit, channel) : 'time';
+    case QUANTITATIVE:
+      if (model.bin(channel)) {
+        return channel === ROW || channel === COL || channel === SHAPE ? 'ordinal' : 'linear';
       }
-      return encoding.scale(name).type;
+      return model.scale(channel).type;
   }
 }
 
-export function domain(encoding, name, type, facet:boolean = false) {
-  var encDef = encoding.encDef(name);
+export function domain(model: Model, channel:Channel, type, facet:boolean = false) {
+  var fieldDef = model.fieldDef(channel);
 
-  if (encDef.scale.domain) { // explicit value
-    return encDef.scale.domain;
+  if (fieldDef.scale.domain) { // explicit value
+    return fieldDef.scale.domain;
   }
 
   // special case for temporal scale
-  if (encDef.type === Type.Temporal) {
-    var range = time.scale.domain(encDef.timeUnit, name);
+  if (fieldDef.type === TEMPORAL) {
+    var range = time.scale.domain(fieldDef.timeUnit, channel);
     if (range) return range;
   }
 
   // For stack, use STACKED data.
-  var stack = encoding.stack();
-  if (stack && name === stack.value) {
+  var stack = model.stack();
+  if (stack && channel === stack.value) {
     return {
-      data: Table.STACKED,
-      field: encoding.fieldRef(name, {
+      data: STACKED,
+      field: model.fieldRef(channel, {
         // If faceted, scale is determined by the max of sum in each facet.
         prefn: (facet ? 'max_' : '') + 'sum_'
       })
     };
   }
 
-  var useRawDomain = _useRawDomain(encoding, name);
-  var sort = domainSort(encoding, name, type);
+  var useRawDomain = _useRawDomain(model, channel);
+  var sort = domainSort(model, channel, type);
 
   if (useRawDomain) { // useRawDomain - only Q/T
     return {
-      data: Table.SOURCE,
-      field: encoding.fieldRef(name, {noAggregate:true})
+      data: SOURCE,
+      field: model.fieldRef(channel, {noAggregate:true})
     };
-  } else if (encDef.bin) { // bin
+  } else if (fieldDef.bin) { // bin
 
     return {
-      data: encoding.dataTable(),
+      data: model.dataTable(),
       field: type === 'ordinal' ?
         // ordinal scale only use bin start for now
-        encoding.fieldRef(name, { bin_suffix: '_start' }) :
+        model.fieldRef(channel, { binSuffix: '_start' }) :
         // need to merge both bin_start and bin_end for non-ordinal scale
         [
-          encoding.fieldRef(name, { bin_suffix: '_start' }),
-          encoding.fieldRef(name, { bin_suffix: '_end' })
+          model.fieldRef(channel, { binSuffix: '_start' }),
+          model.fieldRef(channel, { binSuffix: '_end' })
         ]
     };
   } else if (sort) { // have sort -- only for ordinal
     return {
       // If sort by aggregation of a specified sort field, we need to use SOURCE table,
       // so we can aggregate values for the scale independently from the main aggregation.
-      data: sort.op ? Table.SOURCE : encoding.dataTable(),
-      field: encoding.fieldRef(name),
+      data: sort.op ? SOURCE : model.dataTable(),
+      field: model.fieldRef(channel),
       sort: sort
     };
   } else {
     return {
-      data: encoding.dataTable(),
-      field: encoding.fieldRef(name)
+      data: model.dataTable(),
+      field: model.fieldRef(channel)
     };
   }
 }
 
-export function domainSort(encoding, name, type):any {
-  var sort = encoding.encDef(name).sort;
+export function domainSort(model: Model, channel: Channel, type):any {
+  var sort = model.fieldDef(channel).sort;
   if (sort === 'ascending' || sort === 'descending') {
     return true;
   }
@@ -144,8 +145,8 @@ export function domainSort(encoding, name, type):any {
   return undefined;
 }
 
-export function reverse(encoding, name) {
-  var sort = encoding.encDef(name).sort;
+export function reverse(model: Model, channel: Channel) {
+  var sort = model.fieldDef(channel).sort;
   return sort && (sort === 'descending' || (sort.order === 'descending')) ? true : undefined;
 }
 
@@ -158,114 +159,114 @@ var sharedDomainAggregate = ['mean', 'average', 'stdev', 'stdevp', 'median', 'q1
  * 2. Aggregation function is not `count` or `sum`
  * 3. The scale is quantitative or time scale.
  */
-export function _useRawDomain (encoding, name) {
-  var encDef = encoding.encDef(name);
+export function _useRawDomain (model: Model, channel: Channel) {
+  var fieldDef = model.fieldDef(channel);
 
   // scale value
-  var scaleUseRawDomain = encoding.scale(name).useRawDomain;
+  var scaleUseRawDomain = model.scale(channel).useRawDomain;
 
   // Determine if useRawDomain is enabled. If scale value is specified, use scale value.
   // Otherwise, use config value.
   var useRawDomainEnabled = scaleUseRawDomain !== undefined ?
-      scaleUseRawDomain : encoding.config('useRawDomain');
+      scaleUseRawDomain : model.config('useRawDomain');
 
   return  useRawDomainEnabled &&
     // only applied to aggregate table
-    encDef.aggregate &&
+    fieldDef.aggregate &&
     // only activated if used with aggregate functions that produces values ranging in the domain of the source data
-    sharedDomainAggregate.indexOf(encDef.aggregate) >= 0 &&
+    sharedDomainAggregate.indexOf(fieldDef.aggregate) >= 0 &&
     (
       // Q always uses quantitative scale except when it's binned.
       // Binned field has similar values in both the source table and the summary table
       // but the summary table has fewer values, therefore binned fields draw
       // domain values from the summary table.
-      (encDef.type === Type.Quantitative && !encDef.bin) ||
+      (fieldDef.type === QUANTITATIVE && !fieldDef.bin) ||
       // T uses non-ordinal scale when there's no unit or when the unit is not ordinal.
-      (encDef.type === Type.Temporal &&
-        (!encDef.timeUnit || !time.isOrdinalFn(encDef.timeUnit))
+      (fieldDef.type === TEMPORAL &&
+        (!fieldDef.timeUnit || !time.isOrdinalFn(fieldDef.timeUnit))
       )
     );
 }
 
-export function bandWidth(encoding, name, type, layout) {
+export function bandWidth(model: Model, channel: Channel, type, layout) {
   // TODO: eliminate layout
 
-  switch (name) {
-    case Enctype.X: /* fall through */
-    case Enctype.Y:
+  switch (channel) {
+    case X: /* fall through */
+    case Y:
       if (type === 'ordinal') {
-        return encoding.bandWidth(name, layout[name].useSmallBand);
+        return model.bandWidth(channel, layout[channel].useSmallBand);
       }
       break;
-    case Enctype.ROW: // support only ordinal
+    case ROW: // support only ordinal
       return layout.cellHeight;
-    case Enctype.COL: // support only ordinal
+    case COL: // support only ordinal
       return layout.cellWidth;
   }
   return undefined;
 }
 
-export function clamp(encoding, name) {
+export function clamp(model: Model, channel: Channel) {
   // only return value if explicit value is specified.
-  return encoding.encDef(name).scale.clamp;
+  return model.fieldDef(channel).scale.clamp;
 }
 
-export function exponent(encoding, name) {
+export function exponent(model: Model, channel: Channel) {
   // only return value if explicit value is specified.
-  return encoding.encDef(name).scale.exponent;
+  return model.fieldDef(channel).scale.exponent;
 }
 
-export function nice(encoding: Encoding, name, type) {
-  if (encoding.encDef(name).scale.nice !== undefined) {
+export function nice(model: Model, channel: Channel, type) {
+  if (model.fieldDef(channel).scale.nice !== undefined) {
     // explicit value
-    return encoding.encDef(name).scale.nice;
+    return model.fieldDef(channel).scale.nice;
   }
 
-  switch (name) {
-    case Enctype.X: /* fall through */
-    case Enctype.Y:
+  switch (channel) {
+    case X: /* fall through */
+    case Y:
       if (type === 'time' || type === 'ordinal') {
         return undefined;
       }
       return true;
 
-    case Enctype.ROW: /* fall through */
-    case Enctype.COL:
+    case ROW: /* fall through */
+    case COL:
       return true;
   }
   return undefined;
 }
 
-export function outerPadding(encoding, name, type) {
+export function outerPadding(model: Model, channel: Channel, type) {
   if (type === 'ordinal') {
-    if (encoding.encDef(name).scale.outerPadding !== undefined) {
-      return encoding.encDef(name).scale.outerPadding; // explicit value
+    if (model.fieldDef(channel).scale.outerPadding !== undefined) {
+      return model.fieldDef(channel).scale.outerPadding; // explicit value
     }
-    if (name === Enctype.ROW || name === Enctype.COL) {
+    if (channel === ROW || channel === COL) {
       return 0;
     }
   }
   return undefined;
 }
 
-export function padding(encoding, name, type) {
+export function padding(model: Model, channel: Channel, type) {
   if (type === 'ordinal') {
     // Both explicit and non-explicit values are handled by the helper method.
-    return encoding.padding(name);
+    return model.padding(channel);
   }
   return undefined;
 }
 
-export function points(encoding, name, type) {
+export function points(model: Model, channel: Channel, type) {
   if (type === 'ordinal') {
-    if (encoding.encDef(name).scale.points !== undefined) {
+    if (model.fieldDef(channel).scale.points !== undefined) {
       // explicit value
-      return encoding.encDef(name).scale.points;
+      return model.fieldDef(channel).scale.points;
     }
 
-    switch (name) {
-      case Enctype.X:
-      case Enctype.Y:
+    switch (channel) {
+      case X:
+      case Y:
         return true;
     }
   }
@@ -273,70 +274,70 @@ export function points(encoding, name, type) {
 }
 
 
-export function range(encoding: Encoding, name, type, layout, stats) {
-  var encDef = encoding.encDef(name);
+export function range(model: Model, channel: Channel, type, layout, stats) {
+  var fieldDef = model.fieldDef(channel);
 
-  if (encDef.scale.range) { // explicit value
-    return encDef.scale.range;
+  if (fieldDef.scale.range) { // explicit value
+    return fieldDef.scale.range;
   }
 
-  switch (name) {
-    case Enctype.X:
+  switch (channel) {
+    case X:
       return layout.cellWidth ? [0, layout.cellWidth] : 'width';
-    case Enctype.Y:
+    case Y:
       if (type === 'ordinal') {
         return layout.cellHeight ?
-          (encDef.bin ? [layout.cellHeight, 0] : [0, layout.cellHeight]) :
+          (fieldDef.bin ? [layout.cellHeight, 0] : [0, layout.cellHeight]) :
           'height';
       }
       return layout.cellHeight ? [layout.cellHeight, 0] : 'height';
-    case Enctype.SIZE:
-      if (encoding.is('bar')) {
+    case SIZE:
+      if (model.is('bar')) {
         // FIXME this is definitely incorrect
         // but let's fix it later since bar size is a bad encoding anyway
-        return [3, Math.max(encoding.bandWidth(Enctype.X), encoding.bandWidth(Enctype.Y))];
-      } else if (encoding.is(Enctype.TEXT)) {
+        return [3, Math.max(model.bandWidth(X), model.bandWidth(Y))];
+      } else if (model.is(TEXT)) {
         return [8, 40];
       }
       // else -- point
-      var bandWidth = Math.min(encoding.bandWidth(Enctype.X), encoding.bandWidth(Enctype.Y)) - 1;
+      var bandWidth = Math.min(model.bandWidth(X), model.bandWidth(Y)) - 1;
       return [10, 0.8 * bandWidth*bandWidth];
-    case Enctype.SHAPE:
+    case SHAPE:
       return 'shapes';
-    case Enctype.COLOR:
-      return color(encoding, name, type, stats);
+    case COLOR:
+      return color(model, channel, type, stats);
   }
 
   return undefined;
 }
 
-export function round(encoding: Encoding, name) {
-  if (encoding.encDef(name).scale.round !== undefined) {
-    return encoding.encDef(name).scale.round;
+export function round(model: Model, channel: Channel) {
+  if (model.fieldDef(channel).scale.round !== undefined) {
+    return model.fieldDef(channel).scale.round;
   }
 
   // FIXME: revise if round is already the default value
-  switch (name) {
-    case Enctype.X: /* fall through */
-    case Enctype.Y:
-    case Enctype.ROW:
-    case Enctype.COL:
-    case Enctype.SIZE:
+  switch (channel) {
+    case X: /* fall through */
+    case Y:
+    case ROW:
+    case COL:
+    case SIZE:
       return true;
   }
   return undefined;
 }
 
-export function zero(encoding, name) {
-  var encDef = encoding.encDef(name);
-  var timeUnit = encDef.timeUnit;
+export function zero(model: Model, channel: Channel) {
+  var fieldDef = model.fieldDef(channel);
+  var timeUnit = fieldDef.timeUnit;
 
-  if (encDef.scale.zero !== undefined) {
+  if (fieldDef.scale.zero !== undefined) {
     // explicit value
-    return encDef.scale.zero;
+    return fieldDef.scale.zero;
   }
 
-  if (encDef.type === Type.Temporal) {
+  if (fieldDef.type === TEMPORAL) {
     if (timeUnit === 'year') {
       // year is using linear scale, but should not include zero
       return false;
@@ -345,30 +346,30 @@ export function zero(encoding, name) {
     // zero property is ignored by vega so we should not generate them any way
     return undefined;
   }
-  if (encDef.bin) {
+  if (fieldDef.bin) {
     // Returns false (undefined) by default of bin
     return false;
   }
 
-  return name === Enctype.X || name === Enctype.Y ?
+  return channel === X || channel === Y ?
     // if not bin / temporal, returns undefined for X and Y encoding
     // since zero is true by default in vega for linear scale
     undefined :
     false;
 }
 
-export function color(encoding: Encoding, name, scaleType, stats) {
-  var colorScale = encoding.scale(Enctype.COLOR),
+export function color(model: Model, channel: Channel, scaleType, stats) {
+  var colorScale = model.scale(COLOR),
     range = colorScale.range,
-    cardinality = encoding.cardinality(Enctype.COLOR, stats),
-    type = encoding.encDef(Enctype.COLOR).type;
+    cardinality = model.cardinality(COLOR, stats),
+    type = model.fieldDef(COLOR).type;
 
   if (range === undefined) {
     var ordinalPalette = colorScale.ordinalPalette,
       quantitativeRange = colorScale.quantitativeRange;
 
     if (scaleType === 'ordinal') {
-      if (type === Type.Nominal) {
+      if (type === NOMINAL) {
         // use categorical color scale
         if (cardinality <= 10) {
           range = colorScale.c10palette;
@@ -420,7 +421,7 @@ export namespace colors {
       if (cardinality in palette) return palette[cardinality];
 
       // if not, use the highest cardinality one for nominal
-      if (type === Type.Nominal) {
+      if (type === NOMINAL) {
         return palette[Math.max.apply(null, util.keys(palette))];
       }
 

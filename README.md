@@ -4,19 +4,18 @@
 [![npm dependencies](https://david-dm.org/vega/vega-lite.svg)](https://www.npmjs.com/package/vega-lite)
 [![npm version](https://img.shields.io/npm/v/vega-lite.svg)](https://www.npmjs.com/package/vega-lite)
 
-**Vega-Lite is still in alpha phase and we are working on improving the code and [documentation](docs/Documentation.md).
-Note that our syntax might change slightly before we release 1.0.**
-
 Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete [Vega](https://vega.github.io/) specifications.
 
-Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as position (`x`,`y`), `size`, `color` and `shape`. These mappings are then translated into a detailed visualization specifications in the form of a Vega specification. These resulting visualizations can then be exported or further modified to customize the display.
-
-If you are using Vega-Lite for your project(s), please let us know by emailing us at [Vega-Lite \[at\] cs.washington.edu](mailto:vega-lite@cs.washington.edu).  Feedback is also welcome.
-If you find a bug or have a feature request, please [create an issue](https://github.com/vega/vega-lite/issues/new).
+Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as position (`x`,`y`), `size`, `color` and `shape`. These mappings are then translated into a detailed visualization specifications in the form of a Vega specification.  Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using rule-based approach, but users can explicit specify these properties to override default values.  
 
 __Try using Vega-Lite in the online [Vega Editor](http://vega.github.io/vega-editor/?mode=vega-lite)__.
 
 The complete schema for specifications as [JSON schema](http://json-schema.org/) is at [vega-lite-schema.json](https://vega.github.io/vega-lite/vega-lite-schema.json).
+
+**Note: Vega-Lite is still in alpha phase and we are working on improving the code and [documentation](docs/Documentation.md).
+Our syntax might change slightly before we release 1.0.**  See our wiki pages for [the development roadmap](https://github.com/vega/vega-lite/wiki/Roadmap) and [how you can contribute](https://github.com/vega/vega-lite/wiki/Contribute). 
+If you find a bug or have a feature request, please [create an issue](https://github.com/vega/vega-lite/issues/new).
+
 
 ## Example specification
 
