@@ -37,6 +37,7 @@ export function map(obj, f, thisArg?) {
     for (var k in obj) {
       output.push( f.call(thisArg, obj[k], k, obj));
     }
+    return output;
   }
 }
 
