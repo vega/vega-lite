@@ -1,10 +1,12 @@
 // utility for encoding mapping
+import {Encoding} from './schema/encoding.schema';
+import {FieldDef} from './schema/fielddef.schema';
 
-import {CHANNELS} from './channel';
+import {Channel, CHANNELS} from './channel';
 import * as vlFieldDef from './fielddef';
 import * as util from './util';
 
-export function countRetinal(encoding) {
+export function countRetinal(encoding: Encoding) {
   var count = 0;
   if (encoding.color) count++;
   if (encoding.size) count++;
@@ -12,12 +14,12 @@ export function countRetinal(encoding) {
   return count;
 }
 
-export function has(encoding, channel) {
+export function has(encoding: Encoding, channel: Channel) {
   var fieldDef = encoding && encoding[channel];
   return fieldDef && fieldDef.name;
 }
 
-export function isAggregate(encoding) {
+export function isAggregate(encoding: Encoding) {
   for (var k in encoding) {
     if (has(encoding, k) && encoding[k].aggregate) {
       return true;
@@ -26,7 +28,8 @@ export function isAggregate(encoding) {
   return false;
 }
 
-export function forEach(encoding, f) {
+export function forEach(encoding: Encoding,
+                        f: (fd: FieldDef, c: Channel, i:number) => void) {
   var i = 0;
   CHANNELS.forEach(function(channel) {
     if (has(encoding, channel)) {
@@ -35,7 +38,8 @@ export function forEach(encoding, f) {
   });
 }
 
-export function map(encoding, f) {
+export function map(encoding: Encoding,
+                    f: (fd: FieldDef, c: Channel, e: Encoding) => any) {
   var arr = [];
   CHANNELS.forEach(function(k) {
     if (has(encoding, k)) {
@@ -45,7 +49,9 @@ export function map(encoding, f) {
   return arr;
 }
 
-export function reduce(encoding, f, init) {
+export function reduce(encoding: Encoding,
+                  f: (acc: any, fd: FieldDef, c: Channel, e: Encoding) => any,
+                  init) {
   var r = init;
   CHANNELS.forEach(function(k) {
     if (has(encoding, k)) {
@@ -59,8 +65,8 @@ export function reduce(encoding, f, init) {
 /**
  * return key-value pairs of field name and list of fields of that field name
  */
-export function fields(encoding) {
-  return reduce(encoding, function (m, fieldDef) {
+export function fields(encoding: Encoding) {
+  return reduce(encoding, function (m, fieldDef: FieldDef) {
     var fieldList = m[fieldDef.name] = m[fieldDef.name] || [];
     var containsType = fieldList.containsType = fieldList.containsType || {};
 

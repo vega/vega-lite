@@ -3,6 +3,7 @@
 import {utcFormat} from 'd3-time-format';
 
 import {Model} from './Model';
+import {FieldDef} from '../schema/fielddef.schema';
 import * as vlFieldDef from '../fielddef';
 import * as util from '../util';
 import {COLOR, COL, ROW, Channel} from '../channel';
@@ -13,7 +14,7 @@ import {TEMPORAL} from '../type';
 // September is the longest month (8 in javascript as it is zero-indexed).
 const LONG_DATE = new Date(Date.UTC(2014, 8, 17));
 
-export function cardinality(fieldDef, stats, filterNull, type) {
+export function cardinality(fieldDef: FieldDef, stats, filterNull, type) {
   var timeUnit = fieldDef.timeUnit;
   switch (timeUnit) {
     case 'seconds': return 60;
@@ -35,7 +36,7 @@ export function cardinality(fieldDef, stats, filterNull, type) {
   return null;
 }
 
-export function formula(timeUnit, fieldRef) {
+export function formula(timeUnit, fieldRef: string) {
   // TODO(kanitw): add formula to other time format
   var fn = 'utc' + timeUnit;
   return fn + '(' + fieldRef + ')';

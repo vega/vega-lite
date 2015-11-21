@@ -1,3 +1,18 @@
+export interface Axis {
+  // Vega Axis Properties
+  format?: string;
+  grid?: boolean;
+  layer?: string;
+  orient?: string;
+  ticks?: string;
+  title?: string;
+  // Vega-Lite only
+  labelMaxLength?: number;
+  titleMaxLength?: number;
+  titleOffset?: number;
+  properties?: any; // TODO: declare VgAxisProperties
+}
+
 export var axis = {
   type: 'object',
   properties: {

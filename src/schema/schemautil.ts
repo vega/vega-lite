@@ -33,7 +33,7 @@ export function instantiate(schema) {
 
 // remove all defaults from an instance
 export function subtract(instance, defaults) {
-  var changes = {};
+  var changes:any = {};
   for (var prop in instance) {
     var def = defaults[prop];
     var ins = instance[prop];

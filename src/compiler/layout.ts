@@ -2,7 +2,7 @@
 
 import * as d3_format from 'd3-format';
 import {setter} from '../util';
-import {COL, ROW, X, Y, TEXT} from '../channel';
+import {COL, ROW, X, Y, TEXT, Channel} from '../channel';
 import {Model} from './Model';
 import * as time from './time';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
@@ -89,13 +89,13 @@ function box(model: Model, stats) {
   };
 }
 
-function getMaxNumberLength(model: Model, channel, fieldStats) {
+function getMaxNumberLength(model: Model, channel: Channel, fieldStats) {
   var format = model.numberFormat(channel);
   return d3_format.format(format)(fieldStats.max).length;
 }
 
 // TODO(#600) revise this
-function getMaxLength(model: Model, stats, channel) {
+function getMaxLength(model: Model, stats, channel: Channel) {
   var fieldDef = model.fieldDef(channel),
     fieldStats = stats[fieldDef.name];
 

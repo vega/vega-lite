@@ -1,3 +1,5 @@
+// TODO: add interface Config
+
 export var config = {
   type: 'object',
   properties: {

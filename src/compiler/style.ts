@@ -1,4 +1,6 @@
 import {Model} from './Model';
+import {FieldDef} from '../schema/fielddef.schema';
+
 import * as vlFieldDef from '../fielddef';
 import {ROW, COL, X, Y, Channel} from '../channel';
 
@@ -23,7 +25,7 @@ function estimateOpacity(model: Model, stats) {
     //  for each non faceting and non-ordinal X / Y fields
     //  note that ordinal x,y are not include since we can
     //  consider that ordinal x are subdividing the cell into subcells anyway
-    model.forEach(function(fieldDef, channel: Channel) {
+    model.forEach(function(fieldDef: FieldDef, channel: Channel) {
 
       if (channel !== ROW && channel !== COL &&
           !((channel === X || channel === Y) &&

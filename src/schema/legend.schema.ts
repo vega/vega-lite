@@ -1,3 +1,11 @@
+export interface Legend {
+  title?: string;
+  orient?: string;
+  format?: string;
+  values?: Array<any>;
+  properties?: any; //TODO declare VgLegendProperties
+}
+
 export var legend = {
   type: 'object',
   description: 'Properties of a legend.',

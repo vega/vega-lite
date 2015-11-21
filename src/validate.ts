@@ -1,3 +1,5 @@
+import {Spec} from './schema/schema';
+
 // TODO: move to vl.spec.validator?
 
 import {toMap} from './util';
@@ -53,7 +55,7 @@ export const DEFAULT_SUPPORTED_CHANNEL_TYPE: SupportedChannelMap = {
   * @return {String} Return one reason why the encoding is invalid,
   *                  or null if the encoding is valid.
   */
-export function getEncodingMappingError(spec, //TODO: add ":spec"
+export function getEncodingMappingError(spec: Spec,
       requiredChannelMap: RequiredChannelMap = DEFAULT_REQUIRED_CHANNEL_MAP,
       supportedChannelMap: SupportedChannelMap = DEFAULT_SUPPORTED_CHANNEL_TYPE
     ) {
