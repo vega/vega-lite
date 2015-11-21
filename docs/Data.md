@@ -57,7 +57,7 @@ Each formula object in the `calculate` array has two properties:
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| field         | String        | The property name in which to store the computed formula value. |
+| field         | String        | The field name in which to store the computed formula value. |
 | expr          | String        | A string containing an expression for the formula. Use the variable `datum` to to refer to the current data object. |
 
 ### Binning, Time Unit Conversion, Aggregation

@@ -9,8 +9,8 @@ describe('data', function () {
     it('should contain two tables', function() {
       var encoding = new Model({
           encoding: {
-            x: {name: 'a', type: 'temporal'},
-            y: {name: 'b', type: 'quantitative', scale: {type: 'log'}, aggregate: 'sum'}
+            x: {field: 'a', type: 'temporal'},
+            y: {field: 'b', type: 'quantitative', scale: {type: 'log'}, aggregate: 'sum'}
           }
         });
 
@@ -22,8 +22,8 @@ describe('data', function () {
   describe('when contains log in non-aggregate', function () {
     var rawEncodingWithLog = new Model({
         encoding: {
-          x: {name: 'a', type: 'temporal'},
-          y: {name: 'b', type: 'quantitative', scale: {type: 'log'}}
+          x: {field: 'a', type: 'temporal'},
+          y: {field: 'b', type: 'quantitative', scale: {type: 'log'}}
         }
       });
 
@@ -83,9 +83,9 @@ describe('data.source', function() {
     it('should have correct parse', function() {
       var encoding = new Model({
           encoding: {
-            x: {name: 'a', type: 'temporal'},
-            y: {name: 'b', type: 'quantitative'},
-            color: {name: '*', type: 'quantitative', aggregate: 'count'}
+            x: {field: 'a', type: 'temporal'},
+            y: {field: 'b', type: 'quantitative'},
+            color: {field: '*', type: 'quantitative', aggregate: 'count'}
           }
         });
 
@@ -103,10 +103,10 @@ describe('data.source', function() {
         filter: 'datum.a > datum.b && datum.c === datum.d'
       },
       encoding: {
-        x: {name: 'a', type:'temporal', timeUnit: 'year'},
+        x: {field: 'a', type:'temporal', timeUnit: 'year'},
         y: {
           'bin': {'maxbins': 15},
-          'name': 'Acceleration',
+          'field': 'Acceleration',
           'type': 'quantitative'
         }
       }
@@ -129,9 +129,9 @@ describe('data.source', function() {
       var spec = {
           marktype: 'point',
           encoding: {
-            y: {name: 'qq', type:'quantitative'},
-            x: {name: 'tt', type:'temporal'},
-            color: {name: 'oo', type:'ordinal'}
+            y: {field: 'qq', type:'quantitative'},
+            x: {field: 'tt', type:'temporal'},
+            color: {field: 'oo', type:'ordinal'}
           }
         };
 
@@ -199,14 +199,14 @@ describe('data.summary', function () {
         encoding: {
           'y': {
             'aggregate': 'sum',
-            'name': 'Acceleration',
+            'field': 'Acceleration',
             'type': 'quantitative'
           },
           'x': {
-            'name': 'origin',
+            'field': 'origin',
             'type': 'ordinal'
           },
-          color: {name: '*', type: 'quantitative', aggregate: 'count'}
+          color: {field: '*', type: 'quantitative', aggregate: 'count'}
         }
       });
 

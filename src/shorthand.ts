@@ -61,7 +61,7 @@ export function shortenFieldDef(fieldDef: FieldDef): string {
   return (fieldDef.aggregate ? fieldDef.aggregate + FUNC : '') +
     (fieldDef.timeUnit ? fieldDef.timeUnit + FUNC : '') +
     (fieldDef.bin ? 'bin' + FUNC : '') +
-    (fieldDef.name || '') + TYPE + SHORT_TYPE[fieldDef.type];
+    (fieldDef.field || '') + TYPE + SHORT_TYPE[fieldDef.type];
 }
 
 export function shortenFieldDefs(fieldDefs: FieldDef[], delim = DELIM): string {
@@ -71,17 +71,17 @@ export function shortenFieldDefs(fieldDefs: FieldDef[], delim = DELIM): string {
 export function parseFieldDef(fieldDefShorthand: string): FieldDef {
   var split = fieldDefShorthand.split(TYPE), i;
 
-  var fieldDef: any = {
-    name: split[0].trim(),
+  var fieldDef: FieldDef = {
+    field: split[0].trim(),
     type: TYPE_FROM_SHORT_TYPE[split[1].trim()]
   };
 
   // check aggregate type
   for (i in AGGREGATE_OPS) {
     var a = AGGREGATE_OPS[i];
-    if (fieldDef.name.indexOf(a + '_') === 0) {
-      fieldDef.name = fieldDef.name.substr(a.length + 1);
-      if (a === 'count' && fieldDef.name.length === 0) fieldDef.name = '*';
+    if (fieldDef.field.indexOf(a + '_') === 0) {
+      fieldDef.field = fieldDef.field.substr(a.length + 1);
+      if (a === 'count' && fieldDef.field.length === 0) fieldDef.field = '*';
       fieldDef.aggregate = a;
       break;
     }
@@ -89,16 +89,16 @@ export function parseFieldDef(fieldDefShorthand: string): FieldDef {
 
   for (i in TIMEUNITS) {
     var tu = TIMEUNITS[i];
-    if (fieldDef.name && fieldDef.name.indexOf(tu + '_') === 0) {
-      fieldDef.name = fieldDef.name.substr(fieldDef.name.length + 1);
+    if (fieldDef.field && fieldDef.field.indexOf(tu + '_') === 0) {
+      fieldDef.field = fieldDef.field.substr(fieldDef.field.length + 1);
       fieldDef.timeUnit = tu;
       break;
     }
   }
 
   // check bin
-  if (fieldDef.name && fieldDef.name.indexOf('bin_') === 0) {
-    fieldDef.name = fieldDef.name.substr(4);
+  if (fieldDef.field && fieldDef.field.indexOf('bin_') === 0) {
+    fieldDef.field = fieldDef.field.substr(4);
     fieldDef.bin = true;
   }
 

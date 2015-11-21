@@ -8,7 +8,7 @@ describe('time', function() {
     timeUnit = 'month',
     encoding = new Model({
       encoding: {
-        x: {name: field, type: 'temporal', timeUnit: timeUnit}
+        x: {field: field, type: 'temporal', timeUnit: timeUnit}
       }
     }),
     scales = time.scales(encoding);

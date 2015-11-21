@@ -96,8 +96,8 @@ function getMaxNumberLength(model: Model, channel: Channel, fieldStats) {
 
 // TODO(#600) revise this
 function getMaxLength(model: Model, stats, channel: Channel) {
-  var fieldDef = model.fieldDef(channel),
-    fieldStats = stats[fieldDef.name];
+  var fieldDef: FieldDef = model.fieldDef(channel),
+    fieldStats = stats[fieldDef.field];
 
   if (fieldDef.bin) {
     // TODO once bin support range, need to update this

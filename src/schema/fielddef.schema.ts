@@ -11,7 +11,7 @@ import {TIMEUNITS} from '../timeunit';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 
 export interface FieldDef {
-  name?: string;
+  field?: string;
   type?: string;
   value?: any;
 
@@ -42,7 +42,7 @@ export interface FieldDef {
 export var fieldDef = {
   type: 'object',
   properties: {
-    name: {
+    field: {
       type: 'string'
     },
     type: {

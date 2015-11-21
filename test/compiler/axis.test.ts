@@ -16,7 +16,7 @@ describe('Axis', function() {
       encoding = new Model({
         marktype: 'line',
         encoding: {
-          x: {name: field, type: 'temporal', timeUnit: timeUnit}
+          x: {field: field, type: 'temporal', timeUnit: timeUnit}
         }
       });
     var _axis = axis.def('x', encoding, {
@@ -51,7 +51,7 @@ describe('Axis', function() {
     it('should return specified orient', function () {
       var orient = axis.orient(new Model({
           encoding: {
-            x: {name: 'a', axis:{orient: 'bottom'}}
+            x: {field: 'a', axis:{orient: 'bottom'}}
           }
         }), 'x', {}, stats);
       expect(orient).to.eql('bottom');
@@ -60,7 +60,7 @@ describe('Axis', function() {
     it('should return undefined by default', function () {
       var orient = axis.orient(new Model({
           encoding: {
-            x: {name: 'a'}
+            x: {field: 'a'}
           }
         }), 'x', {}, stats);
       expect(orient).to.eql(undefined);
@@ -69,8 +69,8 @@ describe('Axis', function() {
     it('should return top for COL', function () {
       var orient = axis.orient(new Model({
           encoding: {
-            x: {name: 'a'},
-            column: {name: 'a'}
+            x: {field: 'a'},
+            column: {field: 'a'}
           }
         }), 'column', {}, stats);
       expect(orient).to.eql('top');
@@ -79,8 +79,8 @@ describe('Axis', function() {
     it('should return top for X with high cardinality, ordinal Y', function () {
       var orient = axis.orient(new Model({
           encoding: {
-            x: {name: 'a'},
-            y: {name: 'b', type: 'ordinal'}
+            x: {field: 'a'},
+            y: {field: 'b', type: 'ordinal'}
           }
         }), 'x', {}, stats);
       expect(orient).to.eql('top');
@@ -91,7 +91,7 @@ describe('Axis', function() {
     it('should add explicitly specified title', function () {
       var title = axis.title(new Model({
           encoding: {
-            x: {name: 'a', axis: {title: 'Custom'}}
+            x: {field: 'a', axis: {title: 'Custom'}}
           }
         }), 'x', layout);
       expect(title).to.eql('Custom');
@@ -100,7 +100,7 @@ describe('Axis', function() {
     it('should add return fieldTitle by default', function () {
       var title = axis.title(new Model({
           encoding: {
-            x: {name: 'a', type: 'Q', axis: {titleMaxLength: 3}}
+            x: {field: 'a', type: 'Q', axis: {titleMaxLength: 3}}
           }
         }), 'x', layout);
       expect(title).to.eql('a');
@@ -109,7 +109,7 @@ describe('Axis', function() {
     it('should add return fieldTitle by default', function () {
       var title = axis.title(new Model({
           encoding: {
-            x: {name: 'a', type: 'Q', aggregate: 'sum', axis: {titleMaxLength: 10}}
+            x: {field: 'a', type: 'Q', aggregate: 'sum', axis: {titleMaxLength: 10}}
           }
         }), 'x', layout);
       expect(title).to.eql('SUM(a)');
@@ -118,7 +118,7 @@ describe('Axis', function() {
     it('should add return fieldTitle by default and truncate', function () {
       var title = axis.title(new Model({
           encoding: {
-            x: {name: 'a', type: 'Q', aggregate: 'sum', axis: {titleMaxLength: 3}}
+            x: {field: 'a', type: 'Q', aggregate: 'sum', axis: {titleMaxLength: 3}}
           }
         }), 'x', layout);
       expect(title).to.eql('SU…');
@@ -128,7 +128,7 @@ describe('Axis', function() {
     it('should add return fieldTitle by default and truncate', function () {
       var title = axis.title(new Model({
           encoding: {
-            x: {name: 'abcdefghijkl'}
+            x: {field: 'abcdefghijkl'}
           }
         }), 'x', layout);
       expect(title).to.eql('abcdefghi…');

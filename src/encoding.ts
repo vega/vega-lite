@@ -15,8 +15,8 @@ export function countRetinal(encoding: Encoding) {
 }
 
 export function has(encoding: Encoding, channel: Channel) {
-  var fieldDef = encoding && encoding[channel];
-  return fieldDef && fieldDef.name;
+  var fieldDef: FieldDef = encoding && encoding[channel];
+  return fieldDef && fieldDef.field;
 }
 
 export function isAggregate(encoding: Encoding) {
@@ -67,7 +67,7 @@ export function reduce(encoding: Encoding,
  */
 export function fields(encoding: Encoding) {
   return reduce(encoding, function (m, fieldDef: FieldDef) {
-    var fieldList = m[fieldDef.name] = m[fieldDef.name] || [];
+    var fieldList = m[fieldDef.field] = m[fieldDef.field] || [];
     var containsType = fieldList.containsType = fieldList.containsType || {};
 
     if (fieldList.indexOf(fieldDef) === -1) {
