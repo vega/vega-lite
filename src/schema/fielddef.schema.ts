@@ -14,13 +14,14 @@ export interface FieldDef {
   field?: string;
   type?: string;
   value?: any;
+  displayName?: string;
 
   // function
   aggregate?: string;
   timeUnit?: string;
   bin?: boolean | Bin;
 
-  //
+
   sort?: Sort | string;
 
   // override
