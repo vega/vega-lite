@@ -28,7 +28,7 @@ app.directive('vlPlot', function() {
       var vlElement = element[0];
 
       var callback = function(stats) {
-        var spec = vl.compile(scope.vlSpec, stats);
+        var spec = vl.compile(scope.vlSpec, stats).spec;
 
         vg.parse.spec(spec, function(chart) {
           var view = chart({el: vlElement, renderer: 'svg'});
