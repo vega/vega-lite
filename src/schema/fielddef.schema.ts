@@ -21,7 +21,7 @@ export interface FieldDef {
   bin?: boolean | Bin;
 
   //
-  sort?: any; // TODO: describe Sort | string;
+  sort?: Sort | string;
 
   // override
   axis?: Axis;

@@ -5,7 +5,7 @@ import {toMap} from '../util';
 export interface Sort {
   field: string;
   op: string;
-  order: string;
+  order?: string;
 }
 
 export var sort = {
