@@ -2,7 +2,7 @@
 
 import * as d3_format from 'd3-format';
 import {setter} from '../util';
-import {COL, ROW, X, Y, TEXT, Channel} from '../channel';
+import {COLUMN, ROW, X, Y, TEXT, Channel} from '../channel';
 import {Model} from './Model';
 import * as time from './time';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
@@ -21,7 +21,7 @@ export default function(model: Model, stats) {
  */
 function box(model: Model, stats) {
   var hasRow = model.has(ROW),
-      hasCol = model.has(COL),
+      hasCol = model.has(COLUMN),
       hasX = model.has(X),
       hasY = model.has(Y),
       marktype = model.marktype();
@@ -41,7 +41,7 @@ function box(model: Model, stats) {
       // for ordinal, hasCol or not doesn't matter -- we scale based on cardinality
       cellWidth = (xCardinality + model.padding(X)) * model.bandWidth(X, useSmallBand);
     } else {
-      cellWidth = hasCol || hasRow ? model.fieldDef(COL).width :  model.config('singleWidth');
+      cellWidth = hasCol || hasRow ? model.fieldDef(COLUMN).width :  model.config('singleWidth');
     }
   } else {
     if (marktype === TEXT) {
@@ -67,7 +67,7 @@ function box(model: Model, stats) {
 
   var width = cellWidth, height = cellHeight;
   if (hasCol) {
-    var colCardinality = model.cardinality(COL, stats);
+    var colCardinality = model.cardinality(COLUMN, stats);
     width = cellWidth * ((1 + cellPadding) * (colCardinality - 1) + 1);
   }
   if (hasRow) {

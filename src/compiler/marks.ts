@@ -1,5 +1,5 @@
 import {Model} from './Model';
-import {COL, ROW, X, Y, COLOR, TEXT, SIZE, SHAPE} from '../channel';
+import {COLUMN, ROW, X, Y, COLOR, TEXT, SIZE, SHAPE} from '../channel';
 import {QUANTITATIVE} from '../type';
 
 // https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations

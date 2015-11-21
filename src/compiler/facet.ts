@@ -1,5 +1,5 @@
 import * as util from '../util';
-import {COL, ROW, X, Y} from '../channel';
+import {COLUMN, ROW, X, Y} from '../channel';
 import {Model} from './Model';
 
 import * as vlAxis from './axis';
@@ -40,7 +40,7 @@ export default function(group, model: Model, layout, output, singleScaleNames, s
   var enter = group.properties.enter;
   var facetKeys = [], cellAxes = [], from, axesGrp;
 
-  var hasRow = model.has(ROW), hasCol = model.has(COL);
+  var hasRow = model.has(ROW), hasCol = model.has(COLUMN);
 
   enter.fill = {value: model.config('cellBackgroundColor')};
 
@@ -69,12 +69,12 @@ export default function(group, model: Model, layout, output, singleScaleNames, s
     if (hasCol) {
       from = util.duplicate(group.from);
       from.transform = from.transform || [];
-      from.transform.unshift({type: 'facet', groupby: [model.fieldRef(COL)]});
+      from.transform.unshift({type: 'facet', groupby: [model.fieldRef(COLUMN)]});
     }
 
     axesGrp = groupdef('x-axes', {
         axes: model.has(X) ? [vlAxis.def(X, model, layout, stats)] : undefined,
-        x: hasCol ? {scale: COL, field: model.fieldRef(COL)} : {value: 0},
+        x: hasCol ? {scale: COLUMN, field: model.fieldRef(COLUMN)} : {value: 0},
         width: hasCol && {'value': layout.cellWidth}, //HACK?
         from: from
       });
@@ -90,13 +90,13 @@ export default function(group, model: Model, layout, output, singleScaleNames, s
   }
 
   if (hasCol) {
-    if (!model.isDimension(COL)) {
+    if (!model.isDimension(COLUMN)) {
       util.error('Col encoding should be ordinal.');
     }
-    enter.x = {scale: COL, field: model.fieldRef(COL)};
+    enter.x = {scale: COLUMN, field: model.fieldRef(COLUMN)};
     enter.width = {'value': layout.cellWidth}; // HACK
 
-    facetKeys.push(model.fieldRef(COL));
+    facetKeys.push(model.fieldRef(COLUMN));
 
     if (hasRow) {
       from = util.duplicate(group.from);
@@ -114,7 +114,7 @@ export default function(group, model: Model, layout, output, singleScaleNames, s
 
     output.marks.unshift(axesGrp); // need to prepend so it appears under the plots
     (output.axes = output.axes || []);
-    output.axes.push(vlAxis.def(COL, model, layout, stats));
+    output.axes.push(vlAxis.def(COLUMN, model, layout, stats));
   } else { // doesn't have col
     if (model.has(Y)) {
       cellAxes.push(vlAxis.def(Y, model, layout, stats));

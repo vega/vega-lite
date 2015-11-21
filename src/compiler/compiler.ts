@@ -16,7 +16,7 @@ import vlLayout from './layout';
 import vlStack from './stack';
 import vlStyle from './style';
 import vlSubfacet from './subfacet';
-import {COL, ROW, X, Y} from '../channel';
+import {COLUMN, ROW, X, Y} from '../channel';
 
 export {Model} from './Model';
 
@@ -105,7 +105,7 @@ export function compile(spec, stats, theme?) {
   var legends = vlLegend.defs(model, styleCfg);
 
   // Small Multiples
-  if (model.has(ROW) || model.has(COL)) {
+  if (model.has(ROW) || model.has(COLUMN)) {
     output = vlFacet(group, model, layout, output, singleScaleNames, stats);
     if (legends.length > 0) {
       output.legends = legends;
