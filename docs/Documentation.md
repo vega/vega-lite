@@ -70,7 +70,7 @@ var vlspec = {
       }
     };
 
-var vgspec = vl.compile(vlspec);
+var vgspec = vl.compile(vlspec).spec;
 parse(vgspec);
 
 </script>
@@ -100,7 +100,7 @@ Note that the need to call `vl.data.stats()` will be eliminated very soon (befor
 
 function render(vlSpec) {
   var callback = function(stats) {
-    var vgSpec = vl.compile(vlSpec, stats);
+    var vgSpec = vl.compile(vlSpec, stats).spec;
 
     vg.parse.spec(vgSpec, function(chart) {
       var view = chart({el: '#vis', renderer: 'svg'});

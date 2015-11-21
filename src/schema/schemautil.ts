@@ -41,9 +41,27 @@ export function subtract(instance, defaults) {
     if (!defaults || def !== ins) {
       if (typeof ins === 'object' && !util.isArray(ins) && def) {
         var c = subtract(ins, def);
-        if (!isEmpty(c))
+        if (!isEmpty(c)) {
           changes[prop] = c;
-      } else if (!util.isArray(ins) || ins.length > 0) {
+        }
+      } else if (util.isArray(ins)) {
+        if (util.isArray(def)) {
+          // check each item in the array
+          if (ins.length === def.length) {
+            var equal = true;
+            for (var i = 0 ; i < ins.length; i++) {
+              if (ins[i] !== def[i]) {
+                equal = false;
+                break;
+              }
+            }
+            if (equal) {
+              continue; // continue with next property
+            }
+          }
+        }
+        changes[prop] = ins;
+      } else {
         changes[prop] = ins;
       }
     }
