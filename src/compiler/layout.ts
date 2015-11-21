@@ -1,5 +1,7 @@
 /// <reference path="../../typings/d3-format.d.ts"/>
 
+import {FieldDef} from '../schema/fielddef.schema';
+
 import * as d3_format from 'd3-format';
 import {setter} from '../util';
 import {COLUMN, ROW, X, Y, TEXT, Channel} from '../channel';
