@@ -1,6 +1,10 @@
+/// <reference path="../../typings/colorbrewer.d.ts"/>
+import * as colorbrewer from 'colorbrewer';
+
 import {merge} from './schemautil';
 import {duplicate} from '../util';
 import * as vlUtil from '../util';
+
 
 import {axis} from './axis.schema';
 import {FieldDef} from './fielddef.schema';
