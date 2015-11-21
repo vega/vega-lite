@@ -16,7 +16,7 @@ export interface Spec {
 }
 
 // TODO remove this
-export {aggregate} from './fieldDef.schema';
+export {aggregate} from './fielddef.schema';
 
 export var util = schemaUtil;
 
