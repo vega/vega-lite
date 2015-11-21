@@ -13,7 +13,7 @@
     "test": "test"
   },
   "scripts": {
-    "build": "gulp build",
+    "build": "tsc && gulp build",
     "cover": "gulp coverage",
     "deploy": "npm run lint && npm run test && scripts/deploy.sh",
     "lint": "gulp tslint",

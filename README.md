@@ -13,7 +13,7 @@ __Try using Vega-Lite in the online [Vega Editor](http://vega.github.io/vega-edi
 The complete schema for specifications as [JSON schema](http://json-schema.org/) is at [vega-lite-schema.json](https://vega.github.io/vega-lite/vega-lite-schema.json).
 
 **Note: Vega-Lite is still in alpha phase and we are working on improving the code and [documentation](docs/Documentation.md).
-Our syntax might change slightly before we release 1.0.**  See our wiki pages for [the development roadmap](https://github.com/vega/vega-lite/wiki/Roadmap) and [how you can contribute](https://github.com/vega/vega-lite/wiki/Contribute). 
+Our syntax might change slightly before we release 1.0.**  See our wiki pages for [the development roadmap](https://github.com/vega/vega-lite/wiki/Roadmap) and [how you can contribute](https://github.com/vega/vega-lite/wiki/Contribute).
 If you find a bug or have a feature request, please [create an issue](https://github.com/vega/vega-lite/issues/new).
 
 
@@ -72,11 +72,16 @@ cd vega-lite
 npm install
 ```
 
+Since Vega-Lite is written in Typescript, you should also install TypeScript
+```
+npm install -g typescript
+```
+
 ### Commands
 
 You can run `npm run build` to compile Vega-Lite.
 
-You can `npm run watch` to start a watcher task that 
+You can `npm run watch` to start a watcher task that
 - re-compile Vega-Lite
 - regenerate the `vega-lite-schema.json` file whenever `schema.js` changes
 - lints and tests all JS files when any `.js` file in `test/` or `src/` changes.
