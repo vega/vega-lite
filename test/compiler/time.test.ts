@@ -22,18 +22,17 @@ describe('time', function() {
 
   describe('maxLength', function() {
     it('should return max length of the month custom scale', function () {
-      expect(time.maxLength('month', new Model({mark: 'point'})))
+      expect(time.maxLength('month', new Model({marktype: 'point'})))
         .to.eql(3);
     });
 
     it('should return max length of the day custom scale', function () {
-      expect(time.maxLength('day', new Model({mark: 'point'})))
+      expect(time.maxLength('day', new Model({marktype: 'point'})))
         .to.eql(3);
     });
 
     it('should return max length of the month custom scale', function () {
       expect(time.maxLength('month', new Model({
-        mark: 'point',
         config: {
           timeScaleLabelLength: 0
         }

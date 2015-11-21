@@ -16,12 +16,12 @@ export interface FieldDef {
   value?: any;
 
   // function
-  aggregate: string;
+  aggregate?: string;
   timeUnit?: string;
-  bin?: boolean|Bin;
+  bin?: boolean | Bin;
 
   //
-  sort?: string|Sort;
+  sort?: any; // TODO: describe Sort | string;
 
   // override
   axis?: Axis;
@@ -30,13 +30,13 @@ export interface FieldDef {
   stack?: any;// TODO move this to config
 
   // text
-  align: string;
-  baseline: string;
-  color: string;
-  margin: number;
-  placeholder: string;
-  font: any; // declare font
-  format: string;
+  align?: string;
+  baseline?: string;
+  color?: string;
+  margin?: number;
+  placeholder?: string;
+  font?: any; // declare font
+  format?: string;
 }
 
 export var fieldDef = {

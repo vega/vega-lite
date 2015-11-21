@@ -1,5 +1,9 @@
+import {Spec} from '../schema/schema';
+import {Bin} from '../schema/bin.schema';
+import {FieldDef} from '../schema/fielddef.schema';
+
 import {MAXBINS_DEFAULT} from '../bin';
-import {COL, ROW, X, Y, COLOR, DETAIL} from '../channel';
+import {COL, ROW, X, Y, COLOR, DETAIL, Channel} from '../channel';
 import {SOURCE, SUMMARY} from '../data';
 import * as util from '../util';
 import * as vlFieldDef from '../fielddef';
@@ -20,7 +24,7 @@ export class Model {
 
   // TODO: include _stack, _layout, _style, etc.
 
-  constructor(spec, theme?) {
+  constructor(spec: Spec, theme?) {
     var defaults = schema.instantiate();
     var specExtended = schemaUtil.merge(defaults, theme || {}, spec);
 
@@ -39,7 +43,7 @@ export class Model {
 
   toSpec(excludeConfig?, excludeData?) {
     var encoding = util.duplicate(this._encoding),
-      spec;
+      spec: any;
 
     spec = {
       marktype: this._marktype,
@@ -67,17 +71,17 @@ export class Model {
     return this._marktype === m;
   }
 
-  has(channel) {
+  has(channel: Channel) {
     // equivalent to calling vlenc.has(this._encoding, channel)
     return this._encoding[channel].name !== undefined;
   }
 
-  fieldDef(channel) {
+  fieldDef(channel: Channel) {
     return this._encoding[channel];
   }
 
   // get "field" reference for vega
-  fieldRef(channel, opt?) {
+  fieldRef(channel: Channel, opt?) {
     opt = opt || {};
     return vlFieldDef.fieldRef(this._encoding[channel], opt);
   }
@@ -89,7 +93,7 @@ export class Model {
     return vlEncoding.fields(this._encoding);
   }
 
-  fieldTitle(channel) {
+  fieldTitle(channel: Channel) {
     if (vlFieldDef.isCount(this._encoding[channel])) {
       return vlFieldDef.COUNT_DISPLAYNAME;
     }
@@ -101,15 +105,15 @@ export class Model {
     }
   }
 
-  scale(channel) {
+  scale(channel: Channel) {
     return this._encoding[channel].scale || {};
   }
 
-  axis(channel) {
+  axis(channel: Channel) {
     return this._encoding[channel].axis || {};
   }
 
-  bandWidth(channel, useSmallBand?: boolean) {
+  bandWidth(channel: Channel, useSmallBand?: boolean) {
     if (this.fieldDef(channel).scale.bandWidth !== undefined) {
       // explicit value
       return this.fieldDef(channel).scale.bandWidth;
@@ -125,7 +129,7 @@ export class Model {
     return this.config(useSmallBand ? 'smallBandWidth' : 'largeBandWidth');
   }
 
-  padding(channel) {
+  padding(channel: Channel) {
     if (this.fieldDef(channel).scale.padding !== undefined) {
       // explicit value
       return this.fieldDef(channel).scale.padding;
@@ -137,7 +141,7 @@ export class Model {
   }
 
   // returns false if binning is disabled, otherwise an object with binning properties
-  bin(channel) {
+  bin(channel: Channel): Bin | boolean {
     var bin = this._encoding[channel].bin;
     if (bin === {})
       return false;
@@ -148,11 +152,11 @@ export class Model {
     return bin;
   }
 
-  value(channel) {
+  value(channel: Channel) {
     return this._encoding[channel].value;
   }
 
-  numberFormat = function(name?) {
+  numberFormat = function(channel?: Channel) {
     // TODO(#497): have different number format based on numberType (discrete/continuous)
     return this.config('numberFormat');
   };
@@ -169,23 +173,23 @@ export class Model {
     return vlEncoding.forEach(this._encoding, f);
   }
 
-  isTypes(channel: string, type: Array<any>) {
+  isTypes(channel: Channel, type: Array<any>) {
     var fieldDef = this.fieldDef(channel);
     return fieldDef && vlFieldDef.isTypes(fieldDef, type);
   }
 
 
-  isOrdinalScale(channel) {
+  isOrdinalScale(channel: Channel) {
     return this.has(channel) &&
       vlFieldDef.isOrdinalScale(this.fieldDef(channel));
   }
 
-  isDimension(channel) {
+  isDimension(channel: Channel) {
     return this.has(channel) &&
       vlFieldDef.isDimension(this.fieldDef(channel));
   }
 
-  isMeasure(channel) {
+  isMeasure(channel: Channel) {
     return this.has(channel) &&
       vlFieldDef.isMeasure(this.fieldDef(channel));
   }
@@ -240,8 +244,8 @@ export class Model {
 
   details() {
     var encoding = this;
-    return this.reduce(function(refs, field, channel) {
-      if (!field.aggregate && (channel !== X && channel !== Y)) {
+    return this.reduce(function(refs, fieldDef: FieldDef, channel: Channel) {
+      if (!fieldDef.aggregate && (channel !== X && channel !== Y)) {
         refs.push(encoding.fieldRef(channel));
       }
       return refs;
@@ -250,7 +254,7 @@ export class Model {
 
   facets() {
     var encoding = this;
-    return this.reduce(function(refs, field, channel) {
+    return this.reduce(function(refs: string[], field: FieldDef, channel: Channel) {
       if (!field.aggregate && (channel === ROW || channel === COL)) {
         refs.push(encoding.fieldRef(channel));
       }
@@ -258,7 +262,7 @@ export class Model {
     }, []);
   }
 
-  cardinality(channel, stats) {
+  cardinality(channel: Channel, stats) {
     return vlFieldDef.cardinality(this.fieldDef(channel), stats, this.config('filterNull'));
   }
 
@@ -276,7 +280,7 @@ export class Model {
     return vals && vals.length;
   }
 
-  config(name) {
+  config(name: string) {
     return this._config[name];
   }
 }

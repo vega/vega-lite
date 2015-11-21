@@ -1,10 +1,12 @@
 import * as vlFieldDef from '../fielddef';
 import * as util from '../util';
 import {Model} from './Model';
+
+import {MAXBINS_DEFAULT} from '../bin';
+import {Channel} from '../channel';
 import {SOURCE, STACKED, SUMMARY} from '../data';
 import * as time from './time';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
-import {Channel} from '../channel';
 
 /**
  * Create Vega's data array from a given encoding.
@@ -119,7 +121,8 @@ export namespace source {
 
   export function binTransform(model: Model) {
     return model.reduce(function(transform, fieldDef, channel) {
-      if (model.bin(channel)) {
+      const bin = model.bin(channel);
+      if (bin) {
         transform.push({
           type: 'bin',
           field: fieldDef.name,
@@ -127,7 +130,7 @@ export namespace source {
             start: model.fieldRef(channel, {binSuffix: '_start'}),
             end: model.fieldRef(channel, {binSuffix: '_end'})
           },
-          maxbins: model.bin(channel).maxbins
+          maxbins: typeof bin === 'boolean' ? MAXBINS_DEFAULT : bin.maxbins
         });
         // temporary fix for adding missing `bin_mid` from the bin transform
         transform.push({

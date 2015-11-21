@@ -1,9 +1,9 @@
 export interface Data {
-  formatType: string;
-  url: string;
-  values: Array<any>;
-  filter: string;
-  calculate: Array<VgFormula>;
+  formatType?: string;
+  url?: string;
+  values?: any[];
+  filter?: string;
+  calculate?: VgFormula[];
 }
 
 // TODO move this to one central position

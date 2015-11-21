@@ -8,13 +8,12 @@ import {config} from './config.schema';
 import {data, Data} from './data.schema';
 import {encoding, Encoding} from './encoding.schema';
 
-interface Spec {
-  marktype: string;
+export interface Spec {
   data?: Data;
-  encoding: Encoding;
+  marktype?: string;
+  encoding?: Encoding;
   config?: any; // FIXME: declare
 }
-
 
 // TODO remove this
 export {aggregate} from './fieldDef.schema';
@@ -26,10 +25,10 @@ export var schema = {
   $schema: 'http://json-schema.org/draft-04/schema#',
   description: 'Schema for Vega-lite specification',
   type: 'object',
-  required: ['marktype', 'encoding', 'data'],
+  required: ['marktype', 'encoding'],
   properties: {
-    marktype: marktype,
     data: data,
+    marktype: marktype,
     encoding: encoding,
     config: config
   }

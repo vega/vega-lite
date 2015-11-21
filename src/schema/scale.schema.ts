@@ -3,25 +3,25 @@ import {merge} from './schemautil';
 import {QUANTITATIVE, TEMPORAL} from '../type';
 
 export interface Scale {
-  type: string;
-  domain: any; // TODO: declare vgDataDomain
-  range: any; // TODO: declare vgRangeDomain
-  round: boolean;
+  type?: string;
+  domain?: any; // TODO: declare vgDataDomain
+  range?: any; // TODO: declare vgRangeDomain
+  round?: boolean;
 
   // ordinal
-  bandWidth: number;
-  outerPadding: number;
-  padding: number;
-  points: boolean;
+  bandWidth?: number;
+  outerPadding?: number;
+  padding?: number;
+  points?: boolean;
 
   // typical
-  clamp: boolean;
-  nice: boolean|string;
-  exponent: number;
-  zero: boolean;
+  clamp?: boolean;
+  nice?: boolean|string;
+  exponent?: number;
+  zero?: boolean;
 
   // Vega-Lite only
-  useRawDomain: boolean;
+  useRawDomain?: boolean;
 }
 
 var scale = {

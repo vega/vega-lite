@@ -43,13 +43,13 @@ describe('data', function () {
 
 describe('data.source', function() {
   describe('with explicit values', function() {
-    var encoding = new Model({
+    var model = new Model({
       data: {
         values: [{a: 1, b:2, c:3}, {a: 4, b:5, c:6}]
       }
     });
 
-    var sourceDef = source.def(encoding);
+    var sourceDef = source.def(model);
 
     it('should have values', function() {
       expect(sourceDef.name).to.equal('source');

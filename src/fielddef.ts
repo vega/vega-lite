@@ -1,11 +1,23 @@
 // utility for a field definition object
 
+import {FieldDef} from './schema/fielddef.schema';
+import {Bin} from './schema/bin.schema';
+
 import {MAXBINS_DEFAULT} from './bin';
 import {AGGREGATE_OPS} from './aggregate';
 import * as util from './util';
 import * as time from './compiler/time';
 import {TIMEUNITS} from './timeunit';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL, SHORT_TYPE, TYPE_FROM_SHORT_TYPE} from './type';
+
+export interface FieldRefOption {
+  nofn?: boolean;
+  noAggregate?: boolean;
+  datum?: boolean;
+  fn?: string;
+  prefn?: string;
+  binSuffix?: string;
+}
 
 /**
  * @param field
@@ -19,7 +31,7 @@ import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL, SHORT_TYPE, TYPE_FROM_SHORT_TY
 
  * @return {[type]}       [description]
  */
-export function fieldRef(fieldDef, opt) {
+export function fieldRef(fieldDef: FieldDef, opt?: FieldRefOption) {
   opt = opt || {};
 
   var f = (opt.datum ? 'datum.' : '') + (opt.prefn || ''),
@@ -41,7 +53,7 @@ export function fieldRef(fieldDef, opt) {
   }
 }
 
-export function isTypes(fieldDef, types: Array<String>) {
+export function isTypes(fieldDef: FieldDef, types: Array<String>) {
   for (var t = 0; t < types.length; t++) {
     if (fieldDef.type === types[t]) {
       return true;
@@ -54,23 +66,23 @@ export function isTypes(fieldDef, types: Array<String>) {
  * Most fields that use ordinal scale are dimensions.
  * However, YEAR(T), YEARMONTH(T) use time scale, not ordinal but are dimensions too.
  */
-export function isOrdinalScale(fieldDef) {
+export function isOrdinalScale(fieldDef: FieldDef) {
   return  isTypes(fieldDef, [NOMINAL, ORDINAL]) ||
     (fieldDef.type === TEMPORAL && fieldDef.timeUnit && time.isOrdinalFn(fieldDef.timeUnit) );
 }
 
 
 // TODO remove these "isDimension/isMeasure" stuff
-function _isFieldDimension(fieldDef) {
+function _isFieldDimension(fieldDef: FieldDef) {
   return  isTypes(fieldDef, [NOMINAL, ORDINAL]) || !!fieldDef.bin ||
     (fieldDef.type === TEMPORAL && !!fieldDef.timeUnit );
 }
 
-export function isDimension(fieldDef) {
+export function isDimension(fieldDef: FieldDef) {
   return fieldDef && _isFieldDimension(fieldDef);
 }
 
-export function isMeasure(fieldDef) {
+export function isMeasure(fieldDef: FieldDef) {
   return fieldDef && !_isFieldDimension(fieldDef);
 }
 
@@ -80,18 +92,22 @@ export function count() {
 
 export const COUNT_DISPLAYNAME = 'Number of Records';
 
-export function isCount(fieldDef) {
+export function isCount(fieldDef: FieldDef) {
   return fieldDef.aggregate === 'count';
 }
 
-export function cardinality(fieldDef, stats, filterNull = {}) {
+export function cardinality(fieldDef: FieldDef, stats, filterNull = {}) {
   // FIXME need to take filter into account
 
   var stat = stats[fieldDef.name];
   var type = fieldDef.type;
 
   if (fieldDef.bin) {
-    var bins = util.getbins(stat, fieldDef.bin.maxbins || MAXBINS_DEFAULT);
+    // need to reassign bin, otherwise compilation will fail due to a TS bug.
+    const bin = fieldDef.bin;
+    const maxbins = (typeof bin === 'boolean') ? MAXBINS_DEFAULT : bin.maxbins;
+
+    var bins = util.getbins(stat, maxbins);
     return (bins.stop - bins.start) / bins.step;
   }
   if (fieldDef.type === TEMPORAL) {
