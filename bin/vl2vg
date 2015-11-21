@@ -50,7 +50,9 @@ fs.readFile(specFile, 'utf8', function(err, text) {
 });
 
 function compile(vlSpec, stats) {
-  var vgSpec = vl.compile(vlSpec, stats);
+  var result =  vl.compile(vlSpec, stats);
+  // TODO: deal with error 
+  var vgSpec = result.spec;
   if (args.p) {
     process.stdout.write(JSON.stringify(vgSpec, null, 4));
   } else {
