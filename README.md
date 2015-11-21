@@ -72,6 +72,11 @@ cd vega-lite
 npm install
 ```
 
+Since Vega-Lite is written in Typescript, you should also install TypeScript
+```
+npm install -g typescript
+```
+
 ### Commands
 
 You can run `npm run build` to compile Vega-Lite.
