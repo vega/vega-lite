@@ -9,7 +9,7 @@ import {interpolateHsl} from 'd3-color';
 
 import * as util from '../util';
 import {Model} from './Model';
-import {COL, ROW, X, Y, SHAPE, SIZE, COLOR, TEXT, Channel} from '../channel';
+import {COLUMN, ROW, X, Y, SHAPE, SIZE, COLOR, TEXT, Channel} from '../channel';
 import {SOURCE, STACKED} from '../data';
 import * as time from './time';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
@@ -61,7 +61,7 @@ export function type(channel: Channel, model: Model) {
       return timeUnit ? time.scale.type(timeUnit, channel) : 'time';
     case QUANTITATIVE:
       if (model.bin(channel)) {
-        return channel === ROW || channel === COL || channel === SHAPE ? 'ordinal' : 'linear';
+        return channel === ROW || channel === COLUMN || channel === SHAPE ? 'ordinal' : 'linear';
       }
       return model.scale(channel).type;
   }
@@ -200,7 +200,7 @@ export function bandWidth(model: Model, channel: Channel, type, layout) {
       break;
     case ROW: // support only ordinal
       return layout.cellHeight;
-    case COL: // support only ordinal
+    case COLUMN: // support only ordinal
       return layout.cellWidth;
   }
   return undefined;
@@ -231,7 +231,7 @@ export function nice(model: Model, channel: Channel, type) {
       return true;
 
     case ROW: /* fall through */
-    case COL:
+    case COLUMN:
       return true;
   }
   return undefined;
@@ -242,7 +242,7 @@ export function outerPadding(model: Model, channel: Channel, type) {
     if (model.fieldDef(channel).scale.outerPadding !== undefined) {
       return model.fieldDef(channel).scale.outerPadding; // explicit value
     }
-    if (channel === ROW || channel === COL) {
+    if (channel === ROW || channel === COLUMN) {
       return 0;
     }
   }
@@ -321,7 +321,7 @@ export function round(model: Model, channel: Channel) {
     case X: /* fall through */
     case Y:
     case ROW:
-    case COL:
+    case COLUMN:
     case SIZE:
       return true;
   }

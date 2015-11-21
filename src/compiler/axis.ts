@@ -1,14 +1,14 @@
 import {Model} from './Model';
 import * as util from '../util';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
-import {COL, ROW, X, Y, Channel} from '../channel';
+import {COLUMN, ROW, X, Y, Channel} from '../channel';
 import * as time from './time';
 
 // https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations
 declare var exports;
 
 export function def(channel: Channel, model: Model, layout, stats) {
-  var isCol = channel === COL,
+  var isCol = channel === COLUMN,
     isRow = channel === ROW,
     type = isCol ? 'x' : isRow ? 'y': channel;
 
@@ -87,7 +87,7 @@ export function grid(model: Model, channel: Channel) {
   // - ROW and COL.
   // - X and Y that have (1) quantitative fields that are not binned or (2) time fields.
   // Otherwise, the default value is `false`.
-  return channel === ROW || channel === COL ||
+  return channel === ROW || channel === COLUMN ||
     (model.isTypes(channel, [QUANTITATIVE, TEMPORAL]) && !model.fieldDef(channel).bin);
 }
 
@@ -119,7 +119,7 @@ export function orient(model: Model, channel: Channel, layout, stats) {
   var orient = model.fieldDef(channel).axis.orient;
   if (orient) {
     return orient;
-  } else if (channel === COL) {
+  } else if (channel === COLUMN) {
     return 'top';
   } else if (channel === X && model.has(Y) && model.isOrdinalScale(Y) && model.cardinality(Y, stats) > 30) {
     // FIXME remove this case and migrate this logic to vega-lite-ui
@@ -148,7 +148,7 @@ export function tickSize(model: Model, channel: Channel) {
   if (tickSize !== undefined) {
     return tickSize;
   }
-  if (channel === ROW || channel === COL) {
+  if (channel === ROW || channel === COLUMN) {
     return 0;
   }
   return undefined;
@@ -184,14 +184,14 @@ export function titleOffset(model: Model, channel: Channel) {
 
   switch (channel) {
     case ROW: return 0;
-    case COL: return 35;
+    case COLUMN: return 35;
   }
   return undefined;
 }
 
 namespace properties {
   export function axis(model: Model, channel: Channel, spec) {
-    if (channel === ROW || channel === COL) {
+    if (channel === ROW || channel === COLUMN) {
       // hide axis for facets
       return util.extend({
         opacity: {value: 0}
@@ -204,7 +204,7 @@ namespace properties {
     var cellPadding = layout.cellPadding;
 
     if (def.grid) {
-      if (channel === COL) {
+      if (channel === COLUMN) {
         // set grid property -- put the lines on the right the cell
         var yOffset = model.config('cellGridOffset');
 
@@ -215,7 +215,7 @@ namespace properties {
           x: {
             offset: layout.cellWidth * (1+ cellPadding/2.0),
             // default value(s) -- vega doesn't do recursive merge
-            scale: 'col',
+            scale: 'column',
             field: 'data'
           },
           y: {

@@ -6,14 +6,14 @@
 export const X = 'x';
 export const Y = 'y';
 export const ROW = 'row';
-export const COL = 'col';
+export const COLUMN = 'column';
 export const SHAPE = 'shape';
 export const SIZE = 'size';
 export const COLOR = 'color';
 export const TEXT = 'text';
 export const DETAIL = 'detail';
 
-export const CHANNELS = [X, Y, ROW, COL, SIZE, SHAPE, COLOR, TEXT, DETAIL];
+export const CHANNELS = [X, Y, ROW, COLUMN, SIZE, SHAPE, COLOR, TEXT, DETAIL];
 
 export type Channel = string;
 
@@ -36,7 +36,7 @@ export function getSupportedRole(channel: Channel): SupportedRole {
         dimension: true
       };
     case ROW:
-    case COL:
+    case COLUMN:
     case SHAPE:
     case DETAIL:
       return {

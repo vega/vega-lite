@@ -3,7 +3,7 @@ import {Bin} from '../schema/bin.schema';
 import {FieldDef} from '../schema/fielddef.schema';
 
 import {MAXBINS_DEFAULT} from '../bin';
-import {COL, ROW, X, Y, COLOR, DETAIL, Channel} from '../channel';
+import {COLUMN, ROW, X, Y, COLOR, DETAIL, Channel} from '../channel';
 import {SOURCE, SUMMARY} from '../data';
 import * as util from '../util';
 import * as vlFieldDef from '../fielddef';
@@ -124,7 +124,7 @@ export class Model {
     useSmallBand = useSmallBand ||
     //isBandInSmallMultiples
     (channel === Y && this.has(ROW) && this.has(Y)) ||
-    (channel === X && this.has(COL) && this.has(X));
+    (channel === X && this.has(COLUMN) && this.has(X));
 
     return this.config(useSmallBand ? 'smallBandWidth' : 'largeBandWidth');
   }
@@ -134,7 +134,7 @@ export class Model {
       // explicit value
       return this.fieldDef(channel).scale.padding;
     }
-    if (channel === ROW || channel === COL) {
+    if (channel === ROW || channel === COLUMN) {
       return this.config('cellPadding');
     }
     return this.config('padding');
@@ -255,7 +255,7 @@ export class Model {
   facets() {
     var encoding = this;
     return this.reduce(function(refs: string[], field: FieldDef, channel: Channel) {
-      if (!field.aggregate && (channel === ROW || channel === COL)) {
+      if (!field.aggregate && (channel === ROW || channel === COLUMN)) {
         refs.push(encoding.fieldRef(channel));
       }
       return refs;

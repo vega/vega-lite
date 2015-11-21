@@ -70,9 +70,9 @@ describe('Axis', function() {
       var orient = axis.orient(new Model({
           encoding: {
             x: {name: 'a'},
-            col: {name: 'a'}
+            column: {name: 'a'}
           }
-        }), 'col', {}, stats);
+        }), 'column', {}, stats);
       expect(orient).to.eql('top');
     });
 

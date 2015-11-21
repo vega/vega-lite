@@ -30,8 +30,8 @@ export function transpose(spec: Spec): Spec {
     encoding = util.duplicate(spec.encoding);
   encoding.x = oldenc.y;
   encoding.y = oldenc.x;
-  encoding.row = oldenc.col;
-  encoding.col = oldenc.row;
+  encoding.row = oldenc.column;
+  encoding.column = oldenc.row;
   spec.encoding = encoding;
   return spec;
 }

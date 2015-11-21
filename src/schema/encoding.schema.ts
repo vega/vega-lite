@@ -16,7 +16,7 @@ export interface Encoding {
   x?: FieldDef;
   y?: FieldDef;
   row?: FieldDef;
-  col?: FieldDef;
+  column?: FieldDef;
   color?: FieldDef;
   size?: FieldDef;
   shape?: FieldDef;
@@ -57,7 +57,7 @@ var row = merge(duplicate(facet), {
   }
 });
 
-var col = merge(duplicate(facet), {
+var column = merge(duplicate(facet), {
   properties: {
     // FIXME use this over config
     width: {
@@ -244,7 +244,7 @@ export var encoding = {
     x: x,
     y: y,
     row: row,
-    col: col,
+    column: column,
     size: size,
     color: color,
     shape: shape,

@@ -55,7 +55,7 @@ var EXAMPLES = [
       encoding: {
         x: {name: 'Origin', type: 'nominal'},
         y: {name: 'Acceleration', type: 'quantitative', aggregate: 'mean'},
-        col: {name: 'Cylinders', type: 'ordinal'},
+        column: {name: 'Cylinders', type: 'ordinal'},
         color: {
           name: 'Origin',
           type: 'nominal'
@@ -161,7 +161,7 @@ var EXAMPLES = [
       'encoding': {
         'x': {'name': 'Year','type': 'temporal','timeUnit': 'year'},
         'y': {'name': 'Weight_in_lbs','type': 'quantitative','aggregate': 'sum'},
-        'col': {'name': 'Cylinders', 'type': 'ordinal'}
+        'column': {'name': 'Cylinders', 'type': 'ordinal'}
       },
       'data': {'url': 'data/cars.json'}
     }
@@ -207,7 +207,7 @@ var EXAMPLES = [
       'encoding': {
         'x': {'name': 'yield','type': 'quantitative','aggregate': 'sum'},
         'y': {'name': 'variety','type': 'nominal'},
-        'col': {'name': 'year','type': 'ordinal'},
+        'column': {'name': 'year','type': 'ordinal'},
         'color': {'name': 'site', 'type': 'nominal'}
       },
       'data': {'url': 'data/barley.json'}
@@ -219,7 +219,7 @@ var EXAMPLES = [
       'encoding': {
         'x': {'name': 'Worldwide_Gross','type': 'quantitative'},
         'y': {'name': 'US_DVD_Sales','type': 'quantitative'},
-        'col': {'name': 'MPAA_Rating','type': 'ordinal'}
+        'column': {'name': 'MPAA_Rating','type': 'ordinal'}
       },
       'data': {'url': 'data/movies.json'}
     }
@@ -247,7 +247,7 @@ var EXAMPLES = [
       'marktype': 'text',
       'encoding': {
         'row': {'name': 'Origin','type': 'ordinal'},
-        'col': {'name': 'Cylinders','type': 'ordinal'},
+        'column': {'name': 'Cylinders','type': 'ordinal'},
         'color': {'name': 'Horsepower','type': 'quantitative','aggregate': 'mean'},
         'text': {'name': '*','type': 'quantitative','aggregate': 'count'}
       },

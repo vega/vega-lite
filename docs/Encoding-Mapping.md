@@ -1,5 +1,5 @@
 Vega-Lite's top-level `encoding` property is a key-value mapping between
-encoding channels (`x`,`y`, `row`, `col`, `color`, `size`, `shape`, `text`,
+encoding channels (`x`,`y`, `row`, `column`, `color`, `size`, `shape`, `text`,
 `detail`) and encoding definitions.
 
 Each encoding definition object contains:
@@ -145,7 +145,7 @@ For now please see [legends json schema in schema.js](https://github.com/uwdata/
 ## sort
 
 Each encoding channel's values can be sorted using the `'sort'` property.  For
-`x`, `y`, `row` and `col`, this determines the order of each value's position.
+`x`, `y`, `row` and `column`, this determines the order of each value's position.
 For `color`, `shape`, `size` and `detail`, this determines the layer order
 (z-position) of each value.
 

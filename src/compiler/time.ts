@@ -6,7 +6,7 @@ import {Model} from './Model';
 import {FieldDef} from '../schema/fielddef.schema';
 import * as vlFieldDef from '../fielddef';
 import * as util from '../util';
-import {COLOR, COL, ROW, Channel} from '../channel';
+import {COLOR, COLUMN, ROW, Channel} from '../channel';
 import {TEMPORAL} from '../type';
 
 // 'Wednesday September 17 04:00:00 2014'
@@ -139,7 +139,7 @@ export namespace scale {
     }
 
     // FIXME revise this -- should 'year' be linear too?
-    return isOrdinalFn(timeUnit) || channel === COL || channel === ROW ? 'ordinal' : 'linear';
+    return isOrdinalFn(timeUnit) || channel === COLUMN || channel === ROW ? 'ordinal' : 'linear';
   }
 
   export function domain(timeUnit, channel?: Channel) {

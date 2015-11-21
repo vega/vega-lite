@@ -2,7 +2,7 @@ import {Model} from './Model';
 import {FieldDef} from '../schema/fielddef.schema';
 
 import * as vlFieldDef from '../fielddef';
-import {ROW, COL, X, Y, Channel} from '../channel';
+import {ROW, COLUMN, X, Y, Channel} from '../channel';
 
 export default function(model: Model, stats) {
   return {
@@ -27,7 +27,7 @@ function estimateOpacity(model: Model, stats) {
     //  consider that ordinal x are subdividing the cell into subcells anyway
     model.forEach(function(fieldDef: FieldDef, channel: Channel) {
 
-      if (channel !== ROW && channel !== COL &&
+      if (channel !== ROW && channel !== COLUMN &&
           !((channel === X || channel === Y) &&
           vlFieldDef.isOrdinalScale(fieldDef))
         ) {
@@ -48,8 +48,8 @@ function estimateOpacity(model: Model, stats) {
     if (model.has(ROW)) {
       numMultiples *= model.cardinality(ROW, stats);
     }
-    if (model.has(COL)) {
-      numMultiples *= model.cardinality(COL, stats);
+    if (model.has(COLUMN)) {
+      numMultiples *= model.cardinality(COLUMN, stats);
     }
     numPoints /= numMultiples;
   }
