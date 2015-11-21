@@ -29,14 +29,14 @@ interface SupportedChannelMap {
  * Supported Encoding Channel for each mark type
  */
 export const DEFAULT_SUPPORTED_CHANNEL_TYPE: SupportedChannelMap = {
-  bar: toMap(['row', 'col', 'x', 'y', 'size', 'color', 'detail']),
-  line: toMap(['row', 'col', 'x', 'y', 'color', 'detail']), // TODO: add size when Vega supports
-  area: toMap(['row', 'col', 'x', 'y', 'color', 'detail']),
-  tick: toMap(['row', 'col', 'x', 'y', 'color', 'detail']),
-  circle: toMap(['row', 'col', 'x', 'y', 'color', 'size', 'detail']),
-  square: toMap(['row', 'col', 'x', 'y', 'color', 'size', 'detail']),
-  point: toMap(['row', 'col', 'x', 'y', 'color', 'size', 'detail', 'shape']),
-  text: toMap(['row', 'col', 'size', 'color', 'text']) //TODO(#724) revise
+  bar: toMap(['row', 'column', 'x', 'y', 'size', 'color', 'detail']),
+  line: toMap(['row', 'column', 'x', 'y', 'color', 'detail']), // TODO: add size when Vega supports
+  area: toMap(['row', 'column', 'x', 'y', 'color', 'detail']),
+  tick: toMap(['row', 'column', 'x', 'y', 'color', 'detail']),
+  circle: toMap(['row', 'column', 'x', 'y', 'color', 'size', 'detail']),
+  square: toMap(['row', 'column', 'x', 'y', 'color', 'size', 'detail']),
+  point: toMap(['row', 'column', 'x', 'y', 'color', 'size', 'detail', 'shape']),
+  text: toMap(['row', 'column', 'size', 'color', 'text']) //TODO(#724) revise
 };
 
 // TODO: consider if we should add validate method and

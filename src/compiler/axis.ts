@@ -215,7 +215,7 @@ namespace properties {
           x: {
             offset: layout.cellWidth * (1+ cellPadding/2.0),
             // default value(s) -- vega doesn't do recursive merge
-            scale: 'col',
+            scale: 'column',
             field: 'data'
           },
           y: {

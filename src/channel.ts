@@ -6,7 +6,7 @@
 export const X = 'x';
 export const Y = 'y';
 export const ROW = 'row';
-export const COLUMN = 'col';
+export const COLUMN = 'column';
 export const SHAPE = 'shape';
 export const SIZE = 'size';
 export const COLOR = 'color';

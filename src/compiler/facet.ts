@@ -115,7 +115,7 @@ export default function(group, model: Model, layout, output, singleScaleNames, s
     output.marks.unshift(axesGrp); // need to prepend so it appears under the plots
     (output.axes = output.axes || []);
     output.axes.push(vlAxis.def(COLUMN, model, layout, stats));
-  } else { // doesn't have col
+  } else { // doesn't have column
     if (model.has(Y)) {
       cellAxes.push(vlAxis.def(Y, model, layout, stats));
     }
@@ -129,7 +129,7 @@ export default function(group, model: Model, layout, output, singleScaleNames, s
     layout,
     stats,
     true
-  )); // row/col scales + cell scales
+  )); // row/column scales + cell scales
 
   if (cellAxes.length > 0) {
     group.axes = cellAxes;
