@@ -35,21 +35,21 @@ export function fieldRef(fieldDef: FieldDef, opt?: FieldRefOption) {
   opt = opt || {};
 
   var f = (opt.datum ? 'datum.' : '') + (opt.prefn || ''),
-    name = fieldDef.name;
+    field = fieldDef.field;
 
   if (isCount(fieldDef)) {
     return f + 'count';
   } else if (opt.fn) {
-    return f + opt.fn + '_' + name;
+    return f + opt.fn + '_' + field;
   } else if (!opt.nofn && fieldDef.bin) {
     var binSuffix = opt.binSuffix || '_start';
-    return f + 'bin_' + name + binSuffix;
+    return f + 'bin_' + field + binSuffix;
   } else if (!opt.nofn && !opt.noAggregate && fieldDef.aggregate) {
-    return f + fieldDef.aggregate + '_' + name;
+    return f + fieldDef.aggregate + '_' + field;
   } else if (!opt.nofn && fieldDef.timeUnit) {
-    return f + fieldDef.timeUnit + '_' + name;
+    return f + fieldDef.timeUnit + '_' + field;
   }  else {
-    return f + name;
+    return f + field;
   }
 }
 
@@ -86,8 +86,8 @@ export function isMeasure(fieldDef: FieldDef) {
   return fieldDef && !_isFieldDimension(fieldDef);
 }
 
-export function count() {
-  return {name:'*', aggregate: 'count', type: QUANTITATIVE, displayName: COUNT_DISPLAYNAME};
+export function count(): FieldDef {
+  return {field:'*', aggregate: 'count', type: QUANTITATIVE, displayName: COUNT_DISPLAYNAME};
 }
 
 export const COUNT_DISPLAYNAME = 'Number of Records';
@@ -99,7 +99,7 @@ export function isCount(fieldDef: FieldDef) {
 export function cardinality(fieldDef: FieldDef, stats, filterNull = {}) {
   // FIXME need to take filter into account
 
-  var stat = stats[fieldDef.name];
+  var stat = stats[fieldDef.field];
   var type = fieldDef.type;
 
   if (fieldDef.bin) {

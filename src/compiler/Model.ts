@@ -73,7 +73,7 @@ export class Model {
 
   has(channel: Channel) {
     // equivalent to calling vlenc.has(this._encoding, channel)
-    return this._encoding[channel].name !== undefined;
+    return this._encoding[channel].field !== undefined;
   }
 
   fieldDef(channel: Channel) {
@@ -99,9 +99,9 @@ export class Model {
     }
     var fn = this._encoding[channel].aggregate || this._encoding[channel].timeUnit || (this._encoding[channel].bin && 'bin');
     if (fn) {
-      return fn.toUpperCase() + '(' + this._encoding[channel].name + ')';
+      return fn.toUpperCase() + '(' + this._encoding[channel].field + ')';
     } else {
-      return this._encoding[channel].name;
+      return this._encoding[channel].field;
     }
   }
 

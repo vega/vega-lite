@@ -1,6 +1,7 @@
 import * as vlFieldDef from '../fielddef';
 import * as util from '../util';
 import {Model} from './Model';
+import {FieldDef} from '../schema/fielddef.schema';
 
 import {MAXBINS_DEFAULT} from '../bin';
 import {Channel} from '../channel';
@@ -75,14 +76,14 @@ export namespace source {
   function formatParse(model: Model) {
     var parse;
 
-    model.forEach(function(fieldDef) {
+    model.forEach(function(fieldDef: FieldDef) {
       if (fieldDef.type === TEMPORAL) {
         parse = parse || {};
-        parse[fieldDef.name] = 'date';
+        parse[fieldDef.field] = 'date';
       } else if (fieldDef.type === QUANTITATIVE) {
         if (vlFieldDef.isCount(fieldDef)) return;
         parse = parse || {};
-        parse[fieldDef.name] = 'number';
+        parse[fieldDef.field] = 'number';
       }
     });
 
@@ -105,7 +106,7 @@ export namespace source {
   }
 
   export function timeTransform(model: Model) {
-    return model.reduce(function(transform, fieldDef, channel) {
+    return model.reduce(function(transform, fieldDef: FieldDef, channel: Channel) {
       if (fieldDef.type === TEMPORAL && fieldDef.timeUnit) {
         var fieldRef = model.fieldRef(channel, {nofn: true, datum: true});
 
@@ -120,12 +121,12 @@ export namespace source {
   }
 
   export function binTransform(model: Model) {
-    return model.reduce(function(transform, fieldDef, channel) {
+    return model.reduce(function(transform, fieldDef: FieldDef, channel: Channel) {
       const bin = model.bin(channel);
       if (bin) {
         transform.push({
           type: 'bin',
-          field: fieldDef.name,
+          field: fieldDef.field,
           output: {
             start: model.fieldRef(channel, {binSuffix: '_start'}),
             end: model.fieldRef(channel, {binSuffix: '_end'})
@@ -209,8 +210,8 @@ export namespace summary {
           meas['*'] = meas['*'] || {};
           meas['*'].count = true;
         } else {
-          meas[fieldDef.name] = meas[fieldDef.name] || {};
-          meas[fieldDef.name][fieldDef.aggregate] = true;
+          meas[fieldDef.field] = meas[fieldDef.field] || {};
+          meas[fieldDef.field][fieldDef.aggregate] = true;
         }
       } else {
         if (fieldDef.bin) {
@@ -219,7 +220,7 @@ export namespace summary {
           dims[model.fieldRef(channel, {binSuffix: '_mid'})] = model.fieldRef(channel, {binSuffix: '_mid'});
           dims[model.fieldRef(channel, {binSuffix: '_end'})] = model.fieldRef(channel, {binSuffix: '_end'});
         } else {
-          dims[fieldDef.name] = model.fieldRef(channel);
+          dims[fieldDef.field] = model.fieldRef(channel);
         }
 
       }

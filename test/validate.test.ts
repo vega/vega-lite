@@ -16,23 +16,23 @@ describe('vl.validate', function() {
       expect(getEncodingMappingError({
         marktype: 'bar',
         encoding: {
-          x: {name: 'a'}
+          x: {field: 'a'}
         }
       })).to.be.null;
 
       expect(getEncodingMappingError({
         marktype: 'line',
         encoding: {
-          x: {name: 'b'},
-          y: {name: 'a'}
+          x: {field: 'b'},
+          y: {field: 'a'}
         }
       })).to.be.null;
 
       expect(getEncodingMappingError({
         marktype: 'area',
         encoding: {
-          x: {name: 'a'},
-          y: {name: 'b'}
+          x: {field: 'a'},
+          y: {field: 'b'}
         }
       })).to.be.null;
     });
@@ -41,42 +41,42 @@ describe('vl.validate', function() {
       expect(getEncodingMappingError({
         marktype: 'line',
         encoding: {
-          x: {name: 'b'} // missing y
+          x: {field: 'b'} // missing y
         }
       })).to.be.ok;
 
       expect(getEncodingMappingError({
         marktype: 'area',
         encoding: {
-          y: {name: 'b'} // missing x
+          y: {field: 'b'} // missing x
         }
       })).to.be.ok;
 
       expect(getEncodingMappingError({
         marktype: 'text',
         encoding: {
-          y: {name: 'b'} // missing text
+          y: {field: 'b'} // missing text
         }
       })).to.be.ok;
 
       expect(getEncodingMappingError({
         marktype: 'line',
         encoding: {
-          shape: {name: 'b'} // using shape with line
+          shape: {field: 'b'} // using shape with line
         }
       })).to.be.ok;
 
       expect(getEncodingMappingError({
         marktype: 'area',
         encoding: {
-          shape: {name: 'b'} // using shape with area
+          shape: {field: 'b'} // using shape with area
         }
       })).to.be.ok;
 
       expect(getEncodingMappingError({
         marktype: 'bar',
         encoding: {
-          shape: {name: 'b'} // using shape with bar
+          shape: {field: 'b'} // using shape with bar
         }
       })).to.be.ok;
     });

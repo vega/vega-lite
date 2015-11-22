@@ -26,7 +26,7 @@ export interface Encoding {
 
 // TODO: remove if possible
 var requiredNameType = {
-  required: ['name', 'type']
+  required: ['field', 'type']
 };
 
 var x = merge(duplicate(typicalField), requiredNameType, {

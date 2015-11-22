@@ -8,7 +8,7 @@ describe('Legend', function() {
     it('should add explicitly specified title', function () {
       var title = legend.title(new Model({
           encoding: {
-            color: {name: 'a', legend: {title: 'Custom'}}
+            color: {field: 'a', legend: {title: 'Custom'}}
           }
         }), 'color');
       expect(title).to.eql('Custom');
@@ -17,7 +17,7 @@ describe('Legend', function() {
     it('should add return fieldTitle by default', function () {
       var encoding = new Model({
           encoding: {
-            color: {name: 'a', legend: {}}
+            color: {field: 'a', legend: {}}
           }
         });
 
