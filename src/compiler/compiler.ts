@@ -7,7 +7,7 @@ import * as vlScale from './scale';
 import * as vlTime from './time';
 import {compileAxis} from './axis';
 import {compileData} from './data';
-import * as vlLegend from './legend';
+import {compileLegends} from './legend';
 import * as vlMarks from './marks';
 import vlFacet from './facet';
 import vlLayout from './layout';
@@ -99,7 +99,7 @@ export function compile(spec, stats, theme?) {
     return vlScale.names(markProps.properties.update);
   }));
 
-  var legends = vlLegend.defs(model, styleCfg);
+  var legends = compileLegends(model, styleCfg);
 
   // Small Multiples
   if (model.has(ROW) || model.has(COLUMN)) {
