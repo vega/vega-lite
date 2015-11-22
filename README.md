@@ -12,7 +12,7 @@ __Try using Vega-Lite in the online [Vega Editor](http://vega.github.io/vega-edi
 
 The complete schema for specifications as [JSON schema](http://json-schema.org/) is at [vega-lite-schema.json](https://vega.github.io/vega-lite/vega-lite-schema.json).
 
-**Note: Vega-Lite is still in alpha phase and we are working on improving the code and [documentation](http://vega.github.io/vega-lite/docs/index.html).
+**Note: Vega-Lite is still in alpha phase and we are working on improving the code and [documentation](https://vega.github.io/vega-lite/docs/).
 Our syntax might change slightly before we release 1.0.**  See our wiki pages for [the development roadmap](https://github.com/vega/vega-lite/wiki/Roadmap) and [how you can contribute](https://github.com/vega/vega-lite/wiki/Contribute).
 If you find a bug or have a feature request, please [create an issue](https://github.com/vega/vega-lite/issues/new).
 
