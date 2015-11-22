@@ -16,12 +16,12 @@ These channels are properties for the top-level `encoding` definition object.
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| x, y          | [FieldDef](#field-definition)| Mapping values of a field to x or y coordinates (or to width or height for `bar` and `area` marks). |
-| row, column   | [FieldDef](#field-definition)| Using a field to facet data into vertical and horizontal [trellis plots](https://en.wikipedia.org/wiki/Small_multiple) respectively. |
-| color | [FieldDef](#field-definition)| Mapping values of a field to color or setting static color value.  The values are mapped to hue if the field is nominal, and mapped to saturation otherwise.  |
-| shape  | [FieldDef](#field-definition)| Mapping values of a field to shape of the marks or setting static shape.  `shape` is only applicable for `point` marks.  |
-| size  | [FieldDef](#field-definition)| Mapping values of the field to size of the marks.  `size` is not applicable for `line` and `area`. |
-| detail | [FieldDef](#field-definition)| Adding additional dimension to aggregate views.  `detail` does not affect raw plots. |
+| x, y          | [FieldDef](#field-definition)| Description of a field mapped to x or y coordinates (or to width or height for `bar` and `area` marks). |
+| row, column   | [FieldDef](#field-definition)| Description of a field that is used to facet data into vertical and horizontal [trellis plots](https://en.wikipedia.org/wiki/Small_multiple) respectively. |
+| color | [FieldDef](#field-definition)| Description of a field mapped to color or a constant value for color.  The values are mapped to hue if the field is nominal, and mapped to saturation otherwise.  |
+| shape  | [FieldDef](#field-definition)| Description of a field mapped to shape encoding or a constant value for shape.   `shape` is only applicable for `point` marks.  |
+| size  | [FieldDef](#field-definition)| Description of a field mapped to size encoding or a constant value for size.  `size` is not applicable for `line` and `area`. |
+| detail | [FieldDef](#field-definition)| Description of a field that serves as an additional dimension for aggregate views without mapping to a specific visual channel.  `detail` does not affect raw plots. |
 
 <!-- # Faceting
 TODO: add visual examples for both row and column
