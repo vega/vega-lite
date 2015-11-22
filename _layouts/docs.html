@@ -1,8 +1,16 @@
 <!DOCTYPE html>
 <html>
   <link rel=stylesheet href="Github2.css">
+  <link rel=stylesheet href="syntax.css">
   <body>
-    <h1> {{site.title}} </h1>
+    <div style="float:right">
+      <a href="index.html">Docs</a>
+      <a href="data.html">Data</a>
+      <a href="marktype.html">Mark Type</a>
+      <a href="encoding.html">Encoding</a>
+      <a href="config.html">Config</a>
+    </div>
+    <h1> {{site.title}}: {{page.title}} </h1>
     <div class="page-content">
       <div class="wrapper">
         {{ content }}

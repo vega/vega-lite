@@ -1,7 +1,7 @@
 ---
 layout: docs
-title: Encoding Mapping
-permalink: /docs/encoding-mapping.html
+title: Mark Type
+permalink: /docs/marktype.html
 ---
 
 Currently Vega-Lite supports the following mark types:

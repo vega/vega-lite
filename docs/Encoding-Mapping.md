@@ -60,7 +60,7 @@ Here is a list of properties for the field definition object:
 
 ## Field Transformations
 
-#### ▸ `aggregate`
+### ▸ `aggregate`
 
 Vega-Lite supports all [Vega aggregation operations](https://github.com/vega/vega/wiki/Data-Transforms#-aggregate) (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).
 
@@ -70,7 +70,7 @@ If none of the specified encoding channel contains aggregation, no additional da
 
 ----
 
-#### ▸ `bin`
+### ▸ `bin`
 
 To group raw data values of a particular field into bins (e.g., for a histogram),
 the field should have `bin` property specified.  
@@ -87,7 +87,7 @@ __Pending Revision__: We are revising how binning should be specified in Vega-Li
 
 ----
 
-#### ▸ `sort`
+### ▸ `sort`
 
 Order of a field's values can be specified using the `'sort'` property.  
 For `x`, `y`, `row` and `column`, this determines the order of each value's position.
@@ -111,7 +111,7 @@ For `color`, `shape`, `size` and `detail`, this determines the layer order
 
 ----
 
-#### ▸ `timeUnit`
+### ▸ `timeUnit`
 
 `timeUnit` property can be specified for converting timeUnit for temporal field.  
 Therefore, `timeUnit` is only applied when the `type` is "`temporal`".
@@ -121,7 +121,7 @@ __In Roadmap__: Support for other values such as `year-month`, `year-month-day`,
 
 ## Scale, Axis, and Legend
 
-#### ▸ `scale`
+### ▸ `scale`
 
 Vega-Lite's `scale` object supports the following Vega scale properties:
 
@@ -160,7 +160,7 @@ Scales of quantitative fields are linear scales by default, but users can specif
 
 ----
 
-#### ▸ `axis`
+### ▸ `axis`
 
 Axes provide axis lines, ticks and labels to convey how a spatial range represents a data range. Simply put, axes visualize scales.
 
@@ -191,8 +191,9 @@ If `title` is unspecified, the default value is produced from the field's name a
 If `titleOffset` is unspecified, the default value is automatically determined.
 <!-- TODO: add detail about default behavior -->
 
+----
 
-#### ▸ `legend`
+### ▸ `legend`
 
 <!-- TODO: add support for turning legends off -->
 

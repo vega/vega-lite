@@ -28,7 +28,7 @@ that contains the following top-level properties:
 | [data](data.html)    | Object        | An object describing data source |
 | [marktype](marktype.html)| String        | The mark type.  Currently Vega-Lite supports `bar`, `line`, `area`, `point`, and `text` (text table). |
 | [encoding](encoding.html)| Object        | key-value mapping between encoding channels and encoding object |
-| config   | Object        | Configuration object.  (__Documentation Coming Soon__ -- for now please see [config json schema in schema.js](https://github.com/uwdata/vega-lite/blob/master/src/schema/schema.js#L573)) |
+| [config](config.html)   | Object        | Configuration object. |
 
 ## Using Vega-Lite
 
@@ -38,7 +38,7 @@ Here is the bare minimum html file to get Vega-Lite with inline values working i
 Basically, Vega-Lite compiles a Vega-Lite specification into a Vega
 specification and use Vega Runtime to display visualizations.
 
-```html
+{% highlight html %}
 <!DOCTYPE html>
 <meta charset="utf-8">
 
@@ -74,7 +74,8 @@ var vgspec = vl.compile(vlspec).spec;
 parse(vgspec);
 
 </script>
-```
+{% endhighlight %}
+
 
 ### Data from URL
 
