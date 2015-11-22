@@ -10,6 +10,7 @@ import * as vlEncoding from '../encoding';
 import {AREA, BAR} from '../marktype';
 import * as schema from '../schema/schema';
 import * as schemaUtil from '../schema/schemautil';
+import {StackProperties} from './stack';
 import {getFullName} from '../type';
 import * as util from '../util';
 
@@ -19,12 +20,14 @@ import * as util from '../util';
 
 export class Model {
   _spec: Spec;
+  _stack: StackProperties;
 
   // TODO: include _stack, _layout, _style, etc.
 
   constructor(spec: Spec, theme?) {
     var defaults = schema.instantiate();
     this._spec = schemaUtil.merge(defaults, theme || {}, spec);
+    this._stack = this.getStackProperties();
 
     // convert short type to full type
     vlEncoding.forEach(this._spec.encoding, function(fieldDef) {
@@ -32,6 +35,41 @@ export class Model {
         fieldDef.type = getFullName(fieldDef.type);
       }
     });
+
+    // calculate stack
+  }
+
+  private getStackProperties(): StackProperties {
+    var stack = (this.has(COLOR)) ? COLOR : (this.has(DETAIL)) ? DETAIL : null;
+
+    if (stack &&
+        (this.is(BAR) || this.is(AREA)) &&
+        this.config('stack') !== false &&
+        this.isAggregate()) {
+      var isXMeasure = this.isMeasure(X);
+      var isYMeasure = this.isMeasure(Y);
+
+      if (isXMeasure && !isYMeasure) {
+        return {
+          groupbyChannel: Y,
+          fieldChannel: X,
+          stackChannel: stack,
+          config: this.config('stack')
+        };
+      } else if (isYMeasure && !isXMeasure) {
+        return {
+          groupbyChannel: X,
+          fieldChannel: Y,
+          stackChannel: stack,
+          config: this.config('stack')
+        };
+      }
+    }
+    return null;
+  }
+
+  stack(): StackProperties {
+    return this._stack;
   }
 
   toSpec(excludeConfig?, excludeData?) {
@@ -183,45 +221,6 @@ export class Model {
     return this.isAggregate() ? SUMMARY : SOURCE;
   }
 
-  // TODO: calculate this and store it in this._spec.stack so it can be called multiple times.
-  /**
-   * Check if the encoding should be stacked and return the stack dimenstion and value fields.
-   * @return {Object} An object containing two properties:
-   * - dimension - the dimension field
-   * - value - the value field
-   */
-  stack() {
-    var stack = (this.has(COLOR) && this.fieldDef(COLOR).stack) ? COLOR :
-      (this.has(DETAIL) && this.fieldDef(DETAIL).stack) ? DETAIL :
-        null;
-
-    var properties = stack && this.fieldDef(stack).stack !== true ?
-      this.fieldDef(stack).stack :
-      {};
-
-    if ((this.is(BAR) || this.is(AREA)) && stack && this.isAggregate()) {
-
-      var isXMeasure = this.isMeasure(X);
-      var isYMeasure = this.isMeasure(Y);
-
-      if (isXMeasure && !isYMeasure) {
-        return {
-          groupby: Y,
-          value: X,
-          stack: stack,
-          properties: properties
-        };
-      } else if (isYMeasure && !isXMeasure) {
-        return {
-          groupby: X,
-          value: Y,
-          stack: stack,
-          properties: properties
-        };
-      }
-    }
-    return null; // no stack encoding
-  }
 
   details() {
     var encoding = this;

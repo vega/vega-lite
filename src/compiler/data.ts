@@ -2,6 +2,7 @@ import * as vlFieldDef from '../fielddef';
 import * as util from '../util';
 import {Model} from './Model';
 import {FieldDef} from '../schema/fielddef.schema';
+import {StackProperties} from './stack';
 
 import {MAXBINS_DEFAULT} from '../bin';
 import {Channel} from '../channel';
@@ -32,9 +33,9 @@ export function def(model: Model) {
   filterNonPositive(def[def.length - 1], model);
 
   // Stack
-  var stackCfg = model.stack();
-  if (stackCfg) {
-    def.push(stack.def(model, stackCfg));
+  var stackDef = model.stack();
+  if (stackDef) {
+    def.push(stack.def(model, stackDef));
   }
 
   return def;
@@ -254,9 +255,9 @@ export namespace stack {
   /**
    * Add stacked data source, for feeding the shared scale.
    */
-  export function def(model: Model, stackCfg):VgData {
-    var dim = stackCfg.groupby;
-    var val = stackCfg.value;
+  export function def(model: Model, stackProps: StackProperties):VgData {
+    var groupbyChannel = stackProps.groupbyChannel;
+    var fieldChannel = stackProps.fieldChannel;
     var facets = model.facets();
 
     var stacked:VgData = {
@@ -264,8 +265,9 @@ export namespace stack {
       source: model.dataTable(),
       transform: [{
         type: 'aggregate',
-        groupby: [model.fieldRef(dim)].concat(facets), // dim and other facets
-        summarize: [{ops: ['sum'], field: model.fieldRef(val)}]
+        // group by channel and other facets
+        groupby: [model.fieldRef(groupbyChannel)].concat(facets),
+        summarize: [{ops: ['sum'], field: model.fieldRef(fieldChannel)}]
       }]
     };
 
@@ -276,7 +278,7 @@ export namespace stack {
         summarize: [{
           ops: ['max'],
           // we want max of sum from above transform
-          field: model.fieldRef(val, {prefn: 'sum_'})
+          field: model.fieldRef(fieldChannel, {prefn: 'sum_'})
         }]
       });
     }

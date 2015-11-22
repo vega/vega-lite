@@ -27,7 +27,6 @@ Here are the list of properties of the encoding property definition object:
 | [axis](#axis)        | Object        | Configuration object for the encoding's axis    |
 | [legends](#legends)  | Object        | Configuration object for the encoding's legends |
 | [scale](#scale)      | Object        | Configuration object for the encoding's scale   |
-| [stack](#stack)      | Boolean \| Object        | Boolean flag / configuration object for stacking (only for bar and area marks). See [Stack](#stack).  |
 
 __<sup>1</sup>__ __Pending Revision__
 We are considering other properties of variables including specifying primitive type.
@@ -160,32 +159,6 @@ For `color`, `shape`, `size` and `detail`, this determines the layer order
 | _sort.op_     | String        | A valid [aggregation operation](Data-Transforms#-aggregate) (e.g., `mean`, `median`, etc.).|
 | _sort.order_  | String        | `'ascending'` or `'descending'` order. |
 
-
-
-
 # Channel Specific Properties
-
-## Stack
-
-Stacked bar chart and stacked area chart can be specified using `'stack'`
-property in the `'color'` encoding channel.
-Stack is only applicable only for bar and area marks.  Otherwise, stack property is
-ignored.
-
-When applicable, `'stack'` property can be either boolean or a definition
-object.  When specified as `'boolean'`, default properties are applied.
-`'stack'` definition object has the following properties:
-
-
-
-| Property      | Type          | Description    |
-| :------------ |:-------------:| :------------- |
-| _stack.offset_| String        | The baseline offset style. One of `"zero"` (default), `"center"`, or `"normalize"`. The `"center"` offset will center the stacks. The `"normalize"` offset will compute percentage values for each stack point; the output values will be in the range [0,1].|
-
-__TODO: order or reverse?__
-
-
-
-## Other
 
 _(Coming Soon)_

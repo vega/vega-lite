@@ -82,7 +82,7 @@ export function domain(model: Model, channel:Channel, type, facet:boolean = fals
 
   // For stack, use STACKED data.
   var stack = model.stack();
-  if (stack && channel === stack.value) {
+  if (stack && channel === stack.fieldChannel) {
     return {
       data: STACKED,
       field: model.fieldRef(channel, {

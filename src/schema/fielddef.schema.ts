@@ -21,14 +21,12 @@ export interface FieldDef {
   timeUnit?: string;
   bin?: boolean | Bin;
 
-
   sort?: Sort | string;
 
-  // override
+  // override vega components
   axis?: Axis;
   legend?: Legend;
   scale?: Scale;
-  stack?: any;// TODO move this to config
 
   // text
   align?: string;
@@ -89,23 +87,3 @@ export var onlyOrdinalField = merge(duplicate(fieldDef), {
     scale: ordinalOnlyScale
   }
 });
-
-export var stack = {
-  type: ['boolean', 'object'],
-  default: true,
-  description: 'Enable stacking (for bar and area marks only).',
-  properties: {
-    reverse: {
-      type: 'boolean',
-      default: false,
-      description: 'Whether to reverse the stack\'s sortby.'
-    },
-    offset: {
-      type: 'string',
-      default: undefined,
-      enum: ['zero', 'center', 'normalize']
-      // TODO(#620) refer to Vega spec once it doesn't throw error
-      // enum: vgStackSchema.properties.offset.oneOf[0].enum
-    }
-  }
-};

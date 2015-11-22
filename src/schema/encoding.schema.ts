@@ -10,7 +10,7 @@ import {axis} from './axis.schema';
 import {FieldDef} from './fielddef.schema';
 import {legend} from './legend.schema';
 import {sort} from './sort.schema';
-import {typicalField, onlyOrdinalField, stack} from './fielddef.schema';
+import {typicalField, onlyOrdinalField} from './fielddef.schema';
 
 export interface Encoding {
   x?: FieldDef;
@@ -87,7 +87,6 @@ var color = merge(duplicate(typicalField), {
   properties: {
     legend: legend,
     sort: sort,
-    stack: stack,
     value: {
       type: 'string',
       role: 'color',
@@ -171,8 +170,7 @@ var shape = merge(duplicate(onlyOrdinalField), {
 var detail = merge(duplicate(onlyOrdinalField), {
   supportedMarktypes: {point: true, tick: true, line: true, circle: true, square: true},
   properties: {
-    sort: sort,
-    stack: stack
+    sort: sort
   }
 });
 

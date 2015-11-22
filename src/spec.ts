@@ -4,6 +4,8 @@ import * as vlEncoding from './encoding';
 import * as util from './util';
 import {Model} from './compiler/Model';
 import {Spec} from './schema/schema';
+import {COLOR, DETAIL} from './channel';
+import {BAR, AREA} from './marktype';
 
 // TODO: add vl.spec.validate & move stuff from vl.validate to here
 
@@ -17,11 +19,11 @@ export function getCleanSpec(spec: Spec): Spec {
   return new Model(spec).toSpec(true);
 }
 
-
-export function isStack(spec): boolean {
-  // FIXME update this once we have control for stack ...
-  return (spec.marktype === 'bar' || spec.marktype === 'area') &&
-    !!spec.encoding.color;
+export function isStack(spec: Spec): boolean {
+  return (spec.encoding[COLOR].field || spec.encoding[DETAIL].field) &&
+    (spec.marktype === BAR || spec.marktype === AREA) &&
+    (!spec.config || !spec.config.stack !== false) &&
+    vlEncoding.isAggregate(spec.encoding);
 }
 
 // TODO revise

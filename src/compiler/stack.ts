@@ -1,8 +1,27 @@
 import {Model} from './Model';
+import {Channel} from '../channel';
+import * as util from '../util';
 
-export default function(model: Model, mdef, stack) {
-  var groupby = stack.groupby;
-  var fieldChannel = stack.value;
+export interface StackProperties {
+  groupbyChannel: Channel;
+  fieldChannel: Channel;
+  stackChannel: Channel; // COLOR or DETAIL
+  config: any;
+}
+
+// TODO: put all vega interface in one place
+interface StackTransform {
+  type: string;
+  offset?: any;
+  groupby: any;
+  field: any;
+  sortby: any;
+  output: any;
+}
+
+export default function(model: Model, mdef, stackProps: StackProperties) {
+  var groupby = stackProps.groupbyChannel;
+  var fieldChannel = stackProps.fieldChannel;
 
   var valName = model.fieldRef(fieldChannel);
   var startField = valName + '_start';
@@ -15,34 +34,32 @@ export default function(model: Model, mdef, stack) {
     transforms.push({
       type: 'impute',
       field: model.fieldRef(fieldChannel),
-      groupby: [model.fieldRef(stack.stack)],
+      groupby: [model.fieldRef(stackProps.stackChannel)],
       orderby: [model.fieldRef(groupby)],
       method: 'value',
       value: 0
     });
   }
 
-  // TODO: put all vega interface in one place
-  interface StackTransform {
-    type: string;
-    offset?: any;
-    groupby: any;
-    field: any;
-    sortby: any;
-    output: any;
-  }
+  const sortby = stackProps.config.sort === 'descending' ?
+                   '-' + model.fieldRef(stackProps.stackChannel) :
+                 stackProps.config.sort === 'ascending' ?
+                   model.fieldRef(stackProps.stackChannel) :
+                 util.isObject(stackProps.config.sort) ?
+                   stackProps.config.sort :
+                   '-' + model.fieldRef(stackProps.stackChannel); // default
 
   // add stack transform to mark
   var stackTransform: StackTransform = {
     type: 'stack',
     groupby: [model.fieldRef(groupby)],
     field: model.fieldRef(fieldChannel),
-    sortby: [(stack.properties.reverse ? '-' : '') + model.fieldRef(stack.stack)],
+    sortby: sortby,
     output: {start: startField, end: endField}
   };
 
-  if (stack.properties.offset) {
-    stackTransform.offset = stack.properties.offset;
+  if (stackProps.config.offset) {
+    stackTransform.offset = stackProps.config.offset;
   }
 
   transforms.push(stackTransform);
