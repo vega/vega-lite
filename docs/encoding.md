@@ -1,21 +1,15 @@
 ---
 layout: docs
-title: Encoding Mapping
+title: Encoding
 permalink: /docs/encoding.html
 ---
 
-Vega-Lite's top-level `encoding` property is a key-value mapping between
+Vega-Lite's top-level `encoding` property describes a mapping between
 encoding channels (such as `x`,`y`, and `color`) and field definitions.
-
-Each field definition object contains:
-- A reference to the `field` name or a constant `value`
-- The field's data `type`
-- The field's inline transformation including aggregation (`aggregate`), binning (`bin`),
-sorting (`sort`), and time unit conversion (`timeUnit`).
-- Optional configuration properties for `scale`, `axis`, and `legend` of the encoding channel.
-- [Additional visual properties for each encoding channel](#Channel-Specific-Properties)
-
-# Encoding Channels
+Each field definition object describes
+a constant `value` or a reference to the `field` name and its data `type` and inline transformation (`aggregate`, `bin`, `sort` and `timeUnit`).
+Each field definition object can also optionally include configuration properties for `scale`, `axis`, and `legend`
+<!-- [Additional visual properties for each encoding channel](#Channel-Specific-Properties) -->
 
 Vega-Lite supports the following encoding channels: `x`,`y`, `row`, `column`, `color`, `size`, `shape`, `text`, `detail`.
 These channels are properties for the top-level `encoding` definition object.
