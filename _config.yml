@@ -1,6 +1,6 @@
 # Github Pages' Jekyll Site settings
 title: Vega-Lite
-description: Vega-Lite: a high-level grammar for statistical graphics.
+description: Vega-Lite - a high-level grammar for statistical graphics.
   Vega-Lite provides a higher-level grammar for visual analysis,
   comparable to ggplot or Tableau, that generates complete Vega specifications.
 
