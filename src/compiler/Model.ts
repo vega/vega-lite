@@ -195,9 +195,7 @@ export class Model {
    * - value - the value field
    */
   stack(): StackDef {
-    var stack = (this.has(COLOR) && this.fieldDef(COLOR).stack) ? COLOR :
-      (this.has(DETAIL) && this.fieldDef(DETAIL).stack) ? DETAIL :
-        null;
+    var stack = (this.has(COLOR)) ? COLOR : (this.has(DETAIL)) ? DETAIL : null;
 
     if ((this.is(BAR) || this.is(AREA)) && stack && this.isAggregate()) {
 
