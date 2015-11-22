@@ -1,4 +1,4 @@
-Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications.
+Vega-Lite provides a higher-level grammar for visual analysis, akin to ggplot or Tableau, that generates complete Vega specifications.
 
 Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as position (x,y), size, color and shape. These mappings are then translated into full visualization specifications using the Vega visualization grammar. These resulting visualizations can then be exported or further modified to customize the display.
 
@@ -7,14 +7,14 @@ embed Vega-Lite visualizations in your applications.
 
 ## Vega-Lite Specification
 
-A Vega-Lite specification is a JSON object that describes a
-single data source (`data`), a mark type (`marktype`), key-value
-visual encodings of data variables (`encoding`), and data transformations.
+A Vega-Lite specification is a JSON object that describes data source (`data`),
+a mark type (`marktype`), key-value visual encodings of data variables (`encoding`),
+and data transformations.
 
 Vega-Lite assumes a tabular data model: each data source is a set of records,
 where each record has values for the same set of variables.
 
-In the current version, Vega-Lite specification<sup>1</sup> is a JSON object
+In the current version, Vega-Lite specification is a JSON object
 that contains the following top-level properties:
 
 | Property             | Type          | Description    |
@@ -23,12 +23,6 @@ that contains the following top-level properties:
 | marktype             | String        | The mark type.  Currently Vega-Lite supports `bar`, `line`, `area`, `point`, and `text` (text table). |
 | [encoding](Encoding Mapping)| Object        | key-value mapping between encoding channels and encoding object |
 | config   | Object        | Configuration object.  (__Documentation Coming Soon__ -- for now please see [config json schema in schema.js](https://github.com/uwdata/vega-lite/blob/master/src/schema/schema.js#L573)) |
-
-<sup>1</sup>
-Vega-Lite is currently an alpha software.  The specification syntax is subject
-to change and will become more stable once we reach 1.0. See our  [[Roadmap]]
-page for our development plan.  We also note in this documentation that are
-likely to change are annotated with  __"Pending Revision"__ notes.
 
 ## Using Vega-Lite
 
