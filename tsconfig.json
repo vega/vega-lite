@@ -20,7 +20,7 @@
         "**/*.tsx",
         "!node_modules/**",
         "!bower_components/**",
-        "!_site"
+        "!_site/**"
     ],
     "files": [
         "src/aggregate.ts",
