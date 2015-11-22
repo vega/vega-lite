@@ -2,7 +2,7 @@ import {Model} from './Model';
 import {Channel} from '../channel';
 import * as util from '../util';
 
-export interface StackDef {
+export interface StackProperties {
   groupbyChannel: Channel;
   fieldChannel: Channel;
   stackChannel: Channel; // COLOR or DETAIL
@@ -19,9 +19,9 @@ interface StackTransform {
   output: any;
 }
 
-export default function(model: Model, mdef, stack: StackDef) {
-  var groupby = stack.groupbyChannel;
-  var fieldChannel = stack.fieldChannel;
+export default function(model: Model, mdef, stackProps: StackProperties) {
+  var groupby = stackProps.groupbyChannel;
+  var fieldChannel = stackProps.fieldChannel;
 
   var valName = model.fieldRef(fieldChannel);
   var startField = valName + '_start';
@@ -34,20 +34,20 @@ export default function(model: Model, mdef, stack: StackDef) {
     transforms.push({
       type: 'impute',
       field: model.fieldRef(fieldChannel),
-      groupby: [model.fieldRef(stack.stackChannel)],
+      groupby: [model.fieldRef(stackProps.stackChannel)],
       orderby: [model.fieldRef(groupby)],
       method: 'value',
       value: 0
     });
   }
 
-  const sortby = stack.config.sort === 'descending' ?
-                   '-' + model.fieldRef(stack.stackChannel) :
-                 stack.config.sort === 'ascending' ?
-                   model.fieldRef(stack.stackChannel) :
-                 util.isObject(stack.config.sort) ?
-                   stack.config.sort :
-                   '-' + model.fieldRef(stack.stackChannel); // default
+  const sortby = stackProps.config.sort === 'descending' ?
+                   '-' + model.fieldRef(stackProps.stackChannel) :
+                 stackProps.config.sort === 'ascending' ?
+                   model.fieldRef(stackProps.stackChannel) :
+                 util.isObject(stackProps.config.sort) ?
+                   stackProps.config.sort :
+                   '-' + model.fieldRef(stackProps.stackChannel); // default
 
   // add stack transform to mark
   var stackTransform: StackTransform = {
@@ -58,8 +58,8 @@ export default function(model: Model, mdef, stack: StackDef) {
     output: {start: startField, end: endField}
   };
 
-  if (stack.config.offset) {
-    stackTransform.offset = stack.config.offset;
+  if (stackProps.config.offset) {
+    stackTransform.offset = stackProps.config.offset;
   }
 
   transforms.push(stackTransform);

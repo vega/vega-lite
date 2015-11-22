@@ -10,7 +10,7 @@ import * as vlEncoding from '../encoding';
 import {AREA, BAR} from '../marktype';
 import * as schema from '../schema/schema';
 import * as schemaUtil from '../schema/schemautil';
-import {StackDef} from './stack';
+import {StackProperties} from './stack';
 import {getFullName} from '../type';
 import * as util from '../util';
 
@@ -20,14 +20,14 @@ import * as util from '../util';
 
 export class Model {
   _spec: Spec;
-  _stack: StackDef;
+  _stack: StackProperties;
 
   // TODO: include _stack, _layout, _style, etc.
 
   constructor(spec: Spec, theme?) {
     var defaults = schema.instantiate();
     this._spec = schemaUtil.merge(defaults, theme || {}, spec);
-    this._stack = this.getStackDef();
+    this._stack = this.getStackProperties();
 
     // convert short type to full type
     vlEncoding.forEach(this._spec.encoding, function(fieldDef) {
@@ -39,7 +39,7 @@ export class Model {
     // calculate stack
   }
 
-  private getStackDef(): StackDef {
+  private getStackProperties(): StackProperties {
     var stack = (this.has(COLOR)) ? COLOR : (this.has(DETAIL)) ? DETAIL : null;
 
     if (stack &&
@@ -68,7 +68,7 @@ export class Model {
     return null;
   }
 
-  stack(): StackDef {
+  stack(): StackProperties {
     return this._stack;
   }
 

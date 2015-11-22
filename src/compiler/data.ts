@@ -2,7 +2,7 @@ import * as vlFieldDef from '../fielddef';
 import * as util from '../util';
 import {Model} from './Model';
 import {FieldDef} from '../schema/fielddef.schema';
-import {StackDef} from './stack';
+import {StackProperties} from './stack';
 
 import {MAXBINS_DEFAULT} from '../bin';
 import {Channel} from '../channel';
@@ -255,9 +255,9 @@ export namespace stack {
   /**
    * Add stacked data source, for feeding the shared scale.
    */
-  export function def(model: Model, stackDef: StackDef):VgData {
-    var groupbyChannel = stackDef.groupbyChannel;
-    var fieldChannel = stackDef.fieldChannel;
+  export function def(model: Model, stackProps: StackProperties):VgData {
+    var groupbyChannel = stackProps.groupbyChannel;
+    var fieldChannel = stackProps.fieldChannel;
     var facets = model.facets();
 
     var stacked:VgData = {
