@@ -112,7 +112,7 @@ function getMaxLength(model: Model, stats, channel: Channel) {
     if(fieldStats.type === 'number') {
       return getMaxNumberLength(model, channel, fieldStats);
     } else {
-      return Math.min(fieldStats.max, model.axis(channel).labelMaxLength || Infinity);
+      return Math.min(fieldStats.max, fieldDef.axis.labelMaxLength || Infinity);
     }
   }
 }
