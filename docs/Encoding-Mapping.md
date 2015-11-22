@@ -4,7 +4,7 @@ encoding channels (`x`,`y`, `row`, `column`, `color`, `size`, `shape`, `text`,
 
 Each encoding definition object contains:
 - A field's definition
-  - A field reference to the variable by `name` or a constant value `value`
+  - A field reference to the variable by `field` or a constant value `value`
   - The variable's data `type`
   - Its inline transformation including aggregation (`aggregate`), binning (`bin`), and time unit conversion (`timeUnit`).
 - Optional configuration properties for `scale`, `axis`, and `legends`, `stack` of the encoding channel.
@@ -17,9 +17,9 @@ Here are the list of properties of the encoding property definition object:
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| name __<sup>1</sup>__ | String        | Name of the field/variable from which to pull a data value.    |
+| field         | String        | Name of the field from which to pull a data value.    |
 | value         | String,Integer | A constant value |
-| type          | String        | Data type of the field.  This property accepts both a full type name (`'quantitative'`, `'temporal'`, `'ordinal'`,  and `'nominal'`), or an initial character of the type name (`'Q'`, `'T'`, `'O'`, `'N'`).  This property is case insensitive.  __<sup>2</sup>__ |
+| type          | String        | Data type of the field.  This property accepts both a full type name (`'quantitative'`, `'temporal'`, `'ordinal'`,  and `'nominal'`), or an initial character of the type name (`'Q'`, `'T'`, `'O'`, `'N'`).  This property is case insensitive.  __<sup>1</sup>__ |
 | [aggregate](#aggregate) | String        | Aggregation function for the field (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).  |
 | [bin](#bin)          | Boolean \| Object        | Boolean flag / configuration object for binning.  See [Binning](#Binning) |
 | [timeUnit](#timeunit)| String        | Property for converting time unit            |
@@ -29,11 +29,7 @@ Here are the list of properties of the encoding property definition object:
 | [scale](#scale)      | Object        | Configuration object for the encoding's scale   |
 | [stack](#stack)      | Boolean \| Object        | Boolean flag / configuration object for stacking (only for bar and area marks). See [Stack](#stack).  |
 
-
 __<sup>1</sup>__ __Pending Revision__
-`name` properties will be renamed to `field` to be consistent with the rest of Vega projects.  [#480](/vega/vega-lite/issues/480)
-
-__<sup>2</sup>__ __Pending Revision__
 We are considering other properties of variables including specifying primitive type.
 
 ## bin

@@ -1,5 +1,7 @@
 /// <reference path="../../typings/d3-format.d.ts"/>
 
+import {FieldDef} from '../schema/fielddef.schema';
+
 import * as d3_format from 'd3-format';
 import {setter} from '../util';
 import {COLUMN, ROW, X, Y, TEXT, Channel} from '../channel';
@@ -96,8 +98,8 @@ function getMaxNumberLength(model: Model, channel: Channel, fieldStats) {
 
 // TODO(#600) revise this
 function getMaxLength(model: Model, stats, channel: Channel) {
-  var fieldDef = model.fieldDef(channel),
-    fieldStats = stats[fieldDef.name];
+  var fieldDef: FieldDef = model.fieldDef(channel),
+    fieldStats = stats[fieldDef.field];
 
   if (fieldDef.bin) {
     // TODO once bin support range, need to update this

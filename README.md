@@ -28,14 +28,14 @@ We have more example visualizations in our [gallery](https://vega.github.io/vega
   "data": {"url": "data/barley.json"},
   "marktype": "point",
   "encoding": {
-    "x": {"type": "quantitative","name": "yield","aggregate": "mean"},
+    "x": {"type": "quantitative", "field": "yield","aggregate": "mean"},
     "y": {
-      "sort": {"name": "yield","aggregate": "mean","reverse": false},
+      "sort": {"field": "yield", "aggregate": "mean", "reverse": false},
       "type": "ordinal",
-      "name": "variety"
+      "field": "variety"
     },
-    "row": {"type": "ordinal","name": "site"},
-    "color": {"type": "ordinal","name": "year"}
+    "row": {"type": "ordinal", "field": "site"},
+    "color": {"type": "ordinal", "field": "year"}
   }
 }
 ```
@@ -55,8 +55,8 @@ This is a similar chart as one of the Vega examples in https://github.com/trifac
   },
   "marktype": "bar",
   "encoding": {
-    "x": {"type": "ordinal","name": "a"},
-    "y": {"type": "quantitative","name": "b"}
+    "x": {"type": "ordinal", "field": "a"},
+    "y": {"type": "quantitative", "field": "b"}
   }
 }
 ```

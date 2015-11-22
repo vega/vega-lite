@@ -9,6 +9,7 @@ import {interpolateHsl} from 'd3-color';
 
 import * as util from '../util';
 import {Model} from './Model';
+import {SHARED_DOMAIN_OPS} from '../aggregate';
 import {COLUMN, ROW, X, Y, SHAPE, SIZE, COLOR, TEXT, Channel} from '../channel';
 import {SOURCE, STACKED} from '../data';
 import * as time from './time';
@@ -150,8 +151,6 @@ export function reverse(model: Model, channel: Channel) {
   return sort && (sort === 'descending' || (sort.order === 'descending')) ? true : undefined;
 }
 
-var sharedDomainAggregate = ['mean', 'average', 'stdev', 'stdevp', 'median', 'q1', 'q3', 'min', 'max'];
-
 /**
  * Determine if useRawDomain should be activated for this scale.
  * @return {Boolean} Returns true if all of the following conditons applies:
@@ -174,7 +173,7 @@ export function _useRawDomain (model: Model, channel: Channel) {
     // only applied to aggregate table
     fieldDef.aggregate &&
     // only activated if used with aggregate functions that produces values ranging in the domain of the source data
-    sharedDomainAggregate.indexOf(fieldDef.aggregate) >= 0 &&
+    SHARED_DOMAIN_OPS.indexOf(fieldDef.aggregate) >= 0 &&
     (
       // Q always uses quantitative scale except when it's binned.
       // Binned field has similar values in both the source table and the summary table

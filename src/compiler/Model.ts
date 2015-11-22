@@ -5,13 +5,14 @@ import {FieldDef} from '../schema/fielddef.schema';
 import {MAXBINS_DEFAULT} from '../bin';
 import {COLUMN, ROW, X, Y, COLOR, DETAIL, Channel} from '../channel';
 import {SOURCE, SUMMARY} from '../data';
-import * as util from '../util';
 import * as vlFieldDef from '../fielddef';
 import * as vlEncoding from '../encoding';
+import {AREA, BAR} from '../marktype';
 import * as schema from '../schema/schema';
 import * as schemaUtil from '../schema/schemautil';
 import {StackDef} from './stack';
 import {getFullName} from '../type';
+import * as util from '../util';
 
 /**
  * Internal model of Vega-Lite specification for the compiler.
@@ -74,7 +75,7 @@ export class Model {
 
   has(channel: Channel) {
     // equivalent to calling vlenc.has(this._encoding, channel)
-    return this._encoding[channel].name !== undefined;
+    return this._encoding[channel].field !== undefined;
   }
 
   fieldDef(channel: Channel) {
@@ -100,9 +101,9 @@ export class Model {
     }
     var fn = this._encoding[channel].aggregate || this._encoding[channel].timeUnit || (this._encoding[channel].bin && 'bin');
     if (fn) {
-      return fn.toUpperCase() + '(' + this._encoding[channel].name + ')';
+      return fn.toUpperCase() + '(' + this._encoding[channel].field + ')';
     } else {
-      return this._encoding[channel].name;
+      return this._encoding[channel].field;
     }
   }
 
@@ -219,7 +220,7 @@ export class Model {
       this.fieldDef(stack).stack :
       {};
 
-    if ((this.is('bar') || this.is('area')) && stack && this.isAggregate()) {
+    if ((this.is(BAR) || this.is(AREA)) && stack && this.isAggregate()) {
 
       var isXMeasure = this.isMeasure(X);
       var isYMeasure = this.isMeasure(Y);

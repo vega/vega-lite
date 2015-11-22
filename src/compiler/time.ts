@@ -24,8 +24,8 @@ export function cardinality(fieldDef: FieldDef, stats, filterNull, type) {
     case 'date': return 31;
     case 'month': return 12;
     case 'year':
-      var stat = stats[fieldDef.name],
-        yearstat = stats['year_' + fieldDef.name];
+      var stat = stats[fieldDef.field],
+        yearstat = stats['year_' + fieldDef.field];
 
       if (!yearstat) { return null; }
 

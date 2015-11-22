@@ -50,7 +50,7 @@ export var data = {
         properties: {
           field: {
             type: 'string',
-            description: 'The property name in which to store the computed formula value.'
+            description: 'The field in which to store the computed formula value.'
           },
           expr: {
             type: 'string',

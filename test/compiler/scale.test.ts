@@ -20,10 +20,10 @@ describe('vl.compile.scale', function() {
           encoding: {
             y: {
               aggregate: 'sum',
-              name: 'origin'
+              field: 'origin'
             },
-            x: {name: 'x', type: 'ordinal'},
-            color: {name: 'color', type: 'ordinal'}
+            x: {field: 'x', type: 'ordinal'},
+            color: {field: 'color', type: 'ordinal'}
           }
         }), 'y', 'linear', true);
 
@@ -39,10 +39,10 @@ describe('vl.compile.scale', function() {
           encoding: {
             y: {
               aggregate: 'sum',
-              name: 'origin'
+              field: 'origin'
             },
-            x: {name: 'x', type: 'ordinal'},
-            color: {name: 'color', type: 'ordinal'}
+            x: {field: 'x', type: 'ordinal'},
+            color: {field: 'color', type: 'ordinal'}
           }
         }), 'y', 'linear', true);
 
@@ -60,7 +60,7 @@ describe('vl.compile.scale', function() {
             encoding: {
               y: {
                 bin: {maxbins: 15},
-                name: 'origin',
+                field: 'origin',
                 scale: {useRawDomain: true},
                 type: QUANTITATIVE
               }
@@ -79,7 +79,7 @@ describe('vl.compile.scale', function() {
             encoding: {
               y: {
                 aggregate: 'mean',
-                name: 'origin',
+                field: 'origin',
                 scale: {useRawDomain: true},
                 type: 'quantitative'
               }
@@ -95,7 +95,7 @@ describe('vl.compile.scale', function() {
             encoding: {
               y: {
                 aggregate: 'sum',
-                name: 'origin',
+                field: 'origin',
                 scale: {useRawDomain: true},
                 type: QUANTITATIVE
               }
@@ -111,7 +111,7 @@ describe('vl.compile.scale', function() {
             encoding: {
               y: {
                 aggregate: 'min',
-                name: 'origin',
+                field: 'origin',
                 scale: {useRawDomain: false},
                 type: QUANTITATIVE
               }
@@ -128,7 +128,7 @@ describe('vl.compile.scale', function() {
           var domain = vlscale.domain(new Model({
             encoding: {
               y: {
-                name: 'origin',
+                field: 'origin',
                 scale: {useRawDomain: true},
                 type: TEMPORAL
               }
@@ -143,7 +143,7 @@ describe('vl.compile.scale', function() {
           var domain = vlscale.domain(new Model({
             encoding: {
               y: {
-                name: 'origin',
+                field: 'origin',
                 scale: {useRawDomain: true},
                 type: 'temporal',
                 timeUnit: 'year'
@@ -160,7 +160,7 @@ describe('vl.compile.scale', function() {
           var domain = vlscale.domain(new Model({
             encoding: {
               y: {
-                name: 'origin',
+                field: 'origin',
                 scale: {useRawDomain: true},
                 type: 'temporal',
                 timeUnit: 'month'
@@ -177,7 +177,7 @@ describe('vl.compile.scale', function() {
         var sortDef = {op: 'min', field:'Acceleration'};
         var encoding = new Model({
             encoding: {
-              y: { name: 'origin', type: ORDINAL, sort: sortDef}
+              y: { field: 'origin', type: ORDINAL, sort: sortDef}
             }
           });
 
@@ -192,7 +192,7 @@ describe('vl.compile.scale', function() {
       it('should return correct domain without sort if sort is not provided', function() {
         var encoding = new Model({
             encoding: {
-              y: { name: 'origin', type: ORDINAL}
+              y: { field: 'origin', type: ORDINAL}
             }
           });
 
