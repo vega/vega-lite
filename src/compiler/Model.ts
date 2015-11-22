@@ -196,10 +196,6 @@ export class Model {
       (this.has(DETAIL) && this.fieldDef(DETAIL).stack) ? DETAIL :
         null;
 
-    var properties = stack && this.fieldDef(stack).stack !== true ?
-      this.fieldDef(stack).stack :
-      {};
-
     if ((this.is(BAR) || this.is(AREA)) && stack && this.isAggregate()) {
 
       var isXMeasure = this.isMeasure(X);
@@ -210,14 +206,14 @@ export class Model {
           groupby: Y,
           value: X,
           stack: stack,
-          properties: properties
+          properties: this.config('stack')
         };
       } else if (isYMeasure && !isXMeasure) {
         return {
           groupby: X,
           value: Y,
           stack: stack,
-          properties: properties
+          properties: this.config('stack')
         };
       }
     }

@@ -113,6 +113,25 @@ export var config = {
       minimum: 0
     },
 
+    // layout
+    stack: {
+      type: ['boolean', 'object'],
+      default: true,
+      description: 'Enable stacking (for bar and area marks only).',
+      properties: {
+        reverse: {
+          type: 'boolean',
+          description: 'Whether to reverse the stack\'s sortby.'
+        },
+        offset: {
+          type: 'string',
+          enum: ['zero', 'center', 'normalize']
+          // TODO(#620) refer to Vega spec once it doesn't throw error
+          // enum: vgStackSchema.properties.offset.oneOf[0].enum
+        }
+      }
+    },
+
     // marks
     strokeWidth: {
       type: 'integer',
