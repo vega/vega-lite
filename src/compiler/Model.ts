@@ -20,13 +20,14 @@ import * as util from '../util';
 
 export class Model {
   _spec: Spec;
-  _stackDef: StackDef;
+  _stack: StackDef;
 
   // TODO: include _stack, _layout, _style, etc.
 
   constructor(spec: Spec, theme?) {
     var defaults = schema.instantiate();
     this._spec = schemaUtil.merge(defaults, theme || {}, spec);
+    this._stack = this.getStackDef();
 
     // convert short type to full type
     vlEncoding.forEach(this._spec.encoding, function(fieldDef) {
@@ -36,6 +37,39 @@ export class Model {
     });
 
     // calculate stack
+  }
+
+  private getStackDef(): StackDef {
+    var stack = (this.has(COLOR)) ? COLOR : (this.has(DETAIL)) ? DETAIL : null;
+
+    if (stack &&
+        (this.is(BAR) || this.is(AREA)) &&
+        this.config('stack') !== false &&
+        this.isAggregate()) {
+      var isXMeasure = this.isMeasure(X);
+      var isYMeasure = this.isMeasure(Y);
+
+      if (isXMeasure && !isYMeasure) {
+        return {
+          groupbyChannel: Y,
+          fieldChannel: X,
+          stackChannel: stack,
+          config: this.config('stack')
+        };
+      } else if (isYMeasure && !isXMeasure) {
+        return {
+          groupbyChannel: X,
+          fieldChannel: Y,
+          stackChannel: stack,
+          config: this.config('stack')
+        };
+      }
+    }
+    return null;
+  }
+
+  stack(): StackDef {
+    return this._stack;
   }
 
   toSpec(excludeConfig?, excludeData?) {
@@ -187,39 +221,6 @@ export class Model {
     return this.isAggregate() ? SUMMARY : SOURCE;
   }
 
-  // TODO: calculate this and store it in this._spec.stack so it can be called multiple times.
-  /**
-   * Check if the encoding should be stacked and return the stack dimenstion and value fields.
-   * @return {Object} An object containing two properties:
-   * - dimension - the dimension field
-   * - value - the value field
-   */
-  stack(): StackDef {
-    var stack = (this.has(COLOR)) ? COLOR : (this.has(DETAIL)) ? DETAIL : null;
-
-    if ((this.is(BAR) || this.is(AREA)) && stack && this.isAggregate()) {
-
-      var isXMeasure = this.isMeasure(X);
-      var isYMeasure = this.isMeasure(Y);
-
-      if (isXMeasure && !isYMeasure) {
-        return {
-          groupbyChannel: Y,
-          fieldChannel: X,
-          stack: stack,
-          config: this.config('stack')
-        };
-      } else if (isYMeasure && !isXMeasure) {
-        return {
-          groupbyChannel: X,
-          fieldChannel: Y,
-          stack: stack,
-          config: this.config('stack')
-        };
-      }
-    }
-    return null; // no stack encoding
-  }
 
   details() {
     var encoding = this;

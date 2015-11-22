@@ -5,7 +5,7 @@ import * as util from '../util';
 export interface StackDef {
   groupbyChannel: Channel;
   fieldChannel: Channel;
-  stack: Channel; // COLOR or DETAIL
+  stackChannel: Channel; // COLOR or DETAIL
   config: any;
 }
 
@@ -34,7 +34,7 @@ export default function(model: Model, mdef, stack: StackDef) {
     transforms.push({
       type: 'impute',
       field: model.fieldRef(fieldChannel),
-      groupby: [model.fieldRef(stack.stack)],
+      groupby: [model.fieldRef(stack.stackChannel)],
       orderby: [model.fieldRef(groupby)],
       method: 'value',
       value: 0
@@ -42,12 +42,12 @@ export default function(model: Model, mdef, stack: StackDef) {
   }
 
   const sortby = stack.config.sort === 'descending' ?
-                   '-' + model.fieldRef(stack.stack) :
+                   '-' + model.fieldRef(stack.stackChannel) :
                  stack.config.sort === 'ascending' ?
-                   model.fieldRef(stack.stack) :
+                   model.fieldRef(stack.stackChannel) :
                  util.isObject(stack.config.sort) ?
                    stack.config.sort :
-                   '-' + model.fieldRef(stack.stack); // default
+                   '-' + model.fieldRef(stack.stackChannel); // default
 
   // add stack transform to mark
   var stackTransform: StackTransform = {
