@@ -1,3 +1,9 @@
+---
+layout: docs
+title: Data
+permalink: /docs/data.html
+---
+
 # Data
 
 Vega-Lite's top-level `data` property is an object that describes data source and its transformations.
@@ -62,4 +68,4 @@ an array of formula objects.  Each formula object has two properties:
 
 ### Field Transformation
 
-Other [field transformations including aggregation and binning](Encoding-Mapping.md) are specified as part of [encoding definitions](Encoding-Mapping.md)
+Other [field transformations including aggregation and binning](encoding.html#Field-Transformations) are specified as part of [encoding definitions](encoding.html#Field-Transformations)

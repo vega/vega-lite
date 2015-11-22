@@ -1,3 +1,9 @@
+---
+layout: docs
+title: Documentation
+permalink: /docs/index.html
+---
+
 Vega-Lite provides a higher-level grammar for visual analysis, akin to ggplot or Tableau, that generates complete Vega specifications.
 
 Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as position (x,y), size, color and shape. These mappings are then translated into full visualization specifications using the Vega visualization grammar. These resulting visualizations can then be exported or further modified to customize the display.
@@ -19,9 +25,9 @@ that contains the following top-level properties:
 
 | Property             | Type          | Description    |
 | :------------        |:-------------:| :------------- |
-| [data](Data)         | Object        | An object describing data source |
-| marktype             | String        | The mark type.  Currently Vega-Lite supports `bar`, `line`, `area`, `point`, and `text` (text table). |
-| [encoding](Encoding Mapping)| Object        | key-value mapping between encoding channels and encoding object |
+| [data](data.html)    | Object        | An object describing data source |
+| [marktype](marktype.html)| String        | The mark type.  Currently Vega-Lite supports `bar`, `line`, `area`, `point`, and `text` (text table). |
+| [encoding](encoding.html)| Object        | key-value mapping between encoding channels and encoding object |
 | config   | Object        | Configuration object.  (__Documentation Coming Soon__ -- for now please see [config json schema in schema.js](https://github.com/uwdata/vega-lite/blob/master/src/schema/schema.js#L573)) |
 
 ## Using Vega-Lite
@@ -80,7 +86,7 @@ After that, Vega-Lite compiles a Vega-Lite specification into a Vega specificati
 
 Note that the need to call `vl.data.stats()` will be eliminated very soon (before we release 1.0).
 
-```html
+{% highlight html %}
 <!DOCTYPE html>
 <meta charset="utf-8">
 
@@ -126,7 +132,8 @@ var vlspec = {
 render(vlSpec);
 
 </script>
-```
+{% endhighlight %}
+
 
 __Pending Revision__:
 Vega-Lite Compile API is under revision.  A better tutorial is coming soon.

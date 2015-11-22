@@ -1,3 +1,9 @@
+---
+layout: docs
+title: Encoding Mapping
+permalink: /docs/encoding.html
+---
+
 Vega-Lite's top-level `encoding` property is a key-value mapping between
 encoding channels (such as `x`,`y`, and `color`) and field definitions.
 
@@ -50,7 +56,7 @@ Here is a list of properties for the field definition object:
 | [scale](#scale)      | Object        | Configuration object for the encoding's scale   |
 
 <!-- ## Data Type -->
-<!-- TODO: add description about each data type, describe how nominal and ordinal are treated differently --> 
+<!-- TODO: add description about each data type, describe how nominal and ordinal are treated differently -->
 
 ## Field Transformations
 

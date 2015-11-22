@@ -1,3 +1,9 @@
+---
+layout: docs
+title: Config
+permalink: /docs/config.html
+---
+
 # Layout
 
 ## Facet Layout

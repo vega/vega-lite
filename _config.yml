@@ -1,0 +1,9 @@
+# Site settings
+title: Vega-Lite
+baseurl: "" # the subpath of your site, e.g. /blog/
+url: "http://vega.github.io/vega-lite" # the base hostname & protocol for your site
+exclude: [bin, gulp, lib, scripts, test, typings, package.json, bower.json]
+
+# Build settings
+markdown: kramdown
+highlighter: pygments

@@ -1,3 +1,9 @@
+---
+layout: docs
+title: Encoding Mapping
+permalink: /docs/encoding-mapping.html
+---
+
 Currently Vega-Lite supports the following mark types:
 `point`', `bar`, `tick`, `line`, `area`, and `text` (text table).
 

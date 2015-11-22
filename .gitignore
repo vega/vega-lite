@@ -14,3 +14,4 @@ src/**/*.js
 test/*.js
 test/**/*.js
 **/*.js.map
+_site
