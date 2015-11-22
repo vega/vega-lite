@@ -14,7 +14,6 @@ export interface FieldDef {
   field?: string;
   type?: string;
   value?: any;
-  displayName?: string;
 
   // function
   aggregate?: string;
@@ -36,6 +35,10 @@ export interface FieldDef {
   placeholder?: string;
   font?: any; // declare font
   format?: string;
+
+  // TODO: maybe extend this in other app?
+  // unused metadata -- for other application
+  displayName?: string;
 }
 
 export var fieldDef = {
