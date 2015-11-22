@@ -1,6 +1,6 @@
 export interface Legend {
-  title?: string;
   orient?: string;
+  title?: string;
   format?: string;
   values?: Array<any>;
   properties?: any; //TODO declare VgLegendProperties
@@ -10,15 +10,15 @@ export var legend = {
   type: 'object',
   description: 'Properties of a legend.',
   properties: {
+    orient: {
+      type: 'string',
+      default: undefined,
+      description: 'The orientation of the legend. One of "left" or "right". This determines how the legend is positioned within the scene. The default is "right".'
+    },
     title: {
       type: 'string',
       default: undefined,
       description: 'A title for the legend. (Shows field name and its function by default.)'
-    },
-    orient: {
-      type: 'string',
-      default: 'right',
-      description: 'The orientation of the legend. One of "left" or "right". This determines how the legend is positioned within the scene. The default is "right".'
     },
     format: {
       type: 'string',
