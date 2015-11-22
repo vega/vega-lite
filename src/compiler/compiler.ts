@@ -8,7 +8,7 @@ import * as vlTime from './time';
 import {compileAxis} from './axis';
 import {compileData} from './data';
 import {compileLegends} from './legend';
-import * as vlMarks from './marks';
+import {compileMarks} from './marks';
 import vlFacet from './facet';
 import vlLayout from './layout';
 import vlStack from './stack';
@@ -65,7 +65,7 @@ export function compile(spec, stats, theme?) {
 
   // marks
   var styleCfg = vlStyle(model, stats),
-    mdefs = group.marks = vlMarks.defs(model, layout, styleCfg),
+    mdefs = group.marks = compileMarks(model, layout, styleCfg),
     mdef = mdefs[mdefs.length - 1];  // TODO: remove this dirty hack by refactoring the whole flow
 
   var stack = model.stack();
@@ -74,18 +74,19 @@ export function compile(spec, stats, theme?) {
     vlStack(model, mdef, stack);
   }
 
-  var lineType = vlMarks[model.marktype()].line;
+  const marktype = model.marktype();
+  const isLineType = marktype === 'line' || marktype === 'area';
 
   // handle subfacets
   var details = model.details();
 
-  if (details.length > 0 && lineType) {
+  if (details.length > 0 && isLineType) {
     //subfacet to group area / line together in one group
     vlSubfacet(group, mdef, details);
   }
 
   // auto-sort line/area values
-  if (lineType && model.config('autoSortLine')) {
+  if (isLineType && model.config('autoSortLine')) { // TODO: remove autoSortLine
     var f = (model.isMeasure(X) && model.isDimension(Y)) ? Y : X;
     if (!mdef.from) {
       mdef.from = {};
