@@ -98,10 +98,6 @@ export class Model {
     }
   }
 
-  axis(channel: Channel) {
-    return this._spec.encoding[channel].axis || {};
-  }
-
   bandWidth(channel: Channel, useSmallBand?: boolean) {
     if (this.fieldDef(channel).scale.bandWidth !== undefined) {
       // explicit value

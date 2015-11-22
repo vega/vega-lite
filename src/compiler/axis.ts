@@ -58,7 +58,7 @@ export function def(channel: Channel, model: Model, layout, stats) {
 }
 
 export function format(model: Model, channel: Channel) {
-  let fieldDef = model.fieldDef(channel);
+  const fieldDef = model.fieldDef(channel);
   var format = fieldDef.axis.format;
   if (format !== undefined)  {
     return format;
@@ -67,7 +67,7 @@ export function format(model: Model, channel: Channel) {
   if (fieldDef.type === QUANTITATIVE) {
     return model.numberFormat(channel);
   } else if (fieldDef.type === TEMPORAL) {
-    var timeUnit = model.fieldDef(channel).timeUnit;
+    const timeUnit = fieldDef.timeUnit;
     if (!timeUnit) {
       return model.config('timeFormat');
     } else if (timeUnit === 'year') {
@@ -78,7 +78,7 @@ export function format(model: Model, channel: Channel) {
 }
 
 export function grid(model: Model, channel: Channel) {
-  var grid = model.axis(channel).grid;
+  var grid = model.fieldDef(channel).axis.grid;
   if (grid !== undefined) {
     return grid;
   }
@@ -92,7 +92,7 @@ export function grid(model: Model, channel: Channel) {
 }
 
 export function layer(model: Model, channel: Channel, layout, stats, def) {
-  var layer = model.axis(channel).layer;
+  var layer = model.fieldDef(channel).axis.layer;
   if (layer !== undefined) {
     return layer;
   }
@@ -274,11 +274,11 @@ namespace properties {
       }, spec || {});
     }
 
-    if (model.isTypes(channel, [NOMINAL, ORDINAL]) && model.axis(channel).labelMaxLength) {
+    if (model.isTypes(channel, [NOMINAL, ORDINAL]) && fieldDef.axis.labelMaxLength) {
       // TODO replace this with Vega's labelMaxLength once it is introduced
       spec = util.extend({
         text: {
-          template: '{{ datum.data | truncate:' + model.axis(channel).labelMaxLength + '}}'
+          template: '{{ datum.data | truncate:' + fieldDef.axis.labelMaxLength + '}}'
         }
       }, spec || {});
     }
