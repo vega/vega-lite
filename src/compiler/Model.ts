@@ -5,12 +5,13 @@ import {FieldDef} from '../schema/fielddef.schema';
 import {MAXBINS_DEFAULT} from '../bin';
 import {COLUMN, ROW, X, Y, COLOR, DETAIL, Channel} from '../channel';
 import {SOURCE, SUMMARY} from '../data';
-import * as util from '../util';
 import * as vlFieldDef from '../fielddef';
 import * as vlEncoding from '../encoding';
+import {AREA, BAR} from '../marktype';
 import * as schema from '../schema/schema';
 import * as schemaUtil from '../schema/schemautil';
 import {getFullName} from '../type';
+import * as util from '../util';
 
 /**
  * Internal model of Vega-Lite specification for the compiler.
@@ -218,7 +219,7 @@ export class Model {
       this.fieldDef(stack).stack :
       {};
 
-    if ((this.is('bar') || this.is('area')) && stack && this.isAggregate()) {
+    if ((this.is(BAR) || this.is(AREA)) && stack && this.isAggregate()) {
 
       var isXMeasure = this.isMeasure(X);
       var isYMeasure = this.isMeasure(Y);
