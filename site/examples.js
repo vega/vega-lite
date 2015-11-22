@@ -51,17 +51,34 @@ var EXAMPLES = [
   },{
     title: 'Grouped bar chart',
     spec: {
-      marktype: 'bar',
-      encoding: {
-        x: {field: 'Origin', type: 'nominal'},
-        y: {field: 'Acceleration', type: 'quantitative', aggregate: 'mean'},
-        column: {field: 'Cylinders', type: 'ordinal'},
-        color: {
-          field: 'Origin',
-          type: 'nominal'
+      "data": {"values": [
+        {"category":"A", "position":0, "value":0.1},
+        {"category":"A", "position":1, "value":0.6},
+        {"category":"A", "position":2, "value":0.9},
+        {"category":"A", "position":3, "value":0.4},
+        {"category":"B", "position":0, "value":0.7},
+        {"category":"B", "position":1, "value":0.2},
+        {"category":"B", "position":2, "value":1.1},
+        {"category":"B", "position":3, "value":0.8},
+        {"category":"C", "position":0, "value":0.6},
+        {"category":"C", "position":1, "value":0.1},
+        {"category":"C", "position":2, "value":0.2},
+        {"category":"C", "position":3, "value":0.7}
+      ]},
+      "marktype": "bar",
+      "encoding": {
+        "x": {"field": "value","type": "quantitative"},
+        "y": {"field": "position","type": "nominal"},
+
+        "row": {
+          "field": "category",
+          "type": "O"
+        },
+        "color": {
+          "field": "position",
+          "type": "N"
         }
-      },
-      data: {url: 'data/cars.json'}
+      }
     }
   },{
     title: 'Scatter plot.',
