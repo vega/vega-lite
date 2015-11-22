@@ -7,33 +7,38 @@ export interface Legend {
 }
 
 export var legend = {
-  type: 'object',
-  description: 'Properties of a legend.',
-  properties: {
-    orient: {
-      type: 'string',
-      default: undefined,
-      description: 'The orientation of the legend. One of "left" or "right". This determines how the legend is positioned within the scene. The default is "right".'
-    },
-    title: {
-      type: 'string',
-      default: undefined,
-      description: 'A title for the legend. (Shows field name and its function by default.)'
-    },
-    format: {
-      type: 'string',
-      default: undefined,
-      description: 'An optional formatting pattern for legend labels. Vega uses D3\'s format pattern.'
-    },
-    values: {
-      type: 'array',
-      default: undefined,
-      description: 'Explicitly set the visible legend values.'
-    },
+  default: true,
+  description: 'Properties of a legend or boolean flag for determining whether to show it.',
+  oneOf: [{
+    type: 'object',
     properties: {
-      type: 'object',
-      default: undefined,
-      description: 'Optional mark property definitions for custom legend styling. '
+      orient: {
+        type: 'string',
+        default: undefined,
+        description: 'The orientation of the legend. One of "left" or "right". This determines how the legend is positioned within the scene. The default is "right".'
+      },
+      title: {
+        type: 'string',
+        default: undefined,
+        description: 'A title for the legend. (Shows field name and its function by default.)'
+      },
+      format: {
+        type: 'string',
+        default: undefined,
+        description: 'An optional formatting pattern for legend labels. Vega uses D3\'s format pattern.'
+      },
+      values: {
+        type: 'array',
+        default: undefined,
+        description: 'Explicitly set the visible legend values.'
+      },
+      properties: {
+        type: 'object',
+        default: undefined,
+        description: 'Optional mark property definitions for custom legend styling. '
+      }
     }
-  }
+  }, {
+    type: 'boolean'
+  }]
 };
