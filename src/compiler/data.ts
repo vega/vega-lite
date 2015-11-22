@@ -186,8 +186,7 @@ export namespace source {
     }
 
     return calculate.reduce(function(transform, formula) {
-      formula.type = 'formula';
-      transform.push(formula);
+      transform.push(util.extend({type: formula}, formula));
       return transform;
     }, []);
   }
