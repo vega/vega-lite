@@ -4,31 +4,31 @@ import {Model} from './Model';
 import * as time from './time';
 import {TEMPORAL} from '../type';
 
-export function defs(model: Model, styleCfg) {
+export function compileLegends(model: Model, styleCfg) {
   var defs = [];
 
   if (model.has(COLOR) && model.fieldDef(COLOR).legend) {
-    defs.push(def(model, COLOR, {
+    defs.push(compileLegend(model, COLOR, {
       fill: COLOR
       // TODO: consider if this should be stroke for line
     }, styleCfg));
   }
 
   if (model.has(SIZE) && model.fieldDef(SIZE).legend) {
-    defs.push(def(model, SIZE, {
+    defs.push(compileLegend(model, SIZE, {
       size: SIZE
     }, styleCfg));
   }
 
   if (model.has(SHAPE) && model.fieldDef(SHAPE).legend) {
-    defs.push(def(model, SHAPE, {
+    defs.push(compileLegend(model, SHAPE, {
       shape: SHAPE
     }, styleCfg));
   }
   return defs;
 }
 
-export function def(model: Model, channel: Channel, def, styleCfg) {
+export function compileLegend(model: Model, channel: Channel, def, styleCfg) {
   let legend = model.fieldDef(channel).legend;
 
   // 1.1 Add properties with special rules

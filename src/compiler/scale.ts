@@ -15,14 +15,15 @@ import {SOURCE, STACKED} from '../data';
 import * as time from './time';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 
-export function names(props) {
+// TODO: consider if we can remove this and simplify the codebase
+export function compileScaleNames(props) {
   return util.keys(util.keys(props).reduce(function(a, x) {
     if (props[x] && props[x].scale) a[props[x].scale] = 1;
     return a;
   }, {}));
 }
 
-export function defs(names: Array<string>, model: Model, layout, stats, facet?) {
+export function compileScales(names: Array<string>, model: Model, layout, stats, facet?) {
   return names.reduce(function(a, channel: Channel) {
     var scaleDef: any = {};
 

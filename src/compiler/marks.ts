@@ -5,7 +5,7 @@ import {QUANTITATIVE} from '../type';
 // https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations
 declare var exports;
 
-export function defs(model: Model, layout, style) {
+export function compileMarks(model: Model, layout, style) {
   var defs = [],
     mark = exports[model.marktype()],
     from = model.dataTable();
@@ -44,13 +44,11 @@ export const bar = {
 
 export const line = {
   type: 'line',
-  line: true,
   prop: line_props
 };
 
 export const area = {
   type: 'area',
-  line: true,
   prop: area_props
 };
 
