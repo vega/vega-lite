@@ -1,9 +1,13 @@
-Vega-Lite provides a higher-level grammar for visual analysis, akin to ggplot or Tableau, that generates complete Vega specifications.
+---
+layout: docs
+title: Documentation
+permalink: /docs/index.html
+---
 
-Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as position (x,y), size, color and shape. These mappings are then translated into full visualization specifications using the Vega visualization grammar. These resulting visualizations can then be exported or further modified to customize the display.
+Vega-Lite provides a higher-level grammar for visual analysis, akin to ggplot or Tableau, that generates complete [Vega](https://vega.github.io/) specifications.
 
-This documentation outlines the syntax of Vega-Lite specification, and how to
-embed Vega-Lite visualizations in your applications.
+Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as position (`x`,`y`), `size`, `color` and `shape`. These mappings are then translated into detailed visualization specifications in the form of Vega specification language.  Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values.  
+This documentation outlines the syntax of Vega-Lite specification, and how to embed Vega-Lite visualizations in your applications.
 
 ## Vega-Lite Specification
 
@@ -19,10 +23,10 @@ that contains the following top-level properties:
 
 | Property             | Type          | Description    |
 | :------------        |:-------------:| :------------- |
-| [data](Data)         | Object        | An object describing data source |
-| marktype             | String        | The mark type.  Currently Vega-Lite supports `bar`, `line`, `area`, `point`, and `text` (text table). |
-| [encoding](Encoding Mapping)| Object        | key-value mapping between encoding channels and encoding object |
-| config   | Object        | Configuration object.  (__Documentation Coming Soon__ -- for now please see [config json schema in schema.js](https://github.com/uwdata/vega-lite/blob/master/src/schema/schema.js#L573)) |
+| [data](data.html)    | Object        | An object describing data source |
+| [marktype](marktype.html)| String        | The mark type.  Currently Vega-Lite supports `bar`, `line`, `area`, `point`, and `text` (text table). |
+| [encoding](encoding.html)| Object        | key-value mapping between encoding channels and encoding object |
+| [config](config.html)   | Object        | Configuration object. |
 
 ## Using Vega-Lite
 
@@ -69,6 +73,7 @@ parse(vgspec);
 
 </script>
 ```
+
 
 ### Data from URL
 
@@ -127,6 +132,7 @@ render(vlSpec);
 
 </script>
 ```
+
 
 __Pending Revision__:
 Vega-Lite Compile API is under revision.  A better tutorial is coming soon.

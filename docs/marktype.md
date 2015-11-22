@@ -1,3 +1,9 @@
+---
+layout: docs
+title: Mark Type
+permalink: /docs/marktype.html
+---
+
 Currently Vega-Lite supports the following mark types:
 `point`', `bar`, `tick`, `line`, `area`, and `text` (text table).
 

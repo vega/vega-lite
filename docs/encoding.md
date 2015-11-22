@@ -1,36 +1,45 @@
-Vega-Lite's top-level `encoding` property is a key-value mapping between
+---
+layout: docs
+title: Encoding
+permalink: /docs/encoding.html
+---
+
+Vega-Lite's top-level `encoding` property describes a mapping between
 encoding channels (such as `x`,`y`, and `color`) and field definitions.
-
-Each field definition object contains:
-- A reference to the `field` name or a constant `value`
-- The field's data `type`
-- The field's inline transformation including aggregation (`aggregate`), binning (`bin`),
-sorting (`sort`), and time unit conversion (`timeUnit`).
-- Optional configuration properties for `scale`, `axis`, and `legend` of the encoding channel.
-- [Additional visual properties for each encoding channel](#Channel-Specific-Properties)
-
-# Encoding Channels
+Each field definition object describes
+a constant `value` or a reference to the `field` name and its data `type` and inline transformation (`aggregate`, `bin`, `sort` and `timeUnit`).
+Each field definition object can also optionally include configuration properties for `scale`, `axis`, and `legend`
+<!-- [Additional visual properties for each encoding channel](#Channel-Specific-Properties) -->
 
 Vega-Lite supports the following encoding channels: `x`,`y`, `row`, `column`, `color`, `size`, `shape`, `text`, `detail`.
+These channels are properties for the top-level `encoding` definition object.
 
-- `x` and `y` channels map values of the corresponding data fields to x and y coordinates (or to width/height for `bar` and `area` marks)
+| Property      | Type          | Description    |
+| :------------ |:-------------:| :------------- |
+| x, y          | [FieldDef](#field-definition)| Description of a field mapped to x or y coordinates (or to width or height for `bar` and `area` marks). |
+| row, column   | [FieldDef](#field-definition)| Description of a field that is used to facet data into vertical and horizontal [trellis plots](https://en.wikipedia.org/wiki/Small_multiple) respectively. |
+| color | [FieldDef](#field-definition)| Description of a field mapped to color or a constant value for color.  The values are mapped to hue if the field is nominal, and mapped to saturation otherwise.  |
+| shape  | [FieldDef](#field-definition)| Description of a field mapped to shape encoding or a constant value for shape.   `shape` is only applicable for `point` marks.  |
+| size  | [FieldDef](#field-definition)| Description of a field mapped to size encoding or a constant value for size.  `size` is not applicable for `line` and `area`. |
+| detail | [FieldDef](#field-definition)| Description of a field that serves as an additional dimension for aggregate views without mapping to a specific visual channel.  `detail` does not affect raw plots. |
 
-<!-- TODO: add visual examples -->
+<!-- # Faceting
+TODO: add visual examples for both row and column
+-->
 
-- `row` and `column` facet data into vertical and horizontal [trellis plots](https://en.wikipedia.org/wiki/Small_multiple) respectively.  
+<!-- # Color
+TODO: visual examples for hue, saturation
+ -->
 
-<!-- TODO: add visual examples for both row and column -->
+<!-- # Size
+TODO: example: bubble plots
+-->
 
-- Values can be mapped to other non-positional encoding channels including `color`, `size`, and  `shape`.
-
-<!-- TODO: add visual examples for each one -->
-
-- For aggregate views, `detail` to specify additional dimensions
-
-<!-- TODO: explain more about detail  -->
+<!-- # Detail
+TODO: explain more about detail  
+-->
 
 <!-- TODO: tooltips, labels -->
-
 
 # Field Definition
 
@@ -39,22 +48,22 @@ Here is a list of properties for the field definition object:
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | field         | String        | Name of the field from which to pull a data value.    |
-| value         | String &#124; Integer | A constant value |
+| value         | String &#124; Integer | A constant value. |
 | type          | String        | Data type of the field.  This property accepts both a full type name (`'quantitative'`, `'temporal'`, `'ordinal'`,  and `'nominal'`), or an initial character of the type name (`'Q'`, `'T'`, `'O'`, `'N'`).  This property is case insensitive.|
 | [aggregate](#Aggregate) | String        | Aggregation function for the field (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).  |
 | [bin](#bin)          | Boolean &#124; Object        | Boolean flag / configuration object for binning.  See [Binning](#Bin) |
 | [sort](#sort)        | String &#124; Object        | Sort order for a particular field.  This can be string (`'ascending'`, `'descending'`, or `'unsorted'`) or a sort field definition object for sorting by an aggregate calculation of a specified sort field.  If unspecified, the default value is `ascending`.  See [Sort](#sort) section for more information. |
-| [timeUnit](#timeunit)| String        | Property for converting time unit            |
-| [axis](#axis)        | Object        | Configuration object for the encoding's axis    |
-| [legend](#legend)  | Object        | Configuration object for the encoding's legends |
-| [scale](#scale)      | Object        | Configuration object for the encoding's scale   |
+| [timeUnit](#timeunit)| String        | Property for converting time unit.            |
+| [axis](#axis)        | Object        | Configuration object for the encoding's axis.    |
+| [legend](#legend)  | Object        | Configuration object for the encoding's legends. |
+| [scale](#scale)      | Object        | Configuration object for the encoding's scale.   |
 
 <!-- ## Data Type -->
-<!-- TODO: add description about each data type, describe how nominal and ordinal are treated differently --> 
+<!-- TODO: add description about each data type, describe how nominal and ordinal are treated differently -->
 
 ## Field Transformations
 
-#### ▸ `aggregate`
+### ▸ `aggregate`
 
 Vega-Lite supports all [Vega aggregation operations](https://github.com/vega/vega/wiki/Data-Transforms#-aggregate) (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).
 
@@ -64,7 +73,7 @@ If none of the specified encoding channel contains aggregation, no additional da
 
 ----
 
-#### ▸ `bin`
+### ▸ `bin`
 
 To group raw data values of a particular field into bins (e.g., for a histogram),
 the field should have `bin` property specified.  
@@ -75,13 +84,13 @@ The `bin` property definition object contains the following properties:
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| maxbins       | Integer       | The maximum number of allowable bins.  See [Datalib's binning documentation](https://github.com/vega/datalib/wiki/Statistics#dl_bins) for more information |
+| maxbins       | Integer       | The maximum number of allowable bins.  See [Datalib's binning documentation](https://github.com/vega/datalib/wiki/Statistics#dl_bins) for more information. |
 
 __Pending Revision__: We are revising how binning should be specified in Vega-Lite and properties for binning.  Other properties in [Datalib's binning ](https://github.com/vega/datalib/wiki/Statistics#dl_bins) such as `min`, `max`, `maxbins`, `step`, `steps`, `minstep`, `div` will be added once this is revised.
 
 ----
 
-#### ▸ `sort`
+### ▸ `sort`
 
 Order of a field's values can be specified using the `'sort'` property.  
 For `x`, `y`, `row` and `column`, this determines the order of each value's position.
@@ -105,7 +114,7 @@ For `color`, `shape`, `size` and `detail`, this determines the layer order
 
 ----
 
-#### ▸ `timeUnit`
+### ▸ `timeUnit`
 
 `timeUnit` property can be specified for converting timeUnit for temporal field.  
 Therefore, `timeUnit` is only applied when the `type` is "`temporal`".
@@ -115,7 +124,7 @@ __In Roadmap__: Support for other values such as `year-month`, `year-month-day`,
 
 ## Scale, Axis, and Legend
 
-#### ▸ `scale`
+### ▸ `scale`
 
 Vega-Lite's `scale` object supports the following Vega scale properties:
 
@@ -154,7 +163,7 @@ Scales of quantitative fields are linear scales by default, but users can specif
 
 ----
 
-#### ▸ `axis`
+### ▸ `axis`
 
 Axes provide axis lines, ticks and labels to convey how a spatial range represents a data range. Simply put, axes visualize scales.
 
@@ -170,7 +179,7 @@ Moreover, Vega-Lite supports the following additional axis properties.
 | :------------   |:-------------:| :------------- |
 | labelMaxLength  | Integer       | Max length for axis labels. Longer labels are truncated. (25 by default.) |
 | labelAngle      | Integer       | Angle by which to rotate labels. Set to 0 to force horizontal.   |
-| titleMaxLength  | Integer       | Max length for axis title when the title is automatically generated from the field\'s description.  If the   |
+| titleMaxLength  | Integer       | Max length for axis title when the title is automatically generated from the field\'s description. |
 | titleOffset     | Integer       | Offset between the axis title and the axis.  |
 
 <sup>1</sup>
@@ -185,8 +194,9 @@ If `title` is unspecified, the default value is produced from the field's name a
 If `titleOffset` is unspecified, the default value is automatically determined.
 <!-- TODO: add detail about default behavior -->
 
+----
 
-#### ▸ `legend`
+### ▸ `legend`
 
 <!-- TODO: add support for turning legends off -->
 
