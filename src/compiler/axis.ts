@@ -179,7 +179,7 @@ export function title(model: Model, channel: Channel, layout) {
 
 export function titleOffset(model: Model, channel: Channel) {
   // return specified value if specified
-  var value = model.axis(channel).titleOffset;
+  var value = model.fieldDef(channel).axis.titleOffset;
   if (value)  return value;
 
   switch (channel) {
