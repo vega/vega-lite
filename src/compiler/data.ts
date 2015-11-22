@@ -19,7 +19,7 @@ import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
  *                 If the encoding contains aggregate value, this will also create
  *                 aggregate table as well.
  */
-export function def(model: Model) {
+export function compileData(model: Model) {
   var def = [source.def(model)];
 
   var summaryDef = summary.def(model);

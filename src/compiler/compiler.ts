@@ -8,7 +8,7 @@ import * as vlTime from './time';
 import * as vlAxis from './axis';
 import * as vlLegend from './legend';
 import * as vlMarks from './marks';
-import {def as dataDef} from './data';
+import {compileData} from './data';
 import vlFacet from './facet';
 import vlLayout from './layout';
 import vlStack from './stack';
@@ -38,7 +38,7 @@ export function compile(spec, stats, theme?) {
       width: layout.width,
       height: layout.height,
       padding: 'auto',
-      data: dataDef(model),
+      data: compileData(model),
       marks: [{
         name: 'cell',
         type: 'group',
