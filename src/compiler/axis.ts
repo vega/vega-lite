@@ -1,4 +1,5 @@
 import {Model} from './Model';
+import {roundFloat} from '../util';
 import * as util from '../util';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 import {COLUMN, ROW, X, Y, Channel} from '../channel';
@@ -213,7 +214,7 @@ namespace properties {
         // TODO(#677): this should depend on orient
         return util.extend({
           x: {
-            offset: layout.cellWidth * (1+ cellPadding/2.0),
+            offset: roundFloat(layout.cellWidth * (1+ cellPadding/2.0)),
             // default value(s) -- vega doesn't do recursive merge
             scale: 'column',
             field: 'data'
@@ -238,7 +239,7 @@ namespace properties {
         // set grid property -- put the lines on the top
         return util.extend({
           y: {
-            offset: -layout.cellHeight * (cellPadding/2),
+            offset: roundFloat(-layout.cellHeight * (cellPadding/2)),
             // default value(s) -- vega doesn't do recursive merge
             scale: 'row',
             field: 'data'
