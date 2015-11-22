@@ -4,8 +4,6 @@ title: Data
 permalink: /docs/data.html
 ---
 
-# Data
-
 Vega-Lite's top-level `data` property is an object that describes data source and its transformations.
 
 Akin to [Vega](/vega/vega)'s [data model](vega/vega/wiki/Data), the basic data model used by Vega is _tabular_ data, similar to a spreadsheet or database table. Individual data sets are assumed to contain a collection of records (or rows), which may contain any number of named data fields (or variables/columns).
@@ -68,4 +66,4 @@ an array of formula objects.  Each formula object has two properties:
 
 ### Field Transformation
 
-Other [field transformations including aggregation and binning](encoding.html#Field-Transformations) are specified as part of [encoding definitions](encoding.html#Field-Transformations)
+Other [field transformations including aggregation and binning](encoding.html#Field-Transformations) are specified as a part of the  [field definitions](encoding.html#Field-Transformations).

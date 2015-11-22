@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
+  <link rel=stylesheet href="docs.css">
   <link rel=stylesheet href="gh2.css">
   <link rel=stylesheet href="syntax.css">
   <body>
-    <div style="float:right">
+    <div class="menu" style="float:right">
       <a href="index.html">Docs</a>
       <a href="data.html">Data</a>
       <a href="marktype.html">Mark Type</a>
@@ -16,5 +17,10 @@
         {{ content }}
       </div>
     </div>
+
+    <footer>
+      Would like to help improve the documentation?
+      <a href="https://github.com/vega/vega-lite/blob/master/{{page.path}}"> Edit this file and send a pull request!</a>
+    </footer>
   </body>
 </html>
