@@ -186,8 +186,7 @@ export namespace source {
     }
 
     return calculate.reduce(function(transform, formula) {
-      formula.type = 'formula';
-      transform.push(formula);
+      transform.push(util.extend({type: formula}, formula));
       return transform;
     }, []);
   }
@@ -287,7 +286,7 @@ export namespace stack {
 
 export function filterNonPositive(dataTable, model: Model) {
   model.forEach(function(_, channel) {
-    if (model.scale(channel).type === 'log') {
+    if (model.fieldDef(channel).scale.type === 'log') {
       dataTable.transform.push({
         type: 'filter',
         test: model.fieldRef(channel, {datum: 1}) + ' > 0'

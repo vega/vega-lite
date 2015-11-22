@@ -19,24 +19,16 @@ import * as util from '../util';
  */
 
 export class Model {
-  _data: any;
-  _marktype: string;
-  _encoding: any;
-  _config: any;
+  _spec: Spec;
 
   // TODO: include _stack, _layout, _style, etc.
 
   constructor(spec: Spec, theme?) {
     var defaults = schema.instantiate();
-    var specExtended = schemaUtil.merge(defaults, theme || {}, spec);
-
-    this._data = specExtended.data;
-    this._marktype = specExtended.marktype;
-    this._encoding = specExtended.encoding;
-    this._config = specExtended.config;
+    this._spec = schemaUtil.merge(defaults, theme || {}, spec);
 
     // convert short type to full type
-    vlEncoding.forEach(this._encoding, function(fieldDef) {
+    vlEncoding.forEach(this._spec.encoding, function(fieldDef) {
       if (fieldDef.type) {
         fieldDef.type = getFullName(fieldDef.type);
       }
@@ -44,20 +36,20 @@ export class Model {
   }
 
   toSpec(excludeConfig?, excludeData?) {
-    var encoding = util.duplicate(this._encoding),
+    var encoding = util.duplicate(this._spec.encoding),
       spec: any;
 
     spec = {
-      marktype: this._marktype,
+      marktype: this._spec.marktype,
       encoding: encoding
     };
 
     if (!excludeConfig) {
-      spec.config = util.duplicate(this._config);
+      spec.config = util.duplicate(this._spec.config);
     }
 
     if (!excludeData) {
-      spec.data = util.duplicate(this._data);
+      spec.data = util.duplicate(this._spec.data);
     }
 
     // remove defaults
@@ -66,53 +58,45 @@ export class Model {
   }
 
   marktype() {
-    return this._marktype;
+    return this._spec.marktype;
   }
 
   is(m) {
-    return this._marktype === m;
+    return this._spec.marktype === m;
   }
 
   has(channel: Channel) {
-    // equivalent to calling vlenc.has(this._encoding, channel)
-    return this._encoding[channel].field !== undefined;
+    // equivalent to calling vlenc.has(this._spec.encoding, channel)
+    return this._spec.encoding[channel].field !== undefined;
   }
 
   fieldDef(channel: Channel) {
-    return this._encoding[channel];
+    return this._spec.encoding[channel];
   }
 
   // get "field" reference for vega
   fieldRef(channel: Channel, opt?) {
     opt = opt || {};
-    return vlFieldDef.fieldRef(this._encoding[channel], opt);
+    return vlFieldDef.fieldRef(this._spec.encoding[channel], opt);
   }
 
   /*
    * return key-value pairs of field name and list of fields of that field name
    */
   fields() {
-    return vlEncoding.fields(this._encoding);
+    return vlEncoding.fields(this._spec.encoding);
   }
 
   fieldTitle(channel: Channel) {
-    if (vlFieldDef.isCount(this._encoding[channel])) {
+    if (vlFieldDef.isCount(this._spec.encoding[channel])) {
       return vlFieldDef.COUNT_DISPLAYNAME;
     }
-    var fn = this._encoding[channel].aggregate || this._encoding[channel].timeUnit || (this._encoding[channel].bin && 'bin');
+    var fn = this._spec.encoding[channel].aggregate || this._spec.encoding[channel].timeUnit || (this._spec.encoding[channel].bin && 'bin');
     if (fn) {
-      return fn.toUpperCase() + '(' + this._encoding[channel].field + ')';
+      return fn.toUpperCase() + '(' + this._spec.encoding[channel].field + ')';
     } else {
-      return this._encoding[channel].field;
+      return this._spec.encoding[channel].field;
     }
-  }
-
-  scale(channel: Channel) {
-    return this._encoding[channel].scale || {};
-  }
-
-  axis(channel: Channel) {
-    return this._encoding[channel].axis || {};
   }
 
   bandWidth(channel: Channel, useSmallBand?: boolean) {
@@ -144,7 +128,7 @@ export class Model {
 
   // returns false if binning is disabled, otherwise an object with binning properties
   bin(channel: Channel): Bin | boolean {
-    var bin = this._encoding[channel].bin;
+    var bin = this._spec.encoding[channel].bin;
     if (bin === {})
       return false;
     if (bin === true)
@@ -154,25 +138,21 @@ export class Model {
     return bin;
   }
 
-  value(channel: Channel) {
-    return this._encoding[channel].value;
-  }
-
   numberFormat = function(channel?: Channel) {
     // TODO(#497): have different number format based on numberType (discrete/continuous)
     return this.config('numberFormat');
   };
 
   map(f) {
-    return vlEncoding.map(this._encoding, f);
+    return vlEncoding.map(this._spec.encoding, f);
   }
 
   reduce(f, init) {
-    return vlEncoding.reduce(this._encoding, f, init);
+    return vlEncoding.reduce(this._spec.encoding, f, init);
   }
 
   forEach(f) {
-    return vlEncoding.forEach(this._encoding, f);
+    return vlEncoding.forEach(this._spec.encoding, f);
   }
 
   isTypes(channel: Channel, type: Array<any>) {
@@ -197,14 +177,14 @@ export class Model {
   }
 
   isAggregate() {
-    return vlEncoding.isAggregate(this._encoding);
+    return vlEncoding.isAggregate(this._spec.encoding);
   }
 
   dataTable() {
     return this.isAggregate() ? SUMMARY : SOURCE;
   }
 
-  // TODO: calculate this and store it in this._stack so it can be called multiple times.
+  // TODO: calculate this and store it in this._spec.stack so it can be called multiple times.
   /**
    * Check if the encoding should be stacked and return the stack dimenstion and value fields.
    * @return {Object} An object containing two properties:
@@ -268,12 +248,8 @@ export class Model {
     return vlFieldDef.cardinality(this.fieldDef(channel), stats, this.config('filterNull'));
   }
 
-  isRaw() {
-    return !this.isAggregate();
-  }
-
   data() {
-    return this._data;
+    return this._spec.data;
   }
 
   // returns whether the encoding has values embedded
@@ -283,6 +259,6 @@ export class Model {
   }
 
   config(name: string) {
-    return this._config[name];
+    return this._spec.config[name];
   }
 }

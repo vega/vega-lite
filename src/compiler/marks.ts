@@ -147,7 +147,7 @@ function bar_props(e: Model, layout, style) {
   if (e.has(COLOR)) {
     p.fill = {scale: COLOR, field: e.fieldRef(COLOR)};
   } else {
-    p.fill = {value: e.value(COLOR)};
+    p.fill = {value: e.fieldDef(COLOR).value};
   }
 
   // opacity
@@ -179,14 +179,14 @@ function point_props(e: Model, layout, style) {
   if (e.has(SIZE)) {
     p.size = {scale: SIZE, field: e.fieldRef(SIZE)};
   } else if (!e.has(SIZE)) {
-    p.size = {value: e.value(SIZE)};
+    p.size = {value: e.fieldDef(SIZE).value};
   }
 
   // shape
   if (e.has(SHAPE)) {
     p.shape = {scale: SHAPE, field: e.fieldRef(SHAPE)};
   } else if (!e.has(SHAPE)) {
-    p.shape = {value: e.value(SHAPE)};
+    p.shape = {value: e.fieldDef(SHAPE).value};
   }
 
   // fill or stroke
@@ -194,13 +194,13 @@ function point_props(e: Model, layout, style) {
     if (e.has(COLOR)) {
       p.fill = {scale: COLOR, field: e.fieldRef(COLOR)};
     } else if (!e.has(COLOR)) {
-      p.fill = {value: e.value(COLOR)};
+      p.fill = {value: e.fieldDef(COLOR).value};
     }
   } else {
     if (e.has(COLOR)) {
       p.stroke = {scale: COLOR, field: e.fieldRef(COLOR)};
     } else if (!e.has(COLOR)) {
-      p.stroke = {value: e.value(COLOR)};
+      p.stroke = {value: e.fieldDef(COLOR).value};
     }
     p.strokeWidth = {value: e.config('strokeWidth')};
   }
@@ -234,7 +234,7 @@ function line_props(e: Model,layout, style) {
   if (e.has(COLOR)) {
     p.stroke = {scale: COLOR, field: e.fieldRef(COLOR)};
   } else if (!e.has(COLOR)) {
-    p.stroke = {value: e.value(COLOR)};
+    p.stroke = {value: e.fieldDef(COLOR).value};
   }
 
   var opacity = e.fieldDef(COLOR).opacity;
@@ -277,7 +277,7 @@ function area_props(e: Model, layout, style) {
   if (e.has(COLOR)) {
     p.fill = {scale: COLOR, field: e.fieldRef(COLOR)};
   } else if (!e.has(COLOR)) {
-    p.fill = {value: e.value(COLOR)};
+    p.fill = {value: e.fieldDef(COLOR).value};
   }
 
   var opacity = e.fieldDef(COLOR).opacity;
@@ -330,7 +330,7 @@ function tick_props(e: Model, layout, style) {
   if (e.has(COLOR)) {
     p.fill = {scale: COLOR, field: e.fieldRef(COLOR)};
   } else {
-    p.fill = {value: e.value(COLOR)};
+    p.fill = {value: e.fieldDef(COLOR).value};
   }
 
   var opacity = e.fieldDef(COLOR).opacity  || style.opacity;
@@ -362,7 +362,7 @@ function filled_point_props(shape) {
     if (e.has(SIZE)) {
       p.size = {scale: SIZE, field: e.fieldRef(SIZE)};
     } else if (!e.has(X)) {
-      p.size = {value: e.value(SIZE)};
+      p.size = {value: e.fieldDef(SIZE).value};
     }
 
     // shape
@@ -372,7 +372,7 @@ function filled_point_props(shape) {
     if (e.has(COLOR)) {
       p.fill = {scale: COLOR, field: e.fieldRef(COLOR)};
     } else if (!e.has(COLOR)) {
-      p.fill = {value: e.value(COLOR)};
+      p.fill = {value: e.fieldDef(COLOR).value};
     }
 
     var opacity = e.fieldDef(COLOR).opacity  || style.opacity;

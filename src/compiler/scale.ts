@@ -52,19 +52,18 @@ export function defs(names: Array<string>, model: Model, layout, stats, facet?) 
 }
 
 export function type(channel: Channel, model: Model) {
-  var type = model.fieldDef(channel).type;
-  switch (type) {
+  const fieldDef = model.fieldDef(channel);
+  switch (fieldDef.type) {
     case NOMINAL: //fall through
     case ORDINAL:
       return 'ordinal';
     case TEMPORAL:
-      var timeUnit = model.fieldDef(channel).timeUnit;
-      return timeUnit ? time.scale.type(timeUnit, channel) : 'time';
+      return fieldDef.timeUnit ? time.scale.type(fieldDef.timeUnit, channel) : 'time';
     case QUANTITATIVE:
       if (model.bin(channel)) {
         return channel === ROW || channel === COLUMN || channel === SHAPE ? 'ordinal' : 'linear';
       }
-      return model.scale(channel).type;
+      return fieldDef.scale.type;
   }
 }
 
@@ -159,10 +158,8 @@ export function reverse(model: Model, channel: Channel) {
  * 3. The scale is quantitative or time scale.
  */
 export function _useRawDomain (model: Model, channel: Channel) {
-  var fieldDef = model.fieldDef(channel);
-
-  // scale value
-  var scaleUseRawDomain = model.scale(channel).useRawDomain;
+  const fieldDef = model.fieldDef(channel);
+  const scaleUseRawDomain = fieldDef.scale.useRawDomain;
 
   // Determine if useRawDomain is enabled. If scale value is specified, use scale value.
   // Otherwise, use config value.
@@ -358,10 +355,12 @@ export function zero(model: Model, channel: Channel) {
 }
 
 export function color(model: Model, channel: Channel, scaleType, stats) {
-  var colorScale = model.scale(COLOR),
-    range = colorScale.range,
+  const fieldDef = model.fieldDef(COLOR),
+    colorScale = fieldDef.scale,
     cardinality = model.cardinality(COLOR, stats),
-    type = model.fieldDef(COLOR).type;
+    type = fieldDef.type;
+
+  let range = colorScale.range;
 
   if (range === undefined) {
     var ordinalPalette = colorScale.ordinalPalette,
