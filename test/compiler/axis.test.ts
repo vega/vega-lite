@@ -19,7 +19,7 @@ describe('Axis', function() {
           x: {field: field, type: 'temporal', timeUnit: timeUnit}
         }
       });
-    var _axis = axis.def('x', encoding, {
+    var _axis = axis.compileAxis('x', encoding, {
       width: 200,
       height: 200,
       cellWidth: 200,

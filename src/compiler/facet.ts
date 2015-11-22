@@ -2,7 +2,7 @@ import * as util from '../util';
 import {COLUMN, ROW, X, Y} from '../channel';
 import {Model} from './Model';
 
-import * as vlAxis from './axis';
+import {compileAxis} from './axis';
 import * as vlScale from './scale';
 
 function groupdef(name, opt) {
@@ -73,7 +73,7 @@ export default function(group, model: Model, layout, output, singleScaleNames, s
     }
 
     axesGrp = groupdef('x-axes', {
-        axes: model.has(X) ? [vlAxis.def(X, model, layout, stats)] : undefined,
+        axes: model.has(X) ? [compileAxis(X, model, layout, stats)] : undefined,
         x: hasCol ? {scale: COLUMN, field: model.fieldRef(COLUMN)} : {value: 0},
         width: hasCol && {'value': layout.cellWidth}, //HACK?
         from: from
@@ -81,11 +81,11 @@ export default function(group, model: Model, layout, output, singleScaleNames, s
 
     output.marks.unshift(axesGrp); // need to prepend so it appears under the plots
     (output.axes = output.axes || []);
-    output.axes.push(vlAxis.def(ROW, model, layout, stats));
+    output.axes.push(compileAxis(ROW, model, layout, stats));
   } else { // doesn't have row
     if (model.has(X)) {
       //keep x axis in the cell
-      cellAxes.push(vlAxis.def(X, model, layout, stats));
+      cellAxes.push(compileAxis(X, model, layout, stats));
     }
   }
 
@@ -105,7 +105,7 @@ export default function(group, model: Model, layout, output, singleScaleNames, s
     }
 
     axesGrp = groupdef('y-axes', {
-      axes: model.has(Y) ? [vlAxis.def(Y, model, layout, stats)] : undefined,
+      axes: model.has(Y) ? [compileAxis(Y, model, layout, stats)] : undefined,
       y: hasRow && {scale: ROW, field: model.fieldRef(ROW)},
       x: hasRow && {value: 0},
       height: hasRow && {'value': layout.cellHeight}, //HACK?
@@ -114,10 +114,10 @@ export default function(group, model: Model, layout, output, singleScaleNames, s
 
     output.marks.unshift(axesGrp); // need to prepend so it appears under the plots
     (output.axes = output.axes || []);
-    output.axes.push(vlAxis.def(COLUMN, model, layout, stats));
+    output.axes.push(compileAxis(COLUMN, model, layout, stats));
   } else { // doesn't have column
     if (model.has(Y)) {
-      cellAxes.push(vlAxis.def(Y, model, layout, stats));
+      cellAxes.push(compileAxis(Y, model, layout, stats));
     }
   }
 

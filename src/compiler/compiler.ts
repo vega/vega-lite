@@ -5,10 +5,10 @@ import {Model} from './Model';
 
 import * as vlScale from './scale';
 import * as vlTime from './time';
-import * as vlAxis from './axis';
+import {compileAxis} from './axis';
+import {compileData} from './data';
 import * as vlLegend from './legend';
 import * as vlMarks from './marks';
-import {compileData} from './data';
 import vlFacet from './facet';
 import vlLayout from './layout';
 import vlStack from './stack';
@@ -112,10 +112,10 @@ export function compile(spec, stats, theme?) {
 
     var axes = [];
     if (model.has(X)) {
-      axes.push(vlAxis.def(X, model, layout, stats));
+      axes.push(compileAxis(X, model, layout, stats));
     }
     if (model.has(Y)) {
-      axes.push(vlAxis.def(Y, model, layout, stats));
+      axes.push(compileAxis(Y, model, layout, stats));
     }
     if (axes.length > 0) {
       group.axes = axes;
