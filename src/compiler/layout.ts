@@ -8,6 +8,7 @@ import {COLUMN, ROW, X, Y, TEXT, Channel} from '../channel';
 import {Model} from './Model';
 import * as time from './time';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
+import {roundFloat} from '../util';
 
 export default function(model: Model, stats) {
   var layout = box(model, stats);
@@ -79,12 +80,12 @@ function box(model: Model, stats) {
 
   return {
     // width and height of the whole cell
-    cellWidth: cellWidth,
-    cellHeight: cellHeight,
+    cellWidth: roundFloat(cellWidth),
+    cellHeight: roundFloat(cellHeight),
     cellPadding: cellPadding,
     // width and height of the chart
-    width: width,
-    height: height,
+    width: roundFloat(width),
+    height: roundFloat(height),
     // information about x and y, such as band size
     x: {useSmallBand: useSmallBand},
     y: {useSmallBand: useSmallBand}

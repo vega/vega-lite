@@ -8,6 +8,13 @@ export * from 'datalib/src/stats';
 import dlBin = require('datalib/src/bins/bins');
 export var bin = dlBin;
 
+/*
+ * Deal with floating point instabiility in javasscript to avoid weird .000001 output
+ */
+export function roundFloat(x: number, digit:number = 4) {
+  return +x.toFixed(digit);
+}
+
 export function forEach(obj, f, thisArg) {
   if (obj.forEach) {
     obj.forEach.call(thisArg, f);
