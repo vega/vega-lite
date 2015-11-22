@@ -247,10 +247,6 @@ export class Model {
     return vlFieldDef.cardinality(this.fieldDef(channel), stats, this.config('filterNull'));
   }
 
-  isRaw() {
-    return !this.isAggregate();
-  }
-
   data() {
     return this._spec.data;
   }
