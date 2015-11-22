@@ -98,10 +98,6 @@ export class Model {
     }
   }
 
-  scale(channel: Channel) {
-    return this._spec.encoding[channel].scale || {};
-  }
-
   axis(channel: Channel) {
     return this._spec.encoding[channel].axis || {};
   }
