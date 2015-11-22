@@ -37,7 +37,7 @@ export default function(model: Model, mdef, stack) {
     type: 'stack',
     groupby: [model.fieldRef(groupby)],
     field: model.fieldRef(fieldChannel),
-    sortby: [(stack.properties.reverse ? '-' : '') + model.fieldRef(stack.stack)],
+    sortby: [(stack.properties.reverse ? '' : '-') + model.fieldRef(stack.stack)],
     output: {start: startField, end: endField}
   };
 
