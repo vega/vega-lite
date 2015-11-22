@@ -1,5 +1,5 @@
 import * as __ from 'lodash';
-var galleryExamples = require('../gallery/examples');
+var galleryExamples = require('../site/examples');
 
 import {f} from './fixtures';
 
