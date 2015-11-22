@@ -15,7 +15,7 @@ import vlStack from './stack';
 import vlStyle from './style';
 import vlSubfacet from './subfacet';
 
-import * as vlData from '../data';
+import {stats as vlDataStats} from '../data';
 import {COLUMN, ROW, X, Y} from '../channel';
 
 export {Model} from './Model';
@@ -25,7 +25,7 @@ export function compile(spec, stats, theme?) {
   // no need to pass stats if you pass in the data
   if (!stats) {
     if (model.hasValues()) {
-        stats = vlData.stats(model.data().values);
+        stats = vlDataStats(model.data().values);
     } else {
       console.error('No stats provided and data is not embedded.');
     }
