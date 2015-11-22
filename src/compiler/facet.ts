@@ -3,7 +3,7 @@ import {COLUMN, ROW, X, Y} from '../channel';
 import {Model} from './Model';
 
 import {compileAxis} from './axis';
-import * as vlScale from './scale';
+import {compileScales, compileScaleNames} from './scale';
 
 function groupdef(name, opt) {
   opt = opt || {};
@@ -123,8 +123,8 @@ export default function(group, model: Model, layout, output, singleScaleNames, s
 
   // assuming equal cellWidth here
   // TODO: support heterogenous cellWidth (maybe by using multiple scales?)
-  output.scales = (output.scales || []).concat(vlScale.defs(
-    vlScale.names(enter).concat(singleScaleNames),
+  output.scales = (output.scales || []).concat(compileScales(
+    compileScaleNames(enter).concat(singleScaleNames),
     model,
     layout,
     stats,

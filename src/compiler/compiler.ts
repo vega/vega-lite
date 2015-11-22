@@ -3,12 +3,14 @@
  */
 import {Model} from './Model';
 
-import * as vlScale from './scale';
 import * as vlTime from './time';
 import {compileAxis} from './axis';
 import {compileData} from './data';
 import {compileLegends} from './legend';
 import {compileMarks} from './marks';
+import {compileScales, compileScaleNames} from './scale';
+
+// TODO: stop using default if we were to keep these files
 import vlFacet from './facet';
 import vlLayout from './layout';
 import vlStack from './stack';
@@ -97,7 +99,7 @@ export function compile(spec, stats, theme?) {
 
   // get a flattened list of all scale names that are used in the vl spec
   var singleScaleNames = [].concat.apply([], mdefs.map(function(markProps) {
-    return vlScale.names(markProps.properties.update);
+    return compileScaleNames(markProps.properties.update);
   }));
 
   var legends = compileLegends(model, styleCfg);
@@ -109,7 +111,7 @@ export function compile(spec, stats, theme?) {
       output.legends = legends;
     }
   } else {
-    group.scales = vlScale.defs(singleScaleNames, model, layout, stats);
+    group.scales = compileScales(singleScaleNames, model, layout, stats);
 
     var axes = [];
     if (model.has(X)) {
