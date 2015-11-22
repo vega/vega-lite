@@ -4,11 +4,13 @@ var gulp = require('gulp');
 var paths = gulp.paths;
 var $ = require('gulp-load-plugins')();
 
-gulp.task('jshint', function() {
+gulp.task('tslint', function() {
   return gulp.src([
-      paths.src + '/**/*.js',
-      paths.test + '/**/*.js',
+      paths.src + '/**/*.ts',
+      paths.test + '/**/*.ts',
     ])
-    .pipe($.jshint())
-    .pipe($.jshint.reporter('jshint-stylish'));
+    .pipe($.tslint())
+    .pipe($.tslint.report('prose', {
+      summarizeFailureOutput: true
+    }));
 });

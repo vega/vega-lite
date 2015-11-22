@@ -42,12 +42,6 @@ npm run build
 # add the compiled files, commit and tag!
 git add vega-lite* -f
 
-# add bower_components for editor
-cd editor
-bower install
-git add bower_components/* -f
-cd ..
-
 # add bower_components for gallery
 cd gallery
 bower install

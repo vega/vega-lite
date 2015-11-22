@@ -4,19 +4,18 @@
 [![npm dependencies](https://david-dm.org/vega/vega-lite.svg)](https://www.npmjs.com/package/vega-lite)
 [![npm version](https://img.shields.io/npm/v/vega-lite.svg)](https://www.npmjs.com/package/vega-lite)
 
-**Vega-Lite is still in alpha phase and we are working on improving the code and [documentation](docs/Documentation.md).
-Note that our syntax might change slightly before we release 1.0.**
-
 Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete [Vega](https://vega.github.io/) specifications.
 
-Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as position (`x`,`y`), `size`, `color` and `shape`. These mappings are then translated into a full visualization specifications. These resulting visualizations can then be exported or further modified to customize the display.
+Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as position (`x`,`y`), `size`, `color` and `shape`. These mappings are then translated into a detailed visualization specifications in the form of a Vega specification.  Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using rule-based approach, but users can explicit specify these properties to override default values.  
 
-If you are using Vega-Lite for your project(s), please let us know by emailing us at [Vega-Lite \[at\] cs.washington.edu](mailto:vega-lite@cs.washington.edu).  Feedback is also welcome.
-If you find a bug or have a feature request, please [create an issue](https://github.com/vega/vega-lite/issues/new).
-
-__Try using Vega-lite in the online [Vega Editor](http://vega.github.io/vega-editor/?mode=vega-lite)__. 
+__Try using Vega-Lite in the online [Vega Editor](http://vega.github.io/vega-editor/?mode=vega-lite)__.
 
 The complete schema for specifications as [JSON schema](http://json-schema.org/) is at [vega-lite-schema.json](https://vega.github.io/vega-lite/vega-lite-schema.json).
+
+**Note: Vega-Lite is still in alpha phase and we are working on improving the code and [documentation](docs/Documentation.md).
+Our syntax might change slightly before we release 1.0.**  See our wiki pages for [the development roadmap](https://github.com/vega/vega-lite/wiki/Roadmap) and [how you can contribute](https://github.com/vega/vega-lite/wiki/Contribute).
+If you find a bug or have a feature request, please [create an issue](https://github.com/vega/vega-lite/issues/new).
+
 
 ## Example specification
 
@@ -29,14 +28,14 @@ We have more example visualizations in our [gallery](https://vega.github.io/vega
   "data": {"url": "data/barley.json"},
   "marktype": "point",
   "encoding": {
-    "x": {"type": "Q","name": "yield","aggregate": "mean"},
+    "x": {"type": "quantitative", "field": "yield","aggregate": "mean"},
     "y": {
-      "sort": {"name": "yield","aggregate": "mean","reverse": false},
-      "type": "O",
-      "name": "variety"
+      "sort": {"field": "yield", "aggregate": "mean", "reverse": false},
+      "type": "ordinal",
+      "field": "variety"
     },
-    "row": {"type": "O","name": "site"},
-    "color": {"type": "O","name": "year"}
+    "row": {"type": "ordinal", "field": "site"},
+    "color": {"type": "ordinal", "field": "year"}
   }
 }
 ```
@@ -56,8 +55,8 @@ This is a similar chart as one of the Vega examples in https://github.com/trifac
   },
   "marktype": "bar",
   "encoding": {
-    "x": {"type": "O","name": "a"},
-    "y": {"type": "Q","name": "b"}
+    "x": {"type": "ordinal", "field": "a"},
+    "y": {"type": "quantitative", "field": "b"}
   }
 }
 ```
@@ -73,16 +72,25 @@ cd vega-lite
 npm install
 ```
 
+Since Vega-Lite is written in Typescript, you should also install TypeScript
+```
+npm install -g typescript
+```
+
 ### Commands
 
-You can run `npm run build` to compile vega-lite or run `npm start` to open the live vega-lite editor.
+You can run `npm run build` to compile Vega-Lite.
 
-You can `npm run watch` to start a watcher task that regenerate the `vega-lite-schema.json` file whenever `schema.js` changes, and lints and tests all JS files when any `.js` file in `test/` or `src/` changes.
+You can `npm run watch` to start a watcher task that
+- re-compile Vega-Lite
+- regenerate the `vega-lite-schema.json` file whenever `schema.js` changes
+- lints and tests all JS files when any `.js` file in `test/` or `src/` changes.
 
-Note: These commands use [Gulp](http://gulpjs.com) internally; to run them directly (instead of through the `npm run` aliases), install gulp globally with
+Note: These commands use [Gulp](http://gulpjs.com) internally; Therefore, you need to install gulp globally with
 ```sh
 npm install -g gulp
 ```
+to make them work.  
 
 ### Developing Vega-Lite and Datalib
 

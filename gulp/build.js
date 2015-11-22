@@ -8,15 +8,16 @@ var browserify = require('browserify');
 var browserSync = require('browser-sync');
 var source = require('vinyl-source-stream');
 var watchify = require('watchify');
+var tsify = require('tsify');
 
 var bundleDef = {
-  entries: ['./src/vl'],
+  entries: ['./src/vl.ts'],
   standalone: 'vl',
   debug: true
 };
 
-var browserBundler = browserify(bundleDef);
-var watchBundler = watchify(browserify(bundleDef));
+var browserBundler = browserify(bundleDef).plugin(tsify);
+var watchBundler = watchify(browserify(bundleDef)).plugin(tsify);
 
 // builds Vega-lite with watcher
 function bundle() {
