@@ -24,7 +24,7 @@ export interface FieldDef {
 
   // override vega components
   axis?: Axis;
-  legend?: Legend;
+  legend?: Legend | boolean;
   scale?: Scale;
 
   // text
