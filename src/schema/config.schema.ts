@@ -116,10 +116,10 @@ export var config = {
     // layout
     stack: {
       type: ['boolean', 'object'],
+      default: {},
       description: 'Enable stacking (for bar and area marks only).',
       properties: {
         sort: {
-          default: 'descending',
           oneOf: [{
             type: 'string',
             enum: ['ascending', 'descending']
