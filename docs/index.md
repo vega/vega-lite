@@ -38,7 +38,7 @@ Here is the bare minimum html file to get Vega-Lite with inline values working i
 Basically, Vega-Lite compiles a Vega-Lite specification into a Vega
 specification and use Vega Runtime to display visualizations.
 
-{% highlight html %}
+```html
 <!DOCTYPE html>
 <meta charset="utf-8">
 
@@ -74,7 +74,7 @@ var vgspec = vl.compile(vlspec).spec;
 parse(vgspec);
 
 </script>
-{% endhighlight %}
+```
 
 
 ### Data from URL
@@ -87,7 +87,7 @@ After that, Vega-Lite compiles a Vega-Lite specification into a Vega specificati
 
 Note that the need to call `vl.data.stats()` will be eliminated very soon (before we release 1.0).
 
-{% highlight html %}
+```html
 <!DOCTYPE html>
 <meta charset="utf-8">
 
@@ -133,7 +133,7 @@ var vlspec = {
 render(vlSpec);
 
 </script>
-{% endhighlight %}
+```
 
 
 __Pending Revision__:

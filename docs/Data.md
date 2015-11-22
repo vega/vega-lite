@@ -30,7 +30,7 @@ Vega-Lite currently supports single data source.  The data set can be specified 
 Inline Data can be specified using `values` property.
 For example, a data table with two rows and two columns (`a` and `b`) in a spec might look like this:
 
-{% highlight json %}
+```json
 {
   "data": {
     "values": [{"a":0, "b":3}, {"a":1, "b":5}, {"a":3, "b":1}, {"a":4, "b":2}]
@@ -41,7 +41,7 @@ For example, a data table with two rows and two columns (`a` and `b`) in a spec 
     "y": {"field": "b", "type": "quantitative"}
   }
 }
-{% endhighlight %}
+```
 
 #### Data from URL
 

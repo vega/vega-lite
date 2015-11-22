@@ -5,4 +5,7 @@ url: "http://vega.github.io/vega-lite/" # the base hostname & protocol for your 
 exclude: [bin, bower_components, coverage, Gemfile, Gemfile.lock, gulp, lib, node_modules, scripts, test, typings, package.json, bower.json]
 
 # Build settings
-markdown: kramdown
+markdown: redcarpet # use redcarpet to enable backtick code
+redcarpet:
+  #https://george-hawkins.github.io/basic-gfm-jekyll/redcarpet-extensions.html
+  extensions: ["tables", "fenced_code_blocks", "footnotes", "autolink", "strikethrough", "superscript", "with_toc_data"]
