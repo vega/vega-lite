@@ -55,7 +55,7 @@ Here is a list of properties for the field definition object:
 | [sort](#sort)        | String &#124; Object        | Sort order for a particular field.  This can be string (`'ascending'`, `'descending'`, or `'unsorted'`) or a sort field definition object for sorting by an aggregate calculation of a specified sort field.  If unspecified, the default value is `ascending`.  See [Sort](#sort) section for more information. |
 | [timeUnit](#timeunit)| String        | Property for converting time unit.            |
 | [axis](#axis)        | Object        | Configuration object for the encoding's axis.    |
-| [legend](#legend)  | Object        | Configuration object for the encoding's legends. |
+| [legend](#legend)    | Boolean &#124; Object  | Boolean flag for showing legend (`true` by default), or a configuration object for the encoding's legends. |
 | [scale](#scale)      | Object        | Configuration object for the encoding's scale.   |
 
 <!-- ## Data Type -->
@@ -202,9 +202,14 @@ If `titleOffset` is unspecified, the default value is automatically determined.
 
 Similar to axes, legends visualize scales. However, whereas axes aid interpretation of scales with spatial ranges, legends aid interpretation of scales with ranges such as colors, shapes and sizes.
 
-Vega-Lite's `legend` object supports the following [Vega legend properties](https://github.com/vega/vega/wiki/Legends#legend-properties):
+By default, Vega-Lite automatically creates legends for `color`, `size`, and `shape` channels when they are encoded.
+The field's legend can be removed by setting `legend` to `false`.
+If `legend` is `true`, default legend properties are applied.
+Legend properties can be overridden by setting `legend` to a legend property object.
+The `legend` property object supports the following [Vega legend properties](https://github.com/vega/vega/wiki/Legends#legend-properties):
 `orient`, `title`, `format`, `values`, and `properties`.
-See [Vega documentation](https://github.com/vega/vega/wiki/Legends#legend-properties) for more information.
+
+See [Vega documentation](https://github.com/vega/vega/wiki/Legends#legend-properties) for more information about each property.
 
 <!-- TODO: add a table here instead of pointing to Vega-->
 
