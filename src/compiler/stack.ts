@@ -3,8 +3,8 @@ import {Channel} from '../channel';
 import * as util from '../util';
 
 export interface StackDef {
-  groupby: Channel;
-  value: Channel;
+  groupbyChannel: Channel;
+  fieldChannel: Channel;
   stack: Channel; // COLOR or DETAIL
   config: any;
 }
@@ -20,8 +20,8 @@ interface StackTransform {
 }
 
 export default function(model: Model, mdef, stack: StackDef) {
-  var groupby = stack.groupby;
-  var fieldChannel = stack.value;
+  var groupby = stack.groupbyChannel;
+  var fieldChannel = stack.fieldChannel;
 
   var valName = model.fieldRef(fieldChannel);
   var startField = valName + '_start';

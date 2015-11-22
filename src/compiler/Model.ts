@@ -204,15 +204,15 @@ export class Model {
 
       if (isXMeasure && !isYMeasure) {
         return {
-          groupby: Y,
-          value: X,
+          groupbyChannel: Y,
+          fieldChannel: X,
           stack: stack,
           config: this.config('stack')
         };
       } else if (isYMeasure && !isXMeasure) {
         return {
-          groupby: X,
-          value: Y,
+          groupbyChannel: X,
+          fieldChannel: Y,
           stack: stack,
           config: this.config('stack')
         };
