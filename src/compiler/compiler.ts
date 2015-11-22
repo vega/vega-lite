@@ -1,8 +1,6 @@
 /**
  * Module for compiling Vega-lite spec into Vega spec.
  */
-
-import {summary} from '../util';
 import {Model} from './Model';
 
 import * as vlScale from './scale';
@@ -10,12 +8,14 @@ import * as vlTime from './time';
 import * as vlAxis from './axis';
 import * as vlLegend from './legend';
 import * as vlMarks from './marks';
-import vlData from './data';
+import {def as dataDef} from './data';
 import vlFacet from './facet';
 import vlLayout from './layout';
 import vlStack from './stack';
 import vlStyle from './style';
 import vlSubfacet from './subfacet';
+
+import * as vlData from '../data';
 import {COLUMN, ROW, X, Y} from '../channel';
 
 export {Model} from './Model';
@@ -25,10 +25,7 @@ export function compile(spec, stats, theme?) {
   // no need to pass stats if you pass in the data
   if (!stats) {
     if (model.hasValues()) {
-        stats = summary(model.data().values).reduce(function(s, p) {
-        s[p.field] = p;
-        return s;
-      }, {});
+        stats = vlData.stats(model.data().values);
     } else {
       console.error('No stats provided and data is not embedded.');
     }
@@ -41,7 +38,7 @@ export function compile(spec, stats, theme?) {
       width: layout.width,
       height: layout.height,
       padding: 'auto',
-      data: vlData(model),
+      data: dataDef(model),
       marks: [{
         name: 'cell',
         type: 'group',

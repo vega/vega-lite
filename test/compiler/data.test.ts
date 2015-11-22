@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 
-import data, {source, summary} from '../../src/compiler/data';
+import {def as dataDef, source, summary} from '../../src/compiler/data';
 import {SUMMARY} from '../../src/data';
 import {Model} from '../../src/compiler/Model';
 
@@ -14,7 +14,7 @@ describe('data', function () {
           }
         });
 
-      var _data = data(encoding);
+      var _data = dataDef(encoding);
       expect(_data.length).to.equal(2);
     });
   });
@@ -27,7 +27,7 @@ describe('data', function () {
         }
       });
 
-    var _data = data(rawEncodingWithLog);
+    var _data = dataDef(rawEncodingWithLog);
     it('should contains one table', function() {
       expect(_data.length).to.equal(1);
     });
