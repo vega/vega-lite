@@ -18,25 +18,34 @@ sorting (`sort`), and time unit conversion (`timeUnit`).
 # Encoding Channels
 
 Vega-Lite supports the following encoding channels: `x`,`y`, `row`, `column`, `color`, `size`, `shape`, `text`, `detail`.
+These channels are properties for the top-level `encoding` definition object.
 
-- `x` and `y` channels map values of the corresponding data fields to x and y coordinates (or to width/height for `bar` and `area` marks)
+| Property      | Type          | Description    |
+| :------------ |:-------------:| :------------- |
+| x, y          | [FieldDef](#field-definition)| Mapping values of a field to x or y coordinates (or to width or height for `bar` and `area` marks). |
+| row, column   | [FieldDef](#field-definition)| Using a field to facet data into vertical and horizontal [trellis plots](https://en.wikipedia.org/wiki/Small_multiple) respectively. |
+| color | [FieldDef](#field-definition)| Mapping values of a field to color or setting static color value.  The values are mapped to hue if the field is nominal, and mapped to saturation otherwise.  |
+| shape  | [FieldDef](#field-definition)| Mapping values of a field to shape of the marks or setting static shape.  `shape` is only applicable for `point` marks.  |
+| size  | [FieldDef](#field-definition)| Mapping values of the field to size of the marks.  `size` is not applicable for `line` and `area`. |
+| detail | [FieldDef](#field-definition)| Adding additional dimension to aggregate views.  `detail` does not affect raw plots. |
 
-<!-- TODO: add visual examples -->
+<!-- # Faceting
+TODO: add visual examples for both row and column
+-->
 
-- `row` and `column` facet data into vertical and horizontal [trellis plots](https://en.wikipedia.org/wiki/Small_multiple) respectively.  
+<!-- # Color
+TODO: visual examples for hue, saturation
+ -->
 
-<!-- TODO: add visual examples for both row and column -->
+<!-- # Size
+TODO: example: bubble plots
+-->
 
-- Values can be mapped to other non-positional encoding channels including `color`, `size`, and  `shape`.
-
-<!-- TODO: add visual examples for each one -->
-
-- For aggregate views, `detail` to specify additional dimensions
-
-<!-- TODO: explain more about detail  -->
+<!-- # Detail
+TODO: explain more about detail  
+-->
 
 <!-- TODO: tooltips, labels -->
-
 
 # Field Definition
 
@@ -45,15 +54,15 @@ Here is a list of properties for the field definition object:
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | field         | String        | Name of the field from which to pull a data value.    |
-| value         | String &#124; Integer | A constant value |
+| value         | String &#124; Integer | A constant value. |
 | type          | String        | Data type of the field.  This property accepts both a full type name (`'quantitative'`, `'temporal'`, `'ordinal'`,  and `'nominal'`), or an initial character of the type name (`'Q'`, `'T'`, `'O'`, `'N'`).  This property is case insensitive.|
 | [aggregate](#Aggregate) | String        | Aggregation function for the field (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).  |
 | [bin](#bin)          | Boolean &#124; Object        | Boolean flag / configuration object for binning.  See [Binning](#Bin) |
 | [sort](#sort)        | String &#124; Object        | Sort order for a particular field.  This can be string (`'ascending'`, `'descending'`, or `'unsorted'`) or a sort field definition object for sorting by an aggregate calculation of a specified sort field.  If unspecified, the default value is `ascending`.  See [Sort](#sort) section for more information. |
-| [timeUnit](#timeunit)| String        | Property for converting time unit            |
-| [axis](#axis)        | Object        | Configuration object for the encoding's axis    |
-| [legend](#legend)  | Object        | Configuration object for the encoding's legends |
-| [scale](#scale)      | Object        | Configuration object for the encoding's scale   |
+| [timeUnit](#timeunit)| String        | Property for converting time unit.            |
+| [axis](#axis)        | Object        | Configuration object for the encoding's axis.    |
+| [legend](#legend)  | Object        | Configuration object for the encoding's legends. |
+| [scale](#scale)      | Object        | Configuration object for the encoding's scale.   |
 
 <!-- ## Data Type -->
 <!-- TODO: add description about each data type, describe how nominal and ordinal are treated differently -->
@@ -81,7 +90,7 @@ The `bin` property definition object contains the following properties:
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| maxbins       | Integer       | The maximum number of allowable bins.  See [Datalib's binning documentation](https://github.com/vega/datalib/wiki/Statistics#dl_bins) for more information |
+| maxbins       | Integer       | The maximum number of allowable bins.  See [Datalib's binning documentation](https://github.com/vega/datalib/wiki/Statistics#dl_bins) for more information. |
 
 __Pending Revision__: We are revising how binning should be specified in Vega-Lite and properties for binning.  Other properties in [Datalib's binning ](https://github.com/vega/datalib/wiki/Statistics#dl_bins) such as `min`, `max`, `maxbins`, `step`, `steps`, `minstep`, `div` will be added once this is revised.
 
@@ -176,7 +185,7 @@ Moreover, Vega-Lite supports the following additional axis properties.
 | :------------   |:-------------:| :------------- |
 | labelMaxLength  | Integer       | Max length for axis labels. Longer labels are truncated. (25 by default.) |
 | labelAngle      | Integer       | Angle by which to rotate labels. Set to 0 to force horizontal.   |
-| titleMaxLength  | Integer       | Max length for axis title when the title is automatically generated from the field\'s description.  If the   |
+| titleMaxLength  | Integer       | Max length for axis title when the title is automatically generated from the field\'s description. |
 | titleOffset     | Integer       | Offset between the axis title and the axis.  |
 
 <sup>1</sup>

@@ -4,26 +4,32 @@ title: Data
 permalink: /docs/data.html
 ---
 
+Akin to [Vega](/vega/vega)'s [data model](vega/vega/wiki/Data), the basic data model used by Vega is _tabular_ data, similar to a spreadsheet or database table. Individual data sets are assumed to contain a collection of records, which may contain any number of named data fields.
+
 Vega-Lite's top-level `data` property is an object that describes data source and its transformations.
-
-Akin to [Vega](/vega/vega)'s [data model](vega/vega/wiki/Data), the basic data model used by Vega is _tabular_ data, similar to a spreadsheet or database table. Individual data sets are assumed to contain a collection of records (or rows), which may contain any number of named data fields (or variables/columns).
-
+`data` definition object can have the following properties:
+[values](#data-source),
+[url](#data-source),
+[formatType](#data-source),
+[calculate](#data-transformation),
+[filter](#data-transformation).
 
 ## Data Properties
 
-Here is a list of properties for `data`:
+
+### Data Source
+
+Vega-Lite currently supports single data source.  The data set can be specified either through including the data inline or providing a URL from which to load the data.
+
+Here is a list of all properties describing `data` source:
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | values        | Array         | Array of object that maps field names to their values.  See [Inline Data](#Inline-Data) |
 | url           | String        | A URL from which to load the data set. Use the _formatType_ property to ensure the loaded data is correctly parsed. |
 | formatType    | String        | Type of input data: `json`(default), `csv` |
-| filter        | String        | [Vega Expression](https://github.com/vega/vega/wiki/Expressions) for filtering data.  Each datum object can be referred using bound variable `datum`. |
-| calculate     | Array         | An array of [formula object for deriving new calculated field](#calculate-field).  Calculation are applied before filter. |
 
-### Data Source
 
-Vega-Lite currently supports single data source.  The data set can be specified either through including the data inline or providing a URL from which to load the data.
 
 #### Inline Data
 
@@ -49,9 +55,12 @@ Data can be specified from url using the `url` property.  Format of the input da
 
 ## Data Transformation
 
-### Filter
+`data` property also describes data transformations including `calculate` and `filter`.
 
-To exclude data items (rows), `filter` property can be specified using a [Vega Expression](https://github.com/vega/vega/wiki/Expressions).
+| Property      | Type          | Description    |
+| :------------ |:-------------:| :------------- |
+| calculate     | Array         | An array of [formula object for deriving new calculated field](#calculate-field).  Calculation are applied before filter. |
+| filter        | String        | [Vega Expression](https://github.com/vega/vega/wiki/Expressions) for filtering data items (or rows).  Each datum object can be referred using bound variable `datum`. |
 
 
 ### Calculated Field
