@@ -10,7 +10,6 @@ export var bin = dlBin;
 
 /*
  * Deal with floating point instabiility in javasscript to avoid weird .000001 output
- * http://stackoverflow.com/questions/11695618/dealing-with-float-precision-in-javascript
  */
 export function roundFloat(x: number, digit:number = 4) {
   return +x.toFixed(digit);
