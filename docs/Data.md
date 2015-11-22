@@ -1,65 +1,65 @@
 # Data
 
-Data in Vega-Lite can be specified in the `data` property definition.
+Vega-Lite's top-level `data` property is an object that describes data source and its transformations.
 
-Akin to [Vega](/vega/vega)'s [data model](vega/vega/wiki/Data), the basic data model used by Vega is _tabular_ data, similar to a spreadsheet or database table. Individual data sets are assumed to contain a collection of records (or "rows"), which may contain any number of named data attributes (variables, or "columns").
+Akin to [Vega](/vega/vega)'s [data model](vega/vega/wiki/Data), the basic data model used by Vega is _tabular_ data, similar to a spreadsheet or database table. Individual data sets are assumed to contain a collection of records (or rows), which may contain any number of named data fields (or variables/columns).
 
-## Data Source
+
+## Data Properties
+
+Here is a list of properties for `data`:
+
+| Property      | Type          | Description    |
+| :------------ |:-------------:| :------------- |
+| values        | Array         | Array of object that maps field names to their values.  See [Inline Data](#Inline-Data) |
+| url           | String        | A URL from which to load the data set. Use the _formatType_ property to ensure the loaded data is correctly parsed. |
+| formatType    | String        | Type of input data: `json`(default), `csv` |
+| filter        | String        | [Vega Expression](https://github.com/vega/vega/wiki/Expressions) for filtering data.  Each datum object can be referred using bound variable `datum`. |
+| calculate     | Array         | An array of [formula object for deriving new calculated field](#calculate-field).  Calculation are applied before filter. |
+
+### Data Source
 
 Vega-Lite currently supports single data source.  The data set can be specified either through including the data inline or providing a URL from which to load the data.
 
-### Inline Data
+#### Inline Data
 
 Inline Data can be specified using `values` property.
-
-| Property      | Type          | Description    |
-| :------------ |:-------------:| :------------- |
-| values        | Array         | Array of object that maps variable names to their values. |
-
 For example, a data table with two rows and two columns (`a` and `b`) in a spec might look like this:
 
-```js
+```json
 {
-  data: {
-    values: [{"a":0, "b":3}, {"a":1, "b":5}]]
+  "data": {
+    "values": [{"a":0, "b":3}, {"a":1, "b":5}, {"a":3, "b":1}, {"a":4, "b":2}]
   },
-  encoding: …,
-  …
+  "marktype": "point",
+  "encoding": {
+    "x": {"field": "a", "type": "quantitative"},
+    "y": {"field": "b", "type": "quantitative"}
+  }
 }
 ```
 
-### Data from URL
+#### Data from URL
 
-Alternatively, data can be specified from url using the following properties.
-
-| Property      | Type          | Description    |
-| :------------ |:-------------:| :------------- |
-| url           | String        | A URL from which to load the data set. Use the _formatType_ property to ensure the loaded data is correctly parsed. |
-
-| formatType    | String        | Type of input data: `json`(default), `csv` |
-| filter        | String        | Vega Expression for filtering data.  Each datum object can be referred using bound variable `datum`. |
-
-
-__Pending Revision__: We are considering to support a subset of Vega transformations – notably map-based transforms for new value derivation [#37](https://github.com/vega/issues/37).
+Data can be specified from url using the `url` property.  Format of the input data can be specified using `formatType` property.  
 
 ## Data Transformation
 
-Filter and calculated field can be specified using `filter` and `calculate` properties.
+### Filter
 
-| Property      | Type          | Description    |
-| :------------ |:-------------:| :------------- |
-| filter        | String        | A string containing the filter Vega expression. Use `datum` to refer to the current data object. |
-| calculate     | Array         | An array of [formula object for deriving new calculated field](#calculate-field).  Calculation are applied before filter. |
+To exclude data items (rows), `filter` property can be specified using a [Vega Expression](https://github.com/vega/vega/wiki/Expressions).
+
 
 ### Calculated Field
 
-Each formula object in the `calculate` array has two properties:
+New field can be derived from the existing data using `calculate` property, which contains
+an array of formula objects.  Each formula object has two properties:
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | field         | String        | The field name in which to store the computed formula value. |
 | expr          | String        | A string containing an expression for the formula. Use the variable `datum` to to refer to the current data object. |
 
-### Binning, Time Unit Conversion, Aggregation
+### Field Transformation
 
-Some transformation including binning and aggregation are specified as part of [encoding definitions](Encoding-Mapping.md)
+Other [field transformations including aggregation and binning](Encoding-Mapping.md) are specified as part of [encoding definitions](Encoding-Mapping.md)
