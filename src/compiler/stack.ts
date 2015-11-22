@@ -1,6 +1,24 @@
 import {Model} from './Model';
+import {Channel} from '../channel';
 
-export default function(model: Model, mdef, stack) {
+export interface StackDef {
+  groupby: Channel;
+  value: Channel;
+  stack: Channel; // COLOR or DETAIL
+  properties: any;
+}
+
+// TODO: put all vega interface in one place
+interface StackTransform {
+  type: string;
+  offset?: any;
+  groupby: any;
+  field: any;
+  sortby: any;
+  output: any;
+}
+
+export default function(model: Model, mdef, stack: StackDef) {
   var groupby = stack.groupby;
   var fieldChannel = stack.value;
 
@@ -20,16 +38,6 @@ export default function(model: Model, mdef, stack) {
       method: 'value',
       value: 0
     });
-  }
-
-  // TODO: put all vega interface in one place
-  interface StackTransform {
-    type: string;
-    offset?: any;
-    groupby: any;
-    field: any;
-    sortby: any;
-    output: any;
   }
 
   // add stack transform to mark

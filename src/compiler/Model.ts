@@ -10,6 +10,7 @@ import * as vlFieldDef from '../fielddef';
 import * as vlEncoding from '../encoding';
 import * as schema from '../schema/schema';
 import * as schemaUtil from '../schema/schemautil';
+import {StackDef} from './stack';
 import {getFullName} from '../type';
 
 /**
@@ -209,7 +210,7 @@ export class Model {
    * - dimension - the dimension field
    * - value - the value field
    */
-  stack() {
+  stack(): StackDef {
     var stack = (this.has(COLOR) && this.fieldDef(COLOR).stack) ? COLOR :
       (this.has(DETAIL) && this.fieldDef(DETAIL).stack) ? DETAIL :
         null;
