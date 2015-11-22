@@ -137,10 +137,6 @@ export class Model {
     return bin;
   }
 
-  value(channel: Channel) {
-    return this._spec.encoding[channel].value;
-  }
-
   numberFormat = function(channel?: Channel) {
     // TODO(#497): have different number format based on numberType (discrete/continuous)
     return this.config('numberFormat');

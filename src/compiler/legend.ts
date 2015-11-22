@@ -101,14 +101,14 @@ namespace properties {
           if (model.has(COLOR) && channel === COLOR) {
             symbols.fill = {scale: COLOR, field: 'data'};
           } else {
-            symbols.fill = {value: model.value(COLOR)};
+            symbols.fill = {value: model.fieldDef(COLOR).value};
           }
           symbols.stroke = {value: 'transparent'};
         } else {
           if (model.has(COLOR) && channel === COLOR) {
             symbols.stroke = {scale: COLOR, field: 'data'};
           } else {
-            symbols.stroke = {value: model.value(COLOR)};
+            symbols.stroke = {value: model.fieldDef(COLOR).value};
           }
           symbols.fill = {value: 'transparent'};
           symbols.strokeWidth = {value: model.config('strokeWidth')};
