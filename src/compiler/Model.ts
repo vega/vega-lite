@@ -20,6 +20,7 @@ import * as util from '../util';
 
 export class Model {
   _spec: Spec;
+  _stackDef: StackDef;
 
   // TODO: include _stack, _layout, _style, etc.
 
@@ -33,6 +34,8 @@ export class Model {
         fieldDef.type = getFullName(fieldDef.type);
       }
     });
+
+    // calculate stack
   }
 
   toSpec(excludeConfig?, excludeData?) {
@@ -206,14 +209,14 @@ export class Model {
           groupby: Y,
           value: X,
           stack: stack,
-          properties: this.config('stack')
+          config: this.config('stack')
         };
       } else if (isYMeasure && !isXMeasure) {
         return {
           groupby: X,
           value: Y,
           stack: stack,
-          properties: this.config('stack')
+          config: this.config('stack')
         };
       }
     }

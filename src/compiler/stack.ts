@@ -1,11 +1,12 @@
 import {Model} from './Model';
 import {Channel} from '../channel';
+import * as util from '../util';
 
 export interface StackDef {
   groupby: Channel;
   value: Channel;
   stack: Channel; // COLOR or DETAIL
-  properties: any;
+  config: any;
 }
 
 // TODO: put all vega interface in one place
@@ -40,17 +41,25 @@ export default function(model: Model, mdef, stack: StackDef) {
     });
   }
 
+  const sortby = stack.config.sort === 'descending' ?
+                   '-' + model.fieldRef(stack.stack) :
+                 stack.config.sort === 'ascending' ?
+                   model.fieldRef(stack.stack) :
+                 util.isObject(stack.config.sort) ?
+                   stack.config.sort :
+                   '-' + model.fieldRef(stack.stack); // default
+
   // add stack transform to mark
   var stackTransform: StackTransform = {
     type: 'stack',
     groupby: [model.fieldRef(groupby)],
     field: model.fieldRef(fieldChannel),
-    sortby: [(stack.properties.reverse ? '' : '-') + model.fieldRef(stack.stack)],
+    sortby: sortby,
     output: {start: startField, end: endField}
   };
 
-  if (stack.properties.offset) {
-    stackTransform.offset = stack.properties.offset;
+  if (stack.config.offset) {
+    stackTransform.offset = stack.config.offset;
   }
 
   transforms.push(stackTransform);
