@@ -24,6 +24,6 @@ describe('util.makeValidPropertyName', function () {
   });
 
   it('should encode invalid names', function() {
-    expect(util.makeValidPropertyName('foo bar')).to.eql('Zm9vIGJhcg__');
+    expect(util.makeValidPropertyName('foo bar')).to.eql('foo_bar');
   });
 });

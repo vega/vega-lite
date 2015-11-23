@@ -8,6 +8,9 @@ export * from 'datalib/src/stats';
 import dlBin = require('datalib/src/bins/bins');
 export var bin = dlBin;
 
+const VALID_IDENTIFIER = /^[0-9a-zA-Z\$\_]+$/;
+const INVALID_CHARS = /[^0-9a-zA-Z\$\_]/ig;
+
 /*
  * Deal with floating point instabiility in javasscript to avoid weird .000001 output
  */
@@ -77,31 +80,14 @@ export function getbins(stats, maxbins) {
  * array notation and as an unquoted key.
  */
 export function isSimplePropertyName(name: string) {
-  const validCharacters = /^[0-9a-zA-Z\$\_]+$/;
-  return validCharacters.test(name);
+  return VALID_IDENTIFIER.test(name);
 }
 
 /**
- * Encode property names that are not simple.
+ * Rename invalid characters to _
  */
 export function makeValidPropertyName(name: string) {
-  if (isSimplePropertyName(name)) {
-    return name;
-  }
-  return toBase64(name).replace('==', '__');
-}
-
-/**
- * Base64 encoding that works in browsers and in node.
- */
-function toBase64(str: string) {
-  if (typeof btoa === 'undefined') {
-    // node
-    return new Buffer(str).toString('base64');
-  } else {
-    // browser
-    return btoa(str);
-  }
+  return name.replace(INVALID_CHARS, '_');
 }
 
 //FIXME remove this
