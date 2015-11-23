@@ -72,6 +72,38 @@ export function getbins(stats, maxbins) {
   });
 }
 
+/**
+ * Checks if a property name is simple enough so that it can be used without
+ * array notation and as an unquoted key.
+ */
+export function isSimplePropertyName(name: string) {
+  const validCharacters = /^[0-9a-zA-Z\$\_]+$/;
+  return validCharacters.test(name);
+}
+
+/**
+ * Encode property names that are not simple.
+ */
+export function makeValidPropertyName(name: string) {
+  if (isSimplePropertyName(name)) {
+    return name;
+  }
+  return toBase64(name).replace('==', '__');
+}
+
+/**
+ * Base64 encoding that works in browsers and in node.
+ */
+function toBase64(str: string) {
+  if (typeof btoa === 'undefined') {
+    // node
+    return new Buffer(str).toString('base64');
+  } else {
+    // browser
+    return btoa(str);
+  }
+}
+
 //FIXME remove this
 /**
  * x[p[0]]...[p[n]] = val
@@ -88,7 +120,6 @@ export function setter(x, p, val, noaugment = false) {
   }
   x[p[i]] = val;
 }
-
 
 export function error(message: any): void {
   console.error('[VL Error]', message);
