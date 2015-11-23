@@ -5,20 +5,20 @@ var gutil = require('gulp-util');
 var mocha = require('gulp-spawn-mocha');
 
 // runs the tests
-gulp.task('coverage', function() {
-  return gulp.src(['test/**/*.test.ts'], { read: false })
+gulp.task('coverage', ['compile'], function() {
+  return gulp.src(['test/**/*.test.js'], { read: false })
     .pipe(mocha({
-      require: 'ts-node/register',
+      require: 'source-map-support/register',
       istanbul: true
     }))
     .on('error', gutil.log);
 });
 
 // quick test
-gulp.task('test', function() {
-  return gulp.src(['test/**/*.test.ts'], { read: false })
+gulp.task('test', ['compile'],  function() {
+  return gulp.src(['test/**/*.test.js'], { read: false })
     .pipe(mocha({
-      require: 'ts-node/register',
+      require: 'source-map-support/register',
       istanbul: false
     }))
     .on('error', gutil.log);

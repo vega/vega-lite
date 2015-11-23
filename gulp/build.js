@@ -1,6 +1,7 @@
 'use strict';
 
 var gulp = require('gulp');
+var paths = gulp.paths;
 var $ = require('gulp-load-plugins')();
 
 var buffer = require('vinyl-buffer');
@@ -9,6 +10,7 @@ var browserSync = require('browser-sync');
 var source = require('vinyl-source-stream');
 var watchify = require('watchify');
 var tsify = require('tsify');
+var del = require('del');
 
 var bundleDef = {
   entries: ['./src/vl.ts'],
@@ -39,9 +41,28 @@ function build(bundle) {
 }
 
 // builds Vega-lite and schema
-gulp.task('build', ['schema'], function() {
+gulp.task('build', ['compile', 'schema'], function() {
   build(browserBundler.bundle());
 });
 
 watchBundler.on('update', bundle);
-gulp.task('bundle', bundle);
+gulp.task('bundle', ['compile'], bundle);
+
+gulp.task('clean', function() {
+  return del([
+      paths.src + '/**/*.js',
+      paths.src + '/**/*.js.map',
+      paths.test + '/**/*.js',
+      paths.test + '/**/*.js.map'
+    ]);
+});
+
+gulp.task('compile', function() {
+  return gulp.src([
+      paths.src + '/**/*.ts',
+      paths.test + '/**/*.ts',
+      'typings/**/*.d.ts'
+    ])
+    .pipe($.tsc({sourceMap: true}))
+    .pipe(gulp.dest('./'));
+});
