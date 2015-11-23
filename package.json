@@ -13,9 +13,10 @@
     "test": "test"
   },
   "scripts": {
-    "build": "tsc && gulp build",
+    "build": "gulp build",
     "cover": "gulp coverage",
-    "deploy": "npm run lint && npm run test && scripts/deploy.sh",
+    "clean": "gulp clean",
+    "deploy": "npm run clean && npm run lint && npm run test && scripts/deploy.sh",
     "lint": "gulp tslint",
     "start": "gulp serve",
     "test": "gulp test",
@@ -58,8 +59,8 @@
     "lodash": "^3.10.1",
     "mocha": "^2.3.4",
     "require-dir": "^0.3.0",
+    "source-map-support": "^0.3.3",
     "through": "^2.3.8",
-    "ts-node": "^0.5.3",
     "tsify": "^0.12.2",
     "typescript": "^1.6.2",
     "vinyl-buffer": "^1.0.0",

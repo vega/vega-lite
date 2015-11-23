@@ -10,6 +10,7 @@ var browserSync = require('browser-sync');
 var source = require('vinyl-source-stream');
 var watchify = require('watchify');
 var tsify = require('tsify');
+var del = require('del');
 
 var bundleDef = {
   entries: ['./src/vl.ts'],
@@ -40,12 +41,12 @@ function build(bundle) {
 }
 
 // builds Vega-lite and schema
-gulp.task('build', ['schema'], function() {
+gulp.task('build', ['compile', 'schema'], function() {
   build(browserBundler.bundle());
 });
 
 watchBundler.on('update', bundle);
-gulp.task('bundle', bundle);
+gulp.task('bundle', ['compile'], bundle);
 
 gulp.task('clean', function() {
   return del([
