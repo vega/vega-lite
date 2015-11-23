@@ -17,10 +17,12 @@
     },
     "filesGlob": [
         "**/*.ts",
-        "**/*.tsx",
-        "!node_modules/**",
-        "!bower_components/**",
-        "!_site/**"
+        "**/*.tsx"
+    ],
+    "exclude": [
+        "node_modules",
+        "bower_components",
+        "_site"
     ],
     "files": [
         "src/aggregate.ts",
