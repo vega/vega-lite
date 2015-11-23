@@ -11,26 +11,20 @@ import {TIMEUNITS} from './timeunit';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL, SHORT_TYPE, TYPE_FROM_SHORT_TYPE} from './type';
 
 export interface FieldRefOption {
+  /** exclude bin, aggregate, timeUnit */
   nofn?: boolean;
+  /** exclude aggregation function */
   noAggregate?: boolean;
+  /** include 'datum.' */
   datum?: boolean;
+  /** replace fn with custom function prefix */
   fn?: string;
+  /** prepend fn with custom function prefix */
   prefn?: string;
+  /** append suffix to the field ref for bin (default='_start') */
   binSuffix?: string;
 }
 
-/**
- * @param field
- * @param opt
- *   opt.nofn -- exclude bin, aggregate, timeUnit
- *   opt.noAggregate -- exclude aggregation function
- *   opt.datum - include 'datum.'
- *   opt.fn - replace fn with custom function prefix
- *   opt.prefn - prepend fn with custom function prefix
- *   opt.binSuffix - append suffix to the field ref for bin (default='_start')
-
- * @return {[type]}       [description]
- */
 export function fieldRef(fieldDef: FieldDef, opt?: FieldRefOption) {
   opt = opt || {};
 
