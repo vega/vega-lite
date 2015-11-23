@@ -1,6 +1,7 @@
 'use strict';
 
 var gulp = require('gulp');
+var paths = gulp.paths;
 var $ = require('gulp-load-plugins')();
 
 var buffer = require('vinyl-buffer');
@@ -45,3 +46,12 @@ gulp.task('build', ['schema'], function() {
 
 watchBundler.on('update', bundle);
 gulp.task('bundle', bundle);
+gulp.task('compile', function() {
+  return gulp.src([
+      paths.src + '/**/*.ts',
+      paths.test + '/**/*.ts',
+      'typings/**/*.d.ts'
+    ])
+    .pipe($.tsc({sourceMap: true}))
+    .pipe(gulp.dest('./'));
+});
