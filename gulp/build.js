@@ -46,6 +46,16 @@ gulp.task('build', ['schema'], function() {
 
 watchBundler.on('update', bundle);
 gulp.task('bundle', bundle);
+
+gulp.task('clean', function() {
+  return del([
+      paths.src + '/**/*.js',
+      paths.src + '/**/*.js.map',
+      paths.test + '/**/*.js',
+      paths.test + '/**/*.js.map'
+    ]);
+});
+
 gulp.task('compile', function() {
   return gulp.src([
       paths.src + '/**/*.ts',
