@@ -27,16 +27,16 @@ export class Model {
   constructor(spec: Spec, theme?) {
     var defaults = schema.instantiate();
     this._spec = schemaUtil.merge(defaults, theme || {}, spec);
-    this._stack = this.getStackProperties();
 
     // convert short type to full type
-    vlEncoding.forEach(this._spec.encoding, function(fieldDef) {
+    vlEncoding.forEach(this._spec.encoding, function(fieldDef: FieldDef, channel: Channel) {
       if (fieldDef.type) {
         fieldDef.type = getFullName(fieldDef.type);
       }
     });
 
     // calculate stack
+    this._stack = this.getStackProperties();
   }
 
   private getStackProperties(): StackProperties {
