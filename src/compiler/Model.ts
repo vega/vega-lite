@@ -40,9 +40,9 @@ export class Model {
   }
 
   private getStackProperties(): StackProperties {
-    var stack = (this.has(COLOR)) ? COLOR : (this.has(DETAIL)) ? DETAIL : null;
+    var stackChannel = (this.has(COLOR)) ? COLOR : (this.has(DETAIL)) ? DETAIL : null;
 
-    if (stack &&
+    if (stackChannel &&
         (this.is(BAR) || this.is(AREA)) &&
         this.config('stack') !== false &&
         this.isAggregate()) {
@@ -53,14 +53,14 @@ export class Model {
         return {
           groupbyChannel: Y,
           fieldChannel: X,
-          stackChannel: stack,
+          stackChannel: stackChannel,
           config: this.config('stack')
         };
       } else if (isYMeasure && !isXMeasure) {
         return {
           groupbyChannel: X,
           fieldChannel: Y,
-          stackChannel: stack,
+          stackChannel: stackChannel,
           config: this.config('stack')
         };
       }

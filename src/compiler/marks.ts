@@ -1,7 +1,8 @@
 import {Model} from './Model';
-import {COLUMN, ROW, X, Y, COLOR, TEXT, SIZE, SHAPE} from '../channel';
+import {COLUMN, ROW, X, Y, COLOR, TEXT, SIZE, SHAPE, DETAIL, Channel} from '../channel';
 import {AREA, BAR, LINE, POINT, TEXT as TEXTMARKS, TICK, CIRCLE, SQUARE} from '../marktype';
 import {QUANTITATIVE} from '../type';
+import {imputeTransform, stackTransform} from './stack';
 
 // https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations
 declare var exports;
@@ -18,44 +19,121 @@ const MARKTYPES_MAP = {
   square: 'symbol'
 };
 
-export function compileMarks(model: Model, layout, style) {
+export function compileMarks(model: Model, layout, style): any[] {
   const marktype = model.marktype();
-  const from = {data: model.dataTable()};
-  let defs = [];
+  if (marktype === LINE || marktype === AREA) {
 
-  switch (marktype) {
-    case TEXTMARKS:
-      if (model.has(COLOR)) {
-        defs.push({
-          type: 'rect',
-          from: from,
-          properties: {update: properties.textBackground(model, layout)}
-        });
+    // For Line and Area, we sort values based on dimension by default
+    // TODO: allow sort config
+    const sortField = (model.isMeasure(X) && model.isDimension(Y)) ? Y : X;
+
+    let mainDef: any = {
+      type: MARKTYPES_MAP[marktype],
+      from: {
+        transform: [{type: 'sort', by: '-' + model.fieldRef(sortField)}]
+      },
+      properties: {
+        update: properties[marktype](model, layout, style)
       }
-      break;
-    case LINE:
-    case AREA:
-      // TODO: move subfacets and line sort logic here
-  };
+    };
 
-  defs.push({
-    type: MARKTYPES_MAP[marktype],
-    from: from,
-    properties: {
-      update: properties[marktype](model, layout, style)
+    const details = detailChannels(model);
+    if (details.length > 0) { // have level of details - need to facet line into subgroups
+      const facetTransform = {type: 'facet', groupby: details};
+      const transform = marktype === AREA ?
+        // AREA with detail -- we need to impute missing tuples and stack values
+        // TODO: is there a case where area doesn't require impute?
+        [imputeTransform(model), stackTransform(model), facetTransform] :
+        [facetTransform];
+
+      return [{
+        name: marktype  + '-facet',
+        type: 'group',
+        from: {
+          data: model.dataTable(),
+          transform: transform
+        },
+        properties: {
+          update: {
+            width: {field: {group: 'width'}},
+            height: {field: {group: 'height'}}
+          }
+        },
+        marks: [mainDef]
+      }];
+    } else {
+      // FIXME: do we actually need impute here too?
+      mainDef.from.data = model.dataTable();
+      return [mainDef];
     }
-  });
+  } else { // other mark type
+    const from:any = {data: model.dataTable()}; // TODO: VgDataFrom
+    const mainDef = { // TODO add name
+      type: MARKTYPES_MAP[marktype],
+      from: from,
+      properties: {
+        update: properties[marktype](model, layout, style)
+      }
+    };
 
-  return defs;
+    if (marktype === TEXTMARKS && model.has(COLOR)) {
+      // add background to 'text' marks if has color
+      return [{
+        type: 'rect',
+        from: from, // FIXME this is tricky for small multiples of text
+        properties: {update: properties.textBackground(model, layout)}
+      }, mainDef];
+    }
+
+    const stack = model.stack();
+    if (marktype === BAR && stack) {
+      from.transform = [stackTransform(model)];
+    }
+
+    // if (model.has(LABEL)) {
+    //   // TODO: add label by type here
+    // }
+
+    return [mainDef];
+  }
+}
+
+/**
+ * Returns array of detail channels ('color', 'shape', or 'detail') that
+ * the model's spec contains.
+ */
+function detailChannels(model:Model): Channel[] {
+  var details = [];
+  if (model.has(COLOR)) {
+    details.push(COLOR);
+  }
+  if (model.has[DETAIL]) {
+    details.push(DETAIL);
+  }
+  if (model.has(SHAPE)) {
+    details.push(SHAPE);
+  }
+  return details;
 }
 
 export namespace properties {
 export function bar(model: Model, layout, style) {
+  const stack = model.stack();
+
   // TODO Use Vega's marks properties interface
   var p:any = {};
 
   // x's and width
-  if (model.fieldDef(X).bin) {
+  if (stack && X === stack.fieldChannel) {
+    p.x = {
+      scale: X,
+      field: model.fieldRef(X) + '_start'
+    };
+    p.x2 = {
+      scale: X,
+      field: model.fieldRef(X) + '_end'
+    };
+  } else if (model.fieldDef(X).bin) {
     p.x = {scale: X, field: model.fieldRef(X, {binSuffix: '_start'}), offset: 1};
     p.x2 = {scale: X, field: model.fieldRef(X, {binSuffix: '_end'})};
   } else if (model.isMeasure(X)) {
@@ -88,7 +166,16 @@ export function bar(model: Model, layout, style) {
   }
 
   // y's & height
-  if (model.fieldDef(Y).bin) {
+  if (stack && Y === stack.fieldChannel) {
+    p.y = {
+      scale: Y,
+      field: model.fieldRef(Y) + '_start'
+    };
+    p.y2 = {
+      scale: Y,
+      field: model.fieldRef(Y) + '_end'
+    };
+  } else if (model.fieldDef(Y).bin) {
     p.y = {scale: Y, field: model.fieldRef(Y, {binSuffix: '_start'})};
     p.y2 = {scale: Y, field: model.fieldRef(Y, {binSuffix: '_end'}), offset: 1};
   } else if (model.isMeasure(Y)) {
@@ -217,41 +304,61 @@ export function line(model: Model,layout, style) {
 }
 
 // TODO(#694): optimize area's usage with bin
-export function area(e: Model, layout, style) {
+export function area(model: Model, layout, style) {
+  const stack = model.stack();
+
   // TODO Use Vega's marks properties interface
   var p:any = {};
 
   // x
-  if (e.isMeasure(X)) {
-    p.x = {scale: X, field: e.fieldRef(X)};
-    if (e.isDimension(Y)) {
+  if (stack && X === stack.fieldChannel) {
+    p.x = {
+      scale: X,
+      field: model.fieldRef(X) + '_start'
+    };
+    p.x2 = {
+      scale: X,
+      field: model.fieldRef(X) + '_end'
+    };
+  } else if (model.isMeasure(X)) {
+    p.x = {scale: X, field: model.fieldRef(X)};
+    if (model.isDimension(Y)) {
       p.x2 = {scale: X, value: 0};
       p.orient = {value: 'horizontal'};
     }
-  } else if (e.has(X)) {
-    p.x = {scale: X, field: e.fieldRef(X, {binSuffix: '_mid'})};
+  } else if (model.has(X)) {
+    p.x = {scale: X, field: model.fieldRef(X, {binSuffix: '_mid'})};
   } else {
     p.x = {value: 0};
   }
 
   // y
-  if (e.isMeasure(Y)) {
-    p.y = {scale: Y, field: e.fieldRef(Y)};
+  if (stack && Y === stack.fieldChannel) {
+    p.y = {
+      scale: Y,
+      field: model.fieldRef(Y) + '_start'
+    };
+    p.y2 = {
+      scale: Y,
+      field: model.fieldRef(Y) + '_end'
+    };
+  } else if (model.isMeasure(Y)) {
+    p.y = {scale: Y, field: model.fieldRef(Y)};
     p.y2 = {scale: Y, value: 0};
-  } else if (e.has(Y)) {
-    p.y = {scale: Y, field: e.fieldRef(Y, {binSuffix: '_mid'})};
+  } else if (model.has(Y)) {
+    p.y = {scale: Y, field: model.fieldRef(Y, {binSuffix: '_mid'})};
   } else {
     p.y = {field: {group: 'height'}};
   }
 
   // fill
-  if (e.has(COLOR)) {
-    p.fill = {scale: COLOR, field: e.fieldRef(COLOR)};
-  } else if (!e.has(COLOR)) {
-    p.fill = {value: e.fieldDef(COLOR).value};
+  if (model.has(COLOR)) {
+    p.fill = {scale: COLOR, field: model.fieldRef(COLOR)};
+  } else if (!model.has(COLOR)) {
+    p.fill = {value: model.fieldDef(COLOR).value};
   }
 
-  var opacity = e.fieldDef(COLOR).opacity;
+  var opacity = model.fieldDef(COLOR).opacity;
   if (opacity) p.opacity = {value: opacity};
 
   return p;
