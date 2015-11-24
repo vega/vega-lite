@@ -20,7 +20,7 @@ const MARKTYPES_MAP = {
 
 export function compileMarks(model: Model, layout, style) {
   const marktype = model.marktype();
-  const from = {from: model.dataTable()};
+  const from = {data: model.dataTable()};
   let defs = [];
 
   switch (marktype) {
@@ -217,41 +217,41 @@ export function line(model: Model,layout, style) {
 }
 
 // TODO(#694): optimize area's usage with bin
-export function area(model: Model, layout, style) {
+export function area(e: Model, layout, style) {
   // TODO Use Vega's marks properties interface
   var p:any = {};
 
   // x
-  if (model.isMeasure(X)) {
-    p.x = {scale: X, field: model.fieldRef(X)};
-    if (model.isDimension(Y)) {
+  if (e.isMeasure(X)) {
+    p.x = {scale: X, field: e.fieldRef(X)};
+    if (e.isDimension(Y)) {
       p.x2 = {scale: X, value: 0};
       p.orient = {value: 'horizontal'};
     }
-  } else if (model.has(X)) {
-    p.x = {scale: X, field: model.fieldRef(X, {binSuffix: '_mid'})};
+  } else if (e.has(X)) {
+    p.x = {scale: X, field: e.fieldRef(X, {binSuffix: '_mid'})};
   } else {
     p.x = {value: 0};
   }
 
   // y
-  if (model.isMeasure(Y)) {
-    p.y = {scale: Y, field: model.fieldRef(Y)};
+  if (e.isMeasure(Y)) {
+    p.y = {scale: Y, field: e.fieldRef(Y)};
     p.y2 = {scale: Y, value: 0};
-  } else if (model.has(Y)) {
-    p.y = {scale: Y, field: model.fieldRef(Y, {binSuffix: '_mid'})};
+  } else if (e.has(Y)) {
+    p.y = {scale: Y, field: e.fieldRef(Y, {binSuffix: '_mid'})};
   } else {
     p.y = {field: {group: 'height'}};
   }
 
   // fill
-  if (model.has(COLOR)) {
-    p.fill = {scale: COLOR, field: model.fieldRef(COLOR)};
-  } else if (!model.has(COLOR)) {
-    p.fill = {value: model.fieldDef(COLOR).value};
+  if (e.has(COLOR)) {
+    p.fill = {scale: COLOR, field: e.fieldRef(COLOR)};
+  } else if (!e.has(COLOR)) {
+    p.fill = {value: e.fieldDef(COLOR).value};
   }
 
-  var opacity = model.fieldDef(COLOR).opacity;
+  var opacity = e.fieldDef(COLOR).opacity;
   if (opacity) p.opacity = {value: opacity};
 
   return p;
