@@ -1,5 +1,6 @@
 import * as util from '../util';
-import {COLUMN, ROW, X, Y} from '../channel';
+import {COLUMN, ROW, X, Y, Channel} from '../channel';
+import {FieldDef} from '../schema/fielddef.schema';
 import {Model} from './Model';
 
 import {compileAxis} from './axis';
@@ -36,7 +37,7 @@ function groupdef(name, opt) {
   return group;
 }
 
-export default function(group, model: Model, layout, output, singleScaleNames, stats) {
+export default function(group, model: Model, layout, output, stats) {
   var update = group.properties.update;
   var facetKeys = [], cellAxes = [], from, axesGrp;
 
@@ -121,10 +122,16 @@ export default function(group, model: Model, layout, output, singleScaleNames, s
     }
   }
 
+  const scaleNames = model.reduce(
+    function(names: Channel[], fieldDef: FieldDef, channel: Channel){
+      names.push(channel);
+      return names;
+    }, []);
+
   // assuming equal cellWidth here
   // TODO: support heterogenous cellWidth (maybe by using multiple scales?)
   output.scales = (output.scales || []).concat(compileScales(
-    compileScaleNames(update).concat(singleScaleNames),
+    scaleNames,
     model,
     layout,
     stats,
