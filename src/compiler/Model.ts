@@ -32,7 +32,6 @@ export class Model {
     vlEncoding.forEach(this._spec.encoding, function(fieldDef: FieldDef, channel: Channel) {
       if (fieldDef.type) {
         fieldDef.type = getFullName(fieldDef.type);
-        console.log(channel, "fieldDef", fieldDef.field, fieldDef.type);
       }
     });
 
