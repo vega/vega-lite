@@ -37,12 +37,12 @@ function groupdef(name, opt) {
 }
 
 export default function(group, model: Model, layout, output, singleScaleNames, stats) {
-  var enter = group.properties.enter;
+  var update = group.properties.update;
   var facetKeys = [], cellAxes = [], from, axesGrp;
 
   var hasRow = model.has(ROW), hasCol = model.has(COLUMN);
 
-  enter.fill = {value: model.config('cellBackgroundColor')};
+  update.fill = {value: model.config('cellBackgroundColor')};
 
   //move "from" to cell level and add facet transform
   group.from = {data: group.marks[0].from.data};
@@ -61,8 +61,8 @@ export default function(group, model: Model, layout, output, singleScaleNames, s
     if (!model.isDimension(ROW)) {
       util.error('Row encoding should be ordinal.');
     }
-    enter.y = {scale: ROW, field: model.fieldRef(ROW)};
-    enter.height = {'value': layout.cellHeight}; // HACK
+    update.y = {scale: ROW, field: model.fieldRef(ROW)};
+    update.height = {'value': layout.cellHeight}; // HACK
 
     facetKeys.push(model.fieldRef(ROW));
 
@@ -93,8 +93,8 @@ export default function(group, model: Model, layout, output, singleScaleNames, s
     if (!model.isDimension(COLUMN)) {
       util.error('Col encoding should be ordinal.');
     }
-    enter.x = {scale: COLUMN, field: model.fieldRef(COLUMN)};
-    enter.width = {'value': layout.cellWidth}; // HACK
+    update.x = {scale: COLUMN, field: model.fieldRef(COLUMN)};
+    update.width = {'value': layout.cellWidth}; // HACK
 
     facetKeys.push(model.fieldRef(COLUMN));
 
@@ -124,7 +124,7 @@ export default function(group, model: Model, layout, output, singleScaleNames, s
   // assuming equal cellWidth here
   // TODO: support heterogenous cellWidth (maybe by using multiple scales?)
   output.scales = (output.scales || []).concat(compileScales(
-    compileScaleNames(enter).concat(singleScaleNames),
+    compileScaleNames(update).concat(singleScaleNames),
     model,
     layout,
     stats,
