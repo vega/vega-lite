@@ -37,12 +37,13 @@ export function compileMarks(model: Model, layout, style): any[] {
       }
     };
 
+    // FIXME is there a case where area requires impute without stacking?
+
     const details = detailFields(model);
     if (details.length > 0) { // have level of details - need to facet line into subgroups
       const facetTransform = {type: 'facet', groupby: details};
-      const transform = marktype === AREA ?
-        // AREA with detail -- we need to impute missing tuples and stack values
-        // TODO: is there a case where area doesn't require impute?
+      const transform = marktype === AREA && model.stack() ?
+        // For stacked area, we need to impute missing tuples and stack values
         [imputeTransform(model), stackTransform(model), facetTransform] :
         [facetTransform];
 
@@ -62,7 +63,6 @@ export function compileMarks(model: Model, layout, style): any[] {
         marks: [mainDef]
       }];
     } else {
-      // FIXME: do we actually need impute here too?
       mainDef.from.data = model.dataTable();
       return [mainDef];
     }
