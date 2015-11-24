@@ -39,7 +39,6 @@
         "src/compiler/scale.ts",
         "src/compiler/stack.ts",
         "src/compiler/style.ts",
-        "src/compiler/subfacet.ts",
         "src/compiler/time.ts",
         "src/data.ts",
         "src/encoding.ts",

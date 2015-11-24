@@ -8,17 +8,16 @@ import {compileAxis} from './axis';
 import {compileData} from './data';
 import {compileLegends} from './legend';
 import {compileMarks} from './marks';
-import {compileScales, compileScaleNames} from './scale';
+import {compileScales} from './scale';
 
 // TODO: stop using default if we were to keep these files
 import vlFacet from './facet';
 import vlLayout from './layout';
-import vlStack from './stack';
 import vlStyle from './style';
-import vlSubfacet from './subfacet';
 
 import {stats as vlDataStats} from '../data';
-import {COLUMN, ROW, X, Y} from '../channel';
+import {COLUMN, ROW, X, Y, Channel} from '../channel';
+import {FieldDef} from '../schema/fielddef.schema';
 
 export {Model} from './Model';
 
@@ -62,56 +61,27 @@ export function compile(spec, stats, theme?) {
   if (timeScales.length > 0) {
     output.scales = timeScales;
   }
-
   var group = output.marks[0];
 
   // marks
-  var styleCfg = vlStyle(model, stats),
-    mdefs = group.marks = compileMarks(model, layout, styleCfg),
-    mdef = mdefs[mdefs.length - 1];  // TODO: remove this dirty hack by refactoring the whole flow
-
-  var stack = model.stack();
-  if (stack) {
-    // modify mdef.{from,properties}
-    vlStack(model, mdef, stack);
-  }
-
-  const marktype = model.marktype();
-  const isLineType = marktype === 'line' || marktype === 'area';
-
-  // handle subfacets
-  var details = model.details();
-
-  if (details.length > 0 && isLineType) {
-    //subfacet to group area / line together in one group
-    vlSubfacet(group, mdef, details);
-  }
-
-  // auto-sort line/area values
-  if (isLineType && model.config('autoSortLine')) { // TODO: remove autoSortLine
-    var f = (model.isMeasure(X) && model.isDimension(Y)) ? Y : X;
-    if (!mdef.from) {
-      mdef.from = {};
-    }
-    // TODO: why - ?
-    mdef.from.transform = [{type: 'sort', by: '-' + model.fieldRef(f)}];
-  }
-
-  // get a flattened list of all scale names that are used in the vl spec
-  var singleScaleNames = [].concat.apply([], mdefs.map(function(markProps) {
-    return compileScaleNames(markProps.properties.update);
-  }));
+  var styleCfg = vlStyle(model, stats);
+  group.marks = compileMarks(model, layout, styleCfg);
 
   var legends = compileLegends(model, styleCfg);
 
   // Small Multiples
   if (model.has(ROW) || model.has(COLUMN)) {
-    output = vlFacet(group, model, layout, output, singleScaleNames, stats);
+    output = vlFacet(group, model, layout, output, stats);
     if (legends.length > 0) {
       output.legends = legends;
     }
   } else {
-    group.scales = compileScales(singleScaleNames, model, layout, stats);
+    const scaleNames = model.reduce(
+      function(names: Channel[], fieldDef: FieldDef, channel: Channel){
+        names.push(channel);
+        return names;
+      }, []);
+    group.scales = compileScales(scaleNames, model, layout, stats);
 
     var axes = [];
     if (model.has(X)) {

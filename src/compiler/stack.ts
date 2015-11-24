@@ -19,60 +19,45 @@ interface StackTransform {
   output: any;
 }
 
-export default function(model: Model, mdef, stackProps: StackProperties) {
-  var groupby = stackProps.groupbyChannel;
-  var fieldChannel = stackProps.fieldChannel;
+// impute data for stacked area
+export function imputeTransform(model) {
+  const stack = model.stack();
+  return {
+    type: 'impute',
+    field: model.fieldRef(stack.fieldChannel),
+    groupby: [model.fieldRef(stack.stackChannel)],
+    orderby: [model.fieldRef(stack.groupbyChannel)],
+    method: 'value',
+    value: 0
+  };
+}
 
-  var valName = model.fieldRef(fieldChannel);
-  var startField = valName + '_start';
-  var endField = valName + '_end';
+export function stackTransform(model: Model) {
+  const stack = model.stack();
+  const sortby = stack.config.sort === 'descending' ?
+                   '-' + model.fieldRef(stack.stackChannel) :
+                 stack.config.sort === 'ascending' ?
+                   model.fieldRef(stack.stackChannel) :
+                 util.isObject(stack.config.sort) ?
+                   stack.config.sort :
+                   '-' + model.fieldRef(stack.stackChannel); // default
 
-  var transforms = [];
-
-  if (model.marktype() === 'area') {
-    // Add impute transform to ensure we have all values for each series
-    transforms.push({
-      type: 'impute',
-      field: model.fieldRef(fieldChannel),
-      groupby: [model.fieldRef(stackProps.stackChannel)],
-      orderby: [model.fieldRef(groupby)],
-      method: 'value',
-      value: 0
-    });
-  }
-
-  const sortby = stackProps.config.sort === 'descending' ?
-                   '-' + model.fieldRef(stackProps.stackChannel) :
-                 stackProps.config.sort === 'ascending' ?
-                   model.fieldRef(stackProps.stackChannel) :
-                 util.isObject(stackProps.config.sort) ?
-                   stackProps.config.sort :
-                   '-' + model.fieldRef(stackProps.stackChannel); // default
+  const valName = model.fieldRef(stack.fieldChannel);
 
   // add stack transform to mark
-  var stackTransform: StackTransform = {
+  var transform: StackTransform = {
     type: 'stack',
-    groupby: [model.fieldRef(groupby)],
-    field: model.fieldRef(fieldChannel),
+    groupby: [model.fieldRef(stack.groupbyChannel)],
+    field: model.fieldRef(stack.fieldChannel),
     sortby: sortby,
-    output: {start: startField, end: endField}
+    output: {
+      start: valName + '_start',
+      end: valName + '_end'
+    }
   };
 
-  if (stackProps.config.offset) {
-    stackTransform.offset = stackProps.config.offset;
+  if (stack.config.offset) {
+    transform.offset = stack.config.offset;
   }
-
-  transforms.push(stackTransform);
-
-  mdef.from.transform = transforms;
-
-  // TODO(#276): This is super hack-ish -- consolidate into modular mark properties?
-  mdef.properties.update[fieldChannel] = {
-    scale: fieldChannel,
-    field: startField
-  };
-  mdef.properties.update[fieldChannel + '2'] = {
-    scale: fieldChannel,
-    field: endField
-  };
+  return transform;
 }

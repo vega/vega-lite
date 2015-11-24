@@ -40,9 +40,9 @@ export class Model {
   }
 
   private getStackProperties(): StackProperties {
-    var stack = (this.has(COLOR)) ? COLOR : (this.has(DETAIL)) ? DETAIL : null;
+    var stackChannel = (this.has(COLOR)) ? COLOR : (this.has(DETAIL)) ? DETAIL : null;
 
-    if (stack &&
+    if (stackChannel &&
         (this.is(BAR) || this.is(AREA)) &&
         this.config('stack') !== false &&
         this.isAggregate()) {
@@ -53,14 +53,14 @@ export class Model {
         return {
           groupbyChannel: Y,
           fieldChannel: X,
-          stackChannel: stack,
+          stackChannel: stackChannel,
           config: this.config('stack')
         };
       } else if (isYMeasure && !isXMeasure) {
         return {
           groupbyChannel: X,
           fieldChannel: Y,
-          stackChannel: stack,
+          stackChannel: stackChannel,
           config: this.config('stack')
         };
       }
@@ -219,17 +219,6 @@ export class Model {
 
   dataTable() {
     return this.isAggregate() ? SUMMARY : SOURCE;
-  }
-
-
-  details() {
-    var encoding = this;
-    return this.reduce(function(refs, fieldDef: FieldDef, channel: Channel) {
-      if (!fieldDef.aggregate && (channel !== X && channel !== Y)) {
-        refs.push(encoding.fieldRef(channel));
-      }
-      return refs;
-    }, []);
   }
 
   facets() {

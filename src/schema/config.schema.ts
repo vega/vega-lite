@@ -42,10 +42,6 @@ export var config = {
         temporal: {type:'boolean', default: true}
       }
     },
-    autoSortLine: {
-      type: 'boolean',
-      default: true
-    },
 
     // single plot
     singleHeight: {
@@ -114,6 +110,13 @@ export var config = {
     },
 
     // layout
+    // TODO: add orient
+    sortLineBy: {
+      type: 'string',
+      default: undefined,
+      description: 'Data field to sort line by. ' +
+        '\'-\' prefix can be added to suggest descending order.'
+    },
     stack: {
       type: ['boolean', 'object'],
       default: {},
