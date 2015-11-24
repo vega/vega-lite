@@ -26,14 +26,14 @@ export function compileMarks(model: Model, layout, style): any[] {
     // For line, a special config "sortLineBy" is allowed
     let sortBy = marktype === LINE ? model.config('sortLineBy') : undefined;
     if (!sortBy) {
-      const sortField = (model.isMeasure(X) && model.isDimension(Y)) ? Y : X
-      sortBy = '-' + model.fieldRef(sortFieldD);
+      const sortField = (model.isMeasure(X) && model.isDimension(Y)) ? Y : X;
+      sortBy = '-' + model.fieldRef(sortField);
     }
 
     let mainDef: any = {
       type: MARKTYPES_MAP[marktype],
       from: {
-        transform: [{type: 'sort', by: sortBy]
+        transform: [{type: 'sort', by: sortBy}]
       },
       properties: {
         update: properties[marktype](model, layout, style)
