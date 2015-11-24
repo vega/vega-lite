@@ -63,6 +63,10 @@ gulp.task('compile', function() {
       paths.test + '/**/*.ts',
       'typings/**/*.d.ts'
     ])
-    .pipe($.tsc({sourceMap: true}))
+    .pipe($.tsc({
+      sourceMap: true,
+      tmpDir: '/tmp',
+      outDir: './'
+    }))
     .pipe(gulp.dest('./'));
 });
