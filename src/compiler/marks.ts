@@ -99,8 +99,8 @@ export function compileMarks(model: Model, layout, style): any[] {
 }
 
 /**
- * Returns list of detail fields ('color', 'shape', or 'detail') that
- * the model's spec contains.
+ * Returns list of detail fields (for 'color', 'shape', or 'detail' channels)
+ * that the model's spec contains.
  */
 function detailFields(model:Model): string[] {
   return [COLOR, DETAIL, SHAPE].reduce(function(details, channel) {

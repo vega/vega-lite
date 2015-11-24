@@ -64,8 +64,8 @@ export function compile(spec, stats, theme?) {
   var group = output.marks[0];
 
   // marks
-  var styleCfg = vlStyle(model, stats),
-    mdefs = group.marks = compileMarks(model, layout, styleCfg);
+  var styleCfg = vlStyle(model, stats);
+  group.marks = compileMarks(model, layout, styleCfg);
 
   var legends = compileLegends(model, styleCfg);
 
