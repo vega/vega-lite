@@ -221,17 +221,6 @@ export class Model {
     return this.isAggregate() ? SUMMARY : SOURCE;
   }
 
-
-  details() {
-    var encoding = this;
-    return this.reduce(function(refs, fieldDef: FieldDef, channel: Channel) {
-      if (!fieldDef.aggregate && (channel !== X && channel !== Y)) {
-        refs.push(encoding.fieldRef(channel));
-      }
-      return refs;
-    }, []);
-  }
-
   facets() {
     var encoding = this;
     return this.reduce(function(refs: string[], field: FieldDef, channel: Channel) {

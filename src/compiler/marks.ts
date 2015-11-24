@@ -37,7 +37,7 @@ export function compileMarks(model: Model, layout, style): any[] {
       }
     };
 
-    const details = detailChannels(model);
+    const details = detailFields(model);
     if (details.length > 0) { // have level of details - need to facet line into subgroups
       const facetTransform = {type: 'facet', groupby: details};
       const transform = marktype === AREA ?
@@ -99,21 +99,16 @@ export function compileMarks(model: Model, layout, style): any[] {
 }
 
 /**
- * Returns array of detail channels ('color', 'shape', or 'detail') that
+ * Returns list of detail fields ('color', 'shape', or 'detail') that
  * the model's spec contains.
  */
-function detailChannels(model:Model): Channel[] {
-  var details = [];
-  if (model.has(COLOR)) {
-    details.push(COLOR);
-  }
-  if (model.has[DETAIL]) {
-    details.push(DETAIL);
-  }
-  if (model.has(SHAPE)) {
-    details.push(SHAPE);
-  }
-  return details;
+function detailFields(model:Model): string[] {
+  return [COLOR, DETAIL, SHAPE].reduce(function(details, channel) {
+    if (model.has(channel) && !model.fieldDef(channel).aggregate) {
+      details.push(model.fieldRef(channel));
+    }
+    return details;
+  }, []);
 }
 
 export namespace properties {
