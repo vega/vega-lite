@@ -4,7 +4,7 @@ import {FieldDef} from '../schema/fielddef.schema';
 import {Model} from './Model';
 
 import {compileAxis} from './axis';
-import {compileScales, compileScaleNames} from './scale';
+import {compileScales} from './scale';
 
 function groupdef(name, opt) {
   opt = opt || {};

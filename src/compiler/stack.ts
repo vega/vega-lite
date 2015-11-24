@@ -61,4 +61,3 @@ export function stackTransform(model: Model) {
   }
   return transform;
 }
-\
