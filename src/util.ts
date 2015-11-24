@@ -8,6 +8,9 @@ export * from 'datalib/src/stats';
 import dlBin = require('datalib/src/bins/bins');
 export var bin = dlBin;
 
+const VALID_IDENTIFIER = /^[0-9a-zA-Z\$\_]+$/;
+const INVALID_CHARS = /[^0-9a-zA-Z\$\_]/ig;
+
 /*
  * Deal with floating point instabiility in javasscript to avoid weird .000001 output
  */
@@ -72,6 +75,21 @@ export function getbins(stats, maxbins) {
   });
 }
 
+/**
+ * Checks if a property name is simple enough so that it can be used without
+ * array notation and as an unquoted key.
+ */
+export function isSimplePropertyName(name: string) {
+  return VALID_IDENTIFIER.test(name);
+}
+
+/**
+ * Rename invalid characters to _
+ */
+export function makeValidPropertyName(name: string) {
+  return name.replace(INVALID_CHARS, '_');
+}
+
 //FIXME remove this
 /**
  * x[p[0]]...[p[n]] = val
@@ -88,7 +106,6 @@ export function setter(x, p, val, noaugment = false) {
   }
   x[p[i]] = val;
 }
-
 
 export function error(message: any): void {
   console.error('[VL Error]', message);
