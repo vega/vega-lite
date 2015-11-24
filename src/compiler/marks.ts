@@ -22,15 +22,18 @@ const MARKTYPES_MAP = {
 export function compileMarks(model: Model, layout, style): any[] {
   const marktype = model.marktype();
   if (marktype === LINE || marktype === AREA) {
-
     // For Line and Area, we sort values based on dimension by default
-    // TODO: allow sort config
-    const sortField = (model.isMeasure(X) && model.isDimension(Y)) ? Y : X;
+    // For line, a special config "sortLineBy" is allowed
+    let sortBy = marktype === LINE ? model.config('sortLineBy') : undefined;
+    if (!sortBy) {
+      const sortField = (model.isMeasure(X) && model.isDimension(Y)) ? Y : X
+      sortBy = '-' + model.fieldRef(sortFieldD);
+    }
 
     let mainDef: any = {
       type: MARKTYPES_MAP[marktype],
       from: {
-        transform: [{type: 'sort', by: '-' + model.fieldRef(sortField)}]
+        transform: [{type: 'sort', by: sortBy]
       },
       properties: {
         update: properties[marktype](model, layout, style)
