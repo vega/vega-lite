@@ -45,11 +45,11 @@ export function compile(spec, stats, theme?) {
         name: 'cell',
         type: 'group',
         properties: {
-          enter: {
-            width: layout.cellWidth ?
+          update: {
+            width: model.has(COLUMN) ?
                      {value: layout.cellWidth} :
                      {field: {group: 'width'}},
-            height: layout.cellHeight ?
+            height: model.has(ROW) ?
                     {value: layout.cellHeight} :
                     {field: {group: 'height'}}
           }
