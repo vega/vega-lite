@@ -30,9 +30,10 @@ export function compileMarks(model: Model, layout, style): any[] {
       sortBy = '-' + model.fieldRef(sortField);
     }
 
-    let mainDef: any = {
+    let pathMarks: any = {
       type: MARKTYPES_MAP[marktype],
       from: {
+        // from.data might be added later for non-facet, single group line/area
         transform: [{type: 'sort', by: sortBy}]
       },
       properties: {
@@ -54,7 +55,7 @@ export function compileMarks(model: Model, layout, style): any[] {
         name: marktype  + '-facet',
         type: 'group',
         from: {
-
+          // from.data might be added later for non-facet charts
           transform: transform
         },
         properties: {
@@ -63,34 +64,35 @@ export function compileMarks(model: Model, layout, style): any[] {
             height: {field: {group: 'height'}}
           }
         },
-        marks: [mainDef]
+        marks: [pathMarks]
       }];
     } else {
-      return [mainDef];
+      return [pathMarks];
     }
   } else { // other mark type
-    const mainDef: any = { // TODO: vgMarks
+    let marks = []; // TODO: vgMarks
+    if (marktype === TEXTMARKS && model.has(COLOR)) {
+      // add background to 'text' marks if has color
+      marks.push({
+        type: 'rect',
+        properties: {update: properties.textBackground(model, layout)}
+      });
+    }
+
+    let mainDef: any = {
       // TODO add name
       type: MARKTYPES_MAP[marktype],
       properties: {
         update: properties[marktype](model, layout, style)
       }
     };
-
-    if (marktype === TEXTMARKS && model.has(COLOR)) {
-      // add background to 'text' marks if has color
-      return [{
-        type: 'rect',
-        properties: {update: properties.textBackground(model, layout)}
-      }, mainDef];
-    }
-
     const stack = model.stack();
     if (marktype === BAR && stack) {
       mainDef.from = {
         transform: [stackTransform(model)]
       };
     }
+    marks.push(mainDef);
 
     // if (model.has(LABEL)) {
     //   // TODO: add label by type here
