@@ -54,7 +54,7 @@ export function compileMarks(model: Model, layout, style): any[] {
         name: marktype  + '-facet',
         type: 'group',
         from: {
-          data: model.dataTable(),
+
           transform: transform
         },
         properties: {
@@ -66,14 +66,12 @@ export function compileMarks(model: Model, layout, style): any[] {
         marks: [mainDef]
       }];
     } else {
-      mainDef.from.data = model.dataTable();
       return [mainDef];
     }
   } else { // other mark type
-    const from:any = {data: model.dataTable()}; // TODO: VgDataFrom
-    const mainDef = { // TODO add name
+    const mainDef: any = { // TODO: vgMarks
+      // TODO add name
       type: MARKTYPES_MAP[marktype],
-      from: from,
       properties: {
         update: properties[marktype](model, layout, style)
       }
@@ -83,14 +81,15 @@ export function compileMarks(model: Model, layout, style): any[] {
       // add background to 'text' marks if has color
       return [{
         type: 'rect',
-        from: from, // FIXME this is tricky for small multiples of text
         properties: {update: properties.textBackground(model, layout)}
       }, mainDef];
     }
 
     const stack = model.stack();
     if (marktype === BAR && stack) {
-      from.transform = [stackTransform(model)];
+      mainDef.from = {
+        transform: [stackTransform(model)]
+      };
     }
 
     // if (model.has(LABEL)) {
