@@ -38,7 +38,6 @@
         "src/compiler/Model.ts",
         "src/compiler/scale.ts",
         "src/compiler/stack.ts",
-        "src/compiler/style.ts",
         "src/compiler/time.ts",
         "src/data.ts",
         "src/encoding.ts",
