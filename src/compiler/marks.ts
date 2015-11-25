@@ -513,6 +513,8 @@ export function text(model: Model, layout) {
   p.fill = {value: fieldDef.color};
 
   var opacity = model.fieldDef(COLOR).opacity;
+
+  // default opacity in vega is 1 if we don't set it
   if (opacity) {
     p.opacity = {value: opacity};
   }
