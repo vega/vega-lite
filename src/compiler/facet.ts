@@ -6,40 +6,9 @@ import {Model} from './Model';
 import {compileAxis} from './axis';
 import {compileScales} from './scale';
 
-function groupdef(name, opt) {
-  opt = opt || {};
-
-  // TODO: Vega's Marks interface
-  var group:any = {
-    name: name || undefined,
-    type: 'group',
-    properties: {
-      enter: {
-        width: opt.width || {field: {group: 'width'}},
-        height: opt.height || {field: {group: 'height'}}
-      }
-    }
-  };
-
-  if (opt.from) {
-    group.from = opt.from;
-  }
-  if (opt.x) {
-    group.properties.enter.x = opt.x;
-  }
-  if (opt.y) {
-    group.properties.enter.y = opt.y;
-  }
-  if (opt.axes) {
-    group.axes = opt.axes;
-  }
-
-  return group;
-}
-
 export default function(group, model: Model, layout, output, stats) {
   var update = group.properties.update;
-  var facetKeys = [], cellAxes = [], from, axesGrp;
+  var facetKeys = [], cellAxes = [], from;
 
   var hasRow = model.has(ROW), hasCol = model.has(COLUMN);
 
@@ -60,6 +29,7 @@ export default function(group, model: Model, layout, output, stats) {
 
   if (hasRow) {
     if (!model.isDimension(ROW)) {
+      // TODO: add error to model instead
       util.error('Row encoding should be ordinal.');
     }
     update.y = {scale: ROW, field: model.fieldRef(ROW)};
@@ -73,14 +43,24 @@ export default function(group, model: Model, layout, output, stats) {
       from.transform.unshift({type: 'facet', groupby: [model.fieldRef(COLUMN)]});
     }
 
-    axesGrp = groupdef('x-axes', {
-        axes: model.has(X) ? [compileAxis(X, model, layout, stats)] : undefined,
-        x: hasCol ? {scale: COLUMN, field: model.fieldRef(COLUMN)} : {value: 0},
-        width: hasCol && {'value': layout.cellWidth}, //HACK?
-        from: from
+    if (model.has(X)) {
+      // prepend a group for shared x-axes in the root group's marks
+      output.marks.unshift({
+        name: 'x-axes',
+        type: 'group',
+        from: from,
+        properties: {
+          update: {
+            width: hasCol ? {'value': layout.cellWidth} : {field: {group: 'width'}},
+            height: {field: {group: 'height'}},
+            x: hasCol ? {scale: COLUMN, field: model.fieldRef(COLUMN)} : {value: 0},
+          }
+        },
+        axes: [compileAxis(X, model, layout, stats)]
       });
+    }
 
-    output.marks.unshift(axesGrp); // need to prepend so it appears under the plots
+
     (output.axes = output.axes || []);
     output.axes.push(compileAxis(ROW, model, layout, stats));
   } else { // doesn't have row
@@ -92,6 +72,7 @@ export default function(group, model: Model, layout, output, stats) {
 
   if (hasCol) {
     if (!model.isDimension(COLUMN)) {
+      // TODO: add error to model instead
       util.error('Col encoding should be ordinal.');
     }
     update.x = {scale: COLUMN, field: model.fieldRef(COLUMN)};
@@ -105,15 +86,24 @@ export default function(group, model: Model, layout, output, stats) {
       from.transform.unshift({type: 'facet', groupby: [model.fieldRef(ROW)]});
     }
 
-    axesGrp = groupdef('y-axes', {
-      axes: model.has(Y) ? [compileAxis(Y, model, layout, stats)] : undefined,
-      y: hasRow && {scale: ROW, field: model.fieldRef(ROW)},
-      x: hasRow && {value: 0},
-      height: hasRow && {'value': layout.cellHeight}, //HACK?
-      from: from
-    });
+    if (model.has(Y)) {
+      // prepend a group for shared y-axes in the root group's marks
+      output.marks.unshift({
+        name: 'y-axes',
+        type: 'group',
+        from: from,
+        properties: {
+          update: {
+            width: {field: {group: 'width'}},
+            height: hasRow ? {'value': layout.cellHeight} : {field: {group: 'height'}},
+            x: hasCol ? {scale: COLUMN, field: model.fieldRef(COLUMN)} : {value: 0},
+          }
+        },
+        axes: [compileAxis(Y, model, layout, stats)]
+      });
 
-    output.marks.unshift(axesGrp); // need to prepend so it appears under the plots
+    }
+
     (output.axes = output.axes || []);
     output.axes.push(compileAxis(COLUMN, model, layout, stats));
   } else { // doesn't have column
