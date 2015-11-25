@@ -91,16 +91,6 @@ var EXAMPLES = [
       'data': {'url': 'data/cars.json'}
     }
   },{
-    title: 'Scatter Plot with Ordinal on Top',
-    spec: {
-      'marktype': 'point',
-      'encoding': {
-        'x': {'field': 'MPAA_Rating','type': 'nominal'},
-        'y': {'field': 'Release_Date','type': 'nominal'}
-      },
-      'data': {'url': 'data/movies.json'}
-    }
-  },{
     title: 'Line Chart',
     description: 'Horse power over time',
     spec: {
