@@ -4,8 +4,7 @@ import * as axis from '../../src/compiler/axis';
 import {Model} from '../../src/compiler/Model';
 
 describe('Axis', function() {
-  var stats = {a: {distinct: 5}, b: {distinct: 32}},
-    layout = {
+  var layout = {
       cellWidth: 60,  // default characterWidth = 6
       cellHeight: 60
     };
@@ -30,7 +29,7 @@ describe('Axis', function() {
       y: {
         axisTitleOffset: 60
       }
-    }, stats);
+    });
 
     //FIXME decouple the test here
 
@@ -53,7 +52,7 @@ describe('Axis', function() {
           encoding: {
             x: {field: 'a', axis:{orient: 'bottom'}}
           }
-        }), 'x', {}, stats);
+        }), 'x', {});
       expect(orient).to.eql('bottom');
     });
 
@@ -62,7 +61,7 @@ describe('Axis', function() {
           encoding: {
             x: {field: 'a'}
           }
-        }), 'x', {}, stats);
+        }), 'x', {});
       expect(orient).to.eql(undefined);
     });
 
@@ -72,7 +71,7 @@ describe('Axis', function() {
             x: {field: 'a'},
             column: {field: 'a'}
           }
-        }), 'column', {}, stats);
+        }), 'column', {});
       expect(orient).to.eql('top');
     });
 
@@ -82,7 +81,7 @@ describe('Axis', function() {
             x: {field: 'a'},
             y: {field: 'b', type: 'ordinal'}
           }
-        }), 'x', {}, stats);
+        }), 'x', {});
       expect(orient).to.eql('top');
     });
   });

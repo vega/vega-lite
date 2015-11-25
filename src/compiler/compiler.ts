@@ -67,8 +67,8 @@ export function compile(spec, stats, theme?) {
       });
     rootGroup.scales = compileScales(scaleNames, model, layout, stats);
 
-    var axes = (model.has(X) ? [compileAxis(X, model, layout, stats)] : [])
-      .concat(model.has(Y) ? [compileAxis(Y, model, layout, stats)] : []);
+    var axes = (model.has(X) ? [compileAxis(X, model, layout)] : [])
+      .concat(model.has(Y) ? [compileAxis(Y, model, layout)] : []);
     if (axes.length > 0) {
       rootGroup.axes = axes;
     }
