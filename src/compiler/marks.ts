@@ -98,7 +98,7 @@ export function compileMarks(model: Model, layout): any[] {
     //   // TODO: add label by type here
     // }
 
-    return [mainDef];
+    return marks;
   }
 }
 
