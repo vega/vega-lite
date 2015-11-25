@@ -13,7 +13,6 @@ import {compileScales} from './scale';
 
 // TODO: stop using default if we were to keep these files
 import vlLayout from './layout';
-import vlStyle from './style';
 import * as util from '../util';
 
 import {stats as vlDataStats} from '../data';
@@ -48,9 +47,7 @@ export function compile(spec, stats, theme?) {
     }
   };
 
-  // marks
-  var styleCfg = vlStyle(model, stats);
-  const marks = compileMarks(model, layout, styleCfg);
+  const marks = compileMarks(model, layout);
 
   // Small Multiples
   if (model.has(ROW) || model.has(COLUMN)) {
@@ -75,7 +72,7 @@ export function compile(spec, stats, theme?) {
   }
 
   // legends (similar for either facets or non-facets
-  var legends = compileLegends(model, styleCfg);
+  var legends = compileLegends(model);
   if (legends.length > 0) {
     rootGroup.legends = legends;
   }

@@ -19,7 +19,7 @@ const MARKTYPES_MAP = {
   square: 'symbol'
 };
 
-export function compileMarks(model: Model, layout, style): any[] {
+export function compileMarks(model: Model, layout): any[] {
   const marktype = model.marktype();
   if (marktype === LINE || marktype === AREA) {
     // For Line and Area, we sort values based on dimension by default
@@ -37,7 +37,7 @@ export function compileMarks(model: Model, layout, style): any[] {
         transform: [{type: 'sort', by: sortBy}]
       },
       properties: {
-        update: properties[marktype](model, layout, style)
+        update: properties[marktype](model, layout)
       }
     };
 
@@ -83,7 +83,7 @@ export function compileMarks(model: Model, layout, style): any[] {
       // TODO add name
       type: MARKTYPES_MAP[marktype],
       properties: {
-        update: properties[marktype](model, layout, style)
+        update: properties[marktype](model, layout)
       }
     };
     const stack = model.stack();
@@ -116,7 +116,7 @@ function detailFields(model:Model): string[] {
 }
 
 export namespace properties {
-export function bar(model: Model, layout, style) {
+export function bar(model: Model, layout) {
   const stack = model.stack();
 
   // TODO Use Vega's marks properties interface
@@ -214,7 +214,7 @@ export function bar(model: Model, layout, style) {
   return p;
 }
 
-export function point(model: Model, layout, style) {
+export function point(model: Model, layout) {
   // TODO Use Vega's marks properties interface
   var p:any = {};
 
@@ -263,13 +263,15 @@ export function point(model: Model, layout, style) {
   }
 
   // opacity
-  var opacity = model.fieldDef(COLOR).opacity || style.opacity;
-  if (opacity) p.opacity = {value: opacity};
+  var opacity = model.fieldDef(COLOR).opacity;
+  if (opacity) {
+    p.opacity = {value: opacity};
+  }
 
   return p;
 }
 
-export function line(model: Model,layout, style) {
+export function line(model: Model,layout) {
   // TODO Use Vega's marks properties interface
   var p:any = {};
 
@@ -303,7 +305,7 @@ export function line(model: Model,layout, style) {
 }
 
 // TODO(#694): optimize area's usage with bin
-export function area(model: Model, layout, style) {
+export function area(model: Model, layout) {
   const stack = model.stack();
 
   // TODO Use Vega's marks properties interface
@@ -363,7 +365,7 @@ export function area(model: Model, layout, style) {
   return p;
 }
 
-export function tick(model: Model, layout, style) {
+export function tick(model: Model, layout) {
   // TODO Use Vega's marks properties interface
   var p:any = {};
 
@@ -410,14 +412,16 @@ export function tick(model: Model, layout, style) {
     p.fill = {value: model.fieldDef(COLOR).value};
   }
 
-  var opacity = model.fieldDef(COLOR).opacity  || style.opacity;
-  if(opacity) p.opacity = {value: opacity};
+  var opacity = model.fieldDef(COLOR).opacity;
+  if (opacity) {
+    p.opacity = {value: opacity};
+  }
 
   return p;
 }
 
 function filled_point_props(shape) {
-  return function(model: Model, layout, style) {
+  return function(model: Model, layout) {
     // TODO Use Vega's marks properties interface
     var p:any = {};
 
@@ -452,8 +456,10 @@ function filled_point_props(shape) {
       p.fill = {value: model.fieldDef(COLOR).value};
     }
 
-    var opacity = model.fieldDef(COLOR).opacity  || style.opacity;
-    if(opacity) p.opacity = {value: opacity};
+    var opacity = model.fieldDef(COLOR).opacity
+    if (opacity) {
+      p.opacity = {value: opacity};
+    }
 
     return p;
   };
@@ -472,7 +478,7 @@ export function textBackground(model: Model, layout) {
   };
 }
 
-export function text(model: Model, layout, style) {
+export function text(model: Model, layout) {
   // TODO Use Vega's marks properties interface
   var p:any = {},
     fieldDef = model.fieldDef(TEXT);
@@ -506,8 +512,10 @@ export function text(model: Model, layout, style) {
   // color should be set to background
   p.fill = {value: fieldDef.color};
 
-  var opacity = model.fieldDef(COLOR).opacity  || style.opacity;
-  if(opacity) p.opacity = {value: opacity};
+  var opacity = model.fieldDef(COLOR).opacity;
+  if (opacity) {
+    p.opacity = {value: opacity};
+  }
 
   // text
   if (model.has(TEXT)) {

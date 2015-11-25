@@ -4,31 +4,31 @@ import {Model} from './Model';
 import * as time from './time';
 import {TEMPORAL} from '../type';
 
-export function compileLegends(model: Model, styleCfg) {
+export function compileLegends(model: Model) {
   var defs = [];
 
   if (model.has(COLOR) && model.fieldDef(COLOR).legend) {
     defs.push(compileLegend(model, COLOR, {
       fill: COLOR
       // TODO: consider if this should be stroke for line
-    }, styleCfg));
+    }));
   }
 
   if (model.has(SIZE) && model.fieldDef(SIZE).legend) {
     defs.push(compileLegend(model, SIZE, {
       size: SIZE
-    }, styleCfg));
+    }));
   }
 
   if (model.has(SHAPE) && model.fieldDef(SHAPE).legend) {
     defs.push(compileLegend(model, SHAPE, {
       shape: SHAPE
-    }, styleCfg));
+    }));
   }
   return defs;
 }
 
-export function compileLegend(model: Model, channel: Channel, def, styleCfg) {
+export function compileLegend(model: Model, channel: Channel, def) {
   let legend = model.fieldDef(channel).legend;
 
   // 1.1 Add properties with special rules
@@ -46,7 +46,7 @@ export function compileLegend(model: Model, channel: Channel, def, styleCfg) {
   let props = legend.properties || {};
   ['title', 'labels', 'symbols', 'legend'].forEach(function(group) {
     let value = properties[group] ?
-      properties[group](model, channel, props[group], styleCfg) : // apply rule
+      properties[group](model, channel, props[group]) : // apply rule
       props[group]; // no rule -- just default values
     if (value !== undefined) {
       def.properties = def.properties || {};
@@ -79,7 +79,7 @@ namespace properties {
     return spec;
   }
 
-  export function symbols(model: Model, channel: Channel, spec, styleCfg) {
+  export function symbols(model: Model, channel: Channel, spec) {
     let symbols:any = {};
     let marktype = model.marktype();
 
@@ -121,7 +121,7 @@ namespace properties {
         break;
     }
 
-    var opacity = model.fieldDef(COLOR).opacity || styleCfg.opacity;
+    var opacity = model.fieldDef(COLOR).opacity;
     if (opacity) {
       symbols.opacity = {value: opacity};
     }
