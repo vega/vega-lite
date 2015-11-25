@@ -30,9 +30,10 @@ export function compileMarks(model: Model, layout, style): any[] {
       sortBy = '-' + model.fieldRef(sortField);
     }
 
-    let mainDef: any = {
+    let pathMarks: any = {
       type: MARKTYPES_MAP[marktype],
       from: {
+        // from.data might be added later for non-facet, single group line/area
         transform: [{type: 'sort', by: sortBy}]
       },
       properties: {
@@ -54,7 +55,7 @@ export function compileMarks(model: Model, layout, style): any[] {
         name: marktype  + '-facet',
         type: 'group',
         from: {
-          data: model.dataTable(),
+          // from.data might be added later for non-facet charts
           transform: transform
         },
         properties: {
@@ -63,35 +64,35 @@ export function compileMarks(model: Model, layout, style): any[] {
             height: {field: {group: 'height'}}
           }
         },
-        marks: [mainDef]
+        marks: [pathMarks]
       }];
     } else {
-      mainDef.from.data = model.dataTable();
-      return [mainDef];
+      return [pathMarks];
     }
   } else { // other mark type
-    const from:any = {data: model.dataTable()}; // TODO: VgDataFrom
-    const mainDef = { // TODO add name
+    let marks = []; // TODO: vgMarks
+    if (marktype === TEXTMARKS && model.has(COLOR)) {
+      // add background to 'text' marks if has color
+      marks.push({
+        type: 'rect',
+        properties: {update: properties.textBackground(model, layout)}
+      });
+    }
+
+    let mainDef: any = {
+      // TODO add name
       type: MARKTYPES_MAP[marktype],
-      from: from,
       properties: {
         update: properties[marktype](model, layout, style)
       }
     };
-
-    if (marktype === TEXTMARKS && model.has(COLOR)) {
-      // add background to 'text' marks if has color
-      return [{
-        type: 'rect',
-        from: from, // FIXME this is tricky for small multiples of text
-        properties: {update: properties.textBackground(model, layout)}
-      }, mainDef];
-    }
-
     const stack = model.stack();
     if (marktype === BAR && stack) {
-      from.transform = [stackTransform(model)];
+      mainDef.from = {
+        transform: [stackTransform(model)]
+      };
     }
+    marks.push(mainDef);
 
     // if (model.has(LABEL)) {
     //   // TODO: add label by type here
