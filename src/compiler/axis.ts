@@ -8,7 +8,7 @@ import * as time from './time';
 // https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations
 declare var exports;
 
-export function compileAxis(channel: Channel, model: Model, layout, stats) {
+export function compileAxis(channel: Channel, model: Model, layout) {
   var isCol = channel === COLUMN,
     isRow = channel === ROW,
     type = isCol ? 'x' : isRow ? 'y': channel;
@@ -28,11 +28,11 @@ export function compileAxis(channel: Channel, model: Model, layout, stats) {
     'tickPadding', 'tickSize', 'tickSizeMajor', 'tickSizeMinor', 'tickSizeEnd',
     'values', 'subdivide'
   ].forEach(function(property) {
-    let method: (model: Model, channel: Channel, layout:any, stats:any, def:any)=>any;
+    let method: (model: Model, channel: Channel, layout:any, def:any)=>any;
 
     var value = (method = exports[property]) ?
                   // calling axis.format, axis.grid, ...
-                  method(model, channel, layout, stats, def) :
+                  method(model, channel, layout, def) :
                   model.fieldDef(channel).axis[property];
     if (value !== undefined) {
       def[property] = value;
@@ -92,7 +92,7 @@ export function grid(model: Model, channel: Channel) {
     (model.isTypes(channel, [QUANTITATIVE, TEMPORAL]) && !model.fieldDef(channel).bin);
 }
 
-export function layer(model: Model, channel: Channel, layout, stats, def) {
+export function layer(model: Model, channel: Channel, layout, def) {
   var layer = model.fieldDef(channel).axis.layer;
   if (layer !== undefined) {
     return layer;
@@ -116,15 +116,11 @@ export function offset(model: Model, channel: Channel, layout) {
   return undefined;
 }
 
-export function orient(model: Model, channel: Channel, layout, stats) {
+export function orient(model: Model, channel: Channel, layout) {
   var orient = model.fieldDef(channel).axis.orient;
   if (orient) {
     return orient;
   } else if (channel === COLUMN) {
-    return 'top';
-  } else if (channel === X && model.has(Y) && model.isOrdinalScale(Y) && model.cardinality(Y, stats) > 30) {
-    // FIXME remove this case and migrate this logic to vega-lite-ui
-    // x-axis for long y - put on top
     return 'top';
   }
   return undefined;
