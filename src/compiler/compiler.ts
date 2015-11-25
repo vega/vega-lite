@@ -34,26 +34,28 @@ export function compile(spec, stats, theme?) {
 
   var layout = vlLayout(model, stats);
 
+  var rootGroup:any = {
+    name: 'root',
+    type: 'group',
+    properties: {
+      update: {
+        width: model.has(COLUMN) ?
+                 {value: layout.cellWidth} :
+                 {field: {group: 'width'}},
+        height: model.has(ROW) ?
+                {value: layout.cellHeight} :
+                {field: {group: 'height'}}
+      }
+    }
+  };
+
   // TODO: change type to become VgSpec
   var output:any = {
       width: layout.width,
       height: layout.height,
       padding: 'auto',
       data: compileData(model),
-      marks: [{
-        name: 'cell',
-        type: 'group',
-        properties: {
-          update: {
-            width: model.has(COLUMN) ?
-                     {value: layout.cellWidth} :
-                     {field: {group: 'width'}},
-            height: model.has(ROW) ?
-                    {value: layout.cellHeight} :
-                    {field: {group: 'height'}}
-          }
-        }
-      }]
+      marks: [rootGroup]
     };
 
   // global scales contains only time unit scales
@@ -61,17 +63,17 @@ export function compile(spec, stats, theme?) {
   if (timeScales.length > 0) {
     output.scales = timeScales;
   }
-  var group = output.marks[0];
+
 
   // marks
   var styleCfg = vlStyle(model, stats);
-  group.marks = compileMarks(model, layout, styleCfg);
+  rootGroup.marks = compileMarks(model, layout, styleCfg);
 
   var legends = compileLegends(model, styleCfg);
 
   // Small Multiples
   if (model.has(ROW) || model.has(COLUMN)) {
-    output = vlFacet(group, model, layout, output, stats);
+    output = vlFacet(rootGroup, model, layout, output, stats);
     if (legends.length > 0) {
       output.legends = legends;
     }
@@ -81,7 +83,7 @@ export function compile(spec, stats, theme?) {
         names.push(channel);
         return names;
       }, []);
-    group.scales = compileScales(scaleNames, model, layout, stats);
+    rootGroup.scales = compileScales(scaleNames, model, layout, stats);
 
     var axes = [];
     if (model.has(X)) {
@@ -91,11 +93,11 @@ export function compile(spec, stats, theme?) {
       axes.push(compileAxis(Y, model, layout, stats));
     }
     if (axes.length > 0) {
-      group.axes = axes;
+      rootGroup.axes = axes;
     }
 
     if (legends.length > 0) {
-      group.legends = legends;
+      rootGroup.legends = legends;
     }
   }
 
