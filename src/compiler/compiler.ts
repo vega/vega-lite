@@ -72,7 +72,7 @@ export function compile(spec, stats, theme?) {
   }
 
   // legends (similar for either facets or non-facets
-  var legends = compileLegends(model, styleCfg);
+  var legends = compileLegends(model);
   if (legends.length > 0) {
     rootGroup.legends = legends;
   }
