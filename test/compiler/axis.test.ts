@@ -74,16 +74,6 @@ describe('Axis', function() {
         }), 'column', {});
       expect(orient).to.eql('top');
     });
-
-    it('should return top for X with high cardinality, ordinal Y', function () {
-      var orient = axis.orient(new Model({
-          encoding: {
-            x: {field: 'a'},
-            y: {field: 'b', type: 'ordinal'}
-          }
-        }), 'x', {});
-      expect(orient).to.eql('top');
-    });
   });
 
   describe('title()', function () {
