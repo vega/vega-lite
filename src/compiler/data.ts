@@ -217,7 +217,7 @@ export namespace stats {
         field: 'cellWidth',
         expr: model.fieldRef(X, {datum: true, fn: 'distinct'}) + ' + ' +
               model.padding(X) + ' * ' + model.bandWidth(X)
-      })
+      });
     }
 
     if (model.has(Y) && model.isOrdinalScale(Y)) { // FIXME check if we need to call twice
@@ -230,7 +230,7 @@ export namespace stats {
         field: 'cellHeight',
         expr: model.fieldRef(Y, {datum: true, fn: 'distinct'}) + ' + ' +
               model.padding(Y) + ' * ' + model.bandWidth(Y)
-      })
+      });
     }
 
     if (summarize.length > 0) {
