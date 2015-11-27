@@ -136,20 +136,13 @@ export class Model {
     }
   }
 
-  bandWidth(channel: Channel, useSmallBand?: boolean) {
+  bandWidth(channel: Channel) {
     if (this.fieldDef(channel).scale.bandWidth !== undefined) {
       // explicit value
       return this.fieldDef(channel).scale.bandWidth;
     }
-
     // If not specified, draw value from config.
-
-    useSmallBand = useSmallBand ||
-    //isBandInSmallMultiples
-    (channel === Y && this.has(ROW) && this.has(Y)) ||
-    (channel === X && this.has(COLUMN) && this.has(X));
-
-    return this.config(useSmallBand ? 'smallBandWidth' : 'largeBandWidth');
+    return this.config('bandWidth');
   }
 
   padding(channel: Channel) {

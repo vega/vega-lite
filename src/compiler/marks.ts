@@ -116,7 +116,7 @@ function detailFields(model:Model): string[] {
 }
 
 export namespace properties {
-export function bar(model: Model, layout) {
+export function bar(model: Model) {
   const stack = model.stack();
 
   // TODO Use Vega's marks properties interface
@@ -171,7 +171,7 @@ export function bar(model: Model, layout) {
         };
       } else {
         p.width = {
-          value: model.bandWidth(X, layout.x.useSmallBand),
+          value: model.bandWidth(X),
           offset: -1
         };
       }
@@ -226,7 +226,7 @@ export function bar(model: Model, layout) {
       };
     } else {
       p.height = {
-        value: model.bandWidth(Y, layout.y.useSmallBand),
+        value: model.bandWidth(Y),
         offset: -1
       };
     }
@@ -249,7 +249,7 @@ export function bar(model: Model, layout) {
   return p;
 }
 
-export function point(model: Model, layout) {
+export function point(model: Model) {
   // TODO Use Vega's marks properties interface
   var p:any = {};
 
@@ -260,7 +260,7 @@ export function point(model: Model, layout) {
       field: model.fieldRef(X, {binSuffix: '_mid'})
     };
   } else if (!model.has(X)) {
-    p.x = {value: model.bandWidth(X, layout.x.useSmallBand) / 2};
+    p.x = {value: model.bandWidth(X) / 2};
   }
 
   // y
@@ -270,7 +270,7 @@ export function point(model: Model, layout) {
       field: model.fieldRef(Y, {binSuffix: '_mid'})
     };
   } else if (!model.has(Y)) {
-    p.y = {value: model.bandWidth(Y, layout.y.useSmallBand) / 2};
+    p.y = {value: model.bandWidth(Y) / 2};
   }
 
   // size
@@ -324,7 +324,7 @@ export function point(model: Model, layout) {
   return p;
 }
 
-export function line(model: Model,layout) {
+export function line(model: Model) {
   // TODO Use Vega's marks properties interface
   var p:any = {};
 
@@ -367,7 +367,7 @@ export function line(model: Model,layout) {
 }
 
 // TODO(#694): optimize area's usage with bin
-export function area(model: Model, layout) {
+export function area(model: Model) {
   const stack = model.stack();
 
   // TODO Use Vega's marks properties interface
@@ -447,7 +447,7 @@ export function area(model: Model, layout) {
   return p;
 }
 
-export function tick(model: Model, layout) {
+export function tick(model: Model) {
   // TODO Use Vega's marks properties interface
   var p:any = {};
 
@@ -458,7 +458,7 @@ export function tick(model: Model, layout) {
       field: model.fieldRef(X, {binSuffix: '_mid'})
     };
     if (model.isDimension(X)) {
-      p.x.offset = -model.bandWidth(X, layout.x.useSmallBand) / 3;
+      p.x.offset = -model.bandWidth(X) / 3;
     }
   } else if (!model.has(X)) {
     p.x = {value: 0};
@@ -471,7 +471,7 @@ export function tick(model: Model, layout) {
       field: model.fieldRef(Y, {binSuffix: '_mid'})
     };
     if (model.isDimension(Y)) {
-      p.y.offset = -model.bandWidth(Y, layout.y.useSmallBand) / 3;
+      p.y.offset = -model.bandWidth(Y) / 3;
     }
   } else if (!model.has(Y)) {
     p.y = {value: 0};
@@ -480,7 +480,7 @@ export function tick(model: Model, layout) {
   // width
   if (!model.has(X) || model.isDimension(X)) {
     // TODO(#694): optimize tick's width for bin
-    p.width = {value: model.bandWidth(X, layout.y.useSmallBand) / 1.5};
+    p.width = {value: model.bandWidth(X) / 1.5};
   } else {
     p.width = {value: 1};
   }
@@ -488,7 +488,7 @@ export function tick(model: Model, layout) {
   // height
   if (!model.has(Y) || model.isDimension(Y)) {
     // TODO(#694): optimize tick's height for bin
-    p.height = {value: model.bandWidth(Y, layout.y.useSmallBand) / 1.5};
+    p.height = {value: model.bandWidth(Y) / 1.5};
   } else {
     p.height = {value: 1};
   }
@@ -512,7 +512,7 @@ export function tick(model: Model, layout) {
 }
 
 function filled_point_props(shape) {
-  return function(model: Model, layout) {
+  return function(model: Model) {
     // TODO Use Vega's marks properties interface
     var p:any = {};
 
@@ -523,7 +523,7 @@ function filled_point_props(shape) {
         field: model.fieldRef(X, {binSuffix: '_mid'})
       };
     } else if (!model.has(X)) {
-      p.x = {value: model.bandWidth(X, layout.x.useSmallBand) / 2};
+      p.x = {value: model.bandWidth(X) / 2};
     }
 
     // y
@@ -533,7 +533,7 @@ function filled_point_props(shape) {
         field: model.fieldRef(Y, {binSuffix: '_mid'})
       };
     } else if (!model.has(Y)) {
-      p.y = {value: model.bandWidth(Y, layout.y.useSmallBand) / 2};
+      p.y = {value: model.bandWidth(Y) / 2};
     }
 
     // size
@@ -596,7 +596,7 @@ export function text(model: Model, layout) {
     if (model.has(TEXT) && model.fieldDef(TEXT).type === QUANTITATIVE) {
       p.x = {value: layout.cellWidth-5};
     } else {
-      p.x = {value: model.bandWidth(X, layout.x.useSmallBand) / 2};
+      p.x = {value: model.bandWidth(X) / 2};
     }
   }
 
@@ -607,7 +607,7 @@ export function text(model: Model, layout) {
       field: model.fieldRef(Y, {binSuffix: '_mid'})
     };
   } else if (!model.has(Y)) {
-    p.y = {value: model.bandWidth(Y, layout.y.useSmallBand) / 2};
+    p.y = {value: model.bandWidth(Y) / 2};
   }
 
   // size
