@@ -37,7 +37,7 @@ export function compile(spec, stats, theme?) {
   var rootGroup:any = {
     name: 'root',
     type: 'group',
-    // TODO: add from: {data: 'stats'}
+    from: {data: 'stats'},
     properties: {
       update: {
         // TODO replace with signal or inline calculation

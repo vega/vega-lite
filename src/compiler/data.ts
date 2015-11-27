@@ -6,7 +6,7 @@ import {StackProperties} from './stack';
 
 import {MAXBINS_DEFAULT} from '../bin';
 import {Channel} from '../channel';
-import {SOURCE, STACKED, SUMMARY} from '../data';
+import {SOURCE, STACKED, STATS, SUMMARY} from '../data';
 import * as time from './time';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 
@@ -31,6 +31,9 @@ export function compileData(model: Model) {
 
   // append non-positive filter at the end for the data table
   filterNonPositive(def[def.length - 1], model);
+
+  // add stats for layout calculation
+  def.push(stats.def(model));
 
   // Stack
   var stackDef = model.stack();
@@ -191,6 +194,26 @@ export namespace source {
       transform.push(util.extend({type: formula}, formula));
       return transform;
     }, []);
+  }
+}
+
+
+export namespace stats {
+  export function def(model: Model): VgData {
+    // FIXME optimize this
+    return {
+      name: STATS,
+      source: SOURCE,
+      transform: [{
+        type: 'aggregate',
+        summarize: model.reduce(function(summarize, fieldDef: FieldDef) {
+          if (fieldDef.type === ORDINAL) {
+            summarize[fieldDef.field] = 'distinct';
+          }
+          return summarize;
+        }, {})
+      }]
+    };
   }
 }
 
