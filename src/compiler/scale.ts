@@ -15,7 +15,7 @@ import {SOURCE, STACKED} from '../data';
 import * as time from './time';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 
-export function compileScales(names: Array<string>, model: Model, layout, stats, facet?) {
+export function compileScales(names: Array<string>, model: Model, layout, facet?) {
   return names.reduce(function(a, channel: Channel) {
     var scaleDef: any = {};
 
@@ -34,7 +34,7 @@ export function compileScales(names: Array<string>, model: Model, layout, stats,
       // ordinal
       'bandWidth', 'outerPadding', 'padding', 'points'
     ].forEach(function(property) {
-      var value = exports[property](model, channel, t, layout, stats);
+      var value = exports[property](model, channel, t, layout);
       if (value !== undefined) {
         scaleDef[property] = value;
       }
@@ -48,8 +48,10 @@ export function type(channel: Channel, model: Model) {
   const fieldDef = model.fieldDef(channel);
   switch (fieldDef.type) {
     case NOMINAL: //fall through
-    case ORDINAL:
       return 'ordinal';
+    case ORDINAL:
+      let range = fieldDef.scale.range;
+      return channel === COLOR && (typeof range !== 'string') ? 'linear' : 'ordinal';
     case TEMPORAL:
       return fieldDef.timeUnit ? time.scale.type(fieldDef.timeUnit, channel) : 'time';
     case QUANTITATIVE:
@@ -263,7 +265,7 @@ export function points(model: Model, channel: Channel, type) {
 }
 
 
-export function range(model: Model, channel: Channel, type, layout, stats) {
+export function range(model: Model, channel: Channel, type, layout) {
   var fieldDef = model.fieldDef(channel);
 
   if (fieldDef.scale.range) { // explicit value
@@ -294,9 +296,12 @@ export function range(model: Model, channel: Channel, type, layout, stats) {
     case SHAPE:
       return 'shapes';
     case COLOR:
-      return color(model, channel, type, stats);
+      if (type === 'ordinal') {
+        return 'category10';
+      } else { //time or quantitative
+        return ['#AFC6A3', '#09622A']; // tableau greens
+      }
   }
-
   return undefined;
 }
 
@@ -345,90 +350,4 @@ export function zero(model: Model, channel: Channel) {
     // since zero is true by default in vega for linear scale
     undefined :
     false;
-}
-
-export function color(model: Model, channel: Channel, scaleType, stats) {
-  const fieldDef = model.fieldDef(COLOR),
-    colorScale = fieldDef.scale,
-    cardinality = model.cardinality(COLOR, stats),
-    type = fieldDef.type;
-
-  let range = colorScale.range;
-
-  if (range === undefined) {
-    var ordinalPalette = colorScale.ordinalPalette,
-      quantitativeRange = colorScale.quantitativeRange;
-
-    if (scaleType === 'ordinal') {
-      if (type === NOMINAL) {
-        // use categorical color scale
-        if (cardinality <= 10) {
-          range = colorScale.c10palette;
-        } else {
-          range = colorScale.c20palette;
-        }
-        return colors.palette(range, cardinality, type);
-      } else {
-        if (ordinalPalette) {
-          return colors.palette(ordinalPalette, cardinality, type);
-        }
-        return colors.interpolate(quantitativeRange[0], quantitativeRange[1], cardinality);
-      }
-    } else { //time or quantitative
-      return [quantitativeRange[0], quantitativeRange[1]];
-    }
-  }
-}
-
-export namespace colors {
-  export function palette(range, cardinality?, type?: String) {
-    // FIXME(kanitw): Jul 29, 2015 - check range is string
-    switch (range) {
-      case 'category10k':
-        // tableau's category 10, ordered by perceptual kernel study results
-        // https://github.com/uwdata/perceptual-kernels
-        return ['#2ca02c', '#e377c2', '#7f7f7f', '#17becf', '#8c564b', '#d62728', '#bcbd22', '#9467bd', '#ff7f0e', '#1f77b4'];
-
-      // d3/tableau category10/20/20b/20c
-      case 'category10':
-        return ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf'];
-
-      case 'category20':
-        return ['#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5'];
-
-      case 'category20b':
-        return ['#393b79', '#5254a3', '#6b6ecf', '#9c9ede', '#637939', '#8ca252', '#b5cf6b', '#cedb9c', '#8c6d31', '#bd9e39', '#e7ba52', '#e7cb94', '#843c39', '#ad494a', '#d6616b', '#e7969c', '#7b4173', '#a55194', '#ce6dbd', '#de9ed6'];
-
-      case 'category20c':
-        return ['#3182bd', '#6baed6', '#9ecae1', '#c6dbef', '#e6550d', '#fd8d3c', '#fdae6b', '#fdd0a2', '#31a354', '#74c476', '#a1d99b', '#c7e9c0', '#756bb1', '#9e9ac8', '#bcbddc', '#dadaeb', '#636363', '#969696', '#bdbdbd', '#d9d9d9'];
-    }
-
-    // TODO add our own set of custom ordinal color palette
-
-    if (range in colorbrewer) {
-      var palette = colorbrewer[range];
-
-      // if cardinality pre-defined, use it.
-      if (cardinality in palette) return palette[cardinality];
-
-      // if not, use the highest cardinality one for nominal
-      if (type === NOMINAL) {
-        return palette[Math.max.apply(null, util.keys(palette))];
-      }
-
-      // otherwise, interpolate
-      var ps = cardinality < 3 ? 3 : Math.max.apply(null, util.keys(palette)),
-        from = 0 , to = ps - 1;
-      // FIXME add config for from / to
-
-      return colors.interpolate(palette[ps][from], palette[ps][to], cardinality);
-    }
-
-    return range;
-  }
-
-  export function interpolate(start, end, cardinality) {
-    var interpolator = interpolateHsl(start, end);
-    return util.range(cardinality).map(function(i) { return interpolator(i*1.0/(cardinality-1)); });
-  }
 }

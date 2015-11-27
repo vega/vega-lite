@@ -43,7 +43,7 @@ var scale = {
     },
     range: {
       default: undefined,
-      type: ['array', 'object'],
+      type: ['array', 'object', 'string'],
       description: 'The range of the scale, representing the set of visual values. For numeric values, the range can take the form of a two-element array with minimum and maximum values. For ordinal or quantized data, the range may by an array of desired output values, which are mapped to elements in the specified domain. For ordinal scales only, the range can be defined using a DataRef: the range values are then drawn dynamically from a backing data set.'
     },
     round: {

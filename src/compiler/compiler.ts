@@ -52,7 +52,7 @@ export function compile(spec, stats, theme?) {
   // Small Multiples
   if (model.has(ROW) || model.has(COLUMN)) {
     // put the marks inside a facet cell's group
-    util.extend(rootGroup, facetMixins(model, marks, layout, stats));
+    util.extend(rootGroup, facetMixins(model, marks, layout));
   } else {
     rootGroup.marks = marks.map(function(marks) {
       marks.from = marks.from || {};
@@ -62,7 +62,7 @@ export function compile(spec, stats, theme?) {
     const scaleNames = model.map(function(_, channel: Channel){
         return channel; // TODO model.scaleName(channel)
       });
-    rootGroup.scales = compileScales(scaleNames, model, layout, stats);
+    rootGroup.scales = compileScales(scaleNames, model, layout);
 
     var axes = (model.has(X) ? [compileAxis(X, model, layout)] : [])
       .concat(model.has(Y) ? [compileAxis(Y, model, layout)] : []);

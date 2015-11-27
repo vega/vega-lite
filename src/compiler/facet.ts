@@ -9,7 +9,7 @@ import {compileScales} from './scale';
 /**
  * return mixins that contains marks, scales, and axes for the rootGroup
  */
-export function facetMixins(model: Model, marks, layout, stats) {
+export function facetMixins(model: Model, marks, layout) {
   const cellWidth = !model.has(COLUMN) ?
       {field: {group: 'width'}} :
     model.has(X) && model.isOrdinalScale(X) ?
@@ -141,6 +141,6 @@ export function facetMixins(model: Model, marks, layout, stats) {
     marks: rootMarks,
     axes: rootAxes,
     // assuming equal cellWidth here
-    scales: compileScales(scaleNames, model, layout, stats, true)
+    scales: compileScales(scaleNames, model, layout, true)
   };
 }
