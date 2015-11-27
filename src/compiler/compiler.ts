@@ -47,7 +47,7 @@ export function compile(spec, stats, theme?) {
     }
   };
 
-  const marks = compileMarks(model, layout);
+  const marks = compileMarks(model);
 
   // Small Multiples
   if (model.has(ROW) || model.has(COLUMN)) {
