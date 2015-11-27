@@ -20,8 +20,8 @@ export function compileScales(names: Array<string>, model: Model, layout) {
     var scaleDef: any = {};
 
     scaleDef.name = channel;
-    var t = scaleDef.type = type(channel, model);
-    scaleDef.domain = domain(model, channel, t);
+    var scaleType = scaleDef.type = type(channel, model);
+    scaleDef.domain = domain(model, channel, scaleType);
 
     // Add optional properties
     [
@@ -34,7 +34,7 @@ export function compileScales(names: Array<string>, model: Model, layout) {
       // ordinal
       'bandWidth', 'outerPadding', 'padding', 'points'
     ].forEach(function(property) {
-      var value = exports[property](model, channel, t, layout);
+      var value = exports[property](model, channel, scaleType, layout);
       if (value !== undefined) {
         scaleDef[property] = value;
       }
@@ -180,13 +180,13 @@ export function _useRawDomain (model: Model, channel: Channel) {
     );
 }
 
-export function bandWidth(model: Model, channel: Channel, type, layout) {
+export function bandWidth(model: Model, channel: Channel, scaleType, layout) {
   // TODO: eliminate layout
 
   switch (channel) {
     case X: /* fall through */
     case Y:
-      if (type === 'ordinal') {
+      if (scaleType === 'ordinal') {
         return model.bandWidth(channel);
       }
       break;
@@ -208,7 +208,7 @@ export function exponent(model: Model, channel: Channel) {
   return model.fieldDef(channel).scale.exponent;
 }
 
-export function nice(model: Model, channel: Channel, type) {
+export function nice(model: Model, channel: Channel, scaleType) {
   if (model.fieldDef(channel).scale.nice !== undefined) {
     // explicit value
     return model.fieldDef(channel).scale.nice;
@@ -217,7 +217,7 @@ export function nice(model: Model, channel: Channel, type) {
   switch (channel) {
     case X: /* fall through */
     case Y:
-      if (type === 'time' || type === 'ordinal') {
+      if (scaleType === 'time' || scaleType === 'ordinal') {
         return undefined;
       }
       return true;
@@ -229,8 +229,8 @@ export function nice(model: Model, channel: Channel, type) {
   return undefined;
 }
 
-export function outerPadding(model: Model, channel: Channel, type) {
-  if (type === 'ordinal') {
+export function outerPadding(model: Model, channel: Channel, scaleType) {
+  if (scaleType === 'ordinal') {
     if (model.fieldDef(channel).scale.outerPadding !== undefined) {
       return model.fieldDef(channel).scale.outerPadding; // explicit value
     }
@@ -241,16 +241,16 @@ export function outerPadding(model: Model, channel: Channel, type) {
   return undefined;
 }
 
-export function padding(model: Model, channel: Channel, type) {
-  if (type === 'ordinal') {
+export function padding(model: Model, channel: Channel, scaleType) {
+  if (scaleType === 'ordinal') {
     // Both explicit and non-explicit values are handled by the helper method.
     return model.padding(channel);
   }
   return undefined;
 }
 
-export function points(model: Model, channel: Channel, type) {
-  if (type === 'ordinal') {
+export function points(model: Model, channel: Channel, scaleType) {
+  if (scaleType === 'ordinal') {
     if (model.fieldDef(channel).scale.points !== undefined) {
       // explicit value
       return model.fieldDef(channel).scale.points;
@@ -266,7 +266,7 @@ export function points(model: Model, channel: Channel, type) {
 }
 
 
-export function range(model: Model, channel: Channel, type, layout) {
+export function range(model: Model, channel: Channel, scaleType, layout) {
   var fieldDef = model.fieldDef(channel);
 
   if (fieldDef.scale.range) { // explicit value
@@ -277,7 +277,7 @@ export function range(model: Model, channel: Channel, type, layout) {
     case X:
       return layout.cellWidth ? [0, layout.cellWidth] : 'width';
     case Y:
-      if (type === 'ordinal') {
+      if (scaleType === 'ordinal') {
         return layout.cellHeight ?
           (fieldDef.bin ? [layout.cellHeight, 0] : [0, layout.cellHeight]) :
           'height';
@@ -297,7 +297,7 @@ export function range(model: Model, channel: Channel, type, layout) {
     case SHAPE:
       return 'shapes';
     case COLOR:
-      if (type === 'ordinal') {
+      if (scaleType === 'ordinal') {
         return 'category10';
       } else { //time or quantitative
         return ['#AFC6A3', '#09622A']; // tableau greens
