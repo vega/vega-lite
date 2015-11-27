@@ -194,7 +194,7 @@ export namespace source {
     }
 
     return calculate.reduce(function(transform, formula) {
-      transform.push(util.extend({type: formula}, formula));
+      transform.push(util.extend({type: 'formula'}, formula));
       return transform;
     }, []);
   }
