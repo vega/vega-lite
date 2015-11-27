@@ -1,5 +1,5 @@
 import * as util from '../util';
-import {COLUMN, ROW, X, Y, Channel} from '../channel';
+import {COLUMN, ROW, X, Y, TEXT, Channel} from '../channel';
 import {FieldDef} from '../schema/fielddef.schema';
 import {Model} from './Model';
 
@@ -10,16 +10,24 @@ import {compileScales} from './scale';
  * return mixins that contains marks, scales, and axes for the rootGroup
  */
 export function facetMixins(model: Model, marks, layout) {
-  const cellWidth = !model.has(COLUMN) ?
+  // TODO: we might want to consolidate this in layout.ts
+  const cellWidth: any = !model.has(COLUMN) ?
       {field: {group: 'width'}} :
-    model.has(X) && model.isOrdinalScale(X) ?
-      {field: {parent: {datum: 'cellWidth'}}} :
-      {value: model.config('singleWidth')};
-  const cellHeight = !model.has(ROW) ?
+    model.has(X) ?
+      model.isOrdinalScale(X) ?
+        {field: {parent: {datum: 'cellWidth'}}} :
+        {value: model.config('singleWidth')} :
+      model.marktype() === TEXT ?
+        {value: model.config('textCellWidth')} :
+        {value: model.bandWidth(X)};
+
+  const cellHeight: any = !model.has(ROW) ?
       {field: {group: 'height'}} :
-    model.has(Y) && model.isOrdinalScale(Y) ?
+    model.has(Y) ?
+      model.isOrdinalScale(Y) ?
       {field: {parent: {datum: 'cellHeight'}}} :
-      {value: model.config('singleHeight')};
+      {value: model.config('singleHeight')} :
+    {value: model.bandWidth(Y)};
 
   let facetGroupProperties: any = {
     width: cellWidth,
