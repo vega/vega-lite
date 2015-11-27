@@ -33,16 +33,13 @@ function box(model: Model, stats) {
   var xCardinality = hasX && model.isDimension(X) ? model.cardinality(X, stats) : 1,
     yCardinality = hasY && model.isDimension(Y) ? model.cardinality(Y, stats) : 1;
 
-  var useSmallBand = xCardinality > model.config('largeBandMaxCardinality') ||
-    yCardinality > model.config('largeBandMaxCardinality');
-
   var cellWidth, cellHeight, cellPadding = model.config('cellPadding');
 
   // set cellWidth
   if (hasX) {
     if (model.isOrdinalScale(X)) {
       // for ordinal, hasCol or not doesn't matter -- we scale based on cardinality
-      cellWidth = (xCardinality + model.padding(X)) * model.bandWidth(X, useSmallBand);
+      cellWidth = (xCardinality + model.padding(X)) * model.bandWidth(X);
     } else {
       cellWidth = hasCol || hasRow ? model.fieldDef(COLUMN).width :  model.config('singleWidth');
     }
@@ -58,7 +55,7 @@ function box(model: Model, stats) {
   if (hasY) {
     if (model.isOrdinalScale(Y)) {
       // for ordinal, hasCol or not doesn't matter -- we scale based on cardinality
-      cellHeight = (yCardinality + model.padding(Y)) * model.bandWidth(Y, useSmallBand);
+      cellHeight = (yCardinality + model.padding(Y)) * model.bandWidth(Y);
     } else {
       cellHeight = hasCol || hasRow ? model.fieldDef(ROW).height :  model.config('singleHeight');
     }
@@ -85,10 +82,7 @@ function box(model: Model, stats) {
     cellPadding: cellPadding,
     // width and height of the chart
     width: roundFloat(width),
-    height: roundFloat(height),
-    // information about x and y, such as band size
-    x: {useSmallBand: useSmallBand},
-    y: {useSmallBand: useSmallBand}
+    height: roundFloat(height)
   };
 }
 

@@ -184,7 +184,7 @@ export function bandWidth(model: Model, channel: Channel, type, layout) {
     case X: /* fall through */
     case Y:
       if (type === 'ordinal') {
-        return model.bandWidth(channel, layout[channel].useSmallBand);
+        return model.bandWidth(channel);
       }
       break;
     case ROW: // support only ordinal

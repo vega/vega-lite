@@ -57,20 +57,10 @@ export var config = {
       minimum: 0
     },
     // band size
-    largeBandWidth: {
+    bandWidth: {
       type: 'integer',
       default: 21,
       minimum: 0
-    },
-    smallBandWidth: {
-      //small multiples or single plot with high cardinality
-      type: 'integer',
-      default: 12,
-      minimum: 0
-    },
-    largeBandMaxCardinality: {
-      type: 'integer',
-      default: 10
     },
     padding: {
       type: 'number',
