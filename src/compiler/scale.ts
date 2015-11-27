@@ -15,13 +15,13 @@ import {SOURCE, STACKED} from '../data';
 import * as time from './time';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 
-export function compileScales(names: Array<string>, model: Model, layout, facet?) {
+export function compileScales(names: Array<string>, model: Model, layout) {
   return names.reduce(function(a, channel: Channel) {
     var scaleDef: any = {};
 
     scaleDef.name = channel;
     var t = scaleDef.type = type(channel, model);
-    scaleDef.domain = domain(model, channel, t, facet);
+    scaleDef.domain = domain(model, channel, t);
 
     // Add optional properties
     [
@@ -62,7 +62,7 @@ export function type(channel: Channel, model: Model) {
   }
 }
 
-export function domain(model: Model, channel:Channel, type, facet:boolean = false) {
+export function domain(model: Model, channel:Channel, type) {
   var fieldDef = model.fieldDef(channel);
 
   if (fieldDef.scale.domain) { // explicit value
@@ -78,6 +78,7 @@ export function domain(model: Model, channel:Channel, type, facet:boolean = fals
   // For stack, use STACKED data.
   var stack = model.stack();
   if (stack && channel === stack.fieldChannel) {
+    const facet = model.has(ROW) || model.has(COLUMN);
     return {
       data: STACKED,
       field: model.fieldRef(channel, {

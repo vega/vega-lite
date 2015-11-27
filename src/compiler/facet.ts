@@ -149,6 +149,6 @@ export function facetMixins(model: Model, marks, layout) {
     marks: rootMarks,
     axes: rootAxes,
     // assuming equal cellWidth here
-    scales: compileScales(scaleNames, model, layout, true)
+    scales: compileScales(scaleNames, model, layout)
   };
 }
