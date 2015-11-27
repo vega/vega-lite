@@ -5,6 +5,7 @@ import {FieldDef} from '../schema/fielddef.schema';
 import {MAXBINS_DEFAULT} from '../bin';
 import {COLUMN, ROW, X, Y, COLOR, DETAIL, Channel} from '../channel';
 import {SOURCE, SUMMARY} from '../data';
+import {FieldRefOption} from '../fielddef';
 import * as vlFieldDef from '../fielddef';
 import * as vlEncoding from '../encoding';
 import {AREA, BAR} from '../marktype';
@@ -112,8 +113,7 @@ export class Model {
   }
 
   // get "field" reference for vega
-  fieldRef(channel: Channel, opt?) {
-    opt = opt || {};
+  fieldRef(channel: Channel, opt?: FieldRefOption) {
     return vlFieldDef.fieldRef(this._spec.encoding[channel], opt);
   }
 
