@@ -138,7 +138,8 @@ export namespace source {
         transform.push({
           type: 'formula',
           field: model.fieldRef(channel, {binSuffix: '_mid'}),
-          expr: '(' + model.fieldRef(channel, {datum:1, binSuffix: '_start'}) + '+' + model.fieldRef(channel, {datum:1, binSuffix: '_end'}) + ')/2'
+          expr: '(' + model.fieldRef(channel, {datum: true, binSuffix: '_start'}) +
+                '+' + model.fieldRef(channel, {datum: true, binSuffix: '_end'}) + ') / 2'
         });
       }
       return transform;
@@ -291,7 +292,7 @@ export function filterNonPositive(dataTable, model: Model) {
     if (model.fieldDef(channel).scale.type === 'log') {
       dataTable.transform.push({
         type: 'filter',
-        test: model.fieldRef(channel, {datum: 1}) + ' > 0'
+        test: model.fieldRef(channel, {datum: true}) + ' > 0'
       });
     }
   });

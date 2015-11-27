@@ -211,7 +211,8 @@ var EXAMPLES = [
         'y': {'field': 'US_DVD_Sales','type': 'quantitative'},
         'column': {'field': 'MPAA_Rating','type': 'ordinal'}
       },
-      'data': {'url': 'data/movies.json'}
+      'data': {'url': 'data/movies.json'},
+      'config': {'bandWidth': 12}
     }
   },{
     title: 'Trellis Plot, sorted by mean yield.',
