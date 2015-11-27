@@ -256,7 +256,8 @@ export function point(model: Model, layout) {
   // x
   if (model.has(X)) {
     p.x = {
-      scale: X, field: model.fieldRef(X, {binSuffix: '_mid'})
+      scale: X,
+      field: model.fieldRef(X, {binSuffix: '_mid'})
     };
   } else if (!model.has(X)) {
     p.x = {value: model.bandWidth(X, layout.x.useSmallBand) / 2};
