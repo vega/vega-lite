@@ -23,9 +23,10 @@ describe('vl.compile.scale', function() {
               field: 'origin'
             },
             x: {field: 'x', type: 'ordinal'},
-            color: {field: 'color', type: 'ordinal'}
+            color: {field: 'color', type: 'ordinal'},
+            row: {field: 'row'}
           }
-        }), 'y', 'linear', true);
+        }), 'y', 'linear');
 
         expect(domain).to.eql({
           data: 'stacked',
@@ -42,9 +43,10 @@ describe('vl.compile.scale', function() {
               field: 'origin'
             },
             x: {field: 'x', type: 'ordinal'},
-            color: {field: 'color', type: 'ordinal'}
+            color: {field: 'color', type: 'ordinal'},
+            row: {field: 'row'}
           }
-        }), 'y', 'linear', true);
+        }), 'y', 'linear');
 
         expect(domain).to.eql({
           data: 'stacked',
