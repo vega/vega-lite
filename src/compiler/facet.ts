@@ -31,7 +31,6 @@ export function facetMixins(model: Model, marks, layout, stats) {
       scale: ROW,
       field: model.fieldRef(ROW)
     };
-    facetGroupProperties.height = {'value': layout.cellHeight}; // HACK
 
     facetKeys.push(model.fieldRef(ROW));
 
@@ -75,7 +74,6 @@ export function facetMixins(model: Model, marks, layout, stats) {
       scale: COLUMN,
       field: model.fieldRef(COLUMN)
     };
-    facetGroupProperties.width = {'value': layout.cellWidth}; // HACK
 
     facetKeys.push(model.fieldRef(COLUMN));
 
