@@ -52,7 +52,7 @@ describe('Axis', function() {
           encoding: {
             x: {field: 'a', axis:{orient: 'bottom'}}
           }
-        }), 'x', {});
+        }), 'x');
       expect(orient).to.eql('bottom');
     });
 
@@ -61,7 +61,7 @@ describe('Axis', function() {
           encoding: {
             x: {field: 'a'}
           }
-        }), 'x', {});
+        }), 'x');
       expect(orient).to.eql(undefined);
     });
 
@@ -71,7 +71,7 @@ describe('Axis', function() {
             x: {field: 'a'},
             column: {field: 'a'}
           }
-        }), 'column', {});
+        }), 'column');
       expect(orient).to.eql('top');
     });
   });
@@ -82,7 +82,7 @@ describe('Axis', function() {
           encoding: {
             x: {field: 'a', axis: {title: 'Custom'}}
           }
-        }), 'x', layout);
+        }), 'x');
       expect(title).to.eql('Custom');
     });
 
@@ -91,7 +91,7 @@ describe('Axis', function() {
           encoding: {
             x: {field: 'a', type: 'Q', axis: {titleMaxLength: 3}}
           }
-        }), 'x', layout);
+        }), 'x');
       expect(title).to.eql('a');
     });
 
@@ -100,7 +100,7 @@ describe('Axis', function() {
           encoding: {
             x: {field: 'a', type: 'Q', aggregate: 'sum', axis: {titleMaxLength: 10}}
           }
-        }), 'x', layout);
+        }), 'x');
       expect(title).to.eql('SUM(a)');
     });
 
@@ -109,7 +109,7 @@ describe('Axis', function() {
           encoding: {
             x: {field: 'a', type: 'Q', aggregate: 'sum', axis: {titleMaxLength: 3}}
           }
-        }), 'x', layout);
+        }), 'x');
       expect(title).to.eql('SU…');
     });
 
@@ -118,8 +118,11 @@ describe('Axis', function() {
       var title = axis.title(new Model({
           encoding: {
             x: {field: 'abcdefghijkl'}
+          },
+          config: {
+            singleWidth: 60
           }
-        }), 'x', layout);
+        }), 'x');
       expect(title).to.eql('abcdefghi…');
     });
   });

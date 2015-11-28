@@ -28,11 +28,11 @@ export function compileAxis(channel: Channel, model: Model, layout) {
     'tickPadding', 'tickSize', 'tickSizeMajor', 'tickSizeMinor', 'tickSizeEnd',
     'values', 'subdivide'
   ].forEach(function(property) {
-    let method: (model: Model, channel: Channel, layout:any, def:any)=>any;
+    let method: (model: Model, channel: Channel, def:any, layout:any)=>any;
 
     var value = (method = exports[property]) ?
                   // calling axis.format, axis.grid, ...
-                  method(model, channel, layout, def) :
+                  method(model, channel, def, layout) :
                   model.fieldDef(channel).axis[property];
     if (value !== undefined) {
       def[property] = value;
@@ -47,7 +47,7 @@ export function compileAxis(channel: Channel, model: Model, layout) {
     'ticks', 'majorTicks', 'minorTicks' // only default values
   ].forEach(function(group) {
     var value = properties[group] ?
-      properties[group](model, channel, props[group], layout, def) :
+      properties[group](model, channel, props[group], def, layout) :
       props[group];
     if (value !== undefined) {
       def.properties = def.properties || {};
@@ -92,7 +92,7 @@ export function grid(model: Model, channel: Channel) {
     (model.isTypes(channel, [QUANTITATIVE, TEMPORAL]) && !model.fieldDef(channel).bin);
 }
 
-export function layer(model: Model, channel: Channel, layout, def) {
+export function layer(model: Model, channel: Channel, def) {
   var layer = model.fieldDef(channel).axis.layer;
   if (layer !== undefined) {
     return layer;
@@ -104,7 +104,7 @@ export function layer(model: Model, channel: Channel, layout, def) {
   return undefined; // otherwise return undefined and use Vega's default.
 };
 
-export function offset(model: Model, channel: Channel, layout) {
+export function offset(model: Model, channel: Channel, def, layout) {
   var offset = model.fieldDef(channel).axis.offset;
   if (offset) {
     return offset;
@@ -116,7 +116,7 @@ export function offset(model: Model, channel: Channel, layout) {
   return undefined;
 }
 
-export function orient(model: Model, channel: Channel, layout) {
+export function orient(model: Model, channel: Channel) {
   var orient = model.fieldDef(channel).axis.orient;
   if (orient) {
     return orient;
@@ -152,7 +152,7 @@ export function tickSize(model: Model, channel: Channel) {
 }
 
 
-export function title(model: Model, channel: Channel, layout) {
+export function title(model: Model, channel: Channel) {
   var axisSpec = model.fieldDef(channel).axis;
   if (axisSpec.title !== undefined) {
     return axisSpec.title;
@@ -160,13 +160,14 @@ export function title(model: Model, channel: Channel, layout) {
 
   // if not defined, automatically determine axis title from field def
   var fieldTitle = model.fieldTitle(channel);
+  const layout = model.layout();
 
   var maxLength;
   if (axisSpec.titleMaxLength) {
-  maxLength = axisSpec.titleMaxLength;
-  } else if (channel === X) {
+    maxLength = axisSpec.titleMaxLength;
+  } else if (channel === X && typeof layout.cellWidth === 'number') {
     maxLength = layout.cellWidth / model.config('characterWidth');
-  } else if (channel === Y) {
+  } else if (channel === Y && typeof layout.cellHeight === 'number') {
     maxLength = layout.cellHeight / model.config('characterWidth');
   }
 
@@ -197,7 +198,7 @@ namespace properties {
     return spec || undefined;
   }
 
-  export function grid(model: Model, channel: Channel, spec, layout, def) {
+  export function grid(model: Model, channel: Channel, spec, def, layout) {
     var cellPadding = model.config('cellPadding');
 
     if (def.grid) {
@@ -262,7 +263,7 @@ namespace properties {
     return spec || undefined;
   }
 
-  export function labels(model: Model, channel: Channel, spec, layout, def) {
+  export function labels(model: Model, channel: Channel, spec, def) {
     let fieldDef = model.fieldDef(channel);
     var timeUnit = fieldDef.timeUnit;
     if (fieldDef.type === TEMPORAL && timeUnit && (time.hasScale(timeUnit))) {
@@ -303,7 +304,6 @@ namespace properties {
           field: {group: 'mark.group.height'},
           mult: -0.5,
           offset: -20
-          // value: (-layout.height / 2) - 20
         }
       }, spec || {});
     }
