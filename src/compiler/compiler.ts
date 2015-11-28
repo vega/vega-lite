@@ -32,8 +32,8 @@ export function compile(spec, stats, theme?) {
     }
   }
 
-  var layout = vlLayout(model, stats);
-
+  var _layout = vlLayout(model, stats);
+  const layout = model.layout();
   var rootGroup:any = {
     name: 'root',
     type: 'group',
@@ -41,8 +41,12 @@ export function compile(spec, stats, theme?) {
     properties: {
       update: {
         // TODO replace with signal or inline calculation
-        width: {value: layout.width},
-        height: {value: layout.height}
+        width: layout.width.field ?
+               {field: layout.width.field} :
+               {value: layout.width},
+        height: layout.height.field ?
+                {field: layout.height.field} :
+                {value: layout.height}
       }
     }
   };
@@ -52,7 +56,7 @@ export function compile(spec, stats, theme?) {
   // Small Multiples
   if (model.has(ROW) || model.has(COLUMN)) {
     // put the marks inside a facet cell's group
-    util.extend(rootGroup, facetMixins(model, marks, layout));
+    util.extend(rootGroup, facetMixins(model, marks, _layout));
   } else {
     rootGroup.marks = marks.map(function(marks) {
       marks.from = marks.from || {};
@@ -62,10 +66,10 @@ export function compile(spec, stats, theme?) {
     const scaleNames = model.map(function(_, channel: Channel){
         return channel; // TODO model.scaleName(channel)
       });
-    rootGroup.scales = compileScales(scaleNames, model, layout);
+    rootGroup.scales = compileScales(scaleNames, model, _layout);
 
-    var axes = (model.has(X) ? [compileAxis(X, model, layout)] : [])
-      .concat(model.has(Y) ? [compileAxis(Y, model, layout)] : []);
+    var axes = (model.has(X) ? [compileAxis(X, model, _layout)] : [])
+      .concat(model.has(Y) ? [compileAxis(Y, model, _layout)] : []);
     if (axes.length > 0) {
       rootGroup.axes = axes;
     }
@@ -79,8 +83,8 @@ export function compile(spec, stats, theme?) {
 
   // TODO: change type to become VgSpec
   var output:any = {
-      width: layout.width,
-      height: layout.height,
+      width: _layout.width,
+      height: _layout.height,
       padding: 'auto',
       data: compileData(model),
       marks: [rootGroup]

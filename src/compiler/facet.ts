@@ -9,27 +9,17 @@ import {compileScales} from './scale';
 /**
  * return mixins that contains marks, scales, and axes for the rootGroup
  */
-export function facetMixins(model: Model, marks, layout) {
+export function facetMixins(model: Model, marks, _layout) {
   // TODO: we might want to consolidate this in one stats table
-  const cellWidth: any = !model.has(COLUMN) ?
-      {field: {group: 'width'}} :
-    model.has(X) ?
-      model.isOrdinalScale(X) ?
-        {field: {parent: {datum: 'cellWidth'}}} :
-        {value: model.config(model.isFacet() ? 'cellWidth' : 'singleWidth')} :
-      {
-        value: model.marktype() === TEXT ?
-               model.config('textCellWidth') :
-               model.bandWidth(X)
-      };
+  const layout = model.layout();
 
-  const cellHeight: any = !model.has(ROW) ?
-      {field: {group: 'height'}} :
-    model.has(Y) ?
-      model.isOrdinalScale(Y) ?
-      {field: {parent: {datum: 'cellHeight'}}} :
-      {value: model.config(model.isFacet() ? 'cellHeight' : 'singleHeight')} :
-    {value: model.bandWidth(Y)};
+  const cellWidth: any = layout.cellWidth.field ?
+    {field: {parent: layout.cellWidth.field}, level: 2} :
+    {value: layout.cellWidth};
+
+  const cellHeight: any = layout.cellHeight.field ?
+    {field: {parent: layout.cellHeight.field}, level: 2} :
+    {value: layout.cellHeight};
 
   let facetGroupProperties: any = {
     width: cellWidth,
@@ -51,7 +41,7 @@ export function facetMixins(model: Model, marks, layout) {
 
     facetKeys.push(model.fieldRef(ROW));
 
-    rootAxes.push(compileAxis(ROW, model, layout));
+    rootAxes.push(compileAxis(ROW, model, _layout));
 
     if (model.has(X)) {
       // If has X, prepend a group for shared x-axes in the root group's marks
@@ -65,7 +55,7 @@ export function facetMixins(model: Model, marks, layout) {
             x: hasCol ? {scale: COLUMN, field: model.fieldRef(COLUMN)} : {value: 0},
           }
         },
-        axes: [compileAxis(X, model, layout)]
+        axes: [compileAxis(X, model, _layout)]
       };
       if (hasCol) {
         xAxesGroup.from = {
@@ -78,7 +68,7 @@ export function facetMixins(model: Model, marks, layout) {
   } else { // doesn't have row
     if (model.has(X)) {
       //keep x axis in the cell
-      cellAxes.push(compileAxis(X, model, layout));
+      cellAxes.push(compileAxis(X, model, _layout));
     }
   }
 
@@ -94,7 +84,7 @@ export function facetMixins(model: Model, marks, layout) {
 
     facetKeys.push(model.fieldRef(COLUMN));
 
-    rootAxes.push(compileAxis(COLUMN, model, layout));
+    rootAxes.push(compileAxis(COLUMN, model, _layout));
 
     if (model.has(Y)) {
       // If has Y, prepend a group for shared y-axes in the root group's marks
@@ -108,7 +98,7 @@ export function facetMixins(model: Model, marks, layout) {
             x: hasCol ? {scale: COLUMN, field: model.fieldRef(COLUMN)} : {value: 0},
           }
         },
-        axes: [compileAxis(Y, model, layout)]
+        axes: [compileAxis(Y, model, _layout)]
       };
 
       if (hasRow) {
@@ -122,7 +112,7 @@ export function facetMixins(model: Model, marks, layout) {
 
   } else { // doesn't have column
     if (model.has(Y)) {
-      cellAxes.push(compileAxis(Y, model, layout));
+      cellAxes.push(compileAxis(Y, model, _layout));
     }
   }
 
@@ -151,6 +141,6 @@ export function facetMixins(model: Model, marks, layout) {
     marks: rootMarks,
     axes: rootAxes,
     // assuming equal cellWidth here
-    scales: compileScales(scaleNames, model, layout)
+    scales: compileScales(scaleNames, model, _layout)
   };
 }

@@ -8,6 +8,7 @@ import {SOURCE, SUMMARY} from '../data';
 import {FieldRefOption} from '../fielddef';
 import * as vlFieldDef from '../fielddef';
 import * as vlEncoding from '../encoding';
+import {compileLayout} from './layout';
 import {AREA, BAR} from '../marktype';
 import * as schema from '../schema/schema';
 import * as schemaUtil from '../schema/schemautil';
@@ -23,6 +24,7 @@ import * as time from './time';
 export class Model {
   _spec: Spec;
   _stack: StackProperties;
+  _layout: any;
 
   // TODO: include _stack, _layout, _style, etc.
 
@@ -39,6 +41,7 @@ export class Model {
 
     // calculate stack
     this._stack = this.getStackProperties();
+    this._layout = compileLayout(this);
   }
 
   private getStackProperties(): StackProperties {
@@ -70,6 +73,10 @@ export class Model {
     return null;
   }
 
+  layout(): any {
+    return this._layout;
+  }
+  
   stack(): StackProperties {
     return this._stack;
   }

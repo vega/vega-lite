@@ -278,20 +278,12 @@ export function rangeMixins(model: Model, channel: Channel, scaleType): any {
 
   switch (channel) {
     case X:
-      return {
-        rangeMin: 0,
-        rangeMax: model.isOrdinalScale(X) ?
-          {from: STATS, field: 'cellWidth'} :
-          model.config(model.isFacet() ? 'cellWidth' : 'singleWidth')
-      };
+      return { rangeMin: 0, rangeMax: model.layout().cellWidth};
     case Y:
-      const cellHeight = model.isOrdinalScale(Y) ?
-              {from: STATS, field: 'cellHeight'} :
-              model.config(model.isFacet() ? 'cellHeight' :'singleHeight');
       if (scaleType === 'ordinal') {
-        return {rangeMin: 0, rangeMax: cellHeight};
+        return {rangeMin: 0, rangeMax: model.layout().cellHeight};
       }
-      return {rangeMin: cellHeight, rangeMax :0};
+      return {rangeMin: model.layout().cellHeight, rangeMax :0};
     case SIZE:
       if (model.is('bar')) {
         // FIXME this is definitely incorrect

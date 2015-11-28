@@ -5,7 +5,7 @@ import {FieldDef} from '../schema/fielddef.schema';
 import {StackProperties} from './stack';
 
 import {MAXBINS_DEFAULT} from '../bin';
-import {Channel, X, Y} from '../channel';
+import {Channel, X, Y, ROW, COLUMN} from '../channel';
 import {SOURCE, STACKED, STATS, SUMMARY} from '../data';
 import * as time from './time';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
@@ -200,8 +200,8 @@ export namespace source {
   }
 }
 
-
 export namespace stats {
+
   export function def(model: Model): VgData {
     let summarize = [];
     let formulas = [];
@@ -215,8 +215,9 @@ export namespace stats {
       formulas.push({
         type: 'formula',
         field: 'cellWidth',
-        expr: model.fieldRef(X, {datum: true, fn: 'distinct'}) + ' + ' +
-              model.padding(X) + ' * ' + model.bandWidth(X)
+        // (xCardinality + model.padding(X)) * model.bandWidth(X)
+        expr: '(' + model.fieldRef(X, {datum: true, fn: 'distinct'}) + ' + ' +
+              model.padding(X) + ') * ' + model.bandWidth(X)
       });
     }
 
@@ -228,8 +229,48 @@ export namespace stats {
       formulas.push({
         type: 'formula',
         field: 'cellHeight',
-        expr: model.fieldRef(Y, {datum: true, fn: 'distinct'}) + ' + ' +
-              model.padding(Y) + ' * ' + model.bandWidth(Y)
+        // (yCardinality + model.padding(Y)) * model.bandWidth(Y)
+        expr: '(' + model.fieldRef(Y, {datum: true, fn: 'distinct'}) + ' + ' +
+              model.padding(Y) + ') * ' + model.bandWidth(Y)
+      });
+    }
+
+    const cellPadding = model.config('cellPadding');
+    const layout = model.layout();
+
+    if (model.has(COLUMN)) {
+      const cellWidth = layout.cellWidth.field ?
+                        'datum.' + layout.cellWidth.field :
+                        layout.cellWidth;
+      const distinctCol = model.fieldRef(COLUMN, {datum: true, fn: 'distinct'});
+      summarize.push({
+        field: model.fieldDef(COLUMN).field,
+        ops: ['distinct']
+      });
+      formulas.push({
+        type: 'formula',
+        field: 'width',
+        // cellWidth + (colCardinality + (colCardinality - 1) * cellPadding)
+        expr: cellWidth + '* ( ' + distinctCol + ' + ' +
+              '(' + distinctCol + ' - 1) * ' + cellPadding + ')'
+      });
+    }
+
+    if (model.has(ROW)) {
+      const cellHeight = layout.cellHeight.field ?
+                        'datum.' + layout.cellHeight.field :
+                        layout.cellHeight;
+      const distinctRow = model.fieldRef(ROW, {datum: true, fn: 'distinct'});
+      summarize.push({
+        field: model.fieldDef(ROW).field,
+        ops: ['distinct']
+      });
+      formulas.push({
+        type: 'formula',
+        field: 'height',
+        // cellHeight + (rowCardinality + (rowCardinality - 1) * cellPadding)
+        expr: cellHeight + '* ( ' + distinctRow + ' + ' +
+              '(' + distinctRow + ' - 1) * ' + cellPadding +')'
       });
     }
 
@@ -239,13 +280,12 @@ export namespace stats {
         source: SOURCE,
         transform: [{
             type: 'aggregate',
-            summarize: summarize
+              summarize: summarize
           }].concat(formulas)
       };
     }
     return null;
   }
-
 }
 
 export namespace summary {
