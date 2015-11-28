@@ -198,7 +198,7 @@ namespace properties {
   }
 
   export function grid(model: Model, channel: Channel, spec, layout, def) {
-    var cellPadding = layout.cellPadding;
+    var cellPadding = model.config('cellPadding');
 
     if (def.grid) {
       if (channel === COLUMN) {
