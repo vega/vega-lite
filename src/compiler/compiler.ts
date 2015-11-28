@@ -66,7 +66,7 @@ export function compile(spec, stats, theme?) {
     const scaleNames = model.map(function(_, channel: Channel){
         return channel; // TODO model.scaleName(channel)
       });
-    rootGroup.scales = compileScales(scaleNames, model, _layout);
+    rootGroup.scales = compileScales(scaleNames, model);
 
     var axes = (model.has(X) ? [compileAxis(X, model, _layout)] : [])
       .concat(model.has(Y) ? [compileAxis(Y, model, _layout)] : []);

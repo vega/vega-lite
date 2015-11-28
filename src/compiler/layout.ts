@@ -132,11 +132,11 @@ function box(model: Model, stats) {
   var width = cellWidth, height = cellHeight;
   if (hasCol) {
     var colCardinality = model.cardinality(COLUMN, stats);
-    width = cellWidth * ((1 + cellPadding) * (colCardinality - 1) + 1);
+    width = cellWidth * colCardinality + cellPadding * (colCardinality - 1) ;
   }
   if (hasRow) {
     var rowCardinality =  model.cardinality(ROW, stats);
-    height = cellHeight * ((1 + cellPadding) * (rowCardinality - 1) + 1);
+    height = cellHeight * rowCardinality + cellPadding * (rowCardinality - 1);
   }
 
   return {

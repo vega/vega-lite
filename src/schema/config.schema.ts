@@ -65,13 +65,13 @@ export var config = {
     padding: {
       type: 'number',
       default: 1,
-      description: 'default scale padding for ordinal x/y scales.'
+      description: 'default scale padding ratio for ordinal x/y scales.'
     },
     // small multiples
     cellPadding: {
-      type: 'number',
-      default: 0.1,
-      description: 'default scale padding for row/column scales.'
+      type: 'integer',
+      default: 16, 
+      description: 'default padding between facets.'
     },
     cellGridColor: {
       type: 'string',

@@ -251,8 +251,8 @@ export namespace stats {
         type: 'formula',
         field: 'width',
         // cellWidth + (colCardinality + (colCardinality - 1) * cellPadding)
-        expr: cellWidth + '* ( ' + distinctCol + ' + ' +
-              '(' + distinctCol + ' - 1) * ' + cellPadding + ')'
+        expr: cellWidth + ' * ' + distinctCol + ' + ' +
+              '(' + distinctCol + ' - 1) * ' + cellPadding
       });
     }
 
@@ -269,8 +269,8 @@ export namespace stats {
         type: 'formula',
         field: 'height',
         // cellHeight + (rowCardinality + (rowCardinality - 1) * cellPadding)
-        expr: cellHeight + '* ( ' + distinctRow + ' + ' +
-              '(' + distinctRow + ' - 1) * ' + cellPadding +')'
+        expr: cellHeight + ' * ' + distinctRow + ' + ' +
+              '(' + distinctRow + ' - 1) * ' + cellPadding
       });
     }
 

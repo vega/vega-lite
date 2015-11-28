@@ -13,13 +13,17 @@ export function facetMixins(model: Model, marks, _layout) {
   // TODO: we might want to consolidate this in one stats table
   const layout = model.layout();
 
-  const cellWidth: any = layout.cellWidth.field ?
-    {field: {parent: layout.cellWidth.field}, level: 2} :
-    {value: layout.cellWidth};
+  const cellWidth: any = !model.has(COLUMN) ?
+      {field: {group: 'width'}} :
+    layout.cellWidth.field ?
+      {scale: 'column', band: true} :
+      {value: layout.cellWidth};
 
-  const cellHeight: any = layout.cellHeight.field ?
-    {field: {parent: layout.cellHeight.field}, level: 2} :
-    {value: layout.cellHeight};
+  const cellHeight: any = !model.has(ROW) ?
+      {field: {group: 'height'}} :
+    layout.cellHeight.field ?
+      {scale: 'row', band: true} :
+      {value: layout.cellHeight};
 
   let facetGroupProperties: any = {
     width: cellWidth,
@@ -141,6 +145,6 @@ export function facetMixins(model: Model, marks, _layout) {
     marks: rootMarks,
     axes: rootAxes,
     // assuming equal cellWidth here
-    scales: compileScales(scaleNames, model, _layout)
+    scales: compileScales(scaleNames, model)
   };
 }

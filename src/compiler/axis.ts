@@ -210,7 +210,7 @@ namespace properties {
         // TODO(#677): this should depend on orient
         return util.extend({
           x: {
-            offset: roundFloat(layout.cellWidth * (1+ cellPadding/2.0)),
+            offset: roundFloat(layout.cellWidth + cellPadding / 2.0 - 1),
             // default value(s) -- vega doesn't do recursive merge
             scale: 'column',
             field: 'data'
@@ -235,7 +235,7 @@ namespace properties {
         // set grid property -- put the lines on the top
         return util.extend({
           y: {
-            offset: roundFloat(-layout.cellHeight * (cellPadding/2)),
+            offset: roundFloat(- cellPadding / 2.0 + 1),
             // default value(s) -- vega doesn't do recursive merge
             scale: 'row',
             field: 'data'

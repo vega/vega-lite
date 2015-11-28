@@ -15,7 +15,7 @@ import {SOURCE, STACKED, STATS} from '../data';
 import * as time from './time';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 
-export function compileScales(names: Array<string>, model: Model, layout) {
+export function compileScales(names: Array<string>, model: Model) {
   return names.reduce(function(a, channel: Channel) {
     var scaleDef: any = {
       name: channel,
@@ -37,7 +37,7 @@ export function compileScales(names: Array<string>, model: Model, layout) {
       'bandWidth', 'outerPadding', 'padding', 'points'
     ].forEach(function(property) {
       // TODO include fieldDef as part of the parameters
-      var value = exports[property](model, channel, scaleDef.type, layout);
+      var value = exports[property](model, channel, scaleDef.type);
       if (value !== undefined) {
         scaleDef[property] = value;
       }
@@ -183,9 +183,7 @@ export function _useRawDomain (model: Model, channel: Channel) {
     );
 }
 
-export function bandWidth(model: Model, channel: Channel, scaleType, layout) {
-  // TODO: eliminate layout
-
+export function bandWidth(model: Model, channel: Channel, scaleType) {
   switch (channel) {
     case X: /* fall through */
     case Y:
@@ -193,10 +191,6 @@ export function bandWidth(model: Model, channel: Channel, scaleType, layout) {
         return model.bandWidth(channel);
       }
       break;
-    case ROW: // support only ordinal
-      return layout.cellHeight;
-    case COLUMN: // support only ordinal
-      return layout.cellWidth;
   }
   return undefined;
 }
@@ -236,9 +230,6 @@ export function outerPadding(model: Model, channel: Channel, scaleType) {
   if (scaleType === 'ordinal') {
     if (model.fieldDef(channel).scale.outerPadding !== undefined) {
       return model.fieldDef(channel).scale.outerPadding; // explicit value
-    }
-    if (channel === ROW || channel === COLUMN) {
-      return 0;
     }
   }
   return undefined;
@@ -303,6 +294,10 @@ export function rangeMixins(model: Model, channel: Channel, scaleType): any {
       } else { //time or quantitative
         return {range: ['#AFC6A3', '#09622A']}; // tableau greens
       }
+    case ROW:
+      return {range: 'height'};
+    case COLUMN:
+      return {range: 'width'};
   }
   return {};
 }

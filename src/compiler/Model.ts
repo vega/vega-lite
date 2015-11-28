@@ -76,7 +76,7 @@ export class Model {
   layout(): any {
     return this._layout;
   }
-  
+
   stack(): StackProperties {
     return this._stack;
   }
@@ -158,10 +158,7 @@ export class Model {
       // explicit value
       return this.fieldDef(channel).scale.padding;
     }
-    if (channel === ROW || channel === COLUMN) {
-      return this.config('cellPadding');
-    }
-    return this.config('padding');
+    return channel === X || channel === Y ? this.config('padding') : undefined;
   }
 
   // returns false if binning is disabled, otherwise an object with binning properties
