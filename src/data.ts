@@ -8,6 +8,7 @@ import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from './type';
 export const SUMMARY = 'summary';
 export const SOURCE = 'source';
 export const STACKED = 'stacked';
+export const STATS = 'stats';
 
 /** Mapping from datalib's inferred type to Vega-lite's type */
 // TODO: ALL_CAPS

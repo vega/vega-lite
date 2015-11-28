@@ -5,8 +5,8 @@ import {FieldDef} from '../schema/fielddef.schema';
 import {StackProperties} from './stack';
 
 import {MAXBINS_DEFAULT} from '../bin';
-import {Channel} from '../channel';
-import {SOURCE, STACKED, SUMMARY} from '../data';
+import {Channel, X, Y} from '../channel';
+import {SOURCE, STACKED, STATS, SUMMARY} from '../data';
 import * as time from './time';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 
@@ -22,7 +22,7 @@ import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 export function compileData(model: Model) {
   var def = [source.def(model)];
 
-  var summaryDef = summary.def(model);
+  const summaryDef = summary.def(model);
   if (summaryDef) {
     def.push(summaryDef);
   }
@@ -32,8 +32,14 @@ export function compileData(model: Model) {
   // append non-positive filter at the end for the data table
   filterNonPositive(def[def.length - 1], model);
 
+  // add stats for layout calculation
+  const statsDef = stats.def(model);
+  if(statsDef) {
+    def.push(statsDef);
+  }
+
   // Stack
-  var stackDef = model.stack();
+  const stackDef = model.stack();
   if (stackDef) {
     def.push(stack.def(model, stackDef));
   }
@@ -192,6 +198,54 @@ export namespace source {
       return transform;
     }, []);
   }
+}
+
+
+export namespace stats {
+  export function def(model: Model): VgData {
+    let summarize = [];
+    let formulas = [];
+
+    // TODO: handle "fit" mode
+    if (model.has(X) && model.isOrdinalScale(X)) { // FIXME check if we need to call twice
+      summarize.push({
+        field: model.fieldDef(X).field,
+        ops: ['distinct']
+      });
+      formulas.push({
+        type: 'formula',
+        field: 'cellWidth',
+        expr: model.fieldRef(X, {datum: true, fn: 'distinct'}) + ' + ' +
+              model.padding(X) + ' * ' + model.bandWidth(X)
+      })
+    }
+
+    if (model.has(Y) && model.isOrdinalScale(Y)) { // FIXME check if we need to call twice
+      summarize.push({
+        field: model.fieldDef(Y).field,
+        ops: ['distinct']
+      });
+      formulas.push({
+        type: 'formula',
+        field: 'cellHeight',
+        expr: model.fieldRef(Y, {datum: true, fn: 'distinct'}) + ' + ' +
+              model.padding(Y) + ' * ' + model.bandWidth(Y)
+      })
+    }
+
+    if (summarize.length > 0) {
+      return {
+        name: STATS,
+        source: SOURCE,
+        transform: [{
+            type: 'aggregate',
+            summarize: summarize
+          }].concat(formulas)
+      };
+    }
+    return null;
+  }
+
 }
 
 export namespace summary {

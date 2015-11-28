@@ -1,5 +1,5 @@
 import * as util from '../util';
-import {COLUMN, ROW, X, Y, Channel} from '../channel';
+import {COLUMN, ROW, X, Y, TEXT, Channel} from '../channel';
 import {FieldDef} from '../schema/fielddef.schema';
 import {Model} from './Model';
 
@@ -10,13 +10,28 @@ import {compileScales} from './scale';
  * return mixins that contains marks, scales, and axes for the rootGroup
  */
 export function facetMixins(model: Model, marks, layout, stats) {
+  // TODO: we might want to consolidate this in layout.ts 
+  const cellWidth: any = !model.has(COLUMN) ?
+      {field: {group: 'width'}} :
+    model.has(X) ?
+      model.isOrdinalScale(X) ?
+        {field: {parent: {datum: 'cellWidth'}}} :
+        {value: model.config('singleWidth')} :
+      model.marktype() === TEXT ?
+        {value: model.config('textCellWidth')} :
+        {value: model.bandWidth(X)};
+
+  const cellHeight: any = !model.has(ROW) ?
+      {field: {group: 'height'}} :
+    model.has(Y) ?
+      model.isOrdinalScale(Y) ?
+      {field: {parent: {datum: 'cellHeight'}}} :
+      {value: model.config('singleHeight')} :
+    {value: model.bandWidth(Y)};
+
   let facetGroupProperties: any = {
-    width: model.has(COLUMN) ?
-             {value: layout.cellWidth} :
-             {field: {group: 'width'}},
-    height: model.has(ROW) ?
-            {value: layout.cellHeight} :
-            {field: {group: 'height'}},
+    width: cellWidth,
+    height: cellHeight,
     fill: {value: model.config('cellBackgroundColor')}
   };
 
@@ -43,7 +58,7 @@ export function facetMixins(model: Model, marks, layout, stats) {
         type: 'group',
         properties: {
           update: {
-            width: hasCol ? {'value': layout.cellWidth} : {field: {group: 'width'}},
+            width: cellWidth,
             height: {field: {group: 'height'}},
             x: hasCol ? {scale: COLUMN, field: model.fieldRef(COLUMN)} : {value: 0},
           }
@@ -87,7 +102,7 @@ export function facetMixins(model: Model, marks, layout, stats) {
         properties: {
           update: {
             width: {field: {group: 'width'}},
-            height: hasRow ? {'value': layout.cellHeight} : {field: {group: 'height'}},
+            height: cellHeight,
             x: hasCol ? {scale: COLUMN, field: model.fieldRef(COLUMN)} : {value: 0},
           }
         },

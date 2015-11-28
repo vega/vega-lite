@@ -37,7 +37,7 @@ export function compile(spec, stats, theme?) {
   var rootGroup:any = {
     name: 'root',
     type: 'group',
-    // TODO: add from: {data: 'stats'}
+    from: {data: 'stats'},
     properties: {
       update: {
         // TODO replace with signal or inline calculation
@@ -47,7 +47,7 @@ export function compile(spec, stats, theme?) {
     }
   };
 
-  const marks = compileMarks(model, layout);
+  const marks = compileMarks(model);
 
   // Small Multiples
   if (model.has(ROW) || model.has(COLUMN)) {
