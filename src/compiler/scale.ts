@@ -11,22 +11,24 @@ import * as util from '../util';
 import {Model} from './Model';
 import {SHARED_DOMAIN_OPS} from '../aggregate';
 import {COLUMN, ROW, X, Y, SHAPE, SIZE, COLOR, TEXT, Channel} from '../channel';
-import {SOURCE, STACKED} from '../data';
+import {SOURCE, STACKED, STATS} from '../data';
 import * as time from './time';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 
 export function compileScales(names: Array<string>, model: Model, layout) {
   return names.reduce(function(a, channel: Channel) {
-    var scaleDef: any = {};
+    var scaleDef: any = {
+      name: channel,
+      type: type(channel, model),
+    };
 
-    scaleDef.name = channel;
-    var scaleType = scaleDef.type = type(channel, model);
-    scaleDef.domain = domain(model, channel, scaleType);
+    scaleDef.domain = domain(model, channel, scaleDef.type);
+    util.extend(scaleDef, rangeMixins(model, channel, scaleDef.type));
 
     // Add optional properties
     [
       // general properties
-      'range', 'reverse', 'round',
+      'reverse', 'round',
       // quantitative / time
       'clamp', 'nice',
       // quantitative
@@ -34,7 +36,8 @@ export function compileScales(names: Array<string>, model: Model, layout) {
       // ordinal
       'bandWidth', 'outerPadding', 'padding', 'points'
     ].forEach(function(property) {
-      var value = exports[property](model, channel, scaleType, layout);
+      // TODO include fieldDef as part of the parameters
+      var value = exports[property](model, channel, scaleDef.type, layout);
       if (value !== undefined) {
         scaleDef[property] = value;
       }
@@ -175,7 +178,7 @@ export function _useRawDomain (model: Model, channel: Channel) {
       (fieldDef.type === QUANTITATIVE && !fieldDef.bin) ||
       // T uses non-ordinal scale when there's no unit or when the unit is not ordinal.
       (fieldDef.type === TEMPORAL &&
-        (!fieldDef.timeUnit || !time.isOrdinalFn(fieldDef.timeUnit))
+        (!fieldDef.timeUnit || time.scale.type(fieldDef.timeUnit, channel) === 'linear')
       )
     );
 }
@@ -266,44 +269,50 @@ export function points(model: Model, channel: Channel, scaleType) {
 }
 
 
-export function range(model: Model, channel: Channel, scaleType, layout) {
+export function rangeMixins(model: Model, channel: Channel, scaleType): any {
   var fieldDef = model.fieldDef(channel);
 
   if (fieldDef.scale.range) { // explicit value
-    return fieldDef.scale.range;
+    return {range: fieldDef.scale.range};
   }
 
   switch (channel) {
     case X:
-      return layout.cellWidth ? [0, layout.cellWidth] : 'width';
+      return {
+        rangeMin: 0,
+        rangeMax: model.isOrdinalScale(X) ?
+          {from: STATS, field: 'cellWidth'} :
+          model.config(model.isFacet() ? 'cellWidth' : 'singleWidth')
+      };
     case Y:
+      const cellHeight = model.isOrdinalScale(Y) ?
+              {from: STATS, field: 'cellHeight'} :
+              model.config(model.isFacet() ? 'cellHeight' :'singleHeight');
       if (scaleType === 'ordinal') {
-        return layout.cellHeight ?
-          (fieldDef.bin ? [layout.cellHeight, 0] : [0, layout.cellHeight]) :
-          'height';
+        return {rangeMin: 0, rangeMax: cellHeight};
       }
-      return layout.cellHeight ? [layout.cellHeight, 0] : 'height';
+      return {rangeMin: cellHeight, rangeMax :0};
     case SIZE:
       if (model.is('bar')) {
         // FIXME this is definitely incorrect
         // but let's fix it later since bar size is a bad encoding anyway
-        return [3, Math.max(model.bandWidth(X), model.bandWidth(Y))];
+        return {range: [3, Math.max(model.bandWidth(X), model.bandWidth(Y))]};
       } else if (model.is(TEXT)) {
-        return [8, 40];
+        return {range: [8, 40]};
       }
       // else -- point
       var bandWidth = Math.min(model.bandWidth(X), model.bandWidth(Y)) - 1;
-      return [10, 0.8 * bandWidth*bandWidth];
+      return {range: [10, 0.8 * bandWidth*bandWidth]};
     case SHAPE:
-      return 'shapes';
+      return {range: 'shapes'};
     case COLOR:
       if (scaleType === 'ordinal') {
-        return 'category10';
+        return {range: 'category10'};
       } else { //time or quantitative
-        return ['#AFC6A3', '#09622A']; // tableau greens
+        return {range: ['#AFC6A3', '#09622A']}; // tableau greens
       }
   }
-  return undefined;
+  return {};
 }
 
 export function round(model: Model, channel: Channel) {

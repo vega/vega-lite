@@ -103,7 +103,7 @@ export function scales(model: Model) {
   return util.vals(scales);
 }
 
-export function isOrdinalFn(timeUnit) {
+function isOrdinalFn(timeUnit) {
   switch (timeUnit) {
     case 'seconds':
     case 'minutes':

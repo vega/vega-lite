@@ -12,8 +12,9 @@ import {AREA, BAR} from '../marktype';
 import * as schema from '../schema/schema';
 import * as schemaUtil from '../schema/schemautil';
 import {StackProperties} from './stack';
-import {getFullName} from '../type';
+import {getFullName, NOMINAL, ORDINAL, TEMPORAL} from '../type';
 import * as util from '../util';
+import * as time from './time';
 
 /**
  * Internal model of Vega-Lite specification for the compiler.
@@ -192,8 +193,12 @@ export class Model {
 
 
   isOrdinalScale(channel: Channel) {
-    return this.has(channel) &&
-      vlFieldDef.isOrdinalScale(this.fieldDef(channel));
+    const fieldDef = this.fieldDef(channel);
+    return fieldDef && (
+      vlFieldDef.isTypes(fieldDef, [NOMINAL, ORDINAL]) ||
+      ( fieldDef.type === TEMPORAL && fieldDef.timeUnit &&
+        time.scale.type(fieldDef.timeUnit, channel) === 'ordinal' )
+    );
   }
 
   isDimension(channel: Channel) {
@@ -210,10 +215,15 @@ export class Model {
     return vlEncoding.isAggregate(this._spec.encoding);
   }
 
+  isFacet() {
+    return this.has(ROW) || this.has(COLUMN);
+  }
+
   dataTable() {
     return this.isAggregate() ? SUMMARY : SOURCE;
   }
 
+  // FIXME remove this
   facets() {
     var encoding = this;
     return this.reduce(function(refs: string[], field: FieldDef, channel: Channel) {

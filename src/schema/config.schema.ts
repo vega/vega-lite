@@ -93,6 +93,14 @@ export var config = {
       role: 'color',
       default: 'rgba(0,0,0,0)'
     },
+    cellWidth: {
+      type: 'integer',
+      default: 150
+    },
+    cellHeight: {
+      type: 'integer',
+      default: 150
+    },
     textCellWidth: {
       type: 'integer',
       default: 90,

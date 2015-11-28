@@ -10,23 +10,25 @@ import {compileScales} from './scale';
  * return mixins that contains marks, scales, and axes for the rootGroup
  */
 export function facetMixins(model: Model, marks, layout) {
-  // TODO: we might want to consolidate this in layout.ts
+  // TODO: we might want to consolidate this in one stats table
   const cellWidth: any = !model.has(COLUMN) ?
       {field: {group: 'width'}} :
     model.has(X) ?
       model.isOrdinalScale(X) ?
         {field: {parent: {datum: 'cellWidth'}}} :
-        {value: model.config('singleWidth')} :
-      model.marktype() === TEXT ?
-        {value: model.config('textCellWidth')} :
-        {value: model.bandWidth(X)};
+        {value: model.config(model.isFacet() ? 'cellWidth' : 'singleWidth')} :
+      {
+        value: model.marktype() === TEXT ?
+               model.config('textCellWidth') :
+               model.bandWidth(X)
+      };
 
   const cellHeight: any = !model.has(ROW) ?
       {field: {group: 'height'}} :
     model.has(Y) ?
       model.isOrdinalScale(Y) ?
       {field: {parent: {datum: 'cellHeight'}}} :
-      {value: model.config('singleHeight')} :
+      {value: model.config(model.isFacet() ? 'cellHeight' : 'singleHeight')} :
     {value: model.bandWidth(Y)};
 
   let facetGroupProperties: any = {
