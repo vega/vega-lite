@@ -293,13 +293,18 @@ namespace properties {
     return spec || undefined;
   }
 
-  export function title(model: Model, channel: Channel, spec, layout) {
+  export function title(model: Model, channel: Channel, spec) {
     if (channel === ROW) {
       return util.extend({
         angle: {value: 0},
         align: {value: 'right'},
         baseline: {value: 'middle'},
-        dy: {value: (-layout.height / 2) - 20}
+        dy: {
+          field: {group: 'mark.group.height'},
+          mult: -0.5,
+          offset: -20
+          // value: (-layout.height / 2) - 20
+        }
       }, spec || {});
     }
     return spec || undefined;
