@@ -2,7 +2,6 @@
 
 import {FieldDef} from '../schema/fielddef.schema';
 
-import * as d3_format from 'd3-format';
 import {setter} from '../util';
 import {COLUMN, ROW, X, Y, TEXT, Channel} from '../channel';
 import {STATS} from '../data';
@@ -10,8 +9,6 @@ import {Model} from './Model';
 import * as time from './time';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 import {roundFloat} from '../util';
-
-
 
 interface DataRef {
   data?: string;
@@ -72,12 +69,8 @@ function getHeight(model: Model, cellHeight: LayoutValue): LayoutValue {
   return cellHeight;
 }
 
-
-
 export default function(model: Model, stats) {
-  var layout = box(model, stats);
-  layout = offset(model, stats, layout);
-  return layout;
+  return box(model, stats);
 }
 
 /*
@@ -127,8 +120,6 @@ function box(model: Model, stats) {
     cellHeight = model.bandWidth(Y);
   }
 
-  // Cell bands use rangeBands(). There are n-1 padding.  Outerpadding = 0 for cells
-
   var width = cellWidth, height = cellHeight;
   if (hasCol) {
     var colCardinality = model.cardinality(COLUMN, stats);
@@ -148,66 +139,4 @@ function box(model: Model, stats) {
     width: roundFloat(width),
     height: roundFloat(height)
   };
-}
-
-function getMaxNumberLength(model: Model, channel: Channel, fieldStats) {
-  var format = model.numberFormat(channel);
-  return d3_format.format(format)(fieldStats.max).length;
-}
-
-// TODO(#600) revise this
-function getMaxLength(model: Model, stats, channel: Channel) {
-  var fieldDef: FieldDef = model.fieldDef(channel),
-    fieldStats = stats[fieldDef.field];
-
-  if (fieldDef.bin) {
-    // TODO once bin support range, need to update this
-    return getMaxNumberLength(model, channel, fieldStats);
-  } if (fieldDef.type === QUANTITATIVE) {
-    return getMaxNumberLength(model, channel, fieldStats);
-  } else if (fieldDef.type === TEMPORAL) {
-    return time.maxLength(model.fieldDef(channel).timeUnit, model);
-  } else if (model.isTypes(channel, [NOMINAL, ORDINAL])) {
-    if(fieldStats.type === 'number') {
-      return getMaxNumberLength(model, channel, fieldStats);
-    } else {
-      return Math.min(fieldStats.max, fieldDef.axis.labelMaxLength || Infinity);
-    }
-  }
-}
-
-function offset(model: Model, stats, layout) {
-  [X, Y].forEach(function (channel) {
-    // TODO(kanitw): Jul 19, 2015 - create a set of visual test for extraOffset
-    let extraOffset = channel === X ? 20 : 22;
-    let fieldDef = model.fieldDef(channel);
-    let maxLength;
-
-    if (model.isDimension(channel) || fieldDef.type === TEMPORAL) {
-      maxLength = getMaxLength(model, stats, channel);
-    } else if (
-      // TODO once we have #512 (allow using inferred type)
-      // Need to adjust condition here.
-      fieldDef.type === QUANTITATIVE || fieldDef.aggregate === 'count'
-    ) {
-      if (
-        channel===Y
-        // || (channel===X && false)
-        // FIXME determine when X would rotate, but should move this to axis.js first #506
-      ) {
-        maxLength = getMaxLength(model, stats, channel);
-      }
-    } else {
-      // nothing
-    }
-
-    if (maxLength) {
-      setter(layout,[channel, 'axisTitleOffset'], model.config('characterWidth') *  maxLength + extraOffset);
-    } else {
-      // if no max length (no rotation case), use maxLength = 3
-      setter(layout,[channel, 'axisTitleOffset'], model.config('characterWidth') * 3 + extraOffset);
-    }
-
-  });
-  return layout;
 }
