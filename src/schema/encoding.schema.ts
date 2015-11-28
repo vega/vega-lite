@@ -43,27 +43,8 @@ var facet = merge(duplicate(onlyOrdinalField), requiredNameType, {
   }
 });
 
-var row = merge(duplicate(facet), {
-  properties: {
-    // FIXME use this over config
-    height: {
-      type: 'number',
-      minimum: 0,
-      default: 150
-    }
-  }
-});
-
-var column = merge(duplicate(facet), {
-  properties: {
-    // FIXME use this over config
-    width: {
-      type: 'number',
-      minimum: 0,
-      default: 150
-    }
-  }
-});
+var row = merge(duplicate(facet));
+var column = merge(duplicate(facet));
 
 var size = merge(duplicate(typicalField), {
   supportedMarktypes: {point: true, bar: true, circle: true, square: true, text: true},

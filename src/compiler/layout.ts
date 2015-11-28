@@ -41,7 +41,7 @@ function box(model: Model, stats) {
       // for ordinal, hasCol or not doesn't matter -- we scale based on cardinality
       cellWidth = (xCardinality + model.padding(X)) * model.bandWidth(X);
     } else {
-      cellWidth = hasCol || hasRow ? model.fieldDef(COLUMN).width :  model.config('singleWidth');
+      cellWidth =  model.config(hasCol || hasRow ? 'cellWidth' : 'singleWidth');
     }
   } else {
     if (marktype === TEXT) {
@@ -57,7 +57,7 @@ function box(model: Model, stats) {
       // for ordinal, hasCol or not doesn't matter -- we scale based on cardinality
       cellHeight = (yCardinality + model.padding(Y)) * model.bandWidth(Y);
     } else {
-      cellHeight = hasCol || hasRow ? model.fieldDef(ROW).height :  model.config('singleHeight');
+      cellHeight = model.config(hasCol || hasRow ? 'cellHeight' : 'singleHeight');
     }
   } else {
     cellHeight = model.bandWidth(Y);
