@@ -95,7 +95,7 @@ export function facetMixins(model: Model, marks, _layout) {
           update: {
             width: {field: {group: 'width'}},
             height: cellHeight,
-            x: hasCol ? {scale: COLUMN, field: model.fieldRef(COLUMN)} : {value: 0},
+            y: hasRow ? {scale: ROW, field: model.fieldRef(ROW)} : {value: 0},
           }
         },
         axes: [compileAxis(Y, model, _layout)]
