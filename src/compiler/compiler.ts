@@ -3,46 +3,37 @@
  */
 import {Model} from './Model';
 
-import * as vlTime from './time';
 import {compileAxis} from './axis';
 import {compileData} from './data';
 import {facetMixins} from './facet';
 import {compileLegends} from './legend';
 import {compileMarks} from './marks';
 import {compileScales} from './scale';
-
-// TODO: stop using default if we were to keep these files
-import vlLayout from './layout';
+import * as vlTime from './time';
 import * as util from '../util';
 
-import {stats as vlDataStats} from '../data';
+import {LAYOUT} from '../data';
 import {COLUMN, ROW, X, Y, Channel} from '../channel';
 import {FieldDef} from '../schema/fielddef.schema';
 
 export {Model} from './Model';
 
-export function compile(spec, stats, theme?) {
+export function compile(spec, theme?) {
   var model = new Model(spec, theme);
-  // no need to pass stats if you pass in the data
-  if (!stats) {
-    if (model.hasValues()) {
-        stats = vlDataStats(model.data().values);
-    } else {
-      console.error('No stats provided and data is not embedded.');
-    }
-  }
-
-  var layout = vlLayout(model, stats);
+  const layout = model.layout();
 
   var rootGroup:any = {
     name: 'root',
     type: 'group',
-    // TODO: add from: {data: 'stats'}
+    from: {data: LAYOUT},
     properties: {
       update: {
-        // TODO replace with signal or inline calculation
-        width: {value: layout.width},
-        height: {value: layout.height}
+        width: layout.width.field ?
+               {field: layout.width.field} :
+               {value: layout.width},
+        height: layout.height.field ?
+                {field: layout.height.field} :
+                {value: layout.height}
       }
     }
   };
@@ -52,7 +43,7 @@ export function compile(spec, stats, theme?) {
   // Small Multiples
   if (model.has(ROW) || model.has(COLUMN)) {
     // put the marks inside a facet cell's group
-    util.extend(rootGroup, facetMixins(model, marks, layout, stats));
+    util.extend(rootGroup, facetMixins(model, marks));
   } else {
     rootGroup.marks = marks.map(function(marks) {
       marks.from = marks.from || {};
@@ -62,10 +53,10 @@ export function compile(spec, stats, theme?) {
     const scaleNames = model.map(function(_, channel: Channel){
         return channel; // TODO model.scaleName(channel)
       });
-    rootGroup.scales = compileScales(scaleNames, model, layout, stats);
+    rootGroup.scales = compileScales(scaleNames, model);
 
-    var axes = (model.has(X) ? [compileAxis(X, model, layout)] : [])
-      .concat(model.has(Y) ? [compileAxis(Y, model, layout)] : []);
+    var axes = (model.has(X) ? [compileAxis(X, model)] : [])
+      .concat(model.has(Y) ? [compileAxis(Y, model)] : []);
     if (axes.length > 0) {
       rootGroup.axes = axes;
     }
@@ -77,10 +68,13 @@ export function compile(spec, stats, theme?) {
     rootGroup.legends = legends;
   }
 
+
+
   // TODO: change type to become VgSpec
   var output:any = {
-      width: layout.width,
-      height: layout.height,
+      // FIXME replace 'singleWidth|Height' below with 'auto' once Vega has it.
+      width: layout.width.field ? model.config('singleWidth') : layout.width,
+      height: layout.height.field ? model.config('singleHeight') : layout.height,
       padding: 'auto',
       data: compileData(model),
       marks: [rootGroup]

@@ -48,12 +48,7 @@ specification and use Vega Runtime to display visualizations.
 
 <script>
 
-function parse(spec) {
-  vg.parse.spec(spec, function(chart) {
-    chart({el:"#vis"}).update(); });
-}
-
-var vlspec = {
+var vlSpec = {
       "data": {
         "values": [
           {"a":"A", "b":28}, {"a":"B", "b":55}, {"a":"C", "b":43},
@@ -68,8 +63,9 @@ var vlspec = {
       }
     };
 
-var vgspec = vl.compile(vlspec).spec;
-parse(vgspec);
+var vgSpec = vl.compile(vlSpec).spec;
+vg.parse.spec(vgSpec, function(chart) {
+  chart({el:"#vis"}).update(); });
 
 </script>
 ```
@@ -78,12 +74,6 @@ parse(vgspec);
 ### Data from URL
 
 Here is the bare minimum html file to get Vega-Lite with data from url working in a webpage.
-Currently, Vega-Lite relies on pre-calculating statistics of the underlying data,
-so `vl.data.stats()` must be called beforehand.
-After that, Vega-Lite compiles a Vega-Lite specification into a Vega specification
-(using some knowledge from the stats object) and use Vega Runtime to display visualizations.
-
-Note that the need to call `vl.data.stats()` will be eliminated very soon (before we release 1.0).
 
 ```html
 <!DOCTYPE html>
@@ -97,28 +87,7 @@ Note that the need to call `vl.data.stats()` will be eliminated very soon (befor
 
 <script>
 
-function render(vlSpec) {
-  var callback = function(stats) {
-    var vgSpec = vl.compile(vlSpec, stats).spec;
-
-    vg.parse.spec(vgSpec, function(chart) {
-      var view = chart({el: '#vis', renderer: 'svg'});
-      view.update();
-    });
-  };
-
-  if (!vlSpec.data.values) {
-    d3.json(vlSpec.data.url, function(err, data) {
-      if (err) return alert('Error loading data ' + err.statusText);
-      var stats = vl.data.stats(data);
-      callback(stats);
-    });
-  } else {
-    callback();
-  }
-}
-
-var vlspec = {
+var vlSpec = {
       "data": {"url": "data/cars.json"},
       "marktype": "point",
       "encoding": {
@@ -126,10 +95,12 @@ var vlspec = {
         "y": {"type": "quantitative","field": "Acceleration"}
       }
     };
+var vgSpec = vl.compile(vlSpec).spec;
 
-
-render(vlSpec);
-
+vg.parse.spec(vgSpec, function(chart) {
+  var view = chart({el: '#vis', renderer: 'svg'});
+  view.update();
+});
 </script>
 ```
 

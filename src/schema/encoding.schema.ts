@@ -1,6 +1,3 @@
-/// <reference path="../../typings/colorbrewer.d.ts"/>
-import * as colorbrewer from 'colorbrewer';
-
 import {merge} from './schemautil';
 import {duplicate} from '../util';
 import * as vlUtil from '../util';
@@ -46,27 +43,8 @@ var facet = merge(duplicate(onlyOrdinalField), requiredNameType, {
   }
 });
 
-var row = merge(duplicate(facet), {
-  properties: {
-    // FIXME use this over config
-    height: {
-      type: 'number',
-      minimum: 0,
-      default: 150
-    }
-  }
-});
-
-var column = merge(duplicate(facet), {
-  properties: {
-    // FIXME use this over config
-    width: {
-      type: 'number',
-      minimum: 0,
-      default: 150
-    }
-  }
-});
+var row = merge(duplicate(facet));
+var column = merge(duplicate(facet));
 
 var size = merge(duplicate(typicalField), {
   supportedMarktypes: {point: true, bar: true, circle: true, square: true, text: true},
@@ -102,35 +80,6 @@ var color = merge(duplicate(typicalField), {
     scale: {
       type: 'object',
       properties: {
-        range: {
-          type: ['string', 'array'],
-          default: undefined,
-          description:
-            'Color palette, if undefined vega-lite will use data property' +
-            'to pick one from c10palette, c20palette, or ordinalPalette.'
-            //FIXME
-        },
-        c10palette: {
-          type: 'string',
-          default: 'category10',
-          enum: [
-            // Tableau
-            'category10', 'category10k',
-            // Color Brewer
-            'Pastel1', 'Pastel2', 'Set1', 'Set2', 'Set3'
-          ]
-        },
-        c20palette: {
-          type: 'string',
-          default: 'category20',
-          enum: ['category20', 'category20b', 'category20c']
-        },
-        ordinalPalette: {
-          type: 'string',
-          default: undefined,
-          description: 'Color palette to encode ordinal variables.',
-          enum: vlUtil.keys(colorbrewer)
-        },
         quantitativeRange: {
           type: 'array',
           default: ['#AFC6A3', '#09622A'], // tableau greens

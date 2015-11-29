@@ -5,8 +5,8 @@ import {FieldDef} from '../schema/fielddef.schema';
 import {StackProperties} from './stack';
 
 import {MAXBINS_DEFAULT} from '../bin';
-import {Channel} from '../channel';
-import {SOURCE, STACKED, SUMMARY} from '../data';
+import {Channel, X, Y, ROW, COLUMN} from '../channel';
+import {SOURCE, STACKED, LAYOUT, SUMMARY} from '../data';
 import * as time from './time';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 
@@ -22,7 +22,7 @@ import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 export function compileData(model: Model) {
   var def = [source.def(model)];
 
-  var summaryDef = summary.def(model);
+  const summaryDef = summary.def(model);
   if (summaryDef) {
     def.push(summaryDef);
   }
@@ -30,10 +30,16 @@ export function compileData(model: Model) {
   // TODO add "having" filter here
 
   // append non-positive filter at the end for the data table
-  filterNonPositive(def[def.length - 1], model);
+  filterNonPositiveForLog(def[def.length - 1], model);
+
+  // add stats for layout calculation
+  const statsDef = layout.def(model);
+  if(statsDef) {
+    def.push(statsDef);
+  }
 
   // Stack
-  var stackDef = model.stack();
+  const stackDef = model.stack();
   if (stackDef) {
     def.push(stack.def(model, stackDef));
   }
@@ -194,6 +200,94 @@ export namespace source {
   }
 }
 
+export namespace layout {
+
+  export function def(model: Model): VgData {
+    let summarize = [];
+    let formulas = [];
+
+    // TODO: handle "fit" mode
+    if (model.has(X) && model.isOrdinalScale(X)) { // FIXME check if we need to call twice
+      summarize.push({
+        field: model.fieldDef(X).field,
+        ops: ['distinct']
+      });
+      formulas.push({
+        type: 'formula',
+        field: 'cellWidth',
+        // (xCardinality + model.padding(X)) * model.bandWidth(X)
+        expr: '(' + model.fieldRef(X, {datum: true, fn: 'distinct'}) + ' + ' +
+              model.padding(X) + ') * ' + model.bandWidth(X)
+      });
+    }
+
+    if (model.has(Y) && model.isOrdinalScale(Y)) { // FIXME check if we need to call twice
+      summarize.push({
+        field: model.fieldDef(Y).field,
+        ops: ['distinct']
+      });
+      formulas.push({
+        type: 'formula',
+        field: 'cellHeight',
+        // (yCardinality + model.padding(Y)) * model.bandWidth(Y)
+        expr: '(' + model.fieldRef(Y, {datum: true, fn: 'distinct'}) + ' + ' +
+              model.padding(Y) + ') * ' + model.bandWidth(Y)
+      });
+    }
+
+    const cellPadding = model.config('cellPadding');
+    const layout = model.layout();
+
+    if (model.has(COLUMN)) {
+      const cellWidth = layout.cellWidth.field ?
+                        'datum.' + layout.cellWidth.field :
+                        layout.cellWidth;
+      const distinctCol = model.fieldRef(COLUMN, {datum: true, fn: 'distinct'});
+      summarize.push({
+        field: model.fieldDef(COLUMN).field,
+        ops: ['distinct']
+      });
+      formulas.push({
+        type: 'formula',
+        field: 'width',
+        // cellWidth + (|col| + (|col| - 1) * cellPadding)
+        expr: cellWidth + ' * ' + distinctCol + ' + ' +
+              '(' + distinctCol + ' - 1) * ' + cellPadding
+      });
+    }
+
+    if (model.has(ROW)) {
+      const cellHeight = layout.cellHeight.field ?
+                        'datum.' + layout.cellHeight.field :
+                        layout.cellHeight;
+      const distinctRow = model.fieldRef(ROW, {datum: true, fn: 'distinct'});
+      summarize.push({
+        field: model.fieldDef(ROW).field,
+        ops: ['distinct']
+      });
+      formulas.push({
+        type: 'formula',
+        field: 'height',
+        // cellHeight + (|row| + (|row| - 1) * cellPadding)
+        expr: cellHeight + ' * ' + distinctRow + ' + ' +
+              '(' + distinctRow + ' - 1) * ' + cellPadding
+      });
+    }
+
+    if (summarize.length > 0) {
+      return {
+        name: LAYOUT,
+        source: model.dataTable(),
+        transform: [{
+            type: 'aggregate',
+              summarize: summarize
+          }].concat(formulas)
+      };
+    }
+    return null;
+  }
+}
+
 export namespace summary {
   export function def(model: Model):VgData {
     /* dict set for dimensions */
@@ -287,7 +381,7 @@ export namespace stack {
   };
 }
 
-export function filterNonPositive(dataTable, model: Model) {
+export function filterNonPositiveForLog(dataTable, model: Model) {
   model.forEach(function(_, channel) {
     if (model.fieldDef(channel).scale.type === 'log') {
       dataTable.transform.push({

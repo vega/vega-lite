@@ -56,15 +56,6 @@ export function isTypes(fieldDef: FieldDef, types: Array<String>) {
   return false;
 }
 
-/*
- * Most fields that use ordinal scale are dimensions.
- * However, YEAR(T), YEARMONTH(T) use time scale, not ordinal but are dimensions too.
- */
-export function isOrdinalScale(fieldDef: FieldDef) {
-  return  isTypes(fieldDef, [NOMINAL, ORDINAL]) ||
-    (fieldDef.type === TEMPORAL && fieldDef.timeUnit && time.isOrdinalFn(fieldDef.timeUnit) );
-}
-
 
 // TODO remove these "isDimension/isMeasure" stuff
 function _isFieldDimension(fieldDef: FieldDef) {

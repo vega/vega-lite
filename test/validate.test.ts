@@ -102,15 +102,7 @@ describe('Examples', function() {
       }
       expect(isVlValid).to.eql(true);
 
-      var stats;
-
-      if (vlspec.data.url) {
-        var data = dl.read(dl.load({
-          file: vlspec.data.url
-        }), {type: 'json', parse: 'auto'});
-        stats = vl.data.stats(data);
-      }
-      var vegaSpec = vl.compile(vlspec, stats);
+      var vegaSpec = vl.compile(vlspec);
 
       var isVgValid = validator.validate(vegaSpec, vgSchema);
 

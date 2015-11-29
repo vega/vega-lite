@@ -203,18 +203,6 @@ var EXAMPLES = [
       'data': {'url': 'data/barley.json'}
     }
   },{
-    title: 'Trellis Plot',
-    spec: {
-      'marktype': 'point',
-      'encoding': {
-        'x': {'field': 'Worldwide_Gross','type': 'quantitative'},
-        'y': {'field': 'US_DVD_Sales','type': 'quantitative'},
-        'column': {'field': 'MPAA_Rating','type': 'ordinal'}
-      },
-      'data': {'url': 'data/movies.json'},
-      'config': {'bandWidth': 12}
-    }
-  },{
     title: 'Trellis Plot, sorted by mean yield.',
     // TODO: find source of this example and write better description
     description: 'Classic Barley Example',
@@ -226,7 +214,8 @@ var EXAMPLES = [
         y: {
           sort: {field: 'yield', op: 'mean'},
           type: 'ordinal',
-          field: 'variety'
+          field: 'variety',
+          scale: {'bandWidth': 12}
         },
         row: {type: 'ordinal', field: 'site'},
         color: {type: 'nominal', field: 'year'}

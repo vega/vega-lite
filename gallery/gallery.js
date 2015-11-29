@@ -26,25 +26,12 @@ app.directive('vlPlot', function() {
     link: function(scope, element) {
 
       var vlElement = element[0];
+      var spec = vl.compile(scope.vlSpec).spec;
 
-      var callback = function(stats) {
-        var spec = vl.compile(scope.vlSpec, stats).spec;
-
-        vg.parse.spec(spec, function(chart) {
-          var view = chart({el: vlElement, renderer: 'svg'});
-          view.update();
-        });
-      };
-
-      if (!scope.vlSpec.data.values) {
-        d3.json(scope.vlSpec.data.url, function(err, data) {
-          if (err) return alert('Error loading data ' + err.statusText);
-          var stats = vl.data.stats(data);
-          callback(stats);
-        });
-      } else {
-        callback();
-      }
+      vg.parse.spec(spec, function(chart) {
+        var view = chart({el: vlElement, renderer: 'svg'});
+        view.update();
+      });
     }
   };
 });

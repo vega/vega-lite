@@ -8,12 +8,14 @@ import {SOURCE, SUMMARY} from '../data';
 import {FieldRefOption} from '../fielddef';
 import * as vlFieldDef from '../fielddef';
 import * as vlEncoding from '../encoding';
+import {compileLayout} from './layout';
 import {AREA, BAR} from '../marktype';
 import * as schema from '../schema/schema';
 import * as schemaUtil from '../schema/schemautil';
 import {StackProperties} from './stack';
-import {getFullName} from '../type';
+import {getFullName, NOMINAL, ORDINAL, TEMPORAL} from '../type';
 import * as util from '../util';
+import * as time from './time';
 
 /**
  * Internal model of Vega-Lite specification for the compiler.
@@ -22,6 +24,7 @@ import * as util from '../util';
 export class Model {
   _spec: Spec;
   _stack: StackProperties;
+  _layout: any;
 
   // TODO: include _stack, _layout, _style, etc.
 
@@ -38,6 +41,7 @@ export class Model {
 
     // calculate stack
     this._stack = this.getStackProperties();
+    this._layout = compileLayout(this);
   }
 
   private getStackProperties(): StackProperties {
@@ -67,6 +71,10 @@ export class Model {
       }
     }
     return null;
+  }
+
+  layout(): any {
+    return this._layout;
   }
 
   stack(): StackProperties {
@@ -150,10 +158,7 @@ export class Model {
       // explicit value
       return this.fieldDef(channel).scale.padding;
     }
-    if (channel === ROW || channel === COLUMN) {
-      return this.config('cellPadding');
-    }
-    return this.config('padding');
+    return channel === X || channel === Y ? this.config('padding') : undefined;
   }
 
   // returns false if binning is disabled, otherwise an object with binning properties
@@ -185,6 +190,7 @@ export class Model {
     return vlEncoding.forEach(this._spec.encoding, f);
   }
 
+  // FIXME: remove this 
   isTypes(channel: Channel, type: Array<any>) {
     var fieldDef = this.fieldDef(channel);
     return fieldDef && vlFieldDef.isTypes(fieldDef, type);
@@ -192,8 +198,12 @@ export class Model {
 
 
   isOrdinalScale(channel: Channel) {
-    return this.has(channel) &&
-      vlFieldDef.isOrdinalScale(this.fieldDef(channel));
+    const fieldDef = this.fieldDef(channel);
+    return fieldDef && (
+      vlFieldDef.isTypes(fieldDef, [NOMINAL, ORDINAL]) ||
+      ( fieldDef.type === TEMPORAL && fieldDef.timeUnit &&
+        time.scale.type(fieldDef.timeUnit, channel) === 'ordinal' )
+    );
   }
 
   isDimension(channel: Channel) {
@@ -210,10 +220,15 @@ export class Model {
     return vlEncoding.isAggregate(this._spec.encoding);
   }
 
+  isFacet() {
+    return this.has(ROW) || this.has(COLUMN);
+  }
+
   dataTable() {
     return this.isAggregate() ? SUMMARY : SOURCE;
   }
 
+  // FIXME remove this
   facets() {
     var encoding = this;
     return this.reduce(function(refs: string[], field: FieldDef, channel: Channel) {
@@ -222,10 +237,6 @@ export class Model {
       }
       return refs;
     }, []);
-  }
-
-  cardinality(channel: Channel, stats) {
-    return vlFieldDef.cardinality(this.fieldDef(channel), stats, this.config('filterNull'));
   }
 
   data() {
