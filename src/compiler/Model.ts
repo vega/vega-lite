@@ -190,6 +190,7 @@ export class Model {
     return vlEncoding.forEach(this._spec.encoding, f);
   }
 
+  // FIXME: remove this 
   isTypes(channel: Channel, type: Array<any>) {
     var fieldDef = this.fieldDef(channel);
     return fieldDef && vlFieldDef.isTypes(fieldDef, type);
@@ -236,10 +237,6 @@ export class Model {
       }
       return refs;
     }, []);
-  }
-
-  cardinality(channel: Channel, stats) {
-    return vlFieldDef.cardinality(this.fieldDef(channel), stats, this.config('filterNull'));
   }
 
   data() {
