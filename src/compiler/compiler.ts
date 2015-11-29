@@ -18,7 +18,7 @@ import {FieldDef} from '../schema/fielddef.schema';
 
 export {Model} from './Model';
 
-export function compile(spec, stats, theme?) {
+export function compile(spec, theme?) {
   var model = new Model(spec, theme);
   const layout = model.layout();
 
