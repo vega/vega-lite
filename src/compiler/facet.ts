@@ -51,6 +51,9 @@ export function facetMixins(model: Model, marks) {
       // If has X, prepend a group for shared x-axes in the root group's marks
       rootMarks.push(getXAxesGroup(model, cellWidth, hasCol));
     }
+
+    // TODO: add properties to make rule optional
+    rootMarks.push(getRowRulesGroup(model, cellHeight));
   } else { // doesn't have row
     if (model.has(X)) { //keep x axis in the cell
       cellAxes.push(compileAxis(X, model));
@@ -74,7 +77,9 @@ export function facetMixins(model: Model, marks) {
     if (model.has(Y)) {
       // If has Y, prepend a group for shared y-axes in the root group's marks
       rootMarks.push(getYAxesGroup(model, cellHeight, hasRow));
-          }
+    }
+    // TODO: add properties to make rule optional
+    rootMarks.push(getColumnRulesGroup(model, cellWidth));
   } else { // doesn't have column
     if (model.has(Y)) { //keep y axis in the cell
       cellAxes.push(compileAxis(Y, model));
@@ -157,4 +162,88 @@ function getYAxesGroup(model: Model, cellHeight, hasRow: boolean) {
     };
   }
   return yAxesGroup;
+}
+
+function getRowRulesGroup(model: Model, cellHeight): any { // TODO: VgMarks
+  const rowRulesOnTop = !model.has(X) || model.fieldDef(X).axis.orient !== 'top';
+  const rowRules = {
+    name: 'row-rules',
+    type: 'rule',
+    from: {
+      data: 'summary',
+      transform: [{type: 'facet', groupby: [model.fieldRef(ROW)]}]
+    },
+    properties: {
+      update: {
+        y: {
+          scale: 'row',
+          field: model.fieldRef(ROW),
+          offset: (rowRulesOnTop ? -1 : 1) * (model.config('cellPadding') / 2 - 1)
+        },
+        x: {value: 0},
+        x2: {field: {group: 'width'}},
+        stroke: { value: model.config('cellGridColor') },
+        strokeOpacity: { value: model.config('cellGridOpacity') }
+      }
+    }
+  };
+
+  if (rowRulesOnTop) {
+    return rowRules;
+  }
+  return {
+    name: 'row-rules-group',
+    type: 'group',
+    properties: {
+      update: {
+        // offset to avoid clashing with axis
+        y: cellHeight,
+        // include width so it can be referred inside row-rules
+        width: {field: {group: 'width'}}
+      }
+    },
+    marks: [rowRules]
+  };
+}
+
+function getColumnRulesGroup(model: Model, cellWidth): any { // TODO: VgMarks
+  const colRulesOnLeft = !model.has(Y) || model.fieldDef(Y).axis.orient === 'right';
+  const columnRules = {
+    name: 'column-rules',
+    type: 'rule',
+    from: {
+      data: 'summary',
+      transform: [{type: 'facet', groupby: [model.fieldRef(COLUMN)]}]
+    },
+    properties: {
+      update: {
+        x: {
+          scale: 'column',
+          field: model.fieldRef(COLUMN),
+          offset: (colRulesOnLeft ? -1 : 1) * (model.config('cellPadding') / 2 - 1)
+        },
+        y: {value: 0},
+        y2: {field: {group: 'height'}},
+        stroke: { value: model.config('cellGridColor') },
+        strokeOpacity: { value: model.config('cellGridOpacity') }
+      }
+    }
+  };
+
+  if (colRulesOnLeft) {
+    return columnRules;
+  }
+  return {
+    name: 'column-rules-group',
+    type: 'group',
+    properties: {
+      update: {
+        // offset to avoid clashing with axis
+        x: cellWidth,
+        // include height so it can be referred inside column-rules
+        height: {field: {group: 'height'}}
+      }
+    },
+    marks: [columnRules]
+  };
 }
