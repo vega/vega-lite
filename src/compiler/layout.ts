@@ -1,5 +1,3 @@
-/// <reference path="../../typings/d3-format.d.ts"/>
-
 import {FieldDef} from '../schema/fielddef.schema';
 
 import {setter} from '../util';

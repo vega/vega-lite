@@ -110,7 +110,7 @@ export function offset(model: Model, channel: Channel, def) {
   if ((channel === ROW && !model.has(Y)) ||
       (channel === COLUMN && !model.has(X))
     ) {
-    return model.config('cellGridOffset')
+    return model.config('cellGridOffset');
   }
   return undefined;
 }
