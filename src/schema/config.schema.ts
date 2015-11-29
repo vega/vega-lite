@@ -45,13 +45,13 @@ export var config = {
 
     // single plot
     singleHeight: {
-      // will be overwritten by bandWidth * (cardinality + padding)
+      // will be overwritten by bandWidth
       type: 'integer',
       default: 200,
       minimum: 0
     },
     singleWidth: {
-      // will be overwritten by bandWidth * (cardinality + padding)
+      // will be overwritten by bandWidth 
       type: 'integer',
       default: 200,
       minimum: 0
@@ -70,7 +70,7 @@ export var config = {
     // small multiples
     cellPadding: {
       type: 'integer',
-      default: 16, 
+      default: 16,
       description: 'default padding between facets.'
     },
     cellGridColor: {
