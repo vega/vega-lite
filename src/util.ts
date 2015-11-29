@@ -4,16 +4,6 @@ export * from 'datalib/src/util';
 export * from 'datalib/src/generate';
 export * from 'datalib/src/stats';
 
-// https://github.com/Microsoft/TypeScript/issues/3612
-import dlBin = require('datalib/src/bins/bins');
-export var bin = dlBin;
-
-/*
- * Deal with floating point instabiility in javasscript to avoid weird .000001 output
- */
-export function roundFloat(x: number, digit:number = 4) {
-  return +x.toFixed(digit);
-}
 
 export function forEach(obj, f, thisArg) {
   if (obj.forEach) {
@@ -64,6 +54,8 @@ export function all(arr: Array<any>, f: (d, k?, i?) => boolean) {
   return true;
 }
 
+// FIXME remove this 
+import dlBin = require('datalib/src/bins/bins');
 export function getbins(stats, maxbins) {
   return dlBin({
     min: stats.min,
