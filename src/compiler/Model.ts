@@ -221,17 +221,6 @@ export class Model {
     return this.isAggregate() ? SUMMARY : SOURCE;
   }
 
-  // FIXME remove this
-  facets() {
-    var encoding = this;
-    return this.reduce(function(refs: string[], field: FieldDef, channel: Channel) {
-      if (!field.aggregate && (channel === ROW || channel === COLUMN)) {
-        refs.push(encoding.fieldRef(channel));
-      }
-      return refs;
-    }, []);
-  }
-
   data() {
     return this._spec.data;
   }

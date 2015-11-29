@@ -347,7 +347,8 @@ export namespace stack {
   export function def(model: Model, stackProps: StackProperties):VgData {
     var groupbyChannel = stackProps.groupbyChannel;
     var fieldChannel = stackProps.fieldChannel;
-    var facets = model.facets();
+    var facetFields = (model.has(COLUMN) ? [model.fieldRef(COLUMN)] : [])
+                      .concat((model.has(ROW) ? [model.fieldRef(ROW)] : []))
 
     var stacked:VgData = {
       name: STACKED,
@@ -355,15 +356,15 @@ export namespace stack {
       transform: [{
         type: 'aggregate',
         // group by channel and other facets
-        groupby: [model.fieldRef(groupbyChannel)].concat(facets),
+        groupby: [model.fieldRef(groupbyChannel)].concat(facetFields),
         summarize: [{ops: ['sum'], field: model.fieldRef(fieldChannel)}]
       }]
     };
 
-    if (facets && facets.length > 0) {
+    if (facetFields && facetFields.length > 0) {
       stacked.transform.push({ //calculate max for each facet
         type: 'aggregate',
-        groupby: facets,
+        groupby: facetFields,
         summarize: [{
           ops: ['max'],
           // we want max of sum from above transform
