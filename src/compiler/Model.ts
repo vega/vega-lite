@@ -125,13 +125,6 @@ export class Model {
     return vlFieldDef.fieldRef(this._spec.encoding[channel], opt);
   }
 
-  /*
-   * return key-value pairs of field name and list of fields of that field name
-   */
-  fields() {
-    return vlEncoding.fields(this._spec.encoding);
-  }
-
   fieldTitle(channel: Channel) {
     if (vlFieldDef.isCount(this._spec.encoding[channel])) {
       return vlFieldDef.COUNT_DISPLAYNAME;

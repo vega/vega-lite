@@ -156,19 +156,13 @@ export namespace source {
    * @return {Array} An array that might contain a filter transform for filtering null value based on filterNul config
    */
   export function nullFilterTransform(model: Model) {
-    var filteredFields = util.reduce(model.fields(),
-      function(filteredFields, fieldList, fieldName) {
-        if (fieldName === '*') return filteredFields; //count
-
-        // TODO(#597) revise how filterNull is structured.
-        if ((model.config('filterNull').quantitative && fieldList.containsType[QUANTITATIVE]) ||
-            (model.config('filterNull').temporal && fieldList.containsType[TEMPORAL]) ||
-            (model.config('filterNull').ordinal && fieldList.containsType[ORDINAL]) ||
-            (model.config('filterNull').nominal && fieldList.containsType[NOMINAL])) {
-          filteredFields.push(fieldName);
-        }
-        return filteredFields;
-      }, []);
+    const filterNull = model.config('filterNull');
+    const filteredFields = util.keys(model.reduce(function(filteredFields, fieldDef: FieldDef) {
+      if (fieldDef.field && fieldDef.field !== '*' && filterNull[fieldDef.type]) {
+        filteredFields[fieldDef.field] = true;
+      }
+      return filteredFields;
+    }, {}));
 
     return filteredFields.length > 0 ?
       [{

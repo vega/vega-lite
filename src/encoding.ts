@@ -57,21 +57,3 @@ export function reduce(encoding: Encoding,
   });
   return r;
 }
-
-// FIXME: revise this / consider if we should remove
-/**
- * return key-value pairs of field name and list of fields of that field name
- */
-export function fields(encoding: Encoding) {
-  return reduce(encoding, function (m, fieldDef: FieldDef) {
-    var fieldList = m[fieldDef.field] = m[fieldDef.field] || [];
-    var containsType = fieldList.containsType = fieldList.containsType || {};
-
-    if (fieldList.indexOf(fieldDef) === -1) {
-      fieldList.push(fieldDef);
-      // augment the array with containsType.Q / O / N / T
-      containsType[fieldDef.type] = true;
-    }
-    return m;
-  }, {});
-}
