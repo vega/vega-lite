@@ -5,24 +5,15 @@ import {Bin} from './schema/bin.schema';
 
 import {MAXBINS_DEFAULT} from './bin';
 import {AGGREGATE_OPS} from './aggregate';
-import {getbins} from './util';
+import {contains, getbins} from './util';
 import * as time from './compiler/time';
 import {TIMEUNITS} from './timeunit';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL, SHORT_TYPE, TYPE_FROM_SHORT_TYPE} from './type';
 
-export function isTypes(fieldDef: FieldDef, types: Array<String>) {
-  for (var t = 0; t < types.length; t++) {
-    if (fieldDef.type === types[t]) {
-      return true;
-    }
-  }
-  return false;
-}
-
 
 // TODO remove these "isDimension/isMeasure" stuff
 function _isFieldDimension(fieldDef: FieldDef) {
-  return  isTypes(fieldDef, [NOMINAL, ORDINAL]) || !!fieldDef.bin ||
+  return  contains([NOMINAL, ORDINAL], fieldDef.type) || !!fieldDef.bin ||
     (fieldDef.type === TEMPORAL && !!fieldDef.timeUnit );
 }
 
@@ -44,6 +35,7 @@ export function isCount(fieldDef: FieldDef) {
   return fieldDef.aggregate === 'count';
 }
 
+// FIXME remove this, and the getbins method
 export function cardinality(fieldDef: FieldDef, stats, filterNull = {}) {
   // FIXME need to take filter into account
 
@@ -54,6 +46,7 @@ export function cardinality(fieldDef: FieldDef, stats, filterNull = {}) {
     // need to reassign bin, otherwise compilation will fail due to a TS bug.
     const bin = fieldDef.bin;
     const maxbins = (typeof bin === 'boolean') ? MAXBINS_DEFAULT : bin.maxbins;
+
 
     var bins = getbins(stat, maxbins);
     return (bins.stop - bins.start) / bins.step;

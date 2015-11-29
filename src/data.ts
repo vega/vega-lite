@@ -19,18 +19,3 @@ export const types = {
   'date': TEMPORAL,
   'string': NOMINAL
 };
-
-// TODO: remove this
-export function stats(data: Array<Array<any>>) {
-  var summary = util.summary(data);
-
-  return summary.reduce(function(s, profile) {
-    s[profile.field] = profile;
-    return s;
-  }, {
-    '*': {
-      max: data.length,
-      min: 0
-    }
-  });
-}

@@ -13,7 +13,7 @@ import * as schema from '../schema/schema';
 import * as schemaUtil from '../schema/schemautil';
 import {StackProperties} from './stack';
 import {getFullName, NOMINAL, ORDINAL, TEMPORAL} from '../type';
-import {duplicate} from '../util';
+import {contains, duplicate} from '../util';
 import * as time from './time';
 
 
@@ -219,17 +219,10 @@ export class Model {
     return vlEncoding.forEach(this._spec.encoding, f);
   }
 
-  // FIXME: remove this
-  isTypes(channel: Channel, type: Array<any>) {
-    var fieldDef = this.fieldDef(channel);
-    return fieldDef && vlFieldDef.isTypes(fieldDef, type);
-  }
-
-
   isOrdinalScale(channel: Channel) {
     const fieldDef = this.fieldDef(channel);
     return fieldDef && (
-      vlFieldDef.isTypes(fieldDef, [NOMINAL, ORDINAL]) ||
+      contains([NOMINAL, ORDINAL], fieldDef.type) ||
       ( fieldDef.type === TEMPORAL && fieldDef.timeUnit &&
         time.scale.type(fieldDef.timeUnit, channel) === 'ordinal' )
     );
