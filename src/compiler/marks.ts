@@ -19,7 +19,7 @@ const MARKTYPES_MAP = {
   square: 'symbol'
 };
 
-export function compileMarks(model: Model, layout): any[] {
+export function compileMarks(model: Model): any[] {
   const marktype = model.marktype();
   if (marktype === LINE || marktype === AREA) {
     // For Line and Area, we sort values based on dimension by default
@@ -37,7 +37,7 @@ export function compileMarks(model: Model, layout): any[] {
         transform: [{type: 'sort', by: sortBy}]
       },
       properties: {
-        update: properties[marktype](model, layout)
+        update: properties[marktype](model)
       }
     };
 
@@ -75,7 +75,7 @@ export function compileMarks(model: Model, layout): any[] {
       // add background to 'text' marks if has color
       marks.push({
         type: 'rect',
-        properties: {update: properties.textBackground(model, layout)}
+        properties: {update: properties.textBackground(model)}
       });
     }
 
@@ -83,7 +83,7 @@ export function compileMarks(model: Model, layout): any[] {
       // TODO add name
       type: MARKTYPES_MAP[marktype],
       properties: {
-        update: properties[marktype](model, layout)
+        update: properties[marktype](model)
       }
     };
     const stack = model.stack();
@@ -571,17 +571,17 @@ function filled_point_props(shape) {
 export const circle = filled_point_props('circle');
 export const square = filled_point_props('square');
 
-export function textBackground(model: Model, layout) {
+export function textBackground(model: Model) {
   return {
     x: {value: 0},
     y: {value: 0},
-    x2: {value: layout.cellWidth},
-    y2: {value: layout.cellHeight},
+    width: {field: {group: 'width'}},
+    height: {field: {group: 'height'}},
     fill: {scale: COLOR, field: model.fieldRef(COLOR)}
   };
 }
 
-export function text(model: Model, layout) {
+export function text(model: Model) {
   // TODO Use Vega's marks properties interface
   var p:any = {},
     fieldDef = model.fieldDef(TEXT);
@@ -594,7 +594,7 @@ export function text(model: Model, layout) {
     };
   } else if (!model.has(X)) {
     if (model.has(TEXT) && model.fieldDef(TEXT).type === QUANTITATIVE) {
-      p.x = {value: layout.cellWidth-5};
+      p.x = {field: {group: 'width'}, offset: -5};
     } else {
       p.x = {value: model.bandWidth(X) / 2};
     }
