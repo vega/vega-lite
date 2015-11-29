@@ -18,18 +18,7 @@ describe('Axis', function() {
           x: {field: field, type: 'temporal', timeUnit: timeUnit}
         }
       });
-    var _axis = axis.compileAxis('x', encoding, {
-      width: 200,
-      height: 200,
-      cellWidth: 200,
-      cellHeight: 200,
-      x: {
-        axisTitleOffset: 60
-      },
-      y: {
-        axisTitleOffset: 60
-      }
-    });
+    var _axis = axis.compileAxis('x', encoding);
 
     //FIXME decouple the test here
 
