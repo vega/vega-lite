@@ -33,7 +33,7 @@ export function facetMixins(model: Model, marks) {
   let rootMarks = [], rootAxes = [], facetKeys = [], cellAxes = [];
   const hasRow = model.has(ROW), hasCol = model.has(COLUMN);
 
-  // TODO: add property to keep axes in cells even if row is encoded
+  // TODO(#90): add property to keep axes in cells even if row is encoded
   if (hasRow) {
     if (!model.isDimension(ROW)) {
       // TODO: add error to model instead
@@ -59,7 +59,7 @@ export function facetMixins(model: Model, marks) {
     }
   }
 
-  // TODO: add property to keep axes in cells even if column is encoded
+  // TODO(#90): add property to keep axes in cells even if column is encoded
   if (hasCol) {
     if (!model.isDimension(COLUMN)) {
       // TODO: add error to model instead

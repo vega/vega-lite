@@ -19,24 +19,4 @@ describe('time', function() {
       return scale.name === 'time-'+ timeUnit;
     }).length).to.equal(1);
   });
-
-  describe('maxLength', function() {
-    it('should return max length of the month custom scale', function () {
-      expect(time.maxLength('month', new Model({marktype: 'point'})))
-        .to.eql(3);
-    });
-
-    it('should return max length of the day custom scale', function () {
-      expect(time.maxLength('day', new Model({marktype: 'point'})))
-        .to.eql(3);
-    });
-
-    it('should return max length of the month custom scale', function () {
-      expect(time.maxLength('month', new Model({
-        config: {
-          timeScaleLabelLength: 0
-        }
-      }))).to.eql(9);
-    });
-  });
 });

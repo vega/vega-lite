@@ -1,7 +1,3 @@
-/// <reference path="../../typings/d3-time-format.d.ts"/>
-
-import {utcFormat} from 'd3-time-format';
-
 import {Model} from './Model';
 import {FieldDef} from '../schema/fielddef.schema';
 import * as vlFieldDef from '../fielddef';
@@ -40,30 +36,6 @@ export function formula(timeUnit, fieldRef: string) {
   // TODO(kanitw): add formula to other time format
   var fn = 'utc' + timeUnit;
   return fn + '(' + fieldRef + ')';
-}
-
-export function maxLength(timeUnit, model: Model) {
-  switch (timeUnit) {
-    case 'seconds':
-    case 'minutes':
-    case 'hours':
-    case 'date':
-      return 2;
-    case 'month':
-    case 'day':
-      var rng = range(timeUnit, model);
-      if (rng) {
-        // return the longest name in the range
-        return Math.max.apply(null, rng.map(function(r) {return r.length;}));
-      }
-      return 2;
-    case 'year':
-      return 4; //'1998'
-  }
-  // TODO(#600) revise this
-  // no time unit
-  var timeFormat = model.config('timeFormat');
-  return utcFormat(timeFormat)(LONG_DATE).length;
 }
 
 export function range(timeUnit, model: Model) {

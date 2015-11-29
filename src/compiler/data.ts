@@ -156,19 +156,13 @@ export namespace source {
    * @return {Array} An array that might contain a filter transform for filtering null value based on filterNul config
    */
   export function nullFilterTransform(model: Model) {
-    var filteredFields = util.reduce(model.fields(),
-      function(filteredFields, fieldList, fieldName) {
-        if (fieldName === '*') return filteredFields; //count
-
-        // TODO(#597) revise how filterNull is structured.
-        if ((model.config('filterNull').quantitative && fieldList.containsType[QUANTITATIVE]) ||
-            (model.config('filterNull').temporal && fieldList.containsType[TEMPORAL]) ||
-            (model.config('filterNull').ordinal && fieldList.containsType[ORDINAL]) ||
-            (model.config('filterNull').nominal && fieldList.containsType[NOMINAL])) {
-          filteredFields.push(fieldName);
-        }
-        return filteredFields;
-      }, []);
+    const filterNull = model.config('filterNull');
+    const filteredFields = util.keys(model.reduce(function(filteredFields, fieldDef: FieldDef) {
+      if (fieldDef.field && fieldDef.field !== '*' && filterNull[fieldDef.type]) {
+        filteredFields[fieldDef.field] = true;
+      }
+      return filteredFields;
+    }, {}));
 
     return filteredFields.length > 0 ?
       [{
@@ -353,7 +347,8 @@ export namespace stack {
   export function def(model: Model, stackProps: StackProperties):VgData {
     var groupbyChannel = stackProps.groupbyChannel;
     var fieldChannel = stackProps.fieldChannel;
-    var facets = model.facets();
+    var facetFields = (model.has(COLUMN) ? [model.fieldRef(COLUMN)] : [])
+                      .concat((model.has(ROW) ? [model.fieldRef(ROW)] : []))
 
     var stacked:VgData = {
       name: STACKED,
@@ -361,15 +356,15 @@ export namespace stack {
       transform: [{
         type: 'aggregate',
         // group by channel and other facets
-        groupby: [model.fieldRef(groupbyChannel)].concat(facets),
+        groupby: [model.fieldRef(groupbyChannel)].concat(facetFields),
         summarize: [{ops: ['sum'], field: model.fieldRef(fieldChannel)}]
       }]
     };
 
-    if (facets && facets.length > 0) {
+    if (facetFields && facetFields.length > 0) {
       stacked.transform.push({ //calculate max for each facet
         type: 'aggregate',
-        groupby: facets,
+        groupby: facetFields,
         summarize: [{
           ops: ['max'],
           // we want max of sum from above transform

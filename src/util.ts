@@ -72,24 +72,6 @@ export function getbins(stats, maxbins) {
   });
 }
 
-//FIXME remove this
-/**
- * x[p[0]]...[p[n]] = val
- * @param noaugment determine whether new object should be added f
- * or non-existing properties along the path
- */
-export function setter(x, p, val, noaugment = false) {
-  for (var i=0; i<p.length-1; ++i) {
-    if (!noaugment && !(p[i] in x)){
-      x = x[p[i]] = {};
-    } else {
-      x = x[p[i]];
-    }
-  }
-  x[p[i]] = val;
-}
-
-
 export function error(message: any): void {
   console.error('[VL Error]', message);
 }

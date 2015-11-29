@@ -5,7 +5,7 @@ import {Bin} from './schema/bin.schema';
 
 import {MAXBINS_DEFAULT} from './bin';
 import {AGGREGATE_OPS} from './aggregate';
-import * as util from './util';
+import {getbins} from './util';
 import * as time from './compiler/time';
 import {TIMEUNITS} from './timeunit';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL, SHORT_TYPE, TYPE_FROM_SHORT_TYPE} from './type';
@@ -92,7 +92,7 @@ export function cardinality(fieldDef: FieldDef, stats, filterNull = {}) {
     const bin = fieldDef.bin;
     const maxbins = (typeof bin === 'boolean') ? MAXBINS_DEFAULT : bin.maxbins;
 
-    var bins = util.getbins(stat, maxbins);
+    var bins = getbins(stat, maxbins);
     return (bins.stop - bins.start) / bins.step;
   }
   if (fieldDef.type === TEMPORAL) {

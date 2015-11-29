@@ -1,13 +1,7 @@
-/// <reference path="../../typings/colorbrewer.d.ts"/>
-/// <reference path="../../typings/d3-color.d.ts"/>
-
 // https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations
 declare var exports;
 
-import * as colorbrewer from 'colorbrewer';
-import {interpolateHsl} from 'd3-color';
-
-import * as util from '../util';
+import {extend, isObject} from '../util';
 import {Model} from './Model';
 import {SHARED_DOMAIN_OPS} from '../aggregate';
 import {COLUMN, ROW, X, Y, SHAPE, SIZE, COLOR, TEXT, Channel} from '../channel';
@@ -23,7 +17,7 @@ export function compileScales(names: Array<string>, model: Model) {
     };
 
     scaleDef.domain = domain(model, channel, scaleDef.type);
-    util.extend(scaleDef, rangeMixins(model, channel, scaleDef.type));
+    extend(scaleDef, rangeMixins(model, channel, scaleDef.type));
 
     // Add optional properties
     [
@@ -135,7 +129,7 @@ export function domainSort(model: Model, channel: Channel, type):any {
   }
 
   // Sorted based on an aggregate calculation over a specified sort field (only for ordinal scale)
-  if (type === 'ordinal' && util.isObject(sort)) {
+  if (type === 'ordinal' && isObject(sort)) {
     return {
       op: sort.op,
       field: sort.field

@@ -20,6 +20,7 @@ export const types = {
   'string': NOMINAL
 };
 
+// TODO: remove this
 export function stats(data: Array<Array<any>>) {
   var summary = util.summary(data);
 

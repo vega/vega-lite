@@ -1,14 +1,10 @@
-/// <reference path="../../typings/d3-format.d.ts"/>
-
-import {FieldDef} from '../schema/fielddef.schema';
-
-import {setter} from '../util';
-import {COLUMN, ROW, X, Y, TEXT, Channel} from '../channel';
-import {LAYOUT} from '../data';
 import {Model} from './Model';
 import * as time from './time';
+
+import {FieldDef} from '../schema/fielddef.schema';
+import {COLUMN, ROW, X, Y, TEXT, Channel} from '../channel';
+import {LAYOUT} from '../data';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
-import {roundFloat} from '../util';
 
 interface DataRef {
   data?: string;

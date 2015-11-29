@@ -10,7 +10,7 @@ import {compileLegends} from './legend';
 import {compileMarks} from './marks';
 import {compileScales} from './scale';
 import * as vlTime from './time';
-import * as util from '../util';
+import {extend} from '../util';
 
 import {LAYOUT} from '../data';
 import {COLUMN, ROW, X, Y, Channel} from '../channel';
@@ -43,7 +43,7 @@ export function compile(spec, theme?) {
   // Small Multiples
   if (model.has(ROW) || model.has(COLUMN)) {
     // put the marks inside a facet cell's group
-    util.extend(rootGroup, facetMixins(model, marks));
+    extend(rootGroup, facetMixins(model, marks));
   } else {
     rootGroup.marks = marks.map(function(marks) {
       marks.from = marks.from || {};

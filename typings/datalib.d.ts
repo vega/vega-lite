@@ -3,7 +3,6 @@ declare module "datalib/src/util" {
   export function extend(a, b, c?);
   export function duplicate(a);
   export function isArray(a);
-  export function range(a, b?);
   export function vals(a);
   export function truncate(a:string, length: number);
   export function toMap(a);
@@ -11,6 +10,7 @@ declare module "datalib/src/util" {
 }
 
 declare module "datalib/src/generate" {
+  export function range(a, b?);
 }
 
 declare module "datalib/src/stats" {
