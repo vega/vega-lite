@@ -1,4 +1,4 @@
-import * as util from '../util';
+import {extend, keys} from '../util';
 import {COLOR, SIZE, SHAPE, Channel} from '../channel';
 import {Model} from './Model';
 import * as time from './time';
@@ -70,7 +70,7 @@ namespace properties {
     var fieldDef = model.fieldDef(channel);
     var timeUnit = fieldDef.timeUnit;
     if (fieldDef.type === TEMPORAL && timeUnit && time.hasScale(timeUnit)) {
-      return util.extend({
+      return extend({
         text: {
           scale: 'time-'+ timeUnit
         }
@@ -126,8 +126,8 @@ namespace properties {
       symbols.opacity = {value: opacity};
     }
 
-    symbols = util.extend(symbols, spec || {});
+    symbols = extend(symbols, spec || {});
 
-    return util.keys(symbols).length > 0 ? symbols : undefined;
+    return keys(symbols).length > 0 ? symbols : undefined;
   }
 }

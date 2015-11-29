@@ -14,7 +14,7 @@ import * as schema from '../schema/schema';
 import * as schemaUtil from '../schema/schemautil';
 import {StackProperties} from './stack';
 import {getFullName, NOMINAL, ORDINAL, TEMPORAL} from '../type';
-import * as util from '../util';
+import {duplicate} from '../util';
 import * as time from './time';
 
 /**
@@ -82,7 +82,7 @@ export class Model {
   }
 
   toSpec(excludeConfig?, excludeData?) {
-    var encoding = util.duplicate(this._spec.encoding),
+    var encoding = duplicate(this._spec.encoding),
       spec: any;
 
     spec = {
@@ -91,11 +91,11 @@ export class Model {
     };
 
     if (!excludeConfig) {
-      spec.config = util.duplicate(this._spec.config);
+      spec.config = duplicate(this._spec.config);
     }
 
     if (!excludeData) {
-      spec.data = util.duplicate(this._spec.data);
+      spec.data = duplicate(this._spec.data);
     }
 
     // remove defaults
@@ -190,7 +190,7 @@ export class Model {
     return vlEncoding.forEach(this._spec.encoding, f);
   }
 
-  // FIXME: remove this 
+  // FIXME: remove this
   isTypes(channel: Channel, type: Array<any>) {
     var fieldDef = this.fieldDef(channel);
     return fieldDef && vlFieldDef.isTypes(fieldDef, type);

@@ -1,6 +1,6 @@
 import {Model} from './Model';
 import {Channel} from '../channel';
-import * as util from '../util';
+import {isObject} from '../util';
 
 export interface StackProperties {
   groupbyChannel: Channel;
@@ -38,7 +38,7 @@ export function stackTransform(model: Model) {
                    '-' + model.fieldRef(stack.stackChannel) :
                  stack.config.sort === 'ascending' ?
                    model.fieldRef(stack.stackChannel) :
-                 util.isObject(stack.config.sort) ?
+                 isObject(stack.config.sort) ?
                    stack.config.sort :
                    '-' + model.fieldRef(stack.stackChannel); // default
 

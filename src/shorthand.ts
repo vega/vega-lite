@@ -7,7 +7,6 @@ import {Spec} from './schema/schema';
 import {AGGREGATE_OPS} from './aggregate';
 import {TIMEUNITS} from './timeunit';
 import {SHORT_TYPE, TYPE_FROM_SHORT_TYPE} from './type';
-import * as util from './util';
 import * as vlEncoding from './encoding';
 
 export const DELIM = '|';

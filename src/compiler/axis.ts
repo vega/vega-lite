@@ -1,6 +1,5 @@
 import {Model} from './Model';
-import {roundFloat} from '../util';
-import * as util from '../util';
+import {extend, roundFloat, truncate} from '../util';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 import {COLUMN, ROW, X, Y, Channel} from '../channel';
 import * as time from './time';
@@ -177,7 +176,7 @@ export function title(model: Model, channel: Channel) {
     maxLength = layout.cellHeight / model.config('characterWidth');
   }
 
-  return maxLength ? util.truncate(fieldTitle, maxLength) : fieldTitle;
+  return maxLength ? truncate(fieldTitle, maxLength) : fieldTitle;
 }
 
 
@@ -198,7 +197,7 @@ namespace properties {
   export function axis(model: Model, channel: Channel, spec) {
     if (channel === ROW || channel === COLUMN) {
       // hide axis for facets
-      return util.extend({
+      return extend({
         opacity: {value: 0}
       }, spec || {});
     }
@@ -209,14 +208,14 @@ namespace properties {
     let fieldDef = model.fieldDef(channel);
     var timeUnit = fieldDef.timeUnit;
     if (fieldDef.type === TEMPORAL && timeUnit && (time.hasScale(timeUnit))) {
-      spec = util.extend({
+      spec = extend({
         text: {scale: 'time-' + timeUnit, field: 'data'}
       }, spec || {});
     }
 
     if (model.isTypes(channel, [NOMINAL, ORDINAL]) && fieldDef.axis.labelMaxLength) {
       // TODO replace this with Vega's labelMaxLength once it is introduced
-      spec = util.extend({
+      spec = extend({
         text: {
           template: '{{ datum.data | truncate:' + fieldDef.axis.labelMaxLength + '}}'
         }
@@ -227,7 +226,7 @@ namespace properties {
     switch (channel) {
       case X:
         if ((model.isDimension(X) || fieldDef.type === TEMPORAL)) {
-          spec = util.extend({
+          spec = extend({
             angle: {value: 270},
             align: {value: def.orient === 'top' ? 'left': 'right'},
             baseline: {value: 'middle'}
@@ -236,7 +235,7 @@ namespace properties {
         break;
       case ROW:
         if (def.orient === 'right') {
-          spec = util.extend({
+          spec = extend({
             angle: {value: 90},
             align: {value: 'center'},
             baseline: {value: 'bottom'}

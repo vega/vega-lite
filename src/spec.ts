@@ -1,7 +1,7 @@
 /* Utilities for a Vega-Lite specificiation */
 
 import * as vlEncoding from './encoding';
-import * as util from './util';
+import {duplicate} from './util';
 import {Model} from './compiler/Model';
 import {Spec} from './schema/schema';
 import {COLOR, DETAIL} from './channel';
@@ -29,7 +29,7 @@ export function isStack(spec: Spec): boolean {
 // TODO revise
 export function transpose(spec: Spec): Spec {
   var oldenc = spec.encoding,
-    encoding = util.duplicate(spec.encoding);
+    encoding = duplicate(spec.encoding);
   encoding.x = oldenc.y;
   encoding.y = oldenc.x;
   encoding.row = oldenc.column;
