@@ -208,11 +208,10 @@ var EXAMPLES = [
       'marktype': 'point',
       'encoding': {
         'x': {'field': 'Worldwide_Gross','type': 'quantitative'},
-        'y': {'field': 'US_DVD_Sales','type': 'quantitative'},
+        'y': {'field': 'US_DVD_Sales','type': 'quantitative', 'scale': {'bandWidth': 12}},
         'column': {'field': 'MPAA_Rating','type': 'ordinal'}
       },
-      'data': {'url': 'data/movies.json'},
-      'config': {'bandWidth': 12}
+      'data': {'url': 'data/movies.json'}
     }
   },{
     title: 'Trellis Plot, sorted by mean yield.',
