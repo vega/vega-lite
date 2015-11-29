@@ -1,5 +1,5 @@
 import {Model} from './Model';
-import {extend, roundFloat, truncate} from '../util';
+import {extend, truncate} from '../util';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 import {COLUMN, ROW, X, Y, Channel} from '../channel';
 import * as time from './time';

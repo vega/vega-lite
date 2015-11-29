@@ -44,6 +44,7 @@ export function isCount(fieldDef: FieldDef) {
   return fieldDef.aggregate === 'count';
 }
 
+// FIXME remove this, and the getbins method
 export function cardinality(fieldDef: FieldDef, stats, filterNull = {}) {
   // FIXME need to take filter into account
 
@@ -54,6 +55,7 @@ export function cardinality(fieldDef: FieldDef, stats, filterNull = {}) {
     // need to reassign bin, otherwise compilation will fail due to a TS bug.
     const bin = fieldDef.bin;
     const maxbins = (typeof bin === 'boolean') ? MAXBINS_DEFAULT : bin.maxbins;
+
 
     var bins = getbins(stat, maxbins);
     return (bins.stop - bins.start) / bins.step;
