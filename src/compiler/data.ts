@@ -30,7 +30,7 @@ export function compileData(model: Model) {
   // TODO add "having" filter here
 
   // append non-positive filter at the end for the data table
-  filterNonPositive(def[def.length - 1], model);
+  filterNonPositiveForLog(def[def.length - 1], model);
 
   // add stats for layout calculation
   const statsDef = layout.def(model);
@@ -277,7 +277,7 @@ export namespace layout {
     if (summarize.length > 0) {
       return {
         name: LAYOUT,
-        source: SOURCE,
+        source: model.dataTable(),
         transform: [{
             type: 'aggregate',
               summarize: summarize
@@ -381,7 +381,7 @@ export namespace stack {
   };
 }
 
-export function filterNonPositive(dataTable, model: Model) {
+export function filterNonPositiveForLog(dataTable, model: Model) {
   model.forEach(function(_, channel) {
     if (model.fieldDef(channel).scale.type === 'log') {
       dataTable.transform.push({
