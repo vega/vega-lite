@@ -196,8 +196,12 @@ function getRowRulesGroup(model: Model, cellHeight): any { // TODO: VgMarks
     type: 'group',
     properties: {
       update: {
-        // offset to avoid clashing with axis
-        y: cellHeight,
+        // add offset to avoid clashing with axis
+        y: cellHeight.value ?
+          // If cellHeight contains value, just use it.
+          cellHeight :
+          // Otherwise, need to get it from layout data in the root group
+          {field: {parent: 'cellHeight'}},
         // include width so it can be referred inside row-rules
         width: {field: {group: 'width'}}
       }
@@ -238,8 +242,12 @@ function getColumnRulesGroup(model: Model, cellWidth): any { // TODO: VgMarks
     type: 'group',
     properties: {
       update: {
-        // offset to avoid clashing with axis
-        x: cellWidth,
+        // Add offset to avoid clashing with axis
+        x: cellWidth.value ?
+           // If cellWidth contains value, just use it.
+           cellWidth :
+           // Otherwise, need to get it from layout data in the root group
+           {field: {parent: 'cellWidth'}},
         // include height so it can be referred inside column-rules
         height: {field: {group: 'height'}}
       }
