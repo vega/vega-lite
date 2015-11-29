@@ -10,20 +10,19 @@ import {compileScales} from './scale';
  * return mixins that contains marks, scales, and axes for the rootGroup
  */
 export function facetMixins(model: Model, marks) {
-  // TODO: we might want to consolidate this in one stats table
   const layout = model.layout();
 
   const cellWidth: any = !model.has(COLUMN) ?
-      {field: {group: 'width'}} :
+      {field: {group: 'width'}} :     // cellWidth = width -- just use group's
     layout.cellWidth.field ?
-      {scale: 'column', band: true} :
-      {value: layout.cellWidth};
+      {scale: 'column', band: true} : // bandSize of the scale
+      {value: layout.cellWidth};      // static value 
 
   const cellHeight: any = !model.has(ROW) ?
-      {field: {group: 'height'}} :
+      {field: {group: 'height'}} :  // cellHeight = height -- just use group's
     layout.cellHeight.field ?
-      {scale: 'row', band: true} :
-      {value: layout.cellHeight};
+      {scale: 'row', band: true} :  // bandSize of the scale
+      {value: layout.cellHeight};   // static value
 
   let facetGroupProperties: any = {
     width: cellWidth,
@@ -188,9 +187,9 @@ function getRowRulesGroup(model: Model, cellHeight): any { // TODO: VgMarks
     }
   };
 
-  if (rowRulesOnTop) {
+  if (rowRulesOnTop) { // on top - no need to add offset
     return rowRules;
-  }
+  } // otherwise, need to offset all rules by cellHeight
   return {
     name: 'row-rules-group',
     type: 'group',
@@ -202,6 +201,7 @@ function getRowRulesGroup(model: Model, cellHeight): any { // TODO: VgMarks
           cellHeight :
           // Otherwise, need to get it from layout data in the root group
           {field: {parent: 'cellHeight'}},
+
         // include width so it can be referred inside row-rules
         width: {field: {group: 'width'}}
       }
@@ -234,9 +234,9 @@ function getColumnRulesGroup(model: Model, cellWidth): any { // TODO: VgMarks
     }
   };
 
-  if (colRulesOnLeft) {
+  if (colRulesOnLeft) { // on left, no need to add global offset
     return columnRules;
-  }
+  } // otherwise, need to offset all rules by cellWidth
   return {
     name: 'column-rules-group',
     type: 'group',
@@ -248,6 +248,7 @@ function getColumnRulesGroup(model: Model, cellWidth): any { // TODO: VgMarks
            cellWidth :
            // Otherwise, need to get it from layout data in the root group
            {field: {parent: 'cellWidth'}},
+
         // include height so it can be referred inside column-rules
         height: {field: {group: 'height'}}
       }

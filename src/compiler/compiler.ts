@@ -28,7 +28,6 @@ export function compile(spec, theme?) {
     from: {data: LAYOUT},
     properties: {
       update: {
-        // TODO replace with signal or inline calculation
         width: layout.width.field ?
                {field: layout.width.field} :
                {value: layout.width},

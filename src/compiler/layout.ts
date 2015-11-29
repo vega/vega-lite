@@ -16,9 +16,10 @@ interface DataRef {
   value?: string;
 }
 
+// value that we can put in scale's domain/range (either a number, or a data ref)
 type LayoutValue = number | DataRef;
 
-export function compileLayout(model: Model) {
+export function compileLayout(model: Model): {[layoutProp: string]: LayoutValue} {
   const cellWidth = getCellWidth(model);
   const cellHeight = getCellHeight(model);
   return {

@@ -115,6 +115,7 @@ export function orient(model: Model, channel: Channel) {
   if (orient) {
     return orient;
   } else if (channel === COLUMN) {
+    // FIXME test and decide
     return 'top';
   } else if (channel === ROW) {
     if (model.has(Y) && model.fieldDef(Y).axis.orient !== 'right') {
@@ -164,8 +165,10 @@ export function title(model: Model, channel: Channel) {
   if (axisSpec.titleMaxLength) {
     maxLength = axisSpec.titleMaxLength;
   } else if (channel === X && typeof layout.cellWidth === 'number') {
+    // Guess max length if we know cell size at compile time
     maxLength = layout.cellWidth / model.config('characterWidth');
   } else if (channel === Y && typeof layout.cellHeight === 'number') {
+    // Guess max length if we know cell size at compile time
     maxLength = layout.cellHeight / model.config('characterWidth');
   }
 
@@ -230,7 +233,8 @@ namespace properties {
         if (def.orient === 'right') {
           spec = util.extend({
             angle: {value: 90},
-            align: {value: 'center'}
+            align: {value: 'center'},
+            baseline: {value: 'bottom'}
           }, spec || {});
         }
     }
