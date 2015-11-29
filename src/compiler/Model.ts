@@ -5,7 +5,6 @@ import {FieldDef} from '../schema/fielddef.schema';
 import {MAXBINS_DEFAULT} from '../bin';
 import {COLUMN, ROW, X, Y, COLOR, DETAIL, Channel} from '../channel';
 import {SOURCE, SUMMARY} from '../data';
-import {FieldRefOption} from '../fielddef';
 import * as vlFieldDef from '../fielddef';
 import * as vlEncoding from '../encoding';
 import {compileLayout} from './layout';
@@ -16,6 +15,23 @@ import {StackProperties} from './stack';
 import {getFullName, NOMINAL, ORDINAL, TEMPORAL} from '../type';
 import {duplicate} from '../util';
 import * as time from './time';
+
+
+interface FieldRefOption {
+  /** exclude bin, aggregate, timeUnit */
+  nofn?: boolean;
+  /** exclude aggregation function */
+  noAggregate?: boolean;
+  /** include 'datum.' */
+  datum?: boolean;
+  /** replace fn with custom function prefix */
+  fn?: string;
+  /** prepend fn with custom function prefix */
+  prefn?: string;
+  /** append suffix to the field ref for bin (default='_start') */
+  binSuffix?: string;
+}
+
 
 /**
  * Internal model of Vega-Lite specification for the compiler.
@@ -122,7 +138,27 @@ export class Model {
 
   // get "field" reference for vega
   fieldRef(channel: Channel, opt?: FieldRefOption) {
-    return vlFieldDef.fieldRef(this._spec.encoding[channel], opt);
+    opt = opt || {};
+
+    const fieldDef = this.fieldDef(channel);
+
+    var f = (opt.datum ? 'datum.' : '') + (opt.prefn || ''),
+      field = fieldDef.field;
+
+    if (vlFieldDef.isCount(fieldDef)) {
+      return f + 'count';
+    } else if (opt.fn) {
+      return f + opt.fn + '_' + field;
+    } else if (!opt.nofn && fieldDef.bin) {
+      var binSuffix = opt.binSuffix || '_start';
+      return f + 'bin_' + field + binSuffix;
+    } else if (!opt.nofn && !opt.noAggregate && fieldDef.aggregate) {
+      return f + fieldDef.aggregate + '_' + field;
+    } else if (!opt.nofn && fieldDef.timeUnit) {
+      return f + fieldDef.timeUnit + '_' + field;
+    }  else {
+      return f + field;
+    }
   }
 
   fieldTitle(channel: Channel) {

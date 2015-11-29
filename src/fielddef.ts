@@ -10,43 +10,6 @@ import * as time from './compiler/time';
 import {TIMEUNITS} from './timeunit';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL, SHORT_TYPE, TYPE_FROM_SHORT_TYPE} from './type';
 
-export interface FieldRefOption {
-  /** exclude bin, aggregate, timeUnit */
-  nofn?: boolean;
-  /** exclude aggregation function */
-  noAggregate?: boolean;
-  /** include 'datum.' */
-  datum?: boolean;
-  /** replace fn with custom function prefix */
-  fn?: string;
-  /** prepend fn with custom function prefix */
-  prefn?: string;
-  /** append suffix to the field ref for bin (default='_start') */
-  binSuffix?: string;
-}
-
-export function fieldRef(fieldDef: FieldDef, opt?: FieldRefOption) {
-  opt = opt || {};
-
-  var f = (opt.datum ? 'datum.' : '') + (opt.prefn || ''),
-    field = fieldDef.field;
-
-  if (isCount(fieldDef)) {
-    return f + 'count';
-  } else if (opt.fn) {
-    return f + opt.fn + '_' + field;
-  } else if (!opt.nofn && fieldDef.bin) {
-    var binSuffix = opt.binSuffix || '_start';
-    return f + 'bin_' + field + binSuffix;
-  } else if (!opt.nofn && !opt.noAggregate && fieldDef.aggregate) {
-    return f + fieldDef.aggregate + '_' + field;
-  } else if (!opt.nofn && fieldDef.timeUnit) {
-    return f + fieldDef.timeUnit + '_' + field;
-  }  else {
-    return f + field;
-  }
-}
-
 export function isTypes(fieldDef: FieldDef, types: Array<String>) {
   for (var t = 0; t < types.length; t++) {
     if (fieldDef.type === types[t]) {
