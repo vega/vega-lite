@@ -73,7 +73,8 @@ npm install
 ```
 
 Since Vega-Lite is written in Typescript, you should also install TypeScript
-```
+
+```sh
 npm install -g typescript
 ```
 
@@ -87,9 +88,11 @@ You can `npm run watch` to start a watcher task that
 - lints and tests all JS files when any `.js` file in `test/` or `src/` changes.
 
 Note: These commands use [Gulp](http://gulpjs.com) internally; Therefore, you need to install gulp globally with
+
 ```sh
 npm install -g gulp
 ```
+
 to make them work.  
 
 ### Developing Vega-Lite and Datalib
@@ -98,7 +101,7 @@ Vega-Lite depends on [Datalib](https://github.com/vega/datalib).
 If you plan to make changes to datalib and test Vega-Lite without publishing / copying compiled datalib all the time, use npm's [link](http://justjs.com/posts/npm-link-developing-your-own-npm-modules-without-tears) function.
 
 
-```
+```sh
 # first link datalib global npm
 cd path/to/datalib
 npm link
