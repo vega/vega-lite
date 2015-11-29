@@ -23,15 +23,3 @@ describe('vl.fieldDef.cardinality()', function () {
     });
   });
 });
-
-describe('vl.fieldDef.isTypes', function () {
-  it('should return correct type checking', function() {
-    var qDef = {field: 'number', type:'quantitative'};
-    expect(qDef.type === QUANTITATIVE).to.eql(true);
-    expect(vlFieldDef.isTypes(qDef, [QUANTITATIVE])).to.eql(true);
-    expect(vlFieldDef.isTypes(qDef, [QUANTITATIVE, ORDINAL])).to.eql(true);
-    expect(vlFieldDef.isTypes(qDef, [ORDINAL, QUANTITATIVE])).to.eql(true);
-    expect(vlFieldDef.isTypes(qDef, [QUANTITATIVE, NOMINAL])).to.eql(true);
-    expect(vlFieldDef.isTypes(qDef, [NOMINAL])).to.eql(false);
-  });
-});

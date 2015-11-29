@@ -5,24 +5,15 @@ import {Bin} from './schema/bin.schema';
 
 import {MAXBINS_DEFAULT} from './bin';
 import {AGGREGATE_OPS} from './aggregate';
-import {getbins} from './util';
+import {contains, getbins} from './util';
 import * as time from './compiler/time';
 import {TIMEUNITS} from './timeunit';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL, SHORT_TYPE, TYPE_FROM_SHORT_TYPE} from './type';
 
-export function isTypes(fieldDef: FieldDef, types: Array<String>) {
-  for (var t = 0; t < types.length; t++) {
-    if (fieldDef.type === types[t]) {
-      return true;
-    }
-  }
-  return false;
-}
-
 
 // TODO remove these "isDimension/isMeasure" stuff
 function _isFieldDimension(fieldDef: FieldDef) {
-  return  isTypes(fieldDef, [NOMINAL, ORDINAL]) || !!fieldDef.bin ||
+  return  contains([NOMINAL, ORDINAL], fieldDef.type) || !!fieldDef.bin ||
     (fieldDef.type === TEMPORAL && !!fieldDef.timeUnit );
 }
 

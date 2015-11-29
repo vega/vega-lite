@@ -1,5 +1,5 @@
 import {Model} from './Model';
-import {extend, truncate} from '../util';
+import {contains, extend, truncate} from '../util';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 import {COLUMN, ROW, X, Y, Channel} from '../channel';
 import * as time from './time';
@@ -78,7 +78,8 @@ export function format(model: Model, channel: Channel) {
 }
 
 export function grid(model: Model, channel: Channel) {
-  var grid = model.fieldDef(channel).axis.grid;
+  const fieldDef = model.fieldDef(channel);
+  var grid = fieldDef.axis.grid;
   if (grid !== undefined) {
     return grid;
   }
@@ -86,7 +87,7 @@ export function grid(model: Model, channel: Channel) {
   // If `grid` is unspecified, the default value is `true` for
   // - X and Y that have (1) quantitative fields that are not binned or (2) time fields.
   // Otherwise, the default value is `false`.
-  return (model.isTypes(channel, [QUANTITATIVE, TEMPORAL]) && !model.fieldDef(channel).bin);
+  return (contains([QUANTITATIVE, TEMPORAL], fieldDef.type) && !model.fieldDef(channel).bin);
 }
 
 export function layer(model: Model, channel: Channel, def) {
@@ -213,7 +214,7 @@ namespace properties {
       }, spec || {});
     }
 
-    if (model.isTypes(channel, [NOMINAL, ORDINAL]) && fieldDef.axis.labelMaxLength) {
+    if (contains([NOMINAL, ORDINAL], fieldDef.type) && fieldDef.axis.labelMaxLength) {
       // TODO replace this with Vega's labelMaxLength once it is introduced
       spec = extend({
         text: {

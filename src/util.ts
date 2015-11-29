@@ -5,6 +5,10 @@ export * from 'datalib/src/generate';
 export * from 'datalib/src/stats';
 
 
+export function contains(array, item) {
+  return array.indexOf(item) > -1;
+}
+
 export function forEach(obj, f, thisArg) {
   if (obj.forEach) {
     obj.forEach.call(thisArg, f);
@@ -54,7 +58,7 @@ export function all(arr: Array<any>, f: (d, k?, i?) => boolean) {
   return true;
 }
 
-// FIXME remove this 
+// FIXME remove this
 import dlBin = require('datalib/src/bins/bins');
 export function getbins(stats, maxbins) {
   return dlBin({
