@@ -183,9 +183,7 @@ Moreover, Vega-Lite supports the following additional axis properties.
 | titleOffset     | Integer       | Offset between the axis title and the axis.  |
 
 <sup>1</sup>
-If `grid` is unspecified, the default value is `true` for ROW and COL.
-For X and Y, the default value is `true` for (1) quantitative fields that are not binned and (2) time fields.
-Otherwise, the default value is `false`.
+If `grid` is unspecified for X and Y, the default value is `true` for (1) quantitative fields that are not binned and (2) time fields.  Otherwise, the default value is `false`.
 
 <sup>2</sup>
 If `title` is unspecified, the default value is produced from the field's name and transformation function applied e.g, "field_name", "SUM(field_name)", "BIN(field_name)", "YEAR(field_name)".

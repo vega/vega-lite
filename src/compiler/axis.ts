@@ -43,11 +43,11 @@ export function compileAxis(channel: Channel, model: Model, layout) {
   var props = model.fieldDef(channel).axis.properties || {};
 
   [
-    'axis', 'grid', 'labels',// have special rules
-    'title', 'ticks', 'majorTicks', 'minorTicks' // only default values
+    'axis', 'labels',// have special rules
+    'grid', 'title', 'ticks', 'majorTicks', 'minorTicks' // only default values
   ].forEach(function(group) {
     var value = properties[group] ?
-      properties[group](model, channel, props[group], def, layout) :
+      properties[group](model, channel, props[group], def) :
       props[group];
     if (value !== undefined) {
       def.properties = def.properties || {};
@@ -85,11 +85,9 @@ export function grid(model: Model, channel: Channel) {
   }
 
   // If `grid` is unspecified, the default value is `true` for
-  // - ROW and COL.
   // - X and Y that have (1) quantitative fields that are not binned or (2) time fields.
   // Otherwise, the default value is `false`.
-  return channel === ROW || channel === COLUMN ||
-    (model.isTypes(channel, [QUANTITATIVE, TEMPORAL]) && !model.fieldDef(channel).bin);
+  return (model.isTypes(channel, [QUANTITATIVE, TEMPORAL]) && !model.fieldDef(channel).bin);
 }
 
 export function layer(model: Model, channel: Channel, def) {
@@ -195,71 +193,6 @@ namespace properties {
       return util.extend({
         opacity: {value: 0}
       }, spec || {});
-    }
-    return spec || undefined;
-  }
-
-  export function grid(model: Model, channel: Channel, spec, def, layout) {
-    var cellPadding = model.config('cellPadding');
-
-    if (def.grid) {
-      if (channel === COLUMN) {
-        // set grid property -- put the lines on the right the cell
-        var yOffset = model.config('cellGridOffset');
-
-        var sign = model.fieldDef(channel).axis.orient === 'bottom' ? -1 : 1;
-
-        // TODO(#677): this should depend on orient
-        return util.extend({
-          x: {
-            offset: roundFloat(layout.cellWidth + cellPadding / 2 - 1),
-            // default value(s) -- vega doesn't do recursive merge
-            scale: 'column',
-            field: 'data'
-          },
-          y: {
-            value: - sign * yOffset,
-          },
-          y2: {
-            field: {group: 'mark.group.height'},
-            offset: sign * yOffset,
-            mult: sign
-          },
-          stroke: { value: model.config('cellGridColor') },
-          strokeOpacity: { value: model.config('cellGridOpacity') }
-        }, spec || {});
-      } else if (channel === ROW) {
-        var xOffset = model.config('cellGridOffset');
-
-        var sign = def.orient === 'right' ? -1 : 1;
-
-        // TODO(#677): this should depend on orient
-        // set grid property -- put the lines on the top
-        return util.extend({
-          y: {
-            offset: roundFloat(- cellPadding / 2 + 1),
-            // default value(s) -- vega doesn't do recursive merge
-            scale: 'row',
-            field: 'data'
-          },
-          x: {
-            value: sign * ((def.offset || 0) - xOffset)
-          },
-          x2: {
-            field: {group: 'mark.group.width'},
-            offset: sign * ((def.offset || 0) + xOffset),
-            // default value(s) -- vega doesn't do recursive merge
-            mult: sign
-          },
-          stroke: { value: model.config('cellGridColor') },
-          strokeOpacity: { value: model.config('cellGridOpacity') }
-        }, spec || {});
-      } else {
-        return util.extend({
-          stroke: { value: model.config('gridColor') },
-          strokeOpacity: { value: model.config('gridOpacity') }
-        }, spec || {});
-      }
     }
     return spec || undefined;
   }
