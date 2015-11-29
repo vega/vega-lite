@@ -41,10 +41,10 @@ export function facetMixins(model: Model, marks) {
     }
     facetGroupProperties.y = {
       scale: ROW,
-      field: model.fieldRef(ROW)
+      field: model.field(ROW)
     };
 
-    facetKeys.push(model.fieldRef(ROW));
+    facetKeys.push(model.field(ROW));
     rootAxes.push(compileAxis(ROW, model));
     if (model.has(X)) {
       // If has X, prepend a group for shared x-axes in the root group's marks
@@ -67,10 +67,10 @@ export function facetMixins(model: Model, marks) {
     }
     facetGroupProperties.x = {
       scale: COLUMN,
-      field: model.fieldRef(COLUMN)
+      field: model.field(COLUMN)
     };
 
-    facetKeys.push(model.fieldRef(COLUMN));
+    facetKeys.push(model.field(COLUMN));
     rootAxes.push(compileAxis(COLUMN, model));
 
     if (model.has(Y)) {
@@ -122,7 +122,7 @@ function getXAxesGroup(model: Model, cellWidth, hasCol: boolean) {
       update: {
         width: cellWidth,
         height: {field: {group: 'height'}},
-        x: hasCol ? {scale: COLUMN, field: model.fieldRef(COLUMN)} : {value: 0},
+        x: hasCol ? {scale: COLUMN, field: model.field(COLUMN)} : {value: 0},
         y: {value: - model.config('cellPadding') / 2}
       }
     },
@@ -132,7 +132,7 @@ function getXAxesGroup(model: Model, cellWidth, hasCol: boolean) {
     // FIXME facet is too expensive here - we only need to know unique columns
     xAxesGroup.from = {
       data: model.dataTable(),
-      transform: {type: 'facet', groupby: [model.fieldRef(COLUMN)]}
+      transform: {type: 'facet', groupby: [model.field(COLUMN)]}
     };
   }
   return xAxesGroup;
@@ -147,7 +147,7 @@ function getYAxesGroup(model: Model, cellHeight, hasRow: boolean) {
         width: {field: {group: 'width'}},
         height: cellHeight,
         x: {value: - model.config('cellPadding') / 2},
-        y: hasRow ? {scale: ROW, field: model.fieldRef(ROW)} : {value: 0}
+        y: hasRow ? {scale: ROW, field: model.field(ROW)} : {value: 0}
       }
     },
     axes: [compileAxis(Y, model)]
@@ -157,7 +157,7 @@ function getYAxesGroup(model: Model, cellHeight, hasRow: boolean) {
     // FIXME facet is too expensive here - we only need to know unique rows
     yAxesGroup.from = {
       data: model.dataTable(),
-      transform: {type: 'facet', groupby: [model.fieldRef(ROW)]}
+      transform: {type: 'facet', groupby: [model.field(ROW)]}
     };
   }
   return yAxesGroup;
@@ -171,13 +171,13 @@ function getRowRulesGroup(model: Model, cellHeight): any { // TODO: VgMarks
     type: 'rule',
     from: {
       data: 'summary',
-      transform: [{type: 'facet', groupby: [model.fieldRef(ROW)]}]
+      transform: [{type: 'facet', groupby: [model.field(ROW)]}]
     },
     properties: {
       update: {
         y: {
           scale: 'row',
-          field: model.fieldRef(ROW),
+          field: model.field(ROW),
           offset: (rowRulesOnTop ? -1 : 1) * offset
         },
         x: {value: 0, offset: -model.config('cellGridOffset')},
@@ -219,13 +219,13 @@ function getColumnRulesGroup(model: Model, cellWidth): any { // TODO: VgMarks
     type: 'rule',
     from: {
       data: 'summary',
-      transform: [{type: 'facet', groupby: [model.fieldRef(COLUMN)]}]
+      transform: [{type: 'facet', groupby: [model.field(COLUMN)]}]
     },
     properties: {
       update: {
         x: {
           scale: 'column',
-          field: model.fieldRef(COLUMN),
+          field: model.field(COLUMN),
           offset: (colRulesOnLeft ? -1 : 1) * offset
         },
         y: {value: 0, offset: -model.config('cellGridOffset')},

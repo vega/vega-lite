@@ -27,7 +27,7 @@ export function compileMarks(model: Model): any[] {
     let sortBy = marktype === LINE ? model.config('sortLineBy') : undefined;
     if (!sortBy) {
       const sortField = (model.isMeasure(X) && model.isDimension(Y)) ? Y : X;
-      sortBy = '-' + model.fieldRef(sortField);
+      sortBy = '-' + model.field(sortField);
     }
 
     let pathMarks: any = {
@@ -109,7 +109,7 @@ export function compileMarks(model: Model): any[] {
 function detailFields(model:Model): string[] {
   return [COLOR, DETAIL, SHAPE].reduce(function(details, channel) {
     if (model.has(channel) && !model.fieldDef(channel).aggregate) {
-      details.push(model.fieldRef(channel));
+      details.push(model.field(channel));
     }
     return details;
   }, []);
@@ -126,26 +126,26 @@ export function bar(model: Model) {
   if (stack && X === stack.fieldChannel) {
     p.x = {
       scale: X,
-      field: model.fieldRef(X) + '_start'
+      field: model.field(X) + '_start'
     };
     p.x2 = {
       scale: X,
-      field: model.fieldRef(X) + '_end'
+      field: model.field(X) + '_end'
     };
   } else if (model.fieldDef(X).bin) {
     p.x = {
       scale: X,
-      field: model.fieldRef(X, {binSuffix: '_start'}),
+      field: model.field(X, {binSuffix: '_start'}),
       offset: 1
     };
     p.x2 = {
       scale: X,
-      field: model.fieldRef(X, {binSuffix: '_end'})
+      field: model.field(X, {binSuffix: '_end'})
     };
   } else if (model.isMeasure(X)) {
     p.x = {
       scale: X,
-      field: model.fieldRef(X)
+      field: model.field(X)
     };
     if (!model.has(Y) || model.isDimension(Y)) {
       p.x2 = {value: 0};
@@ -154,7 +154,7 @@ export function bar(model: Model) {
     if (model.has(X)) { // is ordinal
        p.xc = {
          scale: X,
-         field: model.fieldRef(X)
+         field: model.field(X)
        };
     } else {
        p.x = {value: 0, offset: model.config('singleBarOffset')};
@@ -167,7 +167,7 @@ export function bar(model: Model) {
       if (model.has(SIZE)) {
         p.width = {
           scale: SIZE,
-          field: model.fieldRef(SIZE)
+          field: model.field(SIZE)
         };
       } else {
         p.width = {
@@ -184,33 +184,33 @@ export function bar(model: Model) {
   if (stack && Y === stack.fieldChannel) {
     p.y = {
       scale: Y,
-      field: model.fieldRef(Y) + '_start'
+      field: model.field(Y) + '_start'
     };
     p.y2 = {
       scale: Y,
-      field: model.fieldRef(Y) + '_end'
+      field: model.field(Y) + '_end'
     };
   } else if (model.fieldDef(Y).bin) {
     p.y = {
       scale: Y,
-      field: model.fieldRef(Y, {binSuffix: '_start'})
+      field: model.field(Y, {binSuffix: '_start'})
     };
     p.y2 = {
       scale: Y,
-      field: model.fieldRef(Y, {binSuffix: '_end'}),
+      field: model.field(Y, {binSuffix: '_end'}),
       offset: 1
     };
   } else if (model.isMeasure(Y)) {
     p.y = {
       scale: Y,
-      field: model.fieldRef(Y)
+      field: model.field(Y)
     };
     p.y2 = {field: {group: 'height'}};
   } else {
     if (model.has(Y)) { // is ordinal
       p.yc = {
         scale: Y,
-        field: model.fieldRef(Y)
+        field: model.field(Y)
       };
     } else {
       p.y2 = {
@@ -222,7 +222,7 @@ export function bar(model: Model) {
     if (model.has(SIZE)) {
       p.height = {
         scale: SIZE,
-        field: model.fieldRef(SIZE)
+        field: model.field(SIZE)
       };
     } else {
       p.height = {
@@ -236,7 +236,7 @@ export function bar(model: Model) {
   if (model.has(COLOR)) {
     p.fill = {
       scale: COLOR,
-      field: model.fieldRef(COLOR)
+      field: model.field(COLOR)
     };
   } else {
     p.fill = {value: model.fieldDef(COLOR).value};
@@ -257,7 +257,7 @@ export function point(model: Model) {
   if (model.has(X)) {
     p.x = {
       scale: X,
-      field: model.fieldRef(X, {binSuffix: '_mid'})
+      field: model.field(X, {binSuffix: '_mid'})
     };
   } else if (!model.has(X)) {
     p.x = {value: model.bandWidth(X) / 2};
@@ -267,7 +267,7 @@ export function point(model: Model) {
   if (model.has(Y)) {
     p.y = {
       scale: Y,
-      field: model.fieldRef(Y, {binSuffix: '_mid'})
+      field: model.field(Y, {binSuffix: '_mid'})
     };
   } else if (!model.has(Y)) {
     p.y = {value: model.bandWidth(Y) / 2};
@@ -277,7 +277,7 @@ export function point(model: Model) {
   if (model.has(SIZE)) {
     p.size = {
       scale: SIZE,
-      field: model.fieldRef(SIZE)
+      field: model.field(SIZE)
     };
   } else if (!model.has(SIZE)) {
     p.size = {value: model.fieldDef(SIZE).value};
@@ -287,7 +287,7 @@ export function point(model: Model) {
   if (model.has(SHAPE)) {
     p.shape = {
       scale: SHAPE,
-      field: model.fieldRef(SHAPE)
+      field: model.field(SHAPE)
     };
   } else if (!model.has(SHAPE)) {
     p.shape = {value: model.fieldDef(SHAPE).value};
@@ -298,7 +298,7 @@ export function point(model: Model) {
     if (model.has(COLOR)) {
       p.fill = {
         scale: COLOR,
-        field: model.fieldRef(COLOR)
+        field: model.field(COLOR)
       };
     } else if (!model.has(COLOR)) {
       p.fill = {value: model.fieldDef(COLOR).value};
@@ -307,7 +307,7 @@ export function point(model: Model) {
     if (model.has(COLOR)) {
       p.stroke = {
         scale: COLOR,
-        field: model.fieldRef(COLOR)
+        field: model.field(COLOR)
       };
     } else if (!model.has(COLOR)) {
       p.stroke = {value: model.fieldDef(COLOR).value};
@@ -332,7 +332,7 @@ export function line(model: Model) {
   if (model.has(X)) {
     p.x = {
       scale: X,
-      field: model.fieldRef(X, {binSuffix: '_mid'})
+      field: model.field(X, {binSuffix: '_mid'})
     };
   } else if (!model.has(X)) {
     p.x = {value: 0};
@@ -342,7 +342,7 @@ export function line(model: Model) {
   if (model.has(Y)) {
     p.y = {
       scale: Y,
-      field: model.fieldRef(Y, {binSuffix: '_mid'})
+      field: model.field(Y, {binSuffix: '_mid'})
     };
   } else if (!model.has(Y)) {
     p.y = {field: {group: 'height'}};
@@ -352,7 +352,7 @@ export function line(model: Model) {
   if (model.has(COLOR)) {
     p.stroke = {
       scale: COLOR,
-      field: model.fieldRef(COLOR)
+      field: model.field(COLOR)
     };
   } else if (!model.has(COLOR)) {
     p.stroke = {value: model.fieldDef(COLOR).value};
@@ -377,14 +377,14 @@ export function area(model: Model) {
   if (stack && X === stack.fieldChannel) {
     p.x = {
       scale: X,
-      field: model.fieldRef(X) + '_start'
+      field: model.field(X) + '_start'
     };
     p.x2 = {
       scale: X,
-      field: model.fieldRef(X) + '_end'
+      field: model.field(X) + '_end'
     };
   } else if (model.isMeasure(X)) {
-    p.x = {scale: X, field: model.fieldRef(X)};
+    p.x = {scale: X, field: model.field(X)};
     if (model.isDimension(Y)) {
       p.x2 = {
         scale: X,
@@ -395,7 +395,7 @@ export function area(model: Model) {
   } else if (model.has(X)) {
     p.x = {
       scale: X,
-      field: model.fieldRef(X, {binSuffix: '_mid'})
+      field: model.field(X, {binSuffix: '_mid'})
     };
   } else {
     p.x = {value: 0};
@@ -405,16 +405,16 @@ export function area(model: Model) {
   if (stack && Y === stack.fieldChannel) {
     p.y = {
       scale: Y,
-      field: model.fieldRef(Y) + '_start'
+      field: model.field(Y) + '_start'
     };
     p.y2 = {
       scale: Y,
-      field: model.fieldRef(Y) + '_end'
+      field: model.field(Y) + '_end'
     };
   } else if (model.isMeasure(Y)) {
     p.y = {
       scale: Y,
-      field: model.fieldRef(Y)
+      field: model.field(Y)
     };
     p.y2 = {
       scale: Y,
@@ -423,7 +423,7 @@ export function area(model: Model) {
   } else if (model.has(Y)) {
     p.y = {
       scale: Y,
-      field: model.fieldRef(Y, {binSuffix: '_mid'})
+      field: model.field(Y, {binSuffix: '_mid'})
     };
   } else {
     p.y = {field: {group: 'height'}};
@@ -433,7 +433,7 @@ export function area(model: Model) {
   if (model.has(COLOR)) {
     p.fill = {
       scale: COLOR,
-      field: model.fieldRef(COLOR)
+      field: model.field(COLOR)
     };
   } else if (!model.has(COLOR)) {
     p.fill = {value: model.fieldDef(COLOR).value};
@@ -455,7 +455,7 @@ export function tick(model: Model) {
   if (model.has(X)) {
     p.x = {
       scale: X,
-      field: model.fieldRef(X, {binSuffix: '_mid'})
+      field: model.field(X, {binSuffix: '_mid'})
     };
     if (model.isDimension(X)) {
       p.x.offset = -model.bandWidth(X) / 3;
@@ -468,7 +468,7 @@ export function tick(model: Model) {
   if (model.has(Y)) {
     p.y = {
       scale: Y,
-      field: model.fieldRef(Y, {binSuffix: '_mid'})
+      field: model.field(Y, {binSuffix: '_mid'})
     };
     if (model.isDimension(Y)) {
       p.y.offset = -model.bandWidth(Y) / 3;
@@ -497,7 +497,7 @@ export function tick(model: Model) {
   if (model.has(COLOR)) {
     p.fill = {
       scale: COLOR,
-      field: model.fieldRef(COLOR)
+      field: model.field(COLOR)
     };
   } else {
     p.fill = {value: model.fieldDef(COLOR).value};
@@ -520,7 +520,7 @@ function filled_point_props(shape) {
     if (model.has(X)) {
       p.x = {
         scale: X,
-        field: model.fieldRef(X, {binSuffix: '_mid'})
+        field: model.field(X, {binSuffix: '_mid'})
       };
     } else if (!model.has(X)) {
       p.x = {value: model.bandWidth(X) / 2};
@@ -530,7 +530,7 @@ function filled_point_props(shape) {
     if (model.has(Y)) {
       p.y = {
         scale: Y,
-        field: model.fieldRef(Y, {binSuffix: '_mid'})
+        field: model.field(Y, {binSuffix: '_mid'})
       };
     } else if (!model.has(Y)) {
       p.y = {value: model.bandWidth(Y) / 2};
@@ -540,7 +540,7 @@ function filled_point_props(shape) {
     if (model.has(SIZE)) {
       p.size = {
         scale: SIZE,
-        field: model.fieldRef(SIZE)
+        field: model.field(SIZE)
       };
     } else if (!model.has(X)) {
       p.size = {value: model.fieldDef(SIZE).value};
@@ -553,7 +553,7 @@ function filled_point_props(shape) {
     if (model.has(COLOR)) {
       p.fill = {
         scale: COLOR,
-        field: model.fieldRef(COLOR)
+        field: model.field(COLOR)
       };
     } else if (!model.has(COLOR)) {
       p.fill = {value: model.fieldDef(COLOR).value};
@@ -577,7 +577,7 @@ export function textBackground(model: Model) {
     y: {value: 0},
     width: {field: {group: 'width'}},
     height: {field: {group: 'height'}},
-    fill: {scale: COLOR, field: model.fieldRef(COLOR)}
+    fill: {scale: COLOR, field: model.field(COLOR)}
   };
 }
 
@@ -590,7 +590,7 @@ export function text(model: Model) {
   if (model.has(X)) {
     p.x = {
       scale: X,
-      field: model.fieldRef(X, {binSuffix: '_mid'})
+      field: model.field(X, {binSuffix: '_mid'})
     };
   } else if (!model.has(X)) {
     if (model.has(TEXT) && model.fieldDef(TEXT).type === QUANTITATIVE) {
@@ -604,7 +604,7 @@ export function text(model: Model) {
   if (model.has(Y)) {
     p.y = {
       scale: Y,
-      field: model.fieldRef(Y, {binSuffix: '_mid'})
+      field: model.field(Y, {binSuffix: '_mid'})
     };
   } else if (!model.has(Y)) {
     p.y = {value: model.bandWidth(Y) / 2};
@@ -614,7 +614,7 @@ export function text(model: Model) {
   if (model.has(SIZE)) {
     p.fontSize = {
       scale: SIZE,
-      field: model.fieldRef(SIZE)
+      field: model.field(SIZE)
     };
   } else if (!model.has(SIZE)) {
     p.fontSize = {value: fieldDef.font.size};
@@ -637,11 +637,11 @@ export function text(model: Model) {
       var numberFormat = fieldDef.format !== undefined ?
                          fieldDef.format : model.numberFormat(TEXT);
 
-      p.text = {template: '{{' + model.fieldRef(TEXT, {datum: true}) + ' | number:\'' +
+      p.text = {template: '{{' + model.field(TEXT, {datum: true}) + ' | number:\'' +
         numberFormat +'\'}}'};
       p.align = {value: fieldDef.align};
     } else {
-      p.text = {field: model.fieldRef(TEXT)};
+      p.text = {field: model.field(TEXT)};
     }
   } else {
     p.text = {value: fieldDef.placeholder};

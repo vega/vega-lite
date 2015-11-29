@@ -20,13 +20,13 @@ interface StackTransform {
 }
 
 // impute data for stacked area
-export function imputeTransform(model) {
+export function imputeTransform(model: Model) {
   const stack = model.stack();
   return {
     type: 'impute',
-    field: model.fieldRef(stack.fieldChannel),
-    groupby: [model.fieldRef(stack.stackChannel)],
-    orderby: [model.fieldRef(stack.groupbyChannel)],
+    field: model.field(stack.fieldChannel),
+    groupby: [model.field(stack.stackChannel)],
+    orderby: [model.field(stack.groupbyChannel)],
     method: 'value',
     value: 0
   };
@@ -35,20 +35,20 @@ export function imputeTransform(model) {
 export function stackTransform(model: Model) {
   const stack = model.stack();
   const sortby = stack.config.sort === 'descending' ?
-                   '-' + model.fieldRef(stack.stackChannel) :
+                   '-' + model.field(stack.stackChannel) :
                  stack.config.sort === 'ascending' ?
-                   model.fieldRef(stack.stackChannel) :
+                   model.field(stack.stackChannel) :
                  isObject(stack.config.sort) ?
                    stack.config.sort :
-                   '-' + model.fieldRef(stack.stackChannel); // default
+                   '-' + model.field(stack.stackChannel); // default
 
-  const valName = model.fieldRef(stack.fieldChannel);
+  const valName = model.field(stack.fieldChannel);
 
   // add stack transform to mark
   var transform: StackTransform = {
     type: 'stack',
-    groupby: [model.fieldRef(stack.groupbyChannel)],
-    field: model.fieldRef(stack.fieldChannel),
+    groupby: [model.field(stack.groupbyChannel)],
+    field: model.field(stack.fieldChannel),
     sortby: sortby,
     output: {
       start: valName + '_start',

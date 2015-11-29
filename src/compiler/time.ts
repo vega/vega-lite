@@ -32,10 +32,10 @@ export function cardinality(fieldDef: FieldDef, stats, filterNull, type) {
   return null;
 }
 
-export function formula(timeUnit, fieldRef: string) {
+export function formula(timeUnit, field: string) {
   // TODO(kanitw): add formula to other time format
   var fn = 'utc' + timeUnit;
-  return fn + '(' + fieldRef + ')';
+  return fn + '(' + field + ')';
 }
 
 export function range(timeUnit, model: Model) {

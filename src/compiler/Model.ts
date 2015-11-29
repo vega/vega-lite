@@ -137,7 +137,7 @@ export class Model {
   }
 
   // get "field" reference for vega
-  fieldRef(channel: Channel, opt?: FieldRefOption) {
+  field(channel: Channel, opt?: FieldRefOption) {
     opt = opt || {};
 
     const fieldDef = this.fieldDef(channel);

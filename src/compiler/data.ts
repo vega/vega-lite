@@ -115,12 +115,12 @@ export namespace source {
   export function timeTransform(model: Model) {
     return model.reduce(function(transform, fieldDef: FieldDef, channel: Channel) {
       if (fieldDef.type === TEMPORAL && fieldDef.timeUnit) {
-        var fieldRef = model.fieldRef(channel, {nofn: true, datum: true});
+        var field = model.field(channel, {nofn: true, datum: true});
 
         transform.push({
           type: 'formula',
-          field: model.fieldRef(channel),
-          expr: time.formula(fieldDef.timeUnit, fieldRef)
+          field: model.field(channel),
+          expr: time.formula(fieldDef.timeUnit, field)
         });
       }
       return transform;
@@ -135,17 +135,17 @@ export namespace source {
           type: 'bin',
           field: fieldDef.field,
           output: {
-            start: model.fieldRef(channel, {binSuffix: '_start'}),
-            end: model.fieldRef(channel, {binSuffix: '_end'})
+            start: model.field(channel, {binSuffix: '_start'}),
+            end: model.field(channel, {binSuffix: '_end'})
           },
           maxbins: typeof bin === 'boolean' ? MAXBINS_DEFAULT : bin.maxbins
         });
         // temporary fix for adding missing `bin_mid` from the bin transform
         transform.push({
           type: 'formula',
-          field: model.fieldRef(channel, {binSuffix: '_mid'}),
-          expr: '(' + model.fieldRef(channel, {datum: true, binSuffix: '_start'}) +
-                '+' + model.fieldRef(channel, {datum: true, binSuffix: '_end'}) + ') / 2'
+          field: model.field(channel, {binSuffix: '_mid'}),
+          expr: '(' + model.field(channel, {datum: true, binSuffix: '_start'}) +
+                '+' + model.field(channel, {datum: true, binSuffix: '_end'}) + ') / 2'
         });
       }
       return transform;
@@ -210,7 +210,7 @@ export namespace layout {
         type: 'formula',
         field: 'cellWidth',
         // (xCardinality + model.padding(X)) * model.bandWidth(X)
-        expr: '(' + model.fieldRef(X, {datum: true, fn: 'distinct'}) + ' + ' +
+        expr: '(' + model.field(X, {datum: true, fn: 'distinct'}) + ' + ' +
               model.padding(X) + ') * ' + model.bandWidth(X)
       });
     }
@@ -224,7 +224,7 @@ export namespace layout {
         type: 'formula',
         field: 'cellHeight',
         // (yCardinality + model.padding(Y)) * model.bandWidth(Y)
-        expr: '(' + model.fieldRef(Y, {datum: true, fn: 'distinct'}) + ' + ' +
+        expr: '(' + model.field(Y, {datum: true, fn: 'distinct'}) + ' + ' +
               model.padding(Y) + ') * ' + model.bandWidth(Y)
       });
     }
@@ -236,7 +236,7 @@ export namespace layout {
       const cellWidth = layout.cellWidth.field ?
                         'datum.' + layout.cellWidth.field :
                         layout.cellWidth;
-      const distinctCol = model.fieldRef(COLUMN, {datum: true, fn: 'distinct'});
+      const distinctCol = model.field(COLUMN, {datum: true, fn: 'distinct'});
       summarize.push({
         field: model.fieldDef(COLUMN).field,
         ops: ['distinct']
@@ -254,7 +254,7 @@ export namespace layout {
       const cellHeight = layout.cellHeight.field ?
                         'datum.' + layout.cellHeight.field :
                         layout.cellHeight;
-      const distinctRow = model.fieldRef(ROW, {datum: true, fn: 'distinct'});
+      const distinctRow = model.field(ROW, {datum: true, fn: 'distinct'});
       summarize.push({
         field: model.fieldDef(ROW).field,
         ops: ['distinct']
@@ -305,11 +305,11 @@ export namespace summary {
       } else {
         if (fieldDef.bin) {
           // TODO(#694) only add dimension for the required ones.
-          dims[model.fieldRef(channel, {binSuffix: '_start'})] = model.fieldRef(channel, {binSuffix: '_start'});
-          dims[model.fieldRef(channel, {binSuffix: '_mid'})] = model.fieldRef(channel, {binSuffix: '_mid'});
-          dims[model.fieldRef(channel, {binSuffix: '_end'})] = model.fieldRef(channel, {binSuffix: '_end'});
+          dims[model.field(channel, {binSuffix: '_start'})] = model.field(channel, {binSuffix: '_start'});
+          dims[model.field(channel, {binSuffix: '_mid'})] = model.field(channel, {binSuffix: '_mid'});
+          dims[model.field(channel, {binSuffix: '_end'})] = model.field(channel, {binSuffix: '_end'});
         } else {
-          dims[fieldDef.field] = model.fieldRef(channel);
+          dims[fieldDef.field] = model.field(channel);
         }
 
       }
@@ -347,8 +347,8 @@ export namespace stack {
   export function def(model: Model, stackProps: StackProperties):VgData {
     var groupbyChannel = stackProps.groupbyChannel;
     var fieldChannel = stackProps.fieldChannel;
-    var facetFields = (model.has(COLUMN) ? [model.fieldRef(COLUMN)] : [])
-                      .concat((model.has(ROW) ? [model.fieldRef(ROW)] : []))
+    var facetFields = (model.has(COLUMN) ? [model.field(COLUMN)] : [])
+                      .concat((model.has(ROW) ? [model.field(ROW)] : []));
 
     var stacked:VgData = {
       name: STACKED,
@@ -356,8 +356,8 @@ export namespace stack {
       transform: [{
         type: 'aggregate',
         // group by channel and other facets
-        groupby: [model.fieldRef(groupbyChannel)].concat(facetFields),
-        summarize: [{ops: ['sum'], field: model.fieldRef(fieldChannel)}]
+        groupby: [model.field(groupbyChannel)].concat(facetFields),
+        summarize: [{ops: ['sum'], field: model.field(fieldChannel)}]
       }]
     };
 
@@ -368,7 +368,7 @@ export namespace stack {
         summarize: [{
           ops: ['max'],
           // we want max of sum from above transform
-          field: model.fieldRef(fieldChannel, {prefn: 'sum_'})
+          field: model.field(fieldChannel, {prefn: 'sum_'})
         }]
       });
     }
@@ -381,7 +381,7 @@ export function filterNonPositiveForLog(dataTable, model: Model) {
     if (model.fieldDef(channel).scale.type === 'log') {
       dataTable.transform.push({
         type: 'filter',
-        test: model.fieldRef(channel, {datum: true}) + ' > 0'
+        test: model.field(channel, {datum: true}) + ' > 0'
       });
     }
   });

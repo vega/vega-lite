@@ -78,7 +78,7 @@ export function domain(model: Model, channel:Channel, type) {
     const facet = model.has(ROW) || model.has(COLUMN);
     return {
       data: STACKED,
-      field: model.fieldRef(channel, {
+      field: model.field(channel, {
         // If faceted, scale is determined by the max of sum in each facet.
         prefn: (facet ? 'max_' : '') + 'sum_'
       })
@@ -91,7 +91,7 @@ export function domain(model: Model, channel:Channel, type) {
   if (useRawDomain) { // useRawDomain - only Q/T
     return {
       data: SOURCE,
-      field: model.fieldRef(channel, {noAggregate:true})
+      field: model.field(channel, {noAggregate:true})
     };
   } else if (fieldDef.bin) { // bin
 
@@ -99,11 +99,11 @@ export function domain(model: Model, channel:Channel, type) {
       data: model.dataTable(),
       field: type === 'ordinal' ?
         // ordinal scale only use bin start for now
-        model.fieldRef(channel, { binSuffix: '_start' }) :
+        model.field(channel, { binSuffix: '_start' }) :
         // need to merge both bin_start and bin_end for non-ordinal scale
         [
-          model.fieldRef(channel, { binSuffix: '_start' }),
-          model.fieldRef(channel, { binSuffix: '_end' })
+          model.field(channel, { binSuffix: '_start' }),
+          model.field(channel, { binSuffix: '_end' })
         ]
     };
   } else if (sort) { // have sort -- only for ordinal
@@ -111,13 +111,13 @@ export function domain(model: Model, channel:Channel, type) {
       // If sort by aggregation of a specified sort field, we need to use SOURCE table,
       // so we can aggregate values for the scale independently from the main aggregation.
       data: sort.op ? SOURCE : model.dataTable(),
-      field: model.fieldRef(channel),
+      field: model.field(channel),
       sort: sort
     };
   } else {
     return {
       data: model.dataTable(),
-      field: model.fieldRef(channel)
+      field: model.field(channel)
     };
   }
 }
