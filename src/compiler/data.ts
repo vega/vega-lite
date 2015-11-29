@@ -6,7 +6,7 @@ import {StackProperties} from './stack';
 
 import {MAXBINS_DEFAULT} from '../bin';
 import {Channel, X, Y, ROW, COLUMN} from '../channel';
-import {SOURCE, STACKED, STATS, SUMMARY} from '../data';
+import {SOURCE, STACKED, LAYOUT, SUMMARY} from '../data';
 import * as time from './time';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 
@@ -33,7 +33,7 @@ export function compileData(model: Model) {
   filterNonPositive(def[def.length - 1], model);
 
   // add stats for layout calculation
-  const statsDef = stats.def(model);
+  const statsDef = layout.def(model);
   if(statsDef) {
     def.push(statsDef);
   }
@@ -200,7 +200,7 @@ export namespace source {
   }
 }
 
-export namespace stats {
+export namespace layout {
 
   export function def(model: Model): VgData {
     let summarize = [];
@@ -276,7 +276,7 @@ export namespace stats {
 
     if (summarize.length > 0) {
       return {
-        name: STATS,
+        name: LAYOUT,
         source: SOURCE,
         transform: [{
             type: 'aggregate',

@@ -4,7 +4,7 @@ import {FieldDef} from '../schema/fielddef.schema';
 
 import {setter} from '../util';
 import {COLUMN, ROW, X, Y, TEXT, Channel} from '../channel';
-import {STATS} from '../data';
+import {LAYOUT} from '../data';
 import {Model} from './Model';
 import * as time from './time';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
@@ -34,7 +34,7 @@ export function compileLayout(model: Model) {
 function getCellWidth(model: Model): LayoutValue {
   if (model.has(X)) {
     if (model.isOrdinalScale(X)) { // calculate in data
-      return {data: STATS, field: 'cellWidth'};
+      return {data: LAYOUT, field: 'cellWidth'};
     }
     return model.config(model.isFacet() ? 'cellWidth' : 'singleWidth');
   }
@@ -46,7 +46,7 @@ function getCellWidth(model: Model): LayoutValue {
 
 function getWidth(model: Model, cellWidth: LayoutValue): LayoutValue {
   if (model.has(COLUMN)) { // calculate in data
-    return {data: STATS, field: 'width'};
+    return {data: LAYOUT, field: 'width'};
   }
   return cellWidth;
 }
@@ -54,7 +54,7 @@ function getWidth(model: Model, cellWidth: LayoutValue): LayoutValue {
 function getCellHeight(model: Model): LayoutValue {
   if (model.has(Y)) {
     if (model.isOrdinalScale(Y)) { // calculate in data
-      return {data: STATS, field: 'cellHeight'};
+      return {data: LAYOUT, field: 'cellHeight'};
     } else {
       return model.config(model.isFacet() ? 'cellHeight' : 'singleHeight');
     }
@@ -64,7 +64,7 @@ function getCellHeight(model: Model): LayoutValue {
 
 function getHeight(model: Model, cellHeight: LayoutValue): LayoutValue {
   if (model.has(ROW)) {
-    return {data: STATS, field: 'height'};
+    return {data: LAYOUT, field: 'height'};
   }
   return cellHeight;
 }
