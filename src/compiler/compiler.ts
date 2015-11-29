@@ -15,7 +15,7 @@ import {compileScales} from './scale';
 import vlLayout from './layout';
 import * as util from '../util';
 
-import {stats as vlDataStats} from '../data';
+import {stats as vlDataStats, LAYOUT} from '../data';
 import {COLUMN, ROW, X, Y, Channel} from '../channel';
 import {FieldDef} from '../schema/fielddef.schema';
 
@@ -37,7 +37,7 @@ export function compile(spec, stats, theme?) {
   var rootGroup:any = {
     name: 'root',
     type: 'group',
-    from: {data: 'stats'},
+    from: {data: LAYOUT},
     properties: {
       update: {
         // TODO replace with signal or inline calculation
