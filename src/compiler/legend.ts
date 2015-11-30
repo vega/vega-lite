@@ -43,7 +43,7 @@ export function compileLegend(model: Model, channel: Channel, def) {
   });
 
   // 2) Add mark property definition groups
-  let props = legend.properties || {};
+  const props = typeof legend === 'Legend' && legend.properties || {};
   ['title', 'labels', 'symbols', 'legend'].forEach(function(group) {
     let value = properties[group] ?
       properties[group](model, channel, props[group]) : // apply rule
@@ -58,9 +58,11 @@ export function compileLegend(model: Model, channel: Channel, def) {
 }
 
 export function title(model: Model, channel: Channel) {
-  let leg = model.fieldDef(channel).legend;
+  const legend = model.fieldDef(channel).legend;
 
-  if (leg.title) return leg.title;
+  if (typeof legend === 'Legend' && legend.title) {
+    return legend.title;
+  }
 
   return model.fieldTitle(channel);
 }

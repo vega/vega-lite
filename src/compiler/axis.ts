@@ -103,7 +103,7 @@ export function layer(model: Model, channel: Channel, def) {
 };
 
 export function offset(model: Model, channel: Channel, def) {
-  var offset = model.fieldDef(channel).axis.offset;
+  const offset = model.fieldDef(channel).axis.offset;
   if (offset) {
     return offset;
   }
@@ -131,7 +131,7 @@ export function orient(model: Model, channel: Channel) {
 }
 
 export function ticks(model: Model, channel: Channel) {
-  var ticks = model.fieldDef(channel).axis.ticks;
+  const ticks = model.fieldDef(channel).axis.ticks;
   if (ticks !== undefined) {
     return ticks;
   }
@@ -145,7 +145,7 @@ export function ticks(model: Model, channel: Channel) {
 }
 
 export function tickSize(model: Model, channel: Channel) {
-  var tickSize = model.fieldDef(channel).axis.tickSize;
+  const tickSize = model.fieldDef(channel).axis.tickSize;
   if (tickSize !== undefined) {
     return tickSize;
   }

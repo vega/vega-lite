@@ -4,8 +4,10 @@ export interface Axis {
   grid?: boolean;
   layer?: string;
   orient?: string;
-  ticks?: string;
+  ticks?: number;
   title?: string;
+  tickSize?: number;
+  offset?: number;
   // Vega-Lite only
   labelMaxLength?: number;
   titleMaxLength?: number;
