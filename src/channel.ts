@@ -21,6 +21,10 @@ interface SupportedMarktype {
   [marktype: string]: boolean;
 };
 
+export function supportMarktype(channel: Channel, marktype) {
+  return !!getSupportedMarktype(channel)[marktype];
+}
+
 /**
  * Return a dictionary showing whether a channel supports mark type.
  * @param  {Enctype.Type}  channel
