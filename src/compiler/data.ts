@@ -203,7 +203,7 @@ export namespace layout {
     // TODO: handle "fit" mode
     if (model.has(X) && model.isOrdinalScale(X)) { // FIXME check if we need to call twice
       summarize.push({
-        field: model.fieldDef(X).field,
+        field: model.field(X),
         ops: ['distinct']
       });
       formulas.push({
@@ -217,7 +217,7 @@ export namespace layout {
 
     if (model.has(Y) && model.isOrdinalScale(Y)) { // FIXME check if we need to call twice
       summarize.push({
-        field: model.fieldDef(Y).field,
+        field: model.field(Y),
         ops: ['distinct']
       });
       formulas.push({
