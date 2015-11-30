@@ -207,10 +207,8 @@ namespace properties {
 
   export function labels(model: Model, channel: Channel, spec, def) {
     let fieldDef = model.fieldDef(channel);
-    var timeUnit = fieldDef.timeUnit;
-    var filterName = time.labelTemplate(timeUnit, fieldDef.axis.shortTimeNames);
-    if (fieldDef.type === TEMPORAL && timeUnit && time.labelTemplate(timeUnit)) {
-      var filterName = time.labelTemplate(timeUnit, fieldDef.axis.shortTimeNames);
+    var filterName = time.labelTemplate(fieldDef.timeUnit, fieldDef.axis.shortTimeNames);
+    if (fieldDef.type === TEMPORAL && filterName) {
       spec = extend({
         text: {template: '{{datum.data | ' + filterName + '}}'}
       }, spec || {});
