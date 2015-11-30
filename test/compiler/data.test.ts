@@ -211,7 +211,7 @@ describe('data.summary', function () {
       });
 
     var aggregated = summary.def(encoding);
-    expect(aggregated ).to.eql({
+    expect(aggregated).to.eql({
       'name': SUMMARY,
       'source': 'source',
       'transform': [{
