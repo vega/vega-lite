@@ -208,9 +208,11 @@ namespace properties {
   export function labels(model: Model, channel: Channel, spec, def) {
     let fieldDef = model.fieldDef(channel);
     var timeUnit = fieldDef.timeUnit;
-    if (fieldDef.type === TEMPORAL && timeUnit && (time.hasScale(timeUnit))) {
+    var filterName = time.labelTemplate(timeUnit, fieldDef.axis.shortTimeNames);
+    if (fieldDef.type === TEMPORAL && timeUnit && time.labelTemplate(timeUnit)) {
+      var filterName = time.labelTemplate(timeUnit, fieldDef.axis.shortTimeNames);
       spec = extend({
-        text: {scale: 'time-' + timeUnit, field: 'data'}
+        text: {template: '{{datum.data | ' + filterName + '}}'}
       }, spec || {});
     }
 
@@ -226,7 +228,7 @@ namespace properties {
      // for x-axis, set ticks for Q or rotate scale for ordinal scale
     switch (channel) {
       case X:
-        if ((model.isDimension(X) || fieldDef.type === TEMPORAL)) {
+        if (model.isDimension(X) || fieldDef.type === TEMPORAL) {
           spec = extend({
             angle: {value: 270},
             align: {value: def.orient === 'top' ? 'left': 'right'},

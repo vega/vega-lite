@@ -5,11 +5,6 @@ import * as util from '../util';
 import {COLOR, COLUMN, ROW, Channel} from '../channel';
 import {TEMPORAL} from '../type';
 
-// 'Wednesday September 17 04:00:00 2014'
-// Wednesday is the longest date
-// September is the longest month (8 in javascript as it is zero-indexed).
-const LONG_DATE = new Date(Date.UTC(2014, 8, 17));
-
 export function cardinality(fieldDef: FieldDef, stats, filterNull, type) {
   var timeUnit = fieldDef.timeUnit;
   switch (timeUnit) {
@@ -57,24 +52,6 @@ export function range(timeUnit, model: Model) {
   return;
 }
 
-
-/**
- * @param  {Model} model
- * @return {Array}  scales for time unit names
- */
-export function scales(model: Model) {
-  var scales = model.reduce(function(scales, fieldDef) {
-    var timeUnit = fieldDef.timeUnit;
-    if (fieldDef.type === TEMPORAL && timeUnit && !scales[timeUnit]) {
-      var scaleDef = scale.def(fieldDef.timeUnit, model);
-      if (scaleDef) scales[timeUnit] = scaleDef;
-    }
-    return scales;
-  }, {});
-
-  return util.vals(scales);
-}
-
 function isOrdinalFn(timeUnit) {
   switch (timeUnit) {
     case 'seconds':
@@ -88,23 +65,7 @@ function isOrdinalFn(timeUnit) {
   return false;
 }
 
-
 export namespace scale {
-  /** append custom time scales for axis label */
-  export function def(timeUnit, model: Model) {
-    var rangeDef = range(timeUnit, model);
-
-    if (rangeDef) {
-      return {
-        name: 'time-'+timeUnit,
-        type: 'ordinal',
-        domain: scale.domain(timeUnit),
-        range: rangeDef
-      };
-    }
-    return null;
-  }
-
   export function type(timeUnit, channel: Channel) {
     if (channel === COLOR) {
       return 'linear'; // time has order, so use interpolated ordinal color scale.
@@ -128,12 +89,14 @@ export namespace scale {
   }
 }
 
-/** whether a particular time function has custom scale for labels implemented in time.scale */
-export function hasScale(timeUnit) {
+/** returns the template name used for axis labels for a time unit */
+export function labelTemplate(timeUnit, abbreviated=false) : string {
+  var postfix = abbreviated ? '-abbrev' : '';
   switch (timeUnit) {
     case 'day':
+      return 'day' + postfix;
     case 'month':
-      return true;
+      return 'month' + postfix;
   }
-  return false;
+  return null;
 }

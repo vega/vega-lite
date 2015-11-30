@@ -71,7 +71,7 @@ export function compile(spec, theme?) {
 
 
   // TODO: change type to become VgSpec
-  var output:any = {
+  var output = {
       // FIXME replace 'singleWidth|Height' below with 'auto' once Vega has it.
       width: layout.width.field ? model.config('singleWidth') : layout.width,
       height: layout.height.field ? model.config('singleHeight') : layout.height,
@@ -79,13 +79,6 @@ export function compile(spec, theme?) {
       data: compileData(model),
       marks: [rootGroup]
     };
-
-  // FIXME(domoritz): remove this
-  // global scales contains only time unit scales
-  var timeScales = vlTime.scales(model);
-  if (timeScales.length > 0) {
-    output.scales = timeScales;
-  }
 
   return {
     spec: output
