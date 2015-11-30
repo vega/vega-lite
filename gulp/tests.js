@@ -5,7 +5,7 @@ var gutil = require('gulp-util');
 var mocha = require('gulp-spawn-mocha');
 
 // runs the tests
-gulp.task('coverage', ['compile'], function() {
+gulp.task('coverage', ['compile-watch'], function() {
   return gulp.src(['test/**/*.test.js'], { read: false })
     .pipe(mocha({
       require: 'source-map-support/register',
@@ -15,7 +15,7 @@ gulp.task('coverage', ['compile'], function() {
 });
 
 // quick test
-gulp.task('test', ['compile'],  function() {
+gulp.task('test', ['compile-watch'],  function() {
   return gulp.src(['test/**/*.test.js'], { read: false })
     .pipe(mocha({
       require: 'source-map-support/register',
