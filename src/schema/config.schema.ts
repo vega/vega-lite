@@ -19,17 +19,6 @@ export var config = {
       },
       default: undefined
     },
-    gridColor: {
-      type: 'string',
-      role: 'color',
-      default: '#000000'
-    },
-    gridOpacity: {
-      type: 'number',
-      minimum: 0,
-      maximum: 1,
-      default: 0.08
-    },
 
     // filter null
     // TODO(#597) revise this config
@@ -51,7 +40,7 @@ export var config = {
       minimum: 0
     },
     singleWidth: {
-      // will be overwritten by bandWidth 
+      // will be overwritten by bandWidth
       type: 'integer',
       default: 200,
       minimum: 0
