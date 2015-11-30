@@ -109,7 +109,7 @@ describe('Axis', function() {
             x: {field: 'abcdefghijkl'}
           },
           config: {
-            singleWidth: 60
+            cell: {width: 60}
           }
         }), 'x');
       expect(title).to.eql('abcdefghi…');

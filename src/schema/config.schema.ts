@@ -32,19 +32,6 @@ export var config = {
       }
     },
 
-    // single plot
-    singleHeight: {
-      // will be overwritten by bandWidth
-      type: 'integer',
-      default: 200,
-      minimum: 0
-    },
-    singleWidth: {
-      // will be overwritten by bandWidth
-      type: 'integer',
-      default: 200,
-      minimum: 0
-    },
     // band size
     bandWidth: {
       type: 'integer',
@@ -82,14 +69,7 @@ export var config = {
       role: 'color',
       default: 'rgba(0,0,0,0)'
     },
-    cellWidth: {
-      type: 'integer',
-      default: 150
-    },
-    cellHeight: {
-      type: 'integer',
-      default: 150
-    },
+
     textCellWidth: {
       type: 'integer',
       default: 90,
@@ -128,6 +108,20 @@ export var config = {
           // TODO(#620) refer to Vega spec once it doesn't throw error
           // enum: vgStackSchema.properties.offset.oneOf[0].enum
         }
+      }
+    },
+    // cell
+    cell: {
+      type: 'object',
+      properties: {
+        width: {
+          type: 'integer',
+          default: 200
+        },
+        height: {
+          type: 'integer',
+          default: 200
+        },
       }
     },
 
