@@ -4,7 +4,7 @@ import * as time from './time';
 import {FieldDef} from '../schema/fielddef.schema';
 import {COLUMN, ROW, X, Y, TEXT, Channel} from '../channel';
 import {LAYOUT} from '../data';
-import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
+import {NOMINAL, ORDINAL, QUANTITATIVE} from '../type';
 
 interface DataRef {
   data?: string;

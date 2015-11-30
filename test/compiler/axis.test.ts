@@ -23,7 +23,7 @@ describe('Axis', function() {
     //FIXME decouple the test here
 
     it('should use custom label', function() {
-      expect(_axis.properties.labels.text.scale).to.equal('time-'+ timeUnit);
+      expect(_axis.properties.labels.text.template).to.equal('{{datum.data | month}}');
     });
     it('should rotate label', function() {
       expect(_axis.properties.labels.angle.value).to.equal(270);

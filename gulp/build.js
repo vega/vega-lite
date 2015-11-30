@@ -46,7 +46,7 @@ gulp.task('build', ['compile', 'schema'], function() {
 });
 
 watchBundler.on('update', bundle);
-gulp.task('bundle', ['compile'], bundle);
+gulp.task('bundle', ['compile-watch'], bundle);
 
 gulp.task('clean', function() {
   return del([
@@ -67,6 +67,22 @@ gulp.task('compile', function() {
       sourceMap: true,
       tmpDir: '/tmp',
       outDir: './'
+    }))
+    .pipe(gulp.dest('./'));
+});
+
+// does not terminate on compile error
+gulp.task('compile-watch', function() {
+  return gulp.src([
+      paths.src + '/**/*.ts',
+      paths.test + '/**/*.ts',
+      'typings/**/*.d.ts'
+    ])
+    .pipe($.tsc({
+      sourceMap: true,
+      tmpDir: '/tmp',
+      outDir: './',
+      emitError: false
     }))
     .pipe(gulp.dest('./'));
 });

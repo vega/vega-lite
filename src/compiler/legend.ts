@@ -69,10 +69,10 @@ namespace properties {
   export function labels(model: Model, channel: Channel, spec) {
     var fieldDef = model.fieldDef(channel);
     var timeUnit = fieldDef.timeUnit;
-    if (fieldDef.type === TEMPORAL && timeUnit && time.hasScale(timeUnit)) {
+    if (fieldDef.type === TEMPORAL && timeUnit && time.labelTemplate(timeUnit)) {
       return extend({
         text: {
-          scale: 'time-'+ timeUnit
+          template: '{{datum.data | ' + time.labelTemplate(timeUnit) + '}}'
         }
       }, spec || {});
     }

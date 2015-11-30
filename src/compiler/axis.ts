@@ -84,10 +84,9 @@ export function grid(model: Model, channel: Channel) {
     return grid;
   }
 
-  // If `grid` is unspecified, the default value is `true` for
-  // - X and Y that have (1) quantitative fields that are not binned or (2) time fields.
-  // Otherwise, the default value is `false`.
-  return (contains([QUANTITATIVE, TEMPORAL], fieldDef.type) && !model.fieldDef(channel).bin);
+  // If `grid` is unspecified, the default value is `true` for ordinal scales
+  // that are not binned
+  return !model.isOrdinalScale(channel) && !fieldDef.bin;
 }
 
 export function layer(model: Model, channel: Channel, def) {
@@ -193,10 +192,10 @@ namespace properties {
 
   export function labels(model: Model, channel: Channel, spec, def) {
     let fieldDef = model.fieldDef(channel);
-    var timeUnit = fieldDef.timeUnit;
-    if (fieldDef.type === TEMPORAL && timeUnit && (time.hasScale(timeUnit))) {
+    var filterName = time.labelTemplate(fieldDef.timeUnit, fieldDef.axis.shortTimeNames);
+    if (fieldDef.type === TEMPORAL && filterName) {
       spec = extend({
-        text: {scale: 'time-' + timeUnit, field: 'data'}
+        text: {template: '{{datum.data | ' + filterName + '}}'}
       }, spec || {});
     }
 
@@ -212,7 +211,7 @@ namespace properties {
      // for x-axis, set ticks for Q or rotate scale for ordinal scale
     switch (channel) {
       case X:
-        if ((model.isDimension(X) || fieldDef.type === TEMPORAL)) {
+        if (model.isDimension(X) || fieldDef.type === TEMPORAL) {
           spec = extend({
             angle: {value: 270},
             align: {value: def.orient === 'top' ? 'left': 'right'},
