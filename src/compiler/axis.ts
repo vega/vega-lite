@@ -22,10 +22,10 @@ export function compileAxis(channel: Channel, model: Model) {
   // 1. Add properties
   [
     // a) properties with special rules (so it has axis[property] methods) -- call rule functions
-    'format', 'grid', 'layer', 'offset', 'orient', 'tickSize', 'ticks', 'title', 'titleOffset',
+    'format', 'grid', 'layer', 'offset', 'orient', 'tickSize', 'ticks', 'title',
     // b) properties without rules, only produce default values in the schema, or explicit value if specified
     'tickPadding', 'tickSize', 'tickSizeMajor', 'tickSizeMinor', 'tickSizeEnd',
-    'values', 'subdivide'
+    'titleOffset', 'values', 'subdivide'
   ].forEach(function(property) {
     let method: (model: Model, channel: Channel, def:any)=>any;
 
@@ -178,20 +178,6 @@ export function title(model: Model, channel: Channel) {
   }
 
   return maxLength ? truncate(fieldTitle, maxLength) : fieldTitle;
-}
-
-
-export function titleOffset(model: Model, channel: Channel) {
-  // return specified value if specified
-  var value = model.fieldDef(channel).axis.titleOffset;
-  if (value)  return value;
-
-  switch (channel) {
-    // FIXME add cellAxisTitleOffset
-    case ROW: return 35;
-    case COLUMN: return 35;
-  }
-  return undefined;
 }
 
 namespace properties {
