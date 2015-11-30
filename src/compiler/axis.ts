@@ -84,10 +84,9 @@ export function grid(model: Model, channel: Channel) {
     return grid;
   }
 
-  // If `grid` is unspecified, the default value is `true` for
-  // - X and Y that have (1) quantitative fields that are not binned or (2) time fields that don't have a timeUnit.
-  // Otherwise, the default value is `false`.
-  return (contains([QUANTITATIVE, TEMPORAL], fieldDef.type) && !model.fieldDef(channel).bin && !model.fieldDef(channel).timeUnit);
+  // If `grid` is unspecified, the default value is `true` for ordinal scales
+  // that are not binned
+  return !model.isOrdinalScale(channel) && !fieldDef.bin;
 }
 
 export function layer(model: Model, channel: Channel, def) {
