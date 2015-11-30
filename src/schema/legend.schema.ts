@@ -1,9 +1,15 @@
+import {isObject} from '../util';
+
 export interface Legend {
   orient?: string;
   title?: string;
   format?: string;
   values?: Array<any>;
   properties?: any; //TODO declare VgLegendProperties
+}
+
+export function isLegend(object: any): object is Legend {
+  return isObject(object);
 }
 
 export var legend = {

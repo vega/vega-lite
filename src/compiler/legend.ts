@@ -3,6 +3,7 @@ import {COLOR, SIZE, SHAPE, Channel} from '../channel';
 import {Model} from './Model';
 import * as time from './time';
 import {TEMPORAL} from '../type';
+import {isLegend} from '../schema/legend.schema';
 
 export function compileLegends(model: Model) {
   var defs = [];
@@ -29,7 +30,8 @@ export function compileLegends(model: Model) {
 }
 
 export function compileLegend(model: Model, channel: Channel, def) {
-  let legend = model.fieldDef(channel).legend;
+  // Have to use any because for some reason my custom type guard is not working
+  const legend:any = model.fieldDef(channel).legend;
 
   // 1.1 Add properties with special rules
   def.title = title(model, channel);
@@ -43,7 +45,7 @@ export function compileLegend(model: Model, channel: Channel, def) {
   });
 
   // 2) Add mark property definition groups
-  const props = typeof legend === 'Legend' && legend.properties || {};
+  const props =  isLegend(legend) && legend.properties || {};
   ['title', 'labels', 'symbols', 'legend'].forEach(function(group) {
     let value = properties[group] ?
       properties[group](model, channel, props[group]) : // apply rule
@@ -58,9 +60,10 @@ export function compileLegend(model: Model, channel: Channel, def) {
 }
 
 export function title(model: Model, channel: Channel) {
-  const legend = model.fieldDef(channel).legend;
+  // Have to use any because for some reason my custom type guard is not working
+  const legend: any = model.fieldDef(channel).legend;
 
-  if (typeof legend === 'Legend' && legend.title) {
+  if (isLegend(legend) && legend.title) {
     return legend.title;
   }
 
