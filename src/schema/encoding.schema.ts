@@ -27,7 +27,6 @@ var requiredNameType = {
 };
 
 var x = merge(duplicate(typicalField), requiredNameType, {
-  supportedMarktypes: {point: true, tick: true, bar: true, line: true, area: true, circle: true, square: true},
   properties: {
     axis: axis,
     sort: sort
@@ -36,7 +35,6 @@ var x = merge(duplicate(typicalField), requiredNameType, {
 var y = duplicate(x);
 
 var facet = merge(duplicate(onlyOrdinalField), requiredNameType, {
-  supportedMarktypes: {point: true, tick: true, bar: true, line: true, area: true, circle: true, square: true, text: true},
   properties: {
     axis: axis,
     sort: sort
@@ -47,7 +45,6 @@ var row = merge(duplicate(facet));
 var column = merge(duplicate(facet));
 
 var size = merge(duplicate(typicalField), {
-  supportedMarktypes: {point: true, bar: true, circle: true, square: true, text: true},
   properties: {
     legend: legend,
     sort: sort,
@@ -61,7 +58,6 @@ var size = merge(duplicate(typicalField), {
 });
 
 var color = merge(duplicate(typicalField), {
-  supportedMarktypes: {point: true, tick: true, bar: true, line: true, area: true, circle: true, square: true, 'text': true},
   properties: {
     legend: legend,
     sort: sort,
@@ -98,7 +94,6 @@ var color = merge(duplicate(typicalField), {
 });
 
 var shape = merge(duplicate(onlyOrdinalField), {
-  supportedMarktypes: {point: true, circle: true, square: true},
   properties: {
     legend: legend,
     sort: sort,
@@ -117,7 +112,6 @@ var shape = merge(duplicate(onlyOrdinalField), {
 });
 
 var detail = merge(duplicate(onlyOrdinalField), {
-  supportedMarktypes: {point: true, tick: true, line: true, circle: true, square: true},
   properties: {
     sort: sort
   }
@@ -125,7 +119,6 @@ var detail = merge(duplicate(onlyOrdinalField), {
 
 // we only put aggregated measure in pivot table
 var text = merge(duplicate(typicalField), {
-  supportedMarktypes: {'text': true},
   properties: {
     sort: sort,
 
