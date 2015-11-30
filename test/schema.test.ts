@@ -19,13 +19,6 @@ describe('Schema', function() {
     }
     assert.equal(valid, true);
   });
-
-  it('field def should have supportedMarktypes', function() {
-    var encProps = specSchema.properties.encoding.properties;
-    for (var k in encProps) {
-      assert.notEqual(encProps[k].supportedMarktypes, undefined);
-    }
-  });
 });
 
 describe('Util', function() {
