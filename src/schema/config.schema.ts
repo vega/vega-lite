@@ -142,30 +142,6 @@ export var config = {
       default: 5,
       minimum: 0
     },
-    // scales
-    timeScaleLabelLength: {
-      type: 'integer',
-      default: 3,
-      minimum: 0,
-      description: 'Max length for values in dayScaleLabel and monthScaleLabel.  Zero means using full names in dayScaleLabel/monthScaleLabel.'
-    },
-    dayScaleLabel: {
-      type: 'array',
-      items: {
-        type: 'string'
-      },
-      default: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-      description: 'Axis labels for day of week, starting from Sunday.' +
-        '(Consistent with Javascript -- See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getDay.'
-    },
-    monthScaleLabel: {
-      type: 'array',
-      items: {
-        type: 'string'
-      },
-      default: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-      description: 'Axis labels for month.'
-    },
     // other
     characterWidth: {
       type: 'integer',
