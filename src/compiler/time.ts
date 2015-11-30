@@ -60,7 +60,6 @@ function isOrdinalFn(timeUnit) {
     case 'day':
     case 'date':
     case 'month':
-    case 'year':
       return true;
   }
   return false;
@@ -72,6 +71,7 @@ export namespace scale {
       return 'linear'; // time has order, so use interpolated ordinal color scale.
     }
 
+    // FIXME revise this -- should 'year' be linear too?
     return isOrdinalFn(timeUnit) || channel === COLUMN || channel === ROW ? 'ordinal' : 'linear';
   }
 
