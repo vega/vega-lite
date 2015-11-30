@@ -362,7 +362,7 @@ var EXAMPLES = [
       }
     }
   }, {
-    title: "Birdstrikes throughout the year",
+    title: "Number of birdstrikes throughout the year",
     description: 'Shows how to use timeUnit and shortTimeNames',
     spec: {
       "marktype": "bar",
