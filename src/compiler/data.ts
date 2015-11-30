@@ -136,16 +136,10 @@ export namespace source {
           field: fieldDef.field,
           output: {
             start: model.field(channel, {binSuffix: '_start'}),
+            mid: model.field(channel, {binSuffix: '_mid'}),
             end: model.field(channel, {binSuffix: '_end'})
           },
           maxbins: typeof bin === 'boolean' ? MAXBINS_DEFAULT : bin.maxbins
-        });
-        // temporary fix for adding missing `bin_mid` from the bin transform
-        transform.push({
-          type: 'formula',
-          field: model.field(channel, {binSuffix: '_mid'}),
-          expr: '(' + model.field(channel, {datum: true, binSuffix: '_start'}) +
-                '+' + model.field(channel, {datum: true, binSuffix: '_end'}) + ') / 2'
         });
       }
       return transform;
