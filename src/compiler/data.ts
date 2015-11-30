@@ -210,7 +210,7 @@ export namespace layout {
         type: 'formula',
         field: 'cellWidth',
         // (xCardinality + model.padding(X)) * model.bandWidth(X)
-        expr: '(' + model.field(X, {datum: true, fn: 'distinct'}) + ' + ' +
+        expr: '(' + model.field(X, {datum: true, prefn: 'distinct_'}) + ' + ' +
               model.padding(X) + ') * ' + model.bandWidth(X)
       });
     }
@@ -224,7 +224,7 @@ export namespace layout {
         type: 'formula',
         field: 'cellHeight',
         // (yCardinality + model.padding(Y)) * model.bandWidth(Y)
-        expr: '(' + model.field(Y, {datum: true, fn: 'distinct'}) + ' + ' +
+        expr: '(' + model.field(Y, {datum: true, prefn: 'distinct_'}) + ' + ' +
               model.padding(Y) + ') * ' + model.bandWidth(Y)
       });
     }
@@ -236,7 +236,7 @@ export namespace layout {
       const cellWidth = layout.cellWidth.field ?
                         'datum.' + layout.cellWidth.field :
                         layout.cellWidth;
-      const distinctCol = model.field(COLUMN, {datum: true, fn: 'distinct'});
+      const distinctCol = model.field(COLUMN, {datum: true, prefn: 'distinct_'});
       summarize.push({
         field: model.fieldDef(COLUMN).field,
         ops: ['distinct']
@@ -254,7 +254,7 @@ export namespace layout {
       const cellHeight = layout.cellHeight.field ?
                         'datum.' + layout.cellHeight.field :
                         layout.cellHeight;
-      const distinctRow = model.field(ROW, {datum: true, fn: 'distinct'});
+      const distinctRow = model.field(ROW, {datum: true, prefn: 'distinct_'});
       summarize.push({
         field: model.fieldDef(ROW).field,
         ops: ['distinct']
