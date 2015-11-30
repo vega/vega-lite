@@ -361,6 +361,22 @@ var EXAMPLES = [
         "x": {"type": "ordinal","field": "dataset"}
       }
     }
+  }, {
+    title: "Birdstrikes throughout the year",
+    description: 'Shows how to use timeUnit and shortTimeNames',
+    spec: {
+      "marktype": "bar",
+      "encoding": {
+        "y": {
+          "axis": {"shortTimeNames": true},
+          "field": "Flight_Date",
+          "type": "temporal",
+          "timeUnit": "month"
+        },
+        "x": {"field": "*","type": "quantitative","aggregate": "count"}
+      },
+      "data": {"url": "data/birdstrikes.json"}
+    }
   }
 ];
 
