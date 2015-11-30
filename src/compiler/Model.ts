@@ -132,7 +132,7 @@ export class Model {
     return this._spec.encoding[channel].field !== undefined;
   }
 
-  fieldDef(channel: Channel) {
+  fieldDef(channel: Channel): FieldDef {
     return this._spec.encoding[channel];
   }
 
