@@ -30,7 +30,7 @@ export function compileLegends(model: Model) {
 }
 
 export function compileLegend(model: Model, channel: Channel, def) {
-  // Have to use any because for some reason my custom type guard is not working
+  // https://github.com/Microsoft/TypeScript/issues/5842
   const legend:any = model.fieldDef(channel).legend;
 
   // 1.1 Add properties with special rules
@@ -60,7 +60,7 @@ export function compileLegend(model: Model, channel: Channel, def) {
 }
 
 export function title(model: Model, channel: Channel) {
-  // Have to use any because for some reason my custom type guard is not working
+  // https://github.com/Microsoft/TypeScript/issues/5842
   const legend: any = model.fieldDef(channel).legend;
 
   if (isLegend(legend) && legend.title) {
