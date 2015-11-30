@@ -85,9 +85,9 @@ export function grid(model: Model, channel: Channel) {
   }
 
   // If `grid` is unspecified, the default value is `true` for
-  // - X and Y that have (1) quantitative fields that are not binned or (2) time fields.
+  // - X and Y that have (1) quantitative fields that are not binned or (2) time fields that don't have a timeUnit.
   // Otherwise, the default value is `false`.
-  return (contains([QUANTITATIVE, TEMPORAL], fieldDef.type) && !model.fieldDef(channel).bin);
+  return (contains([QUANTITATIVE, TEMPORAL], fieldDef.type) && !model.fieldDef(channel).bin && !model.fieldDef(channel).timeUnit);
 }
 
 export function layer(model: Model, channel: Channel, def) {
