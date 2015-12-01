@@ -243,7 +243,7 @@ export function bar(model: Model) {
   }
 
   // opacity
-  var opacity = model.fieldDef(COLOR).opacity;
+  var opacity = model.config('marks').opacity;
   if (opacity) p.opacity = {value: opacity};
 
   return p;
@@ -252,6 +252,7 @@ export function bar(model: Model) {
 export function point(model: Model) {
   // TODO Use Vega's marks properties interface
   var p:any = {};
+  const marksConfig = model.config('marks');
 
   // x
   if (model.has(X)) {
@@ -294,7 +295,7 @@ export function point(model: Model) {
   }
 
   // fill or stroke
-  if (model.fieldDef(SHAPE).filled) {
+  if (marksConfig.filled) {
     if (model.has(COLOR)) {
       p.fill = {
         scale: COLOR,
@@ -316,7 +317,7 @@ export function point(model: Model) {
   }
 
   // opacity
-  var opacity = model.fieldDef(COLOR).opacity;
+  var opacity = marksConfig.opacity;
   if (opacity) {
     p.opacity = {value: opacity};
   }
@@ -358,7 +359,7 @@ export function line(model: Model) {
     p.stroke = {value: model.fieldDef(COLOR).value};
   }
 
-  var opacity = model.fieldDef(COLOR).opacity;
+  var opacity = model.config('marks').opacity;
   if (opacity) p.opacity = {value: opacity};
 
   p.strokeWidth = {value: model.config('strokeWidth')};
@@ -439,7 +440,7 @@ export function area(model: Model) {
     p.fill = {value: model.fieldDef(COLOR).value};
   }
 
-  var opacity = model.fieldDef(COLOR).opacity;
+  var opacity = model.config('marks').opacity;
   if (opacity) {
     p.opacity = {value: opacity};
   }
@@ -503,7 +504,7 @@ export function tick(model: Model) {
     p.fill = {value: model.fieldDef(COLOR).value};
   }
 
-  var opacity = model.fieldDef(COLOR).opacity;
+  var opacity = model.config('marks').opacity;
   if (opacity) {
     p.opacity = {value: opacity};
   }
@@ -559,7 +560,7 @@ function filled_point_props(shape) {
       p.fill = {value: model.fieldDef(COLOR).value};
     }
 
-    var opacity = model.fieldDef(COLOR).opacity;
+    var opacity = model.config('marks').opacity;
     if (opacity) {
       p.opacity = {value: opacity};
     }
@@ -626,7 +627,7 @@ export function text(model: Model) {
   // TODO: consider if color should just map to fill instead?
 
 
-  var opacity = model.fieldDef(COLOR).opacity;
+  var opacity = model.config('marks').opacity;
 
   // default opacity in vega is 1 if we don't set it
   if (opacity) {

@@ -147,6 +147,28 @@ export var config = {
     marks: {
       type: 'object',
       properties: {
+        // Vega-Lite special
+        filled: {
+          type: 'boolean',
+          default: false,
+          description: 'Whether the shape\'s color should be used as fill color instead of stroke color.'
+        },
+        format: {
+          type: 'string',
+          default: '',  // auto
+          description: 'The formatting pattern for text value.'+
+                       'If not defined, this will be determined automatically'
+        },
+
+        // General Vega
+
+        opacity: {
+          type: 'number',
+          default: undefined,  // auto
+          minimum: 0,
+          maximum: 1
+        },
+
         // text-only
         align: {
           type: 'string',
@@ -189,12 +211,6 @@ export var config = {
           enum: ['normal', 'bold'],
           default: undefined,
           description: 'The font weight (e.g., bold).'
-        },
-        format: {
-          type: 'string',
-          default: '',  // auto
-          description: 'The formatting pattern for text value.'+
-                       'If not defined, this will be determined automatically'
         }
       }
     },

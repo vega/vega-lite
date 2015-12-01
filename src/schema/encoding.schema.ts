@@ -67,12 +67,6 @@ var color = merge(duplicate(typicalField), {
       default: '#4682b4',
       description: 'Color to be used for marks.'
     },
-    opacity: {
-      type: 'number',
-      default: undefined,  // auto
-      minimum: 0,
-      maximum: 1
-    },
     scale: {
       type: 'object',
       properties: {
@@ -102,11 +96,6 @@ var shape = merge(duplicate(onlyOrdinalField), {
       enum: ['circle', 'square', 'cross', 'diamond', 'triangle-up', 'triangle-down'],
       default: 'circle',
       description: 'Mark to be used.'
-    },
-    filled: {
-      type: 'boolean',
-      default: false,
-      description: 'Whether the shape\'s color should be used as fill color instead of stroke color.'
     }
   }
 });
