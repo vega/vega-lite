@@ -1,14 +1,13 @@
 // https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations
 declare var exports;
 
-import {extend, isObject} from '../util';
+import {extend} from '../util';
 import {Model} from './Model';
 import {SHARED_DOMAIN_OPS} from '../aggregate';
 import {COLUMN, ROW, X, Y, SHAPE, SIZE, COLOR, TEXT, Channel} from '../channel';
 import {SOURCE, STACKED, LAYOUT} from '../data';
 import * as time from './time';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
-import {isSort} from '../schema/sort.schema';
 
 export function compileScales(names: Array<string>, model: Model) {
   return names.reduce(function(a, channel: Channel) {
@@ -130,7 +129,7 @@ export function domainSort(model: Model, channel: Channel, type):any {
   }
 
   // Sorted based on an aggregate calculation over a specified sort field (only for ordinal scale)
-  if (type === 'ordinal' && isSort(sort)) {
+  if (type === 'ordinal' && typeof sort !== 'string') {
     return {
       op: sort.op,
       field: sort.field
@@ -141,7 +140,10 @@ export function domainSort(model: Model, channel: Channel, type):any {
 
 export function reverse(model: Model, channel: Channel) {
   var sort = model.fieldDef(channel).sort;
-  return sort && (sort === 'descending' || (isSort(sort) && sort.order === 'descending')) ? true : undefined;
+  return sort && (typeof sort === 'string' ?
+                    sort === 'descending' :
+                    sort.order === 'descending'
+                 ) ? true : undefined;
 }
 
 /**

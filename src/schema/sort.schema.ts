@@ -1,16 +1,11 @@
 import {AGGREGATE_OPS} from '../aggregate';
 import {ORDINAL, QUANTITATIVE} from '../type';
-import {toMap, isObject} from '../util';
+import {toMap} from '../util';
 
 export interface Sort {
   field: string;
   op: string;
   order?: string;
-}
-
-export function isSort(object: any): object is Sort {
-  // usually, the object is either Sort or boolean so we only do a simple check here
-  return isObject(object);
 }
 
 export var sort = {
