@@ -20,6 +20,9 @@ export interface Scale {
   exponent?: number;
   zero?: boolean;
 
+  // color channel only
+  quantitativeRange? : string[];
+
   // Vega-Lite only
   useRawDomain?: boolean;
 }
@@ -126,7 +129,7 @@ var typicalScaleMixin = {
       description: 'Uses the source data range as scale domain instead of ' +
                    'aggregated data for aggregate axis. ' +
                    'This option does not work with sum or count aggregate' +
-                   'as they might have a substantially larger scale range.' 
+                   'as they might have a substantially larger scale range.'
     }
   }
 };

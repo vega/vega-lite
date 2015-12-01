@@ -27,20 +27,6 @@ export interface FieldDef {
   legend?: Legend | boolean;
   scale?: Scale;
 
-  // text
-  align?: string;
-  baseline?: string;
-  color?: string;
-  margin?: number;
-  placeholder?: string;
-  font?: any; // declare font
-  format?: string;
-  fontSize?: number;
-
-  // TODO: move to config
-  filled?: boolean;
-  opacity?: number;
-
   // TODO: maybe extend this in other app?
   // unused metadata -- for other application
   displayName?: string;
