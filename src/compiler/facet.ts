@@ -180,7 +180,7 @@ function getRowRulesGroup(model: Model, cellHeight): any { // TODO: VgMarks
     name: 'row-rules',
     type: 'rule',
     from: {
-      data: 'summary',
+      data: model.dataTable(),
       transform: [{type: 'facet', groupby: [model.field(ROW)]}]
     },
     properties: {
@@ -228,7 +228,7 @@ function getColumnRulesGroup(model: Model, cellWidth): any { // TODO: VgMarks
     name: 'column-rules',
     type: 'rule',
     from: {
-      data: 'summary',
+      data: model.dataTable(),
       transform: [{type: 'facet', groupby: [model.field(COLUMN)]}]
     },
     properties: {
