@@ -313,7 +313,7 @@ export function point(model: Model) {
     } else if (!model.has(COLOR)) {
       p.stroke = {value: model.fieldDef(COLOR).value};
     }
-    p.strokeWidth = {value: model.config('strokeWidth')};
+    p.strokeWidth = {value: model.config('marks').strokeWidth};
   }
 
   // opacity
@@ -362,7 +362,7 @@ export function line(model: Model) {
   var opacity = model.config('marks').opacity;
   if (opacity) p.opacity = {value: opacity};
 
-  p.strokeWidth = {value: model.config('strokeWidth')};
+  p.strokeWidth = {value: model.config('marks').strokeWidth};
 
   return p;
 }

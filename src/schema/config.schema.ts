@@ -161,12 +161,16 @@ export var config = {
         },
 
         // General Vega
-
         opacity: {
           type: 'number',
           default: undefined,  // auto
           minimum: 0,
           maximum: 1
+        },
+        strokeWidth: {
+          type: 'integer',
+          default: 2,
+          minimum: 0
         },
 
         // text-only
@@ -216,11 +220,6 @@ export var config = {
     },
 
     // marks
-    strokeWidth: {
-      type: 'integer',
-      default: 2,
-      minimum: 0
-    },
     singleBarOffset: {
       type: 'integer',
       default: 5,
