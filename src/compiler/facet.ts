@@ -27,7 +27,7 @@ export function facetMixins(model: Model, marks) {
   let facetGroupProperties: any = {
     width: cellWidth,
     height: cellHeight,
-    fill: {value: model.config('cellBackgroundColor')}
+    fill: {value: model.config('cell').fill}
   };
 
   let rootMarks = [], rootAxes = [], facetKeys = [], cellAxes = [];
@@ -123,7 +123,7 @@ function getXAxesGroup(model: Model, cellWidth, hasCol: boolean) {
         width: cellWidth,
         height: {field: {group: 'height'}},
         x: hasCol ? {scale: COLUMN, field: model.field(COLUMN)} : {value: 0},
-        y: {value: - model.config('cellPadding') / 2}
+        y: {value: - model.config('cell').padding / 2}
       }
     },
     axes: [compileAxis(X, model)]
@@ -146,7 +146,7 @@ function getYAxesGroup(model: Model, cellHeight, hasRow: boolean) {
       update: {
         width: {field: {group: 'width'}},
         height: cellHeight,
-        x: {value: - model.config('cellPadding') / 2},
+        x: {value: - model.config('cell').padding / 2},
         y: hasRow ? {scale: ROW, field: model.field(ROW)} : {value: 0}
       }
     },
@@ -165,7 +165,7 @@ function getYAxesGroup(model: Model, cellHeight, hasRow: boolean) {
 
 function getRowRulesGroup(model: Model, cellHeight): any { // TODO: VgMarks
   const rowRulesOnTop = !model.has(X) || model.fieldDef(X).axis.orient !== 'top';
-  const offset = model.config('cellPadding') / 2 - 1;
+  const offset = model.config('cell').padding / 2 - 1;
   const rowRules = {
     name: 'row-rules',
     type: 'rule',
@@ -180,10 +180,10 @@ function getRowRulesGroup(model: Model, cellHeight): any { // TODO: VgMarks
           field: model.field(ROW),
           offset: (rowRulesOnTop ? -1 : 1) * offset
         },
-        x: {value: 0, offset: -model.config('cellGridOffset')},
-        x2: {field: {group: 'width'}, offset: model.config('cellGridOffset')},
-        stroke: { value: model.config('cellGridColor') },
-        strokeOpacity: { value: model.config('cellGridOpacity') }
+        x: {value: 0, offset: -model.config('cell').gridOffset},
+        x2: {field: {group: 'width'}, offset: model.config('cell').gridOffset},
+        stroke: { value: model.config('cell').gridColor },
+        strokeOpacity: { value: model.config('cell').gridOpacity }
       }
     }
   };
@@ -213,7 +213,7 @@ function getRowRulesGroup(model: Model, cellHeight): any { // TODO: VgMarks
 
 function getColumnRulesGroup(model: Model, cellWidth): any { // TODO: VgMarks
   const colRulesOnLeft = !model.has(Y) || model.fieldDef(Y).axis.orient === 'right';
-  const offset = model.config('cellPadding') / 2 - 1;
+  const offset = model.config('cell').padding / 2 - 1;
   const columnRules = {
     name: 'column-rules',
     type: 'rule',
@@ -228,10 +228,10 @@ function getColumnRulesGroup(model: Model, cellWidth): any { // TODO: VgMarks
           field: model.field(COLUMN),
           offset: (colRulesOnLeft ? -1 : 1) * offset
         },
-        y: {value: 0, offset: -model.config('cellGridOffset')},
-        y2: {field: {group: 'height'}, offset: model.config('cellGridOffset')},
-        stroke: { value: model.config('cellGridColor') },
-        strokeOpacity: { value: model.config('cellGridOpacity') }
+        y: {value: 0, offset: -model.config('cell').gridOffset},
+        y2: {field: {group: 'height'}, offset: model.config('cell').gridOffset},
+        stroke: { value: model.config('cell').gridColor },
+        strokeOpacity: { value: model.config('cell').gridOpacity }
       }
     }
   };

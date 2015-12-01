@@ -223,7 +223,7 @@ export namespace layout {
       });
     }
 
-    const cellPadding = model.config('cellPadding');
+    const cellPadding = model.config('cell').padding;
     const layout = model.layout();
 
     if (model.has(COLUMN)) {

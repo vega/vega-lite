@@ -44,32 +44,6 @@ export var config = {
       description: 'default scale padding ratio for ordinal x/y scales.'
     },
     // small multiples
-    cellPadding: {
-      type: 'integer',
-      default: 16,
-      description: 'default padding between facets.'
-    },
-    cellGridColor: {
-      type: 'string',
-      role: 'color',
-      default: '#000000'
-    },
-    cellGridOpacity: {
-      type: 'number',
-      minimum: 0,
-      maximum: 1,
-      default: 0.25
-    },
-    cellGridOffset: {
-      type: 'number',
-      default: 6 // equal to tickSize
-    },
-    cellBackgroundColor: {
-      type: 'string',
-      role: 'color',
-      default: 'rgba(0,0,0,0)'
-    },
-
     textCellWidth: {
       type: 'integer',
       default: 90,
@@ -122,6 +96,31 @@ export var config = {
           type: 'integer',
           default: 200
         },
+        padding: {
+          type: 'integer',
+          default: 16,
+          description: 'default padding between facets.'
+        },
+        gridColor: {
+          type: 'string',
+          role: 'color',
+          default: '#000000'
+        },
+        gridOpacity: {
+          type: 'number',
+          minimum: 0,
+          maximum: 1,
+          default: 0.25
+        },
+        gridOffset: {
+          type: 'number',
+          default: 6 // equal to tickSize
+        },
+        fill: {
+          type: 'string',
+          role: 'color',
+          default: 'rgba(0,0,0,0)'
+        }
       }
     },
 
