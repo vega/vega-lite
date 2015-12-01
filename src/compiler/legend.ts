@@ -3,7 +3,6 @@ import {COLOR, SIZE, SHAPE, Channel} from '../channel';
 import {Model} from './Model';
 import * as time from './time';
 import {TEMPORAL} from '../type';
-import {isLegend} from '../schema/legend.schema';
 
 export function compileLegends(model: Model) {
   var defs = [];
@@ -45,7 +44,7 @@ export function compileLegend(model: Model, channel: Channel, def) {
   });
 
   // 2) Add mark property definition groups
-  const props =  isLegend(legend) && legend.properties || {};
+  const props = (typeof legend !== 'boolean' && legend.properties) || {};
   ['title', 'labels', 'symbols', 'legend'].forEach(function(group) {
     let value = properties[group] ?
       properties[group](model, channel, props[group]) : // apply rule
@@ -63,7 +62,7 @@ export function title(model: Model, channel: Channel) {
   // https://github.com/Microsoft/TypeScript/issues/5842
   const legend: any = model.fieldDef(channel).legend;
 
-  if (isLegend(legend) && legend.title) {
+  if (typeof legend !== 'boolean' && legend.title) {
     return legend.title;
   }
 
