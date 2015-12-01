@@ -36,6 +36,10 @@ export interface FieldDef {
   font?: any; // declare font
   format?: string;
 
+  // TODO: move to config
+  filled?: boolean;
+  opacity?: number;
+
   // TODO: maybe extend this in other app?
   // unused metadata -- for other application
   displayName?: string;
