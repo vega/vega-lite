@@ -34,7 +34,7 @@ var x = merge(duplicate(typicalField), requiredNameType, {
         bandWidth: {default: 21}
       }
     },
-    axis: axis
+    axis: axis,
     sort: sort
   }
 });
