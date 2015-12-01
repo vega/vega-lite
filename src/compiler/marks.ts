@@ -583,8 +583,9 @@ export function textBackground(model: Model) {
 
 export function text(model: Model) {
   // TODO Use Vega's marks properties interface
-  var p:any = {},
-    fieldDef = model.fieldDef(TEXT);
+  let p:any = {};
+  const fieldDef = model.fieldDef(TEXT);
+  const marksConfig = model.config('marks');
 
   // x
   if (model.has(X)) {
@@ -594,6 +595,7 @@ export function text(model: Model) {
     };
   } else if (!model.has(X)) {
     if (model.has(TEXT) && model.fieldDef(TEXT).type === QUANTITATIVE) {
+      // TODO: make this -5 offset a config
       p.x = {field: {group: 'width'}, offset: -5};
     } else {
       p.x = {value: model.bandWidth(X) / 2};
@@ -617,12 +619,12 @@ export function text(model: Model) {
       field: model.field(SIZE)
     };
   } else if (!model.has(SIZE)) {
-    p.fontSize = {value: fieldDef.font.size};
+    p.fontSize = {value: fieldDef.fontSize};
   }
 
   // fill
-  // color should be set to background
-  p.fill = {value: fieldDef.color};
+  // TODO: consider if color should just map to fill instead?
+
 
   var opacity = model.fieldDef(COLOR).opacity;
 
@@ -634,21 +636,21 @@ export function text(model: Model) {
   // text
   if (model.has(TEXT)) {
     if (model.fieldDef(TEXT).type === QUANTITATIVE) {
-      var numberFormat = fieldDef.format !== undefined ?
-                         fieldDef.format : model.numberFormat(TEXT);
+      // TODO: revise this line
+      var numberFormat = marksConfig.format !== undefined ?
+                         marksConfig.format : model.numberFormat(TEXT);
 
-      p.text = {template: '{{' + model.field(TEXT, {datum: true}) + ' | number:\'' +
-        numberFormat +'\'}}'};
-      p.align = {value: fieldDef.align};
+      p.text = {template: '{{' + model.field(TEXT, {datum: true}) +
+               ' | number:\'' + numberFormat +'\'}}'};
     } else {
       p.text = {field: model.field(TEXT)};
     }
   } else {
-    p.text = {value: fieldDef.placeholder};
+    p.text = {value: fieldDef.value};
   }
 
-  const marksConfig = model.config('marks');
-  ['baseline', 'font', 'fontWeight', 'fontStyle']
+
+  ['align', 'baseline', 'fill', 'font', 'fontWeight', 'fontStyle']
     .forEach(function(property) {
       const value = marksConfig[property];
       if (value !== undefined) {

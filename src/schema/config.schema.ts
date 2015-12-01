@@ -147,23 +147,54 @@ export var config = {
     marks: {
       type: 'object',
       properties: {
+        // text-only
+        align: {
+          type: 'string',
+          default: 'right',
+          enum: ['left', 'right', 'center'],
+          description: 'The horizontal alignment of the text. One of left, right, center.'
+        },
         baseline: {
           type: 'string',
-          default: 'middle'
+          default: 'middle',
+          enum: ['top', 'middle', 'bottom'],
+          description: 'The vertical alignment of the text. One of top, middle, bottom.'
+        },
+        // TODO dx, dy, radius, theta, angle
+        fill: {
+          type: 'string',
+          role: 'color',
+          default: '#000000'
         },
         font: {
           type: 'string',
-          default: undefined
+          default: undefined,
+          role: 'font',
+          description: 'The typeface to set the text in (e.g., Helvetica Neue).'
+        },
+        fontSize: {
+          type: 'integer',
+          default: undefined,
+          minimum: 0,
+          description: 'The font size, in pixels.'
         },
         fontStyle: {
           type: 'string',
           default: undefined,
-          enum: ['normal', 'italic']
+          enum: ['normal', 'italic'],
+          description: 'The font style (e.g., italic).'
         },
         fontWeight: {
           type: 'string',
           enum: ['normal', 'bold'],
-          default: undefined
+          default: undefined,
+          description: 'The font weight (e.g., bold).'
+        },
+        format: {
+          type: 'string',
+          default: '',  // auto
+          description: 'The formatting pattern for text value.'+
+                       'If not defined, this will be determined automatically'
         }
       }
     },

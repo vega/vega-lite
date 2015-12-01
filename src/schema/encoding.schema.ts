@@ -121,43 +121,10 @@ var detail = merge(duplicate(onlyOrdinalField), {
 var text = merge(duplicate(typicalField), {
   properties: {
     sort: sort,
-
-    // TODO: consider if these properties should be under 'marks.'
-    align: {
-      type: 'string',
-      default: 'right'
-    },
-
-    color: {
-      type: 'string',
-      role: 'color',
-      default: '#000000'
-    },
-    margin: {
-      type: 'integer',
-      default: 4,
-      minimum: 0
-    },
-    placeholder: {
+    value: {
       type: 'string',
       default: 'Abc'
-    },
-    font: {
-      type: 'object',
-      properties: {
-        size: {
-          type: 'integer',
-          default: 10,
-          minimum: 0
-        }
-      }
-    },
-    format: {
-      type: 'string',
-      default: '',  // auto
-      description: 'The formatting pattern for text value.'+
-                   'If not defined, this will be determined automatically'
-    },
+    }
   }
 });
 
