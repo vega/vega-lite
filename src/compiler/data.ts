@@ -254,7 +254,6 @@ export namespace layout {
       formulas.push({
         type: 'formula',
         field: 'width',
-        // cellWidth + (|col| + (|col| - 1) * cellPadding)
         expr: cellWidth + ' * ' + colCardinality + ' + ' +
               '(' + colCardinality + ' - 1) * ' + cellPadding
       });
@@ -272,13 +271,12 @@ export namespace layout {
           ops: ['distinct']
         });
       }
-      
+
       const rowCardinality = rowHasDomain ? rowScale.domain.length :
                                model.field(ROW, {datum: true, prefn: 'distinct_'});
       formulas.push({
         type: 'formula',
         field: 'height',
-        // cellHeight + (|row| + (|row| - 1) * cellPadding)
         expr: cellHeight + ' * ' + rowCardinality + ' + ' +
               '(' +rowCardinality + ' - 1) * ' + cellPadding
       });
