@@ -208,7 +208,7 @@ export var config = {
       }
     },
 
-    // marks
+    // FIXME remove this 
     singleBarOffset: {
       type: 'integer',
       default: 5,
@@ -219,11 +219,13 @@ export var config = {
       type: 'integer',
       default: 6
     },
+    // FIXME(#497) handle this
     numberFormat: {
       type: 'string',
       default: 's',
       description: 'D3 Number format for axis labels and text tables.'
     },
+    // FIXME(#497) handle this
     timeFormat: {
       type: 'string',
       default: '%Y-%m-%d',
