@@ -623,7 +623,7 @@ export function text(model: Model) {
       field: model.field(SIZE)
     };
   } else if (!model.has(SIZE)) {
-    p.fontSize = {value: fieldDef.fontSize};
+    p.fontSize = {value: marksConfig.fontSize};
   }
 
   // fill
