@@ -73,7 +73,7 @@ describe('compile.marks', function() {
           e = new Model(f),
           def = marks.properties.point(e);
       it('should be centered', function() {
-        expect(def.y).to.eql({value: e.bandWidth(Y) / 2});
+        expect(def.y).to.eql({value: e.fieldDef(Y).scale.bandWidth / 2});
       });
       it('should scale on x', function() {
         expect(def.x).to.eql({scale: X, field: 'year'});
@@ -85,7 +85,7 @@ describe('compile.marks', function() {
           e = new Model(f),
           def = marks.properties.point(e);
       it('should be centered', function() {
-        expect(def.x).to.eql({value: e.bandWidth(X) / 2});
+        expect(def.x).to.eql({value: e.fieldDef(X).scale.bandWidth / 2});
       });
       it('should scale on y', function() {
         expect(def.y).to.eql({scale: Y, field: 'year'});

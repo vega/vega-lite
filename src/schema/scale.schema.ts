@@ -122,12 +122,11 @@ var typicalScaleMixin = {
     /* Vega-lite only Properties */
     useRawDomain: {
       type: 'boolean',
-      default: undefined,
+      default: false,
       description: 'Uses the source data range as scale domain instead of ' +
                    'aggregated data for aggregate axis. ' +
                    'This option does not work with sum or count aggregate' +
-                   'as they might have a substantially larger scale range.' +
-                   'By default, use value from config.useRawDomain.'
+                   'as they might have a substantially larger scale range.' 
     }
   }
 };

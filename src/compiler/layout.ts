@@ -33,12 +33,12 @@ function getCellWidth(model: Model): LayoutValue {
     if (model.isOrdinalScale(X)) { // calculate in data
       return {data: LAYOUT, field: 'cellWidth'};
     }
-    return model.config(model.isFacet() ? 'cellWidth' : 'singleWidth');
+    return model.config('cell').width;
   }
   if (model.marktype() === TEXT) {
     return model.config('textCellWidth');
   }
-  return model.bandWidth(X);
+  return model.fieldDef(X).scale.bandWidth;
 }
 
 function getWidth(model: Model, cellWidth: LayoutValue): LayoutValue {
@@ -53,10 +53,10 @@ function getCellHeight(model: Model): LayoutValue {
     if (model.isOrdinalScale(Y)) { // calculate in data
       return {data: LAYOUT, field: 'cellHeight'};
     } else {
-      return model.config(model.isFacet() ? 'cellHeight' : 'singleHeight');
+      return model.config('cell').height;
     }
   }
-  return model.bandWidth(Y);
+  return model.fieldDef(Y).scale.bandWidth;
 }
 
 function getHeight(model: Model, cellHeight: LayoutValue): LayoutValue {

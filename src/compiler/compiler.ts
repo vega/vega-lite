@@ -68,13 +68,12 @@ export function compile(spec, theme?) {
     rootGroup.legends = legends;
   }
 
-
-
+  // FIXME replace FIT with appropriate mechanism once Vega has it
+  const FIT = 1;
   // TODO: change type to become VgSpec
   var output = {
-      // FIXME replace 'singleWidth|Height' below with 'auto' once Vega has it.
-      width: layout.width.field ? model.config('singleWidth') : layout.width,
-      height: layout.height.field ? model.config('singleHeight') : layout.height,
+      width: layout.width.field ? FIT : layout.width,
+      height: layout.height.field ? FIT : layout.height,
       padding: 'auto',
       data: compileData(model),
       marks: [rootGroup]

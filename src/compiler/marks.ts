@@ -170,8 +170,9 @@ export function bar(model: Model) {
           field: model.field(SIZE)
         };
       } else {
+        // FIXME consider using band: true here
         p.width = {
-          value: model.bandWidth(X),
+          value: model.fieldDef(X).scale.bandWidth,
           offset: -1
         };
       }
@@ -225,8 +226,9 @@ export function bar(model: Model) {
         field: model.field(SIZE)
       };
     } else {
+      // FIXME: band:true?
       p.height = {
-        value: model.bandWidth(Y),
+        value: model.fieldDef(Y).scale.bandWidth,
         offset: -1
       };
     }
@@ -243,7 +245,7 @@ export function bar(model: Model) {
   }
 
   // opacity
-  var opacity = model.fieldDef(COLOR).opacity;
+  var opacity = model.config('marks').opacity;
   if (opacity) p.opacity = {value: opacity};
 
   return p;
@@ -252,6 +254,7 @@ export function bar(model: Model) {
 export function point(model: Model) {
   // TODO Use Vega's marks properties interface
   var p:any = {};
+  const marksConfig = model.config('marks');
 
   // x
   if (model.has(X)) {
@@ -260,7 +263,7 @@ export function point(model: Model) {
       field: model.field(X, {binSuffix: '_mid'})
     };
   } else if (!model.has(X)) {
-    p.x = {value: model.bandWidth(X) / 2};
+    p.x = {value: model.fieldDef(X).scale.bandWidth / 2};
   }
 
   // y
@@ -270,7 +273,7 @@ export function point(model: Model) {
       field: model.field(Y, {binSuffix: '_mid'})
     };
   } else if (!model.has(Y)) {
-    p.y = {value: model.bandWidth(Y) / 2};
+    p.y = {value: model.fieldDef(Y).scale.bandWidth / 2};
   }
 
   // size
@@ -294,7 +297,7 @@ export function point(model: Model) {
   }
 
   // fill or stroke
-  if (model.fieldDef(SHAPE).filled) {
+  if (marksConfig.filled) {
     if (model.has(COLOR)) {
       p.fill = {
         scale: COLOR,
@@ -312,11 +315,11 @@ export function point(model: Model) {
     } else if (!model.has(COLOR)) {
       p.stroke = {value: model.fieldDef(COLOR).value};
     }
-    p.strokeWidth = {value: model.config('strokeWidth')};
+    p.strokeWidth = {value: model.config('marks').strokeWidth};
   }
 
   // opacity
-  var opacity = model.fieldDef(COLOR).opacity;
+  var opacity = marksConfig.opacity;
   if (opacity) {
     p.opacity = {value: opacity};
   }
@@ -358,10 +361,10 @@ export function line(model: Model) {
     p.stroke = {value: model.fieldDef(COLOR).value};
   }
 
-  var opacity = model.fieldDef(COLOR).opacity;
+  var opacity = model.config('marks').opacity;
   if (opacity) p.opacity = {value: opacity};
 
-  p.strokeWidth = {value: model.config('strokeWidth')};
+  p.strokeWidth = {value: model.config('marks').strokeWidth};
 
   return p;
 }
@@ -439,7 +442,7 @@ export function area(model: Model) {
     p.fill = {value: model.fieldDef(COLOR).value};
   }
 
-  var opacity = model.fieldDef(COLOR).opacity;
+  var opacity = model.config('marks').opacity;
   if (opacity) {
     p.opacity = {value: opacity};
   }
@@ -449,6 +452,7 @@ export function area(model: Model) {
 
 export function tick(model: Model) {
   // TODO Use Vega's marks properties interface
+  // FIXME are /3 , /1.5 divisions here correct?
   var p:any = {};
 
   // x
@@ -458,7 +462,7 @@ export function tick(model: Model) {
       field: model.field(X, {binSuffix: '_mid'})
     };
     if (model.isDimension(X)) {
-      p.x.offset = -model.bandWidth(X) / 3;
+      p.x.offset = -model.fieldDef(X).scale.bandWidth / 3;
     }
   } else if (!model.has(X)) {
     p.x = {value: 0};
@@ -471,7 +475,7 @@ export function tick(model: Model) {
       field: model.field(Y, {binSuffix: '_mid'})
     };
     if (model.isDimension(Y)) {
-      p.y.offset = -model.bandWidth(Y) / 3;
+      p.y.offset = -model.fieldDef(Y).scale.bandWidth / 3;
     }
   } else if (!model.has(Y)) {
     p.y = {value: 0};
@@ -480,7 +484,7 @@ export function tick(model: Model) {
   // width
   if (!model.has(X) || model.isDimension(X)) {
     // TODO(#694): optimize tick's width for bin
-    p.width = {value: model.bandWidth(X) / 1.5};
+    p.width = {value: model.fieldDef(X).scale.bandWidth / 1.5};
   } else {
     p.width = {value: 1};
   }
@@ -488,7 +492,7 @@ export function tick(model: Model) {
   // height
   if (!model.has(Y) || model.isDimension(Y)) {
     // TODO(#694): optimize tick's height for bin
-    p.height = {value: model.bandWidth(Y) / 1.5};
+    p.height = {value: model.fieldDef(Y).scale.bandWidth / 1.5};
   } else {
     p.height = {value: 1};
   }
@@ -503,7 +507,7 @@ export function tick(model: Model) {
     p.fill = {value: model.fieldDef(COLOR).value};
   }
 
-  var opacity = model.fieldDef(COLOR).opacity;
+  var opacity = model.config('marks').opacity;
   if (opacity) {
     p.opacity = {value: opacity};
   }
@@ -523,7 +527,7 @@ function filled_point_props(shape) {
         field: model.field(X, {binSuffix: '_mid'})
       };
     } else if (!model.has(X)) {
-      p.x = {value: model.bandWidth(X) / 2};
+      p.x = {value: model.fieldDef(X).scale.bandWidth / 2};
     }
 
     // y
@@ -533,7 +537,7 @@ function filled_point_props(shape) {
         field: model.field(Y, {binSuffix: '_mid'})
       };
     } else if (!model.has(Y)) {
-      p.y = {value: model.bandWidth(Y) / 2};
+      p.y = {value: model.fieldDef(Y).scale.bandWidth / 2};
     }
 
     // size
@@ -559,7 +563,7 @@ function filled_point_props(shape) {
       p.fill = {value: model.fieldDef(COLOR).value};
     }
 
-    var opacity = model.fieldDef(COLOR).opacity;
+    var opacity = model.config('marks').opacity;
     if (opacity) {
       p.opacity = {value: opacity};
     }
@@ -583,8 +587,9 @@ export function textBackground(model: Model) {
 
 export function text(model: Model) {
   // TODO Use Vega's marks properties interface
-  var p:any = {},
-    fieldDef = model.fieldDef(TEXT);
+  let p:any = {};
+  const fieldDef = model.fieldDef(TEXT);
+  const marksConfig = model.config('marks');
 
   // x
   if (model.has(X)) {
@@ -594,9 +599,10 @@ export function text(model: Model) {
     };
   } else if (!model.has(X)) {
     if (model.has(TEXT) && model.fieldDef(TEXT).type === QUANTITATIVE) {
+      // TODO: make this -5 offset a config
       p.x = {field: {group: 'width'}, offset: -5};
     } else {
-      p.x = {value: model.bandWidth(X) / 2};
+      p.x = {value: model.fieldDef(X).scale.bandWidth / 2};
     }
   }
 
@@ -607,7 +613,7 @@ export function text(model: Model) {
       field: model.field(Y, {binSuffix: '_mid'})
     };
   } else if (!model.has(Y)) {
-    p.y = {value: model.bandWidth(Y) / 2};
+    p.y = {value: model.fieldDef(Y).scale.bandWidth / 2};
   }
 
   // size
@@ -617,14 +623,14 @@ export function text(model: Model) {
       field: model.field(SIZE)
     };
   } else if (!model.has(SIZE)) {
-    p.fontSize = {value: fieldDef.font.size};
+    p.fontSize = {value: fieldDef.fontSize};
   }
 
   // fill
-  // color should be set to background
-  p.fill = {value: fieldDef.color};
+  // TODO: consider if color should just map to fill instead?
 
-  var opacity = model.fieldDef(COLOR).opacity;
+
+  var opacity = model.config('marks').opacity;
 
   // default opacity in vega is 1 if we don't set it
   if (opacity) {
@@ -634,23 +640,28 @@ export function text(model: Model) {
   // text
   if (model.has(TEXT)) {
     if (model.fieldDef(TEXT).type === QUANTITATIVE) {
-      var numberFormat = fieldDef.format !== undefined ?
-                         fieldDef.format : model.numberFormat(TEXT);
+      // TODO: revise this line
+      var numberFormat = marksConfig.format !== undefined ?
+                         marksConfig.format : model.numberFormat(TEXT);
 
-      p.text = {template: '{{' + model.field(TEXT, {datum: true}) + ' | number:\'' +
-        numberFormat +'\'}}'};
-      p.align = {value: fieldDef.align};
+      p.text = {template: '{{' + model.field(TEXT, {datum: true}) +
+               ' | number:\'' + numberFormat +'\'}}'};
     } else {
       p.text = {field: model.field(TEXT)};
     }
   } else {
-    p.text = {value: fieldDef.placeholder};
+    p.text = {value: fieldDef.value};
   }
 
-  p.font = {value: fieldDef.font.family};
-  p.fontWeight = {value: fieldDef.font.weight};
-  p.fontStyle = {value: fieldDef.font.style};
-  p.baseline = {value: fieldDef.baseline};
+
+  ['align', 'baseline', 'fill', 'font', 'fontWeight', 'fontStyle']
+    .forEach(function(property) {
+      const value = marksConfig[property];
+      if (value !== undefined) {
+        p[property] = {value: value};
+      }
+
+    });
 
   return p;
 }

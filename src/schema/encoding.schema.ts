@@ -28,10 +28,17 @@ var requiredNameType = {
 
 var x = merge(duplicate(typicalField), requiredNameType, {
   properties: {
-    axis: axis,
+    scale: {// replacing default values for just these two axes
+      properties: {
+        padding: {default: 1},
+        bandWidth: {default: 21}
+      }
+    },
+    axis: axis
     sort: sort
   }
 });
+
 var y = duplicate(x);
 
 var facet = merge(duplicate(onlyOrdinalField), requiredNameType, {
@@ -67,12 +74,6 @@ var color = merge(duplicate(typicalField), {
       default: '#4682b4',
       description: 'Color to be used for marks.'
     },
-    opacity: {
-      type: 'number',
-      default: undefined,  // auto
-      minimum: 0,
-      maximum: 1
-    },
     scale: {
       type: 'object',
       properties: {
@@ -102,11 +103,6 @@ var shape = merge(duplicate(onlyOrdinalField), {
       enum: ['circle', 'square', 'cross', 'diamond', 'triangle-up', 'triangle-down'],
       default: 'circle',
       description: 'Mark to be used.'
-    },
-    filled: {
-      type: 'boolean',
-      default: false,
-      description: 'Whether the shape\'s color should be used as fill color instead of stroke color.'
     }
   }
 });
@@ -121,60 +117,10 @@ var detail = merge(duplicate(onlyOrdinalField), {
 var text = merge(duplicate(typicalField), {
   properties: {
     sort: sort,
-
-    // TODO: consider if these properties should be under 'marks.'
-    align: {
-      type: 'string',
-      default: 'right'
-    },
-    baseline: {
-      type: 'string',
-      default: 'middle'
-    },
-    color: {
-      type: 'string',
-      role: 'color',
-      default: '#000000'
-    },
-    margin: {
-      type: 'integer',
-      default: 4,
-      minimum: 0
-    },
-    placeholder: {
+    value: {
       type: 'string',
       default: 'Abc'
-    },
-    font: {
-      type: 'object',
-      properties: {
-        weight: {
-          type: 'string',
-          enum: ['normal', 'bold'],
-          default: 'normal'
-        },
-        size: {
-          type: 'integer',
-          default: 10,
-          minimum: 0
-        },
-        family: {
-          type: 'string',
-          default: 'Helvetica Neue'
-        },
-        style: {
-          type: 'string',
-          default: 'normal',
-          enum: ['normal', 'italic']
-        }
-      }
-    },
-    format: {
-      type: 'string',
-      default: '',  // auto
-      description: 'The formatting pattern for text value.'+
-                   'If not defined, this will be determined automatically'
-    },
+    }
   }
 });
 

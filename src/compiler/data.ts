@@ -200,12 +200,13 @@ export namespace layout {
         field: model.field(X),
         ops: ['distinct']
       });
+      const xScale = model.fieldDef(X).scale;
       formulas.push({
         type: 'formula',
         field: 'cellWidth',
-        // (xCardinality + model.padding(X)) * model.bandWidth(X)
+        // (xCardinality + model.padding(X)) * xBandWidth
         expr: '(' + model.field(X, {datum: true, prefn: 'distinct_'}) + ' + ' +
-              model.padding(X) + ') * ' + model.bandWidth(X)
+              xScale.padding + ') * ' + xScale.bandWidth
       });
     }
 
@@ -214,16 +215,18 @@ export namespace layout {
         field: model.field(Y),
         ops: ['distinct']
       });
+
+      const yScale = model.fieldDef(Y).scale;
       formulas.push({
         type: 'formula',
         field: 'cellHeight',
-        // (yCardinality + model.padding(Y)) * model.bandWidth(Y)
+        // (yCardinality + model.padding(Y)) * yBandWidth
         expr: '(' + model.field(Y, {datum: true, prefn: 'distinct_'}) + ' + ' +
-              model.padding(Y) + ') * ' + model.bandWidth(Y)
+              yScale.padding + ') * ' + yScale.bandWidth
       });
     }
 
-    const cellPadding = model.config('cellPadding');
+    const cellPadding = model.config('cell').padding;
     const layout = model.layout();
 
     if (model.has(COLUMN)) {
