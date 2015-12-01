@@ -8,10 +8,6 @@ export interface Legend {
   properties?: any; //TODO declare VgLegendProperties
 }
 
-export function isLegend(object: any): object is Legend {
-  return isObject(object);
-}
-
 export var legend = {
   default: true,
   description: 'Properties of a legend or boolean flag for determining whether to show it.',
