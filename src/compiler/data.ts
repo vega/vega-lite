@@ -204,7 +204,7 @@ export namespace layout {
       formulas.push({
         type: 'formula',
         field: 'cellWidth',
-        // (xCardinality + model.padding(X)) * model.fieldDef(X).scale.bandWidth
+        // (xCardinality + model.padding(X)) * xBandWidth
         expr: '(' + model.field(X, {datum: true, prefn: 'distinct_'}) + ' + ' +
               xScale.padding + ') * ' + xScale.bandWidth
       });
@@ -220,7 +220,7 @@ export namespace layout {
       formulas.push({
         type: 'formula',
         field: 'cellHeight',
-        // (yCardinality + model.padding(Y)) * model.fieldDef(Y).scale.bandWidth
+        // (yCardinality + model.padding(Y)) * yBandWidth
         expr: '(' + model.field(Y, {datum: true, prefn: 'distinct_'}) + ' + ' +
               yScale.padding + ') * ' + yScale.bandWidth
       });
