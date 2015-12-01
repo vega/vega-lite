@@ -28,10 +28,18 @@ var requiredNameType = {
 
 var x = merge(duplicate(typicalField), requiredNameType, {
   properties: {
-    axis: axis,
+    scale: {// replacing default values for just these two axis
+      properties: {
+        padding: {default: 1},
+        bandWidth: {default: 21}
+      }
+    },
+    axis: axis
     sort: sort
   }
 });
+
+console.log('xAxis', x.properties.axis);
 var y = duplicate(x);
 
 var facet = merge(duplicate(onlyOrdinalField), requiredNameType, {

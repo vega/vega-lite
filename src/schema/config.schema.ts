@@ -32,17 +32,6 @@ export var config = {
       }
     },
 
-    // band size
-    bandWidth: {
-      type: 'integer',
-      default: 21,
-      minimum: 0
-    },
-    padding: {
-      type: 'number',
-      default: 1,
-      description: 'default scale padding ratio for ordinal x/y scales.'
-    },
     // small multiples
     textCellWidth: {
       type: 'integer',

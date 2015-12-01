@@ -173,23 +173,6 @@ export class Model {
     }
   }
 
-  bandWidth(channel: Channel) {
-    if (this.fieldDef(channel).scale.bandWidth !== undefined) {
-      // explicit value
-      return this.fieldDef(channel).scale.bandWidth;
-    }
-    // If not specified, draw value from config.
-    return this.config('bandWidth');
-  }
-
-  padding(channel: Channel) {
-    if (this.fieldDef(channel).scale.padding !== undefined) {
-      // explicit value
-      return this.fieldDef(channel).scale.padding;
-    }
-    return channel === X || channel === Y ? this.config('padding') : undefined;
-  }
-
   // returns false if binning is disabled, otherwise an object with binning properties
   bin(channel: Channel): Bin | boolean {
     var bin = this._spec.encoding[channel].bin;

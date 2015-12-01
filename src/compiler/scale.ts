@@ -172,13 +172,8 @@ export function _useRawDomain (model: Model, channel: Channel) {
 }
 
 export function bandWidth(model: Model, channel: Channel, scaleType) {
-  switch (channel) {
-    case X: /* fall through */
-    case Y:
-      if (scaleType === 'ordinal') {
-        return model.bandWidth(channel);
-      }
-      break;
+  if (scaleType === 'ordinal') {
+    return model.fieldDef(channel).scale.bandWidth;
   }
   return undefined;
 }
@@ -226,7 +221,7 @@ export function outerPadding(model: Model, channel: Channel, scaleType) {
 export function padding(model: Model, channel: Channel, scaleType) {
   if (scaleType === 'ordinal') {
     // Both explicit and non-explicit values are handled by the helper method.
-    return model.padding(channel);
+    return model.fieldDef(channel).scale.padding;
   }
   return undefined;
 }
@@ -267,12 +262,17 @@ export function rangeMixins(model: Model, channel: Channel, scaleType): any {
       if (model.is('bar')) {
         // FIXME this is definitely incorrect
         // but let's fix it later since bar size is a bad encoding anyway
-        return {range: [3, Math.max(model.bandWidth(X), model.bandWidth(Y))]};
+        return {
+          range: [3, Math.max(
+            model.fieldDef(X).scale.bandWidth,
+            model.fieldDef(Y).scale.bandWidth
+          )]
+        };
       } else if (model.is(TEXT)) {
         return {range: [8, 40]};
       }
       // else -- point
-      var bandWidth = Math.min(model.bandWidth(X), model.bandWidth(Y)) - 1;
+      var bandWidth = Math.min(model.fieldDef(X).scale.bandWidth, model.fieldDef(Y).scale.bandWidth) - 1;
       return {range: [10, 0.8 * bandWidth*bandWidth]};
     case SHAPE:
       return {range: 'shapes'};

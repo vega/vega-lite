@@ -38,7 +38,7 @@ function getCellWidth(model: Model): LayoutValue {
   if (model.marktype() === TEXT) {
     return model.config('textCellWidth');
   }
-  return model.bandWidth(X);
+  return model.fieldDef(X).scale.bandWidth;
 }
 
 function getWidth(model: Model, cellWidth: LayoutValue): LayoutValue {
@@ -56,7 +56,7 @@ function getCellHeight(model: Model): LayoutValue {
       return model.config('cell').height;
     }
   }
-  return model.bandWidth(Y);
+  return model.fieldDef(Y).scale.bandWidth;
 }
 
 function getHeight(model: Model, cellHeight: LayoutValue): LayoutValue {

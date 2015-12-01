@@ -170,8 +170,9 @@ export function bar(model: Model) {
           field: model.field(SIZE)
         };
       } else {
+        // FIXME consider using band: true here
         p.width = {
-          value: model.bandWidth(X),
+          value: model.fieldDef(X).scale.bandWidth,
           offset: -1
         };
       }
@@ -225,8 +226,9 @@ export function bar(model: Model) {
         field: model.field(SIZE)
       };
     } else {
+      // FIXME: band:true?
       p.height = {
-        value: model.bandWidth(Y),
+        value: model.fieldDef(Y).scale.bandWidth,
         offset: -1
       };
     }
@@ -261,7 +263,7 @@ export function point(model: Model) {
       field: model.field(X, {binSuffix: '_mid'})
     };
   } else if (!model.has(X)) {
-    p.x = {value: model.bandWidth(X) / 2};
+    p.x = {value: model.fieldDef(X).scale.bandWidth / 2};
   }
 
   // y
@@ -271,7 +273,7 @@ export function point(model: Model) {
       field: model.field(Y, {binSuffix: '_mid'})
     };
   } else if (!model.has(Y)) {
-    p.y = {value: model.bandWidth(Y) / 2};
+    p.y = {value: model.fieldDef(Y).scale.bandWidth / 2};
   }
 
   // size
@@ -450,6 +452,7 @@ export function area(model: Model) {
 
 export function tick(model: Model) {
   // TODO Use Vega's marks properties interface
+  // FIXME are /3 , /1.5 divisions here correct?
   var p:any = {};
 
   // x
@@ -459,7 +462,7 @@ export function tick(model: Model) {
       field: model.field(X, {binSuffix: '_mid'})
     };
     if (model.isDimension(X)) {
-      p.x.offset = -model.bandWidth(X) / 3;
+      p.x.offset = -model.fieldDef(X).scale.bandWidth / 3;
     }
   } else if (!model.has(X)) {
     p.x = {value: 0};
@@ -472,7 +475,7 @@ export function tick(model: Model) {
       field: model.field(Y, {binSuffix: '_mid'})
     };
     if (model.isDimension(Y)) {
-      p.y.offset = -model.bandWidth(Y) / 3;
+      p.y.offset = -model.fieldDef(Y).scale.bandWidth / 3;
     }
   } else if (!model.has(Y)) {
     p.y = {value: 0};
@@ -481,7 +484,7 @@ export function tick(model: Model) {
   // width
   if (!model.has(X) || model.isDimension(X)) {
     // TODO(#694): optimize tick's width for bin
-    p.width = {value: model.bandWidth(X) / 1.5};
+    p.width = {value: model.fieldDef(X).scale.bandWidth / 1.5};
   } else {
     p.width = {value: 1};
   }
@@ -489,7 +492,7 @@ export function tick(model: Model) {
   // height
   if (!model.has(Y) || model.isDimension(Y)) {
     // TODO(#694): optimize tick's height for bin
-    p.height = {value: model.bandWidth(Y) / 1.5};
+    p.height = {value: model.fieldDef(Y).scale.bandWidth / 1.5};
   } else {
     p.height = {value: 1};
   }
@@ -524,7 +527,7 @@ function filled_point_props(shape) {
         field: model.field(X, {binSuffix: '_mid'})
       };
     } else if (!model.has(X)) {
-      p.x = {value: model.bandWidth(X) / 2};
+      p.x = {value: model.fieldDef(X).scale.bandWidth / 2};
     }
 
     // y
@@ -534,7 +537,7 @@ function filled_point_props(shape) {
         field: model.field(Y, {binSuffix: '_mid'})
       };
     } else if (!model.has(Y)) {
-      p.y = {value: model.bandWidth(Y) / 2};
+      p.y = {value: model.fieldDef(Y).scale.bandWidth / 2};
     }
 
     // size
@@ -599,7 +602,7 @@ export function text(model: Model) {
       // TODO: make this -5 offset a config
       p.x = {field: {group: 'width'}, offset: -5};
     } else {
-      p.x = {value: model.bandWidth(X) / 2};
+      p.x = {value: model.fieldDef(X).scale.bandWidth / 2};
     }
   }
 
@@ -610,7 +613,7 @@ export function text(model: Model) {
       field: model.field(Y, {binSuffix: '_mid'})
     };
   } else if (!model.has(Y)) {
-    p.y = {value: model.bandWidth(Y) / 2};
+    p.y = {value: model.fieldDef(Y).scale.bandWidth / 2};
   }
 
   // size
