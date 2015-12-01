@@ -196,33 +196,40 @@ export namespace layout {
 
     // TODO: handle "fit" mode
     if (model.has(X) && model.isOrdinalScale(X)) { // FIXME check if we need to call twice
-      summarize.push({
-        field: model.field(X),
-        ops: ['distinct']
-      });
       const xScale = model.fieldDef(X).scale;
+      const xHasDomain = xScale.domain instanceof Array;
+      if (!xHasDomain) {
+        summarize.push({
+          field: model.field(X),
+          ops: ['distinct']
+        });
+      }
+      const xCardinality = xHasDomain ? xScale.domain.length :
+                             model.field(X, {datum: true, prefn: 'distinct_'});
       formulas.push({
         type: 'formula',
         field: 'cellWidth',
-        // (xCardinality + model.padding(X)) * xBandWidth
-        expr: '(' + model.field(X, {datum: true, prefn: 'distinct_'}) + ' + ' +
-              xScale.padding + ') * ' + xScale.bandWidth
+        expr: '(' + xCardinality + ' + ' + xScale.padding + ') * ' + xScale.bandWidth
       });
     }
 
     if (model.has(Y) && model.isOrdinalScale(Y)) { // FIXME check if we need to call twice
-      summarize.push({
-        field: model.field(Y),
-        ops: ['distinct']
-      });
-
       const yScale = model.fieldDef(Y).scale;
+      const yHasDomain = yScale.domain instanceof Array;
+
+      if (!yHasDomain) {
+        summarize.push({
+          field: model.field(Y),
+          ops: ['distinct']
+        });
+      }
+
+      const yCardinality = yHasDomain ? yScale.domain.length :
+                             model.field(Y, {datum: true, prefn: 'distinct_'});
       formulas.push({
         type: 'formula',
         field: 'cellHeight',
-        // (yCardinality + model.padding(Y)) * yBandWidth
-        expr: '(' + model.field(Y, {datum: true, prefn: 'distinct_'}) + ' + ' +
-              yScale.padding + ') * ' + yScale.bandWidth
+        expr: '(' + yCardinality + ' + ' + yScale.padding + ') * ' + yScale.bandWidth
       });
     }
 
@@ -233,17 +240,23 @@ export namespace layout {
       const cellWidth = layout.cellWidth.field ?
                         'datum.' + layout.cellWidth.field :
                         layout.cellWidth;
-      const distinctCol = model.field(COLUMN, {datum: true, prefn: 'distinct_'});
-      summarize.push({
-        field: model.fieldDef(COLUMN).field,
-        ops: ['distinct']
-      });
+      const colScale = model.fieldDef(COLUMN).scale;
+      const colHasDomain = colScale.domain instanceof Array;
+      if (!colHasDomain) {
+        summarize.push({
+          field: model.fieldDef(COLUMN).field,
+          ops: ['distinct']
+        });
+      }
+
+      const colCardinality = colHasDomain ? colScale.domain.length :
+                               model.field(COLUMN, {datum: true, prefn: 'distinct_'});
       formulas.push({
         type: 'formula',
         field: 'width',
         // cellWidth + (|col| + (|col| - 1) * cellPadding)
-        expr: cellWidth + ' * ' + distinctCol + ' + ' +
-              '(' + distinctCol + ' - 1) * ' + cellPadding
+        expr: cellWidth + ' * ' + colCardinality + ' + ' +
+              '(' + colCardinality + ' - 1) * ' + cellPadding
       });
     }
 
@@ -251,17 +264,23 @@ export namespace layout {
       const cellHeight = layout.cellHeight.field ?
                         'datum.' + layout.cellHeight.field :
                         layout.cellHeight;
-      const distinctRow = model.field(ROW, {datum: true, prefn: 'distinct_'});
-      summarize.push({
-        field: model.fieldDef(ROW).field,
-        ops: ['distinct']
-      });
+      const rowScale = model.fieldDef(ROW).scale;
+      const rowHasDomain = rowScale.domain instanceof Array;
+      if (!rowHasDomain) {
+        summarize.push({
+          field: model.fieldDef(ROW).field,
+          ops: ['distinct']
+        });
+      }
+      
+      const rowCardinality = rowHasDomain ? rowScale.domain.length :
+                               model.field(ROW, {datum: true, prefn: 'distinct_'});
       formulas.push({
         type: 'formula',
         field: 'height',
         // cellHeight + (|row| + (|row| - 1) * cellPadding)
-        expr: cellHeight + ' * ' + distinctRow + ' + ' +
-              '(' + distinctRow + ' - 1) * ' + cellPadding
+        expr: cellHeight + ' * ' + rowCardinality + ' + ' +
+              '(' +rowCardinality + ' - 1) * ' + cellPadding
       });
     }
 
