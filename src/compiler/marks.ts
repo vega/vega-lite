@@ -647,10 +647,15 @@ export function text(model: Model) {
     p.text = {value: fieldDef.placeholder};
   }
 
-  p.font = {value: fieldDef.font.family};
-  p.fontWeight = {value: fieldDef.font.weight};
-  p.fontStyle = {value: fieldDef.font.style};
-  p.baseline = {value: fieldDef.baseline};
+  const marksConfig = model.config('marks');
+  ['baseline', 'font', 'fontWeight', 'fontStyle']
+    .forEach(function(property) {
+      const value = marksConfig[property];
+      if (value !== undefined) {
+        p[property] = {value: value};
+      }
+
+    });
 
   return p;
 }

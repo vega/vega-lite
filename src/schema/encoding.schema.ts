@@ -127,10 +127,7 @@ var text = merge(duplicate(typicalField), {
       type: 'string',
       default: 'right'
     },
-    baseline: {
-      type: 'string',
-      default: 'middle'
-    },
+
     color: {
       type: 'string',
       role: 'color',
@@ -148,24 +145,10 @@ var text = merge(duplicate(typicalField), {
     font: {
       type: 'object',
       properties: {
-        weight: {
-          type: 'string',
-          enum: ['normal', 'bold'],
-          default: 'normal'
-        },
         size: {
           type: 'integer',
           default: 10,
           minimum: 0
-        },
-        family: {
-          type: 'string',
-          default: 'Helvetica Neue'
-        },
-        style: {
-          type: 'string',
-          default: 'normal',
-          enum: ['normal', 'italic']
         }
       }
     },

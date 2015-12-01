@@ -144,6 +144,29 @@ export var config = {
         }
       }
     },
+    marks: {
+      type: 'object',
+      properties: {
+        baseline: {
+          type: 'string',
+          default: 'middle'
+        },
+        font: {
+          type: 'string',
+          default: undefined
+        },
+        fontStyle: {
+          type: 'string',
+          default: undefined,
+          enum: ['normal', 'italic']
+        },
+        fontWeight: {
+          type: 'string',
+          enum: ['normal', 'bold'],
+          default: undefined
+        }
+      }
+    },
 
     // marks
     strokeWidth: {

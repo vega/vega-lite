@@ -29,6 +29,7 @@ export function facetMixins(model: Model, marks) {
     height: cellHeight
   };
 
+  // add configs that are the resulting group marks properties
   const cellConfig = model.config('cell');
   ['fill', 'fillOpacity', 'stroke', 'strokeWidth',
     'strokeOpacity', 'strokeDash', 'strokeDashOffset']
