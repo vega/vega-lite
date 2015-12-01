@@ -120,6 +120,27 @@ export var config = {
           type: 'string',
           role: 'color',
           default: 'rgba(0,0,0,0)'
+        },
+        fillOpacity: {
+          type: 'number',
+        },
+        stroke: {
+          type: 'string',
+          role: 'color',
+        },
+        strokeWidth: {
+          type: 'integer'
+        },
+        strokeOpacity: {
+          type: 'number'
+        },
+        strokeDash: {
+          type: 'array',
+          default: undefined
+        },
+        strokeDashOffset: {
+          type: 'integer',
+          description: 'The offset (in pixels) into which to begin drawing with the stroke dash array.'
         }
       }
     },

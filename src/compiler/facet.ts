@@ -26,9 +26,18 @@ export function facetMixins(model: Model, marks) {
 
   let facetGroupProperties: any = {
     width: cellWidth,
-    height: cellHeight,
-    fill: {value: model.config('cell').fill}
+    height: cellHeight
   };
+
+  const cellConfig = model.config('cell');
+  ['fill', 'fillOpacity', 'stroke', 'strokeWidth',
+    'strokeOpacity', 'strokeDash', 'strokeDashOffset']
+    .forEach(function(property) {
+      const value = cellConfig[property];
+      if (value !== undefined) {
+        facetGroupProperties[property] = value;
+      }
+    });
 
   let rootMarks = [], rootAxes = [], facetKeys = [], cellAxes = [];
   const hasRow = model.has(ROW), hasCol = model.has(COLUMN);
