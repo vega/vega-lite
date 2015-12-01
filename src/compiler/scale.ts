@@ -152,14 +152,8 @@ export function reverse(model: Model, channel: Channel) {
  */
 export function _useRawDomain (model: Model, channel: Channel) {
   const fieldDef = model.fieldDef(channel);
-  const scaleUseRawDomain = fieldDef.scale.useRawDomain;
 
-  // Determine if useRawDomain is enabled. If scale value is specified, use scale value.
-  // Otherwise, use config value.
-  var useRawDomainEnabled = scaleUseRawDomain !== undefined ?
-      scaleUseRawDomain : model.config('useRawDomain');
-
-  return  useRawDomainEnabled &&
+  return fieldDef.scale.useRawDomain && //  if useRawDomain is enabled
     // only applied to aggregate table
     fieldDef.aggregate &&
     // only activated if used with aggregate functions that produces values ranging in the domain of the source data

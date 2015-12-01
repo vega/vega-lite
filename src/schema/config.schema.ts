@@ -239,15 +239,6 @@ export var config = {
       type: 'string',
       default: '%Y-%m-%d',
       description: 'Date format for axis labels.'
-    },
-    useRawDomain: {
-      type: 'boolean',
-      default: false,
-      description: 'Use the source data range as scale domain instead of ' +
-                   'aggregated data for aggregate axis. ' +
-                   'This option does not work with sum or count aggregate' +
-                   'as they might have a substantially larger scale range.' +
-                   'By default, use value from config.useRawDomain.'
     }
   }
 };
