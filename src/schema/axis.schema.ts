@@ -8,6 +8,7 @@ export interface Axis {
   title?: string;
   tickSize?: number;
   offset?: number;
+  shortTimeNames?: boolean;
   // Vega-Lite only
   labelMaxLength?: number;
   titleMaxLength?: number;

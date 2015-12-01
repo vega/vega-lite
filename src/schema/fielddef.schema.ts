@@ -35,6 +35,7 @@ export interface FieldDef {
   placeholder?: string;
   font?: any; // declare font
   format?: string;
+  fontSize?: number;
 
   // TODO: move to config
   filled?: boolean;
