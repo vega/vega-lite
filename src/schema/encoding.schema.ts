@@ -39,7 +39,6 @@ var x = merge(duplicate(typicalField), requiredNameType, {
   }
 });
 
-console.log('xAxis', x.properties.axis);
 var y = duplicate(x);
 
 var facet = merge(duplicate(onlyOrdinalField), requiredNameType, {
