@@ -282,14 +282,18 @@ export namespace layout {
       });
     }
 
-    if (summarize.length > 0) {
-      return {
+    if (formulas.length > 0) {
+      return summarize.length > 0 ? {
         name: LAYOUT,
         source: model.dataTable(),
         transform: [{
             type: 'aggregate',
-              summarize: summarize
+            summarize: summarize
           }].concat(formulas)
+      } : {
+        name: LAYOUT,
+        values: [{}],
+        transform: formulas
       };
     }
     return null;
