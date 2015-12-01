@@ -28,7 +28,7 @@ var requiredNameType = {
 
 var x = merge(duplicate(typicalField), requiredNameType, {
   properties: {
-    scale: {// replacing default values for just these two axis
+    scale: {// replacing default values for just these two axes
       properties: {
         padding: {default: 1},
         bandWidth: {default: 21}
