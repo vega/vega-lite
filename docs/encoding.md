@@ -5,11 +5,12 @@ permalink: /docs/encoding.html
 ---
 
 Vega-Lite's top-level `encoding` property describes a mapping between
-encoding channels (such as `x`,`y`, and `color`) and field definitions.
+encoding channels (such as `x`,`y`, and `color`) and [field definitions](#field-definition).
 Each field definition object describes
 a constant `value` or a reference to the `field` name and its data `type` and inline transformation (`aggregate`, `bin`, `sort` and `timeUnit`).
-Each field definition object can also optionally include configuration properties for `scale`, `axis`, and `legend`
-<!-- [Additional visual properties for each encoding channel](#Channel-Specific-Properties) -->
+Each field definition object can also optionally include configuration properties for `scale`, `axis`, and `legend`.
+
+# Encoding Channels
 
 Vega-Lite supports the following encoding channels: `x`,`y`, `row`, `column`, `color`, `size`, `shape`, `text`, `detail`.
 These channels are properties for the top-level `encoding` definition object.
@@ -17,11 +18,11 @@ These channels are properties for the top-level `encoding` definition object.
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | x, y          | [FieldDef](#field-definition)| Description of a field mapped to x or y coordinates (or to width or height for `bar` and `area` marks). |
-| row, column   | [FieldDef](#field-definition)| Description of a field that is used to facet data into vertical and horizontal [trellis plots](https://en.wikipedia.org/wiki/Small_multiple) respectively. |
+| row, column   | [FieldDef](#field-definition)| Description of a field that facets data into vertical and horizontal [trellis plots](https://en.wikipedia.org/wiki/Small_multiple) respectively. |
 | color | [FieldDef](#field-definition)| Description of a field mapped to color or a constant value for color.  The values are mapped to hue if the field is nominal, and mapped to saturation otherwise.  |
-| shape  | [FieldDef](#field-definition)| Description of a field mapped to shape encoding or a constant value for shape.   `shape` is only applicable for `point` marks.  |
-| size  | [FieldDef](#field-definition)| Description of a field mapped to size encoding or a constant value for size.  `size` is not applicable for `line` and `area`. |
-| detail | [FieldDef](#field-definition)| Description of a field that serves as an additional dimension for aggregate views without mapping to a specific visual channel.  `detail` does not affect raw plots. |
+| shape  | [FieldDef](#field-definition)| Description of a field mapped to shape encoding or a constant value for shape.   `shape` channel is only applicable for `point` marks.  |
+| size  | [FieldDef](#field-definition)| Description of a field mapped to size encoding or a constant value for size.  `size` channel is currently not applicable for `line` and `area`. |
+| detail | [FieldDef](#field-definition)| Description of a field that serves as an additional dimension for aggregate views without mapping to a specific visual channel.  `detail` channel is  not applicable raw plots (plots without aggregation). |
 
 <!-- # Faceting
 TODO: add visual examples for both row and column
@@ -173,10 +174,33 @@ __<sup>1</sup>__ All Vega-Lite scale properties exist in Vega except `useRawDoma
 Axes provide axis lines, ticks and labels to convey how a spatial range represents a data range. Simply put, axes visualize scales.
 
 Vega-Lite's `axis` object supports the following [Vega axis properties](https://github.com/vega/vega/wiki/Axes#axis-properties):
-`format`, `grid`<sup>1</sup>, `layer`, `orient`, `ticks`, `title` <sup>2</sup>, and `titleOffset`<sup>3,4</sup>.
-See [Vega documentation](https://github.com/vega/vega/wiki/Axes#axis-properties) for more information.
 
-<!-- TODO: add a table here instead of pointing to Vega-->
+| Property      | Type          | Description    |
+| :------------ |:-------------:| :------------- |
+| orient        | String        | The orientation of the axis. One of `top` or `bottom` for `y` and `row` channels, and `left` or `right` for `x` and `column` channels.  By default, `x` axis is placed on the bottom, `y` axis is placed on the left, `column`'s x-axis is placed on the top, `row`'s y-axis is placed on the right. |
+| title         | String        | A title for the axis.  If `title` is unspecified, the default value is produced from the field's name and transformation function applied e.g, "field_name", "SUM(field_name)", "BIN(field_name)", "YEAR(field_name)". |
+| titleOffset   | Number        | The offset (in pixels) from the axis at which to place the title.|
+| format        | String        | The formatting pattern for axis labels. Vega uses [D3's format pattern](https://github.com/mbostock/d3/wiki/Formatting).|
+| ticks         | Number        | A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are "nice" (multiples of 2, 5, 10) and lie within the underlying scale's range.  |
+| layer         | String        | A string indicating if the axis (and any gridlines) should be placed above or below the data marks. One of `"front"` or `"back"` (default).|
+| grid          | Boolean       | A flag indicate if gridlines should be created in addition to ticks.  If `grid` is unspecified for X and Y, the default value is `true` for (1) quantitative fields that are not binned and (2) time fields.  Otherwise, the default value is `false`. |
+| properties    | Object        | Optional mark property definitions for custom axis styling. The input object can include sub-objects for `ticks` (both major and minor), `majorTicks`, `minorTicks`, `labels` and `axis` (for the axis line).  These mark property definitions can make value references to their scale domain data via `data` property like so: `{field: "data"}`. This is a shorthand for `{field: {datum: "data"}}`. The template follows suite: `{template: "datum.data"}`. |
+
+
+<!--TODO: elaborate example for the properties group -->
+
+<!--TODO: what's the default behavior for format, `ticks,  default values for `axis` and `labels` properties groups -->
+
+
+<!--TODO: Add this part of table once we support these properties
+| values        | Array         | Explicitly set the visible axis tick values.|
+| subdivide     | Number        | If provided, sets the number of minor ticks between major ticks (the value 9 results in decimal subdivision). Only applicable for axes visualizing quantitative scales.|
+| tickPadding   | Number        | The padding, in pixels, between ticks and text labels.|
+| tickSize      | Number        | The size, in pixels, of major, minor and end ticks.|
+| tickSizeMajor | Number        | The size, in pixels, of major ticks.|
+| tickSizeMinor | Number        | The size, in pixels, of minor ticks.|
+| tickSizeEnd   | Number        | The size, in pixels, of end ticks.|
+| offset        | Number &#124; Object| If a number, then the value is the offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle. The offset can also be specified as an object with `scale` and `value` properties in which `scale` refers to the name of a scale and `value` is a value in the domain of the scale. The resulting value will be a number in the range of the scale.| -->
 
 Moreover, Vega-Lite supports the following additional axis properties.
 
@@ -187,31 +211,26 @@ Moreover, Vega-Lite supports the following additional axis properties.
 | titleMaxLength  | Integer       | Max length for axis title when the title is automatically generated from the field\'s description. |
 | titleOffset     | Integer       | Offset between the axis title and the axis.  |
 
-<sup>1</sup>
-If `grid` is unspecified for X and Y, the default value is `true` for (1) quantitative fields that are not binned and (2) time fields.  Otherwise, the default value is `false`.
-
-<sup>2</sup>
-If `title` is unspecified, the default value is produced from the field's name and transformation function applied e.g, "field_name", "SUM(field_name)", "BIN(field_name)", "YEAR(field_name)".
-
-<sup>3</sup>
-If `titleOffset` is unspecified, the default value is automatically determined.
-<!-- TODO: add detail about default behavior -->
 
 ----
 
 ### ▸ `legend`
-
-<!-- TODO: add support for turning legends off -->
 
 Similar to axes, legends visualize scales. However, whereas axes aid interpretation of scales with spatial ranges, legends aid interpretation of scales with ranges such as colors, shapes and sizes.
 
 By default, Vega-Lite automatically creates legends for `color`, `size`, and `shape` channels when they are encoded.
 The field's legend can be removed by setting `legend` to `false`.
 If `legend` is `true`, default legend properties are applied.
+
 Legend properties can be overridden by setting `legend` to a legend property object.
 The `legend` property object supports the following [Vega legend properties](https://github.com/vega/vega/wiki/Legends#legend-properties):
-`orient`, `title`, `format`, `values`, and `properties`.
 
-See [Vega documentation](https://github.com/vega/vega/wiki/Legends#legend-properties) for more information about each property.
+| Property      | Type          | Description    |
+| :------------ |:-------------:| :------------- |
+| orient        | String        | The orientation of the legend. One of `"left"` or `"right"`. This determines how the legend is positioned within the scene. The default is `"right"`.|
+| title         | String        | The title for the legend.  If `title` is unspecified, the default value is produced from the field's name and transformation function applied e.g, "field_name", "SUM(field_name)", "BIN(field_name)", "YEAR(field_name)". |
+| format        | String        | An optional formatting pattern for legend labels. Vega uses [D3's format pattern](https://github.com/mbostock/d3/wiki/Formatting).|
+| values        | Array         | Explicitly set the visible legend values.|
+| properties    | Object        | Optional mark property definitions for custom legend styling. The input object can include sub-objects for `title`, `labels`, `symbols` (for discrete legend items), `gradient` (for a continuous color gradient) and `legend` (for the overall legend group).  These mark property definitions can make value references to their scale domain data via `data` property like so: `{field: "data"}`. This is a shorthand for `{field: {datum: "data"}}`. The template follows suite: `{template: "datum.data"}`. |
 
-<!-- TODO: add a table here instead of pointing to Vega-->
+<!--TODO: elaborate example for the properties group -->
