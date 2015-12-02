@@ -50,7 +50,7 @@ export function type(channel: Channel, model: Model) {
       let range = fieldDef.scale.range;
       return channel === COLOR && (typeof range !== 'string') ? 'linear' : 'ordinal';
     case TEMPORAL:
-      return fieldDef.timeUnit ? time.scale.type(fieldDef.timeUnit, channel) : 'time';
+      return time.scale.type(fieldDef.timeUnit, channel);
     case QUANTITATIVE:
       if (model.bin(channel)) {
         return channel === ROW || channel === COLUMN || channel === SHAPE ? 'ordinal' : 'linear';
@@ -255,8 +255,11 @@ export function rangeMixins(model: Model, channel: Channel, scaleType): any {
 
   switch (channel) {
     case X:
-      return { rangeMin: 0, rangeMax: model.layout().cellWidth};
+      // we can't use {range: "width"} here since we put scale in the root group
+      // not inside the cell, so scale is reusable for axes group
+      return {rangeMin: 0, rangeMax: model.layout().cellWidth};
     case Y:
+      // We can't use {range: "height"} here for the same reason
       if (scaleType === 'ordinal') {
         return {rangeMin: 0, rangeMax: model.layout().cellHeight};
       }
