@@ -162,7 +162,7 @@ export function title(model: Model, channel: Channel) {
     // Guess max length if we know cell size at compile time
     maxLength = layout.cellHeight / model.config('characterWidth');
   }
-
+  // FIXME: we should use template to truncate instead
   return maxLength ? truncate(fieldTitle, maxLength) : fieldTitle;
 }
 

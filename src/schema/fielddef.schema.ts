@@ -73,11 +73,6 @@ export var typicalField = merge(duplicate(fieldDef), {
 
 export var onlyOrdinalField = merge(duplicate(fieldDef), {
   properties: {
-    aggregate: {
-      type: 'string',
-      enum: ['count'],
-      supportedTypes: toMap([NOMINAL, ORDINAL])
-    },
     scale: ordinalOnlyScale
   }
 });

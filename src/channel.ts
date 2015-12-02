@@ -21,6 +21,12 @@ interface SupportedMarktype {
   [marktype: string]: boolean;
 };
 
+/**
+ * Return whether a channel supports a particular mark type.
+ * @param  {string} channel  channel name
+ * @param  {string} marktype
+ * @return {boolean}
+ */
 export function supportMarktype(channel: Channel, marktype) {
   return !!getSupportedMarktype(channel)[marktype];
 }
