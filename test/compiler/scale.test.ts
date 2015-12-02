@@ -2,7 +2,6 @@
 
 import {expect} from 'chai';
 
-var d3 = require('d3');
 var colorbrewer = require('colorbrewer');
 
 import * as vlscale from '../../src/compiler/scale';

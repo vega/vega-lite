@@ -1,4 +1,3 @@
-import * as __ from 'lodash';
 var galleryExamples = require('../gallery/examples');
 
 import {f} from './fixtures';
@@ -16,10 +15,14 @@ var addTitles = function(examples, name) {
   }, []);
 };
 
-e = e.concat(addTitles(__.values(f.bars), 'bars'));
-e = e.concat(addTitles(__.values(f.points), 'points'));
-e = e.concat(addTitles(__.values(f.lines), 'lines'));
-e = e.concat(addTitles(__.values(f.area), 'area'));
+function values(obj) {
+  return Object.keys(obj).map(key => obj[key]);
+}
+
+e = e.concat(addTitles(values(f.bars), 'bars'));
+e = e.concat(addTitles(values(f.points), 'points'));
+e = e.concat(addTitles(values(f.lines), 'lines'));
+e = e.concat(addTitles(values(f.area), 'area'));
 e = e.concat(galleryExamples);
 
 module.exports = e;
