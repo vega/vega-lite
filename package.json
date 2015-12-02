@@ -13,7 +13,7 @@
     "test": "test"
   },
   "scripts": {
-    "build": "browserify src/vl.ts -p tsify --debug | exorcist vega-lite.js.map > vega-lite.js",
+    "build": "browserify src/vl.ts -p tsify -d -s vl | exorcist vega-lite.js.map > vega-lite.js",
     "postbuild": "uglifyjs vega-lite.js -cm --source-map vega-lite.min.js.map > vega-lite.min.js",
     "postbuild": "npm run schema",
     "precover": "tsc",
