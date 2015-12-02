@@ -52,27 +52,31 @@ export function range(timeUnit, model: Model) {
   return;
 }
 
-function isOrdinalFn(timeUnit) {
-  switch (timeUnit) {
-    case 'seconds':
-    case 'minutes':
-    case 'hours':
-    case 'day':
-    case 'date':
-    case 'month':
-      return true;
-  }
-  return false;
-}
-
 export namespace scale {
+  // FIXME move this to scale.type
   export function type(timeUnit, channel: Channel) {
     if (channel === COLOR) {
+      // FIXME if user specify scale.range as ordinal presets, then this should be ordinal
       return 'linear'; // time has order, so use interpolated ordinal color scale.
     }
+    if (channel === COLUMN || channel === ROW) {
+      return 'ordinal';
+    }
 
-    // FIXME revise this -- should 'year' be linear too?
-    return isOrdinalFn(timeUnit) || channel === COLUMN || channel === ROW ? 'ordinal' : 'linear';
+    switch (timeUnit) {
+      case 'hours':
+      case 'day':
+      case 'date':
+      case 'month':
+        return 'ordinal';
+      case 'year':
+      case 'second':
+      case 'minute':
+        return 'linear';
+    }
+    return 'time';
+
+
   }
 
   export function domain(timeUnit, channel?: Channel) {
