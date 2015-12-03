@@ -4,13 +4,7 @@ export enum Type {
   QUANTITATIVE = <any>'quantitative',
   ORDINAL = <any>'ordinal',
   TEMPORAL = <any>'temporal',
-  NOMINAL = <any>'nominal',
-
-  // legacy short names, translated in getFullName
-  Q = <any>'quantitative',
-  O = <any>'ordinal',
-  T = <any>'temporal',
-  N = <any>'nominal'
+  NOMINAL = <any>'nominal'
 }
 
 export const QUANTITATIVE = Type.QUANTITATIVE;
