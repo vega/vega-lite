@@ -3,6 +3,8 @@
  * such as 'x', 'y', 'color'.
  */
 
+import {Marktype} from './marktype';
+
 export enum Channel {
   X = <any>'x',
   Y = <any>'y',
@@ -37,7 +39,7 @@ interface SupportedMarktype {
  * @param marktype the mark type
  * @return whether the marktype supports the channel
  */
-export function supportMarktype(channel: Channel, marktype) {
+export function supportMarktype(channel: Channel, marktype: Marktype) {
   return !!getSupportedMarktype(channel)[marktype];
 }
 
