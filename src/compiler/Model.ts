@@ -64,9 +64,9 @@ export class Model {
     var stackChannel = (this.has(COLOR)) ? COLOR : (this.has(DETAIL)) ? DETAIL : null;
 
     if (stackChannel &&
-        (this.is(BAR) || this.is(AREA)) &&
-        this.config('stack') !== false &&
-        this.isAggregate()) {
+      (this.is(BAR) || this.is(AREA)) &&
+      this.config('stack') !== false &&
+      this.isAggregate()) {
       var isXMeasure = this.isMeasure(X);
       var isYMeasure = this.isMeasure(Y);
 
@@ -156,7 +156,7 @@ export class Model {
       return f + fieldDef.aggregate + '_' + field;
     } else if (!opt.nofn && fieldDef.timeUnit) {
       return f + fieldDef.timeUnit + '_' + field;
-    }  else {
+    } else {
       return f + field;
     }
   }
@@ -206,9 +206,9 @@ export class Model {
     const fieldDef = this.fieldDef(channel);
     return fieldDef && (
       contains([NOMINAL, ORDINAL], fieldDef.type) ||
-      ( fieldDef.type === TEMPORAL && fieldDef.timeUnit &&
-        time.scale.type(fieldDef.timeUnit, channel) === 'ordinal' )
-    );
+      (fieldDef.type === TEMPORAL && fieldDef.timeUnit &&
+        time.scale.type(fieldDef.timeUnit, channel) === ORDINAL)
+      );
   }
 
   isDimension(channel: Channel) {
@@ -237,7 +237,7 @@ export class Model {
     return this._spec.data;
   }
 
-  // returns whether the encoding has values embedded
+  /** returns whether the encoding has values embedded */
   hasValues() {
     var vals = this.data().values;
     return vals && vals.length;
