@@ -8,7 +8,7 @@ import {SOURCE, SUMMARY} from '../data';
 import * as vlFieldDef from '../fielddef';
 import * as vlEncoding from '../encoding';
 import {compileLayout} from './layout';
-import {AREA, BAR} from '../marktype';
+import {BAR, AREA, POINT, TICK, CIRCLE, SQUARE} from '../marktype';
 import * as schema from '../schema/schema';
 import * as schemaUtil from '../schema/schemautil';
 import {StackProperties} from './stack';
@@ -245,5 +245,28 @@ export class Model {
 
   config(name: string) {
     return this._spec.config[name];
+  }
+
+  markOpacity() : number {
+    const opacity = this.config('marks').opacity;
+    if (opacity) {
+      return opacity;
+    } else {
+      const X_MEASURE = this.isMeasure(X);
+      const Y_MEASURE = this.isMeasure(Y);
+
+      // both measure means there can be overlap
+      const BOTH_MEASURE = X_MEASURE && Y_MEASURE;
+      // not aggregated and at least one measure
+      const NO_AGG = !this.isAggregate() && (X_MEASURE || Y_MEASURE);
+      // aggregated but uses color or detail (so we can have overlap)
+      const AGG_BUT_SPLIT = this.isAggregate() && (this.has(DETAIL) || this.has(COLOR)) && (X_MEASURE || Y_MEASURE);
+
+      const COND = NO_AGG || BOTH_MEASURE || AGG_BUT_SPLIT;
+      if (COND && contains([POINT, TICK, CIRCLE, SQUARE], this.marktype())) {
+        return 0.7;
+      }
+    }
+    return undefined;
   }
 }

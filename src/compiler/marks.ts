@@ -245,7 +245,7 @@ export function bar(model: Model) {
   }
 
   // opacity
-  var opacity = model.config('marks').opacity;
+  var opacity = model.markOpacity();
   if (opacity) p.opacity = {value: opacity};
 
   return p;
@@ -319,10 +319,8 @@ export function point(model: Model) {
   }
 
   // opacity
-  var opacity = marksConfig.opacity;
-  if (opacity) {
-    p.opacity = {value: opacity};
-  }
+  const opacity = model.markOpacity();
+  if (opacity) p.opacity = {value: opacity};
 
   return p;
 }
@@ -361,7 +359,8 @@ export function line(model: Model) {
     p.stroke = {value: model.fieldDef(COLOR).value};
   }
 
-  var opacity = model.config('marks').opacity;
+  // opacity
+  var opacity = model.markOpacity();
   if (opacity) p.opacity = {value: opacity};
 
   p.strokeWidth = {value: model.config('marks').strokeWidth};
@@ -442,10 +441,9 @@ export function area(model: Model) {
     p.fill = {value: model.fieldDef(COLOR).value};
   }
 
-  var opacity = model.config('marks').opacity;
-  if (opacity) {
-    p.opacity = {value: opacity};
-  }
+  // opacity
+  var opacity = model.markOpacity();
+  if (opacity) p.opacity = {value: opacity};
 
   return p;
 }
@@ -507,10 +505,9 @@ export function tick(model: Model) {
     p.fill = {value: model.fieldDef(COLOR).value};
   }
 
-  var opacity = model.config('marks').opacity;
-  if (opacity) {
-    p.opacity = {value: opacity};
-  }
+  // opacity
+  var opacity = model.markOpacity();
+  if (opacity) p.opacity = {value: opacity};
 
   return p;
 }
@@ -563,10 +560,9 @@ function filled_point_props(shape) {
       p.fill = {value: model.fieldDef(COLOR).value};
     }
 
-    var opacity = model.config('marks').opacity;
-    if (opacity) {
-      p.opacity = {value: opacity};
-    }
+    // opacity
+    var opacity = model.markOpacity();
+    if (opacity) p.opacity = {value: opacity};
 
     return p;
   };
@@ -629,13 +625,9 @@ export function text(model: Model) {
   // fill
   // TODO: consider if color should just map to fill instead?
 
-
-  var opacity = model.config('marks').opacity;
-
-  // default opacity in vega is 1 if we don't set it
-  if (opacity) {
-    p.opacity = {value: opacity};
-  }
+  // opacity
+  var opacity = model.markOpacity();
+  if (opacity) p.opacity = {value: opacity};
 
   // text
   if (model.has(TEXT)) {
