@@ -59,7 +59,7 @@
     "d3-time-format": "0.2.0",
     "datalib": "^1.4.12",
     "yargs": "^3.30.0",
-    "vega": "^2.4.0"
+    "vega": "^2.4.1"
   },
   "browserify": {
     "transform": [
