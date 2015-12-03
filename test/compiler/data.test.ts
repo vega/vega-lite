@@ -3,6 +3,7 @@ import {expect} from 'chai';
 import {compileData, source, summary} from '../../src/compiler/data';
 import {SUMMARY} from '../../src/data';
 import {Model} from '../../src/compiler/Model';
+import {POINT} from '../../src/marktype';
 
 describe('data', function () {
   describe('for aggregate encoding', function () {
@@ -131,7 +132,7 @@ describe('data.source', function() {
 
     describe('nullFilter', function() {
       var spec = {
-          marktype: 'point',
+          marktype: POINT,
           encoding: {
             y: {field: 'qq', type:'quantitative'},
             x: {field: 'tt', type:'temporal'},

@@ -2,6 +2,7 @@ import {expect} from 'chai';
 
 import * as axis from '../../src/compiler/axis';
 import {Model} from '../../src/compiler/Model';
+import {LINE} from '../../src/marktype';
 
 describe('Axis', function() {
   var layout = {
@@ -13,7 +14,7 @@ describe('Axis', function() {
     var field = 'a',
       timeUnit = 'month',
       encoding = new Model({
-        marktype: 'line',
+        marktype: LINE,
         encoding: {
           x: {field: field, type: 'temporal', timeUnit: timeUnit}
         }

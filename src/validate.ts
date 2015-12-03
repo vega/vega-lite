@@ -4,6 +4,7 @@ import {Spec} from './schema/schema';
 
 import {toMap} from './util';
 import {schema} from './schema/schema';
+import {BAR} from './marktype';
 
 interface RequiredChannelMap {
   [marktype:string]: Array<string>;
@@ -78,7 +79,7 @@ export function getEncodingMappingError(spec: Spec,
     }
   }
 
-  if (marktype === 'bar' && !encoding.x && !encoding.y) {
+  if (marktype === BAR && !encoding.x && !encoding.y) {
     return 'Missing both x and y for bar';
   }
 

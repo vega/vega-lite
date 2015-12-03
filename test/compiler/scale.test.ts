@@ -9,13 +9,14 @@ import {SOURCE, SUMMARY} from '../../src/data';
 import {Model} from '../../src/compiler/Model';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../../src/type';
 import * as util from '../../src/util';
+import {BAR} from '../../src/marktype';
 
 describe('vl.compile.scale', function() {
   describe('domain()', function() {
     describe('for stack', function() {
       it('should return correct stack', function() {
         var domain = vlscale.domain(new Model({
-          marktype: 'bar',
+          marktype: BAR,
           encoding: {
             y: {
               aggregate: 'sum',
@@ -35,7 +36,7 @@ describe('vl.compile.scale', function() {
 
       it('should return correct aggregated stack', function() {
         var domain = vlscale.domain(new Model({
-          marktype: 'bar',
+          marktype: BAR,
           encoding: {
             y: {
               aggregate: 'sum',
