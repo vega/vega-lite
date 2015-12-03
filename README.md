@@ -78,22 +78,25 @@ Since Vega-Lite is written in Typescript, you should also install TypeScript
 npm install -g typescript
 ```
 
+We use the [atom](atom.io) editor with typescript support. If you don't want to see intermediate files (`.js`, `.js.map`), you can "Hide VCS Ignored Files" in the `tree-view` plugin.
+
 ### Commands
 
-You can run `npm run build` to compile Vega-Lite.
+You can run `npm run build` to compile Vega-Lite and regenerate `vega-lite-schema.json`. More commands are available in `npm run`.
 
-You can `npm run watch` to start a watcher task that
-- re-compile Vega-Lite
-- regenerate the `vega-lite-schema.json` file whenever `schema.js` changes
-- lints and tests all JS files when any `.js` file in `test/` or `src/` changes.
+#### Watch tasks
 
-Note: These commands use [Gulp](http://gulpjs.com) internally; Therefore, you need to install gulp globally with
+During development, it can be convenient to rebuild automatically or run tests in the background.
 
-```sh
-npm install -g gulp
-```
+You can `npm run watch:dev` to start a watcher task that **lints and runs tests** when any `.ts` file changes.
 
-to make them work.  
+You can use `npm run watch:build` to start a watcher task that **re-compiles Vega-Lite** when `.ts` files related to VL change.
+
+The previous two commands run very fast but don't run all tasks that you may want. If you are okay to use a slow command, you can use `npm run watch:all` to start a watcher task that when any `.ts` file changes:
+- lints and runs tests
+- re-compiles Vega-Lite
+- regenerates `vega-lite-schema.json`
+
 
 ### Developing Vega-Lite and Datalib
 
