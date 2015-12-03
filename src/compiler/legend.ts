@@ -85,7 +85,7 @@ namespace properties {
 
   export function symbols(model: Model, channel: Channel, spec) {
     let symbols:any = {};
-    let marktype = model.marktype();
+    const marktype = model.marktype();
 
     switch (marktype) {
       case 'bar':
