@@ -39,6 +39,7 @@ export const TYPE_FROM_SHORT_TYPE = {
  * @return Full type name.
  */
 export function getFullName(type: Type): Type {
-  return TYPE_FROM_SHORT_TYPE[Type[type].toUpperCase()] || // short type is uppercase by default
-         Type[type].toLowerCase();
+  const typeString = <any>type;  // force type as string so we can translate short types
+  return TYPE_FROM_SHORT_TYPE[typeString.toUpperCase()] || // short type is uppercase by default
+         typeString.toLowerCase();
 }
