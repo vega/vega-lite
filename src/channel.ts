@@ -23,9 +23,9 @@ interface SupportedMarktype {
 
 /**
  * Return whether a channel supports a particular mark type.
- * @param  {string} channel  channel name
- * @param  {string} marktype
- * @return {boolean}
+ * @param channel  channel name
+ * @param marktype the mark type
+ * @return whether the marktype supports the channel
  */
 export function supportMarktype(channel: Channel, marktype) {
   return !!getSupportedMarktype(channel)[marktype];
@@ -33,8 +33,8 @@ export function supportMarktype(channel: Channel, marktype) {
 
 /**
  * Return a dictionary showing whether a channel supports mark type.
- * @param  {Enctype.Type}  channel
- * @return {SupportedRole} A dictionary mapping mark types to boolean values.
+ * @param channel
+ * @return A dictionary mapping mark types to boolean values.
  */
 export function getSupportedMarktype(channel: Channel): SupportedMarktype {
   switch (channel) {
@@ -75,8 +75,8 @@ interface SupportedRole {
 
 /**
  * Return whether a channel supports dimension / measure role
- * @param  {Enctype.Type}  channel
- * @return {SupportedRole} A dictionary mapping role to boolean values.
+ * @param  channel
+ * @return A dictionary mapping role to boolean values.
  */
 export function getSupportedRole(channel: Channel): SupportedRole {
   switch (channel) {
