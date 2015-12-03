@@ -22,9 +22,9 @@ export function compileAxis(channel: Channel, model: Model) {
   // 1. Add properties
   [
     // a) properties with special rules (so it has axis[property] methods) -- call rule functions
-    'format', 'grid', 'layer', 'offset', 'orient', 'tickSize', 'ticks', 'title',
+    'format', 'grid', 'layer', 'orient', 'tickSize', 'ticks', 'title',
     // b) properties without rules, only produce default values in the schema, or explicit value if specified
-    'tickPadding', 'tickSize', 'tickSizeMajor', 'tickSizeMinor', 'tickSizeEnd',
+    'offset', 'tickPadding', 'tickSize', 'tickSizeMajor', 'tickSizeMinor', 'tickSizeEnd',
     'titleOffset', 'values', 'subdivide'
   ].forEach(function(property) {
     let method: (model: Model, channel: Channel, def:any)=>any;
@@ -101,19 +101,6 @@ export function layer(model: Model, channel: Channel, def) {
   return undefined; // otherwise return undefined and use Vega's default.
 };
 
-export function offset(model: Model, channel: Channel, def) {
-  const offset = model.fieldDef(channel).axis.offset;
-  if (offset) {
-    return offset;
-  }
-  if ((channel === ROW && !model.has(Y)) ||
-      (channel === COLUMN && !model.has(X))
-    ) {
-    return model.config('cell').gridOffset;
-  }
-  return undefined;
-}
-
 export function orient(model: Model, channel: Channel) {
   var orient = model.fieldDef(channel).axis.orient;
   if (orient) {
@@ -175,7 +162,7 @@ export function title(model: Model, channel: Channel) {
     // Guess max length if we know cell size at compile time
     maxLength = layout.cellHeight / model.config('characterWidth');
   }
-
+  // FIXME: we should use template to truncate instead
   return maxLength ? truncate(fieldTitle, maxLength) : fieldTitle;
 }
 
