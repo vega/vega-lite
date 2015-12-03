@@ -8,7 +8,7 @@ import {SOURCE, SUMMARY} from '../data';
 import * as vlFieldDef from '../fielddef';
 import * as vlEncoding from '../encoding';
 import {compileLayout} from './layout';
-import {AREA, BAR} from '../marktype';
+import {AREA, BAR, Marktype} from '../marktype';
 import * as schema from '../schema/schema';
 import * as schemaUtil from '../schema/schemautil';
 import {StackProperties} from './stack';
@@ -119,7 +119,7 @@ export class Model {
     return schemaUtil.subtract(spec, defaults);
   }
 
-  marktype() {
+  marktype() : Marktype {
     return this._spec.marktype;
   }
 
@@ -207,7 +207,7 @@ export class Model {
     return fieldDef && (
       contains([NOMINAL, ORDINAL], fieldDef.type) ||
       (fieldDef.type === TEMPORAL && fieldDef.timeUnit &&
-        time.scale.type(fieldDef.timeUnit, channel) === ORDINAL)
+        time.scale.type(fieldDef.timeUnit, channel) === 'ordinal')
       );
   }
 

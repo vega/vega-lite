@@ -2,6 +2,7 @@ import {expect} from 'chai';
 
 import * as legend from '../../src/compiler/legend';
 import {Model} from '../../src/compiler/Model';
+import {COLOR} from '../../src/channel';
 
 describe('Legend', function() {
   describe('title()', function () {
@@ -10,7 +11,7 @@ describe('Legend', function() {
           encoding: {
             color: {field: 'a', legend: {title: 'Custom'}}
           }
-        }), 'color');
+        }), COLOR);
       expect(title).to.eql('Custom');
     });
 
@@ -21,7 +22,7 @@ describe('Legend', function() {
           }
         });
 
-      var title = legend.title(encoding, 'color');
+      var title = legend.title(encoding, COLOR);
       expect(title).to.eql('a');
     });
   });

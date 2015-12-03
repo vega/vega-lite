@@ -3,6 +3,7 @@ import {COLOR, SIZE, SHAPE, Channel} from '../channel';
 import {Model} from './Model';
 import * as time from './time';
 import {TEMPORAL} from '../type';
+import {AREA, BAR, TICK, TEXT, LINE, POINT, CIRCLE, SQUARE} from '../marktype';
 
 export function compileLegends(model: Model) {
   var defs = [];
@@ -88,18 +89,18 @@ namespace properties {
     const marktype = model.marktype();
 
     switch (marktype) {
-      case 'bar':
-      case 'tick':
-      case 'text':
+      case BAR:
+      case TICK:
+      case TEXT:
         symbols.stroke = {value: 'transparent'};
         symbols.shape = {value: 'square'};
         break;
 
-      case 'circle':
-      case 'square':
+      case CIRCLE:
+      case SQUARE:
         symbols.shape = {value: marktype};
         /* fall through */
-      case 'point':
+      case POINT:
         // fill or stroke
         if (model.config('marks').filled) {
           if (model.has(COLOR) && channel === COLOR) {
@@ -119,8 +120,8 @@ namespace properties {
         }
 
         break;
-      case 'line':
-      case 'area':
+      case LINE:
+      case AREA:
         // TODO use shape here after implementing #508
         break;
     }
