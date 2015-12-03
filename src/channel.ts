@@ -3,19 +3,29 @@
  * such as 'x', 'y', 'color'.
  */
 
-export const X = 'x';
-export const Y = 'y';
-export const ROW = 'row';
-export const COLUMN = 'column';
-export const SHAPE = 'shape';
-export const SIZE = 'size';
-export const COLOR = 'color';
-export const TEXT = 'text';
-export const DETAIL = 'detail';
+export enum Channel {
+  X = <any>'x',
+  Y = <any>'y',
+  ROW = <any>'row',
+  COLUMN = <any>'column',
+  SHAPE = <any>'shape',
+  SIZE = <any>'size',
+  COLOR = <any>'color',
+  TEXT = <any>'text',
+  DETAIL = <any>'detail',
+}
+
+export const X = Channel.X;
+export const Y = Channel.Y;
+export const ROW = Channel.ROW;
+export const COLUMN = Channel.COLUMN;
+export const SHAPE = Channel.SHAPE;
+export const SIZE = Channel.SIZE;
+export const COLOR = Channel.COLOR;
+export const TEXT = Channel.TEXT;
+export const DETAIL = Channel.DETAIL;
 
 export const CHANNELS = [X, Y, ROW, COLUMN, SIZE, SHAPE, COLOR, TEXT, DETAIL];
-
-export type Channel = string;
 
 interface SupportedMarktype {
   [marktype: string]: boolean;
