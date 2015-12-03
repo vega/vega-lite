@@ -23,8 +23,8 @@ describe('vl.compile.scale', function() {
               aggregate: 'sum',
               field: 'origin'
             },
-            x: {field: 'x', type: 'ordinal'},
-            color: {field: 'color', type: 'ordinal'},
+            x: {field: 'x', type: ORDINAL},
+            color: {field: 'color', type: ORDINAL},
             row: {field: 'row'}
           }
         }), Y, 'linear');
@@ -43,8 +43,8 @@ describe('vl.compile.scale', function() {
               aggregate: 'sum',
               field: 'origin'
             },
-            x: {field: 'x', type: 'ordinal'},
-            color: {field: 'color', type: 'ordinal'},
+            x: {field: 'x', type: ORDINAL},
+            color: {field: 'color', type: ORDINAL},
             row: {field: 'row'}
           }
         }), Y, 'linear');
@@ -68,7 +68,7 @@ describe('vl.compile.scale', function() {
                 type: QUANTITATIVE
               }
             }
-          }), Y, 'ordinal');
+          }), Y, ORDINAL);
 
           expect(domain).to.eql({
             data: SOURCE,
@@ -84,7 +84,7 @@ describe('vl.compile.scale', function() {
                 aggregate: 'mean',
                 field: 'origin',
                 scale: {useRawDomain: true},
-                type: 'quantitative'
+                type: QUANTITATIVE
               }
             }
           }), Y, 'linear');
@@ -148,11 +148,11 @@ describe('vl.compile.scale', function() {
               y: {
                 field: 'origin',
                 scale: {useRawDomain: true},
-                type: 'temporal',
+                type: TEMPORAL,
                 timeUnit: 'year'
               }
             }
-          }), Y, 'ordinal');
+          }), Y, ORDINAL);
 
           expect(domain.data).to.eql(SOURCE);
           expect(domain.field.indexOf('year')).to.gt(-1);
@@ -165,11 +165,11 @@ describe('vl.compile.scale', function() {
               y: {
                 field: 'origin',
                 scale: {useRawDomain: true},
-                type: 'temporal',
+                type: TEMPORAL,
                 timeUnit: 'month'
               }
             }
-          }), Y, 'ordinal');
+          }), Y, ORDINAL);
 
           expect(domain).to.eql([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]);
         });
@@ -184,7 +184,7 @@ describe('vl.compile.scale', function() {
             }
           });
 
-        expect(vlscale.domain(encoding, Y, 'ordinal'))
+        expect(vlscale.domain(encoding, Y, ORDINAL))
           .to.eql({
             data: SOURCE,
             field: 'origin',
@@ -199,7 +199,7 @@ describe('vl.compile.scale', function() {
             }
           });
 
-        expect(vlscale.domain(encoding, Y, 'ordinal'))
+        expect(vlscale.domain(encoding, Y, ORDINAL))
           .to.eql({
             data: SOURCE,
             field: 'origin',

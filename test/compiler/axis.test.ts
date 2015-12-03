@@ -4,6 +4,7 @@ import * as axis from '../../src/compiler/axis';
 import {Model} from '../../src/compiler/Model';
 import {LINE} from '../../src/marktype';
 import {X, COLUMN} from '../../src/channel';
+import {TEMPORAL, QUANTITATIVE, ORDINAL} from '../../src/type';
 
 describe('Axis', function() {
   var layout = {
@@ -17,7 +18,7 @@ describe('Axis', function() {
       encoding = new Model({
         marktype: LINE,
         encoding: {
-          x: {field: field, type: 'temporal', timeUnit: timeUnit}
+          x: {field: field, type: TEMPORAL, timeUnit: timeUnit}
         }
       });
     var _axis = axis.compileAxis(X, encoding);
@@ -80,7 +81,7 @@ describe('Axis', function() {
     it('should add return fieldTitle by default', function () {
       var title = axis.title(new Model({
           encoding: {
-            x: {field: 'a', type: 'Q', axis: {titleMaxLength: 3}}
+            x: {field: 'a', type: QUANTITATIVE, axis: {titleMaxLength: 3}}
           }
         }), X);
       expect(title).to.eql('a');
@@ -89,7 +90,7 @@ describe('Axis', function() {
     it('should add return fieldTitle by default', function () {
       var title = axis.title(new Model({
           encoding: {
-            x: {field: 'a', type: 'Q', aggregate: 'sum', axis: {titleMaxLength: 10}}
+            x: {field: 'a', type: QUANTITATIVE, aggregate: 'sum', axis: {titleMaxLength: 10}}
           }
         }), X);
       expect(title).to.eql('SUM(a)');
@@ -98,7 +99,7 @@ describe('Axis', function() {
     it('should add return fieldTitle by default and truncate', function () {
       var title = axis.title(new Model({
           encoding: {
-            x: {field: 'a', type: 'Q', aggregate: 'sum', axis: {titleMaxLength: 3}}
+            x: {field: 'a', type: QUANTITATIVE, aggregate: 'sum', axis: {titleMaxLength: 3}}
           }
         }), X);
       expect(title).to.eql('SU…');
