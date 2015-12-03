@@ -3,6 +3,7 @@ import {expect} from 'chai';
 import * as axis from '../../src/compiler/axis';
 import {Model} from '../../src/compiler/Model';
 import {LINE} from '../../src/marktype';
+import {X, COLUMN} from '../../src/channel';
 
 describe('Axis', function() {
   var layout = {
@@ -19,7 +20,7 @@ describe('Axis', function() {
           x: {field: field, type: 'temporal', timeUnit: timeUnit}
         }
       });
-    var _axis = axis.compileAxis('x', encoding);
+    var _axis = axis.compileAxis(X, encoding);
 
     //FIXME decouple the test here
 
@@ -42,7 +43,7 @@ describe('Axis', function() {
           encoding: {
             x: {field: 'a', axis:{orient: 'bottom'}}
           }
-        }), 'x');
+        }), X);
       expect(orient).to.eql('bottom');
     });
 
@@ -51,7 +52,7 @@ describe('Axis', function() {
           encoding: {
             x: {field: 'a'}
           }
-        }), 'x');
+        }), X);
       expect(orient).to.eql(undefined);
     });
 
@@ -61,7 +62,7 @@ describe('Axis', function() {
             x: {field: 'a'},
             column: {field: 'a'}
           }
-        }), 'column');
+        }), COLUMN);
       expect(orient).to.eql('top');
     });
   });
@@ -72,7 +73,7 @@ describe('Axis', function() {
           encoding: {
             x: {field: 'a', axis: {title: 'Custom'}}
           }
-        }), 'x');
+        }), X);
       expect(title).to.eql('Custom');
     });
 
@@ -81,7 +82,7 @@ describe('Axis', function() {
           encoding: {
             x: {field: 'a', type: 'Q', axis: {titleMaxLength: 3}}
           }
-        }), 'x');
+        }), X);
       expect(title).to.eql('a');
     });
 
@@ -90,7 +91,7 @@ describe('Axis', function() {
           encoding: {
             x: {field: 'a', type: 'Q', aggregate: 'sum', axis: {titleMaxLength: 10}}
           }
-        }), 'x');
+        }), X);
       expect(title).to.eql('SUM(a)');
     });
 
@@ -99,7 +100,7 @@ describe('Axis', function() {
           encoding: {
             x: {field: 'a', type: 'Q', aggregate: 'sum', axis: {titleMaxLength: 3}}
           }
-        }), 'x');
+        }), X);
       expect(title).to.eql('SU…');
     });
 
@@ -112,7 +113,7 @@ describe('Axis', function() {
           config: {
             cell: {width: 60}
           }
-        }), 'x');
+        }), X);
       expect(title).to.eql('abcdefghi…');
     });
   });

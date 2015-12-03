@@ -9,7 +9,7 @@ import {SOURCE, STACKED, LAYOUT} from '../data';
 import * as time from './time';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 
-export function compileScales(names: Array<string>, model: Model) {
+export function compileScales(names: Array<Channel>, model: Model) {
   return names.reduce(function(a, channel: Channel) {
     var scaleDef: any = {
       name: channel,
