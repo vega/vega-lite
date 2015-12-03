@@ -22,7 +22,7 @@
     "start": "npm run watch & browser-sync start --server --files 'vega-lite.js' --index 'gallery.html'",
     "schema": "tsc && node src/schema/schemagen.js > vega-lite-schema.json",
     "test": "tsc && mocha --recursive --require source-map-support/register",
-    "watch": "nodemon -e ts -x 'npm test && npm run build'"
+    "watch": "nodemon -e ts -x 'npm test & npm run build'"
   },
   "repository": {
     "type": "git",
