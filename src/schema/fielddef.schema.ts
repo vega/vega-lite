@@ -12,7 +12,7 @@ import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL, Type} from '../type';
 
 export interface FieldDef {
   field?: string;
-  type?: Type | string;  // type can be short (Q) or long (Quantitative)
+  type?: Type;
   value?: any;
 
   // function

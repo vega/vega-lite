@@ -4,7 +4,13 @@ export enum Type {
   QUANTITATIVE = <any>'quantitative',
   ORDINAL = <any>'ordinal',
   TEMPORAL = <any>'temporal',
-  NOMINAL = <any>'nominal'
+  NOMINAL = <any>'nominal',
+
+  // legacy short names, translated in getFullName
+  Q = <any>'quantitative',
+  O = <any>'ordinal',
+  T = <any>'temporal',
+  N = <any>'nominal'
 }
 
 export const QUANTITATIVE = Type.QUANTITATIVE;
@@ -38,8 +44,7 @@ export const TYPE_FROM_SHORT_TYPE = {
  * @param  type
  * @return Full type name.
  */
-export function getFullName(type: Type | string): Type {
-  const typeString = <string>type;
-  return TYPE_FROM_SHORT_TYPE[typeString.toUpperCase()] || // short type is uppercase by default
-         typeString.toLowerCase();
+export function getFullName(type: Type): Type {
+  return TYPE_FROM_SHORT_TYPE[Type[type].toUpperCase()] || // short type is uppercase by default
+         Type[type].toLowerCase();
 }
