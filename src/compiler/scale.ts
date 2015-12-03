@@ -41,7 +41,7 @@ export function compileScales(names: Array<Channel>, model: Model) {
   }, []);
 }
 
-export function type(channel: Channel, model: Model): Type | string {
+export function type(channel: Channel, model: Model): string {
   const fieldDef = model.fieldDef(channel);
   switch (fieldDef.type) {
     case NOMINAL: //fall through
