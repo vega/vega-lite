@@ -8,11 +8,11 @@ import {AGGREGATE_OPS} from '../aggregate';
 import {toMap, duplicate} from '../util';
 import {merge} from './schemautil';
 import {TIMEUNITS} from '../timeunit';
-import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
+import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL, Type} from '../type';
 
 export interface FieldDef {
   field?: string;
-  type?: string;
+  type?: Type | string;  // type can be short (Q) or long (Quantitative)
   value?: any;
 
   // function

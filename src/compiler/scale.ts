@@ -7,7 +7,7 @@ import {SHARED_DOMAIN_OPS} from '../aggregate';
 import {COLUMN, ROW, X, Y, SHAPE, SIZE, COLOR, TEXT, Channel} from '../channel';
 import {SOURCE, STACKED, LAYOUT} from '../data';
 import * as time from './time';
-import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
+import {Type, NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 
 export function compileScales(names: Array<Channel>, model: Model) {
   return names.reduce(function(a, channel: Channel) {
@@ -41,7 +41,7 @@ export function compileScales(names: Array<Channel>, model: Model) {
   }, []);
 }
 
-export function type(channel: Channel, model: Model) {
+export function type(channel: Channel, model: Model): Type | string {
   const fieldDef = model.fieldDef(channel);
   switch (fieldDef.type) {
     case NOMINAL: //fall through

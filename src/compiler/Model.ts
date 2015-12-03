@@ -207,7 +207,7 @@ export class Model {
     return fieldDef && (
       contains([NOMINAL, ORDINAL], fieldDef.type) ||
       (fieldDef.type === TEMPORAL && fieldDef.timeUnit &&
-        time.scale.type(fieldDef.timeUnit, channel) === ORDINAL)
+        time.scale.type(fieldDef.timeUnit, channel) === <any>ORDINAL)
       );
   }
 
