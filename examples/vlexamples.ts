@@ -35,7 +35,7 @@ const VL_SPECS = {
       title: "Tick marks"
     },
     {
-      "name": "Line",
+      "name": "line",
       "title": "Line chart"
     },
     {
