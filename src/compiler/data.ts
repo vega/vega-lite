@@ -10,16 +10,17 @@ import {SOURCE, STACKED, LAYOUT, SUMMARY} from '../data';
 import * as time from './time';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 
+
 /**
  * Create Vega's data array from a given encoding.
  *
- * @param  {Encoding} encoding
- * @return {Array} Array of Vega data.
+ * @param  encoding
+ * @return Array of Vega data.
  *                 This always includes a "source" data table.
  *                 If the encoding contains aggregate value, this will also create
  *                 aggregate table as well.
  */
-export function compileData(model: Model) {
+export function compileData(model: Model): VgData[] {
   var def = [source.def(model)];
 
   const summaryDef = summary.def(model);
@@ -147,7 +148,7 @@ export namespace source {
   }
 
   /**
-   * @return {Array} An array that might contain a filter transform for filtering null value based on filterNul config
+   * @return An array that might contain a filter transform for filtering null value based on filterNul config
    */
   export function nullFilterTransform(model: Model) {
     const filterNull = model.config('filterNull');

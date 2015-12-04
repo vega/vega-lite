@@ -4,9 +4,6 @@ import {AREA, BAR, LINE, POINT, TEXT as TEXTMARKS, TICK, CIRCLE, SQUARE} from '.
 import {QUANTITATIVE} from '../type';
 import {imputeTransform, stackTransform} from './stack';
 
-// https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations
-declare var exports;
-
 /* mapping from vega-lite's mark types to vega's mark types */
 const MARKTYPES_MAP = {
   bar: 'rect',

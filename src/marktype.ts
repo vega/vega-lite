@@ -1,12 +1,12 @@
 export enum Marktype {
-  AREA = <any>'area',
-  BAR = <any>'bar',
-  LINE = <any>'line',
-  POINT = <any>'point',
-  TEXT = <any>'text',
-  TICK = <any>'tick',
-  CIRCLE = <any>'circle',
-  SQUARE = <any>'square',
+  AREA = 'area' as any,
+  BAR = 'bar' as any,
+  LINE = 'line' as any,
+  POINT = 'point' as any,
+  TEXT = 'text' as any,
+  TICK = 'tick' as any,
+  CIRCLE = 'circle' as any,
+  SQUARE = 'square' as any
 }
 
 export const AREA = Marktype.AREA;

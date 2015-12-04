@@ -5,11 +5,11 @@ export * from 'datalib/src/generate';
 export * from 'datalib/src/stats';
 
 
-export function contains(array, item) {
+export function contains(array: Array<any>, item: any) {
   return array.indexOf(item) > -1;
 }
 
-export function forEach(obj, f, thisArg) {
+export function forEach(obj, f: (a, d, k, o) => any, thisArg) {
   if (obj.forEach) {
     obj.forEach.call(thisArg, f);
   } else {
@@ -19,7 +19,7 @@ export function forEach(obj, f, thisArg) {
   }
 }
 
-export function reduce(obj, f, init, thisArg?) {
+export function reduce(obj, f: (a, i, d, k, o) => any, init, thisArg?) {
   if (obj.reduce) {
     return obj.reduce.call(thisArg, f, init);
   } else {
@@ -30,13 +30,13 @@ export function reduce(obj, f, init, thisArg?) {
   }
 }
 
-export function map(obj, f, thisArg?) {
+export function map(obj, f: (a, d, k, o) => any, thisArg?) {
   if (obj.map) {
     return obj.map.call(thisArg, f);
   } else {
     var output = [];
     for (var k in obj) {
-      output.push( f.call(thisArg, obj[k], k, obj));
+      output.push(f.call(thisArg, obj[k], k, obj));
     }
     return output;
   }
@@ -68,6 +68,6 @@ export function getbins(stats, maxbins) {
   });
 }
 
-export function error(message: any): void {
+export function error(message: any) {
   console.error('[VL Error]', message);
 }

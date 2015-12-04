@@ -33,25 +33,6 @@ export function formula(timeUnit, field: string) {
   return fn + '(' + field + ')';
 }
 
-export function range(timeUnit, model: Model) {
-  var labelLength = model.config('timeScaleLabelLength'),
-    scaleLabel;
-  switch (timeUnit) {
-    case 'day':
-      scaleLabel = model.config('dayScaleLabel');
-      break;
-    case 'month':
-      scaleLabel = model.config('monthScaleLabel');
-      break;
-  }
-  if (scaleLabel) {
-    return labelLength ? scaleLabel.map(
-        function(s) { return s.substr(0, labelLength);}
-      ) : scaleLabel;
-  }
-  return;
-}
-
 export namespace scale {
   // FIXME move this to scale.type
   export function type(timeUnit, channel: Channel) {
@@ -75,8 +56,6 @@ export namespace scale {
         return 'linear';
     }
     return 'time';
-
-
   }
 
   export function domain(timeUnit, channel?: Channel) {

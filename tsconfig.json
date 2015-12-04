@@ -85,10 +85,7 @@
         "typings/chai.d.ts",
         "typings/colorbrewer.d.ts",
         "typings/d3-color.d.ts",
-        "typings/d3-format.d.ts",
-        "typings/d3-time-format.d.ts",
         "typings/datalib.d.ts",
-        "typings/lodash.d.ts",
         "typings/mocha.d.ts",
         "typings/node.d.ts",
         "typings/vega.d.ts"

@@ -8,6 +8,7 @@ import {COLUMN, ROW, X, Y, SHAPE, SIZE, COLOR, TEXT, Channel} from '../channel';
 import {SOURCE, STACKED, LAYOUT} from '../data';
 import * as time from './time';
 import {Type, NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
+import {BAR, TEXT as TEXT_MARK} from '../marktype';
 
 export function compileScales(names: Array<Channel>, model: Model) {
   return names.reduce(function(a, channel: Channel) {
@@ -265,7 +266,7 @@ export function rangeMixins(model: Model, channel: Channel, scaleType): any {
       }
       return {rangeMin: model.layout().cellHeight, rangeMax :0};
     case SIZE:
-      if (model.is('bar')) {
+      if (model.is(BAR)) {
         // FIXME this is definitely incorrect
         // but let's fix it later since bar size is a bad encoding anyway
         return {
@@ -274,7 +275,7 @@ export function rangeMixins(model: Model, channel: Channel, scaleType): any {
             model.fieldDef(Y).scale.bandWidth
           )]
         };
-      } else if (model.is(TEXT)) {
+      } else if (model.is(TEXT_MARK)) {
         return {range: [8, 40]};
       }
       // else -- point
