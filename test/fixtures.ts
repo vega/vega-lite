@@ -5,7 +5,7 @@ export var f: any = {};
 f.bars = {};
 
 f.bars.log_ver = {
-  'marktype': 'bar',
+  'mark': 'bar',
   'encoding': {
     'x': {'bin': {'maxbins': 15},'type': 'quantitative','field': 'IMDB_Rating'},
     'y': {'scale': {'type': 'log'},'type': 'quantitative','field': 'US_Gross','aggregate': 'mean'}
@@ -14,7 +14,7 @@ f.bars.log_ver = {
 };
 
 f.bars.log_hor = {
-  'marktype': 'bar',
+  'mark': 'bar',
   'encoding': {
     'y': {'bin': {'maxbins': 15},'type': 'quantitative','field': 'IMDB_Rating'},
     'x': {'scale': {'type': 'log'},'type': 'quantitative','field': 'US_Gross','aggregate': 'mean'}
@@ -23,14 +23,14 @@ f.bars.log_hor = {
 };
 
 f.bars['1d_hor'] = {
-  'marktype': 'bar',
+  'mark': 'bar',
   'encoding': {'x': {'type': 'quantitative','field': 'US_Gross','aggregate': 'sum'}},
   'data': {'url': 'data/movies.json'}
 };
 
 
 f.bars['1d_ver'] = {
-  'marktype': 'bar',
+  'mark': 'bar',
   'encoding': {'y': {'type': 'quantitative','field': 'US_Gross','aggregate': 'sum'}},
   'data': {'url': 'data/movies.json'}
 };
@@ -40,7 +40,7 @@ f.bars['1d_ver'] = {
 f.stack = {};
 
 f.stack.binY = {
-  'marktype': 'bar',
+  'mark': 'bar',
   'encoding': {
     'x': {'type': 'quantitative','field': 'Cost__Other','aggregate': 'mean'},
     'y': {'bin': true,'type': 'quantitative','field': 'Cost__Total_$'},
@@ -48,7 +48,7 @@ f.stack.binY = {
   }
 };
 f.stack.binX = {
-  'marktype': 'bar',
+  'mark': 'bar',
   'encoding': {
     'y': {'type': 'quantitative','field': 'Cost__Other','aggregate': 'mean'},
     'x': {'bin': true,'type': 'quantitative','field': 'Cost__Total_$'},
@@ -61,25 +61,25 @@ f.stack.binX = {
 f.points = {};
 
 f.points['1d_hor'] = {
-  'marktype': 'point',
+  'mark': 'point',
   'encoding': {'x': {'field': 'year','type': 'ordinal'}},
   'data': {'url': 'data/barley.json'}
 };
 
 f.points['1d_ver'] = {
-  'marktype': 'point',
+  'mark': 'point',
   'encoding': {'y': {'field': 'year','type': 'ordinal'}},
   'data': {'url': 'data/barley.json'}
 };
 
 f.points['x,y'] = {
-  'marktype': 'point',
+  'mark': 'point',
   'encoding': {'x': {'field': 'year','type': 'ordinal'},'y': {'field': 'yield','type': 'quantitative'}},
   'data': {'url': 'data/barley.json'}
 };
 
 f.points['x,y,size'] = {
-  'marktype': 'point',
+  'mark': 'point',
   'encoding': {
     'x': {'field': 'year','type': 'ordinal'},
     'y': {'field': 'yield','type': 'quantitative'},
@@ -89,7 +89,7 @@ f.points['x,y,size'] = {
 };
 
 f.points['x,y,stroke'] = {
-  'marktype': 'point',
+  'mark': 'point',
   'encoding': {
     'x': {'field': 'year','type': 'ordinal'},
     'y': {'field': 'yield','type': 'quantitative'},
@@ -99,7 +99,7 @@ f.points['x,y,stroke'] = {
 };
 
 f.points['x,y,shape'] = {
-  'marktype': 'point',
+  'mark': 'point',
   'encoding': {
     'x': {'field': 'year','type': 'ordinal'},
     'y': {'field': 'yield','type': 'quantitative'},
@@ -113,7 +113,7 @@ f.points['x,y,shape'] = {
 f.lines = {};
 
 f.lines['x,y'] = {
-  'marktype': 'line',
+  'mark': 'line',
   'encoding': {
     'x': {'field': 'year','type': 'ordinal'},
     'y': {'field': 'yield','type': 'quantitative'}
@@ -122,7 +122,7 @@ f.lines['x,y'] = {
 };
 
 f.lines['x,y,stroke'] = {
-  'marktype': 'line',
+  'mark': 'line',
   'encoding': {
     'x': {'field': 'Name','type': 'nominal'},
     'y': {'field': 'Cylinders','type': 'ordinal'},
@@ -136,7 +136,7 @@ f.lines['x,y,stroke'] = {
 f.area = {};
 
 f.area['x,y'] = {
-  'marktype': 'area',
+  'mark': 'area',
   'encoding': {
     'x': {'field': 'Displacement','type': 'quantitative'},
     'y': {'field': 'Acceleration','type': 'quantitative'}
@@ -145,7 +145,7 @@ f.area['x,y'] = {
 };
 
 f.area['x,y,stroke'] = {
-  'marktype': 'area',
+  'mark': 'area',
   'encoding': {
     'x': {'field': 'Displacement','type': 'quantitative'},
     'y': {'field': 'Acceleration','type': 'quantitative'},

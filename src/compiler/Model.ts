@@ -8,7 +8,7 @@ import {SOURCE, SUMMARY} from '../data';
 import * as vlFieldDef from '../fielddef';
 import * as vlEncoding from '../encoding';
 import {compileLayout} from './layout';
-import {AREA, BAR, POINT, TICK, CIRCLE, SQUARE, Marktype} from '../marktype';
+import {AREA, BAR, POINT, TICK, CIRCLE, SQUARE, Mark} from '../mark';
 import * as schema from '../schema/schema';
 import * as schemaUtil from '../schema/schemautil';
 import {StackProperties} from './stack';
@@ -103,7 +103,7 @@ export class Model {
       spec: any;
 
     spec = {
-      marktype: this._spec.marktype,
+      mark: this._spec.mark,
       encoding: encoding
     };
 
@@ -120,16 +120,16 @@ export class Model {
     return schemaUtil.subtract(spec, defaults);
   }
 
-  marktype() : Marktype {
-    return this._spec.marktype;
+  mark() : Mark {
+    return this._spec.mark;
   }
 
   spec(): Spec {
     return this._spec;
   }
 
-  is(markType: Marktype) {
-    return this._spec.marktype === markType;
+  is(mark: Mark) {
+    return this._spec.mark === mark;
   }
 
   has(channel: Channel) {
@@ -257,7 +257,7 @@ export class Model {
     if (opacity) {
       return opacity;
     } else {
-      if (contains([POINT, TICK, CIRCLE, SQUARE], this.marktype())) {
+      if (contains([POINT, TICK, CIRCLE, SQUARE], this.mark())) {
         // point-based marks and bar
         if (!this.isAggregate() ||
           (this.has(DETAIL) || this.has(COLOR) || this.has(SHAPE))) {

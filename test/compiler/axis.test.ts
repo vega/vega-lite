@@ -2,7 +2,7 @@ import {expect} from 'chai';
 
 import * as axis from '../../src/compiler/axis';
 import {Model} from '../../src/compiler/Model';
-import {LINE} from '../../src/marktype';
+import {LINE} from '../../src/mark';
 import {X, COLUMN} from '../../src/channel';
 import {TEMPORAL, QUANTITATIVE, ORDINAL} from '../../src/type';
 
@@ -16,7 +16,7 @@ describe('Axis', function() {
     var field = 'a',
       timeUnit = 'month',
       encoding = new Model({
-        marktype: LINE,
+        mark: LINE,
         encoding: {
           x: {field: field, type: TEMPORAL, timeUnit: timeUnit}
         }

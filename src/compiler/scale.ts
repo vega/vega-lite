@@ -8,7 +8,7 @@ import {COLUMN, ROW, X, Y, SHAPE, SIZE, COLOR, TEXT, Channel} from '../channel';
 import {SOURCE, STACKED, LAYOUT} from '../data';
 import * as time from './time';
 import {Type, NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
-import {BAR, TEXT as TEXT_MARK} from '../marktype';
+import {BAR, TEXT as TEXT_MARK} from '../mark';
 
 export function compileScales(names: Array<Channel>, model: Model) {
   return names.reduce(function(a, channel: Channel) {

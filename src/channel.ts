@@ -3,7 +3,7 @@
  * such as 'x', 'y', 'color'.
  */
 
-import {Marktype} from './marktype';
+import {Mark} from './mark';
 
 export enum Channel {
   X = 'x' as any,
@@ -29,7 +29,7 @@ export const DETAIL = Channel.DETAIL;
 
 export const CHANNELS = [X, Y, ROW, COLUMN, SIZE, SHAPE, COLOR, TEXT, DETAIL];
 
-interface SupportedMarktype {
+interface SupportedMark {
   point?: boolean,
   tick?: boolean,
   circle?: boolean,
@@ -43,11 +43,11 @@ interface SupportedMarktype {
 /**
  * Return whether a channel supports a particular mark type.
  * @param channel  channel name
- * @param marktype the mark type
- * @return whether the marktype supports the channel
+ * @param mark the mark type
+ * @return whether the mark supports the channel
  */
-export function supportMarktype(channel: Channel, marktype: Marktype) {
-  return !!getSupportedMarktype(channel)[marktype];
+export function supportMark(channel: Channel, mark: Mark) {
+  return !!getSupportedMark(channel)[mark];
 }
 
 /**
@@ -55,7 +55,7 @@ export function supportMarktype(channel: Channel, marktype: Marktype) {
  * @param channel
  * @return A dictionary mapping mark types to boolean values.
  */
-export function getSupportedMarktype(channel: Channel): SupportedMarktype {
+export function getSupportedMark(channel: Channel): SupportedMark {
   switch (channel) {
     case X:
     case Y:

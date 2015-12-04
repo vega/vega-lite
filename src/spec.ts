@@ -6,7 +6,7 @@ import {Spec} from './schema/schema';
 import {Model} from './compiler/Model';
 import {COLOR, DETAIL, SHAPE} from './channel';
 import * as vlEncoding from './encoding';
-import {BAR, AREA} from './marktype';
+import {BAR, AREA} from './mark';
 import {duplicate} from './util';
 
 // TODO: add vl.spec.validate & move stuff from vl.validate to here
