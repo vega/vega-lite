@@ -1,4 +1,4 @@
-export enum Marktype {
+export enum Mark {
   AREA = 'area' as any,
   BAR = 'bar' as any,
   LINE = 'line' as any,
@@ -9,13 +9,13 @@ export enum Marktype {
   SQUARE = 'square' as any
 }
 
-export const AREA = Marktype.AREA;
-export const BAR = Marktype.BAR;
-export const LINE = Marktype.LINE;
-export const POINT = Marktype.POINT;
-export const TEXT = Marktype.TEXT;
-export const TICK = Marktype.TICK;
+export const AREA = Mark.AREA;
+export const BAR = Mark.BAR;
+export const LINE = Mark.LINE;
+export const POINT = Mark.POINT;
+export const TEXT = Mark.TEXT;
+export const TICK = Mark.TICK;
 
 // TODO: decide if we want to keep them?
-export const CIRCLE = Marktype.CIRCLE;
-export const SQUARE = Marktype.SQUARE;
+export const CIRCLE = Mark.CIRCLE;
+export const SQUARE = Mark.SQUARE;
