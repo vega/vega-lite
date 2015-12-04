@@ -5,13 +5,25 @@ export interface MarksConfig {
   // General Vega
   opacity?: number;
   strokeWidth?: number;
+  strokeDash?: number[];
+  strokeDashOffset?: number[];
   fill?: string;
+
+  // Bar / area
+  orient?: string;
+  // Line / area
+  interpolate?: string;
+  tension?: number;
 
   // Text-only
   align?: string;
+  angle?: number;
   baseline?: string;
+  dx?: number;
+  dy?: number;
+  radius?: number;
+  theta?: number;
   font?: string;
-  fontSize?: number;
   fontStyle?: string;
   fontWeight?: string;
 }
@@ -50,6 +62,36 @@ export const marksConfig = {
       default: 2,
       minimum: 0
     },
+    strokeDash: {
+      type: 'array',
+      default: undefined,
+      description: 'An array of alternating stroke, space lengths for creating dashed or dotted lines.'
+    },
+    strokeDashOffset: {
+      type: 'array',
+      default: undefined,
+      description: 'The offset (in pixels) into which to begin drawing with the stroke dash array.'
+    },
+
+    // bar / area
+    orient: {
+      type: 'string',
+      default: undefined,
+      description: 'The orientation of this area mark. One of horizontal (the default) or vertical.'
+    },
+
+    // line / area
+    interpolate: {
+      type: 'string',
+      default: undefined,
+      // TODO better describe that some of them isn't supported in area
+      description: 'The line interpolation method to use. One of linear, step-before, step-after, basis, basis-open, basis-closed, bundle, cardinal, cardinal-open, cardinal-closed, monotone.'
+    },
+    tension: {
+      type: 'number',
+      default: undefined,
+      description: 'Depending on the interpolation type, sets the tension parameter.'
+    },
 
     // text-only
     align: {
@@ -58,26 +100,34 @@ export const marksConfig = {
       enum: ['left', 'right', 'center'],
       description: 'The horizontal alignment of the text. One of left, right, center.'
     },
+    angle: {
+      type: 'number',
+      default: undefined,
+      description: 'The rotation angle of the text, in degrees.'
+    },
     baseline: {
       type: 'string',
       default: 'middle',
       enum: ['top', 'middle', 'bottom'],
       description: 'The vertical alignment of the text. One of top, middle, bottom.'
     },
-    // TODO dx, dy, radius, theta, angle
-
+    dx: {
+      type: 'number',
+      default: undefined,
+      description: 'The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the angle property.'
+    },
+    dy: {
+      type: 'number',
+      default: undefined,
+      description: 'The vertical offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the angle property.'
+    },
     font: {
       type: 'string',
       default: undefined,
       role: 'font',
       description: 'The typeface to set the text in (e.g., Helvetica Neue).'
     },
-    fontSize: {
-      type: 'integer',
-      default: undefined,
-      minimum: 0,
-      description: 'The font size, in pixels.'
-    },
+    // fontSize excluded as we use size.value
     fontStyle: {
       type: 'string',
       default: undefined,
@@ -89,6 +139,16 @@ export const marksConfig = {
       enum: ['normal', 'bold'],
       default: undefined,
       description: 'The font weight (e.g., bold).'
+    },
+    radius: {
+      type: 'number',
+      default: undefined,
+      description: 'Polar coordinate radial offset, in pixels, of the text label from the origin determined by the x and y properties.'
+    },
+    theta: {
+      type: 'number',
+      default: undefined,
+      description: 'Polar coordinate angle, in radians, of the text label from the origin determined by the x and y properties. Values for theta follow the same convention of arc mark startAngle and endAngle properties: angles are measured in radians, with 0 indicating "north".'
     }
   }
 };

@@ -102,6 +102,17 @@ export function compileMarks(model: Model): any[] {
   }
 }
 
+
+
+function applyMarksConfig(marksProperties, marksConfig, propsList) {
+  propsList.forEach(function(property) {
+    const value = marksConfig[property];
+    if (value !== undefined) {
+      marksProperties[property] = {value: value};
+    }
+  });
+}
+
 /**
  * Returns list of detail fields (for 'color', 'shape', or 'detail' channels)
  * that the model's spec contains.
@@ -119,6 +130,7 @@ export namespace properties {
 export function bar(model: Model) {
   const stack = model.stack();
 
+  // FIXME(#724) apply orient from config if applicable
   // TODO Use Vega's marks properties interface
   var p:any = {};
 
@@ -365,12 +377,16 @@ export function line(model: Model) {
 
   p.strokeWidth = {value: model.config('marks').strokeWidth};
 
+  applyMarksConfig(p, model.config('marks'), ['interpolate', 'tension']);
+
   return p;
 }
 
 // TODO(#694): optimize area's usage with bin
 export function area(model: Model) {
   const stack = model.stack();
+
+  // FIXME(#724): apply orient properties
 
   // TODO Use Vega's marks properties interface
   var p:any = {};
@@ -444,6 +460,8 @@ export function area(model: Model) {
   // opacity
   var opacity = model.markOpacity();
   if (opacity) p.opacity = {value: opacity};
+
+  applyMarksConfig(p, model.config('marks'), ['interpolate', 'tension']);
 
   return p;
 }
@@ -645,15 +663,9 @@ export function text(model: Model) {
     p.text = {value: fieldDef.value};
   }
 
-
-  ['align', 'baseline', 'fill', 'font', 'fontWeight', 'fontStyle']
-    .forEach(function(property) {
-      const value = marksConfig[property];
-      if (value !== undefined) {
-        p[property] = {value: value};
-      }
-
-    });
+  applyMarksConfig(p, marksConfig,
+    ['angle', 'align', 'baseline', 'dx', 'dy', 'fill', 'font', 'fontWeight',
+     'fontStyle', 'radius', 'theta']);
 
   return p;
 }
