@@ -3,7 +3,6 @@ import {CellConfig, cellConfig} from './config.cell.schema';
 import {MarksConfig, marksConfig} from './config.marks.schema';
 
 export interface Config {
-  name?: number;
   width?: number;
   height?: number;
   viewport?: number;
@@ -30,11 +29,6 @@ export const config = {
   type: 'object',
   properties: {
     // template
-    name: {
-      type: 'integer',
-      default: undefined,
-      description: 'A unique name for the visualization specification.'
-    },
     // TODO: add this back once we have top-down layout approach
     // width: {
     //   type: 'integer',

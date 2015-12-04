@@ -22,21 +22,24 @@ export function compile(spec, theme?) {
   var model = new Model(spec, theme);
   const layout = model.layout();
 
-  var rootGroup:any = {
-    name: 'root',
-    type: 'group',
-    from: {data: LAYOUT},
-    properties: {
-      update: {
-        width: layout.width.field ?
-               {field: layout.width.field} :
-               {value: layout.width},
-        height: layout.height.field ?
-                {field: layout.height.field} :
-                {value: layout.height}
+  let rootGroup:any = extend({
+      name: spec.name ? spec.name + '_root' : 'root',
+      type: 'group',
+    },
+    spec.description ? {description: spec.description} : {},
+    {
+      from: {data: LAYOUT},
+      properties: {
+        update: {
+          width: layout.width.field ?
+                 {field: layout.width.field} :
+                 {value: layout.width},
+          height: layout.height.field ?
+                  {field: layout.height.field} :
+                  {value: layout.height}
+        }
       }
-    }
-  };
+    });
 
   const marks = compileMarks(model);
 
@@ -73,7 +76,7 @@ export function compile(spec, theme?) {
 
   // TODO: change type to become VgSpec
   var output = extend(
-    model.config('name') ? {name: model.config('name')} : {},
+    spec.name ? {name: spec.name} : {},
     {
       width: layout.width.field ? FIT : layout.width,
       height: layout.height.field ? FIT : layout.height,

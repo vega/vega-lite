@@ -10,6 +10,8 @@ import {encoding, Encoding} from './encoding.schema';
 import {Marktype} from '../marktype';
 
 export interface Spec {
+  name?: string;
+  description?: string;
   data?: Data;
   marktype?: Marktype;
   encoding?: Encoding;
@@ -28,6 +30,12 @@ export var schema = {
   type: 'object',
   required: ['marktype', 'encoding'],
   properties: {
+    name: {
+      type: 'string'
+    },
+    description: {
+      type: 'string'
+    },
     data: data,
     marktype: marktype,
     encoding: encoding,
