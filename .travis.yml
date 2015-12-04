@@ -3,6 +3,9 @@ node_js:
   - "0.12"
   - "4.1"
 install: npm install
+script:
+  - npm run lint
+  - npm test
 notifications:
   email:
     on_success: never
