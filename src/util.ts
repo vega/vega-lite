@@ -5,7 +5,7 @@ export * from 'datalib/src/generate';
 export * from 'datalib/src/stats';
 
 
-export function contains(array, item) {
+export function contains(array: Array<any>, item: any) {
   return array.indexOf(item) > -1;
 }
 
