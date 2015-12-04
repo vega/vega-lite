@@ -123,8 +123,8 @@ export class Model {
     return this._spec.marktype;
   }
 
-  is(m) {
-    return this._spec.marktype === m;
+  is(markType: Marktype) {
+    return this._spec.marktype === markType;
   }
 
   has(channel: Channel) {
