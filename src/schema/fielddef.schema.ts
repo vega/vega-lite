@@ -8,11 +8,11 @@ import {AGGREGATE_OPS} from '../aggregate';
 import {toMap, duplicate} from '../util';
 import {merge} from './schemautil';
 import {TIMEUNITS} from '../timeunit';
-import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
+import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL, Type} from '../type';
 
 export interface FieldDef {
   field?: string;
-  type?: string;
+  type?: Type;
   value?: any;
 
   // function
@@ -24,17 +24,8 @@ export interface FieldDef {
 
   // override vega components
   axis?: Axis;
-  legend?: Legend;
+  legend?: Legend | boolean;
   scale?: Scale;
-
-  // text
-  align?: string;
-  baseline?: string;
-  color?: string;
-  margin?: number;
-  placeholder?: string;
-  font?: any; // declare font
-  format?: string;
 
   // TODO: maybe extend this in other app?
   // unused metadata -- for other application
@@ -82,11 +73,6 @@ export var typicalField = merge(duplicate(fieldDef), {
 
 export var onlyOrdinalField = merge(duplicate(fieldDef), {
   properties: {
-    aggregate: {
-      type: 'string',
-      enum: ['count'],
-      supportedTypes: toMap([NOMINAL, ORDINAL])
-    },
     scale: ordinalOnlyScale
   }
 });

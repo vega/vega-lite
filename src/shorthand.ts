@@ -7,8 +7,8 @@ import {Spec} from './schema/schema';
 import {AGGREGATE_OPS} from './aggregate';
 import {TIMEUNITS} from './timeunit';
 import {SHORT_TYPE, TYPE_FROM_SHORT_TYPE} from './type';
-import * as util from './util';
 import * as vlEncoding from './encoding';
+import {Mark} from './mark';
 
 export const DELIM = '|';
 export const ASSIGN = '=';
@@ -17,17 +17,17 @@ export const FUNC = '_';
 
 
 export function shorten(spec: Spec): string {
-  return 'mark' + ASSIGN + spec.marktype +
+  return 'mark' + ASSIGN + spec.mark +
     DELIM + shortenEncoding(spec.encoding);
 }
 
 export function parse(shorthand: string, data?, config?) {
   let split = shorthand.split(DELIM),
-    marktype = split.shift().split(ASSIGN)[1].trim(),
+    mark = split.shift().split(ASSIGN)[1].trim(),
     encoding = parseEncoding(split.join(DELIM));
 
   let spec:Spec = {
-    marktype: marktype,
+    mark: Mark[mark],
     encoding: encoding
   };
 

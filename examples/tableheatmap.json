@@ -1,0 +1,10 @@
+{
+  "data": {"url": "data/cars.json"},
+  "mark": "text",
+  "encoding": {
+    "row": {"field": "Origin","type": "ordinal"},
+    "column": {"field": "Cylinders","type": "ordinal"},
+    "color": {"field": "Horsepower","type": "quantitative","aggregate": "mean"},
+    "text": {"field": "*","type": "quantitative","aggregate": "count"}
+  }
+}

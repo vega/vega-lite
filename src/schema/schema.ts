@@ -3,16 +3,19 @@
 /// <reference path="../../typings/vega.d.ts"/>
 
 import * as schemaUtil from './schemautil';
-import {marktype} from './marktype.schema';
-import {config} from './config.schema';
+import {mark} from './mark.schema';
+import {config, Config} from './config.schema';
 import {data, Data} from './data.schema';
 import {encoding, Encoding} from './encoding.schema';
+import {Mark} from '../mark';
 
 export interface Spec {
+  name?: string;
+  description?: string;
   data?: Data;
-  marktype?: string;
+  mark?: Mark;
   encoding?: Encoding;
-  config?: any; // FIXME: declare
+  config?: Config;
 }
 
 // TODO remove this
@@ -25,10 +28,16 @@ export var schema = {
   $schema: 'http://json-schema.org/draft-04/schema#',
   description: 'Schema for Vega-lite specification',
   type: 'object',
-  required: ['marktype', 'encoding'],
+  required: ['mark', 'encoding'],
   properties: {
+    name: {
+      type: 'string'
+    },
+    description: {
+      type: 'string'
+    },
     data: data,
-    marktype: marktype,
+    mark: mark,
     encoding: encoding,
     config: config
   }

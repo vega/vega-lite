@@ -5,76 +5,15 @@ import {Bin} from './schema/bin.schema';
 
 import {MAXBINS_DEFAULT} from './bin';
 import {AGGREGATE_OPS} from './aggregate';
-import * as util from './util';
+import {contains, getbins} from './util';
 import * as time from './compiler/time';
 import {TIMEUNITS} from './timeunit';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL, SHORT_TYPE, TYPE_FROM_SHORT_TYPE} from './type';
 
-export interface FieldRefOption {
-  nofn?: boolean;
-  noAggregate?: boolean;
-  datum?: boolean;
-  fn?: string;
-  prefn?: string;
-  binSuffix?: string;
-}
-
-/**
- * @param field
- * @param opt
- *   opt.nofn -- exclude bin, aggregate, timeUnit
- *   opt.noAggregate -- exclude aggregation function
- *   opt.datum - include 'datum.'
- *   opt.fn - replace fn with custom function prefix
- *   opt.prefn - prepend fn with custom function prefix
- *   opt.binSuffix - append suffix to the field ref for bin (default='_start')
-
- * @return {[type]}       [description]
- */
-export function fieldRef(fieldDef: FieldDef, opt?: FieldRefOption) {
-  opt = opt || {};
-
-  var f = (opt.datum ? 'datum.' : '') + (opt.prefn || ''),
-    field = fieldDef.field;
-
-  if (isCount(fieldDef)) {
-    return f + 'count';
-  } else if (opt.fn) {
-    return f + opt.fn + '_' + field;
-  } else if (!opt.nofn && fieldDef.bin) {
-    var binSuffix = opt.binSuffix || '_start';
-    return f + 'bin_' + field + binSuffix;
-  } else if (!opt.nofn && !opt.noAggregate && fieldDef.aggregate) {
-    return f + fieldDef.aggregate + '_' + field;
-  } else if (!opt.nofn && fieldDef.timeUnit) {
-    return f + fieldDef.timeUnit + '_' + field;
-  }  else {
-    return f + field;
-  }
-}
-
-export function isTypes(fieldDef: FieldDef, types: Array<String>) {
-  for (var t = 0; t < types.length; t++) {
-    if (fieldDef.type === types[t]) {
-      return true;
-    }
-  }
-  return false;
-}
-
-/*
- * Most fields that use ordinal scale are dimensions.
- * However, YEAR(T), YEARMONTH(T) use time scale, not ordinal but are dimensions too.
- */
-export function isOrdinalScale(fieldDef: FieldDef) {
-  return  isTypes(fieldDef, [NOMINAL, ORDINAL]) ||
-    (fieldDef.type === TEMPORAL && fieldDef.timeUnit && time.isOrdinalFn(fieldDef.timeUnit) );
-}
-
 
 // TODO remove these "isDimension/isMeasure" stuff
 function _isFieldDimension(fieldDef: FieldDef) {
-  return  isTypes(fieldDef, [NOMINAL, ORDINAL]) || !!fieldDef.bin ||
+  return  contains([NOMINAL, ORDINAL], fieldDef.type) || !!fieldDef.bin ||
     (fieldDef.type === TEMPORAL && !!fieldDef.timeUnit );
 }
 
@@ -96,6 +35,7 @@ export function isCount(fieldDef: FieldDef) {
   return fieldDef.aggregate === 'count';
 }
 
+// FIXME remove this, and the getbins method
 export function cardinality(fieldDef: FieldDef, stats, filterNull = {}) {
   // FIXME need to take filter into account
 
@@ -107,7 +47,8 @@ export function cardinality(fieldDef: FieldDef, stats, filterNull = {}) {
     const bin = fieldDef.bin;
     const maxbins = (typeof bin === 'boolean') ? MAXBINS_DEFAULT : bin.maxbins;
 
-    var bins = util.getbins(stat, maxbins);
+
+    var bins = getbins(stat, maxbins);
     return (bins.stop - bins.start) / bins.step;
   }
   if (fieldDef.type === TEMPORAL) {

@@ -1,5 +1,5 @@
 import {Model} from './Model';
-import * as util from '../util';
+import {contains, extend, truncate} from '../util';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 import {COLUMN, ROW, X, Y, Channel} from '../channel';
 import * as time from './time';
@@ -7,8 +7,8 @@ import * as time from './time';
 // https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations
 declare var exports;
 
-export function compileAxis(channel: Channel, model: Model, layout, stats) {
-  var isCol = channel === COLUMN,
+export function compileAxis(channel: Channel, model: Model) {
+  const isCol = channel === COLUMN,
     isRow = channel === ROW,
     type = isCol ? 'x' : isRow ? 'y': channel;
 
@@ -22,16 +22,16 @@ export function compileAxis(channel: Channel, model: Model, layout, stats) {
   // 1. Add properties
   [
     // a) properties with special rules (so it has axis[property] methods) -- call rule functions
-    'format', 'grid', 'layer', 'offset', 'orient', 'tickSize', 'ticks', 'title', 'titleOffset',
+    'format', 'grid', 'layer', 'orient', 'tickSize', 'ticks', 'title',
     // b) properties without rules, only produce default values in the schema, or explicit value if specified
-    'tickPadding', 'tickSize', 'tickSizeMajor', 'tickSizeMinor', 'tickSizeEnd',
-    'values', 'subdivide'
+    'offset', 'tickPadding', 'tickSize', 'tickSizeMajor', 'tickSizeMinor', 'tickSizeEnd',
+    'titleOffset', 'values', 'subdivide'
   ].forEach(function(property) {
-    let method: (model: Model, channel: Channel, layout:any, stats:any, def:any)=>any;
+    let method: (model: Model, channel: Channel, def:any)=>any;
 
     var value = (method = exports[property]) ?
                   // calling axis.format, axis.grid, ...
-                  method(model, channel, layout, stats, def) :
+                  method(model, channel, def) :
                   model.fieldDef(channel).axis[property];
     if (value !== undefined) {
       def[property] = value;
@@ -42,11 +42,11 @@ export function compileAxis(channel: Channel, model: Model, layout, stats) {
   var props = model.fieldDef(channel).axis.properties || {};
 
   [
-    'axis', 'grid', 'labels', 'title', // have special rules
-    'ticks', 'majorTicks', 'minorTicks' // only default values
+    'axis', 'labels',// have special rules
+    'grid', 'title', 'ticks', 'majorTicks', 'minorTicks' // only default values
   ].forEach(function(group) {
     var value = properties[group] ?
-      properties[group](model, channel, props[group], layout, def) :
+      properties[group](model, channel, props[group], def) :
       props[group];
     if (value !== undefined) {
       def.properties = def.properties || {};
@@ -78,20 +78,18 @@ export function format(model: Model, channel: Channel) {
 }
 
 export function grid(model: Model, channel: Channel) {
-  var grid = model.fieldDef(channel).axis.grid;
+  const fieldDef = model.fieldDef(channel);
+  var grid = fieldDef.axis.grid;
   if (grid !== undefined) {
     return grid;
   }
 
-  // If `grid` is unspecified, the default value is `true` for
-  // - ROW and COL.
-  // - X and Y that have (1) quantitative fields that are not binned or (2) time fields.
-  // Otherwise, the default value is `false`.
-  return channel === ROW || channel === COLUMN ||
-    (model.isTypes(channel, [QUANTITATIVE, TEMPORAL]) && !model.fieldDef(channel).bin);
+  // If `grid` is unspecified, the default value is `true` for ordinal scales
+  // that are not binned
+  return !model.isOrdinalScale(channel) && !fieldDef.bin;
 }
 
-export function layer(model: Model, channel: Channel, layout, stats, def) {
+export function layer(model: Model, channel: Channel, def) {
   var layer = model.fieldDef(channel).axis.layer;
   if (layer !== undefined) {
     return layer;
@@ -103,34 +101,23 @@ export function layer(model: Model, channel: Channel, layout, stats, def) {
   return undefined; // otherwise return undefined and use Vega's default.
 };
 
-export function offset(model: Model, channel: Channel, layout) {
-  var offset = model.fieldDef(channel).axis.offset;
-  if (offset) {
-    return offset;
-  }
-
-  if(channel === ROW) {
-   return layout.y.axisTitleOffset + 20;
-  }
-  return undefined;
-}
-
-export function orient(model: Model, channel: Channel, layout, stats) {
+export function orient(model: Model, channel: Channel) {
   var orient = model.fieldDef(channel).axis.orient;
   if (orient) {
     return orient;
   } else if (channel === COLUMN) {
+    // FIXME test and decide
     return 'top';
-  } else if (channel === X && model.has(Y) && model.isOrdinalScale(Y) && model.cardinality(Y, stats) > 30) {
-    // FIXME remove this case and migrate this logic to vega-lite-ui
-    // x-axis for long y - put on top
-    return 'top';
+  } else if (channel === ROW) {
+    if (model.has(Y) && model.fieldDef(Y).axis.orient !== 'right') {
+      return 'right';
+    }
   }
   return undefined;
 }
 
 export function ticks(model: Model, channel: Channel) {
-  var ticks = model.fieldDef(channel).axis.ticks;
+  const ticks = model.fieldDef(channel).axis.ticks;
   if (ticks !== undefined) {
     return ticks;
   }
@@ -144,7 +131,7 @@ export function ticks(model: Model, channel: Channel) {
 }
 
 export function tickSize(model: Model, channel: Channel) {
-  var tickSize = model.fieldDef(channel).axis.tickSize;
+  const tickSize = model.fieldDef(channel).axis.tickSize;
   if (tickSize !== undefined) {
     return tickSize;
   }
@@ -155,7 +142,7 @@ export function tickSize(model: Model, channel: Channel) {
 }
 
 
-export function title(model: Model, channel: Channel, layout) {
+export function title(model: Model, channel: Channel) {
   var axisSpec = model.fieldDef(channel).axis;
   if (axisSpec.title !== undefined) {
     return axisSpec.title;
@@ -163,120 +150,45 @@ export function title(model: Model, channel: Channel, layout) {
 
   // if not defined, automatically determine axis title from field def
   var fieldTitle = model.fieldTitle(channel);
+  const layout = model.layout();
 
   var maxLength;
   if (axisSpec.titleMaxLength) {
-  maxLength = axisSpec.titleMaxLength;
-  } else if (channel === X) {
+    maxLength = axisSpec.titleMaxLength;
+  } else if (channel === X && typeof layout.cellWidth === 'number') {
+    // Guess max length if we know cell size at compile time
     maxLength = layout.cellWidth / model.config('characterWidth');
-  } else if (channel === Y) {
+  } else if (channel === Y && typeof layout.cellHeight === 'number') {
+    // Guess max length if we know cell size at compile time
     maxLength = layout.cellHeight / model.config('characterWidth');
   }
-
-  return maxLength ? util.truncate(fieldTitle, maxLength) : fieldTitle;
-}
-
-
-export function titleOffset(model: Model, channel: Channel) {
-  // return specified value if specified
-  var value = model.fieldDef(channel).axis.titleOffset;
-  if (value)  return value;
-
-  switch (channel) {
-    case ROW: return 0;
-    case COLUMN: return 35;
-  }
-  return undefined;
+  // FIXME: we should use template to truncate instead
+  return maxLength ? truncate(fieldTitle, maxLength) : fieldTitle;
 }
 
 namespace properties {
   export function axis(model: Model, channel: Channel, spec) {
     if (channel === ROW || channel === COLUMN) {
       // hide axis for facets
-      return util.extend({
+      return extend({
         opacity: {value: 0}
       }, spec || {});
     }
     return spec || undefined;
   }
 
-  export function grid(model: Model, channel: Channel, spec, layout, def) {
-    var cellPadding = layout.cellPadding;
-
-    if (def.grid) {
-      if (channel === COLUMN) {
-        // set grid property -- put the lines on the right the cell
-        var yOffset = model.config('cellGridOffset');
-
-        var sign = model.fieldDef(channel).axis.orient === 'bottom' ? -1 : 1;
-
-        // TODO(#677): this should depend on orient
-        return util.extend({
-          x: {
-            offset: layout.cellWidth * (1+ cellPadding/2.0),
-            // default value(s) -- vega doesn't do recursive merge
-            scale: 'column',
-            field: 'data'
-          },
-          y: {
-            value: - sign * yOffset,
-          },
-          y2: {
-            field: {group: 'mark.group.height'},
-            offset: sign * yOffset,
-            mult: sign
-          },
-          stroke: { value: model.config('cellGridColor') },
-          strokeOpacity: { value: model.config('cellGridOpacity') }
-        }, spec || {});
-      } else if (channel === ROW) {
-        var xOffset = model.config('cellGridOffset');
-
-        var sign = model.fieldDef(channel).axis.orient === 'right' ? -1 : 1;
-
-        // TODO(#677): this should depend on orient
-        // set grid property -- put the lines on the top
-        return util.extend({
-          y: {
-            offset: -layout.cellHeight * (cellPadding/2),
-            // default value(s) -- vega doesn't do recursive merge
-            scale: 'row',
-            field: 'data'
-          },
-          x: {
-            value: sign * (def.offset - xOffset)
-          },
-          x2: {
-            field: {group: 'mark.group.width'},
-            offset: sign * (def.offset + xOffset),
-            // default value(s) -- vega doesn't do recursive merge
-            mult: sign
-          },
-          stroke: { value: model.config('cellGridColor') },
-          strokeOpacity: { value: model.config('cellGridOpacity') }
-        }, spec || {});
-      } else {
-        return util.extend({
-          stroke: { value: model.config('gridColor') },
-          strokeOpacity: { value: model.config('gridOpacity') }
-        }, spec || {});
-      }
-    }
-    return spec || undefined;
-  }
-
-  export function labels(model: Model, channel: Channel, spec, layout, def) {
+  export function labels(model: Model, channel: Channel, spec, def) {
     let fieldDef = model.fieldDef(channel);
-    var timeUnit = fieldDef.timeUnit;
-    if (fieldDef.type === TEMPORAL && timeUnit && (time.hasScale(timeUnit))) {
-      spec = util.extend({
-        text: {scale: 'time-' + timeUnit, field: 'data'}
+    var filterName = time.labelTemplate(fieldDef.timeUnit, fieldDef.axis.shortTimeNames);
+    if (fieldDef.type === TEMPORAL && filterName) {
+      spec = extend({
+        text: {template: '{{datum.data | ' + filterName + '}}'}
       }, spec || {});
     }
 
-    if (model.isTypes(channel, [NOMINAL, ORDINAL]) && fieldDef.axis.labelMaxLength) {
+    if (contains([NOMINAL, ORDINAL], fieldDef.type) && fieldDef.axis.labelMaxLength) {
       // TODO replace this with Vega's labelMaxLength once it is introduced
-      spec = util.extend({
+      spec = extend({
         text: {
           template: '{{ datum.data | truncate:' + fieldDef.axis.labelMaxLength + '}}'
         }
@@ -284,27 +196,26 @@ namespace properties {
     }
 
      // for x-axis, set ticks for Q or rotate scale for ordinal scale
-    if (channel === X) {
-      if ((model.isDimension(X) || fieldDef.type === TEMPORAL)) {
-        spec = util.extend({
-          angle: {value: 270},
-          align: {value: def.orient === 'top' ? 'left': 'right'},
-          baseline: {value: 'middle'}
-        }, spec || {});
-      }
+    switch (channel) {
+      case X:
+        if (model.isDimension(X) || fieldDef.type === TEMPORAL) {
+          spec = extend({
+            angle: {value: 270},
+            align: {value: def.orient === 'top' ? 'left': 'right'},
+            baseline: {value: 'middle'}
+          }, spec || {});
+        }
+        break;
+      case ROW:
+        if (def.orient === 'right') {
+          spec = extend({
+            angle: {value: 90},
+            align: {value: 'center'},
+            baseline: {value: 'bottom'}
+          }, spec || {});
+        }
     }
-    return spec || undefined;
-  }
 
-  export function title(model: Model, channel: Channel, spec, layout) {
-    if (channel === ROW) {
-      return util.extend({
-        angle: {value: 0},
-        align: {value: 'right'},
-        baseline: {value: 'middle'},
-        dy: {value: (-layout.height / 2) - 20}
-      }, spec || {});
-    }
     return spec || undefined;
   }
 }

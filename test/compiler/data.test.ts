@@ -3,14 +3,16 @@ import {expect} from 'chai';
 import {compileData, source, summary} from '../../src/compiler/data';
 import {SUMMARY} from '../../src/data';
 import {Model} from '../../src/compiler/Model';
+import {POINT} from '../../src/mark';
+import {TEMPORAL, QUANTITATIVE, ORDINAL} from '../../src/type';
 
 describe('data', function () {
   describe('for aggregate encoding', function () {
     it('should contain two tables', function() {
       var encoding = new Model({
           encoding: {
-            x: {field: 'a', type: 'temporal'},
-            y: {field: 'b', type: 'quantitative', scale: {type: 'log'}, aggregate: 'sum'}
+            x: {field: 'a', type: TEMPORAL},
+            y: {field: 'b', type: QUANTITATIVE, scale: {type: 'log'}, aggregate: 'sum'}
           }
         });
 
@@ -22,8 +24,8 @@ describe('data', function () {
   describe('when contains log in non-aggregate', function () {
     var rawEncodingWithLog = new Model({
         encoding: {
-          x: {field: 'a', type: 'temporal'},
-          y: {field: 'b', type: 'quantitative', scale: {type: 'log'}}
+          x: {field: 'a', type: TEMPORAL},
+          y: {field: 'b', type: QUANTITATIVE, scale: {type: 'log'}}
         }
       });
 
@@ -83,9 +85,9 @@ describe('data.source', function() {
     it('should have correct parse', function() {
       var encoding = new Model({
           encoding: {
-            x: {field: 'a', type: 'temporal'},
-            y: {field: 'b', type: 'quantitative'},
-            color: {field: '*', type: 'quantitative', aggregate: 'count'}
+            x: {field: 'a', type: TEMPORAL},
+            y: {field: 'b', type: QUANTITATIVE},
+            color: {field: '*', type: QUANTITATIVE, aggregate: 'count'}
           }
         });
 
@@ -103,11 +105,11 @@ describe('data.source', function() {
         filter: 'datum.a > datum.b && datum.c === datum.d'
       },
       encoding: {
-        x: {field: 'a', type:'temporal', timeUnit: 'year'},
+        x: {field: 'a', type: TEMPORAL, timeUnit: 'year'},
         y: {
           'bin': {'maxbins': 15},
           'field': 'Acceleration',
-          'type': 'quantitative'
+          'type': QUANTITATIVE
         }
       }
     });
@@ -119,7 +121,11 @@ describe('data.source', function() {
         expect(transform[0]).to.eql({
           type: 'bin',
           field: 'Acceleration',
-          output: {start: 'bin_Acceleration_start', end: 'bin_Acceleration_end'},
+          output: {
+            start: 'bin_Acceleration_start',
+            mid: 'bin_Acceleration_mid',
+            end: 'bin_Acceleration_end'
+          },
           maxbins: 15
         });
       });
@@ -127,11 +133,11 @@ describe('data.source', function() {
 
     describe('nullFilter', function() {
       var spec = {
-          marktype: 'point',
+          mark: POINT,
           encoding: {
-            y: {field: 'qq', type:'quantitative'},
-            x: {field: 'tt', type:'temporal'},
-            color: {field: 'oo', type:'ordinal'}
+            y: {field: 'qq', type: QUANTITATIVE},
+            x: {field: 'tt', type: TEMPORAL},
+            color: {field: 'oo', type: ORDINAL}
           }
         };
 
@@ -185,8 +191,7 @@ describe('data.source', function() {
       expect(transform[0].type).to.eql('filter');
       expect(transform[1].type).to.eql('formula');
       expect(transform[2].type).to.eql('bin');
-      expect(transform[3].type).to.eql('formula'); // formula for bin_mid
-      expect(transform[4].type).to.eql('filter');
+      expect(transform[3].type).to.eql('filter');
     });
 
   });
@@ -200,18 +205,18 @@ describe('data.summary', function () {
           'y': {
             'aggregate': 'sum',
             'field': 'Acceleration',
-            'type': 'quantitative'
+            'type': QUANTITATIVE
           },
           'x': {
             'field': 'origin',
-            'type': 'ordinal'
+            'type': ORDINAL
           },
-          color: {field: '*', type: 'quantitative', aggregate: 'count'}
+          color: {field: '*', type: QUANTITATIVE, aggregate: 'count'}
         }
       });
 
     var aggregated = summary.def(encoding);
-    expect(aggregated ).to.eql({
+    expect(aggregated).to.eql({
       'name': SUMMARY,
       'source': 'source',
       'transform': [{
