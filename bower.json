@@ -25,9 +25,7 @@
     "test"
   ],
   "dependencies": {
-    "datalib": "^1.5.2"
-  },
-  "devDependencies": {
+    "datalib": "^1.5.2",
     "vega": "^2.4.1"
   }
 }

@@ -49,17 +49,13 @@
     "tslint": "^3.1.1",
     "typescript": "^1.7.3",
     "uglify-js": "^2.6.1",
+    "vega": "^2.4.1",
     "watchify": "^3.6.1",
     "z-schema": "^3.16.0"
   },
   "dependencies": {
-    "colorbrewer": "0.0.2",
-    "d3-color": "^0.3.1",
-    "d3-format": "^0.4.0",
-    "d3-time-format": "0.2.0",
     "datalib": "^1.4.12",
-    "yargs": "^3.30.0",
-    "vega": "^2.4.1"
+    "yargs": "^3.30.0"
   },
   "browserify": {
     "transform": [
