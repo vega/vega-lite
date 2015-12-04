@@ -11,6 +11,7 @@ coverage
 
 src/*.js
 src/**/*.js
+examples/*.js
 test/*.js
 test/**/*.js
 **/*.js.map
