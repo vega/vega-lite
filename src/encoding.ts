@@ -25,6 +25,16 @@ export function isAggregate(encoding: Encoding) {
   return false;
 }
 
+export function fieldDefs(encoding: Encoding): FieldDef[] {
+  var arr = [];
+  CHANNELS.forEach(function(k) {
+    if (has(encoding, k)) {
+      arr.push(encoding[k]);
+    }
+  });
+  return arr;
+};
+
 export function forEach(encoding: Encoding,
                         f: (fd: FieldDef, c: Channel, i:number) => void) {
   var i = 0;

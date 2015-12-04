@@ -1,11 +1,13 @@
 /* Utilities for a Vega-Lite specificiation */
 
-import * as vlEncoding from './encoding';
-import {duplicate} from './util';
-import {Model} from './compiler/Model';
+import {FieldDef} from './schema/fielddef.schema';
 import {Spec} from './schema/schema';
+
+import {Model} from './compiler/Model';
 import {COLOR, DETAIL} from './channel';
+import * as vlEncoding from './encoding';
 import {BAR, AREA} from './marktype';
+import {duplicate} from './util';
 
 // TODO: add vl.spec.validate & move stuff from vl.validate to here
 
@@ -13,6 +15,11 @@ export function alwaysNoOcclusion(spec: Spec): boolean {
   // FIXME raw OxQ with # of rows = # of O
   return vlEncoding.isAggregate(spec.encoding);
 }
+
+export function fieldDefs(spec: Spec): FieldDef[] {
+  // TODO: refactor this once we have composition
+  return vlEncoding.fieldDefs(spec.encoding);
+};
 
 export function getCleanSpec(spec: Spec): Spec {
   // TODO: move toSpec to here!
