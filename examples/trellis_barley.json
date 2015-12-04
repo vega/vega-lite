@@ -1,0 +1,16 @@
+{
+  "description": "Classic Trellis Example.",
+  "data": {"url": "data/barley.json"},
+  "mark": "point",
+  "encoding": {
+    "x": {"type": "quantitative","field": "yield","aggregate": "mean"},
+    "y": {
+      "sort": {"field": "yield","op": "mean"},
+      "type": "ordinal",
+      "field": "variety",
+      "scale": {"bandWidth": 12}
+    },
+    "row": {"type": "ordinal","field": "site"},
+    "color": {"type": "nominal","field": "year"}
+  }
+}

@@ -1,9 +1,9 @@
-test/log
-test/log/difflist.json
 node_modules
 bower_components
 data
-editor
-gallery
 index.html
+script
+site
+test
+typings
 _site
