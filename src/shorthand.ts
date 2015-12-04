@@ -69,7 +69,7 @@ export function shortenFieldDefs(fieldDefs: FieldDef[], delim = DELIM): string {
 }
 
 export function parseFieldDef(fieldDefShorthand: string): FieldDef {
-  var split = fieldDefShorthand.split(TYPE), i;
+  var split = fieldDefShorthand.split(TYPE);
 
   var fieldDef: FieldDef = {
     field: split[0].trim(),
@@ -77,17 +77,19 @@ export function parseFieldDef(fieldDefShorthand: string): FieldDef {
   };
 
   // check aggregate type
-  for (i in AGGREGATE_OPS) {
+  for (let i = 0; i < AGGREGATE_OPS.length; i++) {
     var a = AGGREGATE_OPS[i];
     if (fieldDef.field.indexOf(a + '_') === 0) {
       fieldDef.field = fieldDef.field.substr(a.length + 1);
-      if (a === 'count' && fieldDef.field.length === 0) fieldDef.field = '*';
+      if (a === 'count' && fieldDef.field.length === 0) {
+        fieldDef.field = '*';
+      }
       fieldDef.aggregate = a;
       break;
     }
   }
 
-  for (i in TIMEUNITS) {
+  for (let i = 0; i < TIMEUNITS.length; i++) {
     var tu = TIMEUNITS[i];
     if (fieldDef.field && fieldDef.field.indexOf(tu + '_') === 0) {
       fieldDef.field = fieldDef.field.substr(fieldDef.field.length + 1);

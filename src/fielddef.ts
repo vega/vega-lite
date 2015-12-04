@@ -1,20 +1,17 @@
 // utility for a field definition object
 
 import {FieldDef} from './schema/fielddef.schema';
-import {Bin} from './schema/bin.schema';
 
 import {MAXBINS_DEFAULT} from './bin';
-import {AGGREGATE_OPS} from './aggregate';
 import {contains, getbins} from './util';
 import * as time from './compiler/time';
-import {TIMEUNITS} from './timeunit';
-import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL, SHORT_TYPE, TYPE_FROM_SHORT_TYPE} from './type';
+import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from './type';
 
 
 // TODO remove these "isDimension/isMeasure" stuff
 function _isFieldDimension(fieldDef: FieldDef) {
-  return  contains([NOMINAL, ORDINAL], fieldDef.type) || !!fieldDef.bin ||
-    (fieldDef.type === TEMPORAL && !!fieldDef.timeUnit );
+  return contains([NOMINAL, ORDINAL], fieldDef.type) || !!fieldDef.bin ||
+    (fieldDef.type === TEMPORAL && !!fieldDef.timeUnit);
 }
 
 export function isDimension(fieldDef: FieldDef) {
@@ -25,11 +22,11 @@ export function isMeasure(fieldDef: FieldDef) {
   return fieldDef && !_isFieldDimension(fieldDef);
 }
 
-export function count(): FieldDef {
-  return {field:'*', aggregate: 'count', type: QUANTITATIVE, displayName: COUNT_DISPLAYNAME};
-}
-
 export const COUNT_DISPLAYNAME = 'Number of Records';
+
+export function count(): FieldDef {
+  return { field: '*', aggregate: 'count', type: QUANTITATIVE, displayName: COUNT_DISPLAYNAME };
+}
 
 export function isCount(fieldDef: FieldDef) {
   return fieldDef.aggregate === 'count';
@@ -53,8 +50,8 @@ export function cardinality(fieldDef: FieldDef, stats, filterNull = {}) {
   }
   if (fieldDef.type === TEMPORAL) {
     var cardinality = time.cardinality(fieldDef, stats, filterNull, type);
-    if(cardinality !== null) return cardinality;
-    //otherwise use calculation below
+    if (cardinality !== null) { return cardinality; }
+    // otherwise use calculation below
   }
   if (fieldDef.aggregate) {
     return 1;

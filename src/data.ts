@@ -2,8 +2,7 @@
  * Constants and utilities for data.
  */
 
-import * as util from './util';
-import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from './type';
+import {NOMINAL, QUANTITATIVE, TEMPORAL} from './type';
 
 export const SUMMARY = 'summary';
 export const SOURCE = 'source';

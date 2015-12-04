@@ -14,7 +14,9 @@ export function forEach(obj, f: (a, d, k, o) => any, thisArg) {
     obj.forEach.call(thisArg, f);
   } else {
     for (var k in obj) {
-      f.call(thisArg, obj[k], k , obj);
+      if (obj.hasOwnProperty(k)) {
+        f.call(thisArg, obj[k], k, obj);
+      }
     }
   }
 }
@@ -24,7 +26,9 @@ export function reduce(obj, f: (a, i, d, k, o) => any, init, thisArg?) {
     return obj.reduce.call(thisArg, f, init);
   } else {
     for (var k in obj) {
-      init = f.call(thisArg, init, obj[k], k, obj);
+      if (obj.hasOwnProperty(k)) {
+        init = f.call(thisArg, init, obj[k], k, obj);
+      }
     }
     return init;
   }
@@ -36,24 +40,30 @@ export function map(obj, f: (a, d, k, o) => any, thisArg?) {
   } else {
     var output = [];
     for (var k in obj) {
-      output.push(f.call(thisArg, obj[k], k, obj));
+      if (obj.hasOwnProperty(k)) {
+        output.push(f.call(thisArg, obj[k], k, obj));
+      }
     }
     return output;
   }
 }
 
 export function any(arr: Array<any>, f: (d, k?, i?) => boolean) {
-  var i = 0, k;
-  for (k in arr) {
-    if (f(arr[k], k, i++)) return true;
+  var i = 0;
+  for (let k = 0; k<arr.length; k++) {
+    if (f(arr[k], k, i++)) {
+      return true;
+    }
   }
   return false;
 }
 
 export function all(arr: Array<any>, f: (d, k?, i?) => boolean) {
-  var i = 0, k;
-  for (k in arr) {
-    if (!f(arr[k], k, i++)) return false;
+  var i = 0;
+  for (let k = 0; k<arr.length; k++) {
+    if (!f(arr[k], k, i++)) {
+      return false;
+    }
   }
   return true;
 }

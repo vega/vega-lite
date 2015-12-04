@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 
 import * as vlFieldDef from '../src/fielddef';
-import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../src/type';
+import {QUANTITATIVE} from '../src/type';
 
 
 describe('vl.fieldDef.cardinality()', function () {

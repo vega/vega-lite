@@ -5,9 +5,9 @@ import {Channel, CHANNELS} from './channel';
 
 export function countRetinal(encoding: Encoding) {
   var count = 0;
-  if (encoding.color) count++;
-  if (encoding.size) count++;
-  if (encoding.shape) count++;
+  if (encoding.color) { count++; }
+  if (encoding.size) { count++; }
+  if (encoding.shape) { count++; }
   return count;
 }
 
@@ -36,7 +36,7 @@ export function fieldDefs(encoding: Encoding): FieldDef[] {
 };
 
 export function forEach(encoding: Encoding,
-                        f: (fd: FieldDef, c: Channel, i:number) => void) {
+  f: (fd: FieldDef, c: Channel, i: number) => void) {
   var i = 0;
   CHANNELS.forEach(function(channel) {
     if (has(encoding, channel)) {
@@ -46,7 +46,7 @@ export function forEach(encoding: Encoding,
 }
 
 export function map(encoding: Encoding,
-                    f: (fd: FieldDef, c: Channel, e: Encoding) => any) {
+  f: (fd: FieldDef, c: Channel, e: Encoding) => any) {
   var arr = [];
   CHANNELS.forEach(function(k) {
     if (has(encoding, k)) {
@@ -57,12 +57,12 @@ export function map(encoding: Encoding,
 }
 
 export function reduce(encoding: Encoding,
-                  f: (acc: any, fd: FieldDef, c: Channel, e: Encoding) => any,
-                  init) {
+  f: (acc: any, fd: FieldDef, c: Channel, e: Encoding) => any,
+  init) {
   var r = init;
   CHANNELS.forEach(function(k) {
     if (has(encoding, k)) {
-      r = f(r, encoding[k], k,  encoding);
+      r = f(r, encoding[k], k, encoding);
     }
   });
   return r;

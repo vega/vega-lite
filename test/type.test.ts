@@ -2,7 +2,6 @@ import {expect} from 'chai';
 
 import {getFullName, QUANTITATIVE} from '../src/type';
 
-
 describe('vl.type.getFullName()', function () {
   it('translates short type', function() {
     expect(getFullName(<any>'Q')).to.equal(QUANTITATIVE);

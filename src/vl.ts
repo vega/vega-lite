@@ -12,8 +12,6 @@ import * as vlType from './type';
 import * as vlValidate from './validate';
 import * as vlUtil from './util';
 
-
-
 export var bin = vlBin;
 export var channel = vlChannel;
 export var compiler = vlCompiler;

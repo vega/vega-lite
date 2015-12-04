@@ -4,7 +4,7 @@ import {FieldDef} from './schema/fielddef.schema';
 import {Spec} from './schema/schema';
 
 import {Model} from './compiler/Model';
-import {COLOR, DETAIL, SHAPE} from './channel';
+import {COLOR, SHAPE} from './channel';
 import * as vlEncoding from './encoding';
 import {BAR, AREA} from './mark';
 import {duplicate} from './util';
