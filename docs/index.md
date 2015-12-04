@@ -12,7 +12,7 @@ This documentation outlines the syntax of Vega-Lite specification, and how to em
 ## Vega-Lite Specification
 
 A Vega-Lite specification is a JSON object that describes data source (`data`),
-a mark type (`marktype`), key-value visual encodings of data variables (`encoding`),
+a mark type (`mark`), key-value visual encodings of data variables (`encoding`),
 and data transformations.
 
 Vega-Lite assumes a tabular data model: each data source is a set of records,
@@ -24,7 +24,7 @@ that contains the following top-level properties:
 | Property             | Type          | Description    |
 | :------------        |:-------------:| :------------- |
 | [data](data.html)    | Object        | An object describing data source |
-| [marktype](marktype.html)| String        | The mark type.  Currently Vega-Lite supports `bar`, `line`, `area`, `point`, and `text` (text table). |
+| [mark](mark.html)| String        | The mark type.  Currently Vega-Lite supports `bar`, `line`, `area`, `point`, and `text` (text table). |
 | [encoding](encoding.html)| Object        | key-value mapping between encoding channels and encoding object |
 | [config](config.html)   | Object        | Configuration object. |
 
@@ -56,7 +56,7 @@ var vlSpec = {
           {"a":"G", "b":19}, {"a":"H", "b":87}, {"a":"I", "b":52}
         ]
       },
-      "marktype": "bar",
+      "mark": "bar",
       "encoding": {
         "x": {"type": "ordinal","field": "a"},
         "y": {"type": "quantitative","field": "b"}
@@ -89,7 +89,7 @@ Here is the bare minimum html file to get Vega-Lite with data from url working i
 
 var vlSpec = {
       "data": {"url": "data/cars.json"},
-      "marktype": "point",
+      "mark": "point",
       "encoding": {
         "x": {"type": "ordinal","field": "Origin"},
         "y": {"type": "quantitative","field": "Acceleration"}

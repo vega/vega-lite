@@ -41,7 +41,7 @@ For example, a data table with two rows and two columns (`a` and `b`) in a spec 
   "data": {
     "values": [{"a":0, "b":3}, {"a":1, "b":5}, {"a":3, "b":1}, {"a":4, "b":2}]
   },
-  "marktype": "point",
+  "mark": "point",
   "encoding": {
     "x": {"field": "a", "type": "quantitative"},
     "y": {"field": "b", "type": "quantitative"}

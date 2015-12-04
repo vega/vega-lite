@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {getEncodingMappingError} from '../src/validate';
-import {BAR, LINE, AREA, TEXT} from '../src/marktype';
+import {BAR, LINE, AREA, TEXT} from '../src/mark';
 
 var zSchema = require('z-schema'),
   inspect = require('util').inspect,
@@ -15,14 +15,14 @@ describe('vl.validate', function() {
   describe('getEncodingMappingError()', function () {
     it('should return no error for valid specs', function() {
       expect(getEncodingMappingError({
-        marktype: BAR,
+        mark: BAR,
         encoding: {
           x: {field: 'a'}
         }
       })).to.be.null;
 
       expect(getEncodingMappingError({
-        marktype: LINE,
+        mark: LINE,
         encoding: {
           x: {field: 'b'},
           y: {field: 'a'}
@@ -30,7 +30,7 @@ describe('vl.validate', function() {
       })).to.be.null;
 
       expect(getEncodingMappingError({
-        marktype: AREA,
+        mark: AREA,
         encoding: {
           x: {field: 'a'},
           y: {field: 'b'}
@@ -40,42 +40,42 @@ describe('vl.validate', function() {
 
     it('should return error for invalid specs', function() {
       expect(getEncodingMappingError({
-        marktype: LINE,
+        mark: LINE,
         encoding: {
           x: {field: 'b'} // missing y
         }
       })).to.be.ok;
 
       expect(getEncodingMappingError({
-        marktype: AREA,
+        mark: AREA,
         encoding: {
           y: {field: 'b'} // missing x
         }
       })).to.be.ok;
 
       expect(getEncodingMappingError({
-        marktype: TEXT,
+        mark: TEXT,
         encoding: {
           y: {field: 'b'} // missing text
         }
       })).to.be.ok;
 
       expect(getEncodingMappingError({
-        marktype: LINE,
+        mark: LINE,
         encoding: {
           shape: {field: 'b'} // using shape with line
         }
       })).to.be.ok;
 
       expect(getEncodingMappingError({
-        marktype: AREA,
+        mark: AREA,
         encoding: {
           shape: {field: 'b'} // using shape with area
         }
       })).to.be.ok;
 
       expect(getEncodingMappingError({
-        marktype: BAR,
+        mark: BAR,
         encoding: {
           shape: {field: 'b'} // using shape with bar
         }

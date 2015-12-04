@@ -4,10 +4,10 @@ import {Spec} from './schema/schema';
 
 import {toMap} from './util';
 import {schema} from './schema/schema';
-import {BAR} from './marktype';
+import {BAR} from './mark';
 
 interface RequiredChannelMap {
-  [marktype:string]: Array<string>;
+  [mark:string]: Array<string>;
 }
 
 /**
@@ -21,7 +21,7 @@ export const DEFAULT_REQUIRED_CHANNEL_MAP: RequiredChannelMap = {
 };
 
 interface SupportedChannelMap {
-  [marktype:string]: {
+  [mark:string]: {
     [channel:string]: number
   };
 }
@@ -60,26 +60,26 @@ export function getEncodingMappingError(spec: Spec,
       requiredChannelMap: RequiredChannelMap = DEFAULT_REQUIRED_CHANNEL_MAP,
       supportedChannelMap: SupportedChannelMap = DEFAULT_SUPPORTED_CHANNEL_TYPE
     ) {
-  let marktype = spec.marktype;
+  let mark = spec.mark;
   let encoding = spec.encoding;
-  let requiredChannels = requiredChannelMap[marktype];
-  let supportedChannels = supportedChannelMap[marktype];
+  let requiredChannels = requiredChannelMap[mark];
+  let supportedChannels = supportedChannelMap[mark];
 
   for (let i in requiredChannels) { // all required channels are in encoding`
     if (!(requiredChannels[i] in encoding)) {
       return 'Missing encoding channel \"' + requiredChannels[i] +
-              '\" for marktype \"' + marktype + '\"';
+              '\" for mark \"' + mark + '\"';
     }
   }
 
   for (let channel in encoding) { // all channels in encoding are supported
     if (!supportedChannels[channel]) {
       return 'Encoding channel \"' + channel +
-             '\" is not supported by mark type \"' + marktype + '\"';
+             '\" is not supported by mark type \"' + mark + '\"';
     }
   }
 
-  if (marktype === BAR && !encoding.x && !encoding.y) {
+  if (mark === BAR && !encoding.x && !encoding.y) {
     return 'Missing both x and y for bar';
   }
 
