@@ -252,7 +252,7 @@ export class Model {
     if (opacity) {
       return opacity;
     } else {
-      if (contains([POINT, TICK, CIRCLE, SQUARE, BAR], this.marktype())) {
+      if (contains([POINT, TICK, CIRCLE, SQUARE], this.marktype())) {
         // point-based marks and bar
         if (!this.isAggregate() ||
           (this.has(DETAIL) || this.has(COLOR) || this.has(SHAPE))) {
