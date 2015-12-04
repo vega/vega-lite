@@ -4,7 +4,7 @@ import {FieldDef} from './schema/fielddef.schema';
 import {Spec} from './schema/schema';
 
 import {Model} from './compiler/Model';
-import {COLOR, DETAIL} from './channel';
+import {COLOR, DETAIL, SHAPE} from './channel';
 import * as vlEncoding from './encoding';
 import {BAR, AREA} from './mark';
 import {duplicate} from './util';
@@ -27,7 +27,7 @@ export function getCleanSpec(spec: Spec): Spec {
 }
 
 export function isStack(spec: Spec): boolean {
-  return (spec.encoding[COLOR].field || spec.encoding[DETAIL].field) &&
+  return (vlEncoding.has(spec.encoding, COLOR) || vlEncoding.has(spec.encoding, SHAPE)) &&
     (spec.mark === BAR || spec.mark === AREA) &&
     (!spec.config || !spec.config.stack !== false) &&
     vlEncoding.isAggregate(spec.encoding);
