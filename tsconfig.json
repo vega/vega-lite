@@ -25,6 +25,7 @@
         "_site"
     ],
     "files": [
+        "examples/vlexamples.ts",
         "src/aggregate.ts",
         "src/bin.ts",
         "src/channel.ts",
@@ -75,7 +76,7 @@
         "test/compiler/scale.test.ts",
         "test/compiler/stack.test.ts",
         "test/compiler/time.test.ts",
-        "test/examples.ts",
+        "test/examples.test.ts",
         "test/fielddef.test.ts",
         "test/fixtures.ts",
         "test/schema.test.ts",

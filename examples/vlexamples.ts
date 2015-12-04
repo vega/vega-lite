@@ -1,7 +1,4 @@
-'use strict';
-// jshint quotmark: false
-
-var VL_SPECS = {
+const VL_SPECS = {
   'Basic': [
     {
       "name": "bar",
@@ -92,3 +89,5 @@ var VL_SPECS = {
     {"name": "trellis_scatter"}
   ]
 };
+
+export const VL_EXAMPLES = VL_SPECS;
