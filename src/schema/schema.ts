@@ -4,7 +4,7 @@
 
 import * as schemaUtil from './schemautil';
 import {marktype} from './marktype.schema';
-import {config} from './config.schema';
+import {config, Config} from './config.schema';
 import {data, Data} from './data.schema';
 import {encoding, Encoding} from './encoding.schema';
 import {Marktype} from '../marktype';
@@ -13,7 +13,7 @@ export interface Spec {
   data?: Data;
   marktype?: Marktype;
   encoding?: Encoding;
-  config?: any; // FIXME: declare
+  config?: Config;
 }
 
 // TODO remove this
