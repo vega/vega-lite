@@ -1,0 +1,20 @@
+{
+  "description": "This example shows how to use timeUnit and shortTimeNames",
+  "data": {"url": "data/birdstrikes.json"},
+  "mark": "line",
+  "encoding": {
+    "x": {
+      "axis": {
+        "shortTimeNames": true
+      },
+      "field": "Flight_Date",
+      "type": "temporal",
+      "timeUnit": "month"
+    },
+    "y": {
+      "field": "*",
+      "type": "quantitative",
+      "aggregate": "count"
+    }
+  }
+}
