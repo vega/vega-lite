@@ -4,16 +4,18 @@
 
 import * as schemaUtil from './schemautil';
 import {marktype} from './marktype.schema';
-import {config} from './config.schema';
+import {config, Config} from './config.schema';
 import {data, Data} from './data.schema';
 import {encoding, Encoding} from './encoding.schema';
 import {Marktype} from '../marktype';
 
 export interface Spec {
+  name?: string;
+  description?: string;
   data?: Data;
   marktype?: Marktype;
   encoding?: Encoding;
-  config?: any; // FIXME: declare
+  config?: Config;
 }
 
 // TODO remove this
@@ -28,6 +30,12 @@ export var schema = {
   type: 'object',
   required: ['marktype', 'encoding'],
   properties: {
+    name: {
+      type: 'string'
+    },
+    description: {
+      type: 'string'
+    },
     data: data,
     marktype: marktype,
     encoding: encoding,

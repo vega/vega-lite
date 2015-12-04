@@ -22,21 +22,24 @@ export function compile(spec, theme?) {
   var model = new Model(spec, theme);
   const layout = model.layout();
 
-  var rootGroup:any = {
-    name: 'root',
-    type: 'group',
-    from: {data: LAYOUT},
-    properties: {
-      update: {
-        width: layout.width.field ?
-               {field: layout.width.field} :
-               {value: layout.width},
-        height: layout.height.field ?
-                {field: layout.height.field} :
-                {value: layout.height}
+  let rootGroup:any = extend({
+      name: spec.name ? spec.name + '_root' : 'root',
+      type: 'group',
+    },
+    spec.description ? {description: spec.description} : {},
+    {
+      from: {data: LAYOUT},
+      properties: {
+        update: {
+          width: layout.width.field ?
+                 {field: layout.width.field} :
+                 {value: layout.width},
+          height: layout.height.field ?
+                  {field: layout.height.field} :
+                  {value: layout.height}
+        }
       }
-    }
-  };
+    });
 
   const marks = compileMarks(model);
 
@@ -70,14 +73,26 @@ export function compile(spec, theme?) {
 
   // FIXME replace FIT with appropriate mechanism once Vega has it
   const FIT = 1;
+
   // TODO: change type to become VgSpec
-  var output = {
+  var output = extend(
+    spec.name ? {name: spec.name} : {},
+    {
       width: layout.width.field ? FIT : layout.width,
       height: layout.height.field ? FIT : layout.height,
-      padding: 'auto',
+      padding: 'auto'
+    },
+    ['viewport', 'background', 'scene'].reduce(function(topLevelConfig, property) {
+      const value = model.config(property);
+      if (value !== undefined) {
+        topLevelConfig[property] = value;
+      }
+      return topLevelConfig;
+    }, {}),
+    {
       data: compileData(model),
       marks: [rootGroup]
-    };
+    });
 
   return {
     spec: output

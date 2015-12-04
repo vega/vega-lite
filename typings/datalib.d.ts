@@ -1,6 +1,6 @@
 declare module "datalib/src/util" {
   export function keys(a): Array<string>;
-  export function extend(a, b, c?);
+  export function extend(a, b, ...rest);
   export function duplicate(a);
   export function isArray(a): boolean;
   export function vals(a);
