@@ -64,7 +64,7 @@ export function facetMixins(model: Model, marks) {
     // TODO: add properties to make rule optional
     rootMarks.push(getRowRulesGroup(model, cellHeight));
   } else { // doesn't have row
-    if (model.has(X)) { //keep x axis in the cell
+    if (model.has(X)) { // keep x axis in the cell
       cellAxes.push(compileAxis(X, model));
     }
   }
@@ -90,7 +90,7 @@ export function facetMixins(model: Model, marks) {
     // TODO: add properties to make rule optional
     rootMarks.push(getColumnRulesGroup(model, cellWidth));
   } else { // doesn't have column
-    if (model.has(Y)) { //keep y axis in the cell
+    if (model.has(Y)) { // keep y axis in the cell
       cellAxes.push(compileAxis(Y, model));
     }
   }

@@ -89,7 +89,7 @@ export namespace source {
         parse = parse || {};
         parse[fieldDef.field] = 'date';
       } else if (fieldDef.type === QUANTITATIVE) {
-        if (vlFieldDef.isCount(fieldDef)) return;
+        if (vlFieldDef.isCount(fieldDef)) { return; }
         parse = parse || {};
         parse[fieldDef.field] = 'number';
       }
@@ -381,7 +381,7 @@ export namespace stack {
     };
 
     if (facetFields && facetFields.length > 0) {
-      stacked.transform.push({ //calculate max for each facet
+      stacked.transform.push({ // calculate max for each facet
         type: 'aggregate',
         groupby: facetFields,
         summarize: [{

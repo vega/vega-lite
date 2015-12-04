@@ -5,7 +5,7 @@ export interface Legend {
   title?: string;
   format?: string;
   values?: Array<any>;
-  properties?: any; //TODO declare VgLegendProperties
+  properties?: any; // TODO declare VgLegendProperties
 }
 
 export var legend = {

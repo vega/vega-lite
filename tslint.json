@@ -1,11 +1,17 @@
 {
   "rules": {
+    "ban": true,
     "class-name": true,
     "eofline": true,
     "indent": [true, "spaces"],
+    "comment-format": [true, "check-space"],
+    "curly": true,
+    "forin": true,
     "label-position": true,
     "label-undefined": true,
     "no-arg": true,
+    "jsdoc-format": true,
+    "member-access": true,
     "semicolon": true,
     "no-duplicate-key": true,
     "no-duplicate-variable": true,

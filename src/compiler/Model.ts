@@ -39,9 +39,9 @@ interface FieldRefOption {
  */
 
 export class Model {
-  _spec: Spec;
-  _stack: StackProperties;
-  _layout: any;
+  private _spec: Spec;
+  private _stack: StackProperties;
+  private _layout: any;
 
   // TODO: include _stack, _layout, _style, etc.
 
@@ -90,15 +90,15 @@ export class Model {
     return null;
   }
 
-  layout(): any {
+  public layout(): any {
     return this._layout;
   }
 
-  stack(): StackProperties {
+  public stack(): StackProperties {
     return this._stack;
   }
 
-  toSpec(excludeConfig?, excludeData?) {
+  public toSpec(excludeConfig?, excludeData?) {
     var encoding = duplicate(this._spec.encoding),
       spec: any;
 
@@ -120,29 +120,29 @@ export class Model {
     return schemaUtil.subtract(spec, defaults);
   }
 
-  mark() : Mark {
+  public mark() : Mark {
     return this._spec.mark;
   }
 
-  spec(): Spec {
+  public spec(): Spec {
     return this._spec;
   }
 
-  is(mark: Mark) {
+  public is(mark: Mark) {
     return this._spec.mark === mark;
   }
 
-  has(channel: Channel) {
+  public has(channel: Channel) {
     // equivalent to calling vlenc.has(this._spec.encoding, channel)
     return this._spec.encoding[channel].field !== undefined;
   }
 
-  fieldDef(channel: Channel): FieldDef {
+  public fieldDef(channel: Channel): FieldDef {
     return this._spec.encoding[channel];
   }
 
   // get "field" reference for vega
-  field(channel: Channel, opt?: FieldRefOption) {
+  public field(channel: Channel, opt?: FieldRefOption) {
     opt = opt || {};
 
     const fieldDef = this.fieldDef(channel);
@@ -166,7 +166,7 @@ export class Model {
     }
   }
 
-  fieldTitle(channel: Channel) : string {
+  public fieldTitle(channel: Channel) : string {
     if (vlFieldDef.isCount(this._spec.encoding[channel])) {
       return vlFieldDef.COUNT_DISPLAYNAME;
     }
@@ -179,35 +179,36 @@ export class Model {
   }
 
   // returns false if binning is disabled, otherwise an object with binning properties
-  bin(channel: Channel): Bin | boolean {
+  public bin(channel: Channel): Bin | boolean {
     var bin = this._spec.encoding[channel].bin;
-    if (bin === {})
+    if (bin === {}) {
       return false;
-    if (bin === true)
+    } if (bin === true) {
       return {
         maxbins: MAXBINS_DEFAULT
       };
+    }
     return bin;
   }
 
-  numberFormat(channel?: Channel): string {
+  public numberFormat(channel?: Channel): string {
     // TODO(#497): have different number format based on numberType (discrete/continuous)
     return this.config('numberFormat');
   };
 
-  map(f: (fd: FieldDef, c: Channel, e: Encoding) => any) {
+  public map(f: (fd: FieldDef, c: Channel, e: Encoding) => any) {
     return vlEncoding.map(this._spec.encoding, f);
   }
 
-  reduce(f: (acc: any, fd: FieldDef, c: Channel, e: Encoding) => any, init) {
+  public reduce(f: (acc: any, fd: FieldDef, c: Channel, e: Encoding) => any, init) {
     return vlEncoding.reduce(this._spec.encoding, f, init);
   }
 
-  forEach(f: (fd: FieldDef, c: Channel, i:number) => void) {
+  public forEach(f: (fd: FieldDef, c: Channel, i:number) => void) {
     return vlEncoding.forEach(this._spec.encoding, f);
   }
 
-  isOrdinalScale(channel: Channel) {
+  public isOrdinalScale(channel: Channel) {
     const fieldDef = this.fieldDef(channel);
     return fieldDef && (
       contains([NOMINAL, ORDINAL], fieldDef.type) ||
@@ -216,43 +217,43 @@ export class Model {
       );
   }
 
-  isDimension(channel: Channel) {
+  public isDimension(channel: Channel) {
     return this.has(channel) &&
       vlFieldDef.isDimension(this.fieldDef(channel));
   }
 
-  isMeasure(channel: Channel) {
+  public isMeasure(channel: Channel) {
     return this.has(channel) &&
       vlFieldDef.isMeasure(this.fieldDef(channel));
   }
 
-  isAggregate() {
+  public isAggregate() {
     return vlEncoding.isAggregate(this._spec.encoding);
   }
 
-  isFacet() {
+  public isFacet() {
     return this.has(ROW) || this.has(COLUMN);
   }
 
-  dataTable() {
+  public dataTable() {
     return this.isAggregate() ? SUMMARY : SOURCE;
   }
 
-  data() {
+  public data() {
     return this._spec.data;
   }
 
   /** returns whether the encoding has values embedded */
-  hasValues() {
+  public hasValues() {
     var vals = this.data().values;
     return vals && vals.length;
   }
 
-  config(name: string) {
+  public config(name: string) {
     return this._spec.config[name];
   }
 
-  markOpacity() : number {
+  public markOpacity() : number {
     const opacity = this.config('marks').opacity;
     if (opacity) {
       return opacity;

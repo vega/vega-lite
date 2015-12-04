@@ -125,7 +125,7 @@ namespace properties {
     }
 
     var opacity = model.markOpacity();
-    if (opacity) symbols.opacity = {value: opacity};
+    if (opacity) { symbols.opacity = {value: opacity}; }
 
     symbols = extend(symbols, spec || {});
 

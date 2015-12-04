@@ -19,9 +19,11 @@ export function instantiate(schema) {
   } else if (schema.type === 'object') {
     var instance = {};
     for (var name in schema.properties) {
-      val = instantiate(schema.properties[name]);
-      if (val !== undefined) {
-        instance[name] = val;
+      if (schema.properties.hasOwnProperty(name)) {
+        val = instantiate(schema.properties[name]);
+        if (val !== undefined) {
+          instance[name] = val;
+        }
       }
     }
     return instance;
@@ -33,44 +35,46 @@ export function instantiate(schema) {
 
 // remove all defaults from an instance
 export function subtract(instance, defaults) {
-  var changes:any = {};
+  var changes: any = {};
   for (var prop in instance) {
-    var def = defaults[prop];
-    var ins = instance[prop];
-    // Note: does not properly subtract arrays
-    if (!defaults || def !== ins) {
-      if (typeof ins === 'object' && !util.isArray(ins) && def) {
-        var c = subtract(ins, def);
-        if (!isEmpty(c)) {
-          changes[prop] = c;
-        }
-      } else if (util.isArray(ins)) {
-        if (util.isArray(def)) {
-          // check each item in the array
-          if (ins.length === def.length) {
-            var equal = true;
-            for (var i = 0 ; i < ins.length; i++) {
-              if (ins[i] !== def[i]) {
-                equal = false;
-                break;
+    if (instance.hasOwnProperty(prop)) {
+      var def = defaults[prop];
+      var ins = instance[prop];
+      // Note: does not properly subtract arrays
+      if (!defaults || def !== ins) {
+        if (typeof ins === 'object' && !util.isArray(ins) && def) {
+          var c = subtract(ins, def);
+          if (!isEmpty(c)) {
+            changes[prop] = c;
+          }
+        } else if (util.isArray(ins)) {
+          if (util.isArray(def)) {
+            // check each item in the array
+            if (ins.length === def.length) {
+              var equal = true;
+              for (var i = 0; i < ins.length; i++) {
+                if (ins[i] !== def[i]) {
+                  equal = false;
+                  break;
+                }
+              }
+              if (equal) {
+                continue; // continue with next property
               }
             }
-            if (equal) {
-              continue; // continue with next property
-            }
           }
+          changes[prop] = ins;
+        } else {
+          changes[prop] = ins;
         }
-        changes[prop] = ins;
-      } else {
-        changes[prop] = ins;
       }
     }
   }
   return changes;
 };
 
-export function merge(dest, ...src: any[]){
-  for (var i=0 ; i<src.length; i++) {
+export function merge(dest, ...src: any[]) {
+  for (var i = 0; i < src.length; i++) {
     dest = merge_(dest, src[i]);
   }
   return dest;

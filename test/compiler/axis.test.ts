@@ -23,7 +23,7 @@ describe('Axis', function() {
       });
     var _axis = axis.compileAxis(X, encoding);
 
-    //FIXME decouple the test here
+    // FIXME decouple the test here
 
     it('should use custom label', function() {
       expect(_axis.properties.labels.text.template).to.equal('{{datum.data | month}}');
