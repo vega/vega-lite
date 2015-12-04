@@ -9,12 +9,10 @@ import {facetMixins} from './facet';
 import {compileLegends} from './legend';
 import {compileMarks} from './marks';
 import {compileScales} from './scale';
-import * as vlTime from './time';
 import {extend} from '../util';
 
 import {LAYOUT} from '../data';
 import {COLUMN, ROW, X, Y, Channel} from '../channel';
-import {FieldDef} from '../schema/fielddef.schema';
 
 export {Model} from './Model';
 
@@ -48,10 +46,10 @@ export function compile(spec, theme?) {
     // put the marks inside a facet cell's group
     extend(rootGroup, facetMixins(model, marks));
   } else {
-    rootGroup.marks = marks.map(function(marks) {
-      marks.from = marks.from || {};
-      marks.from.data = model.dataTable();
-      return marks;
+    rootGroup.marks = marks.map(function(mark) {
+      mark.from = mark.from || {};
+      mark.from.data = model.dataTable();
+      return mark;
     });
     const scaleNames = model.map(function(_, channel: Channel){
         return channel; // TODO model.scaleName(channel)

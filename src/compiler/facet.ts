@@ -1,6 +1,5 @@
 import * as util from '../util';
-import {COLUMN, ROW, X, Y, TEXT, Channel} from '../channel';
-import {FieldDef} from '../schema/fielddef.schema';
+import {COLUMN, ROW, X, Y, Channel} from '../channel';
 import {Model} from './Model';
 
 import {compileAxis} from './axis';

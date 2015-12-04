@@ -3,7 +3,7 @@ import {Bin} from '../schema/bin.schema';
 import {FieldDef} from '../schema/fielddef.schema';
 
 import {MAXBINS_DEFAULT} from '../bin';
-import {COLUMN, ROW, X, Y, COLOR, SHAPE, DETAIL, Channel} from '../channel';
+import {COLUMN, ROW, X, Y, COLOR, DETAIL, Channel} from '../channel';
 import {SOURCE, SUMMARY} from '../data';
 import * as vlFieldDef from '../fielddef';
 import * as vlEncoding from '../encoding';

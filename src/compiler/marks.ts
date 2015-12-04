@@ -1,6 +1,6 @@
 import {Model} from './Model';
-import {COLUMN, ROW, X, Y, COLOR, TEXT, SIZE, SHAPE, DETAIL, Channel} from '../channel';
-import {AREA, BAR, LINE, POINT, TEXT as TEXTMARKS, TICK, CIRCLE, SQUARE} from '../mark';
+import {X, Y, COLOR, TEXT, SIZE, SHAPE, DETAIL} from '../channel';
+import {AREA, BAR, LINE, TEXT as TEXTMARKS} from '../mark';
 import {QUANTITATIVE} from '../type';
 import {imputeTransform, stackTransform} from './stack';
 

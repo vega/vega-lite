@@ -1,5 +1,3 @@
-import {isObject} from '../util';
-
 export interface Legend {
   orient?: string;
   title?: string;
