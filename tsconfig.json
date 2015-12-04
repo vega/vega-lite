@@ -76,6 +76,7 @@
         "test/fielddef.test.ts",
         "test/fixtures.ts",
         "test/schema.test.ts",
+        "test/type.test.ts",
         "test/validate.test.ts",
         "typings/assertion-error.d.ts",
         "typings/chai.d.ts",

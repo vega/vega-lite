@@ -1,9 +1,16 @@
 /** Constants and utilities for data type */
 
-export const QUANTITATIVE = 'quantitative';
-export const ORDINAL = 'ordinal';
-export const TEMPORAL = 'temporal';
-export const NOMINAL = 'nominal';
+export enum Type {
+  QUANTITATIVE = <any>'quantitative',
+  ORDINAL = <any>'ordinal',
+  TEMPORAL = <any>'temporal',
+  NOMINAL = <any>'nominal'
+}
+
+export const QUANTITATIVE = Type.QUANTITATIVE;
+export const ORDINAL = Type.ORDINAL;
+export const TEMPORAL = Type.TEMPORAL;
+export const NOMINAL = Type.NOMINAL;
 
 /**
  * Mapping from full type names to short type names.
@@ -28,10 +35,11 @@ export const TYPE_FROM_SHORT_TYPE = {
 
 /**
  * Get full, lowercase type name for a given type.
- * @param  {String} type
- * @return {String} Full type name.
+ * @param  type
+ * @return Full type name.
  */
-export function getFullName(type: string): string {
-  return TYPE_FROM_SHORT_TYPE[type.toUpperCase()] || // short type is uppercase by default
-         type.toLowerCase();
+export function getFullName(type: Type): Type {
+  const typeString = <any>type;  // force type as string so we can translate short types
+  return TYPE_FROM_SHORT_TYPE[typeString.toUpperCase()] || // short type is uppercase by default
+         typeString.toLowerCase();
 }

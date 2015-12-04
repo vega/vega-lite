@@ -2,6 +2,9 @@ import {expect} from 'chai';
 
 import * as axis from '../../src/compiler/axis';
 import {Model} from '../../src/compiler/Model';
+import {LINE} from '../../src/marktype';
+import {X, COLUMN} from '../../src/channel';
+import {TEMPORAL, QUANTITATIVE, ORDINAL} from '../../src/type';
 
 describe('Axis', function() {
   var layout = {
@@ -13,12 +16,12 @@ describe('Axis', function() {
     var field = 'a',
       timeUnit = 'month',
       encoding = new Model({
-        marktype: 'line',
+        marktype: LINE,
         encoding: {
-          x: {field: field, type: 'temporal', timeUnit: timeUnit}
+          x: {field: field, type: TEMPORAL, timeUnit: timeUnit}
         }
       });
-    var _axis = axis.compileAxis('x', encoding);
+    var _axis = axis.compileAxis(X, encoding);
 
     //FIXME decouple the test here
 
@@ -41,7 +44,7 @@ describe('Axis', function() {
           encoding: {
             x: {field: 'a', axis:{orient: 'bottom'}}
           }
-        }), 'x');
+        }), X);
       expect(orient).to.eql('bottom');
     });
 
@@ -50,7 +53,7 @@ describe('Axis', function() {
           encoding: {
             x: {field: 'a'}
           }
-        }), 'x');
+        }), X);
       expect(orient).to.eql(undefined);
     });
 
@@ -60,7 +63,7 @@ describe('Axis', function() {
             x: {field: 'a'},
             column: {field: 'a'}
           }
-        }), 'column');
+        }), COLUMN);
       expect(orient).to.eql('top');
     });
   });
@@ -71,34 +74,34 @@ describe('Axis', function() {
           encoding: {
             x: {field: 'a', axis: {title: 'Custom'}}
           }
-        }), 'x');
+        }), X);
       expect(title).to.eql('Custom');
     });
 
     it('should add return fieldTitle by default', function () {
       var title = axis.title(new Model({
           encoding: {
-            x: {field: 'a', type: 'Q', axis: {titleMaxLength: 3}}
+            x: {field: 'a', type: QUANTITATIVE, axis: {titleMaxLength: 3}}
           }
-        }), 'x');
+        }), X);
       expect(title).to.eql('a');
     });
 
     it('should add return fieldTitle by default', function () {
       var title = axis.title(new Model({
           encoding: {
-            x: {field: 'a', type: 'Q', aggregate: 'sum', axis: {titleMaxLength: 10}}
+            x: {field: 'a', type: QUANTITATIVE, aggregate: 'sum', axis: {titleMaxLength: 10}}
           }
-        }), 'x');
+        }), X);
       expect(title).to.eql('SUM(a)');
     });
 
     it('should add return fieldTitle by default and truncate', function () {
       var title = axis.title(new Model({
           encoding: {
-            x: {field: 'a', type: 'Q', aggregate: 'sum', axis: {titleMaxLength: 3}}
+            x: {field: 'a', type: QUANTITATIVE, aggregate: 'sum', axis: {titleMaxLength: 3}}
           }
-        }), 'x');
+        }), X);
       expect(title).to.eql('SU…');
     });
 
@@ -111,7 +114,7 @@ describe('Axis', function() {
           config: {
             cell: {width: 60}
           }
-        }), 'x');
+        }), X);
       expect(title).to.eql('abcdefghi…');
     });
   });

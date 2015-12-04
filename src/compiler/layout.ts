@@ -3,6 +3,7 @@ import * as time from './time';
 
 import {FieldDef} from '../schema/fielddef.schema';
 import {COLUMN, ROW, X, Y, TEXT, Channel} from '../channel';
+import {TEXT as TEXT_MARK} from '../marktype';
 import {LAYOUT} from '../data';
 import {NOMINAL, ORDINAL, QUANTITATIVE} from '../type';
 
@@ -35,7 +36,7 @@ function getCellWidth(model: Model): LayoutValue {
     }
     return model.config('cell').width;
   }
-  if (model.marktype() === TEXT) {
+  if (model.marktype() === TEXT_MARK) {
     return model.config('textCellWidth');
   }
   return model.fieldDef(X).scale.bandWidth;
