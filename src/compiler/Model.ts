@@ -3,7 +3,7 @@ import {Bin} from '../schema/bin.schema';
 import {FieldDef} from '../schema/fielddef.schema';
 
 import {MAXBINS_DEFAULT} from '../bin';
-import {COLUMN, ROW, X, Y, COLOR, DETAIL, SHAPE, Channel} from '../channel';
+import {COLUMN, ROW, X, Y, COLOR, SHAPE, DETAIL, Channel} from '../channel';
 import {SOURCE, SUMMARY} from '../data';
 import * as vlFieldDef from '../fielddef';
 import * as vlEncoding from '../encoding';
@@ -252,8 +252,8 @@ export class Model {
     if (opacity) {
       return opacity;
     } else {
-      if (contains([POINT, TICK, CIRCLE, SQUARE], this.marktype())) {
-        // point-based marks
+      if (contains([POINT, TICK, CIRCLE, SQUARE, BAR], this.marktype())) {
+        // point-based marks and bar
         if (!this.isAggregate() ||
           (this.has(DETAIL) || this.has(COLOR) || this.has(SHAPE))) {
           return 0.7;
