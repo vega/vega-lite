@@ -49,6 +49,7 @@
     "tslint": "^3.1.1",
     "typescript": "^1.7.3",
     "uglify-js": "^2.6.1",
+    "vega": "^2.4.1",
     "watchify": "^3.6.1",
     "z-schema": "^3.16.0"
   },
