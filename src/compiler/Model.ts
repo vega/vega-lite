@@ -15,6 +15,7 @@ import {StackProperties} from './stack';
 import {getFullName, NOMINAL, ORDINAL, TEMPORAL} from '../type';
 import {contains, duplicate} from '../util';
 import * as time from './time';
+import {Encoding} from '../schema/encoding.schema';
 
 
 interface FieldRefOption {
@@ -190,15 +191,15 @@ export class Model {
     return this.config('numberFormat');
   };
 
-  map(f: (...any) => any) {
+  map(f: (fd: FieldDef, c: Channel, e: Encoding) => any) {
     return vlEncoding.map(this._spec.encoding, f);
   }
 
-  reduce(f: (...any) => any, init) {
+  reduce(f: (acc: any, fd: FieldDef, c: Channel, e: Encoding) => any, init) {
     return vlEncoding.reduce(this._spec.encoding, f, init);
   }
 
-  forEach(f: (...any) => any) {
+  forEach(f: (fd: FieldDef, c: Channel, i:number) => void) {
     return vlEncoding.forEach(this._spec.encoding, f);
   }
 
