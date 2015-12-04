@@ -41,12 +41,11 @@ npm run build
 
 # add the compiled files, commit and tag!
 git add vega-lite* -f
+git add src/**/*.js -f
 
-# add bower_components for gallery
-cd gallery
+# add bower_components
 bower install
 git add bower_components/* -f
-cd ..
 
 # commit, tag and push to gh-pages and swap back to master
 set +e
