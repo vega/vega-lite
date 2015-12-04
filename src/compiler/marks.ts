@@ -1,6 +1,6 @@
 import {Model} from './Model';
 import {COLUMN, ROW, X, Y, COLOR, TEXT, SIZE, SHAPE, DETAIL, Channel} from '../channel';
-import {AREA, BAR, LINE, POINT, TEXT as TEXTMARKS, TICK, CIRCLE, SQUARE} from '../marktype';
+import {AREA, BAR, LINE, POINT, TEXT as TEXTMARKS, TICK, CIRCLE, SQUARE} from '../mark';
 import {QUANTITATIVE} from '../type';
 import {imputeTransform, stackTransform} from './stack';
 
@@ -17,24 +17,24 @@ const MARKTYPES_MAP = {
 };
 
 export function compileMarks(model: Model): any[] {
-  const marktype = model.marktype();
-  if (marktype === LINE || marktype === AREA) {
+  const mark = model.mark();
+  if (mark === LINE || mark === AREA) {
     // For Line and Area, we sort values based on dimension by default
     // For line, a special config "sortLineBy" is allowed
-    let sortBy = marktype === LINE ? model.config('sortLineBy') : undefined;
+    let sortBy = mark === LINE ? model.config('sortLineBy') : undefined;
     if (!sortBy) {
       const sortField = (model.isMeasure(X) && model.isDimension(Y)) ? Y : X;
       sortBy = '-' + model.field(sortField);
     }
 
     let pathMarks: any = {
-      type: MARKTYPES_MAP[marktype],
+      type: MARKTYPES_MAP[mark],
       from: {
         // from.data might be added later for non-facet, single group line/area
         transform: [{type: 'sort', by: sortBy}]
       },
       properties: {
-        update: properties[marktype](model)
+        update: properties[mark](model)
       }
     };
 
@@ -43,13 +43,13 @@ export function compileMarks(model: Model): any[] {
     const details = detailFields(model);
     if (details.length > 0) { // have level of details - need to facet line into subgroups
       const facetTransform = {type: 'facet', groupby: details};
-      const transform = marktype === AREA && model.stack() ?
+      const transform = mark === AREA && model.stack() ?
         // For stacked area, we need to impute missing tuples and stack values
         [imputeTransform(model), stackTransform(model), facetTransform] :
         [facetTransform];
 
       return [{
-        name: marktype  + '-facet',
+        name: mark  + '-facet',
         type: 'group',
         from: {
           // from.data might be added later for non-facet charts
@@ -68,7 +68,7 @@ export function compileMarks(model: Model): any[] {
     }
   } else { // other mark type
     let marks = []; // TODO: vgMarks
-    if (marktype === TEXTMARKS && model.has(COLOR)) {
+    if (mark === TEXTMARKS && model.has(COLOR)) {
       // add background to 'text' marks if has color
       marks.push({
         type: 'rect',
@@ -78,13 +78,13 @@ export function compileMarks(model: Model): any[] {
 
     let mainDef: any = {
       // TODO add name
-      type: MARKTYPES_MAP[marktype],
+      type: MARKTYPES_MAP[mark],
       properties: {
-        update: properties[marktype](model)
+        update: properties[mark](model)
       }
     };
     const stack = model.stack();
-    if (marktype === BAR && stack) {
+    if (mark === BAR && stack) {
       mainDef.from = {
         transform: [stackTransform(model)]
       };

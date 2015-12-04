@@ -3,7 +3,7 @@ import {COLOR, SIZE, SHAPE, Channel} from '../channel';
 import {Model} from './Model';
 import * as time from './time';
 import {TEMPORAL} from '../type';
-import {AREA, BAR, TICK, TEXT, LINE, POINT, CIRCLE, SQUARE} from '../marktype';
+import {AREA, BAR, TICK, TEXT, LINE, POINT, CIRCLE, SQUARE} from '../mark';
 
 export function compileLegends(model: Model) {
   var defs = [];
@@ -84,9 +84,9 @@ namespace properties {
 
   export function symbols(model: Model, channel: Channel, spec) {
     let symbols:any = {};
-    const marktype = model.marktype();
+    const mark = model.mark();
 
-    switch (marktype) {
+    switch (mark) {
       case BAR:
       case TICK:
       case TEXT:
@@ -96,7 +96,7 @@ namespace properties {
 
       case CIRCLE:
       case SQUARE:
-        symbols.shape = {value: marktype};
+        symbols.shape = {value: mark};
         /* fall through */
       case POINT:
         // fill or stroke

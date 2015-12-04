@@ -26,7 +26,7 @@ We have more example visualizations in our [gallery](https://vega.github.io/vega
 ```json
 {
   "data": {"url": "data/barley.json"},
-  "marktype": "point",
+  "mark": "point",
   "encoding": {
     "x": {"type": "quantitative", "field": "yield","aggregate": "mean"},
     "y": {
@@ -53,7 +53,7 @@ This is a similar chart as one of the Vega examples in https://github.com/trifac
       {"a":"G", "b":19}, {"a":"H", "b":87}, {"a":"I", "b":52}
     ]
   },
-  "marktype": "bar",
+  "mark": "bar",
   "encoding": {
     "x": {"type": "ordinal", "field": "a"},
     "y": {"type": "quantitative", "field": "b"}

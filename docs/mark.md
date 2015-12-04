@@ -1,10 +1,10 @@
 ---
 layout: docs
-title: Mark Type
-permalink: /docs/marktype.html
+title: Mark
+permalink: /docs/mark.html
 ---
 
-Currently Vega-Lite supports the following mark types:
+Currently Vega-Lite supports the following `mark` types:
 `point`, `bar`, `tick`, `line`, `area`, and `text` (text table).
 
 __Coming Soon!: Details for each encoding channel__
@@ -55,7 +55,7 @@ Bar is typically used with one dimension and one quantitative dimension.
 ## Line
 - Line = ordinal / temporal and typically another measure  
 - How sort order is determined
-- Custom order for line 
+- Custom order for line
 - (Future) color
 -->
 

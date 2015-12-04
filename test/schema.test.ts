@@ -36,7 +36,7 @@ describe('Util', function() {
 
   it('remove defaults', function() {
     var spec = {
-      marktype: 'point',
+      mark: 'point',
       encoding: {
         x: { field: 'dsp', type: 'quantitative', scale: {type: 'linear'}
       },
@@ -49,7 +49,7 @@ describe('Util', function() {
     };
 
     var expected = {
-      marktype: 'point',
+      mark: 'point',
       encoding: {
         x: { field: 'dsp', type: 'quantitative' },
         color: { field: 'cyl', type: 'ordinal' }

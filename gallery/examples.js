@@ -13,7 +13,7 @@ var EXAMPLES = [
           {'x':'D', 'y':91}, {'x':'E', 'y':81}, {'x':'F', 'y':53}
         ]
       },
-      marktype: 'bar',
+      mark: 'bar',
       encoding: {
         y: {type: 'quantitative', field: 'y'},
         x: {type: 'ordinal', field: 'x'}
@@ -32,7 +32,7 @@ var EXAMPLES = [
         'filter': 'datum.y > 60',
         'formulas': [{'field': 'y','expr': '2*datum.y'}]
       },
-      marktype: 'bar',
+      mark: 'bar',
       encoding: {
         y: {type: 'quantitative', field: 'y'},
         x: {type: 'ordinal', field: 'x'}
@@ -41,7 +41,7 @@ var EXAMPLES = [
   },{
     title: 'Aggregate Bar Chart',
     spec: {
-      'marktype': 'bar',
+      'mark': 'bar',
       'encoding': {
         'x': {'field': 'Cylinders','type': 'ordinal'},
         'y': {'field': 'Acceleration','type': 'quantitative','aggregate': 'mean'}
@@ -51,7 +51,7 @@ var EXAMPLES = [
   },{
     title: 'Grouped bar chart',
     spec: {
-      marktype: 'bar',
+      mark: 'bar',
       encoding: {
         x: {field: 'Origin', type: 'nominal'},
         y: {field: 'Acceleration', type: 'quantitative', aggregate: 'mean'},
@@ -67,7 +67,7 @@ var EXAMPLES = [
     title: 'Scatter plot.',
     description: 'Horse power and miles per gallon',
     spec: {
-      marktype: 'point',
+      mark: 'point',
       encoding: {
         x: {'field': 'Horsepower','type': 'quantitative'},
         y: {'field': 'Miles_per_Gallon','type': 'quantitative'}
@@ -77,7 +77,7 @@ var EXAMPLES = [
   },{
     title: 'Binned Scatter plots',
     spec: {
-      'marktype': 'point',
+      'mark': 'point',
       'encoding': {
         'x': {'bin': true,'field': 'Displacement','type': 'quantitative'},
         'y': {'bin': true,'field': 'Miles_per_Gallon','type': 'quantitative'},
@@ -94,7 +94,7 @@ var EXAMPLES = [
     title: 'Line Chart',
     description: 'Horse power over time',
     spec: {
-      marktype: 'line',
+      mark: 'line',
       encoding: {
         x: {'field': 'Year','type': 'temporal','timeUnit': 'year'},
         y: {'field': 'Horsepower','type': 'quantitative','aggregate': 'mean'}
@@ -104,7 +104,7 @@ var EXAMPLES = [
   },{
     title: 'Histogram',
     spec: {
-      marktype: 'bar',
+      mark: 'bar',
       encoding: {
         x: {'bin': {'maxbins': 15},'field': 'Horsepower','type': 'quantitative'},
         y: {'field': '*','type': 'quantitative','aggregate': 'count'}
@@ -115,7 +115,7 @@ var EXAMPLES = [
     title: 'Stacked Histogram',
     description: 'Simple histogram with bars broken down by the number of cylinders. Also has a legend.',
     spec: {
-      marktype: 'bar',
+      mark: 'bar',
       encoding: {
         x: {'bin': {'maxbins': 15},'field': 'Horsepower','type': 'quantitative'},
         y: {'field': '*','type': 'quantitative','aggregate': 'count'},
@@ -126,7 +126,7 @@ var EXAMPLES = [
   },{
     title: 'Area chart',
     spec: {
-      'marktype': 'area',
+      'mark': 'area',
       'encoding': {
         'x': {'field': 'Year','type': 'temporal','timeUnit': 'year'},
         'y': {'field': 'Weight_in_lbs','type': 'quantitative','aggregate': 'sum'}
@@ -136,7 +136,7 @@ var EXAMPLES = [
   },{
     title: 'Stacked Area chart',
     spec: {
-      'marktype': 'area',
+      'mark': 'area',
       'encoding': {
         'x': {'field': 'Year','type': 'temporal','timeUnit': 'year'},
         'y': {'field': 'Weight_in_lbs','type': 'quantitative','aggregate': 'sum'},
@@ -147,7 +147,7 @@ var EXAMPLES = [
   },{
     title: 'Trellis Area chart',
     spec: {
-      'marktype': 'area',
+      'mark': 'area',
       'encoding': {
         'x': {'field': 'Year','type': 'temporal','timeUnit': 'year'},
         'y': {'field': 'Weight_in_lbs','type': 'quantitative','aggregate': 'sum'},
@@ -158,7 +158,7 @@ var EXAMPLES = [
   },{
     title: 'Horizontal Stacked Bar Chart',
     spec: {
-      'marktype': 'bar',
+      'mark': 'bar',
       'encoding': {
         'x': {'field': 'yield','type': 'quantitative','aggregate': 'sum'},
         'y': {'field': 'variety','type': 'nominal'},
@@ -169,7 +169,7 @@ var EXAMPLES = [
   },{
     title: 'Vertical Stacked Bar Chart',
     spec: {
-      'marktype': 'bar',
+      'mark': 'bar',
       'encoding': {
         'y': {'field': 'yield','type': 'quantitative','aggregate': 'sum'},
         'x': {'field': 'variety','type': 'nominal'},
@@ -180,7 +180,7 @@ var EXAMPLES = [
   },{
     title: '1D Stack Bar Chart',
     spec: {
-      'marktype': 'bar',
+      'mark': 'bar',
       'encoding': {
         'x': {'field': 'Acceleration','type': 'quantitative','aggregate': 'sum'},
         'color': {
@@ -193,7 +193,7 @@ var EXAMPLES = [
   },{
     title: 'Trellis Stacked Bar Chart',
     spec: {
-      'marktype': 'bar',
+      'mark': 'bar',
       'encoding': {
         'x': {'field': 'yield','type': 'quantitative','aggregate': 'sum'},
         'y': {'field': 'variety','type': 'nominal'},
@@ -208,7 +208,7 @@ var EXAMPLES = [
     description: 'Classic Barley Example',
     spec: {
       data: {url: 'data/barley.json'},
-      marktype: 'point',
+      mark: 'point',
       encoding: {
         x: {type: 'quantitative',field: 'yield', aggregate: 'mean'},
         y: {
@@ -224,7 +224,7 @@ var EXAMPLES = [
   },{
     title: 'Text Heatmap',
     spec: {
-      'marktype': 'text',
+      'mark': 'text',
       'encoding': {
         'row': {'field': 'Origin', 'type': 'ordinal'},
         'column': {'field': 'Cylinders', 'type': 'ordinal'},
@@ -236,7 +236,7 @@ var EXAMPLES = [
   },{
     title: 'Histogram',
     spec: {
-      "marktype": "bar",
+      "mark": "bar",
       "encoding": {
         "x": {"bin": true, "field": "Acceleration","type": "quantitative"},
         "y": {
@@ -251,7 +251,7 @@ var EXAMPLES = [
   },{
     title: 'Horizontal Histogram',
     spec: {
-      "marktype": "bar",
+      "mark": "bar",
       "encoding": {
         "y": {"bin": true, "field": "Acceleration","type": "quantitative"},
         "x": {
@@ -266,7 +266,7 @@ var EXAMPLES = [
   },{
     title: 'Histogram with point instead',
     spec: {
-      "marktype": "point",
+      "mark": "point",
       "encoding": {
         "x": {"bin": true,"field": "Acceleration","type": "quantitative"},
         "y": {
@@ -281,7 +281,7 @@ var EXAMPLES = [
   },{
     title: 'Histogram with line instead',
     spec: {
-      "marktype": "line",
+      "mark": "line",
       "encoding": {
         "x": {"bin": true,"field": "Acceleration","type": "quantitative"},
         "y": {
@@ -296,7 +296,7 @@ var EXAMPLES = [
   },{
     title: 'Histogram with area instead',
     spec: {
-      "marktype": "area",
+      "mark": "area",
       "encoding": {
         "x": {"bin": true,"field": "Acceleration","type": "quantitative"},
         "y": {
@@ -311,7 +311,7 @@ var EXAMPLES = [
   },{
     title: "Bar chart with log scale and large numbers",
     spec: {
-      "marktype": "bar",
+      "mark": "bar",
       "data": {
         "values": [
           {"m_teps": 33.5330810546875,"dataset": "ak2010"},
@@ -365,7 +365,7 @@ var EXAMPLES = [
     title: "Number of birdstrikes throughout the year",
     description: 'Shows how to use timeUnit and shortTimeNames',
     spec: {
-      "marktype": "bar",
+      "mark": "bar",
       "encoding": {
         "y": {
           "axis": {"shortTimeNames": true},
@@ -380,7 +380,7 @@ var EXAMPLES = [
   }, {
     title: "Tick marks",
     spec: {
-      "marktype": "tick",
+      "mark": "tick",
       "encoding": {
         "x": {"field": "Horsepower","type": "quantitative"},
         "y": {"field": "Cylinders","type": "ordinal"}
