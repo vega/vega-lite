@@ -123,6 +123,10 @@ export class Model {
     return this._spec.marktype;
   }
 
+  spec(): Spec {
+    return this._spec;
+  }
+
   is(m) {
     return this._spec.marktype === m;
   }
