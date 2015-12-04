@@ -82,7 +82,8 @@ export function getSupportedMarktype(channel: Channel): SupportedMarktype {
 }
 
 interface SupportedRole {
-  [role:string]:boolean;
+  measure: boolean,
+  dimension: boolean
 };
 
 /**
