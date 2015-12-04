@@ -120,7 +120,7 @@ export class Model {
     return schemaUtil.subtract(spec, defaults);
   }
 
-  public mark() : Mark {
+  public mark(): Mark {
     return this._spec.mark;
   }
 
@@ -166,7 +166,7 @@ export class Model {
     }
   }
 
-  public fieldTitle(channel: Channel) : string {
+  public fieldTitle(channel: Channel): string {
     if (vlFieldDef.isCount(this._spec.encoding[channel])) {
       return vlFieldDef.COUNT_DISPLAYNAME;
     }
@@ -253,7 +253,7 @@ export class Model {
     return this._spec.config[name];
   }
 
-  public markOpacity() : number {
+  public markOpacity(): number {
     const opacity = this.config('marks').opacity;
     if (opacity) {
       return opacity;
