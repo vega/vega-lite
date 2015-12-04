@@ -37,7 +37,7 @@ export function compileLegend(model: Model, channel: Channel, def) {
 
   // 1.2 Add properties without rules
   ['orient', 'format', 'values'].forEach(function(property) {
-    let value = legend[property];
+    const value = legend[property];
     if (value !== undefined) {
       def[property] = value;
     }
