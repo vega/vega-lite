@@ -3,8 +3,7 @@ import {expect} from 'chai';
 import * as vlscale from '../../src/compiler/scale';
 import {SOURCE, SUMMARY} from '../../src/data';
 import {Model} from '../../src/compiler/Model';
-import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../../src/type';
-import * as util from '../../src/util';
+import {ORDINAL, QUANTITATIVE, TEMPORAL} from '../../src/type';
 import {BAR} from '../../src/mark';
 import {Y} from '../../src/channel';
 

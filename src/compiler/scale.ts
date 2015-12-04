@@ -5,9 +5,9 @@ import {extend} from '../util';
 import {Model} from './Model';
 import {SHARED_DOMAIN_OPS} from '../aggregate';
 import {COLUMN, ROW, X, Y, SHAPE, SIZE, COLOR, TEXT, Channel} from '../channel';
-import {SOURCE, STACKED, LAYOUT} from '../data';
+import {SOURCE, STACKED} from '../data';
 import * as time from './time';
-import {Type, NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
+import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 import {BAR, TEXT as TEXT_MARK} from '../mark';
 
 export function compileScales(names: Array<Channel>, model: Model) {
@@ -45,7 +45,7 @@ export function compileScales(names: Array<Channel>, model: Model) {
 export function type(channel: Channel, model: Model): string {
   const fieldDef = model.fieldDef(channel);
   switch (fieldDef.type) {
-    case NOMINAL: //fall through
+    case NOMINAL: // fall through
       return 'ordinal';
     case ORDINAL:
       let range = fieldDef.scale.range;
@@ -70,7 +70,7 @@ export function domain(model: Model, channel:Channel, type) {
   // special case for temporal scale
   if (fieldDef.type === TEMPORAL) {
     var range = time.scale.domain(fieldDef.timeUnit, channel);
-    if (range) return range;
+    if (range) { return range; }
   }
 
   // For stack, use STACKED data.
@@ -286,7 +286,7 @@ export function rangeMixins(model: Model, channel: Channel, scaleType): any {
     case COLOR:
       if (scaleType === 'ordinal') {
         return {range: 'category10'};
-      } else { //time or quantitative
+      } else { // time or quantitative
         return {range: ['#AFC6A3', '#09622A']}; // tableau greens
       }
     case ROW:

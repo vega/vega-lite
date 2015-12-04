@@ -1,7 +1,6 @@
 import {expect} from 'chai';
 
 import {labelTemplate} from '../../src/compiler/time';
-import {Model} from '../../src/compiler/Model';
 
 describe('time', function() {
   it('should get the right time template', function() {

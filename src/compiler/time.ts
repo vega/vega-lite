@@ -1,9 +1,6 @@
-import {Model} from './Model';
 import {FieldDef} from '../schema/fielddef.schema';
-import * as vlFieldDef from '../fielddef';
 import * as util from '../util';
 import {COLOR, COLUMN, ROW, Channel} from '../channel';
-import {TEMPORAL} from '../type';
 
 export function cardinality(fieldDef: FieldDef, stats, filterNull, type) {
   var timeUnit = fieldDef.timeUnit;

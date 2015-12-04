@@ -1,6 +1,5 @@
 import {merge} from './schemautil';
 import {duplicate} from '../util';
-import * as vlUtil from '../util';
 
 
 import {axis} from './axis.schema';

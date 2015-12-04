@@ -1,3 +1,5 @@
+/* tslint:disable */
+
 const VL_SPECS = {
   'Basic': [
     {

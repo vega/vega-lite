@@ -8,7 +8,7 @@ import {MAXBINS_DEFAULT} from '../bin';
 import {Channel, X, Y, ROW, COLUMN} from '../channel';
 import {SOURCE, STACKED, LAYOUT, SUMMARY} from '../data';
 import * as time from './time';
-import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
+import {QUANTITATIVE, TEMPORAL} from '../type';
 
 
 /**
@@ -89,7 +89,7 @@ export namespace source {
         parse = parse || {};
         parse[fieldDef.field] = 'date';
       } else if (fieldDef.type === QUANTITATIVE) {
-        if (vlFieldDef.isCount(fieldDef)) return;
+        if (vlFieldDef.isCount(fieldDef)) { return; }
         parse = parse || {};
         parse[fieldDef.field] = 'number';
       }
@@ -152,11 +152,11 @@ export namespace source {
    */
   export function nullFilterTransform(model: Model) {
     const filterNull = model.config('filterNull');
-    const filteredFields = util.keys(model.reduce(function(filteredFields, fieldDef: FieldDef) {
+    const filteredFields = util.keys(model.reduce(function(aggregator, fieldDef: FieldDef) {
       if (fieldDef.field && fieldDef.field !== '*' && filterNull[fieldDef.type]) {
-        filteredFields[fieldDef.field] = true;
+        aggregator[fieldDef.field] = true;
       }
-      return filteredFields;
+      return aggregator;
     }, {}));
 
     return filteredFields.length > 0 ?
@@ -338,9 +338,9 @@ export namespace summary {
 
     // short-format summarize object for Vega's aggregate transform
     // https://github.com/vega/vega/wiki/Data-Transforms#-aggregate
-    var summarize = util.reduce(meas, function(summarize, fnDictSet, field) {
-      summarize[field] = util.keys(fnDictSet);
-      return summarize;
+    var summarize = util.reduce(meas, function(aggregator, fnDictSet, field) {
+      aggregator[field] = util.keys(fnDictSet);
+      return aggregator;
     }, {});
 
     if (hasAggregate) {
@@ -381,7 +381,7 @@ export namespace stack {
     };
 
     if (facetFields && facetFields.length > 0) {
-      stacked.transform.push({ //calculate max for each facet
+      stacked.transform.push({ // calculate max for each facet
         type: 'aggregate',
         groupby: facetFields,
         summarize: [{

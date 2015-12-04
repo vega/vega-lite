@@ -4,14 +4,9 @@ import * as axis from '../../src/compiler/axis';
 import {Model} from '../../src/compiler/Model';
 import {LINE} from '../../src/mark';
 import {X, COLUMN} from '../../src/channel';
-import {TEMPORAL, QUANTITATIVE, ORDINAL} from '../../src/type';
+import {TEMPORAL, QUANTITATIVE} from '../../src/type';
 
 describe('Axis', function() {
-  var layout = {
-      cellWidth: 60,  // default characterWidth = 6
-      cellHeight: 60
-    };
-
   describe('(X) for Time Data', function() {
     var field = 'a',
       timeUnit = 'month',
@@ -23,7 +18,7 @@ describe('Axis', function() {
       });
     var _axis = axis.compileAxis(X, encoding);
 
-    //FIXME decouple the test here
+    // FIXME decouple the test here
 
     it('should use custom label', function() {
       expect(_axis.properties.labels.text.template).to.equal('{{datum.data | month}}');

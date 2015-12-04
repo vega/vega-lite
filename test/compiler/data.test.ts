@@ -142,8 +142,8 @@ describe('data.source', function() {
         };
 
       it('should add filterNull for Q and T by default', function () {
-        var encoding = new Model(spec);
-        expect(source.nullFilterTransform(encoding))
+        var enc = new Model(spec);
+        expect(source.nullFilterTransform(enc))
           .to.eql([{
             type: 'filter',
             test: 'datum.tt!==null && datum.qq!==null'
@@ -151,12 +151,12 @@ describe('data.source', function() {
       });
 
       it('should add filterNull for O when specified', function () {
-        var encoding = new Model(spec, {
+        var enc = new Model(spec, {
           config: {
             filterNull: {ordinal: true}
           }
         });
-        expect(source.nullFilterTransform(encoding))
+        expect(source.nullFilterTransform(enc))
           .to.eql([{
             type: 'filter',
             test:'datum.tt!==null && datum.qq!==null && datum.oo!==null'

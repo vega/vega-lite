@@ -1,11 +1,9 @@
-import {isObject} from '../util';
-
 export interface Legend {
   orient?: string;
   title?: string;
   format?: string;
   values?: Array<any>;
-  properties?: any; //TODO declare VgLegendProperties
+  properties?: any; // TODO declare VgLegendProperties
 }
 
 export var legend = {
