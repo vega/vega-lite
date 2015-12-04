@@ -30,7 +30,7 @@ export function reduce(obj, f, init, thisArg?) {
   }
 }
 
-export function map(obj, f, thisArg?) {
+export function map(obj, f: (a, d, k, o) => any, thisArg?) {
   if (obj.map) {
     return obj.map.call(thisArg, f);
   } else {
@@ -68,6 +68,6 @@ export function getbins(stats, maxbins) {
   });
 }
 
-export function error(message: any): void {
+export function error(message: any) {
   console.error('[VL Error]', message);
 }

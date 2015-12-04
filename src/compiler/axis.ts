@@ -8,7 +8,7 @@ import * as time from './time';
 declare var exports;
 
 export function compileAxis(channel: Channel, model: Model) {
-  var isCol = channel === COLUMN,
+  const isCol = channel === COLUMN,
     isRow = channel === ROW,
     type = isCol ? 'x' : isRow ? 'y': channel;
 

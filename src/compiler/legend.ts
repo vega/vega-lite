@@ -30,8 +30,7 @@ export function compileLegends(model: Model) {
 }
 
 export function compileLegend(model: Model, channel: Channel, def) {
-  // https://github.com/Microsoft/TypeScript/issues/5842
-  const legend:any = model.fieldDef(channel).legend;
+  const legend = model.fieldDef(channel).legend;
 
   // 1.1 Add properties with special rules
   def.title = title(model, channel);
@@ -60,8 +59,7 @@ export function compileLegend(model: Model, channel: Channel, def) {
 }
 
 export function title(model: Model, channel: Channel) {
-  // https://github.com/Microsoft/TypeScript/issues/5842
-  const legend: any = model.fieldDef(channel).legend;
+  const legend = model.fieldDef(channel).legend;
 
   if (typeof legend !== 'boolean' && legend.title) {
     return legend.title;
