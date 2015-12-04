@@ -88,14 +88,16 @@ You can run `npm run build` to compile Vega-Lite and regenerate `vega-lite-schem
 
 During development, it can be convenient to rebuild automatically or run tests in the background.
 
-You can `npm run watch:dev` to start a watcher task that **lints and runs tests** when any `.ts` file changes.
+You can run `npm run watch` to start a watcher task that
+(1) lints and runs tests, (2) re-compiles Vega-Lite, and (3) regenerates `vega-lite-schema.json` whenever any `.ts` file changes.
 
-You can use `npm run watch:build` to start a watcher task that **re-compiles Vega-Lite** when `.ts` files related to VL change.
+If you want to sync the test gallery in the browser while also running watch, use `npm start`.   
 
-The previous two commands run very fast but don't run all tasks that you may want. If you are okay to use a slow command, you can use `npm run watch:all` to start a watcher task that when any `.ts` file changes:
-- lints and runs tests
-- re-compiles Vega-Lite
-- regenerates `vega-lite-schema.json`
+`npm run watch` can be slightly slow. If you only want subset of these actions, you can use:
+
+- `npm run watch:dev` to start a watcher task that **lints and runs tests** when any `.ts` file changes.
+
+- `npm run watch:build` to start a watcher task that **re-compiles Vega-Lite** when `.ts` files related to VL change.
 
 
 ### Developing Vega-Lite and Datalib
