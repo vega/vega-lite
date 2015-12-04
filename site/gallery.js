@@ -5,13 +5,13 @@
 d3.select('#vl-version').text(vl.version);
 d3.select('#vg-version').text(vg.version);
 
-var specs = d3.keys(VL_SPECS).reduce(function(specs, groupName) {
+var examples = d3.keys(VL_SPECS).reduce(function(examples, groupName) {
   var group = VL_SPECS[groupName];
-  return specs.concat(group);
+  return examples.concat(group);
 }, []);
 
 var viz = d3.select('div.viz-list').selectAll('.viz')
-  .data(specs)
+  .data(examples)
   .enter()
   .append('div')
   .attr('class', 'viz')
@@ -23,12 +23,12 @@ viz.append('div').attr('class', 'view');
 viz.append('div').attr('class', 'desc');
 
 
-specs.forEach(function(spec) {
-  d3.json('examples/' + spec.name + '.json', function(error, vlSpec) {
+examples.forEach(function(example) {
+  d3.json('examples/' + example.name + '.json', function(error, vlSpec) {
     var vgSpec = vl.compile(vlSpec).spec;
     vg.parse.spec(vgSpec, function(chart) {
       var view = chart({
-        el: d3.select('.viz#'+ spec.name + '> div.view').node(),
+        el: d3.select('.viz#'+ example.name + '> div.view').node(),
         renderer: 'svg'
       });
       view.update();
