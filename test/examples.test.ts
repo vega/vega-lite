@@ -45,8 +45,8 @@ describe('Examples', function() {
 
   examples.forEach(function(example) {
     it('should be valid and produce valid vega for: ' + example.name, function(done) {
-      var json_data = dl.load({url: 'examples/' + example.name + '.json'});
-      var data = dl.read(json_data, {type: 'json', parse: 'auto'});
+      var jsonData = dl.load({url: 'examples/' + example.name + '.json'});
+      var data = dl.read(jsonData, {type: 'json', parse: 'auto'});
       validateAgainstSchemas(data, done);
     });
   });
