@@ -85,7 +85,6 @@
         "typings/assertion-error.d.ts",
         "typings/chai.d.ts",
         "typings/colorbrewer.d.ts",
-        "typings/d3-color.d.ts",
         "typings/datalib.d.ts",
         "typings/mocha.d.ts",
         "typings/node.d.ts",
