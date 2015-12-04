@@ -18,7 +18,7 @@
     "cover": "tsc && istanbul cover node_modules/.bin/_mocha -- --recursive",
     "clean": "rm -f vega-lite.* vega-lite-schema.json & find src -name '*.js*' -type f -delete & find test -name '*.js*' -type f -delete",
     "deploy": "npm run clean && npm run lint && npm run test && scripts/deploy.sh",
-    "lint": "tslint -c tslint.json src/**/*.ts test/**/*.ts",
+    "lint": "tslint -c tslint.json src/*.ts test/*.ts src/**/*.ts test/**/*.ts",
     "start": "npm run watch:build & browser-sync start --server --files 'vega-lite.js' --index 'gallery.html'",
     "schema": "tsc && node src/schema/schemagen.js > vega-lite-schema.json",
     "test": "tsc && mocha --recursive --require source-map-support/register",
