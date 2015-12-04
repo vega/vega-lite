@@ -82,19 +82,26 @@ export namespace source {
   }
 
   function formatParse(model: Model) {
-    var parse;
+    const calcFieldMap = (model.data().calculate || []).reduce(function(fieldMap, formula) {
+      fieldMap[formula.field] = true;
+      return fieldMap;
+    }, {});
 
+    let parse;
+    // use forEach rather than reduce so that it can return undefined
+    // if there is no parse needed
     model.forEach(function(fieldDef: FieldDef) {
       if (fieldDef.type === TEMPORAL) {
         parse = parse || {};
         parse[fieldDef.field] = 'date';
       } else if (fieldDef.type === QUANTITATIVE) {
-        if (vlFieldDef.isCount(fieldDef)) { return; }
+        if (vlFieldDef.isCount(fieldDef) || calcFieldMap[fieldDef.field]) {
+          return;
+        }
         parse = parse || {};
         parse[fieldDef.field] = 'number';
       }
     });
-
     return parse;
   }
 
@@ -177,12 +184,7 @@ export namespace source {
   }
 
   export function formulaTransform(model: Model) {
-    var calculate = model.data().calculate;
-    if (calculate === undefined) {
-      return [];
-    }
-
-    return calculate.reduce(function(transform, formula) {
+    return (model.data().calculate || []).reduce(function(transform, formula) {
       transform.push(util.extend({type: 'formula'}, formula));
       return transform;
     }, []);
