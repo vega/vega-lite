@@ -6,15 +6,15 @@
 import {Marktype} from './marktype';
 
 export enum Channel {
-  X = <any>'x',
-  Y = <any>'y',
-  ROW = <any>'row',
-  COLUMN = <any>'column',
-  SHAPE = <any>'shape',
-  SIZE = <any>'size',
-  COLOR = <any>'color',
-  TEXT = <any>'text',
-  DETAIL = <any>'detail',
+  X = 'x' as any,
+  Y = 'y' as any,
+  ROW = 'row' as any,
+  COLUMN = 'column' as any,
+  SHAPE = 'shape' as any,
+  SIZE = 'size' as any,
+  COLOR = 'color' as any,
+  TEXT = 'text' as any,
+  DETAIL = 'detail' as any
 }
 
 export const X = Channel.X;

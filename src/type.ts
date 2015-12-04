@@ -1,10 +1,10 @@
 /** Constants and utilities for data type */
 
 export enum Type {
-  QUANTITATIVE = <any>'quantitative',
-  ORDINAL = <any>'ordinal',
-  TEMPORAL = <any>'temporal',
-  NOMINAL = <any>'nominal'
+  QUANTITATIVE = 'quantitative' as any,
+  ORDINAL = 'ordinal' as any,
+  TEMPORAL = 'temporal' as any,
+  NOMINAL = 'nominal' as any
 }
 
 export const QUANTITATIVE = Type.QUANTITATIVE;
