@@ -1,8 +1,4 @@
-/// <reference path="../../typings/d3-color.d.ts"/>
-
 import {expect} from 'chai';
-
-var colorbrewer = require('colorbrewer');
 
 import * as vlscale from '../../src/compiler/scale';
 import {SOURCE, SUMMARY} from '../../src/data';
