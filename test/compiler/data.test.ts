@@ -82,8 +82,13 @@ describe('data.source', function() {
   });
 
   describe('formatParse', function () {
-    it('should have correct parse', function() {
+    it('should include parse for all applicable fields, and exclude calculated fields', function() {
       var encoding = new Model({
+          data: {
+            calculate: [
+              {field: 'b2', expr: 'datum.b * 2'}
+            ]
+          },
           encoding: {
             x: {field: 'a', type: TEMPORAL},
             y: {field: 'b', type: QUANTITATIVE},
