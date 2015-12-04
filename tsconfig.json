@@ -22,7 +22,9 @@
     "exclude": [
         "node_modules",
         "bower_components",
-        "_site"
+        "data",
+        "_site",
+        "lib"
     ],
     "files": [
         "examples/vlexamples.ts",
