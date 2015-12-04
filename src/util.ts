@@ -36,7 +36,7 @@ export function map(obj, f: (a, d, k, o) => any, thisArg?) {
   } else {
     var output = [];
     for (var k in obj) {
-      output.push( f.call(thisArg, obj[k], k, obj));
+      output.push(f(thisArg, obj[k], k, obj));
     }
     return output;
   }
