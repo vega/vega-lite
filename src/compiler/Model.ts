@@ -255,8 +255,7 @@ export class Model {
     } else {
       if (contains([POINT, TICK, CIRCLE, SQUARE], this.marktype())) {
         // point-based marks and bar
-        if (!this.isAggregate() ||
-          (this.has(DETAIL) || this.has(COLOR) || this.has(SHAPE))) {
+        if (!this.isAggregate() || this.has(DETAIL)) {
           return 0.7;
         }
       }
