@@ -30,7 +30,14 @@ export const DETAIL = Channel.DETAIL;
 export const CHANNELS = [X, Y, ROW, COLUMN, SIZE, SHAPE, COLOR, TEXT, DETAIL];
 
 interface SupportedMarktype {
-  [marktype: string]: boolean;
+  point?: boolean,
+  tick?: boolean,
+  circle?: boolean,
+  square?: boolean,
+  bar?: boolean,
+  line?: boolean,
+  area?: boolean,
+  text?: boolean
 };
 
 /**
@@ -82,7 +89,8 @@ export function getSupportedMarktype(channel: Channel): SupportedMarktype {
 }
 
 interface SupportedRole {
-  [role:string]:boolean;
+  measure: boolean,
+  dimension: boolean
 };
 
 /**

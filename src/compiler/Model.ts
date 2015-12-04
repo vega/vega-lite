@@ -15,6 +15,7 @@ import {StackProperties} from './stack';
 import {getFullName, NOMINAL, ORDINAL, TEMPORAL} from '../type';
 import {contains, duplicate} from '../util';
 import * as time from './time';
+import {Encoding} from '../schema/encoding.schema';
 
 
 interface FieldRefOption {
@@ -161,7 +162,7 @@ export class Model {
     }
   }
 
-  fieldTitle(channel: Channel) {
+  fieldTitle(channel: Channel) : string {
     if (vlFieldDef.isCount(this._spec.encoding[channel])) {
       return vlFieldDef.COUNT_DISPLAYNAME;
     }
@@ -185,20 +186,20 @@ export class Model {
     return bin;
   }
 
-  numberFormat = function(channel?: Channel) {
+  numberFormat(channel?: Channel): string {
     // TODO(#497): have different number format based on numberType (discrete/continuous)
     return this.config('numberFormat');
   };
 
-  map(f) {
+  map(f: (fd: FieldDef, c: Channel, e: Encoding) => any) {
     return vlEncoding.map(this._spec.encoding, f);
   }
 
-  reduce(f, init) {
+  reduce(f: (acc: any, fd: FieldDef, c: Channel, e: Encoding) => any, init) {
     return vlEncoding.reduce(this._spec.encoding, f, init);
   }
 
-  forEach(f) {
+  forEach(f: (fd: FieldDef, c: Channel, i:number) => void) {
     return vlEncoding.forEach(this._spec.encoding, f);
   }
 
