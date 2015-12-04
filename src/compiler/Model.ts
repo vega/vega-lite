@@ -3,12 +3,12 @@ import {Bin} from '../schema/bin.schema';
 import {FieldDef} from '../schema/fielddef.schema';
 
 import {MAXBINS_DEFAULT} from '../bin';
-import {COLUMN, ROW, X, Y, COLOR, DETAIL, Channel} from '../channel';
+import {COLUMN, ROW, X, Y, COLOR, SHAPE, DETAIL, Channel} from '../channel';
 import {SOURCE, SUMMARY} from '../data';
 import * as vlFieldDef from '../fielddef';
 import * as vlEncoding from '../encoding';
 import {compileLayout} from './layout';
-import {AREA, BAR, Marktype} from '../marktype';
+import {AREA, BAR, POINT, TICK, CIRCLE, SQUARE, Marktype} from '../marktype';
 import * as schema from '../schema/schema';
 import * as schemaUtil from '../schema/schemautil';
 import {StackProperties} from './stack';
@@ -123,8 +123,8 @@ export class Model {
     return this._spec.marktype;
   }
 
-  is(m) {
-    return this._spec.marktype === m;
+  is(markType: Marktype) {
+    return this._spec.marktype === markType;
   }
 
   has(channel: Channel) {
@@ -245,5 +245,21 @@ export class Model {
 
   config(name: string) {
     return this._spec.config[name];
+  }
+
+  markOpacity() : number {
+    const opacity = this.config('marks').opacity;
+    if (opacity) {
+      return opacity;
+    } else {
+      if (contains([POINT, TICK, CIRCLE, SQUARE, BAR], this.marktype())) {
+        // point-based marks and bar
+        if (!this.isAggregate() ||
+          (this.has(DETAIL) || this.has(COLOR) || this.has(SHAPE))) {
+          return 0.7;
+        }
+      }
+    }
+    return undefined;
   }
 }

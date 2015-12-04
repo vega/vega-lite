@@ -377,6 +377,16 @@ var EXAMPLES = [
       },
       "data": {"url": "data/birdstrikes.json"}
     }
+  }, {
+    title: "Tick marks",
+    spec: {
+      "marktype": "tick",
+      "encoding": {
+        "x": {"field": "Horsepower","type": "quantitative"},
+        "y": {"field": "Cylinders","type": "ordinal"}
+      },
+      "data": {"url": "data/cars.json"}
+    }
   }
 ];
 
