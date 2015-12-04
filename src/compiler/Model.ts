@@ -3,7 +3,7 @@ import {Bin} from '../schema/bin.schema';
 import {FieldDef} from '../schema/fielddef.schema';
 
 import {MAXBINS_DEFAULT} from '../bin';
-import {COLUMN, ROW, X, Y, COLOR, DETAIL, Channel} from '../channel';
+import {COLUMN, ROW, X, Y, COLOR, DETAIL, SHAPE, Channel} from '../channel';
 import {SOURCE, SUMMARY} from '../data';
 import * as vlFieldDef from '../fielddef';
 import * as vlEncoding from '../encoding';
@@ -252,19 +252,12 @@ export class Model {
     if (opacity) {
       return opacity;
     } else {
-      const X_MEASURE = this.isMeasure(X);
-      const Y_MEASURE = this.isMeasure(Y);
-
-      // both measure means there can be overlap
-      const BOTH_MEASURE = X_MEASURE && Y_MEASURE;
-      // not aggregated and at least one measure
-      const NO_AGG = !this.isAggregate() && (X_MEASURE || Y_MEASURE);
-      // aggregated but uses color or detail (so we can have overlap)
-      const AGG_BUT_SPLIT = this.isAggregate() && (this.has(DETAIL) || this.has(COLOR)) && (X_MEASURE || Y_MEASURE);
-
-      const COND = NO_AGG || BOTH_MEASURE || AGG_BUT_SPLIT;
-      if (COND && contains([POINT, TICK, CIRCLE, SQUARE], this.marktype())) {
-        return 0.7;
+      if (contains([POINT, TICK, CIRCLE, SQUARE], this.marktype())) {
+        // point-based marks
+        if (!this.isAggregate() ||
+          (this.has(DETAIL) || this.has(COLOR) || this.has(SHAPE))) {
+          return 0.7;
+        }
       }
     }
     return undefined;
