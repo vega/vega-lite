@@ -9,7 +9,7 @@ export function contains(array: Array<any>, item: any) {
   return array.indexOf(item) > -1;
 }
 
-export function forEach(obj, f, thisArg) {
+export function forEach(obj, f: (a, d, k, o) => any, thisArg) {
   if (obj.forEach) {
     obj.forEach.call(thisArg, f);
   } else {
@@ -19,7 +19,7 @@ export function forEach(obj, f, thisArg) {
   }
 }
 
-export function reduce(obj, f, init, thisArg?) {
+export function reduce(obj, f: (a, i, d, k, o) => any, init, thisArg?) {
   if (obj.reduce) {
     return obj.reduce.call(thisArg, f, init);
   } else {
@@ -36,7 +36,7 @@ export function map(obj, f: (a, d, k, o) => any, thisArg?) {
   } else {
     var output = [];
     for (var k in obj) {
-      output.push(f(thisArg, obj[k], k, obj));
+      output.push(f.call(thisArg, obj[k], k, obj));
     }
     return output;
   }
