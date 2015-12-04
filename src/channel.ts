@@ -30,14 +30,14 @@ export const DETAIL = Channel.DETAIL;
 export const CHANNELS = [X, Y, ROW, COLUMN, SIZE, SHAPE, COLOR, TEXT, DETAIL];
 
 interface SupportedMark {
-  point?: boolean,
-  tick?: boolean,
-  circle?: boolean,
-  square?: boolean,
-  bar?: boolean,
-  line?: boolean,
-  area?: boolean,
-  text?: boolean
+  point?: boolean;
+  tick?: boolean;
+  circle?: boolean;
+  square?: boolean;
+  bar?: boolean;
+  line?: boolean;
+  area?: boolean;
+  text?: boolean;
 };
 
 /**
@@ -89,8 +89,8 @@ export function getSupportedMark(channel: Channel): SupportedMark {
 }
 
 interface SupportedRole {
-  measure: boolean,
-  dimension: boolean
+  measure: boolean;
+  dimension: boolean;
 };
 
 /**
