@@ -1,7 +1,6 @@
 import {expect} from 'chai';
 import {getEncodingMappingError} from '../src/validate';
 import {BAR, LINE, AREA, TEXT} from '../src/mark';
-import * as vl from '../src/vl';
 
 describe('vl.validate', function() {
   describe('getEncodingMappingError()', function () {
