@@ -70,14 +70,26 @@ export function compile(spec, theme?) {
 
   // FIXME replace FIT with appropriate mechanism once Vega has it
   const FIT = 1;
+
   // TODO: change type to become VgSpec
-  var output = {
+  var output = extend(
+    model.config('name') ? {name: model.config('name')} : {},
+    {
       width: layout.width.field ? FIT : layout.width,
       height: layout.height.field ? FIT : layout.height,
-      padding: 'auto',
+      padding: 'auto'
+    },
+    ['viewport', 'background', 'scene'].reduce(function(topLevelConfig, property) {
+      const value = model.config(property);
+      if (value !== undefined) {
+        topLevelConfig[property] = value;
+      }
+      return topLevelConfig;
+    }, {}),
+    {
       data: compileData(model),
       marks: [rootGroup]
-    };
+    });
 
   return {
     spec: output

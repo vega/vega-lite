@@ -4,20 +4,42 @@ export var config = {
   type: 'object',
   properties: {
     // template
-    width: {
+    name: {
       type: 'integer',
-      default: undefined
+      default: undefined,
+      description: 'A unique name for the visualization specification.'
     },
-    height: {
-      type: 'integer',
-      default: undefined
-    },
+    // TODO: add this back once we have top-down layout approach
+    // width: {
+    //   type: 'integer',
+    //   default: undefined
+    // },
+    // height: {
+    //   type: 'integer',
+    //   default: undefined
+    // },
+    // padding: {
+    //   type: ['number', 'string'],
+    //   default: 'auto'
+    // },
     viewport: {
       type: 'array',
       items: {
         type: 'integer'
       },
-      default: undefined
+      default: undefined,
+      description: 'The width and height of the on-screen viewport, in pixels. If necessary, clipping and scrolling will be applied.'
+    },
+    background: {
+      type: 'string',
+      role: 'color',
+      default: undefined,
+      description: 'CSS color property to use as background of visualization. Default is `"transparent"`.'
+    },
+    scene: {
+      type: 'object',
+      default: undefined,
+      description: 'An object to style the top-level scenegraph root. Available properties include `fill`, `fillOpacity`, `stroke`, `strokeOpacity`, `strokeWidth`, `strokeDash`, `strokeDashOffset`'
     },
 
     // filter null
