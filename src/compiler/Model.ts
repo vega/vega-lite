@@ -8,7 +8,7 @@ import {SOURCE, SUMMARY} from '../data';
 import * as vlFieldDef from '../fielddef';
 import * as vlEncoding from '../encoding';
 import {compileLayout} from './layout';
-import {AREA, BAR, Marktype} from '../marktype';
+import {AREA, BAR, POINT, TICK, CIRCLE, SQUARE, Marktype} from '../marktype';
 import * as schema from '../schema/schema';
 import * as schemaUtil from '../schema/schemautil';
 import {StackProperties} from './stack';
