@@ -19,10 +19,6 @@ const VL_SPECS = {
       "title": "Grouped bar chart."
     },
     {
-      "name": "bar_log",
-      title: "Bar chart with log scale and large numbers",
-    },
-    {
       "name": "scatter",
       "title": "A scatterplot"
     },
@@ -33,8 +29,12 @@ const VL_SPECS = {
       "title": "Binned Scatterplot"
     },
     {
+      "name": "scatter_log",
+      "title": "Scatter plot with log scale and large numbers",
+    },
+    {
       "name": "tick",
-      title: "Tick marks"
+      "title": "Tick marks"
     },
     {
       "name": "line",
@@ -73,7 +73,7 @@ const VL_SPECS = {
     },
     {
       "name": "stacked_bar_1d",
-      title: '1D Stacked Bar Chart'
+      "title": '1D Stacked Bar Chart'
     }
   ],
   'Trellis': [
@@ -83,12 +83,15 @@ const VL_SPECS = {
     },
     {
       "name": "trellis_area",
-      title: 'Trellis Area chart'
+      "title": 'Trellis Area chart'
     },
     {
-      "name": "trellis_stacked_bar", title: 'Trellis Stacked Bar Chart'
+      "name": "trellis_stacked_bar",
+      "title": 'Trellis Stacked Bar Chart'
     },
-    {"name": "trellis_scatter"}
+    {
+      "name": "trellis_scatter"
+    }
   ]
 };
 
