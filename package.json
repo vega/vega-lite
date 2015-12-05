@@ -21,6 +21,7 @@
     "lint": "tslint -c tslint.json src/*.ts test/*.ts src/**/*.ts test/**/*.ts",
     "start": "npm run watch:build & browser-sync start --server --files 'vega-lite.js' --index 'gallery.html'",
     "schema": "tsc && node src/schema/schemagen.js > vega-lite-schema.json",
+    "site": "bundle exec jekyll serve",
     "test": "tsc && mocha --recursive --require source-map-support/register",
     "watch:build": "watchify src/vl.ts -p tsify -v -d -s vl -o 'exorcist vega-lite.js.map > vega-lite.js'",
     "watch:dev": "nodemon -e ts -x 'npm test && npm run lint'",
