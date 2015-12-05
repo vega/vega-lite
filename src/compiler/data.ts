@@ -1,5 +1,5 @@
 import * as vlFieldDef from '../fielddef';
-import * as util from '../util';
+import {extend, keys, vals, reduce} from '../util';
 import {Model} from './Model';
 import {FieldDef} from '../schema/fielddef.schema';
 import {StackProperties} from './stack';
@@ -139,16 +139,18 @@ export namespace source {
     return model.reduce(function(transform, fieldDef: FieldDef, channel: Channel) {
       const bin = model.bin(channel);
       if (bin) {
-        transform.push({
-          type: 'bin',
-          field: fieldDef.field,
-          output: {
-            start: model.field(channel, {binSuffix: '_start'}),
-            mid: model.field(channel, {binSuffix: '_mid'}),
-            end: model.field(channel, {binSuffix: '_end'})
+        transform.push(extend({
+            type: 'bin',
+            field: fieldDef.field,
+            output: {
+              start: model.field(channel, {binSuffix: '_start'}),
+              mid: model.field(channel, {binSuffix: '_mid'}),
+              end: model.field(channel, {binSuffix: '_end'})
+            },
+            maxbins: typeof bin === 'boolean' ? MAXBINS_DEFAULT : bin.maxbins
           },
-          maxbins: typeof bin === 'boolean' ? MAXBINS_DEFAULT : bin.maxbins
-        });
+          typeof bin === 'boolean' ? {} : bin
+        ));
       }
       return transform;
     }, []);
@@ -159,7 +161,7 @@ export namespace source {
    */
   export function nullFilterTransform(model: Model) {
     const filterNull = model.config('filterNull');
-    const filteredFields = util.keys(model.reduce(function(aggregator, fieldDef: FieldDef) {
+    const filteredFields = keys(model.reduce(function(aggregator, fieldDef: FieldDef) {
       if (fieldDef.field && fieldDef.field !== '*' && filterNull[fieldDef.type]) {
         aggregator[fieldDef.field] = true;
       }
@@ -185,7 +187,7 @@ export namespace source {
 
   export function formulaTransform(model: Model) {
     return (model.data().calculate || []).reduce(function(transform, formula) {
-      transform.push(util.extend({type: 'formula'}, formula));
+      transform.push(extend({type: 'formula'}, formula));
       return transform;
     }, []);
   }
@@ -336,12 +338,12 @@ export namespace summary {
       }
     });
 
-    var groupby = util.vals(dims);
+    var groupby = vals(dims);
 
     // short-format summarize object for Vega's aggregate transform
     // https://github.com/vega/vega/wiki/Data-Transforms#-aggregate
-    var summarize = util.reduce(meas, function(aggregator, fnDictSet, field) {
-      aggregator[field] = util.keys(fnDictSet);
+    var summarize = reduce(meas, function(aggregator, fnDictSet, field) {
+      aggregator[field] = keys(fnDictSet);
       return aggregator;
     }, {});
 
