@@ -198,7 +198,7 @@ export namespace layout {
     let formulas = [];
 
     // TODO: handle "fit" mode
-    if (model.has(X) && model.isOrdinalScale(X)) { // FIXME check if we need to call twice
+    if (model.has(X) && model.isDimension(X)) {
       const xScale = model.fieldDef(X).scale;
       const xHasDomain = xScale.domain instanceof Array;
       if (!xHasDomain) {
@@ -216,7 +216,7 @@ export namespace layout {
       });
     }
 
-    if (model.has(Y) && model.isOrdinalScale(Y)) { // FIXME check if we need to call twice
+    if (model.has(Y) && model.isDimension(Y)) {
       const yScale = model.fieldDef(Y).scale;
       const yHasDomain = yScale.domain instanceof Array;
 
@@ -247,7 +247,7 @@ export namespace layout {
       const colHasDomain = colScale.domain instanceof Array;
       if (!colHasDomain) {
         summarize.push({
-          field: model.fieldDef(COLUMN).field,
+          field: model.field(COLUMN),
           ops: ['distinct']
         });
       }
@@ -270,7 +270,7 @@ export namespace layout {
       const rowHasDomain = rowScale.domain instanceof Array;
       if (!rowHasDomain) {
         summarize.push({
-          field: model.fieldDef(ROW).field,
+          field: model.field(ROW),
           ops: ['distinct']
         });
       }
