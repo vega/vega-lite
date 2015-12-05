@@ -178,19 +178,6 @@ export class Model {
     }
   }
 
-  // returns false if binning is disabled, otherwise an object with binning properties
-  public bin(channel: Channel): Bin | boolean {
-    var bin = this._spec.encoding[channel].bin;
-    if (bin === {}) {
-      return false;
-    } if (bin === true) {
-      return {
-        maxbins: MAXBINS_DEFAULT
-      };
-    }
-    return bin;
-  }
-
   public numberFormat(channel?: Channel): string {
     // TODO(#497): have different number format based on numberType (discrete/continuous)
     return this.config('numberFormat');

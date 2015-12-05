@@ -137,7 +137,7 @@ export namespace source {
 
   export function binTransform(model: Model) {
     return model.reduce(function(transform, fieldDef: FieldDef, channel: Channel) {
-      const bin = model.bin(channel);
+      const bin = model.fieldDef(channel).bin;
       if (bin) {
         transform.push(extend({
             type: 'bin',
@@ -149,6 +149,7 @@ export namespace source {
             },
             maxbins: typeof bin === 'boolean' ? MAXBINS_DEFAULT : bin.maxbins
           },
+          // if bin is an object, load parameter here!
           typeof bin === 'boolean' ? {} : bin
         ));
       }
