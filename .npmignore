@@ -1,6 +1,9 @@
 node_modules
 bower_components
 data
+examples/_original
+examples/_output
+examples/_diff
 index.html
 script
 site

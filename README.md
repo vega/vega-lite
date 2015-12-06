@@ -61,7 +61,7 @@ This is a similar chart as one of the Vega examples in https://github.com/trifac
 }
 ```
 
-## Setup Instructions
+## Development Setup
 
 Make sure you have node.js. (We recommend using [homebrew](http://brew.sh) and simply run `brew install node`.)
 
@@ -72,17 +72,25 @@ cd vega-lite
 npm install
 ```
 
-Since Vega-Lite is written in Typescript, you should also install TypeScript
+You also need install some node modules globally for development
 
 ```sh
-npm install -g typescript
+npm install -g typescript istanbul json-diff
 ```
 
-We use the [atom](atom.io) editor with typescript support. If you don't want to see intermediate files (`.js`, `.js.map`), you can "Hide VCS Ignored Files" in the `tree-view` plugin.
+We use the [atom](atom.io) editor with typescript plug-in. If you don't want to see intermediate files (`.js`, `.js.map`), you can "Hide VCS Ignored Files" in the `tree-view` plugin.
 
 ### Commands
 
-You can run `npm run build` to compile Vega-Lite and regenerate `vega-lite-schema.json`. More commands are available in `npm run`.
+Below are a list of commonly used commands More commands are available in `npm run`.
+
+#### Build
+
+You can run `npm run build` to compile Vega-Lite and regenerate `vega-lite-schema.json`.
+
+#### Basic Lint & Test
+
+`npm run lint` and `npm run test` run ts-lint and all unit-tests respectively.  These two commands are automatically run by `npm start` and `npm run watch`.
 
 #### Watch tasks
 
@@ -103,7 +111,15 @@ If you only want subset of these actions, you can use:
 
 - `npm run watch:build` to start a watcher task that **re-compiles Vega-Lite** when `.ts` files related to VL change.
 
+#### Output diff
 
+We also have commands for observing changes in output Vega spec and output images.
+
+To create aseline Vega output specs from the Vega-Lite specs in `examples/`, check out the baseline branch (e.g., `git checkout master`) and run `npm x-compile`.
+All compiled specs will be in `examples/_original`.
+
+Once you develop some features and would like to diff the compiled specs, run `npm x-diff`.  This will compile all examples again and output the diff for changed examples in the console.  
+All compiled specs will be in `examples/_output`.  For changed examples, SVG files will be created in `examples/_diff` for comparison.  You can open those files to inspect visual changes, or run a diff command (e.g., `diff examples/_diff/area-base.svg examples/_diff/area.svg`).
 
 ### Developing Vega-Lite and Datalib
 
