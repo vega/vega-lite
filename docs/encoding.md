@@ -86,8 +86,13 @@ The `bin` property definition object contains the following properties:
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | maxbins       | Integer       | The maximum number of allowable bins.  See [Datalib's binning documentation](https://github.com/vega/datalib/wiki/Statistics#dl_bins) for more information. |
-
-__Pending Revision__: We are revising how binning should be specified in Vega-Lite and properties for binning.  Other properties in [Datalib's binning ](https://github.com/vega/datalib/wiki/Statistics#dl_bins) such as `min`, `max`, `maxbins`, `step`, `steps`, `minstep`, `div` will be added once this is revised.
+| min                 | Number              | The minimum bin value to consider. If unspecified, the minimum value of the specified field is used.|
+| max                 | Number              | The maximum bin value to consider. If unspecified, the maximum value of the specified field is used.|
+| base                | Number              | The number base to use for automatic bin determination (default is base 10).|
+| step                | Number              | An exact step size to use between bins. If provided, options such as maxbins will be ignored.|
+| steps               | Array               | An array of allowable step sizes to choose from.|
+| minstep             | Number              | A minimum allowable step size (particularly useful for integer values).|
+| div                 | Array               | Scale factors indicating allowable subdivisions. The default value is [5, 2], which indicates that for base 10 numbers (the default base), the method may consider dividing bin sizes by 5 and/or 2. For example, for an initial step size of 10, the method can check if bin sizes of 2 (= 10/5), 5 (= 10/2), or 1 (= 10/(5*2)) might also satisfy the given constraints.|
 
 ----
 
