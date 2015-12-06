@@ -85,7 +85,7 @@ The `bin` property definition object contains the following properties:
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| maxbins       | Integer       | The maximum number of allowable bins.  See [Datalib's binning documentation](https://github.com/vega/datalib/wiki/Statistics#dl_bins) for more information. |
+| maxbins       | Integer       | The maximum number of allowable bins.  If unspecified, this is 6 for `row`, `column` and `shape` and 10 for other channels.  See [Datalib's binning documentation](https://github.com/vega/datalib/wiki/Statistics#dl_bins) for more information. |
 | min                 | Number              | The minimum bin value to consider. If unspecified, the minimum value of the specified field is used.|
 | max                 | Number              | The maximum bin value to consider. If unspecified, the maximum value of the specified field is used.|
 | base                | Number              | The number base to use for automatic bin determination (default is base 10).|

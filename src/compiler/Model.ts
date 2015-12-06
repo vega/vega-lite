@@ -2,7 +2,6 @@ import {Spec} from '../schema/schema';
 import {Bin} from '../schema/bin.schema';
 import {FieldDef} from '../schema/fielddef.schema';
 
-import {MAXBINS_DEFAULT} from '../bin';
 import {COLUMN, ROW, X, Y, COLOR, DETAIL, Channel} from '../channel';
 import {SOURCE, SUMMARY} from '../data';
 import * as vlFieldDef from '../fielddef';
@@ -240,6 +239,7 @@ export class Model {
     return this._spec.config[name];
   }
 
+  // FIXME -- move this to marks.ts
   public markOpacity(): number {
     const opacity = this.config('marks').opacity;
     if (opacity) {

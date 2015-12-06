@@ -1,8 +1,5 @@
-import {MAXBINS_DEFAULT} from '../bin';
 import {QUANTITATIVE} from '../type';
 import {toMap} from '../util';
-
-// TODO: add other bin properties
 
 export interface Bin {
   min?: number;
@@ -56,7 +53,7 @@ export var bin = {
     },
     maxbins: {
       type: 'integer',
-      default: MAXBINS_DEFAULT,
+      default: undefined,
       minimum: 2,
       description: 'Maximum number of bins.'
     }

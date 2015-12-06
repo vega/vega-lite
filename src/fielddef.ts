@@ -1,8 +1,6 @@
 // utility for a field definition object
 
 import {FieldDef} from './schema/fielddef.schema';
-
-import {MAXBINS_DEFAULT} from './bin';
 import {contains, getbins} from './util';
 import * as time from './compiler/time';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from './type';
@@ -33,6 +31,7 @@ export function isCount(fieldDef: FieldDef) {
 }
 
 // FIXME remove this, and the getbins method
+// FIXME this depends on channel
 export function cardinality(fieldDef: FieldDef, stats, filterNull = {}) {
   // FIXME need to take filter into account
 
@@ -42,8 +41,10 @@ export function cardinality(fieldDef: FieldDef, stats, filterNull = {}) {
   if (fieldDef.bin) {
     // need to reassign bin, otherwise compilation will fail due to a TS bug.
     const bin = fieldDef.bin;
-    const maxbins = (typeof bin === 'boolean') ? MAXBINS_DEFAULT : bin.maxbins;
-
+    let maxbins = (typeof bin === 'boolean') ? undefined : bin.maxbins;
+    if (maxbins === undefined) {
+      maxbins = 10;
+    }
 
     var bins = getbins(stat, maxbins);
     return (bins.stop - bins.start) / bins.step;

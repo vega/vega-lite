@@ -4,7 +4,7 @@ import {Model} from './Model';
 import {FieldDef} from '../schema/fielddef.schema';
 import {StackProperties} from './stack';
 
-import {MAXBINS_DEFAULT} from '../bin';
+import {autoMaxBins} from '../bin';
 import {Channel, X, Y, ROW, COLUMN} from '../channel';
 import {SOURCE, STACKED, LAYOUT, SUMMARY} from '../data';
 import * as time from './time';
@@ -139,19 +139,24 @@ export namespace source {
     return model.reduce(function(transform, fieldDef: FieldDef, channel: Channel) {
       const bin = model.fieldDef(channel).bin;
       if (bin) {
-        transform.push(extend({
+        let binTrans = extend({
             type: 'bin',
             field: fieldDef.field,
             output: {
               start: model.field(channel, {binSuffix: '_start'}),
               mid: model.field(channel, {binSuffix: '_mid'}),
               end: model.field(channel, {binSuffix: '_end'})
-            },
-            maxbins: typeof bin === 'boolean' ? MAXBINS_DEFAULT : bin.maxbins
+            }
           },
           // if bin is an object, load parameter here!
           typeof bin === 'boolean' ? {} : bin
-        ));
+        );
+
+        if (!binTrans.maxbins) {
+          binTrans.maxbins = autoMaxBins(channel);
+        }
+
+        transform.push(binTrans);
       }
       return transform;
     }, []);
