@@ -1,5 +1,4 @@
 import {Spec} from '../schema/schema';
-import {Bin} from '../schema/bin.schema';
 import {FieldDef} from '../schema/fielddef.schema';
 
 import {COLUMN, ROW, X, Y, COLOR, DETAIL, Channel} from '../channel';

@@ -8,7 +8,9 @@ d3.select('#vg-version').text(vg.version);
 var examples = d3.keys(VL_SPECS).reduce(function(examples, groupName) {
   var group = VL_SPECS[groupName];
   return examples.concat(group);
-}, []);
+}, []).filter(function(example){
+  return example.name;  // must contain file name to be included
+});
 
 var viz = d3.select('div.viz-list').selectAll('.viz')
   .data(examples)
