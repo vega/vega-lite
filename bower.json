@@ -29,7 +29,6 @@
     "example/_diff/*"
   ],
   "dependencies": {
-    "datalib": "^1.5.7",
     "vega": "^2.4.1"
   }
 }
