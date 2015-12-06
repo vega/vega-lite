@@ -58,7 +58,7 @@
     "z-schema": "^3.16.0"
   },
   "dependencies": {
-    "datalib": "^1.4.12",
+    "datalib": "^1.5.7",
     "yargs": "^3.30.0"
   },
   "browserify": {
