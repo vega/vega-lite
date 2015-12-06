@@ -76,3 +76,4 @@ git push --tags
 # now the published tag contains build files which work great with bower.
 
 #  3. GITHUB PAGES PUBLISH
+. ./scripts/deploy-gh.sh

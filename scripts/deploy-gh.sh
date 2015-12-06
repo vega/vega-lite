@@ -1,6 +1,7 @@
 . ./scripts/pre-deploy.sh
 
 git checkout gh-pages
+git merge master
 
 # update bower_components
 git rm bower_components/*
