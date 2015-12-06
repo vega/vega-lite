@@ -12,12 +12,12 @@
       {"a": "E","b": 81},
       {"a": "F","b": 53}
     ],
-    "filter": "datum.b > 60",
-    "calculate": [{"field": "b","expr": "2*datum.b"}]
+    "calculate": [{"field": "b2","expr": "2*datum.b"}],
+    "filter": "datum.b > 60"
   },
   "mark": "bar",
   "encoding": {
-    "y": {"type": "quantitative","field": "b"},
+    "y": {"type": "quantitative","field": "b2"},
     "x": {"type": "ordinal","field": "a"}
   }
 }
