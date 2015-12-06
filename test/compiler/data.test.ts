@@ -112,7 +112,10 @@ describe('data.source', function() {
       encoding: {
         x: {field: 'a', type: TEMPORAL, timeUnit: 'year'},
         y: {
-          'bin': {'maxbins': 15},
+          bin: {
+            min: 0,
+            max: 100
+          },
           'field': 'Acceleration',
           'type': QUANTITATIVE
         }
@@ -120,7 +123,7 @@ describe('data.source', function() {
     });
 
     describe('bin', function() {
-      it('should add bin transform', function() {
+      it('should add bin transform and correctly apply bin', function() {
         var transform = source.binTransform(encoding);
 
         expect(transform[0]).to.eql({
@@ -131,7 +134,9 @@ describe('data.source', function() {
             mid: 'bin_Acceleration_mid',
             end: 'bin_Acceleration_end'
           },
-          maxbins: 15
+          maxbins: 10,
+          min: 0,
+          max: 100
         });
       });
     });
