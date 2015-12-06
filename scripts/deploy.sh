@@ -4,7 +4,6 @@ set -e
 RED='\033[0;31m'
 NC='\033[0m' # No Color
 
-
 # 0.1 Check if jq has been installed
 type jq >/dev/null 2>&1 || { echo >&2 "I require jq but it's not installed.  Aborting."; exit 1; }
 
@@ -23,41 +22,24 @@ else
   exit 1
 fi
 
-# # 1. BOWER PUBLISH
+# 1. NPM PUBLISH
 
-# read version
-gitsha=$(git rev-parse HEAD)
-version=$(cat package.json | jq .version | sed -e 's/^"//'  -e 's/"$//')
+# build:all (clean, rebuild, compile, test, and lint)
+npm run build:all
 
-# remove all the compiled files, so we can checkout gh-pages without errors
-rm -f vega-lite*
-
-# update github pages
-git checkout gh-pages
-git pull
-git merge master --no-edit
-
-npm run build
-
-# add the compiled files, commit and tag!
-git add vega-lite* -f
-git add src/**/*.js -f
-
-# add bower_components
-bower install
-git add bower_components/* -f
-
-# commit, tag and push to gh-pages and swap back to master
-set +e
-git commit -m "release $version $gitsha"
-set -e
-git push
-git tag -am "Release v$version." "v$version"
-git push --tags
-git checkout master
-npm run build # rebuild so that vega-lite.js are back  for linked bower/npm
-
-# 2. NPM PUBLISH
+# Check if all required files are here
+if ![ -f vega-lite.js ]; then
+  echo "${RED} vega-lite.js not found ${NC}"
+  exit 1;
+fi
+if ![ -f vega-lite-schema.json ]; then
+  echo "${RED} vega-lite-schema.json not found${NC}"
+  exit 1;
+fi
+if ![ -f src/vl.js ]; then
+  echo "${RED} src/vl.js not found.  Typescripts may be not compiled.${NC}"
+  exit 1;
+fi
 
 npm publish
 # exit if npm publish failed
@@ -66,3 +48,31 @@ if [[ $rc != 0 ]]; then
 	echo "${RED} npm publish failed.  Publishing canceled. ${NC} \n\n"
 	exit $rc;
 fi
+
+# 2. BOWER PUBLISH
+
+# read version
+gitsha=$(git rev-parse HEAD)
+version=$(cat package.json | jq .version | sed -e 's/^"//'  -e 's/"$//')
+
+# remove all the compiled files, so we can checkout gh-pages without errors
+rm -f vega-lite*
+
+git checkout head
+# add the compiled files, commit and tag!
+git add vega-lite* -f
+git add src/**/*.js -f
+
+# commit, tag and push to gh-pages and swap back to master
+set +e
+git commit -m "release $version $gitsha"
+set -e
+git push
+git tag -am "Release v$version." "v$version"
+
+# swap back to the clean master and push the new tag
+git checkout master
+git push --tags
+# now the published tag contains build files which work great with bower.
+
+#  3. GITHUB PAGES PUBLISH
