@@ -23,8 +23,9 @@ const VL_SPECS = {
       "title": "A scatterplot"
     },
     {
-      "_name": "scatter_binned",
-      "title": "Binned Scatterplot"
+      "name": "scatter_binned",
+      "title": "Binned Scatterplot",
+      "hide": true
     },
     {
       "name": "scatter_log",
