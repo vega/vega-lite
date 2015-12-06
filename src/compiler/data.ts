@@ -198,7 +198,7 @@ export namespace layout {
     let formulas = [];
 
     // TODO: handle "fit" mode
-    if (model.has(X) && model.isDimension(X)) {
+    if (model.has(X) && model.isOrdinalScale(X)) {
       const xScale = model.fieldDef(X).scale;
       const xHasDomain = xScale.domain instanceof Array;
       if (!xHasDomain) {
@@ -216,7 +216,7 @@ export namespace layout {
       });
     }
 
-    if (model.has(Y) && model.isDimension(Y)) {
+    if (model.has(Y) && model.isOrdinalScale(Y)) {
       const yScale = model.fieldDef(Y).scale;
       const yHasDomain = yScale.domain instanceof Array;
 
