@@ -4,7 +4,7 @@ git checkout gh-pages
 git merge master
 
 # update bower_components
-git rm bower_components/*
+git rm -rf bower_components
 bower install
 git add bower_components/* -f
 
