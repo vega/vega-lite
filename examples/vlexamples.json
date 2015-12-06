@@ -1,7 +1,5 @@
-/* tslint:disable */
-
-const VL_SPECS = {
-  'Basic': [
+{
+  "Basic": [
     {
       "name": "bar",
       "title": "Simple Bar Chart"
@@ -29,7 +27,7 @@ const VL_SPECS = {
     },
     {
       "name": "scatter_log",
-      "title": "Scatter plot with log scale and large numbers",
+      "title": "Scatter plot with log scale and large numbers"
     },
     {
       "name": "tick",
@@ -50,14 +48,14 @@ const VL_SPECS = {
     {
       "name": "area",
       "title": "Area Chart"
+    },
+    {
+      "name": "tableheatmap",
+      "title": "Table Heatmap.",
+      "hide": true
     }
-    // Hide until we finalize heatmap
-    // {
-    //   "name": "tableheatmap",
-    //   "title": "Table Heatmap."
-    // }
   ],
-  'Stack': [
+  "Stack": [
     {
       "name": "stacked_area",
       "title": "Stacked Area Chart"
@@ -72,27 +70,24 @@ const VL_SPECS = {
     },
     {
       "name": "stacked_bar_1d",
-      "title": '1D Stacked Bar Chart'
+      "title": "1D Stacked Bar Chart"
     }
   ],
-  'Trellis': [
+  "Trellis": [
     {
       "name": "trellis_barley",
       "title": "Trellis Plot"
     },
     {
       "name": "trellis_area",
-      "title": 'Trellis Area chart'
+      "title": "Trellis Area chart"
     },
     {
       "name": "trellis_stacked_bar",
-      "title": 'Trellis Stacked Bar Chart'
+      "title": "Trellis Stacked Bar Chart"
     },
     {
       "name": "trellis_scatter"
     }
   ]
-};
-
-declare var exports;
-export const VL_EXAMPLES = VL_SPECS;
+}

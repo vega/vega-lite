@@ -27,7 +27,6 @@
         "lib"
     ],
     "files": [
-        "examples/vlexamples.ts",
         "src/aggregate.ts",
         "src/bin.ts",
         "src/channel.ts",
