@@ -6,4 +6,6 @@ script
 site
 test
 typings
+examples/_original
+examples/_output
 _site

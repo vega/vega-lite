@@ -22,7 +22,9 @@
     "**/.*",
     "node_modules",
     "bower_components",
-    "test"
+    "test",
+    "example/_original/*",
+    "example/_output/*"
   ],
   "dependencies": {
     "datalib": "^1.5.2",
