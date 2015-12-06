@@ -12,8 +12,12 @@ git add bower_components/* -f
 npm run build:all
 git add vega-lite* -f
 
-# commit
-version=$(cat package.json | jq .version | sed -e 's/^"//'  -e 's/"$//')
-git commit -m "release $version"
+# commit if things changed
+if [ -n "$(git status --porcelain)" ]; then
+  version=$(cat package.json | jq .version | sed -e 's/^"//'  -e 's/"$//')
+  git commit -m "release $version"
+fi
+
+# push and return to master!
 git push
 git checkout master
