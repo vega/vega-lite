@@ -115,7 +115,7 @@ If you only want subset of these actions, you can use:
 
 We also have commands for observing changes in output Vega spec and output images.
 
-To create a baseline Vega output specs from the Vega-Lite specs in `examples/`, check out the baseline branch (e.g., `git checkout master`) and run `npm x-compile`.
+To create aseline Vega output specs from the Vega-Lite specs in `examples/`, check out the baseline branch (e.g., `git checkout master`) and run `npm x-compile`.
 All compiled specs will be in `examples/_original`.
 
 Once you develop some features and would like to diff the compiled specs, run `npm x-diff`.  This will compile all examples again and output the diff for changed examples in the console.  
