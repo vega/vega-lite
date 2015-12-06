@@ -1,5 +1,4 @@
 import {expect} from 'chai';
-import {VL_EXAMPLES} from '../examples/vlexamples';
 import * as vl from '../src/vl';
 
 const zSchema = require('z-schema');
@@ -38,9 +37,12 @@ function validateAgainstSchemas(vlspec, done?) {
 }
 
 describe('Examples', function() {
+  var VL_EXAMPLES = dl.json('examples/vlexamples.json');
+
   var examples = dl.keys(VL_EXAMPLES).reduce(function(specs, groupName) {
     var group = VL_EXAMPLES[groupName];
-    return specs.concat(group);
+    return dl.isArray(group) ? // need to exclude __types__: {}
+      specs.concat(group) : specs;
   }, []);
 
   examples.forEach(function(example) {
