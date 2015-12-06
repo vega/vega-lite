@@ -1,0 +1,4 @@
+{
+  "ext": "ts,json",
+  "ignore": ["node_modules/*", "bower_components/*", "data/*", "vega-lite-schema.json"]
+}
