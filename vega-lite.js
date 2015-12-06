@@ -2631,7 +2631,7 @@ var layout;
     function def(model) {
         var summarize = [];
         var formulas = [];
-        if (model.has(channel_1.X) && model.isDimension(channel_1.X)) {
+        if (model.has(channel_1.X) && model.isOrdinalScale(channel_1.X)) {
             var xScale = model.fieldDef(channel_1.X).scale;
             var xHasDomain = xScale.domain instanceof Array;
             if (!xHasDomain) {
@@ -2648,7 +2648,7 @@ var layout;
                 expr: '(' + xCardinality + ' + ' + xScale.padding + ') * ' + xScale.bandWidth
             });
         }
-        if (model.has(channel_1.Y) && model.isDimension(channel_1.Y)) {
+        if (model.has(channel_1.Y) && model.isOrdinalScale(channel_1.Y)) {
             var yScale = model.fieldDef(channel_1.Y).scale;
             var yHasDomain = yScale.domain instanceof Array;
             if (!yHasDomain) {
