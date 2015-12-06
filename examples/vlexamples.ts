@@ -22,11 +22,10 @@ const VL_SPECS = {
       "name": "scatter",
       "title": "A scatterplot"
     },
-    // TODO: colored & shape scatter,
-    // TOOD: bubble scatter,
     {
       "name": "scatter_binned",
-      "title": "Binned Scatterplot"
+      "title": "Binned Scatterplot",
+      "hide": true
     },
     {
       "name": "scatter_log",
@@ -58,7 +57,7 @@ const VL_SPECS = {
     //   "title": "Table Heatmap."
     // }
   ],
-  'stack': [
+  'Stack': [
     {
       "name": "stacked_area",
       "title": "Stacked Area Chart"
@@ -95,4 +94,5 @@ const VL_SPECS = {
   ]
 };
 
+declare var exports;
 export const VL_EXAMPLES = VL_SPECS;

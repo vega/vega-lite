@@ -53,7 +53,7 @@ export function type(channel: Channel, model: Model): string {
     case TEMPORAL:
       return time.scale.type(fieldDef.timeUnit, channel);
     case QUANTITATIVE:
-      if (model.bin(channel)) {
+      if (fieldDef.bin) {
         return channel === ROW || channel === COLUMN || channel === SHAPE ? 'ordinal' : 'linear';
       }
       return fieldDef.scale.type;
