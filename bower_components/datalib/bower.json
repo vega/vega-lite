@@ -1,0 +1,29 @@
+{
+  "name": "datalib",
+  "main": "datalib.js",
+  "homepage": "http://github.com/vega/datalib.git",
+  "authors": [
+    "Jeffrey Heer (http://idl.cs.washington.edu)"
+  ],
+  "description": "JavaScript utilites for loading, summarizing and working with data.",
+  "moduleType": [
+    "node"
+  ],
+  "keywords": [
+    "data",
+    "table",
+    "statistics",
+    "parse",
+    "csv",
+    "tsv",
+    "json",
+    "utility"
+  ],
+  "license": "BSD-3-Clause",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test"
+  ]
+}
