@@ -16,7 +16,7 @@
     "build": "browserify src/vl.ts -p tsify -d -s vl | exorcist vega-lite.js.map > vega-lite.js",
     "postbuild": "uglifyjs vega-lite.js -cm --source-map vega-lite.min.js.map > vega-lite.min.js && npm run schema",
     "cover": "tsc && istanbul cover node_modules/.bin/_mocha -- --recursive",
-    "clean": "rm -f vega-lite.* vega-lite-schema.json & find src -name '*.js*' -type f -delete & find test -name '*.js*' -type f -delete",
+    "clean": "rm -f vega-lite.* vega-lite-schema.json & find src -name '*.js*' -type f -delete & find test -name '*.js*' -type f -delete & rm -rf examples/_diff examples/_original examples/_output",
     "deploy": "npm run clean && npm run lint && npm run test && scripts/deploy.sh",
     "lint": "tslint -c tslint.json src/*.ts test/*.ts src/**/*.ts test/**/*.ts",
     "start": "npm run watch & browser-sync start --server --files 'vega-lite.js' --index 'gallery.html'",
@@ -25,7 +25,9 @@
     "test": "tsc && mocha --recursive --require source-map-support/register",
     "watch:build": "watchify src/vl.ts -p tsify -v -d -s vl -o 'exorcist vega-lite.js.map > vega-lite.js'",
     "watch:test": "nodemon -x 'npm test && npm run lint'",
-    "watch": "nodemon -x 'npm run build && npm test && npm run lint'"
+    "watch": "nodemon -x 'npm run build && npm test && npm run lint'",
+    "x-compile": "./scripts/examples-compile.sh",
+    "x-diff": "./scripts/examples-diff.sh"
   },
   "repository": {
     "type": "git",
