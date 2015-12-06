@@ -152,7 +152,8 @@ export namespace source {
           typeof bin === 'boolean' ? {} : bin
         );
 
-        if (!binTrans.maxbins) {
+        if (!binTrans.maxbins && !binTrans.step) {
+          // if both maxbins and step are specified, need to automatically determine bin
           binTrans.maxbins = autoMaxBins(channel);
         }
 

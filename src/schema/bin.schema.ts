@@ -9,7 +9,7 @@ export interface Bin {
   steps?: number[];
   minstep?: number;
   div?: number[];
-  maxbins: number;
+  maxbins?: number;
 }
 
 export var bin = {
