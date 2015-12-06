@@ -24,8 +24,8 @@
     "site": "bundle exec jekyll serve",
     "test": "tsc && mocha --recursive --require source-map-support/register",
     "watch:build": "watchify src/vl.ts -p tsify -v -d -s vl -o 'exorcist vega-lite.js.map > vega-lite.js'",
-    "watch:test": "nodemon -e ts -x 'npm test && npm run lint'",
-    "watch": "nodemon -e ts -x 'npm run build && npm test && npm run lint'"
+    "watch:test": "nodemon -x 'npm test && npm run lint'",
+    "watch": "nodemon -x 'npm run build && npm test && npm run lint'"
   },
   "repository": {
     "type": "git",
