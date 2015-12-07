@@ -4836,7 +4836,7 @@ exports.timeUnit = vlTimeUnit;
 exports.type = vlType;
 exports.util = vlUtil;
 exports.validate = vlValidate;
-exports.version = '0.9.1';
+exports.version = '0.9.2';
 
 },{"./bin":8,"./channel":9,"./compiler/compiler":12,"./data":21,"./encoding":22,"./fielddef":23,"./schema/schema":37,"./shorthand":40,"./spec":41,"./timeunit":42,"./type":43,"./util":44,"./validate":45}]},{},[46])(46)
 });
