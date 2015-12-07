@@ -1,9 +1,7 @@
 /// <reference path="../typings/datalib.d.ts"/>
 
-export * from 'datalib/src/util';
-export * from 'datalib/src/generate';
-export * from 'datalib/src/stats';
-
+export {keys, extend, duplicate, isArray, vals, truncate, toMap, isObject} from 'datalib/src/util';
+export {range} from 'datalib/src/generate';
 
 export function contains(array: Array<any>, item: any) {
   return array.indexOf(item) > -1;
