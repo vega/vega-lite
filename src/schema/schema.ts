@@ -1,7 +1,5 @@
 // Package of defining Vega-lite Specification's json schema
 
-/// <reference path="../../typings/vega.d.ts"/>
-
 import * as schemaUtil from './schemautil';
 import {mark} from './mark.schema';
 import {config, Config} from './config.schema';

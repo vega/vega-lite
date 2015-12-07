@@ -33,9 +33,6 @@ fi
 gitsha=$(git rev-parse HEAD)
 version=$(cat package.json | jq .version | sed -e 's/^"//'  -e 's/"$//')
 
-# remove all the compiled files, so we can checkout gh-pages without errors
-rm -f vega-lite*
-
 git checkout head
 # add the compiled files, commit and tag!
 git add vega-lite* -f
@@ -45,7 +42,6 @@ git add src/**/*.js -f
 set +e
 git commit -m "release $version $gitsha"
 set -e
-git push
 git tag -am "Release v$version." "v$version"
 
 # swap back to the clean master and push the new tag
