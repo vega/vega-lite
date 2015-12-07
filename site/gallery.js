@@ -1,50 +1,39 @@
 'use strict';
 
-/*global vl, d3, vg, angular, alert, EXAMPLES */
+/*global vl, d3, vg, alert, EXAMPLES */
 
+d3.select('#vl-version').text(vl.version);
+d3.select('#vg-version').text(vg.version);
 
-var app = angular.module('app', []);
-
-app.controller('GalleryCtrl', function ($scope) {
-  $scope.visualizations = EXAMPLES;
-  $scope.vegaVersion = vg.version;
-  $scope.vlVersion = vl.version;
-});
-
-app.filter('compactJSON', function() {
-    return function(input) {
-      return JSON.stringify(input, null, '  ', 80);
-    };
+d3.json('examples/vlexamples.json', function(VL_SPECS) {
+  var examples = d3.keys(VL_SPECS).reduce(function(examples, groupName) {
+    var group = VL_SPECS[groupName];
+    return examples.concat(group);
+  }, []).filter(function(example){
+    return !example.hide;  // must contain file name to be included
   });
 
-app.directive('vlPlot', function() {
-  return {
-    scope: {
-      vlSpec: '='
-    },
-    template: '',
-    link: function(scope, element) {
+  var viz = d3.select('div.viz-list').selectAll('.viz')
+    .data(examples)
+    .enter()
+    .append('div')
+    .attr('class', 'viz')
+    .attr('id', function(d) { return d.name; });
 
-      var vlElement = element[0];
+  viz.append('h3').text(function(d){ return d.title; });
+  viz.append('div').attr('class', 'view');
+  viz.append('div').attr('class', 'desc');
 
-      var callback = function(stats) {
-        var spec = vl.compile(scope.vlSpec, stats).spec;
-
-        vg.parse.spec(spec, function(chart) {
-          var view = chart({el: vlElement, renderer: 'svg'});
-          view.update();
+  examples.forEach(function(example) {
+    d3.json('examples/' + example.name + '.json', function(error, vlSpec) {
+      var vgSpec = vl.compile(vlSpec).spec;
+      vg.parse.spec(vgSpec, function(chart) {
+        var view = chart({
+          el: d3.select('.viz#'+ example.name + '> div.view').node(),
+          renderer: 'svg'
         });
-      };
-
-      if (!scope.vlSpec.data.values) {
-        d3.json(scope.vlSpec.data.url, function(err, data) {
-          if (err) return alert('Error loading data ' + err.statusText);
-          var stats = vl.data.stats(data);
-          callback(stats);
-        });
-      } else {
-        callback();
-      }
-    }
-  };
-});
+        view.update();
+      });
+    });
+  });
+})
