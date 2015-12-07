@@ -22,7 +22,8 @@
     },
     {
       "name": "scatter_binned",
-      "title": "Binned Scatterplot"
+      "title": "Binned Scatterplot",
+      "hide": true 
     },
     {
       "name": "scatter_log",
