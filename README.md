@@ -4,7 +4,7 @@
 [![npm dependencies](https://david-dm.org/vega/vega-lite.svg)](https://www.npmjs.com/package/vega-lite)
 [![npm version](https://img.shields.io/npm/v/vega-lite.svg)](https://www.npmjs.com/package/vega-lite)
 
-Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete [Vega](https://vega.github.io/) specifications.
+Vega-Lite provides a higher-level grammar for visual analysis, akin to ggplot or Tableau, that generates complete [Vega](https://vega.github.io/) specifications.
 
 Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as position (`x`,`y`), `size`, `color` and `shape`. These mappings are then translated into detailed visualization specifications in the form of Vega specification language.  Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values.  
 
@@ -12,7 +12,7 @@ __Try using Vega-Lite in the online [Vega Editor](http://vega.github.io/vega-edi
 
 The complete schema for specifications as [JSON schema](http://json-schema.org/) is at [vega-lite-schema.json](https://vega.github.io/vega-lite/vega-lite-schema.json).
 
-**Note: Vega-Lite is still in alpha phase and we are working on improving the code and [documentation](http://vega.github.io/vega-lite/docs/index.html).
+**Note: Vega-Lite is still in alpha phase and we are working on improving the code and [documentation](https://vega.github.io/vega-lite/docs/).
 Our syntax might change slightly before we release 1.0.**  See our wiki pages for [the development roadmap](https://github.com/vega/vega-lite/wiki/Roadmap) and [how you can contribute](https://github.com/vega/vega-lite/wiki/Contribute).
 If you find a bug or have a feature request, please [create an issue](https://github.com/vega/vega-lite/issues/new).
 
@@ -26,7 +26,7 @@ We have more example visualizations in our [gallery](https://vega.github.io/vega
 ```json
 {
   "data": {"url": "data/barley.json"},
-  "marktype": "point",
+  "mark": "point",
   "encoding": {
     "x": {"type": "quantitative", "field": "yield","aggregate": "mean"},
     "y": {
@@ -53,7 +53,7 @@ This is a similar chart as one of the Vega examples in https://github.com/trifac
       {"a":"G", "b":19}, {"a":"H", "b":87}, {"a":"I", "b":52}
     ]
   },
-  "marktype": "bar",
+  "mark": "bar",
   "encoding": {
     "x": {"type": "ordinal", "field": "a"},
     "y": {"type": "quantitative", "field": "b"}
@@ -61,7 +61,7 @@ This is a similar chart as one of the Vega examples in https://github.com/trifac
 }
 ```
 
-## Setup Instructions
+## Development Setup
 
 Make sure you have node.js. (We recommend using [homebrew](http://brew.sh) and simply run `brew install node`.)
 
@@ -72,25 +72,54 @@ cd vega-lite
 npm install
 ```
 
-Since Vega-Lite is written in Typescript, you should also install TypeScript
+You also need install some node modules globally for development
+
+```sh
+npm install -g typescript istanbul json-diff
 ```
-npm install -g typescript
-```
+
+We use the [atom](atom.io) editor with typescript plug-in. If you don't want to see intermediate files (`.js`, `.js.map`), you can "Hide VCS Ignored Files" in the `tree-view` plugin.
 
 ### Commands
 
-You can run `npm run build` to compile Vega-Lite.
+Below are a list of commonly used commands More commands are available in `npm run`.
 
-You can `npm run watch` to start a watcher task that
-- re-compile Vega-Lite
-- regenerate the `vega-lite-schema.json` file whenever `schema.js` changes
-- lints and tests all JS files when any `.js` file in `test/` or `src/` changes.
+#### Build
 
-Note: These commands use [Gulp](http://gulpjs.com) internally; Therefore, you need to install gulp globally with
-```sh
-npm install -g gulp
-```
-to make them work.  
+You can run `npm run build` to compile Vega-Lite and regenerate `vega-lite-schema.json`.
+
+#### Basic Lint & Test
+
+`npm run lint` and `npm run test` run ts-lint and all unit-tests respectively.  These two commands are automatically run by `npm start` and `npm run watch`.
+
+#### Watch tasks
+
+During development, it can be convenient to rebuild automatically or run tests in the background.
+
+You can run `npm run start` to start a watcher task that shows the example gallery.
+Whenever any `.ts` file changes, the watcher:
+(1) re-compiles Vega-Lite
+(2) automatically refreshes the gallery with BrowserSync
+(3) lints and runs tests
+(4) regenerates the JSON schema (`vega-lite-schema.json`)
+
+If you only want subset of these actions, you can use:
+
+- `npm run watch` to start a watcher task that do all of above except opening and syncing the gallery.
+
+- `npm run watch:test` to start a watcher task that **lints and runs tests** when any `.ts` file changes.
+
+- `npm run watch:build` to start a watcher task that **re-compiles Vega-Lite** when `.ts` files related to VL change.
+
+#### Output diff
+
+We also have commands for observing changes in output Vega spec and output images.
+
+To create aseline Vega output specs from the Vega-Lite specs in `examples/`, check out the baseline branch (e.g., `git checkout master`) and run `npm x-compile`.
+All compiled specs will be in `examples/_original`.
+
+Once you develop some features and would like to diff the compiled specs, run `npm x-diff`.  This will compile all examples again and output the diff for changed examples in the console.  
+All compiled specs will be in `examples/_output`.  For changed examples, SVG files will be created in `examples/_diff` for comparison.  You can open those files to inspect visual changes, or run a diff command (e.g., `diff examples/_diff/area-base.svg examples/_diff/area.svg`).
 
 ### Developing Vega-Lite and Datalib
 
@@ -98,7 +127,7 @@ Vega-Lite depends on [Datalib](https://github.com/vega/datalib).
 If you plan to make changes to datalib and test Vega-Lite without publishing / copying compiled datalib all the time, use npm's [link](http://justjs.com/posts/npm-link-developing-your-own-npm-modules-without-tears) function.
 
 
-```
+```sh
 # first link datalib global npm
 cd path/to/datalib
 npm link

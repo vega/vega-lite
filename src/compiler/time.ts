@@ -1,18 +1,6 @@
-/// <reference path="../../typings/d3-time-format.d.ts"/>
-
-import {utcFormat} from 'd3-time-format';
-
-import {Model} from './Model';
 import {FieldDef} from '../schema/fielddef.schema';
-import * as vlFieldDef from '../fielddef';
 import * as util from '../util';
 import {COLOR, COLUMN, ROW, Channel} from '../channel';
-import {TEMPORAL} from '../type';
-
-// 'Wednesday September 17 04:00:00 2014'
-// Wednesday is the longest date
-// September is the longest month (8 in javascript as it is zero-indexed).
-const LONG_DATE = new Date(Date.UTC(2014, 8, 17));
 
 export function cardinality(fieldDef: FieldDef, stats, filterNull, type) {
   var timeUnit = fieldDef.timeUnit;
@@ -36,110 +24,35 @@ export function cardinality(fieldDef: FieldDef, stats, filterNull, type) {
   return null;
 }
 
-export function formula(timeUnit, fieldRef: string) {
+export function formula(timeUnit, field: string) {
   // TODO(kanitw): add formula to other time format
   var fn = 'utc' + timeUnit;
-  return fn + '(' + fieldRef + ')';
+  return fn + '(' + field + ')';
 }
-
-export function maxLength(timeUnit, model: Model) {
-  switch (timeUnit) {
-    case 'seconds':
-    case 'minutes':
-    case 'hours':
-    case 'date':
-      return 2;
-    case 'month':
-    case 'day':
-      var rng = range(timeUnit, model);
-      if (rng) {
-        // return the longest name in the range
-        return Math.max.apply(null, rng.map(function(r) {return r.length;}));
-      }
-      return 2;
-    case 'year':
-      return 4; //'1998'
-  }
-  // TODO(#600) revise this
-  // no time unit
-  var timeFormat = model.config('timeFormat');
-  return utcFormat(timeFormat)(LONG_DATE).length;
-}
-
-export function range(timeUnit, model: Model) {
-  var labelLength = model.config('timeScaleLabelLength'),
-    scaleLabel;
-  switch (timeUnit) {
-    case 'day':
-      scaleLabel = model.config('dayScaleLabel');
-      break;
-    case 'month':
-      scaleLabel = model.config('monthScaleLabel');
-      break;
-  }
-  if (scaleLabel) {
-    return labelLength ? scaleLabel.map(
-        function(s) { return s.substr(0, labelLength);}
-      ) : scaleLabel;
-  }
-  return;
-}
-
-
-/**
- * @param  {Model} model
- * @return {Array}  scales for time unit names
- */
-export function scales(model: Model) {
-  var scales = model.reduce(function(scales, fieldDef) {
-    var timeUnit = fieldDef.timeUnit;
-    if (fieldDef.type === TEMPORAL && timeUnit && !scales[timeUnit]) {
-      var scaleDef = scale.def(fieldDef.timeUnit, model);
-      if (scaleDef) scales[timeUnit] = scaleDef;
-    }
-    return scales;
-  }, {});
-
-  return util.vals(scales);
-}
-
-export function isOrdinalFn(timeUnit) {
-  switch (timeUnit) {
-    case 'seconds':
-    case 'minutes':
-    case 'hours':
-    case 'day':
-    case 'date':
-    case 'month':
-      return true;
-  }
-  return false;
-}
-
 
 export namespace scale {
-  /** append custom time scales for axis label */
-  export function def(timeUnit, model: Model) {
-    var rangeDef = range(timeUnit, model);
-
-    if (rangeDef) {
-      return {
-        name: 'time-'+timeUnit,
-        type: 'ordinal',
-        domain: scale.domain(timeUnit),
-        range: rangeDef
-      };
-    }
-    return null;
-  }
-
+  // FIXME move this to scale.type
   export function type(timeUnit, channel: Channel) {
     if (channel === COLOR) {
+      // FIXME if user specify scale.range as ordinal presets, then this should be ordinal
       return 'linear'; // time has order, so use interpolated ordinal color scale.
     }
+    if (channel === COLUMN || channel === ROW) {
+      return 'ordinal';
+    }
 
-    // FIXME revise this -- should 'year' be linear too?
-    return isOrdinalFn(timeUnit) || channel === COLUMN || channel === ROW ? 'ordinal' : 'linear';
+    switch (timeUnit) {
+      case 'hours':
+      case 'day':
+      case 'date':
+      case 'month':
+        return 'ordinal';
+      case 'year':
+      case 'second':
+      case 'minute':
+        return 'linear';
+    }
+    return 'time';
   }
 
   export function domain(timeUnit, channel?: Channel) {
@@ -156,12 +69,14 @@ export namespace scale {
   }
 }
 
-/** whether a particular time function has custom scale for labels implemented in time.scale */
-export function hasScale(timeUnit) {
+/** returns the template name used for axis labels for a time unit */
+export function labelTemplate(timeUnit, abbreviated=false): string {
+  var postfix = abbreviated ? '-abbrev' : '';
   switch (timeUnit) {
     case 'day':
+      return 'day' + postfix;
     case 'month':
-      return true;
+      return 'month' + postfix;
   }
-  return false;
+  return null;
 }

@@ -3,131 +3,94 @@
  */
 import {Model} from './Model';
 
-import * as vlTime from './time';
 import {compileAxis} from './axis';
 import {compileData} from './data';
+import {facetMixins} from './facet';
 import {compileLegends} from './legend';
 import {compileMarks} from './marks';
-import {compileScales, compileScaleNames} from './scale';
+import {compileScales} from './scale';
+import {extend} from '../util';
 
-// TODO: stop using default if we were to keep these files
-import vlFacet from './facet';
-import vlLayout from './layout';
-import vlStack from './stack';
-import vlStyle from './style';
-import vlSubfacet from './subfacet';
-
-import {stats as vlDataStats} from '../data';
-import {COLUMN, ROW, X, Y} from '../channel';
+import {LAYOUT} from '../data';
+import {COLUMN, ROW, X, Y, Channel} from '../channel';
 
 export {Model} from './Model';
 
-export function compile(spec, stats, theme?) {
+export function compile(spec, theme?) {
   var model = new Model(spec, theme);
-  // no need to pass stats if you pass in the data
-  if (!stats) {
-    if (model.hasValues()) {
-        stats = vlDataStats(model.data().values);
-    } else {
-      console.error('No stats provided and data is not embedded.');
-    }
-  }
+  const layout = model.layout();
 
-  var layout = vlLayout(model, stats);
-
-  // TODO: change type to become VgSpec
-  var output:any = {
-      width: layout.width,
-      height: layout.height,
-      padding: 'auto',
-      data: compileData(model),
-      marks: [{
-        name: 'cell',
-        type: 'group',
-        properties: {
-          enter: {
-            width: layout.cellWidth ?
-                     {value: layout.cellWidth} :
-                     {field: {group: 'width'}},
-            height: layout.cellHeight ?
-                    {value: layout.cellHeight} :
-                    {field: {group: 'height'}}
-          }
+  let rootGroup:any = extend({
+      name: spec.name ? spec.name + '_root' : 'root',
+      type: 'group',
+    },
+    spec.description ? {description: spec.description} : {},
+    {
+      from: {data: LAYOUT},
+      properties: {
+        update: {
+          width: layout.width.field ?
+                 {field: layout.width.field} :
+                 {value: layout.width},
+          height: layout.height.field ?
+                  {field: layout.height.field} :
+                  {value: layout.height}
         }
-      }]
-    };
+      }
+    });
 
-  // global scales contains only time unit scales
-  var timeScales = vlTime.scales(model);
-  if (timeScales.length > 0) {
-    output.scales = timeScales;
-  }
-
-  var group = output.marks[0];
-
-  // marks
-  var styleCfg = vlStyle(model, stats),
-    mdefs = group.marks = compileMarks(model, layout, styleCfg),
-    mdef = mdefs[mdefs.length - 1];  // TODO: remove this dirty hack by refactoring the whole flow
-
-  var stack = model.stack();
-  if (stack) {
-    // modify mdef.{from,properties}
-    vlStack(model, mdef, stack);
-  }
-
-  const marktype = model.marktype();
-  const isLineType = marktype === 'line' || marktype === 'area';
-
-  // handle subfacets
-  var details = model.details();
-
-  if (details.length > 0 && isLineType) {
-    //subfacet to group area / line together in one group
-    vlSubfacet(group, mdef, details);
-  }
-
-  // auto-sort line/area values
-  if (isLineType && model.config('autoSortLine')) { // TODO: remove autoSortLine
-    var f = (model.isMeasure(X) && model.isDimension(Y)) ? Y : X;
-    if (!mdef.from) {
-      mdef.from = {};
-    }
-    // TODO: why - ?
-    mdef.from.transform = [{type: 'sort', by: '-' + model.fieldRef(f)}];
-  }
-
-  // get a flattened list of all scale names that are used in the vl spec
-  var singleScaleNames = [].concat.apply([], mdefs.map(function(markProps) {
-    return compileScaleNames(markProps.properties.update);
-  }));
-
-  var legends = compileLegends(model, styleCfg);
+  const marks = compileMarks(model);
 
   // Small Multiples
   if (model.has(ROW) || model.has(COLUMN)) {
-    output = vlFacet(group, model, layout, output, singleScaleNames, stats);
-    if (legends.length > 0) {
-      output.legends = legends;
-    }
+    // put the marks inside a facet cell's group
+    extend(rootGroup, facetMixins(model, marks));
   } else {
-    group.scales = compileScales(singleScaleNames, model, layout, stats);
+    rootGroup.marks = marks.map(function(mark) {
+      mark.from = mark.from || {};
+      mark.from.data = model.dataTable();
+      return mark;
+    });
+    const scaleNames = model.map(function(_, channel: Channel){
+        return channel; // TODO model.scaleName(channel)
+      });
+    rootGroup.scales = compileScales(scaleNames, model);
 
-    var axes = [];
-    if (model.has(X)) {
-      axes.push(compileAxis(X, model, layout, stats));
-    }
-    if (model.has(Y)) {
-      axes.push(compileAxis(Y, model, layout, stats));
-    }
+    var axes = (model.has(X) ? [compileAxis(X, model)] : [])
+      .concat(model.has(Y) ? [compileAxis(Y, model)] : []);
     if (axes.length > 0) {
-      group.axes = axes;
-    }
-
-    if (legends.length > 0) {
-      group.legends = legends;
+      rootGroup.axes = axes;
     }
   }
+
+  // legends (similar for either facets or non-facets
+  var legends = compileLegends(model);
+  if (legends.length > 0) {
+    rootGroup.legends = legends;
+  }
+
+  // FIXME replace FIT with appropriate mechanism once Vega has it
+  const FIT = 1;
+
+  // TODO: change type to become VgSpec
+  var output = extend(
+    spec.name ? {name: spec.name} : {},
+    {
+      width: layout.width.field ? FIT : layout.width,
+      height: layout.height.field ? FIT : layout.height,
+      padding: 'auto'
+    },
+    ['viewport', 'background', 'scene'].reduce(function(topLevelConfig, property) {
+      const value = model.config(property);
+      if (value !== undefined) {
+        topLevelConfig[property] = value;
+      }
+      return topLevelConfig;
+    }, {}),
+    {
+      data: compileData(model),
+      marks: [rootGroup]
+    });
 
   return {
     spec: output

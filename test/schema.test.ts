@@ -19,13 +19,6 @@ describe('Schema', function() {
     }
     assert.equal(valid, true);
   });
-
-  it('field def should have supportedMarktypes', function() {
-    var encProps = specSchema.properties.encoding.properties;
-    for (var k in encProps) {
-      assert.notEqual(encProps[k].supportedMarktypes, undefined);
-    }
-  });
 });
 
 describe('Util', function() {
@@ -43,7 +36,7 @@ describe('Util', function() {
 
   it('remove defaults', function() {
     var spec = {
-      marktype: 'point',
+      mark: 'point',
       encoding: {
         x: { field: 'dsp', type: 'quantitative', scale: {type: 'linear'}
       },
@@ -56,7 +49,7 @@ describe('Util', function() {
     };
 
     var expected = {
-      marktype: 'point',
+      mark: 'point',
       encoding: {
         x: { field: 'dsp', type: 'quantitative' },
         color: { field: 'cyl', type: 'ordinal' }

@@ -1,52 +1,53 @@
-import * as util from '../util';
+import {extend, keys} from '../util';
 import {COLOR, SIZE, SHAPE, Channel} from '../channel';
 import {Model} from './Model';
 import * as time from './time';
 import {TEMPORAL} from '../type';
+import {AREA, BAR, TICK, TEXT, LINE, POINT, CIRCLE, SQUARE} from '../mark';
 
-export function compileLegends(model: Model, styleCfg) {
+export function compileLegends(model: Model) {
   var defs = [];
 
   if (model.has(COLOR) && model.fieldDef(COLOR).legend) {
     defs.push(compileLegend(model, COLOR, {
       fill: COLOR
       // TODO: consider if this should be stroke for line
-    }, styleCfg));
+    }));
   }
 
   if (model.has(SIZE) && model.fieldDef(SIZE).legend) {
     defs.push(compileLegend(model, SIZE, {
       size: SIZE
-    }, styleCfg));
+    }));
   }
 
   if (model.has(SHAPE) && model.fieldDef(SHAPE).legend) {
     defs.push(compileLegend(model, SHAPE, {
       shape: SHAPE
-    }, styleCfg));
+    }));
   }
   return defs;
 }
 
-export function compileLegend(model: Model, channel: Channel, def, styleCfg) {
-  let legend = model.fieldDef(channel).legend;
+export function compileLegend(model: Model, channel: Channel, def) {
+  const legend = model.fieldDef(channel).legend;
 
   // 1.1 Add properties with special rules
   def.title = title(model, channel);
 
   // 1.2 Add properties without rules
   ['orient', 'format', 'values'].forEach(function(property) {
-    let value = legend[property];
+    const value = legend[property];
     if (value !== undefined) {
       def[property] = value;
     }
   });
 
   // 2) Add mark property definition groups
-  let props = legend.properties || {};
+  const props = (typeof legend !== 'boolean' && legend.properties) || {};
   ['title', 'labels', 'symbols', 'legend'].forEach(function(group) {
     let value = properties[group] ?
-      properties[group](model, channel, props[group], styleCfg) : // apply rule
+      properties[group](model, channel, props[group]) : // apply rule
       props[group]; // no rule -- just default values
     if (value !== undefined) {
       def.properties = def.properties || {};
@@ -58,9 +59,11 @@ export function compileLegend(model: Model, channel: Channel, def, styleCfg) {
 }
 
 export function title(model: Model, channel: Channel) {
-  let leg = model.fieldDef(channel).legend;
+  const legend = model.fieldDef(channel).legend;
 
-  if (leg.title) return leg.title;
+  if (typeof legend !== 'boolean' && legend.title) {
+    return legend.title;
+  }
 
   return model.fieldTitle(channel);
 }
@@ -69,35 +72,35 @@ namespace properties {
   export function labels(model: Model, channel: Channel, spec) {
     var fieldDef = model.fieldDef(channel);
     var timeUnit = fieldDef.timeUnit;
-    if (fieldDef.type === TEMPORAL && timeUnit && time.hasScale(timeUnit)) {
-      return util.extend({
+    if (fieldDef.type === TEMPORAL && timeUnit && time.labelTemplate(timeUnit)) {
+      return extend({
         text: {
-          scale: 'time-'+ timeUnit
+          template: '{{datum.data | ' + time.labelTemplate(timeUnit) + '}}'
         }
       }, spec || {});
     }
     return spec;
   }
 
-  export function symbols(model: Model, channel: Channel, spec, styleCfg) {
+  export function symbols(model: Model, channel: Channel, spec) {
     let symbols:any = {};
-    let marktype = model.marktype();
+    const mark = model.mark();
 
-    switch (marktype) {
-      case 'bar':
-      case 'tick':
-      case 'text':
+    switch (mark) {
+      case BAR:
+      case TICK:
+      case TEXT:
         symbols.stroke = {value: 'transparent'};
         symbols.shape = {value: 'square'};
         break;
 
-      case 'circle':
-      case 'square':
-        symbols.shape = {value: marktype};
+      case CIRCLE:
+      case SQUARE:
+        symbols.shape = {value: mark};
         /* fall through */
-      case 'point':
+      case POINT:
         // fill or stroke
-        if (model.fieldDef(SHAPE).filled) {
+        if (model.config('marks').filled) {
           if (model.has(COLOR) && channel === COLOR) {
             symbols.fill = {scale: COLOR, field: 'data'};
           } else {
@@ -111,23 +114,21 @@ namespace properties {
             symbols.stroke = {value: model.fieldDef(COLOR).value};
           }
           symbols.fill = {value: 'transparent'};
-          symbols.strokeWidth = {value: model.config('strokeWidth')};
+          symbols.strokeWidth = {value: model.config('marks').strokeWidth};
         }
 
         break;
-      case 'line':
-      case 'area':
+      case LINE:
+      case AREA:
         // TODO use shape here after implementing #508
         break;
     }
 
-    var opacity = model.fieldDef(COLOR).opacity || styleCfg.opacity;
-    if (opacity) {
-      symbols.opacity = {value: opacity};
-    }
+    var opacity = model.markOpacity();
+    if (opacity) { symbols.opacity = {value: opacity}; }
 
-    symbols = util.extend(symbols, spec || {});
+    symbols = extend(symbols, spec || {});
 
-    return util.keys(symbols).length > 0 ? symbols : undefined;
+    return keys(symbols).length > 0 ? symbols : undefined;
   }
 }

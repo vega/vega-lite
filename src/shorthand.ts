@@ -7,8 +7,8 @@ import {Spec} from './schema/schema';
 import {AGGREGATE_OPS} from './aggregate';
 import {TIMEUNITS} from './timeunit';
 import {SHORT_TYPE, TYPE_FROM_SHORT_TYPE} from './type';
-import * as util from './util';
 import * as vlEncoding from './encoding';
+import {Mark} from './mark';
 
 export const DELIM = '|';
 export const ASSIGN = '=';
@@ -17,17 +17,17 @@ export const FUNC = '_';
 
 
 export function shorten(spec: Spec): string {
-  return 'mark' + ASSIGN + spec.marktype +
+  return 'mark' + ASSIGN + spec.mark +
     DELIM + shortenEncoding(spec.encoding);
 }
 
 export function parse(shorthand: string, data?, config?) {
   let split = shorthand.split(DELIM),
-    marktype = split.shift().split(ASSIGN)[1].trim(),
+    mark = split.shift().split(ASSIGN)[1].trim(),
     encoding = parseEncoding(split.join(DELIM));
 
   let spec:Spec = {
-    marktype: marktype,
+    mark: Mark[mark],
     encoding: encoding
   };
 
@@ -69,7 +69,7 @@ export function shortenFieldDefs(fieldDefs: FieldDef[], delim = DELIM): string {
 }
 
 export function parseFieldDef(fieldDefShorthand: string): FieldDef {
-  var split = fieldDefShorthand.split(TYPE), i;
+  var split = fieldDefShorthand.split(TYPE);
 
   var fieldDef: FieldDef = {
     field: split[0].trim(),
@@ -77,17 +77,19 @@ export function parseFieldDef(fieldDefShorthand: string): FieldDef {
   };
 
   // check aggregate type
-  for (i in AGGREGATE_OPS) {
+  for (let i = 0; i < AGGREGATE_OPS.length; i++) {
     var a = AGGREGATE_OPS[i];
     if (fieldDef.field.indexOf(a + '_') === 0) {
       fieldDef.field = fieldDef.field.substr(a.length + 1);
-      if (a === 'count' && fieldDef.field.length === 0) fieldDef.field = '*';
+      if (a === 'count' && fieldDef.field.length === 0) {
+        fieldDef.field = '*';
+      }
       fieldDef.aggregate = a;
       break;
     }
   }
 
-  for (i in TIMEUNITS) {
+  for (let i = 0; i < TIMEUNITS.length; i++) {
     var tu = TIMEUNITS[i];
     if (fieldDef.field && fieldDef.field.indexOf(tu + '_') === 0) {
       fieldDef.field = fieldDef.field.substr(fieldDef.field.length + 1);

@@ -1,0 +1,51 @@
+{
+  "mark": "point",
+  "data": {
+    "values": [
+      {"m_teps": 33.5330810546875,"dataset": "ak2010"},
+      {
+        "m_teps": 21.458358764648438,
+        "dataset": "belgium_osm"
+      },
+      {
+        "m_teps": 1023.6077880859375,
+        "dataset": "cit-Patents"
+      },
+      {
+        "m_teps": 502.16387939453125,
+        "dataset": "coAuthorsDBLP"
+      },
+      {
+        "m_teps": 10.410270690917969,
+        "dataset": "delaunay_n13"
+      },
+      {
+        "m_teps": 187.35877990722656,
+        "dataset": "delaunay_n21"
+      },
+      {
+        "m_teps": 443.1048889160156,
+        "dataset": "delaunay_n24"
+      },
+      {"m_teps": 55.096927642822266,"dataset": "europe_osm"},
+      {
+        "m_teps": 3530.5595703125,
+        "dataset": "kron_g500-logn21"
+      },
+      {"m_teps": 79.42512512207031,"dataset": "road_usa"},
+      {
+        "m_teps": 2050.32421875,
+        "dataset": "soc-LiveJournal1"
+      }
+    ]
+  },
+  "encoding": {
+    "y": {
+      "scale": {"type": "log"},
+      "type": "quantitative",
+      "field": "m_teps",
+      "axis": {"title": "MTEPS"}
+    },
+    "x": {"type": "ordinal","field": "dataset"}
+  }
+}

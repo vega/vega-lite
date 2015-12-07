@@ -1,442 +1,671 @@
 import {Model} from './Model';
-import {COLUMN, ROW, X, Y, COLOR, TEXT, SIZE, SHAPE} from '../channel';
+import {X, Y, COLOR, TEXT, SIZE, SHAPE, DETAIL} from '../channel';
+import {AREA, BAR, LINE, TEXT as TEXTMARKS} from '../mark';
 import {QUANTITATIVE} from '../type';
+import {imputeTransform, stackTransform} from './stack';
 
-// https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations
-declare var exports;
+/* mapping from vega-lite's mark types to vega's mark types */
+const MARKTYPES_MAP = {
+  bar: 'rect',
+  tick: 'rect',
+  point: 'symbol',
+  line: 'line',
+  area: 'area',
+  text: 'text',
+  circle: 'symbol',
+  square: 'symbol'
+};
 
-export function compileMarks(model: Model, layout, style) {
-  var defs = [],
-    mark = exports[model.marktype()],
-    from = model.dataTable();
+export function compileMarks(model: Model): any[] {
+  const mark = model.mark();
+  if (mark === LINE || mark === AREA) {
+    // For Line and Area, we sort values based on dimension by default
+    // For line, a special config "sortLineBy" is allowed
+    let sortBy = mark === LINE ? model.config('sortLineBy') : undefined;
+    if (!sortBy) {
+      const sortField = (model.isMeasure(X) && model.isDimension(Y)) ? Y : X;
+      sortBy = '-' + model.field(sortField);
+    }
 
-  // to add a background to text, we need to add it before the text
-  if (model.marktype() === TEXT && model.has(COLOR)) {
-    var bg = {
-      x: {value: 0},
-      y: {value: 0},
-      x2: {value: layout.cellWidth},
-      y2: {value: layout.cellHeight},
-      fill: {scale: COLOR, field: model.fieldRef(COLOR)}
+    let pathMarks: any = {
+      type: MARKTYPES_MAP[mark],
+      from: {
+        // from.data might be added later for non-facet, single group line/area
+        transform: [{ type: 'sort', by: sortBy }]
+      },
+      properties: {
+        update: properties[mark](model)
+      }
     };
-    defs.push({
-      type: 'rect',
-      from: {data: from},
-      properties: {enter: bg, update: bg}
-    });
+
+    // FIXME is there a case where area requires impute without stacking?
+
+    const details = detailFields(model);
+    if (details.length > 0) { // have level of details - need to facet line into subgroups
+      const facetTransform = { type: 'facet', groupby: details };
+      const transform = mark === AREA && model.stack() ?
+        // For stacked area, we need to impute missing tuples and stack values
+        [imputeTransform(model), stackTransform(model), facetTransform] :
+        [facetTransform];
+
+      return [{
+        name: mark + '-facet',
+        type: 'group',
+        from: {
+          // from.data might be added later for non-facet charts
+          transform: transform
+        },
+        properties: {
+          update: {
+            width: { field: { group: 'width' } },
+            height: { field: { group: 'height' } }
+          }
+        },
+        marks: [pathMarks]
+      }];
+    } else {
+      return [pathMarks];
+    }
+  } else { // other mark type
+    let marks = []; // TODO: vgMarks
+    if (mark === TEXTMARKS && model.has(COLOR)) {
+      // add background to 'text' marks if has color
+      marks.push({
+        type: 'rect',
+        properties: { update: properties.textBackground(model) }
+      });
+    }
+
+    let mainDef: any = {
+      // TODO add name
+      type: MARKTYPES_MAP[mark],
+      properties: {
+        update: properties[mark](model)
+      }
+    };
+    const stack = model.stack();
+    if (mark === BAR && stack) {
+      mainDef.from = {
+        transform: [stackTransform(model)]
+      };
+    }
+    marks.push(mainDef);
+
+    // if (model.has(LABEL)) {
+    //   // TODO: add label by type here
+    // }
+
+    return marks;
   }
-
-  // add the mark def for the main thing
-  var p = mark.prop(model, layout, style);
-  defs.push({
-    type: mark.type,
-    from: {data: from},
-    properties: {update: p}
-  });
-
-  return defs;
 }
 
-export const bar = {
-  type: 'rect',
-  prop: bar_props
-};
 
-export const line = {
-  type: 'line',
-  prop: line_props
-};
 
-export const area = {
-  type: 'area',
-  prop: area_props
-};
-
-export const tick = {
-  type: 'rect',
-  prop: tick_props
-};
-
-export const circle = {
-  type: 'symbol',
-  prop: filled_point_props('circle')
-};
-
-export const square = {
-  type: 'symbol',
-  prop: filled_point_props('square')
-};
-
-export const point = {
-  type: 'symbol',
-  prop: point_props
-};
-
-export const text = {
-  type: 'text',
-  prop: text_props
-};
-
-function bar_props(e: Model, layout, style) {
-  // TODO Use Vega's marks properties interface
-  var p:any = {};
-
-  // x's and width
-  if (e.fieldDef(X).bin) {
-    p.x = {scale: X, field: e.fieldRef(X, {binSuffix: '_start'}), offset: 1};
-    p.x2 = {scale: X, field: e.fieldRef(X, {binSuffix: '_end'})};
-  } else if (e.isMeasure(X)) {
-    p.x = {scale: X, field: e.fieldRef(X)};
-    if (!e.has(Y) || e.isDimension(Y)) {
-      p.x2 = {value: 0};
+function applyMarksConfig(marksProperties, marksConfig, propsList) {
+  propsList.forEach(function(property) {
+    const value = marksConfig[property];
+    if (value !== undefined) {
+      marksProperties[property] = { value: value };
     }
-  } else {
-    if (e.has(X)) { // is ordinal
-       p.xc = {scale: X, field: e.fieldRef(X)};
+  });
+}
+
+/**
+ * Returns list of detail fields (for 'color', 'shape', or 'detail' channels)
+ * that the model's spec contains.
+ */
+function detailFields(model: Model): string[] {
+  return [COLOR, DETAIL, SHAPE].reduce(function(details, channel) {
+    if (model.has(channel) && !model.fieldDef(channel).aggregate) {
+      details.push(model.field(channel));
+    }
+    return details;
+  }, []);
+}
+
+export namespace properties {
+  export function bar(model: Model) {
+    const stack = model.stack();
+
+    // FIXME(#724) apply orient from config if applicable
+    // TODO Use Vega's marks properties interface
+    var p: any = {};
+
+    // x's and width
+    if (stack && X === stack.fieldChannel) {
+      p.x = {
+        scale: X,
+        field: model.field(X) + '_start'
+      };
+      p.x2 = {
+        scale: X,
+        field: model.field(X) + '_end'
+      };
+    } else if (model.fieldDef(X).bin) {
+      p.x = {
+        scale: X,
+        field: model.field(X, { binSuffix: '_start' }),
+        offset: 1
+      };
+      p.x2 = {
+        scale: X,
+        field: model.field(X, { binSuffix: '_end' })
+      };
+    } else if (model.isMeasure(X)) {
+      p.x = {
+        scale: X,
+        field: model.field(X)
+      };
+      if (!model.has(Y) || model.isDimension(Y)) {
+        p.x2 = { value: 0 };
+      }
     } else {
-       p.x = {value: 0, offset: e.config('singleBarOffset')};
-    }
-  }
-
-  // width
-  if (!p.x2) {
-    if (!e.has(X) || e.isOrdinalScale(X)) { // no X or X is ordinal
-      if (e.has(SIZE)) {
-        p.width = {scale: SIZE, field: e.fieldRef(SIZE)};
+      if (model.has(X)) { // is ordinal
+        p.xc = {
+          scale: X,
+          field: model.field(X)
+        };
       } else {
-        p.width = {
-          value: e.bandWidth(X, layout.x.useSmallBand),
+        p.x = { value: 0, offset: model.config('singleBarOffset') };
+      }
+    }
+
+    // width
+    if (!p.x2) {
+      if (!model.has(X) || model.isOrdinalScale(X)) { // no X or X is ordinal
+        if (model.has(SIZE)) {
+          p.width = {
+            scale: SIZE,
+            field: model.field(SIZE)
+          };
+        } else {
+          // FIXME consider using band: true here
+          p.width = {
+            value: model.fieldDef(X).scale.bandWidth,
+            offset: -1
+          };
+        }
+      } else { // X is Quant or Time Scale
+        p.width = { value: 2 };
+      }
+    }
+
+    // y's & height
+    if (stack && Y === stack.fieldChannel) {
+      p.y = {
+        scale: Y,
+        field: model.field(Y) + '_start'
+      };
+      p.y2 = {
+        scale: Y,
+        field: model.field(Y) + '_end'
+      };
+    } else if (model.fieldDef(Y).bin) {
+      p.y = {
+        scale: Y,
+        field: model.field(Y, { binSuffix: '_start' })
+      };
+      p.y2 = {
+        scale: Y,
+        field: model.field(Y, { binSuffix: '_end' }),
+        offset: 1
+      };
+    } else if (model.isMeasure(Y)) {
+      p.y = {
+        scale: Y,
+        field: model.field(Y)
+      };
+      p.y2 = { field: { group: 'height' } };
+    } else {
+      if (model.has(Y)) { // is ordinal
+        p.yc = {
+          scale: Y,
+          field: model.field(Y)
+        };
+      } else {
+        p.y2 = {
+          field: { group: 'height' },
+          offset: -model.config('singleBarOffset')
+        };
+      }
+
+      if (model.has(SIZE)) {
+        p.height = {
+          scale: SIZE,
+          field: model.field(SIZE)
+        };
+      } else {
+        // FIXME: band:true?
+        p.height = {
+          value: model.fieldDef(Y).scale.bandWidth,
           offset: -1
         };
       }
-    } else { // X is Quant or Time Scale
-      p.width = {value: 2};
     }
-  }
 
-  // y's & height
-  if (e.fieldDef(Y).bin) {
-    p.y = {scale: Y, field: e.fieldRef(Y, {binSuffix: '_start'})};
-    p.y2 = {scale: Y, field: e.fieldRef(Y, {binSuffix: '_end'}), offset: 1};
-  } else if (e.isMeasure(Y)) {
-    p.y = {scale: Y, field: e.fieldRef(Y)};
-    p.y2 = {field: {group: 'height'}};
-  } else {
-    if (e.has(Y)) { // is ordinal
-      p.yc = {scale: Y, field: e.fieldRef(Y)};
-    } else {
-      p.y2 = {
-        field: {group: 'height'},
-        offset: -e.config('singleBarOffset')
+    // fill
+    if (model.has(COLOR)) {
+      p.fill = {
+        scale: COLOR,
+        field: model.field(COLOR)
       };
-    }
-
-    if (e.has(SIZE)) {
-      p.height = {scale: SIZE, field: e.fieldRef(SIZE)};
     } else {
-      p.height = {
-        value: e.bandWidth(Y, layout.y.useSmallBand),
-        offset: -1
-      };
+      p.fill = { value: model.fieldDef(COLOR).value };
     }
+
+    // opacity
+    var opacity = model.markOpacity();
+    if (opacity) { p.opacity = { value: opacity }; };
+
+    return p;
   }
 
-  // fill
-  if (e.has(COLOR)) {
-    p.fill = {scale: COLOR, field: e.fieldRef(COLOR)};
-  } else {
-    p.fill = {value: e.fieldDef(COLOR).value};
-  }
-
-  // opacity
-  var opacity = e.fieldDef(COLOR).opacity;
-  if (opacity) p.opacity = {value: opacity};
-
-  return p;
-}
-
-function point_props(e: Model, layout, style) {
-  // TODO Use Vega's marks properties interface
-  var p:any = {};
-
-  // x
-  if (e.has(X)) {
-    p.x = {scale: X, field: e.fieldRef(X, {binSuffix: '_mid'})};
-  } else if (!e.has(X)) {
-    p.x = {value: e.bandWidth(X, layout.x.useSmallBand) / 2};
-  }
-
-  // y
-  if (e.has(Y)) {
-    p.y = {scale: Y, field: e.fieldRef(Y, {binSuffix: '_mid'})};
-  } else if (!e.has(Y)) {
-    p.y = {value: e.bandWidth(Y, layout.y.useSmallBand) / 2};
-  }
-
-  // size
-  if (e.has(SIZE)) {
-    p.size = {scale: SIZE, field: e.fieldRef(SIZE)};
-  } else if (!e.has(SIZE)) {
-    p.size = {value: e.fieldDef(SIZE).value};
-  }
-
-  // shape
-  if (e.has(SHAPE)) {
-    p.shape = {scale: SHAPE, field: e.fieldRef(SHAPE)};
-  } else if (!e.has(SHAPE)) {
-    p.shape = {value: e.fieldDef(SHAPE).value};
-  }
-
-  // fill or stroke
-  if (e.fieldDef(SHAPE).filled) {
-    if (e.has(COLOR)) {
-      p.fill = {scale: COLOR, field: e.fieldRef(COLOR)};
-    } else if (!e.has(COLOR)) {
-      p.fill = {value: e.fieldDef(COLOR).value};
-    }
-  } else {
-    if (e.has(COLOR)) {
-      p.stroke = {scale: COLOR, field: e.fieldRef(COLOR)};
-    } else if (!e.has(COLOR)) {
-      p.stroke = {value: e.fieldDef(COLOR).value};
-    }
-    p.strokeWidth = {value: e.config('strokeWidth')};
-  }
-
-  // opacity
-  var opacity = e.fieldDef(COLOR).opacity || style.opacity;
-  if (opacity) p.opacity = {value: opacity};
-
-  return p;
-}
-
-function line_props(e: Model,layout, style) {
-  // TODO Use Vega's marks properties interface
-  var p:any = {};
-
-  // x
-  if (e.has(X)) {
-    p.x = {scale: X, field: e.fieldRef(X, {binSuffix: '_mid'})};
-  } else if (!e.has(X)) {
-    p.x = {value: 0};
-  }
-
-  // y
-  if (e.has(Y)) {
-    p.y = {scale: Y, field: e.fieldRef(Y, {binSuffix: '_mid'})};
-  } else if (!e.has(Y)) {
-    p.y = {field: {group: 'height'}};
-  }
-
-  // stroke
-  if (e.has(COLOR)) {
-    p.stroke = {scale: COLOR, field: e.fieldRef(COLOR)};
-  } else if (!e.has(COLOR)) {
-    p.stroke = {value: e.fieldDef(COLOR).value};
-  }
-
-  var opacity = e.fieldDef(COLOR).opacity;
-  if (opacity) p.opacity = {value: opacity};
-
-  p.strokeWidth = {value: e.config('strokeWidth')};
-
-  return p;
-}
-
-// TODO(#694): optimize area's usage with bin
-function area_props(e: Model, layout, style) {
-  // TODO Use Vega's marks properties interface
-  var p:any = {};
-
-  // x
-  if (e.isMeasure(X)) {
-    p.x = {scale: X, field: e.fieldRef(X)};
-    if (e.isDimension(Y)) {
-      p.x2 = {scale: X, value: 0};
-      p.orient = {value: 'horizontal'};
-    }
-  } else if (e.has(X)) {
-    p.x = {scale: X, field: e.fieldRef(X, {binSuffix: '_mid'})};
-  } else {
-    p.x = {value: 0};
-  }
-
-  // y
-  if (e.isMeasure(Y)) {
-    p.y = {scale: Y, field: e.fieldRef(Y)};
-    p.y2 = {scale: Y, value: 0};
-  } else if (e.has(Y)) {
-    p.y = {scale: Y, field: e.fieldRef(Y, {binSuffix: '_mid'})};
-  } else {
-    p.y = {field: {group: 'height'}};
-  }
-
-  // fill
-  if (e.has(COLOR)) {
-    p.fill = {scale: COLOR, field: e.fieldRef(COLOR)};
-  } else if (!e.has(COLOR)) {
-    p.fill = {value: e.fieldDef(COLOR).value};
-  }
-
-  var opacity = e.fieldDef(COLOR).opacity;
-  if (opacity) p.opacity = {value: opacity};
-
-  return p;
-}
-
-function tick_props(e: Model, layout, style) {
-  // TODO Use Vega's marks properties interface
-  var p:any = {};
-
-  // x
-  if (e.has(X)) {
-    p.x = {scale: X, field: e.fieldRef(X, {binSuffix: '_mid'})};
-    if (e.isDimension(X)) {
-      p.x.offset = -e.bandWidth(X, layout.x.useSmallBand) / 3;
-    }
-  } else if (!e.has(X)) {
-    p.x = {value: 0};
-  }
-
-  // y
-  if (e.has(Y)) {
-    p.y = {scale: Y, field: e.fieldRef(Y, {binSuffix: '_mid'})};
-    if (e.isDimension(Y)) {
-      p.y.offset = -e.bandWidth(Y, layout.y.useSmallBand) / 3;
-    }
-  } else if (!e.has(Y)) {
-    p.y = {value: 0};
-  }
-
-  // width
-  if (!e.has(X) || e.isDimension(X)) {
-    // TODO(#694): optimize tick's width for bin
-    p.width = {value: e.bandWidth(X, layout.y.useSmallBand) / 1.5};
-  } else {
-    p.width = {value: 1};
-  }
-
-  // height
-  if (!e.has(Y) || e.isDimension(Y)) {
-    // TODO(#694): optimize tick's height for bin
-    p.height = {value: e.bandWidth(Y, layout.y.useSmallBand) / 1.5};
-  } else {
-    p.height = {value: 1};
-  }
-
-  // fill
-  if (e.has(COLOR)) {
-    p.fill = {scale: COLOR, field: e.fieldRef(COLOR)};
-  } else {
-    p.fill = {value: e.fieldDef(COLOR).value};
-  }
-
-  var opacity = e.fieldDef(COLOR).opacity  || style.opacity;
-  if(opacity) p.opacity = {value: opacity};
-
-  return p;
-}
-
-function filled_point_props(shape) {
-  return function(e: Model, layout, style) {
+  export function point(model: Model) {
     // TODO Use Vega's marks properties interface
-    var p:any = {};
+    var p: any = {};
+    const marksConfig = model.config('marks');
 
     // x
-    if (e.has(X)) {
-      p.x = {scale: X, field: e.fieldRef(X, {binSuffix: '_mid'})};
-    } else if (!e.has(X)) {
-      p.x = {value: e.bandWidth(X, layout.x.useSmallBand) / 2};
+    if (model.has(X)) {
+      p.x = {
+        scale: X,
+        field: model.field(X, { binSuffix: '_mid' })
+      };
+    } else if (!model.has(X)) {
+      p.x = { value: model.fieldDef(X).scale.bandWidth / 2 };
     }
 
     // y
-    if (e.has(Y)) {
-      p.y = {scale: Y, field: e.fieldRef(Y, {binSuffix: '_mid'})};
-    } else if (!e.has(Y)) {
-      p.y = {value: e.bandWidth(Y, layout.y.useSmallBand) / 2};
+    if (model.has(Y)) {
+      p.y = {
+        scale: Y,
+        field: model.field(Y, { binSuffix: '_mid' })
+      };
+    } else if (!model.has(Y)) {
+      p.y = { value: model.fieldDef(Y).scale.bandWidth / 2 };
     }
 
     // size
-    if (e.has(SIZE)) {
-      p.size = {scale: SIZE, field: e.fieldRef(SIZE)};
-    } else if (!e.has(X)) {
-      p.size = {value: e.fieldDef(SIZE).value};
+    if (model.has(SIZE)) {
+      p.size = {
+        scale: SIZE,
+        field: model.field(SIZE)
+      };
+    } else if (!model.has(SIZE)) {
+      p.size = { value: model.fieldDef(SIZE).value };
     }
 
     // shape
-    p.shape = {value: shape};
-
-    // fill
-    if (e.has(COLOR)) {
-      p.fill = {scale: COLOR, field: e.fieldRef(COLOR)};
-    } else if (!e.has(COLOR)) {
-      p.fill = {value: e.fieldDef(COLOR).value};
+    if (model.has(SHAPE)) {
+      p.shape = {
+        scale: SHAPE,
+        field: model.field(SHAPE)
+      };
+    } else if (!model.has(SHAPE)) {
+      p.shape = { value: model.fieldDef(SHAPE).value };
     }
 
-    var opacity = e.fieldDef(COLOR).opacity  || style.opacity;
-    if(opacity) p.opacity = {value: opacity};
+    // fill or stroke
+    if (marksConfig.filled) {
+      if (model.has(COLOR)) {
+        p.fill = {
+          scale: COLOR,
+          field: model.field(COLOR)
+        };
+      } else if (!model.has(COLOR)) {
+        p.fill = { value: model.fieldDef(COLOR).value };
+      }
+    } else {
+      if (model.has(COLOR)) {
+        p.stroke = {
+          scale: COLOR,
+          field: model.field(COLOR)
+        };
+      } else if (!model.has(COLOR)) {
+        p.stroke = { value: model.fieldDef(COLOR).value };
+      }
+      p.strokeWidth = { value: model.config('marks').strokeWidth };
+    }
+
+    // opacity
+    const opacity = model.markOpacity();
+    if (opacity) { p.opacity = { value: opacity }; };
 
     return p;
-  };
-}
+  }
 
-function text_props(e: Model, layout, style) {
-  // TODO Use Vega's marks properties interface
-  var p:any = {},
-    fieldDef = e.fieldDef(TEXT);
+  export function line(model: Model) {
+    // TODO Use Vega's marks properties interface
+    var p: any = {};
 
-  // x
-  if (e.has(X)) {
-    p.x = {scale: X, field: e.fieldRef(X, {binSuffix: '_mid'})};
-  } else if (!e.has(X)) {
-    if (e.has(TEXT) && e.fieldDef(TEXT).type === QUANTITATIVE) {
-      p.x = {value: layout.cellWidth-5};
-    } else {
-      p.x = {value: e.bandWidth(X, layout.x.useSmallBand) / 2};
+    // x
+    if (model.has(X)) {
+      p.x = {
+        scale: X,
+        field: model.field(X, { binSuffix: '_mid' })
+      };
+    } else if (!model.has(X)) {
+      p.x = { value: 0 };
     }
-  }
 
-  // y
-  if (e.has(Y)) {
-    p.y = {scale: Y, field: e.fieldRef(Y, {binSuffix: '_mid'})};
-  } else if (!e.has(Y)) {
-    p.y = {value: e.bandWidth(Y, layout.y.useSmallBand) / 2};
-  }
-
-  // size
-  if (e.has(SIZE)) {
-    p.fontSize = {scale: SIZE, field: e.fieldRef(SIZE)};
-  } else if (!e.has(SIZE)) {
-    p.fontSize = {value: fieldDef.font.size};
-  }
-
-  // fill
-  // color should be set to background
-  p.fill = {value: fieldDef.color};
-
-  var opacity = e.fieldDef(COLOR).opacity  || style.opacity;
-  if(opacity) p.opacity = {value: opacity};
-
-  // text
-  if (e.has(TEXT)) {
-    if (e.fieldDef(TEXT).type === QUANTITATIVE) {
-      var numberFormat = fieldDef.format !== undefined ?
-                         fieldDef.format : e.numberFormat(TEXT);
-
-      p.text = {template: '{{' + e.fieldRef(TEXT, {datum: true}) + ' | number:\'' +
-        numberFormat +'\'}}'};
-      p.align = {value: fieldDef.align};
-    } else {
-      p.text = {field: e.fieldRef(TEXT)};
+    // y
+    if (model.has(Y)) {
+      p.y = {
+        scale: Y,
+        field: model.field(Y, { binSuffix: '_mid' })
+      };
+    } else if (!model.has(Y)) {
+      p.y = { field: { group: 'height' } };
     }
-  } else {
-    p.text = {value: fieldDef.placeholder};
+
+    // stroke
+    if (model.has(COLOR)) {
+      p.stroke = {
+        scale: COLOR,
+        field: model.field(COLOR)
+      };
+    } else if (!model.has(COLOR)) {
+      p.stroke = { value: model.fieldDef(COLOR).value };
+    }
+
+    // opacity
+    var opacity = model.markOpacity();
+    if (opacity) { p.opacity = { value: opacity }; };
+
+    p.strokeWidth = { value: model.config('marks').strokeWidth };
+
+    applyMarksConfig(p, model.config('marks'), ['interpolate', 'tension']);
+
+    return p;
   }
 
-  p.font = {value: fieldDef.font.family};
-  p.fontWeight = {value: fieldDef.font.weight};
-  p.fontStyle = {value: fieldDef.font.style};
-  p.baseline = {value: fieldDef.baseline};
+  // TODO(#694): optimize area's usage with bin
+  export function area(model: Model) {
+    const stack = model.stack();
 
-  return p;
+    // FIXME(#724): apply orient properties
+
+    // TODO Use Vega's marks properties interface
+    var p: any = {};
+
+    // x
+    if (stack && X === stack.fieldChannel) {
+      p.x = {
+        scale: X,
+        field: model.field(X) + '_start'
+      };
+      p.x2 = {
+        scale: X,
+        field: model.field(X) + '_end'
+      };
+    } else if (model.isMeasure(X)) {
+      p.x = { scale: X, field: model.field(X) };
+      if (model.isDimension(Y)) {
+        p.x2 = {
+          scale: X,
+          value: 0
+        };
+        p.orient = { value: 'horizontal' };
+      }
+    } else if (model.has(X)) {
+      p.x = {
+        scale: X,
+        field: model.field(X, { binSuffix: '_mid' })
+      };
+    } else {
+      p.x = { value: 0 };
+    }
+
+    // y
+    if (stack && Y === stack.fieldChannel) {
+      p.y = {
+        scale: Y,
+        field: model.field(Y) + '_start'
+      };
+      p.y2 = {
+        scale: Y,
+        field: model.field(Y) + '_end'
+      };
+    } else if (model.isMeasure(Y)) {
+      p.y = {
+        scale: Y,
+        field: model.field(Y)
+      };
+      p.y2 = {
+        scale: Y,
+        value: 0
+      };
+    } else if (model.has(Y)) {
+      p.y = {
+        scale: Y,
+        field: model.field(Y, { binSuffix: '_mid' })
+      };
+    } else {
+      p.y = { field: { group: 'height' } };
+    }
+
+    // fill
+    if (model.has(COLOR)) {
+      p.fill = {
+        scale: COLOR,
+        field: model.field(COLOR)
+      };
+    } else if (!model.has(COLOR)) {
+      p.fill = { value: model.fieldDef(COLOR).value };
+    }
+
+    // opacity
+    var opacity = model.markOpacity();
+    if (opacity) { p.opacity = { value: opacity }; };
+
+    applyMarksConfig(p, model.config('marks'), ['interpolate', 'tension']);
+
+    return p;
+  }
+
+  export function tick(model: Model) {
+    // TODO Use Vega's marks properties interface
+    // FIXME are /3 , /1.5 divisions here correct?
+    var p: any = {};
+
+    // x
+    if (model.has(X)) {
+      p.x = {
+        scale: X,
+        field: model.field(X, { binSuffix: '_mid' })
+      };
+      if (model.isDimension(X)) {
+        p.x.offset = -model.fieldDef(X).scale.bandWidth / 3;
+      }
+    } else if (!model.has(X)) {
+      p.x = { value: 0 };
+    }
+
+    // y
+    if (model.has(Y)) {
+      p.y = {
+        scale: Y,
+        field: model.field(Y, { binSuffix: '_mid' })
+      };
+      if (model.isDimension(Y)) {
+        p.y.offset = -model.fieldDef(Y).scale.bandWidth / 3;
+      }
+    } else if (!model.has(Y)) {
+      p.y = { value: 0 };
+    }
+
+    // width
+    if (!model.has(X) || model.isDimension(X)) {
+      // TODO(#694): optimize tick's width for bin
+      p.width = { value: model.fieldDef(X).scale.bandWidth / 1.5 };
+    } else {
+      p.width = { value: 1 };
+    }
+
+    // height
+    if (!model.has(Y) || model.isDimension(Y)) {
+      // TODO(#694): optimize tick's height for bin
+      p.height = { value: model.fieldDef(Y).scale.bandWidth / 1.5 };
+    } else {
+      p.height = { value: 1 };
+    }
+
+    // fill
+    if (model.has(COLOR)) {
+      p.fill = {
+        scale: COLOR,
+        field: model.field(COLOR)
+      };
+    } else {
+      p.fill = { value: model.fieldDef(COLOR).value };
+    }
+
+    // opacity
+    var opacity = model.markOpacity();
+    if (opacity) { p.opacity = { value: opacity }; };
+
+    return p;
+  }
+
+  function filled_point_props(shape) {
+    return function(model: Model) {
+      // TODO Use Vega's marks properties interface
+      var p: any = {};
+
+      // x
+      if (model.has(X)) {
+        p.x = {
+          scale: X,
+          field: model.field(X, { binSuffix: '_mid' })
+        };
+      } else if (!model.has(X)) {
+        p.x = { value: model.fieldDef(X).scale.bandWidth / 2 };
+      }
+
+      // y
+      if (model.has(Y)) {
+        p.y = {
+          scale: Y,
+          field: model.field(Y, { binSuffix: '_mid' })
+        };
+      } else if (!model.has(Y)) {
+        p.y = { value: model.fieldDef(Y).scale.bandWidth / 2 };
+      }
+
+      // size
+      if (model.has(SIZE)) {
+        p.size = {
+          scale: SIZE,
+          field: model.field(SIZE)
+        };
+      } else if (!model.has(X)) {
+        p.size = { value: model.fieldDef(SIZE).value };
+      }
+
+      // shape
+      p.shape = { value: shape };
+
+      // fill
+      if (model.has(COLOR)) {
+        p.fill = {
+          scale: COLOR,
+          field: model.field(COLOR)
+        };
+      } else if (!model.has(COLOR)) {
+        p.fill = { value: model.fieldDef(COLOR).value };
+      }
+
+      // opacity
+      var opacity = model.markOpacity();
+      if (opacity) { p.opacity = { value: opacity }; };
+
+      return p;
+    };
+  }
+
+  export const circle = filled_point_props('circle');
+  export const square = filled_point_props('square');
+
+  export function textBackground(model: Model) {
+    return {
+      x: { value: 0 },
+      y: { value: 0 },
+      width: { field: { group: 'width' } },
+      height: { field: { group: 'height' } },
+      fill: { scale: COLOR, field: model.field(COLOR) }
+    };
+  }
+
+  export function text(model: Model) {
+    // TODO Use Vega's marks properties interface
+    let p: any = {};
+    const fieldDef = model.fieldDef(TEXT);
+    const marksConfig = model.config('marks');
+
+    // x
+    if (model.has(X)) {
+      p.x = {
+        scale: X,
+        field: model.field(X, { binSuffix: '_mid' })
+      };
+    } else if (!model.has(X)) {
+      if (model.has(TEXT) && model.fieldDef(TEXT).type === QUANTITATIVE) {
+        // TODO: make this -5 offset a config
+        p.x = { field: { group: 'width' }, offset: -5 };
+      } else {
+        p.x = { value: model.fieldDef(X).scale.bandWidth / 2 };
+      }
+    }
+
+    // y
+    if (model.has(Y)) {
+      p.y = {
+        scale: Y,
+        field: model.field(Y, { binSuffix: '_mid' })
+      };
+    } else if (!model.has(Y)) {
+      p.y = { value: model.fieldDef(Y).scale.bandWidth / 2 };
+    }
+
+    // size
+    if (model.has(SIZE)) {
+      p.fontSize = {
+        scale: SIZE,
+        field: model.field(SIZE)
+      };
+    } else if (!model.has(SIZE)) {
+      p.fontSize = { value: marksConfig.fontSize };
+    }
+
+    // fill
+    // TODO: consider if color should just map to fill instead?
+
+    // opacity
+    var opacity = model.markOpacity();
+    if (opacity) { p.opacity = { value: opacity }; };
+
+    // text
+    if (model.has(TEXT)) {
+      if (model.fieldDef(TEXT).type === QUANTITATIVE) {
+        // TODO: revise this line
+        var numberFormat = marksConfig.format !== undefined ?
+          marksConfig.format : model.numberFormat(TEXT);
+
+        p.text = {
+          template: '{{' + model.field(TEXT, { datum: true }) +
+          ' | number:\'' + numberFormat + '\'}}'
+        };
+      } else {
+        p.text = { field: model.field(TEXT) };
+      }
+    } else {
+      p.text = { value: fieldDef.value };
+    }
+
+    applyMarksConfig(p, marksConfig,
+      ['angle', 'align', 'baseline', 'dx', 'dy', 'fill', 'font', 'fontWeight',
+        'fontStyle', 'radius', 'theta']);
+
+    return p;
+  }
 }

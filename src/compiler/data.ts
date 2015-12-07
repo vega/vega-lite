@@ -1,28 +1,29 @@
 import * as vlFieldDef from '../fielddef';
-import * as util from '../util';
+import {extend, keys, vals, reduce} from '../util';
 import {Model} from './Model';
 import {FieldDef} from '../schema/fielddef.schema';
 import {StackProperties} from './stack';
 
-import {MAXBINS_DEFAULT} from '../bin';
-import {Channel} from '../channel';
-import {SOURCE, STACKED, SUMMARY} from '../data';
+import {autoMaxBins} from '../bin';
+import {Channel, X, Y, ROW, COLUMN} from '../channel';
+import {SOURCE, STACKED, LAYOUT, SUMMARY} from '../data';
 import * as time from './time';
-import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
+import {QUANTITATIVE, TEMPORAL} from '../type';
+
 
 /**
  * Create Vega's data array from a given encoding.
  *
- * @param  {Encoding} encoding
- * @return {Array} Array of Vega data.
+ * @param  encoding
+ * @return Array of Vega data.
  *                 This always includes a "source" data table.
  *                 If the encoding contains aggregate value, this will also create
  *                 aggregate table as well.
  */
-export function compileData(model: Model) {
+export function compileData(model: Model): VgData[] {
   var def = [source.def(model)];
 
-  var summaryDef = summary.def(model);
+  const summaryDef = summary.def(model);
   if (summaryDef) {
     def.push(summaryDef);
   }
@@ -30,10 +31,16 @@ export function compileData(model: Model) {
   // TODO add "having" filter here
 
   // append non-positive filter at the end for the data table
-  filterNonPositive(def[def.length - 1], model);
+  filterNonPositiveForLog(def[def.length - 1], model);
+
+  // add stats for layout calculation
+  const statsDef = layout.def(model);
+  if(statsDef) {
+    def.push(statsDef);
+  }
 
   // Stack
-  var stackDef = model.stack();
+  const stackDef = model.stack();
   if (stackDef) {
     def.push(stack.def(model, stackDef));
   }
@@ -75,19 +82,26 @@ export namespace source {
   }
 
   function formatParse(model: Model) {
-    var parse;
+    const calcFieldMap = (model.data().calculate || []).reduce(function(fieldMap, formula) {
+      fieldMap[formula.field] = true;
+      return fieldMap;
+    }, {});
 
+    let parse;
+    // use forEach rather than reduce so that it can return undefined
+    // if there is no parse needed
     model.forEach(function(fieldDef: FieldDef) {
       if (fieldDef.type === TEMPORAL) {
         parse = parse || {};
         parse[fieldDef.field] = 'date';
       } else if (fieldDef.type === QUANTITATIVE) {
-        if (vlFieldDef.isCount(fieldDef)) return;
+        if (vlFieldDef.isCount(fieldDef) || calcFieldMap[fieldDef.field]) {
+          return;
+        }
         parse = parse || {};
         parse[fieldDef.field] = 'number';
       }
     });
-
     return parse;
   }
 
@@ -109,12 +123,12 @@ export namespace source {
   export function timeTransform(model: Model) {
     return model.reduce(function(transform, fieldDef: FieldDef, channel: Channel) {
       if (fieldDef.type === TEMPORAL && fieldDef.timeUnit) {
-        var fieldRef = model.fieldRef(channel, {nofn: true, datum: true});
+        var field = model.field(channel, {nofn: true, datum: true});
 
         transform.push({
           type: 'formula',
-          field: model.fieldRef(channel),
-          expr: time.formula(fieldDef.timeUnit, fieldRef)
+          field: model.field(channel),
+          expr: time.formula(fieldDef.timeUnit, field)
         });
       }
       return transform;
@@ -123,45 +137,43 @@ export namespace source {
 
   export function binTransform(model: Model) {
     return model.reduce(function(transform, fieldDef: FieldDef, channel: Channel) {
-      const bin = model.bin(channel);
+      const bin = model.fieldDef(channel).bin;
       if (bin) {
-        transform.push({
-          type: 'bin',
-          field: fieldDef.field,
-          output: {
-            start: model.fieldRef(channel, {binSuffix: '_start'}),
-            end: model.fieldRef(channel, {binSuffix: '_end'})
+        let binTrans = extend({
+            type: 'bin',
+            field: fieldDef.field,
+            output: {
+              start: model.field(channel, {binSuffix: '_start'}),
+              mid: model.field(channel, {binSuffix: '_mid'}),
+              end: model.field(channel, {binSuffix: '_end'})
+            }
           },
-          maxbins: typeof bin === 'boolean' ? MAXBINS_DEFAULT : bin.maxbins
-        });
-        // temporary fix for adding missing `bin_mid` from the bin transform
-        transform.push({
-          type: 'formula',
-          field: model.fieldRef(channel, {binSuffix: '_mid'}),
-          expr: '(' + model.fieldRef(channel, {datum:1, binSuffix: '_start'}) + '+' + model.fieldRef(channel, {datum:1, binSuffix: '_end'}) + ')/2'
-        });
+          // if bin is an object, load parameter here!
+          typeof bin === 'boolean' ? {} : bin
+        );
+
+        if (!binTrans.maxbins && !binTrans.step) {
+          // if both maxbins and step are specified, need to automatically determine bin
+          binTrans.maxbins = autoMaxBins(channel);
+        }
+
+        transform.push(binTrans);
       }
       return transform;
     }, []);
   }
 
   /**
-   * @return {Array} An array that might contain a filter transform for filtering null value based on filterNul config
+   * @return An array that might contain a filter transform for filtering null value based on filterNul config
    */
   export function nullFilterTransform(model: Model) {
-    var filteredFields = util.reduce(model.fields(),
-      function(filteredFields, fieldList, fieldName) {
-        if (fieldName === '*') return filteredFields; //count
-
-        // TODO(#597) revise how filterNull is structured.
-        if ((model.config('filterNull').quantitative && fieldList.containsType[QUANTITATIVE]) ||
-            (model.config('filterNull').temporal && fieldList.containsType[TEMPORAL]) ||
-            (model.config('filterNull').ordinal && fieldList.containsType[ORDINAL]) ||
-            (model.config('filterNull').nominal && fieldList.containsType[NOMINAL])) {
-          filteredFields.push(fieldName);
-        }
-        return filteredFields;
-      }, []);
+    const filterNull = model.config('filterNull');
+    const filteredFields = keys(model.reduce(function(aggregator, fieldDef: FieldDef) {
+      if (fieldDef.field && fieldDef.field !== '*' && filterNull[fieldDef.type]) {
+        aggregator[fieldDef.field] = true;
+      }
+      return aggregator;
+    }, {}));
 
     return filteredFields.length > 0 ?
       [{
@@ -181,15 +193,122 @@ export namespace source {
   }
 
   export function formulaTransform(model: Model) {
-    var calculate = model.data().calculate;
-    if (calculate === undefined) {
-      return [];
-    }
-
-    return calculate.reduce(function(transform, formula) {
-      transform.push(util.extend({type: formula}, formula));
+    return (model.data().calculate || []).reduce(function(transform, formula) {
+      transform.push(extend({type: 'formula'}, formula));
       return transform;
     }, []);
+  }
+}
+
+export namespace layout {
+
+  export function def(model: Model): VgData {
+    let summarize = [];
+    let formulas = [];
+
+    // TODO: handle "fit" mode
+    if (model.has(X) && model.isOrdinalScale(X)) {
+      const xScale = model.fieldDef(X).scale;
+      const xHasDomain = xScale.domain instanceof Array;
+      if (!xHasDomain) {
+        summarize.push({
+          field: model.field(X),
+          ops: ['distinct']
+        });
+      }
+      const xCardinality = xHasDomain ? xScale.domain.length :
+                             model.field(X, {datum: true, prefn: 'distinct_'});
+      formulas.push({
+        type: 'formula',
+        field: 'cellWidth',
+        expr: '(' + xCardinality + ' + ' + xScale.padding + ') * ' + xScale.bandWidth
+      });
+    }
+
+    if (model.has(Y) && model.isOrdinalScale(Y)) {
+      const yScale = model.fieldDef(Y).scale;
+      const yHasDomain = yScale.domain instanceof Array;
+
+      if (!yHasDomain) {
+        summarize.push({
+          field: model.field(Y),
+          ops: ['distinct']
+        });
+      }
+
+      const yCardinality = yHasDomain ? yScale.domain.length :
+                             model.field(Y, {datum: true, prefn: 'distinct_'});
+      formulas.push({
+        type: 'formula',
+        field: 'cellHeight',
+        expr: '(' + yCardinality + ' + ' + yScale.padding + ') * ' + yScale.bandWidth
+      });
+    }
+
+    const cellPadding = model.config('cell').padding;
+    const layout = model.layout();
+
+    if (model.has(COLUMN)) {
+      const cellWidth = layout.cellWidth.field ?
+                        'datum.' + layout.cellWidth.field :
+                        layout.cellWidth;
+      const colScale = model.fieldDef(COLUMN).scale;
+      const colHasDomain = colScale.domain instanceof Array;
+      if (!colHasDomain) {
+        summarize.push({
+          field: model.field(COLUMN),
+          ops: ['distinct']
+        });
+      }
+
+      const colCardinality = colHasDomain ? colScale.domain.length :
+                               model.field(COLUMN, {datum: true, prefn: 'distinct_'});
+      formulas.push({
+        type: 'formula',
+        field: 'width',
+        expr: cellWidth + ' * ' + colCardinality + ' + ' +
+              '(' + colCardinality + ' - 1) * ' + cellPadding
+      });
+    }
+
+    if (model.has(ROW)) {
+      const cellHeight = layout.cellHeight.field ?
+                        'datum.' + layout.cellHeight.field :
+                        layout.cellHeight;
+      const rowScale = model.fieldDef(ROW).scale;
+      const rowHasDomain = rowScale.domain instanceof Array;
+      if (!rowHasDomain) {
+        summarize.push({
+          field: model.field(ROW),
+          ops: ['distinct']
+        });
+      }
+
+      const rowCardinality = rowHasDomain ? rowScale.domain.length :
+                               model.field(ROW, {datum: true, prefn: 'distinct_'});
+      formulas.push({
+        type: 'formula',
+        field: 'height',
+        expr: cellHeight + ' * ' + rowCardinality + ' + ' +
+              '(' +rowCardinality + ' - 1) * ' + cellPadding
+      });
+    }
+
+    if (formulas.length > 0) {
+      return summarize.length > 0 ? {
+        name: LAYOUT,
+        source: model.dataTable(),
+        transform: [{
+            type: 'aggregate',
+            summarize: summarize
+          }].concat(formulas)
+      } : {
+        name: LAYOUT,
+        values: [{}],
+        transform: formulas
+      };
+    }
+    return null;
   }
 }
 
@@ -216,23 +335,23 @@ export namespace summary {
       } else {
         if (fieldDef.bin) {
           // TODO(#694) only add dimension for the required ones.
-          dims[model.fieldRef(channel, {binSuffix: '_start'})] = model.fieldRef(channel, {binSuffix: '_start'});
-          dims[model.fieldRef(channel, {binSuffix: '_mid'})] = model.fieldRef(channel, {binSuffix: '_mid'});
-          dims[model.fieldRef(channel, {binSuffix: '_end'})] = model.fieldRef(channel, {binSuffix: '_end'});
+          dims[model.field(channel, {binSuffix: '_start'})] = model.field(channel, {binSuffix: '_start'});
+          dims[model.field(channel, {binSuffix: '_mid'})] = model.field(channel, {binSuffix: '_mid'});
+          dims[model.field(channel, {binSuffix: '_end'})] = model.field(channel, {binSuffix: '_end'});
         } else {
-          dims[fieldDef.field] = model.fieldRef(channel);
+          dims[fieldDef.field] = model.field(channel);
         }
 
       }
     });
 
-    var groupby = util.vals(dims);
+    var groupby = vals(dims);
 
     // short-format summarize object for Vega's aggregate transform
     // https://github.com/vega/vega/wiki/Data-Transforms#-aggregate
-    var summarize = util.reduce(meas, function(summarize, fnDictSet, field) {
-      summarize[field] = util.keys(fnDictSet);
-      return summarize;
+    var summarize = reduce(meas, function(aggregator, fnDictSet, field) {
+      aggregator[field] = keys(fnDictSet);
+      return aggregator;
     }, {});
 
     if (hasAggregate) {
@@ -258,7 +377,8 @@ export namespace stack {
   export function def(model: Model, stackProps: StackProperties):VgData {
     var groupbyChannel = stackProps.groupbyChannel;
     var fieldChannel = stackProps.fieldChannel;
-    var facets = model.facets();
+    var facetFields = (model.has(COLUMN) ? [model.field(COLUMN)] : [])
+                      .concat((model.has(ROW) ? [model.field(ROW)] : []));
 
     var stacked:VgData = {
       name: STACKED,
@@ -266,19 +386,19 @@ export namespace stack {
       transform: [{
         type: 'aggregate',
         // group by channel and other facets
-        groupby: [model.fieldRef(groupbyChannel)].concat(facets),
-        summarize: [{ops: ['sum'], field: model.fieldRef(fieldChannel)}]
+        groupby: [model.field(groupbyChannel)].concat(facetFields),
+        summarize: [{ops: ['sum'], field: model.field(fieldChannel)}]
       }]
     };
 
-    if (facets && facets.length > 0) {
-      stacked.transform.push({ //calculate max for each facet
+    if (facetFields && facetFields.length > 0) {
+      stacked.transform.push({ // calculate max for each facet
         type: 'aggregate',
-        groupby: facets,
+        groupby: facetFields,
         summarize: [{
           ops: ['max'],
           // we want max of sum from above transform
-          field: model.fieldRef(fieldChannel, {prefn: 'sum_'})
+          field: model.field(fieldChannel, {prefn: 'sum_'})
         }]
       });
     }
@@ -286,12 +406,12 @@ export namespace stack {
   };
 }
 
-export function filterNonPositive(dataTable, model: Model) {
+export function filterNonPositiveForLog(dataTable, model: Model) {
   model.forEach(function(_, channel) {
     if (model.fieldDef(channel).scale.type === 'log') {
       dataTable.transform.push({
         type: 'filter',
-        test: model.fieldRef(channel, {datum: 1}) + ' > 0'
+        test: model.field(channel, {datum: true}) + ' > 0'
       });
     }
   });

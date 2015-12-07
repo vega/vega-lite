@@ -1,143 +1,269 @@
 import * as util from '../util';
-import {COLUMN, ROW, X, Y} from '../channel';
+import {COLUMN, ROW, X, Y, Channel} from '../channel';
 import {Model} from './Model';
 
 import {compileAxis} from './axis';
-import {compileScales, compileScaleNames} from './scale';
+import {compileScales} from './scale';
 
-function groupdef(name, opt) {
-  opt = opt || {};
+/**
+ * return mixins that contains marks, scales, and axes for the rootGroup
+ */
+export function facetMixins(model: Model, marks) {
+  const layout = model.layout();
 
-  // TODO: Vega's Marks interface
-  var group:any = {
-    name: name || undefined,
+  const cellWidth: any = !model.has(COLUMN) ?
+      {field: {group: 'width'}} :     // cellWidth = width -- just use group's
+    layout.cellWidth.field ?
+      {scale: 'column', band: true} : // bandSize of the scale
+      {value: layout.cellWidth};      // static value
+
+  const cellHeight: any = !model.has(ROW) ?
+      {field: {group: 'height'}} :  // cellHeight = height -- just use group's
+    layout.cellHeight.field ?
+      {scale: 'row', band: true} :  // bandSize of the scale
+      {value: layout.cellHeight};   // static value
+
+  let facetGroupProperties: any = {
+    width: cellWidth,
+    height: cellHeight
+  };
+
+  // add configs that are the resulting group marks properties
+  const cellConfig = model.config('cell');
+  ['fill', 'fillOpacity', 'stroke', 'strokeWidth',
+    'strokeOpacity', 'strokeDash', 'strokeDashOffset']
+    .forEach(function(property) {
+      const value = cellConfig[property];
+      if (value !== undefined) {
+        facetGroupProperties[property] = value;
+      }
+    });
+
+  let rootMarks = [], rootAxes = [], facetKeys = [], cellAxes = [];
+  const hasRow = model.has(ROW), hasCol = model.has(COLUMN);
+
+  // TODO(#90): add property to keep axes in cells even if row is encoded
+  if (hasRow) {
+    if (!model.isDimension(ROW)) {
+      // TODO: add error to model instead
+      util.error('Row encoding should be ordinal.');
+    }
+    facetGroupProperties.y = {
+      scale: ROW,
+      field: model.field(ROW)
+    };
+
+    facetKeys.push(model.field(ROW));
+    rootAxes.push(compileAxis(ROW, model));
+    if (model.has(X)) {
+      // If has X, prepend a group for shared x-axes in the root group's marks
+      rootMarks.push(getXAxesGroup(model, cellWidth, hasCol));
+    }
+
+    // TODO: add properties to make rule optional
+    rootMarks.push(getRowRulesGroup(model, cellHeight));
+  } else { // doesn't have row
+    if (model.has(X)) { // keep x axis in the cell
+      cellAxes.push(compileAxis(X, model));
+    }
+  }
+
+  // TODO(#90): add property to keep axes in cells even if column is encoded
+  if (hasCol) {
+    if (!model.isDimension(COLUMN)) {
+      // TODO: add error to model instead
+      util.error('Col encoding should be ordinal.');
+    }
+    facetGroupProperties.x = {
+      scale: COLUMN,
+      field: model.field(COLUMN)
+    };
+
+    facetKeys.push(model.field(COLUMN));
+    rootAxes.push(compileAxis(COLUMN, model));
+
+    if (model.has(Y)) {
+      // If has Y, prepend a group for shared y-axes in the root group's marks
+      rootMarks.push(getYAxesGroup(model, cellHeight, hasRow));
+    }
+    // TODO: add properties to make rule optional
+    rootMarks.push(getColumnRulesGroup(model, cellWidth));
+  } else { // doesn't have column
+    if (model.has(Y)) { // keep y axis in the cell
+      cellAxes.push(compileAxis(Y, model));
+    }
+  }
+
+  let facetGroup: any = {
+    name: 'cell', // FIXME model.name() + cell
+    type: 'group',
+    from: {
+      data: model.dataTable(),
+      transform: [{type: 'facet', groupby: facetKeys}]
+    },
+    properties: {
+      update: facetGroupProperties
+    },
+    marks: marks
+  };
+  if (cellAxes.length > 0) {
+    facetGroup.axes = cellAxes;
+  }
+  rootMarks.push(facetGroup);
+
+  const scaleNames = model.map(function(_, channel: Channel){
+    return channel; // TODO model.scaleName(channel)
+  });
+
+  return {
+    marks: rootMarks,
+    axes: rootAxes,
+    // assuming equal cellWidth here
+    scales: compileScales(scaleNames, model)
+  };
+}
+
+function getXAxesGroup(model: Model, cellWidth, hasCol: boolean) {
+  let xAxesGroup: any = { // TODO: VgMarks
+    name: 'x-axes',
     type: 'group',
     properties: {
-      enter: {
-        width: opt.width || {field: {group: 'width'}},
-        height: opt.height || {field: {group: 'height'}}
+      update: {
+        width: cellWidth,
+        height: {field: {group: 'height'}},
+        x: hasCol ? {scale: COLUMN, field: model.field(COLUMN)} : {value: 0},
+        y: {value: - model.config('cell').padding / 2}
+      }
+    },
+    axes: [compileAxis(X, model)]
+  };
+  if (hasCol) {
+    // FIXME facet is too expensive here - we only need to know unique columns
+    xAxesGroup.from = {
+      data: model.dataTable(),
+      transform: {type: 'facet', groupby: [model.field(COLUMN)]}
+    };
+  }
+  return xAxesGroup;
+}
+
+function getYAxesGroup(model: Model, cellHeight, hasRow: boolean) {
+  let yAxesGroup: any = { // TODO: VgMarks
+    name: 'y-axes',
+    type: 'group',
+    properties: {
+      update: {
+        width: {field: {group: 'width'}},
+        height: cellHeight,
+        x: {value: - model.config('cell').padding / 2},
+        y: hasRow ? {scale: ROW, field: model.field(ROW)} : {value: 0}
+      }
+    },
+    axes: [compileAxis(Y, model)]
+  };
+
+  if (hasRow) {
+    // FIXME facet is too expensive here - we only need to know unique rows
+    yAxesGroup.from = {
+      data: model.dataTable(),
+      transform: {type: 'facet', groupby: [model.field(ROW)]}
+    };
+  }
+  return yAxesGroup;
+}
+
+function getRowRulesGroup(model: Model, cellHeight): any { // TODO: VgMarks
+  const rowRulesOnTop = !model.has(X) || model.fieldDef(X).axis.orient !== 'top';
+  const offset = model.config('cell').padding / 2 - 1;
+  const rowRules = {
+    name: 'row-rules',
+    type: 'rule',
+    from: {
+      data: model.dataTable(),
+      transform: [{type: 'facet', groupby: [model.field(ROW)]}]
+    },
+    properties: {
+      update: {
+        y: {
+          scale: 'row',
+          field: model.field(ROW),
+          offset: (rowRulesOnTop ? -1 : 1) * offset
+        },
+        x: {value: 0, offset: -model.config('cell').gridOffset},
+        x2: {field: {group: 'width'}, offset: model.config('cell').gridOffset},
+        stroke: { value: model.config('cell').gridColor },
+        strokeOpacity: { value: model.config('cell').gridOpacity }
       }
     }
   };
 
-  if (opt.from) {
-    group.from = opt.from;
-  }
-  if (opt.x) {
-    group.properties.enter.x = opt.x;
-  }
-  if (opt.y) {
-    group.properties.enter.y = opt.y;
-  }
-  if (opt.axes) {
-    group.axes = opt.axes;
-  }
+  if (rowRulesOnTop) { // on top - no need to add offset
+    return rowRules;
+  } // otherwise, need to offset all rules by cellHeight
+  return {
+    name: 'row-rules-group',
+    type: 'group',
+    properties: {
+      update: {
+        // add offset to avoid clashing with axis
+        y: cellHeight.value ?
+          // If cellHeight contains value, just use it.
+          cellHeight :
+          // Otherwise, need to get it from layout data in the root group
+          {field: {parent: 'cellHeight'}},
 
-  return group;
+        // include width so it can be referred inside row-rules
+        width: {field: {group: 'width'}}
+      }
+    },
+    marks: [rowRules]
+  };
 }
 
-export default function(group, model: Model, layout, output, singleScaleNames, stats) {
-  var enter = group.properties.enter;
-  var facetKeys = [], cellAxes = [], from, axesGrp;
-
-  var hasRow = model.has(ROW), hasCol = model.has(COLUMN);
-
-  enter.fill = {value: model.config('cellBackgroundColor')};
-
-  //move "from" to cell level and add facet transform
-  group.from = {data: group.marks[0].from.data};
-
-  // Hack, this needs to be refactored
-  for (var i = 0; i < group.marks.length; i++) {
-    var mark = group.marks[i];
-    if (mark.from.transform) {
-      delete mark.from.data; //need to keep transform for subfacetting case
-    } else {
-      delete mark.from;
+function getColumnRulesGroup(model: Model, cellWidth): any { // TODO: VgMarks
+  const colRulesOnLeft = !model.has(Y) || model.fieldDef(Y).axis.orient === 'right';
+  const offset = model.config('cell').padding / 2 - 1;
+  const columnRules = {
+    name: 'column-rules',
+    type: 'rule',
+    from: {
+      data: model.dataTable(),
+      transform: [{type: 'facet', groupby: [model.field(COLUMN)]}]
+    },
+    properties: {
+      update: {
+        x: {
+          scale: 'column',
+          field: model.field(COLUMN),
+          offset: (colRulesOnLeft ? -1 : 1) * offset
+        },
+        y: {value: 0, offset: -model.config('cell').gridOffset},
+        y2: {field: {group: 'height'}, offset: model.config('cell').gridOffset},
+        stroke: { value: model.config('cell').gridColor },
+        strokeOpacity: { value: model.config('cell').gridOpacity }
+      }
     }
-  }
+  };
 
-  if (hasRow) {
-    if (!model.isDimension(ROW)) {
-      util.error('Row encoding should be ordinal.');
-    }
-    enter.y = {scale: ROW, field: model.fieldRef(ROW)};
-    enter.height = {'value': layout.cellHeight}; // HACK
+  if (colRulesOnLeft) { // on left, no need to add global offset
+    return columnRules;
+  } // otherwise, need to offset all rules by cellWidth
+  return {
+    name: 'column-rules-group',
+    type: 'group',
+    properties: {
+      update: {
+        // Add offset to avoid clashing with axis
+        x: cellWidth.value ?
+           // If cellWidth contains value, just use it.
+           cellWidth :
+           // Otherwise, need to get it from layout data in the root group
+           {field: {parent: 'cellWidth'}},
 
-    facetKeys.push(model.fieldRef(ROW));
-
-    if (hasCol) {
-      from = util.duplicate(group.from);
-      from.transform = from.transform || [];
-      from.transform.unshift({type: 'facet', groupby: [model.fieldRef(COLUMN)]});
-    }
-
-    axesGrp = groupdef('x-axes', {
-        axes: model.has(X) ? [compileAxis(X, model, layout, stats)] : undefined,
-        x: hasCol ? {scale: COLUMN, field: model.fieldRef(COLUMN)} : {value: 0},
-        width: hasCol && {'value': layout.cellWidth}, //HACK?
-        from: from
-      });
-
-    output.marks.unshift(axesGrp); // need to prepend so it appears under the plots
-    (output.axes = output.axes || []);
-    output.axes.push(compileAxis(ROW, model, layout, stats));
-  } else { // doesn't have row
-    if (model.has(X)) {
-      //keep x axis in the cell
-      cellAxes.push(compileAxis(X, model, layout, stats));
-    }
-  }
-
-  if (hasCol) {
-    if (!model.isDimension(COLUMN)) {
-      util.error('Col encoding should be ordinal.');
-    }
-    enter.x = {scale: COLUMN, field: model.fieldRef(COLUMN)};
-    enter.width = {'value': layout.cellWidth}; // HACK
-
-    facetKeys.push(model.fieldRef(COLUMN));
-
-    if (hasRow) {
-      from = util.duplicate(group.from);
-      from.transform = from.transform || [];
-      from.transform.unshift({type: 'facet', groupby: [model.fieldRef(ROW)]});
-    }
-
-    axesGrp = groupdef('y-axes', {
-      axes: model.has(Y) ? [compileAxis(Y, model, layout, stats)] : undefined,
-      y: hasRow && {scale: ROW, field: model.fieldRef(ROW)},
-      x: hasRow && {value: 0},
-      height: hasRow && {'value': layout.cellHeight}, //HACK?
-      from: from
-    });
-
-    output.marks.unshift(axesGrp); // need to prepend so it appears under the plots
-    (output.axes = output.axes || []);
-    output.axes.push(compileAxis(COLUMN, model, layout, stats));
-  } else { // doesn't have column
-    if (model.has(Y)) {
-      cellAxes.push(compileAxis(Y, model, layout, stats));
-    }
-  }
-
-  // assuming equal cellWidth here
-  // TODO: support heterogenous cellWidth (maybe by using multiple scales?)
-  output.scales = (output.scales || []).concat(compileScales(
-    compileScaleNames(enter).concat(singleScaleNames),
-    model,
-    layout,
-    stats,
-    true
-  )); // row/column scales + cell scales
-
-  if (cellAxes.length > 0) {
-    group.axes = cellAxes;
-  }
-
-  // add facet transform
-  var trans = (group.from.transform || (group.from.transform = []));
-  trans.unshift({type: 'facet', groupby: facetKeys});
-
-  return output;
+        // include height so it can be referred inside column-rules
+        height: {field: {group: 'height'}}
+      }
+    },
+    marks: [columnRules]
+  };
 }

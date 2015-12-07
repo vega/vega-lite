@@ -2,40 +2,26 @@ import {expect} from 'chai';
 
 import * as axis from '../../src/compiler/axis';
 import {Model} from '../../src/compiler/Model';
+import {LINE} from '../../src/mark';
+import {X, COLUMN} from '../../src/channel';
+import {TEMPORAL, QUANTITATIVE} from '../../src/type';
 
 describe('Axis', function() {
-  var stats = {a: {distinct: 5}, b: {distinct: 32}},
-    layout = {
-      cellWidth: 60,  // default characterWidth = 6
-      cellHeight: 60
-    };
-
   describe('(X) for Time Data', function() {
     var field = 'a',
       timeUnit = 'month',
       encoding = new Model({
-        marktype: 'line',
+        mark: LINE,
         encoding: {
-          x: {field: field, type: 'temporal', timeUnit: timeUnit}
+          x: {field: field, type: TEMPORAL, timeUnit: timeUnit}
         }
       });
-    var _axis = axis.compileAxis('x', encoding, {
-      width: 200,
-      height: 200,
-      cellWidth: 200,
-      cellHeight: 200,
-      x: {
-        axisTitleOffset: 60
-      },
-      y: {
-        axisTitleOffset: 60
-      }
-    }, stats);
+    var _axis = axis.compileAxis(X, encoding);
 
-    //FIXME decouple the test here
+    // FIXME decouple the test here
 
     it('should use custom label', function() {
-      expect(_axis.properties.labels.text.scale).to.equal('time-'+ timeUnit);
+      expect(_axis.properties.labels.text.template).to.equal('{{datum.data | month}}');
     });
     it('should rotate label', function() {
       expect(_axis.properties.labels.angle.value).to.equal(270);
@@ -53,7 +39,7 @@ describe('Axis', function() {
           encoding: {
             x: {field: 'a', axis:{orient: 'bottom'}}
           }
-        }), 'x', {}, stats);
+        }), X);
       expect(orient).to.eql('bottom');
     });
 
@@ -62,7 +48,7 @@ describe('Axis', function() {
           encoding: {
             x: {field: 'a'}
           }
-        }), 'x', {}, stats);
+        }), X);
       expect(orient).to.eql(undefined);
     });
 
@@ -72,17 +58,7 @@ describe('Axis', function() {
             x: {field: 'a'},
             column: {field: 'a'}
           }
-        }), 'column', {}, stats);
-      expect(orient).to.eql('top');
-    });
-
-    it('should return top for X with high cardinality, ordinal Y', function () {
-      var orient = axis.orient(new Model({
-          encoding: {
-            x: {field: 'a'},
-            y: {field: 'b', type: 'ordinal'}
-          }
-        }), 'x', {}, stats);
+        }), COLUMN);
       expect(orient).to.eql('top');
     });
   });
@@ -93,34 +69,34 @@ describe('Axis', function() {
           encoding: {
             x: {field: 'a', axis: {title: 'Custom'}}
           }
-        }), 'x', layout);
+        }), X);
       expect(title).to.eql('Custom');
     });
 
     it('should add return fieldTitle by default', function () {
       var title = axis.title(new Model({
           encoding: {
-            x: {field: 'a', type: 'Q', axis: {titleMaxLength: 3}}
+            x: {field: 'a', type: QUANTITATIVE, axis: {titleMaxLength: 3}}
           }
-        }), 'x', layout);
+        }), X);
       expect(title).to.eql('a');
     });
 
     it('should add return fieldTitle by default', function () {
       var title = axis.title(new Model({
           encoding: {
-            x: {field: 'a', type: 'Q', aggregate: 'sum', axis: {titleMaxLength: 10}}
+            x: {field: 'a', type: QUANTITATIVE, aggregate: 'sum', axis: {titleMaxLength: 10}}
           }
-        }), 'x', layout);
+        }), X);
       expect(title).to.eql('SUM(a)');
     });
 
     it('should add return fieldTitle by default and truncate', function () {
       var title = axis.title(new Model({
           encoding: {
-            x: {field: 'a', type: 'Q', aggregate: 'sum', axis: {titleMaxLength: 3}}
+            x: {field: 'a', type: QUANTITATIVE, aggregate: 'sum', axis: {titleMaxLength: 3}}
           }
-        }), 'x', layout);
+        }), X);
       expect(title).to.eql('SU…');
     });
 
@@ -129,8 +105,11 @@ describe('Axis', function() {
       var title = axis.title(new Model({
           encoding: {
             x: {field: 'abcdefghijkl'}
+          },
+          config: {
+            cell: {width: 60}
           }
-        }), 'x', layout);
+        }), X);
       expect(title).to.eql('abcdefghi…');
     });
   });

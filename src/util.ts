@@ -4,59 +4,72 @@ export * from 'datalib/src/util';
 export * from 'datalib/src/generate';
 export * from 'datalib/src/stats';
 
-// https://github.com/Microsoft/TypeScript/issues/3612
-import dlBin = require('datalib/src/bins/bins');
-export var bin = dlBin;
 
-export function forEach(obj, f, thisArg) {
+export function contains(array: Array<any>, item: any) {
+  return array.indexOf(item) > -1;
+}
+
+export function forEach(obj, f: (a, d, k, o) => any, thisArg) {
   if (obj.forEach) {
     obj.forEach.call(thisArg, f);
   } else {
     for (var k in obj) {
-      f.call(thisArg, obj[k], k , obj);
+      if (obj.hasOwnProperty(k)) {
+        f.call(thisArg, obj[k], k, obj);
+      }
     }
   }
 }
 
-export function reduce(obj, f, init, thisArg?) {
+export function reduce(obj, f: (a, i, d, k, o) => any, init, thisArg?) {
   if (obj.reduce) {
     return obj.reduce.call(thisArg, f, init);
   } else {
     for (var k in obj) {
-      init = f.call(thisArg, init, obj[k], k, obj);
+      if (obj.hasOwnProperty(k)) {
+        init = f.call(thisArg, init, obj[k], k, obj);
+      }
     }
     return init;
   }
 }
 
-export function map(obj, f, thisArg?) {
+export function map(obj, f: (a, d, k, o) => any, thisArg?) {
   if (obj.map) {
     return obj.map.call(thisArg, f);
   } else {
     var output = [];
     for (var k in obj) {
-      output.push( f.call(thisArg, obj[k], k, obj));
+      if (obj.hasOwnProperty(k)) {
+        output.push(f.call(thisArg, obj[k], k, obj));
+      }
     }
     return output;
   }
 }
 
 export function any(arr: Array<any>, f: (d, k?, i?) => boolean) {
-  var i = 0, k;
-  for (k in arr) {
-    if (f(arr[k], k, i++)) return true;
+  var i = 0;
+  for (let k = 0; k<arr.length; k++) {
+    if (f(arr[k], k, i++)) {
+      return true;
+    }
   }
   return false;
 }
 
 export function all(arr: Array<any>, f: (d, k?, i?) => boolean) {
-  var i = 0, k;
-  for (k in arr) {
-    if (!f(arr[k], k, i++)) return false;
+  var i = 0;
+  for (let k = 0; k<arr.length; k++) {
+    if (!f(arr[k], k, i++)) {
+      return false;
+    }
   }
   return true;
 }
 
+// FIXME remove this
+import dlBin = require('datalib/src/bins/bins');
 export function getbins(stats, maxbins) {
   return dlBin({
     min: stats.min,
@@ -65,24 +78,6 @@ export function getbins(stats, maxbins) {
   });
 }
 
-//FIXME remove this
-/**
- * x[p[0]]...[p[n]] = val
- * @param noaugment determine whether new object should be added f
- * or non-existing properties along the path
- */
-export function setter(x, p, val, noaugment = false) {
-  for (var i=0; i<p.length-1; ++i) {
-    if (!noaugment && !(p[i] in x)){
-      x = x[p[i]] = {};
-    } else {
-      x = x[p[i]];
-    }
-  }
-  x[p[i]] = val;
-}
-
-
-export function error(message: any): void {
+export function error(message: any) {
   console.error('[VL Error]', message);
 }

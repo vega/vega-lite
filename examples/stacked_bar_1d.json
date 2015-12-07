@@ -1,0 +1,8 @@
+{
+  "data": {"url": "data/cars.json"},
+  "mark": "bar",
+  "encoding": {
+    "x": {"field": "Acceleration","type": "quantitative","aggregate": "sum"},
+    "color": {"field": "Origin","type": "nominal"}
+  }
+}

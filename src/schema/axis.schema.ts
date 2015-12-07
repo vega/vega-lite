@@ -4,8 +4,11 @@ export interface Axis {
   grid?: boolean;
   layer?: string;
   orient?: string;
-  ticks?: string;
+  ticks?: number;
   title?: string;
+  tickSize?: number;
+  offset?: number;
+  shortTimeNames?: boolean;
   // Vega-Lite only
   labelMaxLength?: number;
   titleMaxLength?: number;
@@ -70,6 +73,11 @@ export var axis = {
       type: 'integer',
       default: undefined,  // auto
       description: 'A title offset value for the axis.'
+    },
+    shortTimeNames: {
+      type: 'boolean',
+      default: false,
+      description: 'Whether month names and weekday names should be abbreviated.'
     },
     properties: {
       type: 'object',

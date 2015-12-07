@@ -1,16 +1,13 @@
 // utility for encoding mapping
 import {Encoding} from './schema/encoding.schema';
 import {FieldDef} from './schema/fielddef.schema';
-
 import {Channel, CHANNELS} from './channel';
-import * as vlFieldDef from './fielddef';
-import * as util from './util';
 
 export function countRetinal(encoding: Encoding) {
   var count = 0;
-  if (encoding.color) count++;
-  if (encoding.size) count++;
-  if (encoding.shape) count++;
+  if (encoding.color) { count++; }
+  if (encoding.size) { count++; }
+  if (encoding.shape) { count++; }
   return count;
 }
 
@@ -28,8 +25,18 @@ export function isAggregate(encoding: Encoding) {
   return false;
 }
 
+export function fieldDefs(encoding: Encoding): FieldDef[] {
+  var arr = [];
+  CHANNELS.forEach(function(k) {
+    if (has(encoding, k)) {
+      arr.push(encoding[k]);
+    }
+  });
+  return arr;
+};
+
 export function forEach(encoding: Encoding,
-                        f: (fd: FieldDef, c: Channel, i:number) => void) {
+  f: (fd: FieldDef, c: Channel, i: number) => void) {
   var i = 0;
   CHANNELS.forEach(function(channel) {
     if (has(encoding, channel)) {
@@ -39,7 +46,7 @@ export function forEach(encoding: Encoding,
 }
 
 export function map(encoding: Encoding,
-                    f: (fd: FieldDef, c: Channel, e: Encoding) => any) {
+  f: (fd: FieldDef, c: Channel, e: Encoding) => any) {
   var arr = [];
   CHANNELS.forEach(function(k) {
     if (has(encoding, k)) {
@@ -50,31 +57,13 @@ export function map(encoding: Encoding,
 }
 
 export function reduce(encoding: Encoding,
-                  f: (acc: any, fd: FieldDef, c: Channel, e: Encoding) => any,
-                  init) {
+  f: (acc: any, fd: FieldDef, c: Channel, e: Encoding) => any,
+  init) {
   var r = init;
   CHANNELS.forEach(function(k) {
     if (has(encoding, k)) {
-      r = f(r, encoding[k], k,  encoding);
+      r = f(r, encoding[k], k, encoding);
     }
   });
   return r;
-}
-
-// FIXME: revise this / consider if we should remove
-/**
- * return key-value pairs of field name and list of fields of that field name
- */
-export function fields(encoding: Encoding) {
-  return reduce(encoding, function (m, fieldDef: FieldDef) {
-    var fieldList = m[fieldDef.field] = m[fieldDef.field] || [];
-    var containsType = fieldList.containsType = fieldList.containsType || {};
-
-    if (fieldList.indexOf(fieldDef) === -1) {
-      fieldList.push(fieldDef);
-      // augment the array with containsType.Q / O / N / T
-      containsType[fieldDef.type] = true;
-    }
-    return m;
-  }, {});
 }
