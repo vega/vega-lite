@@ -87,8 +87,7 @@
         "typings/chai.d.ts",
         "typings/datalib.d.ts",
         "typings/mocha.d.ts",
-        "typings/node.d.ts",
-        "typings/vega.d.ts"
+        "typings/node.d.ts"
     ],
     "atom": {
         "rewriteTsconfig": true
