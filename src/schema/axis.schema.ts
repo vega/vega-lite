@@ -8,8 +8,8 @@ export interface Axis {
   title?: string;
   tickSize?: number;
   offset?: number;
-  shortTimeNames?: boolean;
   // Vega-Lite only
+  shortTimeLabels?: boolean;
   labelMaxLength?: number;
   titleMaxLength?: number;
   titleOffset?: number;
@@ -74,7 +74,7 @@ export var axis = {
       default: undefined,  // auto
       description: 'A title offset value for the axis.'
     },
-    shortTimeNames: {
+    shortTimeLabels: {
       type: 'boolean',
       default: false,
       description: 'Whether month names and weekday names should be abbreviated.'
