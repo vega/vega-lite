@@ -42,7 +42,7 @@ We have more example visualizations in our [gallery](https://vega.github.io/vega
 
 ### Simple bar chart
 
-This is a similar chart as one of the Vega examples in https://github.com/trifacta/vega/wiki/Tutorial. See how much simpler it is.
+This is a similar chart as one of the Vega examples in https://github.com/vega/vega/wiki/Tutorial. See how much simpler it is.
 
 ```json
 {
