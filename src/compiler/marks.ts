@@ -1,8 +1,9 @@
 import {Model} from './Model';
 import {X, Y, COLOR, TEXT, SIZE, SHAPE, DETAIL} from '../channel';
-import {AREA, BAR, LINE, TEXT as TEXTMARKS} from '../mark';
-import {QUANTITATIVE} from '../type';
+import {AREA, LINE, TEXT as TEXTMARKS} from '../mark';
 import {imputeTransform, stackTransform} from './stack';
+import {QUANTITATIVE} from '../type';
+import {extend} from '../util';
 
 /* mapping from vega-lite's mark types to vega's mark types */
 const MARKTYPES_MAP = {
@@ -76,20 +77,20 @@ export function compileMarks(model: Model): any[] {
       });
     }
 
-    let mainDef: any = {
-      // TODO add name
-      type: MARKTYPES_MAP[mark],
-      properties: {
-        update: properties[mark](model)
-      }
-    };
-    const stack = model.stack();
-    if (mark === BAR && stack) {
-      mainDef.from = {
-        transform: [stackTransform(model)]
-      };
-    }
-    marks.push(mainDef);
+    marks.push(extend({
+        // TODO add name
+        type: MARKTYPES_MAP[mark]
+      },
+      (model.stack()) ? {
+        from: {
+          transform: [stackTransform(model)]
+        }
+      } : {},
+      {
+        properties: {
+          update: properties[mark](model)
+        }
+      }));
 
     // if (model.has(LABEL)) {
     //   // TODO: add label by type here
