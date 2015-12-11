@@ -100,8 +100,6 @@ export function compileMarks(model: Model): any[] {
   }
 }
 
-
-
 function applyMarksConfig(marksProperties, marksConfig, propsList) {
   propsList.forEach(function(property) {
     const value = marksConfig[property];
@@ -272,7 +270,7 @@ export namespace properties {
         scale: X,
         field: model.field(X, { binSuffix: '_mid' })
       };
-    } else if (!model.has(X)) {
+    } else {
       p.x = { value: model.fieldDef(X).scale.bandWidth / 2 };
     }
 
@@ -282,7 +280,7 @@ export namespace properties {
         scale: Y,
         field: model.field(Y, { binSuffix: '_mid' })
       };
-    } else if (!model.has(Y)) {
+    } else {
       p.y = { value: model.fieldDef(Y).scale.bandWidth / 2 };
     }
 
@@ -292,7 +290,7 @@ export namespace properties {
         scale: SIZE,
         field: model.field(SIZE)
       };
-    } else if (!model.has(SIZE)) {
+    } else {
       p.size = { value: model.fieldDef(SIZE).value };
     }
 
@@ -302,7 +300,7 @@ export namespace properties {
         scale: SHAPE,
         field: model.field(SHAPE)
       };
-    } else if (!model.has(SHAPE)) {
+    } else {
       p.shape = { value: model.fieldDef(SHAPE).value };
     }
 
@@ -313,7 +311,7 @@ export namespace properties {
           scale: COLOR,
           field: model.field(COLOR)
         };
-      } else if (!model.has(COLOR)) {
+      } else {
         p.fill = { value: model.fieldDef(COLOR).value };
       }
     } else {
@@ -322,7 +320,7 @@ export namespace properties {
           scale: COLOR,
           field: model.field(COLOR)
         };
-      } else if (!model.has(COLOR)) {
+      } else {
         p.stroke = { value: model.fieldDef(COLOR).value };
       }
       p.strokeWidth = { value: model.config('marks').strokeWidth };
@@ -345,7 +343,7 @@ export namespace properties {
         scale: X,
         field: model.field(X, { binSuffix: '_mid' })
       };
-    } else if (!model.has(X)) {
+    } else {
       p.x = { value: 0 };
     }
 
@@ -355,7 +353,7 @@ export namespace properties {
         scale: Y,
         field: model.field(Y, { binSuffix: '_mid' })
       };
-    } else if (!model.has(Y)) {
+    } else {
       p.y = { field: { group: 'height' } };
     }
 
@@ -365,7 +363,7 @@ export namespace properties {
         scale: COLOR,
         field: model.field(COLOR)
       };
-    } else if (!model.has(COLOR)) {
+    } else {
       p.stroke = { value: model.fieldDef(COLOR).value };
     }
 
@@ -451,7 +449,7 @@ export namespace properties {
         scale: COLOR,
         field: model.field(COLOR)
       };
-    } else if (!model.has(COLOR)) {
+    } else {
       p.fill = { value: model.fieldDef(COLOR).value };
     }
 
@@ -478,7 +476,7 @@ export namespace properties {
       if (model.isDimension(X)) {
         p.x.offset = -model.fieldDef(X).scale.bandWidth / 3;
       }
-    } else if (!model.has(X)) {
+    } else {
       p.x = { value: 0 };
     }
 
@@ -491,7 +489,7 @@ export namespace properties {
       if (model.isDimension(Y)) {
         p.y.offset = -model.fieldDef(Y).scale.bandWidth / 3;
       }
-    } else if (!model.has(Y)) {
+    } else {
       p.y = { value: 0 };
     }
 
@@ -539,7 +537,7 @@ export namespace properties {
           scale: X,
           field: model.field(X, { binSuffix: '_mid' })
         };
-      } else if (!model.has(X)) {
+      } else {
         p.x = { value: model.fieldDef(X).scale.bandWidth / 2 };
       }
 
@@ -549,7 +547,7 @@ export namespace properties {
           scale: Y,
           field: model.field(Y, { binSuffix: '_mid' })
         };
-      } else if (!model.has(Y)) {
+      } else {
         p.y = { value: model.fieldDef(Y).scale.bandWidth / 2 };
       }
 
@@ -559,7 +557,7 @@ export namespace properties {
           scale: SIZE,
           field: model.field(SIZE)
         };
-      } else if (!model.has(X)) {
+      } else {
         p.size = { value: model.fieldDef(SIZE).value };
       }
 
@@ -572,7 +570,7 @@ export namespace properties {
           scale: COLOR,
           field: model.field(COLOR)
         };
-      } else if (!model.has(COLOR)) {
+      } else {
         p.fill = { value: model.fieldDef(COLOR).value };
       }
 
@@ -609,7 +607,7 @@ export namespace properties {
         scale: X,
         field: model.field(X, { binSuffix: '_mid' })
       };
-    } else if (!model.has(X)) {
+    } else {
       if (model.has(TEXT) && model.fieldDef(TEXT).type === QUANTITATIVE) {
         // TODO: make this -5 offset a config
         p.x = { field: { group: 'width' }, offset: -5 };
@@ -624,7 +622,7 @@ export namespace properties {
         scale: Y,
         field: model.field(Y, { binSuffix: '_mid' })
       };
-    } else if (!model.has(Y)) {
+    } else {
       p.y = { value: model.fieldDef(Y).scale.bandWidth / 2 };
     }
 
@@ -634,7 +632,7 @@ export namespace properties {
         scale: SIZE,
         field: model.field(SIZE)
       };
-    } else if (!model.has(SIZE)) {
+    } else {
       p.fontSize = { value: marksConfig.fontSize };
     }
 
