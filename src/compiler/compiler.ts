@@ -46,11 +46,7 @@ export function compile(spec, theme?) {
     // put the marks inside a facet cell's group
     extend(rootGroup, facetMixins(model, marks));
   } else {
-    rootGroup.marks = marks.map(function(mark) {
-      mark.from = mark.from || {};
-      mark.from.data = model.dataTable();
-      return mark;
-    });
+    rootGroup.marks = marks;
     const scaleNames = model.map(function(_, channel: Channel){
         return channel; // TODO model.scaleName(channel)
       });

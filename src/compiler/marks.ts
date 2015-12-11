@@ -1,8 +1,9 @@
 import {Model} from './Model';
-import {X, Y, COLOR, TEXT, SIZE, SHAPE, DETAIL} from '../channel';
-import {AREA, BAR, LINE, TEXT as TEXTMARKS} from '../mark';
-import {QUANTITATIVE} from '../type';
+import {X, Y, COLOR, TEXT, SIZE, SHAPE, DETAIL, ROW, COLUMN} from '../channel';
+import {AREA, LINE, TEXT as TEXTMARKS} from '../mark';
 import {imputeTransform, stackTransform} from './stack';
+import {QUANTITATIVE} from '../type';
+import {extend} from '../util';
 
 /* mapping from vega-lite's mark types to vega's mark types */
 const MARKTYPES_MAP = {
@@ -18,8 +19,13 @@ const MARKTYPES_MAP = {
 
 export function compileMarks(model: Model): any[] {
   const mark = model.mark();
+  const isFaceted = model.has(ROW) || model.has(COLUMN);
+  const dataFrom = {data: model.dataTable()};
+
   if (mark === LINE || mark === AREA) {
-    // For Line and Area, we sort values based on dimension by default
+    const details = detailFields(model);
+
+    // For line and area, we sort values based on dimension by default
     // For line, a special config "sortLineBy" is allowed
     let sortBy = mark === LINE ? model.config('sortLineBy') : undefined;
     if (!sortBy) {
@@ -29,18 +35,20 @@ export function compileMarks(model: Model): any[] {
 
     let pathMarks: any = {
       type: MARKTYPES_MAP[mark],
-      from: {
-        // from.data might be added later for non-facet, single group line/area
-        transform: [{ type: 'sort', by: sortBy }]
-      },
-      properties: {
-        update: properties[mark](model)
-      }
+      from: extend(
+        // If has facet, `from.data` will be added in the cell group.
+        // If has subfacet for line/area group, `from.data` will be added in the outer subfacet group below.
+        // If has no subfacet, add from.data.
+        isFaceted || details.length > 0 ? {} : dataFrom,
+
+        // sort transform
+        {transform: [{ type: 'sort', by: sortBy }]}
+      ),
+      properties: { update: properties[mark](model) }
     };
 
     // FIXME is there a case where area requires impute without stacking?
 
-    const details = detailFields(model);
     if (details.length > 0) { // have level of details - need to facet line into subgroups
       const facetTransform = { type: 'facet', groupby: details };
       const transform = mark === AREA && model.stack() ?
@@ -51,10 +59,12 @@ export function compileMarks(model: Model): any[] {
       return [{
         name: mark + '-facet',
         type: 'group',
-        from: {
-          // from.data might be added later for non-facet charts
-          transform: transform
-        },
+        from: extend(
+          // If has facet, `from.data` will be added in the cell group.
+          // Otherwise, add it here.
+          isFaceted ? {} : dataFrom,
+          {transform: transform}
+        ),
         properties: {
           update: {
             width: { field: { group: 'width' } },
@@ -70,26 +80,34 @@ export function compileMarks(model: Model): any[] {
     let marks = []; // TODO: vgMarks
     if (mark === TEXTMARKS && model.has(COLOR)) {
       // add background to 'text' marks if has color
-      marks.push({
-        type: 'rect',
-        properties: { update: properties.textBackground(model) }
-      });
+      marks.push(extend(
+        {type: 'rect'},
+        // If has facet, `from.data` will be added in the cell group.
+        // Otherwise, add it here.
+        isFaceted ? {} : {from: dataFrom},
+        // Properties
+        {properties: { update: properties.textBackground(model) } }
+      ));
     }
 
-    let mainDef: any = {
-      // TODO add name
-      type: MARKTYPES_MAP[mark],
-      properties: {
-        update: properties[mark](model)
-      }
-    };
-    const stack = model.stack();
-    if (mark === BAR && stack) {
-      mainDef.from = {
-        transform: [stackTransform(model)]
-      };
-    }
-    marks.push(mainDef);
+    marks.push(extend(
+      {
+        // TODO add name
+        type: MARKTYPES_MAP[mark]
+      },
+      // Add `from` if needed
+      (!isFaceted || model.stack()) ? {
+        from: extend(
+          // If faceted, `from.data` will be added in the cell group.
+          // Otherwise, add it here
+          isFaceted ? {} : dataFrom,
+          // Stacked Chart need additional transform
+          model.stack() ? {transform: [stackTransform(model)]} : {}
+        )
+      } : {},
+      // properties groups
+      { properties: { update: properties[mark](model) } }
+    ));
 
     // if (model.has(LABEL)) {
     //   // TODO: add label by type here
