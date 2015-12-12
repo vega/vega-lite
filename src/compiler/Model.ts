@@ -181,6 +181,10 @@ export class Model {
     return this.config('numberFormat');
   };
 
+  public channels(): Channel[] {
+    return vlEncoding.channels(this._spec.encoding);
+  }
+
   public map(f: (fd: FieldDef, c: Channel, e: Encoding) => any) {
     return vlEncoding.map(this._spec.encoding, f);
   }

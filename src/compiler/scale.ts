@@ -10,8 +10,8 @@ import * as time from './time';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 import {BAR, TEXT as TEXT_MARK} from '../mark';
 
-export function compileScales(names: Array<Channel>, model: Model) {
-  return names.reduce(function(a, channel: Channel) {
+export function compileScales(channels: Channel[], model: Model) {
+  return channels.reduce(function(a, channel: Channel) {
     var scaleDef: any = {
       name: model.scale(channel),
       type: type(channel, model),

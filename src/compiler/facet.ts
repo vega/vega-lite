@@ -1,5 +1,5 @@
 import * as util from '../util';
-import {COLUMN, ROW, X, Y, Channel} from '../channel';
+import {COLUMN, ROW, X, Y} from '../channel';
 import {Model} from './Model';
 
 import {compileAxis} from './axis';
@@ -111,15 +111,14 @@ export function facetMixins(model: Model, marks) {
   }
   rootMarks.push(facetGroup);
 
-  const scaleNames = model.map(function(_, channel: Channel){
-    return model.scale(channel);
-  });
-
   return {
     marks: rootMarks,
     axes: rootAxes,
     // assuming equal cellWidth here
-    scales: compileScales(scaleNames, model)
+    scales: compileScales(
+      model.channels(), // TODO: with nesting, not all scale might be a root-level
+      model
+    )
   };
 }
 

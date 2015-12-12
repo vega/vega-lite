@@ -11,6 +11,16 @@ export function countRetinal(encoding: Encoding) {
   return count;
 }
 
+export function channels(encoding: Encoding) {
+  var arr = [];
+  CHANNELS.forEach(function(channel) {
+    if (has(encoding, channel)) {
+      arr.push(channel);
+    }
+  });
+  return arr;
+}
+
 export function has(encoding: Encoding, channel: Channel) {
   var fieldDef: FieldDef = encoding && encoding[channel];
   return fieldDef && fieldDef.field;
