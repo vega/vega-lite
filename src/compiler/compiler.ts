@@ -21,7 +21,7 @@ export function compile(spec, theme?) {
   const layout = model.layout();
 
   let rootGroup:any = extend({
-      name: spec.name ? spec.name + '_root' : 'root',
+      name: spec.name ? spec.name + '-root' : 'root',
       type: 'group',
     },
     spec.description ? {description: spec.description} : {},
