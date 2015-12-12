@@ -181,16 +181,16 @@ export class Model {
     return this.config('numberFormat');
   };
 
-  public map(f: (fd: FieldDef, c: Channel, e: Encoding) => any) {
-    return vlEncoding.map(this._spec.encoding, f);
+  public map(f: (fd: FieldDef, c: Channel, e: Encoding) => any, t?: any) {
+    return vlEncoding.map(this._spec.encoding, f, t);
   }
 
-  public reduce(f: (acc: any, fd: FieldDef, c: Channel, e: Encoding) => any, init) {
-    return vlEncoding.reduce(this._spec.encoding, f, init);
+  public reduce(f: (acc: any, fd: FieldDef, c: Channel, e: Encoding) => any, init, t?: any) {
+    return vlEncoding.reduce(this._spec.encoding, f, init, t);
   }
 
-  public forEach(f: (fd: FieldDef, c: Channel, i:number) => void) {
-    return vlEncoding.forEach(this._spec.encoding, f);
+  public forEach(f: (fd: FieldDef, c: Channel, i:number) => void, t?: any) {
+    return vlEncoding.forEach(this._spec.encoding, f, t);
   }
 
   public isOrdinalScale(channel: Channel) {
