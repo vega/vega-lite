@@ -10,6 +10,7 @@ describe('data', function () {
   describe('for aggregate encoding', function () {
     it('should contain two tables', function() {
       var encoding = new Model({
+          mark: POINT,
           encoding: {
             x: {field: 'a', type: TEMPORAL},
             y: {field: 'b', type: QUANTITATIVE, scale: {type: 'log'}, aggregate: 'sum'}
@@ -23,6 +24,7 @@ describe('data', function () {
 
   describe('when contains log in non-aggregate', function () {
     var rawEncodingWithLog = new Model({
+        mark: POINT,
         encoding: {
           x: {field: 'a', type: TEMPORAL},
           y: {field: 'b', type: QUANTITATIVE, scale: {type: 'log'}}
@@ -89,6 +91,7 @@ describe('data.source', function() {
               {field: 'b2', expr: 'datum.b * 2'}
             ]
           },
+          mark: POINT,
           encoding: {
             x: {field: 'a', type: TEMPORAL},
             y: {field: 'b', type: QUANTITATIVE},
@@ -109,6 +112,7 @@ describe('data.source', function() {
       data: {
         filter: 'datum.a > datum.b && datum.c === datum.d'
       },
+      mark: POINT,
       encoding: {
         x: {field: 'a', type: TEMPORAL, timeUnit: 'year'},
         y: {
@@ -211,6 +215,7 @@ describe('data.source', function() {
 describe('data.summary', function () {
   it('should return correct aggregation', function() {
     var encoding = new Model({
+        mark: POINT,
         encoding: {
           'y': {
             'aggregate': 'sum',

@@ -1,7 +1,7 @@
 import {Spec} from '../schema/schema';
 import {FieldDef} from '../schema/fielddef.schema';
 
-import {COLUMN, ROW, X, Y, COLOR, DETAIL, Channel} from '../channel';
+import {COLUMN, ROW, X, Y, COLOR, DETAIL, Channel, supportMark} from '../channel';
 import {SOURCE, SUMMARY} from '../data';
 import * as vlFieldDef from '../fielddef';
 import * as vlEncoding from '../encoding';
@@ -41,18 +41,25 @@ export class Model {
   private _stack: StackProperties;
   private _layout: any;
 
-  // TODO: include _stack, _layout, _style, etc.
-
   constructor(spec: Spec, theme?) {
     var defaults = schema.instantiate();
     this._spec = schemaUtil.merge(defaults, theme || {}, spec);
 
-    // convert short type to full type
+
     vlEncoding.forEach(this._spec.encoding, function(fieldDef: FieldDef, channel: Channel) {
+      if (!supportMark(channel, this._spec.mark)) {
+        // Drop unsupported channel
+
+        // FIXME consolidate warning method
+        console.warn(channel, 'dropped as it is incompatible with', this._spec.mark);
+        delete this._spec.encoding[channel].field;
+      }
+
       if (fieldDef.type) {
+        // convert short type to full type
         fieldDef.type = getFullName(fieldDef.type);
       }
-    });
+    }, this);
 
     // calculate stack
     this._stack = this.getStackProperties();
