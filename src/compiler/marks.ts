@@ -19,6 +19,7 @@ const MARKTYPES_MAP = {
 
 export function compileMarks(model: Model): any[] {
   const mark = model.mark();
+  const name = model.spec().name;
   const isFaceted = model.has(ROW) || model.has(COLUMN);
   const dataFrom = {data: model.dataTable()};
 
@@ -33,19 +34,22 @@ export function compileMarks(model: Model): any[] {
       sortBy = '-' + model.field(sortField);
     }
 
-    let pathMarks: any = {
-      type: MARKTYPES_MAP[mark],
-      from: extend(
-        // If has facet, `from.data` will be added in the cell group.
-        // If has subfacet for line/area group, `from.data` will be added in the outer subfacet group below.
-        // If has no subfacet, add from.data.
-        isFaceted || details.length > 0 ? {} : dataFrom,
+    let pathMarks: any = extend(
+      name ? { name: name + '-marks' } : {},
+      {
+        type: MARKTYPES_MAP[mark],
+        from: extend(
+          // If has facet, `from.data` will be added in the cell group.
+          // If has subfacet for line/area group, `from.data` will be added in the outer subfacet group below.
+          // If has no subfacet, add from.data.
+          isFaceted || details.length > 0 ? {} : dataFrom,
 
-        // sort transform
-        {transform: [{ type: 'sort', by: sortBy }]}
-      ),
-      properties: { update: properties[mark](model) }
-    };
+          // sort transform
+          {transform: [{ type: 'sort', by: sortBy }]}
+        ),
+        properties: { update: properties[mark](model) }
+      }
+    );
 
     // FIXME is there a case where area requires impute without stacking?
 
@@ -57,7 +61,7 @@ export function compileMarks(model: Model): any[] {
         [facetTransform];
 
       return [{
-        name: mark + '-facet',
+        name: (name ? name + '-' : '') + mark + '-facet',
         type: 'group',
         from: extend(
           // If has facet, `from.data` will be added in the cell group.
@@ -81,6 +85,7 @@ export function compileMarks(model: Model): any[] {
     if (mark === TEXTMARKS && model.has(COLOR)) {
       // add background to 'text' marks if has color
       marks.push(extend(
+        name ? { name: name + '-background' } : {},
         {type: 'rect'},
         // If has facet, `from.data` will be added in the cell group.
         // Otherwise, add it here.
@@ -91,10 +96,8 @@ export function compileMarks(model: Model): any[] {
     }
 
     marks.push(extend(
-      {
-        // TODO add name
-        type: MARKTYPES_MAP[mark]
-      },
+      name ? { name: name + '-marks' } : {},
+      { type: MARKTYPES_MAP[mark] },
       // Add `from` if needed
       (!isFaceted || model.stack()) ? {
         from: extend(
