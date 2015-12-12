@@ -14,13 +14,13 @@ export function facetMixins(model: Model, marks) {
   const cellWidth: any = !model.has(COLUMN) ?
       {field: {group: 'width'}} :     // cellWidth = width -- just use group's
     layout.cellWidth.field ?
-      {scale: 'column', band: true} : // bandSize of the scale
+      {scale: model.scale(COLUMN), band: true} : // bandSize of the scale
       {value: layout.cellWidth};      // static value
 
   const cellHeight: any = !model.has(ROW) ?
       {field: {group: 'height'}} :  // cellHeight = height -- just use group's
     layout.cellHeight.field ?
-      {scale: 'row', band: true} :  // bandSize of the scale
+      {scale: model.scale(ROW), band: true} :  // bandSize of the scale
       {value: layout.cellHeight};   // static value
 
   let facetGroupProperties: any = {
@@ -49,7 +49,7 @@ export function facetMixins(model: Model, marks) {
       util.error('Row encoding should be ordinal.');
     }
     facetGroupProperties.y = {
-      scale: ROW,
+      scale: model.scale(ROW),
       field: model.field(ROW)
     };
 
@@ -75,7 +75,7 @@ export function facetMixins(model: Model, marks) {
       util.error('Col encoding should be ordinal.');
     }
     facetGroupProperties.x = {
-      scale: COLUMN,
+      scale: model.scale(COLUMN),
       field: model.field(COLUMN)
     };
 
@@ -112,7 +112,7 @@ export function facetMixins(model: Model, marks) {
   rootMarks.push(facetGroup);
 
   const scaleNames = model.map(function(_, channel: Channel){
-    return channel; // TODO model.scaleName(channel)
+    return model.scale(channel);
   });
 
   return {
@@ -131,7 +131,7 @@ function getXAxesGroup(model: Model, cellWidth, hasCol: boolean) {
       update: {
         width: cellWidth,
         height: {field: {group: 'height'}},
-        x: hasCol ? {scale: COLUMN, field: model.field(COLUMN)} : {value: 0},
+        x: hasCol ? {scale: model.scale(COLUMN), field: model.field(COLUMN)} : {value: 0},
         y: {value: - model.config('cell').padding / 2}
       }
     },
@@ -156,7 +156,7 @@ function getYAxesGroup(model: Model, cellHeight, hasRow: boolean) {
         width: {field: {group: 'width'}},
         height: cellHeight,
         x: {value: - model.config('cell').padding / 2},
-        y: hasRow ? {scale: ROW, field: model.field(ROW)} : {value: 0}
+        y: hasRow ? {scale: model.scale(ROW), field: model.field(ROW)} : {value: 0}
       }
     },
     axes: [compileAxis(Y, model)]
@@ -185,7 +185,7 @@ function getRowRulesGroup(model: Model, cellHeight): any { // TODO: VgMarks
     properties: {
       update: {
         y: {
-          scale: 'row',
+          scale: model.scale(ROW),
           field: model.field(ROW),
           offset: (rowRulesOnTop ? -1 : 1) * offset
         },
@@ -233,7 +233,7 @@ function getColumnRulesGroup(model: Model, cellWidth): any { // TODO: VgMarks
     properties: {
       update: {
         x: {
-          scale: 'column',
+          scale: model.scale(COLUMN),
           field: model.field(COLUMN),
           offset: (colRulesOnLeft ? -1 : 1) * offset
         },

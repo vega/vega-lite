@@ -10,20 +10,20 @@ export function compileLegends(model: Model) {
 
   if (model.has(COLOR) && model.fieldDef(COLOR).legend) {
     defs.push(compileLegend(model, COLOR, {
-      fill: COLOR
+      fill: model.scale(COLOR)
       // TODO: consider if this should be stroke for line
     }));
   }
 
   if (model.has(SIZE) && model.fieldDef(SIZE).legend) {
     defs.push(compileLegend(model, SIZE, {
-      size: SIZE
+      size: model.scale(SIZE)
     }));
   }
 
   if (model.has(SHAPE) && model.fieldDef(SHAPE).legend) {
     defs.push(compileLegend(model, SHAPE, {
-      shape: SHAPE
+      shape: model.scale(SHAPE)
     }));
   }
   return defs;
@@ -102,14 +102,14 @@ namespace properties {
         // fill or stroke
         if (model.config('marks').filled) {
           if (model.has(COLOR) && channel === COLOR) {
-            symbols.fill = {scale: COLOR, field: 'data'};
+            symbols.fill = {scale: model.scale(COLOR), field: 'data'};
           } else {
             symbols.fill = {value: model.fieldDef(COLOR).value};
           }
           symbols.stroke = {value: 'transparent'};
         } else {
           if (model.has(COLOR) && channel === COLOR) {
-            symbols.stroke = {scale: COLOR, field: 'data'};
+            symbols.stroke = {scale: model.scale(COLOR), field: 'data'};
           } else {
             symbols.stroke = {value: model.fieldDef(COLOR).value};
           }

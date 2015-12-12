@@ -48,8 +48,8 @@ export function compile(spec, theme?) {
   } else {
     rootGroup.marks = marks;
     const scaleNames = model.map(function(_, channel: Channel){
-        return channel; // TODO model.scaleName(channel)
-      });
+      return model.scale(channel);
+    });
     rootGroup.scales = compileScales(scaleNames, model);
 
     var axes = (model.has(X) ? [compileAxis(X, model)] : [])

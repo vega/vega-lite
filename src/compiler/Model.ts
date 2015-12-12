@@ -238,6 +238,12 @@ export class Model {
     return this._spec.config[name];
   }
 
+  /** returns scale name for a given channel */
+  public scale(channel: Channel): string {
+    const name = this.spec().name;
+    return (name ? name + '-' : '') + channel;
+  }
+
   // FIXME -- move this to marks.ts
   public markOpacity(): number {
     const opacity = this.config('marks').opacity;

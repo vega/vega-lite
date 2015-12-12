@@ -153,26 +153,26 @@ export namespace properties {
     // x's and width
     if (stack && X === stack.fieldChannel) {
       p.x = {
-        scale: X,
+        scale: model.scale(X),
         field: model.field(X) + '_start'
       };
       p.x2 = {
-        scale: X,
+        scale: model.scale(X),
         field: model.field(X) + '_end'
       };
     } else if (model.fieldDef(X).bin) {
       p.x = {
-        scale: X,
+        scale: model.scale(X),
         field: model.field(X, { binSuffix: '_start' }),
         offset: 1
       };
       p.x2 = {
-        scale: X,
+        scale: model.scale(X),
         field: model.field(X, { binSuffix: '_end' })
       };
     } else if (model.isMeasure(X)) {
       p.x = {
-        scale: X,
+        scale: model.scale(X),
         field: model.field(X)
       };
       if (!model.has(Y) || model.isDimension(Y)) {
@@ -181,7 +181,7 @@ export namespace properties {
     } else {
       if (model.has(X)) { // is ordinal
         p.xc = {
-          scale: X,
+          scale: model.scale(X),
           field: model.field(X)
         };
       } else {
@@ -194,7 +194,7 @@ export namespace properties {
       if (!model.has(X) || model.isOrdinalScale(X)) { // no X or X is ordinal
         if (model.has(SIZE)) {
           p.width = {
-            scale: SIZE,
+            scale: model.scale(SIZE),
             field: model.field(SIZE)
           };
         } else {
@@ -212,33 +212,33 @@ export namespace properties {
     // y's & height
     if (stack && Y === stack.fieldChannel) {
       p.y = {
-        scale: Y,
+        scale: model.scale(Y),
         field: model.field(Y) + '_start'
       };
       p.y2 = {
-        scale: Y,
+        scale: model.scale(Y),
         field: model.field(Y) + '_end'
       };
     } else if (model.fieldDef(Y).bin) {
       p.y = {
-        scale: Y,
+        scale: model.scale(Y),
         field: model.field(Y, { binSuffix: '_start' })
       };
       p.y2 = {
-        scale: Y,
+        scale: model.scale(Y),
         field: model.field(Y, { binSuffix: '_end' }),
         offset: 1
       };
     } else if (model.isMeasure(Y)) {
       p.y = {
-        scale: Y,
+        scale: model.scale(Y),
         field: model.field(Y)
       };
       p.y2 = { field: { group: 'height' } };
     } else {
       if (model.has(Y)) { // is ordinal
         p.yc = {
-          scale: Y,
+          scale: model.scale(Y),
           field: model.field(Y)
         };
       } else {
@@ -250,7 +250,7 @@ export namespace properties {
 
       if (model.has(SIZE)) {
         p.height = {
-          scale: SIZE,
+          scale: model.scale(SIZE),
           field: model.field(SIZE)
         };
       } else {
@@ -265,7 +265,7 @@ export namespace properties {
     // fill
     if (model.has(COLOR)) {
       p.fill = {
-        scale: COLOR,
+        scale: model.scale(COLOR),
         field: model.field(COLOR)
       };
     } else {
@@ -287,7 +287,7 @@ export namespace properties {
     // x
     if (model.has(X)) {
       p.x = {
-        scale: X,
+        scale: model.scale(X),
         field: model.field(X, { binSuffix: '_mid' })
       };
     } else {
@@ -297,7 +297,7 @@ export namespace properties {
     // y
     if (model.has(Y)) {
       p.y = {
-        scale: Y,
+        scale: model.scale(Y),
         field: model.field(Y, { binSuffix: '_mid' })
       };
     } else {
@@ -307,7 +307,7 @@ export namespace properties {
     // size
     if (model.has(SIZE)) {
       p.size = {
-        scale: SIZE,
+        scale: model.scale(SIZE),
         field: model.field(SIZE)
       };
     } else {
@@ -317,7 +317,7 @@ export namespace properties {
     // shape
     if (model.has(SHAPE)) {
       p.shape = {
-        scale: SHAPE,
+        scale: model.scale(SHAPE),
         field: model.field(SHAPE)
       };
     } else {
@@ -328,7 +328,7 @@ export namespace properties {
     if (marksConfig.filled) {
       if (model.has(COLOR)) {
         p.fill = {
-          scale: COLOR,
+          scale: model.scale(COLOR),
           field: model.field(COLOR)
         };
       } else {
@@ -337,7 +337,7 @@ export namespace properties {
     } else {
       if (model.has(COLOR)) {
         p.stroke = {
-          scale: COLOR,
+          scale: model.scale(COLOR),
           field: model.field(COLOR)
         };
       } else {
@@ -360,7 +360,7 @@ export namespace properties {
     // x
     if (model.has(X)) {
       p.x = {
-        scale: X,
+        scale: model.scale(X),
         field: model.field(X, { binSuffix: '_mid' })
       };
     } else {
@@ -370,7 +370,7 @@ export namespace properties {
     // y
     if (model.has(Y)) {
       p.y = {
-        scale: Y,
+        scale: model.scale(Y),
         field: model.field(Y, { binSuffix: '_mid' })
       };
     } else {
@@ -380,7 +380,7 @@ export namespace properties {
     // stroke
     if (model.has(COLOR)) {
       p.stroke = {
-        scale: COLOR,
+        scale: model.scale(COLOR),
         field: model.field(COLOR)
       };
     } else {
@@ -410,25 +410,25 @@ export namespace properties {
     // x
     if (stack && X === stack.fieldChannel) {
       p.x = {
-        scale: X,
+        scale: model.scale(X),
         field: model.field(X) + '_start'
       };
       p.x2 = {
-        scale: X,
+        scale: model.scale(X),
         field: model.field(X) + '_end'
       };
     } else if (model.isMeasure(X)) {
-      p.x = { scale: X, field: model.field(X) };
+      p.x = { scale: model.scale(X), field: model.field(X) };
       if (model.isDimension(Y)) {
         p.x2 = {
-          scale: X,
+          scale: model.scale(X),
           value: 0
         };
         p.orient = { value: 'horizontal' };
       }
     } else if (model.has(X)) {
       p.x = {
-        scale: X,
+        scale: model.scale(X),
         field: model.field(X, { binSuffix: '_mid' })
       };
     } else {
@@ -438,25 +438,25 @@ export namespace properties {
     // y
     if (stack && Y === stack.fieldChannel) {
       p.y = {
-        scale: Y,
+        scale: model.scale(Y),
         field: model.field(Y) + '_start'
       };
       p.y2 = {
-        scale: Y,
+        scale: model.scale(Y),
         field: model.field(Y) + '_end'
       };
     } else if (model.isMeasure(Y)) {
       p.y = {
-        scale: Y,
+        scale: model.scale(Y),
         field: model.field(Y)
       };
       p.y2 = {
-        scale: Y,
+        scale: model.scale(Y),
         value: 0
       };
     } else if (model.has(Y)) {
       p.y = {
-        scale: Y,
+        scale: model.scale(Y),
         field: model.field(Y, { binSuffix: '_mid' })
       };
     } else {
@@ -466,7 +466,7 @@ export namespace properties {
     // fill
     if (model.has(COLOR)) {
       p.fill = {
-        scale: COLOR,
+        scale: model.scale(COLOR),
         field: model.field(COLOR)
       };
     } else {
@@ -490,7 +490,7 @@ export namespace properties {
     // x
     if (model.has(X)) {
       p.x = {
-        scale: X,
+        scale: model.scale(X),
         field: model.field(X, { binSuffix: '_mid' })
       };
       if (model.isDimension(X)) {
@@ -503,7 +503,7 @@ export namespace properties {
     // y
     if (model.has(Y)) {
       p.y = {
-        scale: Y,
+        scale: model.scale(Y),
         field: model.field(Y, { binSuffix: '_mid' })
       };
       if (model.isDimension(Y)) {
@@ -532,7 +532,7 @@ export namespace properties {
     // fill
     if (model.has(COLOR)) {
       p.fill = {
-        scale: COLOR,
+        scale: model.scale(COLOR),
         field: model.field(COLOR)
       };
     } else {
@@ -554,7 +554,7 @@ export namespace properties {
       // x
       if (model.has(X)) {
         p.x = {
-          scale: X,
+          scale: model.scale(X),
           field: model.field(X, { binSuffix: '_mid' })
         };
       } else {
@@ -564,7 +564,7 @@ export namespace properties {
       // y
       if (model.has(Y)) {
         p.y = {
-          scale: Y,
+          scale: model.scale(Y),
           field: model.field(Y, { binSuffix: '_mid' })
         };
       } else {
@@ -574,7 +574,7 @@ export namespace properties {
       // size
       if (model.has(SIZE)) {
         p.size = {
-          scale: SIZE,
+          scale: model.scale(SIZE),
           field: model.field(SIZE)
         };
       } else {
@@ -587,7 +587,7 @@ export namespace properties {
       // fill
       if (model.has(COLOR)) {
         p.fill = {
-          scale: COLOR,
+          scale: model.scale(COLOR),
           field: model.field(COLOR)
         };
       } else {
@@ -611,7 +611,7 @@ export namespace properties {
       y: { value: 0 },
       width: { field: { group: 'width' } },
       height: { field: { group: 'height' } },
-      fill: { scale: COLOR, field: model.field(COLOR) }
+      fill: { scale: model.scale(COLOR), field: model.field(COLOR) }
     };
   }
 
@@ -624,7 +624,7 @@ export namespace properties {
     // x
     if (model.has(X)) {
       p.x = {
-        scale: X,
+        scale: model.scale(X),
         field: model.field(X, { binSuffix: '_mid' })
       };
     } else {
@@ -639,7 +639,7 @@ export namespace properties {
     // y
     if (model.has(Y)) {
       p.y = {
-        scale: Y,
+        scale: model.scale(Y),
         field: model.field(Y, { binSuffix: '_mid' })
       };
     } else {
@@ -649,7 +649,7 @@ export namespace properties {
     // size
     if (model.has(SIZE)) {
       p.fontSize = {
-        scale: SIZE,
+        scale: model.scale(SIZE),
         field: model.field(SIZE)
       };
     } else {
