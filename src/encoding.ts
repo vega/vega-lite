@@ -12,18 +12,14 @@ export function countRetinal(encoding: Encoding) {
 }
 
 export function channels(encoding: Encoding) {
-  var arr = [];
-  CHANNELS.forEach(function(channel) {
-    if (has(encoding, channel)) {
-      arr.push(channel);
-    }
+  return CHANNELS.filter(function(channel) {
+    return has(encoding, channel);
   });
-  return arr;
 }
 
-export function has(encoding: Encoding, channel: Channel) {
+export function has(encoding: Encoding, channel: Channel): boolean {
   var fieldDef: FieldDef = encoding && encoding[channel];
-  return fieldDef && fieldDef.field;
+  return fieldDef && !!fieldDef.field;
 }
 
 export function isAggregate(encoding: Encoding) {
