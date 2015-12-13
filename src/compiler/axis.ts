@@ -16,7 +16,7 @@ export function compileAxis(channel: Channel, model: Model) {
   // TODO: replace any with Vega Axis Interface
   var def:any = {
     type: type,
-    scale: channel
+    scale: model.scale(channel)
   };
 
   // 1. Add properties

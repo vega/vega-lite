@@ -10,10 +10,10 @@ import * as time from './time';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 import {BAR, TEXT as TEXT_MARK} from '../mark';
 
-export function compileScales(names: Array<Channel>, model: Model) {
-  return names.reduce(function(a, channel: Channel) {
+export function compileScales(channels: Channel[], model: Model) {
+  return channels.map(function(channel: Channel) {
     var scaleDef: any = {
-      name: channel,
+      name: model.scale(channel),
       type: type(channel, model),
     };
 
@@ -38,8 +38,8 @@ export function compileScales(names: Array<Channel>, model: Model) {
       }
     });
 
-    return (a.push(scaleDef), a);
-  }, []);
+    return scaleDef;
+  });
 }
 
 export function type(channel: Channel, model: Model): string {

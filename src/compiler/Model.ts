@@ -188,6 +188,10 @@ export class Model {
     return this.config('numberFormat');
   };
 
+  public channels(): Channel[] {
+    return vlEncoding.channels(this._spec.encoding);
+  }
+
   public map(f: (fd: FieldDef, c: Channel, e: Encoding) => any, t?: any) {
     return vlEncoding.map(this._spec.encoding, f, t);
   }
@@ -243,6 +247,12 @@ export class Model {
 
   public config(name: string) {
     return this._spec.config[name];
+  }
+
+  /** returns scale name for a given channel */
+  public scale(channel: Channel): string {
+    const name = this.spec().name;
+    return (name ? name + '-' : '') + channel;
   }
 
   // FIXME -- move this to marks.ts
