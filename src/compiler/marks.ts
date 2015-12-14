@@ -17,6 +17,8 @@ const MARKTYPES_MAP = {
   square: 'symbol'
 };
 
+declare var exports;
+
 export function compileMarks(model: Model): any[] {
   const mark = model.mark();
   const name = model.spec().name;
