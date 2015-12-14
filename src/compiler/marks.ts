@@ -47,7 +47,7 @@ export function compileMarks(model: Model): any[] {
           // sort transform
           {transform: [{ type: 'sort', by: sortBy }]}
         ),
-        properties: { update: properties[mark](model) }
+        properties: { update: exports[mark].properties(model) }
       }
     );
 
@@ -91,7 +91,7 @@ export function compileMarks(model: Model): any[] {
         // Otherwise, add it here.
         isFaceted ? {} : {from: dataFrom},
         // Properties
-        {properties: { update: properties.textBackground(model) } }
+        {properties: { update: text.background(model) } }
       ));
     }
 
@@ -109,7 +109,7 @@ export function compileMarks(model: Model): any[] {
         )
       } : {},
       // properties groups
-      { properties: { update: properties[mark](model) } }
+      { properties: { update: exports[mark].properties(model) } }
     ));
 
     // if (model.has(LABEL)) {
@@ -142,8 +142,8 @@ function detailFields(model: Model): string[] {
   }, []);
 }
 
-export namespace properties {
-  export function bar(model: Model) {
+export namespace bar {
+  export function properties(model: Model) {
     const stack = model.stack();
 
     // FIXME(#724) apply orient from config if applicable
@@ -278,8 +278,10 @@ export namespace properties {
 
     return p;
   }
+}
 
-  export function point(model: Model) {
+export namespace point {
+  export function properties(model: Model) {
     // TODO Use Vega's marks properties interface
     var p: any = {};
     const marksConfig = model.config('marks');
@@ -352,8 +354,10 @@ export namespace properties {
 
     return p;
   }
+}
 
-  export function line(model: Model) {
+export namespace line {
+  export function properties(model: Model) {
     // TODO Use Vega's marks properties interface
     var p: any = {};
 
@@ -397,9 +401,11 @@ export namespace properties {
 
     return p;
   }
+}
 
+export namespace area {
   // TODO(#694): optimize area's usage with bin
-  export function area(model: Model) {
+  export function properties(model: Model) {
     const stack = model.stack();
 
     // FIXME(#724): apply orient properties
@@ -481,8 +487,10 @@ export namespace properties {
 
     return p;
   }
+}
 
-  export function tick(model: Model) {
+export namespace tick {
+  export function properties(model: Model) {
     // TODO Use Vega's marks properties interface
     // FIXME are /3 , /1.5 divisions here correct?
     var p: any = {};
@@ -545,67 +553,74 @@ export namespace properties {
 
     return p;
   }
+}
 
-  function filled_point_props(shape) {
-    return function(model: Model) {
-      // TODO Use Vega's marks properties interface
-      var p: any = {};
+function filled_point_props(shape) {
+  return function(model: Model) {
+    // TODO Use Vega's marks properties interface
+    var p: any = {};
 
-      // x
-      if (model.has(X)) {
-        p.x = {
-          scale: model.scale(X),
-          field: model.field(X, { binSuffix: '_mid' })
-        };
-      } else {
-        p.x = { value: model.fieldDef(X).scale.bandWidth / 2 };
-      }
+    // x
+    if (model.has(X)) {
+      p.x = {
+        scale: model.scale(X),
+        field: model.field(X, { binSuffix: '_mid' })
+      };
+    } else {
+      p.x = { value: model.fieldDef(X).scale.bandWidth / 2 };
+    }
 
-      // y
-      if (model.has(Y)) {
-        p.y = {
-          scale: model.scale(Y),
-          field: model.field(Y, { binSuffix: '_mid' })
-        };
-      } else {
-        p.y = { value: model.fieldDef(Y).scale.bandWidth / 2 };
-      }
+    // y
+    if (model.has(Y)) {
+      p.y = {
+        scale: model.scale(Y),
+        field: model.field(Y, { binSuffix: '_mid' })
+      };
+    } else {
+      p.y = { value: model.fieldDef(Y).scale.bandWidth / 2 };
+    }
 
-      // size
-      if (model.has(SIZE)) {
-        p.size = {
-          scale: model.scale(SIZE),
-          field: model.field(SIZE)
-        };
-      } else {
-        p.size = { value: model.fieldDef(SIZE).value };
-      }
+    // size
+    if (model.has(SIZE)) {
+      p.size = {
+        scale: model.scale(SIZE),
+        field: model.field(SIZE)
+      };
+    } else {
+      p.size = { value: model.fieldDef(SIZE).value };
+    }
 
-      // shape
-      p.shape = { value: shape };
+    // shape
+    p.shape = { value: shape };
 
-      // fill
-      if (model.has(COLOR)) {
-        p.fill = {
-          scale: model.scale(COLOR),
-          field: model.field(COLOR)
-        };
-      } else {
-        p.fill = { value: model.fieldDef(COLOR).value };
-      }
+    // fill
+    if (model.has(COLOR)) {
+      p.fill = {
+        scale: model.scale(COLOR),
+        field: model.field(COLOR)
+      };
+    } else {
+      p.fill = { value: model.fieldDef(COLOR).value };
+    }
 
-      // opacity
-      var opacity = model.markOpacity();
-      if (opacity) { p.opacity = { value: opacity }; };
+    // opacity
+    var opacity = model.markOpacity();
+    if (opacity) { p.opacity = { value: opacity }; };
 
-      return p;
-    };
-  }
+    return p;
+  };
+}
 
-  export const circle = filled_point_props('circle');
-  export const square = filled_point_props('square');
+export namespace circle {
+  export const properties = filled_point_props('circle');
+}
 
-  export function textBackground(model: Model) {
+export namespace square {
+  export const properties = filled_point_props('square');
+}
+
+export namespace text {
+  export function background(model: Model) {
     return {
       x: { value: 0 },
       y: { value: 0 },
@@ -615,7 +630,7 @@ export namespace properties {
     };
   }
 
-  export function text(model: Model) {
+  export function properties(model: Model) {
     // TODO Use Vega's marks properties interface
     let p: any = {};
     const fieldDef = model.fieldDef(TEXT);
