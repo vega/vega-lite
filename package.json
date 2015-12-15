@@ -42,7 +42,7 @@
   },
   "homepage": "https://github.com/vega/vega-lite",
   "devDependencies": {
-    "browser-sync": "^2.10.0",
+    "browser-sync": "^2.10.1",
     "browserify": "^12.0.1",
     "browserify-shim": "^3.8.11",
     "browserify-versionify": "^1.0.6",
@@ -53,16 +53,16 @@
     "nodemon": "^1.8.1",
     "source-map-support": "^0.4.0",
     "tsify": "^0.13.1",
-    "tslint": "^3.1.1",
-    "typescript": "^1.7.3",
+    "tslint": "^3.2.0",
+    "typescript": "^1.7.5",
     "uglify-js": "^2.6.1",
     "vega": "^2.4.1",
     "watchify": "^3.6.1",
-    "z-schema": "^3.16.0"
+    "z-schema": "^3.16.1"
   },
   "dependencies": {
     "datalib": "^1.5.7",
-    "yargs": "^3.30.0"
+    "yargs": "^3.31.0"
   },
   "browserify": {
     "transform": [
