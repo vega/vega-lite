@@ -1,4 +1,5 @@
 import * as util from '../util';
+import {extend} from '../util';
 import {COLUMN, ROW, X, Y} from '../channel';
 import {Model} from './Model';
 
@@ -93,9 +94,9 @@ export function facetMixins(model: Model, marks) {
       cellAxes.push(compileAxis(Y, model));
     }
   }
-
+  const name = model.spec().name;
   let facetGroup: any = {
-    name: 'cell', // FIXME model.name() + cell
+    name: (name ? name + '-' : '') + 'cell',
     type: 'group',
     from: {
       data: model.dataTable(),
@@ -122,60 +123,62 @@ export function facetMixins(model: Model, marks) {
   };
 }
 
-function getXAxesGroup(model: Model, cellWidth, hasCol: boolean) {
-  let xAxesGroup: any = { // TODO: VgMarks
-    name: 'x-axes',
-    type: 'group',
-    properties: {
-      update: {
-        width: cellWidth,
-        height: {field: {group: 'height'}},
-        x: hasCol ? {scale: model.scale(COLUMN), field: model.field(COLUMN)} : {value: 0},
-        y: {value: - model.config('cell').padding / 2}
-      }
+function getXAxesGroup(model: Model, cellWidth, hasCol: boolean) { // TODO: VgMarks
+  const name = model.spec().name;
+  return extend({
+      name: (name ? name + '-' : '') + 'x-axes',
+      type: 'group'
     },
-    axes: [compileAxis(X, model)]
-  };
-  if (hasCol) {
-    // FIXME facet is too expensive here - we only need to know unique columns
-    xAxesGroup.from = {
-      data: model.dataTable(),
-      transform: {type: 'facet', groupby: [model.field(COLUMN)]}
-    };
-  }
-  return xAxesGroup;
+    hasCol ? {
+      from: {
+        data: model.dataTable(),
+        transform: [{type: 'facet', groupby: [model.field(COLUMN)]}]
+      }
+    } : {},
+    {
+      properties: {
+        update: {
+          width: cellWidth,
+          height: {field: {group: 'height'}},
+          x: hasCol ? {scale: model.scale(COLUMN), field: model.field(COLUMN)} : {value: 0},
+          y: {value: - model.config('cell').padding / 2}
+        }
+      },
+      axes: [compileAxis(X, model)]
+    });
 }
 
-function getYAxesGroup(model: Model, cellHeight, hasRow: boolean) {
-  let yAxesGroup: any = { // TODO: VgMarks
-    name: 'y-axes',
-    type: 'group',
-    properties: {
-      update: {
-        width: {field: {group: 'width'}},
-        height: cellHeight,
-        x: {value: - model.config('cell').padding / 2},
-        y: hasRow ? {scale: model.scale(ROW), field: model.field(ROW)} : {value: 0}
-      }
+function getYAxesGroup(model: Model, cellHeight, hasRow: boolean) { // TODO: VgMarks
+  const name = model.spec().name;
+  return extend({
+      name: (name ? name + '-' : '') + 'y-axes',
+      type: 'group'
     },
-    axes: [compileAxis(Y, model)]
-  };
-
-  if (hasRow) {
-    // FIXME facet is too expensive here - we only need to know unique rows
-    yAxesGroup.from = {
-      data: model.dataTable(),
-      transform: {type: 'facet', groupby: [model.field(ROW)]}
-    };
-  }
-  return yAxesGroup;
+    hasRow ? {
+      from: {
+        data: model.dataTable(),
+        transform: [{type: 'facet', groupby: [model.field(ROW)]}]
+      }
+    } : {},
+    {
+      properties: {
+        update: {
+          width: {field: {group: 'width'}},
+          height: cellHeight,
+          x: {value: - model.config('cell').padding / 2},
+          y: hasRow ? {scale: model.scale(ROW), field: model.field(ROW)} : {value: 0}
+        }
+      },
+      axes: [compileAxis(Y, model)]
+    });
 }
 
 function getRowRulesGroup(model: Model, cellHeight): any { // TODO: VgMarks
   const rowRulesOnTop = !model.has(X) || model.fieldDef(X).axis.orient !== 'top';
   const offset = model.config('cell').padding / 2 - 1;
+  const name = model.spec().name;
   const rowRules = {
-    name: 'row-rules',
+    name: (name ? name + '-' : '') + 'row-rules',
     type: 'rule',
     from: {
       data: model.dataTable(),
@@ -200,7 +203,7 @@ function getRowRulesGroup(model: Model, cellHeight): any { // TODO: VgMarks
     return rowRules;
   } // otherwise, need to offset all rules by cellHeight
   return {
-    name: 'row-rules-group',
+    name: (name ? name + '-' : '') + 'row-rules-group',
     type: 'group',
     properties: {
       update: {
@@ -222,8 +225,9 @@ function getRowRulesGroup(model: Model, cellHeight): any { // TODO: VgMarks
 function getColumnRulesGroup(model: Model, cellWidth): any { // TODO: VgMarks
   const colRulesOnLeft = !model.has(Y) || model.fieldDef(Y).axis.orient === 'right';
   const offset = model.config('cell').padding / 2 - 1;
+  const name = model.spec().name;
   const columnRules = {
-    name: 'column-rules',
+    name: (name ? name + '-' : '') + 'column-rules',
     type: 'rule',
     from: {
       data: model.dataTable(),
@@ -248,7 +252,7 @@ function getColumnRulesGroup(model: Model, cellWidth): any { // TODO: VgMarks
     return columnRules;
   } // otherwise, need to offset all rules by cellWidth
   return {
-    name: 'column-rules-group',
+    name: (name ? name + '-' : '') + 'column-rules-group',
     type: 'group',
     properties: {
       update: {
