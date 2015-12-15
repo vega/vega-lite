@@ -1,6 +1,6 @@
 'use strict';
 
-/*global vl, d3, vg, alert, EXAMPLES */
+/* global vl, d3, vg */
 
 d3.select('#vl-version').text(vl.version);
 d3.select('#vg-version').text(vg.version);
