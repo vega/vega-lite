@@ -94,9 +94,9 @@ export function facetMixins(model: Model, marks) {
       cellAxes.push(compileAxis(Y, model));
     }
   }
-
+  const name = model.spec().name;
   let facetGroup: any = {
-    name: 'cell', // FIXME model.name() + cell
+    name: (name ? name + '-' : '') + 'cell',
     type: 'group',
     from: {
       data: model.dataTable(),
@@ -124,8 +124,9 @@ export function facetMixins(model: Model, marks) {
 }
 
 function getXAxesGroup(model: Model, cellWidth, hasCol: boolean) {
+  const name = model.spec().name;
   return extend({ // TODO: VgMarks
-      name: 'x-axes',
+      name: (name ? name + '-' : '') + 'x-axes',
       type: 'group'
     },
     hasCol ? {
@@ -148,8 +149,9 @@ function getXAxesGroup(model: Model, cellWidth, hasCol: boolean) {
 }
 
 function getYAxesGroup(model: Model, cellHeight, hasRow: boolean) {
+  const name = model.spec().name;
   return extend({ // TODO: VgMarks
-      name: 'y-axes',
+      name: (name ? name + '-' : '') + 'y-axes',
       type: 'group'
     },
     hasRow ? {
@@ -174,8 +176,9 @@ function getYAxesGroup(model: Model, cellHeight, hasRow: boolean) {
 function getRowRulesGroup(model: Model, cellHeight): any { // TODO: VgMarks
   const rowRulesOnTop = !model.has(X) || model.fieldDef(X).axis.orient !== 'top';
   const offset = model.config('cell').padding / 2 - 1;
+  const name = model.spec().name;
   const rowRules = {
-    name: 'row-rules',
+    name: (name ? name + '-' : '') + 'row-rules',
     type: 'rule',
     from: {
       data: model.dataTable(),
@@ -200,7 +203,7 @@ function getRowRulesGroup(model: Model, cellHeight): any { // TODO: VgMarks
     return rowRules;
   } // otherwise, need to offset all rules by cellHeight
   return {
-    name: 'row-rules-group',
+    name: (name ? name + '-' : '') + 'row-rules-group',
     type: 'group',
     properties: {
       update: {
@@ -222,8 +225,9 @@ function getRowRulesGroup(model: Model, cellHeight): any { // TODO: VgMarks
 function getColumnRulesGroup(model: Model, cellWidth): any { // TODO: VgMarks
   const colRulesOnLeft = !model.has(Y) || model.fieldDef(Y).axis.orient === 'right';
   const offset = model.config('cell').padding / 2 - 1;
+  const name = model.spec().name;
   const columnRules = {
-    name: 'column-rules',
+    name: (name ? name + '-' : '') + 'column-rules',
     type: 'rule',
     from: {
       data: model.dataTable(),
@@ -248,7 +252,7 @@ function getColumnRulesGroup(model: Model, cellWidth): any { // TODO: VgMarks
     return columnRules;
   } // otherwise, need to offset all rules by cellWidth
   return {
-    name: 'column-rules-group',
+    name: (name ? name + '-' : '') + 'column-rules-group',
     type: 'group',
     properties: {
       update: {
