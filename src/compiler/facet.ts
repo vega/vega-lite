@@ -123,9 +123,9 @@ export function facetMixins(model: Model, marks) {
   };
 }
 
-function getXAxesGroup(model: Model, cellWidth, hasCol: boolean) {
+function getXAxesGroup(model: Model, cellWidth, hasCol: boolean) { // TODO: VgMarks
   const name = model.spec().name;
-  return extend({ // TODO: VgMarks
+  return extend({
       name: (name ? name + '-' : '') + 'x-axes',
       type: 'group'
     },
@@ -148,9 +148,9 @@ function getXAxesGroup(model: Model, cellWidth, hasCol: boolean) {
     });
 }
 
-function getYAxesGroup(model: Model, cellHeight, hasRow: boolean) {
+function getYAxesGroup(model: Model, cellHeight, hasRow: boolean) { // TODO: VgMarks
   const name = model.spec().name;
-  return extend({ // TODO: VgMarks
+  return extend({
       name: (name ? name + '-' : '') + 'y-axes',
       type: 'group'
     },
