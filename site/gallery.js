@@ -21,19 +21,24 @@ d3.json('examples/vlexamples.json', function(VL_SPECS) {
     .attr('id', function(d) { return d.name; });
 
   viz.append('h3').text(function(d){ return d.title; });
-  viz.append('div').attr('class', 'view');
   viz.append('div').attr('class', 'desc');
+  viz.append('div').attr('class', 'view');
 
   examples.forEach(function(example) {
     d3.json('examples/' + example.name + '.json', function(error, vlSpec) {
-      var vgSpec = vl.compile(vlSpec).spec;
-      vg.parse.spec(vgSpec, function(chart) {
-        var view = chart({
-          el: d3.select('.viz#'+ example.name + '> div.view').node(),
-          renderer: 'svg'
-        });
-        view.update();
+      var embedSpec = {
+        mode: 'vega-lite',
+        spec: vlSpec,
+        actions: {
+          export: false
+        }
+      };
+      vg.embed('.viz#'+ example.name + '> div.view', embedSpec, function(view, vega_spec) {
+        // Callback receiving the View instance and parsed Vega spec...
+        // The View resides under the '#vis' element
       });
+
+      d3.select('.viz#'+ example.name + '> .desc').text(vlSpec.description || '');
     });
   });
-})
+});
