@@ -1,4 +1,5 @@
 import * as util from '../util';
+import {extend} from '../util';
 import {COLUMN, ROW, X, Y} from '../channel';
 import {Model} from './Model';
 
@@ -123,52 +124,51 @@ export function facetMixins(model: Model, marks) {
 }
 
 function getXAxesGroup(model: Model, cellWidth, hasCol: boolean) {
-  let xAxesGroup: any = { // TODO: VgMarks
-    name: 'x-axes',
-    type: 'group',
-    properties: {
-      update: {
-        width: cellWidth,
-        height: {field: {group: 'height'}},
-        x: hasCol ? {scale: model.scale(COLUMN), field: model.field(COLUMN)} : {value: 0},
-        y: {value: - model.config('cell').padding / 2}
-      }
+  return extend({ // TODO: VgMarks
+      name: 'x-axes',
+      type: 'group'
     },
-    axes: [compileAxis(X, model)]
-  };
-  if (hasCol) {
-    // FIXME facet is too expensive here - we only need to know unique columns
-    xAxesGroup.from = {
-      data: model.dataTable(),
-      transform: {type: 'facet', groupby: [model.field(COLUMN)]}
-    };
-  }
-  return xAxesGroup;
+    hasCol ? {
+      from: {
+        data: model.dataTable(),
+        transform: [{type: 'facet', groupby: [model.field(COLUMN)]}]
+      }
+    } : {},
+    {
+      properties: {
+        update: {
+          width: cellWidth,
+          height: {field: {group: 'height'}},
+          x: hasCol ? {scale: model.scale(COLUMN), field: model.field(COLUMN)} : {value: 0},
+          y: {value: - model.config('cell').padding / 2}
+        }
+      },
+      axes: [compileAxis(X, model)]
+    });
 }
 
 function getYAxesGroup(model: Model, cellHeight, hasRow: boolean) {
-  let yAxesGroup: any = { // TODO: VgMarks
-    name: 'y-axes',
-    type: 'group',
-    properties: {
-      update: {
-        width: {field: {group: 'width'}},
-        height: cellHeight,
-        x: {value: - model.config('cell').padding / 2},
-        y: hasRow ? {scale: model.scale(ROW), field: model.field(ROW)} : {value: 0}
-      }
+  return extend({ // TODO: VgMarks
+      name: 'y-axes',
+      type: 'group'
     },
-    axes: [compileAxis(Y, model)]
-  };
-
-  if (hasRow) {
-    // FIXME facet is too expensive here - we only need to know unique rows
-    yAxesGroup.from = {
-      data: model.dataTable(),
-      transform: {type: 'facet', groupby: [model.field(ROW)]}
-    };
-  }
-  return yAxesGroup;
+    hasRow ? {
+      from: {
+        data: model.dataTable(),
+        transform: [{type: 'facet', groupby: [model.field(ROW)]}]
+      }
+    } : {},
+    {
+      properties: {
+        update: {
+          width: {field: {group: 'width'}},
+          height: cellHeight,
+          x: {value: - model.config('cell').padding / 2},
+          y: hasRow ? {scale: model.scale(ROW), field: model.field(ROW)} : {value: 0}
+        }
+      },
+      axes: [compileAxis(Y, model)]
+    });
 }
 
 function getRowRulesGroup(model: Model, cellHeight): any { // TODO: VgMarks
