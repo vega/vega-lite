@@ -42,17 +42,39 @@ a:hover {
 	overflow: auto;
   /* avoid horizontal scrolling */
   padding-right: 15px;
-}
 
-.viz > div {
-	display: flex;
+  display: flex;
+  flex-direction: column;
 }
 
 .viz h3 {
 	margin: 0;
 }
 
-.viz p {
+.viz .desc {
 	color: gray;
-	max-width: 400px;
+  font-size: 0.9em;
+  display: inline-block;
+  max-width: 250px;
+}
+
+.viz .vega-embed {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 0;
+}
+
+.viz .vega-embed .vega {
+  flex: 1 0 0;
+}
+
+.viz .vega-actions a {
+  font-size: 0.8em;
+  display: list-item;
+  color: gray;
+}
+
+.viz .vega-actions a:hover {
+  color: #333;
+  text-decoration: underline;
 }
