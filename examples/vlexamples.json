@@ -21,9 +21,16 @@
       "title": "A scatterplot"
     },
     {
-      "name": "scatter_binned",
-      "title": "Binned Scatterplot",
-      "hide": true 
+      "name": "scatter_binned_axes",
+      "title": "Scatterplot with binned axes"
+    },
+    {
+      "name": "scatter_binned_color",
+      "title": "Scatterplot with binned color"
+    },
+    {
+      "name": "scatter_binned_color",
+      "title": "Scatterplot with binned size"
     },
     {
       "name": "scatter_log",
@@ -88,6 +95,9 @@
     },
     {
       "name": "trellis_scatter"
+    },
+    {
+      "name": "trellis_scatter_binned_row"
     }
   ]
 }
