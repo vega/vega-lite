@@ -132,7 +132,11 @@ function getXAxesGroup(model: Model, cellWidth, hasCol: boolean) { // TODO: VgMa
     hasCol ? {
       from: {
         data: model.dataTable(),
-        transform: [{type: 'facet', groupby: [model.field(COLUMN)]}]
+        transform: [{
+          type: 'aggregate',
+          groupby: [model.field(COLUMN)],
+          summarize: {'*': 'count'} // just a placeholder aggregation
+        }]
       }
     } : {},
     {
@@ -157,7 +161,11 @@ function getYAxesGroup(model: Model, cellHeight, hasRow: boolean) { // TODO: VgM
     hasRow ? {
       from: {
         data: model.dataTable(),
-        transform: [{type: 'facet', groupby: [model.field(ROW)]}]
+        transform: [{
+          type: 'aggregate',
+          groupby: [model.field(ROW)],
+          summarize: {'*': 'count'} // just a placeholder aggregation
+        }]
       }
     } : {},
     {
