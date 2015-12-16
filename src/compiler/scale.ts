@@ -1,7 +1,7 @@
 // https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations
 declare var exports;
 
-import {extend} from '../util';
+import {contains, extend} from '../util';
 import {Model} from './Model';
 import {SHARED_DOMAIN_OPS} from '../aggregate';
 import {COLUMN, ROW, X, Y, SHAPE, SIZE, COLOR, TEXT, Channel} from '../channel';
@@ -54,7 +54,9 @@ export function type(channel: Channel, model: Model): string {
       return time.scale.type(fieldDef.timeUnit, channel);
     case QUANTITATIVE:
       if (fieldDef.bin) {
-        return channel === ROW || channel === COLUMN || channel === SHAPE ? 'ordinal' : 'linear';
+        // TODO: Ideally binned COLOR should be an ordinal scale
+        // However, currently ordinal scale doesn't support color ramp yet.
+        return contains([X, Y, COLOR], channel) ? 'linear' : 'ordinal';
       }
       return fieldDef.scale.type;
   }
@@ -92,20 +94,29 @@ export function domain(model: Model, channel:Channel, type) {
   if (useRawDomain) { // useRawDomain - only Q/T
     return {
       data: SOURCE,
-      field: model.field(channel, {noAggregate:true})
+      field: model.field(channel, {noAggregate: true})
     };
   } else if (fieldDef.bin) { // bin
-
-    return {
+    return type === 'ordinal' ? {
+      // ordinal bin scale takes domain from bin_range, ordered by bin_start
       data: model.dataTable(),
-      field: type === 'ordinal' ?
-        // ordinal scale only use bin start for now
-        model.field(channel, { binSuffix: '_start' }) :
-        // need to merge both bin_start and bin_end for non-ordinal scale
-        [
-          model.field(channel, { binSuffix: '_start' }),
-          model.field(channel, { binSuffix: '_end' })
-        ]
+      field: model.field(channel, { binSuffix: '_range' }),
+      sort: {
+        field: model.field(channel, { binSuffix: '_start' }),
+        op: 'min' // min or max doesn't matter since same _range would have the same _start
+      }
+    } : channel === COLOR ? {
+      // Currently, binned on color uses linear scale and thus use _mid point
+      // TODO: This ideally should become ordinal scale once ordinal scale supports color ramp.
+      data: model.dataTable(),
+      field: model.field(channel, { binSuffix: '_mid' })
+    } : {
+      // other linear bin scale merges both bin_start and bin_end for non-ordinal scale
+      data: model.dataTable(),
+      field: [
+        model.field(channel, { binSuffix: '_start' }),
+        model.field(channel, { binSuffix: '_end' })
+      ]
     };
   } else if (sort) { // have sort -- only for ordinal
     return {
@@ -285,6 +296,8 @@ export function rangeMixins(model: Model, channel: Channel, scaleType): any {
       return {range: 'shapes'};
     case COLOR:
       if (scaleType === 'ordinal') {
+        // TODO: once Vega supports color ramp for ordinal scale
+        // This should returns a color ramp for ordinal scale of ordinal or binned data
         return {range: 'category10'};
       } else { // time or quantitative
         return {range: ['#AFC6A3', '#09622A']}; // tableau greens
