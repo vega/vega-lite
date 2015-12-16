@@ -106,10 +106,10 @@ export function domain(model: Model, channel:Channel, type) {
         op: 'min' // min or max doesn't matter since same _range would have the same _start
       }
     } : channel === COLOR ? {
-      // Currently, binned on color uses linear scale and thus use _mid point
+      // Currently, binned on color uses linear scale and thus use _start point
       // TODO: This ideally should become ordinal scale once ordinal scale supports color ramp.
       data: model.dataTable(),
-      field: model.field(channel, { binSuffix: '_mid' })
+      field: model.field(channel, { binSuffix: '_start' })
     } : {
       // other linear bin scale merges both bin_start and bin_end for non-ordinal scale
       data: model.dataTable(),
