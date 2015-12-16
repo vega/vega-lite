@@ -33,9 +33,10 @@ d3.json('examples/vlexamples.json', function(VL_SPECS) {
           export: false
         }
       };
-      vg.embed('.viz#'+ example.name + '> div.view', embedSpec, function(view, vega_spec) {
-        // Callback receiving the View instance and parsed Vega spec...
-        // The View resides under the '#vis' element
+      vg.embed('.viz#'+ example.name + '> div.view', embedSpec, function(err) {
+        if (err) {
+          console.error(err);
+        }
       });
 
       d3.select('.viz#'+ example.name + '> .desc').text(vlSpec.description || '');
