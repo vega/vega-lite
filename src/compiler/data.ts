@@ -275,8 +275,7 @@ export namespace layout {
       formulas.push({
         type: 'formula',
         field: 'width',
-        expr: cellWidth + ' * ' + colCardinality + ' + ' +
-              '(' + colCardinality + ' - 1) * ' + cellPadding
+        expr: '(' + cellWidth + ' + ' + cellPadding + ')' + ' * ' + colCardinality
       });
     }
 
@@ -298,8 +297,7 @@ export namespace layout {
       formulas.push({
         type: 'formula',
         field: 'height',
-        expr: cellHeight + ' * ' + rowCardinality + ' + ' +
-              '(' +rowCardinality + ' - 1) * ' + cellPadding
+        expr: '(' + cellHeight + '+' + cellPadding + ')' + ' * ' + rowCardinality
       });
     }
 
