@@ -25,7 +25,7 @@ export function imputeTransform(model: Model) {
   return {
     type: 'impute',
     field: model.field(stack.fieldChannel),
-    groupby: [stack.stackChannels.map(function(c) { return model.field(c); })],
+    groupby: stack.stackChannels.map(function(c) { return model.field(c); }),
     orderby: [model.field(stack.groupbyChannel)],
     method: 'value',
     value: 0
