@@ -127,7 +127,7 @@ describe('compile.marks', function() {
             e = new Model(f),
             def = marks.point.properties(e);
         it('should have scale for shape', function () {
-          expect(def.shape).to.eql({scale: SHAPE, field: 'bin_yield_start'});
+          expect(def.shape).to.eql({scale: SHAPE, field: 'bin_yield_range'});
         });
       });
     });

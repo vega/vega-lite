@@ -9,7 +9,7 @@ import {Channel, X, Y, ROW, COLUMN} from '../channel';
 import {SOURCE, STACKED, LAYOUT, SUMMARY} from '../data';
 import * as time from './time';
 import {QUANTITATIVE, TEMPORAL} from '../type';
-
+import {type as scaleType} from './scale';
 
 /**
  * Create Vega's data array from a given encoding.
@@ -158,6 +158,15 @@ export namespace source {
         }
 
         transform.push(binTrans);
+        if (scaleType(channel, model) === 'ordinal') {
+          transform.push({
+            type: 'formula',
+            field: model.field(channel, {binSuffix: '_range'}),
+            expr: model.field(channel, {datum: true, binSuffix: '_start'}) +
+                  '+ \'-\' +' +
+                  model.field(channel, {datum: true, binSuffix: '_end'})
+          });
+        }
       }
       return transform;
     }, []);

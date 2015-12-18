@@ -68,7 +68,11 @@ describe('vl.compile.scale', function() {
 
           expect(domain).to.eql({
             data: SOURCE,
-            field: 'bin_origin_start'
+            field: 'bin_origin_range',
+            sort: {
+              field: 'bin_origin_start',
+              op: 'min'
+            }
           });
         });
 

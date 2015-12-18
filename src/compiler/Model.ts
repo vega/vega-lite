@@ -10,6 +10,7 @@ import {AREA, BAR, POINT, TICK, CIRCLE, SQUARE, Mark} from '../mark';
 import * as schema from '../schema/schema';
 import * as schemaUtil from '../schema/schemautil';
 import {StackProperties} from './stack';
+import {type as scaleType} from './scale';
 import {getFullName, NOMINAL, ORDINAL, TEMPORAL} from '../type';
 import {contains, duplicate} from '../util';
 import * as time from './time';
@@ -161,7 +162,8 @@ export class Model {
     } else if (opt.fn) {
       return f + opt.fn + '_' + field;
     } else if (!opt.nofn && fieldDef.bin) {
-      var binSuffix = opt.binSuffix || '_start';
+      var binSuffix = opt.binSuffix ||
+        (scaleType(channel, this) === 'ordinal' ? '_range' : '_start');
       return f + 'bin_' + field + binSuffix;
     } else if (!opt.nofn && !opt.noAggregate && fieldDef.aggregate) {
       return f + fieldDef.aggregate + '_' + field;
