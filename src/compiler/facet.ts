@@ -183,7 +183,6 @@ function getYAxesGroup(model: Model, cellHeight, hasRow: boolean) { // TODO: VgM
 
 function getRowRulesGroup(model: Model, cellHeight): any { // TODO: VgMarks
   const rowRulesOnTop = !model.has(X) || model.fieldDef(X).axis.orient !== 'top';
-  const offset = model.config('cell').padding / 2 - 1;
   const name = model.spec().name;
   const rowRules = {
     name: (name ? name + '-' : '') + 'row-rules',
@@ -197,7 +196,7 @@ function getRowRulesGroup(model: Model, cellHeight): any { // TODO: VgMarks
         y: {
           scale: model.scale(ROW),
           field: model.field(ROW),
-          offset: (rowRulesOnTop ? -1 : 1) * offset
+          offset: (rowRulesOnTop ? -1 : 1) * model.config('cell').padding / 2
         },
         x: {value: 0, offset: -model.config('cell').gridOffset},
         x2: {field: {group: 'width'}, offset: model.config('cell').gridOffset},
@@ -232,7 +231,6 @@ function getRowRulesGroup(model: Model, cellHeight): any { // TODO: VgMarks
 
 function getColumnRulesGroup(model: Model, cellWidth): any { // TODO: VgMarks
   const colRulesOnLeft = !model.has(Y) || model.fieldDef(Y).axis.orient === 'right';
-  const offset = model.config('cell').padding / 2 - 1;
   const name = model.spec().name;
   const columnRules = {
     name: (name ? name + '-' : '') + 'column-rules',
@@ -246,7 +244,7 @@ function getColumnRulesGroup(model: Model, cellWidth): any { // TODO: VgMarks
         x: {
           scale: model.scale(COLUMN),
           field: model.field(COLUMN),
-          offset: (colRulesOnLeft ? -1 : 1) * offset
+          offset: (colRulesOnLeft ? -1 : 1) * model.config('cell').padding / 2
         },
         y: {value: 0, offset: -model.config('cell').gridOffset},
         y2: {field: {group: 'height'}, offset: model.config('cell').gridOffset},
