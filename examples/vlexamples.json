@@ -94,10 +94,12 @@
       "title": "Trellis Stacked Bar Chart"
     },
     {
-      "name": "trellis_scatter"
+      "name": "trellis_scatter",
+      "title": "Trellis Scatter Plot"
     },
     {
-      "name": "trellis_scatter_binned_row"
+      "name": "trellis_scatter_binned_row",
+      "title": "Trellis Scatter Plot, faceted by Binned Row"
     }
   ]
 }
