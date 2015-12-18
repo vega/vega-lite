@@ -56,12 +56,12 @@
     "tslint": "^3.2.0",
     "typescript": "^1.7.5",
     "uglify-js": "^2.6.1",
-    "vega": "^2.4.1",
+    "vega": "^2.4.2",
     "watchify": "^3.6.1",
     "z-schema": "^3.16.1"
   },
   "dependencies": {
-    "datalib": "^1.5.7",
+    "datalib": "^1.5.8",
     "yargs": "^3.31.0"
   },
   "browserify": {

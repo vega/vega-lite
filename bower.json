@@ -29,7 +29,7 @@
     "example/_diff/*"
   ],
   "dependencies": {
-    "vega": "^2.4.1"
+    "vega": "^2.4.2"
   },
   "devDependencies": {
     "vega-embed": "~2.0.0"
