@@ -175,15 +175,7 @@ export class Model {
   }
 
   public fieldTitle(channel: Channel): string {
-    if (vlFieldDef.isCount(this._spec.encoding[channel])) {
-      return vlFieldDef.COUNT_DISPLAYNAME;
-    }
-    var fn = this._spec.encoding[channel].aggregate || this._spec.encoding[channel].timeUnit || (this._spec.encoding[channel].bin && 'bin');
-    if (fn) {
-      return fn.toUpperCase() + '(' + this._spec.encoding[channel].field + ')';
-    } else {
-      return this._spec.encoding[channel].field;
-    }
+    return vlFieldDef.title(this._spec.encoding[channel]);
   }
 
   public numberFormat(channel?: Channel): string {
