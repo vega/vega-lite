@@ -1,5 +1,5 @@
 import {Model} from './Model';
-import {X, Y, COLOR, TEXT, SIZE, SHAPE, DETAIL, ROW, COLUMN} from '../channel';
+import {X, Y, COLOR, TEXT, SIZE, SHAPE, DETAIL, ROW, COLUMN, LABEL} from '../channel';
 import {AREA, LINE, TEXT as TEXTMARKS} from '../mark';
 import {imputeTransform, stackTransform} from './stack';
 import {QUANTITATIVE} from '../type';
@@ -114,9 +114,24 @@ export function compileMarks(model: Model): any[] {
       { properties: { update: exports[mark].properties(model) } }
     ));
 
-    // if (model.has(LABEL)) {
-    //   // TODO: add label by type here
-    // }
+    if (model.has(LABEL)) {
+      const labelProperties = exports[mark].labels(model);
+
+      // check if we have label method for current mark type.
+      // TODO(#240): remove this line once we support label for all mark types
+      if (labelProperties) {
+        // add label group
+        marks.push(extend(
+          name ? { name: name + '-label' } : {},
+          {type: 'text'},
+          // If has facet, `from.data` will be added in the cell group.
+          // Otherwise, add it here.
+          isFaceted ? {} : {from: dataFrom},
+          // Properties
+          { properties: { update: labelProperties } }
+        ));
+      }
+    }
 
     return marks;
   }
@@ -280,6 +295,11 @@ export namespace bar {
 
     return p;
   }
+
+  export function labels(model: Model) {
+    // TODO(#64): fill this method
+    return undefined;
+  }
 }
 
 export namespace point {
@@ -356,6 +376,10 @@ export namespace point {
 
     return p;
   }
+
+  export function labels(model: Model) {
+    // TODO(#240): fill this method
+  }
 }
 
 export namespace line {
@@ -402,6 +426,11 @@ export namespace line {
     applyMarksConfig(p, model.config('marks'), ['interpolate', 'tension']);
 
     return p;
+  }
+
+  export function labels(model: Model) {
+    // TODO(#240): fill this method
+    return undefined;
   }
 }
 
@@ -489,6 +518,11 @@ export namespace area {
 
     return p;
   }
+
+  export function labels(model: Model) {
+    // TODO(#240): fill this method
+    return undefined;
+  }
 }
 
 export namespace tick {
@@ -555,6 +589,11 @@ export namespace tick {
 
     return p;
   }
+
+  export function labels(model: Model) {
+    // TODO(#240): fill this method
+    return undefined;
+  }
 }
 
 function filled_point_props(shape) {
@@ -615,10 +654,20 @@ function filled_point_props(shape) {
 
 export namespace circle {
   export const properties = filled_point_props('circle');
+
+  export function labels(model: Model) {
+    // TODO(#240): fill this method
+    return undefined;
+  }
 }
 
 export namespace square {
   export const properties = filled_point_props('square');
+
+  export function labels(model: Model) {
+    // TODO(#240): fill this method
+    return undefined;
+  }
 }
 
 export namespace text {
@@ -703,5 +752,10 @@ export namespace text {
         'fontStyle', 'radius', 'theta']);
 
     return p;
+  }
+
+  export function labels(model: Model) {
+    // TODO(#240): fill this method
+    return undefined;
   }
 }
