@@ -2,7 +2,9 @@ node_modules
 bower_components
 data
 docs
-examples
+examples/_original
+examples/_output
+examples/_diff
 scripts
 site
 test
