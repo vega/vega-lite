@@ -18,6 +18,7 @@ export interface Encoding {
   shape?: FieldDef;
   detail?: FieldDef;
   text?: FieldDef;
+  label?: FieldDef;
 }
 
 // TODO: remove if possible
@@ -123,6 +124,12 @@ var text = merge(duplicate(typicalField), {
   }
 });
 
+var label = merge(duplicate(typicalField), {
+  properies: {
+    sort: sort
+  }
+});
+
 export var encoding = {
   type: 'object',
   properties: {
@@ -134,6 +141,7 @@ export var encoding = {
     color: color,
     shape: shape,
     text: text,
-    detail: detail
+    detail: detail,
+    label: label
   }
 };
