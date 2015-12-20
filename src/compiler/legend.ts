@@ -100,7 +100,7 @@ namespace properties {
         /* fall through */
       case POINT:
         // fill or stroke
-        if (model.config('marks').filled) {
+        if (model.config('marks', 'filled')) {
           if (model.has(COLOR) && channel === COLOR) {
             symbols.fill = {scale: model.scale(COLOR), field: 'data'};
           } else {
