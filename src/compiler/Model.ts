@@ -240,6 +240,12 @@ export class Model {
     return vals && vals.length;
   }
 
+  /**
+   * @return Config value from the spec.  If a value is not specified,
+   * return default values.
+   * For example, `config('marks', 'filled')`` returns either true or false based
+   * on the spec's mark type.
+   */
   public config(name: string, prop?: string) {
     const value = prop ? this._spec.config[name][prop] : this._spec.config[name];
 
