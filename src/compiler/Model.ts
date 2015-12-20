@@ -249,23 +249,32 @@ export class Model {
   public config(name: string, prop?: string) {
     const value = prop ? this._spec.config[name][prop] : this._spec.config[name];
 
-    if (value === undefined) {
-      // rules for automatically determining default values
-      switch (name) {
-        case 'marks':
-          switch (prop) {
-            case 'filled':
+
+    // rules for automatically determining default values
+    switch (name) {
+      case 'marks':
+        switch (prop) {
+          case 'filled':
+            if (value === undefined) {
               // only point is not filled by default
               return this.mark() !== POINT;
-            case 'opacity':
-              if (contains([POINT, TICK, CIRCLE, SQUARE], this.mark())) {
-                // point-based marks and bar
-                if (!this.isAggregate() || this.has(DETAIL)) {
-                  return 0.7;
-                }
+            }
+            return value;
+          case 'opacity':
+            if (value === undefined && contains([POINT, TICK, CIRCLE, SQUARE], this.mark())) {
+              // point-based marks and bar
+              if (!this.isAggregate() || this.has(DETAIL)) {
+                return 0.7;
               }
-              break;
-            case 'orient':
+            }
+            return value;
+          case 'orient':
+            const stack = this.stack();
+            if (stack) {
+              // For stacked chart, explicitly specified orient property will be ignored.
+              return stack.groupbyChannel === Y ? 'horizontal' : undefined;
+            }
+            if (value === undefined) {
               return this.isMeasure(X) && this.isDimension(Y) ?
                 // horizontal if X is measure and Y is dimension
                 'horizontal' :
@@ -273,11 +282,14 @@ export class Model {
                 // - Y is measure and X is dimension
                 // - both X and Y are measures or both are dimension
                 undefined;  //
-          }
-          break;
-      }
+            }
+            return value;
+          default:
+            return value;
+        }
+      default:
+        return value;
     }
-    return value;
   }
 
   /** returns scale name for a given channel */

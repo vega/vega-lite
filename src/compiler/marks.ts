@@ -434,39 +434,43 @@ export namespace line {
 export namespace area {
   // TODO(#694): optimize area's usage with bin
   export function properties(model: Model) {
-    const stack = model.stack();
+    // TODO Use Vega's marks properties interface
+    var p: any = {};
 
     const orient = model.config('marks', 'orient');
     if (orient !== undefined) {
       p.orient = { value: orient };
     }
 
-    // TODO Use Vega's marks properties interface
-    var p: any = {};
-
+    const stack = model.stack();
     // x
     if (stack && X === stack.fieldChannel) { // Stacked Measure
       p.x = {
         scale: model.scale(X),
         field: model.field(X) + '_start'
       };
-      p.x2 = {
-        scale: model.scale(X),
-        field: model.field(X) + '_end'
-      };
     } else if (model.isMeasure(X)) { // Measure
       p.x = { scale: model.scale(X), field: model.field(X) };
-      if (orient === 'horizontal') {
-        p.x2 = {
-          scale: model.scale(X),
-          value: 0
-        };
-      }
     } else if (model.isDimension(X)) {
       p.x = {
         scale: model.scale(X),
         field: model.field(X, { binSuffix: '_mid' })
       };
+    }
+
+    // x2
+    if (orient === 'horizontal') {
+      if (stack && X === stack.fieldChannel) {
+        p.x2 = {
+          scale: model.scale(X),
+          field: model.field(X) + '_end'
+        };
+      } else {
+        p.x2 = {
+          scale: model.scale(X),
+          value: 0
+        };
+      }
     }
 
     // y
@@ -475,26 +479,30 @@ export namespace area {
         scale: model.scale(Y),
         field: model.field(Y) + '_start'
       };
-      p.y2 = {
-        scale: model.scale(Y),
-        field: model.field(Y) + '_end'
-      };
     } else if (model.isMeasure(Y)) {
       p.y = {
         scale: model.scale(Y),
         field: model.field(Y)
       };
-      if (orient !== 'horizontal') {
-        p.y2 = {
-          scale: model.scale(Y),
-          value: 0
-        };
-      }
     } else if (model.isDimension(Y)) {
       p.y = {
         scale: model.scale(Y),
         field: model.field(Y, { binSuffix: '_mid' })
       };
+    }
+
+    if (orient !== 'horizontal') { // 'vertical' or undefined are vertical
+      if (stack && Y === stack.fieldChannel) {
+        p.y2 = {
+          scale: model.scale(Y),
+          field: model.field(Y) + '_end'
+        };
+      } else {
+        p.y2 = {
+          scale: model.scale(Y),
+          value: 0
+        };
+      }
     }
 
     // fill
