@@ -61,6 +61,10 @@
       "title": "Area Chart"
     },
     {
+      "name": "area_vertical",
+      "title": "Vertical Area Chart"
+    },
+    {
       "name": "tableheatmap",
       "title": "Table Heatmap.",
       "hide": true
