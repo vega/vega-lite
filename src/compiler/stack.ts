@@ -3,9 +3,13 @@ import {Channel} from '../channel';
 import {isArray} from '../util';
 
 export interface StackProperties {
+  /** Dimension axis of the stack ('x' or 'y'). */
   groupbyChannel: Channel;
+  /** Measure axis of the stack ('x' or 'y'). */
   fieldChannel: Channel;
-  stackChannels: Channel[]; // COLOR or DETAIL
+  /** Stack by channels of the stack ('color' or 'detail'). */
+  stackChannels: Channel[];
+  /** Stack config for the stack transform. */
   config: any;
 }
 
