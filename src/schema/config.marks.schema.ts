@@ -79,7 +79,9 @@ export const marksConfig = {
     orient: {
       type: 'string',
       default: undefined,
-      description: 'The orientation of this area mark. One of horizontal (the default) or vertical.'
+      description: 'The orientation of a bar, area, and line mark. One of horizontal (the default) or vertical.' +
+       'For bar and area, this affects the orient property of the Vega output.' +
+       'For line, this affects the sort order of the points in the line if `config.sortLineBy` is not specified'
     },
 
     // line / area

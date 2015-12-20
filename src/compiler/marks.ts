@@ -32,8 +32,7 @@ export function compileMarks(model: Model): any[] {
     // For line, a special config "sortLineBy" is allowed
     let sortBy = mark === LINE ? model.config('sortLineBy') : undefined;
     if (!sortBy) {
-      const sortField = (model.isMeasure(X) && model.isDimension(Y)) ? Y : X;
-      sortBy = '-' + model.field(sortField);
+      sortBy = '-' + model.field(model.config('marks', 'orient') === 'horizontal' ? Y : X);
     }
 
     let pathMarks: any = extend(
@@ -437,13 +436,16 @@ export namespace area {
   export function properties(model: Model) {
     const stack = model.stack();
 
-    // FIXME(#724): apply orient properties
+    const orient = model.config('marks', 'orient');
+    if (orient !== undefined) {
+      p.orient = { value: orient };
+    }
 
     // TODO Use Vega's marks properties interface
     var p: any = {};
 
     // x
-    if (stack && X === stack.fieldChannel) {
+    if (stack && X === stack.fieldChannel) { // Stacked Measure
       p.x = {
         scale: model.scale(X),
         field: model.field(X) + '_start'
@@ -452,16 +454,15 @@ export namespace area {
         scale: model.scale(X),
         field: model.field(X) + '_end'
       };
-    } else if (model.isMeasure(X)) {
+    } else if (model.isMeasure(X)) { // Measure
       p.x = { scale: model.scale(X), field: model.field(X) };
-      if (model.isDimension(Y)) {
+      if (orient === 'horizontal') {
         p.x2 = {
           scale: model.scale(X),
           value: 0
         };
-        p.orient = { value: 'horizontal' };
       }
-    } else if (model.has(X)) {
+    } else if (model.isDimension(X)) {
       p.x = {
         scale: model.scale(X),
         field: model.field(X, { binSuffix: '_mid' })
@@ -469,7 +470,7 @@ export namespace area {
     }
 
     // y
-    if (stack && Y === stack.fieldChannel) {
+    if (stack && Y === stack.fieldChannel) { // Stacked Measure
       p.y = {
         scale: model.scale(Y),
         field: model.field(Y) + '_start'
@@ -483,11 +484,13 @@ export namespace area {
         scale: model.scale(Y),
         field: model.field(Y)
       };
-      p.y2 = {
-        scale: model.scale(Y),
-        value: 0
-      };
-    } else if (model.has(Y)) {
+      if (orient !== 'horizontal') {
+        p.y2 = {
+          scale: model.scale(Y),
+          value: 0
+        };
+      }
+    } else if (model.isDimension(Y)) {
       p.y = {
         scale: model.scale(Y),
         field: model.field(Y, { binSuffix: '_mid' })

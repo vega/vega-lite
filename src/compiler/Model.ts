@@ -265,6 +265,14 @@ export class Model {
                 }
               }
               break;
+            case 'orient':
+              return this.isMeasure(X) && this.isDimension(Y) ?
+                // horizontal if X is measure and Y is dimension
+                'horizontal' :
+                // vertical (undefined) otherwise.  This includes when
+                // - Y is measure and X is dimension
+                // - both X and Y are measures or both are dimension
+                undefined;  //
           }
           break;
       }
