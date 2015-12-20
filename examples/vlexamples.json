@@ -33,6 +33,10 @@
       "title": "Scatterplot with binned size"
     },
     {
+      "name": "scatter_colored_with_shape",
+      "title": "Scatterplot with shape and color encoding"
+    },
+    {
       "name": "scatter_log",
       "title": "Scatter plot with log scale and large numbers"
     },

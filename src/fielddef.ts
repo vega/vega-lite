@@ -62,3 +62,15 @@ export function cardinality(fieldDef: FieldDef, stats, filterNull = {}) {
   return stat.distinct -
     (stat.missing > 0 && filterNull[type] ? 1 : 0);
 }
+
+export function title(fieldDef: FieldDef) {
+  if (isCount(fieldDef)) {
+    return COUNT_DISPLAYNAME;
+  }
+  var fn = fieldDef.aggregate || fieldDef.timeUnit || (fieldDef.bin && 'bin');
+  if (fn) {
+    return fn.toUpperCase() + '(' + fieldDef.field + ')';
+  } else {
+    return fieldDef.field;
+  }
+}
