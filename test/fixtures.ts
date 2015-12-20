@@ -144,7 +144,7 @@ f.area['x,y'] = {
   'data': {'url': 'data/cars.json'}
 };
 
-f.area['x,y,stroke'] = {
+f.area['x,y,color'] = {
   'mark': 'area',
   'encoding': {
     'x': {'field': 'Displacement','type': 'quantitative'},

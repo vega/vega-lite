@@ -173,7 +173,7 @@ describe('compile.marks', function() {
 
     describe('3D', function() {
       describe('x,y,color', function () {
-        var f = fixtures.area['x,y,stroke'],
+        var f = fixtures.area['x,y,color'],
             e = new Model(f),
             def = marks.area.properties(e);
         it('should have scale for color', function () {
