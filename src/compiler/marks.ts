@@ -226,7 +226,7 @@ export namespace bar {
           field: model.field(X)
         };
       } else {
-        p.x = { value: 0, offset: model.config('singleBarOffset') };
+        p.x = { value: 0, offset: 1 };
       }
     }
 
@@ -285,7 +285,7 @@ export namespace bar {
       } else {
         p.y2 = {
           field: { group: 'height' },
-          offset: -model.config('singleBarOffset')
+          offset: -1
         };
       }
 
