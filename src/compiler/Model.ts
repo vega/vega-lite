@@ -248,29 +248,41 @@ export class Model {
     return vals && vals.length;
   }
 
-  public config(name: string) {
-    return this._spec.config[name];
+  /**
+   * @return Config value from the spec.  If a value is not specified,
+   * return default values.
+   * For example, `config('marks', 'filled')`` returns either true or false based
+   * on the spec's mark type.
+   */
+  public config(name: string, prop?: string) {
+    const value = prop ? this._spec.config[name][prop] : this._spec.config[name];
+
+    if (value === undefined) {
+      // rules for automatically determining default values
+      switch (name) {
+        case 'marks':
+          switch (prop) {
+            case 'filled':
+              // only point is not filled by default
+              return this.mark() !== POINT;
+            case 'opacity':
+              if (contains([POINT, TICK, CIRCLE, SQUARE], this.mark())) {
+                // point-based marks and bar
+                if (!this.isAggregate() || this.has(DETAIL)) {
+                  return 0.7;
+                }
+              }
+              break;
+          }
+          break;
+      }
+    }
+    return value;
   }
 
   /** returns scale name for a given channel */
   public scale(channel: Channel): string {
     const name = this.spec().name;
     return (name ? name + '-' : '') + channel;
-  }
-
-  // FIXME -- move this to marks.ts
-  public markOpacity(): number {
-    const opacity = this.config('marks').opacity;
-    if (opacity) {
-      return opacity;
-    } else {
-      if (contains([POINT, TICK, CIRCLE, SQUARE], this.mark())) {
-        // point-based marks and bar
-        if (!this.isAggregate() || this.has(DETAIL)) {
-          return 0.7;
-        }
-      }
-    }
-    return undefined;
   }
 }

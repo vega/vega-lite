@@ -100,7 +100,7 @@ namespace properties {
         /* fall through */
       case POINT:
         // fill or stroke
-        if (model.config('marks').filled) {
+        if (model.config('marks', 'filled')) {
           if (model.has(COLOR) && channel === COLOR) {
             symbols.fill = {scale: model.scale(COLOR), field: 'data'};
           } else {
@@ -124,7 +124,7 @@ namespace properties {
         break;
     }
 
-    var opacity = model.markOpacity();
+    var opacity = model.config('marks', 'opacity');
     if (opacity) { symbols.opacity = {value: opacity}; }
 
     symbols = extend(symbols, spec || {});

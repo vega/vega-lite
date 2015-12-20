@@ -137,6 +137,31 @@ export function compileMarks(model: Model): any[] {
   }
 }
 
+function colorMixins(model: Model) {
+  let p: any = {};
+  if (model.config('marks', 'filled')) {
+    if (model.has(COLOR)) {
+      p.fill = {
+        scale: model.scale(COLOR),
+        field: model.field(COLOR)
+      };
+    } else {
+      p.fill = { value: model.fieldDef(COLOR).value };
+    }
+  } else {
+    if (model.has(COLOR)) {
+      p.stroke = {
+        scale: model.scale(COLOR),
+        field: model.field(COLOR)
+      };
+    } else {
+      p.stroke = { value: model.fieldDef(COLOR).value };
+    }
+    p.strokeWidth = { value: model.config('marks').strokeWidth };
+  }
+  return p;
+}
+
 function applyMarksConfig(marksProperties, marksConfig, propsList) {
   propsList.forEach(function(property) {
     const value = marksConfig[property];
@@ -280,17 +305,10 @@ export namespace bar {
     }
 
     // fill
-    if (model.has(COLOR)) {
-      p.fill = {
-        scale: model.scale(COLOR),
-        field: model.field(COLOR)
-      };
-    } else {
-      p.fill = { value: model.fieldDef(COLOR).value };
-    }
+    extend(p, colorMixins(model));
 
     // opacity
-    var opacity = model.markOpacity();
+    var opacity = model.config('marks', 'opacity');
     if (opacity) { p.opacity = { value: opacity }; };
 
     return p;
@@ -306,7 +324,6 @@ export namespace point {
   export function properties(model: Model) {
     // TODO Use Vega's marks properties interface
     var p: any = {};
-    const marksConfig = model.config('marks');
 
     // x
     if (model.has(X)) {
@@ -349,29 +366,10 @@ export namespace point {
     }
 
     // fill or stroke
-    if (marksConfig.filled) {
-      if (model.has(COLOR)) {
-        p.fill = {
-          scale: model.scale(COLOR),
-          field: model.field(COLOR)
-        };
-      } else {
-        p.fill = { value: model.fieldDef(COLOR).value };
-      }
-    } else {
-      if (model.has(COLOR)) {
-        p.stroke = {
-          scale: model.scale(COLOR),
-          field: model.field(COLOR)
-        };
-      } else {
-        p.stroke = { value: model.fieldDef(COLOR).value };
-      }
-      p.strokeWidth = { value: model.config('marks').strokeWidth };
-    }
+    extend(p, colorMixins(model));
 
     // opacity
-    const opacity = model.markOpacity();
+    const opacity = model.config('marks', 'opacity');
     if (opacity) { p.opacity = { value: opacity }; };
 
     return p;
@@ -418,7 +416,7 @@ export namespace line {
     }
 
     // opacity
-    var opacity = model.markOpacity();
+    var opacity = model.config('marks', 'opacity');
     if (opacity) { p.opacity = { value: opacity }; };
 
     p.strokeWidth = { value: model.config('marks').strokeWidth };
@@ -501,17 +499,10 @@ export namespace area {
     }
 
     // fill
-    if (model.has(COLOR)) {
-      p.fill = {
-        scale: model.scale(COLOR),
-        field: model.field(COLOR)
-      };
-    } else {
-      p.fill = { value: model.fieldDef(COLOR).value };
-    }
+    extend(p, colorMixins(model));
 
     // opacity
-    var opacity = model.markOpacity();
+    var opacity = model.config('marks', 'opacity');
     if (opacity) { p.opacity = { value: opacity }; };
 
     applyMarksConfig(p, model.config('marks'), ['interpolate', 'tension']);
@@ -584,7 +575,7 @@ export namespace tick {
     }
 
     // opacity
-    var opacity = model.markOpacity();
+    var opacity = model.config('marks', 'opacity');
     if (opacity) { p.opacity = { value: opacity }; };
 
     return p;
@@ -645,7 +636,7 @@ function filled_point_props(shape) {
     }
 
     // opacity
-    var opacity = model.markOpacity();
+    var opacity = model.config('marks', 'opacity');
     if (opacity) { p.opacity = { value: opacity }; };
 
     return p;
@@ -726,7 +717,7 @@ export namespace text {
     // TODO: consider if color should just map to fill instead?
 
     // opacity
-    var opacity = model.markOpacity();
+    var opacity = model.config('marks', 'opacity');
     if (opacity) { p.opacity = { value: opacity }; };
 
     // text
