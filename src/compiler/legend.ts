@@ -4,7 +4,7 @@ import {COLOR, SIZE, SHAPE, Channel} from '../channel';
 import {title as fieldTitle} from '../fielddef';
 import {AREA, BAR, TICK, TEXT, LINE, POINT, CIRCLE, SQUARE} from '../mark';
 import {TEMPORAL} from '../type';
-import {extend, keys, map} from '../util';
+import {extend, keys} from '../util';
 import {Model} from './Model';
 import * as time from './time';
 
