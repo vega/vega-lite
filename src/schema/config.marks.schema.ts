@@ -34,8 +34,10 @@ export const marksConfig = {
     // Vega-Lite special
     filled: {
       type: 'boolean',
-      default: false,
-      description: 'Whether the shape\'s color should be used as fill color instead of stroke color.  This is only applicable for "bar", "point", and "area"'
+      default: undefined,
+      description: 'Whether the shape\'s color should be used as fill color instead of stroke color. ' +
+        'This is only applicable for "bar", "point", and "area". ' +
+        'All marks except "point" marks are filled by default.'
     },
     format: {
       type: 'string',

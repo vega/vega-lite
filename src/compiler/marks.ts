@@ -137,10 +137,9 @@ export function compileMarks(model: Model): any[] {
   }
 }
 
-function colorMixins(model: Model, defaultFilled: boolean) {
+function colorMixins(model: Model) {
   let p: any = {};
-  const marksConfig = model.config('marks');
-  if (marksConfig.filled !== undefined ? marksConfig.filled : defaultFilled) {
+  if (model.config('marks', 'filled')) {
     if (model.has(COLOR)) {
       p.fill = {
         scale: model.scale(COLOR),
@@ -306,10 +305,10 @@ export namespace bar {
     }
 
     // fill
-    extend(p, colorMixins(model, true));
+    extend(p, colorMixins(model));
 
     // opacity
-    var opacity = model.markOpacity();
+    var opacity = model.config('marks', 'opacity');
     if (opacity) { p.opacity = { value: opacity }; };
 
     return p;
@@ -367,10 +366,10 @@ export namespace point {
     }
 
     // fill or stroke
-    extend(p, colorMixins(model, false));
+    extend(p, colorMixins(model));
 
     // opacity
-    const opacity = model.markOpacity();
+    const opacity = model.config('marks', 'opacity');
     if (opacity) { p.opacity = { value: opacity }; };
 
     return p;
@@ -417,7 +416,7 @@ export namespace line {
     }
 
     // opacity
-    var opacity = model.markOpacity();
+    var opacity = model.config('marks', 'opacity');
     if (opacity) { p.opacity = { value: opacity }; };
 
     p.strokeWidth = { value: model.config('marks').strokeWidth };
@@ -500,10 +499,10 @@ export namespace area {
     }
 
     // fill
-    extend(p, colorMixins(model, true));
+    extend(p, colorMixins(model));
 
     // opacity
-    var opacity = model.markOpacity();
+    var opacity = model.config('marks', 'opacity');
     if (opacity) { p.opacity = { value: opacity }; };
 
     applyMarksConfig(p, model.config('marks'), ['interpolate', 'tension']);
@@ -576,7 +575,7 @@ export namespace tick {
     }
 
     // opacity
-    var opacity = model.markOpacity();
+    var opacity = model.config('marks', 'opacity');
     if (opacity) { p.opacity = { value: opacity }; };
 
     return p;
@@ -637,7 +636,7 @@ function filled_point_props(shape) {
     }
 
     // opacity
-    var opacity = model.markOpacity();
+    var opacity = model.config('marks', 'opacity');
     if (opacity) { p.opacity = { value: opacity }; };
 
     return p;
@@ -718,7 +717,7 @@ export namespace text {
     // TODO: consider if color should just map to fill instead?
 
     // opacity
-    var opacity = model.markOpacity();
+    var opacity = model.config('marks', 'opacity');
     if (opacity) { p.opacity = { value: opacity }; };
 
     // text
