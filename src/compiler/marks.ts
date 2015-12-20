@@ -185,14 +185,14 @@ function detailFields(model: Model): string[] {
 
 export namespace bar {
   export function properties(model: Model) {
-    const stack = model.stack();
-
-    // FIXME(#724) apply orient from config if applicable
     // TODO Use Vega's marks properties interface
-    var p: any = {};
+    let p: any = {};
 
-    // x's and width
-    if (stack && X === stack.fieldChannel) {
+    const orient = model.config('marks', 'orient');
+
+    const stack = model.stack();
+    // x, x2, and width -- we must specify two of these in all conditions
+    if (stack && X === stack.fieldChannel) { // x is stacked measure
       p.x = {
         scale: model.scale(X),
         field: model.field(X) + '_start'
@@ -201,57 +201,62 @@ export namespace bar {
         scale: model.scale(X),
         field: model.field(X) + '_end'
       };
-    } else if (model.fieldDef(X).bin) {
-      p.x = {
-        scale: model.scale(X),
-        field: model.field(X, { binSuffix: '_start' }),
-        offset: 1
-      };
-      p.x2 = {
-        scale: model.scale(X),
-        field: model.field(X, { binSuffix: '_end' })
-      };
     } else if (model.isMeasure(X)) {
-      p.x = {
-        scale: model.scale(X),
-        field: model.field(X)
-      };
-      if (!model.has(Y) || model.isDimension(Y)) {
+      if (orient === 'horizontal') {
+        p.x = {
+          scale: model.scale(X),
+          field: model.field(X)
+        };
         p.x2 = { value: 0 };
-      }
-    } else {
-      if (model.has(X)) { // is ordinal
+      } else { // vertical
         p.xc = {
           scale: model.scale(X),
           field: model.field(X)
         };
-      } else {
-        p.x = { value: 0, offset: 1 };
-      }
-    }
-
-    // width
-    if (!p.x2) {
-      if (!model.has(X) || model.isOrdinalScale(X)) { // no X or X is ordinal
-        if (model.has(SIZE)) {
-          p.width = {
-            scale: model.scale(SIZE),
-            field: model.field(SIZE)
-          };
-        } else {
-          // FIXME consider using band: true here
-          p.width = {
-            value: model.fieldDef(X).scale.bandWidth,
-            offset: -1
-          };
-        }
-      } else { // X is Quant or Time Scale
         p.width = { value: 2 };
       }
+    } else if (model.fieldDef(X).bin) {
+      if (!model.has(SIZE)) {
+        p.x = {
+          scale: model.scale(X),
+          field: model.field(X, { binSuffix: '_start' }),
+          offset: 1
+        };
+        p.x2 = {
+          scale: model.scale(X),
+          field: model.field(X, { binSuffix: '_end' })
+        };
+      } else {
+        p.xc = {
+          scale: model.scale(X),
+          field: model.field(X, { binSuffix: '_mid' })
+        };
+        p.width = {
+          scale: model.scale(SIZE),
+          field: model.field(SIZE)
+        };
+      }
+    } else { // x is dimension or unspecified
+      if (model.has(X)) { // is ordinal
+       p.xc = {
+         scale: model.scale(X),
+         field: model.field(X)
+       };
+     } else { // no x
+        p.x = { value: 0, offset: 2 };
+      }
+
+      p.width = model.has(SIZE) ? {
+        scale: model.scale(SIZE),
+        field: model.field(SIZE)
+      } : {
+        value: model.fieldDef(X).scale.bandWidth,
+        offset: -1
+      };
     }
 
-    // y's & height
-    if (stack && Y === stack.fieldChannel) {
+    // y, y2 & height -- we must specify two of these in all conditions
+    if (stack && Y === stack.fieldChannel) { // y is stacked measure
       p.y = {
         scale: model.scale(Y),
         field: model.field(Y) + '_start'
@@ -260,47 +265,62 @@ export namespace bar {
         scale: model.scale(Y),
         field: model.field(Y) + '_end'
       };
-    } else if (model.fieldDef(Y).bin) {
-      p.y = {
-        scale: model.scale(Y),
-        field: model.field(Y, { binSuffix: '_start' })
-      };
-      p.y2 = {
-        scale: model.scale(Y),
-        field: model.field(Y, { binSuffix: '_end' }),
-        offset: 1
-      };
     } else if (model.isMeasure(Y)) {
-      p.y = {
-        scale: model.scale(Y),
-        field: model.field(Y)
-      };
-      p.y2 = { field: { group: 'height' } };
-    } else {
+      if (orient !== 'horizontal') {
+        p.y = {
+          scale: model.scale(Y),
+          field: model.field(Y)
+        };
+        p.y2 = { field: { group: 'height' } };
+      } else {
+        p.yc = {
+          scale: model.scale(Y),
+          field: model.field(Y)
+        };
+        p.height = {value: 2};
+      }
+    } else if (model.fieldDef(Y).bin) {
+      if (!model.has(SIZE)) {
+        p.y = {
+          scale: model.scale(Y),
+          field: model.field(Y, { binSuffix: '_start' })
+        };
+        p.y2 = {
+          scale: model.scale(Y),
+          field: model.field(Y, { binSuffix: '_end' }),
+          offset: 1
+        };
+      } else {
+        p.yc = {
+          scale: model.scale(Y),
+          field: model.field(Y, { binSuffix: '_mid' })
+        };
+        p.height = {
+          scale: model.scale(SIZE),
+          field: model.field(SIZE)
+        };
+      }
+    } else { // y is ordinal or unspecified
+
       if (model.has(Y)) { // is ordinal
         p.yc = {
           scale: model.scale(Y),
           field: model.field(Y)
         };
-      } else {
+      } else { // No Y
         p.y2 = {
           field: { group: 'height' },
           offset: -1
         };
       }
 
-      if (model.has(SIZE)) {
-        p.height = {
-          scale: model.scale(SIZE),
-          field: model.field(SIZE)
-        };
-      } else {
-        // FIXME: band:true?
-        p.height = {
-          value: model.fieldDef(Y).scale.bandWidth,
-          offset: -1
-        };
-      }
+      p.height = model.has(SIZE) ? {
+        scale: model.scale(SIZE),
+        field: model.field(SIZE)
+      } : {
+        value: model.fieldDef(Y).scale.bandWidth,
+        offset: -1
+      };
     }
 
     // fill

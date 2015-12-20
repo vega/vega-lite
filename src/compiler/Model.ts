@@ -249,7 +249,6 @@ export class Model {
   public config(name: string, prop?: string) {
     const value = prop ? this._spec.config[name][prop] : this._spec.config[name];
 
-
     // rules for automatically determining default values
     switch (name) {
       case 'marks':
@@ -275,11 +274,11 @@ export class Model {
               return stack.groupbyChannel === Y ? 'horizontal' : undefined;
             }
             if (value === undefined) {
-              return this.isMeasure(X) && this.isDimension(Y) ?
-                // horizontal if X is measure and Y is dimension
+              return this.isMeasure(X) && !this.isMeasure(Y) ?
+                // horizontal if X is measure and Y is dimension or unspecified
                 'horizontal' :
                 // vertical (undefined) otherwise.  This includes when
-                // - Y is measure and X is dimension
+                // - Y is measure and X is dimension or unspecified
                 // - both X and Y are measures or both are dimension
                 undefined;  //
             }
