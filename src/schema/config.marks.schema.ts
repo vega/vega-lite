@@ -35,7 +35,7 @@ export const marksConfig = {
     filled: {
       type: 'boolean',
       default: false,
-      description: 'Whether the shape\'s color should be used as fill color instead of stroke color.'
+      description: 'Whether the shape\'s color should be used as fill color instead of stroke color.  This is only applicable for "bar", "point", and "area"'
     },
     format: {
       type: 'string',
