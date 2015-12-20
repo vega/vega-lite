@@ -466,8 +466,6 @@ export namespace area {
         scale: model.scale(X),
         field: model.field(X, { binSuffix: '_mid' })
       };
-    } else {
-      p.x = { value: 0 };
     }
 
     // y
@@ -494,8 +492,6 @@ export namespace area {
         scale: model.scale(Y),
         field: model.field(Y, { binSuffix: '_mid' })
       };
-    } else {
-      p.y = { field: { group: 'height' } };
     }
 
     // fill
