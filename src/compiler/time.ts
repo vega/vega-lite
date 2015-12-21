@@ -24,12 +24,6 @@ export function cardinality(fieldDef: FieldDef, stats, filterNull, type) {
   return null;
 }
 
-export function formula(timeUnit, field: string) {
-  // TODO(kanitw): add formula to other time format
-  var fn = 'utc' + timeUnit;
-  return fn + '(' + field + ')';
-}
-
 export namespace scale {
   // FIXME move this to scale.type
   export function type(timeUnit, channel: Channel) {

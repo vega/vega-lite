@@ -7,7 +7,6 @@ import {StackProperties} from './stack';
 import {autoMaxBins} from '../bin';
 import {Channel, X, Y, ROW, COLUMN} from '../channel';
 import {SOURCE, STACKED, LAYOUT, SUMMARY} from '../data';
-import * as time from './time';
 import {QUANTITATIVE, TEMPORAL} from '../type';
 import {type as scaleType} from './scale';
 
@@ -123,12 +122,11 @@ export namespace source {
   export function timeTransform(model: Model) {
     return model.reduce(function(transform, fieldDef: FieldDef, channel: Channel) {
       if (fieldDef.type === TEMPORAL && fieldDef.timeUnit) {
-        var field = model.field(channel, {nofn: true, datum: true});
-
         transform.push({
           type: 'formula',
           field: model.field(channel),
-          expr: time.formula(fieldDef.timeUnit, field)
+          expr: 'utc' + fieldDef.timeUnit + '(' +
+                model.field(channel, {nofn: true, datum: true}) + ')'
         });
       }
       return transform;
