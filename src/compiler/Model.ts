@@ -13,7 +13,6 @@ import {StackProperties} from './stack';
 import {type as scaleType} from './scale';
 import {getFullName, NOMINAL, ORDINAL, TEMPORAL} from '../type';
 import {contains, duplicate} from '../util';
-import * as time from './time';
 import {Encoding} from '../schema/encoding.schema';
 
 
@@ -203,8 +202,7 @@ export class Model {
     const fieldDef = this.fieldDef(channel);
     return fieldDef && (
       contains([NOMINAL, ORDINAL], fieldDef.type) ||
-      (fieldDef.type === TEMPORAL && fieldDef.timeUnit &&
-        time.scale.type(fieldDef.timeUnit, channel) === 'ordinal')
+      ( fieldDef.type === TEMPORAL && scaleType(channel, this) === 'ordinal' )
       );
   }
 
