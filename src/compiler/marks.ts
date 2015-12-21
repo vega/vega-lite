@@ -254,12 +254,12 @@ export namespace bar {
       }
 
       p.width = model.has(SIZE) ? {
-        scale: model.scale(SIZE),
-        field: model.field(SIZE)
-      } : model.isOrdinalScale(X) ? {
-        value: model.fieldDef(X).scale.bandWidth,
-        offset: -1
-      } : { value: LINEAR_SCALE_BAR_SIZE };
+          scale: model.scale(SIZE),
+          field: model.field(SIZE)
+        } : model.isOrdinalScale(X) || !model.has(X) ? {
+          value: model.fieldDef(X).scale.bandWidth,
+          offset: -1
+        } : { value: LINEAR_SCALE_BAR_SIZE };
     }
 
     // y, y2 & height -- we must specify two of these in all conditions
@@ -322,12 +322,12 @@ export namespace bar {
       }
 
       p.height = model.has(SIZE) ? {
-        scale: model.scale(SIZE),
-        field: model.field(SIZE)
-      } : model.isOrdinalScale(Y) ? {
-        value: model.fieldDef(Y).scale.bandWidth,
-        offset: -1
-      } : { value: LINEAR_SCALE_BAR_SIZE };
+          scale: model.scale(SIZE),
+          field: model.field(SIZE)
+        } : model.isOrdinalScale(Y) || !model.has(Y) ? {
+          value: model.fieldDef(Y).scale.bandWidth,
+          offset: -1
+        } : { value: LINEAR_SCALE_BAR_SIZE };
     }
 
     // fill
