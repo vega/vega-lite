@@ -32,7 +32,7 @@ export function compileMarks(model: Model): any[] {
     // For line, a special config "sortLineBy" is allowed
     let sortBy = mark === LINE ? model.config('sortLineBy') : undefined;
     if (!sortBy) {
-      sortBy = '-' + model.field(model.config('marks', 'orient') === 'horizontal' ? Y : X);
+      sortBy = '-' + model.field(model.marksConfig('orient') === 'horizontal' ? Y : X);
     }
 
     let pathMarks: any = extend(
@@ -138,7 +138,7 @@ export function compileMarks(model: Model): any[] {
 
 function colorMixins(model: Model) {
   let p: any = {};
-  if (model.config('marks', 'filled')) {
+  if (model.marksConfig('filled')) {
     if (model.has(COLOR)) {
       p.fill = {
         scale: model.scale(COLOR),
@@ -193,7 +193,7 @@ export namespace bar {
     // TODO Use Vega's marks properties interface
     let p: any = {};
 
-    const orient = model.config('marks', 'orient');
+    const orient = model.marksConfig('orient');
 
     const stack = model.stack();
     // x, x2, and width -- we must specify two of these in all conditions
@@ -332,7 +332,7 @@ export namespace bar {
     extend(p, colorMixins(model));
 
     // opacity
-    var opacity = model.config('marks', 'opacity');
+    var opacity = model.marksConfig('opacity');
     if (opacity) { p.opacity = { value: opacity }; };
 
     return p;
@@ -393,7 +393,7 @@ export namespace point {
     extend(p, colorMixins(model));
 
     // opacity
-    const opacity = model.config('marks', 'opacity');
+    const opacity = model.marksConfig('opacity');
     if (opacity) { p.opacity = { value: opacity }; };
 
     return p;
@@ -440,7 +440,7 @@ export namespace line {
     }
 
     // opacity
-    var opacity = model.config('marks', 'opacity');
+    var opacity = model.marksConfig('opacity');
     if (opacity) { p.opacity = { value: opacity }; };
 
     p.strokeWidth = { value: model.config('marks').strokeWidth };
@@ -462,7 +462,7 @@ export namespace area {
     // TODO Use Vega's marks properties interface
     var p: any = {};
 
-    const orient = model.config('marks', 'orient');
+    const orient = model.marksConfig('orient');
     if (orient !== undefined) {
       p.orient = { value: orient };
     }
@@ -534,7 +534,7 @@ export namespace area {
     extend(p, colorMixins(model));
 
     // opacity
-    var opacity = model.config('marks', 'opacity');
+    var opacity = model.marksConfig('opacity');
     if (opacity) { p.opacity = { value: opacity }; };
 
     applyMarksConfig(p, model.config('marks'), ['interpolate', 'tension']);
@@ -607,7 +607,7 @@ export namespace tick {
     }
 
     // opacity
-    var opacity = model.config('marks', 'opacity');
+    var opacity = model.marksConfig('opacity');
     if (opacity) { p.opacity = { value: opacity }; };
 
     return p;
@@ -668,7 +668,7 @@ function filled_point_props(shape) {
     }
 
     // opacity
-    var opacity = model.config('marks', 'opacity');
+    var opacity = model.marksConfig('opacity');
     if (opacity) { p.opacity = { value: opacity }; };
 
     return p;
@@ -749,7 +749,7 @@ export namespace text {
     // TODO: consider if color should just map to fill instead?
 
     // opacity
-    var opacity = model.config('marks', 'opacity');
+    var opacity = model.marksConfig('opacity');
     if (opacity) { p.opacity = { value: opacity }; };
 
     // text
