@@ -58,7 +58,7 @@ export function type(channel: Channel, model: Model): string {
       if (channel === COLUMN || channel === ROW) {
         return 'ordinal';
       }
-      if (fieldDef.scale.type) {
+      if (fieldDef.scale.type !== undefined) {
         return fieldDef.scale.type;
       }
       // TODO: add timeUnit for other timeUnit once added
@@ -81,7 +81,10 @@ export function type(channel: Channel, model: Model): string {
         // However, currently ordinal scale doesn't support color ramp yet.
         return contains([X, Y, COLOR], channel) ? 'linear' : 'ordinal';
       }
-      return fieldDef.scale.type;
+      if (fieldDef.scale.type !== undefined) {
+        return fieldDef.scale.type;
+      }
+      return 'linear';
   }
 }
 
