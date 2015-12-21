@@ -76,7 +76,6 @@
         "test/compiler/Model.test.ts",
         "test/compiler/scale.test.ts",
         "test/compiler/stack.test.ts",
-        "test/compiler/time.test.ts",
         "test/examples.test.ts",
         "test/fielddef.test.ts",
         "test/fixtures.ts",
