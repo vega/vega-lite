@@ -124,6 +124,16 @@ export function compileMarks(model: Model): any[] {
   }
 }
 
+export function size(model: Model) {
+  if (model.fieldDef(SIZE).value !== undefined) {
+    return model.fieldDef(SIZE).value;
+  }
+  if (model.mark() === TEXTMARKS) {
+    return 10; // font size 10 by default
+  }
+  return 30;
+}
+
 function colorMixins(model: Model) {
   let p: any = {};
   if (model.marksConfig('filled')) {
@@ -372,7 +382,7 @@ export namespace point {
         field: model.field(SIZE)
       };
     } else {
-      p.size = { value: model.fieldDef(SIZE).value };
+      p.size = { value: size(model) };
     }
 
     // shape
@@ -659,7 +669,7 @@ function filled_point_props(shape) {
         field: model.field(SIZE)
       };
     } else {
-      p.size = { value: model.fieldDef(SIZE).value };
+      p.size = { value: size(model) };
     }
 
     // shape
@@ -762,7 +772,7 @@ export namespace text {
         field: model.field(SIZE)
       };
     } else {
-      p.fontSize = { value: marksConfig.fontSize };
+      p.fontSize = { value: size(model) };
     }
 
     // fill

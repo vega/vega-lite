@@ -57,9 +57,9 @@ var size = merge(duplicate(typicalField), {
     sort: sort,
     value: {
       type: 'integer',
-      default: 30,
+      default: undefined,
       minimum: 0,
-      description: 'Size of marks.'
+      description: 'Size of marks. By default, this is 30 for point, square, and circle, and 10 for text.'
     }
   }
 });
