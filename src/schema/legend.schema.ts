@@ -4,6 +4,9 @@ export interface Legend {
   format?: string;
   values?: Array<any>;
   properties?: any; // TODO declare VgLegendProperties
+
+  // Vega-Lite only
+  shortTimeLabels?: boolean;
 }
 
 export var legend = {
@@ -37,7 +40,13 @@ export var legend = {
         default: undefined,
         description: 'Optional mark property definitions for custom legend styling. '
       }
-    }
+    },
+    /* Vega-lite only */
+    shortTimeLabels: {
+      type: 'boolean',
+      default: false,
+      description: 'Whether month names and weekday names should be abbreviated.'
+    },
   }, {
     type: 'boolean'
   }]

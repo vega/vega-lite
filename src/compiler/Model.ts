@@ -275,4 +275,23 @@ export class Model {
     const name = this.spec().name;
     return (name ? name + '-' : '') + channel;
   }
+
+  /** returns the template name used for axis labels for a time unit */
+  public labelTemplate(channel: Channel): string {
+    const fieldDef = this.fieldDef(channel);
+    const legend = fieldDef.legend;
+    const abbreviated = contains([ROW, COLUMN, X, Y], channel) ?
+      fieldDef.axis.shortTimeLabels :
+      typeof legend !== 'boolean' ? legend.shortTimeLabels : false;
+
+    var postfix = abbreviated ? '-abbrev' : '';
+    switch (fieldDef.timeUnit) {
+      case 'day':
+        return 'day' + postfix;
+      case 'month':
+        return 'month' + postfix;
+    }
+    return null;
+  }
+
 }
