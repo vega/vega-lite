@@ -1,28 +1,5 @@
-import {FieldDef} from '../schema/fielddef.schema';
 import * as util from '../util';
 import {COLOR, COLUMN, ROW, Channel} from '../channel';
-
-export function cardinality(fieldDef: FieldDef, stats, filterNull, type) {
-  var timeUnit = fieldDef.timeUnit;
-  switch (timeUnit) {
-    case 'seconds': return 60;
-    case 'minutes': return 60;
-    case 'hours': return 24;
-    case 'day': return 7;
-    case 'date': return 31;
-    case 'month': return 12;
-    case 'year':
-      var stat = stats[fieldDef.field],
-        yearstat = stats['year_' + fieldDef.field];
-
-      if (!yearstat) { return null; }
-
-      return yearstat.distinct -
-        (stat.missing > 0 && filterNull[type] ? 1 : 0);
-  }
-
-  return null;
-}
 
 export namespace scale {
   // FIXME move this to scale.type
