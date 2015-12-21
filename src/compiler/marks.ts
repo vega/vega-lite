@@ -5,18 +5,6 @@ import {imputeTransform, stackTransform} from './stack';
 import {QUANTITATIVE} from '../type';
 import {extend} from '../util';
 
-/* mapping from vega-lite's mark types to vega's mark types */
-const MARKTYPES_MAP = {
-  bar: 'rect',
-  tick: 'rect',
-  point: 'symbol',
-  line: 'line',
-  area: 'area',
-  text: 'text',
-  circle: 'symbol',
-  square: 'symbol'
-};
-
 declare var exports;
 
 export function compileMarks(model: Model): any[] {
@@ -38,7 +26,7 @@ export function compileMarks(model: Model): any[] {
     let pathMarks: any = extend(
       name ? { name: name + '-marks' } : {},
       {
-        type: MARKTYPES_MAP[mark],
+        type: exports[mark].markType(model),
         from: extend(
           // If has facet, `from.data` will be added in the cell group.
           // If has subfacet for line/area group, `from.data` will be added in the outer subfacet group below.
@@ -98,7 +86,7 @@ export function compileMarks(model: Model): any[] {
 
     marks.push(extend(
       name ? { name: name + '-marks' } : {},
-      { type: MARKTYPES_MAP[mark] },
+      { type: exports[mark].markType(model) },
       // Add `from` if needed
       (!isFaceted || model.stack()) ? {
         from: extend(
@@ -189,6 +177,10 @@ function detailFields(model: Model): string[] {
 const LINEAR_SCALE_BAR_SIZE = 2;
 
 export namespace bar {
+  export function markType() {
+    return 'rect';
+  }
+
   export function properties(model: Model) {
     // TODO Use Vega's marks properties interface
     let p: any = {};
@@ -345,6 +337,10 @@ export namespace bar {
 }
 
 export namespace point {
+  export function markType() {
+    return 'symbol';
+  }
+
   export function properties(model: Model) {
     // TODO Use Vega's marks properties interface
     var p: any = {};
@@ -405,6 +401,10 @@ export namespace point {
 }
 
 export namespace line {
+  export function markType() {
+    return 'line';
+  }
+
   export function properties(model: Model) {
     // TODO Use Vega's marks properties interface
     var p: any = {};
@@ -457,6 +457,10 @@ export namespace line {
 }
 
 export namespace area {
+  export function markType() {
+    return 'area';
+  }
+
   // TODO(#694): optimize area's usage with bin
   export function properties(model: Model) {
     // TODO Use Vega's marks properties interface
@@ -549,6 +553,10 @@ export namespace area {
 }
 
 export namespace tick {
+  export function markType() {
+    return 'rect';
+  }
+
   export function properties(model: Model) {
     // TODO Use Vega's marks properties interface
     // FIXME are /3 , /1.5 divisions here correct?
@@ -676,6 +684,10 @@ function filled_point_props(shape) {
 }
 
 export namespace circle {
+  export function markType(model: Model) {
+    return 'symbol';
+  }
+
   export const properties = filled_point_props('circle');
 
   export function labels(model: Model) {
@@ -685,6 +697,10 @@ export namespace circle {
 }
 
 export namespace square {
+  export function markType(model: Model) {
+    return 'symbol';
+  }
+
   export const properties = filled_point_props('square');
 
   export function labels(model: Model) {
@@ -694,6 +710,10 @@ export namespace square {
 }
 
 export namespace text {
+  export function markType(model: Model) {
+    return 'text';
+  }
+
   export function background(model: Model) {
     return {
       x: { value: 0 },
