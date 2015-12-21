@@ -38,8 +38,7 @@ describe('Util', function() {
     var spec = {
       mark: 'point',
       encoding: {
-        x: { field: 'dsp', type: 'quantitative', scale: {type: 'linear'}
-      },
+        x: { field: 'dsp', type: 'quantitative'},
         color: { field: 'cyl', type: 'ordinal' }
       },
       data: {
@@ -51,7 +50,7 @@ describe('Util', function() {
     var expected = {
       mark: 'point',
       encoding: {
-        x: { field: 'dsp', type: 'quantitative' },
+        x: { field: 'dsp', type: 'quantitative'},
         color: { field: 'cyl', type: 'ordinal' }
       },
       data: {
