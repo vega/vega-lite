@@ -183,6 +183,11 @@ function detailFields(model: Model): string[] {
   }, []);
 }
 
+/* Size for bar's width when bar's dimension is on linear scale.
+ * kanitw: I decided not to make this a config as it shouldn't be used in practice anyway.
+ */
+const LINEAR_SCALE_BAR_SIZE = 2;
+
 export namespace bar {
   export function properties(model: Model) {
     // TODO Use Vega's marks properties interface
@@ -213,7 +218,7 @@ export namespace bar {
           scale: model.scale(X),
           field: model.field(X)
         };
-        p.width = { value: 2 };
+        p.width = { value: LINEAR_SCALE_BAR_SIZE };
       }
     } else if (model.fieldDef(X).bin) {
       if (!model.has(SIZE)) {
@@ -249,10 +254,10 @@ export namespace bar {
       p.width = model.has(SIZE) ? {
         scale: model.scale(SIZE),
         field: model.field(SIZE)
-      } : {
+      } : model.isOrdinalScale(X) ? {
         value: model.fieldDef(X).scale.bandWidth,
         offset: -1
-      };
+      } : { value: LINEAR_SCALE_BAR_SIZE };
     }
 
     // y, y2 & height -- we must specify two of these in all conditions
@@ -266,7 +271,7 @@ export namespace bar {
         field: model.field(Y) + '_end'
       };
     } else if (model.isMeasure(Y)) {
-      if (orient !== 'horizontal') {
+      if (orient !== 'horizontal') { // vertical (explicit 'vertical' or undefined)
         p.y = {
           scale: model.scale(Y),
           field: model.field(Y)
@@ -277,7 +282,7 @@ export namespace bar {
           scale: model.scale(Y),
           field: model.field(Y)
         };
-        p.height = {value: 2};
+        p.height = { value: LINEAR_SCALE_BAR_SIZE };
       }
     } else if (model.fieldDef(Y).bin) {
       if (!model.has(SIZE)) {
@@ -317,10 +322,10 @@ export namespace bar {
       p.height = model.has(SIZE) ? {
         scale: model.scale(SIZE),
         field: model.field(SIZE)
-      } : {
+      } : model.isOrdinalScale(Y) ? {
         value: model.fieldDef(Y).scale.bandWidth,
         offset: -1
-      };
+      } : { value: LINEAR_SCALE_BAR_SIZE };
     }
 
     // fill
