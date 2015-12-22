@@ -324,7 +324,7 @@ export function rangeMixins(model: Model, channel: Channel, scaleType): any {
 
         const bandWidth = xIsMeasure !== yIsMeasure ?
           model.fieldDef(xIsMeasure ? Y : X).scale.bandWidth :
-          Math.min(model.fieldDef(X).scale.bandWidth, model.fieldDef(Y).scale.bandWidth)
+          Math.min(model.fieldDef(X).scale.bandWidth, model.fieldDef(Y).scale.bandWidth);
 
         return {range: [10, (bandWidth - 2) * (bandWidth - 2)]};
       }
