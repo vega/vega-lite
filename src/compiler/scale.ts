@@ -311,23 +311,24 @@ export function rangeMixins(model: Model, channel: Channel, scaleType): any {
       if (scaleType === 'ordinal') {
         return {rangeMin: 0, rangeMax: model.layout().cellHeight};
       }
-      return {rangeMin: model.layout().cellHeight, rangeMax :0};
+      return {rangeMin: model.layout().cellHeight, rangeMax: 0};
     case SIZE:
       if (model.is(BAR)) {
-        // FIXME this is definitely incorrect
-        // but let's fix it later since bar size is a bad encoding anyway
-        return {
-          range: [3, Math.max(
-            model.fieldDef(X).scale.bandWidth,
-            model.fieldDef(Y).scale.bandWidth
-          )]
-        };
+        // TODO: determine bandSize for bin, which actually uses linear scale 
+        const dimension = model.marksConfig('orient') === 'horizontal' ? Y : X;
+        return {range: [2, model.fieldDef(dimension).scale.bandWidth]};
       } else if (model.is(TEXT_MARK)) {
         return {range: [8, 40]};
+      } else { // point, square, circle
+        const xIsMeasure = model.isMeasure(X);
+        const yIsMeasure = model.isMeasure(Y);
+
+        const bandWidth = xIsMeasure !== yIsMeasure ?
+          model.fieldDef(xIsMeasure ? Y : X).scale.bandWidth :
+          Math.min(model.fieldDef(X).scale.bandWidth, model.fieldDef(Y).scale.bandWidth);
+
+        return {range: [10, (bandWidth - 2) * (bandWidth - 2)]};
       }
-      // else -- point
-      var bandWidth = Math.min(model.fieldDef(X).scale.bandWidth, model.fieldDef(Y).scale.bandWidth) - 1;
-      return {range: [10, 0.8 * bandWidth*bandWidth]};
     case SHAPE:
       return {range: 'shapes'};
     case COLOR:

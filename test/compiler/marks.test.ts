@@ -43,7 +43,7 @@ describe('compile.marks', function() {
         expect(def.height).to.be.undefined;
       });
       it('should have x-offset', function(){
-        expect(def.x.offset).to.eql(5); // config.singleBarOffset
+        expect(def.x.offset).to.eql(2);
       });
     });
 
@@ -60,7 +60,7 @@ describe('compile.marks', function() {
       it('should have y-offset', function(){
         expect(def.y2).to.eql({
           field: {group: 'height'},
-          offset: -5 // -config.singleBarOffset
+          offset: -1
         });
       });
     });

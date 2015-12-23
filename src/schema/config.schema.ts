@@ -94,12 +94,6 @@ export const config = {
     cell: cellConfig,
     marks: marksConfig,
 
-    // FIXME remove this
-    singleBarOffset: {
-      type: 'integer',
-      default: 5,
-      minimum: 0
-    },
     // other
     characterWidth: {
       type: 'integer',

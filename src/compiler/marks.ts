@@ -5,18 +5,6 @@ import {imputeTransform, stackTransform} from './stack';
 import {QUANTITATIVE} from '../type';
 import {extend} from '../util';
 
-/* mapping from vega-lite's mark types to vega's mark types */
-const MARKTYPES_MAP = {
-  bar: 'rect',
-  tick: 'rect',
-  point: 'symbol',
-  line: 'line',
-  area: 'area',
-  text: 'text',
-  circle: 'symbol',
-  square: 'symbol'
-};
-
 declare var exports;
 
 export function compileMarks(model: Model): any[] {
@@ -32,14 +20,13 @@ export function compileMarks(model: Model): any[] {
     // For line, a special config "sortLineBy" is allowed
     let sortBy = mark === LINE ? model.config('sortLineBy') : undefined;
     if (!sortBy) {
-      const sortField = (model.isMeasure(X) && model.isDimension(Y)) ? Y : X;
-      sortBy = '-' + model.field(sortField);
+      sortBy = '-' + model.field(model.marksConfig('orient') === 'horizontal' ? Y : X);
     }
 
     let pathMarks: any = extend(
       name ? { name: name + '-marks' } : {},
       {
-        type: MARKTYPES_MAP[mark],
+        type: exports[mark].markType(model),
         from: extend(
           // If has facet, `from.data` will be added in the cell group.
           // If has subfacet for line/area group, `from.data` will be added in the outer subfacet group below.
@@ -99,7 +86,7 @@ export function compileMarks(model: Model): any[] {
 
     marks.push(extend(
       name ? { name: name + '-marks' } : {},
-      { type: MARKTYPES_MAP[mark] },
+      { type: exports[mark].markType(model) },
       // Add `from` if needed
       (!isFaceted || model.stack()) ? {
         from: extend(
@@ -137,9 +124,19 @@ export function compileMarks(model: Model): any[] {
   }
 }
 
+export function size(model: Model) {
+  if (model.fieldDef(SIZE).value !== undefined) {
+    return model.fieldDef(SIZE).value;
+  }
+  if (model.mark() === TEXTMARKS) {
+    return 10; // font size 10 by default
+  }
+  return 30;
+}
+
 function colorMixins(model: Model) {
   let p: any = {};
-  if (model.config('marks', 'filled')) {
+  if (model.marksConfig('filled')) {
     if (model.has(COLOR)) {
       p.fill = {
         scale: model.scale(COLOR),
@@ -184,16 +181,26 @@ function detailFields(model: Model): string[] {
   }, []);
 }
 
+/* Size for bar's width when bar's dimension is on linear scale.
+ * kanitw: I decided not to make this a config as it shouldn't be used in practice anyway.
+ */
+const LINEAR_SCALE_BAR_SIZE = 2;
+
 export namespace bar {
+  export function markType() {
+    return 'rect';
+  }
+
   export function properties(model: Model) {
-    const stack = model.stack();
-
-    // FIXME(#724) apply orient from config if applicable
     // TODO Use Vega's marks properties interface
-    var p: any = {};
+    let p: any = {};
 
-    // x's and width
+    const orient = model.marksConfig('orient');
+
+    const stack = model.stack();
+    // x, x2, and width -- we must specify two of these in all conditions
     if (stack && X === stack.fieldChannel) {
+      // 'x' is a stacked measure, thus use <field>_start and <field>_end for x, x2.
       p.x = {
         scale: model.scale(X),
         field: model.field(X) + '_start'
@@ -202,57 +209,69 @@ export namespace bar {
         scale: model.scale(X),
         field: model.field(X) + '_end'
       };
-    } else if (model.fieldDef(X).bin) {
-      p.x = {
-        scale: model.scale(X),
-        field: model.field(X, { binSuffix: '_start' }),
-        offset: 1
-      };
-      p.x2 = {
-        scale: model.scale(X),
-        field: model.field(X, { binSuffix: '_end' })
-      };
     } else if (model.isMeasure(X)) {
-      p.x = {
-        scale: model.scale(X),
-        field: model.field(X)
-      };
-      if (!model.has(Y) || model.isDimension(Y)) {
+      if (orient === 'horizontal') {
+        p.x = {
+          scale: model.scale(X),
+          field: model.field(X)
+        };
         p.x2 = { value: 0 };
-      }
-    } else {
-      if (model.has(X)) { // is ordinal
+      } else { // vertical
         p.xc = {
           scale: model.scale(X),
           field: model.field(X)
         };
+        p.width = { value: LINEAR_SCALE_BAR_SIZE };
+      }
+    } else if (model.fieldDef(X).bin) {
+      if (model.has(SIZE) && orient !== 'horizontal') {
+        // For vertical chart that has binned X and size,
+        // center bar and apply size to width.
+        p.xc = {
+          scale: model.scale(X),
+          field: model.field(X, { binSuffix: '_mid' })
+        };
+        p.width = {
+          scale: model.scale(SIZE),
+          field: model.field(SIZE)
+        };
       } else {
-        p.x = { value: 0, offset: model.config('singleBarOffset') };
+        p.x = {
+          scale: model.scale(X),
+          field: model.field(X, { binSuffix: '_start' }),
+          offset: 1
+        };
+        p.x2 = {
+          scale: model.scale(X),
+          field: model.field(X, { binSuffix: '_end' })
+        };
       }
+    } else { // x is dimension or unspecified
+      if (model.has(X)) { // is ordinal
+       p.xc = {
+         scale: model.scale(X),
+         field: model.field(X)
+       };
+     } else { // no x
+        p.x = { value: 0, offset: 2 };
+      }
+
+      p.width = model.has(SIZE) && orient !== 'horizontal' ? {
+          // apply size scale if has size and is vertical (explicit "vertical" or undefined)
+          scale: model.scale(SIZE),
+          field: model.field(SIZE)
+        } : model.isOrdinalScale(X) || !model.has(X) ? {
+          // for ordinal scale or single bar, we can use bandWidth
+          value: model.fieldDef(X).scale.bandWidth,
+          offset: -1
+        } : {
+          // otherwise, use fixed size
+          value: LINEAR_SCALE_BAR_SIZE
+        };
     }
 
-    // width
-    if (!p.x2) {
-      if (!model.has(X) || model.isOrdinalScale(X)) { // no X or X is ordinal
-        if (model.has(SIZE)) {
-          p.width = {
-            scale: model.scale(SIZE),
-            field: model.field(SIZE)
-          };
-        } else {
-          // FIXME consider using band: true here
-          p.width = {
-            value: model.fieldDef(X).scale.bandWidth,
-            offset: -1
-          };
-        }
-      } else { // X is Quant or Time Scale
-        p.width = { value: 2 };
-      }
-    }
-
-    // y's & height
-    if (stack && Y === stack.fieldChannel) {
+    // y, y2 & height -- we must specify two of these in all conditions
+    if (stack && Y === stack.fieldChannel) { // y is stacked measure
       p.y = {
         scale: model.scale(Y),
         field: model.field(Y) + '_start'
@@ -261,54 +280,77 @@ export namespace bar {
         scale: model.scale(Y),
         field: model.field(Y) + '_end'
       };
-    } else if (model.fieldDef(Y).bin) {
-      p.y = {
-        scale: model.scale(Y),
-        field: model.field(Y, { binSuffix: '_start' })
-      };
-      p.y2 = {
-        scale: model.scale(Y),
-        field: model.field(Y, { binSuffix: '_end' }),
-        offset: 1
-      };
     } else if (model.isMeasure(Y)) {
-      p.y = {
-        scale: model.scale(Y),
-        field: model.field(Y)
-      };
-      p.y2 = { field: { group: 'height' } };
-    } else {
-      if (model.has(Y)) { // is ordinal
+      if (orient !== 'horizontal') { // vertical (explicit 'vertical' or undefined)
+        p.y = {
+          scale: model.scale(Y),
+          field: model.field(Y)
+        };
+        p.y2 = { field: { group: 'height' } };
+      } else {
         p.yc = {
           scale: model.scale(Y),
           field: model.field(Y)
         };
-      } else {
-        p.y2 = {
-          field: { group: 'height' },
-          offset: -model.config('singleBarOffset')
-        };
+        p.height = { value: LINEAR_SCALE_BAR_SIZE };
       }
-
-      if (model.has(SIZE)) {
+    } else if (model.fieldDef(Y).bin) {
+      if (model.has(SIZE) && orient === 'horizontal') {
+        // For horizontal chart that has binned Y and size,
+        // center bar and apply size to height.
+        p.yc = {
+          scale: model.scale(Y),
+          field: model.field(Y, { binSuffix: '_mid' })
+        };
         p.height = {
           scale: model.scale(SIZE),
           field: model.field(SIZE)
         };
       } else {
-        // FIXME: band:true?
-        p.height = {
-          value: model.fieldDef(Y).scale.bandWidth,
+        // Otherwise, simply use <field>_start, <field>_end
+        p.y = {
+          scale: model.scale(Y),
+          field: model.field(Y, { binSuffix: '_start' })
+        };
+        p.y2 = {
+          scale: model.scale(Y),
+          field: model.field(Y, { binSuffix: '_end' }),
+          offset: 1
+        };
+      }
+    } else { // y is ordinal or unspecified
+
+      if (model.has(Y)) { // is ordinal
+        p.yc = {
+          scale: model.scale(Y),
+          field: model.field(Y)
+        };
+      } else { // No Y
+        p.y2 = {
+          field: { group: 'height' },
           offset: -1
         };
       }
+
+      p.height = model.has(SIZE)  && orient === 'horizontal' ? {
+          // apply size scale if has size and is horizontal
+          scale: model.scale(SIZE),
+          field: model.field(SIZE)
+        } : model.isOrdinalScale(Y) || !model.has(Y) ? {
+          // for ordinal scale or single bar, we can use bandWidth
+          value: model.fieldDef(Y).scale.bandWidth,
+          offset: -1
+        } : {
+          // otherwise, use fixed size
+          value: LINEAR_SCALE_BAR_SIZE
+        };
     }
 
     // fill
     extend(p, colorMixins(model));
 
     // opacity
-    var opacity = model.config('marks', 'opacity');
+    var opacity = model.marksConfig('opacity');
     if (opacity) { p.opacity = { value: opacity }; };
 
     return p;
@@ -321,6 +363,10 @@ export namespace bar {
 }
 
 export namespace point {
+  export function markType() {
+    return 'symbol';
+  }
+
   export function properties(model: Model) {
     // TODO Use Vega's marks properties interface
     var p: any = {};
@@ -352,7 +398,7 @@ export namespace point {
         field: model.field(SIZE)
       };
     } else {
-      p.size = { value: model.fieldDef(SIZE).value };
+      p.size = { value: size(model) };
     }
 
     // shape
@@ -369,7 +415,7 @@ export namespace point {
     extend(p, colorMixins(model));
 
     // opacity
-    const opacity = model.config('marks', 'opacity');
+    const opacity = model.marksConfig('opacity');
     if (opacity) { p.opacity = { value: opacity }; };
 
     return p;
@@ -381,6 +427,10 @@ export namespace point {
 }
 
 export namespace line {
+  export function markType() {
+    return 'line';
+  }
+
   export function properties(model: Model) {
     // TODO Use Vega's marks properties interface
     var p: any = {};
@@ -416,7 +466,7 @@ export namespace line {
     }
 
     // opacity
-    var opacity = model.config('marks', 'opacity');
+    var opacity = model.marksConfig('opacity');
     if (opacity) { p.opacity = { value: opacity }; };
 
     p.strokeWidth = { value: model.config('marks').strokeWidth };
@@ -433,76 +483,88 @@ export namespace line {
 }
 
 export namespace area {
+  export function markType() {
+    return 'area';
+  }
+
   // TODO(#694): optimize area's usage with bin
   export function properties(model: Model) {
-    const stack = model.stack();
-
-    // FIXME(#724): apply orient properties
-
     // TODO Use Vega's marks properties interface
     var p: any = {};
 
+    const orient = model.marksConfig('orient');
+    if (orient !== undefined) {
+      p.orient = { value: orient };
+    }
+
+    const stack = model.stack();
     // x
-    if (stack && X === stack.fieldChannel) {
+    if (stack && X === stack.fieldChannel) { // Stacked Measure
       p.x = {
         scale: model.scale(X),
         field: model.field(X) + '_start'
       };
-      p.x2 = {
-        scale: model.scale(X),
-        field: model.field(X) + '_end'
-      };
-    } else if (model.isMeasure(X)) {
+    } else if (model.isMeasure(X)) { // Measure
       p.x = { scale: model.scale(X), field: model.field(X) };
-      if (model.isDimension(Y)) {
-        p.x2 = {
-          scale: model.scale(X),
-          value: 0
-        };
-        p.orient = { value: 'horizontal' };
-      }
-    } else if (model.has(X)) {
+    } else if (model.isDimension(X)) {
       p.x = {
         scale: model.scale(X),
         field: model.field(X, { binSuffix: '_mid' })
       };
-    } else {
-      p.x = { value: 0 };
+    }
+
+    // x2
+    if (orient === 'horizontal') {
+      if (stack && X === stack.fieldChannel) {
+        p.x2 = {
+          scale: model.scale(X),
+          field: model.field(X) + '_end'
+        };
+      } else {
+        p.x2 = {
+          scale: model.scale(X),
+          value: 0
+        };
+      }
     }
 
     // y
-    if (stack && Y === stack.fieldChannel) {
+    if (stack && Y === stack.fieldChannel) { // Stacked Measure
       p.y = {
         scale: model.scale(Y),
         field: model.field(Y) + '_start'
-      };
-      p.y2 = {
-        scale: model.scale(Y),
-        field: model.field(Y) + '_end'
       };
     } else if (model.isMeasure(Y)) {
       p.y = {
         scale: model.scale(Y),
         field: model.field(Y)
       };
-      p.y2 = {
-        scale: model.scale(Y),
-        value: 0
-      };
-    } else if (model.has(Y)) {
+    } else if (model.isDimension(Y)) {
       p.y = {
         scale: model.scale(Y),
         field: model.field(Y, { binSuffix: '_mid' })
       };
-    } else {
-      p.y = { field: { group: 'height' } };
+    }
+
+    if (orient !== 'horizontal') { // 'vertical' or undefined are vertical
+      if (stack && Y === stack.fieldChannel) {
+        p.y2 = {
+          scale: model.scale(Y),
+          field: model.field(Y) + '_end'
+        };
+      } else {
+        p.y2 = {
+          scale: model.scale(Y),
+          value: 0
+        };
+      }
     }
 
     // fill
     extend(p, colorMixins(model));
 
     // opacity
-    var opacity = model.config('marks', 'opacity');
+    var opacity = model.marksConfig('opacity');
     if (opacity) { p.opacity = { value: opacity }; };
 
     applyMarksConfig(p, model.config('marks'), ['interpolate', 'tension']);
@@ -517,6 +579,10 @@ export namespace area {
 }
 
 export namespace tick {
+  export function markType() {
+    return 'rect';
+  }
+
   export function properties(model: Model) {
     // TODO Use Vega's marks properties interface
     // FIXME are /3 , /1.5 divisions here correct?
@@ -575,7 +641,7 @@ export namespace tick {
     }
 
     // opacity
-    var opacity = model.config('marks', 'opacity');
+    var opacity = model.marksConfig('opacity');
     if (opacity) { p.opacity = { value: opacity }; };
 
     return p;
@@ -619,7 +685,7 @@ function filled_point_props(shape) {
         field: model.field(SIZE)
       };
     } else {
-      p.size = { value: model.fieldDef(SIZE).value };
+      p.size = { value: size(model) };
     }
 
     // shape
@@ -636,7 +702,7 @@ function filled_point_props(shape) {
     }
 
     // opacity
-    var opacity = model.config('marks', 'opacity');
+    var opacity = model.marksConfig('opacity');
     if (opacity) { p.opacity = { value: opacity }; };
 
     return p;
@@ -644,6 +710,10 @@ function filled_point_props(shape) {
 }
 
 export namespace circle {
+  export function markType(model: Model) {
+    return 'symbol';
+  }
+
   export const properties = filled_point_props('circle');
 
   export function labels(model: Model) {
@@ -653,6 +723,10 @@ export namespace circle {
 }
 
 export namespace square {
+  export function markType(model: Model) {
+    return 'symbol';
+  }
+
   export const properties = filled_point_props('square');
 
   export function labels(model: Model) {
@@ -662,6 +736,10 @@ export namespace square {
 }
 
 export namespace text {
+  export function markType(model: Model) {
+    return 'text';
+  }
+
   export function background(model: Model) {
     return {
       x: { value: 0 },
@@ -710,14 +788,14 @@ export namespace text {
         field: model.field(SIZE)
       };
     } else {
-      p.fontSize = { value: marksConfig.fontSize };
+      p.fontSize = { value: size(model) };
     }
 
     // fill
     // TODO: consider if color should just map to fill instead?
 
     // opacity
-    var opacity = model.config('marks', 'opacity');
+    var opacity = model.marksConfig('opacity');
     if (opacity) { p.opacity = { value: opacity }; };
 
     // text

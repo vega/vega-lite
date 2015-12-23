@@ -239,33 +239,48 @@ export class Model {
   }
 
   /**
-   * @return Config value from the spec.  If a value is not specified,
-   * return default values.
-   * For example, `config('marks', 'filled')`` returns either true or false based
-   * on the spec's mark type.
+   * @return Config value from the spec, or a default value if unspecified.
    */
-  public config(name: string, prop?: string) {
-    const value = prop ? this._spec.config[name][prop] : this._spec.config[name];
+  public config(name: string) {
+    return this._spec.config[name];
+  }
 
-    if (value === undefined) {
-      // rules for automatically determining default values
-      switch (name) {
-        case 'marks':
-          switch (prop) {
-            case 'filled':
-              // only point is not filled by default
-              return this.mark() !== POINT;
-            case 'opacity':
-              if (contains([POINT, TICK, CIRCLE, SQUARE], this.mark())) {
-                // point-based marks and bar
-                if (!this.isAggregate() || this.has(DETAIL)) {
-                  return 0.7;
-                }
-              }
-              break;
+  /**
+   * @return Marks config value from the spec, or a default value if unspecified.
+   */
+  public marksConfig(name: string) {
+    const value = this._spec.config.marks[name];
+    switch (name) {
+      case 'filled':
+        if (value === undefined) {
+          // only point is not filled by default
+          return this.mark() !== POINT;
+        }
+        return value;
+      case 'opacity':
+        if (value === undefined && contains([POINT, TICK, CIRCLE, SQUARE], this.mark())) {
+          // point-based marks and bar
+          if (!this.isAggregate() || this.has(DETAIL)) {
+            return 0.7;
           }
-          break;
-      }
+        }
+        return value;
+      case 'orient':
+        const stack = this.stack();
+        if (stack) {
+          // For stacked chart, explicitly specified orient property will be ignored.
+          return stack.groupbyChannel === Y ? 'horizontal' : undefined;
+        }
+        if (value === undefined) {
+          return this.isMeasure(X) && !this.isMeasure(Y) ?
+            // horizontal if X is measure and Y is dimension or unspecified
+            'horizontal' :
+            // vertical (undefined) otherwise.  This includes when
+            // - Y is measure and X is dimension or unspecified
+            // - both X and Y are measures or both are dimension
+            undefined;  //
+        }
+        return value;
     }
     return value;
   }
