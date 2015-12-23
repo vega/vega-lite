@@ -8,15 +8,15 @@
 npm run build:all
 
 # Check if all required files are here
-if ![ -f vega-lite.js ]; then
+if ! [ -f vega-lite.js ]; then
   echo "${RED} vega-lite.js not found ${NC}"
   exit 1;
 fi
-if ![ -f vega-lite-schema.json ]; then
+if ! [ -f vega-lite-schema.json ]; then
   echo "${RED} vega-lite-schema.json not found${NC}"
   exit 1;
 fi
-if ![ -f src/vl.js ]; then
+if ! [ -f src/vl.js ]; then
   echo "${RED} src/vl.js not found.  Typescripts may be not compiled.${NC}"
   exit 1;
 fi
