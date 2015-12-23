@@ -199,7 +199,8 @@ export namespace bar {
 
     const stack = model.stack();
     // x, x2, and width -- we must specify two of these in all conditions
-    if (stack && X === stack.fieldChannel) { // x is stacked measure
+    if (stack && X === stack.fieldChannel) {
+      // 'x' is a stacked measure, thus use <field>_start and <field>_end for x, x2.
       p.x = {
         scale: model.scale(X),
         field: model.field(X) + '_start'
@@ -223,7 +224,18 @@ export namespace bar {
         p.width = { value: LINEAR_SCALE_BAR_SIZE };
       }
     } else if (model.fieldDef(X).bin) {
-      if (!model.has(SIZE)) {
+      if (model.has(SIZE) && orient !== 'horizontal') {
+        // For vertical chart that has binned X and size,
+        // center bar and apply size to width.
+        p.xc = {
+          scale: model.scale(X),
+          field: model.field(X, { binSuffix: '_mid' })
+        };
+        p.width = {
+          scale: model.scale(SIZE),
+          field: model.field(SIZE)
+        };
+      } else {
         p.x = {
           scale: model.scale(X),
           field: model.field(X, { binSuffix: '_start' }),
@@ -232,15 +244,6 @@ export namespace bar {
         p.x2 = {
           scale: model.scale(X),
           field: model.field(X, { binSuffix: '_end' })
-        };
-      } else {
-        p.xc = {
-          scale: model.scale(X),
-          field: model.field(X, { binSuffix: '_mid' })
-        };
-        p.width = {
-          scale: model.scale(SIZE),
-          field: model.field(SIZE)
         };
       }
     } else { // x is dimension or unspecified
@@ -253,13 +256,18 @@ export namespace bar {
         p.x = { value: 0, offset: 2 };
       }
 
-      p.width = model.has(SIZE) ? {
+      p.width = model.has(SIZE) && orient !== 'horizontal' ? {
+          // apply size scale if has size and is vertical (explicit "vertical" or undefined)
           scale: model.scale(SIZE),
           field: model.field(SIZE)
         } : model.isOrdinalScale(X) || !model.has(X) ? {
+          // for ordinal scale or single bar, we can use bandWidth
           value: model.fieldDef(X).scale.bandWidth,
           offset: -1
-        } : { value: LINEAR_SCALE_BAR_SIZE };
+        } : {
+          // otherwise, use fixed size
+          value: LINEAR_SCALE_BAR_SIZE
+        };
     }
 
     // y, y2 & height -- we must specify two of these in all conditions
@@ -287,7 +295,19 @@ export namespace bar {
         p.height = { value: LINEAR_SCALE_BAR_SIZE };
       }
     } else if (model.fieldDef(Y).bin) {
-      if (!model.has(SIZE)) {
+      if (model.has(SIZE) && orient === 'horizontal') {
+        // For horizontal chart that has binned Y and size,
+        // center bar and apply size to height.
+        p.yc = {
+          scale: model.scale(Y),
+          field: model.field(Y, { binSuffix: '_mid' })
+        };
+        p.height = {
+          scale: model.scale(SIZE),
+          field: model.field(SIZE)
+        };
+      } else {
+        // Otherwise, simply use <field>_start, <field>_end
         p.y = {
           scale: model.scale(Y),
           field: model.field(Y, { binSuffix: '_start' })
@@ -296,15 +316,6 @@ export namespace bar {
           scale: model.scale(Y),
           field: model.field(Y, { binSuffix: '_end' }),
           offset: 1
-        };
-      } else {
-        p.yc = {
-          scale: model.scale(Y),
-          field: model.field(Y, { binSuffix: '_mid' })
-        };
-        p.height = {
-          scale: model.scale(SIZE),
-          field: model.field(SIZE)
         };
       }
     } else { // y is ordinal or unspecified
@@ -321,13 +332,18 @@ export namespace bar {
         };
       }
 
-      p.height = model.has(SIZE) ? {
+      p.height = model.has(SIZE)  && orient === 'horizontal' ? {
+          // apply size scale if has size and is horizontal
           scale: model.scale(SIZE),
           field: model.field(SIZE)
         } : model.isOrdinalScale(Y) || !model.has(Y) ? {
+          // for ordinal scale or single bar, we can use bandWidth
           value: model.fieldDef(Y).scale.bandWidth,
           offset: -1
-        } : { value: LINEAR_SCALE_BAR_SIZE };
+        } : {
+          // otherwise, use fixed size
+          value: LINEAR_SCALE_BAR_SIZE
+        };
     }
 
     // fill

@@ -314,6 +314,7 @@ export function rangeMixins(model: Model, channel: Channel, scaleType): any {
       return {rangeMin: model.layout().cellHeight, rangeMax: 0};
     case SIZE:
       if (model.is(BAR)) {
+        // TODO: determine bandSize for bin, which actually uses linear scale 
         const dimension = model.marksConfig('orient') === 'horizontal' ? Y : X;
         return {range: [2, model.fieldDef(dimension).scale.bandWidth]};
       } else if (model.is(TEXT_MARK)) {
