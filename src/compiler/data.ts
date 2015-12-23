@@ -7,9 +7,8 @@ import {StackProperties} from './stack';
 import {autoMaxBins} from '../bin';
 import {Channel, X, Y, ROW, COLUMN} from '../channel';
 import {SOURCE, STACKED, LAYOUT, SUMMARY} from '../data';
-import * as time from './time';
 import {QUANTITATIVE, TEMPORAL} from '../type';
-
+import {type as scaleType} from './scale';
 
 /**
  * Create Vega's data array from a given encoding.
@@ -123,12 +122,11 @@ export namespace source {
   export function timeTransform(model: Model) {
     return model.reduce(function(transform, fieldDef: FieldDef, channel: Channel) {
       if (fieldDef.type === TEMPORAL && fieldDef.timeUnit) {
-        var field = model.field(channel, {nofn: true, datum: true});
-
         transform.push({
           type: 'formula',
           field: model.field(channel),
-          expr: time.formula(fieldDef.timeUnit, field)
+          expr: 'utc' + fieldDef.timeUnit + '(' +
+                model.field(channel, {nofn: true, datum: true}) + ')'
         });
       }
       return transform;
@@ -158,6 +156,15 @@ export namespace source {
         }
 
         transform.push(binTrans);
+        if (scaleType(channel, model) === 'ordinal') {
+          transform.push({
+            type: 'formula',
+            field: model.field(channel, {binSuffix: '_range'}),
+            expr: model.field(channel, {datum: true, binSuffix: '_start'}) +
+                  '+ \'-\' +' +
+                  model.field(channel, {datum: true, binSuffix: '_end'})
+          });
+        }
       }
       return transform;
     }, []);
@@ -266,8 +273,7 @@ export namespace layout {
       formulas.push({
         type: 'formula',
         field: 'width',
-        expr: cellWidth + ' * ' + colCardinality + ' + ' +
-              '(' + colCardinality + ' - 1) * ' + cellPadding
+        expr: '(' + cellWidth + ' + ' + cellPadding + ')' + ' * ' + colCardinality
       });
     }
 
@@ -289,8 +295,7 @@ export namespace layout {
       formulas.push({
         type: 'formula',
         field: 'height',
-        expr: cellHeight + ' * ' + rowCardinality + ' + ' +
-              '(' +rowCardinality + ' - 1) * ' + cellPadding
+        expr: '(' + cellHeight + '+' + cellPadding + ')' + ' * ' + rowCardinality
       });
     }
 

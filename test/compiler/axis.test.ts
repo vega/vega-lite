@@ -2,7 +2,7 @@ import {expect} from 'chai';
 
 import * as axis from '../../src/compiler/axis';
 import {Model} from '../../src/compiler/Model';
-import {LINE} from '../../src/mark';
+import {POINT, LINE} from '../../src/mark';
 import {X, COLUMN} from '../../src/channel';
 import {TEMPORAL, QUANTITATIVE} from '../../src/type';
 
@@ -36,6 +36,7 @@ describe('Axis', function() {
   describe('orient()', function () {
     it('should return specified orient', function () {
       var orient = axis.orient(new Model({
+          mark: POINT,
           encoding: {
             x: {field: 'a', axis:{orient: 'bottom'}}
           }
@@ -45,6 +46,7 @@ describe('Axis', function() {
 
     it('should return undefined by default', function () {
       var orient = axis.orient(new Model({
+          mark: POINT,
           encoding: {
             x: {field: 'a'}
           }
@@ -54,6 +56,7 @@ describe('Axis', function() {
 
     it('should return top for COL', function () {
       var orient = axis.orient(new Model({
+          mark: POINT,
           encoding: {
             x: {field: 'a'},
             column: {field: 'a'}
@@ -66,6 +69,7 @@ describe('Axis', function() {
   describe('title()', function () {
     it('should add explicitly specified title', function () {
       var title = axis.title(new Model({
+          mark: POINT,
           encoding: {
             x: {field: 'a', axis: {title: 'Custom'}}
           }
@@ -75,6 +79,7 @@ describe('Axis', function() {
 
     it('should add return fieldTitle by default', function () {
       var title = axis.title(new Model({
+          mark: POINT,
           encoding: {
             x: {field: 'a', type: QUANTITATIVE, axis: {titleMaxLength: 3}}
           }
@@ -84,6 +89,7 @@ describe('Axis', function() {
 
     it('should add return fieldTitle by default', function () {
       var title = axis.title(new Model({
+          mark: POINT,
           encoding: {
             x: {field: 'a', type: QUANTITATIVE, aggregate: 'sum', axis: {titleMaxLength: 10}}
           }
@@ -93,6 +99,7 @@ describe('Axis', function() {
 
     it('should add return fieldTitle by default and truncate', function () {
       var title = axis.title(new Model({
+          mark: POINT,
           encoding: {
             x: {field: 'a', type: QUANTITATIVE, aggregate: 'sum', axis: {titleMaxLength: 3}}
           }
@@ -103,6 +110,7 @@ describe('Axis', function() {
 
     it('should add return fieldTitle by default and truncate', function () {
       var title = axis.title(new Model({
+          mark: POINT,
           encoding: {
             x: {field: 'abcdefghijkl'}
           },

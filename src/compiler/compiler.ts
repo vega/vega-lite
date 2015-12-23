@@ -12,7 +12,7 @@ import {compileScales} from './scale';
 import {extend} from '../util';
 
 import {LAYOUT} from '../data';
-import {COLUMN, ROW, X, Y, Channel} from '../channel';
+import {COLUMN, ROW, X, Y} from '../channel';
 
 export {Model} from './Model';
 
@@ -21,7 +21,7 @@ export function compile(spec, theme?) {
   const layout = model.layout();
 
   let rootGroup:any = extend({
-      name: spec.name ? spec.name + '_root' : 'root',
+      name: spec.name ? spec.name + '-root' : 'root',
       type: 'group',
     },
     spec.description ? {description: spec.description} : {},
@@ -46,15 +46,8 @@ export function compile(spec, theme?) {
     // put the marks inside a facet cell's group
     extend(rootGroup, facetMixins(model, marks));
   } else {
-    rootGroup.marks = marks.map(function(mark) {
-      mark.from = mark.from || {};
-      mark.from.data = model.dataTable();
-      return mark;
-    });
-    const scaleNames = model.map(function(_, channel: Channel){
-        return channel; // TODO model.scaleName(channel)
-      });
-    rootGroup.scales = compileScales(scaleNames, model);
+    rootGroup.marks = marks;
+    rootGroup.scales = compileScales(model.channels(), model);
 
     var axes = (model.has(X) ? [compileAxis(X, model)] : [])
       .concat(model.has(Y) ? [compileAxis(Y, model)] : []);

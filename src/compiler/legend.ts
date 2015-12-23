@@ -1,39 +1,42 @@
-import {extend, keys} from '../util';
+import {FieldDef} from '../schema/fielddef.schema';
+
 import {COLOR, SIZE, SHAPE, Channel} from '../channel';
-import {Model} from './Model';
-import * as time from './time';
-import {TEMPORAL} from '../type';
+import {title as fieldTitle} from '../fielddef';
 import {AREA, BAR, TICK, TEXT, LINE, POINT, CIRCLE, SQUARE} from '../mark';
+import {TEMPORAL} from '../type';
+import {extend, keys} from '../util';
+import {Model} from './Model';
 
 export function compileLegends(model: Model) {
   var defs = [];
 
   if (model.has(COLOR) && model.fieldDef(COLOR).legend) {
     defs.push(compileLegend(model, COLOR, {
-      fill: COLOR
+      fill: model.scale(COLOR)
       // TODO: consider if this should be stroke for line
     }));
   }
 
   if (model.has(SIZE) && model.fieldDef(SIZE).legend) {
     defs.push(compileLegend(model, SIZE, {
-      size: SIZE
+      size: model.scale(SIZE)
     }));
   }
 
   if (model.has(SHAPE) && model.fieldDef(SHAPE).legend) {
     defs.push(compileLegend(model, SHAPE, {
-      shape: SHAPE
+      shape: model.scale(SHAPE)
     }));
   }
   return defs;
 }
 
 export function compileLegend(model: Model, channel: Channel, def) {
-  const legend = model.fieldDef(channel).legend;
+  const fieldDef = model.fieldDef(channel);
+  const legend = fieldDef.legend;
 
   // 1.1 Add properties with special rules
-  def.title = title(model, channel);
+  def.title = title(fieldDef);
 
   // 1.2 Add properties without rules
   ['orient', 'format', 'values'].forEach(function(property) {
@@ -47,7 +50,7 @@ export function compileLegend(model: Model, channel: Channel, def) {
   const props = (typeof legend !== 'boolean' && legend.properties) || {};
   ['title', 'labels', 'symbols', 'legend'].forEach(function(group) {
     let value = properties[group] ?
-      properties[group](model, channel, props[group]) : // apply rule
+      properties[group](fieldDef, props[group], model, channel) : // apply rule
       props[group]; // no rule -- just default values
     if (value !== undefined) {
       def.properties = def.properties || {};
@@ -58,31 +61,30 @@ export function compileLegend(model: Model, channel: Channel, def) {
   return def;
 }
 
-export function title(model: Model, channel: Channel) {
-  const legend = model.fieldDef(channel).legend;
-
+export function title(fieldDef: FieldDef) {
+  const legend = fieldDef.legend;
   if (typeof legend !== 'boolean' && legend.title) {
     return legend.title;
   }
 
-  return model.fieldTitle(channel);
+  return fieldTitle(fieldDef);
 }
 
 namespace properties {
-  export function labels(model: Model, channel: Channel, spec) {
-    var fieldDef = model.fieldDef(channel);
-    var timeUnit = fieldDef.timeUnit;
-    if (fieldDef.type === TEMPORAL && timeUnit && time.labelTemplate(timeUnit)) {
+  export function labels(fieldDef: FieldDef, spec, model: Model, channel: Channel) {
+    const timeUnit = fieldDef.timeUnit;
+    const labelTemplate = model.labelTemplate(channel);
+    if (fieldDef.type === TEMPORAL && timeUnit && labelTemplate) {
       return extend({
         text: {
-          template: '{{datum.data | ' + time.labelTemplate(timeUnit) + '}}'
+          template: '{{datum.data | ' + labelTemplate + '}}'
         }
       }, spec || {});
     }
     return spec;
   }
 
-  export function symbols(model: Model, channel: Channel, spec) {
+  export function symbols(fieldDef: FieldDef, spec, model: Model, channel: Channel) {
     let symbols:any = {};
     const mark = model.mark();
 
@@ -100,18 +102,18 @@ namespace properties {
         /* fall through */
       case POINT:
         // fill or stroke
-        if (model.config('marks').filled) {
+        if (model.marksConfig('filled')) {
           if (model.has(COLOR) && channel === COLOR) {
-            symbols.fill = {scale: COLOR, field: 'data'};
+            symbols.fill = {scale: model.scale(COLOR), field: 'data'};
           } else {
-            symbols.fill = {value: model.fieldDef(COLOR).value};
+            symbols.fill = {value: fieldDef.value};
           }
           symbols.stroke = {value: 'transparent'};
         } else {
           if (model.has(COLOR) && channel === COLOR) {
-            symbols.stroke = {scale: COLOR, field: 'data'};
+            symbols.stroke = {scale: model.scale(COLOR), field: 'data'};
           } else {
-            symbols.stroke = {value: model.fieldDef(COLOR).value};
+            symbols.stroke = {value: fieldDef.value};
           }
           symbols.fill = {value: 'transparent'};
           symbols.strokeWidth = {value: model.config('marks').strokeWidth};
@@ -124,7 +126,7 @@ namespace properties {
         break;
     }
 
-    var opacity = model.markOpacity();
+    var opacity = model.marksConfig('opacity');
     if (opacity) { symbols.opacity = {value: opacity}; }
 
     symbols = extend(symbols, spec || {});

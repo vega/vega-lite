@@ -1,5 +1,6 @@
 import * as util from '../util';
-import {COLUMN, ROW, X, Y, Channel} from '../channel';
+import {extend} from '../util';
+import {COLUMN, ROW, X, Y} from '../channel';
 import {Model} from './Model';
 
 import {compileAxis} from './axis';
@@ -14,13 +15,13 @@ export function facetMixins(model: Model, marks) {
   const cellWidth: any = !model.has(COLUMN) ?
       {field: {group: 'width'}} :     // cellWidth = width -- just use group's
     layout.cellWidth.field ?
-      {scale: 'column', band: true} : // bandSize of the scale
+      {scale: model.scale(COLUMN), band: true} : // bandSize of the scale
       {value: layout.cellWidth};      // static value
 
   const cellHeight: any = !model.has(ROW) ?
       {field: {group: 'height'}} :  // cellHeight = height -- just use group's
     layout.cellHeight.field ?
-      {scale: 'row', band: true} :  // bandSize of the scale
+      {scale: model.scale(ROW), band: true} :  // bandSize of the scale
       {value: layout.cellHeight};   // static value
 
   let facetGroupProperties: any = {
@@ -49,8 +50,9 @@ export function facetMixins(model: Model, marks) {
       util.error('Row encoding should be ordinal.');
     }
     facetGroupProperties.y = {
-      scale: ROW,
-      field: model.field(ROW)
+      scale: model.scale(ROW),
+      field: model.field(ROW),
+      offset: model.config('cell').padding / 2
     };
 
     facetKeys.push(model.field(ROW));
@@ -75,8 +77,9 @@ export function facetMixins(model: Model, marks) {
       util.error('Col encoding should be ordinal.');
     }
     facetGroupProperties.x = {
-      scale: COLUMN,
-      field: model.field(COLUMN)
+      scale: model.scale(COLUMN),
+      field: model.field(COLUMN),
+      offset: model.config('cell').padding / 2
     };
 
     facetKeys.push(model.field(COLUMN));
@@ -93,9 +96,9 @@ export function facetMixins(model: Model, marks) {
       cellAxes.push(compileAxis(Y, model));
     }
   }
-
+  const name = model.spec().name;
   let facetGroup: any = {
-    name: 'cell', // FIXME model.name() + cell
+    name: (name ? name + '-' : '') + 'cell',
     type: 'group',
     from: {
       data: model.dataTable(),
@@ -111,72 +114,77 @@ export function facetMixins(model: Model, marks) {
   }
   rootMarks.push(facetGroup);
 
-  const scaleNames = model.map(function(_, channel: Channel){
-    return channel; // TODO model.scaleName(channel)
-  });
-
   return {
     marks: rootMarks,
     axes: rootAxes,
     // assuming equal cellWidth here
-    scales: compileScales(scaleNames, model)
+    scales: compileScales(
+      model.channels(), // TODO: with nesting, not all scale might be a root-level
+      model
+    )
   };
 }
 
-function getXAxesGroup(model: Model, cellWidth, hasCol: boolean) {
-  let xAxesGroup: any = { // TODO: VgMarks
-    name: 'x-axes',
-    type: 'group',
-    properties: {
-      update: {
-        width: cellWidth,
-        height: {field: {group: 'height'}},
-        x: hasCol ? {scale: COLUMN, field: model.field(COLUMN)} : {value: 0},
-        y: {value: - model.config('cell').padding / 2}
-      }
+function getXAxesGroup(model: Model, cellWidth, hasCol: boolean) { // TODO: VgMarks
+  const name = model.spec().name;
+  return extend({
+      name: (name ? name + '-' : '') + 'x-axes',
+      type: 'group'
     },
-    axes: [compileAxis(X, model)]
-  };
-  if (hasCol) {
-    // FIXME facet is too expensive here - we only need to know unique columns
-    xAxesGroup.from = {
-      data: model.dataTable(),
-      transform: {type: 'facet', groupby: [model.field(COLUMN)]}
-    };
-  }
-  return xAxesGroup;
+    hasCol ? {
+      from: {
+        data: model.dataTable(),
+        transform: [{
+          type: 'aggregate',
+          groupby: [model.field(COLUMN)],
+          summarize: {'*': 'count'} // just a placeholder aggregation
+        }]
+      }
+    } : {},
+    {
+      properties: {
+        update: {
+          width: cellWidth,
+          height: {field: {group: 'height'}},
+          x: hasCol ? {scale: model.scale(COLUMN), field: model.field(COLUMN)} : {value: 0}
+        }
+      },
+      axes: [compileAxis(X, model)]
+    });
 }
 
-function getYAxesGroup(model: Model, cellHeight, hasRow: boolean) {
-  let yAxesGroup: any = { // TODO: VgMarks
-    name: 'y-axes',
-    type: 'group',
-    properties: {
-      update: {
-        width: {field: {group: 'width'}},
-        height: cellHeight,
-        x: {value: - model.config('cell').padding / 2},
-        y: hasRow ? {scale: ROW, field: model.field(ROW)} : {value: 0}
-      }
+function getYAxesGroup(model: Model, cellHeight, hasRow: boolean) { // TODO: VgMarks
+  const name = model.spec().name;
+  return extend({
+      name: (name ? name + '-' : '') + 'y-axes',
+      type: 'group'
     },
-    axes: [compileAxis(Y, model)]
-  };
-
-  if (hasRow) {
-    // FIXME facet is too expensive here - we only need to know unique rows
-    yAxesGroup.from = {
-      data: model.dataTable(),
-      transform: {type: 'facet', groupby: [model.field(ROW)]}
-    };
-  }
-  return yAxesGroup;
+    hasRow ? {
+      from: {
+        data: model.dataTable(),
+        transform: [{
+          type: 'aggregate',
+          groupby: [model.field(ROW)],
+          summarize: {'*': 'count'} // just a placeholder aggregation
+        }]
+      }
+    } : {},
+    {
+      properties: {
+        update: {
+          width: {field: {group: 'width'}},
+          height: cellHeight,
+          y: hasRow ? {scale: model.scale(ROW), field: model.field(ROW)} : {value: 0}
+        }
+      },
+      axes: [compileAxis(Y, model)]
+    });
 }
 
 function getRowRulesGroup(model: Model, cellHeight): any { // TODO: VgMarks
-  const rowRulesOnTop = !model.has(X) || model.fieldDef(X).axis.orient !== 'top';
-  const offset = model.config('cell').padding / 2 - 1;
+  const name = model.spec().name;
   const rowRules = {
-    name: 'row-rules',
+    name: (name ? name + '-' : '') + 'row-rules',
     type: 'rule',
     from: {
       data: model.dataTable(),
@@ -185,9 +193,8 @@ function getRowRulesGroup(model: Model, cellHeight): any { // TODO: VgMarks
     properties: {
       update: {
         y: {
-          scale: 'row',
-          field: model.field(ROW),
-          offset: (rowRulesOnTop ? -1 : 1) * offset
+          scale: model.scale(ROW),
+          field: model.field(ROW)
         },
         x: {value: 0, offset: -model.config('cell').gridOffset},
         x2: {field: {group: 'width'}, offset: model.config('cell').gridOffset},
@@ -197,21 +204,25 @@ function getRowRulesGroup(model: Model, cellHeight): any { // TODO: VgMarks
     }
   };
 
+  const rowRulesOnTop = !model.has(X) || model.fieldDef(X).axis.orient !== 'top';
   if (rowRulesOnTop) { // on top - no need to add offset
     return rowRules;
   } // otherwise, need to offset all rules by cellHeight
   return {
-    name: 'row-rules-group',
+    name: (name ? name + '-' : '') + 'row-rules-group',
     type: 'group',
     properties: {
       update: {
-        // add offset to avoid clashing with axis
-        y: cellHeight.value ?
-          // If cellHeight contains value, just use it.
-          cellHeight :
-          // Otherwise, need to get it from layout data in the root group
-          {field: {parent: 'cellHeight'}},
-
+        // add group offset = `cellHeight + padding` to avoid clashing with axis
+        y: cellHeight.value ? {
+            // If cellHeight contains value, just use it.
+            value: cellHeight,
+            offset: model.config('cell').padding
+          } : {
+            // Otherwise, need to get it from layout data in the root group
+            field: {parent: 'cellHeight'},
+            offset: model.config('cell').padding
+          },
         // include width so it can be referred inside row-rules
         width: {field: {group: 'width'}}
       }
@@ -221,10 +232,9 @@ function getRowRulesGroup(model: Model, cellHeight): any { // TODO: VgMarks
 }
 
 function getColumnRulesGroup(model: Model, cellWidth): any { // TODO: VgMarks
-  const colRulesOnLeft = !model.has(Y) || model.fieldDef(Y).axis.orient === 'right';
-  const offset = model.config('cell').padding / 2 - 1;
+  const name = model.spec().name;
   const columnRules = {
-    name: 'column-rules',
+    name: (name ? name + '-' : '') + 'column-rules',
     type: 'rule',
     from: {
       data: model.dataTable(),
@@ -233,9 +243,8 @@ function getColumnRulesGroup(model: Model, cellWidth): any { // TODO: VgMarks
     properties: {
       update: {
         x: {
-          scale: 'column',
-          field: model.field(COLUMN),
-          offset: (colRulesOnLeft ? -1 : 1) * offset
+          scale: model.scale(COLUMN),
+          field: model.field(COLUMN)
         },
         y: {value: 0, offset: -model.config('cell').gridOffset},
         y2: {field: {group: 'height'}, offset: model.config('cell').gridOffset},
@@ -245,21 +254,25 @@ function getColumnRulesGroup(model: Model, cellWidth): any { // TODO: VgMarks
     }
   };
 
+  const colRulesOnLeft = !model.has(Y) || model.fieldDef(Y).axis.orient === 'right';
   if (colRulesOnLeft) { // on left, no need to add global offset
     return columnRules;
   } // otherwise, need to offset all rules by cellWidth
   return {
-    name: 'column-rules-group',
+    name: (name ? name + '-' : '') + 'column-rules-group',
     type: 'group',
     properties: {
       update: {
-        // Add offset to avoid clashing with axis
-        x: cellWidth.value ?
-           // If cellWidth contains value, just use it.
-           cellWidth :
-           // Otherwise, need to get it from layout data in the root group
-           {field: {parent: 'cellWidth'}},
-
+        // Add group offset = `cellWidth + padding` to avoid clashing with axis
+        x: cellWidth.value ? {
+             // If cellWidth contains value, just use it.
+             value: cellWidth,
+             offset: model.config('cell').padding
+           } : {
+             // Otherwise, need to get it from layout data in the root group
+             field: {parent: 'cellWidth'},
+             offset: model.config('cell').padding
+           },
         // include height so it can be referred inside column-rules
         height: {field: {group: 'height'}}
       }

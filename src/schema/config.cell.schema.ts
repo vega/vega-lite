@@ -45,6 +45,7 @@ export const cellConfig = {
     gridOffset: {
       type: 'number',
       default: 6 // equal to tickSize
+      // TODO refer to tickSize when reading?
     },
 
     // Group properties

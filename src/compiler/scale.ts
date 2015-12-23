@@ -1,19 +1,18 @@
 // https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations
 declare var exports;
 
-import {extend} from '../util';
+import {contains, extend, range} from '../util';
 import {Model} from './Model';
 import {SHARED_DOMAIN_OPS} from '../aggregate';
 import {COLUMN, ROW, X, Y, SHAPE, SIZE, COLOR, TEXT, Channel} from '../channel';
 import {SOURCE, STACKED} from '../data';
-import * as time from './time';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 import {BAR, TEXT as TEXT_MARK} from '../mark';
 
-export function compileScales(names: Array<Channel>, model: Model) {
-  return names.reduce(function(a, channel: Channel) {
+export function compileScales(channels: Channel[], model: Model) {
+  return channels.map(function(channel: Channel) {
     var scaleDef: any = {
-      name: channel,
+      name: model.scale(channel),
       type: type(channel, model),
     };
 
@@ -38,8 +37,8 @@ export function compileScales(names: Array<Channel>, model: Model) {
       }
     });
 
-    return (a.push(scaleDef), a);
-  }, []);
+    return scaleDef;
+  });
 }
 
 export function type(channel: Channel, model: Model): string {
@@ -51,12 +50,41 @@ export function type(channel: Channel, model: Model): string {
       let range = fieldDef.scale.range;
       return channel === COLOR && (typeof range !== 'string') ? 'linear' : 'ordinal';
     case TEMPORAL:
-      return time.scale.type(fieldDef.timeUnit, channel);
+      if (channel === COLOR) {
+        // FIXME if user specify scale.range as ordinal presets, then this should be ordinal.
+        // Also, if we support color ramp, this should be ordinal too.
+        return 'linear'; // time has order, so use interpolated ordinal color scale.
+      }
+      if (channel === COLUMN || channel === ROW) {
+        return 'ordinal';
+      }
+      if (fieldDef.scale.type !== undefined) {
+        return fieldDef.scale.type;
+      }
+      // TODO: add timeUnit for other timeUnit once added
+      switch (fieldDef.timeUnit) {
+        case 'hours':
+        case 'day':
+        case 'date':
+        case 'month':
+          return 'ordinal';
+        case 'year':
+        case 'second':
+        case 'minute':
+          return 'linear';
+      }
+      return 'time';
+
     case QUANTITATIVE:
       if (fieldDef.bin) {
-        return channel === ROW || channel === COLUMN || channel === SHAPE ? 'ordinal' : 'linear';
+        // TODO: Ideally binned COLOR should be an ordinal scale
+        // However, currently ordinal scale doesn't support color ramp yet.
+        return contains([X, Y, COLOR], channel) ? 'linear' : 'ordinal';
       }
-      return fieldDef.scale.type;
+      if (fieldDef.scale.type !== undefined) {
+        return fieldDef.scale.type;
+      }
+      return 'linear';
   }
 }
 
@@ -69,8 +97,20 @@ export function domain(model: Model, channel:Channel, type) {
 
   // special case for temporal scale
   if (fieldDef.type === TEMPORAL) {
-    var range = time.scale.domain(fieldDef.timeUnit, channel);
-    if (range) { return range; }
+    var isColor = channel === COLOR;
+    switch (fieldDef.timeUnit) {
+      case 'seconds':
+      case 'minutes':
+        return isColor ? [0,59] : range(0, 60);
+      case 'hours':
+        return isColor ? [0,23] : range(0, 24);
+      case 'day':
+        return isColor ? [0,6] : range(0, 7);
+      case 'date':
+        return isColor ? [1,31] : range(1, 32);
+      case 'month':
+        return isColor ? [0,11] : range(0, 12);
+    }
   }
 
   // For stack, use STACKED data.
@@ -92,20 +132,29 @@ export function domain(model: Model, channel:Channel, type) {
   if (useRawDomain) { // useRawDomain - only Q/T
     return {
       data: SOURCE,
-      field: model.field(channel, {noAggregate:true})
+      field: model.field(channel, {noAggregate: true})
     };
   } else if (fieldDef.bin) { // bin
-
-    return {
+    return type === 'ordinal' ? {
+      // ordinal bin scale takes domain from bin_range, ordered by bin_start
       data: model.dataTable(),
-      field: type === 'ordinal' ?
-        // ordinal scale only use bin start for now
-        model.field(channel, { binSuffix: '_start' }) :
-        // need to merge both bin_start and bin_end for non-ordinal scale
-        [
-          model.field(channel, { binSuffix: '_start' }),
-          model.field(channel, { binSuffix: '_end' })
-        ]
+      field: model.field(channel, { binSuffix: '_range' }),
+      sort: {
+        field: model.field(channel, { binSuffix: '_start' }),
+        op: 'min' // min or max doesn't matter since same _range would have the same _start
+      }
+    } : channel === COLOR ? {
+      // Currently, binned on color uses linear scale and thus use _start point
+      // TODO: This ideally should become ordinal scale once ordinal scale supports color ramp.
+      data: model.dataTable(),
+      field: model.field(channel, { binSuffix: '_start' })
+    } : {
+      // other linear bin scale merges both bin_start and bin_end for non-ordinal scale
+      data: model.dataTable(),
+      field: [
+        model.field(channel, { binSuffix: '_start' }),
+        model.field(channel, { binSuffix: '_end' })
+      ]
     };
   } else if (sort) { // have sort -- only for ordinal
     return {
@@ -169,9 +218,7 @@ export function _useRawDomain (model: Model, channel: Channel) {
       // domain values from the summary table.
       (fieldDef.type === QUANTITATIVE && !fieldDef.bin) ||
       // T uses non-ordinal scale when there's no unit or when the unit is not ordinal.
-      (fieldDef.type === TEMPORAL &&
-        (!fieldDef.timeUnit || time.scale.type(fieldDef.timeUnit, channel) === 'linear')
-      )
+      (fieldDef.type === TEMPORAL && type(channel, model) === 'linear')
     );
 }
 
@@ -264,27 +311,30 @@ export function rangeMixins(model: Model, channel: Channel, scaleType): any {
       if (scaleType === 'ordinal') {
         return {rangeMin: 0, rangeMax: model.layout().cellHeight};
       }
-      return {rangeMin: model.layout().cellHeight, rangeMax :0};
+      return {rangeMin: model.layout().cellHeight, rangeMax: 0};
     case SIZE:
       if (model.is(BAR)) {
-        // FIXME this is definitely incorrect
-        // but let's fix it later since bar size is a bad encoding anyway
-        return {
-          range: [3, Math.max(
-            model.fieldDef(X).scale.bandWidth,
-            model.fieldDef(Y).scale.bandWidth
-          )]
-        };
+        // TODO: determine bandSize for bin, which actually uses linear scale 
+        const dimension = model.marksConfig('orient') === 'horizontal' ? Y : X;
+        return {range: [2, model.fieldDef(dimension).scale.bandWidth]};
       } else if (model.is(TEXT_MARK)) {
         return {range: [8, 40]};
+      } else { // point, square, circle
+        const xIsMeasure = model.isMeasure(X);
+        const yIsMeasure = model.isMeasure(Y);
+
+        const bandWidth = xIsMeasure !== yIsMeasure ?
+          model.fieldDef(xIsMeasure ? Y : X).scale.bandWidth :
+          Math.min(model.fieldDef(X).scale.bandWidth, model.fieldDef(Y).scale.bandWidth);
+
+        return {range: [10, (bandWidth - 2) * (bandWidth - 2)]};
       }
-      // else -- point
-      var bandWidth = Math.min(model.fieldDef(X).scale.bandWidth, model.fieldDef(Y).scale.bandWidth) - 1;
-      return {range: [10, 0.8 * bandWidth*bandWidth]};
     case SHAPE:
       return {range: 'shapes'};
     case COLOR:
       if (scaleType === 'ordinal') {
+        // TODO: once Vega supports color ramp for ordinal scale
+        // This should returns a color ramp for ordinal scale of ordinal or binned data
         return {range: 'category10'};
       } else { // time or quantitative
         return {range: ['#AFC6A3', '#09622A']}; // tableau greens

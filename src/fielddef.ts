@@ -2,7 +2,6 @@
 
 import {FieldDef} from './schema/fielddef.schema';
 import {contains, getbins} from './util';
-import * as time from './compiler/time';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from './type';
 
 
@@ -50,8 +49,22 @@ export function cardinality(fieldDef: FieldDef, stats, filterNull = {}) {
     return (bins.stop - bins.start) / bins.step;
   }
   if (fieldDef.type === TEMPORAL) {
-    var cardinality = time.cardinality(fieldDef, stats, filterNull, type);
-    if (cardinality !== null) { return cardinality; }
+    var timeUnit = fieldDef.timeUnit;
+    switch (timeUnit) {
+      case 'seconds': return 60;
+      case 'minutes': return 60;
+      case 'hours': return 24;
+      case 'day': return 7;
+      case 'date': return 31;
+      case 'month': return 12;
+      case 'year':
+        var yearstat = stats['year_' + fieldDef.field];
+
+        if (!yearstat) { return null; }
+
+        return yearstat.distinct -
+          (stat.missing > 0 && filterNull[type] ? 1 : 0);
+    }
     // otherwise use calculation below
   }
   if (fieldDef.aggregate) {
@@ -61,4 +74,16 @@ export function cardinality(fieldDef: FieldDef, stats, filterNull = {}) {
   // remove null
   return stat.distinct -
     (stat.missing > 0 && filterNull[type] ? 1 : 0);
+}
+
+export function title(fieldDef: FieldDef) {
+  if (isCount(fieldDef)) {
+    return COUNT_DISPLAYNAME;
+  }
+  var fn = fieldDef.aggregate || fieldDef.timeUnit || (fieldDef.bin && 'bin');
+  if (fn) {
+    return fn.toUpperCase() + '(' + fieldDef.field + ')';
+  } else {
+    return fieldDef.field;
+  }
 }

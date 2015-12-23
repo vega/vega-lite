@@ -1,7 +1,7 @@
 import {Spec} from '../schema/schema';
 import {FieldDef} from '../schema/fielddef.schema';
 
-import {COLUMN, ROW, X, Y, COLOR, DETAIL, Channel} from '../channel';
+import {COLUMN, ROW, X, Y, COLOR, DETAIL, Channel, supportMark} from '../channel';
 import {SOURCE, SUMMARY} from '../data';
 import * as vlFieldDef from '../fielddef';
 import * as vlEncoding from '../encoding';
@@ -10,9 +10,9 @@ import {AREA, BAR, POINT, TICK, CIRCLE, SQUARE, Mark} from '../mark';
 import * as schema from '../schema/schema';
 import * as schemaUtil from '../schema/schemautil';
 import {StackProperties} from './stack';
+import {type as scaleType} from './scale';
 import {getFullName, NOMINAL, ORDINAL, TEMPORAL} from '../type';
 import {contains, duplicate} from '../util';
-import * as time from './time';
 import {Encoding} from '../schema/encoding.schema';
 
 
@@ -41,18 +41,25 @@ export class Model {
   private _stack: StackProperties;
   private _layout: any;
 
-  // TODO: include _stack, _layout, _style, etc.
-
   constructor(spec: Spec, theme?) {
     var defaults = schema.instantiate();
     this._spec = schemaUtil.merge(defaults, theme || {}, spec);
 
-    // convert short type to full type
+
     vlEncoding.forEach(this._spec.encoding, function(fieldDef: FieldDef, channel: Channel) {
+      if (!supportMark(channel, this._spec.mark)) {
+        // Drop unsupported channel
+
+        // FIXME consolidate warning method
+        console.warn(channel, 'dropped as it is incompatible with', this._spec.mark);
+        delete this._spec.encoding[channel].field;
+      }
+
       if (fieldDef.type) {
+        // convert short type to full type
         fieldDef.type = getFullName(fieldDef.type);
       }
-    });
+    }, this);
 
     // calculate stack
     this._stack = this.getStackProperties();
@@ -60,9 +67,10 @@ export class Model {
   }
 
   private getStackProperties(): StackProperties {
-    var stackChannel = (this.has(COLOR)) ? COLOR : (this.has(DETAIL)) ? DETAIL : null;
+    var stackChannels = (this.has(COLOR) ? [COLOR] : [])
+      .concat(this.has(DETAIL) ? [DETAIL] : []);
 
-    if (stackChannel &&
+    if (stackChannels.length > 0 &&
       (this.is(BAR) || this.is(AREA)) &&
       this.config('stack') !== false &&
       this.isAggregate()) {
@@ -73,14 +81,14 @@ export class Model {
         return {
           groupbyChannel: Y,
           fieldChannel: X,
-          stackChannel: stackChannel,
+          stackChannels: stackChannels,
           config: this.config('stack')
         };
       } else if (isYMeasure && !isXMeasure) {
         return {
           groupbyChannel: X,
           fieldChannel: Y,
-          stackChannel: stackChannel,
+          stackChannels: stackChannels,
           config: this.config('stack')
         };
       }
@@ -153,7 +161,8 @@ export class Model {
     } else if (opt.fn) {
       return f + opt.fn + '_' + field;
     } else if (!opt.nofn && fieldDef.bin) {
-      var binSuffix = opt.binSuffix || '_start';
+      var binSuffix = opt.binSuffix ||
+        (scaleType(channel, this) === 'ordinal' ? '_range' : '_start');
       return f + 'bin_' + field + binSuffix;
     } else if (!opt.nofn && !opt.noAggregate && fieldDef.aggregate) {
       return f + fieldDef.aggregate + '_' + field;
@@ -165,15 +174,7 @@ export class Model {
   }
 
   public fieldTitle(channel: Channel): string {
-    if (vlFieldDef.isCount(this._spec.encoding[channel])) {
-      return vlFieldDef.COUNT_DISPLAYNAME;
-    }
-    var fn = this._spec.encoding[channel].aggregate || this._spec.encoding[channel].timeUnit || (this._spec.encoding[channel].bin && 'bin');
-    if (fn) {
-      return fn.toUpperCase() + '(' + this._spec.encoding[channel].field + ')';
-    } else {
-      return this._spec.encoding[channel].field;
-    }
+    return vlFieldDef.title(this._spec.encoding[channel]);
   }
 
   public numberFormat(channel?: Channel): string {
@@ -181,24 +182,27 @@ export class Model {
     return this.config('numberFormat');
   };
 
-  public map(f: (fd: FieldDef, c: Channel, e: Encoding) => any) {
-    return vlEncoding.map(this._spec.encoding, f);
+  public channels(): Channel[] {
+    return vlEncoding.channels(this._spec.encoding);
   }
 
-  public reduce(f: (acc: any, fd: FieldDef, c: Channel, e: Encoding) => any, init) {
-    return vlEncoding.reduce(this._spec.encoding, f, init);
+  public map(f: (fd: FieldDef, c: Channel, e: Encoding) => any, t?: any) {
+    return vlEncoding.map(this._spec.encoding, f, t);
   }
 
-  public forEach(f: (fd: FieldDef, c: Channel, i:number) => void) {
-    return vlEncoding.forEach(this._spec.encoding, f);
+  public reduce(f: (acc: any, fd: FieldDef, c: Channel, e: Encoding) => any, init, t?: any) {
+    return vlEncoding.reduce(this._spec.encoding, f, init, t);
+  }
+
+  public forEach(f: (fd: FieldDef, c: Channel, i:number) => void, t?: any) {
+    return vlEncoding.forEach(this._spec.encoding, f, t);
   }
 
   public isOrdinalScale(channel: Channel) {
     const fieldDef = this.fieldDef(channel);
     return fieldDef && (
       contains([NOMINAL, ORDINAL], fieldDef.type) ||
-      (fieldDef.type === TEMPORAL && fieldDef.timeUnit &&
-        time.scale.type(fieldDef.timeUnit, channel) === 'ordinal')
+      ( fieldDef.type === TEMPORAL && scaleType(channel, this) === 'ordinal' )
       );
   }
 
@@ -234,23 +238,75 @@ export class Model {
     return vals && vals.length;
   }
 
+  /**
+   * @return Config value from the spec, or a default value if unspecified.
+   */
   public config(name: string) {
     return this._spec.config[name];
   }
 
-  // FIXME -- move this to marks.ts
-  public markOpacity(): number {
-    const opacity = this.config('marks').opacity;
-    if (opacity) {
-      return opacity;
-    } else {
-      if (contains([POINT, TICK, CIRCLE, SQUARE], this.mark())) {
-        // point-based marks and bar
-        if (!this.isAggregate() || this.has(DETAIL)) {
-          return 0.7;
+  /**
+   * @return Marks config value from the spec, or a default value if unspecified.
+   */
+  public marksConfig(name: string) {
+    const value = this._spec.config.marks[name];
+    switch (name) {
+      case 'filled':
+        if (value === undefined) {
+          // only point is not filled by default
+          return this.mark() !== POINT;
         }
-      }
+        return value;
+      case 'opacity':
+        if (value === undefined && contains([POINT, TICK, CIRCLE, SQUARE], this.mark())) {
+          // point-based marks and bar
+          if (!this.isAggregate() || this.has(DETAIL)) {
+            return 0.7;
+          }
+        }
+        return value;
+      case 'orient':
+        const stack = this.stack();
+        if (stack) {
+          // For stacked chart, explicitly specified orient property will be ignored.
+          return stack.groupbyChannel === Y ? 'horizontal' : undefined;
+        }
+        if (value === undefined) {
+          return this.isMeasure(X) && !this.isMeasure(Y) ?
+            // horizontal if X is measure and Y is dimension or unspecified
+            'horizontal' :
+            // vertical (undefined) otherwise.  This includes when
+            // - Y is measure and X is dimension or unspecified
+            // - both X and Y are measures or both are dimension
+            undefined;  //
+        }
+        return value;
     }
-    return undefined;
+    return value;
   }
+
+  /** returns scale name for a given channel */
+  public scale(channel: Channel): string {
+    const name = this.spec().name;
+    return (name ? name + '-' : '') + channel;
+  }
+
+  /** returns the template name used for axis labels for a time unit */
+  public labelTemplate(channel: Channel): string {
+    const fieldDef = this.fieldDef(channel);
+    const legend = fieldDef.legend;
+    const abbreviated = contains([ROW, COLUMN, X, Y], channel) ?
+      fieldDef.axis.shortTimeLabels :
+      typeof legend !== 'boolean' ? legend.shortTimeLabels : false;
+
+    var postfix = abbreviated ? '-abbrev' : '';
+    switch (fieldDef.timeUnit) {
+      case 'day':
+        return 'day' + postfix;
+      case 'month':
+        return 'month' + postfix;
+    }
+    return null;
+  }
+
 }

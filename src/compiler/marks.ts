@@ -1,46 +1,47 @@
 import {Model} from './Model';
-import {X, Y, COLOR, TEXT, SIZE, SHAPE, DETAIL} from '../channel';
-import {AREA, BAR, LINE, TEXT as TEXTMARKS} from '../mark';
-import {QUANTITATIVE} from '../type';
+import {X, Y, COLOR, TEXT, SIZE, SHAPE, DETAIL, ROW, COLUMN, LABEL} from '../channel';
+import {AREA, LINE, TEXT as TEXTMARKS} from '../mark';
 import {imputeTransform, stackTransform} from './stack';
+import {QUANTITATIVE} from '../type';
+import {extend} from '../util';
 
-/* mapping from vega-lite's mark types to vega's mark types */
-const MARKTYPES_MAP = {
-  bar: 'rect',
-  tick: 'rect',
-  point: 'symbol',
-  line: 'line',
-  area: 'area',
-  text: 'text',
-  circle: 'symbol',
-  square: 'symbol'
-};
+declare var exports;
 
 export function compileMarks(model: Model): any[] {
   const mark = model.mark();
+  const name = model.spec().name;
+  const isFaceted = model.has(ROW) || model.has(COLUMN);
+  const dataFrom = {data: model.dataTable()};
+
   if (mark === LINE || mark === AREA) {
-    // For Line and Area, we sort values based on dimension by default
+    const details = detailFields(model);
+
+    // For line and area, we sort values based on dimension by default
     // For line, a special config "sortLineBy" is allowed
     let sortBy = mark === LINE ? model.config('sortLineBy') : undefined;
     if (!sortBy) {
-      const sortField = (model.isMeasure(X) && model.isDimension(Y)) ? Y : X;
-      sortBy = '-' + model.field(sortField);
+      sortBy = '-' + model.field(model.marksConfig('orient') === 'horizontal' ? Y : X);
     }
 
-    let pathMarks: any = {
-      type: MARKTYPES_MAP[mark],
-      from: {
-        // from.data might be added later for non-facet, single group line/area
-        transform: [{ type: 'sort', by: sortBy }]
-      },
-      properties: {
-        update: properties[mark](model)
+    let pathMarks: any = extend(
+      name ? { name: name + '-marks' } : {},
+      {
+        type: exports[mark].markType(model),
+        from: extend(
+          // If has facet, `from.data` will be added in the cell group.
+          // If has subfacet for line/area group, `from.data` will be added in the outer subfacet group below.
+          // If has no subfacet, add from.data.
+          isFaceted || details.length > 0 ? {} : dataFrom,
+
+          // sort transform
+          {transform: [{ type: 'sort', by: sortBy }]}
+        ),
+        properties: { update: exports[mark].properties(model) }
       }
-    };
+    );
 
     // FIXME is there a case where area requires impute without stacking?
 
-    const details = detailFields(model);
     if (details.length > 0) { // have level of details - need to facet line into subgroups
       const facetTransform = { type: 'facet', groupby: details };
       const transform = mark === AREA && model.stack() ?
@@ -49,12 +50,14 @@ export function compileMarks(model: Model): any[] {
         [facetTransform];
 
       return [{
-        name: mark + '-facet',
+        name: (name ? name + '-' : '') + mark + '-facet',
         type: 'group',
-        from: {
-          // from.data might be added later for non-facet charts
-          transform: transform
-        },
+        from: extend(
+          // If has facet, `from.data` will be added in the cell group.
+          // Otherwise, add it here.
+          isFaceted ? {} : dataFrom,
+          {transform: transform}
+        ),
         properties: {
           update: {
             width: { field: { group: 'width' } },
@@ -70,36 +73,91 @@ export function compileMarks(model: Model): any[] {
     let marks = []; // TODO: vgMarks
     if (mark === TEXTMARKS && model.has(COLOR)) {
       // add background to 'text' marks if has color
-      marks.push({
-        type: 'rect',
-        properties: { update: properties.textBackground(model) }
-      });
+      marks.push(extend(
+        name ? { name: name + '-background' } : {},
+        {type: 'rect'},
+        // If has facet, `from.data` will be added in the cell group.
+        // Otherwise, add it here.
+        isFaceted ? {} : {from: dataFrom},
+        // Properties
+        {properties: { update: text.background(model) } }
+      ));
     }
 
-    let mainDef: any = {
-      // TODO add name
-      type: MARKTYPES_MAP[mark],
-      properties: {
-        update: properties[mark](model)
+    marks.push(extend(
+      name ? { name: name + '-marks' } : {},
+      { type: exports[mark].markType(model) },
+      // Add `from` if needed
+      (!isFaceted || model.stack()) ? {
+        from: extend(
+          // If faceted, `from.data` will be added in the cell group.
+          // Otherwise, add it here
+          isFaceted ? {} : dataFrom,
+          // Stacked Chart need additional transform
+          model.stack() ? {transform: [stackTransform(model)]} : {}
+        )
+      } : {},
+      // properties groups
+      { properties: { update: exports[mark].properties(model) } }
+    ));
+
+    if (model.has(LABEL)) {
+      const labelProperties = exports[mark].labels(model);
+
+      // check if we have label method for current mark type.
+      // TODO(#240): remove this line once we support label for all mark types
+      if (labelProperties) {
+        // add label group
+        marks.push(extend(
+          name ? { name: name + '-label' } : {},
+          {type: 'text'},
+          // If has facet, `from.data` will be added in the cell group.
+          // Otherwise, add it here.
+          isFaceted ? {} : {from: dataFrom},
+          // Properties
+          { properties: { update: labelProperties } }
+        ));
       }
-    };
-    const stack = model.stack();
-    if (mark === BAR && stack) {
-      mainDef.from = {
-        transform: [stackTransform(model)]
-      };
     }
-    marks.push(mainDef);
-
-    // if (model.has(LABEL)) {
-    //   // TODO: add label by type here
-    // }
 
     return marks;
   }
 }
 
+export function size(model: Model) {
+  if (model.fieldDef(SIZE).value !== undefined) {
+    return model.fieldDef(SIZE).value;
+  }
+  if (model.mark() === TEXTMARKS) {
+    return 10; // font size 10 by default
+  }
+  return 30;
+}
 
+function colorMixins(model: Model) {
+  let p: any = {};
+  if (model.marksConfig('filled')) {
+    if (model.has(COLOR)) {
+      p.fill = {
+        scale: model.scale(COLOR),
+        field: model.field(COLOR)
+      };
+    } else {
+      p.fill = { value: model.fieldDef(COLOR).value };
+    }
+  } else {
+    if (model.has(COLOR)) {
+      p.stroke = {
+        scale: model.scale(COLOR),
+        field: model.field(COLOR)
+      };
+    } else {
+      p.stroke = { value: model.fieldDef(COLOR).value };
+    }
+    p.strokeWidth = { value: model.config('marks').strokeWidth };
+  }
+  return p;
+}
 
 function applyMarksConfig(marksProperties, marksConfig, propsList) {
   propsList.forEach(function(property) {
@@ -123,253 +181,292 @@ function detailFields(model: Model): string[] {
   }, []);
 }
 
-export namespace properties {
-  export function bar(model: Model) {
-    const stack = model.stack();
+/* Size for bar's width when bar's dimension is on linear scale.
+ * kanitw: I decided not to make this a config as it shouldn't be used in practice anyway.
+ */
+const LINEAR_SCALE_BAR_SIZE = 2;
 
-    // FIXME(#724) apply orient from config if applicable
+export namespace bar {
+  export function markType() {
+    return 'rect';
+  }
+
+  export function properties(model: Model) {
     // TODO Use Vega's marks properties interface
-    var p: any = {};
+    let p: any = {};
 
-    // x's and width
+    const orient = model.marksConfig('orient');
+
+    const stack = model.stack();
+    // x, x2, and width -- we must specify two of these in all conditions
     if (stack && X === stack.fieldChannel) {
+      // 'x' is a stacked measure, thus use <field>_start and <field>_end for x, x2.
       p.x = {
-        scale: X,
+        scale: model.scale(X),
         field: model.field(X) + '_start'
       };
       p.x2 = {
-        scale: X,
+        scale: model.scale(X),
         field: model.field(X) + '_end'
       };
-    } else if (model.fieldDef(X).bin) {
-      p.x = {
-        scale: X,
-        field: model.field(X, { binSuffix: '_start' }),
-        offset: 1
-      };
-      p.x2 = {
-        scale: X,
-        field: model.field(X, { binSuffix: '_end' })
-      };
     } else if (model.isMeasure(X)) {
-      p.x = {
-        scale: X,
-        field: model.field(X)
-      };
-      if (!model.has(Y) || model.isDimension(Y)) {
-        p.x2 = { value: 0 };
-      }
-    } else {
-      if (model.has(X)) { // is ordinal
-        p.xc = {
-          scale: X,
+      if (orient === 'horizontal') {
+        p.x = {
+          scale: model.scale(X),
           field: model.field(X)
         };
-      } else {
-        p.x = { value: 0, offset: model.config('singleBarOffset') };
-      }
-    }
-
-    // width
-    if (!p.x2) {
-      if (!model.has(X) || model.isOrdinalScale(X)) { // no X or X is ordinal
-        if (model.has(SIZE)) {
-          p.width = {
-            scale: SIZE,
-            field: model.field(SIZE)
-          };
-        } else {
-          // FIXME consider using band: true here
-          p.width = {
-            value: model.fieldDef(X).scale.bandWidth,
-            offset: -1
-          };
-        }
-      } else { // X is Quant or Time Scale
-        p.width = { value: 2 };
-      }
-    }
-
-    // y's & height
-    if (stack && Y === stack.fieldChannel) {
-      p.y = {
-        scale: Y,
-        field: model.field(Y) + '_start'
-      };
-      p.y2 = {
-        scale: Y,
-        field: model.field(Y) + '_end'
-      };
-    } else if (model.fieldDef(Y).bin) {
-      p.y = {
-        scale: Y,
-        field: model.field(Y, { binSuffix: '_start' })
-      };
-      p.y2 = {
-        scale: Y,
-        field: model.field(Y, { binSuffix: '_end' }),
-        offset: 1
-      };
-    } else if (model.isMeasure(Y)) {
-      p.y = {
-        scale: Y,
-        field: model.field(Y)
-      };
-      p.y2 = { field: { group: 'height' } };
-    } else {
-      if (model.has(Y)) { // is ordinal
-        p.yc = {
-          scale: Y,
-          field: model.field(Y)
+        p.x2 = { value: 0 };
+      } else { // vertical
+        p.xc = {
+          scale: model.scale(X),
+          field: model.field(X)
         };
-      } else {
-        p.y2 = {
-          field: { group: 'height' },
-          offset: -model.config('singleBarOffset')
-        };
+        p.width = { value: LINEAR_SCALE_BAR_SIZE };
       }
-
-      if (model.has(SIZE)) {
-        p.height = {
-          scale: SIZE,
+    } else if (model.fieldDef(X).bin) {
+      if (model.has(SIZE) && orient !== 'horizontal') {
+        // For vertical chart that has binned X and size,
+        // center bar and apply size to width.
+        p.xc = {
+          scale: model.scale(X),
+          field: model.field(X, { binSuffix: '_mid' })
+        };
+        p.width = {
+          scale: model.scale(SIZE),
           field: model.field(SIZE)
         };
       } else {
-        // FIXME: band:true?
+        p.x = {
+          scale: model.scale(X),
+          field: model.field(X, { binSuffix: '_start' }),
+          offset: 1
+        };
+        p.x2 = {
+          scale: model.scale(X),
+          field: model.field(X, { binSuffix: '_end' })
+        };
+      }
+    } else { // x is dimension or unspecified
+      if (model.has(X)) { // is ordinal
+       p.xc = {
+         scale: model.scale(X),
+         field: model.field(X)
+       };
+     } else { // no x
+        p.x = { value: 0, offset: 2 };
+      }
+
+      p.width = model.has(SIZE) && orient !== 'horizontal' ? {
+          // apply size scale if has size and is vertical (explicit "vertical" or undefined)
+          scale: model.scale(SIZE),
+          field: model.field(SIZE)
+        } : model.isOrdinalScale(X) || !model.has(X) ? {
+          // for ordinal scale or single bar, we can use bandWidth
+          value: model.fieldDef(X).scale.bandWidth,
+          offset: -1
+        } : {
+          // otherwise, use fixed size
+          value: LINEAR_SCALE_BAR_SIZE
+        };
+    }
+
+    // y, y2 & height -- we must specify two of these in all conditions
+    if (stack && Y === stack.fieldChannel) { // y is stacked measure
+      p.y = {
+        scale: model.scale(Y),
+        field: model.field(Y) + '_start'
+      };
+      p.y2 = {
+        scale: model.scale(Y),
+        field: model.field(Y) + '_end'
+      };
+    } else if (model.isMeasure(Y)) {
+      if (orient !== 'horizontal') { // vertical (explicit 'vertical' or undefined)
+        p.y = {
+          scale: model.scale(Y),
+          field: model.field(Y)
+        };
+        p.y2 = { field: { group: 'height' } };
+      } else {
+        p.yc = {
+          scale: model.scale(Y),
+          field: model.field(Y)
+        };
+        p.height = { value: LINEAR_SCALE_BAR_SIZE };
+      }
+    } else if (model.fieldDef(Y).bin) {
+      if (model.has(SIZE) && orient === 'horizontal') {
+        // For horizontal chart that has binned Y and size,
+        // center bar and apply size to height.
+        p.yc = {
+          scale: model.scale(Y),
+          field: model.field(Y, { binSuffix: '_mid' })
+        };
         p.height = {
-          value: model.fieldDef(Y).scale.bandWidth,
+          scale: model.scale(SIZE),
+          field: model.field(SIZE)
+        };
+      } else {
+        // Otherwise, simply use <field>_start, <field>_end
+        p.y = {
+          scale: model.scale(Y),
+          field: model.field(Y, { binSuffix: '_start' })
+        };
+        p.y2 = {
+          scale: model.scale(Y),
+          field: model.field(Y, { binSuffix: '_end' }),
+          offset: 1
+        };
+      }
+    } else { // y is ordinal or unspecified
+
+      if (model.has(Y)) { // is ordinal
+        p.yc = {
+          scale: model.scale(Y),
+          field: model.field(Y)
+        };
+      } else { // No Y
+        p.y2 = {
+          field: { group: 'height' },
           offset: -1
         };
       }
+
+      p.height = model.has(SIZE)  && orient === 'horizontal' ? {
+          // apply size scale if has size and is horizontal
+          scale: model.scale(SIZE),
+          field: model.field(SIZE)
+        } : model.isOrdinalScale(Y) || !model.has(Y) ? {
+          // for ordinal scale or single bar, we can use bandWidth
+          value: model.fieldDef(Y).scale.bandWidth,
+          offset: -1
+        } : {
+          // otherwise, use fixed size
+          value: LINEAR_SCALE_BAR_SIZE
+        };
     }
 
     // fill
-    if (model.has(COLOR)) {
-      p.fill = {
-        scale: COLOR,
-        field: model.field(COLOR)
-      };
-    } else {
-      p.fill = { value: model.fieldDef(COLOR).value };
-    }
+    extend(p, colorMixins(model));
 
     // opacity
-    var opacity = model.markOpacity();
+    var opacity = model.marksConfig('opacity');
     if (opacity) { p.opacity = { value: opacity }; };
 
     return p;
   }
 
-  export function point(model: Model) {
+  export function labels(model: Model) {
+    // TODO(#64): fill this method
+    return undefined;
+  }
+}
+
+export namespace point {
+  export function markType() {
+    return 'symbol';
+  }
+
+  export function properties(model: Model) {
     // TODO Use Vega's marks properties interface
     var p: any = {};
-    const marksConfig = model.config('marks');
 
     // x
     if (model.has(X)) {
       p.x = {
-        scale: X,
+        scale: model.scale(X),
         field: model.field(X, { binSuffix: '_mid' })
       };
-    } else if (!model.has(X)) {
+    } else {
       p.x = { value: model.fieldDef(X).scale.bandWidth / 2 };
     }
 
     // y
     if (model.has(Y)) {
       p.y = {
-        scale: Y,
+        scale: model.scale(Y),
         field: model.field(Y, { binSuffix: '_mid' })
       };
-    } else if (!model.has(Y)) {
+    } else {
       p.y = { value: model.fieldDef(Y).scale.bandWidth / 2 };
     }
 
     // size
     if (model.has(SIZE)) {
       p.size = {
-        scale: SIZE,
+        scale: model.scale(SIZE),
         field: model.field(SIZE)
       };
-    } else if (!model.has(SIZE)) {
-      p.size = { value: model.fieldDef(SIZE).value };
+    } else {
+      p.size = { value: size(model) };
     }
 
     // shape
     if (model.has(SHAPE)) {
       p.shape = {
-        scale: SHAPE,
+        scale: model.scale(SHAPE),
         field: model.field(SHAPE)
       };
-    } else if (!model.has(SHAPE)) {
+    } else {
       p.shape = { value: model.fieldDef(SHAPE).value };
     }
 
     // fill or stroke
-    if (marksConfig.filled) {
-      if (model.has(COLOR)) {
-        p.fill = {
-          scale: COLOR,
-          field: model.field(COLOR)
-        };
-      } else if (!model.has(COLOR)) {
-        p.fill = { value: model.fieldDef(COLOR).value };
-      }
-    } else {
-      if (model.has(COLOR)) {
-        p.stroke = {
-          scale: COLOR,
-          field: model.field(COLOR)
-        };
-      } else if (!model.has(COLOR)) {
-        p.stroke = { value: model.fieldDef(COLOR).value };
-      }
-      p.strokeWidth = { value: model.config('marks').strokeWidth };
-    }
+    extend(p, colorMixins(model));
 
     // opacity
-    const opacity = model.markOpacity();
+    const opacity = model.marksConfig('opacity');
     if (opacity) { p.opacity = { value: opacity }; };
 
     return p;
   }
 
-  export function line(model: Model) {
+  export function labels(model: Model) {
+    // TODO(#240): fill this method
+  }
+}
+
+export namespace line {
+  export function markType() {
+    return 'line';
+  }
+
+  export function properties(model: Model) {
     // TODO Use Vega's marks properties interface
     var p: any = {};
 
     // x
     if (model.has(X)) {
       p.x = {
-        scale: X,
+        scale: model.scale(X),
         field: model.field(X, { binSuffix: '_mid' })
       };
-    } else if (!model.has(X)) {
+    } else {
       p.x = { value: 0 };
     }
 
     // y
     if (model.has(Y)) {
       p.y = {
-        scale: Y,
+        scale: model.scale(Y),
         field: model.field(Y, { binSuffix: '_mid' })
       };
-    } else if (!model.has(Y)) {
+    } else {
       p.y = { field: { group: 'height' } };
     }
 
     // stroke
     if (model.has(COLOR)) {
       p.stroke = {
-        scale: COLOR,
+        scale: model.scale(COLOR),
         field: model.field(COLOR)
       };
-    } else if (!model.has(COLOR)) {
+    } else {
       p.stroke = { value: model.fieldDef(COLOR).value };
     }
 
     // opacity
-    var opacity = model.markOpacity();
+    var opacity = model.marksConfig('opacity');
     if (opacity) { p.opacity = { value: opacity }; };
 
     p.strokeWidth = { value: model.config('marks').strokeWidth };
@@ -379,83 +476,95 @@ export namespace properties {
     return p;
   }
 
+  export function labels(model: Model) {
+    // TODO(#240): fill this method
+    return undefined;
+  }
+}
+
+export namespace area {
+  export function markType() {
+    return 'area';
+  }
+
   // TODO(#694): optimize area's usage with bin
-  export function area(model: Model) {
-    const stack = model.stack();
-
-    // FIXME(#724): apply orient properties
-
+  export function properties(model: Model) {
     // TODO Use Vega's marks properties interface
     var p: any = {};
 
+    const orient = model.marksConfig('orient');
+    if (orient !== undefined) {
+      p.orient = { value: orient };
+    }
+
+    const stack = model.stack();
     // x
-    if (stack && X === stack.fieldChannel) {
+    if (stack && X === stack.fieldChannel) { // Stacked Measure
       p.x = {
-        scale: X,
+        scale: model.scale(X),
         field: model.field(X) + '_start'
       };
-      p.x2 = {
-        scale: X,
-        field: model.field(X) + '_end'
-      };
-    } else if (model.isMeasure(X)) {
-      p.x = { scale: X, field: model.field(X) };
-      if (model.isDimension(Y)) {
-        p.x2 = {
-          scale: X,
-          value: 0
-        };
-        p.orient = { value: 'horizontal' };
-      }
-    } else if (model.has(X)) {
+    } else if (model.isMeasure(X)) { // Measure
+      p.x = { scale: model.scale(X), field: model.field(X) };
+    } else if (model.isDimension(X)) {
       p.x = {
-        scale: X,
+        scale: model.scale(X),
         field: model.field(X, { binSuffix: '_mid' })
       };
-    } else {
-      p.x = { value: 0 };
+    }
+
+    // x2
+    if (orient === 'horizontal') {
+      if (stack && X === stack.fieldChannel) {
+        p.x2 = {
+          scale: model.scale(X),
+          field: model.field(X) + '_end'
+        };
+      } else {
+        p.x2 = {
+          scale: model.scale(X),
+          value: 0
+        };
+      }
     }
 
     // y
-    if (stack && Y === stack.fieldChannel) {
+    if (stack && Y === stack.fieldChannel) { // Stacked Measure
       p.y = {
-        scale: Y,
+        scale: model.scale(Y),
         field: model.field(Y) + '_start'
-      };
-      p.y2 = {
-        scale: Y,
-        field: model.field(Y) + '_end'
       };
     } else if (model.isMeasure(Y)) {
       p.y = {
-        scale: Y,
+        scale: model.scale(Y),
         field: model.field(Y)
       };
-      p.y2 = {
-        scale: Y,
-        value: 0
-      };
-    } else if (model.has(Y)) {
+    } else if (model.isDimension(Y)) {
       p.y = {
-        scale: Y,
+        scale: model.scale(Y),
         field: model.field(Y, { binSuffix: '_mid' })
       };
-    } else {
-      p.y = { field: { group: 'height' } };
+    }
+
+    if (orient !== 'horizontal') { // 'vertical' or undefined are vertical
+      if (stack && Y === stack.fieldChannel) {
+        p.y2 = {
+          scale: model.scale(Y),
+          field: model.field(Y) + '_end'
+        };
+      } else {
+        p.y2 = {
+          scale: model.scale(Y),
+          value: 0
+        };
+      }
     }
 
     // fill
-    if (model.has(COLOR)) {
-      p.fill = {
-        scale: COLOR,
-        field: model.field(COLOR)
-      };
-    } else if (!model.has(COLOR)) {
-      p.fill = { value: model.fieldDef(COLOR).value };
-    }
+    extend(p, colorMixins(model));
 
     // opacity
-    var opacity = model.markOpacity();
+    var opacity = model.marksConfig('opacity');
     if (opacity) { p.opacity = { value: opacity }; };
 
     applyMarksConfig(p, model.config('marks'), ['interpolate', 'tension']);
@@ -463,7 +572,18 @@ export namespace properties {
     return p;
   }
 
-  export function tick(model: Model) {
+  export function labels(model: Model) {
+    // TODO(#240): fill this method
+    return undefined;
+  }
+}
+
+export namespace tick {
+  export function markType() {
+    return 'rect';
+  }
+
+  export function properties(model: Model) {
     // TODO Use Vega's marks properties interface
     // FIXME are /3 , /1.5 divisions here correct?
     var p: any = {};
@@ -471,26 +591,26 @@ export namespace properties {
     // x
     if (model.has(X)) {
       p.x = {
-        scale: X,
+        scale: model.scale(X),
         field: model.field(X, { binSuffix: '_mid' })
       };
       if (model.isDimension(X)) {
         p.x.offset = -model.fieldDef(X).scale.bandWidth / 3;
       }
-    } else if (!model.has(X)) {
+    } else {
       p.x = { value: 0 };
     }
 
     // y
     if (model.has(Y)) {
       p.y = {
-        scale: Y,
+        scale: model.scale(Y),
         field: model.field(Y, { binSuffix: '_mid' })
       };
       if (model.isDimension(Y)) {
         p.y.offset = -model.fieldDef(Y).scale.bandWidth / 3;
       }
-    } else if (!model.has(Y)) {
+    } else {
       p.y = { value: 0 };
     }
 
@@ -513,7 +633,7 @@ export namespace properties {
     // fill
     if (model.has(COLOR)) {
       p.fill = {
-        scale: COLOR,
+        scale: model.scale(COLOR),
         field: model.field(COLOR)
       };
     } else {
@@ -521,82 +641,116 @@ export namespace properties {
     }
 
     // opacity
-    var opacity = model.markOpacity();
+    var opacity = model.marksConfig('opacity');
     if (opacity) { p.opacity = { value: opacity }; };
 
     return p;
   }
 
-  function filled_point_props(shape) {
-    return function(model: Model) {
-      // TODO Use Vega's marks properties interface
-      var p: any = {};
+  export function labels(model: Model) {
+    // TODO(#240): fill this method
+    return undefined;
+  }
+}
 
-      // x
-      if (model.has(X)) {
-        p.x = {
-          scale: X,
-          field: model.field(X, { binSuffix: '_mid' })
-        };
-      } else if (!model.has(X)) {
-        p.x = { value: model.fieldDef(X).scale.bandWidth / 2 };
-      }
+function filled_point_props(shape) {
+  return function(model: Model) {
+    // TODO Use Vega's marks properties interface
+    var p: any = {};
 
-      // y
-      if (model.has(Y)) {
-        p.y = {
-          scale: Y,
-          field: model.field(Y, { binSuffix: '_mid' })
-        };
-      } else if (!model.has(Y)) {
-        p.y = { value: model.fieldDef(Y).scale.bandWidth / 2 };
-      }
+    // x
+    if (model.has(X)) {
+      p.x = {
+        scale: model.scale(X),
+        field: model.field(X, { binSuffix: '_mid' })
+      };
+    } else {
+      p.x = { value: model.fieldDef(X).scale.bandWidth / 2 };
+    }
 
-      // size
-      if (model.has(SIZE)) {
-        p.size = {
-          scale: SIZE,
-          field: model.field(SIZE)
-        };
-      } else if (!model.has(X)) {
-        p.size = { value: model.fieldDef(SIZE).value };
-      }
+    // y
+    if (model.has(Y)) {
+      p.y = {
+        scale: model.scale(Y),
+        field: model.field(Y, { binSuffix: '_mid' })
+      };
+    } else {
+      p.y = { value: model.fieldDef(Y).scale.bandWidth / 2 };
+    }
 
-      // shape
-      p.shape = { value: shape };
+    // size
+    if (model.has(SIZE)) {
+      p.size = {
+        scale: model.scale(SIZE),
+        field: model.field(SIZE)
+      };
+    } else {
+      p.size = { value: size(model) };
+    }
 
-      // fill
-      if (model.has(COLOR)) {
-        p.fill = {
-          scale: COLOR,
-          field: model.field(COLOR)
-        };
-      } else if (!model.has(COLOR)) {
-        p.fill = { value: model.fieldDef(COLOR).value };
-      }
+    // shape
+    p.shape = { value: shape };
 
-      // opacity
-      var opacity = model.markOpacity();
-      if (opacity) { p.opacity = { value: opacity }; };
+    // fill
+    if (model.has(COLOR)) {
+      p.fill = {
+        scale: model.scale(COLOR),
+        field: model.field(COLOR)
+      };
+    } else {
+      p.fill = { value: model.fieldDef(COLOR).value };
+    }
 
-      return p;
-    };
+    // opacity
+    var opacity = model.marksConfig('opacity');
+    if (opacity) { p.opacity = { value: opacity }; };
+
+    return p;
+  };
+}
+
+export namespace circle {
+  export function markType(model: Model) {
+    return 'symbol';
   }
 
-  export const circle = filled_point_props('circle');
-  export const square = filled_point_props('square');
+  export const properties = filled_point_props('circle');
 
-  export function textBackground(model: Model) {
+  export function labels(model: Model) {
+    // TODO(#240): fill this method
+    return undefined;
+  }
+}
+
+export namespace square {
+  export function markType(model: Model) {
+    return 'symbol';
+  }
+
+  export const properties = filled_point_props('square');
+
+  export function labels(model: Model) {
+    // TODO(#240): fill this method
+    return undefined;
+  }
+}
+
+export namespace text {
+  export function markType(model: Model) {
+    return 'text';
+  }
+
+  export function background(model: Model) {
     return {
       x: { value: 0 },
       y: { value: 0 },
       width: { field: { group: 'width' } },
       height: { field: { group: 'height' } },
-      fill: { scale: COLOR, field: model.field(COLOR) }
+      fill: { scale: model.scale(COLOR), field: model.field(COLOR) }
     };
   }
 
-  export function text(model: Model) {
+  export function properties(model: Model) {
     // TODO Use Vega's marks properties interface
     let p: any = {};
     const fieldDef = model.fieldDef(TEXT);
@@ -605,10 +759,10 @@ export namespace properties {
     // x
     if (model.has(X)) {
       p.x = {
-        scale: X,
+        scale: model.scale(X),
         field: model.field(X, { binSuffix: '_mid' })
       };
-    } else if (!model.has(X)) {
+    } else {
       if (model.has(TEXT) && model.fieldDef(TEXT).type === QUANTITATIVE) {
         // TODO: make this -5 offset a config
         p.x = { field: { group: 'width' }, offset: -5 };
@@ -620,28 +774,28 @@ export namespace properties {
     // y
     if (model.has(Y)) {
       p.y = {
-        scale: Y,
+        scale: model.scale(Y),
         field: model.field(Y, { binSuffix: '_mid' })
       };
-    } else if (!model.has(Y)) {
+    } else {
       p.y = { value: model.fieldDef(Y).scale.bandWidth / 2 };
     }
 
     // size
     if (model.has(SIZE)) {
       p.fontSize = {
-        scale: SIZE,
+        scale: model.scale(SIZE),
         field: model.field(SIZE)
       };
-    } else if (!model.has(SIZE)) {
-      p.fontSize = { value: marksConfig.fontSize };
+    } else {
+      p.fontSize = { value: size(model) };
     }
 
     // fill
     // TODO: consider if color should just map to fill instead?
 
     // opacity
-    var opacity = model.markOpacity();
+    var opacity = model.marksConfig('opacity');
     if (opacity) { p.opacity = { value: opacity }; };
 
     // text
@@ -667,5 +821,10 @@ export namespace properties {
         'fontStyle', 'radius', 'theta']);
 
     return p;
+  }
+
+  export function labels(model: Model) {
+    // TODO(#240): fill this method
+    return undefined;
   }
 }

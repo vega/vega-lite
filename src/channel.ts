@@ -14,7 +14,8 @@ export enum Channel {
   SIZE = 'size' as any,
   COLOR = 'color' as any,
   TEXT = 'text' as any,
-  DETAIL = 'detail' as any
+  DETAIL = 'detail' as any,
+  LABEL = 'label' as any
 }
 
 export const X = Channel.X;
@@ -26,8 +27,9 @@ export const SIZE = Channel.SIZE;
 export const COLOR = Channel.COLOR;
 export const TEXT = Channel.TEXT;
 export const DETAIL = Channel.DETAIL;
+export const LABEL = Channel.LABEL;
 
-export const CHANNELS = [X, Y, ROW, COLUMN, SIZE, SHAPE, COLOR, TEXT, DETAIL];
+export const CHANNELS = [X, Y, ROW, COLUMN, SIZE, SHAPE, COLOR, TEXT, DETAIL, LABEL];
 
 interface SupportedMark {
   point?: boolean;
@@ -103,6 +105,7 @@ export function getSupportedRole(channel: Channel): SupportedRole {
     case X:
     case Y:
     case COLOR:
+    case LABEL:
       return {
         measure: true,
         dimension: true

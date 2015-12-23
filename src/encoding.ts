@@ -11,9 +11,15 @@ export function countRetinal(encoding: Encoding) {
   return count;
 }
 
-export function has(encoding: Encoding, channel: Channel) {
+export function channels(encoding: Encoding) {
+  return CHANNELS.filter(function(channel) {
+    return has(encoding, channel);
+  });
+}
+
+export function has(encoding: Encoding, channel: Channel): boolean {
   var fieldDef: FieldDef = encoding && encoding[channel];
-  return fieldDef && fieldDef.field;
+  return fieldDef && !!fieldDef.field;
 }
 
 export function isAggregate(encoding: Encoding) {
@@ -36,33 +42,36 @@ export function fieldDefs(encoding: Encoding): FieldDef[] {
 };
 
 export function forEach(encoding: Encoding,
-  f: (fd: FieldDef, c: Channel, i: number) => void) {
+    f: (fd: FieldDef, c: Channel, i: number) => void,
+    thisArg?: any) {
   var i = 0;
   CHANNELS.forEach(function(channel) {
     if (has(encoding, channel)) {
-      f(encoding[channel], channel, i++);
+      f.call(thisArg, encoding[channel], channel, i++);
     }
   });
 }
 
 export function map(encoding: Encoding,
-  f: (fd: FieldDef, c: Channel, e: Encoding) => any) {
+    f: (fd: FieldDef, c: Channel, e: Encoding) => any,
+    thisArg?: any) {
   var arr = [];
   CHANNELS.forEach(function(k) {
     if (has(encoding, k)) {
-      arr.push(f(encoding[k], k, encoding));
+      arr.push(f.call(thisArg, encoding[k], k, encoding));
     }
   });
   return arr;
 }
 
 export function reduce(encoding: Encoding,
-  f: (acc: any, fd: FieldDef, c: Channel, e: Encoding) => any,
-  init) {
+    f: (acc: any, fd: FieldDef, c: Channel, e: Encoding) => any,
+    init,
+    thisArg?: any) {
   var r = init;
   CHANNELS.forEach(function(k) {
     if (has(encoding, k)) {
-      r = f(r, encoding[k], k, encoding);
+      r = f.call(thisArg, r, encoding[k], k, encoding);
     }
   });
   return r;

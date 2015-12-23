@@ -4,7 +4,7 @@ import * as vlscale from '../../src/compiler/scale';
 import {SOURCE, SUMMARY} from '../../src/data';
 import {Model} from '../../src/compiler/Model';
 import {ORDINAL, QUANTITATIVE, TEMPORAL} from '../../src/type';
-import {BAR} from '../../src/mark';
+import {POINT, BAR} from '../../src/mark';
 import {Y} from '../../src/channel';
 
 describe('vl.compile.scale', function() {
@@ -55,6 +55,7 @@ describe('vl.compile.scale', function() {
       it('should return the right domain if binned Q',
         function() {
           var domain = vlscale.domain(new Model({
+            mark: POINT,
             encoding: {
               y: {
                 bin: {maxbins: 15},
@@ -67,13 +68,18 @@ describe('vl.compile.scale', function() {
 
           expect(domain).to.eql({
             data: SOURCE,
-            field: 'bin_origin_start'
+            field: 'bin_origin_range',
+            sort: {
+              field: 'bin_origin_start',
+              op: 'min'
+            }
           });
         });
 
       it('should return the raw domain if useRawDomain is true for non-bin, non-sum Q',
         function() {
           var domain = vlscale.domain(new Model({
+            mark: POINT,
             encoding: {
               y: {
                 aggregate: 'mean',
@@ -90,6 +96,7 @@ describe('vl.compile.scale', function() {
       it('should return the aggregate domain for sum Q',
         function() {
           var domain = vlscale.domain(new Model({
+            mark: POINT,
             encoding: {
               y: {
                 aggregate: 'sum',
@@ -106,6 +113,7 @@ describe('vl.compile.scale', function() {
 
       it('should return the aggregated domain if useRawDomain is false', function() {
           var domain = vlscale.domain(new Model({
+            mark: POINT,
             encoding: {
               y: {
                 aggregate: 'min',
@@ -124,6 +132,7 @@ describe('vl.compile.scale', function() {
       it('should return the raw domain if useRawDomain is true for raw T',
         function() {
           var domain = vlscale.domain(new Model({
+            mark: POINT,
             encoding: {
               y: {
                 field: 'origin',
@@ -139,6 +148,7 @@ describe('vl.compile.scale', function() {
       it('should return the raw domain if useRawDomain is true for year T',
         function() {
           var domain = vlscale.domain(new Model({
+            mark: POINT,
             encoding: {
               y: {
                 field: 'origin',
@@ -156,6 +166,7 @@ describe('vl.compile.scale', function() {
       it('should return the correct domain for month T',
         function() {
           var domain = vlscale.domain(new Model({
+            mark: POINT,
             encoding: {
               y: {
                 field: 'origin',
@@ -174,6 +185,7 @@ describe('vl.compile.scale', function() {
       it('should return correct domain with the provided sort property', function() {
         var sortDef = {op: 'min', field:'Acceleration'};
         var encoding = new Model({
+            mark: POINT,
             encoding: {
               y: { field: 'origin', type: ORDINAL, sort: sortDef}
             }
@@ -189,6 +201,7 @@ describe('vl.compile.scale', function() {
 
       it('should return correct domain without sort if sort is not provided', function() {
         var encoding = new Model({
+            mark: POINT,
             encoding: {
               y: { field: 'origin', type: ORDINAL}
             }
