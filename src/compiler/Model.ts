@@ -13,7 +13,6 @@ import {StackProperties} from './stack';
 import {type as scaleType} from './scale';
 import {getFullName, NOMINAL, ORDINAL, TEMPORAL} from '../type';
 import {contains, duplicate} from '../util';
-import * as time from './time';
 import {Encoding} from '../schema/encoding.schema';
 
 
@@ -203,8 +202,7 @@ export class Model {
     const fieldDef = this.fieldDef(channel);
     return fieldDef && (
       contains([NOMINAL, ORDINAL], fieldDef.type) ||
-      (fieldDef.type === TEMPORAL && fieldDef.timeUnit &&
-        time.scale.type(fieldDef.timeUnit, channel) === 'ordinal')
+      ( fieldDef.type === TEMPORAL && scaleType(channel, this) === 'ordinal' )
       );
   }
 
@@ -277,4 +275,23 @@ export class Model {
     const name = this.spec().name;
     return (name ? name + '-' : '') + channel;
   }
+
+  /** returns the template name used for axis labels for a time unit */
+  public labelTemplate(channel: Channel): string {
+    const fieldDef = this.fieldDef(channel);
+    const legend = fieldDef.legend;
+    const abbreviated = contains([ROW, COLUMN, X, Y], channel) ?
+      fieldDef.axis.shortTimeLabels :
+      typeof legend !== 'boolean' ? legend.shortTimeLabels : false;
+
+    var postfix = abbreviated ? '-abbrev' : '';
+    switch (fieldDef.timeUnit) {
+      case 'day':
+        return 'day' + postfix;
+      case 'month':
+        return 'month' + postfix;
+    }
+    return null;
+  }
+
 }

@@ -124,7 +124,7 @@ export var axis = {
     shortTimeLabels: {
       type: 'boolean',
       default: false,
-      description: 'Whether month names and weekday names should be abbreviated.'
+      description: 'Whether month and day names should be abbreviated.'
     },
     titleMaxLength: {
       type: 'integer',

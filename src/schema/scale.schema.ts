@@ -34,9 +34,8 @@ var scale = {
     /* Common Scale Properties */
     type: {
       type: 'string',
-      // TODO(kanitw) read vega's schema here, add description
-      enum: ['linear', 'log', 'pow', 'sqrt', 'quantile'],
-      default: 'linear',
+      enum: ['linear', 'log', 'pow', 'sqrt', 'quantile', 'ordinal'],
+      default: undefined,
       supportedTypes: toMap([QUANTITATIVE])
     },
     domain: {

@@ -220,9 +220,9 @@ Moreover, Vega-Lite supports the following additional axis properties.
 | Property        | Type          | Description    |
 | :------------   |:-------------:| :------------- |
 | labelMaxLength  | Integer       | Max length for axis labels. Longer labels are truncated. (25 by default.) |
-| labelAngle      | Integer       | Angle by which to rotate labels. Set to 0 to force horizontal.   |
+| shortTimeLabels | Boolean       | Whether month and day names should be abbreviated. |
 | titleMaxLength  | Integer       | Max length for axis title when the title is automatically generated from the field\'s description. |
-| titleOffset     | Integer       | Offset between the axis title and the axis.  |
+
 
 
 ----
@@ -247,3 +247,9 @@ The `legend` property object supports the following [Vega legend properties](htt
 | properties    | Object        | Optional mark property definitions for custom legend styling. The input object can include sub-objects for `title`, `labels`, `symbols` (for discrete legend items), `gradient` (for a continuous color gradient) and `legend` (for the overall legend group).  These mark property definitions can make value references to their scale domain data via `data` property like so: `{field: "data"}`. This is a shorthand for `{field: {datum: "data"}}`. The template follows suite: `{template: "datum.data"}`. |
 
 <!--TODO: elaborate example for the properties group -->
+
+Moreover, Vega-Lite supports the following additional legend properties.
+
+| Property        | Type          | Description    |
+| :------------   |:-------------:| :------------- |
+| shortTimeLabels | Boolean       | Whether month and day names should be abbreviated. |

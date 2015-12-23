@@ -1,12 +1,11 @@
 // https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations
 declare var exports;
 
-import {contains, extend} from '../util';
+import {contains, extend, range} from '../util';
 import {Model} from './Model';
 import {SHARED_DOMAIN_OPS} from '../aggregate';
 import {COLUMN, ROW, X, Y, SHAPE, SIZE, COLOR, TEXT, Channel} from '../channel';
 import {SOURCE, STACKED} from '../data';
-import * as time from './time';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 import {BAR, TEXT as TEXT_MARK} from '../mark';
 
@@ -51,14 +50,41 @@ export function type(channel: Channel, model: Model): string {
       let range = fieldDef.scale.range;
       return channel === COLOR && (typeof range !== 'string') ? 'linear' : 'ordinal';
     case TEMPORAL:
-      return time.scale.type(fieldDef.timeUnit, channel);
+      if (channel === COLOR) {
+        // FIXME if user specify scale.range as ordinal presets, then this should be ordinal.
+        // Also, if we support color ramp, this should be ordinal too.
+        return 'linear'; // time has order, so use interpolated ordinal color scale.
+      }
+      if (channel === COLUMN || channel === ROW) {
+        return 'ordinal';
+      }
+      if (fieldDef.scale.type !== undefined) {
+        return fieldDef.scale.type;
+      }
+      // TODO: add timeUnit for other timeUnit once added
+      switch (fieldDef.timeUnit) {
+        case 'hours':
+        case 'day':
+        case 'date':
+        case 'month':
+          return 'ordinal';
+        case 'year':
+        case 'second':
+        case 'minute':
+          return 'linear';
+      }
+      return 'time';
+
     case QUANTITATIVE:
       if (fieldDef.bin) {
         // TODO: Ideally binned COLOR should be an ordinal scale
         // However, currently ordinal scale doesn't support color ramp yet.
         return contains([X, Y, COLOR], channel) ? 'linear' : 'ordinal';
       }
-      return fieldDef.scale.type;
+      if (fieldDef.scale.type !== undefined) {
+        return fieldDef.scale.type;
+      }
+      return 'linear';
   }
 }
 
@@ -71,8 +97,20 @@ export function domain(model: Model, channel:Channel, type) {
 
   // special case for temporal scale
   if (fieldDef.type === TEMPORAL) {
-    var range = time.scale.domain(fieldDef.timeUnit, channel);
-    if (range) { return range; }
+    var isColor = channel === COLOR;
+    switch (fieldDef.timeUnit) {
+      case 'seconds':
+      case 'minutes':
+        return isColor ? [0,59] : range(0, 60);
+      case 'hours':
+        return isColor ? [0,23] : range(0, 24);
+      case 'day':
+        return isColor ? [0,6] : range(0, 7);
+      case 'date':
+        return isColor ? [1,31] : range(1, 32);
+      case 'month':
+        return isColor ? [0,11] : range(0, 12);
+    }
   }
 
   // For stack, use STACKED data.
@@ -180,9 +218,7 @@ export function _useRawDomain (model: Model, channel: Channel) {
       // domain values from the summary table.
       (fieldDef.type === QUANTITATIVE && !fieldDef.bin) ||
       // T uses non-ordinal scale when there's no unit or when the unit is not ordinal.
-      (fieldDef.type === TEMPORAL &&
-        (!fieldDef.timeUnit || time.scale.type(fieldDef.timeUnit, channel) === 'linear')
-      )
+      (fieldDef.type === TEMPORAL && type(channel, model) === 'linear')
     );
 }
 

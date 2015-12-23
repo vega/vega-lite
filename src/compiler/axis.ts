@@ -2,7 +2,6 @@ import {Model} from './Model';
 import {contains, extend, truncate} from '../util';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 import {COLUMN, ROW, X, Y, Channel} from '../channel';
-import * as time from './time';
 
 // https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations
 declare var exports;
@@ -179,7 +178,7 @@ namespace properties {
 
   export function labels(model: Model, channel: Channel, spec, def) {
     let fieldDef = model.fieldDef(channel);
-    var filterName = time.labelTemplate(fieldDef.timeUnit, fieldDef.axis.shortTimeLabels);
+    var filterName = model.labelTemplate(channel);
     if (fieldDef.type === TEMPORAL && filterName) {
       spec = extend({
         text: {template: '{{datum.data | ' + filterName + '}}'}

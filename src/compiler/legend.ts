@@ -6,7 +6,6 @@ import {AREA, BAR, TICK, TEXT, LINE, POINT, CIRCLE, SQUARE} from '../mark';
 import {TEMPORAL} from '../type';
 import {extend, keys} from '../util';
 import {Model} from './Model';
-import * as time from './time';
 
 export function compileLegends(model: Model) {
   var defs = [];
@@ -72,12 +71,13 @@ export function title(fieldDef: FieldDef) {
 }
 
 namespace properties {
-  export function labels(fieldDef: FieldDef, spec) {
-    var timeUnit = fieldDef.timeUnit;
-    if (fieldDef.type === TEMPORAL && timeUnit && time.labelTemplate(timeUnit)) {
+  export function labels(fieldDef: FieldDef, spec, model: Model, channel: Channel) {
+    const timeUnit = fieldDef.timeUnit;
+    const labelTemplate = model.labelTemplate(channel);
+    if (fieldDef.type === TEMPORAL && timeUnit && labelTemplate) {
       return extend({
         text: {
-          template: '{{datum.data | ' + time.labelTemplate(timeUnit) + '}}'
+          template: '{{datum.data | ' + labelTemplate + '}}'
         }
       }, spec || {});
     }
