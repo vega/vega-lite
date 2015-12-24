@@ -159,9 +159,9 @@ function colorMixins(model: Model) {
   return p;
 }
 
-function applyMarksConfig(marksProperties, marksConfig, propsList) {
+function applyMarksConfig(marksProperties, model: Model, propsList: string[]) {
   propsList.forEach(function(property) {
-    const value = marksConfig[property];
+    const value = model.marksConfig(property);
     if (value !== undefined) {
       marksProperties[property] = { value: value };
     }
@@ -471,7 +471,7 @@ export namespace line {
 
     p.strokeWidth = { value: model.config('marks').strokeWidth };
 
-    applyMarksConfig(p, model.config('marks'), ['interpolate', 'tension']);
+    applyMarksConfig(p, model, ['interpolate', 'tension']);
 
     return p;
   }
@@ -567,7 +567,7 @@ export namespace area {
     var opacity = model.marksConfig('opacity');
     if (opacity) { p.opacity = { value: opacity }; };
 
-    applyMarksConfig(p, model.config('marks'), ['interpolate', 'tension']);
+    applyMarksConfig(p, model, ['interpolate', 'tension']);
 
     return p;
   }
@@ -754,7 +754,6 @@ export namespace text {
     // TODO Use Vega's marks properties interface
     let p: any = {};
     const fieldDef = model.fieldDef(TEXT);
-    const marksConfig = model.config('marks');
 
     // x
     if (model.has(X)) {
@@ -801,9 +800,9 @@ export namespace text {
     // text
     if (model.has(TEXT)) {
       if (model.fieldDef(TEXT).type === QUANTITATIVE) {
+        const format = model.marksConfig('format');
         // TODO: revise this line
-        var numberFormat = marksConfig.format !== undefined ?
-          marksConfig.format : model.numberFormat(TEXT);
+        var numberFormat = format !== undefined ? format : model.numberFormat(TEXT);
 
         p.text = {
           template: '{{' + model.field(TEXT, { datum: true }) +
@@ -816,7 +815,7 @@ export namespace text {
       p.text = { value: fieldDef.value };
     }
 
-    applyMarksConfig(p, marksConfig,
+    applyMarksConfig(p, model,
       ['angle', 'align', 'baseline', 'dx', 'dy', 'fill', 'font', 'fontWeight',
         'fontStyle', 'radius', 'theta']);
 
