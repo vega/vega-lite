@@ -154,7 +154,7 @@ function colorMixins(model: Model) {
     } else {
       p.stroke = { value: model.fieldDef(COLOR).value };
     }
-    p.strokeWidth = { value: model.config('marks').strokeWidth };
+    p.strokeWidth = { value: model.marksConfig('strokeWidth') };
   }
   return p;
 }
@@ -469,7 +469,7 @@ export namespace line {
     var opacity = model.marksConfig('opacity');
     if (opacity) { p.opacity = { value: opacity }; };
 
-    p.strokeWidth = { value: model.config('marks').strokeWidth };
+    p.strokeWidth = { value: model.marksConfig('strokeWidth') };
 
     applyMarksConfig(p, model, ['interpolate', 'tension']);
 
