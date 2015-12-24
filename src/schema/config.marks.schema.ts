@@ -54,7 +54,7 @@ export const marksConfig = {
       maximum: 1
     },
     strokeWidth: {
-      type: 'integer',
+      type: 'number',
       default: 2,
       minimum: 0
     },
@@ -75,10 +75,10 @@ export const marksConfig = {
       default: undefined,
       description: 'The orientation of a non-stacked bar, area, and line charts.' +
        'The value is either horizontal (default) or vertical.' +
-       'For area, this property also affects the orient property of the Vega output.' +
-       'For line, this property also affects the sort order of the points in the line if `config.sortLineBy` is not specified' +
-       'For stacked charts, this is always determined by the orientation of the stack.  ' +
-       'Explicitly specified value will be ignored.'
+       'For area, this property determines the orient property of the Vega output.' +
+       'For line, this property determines the sort order of the points in the line if `config.sortLineBy` is not specified.' +
+       'For stacked charts, this is always determined by the orientation of the stack; ' +
+       'therefore explicitly specified value will be ignored.'
     },
 
     // line / area
@@ -156,7 +156,8 @@ export const marksConfig = {
       type: 'string',
       default: '',  // auto
       description: 'The formatting pattern for text value.'+
-                   'If not defined, this will be determined automatically'
+                   'If not defined, this will be determined automatically. '
+      // TODO expand description 
     }
   }
 };
