@@ -118,7 +118,7 @@ export var axis = {
     labelMaxLength: {
       type: 'integer',
       default: 25,
-      minimum: 0,
+      minimum: 1,
       description: 'Truncate labels that are too long.'
     },
     shortTimeLabels: {
