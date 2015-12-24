@@ -5,6 +5,7 @@
 d3.select('#vl-version').text(vl.version);
 d3.select('#vg-version').text(vg.version);
 
+// parse url parameters
 var params = function() {
   var query = location.search.slice(1);
   if (query.slice(-1) === '/') query = query.slice(0,-1);

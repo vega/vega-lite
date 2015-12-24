@@ -1,5 +1,5 @@
 {
-  "description": "Classic Barleys Example. Shows barley yields for diffent years across varieties and sites.",
+  "description": "Classic Trellis Example. Shows barley yields for different years across varieties and sites.",
   "data": {"url": "data/barley.json"},
   "mark": "point",
   "encoding": {

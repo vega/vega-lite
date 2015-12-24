@@ -27,7 +27,8 @@
     },
     {
       "name": "scatter_binned_axes",
-      "title": "Scatterplot with binned axes"
+      "title": "Scatterplot with binned axes",
+      "showInEditor": true
     },
     {
       "name": "scatter_binned_color",
