@@ -1,5 +1,5 @@
 {
-  "description": "This example shows how to use timeUnit and shortTimeNames",
+  "description": "This example shows how to use timeUnit and shortTimeNames.",
   "data": {"url": "data/birdstrikes.json"},
   "mark": "line",
   "encoding": {

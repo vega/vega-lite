@@ -1,5 +1,5 @@
 {
-  "description": "Line chart of Horsepower over time",
+  "description": "Line chart of Horsepower over time.",
   "data": {"url": "data/cars.json"},
   "mark": "line",
   "encoding": {
