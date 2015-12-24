@@ -155,7 +155,7 @@ export const marksConfig = {
     format: {
       type: 'string',
       default: '',  // auto
-      description: 'The formatting pattern for text value.'+
+      description: 'The formatting pattern for text value. '+
                    'If not defined, this will be determined automatically'
     }
   }
