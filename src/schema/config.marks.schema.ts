@@ -157,7 +157,6 @@ export const marksConfig = {
       default: '',  // auto
       description: 'The formatting pattern for text value.'+
                    'If not defined, this will be determined automatically. '
-      // TODO expand description 
     }
   }
 };

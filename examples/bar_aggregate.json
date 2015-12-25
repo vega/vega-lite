@@ -1,5 +1,5 @@
 {
-  "description": "Aggregate Bar Chart",
+  "description": "A bar chart showing the average acceleration for cars with different numbers of cylinders.",
   "data": {"url": "data/cars.json"},
   "mark": "bar",
   "encoding": {

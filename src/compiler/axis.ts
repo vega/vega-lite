@@ -156,10 +156,10 @@ export function title(model: Model, channel: Channel) {
     maxLength = axisSpec.titleMaxLength;
   } else if (channel === X && typeof layout.cellWidth === 'number') {
     // Guess max length if we know cell size at compile time
-    maxLength = layout.cellWidth / model.config('characterWidth');
+    maxLength = layout.cellWidth / model.fieldDef(X).axis.characterWidth;
   } else if (channel === Y && typeof layout.cellHeight === 'number') {
     // Guess max length if we know cell size at compile time
-    maxLength = layout.cellHeight / model.config('characterWidth');
+    maxLength = layout.cellHeight / model.fieldDef(Y).axis.characterWidth;
   }
   // FIXME: we should use template to truncate instead
   return maxLength ? truncate(fieldTitle, maxLength) : fieldTitle;

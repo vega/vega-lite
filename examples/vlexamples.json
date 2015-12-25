@@ -2,27 +2,33 @@
   "Basic": [
     {
       "name": "bar",
-      "title": "Simple Bar Chart"
+      "title": "Simple Bar Chart",
+      "showInEditor": true
     },
     {
       "name": "bar_filter_calc",
-      "title": "Bar with filter and calculation"
+      "title": "Bar with filter and calculation",
+      "showInEditor": true
     },
     {
       "name": "bar_aggregate",
-      "title": "Aggregate Bar Chart"
+      "title": "Aggregate Bar Chart",
+      "showInEditor": true
     },
     {
       "name": "bar_grouped",
-      "title": "Grouped bar chart."
+      "title": "Grouped bar chart.",
+      "showInEditor": true
     },
     {
       "name": "scatter",
-      "title": "A scatterplot"
+      "title": "A scatterplot",
+      "showInEditor": true
     },
     {
       "name": "scatter_binned_axes",
-      "title": "Scatterplot with binned axes"
+      "title": "Scatterplot with binned axes",
+      "showInEditor": true
     },
     {
       "name": "scatter_binned_color",
@@ -38,27 +44,33 @@
     },
     {
       "name": "scatter_log",
-      "title": "Scatter plot with log scale and large numbers"
+      "title": "Scatter plot with log scale and large numbers",
+      "showInEditor": true
     },
     {
       "name": "tick",
-      "title": "Tick marks"
+      "title": "Tick marks",
+      "showInEditor": true
     },
     {
       "name": "line",
-      "title": "Line chart"
+      "title": "Line chart",
+      "showInEditor": true
     },
     {
       "name": "line_month",
-      "title": "Line showing pattern between months"
+      "title": "Line showing pattern between months",
+      "showInEditor": true
     },
     {
       "name": "histogram",
-      "title": "Histogram"
+      "title": "Histogram",
+      "showInEditor": true
     },
     {
       "name": "area",
-      "title": "Area Chart"
+      "title": "Area Chart",
+      "showInEditor": true
     },
     {
       "name": "area_vertical",
@@ -66,14 +78,14 @@
     },
     {
       "name": "tableheatmap",
-      "title": "Table Heatmap.",
-      "hide": true
+      "title": "Table Heatmap"
     }
   ],
   "Stack": [
     {
       "name": "stacked_area",
-      "title": "Stacked Area Chart"
+      "title": "Stacked Area Chart",
+      "showInEditor": true
     },
     {
       "name": "stacked_bar_h",
@@ -81,7 +93,8 @@
     },
     {
       "name": "stacked_bar_v",
-      "title": "Vertical Stacked Bar Chart"
+      "title": "Vertical Stacked Bar Chart",
+      "showInEditor": true
     },
     {
       "name": "stacked_bar_1d",
@@ -91,7 +104,8 @@
   "Trellis": [
     {
       "name": "trellis_barley",
-      "title": "Trellis Plot"
+      "title": "Trellis Plot",
+      "showInEditor": true
     },
     {
       "name": "trellis_area",
@@ -99,7 +113,8 @@
     },
     {
       "name": "trellis_stacked_bar",
-      "title": "Trellis Stacked Bar Chart"
+      "title": "Trellis Stacked Bar Chart",
+      "showInEditor": true
     },
     {
       "name": "trellis_scatter",
