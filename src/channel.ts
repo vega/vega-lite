@@ -86,6 +86,8 @@ export function getSupportedMark(channel: Channel): SupportedMark {
       return {point: true};
     case TEXT:
       return {text: true};
+    case LABEL:
+      return {bar: true};
   }
   return {};
 }

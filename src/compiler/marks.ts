@@ -357,8 +357,48 @@ export namespace bar {
   }
 
   export function labels(model: Model) {
-    // TODO(#64): fill this method
-    return undefined;
+    // TODO(#64):
+    // √ horizontal support
+    // - vertical support
+    // - color support
+    // - container height/stretching consideration
+    // - consider defaults for offset
+
+    var l: any = {};
+
+    const orient = model.marksConfig('orient');
+
+    l.align = { value: (orient !== 'horizontal') ? "center" : "left" };
+
+    l.text = { field: (orient !== 'horizontal') ? model.field(Y) : model.field(X) };
+
+    if (orient !== 'horizontal') {
+      l.x = {
+        scale: model.scale(X),
+        field: model.field(X)
+      }
+
+      l.dx = {
+        scale: model.scale(X),
+        band: true,
+        mult: 0.5
+      }
+
+      l.y = {
+        scale: model.scale(Y),
+        field: model.field(Y),
+        offset: -5
+      }
+    }
+
+    // fill
+    extend(l, colorMixins(model));
+
+    // opacity
+    var opacity = model.marksConfig('opacity');
+    if (opacity) { l.opacity = { value: opacity }; };
+
+    return l;
   }
 }
 
@@ -423,6 +463,7 @@ export namespace point {
 
   export function labels(model: Model) {
     // TODO(#240): fill this method
+    return undefined;
   }
 }
 
