@@ -219,11 +219,10 @@ Moreover, Vega-Lite supports the following additional axis properties.
 
 | Property        | Type          | Description    |
 | :------------   |:-------------:| :------------- |
+| characterWidth  | Integer       | Character width for automatically determining title max length. |
 | labelMaxLength  | Integer       | Max length for axis labels. Longer labels are truncated. (25 by default.) |
 | shortTimeLabels | Boolean       | Whether month and day names should be abbreviated. |
-| titleMaxLength  | Integer       | Max length for axis title when the title is automatically generated from the field\'s description. |
-
-
+| titleMaxLength  | Integer       | Max length for axis title when the title is automatically generated from the field\'s description. By default, this is automatically based on cell size (`config.cell.width`, `config.cell.height`) and `characterWidth` property. |
 
 ----
 

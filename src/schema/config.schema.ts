@@ -17,7 +17,6 @@ export interface Config {
   stack?: StackConfig;
 
   // TODO: revise
-  characterWidth?: number;
   filterNull?: any;
   textCellWidth?: any;
   numberFormat?: string;
@@ -75,10 +74,6 @@ export const config = {
     },
 
     // FIXME(#497) remove these
-    characterWidth: {
-      type: 'integer',
-      default: 6
-    },
     numberFormat: {
       type: 'string',
       default: 's',
