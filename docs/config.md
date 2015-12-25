@@ -4,10 +4,48 @@ title: Config
 permalink: /docs/config.html
 ---
 
-## General Config
+## Config
 
+A Vega-Lite `config` object can have the following top-level properties:
 
+| Property      | Type          | Description    |
+| :------------ |:-------------:| :------------- |
+| viewport      | Integer[]     | The width and height of the on-screen viewport, in pixels. If necessary, clipping and scrolling will be applied. |
+| background    | String        | CSS color property to use as background of visualization. Default is `"transparent"`. |
+| sortLineBy    | Number[]      | Data field to sort line by.  `"-"` prefix can be added to suggest descending order.  |
 
+<!-- TODO: consider adding width, height, viewport, filterNull, numberFormat, timeFormat  -->
+
+In addition, `config` can have config objects for `cell`, `mark`, `scene`, and `stack`.
+
+## Cell Config
+
+Smallest unit in Vega-Lite visualization is called a cell.  
+Each single (non-trellis)  chart contains one cell.  
+Thus, the width and height of the visualization is the `width` and `height` of the cell.  
+For trellis plots (also called small multiples), cell `width` and `height` determine
+the size of one plot inside the trellis plots.  
+
+`cell` property of the `config` object can have the following size properties:
+
+| Property      | Type          | Description    |
+| :------------ |:-------------:| :------------- |
+| width         | Integer       | The width of the visualization for a single cell (200 pixels by default).  This property is used only when `x` uses non-ordinal scale.  When `x` uses ordinal scale, the width is determined by x-scale's `bandWidth`.  |
+| height        | Integer       | The height of the visualization for a single cell (200 pixels by default).  This property is used only when `y` uses non-ordinal scale.  When `y` uses ordinal scale, the height is determined by y-scale's `bandWidth`. |
+
+and the following fill and stroke properties:
+
+| Property      | Type          | Description    |
+| :------------ |:-------------:| :------------- |
+| fill          | Color         | The fill color. |
+| fillOpacity   | Number        | The fill opacity (value between [0,1]). |
+| stroke        | Color         | The stroke color. |
+| strokeOpacity | Number        | The stroke opacity (value between [0,1]). |
+| strokeWidth   | Number        | The stroke width, in pixels. |
+| strokeDash    | Number[]      | An array of alternating stroke, space lengths for creating dashed or dotted lines.  |
+| strokeDashOffset  | Number[]  | The offset (in pixels) into which to begin drawing with the stroke dash array. |
+
+<!-- TODO: expand what do we mean ordinal scale -->
 
 ## Marks Config
 
@@ -57,14 +95,17 @@ permalink: /docs/config.html
 <!-- TODO: expand format detail -->
 
 
+
 ## Scene Config
 
 `scene` property of the `config` is a scene config object, which can have the following properties:
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| fill          | String        |  |
-| fillOpacity   | Number        | The overall opacity (value between [0,1]). |
+| fill          | Color         | The fill color. |
+| fillOpacity   | Number        | The fill opacity (value between [0,1]). |
+| stroke        | Color         | The stroke color. |
+| strokeOpacity | Number        | The stroke opacity (value between [0,1]). |
 | strokeWidth   | Number        | The stroke width, in pixels. |
 | strokeDash    | Number[]      | An array of alternating stroke, space lengths for creating dashed or dotted lines.  |
 | strokeDashOffset  | Number[]  | The offset (in pixels) into which to begin drawing with the stroke dash array. |
@@ -88,8 +129,3 @@ A stack config object can contain the following properties:
 | :------------ |:-------------:| :------------- |
 | offset        | String        | The baseline offset style. One of `"zero"` (default), `"center"` <!--, or `"normalize"` -->. The `"center"` offset will center the stacks. The `"normalize"` offset will compute percentage values for each stack point; the output values will be in the range [0,1].|
 | sort          | String &#124; Array<field> | Order of the stack.  This can be either a string (either "descending" or "ascending") or a list of fields to determine the order of stack layers.By default, stack uses descending order. |
-
-
-## Other Config
-
-__Coming Soon!__
