@@ -12,7 +12,7 @@ A Vega-Lite `config` object can have the following top-level properties:
 | :------------ |:-------------:| :------------- |
 | viewport      | Integer[]     | The width and height of the on-screen viewport, in pixels. If necessary, clipping and scrolling will be applied. |
 | background    | String        | CSS color property to use as background of visualization. Default is `"transparent"`. |
-| sortLineBy    | Number[]      | Data field to sort line by.  `"-"` prefix can be added to suggest descending order.  |
+| sortLineBy    | Number[]      | Data field to sort line by.  `"-"` prefix can be added to set descending order.  |
 
 <!-- TODO: consider adding width, height, viewport, filterNull, numberFormat, timeFormat  -->
 
@@ -20,7 +20,7 @@ In addition, `config` can have config objects for `cell`, `mark`, `scene`, and `
 
 ## Cell Config
 
-Smallest unit in Vega-Lite visualization is called a cell.  
+The smallest unit in Vega-Lite visualization is called a cell.  
 Each single (non-trellis)  chart contains one cell.  
 Thus, the width and height of the visualization is the `width` and `height` of the cell.  
 For trellis plots (also called small multiples), cell `width` and `height` determine
