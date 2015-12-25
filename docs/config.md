@@ -11,7 +11,7 @@ permalink: /docs/config.html
 
 ## Marks Config
 
-`marks` property of the config is a marks config object.  Marks config object has the following properties:
+`marks` property of the `config` is a marks config object, which can have the following properties:
 
 ### General Marks Config
 
@@ -22,6 +22,8 @@ permalink: /docs/config.html
 | strokeWidth   | Number        | The stroke width, in pixels. |
 | strokeDash    | Number[]      | An array of alternating stroke, space lengths for creating dashed or dotted lines.  |
 | strokeDashOffset  | Number[]  | The offset (in pixels) into which to begin drawing with the stroke dash array. |
+
+<!-- TODO: add fill, stroke, fillOpacity, strokeOpacity -->
 
 ### Marks Config for Bar, Line, and Area Marks
 
@@ -55,30 +57,37 @@ permalink: /docs/config.html
 <!-- TODO: expand format detail -->
 
 
-## Layout
+## Scene Config
 
-### Facet Layout
-
-__Coming Soon!__
-
-### Stack Layout
-
-When either `"bar"` or `"area"` mark type is used with either `"color"` or `"detail"`
-channel, a stacked (bar or area) chart is automatically created.
+`scene` property of the `config` is a scene config object, which can have the following properties:
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| _stack_       | String        | `stack` can be used to customize stacking behavior in Vega-Lite.  If `"stack"` is `false`, stacking is disabled.  Otherwise, if `"stack"` is either `true` or a stack property object, stacking is enabled.|
+| fill          | String        |  |
+| fillOpacity   | Number        | The overall opacity (value between [0,1]). |
+| strokeWidth   | Number        | The stroke width, in pixels. |
+| strokeDash    | Number[]      | An array of alternating stroke, space lengths for creating dashed or dotted lines.  |
+| strokeDashOffset  | Number[]  | The offset (in pixels) into which to begin drawing with the stroke dash array. |
+
+## Stack  
+
+When either `"bar"` or `"area"` mark type is used with either `"color"` or `"detail"`
+channel, a stacked (bar or area) chart is automatically created.  
+For a stacked chart, `stack` property can be used to custo
+
+| Property      | Type          | Description    |
+| :------------ |:-------------:| :------------- |
+| stack         | Boolean &#124; [StackConfig](#stack-config-object) |  If `"stack"` is `false`, stacking is disabled.  Otherwise, if `"stack"` is either `true` or a stack property object, stacking is enabled.|
 
 
 #### Stack Config Object
 
-A stack property object contains the following properties for customizing:
+A stack config object can contain the following properties:
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| _stack.offset_ | String        | The baseline offset style. One of `"zero"` (default), `"center"` <!--, or `"normalize"` -->. The `"center"` offset will center the stacks. The `"normalize"` offset will compute percentage values for each stack point; the output values will be in the range [0,1].|
-| _stack.sort_ | String &#124; Array<field> | Order of the stack.  This can be either a string (either "descending" or "ascending") or a list of fields to determine the order of stack layers.By default, stack uses descending order. |
+| offset        | String        | The baseline offset style. One of `"zero"` (default), `"center"` <!--, or `"normalize"` -->. The `"center"` offset will center the stacks. The `"normalize"` offset will compute percentage values for each stack point; the output values will be in the range [0,1].|
+| sort          | String &#124; Array<field> | Order of the stack.  This can be either a string (either "descending" or "ascending") or a list of fields to determine the order of stack layers.By default, stack uses descending order. |
 
 
 ## Other Config
