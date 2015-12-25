@@ -5,7 +5,7 @@
     "x": {
       "field": "Origin",
       "type": "nominal",
-      "axis": {"labels": false,"title": "","tickSize": 0}
+      "axis": {"labels": false, "title": "", "tickSize": 0}
     },
     "y": {
       "field": "Acceleration",
