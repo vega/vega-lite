@@ -5,22 +5,21 @@ import {MarksConfig, marksConfig} from './config.marks.schema';
 export interface Config {
   width?: number;
   height?: number;
-  viewport?: number;
   padding?: number|string;
-  background?: string;
-  description?: string;
-  spec?: any; // TODO: VgGroupMarks
-  sortLineBy?: string;
-  characterWidth?: number;
+  viewport?: number;
 
-  stack?: StackConfig;
+  background?: string;
+  sortLineBy?: string;
+
   cell?: CellConfig;
   marks?: MarksConfig;
+  scene?: any; // TODO: SceneConfig
+  stack?: StackConfig;
 
   // TODO: revise
+  characterWidth?: number;
   filterNull?: any;
   textCellWidth?: any;
-  singleBarOffset?: number;
   numberFormat?: string;
   timeFormat?: string;
 }
@@ -56,10 +55,11 @@ export const config = {
       default: undefined,
       description: 'CSS color property to use as background of visualization. Default is `"transparent"`.'
     },
-    scene: {
-      type: 'object',
+    sortLineBy: {
+      type: 'string',
       default: undefined,
-      description: 'An object to style the top-level scenegraph root. Available properties include `fill`, `fillOpacity`, `stroke`, `strokeOpacity`, `strokeWidth`, `strokeDash`, `strokeDashOffset`'
+      description: 'Data field to sort line by. ' +
+        '\'-\' prefix can be added to suggest descending order.'
     },
 
     // filter null
@@ -74,42 +74,36 @@ export const config = {
       }
     },
 
-    // small multiples
-    textCellWidth: {
-      type: 'integer',
-      default: 90,
-      minimum: 0
-    },
-
-    // layout
-    // TODO: add orient
-    sortLineBy: {
-      type: 'string',
-      default: undefined,
-      description: 'Data field to sort line by. ' +
-        '\'-\' prefix can be added to suggest descending order.'
-    },
-    // nested
-    stack: stackConfig,
-    cell: cellConfig,
-    marks: marksConfig,
-
-    // other
+    // FIXME(#497) remove these
     characterWidth: {
       type: 'integer',
       default: 6
     },
-    // FIXME(#497) handle this
     numberFormat: {
       type: 'string',
       default: 's',
       description: 'D3 Number format for axis labels and text tables.'
     },
     // FIXME(#497) handle this
+    textCellWidth: {
+      type: 'integer',
+      default: 90,
+      minimum: 0
+    },
     timeFormat: {
       type: 'string',
       default: '%Y-%m-%d',
       description: 'Date format for axis labels.'
+    },
+
+    // nested
+    stack: stackConfig,
+    cell: cellConfig,
+    marks: marksConfig,
+    scene: { // TODO: add SceneConfig
+      type: 'object',
+      default: undefined,
+      description: 'An object for styling the top-level scenegraph root. Available properties include `fill`, `fillOpacity`, `stroke`, `strokeOpacity`, `strokeWidth`, `strokeDash`, `strokeDashOffset`.'
     }
   }
 };
