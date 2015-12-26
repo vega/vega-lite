@@ -365,38 +365,43 @@ export namespace bar {
     // - consider defaults for offset
 
     var l: any = {};
-
     const orient = model.marksConfig('orient');
 
     l.align = { value: (orient !== 'horizontal') ? "center" : "left" };
 
-    l.text = { field: (orient !== 'horizontal') ? model.field(Y) : model.field(X) };
+    l.text = { field: model.has(LABEL) ? model.field(LABEL) : ((orient !== 'horizontal') ? model.field(Y) : model.field(X)) };
+
+    l.x = {
+      scale: model.scale(X),
+      field: model.field(X)
+    }
+
+    l.y = {
+      scale: model.scale(Y),
+      field: model.field(Y)
+    }
 
     if (orient !== 'horizontal') {
-      l.x = {
-        scale: model.scale(X),
-        field: model.field(X)
-      }
+      l.y.offset = -5;
 
       l.dx = {
         scale: model.scale(X),
         band: true,
         mult: 0.5
       }
+    } else {
+      l.x.offset = 5;
+      l.y.offset = 2.5;
 
-      l.y = {
+      l.dy = {
         scale: model.scale(Y),
-        field: model.field(Y),
-        offset: -5
+        band: true,
+        mult: 0.5
       }
     }
 
     // fill
     extend(l, colorMixins(model));
-
-    // opacity
-    var opacity = model.marksConfig('opacity');
-    if (opacity) { l.opacity = { value: opacity }; };
 
     return l;
   }
