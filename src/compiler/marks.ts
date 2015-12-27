@@ -358,11 +358,8 @@ export namespace bar {
 
   export function labels(model: Model) {
     // TODO(#64):
-    // √ horizontal support
-    // √ vertical support
-    // - color support
-    // - container height/stretching consideration
-    // - consider defaults for offset
+    // - adjust for container bounds
+    // - consider defaults for offset and color
 
     var l: any = {};
     const orient = model.marksConfig('orient');
