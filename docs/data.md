@@ -55,24 +55,9 @@ Data can be specified from url using the `url` property.  Format of the input da
 
 ## Data Transformation
 
-`data` property also describes data transformations including `calculate` and `filter`.
+`data` property also supports the following data transformation properties:
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| calculate     | Array         | An array of [formula object for deriving new calculated field](#calculate-field).  Calculation are applied before filter. |
-| filter        | String        | [Vega Expression](https://github.com/vega/vega/wiki/Expressions) for filtering data items (or rows).  Each datum object can be referred using bound variable `datum`. |
-
-
-### Calculated Field
-
-New field can be derived from the existing data using `calculate` property, which contains
-an array of formula objects.  Each formula object has two properties:
-
-| Property      | Type          | Description    |
-| :------------ |:-------------:| :------------- |
-| field         | String        | The field name in which to store the computed formula value. |
-| expr          | String        | A string containing an expression for the formula. Use the variable `datum` to to refer to the current data object. |
-
-### Field Transformation
-
-Other [field transformations including aggregation and binning](encoding.html#Field-Transformations) are specified as a part of the  [field definitions](encoding.html#Field-Transformations).
+| [calculate](transformation.html#calculate)     | Array         | An array of [formula object for deriving new calculated field](#calculate-field).  Calculation are applied before filter. |
+| [filter](transformation.html#filter)        | String        | [Vega Expression](https://github.com/vega/vega/wiki/Expressions) for filtering data items (or rows).  Each datum object can be referred using bound variable `datum`. |
