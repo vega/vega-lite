@@ -165,7 +165,7 @@ export function title(model: Model, channel: Channel) {
   return maxLength ? truncate(fieldTitle, maxLength) : fieldTitle;
 }
 
-namespace properties {
+export namespace properties {
   export function axis(model: Model, channel: Channel, spec) {
     if (channel === ROW || channel === COLUMN) {
       // hide axis for facets
@@ -178,7 +178,14 @@ namespace properties {
 
   export function labels(model: Model, channel: Channel, spec, def) {
     let fieldDef = model.fieldDef(channel);
-    var filterName = model.labelTemplate(channel);
+
+    if (!fieldDef.axis.labels) {
+      return extend({
+        text: ''
+      }, spec);
+    }
+
+    let filterName = model.labelTemplate(channel);
     if (fieldDef.type === TEMPORAL && filterName) {
       spec = extend({
         text: {template: '{{datum.data | ' + filterName + '}}'}
