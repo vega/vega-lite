@@ -246,6 +246,13 @@ export class Model {
   }
 
   /**
+   * @return Cell config value from the spec, or a default value if unspecified.
+   */
+  public cellConfig(name: string) {
+    return this._spec.config.cell[name];
+  }
+
+  /**
    * @return Marks config value from the spec, or a default value if unspecified.
    */
   public marksConfig(name: string) {

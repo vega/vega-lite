@@ -30,11 +30,10 @@ export function facetMixins(model: Model, marks) {
   };
 
   // add configs that are the resulting group marks properties
-  const cellConfig = model.config('cell');
   ['fill', 'fillOpacity', 'stroke', 'strokeWidth',
     'strokeOpacity', 'strokeDash', 'strokeDashOffset']
     .forEach(function(property) {
-      const value = cellConfig[property];
+      const value = model.cellConfig(property);
       if (value !== undefined) {
         facetGroupProperties[property] = value;
       }
@@ -52,7 +51,7 @@ export function facetMixins(model: Model, marks) {
     facetGroupProperties.y = {
       scale: model.scale(ROW),
       field: model.field(ROW),
-      offset: model.config('cell').padding / 2
+      offset: model.cellConfig('padding') / 2
     };
 
     facetKeys.push(model.field(ROW));
@@ -62,7 +61,6 @@ export function facetMixins(model: Model, marks) {
       rootMarks.push(getXAxesGroup(model, cellWidth, hasCol));
     }
 
-    // TODO: add properties to make rule optional
     rootMarks.push(getRowRulesGroup(model, cellHeight));
   } else { // doesn't have row
     if (model.has(X)) { // keep x axis in the cell
@@ -79,7 +77,7 @@ export function facetMixins(model: Model, marks) {
     facetGroupProperties.x = {
       scale: model.scale(COLUMN),
       field: model.field(COLUMN),
-      offset: model.config('cell').padding / 2
+      offset: model.cellConfig('padding') / 2
     };
 
     facetKeys.push(model.field(COLUMN));
@@ -196,10 +194,10 @@ function getRowRulesGroup(model: Model, cellHeight): any { // TODO: VgMarks
           scale: model.scale(ROW),
           field: model.field(ROW)
         },
-        x: {value: 0, offset: -model.config('cell').gridOffset},
-        x2: {field: {group: 'width'}, offset: model.config('cell').gridOffset},
-        stroke: { value: model.config('cell').gridColor },
-        strokeOpacity: { value: model.config('cell').gridOpacity }
+        x: {value: 0, offset: -model.cellConfig('gridOffset') },
+        x2: {field: {group: 'width'}, offset: model.cellConfig('gridOffset') },
+        stroke: { value: model.cellConfig('gridColor') },
+        strokeOpacity: { value: model.cellConfig('gridOpacity') }
       }
     }
   };
@@ -217,11 +215,11 @@ function getRowRulesGroup(model: Model, cellHeight): any { // TODO: VgMarks
         y: cellHeight.value ? {
             // If cellHeight contains value, just use it.
             value: cellHeight,
-            offset: model.config('cell').padding
+            offset: model.cellConfig('padding')
           } : {
             // Otherwise, need to get it from layout data in the root group
             field: {parent: 'cellHeight'},
-            offset: model.config('cell').padding
+            offset: model.cellConfig('padding')
           },
         // include width so it can be referred inside row-rules
         width: {field: {group: 'width'}}
@@ -246,10 +244,10 @@ function getColumnRulesGroup(model: Model, cellWidth): any { // TODO: VgMarks
           scale: model.scale(COLUMN),
           field: model.field(COLUMN)
         },
-        y: {value: 0, offset: -model.config('cell').gridOffset},
-        y2: {field: {group: 'height'}, offset: model.config('cell').gridOffset},
-        stroke: { value: model.config('cell').gridColor },
-        strokeOpacity: { value: model.config('cell').gridOpacity }
+        y: {value: 0, offset: -model.cellConfig('gridOffset')},
+        y2: {field: {group: 'height'}, offset: model.cellConfig('gridOffset') },
+        stroke: { value: model.cellConfig('gridColor') },
+        strokeOpacity: { value: model.cellConfig('gridOpacity') }
       }
     }
   };
@@ -267,11 +265,11 @@ function getColumnRulesGroup(model: Model, cellWidth): any { // TODO: VgMarks
         x: cellWidth.value ? {
              // If cellWidth contains value, just use it.
              value: cellWidth,
-             offset: model.config('cell').padding
+             offset: model.cellConfig('padding')
            } : {
              // Otherwise, need to get it from layout data in the root group
              field: {parent: 'cellWidth'},
-             offset: model.config('cell').padding
+             offset: model.cellConfig('padding')
            },
         // include height so it can be referred inside column-rules
         height: {field: {group: 'height'}}
