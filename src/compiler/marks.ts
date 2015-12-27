@@ -359,7 +359,7 @@ export namespace bar {
   export function labels(model: Model) {
     // TODO(#64):
     // √ horizontal support
-    // - vertical support
+    // √ vertical support
     // - color support
     // - container height/stretching consideration
     // - consider defaults for offset
@@ -369,7 +369,7 @@ export namespace bar {
 
     l.align = { value: (orient !== 'horizontal') ? "center" : "left" };
 
-    l.text = { field: model.has(LABEL) ? model.field(LABEL) : ((orient !== 'horizontal') ? model.field(Y) : model.field(X)) };
+    l.text = { field: ((orient !== 'horizontal') ? model.field(Y) : model.field(X)) };
 
     l.x = {
       scale: model.scale(X),
@@ -382,17 +382,15 @@ export namespace bar {
     }
 
     if (orient !== 'horizontal') {
-      l.y.offset = -5;
-
+      l.y.offset = -6;
       l.dx = {
         scale: model.scale(X),
         band: true,
         mult: 0.5
       }
     } else {
-      l.x.offset = 5;
-      l.y.offset = 2.5;
-
+      l.x.offset = 6;
+      l.y.offset = 3;
       l.dy = {
         scale: model.scale(Y),
         band: true,
