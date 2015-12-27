@@ -1,6 +1,8 @@
-import {StackConfig, stackConfig} from './config.stack.schema';
 import {CellConfig, cellConfig} from './config.cell.schema';
+import {LabelConfig, labelConfig} from './config.label.schema';
 import {MarksConfig, marksConfig} from './config.marks.schema';
+import {StackConfig, stackConfig} from './config.stack.schema';
+
 
 export interface Config {
   width?: number;
@@ -12,6 +14,7 @@ export interface Config {
   sortLineBy?: string;
 
   cell?: CellConfig;
+  label?: LabelConfig;
   marks?: MarksConfig;
   scene?: any; // TODO: SceneConfig
   stack?: StackConfig;
@@ -97,13 +100,14 @@ export const config = {
     },
 
     // nested
-    stack: stackConfig,
     cell: cellConfig,
+    label: labelConfig,
     marks: marksConfig,
     scene: { // TODO: add SceneConfig
       type: 'object',
       default: undefined,
       description: 'An object for styling the top-level scenegraph root. Available properties include `fill`, `fillOpacity`, `stroke`, `strokeOpacity`, `strokeWidth`, `strokeDash`, `strokeDashOffset`.'
-    }
+    },
+    stack: stackConfig
   }
 };

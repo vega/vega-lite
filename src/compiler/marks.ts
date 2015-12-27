@@ -168,6 +168,16 @@ function applyMarksConfig(marksProperties, model: Model, propsList: string[]) {
   });
 }
 
+// TODO: use this in label methods
+function applyLabelConfig(marksProperties, model: Model, propsList: string[]) {
+  propsList.forEach(function(property) {
+    const value = model.labelConfig(property);
+    if (value !== undefined) {
+      marksProperties[property] = { value: value };
+    }
+  });
+}
+
 /**
  * Returns list of detail fields (for 'color', 'shape', or 'detail' channels)
  * that the model's spec contains.

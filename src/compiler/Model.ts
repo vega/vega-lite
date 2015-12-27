@@ -246,6 +246,13 @@ export class Model {
   }
 
   /**
+   * @return Label config value from the spec, or a default value if unspecified.
+   */
+  public labelConfig(name: string) {
+    return this._spec.config.label[name];
+  }
+
+  /**
    * @return Marks config value from the spec, or a default value if unspecified.
    */
   public marksConfig(name: string) {
