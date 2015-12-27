@@ -17,9 +17,10 @@ export interface Axis {
   values?: number[];
   properties?: any; // TODO: declare VgAxisProperties
   // Vega-Lite only
+  characterWidth?: number;
   labels?: boolean;
-  shortTimeLabels?: boolean;
   labelMaxLength?: number;
+  shortTimeLabels?: boolean;
   titleMaxLength?: number;
 }
 
@@ -116,10 +117,17 @@ export var axis = {
       description: 'Optional mark property definitions for custom axis styling.'
     },
     /* Vega-lite only */
+<<<<<<< HEAD
     labels: {
       type: 'boolean',
       default: true,
       description: 'Enable or disable labels.'
+=======
+    characterWidth: {
+      type: 'integer',
+      default: 6,
+      description: 'Character width for automatically determining title max length.'
+>>>>>>> master
     },
     labelMaxLength: {
       type: 'integer',
@@ -136,7 +144,8 @@ export var axis = {
       type: 'integer',
       default: undefined,
       minimum: 0,
-      description: 'Max length for axis title if the title is automatically generated from the field\'s description'
+      description: 'Max length for axis title if the title is automatically generated from the field\'s description.' +
+      'By default, this is automatically based on cell size and characterWidth property.'
     }
   }
 };

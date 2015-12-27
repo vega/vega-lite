@@ -116,7 +116,7 @@ namespace properties {
             symbols.stroke = {value: fieldDef.value};
           }
           symbols.fill = {value: 'transparent'};
-          symbols.strokeWidth = {value: model.config('marks').strokeWidth};
+          symbols.strokeWidth = {value: model.marksConfig('strokeWidth')};
         }
 
         break;

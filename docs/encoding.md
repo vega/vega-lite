@@ -68,7 +68,11 @@ Here is a list of properties for the field definition object:
 
 Vega-Lite supports all [Vega aggregation operations](https://github.com/vega/vega/wiki/Data-Transforms#-aggregate) (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).
 
-If at least one of the specified encoding channel contains aggregation, a summary data table (`aggregate`) will be computed from the source data table (after binning and time unit have been derived) and the resulting visualization shows data from this summary table.  In this case, all fields without aggregation function specified are treated as dimensions.  The summary statistics are grouped by these dimensions.
+If at least one fields in the specified encoding channel contains `aggregate`,
+a summary data table is computed from the source data table.
+The resulting visualization shows data from this summary table.  
+In this case, all fields without aggregation function specified are treated as dimensions; thus, the summary statistics are grouped by these dimensions.
+Additional dimensions that are not directly mapped to visual encodings can be specified using the `detail` channel.  
 
 If none of the specified encoding channel contains aggregation, no additional data table is created.
 
@@ -219,11 +223,10 @@ Moreover, Vega-Lite supports the following additional axis properties.
 
 | Property        | Type          | Description    |
 | :------------   |:-------------:| :------------- |
+| characterWidth  | Integer       | Character width for automatically determining the value of `titleMaxLength`. |
 | labelMaxLength  | Integer       | Max length for axis labels. Longer labels are truncated. (25 by default.) |
 | shortTimeLabels | Boolean       | Whether month and day names should be abbreviated. |
-| titleMaxLength  | Integer       | Max length for axis title when the title is automatically generated from the field\'s description. |
-
-
+| titleMaxLength  | Integer       | Max length for axis title when the title is automatically generated from the field\'s description. By default, this is automatically based on cell size (`config.cell.width`, `config.cell.height`) and `characterWidth` property. |
 
 ----
 

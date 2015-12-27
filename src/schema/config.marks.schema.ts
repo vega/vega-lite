@@ -1,6 +1,5 @@
 export interface MarksConfig {
   filled?: boolean;
-  format?: string;
 
   // General Vega
   opacity?: number;
@@ -26,6 +25,8 @@ export interface MarksConfig {
   font?: string;
   fontStyle?: string;
   fontWeight?: string;
+  // Vega-Lite only for text only
+  format?: string;
 }
 
 export const marksConfig = {
@@ -39,13 +40,6 @@ export const marksConfig = {
         'This is only applicable for "bar", "point", and "area". ' +
         'All marks except "point" marks are filled by default.'
     },
-    format: {
-      type: 'string',
-      default: '',  // auto
-      description: 'The formatting pattern for text value.'+
-                   'If not defined, this will be determined automatically'
-    },
-
     // General Vega
     // TODO consider removing as it is conflicting with color.value
     fill: {
@@ -60,7 +54,7 @@ export const marksConfig = {
       maximum: 1
     },
     strokeWidth: {
-      type: 'integer',
+      type: 'number',
       default: 2,
       minimum: 0
     },
@@ -81,10 +75,10 @@ export const marksConfig = {
       default: undefined,
       description: 'The orientation of a non-stacked bar, area, and line charts.' +
        'The value is either horizontal (default) or vertical.' +
-       'For area, this property also affects the orient property of the Vega output.' +
-       'For line, this property also affects the sort order of the points in the line if `config.sortLineBy` is not specified' +
-       'For stacked charts, this is always determined by the orientation of the stack.  ' +
-       'Explicitly specified value will be ignored.'
+       'For area, this property determines the orient property of the Vega output.' +
+       'For line, this property determines the sort order of the points in the line if `config.sortLineBy` is not specified.' +
+       'For stacked charts, this is always determined by the orientation of the stack; ' +
+       'therefore explicitly specified value will be ignored.'
     },
 
     // line / area
@@ -156,6 +150,13 @@ export const marksConfig = {
       type: 'number',
       default: undefined,
       description: 'Polar coordinate angle, in radians, of the text label from the origin determined by the x and y properties. Values for theta follow the same convention of arc mark startAngle and endAngle properties: angles are measured in radians, with 0 indicating "north".'
+    },
+    // text-only & VL only
+    format: {
+      type: 'string',
+      default: '',  // auto
+      description: 'The formatting pattern for text value.'+
+                   'If not defined, this will be determined automatically. '
     }
   }
 };
