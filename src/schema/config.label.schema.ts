@@ -1,4 +1,7 @@
 export interface LabelConfig {
+  // TODO: add additional label config here
+  // e.g., inset label for bar 
+
   // General Vega
   fill?: string;
   opacity?: number;
