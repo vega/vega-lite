@@ -40,12 +40,11 @@ export const cellConfig = {
       type: 'number',
       minimum: 0,
       maximum: 1,
-      default: 0.25
+      default: 0.4
     },
     gridOffset: {
       type: 'number',
-      default: 6 // equal to tickSize
-      // TODO refer to tickSize when reading?
+      default: 0
     },
 
     // Group properties
