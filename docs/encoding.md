@@ -80,8 +80,7 @@ If none of the specified encoding channel contains aggregation, no additional da
 
 #### ▸ `bin`
 
-To group raw data values of a particular field into bins (e.g., for a histogram),
-the field should have `bin` property specified.  
+To group quantitative, continuous data values of a particular field into smaller number of "bins" (e.g., for a histogram), the field's `bin` property can be specified.  
 `bin` property can be either a boolean value or a bin property definition object.
 If `bin` is `true`, default binning parameters will be applied.
 
