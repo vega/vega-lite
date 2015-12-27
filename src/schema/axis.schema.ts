@@ -18,8 +18,8 @@ export interface Axis {
   properties?: any; // TODO: declare VgAxisProperties
   // Vega-Lite only
   characterWidth?: number;
-  labels?: boolean;
   labelMaxLength?: number;
+  labels?: boolean;
   shortTimeLabels?: boolean;
   titleMaxLength?: number;
 }
@@ -117,23 +117,21 @@ export var axis = {
       description: 'Optional mark property definitions for custom axis styling.'
     },
     /* Vega-lite only */
-<<<<<<< HEAD
-    labels: {
-      type: 'boolean',
-      default: true,
-      description: 'Enable or disable labels.'
-=======
     characterWidth: {
       type: 'integer',
       default: 6,
       description: 'Character width for automatically determining title max length.'
->>>>>>> master
     },
     labelMaxLength: {
       type: 'integer',
       default: 25,
       minimum: 1,
       description: 'Truncate labels that are too long.'
+    },
+    labels: {
+      type: 'boolean',
+      default: true,
+      description: 'Enable or disable labels.'
     },
     shortTimeLabels: {
       type: 'boolean',
