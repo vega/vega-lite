@@ -49,6 +49,7 @@
         "src/schema/bin.schema.ts",
         "src/schema/config.cell.schema.ts",
         "src/schema/config.marks.schema.ts",
+        "src/schema/config.scene.schema.ts",
         "src/schema/config.schema.ts",
         "src/schema/config.stack.schema.ts",
         "src/schema/data.schema.ts",
