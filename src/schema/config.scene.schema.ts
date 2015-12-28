@@ -1,12 +1,4 @@
-export interface CellConfig {
-  width?: number;
-  height?: number;
-  padding?: number;
-
-  gridColor?: string;
-  gridOpacity?: number;
-  gridOffset?: number;
-
+export interface SceneConfig {
   fill?: string;
   fillOpacity?: number;
   stroke?: string;
@@ -16,39 +8,9 @@ export interface CellConfig {
   strokeDashOffset?: number;
 }
 
-export const cellConfig = {
+export const sceneConfig = {
   type: 'object',
   properties: {
-    width: {
-      type: 'integer',
-      default: 200
-    },
-    height: {
-      type: 'integer',
-      default: 200
-    },
-    padding: {
-      type: 'integer',
-      default: 16,
-      description: 'default padding between facets.'
-    },
-    gridColor: {
-      type: 'string',
-      role: 'color',
-      default: '#000000'
-    },
-    gridOpacity: {
-      type: 'number',
-      minimum: 0,
-      maximum: 1,
-      default: 0.4
-    },
-    gridOffset: {
-      type: 'number',
-      default: 0
-    },
-
-    // Group properties
     fill: {
       type: 'string',
       role: 'color',
