@@ -20,7 +20,7 @@ export function compileMarks(model: Model): any[] {
     // For line, a special config "sortLineBy" is allowed
     let sortBy = mark === LINE ? model.config('sortLineBy') : undefined;
     if (!sortBy) {
-      sortBy = '-' + model.field(model.marksConfig('orient') === 'horizontal' ? Y : X);
+      sortBy = '-' + model.field(model.markConfig('orient') === 'horizontal' ? Y : X);
     }
 
     let pathMarks: any = extend(
@@ -136,7 +136,7 @@ export function size(model: Model) {
 
 function colorMixins(model: Model) {
   let p: any = {};
-  if (model.marksConfig('filled')) {
+  if (model.markConfig('filled')) {
     if (model.has(COLOR)) {
       p.fill = {
         scale: model.scale(COLOR),
@@ -154,14 +154,14 @@ function colorMixins(model: Model) {
     } else {
       p.stroke = { value: model.fieldDef(COLOR).value };
     }
-    p.strokeWidth = { value: model.marksConfig('strokeWidth') };
+    p.strokeWidth = { value: model.markConfig('strokeWidth') };
   }
   return p;
 }
 
-function applyMarksConfig(marksProperties, model: Model, propsList: string[]) {
+function applyMarkConfig(marksProperties, model: Model, propsList: string[]) {
   propsList.forEach(function(property) {
-    const value = model.marksConfig(property);
+    const value = model.markConfig(property);
     if (value !== undefined) {
       marksProperties[property] = { value: value };
     }
@@ -195,7 +195,7 @@ export namespace bar {
     // TODO Use Vega's marks properties interface
     let p: any = {};
 
-    const orient = model.marksConfig('orient');
+    const orient = model.markConfig('orient');
 
     const stack = model.stack();
     // x, x2, and width -- we must specify two of these in all conditions
@@ -350,7 +350,7 @@ export namespace bar {
     extend(p, colorMixins(model));
 
     // opacity
-    var opacity = model.marksConfig('opacity');
+    var opacity = model.markConfig('opacity');
     if (opacity) { p.opacity = { value: opacity }; };
 
     return p;
@@ -415,7 +415,7 @@ export namespace point {
     extend(p, colorMixins(model));
 
     // opacity
-    const opacity = model.marksConfig('opacity');
+    const opacity = model.markConfig('opacity');
     if (opacity) { p.opacity = { value: opacity }; };
 
     return p;
@@ -466,12 +466,12 @@ export namespace line {
     }
 
     // opacity
-    var opacity = model.marksConfig('opacity');
+    var opacity = model.markConfig('opacity');
     if (opacity) { p.opacity = { value: opacity }; };
 
-    p.strokeWidth = { value: model.marksConfig('strokeWidth') };
+    p.strokeWidth = { value: model.markConfig('strokeWidth') };
 
-    applyMarksConfig(p, model, ['interpolate', 'tension']);
+    applyMarkConfig(p, model, ['interpolate', 'tension']);
 
     return p;
   }
@@ -492,7 +492,7 @@ export namespace area {
     // TODO Use Vega's marks properties interface
     var p: any = {};
 
-    const orient = model.marksConfig('orient');
+    const orient = model.markConfig('orient');
     if (orient !== undefined) {
       p.orient = { value: orient };
     }
@@ -564,10 +564,10 @@ export namespace area {
     extend(p, colorMixins(model));
 
     // opacity
-    var opacity = model.marksConfig('opacity');
+    var opacity = model.markConfig('opacity');
     if (opacity) { p.opacity = { value: opacity }; };
 
-    applyMarksConfig(p, model, ['interpolate', 'tension']);
+    applyMarkConfig(p, model, ['interpolate', 'tension']);
 
     return p;
   }
@@ -641,7 +641,7 @@ export namespace tick {
     }
 
     // opacity
-    var opacity = model.marksConfig('opacity');
+    var opacity = model.markConfig('opacity');
     if (opacity) { p.opacity = { value: opacity }; };
 
     return p;
@@ -702,7 +702,7 @@ function filled_point_props(shape) {
     }
 
     // opacity
-    var opacity = model.marksConfig('opacity');
+    var opacity = model.markConfig('opacity');
     if (opacity) { p.opacity = { value: opacity }; };
 
     return p;
@@ -794,13 +794,13 @@ export namespace text {
     // TODO: consider if color should just map to fill instead?
 
     // opacity
-    var opacity = model.marksConfig('opacity');
+    var opacity = model.markConfig('opacity');
     if (opacity) { p.opacity = { value: opacity }; };
 
     // text
     if (model.has(TEXT)) {
       if (model.fieldDef(TEXT).type === QUANTITATIVE) {
-        const format = model.marksConfig('format');
+        const format = model.markConfig('format');
         // TODO: revise this line
         var numberFormat = format !== undefined ? format : model.numberFormat(TEXT);
 
@@ -815,7 +815,7 @@ export namespace text {
       p.text = { value: fieldDef.value };
     }
 
-    applyMarksConfig(p, model,
+    applyMarkConfig(p, model,
       ['angle', 'align', 'baseline', 'dx', 'dy', 'fill', 'font', 'fontWeight',
         'fontStyle', 'radius', 'theta']);
 
