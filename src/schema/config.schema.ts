@@ -1,6 +1,6 @@
 import {StackConfig, stackConfig} from './config.stack.schema';
 import {CellConfig, cellConfig} from './config.cell.schema';
-import {MarksConfig, marksConfig} from './config.marks.schema';
+import {MarkConfig, markConfig} from './config.marks.schema';
 import {SceneConfig, sceneConfig} from './config.scene.schema';
 
 export interface Config {
@@ -13,7 +13,7 @@ export interface Config {
   sortLineBy?: string;
 
   cell?: CellConfig;
-  marks?: MarksConfig;
+  mark?: MarkConfig;
   scene?: SceneConfig;
   stack?: StackConfig;
 
@@ -95,7 +95,7 @@ export const config = {
     // nested
     stack: stackConfig,
     cell: cellConfig,
-    marks: marksConfig,
+    mark: markConfig,
     scene: sceneConfig
   }
 };

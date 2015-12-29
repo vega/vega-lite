@@ -253,10 +253,10 @@ export class Model {
   }
 
   /**
-   * @return Marks config value from the spec, or a default value if unspecified.
+   * @return Mark config value from the spec, or a default value if unspecified.
    */
-  public marksConfig(name: string) {
-    const value = this._spec.config.marks[name];
+  public markConfig(name: string) {
+    const value = this._spec.config.mark[name];
     switch (name) {
       case 'filled':
         if (value === undefined) {

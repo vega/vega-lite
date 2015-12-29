@@ -1,4 +1,4 @@
-export interface MarksConfig {
+export interface MarkConfig {
   filled?: boolean;
 
   // General Vega
@@ -29,7 +29,7 @@ export interface MarksConfig {
   format?: string;
 }
 
-export const marksConfig = {
+export const markConfig = {
   type: 'object',
   properties: {
     // Vega-Lite special
