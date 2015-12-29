@@ -3,7 +3,7 @@ import {duplicate} from '../util';
 
 
 import {axis} from './axis.schema';
-import {FieldDef, facetField, onlyOrdinalField, typicalField} from './fielddef.schema';
+import {FieldDef, fieldDef, facetField, onlyOrdinalField, typicalField} from './fielddef.schema';
 import {legend} from './legend.schema';
 import {sort} from './sort.schema';
 
@@ -95,11 +95,7 @@ var shape = merge(duplicate(onlyOrdinalField), {
   }
 });
 
-var detail = merge(duplicate(onlyOrdinalField), {
-  properties: {
-    sort: sort
-  }
-});
+var detail = duplicate(fieldDef);
 
 // we only put aggregated measure in pivot table
 var text = merge(duplicate(typicalField), {
