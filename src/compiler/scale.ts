@@ -4,41 +4,44 @@ declare var exports;
 import {contains, extend, range} from '../util';
 import {Model} from './Model';
 import {SHARED_DOMAIN_OPS} from '../aggregate';
-import {COLUMN, ROW, X, Y, SHAPE, SIZE, COLOR, TEXT, Channel} from '../channel';
+import {COLUMN, ROW, X, Y, SHAPE, SIZE, COLOR, TEXT, DETAIL, Channel} from '../channel';
 import {SOURCE, STACKED} from '../data';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 import {BAR, TEXT as TEXT_MARK} from '../mark';
 
 export function compileScales(channels: Channel[], model: Model) {
-  return channels.map(function(channel: Channel) {
-    var scaleDef: any = {
-      name: model.scale(channel),
-      type: type(channel, model),
-    };
+  return channels.filter(function(channel: Channel) {
+      return channel !== DETAIL;
+    })
+    .map(function(channel: Channel) {
+      var scaleDef: any = {
+        name: model.scale(channel),
+        type: type(channel, model),
+      };
 
-    scaleDef.domain = domain(model, channel, scaleDef.type);
-    extend(scaleDef, rangeMixins(model, channel, scaleDef.type));
+      scaleDef.domain = domain(model, channel, scaleDef.type);
+      extend(scaleDef, rangeMixins(model, channel, scaleDef.type));
 
-    // Add optional properties
-    [
-      // general properties
-      'reverse', 'round',
-      // quantitative / time
-      'clamp', 'nice',
-      // quantitative
-      'exponent', 'zero',
-      // ordinal
-      'bandWidth', 'outerPadding', 'padding', 'points'
-    ].forEach(function(property) {
-      // TODO include fieldDef as part of the parameters
-      var value = exports[property](model, channel, scaleDef.type);
-      if (value !== undefined) {
-        scaleDef[property] = value;
-      }
+      // Add optional properties
+      [
+        // general properties
+        'reverse', 'round',
+        // quantitative / time
+        'clamp', 'nice',
+        // quantitative
+        'exponent', 'zero',
+        // ordinal
+        'bandWidth', 'outerPadding', 'padding', 'points'
+      ].forEach(function(property) {
+        // TODO include fieldDef as part of the parameters
+        var value = exports[property](model, channel, scaleDef.type);
+        if (value !== undefined) {
+          scaleDef[property] = value;
+        }
+      });
+
+      return scaleDef;
     });
-
-    return scaleDef;
-  });
 }
 
 export function type(channel: Channel, model: Model): string {
