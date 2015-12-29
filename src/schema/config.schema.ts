@@ -8,9 +8,7 @@ export interface Config {
   height?: number;
   padding?: number|string;
   viewport?: number;
-
   background?: string;
-  sortLineBy?: string;
 
   cell?: CellConfig;
   mark?: MarkConfig;
@@ -54,12 +52,6 @@ export const config = {
       role: 'color',
       default: undefined,
       description: 'CSS color property to use as background of visualization. Default is `"transparent"`.'
-    },
-    sortLineBy: {
-      type: 'string',
-      default: undefined,
-      description: 'Data field to sort line by. ' +
-        '\'-\' prefix can be added to suggest descending order.'
     },
 
     // filter null
