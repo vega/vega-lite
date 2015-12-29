@@ -33,6 +33,15 @@ the size of one plot inside the trellis plots.
 | width         | Integer       | The width of the visualization for a single cell (200 pixels by default).  This property is used only when `x` uses non-ordinal scale.  When `x` uses ordinal scale, the width is determined by x-scale's `bandWidth`.  |
 | height        | Integer       | The height of the visualization for a single cell (200 pixels by default).  This property is used only when `y` uses non-ordinal scale.  When `y` uses ordinal scale, the height is determined by y-scale's `bandWidth`. |
 
+the following grid properties:
+
+| Property      | Type          | Description    |
+| :------------ |:-------------:| :------------- |
+| gridShow      | Boolean       | Whether to show facet rules.  (True by default)  |
+| gridColor     | Color         | Color of the rules between facets. |
+| gridOpacity   | Number        | Opacity of the rules between facets. |
+| gridOffset    | Number        | Offset for rules between facets.  |
+
 and the following fill and stroke properties:
 
 | Property      | Type          | Description    |
