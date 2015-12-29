@@ -12,6 +12,7 @@ export function compileMarks(model: Model): any[] {
   const name = model.spec().name;
   const isFaceted = model.has(ROW) || model.has(COLUMN);
   const dataFrom = {data: model.dataTable()};
+  const sortBy = model.markConfig('sortBy');
 
   if (mark === LINE || mark === AREA) {
     const details = detailFields(model);
@@ -44,10 +45,13 @@ export function compileMarks(model: Model): any[] {
 
     if (details.length > 0) { // have level of details - need to facet line into subgroups
       const facetTransform = { type: 'facet', groupby: details };
-      const transform = mark === AREA && model.stack() ?
-        // For stacked area, we need to impute missing tuples and stack values
-        [imputeTransform(model), stackTransform(model), facetTransform] :
-        [facetTransform];
+      const transform: any[] = [].concat(
+        (sortBy ? [{type: 'sort', by: sortBy}] : []),
+        mark === AREA && model.stack() ?
+          // For stacked area, we need to impute missing tuples and stack values
+          [imputeTransform(model), stackTransform(model), facetTransform] :
+          [facetTransform]
+        );
 
       return [{
         name: (name ? name + '-' : '') + mark + '-facet',
@@ -88,13 +92,16 @@ export function compileMarks(model: Model): any[] {
       name ? { name: name + '-marks' } : {},
       { type: exports[mark].markType(model) },
       // Add `from` if needed
-      (!isFaceted || model.stack()) ? {
+      (!isFaceted || model.stack() || sortBy) ? {
         from: extend(
           // If faceted, `from.data` will be added in the cell group.
           // Otherwise, add it here
           isFaceted ? {} : dataFrom,
           // Stacked Chart need additional transform
-          model.stack() ? {transform: [stackTransform(model)]} : {}
+          model.stack() || sortBy ? { transform: [].concat(
+              (model.stack() ? [stackTransform(model)] : []),
+              sortBy ? [{type:'sort', by: sortBy}] : []
+          )} : {}
         )
       } : {},
       // properties groups

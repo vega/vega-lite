@@ -56,6 +56,7 @@ and the following fill and stroke properties:
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | filled        | Boolean        | Whether the shape\'s color should be used as fill color instead of stroke color.  This is only applicable for `bar`, `point`, and `area`.  All marks except `point` marks are filled by default. |
+| sortBy        | Field &#124; Field[] | Data field(s) for sorting layer of marks.  The first mark will placed on the bottom.  `"-"` prefix can be added to each field to set descending order. |
 | sortLineBy    | Field &#124; Field[] | Data field(s) for sorting points in each group of line.  `"-"` prefix can be added to each field to set descending order.  |
 | opacity       | Number        | The overall opacity (value between [0,1]). |
 | strokeWidth   | Number        | The stroke width, in pixels. |
