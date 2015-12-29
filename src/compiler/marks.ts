@@ -18,9 +18,9 @@ export function compileMarks(model: Model): any[] {
 
     // For line and area, we sort values based on dimension by default
     // For line, a special config "sortLineBy" is allowed
-    let sortBy = mark === LINE ? model.markConfig('sortLineBy') : undefined;
-    if (!sortBy) {
-      sortBy = '-' + model.field(model.markConfig('orient') === 'horizontal' ? Y : X);
+    let sortLineBy = mark === LINE ? model.markConfig('sortLineBy') : undefined;
+    if (!sortLineBy) {
+      sortLineBy = '-' + model.field(model.markConfig('orient') === 'horizontal' ? Y : X);
     }
 
     let pathMarks: any = extend(
@@ -34,7 +34,7 @@ export function compileMarks(model: Model): any[] {
           isFaceted || details.length > 0 ? {} : dataFrom,
 
           // sort transform
-          {transform: [{ type: 'sort', by: sortBy }]}
+          {transform: [{ type: 'sort', by: sortLineBy }]}
         ),
         properties: { update: exports[mark].properties(model) }
       }
