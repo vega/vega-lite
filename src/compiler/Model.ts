@@ -292,6 +292,13 @@ export class Model {
     return value;
   }
 
+  /**
+   * @return Scene config value from the spec, or a default value if unspecified.
+   */
+  public sceneConfig(name: string) {
+    return this._spec.config.scene[name];
+  }
+
   /** returns scale name for a given channel */
   public scale(channel: Channel): string {
     const name = this.spec().name;
