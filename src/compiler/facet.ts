@@ -30,7 +30,7 @@ export function facetMixins(model: Model, marks) {
   };
 
   // add configs that are the resulting group marks properties
-  ['fill', 'fillOpacity', 'stroke', 'strokeWidth',
+  ['clip', 'fill', 'fillOpacity', 'stroke', 'strokeWidth',
     'strokeOpacity', 'strokeDash', 'strokeDashOffset']
     .forEach(function(property) {
       const value = model.cellConfig(property);

@@ -49,6 +49,9 @@ export const cellConfig = {
     },
 
     // Group properties
+    clip: {
+      type: 'boolean',
+    },
     fill: {
       type: 'string',
       role: 'color',
