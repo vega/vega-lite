@@ -13,8 +13,7 @@ export const sceneConfig = {
   properties: {
     fill: {
       type: 'string',
-      role: 'color',
-      default: 'rgba(0,0,0,0)'
+      role: 'color'
     },
     fillOpacity: {
       type: 'number',
@@ -30,8 +29,7 @@ export const sceneConfig = {
       type: 'number'
     },
     strokeDash: {
-      type: 'array',
-      default: undefined
+      type: 'array'
     },
     strokeDashOffset: {
       type: 'integer',
