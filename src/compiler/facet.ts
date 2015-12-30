@@ -35,7 +35,7 @@ export function facetMixins(model: Model, marks) {
     .forEach(function(property) {
       const value = model.cellConfig(property);
       if (value !== undefined) {
-        facetGroupProperties[property] = value;
+        facetGroupProperties[property] = {value: value};
       }
     });
 
