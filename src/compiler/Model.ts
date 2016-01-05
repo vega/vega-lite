@@ -1,6 +1,7 @@
 import {Spec} from '../schema/schema';
-import {Axis} from '../schema/axis.schema';
+import {Axis, axis as axisSchema} from '../schema/axis.schema';
 import {FieldDef} from '../schema/fielddef.schema';
+import {instantiate} from '../schema/schemautil';
 
 import {COLUMN, ROW, X, Y, COLOR, DETAIL, Channel, supportMark} from '../channel';
 import {SOURCE, SUMMARY} from '../data';
@@ -59,6 +60,10 @@ export class Model {
       if (fieldDef.type) {
         // convert short type to full type
         fieldDef.type = getFullName(fieldDef.type);
+      }
+
+      if (fieldDef.axis === true) {
+        fieldDef.axis = instantiate(axisSchema);
       }
     }, this);
 
