@@ -204,7 +204,7 @@ function getRowRulesGroup(model: Model, cellHeight): any { // TODO: VgMarks
     }
   };
 
-  const rowRulesOnTop = !model.has(X) || model.fieldDef(X).axis.orient !== 'top';
+  const rowRulesOnTop = !model.has(X) || model.axisDef(X).orient !== 'top';
   if (rowRulesOnTop) { // on top - no need to add offset
     return rowRules;
   } // otherwise, need to offset all rules by cellHeight
@@ -254,7 +254,7 @@ function getColumnRulesGroup(model: Model, cellWidth): any { // TODO: VgMarks
     }
   };
 
-  const colRulesOnLeft = !model.has(Y) || model.fieldDef(Y).axis.orient === 'right';
+  const colRulesOnLeft = !model.has(Y) || model.axisDef(Y).orient === 'right';
   if (colRulesOnLeft) { // on left, no need to add global offset
     return columnRules;
   } // otherwise, need to offset all rules by cellWidth

@@ -28,7 +28,7 @@ export interface FieldDef {
   sort?: Sort | string;
 
   // override vega components
-  axis?: Axis;
+  axis?: Axis | boolean;
   legend?: Legend | boolean;
   scale?: Scale;
 

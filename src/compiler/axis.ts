@@ -38,7 +38,7 @@ export function compileAxis(channel: Channel, model: Model) {
   });
 
   // 2) Add mark property definition groups
-  var props = model.fieldDef(channel).axis.properties || {};
+  var props = model.axisDef(channel).properties || {};
 
   [
     'axis', 'labels',// have special rules
@@ -58,7 +58,7 @@ export function compileAxis(channel: Channel, model: Model) {
 
 export function format(model: Model, channel: Channel) {
   const fieldDef = model.fieldDef(channel);
-  var format = fieldDef.axis.format;
+  var format = model.axisDef(channel).format;
   if (format !== undefined)  {
     return format;
   }
@@ -78,7 +78,7 @@ export function format(model: Model, channel: Channel) {
 
 export function grid(model: Model, channel: Channel) {
   const fieldDef = model.fieldDef(channel);
-  var grid = fieldDef.axis.grid;
+  var grid = model.axisDef(channel).grid;
   if (grid !== undefined) {
     return grid;
   }
@@ -89,7 +89,7 @@ export function grid(model: Model, channel: Channel) {
 }
 
 export function layer(model: Model, channel: Channel, def) {
-  var layer = model.fieldDef(channel).axis.layer;
+  var layer = model.axisDef(channel).layer;
   if (layer !== undefined) {
     return layer;
   }
@@ -101,14 +101,14 @@ export function layer(model: Model, channel: Channel, def) {
 };
 
 export function orient(model: Model, channel: Channel) {
-  var orient = model.fieldDef(channel).axis.orient;
+  var orient = model.axisDef(channel).orient;
   if (orient) {
     return orient;
   } else if (channel === COLUMN) {
     // FIXME test and decide
     return 'top';
   } else if (channel === ROW) {
-    if (model.has(Y) && model.fieldDef(Y).axis.orient !== 'right') {
+    if (model.has(Y) && model.axisDef(Y).orient !== 'right') {
       return 'right';
     }
   }
@@ -116,7 +116,7 @@ export function orient(model: Model, channel: Channel) {
 }
 
 export function ticks(model: Model, channel: Channel) {
-  const ticks = model.fieldDef(channel).axis.ticks;
+  const ticks = model.axisDef(channel).ticks;
   if (ticks !== undefined) {
     return ticks;
   }
@@ -130,7 +130,7 @@ export function ticks(model: Model, channel: Channel) {
 }
 
 export function tickSize(model: Model, channel: Channel) {
-  const tickSize = model.fieldDef(channel).axis.tickSize;
+  const tickSize = model.axisDef(channel).tickSize;
   if (tickSize !== undefined) {
     return tickSize;
   }
@@ -142,9 +142,9 @@ export function tickSize(model: Model, channel: Channel) {
 
 
 export function title(model: Model, channel: Channel) {
-  var axisSpec = model.fieldDef(channel).axis;
-  if (axisSpec.title !== undefined) {
-    return axisSpec.title;
+  var axisDef = model.axisDef(channel);
+  if (axisDef.title !== undefined) {
+    return axisDef.title;
   }
 
   // if not defined, automatically determine axis title from field def
@@ -152,14 +152,14 @@ export function title(model: Model, channel: Channel) {
   const layout = model.layout();
 
   var maxLength;
-  if (axisSpec.titleMaxLength) {
-    maxLength = axisSpec.titleMaxLength;
+  if (axisDef.titleMaxLength) {
+    maxLength = axisDef.titleMaxLength;
   } else if (channel === X && typeof layout.cellWidth === 'number') {
     // Guess max length if we know cell size at compile time
-    maxLength = layout.cellWidth / model.fieldDef(X).axis.characterWidth;
+    maxLength = layout.cellWidth / model.axisDef(X).characterWidth;
   } else if (channel === Y && typeof layout.cellHeight === 'number') {
     // Guess max length if we know cell size at compile time
-    maxLength = layout.cellHeight / model.fieldDef(Y).axis.characterWidth;
+    maxLength = layout.cellHeight / model.axisDef(Y).characterWidth;
   }
   // FIXME: we should use template to truncate instead
   return maxLength ? truncate(fieldTitle, maxLength) : fieldTitle;
@@ -177,9 +177,10 @@ export namespace properties {
   }
 
   export function labels(model: Model, channel: Channel, spec, def) {
-    let fieldDef = model.fieldDef(channel);
+    const fieldDef = model.fieldDef(channel);
+    const axisDef = model.axisDef(channel);
 
-    if (!fieldDef.axis.labels) {
+    if (!axisDef.labels) {
       return extend({
         text: ''
       }, spec);
@@ -192,11 +193,11 @@ export namespace properties {
       }, spec || {});
     }
 
-    if (contains([NOMINAL, ORDINAL], fieldDef.type) && fieldDef.axis.labelMaxLength) {
+    if (contains([NOMINAL, ORDINAL], fieldDef.type) && axisDef.labelMaxLength) {
       // TODO replace this with Vega's labelMaxLength once it is introduced
       spec = extend({
         text: {
-          template: '{{ datum.data | truncate:' + fieldDef.axis.labelMaxLength + '}}'
+          template: '{{ datum.data | truncate:' + axisDef.labelMaxLength + '}}'
         }
       }, spec || {});
     }
