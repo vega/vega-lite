@@ -49,8 +49,8 @@ export function compile(spec, theme?) {
     rootGroup.marks = marks;
     rootGroup.scales = compileScales(model.channels(), model);
 
-    var axes = (model.has(X) ? [compileAxis(X, model)] : [])
-      .concat(model.has(Y) ? [compileAxis(Y, model)] : []);
+    var axes = (model.has(X) && model.fieldDef(X).axis ? [compileAxis(X, model)] : [])
+      .concat(model.has(Y) && model.fieldDef(Y).axis ? [compileAxis(Y, model)] : []);
     if (axes.length > 0) {
       rootGroup.axes = axes;
     }

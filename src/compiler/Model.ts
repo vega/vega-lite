@@ -1,5 +1,7 @@
 import {Spec} from '../schema/schema';
+import {Axis, axis as axisSchema} from '../schema/axis.schema';
 import {FieldDef} from '../schema/fielddef.schema';
+import {instantiate} from '../schema/schemautil';
 
 import {COLUMN, ROW, X, Y, COLOR, DETAIL, Channel, supportMark} from '../channel';
 import {SOURCE, SUMMARY} from '../data';
@@ -58,6 +60,10 @@ export class Model {
       if (fieldDef.type) {
         // convert short type to full type
         fieldDef.type = getFullName(fieldDef.type);
+      }
+
+      if (fieldDef.axis === true) {
+        fieldDef.axis = instantiate(axisSchema);
       }
     }, this);
 
@@ -252,6 +258,11 @@ export class Model {
     return this._spec.config.cell[name];
   }
 
+  public axisDef(channel: Channel): Axis {
+    const axis = this.fieldDef(channel).axis;
+    return typeof axis !== 'boolean' ? axis : {};
+  }
+
   /**
    * @return Mark config value from the spec, or a default value if unspecified.
    */
@@ -309,9 +320,10 @@ export class Model {
   public labelTemplate(channel: Channel): string {
     const fieldDef = this.fieldDef(channel);
     const legend = fieldDef.legend;
+    const axis = fieldDef.axis;
     const abbreviated = contains([ROW, COLUMN, X, Y], channel) ?
-      fieldDef.axis.shortTimeLabels :
-      typeof legend !== 'boolean' ? legend.shortTimeLabels : false;
+      (typeof axis !== 'boolean' ? axis.shortTimeLabels : false) :
+      (typeof legend !== 'boolean' ? legend.shortTimeLabels : false);
 
     var postfix = abbreviated ? '-abbrev' : '';
     switch (fieldDef.timeUnit) {

@@ -60,8 +60,9 @@ export function facetMixins(model: Model, marks) {
       // If has X, prepend a group for shared x-axes in the root group's marks
       rootMarks.push(getXAxesGroup(model, cellWidth, hasCol));
     }
-
-    rootMarks.push(getRowRulesGroup(model, cellHeight));
+    if (model.cellConfig('gridShow')) {
+      rootMarks.push(getRowRulesGroup(model, cellHeight));
+    }
   } else { // doesn't have row
     if (model.has(X)) { // keep x axis in the cell
       cellAxes.push(compileAxis(X, model));
@@ -87,8 +88,9 @@ export function facetMixins(model: Model, marks) {
       // If has Y, prepend a group for shared y-axes in the root group's marks
       rootMarks.push(getYAxesGroup(model, cellHeight, hasRow));
     }
-    // TODO: add properties to make rule optional
-    rootMarks.push(getColumnRulesGroup(model, cellWidth));
+    if (model.cellConfig('gridShow')) {
+      rootMarks.push(getColumnRulesGroup(model, cellWidth));
+    }
   } else { // doesn't have column
     if (model.has(Y)) { // keep y axis in the cell
       cellAxes.push(compileAxis(Y, model));
@@ -202,7 +204,7 @@ function getRowRulesGroup(model: Model, cellHeight): any { // TODO: VgMarks
     }
   };
 
-  const rowRulesOnTop = !model.has(X) || model.fieldDef(X).axis.orient !== 'top';
+  const rowRulesOnTop = !model.has(X) || model.axisDef(X).orient !== 'top';
   if (rowRulesOnTop) { // on top - no need to add offset
     return rowRules;
   } // otherwise, need to offset all rules by cellHeight
@@ -252,7 +254,7 @@ function getColumnRulesGroup(model: Model, cellWidth): any { // TODO: VgMarks
     }
   };
 
-  const colRulesOnLeft = !model.has(Y) || model.fieldDef(Y).axis.orient === 'right';
+  const colRulesOnLeft = !model.has(Y) || model.axisDef(Y).orient === 'right';
   if (colRulesOnLeft) { // on left, no need to add global offset
     return columnRules;
   } // otherwise, need to offset all rules by cellWidth

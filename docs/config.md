@@ -12,7 +12,7 @@ A Vega-Lite `config` object can have the following top-level properties:
 | :------------ |:-------------:| :------------- |
 | viewport      | Integer[]     | The width and height of the on-screen viewport, in pixels. If necessary, clipping and scrolling will be applied. |
 | background    | String        | CSS color property to use as background of visualization. Default is `"transparent"`. |
-| sortLineBy    | Number[]      | Data field to sort line by.  `"-"` prefix can be added to set descending order.  |
+
 
 <!-- TODO: consider adding width, height, viewport, filterNull, numberFormat, timeFormat  -->
 
@@ -32,6 +32,15 @@ the size of one plot inside the trellis plots.
 | :------------ |:-------------:| :------------- |
 | width         | Integer       | The width of the visualization for a single cell (200 pixels by default).  This property is used only when `x` uses non-ordinal scale.  When `x` uses ordinal scale, the width is determined by x-scale's `bandWidth`.  |
 | height        | Integer       | The height of the visualization for a single cell (200 pixels by default).  This property is used only when `y` uses non-ordinal scale.  When `y` uses ordinal scale, the height is determined by y-scale's `bandWidth`. |
+
+the following grid properties:
+
+| Property      | Type          | Description    |
+| :------------ |:-------------:| :------------- |
+| gridShow      | Boolean       | Whether to show facet rules.  (True by default)  |
+| gridColor     | Color         | Color of the rules between facets. |
+| gridOpacity   | Number        | Opacity of the rules between facets. |
+| gridOffset    | Number        | Offset for rules between facets.  |
 
 and the following fill and stroke properties:
 
@@ -56,6 +65,8 @@ and the following fill and stroke properties:
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | filled        | Boolean        | Whether the shape\'s color should be used as fill color instead of stroke color.  This is only applicable for `bar`, `point`, and `area`.  All marks except `point` marks are filled by default. |
+| sortBy        | Field &#124; Field[] | Data field(s) for sorting layer of marks.  The first mark will placed on the bottom.  `"-"` prefix can be added to each field to set descending order. |
+| sortLineBy    | Field &#124; Field[] | Data field(s) for sorting points in each group of line.  `"-"` prefix can be added to each field to set descending order.  |
 | opacity       | Number        | The overall opacity (value between [0,1]). |
 | strokeWidth   | Number        | The stroke width, in pixels. |
 | strokeDash    | Number[]      | An array of alternating stroke, space lengths for creating dashed or dotted lines.  |
