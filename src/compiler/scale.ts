@@ -94,7 +94,7 @@ export function type(fieldDef: FieldDef, channel: Channel): string {
   }
 }
 
-export function domain(model: Model, channel:Channel, scaleType) {
+export function domain(model: Model, channel:Channel, scaleType: string) {
   var fieldDef = model.fieldDef(channel);
 
   if (fieldDef.scale.domain) { // explicit value
@@ -132,8 +132,8 @@ export function domain(model: Model, channel:Channel, scaleType) {
     };
   }
 
-  var useRawDomain = _useRawDomain(model, channel, scaleType);
-  var sort = domainSort(model, channel, scaleType);
+  var useRawDomain = _useRawDomain(model, channel, scaleType: string);
+  var sort = domainSort(model, channel, scaleType: string);
 
   if (useRawDomain) { // useRawDomain - only Q/T
     return {
@@ -209,7 +209,7 @@ export function reverse(model: Model, channel: Channel) {
  * 2. Aggregation function is not `count` or `sum`
  * 3. The scale is quantitative or time scale.
  */
-function _useRawDomain (model: Model, channel: Channel, scaleType) {
+function _useRawDomain (model: Model, channel: Channel, scaleType: string) {
   const fieldDef = model.fieldDef(channel);
 
   return fieldDef.scale.useRawDomain && //  if useRawDomain is enabled
@@ -228,7 +228,7 @@ function _useRawDomain (model: Model, channel: Channel, scaleType) {
     );
 }
 
-export function bandWidth(model: Model, channel: Channel, scaleType) {
+export function bandWidth(model: Model, channel: Channel, scaleType: string) {
   if (scaleType === 'ordinal') {
     return model.fieldDef(channel).scale.bandWidth;
   }
@@ -245,7 +245,7 @@ export function exponent(model: Model, channel: Channel) {
   return model.fieldDef(channel).scale.exponent;
 }
 
-export function nice(model: Model, channel: Channel, scaleType) {
+export function nice(model: Model, channel: Channel, scaleType: string) {
   if (model.fieldDef(channel).scale.nice !== undefined) {
     // explicit value
     return model.fieldDef(channel).scale.nice;
@@ -266,7 +266,7 @@ export function nice(model: Model, channel: Channel, scaleType) {
   return undefined;
 }
 
-export function outerPadding(model: Model, channel: Channel, scaleType) {
+export function outerPadding(model: Model, channel: Channel, scaleType: string) {
   if (scaleType === 'ordinal') {
     if (model.fieldDef(channel).scale.outerPadding !== undefined) {
       return model.fieldDef(channel).scale.outerPadding; // explicit value
@@ -275,7 +275,7 @@ export function outerPadding(model: Model, channel: Channel, scaleType) {
   return undefined;
 }
 
-export function padding(model: Model, channel: Channel, scaleType) {
+export function padding(model: Model, channel: Channel, scaleType: string) {
   if (scaleType === 'ordinal') {
     // Both explicit and non-explicit values are handled by the helper method.
     return model.fieldDef(channel).scale.padding;
@@ -283,7 +283,7 @@ export function padding(model: Model, channel: Channel, scaleType) {
   return undefined;
 }
 
-export function points(model: Model, channel: Channel, scaleType) {
+export function points(model: Model, channel: Channel, scaleType: string) {
   if (scaleType === 'ordinal') {
     if (model.fieldDef(channel).scale.points !== undefined) {
       // explicit value
@@ -300,7 +300,7 @@ export function points(model: Model, channel: Channel, scaleType) {
 }
 
 
-export function rangeMixins(model: Model, channel: Channel, scaleType): any {
+export function rangeMixins(model: Model, channel: Channel, scaleType: string): any {
   var fieldDef = model.fieldDef(channel);
 
   if (fieldDef.scale.range) { // explicit value
