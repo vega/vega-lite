@@ -94,7 +94,7 @@ export function type(fieldDef: FieldDef, channel: Channel): string {
   }
 }
 
-export function domain(model: Model, channel:Channel, type) {
+export function domain(model: Model, channel:Channel, scaleType) {
   var fieldDef = model.fieldDef(channel);
 
   if (fieldDef.scale.domain) { // explicit value
@@ -132,8 +132,8 @@ export function domain(model: Model, channel:Channel, type) {
     };
   }
 
-  var useRawDomain = _useRawDomain(model, channel);
-  var sort = domainSort(model, channel, type);
+  var useRawDomain = _useRawDomain(model, channel, scaleType);
+  var sort = domainSort(model, channel, scaleType);
 
   if (useRawDomain) { // useRawDomain - only Q/T
     return {
@@ -141,7 +141,7 @@ export function domain(model: Model, channel:Channel, type) {
       field: model.field(channel, {noAggregate: true})
     };
   } else if (fieldDef.bin) { // bin
-    return type === 'ordinal' ? {
+    return scaleType === 'ordinal' ? {
       // ordinal bin scale takes domain from bin_range, ordered by bin_start
       data: model.dataTable(),
       field: model.field(channel, { binSuffix: '_range' }),
@@ -178,14 +178,14 @@ export function domain(model: Model, channel:Channel, type) {
   }
 }
 
-export function domainSort(model: Model, channel: Channel, type):any {
+export function domainSort(model: Model, channel: Channel, scaleType: string): any {
   var sort = model.fieldDef(channel).sort;
   if (sort === 'ascending' || sort === 'descending') {
     return true;
   }
 
   // Sorted based on an aggregate calculation over a specified sort field (only for ordinal scale)
-  if (type === 'ordinal' && typeof sort !== 'string') {
+  if (scaleType === 'ordinal' && typeof sort !== 'string') {
     return {
       op: sort.op,
       field: sort.field
@@ -209,7 +209,7 @@ export function reverse(model: Model, channel: Channel) {
  * 2. Aggregation function is not `count` or `sum`
  * 3. The scale is quantitative or time scale.
  */
-export function _useRawDomain (model: Model, channel: Channel) {
+function _useRawDomain (model: Model, channel: Channel, scaleType) {
   const fieldDef = model.fieldDef(channel);
 
   return fieldDef.scale.useRawDomain && //  if useRawDomain is enabled
@@ -224,7 +224,7 @@ export function _useRawDomain (model: Model, channel: Channel) {
       // domain values from the summary table.
       (fieldDef.type === QUANTITATIVE && !fieldDef.bin) ||
       // T uses non-ordinal scale when there's no unit or when the unit is not ordinal.
-      (fieldDef.type === TEMPORAL && type(fieldDef, channel) === 'linear')
+      (fieldDef.type === TEMPORAL && scaleType === 'linear')
     );
 }
 

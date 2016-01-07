@@ -208,7 +208,7 @@ export class Model {
     const fieldDef = this.fieldDef(channel);
     return fieldDef && (
       contains([NOMINAL, ORDINAL], fieldDef.type) ||
-      ( fieldDef.type === TEMPORAL && scaleType(channel, this) === 'ordinal' )
+      ( fieldDef.type === TEMPORAL && scaleType(fieldDef, channel) === 'ordinal' )
       );
   }
 
