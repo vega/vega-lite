@@ -156,7 +156,7 @@ export namespace source {
         }
 
         transform.push(binTrans);
-        if (scaleType(channel, model) === 'ordinal') {
+        if (scaleType(fieldDef, channel) === 'ordinal') {
           transform.push({
             type: 'formula',
             field: model.field(channel, {binSuffix: '_range'}),

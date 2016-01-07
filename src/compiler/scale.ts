@@ -1,6 +1,8 @@
 // https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations
 declare var exports;
 
+import {FieldDef} from '../schema/fielddef.schema';
+
 import {contains, extend, range} from '../util';
 import {Model} from './Model';
 import {SHARED_DOMAIN_OPS} from '../aggregate';
@@ -14,9 +16,11 @@ export function compileScales(channels: Channel[], model: Model) {
       return channel !== DETAIL;
     })
     .map(function(channel: Channel) {
+      const fieldDef = model.fieldDef(channel);
+
       var scaleDef: any = {
         name: model.scale(channel),
-        type: type(channel, model),
+        type: type(fieldDef, channel),
       };
 
       scaleDef.domain = domain(model, channel, scaleDef.type);
@@ -34,7 +38,7 @@ export function compileScales(channels: Channel[], model: Model) {
         'bandWidth', 'outerPadding', 'padding', 'points'
       ].forEach(function(property) {
         // TODO include fieldDef as part of the parameters
-        var value = exports[property](model, channel, scaleDef.type);
+        const value = exports[property](model, channel, scaleDef.type);
         if (value !== undefined) {
           scaleDef[property] = value;
         }
@@ -44,8 +48,7 @@ export function compileScales(channels: Channel[], model: Model) {
     });
 }
 
-export function type(channel: Channel, model: Model): string {
-  const fieldDef = model.fieldDef(channel);
+export function type(fieldDef: FieldDef, channel: Channel): string {
   switch (fieldDef.type) {
     case NOMINAL: // fall through
       return 'ordinal';
@@ -221,7 +224,7 @@ export function _useRawDomain (model: Model, channel: Channel) {
       // domain values from the summary table.
       (fieldDef.type === QUANTITATIVE && !fieldDef.bin) ||
       // T uses non-ordinal scale when there's no unit or when the unit is not ordinal.
-      (fieldDef.type === TEMPORAL && type(channel, model) === 'linear')
+      (fieldDef.type === TEMPORAL && type(fieldDef, channel) === 'linear')
     );
 }
 
