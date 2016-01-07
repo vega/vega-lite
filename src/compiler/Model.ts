@@ -182,7 +182,7 @@ export class Model {
       return f + opt.fn + '_' + field;
     } else if (!opt.nofn && fieldDef.bin) {
       var binSuffix = opt.binSuffix ||
-        (scaleType(channel, this) === 'ordinal' ? '_range' : '_start');
+        (scaleType(fieldDef, channel) === 'ordinal' ? '_range' : '_start');
       return f + 'bin_' + field + binSuffix;
     } else if (!opt.nofn && !opt.noAggregate && fieldDef.aggregate) {
       return f + fieldDef.aggregate + '_' + field;
@@ -222,7 +222,7 @@ export class Model {
     const fieldDef = this.fieldDef(channel);
     return fieldDef && (
       contains([NOMINAL, ORDINAL], fieldDef.type) ||
-      ( fieldDef.type === TEMPORAL && scaleType(channel, this) === 'ordinal' )
+      ( fieldDef.type === TEMPORAL && scaleType(fieldDef, channel) === 'ordinal' )
       );
   }
 

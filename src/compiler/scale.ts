@@ -1,6 +1,8 @@
 // https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations
 declare var exports;
 
+import {FieldDef} from '../schema/fielddef.schema';
+
 import {contains, extend, range} from '../util';
 import {Model} from './Model';
 import {SHARED_DOMAIN_OPS} from '../aggregate';
@@ -14,9 +16,11 @@ export function compileScales(channels: Channel[], model: Model) {
       return channel !== DETAIL;
     })
     .map(function(channel: Channel) {
+      const fieldDef = model.fieldDef(channel);
+
       var scaleDef: any = {
         name: model.scale(channel),
-        type: type(channel, model),
+        type: type(fieldDef, channel),
       };
 
       scaleDef.domain = domain(model, channel, scaleDef.type);
@@ -34,7 +38,7 @@ export function compileScales(channels: Channel[], model: Model) {
         'bandWidth', 'outerPadding', 'padding', 'points'
       ].forEach(function(property) {
         // TODO include fieldDef as part of the parameters
-        var value = exports[property](model, channel, scaleDef.type);
+        const value = exports[property](model, channel, scaleDef.type);
         if (value !== undefined) {
           scaleDef[property] = value;
         }
@@ -44,8 +48,7 @@ export function compileScales(channels: Channel[], model: Model) {
     });
 }
 
-export function type(channel: Channel, model: Model): string {
-  const fieldDef = model.fieldDef(channel);
+export function type(fieldDef: FieldDef, channel: Channel): string {
   switch (fieldDef.type) {
     case NOMINAL: // fall through
       return 'ordinal';
@@ -91,7 +94,7 @@ export function type(channel: Channel, model: Model): string {
   }
 }
 
-export function domain(model: Model, channel:Channel, type) {
+export function domain(model: Model, channel:Channel, scaleType: string) {
   var fieldDef = model.fieldDef(channel);
 
   if (fieldDef.scale.domain) { // explicit value
@@ -129,8 +132,8 @@ export function domain(model: Model, channel:Channel, type) {
     };
   }
 
-  var useRawDomain = _useRawDomain(model, channel);
-  var sort = domainSort(model, channel, type);
+  var useRawDomain = _useRawDomain(model, channel, scaleType: string);
+  var sort = domainSort(model, channel, scaleType: string);
 
   if (useRawDomain) { // useRawDomain - only Q/T
     return {
@@ -138,7 +141,7 @@ export function domain(model: Model, channel:Channel, type) {
       field: model.field(channel, {noAggregate: true})
     };
   } else if (fieldDef.bin) { // bin
-    return type === 'ordinal' ? {
+    return scaleType === 'ordinal' ? {
       // ordinal bin scale takes domain from bin_range, ordered by bin_start
       data: model.dataTable(),
       field: model.field(channel, { binSuffix: '_range' }),
@@ -175,14 +178,14 @@ export function domain(model: Model, channel:Channel, type) {
   }
 }
 
-export function domainSort(model: Model, channel: Channel, type):any {
+export function domainSort(model: Model, channel: Channel, scaleType: string): any {
   var sort = model.fieldDef(channel).sort;
   if (sort === 'ascending' || sort === 'descending') {
     return true;
   }
 
   // Sorted based on an aggregate calculation over a specified sort field (only for ordinal scale)
-  if (type === 'ordinal' && typeof sort !== 'string') {
+  if (scaleType === 'ordinal' && typeof sort !== 'string') {
     return {
       op: sort.op,
       field: sort.field
@@ -206,7 +209,7 @@ export function reverse(model: Model, channel: Channel) {
  * 2. Aggregation function is not `count` or `sum`
  * 3. The scale is quantitative or time scale.
  */
-export function _useRawDomain (model: Model, channel: Channel) {
+function _useRawDomain (model: Model, channel: Channel, scaleType: string) {
   const fieldDef = model.fieldDef(channel);
 
   return fieldDef.scale.useRawDomain && //  if useRawDomain is enabled
@@ -221,11 +224,11 @@ export function _useRawDomain (model: Model, channel: Channel) {
       // domain values from the summary table.
       (fieldDef.type === QUANTITATIVE && !fieldDef.bin) ||
       // T uses non-ordinal scale when there's no unit or when the unit is not ordinal.
-      (fieldDef.type === TEMPORAL && type(channel, model) === 'linear')
+      (fieldDef.type === TEMPORAL && scaleType === 'linear')
     );
 }
 
-export function bandWidth(model: Model, channel: Channel, scaleType) {
+export function bandWidth(model: Model, channel: Channel, scaleType: string) {
   if (scaleType === 'ordinal') {
     return model.fieldDef(channel).scale.bandWidth;
   }
@@ -242,7 +245,7 @@ export function exponent(model: Model, channel: Channel) {
   return model.fieldDef(channel).scale.exponent;
 }
 
-export function nice(model: Model, channel: Channel, scaleType) {
+export function nice(model: Model, channel: Channel, scaleType: string) {
   if (model.fieldDef(channel).scale.nice !== undefined) {
     // explicit value
     return model.fieldDef(channel).scale.nice;
@@ -263,7 +266,7 @@ export function nice(model: Model, channel: Channel, scaleType) {
   return undefined;
 }
 
-export function outerPadding(model: Model, channel: Channel, scaleType) {
+export function outerPadding(model: Model, channel: Channel, scaleType: string) {
   if (scaleType === 'ordinal') {
     if (model.fieldDef(channel).scale.outerPadding !== undefined) {
       return model.fieldDef(channel).scale.outerPadding; // explicit value
@@ -272,7 +275,7 @@ export function outerPadding(model: Model, channel: Channel, scaleType) {
   return undefined;
 }
 
-export function padding(model: Model, channel: Channel, scaleType) {
+export function padding(model: Model, channel: Channel, scaleType: string) {
   if (scaleType === 'ordinal') {
     // Both explicit and non-explicit values are handled by the helper method.
     return model.fieldDef(channel).scale.padding;
@@ -280,7 +283,7 @@ export function padding(model: Model, channel: Channel, scaleType) {
   return undefined;
 }
 
-export function points(model: Model, channel: Channel, scaleType) {
+export function points(model: Model, channel: Channel, scaleType: string) {
   if (scaleType === 'ordinal') {
     if (model.fieldDef(channel).scale.points !== undefined) {
       // explicit value
@@ -297,7 +300,7 @@ export function points(model: Model, channel: Channel, scaleType) {
 }
 
 
-export function rangeMixins(model: Model, channel: Channel, scaleType): any {
+export function rangeMixins(model: Model, channel: Channel, scaleType: string): any {
   var fieldDef = model.fieldDef(channel);
 
   if (fieldDef.scale.range) { // explicit value
