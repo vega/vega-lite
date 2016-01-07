@@ -14,7 +14,7 @@ import * as schemaUtil from '../schema/schemautil';
 import {StackProperties} from './stack';
 import {type as scaleType} from './scale';
 import {getFullName, NOMINAL, ORDINAL, TEMPORAL} from '../type';
-import {contains, duplicate} from '../util';
+import {contains, duplicate, isArray} from '../util';
 import {Encoding} from '../schema/encoding.schema';
 
 
@@ -73,10 +73,20 @@ export class Model {
   }
 
   private getStackProperties(): StackProperties {
-    var stackChannels = (this.has(COLOR) ? [COLOR] : [])
-      .concat(this.has(DETAIL) ? [DETAIL] : []);
+    const spec = this.spec();
+    const stackFields = [COLOR, DETAIL].reduce(function(fields, channel) {
+      const channelEncoding = spec.encoding[channel];
+      if (isArray(channelEncoding)) {
+        channelEncoding.forEach(function(fieldDef) {
+          fields.push(fieldDef);
+        });
+      } else {
+        fields.push(channelEncoding);
+      }
+      return fields;
+    }, []);
 
-    if (stackChannels.length > 0 &&
+    if (stackFields.length > 0 &&
       (this.is(BAR) || this.is(AREA)) &&
       this.config('stack') !== false &&
       this.isAggregate()) {
@@ -87,14 +97,14 @@ export class Model {
         return {
           groupbyChannel: Y,
           fieldChannel: X,
-          stackChannels: stackChannels,
+          stackFields: stackFields,
           config: this.config('stack')
         };
       } else if (isYMeasure && !isXMeasure) {
         return {
           groupbyChannel: X,
           fieldChannel: Y,
-          stackChannels: stackChannels,
+          stackFields: stackFields,
           config: this.config('stack')
         };
       }
@@ -146,7 +156,11 @@ export class Model {
 
   public has(channel: Channel) {
     // equivalent to calling vlenc.has(this._spec.encoding, channel)
-    return this._spec.encoding[channel].field !== undefined;
+    const channelEncoding = this._spec.encoding[channel];
+    return channelEncoding && (
+      channelEncoding.field !== undefined ||
+      (isArray(channelEncoding) && channelEncoding.length > 0)
+    );
   }
 
   public fieldDef(channel: Channel): FieldDef {

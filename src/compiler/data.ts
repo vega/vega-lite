@@ -346,7 +346,6 @@ export namespace summary {
         } else {
           dims[fieldDef.field] = model.field(channel);
         }
-
       }
     });
 
