@@ -68,13 +68,7 @@ Here is a list of properties for the field definition object:
 
 Vega-Lite supports all [Vega aggregation operations](https://github.com/vega/vega/wiki/Data-Transforms#-aggregate) (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).
 
-If at least one fields in the specified encoding channel contains `aggregate`,
-a summary data table is computed from the source data table.
-The resulting visualization shows data from this summary table.  
-In this case, all fields without aggregation function specified are treated as dimensions; thus, the summary statistics are grouped by these dimensions.
-Additional dimensions that are not directly mapped to visual encodings can be specified using the `detail` channel.  
-
-If none of the specified encoding channel contains aggregation, no additional data table is created.
+<!--TODO direct to transformation.md-->
 
 ----
 

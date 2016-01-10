@@ -61,3 +61,5 @@ Data can be specified from url using the `url` property.  Format of the input da
 | :------------ |:-------------:| :------------- |
 | [calculate](transformation.html#calculate)     | Array         | An array of [formula object for deriving new calculated field](#calculate-field).  Calculation are applied before filter. |
 | [filter](transformation.html#filter)        | String        | [Vega Expression](https://github.com/vega/vega/wiki/Expressions) for filtering data items (or rows).  Each datum object can be referred using bound variable `datum`. |
+
+For a list of all transformations supported by Vega-Lite, please take a look at the [transformation](transformation.html) page.
