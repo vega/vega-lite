@@ -7,6 +7,7 @@ import {StackProperties} from './stack';
 import {autoMaxBins} from '../bin';
 import {Channel, X, Y, ROW, COLUMN} from '../channel';
 import {SOURCE, STACKED, LAYOUT, SUMMARY} from '../data';
+import {field} from '../fielddef';
 import {QUANTITATIVE, TEMPORAL} from '../type';
 import {type as scaleType} from './scale';
 
@@ -124,9 +125,9 @@ export namespace source {
       if (fieldDef.type === TEMPORAL && fieldDef.timeUnit) {
         transform.push({
           type: 'formula',
-          field: model.field(channel),
+          field: field(fieldDef),
           expr: 'utc' + fieldDef.timeUnit + '(' +
-                model.field(channel, {nofn: true, datum: true}) + ')'
+                field(fieldDef, {nofn: true, datum: true}) + ')'
         });
       }
       return transform;
@@ -141,9 +142,9 @@ export namespace source {
             type: 'bin',
             field: fieldDef.field,
             output: {
-              start: model.field(channel, {binSuffix: '_start'}),
-              mid: model.field(channel, {binSuffix: '_mid'}),
-              end: model.field(channel, {binSuffix: '_end'})
+              start: field(fieldDef, {binSuffix: '_start'}),
+              mid: field(fieldDef, {binSuffix: '_mid'}),
+              end: field(fieldDef, {binSuffix: '_end'})
             }
           },
           // if bin is an object, load parameter here!
@@ -159,10 +160,10 @@ export namespace source {
         if (scaleType(fieldDef, channel) === 'ordinal') {
           transform.push({
             type: 'formula',
-            field: model.field(channel, {binSuffix: '_range'}),
-            expr: model.field(channel, {datum: true, binSuffix: '_start'}) +
+            field: field(fieldDef, {binSuffix: '_range'}),
+            expr: field(fieldDef, {datum: true, binSuffix: '_start'}) +
                   '+ \'-\' +' +
-                  model.field(channel, {datum: true, binSuffix: '_end'})
+                  field(fieldDef, {datum: true, binSuffix: '_end'})
           });
         }
       }
@@ -327,7 +328,7 @@ export namespace summary {
 
     var hasAggregate = false;
 
-    model.forEach(function(fieldDef, channel: Channel) {
+    model.forEach(function(fieldDef: FieldDef, channel: Channel) {
       if (fieldDef.aggregate) {
         hasAggregate = true;
         if (fieldDef.aggregate === 'count') {
@@ -340,11 +341,11 @@ export namespace summary {
       } else {
         if (fieldDef.bin) {
           // TODO(#694) only add dimension for the required ones.
-          dims[model.field(channel, {binSuffix: '_start'})] = model.field(channel, {binSuffix: '_start'});
-          dims[model.field(channel, {binSuffix: '_mid'})] = model.field(channel, {binSuffix: '_mid'});
-          dims[model.field(channel, {binSuffix: '_end'})] = model.field(channel, {binSuffix: '_end'});
+          dims[field(fieldDef, {binSuffix: '_start'})] = field(fieldDef, {binSuffix: '_start'});
+          dims[field(fieldDef, {binSuffix: '_mid'})] = field(fieldDef, {binSuffix: '_mid'});
+          dims[field(fieldDef, {binSuffix: '_end'})] = field(fieldDef, {binSuffix: '_end'});
         } else {
-          dims[fieldDef.field] = model.field(channel);
+          dims[field(fieldDef)] = field(fieldDef);
         }
       }
     });
