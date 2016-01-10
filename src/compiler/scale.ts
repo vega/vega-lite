@@ -132,8 +132,8 @@ export function domain(model: Model, channel:Channel, scaleType: string) {
     };
   }
 
-  var useRawDomain = _useRawDomain(model, channel, scaleType: string);
-  var sort = domainSort(model, channel, scaleType: string);
+  var useRawDomain = _useRawDomain(model, channel, scaleType);
+  var sort = domainSort(model, channel, scaleType);
 
   if (useRawDomain) { // useRawDomain - only Q/T
     return {
