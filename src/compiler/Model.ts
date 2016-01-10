@@ -76,15 +76,17 @@ export class Model {
     const spec = this.spec();
     const stackFields = [COLOR, DETAIL].reduce(function(fields, channel) {
       const channelEncoding = spec.encoding[channel];
-      if (isArray(channelEncoding)) {
-        channelEncoding.forEach(function(fieldDef) {
-          fields.push(fieldDef);
-        });
-      } else {
-        fields.push(channelEncoding);
+      if (this.has(channel)) {
+        if (isArray(channelEncoding)) {
+          channelEncoding.forEach(function(fieldDef) {
+            fields.push(fieldDef);
+          });
+        } else {
+          fields.push(channelEncoding);
+        }
       }
       return fields;
-    }, []);
+    }.bind(this), []);
 
     if (stackFields.length > 0 &&
       (this.is(BAR) || this.is(AREA)) &&

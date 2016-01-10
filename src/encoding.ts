@@ -1,7 +1,7 @@
 // utility for encoding mapping
 import {Encoding} from './schema/encoding.schema';
 import {FieldDef} from './schema/fielddef.schema';
-import {Channel, CHANNELS, DETAIL} from './channel';
+import {Channel, CHANNELS} from './channel';
 import {isArray} from './util';
 
 export function countRetinal(encoding: Encoding) {

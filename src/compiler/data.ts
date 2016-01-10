@@ -412,7 +412,8 @@ export namespace stack {
 
 export function filterNonPositiveForLog(dataTable, model: Model) {
   model.forEach(function(_, channel) {
-    if (model.fieldDef(channel).scale.type === 'log') {
+    const scale = model.fieldDef(channel).scale;
+    if (scale && scale.type === 'log') {
       dataTable.transform.push({
         type: 'filter',
         test: model.field(channel, {datum: true}) + ' > 0'
