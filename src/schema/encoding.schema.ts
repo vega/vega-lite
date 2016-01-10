@@ -1,4 +1,4 @@
-import {merge} from './schemautil';
+import {mergeDeep} from './schemautil';
 import {duplicate} from '../util';
 
 
@@ -20,7 +20,7 @@ export interface Encoding {
   label?: FieldDef;
 }
 
-var x = merge(duplicate(typicalField), {
+var x = mergeDeep(duplicate(typicalField), {
   required: ['field', 'type'], // TODO: remove if possible
   properties: {
     scale: {// replacing default values for just these two axes
@@ -36,10 +36,10 @@ var x = merge(duplicate(typicalField), {
 
 var y = duplicate(x);
 
-var row = merge(duplicate(facetField));
-var column = merge(duplicate(facetField));
+var row = mergeDeep(duplicate(facetField));
+var column = mergeDeep(duplicate(facetField));
 
-var size = merge(duplicate(typicalField), {
+var size = mergeDeep(duplicate(typicalField), {
   properties: {
     legend: legend,
     sort: sort,
@@ -52,7 +52,7 @@ var size = merge(duplicate(typicalField), {
   }
 });
 
-var color = merge(duplicate(typicalField), {
+var color = mergeDeep(duplicate(typicalField), {
   properties: {
     legend: legend,
     sort: sort,
@@ -82,7 +82,7 @@ var color = merge(duplicate(typicalField), {
   }
 });
 
-var shape = merge(duplicate(onlyOrdinalField), {
+var shape = mergeDeep(duplicate(onlyOrdinalField), {
   properties: {
     legend: legend,
     sort: sort,
@@ -98,7 +98,7 @@ var shape = merge(duplicate(onlyOrdinalField), {
 var detail = duplicate(fieldDef);
 
 // we only put aggregated measure in pivot table
-var text = merge(duplicate(typicalField), {
+var text = mergeDeep(duplicate(typicalField), {
   properties: {
     sort: sort,
     value: {
@@ -108,7 +108,7 @@ var text = merge(duplicate(typicalField), {
   }
 });
 
-var label = merge(duplicate(typicalField), {
+var label = mergeDeep(duplicate(typicalField), {
   properies: {
     sort: sort
   }

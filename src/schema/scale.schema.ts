@@ -1,5 +1,5 @@
 import {toMap, duplicate as clone} from '../util';
-import {merge} from './schemautil';
+import {mergeDeep} from './schemautil';
 import {QUANTITATIVE, TEMPORAL} from '../type';
 
 export interface Scale {
@@ -133,5 +133,5 @@ var typicalScaleMixin = {
   }
 };
 
-export var ordinalOnlyScale = merge(clone(scale), ordinalScaleMixin);
-export var typicalScale = merge(clone(scale), ordinalScaleMixin, typicalScaleMixin);
+export var ordinalOnlyScale = mergeDeep(clone(scale), ordinalScaleMixin);
+export var typicalScale = mergeDeep(clone(scale), ordinalScaleMixin, typicalScaleMixin);
