@@ -9,7 +9,7 @@ import {facetMixins} from './facet';
 import {compileLegends} from './legend';
 import {compileMarks} from './marks';
 import {compileScales} from './scale';
-import {extend} from '../util';
+import {extend, keys} from '../util';
 
 import {LAYOUT} from '../data';
 import {COLUMN, ROW, X, Y} from '../channel';
@@ -49,8 +49,8 @@ export function compile(spec, theme?) {
     rootGroup.marks = marks;
     rootGroup.scales = compileScales(model.channels(), model);
 
-    var axes = (model.has(X) ? [compileAxis(X, model)] : [])
-      .concat(model.has(Y) ? [compileAxis(Y, model)] : []);
+    var axes = (model.has(X) && model.fieldDef(X).axis ? [compileAxis(X, model)] : [])
+      .concat(model.has(Y) && model.fieldDef(Y).axis ? [compileAxis(Y, model)] : []);
     if (axes.length > 0) {
       rootGroup.axes = axes;
     }
@@ -73,13 +73,22 @@ export function compile(spec, theme?) {
       height: layout.height.field ? FIT : layout.height,
       padding: 'auto'
     },
-    ['viewport', 'background', 'scene'].reduce(function(topLevelConfig, property) {
+    ['viewport', 'background'].reduce(function(topLevelConfig, property) {
       const value = model.config(property);
       if (value !== undefined) {
         topLevelConfig[property] = value;
       }
       return topLevelConfig;
     }, {}),
+    keys(model.config('scene')).length > 0 ? ['fill', 'fillOpacity', 'stroke', 'strokeWidth',
+      'strokeOpacity', 'strokeDash', 'strokeDashOffset'].reduce(function(topLevelConfig: any, property) {
+        const value = model.sceneConfig(property);
+        if (value !== undefined) {
+          topLevelConfig.scene = topLevelConfig.scene || {};
+          topLevelConfig.scene[property] = {value: value};
+        }
+        return topLevelConfig;
+    }, {}) : {},
     {
       data: compileData(model),
       marks: [rootGroup]

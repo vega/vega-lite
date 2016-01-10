@@ -4,9 +4,30 @@ import * as axis from '../../src/compiler/axis';
 import {Model} from '../../src/compiler/Model';
 import {POINT, LINE} from '../../src/mark';
 import {X, COLUMN} from '../../src/channel';
-import {TEMPORAL, QUANTITATIVE} from '../../src/type';
+import {TEMPORAL, QUANTITATIVE, ORDINAL} from '../../src/type';
+import * as vl from '../../src/vl';
 
 describe('Axis', function() {
+  describe('=true', function() {
+    it('should produce default properties for axis', function() {
+      const spec1 = vl.compile({
+        mark: 'point',
+        encoding: {
+          x: {field: 'Horsepower', type: 'quantitative'},
+          y: {field: 'Miles_per_Gallon', type: 'quantitative'}
+        }
+      });
+      const spec2 = vl.compile({
+        mark: 'point',
+        encoding: {
+          x: {field: 'Horsepower', type: 'quantitative', axis: true},
+          y: {field: 'Miles_per_Gallon', type: 'quantitative', axis: true}
+        }
+      });
+      expect(spec1).to.eql(spec2);
+    });
+  });
+
   describe('(X) for Time Data', function() {
     var field = 'a',
       timeUnit = 'month',
@@ -63,6 +84,28 @@ describe('Axis', function() {
           }
         }), COLUMN);
       expect(orient).to.eql('top');
+    });
+  });
+
+  describe('labels()', function () {
+    it('should show labels by default', function () {
+      var labels = axis.properties.labels(new Model({
+          mark: POINT,
+          encoding: {
+            x: {field: 'a', type: ORDINAL}
+          }
+        }), X, {}, {orient: 'top'});
+      expect(labels.text.template).to.eql('{{ datum.data | truncate:25}}');
+    });
+
+    it('should hide labels if labels are set to false', function () {
+      var labels = axis.properties.labels(new Model({
+          mark: POINT,
+          encoding: {
+            x: {field: 'a', type: ORDINAL, axis: {labels: false}}
+          }
+        }), X, {}, null);
+      expect(labels.text).to.eql('');
     });
   });
 

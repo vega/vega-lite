@@ -102,7 +102,7 @@ namespace properties {
         /* fall through */
       case POINT:
         // fill or stroke
-        if (model.marksConfig('filled')) {
+        if (model.markConfig('filled')) {
           if (model.has(COLOR) && channel === COLOR) {
             symbols.fill = {scale: model.scale(COLOR), field: 'data'};
           } else {
@@ -116,7 +116,7 @@ namespace properties {
             symbols.stroke = {value: fieldDef.value};
           }
           symbols.fill = {value: 'transparent'};
-          symbols.strokeWidth = {value: model.marksConfig('strokeWidth')};
+          symbols.strokeWidth = {value: model.markConfig('strokeWidth')};
         }
 
         break;
@@ -126,7 +126,7 @@ namespace properties {
         break;
     }
 
-    var opacity = model.marksConfig('opacity');
+    var opacity = model.markConfig('opacity');
     if (opacity) { symbols.opacity = {value: opacity}; }
 
     symbols = extend(symbols, spec || {});

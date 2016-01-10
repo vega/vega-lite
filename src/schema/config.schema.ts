@@ -1,19 +1,18 @@
 import {StackConfig, stackConfig} from './config.stack.schema';
 import {CellConfig, cellConfig} from './config.cell.schema';
-import {MarksConfig, marksConfig} from './config.marks.schema';
+import {MarkConfig, markConfig} from './config.marks.schema';
+import {SceneConfig, sceneConfig} from './config.scene.schema';
 
 export interface Config {
   width?: number;
   height?: number;
   padding?: number|string;
   viewport?: number;
-
   background?: string;
-  sortLineBy?: string;
 
   cell?: CellConfig;
-  marks?: MarksConfig;
-  scene?: any; // TODO: SceneConfig
+  mark?: MarkConfig;
+  scene?: SceneConfig;
   stack?: StackConfig;
 
   // TODO: revise
@@ -54,12 +53,6 @@ export const config = {
       default: undefined,
       description: 'CSS color property to use as background of visualization. Default is `"transparent"`.'
     },
-    sortLineBy: {
-      type: 'string',
-      default: undefined,
-      description: 'Data field to sort line by. ' +
-        '\'-\' prefix can be added to suggest descending order.'
-    },
 
     // filter null
     // TODO(#597) revise this config
@@ -94,11 +87,7 @@ export const config = {
     // nested
     stack: stackConfig,
     cell: cellConfig,
-    marks: marksConfig,
-    scene: { // TODO: add SceneConfig
-      type: 'object',
-      default: undefined,
-      description: 'An object for styling the top-level scenegraph root. Available properties include `fill`, `fillOpacity`, `stroke`, `strokeOpacity`, `strokeWidth`, `strokeDash`, `strokeDashOffset`.'
-    }
+    mark: markConfig,
+    scene: sceneConfig
   }
 };

@@ -1,5 +1,7 @@
 import {Spec} from '../schema/schema';
+import {Axis, axis as axisSchema} from '../schema/axis.schema';
 import {FieldDef} from '../schema/fielddef.schema';
+import {instantiate} from '../schema/schemautil';
 
 import {COLUMN, ROW, X, Y, COLOR, DETAIL, Channel, supportMark} from '../channel';
 import {SOURCE, SUMMARY} from '../data';
@@ -58,6 +60,10 @@ export class Model {
       if (fieldDef.type) {
         // convert short type to full type
         fieldDef.type = getFullName(fieldDef.type);
+      }
+
+      if (fieldDef.axis === true) {
+        fieldDef.axis = instantiate(axisSchema);
       }
     }, this);
 
@@ -162,7 +168,7 @@ export class Model {
       return f + opt.fn + '_' + field;
     } else if (!opt.nofn && fieldDef.bin) {
       var binSuffix = opt.binSuffix ||
-        (scaleType(channel, this) === 'ordinal' ? '_range' : '_start');
+        (scaleType(fieldDef, channel) === 'ordinal' ? '_range' : '_start');
       return f + 'bin_' + field + binSuffix;
     } else if (!opt.nofn && !opt.noAggregate && fieldDef.aggregate) {
       return f + fieldDef.aggregate + '_' + field;
@@ -202,7 +208,7 @@ export class Model {
     const fieldDef = this.fieldDef(channel);
     return fieldDef && (
       contains([NOMINAL, ORDINAL], fieldDef.type) ||
-      ( fieldDef.type === TEMPORAL && scaleType(channel, this) === 'ordinal' )
+      ( fieldDef.type === TEMPORAL && scaleType(fieldDef, channel) === 'ordinal' )
       );
   }
 
@@ -246,10 +252,22 @@ export class Model {
   }
 
   /**
-   * @return Marks config value from the spec, or a default value if unspecified.
+   * @return Cell config value from the spec, or a default value if unspecified.
    */
-  public marksConfig(name: string) {
-    const value = this._spec.config.marks[name];
+  public cellConfig(name: string) {
+    return this._spec.config.cell[name];
+  }
+
+  public axisDef(channel: Channel): Axis {
+    const axis = this.fieldDef(channel).axis;
+    return typeof axis !== 'boolean' ? axis : {};
+  }
+
+  /**
+   * @return Mark config value from the spec, or a default value if unspecified.
+   */
+  public markConfig(name: string) {
+    const value = this._spec.config.mark[name];
     switch (name) {
       case 'filled':
         if (value === undefined) {
@@ -285,6 +303,13 @@ export class Model {
     return value;
   }
 
+  /**
+   * @return Scene config value from the spec, or a default value if unspecified.
+   */
+  public sceneConfig(name: string) {
+    return this._spec.config.scene[name];
+  }
+
   /** returns scale name for a given channel */
   public scale(channel: Channel): string {
     const name = this.spec().name;
@@ -295,9 +320,10 @@ export class Model {
   public labelTemplate(channel: Channel): string {
     const fieldDef = this.fieldDef(channel);
     const legend = fieldDef.legend;
+    const axis = fieldDef.axis;
     const abbreviated = contains([ROW, COLUMN, X, Y], channel) ?
-      fieldDef.axis.shortTimeLabels :
-      typeof legend !== 'boolean' ? legend.shortTimeLabels : false;
+      (typeof axis !== 'boolean' ? axis.shortTimeLabels : false) :
+      (typeof legend !== 'boolean' ? legend.shortTimeLabels : false);
 
     var postfix = abbreviated ? '-abbrev' : '';
     switch (fieldDef.timeUnit) {

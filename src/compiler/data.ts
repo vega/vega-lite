@@ -156,7 +156,7 @@ export namespace source {
         }
 
         transform.push(binTrans);
-        if (scaleType(channel, model) === 'ordinal') {
+        if (scaleType(fieldDef, channel) === 'ordinal') {
           transform.push({
             type: 'formula',
             field: model.field(channel, {binSuffix: '_range'}),
@@ -252,7 +252,7 @@ export namespace layout {
       });
     }
 
-    const cellPadding = model.config('cell').padding;
+    const cellPadding = model.cellConfig('padding');
     const layout = model.layout();
 
     if (model.has(COLUMN)) {
