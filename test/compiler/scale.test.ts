@@ -7,6 +7,7 @@ import {ORDINAL, QUANTITATIVE, TEMPORAL} from '../../src/type';
 import {POINT, BAR} from '../../src/mark';
 import {Y} from '../../src/channel';
 
+
 describe('vl.compile.scale', function() {
   describe('domain()', function() {
     describe('for stack', function() {
@@ -64,7 +65,7 @@ describe('vl.compile.scale', function() {
                 type: QUANTITATIVE
               }
             }
-          }), Y, ORDINAL);
+          }), Y, 'ordinal');
 
           expect(domain).to.eql({
             data: SOURCE,
@@ -157,7 +158,7 @@ describe('vl.compile.scale', function() {
                 timeUnit: 'year'
               }
             }
-          }), Y, ORDINAL);
+          }), Y, 'ordinal');
 
           expect(domain.data).to.eql(SOURCE);
           expect(domain.field.indexOf('year')).to.gt(-1);
@@ -175,7 +176,7 @@ describe('vl.compile.scale', function() {
                 timeUnit: 'month'
               }
             }
-          }), Y, ORDINAL);
+          }), Y, 'ordinal');
 
           expect(domain).to.eql([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]);
         });
@@ -191,7 +192,7 @@ describe('vl.compile.scale', function() {
             }
           });
 
-        expect(vlscale.domain(encoding, Y, ORDINAL))
+        expect(vlscale.domain(encoding, Y, 'ordinal'))
           .to.eql({
             data: SOURCE,
             field: 'origin',
@@ -207,7 +208,7 @@ describe('vl.compile.scale', function() {
             }
           });
 
-        expect(vlscale.domain(encoding, Y, ORDINAL))
+        expect(vlscale.domain(encoding, Y, 'ordinal'))
           .to.eql({
             data: SOURCE,
             field: 'origin',
