@@ -141,9 +141,9 @@ export function size(model: Model) {
   return 30;
 }
 
-function colorMixins(model: Model) {
+function colorMixins(model: Model, alwaysFilled: boolean = false) {
   let p: any = {};
-  if (model.markConfig('filled')) {
+  if (alwaysFilled || model.markConfig('filled')) {
     if (model.has(COLOR)) {
       p.fill = {
         scale: model.scale(COLOR),
@@ -163,6 +163,11 @@ function colorMixins(model: Model) {
     }
     p.strokeWidth = { value: model.markConfig('strokeWidth') };
   }
+
+  // opacity
+  var opacity = model.markConfig('opacity');
+  if (opacity) { p.opacity = { value: opacity }; };
+
   return p;
 }
 
@@ -353,13 +358,8 @@ export namespace bar {
         };
     }
 
-    // fill
+    // color (fill/stroke) & opacity
     extend(p, colorMixins(model));
-
-    // opacity
-    var opacity = model.markConfig('opacity');
-    if (opacity) { p.opacity = { value: opacity }; };
-
     return p;
   }
 
@@ -418,13 +418,8 @@ export namespace point {
       p.shape = { value: model.fieldDef(SHAPE).value };
     }
 
-    // fill or stroke
+    // color (fill/stroke) & opacity
     extend(p, colorMixins(model));
-
-    // opacity
-    const opacity = model.markConfig('opacity');
-    if (opacity) { p.opacity = { value: opacity }; };
-
     return p;
   }
 
@@ -567,15 +562,10 @@ export namespace area {
       }
     }
 
-    // fill
+    // color (fill/stroke) & opacity
     extend(p, colorMixins(model));
 
-    // opacity
-    var opacity = model.markConfig('opacity');
-    if (opacity) { p.opacity = { value: opacity }; };
-
     applyMarkConfig(p, model, ['interpolate', 'tension']);
-
     return p;
   }
 
@@ -637,20 +627,8 @@ export namespace tick {
       p.height = { value: 1 };
     }
 
-    // fill
-    if (model.has(COLOR)) {
-      p.fill = {
-        scale: model.scale(COLOR),
-        field: model.field(COLOR)
-      };
-    } else {
-      p.fill = { value: model.fieldDef(COLOR).value };
-    }
-
-    // opacity
-    var opacity = model.markConfig('opacity');
-    if (opacity) { p.opacity = { value: opacity }; };
-
+    // color (fill) & opacity
+    extend(p, colorMixins(model, true));
     return p;
   }
 
@@ -698,20 +676,8 @@ function filled_point_props(shape) {
     // shape
     p.shape = { value: shape };
 
-    // fill
-    if (model.has(COLOR)) {
-      p.fill = {
-        scale: model.scale(COLOR),
-        field: model.field(COLOR)
-      };
-    } else {
-      p.fill = { value: model.fieldDef(COLOR).value };
-    }
-
-    // opacity
-    var opacity = model.markConfig('opacity');
-    if (opacity) { p.opacity = { value: opacity }; };
-
+    // color (fill) & opacity
+    extend(p, colorMixins(model, true));
     return p;
   };
 }
