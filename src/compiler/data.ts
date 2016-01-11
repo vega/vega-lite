@@ -398,17 +398,6 @@ export namespace stack {
       }]
     };
 
-    if (facetFields && facetFields.length > 0) {
-      stacked.transform.push({ // calculate max for each facet
-        type: 'aggregate',
-        groupby: facetFields,
-        summarize: [{
-          ops: ['max'],
-          // we want max of sum from above transform
-          field: model.field(fieldChannel, {prefn: 'sum_'})
-        }]
-      });
-    }
     return stacked;
   };
 }

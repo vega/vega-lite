@@ -122,12 +122,11 @@ export function domain(model: Model, channel:Channel, scaleType: string) {
   // For stack, use STACKED data.
   var stack = model.stack();
   if (stack && channel === stack.fieldChannel) {
-    const facet = model.has(ROW) || model.has(COLUMN);
     return {
       data: STACKED_SCALE,
       field: model.field(channel, {
         // If faceted, scale is determined by the max of sum in each facet.
-        prefn: (facet ? 'max_' : '') + 'sum_'
+        prefn: 'sum_'
       })
     };
   }
