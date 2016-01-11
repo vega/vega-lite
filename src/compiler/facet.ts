@@ -60,7 +60,7 @@ export function facetMixins(model: Model, marks) {
       rootMarks.push(getXAxesGroup(model, cellWidth, hasCol));
     }
     if (model.cellConfig('gridShow')) {
-      rootMarks.push(getRowRulesGroup(model, cellHeight));
+      rootMarks.push(getRowGridGroup(model, cellHeight));
     }
   } else { // doesn't have row
     if (model.has(X)) { // keep x axis in the cell
@@ -88,7 +88,7 @@ export function facetMixins(model: Model, marks) {
       rootMarks.push(getYAxesGroup(model, cellHeight, hasRow));
     }
     if (model.cellConfig('gridShow')) {
-      rootMarks.push(getColumnRulesGroup(model, cellWidth));
+      rootMarks.push(getColumnGridGroup(model, cellWidth));
     }
   } else { // doesn't have column
     if (model.has(Y)) { // keep y axis in the cell
@@ -180,10 +180,10 @@ function getYAxesGroup(model: Model, cellHeight, hasRow: boolean) { // TODO: VgM
     });
 }
 
-function getRowRulesGroup(model: Model, cellHeight): any { // TODO: VgMarks
+function getRowGridGroup(model: Model, cellHeight): any { // TODO: VgMarks
   const name = model.spec().name;
-  const rowRules = {
-    name: (name ? name + '-' : '') + 'row-rules',
+  const rowGrid = {
+    name: (name ? name + '-' : '') + 'row-grid',
     type: 'rule',
     from: {
       data: model.dataTable(),
@@ -203,12 +203,12 @@ function getRowRulesGroup(model: Model, cellHeight): any { // TODO: VgMarks
     }
   };
 
-  const rowRulesOnTop = !model.has(X) || model.axisDef(X).orient !== 'top';
-  if (rowRulesOnTop) { // on top - no need to add offset
-    return rowRules;
-  } // otherwise, need to offset all rules by cellHeight
+  const rowGridOnTop = !model.has(X) || model.axisDef(X).orient !== 'top';
+  if (rowGridOnTop) { // on top - no need to add offset
+    return rowGrid;
+  } // otherwise, need to offset all grid by cellHeight
   return {
-    name: (name ? name + '-' : '') + 'row-rules-group',
+    name: (name ? name + '-' : '') + 'row-grid-group',
     type: 'group',
     properties: {
       update: {
@@ -222,18 +222,18 @@ function getRowRulesGroup(model: Model, cellHeight): any { // TODO: VgMarks
             field: {parent: 'cellHeight'},
             offset: model.cellConfig('padding')
           },
-        // include width so it can be referred inside row-rules
+        // include width so it can be referred inside row-grid
         width: {field: {group: 'width'}}
       }
     },
-    marks: [rowRules]
+    marks: [rowGrid]
   };
 }
 
-function getColumnRulesGroup(model: Model, cellWidth): any { // TODO: VgMarks
+function getColumnGridGroup(model: Model, cellWidth): any { // TODO: VgMarks
   const name = model.spec().name;
-  const columnRules = {
-    name: (name ? name + '-' : '') + 'column-rules',
+  const columnGrid = {
+    name: (name ? name + '-' : '') + 'column-grid',
     type: 'rule',
     from: {
       data: model.dataTable(),
@@ -253,12 +253,12 @@ function getColumnRulesGroup(model: Model, cellWidth): any { // TODO: VgMarks
     }
   };
 
-  const colRulesOnLeft = !model.has(Y) || model.axisDef(Y).orient === 'right';
-  if (colRulesOnLeft) { // on left, no need to add global offset
-    return columnRules;
-  } // otherwise, need to offset all rules by cellWidth
+  const columnGridOnLeft = !model.has(Y) || model.axisDef(Y).orient === 'right';
+  if (columnGridOnLeft) { // on left, no need to add global offset
+    return columnGrid;
+  } // otherwise, need to offset all grid by cellWidth
   return {
-    name: (name ? name + '-' : '') + 'column-rules-group',
+    name: (name ? name + '-' : '') + 'column-grid-group',
     type: 'group',
     properties: {
       update: {
@@ -272,10 +272,10 @@ function getColumnRulesGroup(model: Model, cellWidth): any { // TODO: VgMarks
              field: {parent: 'cellWidth'},
              offset: model.cellConfig('padding')
            },
-        // include height so it can be referred inside column-rules
+        // include height so it can be referred inside column-grid
         height: {field: {group: 'height'}}
       }
     },
-    marks: [columnRules]
+    marks: [columnGrid]
   };
 }

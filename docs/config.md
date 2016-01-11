@@ -37,10 +37,10 @@ the following grid properties:
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| gridShow      | Boolean       | Whether to show facet rules.  (True by default)  |
-| gridColor     | Color         | Color of the rules between facets. |
-| gridOpacity   | Number        | Opacity of the rules between facets. |
-| gridOffset    | Number        | Offset for rules between facets.  |
+| gridShow      | Boolean       | Whether to show facet grid.  (True by default)  |
+| gridColor     | Color         | Color of the grid between facets. |
+| gridOpacity   | Number        | Opacity of the grid between facets. |
+| gridOffset    | Number        | Offset for grid between facets.  |
 
 and the following fill and stroke properties:
 
