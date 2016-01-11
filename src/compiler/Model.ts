@@ -160,7 +160,7 @@ export class Model {
     const fieldDef = this.fieldDef(channel);
     if (fieldDef.bin) { // bin has default suffix that depends on scaleType
       opt = extend({
-        binSuffix: scaleType(fieldDef, channel) === 'ordinal' ? '_range' : '_start'
+        binSuffix: scaleType(fieldDef, channel, this) === 'ordinal' ? '_range' : '_start'
       }, opt);
     }
     return vlFieldDef.field(fieldDef, opt);
@@ -195,7 +195,7 @@ export class Model {
     const fieldDef = this.fieldDef(channel);
     return fieldDef && (
       contains([NOMINAL, ORDINAL], fieldDef.type) ||
-      ( fieldDef.type === TEMPORAL && scaleType(fieldDef, channel) === 'ordinal' )
+      ( fieldDef.type === TEMPORAL && scaleType(fieldDef, channel, this) === 'ordinal' )
       );
   }
 
