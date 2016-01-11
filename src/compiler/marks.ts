@@ -146,6 +146,8 @@ enum ColorMode {
   ALWAYS_STROKED
 }
 
+export const FILL_STROKE_CONFIG = ['fill', 'stroke', 'strokeWidth', 'strokeDash', 'strokeDashOffset'];
+
 function applyColorAndOpacity(p, model: Model, colorMode?: ColorMode) {
   const filled = colorMode === ColorMode.ALWAYS_FILLED ? true :
     colorMode === ColorMode.ALWAYS_STROKED ? false :
@@ -153,7 +155,7 @@ function applyColorAndOpacity(p, model: Model, colorMode?: ColorMode) {
 
   // Apply fill and stroke config first
   // so that `color.value` can override `fill` and `stroke` config
-  applyMarkConfig(p, model, ['fill', 'stroke', 'strokeWidth', 'strokeDash', 'strokeDashOffset']);
+  applyMarkConfig(p, model, FILL_STROKE_CONFIG);
 
   const opacity = model.markConfig('opacity');
   if (filled) {
