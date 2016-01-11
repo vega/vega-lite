@@ -570,7 +570,6 @@ export namespace tick {
   }
 
   export function properties(model: Model) {
-    // TODO Use Vega's marks properties interface
     // FIXME are /3 , /1.5 divisions here correct?
     var p: any = {};
 
@@ -605,7 +604,7 @@ export namespace tick {
       // TODO(#694): optimize tick's width for bin
       p.width = { value: model.fieldDef(X).scale.bandWidth / 1.5 };
     } else {
-      p.width = { value: 1 };
+      p.width = { value: model.markConfig('tickSize') };
     }
 
     // height
@@ -613,7 +612,7 @@ export namespace tick {
       // TODO(#694): optimize tick's height for bin
       p.height = { value: model.fieldDef(Y).scale.bandWidth / 1.5 };
     } else {
-      p.height = { value: 1 };
+      p.height = { value: model.markConfig('tickSize') };
     }
 
     applyColorAndOpacity(p, model, ColorMode.ALWAYS_FILLED);
