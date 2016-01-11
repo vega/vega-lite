@@ -141,9 +141,18 @@ export function size(model: Model) {
   return 30;
 }
 
-function colorMixins(model: Model, alwaysFilled: boolean = false) {
+enum ColorMode {
+  ALWAYS_FILLED,
+  ALWAYS_STROKED
+}
+
+function colorMixins(model: Model, colorMode?: ColorMode) {
   let p: any = {};
-  if (alwaysFilled || model.markConfig('filled')) {
+  const filled = colorMode === ColorMode.ALWAYS_FILLED ? true :
+    colorMode === ColorMode.ALWAYS_STROKED ? false :
+    model.markConfig('filled');
+
+  if (filled) {
     if (model.has(COLOR)) {
       p.fill = {
         scale: model.scale(COLOR),
@@ -458,18 +467,7 @@ export namespace line {
     }
 
     // stroke
-    if (model.has(COLOR)) {
-      p.stroke = {
-        scale: model.scale(COLOR),
-        field: model.field(COLOR)
-      };
-    } else {
-      p.stroke = { value: model.fieldDef(COLOR).value };
-    }
-
-    // opacity
-    var opacity = model.markConfig('opacity');
-    if (opacity) { p.opacity = { value: opacity }; };
+    extend(p, colorMixins(model, ColorMode.ALWAYS_STROKED));
 
     p.strokeWidth = { value: model.markConfig('strokeWidth') };
 
@@ -628,7 +626,7 @@ export namespace tick {
     }
 
     // color (fill) & opacity
-    extend(p, colorMixins(model, true));
+    extend(p, colorMixins(model, ColorMode.ALWAYS_FILLED));
     return p;
   }
 
@@ -677,7 +675,7 @@ function filled_point_props(shape) {
     p.shape = { value: shape };
 
     // color (fill) & opacity
-    extend(p, colorMixins(model, true));
+    extend(p, colorMixins(model, ColorMode.ALWAYS_FILLED));
     return p;
   };
 }
