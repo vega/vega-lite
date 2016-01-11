@@ -63,6 +63,11 @@
       "showInEditor": true
     },
     {
+      "name": "line_color",
+      "title": "Colored Line chart",
+      "showInEditor": true
+    },
+    {
       "name": "line_month",
       "title": "Line showing pattern between months",
       "showInEditor": true
