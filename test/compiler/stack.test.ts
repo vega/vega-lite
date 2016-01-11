@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 
 import {stack} from '../fixtures';
-import {Model} from '../../src/compiler/model';
+import {Model} from '../../src/compiler/Model';
 import {compileData} from '../../src/compiler/data';
 import {compileRootGroup} from '../../src/compiler/compiler';
 import {SUMMARY} from '../../src/data';
