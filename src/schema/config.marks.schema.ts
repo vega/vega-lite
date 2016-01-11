@@ -10,7 +10,9 @@ export interface MarkConfig {
   strokeDash?: number[];
   strokeDashOffset?: number[];
   fill?: string;
+  fillOpacity?: number;
   stroke?: string;
+  strokeOpacity?: number;
 
   // Bar / area
   orient?: string;
@@ -66,10 +68,22 @@ export const markConfig = {
       role: 'color',
       default: undefined
     },
+    fillOpacity: {
+      type: 'number',
+      default: undefined,  // auto
+      minimum: 0,
+      maximum: 1
+    },
     stroke: {
       type: 'string',
       role: 'color',
       default: undefined
+    },
+    strokeOpacity: {
+      type: 'number',
+      default: undefined,  // auto
+      minimum: 0,
+      maximum: 1
     },
     opacity: {
       type: 'number',

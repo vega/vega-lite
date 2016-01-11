@@ -141,10 +141,6 @@ namespace properties {
         break;
     }
 
-    // TODO: use fillOpacity, strokeOpacity when applicable
-    var opacity = model.markConfig('opacity');
-    if (opacity) { symbols.opacity = {value: opacity}; }
-
     symbols = extend(symbols, spec || {});
 
     return keys(symbols).length > 0 ? symbols : undefined;

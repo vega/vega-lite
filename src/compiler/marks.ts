@@ -146,7 +146,9 @@ enum ColorMode {
   ALWAYS_STROKED
 }
 
-export const FILL_STROKE_CONFIG = ['fill', 'stroke', 'strokeWidth', 'strokeDash', 'strokeDashOffset'];
+export const FILL_STROKE_CONFIG = ['fill', 'fillOpacity',
+  'stroke', 'strokeWidth', 'strokeDash', 'strokeDashOffset', 'strokeOpacity',
+  'opacity'];
 
 function applyColorAndOpacity(p, model: Model, colorMode?: ColorMode) {
   const filled = colorMode === ColorMode.ALWAYS_FILLED ? true :
@@ -157,7 +159,6 @@ function applyColorAndOpacity(p, model: Model, colorMode?: ColorMode) {
   // so that `color.value` can override `fill` and `stroke` config
   applyMarkConfig(p, model, FILL_STROKE_CONFIG);
 
-  const opacity = model.markConfig('opacity');
   if (filled) {
     if (model.has(COLOR)) {
       p.fill = {
@@ -167,7 +168,6 @@ function applyColorAndOpacity(p, model: Model, colorMode?: ColorMode) {
     } else {
       p.fill = { value: model.fieldDef(COLOR).value };
     }
-    if (opacity) { p.fillOpacity = { value: opacity }; };
   } else {
     if (model.has(COLOR)) {
       p.stroke = {
@@ -177,7 +177,6 @@ function applyColorAndOpacity(p, model: Model, colorMode?: ColorMode) {
     } else {
       p.stroke = { value: model.fieldDef(COLOR).value };
     }
-    if (opacity) { p.strokeOpacity = { value: opacity }; };
   }
 }
 
@@ -751,6 +750,7 @@ export namespace text {
       p.fontSize = { value: size(model) };
     }
 
+    // FIXME applyColorAndOpacity
     // fill
     // TODO: consider if color should just map to fill instead?
 
