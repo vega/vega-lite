@@ -45,7 +45,7 @@ export class Model {
 
   constructor(spec: Spec, theme?) {
     var defaults = schema.instantiate();
-    this._spec = schemaUtil.merge(defaults, theme || {}, spec);
+    this._spec = schemaUtil.mergeDeep(defaults, theme || {}, spec);
 
 
     vlEncoding.forEach(this._spec.encoding, function(fieldDef: FieldDef, channel: Channel) {
