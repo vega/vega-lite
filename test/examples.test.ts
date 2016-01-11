@@ -9,7 +9,7 @@ const validator = new zSchema();
 const vlSchema = require('../src/schema/schema').schema,
   vgSchema = require('../node_modules/vega/vega-schema.json');
 
-import {f} from './fixtures';
+import * as f from './fixtures';
 
 function validateAgainstSchemas(vlspec, done?) {
   var isVlValid = validator.validate(vlspec, vlSchema);
