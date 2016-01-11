@@ -467,9 +467,7 @@ export namespace line {
     // stroke
     extend(p, colorMixins(model, ColorMode.ALWAYS_STROKED));
 
-    p.strokeWidth = { value: model.markConfig('strokeWidth') };
-
-    applyMarkConfig(p, model, ['interpolate', 'tension']);
+    applyMarkConfig(p, model, ['strokeWidth', 'interpolate', 'tension']);
 
     return p;
   }
