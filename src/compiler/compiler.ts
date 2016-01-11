@@ -1,14 +1,12 @@
 /**
  * Module for compiling Vega-lite spec into Vega spec.
  */
-import {Spec} from '../schema/schema';
 import {Model} from './Model';
 
 import {compileAxis} from './axis';
 import {compileData} from './data';
 import {facetMixins} from './facet';
 import {compileLegends} from './legend';
-import {Layout} from './layout';
 import {compileMarks} from './marks';
 import {compileScales} from './scale';
 import {extend, keys} from '../util';
@@ -51,7 +49,7 @@ export function compile(spec, theme?) {
     }, {}) : {},
     {
       data: compileData(model),
-      marks: [compileRootGroup(spec, model, layout)]
+      marks: [compileRootGroup(model)]
     });
 
   return {
@@ -60,9 +58,10 @@ export function compile(spec, theme?) {
   };
 }
 
-function compileRootGroup(spec: Spec, model: Model, layout: Layout) {
-  const width = layout.width;
-  const height = layout.height;
+export function compileRootGroup(model: Model) {
+  const spec = model.spec();
+  const width = model.layout().width;
+  const height = model.layout().height;
 
   let rootGroup:any = extend({
       name: spec.name ? spec.name + '-root' : 'root',
@@ -105,4 +104,5 @@ function compileRootGroup(spec: Spec, model: Model, layout: Layout) {
   if (legends.length > 0) {
     rootGroup.legends = legends;
   }
+  return rootGroup;
 }
