@@ -27,7 +27,7 @@ describe('vl.compile.stack()', function () {
 
     it('should create stack summary data correctly', function() {
       var stackedData = dataSpec.filter(function(data) {
-        return data.name === 'stacked';
+        return data.name === 'stacked_scale';
       });
       expect(stackedData.length).to.equal(1);
       var stackedAggrTransform = stackedData[0].transform[0];
@@ -64,7 +64,7 @@ describe('vl.compile.stack()', function () {
 
     it('should create stack summary data correctly', function() {
       var stackedData = dataSpec.filter(function(data) {
-        return data.name === 'stacked';
+        return data.name === 'stacked_scale';
       });
 
       expect(stackedData.length).to.equal(1);

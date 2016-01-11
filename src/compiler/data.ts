@@ -6,7 +6,7 @@ import {StackProperties} from './stack';
 
 import {autoMaxBins} from '../bin';
 import {Channel, X, Y, ROW, COLUMN} from '../channel';
-import {SOURCE, STACKED, LAYOUT, SUMMARY} from '../data';
+import {SOURCE, STACKED_SCALE, LAYOUT, SUMMARY} from '../data';
 import {field} from '../fielddef';
 import {QUANTITATIVE, TEMPORAL} from '../type';
 import {type as scaleType} from './scale';
@@ -388,7 +388,7 @@ export namespace stack {
                       .concat((model.has(ROW) ? [model.field(ROW)] : []));
 
     var stacked:VgData = {
-      name: STACKED,
+      name: STACKED_SCALE,
       source: model.dataTable(),
       transform: [{
         type: 'aggregate',
@@ -398,17 +398,6 @@ export namespace stack {
       }]
     };
 
-    if (facetFields && facetFields.length > 0) {
-      stacked.transform.push({ // calculate max for each facet
-        type: 'aggregate',
-        groupby: facetFields,
-        summarize: [{
-          ops: ['max'],
-          // we want max of sum from above transform
-          field: model.field(fieldChannel, {prefn: 'sum_'})
-        }]
-      });
-    }
     return stacked;
   };
 }
