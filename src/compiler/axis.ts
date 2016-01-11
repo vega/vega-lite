@@ -13,7 +13,7 @@ export function compileAxis(channel: Channel, model: Model) {
 
   // TODO: rename def to axisDef and avoid side effects where possible.
   // TODO: replace any with Vega Axis Interface
-  var def:any = {
+  var def: any = {
     type: type,
     scale: model.scale(channel)
   };
@@ -150,16 +150,18 @@ export function title(model: Model, channel: Channel) {
   // if not defined, automatically determine axis title from field def
   var fieldTitle = model.fieldTitle(channel);
   const layout = model.layout();
+  const cellWidth = layout.cellWidth;
+  const cellHeight = layout.cellHeight;
 
   var maxLength;
   if (axisDef.titleMaxLength) {
     maxLength = axisDef.titleMaxLength;
-  } else if (channel === X && typeof layout.cellWidth === 'number') {
+  } else if (channel === X && typeof cellWidth === 'number') {
     // Guess max length if we know cell size at compile time
-    maxLength = layout.cellWidth / model.axisDef(X).characterWidth;
-  } else if (channel === Y && typeof layout.cellHeight === 'number') {
+    maxLength = cellWidth / model.axisDef(X).characterWidth;
+  } else if (channel === Y && typeof cellHeight === 'number') {
     // Guess max length if we know cell size at compile time
-    maxLength = layout.cellHeight / model.axisDef(Y).characterWidth;
+    maxLength = cellHeight / model.axisDef(Y).characterWidth;
   }
   // FIXME: we should use template to truncate instead
   return maxLength ? truncate(fieldTitle, maxLength) : fieldTitle;

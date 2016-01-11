@@ -256,9 +256,10 @@ export namespace layout {
     const layout = model.layout();
 
     if (model.has(COLUMN)) {
-      const cellWidth = layout.cellWidth.field ?
-                        'datum.' + layout.cellWidth.field :
-                        layout.cellWidth;
+      const layoutCellWidth = layout.cellWidth;
+      const cellWidth = typeof layoutCellWidth !== 'number' ?
+                        'datum.' + layoutCellWidth.field :
+                        layoutCellWidth;
       const colScale = model.fieldDef(COLUMN).scale;
       const colHasDomain = colScale.domain instanceof Array;
       if (!colHasDomain) {
@@ -278,9 +279,10 @@ export namespace layout {
     }
 
     if (model.has(ROW)) {
-      const cellHeight = layout.cellHeight.field ?
-                        'datum.' + layout.cellHeight.field :
-                        layout.cellHeight;
+      const layoutCellHeight = layout.cellHeight;
+      const cellHeight = typeof layoutCellHeight !== 'number' ?
+                        'datum.' + layoutCellHeight.field :
+                        layoutCellHeight;
       const rowScale = model.fieldDef(ROW).scale;
       const rowHasDomain = rowScale.domain instanceof Array;
       if (!rowHasDomain) {
