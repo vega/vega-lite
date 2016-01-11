@@ -87,11 +87,13 @@ namespace properties {
   export function symbols(fieldDef: FieldDef, spec, model: Model, channel: Channel) {
     let symbols:any = {};
     const mark = model.mark();
+    // TODO: correctly apply marks config here!
 
     switch (mark) {
       case BAR:
       case TICK:
       case TEXT:
+        // no need to apply color to fill as they are set automatically
         symbols.stroke = {value: 'transparent'};
         symbols.shape = {value: 'square'};
         break;
@@ -106,14 +108,14 @@ namespace properties {
           if (model.has(COLOR) && channel === COLOR) {
             symbols.fill = {scale: model.scale(COLOR), field: 'data'};
           } else {
-            symbols.fill = {value: fieldDef.value};
+            symbols.fill = {value: model.fieldDef(COLOR).value};
           }
           symbols.stroke = {value: 'transparent'};
         } else {
           if (model.has(COLOR) && channel === COLOR) {
             symbols.stroke = {scale: model.scale(COLOR), field: 'data'};
           } else {
-            symbols.stroke = {value: fieldDef.value};
+            symbols.stroke = {value: model.fieldDef(COLOR).value};
           }
           symbols.fill = {value: 'transparent'};
           symbols.strokeWidth = {value: model.markConfig('strokeWidth')};
@@ -122,6 +124,7 @@ namespace properties {
         break;
       case LINE:
       case AREA:
+        symbols.stroke = {value: 'transparent'};
         // TODO use shape here after implementing #508
         break;
     }
