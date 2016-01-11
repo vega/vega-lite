@@ -5,7 +5,7 @@ function isEmpty(obj) {
 };
 
 export function extend(instance, schema) {
-  return merge(instantiate(schema), instance);
+  return mergeDeep(instantiate(schema), instance);
 };
 
 // instantiate a schema
@@ -73,15 +73,15 @@ export function subtract(instance, defaults) {
   return changes;
 };
 
-export function merge(dest, ...src: any[]) {
+export function mergeDeep(dest, ...src: any[]) {
   for (var i = 0; i < src.length; i++) {
-    dest = merge_(dest, src[i]);
+    dest = deepMerge_(dest, src[i]);
   }
   return dest;
 };
 
 // recursively merges src into dest
-function merge_(dest, src) {
+function deepMerge_(dest, src) {
   if (typeof src !== 'object' || src === null) {
     return dest;
   }
@@ -96,9 +96,9 @@ function merge_(dest, src) {
     if (typeof src[p] !== 'object' || src[p] === null) {
       dest[p] = src[p];
     } else if (typeof dest[p] !== 'object' || dest[p] === null) {
-      dest[p] = merge(src[p].constructor === Array ? [] : {}, src[p]);
+      dest[p] = mergeDeep(src[p].constructor === Array ? [] : {}, src[p]);
     } else {
-      merge(dest[p], src[p]);
+      mergeDeep(dest[p], src[p]);
     }
   }
   return dest;

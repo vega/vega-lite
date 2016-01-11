@@ -3,7 +3,7 @@ var assert = require('assert'),
   inspect = require('util').inspect;
 
 var schema = require('../lib/schema.json'),
-  util = require('../src/schema/schemautil'),
+  schemautil = require('../src/schema/schemautil'),
   specSchema = require('../src/schema/schema').schema;
 
 describe('Schema', function() {
@@ -30,7 +30,7 @@ describe('Util', function() {
         fooBar: {type: 'string', default: 'baz'},
         fooBaz: {type: 'string', enum: ['a', 'b']}}};
     assert.deepEqual(
-      util.instantiate(simpleSchema),
+      schemautil.instantiate(simpleSchema),
       {fooBar: 'baz'});
   });
 
@@ -58,7 +58,7 @@ describe('Util', function() {
       }
     };
 
-    var actual = util.subtract(spec, util.instantiate(specSchema));
+    var actual = schemautil.subtract(spec, schemautil.instantiate(specSchema));
     assert.deepEqual(actual, expected);
   });
 
@@ -67,10 +67,10 @@ describe('Util', function() {
     var b = {a: 'foo', b: 'hi', 'baz': 'hi'};
 
     assert.deepEqual(
-      util.subtract(a, b),
+      schemautil.subtract(a, b),
       {b: 'bar', baz: [1, 2, 3]});
 
-    assert.equal(util.subtract(a, b).baz instanceof Array, true);
+    assert.equal(schemautil.subtract(a, b).baz instanceof Array, true);
   });
 
   it('merge objects', function() {
@@ -78,7 +78,7 @@ describe('Util', function() {
     var b = {a: 'fuu'};
 
     assert.deepEqual(
-      util.merge(a, b),
+      schemautil.mergeDeep(a, b),
       {a: 'fuu', b: {'bar': 0, 'baz': [], 'qux': [1, 2, 3]}});
   });
 
@@ -87,7 +87,7 @@ describe('Util', function() {
     var b = {a: 'fuu'};
 
     assert.deepEqual(
-      util.merge(b, a),
+      schemautil.mergeDeep(b, a),
       {a: 'foo', b: {'bar': 0, 'baz': [], 'qux': [1, 2, 3]}});
   });
 });

@@ -8,7 +8,7 @@ import {SOURCE, SUMMARY} from '../data';
 import * as vlFieldDef from '../fielddef';
 import {FieldRefOption} from '../fielddef';
 import * as vlEncoding from '../encoding';
-import {compileLayout} from './layout';
+import {compileLayout, Layout} from './layout';
 import {AREA, BAR, POINT, TICK, CIRCLE, SQUARE, Mark} from '../mark';
 import * as schema from '../schema/schema';
 import * as schemaUtil from '../schema/schemautil';
@@ -26,11 +26,11 @@ import {Encoding} from '../schema/encoding.schema';
 export class Model {
   private _spec: Spec;
   private _stack: StackProperties;
-  private _layout: any;
+  private _layout: Layout;
 
   constructor(spec: Spec, theme?) {
     var defaults = schema.instantiate();
-    this._spec = schemaUtil.merge(defaults, theme || {}, spec);
+    this._spec = schemaUtil.mergeDeep(defaults, theme || {}, spec);
 
 
     vlEncoding.forEach(this._spec.encoding, function(fieldDef: FieldDef, channel: Channel) {
@@ -99,7 +99,7 @@ export class Model {
     return null;
   }
 
-  public layout(): any {
+  public layout(): Layout {
     return this._layout;
   }
 

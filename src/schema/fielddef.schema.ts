@@ -6,7 +6,7 @@ import {sort, Sort} from './sort.schema';
 
 import {AGGREGATE_OPS} from '../aggregate';
 import {toMap, duplicate} from '../util';
-import {merge} from './schemautil';
+import {mergeDeep} from './schemautil';
 import {TIMEUNITS} from '../timeunit';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL, Type} from '../type';
 
@@ -69,20 +69,20 @@ export var aggregate = {
   supportedTypes: toMap([QUANTITATIVE, NOMINAL, ORDINAL, TEMPORAL, ''])
 };
 
-export var typicalField = merge(duplicate(fieldDef), {
+export var typicalField = mergeDeep(duplicate(fieldDef), {
   properties: {
     aggregate: aggregate,
     scale: typicalScale
   }
 });
 
-export var onlyOrdinalField = merge(duplicate(fieldDef), {
+export var onlyOrdinalField = mergeDeep(duplicate(fieldDef), {
   properties: {
     scale: ordinalOnlyScale
   }
 });
 
-export var facetField = merge(duplicate(onlyOrdinalField), {
+export var facetField = mergeDeep(duplicate(onlyOrdinalField), {
   required: ['field', 'type'],
   properties: {
     axis: axis,

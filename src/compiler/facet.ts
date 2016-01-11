@@ -11,16 +11,15 @@ import {compileScales} from './scale';
  */
 export function facetMixins(model: Model, marks) {
   const layout = model.layout();
-
   const cellWidth: any = !model.has(COLUMN) ?
       {field: {group: 'width'}} :     // cellWidth = width -- just use group's
-    layout.cellWidth.field ?
+    typeof layout.cellWidth !== 'number' ?
       {scale: model.scale(COLUMN), band: true} : // bandSize of the scale
       {value: layout.cellWidth};      // static value
 
   const cellHeight: any = !model.has(ROW) ?
       {field: {group: 'height'}} :  // cellHeight = height -- just use group's
-    layout.cellHeight.field ?
+    typeof layout.cellHeight !== 'number' ?
       {scale: model.scale(ROW), band: true} :  // bandSize of the scale
       {value: layout.cellHeight};   // static value
 
