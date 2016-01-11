@@ -36,7 +36,12 @@
     },
     {
       "name": "scatter_binned_size",
-      "title": "Scatterplot with binned size"
+      "title": "Bubble Scatterplot with binned size"
+    },
+    {
+      "name": "scatter_bubble",
+      "title": "Bubble Scatterplot",
+      "showInEditor": true
     },
     {
       "name": "scatter_colored_with_shape",

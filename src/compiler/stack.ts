@@ -7,8 +7,10 @@ export interface StackProperties {
   groupbyChannel: Channel;
   /** Measure axis of the stack ('x' or 'y'). */
   fieldChannel: Channel;
-  /** Stack by channels of the stack ('color' or 'detail'). */
-  stackChannels: Channel[];
+
+  /** Stack by fields of the name (fields for 'color' or 'detail') */
+  stackFields: string[];
+
   /** Stack config for the stack transform. */
   config: any;
 }
@@ -29,7 +31,7 @@ export function imputeTransform(model: Model) {
   return {
     type: 'impute',
     field: model.field(stack.fieldChannel),
-    groupby: stack.stackChannels.map(function(c) { return model.field(c); }),
+    groupby: stack.stackFields,
     orderby: [model.field(stack.groupbyChannel)],
     method: 'value',
     value: 0
@@ -39,14 +41,12 @@ export function imputeTransform(model: Model) {
 export function stackTransform(model: Model) {
   const stack = model.stack();
   const sortby = stack.config.sort === 'ascending' ?
-                   stack.stackChannels.map(function(c) {
-                     return model.field(c);
-                   }) :
+                   stack.stackFields :
                  isArray(stack.config.sort) ?
                    stack.config.sort :
                    // descending, or default
-                   stack.stackChannels.map(function(c) {
-                     return '-' + model.field(c);
+                   stack.stackFields.map(function(field) {
+                     return '-' + field;
                    });
 
   const valName = model.field(stack.fieldChannel);

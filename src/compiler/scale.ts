@@ -9,7 +9,7 @@ import {SHARED_DOMAIN_OPS} from '../aggregate';
 import {COLUMN, ROW, X, Y, SHAPE, SIZE, COLOR, TEXT, DETAIL, Channel} from '../channel';
 import {SOURCE, STACKED} from '../data';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
-import {BAR, TEXT as TEXT_MARK} from '../mark';
+import {BAR, TEXT as TEXT_MARK, TICK} from '../mark';
 
 export function compileScales(channels: Channel[], model: Model) {
   return channels.filter(function(channel: Channel) {
@@ -20,7 +20,7 @@ export function compileScales(channels: Channel[], model: Model) {
 
       var scaleDef: any = {
         name: model.scale(channel),
-        type: type(fieldDef, channel),
+        type: type(fieldDef, channel, model),
       };
 
       scaleDef.domain = domain(model, channel, scaleDef.type);
@@ -48,7 +48,7 @@ export function compileScales(channels: Channel[], model: Model) {
     });
 }
 
-export function type(fieldDef: FieldDef, channel: Channel): string {
+export function type(fieldDef: FieldDef, channel: Channel, model: Model): string {
   switch (fieldDef.type) {
     case NOMINAL: // fall through
       return 'ordinal';
@@ -71,13 +71,16 @@ export function type(fieldDef: FieldDef, channel: Channel): string {
       switch (fieldDef.timeUnit) {
         case 'hours':
         case 'day':
-        case 'date':
         case 'month':
           return 'ordinal';
+        case 'date':
         case 'year':
         case 'second':
         case 'minute':
-          return 'linear';
+          const isHorizontal = model.markConfig('orient') === 'horizontal';
+          return contains([BAR, TICK], model.mark()) &&
+            ((isHorizontal && channel === Y) || (!isHorizontal && channel === X))
+            ? 'ordinal' : 'linear';
       }
       return 'time';
 
