@@ -244,4 +244,43 @@ describe('data.summary', function () {
       }]
     });
   });
+
+  it('should return correct aggregation for detail arrays', function() {
+    var encoding = new Model({
+        mark: POINT,
+        encoding: {
+          'y': {
+            'aggregate': 'mean',
+            'field': 'Acceleration',
+            'type': QUANTITATIVE
+          },
+          'x': {
+            'aggregate': 'mean',
+            'field': 'Displacement',
+            'type': QUANTITATIVE
+          },
+          'detail': [{
+            'field': 'Origin',
+            'type': ORDINAL
+          },{
+            'field': 'Cylinders',
+            'type': QUANTITATIVE
+          }]
+        }
+      });
+
+    var aggregated = summary.def(encoding);
+    expect(aggregated).to.eql({
+      'name': SUMMARY,
+      'source': 'source',
+      'transform': [{
+        'type': 'aggregate',
+        'groupby': ['Origin', 'Cylinders'],
+        'summarize': {
+          'Displacement': ['mean'],
+          'Acceleration': ['mean']
+        }
+      }]
+    });
+  });
 });

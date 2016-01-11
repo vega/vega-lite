@@ -15,7 +15,7 @@ export interface Encoding {
   color?: FieldDef;
   size?: FieldDef;
   shape?: FieldDef;
-  detail?: FieldDef;
+  detail?: FieldDef | FieldDef[];
   text?: FieldDef;
   label?: FieldDef;
 }
@@ -95,7 +95,13 @@ var shape = mergeDeep(duplicate(onlyOrdinalField), {
   }
 });
 
-var detail = duplicate(fieldDef);
+var detail = {
+  default: undefined,
+  oneOf: [duplicate(fieldDef), {
+    type: 'array',
+    items: duplicate(fieldDef)
+  }]
+};
 
 // we only put aggregated measure in pivot table
 var text = mergeDeep(duplicate(typicalField), {

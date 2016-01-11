@@ -6,6 +6,7 @@ import {instantiate} from '../schema/schemautil';
 import {COLUMN, ROW, X, Y, COLOR, DETAIL, Channel, supportMark} from '../channel';
 import {SOURCE, SUMMARY} from '../data';
 import * as vlFieldDef from '../fielddef';
+import {FieldRefOption} from '../fielddef';
 import * as vlEncoding from '../encoding';
 import {compileLayout, Layout} from './layout';
 import {AREA, BAR, POINT, TICK, CIRCLE, SQUARE, Mark} from '../mark';
@@ -14,24 +15,8 @@ import * as schemaUtil from '../schema/schemautil';
 import {StackProperties} from './stack';
 import {type as scaleType} from './scale';
 import {getFullName, NOMINAL, ORDINAL, TEMPORAL} from '../type';
-import {contains, duplicate} from '../util';
+import {contains, duplicate, extend, isArray} from '../util';
 import {Encoding} from '../schema/encoding.schema';
-
-
-interface FieldRefOption {
-  /** exclude bin, aggregate, timeUnit */
-  nofn?: boolean;
-  /** exclude aggregation function */
-  noAggregate?: boolean;
-  /** include 'datum.' */
-  datum?: boolean;
-  /** replace fn with custom function prefix */
-  fn?: string;
-  /** prepend fn with custom function prefix */
-  prefn?: string;
-  /** append suffix to the field ref for bin (default='_start') */
-  binSuffix?: string;
-}
 
 
 /**
@@ -73,10 +58,23 @@ export class Model {
   }
 
   private getStackProperties(): StackProperties {
-    var stackChannels = (this.has(COLOR) ? [COLOR] : [])
-      .concat(this.has(DETAIL) ? [DETAIL] : []);
+    const spec = this.spec();
+    const model = this;
+    const stackFields = [COLOR, DETAIL].reduce(function(fields, channel) {
+      const channelEncoding = spec.encoding[channel];
+      if (model.has(channel)) {
+        if (isArray(channelEncoding)) {
+          channelEncoding.forEach(function(fieldDef) {
+            fields.push(vlFieldDef.field(fieldDef));
+          });
+        } else {
+          fields.push(model.field(channel));
+        }
+      }
+      return fields;
+    }.bind(this), []);
 
-    if (stackChannels.length > 0 &&
+    if (stackFields.length > 0 &&
       (this.is(BAR) || this.is(AREA)) &&
       this.config('stack') !== false &&
       this.isAggregate()) {
@@ -87,14 +85,14 @@ export class Model {
         return {
           groupbyChannel: Y,
           fieldChannel: X,
-          stackChannels: stackChannels,
+          stackFields: stackFields,
           config: this.config('stack')
         };
       } else if (isYMeasure && !isXMeasure) {
         return {
           groupbyChannel: X,
           fieldChannel: Y,
-          stackChannels: stackChannels,
+          stackFields: stackFields,
           config: this.config('stack')
         };
       }
@@ -146,37 +144,26 @@ export class Model {
 
   public has(channel: Channel) {
     // equivalent to calling vlenc.has(this._spec.encoding, channel)
-    return this._spec.encoding[channel].field !== undefined;
+    const channelEncoding = this._spec.encoding[channel];
+    return channelEncoding && (
+      channelEncoding.field !== undefined ||
+      (isArray(channelEncoding) && channelEncoding.length > 0)
+    );
   }
 
   public fieldDef(channel: Channel): FieldDef {
     return this._spec.encoding[channel];
   }
 
-  // get "field" reference for vega
-  public field(channel: Channel, opt?: FieldRefOption) {
-    opt = opt || {};
-
+  /** Get "field" reference for vega */
+  public field(channel: Channel, opt: FieldRefOption = {}) {
     const fieldDef = this.fieldDef(channel);
-
-    var f = (opt.datum ? 'datum.' : '') + (opt.prefn || ''),
-      field = fieldDef.field;
-
-    if (vlFieldDef.isCount(fieldDef)) {
-      return f + 'count';
-    } else if (opt.fn) {
-      return f + opt.fn + '_' + field;
-    } else if (!opt.nofn && fieldDef.bin) {
-      var binSuffix = opt.binSuffix ||
-        (scaleType(fieldDef, channel) === 'ordinal' ? '_range' : '_start');
-      return f + 'bin_' + field + binSuffix;
-    } else if (!opt.nofn && !opt.noAggregate && fieldDef.aggregate) {
-      return f + fieldDef.aggregate + '_' + field;
-    } else if (!opt.nofn && fieldDef.timeUnit) {
-      return f + fieldDef.timeUnit + '_' + field;
-    } else {
-      return f + field;
+    if (fieldDef.bin) { // bin has default suffix that depends on scaleType
+      opt = extend({
+        binSuffix: scaleType(fieldDef, channel) === 'ordinal' ? '_range' : '_start'
+      }, opt);
     }
+    return vlFieldDef.field(fieldDef, opt);
   }
 
   public fieldTitle(channel: Channel): string {
