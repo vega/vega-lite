@@ -67,6 +67,10 @@ and the following fill and stroke properties:
 | filled        | Boolean        | Whether the shape\'s color should be used as fill color instead of stroke color.  This is only applicable for `bar`, `point`, and `area`.  All marks except `point` marks are filled by default. |
 | sortBy        | Field &#124; Field[] | Data field(s) for sorting layer of marks.  The first mark will placed on the bottom.  `"-"` prefix can be added to each field to set descending order. |
 | sortLineBy    | Field &#124; Field[] | Data field(s) for sorting points in each group of line.  `"-"` prefix can be added to each field to set descending order.  |
+| fill          | Color         | The fill color.  This config will be overriden by `color` channel's specified or mapped values if `filled` is `true`. |
+| fillOpacity   | Number        | The fill opacity (value between [0,1]). |
+| stroke        | Color         | The stroke color.  This config will be overriden by `color` channel's specified or mapped values if `filled` is `false`. |
+| strokeOpacity | Number        | The stroke opacity (value between [0,1]). |
 | opacity       | Number        | The overall opacity (value between [0,1]). |
 | strokeWidth   | Number        | The stroke width, in pixels. |
 | strokeDash    | Number[]      | An array of alternating stroke, space lengths for creating dashed or dotted lines.  |

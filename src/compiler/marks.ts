@@ -141,9 +141,25 @@ export function size(model: Model) {
   return 30;
 }
 
-function colorMixins(model: Model) {
-  let p: any = {};
-  if (model.markConfig('filled')) {
+enum ColorMode {
+  ALWAYS_FILLED,
+  ALWAYS_STROKED
+}
+
+export const FILL_STROKE_CONFIG = ['fill', 'fillOpacity',
+  'stroke', 'strokeWidth', 'strokeDash', 'strokeDashOffset', 'strokeOpacity',
+  'opacity'];
+
+function applyColorAndOpacity(p, model: Model, colorMode?: ColorMode) {
+  const filled = colorMode === ColorMode.ALWAYS_FILLED ? true :
+    colorMode === ColorMode.ALWAYS_STROKED ? false :
+    model.markConfig('filled');
+
+  // Apply fill and stroke config first
+  // so that `color.value` can override `fill` and `stroke` config
+  applyMarkConfig(p, model, FILL_STROKE_CONFIG);
+
+  if (filled) {
     if (model.has(COLOR)) {
       p.fill = {
         scale: model.scale(COLOR),
@@ -161,12 +177,10 @@ function colorMixins(model: Model) {
     } else {
       p.stroke = { value: model.fieldDef(COLOR).value };
     }
-    p.strokeWidth = { value: model.markConfig('strokeWidth') };
   }
-  return p;
 }
 
-function applyMarkConfig(marksProperties, model: Model, propsList: string[]) {
+export function applyMarkConfig(marksProperties, model: Model, propsList: string[]) {
   propsList.forEach(function(property) {
     const value = model.markConfig(property);
     if (value !== undefined) {
@@ -353,13 +367,7 @@ export namespace bar {
         };
     }
 
-    // fill
-    extend(p, colorMixins(model));
-
-    // opacity
-    var opacity = model.markConfig('opacity');
-    if (opacity) { p.opacity = { value: opacity }; };
-
+    applyColorAndOpacity(p, model);
     return p;
   }
 
@@ -418,13 +426,7 @@ export namespace point {
       p.shape = { value: model.fieldDef(SHAPE).value };
     }
 
-    // fill or stroke
-    extend(p, colorMixins(model));
-
-    // opacity
-    const opacity = model.markConfig('opacity');
-    if (opacity) { p.opacity = { value: opacity }; };
-
+    applyColorAndOpacity(p, model);
     return p;
   }
 
@@ -462,24 +464,8 @@ export namespace line {
       p.y = { field: { group: 'height' } };
     }
 
-    // stroke
-    if (model.has(COLOR)) {
-      p.stroke = {
-        scale: model.scale(COLOR),
-        field: model.field(COLOR)
-      };
-    } else {
-      p.stroke = { value: model.fieldDef(COLOR).value };
-    }
-
-    // opacity
-    var opacity = model.markConfig('opacity');
-    if (opacity) { p.opacity = { value: opacity }; };
-
-    p.strokeWidth = { value: model.markConfig('strokeWidth') };
-
+    applyColorAndOpacity(p, model, ColorMode.ALWAYS_STROKED);
     applyMarkConfig(p, model, ['interpolate', 'tension']);
-
     return p;
   }
 
@@ -567,15 +553,8 @@ export namespace area {
       }
     }
 
-    // fill
-    extend(p, colorMixins(model));
-
-    // opacity
-    var opacity = model.markConfig('opacity');
-    if (opacity) { p.opacity = { value: opacity }; };
-
+    applyColorAndOpacity(p, model);
     applyMarkConfig(p, model, ['interpolate', 'tension']);
-
     return p;
   }
 
@@ -637,20 +616,7 @@ export namespace tick {
       p.height = { value: 1 };
     }
 
-    // fill
-    if (model.has(COLOR)) {
-      p.fill = {
-        scale: model.scale(COLOR),
-        field: model.field(COLOR)
-      };
-    } else {
-      p.fill = { value: model.fieldDef(COLOR).value };
-    }
-
-    // opacity
-    var opacity = model.markConfig('opacity');
-    if (opacity) { p.opacity = { value: opacity }; };
-
+    applyColorAndOpacity(p, model, ColorMode.ALWAYS_FILLED);
     return p;
   }
 
@@ -698,20 +664,7 @@ function filled_point_props(shape) {
     // shape
     p.shape = { value: shape };
 
-    // fill
-    if (model.has(COLOR)) {
-      p.fill = {
-        scale: model.scale(COLOR),
-        field: model.field(COLOR)
-      };
-    } else {
-      p.fill = { value: model.fieldDef(COLOR).value };
-    }
-
-    // opacity
-    var opacity = model.markConfig('opacity');
-    if (opacity) { p.opacity = { value: opacity }; };
-
+    applyColorAndOpacity(p, model, ColorMode.ALWAYS_FILLED);
     return p;
   };
 }
@@ -797,6 +750,7 @@ export namespace text {
       p.fontSize = { value: size(model) };
     }
 
+    // FIXME applyColorAndOpacity
     // fill
     // TODO: consider if color should just map to fill instead?
 
