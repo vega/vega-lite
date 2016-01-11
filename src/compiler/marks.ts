@@ -181,7 +181,7 @@ function applyColorAndOpacity(p, model: Model, colorMode?: ColorMode) {
   }
 }
 
-function applyMarkConfig(marksProperties, model: Model, propsList: string[]) {
+export function applyMarkConfig(marksProperties, model: Model, propsList: string[]) {
   propsList.forEach(function(property) {
     const value = model.markConfig(property);
     if (value !== undefined) {
