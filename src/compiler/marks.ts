@@ -176,6 +176,8 @@ function applyColorAndOpacity(p, model: Model, colorMode?: ColorMode) {
   }
 }
 
+ const GENERAL_MARK_PROPS = ['fill', 'stroke', 'strokeWidth', 'strokeDash', 'strokeDashOffset']
+
 function applyMarkConfig(marksProperties, model: Model, propsList: string[]) {
   propsList.forEach(function(property) {
     const value = model.markConfig(property);
@@ -363,6 +365,7 @@ export namespace bar {
         };
     }
 
+    applyMarkConfig(p, model, GENERAL_MARK_PROPS);
     applyColorAndOpacity(p, model);
     return p;
   }
@@ -422,6 +425,7 @@ export namespace point {
       p.shape = { value: model.fieldDef(SHAPE).value };
     }
 
+    applyMarkConfig(p, model, GENERAL_MARK_PROPS);
     applyColorAndOpacity(p, model);
     return p;
   }
@@ -460,8 +464,7 @@ export namespace line {
       p.y = { field: { group: 'height' } };
     }
 
-    applyMarkConfig(p, model, ['strokeWidth', 'interpolate', 'tension']);
-
+    applyMarkConfig(p, model, GENERAL_MARK_PROPS.concat(['interpolate', 'tension']));
     applyColorAndOpacity(p, model, ColorMode.ALWAYS_STROKED);
     return p;
   }
@@ -550,7 +553,7 @@ export namespace area {
       }
     }
 
-    applyMarkConfig(p, model, ['interpolate', 'tension']);
+    applyMarkConfig(p, model, GENERAL_MARK_PROPS.concat(['interpolate', 'tension']));
     applyColorAndOpacity(p, model);
     return p;
   }
@@ -613,6 +616,7 @@ export namespace tick {
       p.height = { value: 1 };
     }
 
+    applyMarkConfig(p, model, GENERAL_MARK_PROPS);
     applyColorAndOpacity(p, model, ColorMode.ALWAYS_FILLED);
     return p;
   }
@@ -661,6 +665,7 @@ function filled_point_props(shape) {
     // shape
     p.shape = { value: shape };
 
+    applyMarkConfig(p, model, GENERAL_MARK_PROPS);
     applyColorAndOpacity(p, model, ColorMode.ALWAYS_FILLED);
     return p;
   };
