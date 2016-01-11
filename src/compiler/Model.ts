@@ -59,15 +59,16 @@ export class Model {
 
   private getStackProperties(): StackProperties {
     const spec = this.spec();
+    const model = this;
     const stackFields = [COLOR, DETAIL].reduce(function(fields, channel) {
       const channelEncoding = spec.encoding[channel];
-      if (this.has(channel)) {
+      if (model.has(channel)) {
         if (isArray(channelEncoding)) {
           channelEncoding.forEach(function(fieldDef) {
-            fields.push(fieldDef);
+            fields.push(vlFieldDef.field(fieldDef));
           });
         } else {
-          fields.push(channelEncoding);
+          fields.push(model.field(channel));
         }
       }
       return fields;
