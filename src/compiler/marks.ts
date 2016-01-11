@@ -152,6 +152,7 @@ function colorMixins(model: Model, colorMode?: ColorMode) {
     colorMode === ColorMode.ALWAYS_STROKED ? false :
     model.markConfig('filled');
 
+  const opacity = model.markConfig('opacity');
   if (filled) {
     if (model.has(COLOR)) {
       p.fill = {
@@ -161,6 +162,7 @@ function colorMixins(model: Model, colorMode?: ColorMode) {
     } else {
       p.fill = { value: model.fieldDef(COLOR).value };
     }
+    if (opacity) { p.fillOpacity = { value: opacity }; };
   } else {
     if (model.has(COLOR)) {
       p.stroke = {
@@ -171,12 +173,8 @@ function colorMixins(model: Model, colorMode?: ColorMode) {
       p.stroke = { value: model.fieldDef(COLOR).value };
     }
     p.strokeWidth = { value: model.markConfig('strokeWidth') };
+    if (opacity) { p.strokeOpacity = { value: opacity }; };
   }
-
-  // opacity
-  var opacity = model.markConfig('opacity');
-  if (opacity) { p.opacity = { value: opacity }; };
-
   return p;
 }
 
