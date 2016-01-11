@@ -37,7 +37,7 @@ export const stack = {
   binY: {
     'mark': BAR,
     'encoding': {
-      'x': {'type': QUANTITATIVE, 'field': 'Cost__Other', 'aggregate': 'mean'},
+      'x': {'type': QUANTITATIVE, 'field': 'Cost__Other', 'aggregate': 'sum'},
       'y': {'bin': true, 'type': QUANTITATIVE, 'field': 'Cost__Total_$'},
       'color': {'type': ORDINAL, 'field': 'Effect__Amount_of_damage'}
     }
@@ -45,7 +45,7 @@ export const stack = {
   binX: {
     'mark': BAR,
     'encoding': {
-      'y': {'type': QUANTITATIVE, 'field': 'Cost__Other', 'aggregate': 'mean'},
+      'y': {'type': QUANTITATIVE, 'field': 'Cost__Other', 'aggregate': 'sum'},
       'x': {'bin': true, 'type': QUANTITATIVE, 'field': 'Cost__Total_$'},
       'color': {'type': ORDINAL, 'field': 'Effect__Amount_of_damage'}
     }
