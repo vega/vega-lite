@@ -115,7 +115,7 @@ export const markConfig = {
     // text-only
     align: {
       type: 'string',
-      default: 'right',
+      default: 'right', // FIXME add rules
       enum: ['left', 'right', 'center'],
       description: 'The horizontal alignment of the text. One of left, right, center.'
     },
