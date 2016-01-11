@@ -146,8 +146,7 @@ enum ColorMode {
   ALWAYS_STROKED
 }
 
-function colorMixins(model: Model, colorMode?: ColorMode) {
-  let p: any = {};
+function applyColorAndOpacity(p, model: Model, colorMode?: ColorMode) {
   const filled = colorMode === ColorMode.ALWAYS_FILLED ? true :
     colorMode === ColorMode.ALWAYS_STROKED ? false :
     model.markConfig('filled');
@@ -175,7 +174,6 @@ function colorMixins(model: Model, colorMode?: ColorMode) {
     p.strokeWidth = { value: model.markConfig('strokeWidth') };
     if (opacity) { p.strokeOpacity = { value: opacity }; };
   }
-  return p;
 }
 
 function applyMarkConfig(marksProperties, model: Model, propsList: string[]) {
@@ -365,8 +363,7 @@ export namespace bar {
         };
     }
 
-    // color (fill/stroke) & opacity
-    extend(p, colorMixins(model));
+    applyColorAndOpacity(p, model);
     return p;
   }
 
@@ -425,8 +422,7 @@ export namespace point {
       p.shape = { value: model.fieldDef(SHAPE).value };
     }
 
-    // color (fill/stroke) & opacity
-    extend(p, colorMixins(model));
+    applyColorAndOpacity(p, model);
     return p;
   }
 
@@ -464,11 +460,9 @@ export namespace line {
       p.y = { field: { group: 'height' } };
     }
 
-    // stroke
-    extend(p, colorMixins(model, ColorMode.ALWAYS_STROKED));
-
     applyMarkConfig(p, model, ['strokeWidth', 'interpolate', 'tension']);
 
+    applyColorAndOpacity(p, model, ColorMode.ALWAYS_STROKED);
     return p;
   }
 
@@ -556,10 +550,8 @@ export namespace area {
       }
     }
 
-    // color (fill/stroke) & opacity
-    extend(p, colorMixins(model));
-
     applyMarkConfig(p, model, ['interpolate', 'tension']);
+    applyColorAndOpacity(p, model);
     return p;
   }
 
@@ -621,8 +613,7 @@ export namespace tick {
       p.height = { value: 1 };
     }
 
-    // color (fill) & opacity
-    extend(p, colorMixins(model, ColorMode.ALWAYS_FILLED));
+    applyColorAndOpacity(p, model, ColorMode.ALWAYS_FILLED);
     return p;
   }
 
@@ -670,8 +661,7 @@ function filled_point_props(shape) {
     // shape
     p.shape = { value: shape };
 
-    // color (fill) & opacity
-    extend(p, colorMixins(model, ColorMode.ALWAYS_FILLED));
+    applyColorAndOpacity(p, model, ColorMode.ALWAYS_FILLED);
     return p;
   };
 }
