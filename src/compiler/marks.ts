@@ -176,7 +176,7 @@ function applyColorAndOpacity(p, model: Model, colorMode?: ColorMode) {
   }
 }
 
- const GENERAL_MARK_PROPS = ['fill', 'stroke', 'strokeWidth', 'strokeDash', 'strokeDashOffset']
+ const GENERAL_MARK_PROPS = ['fill', 'stroke', 'strokeWidth', 'strokeDash', 'strokeDashOffset'];
 
 function applyMarkConfig(marksProperties, model: Model, propsList: string[]) {
   propsList.forEach(function(property) {
