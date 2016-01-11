@@ -1,12 +1,10 @@
 import {expect} from 'chai';
 
-import * as fix from '../fixtures';
+import {stack} from '../fixtures';
 import {compile} from '../../src/compiler/compiler';
 import {SUMMARY} from '../../src/data';
 
-var fixtures = fix.f.stack;
-
-var stats = {
+const stats = {
   'Cost__Total_$': {
     min: 0,
     max: 100,
@@ -29,7 +27,7 @@ describe('vl.compile.stack()', function () {
   describe('bin-x', function () {
     it('should put stack on y', function () {
       // FIXME don't run the whole compile
-      var vgSpec = compile(fixtures.binX, stats).spec;
+      var vgSpec = compile(stack.binX, stats).spec;
 
       var tableData = vgSpec.data.filter(function(data) {
         return data.name === SUMMARY;
@@ -54,7 +52,7 @@ describe('vl.compile.stack()', function () {
   describe('bin-y', function () {
     it('should put stack on x', function () {
       // FIXME don't run the whole compile
-      var vgSpec = compile(fixtures.binY, stats).spec;
+      var vgSpec = compile(stack.binY, stats).spec;
 
       var tableData = vgSpec.data.filter(function(data) {
         return data.name === SUMMARY;

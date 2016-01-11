@@ -1,155 +1,144 @@
-export var f: any = {};
+import {BAR, POINT, LINE, AREA} from '../src/mark';
+import {QUANTITATIVE, ORDINAL, NOMINAL} from '../src/type';
 
 // BARS
-
-f.bars = {};
-
-f.bars.log_ver = {
-  'mark': 'bar',
-  'encoding': {
-    'x': {'bin': {'maxbins': 15},'type': 'quantitative','field': 'IMDB_Rating'},
-    'y': {'scale': {'type': 'log'},'type': 'quantitative','field': 'US_Gross','aggregate': 'mean'}
+export const bars = {
+  log_ver: {
+    'mark': BAR,
+    'encoding': {
+      'x': {'bin': {'maxbins': 15}, 'type': QUANTITATIVE, 'field': 'IMDB_Rating'},
+      'y': {'scale': {'type': 'log'}, 'type': QUANTITATIVE, 'field': 'US_Gross', 'aggregate': 'mean'}
+    },
+    'data': {'url': 'data/movies.json'}
   },
-  'data': {'url': 'data/movies.json'}
-};
-
-f.bars.log_hor = {
-  'mark': 'bar',
-  'encoding': {
-    'y': {'bin': {'maxbins': 15},'type': 'quantitative','field': 'IMDB_Rating'},
-    'x': {'scale': {'type': 'log'},'type': 'quantitative','field': 'US_Gross','aggregate': 'mean'}
+  log_hor: {
+    'mark': BAR,
+    'encoding': {
+      'y': {'bin': {'maxbins': 15}, 'type': QUANTITATIVE, 'field': 'IMDB_Rating'},
+      'x': {'scale': {'type': 'log'}, 'type': QUANTITATIVE, 'field': 'US_Gross', 'aggregate': 'mean'}
+    },
+    'data': {'url': 'data/movies.json'}
   },
-  'data': {'url': 'data/movies.json'}
+  '1d_hor': {
+    'mark': BAR,
+    'encoding': {'x': {'type': QUANTITATIVE, 'field': 'US_Gross', 'aggregate': 'sum'}},
+    'data': {'url': 'data/movies.json'}
+  },
+  '1d_ver': {
+    'mark': BAR,
+    'encoding': {'y': {'type': QUANTITATIVE, 'field': 'US_Gross', 'aggregate': 'sum'}},
+    'data': {'url': 'data/movies.json'}
+  }
 };
 
-f.bars['1d_hor'] = {
-  'mark': 'bar',
-  'encoding': {'x': {'type': 'quantitative','field': 'US_Gross','aggregate': 'sum'}},
-  'data': {'url': 'data/movies.json'}
-};
-
-
-f.bars['1d_ver'] = {
-  'mark': 'bar',
-  'encoding': {'y': {'type': 'quantitative','field': 'US_Gross','aggregate': 'sum'}},
-  'data': {'url': 'data/movies.json'}
-};
 
 // STACK
-
-f.stack = {};
-
-f.stack.binY = {
-  'mark': 'bar',
-  'encoding': {
-    'x': {'type': 'quantitative','field': 'Cost__Other','aggregate': 'mean'},
-    'y': {'bin': true,'type': 'quantitative','field': 'Cost__Total_$'},
-    'color': {'type': 'ordinal','field': 'Effect__Amount_of_damage'}
+export const stack = {
+  binY: {
+    'mark': BAR,
+    'encoding': {
+      'x': {'type': QUANTITATIVE, 'field': 'Cost__Other', 'aggregate': 'mean'},
+      'y': {'bin': true, 'type': QUANTITATIVE, 'field': 'Cost__Total_$'},
+      'color': {'type': ORDINAL, 'field': 'Effect__Amount_of_damage'}
+    }
+  },
+  binX: {
+    'mark': BAR,
+    'encoding': {
+      'y': {'type': QUANTITATIVE, 'field': 'Cost__Other', 'aggregate': 'mean'},
+      'x': {'bin': true, 'type': QUANTITATIVE, 'field': 'Cost__Total_$'},
+      'color': {'type': ORDINAL, 'field': 'Effect__Amount_of_damage'}
+    }
   }
 };
-f.stack.binX = {
-  'mark': 'bar',
-  'encoding': {
-    'y': {'type': 'quantitative','field': 'Cost__Other','aggregate': 'mean'},
-    'x': {'bin': true,'type': 'quantitative','field': 'Cost__Total_$'},
-    'color': {'type': 'ordinal','field': 'Effect__Amount_of_damage'}
-  }
-};
+
 
 // POINT
-
-f.points = {};
-
-f.points['1d_hor'] = {
-  'mark': 'point',
-  'encoding': {'x': {'field': 'year','type': 'ordinal'}},
-  'data': {'url': 'data/barley.json'}
-};
-
-f.points['1d_ver'] = {
-  'mark': 'point',
-  'encoding': {'y': {'field': 'year','type': 'ordinal'}},
-  'data': {'url': 'data/barley.json'}
-};
-
-f.points['x,y'] = {
-  'mark': 'point',
-  'encoding': {'x': {'field': 'year','type': 'ordinal'},'y': {'field': 'yield','type': 'quantitative'}},
-  'data': {'url': 'data/barley.json'}
-};
-
-f.points['x,y,size'] = {
-  'mark': 'point',
-  'encoding': {
-    'x': {'field': 'year','type': 'ordinal'},
-    'y': {'field': 'yield','type': 'quantitative'},
-    'size': {'field': '*','type': 'quantitative','aggregate': 'count'}
+export const points = {
+  '1d_hor': {
+    'mark': POINT,
+    'encoding': {'x': {'field': 'year', 'type': ORDINAL}},
+    'data': {'url': 'data/barley.json'}
   },
-  'data': {'url': 'data/barley.json'}
+  '1d_ver': {
+    'mark': POINT,
+    'encoding': {'y': {'field': 'year', 'type': ORDINAL}},
+    'data': {'url': 'data/barley.json'}
+  },
+  'x,y': {
+    'mark': POINT,
+    'encoding': {'x': {'field': 'year', 'type': ORDINAL},'y': {'field': 'yield', 'type': QUANTITATIVE}},
+    'data': {'url': 'data/barley.json'}
+  },
+  'x,y,size': {
+    'mark': POINT,
+    'encoding': {
+      'x': {'field': 'year', 'type': ORDINAL},
+      'y': {'field': 'yield', 'type': QUANTITATIVE},
+      'size': {'field': '*', 'type': QUANTITATIVE, 'aggregate': 'count'}
+    },
+    'data': {'url': 'data/barley.json'}
+  },
+  'x,y,stroke': {
+    'mark': POINT,
+    'encoding': {
+      'x': {'field': 'year', 'type': ORDINAL},
+      'y': {'field': 'yield', 'type': QUANTITATIVE},
+      'color': {'field': 'yield', 'type': QUANTITATIVE}
+    },
+    'data': {'url': 'data/barley.json'}
+  },
+  'x,y,shape': {
+    'mark': POINT,
+    'encoding': {
+      'x': {'field': 'year', 'type': ORDINAL},
+      'y': {'field': 'yield', 'type': QUANTITATIVE},
+      'shape': {'bin': {'maxbins': 15}, 'field': 'yield', 'type': QUANTITATIVE}
+    },
+    'data': {'url': 'data/barley.json'}
+  }
 };
 
-f.points['x,y,stroke'] = {
-  'mark': 'point',
-  'encoding': {
-    'x': {'field': 'year','type': 'ordinal'},
-    'y': {'field': 'yield','type': 'quantitative'},
-    'color': {'field': 'yield','type': 'quantitative'}
-  },
-  'data': {'url': 'data/barley.json'}
-};
-
-f.points['x,y,shape'] = {
-  'mark': 'point',
-  'encoding': {
-    'x': {'field': 'year','type': 'ordinal'},
-    'y': {'field': 'yield','type': 'quantitative'},
-    'shape': {'bin': {'maxbins': 15},'field': 'yield','type': 'quantitative'}
-  },
-  'data': {'url': 'data/barley.json'}
-};
 
 // LINE
-
-f.lines = {};
-
-f.lines['x,y'] = {
-  'mark': 'line',
-  'encoding': {
-    'x': {'field': 'year','type': 'ordinal'},
-    'y': {'field': 'yield','type': 'quantitative'}
+export const lines = {
+  'x,y': {
+    'mark': LINE,
+    'encoding': {
+      'x': {'field': 'year', 'type': ORDINAL},
+      'y': {'field': 'yield', 'type': QUANTITATIVE}
+    },
+    'data': {'url': 'data/barley.json'}
   },
-  'data': {'url': 'data/barley.json'}
+  'x,y,stroke': {
+    'mark': LINE,
+    'encoding': {
+      'x': {'field': 'Name', 'type': NOMINAL},
+      'y': {'field': 'Cylinders', 'type': ORDINAL},
+      'color': {'field': 'Acceleration', 'type': QUANTITATIVE}
+    },
+    'data': {'url': 'data/cars.json'}
+  }
 };
 
-f.lines['x,y,stroke'] = {
-  'mark': 'line',
-  'encoding': {
-    'x': {'field': 'Name','type': 'nominal'},
-    'y': {'field': 'Cylinders','type': 'ordinal'},
-    'color': {'field': 'Acceleration','type': 'quantitative'}
-  },
-  'data': {'url': 'data/cars.json'}
-};
 
 // AREA
-
-f.area = {};
-
-f.area['x,y'] = {
-  'mark': 'area',
-  'encoding': {
-    'x': {'field': 'Displacement','type': 'quantitative'},
-    'y': {'field': 'Acceleration','type': 'quantitative'}
+export const area = {
+  'x,y': {
+    'mark': AREA,
+    'encoding': {
+      'x': {'field': 'Displacement', 'type': QUANTITATIVE},
+      'y': {'field': 'Acceleration', 'type': QUANTITATIVE}
+    },
+    'data': {'url': 'data/cars.json'}
   },
-  'data': {'url': 'data/cars.json'}
-};
-
-f.area['x,y,color'] = {
-  'mark': 'area',
-  'encoding': {
-    'x': {'field': 'Displacement','type': 'quantitative'},
-    'y': {'field': 'Acceleration','type': 'quantitative'},
-    'color': {'field': 'Miles_per_Gallon','type': 'quantitative'}
-  },
-  'data': {'url': 'data/cars.json'}
+  'x,y,color': {
+    'mark': AREA,
+    'encoding': {
+      'x': {'field': 'Displacement', 'type': QUANTITATIVE},
+      'y': {'field': 'Acceleration', 'type': QUANTITATIVE},
+      'color': {'field': 'Miles_per_Gallon', 'type': QUANTITATIVE}
+    },
+    'data': {'url': 'data/cars.json'}
+  }
 };
