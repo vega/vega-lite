@@ -7,7 +7,7 @@ import {contains, extend, range} from '../util';
 import {Model} from './Model';
 import {SHARED_DOMAIN_OPS} from '../aggregate';
 import {COLUMN, ROW, X, Y, SHAPE, SIZE, COLOR, TEXT, DETAIL, Channel} from '../channel';
-import {SOURCE, STACKED} from '../data';
+import {SOURCE, STACKED_SCALE} from '../data';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 import {BAR, TEXT as TEXT_MARK} from '../mark';
 
@@ -124,7 +124,7 @@ export function domain(model: Model, channel:Channel, scaleType: string) {
   if (stack && channel === stack.fieldChannel) {
     const facet = model.has(ROW) || model.has(COLUMN);
     return {
-      data: STACKED,
+      data: STACKED_SCALE,
       field: model.field(channel, {
         // If faceted, scale is determined by the max of sum in each facet.
         prefn: (facet ? 'max_' : '') + 'sum_'
