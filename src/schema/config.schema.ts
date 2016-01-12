@@ -16,7 +16,7 @@ export interface Config {
   stack?: StackConfig;
 
   // TODO: revise
-  filterNull?: any;
+  filterNull?: boolean;
   textCellWidth?: any;
   numberFormat?: string;
   timeFormat?: string;
@@ -57,13 +57,9 @@ export const config = {
     // filter null
     // TODO(#597) revise this config
     filterNull: {
-      type: 'object',
-      properties: {
-        nominal: {type:'boolean', default: false},
-        ordinal: {type:'boolean', default: false},
-        quantitative: {type:'boolean', default: true},
-        temporal: {type:'boolean', default: true}
-      }
+      type: 'boolean',
+      default: undefined,
+      description: 'Filter null values from the data. If set to true, all rows with null values are filtered. If false, no rows are filtered. Set the property to undefined to filter only quantitative and temporal fields.'
     },
 
     // FIXME(#497) remove these
