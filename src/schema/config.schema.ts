@@ -55,7 +55,6 @@ export const config = {
     },
 
     // filter null
-    // TODO(#597) revise this config
     filterNull: {
       type: 'boolean',
       default: undefined,
