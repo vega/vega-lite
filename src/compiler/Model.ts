@@ -3,19 +3,19 @@ import {Axis, axis as axisSchema} from '../schema/axis.schema';
 import {FieldDef} from '../schema/fielddef.schema';
 import {instantiate} from '../schema/schemautil';
 
-import {COLUMN, ROW, X, Y, COLOR, DETAIL, Channel, supportMark} from '../channel';
+import {COLUMN, ROW, X, Y, DETAIL, Channel, supportMark} from '../channel';
 import {SOURCE, SUMMARY} from '../data';
 import * as vlFieldDef from '../fielddef';
 import {FieldRefOption} from '../fielddef';
 import * as vlEncoding from '../encoding';
 import {compileLayout, Layout} from './layout';
-import {AREA, BAR, POINT, TICK, CIRCLE, SQUARE, Mark} from '../mark';
+import {POINT, TICK, CIRCLE, SQUARE, Mark} from '../mark';
 import * as schema from '../schema/schema';
 import * as schemaUtil from '../schema/schemautil';
-import {StackProperties} from './stack';
+import {compileStackProperties, StackProperties} from './stack';
 import {type as scaleType} from './scale';
 import {getFullName, NOMINAL, ORDINAL, TEMPORAL} from '../type';
-import {contains, duplicate, extend, isArray} from '../util';
+import {contains, duplicate, extend} from '../util';
 import {Encoding} from '../schema/encoding.schema';
 
 
@@ -53,51 +53,8 @@ export class Model {
     }, this);
 
     // calculate stack
-    this._stack = this.getStackProperties();
+    this._stack = compileStackProperties(this.spec());
     this._layout = compileLayout(this);
-  }
-
-  private getStackProperties(): StackProperties {
-    const spec = this.spec();
-    const model = this;
-    const stackFields = [COLOR, DETAIL].reduce(function(fields, channel) {
-      const channelEncoding = spec.encoding[channel];
-      if (model.has(channel)) {
-        if (isArray(channelEncoding)) {
-          channelEncoding.forEach(function(fieldDef) {
-            fields.push(vlFieldDef.field(fieldDef));
-          });
-        } else {
-          fields.push(model.field(channel));
-        }
-      }
-      return fields;
-    }.bind(this), []);
-
-    if (stackFields.length > 0 &&
-      (this.is(BAR) || this.is(AREA)) &&
-      this.config().stack !== false &&
-      this.isAggregate()) {
-      var isXMeasure = this.isMeasure(X);
-      var isYMeasure = this.isMeasure(Y);
-
-      if (isXMeasure && !isYMeasure) {
-        return {
-          groupbyChannel: Y,
-          fieldChannel: X,
-          stackFields: stackFields,
-          config: this.config().stack
-        };
-      } else if (isYMeasure && !isXMeasure) {
-        return {
-          groupbyChannel: X,
-          fieldChannel: Y,
-          stackFields: stackFields,
-          config: this.config().stack
-        };
-      }
-    }
-    return null;
   }
 
   public layout(): Layout {
