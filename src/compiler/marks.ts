@@ -393,8 +393,6 @@ export namespace bar {
     var l: any = {};
     const orient = model.config().mark.orient;
 
-    applyLabelConfig(l, model, []);
-
     l.align = { value: (orient !== 'horizontal') ? 'center' : 'left' };
 
     l.text = { field: ((orient !== 'horizontal') ? model.field(Y) : model.field(X)) };
@@ -425,8 +423,11 @@ export namespace bar {
         mult: 0.5
       };
     }
-
     applyColorAndOpacity(l, model);
+
+    // This will override some of the properties assigned above when they are
+    // explicitly specified.
+    applyLabelConfig(l, model, TEXT_CONFIG);
     return l;
   }
 }
