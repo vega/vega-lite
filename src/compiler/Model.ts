@@ -156,13 +156,11 @@ export class Model {
   }
 
   public isDimension(channel: Channel) {
-    return this.has(channel) &&
-      vlFieldDef.isDimension(this.fieldDef(channel));
+    return vlFieldDef.isDimension(this.fieldDef(channel));
   }
 
   public isMeasure(channel: Channel) {
-    return this.has(channel) &&
-      vlFieldDef.isMeasure(this.fieldDef(channel));
+    return vlFieldDef.isMeasure(this.fieldDef(channel));
   }
 
   public isAggregate() {
