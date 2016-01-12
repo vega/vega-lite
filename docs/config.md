@@ -12,6 +12,7 @@ A Vega-Lite `config` object can have the following top-level properties:
 | :------------ |:-------------:| :------------- |
 | viewport      | Integer[]     | The width and height of the on-screen viewport, in pixels. If necessary, clipping and scrolling will be applied. |
 | background    | String        | CSS color property to use as background of visualization. Default is `"transparent"`. |
+| filterNull | Boolean | Filter null values from the data. If set to `true`, all rows with null values are filtered. If `false`, no rows are filtered. Set the property to `undefined` (default) to filter only quantitative and temporal fields. |
 
 
 <!-- TODO: consider adding width, height, viewport, filterNull, numberFormat, timeFormat  -->

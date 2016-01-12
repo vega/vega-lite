@@ -67,7 +67,7 @@ export function format(model: Model, channel: Channel) {
   } else if (fieldDef.type === TEMPORAL) {
     const timeUnit = fieldDef.timeUnit;
     if (!timeUnit) {
-      return model.config('timeFormat');
+      return model.config().timeFormat;
     } else if (timeUnit === 'year') {
       return 'd';
     }

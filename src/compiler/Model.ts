@@ -76,7 +76,7 @@ export class Model {
 
     if (stackFields.length > 0 &&
       (this.is(BAR) || this.is(AREA)) &&
-      this.config('stack') !== false &&
+      this.config().stack !== false &&
       this.isAggregate()) {
       var isXMeasure = this.isMeasure(X);
       var isYMeasure = this.isMeasure(Y);
@@ -86,14 +86,14 @@ export class Model {
           groupbyChannel: Y,
           fieldChannel: X,
           stackFields: stackFields,
-          config: this.config('stack')
+          config: this.config().stack
         };
       } else if (isYMeasure && !isXMeasure) {
         return {
           groupbyChannel: X,
           fieldChannel: Y,
           stackFields: stackFields,
-          config: this.config('stack')
+          config: this.config().stack
         };
       }
     }
@@ -172,7 +172,7 @@ export class Model {
 
   public numberFormat(channel?: Channel): string {
     // TODO(#497): have different number format based on numberType (discrete/continuous)
-    return this.config('numberFormat');
+    return this.config().numberFormat;
   };
 
   public channels(): Channel[] {
@@ -232,17 +232,10 @@ export class Model {
   }
 
   /**
-   * @return Config value from the spec, or a default value if unspecified.
+   * Get the spec configuration.
    */
-  public config(name: string) {
-    return this._spec.config[name];
-  }
-
-  /**
-   * @return Cell config value from the spec, or a default value if unspecified.
-   */
-  public cellConfig(name: string) {
-    return this._spec.config.cell[name];
+  public config() {
+    return this._spec.config;
   }
 
   public axis(channel: Channel): Axis {
@@ -288,13 +281,6 @@ export class Model {
         return value;
     }
     return value;
-  }
-
-  /**
-   * @return Scene config value from the spec, or a default value if unspecified.
-   */
-  public sceneConfig(name: string) {
-    return this._spec.config.scene[name];
   }
 
   /** returns scale name for a given channel */

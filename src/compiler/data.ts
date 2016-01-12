@@ -11,6 +11,13 @@ import {field} from '../fielddef';
 import {QUANTITATIVE, TEMPORAL} from '../type';
 import {type as scaleType} from './scale';
 
+const DEFAULT_NULL_FILTERS = {
+  nominal: false,
+  ordinal: false,
+  quantitative: true,
+  temporal: true
+};
+
 /**
  * Create Vega's data array from a given encoding.
  *
@@ -175,9 +182,10 @@ export namespace source {
    * @return An array that might contain a filter transform for filtering null value based on filterNul config
    */
   export function nullFilterTransform(model: Model) {
-    const filterNull = model.config('filterNull');
+    const filterNull = model.config().filterNull;
     const filteredFields = keys(model.reduce(function(aggregator, fieldDef: FieldDef) {
-      if (fieldDef.field && fieldDef.field !== '*' && filterNull[fieldDef.type]) {
+      if (filterNull ||
+        (filterNull === undefined && fieldDef.field && fieldDef.field !== '*' && DEFAULT_NULL_FILTERS[fieldDef.type])) {
         aggregator[fieldDef.field] = true;
       }
       return aggregator;
@@ -253,7 +261,7 @@ export namespace layout {
       });
     }
 
-    const cellPadding = model.cellConfig('padding');
+    const cellPadding = model.config().cell.padding;
     const layout = model.layout();
 
     if (model.has(COLUMN)) {
