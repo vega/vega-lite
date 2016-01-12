@@ -378,21 +378,21 @@ export namespace bar {
     // - consider defaults for offset and color
 
     var l: any = {};
-    const orient = model.marksConfig('orient');
+    const orient = model.config().mark.orient;
 
-    l.align = { value: (orient !== 'horizontal') ? "center" : "left" };
+    l.align = { value: (orient !== 'horizontal') ? 'center' : 'left' };
 
     l.text = { field: ((orient !== 'horizontal') ? model.field(Y) : model.field(X)) };
 
     l.x = {
       scale: model.scale(X),
       field: model.field(X)
-    }
+    };
 
     l.y = {
       scale: model.scale(Y),
       field: model.field(Y)
-    }
+    };
 
     if (orient !== 'horizontal') {
       l.y.offset = -6;
@@ -400,7 +400,7 @@ export namespace bar {
         scale: model.scale(X),
         band: true,
         mult: 0.5
-      }
+      };
     } else {
       l.x.offset = 6;
       l.y.offset = 3;
@@ -408,12 +408,10 @@ export namespace bar {
         scale: model.scale(Y),
         band: true,
         mult: 0.5
-      }
+      };
     }
 
-    // fill
-    extend(l, colorMixins(model));
-
+    applyColorAndOpacity(l, model);
     return l;
   }
 }
