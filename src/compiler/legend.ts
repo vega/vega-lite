@@ -72,7 +72,7 @@ export function title(fieldDef: FieldDef) {
 }
 
 namespace properties {
-  export function labels(fieldDef: FieldDef, spec, model: Model, channel: Channel) {
+  export function labels(fieldDef: FieldDef, labelsSpec, model: Model, channel: Channel) {
     const timeUnit = fieldDef.timeUnit;
     const labelTemplate = model.labelTemplate(channel);
     if (fieldDef.type === TEMPORAL && timeUnit && labelTemplate) {
@@ -80,12 +80,12 @@ namespace properties {
         text: {
           template: '{{datum.data | ' + labelTemplate + '}}'
         }
-      }, spec || {});
+      }, labelsSpec || {});
     }
-    return spec;
+    return labelsSpec;
   }
 
-  export function symbols(fieldDef: FieldDef, spec, model: Model, channel: Channel) {
+  export function symbols(fieldDef: FieldDef, symbolsSpec, model: Model, channel: Channel) {
     let symbols:any = {};
     const mark = model.mark();
 
@@ -141,7 +141,7 @@ namespace properties {
         break;
     }
 
-    symbols = extend(symbols, spec || {});
+    symbols = extend(symbols, symbolsSpec || {});
 
     return keys(symbols).length > 0 ? symbols : undefined;
   }

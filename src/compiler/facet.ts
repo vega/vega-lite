@@ -203,7 +203,7 @@ function getRowGridGroup(model: Model, cellHeight): any { // TODO: VgMarks
     }
   };
 
-  const rowGridOnTop = !model.has(X) || model.axisDef(X).orient !== 'top';
+  const rowGridOnTop = !model.has(X) || model.axis(X).orient !== 'top';
   if (rowGridOnTop) { // on top - no need to add offset
     return rowGrid;
   } // otherwise, need to offset all grid by cellHeight
@@ -253,7 +253,7 @@ function getColumnGridGroup(model: Model, cellWidth): any { // TODO: VgMarks
     }
   };
 
-  const columnGridOnLeft = !model.has(Y) || model.axisDef(Y).orient === 'right';
+  const columnGridOnLeft = !model.has(Y) || model.axis(Y).orient === 'right';
   if (columnGridOnLeft) { // on left, no need to add global offset
     return columnGrid;
   } // otherwise, need to offset all grid by cellWidth
