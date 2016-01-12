@@ -20,6 +20,9 @@ export interface MarkConfig {
   interpolate?: string;
   tension?: number;
 
+  // Tick-only
+  tickSize?: number;
+
   // Text-only
   align?: string;
   angle?: number;
@@ -130,6 +133,13 @@ export const markConfig = {
       type: 'number',
       default: undefined,
       description: 'Depending on the interpolation type, sets the tension parameter.'
+    },
+
+    // Tick-only
+    tickSize: {
+      type: 'number',
+      default: 1,
+      description: 'Size of the tick mark.'
     },
 
     // text-only

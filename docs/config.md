@@ -60,6 +60,7 @@ and the following fill and stroke properties:
 
 `marks` property of the `config` is a marks config object, which can have the following properties:
 
+
 ### General Marks Config
 
 | Property      | Type          | Description    |
@@ -78,11 +79,13 @@ and the following fill and stroke properties:
 
 <!-- TODO: add fill, stroke, fillOpacity, strokeOpacity -->
 
+
 ### Marks Config for Bar, Line, and Area Marks
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | orient        | String        | The orientation of a non-stacked bar, area, and line charts.  The value is either `"horizontal"`, or `"vertical"` (default).  For area, this property determines the orient property of the Vega output.  For line, this property determines the sort order of the points in the line if `config.sortLineBy` is not specified.  For stacked charts, this is always determined by the orientation of the stack; therefore explicitly specified value will be ignored. |
+
 
 ### Marks Config for Line and Area Marks
 
@@ -90,6 +93,14 @@ and the following fill and stroke properties:
 | :------------ |:-------------:| :------------- |
 | interpolate   | String        | The line interpolation method to use. One of linear, step-before, step-after, basis, basis-open, basis-closed, bundle, cardinal, cardinal-open, cardinal-closed, monotone. |
 | tension       | Number        | Depending on the interpolation type, sets the tension parameter. |
+
+
+### Marks Config for Tick Marks
+
+| Property            | Type                | Description  |
+| :------------------ |:-------------------:| :------------|
+| tickSize            | Number              | Size of the tick mark. |
+
 
 ### Marks Config for Text Marks
 
