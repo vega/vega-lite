@@ -1,6 +1,12 @@
+import {Spec} from '../schema/schema';
+import {stackConfig as stackConfigSchema} from '../schema/config.stack.schema';
+import {instantiate} from '../schema/schemautil';
 import {Model} from './Model';
-import {Channel} from '../channel';
-import {isArray} from '../util';
+import {Channel, X, Y, COLOR, DETAIL} from '../channel';
+import {BAR, AREA} from '../mark';
+import {field, isMeasure} from '../fielddef';
+import {has, isAggregate} from '../encoding';
+import {isArray, contains} from '../util';
 
 export interface StackProperties {
   /** Dimension axis of the stack ('x' or 'y'). */
@@ -23,6 +29,48 @@ interface StackTransform {
   field: any;
   sortby: any;
   output: any;
+}
+
+export function compileStackProperties(spec: Spec, model: Model) {
+  const stackFields = [COLOR, DETAIL].reduce(function(fields, channel) {
+    const channelEncoding = spec.encoding[channel];
+    if (has(spec.encoding, channel)) {
+      if (isArray(channelEncoding)) {
+        channelEncoding.forEach(function(fieldDef) {
+          fields.push(field(fieldDef));
+        });
+      } else {
+        fields.push(model.field(channel));
+      }
+    }
+    return fields;
+  }, []);
+
+  if (stackFields.length > 0 &&
+      contains([BAR, AREA], spec.mark) &&
+      spec.config.stack !== false &&
+      isAggregate(spec.encoding)) {
+
+    var isXMeasure = has(spec.encoding, X) && isMeasure(spec.encoding.x);
+    var isYMeasure = has(spec.encoding, Y) && isMeasure(spec.encoding.y);
+
+    if (isXMeasure && !isYMeasure) {
+      return {
+        groupbyChannel: Y,
+        fieldChannel: X,
+        stackFields: stackFields,
+        config: spec.config.stack === true  ? instantiate(stackConfigSchema) : spec.config.stack
+      };
+    } else if (isYMeasure && !isXMeasure) {
+      return {
+        groupbyChannel: X,
+        fieldChannel: Y,
+        stackFields: stackFields,
+        config: spec.config.stack === true  ? instantiate(stackConfigSchema) : spec.config.stack
+      };
+    }
+  }
+  return null;
 }
 
 // impute data for stacked area
