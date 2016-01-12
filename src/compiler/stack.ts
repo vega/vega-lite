@@ -1,5 +1,6 @@
 import {Spec} from '../schema/schema';
 import {stackConfig as stackConfigSchema} from '../schema/config.stack.schema';
+import {FieldDef} from '../schema/fielddef.schema';
 import {instantiate} from '../schema/schemautil';
 import {Model} from './Model';
 import {Channel, X, Y, COLOR, DETAIL} from '../channel';
@@ -7,6 +8,8 @@ import {BAR, AREA} from '../mark';
 import {field, isMeasure} from '../fielddef';
 import {has, isAggregate} from '../encoding';
 import {isArray, contains} from '../util';
+
+import {type as scaleType} from './scale';
 
 export interface StackProperties {
   /** Dimension axis of the stack ('x' or 'y'). */
@@ -31,7 +34,7 @@ interface StackTransform {
   output: any;
 }
 
-export function compileStackProperties(spec: Spec, model: Model) {
+export function compileStackProperties(spec: Spec) {
   const stackFields = [COLOR, DETAIL].reduce(function(fields, channel) {
     const channelEncoding = spec.encoding[channel];
     if (has(spec.encoding, channel)) {
@@ -40,7 +43,10 @@ export function compileStackProperties(spec: Spec, model: Model) {
           fields.push(field(fieldDef));
         });
       } else {
-        fields.push(model.field(channel));
+        const fieldDef: FieldDef = channelEncoding;
+        fields.push(field(fieldDef, {
+          binSuffix: scaleType(fieldDef, channel, spec.mark) === 'ordinal' ? '_range' : '_start'
+        }));
       }
     }
     return fields;
