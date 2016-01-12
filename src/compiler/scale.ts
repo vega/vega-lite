@@ -50,14 +50,13 @@ export function compileScales(channels: Channel[], model: Model) {
 
 export function type(fieldDef: FieldDef, channel: Channel, model: Model): string {
   switch (fieldDef.type) {
-    case NOMINAL: // fall through
+    case NOMINAL:
       return 'ordinal';
     case ORDINAL:
-      let range = fieldDef.scale.range;
-      return channel === COLOR && (typeof range !== 'string') ? 'linear' : 'ordinal';
+      return 'ordinal';
     case TEMPORAL:
       if (channel === COLOR) {
-        // FIXME if user specify scale.range as ordinal presets, then this should be ordinal.
+        // FIXME(#890) if user specify scale.range as ordinal presets, then this should be ordinal.
         // Also, if we support color ramp, this should be ordinal too.
         return 'linear'; // time has order, so use interpolated ordinal color scale.
       }
@@ -77,6 +76,8 @@ export function type(fieldDef: FieldDef, channel: Channel, model: Model): string
         case 'year':
         case 'second':
         case 'minute':
+          // Returns ordinal if the channel is the dimension of BAR or TICK mark
+          // Otherwise return linear.
           const isHorizontal = model.markConfig('orient') === 'horizontal';
           return contains([BAR, TICK], model.mark()) &&
             ((isHorizontal && channel === Y) || (!isHorizontal && channel === X))
@@ -86,7 +87,7 @@ export function type(fieldDef: FieldDef, channel: Channel, model: Model): string
 
     case QUANTITATIVE:
       if (fieldDef.bin) {
-        // TODO: Ideally binned COLOR should be an ordinal scale
+        // TODO(#890): Ideally binned COLOR should be an ordinal scale
         // However, currently ordinal scale doesn't support color ramp yet.
         return contains([X, Y, COLOR], channel) ? 'linear' : 'ordinal';
       }
@@ -340,9 +341,7 @@ export function rangeMixins(model: Model, channel: Channel, scaleType: string): 
     case SHAPE:
       return {range: 'shapes'};
     case COLOR:
-      if (scaleType === 'ordinal') {
-        // TODO: once Vega supports color ramp for ordinal scale
-        // This should returns a color ramp for ordinal scale of ordinal or binned data
+      if (fieldDef.type === NOMINAL) {
         return {range: 'category10'};
       } else { // time or quantitative
         return {range: ['#AFC6A3', '#09622A']}; // tableau greens
