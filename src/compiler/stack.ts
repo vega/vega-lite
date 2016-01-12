@@ -17,7 +17,7 @@ export interface StackProperties {
   /** Measure axis of the stack ('x' or 'y'). */
   fieldChannel: Channel;
 
-  /** Stack by fields of the name (fields for 'color' or 'detail') */
+  /** Stack-by field names (from 'color' and 'detail') */
   stackFields: string[];
 
   /** Stack config for the stack transform. */
@@ -34,23 +34,9 @@ interface StackTransform {
   output: any;
 }
 
+/** Compile stack properties from a given spec */
 export function compileStackProperties(spec: Spec) {
-  const stackFields = [COLOR, DETAIL].reduce(function(fields, channel) {
-    const channelEncoding = spec.encoding[channel];
-    if (has(spec.encoding, channel)) {
-      if (isArray(channelEncoding)) {
-        channelEncoding.forEach(function(fieldDef) {
-          fields.push(field(fieldDef));
-        });
-      } else {
-        const fieldDef: FieldDef = channelEncoding;
-        fields.push(field(fieldDef, {
-          binSuffix: scaleType(fieldDef, channel, spec.mark) === 'ordinal' ? '_range' : '_start'
-        }));
-      }
-    }
-    return fields;
-  }, []);
+  const stackFields = getStackFields(spec);
 
   if (stackFields.length > 0 &&
       contains([BAR, AREA], spec.mark) &&
@@ -77,6 +63,26 @@ export function compileStackProperties(spec: Spec) {
     }
   }
   return null;
+}
+
+/** Compile stack-by field names from (from 'color' and 'detail') */
+function getStackFields(spec: Spec) {
+  return [COLOR, DETAIL].reduce(function(fields, channel) {
+    const channelEncoding = spec.encoding[channel];
+    if (has(spec.encoding, channel)) {
+      if (isArray(channelEncoding)) {
+        channelEncoding.forEach(function(fieldDef) {
+          fields.push(field(fieldDef));
+        });
+      } else {
+        const fieldDef: FieldDef = channelEncoding;
+        fields.push(field(fieldDef, {
+          binSuffix: scaleType(fieldDef, channel, spec.mark) === 'ordinal' ? '_range' : '_start'
+        }));
+      }
+    }
+    return fields;
+  }, []);
 }
 
 // impute data for stacked area

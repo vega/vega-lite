@@ -12,16 +12,17 @@ export function compileMarks(model: Model): any[] {
   const name = model.spec().name;
   const isFaceted = model.has(ROW) || model.has(COLUMN);
   const dataFrom = {data: model.dataTable()};
-  const sortBy = model.config().mark.sortBy;
+  const markConfig = model.config().mark;
+  const sortBy = markConfig.sortBy;
 
   if (mark === LINE || mark === AREA) {
     const details = detailFields(model);
 
     // For line and area, we sort values based on dimension by default
     // For line, a special config "sortLineBy" is allowed
-    let sortLineBy = mark === LINE ? model.config().mark.sortLineBy : undefined;
+    let sortLineBy = mark === LINE ? markConfig.sortLineBy : undefined;
     if (!sortLineBy) {
-      sortLineBy = '-' + model.field(model.config().mark.orient === 'horizontal' ? Y : X);
+      sortLineBy = '-' + model.field(markConfig.orient === 'horizontal' ? Y : X);
     }
 
     let pathMarks: any = extend(

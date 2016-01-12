@@ -7,7 +7,9 @@ import {isMeasure} from '../fielddef';
 import {POINT, TICK, CIRCLE, SQUARE} from '../mark';
 import {contains, extend} from '../util';
 
-
+/**
+ * Augment config.mark with rule-based default values.
+ */
 export function compileMarkConfig(spec: Spec, stack: StackProperties) {
    return extend(
      ['filled', 'opacity', 'orient'].reduce(function(cfg, property: string) {
