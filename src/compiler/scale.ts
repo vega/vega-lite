@@ -341,9 +341,7 @@ export function rangeMixins(model: Model, channel: Channel, scaleType: string): 
     case SHAPE:
       return {range: 'shapes'};
     case COLOR:
-      if (scaleType === 'ordinal') {
-        // TODO(#890): once Vega supports color ramp for ordinal scale
-        // This should returns a color ramp for ordinal scale of ordinal or binned data
+      if (fieldDef.type === NOMINAL) {
         return {range: 'category10'};
       } else { // time or quantitative
         return {range: ['#AFC6A3', '#09622A']}; // tableau greens
