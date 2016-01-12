@@ -12,16 +12,16 @@ export function compileMarks(model: Model): any[] {
   const name = model.spec().name;
   const isFaceted = model.has(ROW) || model.has(COLUMN);
   const dataFrom = {data: model.dataTable()};
-  const sortBy = model.markConfig('sortBy');
+  const sortBy = model.config().mark.sortBy;
 
   if (mark === LINE || mark === AREA) {
     const details = detailFields(model);
 
     // For line and area, we sort values based on dimension by default
     // For line, a special config "sortLineBy" is allowed
-    let sortLineBy = mark === LINE ? model.markConfig('sortLineBy') : undefined;
+    let sortLineBy = mark === LINE ? model.config().mark.sortLineBy : undefined;
     if (!sortLineBy) {
-      sortLineBy = '-' + model.field(model.markConfig('orient') === 'horizontal' ? Y : X);
+      sortLineBy = '-' + model.field(model.config().mark.orient === 'horizontal' ? Y : X);
     }
 
     let pathMarks: any = extend(
@@ -153,7 +153,7 @@ export const FILL_STROKE_CONFIG = ['fill', 'fillOpacity',
 function applyColorAndOpacity(p, model: Model, colorMode?: ColorMode) {
   const filled = colorMode === ColorMode.ALWAYS_FILLED ? true :
     colorMode === ColorMode.ALWAYS_STROKED ? false :
-    model.markConfig('filled');
+    model.config().mark.filled;
 
   // Apply fill and stroke config first
   // so that `color.value` can override `fill` and `stroke` config
@@ -182,7 +182,7 @@ function applyColorAndOpacity(p, model: Model, colorMode?: ColorMode) {
 
 export function applyMarkConfig(marksProperties, model: Model, propsList: string[]) {
   propsList.forEach(function(property) {
-    const value = model.markConfig(property);
+    const value = model.config().mark[property];
     if (value !== undefined) {
       marksProperties[property] = { value: value };
     }
@@ -216,7 +216,7 @@ export namespace bar {
     // TODO Use Vega's marks properties interface
     let p: any = {};
 
-    const orient = model.markConfig('orient');
+    const orient = model.config().mark.orient;
 
     const stack = model.stack();
     // x, x2, and width -- we must specify two of these in all conditions
@@ -485,7 +485,7 @@ export namespace area {
     // TODO Use Vega's marks properties interface
     var p: any = {};
 
-    const orient = model.markConfig('orient');
+    const orient = model.config().mark.orient;
     if (orient !== undefined) {
       p.orient = { value: orient };
     }
@@ -604,7 +604,7 @@ export namespace tick {
       // TODO(#694): optimize tick's width for bin
       p.width = { value: model.fieldDef(X).scale.bandWidth / 1.5 };
     } else {
-      p.width = { value: model.markConfig('tickSize') };
+      p.width = { value: model.config().mark.tickSize };
     }
 
     // height
@@ -612,7 +612,7 @@ export namespace tick {
       // TODO(#694): optimize tick's height for bin
       p.height = { value: model.fieldDef(Y).scale.bandWidth / 1.5 };
     } else {
-      p.height = { value: model.markConfig('tickSize') };
+      p.height = { value: model.config().mark.tickSize };
     }
 
     applyColorAndOpacity(p, model, ColorMode.ALWAYS_FILLED);
@@ -754,13 +754,13 @@ export namespace text {
     // TODO: consider if color should just map to fill instead?
 
     // opacity
-    var opacity = model.markConfig('opacity');
+    var opacity = model.config().mark.opacity;
     if (opacity) { p.opacity = { value: opacity }; };
 
     // text
     if (model.has(TEXT)) {
       if (model.fieldDef(TEXT).type === QUANTITATIVE) {
-        const format = model.markConfig('format');
+        const format = model.config().mark.format;
         // TODO: revise this line
         var numberFormat = format !== undefined ? format : model.numberFormat(TEXT);
 

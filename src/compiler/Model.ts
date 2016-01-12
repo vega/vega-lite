@@ -6,12 +6,12 @@ import {instantiate} from '../schema/schemautil';
 import * as schema from '../schema/schema';
 import * as schemaUtil from '../schema/schemautil';
 
-import {COLUMN, ROW, X, Y, DETAIL, Channel, supportMark} from '../channel';
+import {COLUMN, ROW, X, Y, Channel, supportMark} from '../channel';
 import {SOURCE, SUMMARY} from '../data';
 import * as vlFieldDef from '../fielddef';
 import {FieldRefOption} from '../fielddef';
 import * as vlEncoding from '../encoding';
-import {POINT, TICK, CIRCLE, SQUARE, Mark} from '../mark';
+import {Mark} from '../mark';
 
 import {getFullName, NOMINAL, ORDINAL, TEMPORAL} from '../type';
 import {contains, duplicate, extend} from '../util';
@@ -197,46 +197,6 @@ export class Model {
   public axis(channel: Channel): Axis {
     const axis = this.fieldDef(channel).axis;
     return typeof axis !== 'boolean' ? axis : {};
-  }
-
-  /**
-   * @return Mark config value from the spec, or a default value if unspecified.
-   */
-  public markConfig(name: string) {
-    const value = this._spec.config.mark[name];
-    switch (name) {
-      case 'filled':
-        if (value === undefined) {
-          // only point is not filled by default
-          return this.mark() !== POINT;
-        }
-        return value;
-      case 'opacity':
-        if (value === undefined && contains([POINT, TICK, CIRCLE, SQUARE], this.mark())) {
-          // point-based marks and bar
-          if (!this.isAggregate() || this.has(DETAIL)) {
-            return 0.7;
-          }
-        }
-        return value;
-      case 'orient':
-        const stack = this.stack();
-        if (stack) {
-          // For stacked chart, explicitly specified orient property will be ignored.
-          return stack.groupbyChannel === Y ? 'horizontal' : undefined;
-        }
-        if (value === undefined) {
-          return this.isMeasure(X) && !this.isMeasure(Y) ?
-            // horizontal if X is measure and Y is dimension or unspecified
-            'horizontal' :
-            // vertical (undefined) otherwise.  This includes when
-            // - Y is measure and X is dimension or unspecified
-            // - both X and Y are measures or both are dimension
-            undefined;  //
-        }
-        return value;
-    }
-    return value;
   }
 
   /** returns scale name for a given channel */

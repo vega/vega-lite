@@ -108,7 +108,7 @@ namespace properties {
         /* fall through */
       case POINT:
         // fill or stroke
-        if (model.markConfig('filled')) { // filled
+        if (model.config().mark.filled) { // filled
           // set stroke to transparent by default unless there is a config for stroke
           symbols.stroke = {value: 'transparent'};
           applyMarkConfig(symbols, model, FILL_STROKE_CONFIG);
