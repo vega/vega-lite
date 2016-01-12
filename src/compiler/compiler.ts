@@ -32,13 +32,13 @@ export function compile(spec, theme?) {
       padding: 'auto'
     },
     ['viewport', 'background'].reduce(function(topLevelConfig, property) {
-      const value = model.config(property);
+      const value = model.config()[property];
       if (value !== undefined) {
         topLevelConfig[property] = value;
       }
       return topLevelConfig;
     }, {}),
-    keys(model.config('scene')).length > 0 ? ['fill', 'fillOpacity', 'stroke', 'strokeWidth',
+    keys(model.config().scene).length > 0 ? ['fill', 'fillOpacity', 'stroke', 'strokeWidth',
       'strokeOpacity', 'strokeDash', 'strokeDashOffset'].reduce(function(topLevelConfig: any, property) {
         const value = model.sceneConfig(property);
         if (value !== undefined) {

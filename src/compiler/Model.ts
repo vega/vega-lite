@@ -17,6 +17,7 @@ import {type as scaleType} from './scale';
 import {getFullName, NOMINAL, ORDINAL, TEMPORAL} from '../type';
 import {contains, duplicate, extend, isArray} from '../util';
 import {Encoding} from '../schema/encoding.schema';
+import {Config} from '../schema/config.schema';
 
 
 /**
@@ -76,7 +77,7 @@ export class Model {
 
     if (stackFields.length > 0 &&
       (this.is(BAR) || this.is(AREA)) &&
-      this.config('stack') !== false &&
+      this.config().stack !== false &&
       this.isAggregate()) {
       var isXMeasure = this.isMeasure(X);
       var isYMeasure = this.isMeasure(Y);
@@ -86,14 +87,14 @@ export class Model {
           groupbyChannel: Y,
           fieldChannel: X,
           stackFields: stackFields,
-          config: this.config('stack')
+          config: this.config().stack
         };
       } else if (isYMeasure && !isXMeasure) {
         return {
           groupbyChannel: X,
           fieldChannel: Y,
           stackFields: stackFields,
-          config: this.config('stack')
+          config: this.config().stack
         };
       }
     }
@@ -172,7 +173,7 @@ export class Model {
 
   public numberFormat(channel?: Channel): string {
     // TODO(#497): have different number format based on numberType (discrete/continuous)
-    return this.config('numberFormat');
+    return this.config().numberFormat;
   };
 
   public channels(): Channel[] {
@@ -232,10 +233,10 @@ export class Model {
   }
 
   /**
-   * @return Config value from the spec, or a default value if unspecified.
+   * Get the spec configuration.
    */
-  public config(name: string) {
-    return this._spec.config[name];
+  public config(): Config {
+    return this._spec.config;
   }
 
   /**

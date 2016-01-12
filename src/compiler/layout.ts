@@ -41,7 +41,7 @@ function getCellWidth(model: Model): LayoutValue {
     return model.cellConfig('width');
   }
   if (model.mark() === TEXT_MARK) {
-    return model.config('textCellWidth');
+    return model.config().textCellWidth;
   }
   return model.fieldDef(X).scale.bandWidth;
 }
