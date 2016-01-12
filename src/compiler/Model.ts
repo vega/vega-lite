@@ -245,7 +245,7 @@ export class Model {
     return this._spec.config.cell[name];
   }
 
-  public axisDef(channel: Channel): Axis {
+  public axis(channel: Channel): Axis {
     const axis = this.fieldDef(channel).axis;
     return typeof axis !== 'boolean' ? axis : {};
   }
