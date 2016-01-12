@@ -1,10 +1,13 @@
 export interface LabelConfig {
   // TODO: add additional label config here
-  // e.g., inset label for bar 
+  // e.g., inset label for bar
 
-  // General Vega
-  fill?: string;
+  // Color & Opacity
   opacity?: number;
+  fill?: string;
+  fillOpacity?: number;
+  stroke?: string;
+  strokeOpacity?: number;
   strokeWidth?: number;
   strokeDash?: number[];
   strokeDashOffset?: number[];
@@ -24,7 +27,6 @@ export interface LabelConfig {
   // Vega-Lite only for text only
   format?: string;
 }
-
 
 export const labelConfig = {
   type: 'object',
@@ -120,4 +122,4 @@ export const labelConfig = {
     // TODO: consider adding format (just like marks)
     // but let's wait until @kanitw stabilize numberFormat issue
   }
-}
+};

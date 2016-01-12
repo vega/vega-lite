@@ -16,6 +16,5 @@ export const POINT = Mark.POINT;
 export const TEXT = Mark.TEXT;
 export const TICK = Mark.TICK;
 
-// TODO: decide if we want to keep them?
 export const CIRCLE = Mark.CIRCLE;
 export const SQUARE = Mark.SQUARE;

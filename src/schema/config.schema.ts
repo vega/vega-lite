@@ -1,27 +1,24 @@
 import {CellConfig, cellConfig} from './config.cell.schema';
 import {LabelConfig, labelConfig} from './config.label.schema';
-import {MarksConfig, marksConfig} from './config.marks.schema';
+import {MarkConfig, markConfig} from './config.marks.schema';
+import {SceneConfig, sceneConfig} from './config.scene.schema';
 import {StackConfig, stackConfig} from './config.stack.schema';
-
 
 export interface Config {
   width?: number;
   height?: number;
   padding?: number|string;
   viewport?: number;
-
   background?: string;
-  sortLineBy?: string;
 
   cell?: CellConfig;
   label?: LabelConfig;
-  marks?: MarksConfig;
-  scene?: any; // TODO: SceneConfig
+  mark?: MarkConfig;
+  scene?: SceneConfig;
   stack?: StackConfig;
 
   // TODO: revise
-  characterWidth?: number;
-  filterNull?: any;
+  filterNull?: boolean;
   textCellWidth?: any;
   numberFormat?: string;
   timeFormat?: string;
@@ -58,30 +55,15 @@ export const config = {
       default: undefined,
       description: 'CSS color property to use as background of visualization. Default is `"transparent"`.'
     },
-    sortLineBy: {
-      type: 'string',
-      default: undefined,
-      description: 'Data field to sort line by. ' +
-        '\'-\' prefix can be added to suggest descending order.'
-    },
 
     // filter null
-    // TODO(#597) revise this config
     filterNull: {
-      type: 'object',
-      properties: {
-        nominal: {type:'boolean', default: false},
-        ordinal: {type:'boolean', default: false},
-        quantitative: {type:'boolean', default: true},
-        temporal: {type:'boolean', default: true}
-      }
+      type: 'boolean',
+      default: undefined,
+      description: 'Filter null values from the data. If set to true, all rows with null values are filtered. If false, no rows are filtered. Set the property to undefined to filter only quantitative and temporal fields.'
     },
 
     // FIXME(#497) remove these
-    characterWidth: {
-      type: 'integer',
-      default: 6
-    },
     numberFormat: {
       type: 'string',
       default: 's',
@@ -102,12 +84,8 @@ export const config = {
     // nested
     cell: cellConfig,
     label: labelConfig,
-    marks: marksConfig,
-    scene: { // TODO: add SceneConfig
-      type: 'object',
-      default: undefined,
-      description: 'An object for styling the top-level scenegraph root. Available properties include `fill`, `fillOpacity`, `stroke`, `strokeOpacity`, `strokeWidth`, `strokeDash`, `strokeDashOffset`.'
-    },
+    mark: markConfig,
+    scene: sceneConfig,
     stack: stackConfig
   }
 };

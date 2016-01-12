@@ -1,29 +1,34 @@
-import {Axis} from './axis.schema';
+import {axis, Axis} from './axis.schema';
 import {bin, Bin} from './bin.schema';
 import {Legend} from './legend.schema';
 import {typicalScale, ordinalOnlyScale, Scale} from './scale.schema';
-import {Sort} from './sort.schema';
+import {sort, Sort} from './sort.schema';
 
 import {AGGREGATE_OPS} from '../aggregate';
 import {toMap, duplicate} from '../util';
-import {merge} from './schemautil';
+import {mergeDeep} from './schemautil';
 import {TIMEUNITS} from '../timeunit';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL, Type} from '../type';
 
+/**
+ *  Interface for any kind of FieldDef;
+ *  For simplicity, we do not declare multiple interfaces of FieldDef like
+ *  we do for JSON schema.
+ */
 export interface FieldDef {
   field?: string;
   type?: Type;
   value?: any;
 
   // function
-  aggregate?: string;
   timeUnit?: string;
   bin?: boolean | Bin;
 
+  aggregate?: string;
   sort?: Sort | string;
 
   // override vega components
-  axis?: Axis;
+  axis?: Axis | boolean;
   legend?: Legend | boolean;
   scale?: Scale;
 
@@ -64,15 +69,23 @@ export var aggregate = {
   supportedTypes: toMap([QUANTITATIVE, NOMINAL, ORDINAL, TEMPORAL, ''])
 };
 
-export var typicalField = merge(duplicate(fieldDef), {
+export var typicalField = mergeDeep(duplicate(fieldDef), {
   properties: {
     aggregate: aggregate,
     scale: typicalScale
   }
 });
 
-export var onlyOrdinalField = merge(duplicate(fieldDef), {
+export var onlyOrdinalField = mergeDeep(duplicate(fieldDef), {
   properties: {
     scale: ordinalOnlyScale
+  }
+});
+
+export var facetField = mergeDeep(duplicate(onlyOrdinalField), {
+  required: ['field', 'type'],
+  properties: {
+    axis: axis,
+    sort: sort
   }
 });

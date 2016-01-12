@@ -12,15 +12,17 @@ export function compileMarks(model: Model): any[] {
   const name = model.spec().name;
   const isFaceted = model.has(ROW) || model.has(COLUMN);
   const dataFrom = {data: model.dataTable()};
+  const markConfig = model.config().mark;
+  const sortBy = markConfig.sortBy;
 
   if (mark === LINE || mark === AREA) {
     const details = detailFields(model);
 
     // For line and area, we sort values based on dimension by default
     // For line, a special config "sortLineBy" is allowed
-    let sortBy = mark === LINE ? model.config('sortLineBy') : undefined;
-    if (!sortBy) {
-      sortBy = '-' + model.field(model.marksConfig('orient') === 'horizontal' ? Y : X);
+    let sortLineBy = mark === LINE ? markConfig.sortLineBy : undefined;
+    if (!sortLineBy) {
+      sortLineBy = '-' + model.field(markConfig.orient === 'horizontal' ? Y : X);
     }
 
     let pathMarks: any = extend(
@@ -34,7 +36,7 @@ export function compileMarks(model: Model): any[] {
           isFaceted || details.length > 0 ? {} : dataFrom,
 
           // sort transform
-          {transform: [{ type: 'sort', by: sortBy }]}
+          {transform: [{ type: 'sort', by: sortLineBy }]}
         ),
         properties: { update: exports[mark].properties(model) }
       }
@@ -44,10 +46,13 @@ export function compileMarks(model: Model): any[] {
 
     if (details.length > 0) { // have level of details - need to facet line into subgroups
       const facetTransform = { type: 'facet', groupby: details };
-      const transform = mark === AREA && model.stack() ?
-        // For stacked area, we need to impute missing tuples and stack values
-        [imputeTransform(model), stackTransform(model), facetTransform] :
-        [facetTransform];
+      const transform: any[] = [].concat(
+        (sortBy ? [{type: 'sort', by: sortBy}] : []),
+        mark === AREA && model.stack() ?
+          // For stacked area, we need to impute missing tuples and stack values
+          [imputeTransform(model), stackTransform(model), facetTransform] :
+          [facetTransform]
+        );
 
       return [{
         name: (name ? name + '-' : '') + mark + '-facet',
@@ -88,13 +93,16 @@ export function compileMarks(model: Model): any[] {
       name ? { name: name + '-marks' } : {},
       { type: exports[mark].markType(model) },
       // Add `from` if needed
-      (!isFaceted || model.stack()) ? {
+      (!isFaceted || model.stack() || sortBy) ? {
         from: extend(
           // If faceted, `from.data` will be added in the cell group.
           // Otherwise, add it here
           isFaceted ? {} : dataFrom,
           // Stacked Chart need additional transform
-          model.stack() ? {transform: [stackTransform(model)]} : {}
+          model.stack() || sortBy ? { transform: [].concat(
+              (model.stack() ? [stackTransform(model)] : []),
+              sortBy ? [{type:'sort', by: sortBy}] : []
+          )} : {}
         )
       } : {},
       // properties groups
@@ -134,9 +142,28 @@ export function size(model: Model) {
   return 30;
 }
 
-function colorMixins(model: Model) {
-  let p: any = {};
-  if (model.marksConfig('filled')) {
+enum ColorMode {
+  ALWAYS_FILLED,
+  ALWAYS_STROKED
+}
+
+export const FILL_STROKE_CONFIG = ['fill', 'fillOpacity',
+  'stroke', 'strokeWidth', 'strokeDash', 'strokeDashOffset', 'strokeOpacity',
+  'opacity'];
+
+const TEXT_CONFIG = ['angle', 'align', 'baseline', 'dx', 'dy', 'fill', 'font', 'fontWeight',
+  'fontStyle', 'radius', 'theta'];
+
+function applyColorAndOpacity(p, model: Model, colorMode?: ColorMode) {
+  const filled = colorMode === ColorMode.ALWAYS_FILLED ? true :
+    colorMode === ColorMode.ALWAYS_STROKED ? false :
+    model.config().mark.filled;
+
+  // Apply fill and stroke config first
+  // so that `color.value` can override `fill` and `stroke` config
+  applyMarkConfig(p, model, FILL_STROKE_CONFIG);
+
+  if (filled) {
     if (model.has(COLOR)) {
       p.fill = {
         scale: model.scale(COLOR),
@@ -154,14 +181,12 @@ function colorMixins(model: Model) {
     } else {
       p.stroke = { value: model.fieldDef(COLOR).value };
     }
-    p.strokeWidth = { value: model.marksConfig('strokeWidth') };
   }
-  return p;
 }
 
-function applyMarksConfig(marksProperties, model: Model, propsList: string[]) {
+export function applyMarkConfig(marksProperties, model: Model, propsList: string[]) {
   propsList.forEach(function(property) {
-    const value = model.marksConfig(property);
+    const value = model.config().mark[property];
     if (value !== undefined) {
       marksProperties[property] = { value: value };
     }
@@ -171,7 +196,7 @@ function applyMarksConfig(marksProperties, model: Model, propsList: string[]) {
 // TODO: use this in label methods
 function applyLabelConfig(marksProperties, model: Model, propsList: string[]) {
   propsList.forEach(function(property) {
-    const value = model.labelConfig(property);
+    const value = model.config().label[property];
     if (value !== undefined) {
       marksProperties[property] = { value: value };
     }
@@ -205,7 +230,7 @@ export namespace bar {
     // TODO Use Vega's marks properties interface
     let p: any = {};
 
-    const orient = model.marksConfig('orient');
+    const orient = model.config().mark.orient;
 
     const stack = model.stack();
     // x, x2, and width -- we must specify two of these in all conditions
@@ -272,7 +297,7 @@ export namespace bar {
           field: model.field(SIZE)
         } : model.isOrdinalScale(X) || !model.has(X) ? {
           // for ordinal scale or single bar, we can use bandWidth
-          value: model.fieldDef(X).scale.bandWidth,
+          value: model.fieldDef(X).scale.bandWidth, // TODO(#724): can we use band: true here?
           offset: -1
         } : {
           // otherwise, use fixed size
@@ -348,7 +373,7 @@ export namespace bar {
           field: model.field(SIZE)
         } : model.isOrdinalScale(Y) || !model.has(Y) ? {
           // for ordinal scale or single bar, we can use bandWidth
-          value: model.fieldDef(Y).scale.bandWidth,
+          value: model.fieldDef(Y).scale.bandWidth, // TODO(#724): can we use band: true here?
           offset: -1
         } : {
           // otherwise, use fixed size
@@ -356,13 +381,7 @@ export namespace bar {
         };
     }
 
-    // fill
-    extend(p, colorMixins(model));
-
-    // opacity
-    var opacity = model.marksConfig('opacity');
-    if (opacity) { p.opacity = { value: opacity }; };
-
+    applyColorAndOpacity(p, model);
     return p;
   }
 
@@ -372,21 +391,23 @@ export namespace bar {
     // - consider defaults for offset and color
 
     var l: any = {};
-    const orient = model.marksConfig('orient');
+    const orient = model.config().mark.orient;
 
-    l.align = { value: (orient !== 'horizontal') ? "center" : "left" };
+    applyLabelConfig(l, model, []);
+
+    l.align = { value: (orient !== 'horizontal') ? 'center' : 'left' };
 
     l.text = { field: ((orient !== 'horizontal') ? model.field(Y) : model.field(X)) };
 
     l.x = {
       scale: model.scale(X),
       field: model.field(X)
-    }
+    };
 
     l.y = {
       scale: model.scale(Y),
       field: model.field(Y)
-    }
+    };
 
     if (orient !== 'horizontal') {
       l.y.offset = -6;
@@ -394,7 +415,7 @@ export namespace bar {
         scale: model.scale(X),
         band: true,
         mult: 0.5
-      }
+      };
     } else {
       l.x.offset = 6;
       l.y.offset = 3;
@@ -402,12 +423,10 @@ export namespace bar {
         scale: model.scale(Y),
         band: true,
         mult: 0.5
-      }
+      };
     }
 
-    // fill
-    extend(l, colorMixins(model));
-
+    applyColorAndOpacity(l, model);
     return l;
   }
 }
@@ -461,13 +480,7 @@ export namespace point {
       p.shape = { value: model.fieldDef(SHAPE).value };
     }
 
-    // fill or stroke
-    extend(p, colorMixins(model));
-
-    // opacity
-    const opacity = model.marksConfig('opacity');
-    if (opacity) { p.opacity = { value: opacity }; };
-
+    applyColorAndOpacity(p, model);
     return p;
   }
 
@@ -506,24 +519,8 @@ export namespace line {
       p.y = { field: { group: 'height' } };
     }
 
-    // stroke
-    if (model.has(COLOR)) {
-      p.stroke = {
-        scale: model.scale(COLOR),
-        field: model.field(COLOR)
-      };
-    } else {
-      p.stroke = { value: model.fieldDef(COLOR).value };
-    }
-
-    // opacity
-    var opacity = model.marksConfig('opacity');
-    if (opacity) { p.opacity = { value: opacity }; };
-
-    p.strokeWidth = { value: model.marksConfig('strokeWidth') };
-
-    applyMarksConfig(p, model, ['interpolate', 'tension']);
-
+    applyColorAndOpacity(p, model, ColorMode.ALWAYS_STROKED);
+    applyMarkConfig(p, model, ['interpolate', 'tension']);
     return p;
   }
 
@@ -543,7 +540,7 @@ export namespace area {
     // TODO Use Vega's marks properties interface
     var p: any = {};
 
-    const orient = model.marksConfig('orient');
+    const orient = model.config().mark.orient;
     if (orient !== undefined) {
       p.orient = { value: orient };
     }
@@ -611,15 +608,8 @@ export namespace area {
       }
     }
 
-    // fill
-    extend(p, colorMixins(model));
-
-    // opacity
-    var opacity = model.marksConfig('opacity');
-    if (opacity) { p.opacity = { value: opacity }; };
-
-    applyMarksConfig(p, model, ['interpolate', 'tension']);
-
+    applyColorAndOpacity(p, model);
+    applyMarkConfig(p, model, ['interpolate', 'tension']);
     return p;
   }
 
@@ -635,7 +625,6 @@ export namespace tick {
   }
 
   export function properties(model: Model) {
-    // TODO Use Vega's marks properties interface
     // FIXME are /3 , /1.5 divisions here correct?
     var p: any = {};
 
@@ -670,7 +659,7 @@ export namespace tick {
       // TODO(#694): optimize tick's width for bin
       p.width = { value: model.fieldDef(X).scale.bandWidth / 1.5 };
     } else {
-      p.width = { value: 1 };
+      p.width = { value: model.config().mark.tickSize };
     }
 
     // height
@@ -678,23 +667,10 @@ export namespace tick {
       // TODO(#694): optimize tick's height for bin
       p.height = { value: model.fieldDef(Y).scale.bandWidth / 1.5 };
     } else {
-      p.height = { value: 1 };
+      p.height = { value: model.config().mark.tickSize };
     }
 
-    // fill
-    if (model.has(COLOR)) {
-      p.fill = {
-        scale: model.scale(COLOR),
-        field: model.field(COLOR)
-      };
-    } else {
-      p.fill = { value: model.fieldDef(COLOR).value };
-    }
-
-    // opacity
-    var opacity = model.marksConfig('opacity');
-    if (opacity) { p.opacity = { value: opacity }; };
-
+    applyColorAndOpacity(p, model, ColorMode.ALWAYS_FILLED);
     return p;
   }
 
@@ -742,20 +718,7 @@ function filled_point_props(shape) {
     // shape
     p.shape = { value: shape };
 
-    // fill
-    if (model.has(COLOR)) {
-      p.fill = {
-        scale: model.scale(COLOR),
-        field: model.field(COLOR)
-      };
-    } else {
-      p.fill = { value: model.fieldDef(COLOR).value };
-    }
-
-    // opacity
-    var opacity = model.marksConfig('opacity');
-    if (opacity) { p.opacity = { value: opacity }; };
-
+    applyColorAndOpacity(p, model, ColorMode.ALWAYS_FILLED);
     return p;
   };
 }
@@ -841,17 +804,18 @@ export namespace text {
       p.fontSize = { value: size(model) };
     }
 
+    // FIXME applyColorAndOpacity
     // fill
     // TODO: consider if color should just map to fill instead?
 
     // opacity
-    var opacity = model.marksConfig('opacity');
+    var opacity = model.config().mark.opacity;
     if (opacity) { p.opacity = { value: opacity }; };
 
     // text
     if (model.has(TEXT)) {
       if (model.fieldDef(TEXT).type === QUANTITATIVE) {
-        const format = model.marksConfig('format');
+        const format = model.config().mark.format;
         // TODO: revise this line
         var numberFormat = format !== undefined ? format : model.numberFormat(TEXT);
 
@@ -866,9 +830,7 @@ export namespace text {
       p.text = { value: fieldDef.value };
     }
 
-    applyMarksConfig(p, model,
-      ['angle', 'align', 'baseline', 'dx', 'dy', 'fill', 'font', 'fontWeight',
-        'fontStyle', 'radius', 'theta']);
+    applyMarkConfig(p, model, TEXT_CONFIG);
 
     return p;
   }

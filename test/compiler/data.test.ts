@@ -167,7 +167,7 @@ describe('data.source', function() {
       it('should add filterNull for O when specified', function () {
         var enc = new Model(spec, {
           config: {
-            filterNull: {ordinal: true}
+            filterNull: true
           }
         });
         expect(source.nullFilterTransform(enc))
@@ -176,7 +176,16 @@ describe('data.source', function() {
             test:'datum.tt!==null && datum.qq!==null && datum.oo!==null'
           }]);
       });
-      // });
+
+      it('should add no null filter if filterNull is false', function () {
+        var enc = new Model(spec, {
+          config: {
+            filterNull: false
+          }
+        });
+        expect(source.nullFilterTransform(enc))
+          .to.eql([]);
+      });
     });
 
     describe('filter', function () {
@@ -240,6 +249,45 @@ describe('data.summary', function () {
         'summarize': {
           '*': ['count'],
           'Acceleration': ['sum']
+        }
+      }]
+    });
+  });
+
+  it('should return correct aggregation for detail arrays', function() {
+    var encoding = new Model({
+        mark: POINT,
+        encoding: {
+          'y': {
+            'aggregate': 'mean',
+            'field': 'Acceleration',
+            'type': QUANTITATIVE
+          },
+          'x': {
+            'aggregate': 'mean',
+            'field': 'Displacement',
+            'type': QUANTITATIVE
+          },
+          'detail': [{
+            'field': 'Origin',
+            'type': ORDINAL
+          },{
+            'field': 'Cylinders',
+            'type': QUANTITATIVE
+          }]
+        }
+      });
+
+    var aggregated = summary.def(encoding);
+    expect(aggregated).to.eql({
+      'name': SUMMARY,
+      'source': 'source',
+      'transform': [{
+        'type': 'aggregate',
+        'groupby': ['Origin', 'Cylinders'],
+        'summarize': {
+          'Displacement': ['mean'],
+          'Acceleration': ['mean']
         }
       }]
     });

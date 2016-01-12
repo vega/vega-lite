@@ -1,6 +1,5 @@
 import {expect} from 'chai';
-
-import {f as fixtures} from '../fixtures';
+import {bars, points, lines, area} from '../fixtures';
 import * as marks from '../../src/compiler/marks';
 import {X, Y, SIZE, COLOR, SHAPE} from '../../src/channel';
 import {Model} from '../../src/compiler/Model';
@@ -9,7 +8,7 @@ import {Model} from '../../src/compiler/Model';
 describe('compile.marks', function() {
   describe('bar', function() {
     describe('vertical, with log', function() {
-      var f = fixtures.bars.log_ver,
+      var f = bars.log_ver,
           e = new Model(f),
           def = marks.bar.properties(e);
       it('should end on axis', function() {
@@ -21,7 +20,7 @@ describe('compile.marks', function() {
     });
 
     describe('horizontal, with log', function() {
-      var f = fixtures.bars.log_hor,
+      var f = bars.log_hor,
           e = new Model(f),
           def = marks.bar.properties(e);
       it('should end on axis', function() {
@@ -33,7 +32,7 @@ describe('compile.marks', function() {
     });
 
     describe('1D, vertical', function() {
-      var f = fixtures.bars['1d_ver'],
+      var f = bars['1d_ver'],
           e = new Model(f),
           def = marks.bar.properties(e);
       it('should end on axis', function() {
@@ -48,7 +47,7 @@ describe('compile.marks', function() {
     });
 
     describe('1D, horizontal', function() {
-      var f = fixtures.bars['1d_hor'],
+      var f = bars['1d_hor'],
           e = new Model(f),
           def = marks.bar.properties(e);
       it('should end on axis', function() {
@@ -68,7 +67,7 @@ describe('compile.marks', function() {
 
   describe('point', function() {
     describe('1D, horizontal', function() {
-      var f = fixtures.points['1d_hor'],
+      var f = points['1d_hor'],
           e = new Model(f),
           def = marks.point.properties(e);
       it('should be centered', function() {
@@ -80,7 +79,7 @@ describe('compile.marks', function() {
     });
 
     describe('1D, vertical', function() {
-      var f = fixtures.points['1d_ver'],
+      var f = points['1d_ver'],
           e = new Model(f),
           def = marks.point.properties(e);
       it('should be centered', function() {
@@ -92,7 +91,7 @@ describe('compile.marks', function() {
     });
 
     describe('2D, x and y', function() {
-      var f = fixtures.points['x,y'],
+      var f = points['x,y'],
           e = new Model(f),
           def = marks.point.properties(e);
       it('should scale on x', function() {
@@ -105,7 +104,7 @@ describe('compile.marks', function() {
 
     describe('3D', function() {
       describe('x,y,size', function () {
-        var f = fixtures.points['x,y,size'],
+        var f = points['x,y,size'],
             e = new Model(f),
             def = marks.point.properties(e);
         it('should have scale for size', function () {
@@ -114,7 +113,7 @@ describe('compile.marks', function() {
       });
 
       describe('x,y,color', function () {
-        var f = fixtures.points['x,y,stroke'],
+        var f = points['x,y,stroke'],
             e = new Model(f),
             def = marks.point.properties(e);
         it('should have scale for color', function () {
@@ -123,7 +122,7 @@ describe('compile.marks', function() {
       });
 
       describe('x,y,shape', function () {
-        var f = fixtures.points['x,y,shape'],
+        var f = points['x,y,shape'],
             e = new Model(f),
             def = marks.point.properties(e);
         it('should have scale for shape', function () {
@@ -135,7 +134,7 @@ describe('compile.marks', function() {
 
   describe('line', function() {
     describe('2D, x and y', function() {
-      var f = fixtures.lines['x,y'],
+      var f = lines['x,y'],
           e = new Model(f),
           def = marks.line.properties(e);
       it('should have scale for x', function() {
@@ -148,7 +147,7 @@ describe('compile.marks', function() {
 
     describe('3D', function() {
       describe('x,y,color', function () {
-        var f = fixtures.lines['x,y,stroke'],
+        var f = lines['x,y,stroke'],
             e = new Model(f),
             def = marks.line.properties(e);
         it('should have scale for color', function () {
@@ -160,7 +159,7 @@ describe('compile.marks', function() {
 
   describe('area', function() {
     describe('2D, x and y', function() {
-      var f = fixtures.area['x,y'],
+      var f = area['x,y'],
           e = new Model(f),
           def = marks.area.properties(e);
       it('should have scale for x', function() {
@@ -173,7 +172,7 @@ describe('compile.marks', function() {
 
     describe('3D', function() {
       describe('x,y,color', function () {
-        var f = fixtures.area['x,y,color'],
+        var f = area['x,y,color'],
             e = new Model(f),
             def = marks.area.properties(e);
         it('should have scale for color', function () {
