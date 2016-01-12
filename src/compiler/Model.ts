@@ -143,12 +143,7 @@ export class Model {
   }
 
   public has(channel: Channel) {
-    // equivalent to calling vlenc.has(this._spec.encoding, channel)
-    const channelEncoding = this._spec.encoding[channel];
-    return channelEncoding && (
-      channelEncoding.field !== undefined ||
-      (isArray(channelEncoding) && channelEncoding.length > 0)
-    );
+    return vlEncoding.has(this._spec.encoding, channel);
   }
 
   public fieldDef(channel: Channel): FieldDef {
