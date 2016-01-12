@@ -10,7 +10,7 @@ import {COLUMN, ROW, X, Y, SHAPE, SIZE, COLOR, TEXT, DETAIL, Channel} from '../c
 import {SOURCE, STACKED_SCALE} from '../data';
 import {isDimension} from '../fielddef';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
-import {BAR, TEXT as TEXT_MARK, TICK} from '../mark';
+import {Mark, BAR, TEXT as TEXT_MARK, TICK} from '../mark';
 
 export function compileScales(channels: Channel[], model: Model) {
   return channels.filter(function(channel: Channel) {
@@ -21,7 +21,7 @@ export function compileScales(channels: Channel[], model: Model) {
 
       var scaleDef: any = {
         name: model.scale(channel),
-        type: type(fieldDef, channel, model),
+        type: type(fieldDef, channel, model.mark()),
       };
 
       scaleDef.domain = domain(model, channel, scaleDef.type);
@@ -49,7 +49,7 @@ export function compileScales(channels: Channel[], model: Model) {
     });
 }
 
-export function type(fieldDef: FieldDef, channel: Channel, model: Model): string {
+export function type(fieldDef: FieldDef, channel: Channel, mark: Mark): string {
   switch (fieldDef.type) {
     case NOMINAL:
       return 'ordinal';
@@ -80,7 +80,7 @@ export function type(fieldDef: FieldDef, channel: Channel, model: Model): string
           // Returns ordinal if (1) the channel is X or Y, and
           // (2) is the dimension of BAR or TICK mark.
           // Otherwise return linear.
-          return contains([BAR, TICK], model.mark()) &&
+          return contains([BAR, TICK], mark) &&
             isDimension(fieldDef) ? 'ordinal' : 'linear';
       }
       return 'time';
