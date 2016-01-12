@@ -68,7 +68,11 @@ Here is a list of properties for the field definition object:
 
 Vega-Lite supports all [Vega aggregation operations](https://github.com/vega/vega/wiki/Data-Transforms#-aggregate) (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).
 
-If at least one of the specified encoding channel contains aggregation, a summary data table (`aggregate`) will be computed from the source data table (after binning and time unit have been derived) and the resulting visualization shows data from this summary table.  In this case, all fields without aggregation function specified are treated as dimensions.  The summary statistics are grouped by these dimensions.
+If at least one fields in the specified encoding channel contains `aggregate`,
+a summary data table is computed from the source data table.
+The resulting visualization shows data from this summary table.  
+In this case, all fields without aggregation function specified are treated as dimensions; thus, the summary statistics are grouped by these dimensions.
+Additional dimensions that are not directly mapped to visual encodings can be specified using the `detail` channel.  
 
 If none of the specified encoding channel contains aggregation, no additional data table is created.
 
@@ -148,9 +152,9 @@ Vega-Lite's `scale` definition supports the following properties<sup>1</sup>:
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | bandWidth     | Number        | Width for each ordinal band.  <!--TODO need to write better explanation --> |
-| points        | Boolean       | If true (default), distributes the ordinal values over a quantitative range at uniformly spaced points. The spacing of the points can be adjusted using the _padding_ property. If false, the ordinal scale will construct evenly-spaced bands, rather than points.  |
-| padding       | Number        | Applies spacing among ordinal elements in the scale range. The actual effect depends on how the scale is configured. If the __points__ parameter is `true`, the padding value is interpreted as a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. Otherwise, padding is typically in the range [0, 1] and corresponds to the fraction of space in the range interval to allocate to padding. A value of 0.5 means that the range band width will be equal to the padding width. For more, see the [D3 ordinal scale documentation](https://github.com/mbostock/d3/wiki/Ordinal-Scales).|
+| padding       | Number        | Applies spacing among ordinal elements in the scale range. The actual effect depends on how the scale is configured. For `x` and `y`, the padding value is interpreted as a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. For `row` and `column`, padding is typically in the range [0, 1] and corresponds to the fraction of space in the range interval to allocate to padding. A value of 0.5 means that the range band width will be equal to the padding width. For more, see the [D3 ordinal scale documentation](https://github.com/mbostock/d3/wiki/Ordinal-Scales).|
 
+<!-- TODO: add outperPadding -->
 
 #### Time Scale Properties
 
@@ -219,11 +223,10 @@ Moreover, Vega-Lite supports the following additional axis properties.
 
 | Property        | Type          | Description    |
 | :------------   |:-------------:| :------------- |
+| characterWidth  | Integer       | Character width for automatically determining the value of `titleMaxLength`. |
 | labelMaxLength  | Integer       | Max length for axis labels. Longer labels are truncated. (25 by default.) |
 | shortTimeLabels | Boolean       | Whether month and day names should be abbreviated. |
-| titleMaxLength  | Integer       | Max length for axis title when the title is automatically generated from the field\'s description. |
-
-
+| titleMaxLength  | Integer       | Max length for axis title when the title is automatically generated from the field\'s description. By default, this is automatically based on cell size (`config.cell.width`, `config.cell.height`) and `characterWidth` property. |
 
 ----
 

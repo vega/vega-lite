@@ -3,6 +3,7 @@ export interface CellConfig {
   height?: number;
   padding?: number;
 
+  gridShow?: boolean;
   gridColor?: string;
   gridOpacity?: number;
   gridOffset?: number;
@@ -12,6 +13,7 @@ export interface CellConfig {
   stroke?: string;
   strokeWidth?: number;
   strokeOpacity? :number;
+  strokeDash?: number;
   strokeDashOffset?: number;
 }
 
@@ -31,6 +33,10 @@ export const cellConfig = {
       default: 16,
       description: 'default padding between facets.'
     },
+    gridShow: {
+      type: 'boolean',
+      default: true
+    },
     gridColor: {
       type: 'string',
       role: 'color',
@@ -40,15 +46,17 @@ export const cellConfig = {
       type: 'number',
       minimum: 0,
       maximum: 1,
-      default: 0.25
+      default: 0.4
     },
     gridOffset: {
       type: 'number',
-      default: 6 // equal to tickSize
-      // TODO refer to tickSize when reading?
+      default: 0
     },
 
     // Group properties
+    clip: {
+      type: 'boolean',
+    },
     fill: {
       type: 'string',
       role: 'color',

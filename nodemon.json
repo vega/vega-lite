@@ -6,6 +6,7 @@
     "data/*",
     "vega-lite-schema.json",
     "examples/_original/*",
-    "examples/_output/*"
+    "examples/_output/*",
+    "_site"
   ]
 }
