@@ -238,13 +238,6 @@ export class Model {
     return this._spec.config;
   }
 
-  /**
-   * Get the spec configuration for cells.
-   */
-  public cellConfig() {
-    return this._spec.config.cell;
-  }
-
   public axis(channel: Channel): Axis {
     const axis = this.fieldDef(channel).axis;
     return typeof axis !== 'boolean' ? axis : {};
@@ -288,13 +281,6 @@ export class Model {
         return value;
     }
     return value;
-  }
-
-  /**
-   * Get the spec scene configuration.
-   */
-  public sceneConfig() {
-    return this._spec.config.scene;
   }
 
   /** returns scale name for a given channel */
