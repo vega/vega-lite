@@ -184,8 +184,8 @@ export namespace source {
   export function nullFilterTransform(model: Model) {
     const filterNull = model.config().filterNull;
     const filteredFields = keys(model.reduce(function(aggregator, fieldDef: FieldDef) {
-      if (filterNull === true ||
-        filterNull !== false && fieldDef.field && fieldDef.field !== '*' && DEFAULT_NULL_FILTERS[fieldDef.type]) {
+      if (filterNull ||
+        (filterNull === undefined && fieldDef.field && fieldDef.field !== '*' && DEFAULT_NULL_FILTERS[fieldDef.type])) {
         aggregator[fieldDef.field] = true;
       }
       return aggregator;
