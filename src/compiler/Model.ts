@@ -17,7 +17,6 @@ import {type as scaleType} from './scale';
 import {getFullName, NOMINAL, ORDINAL, TEMPORAL} from '../type';
 import {contains, duplicate, extend, isArray} from '../util';
 import {Encoding} from '../schema/encoding.schema';
-import {Config} from '../schema/config.schema';
 
 
 /**
@@ -235,15 +234,15 @@ export class Model {
   /**
    * Get the spec configuration.
    */
-  public config(): Config {
+  public config() {
     return this._spec.config;
   }
 
   /**
-   * @return Cell config value from the spec, or a default value if unspecified.
+   * Get the spec configuration for cells.
    */
-  public cellConfig(name: string) {
-    return this._spec.config.cell[name];
+  public cellConfig() {
+    return this._spec.config.cell;
   }
 
   public axis(channel: Channel): Axis {
@@ -292,10 +291,10 @@ export class Model {
   }
 
   /**
-   * @return Scene config value from the spec, or a default value if unspecified.
+   * Get the spec scene configuration.
    */
-  public sceneConfig(name: string) {
-    return this._spec.config.scene[name];
+  public sceneConfig() {
+    return this._spec.config.scene;
   }
 
   /** returns scale name for a given channel */

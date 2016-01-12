@@ -40,7 +40,7 @@ export function compile(spec, theme?) {
     }, {}),
     keys(model.config().scene).length > 0 ? ['fill', 'fillOpacity', 'stroke', 'strokeWidth',
       'strokeOpacity', 'strokeDash', 'strokeDashOffset'].reduce(function(topLevelConfig: any, property) {
-        const value = model.sceneConfig(property);
+        const value = model.sceneConfig()[property];
         if (value !== undefined) {
           topLevelConfig.scene = topLevelConfig.scene || {};
           topLevelConfig.scene[property] = {value: value};
