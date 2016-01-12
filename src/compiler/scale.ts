@@ -287,11 +287,6 @@ export function padding(model: Model, channel: Channel, scaleType: string) {
 
 export function points(model: Model, channel: Channel, scaleType: string) {
   if (scaleType === 'ordinal') {
-    if (model.fieldDef(channel).scale.points !== undefined) {
-      // explicit value
-      return model.fieldDef(channel).scale.points;
-    }
-
     switch (channel) {
       case X:
       case Y:
