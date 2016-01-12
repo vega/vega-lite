@@ -1,23 +1,25 @@
 import {Spec} from '../schema/schema';
 import {Axis, axis as axisSchema} from '../schema/axis.schema';
+import {Encoding} from '../schema/encoding.schema';
 import {FieldDef} from '../schema/fielddef.schema';
 import {instantiate} from '../schema/schemautil';
+import * as schema from '../schema/schema';
+import * as schemaUtil from '../schema/schemautil';
 
 import {COLUMN, ROW, X, Y, DETAIL, Channel, supportMark} from '../channel';
 import {SOURCE, SUMMARY} from '../data';
 import * as vlFieldDef from '../fielddef';
 import {FieldRefOption} from '../fielddef';
 import * as vlEncoding from '../encoding';
-import {compileLayout, Layout} from './layout';
 import {POINT, TICK, CIRCLE, SQUARE, Mark} from '../mark';
-import * as schema from '../schema/schema';
-import * as schemaUtil from '../schema/schemautil';
-import {compileStackProperties, StackProperties} from './stack';
-import {type as scaleType} from './scale';
+
 import {getFullName, NOMINAL, ORDINAL, TEMPORAL} from '../type';
 import {contains, duplicate, extend} from '../util';
-import {Encoding} from '../schema/encoding.schema';
 
+import {compileMarkConfig} from './config';
+import {compileLayout, Layout} from './layout';
+import {compileStackProperties, StackProperties} from './stack';
+import {type as scaleType} from './scale';
 
 /**
  * Internal model of Vega-Lite specification for the compiler.
@@ -53,8 +55,10 @@ export class Model {
     }, this);
 
     // calculate stack
-    this._stack = compileStackProperties(this.spec());
+    this._stack = compileStackProperties(this._spec);
+    this._spec.config.mark = compileMarkConfig(this._spec, this._stack);
     this._layout = compileLayout(this);
+
   }
 
   public layout(): Layout {
