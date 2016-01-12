@@ -29,7 +29,7 @@ export function field(fieldDef: FieldDef, opt: FieldRefOption = {}) {
   } else if (opt.fn) {
     return f + opt.fn + '_' + field;
   } else if (!opt.nofn && fieldDef.bin) {
-    return f + 'bin_' + field + opt.binSuffix;
+    return f + 'bin_' + field + opt.binSuffix || '_start';
   } else if (!opt.nofn && !opt.noAggregate && fieldDef.aggregate) {
     return f + fieldDef.aggregate + '_' + field;
   } else if (!opt.nofn && fieldDef.timeUnit) {
