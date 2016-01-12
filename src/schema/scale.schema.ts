@@ -12,7 +12,6 @@ export interface Scale {
   bandWidth?: number;
   outerPadding?: number;
   padding?: number;
-  points?: boolean;
 
   // typical
   clamp?: boolean;
@@ -74,11 +73,6 @@ var ordinalScaleMixin = {
       type: 'number',
       default: undefined,
       description: 'Applies spacing among ordinal elements in the scale range. The actual effect depends on how the scale is configured. If the __points__ parameter is `true`, the padding value is interpreted as a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. Otherwise, padding is typically in the range [0, 1] and corresponds to the fraction of space in the range interval to allocate to padding. A value of 0.5 means that the range band width will be equal to the padding width. For more, see the [D3 ordinal scale documentation](https://github.com/mbostock/d3/wiki/Ordinal-Scales).'
-        },
-    points: {
-      type: 'boolean',
-      default: undefined,
-      description: 'If true, distributes the ordinal values over a quantitative range at uniformly spaced points. The spacing of the points can be adjusted using the padding property. If false, the ordinal scale will construct evenly-spaced bands, rather than points.'
     }
   }
 };
