@@ -284,8 +284,8 @@ export namespace bar {
           field: model.field(SIZE)
         } : model.isOrdinalScale(X) || !model.has(X) ? {
           // for ordinal scale or single bar, we can use bandWidth
-          value: model.fieldDef(X).scale.bandWidth, // TODO(#724): can we use band: true here?
-          offset: -1
+          value: model.fieldDef(X).scale.bandWidth, // TODO(#618): extract signal
+          offset: -1 // TODO(#931): bandWidthOffset
         } : {
           // otherwise, use fixed size
           value: LINEAR_SCALE_BAR_SIZE
@@ -360,8 +360,8 @@ export namespace bar {
           field: model.field(SIZE)
         } : model.isOrdinalScale(Y) || !model.has(Y) ? {
           // for ordinal scale or single bar, we can use bandWidth
-          value: model.fieldDef(Y).scale.bandWidth, // TODO(#724): can we use band: true here?
-          offset: -1
+          value: model.fieldDef(Y).scale.bandWidth, // TODO(#618): extract signal
+          offset: -1 // TODO(#931): bandWidthOffset
         } : {
           // otherwise, use fixed size
           value: LINEAR_SCALE_BAR_SIZE
