@@ -149,7 +149,14 @@ export function size(model: Model, channel: Channel = SIZE) {
         2;
     case TICK:
       // TICK's size is applied on either X or Y
-      if (!model.has(channel) || model.isDimension(channel)) {
+      if (
+          (!model.has(channel) || model.isDimension(channel)) &&
+          // Tick's bandWidth should only be applied to one side
+          // (X for vertical, Y for horizontal)
+          ((channel === X && model.config().mark.orient !== 'horizontal') ||
+          (channel === Y && model.config().mark.orient === 'horizontal'))
+        ) {
+
         // TODO(#694): optimize tick's width for bin
         return model.fieldDef(channel).scale.bandWidth / 1.5;
       } else {
@@ -575,7 +582,6 @@ export namespace tick {
   }
 
   export function properties(model: Model) {
-    // FIXME are /3 , /1.5 divisions here correct?
     var p: any = {};
 
     // x
