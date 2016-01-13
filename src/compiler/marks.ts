@@ -1,6 +1,6 @@
 import {Model} from './Model';
 import {X, Y, COLOR, TEXT, SIZE, SHAPE, DETAIL, ROW, COLUMN, LABEL, Channel} from '../channel';
-import {AREA, LINE, BAR, TEXT as TEXTMARKS} from '../mark';
+import {AREA, LINE, BAR, TEXT as TEXTMARKS, TICK} from '../mark';
 import {imputeTransform, stackTransform} from './stack';
 import {QUANTITATIVE} from '../type';
 import {extend} from '../util';
@@ -147,6 +147,14 @@ export function size(model: Model, channel: Channel = SIZE) {
         model.fieldDef(channel).scale.bandWidth - 1 :
         // otherwise, set to 2 by default
         2;
+    case TICK:
+      // TICK's size is applied on either X or Y
+      if (!model.has(channel) || model.isDimension(channel)) {
+        // TODO(#694): optimize tick's width for bin
+        return model.fieldDef(channel).scale.bandWidth / 1.5;
+      } else {
+        return model.config().mark.thickness;
+      }
   }
   return 30;
 }
@@ -590,23 +598,9 @@ export namespace tick {
       p.y = { value: 0 };
     }
 
-    // width
-    if (!model.has(X) || model.isDimension(X)) {
-      // TODO(#694): optimize tick's width for bin
-      // TODO: call size()
-      p.width = { value: model.fieldDef(X).scale.bandWidth / 1.5 };
-    } else {
-      p.width = { value: model.config().mark.thickness };
-    }
-
-    // height
-    if (!model.has(Y) || model.isDimension(Y)) {
-      // TODO(#694): optimize tick's height for bin
-      // TODO: call size()
-      p.height = { value: model.fieldDef(Y).scale.bandWidth / 1.5 };
-    } else {
-      p.height = { value: model.config().mark.thickness };
-    }
+    // width & height
+    p.width = { value: size(model, X) };
+    p.height = { value: size(model, Y) };
 
     applyColorAndOpacity(p, model, ColorMode.ALWAYS_FILLED);
     return p;
