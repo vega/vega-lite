@@ -113,8 +113,7 @@ export function compileMarks(model: Model): any[] {
       const labelProperties = exports[mark].labels(model);
 
       // check if we have label method for current mark type.
-      // TODO(#240): remove this line once we support label for all mark types
-      if (labelProperties) {
+      if (labelProperties !== undefined) { // If label is supported 
         // add label group
         marks.push(extend(
           name ? { name: name + '-label' } : {},
@@ -746,7 +745,6 @@ export namespace text {
   }
 
   export function labels(model: Model) {
-    // TODO(#240): fill this method
-    return undefined;
+    return undefined; // text do not support label
   }
 }
