@@ -6,7 +6,9 @@ Please post these questions on our google group.
 
 ## Found an Issue or Want a Feature?
 
-If you find a bug in the code or a mistake in the documentation or want a new feature, you can help us by creating an issue to [our repository](http://github.com/vega/vega-lite), or even better, submit a Pull Request with a fix (See [Development Guide](#dev) Below).  
+If you find a bug in the code or a mistake in the documentation or want a new feature,
+you can help us by creating an issue to [our repository](http://github.com/vega/vega-lite),
+or even better, submit a Pull Request.  
 
 Before creating an issue, please browse through the [issue list](https://github.com/vega/vega-lite/issues) to avoid duplicates.  
 
@@ -16,9 +18,39 @@ A good issue shouldn't leave others needing to chase you up for more information
 
 - __Describe how to reproduce the issue__ If possible, please provide an example Vega-Lite specification for reproducing the issue.  
 
-- __Provide screenshots/animated GIFs or describe the behavior you observed after following the steps__ and point out what exactly is the problem with that behavior.  Skitch is a useful tool for capturing screenshot. Github's issue tracker also supports drag-and-drop image upload.  
+- __Provide screenshots/animated GIFs or describe the behavior you observed
+after following the steps__ and point out what exactly is the problem with that behavior.  
+[Skitch](https://evernote.com/skitch) is a useful tool for capturing screenshot.
+Github's issue tracker also supports drag-and-drop image upload.  
 
 - __Explain which behavior you expected to see instead and why.__
+
+## Submitting a Pull Request
+
+You can contribute to our codebase by submitting [a pull request](https://help.github.com/articles/using-pull-requests/).  Here are some guides:
+
+- Search GitHub for a related pull request. You don't want to duplicate effort.
+
+- Before submitting, all lint and test should pass.  
+Make sure to run `npm run lint` and `npm run test` before submitting a Pull Request.  
+Also, do not forget to update the documentation under `docs/` to reflect the changes
+within the same pull request.
+
+- For small fixes, please feel free to submit a pull request with appropriate test cases or example specs the demonstrate the use case.  No worry about creating an issue first.  
+
+- For major changes, please discuss with us via our mailing list and Github first,
+so we can better coordinate our efforts, prevent duplication of work, and help you to craft the change so that it is successfully accepted into the project.
+
+- Generally we name a branch using this pattern "<your 2-3 letter initial>/<topic>".  For example, @kanitw's branch regarding scale type might be called `kw/scale-type`.
+
+- You can refer to related issue by adding #<issue-no> to the pull request's description.
+
+## Documentation
+
+Our documentation also resides in our Github repository under `docs/` in Markdown format.  
+We use Github Pages to publish our documentation when we release a new version.
+To contribute changes to the documentation, simply submit a pull request that changes
+the corresponding markdown files in `docs/`.   
 
 # <a name="dev"></a> Development Guide
 
@@ -37,16 +69,20 @@ npm install
 
 ## Directory Structure
 
-- `_layouts` – Our website and documentation's Jekyll layout files.  
-- `bin` – Scripts for using Vega-Lite with command line.
-- `data` – Example data.
-- `docs` – Vega-Lite documentation.
-- `examples` – Example Vega-Lite specification.  `examples/vlexamples.json` lists all of these examples.  
-- `scripts` - Scripts for NPM commands.
-- `site`- Misc files for serving the website and gallery
-- `src` - source code.  `src/vl.ts` is the root file for Vega-Lite codebase that exports the global `vl` object.  General helpers methods are under `src`.  `src/compiler` contains all methods for compiler, which compiles Vega-Lite specs into Vega specs.  `src/schema` contains JSON schema and TypeScript interface declaration.  
-- `test` - code for unit testing.  `test`'s structure reflects `src`'s' directory structure.  For example, `test/compiler` test files inside `src/compiler`.  
-- `typings` - TypeScript typing declaration for dependencies.  Some of them are downloaded from the TypeStrong community.
+- `_layouts/` – Our website and documentation's Jekyll layout files.  
+- `bin/` – Scripts for using Vega-Lite with command line.
+- `data/` – Example data.
+- `docs/` – Vega-Lite documentation.
+- `examples/` – Example Vega-Lite specification.  `examples/vlexamples.json` lists all of these examples.  
+- `lib/` contains JSON schema's `schema.json`
+- `scripts/` - Scripts for NPM commands.
+- `site/` - Misc files for serving the website and gallery
+- `src/` - Main source code directory.  
+  - `src/vl.ts` is the root file for Vega-Lite codebase that exports the global `vl` object.  Other helpers methods that might be called by dependent projects such as [Compass](github.com/vega/compass) are also under `src/`.  
+  - `src/compiler/` contains all methods for compiler, which compiles Vega-Lite specs into Vega specs.  
+  - `src/schema/` contains JSON schema and TypeScript interface declaration.  
+- `test/` - Code for unit testing.  `test`'s structure reflects `src`'s' directory structure.  For example, `test/compiler/` test files inside `src/compiler`.  
+- `typings/` - TypeScript typing declaration for dependencies.  Some of them are downloaded from the TypeStrong community.
 
 
 ## Commands
@@ -85,8 +121,8 @@ If you only want subset of these actions, you can use:
 We also have commands for observing changes in output Vega spec and output images.
 
 To create baseline Vega output specs from the Vega-Lite specs in `examples/`,
-check out the baseline branch (e.g., `git checkout master`) and run `npm x-compile`.
-All compiled specs will be in `examples/_original`.
+check out the baseline branch (e.g., `git checkout master`) and run `npm
+x-compile`. All compiled specs will be in `examples/_original`.
 
 Once you develop some features and would like to diff the compiled specs, run `npm x-diff`.  
 This will compile all examples again and output the diff for changed examples in the console.  
@@ -97,8 +133,9 @@ You can open those files to inspect visual changes, or run a diff command
 
 ### Deployment
 
-(For team members only) `npm run deploy` will publish latest code to npm and bower and also update github pages,
-which contains our webpage and documentation.  If you want to update only github pages,
+(For team members only) `npm run deploy` will publish latest code to NPM and Bower
+and also update github pages, which contains our webpage and documentation.  
+If you want to update only github pages,
 use `npm run deploy:gh`.  
 
 To use any of these two commands, you will need to [install jq](https://stedolan.github.io/jq/download/)
@@ -108,14 +145,21 @@ i.e., running `brew install jq` if you use [homebrew](http://brew.sh) on mac.
 
 We use the [atom](atom.io) editor with the following plug-ins:
 - `atom-typescript` - This provides us IDE-like features for TS inside Atom including renaming, go to definition, find all references.
-- `linter` and `linter-tslint` – These shows tslint errors inside the editor.
+- `linter` and `linter-tslint` – These shows tslint errors inside the editor.  This is quite important since our Travis run includes linting too. Therefore, if your branch has a linting error, Travis test will fail too.  
 
 __Tips:__ If you don't want to see intermediate files (`.js`, `.js.map`), you can "Hide VCS Ignored Files" in the `tree-view` plugin.
+
+## Manually Testing with Vega-Editor
+
+To manually test your changes locally, you should have a local instance of
+[Vega Editor](https://github.com/vega/vega-editor) and link Vega-Lite to the editor  
+(See [Vega Editor's README](https://github.com/vega/vega-editor#local-testing--debugging)
+for instructions).
 
 ## Developing Vega-Lite and Datalib
 
 Vega-Lite depends on [Datalib](https://github.com/vega/datalib).
-If you plan to make changes to datalib and test Vega-Lite without publishing / copying compiled datalib all the time, use npm's [link](http://justjs.com/posts/npm-link-developing-your-own-npm-modules-without-tears) function.
+If you plan to make changes to datalib and test Vega-Lite without publishing / copying compiled Datalib all the time, use [`npm link`](http://justjs.com/posts/npm-link-developing-your-own-npm-modules-without-tears) command.
 
 ```sh
 # first link datalib global npm
@@ -128,10 +172,6 @@ npm link datalib
 
 Now all the changes you make in Datalib are reflected in your Vega-Lite automatically.
 
-## Submitting a Pull Request
+# Credit
 
-- All lint and test must pass.  Make sure to run `npm run lint` and `npm run test` before submitting a Pull Request.  
-
-- For small fixes, please feel free to submit a pull request with appropriate test cases or example specs the demonstrate the use case.
-
-TODO 
+This contribution guide is partly inspired from [angular.js's CONTRIBUTION.md](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md).
