@@ -599,7 +599,7 @@ export namespace tick {
       // TODO(#694): optimize tick's width for bin
       p.width = { value: model.fieldDef(X).scale.bandWidth / 1.5 };
     } else {
-      p.width = { value: model.config().mark.tickSize };
+      p.width = { value: model.config().mark.thickness };
     }
 
     // height
@@ -607,7 +607,7 @@ export namespace tick {
       // TODO(#694): optimize tick's height for bin
       p.height = { value: model.fieldDef(Y).scale.bandWidth / 1.5 };
     } else {
-      p.height = { value: model.config().mark.tickSize };
+      p.height = { value: model.config().mark.thickness };
     }
 
     applyColorAndOpacity(p, model, ColorMode.ALWAYS_FILLED);

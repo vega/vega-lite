@@ -100,7 +100,7 @@ and the following fill and stroke properties:
 
 | Property            | Type                | Description  |
 | :------------------ |:-------------------:| :------------|
-| tickSize            | Number              | Size of the tick mark. |
+| thickness           | Number              | Thickness of the tick mark. |
 
 
 ### Marks Config for Text Marks

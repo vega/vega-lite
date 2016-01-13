@@ -21,7 +21,7 @@ export interface MarkConfig {
   tension?: number;
 
   // Tick-only
-  tickSize?: number;
+  thickness?: number;
 
   // Text-only
   align?: string;
@@ -136,10 +136,10 @@ export const markConfig = {
     },
 
     // Tick-only
-    tickSize: {
+    thickness: {
       type: 'number',
       default: 1,
-      description: 'Size of the tick mark.'
+      description: 'Thickness of the tick mark.'
     },
 
     // text-only
