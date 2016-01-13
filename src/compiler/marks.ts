@@ -263,7 +263,7 @@ export namespace bar {
           scale: model.scale(X),
           field: model.field(X)
         };
-        p.width = size(model, X);
+        p.width = {value: size(model, X)};
       }
     } else if (model.fieldDef(X).bin) {
       if (model.has(SIZE) && orient !== 'horizontal') {
