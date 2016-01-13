@@ -26,8 +26,8 @@ describe('vl.compile.scale', function() {
         }), Y, 'linear');
 
         expect(domain).to.eql({
-          data: 'stacked',
-          field: 'max_sum_sum_origin'
+          data: 'stacked_scale',
+          field: 'sum_sum_origin'
         });
       });
 
@@ -46,8 +46,8 @@ describe('vl.compile.scale', function() {
         }), Y, 'linear');
 
         expect(domain).to.eql({
-          data: 'stacked',
-          field: 'max_sum_sum_origin'
+          data: 'stacked_scale',
+          field: 'sum_sum_origin'
         });
       });
     });

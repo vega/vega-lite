@@ -23,6 +23,8 @@ export function compile(spec, theme?) {
   // FIXME replace FIT with appropriate mechanism once Vega has it
   const FIT = 1;
 
+  const config = model.config();
+
   // TODO: change type to become VgSpec
   const output = extend(
     spec.name ? {name: spec.name} : {},
@@ -32,15 +34,15 @@ export function compile(spec, theme?) {
       padding: 'auto'
     },
     ['viewport', 'background'].reduce(function(topLevelConfig, property) {
-      const value = model.config(property);
+      const value = config[property];
       if (value !== undefined) {
         topLevelConfig[property] = value;
       }
       return topLevelConfig;
     }, {}),
-    keys(model.config('scene')).length > 0 ? ['fill', 'fillOpacity', 'stroke', 'strokeWidth',
+    keys(config.scene).length > 0 ? ['fill', 'fillOpacity', 'stroke', 'strokeWidth',
       'strokeOpacity', 'strokeDash', 'strokeDashOffset'].reduce(function(topLevelConfig: any, property) {
-        const value = model.sceneConfig(property);
+        const value = config.scene[property];
         if (value !== undefined) {
           topLevelConfig.scene = topLevelConfig.scene || {};
           topLevelConfig.scene[property] = {value: value};

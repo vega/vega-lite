@@ -5,16 +5,23 @@ export interface MarkConfig {
 
   // General Vega
   opacity?: number;
+
   strokeWidth?: number;
   strokeDash?: number[];
   strokeDashOffset?: number[];
   fill?: string;
+  fillOpacity?: number;
+  stroke?: string;
+  strokeOpacity?: number;
 
   // Bar / area
   orient?: string;
   // Line / area
   interpolate?: string;
   tension?: number;
+
+  // Tick-only
+  thickness?: number;
 
   // Text-only
   align?: string;
@@ -59,11 +66,27 @@ export const markConfig = {
       description: 'Sort layer of marks by a given field or fields.'
     },
     // General Vega
-    // TODO consider removing as it is conflicting with color.value
     fill: {
       type: 'string',
       role: 'color',
-      default: '#000000'
+      default: undefined
+    },
+    fillOpacity: {
+      type: 'number',
+      default: undefined,  // auto
+      minimum: 0,
+      maximum: 1
+    },
+    stroke: {
+      type: 'string',
+      role: 'color',
+      default: undefined
+    },
+    strokeOpacity: {
+      type: 'number',
+      default: undefined,  // auto
+      minimum: 0,
+      maximum: 1
     },
     opacity: {
       type: 'number',
@@ -110,6 +133,13 @@ export const markConfig = {
       type: 'number',
       default: undefined,
       description: 'Depending on the interpolation type, sets the tension parameter.'
+    },
+
+    // Tick-only
+    thickness: {
+      type: 'number',
+      default: 1,
+      description: 'Thickness of the tick mark.'
     },
 
     // text-only

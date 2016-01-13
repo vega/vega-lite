@@ -32,6 +32,7 @@
         "src/channel.ts",
         "src/compiler/axis.ts",
         "src/compiler/compiler.ts",
+        "src/compiler/config.ts",
         "src/compiler/data.ts",
         "src/compiler/facet.ts",
         "src/compiler/layout.ts",

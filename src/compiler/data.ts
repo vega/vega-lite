@@ -6,10 +6,17 @@ import {StackProperties} from './stack';
 
 import {autoMaxBins} from '../bin';
 import {Channel, X, Y, ROW, COLUMN} from '../channel';
-import {SOURCE, STACKED, LAYOUT, SUMMARY} from '../data';
+import {SOURCE, STACKED_SCALE, LAYOUT, SUMMARY} from '../data';
 import {field} from '../fielddef';
 import {QUANTITATIVE, TEMPORAL} from '../type';
 import {type as scaleType} from './scale';
+
+const DEFAULT_NULL_FILTERS = {
+  nominal: false,
+  ordinal: false,
+  quantitative: true,
+  temporal: true
+};
 
 /**
  * Create Vega's data array from a given encoding.
@@ -157,7 +164,7 @@ export namespace source {
         }
 
         transform.push(binTrans);
-        if (scaleType(fieldDef, channel) === 'ordinal') {
+        if (scaleType(fieldDef, channel, model.mark()) === 'ordinal') {
           transform.push({
             type: 'formula',
             field: field(fieldDef, {binSuffix: '_range'}),
@@ -175,9 +182,10 @@ export namespace source {
    * @return An array that might contain a filter transform for filtering null value based on filterNul config
    */
   export function nullFilterTransform(model: Model) {
-    const filterNull = model.config('filterNull');
+    const filterNull = model.config().filterNull;
     const filteredFields = keys(model.reduce(function(aggregator, fieldDef: FieldDef) {
-      if (fieldDef.field && fieldDef.field !== '*' && filterNull[fieldDef.type]) {
+      if (filterNull ||
+        (filterNull === undefined && fieldDef.field && fieldDef.field !== '*' && DEFAULT_NULL_FILTERS[fieldDef.type])) {
         aggregator[fieldDef.field] = true;
       }
       return aggregator;
@@ -253,7 +261,7 @@ export namespace layout {
       });
     }
 
-    const cellPadding = model.cellConfig('padding');
+    const cellPadding = model.config().cell.padding;
     const layout = model.layout();
 
     if (model.has(COLUMN)) {
@@ -388,7 +396,7 @@ export namespace stack {
                       .concat((model.has(ROW) ? [model.field(ROW)] : []));
 
     var stacked:VgData = {
-      name: STACKED,
+      name: STACKED_SCALE,
       source: model.dataTable(),
       transform: [{
         type: 'aggregate',
@@ -398,17 +406,6 @@ export namespace stack {
       }]
     };
 
-    if (facetFields && facetFields.length > 0) {
-      stacked.transform.push({ // calculate max for each facet
-        type: 'aggregate',
-        groupby: facetFields,
-        summarize: [{
-          ops: ['max'],
-          // we want max of sum from above transform
-          field: model.field(fieldChannel, {prefn: 'sum_'})
-        }]
-      });
-    }
     return stacked;
   };
 }

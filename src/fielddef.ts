@@ -29,7 +29,7 @@ export function field(fieldDef: FieldDef, opt: FieldRefOption = {}) {
   } else if (opt.fn) {
     return f + opt.fn + '_' + field;
   } else if (!opt.nofn && fieldDef.bin) {
-    return f + 'bin_' + field + opt.binSuffix;
+    return f + 'bin_' + field + opt.binSuffix || '_start';
   } else if (!opt.nofn && !opt.noAggregate && fieldDef.aggregate) {
     return f + fieldDef.aggregate + '_' + field;
   } else if (!opt.nofn && fieldDef.timeUnit) {
@@ -39,18 +39,17 @@ export function field(fieldDef: FieldDef, opt: FieldRefOption = {}) {
   }
 }
 
-// TODO remove these "isDimension/isMeasure" stuff
 function _isFieldDimension(fieldDef: FieldDef) {
   return contains([NOMINAL, ORDINAL], fieldDef.type) || !!fieldDef.bin ||
     (fieldDef.type === TEMPORAL && !!fieldDef.timeUnit);
 }
 
 export function isDimension(fieldDef: FieldDef) {
-  return fieldDef && _isFieldDimension(fieldDef);
+  return fieldDef && fieldDef.field && _isFieldDimension(fieldDef);
 }
 
 export function isMeasure(fieldDef: FieldDef) {
-  return fieldDef && !_isFieldDimension(fieldDef);
+  return fieldDef && fieldDef.field && !_isFieldDimension(fieldDef);
 }
 
 export const COUNT_DISPLAYNAME = 'Number of Records';

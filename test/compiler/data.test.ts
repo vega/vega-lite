@@ -167,7 +167,7 @@ describe('data.source', function() {
       it('should add filterNull for O when specified', function () {
         var enc = new Model(spec, {
           config: {
-            filterNull: {ordinal: true}
+            filterNull: true
           }
         });
         expect(source.nullFilterTransform(enc))
@@ -176,7 +176,16 @@ describe('data.source', function() {
             test:'datum.tt!==null && datum.qq!==null && datum.oo!==null'
           }]);
       });
-      // });
+
+      it('should add no null filter if filterNull is false', function () {
+        var enc = new Model(spec, {
+          config: {
+            filterNull: false
+          }
+        });
+        expect(source.nullFilterTransform(enc))
+          .to.eql([]);
+      });
     });
 
     describe('filter', function () {
