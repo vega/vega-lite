@@ -6,9 +6,17 @@ import {StackProperties} from './stack';
 
 import {autoMaxBins} from '../bin';
 import {Channel, X, Y, ROW, COLUMN} from '../channel';
-import {SOURCE, STACKED, LAYOUT, SUMMARY} from '../data';
+import {SOURCE, STACKED_SCALE, LAYOUT, SUMMARY} from '../data';
+import {field} from '../fielddef';
 import {QUANTITATIVE, TEMPORAL} from '../type';
 import {type as scaleType} from './scale';
+
+const DEFAULT_NULL_FILTERS = {
+  nominal: false,
+  ordinal: false,
+  quantitative: true,
+  temporal: true
+};
 
 /**
  * Create Vega's data array from a given encoding.
@@ -124,9 +132,9 @@ export namespace source {
       if (fieldDef.type === TEMPORAL && fieldDef.timeUnit) {
         transform.push({
           type: 'formula',
-          field: model.field(channel),
+          field: field(fieldDef),
           expr: 'utc' + fieldDef.timeUnit + '(' +
-                model.field(channel, {nofn: true, datum: true}) + ')'
+                field(fieldDef, {nofn: true, datum: true}) + ')'
         });
       }
       return transform;
@@ -141,9 +149,9 @@ export namespace source {
             type: 'bin',
             field: fieldDef.field,
             output: {
-              start: model.field(channel, {binSuffix: '_start'}),
-              mid: model.field(channel, {binSuffix: '_mid'}),
-              end: model.field(channel, {binSuffix: '_end'})
+              start: field(fieldDef, {binSuffix: '_start'}),
+              mid: field(fieldDef, {binSuffix: '_mid'}),
+              end: field(fieldDef, {binSuffix: '_end'})
             }
           },
           // if bin is an object, load parameter here!
@@ -156,13 +164,13 @@ export namespace source {
         }
 
         transform.push(binTrans);
-        if (scaleType(channel, model) === 'ordinal') {
+        if (scaleType(fieldDef, channel, model.mark()) === 'ordinal') {
           transform.push({
             type: 'formula',
-            field: model.field(channel, {binSuffix: '_range'}),
-            expr: model.field(channel, {datum: true, binSuffix: '_start'}) +
+            field: field(fieldDef, {binSuffix: '_range'}),
+            expr: field(fieldDef, {datum: true, binSuffix: '_start'}) +
                   '+ \'-\' +' +
-                  model.field(channel, {datum: true, binSuffix: '_end'})
+                  field(fieldDef, {datum: true, binSuffix: '_end'})
           });
         }
       }
@@ -174,9 +182,10 @@ export namespace source {
    * @return An array that might contain a filter transform for filtering null value based on filterNul config
    */
   export function nullFilterTransform(model: Model) {
-    const filterNull = model.config('filterNull');
+    const filterNull = model.config().filterNull;
     const filteredFields = keys(model.reduce(function(aggregator, fieldDef: FieldDef) {
-      if (fieldDef.field && fieldDef.field !== '*' && filterNull[fieldDef.type]) {
+      if (filterNull ||
+        (filterNull === undefined && fieldDef.field && fieldDef.field !== '*' && DEFAULT_NULL_FILTERS[fieldDef.type])) {
         aggregator[fieldDef.field] = true;
       }
       return aggregator;
@@ -252,13 +261,14 @@ export namespace layout {
       });
     }
 
-    const cellPadding = model.cellConfig('padding');
+    const cellPadding = model.config().cell.padding;
     const layout = model.layout();
 
     if (model.has(COLUMN)) {
-      const cellWidth = layout.cellWidth.field ?
-                        'datum.' + layout.cellWidth.field :
-                        layout.cellWidth;
+      const layoutCellWidth = layout.cellWidth;
+      const cellWidth = typeof layoutCellWidth !== 'number' ?
+                        'datum.' + layoutCellWidth.field :
+                        layoutCellWidth;
       const colScale = model.fieldDef(COLUMN).scale;
       const colHasDomain = colScale.domain instanceof Array;
       if (!colHasDomain) {
@@ -278,9 +288,10 @@ export namespace layout {
     }
 
     if (model.has(ROW)) {
-      const cellHeight = layout.cellHeight.field ?
-                        'datum.' + layout.cellHeight.field :
-                        layout.cellHeight;
+      const layoutCellHeight = layout.cellHeight;
+      const cellHeight = typeof layoutCellHeight !== 'number' ?
+                        'datum.' + layoutCellHeight.field :
+                        layoutCellHeight;
       const rowScale = model.fieldDef(ROW).scale;
       const rowHasDomain = rowScale.domain instanceof Array;
       if (!rowHasDomain) {
@@ -327,7 +338,7 @@ export namespace summary {
 
     var hasAggregate = false;
 
-    model.forEach(function(fieldDef, channel: Channel) {
+    model.forEach(function(fieldDef: FieldDef, channel: Channel) {
       if (fieldDef.aggregate) {
         hasAggregate = true;
         if (fieldDef.aggregate === 'count') {
@@ -340,13 +351,12 @@ export namespace summary {
       } else {
         if (fieldDef.bin) {
           // TODO(#694) only add dimension for the required ones.
-          dims[model.field(channel, {binSuffix: '_start'})] = model.field(channel, {binSuffix: '_start'});
-          dims[model.field(channel, {binSuffix: '_mid'})] = model.field(channel, {binSuffix: '_mid'});
-          dims[model.field(channel, {binSuffix: '_end'})] = model.field(channel, {binSuffix: '_end'});
+          dims[field(fieldDef, {binSuffix: '_start'})] = field(fieldDef, {binSuffix: '_start'});
+          dims[field(fieldDef, {binSuffix: '_mid'})] = field(fieldDef, {binSuffix: '_mid'});
+          dims[field(fieldDef, {binSuffix: '_end'})] = field(fieldDef, {binSuffix: '_end'});
         } else {
-          dims[fieldDef.field] = model.field(channel);
+          dims[field(fieldDef)] = field(fieldDef);
         }
-
       }
     });
 
@@ -386,7 +396,7 @@ export namespace stack {
                       .concat((model.has(ROW) ? [model.field(ROW)] : []));
 
     var stacked:VgData = {
-      name: STACKED,
+      name: STACKED_SCALE,
       source: model.dataTable(),
       transform: [{
         type: 'aggregate',
@@ -396,24 +406,14 @@ export namespace stack {
       }]
     };
 
-    if (facetFields && facetFields.length > 0) {
-      stacked.transform.push({ // calculate max for each facet
-        type: 'aggregate',
-        groupby: facetFields,
-        summarize: [{
-          ops: ['max'],
-          // we want max of sum from above transform
-          field: model.field(fieldChannel, {prefn: 'sum_'})
-        }]
-      });
-    }
     return stacked;
   };
 }
 
 export function filterNonPositiveForLog(dataTable, model: Model) {
   model.forEach(function(_, channel) {
-    if (model.fieldDef(channel).scale.type === 'log') {
+    const scale = model.fieldDef(channel).scale;
+    if (scale && scale.type === 'log') {
       dataTable.transform.push({
         type: 'filter',
         test: model.field(channel, {datum: true}) + ' > 0'

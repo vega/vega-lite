@@ -1,12 +1,11 @@
-import {merge} from './schemautil';
+import {mergeDeep} from './schemautil';
 import {duplicate} from '../util';
 
 
 import {axis} from './axis.schema';
-import {FieldDef} from './fielddef.schema';
+import {FieldDef, fieldDef, facetField, onlyOrdinalField, typicalField} from './fielddef.schema';
 import {legend} from './legend.schema';
 import {sort} from './sort.schema';
-import {typicalField, onlyOrdinalField} from './fielddef.schema';
 
 export interface Encoding {
   x?: FieldDef;
@@ -16,17 +15,13 @@ export interface Encoding {
   color?: FieldDef;
   size?: FieldDef;
   shape?: FieldDef;
-  detail?: FieldDef;
+  detail?: FieldDef | FieldDef[];
   text?: FieldDef;
   label?: FieldDef;
 }
 
-// TODO: remove if possible
-var requiredNameType = {
-  required: ['field', 'type']
-};
-
-var x = merge(duplicate(typicalField), requiredNameType, {
+var x = mergeDeep(duplicate(typicalField), {
+  required: ['field', 'type'], // TODO: remove if possible
   properties: {
     scale: {// replacing default values for just these two axes
       properties: {
@@ -41,17 +36,10 @@ var x = merge(duplicate(typicalField), requiredNameType, {
 
 var y = duplicate(x);
 
-var facet = merge(duplicate(onlyOrdinalField), requiredNameType, {
-  properties: {
-    axis: axis,
-    sort: sort
-  }
-});
+var row = mergeDeep(duplicate(facetField));
+var column = mergeDeep(duplicate(facetField));
 
-var row = merge(duplicate(facet));
-var column = merge(duplicate(facet));
-
-var size = merge(duplicate(typicalField), {
+var size = mergeDeep(duplicate(typicalField), {
   properties: {
     legend: legend,
     sort: sort,
@@ -64,7 +52,7 @@ var size = merge(duplicate(typicalField), {
   }
 });
 
-var color = merge(duplicate(typicalField), {
+var color = mergeDeep(duplicate(typicalField), {
   properties: {
     legend: legend,
     sort: sort,
@@ -94,7 +82,7 @@ var color = merge(duplicate(typicalField), {
   }
 });
 
-var shape = merge(duplicate(onlyOrdinalField), {
+var shape = mergeDeep(duplicate(onlyOrdinalField), {
   properties: {
     legend: legend,
     sort: sort,
@@ -107,14 +95,16 @@ var shape = merge(duplicate(onlyOrdinalField), {
   }
 });
 
-var detail = merge(duplicate(onlyOrdinalField), {
-  properties: {
-    sort: sort
-  }
-});
+var detail = {
+  default: undefined,
+  oneOf: [duplicate(fieldDef), {
+    type: 'array',
+    items: duplicate(fieldDef)
+  }]
+};
 
 // we only put aggregated measure in pivot table
-var text = merge(duplicate(typicalField), {
+var text = mergeDeep(duplicate(typicalField), {
   properties: {
     sort: sort,
     value: {
@@ -124,7 +114,7 @@ var text = merge(duplicate(typicalField), {
   }
 });
 
-var label = merge(duplicate(typicalField), {
+var label = mergeDeep(duplicate(typicalField), {
   properies: {
     sort: sort
   }

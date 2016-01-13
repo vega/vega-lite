@@ -10,10 +10,17 @@ interface DataRef {
   value?: string;
 }
 
+export interface Layout {
+  cellWidth: LayoutValue;
+  cellHeight: LayoutValue;
+  width: LayoutValue;
+  height: LayoutValue;
+}
+
 // value that we can put in scale's domain/range (either a number, or a data ref)
 type LayoutValue = number | DataRef;
 
-export function compileLayout(model: Model): {[layoutProp: string]: LayoutValue} {
+export function compileLayout(model: Model): Layout {
   const cellWidth = getCellWidth(model);
   const cellHeight = getCellHeight(model);
   return {
@@ -31,10 +38,10 @@ function getCellWidth(model: Model): LayoutValue {
     if (model.isOrdinalScale(X)) { // calculate in data
       return {data: LAYOUT, field: 'cellWidth'};
     }
-    return model.cellConfig('width');
+    return model.config().cell.width;
   }
   if (model.mark() === TEXT_MARK) {
-    return model.config('textCellWidth');
+    return model.config().textCellWidth;
   }
   return model.fieldDef(X).scale.bandWidth;
 }
@@ -51,7 +58,7 @@ function getCellHeight(model: Model): LayoutValue {
     if (model.isOrdinalScale(Y)) { // calculate in data
       return {data: LAYOUT, field: 'cellHeight'};
     } else {
-      return model.cellConfig('height');
+      return model.config().cell.height;
     }
   }
   return model.fieldDef(Y).scale.bandWidth;

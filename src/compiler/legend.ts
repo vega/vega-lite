@@ -6,6 +6,7 @@ import {AREA, BAR, TICK, TEXT, LINE, POINT, CIRCLE, SQUARE} from '../mark';
 import {TEMPORAL} from '../type';
 import {extend, keys} from '../util';
 import {Model} from './Model';
+import {applyMarkConfig, FILL_STROKE_CONFIG} from './marks';
 
 export function compileLegends(model: Model) {
   var defs = [];
@@ -71,7 +72,7 @@ export function title(fieldDef: FieldDef) {
 }
 
 namespace properties {
-  export function labels(fieldDef: FieldDef, spec, model: Model, channel: Channel) {
+  export function labels(fieldDef: FieldDef, labelsSpec, model: Model, channel: Channel) {
     const timeUnit = fieldDef.timeUnit;
     const labelTemplate = model.labelTemplate(channel);
     if (fieldDef.type === TEMPORAL && timeUnit && labelTemplate) {
@@ -79,12 +80,12 @@ namespace properties {
         text: {
           template: '{{datum.data | ' + labelTemplate + '}}'
         }
-      }, spec || {});
+      }, labelsSpec || {});
     }
-    return spec;
+    return labelsSpec;
   }
 
-  export function symbols(fieldDef: FieldDef, spec, model: Model, channel: Channel) {
+  export function symbols(fieldDef: FieldDef, symbolsSpec, model: Model, channel: Channel) {
     let symbols:any = {};
     const mark = model.mark();
 
@@ -92,8 +93,13 @@ namespace properties {
       case BAR:
       case TICK:
       case TEXT:
-        symbols.stroke = {value: 'transparent'};
         symbols.shape = {value: 'square'};
+
+        // set stroke to transparent by default unless there is a config for stroke
+        symbols.stroke = {value: 'transparent'};
+        applyMarkConfig(symbols, model, FILL_STROKE_CONFIG);
+
+        // no need to apply color to fill as they are set automatically
         break;
 
       case CIRCLE:
@@ -102,34 +108,40 @@ namespace properties {
         /* fall through */
       case POINT:
         // fill or stroke
-        if (model.marksConfig('filled')) {
+        if (model.config().mark.filled) { // filled
+          // set stroke to transparent by default unless there is a config for stroke
+          symbols.stroke = {value: 'transparent'};
+          applyMarkConfig(symbols, model, FILL_STROKE_CONFIG);
+
           if (model.has(COLOR) && channel === COLOR) {
             symbols.fill = {scale: model.scale(COLOR), field: 'data'};
           } else {
-            symbols.fill = {value: fieldDef.value};
+            symbols.fill = {value: model.fieldDef(COLOR).value};
           }
-          symbols.stroke = {value: 'transparent'};
-        } else {
+        } else { // stroked
+          // set fill to transparent by default unless there is a config for stroke
+          symbols.fill = {value: 'transparent'};
+          applyMarkConfig(symbols, model, FILL_STROKE_CONFIG);
+
           if (model.has(COLOR) && channel === COLOR) {
             symbols.stroke = {scale: model.scale(COLOR), field: 'data'};
           } else {
-            symbols.stroke = {value: fieldDef.value};
+            symbols.stroke = {value: model.fieldDef(COLOR).value};
           }
-          symbols.fill = {value: 'transparent'};
-          symbols.strokeWidth = {value: model.marksConfig('strokeWidth')};
         }
 
         break;
       case LINE:
       case AREA:
+        // set stroke to transparent by default unless there is a config for stroke
+        symbols.stroke = {value: 'transparent'};
+        applyMarkConfig(symbols, model, FILL_STROKE_CONFIG);
+
         // TODO use shape here after implementing #508
         break;
     }
 
-    var opacity = model.marksConfig('opacity');
-    if (opacity) { symbols.opacity = {value: opacity}; }
-
-    symbols = extend(symbols, spec || {});
+    symbols = extend(symbols, symbolsSpec || {});
 
     return keys(symbols).length > 0 ? symbols : undefined;
   }

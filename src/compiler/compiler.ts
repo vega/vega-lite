@@ -9,7 +9,7 @@ import {facetMixins} from './facet';
 import {compileLegends} from './legend';
 import {compileMarks} from './marks';
 import {compileScales} from './scale';
-import {extend} from '../util';
+import {extend, keys} from '../util';
 
 import {LAYOUT} from '../data';
 import {COLUMN, ROW, X, Y} from '../channel';
@@ -17,8 +17,53 @@ import {COLUMN, ROW, X, Y} from '../channel';
 export {Model} from './Model';
 
 export function compile(spec, theme?) {
-  var model = new Model(spec, theme);
+  const model = new Model(spec, theme);
   const layout = model.layout();
+
+  // FIXME replace FIT with appropriate mechanism once Vega has it
+  const FIT = 1;
+
+  const config = model.config();
+
+  // TODO: change type to become VgSpec
+  const output = extend(
+    spec.name ? {name: spec.name} : {},
+    {
+      width: typeof layout.width !== 'number' ? FIT : layout.width,
+      height: typeof layout.height !== 'number' ? FIT : layout.height,
+      padding: 'auto'
+    },
+    ['viewport', 'background'].reduce(function(topLevelConfig, property) {
+      const value = config[property];
+      if (value !== undefined) {
+        topLevelConfig[property] = value;
+      }
+      return topLevelConfig;
+    }, {}),
+    keys(config.scene).length > 0 ? ['fill', 'fillOpacity', 'stroke', 'strokeWidth',
+      'strokeOpacity', 'strokeDash', 'strokeDashOffset'].reduce(function(topLevelConfig: any, property) {
+        const value = config.scene[property];
+        if (value !== undefined) {
+          topLevelConfig.scene = topLevelConfig.scene || {};
+          topLevelConfig.scene[property] = {value: value};
+        }
+        return topLevelConfig;
+    }, {}) : {},
+    {
+      data: compileData(model),
+      marks: [compileRootGroup(model)]
+    });
+
+  return {
+    spec: output
+    // TODO: add warning / errors here
+  };
+}
+
+export function compileRootGroup(model: Model) {
+  const spec = model.spec();
+  const width = model.layout().width;
+  const height = model.layout().height;
 
   let rootGroup:any = extend({
       name: spec.name ? spec.name + '-root' : 'root',
@@ -29,12 +74,12 @@ export function compile(spec, theme?) {
       from: {data: LAYOUT},
       properties: {
         update: {
-          width: layout.width.field ?
-                 {field: layout.width.field} :
-                 {value: layout.width},
-          height: layout.height.field ?
-                  {field: layout.height.field} :
-                  {value: layout.height}
+          width: typeof width !== 'number' ?
+                 {field: width.field} :
+                 {value: width},
+          height: typeof height !== 'number' ?
+                  {field: height.field} :
+                  {value: height}
         }
       }
     });
@@ -49,8 +94,8 @@ export function compile(spec, theme?) {
     rootGroup.marks = marks;
     rootGroup.scales = compileScales(model.channels(), model);
 
-    var axes = (model.has(X) ? [compileAxis(X, model)] : [])
-      .concat(model.has(Y) ? [compileAxis(Y, model)] : []);
+    var axes = (model.has(X) && model.fieldDef(X).axis ? [compileAxis(X, model)] : [])
+      .concat(model.has(Y) && model.fieldDef(Y).axis ? [compileAxis(Y, model)] : []);
     if (axes.length > 0) {
       rootGroup.axes = axes;
     }
@@ -61,32 +106,5 @@ export function compile(spec, theme?) {
   if (legends.length > 0) {
     rootGroup.legends = legends;
   }
-
-  // FIXME replace FIT with appropriate mechanism once Vega has it
-  const FIT = 1;
-
-  // TODO: change type to become VgSpec
-  var output = extend(
-    spec.name ? {name: spec.name} : {},
-    {
-      width: layout.width.field ? FIT : layout.width,
-      height: layout.height.field ? FIT : layout.height,
-      padding: 'auto'
-    },
-    ['viewport', 'background', 'scene'].reduce(function(topLevelConfig, property) {
-      const value = model.config(property);
-      if (value !== undefined) {
-        topLevelConfig[property] = value;
-      }
-      return topLevelConfig;
-    }, {}),
-    {
-      data: compileData(model),
-      marks: [rootGroup]
-    });
-
-  return {
-    spec: output
-    // TODO: add warning / errors here
-  };
+  return rootGroup;
 }

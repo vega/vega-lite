@@ -1,18 +1,27 @@
-export interface MarksConfig {
+export interface MarkConfig {
   filled?: boolean;
+  sortBy?: String | String[];
+  sortLineBy?: String | String[];
 
   // General Vega
   opacity?: number;
+
   strokeWidth?: number;
   strokeDash?: number[];
   strokeDashOffset?: number[];
   fill?: string;
+  fillOpacity?: number;
+  stroke?: string;
+  strokeOpacity?: number;
 
   // Bar / area
   orient?: string;
   // Line / area
   interpolate?: string;
   tension?: number;
+
+  // Tick-only
+  tickSize?: number;
 
   // Text-only
   align?: string;
@@ -29,7 +38,7 @@ export interface MarksConfig {
   format?: string;
 }
 
-export const marksConfig = {
+export const markConfig = {
   type: 'object',
   properties: {
     // Vega-Lite special
@@ -40,12 +49,44 @@ export const marksConfig = {
         'This is only applicable for "bar", "point", and "area". ' +
         'All marks except "point" marks are filled by default.'
     },
+    sortBy: {
+      default: undefined,
+      oneOf: [
+        {type: 'string'},
+        {type: 'array', items:{type:'string'}}
+      ],
+      description: 'Sort layer of marks by a given field or fields.'
+    },
+    sortLineBy: {
+      default: undefined,
+      oneOf: [
+        {type: 'string'},
+        {type: 'array', items:{type:'string'}}
+      ],
+      description: 'Sort layer of marks by a given field or fields.'
+    },
     // General Vega
-    // TODO consider removing as it is conflicting with color.value
     fill: {
       type: 'string',
       role: 'color',
-      default: '#000000'
+      default: undefined
+    },
+    fillOpacity: {
+      type: 'number',
+      default: undefined,  // auto
+      minimum: 0,
+      maximum: 1
+    },
+    stroke: {
+      type: 'string',
+      role: 'color',
+      default: undefined
+    },
+    strokeOpacity: {
+      type: 'number',
+      default: undefined,  // auto
+      minimum: 0,
+      maximum: 1
     },
     opacity: {
       type: 'number',
@@ -92,6 +133,13 @@ export const marksConfig = {
       type: 'number',
       default: undefined,
       description: 'Depending on the interpolation type, sets the tension parameter.'
+    },
+
+    // Tick-only
+    tickSize: {
+      type: 'number',
+      default: 1,
+      description: 'Size of the tick mark.'
     },
 
     // text-only

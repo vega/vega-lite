@@ -5,18 +5,51 @@ import {contains, getbins} from './util';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from './type';
 
 
-// TODO remove these "isDimension/isMeasure" stuff
+export interface FieldRefOption {
+  /** exclude bin, aggregate, timeUnit */
+  nofn?: boolean;
+  /** exclude aggregation function */
+  noAggregate?: boolean;
+  /** include 'datum.' */
+  datum?: boolean;
+  /** replace fn with custom function prefix */
+  fn?: string;
+  /** prepend fn with custom function prefix */
+  prefn?: string;
+  /** append suffix to the field ref for bin (default='_start') */
+  binSuffix?: string;
+}
+
+export function field(fieldDef: FieldDef, opt: FieldRefOption = {}) {
+  var f = (opt.datum ? 'datum.' : '') + (opt.prefn || ''),
+    field = fieldDef.field;
+
+  if (isCount(fieldDef)) {
+    return f + 'count';
+  } else if (opt.fn) {
+    return f + opt.fn + '_' + field;
+  } else if (!opt.nofn && fieldDef.bin) {
+    return f + 'bin_' + field + opt.binSuffix || '_start';
+  } else if (!opt.nofn && !opt.noAggregate && fieldDef.aggregate) {
+    return f + fieldDef.aggregate + '_' + field;
+  } else if (!opt.nofn && fieldDef.timeUnit) {
+    return f + fieldDef.timeUnit + '_' + field;
+  } else {
+    return f + field;
+  }
+}
+
 function _isFieldDimension(fieldDef: FieldDef) {
   return contains([NOMINAL, ORDINAL], fieldDef.type) || !!fieldDef.bin ||
     (fieldDef.type === TEMPORAL && !!fieldDef.timeUnit);
 }
 
 export function isDimension(fieldDef: FieldDef) {
-  return fieldDef && _isFieldDimension(fieldDef);
+  return fieldDef && fieldDef.field && _isFieldDimension(fieldDef);
 }
 
 export function isMeasure(fieldDef: FieldDef) {
-  return fieldDef && !_isFieldDimension(fieldDef);
+  return fieldDef && fieldDef.field && !_isFieldDimension(fieldDef);
 }
 
 export const COUNT_DISPLAYNAME = 'Number of Records';
