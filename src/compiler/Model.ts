@@ -6,12 +6,12 @@ import {instantiate} from '../schema/schemautil';
 import * as schema from '../schema/schema';
 import * as schemaUtil from '../schema/schemautil';
 
-import {COLUMN, ROW, X, Y, Channel, supportMark} from '../channel';
+import {COLUMN, ROW, X, Y, SIZE, Channel, supportMark} from '../channel';
 import {SOURCE, SUMMARY} from '../data';
 import * as vlFieldDef from '../fielddef';
 import {FieldRefOption} from '../fielddef';
 import * as vlEncoding from '../encoding';
-import {Mark} from '../mark';
+import {Mark, BAR, TICK, TEXT as TEXTMARK} from '../mark';
 
 import {getFullName, NOMINAL, ORDINAL, TEMPORAL} from '../type';
 import {contains, duplicate, extend} from '../util';
@@ -201,6 +201,28 @@ export class Model {
   public scale(channel: Channel): string {
     const name = this.spec().name;
     return (name ? name + '-' : '') + channel;
+  }
+
+  public sizeValue(channel: Channel = SIZE) {
+    const value = this.fieldDef(SIZE).value;
+    if (value !== undefined) {
+      return value;
+    }
+    switch (this.mark()) {
+      case TEXTMARK:
+        return 10; // font size 10 by default
+      case BAR:
+        // BAR's size is applied on either X or Y
+        return !this.has(channel) || this.isOrdinalScale(channel) ?
+          // For ordinal scale or single bar, we can use bandWidth - 1
+          // (-1 so that the border of the bar falls on exact pixel)
+          this.fieldDef(channel).scale.bandWidth - 1 :
+          // otherwise, set to 2 by default
+          2;
+      case TICK:
+        return this.fieldDef(channel).scale.bandWidth / 1.5;
+    }
+    return 30;
   }
 
   /** returns the template name used for axis labels for a time unit */

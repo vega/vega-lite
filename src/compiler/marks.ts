@@ -1,6 +1,6 @@
 import {Model} from './Model';
-import {X, Y, COLOR, TEXT, SIZE, SHAPE, DETAIL, ROW, COLUMN, LABEL, Channel} from '../channel';
-import {AREA, LINE, BAR, TEXT as TEXTMARKS, TICK} from '../mark';
+import {X, Y, COLOR, TEXT, SIZE, SHAPE, DETAIL, ROW, COLUMN, LABEL} from '../channel';
+import {AREA, LINE, TEXT as TEXTMARK} from '../mark';
 import {imputeTransform, stackTransform} from './stack';
 import {QUANTITATIVE} from '../type';
 import {extend} from '../util';
@@ -76,7 +76,7 @@ export function compileMarks(model: Model): any[] {
     }
   } else { // other mark type
     let marks = []; // TODO: vgMarks
-    if (mark === TEXTMARKS && model.has(COLOR)) {
+    if (mark === TEXTMARK && model.has(COLOR)) {
       // add background to 'text' marks if has color
       marks.push(extend(
         name ? { name: name + '-background' } : {},
@@ -130,28 +130,6 @@ export function compileMarks(model: Model): any[] {
 
     return marks;
   }
-}
-
-export function size(model: Model, channel: Channel = SIZE) {
-  const value = model.fieldDef(SIZE).value;
-  if (value !== undefined) {
-    return value;
-  }
-  switch (model.mark()) {
-    case TEXTMARKS:
-      return 10; // font size 10 by default
-    case BAR:
-      // BAR's size is applied on either X or Y
-      return !model.has(channel) || model.isOrdinalScale(channel) ?
-        // For ordinal scale or single bar, we can use bandWidth - 1
-        // (-1 so that the border of the bar falls on exact pixel)
-        model.fieldDef(channel).scale.bandWidth - 1 :
-        // otherwise, set to 2 by default
-        2;
-    case TICK:
-      return model.fieldDef(channel).scale.bandWidth / 1.5;
-  }
-  return 30;
 }
 
 enum ColorMode {
@@ -251,7 +229,7 @@ export namespace bar {
           scale: model.scale(X),
           field: model.field(X)
         };
-        p.width = {value: size(model, X)};
+        p.width = {value: model.sizeValue(X)};
       }
     } else if (model.fieldDef(X).bin) {
       if (model.has(SIZE) && orient !== 'horizontal') {
@@ -292,7 +270,7 @@ export namespace bar {
           field: model.field(SIZE)
         } : {
           // otherwise, use fixed size
-          value: size(model, X)
+          value: model.sizeValue(X)
         };
     }
 
@@ -318,7 +296,7 @@ export namespace bar {
           scale: model.scale(Y),
           field: model.field(Y)
         };
-        p.height = { value: size(model, Y) };
+        p.height = { value: model.sizeValue(Y) };
       }
     } else if (model.fieldDef(Y).bin) {
       if (model.has(SIZE) && orient === 'horizontal') {
@@ -363,7 +341,7 @@ export namespace bar {
           scale: model.scale(SIZE),
           field: model.field(SIZE)
         } : {
-          value: size(model, Y)
+          value: model.sizeValue(Y)
         };
     }
 
@@ -413,7 +391,7 @@ export namespace point {
         field: model.field(SIZE)
       };
     } else {
-      p.size = { value: size(model) };
+      p.size = { value: model.sizeValue() };
     }
 
     // shape
@@ -594,9 +572,9 @@ export namespace tick {
 
     if (model.config().mark.orient === 'horizontal') {
       p.width = { value: model.config().mark.thickness };
-      p.height = { value: size(model, Y) }; // TODO(#932) support size channel
+      p.height = { value: model.sizeValue(Y) }; // TODO(#932) support size channel
     } else {
-      p.width = { value: size(model, X) }; // TODO(#932) support size channel
+      p.width = { value: model.sizeValue(X) }; // TODO(#932) support size channel
       p.height = { value: model.config().mark.thickness };
     }
 
@@ -642,7 +620,7 @@ function filled_point_props(shape) {
         field: model.field(SIZE)
       };
     } else {
-      p.size = { value: size(model) };
+      p.size = { value: model.sizeValue() };
     }
 
     // shape
@@ -731,7 +709,7 @@ export namespace text {
         field: model.field(SIZE)
       };
     } else {
-      p.fontSize = { value: size(model) };
+      p.fontSize = { value: model.sizeValue() };
     }
 
     // FIXME applyColorAndOpacity
