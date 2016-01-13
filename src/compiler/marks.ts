@@ -576,26 +576,20 @@ export namespace tick {
 
     // x
     if (model.has(X)) {
-      p.x = {
+      p.xc = {
         scale: model.scale(X),
         field: model.field(X, { binSuffix: '_mid' })
       };
-      if (model.isDimension(X)) {
-        p.x.offset = -model.fieldDef(X).scale.bandWidth / 3;
-      }
     } else {
       p.x = { value: 0 };
     }
 
     // y
     if (model.has(Y)) {
-      p.y = {
+      p.yc = {
         scale: model.scale(Y),
         field: model.field(Y, { binSuffix: '_mid' })
       };
-      if (model.isDimension(Y)) {
-        p.y.offset = -model.fieldDef(Y).scale.bandWidth / 3;
-      }
     } else {
       p.y = { value: 0 };
     }
