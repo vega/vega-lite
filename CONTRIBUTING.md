@@ -1,14 +1,8 @@
-<!--
-## Got a Question or Problem ?
-
-Please post these questions on our google group.  
--->
-
-## Found an Issue or Want a Feature?
+## Found an Issue or want a Feature?
 
 If you find a bug in the code or a mistake in the documentation or want a new feature,
 you can help us by creating an issue to [our repository](http://github.com/vega/vega-lite),
-or even better, submit a Pull Request.  
+or even better, submit a pull request.  
 
 Before creating an issue, please browse through the [issue list](https://github.com/vega/vega-lite/issues) to avoid duplicates.  
 
@@ -20,7 +14,7 @@ A good issue shouldn't leave others needing to chase you up for more information
 
 - __Provide screenshots/animated GIFs or describe the behavior you observed
 after following the steps__ and point out what exactly is the problem with that behavior.  
-[Skitch](https://evernote.com/skitch) is a useful tool for capturing screenshot.
+[Skitch](https://evernote.com/skitch) is a useful tool for capturing screenshots.
 Github's issue tracker also supports drag-and-drop image upload.  
 
 - __Explain which behavior you expected to see instead and why.__
@@ -52,7 +46,7 @@ We use Github Pages to publish our documentation when we release a new version.
 To contribute changes to the documentation, simply submit a pull request that changes
 the corresponding markdown files in `docs/`.   
 
-# <a name="dev"></a> Development Guide
+# Development Guide
 
 ## Repository Setup
 
@@ -179,4 +173,4 @@ Now all the changes you make in Datalib are reflected in your Vega-Lite automati
 
 # Credit
 
-This contribution guide is partly inspired from [angular.js's CONTRIBUTION.md](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md).
+This contribution guide is partly inspired by [angular.js's CONTRIBUTION.md](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md).
