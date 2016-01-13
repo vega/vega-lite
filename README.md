@@ -57,5 +57,3 @@ This is a similar chart as one of the Vega examples in https://github.com/vega/v
   }
 }
 ```
-
-### Contributing
