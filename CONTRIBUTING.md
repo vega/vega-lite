@@ -79,7 +79,7 @@ npm install
 - `site/` - Misc files for serving the website and gallery
 - `src/` - Main source code directory.  
   - `src/vl.ts` is the root file for Vega-Lite codebase that exports the global `vl` object.  Other helpers methods that might be called by dependent projects such as [Compass](github.com/vega/compass) are also under `src/`.  
-  - `src/compiler/` contains all methods for compiler, which compiles Vega-Lite specs into Vega specs.  
+  - `src/compiler/` contains all methods for compiler, which compiles Vega-Lite specs into Vega specs.  The main Vega-Lite method `vl.compile` is pointing to `compile` function inside `src/compiler/compiler.ts`.
   - `src/schema/` contains JSON schema and TypeScript interface declaration.  
 - `test/` - Code for unit testing.  `test`'s structure reflects `src`'s' directory structure.  For example, `test/compiler/` test files inside `src/compiler`.  
 - `typings/` - TypeScript typing declaration for dependencies.  Some of them are downloaded from the TypeStrong community.
