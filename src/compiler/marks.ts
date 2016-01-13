@@ -133,8 +133,9 @@ export function compileMarks(model: Model): any[] {
 }
 
 export function size(model: Model, channel: Channel = SIZE) {
-  if (model.fieldDef(SIZE).value !== undefined) {
-    return model.fieldDef(SIZE).value;
+  const value = model.fieldDef(SIZE).value;
+  if (value !== undefined) {
+    return value;
   }
   switch (model.mark()) {
     case TEXTMARKS:
@@ -148,20 +149,7 @@ export function size(model: Model, channel: Channel = SIZE) {
         // otherwise, set to 2 by default
         2;
     case TICK:
-      // TICK's size is applied on either X or Y
-      if (
-          (!model.has(channel) || model.isDimension(channel)) &&
-          // Tick's bandWidth should only be applied to one side
-          // (X for vertical, Y for horizontal)
-          ((channel === X && model.config().mark.orient !== 'horizontal') ||
-          (channel === Y && model.config().mark.orient === 'horizontal'))
-        ) {
-
-        // TODO(#694): optimize tick's width for bin
-        return model.fieldDef(channel).scale.bandWidth / 1.5;
-      } else {
-        return model.config().mark.thickness;
-      }
+      return model.fieldDef(channel).scale.bandWidth / 1.5;
   }
   return 30;
 }
@@ -604,9 +592,13 @@ export namespace tick {
       p.y = { value: 0 };
     }
 
-    // width & height
-    p.width = { value: size(model, X) };
-    p.height = { value: size(model, Y) };
+    if (model.config().mark.orient === 'horizontal') {
+      p.width = { value: model.config().mark.thickness };
+      p.height = { value: size(model, Y) }; // TODO(#932) support size channel
+    } else {
+      p.width = { value: size(model, X) }; // TODO(#932) support size channel
+      p.height = { value: model.config().mark.thickness };
+    }
 
     applyColorAndOpacity(p, model, ColorMode.ALWAYS_FILLED);
     return p;
