@@ -1,10 +1,12 @@
+/* tslint:disable:quotemark */
+
 import {expect} from 'chai';
 
 import * as axis from '../../src/compiler/axis';
-import {Model} from '../../src/compiler/Model';
-import {POINT, LINE} from '../../src/mark';
+import {Model, parseModel} from '../../src/compiler/Model';
+import {POINT} from '../../src/mark';
 import {X, COLUMN} from '../../src/channel';
-import {TEMPORAL, QUANTITATIVE, ORDINAL} from '../../src/type';
+import {QUANTITATIVE, ORDINAL} from '../../src/type';
 import * as vl from '../../src/vl';
 
 describe('Axis', function() {
@@ -31,10 +33,10 @@ describe('Axis', function() {
   describe('(X) for Time Data', function() {
     var field = 'a',
       timeUnit = 'month',
-      encoding = new Model({
-        mark: LINE,
+      encoding = parseModel({
+        mark: "line",
         encoding: {
-          x: {field: field, type: TEMPORAL, timeUnit: timeUnit}
+          x: {field: field, type: "temporal", timeUnit: timeUnit}
         }
       });
     var _axis = axis.compileAxis(X, encoding);

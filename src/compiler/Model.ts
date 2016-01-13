@@ -22,9 +22,16 @@ import {compileStackProperties, StackProperties} from './stack';
 import {type as scaleType} from './scale';
 
 /**
+ * Call new Model without worrying about type.
+ * We use this in test to allow using raw JSON. 
+ */
+export function parseModel(spec) {
+  return new Model(spec as Spec);
+}
+
+/**
  * Internal model of Vega-Lite specification for the compiler.
  */
-
 export class Model {
   private _spec: Spec;
   private _stack: StackProperties;
