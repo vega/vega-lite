@@ -1,6 +1,6 @@
 import {Model} from './Model';
-import {X, Y, COLOR, TEXT, SIZE, SHAPE, DETAIL, ROW, COLUMN, LABEL} from '../channel';
-import {AREA, LINE, TEXT as TEXTMARKS} from '../mark';
+import {X, Y, COLOR, TEXT, SIZE, SHAPE, DETAIL, ROW, COLUMN, LABEL, Channel} from '../channel';
+import {AREA, LINE, BAR, TEXT as TEXTMARKS} from '../mark';
 import {imputeTransform, stackTransform} from './stack';
 import {QUANTITATIVE} from '../type';
 import {extend} from '../util';
@@ -132,12 +132,21 @@ export function compileMarks(model: Model): any[] {
   }
 }
 
-export function size(model: Model) {
+export function size(model: Model, channel: Channel = SIZE) {
   if (model.fieldDef(SIZE).value !== undefined) {
     return model.fieldDef(SIZE).value;
   }
-  if (model.mark() === TEXTMARKS) {
-    return 10; // font size 10 by default
+  switch (model.mark()) {
+    case TEXTMARKS:
+      return 10; // font size 10 by default
+    case BAR:
+      // BAR's size is applied on either X or Y
+      return !model.has(channel) || model.isOrdinalScale(channel) ?
+        // For ordinal scale or single bar, we can use bandWidth - 1
+        // (-1 so that the border of the bar falls on exact pixel)
+        model.fieldDef(channel).scale.bandWidth - 1 :
+        // otherwise, set to 2 by default
+        2;
   }
   return 30;
 }
@@ -203,10 +212,6 @@ function detailFields(model: Model): string[] {
   }, []);
 }
 
-/* Size for bar's width when bar's dimension is on linear scale.
- * kanitw: I decided not to make this a config as it shouldn't be used in practice anyway.
- */
-const LINEAR_SCALE_BAR_SIZE = 2;
 
 export namespace bar {
   export function markType() {
@@ -243,7 +248,7 @@ export namespace bar {
           scale: model.scale(X),
           field: model.field(X)
         };
-        p.width = { value: LINEAR_SCALE_BAR_SIZE };
+        p.width = size(model, X);
       }
     } else if (model.fieldDef(X).bin) {
       if (model.has(SIZE) && orient !== 'horizontal') {
@@ -282,13 +287,9 @@ export namespace bar {
           // apply size scale if has size and is vertical (explicit "vertical" or undefined)
           scale: model.scale(SIZE),
           field: model.field(SIZE)
-        } : model.isOrdinalScale(X) || !model.has(X) ? {
-          // for ordinal scale or single bar, we can use bandWidth
-          value: model.fieldDef(X).scale.bandWidth, // TODO(#618): extract signal
-          offset: -1 // TODO(#931): bandWidthOffset
         } : {
           // otherwise, use fixed size
-          value: LINEAR_SCALE_BAR_SIZE
+          value: size(model, X)
         };
     }
 
@@ -314,7 +315,7 @@ export namespace bar {
           scale: model.scale(Y),
           field: model.field(Y)
         };
-        p.height = { value: LINEAR_SCALE_BAR_SIZE };
+        p.height = { value: size(model, Y) };
       }
     } else if (model.fieldDef(Y).bin) {
       if (model.has(SIZE) && orient === 'horizontal') {
@@ -358,13 +359,8 @@ export namespace bar {
           // apply size scale if has size and is horizontal
           scale: model.scale(SIZE),
           field: model.field(SIZE)
-        } : model.isOrdinalScale(Y) || !model.has(Y) ? {
-          // for ordinal scale or single bar, we can use bandWidth
-          value: model.fieldDef(Y).scale.bandWidth, // TODO(#618): extract signal
-          offset: -1 // TODO(#931): bandWidthOffset
         } : {
-          // otherwise, use fixed size
-          value: LINEAR_SCALE_BAR_SIZE
+          value: size(model, Y)
         };
     }
 
@@ -597,6 +593,7 @@ export namespace tick {
     // width
     if (!model.has(X) || model.isDimension(X)) {
       // TODO(#694): optimize tick's width for bin
+      // TODO: call size()
       p.width = { value: model.fieldDef(X).scale.bandWidth / 1.5 };
     } else {
       p.width = { value: model.config().mark.thickness };
@@ -605,6 +602,7 @@ export namespace tick {
     // height
     if (!model.has(Y) || model.isDimension(Y)) {
       // TODO(#694): optimize tick's height for bin
+      // TODO: call size()
       p.height = { value: model.fieldDef(Y).scale.bandWidth / 1.5 };
     } else {
       p.height = { value: model.config().mark.thickness };
