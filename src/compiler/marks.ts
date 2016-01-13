@@ -581,7 +581,7 @@ export namespace tick {
         field: model.field(X, { binSuffix: '_mid' })
       };
     } else {
-      p.x = { value: 0 };
+      p.x = { value: 0, offset: 2 };
     }
 
     // y
