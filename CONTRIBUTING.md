@@ -1,4 +1,4 @@
-## Found an Issue or want a Feature?
+# Found an Issue or want a Feature?
 
 If you find a bug in the code or a mistake in the documentation or want a new feature,
 you can help us by creating an issue to [our repository](http://github.com/vega/vega-lite),
@@ -171,6 +171,6 @@ npm link datalib
 
 Now all the changes you make in Datalib are reflected in your Vega-Lite automatically.
 
-# Credit
+**Credit**
 
 This contribution guide is partly inspired by [angular.js's CONTRIBUTION.md](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md).
