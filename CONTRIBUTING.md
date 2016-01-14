@@ -1,7 +1,6 @@
 # Contribute
 
-If you find a bug in the code or a mistake in the documentation or want a new feature,
-you can help us by creating an issue to [our repository](http://github.com/vega/vega-lite),
+If you find a bug in the code or a mistake in the [documentation](https://vega.github.io/vega-lite/docs/) or want a new feature, you can help us by creating an issue to [our repository](http://github.com/vega/vega-lite),
 or even better, submit a pull request.  
 
 ## Creating an Issue
