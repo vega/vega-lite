@@ -7,7 +7,9 @@
       "field": "date",
       "type": "temporal",
       "timeUnit": "yearmonth",
-      "format": "%B of %Y"
+      "axis": {
+        "format": "%B of %Y"
+      }
     },
     "y": {
       "aggregate": "mean",
