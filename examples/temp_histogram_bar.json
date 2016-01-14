@@ -1,0 +1,18 @@
+{
+  "description": "Temperature in Seattle as a bar chart with yearmonth time unit.",
+  "data": {"url": "data/seattle-temps.csv","formatType": "csv"},
+  "mark": "bar",
+  "encoding": {
+    "x": {
+      "field": "date",
+      "type": "temporal",
+      "timeUnit": "yearmonth",
+      "axis": {"shortTimeLabels": true}
+    },
+    "y": {
+      "aggregate": "mean",
+      "field": "temp",
+      "type": "quantitative"
+    }
+  }
+}
