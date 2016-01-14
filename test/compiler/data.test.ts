@@ -244,27 +244,12 @@ describe('data.dates', function() {
       name: 'day',
       transform: [
         {
-          expr: 'datetime(2006, 0, datum.value+1, 0, 0, 0, 0)',
+          expr: 'datetime(2006, 0, datum.data+1, 0, 0, 0, 0)',
           field: 'date',
           type: 'formula'
         }
       ],
-      values: [{
-          value: 0
-        },{
-          value: 1
-        },{
-          value: 2
-        },{
-          value: 3
-        },{
-          value: 4
-        },{
-          value: 5
-        },{
-          value: 6
-        }
-      ]
+      values: [0,1,2,3,4,5,6]
     }]);
   });
 });

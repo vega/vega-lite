@@ -430,7 +430,7 @@ export namespace dates {
             transform: [{
               type: 'formula',
               field: 'date',
-              expr: parseExpression(fieldDef.timeUnit, 'datum.value', true)
+              expr: parseExpression(fieldDef.timeUnit, 'datum.data', true)
             }]
           });
         }

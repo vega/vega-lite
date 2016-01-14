@@ -117,18 +117,17 @@ export function rawDomain(timeUnit: string, channel: Channel) {
 
   switch (timeUnit) {
     case 'seconds':
-      return range(0, 60).map(v => { return { value: v }; });
+      return range(0, 60);
     case 'minutes':
-      return range(0, 60).map(v => { return { value: v }; });
+      return range(0, 60);
     case 'hours':
-      return range(0, 24).map(v => { return { value: v }; });
+      return range(0, 24);
     case 'day':
-      return range(0, 7).map(v => { return { value: v }; });
+      return range(0, 7);
     case 'date':
-      return range(1, 32).map(v => { return { value: v }; });
+      return range(1, 32);
     case 'month':
-      return range(0, 12).map(v => { return { value: v }; });
-
+      return range(0, 12);
   }
 
   return null;
