@@ -1,14 +1,12 @@
-'use strict';
-
-/* global vl, d3, vg, console, location, window, document */
-
 d3.select('#vl-version').text(vl.version);
 d3.select('#vg-version').text(vg.version);
 
 // parse url parameters
 var params = function() {
   var query = location.search.slice(1);
-  if (query.slice(-1) === '/') query = query.slice(0,-1);
+  if (query.slice(-1) === '/') {
+    query = query.slice(0,-1);
+  }
   return query
     .split('&')
     .map(function(x) { return x.split('='); })
@@ -18,12 +16,12 @@ var params = function() {
 };
 
 d3.json('examples/vlexamples.json', function(VL_SPECS) {
-  var examples = d3.keys(VL_SPECS).reduce(function(examples, groupName) {
+  var examples = d3.keys(VL_SPECS).reduce(function(aggregator, groupName) {
     var group = VL_SPECS[groupName];
-    return examples.concat(group);
+    return aggregator.concat(group);
   }, []);
 
-  var p = params();
+  var p:any = params();
   var debug = p.debug === 'true';
 
   // make debug the default for localhost
@@ -41,7 +39,7 @@ d3.json('examples/vlexamples.json', function(VL_SPECS) {
 
     var path = location.protocol + '//' + location.host + location.pathname;
     var url = debug ? path + '?debug=true' : path + '?debug=false';
-    window.history.replaceState("", document.title, url);
+    window.history.replaceState('', document.title, url);
   });
 
   render();
