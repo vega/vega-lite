@@ -10,12 +10,12 @@ describe('compile.marks', function() {
   describe('bar', function() {
     describe('vertical, with log', function() {
       const e = parseModel({
-        'mark': "bar",
-        'encoding': {
-          'x': {'bin': {'maxbins': 15}, 'type': "quantitative", 'field': 'IMDB_Rating'},
-          'y': {'scale': {'type': 'log'}, 'type': "quantitative", 'field': 'US_Gross', 'aggregate': 'mean'}
+        "mark": "bar",
+        "encoding": {
+          "x": {"bin": true, "type": "quantitative", "field": "IMDB_Rating"},
+          "y": {"scale": {"type": 'log'}, "type": "quantitative", "field": 'US_Gross', "aggregate": "mean"}
         },
-        'data': {'url': 'data/movies.json'}
+        "data": {"url": 'data/movies.json'}
       }),
           def = marks.bar.properties(e);
       it('should end on axis', function() {
@@ -28,12 +28,12 @@ describe('compile.marks', function() {
 
     describe('horizontal, with log', function() {
       const e = parseModel({
-        'mark': "bar",
-        'encoding': {
-          'y': {'bin': {'maxbins': 15}, 'type': "quantitative", 'field': 'IMDB_Rating'},
-          'x': {'scale': {'type': 'log'}, 'type': "quantitative", 'field': 'US_Gross', 'aggregate': 'mean'}
+        "mark": "bar",
+        "encoding": {
+          "y": {"bin": true, "type": "quantitative", "field": "IMDB_Rating"},
+          "x": {"scale": {"type": 'log'}, "type": "quantitative", "field": 'US_Gross', "aggregate": "mean"}
         },
-        'data': {'url': 'data/movies.json'}
+        "data": {"url": 'data/movies.json'}
       });
       const def = marks.bar.properties(e);
       it('should end on axis', function() {
@@ -46,9 +46,9 @@ describe('compile.marks', function() {
 
     describe('1D, vertical', function() {
       const e = parseModel({
-          'mark': "bar",
-          'encoding': {'y': {'type': "quantitative", 'field': 'US_Gross', 'aggregate': 'sum'}},
-          'data': {'url': 'data/movies.json'}
+          "mark": "bar",
+          "encoding": {"y": {"type": "quantitative", "field": 'US_Gross', "aggregate": "sum"}},
+          "data": {"url": 'data/movies.json'}
         }),
         def = marks.bar.properties(e);
       it('should end on axis', function() {
@@ -64,9 +64,9 @@ describe('compile.marks', function() {
 
     describe('1D, horizontal', function() {
       const e = parseModel({
-          'mark': "bar",
-          'encoding': {'x': {'type': "quantitative", 'field': 'US_Gross', 'aggregate': 'sum'}},
-          'data': {'url': 'data/movies.json'}
+          "mark": "bar",
+          "encoding": {"x": {"type": "quantitative", "field": 'US_Gross', "aggregate": 'sum'}},
+          "data": {"url": 'data/movies.json'}
         }),
         def = marks.bar.properties(e);
       it('should end on axis', function() {
