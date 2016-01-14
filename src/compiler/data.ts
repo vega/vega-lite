@@ -19,12 +19,12 @@ const DEFAULT_NULL_FILTERS = {
 };
 
 /**
- * Create Vega's data array from a given encoding.
+ * Create Vega's data array from a given model.
  *
- * @param  encoding
+ * @param  model
  * @return Array of Vega data.
  *                 This always includes a "source" data table.
- *                 If the encoding contains aggregate value, this will also create
+ *                 If the model contains aggregate value, this will also create
  *                 aggregate table as well.
  */
 export function compileData(model: Model): VgData[] {
