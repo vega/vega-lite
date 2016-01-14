@@ -57,7 +57,6 @@ var scale = {
 
 
 var ordinalScaleMixin = {
-  default: {},
   properties: {
     bandWidth: {
       type: 'integer',

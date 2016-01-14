@@ -26,7 +26,7 @@ export function instantiate(schema) {
         }
       }
     }
-    return util.keys(instance).length > 0 ? instance : undefined;
+    return instance;
   } else if (schema.type === 'array') {
     return undefined;
   }
