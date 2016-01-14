@@ -10,7 +10,7 @@ Vega-Lite specifications consist of simple mappings of variables in a data set t
 
 __Try using Vega-Lite in the online [Vega Editor](http://vega.github.io/vega-editor/?mode=vega-lite)__.
 
-The complete schema for specifications as [JSON schema](http://json-schema.org/) is at [vega-lite-schema.json](https://vega.github.io/vega-lite/vega-lite-schema.json).
+The language and API are described in the [documentation](https://vega.github.io/vega-lite/docs/). The complete schema for specifications as [JSON schema](http://json-schema.org/) is at [vega-lite-schema.json](https://vega.github.io/vega-lite/vega-lite-schema.json).
 
 Please refer to [CONTRIBUTING.md](CONTRIBUTING.md) for contribution and development guidelines.
 
