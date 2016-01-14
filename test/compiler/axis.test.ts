@@ -2,8 +2,9 @@
 
 import {expect} from 'chai';
 
+import {parseModel} from '../util';
 import * as axis from '../../src/compiler/axis';
-import {Model, parseModel} from '../../src/compiler/Model';
+import {Model} from '../../src/compiler/Model';
 import {POINT} from '../../src/mark';
 import {X, COLUMN} from '../../src/channel';
 import {QUANTITATIVE, ORDINAL} from '../../src/type';

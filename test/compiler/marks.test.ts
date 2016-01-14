@@ -3,7 +3,7 @@
 import {expect} from 'chai';
 import * as marks from '../../src/compiler/marks';
 import {X, Y, SIZE, COLOR, SHAPE} from '../../src/channel';
-import {parseModel} from '../../src/compiler/Model';
+import {parseModel} from '../util';
 import {extend} from '../../src/util'
 
 describe('compile.marks', function() {

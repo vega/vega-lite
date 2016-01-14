@@ -2,7 +2,7 @@
 
 import {expect} from 'chai';
 
-import {parseModel} from '../../src/compiler/Model';
+import {parseModel} from '../util';
 import {compileData} from '../../src/compiler/data';
 import {compileRootGroup} from '../../src/compiler/compiler';
 import {SUMMARY} from '../../src/data';
