@@ -81,6 +81,7 @@ npm install
   We compile `schema` variable inside `src/schema/schema.ts` to generate the JSON schema.
 
 - `test/` - Code for unit testing.  `test`'s structure reflects `src`'s' directory structure.  For example, `test/compiler/` test files inside `src/compiler`.  
+  - Note that we prepend `/* tslint:disable:quotemark */` to all files under `test/compiler` to allow putting JSON spec in tests directly without getting lint errors.
 - `typings/` - TypeScript typing declaration for dependencies.  Some of them are downloaded from the TypeStrong community.
 
 
