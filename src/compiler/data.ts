@@ -417,16 +417,14 @@ export namespace dates {
    * Add data source for with dates for all months, days, hours, ... as needed.
    */
   export function defs(model: Model) {
-    let defs = [];
-
     let alreadyAdded = {};
 
-    model.forEach(function(fieldDef, channel) {
+    var res = model.reduce(function(aggregator, fieldDef: FieldDef, channel: Channel) {
       if (fieldDef.timeUnit) {
         const domain = rawDomain(fieldDef.timeUnit, channel);
         if (domain && !alreadyAdded[fieldDef.timeUnit]) {
           alreadyAdded[fieldDef.timeUnit] = true;
-          defs.push({
+          aggregator.push({
             name: fieldDef.timeUnit,
             values: domain,
             transform: [{
@@ -437,9 +435,10 @@ export namespace dates {
           });
         }
       }
-    });
+      return aggregator;
+    }, []);
 
-    return defs;
+    return res;
   }
 }
 
