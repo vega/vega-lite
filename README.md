@@ -12,7 +12,7 @@ __Try using Vega-Lite in the online [Vega Editor](http://vega.github.io/vega-edi
 
 The complete schema for specifications as [JSON schema](http://json-schema.org/) is at [vega-lite-schema.json](https://vega.github.io/vega-lite/vega-lite-schema.json).
 
-Please refer to CONTRIBUTE.md for contribution and development guidelines.
+Please refer to [CONTRIBUTING.md](CONTRIBUTING.md) for contribution and development guidelines.
 
 ## Example specification
 
