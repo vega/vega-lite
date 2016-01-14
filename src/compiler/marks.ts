@@ -146,9 +146,6 @@ export function compileMarks(model: Model): any[] {
   }
 }
 
-
-
-
 /**
  * Returns list of detail fields (for 'color', 'shape', or 'detail' channels)
  * that the model's spec contains.
