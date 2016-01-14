@@ -237,6 +237,7 @@ export class Model {
 
     if (format !== undefined) {
       def.format = format;
+      return;
     }
 
     switch (fieldDef.type) {
