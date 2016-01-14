@@ -69,6 +69,7 @@ export function parseExpression(timeUnit: string, fieldRef: string, onlyRef = fa
   if (timeUnit.indexOf('month') > -1) {
     out += get('month');
   } else {
+    // month starts at 0 in javascript
     out += '0, ';
   }
 
