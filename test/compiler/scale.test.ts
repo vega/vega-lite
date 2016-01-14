@@ -1,3 +1,5 @@
+/* tslint:disable:quotemark */
+
 import {expect} from 'chai';
 
 import * as vlscale from '../../src/compiler/scale';

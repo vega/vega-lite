@@ -1,3 +1,5 @@
+/* tslint:disable:quotemark */
+
 import {expect} from 'chai';
 
 import {Model} from '../../src/compiler/Model';

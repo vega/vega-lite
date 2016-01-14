@@ -1,3 +1,5 @@
+/* tslint:disable:quotemark */
+
 import {expect} from 'chai';
 
 import {compileData, source, summary} from '../../src/compiler/data';
