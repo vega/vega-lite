@@ -51,6 +51,12 @@ We use Github Pages to publish our documentation when we release a new version.
 To contribute changes to the documentation, simply submit a pull request that changes
 the corresponding markdown files in `docs/`.   
 
+Since we only publish the Github Pages when we release a new version, 
+it might be slightly outdated compared to `master`.  
+For development, you can run `npm run site` to serve the github page locally at [http://localhost:4000](http://localhost:4000).
+Open [http://localhost:4000/docs](http://localhost:4000/docs) to see the docs. 
+
+
 # Development Guide
 
 ## Repository Setup
