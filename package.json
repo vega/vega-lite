@@ -25,7 +25,7 @@
     "schema": "tsc && npm run schema:only",
     "schema:only": "node src/schema/schemagen.js > vega-lite-schema.json",
     "site": "bundle exec jekyll serve",
-    "test": "tsc && mocha --recursive --require source-map-support/register",
+    "test": "tsc && mocha --recursive --require source-map-support/register test examples",
     "watch:build": "watchify src/vl.ts -p tsify -v -d -s vl -o 'exorcist vega-lite.js.map > vega-lite.js'",
     "watch:test": "nodemon -x 'npm test && npm run lint'",
     "watch": "nodemon -x 'npm run build && npm test && npm run lint'",
