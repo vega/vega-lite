@@ -11,27 +11,7 @@ import {Y} from '../../src/channel';
 describe('vl.compile.scale', function() {
   describe('domain()', function() {
     describe('for stack', function() {
-      it('should return correct stack', function() {
-        var domain = vlscale.domain(new Model({
-          mark: BAR,
-          encoding: {
-            y: {
-              aggregate: 'sum',
-              field: 'origin'
-            },
-            x: {field: 'x', type: ORDINAL},
-            color: {field: 'color', type: ORDINAL},
-            row: {field: 'row'}
-          }
-        }), Y, 'linear');
-
-        expect(domain).to.eql({
-          data: 'stacked_scale',
-          field: 'sum_sum_origin'
-        });
-      });
-
-      it('should return correct aggregated stack', function() {
+      it('should return correct stacked_scale', function() {
         var domain = vlscale.domain(new Model({
           mark: BAR,
           encoding: {

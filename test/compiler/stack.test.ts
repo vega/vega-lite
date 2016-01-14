@@ -1,7 +1,8 @@
+/* tslint:disable:quotemark */
+
 import {expect} from 'chai';
 
-import {stack} from '../fixtures';
-import {Model} from '../../src/compiler/Model';
+import {parseModel} from '../../src/compiler/Model';
 import {compileData} from '../../src/compiler/data';
 import {compileRootGroup} from '../../src/compiler/compiler';
 import {SUMMARY} from '../../src/data';
@@ -9,7 +10,14 @@ import {SUMMARY} from '../../src/data';
 describe('vl.compile.stack()', function () {
 
   describe('bin-x', function () {
-    const model = new Model(stack.binX);
+    const model = parseModel({
+      "mark": "bar",
+      "encoding": {
+        "x": {"type": "quantitative", "field": "Cost__Other", "aggregate": "sum"},
+        "y": {"bin": true, "type": "quantitative", "field": "Cost__Total_$"},
+        "color": {"type": "ordinal", "field": "Effect__Amount_of_damage"}
+      }
+    });
     const dataSpec = compileData(model);
     it('should aggregate data correctly', function () {
 
@@ -46,7 +54,15 @@ describe('vl.compile.stack()', function () {
   });
 
   describe('bin-y', function () {
-    const model = new Model(stack.binY);
+    const model = parseModel({
+      "mark": "bar",
+      "encoding": {
+        "y": {"type": "quantitative", "field": "Cost__Other", "aggregate": "sum"},
+        "x": {"bin": true, "type": "quantitative", "field": "Cost__Total_$"},
+        "color": {"type": "ordinal", "field": "Effect__Amount_of_damage"}
+      }
+    });
+
     const dataSpec = compileData(model);
     it('should aggregate data correctly', function () {
 
