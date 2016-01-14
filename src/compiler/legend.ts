@@ -6,7 +6,7 @@ import {AREA, BAR, TICK, TEXT, LINE, POINT, CIRCLE, SQUARE} from '../mark';
 import {TEMPORAL} from '../type';
 import {extend, keys} from '../util';
 import {Model} from './Model';
-import {applyMarkConfig, FILL_STROKE_CONFIG} from './marks';
+import {applyMarkConfig, FILL_STROKE_CONFIG} from './util';
 
 export function compileLegends(model: Model) {
   var defs = [];
