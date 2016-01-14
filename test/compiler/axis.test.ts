@@ -16,7 +16,7 @@ describe('Axis', function() {
         "encoding": {
           "y": {"type": "quantitative", "field": 'US_Gross', "aggregate": "sum", "axis": true}
         },
-        "data": {"url": 'data/movies.json'}
+        "data": {"url": "data/movies.json"}
       });
 
       const model2 = parseModel({
@@ -24,7 +24,7 @@ describe('Axis', function() {
         "encoding": {
           "y": {"type": "quantitative", "field": 'US_Gross', "aggregate": "sum"}
         },
-        "data": {"url": 'data/movies.json'}
+        "data": {"url": "data/movies.json"}
       });
       expect(model1.spec().encoding.y.axis).to.eql(model2.spec().encoding.y.axis);
     });
