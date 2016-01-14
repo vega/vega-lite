@@ -68,8 +68,6 @@ export function format(model: Model, channel: Channel) {
     const timeUnit = fieldDef.timeUnit;
     if (!timeUnit) {
       return model.config().timeFormat;
-    } else if (timeUnit === 'year') {
-      return 'd';
     }
   }
   return undefined;
@@ -187,10 +185,10 @@ export namespace properties {
       }, labelsSpec);
     }
 
-    let filterName = model.labelTemplate(channel);
-    if (fieldDef.type === TEMPORAL && filterName) {
+    let format = model.timeFormat(channel);
+    if (fieldDef.type === TEMPORAL && format) {
       labelsSpec = extend({
-        text: {template: '{{datum.data | ' + filterName + '}}'}
+        text: {template: '{{datum.data | time:\''+ format + '\'}}'}
       }, labelsSpec || {});
     }
 

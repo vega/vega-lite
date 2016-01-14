@@ -20,6 +20,7 @@ import {compileMarkConfig} from './config';
 import {compileLayout, Layout} from './layout';
 import {compileStackProperties, StackProperties} from './stack';
 import {type as scaleType} from './scale';
+import {format as timeFormatExpr} from './time';
 
 /**
  * Internal model of Vega-Lite specification for the compiler.
@@ -203,8 +204,8 @@ export class Model {
     return (name ? name + '-' : '') + channel;
   }
 
-  /** returns the template name used for axis labels for a time unit */
-  public labelTemplate(channel: Channel): string {
+  /** returns the time format used for axis labels for a time unit */
+  public timeFormat(channel: Channel): string {
     const fieldDef = this.fieldDef(channel);
     const legend = fieldDef.legend;
     const axis = fieldDef.axis;
@@ -212,14 +213,6 @@ export class Model {
       (typeof axis !== 'boolean' ? axis.shortTimeLabels : false) :
       (typeof legend !== 'boolean' ? legend.shortTimeLabels : false);
 
-    var postfix = abbreviated ? '-abbrev' : '';
-    switch (fieldDef.timeUnit) {
-      case 'day':
-        return 'day' + postfix;
-      case 'month':
-        return 'month' + postfix;
-    }
-    return null;
+    return timeFormatExpr(fieldDef.timeUnit, abbreviated);
   }
-
 }

@@ -3,7 +3,7 @@ declare var exports;
 
 import {FieldDef} from '../schema/fielddef.schema';
 
-import {contains, extend, range} from '../util';
+import {contains, extend} from '../util';
 import {Model} from './Model';
 import {SHARED_DOMAIN_OPS} from '../aggregate';
 import {COLUMN, ROW, X, Y, SHAPE, SIZE, COLOR, TEXT, DETAIL, Channel} from '../channel';
@@ -11,6 +11,7 @@ import {SOURCE, STACKED_SCALE} from '../data';
 import {isDimension} from '../fielddef';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 import {Mark, BAR, TEXT as TEXT_MARK, TICK} from '../mark';
+import {rawDomain} from './time';
 
 export function compileScales(channels: Channel[], model: Model) {
   return channels.filter(function(channel: Channel) {
@@ -59,7 +60,7 @@ export function type(fieldDef: FieldDef, channel: Channel, mark: Mark): string {
       if (channel === COLOR) {
         // FIXME(#890) if user specify scale.range as ordinal presets, then this should be ordinal.
         // Also, if we support color ramp, this should be ordinal too.
-        return 'linear'; // time has order, so use interpolated ordinal color scale.
+        return 'time'; // time has order, so use interpolated ordinal color scale.
       }
       if (contains([ROW, COLUMN, SHAPE], channel)) {
         return 'ordinal';
@@ -67,7 +68,6 @@ export function type(fieldDef: FieldDef, channel: Channel, mark: Mark): string {
       if (fieldDef.scale.type !== undefined) {
         return fieldDef.scale.type;
       }
-      // TODO: add timeUnit for other timeUnit once added
       switch (fieldDef.timeUnit) {
         case 'hours':
         case 'day':
@@ -81,8 +81,13 @@ export function type(fieldDef: FieldDef, channel: Channel, mark: Mark): string {
           // (2) is the dimension of BAR or TICK mark.
           // Otherwise return linear.
           return contains([BAR, TICK], mark) &&
-            isDimension(fieldDef) ? 'ordinal' : 'linear';
+            isDimension(fieldDef) ? 'ordinal' : 'time';
       }
+      if (fieldDef.timeUnit) {
+        // yearmonth, monthday, ...
+        return 'ordinal';
+      }
+      // no timeUnit
       return 'time';
 
     case QUANTITATIVE:
@@ -107,20 +112,21 @@ export function domain(model: Model, channel:Channel, scaleType: string) {
 
   // special case for temporal scale
   if (fieldDef.type === TEMPORAL) {
-    var isColor = channel === COLOR;
-    switch (fieldDef.timeUnit) {
-      case 'seconds':
-      case 'minutes':
-        return isColor ? [0,59] : range(0, 60);
-      case 'hours':
-        return isColor ? [0,23] : range(0, 24);
-      case 'day':
-        return isColor ? [0,6] : range(0, 7);
-      case 'date':
-        return isColor ? [1,31] : range(1, 32);
-      case 'month':
-        return isColor ? [0,11] : range(0, 12);
+    if (rawDomain(fieldDef.timeUnit, channel)) {
+      return {
+        data: fieldDef.timeUnit,
+        field: 'date'
+      };
     }
+
+    return {
+      data: model.dataTable(),
+      field: model.field(channel),
+      sort: {
+        field: model.field(channel),
+        op: 'min'
+      }
+    };
   }
 
   // For stack, use STACKED data.

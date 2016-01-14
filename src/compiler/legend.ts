@@ -74,11 +74,11 @@ export function title(fieldDef: FieldDef) {
 namespace properties {
   export function labels(fieldDef: FieldDef, labelsSpec, model: Model, channel: Channel) {
     const timeUnit = fieldDef.timeUnit;
-    const labelTemplate = model.labelTemplate(channel);
-    if (fieldDef.type === TEMPORAL && timeUnit && labelTemplate) {
+    const format = model.timeFormat(channel);
+    if (fieldDef.type === TEMPORAL && timeUnit && format) {
       return extend({
         text: {
-          template: '{{datum.data | ' + labelTemplate + '}}'
+          template: '{{datum.data | ' + format + '}}'
         }
       }, labelsSpec || {});
     }

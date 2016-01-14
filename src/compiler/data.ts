@@ -10,6 +10,7 @@ import {SOURCE, STACKED_SCALE, LAYOUT, SUMMARY} from '../data';
 import {field} from '../fielddef';
 import {QUANTITATIVE, TEMPORAL} from '../type';
 import {type as scaleType} from './scale';
+import {parseExpression, rawDomain} from './time';
 
 const DEFAULT_NULL_FILTERS = {
   nominal: false,
@@ -35,8 +36,6 @@ export function compileData(model: Model): VgData[] {
     def.push(summaryDef);
   }
 
-  // TODO add "having" filter here
-
   // append non-positive filter at the end for the data table
   filterNonPositiveForLog(def[def.length - 1], model);
 
@@ -52,10 +51,16 @@ export function compileData(model: Model): VgData[] {
     def.push(stack.def(model, stackDef));
   }
 
+  // Time domain tables
+
+  dates.defs(model).forEach(dateDef => {
+    def.push(dateDef);
+  });
+
   return def;
 }
 
-// TODO: Consolidate all Vega interface
+// TODO: Consolidate all Vega interfaces
 interface VgData {
   name: string;
   source?: string;
@@ -129,12 +134,12 @@ export namespace source {
 
   export function timeTransform(model: Model) {
     return model.reduce(function(transform, fieldDef: FieldDef, channel: Channel) {
+      const ref = field(fieldDef, { nofn: true, datum: true });
       if (fieldDef.type === TEMPORAL && fieldDef.timeUnit) {
         transform.push({
           type: 'formula',
           field: field(fieldDef),
-          expr: 'utc' + fieldDef.timeUnit + '(' +
-                field(fieldDef, {nofn: true, datum: true}) + ')'
+          expr: parseExpression(fieldDef.timeUnit, ref)
         });
       }
       return transform;
@@ -408,6 +413,37 @@ export namespace stack {
 
     return stacked;
   };
+}
+
+export namespace dates {
+  /**
+   * Add data source for with dates for all months, days, hours, ... as needed.
+   */
+  export function defs(model: Model) {
+    let defs = [];
+
+    let alreadyAdded = {};
+
+    model.forEach((fieldDef, channel) => {
+      if (fieldDef.timeUnit) {
+        const domain = rawDomain(fieldDef.timeUnit, channel);
+        if (domain && !alreadyAdded[fieldDef.timeUnit]) {
+          alreadyAdded[fieldDef.timeUnit] = true;
+          defs.push({
+            name: fieldDef.timeUnit,
+            values: domain,
+            transform: [{
+              type: 'formula',
+              field: 'date',
+              expr: parseExpression(fieldDef.timeUnit, 'datum.value', true)
+            }]
+          });
+        }
+      }
+    });
+
+    return defs;
+  }
 }
 
 export function filterNonPositiveForLog(dataTable, model: Model) {
