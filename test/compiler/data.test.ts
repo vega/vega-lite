@@ -204,7 +204,7 @@ describe('data.source', function() {
         expect(transform[0]).to.eql({
           type: 'formula',
           field: 'year_a',
-          expr: 'time(datetime(year(datum.a), 0, 1, 0, 0, 0, 0))'
+          expr: 'datetime(year(datum.a), 0, 1, 0, 0, 0, 0)'
         });
       });
     });
@@ -244,7 +244,7 @@ describe('data.dates', function() {
       name: 'day',
       transform: [
         {
-          expr: 'time(datetime(2006, 0, datum.value+1, 0, 0, 0, 0))',
+          expr: 'datetime(2006, 0, datum.value+1, 0, 0, 0, 0)',
           field: 'date',
           type: 'formula'
         }

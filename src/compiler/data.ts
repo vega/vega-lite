@@ -52,10 +52,7 @@ export function compileData(model: Model): VgData[] {
   }
 
   // Time domain tables
-
-  dates.defs(model).forEach(dateDef => {
-    def.push(dateDef);
-  });
+  dates.defs(model).forEach(dateDef => def.push(dateDef));
 
   return def;
 }

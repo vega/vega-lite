@@ -3,7 +3,6 @@ import {FieldDef} from '../schema/fielddef.schema';
 import {COLOR, SIZE, SHAPE, Channel} from '../channel';
 import {title as fieldTitle} from '../fielddef';
 import {AREA, BAR, TICK, TEXT, LINE, POINT, CIRCLE, SQUARE} from '../mark';
-import {TEMPORAL} from '../type';
 import {extend, keys} from '../util';
 import {Model} from './Model';
 import {applyMarkConfig, FILL_STROKE_CONFIG} from './marks';
@@ -38,9 +37,10 @@ export function compileLegend(model: Model, channel: Channel, def) {
 
   // 1.1 Add properties with special rules
   def.title = title(fieldDef);
+  model.format(channel, (typeof legend !== 'boolean' && legend.format) || undefined, def);
 
   // 1.2 Add properties without rules
-  ['orient', 'format', 'values'].forEach(function(property) {
+  ['orient', 'values'].forEach(function(property) {
     const value = legend[property];
     if (value !== undefined) {
       def[property] = value;
@@ -49,7 +49,7 @@ export function compileLegend(model: Model, channel: Channel, def) {
 
   // 2) Add mark property definition groups
   const props = (typeof legend !== 'boolean' && legend.properties) || {};
-  ['title', 'labels', 'symbols', 'legend'].forEach(function(group) {
+  ['title', 'symbols', 'legend'].forEach(function(group) {
     let value = properties[group] ?
       properties[group](fieldDef, props[group], model, channel) : // apply rule
       props[group]; // no rule -- just default values
@@ -72,19 +72,6 @@ export function title(fieldDef: FieldDef) {
 }
 
 namespace properties {
-  export function labels(fieldDef: FieldDef, labelsSpec, model: Model, channel: Channel) {
-    const timeUnit = fieldDef.timeUnit;
-    const format = model.timeFormat(channel);
-    if (fieldDef.type === TEMPORAL && timeUnit && format) {
-      return extend({
-        text: {
-          template: '{{datum.data | ' + format + '}}'
-        }
-      }, labelsSpec || {});
-    }
-    return labelsSpec;
-  }
-
   export function symbols(fieldDef: FieldDef, symbolsSpec, model: Model, channel: Channel) {
     let symbols:any = {};
     const mark = model.mark();

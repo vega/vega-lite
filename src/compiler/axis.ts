@@ -17,10 +17,13 @@ export function compileAxis(channel: Channel, model: Model) {
     scale: model.scale(channel)
   };
 
-  // 1. Add properties
+  // 1.1 Add properties with special rules
+  model.format(channel, model.axis(channel).format, def);
+
+  // 1.2. Add properties
   [
     // a) properties with special rules (so it has axis[property] methods) -- call rule functions
-    'format', 'grid', 'layer', 'orient', 'tickSize', 'ticks', 'title',
+    'grid', 'layer', 'orient', 'tickSize', 'ticks', 'title',
     // b) properties without rules, only produce default values in the schema, or explicit value if specified
     'offset', 'tickPadding', 'tickSize', 'tickSizeMajor', 'tickSizeMinor', 'tickSizeEnd',
     'titleOffset', 'values', 'subdivide'
@@ -40,7 +43,7 @@ export function compileAxis(channel: Channel, model: Model) {
   var props = model.axis(channel).properties || {};
 
   [
-    'axis', 'labels',// have special rules
+    'axis', 'labels', // have special rules
     'grid', 'title', 'ticks', 'majorTicks', 'minorTicks' // only default values
   ].forEach(function(group) {
     var value = properties[group] ?
@@ -53,24 +56,6 @@ export function compileAxis(channel: Channel, model: Model) {
   });
 
   return def;
-}
-
-export function format(model: Model, channel: Channel) {
-  const fieldDef = model.fieldDef(channel);
-  var format = model.axis(channel).format;
-  if (format !== undefined)  {
-    return format;
-  }
-
-  if (fieldDef.type === QUANTITATIVE) {
-    return model.numberFormat(channel);
-  } else if (fieldDef.type === TEMPORAL) {
-    const timeUnit = fieldDef.timeUnit;
-    if (!timeUnit) {
-      return model.config().timeFormat;
-    }
-  }
-  return undefined;
 }
 
 export function grid(model: Model, channel: Channel) {
@@ -183,13 +168,6 @@ export namespace properties {
       return extend({
         text: ''
       }, labelsSpec);
-    }
-
-    let format = model.timeFormat(channel);
-    if (fieldDef.type === TEMPORAL && format) {
-      labelsSpec = extend({
-        text: {template: '{{datum.data | time:\''+ format + '\'}}'}
-      }, labelsSpec || {});
     }
 
     if (contains([NOMINAL, ORDINAL], fieldDef.type) && axis.labelMaxLength) {

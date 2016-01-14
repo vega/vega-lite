@@ -27,7 +27,7 @@ describe('Model', function() {
         encoding: {
           x: {timeUnit: 'week', field:'a', type: TEMPORAL, axis: {shortTimeLabels: true}}
         }
-      }).timeFormat(X)).to.equal(null);
+      }).timeFormat(X)).to.equal(undefined);
     });
   });
 });

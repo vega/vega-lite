@@ -4,7 +4,7 @@ import {COLUMN, ROW, SHAPE, COLOR, Channel} from '../channel';
 /** returns the template name used for axis labels for a time unit */
 export function format(timeUnit, abbreviated = false): string {
   if (!timeUnit) {
-    return null;
+    return undefined;
   }
 
   let dateComponents = [];
@@ -46,11 +46,11 @@ export function format(timeUnit, abbreviated = false): string {
     out.push(timeComponents.join(':'));
   }
 
-  return out.length > 0 ? out.join(' ') : null;
+  return out.length > 0 ? out.join(' ') : undefined;
 }
 
 export function parseExpression(timeUnit: string, fieldRef: string, onlyRef = false): string {
-  let out = 'time(datetime(';
+  let out = 'datetime(';
 
   function get(fun: string, addComma = true) {
     if (onlyRef) {
@@ -105,7 +105,7 @@ export function parseExpression(timeUnit: string, fieldRef: string, onlyRef = fa
     out += '0';
   }
 
-  return out + '))';
+  return out + ')';
 }
 
 /** Generate the complete raw domain. */
