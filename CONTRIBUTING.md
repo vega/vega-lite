@@ -41,6 +41,10 @@ so we can better coordinate our efforts, prevent duplication of work, and help y
 
 - You can refer to related issue by adding #<issue-no> to the pull request's description.
 
+### Looking for a Task to Contribute
+
+[This document](http://bit.ly/vega-lite-contribute) lists tasks for contributors, starting from smaller tasks to a larger task. You can also find [all tasks with "help-wanted" label in the issue tracker](https://github.com/vega/vega-lite/labels/help-wanted). 
+
 ## Documentation
 
 Our documentation also resides in our Github repository under `docs/` in Markdown format.  
