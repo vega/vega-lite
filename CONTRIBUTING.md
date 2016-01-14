@@ -1,8 +1,9 @@
-# Found an Issue or Want a Feature?
+# Contribute
 
-If you find a bug in the code or a mistake in the documentation or want a new feature,
-you can help us by creating an issue to [our repository](http://github.com/vega/vega-lite),
+If you find a bug in the code or a mistake in the [documentation](https://vega.github.io/vega-lite/docs/) or want a new feature, you can help us by creating an issue to [our repository](http://github.com/vega/vega-lite),
 or even better, submit a pull request.  
+
+## Creating an Issue
 
 Before creating an issue, please browse through the [issue list](https://github.com/vega/vega-lite/issues) to avoid duplicates.  
 
@@ -38,6 +39,10 @@ so we can better coordinate our efforts, prevent duplication of work, and help y
 - Generally we name a branch using this pattern "<your 2-3 letter initial>/<topic>".  For example, @kanitw's branch regarding scale type might be called `kw/scale-type`.
 
 - You can refer to related issue by adding #<issue-no> to the pull request's description.
+
+### Looking for a Task to Contribute
+
+[This document](http://bit.ly/vega-lite-contribute) lists tasks for contributors, starting from smaller tasks to a larger task. You can also find [all tasks with "help-wanted" label in the issue tracker](https://github.com/vega/vega-lite/labels/help-wanted). 
 
 ## Documentation
 
@@ -96,6 +101,12 @@ You can run `npm run build` to compile Vega-Lite and regenerate `vega-lite-schem
 ### Basic Lint & Test
 
 `npm run lint` and `npm run test` run ts-lint and all unit-tests respectively.  These two commands are automatically run by `npm start` and `npm run watch`.
+
+### Test Coverage
+
+Use `npm run cover` to see test coverage summary and generate a report inside `coverage/lcov-report`.  
+You can see if specific lines are covered in the unit test by running `open coverage/lcov-report/index.html`
+and browse through the report. 
 
 ### Watch tasks
 
@@ -172,6 +183,14 @@ npm link datalib
 
 Now all the changes you make in Datalib are reflected in your Vega-Lite automatically.
 
-**Credit**
+# Note
 
-This contribution guide is partly inspired by [angular.js's CONTRIBUTION.md](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md).
+Vega-Lite enables a number of open-source applications including user interface tools ([PoleStar](https://github.com/uwdata/polestar) and [Voyager](https://github.com/uwdata/voyager)) and visualization recommender ([Compass](https://github.com/uwdata/compass)).  Look at their contribute pages if you are interested!
+
+- [PoleStar: Contribute](https://github.com/uwdata/polestar/wiki/Contribute)
+- [Voyager: Contribute](https://github.com/uwdata/voyager/wiki/Contribute)
+- [Compass: Contribute](https://github.com/uwdata/compass/wiki/Contribute)
+
+-----
+ 
+**Acknowledgment**: This contribution guide is partly inspired by [angular.js's CONTRIBUTION.md](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md).

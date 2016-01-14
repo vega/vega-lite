@@ -109,6 +109,15 @@
     {
       "name": "stacked_bar_1d",
       "title": "1D Stacked Bar Chart"
+    },
+    {
+      "name": "temp_histogram",
+      "title": "Temperature in Seattle",
+      "showInEditor": true
+    },
+    {
+      "name": "temp_histogram_bar",
+      "title": "Temperature in Seattle"
     }
   ],
   "Trellis": [

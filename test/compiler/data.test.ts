@@ -2,7 +2,7 @@
 
 import {expect} from 'chai';
 
-import {compileData, source, summary} from '../../src/compiler/data';
+import {compileData, source, summary, dates} from '../../src/compiler/data';
 import {SUMMARY} from '../../src/data';
 import {Model} from '../../src/compiler/Model'; // FIXME use parseModel
 import {POINT} from '../../src/mark';
@@ -206,7 +206,7 @@ describe('data.source', function() {
         expect(transform[0]).to.eql({
           type: 'formula',
           field: 'year_a',
-          expr: 'utcyear(datum.a)'
+          expr: 'datetime(year(datum.a), 0, 1, 0, 0, 0, 0)'
         });
       });
     });
@@ -222,6 +222,39 @@ describe('data.source', function() {
   });
 });
 
+describe('data.dates', function() {
+  it('should add data source with raw domain data', function() {
+    var encoding = new Model({
+        mark: POINT,
+        encoding: {
+          'y': {
+            'aggregate': 'sum',
+            'field': 'Acceleration',
+            'type': QUANTITATIVE
+          },
+          'x': {
+            'field': 'date',
+            'type': TEMPORAL,
+            'timeUnit': 'day'
+          }
+        }
+      });
+
+    var defs = dates.defs(encoding);
+
+    expect(defs).to.eql([{
+      name: 'day',
+      transform: [
+        {
+          expr: 'datetime(2006, 0, datum.data+1, 0, 0, 0, 0)',
+          field: 'date',
+          type: 'formula'
+        }
+      ],
+      values: [0,1,2,3,4,5,6]
+    }]);
+  });
+});
 
 describe('data.summary', function () {
   it('should return correct aggregation', function() {

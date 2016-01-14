@@ -15,36 +15,21 @@ describe('Model', function() {
         encoding: {
           x: {timeUnit: 'month', field:'a', type: TEMPORAL, axis: {shortTimeLabels: true}}
         }
-      }).labelTemplate(X)).to.equal('month-abbrev');
+      }).timeFormat(X)).to.equal('%b');
 
       expect(new Model({
         mark: POINT,
         encoding: {
           x: {timeUnit: 'month', field:'a', type: TEMPORAL}
         }
-      }).labelTemplate(X)).to.equal('month');
-
-      expect(new Model({
-        mark: POINT,
-        encoding: {
-          x: {timeUnit: 'day', field:'a', type: TEMPORAL, axis: {shortTimeLabels: true}}
-        }
-      }).labelTemplate(X)).to.equal('day-abbrev');
-
-      expect(new Model({
-        mark: POINT,
-        encoding: {
-          x: {timeUnit: 'day', field:'a', type: TEMPORAL}
-        }
-      }).labelTemplate(X)).to.equal('day');
+      }).timeFormat(X)).to.equal('%B');
 
       expect(new Model({
         mark: POINT,
         encoding: {
           x: {timeUnit: 'week', field:'a', type: TEMPORAL, axis: {shortTimeLabels: true}}
         }
-      }).labelTemplate(X)).to.equal(null);
+      }).timeFormat(X)).to.equal(undefined);
     });
   });
-
 });

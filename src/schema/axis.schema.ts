@@ -31,10 +31,7 @@ export var axis = {
     format: {
       type: 'string',
       default: undefined,  // auto
-      description: 'The formatting pattern for axis labels. '+
-                   'If not undefined, this will be determined by ' +
-                   'the max value ' +
-                   'of the field.'
+      description: 'The formatting pattern for axis labels. If undefined, a good format is automatically determined. Vega-Lite uses D3\'s format pattern and automatically switches to datetime formatters.'
     },
     grid: {
       type: 'boolean',

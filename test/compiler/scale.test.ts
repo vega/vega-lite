@@ -158,8 +158,28 @@ describe('vl.compile.scale', function() {
             }
           }), Y, 'ordinal');
 
-          expect(domain).to.eql([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]);
+          expect(domain).to.eql({ data: 'month', field: 'date' });
         });
+
+        it('should return the correct domain for yearmonth T',
+          function() {
+            var domain = vlscale.domain(parseModel({
+              mark: "point",
+              encoding: {
+                y: {
+                  field: 'origin',
+                  scale: {useRawDomain: true},
+                  type: "temporal",
+                  timeUnit: 'yearmonth'
+                }
+              }
+            }), Y, 'ordinal');
+
+            expect(domain).to.eql({
+              data: 'source', field: 'yearmonth_origin',
+              sort: {field: 'yearmonth_origin', op: 'min'}
+            });
+          });
     });
 
     describe('for ordinal', function() {
@@ -174,7 +194,7 @@ describe('vl.compile.scale', function() {
 
         expect(vlscale.domain(encoding, Y, 'ordinal'))
           .to.eql({
-            data: SOURCE,
+            data: "source",
             field: 'origin',
             sort: sortDef
           });
@@ -190,7 +210,7 @@ describe('vl.compile.scale', function() {
 
         expect(vlscale.domain(encoding, Y, 'ordinal'))
           .to.eql({
-            data: SOURCE,
+            data: "source",
             field: 'origin',
             sort: true
           });
