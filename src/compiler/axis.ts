@@ -1,6 +1,6 @@
 import {Model} from './Model';
 import {contains, extend, truncate} from '../util';
-import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
+import {NOMINAL, ORDINAL, TEMPORAL} from '../type';
 import {COLUMN, ROW, X, Y, Channel} from '../channel';
 
 // https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations
