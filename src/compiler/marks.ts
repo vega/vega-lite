@@ -128,8 +128,7 @@ export function compileMarks(model: Model): any[] {
       const labelProperties = markCompiler[mark].labels(model);
 
       // check if we have label method for current mark type.
-      // TODO(#240): remove this line once we support label for all mark types
-      if (labelProperties) {
+      if (labelProperties !== undefined) { // If label is supported
         // add label group
         marks.push(extend(
           name ? { name: name + '-label' } : {},
