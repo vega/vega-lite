@@ -13,13 +13,14 @@ import {FieldRefOption} from '../fielddef';
 import * as vlEncoding from '../encoding';
 import {Mark, BAR, TICK, TEXT as TEXTMARK} from '../mark';
 
-import {getFullName, NOMINAL, ORDINAL, TEMPORAL} from '../type';
+import {getFullName, NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 import {contains, duplicate, extend} from '../util';
 
 import {compileMarkConfig} from './config';
 import {compileLayout, Layout} from './layout';
 import {compileStackProperties, StackProperties} from './stack';
 import {type as scaleType} from './scale';
+import {format as timeFormatExpr} from './time';
 
 /**
  * Internal model of Vega-Lite specification for the compiler.
@@ -225,8 +226,37 @@ export class Model {
     return 30;
   }
 
-  /** returns the template name used for axis labels for a time unit */
-  public labelTemplate(channel: Channel): string {
+  /** Add formatting to a mark definition. Used in axis and legend. */
+  public format(channel: Channel, format: string, def: any) {
+    const fieldDef = this.fieldDef(channel);
+
+    if (fieldDef.type === TEMPORAL) {
+      // explicitly set the fromat type so that vega uses the datetime formatter
+      def.formatType = 'time';
+    }
+
+    if (format !== undefined) {
+      def.format = format;
+      return;
+    }
+
+    switch (fieldDef.type) {
+      case QUANTITATIVE:
+        def.format = this.numberFormat(channel);
+        break;
+      case TEMPORAL:
+        const f = this.timeFormat(channel);
+        if (f) {
+          def.format = f;
+        } else {
+          def.format = this.config().timeFormat;
+        }
+        break;
+    }
+  }
+
+  /** returns the time format used for axis labels for a time unit */
+  public timeFormat(channel: Channel): string {
     const fieldDef = this.fieldDef(channel);
     const legend = fieldDef.legend;
     const axis = fieldDef.axis;
@@ -234,14 +264,6 @@ export class Model {
       (typeof axis !== 'boolean' ? axis.shortTimeLabels : false) :
       (typeof legend !== 'boolean' ? legend.shortTimeLabels : false);
 
-    var postfix = abbreviated ? '-abbrev' : '';
-    switch (fieldDef.timeUnit) {
-      case 'day':
-        return 'day' + postfix;
-      case 'month':
-        return 'month' + postfix;
-    }
-    return null;
+    return timeFormatExpr(fieldDef.timeUnit, abbreviated);
   }
-
 }

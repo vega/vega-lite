@@ -41,8 +41,8 @@ describe('Axis', function() {
 
     // FIXME decouple the test here
 
-    it('should use custom label', function() {
-      expect(_axis.properties.labels.text.template).to.equal('{{datum.data | month}}');
+    it('should use custom format', function() {
+      expect(_axis.format).to.equal('%B');
     });
     it('should rotate label', function() {
       expect(_axis.properties.labels.angle.value).to.equal(270);
