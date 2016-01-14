@@ -424,7 +424,7 @@ export namespace dates {
 
     let alreadyAdded = {};
 
-    model.forEach((fieldDef, channel) => {
+    model.forEach(function(fieldDef, channel) {
       if (fieldDef.timeUnit) {
         const domain = rawDomain(fieldDef.timeUnit, channel);
         if (domain && !alreadyAdded[fieldDef.timeUnit]) {

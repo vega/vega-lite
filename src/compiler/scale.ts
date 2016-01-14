@@ -68,26 +68,27 @@ export function type(fieldDef: FieldDef, channel: Channel, mark: Mark): string {
       if (fieldDef.scale.type !== undefined) {
         return fieldDef.scale.type;
       }
-      switch (fieldDef.timeUnit) {
-        case 'hours':
-        case 'day':
-        case 'month':
-          return 'ordinal';
-        case 'date':
-        case 'year':
-        case 'second':
-        case 'minute':
-          // Returns ordinal if (1) the channel is X or Y, and
-          // (2) is the dimension of BAR or TICK mark.
-          // Otherwise return linear.
-          return contains([BAR, TICK], mark) &&
-            isDimension(fieldDef) ? 'ordinal' : 'time';
-      }
+
       if (fieldDef.timeUnit) {
-        // yearmonth, monthday, ...
-        return 'ordinal';
+        switch (fieldDef.timeUnit) {
+          case 'hours':
+          case 'day':
+          case 'month':
+            return 'ordinal';
+          case 'date':
+          case 'year':
+          case 'second':
+          case 'minute':
+            // Returns ordinal if (1) the channel is X or Y, and
+            // (2) is the dimension of BAR or TICK mark.
+            // Otherwise return linear.
+            return contains([BAR, TICK], mark) &&
+              isDimension(fieldDef) ? 'ordinal' : 'time';
+          default:
+            // yearmonth, monthday, ...
+            return 'ordinal';
+        }
       }
-      // no timeUnit
       return 'time';
 
     case QUANTITATIVE:
