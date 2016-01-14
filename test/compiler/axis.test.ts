@@ -7,26 +7,26 @@ import {Model, parseModel} from '../../src/compiler/Model';
 import {POINT} from '../../src/mark';
 import {X, COLUMN} from '../../src/channel';
 import {QUANTITATIVE, ORDINAL} from '../../src/type';
-import * as vl from '../../src/vl';
 
 describe('Axis', function() {
   describe('=true', function() {
     it('should produce default properties for axis', function() {
-      const spec1 = vl.compile({
-        mark: 'point',
-        encoding: {
-          x: {field: 'Horsepower', type: 'quantitative'},
-          y: {field: 'Miles_per_Gallon', type: 'quantitative'}
-        }
+      const model1 = parseModel({
+        "mark": "bar",
+        "encoding": {
+          "y": {"type": "quantitative", "field": 'US_Gross', "aggregate": "sum", "axis": true}
+        },
+        "data": {"url": 'data/movies.json'}
       });
-      const spec2 = vl.compile({
-        mark: 'point',
-        encoding: {
-          x: {field: 'Horsepower', type: 'quantitative', axis: true},
-          y: {field: 'Miles_per_Gallon', type: 'quantitative', axis: true}
-        }
+
+      const model2 = parseModel({
+        "mark": "bar",
+        "encoding": {
+          "y": {"type": "quantitative", "field": 'US_Gross', "aggregate": "sum"}
+        },
+        "data": {"url": 'data/movies.json'}
       });
-      expect(spec1).to.eql(spec2);
+      expect(model1.spec().encoding.y.axis).to.eql(model2.spec().encoding.y.axis);
     });
   });
 
