@@ -177,6 +177,14 @@ npm link datalib
 
 Now all the changes you make in Datalib are reflected in your Vega-Lite automatically.
 
-**Credit**
+# Note
 
-This contribution guide is partly inspired by [angular.js's CONTRIBUTION.md](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md).
+Vega-Lite enables a number of open-source applications including user interface tools ([PoleStar](https://github.com/uwdata/polestar) and [Voyager](https://github.com/uwdata/voyager)) and visualization recommender ([Compass](https://github.com/uwdata/compass)).  Look at their contribute pages if you are interested!
+
+- [PoleStar: Contribute](https://github.com/uwdata/polestar/wiki/Contribute)
+- [Voyager: Contribute](https://github.com/uwdata/voyager/wiki/Contribute)
+- [Compass: Contribute](https://github.com/uwdata/compass/wiki/Contribute)
+
+-----
+ 
+**Acknowledgment**: This contribution guide is partly inspired by [angular.js's CONTRIBUTION.md](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md).
