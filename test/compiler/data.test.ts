@@ -4,7 +4,7 @@ import {expect} from 'chai';
 
 import {compileData, source, summary} from '../../src/compiler/data';
 import {SUMMARY} from '../../src/data';
-import {Model} from '../../src/compiler/Model';
+import {Model} from '../../src/compiler/Model'; // FIXME use parseModel
 import {POINT} from '../../src/mark';
 import {TEMPORAL, QUANTITATIVE, ORDINAL} from '../../src/type';
 
