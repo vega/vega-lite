@@ -2,7 +2,6 @@ export interface CellConfig {
   width?: number;
   height?: number;
 
-  gridShow?: boolean;
   gridColor?: string;
   gridOpacity?: number;
   gridOffset?: number;
