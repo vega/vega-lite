@@ -90,7 +90,10 @@ export function compileMark(model: Model): any[] {
     }
   } else { // other mark type
     let marks = []; // TODO: vgMarks
-    if (mark === TEXTMARK && model.has(COLOR)) {
+    if (mark === TEXTMARK &&
+      model.has(COLOR) &&
+      model.config().mark.applyColorToBackground && !model.has(X) && !model.has(Y)
+    ) {
       // add background to 'text' marks if has color
       marks.push(extend(
         name ? { name: name + '-background' } : {},

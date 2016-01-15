@@ -36,6 +36,8 @@ export interface MarkConfig {
   fontWeight?: string;
   // Vega-Lite only for text only
   format?: string;
+
+  applyColorToBackground?: boolean;
 }
 
 export const markConfig = {
@@ -205,6 +207,11 @@ export const markConfig = {
       default: '',  // auto
       description: 'The formatting pattern for text value.'+
                    'If not defined, this will be determined automatically. '
+    },
+    applyColorToBackground: {
+      type: 'boolean',
+      default: false,
+      description: 'Apply color field to background color instead of the text.'
     }
   }
 };

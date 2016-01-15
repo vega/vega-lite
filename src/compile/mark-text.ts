@@ -1,6 +1,6 @@
 import {Model} from './Model';
 import {X, Y, COLOR, TEXT, SIZE} from '../channel';
-import {applyMarkConfig} from './util';
+import {applyMarkConfig, applyColorAndOpacity} from './util';
 import {QUANTITATIVE} from '../type';
 
 export namespace text {
@@ -58,14 +58,16 @@ export namespace text {
       p.fontSize = { value: model.sizeValue() };
     }
 
-    // FIXME applyColorAndOpacity
-    // fill
-    // TODO: consider if color should just map to fill instead?
+    if (model.config().mark.applyColorToBackground && !model.has(X) && !model.has(Y)) {
+      p.fill = {value: 'black'}; // TODO: add rules for swapping between black and white
 
-    p.fill = {value: 'black'}; // TODO: add rules for swapping between black and white
-    // opacity
-    var opacity = model.config().mark.opacity;
-    if (opacity) { p.opacity = { value: opacity }; };
+      // opacity
+      var opacity = model.config().mark.opacity;
+      if (opacity) { p.opacity = { value: opacity }; };
+    } else {
+      applyColorAndOpacity(p, model);
+    }
+
 
     // text
     if (model.has(TEXT)) {
@@ -86,7 +88,7 @@ export namespace text {
     }
 
     applyMarkConfig(p, model,
-      ['angle', 'align', 'baseline', 'dx', 'dy', 'fill', 'font', 'fontWeight',
+      ['angle', 'align', 'baseline', 'dx', 'dy', 'font', 'fontWeight',
         'fontStyle', 'radius', 'theta']);
 
     return p;
