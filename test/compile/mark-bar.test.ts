@@ -6,7 +6,11 @@ import {extend} from '../../src/util'
 import {X, Y, SIZE, COLOR, SHAPE} from '../../src/channel';
 import {bar} from '../../src/compile/mark-bar';
 
-describe('compile/mark-bar', function() {
+describe('Mark: Bar', function() {
+  describe('with size.value specified', function() {
+    // TODO
+  });
+
   describe('vertical, with log', function() {
     const e = parseModel({
       "mark": "bar",

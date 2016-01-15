@@ -6,7 +6,7 @@ import {extend} from '../../src/util'
 import {X, Y, COLOR} from '../../src/channel';
 import {line} from '../../src/compile/mark-line';
 
-describe('compile/mark-area', function() {
+describe('Mark: Line', function() {
   function lineXY(moreEncoding = {}) {
     const spec = {
       "mark": "line",

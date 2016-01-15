@@ -8,7 +8,7 @@ import {parseModel} from '../util';
 import {Y} from '../../src/channel';
 
 
-describe('vl.compile.scale', function() {
+describe('Scale', function() {
   describe('domain()', function() {
     describe('for stack', function() {
       it('should return correct stacked_scale', function() {
@@ -216,5 +216,9 @@ describe('vl.compile.scale', function() {
           });
       });
     });
+  });
+
+  describe('rangeMixins()', function() {
+    // TODO
   });
 });

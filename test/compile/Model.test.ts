@@ -8,7 +8,7 @@ import {POINT} from '../../src/mark';
 import {TEMPORAL} from '../../src/type';
 
 describe('Model', function() {
-  describe('labelTemplate', function() {
+  describe('timeFormat()', function() {
     it('should get the right time template', function() {
       expect(new Model({
         mark: POINT,

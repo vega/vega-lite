@@ -1,17 +1,21 @@
-# Contribute
+# Contributing
 
-If you find a bug in the code or a mistake in the [documentation](https://vega.github.io/vega-lite/docs/) or want a new feature, you can help us by creating an issue to [our repository](http://github.com/vega/vega-lite),
+If you find a bug in the code or a mistake in the [documentation](https://vega.github.io/vega-lite/docs/)
+or want a new feature, you can help us by creating an issue to [our repository](http://github.com/vega/vega-lite),
 or even better, submit a pull request.  
 
 ## Creating an Issue
 
-Before creating an issue, please browse through the [issue list](https://github.com/vega/vega-lite/issues) to avoid duplicates.  
+Before creating an issue, please browse through the
+[issue list](https://github.com/vega/vega-lite/issues) to avoid duplicates.  
 
-A good issue shouldn't leave others needing to chase you up for more information.  Here are properties of a good issue:
+A good issue shouldn't leave others needing to chase you up for more information.  
+Here are properties of a good issue:
 
 - __Use clear and descriptive title__ for the issue
 
-- __Describe how to reproduce the issue__ If possible, please provide an example Vega-Lite specification for reproducing the issue.  
+- __Describe how to reproduce the issue__ If possible,
+please provide an example Vega-Lite specification for reproducing the issue.  
 
 - __Provide screenshots/animated GIFs or describe the behavior you observed
 after following the steps__ and point out what exactly is the problem with that behavior.  
@@ -22,27 +26,38 @@ Github's issue tracker also supports drag-and-drop image upload.
 
 ## Submitting a Pull Request
 
-You can contribute to our codebase by submitting [a pull request](https://help.github.com/articles/using-pull-requests/).  Here are some guides:
+You can contribute to our codebase by submitting
+[a pull request](https://help.github.com/articles/using-pull-requests/).  
+Here are some guides:
 
 - Search GitHub for a related pull request. You don't want to duplicate effort.
 
-- Before submitting, all lint and test should pass.  
-Make sure to run `npm run lint` and `npm run test` before submitting a Pull Request.  
-Also, do not forget to update the documentation under `docs/` to reflect the changes
-within the same pull request.
+- Before submitting a pull request:
+  - All lint and test should pass.  
+  - Run `npm run lint` and `npm run test`.  
+  - Update the documentation under `docs/` to reflect the changes.
+  - Provide a concise description for the pull request.  An ideal description
+  should be something that we can copy and paste in
+  [our release note](https://github.com/vega/vega-lite/releases).
 
-- For small fixes, please feel free to submit a pull request with appropriate test cases or example specs the demonstrate the use case.  No worry about creating an issue first.  
+- For small fixes, please feel free to submit a pull request
+with appropriate test cases or example specs the demonstrate the use case.  
+No worry about creating an issue first.  
 
-- For major changes, please discuss with us via our mailing list and Github first,
-so we can better coordinate our efforts, prevent duplication of work, and help you to craft the change so that it is successfully accepted into the project.
+- For major changes, please discuss with us via [our mailing list] and Github first,
+so we can better coordinate our efforts, prevent duplication of work,
+and help you to craft the change so that it is successfully accepted into the project.
 
-- Generally we name a branch using this pattern "<your 2-3 letter initial>/<topic>".  For example, @kanitw's branch regarding scale type might be called `kw/scale-type`.
+- Generally we name a branch using this pattern "<your 2-3 letter initial>/<topic>".  
+For example, @kanitw's branch regarding scale type might be called `kw/scale-type`.
 
 - You can refer to related issue by adding #<issue-no> to the pull request's description.
 
 ### Looking for a Task to Contribute
 
-[This document](http://bit.ly/vega-lite-contribute) lists tasks for contributors, starting from smaller tasks to a larger task. You can also find [all tasks with "help-wanted" label in the issue tracker](https://github.com/vega/vega-lite/labels/help-wanted).
+[This document](http://bit.ly/vega-lite-contribute) lists tasks for contributors,
+starting from smaller tasks to a larger task. You can also find
+[all tasks with "help-wanted" label in the issue tracker](https://github.com/vega/vega-lite/labels/help-wanted).
 
 ## Documentation
 
@@ -51,10 +66,10 @@ We use Github Pages to publish our documentation when we release a new version.
 To contribute changes to the documentation, simply submit a pull request that changes
 the corresponding markdown files in `docs/`.   
 
-Since we only publish the Github Pages when we release a new version, 
+Since we only publish the Github Pages when we release a new version,
 it might be slightly outdated compared to `master`.  
 For development, you can run `npm run site` to serve the github page locally at [http://localhost:4000](http://localhost:4000).
-Open [http://localhost:4000/docs](http://localhost:4000/docs) to see the docs. 
+Open [http://localhost:4000/docs](http://localhost:4000/docs) to see the docs.
 
 
 # Development Guide
@@ -91,9 +106,12 @@ npm install
   - `src/schema/` contains JSON schema and TypeScript interface declaration.  
   We compile `schema` variable inside `src/schema/schema.ts` to generate the JSON schema.
 
-- `test/` - Code for unit testing.  `test`'s structure reflects `src`'s' directory structure.  For example, `test/compile/` test files inside `src/compile`.  
-  - Note that we prepend `/* tslint:disable:quotemark */` to all files under `test/compile` to allow putting JSON spec in tests directly without getting lint errors.
-- `typings/` - TypeScript typing declaration for dependencies.  Some of them are downloaded from the TypeStrong community.
+- `test/` - Code for unit testing.  `test`'s structure reflects `src`'s' directory structure.  
+For example, `test/compile/` test files inside `src/compile/`.  
+  - Note that we prepend `/* tslint:disable:quotemark */` to all files under `test/compile`
+  to allow putting JSON spec in tests directly without getting lint errors.
+- `typings/` - TypeScript typing declaration for dependencies.  
+Some of them are downloaded from the TypeStrong community.
 
 
 ## Commands

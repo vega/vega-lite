@@ -8,7 +8,7 @@ import {Model} from '../../src/compile/Model'; // FIXME use parseModel
 import {POINT} from '../../src/mark';
 import {TEMPORAL, QUANTITATIVE, ORDINAL} from '../../src/type';
 
-describe('data', function () {
+describe('Data', function () {
   describe('for aggregate encoding', function () {
     it('should contain two tables', function() {
       var encoding = new Model({

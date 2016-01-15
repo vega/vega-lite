@@ -6,7 +6,7 @@ import {extend} from '../../src/util'
 import {X, Y, SIZE, COLOR, SHAPE} from '../../src/channel';
 import {point} from '../../src/compile/mark-point';
 
-describe('compile/mark-point', function() {
+describe('Mark: Point', function() {
   function pointXY(moreEncoding = {}) {
     const spec = {
       "mark": "point",

@@ -6,7 +6,7 @@ import {extend} from '../../src/util'
 import {X, Y, COLOR} from '../../src/channel';
 import {area} from '../../src/compile/mark-area';
 
-describe('compile/mark-area', function() {
+describe('Mark: Area', function() {
 
   function areaXY(moreEncoding = {}) {
     return {
