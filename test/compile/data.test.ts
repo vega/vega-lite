@@ -1,44 +1,41 @@
 /* tslint:disable:quotemark */
 
 import {expect} from 'chai';
-
 import {compileData, source, summary, dates} from '../../src/compile/data';
-import {SUMMARY} from '../../src/data';
-import {Model} from '../../src/compile/Model'; // FIXME use parseModel
-import {POINT} from '../../src/mark';
-import {TEMPORAL, QUANTITATIVE, ORDINAL} from '../../src/type';
+import {parseModel} from '../util';
+import {mergeDeep} from '../../src/schema/schemautil';
 
 describe('Data', function () {
   describe('for aggregate encoding', function () {
     it('should contain two tables', function() {
-      var encoding = new Model({
-          mark: POINT,
+      var encoding = parseModel({
+          mark: "point",
           encoding: {
-            x: {field: 'a', type: TEMPORAL},
-            y: {field: 'b', type: QUANTITATIVE, scale: {type: 'log'}, aggregate: 'sum'}
+            x: {field: 'a', type: "temporal"},
+            y: {field: 'b', type: "quantitative", scale: {type: 'log'}, aggregate: 'sum'}
           }
         });
 
-      var _data = compileData(encoding);
-      expect(_data.length).to.equal(2);
+      var data = compileData(encoding);
+      expect(data.length).to.equal(2);
     });
   });
 
   describe('when contains log in non-aggregate', function () {
-    var rawEncodingWithLog = new Model({
-        mark: POINT,
+    var rawEncodingWithLog = parseModel({
+        mark: "point",
         encoding: {
-          x: {field: 'a', type: TEMPORAL},
-          y: {field: 'b', type: QUANTITATIVE, scale: {type: 'log'}}
+          x: {field: 'a', type: "temporal"},
+          y: {field: 'b', type: "quantitative", scale: {type: 'log'}}
         }
       });
 
-    var _data = compileData(rawEncodingWithLog);
+    var data = compileData(rawEncodingWithLog);
     it('should contains one table', function() {
-      expect(_data.length).to.equal(1);
+      expect(data.length).to.equal(1);
     });
     it('should have filter non-positive in source', function() {
-      var sourceTransform = _data[0].transform;
+      var sourceTransform = data[0].transform;
       expect(sourceTransform[sourceTransform.length - 1]).to.eql({
         type: 'filter',
         test: 'datum.b > 0'
@@ -49,7 +46,7 @@ describe('Data', function () {
 
 describe('data.source', function() {
   describe('with explicit values', function() {
-    var model = new Model({
+    var model = parseModel({
       data: {
         values: [{a: 1, b:2, c:3}, {a: 4, b:5, c:6}]
       }
@@ -68,7 +65,7 @@ describe('data.source', function() {
   });
 
   describe('with link to url', function() {
-    var encoding = new Model({
+    var encoding = parseModel({
         data: {
           url: 'http://foo.bar'
         }
@@ -87,17 +84,17 @@ describe('data.source', function() {
 
   describe('formatParse', function () {
     it('should include parse for all applicable fields, and exclude calculated fields', function() {
-      var encoding = new Model({
+      var encoding = parseModel({
           data: {
             calculate: [
               {field: 'b2', expr: 'datum.b * 2'}
             ]
           },
-          mark: POINT,
+          mark: "point",
           encoding: {
-            x: {field: 'a', type: TEMPORAL},
-            y: {field: 'b', type: QUANTITATIVE},
-            color: {field: '*', type: QUANTITATIVE, aggregate: 'count'}
+            x: {field: 'a', type: "temporal"},
+            y: {field: 'b', type: "quantitative"},
+            color: {field: '*', type: "quantitative", aggregate: 'count'}
           }
         });
 
@@ -110,20 +107,20 @@ describe('data.source', function() {
   });
 
   describe('transform', function () {
-    var encoding = new Model({
+    var encoding = parseModel({
       data: {
         filter: 'datum.a > datum.b && datum.c === datum.d'
       },
-      mark: POINT,
+      mark: "point",
       encoding: {
-        x: {field: 'a', type: TEMPORAL, timeUnit: 'year'},
+        x: {field: 'a', type: "temporal", timeUnit: 'year'},
         y: {
           bin: {
             min: 0,
             max: 100
           },
           'field': 'Acceleration',
-          'type': QUANTITATIVE
+          'type': "quantitative"
         }
       }
     });
@@ -149,16 +146,16 @@ describe('data.source', function() {
 
     describe('nullFilter', function() {
       var spec = {
-          mark: POINT,
+          mark: "point",
           encoding: {
-            y: {field: 'qq', type: QUANTITATIVE},
-            x: {field: 'tt', type: TEMPORAL},
-            color: {field: 'oo', type: ORDINAL}
+            y: {field: 'qq', type: "quantitative"},
+            x: {field: 'tt', type: "temporal"},
+            color: {field: 'oo', type: "ordinal"}
           }
         };
 
       it('should add filterNull for Q and T by default', function () {
-        var enc = new Model(spec);
+        var enc = parseModel(spec);
         expect(source.nullFilterTransform(enc))
           .to.eql([{
             type: 'filter',
@@ -167,11 +164,11 @@ describe('data.source', function() {
       });
 
       it('should add filterNull for O when specified', function () {
-        var enc = new Model(spec, {
+        var enc = parseModel(mergeDeep(spec, {
           config: {
             filterNull: true
           }
-        });
+        }));
         expect(source.nullFilterTransform(enc))
           .to.eql([{
             type: 'filter',
@@ -180,11 +177,11 @@ describe('data.source', function() {
       });
 
       it('should add no null filter if filterNull is false', function () {
-        var enc = new Model(spec, {
+        var enc = parseModel(mergeDeep(spec, {
           config: {
             filterNull: false
           }
-        });
+        }));
         expect(source.nullFilterTransform(enc))
           .to.eql([]);
       });
@@ -224,17 +221,17 @@ describe('data.source', function() {
 
 describe('data.dates', function() {
   it('should add data source with raw domain data', function() {
-    var encoding = new Model({
-        mark: POINT,
+    var encoding = parseModel({
+        mark: "point",
         encoding: {
           'y': {
             'aggregate': 'sum',
             'field': 'Acceleration',
-            'type': QUANTITATIVE
+            'type': "quantitative"
           },
           'x': {
             'field': 'date',
-            'type': TEMPORAL,
+            'type': "temporal",
             'timeUnit': 'day'
           }
         }
@@ -258,25 +255,25 @@ describe('data.dates', function() {
 
 describe('data.summary', function () {
   it('should return correct aggregation', function() {
-    var encoding = new Model({
-        mark: POINT,
+    var encoding = parseModel({
+        mark: "point",
         encoding: {
           'y': {
             'aggregate': 'sum',
             'field': 'Acceleration',
-            'type': QUANTITATIVE
+            'type': "quantitative"
           },
           'x': {
             'field': 'origin',
-            'type': ORDINAL
+            'type': "ordinal"
           },
-          color: {field: '*', type: QUANTITATIVE, aggregate: 'count'}
+          color: {field: '*', type: "quantitative", aggregate: 'count'}
         }
       });
 
     var aggregated = summary.def(encoding);
     expect(aggregated).to.eql({
-      'name': SUMMARY,
+      'name': "summary",
       'source': 'source',
       'transform': [{
         'type': 'aggregate',
@@ -290,32 +287,32 @@ describe('data.summary', function () {
   });
 
   it('should return correct aggregation for detail arrays', function() {
-    var encoding = new Model({
-        mark: POINT,
+    var encoding = parseModel({
+        mark: "point",
         encoding: {
           'y': {
             'aggregate': 'mean',
             'field': 'Acceleration',
-            'type': QUANTITATIVE
+            'type': "quantitative"
           },
           'x': {
             'aggregate': 'mean',
             'field': 'Displacement',
-            'type': QUANTITATIVE
+            'type': "quantitative"
           },
           'detail': [{
             'field': 'Origin',
-            'type': ORDINAL
+            'type': "ordinal"
           },{
             'field': 'Cylinders',
-            'type': QUANTITATIVE
+            'type': "quantitative"
           }]
         }
       });
 
     var aggregated = summary.def(encoding);
     expect(aggregated).to.eql({
-      'name': SUMMARY,
+      'name': "summary",
       'source': 'source',
       'transform': [{
         'type': 'aggregate',

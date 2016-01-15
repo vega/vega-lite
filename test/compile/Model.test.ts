@@ -1,33 +1,30 @@
 /* tslint:disable:quotemark */
 
 import {expect} from 'chai';
-
-import {Model} from '../../src/compile/Model';
+import {parseModel} from '../util';
 import {X} from '../../src/channel';
-import {POINT} from '../../src/mark';
-import {TEMPORAL} from '../../src/type';
 
 describe('Model', function() {
   describe('timeFormat()', function() {
     it('should get the right time template', function() {
-      expect(new Model({
-        mark: POINT,
+      expect(parseModel({
+        mark: "point",
         encoding: {
-          x: {timeUnit: 'month', field:'a', type: TEMPORAL, axis: {shortTimeLabels: true}}
+          x: {timeUnit: 'month', field:'a', type: "temporal", axis: {shortTimeLabels: true}}
         }
       }).timeFormat(X)).to.equal('%b');
 
-      expect(new Model({
-        mark: POINT,
+      expect(parseModel({
+        mark: "point",
         encoding: {
-          x: {timeUnit: 'month', field:'a', type: TEMPORAL}
+          x: {timeUnit: 'month', field:'a', type: "temporal"}
         }
       }).timeFormat(X)).to.equal('%B');
 
-      expect(new Model({
-        mark: POINT,
+      expect(parseModel({
+        mark: "point",
         encoding: {
-          x: {timeUnit: 'week', field:'a', type: TEMPORAL, axis: {shortTimeLabels: true}}
+          x: {timeUnit: 'week', field:'a', type: "temporal", axis: {shortTimeLabels: true}}
         }
       }).timeFormat(X)).to.equal(undefined);
     });

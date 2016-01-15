@@ -12,25 +12,27 @@ describe('Mark: Bar', function() {
   });
 
   describe('vertical, with log', function() {
-    const e = parseModel({
+    const model = parseModel({
       "mark": "bar",
       "encoding": {
         "x": {"bin": true, "type": "quantitative", "field": "IMDB_Rating"},
         "y": {"scale": {"type": 'log'}, "type": "quantitative", "field": 'US_Gross', "aggregate": "mean"}
       },
       "data": {"url": 'data/movies.json'}
-    }),
-        def = bar.properties(e);
-    it('should end on axis', function() {
-      expect(def.y2).to.eql({field: {group: 'height'}});
     });
+    const props = bar.properties(model);
+
+    it('should end on axis', function() {
+      expect(props.y2).to.eql({field: {group: 'height'}});
+    });
+
     it('should has no height', function(){
-      expect(def.height).to.be.undefined;
+      expect(props.height).to.be.undefined;
     });
   });
 
   describe('horizontal, with log', function() {
-    const e = parseModel({
+    const model = parseModel({
       "mark": "bar",
       "encoding": {
         "y": {"bin": true, "type": "quantitative", "field": "IMDB_Rating"},
@@ -38,48 +40,57 @@ describe('Mark: Bar', function() {
       },
       "data": {"url": 'data/movies.json'}
     });
-    const def = bar.properties(e);
+
+    const props = bar.properties(model);
+
     it('should end on axis', function() {
-      expect(def.x2).to.eql({value: 0});
+      expect(props.x2).to.eql({value: 0});
     });
+
     it('should have no width', function(){
-      expect(def.width).to.be.undefined;
+      expect(props.width).to.be.undefined;
     });
   });
 
-  describe('1D, vertical', function() {
-    const e = parseModel({
+  describe('vertical', function() {
+    const model = parseModel({
         "mark": "bar",
         "encoding": {"y": {"type": "quantitative", "field": 'US_Gross', "aggregate": "sum"}},
         "data": {"url": 'data/movies.json'}
-      }),
-      def = bar.properties(e);
+      });
+    const props = bar.properties(model);
+
     it('should end on axis', function() {
-      expect(def.y2).to.eql({field: {group: 'height'}});
+      expect(props.y2).to.eql({field: {group: 'height'}});
     });
+
     it('should have no height', function(){
-      expect(def.height).to.be.undefined;
+      expect(props.height).to.be.undefined;
     });
+
     it('should have x-offset', function(){
-      expect(def.x.offset).to.eql(2);
+      expect(props.x.offset).to.eql(2);
     });
   });
 
-  describe('1D, horizontal', function() {
-    const e = parseModel({
+  describe('horizontal', function() {
+    const model = parseModel({
         "mark": "bar",
         "encoding": {"x": {"type": "quantitative", "field": 'US_Gross', "aggregate": 'sum'}},
         "data": {"url": 'data/movies.json'}
-      }),
-      def = bar.properties(e);
+      });
+    const props = bar.properties(model);
+
     it('should end on axis', function() {
-      expect(def.x2).to.eql({value: 0});
+      expect(props.x2).to.eql({value: 0});
     });
+
     it('should have no width', function(){
-      expect(def.width).to.be.undefined;
+      expect(props.width).to.be.undefined;
     });
+
     it('should have y-offset', function(){
-      expect(def.y2).to.eql({
+      expect(props.y2).to.eql({
         field: {group: 'height'},
         offset: -1
       });
