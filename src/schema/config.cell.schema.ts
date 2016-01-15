@@ -1,7 +1,6 @@
 export interface CellConfig {
   width?: number;
   height?: number;
-  padding?: number;
 
   gridShow?: boolean;
   gridColor?: string;
@@ -27,11 +26,6 @@ export const cellConfig = {
     height: {
       type: 'integer',
       default: 200
-    },
-    padding: {
-      type: 'integer',
-      default: 16,
-      description: 'default padding between facets.'
     },
     gridColor: {
       type: 'string',

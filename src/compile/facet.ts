@@ -51,7 +51,7 @@ export function facetMixins(model: Model, marks) {
     facetGroupProperties.y = {
       scale: model.scale(ROW),
       field: model.field(ROW),
-      offset: cellConfig.padding / 2
+      offset: model.fieldDef(ROW).scale.padding / 2
     };
 
     facetKeys.push(model.field(ROW));
@@ -79,7 +79,7 @@ export function facetMixins(model: Model, marks) {
     facetGroupProperties.x = {
       scale: model.scale(COLUMN),
       field: model.field(COLUMN),
-      offset: cellConfig.padding / 2
+      offset: model.fieldDef(COLUMN).scale.padding / 2
     };
 
     facetKeys.push(model.field(COLUMN));
@@ -222,11 +222,11 @@ function getRowGridGroup(model: Model, cellHeight): any { // TODO: VgMarks
         y: cellHeight.value ? {
             // If cellHeight contains value, just use it.
             value: cellHeight,
-            offset: cellConfig.padding
+            offset: model.fieldDef(ROW).scale.padding
           } : {
             // Otherwise, need to get it from layout data in the root group
             field: {parent: 'cellHeight'},
-            offset: cellConfig.padding
+            offset: model.fieldDef(ROW).scale.padding
           },
         // include width so it can be referred inside row-grid
         width: {field: {group: 'width'}}
@@ -274,11 +274,11 @@ function getColumnGridGroup(model: Model, cellWidth): any { // TODO: VgMarks
         x: cellWidth.value ? {
              // If cellWidth contains value, just use it.
              value: cellWidth,
-             offset: cellConfig.padding
+             offset: model.fieldDef(COLUMN).scale.padding
            } : {
              // Otherwise, need to get it from layout data in the root group
              field: {parent: 'cellWidth'},
-             offset: cellConfig.padding
+             offset: model.fieldDef(COLUMN).scale.padding
            },
         // include height so it can be referred inside column-grid
         height: {field: {group: 'height'}}

@@ -286,8 +286,7 @@ export function outerPadding(model: Model, channel: Channel, scaleType: string) 
 }
 
 export function padding(model: Model, channel: Channel, scaleType: string) {
-  if (scaleType === 'ordinal') {
-    // Both explicit and non-explicit values are handled by the helper method.
+  if (scaleType === 'ordinal' && channel !== ROW && channel !== COLUMN) {
     return model.fieldDef(channel).scale.padding;
   }
   return undefined;
