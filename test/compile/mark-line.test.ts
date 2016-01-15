@@ -23,24 +23,27 @@ describe('Mark: Line', function() {
   }
 
   describe('2D, x and y', function() {
-    const e = parseModel(lineXY()),
-        def = line.properties(e);
+    const model = parseModel(lineXY());
+    const props = line.properties(model);
+
     it('should have scale for x', function() {
-      expect(def.x).to.eql({scale: X, field: 'year'});
+      expect(props.x).to.eql({scale: X, field: 'year'});
     });
+
     it('should have scale for y', function(){
-      expect(def.y).to.eql({scale: Y, field: 'yield'});
+      expect(props.y).to.eql({scale: Y, field: 'yield'});
     });
   });
 
   describe('3D', function() {
     describe('x,y,color', function () {
-      const e = parseModel(lineXY({
+      const model = parseModel(lineXY({
         "color": {"field": "Acceleration", "type": "quantitative"}
       }));
-      const def = line.properties(e);
+      const props = line.properties(model);
+
       it('should have scale for color', function () {
-        expect(def.stroke).to.eql({scale: COLOR, field: 'Acceleration'});
+        expect(props.stroke).to.eql({scale: COLOR, field: 'Acceleration'});
       });
     });
   });
