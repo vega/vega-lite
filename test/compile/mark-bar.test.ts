@@ -4,9 +4,9 @@ import {expect} from 'chai';
 import {parseModel} from '../util';
 import {extend} from '../../src/util'
 import {X, Y, SIZE, COLOR, SHAPE} from '../../src/channel';
-import {bar} from '../../src/compile/marks-bar';
+import {bar} from '../../src/compile/mark-bar';
 
-describe('compile/marks-bar', function() {
+describe('compile/mark-bar', function() {
   describe('vertical, with log', function() {
     const e = parseModel({
       "mark": "bar",
