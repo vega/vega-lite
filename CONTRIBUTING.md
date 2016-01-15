@@ -42,7 +42,7 @@ so we can better coordinate our efforts, prevent duplication of work, and help y
 
 ### Looking for a Task to Contribute
 
-[This document](http://bit.ly/vega-lite-contribute) lists tasks for contributors, starting from smaller tasks to a larger task. You can also find [all tasks with "help-wanted" label in the issue tracker](https://github.com/vega/vega-lite/labels/help-wanted). 
+[This document](http://bit.ly/vega-lite-contribute) lists tasks for contributors, starting from smaller tasks to a larger task. You can also find [all tasks with "help-wanted" label in the issue tracker](https://github.com/vega/vega-lite/labels/help-wanted).
 
 ## Documentation
 
@@ -87,12 +87,12 @@ npm install
   Other files under `src/` reflect namespace structure.  
   All methods for `vl.xxx` will be in either `src/xxx.ts` or `src/xxx/xxx.ts`.  
   For example, `vl.channel.*` methods are in `src/channel.ts`.  
-  `vl.compile` is in `src/compiler/compiler.ts` (TODO: This will be renamed to just `compile`).
+  `vl.compile` is in `src/compile/compile.ts`.
   - `src/schema/` contains JSON schema and TypeScript interface declaration.  
   We compile `schema` variable inside `src/schema/schema.ts` to generate the JSON schema.
 
-- `test/` - Code for unit testing.  `test`'s structure reflects `src`'s' directory structure.  For example, `test/compiler/` test files inside `src/compiler`.  
-  - Note that we prepend `/* tslint:disable:quotemark */` to all files under `test/compiler` to allow putting JSON spec in tests directly without getting lint errors.
+- `test/` - Code for unit testing.  `test`'s structure reflects `src`'s' directory structure.  For example, `test/compile/` test files inside `src/compile`.  
+  - Note that we prepend `/* tslint:disable:quotemark */` to all files under `test/compile` to allow putting JSON spec in tests directly without getting lint errors.
 - `typings/` - TypeScript typing declaration for dependencies.  Some of them are downloaded from the TypeStrong community.
 
 
@@ -112,7 +112,7 @@ You can run `npm run build` to compile Vega-Lite and regenerate `vega-lite-schem
 
 Use `npm run cover` to see test coverage summary and generate a report inside `coverage/lcov-report`.  
 You can see if specific lines are covered in the unit test by running `open coverage/lcov-report/index.html`
-and browse through the report. 
+and browse through the report.
 
 ### Watch tasks
 
@@ -198,5 +198,5 @@ Vega-Lite enables a number of open-source applications including user interface 
 - [Compass: Contribute](https://github.com/uwdata/compass/wiki/Contribute)
 
 -----
- 
+
 **Acknowledgment**: This contribution guide is partly inspired by [angular.js's CONTRIBUTION.md](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md).

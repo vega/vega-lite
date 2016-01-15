@@ -2,7 +2,7 @@
 
 import {expect} from 'chai';
 
-import * as vlscale from '../../src/compiler/scale';
+import * as vlscale from '../../src/compile/scale';
 import {SOURCE, SUMMARY} from '../../src/data';
 import {parseModel} from '../util';
 import {Y} from '../../src/channel';

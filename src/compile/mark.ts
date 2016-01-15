@@ -3,12 +3,12 @@ import {X, Y, COLOR, TEXT, SIZE, SHAPE, DETAIL, ROW, COLUMN, LABEL} from '../cha
 import {AREA, LINE, TEXT as TEXTMARK} from '../mark';
 import {imputeTransform, stackTransform} from './stack';
 import {extend} from '../util';
-import {area} from './marks-area';
-import {bar} from './marks-bar';
-import {line} from './marks-line';
-import {point} from './marks-point';
-import {text} from './marks-text';
-import {tick} from './marks-tick';
+import {area} from './mark-area';
+import {bar} from './mark-bar';
+import {line} from './mark-line';
+import {point} from './mark-point';
+import {text} from './mark-text';
+import {tick} from './mark-tick';
 import {applyColorAndOpacity, ColorMode} from './util';
 
 const markCompiler = {
@@ -22,7 +22,7 @@ const markCompiler = {
   square: square
 };
 
-export function compileMarks(model: Model): any[] {
+export function compileMark(model: Model): any[] {
   const mark = model.mark();
   const name = model.spec().name;
   const isFaceted = model.has(ROW) || model.has(COLUMN);

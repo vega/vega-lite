@@ -4,9 +4,9 @@ import {expect} from 'chai';
 import {parseModel} from '../util';
 import {extend} from '../../src/util'
 import {X, Y, COLOR} from '../../src/channel';
-import {line} from '../../src/compiler/marks-line';
+import {line} from '../../src/compile/mark-line';
 
-describe('compile/marks-area', function() {
+describe('compile/mark-area', function() {
   function lineXY(moreEncoding = {}) {
     const spec = {
       "mark": "line",

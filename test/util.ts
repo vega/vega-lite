@@ -1,4 +1,4 @@
-import {Model} from '../src/compiler/Model';
+import {Model} from '../src/compile/Model';
 import {Spec} from '../src/schema/schema';
 
 /**

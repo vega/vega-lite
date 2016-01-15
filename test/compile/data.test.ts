@@ -2,9 +2,9 @@
 
 import {expect} from 'chai';
 
-import {compileData, source, summary, dates} from '../../src/compiler/data';
+import {compileData, source, summary, dates} from '../../src/compile/data';
 import {SUMMARY} from '../../src/data';
-import {Model} from '../../src/compiler/Model'; // FIXME use parseModel
+import {Model} from '../../src/compile/Model'; // FIXME use parseModel
 import {POINT} from '../../src/mark';
 import {TEMPORAL, QUANTITATIVE, ORDINAL} from '../../src/type';
 

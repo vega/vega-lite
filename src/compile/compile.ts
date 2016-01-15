@@ -7,7 +7,7 @@ import {compileAxis} from './axis';
 import {compileData} from './data';
 import {facetMixins} from './facet';
 import {compileLegends} from './legend';
-import {compileMarks} from './marks';
+import {compileMark} from './mark';
 import {compileScales} from './scale';
 import {extend, keys} from '../util';
 
@@ -84,7 +84,7 @@ export function compileRootGroup(model: Model) {
       }
     });
 
-  const marks = compileMarks(model);
+  const marks = compileMark(model);
 
   // Small Multiples
   if (model.has(ROW) || model.has(COLUMN)) {

@@ -2,7 +2,7 @@
 
 import {expect} from 'chai';
 
-import {Model} from '../../src/compiler/Model';
+import {Model} from '../../src/compile/Model';
 import {X} from '../../src/channel';
 import {POINT} from '../../src/mark';
 import {TEMPORAL} from '../../src/type';
