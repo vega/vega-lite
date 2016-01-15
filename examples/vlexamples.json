@@ -36,7 +36,12 @@
     },
     {
       "name": "scatter_binned_size",
-      "title": "Scatterplot with binned size"
+      "title": "Bubble Scatterplot with binned size"
+    },
+    {
+      "name": "scatter_bubble",
+      "title": "Bubble Scatterplot",
+      "showInEditor": true
     },
     {
       "name": "scatter_colored_with_shape",
@@ -55,6 +60,11 @@
     {
       "name": "line",
       "title": "Line chart",
+      "showInEditor": true
+    },
+    {
+      "name": "line_color",
+      "title": "Colored Line chart",
       "showInEditor": true
     },
     {
@@ -99,6 +109,15 @@
     {
       "name": "stacked_bar_1d",
       "title": "1D Stacked Bar Chart"
+    },
+    {
+      "name": "temp_histogram",
+      "title": "Temperature in Seattle",
+      "showInEditor": true
+    },
+    {
+      "name": "temp_histogram_bar",
+      "title": "Temperature in Seattle"
     }
   ],
   "Trellis": [
