@@ -1,15 +1,14 @@
 import {Model} from './Model';
-import {X, Y, COLOR, TEXT, SIZE, SHAPE, DETAIL, ROW, COLUMN, LABEL} from '../channel';
+import {X, Y, COLOR, TEXT, SHAPE, DETAIL, ROW, COLUMN, LABEL} from '../channel';
 import {AREA, LINE, TEXT as TEXTMARK} from '../mark';
 import {imputeTransform, stackTransform} from './stack';
 import {extend} from '../util';
 import {area} from './mark-area';
 import {bar} from './mark-bar';
 import {line} from './mark-line';
-import {point} from './mark-point';
+import {point, circle, square} from './mark-point';
 import {text} from './mark-text';
 import {tick} from './mark-tick';
-import {applyColorAndOpacity, ColorMode} from './util';
 
 const markCompiler = {
   area: area,
@@ -157,73 +156,4 @@ function detailFields(model: Model): string[] {
     }
     return details;
   }, []);
-}
-
-function filled_point_props(shape) {
-  return function(model: Model) {
-    // TODO Use Vega's marks properties interface
-    var p: any = {};
-
-    // x
-    if (model.has(X)) {
-      p.x = {
-        scale: model.scale(X),
-        field: model.field(X, { binSuffix: '_mid' })
-      };
-    } else {
-      p.x = { value: model.fieldDef(X).scale.bandWidth / 2 };
-    }
-
-    // y
-    if (model.has(Y)) {
-      p.y = {
-        scale: model.scale(Y),
-        field: model.field(Y, { binSuffix: '_mid' })
-      };
-    } else {
-      p.y = { value: model.fieldDef(Y).scale.bandWidth / 2 };
-    }
-
-    // size
-    if (model.has(SIZE)) {
-      p.size = {
-        scale: model.scale(SIZE),
-        field: model.field(SIZE)
-      };
-    } else {
-      p.size = { value: model.sizeValue() };
-    }
-
-    // shape
-    p.shape = { value: shape };
-
-    applyColorAndOpacity(p, model, ColorMode.ALWAYS_FILLED);
-    return p;
-  };
-}
-
-export namespace circle {
-  export function markType(model: Model) {
-    return 'symbol';
-  }
-
-  export const properties = filled_point_props('circle');
-
-  export function labels(model: Model) {
-    // TODO(#240): fill this method
-    return undefined;
-  }
-}
-
-export namespace square {
-  export function markType(model: Model) {
-    return 'symbol';
-  }
-
-  export const properties = filled_point_props('square');
-
-  export function labels(model: Model) {
-    // TODO(#240): fill this method
-    return undefined;
-  }
 }
