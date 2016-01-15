@@ -31,11 +31,11 @@ export namespace text {
       };
     } else {
       if (model.has(TEXT) && model.fieldDef(TEXT).type === QUANTITATIVE) {
-        // TODO: make this -5 offset a config
         p.x = { field: { group: 'width' }, offset: -5 };
       } else {
         p.x = { value: model.fieldDef(X).scale.bandWidth / 2 };
       }
+      // TODO: support x.value
     }
 
     // y
@@ -46,6 +46,7 @@ export namespace text {
       };
     } else {
       p.y = { value: model.fieldDef(Y).scale.bandWidth / 2 };
+      // TODO: support x.value
     }
 
     // size
