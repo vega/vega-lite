@@ -4,7 +4,7 @@ import {expect} from 'chai';
 import {parseModel} from '../util';
 import {extend} from '../../src/util'
 import {X, Y, COLOR} from '../../src/channel';
-import {area} from '../../src/compiler/marks-area';
+import {area} from '../../src/compile/marks-area';
 
 describe('compile/marks-area', function() {
 

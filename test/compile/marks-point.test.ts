@@ -4,7 +4,7 @@ import {expect} from 'chai';
 import {parseModel} from '../util';
 import {extend} from '../../src/util'
 import {X, Y, SIZE, COLOR, SHAPE} from '../../src/channel';
-import {point} from '../../src/compiler/marks-point';
+import {point} from '../../src/compile/marks-point';
 
 describe('compile/marks-point', function() {
   function pointXY(moreEncoding = {}) {

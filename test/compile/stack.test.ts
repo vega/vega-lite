@@ -3,8 +3,8 @@
 import {expect} from 'chai';
 
 import {parseModel} from '../util';
-import {compileData} from '../../src/compiler/data';
-import {compileRootGroup} from '../../src/compiler/compiler';
+import {compileData} from '../../src/compile/data';
+import {compileRootGroup} from '../../src/compile/compile';
 import {SUMMARY} from '../../src/data';
 
 describe('vl.compile.stack()', function () {
