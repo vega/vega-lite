@@ -27,6 +27,7 @@
     "lib"
   ],
   "files": [
+    "examples/examples.test.ts",
     "site/gallery.ts",
     "src/aggregate.ts",
     "src/bin.ts",
@@ -79,11 +80,10 @@
     "test/compiler/Model.test.ts",
     "test/compiler/scale.test.ts",
     "test/compiler/stack.test.ts",
-    "test/examples.test.ts",
     "test/fielddef.test.ts",
-    "test/fixtures.ts",
     "test/schema.test.ts",
     "test/type.test.ts",
+    "test/util.ts",
     "test/validate.test.ts",
     "typings/assertion-error.d.ts",
     "typings/chai.d.ts",

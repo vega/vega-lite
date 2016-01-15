@@ -25,7 +25,6 @@ import {format as timeFormatExpr} from './time';
 /**
  * Internal model of Vega-Lite specification for the compiler.
  */
-
 export class Model {
   private _spec: Spec;
   private _stack: StackProperties;

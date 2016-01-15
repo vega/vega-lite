@@ -1,15 +1,22 @@
+/* tslint:disable quote */
+
 import {expect} from 'chai';
-import {bars, points, lines, area} from '../fixtures';
 import * as marks from '../../src/compiler/marks';
 import {X, Y, SIZE, COLOR, SHAPE} from '../../src/channel';
-import {Model} from '../../src/compiler/Model';
-
+import {parseModel} from '../util';
+import {extend} from '../../src/util'
 
 describe('compile.marks', function() {
   describe('bar', function() {
     describe('vertical, with log', function() {
-      var f = bars.log_ver,
-          e = new Model(f),
+      const e = parseModel({
+        "mark": "bar",
+        "encoding": {
+          "x": {"bin": true, "type": "quantitative", "field": "IMDB_Rating"},
+          "y": {"scale": {"type": 'log'}, "type": "quantitative", "field": 'US_Gross', "aggregate": "mean"}
+        },
+        "data": {"url": 'data/movies.json'}
+      }),
           def = marks.bar.properties(e);
       it('should end on axis', function() {
         expect(def.y2).to.eql({field: {group: 'height'}});
@@ -20,9 +27,15 @@ describe('compile.marks', function() {
     });
 
     describe('horizontal, with log', function() {
-      var f = bars.log_hor,
-          e = new Model(f),
-          def = marks.bar.properties(e);
+      const e = parseModel({
+        "mark": "bar",
+        "encoding": {
+          "y": {"bin": true, "type": "quantitative", "field": "IMDB_Rating"},
+          "x": {"scale": {"type": 'log'}, "type": "quantitative", "field": 'US_Gross', "aggregate": "mean"}
+        },
+        "data": {"url": 'data/movies.json'}
+      });
+      const def = marks.bar.properties(e);
       it('should end on axis', function() {
         expect(def.x2).to.eql({value: 0});
       });
@@ -32,9 +45,12 @@ describe('compile.marks', function() {
     });
 
     describe('1D, vertical', function() {
-      var f = bars['1d_ver'],
-          e = new Model(f),
-          def = marks.bar.properties(e);
+      const e = parseModel({
+          "mark": "bar",
+          "encoding": {"y": {"type": "quantitative", "field": 'US_Gross', "aggregate": "sum"}},
+          "data": {"url": 'data/movies.json'}
+        }),
+        def = marks.bar.properties(e);
       it('should end on axis', function() {
         expect(def.y2).to.eql({field: {group: 'height'}});
       });
@@ -47,9 +63,12 @@ describe('compile.marks', function() {
     });
 
     describe('1D, horizontal', function() {
-      var f = bars['1d_hor'],
-          e = new Model(f),
-          def = marks.bar.properties(e);
+      const e = parseModel({
+          "mark": "bar",
+          "encoding": {"x": {"type": "quantitative", "field": 'US_Gross', "aggregate": 'sum'}},
+          "data": {"url": 'data/movies.json'}
+        }),
+        def = marks.bar.properties(e);
       it('should end on axis', function() {
         expect(def.x2).to.eql({value: 0});
       });
@@ -66,10 +85,28 @@ describe('compile.marks', function() {
   });
 
   describe('point', function() {
+    function pointXY(moreEncoding = {}) {
+      const spec = {
+        "mark": "point",
+        "encoding": extend(
+          {
+            "x": {"field": "year", "type": "ordinal"},
+            "y": {"field": "yield", "type": "quantitative"}
+          },
+          moreEncoding
+        ),
+        "data": {"url": "data/barley.json"}
+      };
+      return spec;
+    }
+
     describe('1D, horizontal', function() {
-      var f = points['1d_hor'],
-          e = new Model(f),
-          def = marks.point.properties(e);
+      const e = parseModel({
+        "mark": "point",
+        "encoding": {"x": {"field": "year", "type": "ordinal"}},
+        "data": {"url": "data/barley.json"}
+      });
+      const def = marks.point.properties(e);
       it('should be centered', function() {
         expect(def.y).to.eql({value: e.fieldDef(Y).scale.bandWidth / 2});
       });
@@ -79,9 +116,12 @@ describe('compile.marks', function() {
     });
 
     describe('1D, vertical', function() {
-      var f = points['1d_ver'],
-          e = new Model(f),
-          def = marks.point.properties(e);
+      const e = parseModel({
+        "mark": "point",
+        "encoding": {"y": {"field": "year", "type": "ordinal"}},
+        "data": {"url": "data/barley.json"}
+      });
+      const def = marks.point.properties(e);
       it('should be centered', function() {
         expect(def.x).to.eql({value: e.fieldDef(X).scale.bandWidth / 2});
       });
@@ -91,9 +131,8 @@ describe('compile.marks', function() {
     });
 
     describe('2D, x and y', function() {
-      var f = points['x,y'],
-          e = new Model(f),
-          def = marks.point.properties(e);
+      const e = parseModel(pointXY());
+      const def = marks.point.properties(e);
       it('should scale on x', function() {
         expect(def.x).to.eql({scale: X, field: 'year'});
       });
@@ -104,27 +143,30 @@ describe('compile.marks', function() {
 
     describe('3D', function() {
       describe('x,y,size', function () {
-        var f = points['x,y,size'],
-            e = new Model(f),
-            def = marks.point.properties(e);
+        const e = parseModel(pointXY({
+          "size": {"field": "*", "type": "quantitative", "aggregate": "count"}
+        }));
+        const def = marks.point.properties(e);
         it('should have scale for size', function () {
           expect(def.size).to.eql({scale: SIZE, field: 'count'});
         });
       });
 
       describe('x,y,color', function () {
-        var f = points['x,y,stroke'],
-            e = new Model(f),
-            def = marks.point.properties(e);
+        const e = parseModel(pointXY({
+          "color": {"field": "yield", "type": "quantitative"}
+        }));
+        const def = marks.point.properties(e);
         it('should have scale for color', function () {
           expect(def.stroke).to.eql({scale: COLOR, field: 'yield'});
         });
       });
 
       describe('x,y,shape', function () {
-        var f = points['x,y,shape'],
-            e = new Model(f),
-            def = marks.point.properties(e);
+        const e = parseModel(pointXY({
+          "shape": {"bin": {"maxbins": 15}, "field": "yield", "type": "quantitative"}
+        }));
+        const def = marks.point.properties(e);
         it('should have scale for shape', function () {
           expect(def.shape).to.eql({scale: SHAPE, field: 'bin_yield_range'});
         });
@@ -133,9 +175,23 @@ describe('compile.marks', function() {
   });
 
   describe('line', function() {
+    function lineXY(moreEncoding = {}) {
+      const spec = {
+        "mark": "line",
+        "encoding": extend(
+          {
+            "x": {"field": "year", "type": "ordinal"},
+            "y": {"field": "yield", "type": "quantitative"}
+          },
+          moreEncoding
+        ),
+        "data": {"url": "data/barley.json"}
+      };
+      return spec;
+    }
+
     describe('2D, x and y', function() {
-      var f = lines['x,y'],
-          e = new Model(f),
+      const e = parseModel(lineXY()),
           def = marks.line.properties(e);
       it('should have scale for x', function() {
         expect(def.x).to.eql({scale: X, field: 'year'});
@@ -147,9 +203,10 @@ describe('compile.marks', function() {
 
     describe('3D', function() {
       describe('x,y,color', function () {
-        var f = lines['x,y,stroke'],
-            e = new Model(f),
-            def = marks.line.properties(e);
+        const e = parseModel(lineXY({
+          "color": {"field": "Acceleration", "type": "quantitative"}
+        }));
+        const def = marks.line.properties(e);
         it('should have scale for color', function () {
           expect(def.stroke).to.eql({scale: COLOR, field: 'Acceleration'});
         });
@@ -158,9 +215,23 @@ describe('compile.marks', function() {
   });
 
   describe('area', function() {
+
+    function areaXY(moreEncoding = {}) {
+      return {
+        "mark": "area",
+        "encoding": extend(
+          {
+            "x": {"field": "Displacement", "type": "quantitative"},
+            "y": {"field": "Acceleration", "type": "quantitative"}
+          },
+          moreEncoding
+        ),
+        "data": {"url": "data/cars.json"}
+      };
+    }
+
     describe('2D, x and y', function() {
-      var f = area['x,y'],
-          e = new Model(f),
+      const e = parseModel(areaXY()),
           def = marks.area.properties(e);
       it('should have scale for x', function() {
         expect(def.x).to.eql({scale: X, field: 'Displacement'});
@@ -172,9 +243,10 @@ describe('compile.marks', function() {
 
     describe('3D', function() {
       describe('x,y,color', function () {
-        var f = area['x,y,color'],
-            e = new Model(f),
-            def = marks.area.properties(e);
+        const e = parseModel(areaXY({
+          "color": {"field": "Miles_per_Gallon", "type": "quantitative"}
+        }));
+        const def = marks.area.properties(e);
         it('should have scale for color', function () {
           expect(def.fill).to.eql({scale: COLOR, field: 'Miles_per_Gallon'});
         });

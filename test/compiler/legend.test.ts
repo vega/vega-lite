@@ -1,3 +1,5 @@
+/* tslint:disable:quotemark */
+
 import {expect} from 'chai';
 
 import * as legend from '../../src/compiler/legend';

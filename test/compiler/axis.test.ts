@@ -1,40 +1,43 @@
+/* tslint:disable:quotemark */
+
 import {expect} from 'chai';
 
+import {parseModel} from '../util';
 import * as axis from '../../src/compiler/axis';
-import {Model} from '../../src/compiler/Model';
-import {POINT, LINE} from '../../src/mark';
+import {Model} from '../../src/compiler/Model'; // FIXME use parseModel
+import {POINT} from '../../src/mark';
 import {X, COLUMN} from '../../src/channel';
-import {TEMPORAL, QUANTITATIVE, ORDINAL} from '../../src/type';
-import * as vl from '../../src/vl';
+import {QUANTITATIVE, ORDINAL} from '../../src/type';
 
 describe('Axis', function() {
   describe('=true', function() {
     it('should produce default properties for axis', function() {
-      const spec1 = vl.compile({
-        mark: 'point',
-        encoding: {
-          x: {field: 'Horsepower', type: 'quantitative'},
-          y: {field: 'Miles_per_Gallon', type: 'quantitative'}
-        }
+      const model1 = parseModel({
+        "mark": "bar",
+        "encoding": {
+          "y": {"type": "quantitative", "field": 'US_Gross', "aggregate": "sum", "axis": true}
+        },
+        "data": {"url": "data/movies.json"}
       });
-      const spec2 = vl.compile({
-        mark: 'point',
-        encoding: {
-          x: {field: 'Horsepower', type: 'quantitative', axis: true},
-          y: {field: 'Miles_per_Gallon', type: 'quantitative', axis: true}
-        }
+
+      const model2 = parseModel({
+        "mark": "bar",
+        "encoding": {
+          "y": {"type": "quantitative", "field": 'US_Gross', "aggregate": "sum"}
+        },
+        "data": {"url": "data/movies.json"}
       });
-      expect(spec1).to.eql(spec2);
+      expect(model1.spec().encoding.y.axis).to.eql(model2.spec().encoding.y.axis);
     });
   });
 
   describe('(X) for Time Data', function() {
     var field = 'a',
       timeUnit = 'month',
-      encoding = new Model({
-        mark: LINE,
+      encoding = parseModel({
+        mark: "line",
         encoding: {
-          x: {field: field, type: TEMPORAL, timeUnit: timeUnit}
+          x: {field: field, type: "temporal", timeUnit: timeUnit}
         }
       });
     var _axis = axis.compileAxis(X, encoding);

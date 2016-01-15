@@ -110,7 +110,6 @@ export var axis = {
     },
     properties: {
       type: 'object',
-      default: undefined,
       description: 'Optional mark property definitions for custom axis styling.'
     },
     /* Vega-lite only */
