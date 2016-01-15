@@ -87,6 +87,7 @@
     "test/compile/mark-bar.test.ts",
     "test/compile/mark-line.test.ts",
     "test/compile/mark-point.test.ts",
+    "test/compile/mark-text.test.ts",
     "test/compile/mark-tick.test.ts",
     "test/compile/Model.test.ts",
     "test/compile/scale.test.ts",
