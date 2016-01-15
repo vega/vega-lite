@@ -110,6 +110,7 @@ export function ticks(model: Model, channel: Channel) {
 
   // FIXME depends on scale type too
   if (channel === X && !model.fieldDef(channel).bin) {
+    // Vega's default ticks often lead to a lot of label occlusion on X without 90 degree rotation
     return 5;
   }
 
