@@ -62,6 +62,7 @@ export namespace text {
     // fill
     // TODO: consider if color should just map to fill instead?
 
+    p.fill = {value: 'black'}; // TODO: add rules for swapping between black and white
     // opacity
     var opacity = model.config().mark.opacity;
     if (opacity) { p.opacity = { value: opacity }; };
