@@ -38,7 +38,6 @@ the following grid properties:
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| gridShow      | Boolean       | Whether to show facet grid.  (True by default)  |
 | gridColor     | Color         | Color of the grid between facets. |
 | gridOpacity   | Number        | Opacity of the grid between facets. |
 | gridOffset    | Number        | Offset for grid between facets.  |

@@ -60,6 +60,11 @@ export function compileAxis(channel: Channel, model: Model) {
 
 export function grid(model: Model, channel: Channel) {
   const fieldDef = model.fieldDef(channel);
+  if (channel === ROW || channel === COLUMN) {
+    // never apply grid for ROW and COLUMN since we manually create rule-group for them
+    return undefined;
+  }
+
   var grid = model.axis(channel).grid;
   if (grid !== undefined) {
     return grid;

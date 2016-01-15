@@ -263,7 +263,6 @@ export namespace layout {
       });
     }
 
-    const cellPadding = model.config().cell.padding;
     const layout = model.layout();
 
     if (model.has(COLUMN)) {
@@ -285,7 +284,7 @@ export namespace layout {
       formulas.push({
         type: 'formula',
         field: 'width',
-        expr: '(' + cellWidth + ' + ' + cellPadding + ')' + ' * ' + colCardinality
+        expr: '(' + cellWidth + ' + ' + colScale.padding + ')' + ' * ' + colCardinality
       });
     }
 
@@ -308,7 +307,7 @@ export namespace layout {
       formulas.push({
         type: 'formula',
         field: 'height',
-        expr: '(' + cellHeight + '+' + cellPadding + ')' + ' * ' + rowCardinality
+        expr: '(' + cellHeight + '+' + rowScale.padding + ')' + ' * ' + rowCardinality
       });
     }
 
