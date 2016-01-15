@@ -22,7 +22,7 @@ describe('Mark: Area', function() {
     };
   }
 
-  describe('2D, x and y', function() {
+  describe('with x, y', function() {
     const model = parseModel(areaXY());
     const props = area.properties(model);
 
@@ -35,17 +35,15 @@ describe('Mark: Area', function() {
     });
   });
 
-  describe('3D', function() {
-    describe('x,y,color', function () {
-      const model = parseModel(areaXY({
-        "color": {"field": "Miles_per_Gallon", "type": "quantitative"}
-      }));
+  describe('with x, y, color', function () {
+    const model = parseModel(areaXY({
+      "color": {"field": "Miles_per_Gallon", "type": "quantitative"}
+    }));
 
-      const props = area.properties(model);
+    const props = area.properties(model);
 
-      it('should have scale for color', function () {
-        expect(props.fill).to.eql({scale: COLOR, field: 'Miles_per_Gallon'});
-      });
+    it('should have scale for color', function () {
+      expect(props.fill).to.eql({scale: COLOR, field: 'Miles_per_Gallon'});
     });
   });
 });

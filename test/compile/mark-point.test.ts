@@ -22,7 +22,7 @@ describe('Mark: Point', function() {
     return spec;
   }
 
-  describe('1D, horizontal', function() {
+  describe('with x', function() {
     const model = parseModel({
       "mark": "point",
       "encoding": {"x": {"field": "year", "type": "ordinal"}},
@@ -40,7 +40,7 @@ describe('Mark: Point', function() {
     });
   });
 
-  describe('1D, vertical', function() {
+  describe('with y', function() {
     const model = parseModel({
       "mark": "point",
       "encoding": {"y": {"field": "year", "type": "ordinal"}},
@@ -58,7 +58,7 @@ describe('Mark: Point', function() {
     });
   });
 
-  describe('2D, x and y', function() {
+  describe('with x and y', function() {
     const model = parseModel(pointXY());
     const props = point.properties(model);
 
@@ -70,38 +70,36 @@ describe('Mark: Point', function() {
     });
   });
 
-  describe('3D', function() {
-    describe('x,y,size', function () {
-      const model = parseModel(pointXY({
-        "size": {"field": "*", "type": "quantitative", "aggregate": "count"}
-      }));
-      const props = point.properties(model);
+  describe('with x, y, size', function () {
+    const model = parseModel(pointXY({
+      "size": {"field": "*", "type": "quantitative", "aggregate": "count"}
+    }));
+    const props = point.properties(model);
 
-      it('should have scale for size', function () {
-        expect(props.size).to.eql({scale: SIZE, field: 'count'});
-      });
+    it('should have scale for size', function () {
+      expect(props.size).to.eql({scale: SIZE, field: 'count'});
     });
+  });
 
-    describe('x,y,color', function () {
-      const model = parseModel(pointXY({
-        "color": {"field": "yield", "type": "quantitative"}
-      }));
-      const props = point.properties(model);
+  describe('with x, y, color', function () {
+    const model = parseModel(pointXY({
+      "color": {"field": "yield", "type": "quantitative"}
+    }));
+    const props = point.properties(model);
 
-      it('should have scale for color', function () {
-        expect(props.stroke).to.eql({scale: COLOR, field: 'yield'});
-      });
+    it('should have scale for color', function () {
+      expect(props.stroke).to.eql({scale: COLOR, field: 'yield'});
     });
+  });
 
-    describe('x,y,shape', function () {
-      const model = parseModel(pointXY({
-        "shape": {"bin": {"maxbins": 15}, "field": "yield", "type": "quantitative"}
-      }));
-      const props = point.properties(model);
-      
-      it('should have scale for shape', function () {
-        expect(props.shape).to.eql({scale: SHAPE, field: 'bin_yield_range'});
-      });
+  describe('with x, y, shape', function () {
+    const model = parseModel(pointXY({
+      "shape": {"bin": {"maxbins": 15}, "field": "yield", "type": "quantitative"}
+    }));
+    const props = point.properties(model);
+
+    it('should have scale for shape', function () {
+      expect(props.shape).to.eql({scale: SHAPE, field: 'bin_yield_range'});
     });
   });
 });

@@ -52,7 +52,7 @@ describe('Mark: Bar', function() {
     });
   });
 
-  describe('1D, vertical', function() {
+  describe('vertical', function() {
     const model = parseModel({
         "mark": "bar",
         "encoding": {"y": {"type": "quantitative", "field": 'US_Gross', "aggregate": "sum"}},
@@ -73,7 +73,7 @@ describe('Mark: Bar', function() {
     });
   });
 
-  describe('1D, horizontal', function() {
+  describe('horizontal', function() {
     const model = parseModel({
         "mark": "bar",
         "encoding": {"x": {"type": "quantitative", "field": 'US_Gross', "aggregate": 'sum'}},

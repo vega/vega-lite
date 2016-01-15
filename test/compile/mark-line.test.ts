@@ -22,7 +22,7 @@ describe('Mark: Line', function() {
     return spec;
   }
 
-  describe('2D, x and y', function() {
+  describe('with x, y', function() {
     const model = parseModel(lineXY());
     const props = line.properties(model);
 
@@ -35,16 +35,14 @@ describe('Mark: Line', function() {
     });
   });
 
-  describe('3D', function() {
-    describe('x,y,color', function () {
-      const model = parseModel(lineXY({
-        "color": {"field": "Acceleration", "type": "quantitative"}
-      }));
-      const props = line.properties(model);
+  describe('with x, y, color', function () {
+    const model = parseModel(lineXY({
+      "color": {"field": "Acceleration", "type": "quantitative"}
+    }));
+    const props = line.properties(model);
 
-      it('should have scale for color', function () {
-        expect(props.stroke).to.eql({scale: COLOR, field: 'Acceleration'});
-      });
+    it('should have scale for color', function () {
+      expect(props.stroke).to.eql({scale: COLOR, field: 'Acceleration'});
     });
   });
 });
