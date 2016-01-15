@@ -33,10 +33,6 @@ export const cellConfig = {
       default: 16,
       description: 'default padding between facets.'
     },
-    gridShow: {
-      type: 'boolean',
-      default: true
-    },
     gridColor: {
       type: 'string',
       role: 'color',

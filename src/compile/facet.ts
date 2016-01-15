@@ -60,7 +60,8 @@ export function facetMixins(model: Model, marks) {
       // If has X, prepend a group for shared x-axes in the root group's marks
       rootMarks.push(getXAxesGroup(model, cellWidth, hasCol));
     }
-    if (cellConfig.gridShow) {
+    const rowAxis = model.fieldDef(ROW).axis;
+    if (typeof rowAxis === 'boolean' || rowAxis.grid !== false) {
       rootMarks.push(getRowGridGroup(model, cellHeight));
     }
   } else { // doesn't have row
@@ -88,7 +89,9 @@ export function facetMixins(model: Model, marks) {
       // If has Y, prepend a group for shared y-axes in the root group's marks
       rootMarks.push(getYAxesGroup(model, cellHeight, hasRow));
     }
-    if (cellConfig.gridShow) {
+
+    const colAxis = model.fieldDef(COLUMN).axis;
+    if (typeof colAxis === 'boolean' || colAxis.grid !== false) {
       rootMarks.push(getColumnGridGroup(model, cellWidth));
     }
   } else { // doesn't have column

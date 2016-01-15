@@ -7,7 +7,6 @@ export namespace area {
     return 'area';
   }
 
-  // TODO(#694): optimize area's usage with bin
   export function properties(model: Model) {
     // TODO Use Vega's marks properties interface
     var p: any = {};
