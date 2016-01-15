@@ -9,6 +9,7 @@ export interface Config {
   padding?: number|string;
   viewport?: number;
   background?: string;
+  filterNull?: boolean;
 
   cell?: CellConfig;
   mark?: MarkConfig;
@@ -16,7 +17,6 @@ export interface Config {
   stack?: StackConfig;
 
   // TODO: revise
-  filterNull?: boolean;
   textCellWidth?: any;
   numberFormat?: string;
   timeFormat?: string;
