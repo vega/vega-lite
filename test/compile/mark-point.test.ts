@@ -1,6 +1,6 @@
 /* tslint:disable quote */
 
-import {expect} from 'chai';
+import {assert} from 'chai';
 import {parseModel} from '../util';
 import {extend} from '../../src/util'
 import {X, Y, SIZE, COLOR, SHAPE} from '../../src/channel';
@@ -32,11 +32,11 @@ describe('Mark: Point', function() {
     const props = point.properties(model);
 
     it('should be centered', function() {
-      expect(props.y).to.eql({value: model.fieldDef(Y).scale.bandWidth / 2});
+      assert.deepEqual(props.y, {value: model.fieldDef(Y).scale.bandWidth / 2});
     });
 
     it('should scale on x', function() {
-      expect(props.x).to.eql({scale: X, field: 'year'});
+      assert.deepEqual(props.x, {scale: X, field: 'year'});
     });
   });
 
@@ -50,11 +50,11 @@ describe('Mark: Point', function() {
     const props = point.properties(model);
 
     it('should be centered', function() {
-      expect(props.x).to.eql({value: model.fieldDef(X).scale.bandWidth / 2});
+      assert.deepEqual(props.x, {value: model.fieldDef(X).scale.bandWidth / 2});
     });
 
     it('should scale on y', function() {
-      expect(props.y).to.eql({scale: Y, field: 'year'});
+      assert.deepEqual(props.y, {scale: Y, field: 'year'});
     });
   });
 
@@ -63,10 +63,10 @@ describe('Mark: Point', function() {
     const props = point.properties(model);
 
     it('should scale on x', function() {
-      expect(props.x).to.eql({scale: X, field: 'year'});
+      assert.deepEqual(props.x, {scale: X, field: 'year'});
     });
     it('should scale on y', function(){
-      expect(props.y).to.eql({scale: Y, field: 'yield'});
+      assert.deepEqual(props.y, {scale: Y, field: 'yield'});
     });
   });
 
@@ -77,7 +77,7 @@ describe('Mark: Point', function() {
     const props = point.properties(model);
 
     it('should have scale for size', function () {
-      expect(props.size).to.eql({scale: SIZE, field: 'count'});
+      assert.deepEqual(props.size, {scale: SIZE, field: 'count'});
     });
   });
 
@@ -88,7 +88,7 @@ describe('Mark: Point', function() {
     const props = point.properties(model);
 
     it('should have scale for color', function () {
-      expect(props.stroke).to.eql({scale: COLOR, field: 'yield'});
+      assert.deepEqual(props.stroke, {scale: COLOR, field: 'yield'});
     });
   });
 
@@ -99,7 +99,7 @@ describe('Mark: Point', function() {
     const props = point.properties(model);
 
     it('should have scale for shape', function () {
-      expect(props.shape).to.eql({scale: SHAPE, field: 'bin_yield_range'});
+      assert.deepEqual(props.shape, {scale: SHAPE, field: 'bin_yield_range'});
     });
   });
 });

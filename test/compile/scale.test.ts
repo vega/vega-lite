@@ -1,6 +1,6 @@
 /* tslint:disable:quotemark */
 
-import {expect} from 'chai';
+import {assert} from 'chai';
 
 import * as vlscale from '../../src/compile/scale';
 import {SOURCE, SUMMARY} from '../../src/data';
@@ -25,7 +25,7 @@ describe('Scale', function() {
           }
         }), Y, 'linear');
 
-        expect(domain).to.eql({
+        assert.deepEqual(domain, {
           data: 'stacked_scale',
           field: 'sum_sum_origin'
         });
@@ -47,7 +47,7 @@ describe('Scale', function() {
             }
           }), Y, 'ordinal');
 
-          expect(domain).to.eql({
+          assert.deepEqual(domain, {
             data: SOURCE,
             field: 'bin_origin_range',
             sort: {
@@ -71,7 +71,7 @@ describe('Scale', function() {
             }
           }), Y, 'linear');
 
-          expect(domain.data).to.eql(SOURCE);
+          assert.deepEqual(domain.data, SOURCE);
         });
 
       it('should return the aggregate domain for sum Q',
@@ -88,7 +88,7 @@ describe('Scale', function() {
             }
           }), Y, 'linear');
 
-          expect(domain.data).to.eql(SUMMARY);
+          assert.deepEqual(domain.data, SUMMARY);
         });
 
 
@@ -105,7 +105,7 @@ describe('Scale', function() {
             }
           }), Y, 'linear');
 
-          expect(domain.data).to.eql(SUMMARY);
+          assert.deepEqual(domain.data, SUMMARY);
         });
     });
 
@@ -123,7 +123,7 @@ describe('Scale', function() {
             }
           }), Y, 'time');
 
-          expect(domain.data).to.eql(SOURCE);
+          assert.deepEqual(domain.data, SOURCE);
         });
 
       it('should return the raw domain if useRawDomain is true for year T',
@@ -140,8 +140,8 @@ describe('Scale', function() {
             }
           }), Y, 'ordinal');
 
-          expect(domain.data).to.eql(SOURCE);
-          expect(domain.field.indexOf('year')).to.gt(-1);
+          assert.deepEqual(domain.data, SOURCE);
+          assert.operator(domain.field.indexOf('year'), '>', -1);
         });
 
       it('should return the correct domain for month T',
@@ -158,7 +158,7 @@ describe('Scale', function() {
             }
           }), Y, 'ordinal');
 
-          expect(domain).to.eql({ data: 'month', field: 'date' });
+          assert.deepEqual(domain, { data: 'month', field: 'date' });
         });
 
         it('should return the correct domain for yearmonth T',
@@ -175,7 +175,7 @@ describe('Scale', function() {
               }
             }), Y, 'ordinal');
 
-            expect(domain).to.eql({
+            assert.deepEqual(domain, {
               data: 'source', field: 'yearmonth_origin',
               sort: {field: 'yearmonth_origin', op: 'min'}
             });
@@ -192,8 +192,7 @@ describe('Scale', function() {
             }
           });
 
-        expect(vlscale.domain(encoding, Y, 'ordinal'))
-          .to.eql({
+        assert.deepEqual(vlscale.domain(encoding, Y, 'ordinal'), {
             data: "source",
             field: 'origin',
             sort: sortDef
@@ -208,8 +207,7 @@ describe('Scale', function() {
             }
           });
 
-        expect(vlscale.domain(encoding, Y, 'ordinal'))
-          .to.eql({
+        assert.deepEqual(vlscale.domain(encoding, Y, 'ordinal'), {
             data: "source",
             field: 'origin',
             sort: true

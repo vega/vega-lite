@@ -1,6 +1,6 @@
 /* tslint:disable quote */
 
-import {expect} from 'chai';
+import {assert} from 'chai';
 import {parseModel} from '../util';
 import {extend} from '../../src/util'
 import {X, Y, SIZE, COLOR, SHAPE} from '../../src/channel';
@@ -23,11 +23,11 @@ describe('Mark: Bar', function() {
     const props = bar.properties(model);
 
     it('should end on axis', function() {
-      expect(props.y2).to.eql({field: {group: 'height'}});
+      assert.deepEqual(props.y2, {field: {group: 'height'}});
     });
 
     it('should has no height', function(){
-      expect(props.height).to.be.undefined;
+      assert.isUndefined(props.height);
     });
   });
 
@@ -44,11 +44,11 @@ describe('Mark: Bar', function() {
     const props = bar.properties(model);
 
     it('should end on axis', function() {
-      expect(props.x2).to.eql({value: 0});
+      assert.deepEqual(props.x2, {value: 0});
     });
 
     it('should have no width', function(){
-      expect(props.width).to.be.undefined;
+      assert.isUndefined(props.width);
     });
   });
 
@@ -61,15 +61,15 @@ describe('Mark: Bar', function() {
     const props = bar.properties(model);
 
     it('should end on axis', function() {
-      expect(props.y2).to.eql({field: {group: 'height'}});
+      assert.deepEqual(props.y2, {field: {group: 'height'}});
     });
 
     it('should have no height', function(){
-      expect(props.height).to.be.undefined;
+      assert.isUndefined(props.height);
     });
 
     it('should have x-offset', function(){
-      expect(props.x.offset).to.eql(2);
+      assert.deepEqual(props.x.offset, 2);
     });
   });
 
@@ -82,15 +82,15 @@ describe('Mark: Bar', function() {
     const props = bar.properties(model);
 
     it('should end on axis', function() {
-      expect(props.x2).to.eql({value: 0});
+      assert.deepEqual(props.x2, {value: 0});
     });
 
     it('should have no width', function(){
-      expect(props.width).to.be.undefined;
+      assert.isUndefined(props.width);
     });
 
     it('should have y-offset', function(){
-      expect(props.y2).to.eql({
+      assert.deepEqual(props.y2, {
         field: {group: 'height'},
         offset: -1
       });

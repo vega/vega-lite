@@ -1,6 +1,6 @@
 /* tslint:disable:quotemark */
 
-import {expect} from 'chai';
+import {assert} from 'chai';
 
 import {parseModel} from '../util';
 import {compileData} from '../../src/compile/data';
@@ -24,32 +24,32 @@ describe('vl.compile.stack()', function () {
       var tableData = dataSpec.filter(function(data) {
         return data.name === SUMMARY;
       });
-      expect(tableData.length).to.equal(1);
+      assert.equal(tableData.length, 1);
 
       var tableAggrTransform = tableData[0].transform.filter(function(t) {
         return t.type === 'aggregate';
       })[0];
-      expect(tableAggrTransform.groupby.length).to.equal(4);
-      expect(tableAggrTransform.groupby.indexOf('bin_Cost__Total_$_start')).to.gt(-1);
+      assert.equal(tableAggrTransform.groupby.length, 4);
+      assert.operator(tableAggrTransform.groupby.indexOf('bin_Cost__Total_$_start'), '>', -1);
     });
 
     it('should create stack summary data correctly', function() {
       var stackedData = dataSpec.filter(function(data) {
         return data.name === 'stacked_scale';
       });
-      expect(stackedData.length).to.equal(1);
+      assert.equal(stackedData.length, 1);
       var stackedAggrTransform = stackedData[0].transform[0];
-      expect(stackedAggrTransform.groupby[0]).to.equal('bin_Cost__Total_$_start');
+      assert.equal(stackedAggrTransform.groupby[0], 'bin_Cost__Total_$_start');
     });
 
     it('should stack data correctly', function() {
       const rootGroup = compileRootGroup(model);
       const stackTransform = rootGroup.marks[0].from.transform[0];
-      expect(stackTransform.type).to.equal('stack');
+      assert.equal(stackTransform.type, 'stack');
 
-      expect(stackTransform.groupby).to.eql(['bin_Cost__Total_$_start']);
-      expect(stackTransform.field).to.eql('sum_Cost__Other');
-      expect(stackTransform.sortby).to.eql(['-Effect__Amount_of_damage']);
+      assert.deepEqual(stackTransform.groupby, ['bin_Cost__Total_$_start']);
+      assert.deepEqual(stackTransform.field, 'sum_Cost__Other');
+      assert.deepEqual(stackTransform.sortby, ['-Effect__Amount_of_damage']);
     });
   });
 
@@ -69,13 +69,13 @@ describe('vl.compile.stack()', function () {
       var tableData = dataSpec.filter(function(data) {
         return data.name === SUMMARY;
       });
-      expect(tableData.length).to.equal(1);
+      assert.equal(tableData.length, 1);
 
       var tableAggrTransform = tableData[0].transform.filter(function(t) {
         return t.type === 'aggregate';
       })[0];
-      expect(tableAggrTransform.groupby.length).to.equal(4);
-      expect(tableAggrTransform.groupby.indexOf('bin_Cost__Total_$_start')).to.gt(-1);
+      assert.equal(tableAggrTransform.groupby.length, 4);
+      assert.operator(tableAggrTransform.groupby.indexOf('bin_Cost__Total_$_start'), '>', -1);
     });
 
     it('should create stack summary data correctly', function() {
@@ -83,19 +83,19 @@ describe('vl.compile.stack()', function () {
         return data.name === 'stacked_scale';
       });
 
-      expect(stackedData.length).to.equal(1);
+      assert.equal(stackedData.length, 1);
       var stackedAggrTransform = stackedData[0].transform[0];
-      expect(stackedAggrTransform.groupby[0]).to.equal('bin_Cost__Total_$_start');
+      assert.equal(stackedAggrTransform.groupby[0], 'bin_Cost__Total_$_start');
     });
 
     it('should stack data correctly', function() {
       const rootGroup = compileRootGroup(model);
       const stackTransform = rootGroup.marks[0].from.transform[0];
-      expect(stackTransform.type).to.equal('stack');
+      assert.equal(stackTransform.type, 'stack');
 
-      expect(stackTransform.groupby).to.eql(['bin_Cost__Total_$_start']);
-      expect(stackTransform.field).to.eql('sum_Cost__Other');
-      expect(stackTransform.sortby).to.eql(['-Effect__Amount_of_damage']);
+      assert.deepEqual(stackTransform.groupby, ['bin_Cost__Total_$_start']);
+      assert.deepEqual(stackTransform.field, 'sum_Cost__Other');
+      assert.deepEqual(stackTransform.sortby, ['-Effect__Amount_of_damage']);
     });
   });
 });
