@@ -1,4 +1,4 @@
-import {expect} from 'chai';
+import {assert} from 'chai';
 import * as vl from '../src/vl';
 
 const zSchema = require('z-schema');
@@ -17,7 +17,7 @@ function validateAgainstSchemas(vlspec, done?) {
     errors = validator.getLastErrors();
     console.log(inspect(errors, { depth: 10, colors: true }));
   }
-  expect(isVlValid).to.eql(true);
+  assert.deepEqual(isVlValid, true);
 
   var vegaSpec = vl.compile(vlspec);
 
@@ -27,7 +27,7 @@ function validateAgainstSchemas(vlspec, done?) {
     errors = validator.getLastErrors();
     console.log(inspect(errors, { depth: 10, colors: true }));
   }
-  expect(isVgValid).to.eql(true);
+  assert.deepEqual(isVgValid, true);
 
   if (done) {
     done();

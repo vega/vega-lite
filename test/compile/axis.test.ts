@@ -1,6 +1,6 @@
 /* tslint:disable:quotemark */
 
-import {expect} from 'chai';
+import {assert} from 'chai';
 
 import {parseModel} from '../util';
 import * as axis from '../../src/compile/axis';
@@ -24,7 +24,7 @@ describe('Axis', function() {
         },
         "data": {"url": "data/movies.json"}
       });
-      expect(model1.spec().encoding.y.axis).to.eql(model2.spec().encoding.y.axis);
+      assert.deepEqual(model1.spec().encoding.y.axis, model2.spec().encoding.y.axis);
     });
   });
 
@@ -40,10 +40,10 @@ describe('Axis', function() {
     // FIXME decouple the test here
 
     it('should use custom format', function() {
-      expect(_axis.format).to.equal('%B');
+      assert.equal(_axis.format, '%B');
     });
     it('should rotate label', function() {
-      expect(_axis.properties.labels.angle.value).to.equal(270);
+      assert.equal(_axis.properties.labels.angle.value, 270);
     });
   });
 
@@ -60,7 +60,7 @@ describe('Axis', function() {
             x: {field: 'a', axis:{orient: 'bottom'}}
           }
         }), X);
-      expect(orient).to.eql('bottom');
+      assert.deepEqual(orient, 'bottom');
     });
 
     it('should return undefined by default', function () {
@@ -70,7 +70,7 @@ describe('Axis', function() {
             x: {field: 'a'}
           }
         }), X);
-      expect(orient).to.eql(undefined);
+      assert.deepEqual(orient, undefined);
     });
 
     it('should return top for COL', function () {
@@ -81,7 +81,7 @@ describe('Axis', function() {
             column: {field: 'a'}
           }
         }), COLUMN);
-      expect(orient).to.eql('top');
+      assert.deepEqual(orient, 'top');
     });
   });
 
@@ -93,7 +93,7 @@ describe('Axis', function() {
             x: {field: 'a', type: "ordinal"}
           }
         }), X, {}, {orient: 'top'});
-      expect(labels.text.template).to.eql('{{ datum.data | truncate:25}}');
+      assert.deepEqual(labels.text.template, '{{ datum.data | truncate:25}}');
     });
 
     it('should hide labels if labels are set to false', function () {
@@ -103,7 +103,7 @@ describe('Axis', function() {
             x: {field: 'a', type: "ordinal", axis: {labels: false}}
           }
         }), X, {}, null);
-      expect(labels.text).to.eql('');
+      assert.deepEqual(labels.text, '');
     });
   });
 
@@ -115,7 +115,7 @@ describe('Axis', function() {
             x: {field: 'a', axis: {title: 'Custom'}}
           }
         }), X);
-      expect(title).to.eql('Custom');
+      assert.deepEqual(title, 'Custom');
     });
 
     it('should add return fieldTitle by default', function () {
@@ -125,7 +125,7 @@ describe('Axis', function() {
             x: {field: 'a', type: "quantitative", axis: {titleMaxLength: 3}}
           }
         }), X);
-      expect(title).to.eql('a');
+      assert.deepEqual(title, 'a');
     });
 
     it('should add return fieldTitle by default', function () {
@@ -135,7 +135,7 @@ describe('Axis', function() {
             x: {field: 'a', type: "quantitative", aggregate: 'sum', axis: {titleMaxLength: 10}}
           }
         }), X);
-      expect(title).to.eql('SUM(a)');
+      assert.deepEqual(title, 'SUM(a)');
     });
 
     it('should add return fieldTitle by default and truncate', function () {
@@ -145,7 +145,7 @@ describe('Axis', function() {
             x: {field: 'a', type: "quantitative", aggregate: 'sum', axis: {titleMaxLength: 3}}
           }
         }), X);
-      expect(title).to.eql('SU…');
+      assert.deepEqual(title, 'SU…');
     });
 
 
@@ -159,7 +159,7 @@ describe('Axis', function() {
             cell: {width: 60}
           }
         }), X);
-      expect(title).to.eql('abcdefghi…');
+      assert.deepEqual(title, 'abcdefghi…');
     });
   });
 

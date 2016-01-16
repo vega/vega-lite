@@ -1,6 +1,6 @@
 /* tslint:disable quote */
 
-import {expect} from 'chai';
+import {assert} from 'chai';
 import {parseModel} from '../util';
 import {extend} from '../../src/util'
 import {X, Y, COLOR} from '../../src/channel';
@@ -27,11 +27,11 @@ describe('Mark: Area', function() {
     const props = area.properties(model);
 
     it('should have scale for x', function() {
-      expect(props.x).to.eql({scale: X, field: 'Displacement'});
+      assert.deepEqual(props.x, {scale: X, field: 'Displacement'});
     });
 
     it('should have scale for y', function(){
-      expect(props.y).to.eql({scale: Y, field: 'Acceleration'});
+      assert.deepEqual(props.y, {scale: Y, field: 'Acceleration'});
     });
   });
 
@@ -43,7 +43,7 @@ describe('Mark: Area', function() {
     const props = area.properties(model);
 
     it('should have scale for color', function () {
-      expect(props.fill).to.eql({scale: COLOR, field: 'Miles_per_Gallon'});
+      assert.deepEqual(props.fill, {scale: COLOR, field: 'Miles_per_Gallon'});
     });
   });
 });
