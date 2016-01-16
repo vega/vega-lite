@@ -1,6 +1,6 @@
 /* tslint:disable:quotemark */
 
-import {expect} from 'chai';
+import {assert} from 'chai';
 import {compileData, source, summary, dates} from '../../src/compile/data';
 import {parseModel} from '../util';
 import {mergeDeep} from '../../src/schema/schemautil';
@@ -17,7 +17,7 @@ describe('Data', function () {
         });
 
       var data = compileData(encoding);
-      expect(data.length).to.equal(2);
+      assert.equal(data.length, 2);
     });
   });
 
@@ -32,11 +32,11 @@ describe('Data', function () {
 
     var data = compileData(rawEncodingWithLog);
     it('should contains one table', function() {
-      expect(data.length).to.equal(1);
+      assert.equal(data.length, 1);
     });
     it('should have filter non-positive in source', function() {
       var sourceTransform = data[0].transform;
-      expect(sourceTransform[sourceTransform.length - 1]).to.eql({
+      assert.deepEqual(sourceTransform[sourceTransform.length - 1], {
         type: 'filter',
         test: 'datum.b > 0'
       });
@@ -55,12 +55,12 @@ describe('data.source', function() {
     var sourceDef = source.def(model);
 
     it('should have values', function() {
-      expect(sourceDef.name).to.equal('source');
-      expect(sourceDef.values).to.deep.equal([{a: 1, b:2, c:3}, {a: 4, b:5, c:6}]);
+      assert.equal(sourceDef.name, 'source');
+      assert.deepEqual(sourceDef.values, [{a: 1, b:2, c:3}, {a: 4, b:5, c:6}]);
     });
 
     it('should have source.format', function(){
-      expect(sourceDef.format).to.eql({type: 'json'});
+      assert.deepEqual(sourceDef.format, {type: 'json'});
     });
   });
 
@@ -74,11 +74,11 @@ describe('data.source', function() {
     var sourceDef = source.def(encoding);
 
     it('should have format json', function() {
-      expect(sourceDef.name).to.equal('source');
-      expect(sourceDef.format.type).to.equal('json');
+      assert.equal(sourceDef.name, 'source');
+      assert.equal(sourceDef.format.type, 'json');
     });
     it('should have correct url', function() {
-      expect(sourceDef.url).to.equal('http://foo.bar');
+      assert.equal(sourceDef.url, 'http://foo.bar');
     });
   });
 
@@ -99,7 +99,7 @@ describe('data.source', function() {
         });
 
       var sourceDef = source.def(encoding);
-      expect(sourceDef.format.parse).to.eql({
+      assert.deepEqual(sourceDef.format.parse, {
         'a': 'date',
         'b': 'number'
       });
@@ -129,7 +129,7 @@ describe('data.source', function() {
       it('should add bin transform and correctly apply bin', function() {
         var transform = source.binTransform(encoding);
 
-        expect(transform[0]).to.eql({
+        assert.deepEqual(transform[0], {
           type: 'bin',
           field: 'Acceleration',
           output: {
@@ -156,11 +156,10 @@ describe('data.source', function() {
 
       it('should add filterNull for Q and T by default', function () {
         var enc = parseModel(spec);
-        expect(source.nullFilterTransform(enc))
-          .to.eql([{
-            type: 'filter',
-            test: 'datum.tt!==null && datum.qq!==null'
-          }]);
+        assert.deepEqual(source.nullFilterTransform(enc), [{
+          type: 'filter',
+          test: 'datum.tt!==null && datum.qq!==null'
+        }]);
       });
 
       it('should add filterNull for O when specified', function () {
@@ -169,11 +168,10 @@ describe('data.source', function() {
             filterNull: true
           }
         }));
-        expect(source.nullFilterTransform(enc))
-          .to.eql([{
-            type: 'filter',
-            test:'datum.tt!==null && datum.qq!==null && datum.oo!==null'
-          }]);
+        assert.deepEqual(source.nullFilterTransform(enc), [{
+          type: 'filter',
+          test:'datum.tt!==null && datum.qq!==null && datum.oo!==null'
+        }]);
       });
 
       it('should add no null filter if filterNull is false', function () {
@@ -182,25 +180,23 @@ describe('data.source', function() {
             filterNull: false
           }
         }));
-        expect(source.nullFilterTransform(enc))
-          .to.eql([]);
+        assert.deepEqual(source.nullFilterTransform(enc), []);
       });
     });
 
     describe('filter', function () {
       it('should return array that contains a filter transform', function () {
-        expect(source.filterTransform(encoding))
-          .to.eql([{
-            type: 'filter',
-            test: 'datum.a > datum.b && datum.c === datum.d'
-          }]);
+        assert.deepEqual(source.filterTransform(encoding), [{
+          type: 'filter',
+          test: 'datum.a > datum.b && datum.c === datum.d'
+        }]);
       });
     });
 
     describe('time', function() {
       it('should add formula transform', function() {
         var transform = source.timeTransform(encoding);
-        expect(transform[0]).to.eql({
+        assert.deepEqual(transform[0], {
           type: 'formula',
           field: 'year_a',
           expr: 'datetime(year(datum.a), 0, 1, 0, 0, 0, 0)'
@@ -210,10 +206,10 @@ describe('data.source', function() {
 
     it('should have null filter, timeUnit, bin then filter', function () {
       var transform = source.transform(encoding);
-      expect(transform[0].type).to.eql('filter');
-      expect(transform[1].type).to.eql('formula');
-      expect(transform[2].type).to.eql('bin');
-      expect(transform[3].type).to.eql('filter');
+      assert.deepEqual(transform[0].type, 'filter');
+      assert.deepEqual(transform[1].type, 'formula');
+      assert.deepEqual(transform[2].type, 'bin');
+      assert.deepEqual(transform[3].type, 'filter');
     });
 
   });
@@ -239,7 +235,7 @@ describe('data.dates', function() {
 
     var defs = dates.defs(encoding);
 
-    expect(defs).to.eql([{
+    assert.deepEqual(defs, [{
       name: 'day',
       transform: [
         {
@@ -272,7 +268,7 @@ describe('data.summary', function () {
       });
 
     var aggregated = summary.def(encoding);
-    expect(aggregated).to.eql({
+    assert.deepEqual(aggregated, {
       'name': "summary",
       'source': 'source',
       'transform': [{
@@ -311,7 +307,7 @@ describe('data.summary', function () {
       });
 
     var aggregated = summary.def(encoding);
-    expect(aggregated).to.eql({
+    assert.deepEqual(aggregated, {
       'name': "summary",
       'source': 'source',
       'transform': [{

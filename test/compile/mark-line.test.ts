@@ -1,6 +1,6 @@
 /* tslint:disable quote */
 
-import {expect} from 'chai';
+import {assert} from 'chai';
 import {parseModel} from '../util';
 import {extend} from '../../src/util'
 import {X, Y, COLOR} from '../../src/channel';
@@ -27,11 +27,11 @@ describe('Mark: Line', function() {
     const props = line.properties(model);
 
     it('should have scale for x', function() {
-      expect(props.x).to.eql({scale: X, field: 'year'});
+      assert.deepEqual(props.x, {scale: X, field: 'year'});
     });
 
     it('should have scale for y', function(){
-      expect(props.y).to.eql({scale: Y, field: 'yield'});
+      assert.deepEqual(props.y, {scale: Y, field: 'yield'});
     });
   });
 
@@ -42,7 +42,7 @@ describe('Mark: Line', function() {
     const props = line.properties(model);
 
     it('should have scale for color', function () {
-      expect(props.stroke).to.eql({scale: COLOR, field: 'Acceleration'});
+      assert.deepEqual(props.stroke, {scale: COLOR, field: 'Acceleration'});
     });
   });
 });
