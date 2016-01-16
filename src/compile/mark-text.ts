@@ -1,10 +1,10 @@
 import {Model} from './Model';
 import {X, Y, COLOR, TEXT, SIZE} from '../channel';
-import {applyMarkConfig} from './util';
+import {applyMarkConfig, applyColorAndOpacity} from './util';
 import {QUANTITATIVE} from '../type';
 
 export namespace text {
-  export function markType(model: Model) {
+  export function markType() {
     return 'text';
   }
 
@@ -31,11 +31,11 @@ export namespace text {
       };
     } else {
       if (model.has(TEXT) && model.fieldDef(TEXT).type === QUANTITATIVE) {
-        // TODO: make this -5 offset a config
         p.x = { field: { group: 'width' }, offset: -5 };
       } else {
         p.x = { value: model.fieldDef(X).scale.bandWidth / 2 };
       }
+      // TODO: support x.value
     }
 
     // y
@@ -46,6 +46,7 @@ export namespace text {
       };
     } else {
       p.y = { value: model.fieldDef(Y).scale.bandWidth / 2 };
+      // TODO: support x.value
     }
 
     // size
@@ -58,20 +59,23 @@ export namespace text {
       p.fontSize = { value: model.sizeValue() };
     }
 
-    // FIXME applyColorAndOpacity
-    // fill
-    // TODO: consider if color should just map to fill instead?
+    if (model.config().mark.applyColorToBackground && !model.has(X) && !model.has(Y)) {
+      p.fill = {value: 'black'}; // TODO: add rules for swapping between black and white
 
-    // opacity
-    var opacity = model.config().mark.opacity;
-    if (opacity) { p.opacity = { value: opacity }; };
+      // opacity
+      const opacity = model.config().mark.opacity;
+      if (opacity) { p.opacity = { value: opacity }; };
+    } else {
+      applyColorAndOpacity(p, model);
+    }
+
 
     // text
     if (model.has(TEXT)) {
       if (model.fieldDef(TEXT).type === QUANTITATIVE) {
         const format = model.config().mark.format;
         // TODO: revise this line
-        var numberFormat = format !== undefined ? format : model.numberFormat(TEXT);
+        const numberFormat = format !== undefined ? format : model.numberFormat(TEXT);
 
         p.text = {
           template: '{{' + model.field(TEXT, { datum: true }) +
@@ -85,14 +89,9 @@ export namespace text {
     }
 
     applyMarkConfig(p, model,
-      ['angle', 'align', 'baseline', 'dx', 'dy', 'fill', 'font', 'fontWeight',
+      ['angle', 'align', 'baseline', 'dx', 'dy', 'font', 'fontWeight',
         'fontStyle', 'radius', 'theta']);
 
     return p;
-  }
-
-  export function labels(model: Model) {
-    // TODO(#240): fill this method
-    return undefined;
   }
 }
