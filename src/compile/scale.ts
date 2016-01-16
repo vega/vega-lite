@@ -37,7 +37,7 @@ export function compileScales(channels: Channel[], model: Model) {
         // quantitative
         'exponent', 'zero',
         // ordinal
-        'bandWidth', 'outerPadding', 'padding', 'points'
+        'outerPadding', 'padding', 'points'
       ].forEach(function(property) {
         // TODO include fieldDef as part of the parameters
         const value = exports[property](model, channel, scaleDef.type);
@@ -306,6 +306,10 @@ export function points(model: Model, channel: Channel, scaleType: string) {
 
 export function rangeMixins(model: Model, channel: Channel, scaleType: string): any {
   var fieldDef = model.fieldDef(channel);
+
+  if (scaleType === 'ordinal' && fieldDef.scale.bandWidth) {
+    return {bandWidth: fieldDef.scale.bandWidth};
+  }
 
   if (fieldDef.scale.range) { // explicit value
     return {range: fieldDef.scale.range};
