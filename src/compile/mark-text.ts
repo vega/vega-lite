@@ -63,7 +63,7 @@ export namespace text {
       p.fill = {value: 'black'}; // TODO: add rules for swapping between black and white
 
       // opacity
-      var opacity = model.config().mark.opacity;
+      const opacity = model.config().mark.opacity;
       if (opacity) { p.opacity = { value: opacity }; };
     } else {
       applyColorAndOpacity(p, model);
@@ -75,7 +75,7 @@ export namespace text {
       if (model.fieldDef(TEXT).type === QUANTITATIVE) {
         const format = model.config().mark.format;
         // TODO: revise this line
-        var numberFormat = format !== undefined ? format : model.numberFormat(TEXT);
+        const numberFormat = format !== undefined ? format : model.numberFormat(TEXT);
 
         p.text = {
           template: '{{' + model.field(TEXT, { datum: true }) +
