@@ -4,7 +4,7 @@ import {applyMarkConfig, applyColorAndOpacity} from './util';
 import {QUANTITATIVE} from '../type';
 
 export namespace text {
-  export function markType(model: Model) {
+  export function markType() {
     return 'text';
   }
 
@@ -93,10 +93,5 @@ export namespace text {
         'fontStyle', 'radius', 'theta']);
 
     return p;
-  }
-
-  export function labels(model: Model) {
-    // TODO(#240): fill this method
-    return undefined;
   }
 }

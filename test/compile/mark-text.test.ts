@@ -7,6 +7,10 @@ import {text} from '../../src/compile/mark-text';
 import {X, Y} from '../../src/channel';
 
 describe('Mark: Text', function() {
+  it('should return correct marktype', function() {
+    assert.equal(text.markType(), 'text');
+  });
+
   describe('with nothing', function() {
     let spec = {
       "mark": "text",
@@ -91,5 +95,39 @@ describe('Mark: Text', function() {
         field: 'mean_Acceleration'
       });
     });
+  });
+
+  describe('with row, column, text, and color and mark configs(applyColorToBackground, opacity)', function() {
+    const spec = {
+        "mark": "text",
+        "encoding": {
+          "row": {"field": "Origin", "type": "ordinal"},
+          "column": {"field": "Cylinders", "type": "ordinal"},
+          "text": {"field": "Acceleration", "type": "quantitative", "aggregate": "mean"},
+          "color": {"field": "Acceleration", "type": "quantitative", "aggregate": "mean"},
+          "size": {"field": "Acceleration", "type": "quantitative", "aggregate": "mean"}
+        },
+        "config": {
+          "mark": {
+            "applyColorToBackground": true,
+            "opacity": 0.8
+          }
+        },
+        "data": {"url": "data/cars.json"}
+      };
+    const model = parseModel(spec);
+    const props = text.properties(model);
+    it('should fill black', function() {
+      assert.deepEqual(props.fill, {value: 'black'});
+    });
+
+    const bg = text.background(model);
+    it('should map color to background', function() {
+      assert.deepEqual(bg.fill, {
+        scale: 'color',
+        field: 'mean_Acceleration'
+      });
+    });
+
   });
 });

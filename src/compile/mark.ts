@@ -126,7 +126,7 @@ export function compileMark(model: Model): any[] {
       { properties: { update: markCompiler[mark].properties(model) } }
     ));
 
-    if (model.has(LABEL)) {
+    if (model.has(LABEL) && markCompiler[mark].labels) {
       const labelProperties = markCompiler[mark].labels(model);
 
       // check if we have label method for current mark type.
