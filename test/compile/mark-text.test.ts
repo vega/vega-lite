@@ -7,23 +7,30 @@ import {text} from '../../src/compile/mark-text';
 import {X, Y} from '../../src/channel';
 
 describe('Mark: Text', function() {
-  function textXY(moreEncoding = {}) {
-    const spec = {
+  describe('with nothing', function() {
+    let spec = {
       "mark": "text",
-      "encoding": extend(
-        {
-          "x": {"field": "Acceleration", "type": "ordinal"},
-          "y": {"field": "Displacement", "type": "quantitative"}
-        },
-        moreEncoding
-      ),
+      "encoding": {},
       "data": {"url": "data/cars.json"}
     };
-    return spec;
-  }
+    const model = parseModel(spec);
+    const props = text.properties(model);
 
-  describe('with x, y', function() {
-    const model = parseModel(textXY());
+    it('should have placeholder text', function() {
+      assert.deepEqual(props.text, {value: "Abc"});
+    });
+  })
+  describe('with x, y, text (ordinal)', function() {
+    let spec = {
+      "mark": "text",
+      "encoding": {
+        "x": {"field": "Acceleration", "type": "ordinal"},
+        "y": {"field": "Displacement", "type": "quantitative"},
+        "text": {"field": "Origin", "type": "ordinal"},
+      },
+      "data": {"url": "data/cars.json"}
+    };
+    const model = parseModel(spec);
     const props = text.properties(model);
 
     it('should scale on x', function() {
@@ -37,6 +44,52 @@ describe('Mark: Text', function() {
       assert.deepEqual(props.align, {value: "center"});
     });
 
+    it('should map text with template', function() {
+      assert.deepEqual(props.text, {field: "Origin"});
+    });
+  });
 
+  describe('with row, column, text, and color', function() {
+    const spec = {
+        "mark": "text",
+        "encoding": {
+          "row": {"field": "Origin", "type": "ordinal"},
+          "column": {"field": "Cylinders", "type": "ordinal"},
+          "text": {"field": "Acceleration", "type": "quantitative", "aggregate": "mean"},
+          "color": {"field": "Acceleration", "type": "quantitative", "aggregate": "mean"},
+          "size": {"field": "Acceleration", "type": "quantitative", "aggregate": "mean"}
+        },
+        "data": {"url": "data/cars.json"}
+      };
+    const model = parseModel(spec);
+    const props = text.properties(model);
+
+    it('should fit cell on x', function() {
+      assert.deepEqual(props.x, { field: { group: 'width' }, offset: -5 });
+    });
+
+    it('should center on y', function() {
+      assert.deepEqual(props.y, { value: 10.5 });
+    });
+
+    it('should map text to template', function() {
+      assert.deepEqual(props.text, {
+        template: "{{datum.mean_Acceleration | number:''}}"
+      });
+    });
+
+    it('should map color to fill', function() {
+      assert.deepEqual(props.fill, {
+        scale: 'color',
+        field: 'mean_Acceleration'
+      });
+    });
+
+    it('should map size to fontSize', function() {
+      assert.deepEqual(props.fontSize, {
+        scale: 'size',
+        field: 'mean_Acceleration'
+      });
+    });
   });
 });
