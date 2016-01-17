@@ -6,5 +6,10 @@
     "column": {"field": "Cylinders","type": "ordinal"},
     "color": {"field": "Horsepower","type": "quantitative","aggregate": "mean"},
     "text": {"field": "*","type": "quantitative","aggregate": "count"}
+  },
+  "config": {
+    "mark": {
+      "applyColorToBackground": true
+    }
   }
 }

@@ -9,6 +9,7 @@ export interface Config {
   padding?: number|string;
   viewport?: number;
   background?: string;
+  filterNull?: boolean;
 
   cell?: CellConfig;
   mark?: MarkConfig;
@@ -16,7 +17,6 @@ export interface Config {
   stack?: StackConfig;
 
   // TODO: revise
-  filterNull?: boolean;
   textCellWidth?: any;
   numberFormat?: string;
   timeFormat?: string;
@@ -76,7 +76,7 @@ export const config = {
     timeFormat: {
       type: 'string',
       default: '%Y-%m-%d',
-      description: 'Date format for axis labels.'
+      description: 'Default datetime format for axis and legend labels. The format can be set directly on the axis.'
     },
 
     // nested

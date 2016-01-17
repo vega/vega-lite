@@ -12,7 +12,7 @@ import {contains, extend} from '../util';
  */
 export function compileMarkConfig(spec: Spec, stack: StackProperties) {
    return extend(
-     ['filled', 'opacity', 'orient'].reduce(function(cfg, property: string) {
+     ['filled', 'opacity', 'orient', 'align'].reduce(function(cfg, property: string) {
        const value = spec.config.mark[property];
        switch (property) {
          case 'filled':
@@ -44,6 +44,11 @@ export function compileMarkConfig(spec: Spec, stack: StackProperties) {
                undefined;  //
            }
            break;
+         // text-only
+         case 'align':
+          if (value === undefined) {
+            cfg[property] = has(spec.encoding, X) ? 'center' : 'right';
+          }
        }
        return cfg;
      }, {}),

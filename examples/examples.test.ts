@@ -1,4 +1,4 @@
-import {expect} from 'chai';
+import {assert} from 'chai';
 import * as vl from '../src/vl';
 
 const zSchema = require('z-schema');
@@ -9,8 +9,6 @@ const validator = new zSchema();
 const vlSchema = require('../src/schema/schema').schema,
   vgSchema = require('../node_modules/vega/vega-schema.json');
 
-import * as f from './fixtures';
-
 function validateAgainstSchemas(vlspec, done?) {
   var isVlValid = validator.validate(vlspec, vlSchema);
   var errors;
@@ -19,7 +17,7 @@ function validateAgainstSchemas(vlspec, done?) {
     errors = validator.getLastErrors();
     console.log(inspect(errors, { depth: 10, colors: true }));
   }
-  expect(isVlValid).to.eql(true);
+  assert.deepEqual(isVlValid, true);
 
   var vegaSpec = vl.compile(vlspec);
 
@@ -29,7 +27,7 @@ function validateAgainstSchemas(vlspec, done?) {
     errors = validator.getLastErrors();
     console.log(inspect(errors, { depth: 10, colors: true }));
   }
-  expect(isVgValid).to.eql(true);
+  assert.deepEqual(isVgValid, true);
 
   if (done) {
     done();
@@ -50,35 +48,6 @@ describe('Examples', function() {
       var jsonData = dl.load({url: 'examples/' + example.name + '.json'});
       var data = dl.read(jsonData, {type: 'json', parse: 'auto'});
       validateAgainstSchemas(data, done);
-    });
-  });
-});
-
-describe('Fixtures', function() {
-  var fixtures = [];
-  var addTitles = function(examples, name) {
-    var  i = 1;
-    return examples.reduce(function(aggregator, example) {
-      aggregator.push({
-        spec: example,
-        title: name + ' ' + i++
-      });
-      return aggregator;
-    }, []);
-  };
-
-  function values(obj) {
-    return Object.keys(obj).map(key => obj[key]);
-  }
-
-  fixtures = fixtures.concat(addTitles(values(f.bars), 'bars'));
-  fixtures = fixtures.concat(addTitles(values(f.points), 'points'));
-  fixtures = fixtures.concat(addTitles(values(f.lines), 'lines'));
-  fixtures = fixtures.concat(addTitles(values(f.area), 'area'));
-
-  fixtures.forEach(function(fixture) {
-    it('should be valid and produce valid vega for: ' + fixture.title, function() {
-      validateAgainstSchemas(fixture.spec);
     });
   });
 });

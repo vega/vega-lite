@@ -3,7 +3,7 @@ import * as vlChannel from './channel';
 import * as vlData from './data';
 import * as vlEncoding from './encoding';
 import * as vlFieldDef from './fielddef';
-import * as vlCompiler from './compiler/compiler';
+import * as vlCompile from './compile/compile';
 import * as vlSchema from './schema/schema';
 import * as vlShorthand from './shorthand';
 import * as vlSpec from './spec';
@@ -14,8 +14,7 @@ import * as vlUtil from './util';
 
 export var bin = vlBin;
 export var channel = vlChannel;
-export var compiler = vlCompiler;
-export var compile = vlCompiler.compile;
+export var compile = vlCompile.compile;
 export var data = vlData;
 export var encoding = vlEncoding;
 export var fieldDef = vlFieldDef;
