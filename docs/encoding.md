@@ -10,7 +10,7 @@ Each field definition object describes
 a constant `value` or a reference to the `field` name and its data `type` and inline transformation (`aggregate`, `bin`, `sort` and `timeUnit`).
 Each field definition object can also optionally include configuration properties for `scale`, `axis`, and `legend`.
 
-# Encoding Channels
+## Encoding Channels
 
 Vega-Lite supports the following encoding channels: `x`,`y`, `row`, `column`, `color`, `size`, `shape`, `text`, `detail`.
 These channels are properties for the top-level `encoding` definition object.
@@ -42,7 +42,7 @@ TODO: explain more about detail
 
 <!-- TODO: tooltips, labels -->
 
-# Field Definition
+## Field Definition
 
 Here is a list of properties for the field definition object:
 
@@ -62,9 +62,9 @@ Here is a list of properties for the field definition object:
 <!-- ## Data Type -->
 <!-- TODO: add description about each data type, describe how nominal and ordinal are treated differently -->
 
-## Field Transformations
+### Field Transformations
 
-### ▸ `aggregate`
+#### ▸ `aggregate`
 
 Vega-Lite supports all [Vega aggregation operations](https://github.com/vega/vega/wiki/Data-Transforms#-aggregate) (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).
 
@@ -78,7 +78,7 @@ If none of the specified encoding channel contains aggregation, no additional da
 
 ----
 
-### ▸ `bin`
+#### ▸ `bin`
 
 To group raw data values of a particular field into bins (e.g., for a histogram),
 the field should have `bin` property specified.  
@@ -100,7 +100,7 @@ The `bin` property definition object contains the following properties:
 
 ----
 
-### ▸ `sort`
+#### ▸ `sort`
 
 Order of a field's values can be specified using the `'sort'` property.  
 For `x`, `y`, `row` and `column`, this determines the order of each value's position.
@@ -124,7 +124,7 @@ For `color`, `shape`, `size` and `detail`, this determines the layer order
 
 ----
 
-### ▸ `timeUnit`
+#### ▸ `timeUnit`
 
 `timeUnit` property can be specified for converting timeUnit for temporal field.  
 Therefore, `timeUnit` is only applied when the `type` is "`temporal`".
@@ -132,13 +132,13 @@ Current supported values for `timeUnit` are `year`, `month`, `day`, `date`, `hou
 
 __In Roadmap__: Support for other values such as `year-month`, `year-month-day`, `hour-minute`.
 
-## Scale, Axis, and Legend
+### Scale, Axis, and Legend
 
-### ▸ `scale`
+#### ▸ `scale`
 
 Vega-Lite's `scale` definition supports the following properties<sup>1</sup>:
 
-#### Common Scale Properties
+##### Common Scale Properties
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
@@ -147,7 +147,7 @@ Vega-Lite's `scale` definition supports the following properties<sup>1</sup>:
 | range        | Array &#124; String  | For `x` and `y`, the range covers the chart's cell width and cell height respectively by default.  For `color`, the default range is `'category10'` for nominal fields, and a green ramp (`['#AFC6A3', '#09622A']`) for other types of fields.  <!-- TODO default for size size -->  For `shape`, the default is [Vega's `"shape"` preset](https://github.com/vega/vega/wiki/Scales#scale-range-literals).  For `row` and `column`, the default range is `width` and `height` respectively.  <br/> Custom domain values can be specified. For numeric values, the range can take the form of a two-element array with minimum and maximum values. For ordinal or quantized data, the range may by an array of desired output values, which are mapped to elements in the specified domain. [See Vega's documentation on range literals for more options](https://github.com/vega/vega/wiki/Scales#scale-range-literals). |
 | round         | Boolean       | If true, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid.|
 
-#### Ordinal Scale Properties
+##### Ordinal Scale Properties
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
@@ -156,14 +156,14 @@ Vega-Lite's `scale` definition supports the following properties<sup>1</sup>:
 
 <!-- TODO: add outperPadding -->
 
-#### Time Scale Properties
+##### Time Scale Properties
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | clamp         | Boolean       | If true (default), values that exceed the data domain are clamped to either the minimum or maximum range value.|
 | nice          | String        | If specified, modifies the scale domain to use a more human-friendly value range. For `time` and `utc` scale types only, the nice value should be a string indicating the desired time interval; legal values are `"second"`, `"minute"`, `"hour"`, `"day"`, `"week"`, `"month"`, or `"year"`.|
 
-#### Quantitative Scale Properties
+##### Quantitative Scale Properties
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
@@ -178,7 +178,7 @@ __<sup>1</sup>__ All Vega-Lite scale properties exist in Vega except `useRawDoma
 </small>
 ----
 
-### ▸ `axis`
+#### ▸ `axis`
 
 Axes provide axis lines, ticks and labels to convey how a spatial range represents a data range. Simply put, axes visualize scales.
 
@@ -230,7 +230,7 @@ Moreover, Vega-Lite supports the following additional axis properties.
 
 ----
 
-### ▸ `legend`
+#### ▸ `legend`
 
 Similar to axes, legends visualize scales. However, whereas axes aid interpretation of scales with spatial ranges, legends aid interpretation of scales with ranges such as colors, shapes and sizes.
 
