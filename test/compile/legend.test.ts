@@ -9,7 +9,7 @@ describe('Legend', function() {
   describe('compileLegend()', function() {
     it('should output explicitly specified properties', function() {
       // FIXME test this
-    })
+    });
   });
 
   describe('title()', function () {
