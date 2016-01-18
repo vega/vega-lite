@@ -107,25 +107,17 @@ describe('data.source', function() {
   });
 
   describe('transform', function () {
-    const model = parseModel({
-      data: {
-        filter: 'datum.a > datum.b && datum.c === datum.d'
-      },
-      mark: "point",
-      encoding: {
-        x: {field: 'a', type: "temporal", timeUnit: 'year'},
-        y: {
-          bin: {
-            min: 0,
-            max: 100
-          },
-          'field': 'Acceleration',
-          'type': "quantitative"
-        }
-      }
-    });
-
     describe('bin', function() {
+      const model = parseModel({
+        mark: "point",
+        encoding: {
+          y: {
+            bin: { min: 0, max: 100 },
+            'field': 'Acceleration',
+            'type': "quantitative"
+          }
+        }
+      });
       it('should add bin transform and correctly apply bin', function() {
         const transform = source.binTransform(model);
 
@@ -155,36 +147,41 @@ describe('data.source', function() {
         };
 
       it('should add filterNull for Q and T by default', function () {
-        const enc = parseModel(spec);
-        assert.deepEqual(source.nullFilterTransform(enc), [{
+        const model = parseModel(spec);
+        assert.deepEqual(source.nullFilterTransform(model), [{
           type: 'filter',
           test: 'datum.tt!==null && datum.qq!==null'
         }]);
       });
 
       it('should add filterNull for O when specified', function () {
-        const enc = parseModel(mergeDeep(spec, {
+        const model = parseModel(mergeDeep(spec, {
           config: {
             filterNull: true
           }
         }));
-        assert.deepEqual(source.nullFilterTransform(enc), [{
+        assert.deepEqual(source.nullFilterTransform(model), [{
           type: 'filter',
           test:'datum.tt!==null && datum.qq!==null && datum.oo!==null'
         }]);
       });
 
       it('should add no null filter if filterNull is false', function () {
-        const enc = parseModel(mergeDeep(spec, {
+        const model = parseModel(mergeDeep(spec, {
           config: {
             filterNull: false
           }
         }));
-        assert.deepEqual(source.nullFilterTransform(enc), []);
+        assert.deepEqual(source.nullFilterTransform(model), []);
       });
     });
 
     describe('filter', function () {
+      const model = parseModel({
+        data: {
+          filter: 'datum.a > datum.b && datum.c === datum.d'
+        }
+      });
       it('should return array that contains a filter transform', function () {
         assert.deepEqual(source.filterTransform(model), [{
           type: 'filter',
@@ -194,6 +191,12 @@ describe('data.source', function() {
     });
 
     describe('time', function() {
+      const model = parseModel({
+        mark: "point",
+        encoding: {
+          x: {field: 'a', type: "temporal", timeUnit: 'year'}
+        }
+      });
       it('should add formula transform', function() {
         const transform = source.timeTransform(model);
         assert.deepEqual(transform[0], {
@@ -204,7 +207,24 @@ describe('data.source', function() {
       });
     });
 
-    it('should have null filter, timeUnit, bin then filter', function () {
+    it('should have correct order of transforms (null filter, timeUnit, bin then filter)', function () {
+      const model = parseModel({
+        data: {
+          filter: 'datum.a > datum.b && datum.c === datum.d'
+        },
+        mark: "point",
+        encoding: {
+          x: {field: 'a', type: "temporal", timeUnit: 'year'},
+          y: {
+            bin: {
+              min: 0,
+              max: 100
+            },
+            'field': 'Acceleration',
+            'type': "quantitative"
+          }
+        }
+      });
       const transform = source.transform(model);
       assert.deepEqual(transform[0].type, 'filter');
       assert.deepEqual(transform[1].type, 'formula');
