@@ -234,8 +234,10 @@ export class Model {
   }
 
   /** Add formatting to a mark definition. Used in axis and legend. */
-  public format(channel: Channel, format: string, def: any) {
+  public format(channel: Channel, format: string) {
     const fieldDef = this.fieldDef(channel);
+
+    let def: any = {};
 
     if (fieldDef.type === TEMPORAL) {
       // explicitly set the fromat type so that vega uses the datetime formatter
@@ -244,7 +246,7 @@ export class Model {
 
     if (format !== undefined) {
       def.format = format;
-      return;
+      return def;
     }
 
     switch (fieldDef.type) {
@@ -260,6 +262,8 @@ export class Model {
         }
         break;
     }
+
+    return def;
   }
 
   /** returns the time format used for axis labels for a time unit */
