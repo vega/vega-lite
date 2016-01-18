@@ -62,10 +62,10 @@ describe('Model', function() {
           x: {field:'a', type: "quantitative"}
         },
         config: {
-          numberFormat: 'foo'
+          numberFormat: 'd'
         }
       }).format(X, undefined), {
-        format: 'foo'
+        format: 'd'
       });
     });
 
