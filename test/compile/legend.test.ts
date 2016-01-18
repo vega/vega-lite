@@ -6,6 +6,12 @@ import {X} from '../../src/channel';
 import * as legend from '../../src/compile/legend';
 
 describe('Legend', function() {
+  describe('compileLegend()', function() {
+    it('should output explicitly specified properties', function() {
+      // FIXME test this
+    })
+  });
+
   describe('title()', function () {
     it('should add explicitly specified title', function () {
       const title = legend.title({field: 'a', legend: {title: 'Custom'}});
@@ -27,5 +33,9 @@ describe('Legend', function() {
         }
       }), X), {});
     });
+  });
+
+  describe('properties.symbols', function() {
+    // FIXME test
   });
 });

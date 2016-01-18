@@ -9,31 +9,33 @@ import {Y} from '../../src/channel';
 
 
 describe('Scale', function() {
-  describe('domain()', function() {
-    describe('for stack', function() {
-      it('should return correct stacked_scale', function() {
-        const domain = vlscale.domain(parseModel({
-          mark: "bar",
-          encoding: {
-            y: {
-              aggregate: 'sum',
-              field: 'origin'
-            },
-            x: {field: 'x', type: "ordinal"},
-            color: {field: 'color', type: "ordinal"},
-            row: {field: 'row'}
-          }
-        }), Y, 'linear');
+  describe('type()', function() {
+    // FIXME(kanitw): Jan 18, 2016 - Test
+  });
 
-        assert.deepEqual(domain, {
-          data: 'stacked_scale',
-          field: 'sum_sum_origin'
-        });
+  describe('domain()', function() {
+    it('should return domain for stack', function() {
+      const domain = vlscale.domain(parseModel({
+        mark: "bar",
+        encoding: {
+          y: {
+            aggregate: 'sum',
+            field: 'origin'
+          },
+          x: {field: 'x', type: "ordinal"},
+          color: {field: 'color', type: "ordinal"},
+          row: {field: 'row'}
+        }
+      }), Y, 'linear');
+
+      assert.deepEqual(domain, {
+        data: 'stacked_scale',
+        field: 'sum_sum_origin'
       });
     });
 
     describe('for quantitative', function() {
-      it('should return the right domain if binned Q',
+      it('should return the right domain for binned Q',
         function() {
           const domain = vlscale.domain(parseModel({
             mark: "point",
@@ -217,6 +219,30 @@ describe('Scale', function() {
   });
 
   describe('rangeMixins()', function() {
-    // TODO
+    // FIXME
+  });
+
+  describe('bandWidth()', function() {
+    // FIXME
+  });
+
+  describe('nice()', function() {
+    // FIXME
+  });
+
+  describe('outerPadding()', function() {
+    // FIXME
+  });
+
+  describe('points()', function() {
+    // FIXME
+  });
+
+  describe('reverse()', function() {
+    // FIXME
+  });
+
+  describe('zero()', function() {
+    // FIXME
   });
 });

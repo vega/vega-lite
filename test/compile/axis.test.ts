@@ -82,11 +82,11 @@ describe('Axis', function() {
   });
 
   describe('ticks', function() {
-    // TODO: write test
+    // FIXME: write test
   });
 
   describe('tickSize', function() {
-    // TODO: write test
+    // FIXME: write test
   });
 
   describe('title()', function () {
