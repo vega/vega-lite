@@ -103,3 +103,23 @@ describe('Mark: Point', function() {
     });
   });
 });
+
+describe('Mark: Square', function() {
+  it('should be filled by default', function() {
+    // TODO
+  });
+
+  it('should support config.mark.filled:false', function() {
+    // TODO
+  });
+});
+
+describe('Mark: Circle', function() {
+  it('should be filled by default', function() {
+    // TODO
+  });
+
+  it('should support config.mark.filled:false', function() {
+    // TODO
+  });
+});

@@ -7,7 +7,7 @@ export namespace point {
     return 'symbol';
   }
 
-  export function properties(model: Model) {
+  export function properties(model: Model, fixedShape?: string) {
     // TODO Use Vega's marks properties interface
     var p: any = {};
 
@@ -42,7 +42,9 @@ export namespace point {
     }
 
     // shape
-    if (model.has(SHAPE)) {
+    if (fixedShape) { // square and circle marks
+      p.shape = { value: fixedShape };
+    } else if (model.has(SHAPE)) {
       p.shape = {
         scale: model.scale(SHAPE),
         field: model.field(SHAPE)
@@ -51,7 +53,10 @@ export namespace point {
       p.shape = { value: model.fieldDef(SHAPE).value };
     }
 
-    applyColorAndOpacity(p, model);
+    applyColorAndOpacity(p, model,
+      // square and circle are filled by default, but point is stroked by default.
+      fixedShape ? ColorMode.FILLED_BY_DEFAULT : ColorMode.STROKED_BY_DEFAULT
+    );
     return p;
   }
 
@@ -60,55 +65,14 @@ export namespace point {
   }
 }
 
-function filled_point_props(shape) {
-  return function(model: Model) {
-    // TODO Use Vega's marks properties interface
-    var p: any = {};
-
-    // x
-    if (model.has(X)) {
-      p.x = {
-        scale: model.scale(X),
-        field: model.field(X, { binSuffix: '_mid' })
-      };
-    } else {
-      p.x = { value: model.fieldDef(X).scale.bandWidth / 2 };
-    }
-
-    // y
-    if (model.has(Y)) {
-      p.y = {
-        scale: model.scale(Y),
-        field: model.field(Y, { binSuffix: '_mid' })
-      };
-    } else {
-      p.y = { value: model.fieldDef(Y).scale.bandWidth / 2 };
-    }
-
-    // size
-    if (model.has(SIZE)) {
-      p.size = {
-        scale: model.scale(SIZE),
-        field: model.field(SIZE)
-      };
-    } else {
-      p.size = { value: model.sizeValue() };
-    }
-
-    // shape
-    p.shape = { value: shape };
-
-    applyColorAndOpacity(p, model, ColorMode.ALWAYS_FILLED);
-    return p;
-  };
-}
-
 export namespace circle {
   export function markType(model: Model) {
     return 'symbol';
   }
 
-  export const properties = filled_point_props('circle');
+  export function properties(model: Model) {
+    return point.properties(model, 'circle');
+  }
 
   export function labels(model: Model) {
     // TODO(#240): fill this method
@@ -121,7 +85,9 @@ export namespace square {
     return 'symbol';
   }
 
-  export const properties = filled_point_props('square');
+  export function properties(model: Model) {
+    return point.properties(model, 'square');
+  }
 
   export function labels(model: Model) {
     // TODO(#240): fill this method
