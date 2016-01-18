@@ -7,6 +7,7 @@ import * as axis from '../../src/compile/axis';
 import {X, COLUMN} from '../../src/channel';
 
 describe('Axis', function() {
+  // TODO: move this to model.test.ts
   describe('= true', function() {
     it('should produce default properties for axis', function() {
       const model1 = parseModel({
@@ -28,25 +29,20 @@ describe('Axis', function() {
     });
   });
 
-  describe('(X) for Time Data', function() {
-    const encoding = parseModel({
-        mark: "line",
+  describe('compileAxis', function() {
+    it('should produce a Vega axis object with correct type and scale', function() {
+      const model = parseModel({
+        mark: "point",
         encoding: {
-          x: {field: "a", type: "temporal", timeUnit: "month"}
+          x: {field: "a", type: "quantitative"}
         }
       });
-    const _axis = axis.compileAxis(X, encoding);
-
-    // FIXME decouple the test here
-
-    it('should use custom format', function() {
-      assert.equal(_axis.format, '%B');
-    });
-    it('should rotate label', function() {
-      assert.equal(_axis.properties.labels.angle.value, 270);
+      const def = axis.compileAxis(X, model);
+      assert.isObject(def);
+      assert.equal(def.type, 'x');
+      assert.equal(def.scale, 'x');
     });
   });
-
 
   describe('grid()', function () {
     // FIXME(kanitw): Jul 19, 2015 - write test
@@ -85,26 +81,12 @@ describe('Axis', function() {
     });
   });
 
-  describe('labels()', function () {
-    it('should show labels by default', function () {
-      const labels = axis.properties.labels(parseModel({
-          mark: "point",
-          encoding: {
-            x: {field: 'a', type: "ordinal"}
-          }
-        }), X, {}, {orient: 'top'});
-      assert.deepEqual(labels.text.template, '{{ datum.data | truncate:25}}');
-    });
+  describe('ticks', function() {
+    // TODO: write test
+  });
 
-    it('should hide labels if labels are set to false', function () {
-      const labels = axis.properties.labels(parseModel({
-          mark: "point",
-          encoding: {
-            x: {field: 'a', type: "ordinal", axis: {labels: false}}
-          }
-        }), X, {}, null);
-      assert.deepEqual(labels.text, '');
-    });
+  describe('tickSize', function() {
+    // TODO: write test
   });
 
   describe('title()', function () {
@@ -163,7 +145,41 @@ describe('Axis', function() {
     });
   });
 
-  describe('titleOffset()', function () {
-    // FIXME(kanitw): Jul 19, 2015 - write test
+  describe('properties.labels()', function () {
+    // FIXME write test
+  });
+
+  describe('properties.labels()', function () {
+    it('should show labels by default', function () {
+      const labels = axis.properties.labels(parseModel({
+          mark: "point",
+          encoding: {
+            x: {field: 'a', type: "ordinal"}
+          }
+        }), X, {}, {orient: 'top'});
+      assert.deepEqual(labels.text.template, '{{ datum.data | truncate:25}}');
+    });
+
+    it('should hide labels if labels are set to false', function () {
+      const labels = axis.properties.labels(parseModel({
+          mark: "point",
+          encoding: {
+            x: {field: 'a', type: "ordinal", axis: {labels: false}}
+          }
+        }), X, {}, null);
+      assert.deepEqual(labels.text, '');
+    });
+
+    it('should rotate label', function() {
+      const model = parseModel({
+        mark: "point",
+        encoding: {
+          x: {field: "a", type: "temporal", timeUnit: "month"}
+        }
+      });
+      const labels = axis.properties.labels(model, X, {}, {});
+      assert.equal(labels.angle.value, 270);
+      assert.equal(labels.baseline.value, 'middle');
+    });
   });
 });
