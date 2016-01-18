@@ -60,9 +60,12 @@ describe('Model', function() {
         mark: "point",
         encoding: {
           x: {field:'a', type: "quantitative"}
+        },
+        config: {
+          numberFormat: 'd'
         }
       }).format(X, undefined), {
-        format: 's'
+        format: 'd'
       });
     });
 
