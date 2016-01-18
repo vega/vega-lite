@@ -37,7 +37,7 @@ export function compileLegend(model: Model, channel: Channel, def) {
 
   // 1.1 Add properties with special rules
   def.title = title(fieldDef);
-  format(model, channel, def);
+  extend(def, format(model, channel));
 
   // 1.2 Add properties without rules
   ['orient', 'values'].forEach(function(property) {
@@ -71,14 +71,16 @@ export function title(fieldDef: FieldDef) {
   return fieldTitle(fieldDef);
 }
 
-export function format(model: Model, channel: Channel, def) {
+export function format(model: Model, channel: Channel) {
   const fieldDef = model.fieldDef(channel);
-  const legend = fieldDef.legend;
 
   // If the channel is binned, we should not set the formatter because we have a range label
   if (!fieldDef.bin) {
-    model.format(channel, (typeof legend !== 'boolean' && legend.format) || undefined, def);
+    return {};
   }
+
+  const legend = fieldDef.legend;
+  return model.format(channel, (typeof legend !== 'boolean' && legend.format) || undefined);
 }
 
 namespace properties {
