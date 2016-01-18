@@ -74,8 +74,8 @@ export function title(fieldDef: FieldDef) {
 export function format(model: Model, channel: Channel) {
   const fieldDef = model.fieldDef(channel);
 
-  // If the channel is binned, we should not set the formatter because we have a range label
-  if (!fieldDef.bin) {
+  // If the channel is binned, we should not set the format because we have a range label
+  if (fieldDef.bin) {
     return {};
   }
 
