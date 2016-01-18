@@ -64,8 +64,8 @@ export const config = {
     // FIXME(#497) remove these
     numberFormat: {
       type: 'string',
-      default: 's',
-      description: 'D3 Number format for axis labels and text tables.'
+      default: undefined,
+      description: 'D3 Number format for axis labels and text tables. For example s for SI units.'
     },
     // FIXME(#497) handle this
     textCellWidth: {
