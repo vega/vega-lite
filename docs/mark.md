@@ -11,19 +11,20 @@ which can be either mapped to a field or a constant value.
 
 Currently Vega-Lite supports the following `mark` types:
 [`point`](#point),
+[`circle`](#circle-and-square),
+[`square`](#circle-and-square),
+[`tick`](#tick),
 [`bar`](#bar),
 [`line`](#line),
-[`area`](#area),
-[`circle`](#circle),
-[`square`](#square),
-[`tick`](#tick), and
+[`area`](#area), and
 [`text`](#text) (text table).
 
 ## Point
 
-`point` mark represents each data with a point.  
-It also supports the following encoding channels:
-`x`, `y`, `color`, `shape` and `size`.  
+`point` mark represents each data point with a symbol.  
+
+<!-- It also supports the following encoding channels:
+`x`, `y`, `color`, `shape` and `size`. -->
 
 Mapping a field to only either `x` or `y` of `point` mark creates a dot plot.
 
@@ -36,6 +37,7 @@ Mapping a field to only either `x` or `y` of `point` mark creates a dot plot.
   }
 }
 ```
+
 <script>
 vg.embed('#dot-plot', {
   mode: 'vega-lite',
@@ -174,7 +176,7 @@ vg.embed('#scatter_color_shape_constant', {
 </script>
 <div id="scatter_color_shape_constant"></div>
 
-By default, point marks have filled borders and are transparent inside.  
+By default, `point` marks have filled borders and are transparent inside.  
 Setting `config.mark.filled` creates filled marks instead.
 
 ```js
@@ -273,40 +275,94 @@ vg.embed('#square', {
 </script>
 <div id="square"></div>
 
+## Tick
+
+<!--
+- Supported data type
+- How orientation is determined
+-->
+
 
 ## Bar
 
+`bar` mark represents each data point as a rectangle that fits a dimension scale
+and expands its length along a quantitative scale.  
+
+Mapping a quantitative field to either `x` or `y` of `bar` mark produces a 1D bar chart.
+
+```js
+{
+  "data": {"url": "data/cars.json"},
+  "mark": "point",
+  "encoding": {
+    "x": {"field": "Horsepower", "type": "quantitative", "aggregate": "mean"}
+  }
+}
+```
+
+Mapping a quantitative field and another ordinal field to `x` and `y` produces a bar chart.
+
+<!-- EXAMPLE! -->
+
+Adding color to area chart creates a stacked bar chart by default.
+
+<!-- EXAMPLE! -->
+
+Alternatively, setting `config.stack` to `false` will disable stacking and thus
+produces a layered bar chart.  (Note: setting the mark to be semi-transparent is
+highly-recommended for this chart type.)  
+
+<!-- EXAMPLE! -->
 
 
+[Faceting](#encoding.md) a bar chart can produce a grouped bar chart.  
+<!--In the following example, we also over-encode field XXX with both row/column-facet and color -->
+
+<!-- EXAMPLE! -->
 
 <!--
+- Heat Map
 - How orientation is determined
-- Bar can be used to create bar chart, stacked bar chart, layered bar chart and grouped bar chart (when combined with facets)
 - (Future -- once we have tooltip) -- playing bar's trick with `detail` channel
 -->
 
 ## Line
 
-<!--
-- Line = ordinal / temporal and typically another measure  
-- How sort order is determined
-- Custom order for line
-- (Future) color
--->
+`line` mark represents each group of data points
+with a line that connects all the points in the group.
+
+Using `line` mark with one dimension (typically on `x`) and
+one measure (typically on `y`) produces a line chart with single line.  
+
+Additional grouping can be specified using `color` or `detail` channels.
+Mapping a group field to `color` assigns different colors to each line and
+thus produces a colored line chart.
+
+<!-- EXAMPLE! -->
+
+Mapping a group field to `detail` creates multiple lines with the same color.
+
+<!-- EXAMPLE! -->
+
+<!-- Line interpolation -->
+
+<!--By default, the order between data points in the line is determined by the dimension axis.
+However, -->
+
 
 ## Area
-<!--
-- Area = ordinal / temporal and typically another measure  
-- How sort order is determined
-- Stacking
--->
 
-## Circle and Square
+Similar to `line`, using `area` mark with one dimension (typically on `x`)
+and one measure (typically on `y`) produces an area chart.  
 
-## Tick
-<!--
-- Supported data type
-- How orientation is determined
--->
+
+Adding color to area chart creates stacked area chart by default.
+
+
+<!-- normalized area chart -->
+
+(Please look at[Stack Config](config.html#stack-config)'s documentation
+for how to customize stacking behavior.)
+
 
 ## Text

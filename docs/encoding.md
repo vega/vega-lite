@@ -24,20 +24,20 @@ These channels are properties for the top-level `encoding` definition object.
 | size  | [FieldDef](#field-definition)| Description of a field mapped to size encoding or a constant value for size.  `size` channel is currently not applicable for `line` and `area`. If `size` is not mapped to a field, the default value is 10 for `text` mark, `bandWidth-1` for `bar` with ordinal dimension scale and 2 for `bar` with linear dimension scale, `2/3*bandWidth` for `tick`, and 30 for other marks. |
 | detail | [FieldDef](#field-definition)| Description of a field that serves as an additional dimension for aggregate views without mapping to a specific visual channel.  `detail` channel is  not applicable raw plots (plots without aggregation). |
 
-<!-- # Faceting
-TODO: add visual examples for both row and column
--->
+### X and Y
 
-<!-- # Color
-TODO: visual examples for hue, saturation
- -->
+### Color
 
-<!-- # Size
-TODO: example: bubble plots
--->
+### Faceting
 
-<!-- # Detail
-TODO: explain more about detail  
+### Size
+
+
+### Detail
+
+<!--
+- grouping for line and area
+- additional measure / groupby for aggregation
 -->
 
 <!-- TODO: tooltips, labels -->

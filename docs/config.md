@@ -4,7 +4,16 @@ title: Config
 permalink: /docs/config.html
 ---
 
-## Config
+Vega-Lite's top-level `config` property lists configuration properties of a visualization.
+This page outlines different types of config properties:
+
+- [Top-level config](#top-level-config) (`config.*`)
+- [Cell config](#cell-config) (`config.cell.*`)
+- [Mark Config](#mark-config) (`config.mark.*`)
+- [Scene Config](#scene-config) (`config.scene.*`)
+- [Stack Config](#stack-config) (`config.stack.*`)
+
+## Top-level Config
 
 A Vega-Lite `config` object can have the following top-level properties:
 
@@ -12,29 +21,28 @@ A Vega-Lite `config` object can have the following top-level properties:
 | :------------ |:-------------:| :------------- |
 | viewport      | Integer[]     | The width and height of the on-screen viewport, in pixels. If necessary, clipping and scrolling will be applied. |
 | background    | String        | CSS color property to use as background of visualization. Default is `"transparent"`. |
-| filterNull | Boolean | Filter null values from the data. If set to `true`, all rows with null values are filtered. If `false`, no rows are filtered. Set the property to `undefined` (default) to filter only quantitative and temporal fields. |
-
+| filterNull    | Boolean       | Whether to filter null values from the data.  By default (`undefined`), only quantitative and temporal fields are filtered.  If set to `true`, all data items with null values are filtered. If `false`, all data items are included. |
 
 <!-- TODO: consider adding width, height, viewport, filterNull, numberFormat, timeFormat  -->
 
-In addition, `config` can have config objects for `cell`, `mark`, `scene`, and `stack`.
+
 
 ## Cell Config
 
-The smallest unit in Vega-Lite visualization is called a cell.  
-Each single (non-trellis)  chart contains one cell.  
-Thus, the width and height of the visualization is the `width` and `height` of the cell.  
-For trellis plots (also called small multiples), cell `width` and `height` determine
-the size of one plot inside the trellis plots.  
+The smallest unit in Vega-Lite visualization is called a cell.  Each single (non-trellis)  chart contains one cell.  Thus, the width and height of the visualization is the `width` and `height` of the cell.  For trellis plots (also called small multiples), cell `width` and `height` determine the size of one plot inside the trellis plots.  
 
-`cell` property of the `config` object can have the following size properties:
+`cell` property of the `config` object can have the following config properties:
+
+### Cell Size Config
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | width         | Integer       | The width of the visualization for a single cell (200 pixels by default).  This property is used only when `x` uses non-ordinal scale.  When `x` uses ordinal scale, the width is determined by x-scale's `bandWidth`.  |
 | height        | Integer       | The height of the visualization for a single cell (200 pixels by default).  This property is used only when `y` uses non-ordinal scale.  When `y` uses ordinal scale, the height is determined by y-scale's `bandWidth`. |
 
-the following grid properties:
+<!-- TODO: expand what do we mean ordinal scale -->
+
+### Cell Grid Config
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
@@ -42,7 +50,7 @@ the following grid properties:
 | gridOpacity   | Number        | Opacity of the grid between facets. |
 | gridOffset    | Number        | Offset for grid between facets.  |
 
-and the following fill and stroke properties:
+### Cell Style Config
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
@@ -54,48 +62,57 @@ and the following fill and stroke properties:
 | strokeDash    | Number[]      | An array of alternating stroke, space lengths for creating dashed or dotted lines.  |
 | strokeDashOffset  | Number[]  | The offset (in pixels) into which to begin drawing with the stroke dash array. |
 
-<!-- TODO: expand what do we mean ordinal scale -->
+## Mark Config
 
-## Marks Config
-
-`marks` property of the `config` is a marks config object, which can have the following properties:
-
+`mark` property of the `config` is a mark config object, which can have the following properties:
 
 ### General Marks Config
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| filled        | Boolean        | Whether the shape\'s color should be used as fill color instead of stroke color.  This is only applicable for `bar`, `point`, and `area`.  All marks except `point` marks are filled by default. |
-| sortBy        | Field &#124; Field[] | Data field(s) for sorting layer of marks.  The first mark will placed on the bottom.  `"-"` prefix can be added to each field to set descending order. |
-| sortLineBy    | Field &#124; Field[] | Data field(s) for sorting points in each group of line.  `"-"` prefix can be added to each field to set descending order.  |
-| fill          | Color         | The fill color.  This config will be overriden by `color` channel's specified or mapped values if `filled` is `true`. |
-| fillOpacity   | Number        | The fill opacity (value between [0,1]). |
-| stroke        | Color         | The stroke color.  This config will be overriden by `color` channel's specified or mapped values if `filled` is `false`. |
-| strokeOpacity | Number        | The stroke opacity (value between [0,1]). |
 | opacity       | Number        | The overall opacity (value between [0,1]). |
+| fill          | Color         | The fill color.  This config will be overridden by `color` channel's specified or mapped values if `filled` is `true`. |
+| fillOpacity   | Number        | The fill opacity (value between [0,1]). |
+| stroke        | Color         | The stroke color.  This config will be overridden by `color` channel's specified or mapped values if `filled` is `false`. |
+| strokeOpacity | Number        | The stroke opacity (value between [0,1]). |
 | strokeWidth   | Number        | The stroke width, in pixels. |
 | strokeDash    | Number[]      | An array of alternating stroke, space lengths for creating dashed or dotted lines.  |
 | strokeDashOffset  | Number[]  | The offset (in pixels) into which to begin drawing with the stroke dash array. |
+| filled        | Boolean        | Whether the shape\'s color should be used as fill color instead of stroke color.  This is only applicable for `bar`, `point`, `circle`, `square`, and `area`.  All supported marks except `point` marks are filled by default. See [mark](mark.html#scatter_filled) for a usage example. |
+| sortBy        | Field &#124; Field[] | Data field(s) for sorting layer of marks.  The first mark will placed on the bottom.  `"-"` prefix can be added to each field to set descending order. |
 
-<!-- TODO: add fill, stroke, fillOpacity, strokeOpacity -->
+<!-- one example for custom fill/stroke -->
 
+<!-- one example for sortBy -->
 
 ### Marks Config for Bar, Line, and Area Marks
+<div id="orient"></div>
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | orient        | String        | The orientation of a non-stacked bar, area, and line charts.  The value is either `"horizontal"`, or `"vertical"` (default).  For area, this property determines the orient property of the Vega output.  For line, this property determines the sort order of the points in the line if `config.sortLineBy` is not specified.  For stacked charts, this is always determined by the orientation of the stack; therefore explicitly specified value will be ignored. |
 
+<!-- one example for bar -->
+
 
 ### Marks Config for Line and Area Marks
+
+<div id="interpolate"></div>
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | interpolate   | String        | The line interpolation method to use. One of linear, step-before, step-after, basis, basis-open, basis-closed, bundle, cardinal, cardinal-open, cardinal-closed, monotone. |
 | tension       | Number        | Depending on the interpolation type, sets the tension parameter. |
+| sortLineBy    | Field &#124; Field[] | Data field(s) for sorting points in each group of line.  `"-"` prefix can be added to each field to set descending order.  |
+
+<!-- one example for interpolate -->
+
+<!-- one example for sortLineBy -->
 
 
 ### Marks Config for Tick Marks
+
+<div id="thickness"></div>
 
 | Property            | Type                | Description  |
 | :------------------ |:-------------------:| :------------|
@@ -103,6 +120,8 @@ and the following fill and stroke properties:
 
 
 ### Marks Config for Text Marks
+
+<div id="text"></div>
 
 | Property            | Type                | Description  |
 | :------------------ |:-------------------:| :------------|
@@ -116,7 +135,7 @@ and the following fill and stroke properties:
 | font                | String  | The typeface to set the text in (e.g., `Helvetica Neue`).|
 | fontWeight          | String  | The font weight (e.g., `bold`).|
 | fontStyle           | String  | The font style (e.g., `italic`).|
-| format              | string  | The formatting pattern for text value.  If not defined, this will be determined automatically|
+| format              | string  | The formatting pattern for text value.  |
 
 <!-- TODO: expand format detail -->
 
@@ -136,7 +155,7 @@ and the following fill and stroke properties:
 | strokeDash    | Number[]      | An array of alternating stroke, space lengths for creating dashed or dotted lines.  |
 | strokeDashOffset  | Number[]  | The offset (in pixels) into which to begin drawing with the stroke dash array. |
 
-## Stack  
+## Stack Config
 
 When either `"bar"` or `"area"` mark type is used with either `"color"` or `"detail"`
 channel, a stacked (bar or area) chart is automatically created.  
@@ -144,10 +163,7 @@ For a stacked chart, `stack` property can be used to custo
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| stack         | Boolean &#124; [StackConfig](#stack-config-object) |  If `"stack"` is `false`, stacking is disabled.  Otherwise, if `"stack"` is either `true` or a stack property object, stacking is enabled.|
-
-
-#### Stack Config Object
+| stack         | Boolean &#124; StackConfig |  If `"stack"` is `false`, stacking is disabled.  Otherwise, if `"stack"` is either `true` or a stack property object, stacking is enabled.|
 
 A stack config object can contain the following properties:
 
@@ -155,3 +171,10 @@ A stack config object can contain the following properties:
 | :------------ |:-------------:| :------------- |
 | offset        | String        | The baseline offset style. One of `"zero"` (default), `"center"` <!--, or `"normalize"` -->. The `"center"` offset will center the stacks. The `"normalize"` offset will compute percentage values for each stack point; the output values will be in the range [0,1].|
 | sort          | String &#124; Array<field> | Order of the stack.  This can be either a string (either "descending" or "ascending") or a list of fields to determine the order of stack layers.By default, stack uses descending order. |
+
+<!--
+__Examples__
+- offset
+  - normalized area chart
+  - streamgraph
+-->
