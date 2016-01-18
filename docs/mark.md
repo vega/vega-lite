@@ -21,8 +21,11 @@ Currently Vega-Lite supports the following `mark` types:
 
 ## Point
 
-Point mark can be used with any data type.  It also supports all encoding channels.  
-You can create a dot plot with `point` mark and either `x` or `y`.
+`point` mark represents each data with a point.  
+It also supports the following encoding channels:
+`x`, `y`, `color`, `shape` and `size`.  
+
+Mapping a field to only either `x` or `y` of `point` mark creates a dot plot.
 
 ```js
 {
@@ -48,7 +51,7 @@ vg.embed('#dot-plot', {
 <div id="dot-plot"></div>
 
 
-If both `x` and `y` are encoded, you get a scatter plot.
+Mapping fields to both `x` and `y` creates a scatter plot.
 
 ```js
 {
@@ -75,7 +78,8 @@ vg.embed('#scatter', {
 </script>
 <div id="scatter"></div>
 
-If you add `size` encoding to a scatter plot, you get a bubble plot instead.  
+Mapping another field to `size` channel in the [scatter plot](#scatter) above
+creates a bubble plot instead.  
 
 ```js
 {
@@ -104,7 +108,9 @@ vg.embed('#scatter_bubble', {
 </script>
 <div id="scatter_bubble"></div>
 
-Alternatively, you can map other fields to `color` and `shape`.
+Alternatively, other fields can be mapped to `color` and/or `shape` of the [scatter plot](#scatter).
+For example, this specification over-encodes the field `Origin` with both `color`
+and `shape`.
 
 ```js
 {
@@ -134,6 +140,138 @@ vg.embed('#scatter_color_shape', {
 });
 </script>
 <div id="scatter_color_shape"></div>
+
+
+Or you can set `color` and `shape` to constant values.
+
+```js
+{
+  "data": {"url": "data/cars.json"},
+  "mark": "point",
+  "encoding": {
+    "x": {"field": "Horsepower","type": "quantitative"},
+    "y": {"field": "Miles_per_Gallon","type": "quantitative"},
+    "color": {"value": "#ff9900"},
+    "shape": {"value": "square"}
+  }
+}
+```
+
+<script>
+vg.embed('#scatter_color_shape_constant', {
+  mode: 'vega-lite',
+  spec: {
+    "data": {"url": "../data/cars.json"},
+    "mark": "point",
+    "encoding": {
+      "x": {"field": "Horsepower","type": "quantitative"},
+      "y": {"field": "Miles_per_Gallon","type": "quantitative"},
+      "color": {"value": "#ff9900"},
+      "shape": {"value": "square"}
+    }
+  }
+});
+</script>
+<div id="scatter_color_shape_constant"></div>
+
+By default, point marks have filled borders and are transparent inside.  
+Setting `config.mark.filled` creates filled marks instead.
+
+```js
+{
+  "data": {"url": "data/cars.json"},
+  "mark": "point",
+  "encoding": {
+    "x": {"field": "Horsepower","type": "quantitative"},
+    "y": {"field": "Miles_per_Gallon","type": "quantitative"},
+    "color": {"value": "#ff9900"},
+    "shape": {"value": "square"}
+  },
+  "config": {
+    "mark": {"filled": true}
+  }
+}
+```
+
+<script>
+vg.embed('#scatter_filled', {
+  mode: 'vega-lite',
+  spec: {
+    "data": {"url": "../data/cars.json"},
+    "mark": "point",
+    "encoding": {
+      "x": {"field": "Horsepower","type": "quantitative"},
+      "y": {"field": "Miles_per_Gallon","type": "quantitative"},
+      "color": {"value": "#ff0000"},
+      "shape": {"value": "square"}
+    },
+    "config": {
+      "mark": {"filled": true}
+    }
+  }
+});
+</script>
+<div id="scatter_filled"></div>
+
+
+## Circle and Square
+
+`circle` and `square` marks are similar to `point` mark except that
+(1) the `shape` channel is always set to `circle` and `square`, and
+(2) they are filled by default.  Here are some examples:
+
+```js
+{
+  "data": {"url": "data/cars.json"},
+  "mark": "circle",
+  "encoding": {
+    "x": {"field": "Horsepower","type": "quantitative"},
+    "y": {"field": "Miles_per_Gallon","type": "quantitative"}
+  }
+}
+```
+
+<script>
+vg.embed('#circle', {
+  mode: 'vega-lite',
+  spec: {
+    "data": {"url": "../data/cars.json"},
+    "mark": "circle",
+    "encoding": {
+      "x": {"field": "Horsepower","type": "quantitative"},
+      "y": {"field": "Miles_per_Gallon","type": "quantitative"}
+    }
+  }
+});
+</script>
+<div id="circle"></div>
+
+
+```js
+{
+  "data": {"url": "data/cars.json"},
+  "mark": "square",
+  "encoding": {
+    "x": {"field": "Horsepower","type": "quantitative"},
+    "y": {"field": "Miles_per_Gallon","type": "quantitative"}
+  }
+}
+```
+
+<script>
+vg.embed('#square', {
+  mode: 'vega-lite',
+  spec: {
+    "data": {"url": "../data/cars.json"},
+    "mark": "square",
+    "encoding": {
+      "x": {"field": "Horsepower","type": "quantitative"},
+      "y": {"field": "Miles_per_Gallon","type": "quantitative"}
+    }
+  }
+});
+</script>
+<div id="square"></div>
 
 
 ## Bar
