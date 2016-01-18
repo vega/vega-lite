@@ -8,7 +8,7 @@ import {mergeDeep} from '../../src/schema/schemautil';
 describe('Data', function () {
   describe('for aggregate encoding', function () {
     it('should contain two tables', function() {
-      var encoding = parseModel({
+      const model = parseModel({
           mark: "point",
           encoding: {
             x: {field: 'a', type: "temporal"},
@@ -16,13 +16,13 @@ describe('Data', function () {
           }
         });
 
-      var data = compileData(encoding);
+      const data = compileData(model);
       assert.equal(data.length, 2);
     });
   });
 
   describe('when contains log in non-aggregate', function () {
-    var rawEncodingWithLog = parseModel({
+    const model = parseModel({
         mark: "point",
         encoding: {
           x: {field: 'a', type: "temporal"},
@@ -30,12 +30,12 @@ describe('Data', function () {
         }
       });
 
-    var data = compileData(rawEncodingWithLog);
+    const data = compileData(model);
     it('should contains one table', function() {
       assert.equal(data.length, 1);
     });
     it('should have filter non-positive in source', function() {
-      var sourceTransform = data[0].transform;
+      const sourceTransform = data[0].transform;
       assert.deepEqual(sourceTransform[sourceTransform.length - 1], {
         type: 'filter',
         test: 'datum.b > 0'
@@ -46,13 +46,13 @@ describe('Data', function () {
 
 describe('data.source', function() {
   describe('with explicit values', function() {
-    var model = parseModel({
+    const model = parseModel({
       data: {
         values: [{a: 1, b:2, c:3}, {a: 4, b:5, c:6}]
       }
     });
 
-    var sourceDef = source.def(model);
+    const sourceDef = source.def(model);
 
     it('should have values', function() {
       assert.equal(sourceDef.name, 'source');
@@ -65,13 +65,13 @@ describe('data.source', function() {
   });
 
   describe('with link to url', function() {
-    var encoding = parseModel({
+    const model = parseModel({
         data: {
           url: 'http://foo.bar'
         }
       });
 
-    var sourceDef = source.def(encoding);
+    const sourceDef = source.def(model);
 
     it('should have format json', function() {
       assert.equal(sourceDef.name, 'source');
@@ -84,7 +84,7 @@ describe('data.source', function() {
 
   describe('formatParse', function () {
     it('should include parse for all applicable fields, and exclude calculated fields', function() {
-      var encoding = parseModel({
+      const model = parseModel({
           data: {
             calculate: [
               {field: 'b2', expr: 'datum.b * 2'}
@@ -98,7 +98,7 @@ describe('data.source', function() {
           }
         });
 
-      var sourceDef = source.def(encoding);
+      const sourceDef = source.def(model);
       assert.deepEqual(sourceDef.format.parse, {
         'a': 'date',
         'b': 'number'
@@ -107,7 +107,7 @@ describe('data.source', function() {
   });
 
   describe('transform', function () {
-    var encoding = parseModel({
+    const model = parseModel({
       data: {
         filter: 'datum.a > datum.b && datum.c === datum.d'
       },
@@ -127,7 +127,7 @@ describe('data.source', function() {
 
     describe('bin', function() {
       it('should add bin transform and correctly apply bin', function() {
-        var transform = source.binTransform(encoding);
+        const transform = source.binTransform(model);
 
         assert.deepEqual(transform[0], {
           type: 'bin',
@@ -145,7 +145,7 @@ describe('data.source', function() {
     });
 
     describe('nullFilter', function() {
-      var spec = {
+      const spec = {
           mark: "point",
           encoding: {
             y: {field: 'qq', type: "quantitative"},
@@ -155,7 +155,7 @@ describe('data.source', function() {
         };
 
       it('should add filterNull for Q and T by default', function () {
-        var enc = parseModel(spec);
+        const enc = parseModel(spec);
         assert.deepEqual(source.nullFilterTransform(enc), [{
           type: 'filter',
           test: 'datum.tt!==null && datum.qq!==null'
@@ -163,7 +163,7 @@ describe('data.source', function() {
       });
 
       it('should add filterNull for O when specified', function () {
-        var enc = parseModel(mergeDeep(spec, {
+        const enc = parseModel(mergeDeep(spec, {
           config: {
             filterNull: true
           }
@@ -175,7 +175,7 @@ describe('data.source', function() {
       });
 
       it('should add no null filter if filterNull is false', function () {
-        var enc = parseModel(mergeDeep(spec, {
+        const enc = parseModel(mergeDeep(spec, {
           config: {
             filterNull: false
           }
@@ -186,7 +186,7 @@ describe('data.source', function() {
 
     describe('filter', function () {
       it('should return array that contains a filter transform', function () {
-        assert.deepEqual(source.filterTransform(encoding), [{
+        assert.deepEqual(source.filterTransform(model), [{
           type: 'filter',
           test: 'datum.a > datum.b && datum.c === datum.d'
         }]);
@@ -195,7 +195,7 @@ describe('data.source', function() {
 
     describe('time', function() {
       it('should add formula transform', function() {
-        var transform = source.timeTransform(encoding);
+        const transform = source.timeTransform(model);
         assert.deepEqual(transform[0], {
           type: 'formula',
           field: 'year_a',
@@ -205,7 +205,7 @@ describe('data.source', function() {
     });
 
     it('should have null filter, timeUnit, bin then filter', function () {
-      var transform = source.transform(encoding);
+      const transform = source.transform(model);
       assert.deepEqual(transform[0].type, 'filter');
       assert.deepEqual(transform[1].type, 'formula');
       assert.deepEqual(transform[2].type, 'bin');
@@ -217,7 +217,7 @@ describe('data.source', function() {
 
 describe('data.dates', function() {
   it('should add data source with raw domain data', function() {
-    var encoding = parseModel({
+    const model = parseModel({
         mark: "point",
         encoding: {
           'y': {
@@ -233,7 +233,7 @@ describe('data.dates', function() {
         }
       });
 
-    var defs = dates.defs(encoding);
+    const defs = dates.defs(model);
 
     assert.deepEqual(defs, [{
       name: 'day',
@@ -251,7 +251,7 @@ describe('data.dates', function() {
 
 describe('data.summary', function () {
   it('should return correct aggregation', function() {
-    var encoding = parseModel({
+    const model = parseModel({
         mark: "point",
         encoding: {
           'y': {
@@ -267,7 +267,7 @@ describe('data.summary', function () {
         }
       });
 
-    var aggregated = summary.def(encoding);
+    const aggregated = summary.def(model);
     assert.deepEqual(aggregated, {
       'name': "summary",
       'source': 'source',
@@ -283,7 +283,7 @@ describe('data.summary', function () {
   });
 
   it('should return correct aggregation for detail arrays', function() {
-    var encoding = parseModel({
+    const model = parseModel({
         mark: "point",
         encoding: {
           'y': {
@@ -306,7 +306,7 @@ describe('data.summary', function () {
         }
       });
 
-    var aggregated = summary.def(encoding);
+    const aggregated = summary.def(model);
     assert.deepEqual(aggregated, {
       'name': "summary",
       'source': 'source',
