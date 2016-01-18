@@ -233,7 +233,7 @@ export class Model {
     return 30;
   }
 
-  /** Add formatting to a mark definition. Used in axis and legend. */
+  /** @return an object with format and formatType properties. */
   public formatMixins(channel: Channel, format: string) {
     const fieldDef = this.fieldDef(channel);
 
