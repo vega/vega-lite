@@ -29,13 +29,13 @@ describe('Axis', function() {
   });
 
   describe('(X) for Time Data', function() {
-    var encoding = parseModel({
+    const encoding = parseModel({
         mark: "line",
         encoding: {
           x: {field: "a", type: "temporal", timeUnit: "month"}
         }
       });
-    var _axis = axis.compileAxis(X, encoding);
+    const _axis = axis.compileAxis(X, encoding);
 
     // FIXME decouple the test here
 
@@ -54,7 +54,7 @@ describe('Axis', function() {
 
   describe('orient()', function () {
     it('should return specified orient', function () {
-      var orient = axis.orient(parseModel({
+      const orient = axis.orient(parseModel({
           mark: "point",
           encoding: {
             x: {field: 'a', axis:{orient: 'bottom'}}
@@ -64,7 +64,7 @@ describe('Axis', function() {
     });
 
     it('should return undefined by default', function () {
-      var orient = axis.orient(parseModel({
+      const orient = axis.orient(parseModel({
           mark: "point",
           encoding: {
             x: {field: 'a'}
@@ -74,7 +74,7 @@ describe('Axis', function() {
     });
 
     it('should return top for COL', function () {
-      var orient = axis.orient(parseModel({
+      const orient = axis.orient(parseModel({
           mark: "point",
           encoding: {
             x: {field: 'a'},
@@ -87,7 +87,7 @@ describe('Axis', function() {
 
   describe('labels()', function () {
     it('should show labels by default', function () {
-      var labels = axis.properties.labels(parseModel({
+      const labels = axis.properties.labels(parseModel({
           mark: "point",
           encoding: {
             x: {field: 'a', type: "ordinal"}
@@ -97,7 +97,7 @@ describe('Axis', function() {
     });
 
     it('should hide labels if labels are set to false', function () {
-      var labels = axis.properties.labels(parseModel({
+      const labels = axis.properties.labels(parseModel({
           mark: "point",
           encoding: {
             x: {field: 'a', type: "ordinal", axis: {labels: false}}
@@ -109,7 +109,7 @@ describe('Axis', function() {
 
   describe('title()', function () {
     it('should add explicitly specified title', function () {
-      var title = axis.title(parseModel({
+      const title = axis.title(parseModel({
           mark: "point",
           encoding: {
             x: {field: 'a', axis: {title: 'Custom'}}
@@ -119,7 +119,7 @@ describe('Axis', function() {
     });
 
     it('should add return fieldTitle by default', function () {
-      var title = axis.title(parseModel({
+      const title = axis.title(parseModel({
           mark: "point",
           encoding: {
             x: {field: 'a', type: "quantitative", axis: {titleMaxLength: 3}}
@@ -129,7 +129,7 @@ describe('Axis', function() {
     });
 
     it('should add return fieldTitle by default', function () {
-      var title = axis.title(parseModel({
+      const title = axis.title(parseModel({
           mark: "point",
           encoding: {
             x: {field: 'a', type: "quantitative", aggregate: 'sum', axis: {titleMaxLength: 10}}
@@ -139,7 +139,7 @@ describe('Axis', function() {
     });
 
     it('should add return fieldTitle by default and truncate', function () {
-      var title = axis.title(parseModel({
+      const title = axis.title(parseModel({
           mark: "point",
           encoding: {
             x: {field: 'a', type: "quantitative", aggregate: 'sum', axis: {titleMaxLength: 3}}
@@ -150,7 +150,7 @@ describe('Axis', function() {
 
 
     it('should add return fieldTitle by default and truncate', function () {
-      var title = axis.title(parseModel({
+      const title = axis.title(parseModel({
           mark: "point",
           encoding: {
             x: {field: 'abcdefghijkl'}

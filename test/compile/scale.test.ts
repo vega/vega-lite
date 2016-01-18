@@ -12,7 +12,7 @@ describe('Scale', function() {
   describe('domain()', function() {
     describe('for stack', function() {
       it('should return correct stacked_scale', function() {
-        var domain = vlscale.domain(parseModel({
+        const domain = vlscale.domain(parseModel({
           mark: "bar",
           encoding: {
             y: {
@@ -35,7 +35,7 @@ describe('Scale', function() {
     describe('for quantitative', function() {
       it('should return the right domain if binned Q',
         function() {
-          var domain = vlscale.domain(parseModel({
+          const domain = vlscale.domain(parseModel({
             mark: "point",
             encoding: {
               y: {
@@ -59,7 +59,7 @@ describe('Scale', function() {
 
       it('should return the raw domain if useRawDomain is true for non-bin, non-sum Q',
         function() {
-          var domain = vlscale.domain(parseModel({
+          const domain = vlscale.domain(parseModel({
             mark: "point",
             encoding: {
               y: {
@@ -76,7 +76,7 @@ describe('Scale', function() {
 
       it('should return the aggregate domain for sum Q',
         function() {
-          var domain = vlscale.domain(parseModel({
+          const domain = vlscale.domain(parseModel({
             mark: "point",
             encoding: {
               y: {
@@ -93,7 +93,7 @@ describe('Scale', function() {
 
 
       it('should return the aggregated domain if useRawDomain is false', function() {
-          var domain = vlscale.domain(parseModel({
+          const domain = vlscale.domain(parseModel({
             mark: "point",
             encoding: {
               y: {
@@ -112,7 +112,7 @@ describe('Scale', function() {
     describe('for time', function() {
       it('should return the raw domain if useRawDomain is true for raw T',
         function() {
-          var domain = vlscale.domain(parseModel({
+          const domain = vlscale.domain(parseModel({
             mark: "point",
             encoding: {
               y: {
@@ -128,7 +128,7 @@ describe('Scale', function() {
 
       it('should return the raw domain if useRawDomain is true for year T',
         function() {
-          var domain = vlscale.domain(parseModel({
+          const domain = vlscale.domain(parseModel({
             mark: "point",
             encoding: {
               y: {
@@ -146,7 +146,7 @@ describe('Scale', function() {
 
       it('should return the correct domain for month T',
         function() {
-          var domain = vlscale.domain(parseModel({
+          const domain = vlscale.domain(parseModel({
             mark: "point",
             encoding: {
               y: {
@@ -163,7 +163,7 @@ describe('Scale', function() {
 
         it('should return the correct domain for yearmonth T',
           function() {
-            var domain = vlscale.domain(parseModel({
+            const domain = vlscale.domain(parseModel({
               mark: "point",
               encoding: {
                 y: {
@@ -184,8 +184,8 @@ describe('Scale', function() {
 
     describe('for ordinal', function() {
       it('should return correct domain with the provided sort property', function() {
-        var sortDef = {op: 'min', field:'Acceleration'};
-        var encoding = parseModel({
+        const sortDef = {op: 'min', field:'Acceleration'};
+        const encoding = parseModel({
             mark: "point",
             encoding: {
               y: { field: 'origin', type: "ordinal", sort: sortDef}
@@ -200,7 +200,7 @@ describe('Scale', function() {
       });
 
       it('should return correct domain without sort if sort is not provided', function() {
-        var encoding = parseModel({
+        const encoding = parseModel({
             mark: "point",
             encoding: {
               y: { field: 'origin', type: "ordinal"}

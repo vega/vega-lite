@@ -1,20 +1,20 @@
-var assert = require('assert'),
+const assert = require('assert'),
   zSchema = require('z-schema'),
   inspect = require('util').inspect;
 
-var schema = require('../lib/schema.json'),
+const schema = require('../lib/schema.json'),
   schemautil = require('../src/schema/schemautil'),
   specSchema = require('../src/schema/schema').schema;
 
 describe('Schema', function() {
   it('should be valid', function() {
-    var validator = new zSchema();
+    const validator = new zSchema();
 
     // now validate our data against the schema
-    var valid = validator.validate(specSchema, schema);
+    const valid = validator.validate(specSchema, schema);
 
     if (!valid) {
-      var errors = validator.getLastErrors();
+      const errors = validator.getLastErrors();
       console.log(inspect(errors, { depth: 10, colors: true }));
     }
     assert.equal(valid, true);
@@ -23,7 +23,7 @@ describe('Schema', function() {
 
 describe('Util', function() {
   it('instantiate simple schema', function() {
-    var simpleSchema = {
+    const simpleSchema = {
       type: 'object', required: ['fooBaz'],
       properties: {
         foo: {type: 'array'},
@@ -35,7 +35,7 @@ describe('Util', function() {
   });
 
   it('remove defaults', function() {
-    var spec = {
+    const spec = {
       mark: 'point',
       encoding: {
         x: { field: 'dsp', type: 'quantitative'},
@@ -47,7 +47,7 @@ describe('Util', function() {
       }
     };
 
-    var expected = {
+    const expected = {
       mark: 'point',
       encoding: {
         x: { field: 'dsp', type: 'quantitative'},
@@ -58,13 +58,13 @@ describe('Util', function() {
       }
     };
 
-    var actual = schemautil.subtract(spec, schemautil.instantiate(specSchema));
+    const actual = schemautil.subtract(spec, schemautil.instantiate(specSchema));
     assert.deepEqual(actual, expected);
   });
 
   it('subtract with different types', function() {
-    var a = {a: 'foo', b: 'bar', 'baz': [1, 2, 3]};
-    var b = {a: 'foo', b: 'hi', 'baz': 'hi'};
+    const a = {a: 'foo', b: 'bar', 'baz': [1, 2, 3]};
+    const b = {a: 'foo', b: 'hi', 'baz': 'hi'};
 
     assert.deepEqual(
       schemautil.subtract(a, b),
@@ -74,8 +74,8 @@ describe('Util', function() {
   });
 
   it('merge objects', function() {
-     var a = {a: 'foo', b: {'bar': 0, 'baz': [], 'qux': [1, 2, 3]}};
-    var b = {a: 'fuu'};
+     const a = {a: 'foo', b: {'bar': 0, 'baz': [], 'qux': [1, 2, 3]}};
+    const b = {a: 'fuu'};
 
     assert.deepEqual(
       schemautil.mergeDeep(a, b),
@@ -83,8 +83,8 @@ describe('Util', function() {
   });
 
   it('merge objects reversed', function() {
-    var a = {a: 'foo', b: {'bar': 0, 'baz': [], 'qux': [1, 2, 3]}};
-    var b = {a: 'fuu'};
+    const a = {a: 'foo', b: {'bar': 0, 'baz': [], 'qux': [1, 2, 3]}};
+    const b = {a: 'fuu'};
 
     assert.deepEqual(
       schemautil.mergeDeep(b, a),
