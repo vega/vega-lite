@@ -65,12 +65,12 @@ export const config = {
     numberFormat: {
       type: 'string',
       default: undefined,
-      description: 'D3 Number format for axis labels and text tables. For example s for SI units.'
+      description: 'D3 Number format for axis labels and text tables. For example "s" for SI units.'
     },
     timeFormat: {
       type: 'string',
       default: '%Y-%m-%d',
-      description: 'Default datetime format for axis and legend labels. The format can be set directly on the axis.'
+      description: 'Default datetime format for axis and legend labels. The format can be set directly on each axis and legend.'
     },
 
     textCellWidth: {
