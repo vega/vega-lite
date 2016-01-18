@@ -350,10 +350,14 @@ export namespace summary {
         }
       } else {
         if (fieldDef.bin) {
-          // TODO(#694) only add dimension for the required ones.
           dims[field(fieldDef, {binSuffix: '_start'})] = field(fieldDef, {binSuffix: '_start'});
           dims[field(fieldDef, {binSuffix: '_mid'})] = field(fieldDef, {binSuffix: '_mid'});
           dims[field(fieldDef, {binSuffix: '_end'})] = field(fieldDef, {binSuffix: '_end'});
+
+          if (scaleType(fieldDef, channel, model.mark()) === 'ordinal') {
+            // also produce bin_range if the binned field use ordinal scale
+            dims[field(fieldDef, {binSuffix: '_range'})] = field(fieldDef, {binSuffix: '_range'});
+          }
         } else {
           dims[field(fieldDef)] = field(fieldDef);
         }
