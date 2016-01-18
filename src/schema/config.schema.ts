@@ -61,22 +61,22 @@ export const config = {
       description: 'Filter null values from the data. If set to true, all rows with null values are filtered. If false, no rows are filtered. Set the property to undefined to filter only quantitative and temporal fields.'
     },
 
-    // FIXME(#497) remove these
+    // formats
     numberFormat: {
       type: 'string',
       default: undefined,
       description: 'D3 Number format for axis labels and text tables. For example s for SI units.'
     },
-    // FIXME(#497) handle this
-    textCellWidth: {
-      type: 'integer',
-      default: 90,
-      minimum: 0
-    },
     timeFormat: {
       type: 'string',
       default: '%Y-%m-%d',
       description: 'Default datetime format for axis and legend labels. The format can be set directly on the axis.'
+    },
+
+    textCellWidth: {
+      type: 'integer',
+      default: 90,
+      minimum: 0
     },
 
     // nested
