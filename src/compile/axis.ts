@@ -17,8 +17,8 @@ export function compileAxis(channel: Channel, model: Model) {
     scale: model.scale(channel)
   };
 
-  // 1.1 Add properties with special rules
-  extend(def, model.format(channel, model.axis(channel).format));
+  // format mixins (add format and formatType)
+  extend(def, model.formatMixins(channel, model.axis(channel).format));
 
   // 1.2. Add properties
   [

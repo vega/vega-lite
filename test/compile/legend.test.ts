@@ -18,9 +18,9 @@ describe('Legend', function() {
     });
   });
 
-  describe('format()', function() {
+  describe('formatMixins()', function() {
     it('should not be added for bin', function() {
-      assert.deepEqual(legend.format(parseModel({
+      assert.deepEqual(legend.formatMixins(parseModel({
         mark: "point",
         encoding: {
           x: {field:'a', bin: true}
