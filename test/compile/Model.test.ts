@@ -64,7 +64,7 @@ describe('Model', function() {
         config: {
           numberFormat: 'd'
         }
-      }).format(X, undefined), {
+      }).formatMixins(X, undefined), {
         format: 'd'
       });
     });
