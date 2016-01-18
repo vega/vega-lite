@@ -7,6 +7,9 @@ import {X, Y, COLOR} from '../../src/channel';
 import {area} from '../../src/compile/mark-area';
 
 describe('Mark: Area', function() {
+  it('should return the correct mark type', function() {
+    // TODO call area.markType()
+  });
 
   function areaXY(moreEncoding = {}) {
     return {

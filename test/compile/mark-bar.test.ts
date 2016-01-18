@@ -7,6 +7,10 @@ import {X, Y, SIZE, COLOR, SHAPE} from '../../src/channel';
 import {bar} from '../../src/compile/mark-bar';
 
 describe('Mark: Bar', function() {
+  it('should return the correct mark type', function() {
+    // TODO call bar.markType()
+  });
+
   describe('with size.value specified', function() {
     // TODO
   });

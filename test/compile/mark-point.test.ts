@@ -7,6 +7,10 @@ import {X, Y, SIZE, COLOR, SHAPE} from '../../src/channel';
 import {point} from '../../src/compile/mark-point';
 
 describe('Mark: Point', function() {
+  it('should return the correct mark type', function() {
+    // TODO call point.markType()
+  });
+
   function pointXY(moreEncoding = {}) {
     const spec = {
       "mark": "point",
@@ -105,6 +109,10 @@ describe('Mark: Point', function() {
 });
 
 describe('Mark: Square', function() {
+  it('should return the correct mark type', function() {
+    // TODO call square.markType()
+  });
+
   it('should be filled by default', function() {
     // TODO
   });
@@ -115,6 +123,10 @@ describe('Mark: Square', function() {
 });
 
 describe('Mark: Circle', function() {
+  it('should return the correct mark type', function() {
+    // TODO call circle.markType()
+  });
+
   it('should be filled by default', function() {
     // TODO
   });

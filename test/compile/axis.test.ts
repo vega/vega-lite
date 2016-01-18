@@ -146,10 +146,6 @@ describe('Axis', function() {
   });
 
   describe('properties.labels()', function () {
-    // FIXME write test
-  });
-
-  describe('properties.labels()', function () {
     it('should show labels by default', function () {
       const labels = axis.properties.labels(parseModel({
           mark: "point",
