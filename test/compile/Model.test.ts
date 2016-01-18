@@ -37,7 +37,7 @@ describe('Model', function() {
         encoding: {
           x: {timeUnit: 'month', field:'a', type: "temporal"}
         }
-      }).format(X, undefined), {
+      }).formatMixins(X, undefined), {
         formatType: 'time',
         format: '%B'
       });
@@ -49,7 +49,7 @@ describe('Model', function() {
         encoding: {
           x: {timeUnit: 'week', field:'a', type: "temporal"}
         }
-      }).format(X, undefined), {
+      }).formatMixins(X, undefined), {
         formatType: 'time',
         format: '%Y-%m-%d'
       });
@@ -64,7 +64,7 @@ describe('Model', function() {
         config: {
           numberFormat: 'd'
         }
-      }).format(X, undefined), {
+      }).formatMixins(X, undefined), {
         format: 'd'
       });
     });
@@ -75,7 +75,7 @@ describe('Model', function() {
         encoding: {
           x: {field:'a', type: "quantitative"}
         }
-      }).format(X, 'foo'), {
+      }).formatMixins(X, 'foo'), {
         format: 'foo'
       });
     });

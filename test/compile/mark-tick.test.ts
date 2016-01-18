@@ -6,6 +6,10 @@
 // (except the scaffold labels() method)
 
 describe('Mark: Tick', function() {
+  it('should return the correct mark type', function() {
+    // TODO call tick.markType()
+  });
+
   describe('with quantitative x', function() {
     it('should be centered on y', function() {
       // TODO

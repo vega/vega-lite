@@ -6,6 +6,12 @@ import {X} from '../../src/channel';
 import * as legend from '../../src/compile/legend';
 
 describe('Legend', function() {
+  describe('compileLegend()', function() {
+    it('should output explicitly specified properties', function() {
+      // FIXME test this
+    });
+  });
+
   describe('title()', function () {
     it('should add explicitly specified title', function () {
       const title = legend.title({field: 'a', legend: {title: 'Custom'}});
@@ -18,14 +24,18 @@ describe('Legend', function() {
     });
   });
 
-  describe('format()', function() {
+  describe('formatMixins()', function() {
     it('should not be added for bin', function() {
-      assert.deepEqual(legend.format(parseModel({
+      assert.deepEqual(legend.formatMixins(parseModel({
         mark: "point",
         encoding: {
           x: {field:'a', bin: true}
         }
       }), X), {});
     });
+  });
+
+  describe('properties.symbols', function() {
+    // FIXME test
   });
 });
