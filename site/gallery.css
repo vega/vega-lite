@@ -1,88 +1,88 @@
 body {
-    margin: 20px;
-    padding: 15px;
-    font-family: Avenir, Helvetica Neue, Helvetica, Arial;
+  margin: 20px;
+  padding: 15px;
+  font-family: Avenir, Helvetica Neue, Helvetica, Arial;
 }
 
 strong {
-    font-weight: 400;
+  font-weight: 400;
 }
 
 a {
-    color: #8A5ED3;
-    text-decoration: none;
-    font-weight: 500;
+  color: #8A5ED3;
+  text-decoration: none;
+  font-weight: 500;
 }
 
 a:hover {
-    color: #d5a928;
+  color: #d5a928;
 }
 
 .logo {
-    font-weight: 600;
-    font-size: 60px;
-    line-height: 72px;
-    margin-bottom: 20px;
-    margin-top: 0;
+  font-weight: 600;
+  font-size: 60px;
+  line-height: 72px;
+  margin-bottom: 20px;
+  margin-top: 0;
 }
 
 .viz-list {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-content: flex-start;
-    align-items: stretch;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  align-items: stretch;
 }
 
 .viz {
-    border: 1px solid #CECECE;
-    padding: 10px 15px 0 10px;
-    margin: 10px;
-    max-height: 500px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
+  border: 1px solid #CECECE;
+  padding: 10px 15px 0 10px;
+  margin: 10px;
+  max-height: 500px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .viz h3 {
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    align-content: flex-start;
-    flex: 0 0 auto;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-content: flex-start;
+  flex: 0 0 auto;
 }
 
 .viz .desc {
-    color: gray;
-    font-size: 0.9em;
-    max-width: 250px;
-    display: flex;
-    flex-direction: column;
-    align-content: flex-start;
-    flex: 0 0 auto;
+  color: gray;
+  font-size: 0.9em;
+  max-width: 250px;
+  display: flex;
+  flex-direction: column;
+  align-content: flex-start;
+  flex: 0 0 auto;
 }
 
 .viz .vega-embed {
-    display: flex;
-    flex-direction: column;
-    flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
 }
 
 .viz .vega-embed .vega {
-    flex: 1 0 auto;
+  flex: 1 0 auto;
 }
 
 .viz .vega-actions {
-    padding-bottom: 10px;
+  padding-bottom: 10px;
 }
 
 .viz .vega-actions a {
-    font-size: 0.8em;
-    display: list-item;
-    color: gray;
+  font-size: 0.8em;
+  display: list-item;
+  color: gray;
 }
 
 .viz .vega-actions a:hover {
-    color: #333;
-    text-decoration: underline;
+  color: #333;
+  text-decoration: underline;
 }
