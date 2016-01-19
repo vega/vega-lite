@@ -8,7 +8,7 @@ import {area} from '../../src/compile/mark-area';
 
 describe('Mark: Area', function() {
   it('should return the correct mark type', function() {
-    // TODO call area.markType()
+    assert.equal(area.markType(), 'area');
   });
 
   function areaXY(moreEncoding = {}) {
