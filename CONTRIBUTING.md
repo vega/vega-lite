@@ -88,6 +88,11 @@ cd vega-lite
 npm install
 ```
 
+Now you should be able to build and test the code.
+
+To serve the website and documentation, you also have to [install jekyll](http://jekyllrb.com/docs/installation/) as well.  
+
+
 ## Directory Structure
 
 - `_layouts/` – Our website and documentation's Jekyll layout files.  
