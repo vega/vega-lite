@@ -12,7 +12,7 @@ describe('Mark: Text', function() {
   });
 
   describe('with nothing', function() {
-    let spec = {
+    const spec = {
       "mark": "text",
       "encoding": {},
       "data": {"url": "data/cars.json"}
@@ -26,7 +26,7 @@ describe('Mark: Text', function() {
   });
 
   describe('with quantitative and format', function() {
-    let spec = {
+    const spec = {
       "mark": "text",
       "encoding": {
         "text": {"field": "foo", "type": "quantitative"}
@@ -46,7 +46,7 @@ describe('Mark: Text', function() {
   });
 
   describe('with temporal', function() {
-    let spec = {
+    const spec = {
       "mark": "text",
       "encoding": {
         "text": {"field": "foo", "type": "temporal"}
@@ -55,13 +55,13 @@ describe('Mark: Text', function() {
     const model = parseModel(spec);
     const props = text.properties(model);
 
-    it('should use dtae template', function() {
+    it('should use date template', function() {
       assert.deepEqual(props.text, {template: '{{datum.foo | time:\'%Y-%m-%d\'}}'});
     });
   });
 
   describe('with x, y, text (ordinal)', function() {
-    let spec = {
+    const spec = {
       "mark": "text",
       "encoding": {
         "x": {"field": "Acceleration", "type": "ordinal"},
