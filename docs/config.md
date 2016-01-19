@@ -116,7 +116,8 @@ and the following fill and stroke properties:
 | font                | String  | The typeface to set the text in (e.g., `Helvetica Neue`).|
 | fontWeight          | String  | The font weight (e.g., `bold`).|
 | fontStyle           | String  | The font style (e.g., `italic`).|
-| format              | string  | The formatting pattern for text value.  If not defined, this will be determined automatically|
+| format              | String  | The formatting pattern for text value.  If not defined, this will be determined automatically|
+| shortTimeLabels     | Boolean | Whether month names and weekday names should be abbreviated. |
 
 <!-- TODO: expand format detail -->
 
