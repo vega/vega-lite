@@ -77,10 +77,10 @@ Open [http://localhost:4000/docs](http://localhost:4000/docs) to see the docs.
 
 ## Repository Setup
 
-Make sure you have node.js. (For mac users, we recommend using
+1. Make sure you have node.js. (For mac users, we recommend using
 [homebrew](http://brew.sh) and simply run `brew install node`.)
 
-Then, clone this repository and cd into your local clone of the repository, and install all the npm dependencies:
+2. clone this repository and cd into your local clone of the repository, and install all the npm dependencies:
 
 ```sh
 git clone https://github.com/vega/vega-lite.git
@@ -90,7 +90,14 @@ npm install
 
 Now you should be able to build and test the code.
 
-To serve the website and documentation, you also have to [install Jekyll with Github Pages Gem](https://help.github.com/articles/using-jekyll-with-pages/#installing-jekyll).  
+3. To make the gallery works, you need to install bower and its dependencies:
+
+```sh
+npm install -g bower
+bower install 
+```
+
+4. To serve the website and documentation, you also have to [install Jekyll with Github Pages Gem](https://help.github.com/articles/using-jekyll-with-pages/#installing-jekyll).  
 First, make sure you have ruby installed (If you do not, run `brew install ruby` on Mac will install it).
 Then, run `gem install bundler`. Finally, simply run `bundle install` to install jekyll and its dependencies
 (we already have the `Gemfile` in the repo).
