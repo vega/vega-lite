@@ -10,7 +10,7 @@ Each field definition object describes
 a constant `value` or a reference to the `field` name and its data `type` and inline transformation (`aggregate`, `bin`, `sort` and `timeUnit`).
 Each field definition object can also optionally include configuration properties for `scale`, `axis`, and `legend`.
 
-# Encoding Channels
+## Encoding Channels
 
 Vega-Lite supports the following encoding channels: `x`,`y`, `row`, `column`, `color`, `size`, `shape`, `text`, `detail`.
 These channels are properties for the top-level `encoding` definition object.
@@ -21,7 +21,7 @@ These channels are properties for the top-level `encoding` definition object.
 | row, column   | [FieldDef](#field-definition)| Description of a field that facets data into vertical and horizontal [trellis plots](https://en.wikipedia.org/wiki/Small_multiple) respectively. |
 | color | [FieldDef](#field-definition)| Description of a field mapped to color or a constant value for color.  The values are mapped to hue if the field is nominal, and mapped to saturation otherwise.  |
 | shape  | [FieldDef](#field-definition)| Description of a field mapped to shape encoding or a constant value for shape.   `shape` channel is only applicable for `point` marks.  |
-| size  | [FieldDef](#field-definition)| Description of a field mapped to size encoding or a constant value for size.  `size` channel is currently not applicable for `line` and `area`. |
+| size  | [FieldDef](#field-definition)| Description of a field mapped to size encoding or a constant value for size.  `size` channel is currently not applicable for `line` and `area`. If `size` is not mapped to a field, the default value is 10 for `text` mark, `bandWidth-1` for `bar` with ordinal dimension scale and 2 for `bar` with linear dimension scale, `2/3*bandWidth` for `tick`, and 30 for other marks. |
 | detail | [FieldDef](#field-definition)| Description of a field that serves as an additional dimension for aggregate views without mapping to a specific visual channel.  `detail` channel is  not applicable raw plots (plots without aggregation). |
 
 <!-- # Faceting
@@ -42,7 +42,7 @@ TODO: explain more about detail
 
 <!-- TODO: tooltips, labels -->
 
-# Field Definition
+## Field Definition
 
 Here is a list of properties for the field definition object:
 
@@ -62,19 +62,23 @@ Here is a list of properties for the field definition object:
 <!-- ## Data Type -->
 <!-- TODO: add description about each data type, describe how nominal and ordinal are treated differently -->
 
-## Field Transformations
+### Field Transformations
 
-### ▸ `aggregate`
+#### ▸ `aggregate`
 
 Vega-Lite supports all [Vega aggregation operations](https://github.com/vega/vega/wiki/Data-Transforms#-aggregate) (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).
 
-If at least one of the specified encoding channel contains aggregation, a summary data table (`aggregate`) will be computed from the source data table (after binning and time unit have been derived) and the resulting visualization shows data from this summary table.  In this case, all fields without aggregation function specified are treated as dimensions.  The summary statistics are grouped by these dimensions.
+If at least one fields in the specified encoding channel contains `aggregate`,
+a summary data table is computed from the source data table.
+The resulting visualization shows data from this summary table.  
+In this case, all fields without aggregation function specified are treated as dimensions; thus, the summary statistics are grouped by these dimensions.
+Additional dimensions that are not directly mapped to visual encodings can be specified using the `detail` channel.  
 
 If none of the specified encoding channel contains aggregation, no additional data table is created.
 
 ----
 
-### ▸ `bin`
+#### ▸ `bin`
 
 To group raw data values of a particular field into bins (e.g., for a histogram),
 the field should have `bin` property specified.  
@@ -96,7 +100,7 @@ The `bin` property definition object contains the following properties:
 
 ----
 
-### ▸ `sort`
+#### ▸ `sort`
 
 Order of a field's values can be specified using the `'sort'` property.  
 For `x`, `y`, `row` and `column`, this determines the order of each value's position.
@@ -120,7 +124,7 @@ For `color`, `shape`, `size` and `detail`, this determines the layer order
 
 ----
 
-### ▸ `timeUnit`
+#### ▸ `timeUnit`
 
 `timeUnit` property can be specified for converting timeUnit for temporal field.  
 Therefore, `timeUnit` is only applied when the `type` is "`temporal`".
@@ -128,13 +132,13 @@ Current supported values for `timeUnit` are `year`, `month`, `day`, `date`, `hou
 
 __In Roadmap__: Support for other values such as `year-month`, `year-month-day`, `hour-minute`.
 
-## Scale, Axis, and Legend
+### Scale, Axis, and Legend
 
-### ▸ `scale`
+#### ▸ `scale`
 
 Vega-Lite's `scale` definition supports the following properties<sup>1</sup>:
 
-#### Common Scale Properties
+##### Common Scale Properties
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
@@ -143,23 +147,23 @@ Vega-Lite's `scale` definition supports the following properties<sup>1</sup>:
 | range        | Array &#124; String  | For `x` and `y`, the range covers the chart's cell width and cell height respectively by default.  For `color`, the default range is `'category10'` for nominal fields, and a green ramp (`['#AFC6A3', '#09622A']`) for other types of fields.  <!-- TODO default for size size -->  For `shape`, the default is [Vega's `"shape"` preset](https://github.com/vega/vega/wiki/Scales#scale-range-literals).  For `row` and `column`, the default range is `width` and `height` respectively.  <br/> Custom domain values can be specified. For numeric values, the range can take the form of a two-element array with minimum and maximum values. For ordinal or quantized data, the range may by an array of desired output values, which are mapped to elements in the specified domain. [See Vega's documentation on range literals for more options](https://github.com/vega/vega/wiki/Scales#scale-range-literals). |
 | round         | Boolean       | If true, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid.|
 
-#### Ordinal Scale Properties
+##### Ordinal Scale Properties
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | bandWidth     | Number        | Width for each ordinal band.  <!--TODO need to write better explanation --> |
-| points        | Boolean       | If true (default), distributes the ordinal values over a quantitative range at uniformly spaced points. The spacing of the points can be adjusted using the _padding_ property. If false, the ordinal scale will construct evenly-spaced bands, rather than points.  |
-| padding       | Number        | Applies spacing among ordinal elements in the scale range. The actual effect depends on how the scale is configured. If the __points__ parameter is `true`, the padding value is interpreted as a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. Otherwise, padding is typically in the range [0, 1] and corresponds to the fraction of space in the range interval to allocate to padding. A value of 0.5 means that the range band width will be equal to the padding width. For more, see the [D3 ordinal scale documentation](https://github.com/mbostock/d3/wiki/Ordinal-Scales).|
+| padding       | Number        | Applies spacing among ordinal elements in the scale range. The actual effect depends on how the scale is configured. For `x` and `y`, the padding value is interpreted as a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. For `row` and `column`, padding is typically in the range [0, 1] and corresponds to the fraction of space in the range interval to allocate to padding. A value of 0.5 means that the range band width will be equal to the padding width. For more, see the [D3 ordinal scale documentation](https://github.com/mbostock/d3/wiki/Ordinal-Scales).|
 
+<!-- TODO: add outperPadding -->
 
-#### Time Scale Properties
+##### Time Scale Properties
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | clamp         | Boolean       | If true (default), values that exceed the data domain are clamped to either the minimum or maximum range value.|
 | nice          | String        | If specified, modifies the scale domain to use a more human-friendly value range. For `time` and `utc` scale types only, the nice value should be a string indicating the desired time interval; legal values are `"second"`, `"minute"`, `"hour"`, `"day"`, `"week"`, `"month"`, or `"year"`.|
 
-#### Quantitative Scale Properties
+##### Quantitative Scale Properties
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
@@ -174,7 +178,7 @@ __<sup>1</sup>__ All Vega-Lite scale properties exist in Vega except `useRawDoma
 </small>
 ----
 
-### ▸ `axis`
+#### ▸ `axis`
 
 Axes provide axis lines, ticks and labels to convey how a spatial range represents a data range. Simply put, axes visualize scales.
 
@@ -219,15 +223,14 @@ Moreover, Vega-Lite supports the following additional axis properties.
 
 | Property        | Type          | Description    |
 | :------------   |:-------------:| :------------- |
+| characterWidth  | Integer       | Character width for automatically determining the value of `titleMaxLength`. |
 | labelMaxLength  | Integer       | Max length for axis labels. Longer labels are truncated. (25 by default.) |
 | shortTimeLabels | Boolean       | Whether month and day names should be abbreviated. |
-| titleMaxLength  | Integer       | Max length for axis title when the title is automatically generated from the field\'s description. |
-
-
+| titleMaxLength  | Integer       | Max length for axis title when the title is automatically generated from the field\'s description. By default, this is automatically based on cell size (`config.cell.width`, `config.cell.height`) and `characterWidth` property. |
 
 ----
 
-### ▸ `legend`
+#### ▸ `legend`
 
 Similar to axes, legends visualize scales. However, whereas axes aid interpretation of scales with spatial ranges, legends aid interpretation of scales with ranges such as colors, shapes and sizes.
 

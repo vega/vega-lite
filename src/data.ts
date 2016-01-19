@@ -6,7 +6,7 @@ import {NOMINAL, QUANTITATIVE, TEMPORAL} from './type';
 
 export const SUMMARY = 'summary';
 export const SOURCE = 'source';
-export const STACKED = 'stacked';
+export const STACKED_SCALE = 'stacked_scale';
 export const LAYOUT = 'layout';
 
 /** Mapping from datalib's inferred type to Vega-lite's type */

@@ -1,26 +1,23 @@
 import {StackConfig, stackConfig} from './config.stack.schema';
 import {CellConfig, cellConfig} from './config.cell.schema';
-import {MarksConfig, marksConfig} from './config.marks.schema';
+import {MarkConfig, markConfig} from './config.marks.schema';
+import {SceneConfig, sceneConfig} from './config.scene.schema';
 
 export interface Config {
   width?: number;
   height?: number;
-  viewport?: number;
   padding?: number|string;
+  viewport?: number;
   background?: string;
-  description?: string;
-  spec?: any; // TODO: VgGroupMarks
-  sortLineBy?: string;
-  characterWidth?: number;
+  filterNull?: boolean;
 
-  stack?: StackConfig;
   cell?: CellConfig;
-  marks?: MarksConfig;
+  mark?: MarkConfig;
+  scene?: SceneConfig;
+  stack?: StackConfig;
 
   // TODO: revise
-  filterNull?: any;
   textCellWidth?: any;
-  singleBarOffset?: number;
   numberFormat?: string;
   timeFormat?: string;
 }
@@ -56,60 +53,36 @@ export const config = {
       default: undefined,
       description: 'CSS color property to use as background of visualization. Default is `"transparent"`.'
     },
-    scene: {
-      type: 'object',
-      default: undefined,
-      description: 'An object to style the top-level scenegraph root. Available properties include `fill`, `fillOpacity`, `stroke`, `strokeOpacity`, `strokeWidth`, `strokeDash`, `strokeDashOffset`'
-    },
 
     // filter null
-    // TODO(#597) revise this config
     filterNull: {
-      type: 'object',
-      properties: {
-        nominal: {type:'boolean', default: false},
-        ordinal: {type:'boolean', default: false},
-        quantitative: {type:'boolean', default: true},
-        temporal: {type:'boolean', default: true}
-      }
+      type: 'boolean',
+      default: undefined,
+      description: 'Filter null values from the data. If set to true, all rows with null values are filtered. If false, no rows are filtered. Set the property to undefined to filter only quantitative and temporal fields.'
     },
 
-    // small multiples
+    // formats
+    numberFormat: {
+      type: 'string',
+      default: undefined,
+      description: 'D3 Number format for axis labels and text tables. For example "s" for SI units.'
+    },
+    timeFormat: {
+      type: 'string',
+      default: '%Y-%m-%d',
+      description: 'Default datetime format for axis and legend labels. The format can be set directly on each axis and legend.'
+    },
+
     textCellWidth: {
       type: 'integer',
       default: 90,
       minimum: 0
     },
 
-    // layout
-    // TODO: add orient
-    sortLineBy: {
-      type: 'string',
-      default: undefined,
-      description: 'Data field to sort line by. ' +
-        '\'-\' prefix can be added to suggest descending order.'
-    },
     // nested
     stack: stackConfig,
     cell: cellConfig,
-    marks: marksConfig,
-
-    // other
-    characterWidth: {
-      type: 'integer',
-      default: 6
-    },
-    // FIXME(#497) handle this
-    numberFormat: {
-      type: 'string',
-      default: 's',
-      description: 'D3 Number format for axis labels and text tables.'
-    },
-    // FIXME(#497) handle this
-    timeFormat: {
-      type: 'string',
-      default: '%Y-%m-%d',
-      description: 'Date format for axis labels.'
-    }
+    mark: markConfig,
+    scene: sceneConfig
   }
 };

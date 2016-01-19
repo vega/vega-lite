@@ -24,7 +24,7 @@ export var util = schemaUtil;
 /** @type Object Schema of a vega-lite specification */
 export var schema = {
   $schema: 'http://json-schema.org/draft-04/schema#',
-  description: 'Schema for Vega-lite specification',
+  description: 'Schema for Vega-Lite specification',
   type: 'object',
   required: ['mark', 'encoding'],
   properties: {

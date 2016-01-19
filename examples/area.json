@@ -1,5 +1,5 @@
 {
-  "description": "Area chart showing weight of cars over time",
+  "description": "Area chart showing weight of cars over time.",
   "data": {"url": "data/cars.json"},
   "mark": "area",
   "encoding": {

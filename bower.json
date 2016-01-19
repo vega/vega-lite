@@ -32,6 +32,7 @@
     "vega": "^2.4.2"
   },
   "devDependencies": {
-    "vega-embed": "~2.0.0"
+    "vega-embed": "~2.0.0",
+    "d3": "~3.5.12"
   }
 }

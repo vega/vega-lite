@@ -17,8 +17,10 @@ export interface Axis {
   values?: number[];
   properties?: any; // TODO: declare VgAxisProperties
   // Vega-Lite only
-  shortTimeLabels?: boolean;
+  characterWidth?: number;
   labelMaxLength?: number;
+  labels?: boolean;
+  shortTimeLabels?: boolean;
   titleMaxLength?: number;
 }
 
@@ -29,10 +31,7 @@ export var axis = {
     format: {
       type: 'string',
       default: undefined,  // auto
-      description: 'The formatting pattern for axis labels. '+
-                   'If not undefined, this will be determined by ' +
-                   'the max value ' +
-                   'of the field.'
+      description: 'The formatting pattern for axis labels. If undefined, a good format is automatically determined. Vega-Lite uses D3\'s format pattern and automatically switches to datetime formatters.'
     },
     grid: {
       type: 'boolean',
@@ -111,15 +110,24 @@ export var axis = {
     },
     properties: {
       type: 'object',
-      default: undefined,
       description: 'Optional mark property definitions for custom axis styling.'
     },
     /* Vega-lite only */
+    characterWidth: {
+      type: 'integer',
+      default: 6,
+      description: 'Character width for automatically determining title max length.'
+    },
     labelMaxLength: {
       type: 'integer',
       default: 25,
-      minimum: 0,
+      minimum: 1,
       description: 'Truncate labels that are too long.'
+    },
+    labels: {
+      type: 'boolean',
+      default: true,
+      description: 'Enable or disable labels.'
     },
     shortTimeLabels: {
       type: 'boolean',
@@ -130,7 +138,8 @@ export var axis = {
       type: 'integer',
       default: undefined,
       minimum: 0,
-      description: 'Max length for axis title if the title is automatically generated from the field\'s description'
+      description: 'Max length for axis title if the title is automatically generated from the field\'s description.' +
+      'By default, this is automatically based on cell size and characterWidth property.'
     }
   }
 };
