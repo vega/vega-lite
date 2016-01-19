@@ -18,9 +18,9 @@ export const FILL_STROKE_CONFIG = ['fill', 'fillOpacity',
 export function applyColorAndOpacity(p, model: Model, colorMode: ColorMode = ColorMode.STROKED_BY_DEFAULT) {
   const filled = colorMode === ColorMode.ALWAYS_FILLED ? true :
     colorMode === ColorMode.ALWAYS_STROKED ? false :
-    model.config().mark.filled !== undefined ? model.config().mark.filled :
-    colorMode  === ColorMode.FILLED_BY_DEFAULT ? true :
-    false; // ColorMode.STROKED_BY_DEFAULT
+      model.config().mark.filled !== undefined ? model.config().mark.filled :
+        colorMode === ColorMode.FILLED_BY_DEFAULT ? true :
+          false; // ColorMode.STROKED_BY_DEFAULT
 
   // Apply fill and stroke config first
   // so that `color.value` can override `fill` and `stroke` config
@@ -101,7 +101,7 @@ export function formatMixins(model: Model, channel: Channel, format: string) {
     const filter = def.formatType + (def.format ? ':\'' + def.format + '\'' : '');
     return {
       text: {
-        template: '{{' + model.field(channel, {datum: true}) + ' | ' + filter + '}}'
+        template: '{{' + model.field(channel, { datum: true }) + ' | ' + filter + '}}'
       }
     };
   }
