@@ -110,13 +110,11 @@ function isAbbreviated(model: Model, channel: Channel, fieldDef: FieldDef) {
     case COLUMN:
     case X:
     case Y:
-      const axis = fieldDef.axis;
-      return (typeof axis !== 'boolean' ? axis.shortTimeLabels : false);
+      return model.axis(channel).shortTimeLabels;
     case COLOR:
     case SHAPE:
     case SIZE:
-      const legend = fieldDef.legend;
-      return (typeof legend !== 'boolean' ? legend.shortTimeLabels : false);
+      return model.legend(channel).shortTimeLabels;
     case TEXT:
       return model.config().mark.shortTimeLabels;
     case LABEL:

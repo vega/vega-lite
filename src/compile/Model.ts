@@ -1,5 +1,6 @@
 import {Spec} from '../schema/schema';
 import {Axis, axis as axisSchema} from '../schema/axis.schema';
+import {Legend, legend as legendSchema} from '../schema/legend.schema';
 import {Encoding} from '../schema/encoding.schema';
 import {FieldDef} from '../schema/fielddef.schema';
 import {instantiate} from '../schema/schemautil';
@@ -50,6 +51,10 @@ export class Model {
 
       if (fieldDef.axis === true) {
         fieldDef.axis = instantiate(axisSchema);
+      }
+
+      if (fieldDef.legend === true) {
+        fieldDef.legend = instantiate(legendSchema);
       }
 
       // set default padding for ROW and COLUMN
@@ -196,7 +201,18 @@ export class Model {
 
   public axis(channel: Channel): Axis {
     const axis = this.fieldDef(channel).axis;
+
+    // This line should actually always return axis object since we already
+    // replace boolean axis with properties.
     return typeof axis !== 'boolean' ? axis : {};
+  }
+
+  public legend(channel: Channel): Legend {
+    const legend = this.fieldDef(channel).legend;
+
+    // This line should actually always return legend object since we already
+    // replace boolean legend with properties.
+    return typeof legend !== 'boolean' ? legend : {};
   }
 
   /** returns scale name for a given channel */
