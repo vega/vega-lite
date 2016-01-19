@@ -3,6 +3,7 @@ import {FieldDef} from '../schema/fielddef.schema';
 import {COLUMN, ROW, X, Y, SIZE, COLOR, SHAPE, TEXT, LABEL, Channel} from '../channel';
 import {QUANTITATIVE, TEMPORAL} from '../type';
 import {format as timeFormatExpr} from './time';
+import {contains} from '../util';
 
 export enum ColorMode {
   ALWAYS_FILLED,
@@ -65,15 +66,14 @@ export function applyMarkConfig(marksProperties, model: Model, propsList: string
 export function formatMixins(model: Model, channel: Channel, format: string) {
   const fieldDef = model.fieldDef(channel);
 
+  if(!contains([QUANTITATIVE, TEMPORAL], fieldDef.type)) {
+    return {};
+  }
+
   let def: any = {};
 
-  switch (fieldDef.type) {
-    case QUANTITATIVE:
-      def.formatType = 'number';
-      break;
-    case TEMPORAL:
-      def.formatType = 'time';
-      break;
+  if (fieldDef.type === TEMPORAL) {
+    def.formatType = 'time';
   }
 
   if (format !== undefined) {
@@ -89,21 +89,16 @@ export function formatMixins(model: Model, channel: Channel, format: string) {
     }
   }
 
-  if (def.formatType && channel === TEXT) {
+  if (channel === TEXT) {
     // text does not support format and formatType
     // https://github.com/vega/vega/issues/505
 
-    const filter = def.formatType + (def.format ? ':\'' + def.format + '\'' : '');
+    const filter = (def.formatType || 'number') + (def.format ? ':\'' + def.format + '\'' : '');
     return {
       text: {
         template: '{{' + model.field(channel, { datum: true }) + ' | ' + filter + '}}'
       }
     };
-  }
-
-  if (def.formatType === 'number') {
-    // no need to set vega default
-    delete def.formatType;
   }
 
   return def;
