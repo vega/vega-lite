@@ -4,7 +4,7 @@ import {assert} from 'chai';
 import {parseModel} from '../util';
 import {extend} from '../../src/util'
 import {X, Y, SIZE, COLOR, SHAPE} from '../../src/channel';
-import {point} from '../../src/compile/mark-point';
+import {point, square} from '../../src/compile/mark-point';
 
 describe('Mark: Point', function() {
   it('should return the correct mark type', function() {
@@ -114,7 +114,15 @@ describe('Mark: Square', function() {
   });
 
   it('should be filled by default', function() {
-    // TODO
+    const model = parseModel({
+      "mark": "square",
+      "encoding": {
+        "color": {"value": "red"}
+      }
+    });
+    const props = square.properties(model);
+
+    assert.equal(props.fill.value, 'red');
   });
 
   it('should support config.mark.filled:false', function() {
