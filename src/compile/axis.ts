@@ -15,7 +15,7 @@ export function compileAxis(channel: Channel, model: Model) {
   // TODO: replace any with Vega Axis Interface
   let def: any = {
     type: type,
-    scale: model.scale(channel)
+    scale: model.scaleName(channel)
   };
 
   // format mixins (add format and formatType)

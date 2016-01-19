@@ -15,13 +15,13 @@ export function facetMixins(model: Model, marks) {
   const cellWidth: any = !model.has(COLUMN) ?
       {field: {group: 'width'}} :     // cellWidth = width -- just use group's
     typeof layout.cellWidth !== 'number' ?
-      {scale: model.scale(COLUMN), band: true} : // bandSize of the scale
+      {scale: model.scaleName(COLUMN), band: true} : // bandSize of the scale
       {value: layout.cellWidth};      // static value
 
   const cellHeight: any = !model.has(ROW) ?
       {field: {group: 'height'}} :  // cellHeight = height -- just use group's
     typeof layout.cellHeight !== 'number' ?
-      {scale: model.scale(ROW), band: true} :  // bandSize of the scale
+      {scale: model.scaleName(ROW), band: true} :  // bandSize of the scale
       {value: layout.cellHeight};   // static value
 
   let facetGroupProperties: any = {
@@ -49,7 +49,7 @@ export function facetMixins(model: Model, marks) {
       util.error('Row encoding should be ordinal.');
     }
     facetGroupProperties.y = {
-      scale: model.scale(ROW),
+      scale: model.scaleName(ROW),
       field: model.field(ROW),
       offset: model.fieldDef(ROW).scale.padding / 2
     };
@@ -77,7 +77,7 @@ export function facetMixins(model: Model, marks) {
       util.error('Col encoding should be ordinal.');
     }
     facetGroupProperties.x = {
-      scale: model.scale(COLUMN),
+      scale: model.scaleName(COLUMN),
       field: model.field(COLUMN),
       offset: model.fieldDef(COLUMN).scale.padding / 2
     };
@@ -149,7 +149,7 @@ function getXAxesGroup(model: Model, cellWidth, hasCol: boolean) { // TODO: VgMa
         update: {
           width: cellWidth,
           height: {field: {group: 'height'}},
-          x: hasCol ? {scale: model.scale(COLUMN), field: model.field(COLUMN)} : {value: 0}
+          x: hasCol ? {scale: model.scaleName(COLUMN), field: model.field(COLUMN)} : {value: 0}
         }
       },
       axes: [compileAxis(X, model)]
@@ -177,7 +177,7 @@ function getYAxesGroup(model: Model, cellHeight, hasRow: boolean) { // TODO: VgM
         update: {
           width: {field: {group: 'width'}},
           height: cellHeight,
-          y: hasRow ? {scale: model.scale(ROW), field: model.field(ROW)} : {value: 0}
+          y: hasRow ? {scale: model.scaleName(ROW), field: model.field(ROW)} : {value: 0}
         }
       },
       axes: [compileAxis(Y, model)]
@@ -198,7 +198,7 @@ function getRowGridGroup(model: Model, cellHeight): any { // TODO: VgMarks
     properties: {
       update: {
         y: {
-          scale: model.scale(ROW),
+          scale: model.scaleName(ROW),
           field: model.field(ROW)
         },
         x: {value: 0, offset: -cellConfig.gridOffset },
@@ -250,7 +250,7 @@ function getColumnGridGroup(model: Model, cellWidth): any { // TODO: VgMarks
     properties: {
       update: {
         x: {
-          scale: model.scale(COLUMN),
+          scale: model.scaleName(COLUMN),
           field: model.field(COLUMN)
         },
         y: {value: 0, offset: -cellConfig.gridOffset},

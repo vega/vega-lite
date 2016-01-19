@@ -12,20 +12,20 @@ export function compileLegends(model: Model) {
 
   if (model.has(COLOR) && model.fieldDef(COLOR).legend) {
     defs.push(compileLegend(model, COLOR, {
-      fill: model.scale(COLOR)
+      fill: model.scaleName(COLOR)
       // TODO: consider if this should be stroke for line
     }));
   }
 
   if (model.has(SIZE) && model.fieldDef(SIZE).legend) {
     defs.push(compileLegend(model, SIZE, {
-      size: model.scale(SIZE)
+      size: model.scaleName(SIZE)
     }));
   }
 
   if (model.has(SHAPE) && model.fieldDef(SHAPE).legend) {
     defs.push(compileLegend(model, SHAPE, {
-      shape: model.scale(SHAPE)
+      shape: model.scaleName(SHAPE)
     }));
   }
   return defs;
@@ -114,7 +114,7 @@ namespace properties {
           applyMarkConfig(symbols, model, FILL_STROKE_CONFIG);
 
           if (model.has(COLOR) && channel === COLOR) {
-            symbols.fill = {scale: model.scale(COLOR), field: 'data'};
+            symbols.fill = {scale: model.scaleName(COLOR), field: 'data'};
           } else {
             symbols.fill = {value: model.fieldDef(COLOR).value};
           }
@@ -124,7 +124,7 @@ namespace properties {
           applyMarkConfig(symbols, model, FILL_STROKE_CONFIG);
 
           if (model.has(COLOR) && channel === COLOR) {
-            symbols.stroke = {scale: model.scale(COLOR), field: 'data'};
+            symbols.stroke = {scale: model.scaleName(COLOR), field: 'data'};
           } else {
             symbols.stroke = {value: model.fieldDef(COLOR).value};
           }

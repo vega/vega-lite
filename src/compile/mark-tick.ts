@@ -13,7 +13,7 @@ export namespace tick {
     // x
     if (model.has(X)) {
       p.xc = {
-        scale: model.scale(X),
+        scale: model.scaleName(X),
         field: model.field(X, { binSuffix: '_mid' })
       };
     } else {
@@ -23,7 +23,7 @@ export namespace tick {
     // y
     if (model.has(Y)) {
       p.yc = {
-        scale: model.scale(Y),
+        scale: model.scaleName(Y),
         field: model.field(Y, { binSuffix: '_mid' })
       };
     } else {

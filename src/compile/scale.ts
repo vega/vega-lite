@@ -21,7 +21,7 @@ export function compileScales(channels: Channel[], model: Model) {
       const fieldDef = model.fieldDef(channel);
 
       var scaleDef: any = {
-        name: model.scale(channel),
+        name: model.scaleName(channel),
         type: type(fieldDef, channel, model.mark()),
       };
 

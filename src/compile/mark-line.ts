@@ -15,7 +15,7 @@ export namespace line {
     // x
     if (model.has(X)) {
       p.x = {
-        scale: model.scale(X),
+        scale: model.scaleName(X),
         field: model.field(X, { binSuffix: '_mid' })
       };
     } else {
@@ -25,7 +25,7 @@ export namespace line {
     // y
     if (model.has(Y)) {
       p.y = {
-        scale: model.scale(Y),
+        scale: model.scaleName(Y),
         field: model.field(Y, { binSuffix: '_mid' })
       };
     } else {

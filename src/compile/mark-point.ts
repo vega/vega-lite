@@ -14,7 +14,7 @@ export namespace point {
     // x
     if (model.has(X)) {
       p.x = {
-        scale: model.scale(X),
+        scale: model.scaleName(X),
         field: model.field(X, { binSuffix: '_mid' })
       };
     } else {
@@ -24,7 +24,7 @@ export namespace point {
     // y
     if (model.has(Y)) {
       p.y = {
-        scale: model.scale(Y),
+        scale: model.scaleName(Y),
         field: model.field(Y, { binSuffix: '_mid' })
       };
     } else {
@@ -34,7 +34,7 @@ export namespace point {
     // size
     if (model.has(SIZE)) {
       p.size = {
-        scale: model.scale(SIZE),
+        scale: model.scaleName(SIZE),
         field: model.field(SIZE)
       };
     } else {
@@ -46,7 +46,7 @@ export namespace point {
       p.shape = { value: fixedShape };
     } else if (model.has(SHAPE)) {
       p.shape = {
-        scale: model.scale(SHAPE),
+        scale: model.scaleName(SHAPE),
         field: model.field(SHAPE)
       };
     } else {

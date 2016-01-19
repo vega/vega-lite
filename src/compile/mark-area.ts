@@ -20,14 +20,14 @@ export namespace area {
     // x
     if (stack && X === stack.fieldChannel) { // Stacked Measure
       p.x = {
-        scale: model.scale(X),
+        scale: model.scaleName(X),
         field: model.field(X) + '_start'
       };
     } else if (model.isMeasure(X)) { // Measure
-      p.x = { scale: model.scale(X), field: model.field(X) };
+      p.x = { scale: model.scaleName(X), field: model.field(X) };
     } else if (model.isDimension(X)) {
       p.x = {
-        scale: model.scale(X),
+        scale: model.scaleName(X),
         field: model.field(X, { binSuffix: '_mid' })
       };
     }
@@ -36,12 +36,12 @@ export namespace area {
     if (orient === 'horizontal') {
       if (stack && X === stack.fieldChannel) {
         p.x2 = {
-          scale: model.scale(X),
+          scale: model.scaleName(X),
           field: model.field(X) + '_end'
         };
       } else {
         p.x2 = {
-          scale: model.scale(X),
+          scale: model.scaleName(X),
           value: 0
         };
       }
@@ -50,17 +50,17 @@ export namespace area {
     // y
     if (stack && Y === stack.fieldChannel) { // Stacked Measure
       p.y = {
-        scale: model.scale(Y),
+        scale: model.scaleName(Y),
         field: model.field(Y) + '_start'
       };
     } else if (model.isMeasure(Y)) {
       p.y = {
-        scale: model.scale(Y),
+        scale: model.scaleName(Y),
         field: model.field(Y)
       };
     } else if (model.isDimension(Y)) {
       p.y = {
-        scale: model.scale(Y),
+        scale: model.scaleName(Y),
         field: model.field(Y, { binSuffix: '_mid' })
       };
     }
@@ -68,12 +68,12 @@ export namespace area {
     if (orient !== 'horizontal') { // 'vertical' or undefined are vertical
       if (stack && Y === stack.fieldChannel) {
         p.y2 = {
-          scale: model.scale(Y),
+          scale: model.scaleName(Y),
           field: model.field(Y) + '_end'
         };
       } else {
         p.y2 = {
-          scale: model.scale(Y),
+          scale: model.scaleName(Y),
           value: 0
         };
       }

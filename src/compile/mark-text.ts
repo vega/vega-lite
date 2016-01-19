@@ -15,7 +15,7 @@ export namespace text {
       y: { value: 0 },
       width: { field: { group: 'width' } },
       height: { field: { group: 'height' } },
-      fill: { scale: model.scale(COLOR), field: model.field(COLOR) }
+      fill: { scale: model.scaleName(COLOR), field: model.field(COLOR) }
     };
   }
 
@@ -27,7 +27,7 @@ export namespace text {
     // x
     if (model.has(X)) {
       p.x = {
-        scale: model.scale(X),
+        scale: model.scaleName(X),
         field: model.field(X, { binSuffix: '_mid' })
       };
     } else {
@@ -42,7 +42,7 @@ export namespace text {
     // y
     if (model.has(Y)) {
       p.y = {
-        scale: model.scale(Y),
+        scale: model.scaleName(Y),
         field: model.field(Y, { binSuffix: '_mid' })
       };
     } else {
@@ -53,7 +53,7 @@ export namespace text {
     // size
     if (model.has(SIZE)) {
       p.fontSize = {
-        scale: model.scale(SIZE),
+        scale: model.scaleName(SIZE),
         field: model.field(SIZE)
       };
     } else {

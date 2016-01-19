@@ -30,7 +30,7 @@ export function applyColorAndOpacity(p, model: Model, colorMode: ColorMode = Col
   if (filled) {
     if (model.has(COLOR)) {
       p.fill = {
-        scale: model.scale(COLOR),
+        scale: model.scaleName(COLOR),
         field: model.field(COLOR)
       };
     } else {
@@ -39,7 +39,7 @@ export function applyColorAndOpacity(p, model: Model, colorMode: ColorMode = Col
   } else {
     if (model.has(COLOR)) {
       p.stroke = {
-        scale: model.scale(COLOR),
+        scale: model.scaleName(COLOR),
         field: model.field(COLOR)
       };
     } else {
