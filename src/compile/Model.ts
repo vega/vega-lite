@@ -6,21 +6,20 @@ import {instantiate} from '../schema/schemautil';
 import * as schema from '../schema/schema';
 import * as schemaUtil from '../schema/schemautil';
 
-import {COLUMN, ROW, X, Y, SIZE, COLOR, SHAPE, TEXT, LABEL, Channel, supportMark} from '../channel';
+import {COLUMN, ROW, X, Y, SIZE, TEXT, Channel, supportMark} from '../channel';
 import {SOURCE, SUMMARY} from '../data';
 import * as vlFieldDef from '../fielddef';
 import {FieldRefOption} from '../fielddef';
 import * as vlEncoding from '../encoding';
 import {Mark, BAR, TICK, TEXT as TEXTMARK} from '../mark';
 
-import {getFullName, NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
+import {getFullName, NOMINAL, ORDINAL, TEMPORAL} from '../type';
 import {contains, duplicate, extend} from '../util';
 
 import {compileMarkConfig} from './config';
 import {compileLayout, Layout} from './layout';
 import {compileStackProperties, StackProperties} from './stack';
 import {type as scaleType} from './scale';
-import {format as timeFormatExpr} from './time';
 
 /**
  * Internal model of Vega-Lite specification for the compiler.
@@ -231,90 +230,5 @@ export class Model {
         return this.fieldDef(channel).scale.bandWidth / 1.5;
     }
     return 30;
-  }
-
-  /**
-   * Builds an object with format and formatType properties.
-   *
-   * @param format explicitly specified format
-   */
-  public formatMixins(channel: Channel, format: string) {
-    const fieldDef = this.fieldDef(channel);
-
-    let def: any = {};
-
-    switch (fieldDef.type) {
-      case QUANTITATIVE:
-        def.formatType = 'number';
-        break;
-      case TEMPORAL:
-        def.formatType = 'time';
-        break;
-    }
-
-    if (format !== undefined) {
-      def.format = format;
-    } else {
-      switch (fieldDef.type) {
-        case QUANTITATIVE:
-          def.format = this.numberFormat(channel);
-          break;
-        case TEMPORAL:
-          const f = this.timeFormat(channel);
-          if (f) {
-            def.format = f;
-          } else {
-            def.format = this.config().timeFormat;
-          }
-          break;
-      }
-    }
-
-    if (def.formatType && channel === TEXT) {
-      // text does not support format and formatType
-      // https://github.com/vega/vega/issues/505
-
-      const filter = def.formatType + (def.format ? ':\'' + def.format + '\'' : '');
-      return {
-        text: {
-          template: '{{' + this.field(channel, {datum: true}) + ' | ' + filter + '}}'
-        }
-      };
-    }
-
-    if (def.formatType === 'number') {
-      // no need to set vega default
-      delete def.formatType;
-    }
-
-    return def;
-  }
-
-  private isAbbreviated(channel: Channel, fieldDef: FieldDef) {
-    switch (channel) {
-      case ROW:
-      case COLUMN:
-      case X:
-      case Y:
-        const axis = fieldDef.axis;
-        return (typeof axis !== 'boolean' ? axis.shortTimeLabels : false);
-      case COLOR:
-      case SHAPE:
-      case SIZE:
-        const legend = fieldDef.legend;
-        return (typeof legend !== 'boolean' ? legend.shortTimeLabels : false);
-      case TEXT:
-        return this.config().mark.shortTimeLabels;
-      case LABEL:
-        // TODO(#897): implement when we have label
-    }
-  }
-
-  /**
-   * Returns the time format used for axis labels for a time unit.
-   */
-  public timeFormat(channel: Channel): string {
-    const fieldDef = this.fieldDef(channel);
-    return timeFormatExpr(fieldDef.timeUnit, this.isAbbreviated(channel, fieldDef));
   }
 }

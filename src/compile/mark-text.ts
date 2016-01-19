@@ -1,6 +1,6 @@
 import {Model} from './Model';
 import {X, Y, COLOR, TEXT, SIZE} from '../channel';
-import {applyMarkConfig, applyColorAndOpacity} from './util';
+import {applyMarkConfig, applyColorAndOpacity, formatMixins} from './util';
 import {extend} from '../util';
 import {QUANTITATIVE} from '../type';
 
@@ -75,7 +75,7 @@ export namespace text {
     if (model.has(TEXT)) {
       p.text = { field: model.field(TEXT) };
       const format = model.config().mark.format;
-      extend(p, model.formatMixins(TEXT, format));
+      extend(p, formatMixins(model, TEXT, format));
     } else {
       p.text = { value: fieldDef.value };
     }

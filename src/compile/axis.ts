@@ -2,6 +2,7 @@ import {Model} from './Model';
 import {contains, extend, truncate} from '../util';
 import {NOMINAL, ORDINAL, TEMPORAL} from '../type';
 import {COLUMN, ROW, X, Y, Channel} from '../channel';
+import {formatMixins} from './util';
 
 // https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations
 declare let exports;
@@ -18,7 +19,7 @@ export function compileAxis(channel: Channel, model: Model) {
   };
 
   // format mixins (add format and formatType)
-  extend(def, model.formatMixins(channel, model.axis(channel).format));
+  extend(def, formatMixins(model, channel, model.axis(channel).format));
 
   // 1.2. Add properties
   [

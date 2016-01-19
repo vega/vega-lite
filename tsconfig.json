@@ -92,6 +92,7 @@
     "test/compile/Model.test.ts",
     "test/compile/scale.test.ts",
     "test/compile/stack.test.ts",
+    "test/compile/util.test.ts",
     "test/fielddef.test.ts",
     "test/schema.test.ts",
     "test/type.test.ts",

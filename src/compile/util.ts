@@ -1,5 +1,8 @@
 import {Model} from './Model';
-import {COLOR} from '../channel';
+import {FieldDef} from '../schema/fielddef.schema';
+import {COLUMN, ROW, X, Y, SIZE, COLOR, SHAPE, TEXT, LABEL, Channel} from '../channel';
+import {QUANTITATIVE, TEMPORAL} from '../type';
+import {format as timeFormatExpr} from './time';
 
 export enum ColorMode {
   ALWAYS_FILLED,
@@ -51,4 +54,90 @@ export function applyMarkConfig(marksProperties, model: Model, propsList: string
       marksProperties[property] = { value: value };
     }
   });
+}
+
+
+/**
+ * Builds an object with format and formatType properties.
+ *
+ * @param format explicitly specified format
+ */
+export function formatMixins(model: Model, channel: Channel, format: string) {
+  const fieldDef = model.fieldDef(channel);
+
+  let def: any = {};
+
+  switch (fieldDef.type) {
+    case QUANTITATIVE:
+      def.formatType = 'number';
+      break;
+    case TEMPORAL:
+      def.formatType = 'time';
+      break;
+  }
+
+  if (format !== undefined) {
+    def.format = format;
+  } else {
+    switch (fieldDef.type) {
+      case QUANTITATIVE:
+        def.format = model.numberFormat(channel);
+        break;
+      case TEMPORAL:
+        const f = timeFormat(model, channel);
+        if (f) {
+          def.format = f;
+        } else {
+          def.format = model.config().timeFormat;
+        }
+        break;
+    }
+  }
+
+  if (def.formatType && channel === TEXT) {
+    // text does not support format and formatType
+    // https://github.com/vega/vega/issues/505
+
+    const filter = def.formatType + (def.format ? ':\'' + def.format + '\'' : '');
+    return {
+      text: {
+        template: '{{' + model.field(channel, {datum: true}) + ' | ' + filter + '}}'
+      }
+    };
+  }
+
+  if (def.formatType === 'number') {
+    // no need to set vega default
+    delete def.formatType;
+  }
+
+  return def;
+}
+
+function isAbbreviated(model: Model, channel: Channel, fieldDef: FieldDef) {
+  switch (channel) {
+    case ROW:
+    case COLUMN:
+    case X:
+    case Y:
+      const axis = fieldDef.axis;
+      return (typeof axis !== 'boolean' ? axis.shortTimeLabels : false);
+    case COLOR:
+    case SHAPE:
+    case SIZE:
+      const legend = fieldDef.legend;
+      return (typeof legend !== 'boolean' ? legend.shortTimeLabels : false);
+    case TEXT:
+      return model.config().mark.shortTimeLabels;
+    case LABEL:
+      // TODO(#897): implement when we have label
+  }
+}
+
+/**
+ * Returns the time format used for axis labels for a time unit.
+ */
+export function timeFormat(model: Model, channel: Channel): string {
+  const fieldDef = model.fieldDef(channel);
+  return timeFormatExpr(fieldDef.timeUnit, isAbbreviated(model, channel, fieldDef));
 }
