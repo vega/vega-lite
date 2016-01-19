@@ -234,7 +234,9 @@ export class Model {
   }
 
   /**
-   * Returns an object with format and formatType properties.
+   * Builds an object with format and formatType properties.
+   *
+   * @param format explicitly specified format
    */
   public formatMixins(channel: Channel, format: string) {
     const fieldDef = this.fieldDef(channel);
