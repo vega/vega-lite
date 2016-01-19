@@ -39,13 +39,14 @@ export var legend = {
         type: 'object',
         default: undefined,
         description: 'Optional mark property definitions for custom legend styling. '
+      },
+
+      /* Vega-lite only */
+      shortTimeLabels: {
+        type: 'boolean',
+        default: false,
+        description: 'Whether month names and weekday names should be abbreviated.'
       }
-    },
-    /* Vega-lite only */
-    shortTimeLabels: {
-      type: 'boolean',
-      default: false,
-      description: 'Whether month names and weekday names should be abbreviated.'
     },
   }, {
     type: 'boolean'

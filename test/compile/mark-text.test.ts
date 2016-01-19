@@ -23,7 +23,43 @@ describe('Mark: Text', function() {
     it('should have placeholder text', function() {
       assert.deepEqual(props.text, {value: "Abc"});
     });
-  })
+  });
+
+  describe('with quantitative and format', function() {
+    let spec = {
+      "mark": "text",
+      "encoding": {
+        "text": {"field": "foo", "type": "quantitative"}
+      },
+      "config": {
+        "mark": {
+          "format": "d"
+        }
+      }
+    };
+    const model = parseModel(spec);
+    const props = text.properties(model);
+
+    it('should use number template', function() {
+      assert.deepEqual(props.text, {template: '{{datum.foo | number:\'d\'}}'});
+    });
+  });
+
+  describe('with temporal', function() {
+    let spec = {
+      "mark": "text",
+      "encoding": {
+        "text": {"field": "foo", "type": "temporal"}
+      }
+    };
+    const model = parseModel(spec);
+    const props = text.properties(model);
+
+    it('should use dtae template', function() {
+      assert.deepEqual(props.text, {template: '{{datum.foo | time:\'%Y-%m-%d\'}}'});
+    });
+  });
+
   describe('with x, y, text (ordinal)', function() {
     let spec = {
       "mark": "text",
@@ -78,7 +114,7 @@ describe('Mark: Text', function() {
 
     it('should map text to template', function() {
       assert.deepEqual(props.text, {
-        template: "{{datum.mean_Acceleration | number:''}}"
+        template: "{{datum.mean_Acceleration | number}}"
       });
     });
 

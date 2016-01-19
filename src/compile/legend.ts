@@ -38,7 +38,7 @@ export function compileLegend(model: Model, channel: Channel, def) {
   // 1.1 Add properties with special rules
   def.title = title(fieldDef);
 
-  extend(def, formatMixins(model, channel)); // format and formatType
+  extend(def, formatMixins(model, channel));
 
   // 1.2 Add properties without rules
   ['orient', 'values'].forEach(function(property) {
@@ -81,7 +81,7 @@ export function formatMixins(model: Model, channel: Channel) {
   }
 
   const legend = fieldDef.legend;
-  return model.formatMixins(channel, (typeof legend !== 'boolean' && legend.format) || undefined);
+  return model.formatMixins(channel, (typeof legend !== 'boolean' && legend.format));
 }
 
 namespace properties {

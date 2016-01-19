@@ -1,6 +1,7 @@
 import {Model} from './Model';
 import {X, Y, COLOR, TEXT, SIZE} from '../channel';
 import {applyMarkConfig, applyColorAndOpacity} from './util';
+import {extend} from '../util';
 import {QUANTITATIVE} from '../type';
 
 export namespace text {
@@ -72,18 +73,9 @@ export namespace text {
 
     // text
     if (model.has(TEXT)) {
-      if (model.fieldDef(TEXT).type === QUANTITATIVE) {
-        const format = model.config().mark.format;
-        // TODO: revise this line
-        const numberFormat = format !== undefined ? format : model.numberFormat(TEXT);
-
-        p.text = {
-          template: '{{' + model.field(TEXT, { datum: true }) +
-          ' | number:\'' + numberFormat + '\'}}'
-        };
-      } else {
-        p.text = { field: model.field(TEXT) };
-      }
+      p.text = { field: model.field(TEXT) };
+      const format = model.config().mark.format;
+      extend(p, model.formatMixins(TEXT, format));
     } else {
       p.text = { value: fieldDef.value };
     }
