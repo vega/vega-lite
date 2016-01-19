@@ -83,6 +83,10 @@
       "showInEditor": true
     },
     {
+      "name" : "streamgraph",
+      "title" : "Streamgraph"
+    },
+    {
       "name": "area_vertical",
       "title": "Vertical Area Chart"
     },
