@@ -90,7 +90,10 @@ npm install
 
 Now you should be able to build and test the code.
 
-To serve the website and documentation, you also have to [install jekyll](http://jekyllrb.com/docs/installation/) as well.  
+To serve the website and documentation, you also have to [install Jekyll with Github Pages Gem](https://help.github.com/articles/using-jekyll-with-pages/#installing-jekyll).  
+First, make sure you have ruby installed (If you do not, run `brew install ruby` on Mac will install it).
+Then, run `gem install bundler`. Finally, simply run `bundle install` to install jekyll and its dependencies
+(we already have the `Gemfile` in the repo).
 
 
 ## Directory Structure
