@@ -84,7 +84,7 @@ export function formatMixins(model: Model, channel: Channel, format: string) {
         def.format = model.numberFormat(channel);
         break;
       case TEMPORAL:
-        def.format = timeFormat(model, channel) || this.config().timeFormat;
+        def.format = timeFormat(model, channel) || model.config().timeFormat;
         break;
     }
   }
