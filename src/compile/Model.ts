@@ -6,21 +6,20 @@ import {instantiate} from '../schema/schemautil';
 import * as schema from '../schema/schema';
 import * as schemaUtil from '../schema/schemautil';
 
-import {COLUMN, ROW, X, Y, SIZE, Channel, supportMark} from '../channel';
+import {COLUMN, ROW, X, Y, SIZE, TEXT, Channel, supportMark} from '../channel';
 import {SOURCE, SUMMARY} from '../data';
 import * as vlFieldDef from '../fielddef';
 import {FieldRefOption} from '../fielddef';
 import * as vlEncoding from '../encoding';
 import {Mark, BAR, TICK, TEXT as TEXTMARK} from '../mark';
 
-import {getFullName, NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
+import {getFullName, NOMINAL, ORDINAL, TEMPORAL} from '../type';
 import {contains, duplicate, extend} from '../util';
 
 import {compileMarkConfig} from './config';
 import {compileLayout, Layout} from './layout';
 import {compileStackProperties, StackProperties} from './stack';
 import {type as scaleType} from './scale';
-import {format as timeFormatExpr} from './time';
 
 /**
  * Internal model of Vega-Lite specification for the compiler.
@@ -134,11 +133,6 @@ export class Model {
     return vlFieldDef.title(this._spec.encoding[channel]);
   }
 
-  public numberFormat(channel?: Channel): string {
-    // TODO(#497): have different number format based on numberType (discrete/continuous)
-    return this.config().numberFormat;
-  };
-
   public channels(): Channel[] {
     return vlEncoding.channels(this._spec.encoding);
   }
@@ -231,50 +225,5 @@ export class Model {
         return this.fieldDef(channel).scale.bandWidth / 1.5;
     }
     return 30;
-  }
-
-  /** @return an object with format and formatType properties. */
-  public formatMixins(channel: Channel, format: string) {
-    const fieldDef = this.fieldDef(channel);
-
-    let def: any = {};
-
-    if (fieldDef.type === TEMPORAL) {
-      // explicitly set the fromat type so that vega uses the datetime formatter
-      def.formatType = 'time';
-    }
-
-    if (format !== undefined) {
-      def.format = format;
-      return def;
-    }
-
-    switch (fieldDef.type) {
-      case QUANTITATIVE:
-        def.format = this.numberFormat(channel);
-        break;
-      case TEMPORAL:
-        const f = this.timeFormat(channel);
-        if (f) {
-          def.format = f;
-        } else {
-          def.format = this.config().timeFormat;
-        }
-        break;
-    }
-
-    return def;
-  }
-
-  /** returns the time format used for axis labels for a time unit */
-  public timeFormat(channel: Channel): string {
-    const fieldDef = this.fieldDef(channel);
-    const legend = fieldDef.legend;
-    const axis = fieldDef.axis;
-    const abbreviated = contains([ROW, COLUMN, X, Y], channel) ?
-      (typeof axis !== 'boolean' ? axis.shortTimeLabels : false) :
-      (typeof legend !== 'boolean' ? legend.shortTimeLabels : false);
-
-    return timeFormatExpr(fieldDef.timeUnit, abbreviated);
   }
 }

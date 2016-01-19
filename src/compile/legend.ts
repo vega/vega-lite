@@ -5,7 +5,7 @@ import {title as fieldTitle} from '../fielddef';
 import {AREA, BAR, TICK, TEXT, LINE, POINT, CIRCLE, SQUARE} from '../mark';
 import {extend, keys} from '../util';
 import {Model} from './Model';
-import {applyMarkConfig, FILL_STROKE_CONFIG} from './util';
+import {applyMarkConfig, FILL_STROKE_CONFIG, formatMixins as utilFormatMixins} from './util';
 
 export function compileLegends(model: Model) {
   var defs = [];
@@ -38,7 +38,7 @@ export function compileLegend(model: Model, channel: Channel, def) {
   // 1.1 Add properties with special rules
   def.title = title(fieldDef);
 
-  extend(def, formatMixins(model, channel)); // format and formatType
+  extend(def, formatMixins(model, channel));
 
   // 1.2 Add properties without rules
   ['orient', 'values'].forEach(function(property) {
@@ -81,7 +81,7 @@ export function formatMixins(model: Model, channel: Channel) {
   }
 
   const legend = fieldDef.legend;
-  return model.formatMixins(channel, (typeof legend !== 'boolean' && legend.format) || undefined);
+  return utilFormatMixins(model, channel, typeof legend !== 'boolean' ? legend.format : undefined);
 }
 
 namespace properties {
