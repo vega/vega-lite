@@ -272,10 +272,7 @@ export class Model {
       // text does not support format and formatType
       // https://github.com/vega/vega/issues/505
 
-      let filter = def.formatType ? def.formatType : 'number';
-      if (def.format) {
-        filter += ':\'' + def.format + '\'';
-      }
+      const filter = def.formatType + (def.format ? ':\'' + def.format + '\'' : '');
       return {
         text: {
           template: '{{' + this.field(channel, {datum: true}) + ' | ' + filter + '}}'
