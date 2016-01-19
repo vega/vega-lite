@@ -6,7 +6,7 @@ import {instantiate} from '../schema/schemautil';
 import * as schema from '../schema/schema';
 import * as schemaUtil from '../schema/schemautil';
 
-import {COLUMN, ROW, X, Y, SIZE, COLOR, SHAPE, TEXT, DETAIL, LABEL, Channel, supportMark} from '../channel';
+import {COLUMN, ROW, X, Y, SIZE, COLOR, SHAPE, TEXT, LABEL, Channel, supportMark} from '../channel';
 import {SOURCE, SUMMARY} from '../data';
 import * as vlFieldDef from '../fielddef';
 import {FieldRefOption} from '../fielddef';
@@ -307,8 +307,6 @@ export class Model {
         return this.config().mark.shortTimeLabels;
       case LABEL:
         // TODO(#897): implement when we have label
-      case DETAIL:
-        return false;
     }
   }
 
