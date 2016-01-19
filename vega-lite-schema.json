@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "description": "Schema for Vega-lite specification",
+    "description": "Schema for Vega-Lite specification",
     "type": "object",
     "required": [
         "mark",
@@ -99,7 +99,19 @@
                                 "date",
                                 "hours",
                                 "minutes",
-                                "seconds"
+                                "seconds",
+                                "milliseconds",
+                                "yearmonth",
+                                "yearmonthday",
+                                "yearmonthdate",
+                                "yearday",
+                                "yeardate",
+                                "yearmonthdayhours",
+                                "yearmonthdayhoursminutes",
+                                "hoursminutes",
+                                "hoursminutesseconds",
+                                "minutesseconds",
+                                "secondsmilliseconds"
                             ],
                             "supportedTypes": {
                                 "temporal": 1
@@ -270,10 +282,6 @@
                                     "description": "Applies spacing among ordinal elements in the scale range. The actual effect depends on how the scale is configured. If the __points__ parameter is `true`, the padding value is interpreted as a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. Otherwise, padding is typically in the range [0, 1] and corresponds to the fraction of space in the range interval to allocate to padding. A value of 0.5 means that the range band width will be equal to the padding width. For more, see the [D3 ordinal scale documentation](https://github.com/mbostock/d3/wiki/Ordinal-Scales).",
                                     "default": 1
                                 },
-                                "points": {
-                                    "type": "boolean",
-                                    "description": "If true, distributes the ordinal values over a quantitative range at uniformly spaced points. The spacing of the points can be adjusted using the padding property. If false, the ordinal scale will construct evenly-spaced bands, rather than points."
-                                },
                                 "clamp": {
                                     "type": "boolean",
                                     "default": true,
@@ -329,7 +337,7 @@
                             "properties": {
                                 "format": {
                                     "type": "string",
-                                    "description": "The formatting pattern for axis labels. If not undefined, this will be determined by the max value of the field."
+                                    "description": "The formatting pattern for axis labels. If undefined, a good format is automatically determined. Vega-Lite uses D3's format pattern and automatically switches to datetime formatters."
                                 },
                                 "grid": {
                                     "type": "boolean",
@@ -401,11 +409,21 @@
                                     "type": "object",
                                     "description": "Optional mark property definitions for custom axis styling."
                                 },
+                                "characterWidth": {
+                                    "type": "integer",
+                                    "default": 6,
+                                    "description": "Character width for automatically determining title max length."
+                                },
                                 "labelMaxLength": {
                                     "type": "integer",
                                     "default": 25,
-                                    "minimum": 0,
+                                    "minimum": 1,
                                     "description": "Truncate labels that are too long."
+                                },
+                                "labels": {
+                                    "type": "boolean",
+                                    "default": true,
+                                    "description": "Enable or disable labels."
                                 },
                                 "shortTimeLabels": {
                                     "type": "boolean",
@@ -415,7 +433,7 @@
                                 "titleMaxLength": {
                                     "type": "integer",
                                     "minimum": 0,
-                                    "description": "Max length for axis title if the title is automatically generated from the field's description"
+                                    "description": "Max length for axis title if the title is automatically generated from the field's description.By default, this is automatically based on cell size and characterWidth property."
                                 }
                             }
                         },
@@ -512,7 +530,19 @@
                                 "date",
                                 "hours",
                                 "minutes",
-                                "seconds"
+                                "seconds",
+                                "milliseconds",
+                                "yearmonth",
+                                "yearmonthday",
+                                "yearmonthdate",
+                                "yearday",
+                                "yeardate",
+                                "yearmonthdayhours",
+                                "yearmonthdayhoursminutes",
+                                "hoursminutes",
+                                "hoursminutesseconds",
+                                "minutesseconds",
+                                "secondsmilliseconds"
                             ],
                             "supportedTypes": {
                                 "temporal": 1
@@ -683,10 +713,6 @@
                                     "description": "Applies spacing among ordinal elements in the scale range. The actual effect depends on how the scale is configured. If the __points__ parameter is `true`, the padding value is interpreted as a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. Otherwise, padding is typically in the range [0, 1] and corresponds to the fraction of space in the range interval to allocate to padding. A value of 0.5 means that the range band width will be equal to the padding width. For more, see the [D3 ordinal scale documentation](https://github.com/mbostock/d3/wiki/Ordinal-Scales).",
                                     "default": 1
                                 },
-                                "points": {
-                                    "type": "boolean",
-                                    "description": "If true, distributes the ordinal values over a quantitative range at uniformly spaced points. The spacing of the points can be adjusted using the padding property. If false, the ordinal scale will construct evenly-spaced bands, rather than points."
-                                },
                                 "clamp": {
                                     "type": "boolean",
                                     "default": true,
@@ -742,7 +768,7 @@
                             "properties": {
                                 "format": {
                                     "type": "string",
-                                    "description": "The formatting pattern for axis labels. If not undefined, this will be determined by the max value of the field."
+                                    "description": "The formatting pattern for axis labels. If undefined, a good format is automatically determined. Vega-Lite uses D3's format pattern and automatically switches to datetime formatters."
                                 },
                                 "grid": {
                                     "type": "boolean",
@@ -814,11 +840,21 @@
                                     "type": "object",
                                     "description": "Optional mark property definitions for custom axis styling."
                                 },
+                                "characterWidth": {
+                                    "type": "integer",
+                                    "default": 6,
+                                    "description": "Character width for automatically determining title max length."
+                                },
                                 "labelMaxLength": {
                                     "type": "integer",
                                     "default": 25,
-                                    "minimum": 0,
+                                    "minimum": 1,
                                     "description": "Truncate labels that are too long."
+                                },
+                                "labels": {
+                                    "type": "boolean",
+                                    "default": true,
+                                    "description": "Enable or disable labels."
                                 },
                                 "shortTimeLabels": {
                                     "type": "boolean",
@@ -828,7 +864,7 @@
                                 "titleMaxLength": {
                                     "type": "integer",
                                     "minimum": 0,
-                                    "description": "Max length for axis title if the title is automatically generated from the field's description"
+                                    "description": "Max length for axis title if the title is automatically generated from the field's description.By default, this is automatically based on cell size and characterWidth property."
                                 }
                             }
                         },
@@ -925,7 +961,19 @@
                                 "date",
                                 "hours",
                                 "minutes",
-                                "seconds"
+                                "seconds",
+                                "milliseconds",
+                                "yearmonth",
+                                "yearmonthday",
+                                "yearmonthdate",
+                                "yearday",
+                                "yeardate",
+                                "yearmonthdayhours",
+                                "yearmonthdayhoursminutes",
+                                "hoursminutes",
+                                "hoursminutesseconds",
+                                "minutesseconds",
+                                "secondsmilliseconds"
                             ],
                             "supportedTypes": {
                                 "temporal": 1
@@ -1022,10 +1070,6 @@
                                 "padding": {
                                     "type": "number",
                                     "description": "Applies spacing among ordinal elements in the scale range. The actual effect depends on how the scale is configured. If the __points__ parameter is `true`, the padding value is interpreted as a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. Otherwise, padding is typically in the range [0, 1] and corresponds to the fraction of space in the range interval to allocate to padding. A value of 0.5 means that the range band width will be equal to the padding width. For more, see the [D3 ordinal scale documentation](https://github.com/mbostock/d3/wiki/Ordinal-Scales)."
-                                },
-                                "points": {
-                                    "type": "boolean",
-                                    "description": "If true, distributes the ordinal values over a quantitative range at uniformly spaced points. The spacing of the points can be adjusted using the padding property. If false, the ordinal scale will construct evenly-spaced bands, rather than points."
                                 }
                             }
                         },
@@ -1034,7 +1078,7 @@
                             "properties": {
                                 "format": {
                                     "type": "string",
-                                    "description": "The formatting pattern for axis labels. If not undefined, this will be determined by the max value of the field."
+                                    "description": "The formatting pattern for axis labels. If undefined, a good format is automatically determined. Vega-Lite uses D3's format pattern and automatically switches to datetime formatters."
                                 },
                                 "grid": {
                                     "type": "boolean",
@@ -1106,11 +1150,21 @@
                                     "type": "object",
                                     "description": "Optional mark property definitions for custom axis styling."
                                 },
+                                "characterWidth": {
+                                    "type": "integer",
+                                    "default": 6,
+                                    "description": "Character width for automatically determining title max length."
+                                },
                                 "labelMaxLength": {
                                     "type": "integer",
                                     "default": 25,
-                                    "minimum": 0,
+                                    "minimum": 1,
                                     "description": "Truncate labels that are too long."
+                                },
+                                "labels": {
+                                    "type": "boolean",
+                                    "default": true,
+                                    "description": "Enable or disable labels."
                                 },
                                 "shortTimeLabels": {
                                     "type": "boolean",
@@ -1120,7 +1174,7 @@
                                 "titleMaxLength": {
                                     "type": "integer",
                                     "minimum": 0,
-                                    "description": "Max length for axis title if the title is automatically generated from the field's description"
+                                    "description": "Max length for axis title if the title is automatically generated from the field's description.By default, this is automatically based on cell size and characterWidth property."
                                 }
                             }
                         },
@@ -1217,7 +1271,19 @@
                                 "date",
                                 "hours",
                                 "minutes",
-                                "seconds"
+                                "seconds",
+                                "milliseconds",
+                                "yearmonth",
+                                "yearmonthday",
+                                "yearmonthdate",
+                                "yearday",
+                                "yeardate",
+                                "yearmonthdayhours",
+                                "yearmonthdayhoursminutes",
+                                "hoursminutes",
+                                "hoursminutesseconds",
+                                "minutesseconds",
+                                "secondsmilliseconds"
                             ],
                             "supportedTypes": {
                                 "temporal": 1
@@ -1314,10 +1380,6 @@
                                 "padding": {
                                     "type": "number",
                                     "description": "Applies spacing among ordinal elements in the scale range. The actual effect depends on how the scale is configured. If the __points__ parameter is `true`, the padding value is interpreted as a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. Otherwise, padding is typically in the range [0, 1] and corresponds to the fraction of space in the range interval to allocate to padding. A value of 0.5 means that the range band width will be equal to the padding width. For more, see the [D3 ordinal scale documentation](https://github.com/mbostock/d3/wiki/Ordinal-Scales)."
-                                },
-                                "points": {
-                                    "type": "boolean",
-                                    "description": "If true, distributes the ordinal values over a quantitative range at uniformly spaced points. The spacing of the points can be adjusted using the padding property. If false, the ordinal scale will construct evenly-spaced bands, rather than points."
                                 }
                             }
                         },
@@ -1326,7 +1388,7 @@
                             "properties": {
                                 "format": {
                                     "type": "string",
-                                    "description": "The formatting pattern for axis labels. If not undefined, this will be determined by the max value of the field."
+                                    "description": "The formatting pattern for axis labels. If undefined, a good format is automatically determined. Vega-Lite uses D3's format pattern and automatically switches to datetime formatters."
                                 },
                                 "grid": {
                                     "type": "boolean",
@@ -1398,11 +1460,21 @@
                                     "type": "object",
                                     "description": "Optional mark property definitions for custom axis styling."
                                 },
+                                "characterWidth": {
+                                    "type": "integer",
+                                    "default": 6,
+                                    "description": "Character width for automatically determining title max length."
+                                },
                                 "labelMaxLength": {
                                     "type": "integer",
                                     "default": 25,
-                                    "minimum": 0,
+                                    "minimum": 1,
                                     "description": "Truncate labels that are too long."
+                                },
+                                "labels": {
+                                    "type": "boolean",
+                                    "default": true,
+                                    "description": "Enable or disable labels."
                                 },
                                 "shortTimeLabels": {
                                     "type": "boolean",
@@ -1412,7 +1484,7 @@
                                 "titleMaxLength": {
                                     "type": "integer",
                                     "minimum": 0,
-                                    "description": "Max length for axis title if the title is automatically generated from the field's description"
+                                    "description": "Max length for axis title if the title is automatically generated from the field's description.By default, this is automatically based on cell size and characterWidth property."
                                 }
                             }
                         },
@@ -1509,7 +1581,19 @@
                                 "date",
                                 "hours",
                                 "minutes",
-                                "seconds"
+                                "seconds",
+                                "milliseconds",
+                                "yearmonth",
+                                "yearmonthday",
+                                "yearmonthdate",
+                                "yearday",
+                                "yeardate",
+                                "yearmonthdayhours",
+                                "yearmonthdayhoursminutes",
+                                "hoursminutes",
+                                "hoursminutesseconds",
+                                "minutesseconds",
+                                "secondsmilliseconds"
                             ],
                             "supportedTypes": {
                                 "temporal": 1
@@ -1678,10 +1762,6 @@
                                     "type": "number",
                                     "description": "Applies spacing among ordinal elements in the scale range. The actual effect depends on how the scale is configured. If the __points__ parameter is `true`, the padding value is interpreted as a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. Otherwise, padding is typically in the range [0, 1] and corresponds to the fraction of space in the range interval to allocate to padding. A value of 0.5 means that the range band width will be equal to the padding width. For more, see the [D3 ordinal scale documentation](https://github.com/mbostock/d3/wiki/Ordinal-Scales)."
                                 },
-                                "points": {
-                                    "type": "boolean",
-                                    "description": "If true, distributes the ordinal values over a quantitative range at uniformly spaced points. The spacing of the points can be adjusted using the padding property. If false, the ordinal scale will construct evenly-spaced bands, rather than points."
-                                },
                                 "clamp": {
                                     "type": "boolean",
                                     "default": true,
@@ -1758,12 +1838,12 @@
                                         "properties": {
                                             "type": "object",
                                             "description": "Optional mark property definitions for custom legend styling. "
+                                        },
+                                        "shortTimeLabels": {
+                                            "type": "boolean",
+                                            "default": false,
+                                            "description": "Whether month names and weekday names should be abbreviated."
                                         }
-                                    },
-                                    "shortTimeLabels": {
-                                        "type": "boolean",
-                                        "default": false,
-                                        "description": "Whether month names and weekday names should be abbreviated."
                                     }
                                 },
                                 {
@@ -1865,7 +1945,19 @@
                                 "date",
                                 "hours",
                                 "minutes",
-                                "seconds"
+                                "seconds",
+                                "milliseconds",
+                                "yearmonth",
+                                "yearmonthday",
+                                "yearmonthdate",
+                                "yearday",
+                                "yeardate",
+                                "yearmonthdayhours",
+                                "yearmonthdayhoursminutes",
+                                "hoursminutes",
+                                "hoursminutesseconds",
+                                "minutesseconds",
+                                "secondsmilliseconds"
                             ],
                             "supportedTypes": {
                                 "temporal": 1
@@ -2034,10 +2126,6 @@
                                     "type": "number",
                                     "description": "Applies spacing among ordinal elements in the scale range. The actual effect depends on how the scale is configured. If the __points__ parameter is `true`, the padding value is interpreted as a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. Otherwise, padding is typically in the range [0, 1] and corresponds to the fraction of space in the range interval to allocate to padding. A value of 0.5 means that the range band width will be equal to the padding width. For more, see the [D3 ordinal scale documentation](https://github.com/mbostock/d3/wiki/Ordinal-Scales)."
                                 },
-                                "points": {
-                                    "type": "boolean",
-                                    "description": "If true, distributes the ordinal values over a quantitative range at uniformly spaced points. The spacing of the points can be adjusted using the padding property. If false, the ordinal scale will construct evenly-spaced bands, rather than points."
-                                },
                                 "clamp": {
                                     "type": "boolean",
                                     "default": true,
@@ -2128,12 +2216,12 @@
                                         "properties": {
                                             "type": "object",
                                             "description": "Optional mark property definitions for custom legend styling. "
+                                        },
+                                        "shortTimeLabels": {
+                                            "type": "boolean",
+                                            "default": false,
+                                            "description": "Whether month names and weekday names should be abbreviated."
                                         }
-                                    },
-                                    "shortTimeLabels": {
-                                        "type": "boolean",
-                                        "default": false,
-                                        "description": "Whether month names and weekday names should be abbreviated."
                                     }
                                 },
                                 {
@@ -2236,7 +2324,19 @@
                                 "date",
                                 "hours",
                                 "minutes",
-                                "seconds"
+                                "seconds",
+                                "milliseconds",
+                                "yearmonth",
+                                "yearmonthday",
+                                "yearmonthdate",
+                                "yearday",
+                                "yeardate",
+                                "yearmonthdayhours",
+                                "yearmonthdayhoursminutes",
+                                "hoursminutes",
+                                "hoursminutesseconds",
+                                "minutesseconds",
+                                "secondsmilliseconds"
                             ],
                             "supportedTypes": {
                                 "temporal": 1
@@ -2333,10 +2433,6 @@
                                 "padding": {
                                     "type": "number",
                                     "description": "Applies spacing among ordinal elements in the scale range. The actual effect depends on how the scale is configured. If the __points__ parameter is `true`, the padding value is interpreted as a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. Otherwise, padding is typically in the range [0, 1] and corresponds to the fraction of space in the range interval to allocate to padding. A value of 0.5 means that the range band width will be equal to the padding width. For more, see the [D3 ordinal scale documentation](https://github.com/mbostock/d3/wiki/Ordinal-Scales)."
-                                },
-                                "points": {
-                                    "type": "boolean",
-                                    "description": "If true, distributes the ordinal values over a quantitative range at uniformly spaced points. The spacing of the points can be adjusted using the padding property. If false, the ordinal scale will construct evenly-spaced bands, rather than points."
                                 }
                             }
                         },
@@ -2366,12 +2462,12 @@
                                         "properties": {
                                             "type": "object",
                                             "description": "Optional mark property definitions for custom legend styling. "
+                                        },
+                                        "shortTimeLabels": {
+                                            "type": "boolean",
+                                            "default": false,
+                                            "description": "Whether month names and weekday names should be abbreviated."
                                         }
-                                    },
-                                    "shortTimeLabels": {
-                                        "type": "boolean",
-                                        "default": false,
-                                        "description": "Whether month names and weekday names should be abbreviated."
                                     }
                                 },
                                 {
@@ -2481,7 +2577,19 @@
                                 "date",
                                 "hours",
                                 "minutes",
-                                "seconds"
+                                "seconds",
+                                "milliseconds",
+                                "yearmonth",
+                                "yearmonthday",
+                                "yearmonthdate",
+                                "yearday",
+                                "yeardate",
+                                "yearmonthdayhours",
+                                "yearmonthdayhoursminutes",
+                                "hoursminutes",
+                                "hoursminutesseconds",
+                                "minutesseconds",
+                                "secondsmilliseconds"
                             ],
                             "supportedTypes": {
                                 "temporal": 1
@@ -2649,10 +2757,6 @@
                                 "padding": {
                                     "type": "number",
                                     "description": "Applies spacing among ordinal elements in the scale range. The actual effect depends on how the scale is configured. If the __points__ parameter is `true`, the padding value is interpreted as a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. Otherwise, padding is typically in the range [0, 1] and corresponds to the fraction of space in the range interval to allocate to padding. A value of 0.5 means that the range band width will be equal to the padding width. For more, see the [D3 ordinal scale documentation](https://github.com/mbostock/d3/wiki/Ordinal-Scales)."
-                                },
-                                "points": {
-                                    "type": "boolean",
-                                    "description": "If true, distributes the ordinal values over a quantitative range at uniformly spaced points. The spacing of the points can be adjusted using the padding property. If false, the ordinal scale will construct evenly-spaced bands, rather than points."
                                 },
                                 "clamp": {
                                     "type": "boolean",
@@ -2774,197 +2878,189 @@
                     }
                 },
                 "detail": {
-                    "type": "object",
-                    "properties": {
-                        "field": {
-                            "type": "string"
-                        },
-                        "type": {
-                            "type": "string",
-                            "enum": [
-                                "nominal",
-                                "ordinal",
-                                "quantitative",
-                                "temporal"
-                            ]
-                        },
-                        "timeUnit": {
-                            "type": "string",
-                            "enum": [
-                                "year",
-                                "month",
-                                "day",
-                                "date",
-                                "hours",
-                                "minutes",
-                                "seconds"
-                            ],
-                            "supportedTypes": {
-                                "temporal": 1
-                            }
-                        },
-                        "bin": {
-                            "type": [
-                                "boolean",
-                                "object"
-                            ],
-                            "default": false,
-                            "properties": {
-                                "min": {
-                                    "type": "number",
-                                    "description": "The minimum bin value to consider. If unspecified, the minimum value of the specified field is used."
-                                },
-                                "max": {
-                                    "type": "number",
-                                    "description": "The maximum bin value to consider. If unspecified, the maximum value of the specified field is used."
-                                },
-                                "base": {
-                                    "type": "number",
-                                    "description": "The number base to use for automatic bin determination (default is base 10)."
-                                },
-                                "step": {
-                                    "type": "number",
-                                    "description": "An exact step size to use between bins. If provided, options such as maxbins will be ignored."
-                                },
-                                "steps": {
-                                    "type": "array",
-                                    "description": "An array of allowable step sizes to choose from."
-                                },
-                                "minstep": {
-                                    "type": "number",
-                                    "description": "A minimum allowable step size (particularly useful for integer values)."
-                                },
-                                "div": {
-                                    "type": "array",
-                                    "description": "Scale factors indicating allowable subdivisions. The default value is [5, 2], which indicates that for base 10 numbers (the default base), the method may consider dividing bin sizes by 5 and/or 2. For example, for an initial step size of 10, the method can check if bin sizes of 2 (= 10/5), 5 (= 10/2), or 1 (= 10/(5*2)) might also satisfy the given constraints."
-                                },
-                                "maxbins": {
-                                    "type": "integer",
-                                    "minimum": 2,
-                                    "description": "Maximum number of bins."
-                                }
-                            },
-                            "supportedTypes": {
-                                "quantitative": 1
-                            }
-                        },
-                        "scale": {
+                    "oneOf": [
+                        {
                             "type": "object",
                             "properties": {
+                                "field": {
+                                    "type": "string"
+                                },
                                 "type": {
                                     "type": "string",
                                     "enum": [
-                                        "linear",
-                                        "log",
-                                        "pow",
-                                        "sqrt",
-                                        "quantile",
-                                        "ordinal"
+                                        "nominal",
+                                        "ordinal",
+                                        "quantitative",
+                                        "temporal"
+                                    ]
+                                },
+                                "timeUnit": {
+                                    "type": "string",
+                                    "enum": [
+                                        "year",
+                                        "month",
+                                        "day",
+                                        "date",
+                                        "hours",
+                                        "minutes",
+                                        "seconds",
+                                        "milliseconds",
+                                        "yearmonth",
+                                        "yearmonthday",
+                                        "yearmonthdate",
+                                        "yearday",
+                                        "yeardate",
+                                        "yearmonthdayhours",
+                                        "yearmonthdayhoursminutes",
+                                        "hoursminutes",
+                                        "hoursminutesseconds",
+                                        "minutesseconds",
+                                        "secondsmilliseconds"
                                     ],
+                                    "supportedTypes": {
+                                        "temporal": 1
+                                    }
+                                },
+                                "bin": {
+                                    "type": [
+                                        "boolean",
+                                        "object"
+                                    ],
+                                    "default": false,
+                                    "properties": {
+                                        "min": {
+                                            "type": "number",
+                                            "description": "The minimum bin value to consider. If unspecified, the minimum value of the specified field is used."
+                                        },
+                                        "max": {
+                                            "type": "number",
+                                            "description": "The maximum bin value to consider. If unspecified, the maximum value of the specified field is used."
+                                        },
+                                        "base": {
+                                            "type": "number",
+                                            "description": "The number base to use for automatic bin determination (default is base 10)."
+                                        },
+                                        "step": {
+                                            "type": "number",
+                                            "description": "An exact step size to use between bins. If provided, options such as maxbins will be ignored."
+                                        },
+                                        "steps": {
+                                            "type": "array",
+                                            "description": "An array of allowable step sizes to choose from."
+                                        },
+                                        "minstep": {
+                                            "type": "number",
+                                            "description": "A minimum allowable step size (particularly useful for integer values)."
+                                        },
+                                        "div": {
+                                            "type": "array",
+                                            "description": "Scale factors indicating allowable subdivisions. The default value is [5, 2], which indicates that for base 10 numbers (the default base), the method may consider dividing bin sizes by 5 and/or 2. For example, for an initial step size of 10, the method can check if bin sizes of 2 (= 10/5), 5 (= 10/2), or 1 (= 10/(5*2)) might also satisfy the given constraints."
+                                        },
+                                        "maxbins": {
+                                            "type": "integer",
+                                            "minimum": 2,
+                                            "description": "Maximum number of bins."
+                                        }
+                                    },
                                     "supportedTypes": {
                                         "quantitative": 1
                                     }
-                                },
-                                "domain": {
-                                    "type": [
-                                        "array",
-                                        "object"
-                                    ],
-                                    "description": "The domain of the scale, representing the set of data values. For quantitative data, this can take the form of a two-element array with minimum and maximum values. For ordinal/categorical data, this may be an array of valid input values. The domain may also be specified by a reference to a data source."
-                                },
-                                "range": {
-                                    "type": [
-                                        "array",
-                                        "object",
-                                        "string"
-                                    ],
-                                    "description": "The range of the scale, representing the set of visual values. For numeric values, the range can take the form of a two-element array with minimum and maximum values. For ordinal or quantized data, the range may by an array of desired output values, which are mapped to elements in the specified domain. For ordinal scales only, the range can be defined using a DataRef: the range values are then drawn dynamically from a backing data set."
-                                },
-                                "round": {
-                                    "type": "boolean",
-                                    "description": "If true, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid."
-                                },
-                                "bandWidth": {
-                                    "type": "integer",
-                                    "minimum": 0
-                                },
-                                "outerPadding": {
-                                    "type": "number"
-                                },
-                                "padding": {
-                                    "type": "number",
-                                    "description": "Applies spacing among ordinal elements in the scale range. The actual effect depends on how the scale is configured. If the __points__ parameter is `true`, the padding value is interpreted as a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. Otherwise, padding is typically in the range [0, 1] and corresponds to the fraction of space in the range interval to allocate to padding. A value of 0.5 means that the range band width will be equal to the padding width. For more, see the [D3 ordinal scale documentation](https://github.com/mbostock/d3/wiki/Ordinal-Scales)."
-                                },
-                                "points": {
-                                    "type": "boolean",
-                                    "description": "If true, distributes the ordinal values over a quantitative range at uniformly spaced points. The spacing of the points can be adjusted using the padding property. If false, the ordinal scale will construct evenly-spaced bands, rather than points."
                                 }
                             }
                         },
-                        "sort": {
-                            "default": "ascending",
-                            "supportedTypes": {
-                                "quantitative": 1,
-                                "ordinal": 1
-                            },
-                            "oneOf": [
-                                {
-                                    "type": "string",
-                                    "enum": [
-                                        "ascending",
-                                        "descending",
-                                        "unsorted"
-                                    ]
-                                },
-                                {
-                                    "type": "object",
-                                    "required": [
-                                        "field",
-                                        "op"
-                                    ],
-                                    "properties": {
-                                        "field": {
-                                            "type": "string",
-                                            "description": "The field name to aggregate over."
+                        {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "field": {
+                                        "type": "string"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "nominal",
+                                            "ordinal",
+                                            "quantitative",
+                                            "temporal"
+                                        ]
+                                    },
+                                    "timeUnit": {
+                                        "type": "string",
+                                        "enum": [
+                                            "year",
+                                            "month",
+                                            "day",
+                                            "date",
+                                            "hours",
+                                            "minutes",
+                                            "seconds",
+                                            "milliseconds",
+                                            "yearmonth",
+                                            "yearmonthday",
+                                            "yearmonthdate",
+                                            "yearday",
+                                            "yeardate",
+                                            "yearmonthdayhours",
+                                            "yearmonthdayhoursminutes",
+                                            "hoursminutes",
+                                            "hoursminutesseconds",
+                                            "minutesseconds",
+                                            "secondsmilliseconds"
+                                        ],
+                                        "supportedTypes": {
+                                            "temporal": 1
+                                        }
+                                    },
+                                    "bin": {
+                                        "type": [
+                                            "boolean",
+                                            "object"
+                                        ],
+                                        "default": false,
+                                        "properties": {
+                                            "min": {
+                                                "type": "number",
+                                                "description": "The minimum bin value to consider. If unspecified, the minimum value of the specified field is used."
+                                            },
+                                            "max": {
+                                                "type": "number",
+                                                "description": "The maximum bin value to consider. If unspecified, the maximum value of the specified field is used."
+                                            },
+                                            "base": {
+                                                "type": "number",
+                                                "description": "The number base to use for automatic bin determination (default is base 10)."
+                                            },
+                                            "step": {
+                                                "type": "number",
+                                                "description": "An exact step size to use between bins. If provided, options such as maxbins will be ignored."
+                                            },
+                                            "steps": {
+                                                "type": "array",
+                                                "description": "An array of allowable step sizes to choose from."
+                                            },
+                                            "minstep": {
+                                                "type": "number",
+                                                "description": "A minimum allowable step size (particularly useful for integer values)."
+                                            },
+                                            "div": {
+                                                "type": "array",
+                                                "description": "Scale factors indicating allowable subdivisions. The default value is [5, 2], which indicates that for base 10 numbers (the default base), the method may consider dividing bin sizes by 5 and/or 2. For example, for an initial step size of 10, the method can check if bin sizes of 2 (= 10/5), 5 (= 10/2), or 1 (= 10/(5*2)) might also satisfy the given constraints."
+                                            },
+                                            "maxbins": {
+                                                "type": "integer",
+                                                "minimum": 2,
+                                                "description": "Maximum number of bins."
+                                            }
                                         },
-                                        "op": {
-                                            "type": "string",
-                                            "enum": [
-                                                "values",
-                                                "count",
-                                                "valid",
-                                                "missing",
-                                                "distinct",
-                                                "sum",
-                                                "mean",
-                                                "average",
-                                                "variance",
-                                                "variancep",
-                                                "stdev",
-                                                "stdevp",
-                                                "median",
-                                                "q1",
-                                                "q3",
-                                                "modeskew",
-                                                "min",
-                                                "max",
-                                                "argmin",
-                                                "argmax"
-                                            ],
-                                            "description": "The field name to aggregate over."
-                                        },
-                                        "order": {
-                                            "type": "string",
-                                            "enum": [
-                                                "ascending",
-                                                "descending"
-                                            ]
+                                        "supportedTypes": {
+                                            "quantitative": 1
                                         }
                                     }
                                 }
-                            ]
+                            }
                         }
-                    }
+                    ]
                 },
                 "label": {
                     "type": "object",
@@ -2990,7 +3086,19 @@
                                 "date",
                                 "hours",
                                 "minutes",
-                                "seconds"
+                                "seconds",
+                                "milliseconds",
+                                "yearmonth",
+                                "yearmonthday",
+                                "yearmonthdate",
+                                "yearday",
+                                "yeardate",
+                                "yearmonthdayhours",
+                                "yearmonthdayhoursminutes",
+                                "hoursminutes",
+                                "hoursminutesseconds",
+                                "minutesseconds",
+                                "secondsmilliseconds"
                             ],
                             "supportedTypes": {
                                 "temporal": 1
@@ -3158,10 +3266,6 @@
                                 "padding": {
                                     "type": "number",
                                     "description": "Applies spacing among ordinal elements in the scale range. The actual effect depends on how the scale is configured. If the __points__ parameter is `true`, the padding value is interpreted as a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. Otherwise, padding is typically in the range [0, 1] and corresponds to the fraction of space in the range interval to allocate to padding. A value of 0.5 means that the range band width will be equal to the padding width. For more, see the [D3 ordinal scale documentation](https://github.com/mbostock/d3/wiki/Ordinal-Scales)."
-                                },
-                                "points": {
-                                    "type": "boolean",
-                                    "description": "If true, distributes the ordinal values over a quantitative range at uniformly spaced points. The spacing of the points can be adjusted using the padding property. If false, the ordinal scale will construct evenly-spaced bands, rather than points."
                                 },
                                 "clamp": {
                                     "type": "boolean",
@@ -3297,39 +3401,23 @@
                     "role": "color",
                     "description": "CSS color property to use as background of visualization. Default is `\"transparent\"`."
                 },
-                "scene": {
-                    "type": "object",
-                    "description": "An object to style the top-level scenegraph root. Available properties include `fill`, `fillOpacity`, `stroke`, `strokeOpacity`, `strokeWidth`, `strokeDash`, `strokeDashOffset`"
-                },
                 "filterNull": {
-                    "type": "object",
-                    "properties": {
-                        "nominal": {
-                            "type": "boolean",
-                            "default": false
-                        },
-                        "ordinal": {
-                            "type": "boolean",
-                            "default": false
-                        },
-                        "quantitative": {
-                            "type": "boolean",
-                            "default": true
-                        },
-                        "temporal": {
-                            "type": "boolean",
-                            "default": true
-                        }
-                    }
+                    "type": "boolean",
+                    "description": "Filter null values from the data. If set to true, all rows with null values are filtered. If false, no rows are filtered. Set the property to undefined to filter only quantitative and temporal fields."
+                },
+                "numberFormat": {
+                    "type": "string",
+                    "description": "D3 Number format for axis labels and text tables. For example \"s\" for SI units."
+                },
+                "timeFormat": {
+                    "type": "string",
+                    "default": "%Y-%m-%d",
+                    "description": "Default datetime format for axis and legend labels. The format can be set directly on each axis and legend."
                 },
                 "textCellWidth": {
                     "type": "integer",
                     "default": 90,
                     "minimum": 0
-                },
-                "sortLineBy": {
-                    "type": "string",
-                    "description": "Data field to sort line by. '-' prefix can be added to suggest descending order."
                 },
                 "stack": {
                     "type": [
@@ -3378,11 +3466,6 @@
                             "type": "integer",
                             "default": 200
                         },
-                        "padding": {
-                            "type": "integer",
-                            "default": 16,
-                            "description": "default padding between facets."
-                        },
                         "gridColor": {
                             "type": "string",
                             "role": "color",
@@ -3392,11 +3475,14 @@
                             "type": "number",
                             "minimum": 0,
                             "maximum": 1,
-                            "default": 0.25
+                            "default": 0.4
                         },
                         "gridOffset": {
                             "type": "number",
-                            "default": 6
+                            "default": 0
+                        },
+                        "clip": {
+                            "type": "boolean"
                         },
                         "fill": {
                             "type": "string",
@@ -3425,22 +3511,58 @@
                         }
                     }
                 },
-                "marks": {
+                "mark": {
                     "type": "object",
                     "properties": {
                         "filled": {
                             "type": "boolean",
                             "description": "Whether the shape's color should be used as fill color instead of stroke color. This is only applicable for \"bar\", \"point\", and \"area\". All marks except \"point\" marks are filled by default."
                         },
-                        "format": {
-                            "type": "string",
-                            "default": "",
-                            "description": "The formatting pattern for text value.If not defined, this will be determined automatically"
+                        "sortBy": {
+                            "oneOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            ],
+                            "description": "Sort layer of marks by a given field or fields."
+                        },
+                        "sortLineBy": {
+                            "oneOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            ],
+                            "description": "Sort layer of marks by a given field or fields."
                         },
                         "fill": {
                             "type": "string",
-                            "role": "color",
-                            "default": "#000000"
+                            "role": "color"
+                        },
+                        "fillOpacity": {
+                            "type": "number",
+                            "minimum": 0,
+                            "maximum": 1
+                        },
+                        "stroke": {
+                            "type": "string",
+                            "role": "color"
+                        },
+                        "strokeOpacity": {
+                            "type": "number",
+                            "minimum": 0,
+                            "maximum": 1
                         },
                         "opacity": {
                             "type": "number",
@@ -3448,7 +3570,7 @@
                             "maximum": 1
                         },
                         "strokeWidth": {
-                            "type": "integer",
+                            "type": "number",
                             "default": 2,
                             "minimum": 0
                         },
@@ -3462,7 +3584,7 @@
                         },
                         "orient": {
                             "type": "string",
-                            "description": "The orientation of a non-stacked bar, area, and line charts.The value is either horizontal (default) or vertical.For area, this property also affects the orient property of the Vega output.For line, this property also affects the sort order of the points in the line if `config.sortLineBy` is not specifiedFor stacked charts, this is always determined by the orientation of the stack.  Explicitly specified value will be ignored."
+                            "description": "The orientation of a non-stacked bar, area, and line charts.The value is either horizontal (default) or vertical.For area, this property determines the orient property of the Vega output.For line, this property determines the sort order of the points in the line if `config.sortLineBy` is not specified.For stacked charts, this is always determined by the orientation of the stack; therefore explicitly specified value will be ignored."
                         },
                         "interpolate": {
                             "type": "string",
@@ -3472,9 +3594,13 @@
                             "type": "number",
                             "description": "Depending on the interpolation type, sets the tension parameter."
                         },
+                        "thickness": {
+                            "type": "number",
+                            "default": 1,
+                            "description": "Thickness of the tick mark."
+                        },
                         "align": {
                             "type": "string",
-                            "default": "right",
                             "enum": [
                                 "left",
                                 "right",
@@ -3532,22 +3658,51 @@
                         "theta": {
                             "type": "number",
                             "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the x and y properties. Values for theta follow the same convention of arc mark startAngle and endAngle properties: angles are measured in radians, with 0 indicating \"north\"."
+                        },
+                        "format": {
+                            "type": "string",
+                            "description": "The formatting pattern for text value. If not defined, this will be determined automatically. "
+                        },
+                        "shortTimeLabels": {
+                            "type": "boolean",
+                            "default": false,
+                            "description": "Whether month names and weekday names should be abbreviated."
+                        },
+                        "applyColorToBackground": {
+                            "type": "boolean",
+                            "default": false,
+                            "description": "Apply color field to background color instead of the text."
                         }
                     }
                 },
-                "characterWidth": {
-                    "type": "integer",
-                    "default": 6
-                },
-                "numberFormat": {
-                    "type": "string",
-                    "default": "s",
-                    "description": "D3 Number format for axis labels and text tables."
-                },
-                "timeFormat": {
-                    "type": "string",
-                    "default": "%Y-%m-%d",
-                    "description": "Date format for axis labels."
+                "scene": {
+                    "type": "object",
+                    "properties": {
+                        "fill": {
+                            "type": "string",
+                            "role": "color"
+                        },
+                        "fillOpacity": {
+                            "type": "number"
+                        },
+                        "stroke": {
+                            "type": "string",
+                            "role": "color"
+                        },
+                        "strokeWidth": {
+                            "type": "integer"
+                        },
+                        "strokeOpacity": {
+                            "type": "number"
+                        },
+                        "strokeDash": {
+                            "type": "array"
+                        },
+                        "strokeDashOffset": {
+                            "type": "integer",
+                            "description": "The offset (in pixels) into which to begin drawing with the stroke dash array."
+                        }
+                    }
                 }
             }
         }
