@@ -68,8 +68,9 @@ the corresponding markdown files in `docs/`.
 
 Since we only publish the Github Pages when we release a new version,
 it might be slightly outdated compared to `master`.  
-For development, you can run `npm run site` to serve the github page locally at [http://localhost:4000](http://localhost:4000).
-Open [http://localhost:4000/docs](http://localhost:4000/docs) to see the docs.
+For development, once you have [setup the repository](#repository-setup),
+you can run `npm run site` to serve the github page locally at [http://localhost:4000](http://localhost:4000).
+Open [http://localhost:4000/docs](http://localhost:4000/docs) to see the docs.   
 
 
 # Development Guide
