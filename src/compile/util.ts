@@ -81,7 +81,7 @@ export function formatMixins(model: Model, channel: Channel, format: string) {
   } else {
     switch (fieldDef.type) {
       case QUANTITATIVE:
-        def.format = model.numberFormat(channel);
+        def.format = model.config().numberFormat;
         break;
       case TEMPORAL:
         def.format = timeFormat(model, channel) || model.config().timeFormat;

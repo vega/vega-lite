@@ -133,11 +133,6 @@ export class Model {
     return vlFieldDef.title(this._spec.encoding[channel]);
   }
 
-  public numberFormat(channel?: Channel): string {
-    // TODO(#497): have different number format based on numberType (discrete/continuous)
-    return this.config().numberFormat;
-  };
-
   public channels(): Channel[] {
     return vlEncoding.channels(this._spec.encoding);
   }
