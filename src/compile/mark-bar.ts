@@ -166,10 +166,6 @@ export namespace bar {
 
     // const stack = model.stack();
 
-    p.align = { value: horizontal ? 'left' : 'center' };
-
-    p.baseline = { value: horizontal ? 'middle' : 'bottom' };
-
     let datumField = 'datum.' + (horizontal ? model.field(X) : model.field(Y));
 
     p.text = { field: datumField };
@@ -179,8 +175,14 @@ export namespace bar {
     p.y = { field: horizontal ? 'yc' : datumField };
 
     if (horizontal) {
+      p.baseline = { value: 'middle' }
+      p.align = { value: 'left' };
+
       p.x.offset = 5;
     } else {
+      p.baseline = { value: 'bottom' }
+      p.align = { value: 'center' };
+
       p.y.offset = -5;
       p.y.scale = model.scaleName(Y);
     }

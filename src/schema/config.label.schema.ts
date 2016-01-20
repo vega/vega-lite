@@ -72,7 +72,7 @@ export const labelConfig = {
     },
     baseline: {
       type: 'string',
-      default: 'middle',
+      default: undefined,
       enum: ['top', 'middle', 'bottom'],
       description: 'The vertical alignment of the text. One of top, middle, bottom.'
     },
