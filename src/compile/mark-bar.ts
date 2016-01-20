@@ -168,15 +168,15 @@ export namespace bar {
 
     p.align = { value: horizontal ? 'left' : 'center' };
 
-    p.baseline = { 'value': 'middle' };
+    p.baseline = { value: horizontal ? 'middle' : 'bottom' };
 
-    let f = 'datum.' + (horizontal ? model.field(X) : model.field(Y));
+    let datumField = 'datum.' + (horizontal ? model.field(X) : model.field(Y));
 
-    p.text = { field: f };
+    p.text = { field: datumField };
 
     p.x = { field: horizontal ? 'x2' : 'xc' };
 
-    p.y = { field: horizontal ? 'yc' : f };
+    p.y = { field: horizontal ? 'yc' : datumField };
 
     if (horizontal) {
       p.x.offset = 5;
