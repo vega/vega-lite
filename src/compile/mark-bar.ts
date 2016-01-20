@@ -1,6 +1,6 @@
 import {Model} from './Model';
 import {X, Y, SIZE} from '../channel';
-import {applyColorAndOpacity} from './util';
+import {applyColorAndOpacity, applyLabelConfig} from './util';
 
 
 export namespace bar {
@@ -145,7 +145,7 @@ export namespace bar {
         };
       }
 
-      p.height = model.has(SIZE)  && orient === 'horizontal' ? {
+      p.height = model.has(SIZE) && orient === 'horizontal' ? {
           // apply size scale if has size and is horizontal
           scale: model.scaleName(SIZE),
           field: model.field(SIZE)
@@ -185,9 +185,8 @@ export namespace bar {
       p.y.scale = model.scaleName(Y);
     }
 
-    applyColorAndOpacity(p, model);
+    applyLabelConfig(p, model);
 
-    // applyLabelConfig(l, model, TEXT_CONFIG);
     return p;
   }
 }
