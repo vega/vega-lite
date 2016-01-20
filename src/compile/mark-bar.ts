@@ -159,7 +159,35 @@ export namespace bar {
   }
 
   export function labels(model: Model) {
-    // TODO(#64): fill this method
-    return undefined;
+    let p: any = {};
+
+    const orient = model.config().mark.orient;
+    const horizontal = (orient == 'horizontal');
+
+    // const stack = model.stack();
+
+    p.align = { value: horizontal ? 'left' : 'center' };
+
+    p.baseline = { 'value': 'middle' };
+
+    let f = 'datum.' + (horizontal ? model.field(X) : model.field(Y));
+
+    p.text = { field: f };
+
+    p.x = { field: horizontal ? 'x2' : 'xc' };
+
+    p.y = { field: horizontal ? 'yc' : f };
+
+    if (horizontal) {
+      p.x.offset = 5;
+    } else {
+      p.y.offset = -5;
+      p.y.scale = model.scaleName(Y);
+    }
+
+    applyColorAndOpacity(p, model);
+
+    // applyLabelConfig(l, model, TEXT_CONFIG);
+    return p;
   }
 }
