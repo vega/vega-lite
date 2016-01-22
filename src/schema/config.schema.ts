@@ -1,7 +1,8 @@
-import {StackConfig, stackConfig} from './config.stack.schema';
 import {CellConfig, cellConfig} from './config.cell.schema';
+import {LabelConfig, labelConfig} from './config.label.schema';
 import {MarkConfig, markConfig} from './config.marks.schema';
 import {SceneConfig, sceneConfig} from './config.scene.schema';
+import {StackConfig, stackConfig} from './config.stack.schema';
 
 export interface Config {
   width?: number;
@@ -12,6 +13,7 @@ export interface Config {
   filterNull?: boolean;
 
   cell?: CellConfig;
+  label?: LabelConfig;
   mark?: MarkConfig;
   scene?: SceneConfig;
   stack?: StackConfig;
@@ -80,9 +82,10 @@ export const config = {
     },
 
     // nested
-    stack: stackConfig,
     cell: cellConfig,
+    label: labelConfig,
     mark: markConfig,
-    scene: sceneConfig
+    scene: sceneConfig,
+    stack: stackConfig
   }
 };
