@@ -87,6 +87,8 @@ describe('Axis', function() {
 
   describe('tickSize', function() {
     // FIXME: write test
+    // - it should return explicitly specified tickSize
+    // - otherwise it should return 0 for ROW and COLUMN and undefined for other channels
   });
 
   describe('title()', function () {

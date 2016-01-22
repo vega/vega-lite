@@ -38,6 +38,7 @@ specification and use Vega Runtime to display visualizations.
 
 ```html
 <!DOCTYPE html>
+<title>Vega Lite Bar Chart</title>
 <meta charset="utf-8">
 
 <script src="../lib/d3.min.js"></script>
@@ -77,6 +78,7 @@ Here is the bare minimum html file to get Vega-Lite with data from url working i
 
 ```html
 <!DOCTYPE html>
+<title>Vega Lite Bar Chart</title>
 <meta charset="utf-8">
 
 <script src="../lib/d3.min.js"></script>

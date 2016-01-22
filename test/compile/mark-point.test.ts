@@ -110,13 +110,7 @@ describe('Mark: Point', function() {
 
 describe('Mark: Square', function() {
   it('should return the correct mark type', function() {
-    const model = parseModel({
-      "mark": "square",
-      "encoding": {
-        "color": {"value": "blue"}
-      }
-    });
-    assert.equal(square.markType(model), 'symbol');
+    assert.equal(square.markType(), 'symbol');
   });
 
   it('should have correct shape', function() {
@@ -171,7 +165,7 @@ describe('Mark: Circle', function() {
         "color": {"value": "blue"}
       }
     });
-    assert.equal(circle.markType(model), 'symbol');
+    assert.equal(circle.markType(), 'symbol');
   });
 
   it('should have correct shape', function() {
