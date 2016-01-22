@@ -58,10 +58,10 @@ describe('Mark: Bar', function() {
 
   describe('vertical', function() {
     const model = parseModel({
-        "mark": "bar",
-        "encoding": {"y": {"type": "quantitative", "field": 'US_Gross', "aggregate": "sum"}},
-        "data": {"url": 'data/movies.json'}
-      });
+      "mark": "bar",
+      "encoding": {"y": {"type": "quantitative", "field": 'US_Gross', "aggregate": "sum"}},
+      "data": {"url": 'data/movies.json'}
+    });
     const props = bar.properties(model);
 
     it('should end on axis', function() {
@@ -79,10 +79,10 @@ describe('Mark: Bar', function() {
 
   describe('horizontal', function() {
     const model = parseModel({
-        "mark": "bar",
-        "encoding": {"x": {"type": "quantitative", "field": 'US_Gross', "aggregate": 'sum'}},
-        "data": {"url": 'data/movies.json'}
-      });
+      "mark": "bar",
+      "encoding": {"x": {"type": "quantitative", "field": 'US_Gross', "aggregate": 'sum'}},
+      "data": {"url": 'data/movies.json'}
+    });
     const props = bar.properties(model);
 
     it('should end on axis', function() {
@@ -98,6 +98,80 @@ describe('Mark: Bar', function() {
         field: {group: 'height'},
         offset: -1
       });
+    });
+  });
+
+  describe('horizontal, label', function() {
+    const model = parseModel({
+      "mark": "bar",
+      "encoding": {
+        "x": {"type": "quantitative", "field": "US_Gross"},
+        "y": {"bin": true, "type": "quantitative", "field": "IMDB_Rating"},
+        "label": {
+          "field": "amount",
+          "type": "quantitative"
+        }
+      },
+      "data": {"url": 'data/movies.json'}
+    });
+
+    const labels = bar.labels(model);
+
+    it('should be labeling the correct field', function() {
+      assert.deepEqual(labels.text, { field: 'datum.' + model.field(X) });
+    });
+
+    it('should have horizontal x', function() {
+      assert.deepEqual(labels.x, { field: 'x2', offset: 5 });
+    });
+
+    it('should have horizontal y', function() {
+      assert.deepEqual(labels.y, { field: 'yc' });
+    });
+
+    it('should have baseline middle', function() {
+      assert.deepEqual(labels.baseline, { value: 'middle' });
+    });
+
+    it('should be aligned left', function() {
+      assert.deepEqual(labels.align, { value: 'left' });
+    });
+  });
+
+  describe('vertical, label', function() {
+    const model = parseModel({
+      "mark": "bar",
+      "encoding": {
+        "x": {"bin": true, "type": "quantitative", "field": "IMDB_Rating"},
+        "y": {"type": "quantitative", "field": "US_Gross"},
+        "label": {
+          "field": "amount",
+          "type": "quantitative"
+        }
+      },
+      "data": {"url": 'data/movies.json'}
+    });
+
+    const labels = bar.labels(model);
+
+    it('should be labeling the correct field', function() {
+      assert.deepEqual(labels.text, { field: 'datum.' + model.field(Y) });
+    });
+
+    it('should have vertical x', function() {
+      assert.deepEqual(labels.x, { field: 'xc' })
+    });
+
+    it('should have vertical y', function() {
+      assert.deepEqual(labels.y, { field: 'datum.' + model.field(Y), offset: -5, scale: model.scaleName(Y) });
+    });
+
+    it('should have baseline bottom', function() {
+      assert.deepEqual(labels.baseline, { value: 'bottom' });
+    });
+
+    it('should be aligned center', function() {
+      assert.deepEqual(labels.align, { value: 'center' });
     });
   });
 });

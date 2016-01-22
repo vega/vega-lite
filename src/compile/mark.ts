@@ -23,7 +23,7 @@ const markCompiler = {
 
 export function compileMark(model: Model): any[] {
   const mark = model.mark();
-  const name = model.spec().name;
+  const specName = model.spec().name;
   const isFaceted = model.has(ROW) || model.has(COLUMN);
   const dataFrom = {data: model.dataTable()};
   const markConfig = model.config().mark;
@@ -40,7 +40,7 @@ export function compileMark(model: Model): any[] {
     }
 
     let pathMarks: any = extend(
-      name ? { name: name + '-marks' } : {},
+      specName ? { name: specName + '-marks' } : {},
       {
         type: markCompiler[mark].markType(),
         from: extend(
@@ -50,7 +50,7 @@ export function compileMark(model: Model): any[] {
           isFaceted || details.length > 0 ? {} : dataFrom,
 
           // sort transform
-          {transform: [{ type: 'sort', by: sortLineBy }]}
+          { transform: [{ type: 'sort', by: sortLineBy }] }
         ),
         properties: { update: markCompiler[mark].properties(model) }
       }
@@ -69,13 +69,13 @@ export function compileMark(model: Model): any[] {
         );
 
       return [{
-        name: (name ? name + '-' : '') + mark + '-facet',
+        name: (specName ? specName + '-' : '') + mark + '-facet',
         type: 'group',
         from: extend(
           // If has facet, `from.data` will be added in the cell group.
           // Otherwise, add it here.
           isFaceted ? {} : dataFrom,
-          {transform: transform}
+          { transform: transform }
         ),
         properties: {
           update: {
@@ -96,18 +96,20 @@ export function compileMark(model: Model): any[] {
     ) {
       // add background to 'text' marks if has color
       marks.push(extend(
-        name ? { name: name + '-background' } : {},
-        {type: 'rect'},
+        specName ? { name: specName + '-background' } : {},
+        { type: 'rect' },
         // If has facet, `from.data` will be added in the cell group.
         // Otherwise, add it here.
         isFaceted ? {} : {from: dataFrom},
         // Properties
-        {properties: { update: text.background(model) } }
+        { properties: { update: text.background(model) } }
       ));
     }
 
+    let name = (specName || '') + (specName ? specName + '-' : '') + markCompiler[mark].markType(model); // generated name when global name is absent
+
     marks.push(extend(
-      name ? { name: name + '-marks' } : {},
+      { name: name },
       { type: markCompiler[mark].markType() },
       // Add `from` if needed
       (!isFaceted || model.stack() || sortBy) ? {
@@ -118,7 +120,7 @@ export function compileMark(model: Model): any[] {
           // Stacked Chart need additional transform
           model.stack() || sortBy ? { transform: [].concat(
               (model.stack() ? [stackTransform(model)] : []),
-              sortBy ? [{type:'sort', by: sortBy}] : []
+              sortBy ? [{ type:'sort', by: sortBy }] : []
           )} : {}
         )
       } : {},
@@ -133,11 +135,9 @@ export function compileMark(model: Model): any[] {
       if (labelProperties !== undefined) { // If label is supported
         // add label group
         marks.push(extend(
-          name ? { name: name + '-label' } : {},
-          {type: 'text'},
-          // If has facet, `from.data` will be added in the cell group.
-          // Otherwise, add it here.
-          isFaceted ? {} : {from: dataFrom},
+          specName ? { name: specName + '-label' } : {},
+          { type: 'text' },
+          { from: { 'mark': name } }, // reactive geometry
           // Properties
           { properties: { update: labelProperties } }
         ));
