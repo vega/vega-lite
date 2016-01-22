@@ -6,13 +6,13 @@ export interface MarkConfig {
   // General Vega
   opacity?: number;
 
-  strokeWidth?: number;
-  strokeDash?: number[];
-  strokeDashOffset?: number[];
   fill?: string;
   fillOpacity?: number;
   stroke?: string;
   strokeOpacity?: number;
+  strokeWidth?: number;
+  strokeDash?: number[];
+  strokeDashOffset?: number[];
 
   // Bar / area
   orient?: string;

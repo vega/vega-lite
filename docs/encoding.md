@@ -50,10 +50,10 @@ Here is a list of properties for the field definition object:
 | :------------ |:-------------:| :------------- |
 | field         | String        | Name of the field from which to pull a data value.    |
 | value         | String &#124; Integer | A constant value. |
-| type          | String        | Data type of the field.  This property accepts both a full type name (`'quantitative'`, `'temporal'`, `'ordinal'`,  and `'nominal'`), or an initial character of the type name (`'Q'`, `'T'`, `'O'`, `'N'`).  This property is case insensitive.|
+| type          | String        | Data type of the field.  This property accepts both a full type name (`"quantitative"`, `"temporal"`, `"ordinal"`,  and `"nominal"`), or an initial character of the type name (`"Q"`, `"T"`, `"O"`, `"N"`).  This property is case insensitive.|
 | [aggregate](#Aggregate) | String        | Aggregation function for the field (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).  |
 | [bin](#bin)          | Boolean &#124; Object        | Boolean flag / configuration object for binning.  See [Binning](#Bin) |
-| [sort](#sort)        | String &#124; Object        | Sort order for a particular field.  This can be string (`'ascending'`, `'descending'`, or `'unsorted'`) or a sort field definition object for sorting by an aggregate calculation of a specified sort field.  If unspecified, the default value is `ascending`.  See [Sort](#sort) section for more information. |
+| [sort](#sort)        | String &#124; Object        | Sort order for a particular field.  This can be string (`"ascending"`, `"descending"`, or `"unsorted"`) or a sort field definition object for sorting by an aggregate calculation of a specified sort field.  If unspecified, the default value is `ascending`.  See [Sort](#sort) section for more information. |
 | [timeUnit](#timeunit)| String        | Property for converting time unit.            |
 | [axis](#axis)        | Object        | Configuration object for the encoding's axis.    |
 | [legend](#legend)    | Boolean &#124; Object  | Boolean flag for showing legend (`true` by default), or a configuration object for the encoding's legends. |
@@ -102,7 +102,7 @@ The `bin` property definition object contains the following properties:
 
 #### ▸ `sort`
 
-Order of a field's values can be specified using the `'sort'` property.  
+Order of a field's values can be specified using the `"sort"` property.  
 For `x`, `y`, `row` and `column`, this determines the order of each value's position.
 For `color`, `shape`, `size` and `detail`, this determines the layer order
 (z-position) of each value.
@@ -110,9 +110,9 @@ For `color`, `shape`, `size` and `detail`, this determines the layer order
 `sort` property can be specified for sorting the field's values in two ways:
 
 1. (Supported by all types of fields) as __String__ with the following values:
-    - `'ascending'` –  the field is sort by the field's value in ascending order.  This is the default value when `sort` is not specified.
-    - `'descending'` –  the field is sort by the field's value in descending order.
-    - `'unsorted`' – The field is not sorted. (This is equivalent to specifying `sort:false` in [Vega's scales](https://github.com/vega/vega/wiki/Scales).)
+    - `"ascending"` –  the field is sort by the field's value in ascending order.  This is the default value when `sort` is not specified.
+    - `"descending"` –  the field is sort by the field's value in descending order.
+    - `"unsorted`" – The field is not sorted. (This is equivalent to specifying `sort:false` in [Vega's scales](https://github.com/vega/vega/wiki/Scales).)
 
 2. (Supported by nominal and ordinal fields only) as a __sort field definition object__ - for sorting the field by an aggregate calculation over another sort field.  A sort field object has the following properties:
 
@@ -120,7 +120,7 @@ For `color`, `shape`, `size` and `detail`, this determines the layer order
 | :------------ |:-------------:| :------------- |
 | _sort.field_  | Field         | The field name to aggregate over.|
 | _sort.op_     | String        | A valid [aggregation operation](Data-Transforms#-aggregate) (e.g., `mean`, `median`, etc.).|
-| _sort.order_  | String        | `'ascending'` or `'descending'` order. |
+| _sort.order_  | String        | `"ascending"` or `"descending"` order. |
 
 ----
 
@@ -144,7 +144,7 @@ Vega-Lite's `scale` definition supports the following properties<sup>1</sup>:
 | :------------ |:-------------:| :------------- |
 | type          | String        | The type of scale. This is only customizable for quantitative and temporal fields. <br/> For a quantitative field, the default value is `linear`. Other supported quantitative scale types  are `linear`, `log`, `pow`, `sqrt`, `quantile`, `quantize`, and `threshold`.  <br/> For a temporal field without time unit, the scale type should be `time` (default) or `utc` (for UTC time).  For temporal fields with time units, the scale type can also be `ordinal` (default for `hours`, `day`, `date`, `month`) or `linear` (default for `year`, `second`, `minute`). <br/> See [d3 scale documentation](https://github.com/mbostock/d3/wiki/Quantitative-Scales) for more information.|
 | domain        | Array  | By default, the field's scale draw domain values directly from the field's values.  Custom domain values can be specified.  For quantitative data, this can take the form of a two-element array with minimum and maximum values. For ordinal/categorical data, this may be an array of valid input values. |
-| range        | Array &#124; String  | For `x` and `y`, the range covers the chart's cell width and cell height respectively by default.  For `color`, the default range is `'category10'` for nominal fields, and a green ramp (`['#AFC6A3', '#09622A']`) for other types of fields.  <!-- TODO default for size size -->  For `shape`, the default is [Vega's `"shape"` preset](https://github.com/vega/vega/wiki/Scales#scale-range-literals).  For `row` and `column`, the default range is `width` and `height` respectively.  <br/> Custom domain values can be specified. For numeric values, the range can take the form of a two-element array with minimum and maximum values. For ordinal or quantized data, the range may by an array of desired output values, which are mapped to elements in the specified domain. [See Vega's documentation on range literals for more options](https://github.com/vega/vega/wiki/Scales#scale-range-literals). |
+| range        | Array &#124; String  | For `x` and `y`, the range covers the chart's cell width and cell height respectively by default.  For `color`, the default range is `"category10"` for nominal fields, and a green ramp (`['#AFC6A3', '#09622A']`) for other types of fields.  <!-- TODO default for size size -->  For `shape`, the default is [Vega's `"shape"` preset](https://github.com/vega/vega/wiki/Scales#scale-range-literals).  For `row` and `column`, the default range is `width` and `height` respectively.  <br/> Custom domain values can be specified. For numeric values, the range can take the form of a two-element array with minimum and maximum values. For ordinal or quantized data, the range may by an array of desired output values, which are mapped to elements in the specified domain. [See Vega's documentation on range literals for more options](https://github.com/vega/vega/wiki/Scales#scale-range-literals). |
 | round         | Boolean       | If true, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid.|
 
 ##### Ordinal Scale Properties
@@ -171,10 +171,10 @@ Vega-Lite's `scale` definition supports the following properties<sup>1</sup>:
 | exponent      | Number        | Sets the exponent of the scale transformation. For `pow` scale types only, otherwise ignored.|
 | nice          | Boolean       | If true, modifies the scale domain to use a more human-friendly number range (e.g., 7 instead of 6.96).|
 | zero          | Boolean       | If true, ensures that a zero baseline value is included in the scale domain. This option is ignored for non-quantitative scales.  If unspecified, zero is true by default. |
-| useRawDomain<sup>1</sup>  | Boolean       | (For aggregate field only) If false (default), draw domain data the aggregate (`summary`) data table.  If true, use the raw data instead of summary data for scale domain.  This property only works with aggregate functions that produce values ranging in the domain of the source data (`'mean'`, `'average'`, `'stdev'`, `'stdevp'`, `'median'`, `'q1'`, `'q3'`, `'min'`, `'max'`).  Otherwise, this property is ignored.  If the scale's `domain` is specified, this property is also ignored. |
+| useRawDomain<sup>1</sup>  | Boolean       | (For aggregate field only) If false (default), draw domain data the aggregate (`summary`) data table.  If true, use the raw data instead of summary data for scale domain.  This property only works with aggregate functions that produce values ranging in the domain of the source data (`"mean"`, `"average"`, `"stdev"`, `"stdevp"`, `"median"`, `"q1"`, `"q3"`, `"min"`, `"max"`).  Otherwise, this property is ignored.  If the scale's `domain` is specified, this property is also ignored. |
 
 <small>
-__<sup>1</sup>__ All Vega-Lite scale properties exist in Vega except `useRawDomain`, which is a special property in Vega-Lite.  Some Vega properties are excluded in Vega-Lite. For example,  `reverse` is excluded from Vega-Lite's `scale` to avoid conflicts with `sort` property.  Please use `sort` of a field definition to `'descending'` to get similar behavior to setting  `reverse` to `true` in Vega.  
+__<sup>1</sup>__ All Vega-Lite scale properties exist in Vega except `useRawDomain`, which is a special property in Vega-Lite.  Some Vega properties are excluded in Vega-Lite. For example,  `reverse` is excluded from Vega-Lite's `scale` to avoid conflicts with `sort` property.  Please use `sort` of a field definition to `"descending"` to get similar behavior to setting  `reverse` to `true` in Vega.  
 </small>
 ----
 
@@ -190,7 +190,7 @@ Vega-Lite's `axis` object supports the following [Vega axis properties](https://
 | grid          | Boolean       | A flag indicate if gridlines should be created in addition to ticks.  If `grid` is unspecified for X and Y, the default value is `true` for (1) quantitative fields that are not binned and (2) time fields.  Otherwise, the default value is `false`. |
 | layer         | String        | A string indicating if the axis (and any gridlines) should be placed above or below the data marks. One of `"front"` or `"back"` (default).|
 | offset        | Number | The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle. |
-| orient        | String        | The orientation of the axis. One of `top` or `bottom` for `y` and `row` channels, and `left` or `right` for `x` and `column` channels.  By default, `x` axis is placed on the bottom, `y` axis is placed on the left, `column`'s x-axis is placed on the top, `row`'s y-axis is placed on the right. |
+| orient        | String        | The orientation of the axis. One of `top` or `bottom` for `y` and `row` channels, and `left` or `right` for `x` and `column` channels.  By default, `x` axis is placed on the bottom, `y` axis is placed on the left, `column`"s x-axis is placed on the top, `row`"s y-axis is placed on the right. |
 | subdivide     | Number        | If provided, sets the number of minor ticks between major ticks (the value 9 results in decimal subdivision). Only applicable for axes visualizing quantitative scales.|
 | ticks         | Number        | A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are "nice" (multiples of 2, 5, 10) and lie within the underlying scale's range.  |
 | tickPadding   | Number        | The padding, in pixels, between ticks and text labels.|

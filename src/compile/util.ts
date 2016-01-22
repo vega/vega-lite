@@ -12,9 +12,10 @@ export enum ColorMode {
   STROKED_BY_DEFAULT
 }
 
-export const FILL_STROKE_CONFIG = ['fill', 'fillOpacity',
-  'stroke', 'strokeWidth', 'strokeDash', 'strokeDashOffset', 'strokeOpacity',
-  'opacity'];
+export const FILL_STROKE_CONFIG = ['fill', 'fillOpacity', 'stroke', 'strokeWidth', 'strokeDash', 'strokeDashOffset', 'strokeOpacity', 'opacity'];
+
+export const TEXT_CONFIG = ['angle', 'align', 'baseline', 'dx', 'dy', 'fill', 'font', 'fontWeight', 'fontStyle', 'radius', 'theta'];
+
 
 export function applyColorAndOpacity(p, model: Model, colorMode: ColorMode = ColorMode.STROKED_BY_DEFAULT) {
   const filled = colorMode === ColorMode.ALWAYS_FILLED ? true :
@@ -56,6 +57,17 @@ export function applyMarkConfig(marksProperties, model: Model, propsList: string
     }
   });
 }
+
+export function applyLabelConfig(marksProperties, model: Model) {
+  let propsList = FILL_STROKE_CONFIG.concat(TEXT_CONFIG);
+  propsList.forEach(function(property) {
+    const value = model.config().label[property];
+    if (value !== undefined) {
+      marksProperties[property] = { value: value };
+    }
+  });
+}
+
 
 
 /**
