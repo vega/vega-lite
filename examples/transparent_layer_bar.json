@@ -1,0 +1,20 @@
+{
+  "data": { "url": "data/population.json",
+    "filter": "datum.year == 2000",
+    "calculate": [{"field": "Gender", "expr": "datum.sex == 2 ? \"Female\" : \"Male\""}]
+  },
+  "mark": "bar",
+  "encoding": {
+    "y": {"field": "people","type": "quantitative", "aggregate": "sum"},
+    "x": {"field": "age", "type": "ordinal"},
+    "color": {"field": "Gender","type": "nominal",
+      "scale": {"range": ["red","blue"]}
+    }
+  },
+  "config": {
+    "stack" : false,
+    "mark": {
+      "opacity": 0.4
+    }
+  }
+}
