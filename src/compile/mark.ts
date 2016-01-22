@@ -42,7 +42,7 @@ export function compileMark(model: Model): any[] {
     let pathMarks: any = extend(
       name ? { name: name + '-marks' } : {},
       {
-        type: markCompiler[mark].markType(model),
+        type: markCompiler[mark].markType(),
         from: extend(
           // If has facet, `from.data` will be added in the cell group.
           // If has subfacet for line/area group, `from.data` will be added in the outer subfacet group below.
@@ -108,7 +108,7 @@ export function compileMark(model: Model): any[] {
 
     marks.push(extend(
       name ? { name: name + '-marks' } : {},
-      { type: markCompiler[mark].markType(model) },
+      { type: markCompiler[mark].markType() },
       // Add `from` if needed
       (!isFaceted || model.stack() || sortBy) ? {
         from: extend(
