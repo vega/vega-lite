@@ -4,7 +4,7 @@ import {assert} from 'chai';
 import {parseModel} from '../util';
 import {extend} from '../../src/util'
 import {X, Y, SIZE, COLOR, SHAPE} from '../../src/channel';
-import {point, square} from '../../src/compile/mark-point';
+import {point, square, circle} from '../../src/compile/mark-point';
 
 describe('Mark: Point', function() {
   it('should return the correct mark type', function() {
@@ -110,36 +110,110 @@ describe('Mark: Point', function() {
 
 describe('Mark: Square', function() {
   it('should return the correct mark type', function() {
-    // TODO call square.markType()
+    const model = parseModel({
+      "mark": "square",
+      "encoding": {
+        "color": {"value": "blue"}
+      }
+    });
+    assert.equal(square.markType(model), 'symbol');
+  });
+
+  it('should have correct shape', function() {
+    const model = parseModel({
+      "mark": "square",
+      "encoding": {
+        "color": {"value": "blue"}
+      }
+    });
+    const props = square.properties(model);
+
+    assert.equal(props.shape.value, 'square');
   });
 
   it('should be filled by default', function() {
     const model = parseModel({
       "mark": "square",
       "encoding": {
-        "color": {"value": "red"}
+        "color": {"value": "blue"}
       }
     });
     const props = square.properties(model);
 
-    assert.equal(props.fill.value, 'red');
+    assert.equal(props.fill.value, 'blue');
   });
 
   it('should support config.mark.filled:false', function() {
-    // TODO
+    const model = parseModel({
+      "mark": "square",
+      "encoding": {
+        "color" : {"value" : "blue"}
+      },
+      "config" : {
+        "mark" : {
+          "filled" : false
+        }
+      }
+    });
+
+    const props = square.properties(model);
+
+    assert.equal(props.stroke.value, 'blue');
+    assert.isUndefined(props.fill, 'no fill was defined');
   });
 });
 
 describe('Mark: Circle', function() {
   it('should return the correct mark type', function() {
-    // TODO call circle.markType()
+    const model = parseModel({
+      "mark": "circle",
+      "encoding": {
+        "color": {"value": "blue"}
+      }
+    });
+    assert.equal(circle.markType(model), 'symbol');
+  });
+
+  it('should have correct shape', function() {
+    const model = parseModel({
+      "mark": "circle",
+      "encoding": {
+        "color": {"value": "blue"}
+      }
+    });
+    const props = circle.properties(model);
+
+    assert.equal(props.shape.value, 'circle');
   });
 
   it('should be filled by default', function() {
-    // TODO
+    const model = parseModel({
+      "mark": "circle",
+      "encoding": {
+        "color": {"value": "blue"}
+      }
+    });
+    const props = circle.properties(model);
+
+    assert.equal(props.fill.value, 'blue');
   });
 
   it('should support config.mark.filled:false', function() {
-    // TODO
+    const model = parseModel({
+      "mark": "cirlce",
+      "encoding": {
+        "color" : {"value" : "blue"}
+      },
+      "config" : {
+        "mark" : {
+          "filled" : false
+        }
+      }
+    });
+
+    const props = circle.properties(model);
+
+    assert.equal(props.stroke.value, 'blue');
+    assert.isUndefined(props.fill);
   });
 });
