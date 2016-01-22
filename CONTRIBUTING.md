@@ -36,9 +36,7 @@ Here are some guides:
   - All lint and test should pass.  
   - Run `npm run lint` and `npm run test`.  
   - Update the documentation under `docs/` to reflect the changes.
-  - Provide a concise description for the pull request.  An ideal description
-  should be something that we can copy and paste in
-  [our release note](https://github.com/vega/vega-lite/releases).
+  - Provide a concise description for the pull request.  Write both pull request and commits description in present tense ([Why?](http://stackoverflow.com/questions/13861318/why-is-it-considered-good-practice-to-describe-git-commits-in-the-present-tense)).  This will allow us to copy the description and simply paste in  [our release note](https://github.com/vega/vega-lite/releases).
 
 - For small fixes, please feel free to submit a pull request
 with appropriate test cases or example specs the demonstrate the use case.  
