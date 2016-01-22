@@ -162,10 +162,9 @@ export namespace bar {
     let p: any = {};
 
     const orient = model.config().mark.orient;
-    const horizontal = (orient == 'horizontal');
+    const horizontal = (orient === 'horizontal');
 
-    // const stack = model.stack();
-
+    // for reactive geometry
     let datumField = 'datum.' + (horizontal ? model.field(X) : model.field(Y));
 
     p.text = { field: datumField };
@@ -175,12 +174,12 @@ export namespace bar {
     p.y = { field: horizontal ? 'yc' : datumField };
 
     if (horizontal) {
-      p.baseline = { value: 'middle' }
+      p.baseline = { value: 'middle' };
       p.align = { value: 'left' };
 
       p.x.offset = 5;
     } else {
-      p.baseline = { value: 'bottom' }
+      p.baseline = { value: 'bottom' };
       p.align = { value: 'center' };
 
       p.y.offset = -5;

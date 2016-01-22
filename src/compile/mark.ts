@@ -106,7 +106,7 @@ export function compileMark(model: Model): any[] {
       ));
     }
 
-    let name = (specName || '') + (specName ? specName + '-' : '') + markCompiler[mark].markType(model);
+    let name = (specName || '') + (specName ? specName + '-' : '') + markCompiler[mark].markType(model); // generated name when global name is absent
 
     marks.push(extend(
       { name: name },
@@ -137,7 +137,7 @@ export function compileMark(model: Model): any[] {
         marks.push(extend(
           specName ? { name: specName + '-label' } : {},
           { type: 'text' },
-          { from: { 'mark': name } },
+          { from: { 'mark': name } }, // reactive geometry
           // Properties
           { properties: { update: labelProperties } }
         ));

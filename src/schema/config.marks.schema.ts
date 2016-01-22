@@ -13,7 +13,7 @@ export interface MarkConfig {
   strokeWidth?: number;
   strokeDash?: number[];
   strokeDashOffset?: number[];
-  
+
   // Bar / area
   orient?: string;
   // Line / area
