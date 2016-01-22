@@ -48,7 +48,7 @@ No worry about creating an issue first.
 so we can better coordinate our efforts, prevent duplication of work,
 and help you to craft the change so that it is successfully accepted into the project.
 
-- Generally we name a branch using this pattern "<your 2-3 letter initial>/<topic>".  
+- Generally we name a branch using this pattern `<your 2-3 letters initial>/<topic>`.  
 For example, @kanitw's branch regarding scale type might be called `kw/scale-type`.
 
 - You can refer to related issue by adding #<issue-no> to the pull request's description.
