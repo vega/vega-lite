@@ -66,7 +66,7 @@ export namespace point {
 }
 
 export namespace circle {
-  export function markType(model: Model) {
+  export function markType() {
     return 'symbol';
   }
 
@@ -81,7 +81,7 @@ export namespace circle {
 }
 
 export namespace square {
-  export function markType(model: Model) {
+  export function markType() {
     return 'symbol';
   }
 
