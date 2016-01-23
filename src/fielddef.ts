@@ -24,20 +24,19 @@ export interface FieldRefOption {
 
 export function field(fieldDef: FieldDef, opt: FieldRefOption = {}) {
   const prefix = (opt.datum ? 'datum.' : '') + (opt.prefn || '');
+  const suffix = opt.suffix || '';
   const field = fieldDef.field;
 
   if (isCount(fieldDef)) {
-    return prefix + 'count';
+    return prefix + 'count' + suffix;
   } else if (opt.fn) {
-    return prefix + opt.fn + '_' + field;
+    return prefix + opt.fn + '_' + field + suffix;
   } else if (!opt.nofn && fieldDef.bin) {
-    return prefix + 'bin_' + field + opt.binSuffix || '_start';
+    return prefix + 'bin_' + field + (opt.binSuffix || suffix || '_start');
   } else if (!opt.nofn && !opt.noAggregate && fieldDef.aggregate) {
-    return prefix + fieldDef.aggregate + '_' + field;
+    return prefix + fieldDef.aggregate + '_' + field + suffix;
   } else if (!opt.nofn && fieldDef.timeUnit) {
-    return prefix + fieldDef.timeUnit + '_' + field;
-  } else if (opt.suffix) {
-    return prefix + field + '_' + opt.suffix;
+    return prefix + fieldDef.timeUnit + '_' + field + suffix;
   } else {
     return prefix + field;
   }
