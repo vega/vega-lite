@@ -166,8 +166,13 @@ export namespace bar {
 
     const stack = model.stack();
 
-    const suffix = (stack && X === stack.fieldChannel) ? '_end' : '';
-    const datumField = model.field((isHorizontal ? X : Y), {datum: true, suffix: suffix});
+    let fieldOptions: any = { datum: true };
+    
+    if (stack && X === stack.fieldChannel) {
+      fieldOptions.suffix = '_end';
+    }
+
+    const datumField = model.field((isHorizontal ? X : Y), fieldOptions);
 
     p.text = { field: datumField };
 
