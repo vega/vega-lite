@@ -2,13 +2,13 @@
   "description": "A bar chart showing the US population distribution of age groups and gender in 2000.",
   "data": { "url": "data/population.json",
     "filter": "datum.year == 2000",
-    "calculate": [{"field": "Gender", "expr": "datum.sex == 2 ? \"Female\" : \"Male\""}]
+    "calculate": [{"field": "gender", "expr": "datum.sex == 2 ? \"Female\" : \"Male\""}]
   },
   "mark": "bar",
   "encoding": {
-    "y": {"field": "people","type": "quantitative", "aggregate": "sum"},
+    "y": {"field": "people","type": "quantitative", "aggregate": "sum", "axis": {"title": "population"}},
     "x": {"field": "age", "type": "ordinal"},
-    "color": {"field": "Gender","type": "nominal",
+    "color": {"field": "gender","type": "nominal",
       "scale": {"range": ["red","blue"]}
     }
   },
