@@ -32,7 +32,10 @@ export namespace bar {
           scale: model.scaleName(X),
           field: model.field(X)
         };
-        p.x2 = { value: 0 };
+        p.x2 = {
+          scale: model.scaleName(X),
+          value: 0
+        };
       } else { // vertical
         p.xc = {
           scale: model.scaleName(X),
@@ -99,7 +102,10 @@ export namespace bar {
           scale: model.scaleName(Y),
           field: model.field(Y)
         };
-        p.y2 = { field: { group: 'height' } };
+        p.y2 = {
+          scale: model.scaleName(Y),
+          value: 0
+        };
       } else {
         p.yc = {
           scale: model.scaleName(Y),
