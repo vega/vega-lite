@@ -1,4 +1,5 @@
 {
+  "description": "A bar chart showing the US population distribution of age groups and gender in 2000.",
   "data": { "url": "data/population.json",
     "filter": "datum.year == 2000",
     "calculate": [{"field": "Gender", "expr": "datum.sex == 2 ? \"Female\" : \"Male\""}]
