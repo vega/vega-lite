@@ -64,7 +64,7 @@ export const config = {
     // formats
     numberFormat: {
       type: 'string',
-      default: undefined,
+      default: 's',
       description: 'D3 Number format for axis labels and text tables. For example "s" for SI units.'
     },
     timeFormat: {
