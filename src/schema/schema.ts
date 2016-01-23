@@ -30,7 +30,7 @@ export var schema = {
   properties: {
     name: {
       type: 'string',
-      description: 'A name for the specification. The name is used to annotate marks.'
+      description: 'A name for the specification. The name is used to annotate marks, scale names, and more.'
     },
     description: {
       type: 'string'
