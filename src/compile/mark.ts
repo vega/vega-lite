@@ -106,10 +106,8 @@ export function compileMark(model: Model): any[] {
       ));
     }
 
-    let name = (specName || '') + (specName ? specName + '-' : '') + markCompiler[mark].markType(model); // generated name when global name is absent
-
     marks.push(extend(
-      { name: name },
+      { name: model.name(markCompiler[mark].markType()) },
       { type: markCompiler[mark].markType() },
       // Add `from` if needed
       (!isFaceted || model.stack() || sortBy) ? {

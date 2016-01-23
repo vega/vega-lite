@@ -186,6 +186,11 @@ export class Model {
     return this._spec.data;
   }
 
+  public name(suffix: string): string {
+    const specName = this.spec().name;
+    return (specName || '') + (specName ? specName + '-' : '') + suffix;
+  }
+
   /** returns whether the encoding has values embedded */
   public hasValues() {
     var vals = this.data().values;
