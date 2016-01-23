@@ -164,8 +164,10 @@ export namespace bar {
     const orient = model.config().mark.orient;
     const isHorizontal = (orient === 'horizontal');
 
-    // for reactive geometry
-    let datumField = 'datum.' + (isHorizontal ? model.field(X) : model.field(Y));
+    const stack = model.stack();
+
+    const suffix = (stack && X === stack.fieldChannel) ? '_end' : '';
+    const datumField = model.field((isHorizontal ? X : Y), {datum: true, suffix: suffix});
 
     p.text = { field: datumField };
 
