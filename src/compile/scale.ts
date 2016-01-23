@@ -133,6 +133,9 @@ export function domain(model: Model, channel:Channel, scaleType: string) {
   // For stack, use STACKED data.
   var stack = model.stack();
   if (stack && channel === stack.fieldChannel) {
+    if(stack.config.offset === 'normalize') {
+      return [0, 1];
+    }
     return {
       data: STACKED_SCALE,
       // STACKED_SCALE produces sum of the field's value e.g., sum of sum, sum of distinct
