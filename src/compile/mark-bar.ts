@@ -1,7 +1,8 @@
 import {Model} from './Model';
-import {X, Y, SIZE} from '../channel';
-import {applyColorAndOpacity, applyLabelConfig} from './util';
-
+import {X, Y, SIZE, LABEL} from '../channel';
+import {applyColorAndOpacity, applyLabelConfig, formatMixins} from './util';
+import {extend, contains} from '../util';
+import {QUANTITATIVE, TEMPORAL} from '../type';
 
 export namespace bar {
   export function markType() {
@@ -178,9 +179,16 @@ export namespace bar {
       fieldOptions.suffix = '_end';
     }
 
-    const datumField = model.field((isHorizontal ? X : Y), fieldOptions);
+    // const labelField = (model.fieldDef(LABEL).field === model.fieldDef(X).field) ? X : Y;
+    const datumField = model.field(LABEL, fieldOptions);
 
-    p.text = { field: datumField };
+    // text
+    if (contains([QUANTITATIVE, TEMPORAL], model.fieldDef(LABEL).type)) {
+      const format = model.config().label.format;
+      extend(p, formatMixins(model, LABEL, format, fieldOptions));
+    } else {
+      p.text = { field: datumField };
+    }
 
     p.x = { field: isHorizontal ? 'x2' : 'xc' };
 

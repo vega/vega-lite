@@ -75,7 +75,7 @@ export function applyLabelConfig(marksProperties, model: Model) {
  *
  * @param format explicitly specified format
  */
-export function formatMixins(model: Model, channel: Channel, format: string) {
+export function formatMixins(model: Model, channel: Channel, format: string, fieldOptions?: {}) {
   const fieldDef = model.fieldDef(channel);
 
   if(!contains([QUANTITATIVE, TEMPORAL], fieldDef.type)) {
@@ -101,14 +101,16 @@ export function formatMixins(model: Model, channel: Channel, format: string) {
     }
   }
 
-  if (channel === TEXT) {
+  if (channel === TEXT || channel === LABEL) {
     // text does not support format and formatType
     // https://github.com/vega/vega/issues/505
 
     const filter = (def.formatType || 'number') + (def.format ? ':\'' + def.format + '\'' : '');
+    const options = fieldOptions || { datum: true };
+
     return {
       text: {
-        template: '{{' + model.field(channel, { datum: true }) + ' | ' + filter + '}}'
+        template: '{{' + model.field(channel, options) + ' | ' + filter + '}}'
       }
     };
   }
