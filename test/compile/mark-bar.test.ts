@@ -27,7 +27,7 @@ describe('Mark: Bar', function() {
     const props = bar.properties(model);
 
     it('should end on axis', function() {
-      assert.deepEqual(props.y2, {field: {group: 'height'}});
+      assert.deepEqual(props.y2, { scale: 'y', value: 0});
     });
 
     it('should has no height', function(){
@@ -48,7 +48,7 @@ describe('Mark: Bar', function() {
     const props = bar.properties(model);
 
     it('should end on axis', function() {
-      assert.deepEqual(props.x2, {value: 0});
+      assert.deepEqual(props.x2, {scale: 'x', value: 0});
     });
 
     it('should have no width', function(){
@@ -65,7 +65,7 @@ describe('Mark: Bar', function() {
     const props = bar.properties(model);
 
     it('should end on axis', function() {
-      assert.deepEqual(props.y2, {field: {group: 'height'}});
+      assert.deepEqual(props.y2, {scale: 'y', value: 0});
     });
 
     it('should have no height', function(){
@@ -86,7 +86,7 @@ describe('Mark: Bar', function() {
     const props = bar.properties(model);
 
     it('should end on axis', function() {
-      assert.deepEqual(props.x2, {value: 0});
+      assert.deepEqual(props.x2, {scale: 'x', value: 0});
     });
 
     it('should have no width', function(){
