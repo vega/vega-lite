@@ -4,7 +4,7 @@ import {assert} from 'chai';
 import {parseModel} from '../util';
 import {extend} from '../../src/util'
 import {X, Y, SIZE, COLOR, SHAPE} from '../../src/channel';
-import {point, square} from '../../src/compile/mark-point';
+import {point, square, circle} from '../../src/compile/mark-point';
 
 describe('Mark: Point', function() {
   it('should return the correct mark type', function() {
@@ -124,7 +124,7 @@ describe('Mark: Square', function() {
 
 describe('Mark: Circle', function() {
   it('should return the correct mark type', function() {
-    // TODO call circle.markType()
+    assert.equal(circle.markType(), 'symbol');
   });
 
   it('should be filled by default', function() {
