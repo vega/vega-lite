@@ -119,7 +119,11 @@ export const labelConfig = {
       default: undefined,
       description: 'Polar coordinate angle, in radians, of the text label from the origin determined by the x and y properties. Values for theta follow the same convention of arc mark startAngle and endAngle properties: angles are measured in radians, with 0 indicating "north".'
     },
-    // TODO: consider adding format (just like marks)
-    // but let's wait until @kanitw stabilize numberFormat issue
+    format: {
+      type: 'string',
+      default: 's',
+      enum: ['e', 'f', 'g', 'r', 's', '%', 'p', 'b', 'o', 'd', 'x', 'X', 'c', 'n'],
+      description: 'formatting for text labels'
+    }
   }
 };

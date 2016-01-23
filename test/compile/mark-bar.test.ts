@@ -108,7 +108,7 @@ describe('Mark: Bar', function() {
         "x": {"type": "quantitative", "field": "US_Gross"},
         "y": {"bin": true, "type": "quantitative", "field": "IMDB_Rating"},
         "label": {
-          "field": "amount",
+          "field": "US_Gross",
           "type": "quantitative"
         }
       },
@@ -116,10 +116,6 @@ describe('Mark: Bar', function() {
     });
 
     const labels = bar.labels(model);
-
-    it('should be labeling the correct field', function() {
-      assert.deepEqual(labels.text, { field: 'datum.' + model.field(X) });
-    });
 
     it('should have horizontal x', function() {
       assert.deepEqual(labels.x, { field: 'x2', offset: 5 });
@@ -145,7 +141,7 @@ describe('Mark: Bar', function() {
         "x": {"bin": true, "type": "quantitative", "field": "IMDB_Rating"},
         "y": {"type": "quantitative", "field": "US_Gross"},
         "label": {
-          "field": "amount",
+          "field": "US_Gross",
           "type": "quantitative"
         }
       },
@@ -153,10 +149,6 @@ describe('Mark: Bar', function() {
     });
 
     const labels = bar.labels(model);
-
-    it('should be labeling the correct field', function() {
-      assert.deepEqual(labels.text, { field: 'datum.' + model.field(Y) });
-    });
 
     it('should have vertical x', function() {
       assert.deepEqual(labels.x, { field: 'xc' })

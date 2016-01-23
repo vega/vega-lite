@@ -106,11 +106,11 @@ export function formatMixins(model: Model, channel: Channel, format: string, fie
     // https://github.com/vega/vega/issues/505
 
     const filter = (def.formatType || 'number') + (def.format ? ':\'' + def.format + '\'' : '');
-    const options = fieldOptions || { datum: true };
+    const options = fieldOptions || {};
 
     return {
       text: {
-        template: '{{' + model.field(channel, options) + ' | ' + filter + '}}'
+        template: '{{datum.' + model.field(channel, options) + ' | ' + filter + '}}'
       }
     };
   }
