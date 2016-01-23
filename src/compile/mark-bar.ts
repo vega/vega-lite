@@ -167,7 +167,7 @@ export namespace bar {
     const stack = model.stack();
 
     let fieldOptions: any = { datum: true };
-    
+
     if (stack && X === stack.fieldChannel) {
       fieldOptions.suffix = '_end';
     }
