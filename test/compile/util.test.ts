@@ -70,6 +70,20 @@ describe('Model', function() {
       });
     });
 
+    it('should support empty number format', function() {
+      assert.deepEqual(formatMixins(parseModel({
+        mark: "point",
+        encoding: {
+          x: {field:'a', type: "quantitative"}
+        },
+        config: {
+          numberFormat: ''
+        }
+      }), X, undefined), {
+        format: ''
+      });
+    });
+
     it('should use format if provided', function() {
       assert.deepEqual(formatMixins(parseModel({
         mark: "point",
