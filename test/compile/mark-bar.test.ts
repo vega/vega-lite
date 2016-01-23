@@ -8,7 +8,7 @@ import {bar} from '../../src/compile/mark-bar';
 
 describe('Mark: Bar', function() {
   it('should return the correct mark type', function() {
-    // TODO call bar.markType()
+    assert.equal(bar.markType(), 'rect');
   });
 
   describe('with size.value specified', function() {
