@@ -114,7 +114,15 @@ describe('Mark: Square', function() {
   });
 
   it('should be filled by default', function() {
-    // TODO
+    const model = parseModel({
+      "mark": "square",
+      "encoding": {
+        "color": {"value": "red"}
+      }
+    });
+    const props = square.properties(model);
+
+    assert.equal(props.fill.value, 'red');
   });
 
   it('should support config.mark.filled:false', function() {
