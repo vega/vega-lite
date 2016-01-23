@@ -21,7 +21,7 @@ export namespace area {
     if (stack && X === stack.fieldChannel) { // Stacked Measure
       p.x = {
         scale: model.scaleName(X),
-        field: model.field(X) + '_start'
+        field: model.field(X, { suffix: '_start' })
       };
     } else if (model.isMeasure(X)) { // Measure
       p.x = { scale: model.scaleName(X), field: model.field(X) };
@@ -37,7 +37,7 @@ export namespace area {
       if (stack && X === stack.fieldChannel) {
         p.x2 = {
           scale: model.scaleName(X),
-          field: model.field(X) + '_end'
+          field: model.field(X, { suffix: '_end' })
         };
       } else {
         p.x2 = {
@@ -51,7 +51,7 @@ export namespace area {
     if (stack && Y === stack.fieldChannel) { // Stacked Measure
       p.y = {
         scale: model.scaleName(Y),
-        field: model.field(Y) + '_start'
+        field: model.field(Y, { suffix: '_start' })
       };
     } else if (model.isMeasure(Y)) {
       p.y = {
@@ -69,7 +69,7 @@ export namespace area {
       if (stack && Y === stack.fieldChannel) {
         p.y2 = {
           scale: model.scaleName(Y),
-          field: model.field(Y) + '_end'
+          field: model.field(Y, { suffix: '_end' })
         };
       } else {
         p.y2 = {
