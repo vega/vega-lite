@@ -29,7 +29,8 @@ export var schema = {
   required: ['mark', 'encoding'],
   properties: {
     name: {
-      type: 'string'
+      type: 'string',
+      description: 'A name for the specification. The name is used to annotate marks.'
     },
     description: {
       type: 'string'
