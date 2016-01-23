@@ -8,7 +8,7 @@ import {point, square} from '../../src/compile/mark-point';
 
 describe('Mark: Point', function() {
   it('should return the correct mark type', function() {
-    // TODO call point.markType()
+    assert.equal(point.markType(), 'symbol');
   });
 
   function pointXY(moreEncoding = {}) {
