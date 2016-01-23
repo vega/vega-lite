@@ -135,7 +135,7 @@ export function compileMark(model: Model): any[] {
         marks.push(extend(
           specName ? { name: specName + '-label' } : {},
           { type: 'text' },
-          { from: { 'mark': name } }, // reactive geometry
+          { from: { 'mark': model.name(markCompiler[mark].markType()) } }, // reactive geometry
           // Properties
           { properties: { update: labelProperties } }
         ));
