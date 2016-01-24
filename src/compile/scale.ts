@@ -135,10 +135,8 @@ export function domain(model: Model, channel:Channel, scaleType: string) {
   if (stack && channel === stack.fieldChannel) {
     return {
       data: STACKED_SCALE,
-      field: model.field(channel, {
-        // If faceted, scale is determined by the max of sum in each facet.
-        prefn: 'sum_'
-      })
+      // STACKED_SCALE produces sum of the field's value e.g., sum of sum, sum of distinct
+      field: model.field(channel, {prefn: 'sum_'})
     };
   }
 

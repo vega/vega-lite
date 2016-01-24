@@ -406,6 +406,7 @@ export namespace stack {
         type: 'aggregate',
         // group by channel and other facets
         groupby: [model.field(groupbyChannel)].concat(facetFields),
+        // produce sum of the field's value e.g., sum of sum, sum of distinct
         summarize: [{ops: ['sum'], field: model.field(fieldChannel)}]
       }]
     };
