@@ -122,7 +122,6 @@ export const labelConfig = {
     format: {
       type: 'string',
       default: 's',
-      enum: ['e', 'f', 'g', 'r', 's', '%', 'p', 'b', 'o', 'd', 'x', 'X', 'c', 'n'],
       description: 'formatting for text labels'
     }
   }

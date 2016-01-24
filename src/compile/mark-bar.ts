@@ -173,13 +173,12 @@ export namespace bar {
 
     const stack = model.stack();
 
-    let fieldOptions: any = { datum: true };
+    let fieldOptions: any = { datum: 1 };
 
     if (stack && X === stack.fieldChannel) {
       fieldOptions.suffix = '_end';
     }
 
-    // const labelField = (model.fieldDef(LABEL).field === model.fieldDef(X).field) ? X : Y;
     const datumField = model.field(LABEL, fieldOptions);
 
     // text

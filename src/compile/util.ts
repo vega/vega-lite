@@ -49,6 +49,7 @@ export function applyColorAndOpacity(p, model: Model, colorMode: ColorMode = Col
   }
 }
 
+/** combines given marksProperties with mark config defaults */
 export function applyMarkConfig(marksProperties, model: Model, propsList: string[]) {
   propsList.forEach(function(property) {
     const value = model.config().mark[property];
@@ -58,6 +59,7 @@ export function applyMarkConfig(marksProperties, model: Model, propsList: string
   });
 }
 
+/** combines given marksProperties with label config defaults */
 export function applyLabelConfig(marksProperties, model: Model) {
   let propsList = FILL_STROKE_CONFIG.concat(TEXT_CONFIG);
   propsList.forEach(function(property) {
@@ -106,11 +108,14 @@ export function formatMixins(model: Model, channel: Channel, format: string, fie
     // https://github.com/vega/vega/issues/505
 
     const filter = (def.formatType || 'number') + (def.format ? ':\'' + def.format + '\'' : '');
-    const options = fieldOptions || {};
+
+    let datum = 'datum';
+    let options = fieldOptions || { datum: 1 };
+    options[datum] += fieldOptions[datum] ? 1 : 0;
 
     return {
       text: {
-        template: '{{datum.' + model.field(channel, options) + ' | ' + filter + '}}'
+        template: '{{' + model.field(channel, options) + ' | ' + filter + '}}'
       }
     };
   }

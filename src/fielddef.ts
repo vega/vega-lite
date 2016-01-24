@@ -10,8 +10,8 @@ export interface FieldRefOption {
   nofn?: boolean;
   /** exclude aggregation function */
   noAggregate?: boolean;
-  /** include 'datum.' */
-  datum?: boolean;
+  /** include 'datum' prefix the given number of times */
+  datum?: number;
   /** replace fn with custom function prefix */
   fn?: string;
   /** prepend fn with custom function prefix */
@@ -23,7 +23,8 @@ export interface FieldRefOption {
 }
 
 export function field(fieldDef: FieldDef, opt: FieldRefOption = {}) {
-  const prefix = (opt.datum ? 'datum.' : '') + (opt.prefn || '');
+  const datums = opt.datum ? new Array(opt.datum + 1).join('datum.') : '';
+  const prefix = datums + (opt.prefn || '');
   const suffix = opt.suffix || '';
   const field = fieldDef.field;
 

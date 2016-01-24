@@ -130,7 +130,7 @@ export namespace source {
 
   export function timeTransform(model: Model) {
     return model.reduce(function(transform, fieldDef: FieldDef, channel: Channel) {
-      const ref = field(fieldDef, { nofn: true, datum: true });
+      const ref = field(fieldDef, { nofn: true, datum: 1 });
       if (fieldDef.type === TEMPORAL && fieldDef.timeUnit) {
         transform.push({
           type: 'formula',
@@ -169,9 +169,9 @@ export namespace source {
           transform.push({
             type: 'formula',
             field: field(fieldDef, {binSuffix: '_range'}),
-            expr: field(fieldDef, {datum: true, binSuffix: '_start'}) +
+            expr: field(fieldDef, {datum: 1, binSuffix: '_start'}) +
                   '+ \'-\' +' +
-                  field(fieldDef, {datum: true, binSuffix: '_end'})
+                  field(fieldDef, {datum: 1, binSuffix: '_end'})
           });
         }
       }
@@ -234,7 +234,7 @@ export namespace layout {
         });
       }
       const xCardinality = xHasDomain ? xScale.domain.length :
-                             model.field(X, {datum: true, prefn: 'distinct_'});
+                             model.field(X, {datum: 1, prefn: 'distinct_'});
       formulas.push({
         type: 'formula',
         field: 'cellWidth',
@@ -254,7 +254,7 @@ export namespace layout {
       }
 
       const yCardinality = yHasDomain ? yScale.domain.length :
-                             model.field(Y, {datum: true, prefn: 'distinct_'});
+                             model.field(Y, {datum: 1, prefn: 'distinct_'});
       formulas.push({
         type: 'formula',
         field: 'cellHeight',
@@ -279,7 +279,7 @@ export namespace layout {
       }
 
       const colCardinality = colHasDomain ? colScale.domain.length :
-                               model.field(COLUMN, {datum: true, prefn: 'distinct_'});
+                               model.field(COLUMN, {datum: 1, prefn: 'distinct_'});
       formulas.push({
         type: 'formula',
         field: 'width',
@@ -302,7 +302,7 @@ export namespace layout {
       }
 
       const rowCardinality = rowHasDomain ? rowScale.domain.length :
-                               model.field(ROW, {datum: true, prefn: 'distinct_'});
+                               model.field(ROW, {datum: 1, prefn: 'distinct_'});
       formulas.push({
         type: 'formula',
         field: 'height',
@@ -448,7 +448,7 @@ export function filterNonPositiveForLog(dataTable, model: Model) {
     if (scale && scale.type === 'log') {
       dataTable.transform.push({
         type: 'filter',
-        test: model.field(channel, {datum: true}) + ' > 0'
+        test: model.field(channel, {datum: 1}) + ' > 0'
       });
     }
   });
