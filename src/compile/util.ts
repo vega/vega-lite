@@ -113,7 +113,7 @@ export function formatMixins(model: Model, channel: Channel, format: string, fie
     let options = fieldOptions || { datum: 1 };
 
     if (fieldOptions !== undefined) {
-      options[datum] += fieldOptions[datum] ? 1 : 0;
+      options[datum] += (fieldOptions[datum] !== undefined) ? 1 : 0;
     }
 
     return {
