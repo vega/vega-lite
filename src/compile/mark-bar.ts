@@ -1,7 +1,8 @@
 import {Model} from './Model';
-import {X, Y, SIZE} from '../channel';
-import {applyColorAndOpacity} from './util';
-
+import {X, Y, SIZE, LABEL} from '../channel';
+import {applyColorAndOpacity, applyLabelConfig, formatMixins} from './util';
+import {extend, contains} from '../util';
+import {QUANTITATIVE, TEMPORAL} from '../type';
 
 export namespace bar {
   export function markType() {
@@ -151,7 +152,7 @@ export namespace bar {
         };
       }
 
-      p.height = model.has(SIZE)  && orient === 'horizontal' ? {
+      p.height = model.has(SIZE) && orient === 'horizontal' ? {
           // apply size scale if has size and is horizontal
           scale: model.scaleName(SIZE),
           field: model.field(SIZE)
@@ -165,7 +166,46 @@ export namespace bar {
   }
 
   export function labels(model: Model) {
-    // TODO(#64): fill this method
-    return undefined;
+    let p: any = {};
+
+    const orient = model.config().mark.orient;
+    const isHorizontal = (orient === 'horizontal');
+
+    const stack = model.stack();
+
+    let fieldOptions: any = { datum: 1 };
+
+    if (stack && X === stack.fieldChannel) {
+      fieldOptions.suffix = '_end';
+    }
+
+    const datumField = model.field(LABEL, fieldOptions);
+
+    // text
+    if (contains([QUANTITATIVE, TEMPORAL], model.fieldDef(LABEL).type)) {
+      const format = model.config().label.format;
+      extend(p, formatMixins(model, LABEL, format, fieldOptions));
+    } else {
+      p.text = { field: datumField };
+    }
+
+    p.x = { field: isHorizontal ? 'x2' : 'xc' };
+
+    p.y = { field: isHorizontal ? 'yc' : datumField };
+
+    if (isHorizontal) {
+      p.baseline = { value: 'middle' };
+      p.align = { value: 'left' };
+      p.x.offset = 5;
+    } else {
+      p.baseline = { value: 'bottom' };
+      p.align = { value: 'center' };
+      p.y.offset = -5;
+      p.y.scale = model.scaleName(Y);
+    }
+
+    applyLabelConfig(p, model);
+
+    return p;
   }
 }

@@ -186,6 +186,20 @@ export class Model {
     return this._spec.data;
   }
 
+  /**
+   * returns a name to be given to the model
+   * inherits from specName orbdefaults to just
+   * the suffix if no specName is set
+   *
+   * @param  {string} suffix appended to specName like 'specName-suffix'
+   *                         or is set as the name
+   * @return {string}        a generated name to be assigned to the model
+   */
+  public name(suffix: string): string {
+    const specName = this.spec().name;
+    return (specName || '') + (specName ? specName + '-' : '') + suffix;
+  }
+
   /** returns whether the encoding has values embedded */
   public hasValues() {
     var vals = this.data().values;
