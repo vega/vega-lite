@@ -50,7 +50,7 @@ describe('Mark: Tick', function() {
   describe('with quantitative y', function() {
     const model = parseModel({
       'mark': 'tick',
-      'encoding': {'y': {'field': 'Cylinders','type': 'ordinal'}},
+      'encoding': {'y': {'field': 'Cylinders','type': 'quantitative'}},
       'data': {'url': 'data/cars.json'}
     });
 
