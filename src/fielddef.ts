@@ -18,24 +18,27 @@ export interface FieldRefOption {
   prefn?: string;
   /** append suffix to the field ref for bin (default='_start') */
   binSuffix?: string;
+  /** append suffix to the field ref (general) */
+  suffix?: string;
 }
 
 export function field(fieldDef: FieldDef, opt: FieldRefOption = {}) {
-  var f = (opt.datum ? 'datum.' : '') + (opt.prefn || ''),
-    field = fieldDef.field;
+  const prefix = (opt.datum ? 'datum.' : '') + (opt.prefn || '');
+  const suffix = opt.suffix || '';
+  const field = fieldDef.field;
 
   if (isCount(fieldDef)) {
-    return f + 'count';
+    return prefix + 'count' + suffix;
   } else if (opt.fn) {
-    return f + opt.fn + '_' + field;
+    return prefix + opt.fn + '_' + field + suffix;
   } else if (!opt.nofn && fieldDef.bin) {
-    return f + 'bin_' + field + opt.binSuffix || '_start';
+    return prefix + 'bin_' + field + (opt.binSuffix || suffix || '_start');
   } else if (!opt.nofn && !opt.noAggregate && fieldDef.aggregate) {
-    return f + fieldDef.aggregate + '_' + field;
+    return prefix + fieldDef.aggregate + '_' + field + suffix;
   } else if (!opt.nofn && fieldDef.timeUnit) {
-    return f + fieldDef.timeUnit + '_' + field;
+    return prefix + fieldDef.timeUnit + '_' + field + suffix;
   } else {
-    return f + field;
+    return prefix + field;
   }
 }
 

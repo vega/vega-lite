@@ -8,7 +8,7 @@ import {bar} from '../../src/compile/mark-bar';
 
 describe('Mark: Bar', function() {
   it('should return the correct mark type', function() {
-    // TODO call bar.markType()
+    assert.equal(bar.markType(), 'rect');
   });
 
   describe('with size.value specified', function() {
@@ -27,7 +27,7 @@ describe('Mark: Bar', function() {
     const props = bar.properties(model);
 
     it('should end on axis', function() {
-      assert.deepEqual(props.y2, {field: {group: 'height'}});
+      assert.deepEqual(props.y2, { scale: 'y', value: 0});
     });
 
     it('should has no height', function(){
@@ -48,7 +48,7 @@ describe('Mark: Bar', function() {
     const props = bar.properties(model);
 
     it('should end on axis', function() {
-      assert.deepEqual(props.x2, {value: 0});
+      assert.deepEqual(props.x2, {scale: 'x', value: 0});
     });
 
     it('should have no width', function(){
@@ -65,7 +65,7 @@ describe('Mark: Bar', function() {
     const props = bar.properties(model);
 
     it('should end on axis', function() {
-      assert.deepEqual(props.y2, {field: {group: 'height'}});
+      assert.deepEqual(props.y2, {scale: 'y', value: 0});
     });
 
     it('should have no height', function(){
@@ -86,7 +86,7 @@ describe('Mark: Bar', function() {
     const props = bar.properties(model);
 
     it('should end on axis', function() {
-      assert.deepEqual(props.x2, {value: 0});
+      assert.deepEqual(props.x2, {scale: 'x', value: 0});
     });
 
     it('should have no width', function(){

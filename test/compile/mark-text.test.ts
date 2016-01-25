@@ -114,7 +114,7 @@ describe('Mark: Text', function() {
 
     it('should map text to template', function() {
       assert.deepEqual(props.text, {
-        template: "{{datum.mean_Acceleration | number}}"
+        template: "{{datum.mean_Acceleration | number:'s'}}"
       });
     });
 

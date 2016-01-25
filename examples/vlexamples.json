@@ -89,6 +89,11 @@
     {
       "name": "tableheatmap",
       "title": "Table Heatmap"
+    },
+    {
+      "name": "transparent_layer_bar",
+      "title": "Bar chart with transparent layers",
+      "showInEditor": false
     }
   ],
   "Stack": [

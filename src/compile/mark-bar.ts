@@ -20,11 +20,11 @@ export namespace bar {
       // 'x' is a stacked measure, thus use <field>_start and <field>_end for x, x2.
       p.x = {
         scale: model.scaleName(X),
-        field: model.field(X) + '_start'
+        field: model.field(X, { suffix: '_start' })
       };
       p.x2 = {
         scale: model.scaleName(X),
-        field: model.field(X) + '_end'
+        field: model.field(X, { suffix: '_end' })
       };
     } else if (model.isMeasure(X)) {
       if (orient === 'horizontal') {
@@ -32,7 +32,10 @@ export namespace bar {
           scale: model.scaleName(X),
           field: model.field(X)
         };
-        p.x2 = { value: 0 };
+        p.x2 = {
+          scale: model.scaleName(X),
+          value: 0
+        };
       } else { // vertical
         p.xc = {
           scale: model.scaleName(X),
@@ -87,11 +90,11 @@ export namespace bar {
     if (stack && Y === stack.fieldChannel) { // y is stacked measure
       p.y = {
         scale: model.scaleName(Y),
-        field: model.field(Y) + '_start'
+        field: model.field(Y, { suffix: '_start' })
       };
       p.y2 = {
         scale: model.scaleName(Y),
-        field: model.field(Y) + '_end'
+        field: model.field(Y, { suffix: '_end' })
       };
     } else if (model.isMeasure(Y)) {
       if (orient !== 'horizontal') { // vertical (explicit 'vertical' or undefined)
@@ -99,7 +102,10 @@ export namespace bar {
           scale: model.scaleName(Y),
           field: model.field(Y)
         };
-        p.y2 = { field: { group: 'height' } };
+        p.y2 = {
+          scale: model.scaleName(Y),
+          value: 0
+        };
       } else {
         p.yc = {
           scale: model.scaleName(Y),

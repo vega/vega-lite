@@ -8,7 +8,7 @@ import {line} from '../../src/compile/mark-line';
 
 describe('Mark: Line', function() {
   it('should return the correct mark type', function() {
-    // TODO call line.markType()
+    assert.equal(line.markType(), 'line');
   });
 
   function lineXY(moreEncoding = {}) {
