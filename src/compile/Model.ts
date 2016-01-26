@@ -187,6 +187,10 @@ export class Model {
     return this._spec.data;
   }
 
+  public transform() {
+    return this._spec.transform;
+  }
+
   /** returns whether the encoding has values embedded */
   public hasValues() {
     var vals = this.data().values;

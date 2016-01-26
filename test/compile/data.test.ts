@@ -85,7 +85,7 @@ describe('data.source', function() {
   describe('formatParse', function () {
     it('should include parse for all applicable fields, and exclude calculated fields', function() {
       const model = parseModel({
-          data: {
+          transform: {
             calculate: [
               {field: 'b2', expr: 'datum.b * 2'}
             ]
@@ -94,7 +94,8 @@ describe('data.source', function() {
           encoding: {
             x: {field: 'a', type: "temporal"},
             y: {field: 'b', type: "quantitative"},
-            color: {field: '*', type: "quantitative", aggregate: 'count'}
+            color: {field: '*', type: "quantitative", aggregate: 'count'},
+            size: {field: 'b2', type: "quantitative"},
           }
         });
 
@@ -178,7 +179,7 @@ describe('data.source', function() {
 
     describe('filter', function () {
       const model = parseModel({
-        data: {
+        transform: {
           filter: 'datum.a > datum.b && datum.c === datum.d'
         }
       });
@@ -209,7 +210,7 @@ describe('data.source', function() {
 
     it('should have correct order of transforms (null filter, timeUnit, bin then filter)', function () {
       const model = parseModel({
-        data: {
+        transform: {
           filter: 'datum.a > datum.b && datum.c === datum.d'
         },
         mark: "point",

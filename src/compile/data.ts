@@ -90,7 +90,7 @@ export namespace source {
   }
 
   function formatParse(model: Model) {
-    const calcFieldMap = (model.data().calculate || []).reduce(function(fieldMap, formula) {
+    const calcFieldMap = (model.transform().calculate || []).reduce(function(fieldMap, formula) {
       fieldMap[formula.field] = true;
       return fieldMap;
     }, {});
@@ -202,7 +202,7 @@ export namespace source {
   }
 
   export function filterTransform(model: Model) {
-    var filter = model.data().filter;
+    var filter = model.transform().filter;
     return filter ? [{
         type: 'filter',
         test: filter
@@ -210,7 +210,7 @@ export namespace source {
   }
 
   export function formulaTransform(model: Model) {
-    return (model.data().calculate || []).reduce(function(transform, formula) {
+    return (model.transform().calculate || []).reduce(function(transform, formula) {
       transform.push(extend({type: 'formula'}, formula));
       return transform;
     }, []);
