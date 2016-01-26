@@ -15,6 +15,7 @@ export interface Encoding {
   color?: FieldDef;
   size?: FieldDef;
   shape?: FieldDef;
+  path?: FieldDef;
   detail?: FieldDef | FieldDef[];
   text?: FieldDef;
   label?: FieldDef;
@@ -95,6 +96,14 @@ var shape = mergeDeep(duplicate(onlyOrdinalField), {
   }
 });
 
+var path = {
+  default: undefined,
+  oneOf: [duplicate(fieldDef), {
+    type: 'array',
+    items: duplicate(fieldDef)
+  }]
+};
+
 var detail = {
   default: undefined,
   oneOf: [duplicate(fieldDef), {
@@ -130,6 +139,7 @@ export var encoding = {
     size: size,
     color: color,
     shape: shape,
+    path: path,
     text: text,
     detail: detail,
     label: label

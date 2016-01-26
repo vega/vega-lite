@@ -1,7 +1,6 @@
 export interface MarkConfig {
   filled?: boolean;
   sortBy?: String | String[];
-  sortLineBy?: String | String[];
 
   // General Vega
   opacity?: number;
@@ -53,14 +52,6 @@ export const markConfig = {
         'All marks except "point" marks are filled by default.'
     },
     sortBy: {
-      default: undefined,
-      oneOf: [
-        {type: 'string'},
-        {type: 'array', items:{type:'string'}}
-      ],
-      description: 'Sort layer of marks by a given field or fields.'
-    },
-    sortLineBy: {
       default: undefined,
       oneOf: [
         {type: 'string'},

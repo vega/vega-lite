@@ -13,6 +13,7 @@ export enum Channel {
   SHAPE = 'shape' as any,
   SIZE = 'size' as any,
   COLOR = 'color' as any,
+  PATH = 'path' as any,
   TEXT = 'text' as any,
   DETAIL = 'detail' as any,
   LABEL = 'label' as any
@@ -25,11 +26,12 @@ export const COLUMN = Channel.COLUMN;
 export const SHAPE = Channel.SHAPE;
 export const SIZE = Channel.SIZE;
 export const COLOR = Channel.COLOR;
+export const PATH = Channel.PATH;
 export const TEXT = Channel.TEXT;
 export const DETAIL = Channel.DETAIL;
 export const LABEL = Channel.LABEL;
 
-export const CHANNELS = [X, Y, ROW, COLUMN, SIZE, SHAPE, COLOR, TEXT, DETAIL, LABEL];
+export const CHANNELS = [X, Y, ROW, COLUMN, SIZE, SHAPE, COLOR, PATH, TEXT, DETAIL, LABEL];
 
 interface SupportedMark {
   point?: boolean;
@@ -78,6 +80,8 @@ export function getSupportedMark(channel: Channel): SupportedMark {
       return {point: true};
     case TEXT:
       return {text: true};
+    case PATH:
+      return {line: true};
   }
   return {};
 }
@@ -115,6 +119,11 @@ export function getSupportedRole(channel: Channel): SupportedRole {
       return {
         measure: true,
         dimension: false
+      };
+    case PATH:
+      return {
+        measure: false,
+        dimension: true
       };
   }
   throw new Error('Invalid encoding channel' + channel);

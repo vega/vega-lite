@@ -6,7 +6,7 @@ import {FieldDef} from '../schema/fielddef.schema';
 import {contains, extend} from '../util';
 import {Model} from './Model';
 import {SHARED_DOMAIN_OPS} from '../aggregate';
-import {COLUMN, ROW, X, Y, SHAPE, SIZE, COLOR, TEXT, DETAIL, Channel} from '../channel';
+import {COLUMN, ROW, X, Y, SHAPE, SIZE, COLOR, PATH, TEXT, DETAIL, Channel} from '../channel';
 import {SOURCE, STACKED_SCALE} from '../data';
 import {isDimension} from '../fielddef';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
@@ -15,7 +15,7 @@ import {rawDomain} from './time';
 
 export function compileScales(channels: Channel[], model: Model) {
   return channels.filter(function(channel: Channel) {
-      return channel !== DETAIL;
+      return channel !== DETAIL && channel !== PATH;
     })
     .map(function(channel: Channel) {
       const fieldDef = model.fieldDef(channel);
@@ -51,6 +51,10 @@ export function compileScales(channels: Channel[], model: Model) {
 }
 
 export function type(fieldDef: FieldDef, channel: Channel, mark: Mark): string {
+  if (channel === DETAIL || channel === PATH) {
+    return null; // no scale for DETAIL and PATH
+  }
+
   switch (fieldDef.type) {
     case NOMINAL:
       return 'ordinal';
