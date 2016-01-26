@@ -21,10 +21,8 @@ A Vega-Lite `config` object can have the following top-level properties:
 | :------------ |:-------------:| :------------- |
 | viewport      | Integer[]     | The width and height of the on-screen viewport, in pixels. If necessary, clipping and scrolling will be applied. |
 | background    | String        | CSS color property to use as background of visualization. Default is `"transparent"`. |
-| filterNull    | Boolean       | Whether to filter null values from the data.  By default (`undefined`), only quantitative and temporal fields are filtered.  If set to `true`, all data items with null values are filtered. If `false`, all data items are included. |
 
-<!-- TODO: consider adding width, height, viewport, filterNull, numberFormat, timeFormat  -->
-
+<!-- TODO: consider adding width, height, viewport, numberFormat, timeFormat  -->
 
 
 ## Cell Config
@@ -72,6 +70,7 @@ The smallest unit in Vega-Lite visualization is called a cell.  Each single (non
 | :------------ |:-------------:| :------------- |
 | opacity       | Number        | The overall opacity (value between [0,1]). |
 | fill          | Color         | The fill color.  This config will be overridden by `color` channel's specified or mapped values if `filled` is `true`. |
+| fill          | Color         | The fill color.  This config will be overridden by `color` channel's specified or mapped values if `filled` is `true`. |
 | fillOpacity   | Number        | The fill opacity (value between [0,1]). |
 | stroke        | Color         | The stroke color.  This config will be overridden by `color` channel's specified or mapped values if `filled` is `false`. |
 | strokeOpacity | Number        | The stroke opacity (value between [0,1]). |
@@ -79,7 +78,6 @@ The smallest unit in Vega-Lite visualization is called a cell.  Each single (non
 | strokeDash    | Number[]      | An array of alternating stroke, space lengths for creating dashed or dotted lines.  |
 | strokeDashOffset  | Number[]  | The offset (in pixels) into which to begin drawing with the stroke dash array. |
 | filled        | Boolean        | Whether the shape\'s color should be used as fill color instead of stroke color.  This is only applicable for `bar`, `point`, `circle`, `square`, and `area`.  All supported marks except `point` marks are filled by default. See [mark](mark.html#scatter_filled) for a usage example. |
-| sortBy        | Field &#124; Field[] | Data field(s) for sorting layer of marks.  The first mark will placed on the bottom.  `"-"` prefix can be added to each field to set descending order. |
 
 <!-- one example for custom fill/stroke -->
 
@@ -135,7 +133,8 @@ The smallest unit in Vega-Lite visualization is called a cell.  Each single (non
 | font                | String  | The typeface to set the text in (e.g., `Helvetica Neue`).|
 | fontWeight          | String  | The font weight (e.g., `bold`).|
 | fontStyle           | String  | The font style (e.g., `italic`).|
-| format              | string  | The formatting pattern for text value.  |
+| format              | String  | The formatting pattern for text value.  If not defined, this will be determined automatically|
+| shortTimeLabels     | Boolean | Whether month names and weekday names should be abbreviated. |
 
 <!-- TODO: expand format detail -->
 

@@ -36,9 +36,13 @@ Here are some guides:
   - All lint and test should pass.  
   - Run `npm run lint` and `npm run test`.  
   - Update the documentation under `docs/` to reflect the changes.
-  - Provide a concise description for the pull request.  An ideal description
-  should be something that we can copy and paste in
-  [our release note](https://github.com/vega/vega-lite/releases).
+  - Make sure you have merged `master` into your branch.  If you are not a git command line ninja, we recommend [SourceTree](https://www.sourcetreeapp.com/).
+  - Provide a concise description for the pull request so that we can copy the description and simply paste in  [our release note](https://github.com/vega/vega-lite/releases).  When writing description for a pull request or a commit, please:
+    - Use imperative mood and present tense ([Why?](http://stackoverflow.com/questions/13861318/why-is-it-considered-good-practice-to-describe-git-commits-in-the-present-tense)).
+    - Mention relevant issues using github's # syntax. (e.g., `#1` for mentioning issue #1)
+    - Focus on _what_ and _why_ rather than _how_ 
+    - See more [tips about git commit](http://chris.beams.io/posts/git-commit/).
+
 
 - For small fixes, please feel free to submit a pull request
 with appropriate test cases or example specs the demonstrate the use case.  
@@ -48,7 +52,7 @@ No worry about creating an issue first.
 so we can better coordinate our efforts, prevent duplication of work,
 and help you to craft the change so that it is successfully accepted into the project.
 
-- Generally we name a branch using this pattern "<your 2-3 letter initial>/<topic>".  
+- Generally we name a branch using this pattern `<your 2-3 letters initial>/<topic>`.  
 For example, @kanitw's branch regarding scale type might be called `kw/scale-type`.
 
 - You can refer to related issue by adding #<issue-no> to the pull request's description.
@@ -68,24 +72,40 @@ the corresponding markdown files in `docs/`.
 
 Since we only publish the Github Pages when we release a new version,
 it might be slightly outdated compared to `master`.  
-For development, you can run `npm run site` to serve the github page locally at [http://localhost:4000](http://localhost:4000).
-Open [http://localhost:4000/docs](http://localhost:4000/docs) to see the docs.
+For development, once you have [setup the repository](#repository-setup),
+you can run `npm run site` to serve the github page locally at [http://localhost:4000](http://localhost:4000).
+Open [http://localhost:4000/docs](http://localhost:4000/docs) to see the docs.   
 
 
 # Development Guide
 
 ## Repository Setup
 
-Make sure you have node.js. (For mac users, we recommend using
+1. Make sure you have node.js. (For mac users, we recommend using
 [homebrew](http://brew.sh) and simply run `brew install node`.)
 
-Then, clone this repository and cd into your local clone of the repository, and install all the npm dependencies:
+2. clone this repository and cd into your local clone of the repository, and install all the npm dependencies:
 
 ```sh
 git clone https://github.com/vega/vega-lite.git
 cd vega-lite
 npm install
 ```
+
+Now you should be able to build and test the code.
+
+3. To make the gallery works, you need to install bower and its dependencies:
+
+```sh
+npm install -g bower
+bower install 
+```
+
+4. To serve the website and documentation, you also have to [install Jekyll with Github Pages Gem](https://help.github.com/articles/using-jekyll-with-pages/#installing-jekyll).  
+First, make sure you have ruby installed (If you do not, run `brew install ruby` on Mac will install it).
+Then, run `gem install bundler`. Finally, simply run `bundle install` to install jekyll and its dependencies
+(we already have the `Gemfile` in the repo).
+
 
 ## Directory Structure
 

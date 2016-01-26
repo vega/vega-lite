@@ -4,9 +4,13 @@ import {assert} from 'chai';
 import {parseModel} from '../util';
 import {extend} from '../../src/util'
 import {X, Y, SIZE, COLOR, SHAPE} from '../../src/channel';
-import {point} from '../../src/compile/mark-point';
+import {point, square, circle} from '../../src/compile/mark-point';
 
 describe('Mark: Point', function() {
+  it('should return the correct mark type', function() {
+    assert.equal(point.markType(), 'symbol');
+  });
+
   function pointXY(moreEncoding = {}) {
     const spec = {
       "mark": "point",
@@ -31,7 +35,7 @@ describe('Mark: Point', function() {
 
     const props = point.properties(model);
 
-    it('should be centered', function() {
+    it('should be centered on y', function() {
       assert.deepEqual(props.y, {value: model.fieldDef(Y).scale.bandWidth / 2});
     });
 
@@ -49,7 +53,7 @@ describe('Mark: Point', function() {
 
     const props = point.properties(model);
 
-    it('should be centered', function() {
+    it('should be centered on x', function() {
       assert.deepEqual(props.x, {value: model.fieldDef(X).scale.bandWidth / 2});
     });
 
@@ -101,5 +105,33 @@ describe('Mark: Point', function() {
     it('should have scale for shape', function () {
       assert.deepEqual(props.shape, {scale: SHAPE, field: 'bin_yield_range'});
     });
+  });
+});
+
+describe('Mark: Square', function() {
+  it('should return the correct mark type', function() {
+    assert.equal(square.markType(), 'symbol');
+  });
+
+  it('should be filled by default', function() {
+    // TODO
+  });
+
+  it('should support config.mark.filled:false', function() {
+    // TODO
+  });
+});
+
+describe('Mark: Circle', function() {
+  it('should return the correct mark type', function() {
+    assert.equal(circle.markType(), 'symbol');
+  });
+
+  it('should be filled by default', function() {
+    // TODO
+  });
+
+  it('should support config.mark.filled:false', function() {
+    // TODO
   });
 });

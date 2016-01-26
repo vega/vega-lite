@@ -6,11 +6,13 @@ import {config, Config} from './config.schema';
 import {data, Data} from './data.schema';
 import {encoding, Encoding} from './encoding.schema';
 import {Mark} from '../mark';
+import {transform, Transform} from './transform.schema';
 
 export interface Spec {
   name?: string;
   description?: string;
   data?: Data;
+  transform?: Transform;
   mark?: Mark;
   encoding?: Encoding;
   config?: Config;
@@ -29,12 +31,14 @@ export var schema = {
   required: ['mark', 'encoding'],
   properties: {
     name: {
-      type: 'string'
+      type: 'string',
+      description: 'A name for the specification. The name is used to annotate marks, scale names, and more.'
     },
     description: {
       type: 'string'
     },
     data: data,
+    transform: transform,
     mark: mark,
     encoding: encoding,
     config: config

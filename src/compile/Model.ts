@@ -1,26 +1,26 @@
 import {Spec} from '../schema/schema';
 import {Axis, axis as axisSchema} from '../schema/axis.schema';
+import {Legend, legend as legendSchema} from '../schema/legend.schema';
 import {Encoding} from '../schema/encoding.schema';
 import {FieldDef} from '../schema/fielddef.schema';
 import {instantiate} from '../schema/schemautil';
 import * as schema from '../schema/schema';
 import * as schemaUtil from '../schema/schemautil';
 
-import {COLUMN, ROW, X, Y, SIZE, Channel, supportMark} from '../channel';
+import {COLUMN, ROW, X, Y, SIZE, TEXT, Channel, supportMark} from '../channel';
 import {SOURCE, SUMMARY} from '../data';
 import * as vlFieldDef from '../fielddef';
 import {FieldRefOption} from '../fielddef';
 import * as vlEncoding from '../encoding';
 import {Mark, BAR, TICK, TEXT as TEXTMARK} from '../mark';
 
-import {getFullName, NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
+import {getFullName, NOMINAL, ORDINAL, TEMPORAL} from '../type';
 import {contains, duplicate, extend} from '../util';
 
 import {compileMarkConfig} from './config';
 import {compileLayout, Layout} from './layout';
 import {compileStackProperties, StackProperties} from './stack';
 import {type as scaleType} from './scale';
-import {format as timeFormatExpr} from './time';
 
 /**
  * Internal model of Vega-Lite specification for the compiler.
@@ -33,7 +33,6 @@ export class Model {
   constructor(spec: Spec, theme?) {
     var defaults = schema.instantiate();
     this._spec = schemaUtil.mergeDeep(defaults, theme || {}, spec);
-
 
     vlEncoding.forEach(this._spec.encoding, function(fieldDef: FieldDef, channel: Channel) {
       if (!supportMark(channel, this._spec.mark)) {
@@ -49,8 +48,14 @@ export class Model {
         fieldDef.type = getFullName(fieldDef.type);
       }
 
+      // TODO instantiate bin here
+
       if (fieldDef.axis === true) {
         fieldDef.axis = instantiate(axisSchema);
+      }
+
+      if (fieldDef.legend === true) {
+        fieldDef.legend = instantiate(legendSchema);
       }
 
       // set default padding for ROW and COLUMN
@@ -134,11 +139,6 @@ export class Model {
     return vlFieldDef.title(this._spec.encoding[channel]);
   }
 
-  public numberFormat(channel?: Channel): string {
-    // TODO(#497): have different number format based on numberType (discrete/continuous)
-    return this.config().numberFormat;
-  };
-
   public channels(): Channel[] {
     return vlEncoding.channels(this._spec.encoding);
   }
@@ -187,6 +187,10 @@ export class Model {
     return this._spec.data;
   }
 
+  public transform() {
+    return this._spec.transform;
+  }
+
   /** returns whether the encoding has values embedded */
   public hasValues() {
     var vals = this.data().values;
@@ -202,11 +206,22 @@ export class Model {
 
   public axis(channel: Channel): Axis {
     const axis = this.fieldDef(channel).axis;
+
+    // This line should actually always return axis object since we already
+    // replace boolean axis with properties.
     return typeof axis !== 'boolean' ? axis : {};
   }
 
+  public legend(channel: Channel): Legend {
+    const legend = this.fieldDef(channel).legend;
+
+    // This line should actually always return legend object since we already
+    // replace boolean legend with properties.
+    return typeof legend !== 'boolean' ? legend : {};
+  }
+
   /** returns scale name for a given channel */
-  public scale(channel: Channel): string {
+  public scaleName(channel: Channel): string {
     const name = this.spec().name;
     return (name ? name + '-' : '') + channel;
   }
@@ -231,50 +246,5 @@ export class Model {
         return this.fieldDef(channel).scale.bandWidth / 1.5;
     }
     return 30;
-  }
-
-  /** Add formatting to a mark definition. Used in axis and legend. */
-  public format(channel: Channel, format: string) {
-    const fieldDef = this.fieldDef(channel);
-
-    let def: any = {};
-
-    if (fieldDef.type === TEMPORAL) {
-      // explicitly set the fromat type so that vega uses the datetime formatter
-      def.formatType = 'time';
-    }
-
-    if (format !== undefined) {
-      def.format = format;
-      return def;
-    }
-
-    switch (fieldDef.type) {
-      case QUANTITATIVE:
-        def.format = this.numberFormat(channel);
-        break;
-      case TEMPORAL:
-        const f = this.timeFormat(channel);
-        if (f) {
-          def.format = f;
-        } else {
-          def.format = this.config().timeFormat;
-        }
-        break;
-    }
-
-    return def;
-  }
-
-  /** returns the time format used for axis labels for a time unit */
-  public timeFormat(channel: Channel): string {
-    const fieldDef = this.fieldDef(channel);
-    const legend = fieldDef.legend;
-    const axis = fieldDef.axis;
-    const abbreviated = contains([ROW, COLUMN, X, Y], channel) ?
-      (typeof axis !== 'boolean' ? axis.shortTimeLabels : false) :
-      (typeof legend !== 'boolean' ? legend.shortTimeLabels : false);
-
-    return timeFormatExpr(fieldDef.timeUnit, abbreviated);
   }
 }

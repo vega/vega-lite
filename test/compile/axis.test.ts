@@ -7,6 +7,7 @@ import * as axis from '../../src/compile/axis';
 import {X, COLUMN} from '../../src/channel';
 
 describe('Axis', function() {
+  // TODO: move this to model.test.ts
   describe('= true', function() {
     it('should produce default properties for axis', function() {
       const model1 = parseModel({
@@ -28,25 +29,20 @@ describe('Axis', function() {
     });
   });
 
-  describe('(X) for Time Data', function() {
-    var encoding = parseModel({
-        mark: "line",
+  describe('compileAxis', function() {
+    it('should produce a Vega axis object with correct type and scale', function() {
+      const model = parseModel({
+        mark: "point",
         encoding: {
-          x: {field: "a", type: "temporal", timeUnit: "month"}
+          x: {field: "a", type: "quantitative"}
         }
       });
-    var _axis = axis.compileAxis(X, encoding);
-
-    // FIXME decouple the test here
-
-    it('should use custom format', function() {
-      assert.equal(_axis.format, '%B');
-    });
-    it('should rotate label', function() {
-      assert.equal(_axis.properties.labels.angle.value, 270);
+      const def = axis.compileAxis(X, model);
+      assert.isObject(def);
+      assert.equal(def.type, 'x');
+      assert.equal(def.scale, 'x');
     });
   });
-
 
   describe('grid()', function () {
     // FIXME(kanitw): Jul 19, 2015 - write test
@@ -54,7 +50,7 @@ describe('Axis', function() {
 
   describe('orient()', function () {
     it('should return specified orient', function () {
-      var orient = axis.orient(parseModel({
+      const orient = axis.orient(parseModel({
           mark: "point",
           encoding: {
             x: {field: 'a', axis:{orient: 'bottom'}}
@@ -64,7 +60,7 @@ describe('Axis', function() {
     });
 
     it('should return undefined by default', function () {
-      var orient = axis.orient(parseModel({
+      const orient = axis.orient(parseModel({
           mark: "point",
           encoding: {
             x: {field: 'a'}
@@ -74,7 +70,7 @@ describe('Axis', function() {
     });
 
     it('should return top for COL', function () {
-      var orient = axis.orient(parseModel({
+      const orient = axis.orient(parseModel({
           mark: "point",
           encoding: {
             x: {field: 'a'},
@@ -85,31 +81,19 @@ describe('Axis', function() {
     });
   });
 
-  describe('labels()', function () {
-    it('should show labels by default', function () {
-      var labels = axis.properties.labels(parseModel({
-          mark: "point",
-          encoding: {
-            x: {field: 'a', type: "ordinal"}
-          }
-        }), X, {}, {orient: 'top'});
-      assert.deepEqual(labels.text.template, '{{ datum.data | truncate:25}}');
-    });
+  describe('ticks', function() {
+    // FIXME: write test
+  });
 
-    it('should hide labels if labels are set to false', function () {
-      var labels = axis.properties.labels(parseModel({
-          mark: "point",
-          encoding: {
-            x: {field: 'a', type: "ordinal", axis: {labels: false}}
-          }
-        }), X, {}, null);
-      assert.deepEqual(labels.text, '');
-    });
+  describe('tickSize', function() {
+    // FIXME: write test
+    // - it should return explicitly specified tickSize
+    // - otherwise it should return 0 for ROW and COLUMN and undefined for other channels
   });
 
   describe('title()', function () {
     it('should add explicitly specified title', function () {
-      var title = axis.title(parseModel({
+      const title = axis.title(parseModel({
           mark: "point",
           encoding: {
             x: {field: 'a', axis: {title: 'Custom'}}
@@ -119,7 +103,7 @@ describe('Axis', function() {
     });
 
     it('should add return fieldTitle by default', function () {
-      var title = axis.title(parseModel({
+      const title = axis.title(parseModel({
           mark: "point",
           encoding: {
             x: {field: 'a', type: "quantitative", axis: {titleMaxLength: 3}}
@@ -129,7 +113,7 @@ describe('Axis', function() {
     });
 
     it('should add return fieldTitle by default', function () {
-      var title = axis.title(parseModel({
+      const title = axis.title(parseModel({
           mark: "point",
           encoding: {
             x: {field: 'a', type: "quantitative", aggregate: 'sum', axis: {titleMaxLength: 10}}
@@ -139,7 +123,7 @@ describe('Axis', function() {
     });
 
     it('should add return fieldTitle by default and truncate', function () {
-      var title = axis.title(parseModel({
+      const title = axis.title(parseModel({
           mark: "point",
           encoding: {
             x: {field: 'a', type: "quantitative", aggregate: 'sum', axis: {titleMaxLength: 3}}
@@ -150,7 +134,7 @@ describe('Axis', function() {
 
 
     it('should add return fieldTitle by default and truncate', function () {
-      var title = axis.title(parseModel({
+      const title = axis.title(parseModel({
           mark: "point",
           encoding: {
             x: {field: 'abcdefghijkl'}
@@ -163,7 +147,37 @@ describe('Axis', function() {
     });
   });
 
-  describe('titleOffset()', function () {
-    // FIXME(kanitw): Jul 19, 2015 - write test
+  describe('properties.labels()', function () {
+    it('should show labels by default', function () {
+      const labels = axis.properties.labels(parseModel({
+          mark: "point",
+          encoding: {
+            x: {field: 'a', type: "ordinal"}
+          }
+        }), X, {}, {orient: 'top'});
+      assert.deepEqual(labels.text.template, '{{ datum.data | truncate:25}}');
+    });
+
+    it('should hide labels if labels are set to false', function () {
+      const labels = axis.properties.labels(parseModel({
+          mark: "point",
+          encoding: {
+            x: {field: 'a', type: "ordinal", axis: {labels: false}}
+          }
+        }), X, {}, null);
+      assert.deepEqual(labels.text, '');
+    });
+
+    it('should rotate label', function() {
+      const model = parseModel({
+        mark: "point",
+        encoding: {
+          x: {field: "a", type: "temporal", timeUnit: "month"}
+        }
+      });
+      const labels = axis.properties.labels(model, X, {}, {});
+      assert.equal(labels.angle.value, 270);
+      assert.equal(labels.baseline.value, 'middle');
+    });
   });
 });

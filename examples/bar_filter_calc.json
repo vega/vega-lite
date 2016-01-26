@@ -11,7 +11,9 @@
       {"a": "D","b": 91},
       {"a": "E","b": 81},
       {"a": "F","b": 53}
-    ],
+    ]
+  },
+  "transform": {
     "calculate": [{"field": "b2","expr": "2*datum.b"}],
     "filter": "datum.b > 60"
   },

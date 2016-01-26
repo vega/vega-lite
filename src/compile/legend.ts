@@ -5,27 +5,27 @@ import {title as fieldTitle} from '../fielddef';
 import {AREA, BAR, TICK, TEXT, LINE, POINT, CIRCLE, SQUARE} from '../mark';
 import {extend, keys} from '../util';
 import {Model} from './Model';
-import {applyMarkConfig, FILL_STROKE_CONFIG} from './util';
+import {applyMarkConfig, FILL_STROKE_CONFIG, formatMixins as utilFormatMixins} from './util';
 
 export function compileLegends(model: Model) {
   var defs = [];
 
   if (model.has(COLOR) && model.fieldDef(COLOR).legend) {
     defs.push(compileLegend(model, COLOR, {
-      fill: model.scale(COLOR)
+      fill: model.scaleName(COLOR)
       // TODO: consider if this should be stroke for line
     }));
   }
 
   if (model.has(SIZE) && model.fieldDef(SIZE).legend) {
     defs.push(compileLegend(model, SIZE, {
-      size: model.scale(SIZE)
+      size: model.scaleName(SIZE)
     }));
   }
 
   if (model.has(SHAPE) && model.fieldDef(SHAPE).legend) {
     defs.push(compileLegend(model, SHAPE, {
-      shape: model.scale(SHAPE)
+      shape: model.scaleName(SHAPE)
     }));
   }
   return defs;
@@ -37,7 +37,8 @@ export function compileLegend(model: Model, channel: Channel, def) {
 
   // 1.1 Add properties with special rules
   def.title = title(fieldDef);
-  extend(def, format(model, channel));
+
+  extend(def, formatMixins(model, channel));
 
   // 1.2 Add properties without rules
   ['orient', 'values'].forEach(function(property) {
@@ -71,7 +72,7 @@ export function title(fieldDef: FieldDef) {
   return fieldTitle(fieldDef);
 }
 
-export function format(model: Model, channel: Channel) {
+export function formatMixins(model: Model, channel: Channel) {
   const fieldDef = model.fieldDef(channel);
 
   // If the channel is binned, we should not set the format because we have a range label
@@ -80,7 +81,7 @@ export function format(model: Model, channel: Channel) {
   }
 
   const legend = fieldDef.legend;
-  return model.format(channel, (typeof legend !== 'boolean' && legend.format) || undefined);
+  return utilFormatMixins(model, channel, typeof legend !== 'boolean' ? legend.format : undefined);
 }
 
 namespace properties {
@@ -113,7 +114,7 @@ namespace properties {
           applyMarkConfig(symbols, model, FILL_STROKE_CONFIG);
 
           if (model.has(COLOR) && channel === COLOR) {
-            symbols.fill = {scale: model.scale(COLOR), field: 'data'};
+            symbols.fill = {scale: model.scaleName(COLOR), field: 'data'};
           } else {
             symbols.fill = {value: model.fieldDef(COLOR).value};
           }
@@ -123,7 +124,7 @@ namespace properties {
           applyMarkConfig(symbols, model, FILL_STROKE_CONFIG);
 
           if (model.has(COLOR) && channel === COLOR) {
-            symbols.stroke = {scale: model.scale(COLOR), field: 'data'};
+            symbols.stroke = {scale: model.scaleName(COLOR), field: 'data'};
           } else {
             symbols.stroke = {value: model.fieldDef(COLOR).value};
           }

@@ -9,7 +9,6 @@ export interface Config {
   padding?: number|string;
   viewport?: number;
   background?: string;
-  filterNull?: boolean;
 
   cell?: CellConfig;
   mark?: MarkConfig;
@@ -54,29 +53,22 @@ export const config = {
       description: 'CSS color property to use as background of visualization. Default is `"transparent"`.'
     },
 
-    // filter null
-    filterNull: {
-      type: 'boolean',
-      default: undefined,
-      description: 'Filter null values from the data. If set to true, all rows with null values are filtered. If false, no rows are filtered. Set the property to undefined to filter only quantitative and temporal fields.'
-    },
-
-    // FIXME(#497) remove these
+    // formats
     numberFormat: {
       type: 'string',
       default: 's',
-      description: 'D3 Number format for axis labels and text tables.'
-    },
-    // FIXME(#497) handle this
-    textCellWidth: {
-      type: 'integer',
-      default: 90,
-      minimum: 0
+      description: 'D3 Number format for axis labels and text tables. For example "s" for SI units.'
     },
     timeFormat: {
       type: 'string',
       default: '%Y-%m-%d',
-      description: 'Default datetime format for axis and legend labels. The format can be set directly on the axis.'
+      description: 'Default datetime format for axis and legend labels. The format can be set directly on each axis and legend.'
+    },
+
+    textCellWidth: {
+      type: 'integer',
+      default: 90,
+      minimum: 0
     },
 
     // nested

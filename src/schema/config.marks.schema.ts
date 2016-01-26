@@ -36,6 +36,7 @@ export interface MarkConfig {
   fontWeight?: string;
   // Vega-Lite only for text only
   format?: string;
+  shortTimeLabels?: boolean;
 
   applyColorToBackground?: boolean;
 }
@@ -204,9 +205,13 @@ export const markConfig = {
     // text-only & VL only
     format: {
       type: 'string',
-      default: '',  // auto
-      description: 'The formatting pattern for text value.'+
-                   'If not defined, this will be determined automatically. '
+      default: undefined,  // auto
+      description: 'The formatting pattern for text value. If not defined, this will be determined automatically. '
+    },
+    shortTimeLabels: {
+      type: 'boolean',
+      default: false,
+      description: 'Whether month names and weekday names should be abbreviated.'
     },
     applyColorToBackground: {
       type: 'boolean',

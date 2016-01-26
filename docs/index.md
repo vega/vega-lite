@@ -23,7 +23,8 @@ that contains the following top-level properties:
 
 | Property             | Type          | Description    |
 | :------------        |:-------------:| :------------- |
-| [data](data.html)    | Object        | An object describing data source |
+| [data](data.html)    | Object        | An object describing data source. |
+| [transform](transform.html)  | Object        | An object describing data transformation. |
 | [mark](mark.html)| String        | The mark type.  Currently Vega-Lite supports `bar`, `line`, `area`, `point`, and `text` (text table). |
 | [encoding](encoding.html)| Object        | key-value mapping between encoding channels and encoding object |
 | [config](config.html)   | Object        | Configuration object. |
@@ -38,6 +39,7 @@ specification and use Vega Runtime to display visualizations.
 
 ```html
 <!DOCTYPE html>
+<title>Vega Lite Bar Chart</title>
 <meta charset="utf-8">
 
 <script src="../lib/d3.min.js"></script>
@@ -77,6 +79,7 @@ Here is the bare minimum html file to get Vega-Lite with data from url working i
 
 ```html
 <!DOCTYPE html>
+<title>Vega Lite Bar Chart</title>
 <meta charset="utf-8">
 
 <script src="../lib/d3.min.js"></script>

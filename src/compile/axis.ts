@@ -2,9 +2,10 @@ import {Model} from './Model';
 import {contains, extend, truncate} from '../util';
 import {NOMINAL, ORDINAL, TEMPORAL} from '../type';
 import {COLUMN, ROW, X, Y, Channel} from '../channel';
+import {formatMixins} from './util';
 
 // https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations
-declare var exports;
+declare let exports;
 
 export function compileAxis(channel: Channel, model: Model) {
   const isCol = channel === COLUMN,
@@ -12,13 +13,13 @@ export function compileAxis(channel: Channel, model: Model) {
     type = isCol ? 'x' : isRow ? 'y': channel;
 
   // TODO: replace any with Vega Axis Interface
-  var def: any = {
+  let def: any = {
     type: type,
-    scale: model.scale(channel)
+    scale: model.scaleName(channel)
   };
 
-  // 1.1 Add properties with special rules
-  extend(def, model.format(channel, model.axis(channel).format));
+  // format mixins (add format and formatType)
+  extend(def, formatMixins(model, channel, model.axis(channel).format));
 
   // 1.2. Add properties
   [
@@ -30,7 +31,7 @@ export function compileAxis(channel: Channel, model: Model) {
   ].forEach(function(property) {
     let method: (model: Model, channel: Channel, def:any)=>any;
 
-    var value = (method = exports[property]) ?
+    const value = (method = exports[property]) ?
                   // calling axis.format, axis.grid, ...
                   method(model, channel, def) :
                   model.fieldDef(channel).axis[property];
@@ -40,13 +41,13 @@ export function compileAxis(channel: Channel, model: Model) {
   });
 
   // 2) Add mark property definition groups
-  var props = model.axis(channel).properties || {};
+  const props = model.axis(channel).properties || {};
 
   [
     'axis', 'labels', // have special rules
     'grid', 'title', 'ticks', 'majorTicks', 'minorTicks' // only default values
   ].forEach(function(group) {
-    var value = properties[group] ?
+    const value = properties[group] ?
       properties[group](model, channel, props[group], def) :
       props[group];
     if (value !== undefined) {
@@ -65,7 +66,7 @@ export function grid(model: Model, channel: Channel) {
     return undefined;
   }
 
-  var grid = model.axis(channel).grid;
+  const grid = model.axis(channel).grid;
   if (grid !== undefined) {
     return grid;
   }
@@ -76,7 +77,7 @@ export function grid(model: Model, channel: Channel) {
 }
 
 export function layer(model: Model, channel: Channel, def) {
-  var layer = model.axis(channel).layer;
+  const layer = model.axis(channel).layer;
   if (layer !== undefined) {
     return layer;
   }
@@ -88,7 +89,7 @@ export function layer(model: Model, channel: Channel, def) {
 };
 
 export function orient(model: Model, channel: Channel) {
-  var orient = model.axis(channel).orient;
+  const orient = model.axis(channel).orient;
   if (orient) {
     return orient;
   } else if (channel === COLUMN) {
@@ -130,18 +131,18 @@ export function tickSize(model: Model, channel: Channel) {
 
 
 export function title(model: Model, channel: Channel) {
-  var axis = model.axis(channel);
+  const axis = model.axis(channel);
   if (axis.title !== undefined) {
     return axis.title;
   }
 
   // if not defined, automatically determine axis title from field def
-  var fieldTitle = model.fieldTitle(channel);
+  const fieldTitle = model.fieldTitle(channel);
   const layout = model.layout();
   const cellWidth = layout.cellWidth;
   const cellHeight = layout.cellHeight;
 
-  var maxLength;
+  let maxLength;
   if (axis.titleMaxLength) {
     maxLength = axis.titleMaxLength;
   } else if (channel === X && typeof cellWidth === 'number') {

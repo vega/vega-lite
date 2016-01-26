@@ -27,28 +27,15 @@ export function compile(spec, theme?) {
 
   // TODO: change type to become VgSpec
   const output = extend(
-    spec.name ? {name: spec.name} : {},
+    spec.name ? { name: spec.name } : {},
     {
       width: typeof layout.width !== 'number' ? FIT : layout.width,
       height: typeof layout.height !== 'number' ? FIT : layout.height,
       padding: 'auto'
     },
-    ['viewport', 'background'].reduce(function(topLevelConfig, property) {
-      const value = config[property];
-      if (value !== undefined) {
-        topLevelConfig[property] = value;
-      }
-      return topLevelConfig;
-    }, {}),
-    keys(config.scene).length > 0 ? ['fill', 'fillOpacity', 'stroke', 'strokeWidth',
-      'strokeOpacity', 'strokeDash', 'strokeDashOffset'].reduce(function(topLevelConfig: any, property) {
-        const value = config.scene[property];
-        if (value !== undefined) {
-          topLevelConfig.scene = topLevelConfig.scene || {};
-          topLevelConfig.scene[property] = {value: value};
-        }
-        return topLevelConfig;
-    }, {}) : {},
+    config.viewport ? { viewport: config.viewport } : {},
+    config.background ? { background: config.background } : {},
+    keys(config.scene).length > 0 ? scene(config) : {},
     {
       data: compileData(model),
       marks: [compileRootGroup(model)]
@@ -58,6 +45,19 @@ export function compile(spec, theme?) {
     spec: output
     // TODO: add warning / errors here
   };
+}
+
+function scene(config) {
+  return ['fill', 'fillOpacity', 'stroke', 'strokeWidth',
+    'strokeOpacity', 'strokeDash', 'strokeDashOffset'].
+      reduce(function(topLevelConfig: any, property) {
+      const value = config.scene[property];
+      if (value !== undefined) {
+        topLevelConfig.scene = topLevelConfig.scene || {};
+        topLevelConfig.scene[property] = {value: value};
+      }
+      return topLevelConfig;
+  }, {});
 }
 
 export function compileRootGroup(model: Model) {
