@@ -39,7 +39,7 @@ describe('Mark: Tick', function() {
 
     const props = tick.properties(model);
     it('should be centered on y', function() {
-      assert.deepEqual(props.yc, {value: model.fieldDef(Y).scale.bandWidth / 2});
+      assert.deepEqual(props.yc, {value: 10.5});
     });
 
     it('should scale on x', function() {
@@ -56,7 +56,7 @@ describe('Mark: Tick', function() {
 
     const props = tick.properties(model);
     it('should be centered on x', function() {
-      assert.deepEqual(props.xc, {value: model.fieldDef(X).scale.bandWidth / 2});
+      assert.deepEqual(props.xc, {value: 10.5});
     });
 
     it('should scale on y', function() {
