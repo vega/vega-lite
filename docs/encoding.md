@@ -6,9 +6,7 @@ permalink: /docs/encoding.html
 
 Vega-Lite's top-level `encoding` property describes a mapping between
 encoding channels (such as `x`,`y`, and `color`) and [field definitions](#field-definition).
-Each field definition object describes
-a constant `value` or a reference to the `field` name and its data `type` and inline transformation (`aggregate`, `bin`, `sort` and `timeUnit`).
-Each field definition object can also optionally include configuration properties for `scale`, `axis`, and `legend`.
+Each field definition object describes (1) a reference to the `field` name and its data `type` or a constant value (2) the field's [inline transformation](transform.html#inline) (`aggregate`, `bin`, `sort` and `timeUnit`), and (3) properties for the field's `scale`, `axis`, and `legend`.
 
 ## Encoding Channels
 
@@ -18,29 +16,11 @@ These channels are properties for the top-level `encoding` definition object.
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | x, y          | [FieldDef](#field-definition)| Description of a field mapped to x or y coordinates (or to width or height for `bar` and `area` marks). |
-| row, column   | [FieldDef](#field-definition)| Description of a field that facets data into vertical and horizontal [trellis plots](https://en.wikipedia.org/wiki/Small_multiple) respectively. |
-| color | [FieldDef](#field-definition)| Description of a field mapped to color or a constant value for color.  The values are mapped to hue if the field is nominal, and mapped to saturation otherwise.  |
-| shape  | [FieldDef](#field-definition)| Description of a field mapped to shape encoding or a constant value for shape.   `shape` channel is only applicable for `point` marks.  |
-| size  | [FieldDef](#field-definition)| Description of a field mapped to size encoding or a constant value for size.  `size` channel is currently not applicable for `line` and `area`. If `size` is not mapped to a field, the default value is 10 for `text` mark, `bandWidth-1` for `bar` with ordinal dimension scale and 2 for `bar` with linear dimension scale, `2/3*bandWidth` for `tick`, and 30 for other marks. |
-| detail | [FieldDef](#field-definition)| Description of a field that serves as an additional dimension for aggregate views without mapping to a specific visual channel.  `detail` channel is  not applicable raw plots (plots without aggregation). |
-
-### X and Y
-
-### Color
-
-### Faceting
-
-### Size
-
-
-### Detail
-
-<!--
-- grouping for line and area
-- additional measure / groupby for aggregation
--->
-
-<!-- TODO: tooltips, labels -->
+| color | [FieldDef](#field-definition)| Description of a field or a constant value mapped to color.  The values are mapped to hue if the field is nominal, and mapped to saturation otherwise.  |
+| shape  | [FieldDef](#field-definition)| Description of a field or a constant value mapped to shape. `shape` channel is only applicable for `point` marks.  |
+| size  | [FieldDef](#field-definition)| Description of a field or a constant value mapped to size.  `size` channel is currently applicable for all marks except `line` and `area`. If `size` is not mapped to a field, the default value is 10 for `text` mark, `bandWidth-1` for `bar` with ordinal dimension scale and 2 for `bar` with linear dimension scale, `2/3*bandWidth` for `tick`, and 30 for other marks. |
+| detail | [FieldDef](#field-definition)| Description of a field or fields for (a) adding extra level of detail for aggregate views without mapping to a specific visual channel or (2) determining layer or stack order.  |
+| row, column   | [FieldDef](#field-definition)| Description of a field that facets data into vertical and horizontal [trellis plots](https://en.wikipedia.org/wiki/Small_multiple). |
 
 ## Field Definition
 
@@ -59,15 +39,26 @@ Here is a list of properties for the field definition object:
 | [legend](#legend)    | Boolean &#124; Object  | Boolean flag for showing legend (`true` by default), or a configuration object for the encoding's legends. |
 | [scale](#scale)      | Object        | Configuration object for the encoding's scale.   |
 
+
 <!-- ## Data Type -->
 <!-- TODO: add description about each data type, describe how nominal and ordinal are treated differently -->
 
+<!--
+### X and Y
 
+### Color
 
+### Size
 
+### Shape
 
+### Detail
 
+- grouping for line and area
+- additional measure / groupby for aggregation
 
-<!--TODO: elaborate example for the properties group -->
+### Faceting
 
+-->
 
+<!-- TODO: tooltips, labels -->

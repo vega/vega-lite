@@ -101,6 +101,7 @@ vg.embed('#bar_filter_calc', {
 <div id="bar_filter_calc"></div>
 
 ## Inline Transforms inside each `encoding` channel
+<div id="inline"></div>
 
 To serve exploratory analysis, binning, time unit conversion and aggregation can be specified inline as a part of each channel's [field definition](encoding.html#field-definition).  
 After the transforms inside the top-level `transform` are executed, binning, time unit conversion are then performed respectively.
@@ -238,7 +239,7 @@ the resulting visualization will show aggregate data.
 In this case, all fields without aggregation function specified are treated as dimensions; thus, the summary statistics are grouped by these dimensions.
 Additional dimensions can be specified using the `detail` channel.  
 
-Otherwise, if none of the specified encoding channel contains `aggregate`, 
+Otherwise, if none of the specified encoding channel contains `aggregate`,
 the resulting visualization shows raw data without aggregation.
 
 -------
