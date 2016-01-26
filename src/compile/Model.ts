@@ -30,9 +30,9 @@ export class Model {
   private _stack: StackProperties;
   private _layout: Layout;
 
-  constructor(spec: Spec, theme?) {
+  constructor(spec: Spec) {
     var defaults = schema.instantiate();
-    this._spec = schemaUtil.mergeDeep(defaults, theme || {}, spec);
+    this._spec = schemaUtil.mergeDeep(defaults, spec);
 
     vlEncoding.forEach(this._spec.encoding, function(fieldDef: FieldDef, channel: Channel) {
       if (!supportMark(channel, this._spec.mark)) {

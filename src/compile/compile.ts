@@ -16,8 +16,8 @@ import {COLUMN, ROW, X, Y} from '../channel';
 
 export {Model} from './Model';
 
-export function compile(spec, theme?) {
-  const model = new Model(spec, theme);
+export function compile(spec) {
+  const model = new Model(spec);
   const layout = model.layout();
 
   // FIXME replace FIT with appropriate mechanism once Vega has it
