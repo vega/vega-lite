@@ -4,9 +4,9 @@ title: Scale
 permalink: /docs/scale.html
 ---
 
-<!-- TODO: intro -- what is a scale + by default vega produces scale based on field type.  -->
+Scales are functions that transform a domain of data values (numbers, dates, strings, etc) to a range of visual values (pixels, colors, sizes). A scale function takes a single data value as input and returns a visual value.  
 
-Vega-Lite's `scale` definition supports the following properties<sup>1</sup>:
+By default, Vega-Lite creates default scales for fields that are mapped to visual channels.  The following properties can be specified as part of the [field definition's `scale` property](encoding.html#def) for customizing scales:
 
 ## Common Scale Properties
 
@@ -24,7 +24,7 @@ Vega-Lite's `scale` definition supports the following properties<sup>1</sup>:
 | bandWidth     | Number        | Width for each ordinal band.  <!--TODO need to write better explanation --> |
 | padding       | Number        | Applies spacing among ordinal elements in the scale range. The actual effect depends on how the scale is configured. For `x` and `y`, the padding value is interpreted as a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. For `row` and `column`, padding is typically in the range [0, 1] and corresponds to the fraction of space in the range interval to allocate to padding. A value of 0.5 means that the range band width will be equal to the padding width. For more, see the [D3 ordinal scale documentation](https://github.com/mbostock/d3/wiki/Ordinal-Scales).|
 
-<!-- TODO: add outperPadding -->
+<!-- TODO: add outerPadding -->
 
 ## Time Scale Properties
 
@@ -43,6 +43,14 @@ Vega-Lite's `scale` definition supports the following properties<sup>1</sup>:
 | zero          | Boolean       | If true, ensures that a zero baseline value is included in the scale domain. This option is ignored for non-quantitative scales.  If unspecified, zero is true by default. |
 | useRawDomain<sup>1</sup>  | Boolean       | (For aggregate field only) If false (default), draw domain data the aggregate (`summary`) data table.  If true, use the raw data instead of summary data for scale domain.  This property only works with aggregate functions that produce values ranging in the domain of the source data (`"mean"`, `"average"`, `"stdev"`, `"stdevp"`, `"median"`, `"q1"`, `"q3"`, `"min"`, `"max"`).  Otherwise, this property is ignored.  If the scale's `domain` is specified, this property is also ignored. |
 
+<!-- TODO: rewrite in "relationship to Vega"?
 <small>
 __<sup>1</sup>__ All Vega-Lite scale properties exist in Vega except `useRawDomain`, which is a special property in Vega-Lite.  Some Vega properties are excluded in Vega-Lite. For example,  `reverse` is excluded from Vega-Lite's `scale` to avoid conflicts with `sort` property.  Please use `sort` of a field definition to `"descending"` to get similar behavior to setting  `reverse` to `true` in Vega.  
 </small>
+-->
+
+#### Examples
+
+TODO: Log Scale
+TODO: Custom Domain
+TODO: Custom Color Range

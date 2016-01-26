@@ -80,7 +80,6 @@ The smallest unit in Vega-Lite visualization is called a cell.  Each single (non
 
 <!-- one example for custom fill/stroke -->
 
-<!-- one example for sortBy -->
 
 ### Marks Config for Bar, Line, and Area Marks
 <div id="orient"></div>
@@ -100,11 +99,8 @@ The smallest unit in Vega-Lite visualization is called a cell.  Each single (non
 | :------------ |:-------------:| :------------- |
 | interpolate   | String        | The line interpolation method to use. One of linear, step-before, step-after, basis, basis-open, basis-closed, bundle, cardinal, cardinal-open, cardinal-closed, monotone. |
 | tension       | Number        | Depending on the interpolation type, sets the tension parameter. |
-| sortLineBy    | Field &#124; Field[] | Data field(s) for sorting points in each group of line.  `"-"` prefix can be added to each field to set descending order.  |
 
 <!-- one example for interpolate -->
-
-<!-- one example for sortLineBy -->
 
 
 ### Marks Config for Tick Marks
@@ -136,8 +132,7 @@ The smallest unit in Vega-Lite visualization is called a cell.  Each single (non
 | shortTimeLabels     | Boolean | Whether month names and weekday names should be abbreviated. |
 
 <!-- TODO: expand format detail -->
-
-
+<!-- TODO: example of customized text -->
 
 ## Scene Config
 
