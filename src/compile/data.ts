@@ -90,7 +90,7 @@ export namespace source {
   }
 
   function formatParse(model: Model) {
-    const calcFieldMap = (model.data().calculate || []).reduce(function(fieldMap, formula) {
+    const calcFieldMap = (model.transform().calculate || []).reduce(function(fieldMap, formula) {
       fieldMap[formula.field] = true;
       return fieldMap;
     }, {});
@@ -122,9 +122,9 @@ export namespace source {
     // time and bin should come before filter so we can filter by time and bin
     return nullFilterTransform(model).concat(
       formulaTransform(model),
-      timeTransform(model),
+      filterTransform(model),
       binTransform(model),
-      filterTransform(model)
+      timeTransform(model)
     );
   }
 
@@ -183,7 +183,7 @@ export namespace source {
    * @return An array that might contain a filter transform for filtering null value based on filterNul config
    */
   export function nullFilterTransform(model: Model) {
-    const filterNull = model.config().filterNull;
+    const filterNull = model.transform().filterNull;
     const filteredFields = keys(model.reduce(function(aggregator, fieldDef: FieldDef) {
       if (filterNull ||
         (filterNull === undefined && fieldDef.field && fieldDef.field !== '*' && DEFAULT_NULL_FILTERS[fieldDef.type])) {
@@ -202,7 +202,7 @@ export namespace source {
   }
 
   export function filterTransform(model: Model) {
-    var filter = model.data().filter;
+    var filter = model.transform().filter;
     return filter ? [{
         type: 'filter',
         test: filter
@@ -210,7 +210,7 @@ export namespace source {
   }
 
   export function formulaTransform(model: Model) {
-    return (model.data().calculate || []).reduce(function(transform, formula) {
+    return (model.transform().calculate || []).reduce(function(transform, formula) {
       transform.push(extend({type: 'formula'}, formula));
       return transform;
     }, []);
