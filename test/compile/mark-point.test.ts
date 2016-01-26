@@ -113,25 +113,102 @@ describe('Mark: Square', function() {
     assert.equal(square.markType(), 'symbol');
   });
 
+  it('should have correct shape', function() {
+    const model = parseModel({
+      "mark": "square",
+      "encoding": {
+        "color": {"value": "blue"}
+      }
+    });
+    const props = square.properties(model);
+
+    assert.equal(props.shape.value, 'square');
+  });
+
   it('should be filled by default', function() {
-    // TODO
+    const model = parseModel({
+      "mark": "square",
+      "encoding": {
+        "color": {"value": "blue"}
+      }
+    });
+    const props = square.properties(model);
+
+    assert.equal(props.fill.value, 'blue');
   });
 
   it('should support config.mark.filled:false', function() {
-    // TODO
+    const model = parseModel({
+      "mark": "square",
+      "encoding": {
+        "color" : {"value" : "blue"}
+      },
+      "config" : {
+        "mark" : {
+          "filled" : false
+        }
+      }
+    });
+
+    const props = square.properties(model);
+
+    assert.equal(props.stroke.value, 'blue');
+    assert.isUndefined(props.fill, 'no fill was defined');
   });
 });
 
 describe('Mark: Circle', function() {
   it('should return the correct mark type', function() {
+
+    const model = parseModel({
+      "mark": "circle",
+      "encoding": {
+        "color": {"value": "blue"}
+      }
+    });
     assert.equal(circle.markType(), 'symbol');
   });
 
+  it('should have correct shape', function() {
+    const model = parseModel({
+      "mark": "circle",
+      "encoding": {
+        "color": {"value": "blue"}
+      }
+    });
+    const props = circle.properties(model);
+
+    assert.equal(props.shape.value, 'circle');
+  });
+
   it('should be filled by default', function() {
-    // TODO
+    const model = parseModel({
+      "mark": "circle",
+      "encoding": {
+        "color": {"value": "blue"}
+      }
+    });
+    const props = circle.properties(model);
+
+    assert.equal(props.fill.value, 'blue');
   });
 
   it('should support config.mark.filled:false', function() {
-    // TODO
+    const model = parseModel({
+      "mark": "cirlce",
+      "encoding": {
+        "color" : {"value" : "blue"}
+      },
+      "config" : {
+        "mark" : {
+          "filled" : false
+        }
+      }
+    });
+
+    const props = circle.properties(model);
+
+    assert.equal(props.stroke.value, 'blue');
+    assert.isUndefined(props.fill);
   });
 });

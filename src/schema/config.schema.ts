@@ -9,7 +9,6 @@ export interface Config {
   padding?: number|string;
   viewport?: number;
   background?: string;
-  filterNull?: boolean;
 
   cell?: CellConfig;
   mark?: MarkConfig;
@@ -52,13 +51,6 @@ export const config = {
       role: 'color',
       default: undefined,
       description: 'CSS color property to use as background of visualization. Default is `"transparent"`.'
-    },
-
-    // filter null
-    filterNull: {
-      type: 'boolean',
-      default: undefined,
-      description: 'Filter null values from the data. If set to true, all rows with null values are filtered. If false, no rows are filtered. Set the property to undefined to filter only quantitative and temporal fields.'
     },
 
     // formats

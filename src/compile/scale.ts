@@ -135,10 +135,8 @@ export function domain(model: Model, channel:Channel, scaleType: string) {
   if (stack && channel === stack.fieldChannel) {
     return {
       data: STACKED_SCALE,
-      field: model.field(channel, {
-        // If faceted, scale is determined by the max of sum in each facet.
-        prefn: 'sum_'
-      })
+      // STACKED_SCALE produces sum of the field's value e.g., sum of sum, sum of distinct
+      field: model.field(channel, {prefn: 'sum_'})
     };
   }
 
@@ -346,7 +344,9 @@ export function rangeMixins(model: Model, channel: Channel, scaleType: string): 
     case SHAPE:
       return {range: 'shapes'};
     case COLOR:
-      if (fieldDef.type === NOMINAL) {
+      if (fieldDef.type === NOMINAL
+        || fieldDef.type === ORDINAL // FIXME remove this once we support color ramp for ordinal
+      ) {
         return {range: 'category10'};
       } else { // time or quantitative
         return {range: ['#AFC6A3', '#09622A']}; // tableau greens

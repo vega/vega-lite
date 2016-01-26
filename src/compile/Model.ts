@@ -30,10 +30,9 @@ export class Model {
   private _stack: StackProperties;
   private _layout: Layout;
 
-  constructor(spec: Spec, theme?) {
+  constructor(spec: Spec) {
     var defaults = schema.instantiate();
-    this._spec = schemaUtil.mergeDeep(defaults, theme || {}, spec);
-
+    this._spec = schemaUtil.mergeDeep(defaults, spec);
 
     vlEncoding.forEach(this._spec.encoding, function(fieldDef: FieldDef, channel: Channel) {
       if (!supportMark(channel, this._spec.mark)) {
@@ -48,6 +47,8 @@ export class Model {
         // convert short type to full type
         fieldDef.type = getFullName(fieldDef.type);
       }
+
+      // TODO instantiate bin here
 
       if (fieldDef.axis === true) {
         fieldDef.axis = instantiate(axisSchema);
@@ -151,7 +152,7 @@ export class Model {
   }
 
   public forEach(f: (fd: FieldDef, c: Channel, i:number) => void, t?: any) {
-    return vlEncoding.forEach(this._spec.encoding, f, t);
+    vlEncoding.forEach(this._spec.encoding, f, t);
   }
 
   public isOrdinalScale(channel: Channel) {
@@ -184,6 +185,10 @@ export class Model {
 
   public data() {
     return this._spec.data;
+  }
+
+  public transform() {
+    return this._spec.transform;
   }
 
   /** returns whether the encoding has values embedded */
