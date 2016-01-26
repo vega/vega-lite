@@ -15,7 +15,7 @@ export interface Encoding {
   color?: FieldDef;
   size?: FieldDef;
   shape?: FieldDef;
-  path?: FieldDef;
+  path?: FieldDef | FieldDef[];
   detail?: FieldDef | FieldDef[];
   text?: FieldDef;
   label?: FieldDef;
