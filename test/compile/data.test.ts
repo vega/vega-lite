@@ -211,6 +211,10 @@ describe('data.source', function() {
     it('should have correct order of transforms (null filter, timeUnit, bin then filter)', function () {
       const model = parseModel({
         transform: {
+          calculate: [{
+            field: 'b2',
+            expr: '2 * datum.b'
+          }],
           filter: 'datum.a > datum.b && datum.c === datum.d'
         },
         mark: "point",
@@ -223,14 +227,17 @@ describe('data.source', function() {
             },
             'field': 'Acceleration',
             'type': "quantitative"
-          }
+          },
+          size: {field: 'b2', type:'quantitative'}
         }
       });
       const transform = source.transform(model);
+      console.log(transform);
       assert.deepEqual(transform[0].type, 'filter');
       assert.deepEqual(transform[1].type, 'formula');
-      assert.deepEqual(transform[2].type, 'bin');
-      assert.deepEqual(transform[3].type, 'filter');
+      assert.deepEqual(transform[2].type, 'filter');
+      assert.deepEqual(transform[3].type, 'bin');
+      assert.deepEqual(transform[4].type, 'formula');
     });
 
   });

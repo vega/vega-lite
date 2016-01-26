@@ -122,9 +122,9 @@ export namespace source {
     // time and bin should come before filter so we can filter by time and bin
     return nullFilterTransform(model).concat(
       formulaTransform(model),
-      timeTransform(model),
+      filterTransform(model),
       binTransform(model),
-      filterTransform(model)
+      timeTransform(model)
     );
   }
 
