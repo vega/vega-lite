@@ -70,7 +70,6 @@ The smallest unit in Vega-Lite visualization is called a cell.  Each single (non
 | :------------ |:-------------:| :------------- |
 | opacity       | Number        | The overall opacity (value between [0,1]). |
 | fill          | Color         | The fill color.  This config will be overridden by `color` channel's specified or mapped values if `filled` is `true`. |
-| fill          | Color         | The fill color.  This config will be overridden by `color` channel's specified or mapped values if `filled` is `true`. |
 | fillOpacity   | Number        | The fill opacity (value between [0,1]). |
 | stroke        | Color         | The stroke color.  This config will be overridden by `color` channel's specified or mapped values if `filled` is `false`. |
 | strokeOpacity | Number        | The stroke opacity (value between [0,1]). |
