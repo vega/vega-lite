@@ -34,7 +34,6 @@ export class Model {
     var defaults = schema.instantiate();
     this._spec = schemaUtil.mergeDeep(defaults, theme || {}, spec);
 
-
     vlEncoding.forEach(this._spec.encoding, function(fieldDef: FieldDef, channel: Channel) {
       if (!supportMark(channel, this._spec.mark)) {
         // Drop unsupported channel
@@ -48,6 +47,8 @@ export class Model {
         // convert short type to full type
         fieldDef.type = getFullName(fieldDef.type);
       }
+
+      // TODO instantiate bin here
 
       if (fieldDef.axis === true) {
         fieldDef.axis = instantiate(axisSchema);
