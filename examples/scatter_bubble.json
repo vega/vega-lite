@@ -1,5 +1,5 @@
 {
-  "description": "A scatterplot showing horsepower and miles per gallons with binned acceleration on size.",
+  "description": "A bubbleplot showing horsepower on x, miles per gallons on y, and binned acceleration on size.",
   "data": {"url": "data/cars.json"},
   "mark": "point",
   "encoding": {

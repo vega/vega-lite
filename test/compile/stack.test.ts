@@ -21,12 +21,12 @@ describe('vl.compile.stack()', function () {
     const dataSpec = compileData(model);
     it('should aggregate data correctly', function () {
 
-      var tableData = dataSpec.filter(function(data) {
+      const tableData = dataSpec.filter(function(data) {
         return data.name === SUMMARY;
       });
       assert.equal(tableData.length, 1);
 
-      var tableAggrTransform = tableData[0].transform.filter(function(t) {
+      const tableAggrTransform = tableData[0].transform.filter(function(t) {
         return t.type === 'aggregate';
       })[0];
       assert.equal(tableAggrTransform.groupby.length, 4);
@@ -34,11 +34,11 @@ describe('vl.compile.stack()', function () {
     });
 
     it('should create stack summary data correctly', function() {
-      var stackedData = dataSpec.filter(function(data) {
+      const stackedData = dataSpec.filter(function(data) {
         return data.name === 'stacked_scale';
       });
       assert.equal(stackedData.length, 1);
-      var stackedAggrTransform = stackedData[0].transform[0];
+      const stackedAggrTransform = stackedData[0].transform[0];
       assert.equal(stackedAggrTransform.groupby[0], 'bin_Cost__Total_$_start');
     });
 
@@ -66,12 +66,12 @@ describe('vl.compile.stack()', function () {
     const dataSpec = compileData(model);
     it('should aggregate data correctly', function () {
 
-      var tableData = dataSpec.filter(function(data) {
+      const tableData = dataSpec.filter(function(data) {
         return data.name === SUMMARY;
       });
       assert.equal(tableData.length, 1);
 
-      var tableAggrTransform = tableData[0].transform.filter(function(t) {
+      const tableAggrTransform = tableData[0].transform.filter(function(t) {
         return t.type === 'aggregate';
       })[0];
       assert.equal(tableAggrTransform.groupby.length, 4);
@@ -79,12 +79,12 @@ describe('vl.compile.stack()', function () {
     });
 
     it('should create stack summary data correctly', function() {
-      var stackedData = dataSpec.filter(function(data) {
+      const stackedData = dataSpec.filter(function(data) {
         return data.name === 'stacked_scale';
       });
 
       assert.equal(stackedData.length, 1);
-      var stackedAggrTransform = stackedData[0].transform[0];
+      const stackedAggrTransform = stackedData[0].transform[0];
       assert.equal(stackedAggrTransform.groupby[0], 'bin_Cost__Total_$_start');
     });
 

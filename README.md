@@ -12,7 +12,9 @@ __Try using Vega-Lite in the online [Vega Editor](http://vega.github.io/vega-edi
 
 The language and API are described in the [documentation](https://vega.github.io/vega-lite/docs/). The complete schema for specifications as [JSON schema](http://json-schema.org/) is at [vega-lite-schema.json](https://vega.github.io/vega-lite/vega-lite-schema.json).
 
-Please refer to [CONTRIBUTING.md](CONTRIBUTING.md) for contribution and development guidelines.
+Feel free to ask questions about Vega-Lite in the [Vega Discussion Group / Mailing List](https://groups.google.com/forum/?fromgroups#!forum/vega-js).
+
+Contributions are also welcomed.  Please refer to [CONTRIBUTING.md](CONTRIBUTING.md) for contribution and development guidelines.
 
 ## Example specification
 

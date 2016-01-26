@@ -7,6 +7,10 @@ import {X, Y, COLOR} from '../../src/channel';
 import {line} from '../../src/compile/mark-line';
 
 describe('Mark: Line', function() {
+  it('should return the correct mark type', function() {
+    assert.equal(line.markType(), 'line');
+  });
+
   function lineXY(moreEncoding = {}) {
     const spec = {
       "mark": "line",

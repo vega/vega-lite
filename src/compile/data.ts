@@ -29,7 +29,7 @@ const DEFAULT_NULL_FILTERS = {
  *                 aggregate table as well.
  */
 export function compileData(model: Model): VgData[] {
-  var def = [source.def(model)];
+  const def = [source.def(model)];
 
   const summaryDef = summary.def(model);
   if (summaryDef) {
@@ -40,9 +40,9 @@ export function compileData(model: Model): VgData[] {
   filterNonPositiveForLog(def[def.length - 1], model);
 
   // add stats for layout calculation
-  const statsDef = layout.def(model);
-  if(statsDef) {
-    def.push(statsDef);
+  const layoutDef = layout.def(model);
+  if(layoutDef) {
+    def.push(layoutDef);
   }
 
   // Stack
@@ -51,10 +51,9 @@ export function compileData(model: Model): VgData[] {
     def.push(stack.def(model, stackDef));
   }
 
-  // Time domain tables
-  dates.defs(model).forEach(dateDef => def.push(dateDef));
-
-  return def;
+  return def.concat(
+    dates.defs(model) // Time domain tables
+  );
 }
 
 // TODO: Consolidate all Vega interfaces
@@ -351,10 +350,14 @@ export namespace summary {
         }
       } else {
         if (fieldDef.bin) {
-          // TODO(#694) only add dimension for the required ones.
           dims[field(fieldDef, {binSuffix: '_start'})] = field(fieldDef, {binSuffix: '_start'});
           dims[field(fieldDef, {binSuffix: '_mid'})] = field(fieldDef, {binSuffix: '_mid'});
           dims[field(fieldDef, {binSuffix: '_end'})] = field(fieldDef, {binSuffix: '_end'});
+
+          if (scaleType(fieldDef, channel, model.mark()) === 'ordinal') {
+            // also produce bin_range if the binned field use ordinal scale
+            dims[field(fieldDef, {binSuffix: '_range'})] = field(fieldDef, {binSuffix: '_range'});
+          }
         } else {
           dims[field(fieldDef)] = field(fieldDef);
         }
@@ -403,6 +406,7 @@ export namespace stack {
         type: 'aggregate',
         // group by channel and other facets
         groupby: [model.field(groupbyChannel)].concat(facetFields),
+        // produce sum of the field's value e.g., sum of sum, sum of distinct
         summarize: [{ops: ['sum'], field: model.field(fieldChannel)}]
       }]
     };
@@ -418,7 +422,7 @@ export namespace dates {
   export function defs(model: Model) {
     let alreadyAdded = {};
 
-    var res = model.reduce(function(aggregator, fieldDef: FieldDef, channel: Channel) {
+    return model.reduce(function(aggregator, fieldDef: FieldDef, channel: Channel) {
       if (fieldDef.timeUnit) {
         const domain = rawDomain(fieldDef.timeUnit, channel);
         if (domain && !alreadyAdded[fieldDef.timeUnit]) {
@@ -436,8 +440,6 @@ export namespace dates {
       }
       return aggregator;
     }, []);
-
-    return res;
   }
 }
 

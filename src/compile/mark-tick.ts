@@ -13,21 +13,21 @@ export namespace tick {
     // x
     if (model.has(X)) {
       p.xc = {
-        scale: model.scale(X),
+        scale: model.scaleName(X),
         field: model.field(X, { binSuffix: '_mid' })
       };
     } else {
-      p.x = { value: 0, offset: 2 };
+      p.xc = { value: model.fieldDef(X).scale.bandWidth / 2 };
     }
 
     // y
     if (model.has(Y)) {
       p.yc = {
-        scale: model.scale(Y),
+        scale: model.scaleName(Y),
         field: model.field(Y, { binSuffix: '_mid' })
       };
     } else {
-      p.y = { value: 0 };
+      p.yc = { value: model.fieldDef(Y).scale.bandWidth / 2 };
     }
 
     if (model.config().mark.orient === 'horizontal') {

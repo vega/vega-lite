@@ -1,7 +1,8 @@
 import {Model} from './Model';
 import {X, Y, COLOR, TEXT, SIZE} from '../channel';
-import {applyMarkConfig, applyColorAndOpacity} from './util';
-import {QUANTITATIVE} from '../type';
+import {applyMarkConfig, applyColorAndOpacity, formatMixins} from './util';
+import {extend, contains} from '../util';
+import {QUANTITATIVE, TEMPORAL} from '../type';
 
 export namespace text {
   export function markType() {
@@ -14,7 +15,7 @@ export namespace text {
       y: { value: 0 },
       width: { field: { group: 'width' } },
       height: { field: { group: 'height' } },
-      fill: { scale: model.scale(COLOR), field: model.field(COLOR) }
+      fill: { scale: model.scaleName(COLOR), field: model.field(COLOR) }
     };
   }
 
@@ -26,7 +27,7 @@ export namespace text {
     // x
     if (model.has(X)) {
       p.x = {
-        scale: model.scale(X),
+        scale: model.scaleName(X),
         field: model.field(X, { binSuffix: '_mid' })
       };
     } else {
@@ -41,7 +42,7 @@ export namespace text {
     // y
     if (model.has(Y)) {
       p.y = {
-        scale: model.scale(Y),
+        scale: model.scaleName(Y),
         field: model.field(Y, { binSuffix: '_mid' })
       };
     } else {
@@ -52,7 +53,7 @@ export namespace text {
     // size
     if (model.has(SIZE)) {
       p.fontSize = {
-        scale: model.scale(SIZE),
+        scale: model.scaleName(SIZE),
         field: model.field(SIZE)
       };
     } else {
@@ -72,15 +73,9 @@ export namespace text {
 
     // text
     if (model.has(TEXT)) {
-      if (model.fieldDef(TEXT).type === QUANTITATIVE) {
+      if (contains([QUANTITATIVE, TEMPORAL], model.fieldDef(TEXT).type)) {
         const format = model.config().mark.format;
-        // TODO: revise this line
-        const numberFormat = format !== undefined ? format : model.numberFormat(TEXT);
-
-        p.text = {
-          template: '{{' + model.field(TEXT, { datum: true }) +
-          ' | number:\'' + numberFormat + '\'}}'
-        };
+        extend(p, formatMixins(model, TEXT, format));
       } else {
         p.text = { field: model.field(TEXT) };
       }
