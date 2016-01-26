@@ -51,10 +51,10 @@ Here is a list of properties for the field definition object:
 | field         | String        | Name of the field from which to pull a data value.    |
 | value         | String &#124; Integer | A constant value. |
 | type          | String        | Data type of the field.  This property accepts both a full type name (`"quantitative"`, `"temporal"`, `"ordinal"`,  and `"nominal"`), or an initial character of the type name (`"Q"`, `"T"`, `"O"`, `"N"`).  This property is case insensitive.|
-| [aggregate](#Aggregate) | String        | Aggregation function for the field (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).  |
-| [bin](#bin)          | Boolean &#124; Object        | Boolean flag / configuration object for binning.  See [Binning](#Bin) |
-| [sort](#sort)        | String &#124; Object        | Sort order for a particular field.  This can be string (`"ascending"`, `"descending"`, or `"unsorted"`) or a sort field definition object for sorting by an aggregate calculation of a specified sort field.  If unspecified, the default value is `ascending`.  See [Sort](#sort) section for more information. |
-| [timeUnit](#timeunit)| String        | Property for converting time unit.            |
+| [aggregate](transform.html#aggregate) | String        | Aggregation function for the field (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).  |
+| [bin](transform.html#bin) | Boolean &#124; Object        | Boolean flag / configuration object for binning.   |
+| [sort](transform.html#sort) | String &#124; Object        | Sort order for a particular field.  This can be string (`"ascending"`, `"descending"`, or `"unsorted"`) or a sort field definition object for sorting by an aggregate calculation of a specified sort field.  If unspecified, the default value is `ascending`.  See [Sort](#sort) section for more information. |
+| [timeUnit](transform.html#timeunit)| String        | Property for converting time unit.            |
 | [axis](#axis)        | Object        | Configuration object for the encoding's axis.    |
 | [legend](#legend)    | Boolean &#124; Object  | Boolean flag for showing legend (`true` by default), or a configuration object for the encoding's legends. |
 | [scale](#scale)      | Object        | Configuration object for the encoding's scale.   |
@@ -62,68 +62,8 @@ Here is a list of properties for the field definition object:
 <!-- ## Data Type -->
 <!-- TODO: add description about each data type, describe how nominal and ordinal are treated differently -->
 
-### Field Transformations
 
-#### ▸ `aggregate`
-
-Vega-Lite supports all [Vega aggregation operations](https://github.com/vega/vega/wiki/Data-Transforms#-aggregate) (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).
-
-<!--TODO direct to transformation.md-->
-
-----
-
-#### ▸ `bin`
-
-To group quantitative, continuous data values of a particular field into smaller number of "bins" (e.g., for a histogram), the field's `bin` property can be specified.  
-`bin` property can be either a boolean value or a bin property definition object.
-If `bin` is `true`, default binning parameters will be applied.
-
-The `bin` property definition object contains the following properties:
-
-| Property      | Type          | Description    |
-| :------------ |:-------------:| :------------- |
-| maxbins       | Integer       | The maximum number of allowable bins.  If unspecified, this is 6 for `row`, `column` and `shape` and 10 for other channels.  See [Datalib's binning documentation](https://github.com/vega/datalib/wiki/Statistics#dl_bins) for more information. |
-| min                 | Number              | The minimum bin value to consider. If unspecified, the minimum value of the specified field is used.|
-| max                 | Number              | The maximum bin value to consider. If unspecified, the maximum value of the specified field is used.|
-| base                | Number              | The number base to use for automatic bin determination (default is base 10).|
-| step                | Number              | An exact step size to use between bins. If provided, options such as maxbins will be ignored.|
-| steps               | Array               | An array of allowable step sizes to choose from.|
-| minstep             | Number              | A minimum allowable step size (particularly useful for integer values).|
-| div                 | Array               | Scale factors indicating allowable subdivisions. The default value is [5, 2], which indicates that for base 10 numbers (the default base), the method may consider dividing bin sizes by 5 and/or 2. For example, for an initial step size of 10, the method can check if bin sizes of 2 (= 10/5), 5 (= 10/2), or 1 (= 10/(5*2)) might also satisfy the given constraints.|
-
-----
-
-#### ▸ `sort`
-
-Order of a field's values can be specified using the `"sort"` property.  
-For `x`, `y`, `row` and `column`, this determines the order of each value's position.
-For `color`, `shape`, `size` and `detail`, this determines the layer order
-(z-position) of each value.
-
-`sort` property can be specified for sorting the field's values in two ways:
-
-1. (Supported by all types of fields) as __String__ with the following values:
-    - `"ascending"` –  the field is sort by the field's value in ascending order.  This is the default value when `sort` is not specified.
-    - `"descending"` –  the field is sort by the field's value in descending order.
-    - `"unsorted`" – The field is not sorted. (This is equivalent to specifying `sort:false` in [Vega's scales](https://github.com/vega/vega/wiki/Scales).)
-
-2. (Supported by nominal and ordinal fields only) as a __sort field definition object__ - for sorting the field by an aggregate calculation over another sort field.  A sort field object has the following properties:
-
-| Property      | Type          | Description    |
-| :------------ |:-------------:| :------------- |
-| _sort.field_  | Field         | The field name to aggregate over.|
-| _sort.op_     | String        | A valid [aggregation operation](Data-Transforms#-aggregate) (e.g., `mean`, `median`, etc.).|
-| _sort.order_  | String        | `"ascending"` or `"descending"` order. |
-
-----
-
-#### ▸ `timeUnit`
-
-`timeUnit` property can be specified for converting timeUnit for temporal field.  
-Therefore, `timeUnit` is only applied when the `type` is "`temporal`".
-Current supported values for `timeUnit` are `year`, `month`, `day`, `date`, `hours`, `minutes`, `seconds`.
-
-__In Roadmap__: Support for other values such as `year-month`, `year-month-day`, `hour-minute`.
+<!-- TODO: split this into multiple files -->
 
 ### Scale, Axis, and Legend
 

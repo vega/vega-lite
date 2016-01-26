@@ -12,10 +12,8 @@ A Vega-Lite `config` object can have the following top-level properties:
 | :------------ |:-------------:| :------------- |
 | viewport      | Integer[]     | The width and height of the on-screen viewport, in pixels. If necessary, clipping and scrolling will be applied. |
 | background    | String        | CSS color property to use as background of visualization. Default is `"transparent"`. |
-| filterNull | Boolean | Filter null values from the data. If set to `true`, all rows with null values are filtered. If `false`, no rows are filtered. Set the property to `undefined` (default) to filter only quantitative and temporal fields. |
 
-
-<!-- TODO: consider adding width, height, viewport, filterNull, numberFormat, timeFormat  -->
+<!-- TODO: consider adding width, height, viewport, numberFormat, timeFormat  -->
 
 In addition, `config` can have config objects for `cell`, `mark`, `scene`, and `stack`.
 
@@ -66,8 +64,6 @@ and the following fill and stroke properties:
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | filled        | Boolean        | Whether the shape\'s color should be used as fill color instead of stroke color.  This is only applicable for `bar`, `point`, and `area`.  All marks except `point` marks are filled by default. |
-| sortBy        | Field &#124; Field[] | Data field(s) for sorting layer of marks.  The first mark will placed on the bottom.  `"-"` prefix can be added to each field to set descending order. |
-| sortLineBy    | Field &#124; Field[] | Data field(s) for sorting points in each group of line.  `"-"` prefix can be added to each field to set descending order.  |
 | fill          | Color         | The fill color.  This config will be overriden by `color` channel's specified or mapped values if `filled` is `true`. |
 | fillOpacity   | Number        | The fill opacity (value between [0,1]). |
 | stroke        | Color         | The stroke color.  This config will be overriden by `color` channel's specified or mapped values if `filled` is `false`. |
@@ -76,8 +72,6 @@ and the following fill and stroke properties:
 | strokeWidth   | Number        | The stroke width, in pixels. |
 | strokeDash    | Number[]      | An array of alternating stroke, space lengths for creating dashed or dotted lines.  |
 | strokeDashOffset  | Number[]  | The offset (in pixels) into which to begin drawing with the stroke dash array. |
-
-<!-- TODO: add fill, stroke, fillOpacity, strokeOpacity -->
 
 
 ### Marks Config for Bar, Line, and Area Marks
