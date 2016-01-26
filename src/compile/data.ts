@@ -183,7 +183,7 @@ export namespace source {
    * @return An array that might contain a filter transform for filtering null value based on filterNul config
    */
   export function nullFilterTransform(model: Model) {
-    const filterNull = model.config().filterNull;
+    const filterNull = model.transform().filterNull;
     const filteredFields = keys(model.reduce(function(aggregator, fieldDef: FieldDef) {
       if (filterNull ||
         (filterNull === undefined && fieldDef.field && fieldDef.field !== '*' && DEFAULT_NULL_FILTERS[fieldDef.type])) {

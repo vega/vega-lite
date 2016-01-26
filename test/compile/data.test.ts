@@ -157,7 +157,7 @@ describe('data.source', function() {
 
       it('should add filterNull for O when specified', function () {
         const model = parseModel(mergeDeep(spec, {
-          config: {
+          transform: {
             filterNull: true
           }
         }));
@@ -169,7 +169,7 @@ describe('data.source', function() {
 
       it('should add no null filter if filterNull is false', function () {
         const model = parseModel(mergeDeep(spec, {
-          config: {
+          transform: {
             filterNull: false
           }
         }));

@@ -1,7 +1,6 @@
-// TODO add filterNull
-
 export interface Transform {
   filter?: string;
+  filterNull?: boolean;
   calculate?: VgFormula[];
 }
 
@@ -14,13 +13,16 @@ export interface VgFormula {
 export const transform = {
   type: 'object',
   properties: {
-    // we generate a vega filter transform
+    filterNull: {
+      type: 'boolean',
+      default: undefined,
+      description: 'Filter null values from the data. If set to true, all rows with null values are filtered. If false, no rows are filtered. Set the property to undefined to filter only quantitative and temporal fields.'
+    },
     filter: {
       type: 'string',
       default: undefined,
       description: 'A string containing the filter Vega expression. Use `datum` to refer to the current data object.'
     },
-    // we generate a vega formula transform
     calculate: {
       type: 'array',
       default: undefined,
