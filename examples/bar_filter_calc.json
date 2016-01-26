@@ -15,7 +15,7 @@
   },
   "transform": {
     "calculate": [{"field": "b2","expr": "2*datum.b"}],
-    "filter": "datum.b > 60"
+    "filter": "datum.b2 > 60"
   },
   "mark": "bar",
   "encoding": {

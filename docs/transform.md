@@ -23,6 +23,7 @@ Since `calculate` is before `filter`, derived fields can be used in `filter`'s e
 <!--
 ### filterNull
 provide example for filter null
+Show when filterNull is off and some "null" points will fall on the zero
 -->
 
 ### `calculate`
@@ -34,13 +35,70 @@ New fields can be calculated from from the existing data using `transform`'s `ca
 | field         | String        | The field name in which to store the computed formula value. |
 | expr          | String        | A string containing an expression for the formula. Use the variable `datum` to to refer to the current data object. |
 
-<!-- provide example -->
+---------
 
-<!--
-###filter
-provide example for filter
--->
+__Examples__
 
+This example use `calculate` to derive a new field, then `filter` data based on the new field.  
+
+```js
+{
+  "description": "A simple bar chart with embedded data that uses a filter and calculate.",
+  "data": {
+    "values": [
+      {"a": "A","b": 28},
+      {"a": "B","b": 55},
+      {"a": "C","b": 43},
+      {"a": "G","b": 19},
+      {"a": "H","b": 87},
+      {"a": "I","b": 52},
+      {"a": "D","b": 91},
+      {"a": "E","b": 81},
+      {"a": "F","b": 53}
+    ]
+  },
+  "transform": {
+    "calculate": [{"field": "b2","expr": "2*datum.b"}],
+    "filter": "datum.b2 > 60"
+  },
+  "mark": "bar",
+  "encoding": {
+    "y": {"type": "quantitative","field": "b2"},
+    "x": {"type": "ordinal","field": "a"}
+  }
+}
+```
+<script>
+vg.embed('#bar_filter_calc', {
+  mode: 'vega-lite',
+  spec: {
+    "description": "A simple bar chart with embedded data that uses a filter and calculate.",
+    "data": {
+      "values": [
+        {"a": "A","b": 28},
+        {"a": "B","b": 55},
+        {"a": "C","b": 43},
+        {"a": "G","b": 19},
+        {"a": "H","b": 87},
+        {"a": "I","b": 52},
+        {"a": "D","b": 91},
+        {"a": "E","b": 81},
+        {"a": "F","b": 53}
+      ]
+    },
+    "transform": {
+      "calculate": [{"field": "b2","expr": "2*datum.b"}],
+      "filter": "datum.b2 > 60"
+    },
+    "mark": "bar",
+    "encoding": {
+      "y": {"type": "quantitative","field": "b2"},
+      "x": {"type": "ordinal","field": "a"}
+    }
+  }
+});
+</script>
+<div id="bar_filter_calc"></div>
 
 ## Inline Transforms inside each `encoding` channel
 
@@ -67,37 +125,158 @@ The `bin` property definition object contains the following properties:
 | minstep             | Number              | A minimum allowable step size (particularly useful for integer values).|
 | div                 | Array               | Scale factors indicating allowable subdivisions. The default value is [5, 2], which indicates that for base 10 numbers (the default base), the method may consider dividing bin sizes by 5 and/or 2. For example, for an initial step size of 10, the method can check if bin sizes of 2 (= 10/5), 5 (= 10/2), or 1 (= 10/(5*2)) might also satisfy the given constraints.|
 
-<!-- TODO example -->
+-----
+
+__Example__
+
+Histogram counts number of data in each `bin`.
+
+```js
+{
+  "data": {"url": "data/cars.json"},
+  "mark": "bar",
+  "encoding": {
+    "x": {
+      "bin": {"maxbins": 15},
+      "field": "Horsepower",
+      "type": "quantitative"
+    },
+    "y": {
+      "aggregate": "count",
+      "field": "*",
+      "type": "quantitative",
+      "displayName": "Number of Records"
+    }
+  }
+}
+```
+<script>
+vg.embed('#histogram', {
+  mode: 'vega-lite',
+  spec: {
+    "data": {"url": "../data/cars.json"},
+    "mark": "bar",
+    "encoding": {
+      "x": {
+        "bin": {"maxbins": 15},
+        "field": "Horsepower",
+        "type": "quantitative"
+      },
+      "y": {
+        "aggregate": "count",
+        "field": "\*",
+        "type": "quantitative",
+        "displayName": "Number of Records"
+      }
+    }
+  }
+});
+</script>
+<div id="histogram"></div>
 
 ## Time Unit (`timeUnit`)
 
 New time unit fields can be derived from existing temporal fields using each field definition's `timeUnit` property.  
 
-Currently supported values are: `'year', 'month', 'day', 'date', 'hours', 'minutes', 'seconds', 'milliseconds', 'yearmonth', 'yearmonthday', 'yearmonthdate', 'yearday', 'yeardate', 'yearmonthdayhours', 'yearmonthdayhoursminutes', 'hoursminutes',
-'hoursminutesseconds', 'minutesseconds', 'secondsmilliseconds'`.
+Currently supported values are: `'year'`, `'month'`, `'day'`, `'date'`, `'hours'`, `'minutes'`, `'seconds'`, `'milliseconds'`, `'yearmonth'`, `'yearmonthday'`, `'yearmonthdate'`, `'yearday'`, `'yeardate'`, `'yearmonthdayhours'`, `'yearmonthdayhoursminutes'`, `'hoursminutes'`,
+`'hoursminutesseconds'`, `'minutesseconds'`, `'secondsmilliseconds'`.
 
-<!-- TODO example -->
+----
+__Example__
 
-# Aggregation (`aggregate`)
+This example shows temperature in seattle over the months.
+
+```js
+{
+  "data": {"url": "data/seattle-temps.csv","formatType": "csv"},
+  "mark": "line",
+  "encoding": {
+    "x": {
+      "field": "date",
+      "type": "temporal",
+      "timeUnit": "month",
+      "axis": {"shortTimeLabels": true}
+    },
+    "y": {
+      "aggregate": "mean",
+      "field": "temp",
+      "type": "quantitative"
+    }
+  }
+}
+```
+<script>
+vg.embed('#temp_histogram', {
+  mode: 'vega-lite',
+  spec: {
+    "data": {"url": "../data/seattle-temps.csv","formatType": "csv"},
+    "mark": "line",
+    "encoding": {
+      "x": {
+        "field": "date",
+        "type": "temporal",
+        "timeUnit": "month",
+        "axis": {"shortTimeLabels": true}
+      },
+      "y": {
+        "aggregate": "mean",
+        "field": "temp",
+        "type": "quantitative"
+      }
+    }
+  }
+});
+</script>
+<div id="temp_histogram"></div>
+
+## Aggregation (`aggregate`)
 
 Vega-Lite supports all [Vega aggregation operations](https://github.com/vega/vega/wiki/Data-Transforms#-aggregate) (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).
 
-If at least one fields in the specified encoding channel contains `aggregate`,
-a summary data table is computed from the source data table.
-The resulting visualization shows data from this summary table.  
+If at least one fields in the specified encoding channels contain `aggregate`,
+the resulting visualization will show aggregate data.  
 In this case, all fields without aggregation function specified are treated as dimensions; thus, the summary statistics are grouped by these dimensions.
+Additional dimensions can be specified using the `detail` channel.  
 
-<!-- TODO example -->
+Otherwise, if none of the specified encoding channel contains `aggregate`, 
+the resulting visualization shows raw data without aggregation.
 
-Additional dimensions that are not directly mapped to visual encodings can be specified using the `detail` channel.  
+-------
 
-<!-- TODO example -->
+__Example__
 
-If none of the specified encoding channel contains aggregation, no additional data table is created.
+The following bar chart aggregate mean of `Acceleration`, grouped by
+`Cylinders` (number of cylinders).
 
-<!-- TODO example -->
+```js
+{
+  "data": {"url": "data/cars.json"},
+  "mark": "bar",
+  "encoding": {
+    "x": {"field": "Cylinders", "type": "ordinal"},
+    "y": {"field": "Acceleration", "type": "quantitative", "aggregate": "mean"}
+  }
+}
+```
+<script>
+vg.embed('#bar_aggregate', {
+  mode: 'vega-lite',
+  spec: {
+    "description": "A bar chart showing the average acceleration for cars with different numbers of cylinders.",
+    "data": {"url": "../data/cars.json"},
+    "mark": "bar",
+    "encoding": {
+      "x": {"field": "Cylinders", "type": "ordinal"},
+      "y": {"field": "Acceleration", "type": "quantitative", "aggregate": "mean"}
+    }
+  }
+});
+</script>
+<div id="bar_aggregate"></div>
 
-# Sort (`sort`)
+<!-- TODO make scatter_aggregate_detail -->
+
+## Sort (`sort`)
 
 `sort` property of each channel's field definition determines the order of its field values.
 For `x`, `y`, `row` and `column`, this determines the order of each value's position via the scale.
@@ -121,4 +300,4 @@ For `detail`, this determines the layer order of the output visualization.
 | _sort.op_     | String        | A valid [aggregation operation](Data-Transforms#-aggregate) (e.g., `mean`, `median`, etc.).|
 | _sort.order_  | String        | `"ascending"` or `"descending"` order. |
 
-<!-- example -->
+<!-- TODO: example? or should this be in encoding.md -->
