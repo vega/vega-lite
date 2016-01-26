@@ -152,7 +152,7 @@ export class Model {
   }
 
   public forEach(f: (fd: FieldDef, c: Channel, i:number) => void, t?: any) {
-    return vlEncoding.forEach(this._spec.encoding, f, t);
+    vlEncoding.forEach(this._spec.encoding, f, t);
   }
 
   public isOrdinalScale(channel: Channel) {
