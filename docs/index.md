@@ -31,8 +31,6 @@ where each record has values for the same set of variables.
 ## Using Vega-Lite
 
 Here is the bare minimum HTML file to get Vega-Lite with inline values working in a webpage.
-Basically, Vega-Lite compiles a Vega-Lite specification into a Vega
-specification and use Vega Runtime to display visualizations.
 
 ```html
 <!DOCTYPE html>
@@ -73,10 +71,13 @@ specification and use Vega Runtime to display visualizations.
 </html>
 ```
 
-Here, we first load the required libraries (D3, Vega and Vega-Lite).
-Then we create an HTML tag that we will render the visualization in.
-Then we create a Vega-Lite specification and compile it to Vega.
-Lastly, the Vega specification is passed to the [Vega runtime](https://github.com/vega/vega/wiki/Runtime).
+Basically, Vega-Lite compiles a Vega-Lite specification into a Vega
+specification and use Vega Runtime to display visualizations. You can see the result [here](demo.html).
+
+The page first loads the required libraries (D3, Vega and Vega-Lite).
+Then we created an HTML element that we will render the visualization in.
+In JavaScript, the Vega-Lite specification is compiled to Vega.
+Lastly, the Vega specification is passed to the [Vega runtime](https://github.com/vega/vega/wiki/Runtime), which renders it into the `#vis` element.
 
 If viewed in a browser, this will display a simple bar chart.
 This example shows only the basic set up. The rest of the documentation describes the Vega-Lite specification language in detail.
