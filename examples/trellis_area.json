@@ -1,9 +1,0 @@
-{
-  "data": {"url": "data/cars.json"},
-  "mark": "area",
-  "encoding": {
-    "x": {"field": "Year","type": "temporal","timeUnit": "year"},
-    "y": {"field": "Weight_in_lbs","type": "quantitative","aggregate": "sum"},
-    "column": {"field": "Cylinders","type": "ordinal"}
-  }
-}

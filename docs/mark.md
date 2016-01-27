@@ -328,33 +328,258 @@ Mapping a quantitative field to either `x` or `y` of `bar` mark produces a 1D ba
 
 ```js
 {
-  "data": {"url": "data/cars.json"},
-  "mark": "point",
+  "data": { "url": "data/population.json"},
+  "transform": {
+    "filter": "datum.year == 2000"
+  },
+  "mark": "bar",
   "encoding": {
-    "x": {"field": "Horsepower", "type": "quantitative", "aggregate": "mean"}
+    "x": {"field": "people","type": "quantitative", "aggregate": "sum", "axis": {"title": "population"}}
   }
 }
+
 ```
+<script>
+vg.embed('#bar_1d', {
+  mode: 'vega-lite',
+  spec: {
+    "data": { "url": "../data/population.json"},
+    "transform": {
+      "filter": "datum.year == 2000"
+    },
+    "mark": "bar",
+    "encoding": {
+      "x": {"field": "people","type": "quantitative", "aggregate": "sum", "axis": {"title": "population"}}
+    }
+  }
+});
+</script>
+<div id="bar_1d"></div>
 
 Mapping a quantitative field and another ordinal field to `x` and `y` produces a bar chart.
 
-<!-- EXAMPLE! -->
+```js
+{
+  "description": "A bar chart showing the US population distribution of age groups in 2000.",
+  "data": { "url": "data/population.json"},
+  "transform": {
+    "filter": "datum.year == 2000"
+  },
+  "mark": "bar",
+  "encoding": {
+    "y": {"field": "people","type": "quantitative", "aggregate": "sum", "axis": {"title": "population"}},
+    "x": {"field": "age", "type": "ordinal"}
+  }
+}
+```
+<script>
+vg.embed('#bar_aggregate', {
+  mode: 'vega-lite',
+  spec: {
+    "description": "A bar chart showing the US population distribution of age groups in 2000.",
+    "data": { "url": "../data/population.json"},
+    "transform": {
+      "filter": "datum.year == 2000"
+    },
+    "mark": "bar",
+    "encoding": {
+      "y": {"field": "people","type": "quantitative", "aggregate": "sum", "axis": {"title": "population"}},
+      "x": {"field": "age", "type": "ordinal"}
+    }
+  }
+});
+</script>
+<div id="bar_aggregate"></div>
 
 Adding color to area chart creates a stacked bar chart by default.
 
-<!-- EXAMPLE! -->
+```js
+{
+  "description": "A bar chart showing the US population distribution of age groups and gender in 2000.",
+  "data": { "url": "data/population.json"},
+  "transform": {
+    "filter": "datum.year == 2000",
+    "calculate": [{"field": "gender", "expr": "datum.sex == 2 ? \"Female\" : \"Male\""}]
+  },
+  "mark": "bar",
+  "encoding": {
+    "y": {"field": "people","type": "quantitative", "aggregate": "sum", "axis": {"title": "population"}},
+    "x": {"field": "age", "type": "ordinal"},
+    "color": {"field": "gender","type": "nominal",
+      "scale": {"range": ["#EA98D2","#659CCA"]}
+    }
+  }
+}
+```
+<script>
+vg.embed('#bar_stacked', {
+  mode: 'vega-lite',
+  spec: {
+    "description": "A bar chart showing the US population distribution of age groups and gender in 2000.",
+    "data": { "url": "../data/population.json"},
+    "transform": {
+      "filter": "datum.year == 2000",
+      "calculate": [{"field": "gender", "expr": "datum.sex == 2 ? \"Female\" : \"Male\""}]
+    },
+    "mark": "bar",
+    "encoding": {
+      "y": {"field": "people","type": "quantitative", "aggregate": "sum", "axis": {"title": "population"}},
+      "x": {"field": "age", "type": "ordinal"},
+      "color": {"field": "gender","type": "nominal",
+        "scale": {"range": ["#EA98D2","#659CCA"]}
+      }
+    }  }
+});
+</script>
+<div id="bar_stacked"></div>
 
 Alternatively, setting `config.stack` to `false` will disable stacking and thus
 produces a layered bar chart.  (Note: setting the mark to be semi-transparent is
 highly-recommended for this chart type.)  
 
-<!-- EXAMPLE! -->
+```js
+{
+  "description": "A bar chart showing the US population distribution of age groups and gender in 2000.",
+  "data": { "url": "../data/population.json"},
+  "transform": {
+    "filter": "datum.year == 2000",
+    "calculate": [{"field": "gender", "expr": "datum.sex == 2 ? \"Female\" : \"Male\""}]
+  },
+  "mark": "bar",
+  "encoding": {
+    "y": {
+      "aggregate": "sum",
+      "field": "people",
+      "type": "quantitative",
+      "axis": {"title": "population"}
+    },
+    "x": {
+      "field": "age",
+      "type": "ordinal"
+    },
+    "color": {
+      "field": "gender",
+      "type": "nominal",
+      "scale": {"range": ["#e377c2","#1f77b4"]}
+    }
+  },
+  "config": {
+    "stack" : false,
+    "mark": {
+      "opacity": 0.6
+    }
+  }
+}
 
+```
+<script>
+vg.embed('#bar_layered_transparent', {
+  mode: 'vega-lite',
+  spec: {
+    "description": "A bar chart showing the US population distribution of age groups and gender in 2000.",
+    "data": { "url": "../data/population.json"},
+    "transform": {
+      "filter": "datum.year == 2000",
+      "calculate": [{"field": "gender", "expr": "datum.sex == 2 ? \"Female\" : \"Male\""}]
+    },
+    "mark": "bar",
+    "encoding": {
+      "y": {
+        "aggregate": "sum",
+        "field": "people",
+        "type": "quantitative",
+        "axis": {"title": "population"}
+      },
+      "x": {
+        "field": "age",
+        "type": "ordinal"
+      },
+      "color": {
+        "field": "gender",
+        "type": "nominal",
+        "scale": {"range": ["#e377c2","#1f77b4"]}
+      }
+    },
+    "config": {
+      "stack" : false,
+      "mark": {
+        "opacity": 0.6
+      }
+    }
+  }
+});
+</script>
+<div id="bar_layered_transparent"></div>
 
 [Faceting](#encoding.md) a bar chart can produce a grouped bar chart.  
-<!--In the following example, we also over-encode field XXX with both row/column-facet and color -->
 
-<!-- EXAMPLE! -->
+```js
+{
+  "description": "A trellis bar chart showing the US population distribution of age groups and gender in 2000.",
+  "data": { "url": "data/population.json"},
+  "transform": {
+    "filter": "datum.year == 2000",
+    "calculate": [{"field": "gender", "expr": "datum.sex == 2 ? \"Female\" : \"Male\""}]
+  },
+  "mark": "bar",
+  "encoding": {
+    "y": {
+      "aggregate": "sum",
+      "field": "people",
+      "type": "quantitative",
+      "axis": {"title": "population"}
+    },
+    "x": {
+      "field": "age",
+      "type": "ordinal"
+    },
+    "color": {
+      "field": "gender",
+      "type": "nominal",
+      "scale": {"range": ["#EA98D2","#659CCA"]}
+    },
+    "row": {
+      "field": "gender",
+      "type": "nominal"
+    }
+  }
+}
+```
+<script>
+vg.embed('#trellis_bar', {
+  mode: 'vega-lite',
+  spec: {
+    "description": "A trellis bar chart showing the US population distribution of age groups and gender in 2000.",
+    "data": { "url": "../data/population.json"},
+    "transform": {
+      "filter": "datum.year == 2000",
+      "calculate": [{"field": "gender", "expr": "datum.sex == 2 ? \"Female\" : \"Male\""}]
+    },
+    "mark": "bar",
+    "encoding": {
+      "y": {
+        "aggregate": "sum",
+        "field": "people", "type": "quantitative",
+        "axis": {"title": "population"}
+      },
+      "x": {
+        "field": "age",
+        "type": "ordinal"
+      },
+      "color": {
+        "field": "gender",
+        "type": "nominal",
+        "scale": {"range": ["#EA98D2","#659CCA"]}
+      },
+      "row": {
+        "field": "gender",
+        "type": "nominal"
+      }
+    }
+  }
+});
+</script>
+<div id="trellis_bar"></div>
 
 <!--
 - Heat Map
