@@ -29,7 +29,7 @@ A Vega-Lite `config` object can have the following top-level properties:
 
 The smallest unit in Vega-Lite visualization is called a cell.  Each single (non-trellis)  chart contains one cell.  Thus, the width and height of the visualization is the `width` and `height` of the cell.  For trellis plots (also called small multiples), cell `width` and `height` determine the size of one plot inside the trellis plots.  
 
-`cell` property of the `config` object can have the following config properties:
+`cell` property of the `config` object can have the following properties:
 
 ### Cell Size Config
 
@@ -189,7 +189,7 @@ __TODO: Example - make tick mark thicker__
 
 When either `"bar"` or `"area"` mark type is used with either `"color"` or `"detail"`
 channel, a stacked (bar or area) chart is automatically created.  
-For a stacked chart, `stack` property can be used to custo
+For a stacked chart, `stack` property can be used to customize the stacking.
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
