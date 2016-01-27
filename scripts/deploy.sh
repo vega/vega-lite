@@ -43,7 +43,7 @@ git add src/**/*.js -f
 
 # commit, tag and push to gh-pages and swap back to master
 set +e
-git commit -m "release $version $gitsha"
+git commit -m "Release $version $gitsha"
 set -e
 git tag -am "Release v$version." "v$version"
 
