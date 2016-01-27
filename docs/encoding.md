@@ -16,12 +16,14 @@ These channels are properties for the top-level `encoding` definition object.
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | x, y          | [FieldDef](#field-definition)| Description of a field mapped to x or y coordinates (or to width or height for `bar` and `area` marks). |
-| color | [FieldDef](#field-definition)| Description of a field or a constant value mapped to color.  The values are mapped to hue if the field is nominal, and mapped to saturation otherwise.  |
-| shape  | [FieldDef](#field-definition)| Description of a field or a constant value mapped to shape. `shape` channel is only applicable for `point` marks.  |
-| size  | [FieldDef](#field-definition)| Description of a field or a constant value mapped to size.  `size` channel is currently applicable for all marks except `line` and `area`. If `size` is not mapped to a field, the default value is 10 for `text` mark, `bandWidth-1` for `bar` with ordinal dimension scale and 2 for `bar` with linear dimension scale, `2/3*bandWidth` for `tick`, and 30 for other marks. |
+| color | [FieldDef](#field-definition)| Description of a field or a constant value mapped to color.  |
+| shape  | [FieldDef](#field-definition)| Description of a field or a constant value mapped to the symbol's shape.  Possible values are: `"circle"` (default), `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`, or `"triangle-down"`.  (Only applicable for `point` marks.)  |
+| size  | [FieldDef](#field-definition)| Description of a field or a constant value mapped to size. If `size` is not mapped to a field, default value will be provided based on mark type.    <br/> • For `text`, this property determines the font size. The default value is `10`.     <br/> • For `bar` and `tick`, this property determines the width of the mark.  For `bar`, the default size is set to `bandWidth-1` to provide 1 pixel offset between bars.  If the dimension has linear scale, the bar's default size will be `2` instead.  For `tick`, the default value is `2/3*bandWidth`. This will provide offset between band equals to the width of the tick. <br/> • For `point`, `square` and `circle`, this property determines the pixel area of the mark.  The default value is `30`. |
 | detail | [FieldDef](#field-definition)| Description of a field or fields for (a) adding extra level of detail for aggregate views without mapping to a specific visual channel or (2) determining layer or stack order.  |
 | row, column   | [FieldDef](#field-definition)| Description of a field that facets data into vertical and horizontal [trellis plots](https://en.wikipedia.org/wiki/Small_multiple). |
 
+<!-- TODO: Need to expand on "(or to width or height for `bar` and `area` marks)." for x,y -->
+<!-- TODO: describe more about color's behavior -- possibly link to the scale page -->
 
 <div id="def"></div>
 ## Field Definition
@@ -35,8 +37,6 @@ Here is a list of properties for the field definition object:
 | field         | String        | Name of the field from which to pull a data value.    |
 | value         | String &#124; Integer | A constant value. |
 | type          | String        | Data type of the field.  This property accepts both a full type name (`"quantitative"`, `"temporal"`, `"ordinal"`,  and `"nominal"`), or an initial character of the type name (`"Q"`, `"T"`, `"O"`, `"N"`).  This property is case insensitive.|
-
-<!-- type affect scale-->
 
 ### Inline Transforms
 
@@ -94,9 +94,11 @@ vg.embed('#scatter_color_shape_constant', {
 </script>
 <div id="scatter_color_shape_constant"></div>
 
+Also, see [this example for mapping fields to color and shape](mark.html#ex-scatter_color_shape).
 
 <!-- linked from another page do not remove this "a" tag-->
 <a id="ex-bar-size"></a>
+
 #### Example: Setting Bar's size
 
 By default, there will be 1 pixel offset between bars.  
@@ -144,29 +146,9 @@ vg.embed('#bar_aggregate_size', {
 </script>
 <div id="bar_aggregate_size"></div>
 
-#### Example: Color
+#### Example: Detail
 
-__TODO__
-<!-- Example: nominal -->
-<!-- Example: ordinal -->
-<!-- Example: quantitative -->
-
-<!-- ## Data Type -->
-
-#### Example: Size
-
-__TODO__
-<!-- Example: bubble_chart -->
-
-#### Example: Shape
-
-<!-- Example: scatter plot with shape -->
-<!-- Example: shape on line -->
-
-
-#### Exampl: Detail
-
-<!-- Grouping for line and area -->
+TODO: Grouping for line and area
 <!-- Additional measure / groupby for aggregation -->
 <!-- Layer order -->
 

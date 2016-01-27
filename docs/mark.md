@@ -108,6 +108,9 @@ vg.embed('#scatter_bubble', {
 </script>
 <div id="scatter_bubble"></div>
 
+
+<a id="ex-scatter_color_shape"></a>
+
 Alternatively, other fields can be mapped to `color` and/or `shape` of the [scatter plot](#scatter).
 For example, this specification over-encodes the field `Origin` with both `color` and `shape`.
 
