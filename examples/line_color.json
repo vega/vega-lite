@@ -5,20 +5,9 @@
   },
   "mark": "line",
   "encoding": {
-    "x": {
-      "field": "Year",
-      "type": "temporal",
-      "timeUnit": "year"
-    },
-    "y": {
-      "field": "Horsepower",
-      "type": "quantitative",
-      "aggregate": "mean"
-    },
-    "color": {
-      "field": "Origin",
-      "type": "nominal"
-    }
+    "x": {"timeUnit": "year", "field": "Year", "type": "temporal"},
+    "y": {"aggregate": "mean", "field": "Horsepower", "type": "quantitative"},
+    "color": {"field": "Origin", "type": "nominal"}
   },
   "config": {"mark": {"interpolate": "monotone"}}
 }

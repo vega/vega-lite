@@ -1,4 +1,20 @@
 {
+  "Showcase": [
+    {
+      "name": "bar_layered_transparent",
+      "title": "Bar chart with transparent layers",
+      "showInEditor": true
+    },
+    {
+      "name": "stacked_bar_h",
+      "title": "Horizontal Stacked Bar Chart"
+    },
+    {
+      "name": "trellis_barley",
+      "title": "Trellis Plot",
+      "showInEditor": true
+    }
+  ],
   "Basic": [
     {
       "name": "bar",
@@ -13,11 +29,6 @@
     {
       "name": "bar_aggregate",
       "title": "Aggregate Bar Chart",
-      "showInEditor": true
-    },
-    {
-      "name": "bar_layered_transparent",
-      "title": "Bar chart with transparent layers",
       "showInEditor": true
     },
     {
@@ -97,7 +108,7 @@
       "title": "Vertical Area Chart"
     },
     {
-      "name": "tableheatmap",
+      "name": "text_table_heatmap",
       "title": "Table Heatmap"
     }
   ],
@@ -106,10 +117,6 @@
       "name": "stacked_area",
       "title": "Stacked Area Chart",
       "showInEditor": true
-    },
-    {
-      "name": "stacked_bar_h",
-      "title": "Horizontal Stacked Bar Chart"
     },
     {
       "name": "stacked_bar_v",
@@ -122,11 +129,6 @@
     }
   ],
   "Trellis": [
-    {
-      "name": "trellis_barley",
-      "title": "Trellis Plot",
-      "showInEditor": true
-    },
     {
       "name": "trellis_bar",
       "title": "Population distribution of age groups and gender in 2000"

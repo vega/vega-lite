@@ -3,16 +3,10 @@
   "mark": "line",
   "encoding": {
     "x": {
-      "field": "date",
-      "type": "temporal",
-      "timeUnit": "month",
+      "timeUnit": "month", "field": "date", "type": "temporal",
       "axis": {"shortTimeLabels": true}
     },
-    "y": {
-      "aggregate": "mean",
-      "field": "temp",
-      "type": "quantitative"
-    }
+    "y": {"aggregate": "mean", "field": "temp", "type": "quantitative"}
   },
   "config": {"mark": {"interpolate": "monotone"}}
 }
