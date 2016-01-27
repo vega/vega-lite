@@ -201,13 +201,12 @@ A stack config object can contain the following properties:
 | :------------ |:-------------:| :------------- |
 | offset        | String        | The baseline offset style. One of `"zero"` (default), `"center"` <!--, or `"normalize"` -->. The `"center"` offset will center the stacks. The `"normalize"` offset will compute percentage values for each stack point; the output values will be in the range [0,1].|
 
-__TODO: Example - make customize stack offset__
+#### Example: Normalized Stacked Bar Chart
+
+__TODO__
+
+#### Example: Streamgraph
+
+__TODO__
 
 <!--| sort          | String &#124; Array<field> | Order of the stack.  This can be either a string (either "descending" or "ascending") or a list of fields to determine the order of stack layers.By default, stack uses descending order. |-->
-
-<!--
-__Examples__
-- offset
-  - normalized area chart
-  - streamgraph
--->

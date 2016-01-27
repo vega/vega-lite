@@ -26,9 +26,9 @@ provide example for filter null
 Show when filterNull is off and some "null" points will fall on the zero
 -->
 
-### `calculate`
+### Formula for `calculate`
 
-New fields can be calculated from from the existing data using `transform`'s `calculate` property, which contains an array of formula objects.  Each formula object has two properties:
+`transform`'s '`calculate` property contains an array of formula object for deriving new fields in the dataset.  Each formula object has two properties:
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |

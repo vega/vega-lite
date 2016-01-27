@@ -9,6 +9,8 @@ Marks are the basic visual building block of a visualization.
 Each mark type supports different [encoding channels](encoding.html#Encoding-Channels),
 which can be either mapped to a field or a constant value.  
 
+<!-- Replace the following list with a table listing mark types and their supported channels. -->
+
 Vega-Lite supports the following `mark` types:
 [`point`](#point),
 [`circle`](#circle-and-square),
@@ -22,8 +24,6 @@ Vega-Lite supports the following `mark` types:
 ## Point
 
 `point` mark represents each data point with a symbol.  
-It also supports the following encoding channels:
-`x`, `y`, `color`, `shape` and `size`.
 
 Mapping a field to only either `x` or `y` of `point` mark creates a dot plot.
 
@@ -325,6 +325,7 @@ vg.embed('#bar_aggregate', {
 <div id="bar_aggregate"></div>
 
 Adding color to the bar chart creates a stacked bar chart by default.
+(See [config page for detail about customizing stack](config.html#stack-config).)
 
 ```js
 {
