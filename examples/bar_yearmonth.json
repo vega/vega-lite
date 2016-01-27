@@ -4,17 +4,9 @@
   "mark": "bar",
   "encoding": {
     "x": {
-      "field": "date",
-      "type": "temporal",
-      "timeUnit": "yearmonth",
-      "axis": {
-        "format": "%B of %Y"
-      }
+      "timeUnit": "yearmonth", "field": "date", "type": "temporal",
+      "axis": {"format": "%B of %Y"}
     },
-    "y": {
-      "aggregate": "mean",
-      "field": "temp",
-      "type": "quantitative"
-    }
+    "y": {"aggregate": "mean", "field": "temp", "type": "quantitative"}
   }
 }

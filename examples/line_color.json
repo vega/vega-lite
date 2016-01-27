@@ -19,5 +19,6 @@
       "field": "Origin",
       "type": "nominal"
     }
-  }
+  },
+  "config": {"mark": {"interpolate": "monotone"}}
 }

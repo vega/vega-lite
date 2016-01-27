@@ -211,14 +211,8 @@ It is an ideal mark for displaying distribution of data.
   "data": {"url": "data/cars.json"},
   "mark": "tick",
   "encoding": {
-    "x": {
-      "field": "Horsepower",
-      "type": "quantitative"
-    },
-    "y": {
-      "field": "Cylinders",
-      "type": "ordinal"
-    }
+    "x": {"field": "Horsepower", "type": "quantitative"},
+    "y": {"field": "Cylinders", "type": "ordinal"}
   }
 }
 ```
@@ -230,14 +224,8 @@ vg.embed('div#tick-plot', {
     "data": {"url": "../data/cars.json"},
     "mark": "tick",
     "encoding": {
-      "x": {
-        "field": "Horsepower",
-        "type": "quantitative"
-      },
-      "y": {
-        "field": "Cylinders",
-        "type": "ordinal"
-      }
+      "x": {"field": "Horsepower", "type": "quantitative"},
+      "y": {"field": "Cylinders", "type": "ordinal"}
     }
   }
 });
@@ -260,10 +248,11 @@ Mapping a quantitative field to either `x` or `y` of `bar` mark produces a 1D ba
   },
   "mark": "bar",
   "encoding": {
-    "x": {"field": "people","type": "quantitative", "aggregate": "sum", "axis": {"title": "population"}}
+    "x": {
+      "aggregate": "sum", "field": "people", "type": "quantitative",
+      "axis": {"title": "population"}}
   }
 }
-
 ```
 <script>
 vg.embed('#bar_1d', {
@@ -275,7 +264,10 @@ vg.embed('#bar_1d', {
     },
     "mark": "bar",
     "encoding": {
-      "x": {"field": "people","type": "quantitative", "aggregate": "sum", "axis": {"title": "population"}}
+      "x": {
+        "aggregate": "sum", "field": "people", "type": "quantitative",
+        "axis": {"title": "population"}
+      }
     }
   }
 });

@@ -13,5 +13,6 @@
       "field": "temp",
       "type": "quantitative"
     }
-  }
+  },
+  "config": {"mark": {"interpolate": "monotone"}}
 }

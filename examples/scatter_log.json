@@ -41,11 +41,10 @@
   },
   "encoding": {
     "y": {
+      "field": "m_teps", "type": "quantitative",
       "scale": {"type": "log"},
-      "type": "quantitative",
-      "field": "m_teps",
       "axis": {"title": "MTEPS"}
     },
-    "x": {"type": "ordinal","field": "dataset"}
+    "x": {"field": "dataset", "type": "ordinal"}
   }
 }
