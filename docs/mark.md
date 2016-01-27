@@ -357,6 +357,7 @@ vg.embed('#bar_1d', {
 <div id="bar_1d"></div>
 
 Mapping a quantitative field and another ordinal field to `x` and `y` produces a bar chart.
+Specifying `scale.bandWidth` will adjust the size of the bar.
 
 ```js
 {
@@ -367,8 +368,14 @@ Mapping a quantitative field and another ordinal field to `x` and `y` produces a
   },
   "mark": "bar",
   "encoding": {
-    "y": {"field": "people","type": "quantitative", "aggregate": "sum", "axis": {"title": "population"}},
-    "x": {"field": "age", "type": "ordinal"}
+    "y": {
+      "aggregate": "sum", "field": "people","type": "quantitative",
+      "axis": {"title": "population"}
+    },
+    "x": {
+      "field": "age", "type": "ordinal",
+      "scale": {"bandWidth": 17}
+    }
   }
 }
 ```
@@ -384,7 +391,7 @@ vg.embed('#bar_aggregate', {
     "mark": "bar",
     "encoding": {
       "y": {"field": "people","type": "quantitative", "aggregate": "sum", "axis": {"title": "population"}},
-      "x": {"field": "age", "type": "ordinal"}
+      "x": {"field": "age", "type": "ordinal", "scale": {"bandWidth": 17}}
     }
   }
 });
@@ -403,8 +410,14 @@ Adding color to area chart creates a stacked bar chart by default.
   },
   "mark": "bar",
   "encoding": {
-    "y": {"field": "people","type": "quantitative", "aggregate": "sum", "axis": {"title": "population"}},
-    "x": {"field": "age", "type": "ordinal"},
+    "y": {
+      "aggregate": "sum", "field": "people", "type": "quantitative",
+      "axis": {"title": "population"}
+    },
+    "x": {
+      "field": "age", "type": "ordinal",
+      "scale": {"bandWidth": 17}
+    },
     "color": {"field": "gender","type": "nominal",
       "scale": {"range": ["#EA98D2","#659CCA"]}
     }
@@ -424,7 +437,7 @@ vg.embed('#bar_stacked', {
     "mark": "bar",
     "encoding": {
       "y": {"field": "people","type": "quantitative", "aggregate": "sum", "axis": {"title": "population"}},
-      "x": {"field": "age", "type": "ordinal"},
+      "x": {"field": "age", "type": "ordinal", "scale": {"bandWidth": 17}},
       "color": {"field": "gender","type": "nominal",
         "scale": {"range": ["#EA98D2","#659CCA"]}
       }
@@ -448,18 +461,15 @@ highly-recommended for this chart type.)
   "mark": "bar",
   "encoding": {
     "y": {
-      "aggregate": "sum",
-      "field": "people",
-      "type": "quantitative",
+      "aggregate": "sum", "field": "people", "type": "quantitative",
       "axis": {"title": "population"}
     },
     "x": {
-      "field": "age",
-      "type": "ordinal"
+      "field": "age", "type": "ordinal",
+      "scale": {"bandWidth": 17}
     },
     "color": {
-      "field": "gender",
-      "type": "nominal",
+      "field": "gender", "type": "nominal",
       "scale": {"range": ["#e377c2","#1f77b4"]}
     }
   },
@@ -492,7 +502,8 @@ vg.embed('#bar_layered_transparent', {
       },
       "x": {
         "field": "age",
-        "type": "ordinal"
+        "type": "ordinal",
+        "scale": {"bandWidth": 17}
       },
       "color": {
         "field": "gender",
@@ -523,24 +534,18 @@ vg.embed('#bar_layered_transparent', {
   },
   "mark": "bar",
   "encoding": {
+    "row": { "field": "gender", "type": "nominal"},
     "y": {
-      "aggregate": "sum",
-      "field": "people",
-      "type": "quantitative",
+      "aggregate": "sum", "field": "people", "type": "quantitative",
       "axis": {"title": "population"}
     },
     "x": {
-      "field": "age",
-      "type": "ordinal"
+      "field": "age", "type": "ordinal",
+      "scale": {"bandWidth": 17}
     },
     "color": {
-      "field": "gender",
-      "type": "nominal",
+      "field": "gender", "type": "nominal",
       "scale": {"range": ["#EA98D2","#659CCA"]}
-    },
-    "row": {
-      "field": "gender",
-      "type": "nominal"
     }
   }
 }
@@ -564,7 +569,8 @@ vg.embed('#trellis_bar', {
       },
       "x": {
         "field": "age",
-        "type": "ordinal"
+        "type": "ordinal",
+        "scale": {"bandWidth": 17}
       },
       "color": {
         "field": "gender",

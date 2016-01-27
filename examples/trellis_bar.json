@@ -7,24 +7,20 @@
   },
   "mark": "bar",
   "encoding": {
+    "row": {
+      "field": "gender", "type": "nominal"
+    },
     "y": {
-      "aggregate": "sum",
-      "field": "people",
-      "type": "quantitative",
+      "aggregate": "sum", "field": "people", "type": "quantitative",
       "axis": {"title": "population"}
     },
     "x": {
-      "field": "age",
-      "type": "ordinal"
+      "field": "age", "type": "ordinal",
+      "scale": {"bandWidth": 17}
     },
     "color": {
-      "field": "gender",
-      "type": "nominal",
+      "field": "gender", "type": "nominal",
       "scale": {"range": ["#EA98D2","#659CCA"]}
-    },
-    "row": {
-      "field": "gender",
-      "type": "nominal"
     }
   }
 }

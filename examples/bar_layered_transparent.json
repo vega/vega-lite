@@ -8,18 +8,15 @@
   "mark": "bar",
   "encoding": {
     "y": {
-      "aggregate": "sum",
-      "field": "people",
-      "type": "quantitative",
+      "aggregate": "sum", "field": "people", "type": "quantitative",
       "axis": {"title": "population"}
     },
     "x": {
-      "field": "age",
-      "type": "ordinal"
+      "field": "age", "type": "ordinal",
+      "scale": {"bandWidth": 17}
     },
     "color": {
-      "field": "gender",
-      "type": "nominal",
+      "field": "gender", "type": "nominal",
       "scale": {"range": ["#e377c2","#1f77b4"]}
     }
   },
