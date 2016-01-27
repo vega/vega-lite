@@ -22,9 +22,8 @@ Vega-Lite supports the following `mark` types:
 ## Point
 
 `point` mark represents each data point with a symbol.  
-
-<!-- It also supports the following encoding channels:
-`x`, `y`, `color`, `shape` and `size`. -->
+It also supports the following encoding channels:
+`x`, `y`, `color`, `shape` and `size`.
 
 Mapping a field to only either `x` or `y` of `point` mark creates a dot plot.
 
@@ -369,7 +368,7 @@ Specifying `scale.bandWidth` will adjust the size of the bar.
   "mark": "bar",
   "encoding": {
     "y": {
-      "aggregate": "sum", "field": "people","type": "quantitative",
+      "aggregate": "sum", "field": "people", "type": "quantitative",
       "axis": {"title": "population"}
     },
     "x": {
@@ -522,7 +521,7 @@ vg.embed('#bar_layered_transparent', {
 </script>
 <div id="bar_layered_transparent"></div>
 
-[Faceting](#encoding.md) a bar chart can produce a grouped bar chart.  
+<!-- [Faceting](#encoding.md) a bar chart can produce a grouped bar chart.  
 
 ```js
 {
@@ -534,14 +533,14 @@ vg.embed('#bar_layered_transparent', {
   },
   "mark": "bar",
   "encoding": {
-    "row": { "field": "gender", "type": "nominal"},
+    "column": { "field": "age", "type": "nominal", "scale":{"padding": 4}},
     "y": {
       "aggregate": "sum", "field": "people", "type": "quantitative",
       "axis": {"title": "population"}
     },
     "x": {
-      "field": "age", "type": "ordinal",
-      "scale": {"bandWidth": 17}
+      "field": "gender", "type": "ordinal",
+      "scale": {"bandWidth": 15, "padding": 0.5}
     },
     "color": {
       "field": "gender", "type": "nominal",
@@ -586,7 +585,7 @@ vg.embed('#trellis_bar', {
 });
 </script>
 <div id="trellis_bar"></div>
-
+--->
 <!--
 - Heat Map
 - How orientation is determined
@@ -600,22 +599,23 @@ with a line that connects all the points in the group.
 
 Using `line` mark with one dimension (typically on `x`) and
 one measure (typically on `y`) produces a line chart with single line.  
+<!-- Line interpolation -->
 
 Additional grouping can be specified using `color` or `detail` channels.
 Mapping a group field to `color` assigns different colors to each line and
 thus produces a colored line chart.
 
-<!-- EXAMPLE! -->
+__TODO__: Example - "Stock"
 
 Mapping a group field to `detail` creates multiple lines with the same color.
 
-<!-- EXAMPLE! -->
+__TODO__: Example - "Stock" with detail instead of color
 
-<!-- Line interpolation -->
 
-<!--By default, the order between data points in the line is determined by the dimension axis.
-However, -->
+By default, the line's path is ordered by data values on the dimension axis (x or y) like shown in previous examples.
+However, a field can be mapped to line path
 
+__TODO__: Example - Connected Scatterplot using "driving.json" data 
 
 ## Area
 
