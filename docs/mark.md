@@ -21,7 +21,7 @@ Vega-Lite supports the following `mark` types:
 [`area`](#area), and
 [`text`](#text).
 
-## Point
+## Point Mark
 
 `point` mark represents each data point with a symbol.  
 
@@ -146,7 +146,7 @@ vg.embed('#scatter_color_shape', {
 Note that `point` marks have filled border and are transparent inside by default.
 See [this section for an example that creates filled `point` marks](config.html#config.mark.filled).
 
-## Circle and Square
+## Circle and Square Marks
 
 `circle` and `square` marks are similar to `point` mark except that
 (1) the `shape` value is always set to `circle` and `square`, and
@@ -206,7 +206,7 @@ vg.embed('#square', {
 <div id="square"></div>
 
 
-## Tick
+## Tick Mark
 
 `tick` mark represents each data point as a tick.  
 It is an ideal mark for displaying distribution of data.  
@@ -240,7 +240,7 @@ vg.embed('div#tick-plot', {
 
 __TODO__ Colored Tick with adjusted size and thickness
 
-## Bar
+## Bar Mark
 
 `bar` mark represents each data point as a rectangle that fits a dimension scale
 and expands its length along a quantitative scale.  
@@ -525,7 +525,7 @@ vg.embed('#trellis_bar', {
 - (Future -- once we have tooltip) -- playing bar's trick with `detail` channel
 -->
 
-## Line
+## Line Mark
 
 `line` mark represents each group of data points
 with a line that connects all the points in the group.
@@ -533,17 +533,101 @@ with a line that connects all the points in the group.
 Using `line` mark with one dimension (typically on `x`) and
 one measure (typically on `y`) produces a line chart with single line.  
 
-__TODO__: Line with interpolation
+```js
+{
+  "description": "Google's stock price over time.",
+  "data": {"url": "data/stocks.csv", "formatType":"csv"},
+  "transform": {"filter": "datum.symbol==='GOOG'"},
+  "mark": "line",
+  "encoding": {
+    "x": {"field": "date", "type": "temporal"},
+    "y": {"field": "price", "type": "quantitative"}
+  }
+}
+
+```
+<script>
+vg.embed('#line', {
+  mode: 'vega-lite',
+  spec: {
+  "description": "Google's stock price over time.",
+  "data": {"url": "../data/stocks.csv", "formatType":"csv"},
+  "transform": {"filter": "datum.symbol==='GOOG'"},
+  "mark": "line",
+  "encoding": {
+    "x": {"field": "date", "type": "temporal"},
+    "y": {"field": "price", "type": "quantitative"}
+  }
+}
+
+});
+</script>
+<div id="line"></div>
 
 Additional grouping can be specified using `color` or `detail` channels.
 Mapping a group field to `color` assigns different colors to each line and
 thus produces a colored line chart.
 
-__TODO__: Example - "Stock"
+```js
+{
+  "description": "Stock prices of 5 Tech Companies Over Time.",
+  "data": {"url": "data/stocks.csv", "formatType":"csv"},
+  "mark": "line",
+  "encoding": {
+    "x": {"field": "date", "type": "temporal"},
+    "y": {"field": "price", "type": "quantitative"},
+    "color": {"field": "symbol", "type": "nominal"}
+  }
+}
+```
+<script>
+vg.embed('#line_color', {
+  mode: 'vega-lite',
+  spec: {
+    "description": "Stock prices of 5 Tech Companies Over Time.",
+    "data": {"url": "../data/stocks.csv", "formatType":"csv"},
+    "mark": "line",
+    "encoding": {
+      "x": {"field": "date", "type": "temporal"},
+      "y": {"field": "price", "type": "quantitative"},
+      "color": {"field": "symbol", "type": "nominal"}
+    }
+  }
+});
+</script>
+<div id="line_color"></div>
+
 
 Mapping a group field to `detail` creates multiple lines with the same color.
 
-__TODO__: Example - "Stock" with detail instead of color
+```js
+{
+  "description": "Stock prices of 5 Tech Companies Over Time.",
+  "data": {"url": "data/stocks.csv", "formatType":"csv"},
+  "mark": "line",
+  "encoding": {
+    "x": {"field": "date", "type": "temporal"},
+    "y": {"field": "price", "type": "quantitative"},
+    "detail": {"field": "symbol", "type": "nominal"}
+  }
+}
+```
+<script>
+vg.embed('#line_detail', {
+  mode: 'vega-lite',
+  spec: {
+    "description": "Stock prices of 5 Tech Companies Over Time.",
+    "data": {"url": "../data/stocks.csv", "formatType":"csv"},
+    "mark": "line",
+    "encoding": {
+      "x": {"field": "date", "type": "temporal"},
+      "y": {"field": "price", "type": "quantitative"},
+      "detail": {"field": "symbol", "type": "nominal"}
+    }
+  }
+});
+</script>
+<div id="line_detail"></div>
 
 
 By default, the line's path is ordered by data values on the dimension axis (x or y) like shown in previous examples.

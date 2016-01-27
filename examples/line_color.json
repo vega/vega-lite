@@ -1,13 +1,10 @@
 {
-  "description": "Colored Line chart of Horsepower for Cars from different Origin over the years.",
-  "data": {
-    "url": "data/cars.json"
-  },
+  "description": "Stock prices of 5 Tech Companies Over Time.",
+  "data": {"url": "data/stocks.csv", "formatType":"csv"},
   "mark": "line",
   "encoding": {
-    "x": {"timeUnit": "year", "field": "Year", "type": "temporal"},
-    "y": {"aggregate": "mean", "field": "Horsepower", "type": "quantitative"},
-    "color": {"field": "Origin", "type": "nominal"}
-  },
-  "config": {"mark": {"interpolate": "monotone"}}
+    "x": {"field": "date", "type": "temporal"},
+    "y": {"field": "price", "type": "quantitative"},
+    "color": {"field": "symbol", "type": "nominal"}
+  }
 }
