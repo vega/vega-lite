@@ -24,7 +24,7 @@ In Vega-Lite, a specification can have the following top-level properties.
 | :------------        |:-------------:| :------------- |
 | [data](data.html)    | Object        | An object describing the data source. |
 | [transform](transform.html)  | Object        | An object describing data transformations. |
-| [mark](mark.html) | String        | The mark type.  Currently Vega-Lite supports `bar`, `line`, `area`, `point`, and `text` (text table). |
+| [mark](mark.html) | String        | The mark type.  Currently Vega-Lite supports `bar`, `circle`, `square`, `tick`, `line`, `area`, `point`, and `text` (text table). |
 | [encoding](encoding.html) | Object        | key-value mapping between encoding channels and encoding object |
 | [config](config.html)   | Object        | Configuration object. |
 
