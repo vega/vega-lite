@@ -10,7 +10,7 @@ Each field definition object describes (1) a reference to the `field` name and i
 
 ## Encoding Channels
 
-Vega-Lite supports the following encoding channels: `x`,`y`, `row`, `column`, `color`, `size`, `shape`, `text`, `detail`.
+Vega-Lite supports the following encoding channels: `x`,`y`, `color`, `size`, `shape`, `text`, `detail`, `path`, `row`, and `column`.
 These channels are properties for the top-level `encoding` definition object.
 
 | Property      | Type          | Description    |
@@ -19,7 +19,8 @@ These channels are properties for the top-level `encoding` definition object.
 | color | [FieldDef](#field-definition)| Description of a field or a constant value mapped to color.  |
 | shape  | [FieldDef](#field-definition)| Description of a field or a constant value mapped to the symbol's shape.  Possible values are: `"circle"` (default), `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`, or `"triangle-down"`.  (Only applicable for `point` marks.)  |
 | size  | [FieldDef](#field-definition)| Description of a field or a constant value mapped to size. If `size` is not mapped to a field, default value will be provided based on mark type.    <br/> • For `text`, this property determines the font size. The default value is `10`.     <br/> • For `bar` and `tick`, this property determines the width of the mark.  For `bar`, the default size is set to `bandWidth-1` to provide 1 pixel offset between bars.  If the dimension has linear scale, the bar's default size will be `2` instead.  For `tick`, the default value is `2/3*bandWidth`. This will provide offset between band equals to the width of the tick. <br/> • For `point`, `square` and `circle`, this property determines the pixel area of the mark.  The default value is `30`. |
-| detail | [FieldDef](#field-definition)| Description of a field or fields for (a) adding extra level of detail for aggregate views without mapping to a specific visual channel or (2) determining layer or stack order.  |
+| detail | [FieldDef](#field-definition)| Description of a field or fields for (a) adding extra level of detail for aggregate views without mapping to a specific visual channel or (2) determining layer or stack order. |
+| path   | [FieldDef](#field-definition)| Description of a field or fields that determines order of data points in line mark. |
 | row, column   | [FieldDef](#field-definition)| Description of a field that facets data into vertical and horizontal [trellis plots](https://en.wikipedia.org/wiki/Small_multiple). |
 
 <!-- TODO: Need to expand on "(or to width or height for `bar` and `area` marks)." for x,y -->
