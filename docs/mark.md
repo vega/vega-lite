@@ -32,7 +32,7 @@ Mapping a field to only either `x` or `y` of `point` mark creates a dot plot.
   "data": {"url": "data/cars.json"},
   "mark": "point",
   "encoding": {
-    "x": {"field": "Horsepower","type": "quantitative"}
+    "x": {"field": "Horsepower", "type": "quantitative"}
   }
 }
 ```
@@ -44,7 +44,7 @@ vg.embed('#dot-plot', {
     "data": {"url": "../data/cars.json"},
     "mark": "point",
     "encoding": {
-      "x": {"field": "Horsepower","type": "quantitative"}
+      "x": {"field": "Horsepower", "type": "quantitative"}
     }
   }
 });
@@ -59,8 +59,8 @@ Mapping fields to both `x` and `y` creates a scatter plot.
   "data": {"url": "data/cars.json"},
   "mark": "point",
   "encoding": {
-    "x": {"field": "Horsepower","type": "quantitative"},
-    "y": {"field": "Miles_per_Gallon","type": "quantitative"}
+    "x": {"field": "Horsepower", "type": "quantitative"},
+    "y": {"field": "Miles_per_Gallon", "type": "quantitative"}
   }
 }
 ```
@@ -71,8 +71,8 @@ vg.embed('#scatter', {
     "data": {"url": "../data/cars.json"},
     "mark": "point",
     "encoding": {
-      "x": {"field": "Horsepower","type": "quantitative"},
-      "y": {"field": "Miles_per_Gallon","type": "quantitative"}
+      "x": {"field": "Horsepower", "type": "quantitative"},
+      "y": {"field": "Miles_per_Gallon", "type": "quantitative"}
     }
   }
 });
@@ -86,9 +86,9 @@ Mapping another field to `size` channel in the [scatter plot](#scatter) above cr
   "data": {"url": "data/cars.json"},
   "mark": "point",
   "encoding": {
-    "x": {"field": "Horsepower","type": "quantitative"},
-    "y": {"field": "Miles_per_Gallon","type": "quantitative"},
-    "size": {"field": "Acceleration","type": "quantitative"}
+    "x": {"field": "Horsepower", "type": "quantitative"},
+    "y": {"field": "Miles_per_Gallon", "type": "quantitative"},
+    "size": {"field": "Acceleration", "type": "quantitative"}
   }
 }
 ```
@@ -99,9 +99,9 @@ vg.embed('#scatter_bubble', {
     "data": {"url": "../data/cars.json"},
     "mark": "point",
     "encoding": {
-      "x": {"field": "Horsepower","type": "quantitative"},
-      "y": {"field": "Miles_per_Gallon","type": "quantitative"},
-      "size": {"field": "Acceleration","type": "quantitative"}
+      "x": {"field": "Horsepower", "type": "quantitative"},
+      "y": {"field": "Miles_per_Gallon", "type": "quantitative"},
+      "size": {"field": "Acceleration", "type": "quantitative"}
     }
   }
 });
@@ -116,8 +116,8 @@ For example, this specification over-encodes the field `Origin` with both `color
   "data": {"url": "data/cars.json"},
   "mark": "point",
   "encoding": {
-    "x": {"field": "Horsepower","type": "quantitative"},
-    "y": {"field": "Miles_per_Gallon","type": "quantitative"},
+    "x": {"field": "Horsepower", "type": "quantitative"},
+    "y": {"field": "Miles_per_Gallon", "type": "quantitative"},
     "color": {"field": "Origin", "type": "nominal"},
     "shape": {"field": "Origin", "type": "nominal"}
   }
@@ -130,8 +130,8 @@ vg.embed('#scatter_color_shape', {
     "data": {"url": "../data/cars.json"},
     "mark": "point",
     "encoding": {
-      "x": {"field": "Horsepower","type": "quantitative"},
-      "y": {"field": "Miles_per_Gallon","type": "quantitative"},
+      "x": {"field": "Horsepower", "type": "quantitative"},
+      "y": {"field": "Miles_per_Gallon", "type": "quantitative"},
       "color": {"field": "Origin", "type": "nominal"},
       "shape": {"field": "Origin", "type": "nominal"}
     }
@@ -139,6 +139,9 @@ vg.embed('#scatter_color_shape', {
 });
 </script>
 <div id="scatter_color_shape"></div>
+
+Note that `point` marks have filled border and are transparent inside by default.
+See [this section for an example that creates filled `point` marks](config.html#config.mark.filled).
 
 ## Circle and Square
 
@@ -151,8 +154,8 @@ vg.embed('#scatter_color_shape', {
   "data": {"url": "data/cars.json"},
   "mark": "circle",
   "encoding": {
-    "x": {"field": "Horsepower","type": "quantitative"},
-    "y": {"field": "Miles_per_Gallon","type": "quantitative"}
+    "x": {"field": "Horsepower", "type": "quantitative"},
+    "y": {"field": "Miles_per_Gallon", "type": "quantitative"}
   }
 }
 ```
@@ -164,8 +167,8 @@ vg.embed('#circle', {
     "data": {"url": "../data/cars.json"},
     "mark": "circle",
     "encoding": {
-      "x": {"field": "Horsepower","type": "quantitative"},
-      "y": {"field": "Miles_per_Gallon","type": "quantitative"}
+      "x": {"field": "Horsepower", "type": "quantitative"},
+      "y": {"field": "Miles_per_Gallon", "type": "quantitative"}
     }
   }
 });
@@ -178,8 +181,8 @@ vg.embed('#circle', {
   "data": {"url": "data/cars.json"},
   "mark": "square",
   "encoding": {
-    "x": {"field": "Horsepower","type": "quantitative"},
-    "y": {"field": "Miles_per_Gallon","type": "quantitative"}
+    "x": {"field": "Horsepower", "type": "quantitative"},
+    "y": {"field": "Miles_per_Gallon", "type": "quantitative"}
   }
 }
 ```
@@ -191,8 +194,8 @@ vg.embed('#square', {
     "data": {"url": "../data/cars.json"},
     "mark": "square",
     "encoding": {
-      "x": {"field": "Horsepower","type": "quantitative"},
-      "y": {"field": "Miles_per_Gallon","type": "quantitative"}
+      "x": {"field": "Horsepower", "type": "quantitative"},
+      "y": {"field": "Miles_per_Gallon", "type": "quantitative"}
     }
   }
 });
@@ -232,6 +235,7 @@ vg.embed('div#tick-plot', {
 </script>
 <div id="tick-plot"></div>
 
+__TODO__ Colored Tick with adjusted size and thickness
 
 ## Bar
 
@@ -239,6 +243,7 @@ vg.embed('div#tick-plot', {
 and expands its length along a quantitative scale.  
 
 Mapping a quantitative field to either `x` or `y` of `bar` mark produces a 1D bar chart.
+Note that the `x` in the following example encodes sum of the population.
 
 ```js
 {
@@ -275,7 +280,10 @@ vg.embed('#bar_1d', {
 <div id="bar_1d"></div>
 
 Mapping a quantitative field and another ordinal field to `x` and `y` produces a bar chart.
-Specifying `scale.bandWidth` will adjust the size of the bar.
+Specifying `scale.bandWidth` of an ordinal field will adjust the [ordinal scale's band width](https://github.com/mbostock/d3/wiki/Ordinal-Scales#ordinal_rangeBands).
+By default, there will be 1 pixel offset between bars.  (See [an example that customizes size of the bars](encoding.html#ex-bar-size).)
+
+<!-- TODO: Need to update docs our and Vega's scale.bandWidth property and link there instead -->
 
 ```js
 {
@@ -308,7 +316,7 @@ vg.embed('#bar_aggregate', {
     },
     "mark": "bar",
     "encoding": {
-      "y": {"field": "people","type": "quantitative", "aggregate": "sum", "axis": {"title": "population"}},
+      "y": {"field": "people", "type": "quantitative", "aggregate": "sum", "axis": {"title": "population"}},
       "x": {"field": "age", "type": "ordinal", "scale": {"bandWidth": 17}}
     }
   }
@@ -316,8 +324,9 @@ vg.embed('#bar_aggregate', {
 </script>
 <div id="bar_aggregate"></div>
 
+
 Adding color to the bar chart creates a stacked bar chart by default.
-(See [config page for detail about customizing stack](config.html#stack-config).)
+(See [`config.stack` for more detail about customizing stack](config.html#stack-config).)
 
 ```js
 {
@@ -338,8 +347,8 @@ Adding color to the bar chart creates a stacked bar chart by default.
       "scale": {"bandWidth": 17}
     },
     "color": {
-      "field": "gender","type": "nominal",
-      "scale": {"range": ["#EA98D2","#659CCA"]}
+      "field": "gender", "type": "nominal",
+      "scale": {"range": ["#EA98D2", "#659CCA"]}
     }
   }
 }
@@ -356,10 +365,10 @@ vg.embed('#bar_stacked', {
     },
     "mark": "bar",
     "encoding": {
-      "y": {"field": "people","type": "quantitative", "aggregate": "sum", "axis": {"title": "population"}},
+      "y": {"field": "people", "type": "quantitative", "aggregate": "sum", "axis": {"title": "population"}},
       "x": {"field": "age", "type": "ordinal", "scale": {"bandWidth": 17}},
-      "color": {"field": "gender","type": "nominal",
-        "scale": {"range": ["#EA98D2","#659CCA"]}
+      "color": {"field": "gender", "type": "nominal",
+        "scale": {"range": ["#EA98D2", "#659CCA"]}
       }
     }  }
 });
@@ -367,8 +376,8 @@ vg.embed('#bar_stacked', {
 <div id="bar_stacked"></div>
 
 Alternatively, setting `config.stack` to `false` will disable stacking and thus
-produces a layered bar chart.  (Note: setting the mark to be semi-transparent is
-highly-recommended for this chart type.)  
+produces a layered bar chart.  To make it clear that bars are layered,
+the following example sets the mark's `opacity` to be semi-transparent.
 
 ```js
 {
@@ -390,7 +399,7 @@ highly-recommended for this chart type.)
     },
     "color": {
       "field": "gender", "type": "nominal",
-      "scale": {"range": ["#e377c2","#1f77b4"]}
+      "scale": {"range": ["#e377c2", "#1f77b4"]}
     }
   },
   "config": {
@@ -428,7 +437,7 @@ vg.embed('#bar_layered_transparent', {
       "color": {
         "field": "gender",
         "type": "nominal",
-        "scale": {"range": ["#e377c2","#1f77b4"]}
+        "scale": {"range": ["#e377c2", "#1f77b4"]}
       }
     },
     "config": {
@@ -465,7 +474,7 @@ vg.embed('#bar_layered_transparent', {
     },
     "color": {
       "field": "gender", "type": "nominal",
-      "scale": {"range": ["#EA98D2","#659CCA"]}
+      "scale": {"range": ["#EA98D2", "#659CCA"]}
     }
   }
 }
@@ -495,7 +504,7 @@ vg.embed('#trellis_bar', {
       "color": {
         "field": "gender",
         "type": "nominal",
-        "scale": {"range": ["#EA98D2","#659CCA"]}
+        "scale": {"range": ["#EA98D2", "#659CCA"]}
       },
       "row": {
         "field": "gender",
@@ -520,7 +529,8 @@ with a line that connects all the points in the group.
 
 Using `line` mark with one dimension (typically on `x`) and
 one measure (typically on `y`) produces a line chart with single line.  
-<!-- Line interpolation -->
+
+__TODO__: Line with interpolation
 
 Additional grouping can be specified using `color` or `detail` channels.
 Mapping a group field to `color` assigns different colors to each line and
@@ -549,8 +559,9 @@ Adding color to area chart creates stacked area chart by default.
 
 <!-- normalized area chart -->
 
-(Please look at[Stack Config](config.html#stack-config)'s documentation
-for how to customize stacking behavior.)
+To further customize stack, please look at [`config.stack`](config.html#stack-config) for more detail.
 
 
 ## Text
+
+__TODO__
