@@ -1,0 +1,384 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Vega Embedded Web Components Specification Language",
+  "oneOf": [
+    {
+      "type": "object",
+      "properties": {
+        "source": {
+          "type": "string"
+        },
+        "parameters": {
+          "$ref": "#/refs/parameters"
+        },
+        "parameter_el": {
+          "type": "string"
+        },
+        "renderer": {
+          "enum": [
+            "canvas",
+            "svg"
+          ]
+        },
+        "mode": {
+          "enum": [
+            "vega",
+            "vega-lite"
+          ]
+        },
+        "actions": {
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "export": {
+                  "type": "boolean"
+                },
+                "source": {
+                  "type": "boolean"
+                },
+                "editor": {
+                  "type": "boolean"
+                }
+              }
+            }
+          ]
+        }
+      },
+      "required": [
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "parameters": {
+          "$ref": "#/refs/parameters"
+        },
+        "parameter_el": {
+          "type": "string"
+        },
+        "renderer": {
+          "enum": [
+            "canvas",
+            "svg"
+          ]
+        },
+        "mode": {
+          "enum": [
+            "vega",
+            "vega-lite"
+          ]
+        },
+        "actions": {
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "export": {
+                  "type": "boolean"
+                },
+                "source": {
+                  "type": "boolean"
+                },
+                "editor": {
+                  "type": "boolean"
+                }
+              }
+            }
+          ]
+        }
+      },
+      "required": [
+        "url"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "spec": {
+          "type": "object"
+        },
+        "parameters": {
+          "$ref": "#/refs/parameters"
+        },
+        "parameter_el": {
+          "type": "string"
+        },
+        "renderer": {
+          "enum": [
+            "canvas",
+            "svg"
+          ]
+        },
+        "mode": {
+          "enum": [
+            "vega",
+            "vega-lite"
+          ]
+        },
+        "actions": {
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "export": {
+                  "type": "boolean"
+                },
+                "source": {
+                  "type": "boolean"
+                },
+                "editor": {
+                  "type": "boolean"
+                }
+              }
+            }
+          ]
+        }
+      },
+      "required": [
+        "spec"
+      ],
+      "additionalProperties": false
+    }
+  ],
+  "refs": {
+    "parameters": {
+      "type": "array",
+      "items": {
+        "$ref": "#/refs/parameter"
+      }
+    },
+    "parameter": {
+      "oneOf": [
+        {
+          "$ref": "#/refs/parameter-checkbox"
+        },
+        {
+          "$ref": "#/refs/parameter-select"
+        },
+        {
+          "$ref": "#/refs/parameter-radio"
+        },
+        {
+          "$ref": "#/refs/parameter-range"
+        },
+        {
+          "$ref": "#/refs/parameter-input"
+        }
+      ]
+    },
+    "parameter-checkbox": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "checkbox"
+          ]
+        },
+        "signal": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "rewrite": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "value": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "required": [
+        "type",
+        "signal"
+      ],
+      "additionalProperties": false
+    },
+    "parameter-select": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "select"
+          ]
+        },
+        "signal": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "rewrite": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "value": {
+          "type": [
+            "string",
+            "number",
+            "boolean"
+          ]
+        },
+        "options": {
+          "type": "array",
+          "items": {
+            "type": [
+              "string",
+              "number",
+              "boolean"
+            ]
+          }
+        }
+      },
+      "required": [
+        "type",
+        "signal",
+        "options"
+      ],
+      "additionalProperties": false
+    },
+    "parameter-radio": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "radio"
+          ]
+        },
+        "signal": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "rewrite": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "value": {
+          "type": [
+            "string",
+            "number",
+            "boolean"
+          ]
+        },
+        "options": {
+          "type": "array",
+          "items": {
+            "type": [
+              "string",
+              "number",
+              "boolean"
+            ]
+          }
+        }
+      },
+      "required": [
+        "type",
+        "signal",
+        "options"
+      ],
+      "additionalProperties": false
+    },
+    "parameter-range": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "range"
+          ]
+        },
+        "signal": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "rewrite": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "value": {
+          "type": "number"
+        },
+        "min": {
+          "type": "number"
+        },
+        "max": {
+          "type": "number"
+        },
+        "step": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "type",
+        "signal",
+        "min",
+        "max"
+      ],
+      "additionalProperties": false
+    },
+    "parameter-input": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "text"
+          ]
+        },
+        "signal": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "rewrite": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "value": {
+          "type": [
+            "string",
+            "number",
+            "boolean"
+          ],
+          "default": ""
+        }
+      },
+      "required": [
+        "type",
+        "signal"
+      ],
+      "additionalProperties": true
+    }
+  }
+}

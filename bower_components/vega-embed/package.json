@@ -1,0 +1,54 @@
+{
+  "name": "vega-embed",
+  "version": "2.0.0",
+  "description": "Publish Vega visualizations as embedded web components.",
+  "keywords": [
+    "vega",
+    "data",
+    "visualization",
+    "component",
+    "embed"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/vega/vega-embed.git"
+  },
+  "author": {
+    "name": "Jeffrey Heer",
+    "url": "http://idl.cs.washington.edu"
+  },
+  "license": "BSD-3-Clause",
+  "devDependencies": {
+    "d3": "^3.5.11",
+    "d3-geo-projection": "^0.2.15",
+    "topojson": "^1.6.19",
+    "vega": "^2.4.1",
+    "vega-lite": "^0.9.2",
+    "browserify": "^12.0.1",
+    "browserify-shim": "^3.8.11",
+    "chai": "^3.4.1",
+    "jshint": "^2.9.1-rc1",
+    "mocha": "^2.3.4",
+    "tv4": "^1.2.7",
+    "uglify-js": "^2.6.1"
+  },
+  "scripts": {
+    "deploy": "npm run lint && npm run test && scripts/deploy.sh",
+    "lint": "jshint src/",
+    "test": "npm run schema && mocha --timeout 5000 --recursive test/",
+    "build": "browserify src/embed.js -d -s vg.embed > vega-embed.js",
+    "postbuild": "uglifyjs vega-embed.js -cm > vega-embed.min.js",
+    "schema": "node scripts/schema.js > vega-embed-schema.json",
+    "watch": "watchify src/embed.js -v -d -s vg.embed -o vega-embed.js"
+  },
+  "browserify": {
+    "transform": [
+      "browserify-shim"
+    ]
+  },
+  "browserify-shim": {
+    "d3": "global:d3",
+    "vega": "global:vg",
+    "vega-lite": "global:vl"
+  }
+}

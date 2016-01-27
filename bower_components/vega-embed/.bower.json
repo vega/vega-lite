@@ -1,24 +1,22 @@
 {
-  "name": "vega",
-  "main": "vega.js",
+  "name": "vega-embed",
+  "main": "vega-embed.js",
   "homepage": "http://vega.github.io/vega/",
-  "description": "The Vega visualization grammar.",
+  "description": "Publish Vega visualizations as embedded web components.",
   "keywords": [
     "vega",
-    "visualization",
-    "interaction",
-    "dataflow",
-    "grammar",
     "data",
-    "d3"
+    "visualization",
+    "component",
+    "embed"
   ],
   "authors": [
-    "Arvind Satyanarayan (http://arvindsatya.com)",
     "Jeffrey Heer (http://idl.cs.washington.edu)"
   ],
   "license": "BSD-3-Clause",
   "dependencies": {
-    "d3": "^3.5.6"
+    "d3": "^3.5.11",
+    "vega": "^2.4.1"
   },
   "ignore": [
     ".DS_Store",
@@ -37,14 +35,14 @@
     "src",
     "test"
   ],
-  "version": "2.4.2",
-  "_release": "2.4.2",
+  "version": "2.0.0",
+  "_release": "2.0.0",
   "_resolution": {
     "type": "version",
-    "tag": "v2.4.2",
-    "commit": "c52e3fe5a3502d8dfd4ff3715e2b08dfa8773fe1"
+    "tag": "v2.0.0",
+    "commit": "e4e3ad6d2084a375c1a8f5d7250c90e4b06bb7a3"
   },
-  "_source": "git://github.com/vega/vega.git",
-  "_target": "^2.4.2",
-  "_originalSource": "vega"
+  "_source": "git://github.com/vega/vega-embed.git",
+  "_target": "~2.0.0",
+  "_originalSource": "vega-embed"
 }
