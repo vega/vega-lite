@@ -1,11 +1,12 @@
-.title {
+.vl-title {
   font-size: 32px;
-  margin-top: 50px;
+  font-weight: bold;
 }
 
 .menu a {
   display: inline-block;
   margin-right: 3px;
+  margin-top: 5px;
   text-decoration: none;
   padding: 5px 10px;
   background-color: #4682B4;
