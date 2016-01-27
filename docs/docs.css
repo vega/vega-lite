@@ -1,9 +1,18 @@
-footer {
-  margin-top: 50px;
-  text-align: center;
+.title {
+  margin-top: 40px;
 }
 
 .menu a {
   display: inline-block;
-  margin-right: 10px;
+  margin-right: 3px;
+  text-decoration: none;
+  padding: 5px 10px;
+  background-color: #4682B4;
+  color: white;
+  border-radius: 3px;
+}
+
+footer {
+  margin-top: 50px;
+  text-align: center;
 }
