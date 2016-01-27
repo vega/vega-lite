@@ -230,6 +230,8 @@ vg.embed('#temp_histogram', {
 </script>
 <div id="temp_histogram"></div>
 
+<a id="aggregate"></a>
+
 ## Aggregation (`aggregate`)
 
 Vega-Lite supports all [Vega aggregation operations](https://github.com/vega/vega/wiki/Data-Transforms#-aggregate) (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).
@@ -298,7 +300,7 @@ For `detail`, this determines the layer order of the output visualization.
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | _sort.field_  | Field         | The field name to aggregate over.|
-| _sort.op_     | String        | A valid [aggregation operation](Data-Transforms#-aggregate) (e.g., `mean`, `median`, etc.).|
+| _sort.op_     | String        | A valid [aggregation operation](#aggregate) (e.g., `mean`, `median`, etc.).|
 | _sort.order_  | String        | `"ascending"` or `"descending"` order. |
 
 <!-- TODO: example? or should this be in encoding.md -->
