@@ -128,8 +128,8 @@
       "showInEditor": true
     },
     {
-      "name": "trellis_area",
-      "title": "Trellis Area chart"
+      "name": "trellis_bar",
+      "title": "Population distribution of age groups and gender in 2000"
     },
     {
       "name": "trellis_stacked_bar",

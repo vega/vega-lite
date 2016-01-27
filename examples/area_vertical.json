@@ -3,7 +3,7 @@
   "data": {"url": "data/cars.json"},
   "mark": "area",
   "encoding": {
-    "y": {"field": "Year","type": "temporal","timeUnit": "year"},
-    "x": {"field": "Weight_in_lbs","type": "quantitative","aggregate": "sum"}
+    "y": {"timeUnit": "year", "field": "Year", "type": "temporal"},
+    "x": {"aggregate": "sum", "field": "Weight_in_lbs", "type": "quantitative"}
   }
 }

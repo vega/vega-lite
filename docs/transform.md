@@ -7,7 +7,7 @@ permalink: /docs/transform.html
 Data Transformation in Vega-Lite are described either via the `transform` property
 or via inline transform inside each field definition.
 
-## `transform`
+## `transform` Property
 
 The top-level `transform` object supports the following transformation properties:
 
@@ -26,9 +26,9 @@ provide example for filter null
 Show when filterNull is off and some "null" points will fall on the zero
 -->
 
-### `calculate`
+### Formula for `calculate`
 
-New fields can be calculated from from the existing data using `transform`'s `calculate` property, which contains an array of formula objects.  Each formula object has two properties:
+`transform`'s '`calculate` property contains an array of formula object for deriving new fields in the dataset.  Each formula object has two properties:
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
@@ -63,8 +63,8 @@ This example use `calculate` to derive a new field, then `filter` data based on 
   },
   "mark": "bar",
   "encoding": {
-    "y": {"type": "quantitative","field": "b2"},
-    "x": {"type": "ordinal","field": "a"}
+    "y": {"field": "b2", "type": "quantitative"},
+    "x": {"field": "a", "type": "ordinal"}
   }
 }
 ```
@@ -92,13 +92,15 @@ vg.embed('#bar_filter_calc', {
     },
     "mark": "bar",
     "encoding": {
-      "y": {"type": "quantitative","field": "b2"},
-      "x": {"type": "ordinal","field": "a"}
+      "y": {"field": "b2", "type": "quantitative"},
+      "x": {"field": "a", "type": "ordinal"}
     }
   }
 });
 </script>
 <div id="bar_filter_calc"></div>
+
+<!-- TODO population use calc to derive Male / Female -->
 
 <div id="inline"></div>
 ## Inline Transforms inside each `encoding` channel
@@ -159,14 +161,10 @@ vg.embed('#histogram', {
     "mark": "bar",
     "encoding": {
       "x": {
-        "bin": {"maxbins": 15},
-        "field": "Horsepower",
-        "type": "quantitative"
+        "bin": {"maxbins": 15}, "field": "Horsepower", "type": "quantitative"
       },
       "y": {
-        "aggregate": "count",
-        "field": "\*",
-        "type": "quantitative",
+        "aggregate": "count", "field": "\*", "type": "quantitative",
         "displayName": "Number of Records"
       }
     }
@@ -193,16 +191,10 @@ This example shows temperature in seattle over the months.
   "mark": "line",
   "encoding": {
     "x": {
-      "field": "date",
-      "type": "temporal",
-      "timeUnit": "month",
+      "timeUnit": "month", "field": "date", "type": "temporal",
       "axis": {"shortTimeLabels": true}
     },
-    "y": {
-      "aggregate": "mean",
-      "field": "temp",
-      "type": "quantitative"
-    }
+    "y": {"aggregate": "mean", "field": "temp", "type": "quantitative"}
   }
 }
 ```
@@ -257,7 +249,7 @@ The following bar chart aggregate mean of `Acceleration`, grouped by
   "mark": "bar",
   "encoding": {
     "x": {"field": "Cylinders", "type": "ordinal"},
-    "y": {"field": "Acceleration", "type": "quantitative", "aggregate": "mean"}
+    "y": {"aggregate": "mean", "field": "Acceleration", "type": "quantitative"}
   }
 }
 ```
@@ -303,4 +295,6 @@ For `detail`, this determines the layer order of the output visualization.
 | _sort.op_     | String        | A valid [aggregation operation](#aggregate) (e.g., `mean`, `median`, etc.).|
 | _sort.order_  | String        | `"ascending"` or `"descending"` order. |
 
-<!-- TODO: example? or should this be in encoding.md -->
+__TODO: Example -- sorting axis__
+
+__TODO: Example -- sorting color mapping__

@@ -19,7 +19,7 @@
   },
   "mark": "bar",
   "encoding": {
-    "y": {"type": "quantitative","field": "b2"},
-    "x": {"type": "ordinal","field": "a"}
+    "y": {"field": "b2", "type": "quantitative"},
+    "x": {"field": "a", "type": "ordinal"}
   }
 }

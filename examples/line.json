@@ -5,5 +5,6 @@
   "encoding": {
     "x": {"field": "Year", "type": "temporal", "timeUnit": "year"},
     "y": {"field": "Horsepower", "type": "quantitative", "aggregate": "mean"}
-  }
+  },
+  "config": {"mark": {"interpolate": "monotone"}}
 }

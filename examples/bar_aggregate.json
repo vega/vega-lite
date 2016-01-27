@@ -1,9 +1,18 @@
 {
-  "description": "A bar chart showing the average acceleration for cars with different numbers of cylinders.",
-  "data": {"url": "data/cars.json"},
+  "description": "A bar chart showing the US population distribution of age groups in 2000.",
+  "data": { "url": "data/population.json"},
+  "transform": {
+    "filter": "datum.year == 2000"
+  },
   "mark": "bar",
   "encoding": {
-    "x": {"field": "Cylinders", "type": "ordinal"},
-    "y": {"field": "Acceleration", "type": "quantitative", "aggregate": "mean"}
+    "y": {
+      "aggregate": "sum", "field": "people", "type": "quantitative",
+      "axis": {"title": "population"}
+    },
+    "x": {
+      "field": "age", "type": "ordinal",
+      "scale": {"bandWidth": 17}
+    }
   }
 }

@@ -3,15 +3,10 @@
   "mark": "bar",
   "encoding": {
     "x": {
-      "bin": {"maxbins": 15},
-      "field": "Horsepower",
-      "type": "quantitative"
+      "bin": {"maxbins": 15}, "field": "Horsepower", "type": "quantitative"
     },
     "y": {
-      "aggregate": "count",
-      "field": "*",
-      "type": "quantitative",
-      "displayName": "Number of Records"
+      "aggregate": "count", "field": "*", "type": "quantitative"
     }
   }
 }
