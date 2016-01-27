@@ -7,11 +7,27 @@ permalink: /docs/config.html
 Vega-Lite's top-level `config` property lists configuration properties of a visualization.
 This page outlines different types of config properties:
 
-- [Top-level config](#top-level-config) (`config.*`)
-- [Cell config](#cell-config) (`config.cell.*`)
-- [Mark Config](#mark-config) (`config.mark.*`)
-- [Scene Config](#scene-config) (`config.scene.*`)
-- [Stack Config](#stack-config) (`config.stack.*`)
+- [Top-level config](#top-level-config) 
+- [Cell config](#cell-config) 
+- [Mark Config](#mark-config) 
+- [Scene Config](#scene-config) 
+- [Stack Config](#stack-config) 
+
+```js
+{
+  "data": ... ,
+  "mark": ... ,
+  ... ,
+  "config":{
+    ...//top-level
+    "cell": {  ... },
+    "mark": {  ... },
+    "scene": {  ... },
+    "stack": {  ... }
+  }
+}
+
+```
 
 ## Top-level Config
 
@@ -23,7 +39,41 @@ A Vega-Lite `config` object can have the following top-level properties:
 | background    | String        | CSS color property to use as background of visualization. Default is `"transparent"`. |
 
 <!-- TODO: consider adding width, height, viewport, numberFormat, timeFormat  -->
-
+```js
+{
+  "data": {"url": "../data/stocks.csv", "formatType":"csv"},
+  "mark": "line",
+  "encoding": {
+    "x": {"field": "date", "type": "temporal"},
+    "y": {"field": "price", "type": "quantitative"},
+    "color": {"field": "symbol", "type": "nominal"}
+  },
+  "config":{
+    "viewport":[300, 270],
+    "cell": { "width": 1200, "height": 150}
+  }
+}
+```
+<script>
+vg.embed('#viewport-change', {
+  mode: 'vega-lite',
+  spec: {
+          "description": "Stock prices of 5 Tech Companies Over Time.",
+          "data": {"url": "../data/stocks.csv", "formatType":"csv"},
+          "mark": "line",
+          "encoding": {
+            "x": {"field": "date", "type": "temporal"},
+            "y": {"field": "price", "type": "quantitative"},
+            "color": {"field": "symbol", "type": "nominal"}
+          },
+          "config":{
+            "viewport":[300, 270],
+            "cell": { "width": 1200, "height": 150}
+          }
+        }
+  });
+</script>
+<div id="viewport-change"></div>
 
 ## Cell Config
 
@@ -126,7 +176,38 @@ vg.embed('#scatter_filled', {
 | :------------ |:-------------:| :------------- |
 | orient        | String        | The orientation of a non-stacked bar, area, and line charts.  The value is either `"horizontal"`, or `"vertical"` (default).  For area, this property determines the orient property of the Vega output.  For line, this property determines the path order of the points in the line if `path` channel is not specified.  For stacked charts, this is always determined by the orientation of the stack; therefore explicitly specified value will be ignored. |
 
-__TODO: Example - disambiguate bar orient__
+#### Example: `"horizontal"` orient in the line.
+```js
+{
+  "data": {"url": "data/cars.json"},
+  "mark": "line",
+  "encoding": {
+    "x": {"field": "Horsepower","type": "quantitative"},
+    "y": {"field": "Miles_per_Gallon","type": "quantitative"}
+  },
+  "config": {
+    "mark": {"orient": "horizontal"}
+  }
+}
+```
+<script>
+vg.embed('#horizontal_line', {
+  mode: 'vega-lite',
+  spec: {
+    "data": {"url": "../data/cars.json"},
+    "mark": "point",
+    "encoding": {
+      "x": {"field": "Horsepower","type": "quantitative"},
+      "y": {"field": "Miles_per_Gallon","type": "quantitative"}
+    },
+    "config": {
+      "mark": {"filled": true}
+    }
+  }
+});
+</script>
+<div id="horizontal_line"></div>
+
 
 
 ### Marks Config for Line and Area Marks
@@ -135,10 +216,43 @@ __TODO: Example - disambiguate bar orient__
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| interpolate   | String        | The line interpolation method to use. One of linear, step-before, step-after, basis, basis-open, basis-closed, bundle, cardinal, cardinal-open, cardinal-closed, monotone. |
+| interpolate   | String        | The line interpolation method to use. One of `linear`, `step-before`, `step-after`, `basis`, `basis-open`, `basis-closed`, `bundle`, `cardinal`, `cardinal-open`, `cardinal-closed`, `monotone`. |
 | tension       | Number        | Depending on the interpolation type, sets the tension parameter. |
 
-__TODO: Example - interpolate__
+#### Example: interpolate with `step-before`
+```js
+{
+  "data": {"url": "data/stocks.csv", "formatType":"csv"},
+  "transform": {"filter": "datum.symbol==='GOOG'"},
+  "mark": "line",
+  "encoding": {
+    "x": {"field": "date", "type": "temporal"},
+    "y": {"field": "price", "type": "quantitative"}
+  },
+  "config":{
+    "mark":{"interpolate":"step-before"}
+  }
+}
+```
+<script>
+vg.embed('#interpolate_step_before', {
+  mode: 'vega-lite',
+  spec: {
+    "data": {"url": "data/stocks.csv", "formatType":"csv"},
+    "transform": {"filter": "datum.symbol==='GOOG'"},
+    "mark": "line",
+    "encoding": {
+      "x": {"field": "date", "type": "temporal"},
+      "y": {"field": "price", "type": "quantitative"}
+    },
+    "config":{
+      "mark":{"interpolate":"step-before"}
+    }
+  }
+});
+</script>
+<div id="interpolate_step_before"></div>
+
 
 ### Marks Config for Tick Marks
 
