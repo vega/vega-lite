@@ -4,10 +4,10 @@ title: Tutorial
 permalink: /docs/tutorial.html
 ---
 
-This tutorial describes the basic set up to show [this basic Vega-Lite visualization](demo.html) on a web page.
-Similar tutorial exist for [D3](http://bost.ocks.org/mike/bar/) and [Vega](https://github.com/vega/vega/wiki/Tutorial) but as you will see, creating a bar chart in Vega-Lite is much easier!
+This tutorial describes the basic setup to show [this basic Vega-Lite visualization](demo.html) on a web page.
+Similar tutorials exist for [D3](http://bost.ocks.org/mike/bar/) and [Vega](https://github.com/vega/vega/wiki/Tutorial) but, as you will see, creating a bar chart in Vega-Lite is much easier!
 
-Here is the bare minimum HTML file to get Vega-Lite with inline values working in a webpage.
+Here is the bare minimum HTML file to get Vega-Lite working with inline values in a webpage.
 
 ```html
 <!DOCTYPE html>
@@ -50,10 +50,10 @@ Here is the bare minimum HTML file to get Vega-Lite with inline values working i
 ```
 
 Basically, Vega-Lite compiles a Vega-Lite specification into a Vega
-specification and use Vega Runtime to display visualizations.
+specification and uses the [Vega Runtime](https://github.com/vega/vega/wiki/Runtime) to display visualizations.
 
 This code first loads the required libraries (D3, Vega and Vega-Lite).
-Then it creates an HTML element that will later be used to render the visualization in.
+Then it creates the HTML element within which the visualization will be rendered.
 In the JavaScript code, the Vega-Lite specification is compiled to Vega.
 The Vega specification is then passed to the [Vega runtime](https://github.com/vega/vega/wiki/Runtime), which renders a visualization in the `#vis` element.
 
@@ -61,7 +61,7 @@ If viewed in a browser, this will display a simple bar chart. You can also try i
 
 ## Doing a bit more: load data from a URL
 
-The example above shows only the basic set up. The rest of the Vega-Lite documentation describes the Vega-Lite specification language in detail.
+The example above shows only the basic setup. The rest of the Vega-Lite documentation describes the Vega-Lite specification language in detail.
 
 For example, instead of embedding the data in the specification, it can be loaded from a url.
 Replace the `vlSpec` variable in the code above with the following specification to create a visualization of a dataset about cars.
