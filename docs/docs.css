@@ -1,6 +1,6 @@
 .vl-title {
   font-size: 32px;
-  font-weight: bold;
+  display: inline;
 }
 
 .menu a {
