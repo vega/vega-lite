@@ -17,6 +17,7 @@
     <link rel=stylesheet href="docs.css">
   </head>
   <body>
+    <header>
     <div class="menu" style="float:right">
       <a href="index.html">Home</a>
       <a href="tutorial.html">Tutorial</a>
@@ -26,7 +27,9 @@
       <a href="encoding.html">Encoding</a>
       <a href="config.html">Config</a>
     </div>
-    <h1 class="title">{{site.title}}: {{page.title}}</h1>
+    <div class="vl-title">{{site.title}}</div>
+    </header>
+    <h1 class="title">{{page.title}}</h1>
     <div class="page-content">
       <div class="wrapper">
         {{ content }}
