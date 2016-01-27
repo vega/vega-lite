@@ -36,6 +36,7 @@ gitsha=$(git rev-parse HEAD)
 version=$(cat package.json | jq .version | sed -e 's/^"//'  -e 's/"$//')
 
 git checkout head
+npm run build:all
 # add the compiled files, commit and tag!
 git add vega-lite* -f
 git add src/**/*.js -f
