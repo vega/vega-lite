@@ -30,6 +30,12 @@ In Vega-Lite, a specification can have the following top-level properties.
 
 ## Basic usage
 
+### Online editor
+
+Instead of setting up a web page, you can use the [Vega online editor](https://vega.github.io/vega-editor/?mode=vega-lite) to write Vega-Lite specifications online and immediately see your changes.
+
+### Vega-Lite on your own website
+
 To use Vega-Lite, load the required libraries (D3, Vega, and Vega-Lite).
 
 ```html
