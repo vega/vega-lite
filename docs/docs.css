@@ -9,9 +9,12 @@
   margin-top: 5px;
   text-decoration: none;
   padding: 5px 10px;
+  border-radius: 3px;
+}
+
+.menu a:hover {
   background-color: #4682B4;
   color: white;
-  border-radius: 3px;
 }
 
 footer {
