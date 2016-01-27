@@ -5,11 +5,11 @@ permalink: /docs/mark.html
 ---
 
 Marks are the basic visual building block of a visualization.  
-`mark` property of a Vega-Lite specification defines the visualization's mark type.
+`mark` property in Vega-Lite defines the visualization's mark type.
 Each mark type supports different [encoding channels](encoding.html#Encoding-Channels),
 which can be either mapped to a field or a constant value.  
 
-Currently Vega-Lite supports the following `mark` types:
+Vega-Lite supports the following `mark` types:
 [`point`](#point),
 [`circle`](#circle-and-square),
 [`square`](#circle-and-square),
@@ -17,7 +17,7 @@ Currently Vega-Lite supports the following `mark` types:
 [`bar`](#bar),
 [`line`](#line),
 [`area`](#area), and
-[`text`](#text) (text table).
+[`text`](#text).
 
 ## Point
 
@@ -80,8 +80,7 @@ vg.embed('#scatter', {
 </script>
 <div id="scatter"></div>
 
-Mapping another field to `size` channel in the [scatter plot](#scatter) above
-creates a bubble plot instead.  
+Mapping another field to `size` channel in the [scatter plot](#scatter) above creates a bubble plot instead.  
 
 ```js
 {
@@ -111,8 +110,7 @@ vg.embed('#scatter_bubble', {
 <div id="scatter_bubble"></div>
 
 Alternatively, other fields can be mapped to `color` and/or `shape` of the [scatter plot](#scatter).
-For example, this specification over-encodes the field `Origin` with both `color`
-and `shape`.
+For example, this specification over-encodes the field `Origin` with both `color` and `shape`.
 
 ```js
 {
@@ -177,7 +175,7 @@ vg.embed('#scatter_color_shape_constant', {
 <div id="scatter_color_shape_constant"></div>
 
 By default, `point` marks have filled borders and are transparent inside.  
-Setting `config.mark.filled` creates filled marks instead.
+Setting `config.mark.filled` to `true` creates filled marks instead.
 
 ```js
 {
@@ -219,7 +217,7 @@ vg.embed('#scatter_filled', {
 ## Circle and Square
 
 `circle` and `square` marks are similar to `point` mark except that
-(1) the `shape` channel is always set to `circle` and `square`, and
+(1) the `shape` value is always set to `circle` and `square`, and
 (2) they are filled by default.  Here are some examples:
 
 ```js
