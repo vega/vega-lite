@@ -51,3 +51,8 @@ vg.parse.spec(vgSpec, function(chart) {
   chart({el:"#vis"}).update();
 });
 ```
+
+## Vega-Lite, Vega, and D3
+
+Vega-Lite is a higher-level grammar for visual analysis. Common charts (bar chart, line chart, area chart, scatter plot, heatmap, trellis plots, ...) can be easily created with Vega-Lite, often in a few lines of JSON. Vega is much more expressive and also supports interactions.
+However, with more expressiveness comes complexity and more code is required to create simple charts. The Vega wiki has a detailed [comparison of Vega and D3](https://github.com/vega/vega/wiki/Vega-and-D3).

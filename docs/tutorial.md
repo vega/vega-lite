@@ -5,6 +5,7 @@ permalink: /docs/tutorial.html
 ---
 
 This tutorial describes the basic set up to show [this basic Vega-Lite visualization](demo.html) on a web page.
+Similar tutorial exist for [D3](http://bost.ocks.org/mike/bar/) and [Vega](https://github.com/vega/vega/wiki/Tutorial) but as you will see, creating a bar chart in Vega-Lite is much easier!
 
 Here is the bare minimum HTML file to get Vega-Lite with inline values working in a webpage.
 
