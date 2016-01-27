@@ -79,7 +79,7 @@ Make sure that you have a copy of the [cars dataset](/vega-lite/data/cars.json) 
 }
 ```
 
-## A complex visualizations
+## A complex visualization
 
 Here is an even more complex chart. It shows barley yields for different locations and varieties for two years in a trellis plot. Make sure that you have the [barleys dataset](/vega-lite/data/barley.json) in your `data` directory as before. You can also see [this visualization in the Vega online editor](https://vega.github.io/vega-editor/?mode=vega-lite&spec=trellis_barley).
 
