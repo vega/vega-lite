@@ -14,12 +14,12 @@ which can be mapped either to a field (a variable in your data) or to a constant
 <!-- Replace the following list with a table listing mark types and their supported channels. -->
 
 Vega-Lite supports the following `mark` types:
-[`point`](#point),
-[`circle`](#circle-and-square),
-[`square`](#circle-and-square),
-[`tick`](#tick),
-[`bar`](#bar),
-[`line`](#line),
+[`point`](#point-mark),
+[`circle`](#circle-and-square-marks),
+[`square`](#circle-and-square-marks),
+[`tick`](#tick-mark),
+[`bar`](#bar-mark),
+[`line`](#line-mark),
 [`area`](#area), and
 [`text`](#text).
 
