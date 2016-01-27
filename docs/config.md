@@ -80,8 +80,9 @@ The smallest unit in Vega-Lite visualization is called a cell.  Each single (non
 
 <!-- one example for custom fill/stroke -->
 
-<div id="config.mark.filled"></div>
-#### Example: `filled`
+<!-- Linked from another page.  Don't remove!-->
+<a id="config.mark.filled"></a>
+#### Example: `filled` Points
 
 By default, `point` marks have filled borders and are transparent inside.  
 Setting `config.mark.filled` to `true` creates filled marks instead.

@@ -7,7 +7,7 @@ permalink: /docs/transform.html
 Data Transformation in Vega-Lite are described either via the `transform` property
 or via inline transform inside each field definition.
 
-## `transform`
+## `transform` Property
 
 The top-level `transform` object supports the following transformation properties:
 
@@ -293,4 +293,6 @@ For `detail`, this determines the layer order of the output visualization.
 | _sort.op_     | String        | A valid [aggregation operation](Data-Transforms#-aggregate) (e.g., `mean`, `median`, etc.).|
 | _sort.order_  | String        | `"ascending"` or `"descending"` order. |
 
-<!-- TODO: example? or should this be in encoding.md -->
+__TODO: Example -- sorting axis__
+
+__TODO: Example -- sorting color mapping__

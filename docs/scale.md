@@ -17,6 +17,8 @@ By default, Vega-Lite creates default scales for fields that are mapped to visua
 | range        | Array &#124; String  | For `x` and `y`, the range covers the chart's cell width and cell height respectively by default.  For `color`, the default range is `"category10"` for nominal fields, and a green ramp (`['#AFC6A3', '#09622A']`) for other types of fields.  <!-- TODO default for size size -->  For `shape`, the default is [Vega's `"shape"` preset](https://github.com/vega/vega/wiki/Scales#scale-range-literals).  For `row` and `column`, the default range is `width` and `height` respectively.  <br/> Custom domain values can be specified. For numeric values, the range can take the form of a two-element array with minimum and maximum values. For ordinal or quantized data, the range may by an array of desired output values, which are mapped to elements in the specified domain. [See Vega's documentation on range literals for more options](https://github.com/vega/vega/wiki/Scales#scale-range-literals). |
 | round         | Boolean       | If true, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid.|
 
+<!-- TODO: Explain default domain for month and (week)day -->
+
 ## Ordinal Scale Properties
 
 | Property      | Type          | Description    |
@@ -49,8 +51,18 @@ __<sup>1</sup>__ All Vega-Lite scale properties exist in Vega except `useRawDoma
 </small>
 -->
 
-#### Examples
+-------
 
-TODO: Log Scale
+<!-- TODO: should example be here or separate in each section above? -->
+
+#### Example: Log Scale
+
+TODO: put scatter_log.json here
+
+#### Example: Custom Color Range
+
+TODO: put bar_layered_transparent.json or its variation in mark.md here
+
+#### Example: Custom Domain
+
 TODO: Custom Domain
-TODO: Custom Color Range
