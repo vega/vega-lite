@@ -6,51 +6,48 @@ permalink: /docs/index.html
 
 Vega-Lite provides a higher-level grammar for visual analysis, akin to ggplot or Tableau, that generates complete [Vega](https://vega.github.io/) specifications.
 
-Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as position (`x`,`y`), `size`, `color` and `shape`. These mappings are then translated into detailed visualization specifications in the form of Vega specification language.  Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values.  
-This documentation outlines the syntax of Vega-Lite specification, and how to embed Vega-Lite visualizations in your applications.
+Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as position (`x`,`y`), `size`, `color` and `shape`. These mappings are then translated into detailed visualization specifications in the Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicitly specify these properties to override default values.  
+This documentation outlines the syntax and semantics of Vega-Lite specifications, and how you can embed Vega-Lite visualizations in your applications.
 
 ## Vega-Lite Specification
 
-A Vega-Lite specification is a JSON object that describes data source (`data`),
-a mark type (`mark`), key-value visual encodings of data variables (`encoding`),
+A Vega-Lite specification is a JSON object that describes the data source (`data`),
+a mark type (`mark`), visual encodings of data variables (`encoding`),
 and data transformations.
+
+In Vega-Lite, a specification can have the following top-level properties.
+
+| Property             | Type          | Description    |
+| :------------        |:-------------:| :------------- |
+| [data](data.html)    | Object        | An object describing the data source. |
+| [transform](transform.html)  | Object        | An object describing data transformations. |
+| [mark](mark.html) | String        | The mark type.  Currently Vega-Lite supports `bar`, `line`, `area`, `point`, and `text` (text table). |
+| [encoding](encoding.html) | Object        | key-value mapping between encoding channels and encoding object |
+| [config](config.html)   | Object        | Configuration object. |
 
 Vega-Lite assumes a tabular data model: each data source is a set of records,
 where each record has values for the same set of variables.
 
-In the current version, Vega-Lite specification is a JSON object
-that contains the following top-level properties:
-
-| Property             | Type          | Description    |
-| :------------        |:-------------:| :------------- |
-| [data](data.html)    | Object        | An object describing data source. |
-| [transform](transform.html)  | Object        | An object describing data transformation. |
-| [mark](mark.html)| String        | The mark type.  Currently Vega-Lite supports `bar`, `line`, `area`, `point`, and `text` (text table). |
-| [encoding](encoding.html)| Object        | key-value mapping between encoding channels and encoding object |
-| [config](config.html)   | Object        | Configuration object. |
-
 ## Using Vega-Lite
 
-### Inline Data
-
-Here is the bare minimum html file to get Vega-Lite with inline values working in a webpage.
+Here is the bare minimum HTML file to get Vega-Lite with inline values working in a webpage.
 Basically, Vega-Lite compiles a Vega-Lite specification into a Vega
 specification and use Vega Runtime to display visualizations.
 
 ```html
 <!DOCTYPE html>
-<title>Vega Lite Bar Chart</title>
-<meta charset="utf-8">
+<head>
+  <title>Vega Lite Bar Chart</title>
+  <meta charset="utf-8">
 
-<script src="../lib/d3.min.js"></script>
-<script src="../lib/vega.js"></script>
-<script src="../lib/vega-lite.js"></script>
-
-<div id="vis"></div>
-
-<script>
-
-var vlSpec = {
+  <script src="//d3js.org/d3.v3.min.js"></script>
+  <script src="//vega.github.io/vega/vega.js"></script>
+  <script src="//vega.github.io/vega-lite/vega-lite.js"></script>
+</head>
+<body>
+  <div id="vis"></div>
+  <script>
+  var vlSpec = {
       "data": {
         "values": [
           {"a":"A", "b":28}, {"a":"B", "b":55}, {"a":"C", "b":43},
@@ -65,48 +62,42 @@ var vlSpec = {
       }
     };
 
-var vgSpec = vl.compile(vlSpec).spec;
-vg.parse.spec(vgSpec, function(chart) {
-  chart({el:"#vis"}).update(); });
+  // Use Vega-Lite to compile the Vega-Lite specification to Vega
+  var vgSpec = vl.compile(vlSpec).spec;
 
-</script>
+  // Use Vega to display the visualization
+  vg.parse.spec(vgSpec, function(chart) {
+    chart({el:"#vis"}).update(); });
+  </script>
+</body>
+</html>
 ```
 
+Here, we first load the required libraries (D3, Vega and Vega-Lite).
+Then we create an HTML tag that we will render the visualization in.
+Then we create a Vega-Lite specification and compile it to Vega.
+Lastly, the Vega specification is passed to the [Vega runtime](https://github.com/vega/vega/wiki/Runtime).
+
+If viewed in a browser, this will display a simple bar chart.
+This example shows only the basic set up. The rest of the documentation describes the Vega-Lite specification language in detail.
 
 ### Data from URL
 
-Here is the bare minimum html file to get Vega-Lite with data from url working in a webpage.
+For example, instead of embedding the data in the specification, it can be loaded from a url.
+Replace the `vlSpec` variable in the code above with the following specification to create a visualization of a dataset about cars.
 
-```html
-<!DOCTYPE html>
-<title>Vega Lite Bar Chart</title>
-<meta charset="utf-8">
+Make sure that you have a copy of the [cars dataset](https://vega.github.io/vega-lite/data/cars.json) in the `data` directory.
 
-<script src="../lib/d3.min.js"></script>
-<script src="../lib/vega.js"></script>
-<script src="../lib/vega-lite.js"></script>
-
-<div id="vis"></div>
-
-<script>
-
-var vlSpec = {
-      "data": {"url": "data/cars.json"},
-      "mark": "point",
-      "encoding": {
-        "x": {"type": "ordinal","field": "Origin"},
-        "y": {"type": "quantitative","field": "Acceleration"}
-      }
-    };
-var vgSpec = vl.compile(vlSpec).spec;
-
-vg.parse.spec(vgSpec, function(chart) {
-  var view = chart({el: '#vis', renderer: 'svg'});
-  view.update();
-});
-</script>
+```json
+{
+  "data": {"url": "data/cars.json"},
+  "mark": "point",
+  "encoding": {
+    "x": {"type": "ordinal","field": "Origin"},
+    "y": {"type": "quantitative","field": "Acceleration"}
+  }
+}
 ```
-
 
 __Pending Revision__:
 Vega-Lite Compile API is under revision.  A better tutorial is coming soon.
