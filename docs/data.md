@@ -38,3 +38,10 @@ For example, a data table with two rows and two columns (`a` and `b`) in a spec 
 
 Data can be specified from url using the `url` property.  
 Format of the input data can be specified using `formatType` property.  
+
+__TODO: Example or Link Back to Tutorial Page__
+
+
+## Binding Data at Run-time
+
+__TODO: Example__
