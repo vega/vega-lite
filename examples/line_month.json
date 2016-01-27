@@ -1,20 +1,17 @@
 {
-  "description": "This example shows how to use timeUnit and shortTimeNames.",
-  "data": {"url": "data/birdstrikes.json"},
+  "data": {"url": "data/seattle-temps.csv","formatType": "csv"},
   "mark": "line",
   "encoding": {
     "x": {
-      "axis": {
-        "shortTimeNames": true
-      },
-      "field": "Flight_Date",
+      "field": "date",
       "type": "temporal",
-      "timeUnit": "month"
+      "timeUnit": "month",
+      "axis": {"shortTimeLabels": true}
     },
     "y": {
-      "field": "*",
-      "type": "quantitative",
-      "aggregate": "count"
+      "aggregate": "mean",
+      "field": "temp",
+      "type": "quantitative"
     }
   }
 }

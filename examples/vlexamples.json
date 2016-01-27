@@ -16,8 +16,18 @@
       "showInEditor": true
     },
     {
+      "name": "bar_layered_transparent",
+      "title": "Bar chart with transparent layers",
+      "showInEditor": true
+    },
+    {
       "name": "bar_grouped",
       "title": "Grouped bar chart.",
+      "showInEditor": true
+    },
+    {
+      "name": "bar_yearmonth",
+      "title": "Temperature in Seattle",
       "showInEditor": true
     },
     {
@@ -69,7 +79,7 @@
     },
     {
       "name": "line_month",
-      "title": "Line showing pattern between months",
+      "title": "Temperature in Seattle",
       "showInEditor": true
     },
     {
@@ -89,11 +99,6 @@
     {
       "name": "tableheatmap",
       "title": "Table Heatmap"
-    },
-    {
-      "name": "transparent_layer_bar",
-      "title": "Bar chart with transparent layers",
-      "showInEditor": false
     }
   ],
   "Stack": [
@@ -114,15 +119,6 @@
     {
       "name": "stacked_bar_1d",
       "title": "1D Stacked Bar Chart"
-    },
-    {
-      "name": "temp_histogram",
-      "title": "Temperature in Seattle",
-      "showInEditor": true
-    },
-    {
-      "name": "temp_histogram_bar",
-      "title": "Temperature in Seattle"
     }
   ],
   "Trellis": [
