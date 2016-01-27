@@ -90,7 +90,7 @@ vg.embed('#bar_filter_calc', {
 ## Inline Transforms inside each `encoding` channel
 
 To serve exploratory analysis, binning, time unit conversion and aggregation can be specified inline as a part of each channel's [field definition](encoding.html#field-definition).  
-After the transforms inside the top-level `transform` are executed, binning, time unit conversion are then performed respectively.
+After the transforms inside the top-level `transform` are executed, binning, time unit conversion, aggregation are then performed respectively.
 
 ## Binning (`bin`)
 

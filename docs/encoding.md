@@ -36,7 +36,7 @@ Here is a list of properties for the field definition object:
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | field         | String        | Name of the field from which to pull a data value.    |
-| value         | String &#124; Integer | A constant value. |
+| value         | String &#124; Number | A constant value. |
 | type          | String        | Data type of the field.  This property accepts both a full type name (`"quantitative"`, `"temporal"`, `"ordinal"`,  and `"nominal"`), or an initial character of the type name (`"Q"`, `"T"`, `"O"`, `"N"`).  This property is case insensitive.|
 
 ### Inline Transforms
@@ -55,9 +55,9 @@ For more information about these transforms, please look at [inline transforms s
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| [scale](scale.html)      | Object        | Configuration object for the encoding's scale.   |
-| [axis](axis.html)        | Boolean &#124; Object        | Boolean flag for showing axis (`true` by default), or a config object for the encoding's axis.    |
-| [legend](legend.html)    | Boolean &#124; Object  | Boolean flag for showing legend (`true` by default), or a config object for the encoding's legends. |
+| [scale](scale.html)      | Object        | Configuration object for the encoding's scale. (Only for `x`, `y`, `color`, `size`, `shape`, `row`, and `column`.) |
+| [axis](axis.html)        | Boolean &#124; Object        | Boolean flag for showing axis (`true` by default), or a config object for the encoding's axis. (Only for `x`, `y`, `row`, and `column`.) |
+| [legend](legend.html)    | Boolean &#124; Object  | Boolean flag for showing legend (`true` by default), or a config object for the encoding's legends. (Only for `color`, `size`, and `shape`.) |
 
 For more information about scale, axis, and legend, please look at the [scale](scale.html), [axis](axis.html), and [legend](legend.html) pages.
 
