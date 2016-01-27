@@ -1,8 +1,8 @@
 import {Model} from './Model';
-import {X, Y, COLOR, TEXT, SHAPE, DETAIL, ROW, COLUMN, LABEL} from '../channel';
+import {X, Y, COLOR, TEXT, SHAPE, PATH, DETAIL, ROW, COLUMN, LABEL} from '../channel';
 import {AREA, LINE, TEXT as TEXTMARK} from '../mark';
 import {imputeTransform, stackTransform} from './stack';
-import {extend} from '../util';
+import {extend, isArray} from '../util';
 import {area} from './mark-area';
 import {bar} from './mark-bar';
 import {line} from './mark-line';
@@ -29,15 +29,10 @@ export function compileMark(model: Model): any[] {
   const markConfig = model.config().mark;
   const sortBy = markConfig.sortBy;
 
-  if (mark === LINE || mark === AREA) {
+  if (mark === LINE || mark === AREA) { // TODO: extract this into compilePathMark
     const details = detailFields(model);
 
-    // For line and area, we sort values based on dimension by default
-    // For line, a special config "sortLineBy" is allowed
-    let sortLineBy = mark === LINE ? markConfig.sortLineBy : undefined;
-    if (!sortLineBy) {
-      sortLineBy = '-' + model.field(markConfig.orient === 'horizontal' ? Y : X);
-    }
+    const pathOrder = getPathOrder(model);
 
     let pathMarks: any = [extend(
       name ? { name: name + '-marks' } : {},
@@ -50,13 +45,11 @@ export function compileMark(model: Model): any[] {
           isFaceted || details.length > 0 ? {} : dataFrom,
 
           // sort transform
-          {transform: [{ type: 'sort', by: sortLineBy }]}
+          {transform: [{ type: 'sort', by: pathOrder}]}
         ),
         properties: { update: markCompiler[mark].properties(model) }
       }
     )];
-
-    // FIXME is there a case where area requires impute without stacking?
 
     if (details.length > 0) { // have level of details - need to facet line into subgroups
       const facetTransform = { type: 'facet', groupby: details };
@@ -89,6 +82,8 @@ export function compileMark(model: Model): any[] {
       return pathMarks;
     }
   } else { // other mark type
+    // TODO: extract this into compileNonPathMark
+
     let marks = []; // TODO: vgMarks
     if (mark === TEXTMARK &&
       model.has(COLOR) &&
@@ -145,6 +140,30 @@ export function compileMark(model: Model): any[] {
     }
 
     return marks;
+  }
+}
+
+/**
+ * Return path order for sort transform's by property
+ */
+function getPathOrder(model: Model) {
+  if (model.mark() === LINE && model.has(PATH)) {
+    // For only line, sort by the path field if it is specified.
+
+    if (isArray(model.spec().encoding[PATH])) { // multiple PATH fields
+      return model.spec().encoding[PATH].map(function(fieldDef){
+        // add - prefix for descending
+        return (fieldDef.sort === 'descending' ? '-' : '') + fieldDef.field;
+      });
+    } else { // Single PATH field
+      const fieldDef = model.fieldDef(PATH);
+      // add - prefix for descending
+      return (fieldDef.sort === 'descending' ? '-' : '') + fieldDef.field;
+    }
+
+  } else {
+    // For both line and area, we sort values based on dimension by default
+    return '-' + model.field(model.config().mark.orient === 'horizontal' ? Y : X);
   }
 }
 
