@@ -66,7 +66,7 @@ The example above shows only the basic set up. The rest of the Vega-Lite documen
 For example, instead of embedding the data in the specification, it can be loaded from a url.
 Replace the `vlSpec` variable in the code above with the following specification to create a visualization of a dataset about cars.
 
-Make sure that you have a copy of the [cars dataset](https://vega.github.io/vega-lite/data/cars.json) in the `data` directory.
+Make sure that you have a copy of the [cars dataset](/vega-lite/data/cars.json) in the `data` directory.
 
 ```json
 {
@@ -75,6 +75,27 @@ Make sure that you have a copy of the [cars dataset](https://vega.github.io/vega
   "encoding": {
     "x": {"type": "ordinal","field": "Origin"},
     "y": {"type": "quantitative","field": "Acceleration"}
+  }
+}
+```
+
+## A complex visualizations
+
+Here is an even more complex chart. It shows barley yields for different locations and varieties for two years in a trellis plot. Make sure that you have the [barleys dataset](/vega-lite/data/barley.json) in your `data` directory as before. You can also see [this visualization in the Vega online editor](https://vega.github.io/vega-editor/?mode=vega-lite&spec=trellis_barley).
+
+```json
+{
+  "data": {"url": "data/barley.json"},
+  "mark": "point",
+  "encoding": {
+    "x": {"type": "quantitative", "field": "yield","aggregate": "mean"},
+    "y": {
+      "sort": {"field": "yield", "aggregate": "mean", "reverse": false},
+      "type": "ordinal",
+      "field": "variety"
+    },
+    "row": {"type": "ordinal", "field": "site"},
+    "color": {"type": "ordinal", "field": "year"}
   }
 }
 ```
