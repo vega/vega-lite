@@ -103,18 +103,18 @@ __TODO__
 
 <!-- ## Data Type -->
 
-#### Examples: Size
+#### Example: Size
 
 __TODO__
 <!-- Example: bubble_chart -->
 
-#### Examples: Shape
+#### Example: Shape
 
 <!-- Example: scatter plot with shape -->
 <!-- Example: shape on line -->
 
 
-#### Example: Detail
+#### Exampl: Detail
 
 <!-- Grouping for line and area -->
 <!-- Additional measure / groupby for aggregation -->

@@ -100,6 +100,8 @@ vg.embed('#bar_filter_calc', {
 </script>
 <div id="bar_filter_calc"></div>
 
+<!-- TODO population use calc to derive Male / Female -->
+
 <div id="inline"></div>
 ## Inline Transforms inside each `encoding` channel
 

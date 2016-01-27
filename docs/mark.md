@@ -324,7 +324,7 @@ vg.embed('#bar_aggregate', {
 </script>
 <div id="bar_aggregate"></div>
 
-Adding color to area chart creates a stacked bar chart by default.
+Adding color to the bar chart creates a stacked bar chart by default.
 
 ```js
 {
@@ -344,7 +344,8 @@ Adding color to area chart creates a stacked bar chart by default.
       "field": "age", "type": "ordinal",
       "scale": {"bandWidth": 17}
     },
-    "color": {"field": "gender","type": "nominal",
+    "color": {
+      "field": "gender","type": "nominal",
       "scale": {"range": ["#EA98D2","#659CCA"]}
     }
   }
@@ -542,7 +543,7 @@ __TODO__: Example - "Stock" with detail instead of color
 By default, the line's path is ordered by data values on the dimension axis (x or y) like shown in previous examples.
 However, a field can be mapped to line path
 
-__TODO__: Example - Connected Scatterplot using "driving.json" data 
+__TODO__: Example - Connected Scatterplot using "driving.json" data
 
 ## Area
 
