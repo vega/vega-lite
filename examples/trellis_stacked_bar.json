@@ -2,9 +2,9 @@
   "data": {"url": "data/barley.json"},
   "mark": "bar",
   "encoding": {
+    "column": {"field": "year","type": "ordinal"},
     "x": {"field": "yield","type": "quantitative","aggregate": "sum"},
     "y": {"field": "variety","type": "nominal"},
-    "column": {"field": "year","type": "ordinal"},
     "color": {"field": "site","type": "nominal"}
   }
 }

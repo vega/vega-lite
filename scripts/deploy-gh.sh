@@ -3,6 +3,7 @@
 . ./scripts/pre-deploy.sh
 
 git checkout gh-pages
+git pull
 git merge master --no-edit
 
 # update bower_components

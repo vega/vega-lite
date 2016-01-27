@@ -6,9 +6,13 @@ permalink: /docs/axis.html
 
 Axes provide axis lines, ticks and labels to convey how a spatial range represents a data range. Simply put, axes visualize scales.
 
-<!-- TODO: how to turn off axis -->
+By default, Vega-Lite automatically creates axes for `x`, `y`, `row`, and `column` channels when they are encoded.
 
-Vega-Lite's `axis` object supports the following [Vega axis properties](https://github.com/vega/vega/wiki/Axes#axis-properties):
+The field's axis can be removed by setting `axis` to `false`.
+If `axis` is `true`, default axis properties are applied.
+
+Axis properties can be overridden by setting `axis` to a axis property object.
+The `axis` property object supports the following properties:
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
@@ -30,7 +34,7 @@ Vega-Lite's `axis` object supports the following [Vega axis properties](https://
 | properties    | Object        | Optional mark property definitions for custom axis styling. The input object can include sub-objects for `ticks` (both major and minor), `majorTicks`, `minorTicks`, `labels` and `axis` (for the axis line).  These mark property definitions can make value references to their scale domain data via `data` property like so: `{field: "data"}`. This is a shorthand for `{field: {datum: "data"}}`. The template follows suite: `{template: "datum.data"}`. |
 
 <!--TODO: elaborate example for the properties group -->
-<!--TODO: what's the default behavior for format, `ticks,  default values for `axis` and `labels` properties groups -->
+<!--TODO: what's the default behavior for format, `ticks`, default values for `axis` and `labels` properties groups -->
 
 Moreover, Vega-Lite supports the following additional axis properties.
 

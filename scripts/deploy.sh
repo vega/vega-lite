@@ -36,13 +36,14 @@ gitsha=$(git rev-parse HEAD)
 version=$(cat package.json | jq .version | sed -e 's/^"//'  -e 's/"$//')
 
 git checkout head
+npm run build:all
 # add the compiled files, commit and tag!
 git add vega-lite* -f
 git add src/**/*.js -f
 
 # commit, tag and push to gh-pages and swap back to master
 set +e
-git commit -m "release $version $gitsha"
+git commit -m "Release $version $gitsha"
 set -e
 git tag -am "Release v$version." "v$version"
 

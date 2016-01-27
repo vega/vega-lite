@@ -54,9 +54,9 @@ For more information about these transforms, please look at [inline transforms s
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| [scale](#scale)      | Object        | Configuration object for the encoding's scale.   |
-| [axis](#axis)        | Object        | Configuration object for the encoding's axis.    |
-| [legend](#legend)    | Boolean &#124; Object  | Boolean flag for showing legend (`true` by default), or a configuration object for the encoding's legends. |
+| [scale](scale.html)      | Object        | Configuration object for the encoding's scale.   |
+| [axis](axis.html)        | Boolean &#124; Object        | Boolean flag for showing axis (`true` by default), or a config object for the encoding's axis.    |
+| [legend](legend.html)    | Boolean &#124; Object  | Boolean flag for showing legend (`true` by default), or a config object for the encoding's legends. |
 
 --------
 
