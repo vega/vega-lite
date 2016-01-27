@@ -273,12 +273,50 @@ vg.embed('#square', {
 </script>
 <div id="square"></div>
 
+
 ## Tick
 
-<!--
-- Supported data type
-- How orientation is determined
--->
+`tick` mark represents each data point as a tick.  
+It is an ideal mark for displaying distribution of data.  
+
+```js
+{
+  "description": "Shows the relationship between horsepower and the numbver of cylinders using tick marks.",
+  "data": {"url": "data/cars.json"},
+  "mark": "tick",
+  "encoding": {
+    "x": {
+      "field": "Horsepower",
+      "type": "quantitative"
+    },
+    "y": {
+      "field": "Cylinders",
+      "type": "ordinal"
+    }
+  }
+}
+```
+<script>
+vg.embed('div#tick-plot', {
+  mode: 'vega-lite',
+  spec: {
+    "description": "Shows the relationship between horsepower and the numbver of cylinders using tick marks.",
+    "data": {"url": "../data/cars.json"},
+    "mark": "tick",
+    "encoding": {
+      "x": {
+        "field": "Horsepower",
+        "type": "quantitative"
+      },
+      "y": {
+        "field": "Cylinders",
+        "type": "ordinal"
+      }
+    }
+  }
+});
+</script>
+<div id="tick-plot"></div>
 
 
 ## Bar
