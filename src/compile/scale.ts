@@ -348,7 +348,9 @@ export function rangeMixins(model: Model, channel: Channel, scaleType: string): 
     case SHAPE:
       return {range: 'shapes'};
     case COLOR:
-      if (fieldDef.type === NOMINAL) {
+      if (fieldDef.type === NOMINAL
+        || fieldDef.type === ORDINAL // FIXME remove this once we support color ramp for ordinal
+      ) {
         return {range: 'category10'};
       } else { // time or quantitative
         return {range: ['#AFC6A3', '#09622A']}; // tableau greens
