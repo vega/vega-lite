@@ -12,7 +12,7 @@ Here is a list of all properties describing `data` source:
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| [values](#inline-data) | Array         | Array of object that maps field names to their values.  See [Inline Data](#Inline-Data) |
+| [values](#inline-data) | Array         | Array of object that maps field names to their values. |
 | [url](#data-from-url) | String         | A URL from which to load the data set. Use the _formatType_ property to ensure the loaded data is correctly parsed. |
 | [formatType](#data-from-url) | String  | Type of input data: `json`(default), `csv` |
 
