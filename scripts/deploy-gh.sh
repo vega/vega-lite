@@ -1,3 +1,5 @@
+#!/bin/bash
+
 . ./scripts/pre-deploy.sh
 
 git checkout gh-pages
@@ -11,6 +13,7 @@ git add bower_components/* -f
 # build
 npm run build:all
 git add vega-lite* -f
+git add site/gallery.js -f
 
 # commit if things changed
 if [ -n "$(git status --porcelain)" ]; then

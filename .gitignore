@@ -10,13 +10,10 @@ instance.json
 coverage
 Gemfile.lock
 
-src/*.js
-src/**/*.js
-test/*.js
-test/**/*.js
 test/log
 test/log/difflist.json
 examples/_original/*
 examples/_output/*
 examples/_diff/*
 **/*.js.map
+**/*.js

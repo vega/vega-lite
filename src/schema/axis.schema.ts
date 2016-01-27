@@ -3,17 +3,25 @@ export interface Axis {
   format?: string;
   grid?: boolean;
   layer?: string;
-  orient?: string;
-  ticks?: number;
-  title?: string;
-  tickSize?: number;
   offset?: number;
-  shortTimeNames?: boolean;
-  // Vega-Lite only
-  labelMaxLength?: number;
-  titleMaxLength?: number;
+  orient?: string;
+  subdivide?: number;
+  ticks?: number;
+  tickPadding?: number;
+  tickSize?: number;
+  tickSizeMajor?: number;
+  tickSizeMinor?: number;
+  tickSizeEnd?: number;
+  title?: string;
   titleOffset?: number;
+  values?: number[];
   properties?: any; // TODO: declare VgAxisProperties
+  // Vega-Lite only
+  characterWidth?: number;
+  labelMaxLength?: number;
+  labels?: boolean;
+  shortTimeLabels?: boolean;
+  titleMaxLength?: number;
 }
 
 export var axis = {
@@ -23,10 +31,7 @@ export var axis = {
     format: {
       type: 'string',
       default: undefined,  // auto
-      description: 'The formatting pattern for axis labels. '+
-                   'If not undefined, this will be determined by ' +
-                   'the max value ' +
-                   'of the field.'
+      description: 'The formatting pattern for axis labels. If undefined, a good format is automatically determined. Vega-Lite uses D3\'s format pattern and automatically switches to datetime formatters.'
     },
     grid: {
       type: 'boolean',
@@ -38,11 +43,21 @@ export var axis = {
       default: undefined,
       description: 'A string indicating if the axis (and any gridlines) should be placed above or below the data marks.'
     },
+    offset: {
+      type: 'number',
+      default: undefined,
+      description: 'The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle.'
+    },
     orient: {
       type: 'string',
       default: undefined,
       enum: ['top', 'right', 'left', 'bottom'],
       description: 'The orientation of the axis. One of top, bottom, left or right. The orientation can be used to further specialize the axis type (e.g., a y axis oriented for the right edge of the chart).'
+    },
+    subdivide: {
+      type: 'number',
+      default: undefined,
+      description: 'If provided, sets the number of minor ticks between major ticks (the value 9 results in decimal subdivision). Only applicable for axes visualizing quantitative scales.'
     },
     ticks: {
       type: 'integer',
@@ -50,39 +65,81 @@ export var axis = {
       minimum: 0,
       description: 'A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are "nice" (multiples of 2, 5, 10) and lie within the underlying scale\'s range.'
     },
-    /* Vega Axis Properties that are automatically populated by Vega-lite */
+    tickPadding: {
+      type: 'integer',
+      default: undefined,
+      description: 'The padding, in pixels, between ticks and text labels.'
+    },
+    tickSize: {
+      type: 'integer',
+      default: undefined,
+      minimum: 0,
+      description: 'The size, in pixels, of major, minor and end ticks.'
+    },
+    tickSizeMajor: {
+      type: 'integer',
+      default: undefined,
+      minimum: 0,
+      description: 'The size, in pixels, of major ticks.'
+    },
+    tickSizeMinor: {
+      type: 'integer',
+      default: undefined,
+      minimum: 0,
+      description: 'The size, in pixels, of minor ticks.'
+    },
+    tickSizeEnd: {
+      type: 'integer',
+      default: undefined,
+      minimum: 0,
+      description: 'The size, in pixels, of end ticks.'
+    },
     title: {
       type: 'string',
       default: undefined,
       description: 'A title for the axis. (Shows field name and its function by default.)'
-    },
-    /* Vega-lite only */
-    labelMaxLength: {
-      type: 'integer',
-      default: 25,
-      minimum: 0,
-      description: 'Truncate labels that are too long.'
-    },
-    titleMaxLength: {
-      type: 'integer',
-      default: undefined,
-      minimum: 0,
-      description: 'Max length for axis title if the title is automatically generated from the field\'s description'
     },
     titleOffset: {
       type: 'integer',
       default: undefined,  // auto
       description: 'A title offset value for the axis.'
     },
-    shortTimeNames: {
-      type: 'boolean',
-      default: false,
-      description: 'Whether month names and weekday names should be abbreviated.'
+    values: {
+      type: 'array',
+      default: undefined
     },
     properties: {
       type: 'object',
-      default: undefined,
       description: 'Optional mark property definitions for custom axis styling.'
+    },
+    /* Vega-lite only */
+    characterWidth: {
+      type: 'integer',
+      default: 6,
+      description: 'Character width for automatically determining title max length.'
+    },
+    labelMaxLength: {
+      type: 'integer',
+      default: 25,
+      minimum: 1,
+      description: 'Truncate labels that are too long.'
+    },
+    labels: {
+      type: 'boolean',
+      default: true,
+      description: 'Enable or disable labels.'
+    },
+    shortTimeLabels: {
+      type: 'boolean',
+      default: false,
+      description: 'Whether month and day names should be abbreviated.'
+    },
+    titleMaxLength: {
+      type: 'integer',
+      default: undefined,
+      minimum: 0,
+      description: 'Max length for axis title if the title is automatically generated from the field\'s description.' +
+      'By default, this is automatically based on cell size and characterWidth property.'
     }
   }
 };

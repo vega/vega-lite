@@ -1,0 +1,24 @@
+{
+  "description": "Colored Line chart of Horsepower for Cars from different Origin over the years.",
+  "data": {
+    "url": "data/cars.json"
+  },
+  "mark": "line",
+  "encoding": {
+    "x": {
+      "field": "Year",
+      "type": "temporal",
+      "timeUnit": "year"
+    },
+    "y": {
+      "field": "Horsepower",
+      "type": "quantitative",
+      "aggregate": "mean"
+    },
+    "color": {
+      "field": "Origin",
+      "type": "nominal"
+    }
+  },
+  "config": {"mark": {"interpolate": "monotone"}}
+}

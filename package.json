@@ -1,21 +1,21 @@
 {
   "name": "vega-lite",
   "author": "Jeffrey Heer, Dominik Moritz, Kanit \"Ham\" Wongsuphasawat",
-  "version": "0.9.2",
+  "version": "0.9.3",
   "collaborators": [
     "Kanit Wongsuphasawat <kanitw@gmail.com> (http://kanitw.yellowpigz.com)",
     "Dominik Moritz <domoritz@cs.washington.edu> (http://domoritz.de)",
     "Jeffrey Heer <jheer@uw.edu> (http://jheer.org)"
   ],
   "description": "Vega-lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications.",
-  "main": "vega-lite.js",
+  "main": "src/vl.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "build": "browserify src/vl.ts -p tsify -d -s vl | exorcist vega-lite.js.map > vega-lite.js",
+    "build": "browserify src/vl.ts -p tsify -d -s vl > vega-lite.js",
     "postbuild": "uglifyjs vega-lite.js -cm --source-map vega-lite.min.js.map > vega-lite.min.js && npm run schema",
-    "build:all": "npm run clean && npm run build && npm run schema:only && npm test && npm run lint",
+    "build:all": "npm run clean && npm run build && npm test && npm run lint",
     "cover": "tsc && istanbul cover node_modules/.bin/_mocha -- --recursive",
     "clean": "rm -f vega-lite.* vega-lite-schema.json & find src -name '*.js*' -type f -delete & find test -name '*.js*' -type f -delete & rm -rf examples/_diff examples/_original examples/_output",
     "deploy": "scripts/deploy.sh",
@@ -25,7 +25,7 @@
     "schema": "tsc && npm run schema:only",
     "schema:only": "node src/schema/schemagen.js > vega-lite-schema.json",
     "site": "bundle exec jekyll serve",
-    "test": "tsc && mocha --recursive --require source-map-support/register",
+    "test": "tsc && mocha --recursive --require source-map-support/register test examples",
     "watch:build": "watchify src/vl.ts -p tsify -v -d -s vl -o 'exorcist vega-lite.js.map > vega-lite.js'",
     "watch:test": "nodemon -x 'npm test && npm run lint'",
     "watch": "nodemon -x 'npm run build && npm test && npm run lint'",
@@ -42,28 +42,27 @@
   },
   "homepage": "https://github.com/vega/vega-lite",
   "devDependencies": {
-    "browser-sync": "^2.10.0",
-    "browserify": "^12.0.1",
-    "browserify-shim": "^3.8.11",
+    "browser-sync": "^2.11.0",
+    "browserify": "^13.0.0",
+    "browserify-shim": "^3.8.12",
     "browserify-versionify": "^1.0.6",
     "chai": "^3.4.1",
-    "exorcist": "^0.4.0",
-    "istanbul": "^0.4.1",
+    "istanbul": "^0.4.2",
     "json-diff": "^0.3.1",
     "mocha": "^2.3.4",
     "nodemon": "^1.8.1",
     "source-map-support": "^0.4.0",
-    "tsify": "^0.13.1",
-    "tslint": "^3.1.1",
-    "typescript": "^1.7.3",
+    "tsify": "^0.13.2",
+    "tslint": "^3.2.1",
+    "typescript": "^1.7.5",
     "uglify-js": "^2.6.1",
-    "vega": "^2.4.1",
-    "watchify": "^3.6.1",
-    "z-schema": "^3.16.0"
+    "vega": "^2.4.2",
+    "watchify": "^3.7.0",
+    "z-schema": "^3.16.1"
   },
   "dependencies": {
-    "datalib": "^1.5.7",
-    "yargs": "^3.30.0"
+    "datalib": "^1.5.9",
+    "yargs": "^3.31.0"
   },
   "browserify": {
     "transform": [

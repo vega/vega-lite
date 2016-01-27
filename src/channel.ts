@@ -13,8 +13,10 @@ export enum Channel {
   SHAPE = 'shape' as any,
   SIZE = 'size' as any,
   COLOR = 'color' as any,
+  PATH = 'path' as any,
   TEXT = 'text' as any,
-  DETAIL = 'detail' as any
+  DETAIL = 'detail' as any,
+  LABEL = 'label' as any
 }
 
 export const X = Channel.X;
@@ -24,10 +26,12 @@ export const COLUMN = Channel.COLUMN;
 export const SHAPE = Channel.SHAPE;
 export const SIZE = Channel.SIZE;
 export const COLOR = Channel.COLOR;
+export const PATH = Channel.PATH;
 export const TEXT = Channel.TEXT;
 export const DETAIL = Channel.DETAIL;
+export const LABEL = Channel.LABEL;
 
-export const CHANNELS = [X, Y, ROW, COLUMN, SIZE, SHAPE, COLOR, TEXT, DETAIL];
+export const CHANNELS = [X, Y, ROW, COLUMN, SIZE, SHAPE, COLOR, PATH, TEXT, DETAIL, LABEL];
 
 interface SupportedMark {
   point?: boolean;
@@ -59,13 +63,11 @@ export function getSupportedMark(channel: Channel): SupportedMark {
   switch (channel) {
     case X:
     case Y:
-      return {
-        point: true, tick: true, circle: true, square: true ,
-        bar: true, line: true, area: true
-      };
+    case COLOR:
+    case DETAIL:
     case ROW:
     case COLUMN:
-      return {
+      return { // all marks
         point: true, tick: true, circle: true, square: true,
         bar: true, line: true, area: true, text: true
       };
@@ -74,16 +76,12 @@ export function getSupportedMark(channel: Channel): SupportedMark {
         point: true, tick: true, circle: true, square: true,
         bar: true, text: true
       };
-    case COLOR:
-    case DETAIL:
-      return {
-        point: true, tick: true, circle: true, square: true,
-        bar: true, line: true, area: true, text: true
-      };
     case SHAPE:
       return {point: true};
     case TEXT:
       return {text: true};
+    case PATH:
+      return {line: true};
   }
   return {};
 }
@@ -103,6 +101,7 @@ export function getSupportedRole(channel: Channel): SupportedRole {
     case X:
     case Y:
     case COLOR:
+    case LABEL:
       return {
         measure: true,
         dimension: true
@@ -120,6 +119,11 @@ export function getSupportedRole(channel: Channel): SupportedRole {
       return {
         measure: true,
         dimension: false
+      };
+    case PATH:
+      return {
+        measure: false,
+        dimension: true
       };
   }
   throw new Error('Invalid encoding channel' + channel);

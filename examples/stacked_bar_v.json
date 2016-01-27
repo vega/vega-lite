@@ -2,8 +2,8 @@
   "data": {"url": "data/barley.json"},
   "mark": "bar",
   "encoding": {
-    "y": {"field": "yield","type": "quantitative","aggregate": "sum"},
-    "x": {"field": "variety","type": "nominal"},
-    "color": {"field": "site","type": "nominal"}
+    "y": {"aggregate": "sum", "field": "yield", "type": "quantitative"},
+    "x": {"field": "variety", "type": "nominal"},
+    "color": {"field": "site", "type": "nominal"}
   }
 }
