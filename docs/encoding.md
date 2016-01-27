@@ -59,6 +59,8 @@ For more information about these transforms, please look at [inline transforms s
 | [axis](axis.html)        | Boolean &#124; Object        | Boolean flag for showing axis (`true` by default), or a config object for the encoding's axis.    |
 | [legend](legend.html)    | Boolean &#124; Object  | Boolean flag for showing legend (`true` by default), or a config object for the encoding's legends. |
 
+For more information about scale, axis, and legend, please look at the [scale](scale.html), [axis](axis.html), and [legend](legend.html) pages.
+
 --------
 
 #### Example: Setting Color and Shape of a Scatter Plot
