@@ -80,15 +80,52 @@ The smallest unit in Vega-Lite visualization is called a cell.  Each single (non
 
 <!-- one example for custom fill/stroke -->
 
+<div id="config.mark.filled"></div>
+#### Example: `filled`
+
+By default, `point` marks have filled borders and are transparent inside.  
+Setting `config.mark.filled` to `true` creates filled marks instead.
+
+```js
+{
+  "data": {"url": "data/cars.json"},
+  "mark": "point",
+  "encoding": {
+    "x": {"field": "Horsepower","type": "quantitative"},
+    "y": {"field": "Miles_per_Gallon","type": "quantitative"}
+  },
+  "config": {
+    "mark": {"filled": true}
+  }
+}
+```
+
+<script>
+vg.embed('#scatter_filled', {
+  mode: 'vega-lite',
+  spec: {
+    "data": {"url": "../data/cars.json"},
+    "mark": "point",
+    "encoding": {
+      "x": {"field": "Horsepower","type": "quantitative"},
+      "y": {"field": "Miles_per_Gallon","type": "quantitative"}
+    },
+    "config": {
+      "mark": {"filled": true}
+    }
+  }
+});
+</script>
+<div id="scatter_filled"></div>
 
 ### Marks Config for Bar, Line, and Area Marks
 <div id="orient"></div>
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| orient        | String        | The orientation of a non-stacked bar, area, and line charts.  The value is either `"horizontal"`, or `"vertical"` (default).  For area, this property determines the orient property of the Vega output.  For line, this property determines the sort order of the points in the line if `config.sortLineBy` is not specified.  For stacked charts, this is always determined by the orientation of the stack; therefore explicitly specified value will be ignored. |
+| orient        | String        | The orientation of a non-stacked bar, area, and line charts.  The value is either `"horizontal"`, or `"vertical"` (default).  For area, this property determines the orient property of the Vega output.  For line, this property determines the path order of the points in the line if `path` channel is not specified.  For stacked charts, this is always determined by the orientation of the stack; therefore explicitly specified value will be ignored. |
 
-<!-- one example for bar -->
+__TODO: Example - disambiguate bar orient__
 
 
 ### Marks Config for Line and Area Marks
@@ -100,8 +137,7 @@ The smallest unit in Vega-Lite visualization is called a cell.  Each single (non
 | interpolate   | String        | The line interpolation method to use. One of linear, step-before, step-after, basis, basis-open, basis-closed, bundle, cardinal, cardinal-open, cardinal-closed, monotone. |
 | tension       | Number        | Depending on the interpolation type, sets the tension parameter. |
 
-<!-- one example for interpolate -->
-
+__TODO: Example - interpolate__
 
 ### Marks Config for Tick Marks
 
@@ -111,6 +147,7 @@ The smallest unit in Vega-Lite visualization is called a cell.  Each single (non
 | :------------------ |:-------------------:| :------------|
 | thickness           | Number              | Thickness of the tick mark. |
 
+__TODO: Example - make tick mark thicker__
 
 ### Marks Config for Text Marks
 
@@ -163,6 +200,8 @@ A stack config object can contain the following properties:
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | offset        | String        | The baseline offset style. One of `"zero"` (default), `"center"` <!--, or `"normalize"` -->. The `"center"` offset will center the stacks. The `"normalize"` offset will compute percentage values for each stack point; the output values will be in the range [0,1].|
+
+__TODO: Example - make customize stack offset__
 
 <!--| sort          | String &#124; Array<field> | Order of the stack.  This can be either a string (either "descending" or "ascending") or a list of fields to determine the order of stack layers.By default, stack uses descending order. |-->
 

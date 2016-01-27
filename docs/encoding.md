@@ -59,7 +59,42 @@ For more information about these transforms, please look at [inline transforms s
 | [legend](#legend)    | Boolean &#124; Object  | Boolean flag for showing legend (`true` by default), or a configuration object for the encoding's legends. |
 
 --------
-#### Examples: Color
+
+#### Example: Constant Value
+
+You can set `color` and `shape` of a scatter plot to constant values.
+
+```js
+{
+  "data": {"url": "data/cars.json"},
+  "mark": "point",
+  "encoding": {
+    "x": {"field": "Horsepower","type": "quantitative"},
+    "y": {"field": "Miles_per_Gallon","type": "quantitative"},
+    "color": {"value": "#ff9900"},
+    "shape": {"value": "square"}
+  }
+}
+```
+
+<script>
+vg.embed('#scatter_color_shape_constant', {
+  mode: 'vega-lite',
+  spec: {
+    "data": {"url": "../data/cars.json"},
+    "mark": "point",
+    "encoding": {
+      "x": {"field": "Horsepower","type": "quantitative"},
+      "y": {"field": "Miles_per_Gallon","type": "quantitative"},
+      "color": {"value": "#ff9900"},
+      "shape": {"value": "square"}
+    }
+  }
+});
+</script>
+<div id="scatter_color_shape_constant"></div>
+
+#### Example: Color
 
 __TODO__
 <!-- Example: nominal -->
