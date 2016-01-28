@@ -6,7 +6,6 @@
 // (except the scaffold labels() method)
 import {assert} from 'chai';
 import {parseModel} from '../util';
-import {extend} from '../../src/util';
 import {X, Y} from '../../src/channel';
 import {tick} from '../../src/compile/mark-tick';
 
@@ -14,21 +13,6 @@ describe('Mark: Tick', function() {
   it('should return the correct mark type', function() {
     assert.equal(tick.markType(), 'rect');
   });
-
-  function tickXY(moreEncoding = {}) {
-    const spec = {
-      'mark': 'tick',
-      'encoding': extend(
-        {
-          'x': {'field': 'Horsepower', 'type': 'quantitative'},
-          'y': {'field': 'Cylinders','type': 'ordinal'}
-        },
-        moreEncoding
-      ),
-      'data': {'url': 'data/cars.json'},
-    };
-    return spec;
-  }
 
   describe('with quantitative x', function() {
     const model = parseModel({
@@ -65,7 +49,15 @@ describe('Mark: Tick', function() {
   });
 
   describe('with quantitative x and ordinal y', function() {
-    const model = parseModel(tickXY());
+    const model = parseModel({
+      'mark': 'tick',
+      'encoding':
+        {
+          'x': {'field': 'Horsepower', 'type': 'quantitative'},
+          'y': {'field': 'Cylinders','type': 'ordinal'}
+        },
+      'data': {'url': 'data/cars.json'},
+    });
     const props = tick.properties(model);
 
     it('should scale on x', function() {
