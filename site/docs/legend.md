@@ -4,6 +4,8 @@ title: Legend
 permalink: /docs/legend.html
 ---
 
+# Legend
+
 Similar to [axes](axis.html), legends visualize scales. However, whereas axes aid interpretation of scales with spatial ranges, legends aid interpretation of scales with ranges such as colors, shapes and sizes.
 
 By default, Vega-Lite automatically creates legends for `color`, `size`, and `shape` channels when they are encoded.

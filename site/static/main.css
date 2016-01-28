@@ -3,6 +3,16 @@
   font-weight: bold;
 }
 
+.vl-title a {
+  text-decoration: none;
+  color: black;
+}
+
+h1 {
+  font-size: 50px;
+  font-weight: 300;
+}
+
 .menu a {
   display: inline-block;
   margin-right: 3px;

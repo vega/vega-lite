@@ -4,6 +4,7 @@ title: Configuration
 permalink: /docs/config.html
 ---
 
+# Configuration
 
 ```js
 {

@@ -4,6 +4,8 @@ title: Mark
 permalink: /docs/mark.html
 ---
 
+# Mark
+
 Marks are the basic visual building block of a visualization.
 In a bar chart, the marks are bars. In a scatterplot, the marks might be circles or squares.
 
