@@ -1,31 +1,17 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width initial-scale=1" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="shortcut icon" href="http://vega.github.io/favicon.ico"/>
-    <meta name="description" content="{{ site.description }}">
+---
+layout: default
+---
+<header>
+  <div class="menu" style="float:right">
+    {% include menu.html %}
+  </div>
+  <div><a class="vl-title" href="{{site.baseurl}}/">{{site.title}}</a></div>
+</header>
 
-    <script src="{{baseurl}}/bower_components/d3/d3.min.js"></script>
-    <script src="{{baseurl}}/bower_components/vega/vega.min.js"></script>
-    <script src="{{baseurl}}/vega-lite.min.js"></script>
-    <script src="{{baseurl}}/bower_components/vega-embed/vega-embed.js" charset="utf-8"></script>
+{{ content }}
 
-    <title> {{site.title}}: {{page.title}} </title>
-    <link rel=stylesheet href="{{baseurl}}/site/static/gh2.css">
-    <link rel=stylesheet href="{{baseurl}}/site/static/syntax.css">
-  </head>
-  <body>
-    {{ content }}
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-      ga('create', 'UA-44428446-6', 'auto');
-      ga('send', 'pageview');
-    </script>
-  </body>
-</html>
+<footer>
+  <a href="https://github.com/vega/vega-lite/edit/master/{{page.path}}">
+    Edit this page and submit a pull request!
+  </a>
+</footer>

@@ -1,64 +1,18 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width initial-scale=1" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="shortcut icon" href="http://vega.github.io/favicon.ico"/>
-    <meta name="description" content="{{ site.description }}">
+---
+layout: plain
+---
 
-    <script src="{{baseurl}}/bower_components/d3/d3.min.js"></script>
-    <script src="{{baseurl}}/bower_components/vega/vega.min.js"></script>
-    <script src="{{baseurl}}/vega-lite.min.js"></script>
-    <script src="{{baseurl}}/bower_components/vega-embed/vega-embed.js" charset="utf-8"></script>
+<div class="sub-menu">
+  <a href="{{site.baseurl}}/docs/index.html">Overview</a>
+  <a href="{{site.baseurl}}/docs/data.html">Data</a>
+  <a href="{{site.baseurl}}/docs/transform.html">Transform</a>
+  <a href="{{site.baseurl}}/docs/mark.html">Mark</a>
+  <a href="{{site.baseurl}}/docs/encoding.html">Encoding</a>
+  <a href="{{site.baseurl}}/docs/config.html">Config</a>
+</div>
 
-    <title> {{site.title}} Documentation: {{page.title}} </title>
-    <link rel=stylesheet href="{{baseurl}}/site/static/gh2.css">
-    <link rel=stylesheet href="{{baseurl}}/site/static/syntax.css">
-    <link rel=stylesheet href="{{baseurl}}/site/static/main.css">
-  </head>
-  <body>
-    <header>
-    <div class="menu" style="float:right">
-      <a href="{{baseurl}}/index.html">Home</a>
-      <a href="{{baseurl}}/tutorial.html">Tutorial</a>
-      <a href="{{baseurl}}/docs/index.html"><strong>Documentation</strong></a>
-      <a href="https://vega.github.io/vega-editor/?mode=vega-lite" target="_blank">Try Online</a>
-    </div>
-    <div><a class="vl-title" href="{{site.baseurl}}/">{{site.title}}</a><span class="vl-subtitle">Documentation</span></div>
-    </header>
+<h1>{{page.title}}</h1>
 
-    <div class="sub-menu">
-      <a href="{{baseurl}}/docs/index.html">Overview</a>
-      <a href="{{baseurl}}/docs/data.html">Data</a>
-      <a href="{{baseurl}}/docs/transform.html">Transform</a>
-      <a href="{{baseurl}}/docs/mark.html">Mark</a>
-      <a href="{{baseurl}}/docs/encoding.html">Encoding</a>
-      <a href="{{baseurl}}/docs/config.html">Config</a>
-    </div>
-
-    <h1>{{page.title}}</h1>
-
-    <div class="page-content">
-      <div class="wrapper">
-        {{ content }}
-      </div>
-    </div>
-
-    <footer>
-      Would you like to improve the documentation?
-      <a href="https://github.com/vega/vega-lite/edit/master/{{page.path}}">
-        Edit this page and submit a pull request!
-      </a>
-    </footer>
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-      ga('create', 'UA-44428446-6', 'auto');
-      ga('send', 'pageview');
-    </script>
-  </body>
-</html>
+<div class="page-content">
+  {{ content }}
+</div>

@@ -18,7 +18,7 @@ You can develop Vega-Lite visualizations in the online editor. To deploy the vis
 
 ### Online editor
 
-You can use the [Vega online editor](https://vega.github.io/vega-editor/?mode=vega-lite) to write Vega-Lite specifications online and immediately see your changes. Form the editor you can also export visualizations as images, browse examples, and explore the generated vega code.
+You can use the [Vega online editor](https://vega.github.io/vega-editor/?mode=vega-lite) to write Vega-Lite specifications online and immediately see your changes. From the editor you can also export visualizations as images, browse examples, and explore the generated vega code.
 
 ### Vega-Lite on your own website
 
