@@ -1,11 +1,14 @@
 .vl-title {
   font-size: 32px;
   font-weight: bold;
-}
-
-.vl-title a {
   text-decoration: none;
   color: black;
+}
+
+.vl-subtitle {
+  color: #bbb;
+  font-size: 20px;
+  margin-left: 10px;
 }
 
 h1 {
@@ -26,6 +29,29 @@ h1 {
   background-color: #4682B4;
   color: white;
 }
+
+.sub-menu {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-start | flex-end | center | space-between | space-around;
+}
+
+.sub-menu a {
+  display: inline-block;
+  margin-right: 3px;
+  margin-top: 5px;
+  text-decoration: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+
+  margin: auto;
+}
+
+.sub-menu a:hover {
+  background-color: #4682B4;
+  color: white;
+}
+
 
 footer {
   margin-top: 50px;

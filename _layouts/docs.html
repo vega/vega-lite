@@ -12,11 +12,10 @@
     <script src="{{baseurl}}/vega-lite.min.js"></script>
     <script src="{{baseurl}}/bower_components/vega-embed/vega-embed.js" charset="utf-8"></script>
 
-    <title> {{site.title}}: {{page.title}} </title>
+    <title> {{site.title}} Documentation: {{page.title}} </title>
     <link rel=stylesheet href="{{baseurl}}/site/static/gh2.css">
     <link rel=stylesheet href="{{baseurl}}/site/static/syntax.css">
     <link rel=stylesheet href="{{baseurl}}/site/static/main.css">
-    <link rel=stylesheet href="{{baseurl}}/site/static/docs.css">
   </head>
   <body>
     <header>
@@ -26,20 +25,23 @@
       <a href="{{baseurl}}/docs/index.html"><strong>Documentation</strong></a>
       <a href="https://vega.github.io/vega-editor/?mode=vega-lite" target="_blank">Try Online</a>
     </div>
-    <div class="vl-title"><a href="{{site.baseurl}}/">{{site.title}}</a> Documentation</div>
+    <div><a class="vl-title" href="{{site.baseurl}}/">{{site.title}}</a><span class="vl-subtitle">Documentation</span></div>
     </header>
+
+    <div class="sub-menu">
+      <a href="{{baseurl}}/docs/index.html">Overview</a>
+      <a href="{{baseurl}}/docs/data.html">Data</a>
+      <a href="{{baseurl}}/docs/transform.html">Transform</a>
+      <a href="{{baseurl}}/docs/mark.html">Mark</a>
+      <a href="{{baseurl}}/docs/encoding.html">Encoding</a>
+      <a href="{{baseurl}}/docs/config.html">Config</a>
+    </div>
+
+    <h1>{{page.title}}</h1>
 
     <div class="page-content">
       <div class="wrapper">
         {{ content }}
-      </div>
-      <div class="side-menu">
-        <a href="{{baseurl}}/docs/index.html">Overview</a>
-        <a href="{{baseurl}}/docs/data.html">Data</a>
-        <a href="{{baseurl}}/docs/transform.html">Transform</a>
-        <a href="{{baseurl}}/docs/mark.html">Mark</a>
-        <a href="{{baseurl}}/docs/encoding.html">Encoding</a>
-        <a href="{{baseurl}}/docs/config.html">Config</a>
       </div>
     </div>
 

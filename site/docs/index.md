@@ -1,10 +1,8 @@
 ---
 layout: docs
-title: Documentation
+title: Overview
 permalink: /docs/index.html
 ---
-
-# Vega-Lite Specification
 
 A Vega-Lite specification is a JSON object that describes data source (`data`),
 mark type (`mark`), visual encodings of data variables (`encoding`),

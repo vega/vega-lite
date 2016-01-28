@@ -4,8 +4,6 @@ title: Data Transformation
 permalink: /docs/transform.html
 ---
 
-# Data Transformation
-
 Data Transformation in Vega-Lite are described either via the `transform` property
 or via inline transform inside each field definition.
 

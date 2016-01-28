@@ -1,10 +1,8 @@
 ---
 layout: page
-title: Tutorial
+title: Introduction to Vega-Lite
 permalink: /tutorial.html
 ---
-
-# Introduction to Vega-Lite
 
 This tutorial describes the basic setup to show [this basic Vega-Lite visualization](demo.html) on a web page.
 Similar tutorials exist for [D3](http://bost.ocks.org/mike/bar/) and [Vega](https://github.com/vega/vega/wiki/Tutorial).
