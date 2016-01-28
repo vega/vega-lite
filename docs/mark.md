@@ -27,7 +27,7 @@ Vega-Lite supports the following `mark` types:
 
 `point` mark represents each data point with a symbol.  
 
-Mapping a field to either `x` or `y` of `point` mark (but only one dimension) creates a dot plot.
+Mapping a field to either only `x` (or only `y`) of `point` mark creates a dot plot.
 
 ```js
 {
@@ -81,7 +81,7 @@ vg.embed('#scatter', {
 </script>
 <div id="scatter"></div>
 
-By mapping a third field to the `size` attribute in the [scatter plot](#scatter), we can create a bubble plot instead.
+By mapping a third field to the `size` channel in the [scatter plot](#scatter), we can create a bubble plot instead.
 
 ```js
 {
@@ -113,8 +113,8 @@ vg.embed('#scatter_bubble', {
 
 <a id="ex-scatter_color_shape"></a>
 
-Fields can also be encoded in the [scatter plot](#scatter) using the `color` or `shape` attributes.
-For example, this specification doubly-encodes the field `Origin` with both `color` and `shape`.
+Fields can also be encoded in the [scatter plot](#scatter) using the `color` or `shape` channels.
+For example, this specification encodes the field `Origin` with both `color` and `shape`.
 
 ```js
 {
@@ -209,11 +209,12 @@ vg.embed('#square', {
 </script>
 <div id="square"></div>
 
-
 ## Tick Mark
 
 The `tick` mark represents each data point as a short line.
 This is a useful mark for displaying the distribution of values in a field.
+
+The following stripplot use `tick` mark to represent its data.
 
 ```js
 {
@@ -248,8 +249,8 @@ __TODO__ Colored Tick with adjusted size and thickness
 
 The `bar` mark represents each data point as a rectangle, where the length is mapped to a quantitative scale.
 
-Mapping a quantitative field to either `x` or `y` of the `bar` mark produces a single bar or column.
-In the following example, note that the `x` value encodes the sum of the populations.
+Mapping a quantitative field to either `x` or `y` of the `bar` mark produces a single bar.
+In the following example, note that the `x` channel encodes the sum of the populations.
 
 ```js
 {
@@ -285,7 +286,7 @@ vg.embed('#bar_1d', {
 </script>
 <div id="bar_1d"></div>
 
-If we map a quantitative field to the `y` attribute and a different ordinal field to the `x` attribute, we can produce a familiar bar chart.
+If we map a quantitative field to the `y` attribute and a different ordinal field to the `x` attribute, we can produce a bar chart.
 Specifying `scale.bandWidth` of an ordinal field will adjust the [ordinal scale's band width](https://github.com/mbostock/d3/wiki/Ordinal-Scales#ordinal_rangeBands).
 By default, there will be a 1 pixel offset between bars.  (See [an example that customizes size of the bars](encoding.html#ex-bar-size).)
 
@@ -596,7 +597,7 @@ vg.embed('#line_color', {
 </script>
 <div id="line_color"></div>
 
-Alternatively, we can map this field to `detail`, creating multiple lines, but with the same color.
+Alternatively, we can map the same field to `detail`, creating multiple lines, but with the same color instead.
 
 ```js
 {
