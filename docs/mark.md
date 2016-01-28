@@ -4,20 +4,22 @@ title: Mark
 permalink: /docs/mark.html
 ---
 
-Marks are the basic visual building block of a visualization.  
-`mark` property in Vega-Lite defines the visualization's mark type.
-Each mark type supports different [encoding channels](encoding.html#Encoding-Channels),
-which can be either mapped to a field or a constant value.  
+Marks are the basic visual building block of a visualization.
+In a bar chart, the marks are bars. In a scatterplot, the marks might be circles or squares.
+
+The `mark` property in Vega-Lite defines the visualization's mark type.
+Each mark type supports different [encoding channels](encoding.html#mark-channel),
+which can be mapped either to a field (a variable in your data) or to a constant value.  
 
 <!-- Replace the following list with a table listing mark types and their supported channels. -->
 
 Vega-Lite supports the following `mark` types:
-[`point`](#point),
-[`circle`](#circle-and-square),
-[`square`](#circle-and-square),
-[`tick`](#tick),
-[`bar`](#bar),
-[`line`](#line),
+[`point`](#point-mark),
+[`circle`](#circle-and-square-marks),
+[`square`](#circle-and-square-marks),
+[`tick`](#tick-mark),
+[`bar`](#bar-mark),
+[`line`](#line-mark),
 [`area`](#area), and
 [`text`](#text).
 
@@ -25,7 +27,7 @@ Vega-Lite supports the following `mark` types:
 
 `point` mark represents each data point with a symbol.  
 
-Mapping a field to only either `x` or `y` of `point` mark creates a dot plot.
+Mapping a field to either only `x` (or only `y`) of `point` mark creates a dot plot.
 
 ```js
 {
@@ -52,7 +54,7 @@ vg.embed('#dot-plot', {
 <div id="dot-plot"></div>
 
 
-Mapping fields to both `x` and `y` creates a scatter plot.
+Mapping fields to both the `x` and `y` dimensions creates a scatter plot.
 
 ```js
 {
@@ -79,7 +81,7 @@ vg.embed('#scatter', {
 </script>
 <div id="scatter"></div>
 
-Mapping another field to `size` channel in the [scatter plot](#scatter) above creates a bubble plot instead.  
+By mapping a third field to the `size` channel in the [scatter plot](#scatter), we can create a bubble plot instead.
 
 ```js
 {
@@ -111,8 +113,8 @@ vg.embed('#scatter_bubble', {
 
 <a id="ex-scatter_color_shape"></a>
 
-Alternatively, other fields can be mapped to `color` and/or `shape` of the [scatter plot](#scatter).
-For example, this specification over-encodes the field `Origin` with both `color` and `shape`.
+Fields can also be encoded in the [scatter plot](#scatter) using the `color` or `shape` channels.
+For example, this specification encodes the field `Origin` with both `color` and `shape`.
 
 ```js
 {
@@ -143,14 +145,16 @@ vg.embed('#scatter_color_shape', {
 </script>
 <div id="scatter_color_shape"></div>
 
-Note that `point` marks have filled border and are transparent inside by default.
-See [this section for an example that creates filled `point` marks](config.html#config.mark.filled).
+Note that `point` marks have a border but no fill by default.
+See [this section for an example with filled `point` marks](config.html#config.mark.filled).
 
 ## Circle and Square Marks
 
-`circle` and `square` marks are similar to `point` mark except that
-(1) the `shape` value is always set to `circle` and `square`, and
-(2) they are filled by default.  Here are some examples:
+`circle` and `square` marks are similar to `point` mark, except:
+(1) the `shape` value is always set to `circle` or `square`,
+(2) they are filled by default.
+
+Here are some examples:
 
 ```js
 {
@@ -205,11 +209,12 @@ vg.embed('#square', {
 </script>
 <div id="square"></div>
 
-
 ## Tick Mark
 
-`tick` mark represents each data point as a tick.  
-It is an ideal mark for displaying distribution of data.  
+The `tick` mark represents each data point as a short line.
+This is a useful mark for displaying the distribution of values in a field.
+
+The following stripplot use `tick` mark to represent its data.
 
 ```js
 {
@@ -242,11 +247,10 @@ __TODO__ Colored Tick with adjusted size and thickness
 
 ## Bar Mark
 
-`bar` mark represents each data point as a rectangle that fits a dimension scale
-and expands its length along a quantitative scale.  
+The `bar` mark represents each data point as a rectangle, where the length is mapped to a quantitative scale.
 
-Mapping a quantitative field to either `x` or `y` of `bar` mark produces a 1D bar chart.
-Note that the `x` in the following example encodes sum of the population.
+Mapping a quantitative field to either `x` or `y` of the `bar` mark produces a single bar.
+In the following example, note that the `x` channel encodes the sum of the populations.
 
 ```js
 {
@@ -282,9 +286,9 @@ vg.embed('#bar_1d', {
 </script>
 <div id="bar_1d"></div>
 
-Mapping a quantitative field and another ordinal field to `x` and `y` produces a bar chart.
+If we map a quantitative field to the `y` attribute and a different ordinal field to the `x` attribute, we can produce a bar chart.
 Specifying `scale.bandWidth` of an ordinal field will adjust the [ordinal scale's band width](https://github.com/mbostock/d3/wiki/Ordinal-Scales#ordinal_rangeBands).
-By default, there will be 1 pixel offset between bars.  (See [an example that customizes size of the bars](encoding.html#ex-bar-size).)
+By default, there will be a 1 pixel offset between bars.  (See [an example that customizes size of the bars](encoding.html#ex-bar-size).)
 
 <!-- TODO: Need to update docs our and Vega's scale.bandWidth property and link there instead -->
 
@@ -327,8 +331,7 @@ vg.embed('#bar_aggregate', {
 </script>
 <div id="bar_aggregate"></div>
 
-
-Adding color to the bar chart creates a stacked bar chart by default.
+Adding color to the bar chart (by using the `color` attribute) creates a stacked bar chart by default.
 (See [`config.stack` for more detail about customizing stack](config.html#stack-config).)
 
 ```js
@@ -378,9 +381,9 @@ vg.embed('#bar_stacked', {
 </script>
 <div id="bar_stacked"></div>
 
-Alternatively, setting `config.stack` to `false` will disable stacking and thus
-produces a layered bar chart.  To make it clear that bars are layered,
-the following example sets the mark's `opacity` to be semi-transparent.
+To disable stacking, you can alternatively set `config.stack` to `false`.
+This produces a layered bar chart.
+To make it clear that bars are layered, we can make marks semi-transparent by setting the `opacity` to 0.6.
 
 ```js
 {
@@ -527,11 +530,8 @@ vg.embed('#trellis_bar', {
 
 ## Line Mark
 
-`line` mark represents each group of data points
-with a line that connects all the points in the group.
-
-Using `line` mark with one dimension (typically on `x`) and
-one measure (typically on `y`) produces a line chart with single line.  
+The `line` mark represents the data points stored in a field with a line connecting all of these points.
+Using `line` with one dimension (typically on `x`) and one measure (typically on `y`) produces a simple line chart with a single line.
 
 ```js
 {
@@ -564,9 +564,9 @@ vg.embed('#line', {
 </script>
 <div id="line"></div>
 
-Additional grouping can be specified using `color` or `detail` channels.
-Mapping a group field to `color` assigns different colors to each line and
-thus produces a colored line chart.
+We can add create multiple lines by grouping along different attributes, such as `color` or `detail`.
+
+In the example below, we group points using a new field mapped to `color`. This produces a line chart with different colors for each line.
 
 ```js
 {
@@ -597,8 +597,7 @@ vg.embed('#line_color', {
 </script>
 <div id="line_color"></div>
 
-
-Mapping a group field to `detail` creates multiple lines with the same color.
+Alternatively, we can map the same field to `detail`, creating multiple lines, but with the same color instead.
 
 ```js
 {
@@ -628,7 +627,6 @@ vg.embed('#line_detail', {
 });
 </script>
 <div id="line_detail"></div>
-
 
 By default, the line's path is ordered by data values on the dimension axis (x or y) like shown in previous examples.
 However, a field can be mapped to line path

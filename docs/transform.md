@@ -13,9 +13,9 @@ The top-level `transform` object supports the following transformation propertie
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| filterNull    | Boolean | Whether to filter null values from the data.  By default (`undefined`), only quantitative and temporal fields are filtered.  If set to `true`, all data items with null values are filtered. If `false`, all data items are included.  |
-| [calculate](#calculate) | Formula[] | An array of formula objects for deriving new fields. Each formula object has two properties: <br/>     • `field` _(String)_ – The field name in which to store the computed value. <br/>    • `expr` _(String)_  – A string containing an expression for the formula. Use the variable `datum` to refer to the current data object.|
-| filter        | String | [Vega Expression](https://github.com/vega/vega/wiki/Expressions) for filtering data items (or rows).  Each datum object can be referred using bound variable `datum`.  For example, setting `filter` to `datum.Horsepower > 100` would make the output data includes only items that has Horsepower over 100. |
+| filterNull    | Boolean       | Whether to filter null values from the data.  By default (`undefined`), only quantitative and temporal fields are filtered.  If set to `true`, all data items with null values are filtered. If `false`, all data items are included.  |
+| calculate    | Formula[]      | An array of formula objects for deriving new fields. Each formula object has two properties: <br/>     • `field` _(String)_ – The field name in which to store the computed value. <br/>    • `expr` _(String)_  – A string containing an expression for the formula. Use the variable `datum` to refer to the current data object.|
+| filter        | String | [Vega Expression](https://github.com/vega/vega/wiki/Expressions) for filtering data items (or rows).  Each datum object can be referred using bound variable `datum`.  For example, setting `filter` to `"datum.datum.b2 > 60"` would make the output data includes only items that have values in the field `b2` over 60. |
 
 These transforms are executed in this order: `filterNull`, `calculate`, and then `filter`.
 Since `calculate` is before `filter`, derived fields can be used in `filter`'s expression.
@@ -90,7 +90,7 @@ vg.embed('#bar_filter_calc', {
 ## Inline Transforms inside each `encoding` channel
 
 To serve exploratory analysis, binning, time unit conversion and aggregation can be specified inline as a part of each channel's [field definition](encoding.html#field-definition).  
-After the transforms inside the top-level `transform` are executed, binning, time unit conversion are then performed respectively.
+After the transforms inside the top-level `transform` are executed, binning, time unit conversion, aggregation are then performed respectively.
 
 ## Binning (`bin`)
 

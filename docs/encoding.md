@@ -5,7 +5,8 @@ permalink: /docs/encoding.html
 ---
 
 Vega-Lite's top-level `encoding` property describes a mapping between
-encoding channels (such as `x`,`y`, and `color`) and [field definitions](#field-definition).
+encoding channels (such as `x`, `y`, or `color`) and fields (or variables in the data).
+
 Each field definition object describes (1) a reference to the `field` name and its data `type` or a constant value (2) the field's [inline transforms](transform.html#inline) (`aggregate`, `bin`, `sort` and `timeUnit`), and (3) properties for the field's `scale`, `axis`, and `legend`.
 
 ## Encoding Channels
@@ -15,16 +16,34 @@ These channels are properties for the top-level `encoding` definition object.
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| x, y          | [FieldDef](#field-definition)| Description of a field mapped to x or y coordinates (or to width or height for `bar` and `area` marks). |
-| color | [FieldDef](#field-definition)| Description of a field or a constant value mapped to color.  |
-| shape  | [FieldDef](#field-definition)| Description of a field or a constant value mapped to the symbol's shape.  Possible values are: `"circle"` (default), `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`, or `"triangle-down"`.  (Only applicable for `point` marks.)  |
+| x, y          | [FieldDef](#field-definition)| `x` and `y` channels map data fields to x and y coordinates (or to width and height for `bar` and `area` marks). |
+| color | [FieldDef](#field-definition)| `color` channel maps a field to color. For a nominal field, the field value is mapped to `hue` by default.  For other fields, the field value is mapped to saturation by default.  For constant value, color names and hex color value can be provided.  |
+| shape  | [FieldDef](#field-definition)| `shape` channel maps a field to the symbol's shape.  Possible values are: `"circle"` (default), `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`, or `"triangle-down"`.  (Only applicable for `point` marks.)  |
 | size  | [FieldDef](#field-definition)| Description of a field or a constant value mapped to size. If `size` is not mapped to a field, default value will be provided based on mark type.    <br/> • For `text`, this property determines the font size. The default value is `10`.     <br/> • For `bar` and `tick`, this property determines the width of the mark.  For `bar`, the default size is set to `bandWidth-1` to provide 1 pixel offset between bars.  If the dimension has linear scale, the bar's default size will be `2` instead.  For `tick`, the default value is `2/3*bandWidth`. This will provide offset between band equals to the width of the tick. <br/> • For `point`, `square` and `circle`, this property determines the pixel area of the mark.  The default value is `30`. |
 | detail | [FieldDef](#field-definition)| Description of a field or fields for (a) adding extra level of detail for aggregate views without mapping to a specific visual channel or (2) determining layer or stack order. |
-| path   | [FieldDef](#field-definition)| Description of a field or fields that determines order of data points in line mark. |
+| path   | [FieldDef](#field-definition)| Description of a field or fields that determines order of data points in line mark.  For more information, please look at [line mark](mark.html#line). |
 | row, column   | [FieldDef](#field-definition)| Description of a field that facets data into vertical and horizontal [trellis plots](https://en.wikipedia.org/wiki/Small_multiple). |
 
 <!-- TODO: Need to expand on "(or to width or height for `bar` and `area` marks)." for x,y -->
 <!-- TODO: describe more about color's behavior -- possibly link to the scale page -->
+
+<a id="mark-channel"></a>
+
+### Supported Encoding Channels for each Mark Type
+
+The following table lists supported channels for each mark type.  
+
+|        | x,y | color | size | shape |  text  | path | detail | row, column |
+|--------|-----|-------|------|-------|--------|------|--------|-------------|
+| point  |  ✓  |   ✓   |  ✓   |   ✓   |        |      |    ✓   |      ✓      |
+| circle |  ✓  |   ✓   |  ✓   |       |        |      |    ✓   |      ✓      |
+| square |  ✓  |   ✓   |  ✓   |       |        |      |    ✓   |      ✓      |
+| tick   |  ✓  |   ✓   |  ✓   |       |        |      |    ✓   |      ✓      |
+| bar    |  ✓  |   ✓   |  ✓   |       |        |      |    ✓   |      ✓      |
+| line   |  ✓  |   ✓   |      |       |        |   ✓  |    ✓   |      ✓      |
+| area   |  ✓  |   ✓   |      |       |        |      |    ✓   |      ✓      |
+| text   |  ✓  |   ✓   |  ✓   |       |    ✓   |      |    ✓   |      ✓      |
+
 
 <div id="def"></div>
 ## Field Definition
@@ -36,7 +55,7 @@ Here is a list of properties for the field definition object:
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | field         | String        | Name of the field from which to pull a data value.    |
-| value         | String &#124; Integer | A constant value. |
+| value         | String &#124; Number | A constant value. |
 | type          | String        | Data type of the field.  This property accepts both a full type name (`"quantitative"`, `"temporal"`, `"ordinal"`,  and `"nominal"`), or an initial character of the type name (`"Q"`, `"T"`, `"O"`, `"N"`).  This property is case insensitive.|
 
 ### Inline Transforms
@@ -55,9 +74,9 @@ For more information about these transforms, please look at [inline transforms s
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| [scale](scale.html)      | Object        | Configuration object for the encoding's scale.   |
-| [axis](axis.html)        | Boolean &#124; Object        | Boolean flag for showing axis (`true` by default), or a config object for the encoding's axis.    |
-| [legend](legend.html)    | Boolean &#124; Object  | Boolean flag for showing legend (`true` by default), or a config object for the encoding's legends. |
+| [scale](scale.html)      | Object        | Configuration object for the encoding's scale. (Only for `x`, `y`, `color`, `size`, `shape`, `row`, and `column`.) |
+| [axis](axis.html)        | Boolean &#124; Object        | Boolean flag for showing axis (`true` by default), or a config object for the encoding's axis. (Only for `x`, `y`, `row`, and `column`.) |
+| [legend](legend.html)    | Boolean &#124; Object  | Boolean flag for showing legend (`true` by default), or a config object for the encoding's legends. (Only for `color`, `size`, and `shape`.) |
 
 For more information about scale, axis, and legend, please look at the [scale](scale.html), [axis](axis.html), and [legend](legend.html) pages.
 
