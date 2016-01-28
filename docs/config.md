@@ -1,35 +1,37 @@
 ---
 layout: docs
-title: Config
+title: Configuration
 permalink: /docs/config.html
 ---
 
-Vega-Lite's top-level `config` property lists configuration properties of a visualization.
-This page outlines different types of config properties:
-
-- [Top-level config](#top-level-config) 
-- [Cell config](#cell-config) 
-- [Mark Config](#mark-config) 
-- [Scene Config](#scene-config) 
-- [Stack Config](#stack-config) 
 
 ```js
 {
   "data": ... ,
   "mark": ... ,
-  ... ,
-  "config":{
-    ...//top-level
-    "cell": {  ... },
-    "mark": {  ... },
-    "scene": {  ... },
-    "stack": {  ... }
+  "encoding": ... ,
+  "config": { // Configuration Object
+    ... // Top-level Configuration
+    "scene": { ... }, // Scene Configuration
+    "cell": { ... }, // Cell Configuration
+    "mark": { ... }, // Mark Configuration
+    "stack": { ... } // Stack Configuration
   }
 }
-
 ```
 
-## Top-level Config
+
+Vega-Lite's `config` object lists configuration properties of a visualization.
+This page outlines different types of config properties:
+
+- [Top-level Configuration](#top-level-config)
+- [Scene Configuration](#scene-config)
+- [Cell Configuration](#cell-config)
+- [Mark Configuration](#mark-config)
+- [Stack Configuration](#stack-config)
+
+
+## Top-level Configuration  (`config.*`)
 
 A Vega-Lite `config` object can have the following top-level properties:
 
@@ -38,67 +40,14 @@ A Vega-Lite `config` object can have the following top-level properties:
 | viewport      | Integer[]     | The width and height of the on-screen viewport, in pixels. If necessary, clipping and scrolling will be applied. |
 | background    | String        | CSS color property to use as background of visualization. Default is `"transparent"`. |
 
-<!-- TODO: consider adding width, height, viewport, numberFormat, timeFormat  -->
-```js
-{
-  "data": {"url": "../data/stocks.csv", "formatType":"csv"},
-  "mark": "line",
-  "encoding": {
-    "x": {"field": "date", "type": "temporal"},
-    "y": {"field": "price", "type": "quantitative"},
-    "color": {"field": "symbol", "type": "nominal"}
-  },
-  "config":{
-    "viewport":[300, 270],
-    "cell": { "width": 1200, "height": 150}
-  }
-}
-```
-<script>
-vg.embed('#viewport-change', {
-  mode: 'vega-lite',
-  spec: {
-          "description": "Stock prices of 5 Tech Companies Over Time.",
-          "data": {"url": "../data/stocks.csv", "formatType":"csv"},
-          "mark": "line",
-          "encoding": {
-            "x": {"field": "date", "type": "temporal"},
-            "y": {"field": "price", "type": "quantitative"},
-            "color": {"field": "symbol", "type": "nominal"}
-          },
-          "config":{
-            "viewport":[300, 270],
-            "cell": { "width": 1200, "height": 150}
-          }
-        }
-  });
-</script>
-<div id="viewport-change"></div>
+<!-- TODO: consider adding width, height, numberFormat, timeFormat  -->
 
-## Cell Config
+<!-- Add an example that change trellis_bar's format -->
 
-The smallest unit in Vega-Lite visualization is called a cell.  Each single (non-trellis)  chart contains one cell.  Thus, the width and height of the visualization is the `width` and `height` of the cell.  For trellis plots (also called small multiples), cell `width` and `height` determine the size of one plot inside the trellis plots.  
 
-`cell` property of the `config` object can have the following properties:
+## Scene Configuration (`config.scene.*`)
 
-### Cell Size Config
-
-| Property      | Type          | Description    |
-| :------------ |:-------------:| :------------- |
-| width         | Integer       | The width of the visualization for a single cell (200 pixels by default).  This property is used only when `x` uses non-ordinal scale.  When `x` uses ordinal scale, the width is determined by x-scale's `bandWidth`.  |
-| height        | Integer       | The height of the visualization for a single cell (200 pixels by default).  This property is used only when `y` uses non-ordinal scale.  When `y` uses ordinal scale, the height is determined by y-scale's `bandWidth`. |
-
-<!-- TODO: expand what do we mean ordinal scale -->
-
-### Cell Grid Config
-
-| Property      | Type          | Description    |
-| :------------ |:-------------:| :------------- |
-| gridColor     | Color         | Color of the grid between facets. |
-| gridOpacity   | Number        | Opacity of the grid between facets. |
-| gridOffset    | Number        | Offset for grid between facets.  |
-
-### Cell Style Config
+`scene` property of the `config` is a scene config object, which can have the following properties:
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
@@ -110,11 +59,47 @@ The smallest unit in Vega-Lite visualization is called a cell.  Each single (non
 | strokeDash    | Number[]      | An array of alternating stroke, space lengths for creating dashed or dotted lines.  |
 | strokeDashOffset  | Number[]  | The offset (in pixels) into which to begin drawing with the stroke dash array. |
 
-## Mark Config
+
+## Cell Configuration  (`config.cell.*`)
+
+The smallest unit in Vega-Lite visualization is called a cell.  Each single (non-trellis)  chart contains one cell.  Thus, the width and height of the visualization is the `width` and `height` of the cell.  For trellis plots (also called small multiples), cell `width` and `height` determine the size of one plot inside the trellis plots.  
+
+`cell` property of the `config` object can have the following properties:
+
+### Cell Size Configuration
+
+| Property      | Type          | Description    |
+| :------------ |:-------------:| :------------- |
+| width         | Integer       | The width of the visualization for a single cell (200 pixels by default).  This property is used only when `x` uses non-ordinal scale.  When `x` uses ordinal scale, the width is determined by x-scale's `bandWidth`.  |
+| height        | Integer       | The height of the visualization for a single cell (200 pixels by default).  This property is used only when `y` uses non-ordinal scale.  When `y` uses ordinal scale, the height is determined by y-scale's `bandWidth`. |
+
+<!-- TODO: expand what do we mean ordinal scale -->
+
+### Cell Grid Configuration
+
+| Property      | Type          | Description    |
+| :------------ |:-------------:| :------------- |
+| gridColor     | Color         | Color of the grid between facets. |
+| gridOpacity   | Number        | Opacity of the grid between facets. |
+| gridOffset    | Number        | Offset for grid between facets.  |
+
+### Cell Style Configuration
+
+| Property      | Type          | Description    |
+| :------------ |:-------------:| :------------- |
+| fill          | Color         | The fill color. |
+| fillOpacity   | Number        | The fill opacity (value between [0,1]). |
+| stroke        | Color         | The stroke color. |
+| strokeOpacity | Number        | The stroke opacity (value between [0,1]). |
+| strokeWidth   | Number        | The stroke width, in pixels. |
+| strokeDash    | Number[]      | An array of alternating stroke, space lengths for creating dashed or dotted lines.  |
+| strokeDashOffset  | Number[]  | The offset (in pixels) into which to begin drawing with the stroke dash array. |
+
+## Mark Configuration (`config.mark.*`)
 
 `mark` property of the `config` is a mark config object, which can have the following properties:
 
-### General Marks Config
+### General Marks Configuration
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
@@ -169,13 +154,15 @@ vg.embed('#scatter_filled', {
 </script>
 <div id="scatter_filled"></div>
 
-### Marks Config for Bar, Line, and Area Marks
+### Marks Configuration for Bar, Line, and Area Marks
 <div id="orient"></div>
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | orient        | String        | The orientation of a non-stacked bar, area, and line charts.  The value is either `"horizontal"`, or `"vertical"` (default).  For area, this property determines the orient property of the Vega output.  For line, this property determines the path order of the points in the line if `path` channel is not specified.  For stacked charts, this is always determined by the orientation of the stack; therefore explicitly specified value will be ignored. |
 
+<!-- TODO: think about better example -->
+<!--
 #### Example: `"horizontal"` orient in the line.
 ```js
 {
@@ -207,19 +194,19 @@ vg.embed('#horizontal_line', {
 });
 </script>
 <div id="horizontal_line"></div>
+---->
 
 
-
-### Marks Config for Line and Area Marks
+### Marks Configuration for Line and Area Marks
 
 <div id="interpolate"></div>
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| interpolate   | String        | The line interpolation method to use. One of `linear`, `step-before`, `step-after`, `basis`, `basis-open`, `basis-closed`, `bundle`, `cardinal`, `cardinal-open`, `cardinal-closed`, `monotone`. |
-| tension       | Number        | Depending on the interpolation type, sets the tension parameter. |
+| interpolate   | String        | The line interpolation method to use. One of `"linear"`, `"step-before"`, `"step-after"`, `"basis"`, `"basis-open"`, `"basis-closed"`, `"bundle"`, `"cardinal"`, `"cardinal-open"`, `"cardinal-closed"`, `"monotone"`.  For more information about each interpolation method, please look at [D3's line interpolation document](https://github.com/mbostock/d3/wiki/SVG-Shapes#line_interpolate). |
+| tension       | Number        | Depending on the interpolation type, sets the tension parameter.  [D3's line interpolation document](https://github.com/mbostock/d3/wiki/SVG-Shapes#line_interpolate) |
 
-#### Example: interpolate with `step-before`
+#### Example: interpolate with `monotone`
 ```js
 {
   "data": {"url": "data/stocks.csv", "formatType":"csv"},
@@ -230,31 +217,31 @@ vg.embed('#horizontal_line', {
     "y": {"field": "price", "type": "quantitative"}
   },
   "config":{
-    "mark":{"interpolate":"step-before"}
+    "mark": {"interpolate": "monotone"}
   }
 }
 ```
 <script>
-vg.embed('#interpolate_step_before', {
+vg.embed('#line_interpolate', {
   mode: 'vega-lite',
   spec: {
-    "data": {"url": "data/stocks.csv", "formatType":"csv"},
+    "data": {"url": "../data/stocks.csv", "formatType": "csv"},
     "transform": {"filter": "datum.symbol==='GOOG'"},
     "mark": "line",
     "encoding": {
       "x": {"field": "date", "type": "temporal"},
       "y": {"field": "price", "type": "quantitative"}
     },
-    "config":{
-      "mark":{"interpolate":"step-before"}
+    "config": {
+      "mark": {"interpolate":"monotone"}
     }
   }
 });
 </script>
-<div id="interpolate_step_before"></div>
+<div id="line_interpolate"></div>
 
 
-### Marks Config for Tick Marks
+### Marks Configuration for Tick Marks
 
 <div id="thickness"></div>
 
@@ -264,7 +251,7 @@ vg.embed('#interpolate_step_before', {
 
 __TODO: Example - make tick mark thicker__
 
-### Marks Config for Text Marks
+### Marks Configuration for Text Marks
 
 <div id="text"></div>
 
@@ -286,21 +273,7 @@ __TODO: Example - make tick mark thicker__
 <!-- TODO: expand format detail -->
 <!-- TODO: example of customized text -->
 
-## Scene Config
-
-`scene` property of the `config` is a scene config object, which can have the following properties:
-
-| Property      | Type          | Description    |
-| :------------ |:-------------:| :------------- |
-| fill          | Color         | The fill color. |
-| fillOpacity   | Number        | The fill opacity (value between [0,1]). |
-| stroke        | Color         | The stroke color. |
-| strokeOpacity | Number        | The stroke opacity (value between [0,1]). |
-| strokeWidth   | Number        | The stroke width, in pixels. |
-| strokeDash    | Number[]      | An array of alternating stroke, space lengths for creating dashed or dotted lines.  |
-| strokeDashOffset  | Number[]  | The offset (in pixels) into which to begin drawing with the stroke dash array. |
-
-## Stack Config
+## Stack Configuration  (`config.stack.*`)
 
 When either `"bar"` or `"area"` mark type is used with either `"color"` or `"detail"`
 channel, a stacked (bar or area) chart is automatically created.  
