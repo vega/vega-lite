@@ -8,7 +8,7 @@ Marks are the basic visual building block of a visualization.
 In a bar chart, the marks are bars. In a scatterplot, the marks might be circles or squares.
 
 The `mark` property in Vega-Lite defines the visualization's mark type.
-Each mark type supports different [encoding channels](encoding.html#Encoding-Channels),
+Each mark type supports different [encoding channels](encoding.html#mark-channel),
 which can be mapped either to a field (a variable in your data) or to a constant value.  
 
 <!-- Replace the following list with a table listing mark types and their supported channels. -->
