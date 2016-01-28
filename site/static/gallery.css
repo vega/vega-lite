@@ -1,29 +1,5 @@
 body {
-  margin: 20px;
-  padding: 15px;
-  font-family: Avenir, Helvetica Neue, Helvetica, Arial;
-}
-
-strong {
-  font-weight: 400;
-}
-
-a {
-  color: #8A5ED3;
-  text-decoration: none;
-  font-weight: 500;
-}
-
-a:hover {
-  color: #d5a928;
-}
-
-.logo {
-  font-weight: 600;
-  font-size: 60px;
-  line-height: 72px;
-  margin-bottom: 20px;
-  margin-top: 0;
+  width: auto;
 }
 
 .viz-list {

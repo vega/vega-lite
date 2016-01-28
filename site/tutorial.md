@@ -1,11 +1,11 @@
 ---
-layout: docs
-title: Tutorial
-permalink: /docs/tutorial.html
+layout: page
+title: Introduction to Vega-Lite
+permalink: /tutorial.html
 ---
 
 This tutorial describes the basic setup to show [this basic Vega-Lite visualization](demo.html) on a web page.
-Similar tutorials exist for [D3](http://bost.ocks.org/mike/bar/) and [Vega](https://github.com/vega/vega/wiki/Tutorial) but, as you will see, creating a bar chart in Vega-Lite is much easier!
+Similar tutorials exist for [D3](http://bost.ocks.org/mike/bar/) and [Vega](https://github.com/vega/vega/wiki/Tutorial).
 
 Here is the bare minimum HTML file to get Vega-Lite working with inline values in a webpage.
 
@@ -75,27 +75,6 @@ Make sure that you have a copy of the [cars dataset](/vega-lite/data/cars.json) 
   "encoding": {
     "x": {"type": "ordinal","field": "Origin"},
     "y": {"type": "quantitative","field": "Acceleration"}
-  }
-}
-```
-
-## A complex visualization
-
-Here is an even more complex chart. It shows barley yields for different locations and varieties for two years in a trellis plot. Make sure that you have the [barleys dataset](/vega-lite/data/barley.json) in your `data` directory as before. You can also see [this visualization in the Vega online editor](https://vega.github.io/vega-editor/?mode=vega-lite&spec=trellis_barley).
-
-```json
-{
-  "data": {"url": "data/barley.json"},
-  "mark": "point",
-  "encoding": {
-    "x": {"type": "quantitative", "field": "yield","aggregate": "mean"},
-    "y": {
-      "sort": {"field": "yield", "aggregate": "mean", "reverse": false},
-      "type": "ordinal",
-      "field": "variety"
-    },
-    "row": {"type": "ordinal", "field": "site"},
-    "color": {"type": "ordinal", "field": "year"}
   }
 }
 ```

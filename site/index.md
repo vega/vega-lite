@@ -1,38 +1,24 @@
 ---
-layout: docs
-title: Documentation
-permalink: /docs/index.html
+layout: page
+title: A High-Level Visualization Grammar
+permalink: /index.html
 ---
 
-[Vega-Lite](/vega-lite/) provides a higher-level grammar for visual analysis, akin to ggplot or Tableau, that generates complete [Vega](https://vega.github.io/) specifications.
+**Vega-Lite** is a higher-level grammar for visual analysis, akin to ggplot or Tableau, that generates complete [Vega](https://vega.github.io/) specifications.
 
 Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as position (`x`,`y`), `size`, `color` and `shape`. These mappings are then translated into detailed visualization specifications in the Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicitly specify these properties to override default values.  
 This documentation outlines the syntax and semantics of Vega-Lite specifications, and how you can embed Vega-Lite visualizations in your applications.
 
 
-Want to learn more? [Read the getting started tutorial](tutorial.html).
-
-## Vega-Lite Specification
-
-A Vega-Lite specification is a JSON object that describes data source (`data`),
-mark type (`mark`), visual encodings of data variables (`encoding`),
-and data transformations.
-
-In Vega-Lite, a specification can have the following top-level properties.
-
-| Property             | Type          | Description    |
-| :------------        |:-------------:| :------------- |
-| [data](data.html)    | Object        | An object describing the data source. |
-| [transform](transform.html)  | Object        | An object describing data transformations. |
-| [mark](mark.html) | String        | The mark type.  Currently Vega-Lite supports `bar`, `circle`, `square`, `tick`, `line`, `area`, `point`, and `text` (text table). |
-| [encoding](encoding.html) | Object        | key-value mapping between encoding channels and encoding object |
-| [config](config.html)   | Object        | Configuration object. |
+Want to learn more? [Read the getting started tutorial]({{site.baseurl}}/tutorial.html).
 
 ## Basic usage
 
+You can develop Vega-Lite visualizations in the online editor. To deploy the visualization online, create a web page and load the Vega_lite library and its dependencies.
+
 ### Online editor
 
-Instead of setting up a web page, you can use the [Vega online editor](https://vega.github.io/vega-editor/?mode=vega-lite) to write Vega-Lite specifications online and immediately see your changes.
+You can use the [Vega online editor](https://vega.github.io/vega-editor/?mode=vega-lite) to write Vega-Lite specifications online and immediately see your changes. From the editor you can also export visualizations as images, browse examples, and explore the generated vega code.
 
 ### Vega-Lite on your own website
 
@@ -43,6 +29,8 @@ To use Vega-Lite, load the required libraries (D3, Vega, and Vega-Lite).
 <script src="//vega.github.io/vega/vega.js"></script>
 <script src="//vega.github.io/vega-lite/vega-lite.js"></script>
 ```
+
+You can also download Vega-Lite: [vega-lite.min.js]({{site.baseurl}}/vega-lite.min.js).
 
 To compile a Vega-Lite specification to Vega, call `vl.compile`.
 
@@ -57,6 +45,8 @@ vg.parse.spec(vgSpec, function(chart) {
   chart({el:"#vis"}).update();
 });
 ```
+
+See a [complete example in our demo]({{site.baseurl}}/site/demo.html).
 
 <!--
 ## Vega-Lite, Vega, and D3

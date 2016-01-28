@@ -1,0 +1,17 @@
+---
+layout: default
+---
+<header>
+  <div class="menu" style="float:right">
+    {% include menu.html %}
+  </div>
+  <div><a class="vl-title" href="{{site.baseurl}}/">{{site.title}}</a></div>
+</header>
+
+{{ content }}
+
+<footer>
+  <a href="https://github.com/vega/vega-lite/edit/master/{{page.path}}">
+    Edit this page and submit a pull request!
+  </a>
+</footer>
