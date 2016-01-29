@@ -14,12 +14,9 @@ body {
 header {
   background-color: #E6E6E6;
 }
-header nav {
-  line-height: 33px;
-}
 nav {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   align-content: flex-start;
 }
 nav a {
