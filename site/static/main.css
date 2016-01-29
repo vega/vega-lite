@@ -14,25 +14,6 @@ body {
 header {
   background-color: #E6E6E6;
 }
-nav {
-  display: flex;
-  align-items: baseline;
-  align-content: flex-start;
-}
-nav a {
-  color: #666;
-  padding: 12px 16px 12px 16px;
-}
-nav a:first-child {
-  padding-left: 0px;
-}
-nav a.active {
-  font-weight: bold;
-}
-nav a:hover {
-  color: black;
-  text-decoration: none;
-}
 code, tt {
   margin: 0 2px;
   padding: 0 4px;
@@ -144,6 +125,28 @@ h5 {
 h6 {
   color: #777777;
   font-size: 1.1em;
+}
+
+/* Nav */
+
+nav {
+  display: flex;
+  align-items: baseline;
+  align-content: flex-start;
+}
+nav a {
+  color: #666;
+  padding: 12px 16px 12px 16px;
+}
+nav a:first-child {
+  padding-left: 0px;
+}
+nav a.active {
+  font-weight: bold;
+}
+nav a:hover {
+  color: black;
+  text-decoration: none;
 }
 
 /* Special classes */
