@@ -1,5 +1,6 @@
 ---
 layout: docs
+menu: docs
 title: Scale
 permalink: /docs/scale.html
 ---

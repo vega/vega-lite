@@ -1,5 +1,6 @@
 ---
 layout: docs
+menu: docs
 title: Data Transformation
 permalink: /docs/transform.html
 ---

@@ -1,5 +1,6 @@
 ---
 layout: docs
+menu: docs
 title: Encoding
 permalink: /docs/encoding.html
 ---

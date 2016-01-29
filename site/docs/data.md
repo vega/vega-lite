@@ -1,5 +1,6 @@
 ---
 layout: docs
+menu: docs
 title: Data
 permalink: /docs/data.html
 ---

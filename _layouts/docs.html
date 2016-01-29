@@ -1,18 +1,35 @@
 ---
 layout: plain
+
+navigation:
+ - text: Overview
+   url: index
+ - text: Data
+   url: data
+ - text: Transform
+   url: transform
+ - text: Mark
+   url: mark
+ - text: Encoding
+   url: encoding
+ - text: Config
+   url: config
 ---
 
-<div class="sub-menu">
-  <a href="{{site.baseurl}}/docs/index.html">Overview</a>
-  <a href="{{site.baseurl}}/docs/data.html">Data</a>
-  <a href="{{site.baseurl}}/docs/transform.html">Transform</a>
-  <a href="{{site.baseurl}}/docs/mark.html">Mark</a>
-  <a href="{{site.baseurl}}/docs/encoding.html">Encoding</a>
-  <a href="{{site.baseurl}}/docs/config.html">Config</a>
+{% assign url = page.url | remove:'/docs/'|remove:'.html' %}
+
+<div class="docs-nav">
+  <nav class="page-centered">
+    {% for link in page.navigation %}
+    <a {% if url == link.url %}class="active"{% endif %}
+        href="{{site.baseurl}}/docs/{{link.url}}.html" title="{{link.title}}">{{link.text}}
+    </a>
+    {% endfor %}
+  </nav>
 </div>
 
-<h1>{{page.title}}</h1>
+<div class="page-centered page-content">
+  <h1>{{page.title}}</h1>
 
-<div class="page-content">
   {{ content }}
 </div>

@@ -4,7 +4,7 @@ title: Gallery
 permalink: /gallery.html
 ---
 
-# Vega-Lite
+# Vega-Lite gallery
 
 This is a gallery of Vega-Lite visualizations. Uses Vega-Lite version <span id="vl-version"></span> and Vega version <span id="vg-version"></span>.
 
