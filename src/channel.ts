@@ -4,6 +4,7 @@
  */
 
 import {Mark} from './mark';
+import {contains} from './util';
 
 export enum Channel {
   X = 'x' as any,
@@ -127,4 +128,8 @@ export function getSupportedRole(channel: Channel): SupportedRole {
       };
   }
   throw new Error('Invalid encoding channel' + channel);
+}
+
+export function hasScale(channel: Channel) {
+  return !contains([DETAIL, PATH, TEXT, LABEL], channel);
 }
