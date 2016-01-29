@@ -17,7 +17,6 @@ header {
 header nav {
   line-height: 33px;
 }
-
 nav {
   display: flex;
   align-items: center;
@@ -71,11 +70,9 @@ footer {
   padding: 1.5em 2em 1.5em 2em;
   font-size: small;
   color: #aaa;
-
   /* for safari */
   min-height: 40px;
 }
-
 footer > div {
   display: flex;
   align-items: center;
@@ -119,50 +116,56 @@ table tr th:last-child, table tr td:last-child {
 /* Headers */
 
 h1, h2, h3, h4 {
+  margin-top: 1.3em;
+  margin-bottom: 0.6em;
   text-rendering: optimizeLegibility;
 }
 h1 {
   color: black;
   font-weight: 300;
-  font-size: 40px;
-  margin: 36px 0 0 0;
+  font-size: 2.5em;
+  margin: 0.7em 0 0.3em 0;
 }
 h2 {
-  font-size: 24px;
+  font-size: 1.5em;
   font-weight: 500;
   border-bottom: 1px solid #cccccc;
   color: black;
   margin-top: 1.5em;
-  padding-bottom: 1px; /* more padding between heading and line */
+  padding-bottom: 1px;
+  /* more padding between heading and line */
 }
 h3 {
-  font-size: 18px;
-  margin-top: 1.5em;
+  font-size: 1.2em;
 }
 h4 {
-  font-size: 16px;
+  font-size: 1.15em;
 }
 h5 {
-  font-size: 14px;
+  font-size: 1.1em;
 }
 h6 {
   color: #777777;
-  font-size: 14px;
+  font-size: 1.1em;
 }
 
 /* Special classes */
+
 .page-centered {
-  width: 960px;
+  /* 1000px - 20px = 960px */
+  max-width: 1000px;
   margin: 0 auto;
+  padding: 0 20px;
 }
 .page-content {
-  padding: 0 20px 3em 20px;
+  padding-bottom: 3em;
 }
 .vl-title {
   font-weight: bold;
   font-size: 1.4em;
   color: #666;
-  margin-top: -4px; /* hack */
+  margin-top: -4px;
+  /* hack */
   margin-right: 8px;
 }
 .docs-nav {
@@ -177,4 +180,15 @@ h6 {
 }
 .fill {
   flex: 1 0 auto;
+}
+
+/* Media queries */
+
+@media (max-width:960px) {
+  body {
+    font-size: 14px;
+  }
+  nav a:not(:first-child) {
+    padding: 10px 10px 10px 10px;
+  }
 }
