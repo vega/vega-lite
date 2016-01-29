@@ -54,7 +54,7 @@
     "source-map-support": "^0.4.0",
     "tsify": "^0.13.2",
     "tslint": "^3.3.0",
-    "typescript": "^1.7.5",
+    "typescript": "^1.8.0",
     "uglify-js": "^2.6.1",
     "vega": "^2.4.2",
     "watchify": "^3.7.0",
