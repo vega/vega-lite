@@ -321,6 +321,7 @@ export function rangeMixins(model: Model, channel: Channel, scaleType: string): 
     return {range: fieldDef.scale.range};
   }
 
+  /* tslint:disable:no-switch-case-fall-through */
   switch (channel) {
     case X:
       // we can't use {range: "width"} here since we put scale in the root group
@@ -364,6 +365,7 @@ export function rangeMixins(model: Model, channel: Channel, scaleType: string): 
     case COLUMN:
       return {range: 'width'};
   }
+  /* tslint:enable:no-switch-case-fall-through */
   return {};
 }
 

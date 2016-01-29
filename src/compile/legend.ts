@@ -104,8 +104,9 @@ namespace properties {
 
       case CIRCLE:
       case SQUARE:
+        /* tslint:disable:no-switch-case-fall-through */
         symbols.shape = {value: mark};
-        /* fall through */
+        /* tslint:enable:no-switch-case-fall-through */
       case POINT:
         // fill or stroke
         if (model.config().mark.filled) { // filled
