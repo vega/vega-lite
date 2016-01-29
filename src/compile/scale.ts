@@ -106,6 +106,7 @@ export function type(fieldDef: FieldDef, channel: Channel, mark: Mark): string {
       }
       return 'linear';
   }
+  return null;
 }
 
 export function domain(model: Model, channel:Channel, scaleType: string) {

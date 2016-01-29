@@ -120,6 +120,7 @@ function isAbbreviated(model: Model, channel: Channel, fieldDef: FieldDef) {
     case LABEL:
       // TODO(#897): implement when we have label
   }
+  return false;
 }
 
 /**
