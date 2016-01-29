@@ -1,5 +1,6 @@
 ---
 layout: page
+menu: start
 title: Introduction to Vega-Lite
 permalink: /tutorial.html
 ---

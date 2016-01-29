@@ -1,5 +1,6 @@
 ---
 layout: docs
+menu: docs
 title: Mark
 permalink: /docs/mark.html
 ---

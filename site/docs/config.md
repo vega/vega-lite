@@ -1,5 +1,6 @@
 ---
 layout: docs
+menu: docs
 title: Configuration
 permalink: /docs/config.html
 ---

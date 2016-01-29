@@ -1,17 +1,30 @@
 ---
 layout: default
 ---
-<header>
-  <div class="menu" style="float:right">
-    {% include menu.html %}
-  </div>
-  <div><a class="vl-title" href="{{site.baseurl}}/">{{site.title}}</a></div>
-</header>
 
-{{ content }}
+<div class="fill">
+  <header>
+    <nav class="page-centered">
+      <a class="vl-title" href="{{site.baseurl}}/">{{site.title}}</a>
+      <a href="{{site.baseurl}}/tutorial.html" {% if page.menu == 'start' %}class="active"{% endif %}>Getting Started</a>
+      <a href="{{site.baseurl}}/docs/index.html" {% if page.menu == 'docs' %}class="active"{% endif %}>Documentation</a>
+      <span class="fill"></span>
+      <a href="https://www.github.com/vega/vega-lite" target="_blank">GitHub</a>
+      <a href="https://vega.github.io/vega-editor/?mode=vega-lite" target="_blank">Try Online</a>
+    </nav>
+  </header>
+
+  <section>
+    {{ content }}
+  </section>
+</div>
 
 <footer>
-  <a href="https://github.com/vega/vega-lite/edit/master/{{page.path}}">
-    Edit this page and submit a pull request!
-  </a>
+  <div class="page-centered">
+    <span>
+      <a href="https://github.com/vega/vega-lite/edit/master/{{page.path}}">Edit this page </a> and submit a pull request!
+    </span>
+    <span class="fill"></span>
+    <a href="http://idl.cs.washington.edu" title="UW Interactive Data Lab" class="idl-logo"><img src="{{site.baseurl}}/site/static/idl-logo.png"/></a>
+  </div>
 </footer>

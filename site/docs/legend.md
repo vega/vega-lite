@@ -1,5 +1,6 @@
 ---
 layout: docs
+menu: docs
 title: Legend
 permalink: /docs/legend.html
 ---

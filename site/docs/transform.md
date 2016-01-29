@@ -1,5 +1,6 @@
 ---
 layout: docs
+menu: docs
 title: Transformation
 permalink: /docs/transform.html
 ---

@@ -1,5 +1,6 @@
 ---
 layout: docs
+menu: docs
 title: Axis
 permalink: /docs/axis.html
 ---
