@@ -192,3 +192,48 @@ h6 {
     padding: 10px 10px 10px 10px;
   }
 }
+
+.float-right {
+  float: right;
+}
+
+.example {
+  display: flex;
+  flex-direction: column;
+  margin: 24px 0;
+}
+.example.side {
+  flex-direction: row-reverse;
+}
+.example .example-vis {
+  flex-grow: 1;
+  align-self: center;
+  min-width: 300px;
+  text-align: center;
+}
+.example .example-code {
+  width: 550px;
+  margin: 0;
+  align-self: flex-start;
+}
+.example .example-code pre {
+    white-space: pre-wrap;       /* CSS 3 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+.example .example-code code {
+    white-space: pre-wrap;       /* CSS 3 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+.example .vega-actions {
+  font-size: .8em;
+  opacity: 0.8;
+}
+.example .vega-actions:hover {
+  opacity: 1;
+}

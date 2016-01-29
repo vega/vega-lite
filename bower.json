@@ -33,6 +33,7 @@
   },
   "devDependencies": {
     "vega-embed": "~2.0.0",
-    "d3": "~3.5.14"
+    "d3": "~3.5.14",
+    "highlightjs": "~9.1.0"
   }
 }

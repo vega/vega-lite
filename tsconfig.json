@@ -29,6 +29,7 @@
   ],
   "files": [
     "examples/examples.test.ts",
+    "site/static/docs.ts",
     "site/static/gallery.ts",
     "src/aggregate.ts",
     "src/bin.ts",

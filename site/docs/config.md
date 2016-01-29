@@ -122,37 +122,9 @@ The smallest unit in Vega-Lite visualization is called a cell.  Each single (non
 By default, `point` marks have filled borders and are transparent inside.  
 Setting `config.mark.filled` to `true` creates filled marks instead.
 
-```js
-{
-  "data": {"url": "data/cars.json"},
-  "mark": "point",
-  "encoding": {
-    "x": {"field": "Horsepower","type": "quantitative"},
-    "y": {"field": "Miles_per_Gallon","type": "quantitative"}
-  },
-  "config": {
-    "mark": {"filled": true}
-  }
-}
-```
+<div id="ex-point_filled" class="side"></div>
+<script>example("point_filled", "docs")</script>
 
-<script>
-vg.embed('#scatter_filled', {
-  mode: 'vega-lite',
-  spec: {
-    "data": {"url": "../data/cars.json"},
-    "mark": "point",
-    "encoding": {
-      "x": {"field": "Horsepower","type": "quantitative"},
-      "y": {"field": "Miles_per_Gallon","type": "quantitative"}
-    },
-    "config": {
-      "mark": {"filled": true}
-    }
-  }
-});
-</script>
-<div id="scatter_filled"></div>
 
 ### Marks Configuration for Bar, Line, and Area Marks
 <div id="orient"></div>
@@ -207,38 +179,10 @@ vg.embed('#horizontal_line', {
 | tension       | Number        | Depending on the interpolation type, sets the tension parameter.  [D3's line interpolation document](https://github.com/mbostock/d3/wiki/SVG-Shapes#line_interpolate) |
 
 #### Example: interpolate with `monotone`
-```js
-{
-  "data": {"url": "data/stocks.csv", "formatType":"csv"},
-  "transform": {"filter": "datum.symbol==='GOOG'"},
-  "mark": "line",
-  "encoding": {
-    "x": {"field": "date", "type": "temporal"},
-    "y": {"field": "price", "type": "quantitative"}
-  },
-  "config":{
-    "mark": {"interpolate": "monotone"}
-  }
-}
-```
-<script>
-vg.embed('#line_interpolate', {
-  mode: 'vega-lite',
-  spec: {
-    "data": {"url": "../data/stocks.csv", "formatType": "csv"},
-    "transform": {"filter": "datum.symbol==='GOOG'"},
-    "mark": "line",
-    "encoding": {
-      "x": {"field": "date", "type": "temporal"},
-      "y": {"field": "price", "type": "quantitative"}
-    },
-    "config": {
-      "mark": {"interpolate":"monotone"}
-    }
-  }
-});
-</script>
-<div id="line_interpolate"></div>
+
+<div id="ex-line_monotone" class="side"></div>
+<script>example("line_monotone", "docs")</script>
+
 
 
 ### Marks Configuration for Tick Marks

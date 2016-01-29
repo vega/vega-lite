@@ -28,64 +28,9 @@ __Examples__
 
 This example use `calculate` to derive a new field, then `filter` data based on the new field.  
 
-```js
-{
-  "description": "A simple bar chart with embedded data that uses a filter and calculate.",
-  "data": {
-    "values": [
-      {"a": "A","b": 28},
-      {"a": "B","b": 55},
-      {"a": "C","b": 43},
-      {"a": "G","b": 19},
-      {"a": "H","b": 87},
-      {"a": "I","b": 52},
-      {"a": "D","b": 91},
-      {"a": "E","b": 81},
-      {"a": "F","b": 53}
-    ]
-  },
-  "transform": {
-    "calculate": [{"field": "b2","expr": "2*datum.b"}],
-    "filter": "datum.b2 > 60"
-  },
-  "mark": "bar",
-  "encoding": {
-    "y": {"field": "b2", "type": "quantitative"},
-    "x": {"field": "a", "type": "ordinal"}
-  }
-}
-```
-<script>
-vg.embed('#bar_filter_calc', {
-  mode: 'vega-lite',
-  spec: {
-    "description": "A simple bar chart with embedded data that uses a filter and calculate.",
-    "data": {
-      "values": [
-        {"a": "A","b": 28},
-        {"a": "B","b": 55},
-        {"a": "C","b": 43},
-        {"a": "G","b": 19},
-        {"a": "H","b": 87},
-        {"a": "I","b": 52},
-        {"a": "D","b": 91},
-        {"a": "E","b": 81},
-        {"a": "F","b": 53}
-      ]
-    },
-    "transform": {
-      "calculate": [{"field": "b2","expr": "2*datum.b"}],
-      "filter": "datum.b2 > 60"
-    },
-    "mark": "bar",
-    "encoding": {
-      "y": {"field": "b2", "type": "quantitative"},
-      "x": {"field": "a", "type": "ordinal"}
-    }
-  }
-});
-</script>
-<div id="bar_filter_calc"></div>
+<div id="ex-bar_filter_calc" class="side"></div>
+<script>example("bar_filter_calc", "")</script>
+
 
 <!-- TODO population use calc to derive Male / Female -->
 <!-- TODO example about filterNull -->
