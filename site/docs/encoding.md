@@ -30,12 +30,13 @@ These channels are properties for the top-level `encoding` definition object.
 
 <a id="mark-channel"></a>
 
+<!--
 ### Supported Encoding Channels for each Mark Type
 
 The following table lists supported channels for each mark type.  
 
 |        | x,y | color | size | shape |  text  | path | detail | row, column |
-|--------|-----|-------|------|-------|--------|------|--------|-------------|
+|--------|:---:|:-----:|:----:|:-----:|:------:|:----:|:------:|:-----------:|
 | point  |  ✓  |   ✓   |  ✓   |   ✓   |        |      |    ✓   |      ✓      |
 | circle |  ✓  |   ✓   |  ✓   |       |        |      |    ✓   |      ✓      |
 | square |  ✓  |   ✓   |  ✓   |       |        |      |    ✓   |      ✓      |
@@ -44,7 +45,7 @@ The following table lists supported channels for each mark type.
 | line   |  ✓  |   ✓   |      |       |        |   ✓  |    ✓   |      ✓      |
 | area   |  ✓  |   ✓   |      |       |        |      |    ✓   |      ✓      |
 | text   |  ✓  |   ✓   |  ✓   |       |    ✓   |      |    ✓   |      ✓      |
-
+-->
 
 <div id="def"></div>
 ## Field Definition
@@ -59,19 +60,28 @@ Here is a list of properties for the field definition object:
 | value         | String &#124; Number | A constant value. |
 | type          | String        | Data type of the field.  This property accepts both a full type name (`"quantitative"`, `"temporal"`, `"ordinal"`,  and `"nominal"`), or an initial character of the type name (`"Q"`, `"T"`, `"O"`, `"N"`).  This property is case insensitive.|
 
+<a name="inline"></a>
+
 ### Inline Transforms
+
+To facilitate data exploration, Vega-Lite provides the following inline transforms as a part of the field definition: binning (`bin`), time unit conversion (`timeUnit`), aggregation (`aggregate`), sort (`sort`).  
+
+After the specified top-level `transform`s are executed, inline transforms are executed in this order: binning, time unit conversion, aggregation, and sorting.
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| [bin](transform.html#bin) | Boolean &#124; Object        | Boolean flag / configuration object for binning.   |
-| [timeUnit](transform.html#timeunit)| String        | Property for converting time unit.            |
-| [aggregate](transform.html#aggregate) | String        | Aggregation function for the field (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).  |
-| [sort](transform.html#sort) | String &#124; Object        | Sort order for a particular field.  This can be string (`"ascending"`, `"descending"`, or `"unsorted"`) or a sort field definition object for sorting by an aggregate calculation of a specified sort field.  If unspecified, the default value is `ascending`.  See [Sort](#sort) section for more information. |
+| [bin](bin.html) | Boolean &#124; Object        | Boolean flag / configuration object for binning.   |
+| [timeUnit](timeunit.html)| String        | Property for converting time unit.            |
+| [aggregate](aggregate.html) | String        | Aggregation function for the field (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).  |
+| [sort](sort.html) | String &#124; Object        | Sort order for a particular field.  This can be string (`"ascending"`, `"descending"`, or `"unsorted"`) or a sort field definition object for sorting by an aggregate calculation of a specified sort field.  If unspecified, the default value is `ascending`. |
 
-For more information about these transforms, please look at [inline transforms section in the transformation page](transform.html#inline).
+For more information about inline transforms, please see the following pages: [`bin`](bin.html), [`timeUnit`](timeUnit.html), [`aggregate`](aggregate.html), and [`sort`](sort.html).
 
 
 ### Scale, Axis and Legend
+
+Vega-Lite automatically creates a scale and an axis or a legend for each field by default.   
+
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
@@ -80,6 +90,23 @@ For more information about these transforms, please look at [inline transforms s
 | [legend](legend.html)    | Boolean &#124; Object  | Boolean flag for showing legend (`true` by default), or a config object for the encoding's legends. (Only for `color`, `size`, and `shape`.) |
 
 For more information about scale, axis, and legend, please look at the [scale](scale.html), [axis](axis.html), and [legend](legend.html) pages.
+
+<!--
+### Supported Properties for each Channel's Field Definition
+
+|            | x,y | color | size | shape | text | path | detail | row, column |
+|------------|:---:|:-----:|:----:|:-----:|:----:|:----:|:------:|:-----------:|
+| field      |  ✓  |   ✓   |  ✓   |   ✓   |  ✓   |  ✓   |    ✓   |      ✓      |
+| type       |  ✓  |   ✓   |  ✓   |   ✓   |  ✓   |  ✓   |    ✓   |      ✓      |
+| value      |  ✓  |   ✓   |  ✓   |   ✓   |  ✓   |      |        |             |
+| bin        |  ✓  |   ✓   |  ✓   |   ✓   |  ✓   |  ✓   |    ✓   |      ✓      |
+| timeUnit   |  ✓  |   ✓   |  ✓   |   ✓   |  ✓   |  ✓   |    ✓   |      ✓      |
+| aggregate  |  ✓  |   ✓   |  ✓   |       |  ✓   |  ✓   |    ✓   |             |
+| sort       |  ✓  |   ✓   |  ✓   |   ✓   |      |  ✓   |    ✓   |      ✓      |
+| scale      |  ✓  |   ✓   |  ✓   |   ✓   |      |      |        |      ✓      |
+| axis       |  ✓  |       |      |       |      |      |        |      ✓      |
+| legend     |     |   ✓   |  ✓   |   ✓   |      |      |    ✓   |             |
+-->
 
 --------
 
