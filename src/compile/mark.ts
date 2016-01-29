@@ -1,5 +1,6 @@
 import {Model} from './Model';
 import {X, Y, COLOR, TEXT, SHAPE, PATH, DETAIL, ROW, COLUMN, LABEL} from '../channel';
+import {field} from '../fielddef';
 import {AREA, LINE, TEXT as TEXTMARK} from '../mark';
 import {imputeTransform, stackTransform} from './stack';
 import {contains, extend, isArray} from '../util';
@@ -9,6 +10,8 @@ import {line} from './mark-line';
 import {point, circle, square} from './mark-point';
 import {text} from './mark-text';
 import {tick} from './mark-tick';
+
+import {FieldDef} from '../schema/fielddef.schema';
 
 const markCompiler = {
   area: area,
@@ -34,11 +37,7 @@ function compilePathMark(model: Model) { // TODO: extract this into compilePathM
   const name = model.spec().name;
   const isFaceted = model.has(ROW) || model.has(COLUMN);
   const dataFrom = {data: model.dataTable()};
-  const markConfig = model.config().mark;
-  const sortBy = markConfig.sortBy;
   const details = detailFields(model);
-
-  const pathOrder = getPathOrder(model);
 
   let pathMarks: any = [extend(
     name ? { name: name + '-marks' } : {},
@@ -51,7 +50,7 @@ function compilePathMark(model: Model) { // TODO: extract this into compilePathM
         isFaceted || details.length > 0 ? {} : dataFrom,
 
         // sort transform
-        {transform: [{ type: 'sort', by: pathOrder}]}
+        {transform: [{ type: 'sort', by: sortPathBy(model)}]}
       ),
       properties: { update: markCompiler[mark].properties(model) }
     }
@@ -59,12 +58,15 @@ function compilePathMark(model: Model) { // TODO: extract this into compilePathM
 
   if (details.length > 0) { // have level of details - need to facet line into subgroups
     const facetTransform = { type: 'facet', groupby: details };
-    const transform: any[] = [].concat(
-      (sortBy ? [{type: 'sort', by: sortBy}] : []),
-      mark === AREA && model.stack() ?
-        // For stacked area, we need to impute missing tuples and stack values
-        [imputeTransform(model), stackTransform(model), facetTransform] :
-        [facetTransform]
+    const transform: any[] = mark === AREA && model.stack() ?
+      // For stacked area, we need to impute missing tuples and stack values
+      // (Mark layer order does not matter for stacked charts)
+      [imputeTransform(model), stackTransform(model), facetTransform] :
+      // For non-stacked path (line/area), we need to facet and possibly sort
+      [].concat(
+        facetTransform,
+        // if model has detail, then sort mark's layer order by detail field(s)
+        model.has(DETAIL) ? [{type:'sort', by: sortBy(model)}] : []
       );
 
     return [{
@@ -94,8 +96,6 @@ function compileNonPathMark(model: Model) {
   const name = model.spec().name;
   const isFaceted = model.has(ROW) || model.has(COLUMN);
   const dataFrom = {data: model.dataTable()};
-  const markConfig = model.config().mark;
-  const sortBy = markConfig.sortBy;
 
   let marks = []; // TODO: vgMarks
   if (mark === TEXTMARK &&
@@ -105,12 +105,12 @@ function compileNonPathMark(model: Model) {
     // add background to 'text' marks if has color
     marks.push(extend(
       name ? { name: name + '-background' } : {},
-      {type: 'rect'},
+      { type: 'rect' },
       // If has facet, `from.data` will be added in the cell group.
       // Otherwise, add it here.
       isFaceted ? {} : {from: dataFrom},
       // Properties
-      {properties: { update: text.background(model) } }
+      { properties: { update: text.background(model) } }
     ));
   }
 
@@ -118,16 +118,18 @@ function compileNonPathMark(model: Model) {
     name ? { name: name + '-marks' } : {},
     { type: markCompiler[mark].markType() },
     // Add `from` if needed
-    (!isFaceted || model.stack() || sortBy) ? {
+    (!isFaceted || model.stack() || model.has(DETAIL)) ? {
       from: extend(
         // If faceted, `from.data` will be added in the cell group.
         // Otherwise, add it here
         isFaceted ? {} : dataFrom,
-        // Stacked Chart need additional transform
-        model.stack() || sortBy ? { transform: [].concat(
-            (model.stack() ? [stackTransform(model)] : []),
-            sortBy ? [{type:'sort', by: sortBy}] : []
-        )} : {}
+        // `from.transform`
+        model.stack() ? // Stacked Chart need stack transform
+          { transform: [stackTransform(model)] } :
+        model.has(DETAIL) ?
+          // if non-stacked, detail field determines the layer order of each mark
+          { transform: [{type:'sort', by: sortBy(model)}] } :
+          {}
       )
     } : {},
     // properties groups
@@ -155,28 +157,35 @@ function compileNonPathMark(model: Model) {
   return marks;
 }
 
+function sortBy(model: Model) {
+  if (model.has(DETAIL)) {
+    var channelEncoding = model.spec().encoding[DETAIL];
+    return isArray(channelEncoding) ?
+      channelEncoding.map(sortField) : // sort by multiple fields
+      sortField(channelEncoding);      // sort by one field
+  }
+  return null; // use default order
+}
+
 /**
  * Return path order for sort transform's by property
  */
-function getPathOrder(model: Model) {
+function sortPathBy(model: Model) {
   if (model.mark() === LINE && model.has(PATH)) {
     // For only line, sort by the path field if it is specified.
-
-    if (isArray(model.spec().encoding[PATH])) { // multiple PATH fields
-      return model.spec().encoding[PATH].map(function(fieldDef){
-        // add - prefix for descending
-        return (fieldDef.sort === 'descending' ? '-' : '') + fieldDef.field;
-      });
-    } else { // Single PATH field
-      const fieldDef = model.fieldDef(PATH);
-      // add - prefix for descending
-      return (fieldDef.sort === 'descending' ? '-' : '') + fieldDef.field;
-    }
-
+    const channelEncoding = model.spec().encoding[PATH];
+    return isArray(channelEncoding) ?
+      channelEncoding.map(sortField) : // sort by multiple fields
+      sortField(channelEncoding);
   } else {
     // For both line and area, we sort values based on dimension by default
     return '-' + model.field(model.config().mark.orient === 'horizontal' ? Y : X);
   }
+}
+
+/** Add "-" prefix for descending */
+function sortField(fieldDef: FieldDef) {
+  return (fieldDef.sort === 'descending' ? '-' : '') + field(fieldDef);
 }
 
 /**

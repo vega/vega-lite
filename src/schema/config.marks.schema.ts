@@ -1,6 +1,5 @@
 export interface MarkConfig {
   filled?: boolean;
-  sortBy?: String | String[];
 
   // General Vega
   opacity?: number;
@@ -50,14 +49,6 @@ export const markConfig = {
       description: 'Whether the shape\'s color should be used as fill color instead of stroke color. ' +
         'This is only applicable for "bar", "point", and "area". ' +
         'All marks except "point" marks are filled by default.'
-    },
-    sortBy: {
-      default: undefined,
-      oneOf: [
-        {type: 'string'},
-        {type: 'array', items:{type:'string'}}
-      ],
-      description: 'Sort layer of marks by a given field or fields.'
     },
     // General Vega
     fill: {
