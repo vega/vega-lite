@@ -35,12 +35,12 @@ Here are some guides:
 - Before submitting a pull request:
   - All lint and test should pass.  
   - Run `npm run lint` and `npm run test`.  
-  - Update the documentation under `docs/` to reflect the changes.
+  - Update the documentation under `site/docs/` to reflect the changes.
   - Make sure you have merged `master` into your branch.  If you are not a git command line ninja, we recommend [SourceTree](https://www.sourcetreeapp.com/).
   - Provide a concise description for the pull request so that we can copy the description and simply paste in  [our release note](https://github.com/vega/vega-lite/releases).  When writing description for a pull request or a commit, please:
     - Use imperative mood and present tense ([Why?](http://stackoverflow.com/questions/13861318/why-is-it-considered-good-practice-to-describe-git-commits-in-the-present-tense)).
     - Mention relevant issues using github's # syntax. (e.g., `#1` for mentioning issue #1)
-    - Focus on _what_ and _why_ rather than _how_ 
+    - Focus on _what_ and _why_ rather than _how_
     - See more [tips about git commit](http://chris.beams.io/posts/git-commit/).
 
 
@@ -65,10 +65,10 @@ starting from smaller tasks to a larger task. You can also find
 
 ## Documentation
 
-Our documentation also resides in our Github repository under `docs/` in Markdown format.  
+Our documentation also resides in our Github repository under `site/docs/` in Markdown format.  
 We use Github Pages to publish our documentation when we release a new version.
 To contribute changes to the documentation, simply submit a pull request that changes
-the corresponding markdown files in `docs/`.   
+the corresponding markdown files in `site/docs/`.   
 
 Since we only publish the Github Pages when we release a new version,
 it might be slightly outdated compared to `master`.  
@@ -98,7 +98,7 @@ Now you should be able to build and test the code.
 
 ```sh
 npm install -g bower
-bower install 
+bower install
 ```
 
 4. To serve the website and documentation, you also have to [install Jekyll with Github Pages Gem](https://help.github.com/articles/using-jekyll-with-pages/#installing-jekyll).  
@@ -112,7 +112,7 @@ Then, run `gem install bundler`. Finally, simply run `bundle install` to install
 - `_layouts/` – Our website and documentation's Jekyll layout files.  
 - `bin/` – Scripts for using Vega-Lite with command line.
 - `data/` – Example data.
-- `docs/` – Vega-Lite documentation.
+- `site/` – Vega-Lite website including documentation.
 - `examples/` – Example Vega-Lite specification.  `examples/vlexamples.json` lists all of these examples.  
 - `lib/` contains JSON schema's `schema.json`
 - `scripts/` - Scripts for NPM commands.
