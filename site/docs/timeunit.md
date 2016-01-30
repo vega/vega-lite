@@ -36,4 +36,4 @@ Currently supported values are: `'year'`, `'month'`, `'day'`, `'date'`, `'hours'
 This example shows temperature in Seattle over the months.
 
 <div id="ex-line_month" class="side"></div>
-<script>example("line_month", "")</script>
+<script>example("line_month")</script>

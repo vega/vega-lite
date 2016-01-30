@@ -46,12 +46,12 @@ Mapping a field to either only `x` (or only `y`) of `point` mark creates a dot p
 Mapping fields to both the `x` and `y` dimensions creates a scatter plot.
 
 <div id="ex-scatter" class="side"></div>
-<script>example("scatter", "")</script>
+<script>example("scatter")</script>
 
 By mapping a third field to the `size` channel in the [scatter plot](#scatter), we can create a bubble plot instead.
 
 <div id="ex-scatter_bubble" class="side"></div>
-<script>example("scatter_bubble", "")</script>
+<script>example("scatter_bubble")</script>
 
 
 <a id="ex-scatter_color_shape"></a>
@@ -129,7 +129,7 @@ This produces a layered bar chart.
 To make it clear that bars are layered, we can make marks semi-transparent by setting the `opacity` to 0.6.
 
 <div id="ex-bar_layered_transparent" class="side"><div class="example-vis" style="min-width: 500px"></div></div>
-<script>example("bar_layered_transparent", "")</script>
+<script>example("bar_layered_transparent")</script>
 
 <!-- [Faceting](#encoding.md) a bar chart can produce a grouped bar chart. -->
 <!--
@@ -145,7 +145,7 @@ Using `line` with one dimension (typically on `x`) and one measure (typically on
 
 
 <div id="ex-line" class="side"></div>
-<script>example("line", "")</script>
+<script>example("line")</script>
 
 
 We can add create multiple lines by grouping along different attributes, such as `color` or `detail`.
@@ -154,7 +154,7 @@ In the example below, we group points using a new field mapped to `color`. This 
 
 
 <div id="ex-line_color" class="side"></div>
-<script>example("line_color", "")</script>
+<script>example("line_color")</script>
 
 
 Alternatively, we can map the same field to `detail`, creating multiple lines, but with the same color instead.

@@ -12,6 +12,27 @@ Vega-Lite specifications consist of simple mappings of variables in a data set t
 This documentation outlines the syntax and semantics of Vega-Lite specifications, and how you can embed Vega-Lite visualizations in your applications.
 
 
+<div id="ex-point_1d" class="side"></div>
+<script>
+var vlSpec = {
+      "data": {
+        "values": [
+          {"a":"A", "b":28}, {"a":"B", "b":55}, {"a":"C", "b":43},
+          {"a":"D", "b":91}, {"a":"E", "b":81}, {"a":"F", "b":53},
+          {"a":"G", "b":19}, {"a":"H", "b":87}, {"a":"I", "b":52}
+        ]
+      },
+      "mark": "bar",
+      "encoding": {
+        "x": {"type": "ordinal","field": "a"},
+        "y": {"type": "quantitative","field": "b"}
+      }
+    };
+
+example("point_1d", vlSpec)
+</script>
+
+
 Want to learn more? [Read the getting started tutorial]({{site.baseurl}}/tutorial.html).
 
 ## Basic usage

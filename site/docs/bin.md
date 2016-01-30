@@ -48,4 +48,4 @@ The following specification creates a Histogram.
 Basically, the bar marks show count of the number of data in each `bin`.
 
 <div id="ex-histogram" class="side"></div>
-<script>example("histogram", "")</script>
+<script>example("histogram")</script>

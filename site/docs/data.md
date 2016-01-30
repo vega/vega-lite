@@ -32,7 +32,7 @@ Inline Data can be specified using `values` property.
 For example, a data table with two rows and two columns (`a` and `b`) in a spec might look like this:
 
 <div id="ex-bar" class="side"></div>
-<script>example("bar", '', {class: 'side'})</script>
+<script>example("bar")</script>
 
 
 ## Data from URL

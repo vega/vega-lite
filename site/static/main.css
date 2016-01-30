@@ -189,6 +189,7 @@ nav a:hover {
 }
 
 /* Media queries */
+
 @media (max-width:960px) {
   body {
     font-size: 14px;
@@ -197,11 +198,9 @@ nav a:hover {
     padding: 10px 10px 10px 10px;
   }
 }
-
 .float-right {
   float: right;
 }
-
 .example {
   display: flex;
   flex-direction: column;
@@ -210,7 +209,6 @@ nav a:hover {
 .example.side {
   flex-direction: row-reverse;
 }
-
 @media (max-width: 640px) {
   .example.side {
     flex-direction: column;
@@ -219,7 +217,6 @@ nav a:hover {
     margin-bottom: 24px
   }
 }
-
 .example .example-vis {
   flex-grow: 1;
   align-self: center;
@@ -233,11 +230,7 @@ nav a:hover {
   align-self: flex-start;
 }
 .example .example-code code {
-    white-space: pre-wrap;       /* CSS 3 */
-    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-    white-space: -pre-wrap;      /* Opera 4-6 */
-    white-space: -o-pre-wrap;    /* Opera 7 */
-    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+  white-space: pre-wrap;
 }
 .example .vega-actions {
   font-size: .8em;

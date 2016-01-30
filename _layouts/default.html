@@ -13,8 +13,12 @@
     <script src="{{site.baseurl}}/vega-lite.min.js"></script>
     <script src="{{site.baseurl}}/bower_components/vega-embed/vega-embed.js" charset="utf-8"></script>
     <script src="{{site.baseurl}}/bower_components/highlightjs/highlight.pack.js" charset="utf-8"></script>
+    <script src="{{site.baseurl}}/lib/json3-compactstringify.js"></script>
 
-    <script>var BASEURL = "{{site.baseurl}}";</script>
+    <script>
+      JSON3 = JSON3.noConflict();
+      var BASEURL = "{{site.baseurl}}";
+    </script>
     <script src="{{site.baseurl}}/site/static/docs.js" charset="utf-8"></script>
 
     <title> {{site.title}}: {{page.title}} </title>
