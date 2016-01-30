@@ -22,51 +22,12 @@ The `bin` property definition object contains the following properties:
 | minstep             | Number              | A minimum allowable step size (particularly useful for integer values).|
 | div                 | Array               | Scale factors indicating allowable subdivisions. The default value is [5, 2], which indicates that for base 10 numbers (the default base), the method may consider dividing bin sizes by 5 and/or 2. For example, for an initial step size of 10, the method can check if bin sizes of 2 (= 10/5), 5 (= 10/2), or 1 (= 10/(5*2)) might also satisfy the given constraints.|
 
------
-
 #### Example
 
-<!-- TODO: just show binning alone with dot-plot to get the idea first --> 
+<!-- TODO: just show binning alone with dot-plot to get the idea first -->
 
 The following specification creates a Histogram.
+Basically, the bar marks show count of the number of data in each `bin`.
 
-Histogram counts number of data in each `bin`.
-
-```js
-{
-  "data": {"url": "data/cars.json"},
-  "mark": "bar",
-  "encoding": {
-    "x": {
-      "bin": {"maxbins": 15},
-      "field": "Horsepower",
-      "type": "quantitative"
-    },
-    "y": {
-      "aggregate": "count",
-      "field": "*",
-      "type": "quantitative",
-      "displayName": "Number of Records"
-    }
-  }
-}
-```
-<script>
-vg.embed('#histogram', {
-  mode: 'vega-lite',
-  spec: {
-    "data": {"url": "../data/cars.json"},
-    "mark": "bar",
-    "encoding": {
-      "x": {
-        "bin": {"maxbins": 15}, "field": "Horsepower", "type": "quantitative"
-      },
-      "y": {
-        "aggregate": "count", "field": "\*", "type": "quantitative",
-        "displayName": "Number of Records"
-      }
-    }
-  }
-});
-</script>
-<div id="histogram"></div>
+<div id="ex-histogram" class="side"></div>
+<script>example("histogram", "")</script>

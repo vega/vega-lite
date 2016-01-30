@@ -9,45 +9,12 @@ New time unit fields can be derived from existing temporal fields using each fie
 Currently supported values are: `'year'`, `'month'`, `'day'`, `'date'`, `'hours'`, `'minutes'`, `'seconds'`, `'milliseconds'`, `'yearmonth'`, `'yearmonthday'`, `'yearmonthdate'`, `'yearday'`, `'yeardate'`, `'yearmonthdayhours'`, `'yearmonthdayhoursminutes'`, `'hoursminutes'`,
 `'hoursminutesseconds'`, `'minutesseconds'`, `'secondsmilliseconds'`.
 
+<!-- TODO: explain more distinction between `'month'`, `'day'`, `'date'`, `'hours'`, `'minutes'`, `'seconds'`, `'milliseconds'` and yearmonth, .. -->
 
 ----
 #### Example
 
 This example shows temperature in Seattle over the months.
 
-```js
-{
-  "data": {"url": "data/seattle-temps.csv","formatType": "csv"},
-  "mark": "line",
-  "encoding": {
-    "x": {
-      "timeUnit": "month", "field": "date", "type": "temporal",
-      "axis": {"shortTimeLabels": true}
-    },
-    "y": {"aggregate": "mean", "field": "temp", "type": "quantitative"}
-  }
-}
-```
-<script>
-vg.embed('#temp_histogram', {
-  mode: 'vega-lite',
-  spec: {
-    "data": {"url": "../data/seattle-temps.csv","formatType": "csv"},
-    "mark": "line",
-    "encoding": {
-      "x": {
-        "field": "date",
-        "type": "temporal",
-        "timeUnit": "month",
-        "axis": {"shortTimeLabels": true}
-      },
-      "y": {
-        "aggregate": "mean",
-        "field": "temp",
-        "type": "quantitative"
-      }
-    }
-  }
-});
-</script>
-<div id="temp_histogram"></div>
+<div id="ex-line_month" class="side"></div>
+<script>example("line_month", "")</script>

@@ -1,4 +1,4 @@
 declare module vg {
   export var version;
-  export function embed(selector: string, apec: any, f: any);
+  export function embed(selector: any, spec: any, f?: any);
 }

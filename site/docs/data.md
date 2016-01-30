@@ -22,18 +22,9 @@ Here is a list of all properties describing `data` source:
 Inline Data can be specified using `values` property.
 For example, a data table with two rows and two columns (`a` and `b`) in a spec might look like this:
 
-```json
-{
-  "data": {
-    "values": [{"a":0, "b":3}, {"a":1, "b":5}, {"a":3, "b":1}, {"a":4, "b":2}]
-  },
-  "mark": "point",
-  "encoding": {
-    "x": {"field": "a", "type": "quantitative"},
-    "y": {"field": "b", "type": "quantitative"}
-  }
-}
-```
+<div id="ex-bar" class="side"></div>
+<script>example("bar", '', {class: 'side'})</script>
+
 
 ## Data from URL
 
