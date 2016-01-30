@@ -18,22 +18,10 @@ export interface Encoding {
   label?: FieldDef;
 }
 
-var x = duplicate(positionalField);
-var y = duplicate(positionalField);
-
-var row = mergeDeep(duplicate(facetField));
-var column = mergeDeep(duplicate(facetField));
-
 var size = mergeDeep(duplicate(typicalField), {
   properties: {
     scale: duplicate(typicalScale),
-    legend: legend,
-    value: {
-      type: 'integer',
-      default: undefined,
-      minimum: 0,
-      description: 'Size of marks. By default, this is 30 for point, square, and circle, and 10 for text.'
-    }
+    legend: legend
   }
 });
 
@@ -91,21 +79,19 @@ var text = mergeDeep(duplicate(textField), {
   }
 });
 
-var label = duplicate(textField);
-
 export var encoding = {
   type: 'object',
   properties: {
-    x: x,
-    y: y,
-    row: row,
-    column: column,
+    x: positionalField,
+    y: positionalField,
+    row: facetField,
+    column: facetField,
     size: size,
     color: color,
     shape: shape,
     path: path,
     text: text,
     detail: detail,
-    label: label
+    label: textField
   }
 };
