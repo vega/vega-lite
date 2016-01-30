@@ -1,5 +1,7 @@
 /* tslint:disable */
 
+declare const BASEURL, hljs;
+
 function example(name, dir) {
   const fullUrl = BASEURL + '/examples/' + (dir ? (dir + '/') : '') + name + '.json';
 
@@ -7,18 +9,19 @@ function example(name, dir) {
     const target = '#ex-' + name.replace('/', '-');
     const $target = d3.select(target);
     $target.classed('example', true);
-    const code = $target.append('pre').attr('class', 'example-code')
+
+    const code = $target.insert('pre', "div.example-vis").attr('class', 'example-code')
       .append('code').attr('class', 'json').text(text);
     hljs.highlightBlock(code.node());
-
-    const spec = JSON.parse(text);
-    if (spec.data.url) {
-      spec.data.url = BASEURL + '/' + spec.data.url;
-    }
 
     let vis = $target.select('div.example-vis');
     if (vis.empty()) {
       vis = $target.append('div').attr('class', 'example-vis');
+    }
+
+    const spec = JSON.parse(text);
+    if (spec.data.url) {
+      spec.data.url = BASEURL + '/' + spec.data.url;
     }
 
     vg.embed(vis.node(), {

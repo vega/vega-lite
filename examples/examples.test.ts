@@ -46,7 +46,12 @@ describe('Examples', function() {
   var VL_EXAMPLES = dl.json('examples/vl-examples.json');
   var VL_DOCS_EXAMPLES = dl.json('examples/docs/vl-docs-examples.json');
 
-  var examples = getExampleList(VL_EXAMPLES).concat(VL_DOCS_EXAMPLES);
+  var examples = getExampleList(VL_EXAMPLES).concat(
+    getExampleList(VL_DOCS_EXAMPLES).map(function(example) {
+      example.name = 'docs/' + example.name;
+      return example;
+    })
+  );
 
   examples.forEach(function(example) {
     it('should be valid and produce valid vega for: ' + example.name, function(done) {
