@@ -11,7 +11,7 @@ permalink: /index.html
 Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as position (`x`,`y`), `size`, `color` and `shape`. These mappings are then translated into detailed visualization specifications in the Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicitly specify these properties to override default values.  
 This documentation outlines the syntax and semantics of Vega-Lite specifications, and how you can embed Vega-Lite visualizations in your applications.
 
-<span class="render-vl">
+<span class="vl-example">
 {
   "data": {
     "values": [
@@ -28,7 +28,7 @@ This documentation outlines the syntax and semantics of Vega-Lite specifications
 }
 </span>
 
-<span class="render-vl" data-name="point_1d" data-dir="docs"></span>
+<span class="vl-example" data-name="point_1d" data-dir="docs"></span>
 
 
 

@@ -35,4 +35,4 @@ Currently supported values are: `'year'`, `'month'`, `'day'`, `'date'`, `'hours'
 
 This example shows temperature in Seattle over the months.
 
-<span class="render-vl" data-name="line_month"></span>
+<span class="vl-example" data-name="line_month"></span>

@@ -32,7 +32,7 @@ function renderExample($target: d3.Selection<any>, text: string) {
   });
 }
 
-d3.selectAll('.render-vl').each(function(d, i) {
+d3.selectAll('.vl-example').each(function(d, i) {
   const sel = d3.select(this);
   const name = sel.attr('data-name');
   if (name) {

@@ -40,7 +40,7 @@ the resulting visualization shows raw data without aggregation.
 The following bar chart aggregate mean of `Acceleration`, grouped by
 `Cylinders` (number of cylinders).
 
-<span class="render-vl">
+<span class="vl-example">
 {
   "data": {"url": "data/cars.json"},
   "mark": "bar",

@@ -31,7 +31,7 @@ Here is a list of all properties describing `data` source:
 Inline Data can be specified using `values` property.
 For example, a data table with two rows and two columns (`a` and `b`) in a spec might look like this:
 
-<span class="render-vl" data-name="bar"></span>
+<span class="vl-example" data-name="bar"></span>
 
 
 ## Data from URL
