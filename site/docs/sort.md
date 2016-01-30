@@ -4,6 +4,26 @@ title: Sorting
 permalink: /docs/sort.html
 ---
 
+```js
+{
+  "data": ... ,       
+  "mark": ... ,       
+  "encoding": {     
+    "x": {
+      "field": ...,
+      "type": ...,
+      "sort": {                // sort
+        ...
+      },
+      ...
+    },
+    "y": ...,
+    ...
+  },
+  ...
+}
+```
+
 `sort` property of each channel's field definition determines the order of its field values.
 For `x`, `y`, `row` and `column`, this determines the order of each value's position via the scale.
 For `color`, `shape`, `size`, this determines the order of the channel's scale.

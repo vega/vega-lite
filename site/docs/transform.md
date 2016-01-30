@@ -13,6 +13,20 @@ The rest of this page describes the top-level `transform` property.  For more in
 
 ## `transform` Property
 
+```js
+{
+  "data": ... ,        
+  "transform": {       // transform
+    "filterNull": ...,
+    "calculate": ...,
+    "filter": ...  
+  },       
+  "mark": ... ,
+  "encoding": ... ,
+  ...
+}
+```
+
 The top-level `transform` object supports the following transformation properties:
 
 | Property      | Type          | Description    |

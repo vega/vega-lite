@@ -5,6 +5,20 @@ title: Encoding
 permalink: /docs/encoding.html
 ---
 
+```js
+{
+  "data": ... ,       
+  "mark": ... ,       
+  "encoding": {     // encoding
+    "x": ...,
+    "y": ...,
+    "color": ...,
+    ...
+  },
+  ...
+}
+```
+
 Vega-Lite's top-level `encoding` property describes a mapping between
 encoding channels (such as `x`, `y`, or `color`) and fields (or variables in the data).
 

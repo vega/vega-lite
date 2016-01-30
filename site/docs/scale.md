@@ -7,7 +7,27 @@ permalink: /docs/scale.html
 
 Scales are functions that transform a domain of data values (numbers, dates, strings, etc) to a range of visual values (pixels, colors, sizes). A scale function takes a single data value as input and returns a visual value.  
 
-By default, Vega-Lite creates default scales for fields that are mapped to visual channels.  The following properties can be specified as part of the [field definition's `scale` property](encoding.html#def) for customizing scales:
+By default, Vega-Lite creates default scales for fields that are mapped to visual channels.  To customize properties of a scale, the following properties can be specified as part of the [field definition's `scale` property](encoding.html#def).
+
+```js
+{
+  "data": ... ,       
+  "mark": ... ,       
+  "encoding": {     
+    "x": {
+      "field": ...,
+      "type": "quantitative",
+      "scale": {                // scale
+        "type": ...
+      },
+      ...
+    },
+    "y": ...,
+    ...
+  },
+  ...
+}
+```
 
 ## Common Scale Properties
 

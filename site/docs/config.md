@@ -10,12 +10,12 @@ permalink: /docs/config.html
   "data": ... ,
   "mark": ... ,
   "encoding": ... ,
-  "config": { // Configuration Object
-    ... // Top-level Configuration
-    "scene": { ... }, // Scene Configuration
-    "cell": { ... }, // Cell Configuration
-    "mark": { ... }, // Mark Configuration
-    "stack": { ... } // Stack Configuration
+  "config": {         // Configuration Object
+    ...               // - Top-level Configuration
+    "scene": { ... }, // - Scene Configuration
+    "cell": { ... },  // - Cell Configuration
+    "mark": { ... },  // - Mark Configuration
+    "stack": { ... }  // - Stack Configuration
   }
 }
 ```

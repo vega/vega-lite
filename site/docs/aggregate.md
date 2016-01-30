@@ -4,6 +4,26 @@ title: Aggregation
 permalink: /docs/aggregate.html
 ---
 
+<!-- TODO why aggregation -->
+
+```js
+{
+  "data": ... ,       
+  "mark": ... ,       
+  "encoding": {     
+    "x": {
+      "aggregate": ...,               // aggregate
+      "field": ...,
+      "type": "quantitative",
+      ...
+    },
+    "y": ...,
+    ...
+  },
+  ...
+}
+```
+
 Vega-Lite supports all [Vega aggregation operations](https://github.com/vega/vega/wiki/Data-Transforms#-aggregate) (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).
 
 If at least one fields in the specified encoding channels contain `aggregate`,

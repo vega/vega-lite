@@ -7,7 +7,29 @@ permalink: /docs/legend.html
 
 Similar to [axes](axis.html), legends visualize scales. However, whereas axes aid interpretation of scales with spatial ranges, legends aid interpretation of scales with ranges such as colors, shapes and sizes.
 
-By default, Vega-Lite automatically creates legends for `color`, `size`, and `shape` channels when they are encoded.
+By default, Vega-Lite automatically creates legends for `color`, `size`, and `shape` channels when they are encoded.  Legend can be further customized via the field definition's `legend` property.  
+
+```js
+{
+  "data": ... ,       
+  "mark": ... ,       
+  "encoding": {     
+    "x": ...,
+    "y": ...,
+    "color": {
+      "field": ...,
+      "type": ...,
+      "legend": {                // legend
+        ...
+      },
+      ...
+    },
+    ...
+  },
+  ...
+}
+```
+
 The field's legend can be removed by setting `legend` to `false`.
 If `legend` is `true`, default legend properties are applied.
 

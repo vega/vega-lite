@@ -7,6 +7,15 @@ permalink: /docs/data.html
 
 Akin to [Vega](/vega/vega)'s [data model](vega/vega/wiki/Data), the basic data model used by Vega is _tabular_ data, similar to a spreadsheet or database table. Individual data sets are assumed to contain a collection of records, which may contain any number of named data fields.
 
+```js
+{
+  "data": ... ,       // data
+  "mark": ... ,
+  "encoding": ... ,
+  ...
+}
+```
+
 Vega-Lite's top-level `data` property describes a visualization's data source, which can be either inline data or a URL from which to load the data.
 
 Here is a list of all properties describing `data` source:
