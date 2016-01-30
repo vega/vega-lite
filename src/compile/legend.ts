@@ -117,7 +117,7 @@ namespace properties {
           if (model.has(COLOR) && channel === COLOR) {
             symbols.fill = {scale: model.scaleName(COLOR), field: 'data'};
           } else {
-            symbols.fill = {value: model.fieldDef(COLOR).value};
+            symbols.fill = {value: model.config().mark.color};
           }
         } else { // stroked
           // set fill to transparent by default unless there is a config for stroke
@@ -127,7 +127,7 @@ namespace properties {
           if (model.has(COLOR) && channel === COLOR) {
             symbols.stroke = {scale: model.scaleName(COLOR), field: 'data'};
           } else {
-            symbols.stroke = {value: model.fieldDef(COLOR).value};
+            symbols.stroke = {value: model.config().mark.color};
           }
         }
 

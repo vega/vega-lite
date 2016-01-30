@@ -50,7 +50,7 @@ export namespace point {
         field: model.field(SHAPE)
       };
     } else {
-      p.shape = { value: model.fieldDef(SHAPE).value };
+      p.shape = { value: model.config().mark.shape };
     }
 
     applyColorAndOpacity(p, model,

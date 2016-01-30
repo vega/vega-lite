@@ -1,9 +1,12 @@
 export interface MarkConfig {
+  // Vega-Lite Specific
   filled?: boolean;
+  color?: string;
+  barWidth?: number;
+  tickWidth?: number;
 
   // General Vega
   opacity?: number;
-
   strokeWidth?: number;
   strokeDash?: number[];
   strokeDashOffset?: number[];
@@ -12,11 +15,16 @@ export interface MarkConfig {
   stroke?: string;
   strokeOpacity?: number;
 
+
   // Bar / area
   orient?: string;
   // Line / area
   interpolate?: string;
   tension?: number;
+
+  // Point / Square / Circle
+  shape?: string;
+  size?: number;
 
   // Tick-only
   thickness?: number;
@@ -30,6 +38,7 @@ export interface MarkConfig {
   radius?: number;
   theta?: number;
   font?: string;
+  fontSize?: number;
   fontStyle?: string;
   fontWeight?: string;
   // Vega-Lite only for text only
@@ -49,6 +58,23 @@ export const markConfig = {
       description: 'Whether the shape\'s color should be used as fill color instead of stroke color. ' +
         'This is only applicable for "bar", "point", and "area". ' +
         'All marks except "point" marks are filled by default.'
+    },
+    color: {
+      type: 'string',
+      role: 'color',
+      default: '#4682b4',
+      description: 'Default color.'
+    },
+    barWidth: {
+      type: 'number',
+      default: undefined,
+      description: 'The width of the bars.  If unspecified, the default width is  `bandWidth-1`, which provides 1 pixel offset between bars.'
+    },
+    tickWidth: {
+      type: 'string',
+      role: 'color',
+      default: undefined,
+      description: 'The width of the ticks.'
     },
     // General Vega
     fill: {
@@ -120,6 +146,20 @@ export const markConfig = {
       description: 'Depending on the interpolation type, sets the tension parameter.'
     },
 
+    // point
+    shape: {
+      type: 'number',
+      enum: ['circle', 'square', 'cross', 'diamond', 'triangle-up', 'triangle-down'],
+      default: undefined,
+      description: 'The symbol shape to use. One of circle (default), square, cross, diamond, triangle-up, or triangle-down.'
+    },
+    // point / circle / square
+    size: {
+      type: 'number',
+      default: 30,
+      description: 'The pixel area each the point. For example: in the case of circles, the radius is determined in part by the square root of the size value.'
+    },
+
     // Tick-only
     thickness: {
       type: 'number',
@@ -160,6 +200,11 @@ export const markConfig = {
       default: undefined,
       role: 'font',
       description: 'The typeface to set the text in (e.g., Helvetica Neue).'
+    },
+    fontSize: {
+      type: 'number',
+      default: 10,
+      description: 'The font size, in pixels.'
     },
     // fontSize excluded as we use size.value
     fontStyle: {

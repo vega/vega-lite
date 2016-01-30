@@ -128,8 +128,8 @@ describe('Mark: Square', function() {
   it('should be filled by default', function() {
     const model = parseModel({
       "mark": "square",
-      "encoding": {
-        "color": {"value": "blue"}
+      "config": {
+        "mark": {"color": "blue"}
       }
     });
     const props = square.properties(model);
@@ -140,11 +140,9 @@ describe('Mark: Square', function() {
   it('should support config.mark.filled:false', function() {
     const model = parseModel({
       "mark": "square",
-      "encoding": {
-        "color" : {"value" : "blue"}
-      },
       "config" : {
         "mark" : {
+          "color": "blue",
           "filled" : false
         }
       }
@@ -159,48 +157,31 @@ describe('Mark: Square', function() {
 
 describe('Mark: Circle', function() {
   it('should return the correct mark type', function() {
-
-    const model = parseModel({
-      "mark": "circle",
-      "encoding": {
-        "color": {"value": "blue"}
-      }
-    });
     assert.equal(circle.markType(), 'symbol');
   });
 
-  it('should have correct shape', function() {
-    const model = parseModel({
-      "mark": "circle",
-      "encoding": {
-        "color": {"value": "blue"}
-      }
-    });
-    const props = circle.properties(model);
+  const model = parseModel({
+    "mark": "circle",
+    "config": {
+      "mark": {"color": "blue"}
+    }
+  });
+  const props = circle.properties(model);
 
+  it('should have correct shape', function() {
     assert.equal(props.shape.value, 'circle');
   });
 
   it('should be filled by default', function() {
-    const model = parseModel({
-      "mark": "circle",
-      "encoding": {
-        "color": {"value": "blue"}
-      }
-    });
-    const props = circle.properties(model);
-
     assert.equal(props.fill.value, 'blue');
   });
 
   it('should support config.mark.filled:false', function() {
     const model = parseModel({
-      "mark": "cirlce",
-      "encoding": {
-        "color" : {"value" : "blue"}
-      },
+      "mark": "circle",
       "config" : {
         "mark" : {
+          "color": "blue",
           "filled" : false
         }
       }
