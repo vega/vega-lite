@@ -1,6 +1,6 @@
 import {axis, Axis} from './axis.schema';
 import {bin, Bin} from './bin.schema';
-import {Legend} from './legend.schema';
+import {legend, Legend} from './legend.schema';
 import {typicalScale, ordinalOnlyScale, Scale} from './scale.schema';
 import {sort, Sort} from './sort.schema';
 
@@ -37,7 +37,7 @@ export interface FieldDef {
   displayName?: string;
 }
 
-export var fieldDef = {
+const fieldDef = {
   type: 'object',
   properties: {
     field: {
@@ -47,16 +47,17 @@ export var fieldDef = {
       type: 'string',
       enum: [NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL]
     },
+    bin: bin,
     timeUnit: {
       type: 'string',
       enum: TIMEUNITS,
       supportedTypes: toMap([TEMPORAL])
     },
-    bin: bin,
+    sort: sort
   }
 };
 
-export var aggregate = {
+export const aggregate = {
   type: 'string',
   enum: AGGREGATE_OPS,
   supportedEnums: {
@@ -69,44 +70,75 @@ export var aggregate = {
   supportedTypes: toMap([QUANTITATIVE, NOMINAL, ORDINAL, TEMPORAL, ''])
 };
 
-export var typicalField = mergeDeep(duplicate(fieldDef), {
+const aggregableFieldDefWithScale = mergeDeep(duplicate(fieldDef), {
   properties: {
-    sort: sort,
-    aggregate: aggregate
+    aggregate: aggregate,
+    scale: typicalScale
   }
 });
 
-export var positionalField = mergeDeep(duplicate(typicalField), {
+export const positionFieldDef = mergeDeep(duplicate(aggregableFieldDefWithScale), {
   required: ['field', 'type'], // TODO: remove if possible
   properties: {
-    scale: mergeDeep(duplicate(typicalScale), {
+    scale: {
       // replacing default values for just these two axes
       properties: {
         padding: {default: 1},
         bandWidth: {default: 21}
       }
-    }),
+    },
     axis: axis
   }
 });
 
-export var textField = mergeDeep(duplicate(fieldDef), {
+export const colorFieldDef = mergeDeep(duplicate(aggregableFieldDefWithScale), {
+  properties: {
+    legend: legend
+  }
+});
+
+export const sizeFieldDef = colorFieldDef;
+
+// no scale
+const orderFieldDef = mergeDeep(duplicate(fieldDef), {
   properties: {
     aggregate: aggregate
   }
 });
 
-export var onlyOrdinalField = mergeDeep(duplicate(fieldDef), {
+export const orderFieldDefs = {
+  default: undefined,
+  oneOf: [duplicate(orderFieldDef), {
+    type: 'array',
+    items: duplicate(orderFieldDef)
+  }]
+};
+
+export const textFieldDef = mergeDeep(duplicate(fieldDef), {
   properties: {
-    sort: sort,
+    aggregate: aggregate,
+    value: {
+      type: 'string',
+      default: 'Abc'
+    }
+  }
+});
+
+const ordinalOnlyFieldDef = mergeDeep(duplicate(fieldDef), {
+  properties: {
     scale: ordinalOnlyScale
   }
 });
 
-export var facetField = mergeDeep(duplicate(onlyOrdinalField), {
+export const shapeFieldDef =  mergeDeep(duplicate(ordinalOnlyFieldDef), {
+  properties: {
+    legend: legend
+  }
+});
+
+export const facetFieldDef = mergeDeep(duplicate(ordinalOnlyFieldDef), {
   required: ['field', 'type'],
   properties: {
-    sort: sort,
     axis: axis
   }
 });
