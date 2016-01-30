@@ -27,23 +27,7 @@ var size = mergeDeep(duplicate(typicalField), {
 
 var color = mergeDeep(duplicate(typicalField), {
   properties: {
-    scale: mergeDeep(duplicate(typicalScale), {
-      type: 'object',
-      properties: {
-        quantitativeRange: {
-          type: 'array',
-          default: ['#AFC6A3', '#09622A'], // tableau greens
-          // default: ['#ccece6', '#00441b'], // BuGn.9 [2-8]
-          description: 'Color range to encode quantitative variables.',
-          minItems: 2,
-          maxItems: 2,
-          items: {
-            type: 'string',
-            role: 'color'
-          }
-        }
-      }
-    }),
+    scale: duplicate(typicalScale),
     legend: legend
   }
 });
