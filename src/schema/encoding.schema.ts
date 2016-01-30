@@ -1,11 +1,8 @@
 import {mergeDeep} from './schemautil';
 import {duplicate} from '../util';
-
-
-import {axis} from './axis.schema';
-import {FieldDef, fieldDef, facetField, onlyOrdinalField, typicalField} from './fielddef.schema';
+import {FieldDef, facetField, onlyOrdinalField, positionalField, textField, typicalField} from './fielddef.schema';
+import {typicalScale} from './scale.schema';
 import {legend} from './legend.schema';
-import {sort} from './sort.schema';
 
 export interface Encoding {
   x?: FieldDef;
@@ -21,29 +18,16 @@ export interface Encoding {
   label?: FieldDef;
 }
 
-var x = mergeDeep(duplicate(typicalField), {
-  required: ['field', 'type'], // TODO: remove if possible
-  properties: {
-    scale: {// replacing default values for just these two axes
-      properties: {
-        padding: {default: 1},
-        bandWidth: {default: 21}
-      }
-    },
-    axis: axis,
-    sort: sort
-  }
-});
-
-var y = duplicate(x);
+var x = duplicate(positionalField);
+var y = duplicate(positionalField);
 
 var row = mergeDeep(duplicate(facetField));
 var column = mergeDeep(duplicate(facetField));
 
 var size = mergeDeep(duplicate(typicalField), {
   properties: {
+    scale: duplicate(typicalScale),
     legend: legend,
-    sort: sort,
     value: {
       type: 'integer',
       default: undefined,
@@ -55,15 +39,7 @@ var size = mergeDeep(duplicate(typicalField), {
 
 var color = mergeDeep(duplicate(typicalField), {
   properties: {
-    legend: legend,
-    sort: sort,
-    value: {
-      type: 'string',
-      role: 'color',
-      default: '#4682b4',
-      description: 'Color to be used for marks.'
-    },
-    scale: {
+    scale: mergeDeep(duplicate(typicalScale), {
       type: 'object',
       properties: {
         quantitativeRange: {
@@ -79,6 +55,13 @@ var color = mergeDeep(duplicate(typicalField), {
           }
         }
       }
+    }),
+    legend: legend,
+    value: {
+      type: 'string',
+      role: 'color',
+      default: '#4682b4',
+      description: 'Color to be used for marks.'
     }
   }
 });
@@ -86,7 +69,6 @@ var color = mergeDeep(duplicate(typicalField), {
 var shape = mergeDeep(duplicate(onlyOrdinalField), {
   properties: {
     legend: legend,
-    sort: sort,
     value: {
       type: 'string',
       enum: ['circle', 'square', 'cross', 'diamond', 'triangle-up', 'triangle-down'],
@@ -98,24 +80,23 @@ var shape = mergeDeep(duplicate(onlyOrdinalField), {
 
 var path = {
   default: undefined,
-  oneOf: [duplicate(fieldDef), {
+  oneOf: [duplicate(typicalField), {
     type: 'array',
-    items: duplicate(fieldDef)
+    items: duplicate(typicalField)
   }]
 };
 
 var detail = {
   default: undefined,
-  oneOf: [duplicate(fieldDef), {
+  oneOf: [duplicate(typicalField), {
     type: 'array',
-    items: duplicate(fieldDef)
+    items: duplicate(typicalField)
   }]
 };
 
 // we only put aggregated measure in pivot table
-var text = mergeDeep(duplicate(typicalField), {
+var text = mergeDeep(duplicate(textField), {
   properties: {
-    sort: sort,
     value: {
       type: 'string',
       default: 'Abc'
@@ -123,11 +104,7 @@ var text = mergeDeep(duplicate(typicalField), {
   }
 });
 
-var label = mergeDeep(duplicate(typicalField), {
-  properies: {
-    sort: sort
-  }
-});
+var label = duplicate(textField);
 
 export var encoding = {
   type: 'object',

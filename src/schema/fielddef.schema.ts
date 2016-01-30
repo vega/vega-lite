@@ -71,13 +71,34 @@ export var aggregate = {
 
 export var typicalField = mergeDeep(duplicate(fieldDef), {
   properties: {
-    aggregate: aggregate,
-    scale: typicalScale
+    sort: sort,
+    aggregate: aggregate
+  }
+});
+
+export var positionalField = mergeDeep(duplicate(typicalField), {
+  required: ['field', 'type'], // TODO: remove if possible
+  properties: {
+    scale: mergeDeep(duplicate(typicalScale), {
+      // replacing default values for just these two axes
+      properties: {
+        padding: {default: 1},
+        bandWidth: {default: 21}
+      }
+    }),
+    axis: axis
+  }
+});
+
+export var textField = mergeDeep(duplicate(fieldDef), {
+  properties: {
+    aggregate: aggregate
   }
 });
 
 export var onlyOrdinalField = mergeDeep(duplicate(fieldDef), {
   properties: {
+    sort: sort,
     scale: ordinalOnlyScale
   }
 });
@@ -85,7 +106,7 @@ export var onlyOrdinalField = mergeDeep(duplicate(fieldDef), {
 export var facetField = mergeDeep(duplicate(onlyOrdinalField), {
   required: ['field', 'type'],
   properties: {
-    axis: axis,
-    sort: sort
+    sort: sort,
+    axis: axis
   }
 });
