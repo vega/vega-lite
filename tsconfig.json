@@ -105,7 +105,6 @@
     "typings/chai.d.ts",
     "typings/d3.d.ts",
     "typings/datalib.d.ts",
-    "typings/json3-compactstringify.d.ts",
     "typings/mocha.d.ts",
     "typings/node.d.ts",
     "typings/vega-lite.d.ts",
