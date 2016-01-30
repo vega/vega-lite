@@ -56,25 +56,13 @@ var color = mergeDeep(duplicate(typicalField), {
         }
       }
     }),
-    legend: legend,
-    value: {
-      type: 'string',
-      role: 'color',
-      default: '#4682b4',
-      description: 'Color to be used for marks.'
-    }
+    legend: legend
   }
 });
 
 var shape = mergeDeep(duplicate(onlyOrdinalField), {
   properties: {
-    legend: legend,
-    value: {
-      type: 'string',
-      enum: ['circle', 'square', 'cross', 'diamond', 'triangle-up', 'triangle-down'],
-      default: 'circle',
-      description: 'Mark to be used.'
-    }
+    legend: legend
   }
 });
 
@@ -94,7 +82,6 @@ var detail = {
   }]
 };
 
-// we only put aggregated measure in pivot table
 var text = mergeDeep(duplicate(textField), {
   properties: {
     value: {

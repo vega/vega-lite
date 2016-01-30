@@ -31,16 +31,16 @@ These channels are properties for the top-level `encoding` definition object.
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| x, y          | [FieldDef](#field-definition)| `x` and `y` channels map data fields to x and y coordinates (or to width and height for `bar` and `area` marks). |
-| color | [FieldDef](#field-definition)| `color` channel maps a field to color. For a nominal field, the field value is mapped to `hue` by default.  For other fields, the field value is mapped to saturation by default.  For constant value, color names and hex color value can be provided.  |
-| shape  | [FieldDef](#field-definition)| `shape` channel maps a field to the symbol's shape.  Possible values are: `"circle"` (default), `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`, or `"triangle-down"`.  (Only applicable for `point` marks.)  |
-| size  | [FieldDef](#field-definition)| Description of a field or a constant value mapped to size. If `size` is not mapped to a field, default value will be provided based on mark type.    <br/> • For `text`, this property determines the font size. The default value is `10`.     <br/> • For `bar` and `tick`, this property determines the width of the mark.  For `bar`, the default size is set to `bandWidth-1` to provide 1 pixel offset between bars.  If the dimension has linear scale, the bar's default size will be `2` instead.  For `tick`, the default value is `2/3*bandWidth`. This will provide offset between band equals to the width of the tick. <br/> • For `point`, `square` and `circle`, this property determines the pixel area of the mark.  The default value is `30`. |
-| detail | [FieldDef](#field-definition)| Description of a field or fields for (a) adding extra level of detail for aggregate views without mapping to a specific visual channel or (2) determining layer or stack order. |
-| path   | [FieldDef](#field-definition)| Description of a field or fields that determines order of data points in line mark.  For more information, please look at [line mark](mark.html#line). |
-| row, column   | [FieldDef](#field-definition)| Description of a field that facets data into vertical and horizontal [trellis plots](https://en.wikipedia.org/wiki/Small_multiple). |
+| x, y          | [FieldDef](#field-definition)| Mapping data fields to x and y coordinates (or to width and height for `bar` and `area` marks). |
+| color         | [FieldDef](#field-definition)| Mapping a field to color.  This channel automatically maps the assigned field to fill or stroke color based on mark type. (Fill color for `area`, `bar`, `tick`, `text` and filled point, circle, and square.,  Stroke color for `line` and unfilled point, circle, and square.)  |
+| shape  | [FieldDef](#field-definition)| Mapping a field to the symbol's shape. |
+| size  | [FieldDef](#field-definition)| Mapping a field to size of the mark.  This channel automatically maps the assigned field to different visual properties based on mark type.   <br/>     • For `point`, `square` and `circle`, this channel determines the symbol size, or pixel area of the mark.  <br/> • For `bar` and `tick`, this channel determines the bar and tick width respectively.  <br/>      • For `text`, this channel determines the font size of the text. |
+| detail | [FieldDef[]](#field-definition)| Mapping fields as (a) additional levels of detail for aggregate views without mapping to a specific visual channel or (2) determining layer or stack order. |
+| path   | [FieldDef[]](#field-definition)| Mapping a field or fields for sorting the order of data points in line mark.  For more information, please look at [line mark](mark.html#line). |
+| row, column   | [FieldDef](#field-definition)| Faceting the visualization into into vertical and horizontal [trellis plots](https://en.wikipedia.org/wiki/Small_multiple) with a given field. |
 
 <!-- TODO: Need to expand on "(or to width or height for `bar` and `area` marks)." for x,y -->
-<!-- TODO: describe more about color's behavior -- possibly link to the scale page -->
+<!-- TODO: describe more about color's behavior -- For a nominal field, the field value is mapped to `hue` by default.  For other fields, the field value is mapped to saturation by default.-- possibly link to the scale page -->
 
 <a id="mark-channel"></a>
 

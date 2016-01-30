@@ -126,6 +126,15 @@ Setting `config.mark.filled` to `true` creates filled marks instead.
 <script>example("point_filled", "docs")</script>
 
 
+
+### Marks Configuration for Bar
+<div id="orient"></div>
+
+| Property      | Type          | Description    |
+| :------------ |:-------------:| :------------- |
+| barWidth      | Number        | The width of the bars.  If unspecified, the default width for bars on an ordinal scale is  `bandWidth-1`, which provides 1 pixel offset between bars.  If the dimension has linear scale, the bar's default size will be `2` instead.   |
+
+
 ### Marks Configuration for Bar, Line, and Area Marks
 <div id="orient"></div>
 
@@ -184,6 +193,20 @@ vg.embed('#horizontal_line', {
 <script>example("line_monotone", "docs")</script>
 
 
+### Marks Configuration for Point Mark
+
+| Property            | Type                | Description  |
+| :------------------ |:-------------------:| :------------|
+| shape               | Number              | The symbol shape to use. One of `"circle"` (default), `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`, or `"triangle-down"` |
+
+
+### Marks Configuration for Point, Circle, and Square Marks
+
+| Property            | Type                | Description  |
+| :------------------ |:-------------------:| :------------|
+| size                | Number              | The pixel area each the point (30 by default). For example: in the case of circles, the radius is determined in part by the square root of the size value. |
+
+
 
 ### Marks Configuration for Tick Marks
 
@@ -191,6 +214,7 @@ vg.embed('#horizontal_line', {
 
 | Property            | Type                | Description  |
 | :------------------ |:-------------------:| :------------|
+| tickWidth           | Number        | The width of the ticks.  If unspecified, the default value is `2/3*bandWidth`. This will provide offset between band equals to the width of the tick. |
 | thickness           | Number              | Thickness of the tick mark. |
 
 __TODO: Example - make tick mark thicker__
@@ -209,6 +233,7 @@ __TODO: Example - make tick mark thicker__
 | theta               | Number  | Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating "north".|
 | angle               | Number  | The rotation angle of the text, in degrees.|
 | font                | String  | The typeface to set the text in (e.g., `Helvetica Neue`).|
+| fontSize            | Number  | The font size, in pixels.  The default value is 10. |
 | fontWeight          | String  | The font weight (e.g., `bold`).|
 | fontStyle           | String  | The font style (e.g., `italic`).|
 | format              | String  | The formatting pattern for text value.  If not defined, this will be determined automatically|
