@@ -113,7 +113,10 @@ Then, run `gem install bundler`. Finally, simply run `bundle install` to install
 - `bin/` – Scripts for using Vega-Lite with command line.
 - `data/` – Example data.
 - `site/` – Vega-Lite website including documentation.
-- `examples/` – Example Vega-Lite specification.  `examples/vlexamples.json` lists all of these examples.  
+- `examples/` – Example Vega-Lite specifications.  
+  - `examples/docs/` contains examples that are used in the documetnation, but should not be shown in the gallery.
+  - `examples/vl-examples.json` lists all examples under `examples/`.  Similarly, `examples/docs/vl-docs-examples.json` lists all examples under `examples/docs`. 
+
 - `lib/` contains JSON schema's `schema.json`
 - `scripts/` - Scripts for NPM commands.
 - `site/` - Misc files for serving the website and gallery
