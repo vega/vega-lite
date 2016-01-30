@@ -16,12 +16,16 @@ navigation:
    url: config
 ---
 
-{% assign url = page.url | remove:'/docs/'|remove:'.html' %}
+{% assign url = page.url | remove:'/docs/' | remove:'.html' %}
 
-<div class="docs-nav">
+{% if url == '' %}
+  {% assign url = 'index' %}
+{% endif %}
+
+<div class="sub-nav">
   <nav class="page-centered">
     {% for link in page.navigation %}
-    <a {% if url == link.url %}class="active"{% endif %}
+    <a {% if (url == link.url) %}class="active"{% endif %}
         href="{{site.baseurl}}/docs/{{link.url}}.html" title="{{link.title}}">{{link.text}}
     </a>
     {% endfor %}

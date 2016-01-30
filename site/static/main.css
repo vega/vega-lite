@@ -55,6 +55,12 @@ footer > div {
   display: flex;
   align-items: center;
 }
+blockquote {
+  padding: 0 15px;
+  color: #777;
+  border-left: 4px solid #ddd;
+  margin: 0;
+}
 
 /* Table */
 
@@ -168,7 +174,7 @@ nav a:hover {
   /* hack */
   margin-right: 8px;
 }
-.docs-nav {
+.sub-nav {
   background-color: #F7F7F7;
 }
 .lead {

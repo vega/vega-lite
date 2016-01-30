@@ -2,7 +2,7 @@
 layout: docs
 menu: docs
 title: Overview
-permalink: /docs/index.html
+permalink: /docs/
 ---
 
 A Vega-Lite specification is a JSON object that describes data source (`data`),
