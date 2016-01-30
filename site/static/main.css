@@ -183,7 +183,6 @@ h6 {
 }
 
 /* Media queries */
-
 @media (max-width:960px) {
   body {
     font-size: 14px;
@@ -205,11 +204,22 @@ h6 {
 .example.side {
   flex-direction: row-reverse;
 }
+
+@media (max-width: 640px) {
+  .example.side {
+    flex-direction: column;
+  }
+  .example .example-code {
+    margin-bottom: 24px
+  }
+}
+
 .example .example-vis {
   flex-grow: 1;
   align-self: center;
-  min-width: 300px;
+  min-width: 350px;
   text-align: center;
+  background-color: white;
 }
 .example .example-code {
   width: 550px;

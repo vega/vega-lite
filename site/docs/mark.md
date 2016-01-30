@@ -93,7 +93,7 @@ Mapping a quantitative field to either `x` or `y` of the `bar` mark produces a s
 In the following example, note that the `x` channel encodes the sum of the populations.
 
 
-<div id="ex-bar_1d" class="side"></div>
+<div id="ex-bar_1d" class="side"><div class="example-vis" style="min-width: 500px"></div></div>
 <script>example("bar_1d", "docs")</script>
 
 
@@ -103,14 +103,14 @@ By default, there will be a 1 pixel offset between bars.  (See [an example that 
 
 <!-- TODO: Need to update docs our and Vega's scale.bandWidth property and link there instead -->
 
-<div id="ex-bar_aggregate" class="side"></div>
+<div id="ex-bar_aggregate" class="side"><div class="example-vis" style="min-width: 500px"></div></div>
 <script>example("bar_aggregate")</script>
 
 Adding color to the bar chart (by using the `color` attribute) creates a stacked bar chart by default.  Here we also customize the color's scale range to make the color a little nicer.
 (See [`config.stack` for more detail about customizing stack](config.html#stack-config).)
 
 
-<div id="ex-stacked_bar_population" class="side"></div>
+<div id="ex-stacked_bar_population" class="side"><div class="example-vis" style="min-width: 500px"></div></div>
 <script>example("stacked_bar_population", "docs")</script>
 
 
@@ -118,7 +118,7 @@ To disable stacking, you can alternatively set `config.stack` to `false`.
 This produces a layered bar chart.
 To make it clear that bars are layered, we can make marks semi-transparent by setting the `opacity` to 0.6.
 
-<div id="ex-bar_layered_transparent" class="side"></div>
+<div id="ex-bar_layered_transparent" class="side"><div class="example-vis" style="min-width: 500px"></div></div>
 <script>example("bar_layered_transparent", "")</script>
 
 <!-- [Faceting](#encoding.md) a bar chart can produce a grouped bar chart. -->
