@@ -6,7 +6,25 @@ permalink: /docs/bin.html
 
 To group quantitative, continuous data values of a particular field into smaller number of "bins" (e.g., for a histogram), the field definition's `bin` property can be specified.  
 
-`bin` property can be either a boolean value or a bin property definition object.
+```js
+{
+  "data": ... ,       
+  "mark": ... ,       
+  "encoding": {     
+    "x": {
+      "bin": ...,               // bin
+      "field": ...,
+      "type": "quantitative",
+      ...
+    },
+    "y": ...,
+    ...
+  },
+  ...
+}
+```
+
+Field definition's `bin` property can be either a boolean value or a bin property definition object.
 If `bin` is `true`, default binning parameters will be applied.
 
 The `bin` property definition object contains the following properties:

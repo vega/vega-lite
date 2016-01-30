@@ -1,0 +1,41 @@
+---
+layout: docs
+menu: docs
+title: Overview
+permalink: /docs/
+---
+
+A Vega-Lite specification is a JSON object that describes data source (`data`),
+mark type (`mark`), visual mapping between encoding channels and data variables (`encoding`),
+and data transformations.
+
+```js
+{
+  "description": ... ,       
+  "data": ... ,       
+  "mark": ... ,   
+  "transform": ...,    
+  "encoding": {     
+    "x": {
+      "field": ...,
+      "type": ...,
+      ...
+    },
+    "y": ...,
+    "color": ...,
+    ...
+  },
+  "config": ...
+}
+```
+
+In Vega-Lite, a specification can have the following top-level properties.
+
+| Property             | Type          | Description    |
+| :------------        |:-------------:| :------------- |
+| [data](data.html)    | Object        | An object describing the data source. |
+| [transform](transform.html) | Object | An object describing filter and new field calculation. |
+| [mark](mark.html)    | String        | The mark type.  One of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`, `"area"`, `"point"`, and `"text"` (text table). |
+| [encoding](encoding.html) | Object   | A key-value mapping between encoding channels and definition of fields. |
+| [config](config.html)   | Object     | Configuration object. |
+| description   | String     | An optional description of this mark for commenting purpose. This property has no effect on the output visualization. |

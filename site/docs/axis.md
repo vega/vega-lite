@@ -7,7 +7,29 @@ permalink: /docs/axis.html
 
 Axes provide axis lines, ticks and labels to convey how a spatial range represents a data range. Simply put, axes visualize scales.
 
-By default, Vega-Lite automatically creates axes for `x`, `y`, `row`, and `column` channels when they are encoded.
+By default, Vega-Lite automatically creates axes for `x`, `y`, `row`, and `column` channels when they are encoded.  Axis can be customized via the
+`axis` property of a field definition.  
+
+```js
+{
+  "data": ... ,       
+  "mark": ... ,       
+  "encoding": {     
+    "x": {
+      "field": ...,
+      "type": ...,
+      "axis": {                // axis
+        ...
+      },
+      ...
+    },
+    "y": ...,
+    ...
+  },
+  ...
+}
+```
+
 
 The field's axis can be removed by setting `axis` to `false`.
 If `axis` is `true`, default axis properties are applied.
