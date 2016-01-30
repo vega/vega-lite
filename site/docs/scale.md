@@ -29,20 +29,58 @@ By default, Vega-Lite creates default scales for fields that are mapped to visua
 }
 ```
 
-## Common Scale Properties
+## Scale Type
+
+<!-- TODO: explain what are these types of scale.  Maybe look at D3 docs for inspiration -->
+
+Vega-Lite automatically determines scale type based on the data type of a field.
+
+- For *ordinal* and *nominal* fields, the scale type is always ordinal.  
+- For a *quantitative* field, the scale type is `"linear"` by default.
+<!-- TODO: write default scale type for timeUnit -->
+
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| type          | String        | The type of scale. This is only customizable for quantitative and temporal fields. <br/> • For a _quantitative_ field, the default value is `linear`. Other supported quantitative scale types  are `linear`, `log`, `pow`, `sqrt`, `quantile`, `quantize`, and `threshold`.  <br/> • For a _temporal_ field without time unit, the scale type should be `time` (default) or `utc` (for UTC time).  For temporal fields with time units, the scale type can also be `ordinal` (default for `hours`, `day`, `date`, `month`) or `linear` (default for `year`, `second`, `minute`). <br/> See [d3 scale documentation](https://github.com/mbostock/d3/wiki/Quantitative-Scales) for more information. <br/> • For _ordinal_ and _nominal_ fields, the scale type is always ordinal.  |
-| domain        | Array  | By default, the field's scale draw domain values directly from the field's values.  Custom domain values can be specified.  For quantitative data, this can take the form of a two-element array with minimum and maximum values. For ordinal/categorical data, this may be an array of valid input values. |
-| range        | Array &#124; String  | By default, Vega-Lite provides the following default values: <br/> • For `x` and `y`, the range covers the chart's cell width and cell height respectively.  <br/> •   For `color`, the default range is `"category10"` for nominal fields, and a green ramp (`["#AFC6A3", "#09622A"]`) for other types of fields. <br/> •  For `shape`, the default is [Vega's `"shape"` preset](https://github.com/vega/vega/wiki/Scales#scale-range-literals). <br/> • For `row` and `column`, the default range is `width` and `height` respectively.  <br/><br/> Custom domain values can be specified. For numeric values, the range can take the form of a two-element array with minimum and maximum values. For ordinal or quantized data, the range may by an array of desired output values, which are mapped to elements in the specified domain. [See Vega's documentation on range literals for more options](https://github.com/vega/vega/wiki/Scales#scale-range-literals). |
-| round         | Boolean       | If true, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid.|
+| type          | String        | The type of scale. This is only customizable for quantitative and temporal fields. <br/> •  Supported quantitative scale types  are `"linear"`, `"log"`, `"pow"`, `"sqrt"`, `"quantile"`, `"quantize"`, and `"threshold"`.  <br/> • For a _temporal_ field without time unit, the scale type should be `time` (default) or `utc` (for UTC time).  For temporal fields with time units, the scale type can also be `ordinal` (default for `hours`, `day`, `date`, `month`) or `linear` (default for `year`, `second`, `minute`). <br/> See [d3 scale documentation](https://github.com/mbostock/d3/wiki/Quantitative-Scales) for more information. |
 
+
+## Scale Domain
+
+By default, Vega-Lite's scale draw domain values directly from the field's values.  Custom domain values can be specified via the scale's `domain` property.  
+
+| Property      | Type          | Description    |
+| :------------ |:-------------:| :------------- |
+| domain        | Array         | Custom domain values.  For quantitative data, this can take the form of a two-element array with minimum and maximum values. For ordinal/categorical data, this may be an array of valid input values. |
+
+
+## Scale Range
+
+By default, Vega-Lite provides the following default values:
+- For `x` and `y`, the range covers the chart's cell width and cell height respectively.  
+- For `color`, the default range is `"category10"` for nominal fields, and a green ramp (`["#AFC6A3", "#09622A"]`) for other types of fields.
+- For `shape`, the default is [Vega's `"shape"` preset](https://github.com/vega/vega/wiki/Scales#scale-range-literals).
+<!-- what is the implication of this -->
+- For `row` and `column`, the default range is `width` and `height` respectively.  
+
+Custom range values can be specified via the scale's `range` property.
+
+| Property      | Type          | Description    |
+| :------------ |:-------------:| :------------- |
+| range        | Array &#124; String  | For numeric values, the range can take the form of a two-element array with minimum and maximum values. For ordinal or quantized data, the range may be an array of desired output values, which are mapped to elements in the specified domain. [See Vega's documentation on range literals for more options](https://github.com/vega/vega/wiki/Scales#scale-range-literals). |
+
+## Other Scale Properties
+
+### General Scale Properties
+
+| Property      | Type          | Description    |
+| :------------ |:-------------:| :------------- |
+| round         | Boolean       | If true, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid.|
 
 <!-- TODO default for size size -->
 <!-- TODO: Explain default domain for month and (week)day -->
 
-## Ordinal Scale Properties
+### Ordinal Scale Properties
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
@@ -52,14 +90,14 @@ By default, Vega-Lite creates default scales for fields that are mapped to visua
 <!-- TODO: better explanation for bandWidth-->
 <!-- TODO: add outerPadding -->
 
-## Time Scale Properties
+### Time Scale Properties
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | clamp         | Boolean       | If true (default), values that exceed the data domain are clamped to either the minimum or maximum range value.|
 | nice          | String        | If specified, modifies the scale domain to use a more human-friendly value range. For `time` and `utc` scale types only, the nice value should be a string indicating the desired time interval; legal values are `"second"`, `"minute"`, `"hour"`, `"day"`, `"week"`, `"month"`, or `"year"`.|
 
-## Quantitative Scale Properties
+### Quantitative Scale Properties
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
