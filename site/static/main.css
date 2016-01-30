@@ -204,7 +204,7 @@ nav a:hover {
 .example {
   display: flex;
   flex-direction: column;
-  margin: 24px 0;
+  margin: 1em 0;
 }
 .example.side {
   flex-direction: row-reverse;
@@ -214,13 +214,12 @@ nav a:hover {
     flex-direction: column;
   }
   .example .example-code {
-    margin-bottom: 24px
+    margin-bottom: 1em;
   }
 }
 .example .example-vis {
   flex-grow: 1;
   align-self: center;
-  min-width: 350px;
   text-align: center;
   background-color: white;
 }

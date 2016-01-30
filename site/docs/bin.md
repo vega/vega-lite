@@ -47,5 +47,4 @@ The `bin` property definition object contains the following properties:
 The following specification creates a Histogram.
 Basically, the bar marks show count of the number of data in each `bin`.
 
-<div id="ex-histogram" class="side"></div>
-<script>example("histogram")</script>
+<span class="render-vl" data-name="histogram"></span>

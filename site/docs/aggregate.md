@@ -40,7 +40,7 @@ the resulting visualization shows raw data without aggregation.
 The following bar chart aggregate mean of `Acceleration`, grouped by
 `Cylinders` (number of cylinders).
 
-```js
+<span class="render-vl">
 {
   "data": {"url": "data/cars.json"},
   "mark": "bar",
@@ -49,21 +49,6 @@ The following bar chart aggregate mean of `Acceleration`, grouped by
     "y": {"aggregate": "mean", "field": "Acceleration", "type": "quantitative"}
   }
 }
-```
-<script>
-vg.embed('#bar_aggregate', {
-  mode: 'vega-lite',
-  spec: {
-    "description": "A bar chart showing the average acceleration for cars with different numbers of cylinders.",
-    "data": {"url": "../data/cars.json"},
-    "mark": "bar",
-    "encoding": {
-      "x": {"field": "Cylinders", "type": "ordinal"},
-      "y": {"field": "Acceleration", "type": "quantitative", "aggregate": "mean"}
-    }
-  }
-});
-</script>
-<div id="bar_aggregate"></div>
+</span>
 
 <!-- TODO make scatter_aggregate_detail -->

@@ -42,8 +42,7 @@ __Examples__
 
 This example use `calculate` to derive a new field, then `filter` data based on the new field.  
 
-<div id="ex-bar_filter_calc" class="side"></div>
-<script>example("bar_filter_calc")</script>
+<span class="render-vl" data-name="bar_filter_calc"></span>
 
 
 <!-- TODO population use calc to derive Male / Female -->

@@ -40,28 +40,24 @@ Vega-Lite supports the following `mark` types:
 
 Mapping a field to either only `x` (or only `y`) of `point` mark creates a dot plot.
 
-<div id="ex-point_1d" class="side"></div>
-<script>example("point_1d", "docs")</script>
+<span class="render-vl" data-name="point_1d" data-dir="docs"></span>
 
 Mapping fields to both the `x` and `y` dimensions creates a scatter plot.
 
-<div id="ex-scatter" class="side"></div>
-<script>example("scatter")</script>
+<span class="render-vl" data-name="scatter"></span>
 
 By mapping a third field to the `size` channel in the [scatter plot](#scatter), we can create a bubble plot instead.
 
-<div id="ex-scatter_bubble" class="side"></div>
-<script>example("scatter_bubble")</script>
+<span class="render-vl" data-name="scatter_bubble"></span>
 
 
-<a id="ex-scatter_color_shape"></a>
+<span class="render-vl" data-name="scatter_color_shape"></span>
 
 Fields can also be encoded in the [scatter plot](#scatter) using the `color` or `shape` channels.
 For example, this specification encodes the field `Origin` with both `color` and `shape`.
 
 
-<div id="ex-scatter_colored_with_shape" class="side"></div>
-<script>example("scatter_colored_with_shape")</script>
+<span class="render-vl" data-name="scatter_colored_with_shape"></span>
 
 
 Note that `point` marks have a border but no fill by default.
@@ -75,12 +71,9 @@ See [this section for an example with filled `point` marks](config.html#config.m
 
 Here are some examples:
 
-<div id="ex-circle" class="side"></div>
-<script>example("circle", "docs")</script>
+<span class="render-vl" data-name="circle" data-dir="docs"></span>
 
-
-<div id="ex-square" class="side"></div>
-<script>example("square", "docs")</script>
+<span class="render-vl" data-name="square" data-dir="docs"></span>
 
 
 ## Tick Mark
@@ -90,8 +83,7 @@ This is a useful mark for displaying the distribution of values in a field.
 
 The following strip-plot use `tick` mark to represent its data.
 
-<div id="ex-tick" class="side"></div>
-<script>example("tick")</script>
+<span class="render-vl" data-name="tick"></span>
 
 __TODO__ Colored Tick with adjusted size and thickness
 
@@ -103,8 +95,7 @@ Mapping a quantitative field to either `x` or `y` of the `bar` mark produces a s
 In the following example, note that the `x` channel encodes the sum of the populations.
 
 
-<div id="ex-bar_1d" class="side"><div class="example-vis" style="min-width: 500px"></div></div>
-<script>example("bar_1d", "docs")</script>
+<span class="render-vl" data-name="bar_1d" data-dir="docs"></span>
 
 
 If we map a different ordinal field to the `y` channel, we can produce a horizontal bar chart.
@@ -113,23 +104,20 @@ By default, there will be a 1 pixel offset between bars.  (See [an example that 
 
 <!-- TODO: Need to update docs our and Vega's scale.bandWidth property and link there instead -->
 
-<div id="ex-bar_aggregate" class="side"><div class="example-vis" style="min-width: 500px"></div></div>
-<script>example("bar_aggregate")</script>
+<span class="render-vl" data-name="bar_aggregate"></span>
 
 Adding color to the bar chart (by using the `color` attribute) creates a stacked bar chart by default.  Here we also customize the color's scale range to make the color a little nicer.
 (See [`config.stack` for more detail about customizing stack](config.html#stack-config).)
 
 
-<div id="ex-stacked_bar_population" class="side"><div class="example-vis" style="min-width: 500px"></div></div>
-<script>example("stacked_bar_population", "docs")</script>
+<span class="render-vl" data-name="stacked_bar_population" data-dir="docs"></span>
 
 
 To disable stacking, you can alternatively set `config.stack` to `false`.
 This produces a layered bar chart.
 To make it clear that bars are layered, we can make marks semi-transparent by setting the `opacity` to 0.6.
 
-<div id="ex-bar_layered_transparent" class="side"><div class="example-vis" style="min-width: 500px"></div></div>
-<script>example("bar_layered_transparent")</script>
+<span class="render-vl" data-name="bar_layered_transparent"></span>
 
 <!-- [Faceting](#encoding.md) a bar chart can produce a grouped bar chart. -->
 <!--
@@ -143,25 +131,19 @@ To make it clear that bars are layered, we can make marks semi-transparent by se
 The `line` mark represents the data points stored in a field with a line connecting all of these points.
 Using `line` with one dimension (typically on `x`) and one measure (typically on `y`) produces a simple line chart with a single line.
 
-
-<div id="ex-line" class="side"></div>
-<script>example("line")</script>
+<span class="render-vl" data-name="line"></span>
 
 
 We can add create multiple lines by grouping along different attributes, such as `color` or `detail`.
 
 In the example below, we group points using a new field mapped to `color`. This produces a line chart with different colors for each line.
 
-
-<div id="ex-line_color" class="side"></div>
-<script>example("line_color")</script>
+<span class="render-vl" data-name="line_color"></span>
 
 
 Alternatively, we can map the same field to `detail`, creating multiple lines, but with the same color instead.
 
-
-<div id="ex-line_detail" class="side"></div>
-<script>example("line_detail", "docs")</script>
+<span class="render-vl" data-name="line_detail"></span>
 
 
 By default, the line's path (order of points in the line) is determined by data values on the dimension axis (x or y) like shown in previous examples.

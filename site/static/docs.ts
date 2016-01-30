@@ -2,10 +2,10 @@
 
 declare const BASEURL, hljs;
 
-function renderExample(name: string, text: string) {
-  const target = '#ex-' + name.replace('/', '-');
-  const $target = d3.select(target);
+function renderExample($target: d3.Selection<any>, text: string) {
   $target.classed('example', true);
+  $target.classed('side', true);
+  $target.text('');
 
   const code = $target.insert('pre', 'div.example-vis').attr('class', 'example-code')
     .append('code').attr('class', 'json').text(text);
@@ -32,23 +32,22 @@ function renderExample(name: string, text: string) {
   });
 }
 
-/**
- * Show example in the decs. Provide the name of the example or a spec.
- */
-function example(name: string, dirOrSpec) {
-  if (dirOrSpec !== null && typeof dirOrSpec === 'object') {
-    const spec = JSON3.stringify(dirOrSpec, null, 2, 80);
-    renderExample(name, spec);
-  } else {
-    const dir = dirOrSpec;
+d3.selectAll('.render-vl').each(function(d, i) {
+  const sel = d3.select(this);
+  const name = sel.attr('data-name');
+  if (name) {
+    const dir = sel.attr('data-dir');
     const fullUrl = BASEURL + '/examples/' + (dir ? (dir + '/') : '') + name + '.json';
 
-    d3.text(fullUrl, function(error, text) {
+    d3.text(fullUrl, function(error, spec) {
       if (error) {
         console.error(error);
       } else {
-        renderExample(name, text);
+        renderExample(sel, spec);
       }
     });
+  } else {
+    var spec = sel.text();
+    renderExample(sel, spec);
   }
-}
+});

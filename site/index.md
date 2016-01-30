@@ -11,26 +11,25 @@ permalink: /index.html
 Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as position (`x`,`y`), `size`, `color` and `shape`. These mappings are then translated into detailed visualization specifications in the Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicitly specify these properties to override default values.  
 This documentation outlines the syntax and semantics of Vega-Lite specifications, and how you can embed Vega-Lite visualizations in your applications.
 
+<span class="render-vl">
+{
+  "data": {
+    "values": [
+      {"a":"A", "b":28}, {"a":"B", "b":55}, {"a":"C", "b":43},
+      {"a":"D", "b":91}, {"a":"E", "b":81}, {"a":"F", "b":53},
+      {"a":"G", "b":19}, {"a":"H", "b":87}, {"a":"I", "b":52}
+    ]
+  },
+  "mark": "bar",
+  "encoding": {
+    "x": {"type": "ordinal","field": "a"},
+    "y": {"type": "quantitative","field": "b"}
+  }
+}
+</span>
 
-<div id="ex-point_1d" class="side"></div>
-<script>
-var vlSpec = {
-      "data": {
-        "values": [
-          {"a":"A", "b":28}, {"a":"B", "b":55}, {"a":"C", "b":43},
-          {"a":"D", "b":91}, {"a":"E", "b":81}, {"a":"F", "b":53},
-          {"a":"G", "b":19}, {"a":"H", "b":87}, {"a":"I", "b":52}
-        ]
-      },
-      "mark": "bar",
-      "encoding": {
-        "x": {"type": "ordinal","field": "a"},
-        "y": {"type": "quantitative","field": "b"}
-      }
-    };
+<span class="render-vl" data-name="point_1d" data-dir="docs"></span>
 
-example("point_1d", vlSpec)
-</script>
 
 
 Want to learn more? [Read the getting started tutorial]({{site.baseurl}}/tutorial.html).
