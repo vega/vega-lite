@@ -20,7 +20,7 @@ code, tt {
   white-space: nowrap;
   background: #f6f6f6;
   border: 1px solid #ddd;
-  font-family: 'Droid Sans Mono', monospace;
+  font-family: monospace;
   font-size: 0.8em;
 }
 pre code {
@@ -32,7 +32,7 @@ pre code {
 }
 pre {
   line-height: 1em;
-  font-family: 'Droid Sans Mono', monospace;
+  font-family: monospace;
   background: #f6f6f6;
   padding: 8px;
   border: 1px solid #ddd;
