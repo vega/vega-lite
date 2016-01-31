@@ -320,7 +320,6 @@ export function rangeMixins(model: Model, channel: Channel, scaleType: string): 
     return {range: fieldDef.scale.range};
   }
 
-  /* tslint:disable:no-switch-case-fall-through */
   switch (channel) {
     case X:
       // we can't use {range: "width"} here since we put scale in the root group
@@ -339,16 +338,16 @@ export function rangeMixins(model: Model, channel: Channel, scaleType: string): 
         return {range: [2, model.fieldDef(dimension).scale.bandWidth]};
       } else if (model.is(TEXT_MARK)) {
         return {range: [8, 40]};
-      } else { // point, square, circle
-        const xIsMeasure = model.isMeasure(X);
-        const yIsMeasure = model.isMeasure(Y);
-
-        const bandWidth = xIsMeasure !== yIsMeasure ?
-          model.fieldDef(xIsMeasure ? Y : X).scale.bandWidth :
-          Math.min(model.fieldDef(X).scale.bandWidth, model.fieldDef(Y).scale.bandWidth);
-
-        return {range: [10, (bandWidth - 2) * (bandWidth - 2)]};
       }
+      // else -- point, square, circle
+      const xIsMeasure = model.isMeasure(X);
+      const yIsMeasure = model.isMeasure(Y);
+
+      const bandWidth = xIsMeasure !== yIsMeasure ?
+        model.fieldDef(xIsMeasure ? Y : X).scale.bandWidth :
+        Math.min(model.fieldDef(X).scale.bandWidth, model.fieldDef(Y).scale.bandWidth);
+
+      return {range: [10, (bandWidth - 2) * (bandWidth - 2)]};
     case SHAPE:
       return {range: 'shapes'};
     case COLOR:
@@ -356,15 +355,14 @@ export function rangeMixins(model: Model, channel: Channel, scaleType: string): 
         || fieldDef.type === ORDINAL // FIXME remove this once we support color ramp for ordinal
       ) {
         return {range: 'category10'};
-      } else { // time or quantitative
-        return {range: ['#AFC6A3', '#09622A']}; // tableau greens
       }
+      // else -- time or quantitative
+      return {range: ['#AFC6A3', '#09622A']}; // tableau greens
     case ROW:
       return {range: 'height'};
     case COLUMN:
       return {range: 'width'};
   }
-  /* tslint:enable:no-switch-case-fall-through */
   return {};
 }
 
