@@ -2,6 +2,17 @@
 
 declare const BASEURL, hljs;
 
+/* Anchors */
+
+d3.selectAll('h1 > a, h2 > a, h3 > a, h4 > a, h5 > a, h6 > a').each(function() {
+  const sel = d3.select(this);
+  const href: string = sel.attr('href');
+  const name = href.substring(1, href.length);
+  sel.attr('name', name).attr('class', 'anchor').html('<span class="octicon octicon-link"></span>');
+});
+
+/* Documentation */
+
 function renderExample($target: d3.Selection<any>, text: string) {
   $target.classed('example', true);
   $target.classed('side', true);
@@ -32,7 +43,7 @@ function renderExample($target: d3.Selection<any>, text: string) {
   });
 }
 
-d3.selectAll('.vl-example').each(function(d, i) {
+d3.selectAll('.vl-example').each(function() {
   const sel = d3.select(this);
   const name = sel.attr('data-name');
   if (name) {
