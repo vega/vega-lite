@@ -290,4 +290,4 @@ Now that you have seen the basics of Vega-Lite visualizations, we recommend that
 
 Now that you know how to create a bar chart with aggregated data in Vega-Lite, read our [second tutorial that shows you how to create a visualization of weather data]({{site.baseurl}}/tutorials/weather.html).
 
-There are tutorials similar to this one for [D3](http://bost.ocks.org/mike/bar/) and [Vega](https://github.com/vega/vega/wiki/Tutorial). You can try to recreate visualization from this tutorial.
+There are tutorials similar to this one for [D3](http://bost.ocks.org/mike/bar/) and [Vega](https://github.com/vega/vega/wiki/Tutorial). You can try to recreate the visualizations in this tutorial.
