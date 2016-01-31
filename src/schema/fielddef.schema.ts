@@ -37,6 +37,19 @@ export interface FieldDef {
   displayName?: string;
 }
 
+export const aggregate = {
+  type: 'string',
+  enum: AGGREGATE_OPS,
+  supportedEnums: {
+    quantitative: AGGREGATE_OPS,
+    ordinal: ['median','min','max'],
+    nominal: [],
+    temporal: ['mean', 'median', 'min', 'max'], // TODO: revise what should time support
+    '': ['count']
+  },
+  supportedTypes: toMap([QUANTITATIVE, NOMINAL, ORDINAL, TEMPORAL, ''])
+};
+
 const fieldDef = {
   type: 'object',
   properties: {
@@ -53,31 +66,18 @@ const fieldDef = {
       enum: TIMEUNITS,
       supportedTypes: toMap([TEMPORAL])
     },
+    aggregate: aggregate,
     sort: sort
   }
 };
 
-export const aggregate = {
-  type: 'string',
-  enum: AGGREGATE_OPS,
-  supportedEnums: {
-    quantitative: AGGREGATE_OPS,
-    ordinal: ['median','min','max'],
-    nominal: [],
-    temporal: ['mean', 'median', 'min', 'max'], // TODO: revise what should time support
-    '': ['count']
-  },
-  supportedTypes: toMap([QUANTITATIVE, NOMINAL, ORDINAL, TEMPORAL, ''])
-};
-
-const aggregableFieldDefWithScale = mergeDeep(duplicate(fieldDef), {
+const fieldDefWithScale = mergeDeep(duplicate(fieldDef), {
   properties: {
-    aggregate: aggregate,
     scale: typicalScale
   }
 });
 
-export const positionFieldDef = mergeDeep(duplicate(aggregableFieldDefWithScale), {
+export const positionFieldDef = mergeDeep(duplicate(fieldDefWithScale), {
   required: ['field', 'type'], // TODO: remove if possible
   properties: {
     scale: {
@@ -91,7 +91,7 @@ export const positionFieldDef = mergeDeep(duplicate(aggregableFieldDefWithScale)
   }
 });
 
-export const colorFieldDef = mergeDeep(duplicate(aggregableFieldDefWithScale), {
+export const colorFieldDef = mergeDeep(duplicate(fieldDefWithScale), {
   properties: {
     legend: legend
   }
@@ -99,24 +99,20 @@ export const colorFieldDef = mergeDeep(duplicate(aggregableFieldDefWithScale), {
 
 export const sizeFieldDef = colorFieldDef;
 
-// no scale
-const orderFieldDef = mergeDeep(duplicate(fieldDef), {
-  properties: {
-    aggregate: aggregate
-  }
-});
+// Detail & Path have no scale
 
 export const orderFieldDefs = {
   default: undefined,
-  oneOf: [duplicate(orderFieldDef), {
+  oneOf: [duplicate(fieldDef), {
     type: 'array',
-    items: duplicate(orderFieldDef)
+    items: duplicate(fieldDef)
   }]
 };
 
+// Text has default value = `Abc`
+
 export const textFieldDef = mergeDeep(duplicate(fieldDef), {
   properties: {
-    aggregate: aggregate,
     value: {
       type: 'string',
       default: 'Abc'
@@ -124,19 +120,21 @@ export const textFieldDef = mergeDeep(duplicate(fieldDef), {
   }
 });
 
-const ordinalOnlyFieldDef = mergeDeep(duplicate(fieldDef), {
+// Shape / Row / Column only supports ordinal scale 
+
+const fieldDefWithOrdinalScale = mergeDeep(duplicate(fieldDef), {
   properties: {
     scale: ordinalOnlyScale
   }
 });
 
-export const shapeFieldDef =  mergeDeep(duplicate(ordinalOnlyFieldDef), {
+export const shapeFieldDef =  mergeDeep(duplicate(fieldDefWithOrdinalScale), {
   properties: {
     legend: legend
   }
 });
 
-export const facetFieldDef = mergeDeep(duplicate(ordinalOnlyFieldDef), {
+export const facetFieldDef = mergeDeep(duplicate(fieldDefWithOrdinalScale), {
   required: ['field', 'type'],
   properties: {
     axis: axis
