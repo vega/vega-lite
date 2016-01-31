@@ -5,7 +5,7 @@ title: Introduction to Vega-Lite
 permalink: /tutorials/getting_started.html
 ---
 
-In this tutorial, you will learn how to write a visualization specification in Vega-Lite. You will start with a simple visualization, which you will then extend the encoding and define additional properties. Lastly, you will learn how to embed the final visualization on a web page. There are similar tutorials for [D3](http://bost.ocks.org/mike/bar/) and [Vega](https://github.com/vega/vega/wiki/Tutorial).
+In this tutorial, you will learn how to write a visualization specification in Vega-Lite. You will start with a simple visualization, which you will then extend the encoding and define additional properties. Lastly, you will learn how to embed the final visualization on a web page.
 
 We suggest that you follow along the tutorial by building a visualization in the [online editor](https://vega.github.io/vega-editor/?mode=vega-lite). Extend your specification in the editor as you read through this tutorial. If something does not work as expected, compare with the specifications from this tutorial.
 
@@ -74,7 +74,7 @@ This specification only adds a data source but we haven't defined yet how the th
 }
 </div>
 
-Now, Vega-Lite renders a point. In fact, in renders one point for each of the 9 objects in the array.
+Now, Vega-Lite renders a point. In fact, in renders one point for each of the 9 objects in the array, but they are all overlapping.
 
 ## Encode Properties of the Data as Visual Properties
 
@@ -106,9 +106,9 @@ Here, we added an encoding to our specification.
 ...
 ```
 
-this encoding maps the values for field `a` to the *encoding channel* `x` (the x-location of the points). In addition to the mapping, we also have to specify the data type. Vega-Lite currently supports four data types: `ordinal`, `nominal`, `quanititative`, and `temporal`. The difference between these types is explained in the [documentation for data types]({{stite.baseurl}}/docs/encoding.html#types). It is required that you provide a data type for an encoding.
+The encoding maps the values for field `a` to the *encoding channel* `x` (the x-location of the points). In addition to the mapping, we also have to specify the data type. Vega-Lite currently supports four data types: `ordinal`, `nominal`, `quanititative`, and `temporal`. The difference between these types is explained in the [documentation for data types]({{stite.baseurl}}/docs/encoding.html#types). It is required that you provide a data type for an encoding.
 
-In the visualization that we just crated, Vega-Lite automatically added an axis with labels for the different categories as well as an axis title. However, 3 points are still overlapping in each category. So far, we have only defined a visual encoding for the field `a`. We can add another visual encoding for the field `b`.
+In the visualization above, Vega-Lite automatically adds an axis with labels for the different categories as well as an axis title. However, 3 points are still overlapping in each category. So far, we have only defined a visual encoding for the field `a`. We can add another visual encoding for the field `b`.
 
 ```json
 ...
@@ -135,7 +135,7 @@ This time we set the field type to be `quantitative` because the numeric values 
 }
 </div>
 
-Now we can see the raw data points. Note that Vega-Lite automatically added grid lines to the y-axis to help you see the magnitude of the `b` values.
+Now we can see the raw data points. Note that Vega-Lite automatically adds grid lines to the y-axis to help you see the magnitude of the `b` values.
 
 ## Aggregate Data
 
@@ -278,16 +278,16 @@ You can export visualizations as images from the [online editor](https://vega.gi
 </html>
 ```
 
-As you can see, we created a variable `vlSpec` that holds the specification in JSON format.
+We first load the dependencies for Vega-Lite (D3, Vega and Vega-Lite) in the head of the document. We also create an HTML element hat the visualization will be rendered in.
 
-We also loaded the dependencies for Vega-Lite (D3, Vega and Vega-Lite) in the head of the document.
+Then in the Java Script, we create a variable `vlSpec` that holds the specification in JSON format. In the code, Vega-Lite compiles a Vega-Lite specification into a Vega specification. We use the [Vega Runtime](https://github.com/vega/vega/wiki/Runtime) to display visualization.
 
-In the JavaScript code, Vega-Lite compiles a Vega-Lite specification into a Vega specification. We can then use the [Vega Runtime](https://github.com/vega/vega/wiki/Runtime) to display visualization.
-
-If viewed in a browser, this will display our bar chart. You can also try it [here](demo.html).
+If viewed in a browser, this page displays our bar chart. You can also try it [here](demo.html).
 
 ## Next Steps
 
 Now that you have seen the basics of Vega-Lite visualizations, we recommend that you build you own visualizations in the [online editor](https://vega.github.io/vega-editor/?mode=vega-lite) and get help from the [full documentation]({{site.baseurl}}/docs/).
 
-We also have a [second tutorial that shows you how to create a visualization of weather data]({{site.baseurl}}/tutorials/weather.html).
+Now that you know how to create a bar chart with aggregated data in Vega-Lite, read our [second tutorial that shows you how to create a visualization of weather data]({{site.baseurl}}/tutorials/weather.html).
+
+There tutorials similar to this one for [D3](http://bost.ocks.org/mike/bar/) and [Vega](https://github.com/vega/vega/wiki/Tutorial). You can try to recreate visualization from this tutorial.
