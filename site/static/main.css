@@ -233,7 +233,7 @@ nav a:hover {
   }
 }
 .example .example-vis {
-  flex-grow: 1;
+  flex: 1 0 auto;
   align-self: center;
   text-align: center;
   background-color: white;
