@@ -183,7 +183,7 @@ Great! You computed the aggregate values for each category and visualized the re
 }
 </div>
 
-Note that you don't have to specify that you want a vertical bar chart. In fact, we can change the visualization to a horizontal bar chart by swapping the `x` and `y` channels.
+Since the quantitative value is on y, you automatically get a vertical bar chart. We can change the visualization to a horizontal bar chart by swapping the `x` and `y` channels.
 
 <div class="vl-example">
 {
@@ -278,9 +278,9 @@ You can export your visualization as an image from the [online editor](https://v
 </html>
 ```
 
-We first load the dependencies for Vega-Lite (D3, Vega and Vega-Lite) in the head of the document. We also create an HTML element hat the visualization will be rendered in.
+We first load the dependencies for Vega-Lite (D3, Vega, and Vega-Lite) in the head of the document. We also create an HTML element hat the visualization will be rendered in.
 
-Then in the Java Script, we create a variable `vlSpec` that holds the specification in JSON format. In the code, Vega-Lite compiles a Vega-Lite specification into a Vega specification. We use the [Vega Runtime](https://github.com/vega/vega/wiki/Runtime) to display visualization.
+Then in the Java Script, we create a variable `vlSpec` that holds the specification in JSON format. In the code, Vega-Lite compiles a Vega-Lite specification into a Vega specification with `vl.compile`. We use `vega.parse` to call the [Vega Runtime](https://github.com/vega/vega/wiki/Runtime) to display visualization.
 
 If viewed in a browser, this page displays our bar chart. You can also try it [here](demo.html).
 
