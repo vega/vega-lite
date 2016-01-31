@@ -1,7 +1,7 @@
 ---
 layout: page
 title: A High-Level Visualization Grammar
-permalink: /index.html
+permalink: /
 ---
 
 <span class="lead">
@@ -30,9 +30,7 @@ This documentation outlines the syntax and semantics of Vega-Lite specifications
 
 <span class="vl-example" data-name="point_1d" data-dir="docs"></span>
 
-
-
-Want to learn more? [Read the getting started tutorial]({{site.baseurl}}/tutorial.html).
+Want to learn more? [Read the getting started tutorial]({{site.baseurl}}/tutorials/getting_started.html).
 
 ## Basic usage
 

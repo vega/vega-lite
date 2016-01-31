@@ -134,14 +134,16 @@ h6 {
 .anchor {
   display: inline-block;
   margin-left: -22px;
+  width: 22px;
   color: black;
+  outline: 0;
 }
-h1 .octicon-link, h2 .octicon-link, h3 .octicon-link, h4 .octicon-link, h5 .octicon-link, h6 .octicon-link {
+h2 .octicon-link, h3 .octicon-link, h4 .octicon-link, h5 .octicon-link, h6 .octicon-link {
   color: #000;
   vertical-align: middle;
   visibility: hidden;
 }
-h1:hover .anchor .octicon-link, h2:hover .anchor .octicon-link, h3:hover .anchor .octicon-link, h4:hover .anchor .octicon-link, h5:hover .anchor .octicon-link, h6:hover .anchor .octicon-link {
+h2:hover .anchor .octicon-link, h3:hover .anchor .octicon-link, h4:hover .anchor .octicon-link, h5:hover .anchor .octicon-link, h6:hover .anchor .octicon-link {
   visibility: visible;
 }
 
@@ -199,6 +201,16 @@ nav a:hover {
 .fill {
   flex: 1 0 auto;
 }
+.float-right {
+  float: right;
+}
+
+/* Allow json example with errors */
+
+.highlight .err {
+  color: #000;
+  background-color: transparent;
+}
 
 /* Media queries */
 
@@ -210,9 +222,9 @@ nav a:hover {
     padding: 10px 10px 10px 10px;
   }
 }
-.float-right {
-  float: right;
-}
+
+/* Examples */
+
 .example {
   display: flex;
   flex-direction: column;
@@ -230,10 +242,11 @@ nav a:hover {
   }
 }
 .example .example-vis {
-  flex-grow: 1;
+  flex: 1 0 auto;
   align-self: center;
   text-align: center;
   background-color: white;
+  padding-right: 10px;
 }
 .example .example-code {
   width: 550px;
@@ -249,4 +262,7 @@ nav a:hover {
 }
 .example .vega-actions:hover {
   opacity: 1;
+}
+.example canvas, .example svg {
+  border: 1px dashed #ddd;
 }
