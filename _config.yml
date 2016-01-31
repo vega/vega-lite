@@ -22,4 +22,4 @@ exclude: [bin, coverage, examples/_original, examples/_output, examples/_diff, G
 markdown: redcarpet # use redcarpet to enable backtick code
 redcarpet:
   #https://george-hawkins.github.io/basic-gfm-jekyll/redcarpet-extensions.html
-  extensions: ["tables", "disable_indented_code_blocks", "fenced_code_blocks", "footnotes", "autolink", "strikethrough", "superscript", "no_intra_emphasis", "underline", "highlight"]
+  extensions: ["tables", "disable_indented_code_blocks", "fenced_code_blocks", "footnotes", "autolink", "strikethrough", "with_toc_data" , "superscript", "no_intra_emphasis", "underline", "highlight"]

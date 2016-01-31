@@ -4,11 +4,25 @@ declare const BASEURL, hljs;
 
 /* Anchors */
 
-d3.selectAll('h1 > a, h2 > a, h3 > a, h4 > a, h5 > a, h6 > a').each(function() {
+// anchors for custom names
+const custom: any = d3.selectAll('h2 > a, h3 > a, h4 > a, h5 > a, h6 > a');
+
+custom.each(function() {
   const sel = d3.select(this);
   const href: string = sel.attr('href');
   const name = href.substring(1, href.length);
   sel.attr('name', name).attr('class', 'anchor').html('<span class="octicon octicon-link"></span>');
+});
+
+// add default anchors
+d3.selectAll('h2, h3, h4, h5, h6').each(function() {
+  const sel = d3.select(this);
+  const link = sel.select('a');
+  if (link.size() === 0) {
+    const name = sel.attr('id');
+    const title = sel.html();
+    sel.html('<a href="#' + name + '"" class="anchor"><span class="octicon octicon-link"></span></a>' + title);
+  }
 });
 
 /* Documentation */
