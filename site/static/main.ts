@@ -15,6 +15,12 @@ custom.each(function() {
   const sel = d3.select(this);
   const href: string = sel.attr('href');
   const name = href.substring(1, href.length);
+
+  // trim text to avoid weird space
+  const parent = d3.select(this.parentNode);
+  const text = parent.text();
+  parent.text(trim(text));
+
   sel.attr('name', name).attr('class', 'anchor').html('<span class="octicon octicon-link"></span>');
 });
 
