@@ -2,6 +2,10 @@
 
 declare const BASEURL, hljs;
 
+function trim(str: string) {
+  return str.replace(/^\s+|\s+$/g, '');
+}
+
 /* Anchors */
 
 // anchors for custom names
@@ -72,7 +76,7 @@ d3.selectAll('.vl-example').each(function() {
       }
     });
   } else {
-    var spec = sel.text();
+    var spec = trim(sel.text());
     renderExample(sel, spec);
   }
 });
