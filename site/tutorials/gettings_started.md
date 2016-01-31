@@ -106,17 +106,17 @@ Here, we added an encoding to our specification.
 ...
 ```
 
-The encoding maps the values for field `a` to the *encoding channel* `x` (the x-location of the points). In addition to the mapping, we also have to specify the data type. Vega-Lite currently supports four data types: `ordinal`, `nominal`, `quanititative`, and `temporal`. The difference between these types is explained in the [documentation for data types]({{stite.baseurl}}/docs/encoding.html#types). It is required that you provide a data type for an encoding.
+The encoding maps the values for field `a` to the *encoding channel* `x` (the x-location of the points). In addition to the mapping, we also have to specify the data type. Vega-Lite currently supports four data types: `ordinal`, `nominal`, `quantitative`, and `temporal`. The difference between these types is explained in the [documentation for data types]({{site.baseurl}}/docs/encoding.html#types).
 
-In the visualization above, Vega-Lite automatically adds an axis with labels for the different categories as well as an axis title. However, 3 points are still overlapping in each category. So far, we have only defined a visual encoding for the field `a`. We can add another visual encoding for the field `b`.
+In the visualization above, Vega-Lite automatically adds an axis with labels for the different categories as well as an axis title. However, 3 points in each category are still overlapping. So far, we have only defined a visual encoding for the field `a`. We can also map the field `b` to the `y` channel.
 
 ```json
 ...
-"y": {"field": "b","type": "quantitative"}
+"y": {"field": "b", "type": "quantitative"}
 ...
 ```
 
-This time we set the field type to be `quantitative` because the numeric values in field `b` have a magnitude.
+This time we set the field type to be `quantitative` because the values in field `b` are numeric.
 
 <div class="vl-example">
 {
@@ -204,7 +204,7 @@ Note that you don't have to specify that you want a vertical bar chart. In fact,
 
 ## Customize your Visualization
 
-Vega-Lite automatically provides a large number of defaults, which you can override. For example, to set change the title of the x-axis from `MEAN(b)` to `average of b`, we can set the title property of the axis in the `x` channel.
+Vega-Lite automatically provides sensible default properties for the visualization. However, you can further customize these values. For example, to set change the title of the x-axis from `MEAN(b)` to `average of b`, we can set the title property of the axis in the `x` channel.
 
 <div class="vl-example">
 {
@@ -217,7 +217,7 @@ Vega-Lite automatically provides a large number of defaults, which you can overr
   },
   "mark": "bar",
   "encoding": {
-    "y": {"field": "a","type": "ordinal"},
+    "y": {"field": "a", "type": "ordinal"},
     "x": {
       "field": "b", "type": "quantitative", "aggregate": "mean",
       "axis": {
@@ -231,7 +231,7 @@ Vega-Lite automatically provides a large number of defaults, which you can overr
 
 ## Publish your Visualization Online
 
-You can export visualizations as images from the [online editor](https://vega.github.io/vega-editor/?mode=vega-lite). However, if you want to embed your visualization on a website, you can create a web page with the following content.
+You can export your visualization as an image from the [online editor](https://vega.github.io/vega-editor/?mode=vega-lite). However, if you want to embed your visualization on a website, you can create a web page with the following content.
 
 ```html
 <!DOCTYPE html>
@@ -256,7 +256,7 @@ You can export visualizations as images from the [online editor](https://vega.gi
     },
     "mark": "bar",
     "encoding": {
-      "y": {"field": "a","type": "ordinal"},
+      "y": {"field": "a", "type": "ordinal"},
       "x": {
         "field": "b", "type": "quantitative", "aggregate": "mean",
         "axis": {
