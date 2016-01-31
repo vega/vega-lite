@@ -1,0 +1,27 @@
+---
+layout: plain
+
+navigation:
+ - text: Getting Started
+   url: getting_started
+ - text: Beyond Basics
+   url: weather
+---
+
+{% assign url = page.url | remove:'/tutorials/' | remove:'.html' %}
+
+<div class="sub-nav">
+  <nav class="page-centered">
+    {% for link in page.navigation %}
+    <a {% if (url == link.url) %}class="active"{% endif %}
+        href="{{site.baseurl}}/tutorials/{{link.url}}.html" title="{{link.title}}">{{link.text}}
+    </a>
+    {% endfor %}
+  </nav>
+</div>
+
+<div class="page-centered page-content">
+  <h1>{{page.title}}</h1>
+
+  {{ content }}
+</div>
