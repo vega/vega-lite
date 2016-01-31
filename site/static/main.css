@@ -202,6 +202,16 @@ nav a:hover {
 .fill {
   flex: 1 0 auto;
 }
+.float-right {
+  float: right;
+}
+
+/* Allow json example with errors */
+
+.highlight .err {
+  color: #000;
+  background-color: transparent;
+}
 
 /* Media queries */
 
@@ -213,9 +223,9 @@ nav a:hover {
     padding: 10px 10px 10px 10px;
   }
 }
-.float-right {
-  float: right;
-}
+
+/* Examples */
+
 .example {
   display: flex;
   flex-direction: column;
@@ -237,6 +247,7 @@ nav a:hover {
   align-self: center;
   text-align: center;
   background-color: white;
+  padding-right: 10px;
 }
 .example .example-code {
   width: 550px;
@@ -252,4 +263,7 @@ nav a:hover {
 }
 .example .vega-actions:hover {
   opacity: 1;
+}
+.example canvas, .example svg {
+  border: 1px dashed #ddd;
 }
