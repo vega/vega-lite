@@ -8,7 +8,9 @@
   <script src="//vega.github.io/vega-lite/vega-lite.js"></script>
 </head>
 <body>
+  <!-- container for the visualization -->
   <div id="vis"></div>
+  
   <script>
   var vlSpec = {
     "data": {
@@ -30,10 +32,10 @@
     }
   };
 
-  // Use Vega-Lite to compile the Vega-Lite specification to Vega
+  // Compile the Vega-Lite specification into a Vega specification
   var vgSpec = vl.compile(vlSpec).spec;
 
-  // Use Vega to display the visualization
+  // Use Vega Runtime to display the visualization
   vg.parse.spec(vgSpec, function(chart) {
     chart({el:"#vis"}).update();
   });

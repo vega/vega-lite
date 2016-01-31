@@ -5,13 +5,13 @@ title: Introduction to Vega-Lite
 permalink: /tutorials/getting_started.html
 ---
 
-In this tutorial, you will learn how to write a visualization specification in Vega-Lite. You will start with a simple visualization, which you will then extend the encoding and define additional properties. Lastly, you will learn how to embed the final visualization on a web page.
+This tutorial will guide you how to write a visualization specification in Vega-Lite.  We will walk you through all main components of Vega-Lite by adding each of them to an example specification one-by-one.  After creating the example visualization, we will also guide you how to embed the final visualization on a web page.
 
-We suggest that you follow along the tutorial by building a visualization in the [online editor](https://vega.github.io/vega-editor/?mode=vega-lite). Extend your specification in the editor as you read through this tutorial. If something does not work as expected, compare with the specifications from this tutorial.
+We suggest that you follow along the tutorial by building a visualization in the [online editor](https://vega.github.io/vega-editor/?mode=vega-lite). Extend your specification in the editor as you read through this tutorial. If something does not work as expected, compare your specifications with ones inside this tutorial.
 
 ## The Data
 
-Let's say you have some tabular data with a category in the first column `a` and some numbers in the second column `b`.
+Let's say you have a tabular data set with a categorical variable in the first column `a` and a numerical variable in the second column `b`.
 
 | a | b |
 |---|---|
@@ -25,7 +25,7 @@ Let's say you have some tabular data with a category in the first column `a` and
 | E | 4 |
 | E | 7 |
 
-We can represent this data as a [JSON](http://www.json.org/) array where each row is a new object in the array.
+We can represent this data as a [JSON array](http://www.json.org/) in which each row is an object in the array.
 
 ```json
 [
@@ -41,7 +41,7 @@ We can represent this data as a [JSON](http://www.json.org/) array where each ro
 ]
 ```
 
-To visualize this data with Vega-Lite, we can add it directly to a Vega-Lite specification (we just formatted the array to make it more compact).
+To visualize this data with Vega-Lite, we can add it directly to the `data` property in a Vega-Lite specification. (Note that we reformatted the array to make it more compact.)
 
 ```json
 {
@@ -55,11 +55,14 @@ To visualize this data with Vega-Lite, we can add it directly to a Vega-Lite spe
 }
 ```
 
-The `data` property defines the data source of the visualization. For now, we will directly set the `values` property but later we will so how we can use other data sources.
+The `data` property defines the data source of the visualization.  In this example, we embed the data inline by directly setting `values` property.  Vega-Lite also supports [other types of data sources](data.html) besides inline data as well.  For this tutorial, we will use inline data.  
 
-## Visualize Data with Marks
+## Encoding Data with Marks
 
-This specification only adds a data source but we haven't defined yet how the the data should be visualized. By setting the `mark` property to `point`, we tell Vega-Lite to render point marks.
+Now we have a data source but we haven't defined yet how the the data should be visualized.
+All graphical elements in Vega-Lite are called *marks*. Marks are associated with data: a mark is rendered once per associated datum.  Variables in the datum can be mapped to visual channels of the mark such as position and color.
+
+To show the data as a point, we can set the `mark` property to `point`.
 
 <div class="vl-example">
 {
@@ -74,11 +77,9 @@ This specification only adds a data source but we haven't defined yet how the th
 }
 </div>
 
-Now, Vega-Lite renders a point. In fact, in renders one point for each of the 9 objects in the array, but they are all overlapping.
+Now, we can see a point. In fact, Vega-Lite renders one point for each object in the array, but they are all overlapping.
 
-## Encode Properties of the Data as Visual Properties
-
-Seeing all points on top of each other is not particularly useful so to visually separate the points, we can *encode* the property `a` of the data as the x-location of the points.
+The important next step is mapping data values to visual channels of the marks via the `encoding` property. For example, to visually separate the points, we can *encode* the variable `a` of the data to `x` channel, which represents the x-location of the points.
 
 <div class="vl-example">
 {
@@ -96,7 +97,7 @@ Seeing all points on top of each other is not particularly useful so to visually
 }
 </div>
 
-Here, we added an encoding to our specification.
+Here, we added an `encoding` object to our specification.
 
 ```json
 ...
@@ -106,7 +107,8 @@ Here, we added an encoding to our specification.
 ...
 ```
 
-The encoding maps the values for field `a` to the *encoding channel* `x` (the x-location of the points). In addition to the mapping, we also have to specify the data type. Vega-Lite currently supports four data types: `ordinal`, `nominal`, `quantitative`, and `temporal`. The difference between these types is explained in the [documentation for data types]({{site.baseurl}}/docs/encoding.html#types).
+The `encoding` object is a key-value mapping between encoding channels and definitions of the mapped data fields.  The field definition describes the field's name (`field`) and its [data type](({{site.baseurl}}/docs/encoding.html#types)) (`type`).  
+In this example, we map the values for field `a` to the *encoding channel* `x` (the x-location of the points) and set `a`'s data type to `ordinal`.  <!-- TODO: explain what is ordinal, and why is this ordinal -->
 
 In the visualization above, Vega-Lite automatically adds an axis with labels for the different categories as well as an axis title. However, 3 points in each category are still overlapping. So far, we have only defined a visual encoding for the field `a`. We can also map the field `b` to the `y` channel.
 
@@ -135,11 +137,11 @@ This time we set the field type to be `quantitative` because the values in field
 }
 </div>
 
-Now we can see the raw data points. Note that Vega-Lite automatically adds grid lines to the y-axis to help you see the magnitude of the `b` values.
+Now we can see the raw data points. Note that Vega-Lite automatically adds grid lines to the y-axis to help you compare the magnitude of the `b` values.
 
-## Aggregate Data
+## Data Transformation: Aggregation
 
-Vega-Lite can do more than just visualizing raw data. By adding `"aggregate": "mean"` to the definition of the y encoding channel, we can see the average value in each category. For example, the average value of category `D` is `(1 + 2 + 6)/3 = 9/3 = 3`.
+Vega-Lite also supports data transformation such as aggregation. By adding `"aggregate": "mean"` to the definition of the `y` channel, we can see the average value of `a` in each category. For example, the average value of category `D` is `(1 + 2 + 6)/3 = 9/3 = 3`.
 
 <div class="vl-example">
 {
@@ -204,7 +206,8 @@ Since the quantitative value is on y, you automatically get a vertical bar chart
 
 ## Customize your Visualization
 
-Vega-Lite automatically provides sensible default properties for the visualization. However, you can further customize these values. For example, to set change the title of the x-axis from `MEAN(b)` to `average of b`, we can set the title property of the axis in the `x` channel.
+<!-- TODO need to find a way to talk about conciseness here somehow. -->
+Vega-Lite automatically provides default properties for the visualization. You can further customize these values by adding more properties. For example, to change the title of the x-axis from `MEAN(b)` to `average of b`, we can set the title property of the axis in the `x` channel.
 
 <div class="vl-example">
 {
@@ -231,7 +234,10 @@ Vega-Lite automatically provides sensible default properties for the visualizati
 
 ## Publish your Visualization Online
 
-You can export your visualization as an image from the [online editor](https://vega.github.io/vega-editor/?mode=vega-lite). However, if you want to embed your visualization on a website, you can create a web page with the following content.
+You have learned about basic components of a Vega-Lite specification.
+Now, let's see how to publish your visualization.
+
+To embed your visualization on a website, you can create a web page with the following content:
 
 ```html
 <!DOCTYPE html>
@@ -244,7 +250,9 @@ You can export your visualization as an image from the [online editor](https://v
   <script src="//vega.github.io/vega-lite/vega-lite.js"></script>
 </head>
 <body>
+  <!-- container for the visualization -->
   <div id="vis"></div>
+
   <script>
   var vlSpec = {
     "data": {
@@ -266,10 +274,10 @@ You can export your visualization as an image from the [online editor](https://v
     }
   };
 
-  // Use Vega-Lite to compile the Vega-Lite specification to Vega
+  // Compile the Vega-Lite specification into a Vega specification
   var vgSpec = vl.compile(vlSpec).spec;
 
-  // Use Vega to display the visualization
+  // Use Vega Runtime to display the visualization
   vg.parse.spec(vgSpec, function(chart) {
     chart({el:"#vis"}).update();
   });
@@ -278,16 +286,17 @@ You can export your visualization as an image from the [online editor](https://v
 </html>
 ```
 
-We first load the dependencies for Vega-Lite (D3, Vega, and Vega-Lite) in the head of the document. We also create an HTML element hat the visualization will be rendered in.
+In this webpage, we first load the dependencies for Vega-Lite (D3, Vega, and Vega-Lite) in the `<head/>` tag of the document. We also create an HTML `<div/>` element with id `vis` to serve as a container for the visualization.  
 
-Then in the Java Script, we create a variable `vlSpec` that holds the specification in JSON format. In the code, Vega-Lite compiles a Vega-Lite specification into a Vega specification with `vl.compile`. We use `vega.parse` to call the [Vega Runtime](https://github.com/vega/vega/wiki/Runtime) to display visualization.
+In the JavaScript code, we create a variable `vlSpec` that holds the Vega-Lite specification in JSON format. The `vl.compile` method translates a Vega-Lite specification into a Vega specification.  We then use `vega.parse.spec` to call the [Vega Runtime](https://github.com/vega/vega/wiki/Runtime) to display visualization in the container `<div/>` element.
 
-If viewed in a browser, this page displays our bar chart. You can also try it [here](demo.html).
+If viewed in a browser, this page displays our bar chart. You can also see it [here](demo.html).
 
 ## Next Steps
 
-Now that you have seen the basics of Vega-Lite visualizations, we recommend that you build you own visualizations in the [online editor](https://vega.github.io/vega-editor/?mode=vega-lite) and get help from the [full documentation]({{site.baseurl}}/docs/).
+Now you can create a website that embeds a Vega-Lite specification.  If you want to learn more about Vega-Lite, please feel free to:
 
-Now that you know how to create a bar chart with aggregated data in Vega-Lite, read our [second tutorial that shows you how to create a visualization of weather data]({{site.baseurl}}/tutorials/weather.html).
-
-There are tutorials similar to this one for [D3](http://bost.ocks.org/mike/bar/) and [Vega](https://github.com/vega/vega/wiki/Tutorial). You can try to recreate the visualizations in this tutorial.
+- Read the [next tutorial]({{site.baseurl}}/tutorials/weather.html).
+- See the [examples gallery]({{site.baseurl}}/gallery.html).
+- Build your own visualizations in the [online editor](https://vega.github.io/vega-editor/?mode=vega-lite).
+- Browse through the [documentation]({{site.baseurl}}/docs/).
