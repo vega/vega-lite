@@ -18,10 +18,8 @@ custom.each(function() {
 
   // trim text to avoid weird space
   const parent = d3.select(this.parentNode);
-  const text = parent.text();
-  parent.text(trim(text));
-
-  sel.attr('name', name).attr('class', 'anchor').html('<span class="octicon octicon-link"></span>');
+  const title = parent.text();
+  parent.html('<a href="#' + name + '" class="anchor"><span class="octicon octicon-link"></span></a>' + trim(title));
 });
 
 // add default anchors
@@ -30,8 +28,8 @@ d3.selectAll('h2, h3, h4, h5, h6').each(function() {
   const link = sel.select('a');
   if (link.size() === 0) {
     const name = sel.attr('id');
-    const title = sel.html();
-    sel.html('<a href="#' + name + '"" class="anchor"><span class="octicon octicon-link"></span></a>' + title);
+    const title = sel.text();
+    sel.html('<a href="#' + name + '" class="anchor"><span class="octicon octicon-link"></span></a>' + trim(title));
   }
 });
 
