@@ -80,6 +80,7 @@ Here is a list of properties for the field definition object:
 * **Ordinal**: Or ordered categorical data. Ordinal data can be ranked (1st, 2nd, ...) by which the data can be sorted. However, as opposed to quantitative data, there is no notion of *difference* between them. For example `small`, `medium`, `large`, `extra-large`.
 * **Nominal**: Or categorical data. Nominal data like ordinal data has no notion of difference. Nominal data also has no notion of order. For example `apple`, `banana`, `kiwi`.
 
+Note that data types describe the more than just the raw data type (e.g. `number`, `string`, `date`) as for example a field with only numbers can be quantitative but also ordinal when the numbers encode a category.
 
 ### [](#inline) Inline Transforms
 
