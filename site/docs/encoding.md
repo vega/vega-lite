@@ -61,8 +61,7 @@ The following table lists supported channels for each mark type.
 | text   |  ✓  |   ✓   |  ✓   |       |    ✓   |      |    ✓   |      ✓      |
 -->
 
-<div id="def"></div>
-## Field Definition
+## [](#def) Field Definition
 
 Here is a list of properties for the field definition object:
 
@@ -74,9 +73,15 @@ Here is a list of properties for the field definition object:
 | value         | String &#124; Number | A constant value. |
 | type          | String        | Data type of the field.  This property accepts both a full type name (`"quantitative"`, `"temporal"`, `"ordinal"`,  and `"nominal"`), or an initial character of the type name (`"Q"`, `"T"`, `"O"`, `"N"`).  This property is case insensitive.|
 
-<a name="inline"></a>
+#### [](#types) Data types
 
-### Inline Transforms
+* **Quantitative**: Quantitative data expresses some kind of quantity. Typically this is numerical data. For example `7.3`, `42.0`, `12.1`.
+* **Temporal**: Information about times or time spans. For example `2015-03-07 12:32:17`.
+* **Ordinal**: Or ordered categorical data. Ordinal data can be ranked (1st, 2nd, ...) by which the data can be sorted. However, as opposed to quantitative data, there is no notion of *difference* between them. For example `small`, `medium`, `large`, `extra-large`.
+* **Nominal**: Or categorical data. Nominal data like ordinal data has no notion of difference. Nominal data also has no notion of order. For example `apple`, `banana`, `kiwi`.
+
+
+### [](#inline) Inline Transforms
 
 To facilitate data exploration, Vega-Lite provides the following inline transforms as a part of the field definition: binning (`bin`), time unit conversion (`timeUnit`), aggregation (`aggregate`), sort (`sort`).  
 

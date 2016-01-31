@@ -132,6 +132,19 @@ h6 {
   color: #777777;
   font-size: 1.1em;
 }
+.anchor {
+  display: inline-block;
+  margin-left: -22px;
+  color: black;
+}
+h1 .octicon-link, h2 .octicon-link, h3 .octicon-link, h4 .octicon-link, h5 .octicon-link, h6 .octicon-link {
+  color: #000;
+  vertical-align: middle;
+  visibility: hidden;
+}
+h1:hover .anchor .octicon-link, h2:hover .anchor .octicon-link, h3:hover .anchor .octicon-link, h4:hover .anchor .octicon-link, h5:hover .anchor .octicon-link, h6:hover .anchor .octicon-link {
+  visibility: visible;
+}
 
 /* Nav */
 
