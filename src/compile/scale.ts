@@ -53,6 +53,11 @@ export function type(fieldDef: FieldDef, channel: Channel, mark: Mark): string {
     return null;
   }
 
+  // We can't use linear/time for row, column or shape
+  if (contains([ROW, COLUMN, SHAPE], channel)) {
+    return 'ordinal';
+  }
+
   switch (fieldDef.type) {
     case NOMINAL:
       return 'ordinal';
@@ -69,11 +74,7 @@ export function type(fieldDef: FieldDef, channel: Channel, mark: Mark): string {
         return fieldDef.scale.type;
       }
 
-      // Returns ordinal if
-      // (1) the channel is ROW, COLUMN, or SHAPE, or
-      // (2) uses a BAR or TICK mark
-      // because in that case we should not use a time scale.
-      if (contains([ROW, COLUMN, SHAPE], channel) || contains([BAR, TICK], mark)) {
+      if (contains([BAR, TICK], mark)) {
         return 'ordinal';
       }
 
