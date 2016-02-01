@@ -5,7 +5,7 @@ title: Mark
 permalink: /docs/mark.html
 ---
 
-Marks are the basic visual building block of a visualization: they are graphical primitives whose properties (such as position, size, and color) can be used to visually encode data. In a bar chart, the marks are bars. In a scatterplot, the marks might be circles or squares.
+Marks are the basic visual building block of a visualization: they are graphical primitives whose properties (such as position, size, and color) can be used to visually encode data. In a bar chart, the marks are bars. For instance, in a bar chart, the marks are bars, in a line chart the marks are lines, and in a scatter plot the marks are points/circles/squares.
 
 ```js
 {
