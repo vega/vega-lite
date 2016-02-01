@@ -19,7 +19,7 @@ custom.each(function() {
   // trim text to avoid weird space
   const parent = d3.select(this.parentNode);
   const title = parent.text();
-  parent.html('<a href="#' + name + '" class="anchor"><span class="octicon octicon-link"></span></a>' + trim(title));
+  parent.html('<a href="#' + name + '" name="' + name + '" class="anchor"><span class="octicon octicon-link"></span></a>' + trim(title));
 });
 
 // add default anchors
