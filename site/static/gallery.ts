@@ -15,7 +15,7 @@ var params = function() {
     }, {});
 };
 
-d3.json('examples/vlexamples.json', function(VL_SPECS) {
+d3.json('examples/vl-examples.json', function(VL_SPECS) {
   var examples = d3.keys(VL_SPECS).reduce(function(aggregator, groupName) {
     var group = VL_SPECS[groupName];
     return aggregator.concat(group);
