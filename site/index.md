@@ -30,43 +30,8 @@ This documentation outlines the syntax and semantics of Vega-Lite specifications
 
 <span class="vl-example" data-name="point_1d" data-dir="docs"></span>
 
-Want to learn more? [Read the getting started tutorial]({{site.baseurl}}/tutorials/getting_started.html).
+Want to learn more? [Read the getting started tutorial]({{site.baseurl}}/tutorials/getting_started.html) and create your own visualizations in the [online editor](https://vega.github.io/vega-editor/?mode=vega-lite)
 
-## Basic usage
-
-You can develop Vega-Lite visualizations in the online editor. To deploy the visualization online, create a web page and load the Vega_lite library and its dependencies.
-
-### Online editor
-
-You can use the [Vega online editor](https://vega.github.io/vega-editor/?mode=vega-lite) to write Vega-Lite specifications online and immediately see your changes. From the editor you can also export visualizations as images, browse examples, and explore the generated vega code.
-
-### Vega-Lite on your own website
-
-To use Vega-Lite, load the required libraries (D3, Vega, and Vega-Lite).
-
-```html
-<script src="//d3js.org/d3.v3.min.js"></script>
-<script src="//vega.github.io/vega/vega.js"></script>
-<script src="//vega.github.io/vega-lite/vega-lite.js"></script>
-```
-
-You can also download Vega-Lite: [vega-lite.min.js]({{site.baseurl}}/vega-lite.min.js).
-
-To compile a Vega-Lite specification to Vega, call `vl.compile`.
-
-```js
-var vgSpec = vl.compile(vlSpec).spec;
-```
-
-Then render the Vega specification with the [Vega runtime](https://github.com/vega/vega/wiki/Runtime).
-
-```js
-vg.parse.spec(vgSpec, function(chart) {
-  chart({el:"#vis"}).update();
-});
-```
-
-See a [complete example in our demo]({{site.baseurl}}/site/demo.html).
 
 <!--
 ## Vega-Lite, Vega, and D3
