@@ -5,9 +5,9 @@ title: Overview
 permalink: /docs/
 ---
 
-This documentation describes [Vega-Lite specifications](#specs) and the functionalities of the [Vega-Lite library](#lib).
+This documentation describes [Vega-Lite specifications](#spec) and the functionalities of the [Vega-Lite library](#lib).
 
-## [](#specs) Vega-Lite Specifications
+## [](#spec) Vega-Lite Specifications
 
 A Vega-Lite specification is a JSON object that describes data source (`data`),
 mark type (`mark`), visual mapping between encoding channels and data variables (`encoding`),
