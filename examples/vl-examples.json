@@ -65,6 +65,11 @@
       "showInEditor": true
     },
     {
+      "name": "scatter_aggregate_axis_color",
+      "title": "Scatterplot with aggregated axis and color",
+      "showInEditor": true
+    },
+    {
       "name": "scatter_colored_with_shape",
       "title": "Scatterplot with shape and color encoding"
     },
