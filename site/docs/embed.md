@@ -1,11 +1,11 @@
 ---
 layout: docs
 menu: docs
-title: Embed
+title: Embedding Vega-Lite in a Web Page
 permalink: /docs/embed.html
 ---
 
-This Document assumes that you have a Vega-Lite spec as a JavaScript object in a variable called `vlSpec`. You can find a simple example in our [tutorial]({{site.baseurl}}/tutorials/getting_started.html#embed).
+This document assumes that you have a Vega-Lite specification as a JSON object in a variable called `vlSpec`. You can find an example specification in our [getting started tutorial]({{site.baseurl}}/tutorials/getting_started.html#embed).
 
 ## Load the Required Libraries
 
@@ -48,13 +48,13 @@ Vega-embed automatically adds links to export an image, view the source, and ope
 
 ### Call Vega-Lite and Vega separately
 
-To compile a Vega-Lite specification to Vega, call `vl.compile`.
+To compile a Vega-Lite specification into a Vega specification, call `vl.compile`.
 
 ```js
 var vgSpec = vl.compile(vlSpec).spec;
 ```
 
-Then render the Vega specification with the [Vega runtime](https://github.com/vega/vega/wiki/Runtime).
+Then we can render the Vega specification with the [Vega runtime](https://github.com/vega/vega/wiki/Runtime)'s `vg.parse.spec` method.
 
 ```js
 vg.parse.spec(vgSpec, function(chart) {
