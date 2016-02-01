@@ -65,6 +65,11 @@
       "showInEditor": true
     },
     {
+      "name": "scatter_aggregate",
+      "title": "Scatterplot with aggregate axis and binned axis",
+      "showInEditor": true
+    },
+    {
       "name": "scatter_colored_with_shape",
       "title": "Scatterplot with shape and color encoding"
     },
