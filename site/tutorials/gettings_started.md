@@ -107,7 +107,7 @@ Here, we added an `encoding` object to our specification.
 ...
 ```
 
-The `encoding` object is a key-value mapping between encoding channels and definitions of the mapped data fields.  The field definition describes the field's name (`field`) and its [data type](({{site.baseurl}}/docs/encoding.html#types)) (`type`).  
+The `encoding` object is a key-value mapping between encoding channels and definitions of the mapped data fields.  The field definition describes the field's name (`field`) and its [data type]({{site.baseurl}}/docs/encoding.html#types) (`type`).  
 In this example, we map the values for field `a` to the *encoding channel* `x` (the x-location of the points) and set `a`'s data type to `ordinal`.  <!-- TODO: explain what is ordinal, and why is this ordinal -->
 
 In the visualization above, Vega-Lite automatically adds an axis with labels for the different categories as well as an axis title. However, 3 points in each category are still overlapping. So far, we have only defined a visual encoding for the field `a`. We can also map the field `b` to the `y` channel.
