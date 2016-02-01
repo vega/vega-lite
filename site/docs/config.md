@@ -134,12 +134,12 @@ Setting `config.mark.filled` to `true` creates filled marks instead.
 | barWidth      | Number        | The width of the bars.  If unspecified, the default width for bars on an ordinal scale is  `bandWidth-1`, which provides 1 pixel offset between bars.  If the dimension has linear scale, the bar's default size will be `2` instead.   |
 
 
-### Marks Configuration for Bar, Line, and Area Marks
+### Marks Configuration for Bar, Tick, Line, and Area Marks
 <div id="orient"></div>
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| orient        | String        | The orientation of a non-stacked bar, area, and line charts.  The value is either `"horizontal"`, or `"vertical"` (default).  For area, this property determines the orient property of the Vega output.  For line, this property determines the path order of the points in the line if `path` channel is not specified.  For stacked charts, this is always determined by the orientation of the stack; therefore explicitly specified value will be ignored. |
+| orient        | String        | The orientation of a non-stacked bar, area, and line charts.  The value is either `"horizontal"`, or `"vertical"` (default).  For bar and tick, this determines whether the size of the bar and tick should be applied to x or y dimension.  For area, this property determines the orient property of the Vega output.  For line, this property determines the path order of the points in the line if `path` channel is not specified.  For stacked charts, this is always determined by the orientation of the stack; therefore explicitly specified value will be ignored. |
 
 <!-- TODO: think about better example -->
 <!--
