@@ -100,7 +100,7 @@ describe('Mark: Tick', function() {
       'data': {'url': 'data/cars.json'},
     });
     const props = tick.properties(model);
-    it('width should change with size field', function() {
+    it('height should change with size field', function() {
       assert.deepEqual(props.height, {'field': 'Acceleration', 'scale': SIZE});
     });
   });
