@@ -1,5 +1,5 @@
 import {Model} from './Model';
-import {X, Y} from '../channel';
+import {X, Y, SIZE} from '../channel';
 import {applyColorAndOpacity, ColorMode} from './util';
 
 export namespace tick {
@@ -32,9 +32,19 @@ export namespace tick {
 
     if (model.config().mark.orient === 'horizontal') {
       p.width = { value: model.config().mark.thickness };
-      p.height = { value: model.sizeValue(Y) }; // TODO(#932) support size channel
+      p.height = model.has(SIZE)? {
+            scale: model.scaleName(SIZE),
+            field: model.field(SIZE)
+        } : {
+            value: model.sizeValue(Y)
+        };
     } else {
-      p.width = { value: model.sizeValue(X) }; // TODO(#932) support size channel
+      p.width = model.has(SIZE)? {
+          scale: model.scaleName(SIZE),
+          field: model.field(SIZE)
+        } : {
+          value: model.sizeValue(X)
+        };
       p.height = { value: model.config().mark.thickness };
     }
 
