@@ -6,7 +6,7 @@
 // (except the scaffold labels() method)
 import {assert} from 'chai';
 import {parseModel} from '../util';
-import {X, Y} from '../../src/channel';
+import {X, Y, SIZE} from '../../src/channel';
 import {tick} from '../../src/compile/mark-tick';
 
 describe('Mark: Tick', function() {
@@ -56,7 +56,7 @@ describe('Mark: Tick', function() {
           'x': {'field': 'Horsepower', 'type': 'quantitative'},
           'y': {'field': 'Cylinders','type': 'ordinal'}
         },
-      'data': {'url': 'data/cars.json'},
+      'data': {'url': 'data/cars.json'}
     });
     const props = tick.properties(model);
 
@@ -68,4 +68,24 @@ describe('Mark: Tick', function() {
       assert.deepEqual(props.yc, {scale: Y, field: 'Cylinders'});
     });
   });
+
+  describe('with size.value specified with orient vertical', function() {
+    const model = parseModel({
+      'mark': 'tick',
+      "config": {'mark': {'orient': 'horizontal'}},
+      'encoding':
+        {
+          'x': {'field': 'Horsepower', 'type': 'quantitative'},
+          'y': {'field': 'Cylinders','type': 'ordinal'}
+        },
+      'data': {'url': 'data/cars.json'},
+      'size': {'value': 10}
+    });
+    const props = tick.properties(model);
+    it('width should change with size', function() {
+      assert.deepEqual(props.width, {'value': 10});
+    });
+  });
+
+  
 });
