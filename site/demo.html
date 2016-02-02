@@ -6,11 +6,19 @@
   <script src="//d3js.org/d3.v3.min.js"></script>
   <script src="//vega.github.io/vega/vega.js"></script>
   <script src="//vega.github.io/vega-lite/vega-lite.js"></script>
+  <script src="//vega.github.io/vega-editor/vendor/vega-embed.js"></script>
+
+  <style media="screen">
+    /* Add space between vega-embed links  */
+    .vega-actions a {
+      margin-right: 5px;
+    }
+  </style>
 </head>
 <body>
-  <!-- container for the visualization -->
+  <!-- Container for the visualization -->
   <div id="vis"></div>
-  
+
   <script>
   var vlSpec = {
     "data": {
@@ -32,12 +40,15 @@
     }
   };
 
-  // Compile the Vega-Lite specification into a Vega specification
-  var vgSpec = vl.compile(vlSpec).spec;
+  var embedSpec = {
+    mode: "vega-lite",  // Instruct Vega-Embed to use the Vega-Lite compiler
+    spec: vlSpec
+  };
 
-  // Use Vega Runtime to display the visualization
-  vg.parse.spec(vgSpec, function(chart) {
-    chart({el:"#vis"}).update();
+  // Embed the visualization in the container with id `vis`
+  vg.embed("#vis", embedSpec, function(error, result) {
+    // Callback receiving the View instance and parsed Vega spec
+    // result.view is the View, which resides under the '#vis' element
   });
   </script>
 </body>

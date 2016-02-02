@@ -232,7 +232,7 @@ Vega-Lite automatically provides default properties for the visualization. You c
 </div>
 
 
-## Publish your Visualization Online
+## [](#embed) Publish your Visualization Online
 
 You have learned about basic components of a Vega-Lite specification.
 Now, let's see how to publish your visualization.
@@ -248,9 +248,17 @@ To embed your visualization on a website, you can create a web page with the fol
   <script src="//d3js.org/d3.v3.min.js"></script>
   <script src="//vega.github.io/vega/vega.js"></script>
   <script src="//vega.github.io/vega-lite/vega-lite.js"></script>
+  <script src="//vega.github.io/vega-editor/vendor/vega-embed.js" charset="utf-8"></script>
+
+  <style media="screen">
+    /* Add space between vega-embed links  */
+    .vega-actions a {
+      margin-right: 5px;
+    }
+  </style>
 </head>
 <body>
-  <!-- container for the visualization -->
+  <!-- Container for the visualization -->
   <div id="vis"></div>
 
   <script>
@@ -274,23 +282,26 @@ To embed your visualization on a website, you can create a web page with the fol
     }
   };
 
-  // Compile the Vega-Lite specification into a Vega specification
-  var vgSpec = vl.compile(vlSpec).spec;
+  var embedSpec = {
+    mode: "vega-lite",  // Instruct Vega-Embed to use the Vega-Lite compiler
+    spec: vlSpec
+  };
 
-  // Use Vega Runtime to display the visualization
-  vg.parse.spec(vgSpec, function(chart) {
-    chart({el:"#vis"}).update();
+  // Embed the visualization in the container with id `vis`
+  vg.embed("#vis", embedSpec, function(error, result) {
+    // Callback receiving the View instance and parsed Vega spec
+    // result.view is the View, which resides under the '#vis' element
   });
   </script>
 </body>
 </html>
 ```
 
-In this webpage, we first load the dependencies for Vega-Lite (D3, Vega, and Vega-Lite) in the `<head/>` tag of the document. We also create an HTML `<div/>` element with id `vis` to serve as a container for the visualization.  
+In this webpage, we first load the dependencies for Vega-Lite (D3, Vega-Embed, Vega, and Vega-Lite) in the `<head/>` tag of the document. We also create an HTML `<div/>` element with id `vis` to serve as a container for the visualization.  
 
-In the JavaScript code, we create a variable `vlSpec` that holds the Vega-Lite specification in JSON format. The `vl.compile` method translates a Vega-Lite specification into a Vega specification.  We then use `vega.parse.spec` to call the [Vega Runtime](https://github.com/vega/vega/wiki/Runtime) to display visualization in the container `<div/>` element.
+In the JavaScript code, we create a variable `vlSpec` that holds the Vega-Lite specification in JSON format. The `vl.embed` method translates a Vega-Lite specification into a Vega specification and then calls the [Vega Runtime](https://github.com/vega/vega/wiki/Runtime) to display visualization in the container `<div/>` element.
 
-If viewed in a browser, this page displays our bar chart. You can also see it [here](demo.html).
+If viewed in a browser, this page displays our bar chart. You can also see it [here]({{site.baseurl}}/site/demo.html).
 
 ## Next Steps
 
