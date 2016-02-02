@@ -268,7 +268,7 @@ To embed your visualization on a website, you can create a web page with the fol
       "x": {
         "aggregate": "mean", "field": "b", "type": "quantitative",
         "axis": {
-          "title": "average of b"
+          "title": "Average of b"
         }
       }
     }
