@@ -42,8 +42,6 @@ These channels are properties for the top-level `encoding` definition object.
 <!-- TODO: Need to expand on "(or to width or height for `bar` and `area` marks)." for x,y -->
 <!-- TODO: describe more about color's behavior -- For a nominal field, the field value is mapped to `hue` by default.  For other fields, the field value is mapped to saturation by default.-- possibly link to the scale page -->
 
-<a id="mark-channel"></a>
-
 <!--
 ### Supported Encoding Channels for each Mark Type
 
@@ -61,7 +59,8 @@ The following table lists supported channels for each mark type.
 | text   |  ✓  |   ✓   |  ✓   |       |    ✓   |      |    ✓   |      ✓      |
 -->
 
-## [](#def) Field Definition
+{:#def}
+## Field Definition
 
 Here is a list of properties for the field definition object:
 
@@ -73,7 +72,8 @@ Here is a list of properties for the field definition object:
 | value         | String &#124; Number | A constant value. |
 | type          | String        | Data type of the field.  This property accepts both a full type name (`"quantitative"`, `"temporal"`, `"ordinal"`,  and `"nominal"`), or an initial character of the type name (`"Q"`, `"T"`, `"O"`, `"N"`).  This property is case insensitive.|
 
-#### [](#types) Data types
+{:#types}
+#### Data types
 
 * **Quantitative**: Quantitative data expresses some kind of quantity. Typically this is numerical data. For example `7.3`, `42.0`, `12.1`.
 * **Temporal**: Information about times or time spans. For example `2015-03-07 12:32:17`.
@@ -82,7 +82,8 @@ Here is a list of properties for the field definition object:
 
 Note that data types describe the more than just the raw data type (e.g. `number`, `string`, `date`) as for example a field with only numbers can be quantitative but also ordinal when the numbers encode a category.
 
-### [](#inline) Inline Transforms
+{:#inline}
+### Inline Transforms
 
 To facilitate data exploration, Vega-Lite provides the following inline transforms as a part of the field definition: binning (`bin`), time unit conversion (`timeUnit`), aggregation (`aggregate`), sort (`sort`).  
 

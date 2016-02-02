@@ -7,6 +7,9 @@ permalink: /tutorials/getting_started.html
 
 This tutorial will guide you how to write a visualization specification in Vega-Lite.  We will walk you through all main components of Vega-Lite by adding each of them to an example specification one-by-one.  After creating the example visualization, we will also guide you how to embed the final visualization on a web page.
 
+* TOC
+{:toc}
+
 We suggest that you follow along the tutorial by building a visualization in the [online editor](https://vega.github.io/vega-editor/?mode=vega-lite). Extend your specification in the editor as you read through this tutorial. If something does not work as expected, compare your specifications with ones inside this tutorial.
 
 ## The Data
@@ -105,7 +108,7 @@ To visually separate the points, we can *encode* the variable `a` of the data wi
 }
 </div>
 
-The `encoding` object is a key-value mapping between encoding channels (such as `x`, `y`) and definitions of the mapped data fields.  The field definition describes the field's name (`field`) and its [data type]({{site.baseurl}}/docs/encoding.html#types) (`type`).  In this example, we map the values for field `a` to the *encoding channel* `x` (the x-location of the points) and set `a`'s data type to `nominal`, since it represents categories.  (See [this page for more information about data types]({{site.baseurl}}/docs/encoding.html#types).)  
+The `encoding` object is a key-value mapping between encoding channels (such as `x`, `y`) and definitions of the mapped data fields.  The field definition describes the field's name (`field`) and its [data type](/docs/encoding.html#types) (`type`).  In this example, we map the values for field `a` to the *encoding channel* `x` (the x-location of the points) and set `a`'s data type to `nominal`, since it represents categories.  (See [this page for more information about data types](/docs/encoding.html#types).)  
 
 In the visualization above, Vega-Lite automatically adds an axis with labels for the different categories as well as an axis title. However, 3 points in each category are still overlapping. So far, we have only defined a visual encoding for the field `a`. We can also map the field `b` to the `y` channel.
 
@@ -228,8 +231,8 @@ Vega-Lite automatically provides default properties for the visualization. You c
 }
 </div>
 
-
-## [](#embed) Publish your Visualization Online
+{:#embed}
+## Publish your Visualization Online
 
 You have learned about basic components of a Vega-Lite specification.
 Now, let's see how to publish your visualization.
@@ -298,13 +301,13 @@ In this webpage, we first load the dependencies for Vega-Lite (D3, Vega-Embed, V
 
 In the JavaScript code, we create a variable `vlSpec` that holds the Vega-Lite specification in JSON format. The `vl.embed` method translates a Vega-Lite specification into a Vega specification and then calls the [Vega Runtime](https://github.com/vega/vega/wiki/Runtime) to display visualization in the container `<div/>` element.
 
-If viewed in a browser, this page displays our bar chart. You can also see it [here]({{site.baseurl}}/site/demo.html).
+If viewed in a browser, this page displays our bar chart. You can also see it [here](/site/demo.html).
 
 ## Next Steps
 
 Now you can create a website that embeds a Vega-Lite specification.  If you want to learn more about Vega-Lite, please feel free to:
 
-- Read the [next tutorial]({{site.baseurl}}/tutorials/weather.html).
-- See the [examples gallery]({{site.baseurl}}/gallery.html).
+- Read the [next tutorial](/tutorials/weather.html).
+- See the [examples gallery](/gallery.html).
 - Build your own visualizations in the [online editor](https://vega.github.io/vega-editor/?mode=vega-lite).
-- Browse through the [documentation]({{site.baseurl}}/docs/).
+- Browse through the [documentation](/docs/).
