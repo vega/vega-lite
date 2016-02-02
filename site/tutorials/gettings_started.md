@@ -77,9 +77,17 @@ To show the data as a point, we can set the `mark` property to `point`.
 }
 </div>
 
-Now, it looks like we get a point. In fact, Vega-Lite renders one point for each object in the array, but they are all overlapping since we have not mapped data values to visual channels of the marks.
+Now, it looks like we get a point. In fact, Vega-Lite renders one point for each object in the array, but they are all overlapping since we have not specified each point's position.
 
-We can do that by using the `encoding` property. For example, to visually separate the points, we can *encode* the variable `a` of the data to `x` channel, which represents the x-location of the points.
+To visually separate the points, we can *encode* the variable `a` of the data with `x` channel, which represents the x-position of the points.  We can do that by adding an `encoding` object with its key `x` mapped to a field definition that describes variable `a`.
+
+```json
+...
+"encoding": {
+  "x": {"field": "a", "type": "nominal"}
+}
+...
+```
 
 <div class="vl-example">
 {
@@ -96,17 +104,6 @@ We can do that by using the `encoding` property. For example, to visually separa
   }
 }
 </div>
-
-Here, we added an `encoding` object to our specification.
-
-```json
-...
-"encoding": {
-  "x": {"field": "a", "type": "nominal"}
-}
-...
-```
-
 
 The `encoding` object is a key-value mapping between encoding channels (such as `x`, `y`) and definitions of the mapped data fields.  The field definition describes the field's name (`field`) and its [data type]({{site.baseurl}}/docs/encoding.html#types) (`type`).  In this example, we map the values for field `a` to the *encoding channel* `x` (the x-location of the points) and set `a`'s data type to `nominal`, since it represents categories.  (See [this page for more information about data types]({{site.baseurl}}/docs/encoding.html#types).)  
 
@@ -137,7 +134,7 @@ This time we set the field type to be `quantitative` because the values in field
 }
 </div>
 
-Now we can see the raw data points. Note that Vega-Lite automatically adds grid lines to the y-axis to facilitate comparison.
+Now we can see the raw data points. Note that Vega-Lite automatically adds grid lines to the y-axis to facilitate comparison of the `b` values.
 
 ## Data Transformation: Aggregation
 
