@@ -5,7 +5,7 @@ title: Embedding Vega-Lite in a Web Page
 permalink: /docs/embed.html
 ---
 
-This document assumes that you have a Vega-Lite specification as a JSON object in a variable called `vlSpec`. You can find an example specification in our [getting started tutorial]({{site.baseurl}}/tutorials/getting_started.html#embed).
+This document assumes that you have a Vega-Lite specification as a JSON object in a variable called `vlSpec`. You can find an example specification in our [getting started tutorial](/tutorials/getting_started.html#embed).
 
 ## Load the Required Libraries
 
@@ -18,7 +18,7 @@ To use Vega-Lite on your own web page, load the required libraries (D3, Vega, an
 <script src="//vega.github.io/vega-editor/vendor/vega-embed.js" charset="utf-8"></script>
 ```
 
-You can also download Vega-Lite: [vega-lite.min.js]({{site.baseurl}}/vega-lite.min.js).
+You can also download Vega-Lite: [vega-lite.min.js](/vega-lite.min.js).
 
 Then, create an HTML element that the visualization should be attached to.
 

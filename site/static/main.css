@@ -266,3 +266,6 @@ nav a:hover {
 .example canvas, .example svg {
   border: 1px dashed #ddd;
 }
+.hljs {
+  padding: 0;
+}

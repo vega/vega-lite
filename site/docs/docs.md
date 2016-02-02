@@ -7,7 +7,8 @@ permalink: /docs/
 
 This documentation describes [Vega-Lite specifications](#spec) and the functionalities of the [Vega-Lite library](#lib).
 
-## [](#spec) Vega-Lite Specifications
+{:#spec}
+## Vega-Lite Specifications
 
 A Vega-Lite specification is a JSON object that describes data source (`data`),
 mark type (`mark`), visual mapping between encoding channels and data variables (`encoding`),
@@ -44,6 +45,7 @@ In Vega-Lite, a specification can have the following top-level properties.
 | [encoding](encoding.html) | Object   | A key-value mapping between encoding channels and definition of fields. |
 | [config](config.html)   | Object     | Configuration object. |
 
-## [](#lib) The Vega-Lite Library
+{:#lib}
+## The Vega-Lite Library
 
 You can create visualizations in the [online editor](https://vega.github.io/vega-editor/?mode=vega-lite) or read about how to [embed Vega-Lite visualizations in a web page](embed.html).

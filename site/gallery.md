@@ -12,5 +12,5 @@ This is a gallery of Vega-Lite visualizations. Uses Vega-Lite version <span id="
   Show debug examples <input type="checkbox" id="show-debug"></input>
 </label>
 
-<script src="{{site.baseurl}}/site/static/gallery.js"></script>
+<script src="/site/static/gallery.js"></script>
 <link rel=stylesheet href="{{baseurl}}/site/static/gallery.css">
