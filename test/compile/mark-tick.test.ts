@@ -6,7 +6,7 @@
 // (except the scaffold labels() method)
 import {assert} from 'chai';
 import {parseModel} from '../util';
-import {X, Y, SIZE} from '../../src/channel';
+import {X, Y} from '../../src/channel';
 import {tick} from '../../src/compile/mark-tick';
 
 describe('Mark: Tick', function() {
@@ -72,7 +72,7 @@ describe('Mark: Tick', function() {
   describe('with size.value specified with orient vertical', function() {
     const model = parseModel({
       'mark': 'tick',
-      "config": {'mark': {'orient': 'horizontal'}},
+      'config': {'mark': {'orient': 'horizontal'}},
       'encoding':
         {
           'x': {'field': 'Horsepower', 'type': 'quantitative'},
@@ -86,6 +86,4 @@ describe('Mark: Tick', function() {
       assert.deepEqual(props.width, {'value': 10});
     });
   });
-
-  
 });
