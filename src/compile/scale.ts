@@ -9,7 +9,7 @@ import {SHARED_DOMAIN_OPS} from '../aggregate';
 import {COLUMN, ROW, X, Y, SHAPE, SIZE, COLOR, TEXT, hasScale, Channel} from '../channel';
 import {SOURCE, STACKED_SCALE} from '../data';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
-import {Mark, BAR, TEXT as TEXT_MARK, TICK} from '../mark';
+import {Mark, BAR, TEXT as TEXT_MARK} from '../mark';
 import {rawDomain} from './time';
 
 export function compileScales(channels: Channel[], model: Model) {
@@ -58,6 +58,10 @@ export function type(fieldDef: FieldDef, channel: Channel, mark: Mark): string {
     return 'ordinal';
   }
 
+  if (fieldDef.scale.type !== undefined) {
+    return fieldDef.scale.type;
+  }
+
   switch (fieldDef.type) {
     case NOMINAL:
       return 'ordinal';
@@ -68,14 +72,6 @@ export function type(fieldDef: FieldDef, channel: Channel, mark: Mark): string {
         // FIXME(#890) if user specify scale.range as ordinal presets, then this should be ordinal.
         // Also, if we support color ramp, this should be ordinal too.
         return 'time'; // time has order, so use interpolated ordinal color scale.
-      }
-
-      if (fieldDef.scale.type !== undefined) {
-        return fieldDef.scale.type;
-      }
-
-      if (contains([BAR, TICK], mark)) {
-        return 'ordinal';
       }
 
       if (fieldDef.timeUnit) {
@@ -97,11 +93,10 @@ export function type(fieldDef: FieldDef, channel: Channel, mark: Mark): string {
         // However, currently ordinal scale doesn't support color ramp yet.
         return contains([X, Y, COLOR], channel) ? 'linear' : 'ordinal';
       }
-      if (fieldDef.scale.type !== undefined) {
-        return fieldDef.scale.type;
-      }
       return 'linear';
   }
+
+  // should never reach this
   return null;
 }
 

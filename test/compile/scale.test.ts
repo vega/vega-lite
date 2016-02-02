@@ -38,20 +38,6 @@ describe('Scale', function() {
       assert.deepEqual(vlscale.type(fieldDef, Y, model.mark()), 'ordinal');
     });
 
-    it('should return ordinal for bar chart', function() {
-      const model = parseModel({
-        mark: 'bar',
-        encoding: {
-          y: {
-            type: 'temporal',
-            timeUnit: 'yearMonth'
-          }
-        }
-      });
-      const fieldDef = model.fieldDef(Y);
-      assert.deepEqual(vlscale.type(fieldDef, Y, model.mark()), 'ordinal');
-    });
-
     it('should return ordinal for row', function() {
       const model = parseModel({
         mark: 'point',
