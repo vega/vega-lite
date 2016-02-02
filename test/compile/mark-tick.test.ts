@@ -69,38 +69,38 @@ describe('Mark: Tick', function() {
     });
   });
 
-  describe('with size.value specified with orient vertical', function() {
+  describe('width should be mapped to size', function() {
     const model = parseModel({
       'mark': 'tick',
       'config': {'mark': {'orient': 'vertical'}},
       'encoding':
         {
           'x': {'field': 'Horsepower', 'type': 'quantitative'},
-          'y': {'field': 'Cylinders','type': 'ordinal'},
+          'y': {'field': 'Cylinders', 'type': 'ordinal'},
           'size': {'field': 'Acceleration'}
         },
       'data': {'url': 'data/cars.json'},
     });
     const props = tick.properties(model);
-    it('width should change with size', function() {
+    it('width should change with size field', function() {
       assert.deepEqual(props.width, {'field': 'Acceleration', 'scale': SIZE});
     });
   });
 
-  describe('with size.value specified with orient vertical', function() {
+  describe('height should be mapped to size', function() {
     const model = parseModel({
       'mark': 'tick',
       'config': {'mark': {'orient': 'horizontal'}},
       'encoding':
         {
           'x': {'field': 'Horsepower', 'type': 'quantitative'},
-          'y': {'field': 'Cylinders','type': 'ordinal'},
+          'y': {'field': 'Cylinders', 'type': 'ordinal'},
           'size': {'field': 'Acceleration'}
         },
       'data': {'url': 'data/cars.json'},
     });
     const props = tick.properties(model);
-    it('width should change with size', function() {
+    it('width should change with size field', function() {
       assert.deepEqual(props.height, {'field': 'Acceleration', 'scale': SIZE});
     });
   });
