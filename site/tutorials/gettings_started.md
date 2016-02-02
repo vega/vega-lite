@@ -138,7 +138,7 @@ Now we can see the raw data points. Note that Vega-Lite automatically adds grid 
 
 ## Data Transformation: Aggregation
 
-Vega-Lite also supports data transformation such as aggregation. By adding `"aggregate": "mean"` to the definition of the `y` channel, we can see the average value of `a` in each category. For example, the average value of category `D` is `(1 + 2 + 6)/3 = 9/3 = 3`.
+Vega-Lite also supports data transformation such as aggregation. By adding `"aggregate": "average"` to the definition of the `y` channel, we can see the average value of `a` in each category. For example, the average value of category `D` is `(1 + 2 + 6)/3 = 9/3 = 3`.
 
 <div class="vl-example">
 {
@@ -152,7 +152,7 @@ Vega-Lite also supports data transformation such as aggregation. By adding `"agg
   "mark": "point",
   "encoding": {
     "x": {"field": "a", "type": "nominal"},
-    "y": {"aggregate": "mean", "field": "b", "type": "quantitative"}
+    "y": {"aggregate": "average", "field": "b", "type": "quantitative"}
   }
 }
 </div>
@@ -177,7 +177,7 @@ Great! You computed the aggregate values for each category and visualized the re
   "mark": "bar",
   "encoding": {
     "x": {"field": "a", "type": "nominal"},
-    "y": {"aggregate": "mean", "field": "b", "type": "quantitative"}
+    "y": {"aggregate": "average", "field": "b", "type": "quantitative"}
   }
 }
 </div>
@@ -196,7 +196,7 @@ Since the quantitative value is on y, you automatically get a vertical bar chart
   "mark": "bar",
   "encoding": {
     "y": {"field": "a", "type": "nominal"},
-    "x": {"aggregate": "mean", "field": "b", "type": "quantitative"}
+    "x": {"aggregate": "average", "field": "b", "type": "quantitative"}
   }
 }
 </div>
@@ -219,7 +219,7 @@ Vega-Lite automatically provides default properties for the visualization. You c
   "encoding": {
     "y": {"field": "a", "type": "nominal"},
     "x": {
-      "aggregate": "mean", "field": "b", "type": "quantitative",
+      "aggregate": "average", "field": "b", "type": "quantitative",
       "axis": {
         "title": "Average of b"
       }
@@ -263,7 +263,7 @@ To embed your visualization on a website, you can create a web page with the fol
     "encoding": {
       "y": {"field": "a", "type": "nominal"},
       "x": {
-        "aggregate": "mean", "field": "b", "type": "quantitative",
+        "aggregate": "average", "field": "b", "type": "quantitative",
         "axis": {
           "title": "Average of b"
         }
