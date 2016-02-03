@@ -30,13 +30,12 @@ export namespace text {
         scale: model.scaleName(X),
         field: model.field(X, { binSuffix: '_mid' })
       };
-    } else {
+    } else { // TODO: support x.value, x.datum
       if (model.has(TEXT) && model.fieldDef(TEXT).type === QUANTITATIVE) {
         p.x = { field: { group: 'width' }, offset: -5 };
       } else {
-        p.x = { value: model.fieldDef(X).scale.bandWidth / 2 };
+        p.x = { value: 90 / 2 }; // TODO: config.scale.textBandWidth
       }
-      // TODO: support x.value
     }
 
     // y
@@ -46,8 +45,7 @@ export namespace text {
         field: model.field(Y, { binSuffix: '_mid' })
       };
     } else {
-      p.y = { value: model.fieldDef(Y).scale.bandWidth / 2 };
-      // TODO: support x.value
+      p.y = { value: 21 / 2 }; // TODO: config.scale.bandWidth
     }
 
     // size

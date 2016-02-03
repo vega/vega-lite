@@ -58,6 +58,18 @@ export class Model {
         fieldDef.legend = instantiate(legendSchema);
       }
 
+      // set default bandWidth for X and Y
+      if (channel === X && fieldDef.scale.bandWidth === undefined) {
+        // This should be zero for the sake of text table.
+        fieldDef.scale.bandWidth = this.isOrdinalScale(X) && this.mark() === 'text' ?
+          90 : // TODO: config.scale.textBandWidth
+          21; // TODO: config.scale.bandWidth
+      }
+      if (channel === Y && fieldDef.scale.bandWidth === undefined) {
+        // This should be zero for the sake of text table.
+        fieldDef.scale.bandWidth = 21;
+      }
+
       // set default padding for ROW and COLUMN
       if (channel === ROW && fieldDef.scale.padding === undefined) {
         // This should be zero for the sake of text table.
