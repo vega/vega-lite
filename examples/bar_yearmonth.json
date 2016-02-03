@@ -5,7 +5,8 @@
   "encoding": {
     "x": {
       "timeUnit": "yearmonth", "field": "date", "type": "temporal",
-      "axis": {"format": "%B of %Y"}
+      "axis": {"format": "%B of %Y"},
+      "scale": {"type": "ordinal"}
     },
     "y": {"aggregate": "mean", "field": "temp", "type": "quantitative"}
   }

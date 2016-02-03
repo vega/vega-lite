@@ -5,9 +5,9 @@ title: Create a Visualization of Weather Data
 permalink: /tutorials/weather.html
 ---
 
-In this tutorial, you'll learn a few more techniques for creating visualizations in Vega-Lite. If you are not familiar with Vega-Lite, read the [getting started tutorial]({{site.baseurl}}/tutorials/getting_started.html) first.
+In this tutorial, you'll learn a few more techniques for creating visualizations in Vega-Lite. If you are not familiar with Vega-Lite, read the [getting started tutorial](/tutorials/getting_started.html) first.
 
-Let's say you have some dataset about weather data in Seattle that you want to visualize. The [dataset]({{site.baseurl}}/data/seattle-weather.csv) is a CSV file with columns for the temperature, precipitation, wind, and weather type.
+Let's say you have some dataset about weather data in Seattle that you want to visualize. The [dataset](/data/seattle-weather.csv) is a CSV file with columns for the temperature, precipitation, wind, and weather type.
 
 **TODO**
 

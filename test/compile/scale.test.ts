@@ -5,12 +5,52 @@ import {assert} from 'chai';
 import * as vlscale from '../../src/compile/scale';
 import {SOURCE, SUMMARY} from '../../src/data';
 import {parseModel} from '../util';
-import {Y} from '../../src/channel';
+import {Y, ROW} from '../../src/channel';
 
 
 describe('Scale', function() {
   describe('type()', function() {
-    // FIXME(kanitw): Jan 18, 2016 - Test
+    it('should return time for yearmonth', function() {
+      const model = parseModel({
+        mark: 'point',
+        encoding: {
+          y: {
+            type: 'temporal',
+            timeUnit: 'yearMonth'
+          }
+        }
+      });
+      const fieldDef = model.fieldDef(Y);
+      assert.deepEqual(vlscale.type(fieldDef, Y, model.mark()), 'time');
+    });
+
+    it('should return ordinal for month', function() {
+      const model = parseModel({
+        mark: 'point',
+        encoding: {
+          y: {
+            type: 'temporal',
+            timeUnit: 'month'
+          }
+        }
+      });
+      const fieldDef = model.fieldDef(Y);
+      assert.deepEqual(vlscale.type(fieldDef, Y, model.mark()), 'ordinal');
+    });
+
+    it('should return ordinal for row', function() {
+      const model = parseModel({
+        mark: 'point',
+        encoding: {
+          row: {
+            type: 'temporal',
+            timeUnit: 'yearMonth'
+          }
+        }
+      });
+      const fieldDef = model.fieldDef(ROW);
+      assert.deepEqual(vlscale.type(fieldDef, ROW, model.mark()), 'ordinal');
+    });
   });
 
   describe('domain()', function() {

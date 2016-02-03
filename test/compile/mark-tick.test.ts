@@ -6,7 +6,7 @@
 // (except the scaffold labels() method)
 import {assert} from 'chai';
 import {parseModel} from '../util';
-import {X, Y} from '../../src/channel';
+import {X, Y, SIZE} from '../../src/channel';
 import {tick} from '../../src/compile/mark-tick';
 
 describe('Mark: Tick', function() {
@@ -56,7 +56,7 @@ describe('Mark: Tick', function() {
           'x': {'field': 'Horsepower', 'type': 'quantitative'},
           'y': {'field': 'Cylinders','type': 'ordinal'}
         },
-      'data': {'url': 'data/cars.json'},
+      'data': {'url': 'data/cars.json'}
     });
     const props = tick.properties(model);
 
@@ -66,6 +66,42 @@ describe('Mark: Tick', function() {
 
     it('should scale on y', function() {
       assert.deepEqual(props.yc, {scale: Y, field: 'Cylinders'});
+    });
+  });
+
+  describe('width should be mapped to size', function() {
+    const model = parseModel({
+      'mark': 'tick',
+      'config': {'mark': {'orient': 'vertical'}},
+      'encoding':
+        {
+          'x': {'field': 'Horsepower', 'type': 'quantitative'},
+          'y': {'field': 'Cylinders', 'type': 'ordinal'},
+          'size': {'field': 'Acceleration'}
+        },
+      'data': {'url': 'data/cars.json'},
+    });
+    const props = tick.properties(model);
+    it('width should change with size field', function() {
+      assert.deepEqual(props.width, {'field': 'Acceleration', 'scale': SIZE});
+    });
+  });
+
+  describe('height should be mapped to size', function() {
+    const model = parseModel({
+      'mark': 'tick',
+      'config': {'mark': {'orient': 'horizontal'}},
+      'encoding':
+        {
+          'x': {'field': 'Horsepower', 'type': 'quantitative'},
+          'y': {'field': 'Cylinders', 'type': 'ordinal'},
+          'size': {'field': 'Acceleration'}
+        },
+      'data': {'url': 'data/cars.json'},
+    });
+    const props = tick.properties(model);
+    it('height should change with size field', function() {
+      assert.deepEqual(props.height, {'field': 'Acceleration', 'scale': SIZE});
     });
   });
 });

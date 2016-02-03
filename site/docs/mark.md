@@ -16,7 +16,6 @@ Marks are the basic visual building block of a visualization: they are graphical
 }
 ```
 
-
 The `mark` property in a Vega-Lite specification defines the visualization's mark type.
 Each mark type supports different [encoding channels](encoding.html#mark-channel),
 which can be mapped either to a field (a variable in your data) or to a constant value.  

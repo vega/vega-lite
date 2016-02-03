@@ -14,7 +14,7 @@ navigation:
   <nav class="page-centered">
     {% for link in page.navigation %}
     <a {% if (url == link.url) %}class="active"{% endif %}
-        href="{{site.baseurl}}/tutorials/{{link.url}}.html" title="{{link.title}}">{{link.text}}
+        href="/tutorials/{{link.url}}.html" title="{{link.title}}">{{link.text}}
     </a>
     {% endfor %}
   </nav>

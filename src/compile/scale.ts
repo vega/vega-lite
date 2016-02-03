@@ -8,9 +8,8 @@ import {Model} from './Model';
 import {SHARED_DOMAIN_OPS} from '../aggregate';
 import {COLUMN, ROW, X, Y, SHAPE, SIZE, COLOR, TEXT, hasScale, Channel} from '../channel';
 import {SOURCE, STACKED_SCALE} from '../data';
-import {isDimension} from '../fielddef';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
-import {Mark, BAR, TEXT as TEXT_MARK, TICK} from '../mark';
+import {Mark, BAR, TEXT as TEXT_MARK} from '../mark';
 import {rawDomain} from './time';
 
 export function compileScales(channels: Channel[], model: Model) {
@@ -54,6 +53,15 @@ export function type(fieldDef: FieldDef, channel: Channel, mark: Mark): string {
     return null;
   }
 
+  // We can't use linear/time for row, column or shape
+  if (contains([ROW, COLUMN, SHAPE], channel)) {
+    return 'ordinal';
+  }
+
+  if (fieldDef.scale.type !== undefined) {
+    return fieldDef.scale.type;
+  }
+
   switch (fieldDef.type) {
     case NOMINAL:
       return 'ordinal';
@@ -65,12 +73,6 @@ export function type(fieldDef: FieldDef, channel: Channel, mark: Mark): string {
         // Also, if we support color ramp, this should be ordinal too.
         return 'time'; // time has order, so use interpolated ordinal color scale.
       }
-      if (contains([ROW, COLUMN, SHAPE], channel)) {
-        return 'ordinal';
-      }
-      if (fieldDef.scale.type !== undefined) {
-        return fieldDef.scale.type;
-      }
 
       if (fieldDef.timeUnit) {
         switch (fieldDef.timeUnit) {
@@ -78,18 +80,9 @@ export function type(fieldDef: FieldDef, channel: Channel, mark: Mark): string {
           case 'day':
           case 'month':
             return 'ordinal';
-          case 'date':
-          case 'year':
-          case 'second':
-          case 'minute':
-            // Returns ordinal if (1) the channel is X or Y, and
-            // (2) is the dimension of BAR or TICK mark.
-            // Otherwise return linear.
-            return contains([BAR, TICK], mark) &&
-              isDimension(fieldDef) ? 'ordinal' : 'time';
           default:
-            // yearmonth, monthday, ...
-            return 'ordinal';
+            // date, year, minute, second, yearmonth, monthday, ...
+            return 'time';
         }
       }
       return 'time';
@@ -100,11 +93,10 @@ export function type(fieldDef: FieldDef, channel: Channel, mark: Mark): string {
         // However, currently ordinal scale doesn't support color ramp yet.
         return contains([X, Y, COLOR], channel) ? 'linear' : 'ordinal';
       }
-      if (fieldDef.scale.type !== undefined) {
-        return fieldDef.scale.type;
-      }
       return 'linear';
   }
+
+  // should never reach this
   return null;
 }
 

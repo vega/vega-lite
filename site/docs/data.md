@@ -26,16 +26,16 @@ Here is a list of all properties describing `data` source:
 | [url](#data-from-url) | String         | A URL from which to load the data set. Use the _formatType_ property to ensure the loaded data is correctly parsed. |
 | [formatType](#data-from-url) | String  | Type of input data: `json`(default), `csv`, `tsv`. |
 
-
-## [](#inline) Inline Data
+{:#inline}
+## Inline Data
 
 Inline Data can be specified using `values` property.
 For example, the following specification embeds an inline data table with two rows and two columns (`a` and `b`).
 
 <span class="vl-example" data-name="bar"></span>
 
-
-## [](#url) Data from URL
+{:#url}
+## Data from URL
 
 Data can be specified from url using the `url` property.  In addition, format of the input data can be optionally specified using `formatType` property.
 
@@ -43,7 +43,7 @@ For example, the following specification loads data from a relative `url`: `data
 
 <span class="vl-example" data-name="scatter"></span>
 
-
-## [](#runtime) Binding Data at Run-time
+{:#runtime}
+## Binding Data at Run-time
 
 __TODO: Example__
