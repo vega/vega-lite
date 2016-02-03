@@ -86,8 +86,7 @@ export const positionFieldDef = mergeDeep(duplicate(fieldDefWithScale), {
     scale: {
       // replacing default values for just these two axes
       properties: {
-        padding: {default: 1},
-        bandWidth: {default: 21}
+        padding: {default: 1}
       }
     },
     axis: axis

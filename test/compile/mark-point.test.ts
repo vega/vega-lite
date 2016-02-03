@@ -36,7 +36,7 @@ describe('Mark: Point', function() {
     const props = point.properties(model);
 
     it('should be centered on y', function() {
-      assert.deepEqual(props.y, {value: model.fieldDef(Y).scale.bandWidth / 2});
+      assert.deepEqual(props.y, {value: 21 / 2});
     });
 
     it('should scale on x', function() {
@@ -54,7 +54,7 @@ describe('Mark: Point', function() {
     const props = point.properties(model);
 
     it('should be centered on x', function() {
-      assert.deepEqual(props.x, {value: model.fieldDef(X).scale.bandWidth / 2});
+      assert.deepEqual(props.x, {value: 21 / 2});
     });
 
     it('should scale on y', function() {
