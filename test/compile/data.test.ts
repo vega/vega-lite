@@ -232,7 +232,6 @@ describe('data.source', function() {
         }
       });
       const transform = source.transform(model);
-      console.log(transform);
       assert.deepEqual(transform[0].type, 'filter');
       assert.deepEqual(transform[1].type, 'formula');
       assert.deepEqual(transform[2].type, 'filter');

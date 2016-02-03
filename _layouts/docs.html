@@ -1,46 +1,39 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width initial-scale=1" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="{{ site.description }}">
+---
+layout: plain
 
-    <script src="../bower_components/d3/d3.min.js"></script>
-    <script src="../bower_components/vega/vega.min.js"></script>
-    <script src="../vega-lite.min.js"></script>
-    <script src="../bower_components/vega-embed/vega-embed.js" charset="utf-8"></script>
+navigation:
+ - text: Overview
+   url: index
+ - text: Data
+   url: data
+ - text: Transform
+   url: transform
+ - text: Mark
+   url: mark
+ - text: Encoding
+   url: encoding
+ - text: Config
+   url: config
+---
 
-    <title> {{site.title}}: {{page.title}} </title>
-    <link rel=stylesheet href="gh2.css">
-    <link rel=stylesheet href="syntax.css">
-    <link rel=stylesheet href="docs.css">
-  </head>
-  <body>
-    <header>
-    <div class="menu" style="float:right">
-      <a href="index.html">Home</a>
-      <a href="tutorial.html">Tutorial</a>
-      <a href="data.html">Data</a>
-      <a href="transform.html">Transform</a>
-      <a href="mark.html">Mark</a>
-      <a href="encoding.html">Encoding</a>
-      <a href="config.html">Config</a>
-    </div>
-    <div class="vl-title">{{site.title}}</div>
-    </header>
-    <h1 class="title">{{page.title}}</h1>
-    <div class="page-content">
-      <div class="wrapper">
-        {{ content }}
-      </div>
-    </div>
+{% assign url = page.url | remove:'/docs/' | remove:'.html' %}
 
-    <footer>
-      Would you like to improve the documentation?
-      <a href="https://github.com/vega/vega-lite/edit/master/{{page.path}}">
-        Edit this page and submit a pull request!
-      </a>
-    </footer>
-  </body>
-</html>
+{% if url == '' %}
+  {% assign url = 'index' %}
+{% endif %}
+
+<div class="sub-nav">
+  <nav class="page-centered">
+    {% for link in page.navigation %}
+    <a {% if (url == link.url) %}class="active"{% endif %}
+        href="/docs/{{link.url}}.html" title="{{link.title}}">{{link.text}}
+    </a>
+    {% endfor %}
+  </nav>
+</div>
+
+<div class="page-centered page-content">
+  <h1>{{page.title}}</h1>
+
+  {{ content }}
+</div>

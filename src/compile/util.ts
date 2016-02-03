@@ -23,18 +23,16 @@ export function applyColorAndOpacity(p, model: Model, colorMode: ColorMode = Col
         colorMode === ColorMode.FILLED_BY_DEFAULT ? true :
           false; // ColorMode.STROKED_BY_DEFAULT
 
-  // Apply fill and stroke config first
-  // so that `color.value` can override `fill` and `stroke` config
-  applyMarkConfig(p, model, FILL_STROKE_CONFIG);
-
   if (filled) {
     if (model.has(COLOR)) {
       p.fill = {
         scale: model.scaleName(COLOR),
         field: model.field(COLOR)
       };
-    } else {
+    } else if (model.fieldDef(COLOR).value) {
       p.fill = { value: model.fieldDef(COLOR).value };
+    } else {
+      p.fill = { value: model.config().mark.color };
     }
   } else {
     if (model.has(COLOR)) {
@@ -42,10 +40,16 @@ export function applyColorAndOpacity(p, model: Model, colorMode: ColorMode = Col
         scale: model.scaleName(COLOR),
         field: model.field(COLOR)
       };
-    } else {
+    } else if (model.fieldDef(COLOR).value) {
       p.stroke = { value: model.fieldDef(COLOR).value };
+    } else {
+      p.stroke = { value: model.config().mark.color };
     }
   }
+
+  // Apply fill and stroke config later
+  // `fill` and `stroke` config can override `color` config
+  applyMarkConfig(p, model, FILL_STROKE_CONFIG);
 }
 
 export function applyMarkConfig(marksProperties, model: Model, propsList: string[]) {
@@ -120,6 +124,7 @@ function isAbbreviated(model: Model, channel: Channel, fieldDef: FieldDef) {
     case LABEL:
       // TODO(#897): implement when we have label
   }
+  return false;
 }
 
 /**

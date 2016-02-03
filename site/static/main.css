@@ -1,0 +1,271 @@
+html, body {
+  height: 100%;
+}
+body {
+  font: 16px/1.5em "Helvetica Neue", Helvetica, sans-serif;
+  box-sizing: border-box;
+  line-height: 1.5;
+  color: #373a3c;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+header {
+  background-color: #E6E6E6;
+}
+code, tt {
+  margin: 0 2px;
+  padding: 0 4px;
+  white-space: nowrap;
+  background: #f6f6f6;
+  border: 1px solid #ddd;
+  font-family: monospace;
+  font-size: 0.8em;
+}
+pre code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+pre {
+  line-height: 1em;
+  font-family: monospace;
+  background: #f6f6f6;
+  padding: 8px;
+  border: 1px solid #ddd;
+}
+a {
+  color: #4682B4;
+}
+a:not(:hover) {
+  text-decoration: none;
+}
+footer {
+  border-top: 1px solid #eee;
+  padding: 1.5em 2em 1.5em 2em;
+  font-size: small;
+  color: #aaa;
+  /* for safari */
+  min-height: 40px;
+}
+footer > div {
+  display: flex;
+  align-items: center;
+}
+blockquote {
+  padding: 0 15px;
+  color: #777;
+  border-left: 4px solid #ddd;
+  margin: 0;
+}
+
+/* Table */
+
+table {
+  padding: 0;
+  border-collapse: collapse;
+}
+table tr {
+  border-top: 1px solid #cccccc;
+  background-color: white;
+  margin: 0;
+  padding: 0;
+}
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+table tr th {
+  font-weight: bold;
+  border: 1px solid #cccccc;
+  text-align: left;
+  margin: 0;
+  padding: 6px 13px;
+}
+table tr td {
+  border: 1px solid #cccccc;
+  text-align: left;
+  margin: 0;
+  padding: 6px 13px;
+}
+table tr th:first-child, table tr td:first-child {
+  margin-top: 0;
+}
+table tr th:last-child, table tr td:last-child {
+  margin-bottom: 0;
+}
+
+/* Headers */
+
+h1, h2, h3, h4 {
+  margin-top: 1.3em;
+  margin-bottom: 0.6em;
+  text-rendering: optimizeLegibility;
+}
+h1 {
+  color: black;
+  font-weight: 300;
+  font-size: 2.5em;
+  margin: 0.7em 0 0.3em 0;
+}
+h2 {
+  font-size: 1.5em;
+  font-weight: 500;
+  border-bottom: 1px solid #cccccc;
+  color: black;
+  margin-top: 1.5em;
+  padding-bottom: 1px;
+  /* more padding between heading and line */
+}
+h3 {
+  font-size: 1.2em;
+}
+h4 {
+  font-size: 1.15em;
+}
+h5 {
+  font-size: 1.1em;
+}
+h6 {
+  color: #777777;
+  font-size: 1.1em;
+}
+.anchor {
+  display: inline-block;
+  margin-left: -22px;
+  width: 22px;
+  color: black;
+  outline: 0;
+}
+h2 .octicon-link, h3 .octicon-link, h4 .octicon-link, h5 .octicon-link, h6 .octicon-link {
+  color: #000;
+  vertical-align: middle;
+  visibility: hidden;
+}
+h2:hover .anchor .octicon-link, h3:hover .anchor .octicon-link, h4:hover .anchor .octicon-link, h5:hover .anchor .octicon-link, h6:hover .anchor .octicon-link {
+  visibility: visible;
+}
+
+/* Nav */
+
+nav {
+  display: flex;
+  align-items: baseline;
+  align-content: flex-start;
+}
+nav a {
+  color: #666;
+  padding: 12px 16px 12px 16px;
+}
+nav a:first-child {
+  padding-left: 0px;
+}
+nav a.active {
+  font-weight: bold;
+}
+nav a:hover {
+  color: black;
+  text-decoration: none;
+}
+
+/* Special classes */
+
+.page-centered {
+  /* 1000px - 20px = 960px */
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+.page-content {
+  padding-bottom: 3em;
+}
+.vl-title {
+  font-weight: bold;
+  font-size: 1.4em;
+  color: #666;
+  margin-top: -4px;
+  /* hack */
+  margin-right: 8px;
+}
+.sub-nav {
+  background-color: #F7F7F7;
+}
+.lead {
+  font-size: 1.3em;
+  font-weight: 300;
+}
+.idl-logo img {
+  height: 40px;
+}
+.fill {
+  flex: 1 0 auto;
+}
+.float-right {
+  float: right;
+}
+
+/* Allow json example with errors */
+
+.highlight .err {
+  color: #000;
+  background-color: transparent;
+}
+
+/* Media queries */
+
+@media (max-width:960px) {
+  body {
+    font-size: 14px;
+  }
+  nav a:not(:first-child) {
+    padding: 10px 10px 10px 10px;
+  }
+}
+
+/* Examples */
+
+.example {
+  display: flex;
+  flex-direction: column;
+  margin: 1em 0;
+}
+.example.side {
+  flex-direction: row-reverse;
+}
+@media (max-width: 640px) {
+  .example.side {
+    flex-direction: column;
+  }
+  .example .example-code {
+    margin-bottom: 1em;
+  }
+}
+.example .example-vis {
+  flex: 1 0 auto;
+  align-self: center;
+  text-align: center;
+  background-color: white;
+  padding-right: 10px;
+}
+.example .example-code {
+  width: 550px;
+  margin: 0;
+  align-self: flex-start;
+}
+.example .example-code code {
+  white-space: pre-wrap;
+}
+.example .vega-actions {
+  font-size: .8em;
+  opacity: 0.8;
+}
+.example .vega-actions:hover {
+  opacity: 1;
+}
+.example canvas, .example svg {
+  border: 1px dashed #ddd;
+}
+.hljs {
+  padding: 0;
+}

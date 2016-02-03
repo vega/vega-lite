@@ -13,7 +13,8 @@
     "noLib": false,
     "preserveConstEnums": true,
     "suppressImplicitAnyIndexErrors": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "noImplicitReturns": true
   },
   "filesGlob": [
     "**/*.ts",
@@ -28,7 +29,8 @@
   ],
   "files": [
     "examples/examples.test.ts",
-    "site/gallery.ts",
+    "site/static/gallery.ts",
+    "site/static/main.ts",
     "src/aggregate.ts",
     "src/bin.ts",
     "src/channel.ts",
@@ -81,7 +83,7 @@
     "src/validate.ts",
     "src/vl.ts",
     "test/compile/axis.test.ts",
-    "test/compile/compiler.test.ts",
+    "test/compile/compile.test.ts",
     "test/compile/data.test.ts",
     "test/compile/legend.test.ts",
     "test/compile/mark-area.test.ts",

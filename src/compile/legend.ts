@@ -104,8 +104,9 @@ namespace properties {
 
       case CIRCLE:
       case SQUARE:
+        /* tslint:disable:no-switch-case-fall-through */
         symbols.shape = {value: mark};
-        /* fall through */
+        /* tslint:enable:no-switch-case-fall-through */
       case POINT:
         // fill or stroke
         if (model.config().mark.filled) { // filled
@@ -115,8 +116,10 @@ namespace properties {
 
           if (model.has(COLOR) && channel === COLOR) {
             symbols.fill = {scale: model.scaleName(COLOR), field: 'data'};
-          } else {
+          } else if (model.fieldDef(COLOR).value) {
             symbols.fill = {value: model.fieldDef(COLOR).value};
+          } else {
+            symbols.fill = {value: model.config().mark.color};
           }
         } else { // stroked
           // set fill to transparent by default unless there is a config for stroke
@@ -125,8 +128,10 @@ namespace properties {
 
           if (model.has(COLOR) && channel === COLOR) {
             symbols.stroke = {scale: model.scaleName(COLOR), field: 'data'};
-          } else {
+          } else if (model.fieldDef(COLOR).value) {
             symbols.stroke = {value: model.fieldDef(COLOR).value};
+          } else {
+            symbols.stroke = {value: model.config().mark.color};
           }
         }
 

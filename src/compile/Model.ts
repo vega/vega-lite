@@ -58,11 +58,25 @@ export class Model {
         fieldDef.legend = instantiate(legendSchema);
       }
 
+      // set default bandWidth for X and Y
+      if (channel === X && fieldDef.scale.bandWidth === undefined) {
+        // This should be zero for the sake of text table.
+        fieldDef.scale.bandWidth = this.isOrdinalScale(X) && this.mark() === 'text' ?
+          90 : // TODO: config.scale.textBandWidth
+          21; // TODO: config.scale.bandWidth
+      }
+      if (channel === Y && fieldDef.scale.bandWidth === undefined) {
+        // This should be zero for the sake of text table.
+        fieldDef.scale.bandWidth = 21;
+      }
+
       // set default padding for ROW and COLUMN
       if (channel === ROW && fieldDef.scale.padding === undefined) {
+        // This should be zero for the sake of text table.
         fieldDef.scale.padding = this.has(Y) ? 16 : 0;
       }
       if (channel === COLUMN && fieldDef.scale.padding === undefined) {
+        // This should be zero for the sake of text table.
         fieldDef.scale.padding = this.has(X) ? 16 : 0;
       }
     }, this);
@@ -229,12 +243,15 @@ export class Model {
   public sizeValue(channel: Channel = SIZE) {
     const value = this.fieldDef(SIZE).value;
     if (value !== undefined) {
-      return value;
+       return value;
     }
     switch (this.mark()) {
       case TEXTMARK:
-        return 10; // font size 10 by default
+        return this.config().mark.fontSize; // font size 10 by default
       case BAR:
+        if (this.config().mark.barWidth) {
+          return this.config().mark.barWidth;
+        }
         // BAR's size is applied on either X or Y
         return !this.has(channel) || this.isOrdinalScale(channel) ?
           // For ordinal scale or single bar, we can use bandWidth - 1
@@ -243,8 +260,11 @@ export class Model {
           // otherwise, set to 2 by default
           2;
       case TICK:
+        if (this.config().mark.tickWidth) {
+          return this.config().mark.tickWidth;
+        }
         return this.fieldDef(channel).scale.bandWidth / 1.5;
     }
-    return 30;
+    return this.config().mark.size;
   }
 }

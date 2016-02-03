@@ -2,7 +2,7 @@
 import {Encoding} from './schema/encoding.schema';
 import {FieldDef} from './schema/fielddef.schema';
 import {Channel, CHANNELS} from './channel';
-import {isArray} from './util';
+import {isArray, any as anyIn} from './util';
 
 export function countRetinal(encoding: Encoding) {
   var count = 0;
@@ -27,12 +27,12 @@ export function has(encoding: Encoding, channel: Channel): boolean {
 }
 
 export function isAggregate(encoding: Encoding) {
-  for (var k in encoding) {
-    if (has(encoding, k) && encoding[k].aggregate) {
+  return anyIn(CHANNELS, (channel) => {
+    if (has(encoding, channel) && encoding[channel].aggregate) {
       return true;
     }
-  }
-  return false;
+    return false;
+  });
 }
 
 export function fieldDefs(encoding: Encoding): FieldDef[] {

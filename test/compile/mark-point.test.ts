@@ -36,7 +36,7 @@ describe('Mark: Point', function() {
     const props = point.properties(model);
 
     it('should be centered on y', function() {
-      assert.deepEqual(props.y, {value: model.fieldDef(Y).scale.bandWidth / 2});
+      assert.deepEqual(props.y, {value: 21 / 2});
     });
 
     it('should scale on x', function() {
@@ -54,7 +54,7 @@ describe('Mark: Point', function() {
     const props = point.properties(model);
 
     it('should be centered on x', function() {
-      assert.deepEqual(props.x, {value: model.fieldDef(X).scale.bandWidth / 2});
+      assert.deepEqual(props.x, {value: 21 / 2});
     });
 
     it('should scale on y', function() {
@@ -106,6 +106,20 @@ describe('Mark: Point', function() {
       assert.deepEqual(props.shape, {scale: SHAPE, field: 'bin_yield_range'});
     });
   });
+
+  describe('with constant color, shape, and size', function() {
+    const model = parseModel(pointXY({
+      "shape": {"value": "circle"},
+      "color": {"value": "red"},
+      "size": {"value": 23}
+    }));
+    const props = point.properties(model);
+    it('should correct shape, color and size', function () {
+      assert.deepEqual(props.shape, {value: "circle"});
+      assert.deepEqual(props.stroke, {value: "red"});
+      assert.deepEqual(props.size, {value: 23});
+    });
+  });
 });
 
 describe('Mark: Square', function() {
@@ -128,8 +142,8 @@ describe('Mark: Square', function() {
   it('should be filled by default', function() {
     const model = parseModel({
       "mark": "square",
-      "encoding": {
-        "color": {"value": "blue"}
+      "config": {
+        "mark": {"color": "blue"}
       }
     });
     const props = square.properties(model);
@@ -140,11 +154,9 @@ describe('Mark: Square', function() {
   it('should support config.mark.filled:false', function() {
     const model = parseModel({
       "mark": "square",
-      "encoding": {
-        "color" : {"value" : "blue"}
-      },
       "config" : {
         "mark" : {
+          "color": "blue",
           "filled" : false
         }
       }
@@ -159,48 +171,31 @@ describe('Mark: Square', function() {
 
 describe('Mark: Circle', function() {
   it('should return the correct mark type', function() {
-
-    const model = parseModel({
-      "mark": "circle",
-      "encoding": {
-        "color": {"value": "blue"}
-      }
-    });
     assert.equal(circle.markType(), 'symbol');
   });
 
-  it('should have correct shape', function() {
-    const model = parseModel({
-      "mark": "circle",
-      "encoding": {
-        "color": {"value": "blue"}
-      }
-    });
-    const props = circle.properties(model);
+  const model = parseModel({
+    "mark": "circle",
+    "config": {
+      "mark": {"color": "blue"}
+    }
+  });
+  const props = circle.properties(model);
 
+  it('should have correct shape', function() {
     assert.equal(props.shape.value, 'circle');
   });
 
   it('should be filled by default', function() {
-    const model = parseModel({
-      "mark": "circle",
-      "encoding": {
-        "color": {"value": "blue"}
-      }
-    });
-    const props = circle.properties(model);
-
     assert.equal(props.fill.value, 'blue');
   });
 
   it('should support config.mark.filled:false', function() {
     const model = parseModel({
-      "mark": "cirlce",
-      "encoding": {
-        "color" : {"value" : "blue"}
-      },
+      "mark": "circle",
       "config" : {
         "mark" : {
+          "color": "blue",
           "filled" : false
         }
       }

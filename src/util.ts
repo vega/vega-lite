@@ -3,7 +3,7 @@
 export {keys, extend, duplicate, isArray, vals, truncate, toMap, isObject} from 'datalib/src/util';
 export {range} from 'datalib/src/generate';
 
-export function contains(array: Array<any>, item: any) {
+export function contains<T>(array: Array<T>, item: T) {
   return array.indexOf(item) > -1;
 }
 
@@ -46,7 +46,7 @@ export function map(obj, f: (a, d, k, o) => any, thisArg?) {
   }
 }
 
-export function any(arr: Array<any>, f: (d, k?, i?) => boolean) {
+export function any<T>(arr: Array<T>, f: (d: T, k?, i?) => boolean) {
   var i = 0;
   for (let k = 0; k<arr.length; k++) {
     if (f(arr[k], k, i++)) {
@@ -56,7 +56,7 @@ export function any(arr: Array<any>, f: (d, k?, i?) => boolean) {
   return false;
 }
 
-export function all(arr: Array<any>, f: (d, k?, i?) => boolean) {
+export function all<T>(arr: Array<T>, f: (d: T, k?, i?) => boolean) {
   var i = 0;
   for (let k = 0; k<arr.length; k++) {
     if (!f(arr[k], k, i++)) {

@@ -10,15 +10,13 @@ export interface Config {
   viewport?: number;
   background?: string;
 
+  numberFormat?: string;
+  timeFormat?: string;
+
   cell?: CellConfig;
   mark?: MarkConfig;
   scene?: SceneConfig;
   stack?: StackConfig;
-
-  // TODO: revise
-  textCellWidth?: any;
-  numberFormat?: string;
-  timeFormat?: string;
 }
 
 export const config = {
@@ -63,12 +61,6 @@ export const config = {
       type: 'string',
       default: '%Y-%m-%d',
       description: 'Default datetime format for axis and legend labels. The format can be set directly on each axis and legend.'
-    },
-
-    textCellWidth: {
-      type: 'integer',
-      default: 90,
-      minimum: 0
     },
 
     // nested

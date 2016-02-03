@@ -19,9 +19,6 @@ export interface Scale {
   exponent?: number;
   zero?: boolean;
 
-  // color channel only
-  quantitativeRange? : string[];
-
   // Vega-Lite only
   useRawDomain?: boolean;
 }

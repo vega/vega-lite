@@ -1,10 +1,12 @@
 export interface MarkConfig {
+  // Vega-Lite Specific
   filled?: boolean;
-  sortBy?: String | String[];
+  color?: string;
+  barWidth?: number;
+  tickWidth?: number;
 
   // General Vega
   opacity?: number;
-
   strokeWidth?: number;
   strokeDash?: number[];
   strokeDashOffset?: number[];
@@ -13,11 +15,16 @@ export interface MarkConfig {
   stroke?: string;
   strokeOpacity?: number;
 
-  // Bar / area
+
+  // Bar, Tick, Line, Area
   orient?: string;
   // Line / area
   interpolate?: string;
   tension?: number;
+
+  // Point / Square / Circle
+  shape?: string;
+  size?: number;
 
   // Tick-only
   thickness?: number;
@@ -31,6 +38,7 @@ export interface MarkConfig {
   radius?: number;
   theta?: number;
   font?: string;
+  fontSize?: number;
   fontStyle?: string;
   fontWeight?: string;
   // Vega-Lite only for text only
@@ -51,13 +59,22 @@ export const markConfig = {
         'This is only applicable for "bar", "point", and "area". ' +
         'All marks except "point" marks are filled by default.'
     },
-    sortBy: {
+    color: {
+      type: 'string',
+      role: 'color',
+      default: '#4682b4',
+      description: 'Default color.'
+    },
+    barWidth: {
+      type: 'number',
       default: undefined,
-      oneOf: [
-        {type: 'string'},
-        {type: 'array', items:{type:'string'}}
-      ],
-      description: 'Sort layer of marks by a given field or fields.'
+      description: 'The width of the bars.  If unspecified, the default width is  `bandWidth-1`, which provides 1 pixel offset between bars.'
+    },
+    tickWidth: {
+      type: 'string',
+      role: 'color',
+      default: undefined,
+      description: 'The width of the ticks.'
     },
     // General Vega
     fill: {
@@ -104,12 +121,13 @@ export const markConfig = {
       description: 'The offset (in pixels) into which to begin drawing with the stroke dash array.'
     },
 
-    // bar / area
+    // Bar, Tick, Line, Area
     orient: {
       type: 'string',
       default: undefined,
-      description: 'The orientation of a non-stacked bar, area, and line charts.' +
+      description: 'The orientation of a non-stacked bar, tick, area, and line charts.' +
        'The value is either horizontal (default) or vertical.' +
+       'For bar and tick, this determines whether the size of the bar and tick should be applied to x or y dimension.' +
        'For area, this property determines the orient property of the Vega output.' +
        'For line, this property determines the sort order of the points in the line if `config.sortLineBy` is not specified.' +
        'For stacked charts, this is always determined by the orientation of the stack; ' +
@@ -127,6 +145,20 @@ export const markConfig = {
       type: 'number',
       default: undefined,
       description: 'Depending on the interpolation type, sets the tension parameter.'
+    },
+
+    // point
+    shape: {
+      type: 'number',
+      enum: ['circle', 'square', 'cross', 'diamond', 'triangle-up', 'triangle-down'],
+      default: undefined,
+      description: 'The symbol shape to use. One of circle (default), square, cross, diamond, triangle-up, or triangle-down.'
+    },
+    // point / circle / square
+    size: {
+      type: 'number',
+      default: 30,
+      description: 'The pixel area each the point. For example: in the case of circles, the radius is determined in part by the square root of the size value.'
     },
 
     // Tick-only
@@ -169,6 +201,11 @@ export const markConfig = {
       default: undefined,
       role: 'font',
       description: 'The typeface to set the text in (e.g., Helvetica Neue).'
+    },
+    fontSize: {
+      type: 'number',
+      default: 10,
+      description: 'The font size, in pixels.'
     },
     // fontSize excluded as we use size.value
     fontStyle: {

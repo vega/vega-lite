@@ -61,6 +61,7 @@
         "variable-declaration": "nospace"
       }
     ],
+    "no-switch-case-fall-through": true,
     "quotemark": [true, "single"],
     "triple-equals": [true, "allow-null-check"],
     "variable-name": [true, "check-format", "allow-leading-underscore", "ban-keywords"]
