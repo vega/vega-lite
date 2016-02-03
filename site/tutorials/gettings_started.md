@@ -58,7 +58,7 @@ To visualize this data with Vega-Lite, we can add it directly to the `data` prop
 }
 ```
 
-The `data` property defines the data source of the visualization.  In this example, we embed the data inline by directly setting `values` property.  Vega-Lite also supports [other types of data sources](data.html) besides inline data as well.  For this tutorial, we will use inline data.  
+The `data` property defines the data source of the visualization.  In this example, we embed the data inline by directly setting `values` property.  Vega-Lite also supports [other types of data sources]({{site.baseurl}}/docs/data.html) besides inline data as well.  For this tutorial, we will use inline data.  
 
 ## Encoding Data with Marks
 
@@ -307,7 +307,7 @@ If viewed in a browser, this page displays our bar chart. You can also see it [h
 
 Now you can create a website that embeds a Vega-Lite specification.  If you want to learn more about Vega-Lite, please feel free to:
 
-- Read the [next tutorial](/tutorials/weather.html).
-- See the [examples gallery](/gallery.html).
+- Read the [next tutorial]({{site.baseurl}}/tutorials/weather.html).
+- See the [examples gallery]({{site.baseurl}}/gallery.html).
 - Build your own visualizations in the [online editor](https://vega.github.io/vega-editor/?mode=vega-lite).
-- Browse through the [documentation](/docs/).
+- Browse through the [documentation]({{site.baseurl}}/docs/).
