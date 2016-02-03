@@ -44,7 +44,7 @@ a:not(:hover) {
 }
 footer {
   border-top: 1px solid #eee;
-  padding: 1.5em 2em 1.5em 2em;
+  padding: 1em 2em 1em 2em;
   font-size: small;
   color: #aaa;
   /* for safari */
