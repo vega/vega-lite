@@ -120,7 +120,7 @@ export const textFieldDef = mergeDeep(duplicate(fieldDef), {
   }
 });
 
-// Shape / Row / Column only supports ordinal scale
+// Shape / Row / Column only supports ordinal scale 
 
 const fieldDefWithOrdinalScale = mergeDeep(duplicate(fieldDef), {
   properties: {
@@ -137,13 +137,6 @@ export const shapeFieldDef =  mergeDeep(duplicate(fieldDefWithOrdinalScale), {
 export const facetFieldDef = mergeDeep(duplicate(fieldDefWithOrdinalScale), {
   required: ['field', 'type'],
   properties: {
-    axis: axis,
-    scale: {
-      // Default cell padding between facet
-      // TODO: might re-consider this config in the future 
-      properties: {
-        padding: {default: 16}
-      }
-    }
+    axis: axis
   }
 });

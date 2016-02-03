@@ -57,6 +57,16 @@ export class Model {
       if (fieldDef.legend === true) {
         fieldDef.legend = instantiate(legendSchema);
       }
+
+      // set default padding for ROW and COLUMN
+      if (channel === ROW && fieldDef.scale.padding === undefined) {
+        // This should be zero for the sake of text table.
+        fieldDef.scale.padding = this.has(Y) ? 16 : 0;
+      }
+      if (channel === COLUMN && fieldDef.scale.padding === undefined) {
+        // This should be zero for the sake of text table.
+        fieldDef.scale.padding = this.has(X) ? 16 : 0;
+      }
     }, this);
 
     // calculate stack

@@ -284,7 +284,6 @@ export function outerPadding(model: Model, channel: Channel, scaleType: string) 
 
 export function padding(model: Model, channel: Channel, scaleType: string) {
   if (scaleType === 'ordinal' && channel !== ROW && channel !== COLUMN) {
-    // For `row` and `column` we manually add padding to the layout
     return model.fieldDef(channel).scale.padding;
   }
   return undefined;
