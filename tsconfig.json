@@ -83,7 +83,7 @@
     "src/validate.ts",
     "src/vl.ts",
     "test/compile/axis.test.ts",
-    "test/compile/compiler.test.ts",
+    "test/compile/compile.test.ts",
     "test/compile/data.test.ts",
     "test/compile/legend.test.ts",
     "test/compile/mark-area.test.ts",
