@@ -106,6 +106,20 @@ describe('Mark: Point', function() {
       assert.deepEqual(props.shape, {scale: SHAPE, field: 'bin_yield_range'});
     });
   });
+
+  describe('with constant color, shape, and size', function() {
+    const model = parseModel(pointXY({
+      "shape": {"value": "circle"},
+      "color": {"value": "red"},
+      "size": {"value": 23}
+    }));
+    const props = point.properties(model);
+    it('should correct shape, color and size', function () {
+      assert.deepEqual(props.shape, {value: "circle"});
+      assert.deepEqual(props.stroke, {value: "red"});
+      assert.deepEqual(props.size, {value: 23});
+    });
+  });
 });
 
 describe('Mark: Square', function() {

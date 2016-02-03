@@ -229,6 +229,10 @@ export class Model {
   }
 
   public sizeValue(channel: Channel = SIZE) {
+    const value = this.fieldDef(SIZE).value;
+    if (value !== undefined) {
+       return value;
+    }
     switch (this.mark()) {
       case TEXTMARK:
         return this.config().mark.fontSize; // font size 10 by default

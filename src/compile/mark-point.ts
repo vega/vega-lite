@@ -49,6 +49,8 @@ export namespace point {
         scale: model.scaleName(SHAPE),
         field: model.field(SHAPE)
       };
+    } else if (model.fieldDef(SHAPE).value) {
+      p.shape = { value: model.fieldDef(SHAPE).value };
     } else {
       p.shape = { value: model.config().mark.shape };
     }

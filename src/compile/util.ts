@@ -29,6 +29,8 @@ export function applyColorAndOpacity(p, model: Model, colorMode: ColorMode = Col
         scale: model.scaleName(COLOR),
         field: model.field(COLOR)
       };
+    } else if (model.fieldDef(COLOR).value) {
+      p.fill = { value: model.fieldDef(COLOR).value };
     } else {
       p.fill = { value: model.config().mark.color };
     }
@@ -38,6 +40,8 @@ export function applyColorAndOpacity(p, model: Model, colorMode: ColorMode = Col
         scale: model.scaleName(COLOR),
         field: model.field(COLOR)
       };
+    } else if (model.fieldDef(COLOR).value) {
+      p.stroke = { value: model.fieldDef(COLOR).value };
     } else {
       p.stroke = { value: model.config().mark.color };
     }

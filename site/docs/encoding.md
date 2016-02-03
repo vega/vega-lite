@@ -69,7 +69,7 @@ Here is a list of properties for the field definition object:
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | field         | String        | Name of the field from which to pull a data value.    |
-| value         | String &#124; Number | A constant value. |
+| value         | String &#124; Number | A constant value in visual domain. |
 | type          | String        | Data type of the field.  This property accepts both a full type name (`"quantitative"`, `"temporal"`, `"ordinal"`,  and `"nominal"`), or an initial character of the type name (`"Q"`, `"T"`, `"O"`, `"N"`).  This property is case insensitive.|
 
 {:#types}
