@@ -5,7 +5,7 @@ title: Introduction to Vega-Lite
 permalink: /tutorials/getting_started.html
 ---
 
-This tutorial will guide you how to write a visualization specification in Vega-Lite.  We will walk you through all main components of Vega-Lite by adding each of them to an example specification one-by-one.  After creating the example visualization, we will also guide you how to embed the final visualization on a web page.
+This tutorial will guide through the process of writing a visualization specification in Vega-Lite.  We will walk you through all main components of Vega-Lite by adding each of them to an example specification one-by-one.  After creating the example visualization, we will also guide you how to embed the final visualization on a web page.
 
 * TOC
 {:toc}
