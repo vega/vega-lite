@@ -349,7 +349,7 @@ describe('data.summary', function () {
   });
 });
 
-describe('Handle fix mode', function() {
+describe('Handle fixed time unit domain.', function() {
   it('seconds should have cardinality of 60', function() {
     const model = parseModel({
         "mark": "line",
