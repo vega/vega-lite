@@ -116,6 +116,8 @@ namespace properties {
 
           if (model.has(COLOR) && channel === COLOR) {
             symbols.fill = {scale: model.scaleName(COLOR), field: 'data'};
+          } else if (model.fieldDef(COLOR).value) {
+            symbols.fill = {value: model.fieldDef(COLOR).value};
           } else {
             symbols.fill = {value: model.config().mark.color};
           }
@@ -126,6 +128,8 @@ namespace properties {
 
           if (model.has(COLOR) && channel === COLOR) {
             symbols.stroke = {scale: model.scaleName(COLOR), field: 'data'};
+          } else if (model.fieldDef(COLOR).value) {
+            symbols.stroke = {value: model.fieldDef(COLOR).value};
           } else {
             symbols.stroke = {value: model.config().mark.color};
           }

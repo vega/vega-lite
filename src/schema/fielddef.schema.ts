@@ -56,6 +56,9 @@ const fieldDef = {
     field: {
       type: 'string'
     },
+    value: {
+      type: ['string', 'number']
+    },
     type: {
       type: 'string',
       enum: [NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL]
