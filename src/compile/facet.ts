@@ -65,7 +65,7 @@ export function facetMixins(model: Model, marks) {
       rootMarks.push(getRowGridGroup(model, cellHeight));
     }
   } else { // doesn't have row
-    if (model.has(X)) { // keep x axis in the cell
+    if (model.has(X) && model.fieldDef(X).axis) { // keep x axis in the cell
       cellAxes.push(compileAxis(X, model));
     }
   }
@@ -95,7 +95,7 @@ export function facetMixins(model: Model, marks) {
       rootMarks.push(getColumnGridGroup(model, cellWidth));
     }
   } else { // doesn't have column
-    if (model.has(Y)) { // keep y axis in the cell
+    if (model.has(Y) && model.fieldDef(Y).axis) { // keep y axis in the cell
       cellAxes.push(compileAxis(Y, model));
     }
   }
@@ -151,9 +151,12 @@ function getXAxesGroup(model: Model, cellWidth, hasCol: boolean) { // TODO: VgMa
           height: {field: {group: 'height'}},
           x: hasCol ? {scale: model.scaleName(COLUMN), field: model.field(COLUMN)} : {value: 0}
         }
-      },
+      }
+    },
+    model.fieldDef(X).axis ? {
       axes: [compileAxis(X, model)]
-    });
+    }: {}
+  );
 }
 
 function getYAxesGroup(model: Model, cellHeight, hasRow: boolean) { // TODO: VgMarks
@@ -180,8 +183,11 @@ function getYAxesGroup(model: Model, cellHeight, hasRow: boolean) { // TODO: VgM
           y: hasRow ? {scale: model.scaleName(ROW), field: model.field(ROW)} : {value: 0}
         }
       },
+    },
+    model.fieldDef(Y).axis ? {
       axes: [compileAxis(Y, model)]
-    });
+    }: {}
+  );
 }
 
 function getRowGridGroup(model: Model, cellHeight): any { // TODO: VgMarks
