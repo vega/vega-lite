@@ -116,10 +116,16 @@ export function title(fieldDef: FieldDef) {
   if (isCount(fieldDef)) {
     return COUNT_DISPLAYNAME;
   }
+
+  var unit = '';
+  if(fieldDef.unit) {
+    unit = ' in ' + fieldDef.unit;
+  }
+
   var fn = fieldDef.aggregate || fieldDef.timeUnit || (fieldDef.bin && 'bin');
   if (fn) {
-    return fn.toUpperCase() + '(' + fieldDef.field + ')';
+    return fn.toUpperCase() + '(' + fieldDef.field + ')' + unit;
   } else {
-    return fieldDef.field;
+    return fieldDef.field + unit;
   }
 }

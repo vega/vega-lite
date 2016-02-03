@@ -177,6 +177,22 @@ export namespace properties {
       }, labelsSpec);
     }
 
+    if(axis.showUnit === 'label-prefix') {
+        labelsSpec = extend({
+          text : {
+            template: fieldDef.unit + '{{ datum.data }}'
+          }
+        }, labelsSpec || {});
+    }
+
+    if(axis.showUnit === 'label-suffix') {
+        labelsSpec = extend({
+          text : {
+            template: '{{ datum.data }}' + fieldDef.unit
+          }
+        }, labelsSpec || {});
+    }
+
     if (contains([NOMINAL, ORDINAL], fieldDef.type) && axis.labelMaxLength) {
       // TODO replace this with Vega's labelMaxLength once it is introduced
       labelsSpec = extend({
