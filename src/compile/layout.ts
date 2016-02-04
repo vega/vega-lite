@@ -38,7 +38,7 @@ function getCellWidth(model: Model): LayoutValue {
     if (model.isOrdinalScale(X)) { // calculate in data
       return {data: LAYOUT, field: 'cellWidth'};
     }
-    return model.config().cell.width;
+    return model.config().unit.width;
   }
   if (model.mark() === TEXT_MARK) {
     return 90; // TODO: config.scale.textBandWidth
@@ -58,7 +58,7 @@ function getCellHeight(model: Model): LayoutValue {
     if (model.isOrdinalScale(Y)) { // calculate in data
       return {data: LAYOUT, field: 'cellHeight'};
     } else {
-      return model.config().cell.height;
+      return model.config().unit.height;
     }
   }
   return 21 /* config.scale.bandWidth */;
