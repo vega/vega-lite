@@ -1,6 +1,5 @@
 import {Model} from './Model';
 import {X, Y, COLOR, TEXT, SHAPE, PATH, ORDER, DETAIL, ROW, COLUMN, LABEL} from '../channel';
-import {field} from '../fielddef';
 import {AREA, LINE, TEXT as TEXTMARK} from '../mark';
 import {imputeTransform, stackTransform} from './stack';
 import {contains, extend, isArray} from '../util';
@@ -10,8 +9,8 @@ import {line} from './mark-line';
 import {point, circle, square} from './mark-point';
 import {text} from './mark-text';
 import {tick} from './mark-tick';
+import {sortField} from './util';
 
-import {FieldDef} from '../schema/fielddef.schema';
 
 const markCompiler = {
   area: area,
@@ -181,11 +180,6 @@ function sortPathBy(model: Model) {
     // For both line and area, we sort values based on dimension by default
     return '-' + model.field(model.config().mark.orient === 'horizontal' ? Y : X);
   }
-}
-
-/** Add "-" prefix for descending */
-function sortField(fieldDef: FieldDef) {
-  return (fieldDef.sort === 'descending' ? '-' : '') + field(fieldDef);
 }
 
 /**
