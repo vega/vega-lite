@@ -73,12 +73,19 @@ Here is a list of properties for the field definition object:
 | type          | String        | Data type of the field.  This property accepts both a full type name (`"quantitative"`, `"temporal"`, `"ordinal"`,  and `"nominal"`), or an initial character of the type name (`"Q"`, `"T"`, `"O"`, `"N"`).  This property is case insensitive.|
 
 {:#types}
-#### Data types
+#### Data Types
 
-* **Quantitative**: Quantitative data expresses some kind of quantity. Typically this is numerical data. For example `7.3`, `42.0`, `12.1`.
-* **Temporal**: Information about times or time spans. For example `2015-03-07 12:32:17`.
-* **Ordinal**: Or ordered categorical data. Ordinal data can be ranked (1st, 2nd, ...) by which the data can be sorted. However, as opposed to quantitative data, there is no notion of *difference* between them. For example `small`, `medium`, `large`, `extra-large`.
-* **Nominal**: Or categorical data. Nominal data like ordinal data has no notion of difference. Nominal data also has no notion of order. For example `apple`, `banana`, `kiwi`.
+Quantitative
+: Quantitative data expresses some kind of quantity. Typically this is numerical data. For example `7.3`, `42.0`, `12.1`.
+
+Temporal
+: Information about times or time spans. For example `2015-03-07 12:32:17`.
+
+Ordinal
+: Ordinal data can be ranked (1st, 2nd, ...) by which the data can be sorted. However, as opposed to quantitative data, there is no notion of *difference* between them. For example `small`, `medium`, `large`, `extra-large`.
+
+Nominal
+: Also known as categorical data, nominal data like ordinal data has no notion of difference. Nominal data also has no notion of order. For example `apple`, `banana`, `kiwi`.
 
 Note that data types describe the more than just the raw data type (e.g. `number`, `string`, `date`) as for example a field with only numbers can be quantitative but also ordinal when the numbers encode a category.
 
