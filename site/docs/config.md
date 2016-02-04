@@ -5,6 +5,7 @@ title: Configuration
 permalink: /docs/config.html
 ---
 
+{: .suppress-error}
 ```json
 {
   "data": ... ,
@@ -144,7 +145,7 @@ Setting `config.mark.filled` to `true` creates filled marks instead.
 <!-- TODO: think about better example -->
 <!--
 #### Example: `"horizontal"` orient in the line.
-```js
+```json
 {
   "data": {"url": "data/cars.json"},
   "mark": "line",
@@ -156,6 +157,7 @@ Setting `config.mark.filled` to `true` creates filled marks instead.
     "mark": {"orient": "horizontal"}
   }
 }
+
 ```
 <script>
 vg.embed('#horizontal_line', {

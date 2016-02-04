@@ -205,13 +205,6 @@ nav a:hover {
   float: right;
 }
 
-/* Allow json example with errors */
-
-.highlight .err {
-  color: #000;
-  background-color: transparent;
-}
-
 /* Media queries */
 
 @media (max-width:960px) {

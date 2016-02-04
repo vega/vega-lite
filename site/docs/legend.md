@@ -9,6 +9,7 @@ Similar to [axes](axis.html), legends visualize scales. However, whereas axes ai
 
 By default, Vega-Lite automatically creates legends for `color`, `size`, and `shape` channels when they are encoded.  Legend can be further customized via the field definition's `legend` property.  
 
+{: .suppress-error}
 ```json
 {
   "data": ... ,       

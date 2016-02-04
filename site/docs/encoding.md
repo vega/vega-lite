@@ -5,6 +5,7 @@ title: Encoding
 permalink: /docs/encoding.html
 ---
 
+{: .suppress-error}
 ```json
 {
   "data": ... ,       
@@ -135,7 +136,7 @@ For more information about scale, axis, and legend, please look at the [scale](s
 
 You can set `color` and `shape` of a scatter plot to constant values.
 
-```js
+```json
 {
   "data": {"url": "data/cars.json"},
   "mark": "point",

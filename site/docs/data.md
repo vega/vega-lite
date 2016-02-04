@@ -7,6 +7,7 @@ permalink: /docs/data.html
 
 Akin to [Vega](https://www.github.com/vega/vega)'s [data model](https://www.github.com/vega/vega/wiki/Data), the basic data model used by Vega-Lite is *tabular* data, similar to a spreadsheet or a database table. Individual data sets are assumed to contain a collection of records, which may contain any number of named data fields.
 
+{: .suppress-error}
 ```json
 {
   "data": ... ,       // data
