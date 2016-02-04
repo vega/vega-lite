@@ -9,7 +9,8 @@ This is a gallery of Vega-Lite visualizations. Uses Vega-Lite version <span id="
 <div class="viz-list"></div>
 
 <label>
-  Show debug examples <input type="checkbox" id="show-debug"></input>
+  Show debug examples
+  <input type="checkbox" id="show-debug"/>
 </label>
 
 <script src="{{site.baseurl}}/site/static/gallery.js"></script>
