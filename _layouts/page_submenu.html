@@ -1,0 +1,25 @@
+---
+layout: plain
+---
+
+{% assign url = page.url | remove:page.base | remove:'.html' %}
+
+{% if url == '' %}
+  {% assign url = 'index' %}
+{% endif %}
+
+<div class="sub-nav">
+  <nav class="page-centered">
+    {% for link in page.navigation %}
+    <a {% if (url == link.url) %}class="active"{% endif %}
+        href="{{site.baseurl}}{{page.base}}{% if link.url!='index' %}{{link.url}}.html{% endif %}" title="{{link.title}}">{{link.text}}
+    </a>
+    {% endfor %}
+  </nav>
+</div>
+
+<div class="page-centered page-content">
+  <h1>{{page.title}}</h1>
+
+  {{ content }}
+</div>
