@@ -1,4 +1,4 @@
-import {FieldDef, facetFieldDef, orderFieldDefs, positionFieldDef, shapeFieldDef, sizeFieldDef, textFieldDef, colorFieldDef} from './fielddef.schema';
+import {FieldDef, detailFieldDefs, facetFieldDef, orderFieldDefs, positionFieldDef, shapeFieldDef, sizeFieldDef, textFieldDef, colorFieldDef} from './fielddef.schema';
 
 export interface Encoding {
   x?: FieldDef;
@@ -8,10 +8,12 @@ export interface Encoding {
   color?: FieldDef;
   size?: FieldDef;
   shape?: FieldDef;
-  path?: FieldDef | FieldDef[];
   detail?: FieldDef | FieldDef[];
   text?: FieldDef;
   label?: FieldDef;
+
+  path?: FieldDef | FieldDef[];
+  order?: FieldDef | FieldDef[];
 }
 
 export const encoding = {
@@ -24,9 +26,10 @@ export const encoding = {
     size: sizeFieldDef,
     color: colorFieldDef,
     shape: shapeFieldDef,
-    path: orderFieldDefs,
     text: textFieldDef,
-    detail: orderFieldDefs,
-    label: textFieldDef
+    detail: detailFieldDefs,
+    label: textFieldDef,
+    path: orderFieldDefs,
+    order: orderFieldDefs
   }
 };
