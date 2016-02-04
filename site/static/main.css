@@ -150,6 +150,10 @@ h2:hover .anchor .octicon-link, h3:hover .anchor .octicon-link, h4:hover .anchor
   visibility: visible;
 }
 
+dt {
+  color: #777;
+}
+
 /* Nav */
 
 nav {
