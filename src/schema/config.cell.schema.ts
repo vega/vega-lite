@@ -1,7 +1,4 @@
 export interface CellConfig {
-  width?: number;
-  height?: number;
-
   gridColor?: string;
   gridOpacity?: number;
   gridOffset?: number;
@@ -18,14 +15,6 @@ export interface CellConfig {
 export const cellConfig = {
   type: 'object',
   properties: {
-    width: {
-      type: 'integer',
-      default: 200
-    },
-    height: {
-      type: 'integer',
-      default: 200
-    },
     gridColor: {
       type: 'string',
       role: 'color',

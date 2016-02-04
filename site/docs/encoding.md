@@ -5,7 +5,8 @@ title: Encoding
 permalink: /docs/encoding.html
 ---
 
-```js
+{: .suppress-error}
+```json
 {
   "data": ... ,       
   "mark": ... ,       
@@ -73,12 +74,19 @@ Here is a list of properties for the field definition object:
 | type          | String        | Data type of the field.  This property accepts both a full type name (`"quantitative"`, `"temporal"`, `"ordinal"`,  and `"nominal"`), or an initial character of the type name (`"Q"`, `"T"`, `"O"`, `"N"`).  This property is case insensitive.|
 
 {:#types}
-#### Data types
+#### Data Types
 
-* **Quantitative**: Quantitative data expresses some kind of quantity. Typically this is numerical data. For example `7.3`, `42.0`, `12.1`.
-* **Temporal**: Information about times or time spans. For example `2015-03-07 12:32:17`.
-* **Ordinal**: Or ordered categorical data. Ordinal data can be ranked (1st, 2nd, ...) by which the data can be sorted. However, as opposed to quantitative data, there is no notion of *difference* between them. For example `small`, `medium`, `large`, `extra-large`.
-* **Nominal**: Or categorical data. Nominal data like ordinal data has no notion of difference. Nominal data also has no notion of order. For example `apple`, `banana`, `kiwi`.
+Quantitative
+: Quantitative data expresses some kind of quantity. Typically this is numerical data. For example `7.3`, `42.0`, `12.1`.
+
+Temporal
+: Information about times or time spans. For example `2015-03-07 12:32:17`.
+
+Ordinal
+: Ordinal data can be ranked (1st, 2nd, ...) by which the data can be sorted. However, as opposed to quantitative data, there is no notion of *difference* between them. For example `small`, `medium`, `large`, `extra-large`.
+
+Nominal
+: Also known as categorical data, nominal data like ordinal data has no notion of difference. Nominal data also has no notion of order. For example `apple`, `banana`, `kiwi`.
 
 Note that data types describe the more than just the raw data type (e.g. `number`, `string`, `date`) as for example a field with only numbers can be quantitative but also ordinal when the numbers encode a category.
 
@@ -135,35 +143,7 @@ For more information about scale, axis, and legend, please look at the [scale](s
 
 You can set `color` and `shape` of a scatter plot to constant values.
 
-```js
-{
-  "data": {"url": "data/cars.json"},
-  "mark": "point",
-  "encoding": {
-    "x": {"field": "Horsepower","type": "quantitative"},
-    "y": {"field": "Miles_per_Gallon","type": "quantitative"},
-    "color": {"value": "#ff9900"},
-    "shape": {"value": "square"}
-  }
-}
-```
-
-<script>
-vg.embed('#scatter_color_shape_constant', {
-  mode: 'vega-lite',
-  spec: {
-    "data": {"url": "../data/cars.json"},
-    "mark": "point",
-    "encoding": {
-      "x": {"field": "Horsepower","type": "quantitative"},
-      "y": {"field": "Miles_per_Gallon","type": "quantitative"},
-      "color": {"value": "#ff9900"},
-      "shape": {"value": "square"}
-    }
-  }
-});
-</script>
-<div id="scatter_color_shape_constant"></div>
+<span class="vl-example" data-name="scatter_color_shape_constant" data-dir="docs"></span>
 
 Also, see [this example for mapping fields to color and shape](mark.html#ex-scatter_color_shape).
 
@@ -176,46 +156,7 @@ By default, there will be 1 pixel offset between bars.
 Specifying `size`' `value` will adjust the bar's width.  
 The following example sets the width to 10 to add more offset between bars.  
 
-```js
-{
-  "description": "A bar chart showing the US population distribution of age groups in 2000.",
-  "data": { "url": "data/population.json"},
-  "transform": {
-    "filter": "datum.year == 2000"
-  },
-  "mark": "bar",
-  "encoding": {
-    "y": {
-      "aggregate": "sum", "field": "people", "type": "quantitative",
-      "axis": {"title": "population"}
-    },
-    "x": {
-      "field": "age", "type": "ordinal",
-      "scale": {"bandWidth": 17}
-    },
-    "size": {"value": 10}
-  }
-}
-```
-<script>
-vg.embed('#bar_aggregate_size', {
-  mode: 'vega-lite',
-  spec: {
-    "description": "A bar chart showing the US population distribution of age groups in 2000.",
-    "data": { "url": "../data/population.json"},
-    "transform": {
-      "filter": "datum.year == 2000"
-    },
-    "mark": "bar",
-    "encoding": {
-      "y": {"field": "people", "type": "quantitative", "aggregate": "sum", "axis": {"title": "population"}},
-      "x": {"field": "age", "type": "ordinal", "scale": {"bandWidth": 17}}
-    },
-    "size": {"value": 10}
-  }
-});
-</script>
-<div id="bar_aggregate_size"></div>
+<span class="vl-example" data-name="bar_aggregate_size" data-dir="docs"></span>
 
 #### Example: Detail
 

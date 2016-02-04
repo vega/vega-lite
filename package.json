@@ -13,6 +13,7 @@
     "test": "test"
   },
   "scripts": {
+    "postinstall": "cp node_modules/vega-datasets/data/* data",
     "build": "browserify src/vl.ts -p tsify -d -s vl > vega-lite.js",
     "postbuild": "uglifyjs vega-lite.js -cm --source-map vega-lite.min.js.map > vega-lite.min.js && npm run schema",
     "build:all": "npm run clean && npm run build && npm test && npm run lint",
@@ -21,7 +22,7 @@
     "deploy": "scripts/deploy.sh",
     "deploy:gh": "scripts/deploy-gh.sh",
     "lint": "tslint -c tslint.json src/*.ts test/*.ts src/**/*.ts test/**/*.ts",
-    "prestart": "bundle exec jekyll build && cp _site/gallery.html _gallery.html",
+    "prestart": "bundle exec jekyll build --config _config.yml,_config_dev.yml && cp _site/gallery.html _gallery.html",
     "start": "npm run watch & browser-sync start --server --files 'vega-lite.js' --index '_gallery.html'",
     "schema": "tsc && npm run schema:only",
     "schema:only": "node src/schema/schemagen.js > vega-lite-schema.json",
@@ -58,6 +59,7 @@
     "typescript": "^1.8.0",
     "uglify-js": "^2.6.1",
     "vega": "^2.4.2",
+    "vega-datasets": "vega/vega-datasets#gh-pages",
     "watchify": "^3.7.0",
     "z-schema": "^3.16.1"
   },

@@ -1,18 +1,21 @@
+import {UnitConfig, unitConfig} from './config.unit.schema';
 import {StackConfig, stackConfig} from './config.stack.schema';
 import {CellConfig, cellConfig} from './config.cell.schema';
 import {MarkConfig, markConfig} from './config.marks.schema';
 import {SceneConfig, sceneConfig} from './config.scene.schema';
 
 export interface Config {
-  width?: number;
-  height?: number;
-  padding?: number|string;
+  // TODO: add this back once we have top-down layout approach
+  // width?: number;
+  // height?: number;
+  // padding?: number|string;
   viewport?: number;
   background?: string;
 
   numberFormat?: string;
   timeFormat?: string;
 
+  unit?: UnitConfig;
   cell?: CellConfig;
   mark?: MarkConfig;
   scene?: SceneConfig;
@@ -64,6 +67,7 @@ export const config = {
     },
 
     // nested
+    unit: unitConfig,
     stack: stackConfig,
     cell: cellConfig,
     mark: markConfig,

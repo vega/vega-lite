@@ -44,7 +44,7 @@ a:not(:hover) {
 }
 footer {
   border-top: 1px solid #eee;
-  padding: 1.5em 2em 1.5em 2em;
+  padding: 1em 2em 1em 2em;
   font-size: small;
   color: #aaa;
   /* for safari */
@@ -59,6 +59,10 @@ blockquote {
   color: #777;
   border-left: 4px solid #ddd;
   margin: 0;
+}
+dt {
+  font-weight: bold;
+  color: #777;
 }
 
 /* Table */
@@ -203,13 +207,6 @@ nav a:hover {
 }
 .float-right {
   float: right;
-}
-
-/* Allow json example with errors */
-
-.highlight .err {
-  color: #000;
-  background-color: transparent;
 }
 
 /* Media queries */
