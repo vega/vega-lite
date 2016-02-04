@@ -18,7 +18,7 @@ export namespace point {
         field: model.field(X, { binSuffix: '_mid' })
       };
     } else {
-      p.x = { value: model.fieldDef(X).scale.bandWidth / 2 };
+      p.x = { value: 21 /* config.scale.bandWidth */ / 2 };
     }
 
     // y
@@ -28,7 +28,7 @@ export namespace point {
         field: model.field(Y, { binSuffix: '_mid' })
       };
     } else {
-      p.y = { value: model.fieldDef(Y).scale.bandWidth / 2 };
+      p.y = { value: 21 /* config.scale.bandWidth */ / 2 };
     }
 
     // size
@@ -49,6 +49,8 @@ export namespace point {
         scale: model.scaleName(SHAPE),
         field: model.field(SHAPE)
       };
+    } else if (model.fieldDef(SHAPE).value) {
+      p.shape = { value: model.fieldDef(SHAPE).value };
     } else {
       p.shape = { value: model.config().mark.shape };
     }

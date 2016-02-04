@@ -5,7 +5,7 @@ title: Introduction to Vega-Lite
 permalink: /tutorials/getting_started.html
 ---
 
-This tutorial will guide you how to write a visualization specification in Vega-Lite.  We will walk you through all main components of Vega-Lite by adding each of them to an example specification one-by-one.  After creating the example visualization, we will also guide you how to embed the final visualization on a web page.
+This tutorial will guide through the process of writing a visualization specification in Vega-Lite.  We will walk you through all main components of Vega-Lite by adding each of them to an example specification one-by-one.  After creating the example visualization, we will also guide you how to embed the final visualization on a web page.
 
 * TOC
 {:toc}
@@ -58,7 +58,7 @@ To visualize this data with Vega-Lite, we can add it directly to the `data` prop
 }
 ```
 
-The `data` property defines the data source of the visualization.  In this example, we embed the data inline by directly setting `values` property.  Vega-Lite also supports [other types of data sources](data.html) besides inline data as well.  For this tutorial, we will use inline data.  
+The `data` property defines the data source of the visualization.  In this example, we embed the data inline by directly setting `values` property.  Vega-Lite also supports [other types of data sources]({{site.baseurl}}/docs/data.html) besides inline data as well.  For this tutorial, we will use inline data.  
 
 ## Encoding Data with Marks
 
@@ -301,13 +301,13 @@ In this webpage, we first load the dependencies for Vega-Lite (D3, Vega-Embed, V
 
 In the JavaScript code, we create a variable `vlSpec` that holds the Vega-Lite specification in JSON format. The `vl.embed` method translates a Vega-Lite specification into a Vega specification and then calls the [Vega Runtime](https://github.com/vega/vega/wiki/Runtime) to display visualization in the container `<div/>` element.
 
-If viewed in a browser, this page displays our bar chart. You can also see it [here](/site/demo.html).
+If viewed in a browser, this page displays our bar chart. You can also see it [here]({{site.baseurl}}/site/demo.html).
 
 ## Next Steps
 
 Now you can create a website that embeds a Vega-Lite specification.  If you want to learn more about Vega-Lite, please feel free to:
 
-- Read the [next tutorial](/tutorials/weather.html).
-- See the [examples gallery](/gallery.html).
+- Read the [next tutorial]({{site.baseurl}}/tutorials/weather.html).
+- See the [examples gallery]({{site.baseurl}}/gallery.html).
 - Build your own visualizations in the [online editor](https://vega.github.io/vega-editor/?mode=vega-lite).
-- Browse through the [documentation](/docs/).
+- Browse through the [documentation]({{site.baseurl}}/docs/).
