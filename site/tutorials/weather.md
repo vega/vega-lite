@@ -15,7 +15,7 @@ To load the CSV file with Vega-Lite, we need to provide a URL and set the format
 "data": {"url": "data/seattle-weather.csv", "formatType": "csv"}
 ```
 
-Let's start by looking at the precipitation. Precipitation is a quantitative variable. Let's use a tick mark to show the distribution of the precipitation.
+Let's start by looking at the precipitation. Precipitation is a quantitative variable. Let's use a tick mark to show the distribution of precipitation.
 
 <div class="vl-example">
 {
@@ -27,7 +27,7 @@ Let's start by looking at the precipitation. Precipitation is a quantitative var
 }
 </div>
 
-It looks as though precipitation is skewed towards lower precipitations. To better see this, we can create a histogram of the precipitation data. For this, we have to add an encoding channel for `y` that uses a special field `*` that is aggregated with `count`. just showing how often a a certain value was measured is not very helpful because they are continuous. To discretize the temperature values, set `"bin": true`.
+It looks as though precipitation is skewed towards lower values; that is, when it rains, it usually doesn't rain very much. To better see this, we can create a histogram of the precipitation data. For this, we have to add an encoding channel for `y` that uses a special field `*` that is aggregated with `count`. It is difficult to see patterns across continuous variables. You can therefore discretize temperature values by setting `"bin": true`.
 
 <div class="vl-example">
 {
@@ -67,7 +67,7 @@ Next, let's look at how precipitation in Seattle changes throughout the year. Ve
 
 This chart shows that in Seattle the precipitation in the winter is much higher than during the summer. You can now create similar charts for the other variables on your own!
 
-When looking at precipitation and temperature, we might want to aggregate by year and month rather than just month. This allows us to see seasonal trends but for each year separately. You can find more about [time units in the documentation]({{site.baseurl}}/docs/timeUnit.html). Note that we set the aggregation to `max`so that we see the maximum temperature in each month.
+When looking at precipitation and temperature, we might want to aggregate by year and month rather than just month. This allows us to see seasonal trends but for each year separately. You can find more about [time units in the documentation]({{site.baseurl}}/docs/timeUnit.html). Note that we set the aggregation to `max` in order to see the maximum temperature in each month.
 
 <div class="vl-example">
 {
@@ -91,7 +91,7 @@ When looking at precipitation and temperature, we might want to aggregate by yea
 }
 </div>
 
-In this chart it looks as though the maximum temperature is increasing from year to year. To confirm this, let's create a chart that shows the mean of the maximum daily temperatures.
+In this chart, it looks as though the maximum temperature is increasing from year to year. To confirm this, let's create a chart that shows the mean of the maximum daily temperatures.
 
 <div class="vl-example">
 {
@@ -150,7 +150,7 @@ We can use the new field `temp_range` just like any other field. You can find mo
 }
 </div>
 
-For the last visualization in this tutorial, we will explore the `weather` field. One interesting question is how do different kinds of weather distribute throughout the year.  To answer this, we discretize the `date` by month and then count the number of records on the y-Axis. We then break down the bars by the weather type by adding a color channel with nominal data.  When a field is mapped to color for a bar mark, Vega-Lite automatically generates stacking.
+For the last visualization in this tutorial, we will explore the `weather` field. We might wish to know how different kinds of weather (e.g. sunny days or rainy days) are distributed throughout the year. To answer this, we discretize the `date` by month and then count the number of records on the y-Axis. We then break down the bars by the weather type by adding a color channel with nominal data.  When a field is mapped to color for a bar mark, Vega-Lite automatically stacks the bars atop eachother.
 <!-- TODO: link to stacking config once we finish moving it -->
 
 <div class="vl-example">
