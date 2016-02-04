@@ -253,17 +253,21 @@ export class Model {
           return this.config().mark.barWidth;
         }
         // BAR's size is applied on either X or Y
-        return !this.has(channel) || this.isOrdinalScale(channel) ?
-          // For ordinal scale or single bar, we can use bandWidth - 1
-          // (-1 so that the border of the bar falls on exact pixel)
-          this.fieldDef(channel).scale.bandWidth - 1 :
-          // otherwise, set to 2 by default
-          2;
+        return this.isOrdinalScale(channel) ?
+            // For ordinal scale or single bar, we can use bandWidth - 1
+            // (-1 so that the border of the bar falls on exact pixel)
+            this.fieldDef(channel).scale.bandWidth - 1 :
+          !this.has(channel) ?
+            21 : /* config.scale.bandWidth */
+            2; // otherwise, set to 2 by default
       case TICK:
         if (this.config().mark.tickWidth) {
           return this.config().mark.tickWidth;
         }
-        return this.fieldDef(channel).scale.bandWidth / 1.5;
+        const bandWidth = this.has(channel) ?
+          this.fieldDef(channel).scale.bandWidth :
+          21; /* config.scale.bandWidth */
+        return bandWidth / 1.5;
     }
     return this.config().mark.size;
   }
