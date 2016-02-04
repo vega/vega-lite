@@ -4189,6 +4189,19 @@
                     "default": "%Y-%m-%d",
                     "description": "Default datetime format for axis and legend labels. The format can be set directly on each axis and legend."
                 },
+                "unit": {
+                    "type": "object",
+                    "properties": {
+                        "width": {
+                            "type": "integer",
+                            "default": 200
+                        },
+                        "height": {
+                            "type": "integer",
+                            "default": 200
+                        }
+                    }
+                },
                 "stack": {
                     "type": [
                         "boolean",
@@ -4228,14 +4241,6 @@
                 "cell": {
                     "type": "object",
                     "properties": {
-                        "width": {
-                            "type": "integer",
-                            "default": 200
-                        },
-                        "height": {
-                            "type": "integer",
-                            "default": 200
-                        },
                         "gridColor": {
                             "type": "string",
                             "role": "color",
