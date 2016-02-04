@@ -264,7 +264,10 @@ export class Model {
         if (this.config().mark.tickWidth) {
           return this.config().mark.tickWidth;
         }
-        return this.fieldDef(channel).scale.bandWidth / 1.5;
+        const bandWidth = this.has(channel) ?
+          this.fieldDef(channel).scale.bandWidth :
+          21; /* config.scale.bandWidth */
+        return bandWidth / 1.5;
     }
     return this.config().mark.size;
   }
