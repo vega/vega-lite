@@ -62,6 +62,7 @@ blockquote {
 }
 dt {
   font-weight: bold;
+  color: #777;
 }
 
 /* Table */
@@ -148,10 +149,6 @@ h2 .octicon-link, h3 .octicon-link, h4 .octicon-link, h5 .octicon-link, h6 .octi
 }
 h2:hover .anchor .octicon-link, h3:hover .anchor .octicon-link, h4:hover .anchor .octicon-link, h5:hover .anchor .octicon-link, h6:hover .anchor .octicon-link {
   visibility: visible;
-}
-
-dt {
-  color: #777;
 }
 
 /* Nav */
