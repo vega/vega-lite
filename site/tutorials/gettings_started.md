@@ -84,6 +84,7 @@ Now, it looks like we get a point. In fact, Vega-Lite renders one point for each
 
 To visually separate the points, we can *encode* the variable `a` of the data with `x` channel, which represents the x-position of the points.  We can do that by adding an `encoding` object with its key `x` mapped to a field definition that describes variable `a`.
 
+{: .suppress-error}
 ```json
 ...
 "encoding": {
@@ -112,6 +113,7 @@ The `encoding` object is a key-value mapping between encoding channels (such as 
 
 In the visualization above, Vega-Lite automatically adds an axis with labels for the different categories as well as an axis title. However, 3 points in each category are still overlapping. So far, we have only defined a visual encoding for the field `a`. We can also map the field `b` to the `y` channel.
 
+{: .suppress-error}
 ```json
 ...
 "y": {"field": "b", "type": "quantitative"}
