@@ -15,7 +15,7 @@ To load the CSV file with Vega-Lite, we need to provide a URL and set the format
 "data": {"url": "data/seattle-weather.csv", "formatType": "csv"}
 ```
 
-Let's start by looking at the precipitation. Precipitation is a quantitative variable.  Let's use a tick mark to show the distribution of the precipitation.
+Let's start by looking at the precipitation. Precipitation is a quantitative variable. Let's use a tick mark to show the distribution of the precipitation.
 
 <div class="vl-example">
 {
@@ -65,7 +65,7 @@ Next, let's look at how precipitation in Seattle changes throughout the year. Ve
 }
 </div>
 
-This chart shows that in Seattle the precipitation in the winter  is much higher than during the summer. You can now create similar charts for the other variables on your own!
+This chart shows that in Seattle the precipitation in the winter is much higher than during the summer. You can now create similar charts for the other variables on your own!
 
 When looking at precipitation and temperature, we might want to aggregate by year and month rather than just month. This allows us to see seasonal trends but for each year separately. You can find more about [time units in the documentation]({{site.baseurl}}/docs/timeUnit.html). Note that we set the aggregation to `max`so that we see the maximum temperature in each month.
 
@@ -150,7 +150,7 @@ We can use the new field `temp_range` just like any other field. You can find mo
 }
 </div>
 
-For the last visualization in this tutorial, we will explore the `weather` field. One interesting question is how do different kinds of weather distribute throughout the year.  To answer this, we discretize the `date` by month and then count the number of records on the y-Axis. We then break down the bars by the weather type by adding a color channel with nominal data.  When a field is mapped to color for a bar mark, Vega-Lite automatically generates stacking.  
+For the last visualization in this tutorial, we will explore the `weather` field. One interesting question is how do different kinds of weather distribute throughout the year.  To answer this, we discretize the `date` by month and then count the number of records on the y-Axis. We then break down the bars by the weather type by adding a color channel with nominal data.  When a field is mapped to color for a bar mark, Vega-Lite automatically generates stacking.
 <!-- TODO: link to stacking config once we finish moving it -->
 
 <div class="vl-example">
@@ -169,7 +169,7 @@ For the last visualization in this tutorial, we will explore the `weather` field
 }
 </div>
 
-However, the default color palette's semantics might not match our expectation.  For example, we probably do not expect "sun" (sunny) to be purple.  We can further tune the chart by  providing a color [scale range](../docs/scale.html#range) that maps the values from the `weather` field to meaningful colors.  In addition, we can customize the [axis](../docs/axis.html) and [legend](../docs/legend.html) titles.  
+However, the default color palette's semantics might not match our expectation.  For example, we probably do not expect "sun" (sunny) to be purple.  We can further tune the chart by providing a color [scale range](../docs/scale.html#range) that maps the values from the `weather` field to meaningful colors.  In addition, we can customize the [axis](../docs/axis.html) and [legend](../docs/legend.html) titles.  
 
 <div class="vl-example">
 {
