@@ -1,7 +1,5 @@
 import {Spec} from '../schema/schema';
-import {stackConfig as stackConfigSchema} from '../schema/config.stack.schema';
 import {FieldDef} from '../schema/fielddef.schema';
-import {instantiate} from '../schema/schemautil';
 import {Model} from './Model';
 import {Channel, X, Y, COLOR, DETAIL, ORDER} from '../channel';
 import {BAR, AREA} from '../mark';
@@ -21,8 +19,8 @@ export interface StackProperties {
   /** Stack-by field names (from 'color' and 'detail') */
   stackFields: string[];
 
-  /** Stack config for the stack transform. */
-  config: any;
+  /** Stack offset property. */
+  offset: string;
 }
 
 // TODO: put all vega interface in one place
@@ -41,7 +39,7 @@ export function compileStackProperties(spec: Spec) {
 
   if (stackFields.length > 0 &&
       contains([BAR, AREA], spec.mark) &&
-      spec.config.stack !== false &&
+      spec.config.mark.stacked !== 'none' &&
       isAggregate(spec.encoding)) {
 
     var isXMeasure = has(spec.encoding, X) && isMeasure(spec.encoding.x);
@@ -52,14 +50,14 @@ export function compileStackProperties(spec: Spec) {
         groupbyChannel: Y,
         fieldChannel: X,
         stackFields: stackFields,
-        config: spec.config.stack === true  ? instantiate(stackConfigSchema) : spec.config.stack
+        offset: spec.config.mark.stacked
       };
     } else if (isYMeasure && !isXMeasure) {
       return {
         groupbyChannel: X,
         fieldChannel: Y,
         stackFields: stackFields,
-        config: spec.config.stack === true  ? instantiate(stackConfigSchema) : spec.config.stack
+        offset: spec.config.mark.stacked
       };
     }
   }
@@ -123,8 +121,8 @@ export function stackTransform(model: Model) {
     }
   };
 
-  if (stack.config.offset) {
-    transform.offset = stack.config.offset;
+  if (stack.offset) {
+    transform.offset = stack.offset;
   }
   return transform;
 }

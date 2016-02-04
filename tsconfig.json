@@ -63,7 +63,6 @@
     "src/schema/config.marks.schema.ts",
     "src/schema/config.scene.schema.ts",
     "src/schema/config.schema.ts",
-    "src/schema/config.stack.schema.ts",
     "src/schema/config.unit.schema.ts",
     "src/schema/data.schema.ts",
     "src/schema/encoding.schema.ts",

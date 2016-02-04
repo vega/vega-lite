@@ -129,7 +129,7 @@ export function domain(model: Model, channel:Channel, scaleType: string) {
   // For stack, use STACKED data.
   var stack = model.stack();
   if (stack && channel === stack.fieldChannel) {
-    if(stack.config.offset === 'normalize') {
+    if(stack.offset === 'normalize') {
       return [0, 1];
     }
     return {

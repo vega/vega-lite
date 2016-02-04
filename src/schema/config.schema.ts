@@ -1,5 +1,4 @@
 import {UnitConfig, unitConfig} from './config.unit.schema';
-import {StackConfig, stackConfig} from './config.stack.schema';
 import {CellConfig, cellConfig} from './config.cell.schema';
 import {MarkConfig, markConfig} from './config.marks.schema';
 import {SceneConfig, sceneConfig} from './config.scene.schema';
@@ -19,7 +18,6 @@ export interface Config {
   cell?: CellConfig;
   mark?: MarkConfig;
   scene?: SceneConfig;
-  stack?: StackConfig;
 }
 
 export const config = {
@@ -68,7 +66,6 @@ export const config = {
 
     // nested
     unit: unitConfig,
-    stack: stackConfig,
     cell: cellConfig,
     mark: markConfig,
     scene: sceneConfig
