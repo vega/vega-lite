@@ -96,7 +96,7 @@ In this chart it looks as though the maximum temperature is increasing from year
 <div class="vl-example">
 {
   "data": {"url": "data/seattle-weather.csv", "formatType": "csv"},
-  "mark": "point",
+  "mark": "line",
   "encoding": {
     "x": {"field": "date", "type": "temporal", "timeUnit": "year"},
     "y": {
