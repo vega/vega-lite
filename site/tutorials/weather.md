@@ -202,4 +202,4 @@ However, the default color palette's semantics might not match our expectation. 
 }
 </div>
 
-This is the end of this tutorial. You can find more visualizations in the [gallery]({{site.baseurl}}/gallery.html).
+This is the end of this tutorial where you learned different ways to discretize and aggregate data, derive new fields, and customize your charts. You can find more visualizations in the [gallery]({{site.baseurl}}/gallery.html).
