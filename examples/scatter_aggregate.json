@@ -1,0 +1,17 @@
+{
+  "description": "A scatterplot showing miles per gallons means for cars of different horsepower.",
+  "data": {"url": "data/cars.json"},
+  "mark": "point",
+  "encoding": {
+    "x": {
+      "field": "Horsepower",
+      "type": "quantitative",
+      "bin": {"step": 15}
+    },
+    "y": {
+      "field": "Miles_per_Gallon",
+      "type": "quantitative",
+      "aggregate": "mean"
+    }
+  }
+}
