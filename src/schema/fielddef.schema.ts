@@ -2,7 +2,7 @@ import {axis, Axis} from './axis.schema';
 import {bin, Bin} from './bin.schema';
 import {legend, Legend} from './legend.schema';
 import {typicalScale, ordinalOnlyScale, Scale} from './scale.schema';
-import {sort, Sort} from './sort.schema';
+import {sort, sortEnum, Sort} from './sort.schema';
 
 import {AGGREGATE_OPS} from '../aggregate';
 import {toMap, duplicate} from '../util';
@@ -84,6 +84,7 @@ export const positionFieldDef = mergeDeep(duplicate(fieldDefWithScale), {
   required: ['field', 'type'], // TODO: remove if possible
   properties: {
     scale: {
+      // TODO: remove
       // replacing default values for just these two axes
       properties: {
         padding: {default: 1}
@@ -101,13 +102,29 @@ export const colorFieldDef = mergeDeep(duplicate(fieldDefWithScale), {
 
 export const sizeFieldDef = colorFieldDef;
 
-// Detail & Path have no scale
+// Detail
 
-export const orderFieldDefs = {
+export const detailFieldDefs = {
   default: undefined,
   oneOf: [duplicate(fieldDef), {
     type: 'array',
     items: duplicate(fieldDef)
+  }]
+};
+
+// Order Path have no scale
+
+const orderFieldDef = mergeDeep(duplicate(fieldDef), {
+  properties: {
+    sort: sortEnum
+  }
+});
+
+export const orderFieldDefs = {
+  default: undefined,
+  oneOf: [duplicate(orderFieldDef), {
+    type: 'array',
+    items: duplicate(orderFieldDef)
   }]
 };
 
@@ -122,7 +139,7 @@ export const textFieldDef = mergeDeep(duplicate(fieldDef), {
   }
 });
 
-// Shape / Row / Column only supports ordinal scale 
+// Shape / Row / Column only supports ordinal scale
 
 const fieldDefWithOrdinalScale = mergeDeep(duplicate(fieldDef), {
   properties: {

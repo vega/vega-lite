@@ -14,10 +14,11 @@ export enum Channel {
   SHAPE = 'shape' as any,
   SIZE = 'size' as any,
   COLOR = 'color' as any,
-  PATH = 'path' as any,
   TEXT = 'text' as any,
   DETAIL = 'detail' as any,
-  LABEL = 'label' as any
+  LABEL = 'label' as any,
+  PATH = 'path' as any,
+  ORDER = 'order' as any
 }
 
 export const X = Channel.X;
@@ -27,12 +28,13 @@ export const COLUMN = Channel.COLUMN;
 export const SHAPE = Channel.SHAPE;
 export const SIZE = Channel.SIZE;
 export const COLOR = Channel.COLOR;
-export const PATH = Channel.PATH;
 export const TEXT = Channel.TEXT;
 export const DETAIL = Channel.DETAIL;
 export const LABEL = Channel.LABEL;
+export const PATH = Channel.PATH;
+export const ORDER = Channel.ORDER;
 
-export const CHANNELS = [X, Y, ROW, COLUMN, SIZE, SHAPE, COLOR, PATH, TEXT, DETAIL, LABEL];
+export const CHANNELS = [X, Y, ROW, COLUMN, SIZE, SHAPE, COLOR, PATH, ORDER, TEXT, DETAIL, LABEL];
 
 interface SupportedMark {
   point?: boolean;
@@ -66,6 +68,7 @@ export function getSupportedMark(channel: Channel): SupportedMark {
     case Y:
     case COLOR:
     case DETAIL:
+    case ORDER:
     case ROW:
     case COLUMN:
       return { // all marks
@@ -131,5 +134,5 @@ export function getSupportedRole(channel: Channel): SupportedRole {
 }
 
 export function hasScale(channel: Channel) {
-  return !contains([DETAIL, PATH, TEXT, LABEL], channel);
+  return !contains([DETAIL, PATH, TEXT, LABEL, ORDER], channel);
 }
