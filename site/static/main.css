@@ -60,6 +60,9 @@ blockquote {
   border-left: 4px solid #ddd;
   margin: 0;
 }
+dt {
+  font-weight: bold;
+}
 
 /* Table */
 
