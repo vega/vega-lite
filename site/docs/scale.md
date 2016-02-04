@@ -9,7 +9,7 @@ Scales are functions that transform a domain of data values (numbers, dates, str
 
 By default, Vega-Lite creates default scales for fields that are mapped to visual channels.  To customize properties of a scale, the following properties can be specified as part of the [field definition's `scale` property](encoding.html#def).
 
-```js
+```json
 {
   "data": ... ,       
   "mark": ... ,       

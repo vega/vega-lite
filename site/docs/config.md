@@ -5,7 +5,7 @@ title: Configuration
 permalink: /docs/config.html
 ---
 
-```js
+```json
 {
   "data": ... ,
   "mark": ... ,

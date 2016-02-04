@@ -5,7 +5,7 @@ title: Encoding
 permalink: /docs/encoding.html
 ---
 
-```js
+```json
 {
   "data": ... ,       
   "mark": ... ,       
@@ -176,7 +176,7 @@ By default, there will be 1 pixel offset between bars.
 Specifying `size`' `value` will adjust the bar's width.  
 The following example sets the width to 10 to add more offset between bars.  
 
-```js
+```json
 {
   "description": "A bar chart showing the US population distribution of age groups in 2000.",
   "data": { "url": "data/population.json"},

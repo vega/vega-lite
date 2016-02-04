@@ -4,7 +4,7 @@ title: Sorting
 permalink: /docs/sort.html
 ---
 
-```js
+```json
 {
   "data": ... ,       
   "mark": ... ,       

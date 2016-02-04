@@ -6,7 +6,7 @@ permalink: /docs/bin.html
 
 To group quantitative, continuous data values of a particular field into smaller number of "bins" (e.g., for a histogram), the field definition's `bin` property can be specified.  
 
-```js
+```json
 {
   "data": ... ,       
   "mark": ... ,       

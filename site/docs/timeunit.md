@@ -4,7 +4,7 @@ title: Time Unit Conversion
 permalink: /docs/timeunit.html
 ---
 
-```js
+```json
 {
   "data": ... ,       
   "mark": ... ,       
