@@ -4,6 +4,7 @@ export interface MarkConfig {
   color?: string;
   barWidth?: number;
   tickWidth?: number;
+  stacked?: string;
 
   // General Vega
   opacity?: number;
@@ -75,6 +76,13 @@ export const markConfig = {
       role: 'color',
       default: undefined,
       description: 'The width of the ticks.'
+    },
+    stacked: {
+      type: 'string',
+      enum: ['zero', 'center', 'normalize', 'none'],
+      default: undefined
+      // TODO(#620) refer to Vega spec once it doesn't throw error
+      // enum: vgStackSchema.properties.offset.oneOf[0].enum
     },
     // General Vega
     fill: {

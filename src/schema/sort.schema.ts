@@ -8,14 +8,17 @@ export interface Sort {
   order?: string;
 }
 
+export const sortEnum = {
+  default: 'ascending',
+  type: 'string',
+  enum: ['ascending', 'descending', 'unsorted']
+};
+
 export var sort = {
   default: 'ascending',
   supportedTypes: toMap([QUANTITATIVE, ORDINAL]),
   oneOf: [
-    {
-      type: 'string',
-      enum: ['ascending', 'descending', 'unsorted']
-    },
+    sortEnum,
     { // sort by aggregation of another field
       type: 'object',
       required: ['field', 'op'],

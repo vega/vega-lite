@@ -7,14 +7,14 @@ import {instantiate} from '../schema/schemautil';
 import * as schema from '../schema/schema';
 import * as schemaUtil from '../schema/schemautil';
 
-import {COLUMN, ROW, X, Y, SIZE, TEXT, Channel, supportMark} from '../channel';
+import {COLUMN, ROW, X, Y, SIZE, TEXT, PATH, ORDER, Channel, supportMark} from '../channel';
 import {SOURCE, SUMMARY} from '../data';
 import * as vlFieldDef from '../fielddef';
 import {FieldRefOption} from '../fielddef';
 import * as vlEncoding from '../encoding';
 import {Mark, BAR, TICK, TEXT as TEXTMARK} from '../mark';
 
-import {getFullName, NOMINAL, ORDINAL, TEMPORAL} from '../type';
+import {getFullName, NOMINAL, ORDINAL, TEMPORAL, QUANTITATIVE} from '../type';
 import {contains, duplicate, extend} from '../util';
 
 import {compileMarkConfig} from './config';
@@ -46,6 +46,10 @@ export class Model {
       if (fieldDef.type) {
         // convert short type to full type
         fieldDef.type = getFullName(fieldDef.type);
+      }
+
+      if ((channel === PATH || channel === ORDER) && !fieldDef.aggregate && fieldDef.type === QUANTITATIVE) {
+        fieldDef.aggregate = 'min';
       }
 
       // TODO instantiate bin here

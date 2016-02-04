@@ -91,7 +91,7 @@ When looking at precipitation and temperature, we might want to aggregate by yea
 }
 </div>
 
-In this chart, it looks as though the maximum temperature is increasing from year to year. To confirm this, let's create a chart that shows the mean of the maximum daily temperatures.
+In this chart, it looks as though the maximum temperature is increasing from year to year. To look closer into this, let's create a chart that shows the mean of the maximum daily temperatures.
 
 <div class="vl-example">
 {
@@ -202,4 +202,4 @@ However, the default color palette's semantics might not match our expectation. 
 }
 </div>
 
-This is the end of this tutorial where you learned different ways to discretize and aggregate data, derive new fields, and customize your charts. You can find more visualizations in the [gallery]({{site.baseurl}}/gallery.html).
+This is the end of this tutorial where you learned different ways to discretize and aggregate data, derive new fields, and customize your charts. You can find more visualizations in the [gallery]({{site.baseurl}}/gallery.html). If you want to further customize your charts, please read the [documentation]({{site.baseurl}}/docs/). 
