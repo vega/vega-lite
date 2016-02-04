@@ -10,7 +10,8 @@ Axes provide axis lines, ticks and labels to convey how a spatial range represen
 By default, Vega-Lite automatically creates axes for `x`, `y`, `row`, and `column` channels when they are encoded.  Axis can be customized via the
 `axis` property of a field definition.  
 
-```js
+{: .suppress-error}
+```json
 {
   "data": ... ,       
   "mark": ... ,       

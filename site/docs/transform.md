@@ -13,7 +13,8 @@ The rest of this page describes the top-level `transform` property.  For more in
 
 ## `transform` Property
 
-```js
+{: .suppress-error}
+```json
 {
   "data": ... ,        
   "transform": {       // transform

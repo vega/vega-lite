@@ -6,7 +6,8 @@ permalink: /docs/aggregate.html
 
 <!-- TODO why aggregation -->
 
-```js
+{: .suppress-error}
+```json
 {
   "data": ... ,       
   "mark": ... ,       
