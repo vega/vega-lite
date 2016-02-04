@@ -136,7 +136,7 @@ For more information about scale, axis, and legend, please look at the [scale](s
 
 You can set `color` and `shape` of a scatter plot to constant values.
 
-<span class="vl-example" data-name="scatter_color_shape_constant"></span>
+<span class="vl-example" data-name="scatter_color_shape_constant" data-dir="docs"></span>
 
 Also, see [this example for mapping fields to color and shape](mark.html#ex-scatter_color_shape).
 
@@ -149,7 +149,7 @@ By default, there will be 1 pixel offset between bars.
 Specifying `size`' `value` will adjust the bar's width.  
 The following example sets the width to 10 to add more offset between bars.  
 
-<span class="vl-example" data-name="bar_aggregate_size"></span>
+<span class="vl-example" data-name="bar_aggregate_size" data-dir="docs"></span>
 
 #### Example: Detail
 
