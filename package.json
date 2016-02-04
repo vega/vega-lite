@@ -13,6 +13,7 @@
     "test": "test"
   },
   "scripts": {
+    "postinstall": "cp node_modules/vega-datasets/data/* data",
     "build": "browserify src/vl.ts -p tsify -d -s vl > vega-lite.js",
     "postbuild": "uglifyjs vega-lite.js -cm --source-map vega-lite.min.js.map > vega-lite.min.js && npm run schema",
     "build:all": "npm run clean && npm run build && npm test && npm run lint",
@@ -58,6 +59,7 @@
     "typescript": "^1.8.0",
     "uglify-js": "^2.6.1",
     "vega": "^2.4.2",
+    "vega-datasets": "vega/vega-datasets#gh-pages",
     "watchify": "^3.7.0",
     "z-schema": "^3.16.1"
   },

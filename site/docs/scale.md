@@ -44,7 +44,7 @@ Vega-Lite automatically determines scale type based on the data type of a field.
 | :------------ |:-------------:| :------------- |
 | type          | String        | The type of scale. This is only customizable for quantitative and temporal fields. <br/> •  Supported quantitative scale types  are `"linear"`, `"log"`, `"pow"`, `"sqrt"`, `"quantile"`, `"quantize"`, and `"threshold"`.  <br/> • For a _temporal_ field without time unit, the scale type should be `time` (default) or `utc` (for UTC time).  For temporal fields with time units, the scale type can also be `ordinal` (default for `hours`, `day`, `date`, `month`) or `linear` (default for `year`, `second`, `minute`). <br/> See [d3 scale documentation](https://github.com/mbostock/d3/wiki/Quantitative-Scales) for more information. |
 
-
+{:#domain}
 ## Scale Domain
 
 By default, Vega-Lite's scale draw domain values directly from the field's values.  Custom domain values can be specified via the scale's `domain` property.  
@@ -53,7 +53,7 @@ By default, Vega-Lite's scale draw domain values directly from the field's value
 | :------------ |:-------------:| :------------- |
 | domain        | Array         | Custom domain values.  For quantitative data, this can take the form of a two-element array with minimum and maximum values. For ordinal/categorical data, this may be an array of valid input values. |
 
-
+{:#range}
 ## Scale Range
 
 By default, Vega-Lite provides the following default values:
