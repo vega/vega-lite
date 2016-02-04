@@ -29,7 +29,7 @@ export function getCleanSpec(spec: Spec): Spec {
 export function isStack(spec: Spec): boolean {
   return (vlEncoding.has(spec.encoding, COLOR) || vlEncoding.has(spec.encoding, SHAPE)) &&
     (spec.mark === BAR || spec.mark === AREA) &&
-    (!spec.config || !spec.config.stack !== false) &&
+    (!spec.config || !spec.config.mark.stacked !== false) &&
     vlEncoding.isAggregate(spec.encoding);
 }
 
