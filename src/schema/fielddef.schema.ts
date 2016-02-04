@@ -70,13 +70,13 @@ const fieldDef = {
       supportedTypes: toMap([TEMPORAL])
     },
     aggregate: aggregate,
-    sort: sort
   }
 };
 
 const fieldDefWithScale = mergeDeep(duplicate(fieldDef), {
   properties: {
-    scale: typicalScale
+    scale: typicalScale,
+    sort: sort
   }
 });
 
@@ -126,7 +126,8 @@ export const textFieldDef = mergeDeep(duplicate(fieldDef), {
 
 const fieldDefWithOrdinalScale = mergeDeep(duplicate(fieldDef), {
   properties: {
-    scale: ordinalOnlyScale
+    scale: ordinalOnlyScale,
+    sort: sort
   }
 });
 
