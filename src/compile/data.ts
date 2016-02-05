@@ -5,10 +5,10 @@ import {FieldDef} from '../schema/fielddef.schema';
 import {StackProperties} from './stack';
 
 import {autoMaxBins} from '../bin';
-import {Channel, X, Y, ROW, COLUMN} from '../channel';
+import {Channel, X, Y, ROW, COLUMN, COLOR} from '../channel';
 import {SOURCE, STACKED_SCALE, LAYOUT, SUMMARY} from '../data';
 import {field} from '../fielddef';
-import {QUANTITATIVE, TEMPORAL} from '../type';
+import {QUANTITATIVE, TEMPORAL, ORDINAL} from '../type';
 import {type as scaleType} from './scale';
 import {parseExpression, rawDomain} from './time';
 
@@ -18,6 +18,8 @@ const DEFAULT_NULL_FILTERS = {
   quantitative: true,
   temporal: true
 };
+
+export const COLOR_LABEL_FIELD = '_color_label';
 
 /**
  * Create Vega's data array from a given model.
@@ -124,7 +126,8 @@ export namespace source {
       formulaTransform(model),
       filterTransform(model),
       binTransform(model),
-      timeTransform(model)
+      timeTransform(model),
+      rankTransform(model)
     );
   }
 
@@ -214,6 +217,27 @@ export namespace source {
       transform.push(extend({type: 'formula'}, formula));
       return transform;
     }, []);
+  }
+
+  export function rankTransform(model: Model) {
+    const fieldDef = model.fieldDef(COLOR);
+    const rankColor = model.has(COLOR) && fieldDef.type === ORDINAL;
+    const binColor = model.has(COLOR) && fieldDef.bin;
+    const field = model.field(COLOR, {noRank: true});
+    return rankColor ? [{
+      type: 'sort',
+      by: field
+    },{
+      type: 'rank',
+      field: field
+    }] : binColor ? [{
+      type: 'sort',
+      by: vlFieldDef.field(fieldDef, {suffix: '_start'})
+    },{
+      type: 'formula',
+      field: COLOR_LABEL_FIELD,
+      expr: vlFieldDef.field(fieldDef, {suffix: '_start', datum: true}) + '+ " - " + ' + vlFieldDef.field(fieldDef, {suffix: '_end', datum: true})
+    }] : [];
   }
 }
 

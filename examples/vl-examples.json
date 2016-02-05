@@ -110,6 +110,10 @@
     {
       "name": "text_table_heatmap",
       "title": "Table Heatmap"
+    },
+    {
+      "name": "ordinal_color",
+      "title": "Ordinal color scale"
     }
   ],
   "Stack": [

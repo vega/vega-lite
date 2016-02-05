@@ -11,10 +11,14 @@ import {SOURCE, STACKED_SCALE} from '../data';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 import {Mark, BAR, TEXT as TEXT_MARK} from '../mark';
 import {rawDomain} from './time';
+import {COLOR_LABEL_FIELD} from './data';
+
+export const INVERSE_RANK = 'inverse_rank';
+export const COLOR_LABEL = 'color_label';
 
 export function compileScales(channels: Channel[], model: Model) {
   return channels.filter(hasScale)
-    .map(function(channel: Channel) {
+    .reduce(function(scales: any[], channel: Channel) {
       const fieldDef = model.fieldDef(channel);
 
       var scaleDef: any = {
@@ -43,8 +47,28 @@ export function compileScales(channels: Channel[], model: Model) {
         }
       });
 
-      return scaleDef;
-    });
+      if (channel === COLOR && (fieldDef.type === ORDINAL || fieldDef.bin)) {
+        scales.push({
+          name: INVERSE_RANK,
+          type: ORDINAL,
+          domain: {data: model.dataTable(), field: model.field(COLOR), sort: true},
+          range: {data: model.dataTable(), field: model.field(COLOR, {noRank: true}), sort: true}
+        });
+
+        if (fieldDef.bin) {
+          scales.push({
+            name: COLOR_LABEL,
+            type: ORDINAL,
+            domain: {data: model.dataTable(), field: model.field(COLOR), sort: true},
+            range: {data: model.dataTable(), field: COLOR_LABEL_FIELD}
+          });
+        }
+      }
+
+      scales.push(scaleDef);
+
+      return scales;
+    }, []);
 }
 
 export function type(fieldDef: FieldDef, channel: Channel, mark: Mark): string {
@@ -66,11 +90,12 @@ export function type(fieldDef: FieldDef, channel: Channel, mark: Mark): string {
     case NOMINAL:
       return 'ordinal';
     case ORDINAL:
+      if (channel === COLOR) {
+        return 'linear'; // time has order, so use interpolated ordinal color scale.
+      }
       return 'ordinal';
     case TEMPORAL:
       if (channel === COLOR) {
-        // FIXME(#890) if user specify scale.range as ordinal presets, then this should be ordinal.
-        // Also, if we support color ramp, this should be ordinal too.
         return 'time'; // time has order, so use interpolated ordinal color scale.
       }
 
@@ -89,8 +114,6 @@ export function type(fieldDef: FieldDef, channel: Channel, mark: Mark): string {
 
     case QUANTITATIVE:
       if (fieldDef.bin) {
-        // TODO(#890): Ideally binned COLOR should be an ordinal scale
-        // However, currently ordinal scale doesn't support color ramp yet.
         return contains([X, Y, COLOR], channel) ? 'linear' : 'ordinal';
       }
       return 'linear';
@@ -158,7 +181,6 @@ export function domain(model: Model, channel:Channel, scaleType: string) {
       }
     } : channel === COLOR ? {
       // Currently, binned on color uses linear scale and thus use _start point
-      // TODO: This ideally should become ordinal scale once ordinal scale supports color ramp.
       data: model.dataTable(),
       field: model.field(channel, { binSuffix: '_start' })
     } : {
@@ -186,13 +208,17 @@ export function domain(model: Model, channel:Channel, scaleType: string) {
 }
 
 export function domainSort(model: Model, channel: Channel, scaleType: string): any {
+  if (scaleType !== 'ordinal') {
+    return undefined;
+  }
+
   var sort = model.fieldDef(channel).sort;
   if (sort === 'ascending' || sort === 'descending') {
     return true;
   }
 
   // Sorted based on an aggregate calculation over a specified sort field (only for ordinal scale)
-  if (scaleType === 'ordinal' && typeof sort !== 'string') {
+  if (typeof sort !== 'string') {
     return {
       op: sort.op,
       field: sort.field
@@ -347,11 +373,10 @@ export function rangeMixins(model: Model, channel: Channel, scaleType: string): 
       return {range: 'shapes'};
     case COLOR:
       if (fieldDef.type === NOMINAL
-        || fieldDef.type === ORDINAL // FIXME remove this once we support color ramp for ordinal
       ) {
         return {range: 'category10'};
       }
-      // else -- time or quantitative
+      // else -- ordinal, time, or quantitative
       return {range: ['#AFC6A3', '#09622A']}; // tableau greens
     case ROW:
       return {range: 'height'};

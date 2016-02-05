@@ -20,6 +20,8 @@ export interface FieldRefOption {
   binSuffix?: string;
   /** append suffix to the field ref (general) */
   suffix?: string;
+  /** return the base field, not rank */
+  noRank?: boolean;
 }
 
 export function field(fieldDef: FieldDef, opt: FieldRefOption = {}) {
