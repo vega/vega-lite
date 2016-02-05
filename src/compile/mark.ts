@@ -34,7 +34,8 @@ export function compileMark(model: Model): any[] {
 function compilePathMark(model: Model) { // TODO: extract this into compilePathMark
   const mark = model.mark();
   const name = model.spec().name;
-  const isFaceted = model.has(ROW) || model.has(COLUMN);
+  // TODO: replace this with more general case for composition
+  const hasParentData = model.has(ROW) || model.has(COLUMN);
   const dataFrom = {data: model.dataTable()};
   const details = detailFields(model);
 
@@ -46,7 +47,7 @@ function compilePathMark(model: Model) { // TODO: extract this into compilePathM
         // If has facet, `from.data` will be added in the cell group.
         // If has subfacet for line/area group, `from.data` will be added in the outer subfacet group below.
         // If has no subfacet, add from.data.
-        isFaceted || details.length > 0 ? {} : dataFrom,
+        hasParentData || details.length > 0 ? {} : dataFrom,
 
         // sort transform
         {transform: [{ type: 'sort', by: sortPathBy(model)}]}
@@ -74,7 +75,7 @@ function compilePathMark(model: Model) { // TODO: extract this into compilePathM
       from: extend(
         // If has facet, `from.data` will be added in the cell group.
         // Otherwise, add it here.
-        isFaceted ? {} : dataFrom,
+        hasParentData ? {} : dataFrom,
         {transform: transform}
       ),
       properties: {
@@ -93,7 +94,8 @@ function compilePathMark(model: Model) { // TODO: extract this into compilePathM
 function compileNonPathMark(model: Model) {
   const mark = model.mark();
   const name = model.spec().name;
-  const isFaceted = model.has(ROW) || model.has(COLUMN);
+  // TODO: replace this with more general case for composition 
+  const hasParentData = model.has(ROW) || model.has(COLUMN);
   const dataFrom = {data: model.dataTable()};
 
   let marks = []; // TODO: vgMarks
@@ -107,7 +109,7 @@ function compileNonPathMark(model: Model) {
       { type: 'rect' },
       // If has facet, `from.data` will be added in the cell group.
       // Otherwise, add it here.
-      isFaceted ? {} : {from: dataFrom},
+      hasParentData ? {} : {from: dataFrom},
       // Properties
       { properties: { update: text.background(model) } }
     ));
@@ -117,11 +119,11 @@ function compileNonPathMark(model: Model) {
     name ? { name: name + '-marks' } : {},
     { type: markCompiler[mark].markType() },
     // Add `from` if needed
-    (!isFaceted || model.stack() || model.has(ORDER)) ? {
+    (!hasParentData || model.stack() || model.has(ORDER)) ? {
       from: extend(
         // If faceted, `from.data` will be added in the cell group.
         // Otherwise, add it here
-        isFaceted ? {} : dataFrom,
+        hasParentData ? {} : dataFrom,
         // `from.transform`
         model.stack() ? // Stacked Chart need stack transform
           { transform: [stackTransform(model)] } :
@@ -146,7 +148,7 @@ function compileNonPathMark(model: Model) {
         {type: 'text'},
         // If has facet, `from.data` will be added in the cell group.
         // Otherwise, add it here.
-        isFaceted ? {} : {from: dataFrom},
+        hasParentData ? {} : {from: dataFrom},
         // Properties
         { properties: { update: labelProperties } }
       ));
