@@ -11,7 +11,7 @@ When both types of transforms are specified, the top-level transforms are execut
 
 The rest of this page describes the top-level `transform` property.  For more information about inline transforms, please see the following pages: [`bin`](bin.html), [`timeUnit`](timeUnit.html), [`aggregate`](aggregate.html), and [`sort`](sort.html).
 
-## `transform` Property
+## Top-level Transform Property
 
 {: .suppress-error}
 ```json
@@ -39,7 +39,7 @@ The top-level `transform` object supports the following transformation propertie
 These transforms are executed in this order: `filterNull`, `calculate`, and then `filter`.
 Since `calculate` is before `filter`, derived fields can be used in `filter`'s expression.
 
-__Examples__
+__Example__
 
 This example use `calculate` to derive a new field, then `filter` data based on the new field.  
 
