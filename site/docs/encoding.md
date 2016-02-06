@@ -6,7 +6,7 @@ permalink: /docs/encoding.html
 ---
 
 An integral part of the data visualization process is encoding data with visual properties of graphical marks. Vega-Lite's top-level `encoding` property represents key-value mappings between [encoding channels](#channels) (such as `x`, `y`, or `color`) and its [definition object](#def), which describes the
-encoded data field and its [transformation](#inline)), and the channel's [its inherent components including scales, and axes or legends](#components).
+[encoded data field](#field) or a [constant value](#value), and the channel's [inherent components including a scale and a guide (an axis or a legend)](#components).
 
 {: .suppress-error}
 ```json
@@ -94,7 +94,7 @@ For [aggregated plots](aggregate.html), all encoded fields without `aggregate` f
 {:#def}
 ## Channel Definition
 
-Each channel definition object **must** describe the [data field encoded by the channel](#field) and its [data type](#type), or a [constant value directly mapped to the mark properties](#constant).  In addition, it can describe the mapped field's [transformation](#inline) and [properties for its inherent components including scales, and axes or legends](#components).
+Each channel definition object **must** describe the [data field encoded by the channel](#field) and its [data type](#type), or a [constant value directly mapped to the mark properties](#value).  In addition, it can describe the mapped field's [transformation](#inline) and [properties for its inherent components including scales, and axes or legends](#components).
 
 
 {:#field}
@@ -115,7 +115,7 @@ Quantitative
 : Quantitative data expresses some kind of quantity. Typically this is numerical data. For example `7.3`, `42.0`, `12.1`.
 
 Temporal
-: Information about times or time spans. For example `2015-03-07 12:32:17`.
+: Temporal data supports date-times and times. For example `2015-03-07 12:32:17`, `17:01`, `2015-03-16`.
 
 Ordinal
 : Ordinal data represents ranked order (1st, 2nd, ...) by which the data can be sorted. However, as opposed to quantitative data, there is no notion of *relative degree of difference* between them. For illustration, a "size" variable might have the following values `small`, `medium`, `large`, `extra-large`.  We know that medium is larger than small and same for extra-large larger than large.  However, we cannot claim that compare the magnitude of difference, for example, between (1) small and medium and (2) medium and large.
@@ -123,7 +123,7 @@ Ordinal
 Nominal
 : Nominal data, also known as categorical data, differentiates between values based only on their names or categories.  For example, gender, nationality, music genre, names are all nominal data.  Numbers maybe used to represent the variables but the number do not determines magnitude or ordering.  For example, if a nominal variable contains three values 1, 2, and 3.  We cannot claim that 1 is less than 2 nor 3.  
 
-Note that data `type` here describes semantic of the data rather than primitive data types in programming language sense (`number`, `string`, etc.).  The same primitive data type can have different type of measurement.  For example, numeric data can represent quantitative, ordinal or nominal data.  
+Note that data `type` here describes semantic of the data rather than primitive data types in programming language sense (`number`, `string`, etc.).  The same primitive data type can have different type of measurement.  For example, numeric data can represent quantitative, ordinal, or nominal data.  
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
@@ -153,7 +153,7 @@ For more information about these field transforms, please see the following page
 
 <sup>2</sup> `detail` does not support `aggregate` and `sort`.  When using `path` and `detail`, with non-grouping variables in aggregate plots, they should be aggregated to prevent additional groupings.  
 
-{:#constant}
+{:#value}
 ### Constant Value
 
 For [mark properties channels](#props-channels), if a `field` is not specified, constant values for the properties (e.g., color, size) can be also set directly with the channel definition's `value` property.  
