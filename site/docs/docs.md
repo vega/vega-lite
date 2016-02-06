@@ -12,7 +12,6 @@ At its core, Vega-Lite describes visualizations as mappings between data to prop
 As it is design for analysis, Vega-Lite also supports data transformation such as [aggregation](aggregate.html), [binning](bin.html), [time unit conversion](timeunit.html), [filtering](transform.html), and [sorting](sort.html).  In addition, it also supports faceting a single plot into [trellis plots or small multiples](https://en.wikipedia.org/wiki/Small_multiple).
 
 {:#spec}
-
 ## Vega-Lite Specifications
 
 A Vega-Lite specification is a JSON object that describes data source (`data`),
@@ -52,7 +51,6 @@ In Vega-Lite, a specification can have the following top-level properties.
 | [config](config.html)   | Object     | Configuration object. |
 
 {:#lib}
-
 ## Using Vega-Lite
 
 <!--TODO more about API -->
