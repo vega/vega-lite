@@ -21,7 +21,6 @@
     }
   },
   "config": {
-    "stack" : false,
-    "mark": {"opacity": 0.6}
+    "mark": {"opacity": 0.6, "stack" : "none"}
   }
 }
