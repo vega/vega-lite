@@ -52,7 +52,7 @@ export function compileScales(channels: Channel[], model: Model) {
           name: INVERSE_RANK,
           type: ORDINAL,
           domain: {data: model.dataTable(), field: model.field(COLOR, fieldDef.bin ? {} : {prefn: 'rank_'}), sort: true},
-          range: {data: model.dataTable(), field: model.field(COLOR), sort: !fieldDef.bin}
+          range: {data: model.dataTable(), field: model.field(COLOR), sort: true}
         });
 
         if (fieldDef.bin) {
@@ -60,7 +60,14 @@ export function compileScales(channels: Channel[], model: Model) {
             name: COLOR_LABEL,
             type: ORDINAL,
             domain: {data: model.dataTable(), field: model.field(COLOR,  fieldDef.bin ? {} : {prefn: 'rank_'}), sort: true},
-            range: {data: model.dataTable(), field: field(fieldDef, {binSuffix: '_range'})}
+            range: {
+              data: model.dataTable(),
+              field: field(fieldDef, {binSuffix: '_range'}),
+              sort: {
+                field: model.field(channel, { binSuffix: '_start' }),
+                op: 'min' // min or max doesn't matter since same _range would have the same _start
+              }
+            }
           });
         }
       }

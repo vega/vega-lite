@@ -218,22 +218,17 @@ export namespace source {
   }
 
   export function rankTransform(model: Model) {
-    const fieldDef = model.fieldDef(COLOR);
-    const rankColor = model.has(COLOR) && fieldDef.type === ORDINAL;
-    const binColor = model.has(COLOR) && fieldDef.bin;
-    const field = model.field(COLOR);
+    const rankColor = model.has(COLOR) && model.fieldDef(COLOR).type === ORDINAL;
+
     return rankColor ? [{
       type: 'sort',
-      by: field
+      by: model.field(COLOR)
     },{
       type: 'rank',
-      field: field,
+      field: model.field(COLOR),
       output: {
         rank: model.field(COLOR, {prefn: 'rank_'})
       }
-    }] : binColor ? [{
-      type: 'sort',
-      by: model.field(COLOR, {suffix: '_start'})
     }] : [];
   }
 }

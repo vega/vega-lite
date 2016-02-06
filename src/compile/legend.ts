@@ -172,6 +172,6 @@ namespace properties {
         };
       }
     }
-    return null;
+    return undefined;
   }
 }
