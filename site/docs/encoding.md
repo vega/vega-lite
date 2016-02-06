@@ -5,7 +5,7 @@ title: Encoding
 permalink: /docs/encoding.html
 ---
 
-An integral part of the data visualization process is encoding data with visual properties of graphical marks. Vega-Lite's top-level `encoding` property represents key-value mappings between [encoding channels](#channels) (such as `x`, `y`, or `color`) and its [definition object](#def), which describes the data encoded by the channel (the [`field`](#field) name and [`type`](#type) and its [transformation](#inline)) and [properties for its inherent components including scales, and axes or legends](#components).
+An integral part of the data visualization process is encoding data with visual properties of graphical marks. Vega-Lite's top-level `encoding` property represents key-value mappings between [encoding channels](#channels) (such as `x`, `y`, or `color`) and its [definition object](#def), which describes the data encoded by the channel (the [`field`](#field) name and [`type`](#type) and its [transformation](#inline)) and [properties for its inherent components including scales, axes, and legends](#components).
 
 {: .suppress-error}
 ```json
