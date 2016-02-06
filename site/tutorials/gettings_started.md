@@ -58,12 +58,13 @@ To visualize this data with Vega-Lite, we can add it directly to the `data` prop
 }
 ```
 
-The `data` property defines the data source of the visualization.  In this example, we embed the data inline by directly setting `values` property.  Vega-Lite also supports [other types of data sources]({{site.baseurl}}/docs/data.html) besides inline data as well.  For this tutorial, we will use inline data.  
+The [`data`]({{site.baseurl}}/docs/data.html) property defines the data source of the visualization.  In this example, we embed the data inline by directly setting `values` property.  Vega-Lite also supports [other types of data sources]({{site.baseurl}}/docs/data.html) besides inline data.  
 
 ## Encoding Data with Marks
 
 Now we have a data source but we haven't defined yet how the the data should be visualized.
-All graphical elements in Vega-Lite are called *marks*. Marks are associated with data: a mark is rendered once per associated datum.  Variables in the datum can be mapped to visual channels of the mark such as position and color.
+
+Basic graphical elements in Vega-Lite are [*marks*]({{site.baseurl}}/docs/mark.html).  Marks provide basic shapes whose properties (such as position, size, and color) can be used to visually encode data, either from a data field (or a variable), or a constant value.
 
 To show the data as a point, we can set the `mark` property to `point`.
 
@@ -82,7 +83,7 @@ To show the data as a point, we can set the `mark` property to `point`.
 
 Now, it looks like we get a point. In fact, Vega-Lite renders one point for each object in the array, but they are all overlapping since we have not specified each point's position.
 
-To visually separate the points, we can *encode* the variable `a` of the data with `x` channel, which represents the x-position of the points.  We can do that by adding an `encoding` object with its key `x` mapped to a field definition that describes variable `a`.
+To visually separate the points, data variables can be mapped to visual properties of a mark. For example, we can *encode* the variable `a` of the data with `x` channel, which represents the x-position of the points.  We can do that by adding an `encoding` object with its key `x` mapped to a channel definition that describes variable `a`.
 
 {: .suppress-error}
 ```json
@@ -109,7 +110,7 @@ To visually separate the points, we can *encode* the variable `a` of the data wi
 }
 </div>
 
-The `encoding` object is a key-value mapping between encoding channels (such as `x`, `y`) and definitions of the mapped data fields.  The field definition describes the field's name (`field`) and its [data type](/docs/encoding.html#type) (`type`).  In this example, we map the values for field `a` to the *encoding channel* `x` (the x-location of the points) and set `a`'s data type to `nominal`, since it represents categories.  (See [this page for more information about data types](/docs/encoding.html#type).)  
+The [`encoding`]({{site.baseurl}}/docs/encoding.html) object is a key-value mapping between encoding channels (such as `x`, `y`) and definitions of the mapped data fields.  The channel definition describes the field's name (`field`) and its [data type]({{site.baseurl}}/docs/encoding.html#type) (`type`).  In this example, we map the values for field `a` to the *encoding channel* `x` (the x-location of the points) and set `a`'s data type to `nominal`, since it represents categories.  (See [the documentation for more information about data types]({{site.baseurl}}/docs/encoding.html#type).)  
 
 In the visualization above, Vega-Lite automatically adds an axis with labels for the different categories as well as an axis title. However, 3 points in each category are still overlapping. So far, we have only defined a visual encoding for the field `a`. We can also map the field `b` to the `y` channel.
 
