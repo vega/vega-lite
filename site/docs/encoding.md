@@ -31,6 +31,7 @@ An integral part of the data visualization process is encoding data with visual 
 
 The keys in the encoding object are encoding channels. This section lists supported encoding channels in Vega-Lite.  
 
+{:#props-channels}
 ### Mark Properties Channels
 
 Mark properties channels map data directly to visual properties of the marks.  Here are the supported mark properties:
@@ -126,40 +127,46 @@ Note that data `type` here describes semantic of the data rather than primitive 
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| type          | String        | Data type of the field.  This property accepts both a full type name (`"quantitative"`, `"temporal"`, `"ordinal"`,  and `"nominal"`), or an initial character of the type name (`"Q"`, `"T"`, `"O"`, `"N"`).  This property is case insensitive.  See below for more information about each data type. |
+| type          | String        | The encoded field's [type of measurement ](https://en.wikipedia.org/wiki/Level_of_measurement).  This can be either a full type name (`"quantitative"`, `"temporal"`, `"ordinal"`,  and `"nominal"`) or an initial character of the type name (`"Q"`, `"T"`, `"O"`, `"N"`).  This property is case insensitive. |
 
 {:#inline}
 ### Field Transforms
 
-To facilitate data exploration, Vega-Lite provides inline field transforms as a part of the channel definition. If a `field` is provided, the channel definition supports the following transformations: binning (`bin`), time unit conversion (`timeUnit`), aggregation (`aggregate`), sort (`sort`).   
+To facilitate data exploration, Vega-Lite provides inline field transforms as a part of the channel definition. If a `field` is provided, the channel definition supports the following transformations:
 
-In terms of execution order. inline field transforms are executed after the top-level `transform`s are executed, and are executed in this order: binning, time unit conversion, aggregation, and sorting.
+<!--TODO: revise description in this table-->
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| [bin](bin.html) | Boolean &#124; Object        | Boolean flag / configuration object for binning.   |
-| [timeUnit](timeunit.html)| String        | Property for converting time unit.            |
-| [aggregate](aggregate.html) | String        | Aggregation function for the field (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).  |
-| [sort](sort.html) | String &#124; Object        | Sort order for a particular field.  This can be string (`"ascending"`, `"descending"`, or `"unsorted"`) or a sort field definition object for sorting by an aggregate calculation of a specified sort field.  If unspecified, the default value is `ascending`. |
+| [bin](bin.html)<sup>1</sup> | Boolean &#124; Object | Boolean flag / configuration object for binning.    |
+| [timeUnit](timeunit.html)<sup>1</sup>| String        | Property for converting time unit.            |
+| [aggregate](aggregate.html)<sup>1,2</sup> | String        | Aggregation function for the field (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).  |
+| [sort](sort.html)<sup>1,2</sup> | String &#124; Object        | Sort order for a particular field.  This can be string (`"ascending"`, `"descending"`, or `"unsorted"`) or a sort field definition object for sorting by an aggregate calculation of a specified sort field.  If unspecified, the default value is `ascending`. |
 
 For more information about inline transforms, please see the following pages: [`bin`](bin.html), [`timeUnit`](timeUnit.html), [`aggregate`](aggregate.html), and [`sort`](sort.html).
 
-**Note**: `detail` does not support `aggregate` and `sort`.  When using `path` and `detail`, with non-grouping variables in aggregate plots, they should be aggregated to prevent additional groupings.  
+
+**Notes**:
+
+<sup>1</sup>  Inline field transforms are executed after the top-level `transform`s are executed, and are executed in this order: `bin`, `timeUnit`, `aggregate`, and `sort`.
+
+<sup>2</sup> `detail` does not support `aggregate` and `sort`.  When using `path` and `detail`, with non-grouping variables in aggregate plots, they should be aggregated to prevent additional groupings.  
+
+
 
 {:components}
 ### Inherent Components: Scale, Axis, and Legend
 
 For encoding channels that map data directly to visual properties of the marks, they must provide scales, or functions that transform values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes).  
 
-In addition, visualizations typically provide guides to aid interpretation of scales.  
-Axes produces lines, ticks, and labels to convey how a spatial range represent a data range.    Meanwhile, legends aid interpretation of scales of color, size, and shape.
+In addition, visualizations typically provide guides to aid interpretation of scales. Axes produces lines, ticks, and labels to convey how a spatial range represent a data range.    Meanwhile, legends aid interpretation of scales of color, size, and shape.
 
 By default, Vega-Lite automatically generates a scale and a guide (axis or legend) for each field.  If no properties are specified, scale, axis, and legend's properties are determined based on a set of rules by the compiler.  `scale`, `axis`, `legend` properties of the channel definition can be used to customize their properties.
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| [scale](scale.html)      | Object        | Configuration object for the encoding's scale. (Only for `x`, `y`, `color`, `size`, `shape`, `row`, and `column`.) |
-| [axis](axis.html)        | Boolean &#124; Object        | Boolean flag for showing axis (`true` by default), or a config object for the encoding's axis. (Only for `x`, `y`, `row`, and `column`.) |
+| [scale](scale.html)      | Object        | Property object for the scale of a [mark property channel](#props-channels).  |
+| [axis](axis.html)        | Boolean &#124; Object        | Boolean flag for showing axis (`true` by default), or a property object for the channel's axis. (Only for `x`, `y`, `row`, and `column`.) |
 | [legend](legend.html)    | Boolean &#124; Object  | Boolean flag for showing legend (`true` by default), or a config object for the encoding's legends. (Only for `color`, `size`, and `shape`.) |
 
 For more information about scale, axis, and legend, please look at the [`scale`](scale.html), [`axis`](axis.html), and [`legend`](legend.html) pages.
