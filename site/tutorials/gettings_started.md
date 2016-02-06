@@ -109,7 +109,7 @@ To visually separate the points, we can *encode* the variable `a` of the data wi
 }
 </div>
 
-The `encoding` object is a key-value mapping between encoding channels (such as `x`, `y`) and definitions of the mapped data fields.  The field definition describes the field's name (`field`) and its [data type](/docs/encoding.html#types) (`type`).  In this example, we map the values for field `a` to the *encoding channel* `x` (the x-location of the points) and set `a`'s data type to `nominal`, since it represents categories.  (See [this page for more information about data types](/docs/encoding.html#types).)  
+The `encoding` object is a key-value mapping between encoding channels (such as `x`, `y`) and definitions of the mapped data fields.  The field definition describes the field's name (`field`) and its [data type](/docs/encoding.html#type) (`type`).  In this example, we map the values for field `a` to the *encoding channel* `x` (the x-location of the points) and set `a`'s data type to `nominal`, since it represents categories.  (See [this page for more information about data types](/docs/encoding.html#type).)  
 
 In the visualization above, Vega-Lite automatically adds an axis with labels for the different categories as well as an axis title. However, 3 points in each category are still overlapping. So far, we have only defined a visual encoding for the field `a`. We can also map the field `b` to the `y` channel.
 
