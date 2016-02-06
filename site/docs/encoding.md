@@ -26,25 +26,47 @@ An integral part of the data visualization process is encoding data with visual 
 ```
 
 
-
+{:#channels}
 ## Encoding Channels
 
-The keys in the encoding object are encoding channels.  In general, encoding channels map data directly to visual properties of the marks.  The exceptions are `detail`, `order`, `path`. `detail` is a special encoding channel that provides additional level of detail for grouping data in [aggregated](aggregate.html) views with.  `order` channel sorts the layer order or stacking order (for stacked charts) of the marks while `path` channel sorts the order of data points in line marks.  In addition, `row` and `column` are special encoding channels that facets single plots into [trellis plots (or small multiples)](https://en.wikipedia.org/wiki/Small_multiple).
+The keys in the encoding object are encoding channels. This section lists supported encoding channels in Vega-Lite.  
 
-Here is a full list of currently supported encoding channels:
+### Mark Properties Channels
+
+Mark properties channels map data directly to visual properties of the marks.  Here are the supported mark properties:
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| x, y          | [FieldDef](#field-definition)| X and Y coordinates for `point`, `circle`, `square`, `line`, `text`, and `tick`. (or to width and height for `bar` and `area` marks). |
-| color         | [FieldDef](#field-definition)| Color of the mark.  Vega-Lite automatically maps the assigned field to fill or stroke color based on mark type. (Fill color for `area`, `bar`, `tick`, `text` and filled point, circle, and square.,  Stroke color for `line` and unfilled point, circle, and square.)  |
-| shape  | [FieldDef](#field-definition)| The symbol's shape for point marks. |
-| size  | [FieldDef](#field-definition)| Size of the mark.  <br/>     • For `point`, `square` and `circle` – the symbol size, or pixel area of the mark.  <br/> • For `bar` and `tick` – the bar and tick width respectively.  <br/>      • For `text` – the text's font size. |
-| detail | [FieldDef](#field-definition)| Additional levels of detail for grouping data in  aggregate views without mapping data to a specific visual channel. |
-| order | [FieldDef](#field-definition)| Layer order for non-stacked marks, or stack order for stacked marks. |
-| path   | [FieldDef](#field-definition)| Order of data points in line marks.  For more information, please look at [line mark](mark.html#line). |
-| row, column   | [FieldDef](#field-definition)| Vertical and horizontal facets for vertical and horizontal [trellis plots](https://en.wikipedia.org/wiki/Small_multiple). |
+| x, y          | [ChannelDef](#def)| X and Y coordinates for `point`, `circle`, `square`, `line`, `text`, and `tick`. (or to width and height for `bar` and `area` marks). |
+| color         | [ChannelDef](#def)| Color of the marks – either fill or stroke color based on mark type. (By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /   stroke color for `line` and `point`.)  |
+| shape  | [ChannelDef](#def)| The symbol's shape (only for `point` marks).  The supported values are `"circle"` (default), `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`, or `"triangle-down"`. |
+| size  | [ChannelDef](#def)| Size of the mark.  <br/>     • For `point`, `square` and `circle` – the symbol size, or pixel area of the mark.  <br/> • For `bar` and `tick` – the bar and tick width respectively.  <br/>      • For `text` – the text's font size. |
 
-<!-- TODO: Need to expand on "(or to width or height for `bar` and `area` marks)." for x,y -->
+### Additional Level of Detail Channel
+
+For [aggregated plots](aggregate.html), all encoded fields without `aggregate` functions are used as grouping fields in the aggregation (fields in `GROUP BY` in SQL).  `detail` is a special encoding channel that provides an additional grouping field (level) for grouping data in aggregation.
+
+| Property      | Type          | Description    |
+| :------------ |:-------------:| :------------- |
+| detail | [ChannelDef](#def)| Additional levels of detail for grouping data in aggregate views without mapping data to a specific visual channel.  ([Example](#ex-detail).) |
+
+### Mark Order Channels
+
+`order` channel sorts the layer order or stacking order (for stacked charts) of the marks while `path` channel sorts the order of data points in line marks.
+
+| Property      | Type          | Description    |
+| :------------ |:-------------:| :------------- |
+| order | [ChannelDef](#def)| Layer order for non-stacked marks, or stack order for stacked marks. ([Example](#ex-order).) |
+| path   | [ChannelDef](#def)| Order of data points in line marks.  ([Example](#ex-path).) |
+
+### Facet Channels
+
+`row` and `column` are special encoding channels that facets single plots into [trellis plots (or small multiples)](https://en.wikipedia.org/wiki/Small_multiple).
+
+| Property      | Type          | Description    |
+| :------------ |:-------------:| :------------- |
+| row, column   | [ChannelDef](#def)| Vertical and horizontal facets for vertical and horizontal [trellis plots](https://en.wikipedia.org/wiki/Small_multiple). |
+
 <!-- TODO: describe more about color's behavior -- For a nominal field, the field value is mapped to `hue` by default.  For other fields, the field value is mapped to saturation by default.-- possibly link to the scale page -->
 
 <!--
@@ -180,6 +202,7 @@ The following example sets the width to 10 to add more offset between bars.
 
 <span class="vl-example" data-name="bar_aggregate_size" data-dir="docs"></span>
 
+{:#ex-detail}
 #### Example: Detail
 
 TODO: Grouping for line and area
@@ -187,9 +210,11 @@ TODO: Grouping for line and area
 <!-- Layer order -->
 
 
+{:#ex-order}
 #### Example: Order
 
 
+{:#ex-path}
 #### Example: Path
 
 <!-- TODO: tooltips, labels -->
