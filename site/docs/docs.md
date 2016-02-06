@@ -5,9 +5,14 @@ title: Overview
 permalink: /docs/
 ---
 
-This documentation describes [Vega-Lite specifications](#spec) and the functionalities of the [Vega-Lite library](#lib).
+**Vega-Lite** is a high-level visualization grammar.  It provides a concise JSON syntax for supporting rapid generation of visualizations to support analysis.  Vega-Lite can serve as a declarative format for describing and creating data visualizations.  Vega-Lite specifications can be compiled to a lower-level, more detailed specifications in the form of [Vega](http://vega.github.io/vega) specifications and rendered using Vega's compiler.
+
+At its core, Vega-Lite describes visualizations as mappings between data to properties of graphical marks (e.g., points or bars).  By simply providing a mark type and a mapping, Vega-Lite automatically produces other visualization components including axes, legend, and scale, which transforms data values from the data domain to the visual output domain.  Unless explicitly specified, Vega-Lite determines properties of these components based on a set of carefully designed rules.  This approach allows Vega-Lite specifications to be succinct and expressive but also provides user-control.  
+
+As it is design for analysis, Vega-Lite also supports data transformation such as [aggregation](aggregate.html), [binning](bin.html), [time unit conversion](timeunit.html), [filtering](transform.html), and [sorting](sort.html).  In addition, it also supports faceting a single plot into [trellis plots or small multiples](https://en.wikipedia.org/wiki/Small_multiple).
 
 {:#spec}
+
 ## Vega-Lite Specifications
 
 A Vega-Lite specification is a JSON object that describes data source (`data`),
@@ -47,6 +52,9 @@ In Vega-Lite, a specification can have the following top-level properties.
 | [config](config.html)   | Object     | Configuration object. |
 
 {:#lib}
-## The Vega-Lite Library
+
+## Using Vega-Lite
+
+<!--TODO more about API -->
 
 You can create visualizations in the [online editor](https://vega.github.io/vega-editor/?mode=vega-lite) or read about how to [embed Vega-Lite visualizations in a web page](embed.html).
