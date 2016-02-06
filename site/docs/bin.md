@@ -4,7 +4,7 @@ title: Binning
 permalink: /docs/bin.html
 ---
 
-To group quantitative, continuous data values of a particular field into smaller number of "bins" (e.g., for a histogram), the field definition's `bin` property can be specified.  
+To group quantitative, continuous data values of a particular field into smaller number of "bins" (e.g., for a histogram), the channel definition's `bin` property can be specified.  
 
 {: .suppress-error}
 ```json
@@ -25,7 +25,7 @@ To group quantitative, continuous data values of a particular field into smaller
 }
 ```
 
-Field definition's `bin` property can be either a boolean value or a bin property definition object.
+Channel definition's `bin` property can be either a boolean value or a bin property definition object.
 If `bin` is `true`, default binning parameters will be applied.
 
 The `bin` property definition object contains the following properties:
