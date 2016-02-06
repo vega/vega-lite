@@ -5,7 +5,7 @@ title: Mark
 permalink: /docs/mark.html
 ---
 
-Marks are the basic visual building block of a visualization.  They provide basic shapes whose properties (such as position, size, and color) can be used to visually encode data, either from a data field, or a constant value.  The `mark` property in a Vega-Lite specification defines the visualization's mark type.  The supported mark types are [`point`](#point-mark), [`circle`](#circle-and-square-marks), [`square`](#circle-and-square-marks), [`tick`](#tick-mark), [`bar`](#bar-mark), [`line`](#line-mark), [`area`](#area), and [`text`](#text).  In general, one mark instance is generated per input data element. However, line and area mark types represent multiple data elements as a contiguous line or area shape.
+Marks are the basic visual building block of a visualization.  They provide basic shapes whose properties (such as position, size, and color) can be used to visually encode data, either from a data field, or a constant value.  The `mark` property in a Vega-Lite specification defines the visualization's mark type.  The supported mark types are [`point`](#point-mark), [`circle`](#circle-and-square-marks), [`square`](#circle-and-square-marks), [`tick`](#tick-mark), [`bar`](#bar-mark), [`line`](#line-mark), [`area`](#area), and [`text`](#text).  In general, one mark instance is generated per input data element. However, line and area mark types represent multiple data elements as a contiguous line or shape.
 
 
 {: .suppress-error}
