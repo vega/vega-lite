@@ -53,7 +53,7 @@ For [aggregated plots](aggregate.html), all encoded fields without `aggregate` f
 | :------------ |:-------------:| :------------- |
 | detail | [ChannelDef](#def)| Additional levels of detail for grouping data in aggregate views without mapping data to a specific visual channel.  ([Example](#ex-detail).) |
 
-**Note**: Since `detail` represents an actual data field in the aggregation, it cannot encode constant `value`.
+**Note**: Since `detail` represents an actual data field in the aggregation, it cannot encode a constant `value`.
 
 #### Example
 
@@ -194,4 +194,4 @@ By default, Vega-Lite automatically generates a scale and a guide for each field
 | [axis](axis.html)        | Boolean &#124; Object  | Boolean flag for showing an axis (`true` by default), or a property object for an axis of a position channel (`x` or `y`) or a facet channel (`row` or `column`). |
 | [legend](legend.html)    | Boolean &#124; Object  | Boolean flag for showing a legend (`true` by default), or a config object for a legend of a non-position mark property channel (`color`, `size`, or `shape`). |
 
-For more information about scale, axis, and legend, please look at the [`scale`](scale.html), [`axis`](axis.html), and [`legend`](legend.html) pages.
+For more information about [`scale`](scale.html), [`axis`](axis.html), and [`legend`](legend.html), please look at the respective pages.
