@@ -19,8 +19,6 @@ const DEFAULT_NULL_FILTERS = {
   temporal: true
 };
 
-export const COLOR_LABEL_FIELD = '_color_label';
-
 /**
  * Create Vega's data array from a given model.
  *
@@ -168,12 +166,12 @@ export namespace source {
         }
 
         transform.push(binTrans);
-        if (scaleType(fieldDef, channel, model.mark()) === 'ordinal') {
+        if (scaleType(fieldDef, channel, model.mark()) === 'ordinal' || channel === COLOR) {
           transform.push({
             type: 'formula',
             field: field(fieldDef, {binSuffix: '_range'}),
             expr: field(fieldDef, {datum: true, binSuffix: '_start'}) +
-                  '+ \'-\' +' +
+                  ' + \'-\' + ' +
                   field(fieldDef, {datum: true, binSuffix: '_end'})
           });
         }
@@ -223,20 +221,19 @@ export namespace source {
     const fieldDef = model.fieldDef(COLOR);
     const rankColor = model.has(COLOR) && fieldDef.type === ORDINAL;
     const binColor = model.has(COLOR) && fieldDef.bin;
-    const field = model.field(COLOR, {noRank: true});
+    const field = model.field(COLOR);
     return rankColor ? [{
       type: 'sort',
       by: field
     },{
       type: 'rank',
-      field: field
+      field: field,
+      output: {
+        rank: model.field(COLOR, {prefn: 'rank_'})
+      }
     }] : binColor ? [{
       type: 'sort',
-      by: vlFieldDef.field(fieldDef, {suffix: '_start'})
-    },{
-      type: 'formula',
-      field: COLOR_LABEL_FIELD,
-      expr: vlFieldDef.field(fieldDef, {suffix: '_start', datum: true}) + '+ " - " + ' + vlFieldDef.field(fieldDef, {suffix: '_end', datum: true})
+      by: model.field(COLOR, {suffix: '_start'})
     }] : [];
   }
 }

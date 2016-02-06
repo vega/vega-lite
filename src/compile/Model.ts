@@ -151,10 +151,6 @@ export class Model {
       }, opt);
     }
 
-    if (channel === COLOR && fieldDef.type === ORDINAL && !opt.noRank) {
-      return 'rank';
-    }
-
     return vlFieldDef.field(fieldDef, opt);
   }
 

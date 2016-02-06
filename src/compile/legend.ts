@@ -15,7 +15,7 @@ export function compileLegends(model: Model) {
   if (model.has(COLOR) && model.fieldDef(COLOR).legend) {
     const fieldDef = model.fieldDef(COLOR);
     defs.push(compileLegend(model, COLOR, {
-      fill: fieldDef.type === ORDINAL || fieldDef.bin ? INVERSE_RANK : model.scaleName(COLOR)
+      fill: (fieldDef.type === ORDINAL || fieldDef.bin) ? INVERSE_RANK : model.scaleName(COLOR)
       // TODO: consider if this should be stroke for line
     }));
   }

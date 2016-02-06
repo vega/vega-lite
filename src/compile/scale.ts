@@ -11,7 +11,7 @@ import {SOURCE, STACKED_SCALE} from '../data';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 import {Mark, BAR, TEXT as TEXT_MARK} from '../mark';
 import {rawDomain} from './time';
-import {COLOR_LABEL_FIELD} from './data';
+import {field} from '../fielddef';
 
 export const INVERSE_RANK = 'inverse_rank';
 export const COLOR_LABEL = 'color_label';
@@ -51,16 +51,16 @@ export function compileScales(channels: Channel[], model: Model) {
         scales.push({
           name: INVERSE_RANK,
           type: ORDINAL,
-          domain: {data: model.dataTable(), field: model.field(COLOR), sort: true},
-          range: {data: model.dataTable(), field: model.field(COLOR, {noRank: true}), sort: true}
+          domain: {data: model.dataTable(), field: model.field(COLOR, fieldDef.bin ? {} : {prefn: 'rank_'}), sort: true},
+          range: {data: model.dataTable(), field: model.field(COLOR), sort: !fieldDef.bin}
         });
 
         if (fieldDef.bin) {
           scales.push({
             name: COLOR_LABEL,
             type: ORDINAL,
-            domain: {data: model.dataTable(), field: model.field(COLOR), sort: true},
-            range: {data: model.dataTable(), field: COLOR_LABEL_FIELD}
+            domain: {data: model.dataTable(), field: model.field(COLOR,  fieldDef.bin ? {} : {prefn: 'rank_'}), sort: true},
+            range: {data: model.dataTable(), field: field(fieldDef, {binSuffix: '_range'})}
           });
         }
       }
@@ -196,13 +196,13 @@ export function domain(model: Model, channel:Channel, scaleType: string) {
       // If sort by aggregation of a specified sort field, we need to use SOURCE table,
       // so we can aggregate values for the scale independently from the main aggregation.
       data: sort.op ? SOURCE : model.dataTable(),
-      field: model.field(channel),
+      field: (fieldDef.type === ORDINAL && channel === COLOR) ? model.field(channel, {prefn: 'rank_'}) : model.field(channel),
       sort: sort
     };
   } else {
     return {
       data: model.dataTable(),
-      field: model.field(channel)
+      field: (fieldDef.type === ORDINAL && channel === COLOR) ? model.field(channel, {prefn: 'rank_'}) : model.field(channel),
     };
   }
 }
@@ -372,8 +372,7 @@ export function rangeMixins(model: Model, channel: Channel, scaleType: string): 
     case SHAPE:
       return {range: 'shapes'};
     case COLOR:
-      if (fieldDef.type === NOMINAL
-      ) {
+      if (fieldDef.type === NOMINAL) {
         return {range: 'category10'};
       }
       // else -- ordinal, time, or quantitative
