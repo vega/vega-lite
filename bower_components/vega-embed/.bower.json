@@ -1,0 +1,48 @@
+{
+  "name": "vega-embed",
+  "main": "vega-embed.js",
+  "homepage": "http://vega.github.io/vega/",
+  "description": "Publish Vega visualizations as embedded web components.",
+  "keywords": [
+    "vega",
+    "data",
+    "visualization",
+    "component",
+    "embed"
+  ],
+  "authors": [
+    "Jeffrey Heer (http://idl.cs.washington.edu)"
+  ],
+  "license": "BSD-3-Clause",
+  "dependencies": {
+    "d3": "^3.5.11",
+    "vega": "^2.4.1"
+  },
+  "ignore": [
+    ".DS_Store",
+    ".git",
+    ".gitignore",
+    ".npmignore",
+    ".jshintrc",
+    ".travis.yml",
+    "bin",
+    "coverage",
+    "examples",
+    "index.js",
+    "node_modules",
+    "output",
+    "scripts",
+    "src",
+    "test"
+  ],
+  "version": "2.0.0",
+  "_release": "2.0.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v2.0.0",
+    "commit": "e4e3ad6d2084a375c1a8f5d7250c90e4b06bb7a3"
+  },
+  "_source": "git://github.com/vega/vega-embed.git",
+  "_target": "~2.0.0",
+  "_originalSource": "vega-embed"
+}
