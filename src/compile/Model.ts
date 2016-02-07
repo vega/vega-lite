@@ -7,14 +7,14 @@ import {instantiate} from '../schema/schemautil';
 import * as schema from '../schema/schema';
 import * as schemaUtil from '../schema/schemautil';
 
-import {COLUMN, ROW, X, Y, SIZE, TEXT, Channel, supportMark} from '../channel';
+import {COLUMN, ROW, X, Y, SIZE, TEXT, PATH, ORDER, Channel, supportMark} from '../channel';
 import {SOURCE, SUMMARY} from '../data';
 import * as vlFieldDef from '../fielddef';
 import {FieldRefOption} from '../fielddef';
 import * as vlEncoding from '../encoding';
 import {Mark, BAR, TICK, TEXT as TEXTMARK} from '../mark';
 
-import {getFullName, NOMINAL, ORDINAL, TEMPORAL} from '../type';
+import {getFullName, NOMINAL, ORDINAL, TEMPORAL, QUANTITATIVE} from '../type';
 import {contains, duplicate, extend} from '../util';
 
 import {compileMarkConfig} from './config';
@@ -46,6 +46,10 @@ export class Model {
       if (fieldDef.type) {
         // convert short type to full type
         fieldDef.type = getFullName(fieldDef.type);
+      }
+
+      if ((channel === PATH || channel === ORDER) && !fieldDef.aggregate && fieldDef.type === QUANTITATIVE) {
+        fieldDef.aggregate = 'min';
       }
 
       // TODO instantiate bin here
@@ -253,17 +257,21 @@ export class Model {
           return this.config().mark.barWidth;
         }
         // BAR's size is applied on either X or Y
-        return !this.has(channel) || this.isOrdinalScale(channel) ?
-          // For ordinal scale or single bar, we can use bandWidth - 1
-          // (-1 so that the border of the bar falls on exact pixel)
-          this.fieldDef(channel).scale.bandWidth - 1 :
-          // otherwise, set to 2 by default
-          2;
+        return this.isOrdinalScale(channel) ?
+            // For ordinal scale or single bar, we can use bandWidth - 1
+            // (-1 so that the border of the bar falls on exact pixel)
+            this.fieldDef(channel).scale.bandWidth - 1 :
+          !this.has(channel) ?
+            21 : /* config.scale.bandWidth */
+            2; // otherwise, set to 2 by default
       case TICK:
         if (this.config().mark.tickWidth) {
           return this.config().mark.tickWidth;
         }
-        return this.fieldDef(channel).scale.bandWidth / 1.5;
+        const bandWidth = this.has(channel) ?
+          this.fieldDef(channel).scale.bandWidth :
+          21; /* config.scale.bandWidth */
+        return bandWidth / 1.5;
     }
     return this.config().mark.size;
   }

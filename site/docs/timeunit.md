@@ -4,7 +4,8 @@ title: Time Unit Conversion
 permalink: /docs/timeunit.html
 ---
 
-```js
+{: .suppress-error}
+```json
 {
   "data": ... ,       
   "mark": ... ,       
@@ -23,7 +24,7 @@ permalink: /docs/timeunit.html
 ```
 
 
-New time unit fields can be derived from existing temporal fields using each field definition's `timeUnit` property.  
+New time unit fields can be derived from existing temporal fields using each channel definition's `timeUnit` property.  
 
 Currently supported values are: `'year'`, `'month'`, `'day'`, `'date'`, `'hours'`, `'minutes'`, `'seconds'`, `'milliseconds'`, `'yearmonth'`, `'yearmonthday'`, `'yearmonthdate'`, `'yearday'`, `'yeardate'`, `'yearmonthdayhours'`, `'yearmonthdayhoursminutes'`, `'hoursminutes'`,
 `'hoursminutesseconds'`, `'minutesseconds'`, `'secondsmilliseconds'`.

@@ -14,6 +14,7 @@ A Vega-Lite specification is a JSON object that describes data source (`data`),
 mark type (`mark`), visual mapping between encoding channels and data variables (`encoding`),
 and data transformations.
 
+{: .suppress-error}
 ```json
 {
   "description": ... ,       

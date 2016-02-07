@@ -1,6 +1,5 @@
 import {Model} from './Model';
-import {X, Y, COLOR, TEXT, SHAPE, PATH, DETAIL, ROW, COLUMN, LABEL} from '../channel';
-import {field} from '../fielddef';
+import {X, Y, COLOR, TEXT, SHAPE, PATH, ORDER, DETAIL, ROW, COLUMN, LABEL} from '../channel';
 import {AREA, LINE, TEXT as TEXTMARK} from '../mark';
 import {imputeTransform, stackTransform} from './stack';
 import {contains, extend, isArray} from '../util';
@@ -10,8 +9,8 @@ import {line} from './mark-line';
 import {point, circle, square} from './mark-point';
 import {text} from './mark-text';
 import {tick} from './mark-tick';
+import {sortField} from './util';
 
-import {FieldDef} from '../schema/fielddef.schema';
 
 const markCompiler = {
   area: area,
@@ -35,7 +34,8 @@ export function compileMark(model: Model): any[] {
 function compilePathMark(model: Model) { // TODO: extract this into compilePathMark
   const mark = model.mark();
   const name = model.spec().name;
-  const isFaceted = model.has(ROW) || model.has(COLUMN);
+  // TODO: replace this with more general case for composition
+  const hasParentData = model.has(ROW) || model.has(COLUMN);
   const dataFrom = {data: model.dataTable()};
   const details = detailFields(model);
 
@@ -47,7 +47,7 @@ function compilePathMark(model: Model) { // TODO: extract this into compilePathM
         // If has facet, `from.data` will be added in the cell group.
         // If has subfacet for line/area group, `from.data` will be added in the outer subfacet group below.
         // If has no subfacet, add from.data.
-        isFaceted || details.length > 0 ? {} : dataFrom,
+        hasParentData || details.length > 0 ? {} : dataFrom,
 
         // sort transform
         {transform: [{ type: 'sort', by: sortPathBy(model)}]}
@@ -65,8 +65,8 @@ function compilePathMark(model: Model) { // TODO: extract this into compilePathM
       // For non-stacked path (line/area), we need to facet and possibly sort
       [].concat(
         facetTransform,
-        // if model has detail, then sort mark's layer order by detail field(s)
-        model.has(DETAIL) ? [{type:'sort', by: sortBy(model)}] : []
+        // if model has `order`, then sort mark's layer order by `order` field(s)
+        model.has(ORDER) ? [{type:'sort', by: sortBy(model)}] : []
       );
 
     return [{
@@ -75,7 +75,7 @@ function compilePathMark(model: Model) { // TODO: extract this into compilePathM
       from: extend(
         // If has facet, `from.data` will be added in the cell group.
         // Otherwise, add it here.
-        isFaceted ? {} : dataFrom,
+        hasParentData ? {} : dataFrom,
         {transform: transform}
       ),
       properties: {
@@ -94,7 +94,8 @@ function compilePathMark(model: Model) { // TODO: extract this into compilePathM
 function compileNonPathMark(model: Model) {
   const mark = model.mark();
   const name = model.spec().name;
-  const isFaceted = model.has(ROW) || model.has(COLUMN);
+  // TODO: replace this with more general case for composition 
+  const hasParentData = model.has(ROW) || model.has(COLUMN);
   const dataFrom = {data: model.dataTable()};
 
   let marks = []; // TODO: vgMarks
@@ -108,7 +109,7 @@ function compileNonPathMark(model: Model) {
       { type: 'rect' },
       // If has facet, `from.data` will be added in the cell group.
       // Otherwise, add it here.
-      isFaceted ? {} : {from: dataFrom},
+      hasParentData ? {} : {from: dataFrom},
       // Properties
       { properties: { update: text.background(model) } }
     ));
@@ -118,15 +119,15 @@ function compileNonPathMark(model: Model) {
     name ? { name: name + '-marks' } : {},
     { type: markCompiler[mark].markType() },
     // Add `from` if needed
-    (!isFaceted || model.stack() || model.has(DETAIL)) ? {
+    (!hasParentData || model.stack() || model.has(ORDER)) ? {
       from: extend(
         // If faceted, `from.data` will be added in the cell group.
         // Otherwise, add it here
-        isFaceted ? {} : dataFrom,
+        hasParentData ? {} : dataFrom,
         // `from.transform`
         model.stack() ? // Stacked Chart need stack transform
           { transform: [stackTransform(model)] } :
-        model.has(DETAIL) ?
+        model.has(ORDER) ?
           // if non-stacked, detail field determines the layer order of each mark
           { transform: [{type:'sort', by: sortBy(model)}] } :
           {}
@@ -147,7 +148,7 @@ function compileNonPathMark(model: Model) {
         {type: 'text'},
         // If has facet, `from.data` will be added in the cell group.
         // Otherwise, add it here.
-        isFaceted ? {} : {from: dataFrom},
+        hasParentData ? {} : {from: dataFrom},
         // Properties
         { properties: { update: labelProperties } }
       ));
@@ -158,8 +159,8 @@ function compileNonPathMark(model: Model) {
 }
 
 function sortBy(model: Model) {
-  if (model.has(DETAIL)) {
-    var channelEncoding = model.spec().encoding[DETAIL];
+  if (model.has(ORDER)) {
+    var channelEncoding = model.spec().encoding[ORDER];
     return isArray(channelEncoding) ?
       channelEncoding.map(sortField) : // sort by multiple fields
       sortField(channelEncoding);      // sort by one field
@@ -181,11 +182,6 @@ function sortPathBy(model: Model) {
     // For both line and area, we sort values based on dimension by default
     return '-' + model.field(model.config().mark.orient === 'horizontal' ? Y : X);
   }
-}
-
-/** Add "-" prefix for descending */
-function sortField(fieldDef: FieldDef) {
-  return (fieldDef.sort === 'descending' ? '-' : '') + field(fieldDef);
 }
 
 /**

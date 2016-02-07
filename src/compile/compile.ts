@@ -71,7 +71,6 @@ export function compileRootGroup(model: Model) {
     },
     spec.description ? {description: spec.description} : {},
     {
-      from: {data: LAYOUT},
       properties: {
         update: {
           width: typeof width !== 'number' ?
@@ -83,6 +82,13 @@ export function compileRootGroup(model: Model) {
         }
       }
     });
+
+  // only add reference to layout if needed
+  if (typeof width !== 'number' || typeof height !== 'number') {
+    rootGroup = extend(rootGroup, {
+      from: {data: LAYOUT}
+    });
+  }
 
   const marks = compileMark(model);
 
