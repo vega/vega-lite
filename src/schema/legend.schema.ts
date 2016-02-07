@@ -3,7 +3,7 @@ export interface Legend {
   title?: string;
   format?: string;
   values?: Array<any>;
-  properties?: any; // TODO declare VgLegendProperties
+  properties?: any; // TODO declare LegendProperties in the same fashion as I describe in axis.schema.ts
 
   // Vega-Lite only
   shortTimeLabels?: boolean;
@@ -35,7 +35,7 @@ export var legend = {
         default: undefined,
         description: 'Explicitly set the visible legend values.'
       },
-      properties: {
+      properties: { // declare legendProperties for describing JSON schema for this. 
         type: 'object',
         default: undefined,
         description: 'Optional mark property definitions for custom legend styling. '
