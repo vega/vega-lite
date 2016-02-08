@@ -186,6 +186,12 @@ export namespace properties {
       }, labelsSpec || {});
     }
 
+    if (axis.labelAngle) {
+      labelsSpec = extend({
+        angle: {value: axis.labelAngle}
+      }, labelsSpec || {});
+    }
+
      // for x-axis, set ticks for Q or rotate scale for ordinal scale
     switch (channel) {
       case X:

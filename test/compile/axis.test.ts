@@ -168,6 +168,17 @@ describe('Axis', function() {
       assert.deepEqual(labels.text, '');
     });
 
+    it('should rotate labels if labelAngle is defined', function() {
+      const model = parseModel({
+        mark: "point",
+        encoding: {
+          x: {field: "a", type: "quantitative", axis: {labelAngle: -45}}
+        }
+      });
+      const labels = axis.properties.labels(model, X, {}, {});
+      assert.equal(labels.angle.value, -45);
+    });
+
     it('should rotate label', function() {
       const model = parseModel({
         mark: "point",
