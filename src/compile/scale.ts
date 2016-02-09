@@ -64,8 +64,7 @@ export function compileScales(channels: Channel[], model: Model) {
           range: {data: model.dataTable(), field: model.field(COLOR), sort: true}
         });
 
-        // bin needs an additional scale for labels because we want labels in legends
-        // because we need to map bin_start to bin_range in legends
+        // bin needs an additional scale for labels because we need to map bin_start to bin_range in legends
         if (fieldDef.bin) {
           scales.push({
             name: COLOR_LABEL,
