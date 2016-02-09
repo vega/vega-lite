@@ -4,6 +4,6 @@
   "encoding": {
     "x": {"field": "miles","type": "quantitative", "scale": {"zero": false}},
     "y": {"field": "gas","type": "quantitative", "scale": {"zero": false}},
-    "path": {"field": "year","type": "quantitative"}
+    "path": {"field": "year","type": "temporal"}
   }
 }
