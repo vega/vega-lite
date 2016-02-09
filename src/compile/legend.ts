@@ -7,7 +7,7 @@ import {extend, keys} from '../util';
 import {Model} from './Model';
 import {applyMarkConfig, FILL_STROKE_CONFIG, formatMixins as utilFormatMixins, timeFormat} from './util';
 import {ORDINAL} from '../type';
-import {INVERSE_RANK, COLOR_LABEL} from './scale';
+import {INVERSE_ID, COLOR_LABEL} from './scale';
 
 export function compileLegends(model: Model) {
   var defs = [];
@@ -15,7 +15,7 @@ export function compileLegends(model: Model) {
   if (model.has(COLOR) && model.fieldDef(COLOR).legend) {
     const fieldDef = model.fieldDef(COLOR);
     defs.push(compileLegend(model, COLOR, {
-      fill: (fieldDef.type === ORDINAL || fieldDef.bin || fieldDef.timeUnit) ? INVERSE_RANK : model.scaleName(COLOR)
+      fill: (fieldDef.type === ORDINAL || fieldDef.bin || fieldDef.timeUnit) ? INVERSE_ID : model.scaleName(COLOR)
       // TODO: consider if this should be stroke for line
     }));
   }
@@ -159,7 +159,7 @@ namespace properties {
       if (fieldDef.type === ORDINAL) {
         return {
           text: {
-            scale: INVERSE_RANK,
+            scale: INVERSE_ID,
             field: 'data'
           }
         };

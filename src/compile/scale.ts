@@ -15,7 +15,7 @@ import {field} from '../fielddef';
 
 // scale from rank to field for ordinal color scale,
 // ordinal field to field mapping for binned quantitative and temporal scale with time unit
-export const INVERSE_RANK = 'inverse_rank';
+export const INVERSE_ID = 'inverse_or_identity';
 
 // scale used to get labels for binned color scales
 export const COLOR_LABEL = 'color_label';
@@ -54,7 +54,7 @@ export function compileScales(channels: Channel[], model: Model) {
       // add additional scales needed to support ordinal color scales also for legends
       if (channel === COLOR && fieldDef.legend && (fieldDef.type === ORDINAL || fieldDef.bin || fieldDef.timeUnit)) {
         scales.push({
-          name: INVERSE_RANK,
+          name: INVERSE_ID,
           type: ORDINAL,
           domain: {
             data: model.dataTable(),

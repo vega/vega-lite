@@ -270,7 +270,7 @@ describe('Scale', function() {
 
     it('should create color and inverse scales', function() {
       assert.equal(scales.length, 2);
-      assert.equal(scales[0].name, 'inverse_rank');
+      assert.equal(scales[0].name, 'inverse_or_identity');
       assert.equal(scales[1].name, 'color');
     });
 
@@ -310,12 +310,12 @@ describe('Scale', function() {
     it('should add correct scales', function() {
       assert.equal(scales.length, 3);
 
-      assert.equal(scales[0].name, 'inverse_rank');
+      assert.equal(scales[0].name, 'inverse_or_identity');
       assert.equal(scales[1].name, 'color_label');
       assert.equal(scales[2].name, 'color');
     });
 
-    it('should create correct inverse scale', function() {
+    it('should create correct identity scale', function() {
       assert.equal(scales[0].type, 'ordinal');
       assert.deepEqual(scales[0].domain, {
         data: 'source',
@@ -351,11 +351,11 @@ describe('Scale', function() {
     it('should add correct scales', function() {
       assert.equal(scales.length, 2);
 
-      assert.equal(scales[0].name, 'inverse_rank');
+      assert.equal(scales[0].name, 'inverse_or_identity');
       assert.equal(scales[1].name, 'color');
     });
 
-    it('should create correct inverse scale', function() {
+    it('should create correct identity scale', function() {
       assert.equal(scales[0].type, 'ordinal');
       assert.deepEqual(scales[0].domain, {
         data: 'source',
