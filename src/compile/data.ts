@@ -166,6 +166,7 @@ export namespace source {
         }
 
         transform.push(binTrans);
+        // color ramp has type linear or time
         if (scaleType(fieldDef, channel, model.mark()) === 'ordinal' || channel === COLOR) {
           transform.push({
             type: 'formula',
@@ -218,6 +219,8 @@ export namespace source {
   }
 
   export function rankTransform(model: Model) {
+    // We need to add a rank transform as a work around for color ramps
+
     const rankColor = model.has(COLOR) && model.fieldDef(COLOR).type === ORDINAL;
 
     return rankColor ? [{

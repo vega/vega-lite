@@ -5,7 +5,7 @@ import {title as fieldTitle} from '../fielddef';
 import {AREA, BAR, TICK, TEXT, LINE, POINT, CIRCLE, SQUARE} from '../mark';
 import {extend, keys} from '../util';
 import {Model} from './Model';
-import {applyMarkConfig, FILL_STROKE_CONFIG, formatMixins as utilFormatMixins} from './util';
+import {applyMarkConfig, FILL_STROKE_CONFIG, formatMixins as utilFormatMixins, timeFormat} from './util';
 import {ORDINAL} from '../type';
 import {INVERSE_RANK, COLOR_LABEL} from './scale';
 
@@ -15,7 +15,7 @@ export function compileLegends(model: Model) {
   if (model.has(COLOR) && model.fieldDef(COLOR).legend) {
     const fieldDef = model.fieldDef(COLOR);
     defs.push(compileLegend(model, COLOR, {
-      fill: (fieldDef.type === ORDINAL || fieldDef.bin) ? INVERSE_RANK : model.scaleName(COLOR)
+      fill: (fieldDef.type === ORDINAL || fieldDef.bin || fieldDef.timeUnit) ? INVERSE_RANK : model.scaleName(COLOR)
       // TODO: consider if this should be stroke for line
     }));
   }
@@ -154,7 +154,7 @@ namespace properties {
     return keys(symbols).length > 0 ? symbols : undefined;
   }
 
-  export function labels(fieldDef: FieldDef, symbolsSpec, model: Model, channel: Channel) {
+  export function labels(fieldDef: FieldDef, symbolsSpec, model: Model, channel: Channel): any {
     if (channel === COLOR) {
       if (fieldDef.type === ORDINAL) {
         return {
@@ -168,6 +168,12 @@ namespace properties {
           text: {
             scale: COLOR_LABEL,
             field: 'data'
+          }
+        };
+      } else if (fieldDef.timeUnit) {
+        return {
+          text: {
+            template: '{{ datum.data | time:\'' + timeFormat(model, channel) + '\'}}'
           }
         };
       }

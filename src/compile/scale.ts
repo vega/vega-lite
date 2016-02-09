@@ -47,19 +47,27 @@ export function compileScales(channels: Channel[], model: Model) {
         }
       });
 
-      if (channel === COLOR && (fieldDef.type === ORDINAL || fieldDef.bin)) {
+      // add additional scales needed to support ordinal color scales also for legends
+      if (channel === COLOR && fieldDef.legend && (fieldDef.type === ORDINAL || fieldDef.bin || fieldDef.timeUnit)) {
         scales.push({
           name: INVERSE_RANK,
           type: ORDINAL,
-          domain: {data: model.dataTable(), field: model.field(COLOR, fieldDef.bin ? {} : {prefn: 'rank_'}), sort: true},
+          domain: {
+            data: model.dataTable(),
+            field: model.field(COLOR, (fieldDef.bin || fieldDef.timeUnit) ? {} : {prefn: 'rank_'}), sort: true
+          },
           range: {data: model.dataTable(), field: model.field(COLOR), sort: true}
         });
 
+        // bin needs an additional scale for labels because we want labels in legends
         if (fieldDef.bin) {
           scales.push({
             name: COLOR_LABEL,
             type: ORDINAL,
-            domain: {data: model.dataTable(), field: model.field(COLOR,  fieldDef.bin ? {} : {prefn: 'rank_'}), sort: true},
+            domain: {
+              data: model.dataTable(),
+              field: model.field(COLOR,  (fieldDef.bin || fieldDef.timeUnit) ? {} : {prefn: 'rank_'}), sort: true
+            },
             range: {
               data: model.dataTable(),
               field: field(fieldDef, {binSuffix: '_range'}),

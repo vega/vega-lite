@@ -114,6 +114,10 @@
     {
       "name": "ordinal_color",
       "title": "Ordinal color scale"
+    },
+    {
+      "name": "timeunit_color",
+      "title": "Color scale with time unit"
     }
   ],
   "Stack": [
