@@ -338,6 +338,38 @@ describe('Scale', function() {
     });
   });
 
+  describe('color with time unit', function() {
+    const encoding = parseModel({
+        mark: "point",
+        encoding: {
+          color: {field: 'origin', type: "temporal", timeUnit: "year"}
+        }
+      });
+
+    const scales = vlscale.compileScales([COLOR], encoding);
+
+    it('should add correct scales', function() {
+      assert.equal(scales.length, 2);
+
+      assert.equal(scales[0].name, 'inverse_rank');
+      assert.equal(scales[1].name, 'color');
+    });
+
+    it('should create correct inverse scale', function() {
+      assert.equal(scales[0].type, 'ordinal');
+      assert.deepEqual(scales[0].domain, {
+        data: 'source',
+        field: 'year_origin',
+        sort: true
+      });
+      assert.deepEqual(scales[0].range, {
+        data: 'source',
+        field: 'year_origin',
+        sort: true
+      });
+    });
+  });
+
   describe('rangeMixins()', function() {
     // FIXME
   });

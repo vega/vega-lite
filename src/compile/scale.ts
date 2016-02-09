@@ -13,7 +13,11 @@ import {Mark, BAR, TEXT as TEXT_MARK} from '../mark';
 import {rawDomain} from './time';
 import {field} from '../fielddef';
 
+// scale from rank to field for ordinal color scale,
+// ordinal field to field mapping for binned quantitative and temporal scale with time unit
 export const INVERSE_RANK = 'inverse_rank';
+
+// scale used to get labels for binned color scales
 export const COLOR_LABEL = 'color_label';
 
 export function compileScales(channels: Channel[], model: Model) {
@@ -54,19 +58,22 @@ export function compileScales(channels: Channel[], model: Model) {
           type: ORDINAL,
           domain: {
             data: model.dataTable(),
+            // use rank_<field> for ordinal type, for bin and timeUnit use default field
             field: model.field(COLOR, (fieldDef.bin || fieldDef.timeUnit) ? {} : {prefn: 'rank_'}), sort: true
           },
           range: {data: model.dataTable(), field: model.field(COLOR), sort: true}
         });
 
         // bin needs an additional scale for labels because we want labels in legends
+        // because we need to map bin_start to bin_range in legends
         if (fieldDef.bin) {
           scales.push({
             name: COLOR_LABEL,
             type: ORDINAL,
             domain: {
               data: model.dataTable(),
-              field: model.field(COLOR,  (fieldDef.bin || fieldDef.timeUnit) ? {} : {prefn: 'rank_'}), sort: true
+              field: model.field(COLOR,  {prefn: 'rank_'}),
+              sort: true
             },
             range: {
               data: model.dataTable(),
