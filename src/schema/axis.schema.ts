@@ -21,6 +21,7 @@ export interface Axis {
   labelMaxLength?: number;
   labels?: boolean;
   shortTimeLabels?: boolean;
+  labelAngle?: number;
   titleMaxLength?: number;
 }
 
@@ -133,6 +134,11 @@ export var axis = {
       type: 'boolean',
       default: false,
       description: 'Whether month and day names should be abbreviated.'
+    },
+    labelAngle: {
+      type: 'number',
+      default: undefined,
+      description: 'The rotation angle of the axis labels.'
     },
     titleMaxLength: {
       type: 'integer',
