@@ -51,6 +51,8 @@ export function compileLegend(model: Model, channel: Channel, def) {
   // 2) Add mark property definition groups
   const props = (typeof legend !== 'boolean' && legend.properties) || {};
   ['title', 'symbols', 'legend'].forEach(function(group) {
+    // TODO: modify this and relevant methods to assign each value inside title, symbols, legend to produce correct result.
+
     let value = properties[group] ?
       properties[group](fieldDef, props[group], model, channel) : // apply rule
       props[group]; // no rule -- just default values

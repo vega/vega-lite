@@ -47,6 +47,7 @@ export function compileAxis(channel: Channel, model: Model) {
     'axis', 'labels', // have special rules
     'grid', 'title', 'ticks', 'majorTicks', 'minorTicks' // only default values
   ].forEach(function(group) {
+    // TODO: modify this and relevant methods to assign each value inside axis, labels, ... to produce correct result.
     const value = properties[group] ?
       properties[group](model, channel, props[group], def) :
       props[group];

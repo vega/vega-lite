@@ -1,3 +1,24 @@
+export interface AxisProperties {
+  ticks?: TickProperties;
+  majorTicks?: TickProperties;
+  minorTicks?: TickProperties;
+  // TODO: grid, labels, title, axis
+}
+
+export interface TickProperties {
+  // TODO: add mark properties that is sensible here
+}
+
+// TODO: add interfaces for GridProperties, LabelsP... , TitleP..., AxisP..
+
+export const axisProperties = { // TODO:
+  type: 'object',
+  description: 'Optional mark property definitions for custom axis styling.'
+  // TODO: add properties here
+};
+
+// TODO add json schema for TickProperties, GridProperties, etc. 
+
 export interface Axis {
   // Vega Axis Properties
   format?: string;
@@ -25,7 +46,9 @@ export interface Axis {
   titleMaxLength?: number;
 }
 
-export var axis = {
+
+
+export const axis = {
   type: 'object',
   properties: {
     /* Vega Axis Properties */
@@ -109,10 +132,7 @@ export var axis = {
       type: 'array',
       default: undefined
     },
-    properties: {
-      type: 'object',
-      description: 'Optional mark property definitions for custom axis styling.'
-    },
+    properties: axisProperties,
     /* Vega-lite only */
     characterWidth: {
       type: 'integer',
