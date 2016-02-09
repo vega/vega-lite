@@ -12,7 +12,7 @@ layout: plain
   <nav class="page-centered">
     {% for link in page.navigation %}
     <a {% if (url == link.url) %}class="active"{% endif %}
-        href="{{site.baseurl}}{{page.base}}{% if link.url!='index' %}{{link.url}}.html{% endif %}" title="{{link.title}}">{{link.text}}
+        href="{{site.baseurl}}{{page.base}}{% if link.url != 'index' %}{{link.url}}.html{% endif %}" title="{{link.title}}">{{link.text}}
     </a>
     {% endfor %}
   </nav>
