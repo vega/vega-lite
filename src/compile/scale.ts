@@ -231,7 +231,7 @@ function _useRawDomain (model: Model, channel: Channel, scaleType: string) {
       // domain values from the summary table.
       (fieldDef.type === QUANTITATIVE && !fieldDef.bin) ||
       // T uses non-ordinal scale when there's no unit or when the unit is not ordinal.
-      (fieldDef.type === TEMPORAL && scaleType === 'linear')
+      (fieldDef.type === TEMPORAL && scaleType === 'time')
     );
 }
 
