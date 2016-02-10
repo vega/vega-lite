@@ -15,7 +15,7 @@ import {field} from '../fielddef';
 
 /**
  * Color Ramp's scale for legends.  This scale has to be ordinal so that its
- * legends show list of numbers.
+ * legends show a list of numbers.
  */
 export const COLOR_LEGEND = 'color_legend';
 
