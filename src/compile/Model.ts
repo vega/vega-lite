@@ -150,6 +150,7 @@ export class Model {
         binSuffix: scaleType(fieldDef, channel, this.mark()) === 'ordinal' ? '_range' : '_start'
       }, opt);
     }
+
     return vlFieldDef.field(fieldDef, opt);
   }
 

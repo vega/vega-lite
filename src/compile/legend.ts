@@ -5,14 +5,23 @@ import {title as fieldTitle} from '../fielddef';
 import {AREA, BAR, TICK, TEXT, LINE, POINT, CIRCLE, SQUARE} from '../mark';
 import {extend, keys} from '../util';
 import {Model} from './Model';
-import {applyMarkConfig, FILL_STROKE_CONFIG, formatMixins as utilFormatMixins} from './util';
+import {applyMarkConfig, FILL_STROKE_CONFIG, formatMixins as utilFormatMixins, timeFormat} from './util';
+import {ORDINAL} from '../type';
+import {COLOR_LEGEND, COLOR_LEGEND_LABEL} from './scale';
 
 export function compileLegends(model: Model) {
   var defs = [];
 
   if (model.has(COLOR) && model.fieldDef(COLOR).legend) {
+    const fieldDef = model.fieldDef(COLOR);
     defs.push(compileLegend(model, COLOR, {
-      fill: model.scaleName(COLOR)
+      fill: (fieldDef.type === ORDINAL || fieldDef.bin || fieldDef.timeUnit) ?
+        // To produce ordinal legend (list, rather than linear range) with correct labels:
+        // - For an ordinal field, provide an ordinal scale that maps rank values to field values
+        // - For a field with bin or timeUnit, provide an identity ordinal scale
+        // (mapping the field values to themselves)
+        COLOR_LEGEND :
+        model.scaleName(COLOR)
       // TODO: consider if this should be stroke for line
     }));
   }
@@ -50,7 +59,7 @@ export function compileLegend(model: Model, channel: Channel, def) {
 
   // 2) Add mark property definition groups
   const props = (typeof legend !== 'boolean' && legend.properties) || {};
-  ['title', 'symbols', 'legend'].forEach(function(group) {
+  ['title', 'symbols', 'legend', 'labels'].forEach(function(group) {
     let value = properties[group] ?
       properties[group](fieldDef, props[group], model, channel) : // apply rule
       props[group]; // no rule -- just default values
@@ -149,5 +158,32 @@ namespace properties {
     symbols = extend(symbols, symbolsSpec || {});
 
     return keys(symbols).length > 0 ? symbols : undefined;
+  }
+
+  export function labels(fieldDef: FieldDef, symbolsSpec, model: Model, channel: Channel): any {
+    if (channel === COLOR) {
+      if (fieldDef.type === ORDINAL) {
+        return {
+          text: {
+            scale: COLOR_LEGEND,
+            field: 'data'
+          }
+        };
+      } else if (fieldDef.bin) {
+        return {
+          text: {
+            scale: COLOR_LEGEND_LABEL,
+            field: 'data'
+          }
+        };
+      } else if (fieldDef.timeUnit) {
+        return {
+          text: {
+            template: '{{ datum.data | time:\'' + timeFormat(model, channel) + '\'}}'
+          }
+        };
+      }
+    }
+    return undefined;
   }
 }

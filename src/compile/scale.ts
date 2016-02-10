@@ -11,10 +11,20 @@ import {SOURCE, STACKED_SCALE} from '../data';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 import {Mark, BAR, TEXT as TEXT_MARK} from '../mark';
 import {rawDomain} from './time';
+import {field} from '../fielddef';
+
+/**
+ * Color Ramp's scale for legends.  This scale has to be ordinal so that its
+ * legends show a list of numbers.
+ */
+export const COLOR_LEGEND = 'color_legend';
+
+// scale used to get labels for binned color scales
+export const COLOR_LEGEND_LABEL = 'color_legend_label';
 
 export function compileScales(channels: Channel[], model: Model) {
   return channels.filter(hasScale)
-    .map(function(channel: Channel) {
+    .reduce(function(scales: any[], channel: Channel) {
       const fieldDef = model.fieldDef(channel);
 
       var scaleDef: any = {
@@ -43,8 +53,50 @@ export function compileScales(channels: Channel[], model: Model) {
         }
       });
 
-      return scaleDef;
-    });
+      // Add additional scales needed to support ordinal legends (list of values)
+      // for color ramp.
+      if (channel === COLOR && fieldDef.legend && (fieldDef.type === ORDINAL || fieldDef.bin || fieldDef.timeUnit)) {
+        // This scale is for producing ordinal scale for legends.
+        // - For an ordinal field, provide an ordinal scale that maps rank values to field values
+        // - For a field with bin or timeUnit, provide an identity ordinal scale
+        // (mapping the field values to themselves)
+        scales.push({
+          name: COLOR_LEGEND,
+          type: 'ordinal',
+          domain: {
+            data: model.dataTable(),
+            // use rank_<field> for ordinal type, for bin and timeUnit use default field
+            field: model.field(COLOR, (fieldDef.bin || fieldDef.timeUnit) ? {} : {prefn: 'rank_'}), sort: true
+          },
+          range: {data: model.dataTable(), field: model.field(COLOR), sort: true}
+        });
+
+        // bin needs an additional scale for labels because we need to map bin_start to bin_range in legends
+        if (fieldDef.bin) {
+          scales.push({
+            name: COLOR_LEGEND_LABEL,
+            type: 'ordinal',
+            domain: {
+              data: model.dataTable(),
+              field: model.field(COLOR,  {prefn: 'rank_'}),
+              sort: true
+            },
+            range: {
+              data: model.dataTable(),
+              field: field(fieldDef, {binSuffix: '_range'}),
+              sort: {
+                field: model.field(channel, { binSuffix: '_start' }),
+                op: 'min' // min or max doesn't matter since same _range would have the same _start
+              }
+            }
+          });
+        }
+      }
+
+      scales.push(scaleDef);
+
+      return scales;
+    }, []);
 }
 
 export function type(fieldDef: FieldDef, channel: Channel, mark: Mark): string {
@@ -66,11 +118,12 @@ export function type(fieldDef: FieldDef, channel: Channel, mark: Mark): string {
     case NOMINAL:
       return 'ordinal';
     case ORDINAL:
+      if (channel === COLOR) {
+        return 'linear'; // time has order, so use interpolated ordinal color scale.
+      }
       return 'ordinal';
     case TEMPORAL:
       if (channel === COLOR) {
-        // FIXME(#890) if user specify scale.range as ordinal presets, then this should be ordinal.
-        // Also, if we support color ramp, this should be ordinal too.
         return 'time'; // time has order, so use interpolated ordinal color scale.
       }
 
@@ -89,8 +142,6 @@ export function type(fieldDef: FieldDef, channel: Channel, mark: Mark): string {
 
     case QUANTITATIVE:
       if (fieldDef.bin) {
-        // TODO(#890): Ideally binned COLOR should be an ordinal scale
-        // However, currently ordinal scale doesn't support color ramp yet.
         return contains([X, Y, COLOR], channel) ? 'linear' : 'ordinal';
       }
       return 'linear';
@@ -158,7 +209,6 @@ export function domain(model: Model, channel:Channel, scaleType: string) {
       }
     } : channel === COLOR ? {
       // Currently, binned on color uses linear scale and thus use _start point
-      // TODO: This ideally should become ordinal scale once ordinal scale supports color ramp.
       data: model.dataTable(),
       field: model.field(channel, { binSuffix: '_start' })
     } : {
@@ -174,25 +224,29 @@ export function domain(model: Model, channel:Channel, scaleType: string) {
       // If sort by aggregation of a specified sort field, we need to use SOURCE table,
       // so we can aggregate values for the scale independently from the main aggregation.
       data: sort.op ? SOURCE : model.dataTable(),
-      field: model.field(channel),
+      field: (fieldDef.type === ORDINAL && channel === COLOR) ? model.field(channel, {prefn: 'rank_'}) : model.field(channel),
       sort: sort
     };
   } else {
     return {
       data: model.dataTable(),
-      field: model.field(channel)
+      field: (fieldDef.type === ORDINAL && channel === COLOR) ? model.field(channel, {prefn: 'rank_'}) : model.field(channel),
     };
   }
 }
 
 export function domainSort(model: Model, channel: Channel, scaleType: string): any {
+  if (scaleType !== 'ordinal') {
+    return undefined;
+  }
+
   var sort = model.fieldDef(channel).sort;
   if (sort === 'ascending' || sort === 'descending') {
     return true;
   }
 
   // Sorted based on an aggregate calculation over a specified sort field (only for ordinal scale)
-  if (scaleType === 'ordinal' && typeof sort !== 'string') {
+  if (typeof sort !== 'string') {
     return {
       op: sort.op,
       field: sort.field
@@ -346,12 +400,10 @@ export function rangeMixins(model: Model, channel: Channel, scaleType: string): 
     case SHAPE:
       return {range: 'shapes'};
     case COLOR:
-      if (fieldDef.type === NOMINAL
-        || fieldDef.type === ORDINAL // FIXME remove this once we support color ramp for ordinal
-      ) {
+      if (fieldDef.type === NOMINAL) {
         return {range: 'category10'};
       }
-      // else -- time or quantitative
+      // else -- ordinal, time, or quantitative
       return {range: ['#AFC6A3', '#09622A']}; // tableau greens
     case ROW:
       return {range: 'height'};
