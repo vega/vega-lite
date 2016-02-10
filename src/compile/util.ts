@@ -2,7 +2,7 @@ import {Model} from './Model';
 import {FieldDef} from '../schema/fielddef.schema';
 import {COLUMN, ROW, X, Y, SIZE, COLOR, SHAPE, TEXT, LABEL, Channel} from '../channel';
 import {field} from '../fielddef';
-import {QUANTITATIVE, TEMPORAL} from '../type';
+import {QUANTITATIVE, ORDINAL, TEMPORAL} from '../type';
 import {format as timeFormatExpr} from './time';
 import {contains} from '../util';
 
@@ -24,14 +24,15 @@ export function applyColorAndOpacity(p, model: Model, colorMode: ColorMode = Col
         colorMode === ColorMode.FILLED_BY_DEFAULT ? true :
           false; // ColorMode.STROKED_BY_DEFAULT
 
+  const fieldDef = model.fieldDef(COLOR);
   if (filled) {
     if (model.has(COLOR)) {
       p.fill = {
         scale: model.scaleName(COLOR),
-        field: model.field(COLOR)
+        field: model.field(COLOR, fieldDef.type === ORDINAL ? {prefn: 'rank_'} : {})
       };
-    } else if (model.fieldDef(COLOR).value) {
-      p.fill = { value: model.fieldDef(COLOR).value };
+    } else if (fieldDef.value) {
+      p.fill = { value: fieldDef.value };
     } else {
       p.fill = { value: model.config().mark.color };
     }
@@ -39,10 +40,10 @@ export function applyColorAndOpacity(p, model: Model, colorMode: ColorMode = Col
     if (model.has(COLOR)) {
       p.stroke = {
         scale: model.scaleName(COLOR),
-        field: model.field(COLOR)
+        field: model.field(COLOR, fieldDef.type === ORDINAL ? {prefn: 'rank_'} : {})
       };
-    } else if (model.fieldDef(COLOR).value) {
-      p.stroke = { value: model.fieldDef(COLOR).value };
+    } else if (fieldDef.value) {
+      p.stroke = { value: fieldDef.value };
     } else {
       p.stroke = { value: model.config().mark.color };
     }

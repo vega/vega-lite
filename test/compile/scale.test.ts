@@ -5,7 +5,7 @@ import {assert} from 'chai';
 import * as vlscale from '../../src/compile/scale';
 import {SOURCE, SUMMARY} from '../../src/data';
 import {parseModel} from '../util';
-import {Y, ROW} from '../../src/channel';
+import {Y, ROW, COLOR} from '../../src/channel';
 
 
 describe('Scale', function() {
@@ -254,6 +254,118 @@ describe('Scale', function() {
             field: 'origin',
             sort: true
           });
+      });
+    });
+  });
+
+  describe('ordinal with color', function() {
+    const encoding = parseModel({
+      mark: "point",
+      encoding: {
+        color: { field: 'origin', type: "ordinal"}
+      }
+    });
+
+    const scales = vlscale.compileScales([COLOR], encoding);
+
+    it('should create color and inverse scales', function() {
+      assert.equal(scales.length, 2);
+      assert.equal(scales[0].name, 'color_legend');
+      assert.equal(scales[1].name, 'color');
+    });
+
+    it('should create correct inverse scale', function() {
+      assert.equal(scales[0].type, 'ordinal');
+      assert.deepEqual(scales[0].domain, {
+        data: 'source',
+        field: 'rank_origin',
+        sort: true
+      });
+      assert.deepEqual(scales[0].range, {
+        data: 'source',
+        field: 'origin',
+        sort: true
+      });
+    });
+
+    it('should create correct color scale', function() {
+      assert.equal(scales[1].type, 'linear');
+      assert.deepEqual(scales[1].domain, {
+        data: 'source',
+        field: 'rank_origin'
+      });
+    });
+  });
+
+  describe('color with bin', function() {
+    const encoding = parseModel({
+        mark: "point",
+        encoding: {
+          color: { field: 'origin', type: "quantitative", bin: true}
+        }
+      });
+
+    const scales = vlscale.compileScales([COLOR], encoding);
+
+    it('should add correct scales', function() {
+      assert.equal(scales.length, 3);
+
+      assert.equal(scales[0].name, 'color_legend');
+      assert.equal(scales[1].name, 'color_legend_label');
+      assert.equal(scales[2].name, 'color');
+    });
+
+    it('should create correct identity scale', function() {
+      assert.equal(scales[0].type, 'ordinal');
+      assert.deepEqual(scales[0].domain, {
+        data: 'source',
+        field: 'bin_origin_start',
+        sort: true
+      });
+      assert.deepEqual(scales[0].range, {
+        data: 'source',
+        field: 'bin_origin_start',
+        sort: true
+      });
+    });
+
+    it('should sort range of color labels', function() {
+      assert.deepEqual(scales[1].range, {
+        data: 'source',
+        field: 'bin_origin_range',
+        sort: {"field": "bin_origin_start","op": "min"}
+      });
+    });
+  });
+
+  describe('color with time unit', function() {
+    const encoding = parseModel({
+        mark: "point",
+        encoding: {
+          color: {field: 'origin', type: "temporal", timeUnit: "year"}
+        }
+      });
+
+    const scales = vlscale.compileScales([COLOR], encoding);
+
+    it('should add correct scales', function() {
+      assert.equal(scales.length, 2);
+
+      assert.equal(scales[0].name, 'color_legend');
+      assert.equal(scales[1].name, 'color');
+    });
+
+    it('should create correct identity scale', function() {
+      assert.equal(scales[0].type, 'ordinal');
+      assert.deepEqual(scales[0].domain, {
+        data: 'source',
+        field: 'year_origin',
+        sort: true
+      });
+      assert.deepEqual(scales[0].range, {
+        data: 'source',
+        field: 'year_origin',
+        sort: true
       });
     });
   });

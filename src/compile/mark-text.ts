@@ -2,7 +2,7 @@ import {Model} from './Model';
 import {X, Y, COLOR, TEXT, SIZE} from '../channel';
 import {applyMarkConfig, applyColorAndOpacity, formatMixins} from './util';
 import {extend, contains} from '../util';
-import {QUANTITATIVE, TEMPORAL} from '../type';
+import {QUANTITATIVE, ORDINAL, TEMPORAL} from '../type';
 
 export namespace text {
   export function markType() {
@@ -15,7 +15,10 @@ export namespace text {
       y: { value: 0 },
       width: { field: { group: 'width' } },
       height: { field: { group: 'height' } },
-      fill: { scale: model.scaleName(COLOR), field: model.field(COLOR) }
+      fill: {
+        scale: model.scaleName(COLOR),
+        field: model.field(COLOR, model.fieldDef(COLOR).type === ORDINAL ? {prefn: 'rank_'} : {})
+      }
     };
   }
 

@@ -5,8 +5,7 @@ title: Encoding
 permalink: /docs/encoding.html
 ---
 
-An integral part of the data visualization process is encoding data with visual properties of graphical marks. Vega-Lite's top-level `encoding` property represents key-value mappings between [encoding channels](#channels) (such as `x`, `y`, or `color`) and its [definition object](#def), which describes the
-[encoded data field](#field) or a [constant value](#value), and the channel's [inherent components including a scale and a guide (an axis or a legend)](#components).
+An integral part of the data visualization process is encoding data with visual properties of graphical marks. Vega-Lite's top-level `encoding` property represents key-value mappings between [encoding channels](#channels) (such as `x`, `y`, or `color`) and its [definition object](#def), which describes the encoded [data field](#field) or [constant value](#value), and the channel's [scale and guide (axis or legend)](#components).
 
 {: .suppress-error}
 ```json
@@ -35,7 +34,7 @@ The keys in the encoding object are encoding channels. This section lists suppor
 {:#props-channels}
 ### Mark Properties Channels
 
-Mark properties channels map data fields directly to visual properties of the marks.  Unlike other channel types, they can be mapped to constant values as well. Here are the supported mark properties:
+Mark properties channels map data fields directly to visual properties of the marks.  Unlike other channel types, they can be mapped to [constant values](#value) as well. Here are the supported mark properties:
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
@@ -47,19 +46,30 @@ Mark properties channels map data fields directly to visual properties of the ma
 
 ### Additional Level of Detail Channel
 
-For [aggregated plots](aggregate.html), all encoded fields without `aggregate` functions are used as grouping fields in the aggregation (fields in `GROUP BY` in SQL).  `detail` is a special encoding channel that provides an additional grouping field (level) for grouping data in aggregation.
+Grouping data is another important operation in visualizing data. For [aggregated plots](aggregate.html), all encoded fields without `aggregate` functions are used as grouping fields in the aggregation (similar to fields in `GROUP BY` in SQL).  For line and area marks, mapping a data field to color or shape channel will group the lines and stacked areas by the field.  
+
+`detail` channel allows providing an additional grouping field (level) for grouping data in aggregation without mapping data to a specific visual channel.
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| detail | [ChannelDef](#def)| Additional levels of detail for grouping data in aggregate views without mapping data to a specific visual channel.  ([Example](#ex-detail).) |
+| detail | [ChannelDef](#def)| Additional levels of detail for grouping data in aggregate views and in line and area marks without mapping data to a specific visual channel.  ([Example](#ex-detail).) |
 
 **Note**: Since `detail` represents an actual data field in the aggregation, it cannot encode a constant `value`.
 
-#### Example
+#### Examples
 
-<!-- TODO: Aggregate Scatterplot with detail -->
+Here is a scatterplot showing average horsepower and displacement for cars from different origins.  We map `Origin` to `detail` channel to use the field as a group-by field without mapping it to visual properties of the marks.
 
-<!-- TODO: Line with detail -->
+<div class="vl-example" data-name="scatter_aggregate_detail" data-dir="docs"></div>
+
+
+Here is a line chart showing stock prices of 5 tech companies over time.  
+We map `symbol` variable (stock market ticker symbol) to `detail` to use them to group lines.  
+
+<div class="vl-example" data-name="line_detail" data-dir="docs"></div>
+
+<!-- TODO Need to decide if we want to keep the two examples above since they look bad with labels / tooltips -->
+
 
 ### Mark Order Channels
 
@@ -67,38 +77,67 @@ For [aggregated plots](aggregate.html), all encoded fields without `aggregate` f
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| order | [ChannelDef](#def)| Layer order for non-stacked marks, or stack order for stacked marks. ([Example](#ex-order).) |
-| path   | [ChannelDef](#def)| Order of data points in line marks.  ([Example](#ex-path).) |
+| order | [ChannelDef](#def)| Layer order for non-stacked marks, or stack order for stacked marks. |
+| path   | [ChannelDef](#def)| Order of data points in line marks. |
 
 **Note**: Since `order` and `path` represent actual data fields that are used to sort the data, they cannot encode constant `value`.  In addition, in aggregate plots, they should have `aggregate` function specified.  
 
-#### Example
+{:#ex-order}
+#### Example: Sorting Layer Order
 
-<!-- sorting order color of raw scatterplot -->
+Given a colored scatterplot.
 
-<!-- sorting stack order -->
+<div class="vl-example" data-name="scatter_color" data-dir="docs"></div>
 
-<!-- connected scatterplot -->
+By default, layer order of the data points are determined by original order of the data.  
 
+Mapping the field `Origin` to `order` channel will sort the layer of data points by the field.  
+
+<div class="vl-example" data-name="scatter_color_order" data-dir="docs"></div>
+
+Here we can see that data points from Origin A appear on the top.
+
+#### Example: Sorting Stack Order
+
+Given a stacked bar chart:
+
+<div class="vl-example" data-name="stacked_bar_h"></div>
+
+By default, the stacked bar are sorted by the stack grouping fields (`color` in this example).  
+
+Mapping the sum of yield to `order` channel will sort the layer of stacked bar by sum of yield instead.
+
+<div class="vl-example" data-name="stacked_bar_h_order" data-dir="docs"></div>
+
+Here we can see that site with higher yields for each type of barley are put on the top of the stack (rightmost).
+
+{:#ex-path}
+#### Example: Sorting Line Order
+
+By default, line marks order their points in their paths by the field of channel x or y. However, to show a pattern of data change over time between gasoline price and average miles driven per capita we use `path` channel to sort the points in the line by time field (`year`).
+
+<div class="vl-example" data-name="scatter_connected"></div>
 
 ### Facet Channels
 
-`row` and `column` are special encoding channels that facets single plots into [trellis plots (or small multiples)](https://en.wikipedia.org/wiki/Small_multiple).  For more information, please see [facet](facet.html) page.
+`row` and `column` are special encoding channels that facets single plots into [trellis plots (or small multiples)](https://en.wikipedia.org/wiki/Small_multiple).  
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | row, column   | [ChannelDef](#def)| Vertical and horizontal facets for vertical and horizontal [trellis plots](https://en.wikipedia.org/wiki/Small_multiple). |
+
+For more information, please see [facet](facet.html) page.
 
 **Note**: Since `row` and `column` represent actual data fields that are used to partition the data, they cannot encode constant `value`.  In addition, in aggregate plots, they should not have `aggregate` function specified.  
 
 {:#def}
 ## Channel Definition
 
-Each channel definition object **must** describe the [data field encoded by the channel](#field) and its [data type](#type), or a [constant value directly mapped to the mark properties](#value).  In addition, it can describe the mapped field's [transformation](#inline) and [properties for its inherent components including scales, and axes or legends](#components).
+Each channel definition object **must** describe the [data field encoded by the channel](#field) and its [data type](#type), or a [constant value directly mapped to the mark properties](#value).  In addition, it can describe the mapped field's [transformation](#inline) and [properties for its scale and guide](#components).
 
 
 {:#field}
-### Field
+### Encoded Data
 
 To encode a particular field in the data set with a particular channel, the channel must specify the field's name with `field` property.
 
@@ -106,7 +145,7 @@ To encode a particular field in the data set with a particular channel, the chan
 | :------------ |:-------------:| :------------- |
 | field         | String        | Name of the field from which to pull a data value.    |
 
-### Type
+### Data Type
 
 If a field is specified, the channel definition **must** describe the encoded data's [type of measurement (level of measurement)](https://en.wikipedia.org/wiki/Level_of_measurement).
 The supported data types are:
@@ -180,7 +219,7 @@ Similarly, `value` for `size` channel of bar marks will adjust the bar's width. 
 
 
 {:components}
-### Inherent Components: Scale, Axis, and Legend
+### Scale and Guide
 
 For encoding channels that map data directly to visual properties of the marks, they must provide [scales](scale.html), or functions that transform values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes).  
 

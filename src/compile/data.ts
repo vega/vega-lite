@@ -5,10 +5,10 @@ import {FieldDef} from '../schema/fielddef.schema';
 import {StackProperties} from './stack';
 
 import {autoMaxBins} from '../bin';
-import {Channel, X, Y, ROW, COLUMN} from '../channel';
+import {Channel, X, Y, ROW, COLUMN, COLOR} from '../channel';
 import {SOURCE, STACKED_SCALE, LAYOUT, SUMMARY} from '../data';
 import {field} from '../fielddef';
-import {QUANTITATIVE, TEMPORAL} from '../type';
+import {QUANTITATIVE, TEMPORAL, ORDINAL} from '../type';
 import {type as scaleType} from './scale';
 import {parseExpression, rawDomain} from './time';
 
@@ -124,7 +124,8 @@ export namespace source {
       formulaTransform(model),
       filterTransform(model),
       binTransform(model),
-      timeTransform(model)
+      timeTransform(model),
+      rankTransform(model)
     );
   }
 
@@ -165,12 +166,13 @@ export namespace source {
         }
 
         transform.push(binTrans);
-        if (scaleType(fieldDef, channel, model.mark()) === 'ordinal') {
+        // color ramp has type linear or time
+        if (scaleType(fieldDef, channel, model.mark()) === 'ordinal' || channel === COLOR) {
           transform.push({
             type: 'formula',
             field: field(fieldDef, {binSuffix: '_range'}),
             expr: field(fieldDef, {datum: true, binSuffix: '_start'}) +
-                  '+ \'-\' +' +
+                  ' + \'-\' + ' +
                   field(fieldDef, {datum: true, binSuffix: '_end'})
           });
         }
@@ -214,6 +216,23 @@ export namespace source {
       transform.push(extend({type: 'formula'}, formula));
       return transform;
     }, []);
+  }
+
+  // We need to add a rank transform so that we can use the rank value as
+  // input for color ramp's linear scale.
+  export function rankTransform(model: Model) {
+    const rankColor = model.has(COLOR) && model.fieldDef(COLOR).type === ORDINAL;
+
+    return rankColor ? [{
+      type: 'sort',
+      by: model.field(COLOR)
+    },{
+      type: 'rank',
+      field: model.field(COLOR),
+      output: {
+        rank: model.field(COLOR, {prefn: 'rank_'})
+      }
+    }] : [];
   }
 }
 
