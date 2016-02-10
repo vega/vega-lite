@@ -112,13 +112,13 @@ export function cardinality(fieldDef: FieldDef, stats, filterNull = {}) {
     (stat.missing > 0 && filterNull[type] ? 1 : 0);
 }
 
-export function title(fieldDef: FieldDef) {
+export function title(fieldDef: FieldDef, showUnit: boolean) {
   if (isCount(fieldDef)) {
     return COUNT_DISPLAYNAME;
   }
 
   var unit = '';
-  if(fieldDef.unit) {
+  if(fieldDef.unit && showUnit) {
     unit = ' in ' + fieldDef.unit;
   }
 

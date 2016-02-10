@@ -153,10 +153,6 @@ export class Model {
     return vlFieldDef.field(fieldDef, opt);
   }
 
-  public fieldTitle(channel: Channel): string {
-    return vlFieldDef.title(this._spec.encoding[channel]);
-  }
-
   public channels(): Channel[] {
     return vlEncoding.channels(this._spec.encoding);
   }

@@ -1,6 +1,7 @@
 export interface Legend {
   orient?: string;
   title?: string;
+  showUnit?: string;
   format?: string;
   values?: Array<any>;
   properties?: any; // TODO declare VgLegendProperties
@@ -46,6 +47,12 @@ export var legend = {
         type: 'boolean',
         default: false,
         description: 'Whether month names and weekday names should be abbreviated.'
+      },
+      showUnit: {
+        type: 'string',
+        default: 'title',
+        enum: ['none', 'title', 'label-suffix', 'label-prefix'],
+        description : 'Specifies where to show the fieldDef unit'
       }
     },
   }, {
