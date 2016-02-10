@@ -17,10 +17,10 @@ import {field} from '../fielddef';
  * Color Ramp's scale for legends.  This scale has to be ordinal so that its
  * legends show list of numbers.
  */
-export const INVERSE_ID = 'inverse_or_identity';
+export const COLOR_LEGEND = 'color_legend';
 
 // scale used to get labels for binned color scales
-export const COLOR_LABEL = 'color_label';
+export const COLOR_LEGEND_LABEL = 'color_legend_label';
 
 export function compileScales(channels: Channel[], model: Model) {
   return channels.filter(hasScale)
@@ -61,7 +61,7 @@ export function compileScales(channels: Channel[], model: Model) {
         // - For a field with bin or timeUnit, provide an identity ordinal scale
         // (mapping the field values to themselves)
         scales.push({
-          name: INVERSE_ID,
+          name: COLOR_LEGEND,
           type: 'ordinal',
           domain: {
             data: model.dataTable(),
@@ -74,7 +74,7 @@ export function compileScales(channels: Channel[], model: Model) {
         // bin needs an additional scale for labels because we need to map bin_start to bin_range in legends
         if (fieldDef.bin) {
           scales.push({
-            name: COLOR_LABEL,
+            name: COLOR_LEGEND_LABEL,
             type: 'ordinal',
             domain: {
               data: model.dataTable(),

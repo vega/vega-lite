@@ -7,7 +7,7 @@ import {extend, keys} from '../util';
 import {Model} from './Model';
 import {applyMarkConfig, FILL_STROKE_CONFIG, formatMixins as utilFormatMixins, timeFormat} from './util';
 import {ORDINAL} from '../type';
-import {INVERSE_ID, COLOR_LABEL} from './scale';
+import {COLOR_LEGEND, COLOR_LEGEND_LABEL} from './scale';
 
 export function compileLegends(model: Model) {
   var defs = [];
@@ -20,7 +20,7 @@ export function compileLegends(model: Model) {
         // - For an ordinal field, provide an ordinal scale that maps rank values to field values
         // - For a field with bin or timeUnit, provide an identity ordinal scale
         // (mapping the field values to themselves)
-        INVERSE_ID :
+        COLOR_LEGEND :
         model.scaleName(COLOR)
       // TODO: consider if this should be stroke for line
     }));
@@ -165,14 +165,14 @@ namespace properties {
       if (fieldDef.type === ORDINAL) {
         return {
           text: {
-            scale: INVERSE_ID,
+            scale: COLOR_LEGEND,
             field: 'data'
           }
         };
       } else if (fieldDef.bin) {
         return {
           text: {
-            scale: COLOR_LABEL,
+            scale: COLOR_LEGEND_LABEL,
             field: 'data'
           }
         };

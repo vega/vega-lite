@@ -270,7 +270,7 @@ describe('Scale', function() {
 
     it('should create color and inverse scales', function() {
       assert.equal(scales.length, 2);
-      assert.equal(scales[0].name, 'inverse_or_identity');
+      assert.equal(scales[0].name, 'color_legend');
       assert.equal(scales[1].name, 'color');
     });
 
@@ -310,8 +310,8 @@ describe('Scale', function() {
     it('should add correct scales', function() {
       assert.equal(scales.length, 3);
 
-      assert.equal(scales[0].name, 'inverse_or_identity');
-      assert.equal(scales[1].name, 'color_label');
+      assert.equal(scales[0].name, 'color_legend');
+      assert.equal(scales[1].name, 'color_legend_label');
       assert.equal(scales[2].name, 'color');
     });
 
@@ -351,7 +351,7 @@ describe('Scale', function() {
     it('should add correct scales', function() {
       assert.equal(scales.length, 2);
 
-      assert.equal(scales[0].name, 'inverse_or_identity');
+      assert.equal(scales[0].name, 'color_legend');
       assert.equal(scales[1].name, 'color');
     });
 
