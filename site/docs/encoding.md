@@ -5,7 +5,7 @@ title: Encoding
 permalink: /docs/encoding.html
 ---
 
-An integral part of the data visualization process is encoding data with visual properties of graphical marks. Vega-Lite's top-level `encoding` property represents key-value mappings between [encoding channels](#channels) (such as `x`, `y`, or `color`) and its [definition object](#def), which describes the encoded [data field](#field) or [constant value](#value), and the channel's [scale and guide (axis or legend)](#components).
+An integral part of the data visualization process is encoding data with visual properties of graphical marks. Vega-Lite's top-level `encoding` property represents key-value mappings between [encoding channels](#channels) (such as `x`, `y`, or `color`) and its [definition object](#def), which describes the encoded [data field](#field) or [constant value](#value), and the channel's [scale and guide (axis or legend)](#scale-and-guide).
 
 {: .suppress-error}
 ```json
@@ -160,15 +160,14 @@ Ordinal
 : Ordinal data represents ranked order (1st, 2nd, ...) by which the data can be sorted. However, as opposed to quantitative data, there is no notion of *relative degree of difference* between them. For illustration, a "size" variable might have the following values `small`, `medium`, `large`, `extra-large`.  We know that medium is larger than small and same for extra-large larger than large.  However, we cannot claim that compare the magnitude of difference, for example, between (1) small and medium and (2) medium and large.
 
 Nominal
-: Nominal data, also known as categorical data, differentiates between values based only on their names or categories.  For example, gender, nationality, music genre, names are all nominal data.  Numbers maybe used to represent the variables but the number do not determines magnitude or ordering.  For example, if a nominal variable contains three values 1, 2, and 3.  We cannot claim that 1 is less than 2 nor 3.  
-
-Note that data `type` here describes semantic of the data rather than primitive data types in programming language sense (`number`, `string`, etc.).  The same primitive data type can have different type of measurement.  For example, numeric data can represent quantitative, ordinal, or nominal data.  
+: Nominal data, also known as categorical data, differentiates between values based only on their names or categories.  For example, gender, nationality, music genre, names are all nominal data.  Numbers maybe used to represent the variables but the number do not determine magnitude or ordering.  For example, if a nominal variable contains three values 1, 2, and 3.  We cannot claim that 1 is less than 2 nor 3.    
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | type          | String        | The encoded field's type of measurement.  This can be either a full type name (`"quantitative"`, `"temporal"`, `"ordinal"`,  and `"nominal"`) or an initial character of the type name (`"Q"`, `"T"`, `"O"`, `"N"`).  This property is case insensitive. |
 
-
+**Note**:
+Data `type` here describes semantic of the data rather than primitive data types in programming language sense (`number`, `string`, etc.).  The same primitive data type can have different type of measurement.  For example, numeric data can represent quantitative, ordinal, or nominal data.  
 {:#inline}
 ### Field Transforms
 
@@ -218,7 +217,6 @@ Similarly, `value` for `size` channel of bar marks will adjust the bar's width. 
 
 
 
-{:components}
 ### Scale and Guide
 
 For encoding channels that map data directly to visual properties of the marks, they must provide [scales](scale.html), or functions that transform values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes).  
