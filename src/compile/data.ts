@@ -218,7 +218,8 @@ export namespace source {
     }, []);
   }
 
-  // We need to add a rank transform as a work around for color ramps
+  // We need to add a rank transform so that we can use the rank value as
+  // input for color ramp's linear scale.
   export function rankTransform(model: Model) {
     const rankColor = model.has(COLOR) && model.fieldDef(COLOR).type === ORDINAL;
 

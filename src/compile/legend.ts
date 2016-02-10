@@ -15,7 +15,13 @@ export function compileLegends(model: Model) {
   if (model.has(COLOR) && model.fieldDef(COLOR).legend) {
     const fieldDef = model.fieldDef(COLOR);
     defs.push(compileLegend(model, COLOR, {
-      fill: (fieldDef.type === ORDINAL || fieldDef.bin || fieldDef.timeUnit) ? INVERSE_ID : model.scaleName(COLOR)
+      fill: (fieldDef.type === ORDINAL || fieldDef.bin || fieldDef.timeUnit) ?
+        // To produce ordinal legend (list, rather than linear range) with correct labels:
+        // - For an ordinal field, provide an ordinal scale that maps rank values to field values
+        // - For a field with bin or timeUnit, provide an identity ordinal scale
+        // (mapping the field values to themselves)
+        INVERSE_ID :
+        model.scaleName(COLOR)
       // TODO: consider if this should be stroke for line
     }));
   }
