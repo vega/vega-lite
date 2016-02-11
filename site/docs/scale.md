@@ -41,26 +41,43 @@ The rest of this page describes properties of a scale and their default behavior
 Vega-Lite supports the following scales types:
 
 Quantitative Scales
-: Quantitative scales (`linear`, `power`, `log`, `sqrt`, `quantize`, `quantile` and `threshold`) take continuous, quantitative data as their input domain.  `linear`, `power`, and `log` scales output continuous range while `quantize`, `quantile` and `threshold` scales output discrete range.  By default, quantitative field (field with `type` = `"quantitative"`) has `linear` scale.
+: Quantitative scales take continuous, quantitative data as their input domain.  There are multiple types of quantitative scales. `linear`, `power`, and `log` scales output continuous ranges.  Meanwhile `quantize` and `quantile` scales output discrete ranges.  
+
+- `linear` scale expresses each range value _y_ as a linear function of the domain value _x_: _y = mx + b_.  This is the default scale for a quantitative field (field with `type` = `"quantitative"`).
+- `pow` scale expresses each range value _y_ as a power (exponential) function of the domain value _x_: _y = mx^k + b_, where _k_ is the exponent value.  (_k_ can be customized using [`exponent`](#quant-props) property.)
+- `log` scale expresses each range value _y_ as a logarithmic function of the domain value _x_: _y = mlog(x) + b_.  As _log(0) = -∞_, a log scale domain must be strictly-positive or strictly-negative; the domain must not include or cross zero.  Vega-Lite automatically filters zero values from the field mapped to a log scale.  
+- `quantize` scale maps continuous value to a discrete range by dividing the domain into uniform segments based on the number of values in (i.e., the cardinality of) the output range.  Each range value _y_ can be expressed as a quantized linear function of the domain value _x_: _y = m round(x) + b_.  
+- `quantile` scale maps a sampled input domain to a discrete range by sorting the domain and compute the quantiles.  The cardinality of the output range determines the number of quantiles that will be computed.
+
+<!-- TODO: need to test if we support threshold scale correctly before writing about it-->
 
 Time Scales
-: `time` scale is similar to linear quantitative scale but takes date as input.  By default, temporal field without time unit has `time` scale by default.  `utc` is a time scale that uses [Coordinated Universal Time](https://en.wikipedia.org/wiki/Coordinated_Universal_Time) rather than local time.
+: A `time` scale is similar to a linear quantitative scale but takes date as input.  By default, a temporal field has `time` scale by default (except a temporal field with `hours`, `day`, `date`, `month` as time unit has ordinal scale by default).  
+<br/>`utc` is a time scale that uses [Coordinated Universal Time](https://en.wikipedia.org/wiki/Coordinated_Universal_Time) rather than local time.
 
 Discrete Ordinal Scale
-: Discrete Ordinal Scales (`ordinal`) take discrete domain as their input domain.  
-(ordered) ordinal data and (unordered/categorical) nominal data always use `ordinal` scale.
+: A discrete ordinal scale (`ordinal`) take discrete domain as their input domain.    Ordinal (ordered) and nominal (unordered/categorical) data always use `ordinal` scale.
 <!-- TODO: talk about discrete/continuous range (modified by `ramp` property). -->
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| type          | String        | The type of scale. <br/> •  For a _quantitative_ field, supported quantitative scale types  are `"linear"` (default), `"log"`, `"pow"`, `"sqrt"`, `"quantile"`, `"quantize"`, and `"threshold"`.  <br/> • For a _temporal_ field without `timeUnit`, the scale type should be `time` (default) or `utc`.  For a temporal field with [`timeUnit`](timeUnit.html), the scale type can also be `ordinal`, which is the default scale type for `hours`, `day`, `date`, `month`.  Other time units use `time` scale by default. <br/>  • For _ordinal_ and _nominal_ fields, the type is always `ordinal`.  |
+| type          | String        | The type of scale. <br/> •  For a _quantitative_ field, supported quantitative scale types  are `"linear"` (default), `"log"`, `"pow"`, `"sqrt"`, `"quantile"`, `"quantize"`, and `"threshold"`.  <br/> • For a _temporal_ field without `timeUnit`, the scale type should be `time` (default), `utc` or `ordinal`.  <br/>  • For _ordinal_ and _nominal_ fields, the type is always `ordinal`. <br/>Unsupported values will be ignored.  |
 
 **Note:**
 For more information about scale types, please see [d3 scale documentation](https://github.com/mbostock/d3/wiki/Quantitative-Scales) for more information.
 
 #### Example: Log Scale
 
-TODO: put scatter_log.json here
+The following example has a logarithmic y-scale.
+
+<div class="vl-example" data-name="scatter_log"></div>
+
+<!-- TODO: refine log example -->
+
+<!--
+#### Example: UTC Scale
+TODO: example utc scale with utc time unit (once implemented)
+-->
 
 {:#domain}
 ## Scale Domain
@@ -70,7 +87,14 @@ Custom domain values can be specified via the scale's `domain` property.
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| domain        | Array         | Custom domain values.  For quantitative data, this can take the form of a two-element array with minimum and maximum values. For ordinal/categorical data, this may be an array of valid input values. |
+| domain        | Array         | Custom domain values.  For quantitative data, this can take the form of a two-element array with minimum and maximum values. |
+
+<!-- TODO:
+- Decide if we should write about custom domain for ordinal scale.
+- Write about default domain for `month`, `day`, `hour`, `minute`.  
+- Piecewise scale.
+- Quantize scale?
+-->
 
 **Note:**
 To sort the order mapping between the domain values and range, please use the channel definition's [`sort`](sort.html) property.
@@ -119,6 +143,7 @@ TODO: put bar_layered_transparent.json or its variation in mark.md here
 | :------------ |:-------------:| :------------- |
 | round         | Boolean       | If true, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid.|
 
+{:#quant-props}
 ### Quantitative Scale Properties
 
 | Property      | Type          | Description    |

@@ -64,6 +64,9 @@ dt {
   font-weight: bold;
   color: #777;
 }
+dd {
+  margin-bottom: 10px;
+}
 
 /* Table */
 
