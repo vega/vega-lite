@@ -5,9 +5,9 @@ title: Scale
 permalink: /docs/scale.html
 ---
 
-Scales are functions that transform a domain of data values (numbers, dates, strings, etc) to a range of visual values (pixels, colors, sizes). A scale function takes a single data value as input and returns a visual value.  
+Scales are functions that transform a domain of data values (numbers, dates, strings, etc) to a range of visual values (pixels, colors, sizes).
 
-By default, Vega-Lite creates default scales for fields that are mapped to visual channels.  To customize properties of a scale, the following properties can be specified as part of the [channel definition's `scale` property](encoding.html#def).
+Vega-Lite automatically creates scales for fields that are [mapped to mark properties](#props-channels).  Default scale properties are determined based on a set of rules, but [`scale`](encoding.html#scale-and-guide) property of the channel definition can be provided to customize the scale's properties.
 
 {: .suppress-error}
 ```json
@@ -30,29 +30,57 @@ By default, Vega-Lite creates default scales for fields that are mapped to visua
 }
 ```
 
+The rest of this page describes properties of a scale and their default behavior.  
+
+* TOC
+{:toc}
+
+{:#type}
 ## Scale Type
 
-<!-- TODO: explain what are these types of scale.  Maybe look at D3 docs for inspiration -->
+Vega-Lite supports the following scales types:
 
-Vega-Lite automatically determines scale type based on the data type of a field.
+Quantitative Scales
+: Quantitative scales (`linear`, `power`, `log`, `sqrt`, `quantize`, `quantile` and `threshold`) take continuous, quantitative data as their input domain.  `linear`, `power`, and `log` scales output continuous range while `quantize`, `quantile` and `threshold` scales output discrete range.  By default, quantitative field (field with `type` = `"quantitative"`) has `linear` scale.
 
-- For *ordinal* and *nominal* fields, the scale type is always ordinal.  
-- For a *quantitative* field, the scale type is `"linear"` by default.
-<!-- TODO: write default scale type for timeUnit -->
+Time Scales
+: `time` scale is similar to linear quantitative scale but takes date as input.  By default, temporal field without time unit has `time` scale by default.  `utc` is a time scale that uses [Coordinated Universal Time](https://en.wikipedia.org/wiki/Coordinated_Universal_Time) rather than local time.
 
+Discrete Ordinal Scale
+: Discrete Ordinal Scales (`ordinal`) take discrete domain as their input domain.  
+(ordered) ordinal data and (unordered/categorical) nominal data always use `ordinal` scale.
+<!-- TODO: talk about discrete/continuous range (modified by `ramp` property). -->
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| type          | String        | The type of scale. This is only customizable for quantitative and temporal fields. <br/> •  Supported quantitative scale types  are `"linear"`, `"log"`, `"pow"`, `"sqrt"`, `"quantile"`, `"quantize"`, and `"threshold"`.  <br/> • For a _temporal_ field without time unit, the scale type should be `time` (default) or `utc` (for UTC time).  For temporal fields with time units, the scale type can also be `ordinal` (default for `hours`, `day`, `date`, `month`) or `linear` (default for `year`, `second`, `minute`). <br/> See [d3 scale documentation](https://github.com/mbostock/d3/wiki/Quantitative-Scales) for more information. |
+| type          | String        | The type of scale. <br/> •  For a _quantitative_ field, supported quantitative scale types  are `"linear"` (default), `"log"`, `"pow"`, `"sqrt"`, `"quantile"`, `"quantize"`, and `"threshold"`.  <br/> • For a _temporal_ field without `timeUnit`, the scale type should be `time` (default) or `utc`.  For a temporal field with [`timeUnit`](timeUnit.html), the scale type can also be `ordinal`, which is the default scale type for `hours`, `day`, `date`, `month`.  Other time units use `time` scale by default. <br/>  • For _ordinal_ and _nominal_ fields, the type is always `ordinal`.  |
+
+**Note:**
+For more information about scale types, please see [d3 scale documentation](https://github.com/mbostock/d3/wiki/Quantitative-Scales) for more information.
+
+#### Example: Log Scale
+
+TODO: put scatter_log.json here
 
 {:#domain}
 ## Scale Domain
 
-By default, Vega-Lite's scale draw domain values directly from the field's values.  Custom domain values can be specified via the scale's `domain` property.  
+By default, a scale draws domain values directly from the channel field.  
+Custom domain values can be specified via the scale's `domain` property.  
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | domain        | Array         | Custom domain values.  For quantitative data, this can take the form of a two-element array with minimum and maximum values. For ordinal/categorical data, this may be an array of valid input values. |
+
+**Note:**
+To sort the order mapping between the domain values and range, please use the channel definition's [`sort`](sort.html) property.
+
+<!--
+#### Example: Custom Domain
+TODO: Custom Domain for quantitative
+-->
+
+<!-- TODO: Explain default domain for month and (week)day -->
 
 {:#range}
 ## Scale Range
@@ -70,6 +98,19 @@ Custom range values can be specified via the scale's `range` property.
 | :------------ |:-------------:| :------------- |
 | range        | Array &#124; String  | For numeric values, the range can take the form of a two-element array with minimum and maximum values. For ordinal or quantized data, the range may be an array of desired output values, which are mapped to elements in the specified domain. [See Vega's documentation on range literals for more options](https://github.com/vega/vega/wiki/Scales#scale-range-literals). |
 
+
+#### Example: Default Color Map based on Data Type
+
+__TODO__
+<!-- Example: nominal -->
+<!-- Example: ordinal -->
+<!-- Example: quantitative -->
+
+#### Example: Custom Color Range
+
+TODO: put bar_layered_transparent.json or its variation in mark.md here
+
+
 ## Other Scale Properties
 
 ### General Scale Properties
@@ -78,8 +119,24 @@ Custom range values can be specified via the scale's `range` property.
 | :------------ |:-------------:| :------------- |
 | round         | Boolean       | If true, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid.|
 
-<!-- TODO default for size size -->
-<!-- TODO: Explain default domain for month and (week)day -->
+### Quantitative Scale Properties
+
+| Property      | Type          | Description    |
+| :------------ |:-------------:| :------------- |
+| clamp         | Boolean       | If true (default), values that exceed the data domain are clamped to either the minimum or maximum range value.  This property is not applicable for `quantile`, `quantize`, and `threshold` scales as they output discrete ranges. |
+| exponent      | Number        | Sets the exponent of the scale transformation. For `pow` scale types only, otherwise ignored.|
+| nice          | Boolean       | If true, modifies the scale domain to use a more human-friendly number range (e.g., 7 instead of 6.96).|
+| zero          | Boolean       | If true, ensures that a zero baseline value is included in the scale domain. This option is ignored for non-quantitative scales.  If unspecified, zero is true by default. |
+
+<!-- | useRawDomain<sup>1</sup>  | Boolean       | (For aggregate field only) If false (default), draw domain data the aggregate (`summary`) data table.  If true, use the raw data instead of summary data for scale domain.  This property only works with aggregate functions that produce values ranging in the domain of the source data (`"mean"`, `"average"`, `"stdev"`, `"stdevp"`, `"median"`, `"q1"`, `"q3"`, `"min"`, `"max"`).  Otherwise, this property is ignored.  If the scale's `domain` is specified, this property is also ignored. | -->
+
+### Time Scale Properties
+
+| Property      | Type          | Description    |
+| :------------ |:-------------:| :------------- |
+| clamp         | Boolean       | If true (default), values that exceed the data domain are clamped to either the minimum or maximum range value.|
+| nice          | String        | If specified, modifies the scale domain to use a more human-friendly value range. For `time` and `utc` scale types only, the nice value should be a string indicating the desired time interval; legal values are `"second"`, `"minute"`, `"hour"`, `"day"`, `"week"`, `"month"`, or `"year"`.|
+
 
 ### Ordinal Scale Properties
 
@@ -91,50 +148,8 @@ Custom range values can be specified via the scale's `range` property.
 <!-- TODO: better explanation for bandWidth-->
 <!-- TODO: add outerPadding -->
 
-### Time Scale Properties
-
-| Property      | Type          | Description    |
-| :------------ |:-------------:| :------------- |
-| clamp         | Boolean       | If true (default), values that exceed the data domain are clamped to either the minimum or maximum range value.|
-| nice          | String        | If specified, modifies the scale domain to use a more human-friendly value range. For `time` and `utc` scale types only, the nice value should be a string indicating the desired time interval; legal values are `"second"`, `"minute"`, `"hour"`, `"day"`, `"week"`, `"month"`, or `"year"`.|
-
-### Quantitative Scale Properties
-
-| Property      | Type          | Description    |
-| :------------ |:-------------:| :------------- |
-| clamp         | Boolean       | If true (default), values that exceed the data domain are clamped to either the minimum or maximum range value.|
-| exponent      | Number        | Sets the exponent of the scale transformation. For `pow` scale types only, otherwise ignored.|
-| nice          | Boolean       | If true, modifies the scale domain to use a more human-friendly number range (e.g., 7 instead of 6.96).|
-| zero          | Boolean       | If true, ensures that a zero baseline value is included in the scale domain. This option is ignored for non-quantitative scales.  If unspecified, zero is true by default. |
-
-<!-- | useRawDomain<sup>1</sup>  | Boolean       | (For aggregate field only) If false (default), draw domain data the aggregate (`summary`) data table.  If true, use the raw data instead of summary data for scale domain.  This property only works with aggregate functions that produce values ranging in the domain of the source data (`"mean"`, `"average"`, `"stdev"`, `"stdevp"`, `"median"`, `"q1"`, `"q3"`, `"min"`, `"max"`).  Otherwise, this property is ignored.  If the scale's `domain` is specified, this property is also ignored. | -->
-
 <!-- TODO: rewrite in "relationship to Vega"?
 <small>
 __<sup>1</sup>__ All Vega-Lite scale properties exist in Vega except `useRawDomain`, which is a special property in Vega-Lite.  Some Vega properties are excluded in Vega-Lite. For example,  `reverse` is excluded from Vega-Lite's `scale` to avoid conflicts with `sort` property.  Please use `sort` of a field definition to `"descending"` to get similar behavior to setting  `reverse` to `true` in Vega.  
 </small>
 -->
-
--------
-
-<!-- TODO: should example be here or separate in each section above? -->
-
-#### Example: Log Scale
-
-TODO: put scatter_log.json here
-
-#### Example: Default Color Map based on Data Type
-
-__TODO__
-<!-- Example: nominal -->
-<!-- Example: ordinal -->
-<!-- Example: quantitative -->
-
-
-#### Example: Custom Color Range
-
-TODO: put bar_layered_transparent.json or its variation in mark.md here
-
-#### Example: Custom Domain
-
-TODO: Custom Domain
