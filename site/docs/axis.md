@@ -87,10 +87,3 @@ The `axis` property object supports the following properties:
 | titleOffset   | Number        | The offset (in pixels) from the axis at which to place the title.|
 | titleMaxLength  | Integer     | Max length for axis title when the title is automatically generated from the field\'s description. By default, this is automatically based on cell size (`config.unit.width`, `config.unit.height`) and `characterWidth` property. |
 | characterWidth  | Integer       | Character width for automatically determining the value of `titleMaxLength`. |
-
-
-<!--
-| properties    | Object        | Optional mark property definitions for custom axis styling. The input object can include sub-objects for `ticks` (both major and minor), `majorTicks`, `minorTicks`, `labels` and `axis` (for the axis line).  |
--->
-
-<!--TODO: elaborate example for the properties group -->
