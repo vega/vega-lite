@@ -69,7 +69,8 @@ export function facetMixins(model: Model, marks) {
         }
       } else {
         // Otherwise, manually draw grids between cells
-        rootMarks.push(getRowGridGroup(model, cellHeight));
+        // Note: this is a weird syntax for pushing multiple items
+        rootMarks.push.apply(rootMarks, getRowGridGroups(model, cellHeight));
       }
     }
   } else { // doesn't have row
@@ -107,7 +108,8 @@ export function facetMixins(model: Model, marks) {
         }
       } else {
         // Otherwise, manually draw grids between cells
-        rootMarks.push(getColumnGridGroup(model, cellWidth));
+        // Note: this is a weird syntax for pushing multiple items
+        rootMarks.push.apply(rootMarks, getColumnGridGroups(model, cellWidth));
       }
     }
   } else { // doesn't have column
@@ -206,7 +208,7 @@ function getYAxesGroup(model: Model, cellHeight, hasRow: boolean) { // TODO: VgM
   );
 }
 
-function getRowGridGroup(model: Model, cellHeight): any { // TODO: VgMarks
+function getRowGridGroups(model: Model, cellHeight): any { // TODO: VgMarks
   const name = model.spec().name;
   const cellConfig = model.config().cell;
 
@@ -226,39 +228,29 @@ function getRowGridGroup(model: Model, cellHeight): any { // TODO: VgMarks
         x: {value: 0, offset: -cellConfig.gridOffset },
         x2: {field: {group: 'width'}, offset: cellConfig.gridOffset },
         stroke: { value: cellConfig.gridColor },
-        strokeOpacity: { value: cellConfig.gridOpacity }
+        strokeOpacity: { value: cellConfig.gridOpacity },
+        strokeWidth: {value: 0.5}
       }
     }
   };
 
-  const rowGridOnTop = !model.has(X) || model.axis(X).orient !== 'top';
-  if (rowGridOnTop) { // on top - no need to add offset
-    return rowGrid;
-  } // otherwise, need to offset all grid by cellHeight
-  return {
-    name: (name ? name + '-' : '') + 'row-grid-group',
-    type: 'group',
+  return [rowGrid, {
+    name: (name ? name + '-' : '') + 'row-grid-end',
+    type: 'rule',
     properties: {
       update: {
-        // add group offset = `cellHeight + padding` to avoid clashing with axis
-        y: cellHeight.value ? {
-            // If cellHeight contains value, just use it.
-            value: cellHeight,
-            offset: model.fieldDef(ROW).scale.padding
-          } : {
-            // Otherwise, need to get it from layout data in the root group
-            field: {parent: 'cellHeight'},
-            offset: model.fieldDef(ROW).scale.padding
-          },
-        // include width so it can be referred inside row-grid
-        width: {field: {group: 'width'}}
+        y: { field: {group: 'height'}},
+        x: {value: 0, offset: -cellConfig.gridOffset },
+        x2: {field: {group: 'width'}, offset: cellConfig.gridOffset },
+        stroke: { value: cellConfig.gridColor },
+        strokeOpacity: { value: cellConfig.gridOpacity },
+        strokeWidth: {value: 0.5}
       }
-    },
-    marks: [rowGrid]
-  };
+    }
+  }];
 }
 
-function getColumnGridGroup(model: Model, cellWidth): any { // TODO: VgMarks
+function getColumnGridGroups(model: Model, cellWidth): any { // TODO: VgMarks
   const name = model.spec().name;
   const cellConfig = model.config().cell;
 
@@ -278,34 +270,24 @@ function getColumnGridGroup(model: Model, cellWidth): any { // TODO: VgMarks
         y: {value: 0, offset: -cellConfig.gridOffset},
         y2: {field: {group: 'height'}, offset: cellConfig.gridOffset },
         stroke: { value: cellConfig.gridColor },
-        strokeOpacity: { value: cellConfig.gridOpacity }
+        strokeOpacity: { value: cellConfig.gridOpacity },
+        strokeWidth: {value: 0.5}
       }
     }
   };
 
-  const columnGridOnLeft = !model.has(Y) || model.axis(Y).orient === 'right';
-  if (columnGridOnLeft) { // on left, no need to add global offset
-    return columnGrid;
-  } // otherwise, need to offset all grid by cellWidth
-  return {
-    name: (name ? name + '-' : '') + 'column-grid-group',
-    type: 'group',
+  return [columnGrid,  {
+    name: (name ? name + '-' : '') + 'column-grid-end',
+    type: 'rule',
     properties: {
       update: {
-        // Add group offset = `cellWidth + padding` to avoid clashing with axis
-        x: cellWidth.value ? {
-             // If cellWidth contains value, just use it.
-             value: cellWidth,
-             offset: model.fieldDef(COLUMN).scale.padding
-           } : {
-             // Otherwise, need to get it from layout data in the root group
-             field: {parent: 'cellWidth'},
-             offset: model.fieldDef(COLUMN).scale.padding
-           },
-        // include height so it can be referred inside column-grid
-        height: {field: {group: 'height'}}
+        x: { field: {group: 'width'}},
+        y: {value: 0, offset: -cellConfig.gridOffset},
+        y2: {field: {group: 'height'}, offset: cellConfig.gridOffset },
+        stroke: { value: cellConfig.gridColor },
+        strokeOpacity: { value: cellConfig.gridOpacity },
+        strokeWidth: {value: 0.5}
       }
-    },
-    marks: [columnGrid]
-  };
+    }
+  }];
 }
