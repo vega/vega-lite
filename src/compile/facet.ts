@@ -3,7 +3,7 @@ import {extend} from '../util';
 import {COLUMN, ROW, X, Y} from '../channel';
 import {Model} from './Model';
 
-import {compileAxis, compileGridOnlyAxis, gridShow} from './axis';
+import {compileAxis, compileInnerAxis, gridShow} from './axis';
 import {compileScales} from './scale';
 
 /**
@@ -65,7 +65,7 @@ export function facetMixins(model: Model, marks) {
       if (model.has(X)) {
         if (gridShow(model, X)) {
           // If has X and a grid show be shown, add grid-only x-axis to the cell
-          cellAxes.push(compileGridOnlyAxis(X, model));
+          cellAxes.push(compileInnerAxis(X, model));
         }
       } else {
         // Otherwise, manually draw grids between cells
@@ -104,7 +104,7 @@ export function facetMixins(model: Model, marks) {
       if (model.has(Y)) {
         if (gridShow(model, Y)) {
           // If has Y and a grid show be shown, add grid-only y-axis to the cell
-          cellAxes.push(compileGridOnlyAxis(Y, model));
+          cellAxes.push(compileInnerAxis(Y, model));
         }
       } else {
         // Otherwise, manually draw grids between cells

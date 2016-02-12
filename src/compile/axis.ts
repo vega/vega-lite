@@ -7,13 +7,18 @@ import {formatMixins} from './util';
 // https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations
 declare let exports;
 
-export function compileGridOnlyAxis(channel: Channel, model: Model) {
+/**
+ * Make an inner axis for showing grid for shared axis.
+ */
+export function compileInnerAxis(channel: Channel, model: Model) {
   const isCol = channel === COLUMN,
     isRow = channel === ROW,
     type = isCol ? 'x' : isRow ? 'y': channel;
 
+  // TODO: support adding ticks as well
+
   // TODO: replace any with Vega Axis Interface
-  return {
+  let def = {
     type: type,
     scale: model.scaleName(channel),
     grid: true,
@@ -27,6 +32,20 @@ export function compileGridOnlyAxis(channel: Channel, model: Model) {
       }
     }
   };
+
+  ['layer', 'values', 'subdivide'].forEach(function(property) {
+    let method: (model: Model, channel: Channel, def:any)=>any;
+
+    const value = (method = exports[property]) ?
+                  // calling axis.format, axis.grid, ...
+                  method(model, channel, def) :
+                  model.fieldDef(channel).axis[property];
+    if (value !== undefined) {
+      def[property] = value;
+    }
+  });
+
+  return def;
 }
 
 export function compileAxis(channel: Channel, model: Model) {
@@ -87,6 +106,11 @@ export function compileAxis(channel: Channel, model: Model) {
  * If `grid` is unspecified, the default value is `true` for ordinal scales that are not binned
  */
 export function gridShow(model: Model, channel: Channel) {
+  const grid = model.axis(channel).grid;
+  if (grid !== undefined) {
+    return grid;
+  }
+
   return !model.isOrdinalScale(channel) && !model.fieldDef(channel).bin;
 }
 
@@ -94,11 +118,6 @@ export function grid(model: Model, channel: Channel) {
   if (channel === ROW || channel === COLUMN) {
     // never apply grid for ROW and COLUMN since we manually create rule-group for them
     return undefined;
-  }
-
-  const grid = model.axis(channel).grid;
-  if (grid !== undefined) {
-    return grid;
   }
 
   return gridShow(model, channel) && (
