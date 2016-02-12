@@ -51,7 +51,7 @@ export namespace point {
       };
     } else if (model.fieldDef(SHAPE).value) {
       p.shape = { value: model.fieldDef(SHAPE).value };
-    } else {
+    } else if (model.config().mark.shape) {
       p.shape = { value: model.config().mark.shape };
     }
 
