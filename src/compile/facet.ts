@@ -15,13 +15,13 @@ export function facetMixins(model: Model, marks) {
   const cellWidth: any = !model.has(COLUMN) ?
       {field: {group: 'width'}} :     // cellWidth = width -- just use group's
     typeof layout.cellWidth !== 'number' ?
-      {scale: model.scaleName(COLUMN), band: true} : // bandSize of the scale
+      {field: {parent: 'cellWidth'}} : // bandSize of the scale
       {value: layout.cellWidth};      // static value
 
   const cellHeight: any = !model.has(ROW) ?
       {field: {group: 'height'}} :  // cellHeight = height -- just use group's
     typeof layout.cellHeight !== 'number' ?
-      {scale: model.scaleName(ROW), band: true} :  // bandSize of the scale
+      {field: {parent: 'cellHeight'}} :  // bandSize of the scale
       {value: layout.cellHeight};   // static value
 
   let facetGroupProperties: any = {
