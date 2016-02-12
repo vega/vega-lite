@@ -79,7 +79,7 @@ var typicalScaleMixin = {
     /* Quantitative and temporal Scale Properties */
     clamp: {
       type: 'boolean',
-      default: true,
+      default: undefined,
       description: 'If true, values that exceed the data domain are clamped to either the minimum or maximum range value'
     },
     nice: {
