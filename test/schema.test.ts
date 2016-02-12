@@ -9,6 +9,7 @@ import {schema as specSchema} from '../src/schema/schema';
 
 describe('Schema', function() {
   it('should be valid', function() {
+    // formatters are not used, just registered to we can validate the schema
     zSchema.registerFormat('color', function (str) {
       return false;
     });
