@@ -33,7 +33,7 @@ export function compileInnerAxis(channel: Channel, model: Model) {
     }
   };
 
-  ['layer', 'values', 'subdivide'].forEach(function(property) {
+  ['layer', 'ticks', 'values', 'subdivide'].forEach(function(property) {
     let method: (model: Model, channel: Channel, def:any)=>any;
 
     const value = (method = exports[property]) ?
@@ -101,8 +101,8 @@ export function compileAxis(channel: Channel, model: Model) {
 }
 
 export function offset(model: Model, channel: Channel) {
-  return (channel === Y || channel === X) ||
-    (model.has(COLUMN) && model.has(ROW)) ? 8 : undefined;
+  return (channel === Y || channel === X) &&
+    (model.has(COLUMN) || model.has(ROW)) ? 8 : undefined;
 }
 
 // TODO: we need to refactor this method after we take care of config refactoring
@@ -128,8 +128,7 @@ export function grid(model: Model, channel: Channel) {
   return gridShow(model, channel) && (
     // TODO refactor this cleanly -- essentially the condition below is whether
     // the axis is a shared / union axis.
-    (channel === Y && !model.has(COLUMN)) ||
-    (channel === X && !model.has(ROW))
+    (channel === Y || channel === X) && !(model.has(COLUMN) || model.has(ROW))
   );
 }
 

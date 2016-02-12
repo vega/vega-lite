@@ -13,13 +13,25 @@ export function facetMixins(model: Model, marks) {
   const layout = model.layout();
   const cellConfig = model.config().cell;
   const cellWidth: any = !model.has(COLUMN) ?
-      {field: {group: 'width'}} :     // cellWidth = width -- just use group's
+      { // cellWidth = width -- use group's
+        field: {group: 'width'},
+        // Need to offset the padding because width calculation need to overshoot
+        // by the padding size to allow padding to be integer (can't rely on
+        // ordinal scale's padding since it is fraction.)
+        offset: model.has(COLUMN) ? -model.fieldDef(COLUMN).scale.padding : undefined
+      } :
     typeof layout.cellWidth !== 'number' ?
       {field: {parent: 'cellWidth'}} : // bandSize of the scale
       {value: layout.cellWidth};      // static value
 
   const cellHeight: any = !model.has(ROW) ?
-      {field: {group: 'height'}} :  // cellHeight = height -- just use group's
+      { // cellHeight = height -- use group's
+        field: {group: 'height'},
+        // Need to offset the padding because height calculation need to overshoot
+        // by the padding size to allow padding to be integer (can't rely on
+        // ordinal scale's padding since it is fraction.)
+        offset: model.has(ROW) ? -model.fieldDef(ROW).scale.padding : undefined
+      } :
     typeof layout.cellHeight !== 'number' ?
       {field: {parent: 'cellHeight'}} :  // bandSize of the scale
       {value: layout.cellHeight};   // static value
@@ -50,8 +62,7 @@ export function facetMixins(model: Model, marks) {
     }
     facetGroupProperties.y = {
       scale: model.scaleName(ROW),
-      field: model.field(ROW),
-      offset: model.fieldDef(ROW).scale.padding / 2
+      field: model.field(ROW)
     };
 
     facetKeys.push(model.field(ROW));
@@ -75,7 +86,8 @@ export function facetMixins(model: Model, marks) {
     }
   } else { // doesn't have row
     if (model.has(X) && model.fieldDef(X).axis) { // keep x axis in the cell
-      cellAxes.push(compileAxis(X, model));
+      cellAxes.push(compileInnerAxis(X, model));
+      rootMarks.push(getXAxesGroup(model, cellWidth, hasCol));
     }
   }
 
@@ -113,7 +125,8 @@ export function facetMixins(model: Model, marks) {
     }
   } else { // doesn't have column
     if (model.has(Y) && model.fieldDef(Y).axis) { // keep y axis in the cell
-      cellAxes.push(compileAxis(Y, model));
+      cellAxes.push(compileInnerAxis(Y, model));
+      rootMarks.push(getYAxesGroup(model, cellHeight, hasRow));
     }
   }
   const name = model.spec().name;
@@ -152,7 +165,7 @@ function getXAxesGroup(model: Model, cellWidth, hasCol: boolean) { // TODO: VgMa
       type: 'group'
     },
     hasCol ? {
-      from: {
+      from: { // TODO: if we do facet transform at the parent level we can same some transform here
         data: model.dataTable(),
         transform: [{
           type: 'aggregate',
@@ -165,7 +178,13 @@ function getXAxesGroup(model: Model, cellWidth, hasCol: boolean) { // TODO: VgMa
       properties: {
         update: {
           width: cellWidth,
-          height: {field: {group: 'height'}},
+          height: {
+            field: {group: 'height'},
+            // Need to offset the padding because height calculation need to overshoot
+            // by the padding size to allow padding to be integer (can't rely on
+            // ordinal scale's padding since it is fraction.)
+            offset: model.has(ROW) ? -model.fieldDef(ROW).scale.padding : undefined
+          },
           x: hasCol ? {scale: model.scaleName(COLUMN), field: model.field(COLUMN)} : {value: 0}
         }
       }
@@ -195,7 +214,13 @@ function getYAxesGroup(model: Model, cellHeight, hasRow: boolean) { // TODO: VgM
     {
       properties: {
         update: {
-          width: {field: {group: 'width'}},
+          width: {
+            field: {group: 'width'},
+            // Need to offset the padding because width calculation need to overshoot
+            // by the padding size to allow padding to be integer (can't rely on
+            // ordinal scale's padding since it is fraction.)
+            offset: model.has(COLUMN) ? -model.fieldDef(COLUMN).scale.padding : undefined
+          },
           height: cellHeight,
           y: hasRow ? {scale: model.scaleName(ROW), field: model.field(ROW)} : {value: 0}
         }

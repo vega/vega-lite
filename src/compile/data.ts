@@ -325,7 +325,7 @@ export namespace layout {
       formulas.push({
         type: 'formula',
         field: 'height',
-        expr: '(' + cellHeight + '+' + rowScale.padding + ')' + ' * ' + rowCardinality
+        expr: '(' + cellHeight + ' + ' + rowScale.padding + ')' + ' * ' + rowCardinality
       });
     }
 
