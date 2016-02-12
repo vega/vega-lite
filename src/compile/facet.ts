@@ -3,7 +3,7 @@ import {extend} from '../util';
 import {COLUMN, ROW, X, Y} from '../channel';
 import {Model} from './Model';
 
-import {compileAxis} from './axis';
+import {compileAxis, compileGridOnlyAxis, gridShow} from './axis';
 import {compileScales} from './scale';
 
 /**
@@ -62,7 +62,15 @@ export function facetMixins(model: Model, marks) {
     }
     const rowAxis = model.fieldDef(ROW).axis;
     if (typeof rowAxis === 'boolean' || rowAxis.grid !== false) {
-      rootMarks.push(getRowGridGroup(model, cellHeight));
+      if (model.has(X)) {
+        if (gridShow(model, X)) {
+          // If has X and a grid show be shown, add grid-only x-axis to the cell
+          cellAxes.push(compileGridOnlyAxis(X, model));
+        }
+      } else {
+        // Otherwise, manually draw grids between cells
+        rootMarks.push(getRowGridGroup(model, cellHeight));
+      }
     }
   } else { // doesn't have row
     if (model.has(X) && model.fieldDef(X).axis) { // keep x axis in the cell
@@ -92,7 +100,15 @@ export function facetMixins(model: Model, marks) {
 
     const colAxis = model.fieldDef(COLUMN).axis;
     if (typeof colAxis === 'boolean' || colAxis.grid !== false) {
-      rootMarks.push(getColumnGridGroup(model, cellWidth));
+      if (model.has(Y)) {
+        if (gridShow(model, Y)) {
+          // If has Y and a grid show be shown, add grid-only y-axis to the cell
+          cellAxes.push(compileGridOnlyAxis(Y, model));
+        }
+      } else {
+        // Otherwise, manually draw grids between cells
+        rootMarks.push(getColumnGridGroup(model, cellWidth));
+      }
     }
   } else { // doesn't have column
     if (model.has(Y) && model.fieldDef(Y).axis) { // keep y axis in the cell

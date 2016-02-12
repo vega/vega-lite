@@ -46,9 +46,11 @@ export const cellConfig = {
     stroke: {
       type: 'string',
       role: 'color',
+      default: '#ccc'
     },
     strokeWidth: {
-      type: 'integer'
+      type: 'integer',
+      default: 1
     },
     strokeOpacity: {
       type: 'number'

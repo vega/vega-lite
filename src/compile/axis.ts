@@ -7,6 +7,28 @@ import {formatMixins} from './util';
 // https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations
 declare let exports;
 
+export function compileGridOnlyAxis(channel: Channel, model: Model) {
+  const isCol = channel === COLUMN,
+    isRow = channel === ROW,
+    type = isCol ? 'x' : isRow ? 'y': channel;
+
+  // TODO: replace any with Vega Axis Interface
+  return {
+    type: type,
+    scale: model.scaleName(channel),
+    grid: true,
+    tickSize: 0,
+    properties: {
+      labels: {
+        text: {value:''}
+      },
+      axis: {
+        stroke: {value: 'transparent'}
+      }
+    }
+  };
+}
+
 export function compileAxis(channel: Channel, model: Model) {
   const isCol = channel === COLUMN,
     isRow = channel === ROW,
@@ -59,8 +81,16 @@ export function compileAxis(channel: Channel, model: Model) {
   return def;
 }
 
+// TODO: we need to refactor this method after we take care of config refactoring
+/**
+ * Default rules for whether to show a grid should be shown for a channel.
+ * If `grid` is unspecified, the default value is `true` for ordinal scales that are not binned
+ */
+export function gridShow(model: Model, channel: Channel) {
+  return !model.isOrdinalScale(channel) && !model.fieldDef(channel).bin;
+}
+
 export function grid(model: Model, channel: Channel) {
-  const fieldDef = model.fieldDef(channel);
   if (channel === ROW || channel === COLUMN) {
     // never apply grid for ROW and COLUMN since we manually create rule-group for them
     return undefined;
@@ -71,9 +101,12 @@ export function grid(model: Model, channel: Channel) {
     return grid;
   }
 
-  // If `grid` is unspecified, the default value is `true` for ordinal scales
-  // that are not binned
-  return !model.isOrdinalScale(channel) && !fieldDef.bin;
+  return gridShow(model, channel) && (
+    // TODO refactor this cleanly -- essentially the condition below is whether
+    // the axis is a shared / union axis.
+    (channel === Y && !model.has(COLUMN)) ||
+    (channel === X && !model.has(ROW))
+  );
 }
 
 export function layer(model: Model, channel: Channel, def) {
