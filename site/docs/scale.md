@@ -53,7 +53,7 @@ Quantitative Scales
 
 Time Scales
 : A `time` scale is similar to a linear quantitative scale but takes date as input.  By default, a temporal field has `time` scale by default (except a temporal field with `hours`, `day`, `date`, `month` as time unit has ordinal scale by default).  
-<br/>`utc` is a time scale that uses [Coordinated Universal Time](https://en.wikipedia.org/wiki/Coordinated_Universal_Time) rather than local time.
+<!-- <br/>`utc` is a time scale that uses [Coordinated Universal Time](https://en.wikipedia.org/wiki/Coordinated_Universal_Time) rather than local time. -->
 
 Discrete Ordinal Scale
 : A discrete ordinal scale (`ordinal`) take discrete domain as their input domain.    Ordinal (ordered) and nominal (unordered/categorical) data always use `ordinal` scale.
@@ -61,7 +61,9 @@ Discrete Ordinal Scale
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| type          | String        | The type of scale. <br/> •  For a _quantitative_ field, supported quantitative scale types  are `"linear"` (default), `"log"`, `"pow"`, `"sqrt"`, `"quantile"`, `"quantize"`, and `"threshold"`.  <br/> • For a _temporal_ field without `timeUnit`, the scale type should be `time` (default), `utc` or `ordinal`.  <br/>  • For _ordinal_ and _nominal_ fields, the type is always `ordinal`. <br/>Unsupported values will be ignored.  |
+| type          | String        | The type of scale. <br/> •  For a _quantitative_ field, supported quantitative scale types  are `"linear"` (default), `"log"`, `"pow"`, `"sqrt"`, `"quantile"`, `"quantize"`, and `"threshold"`.  <br/> • For a _temporal_ field without `timeUnit`, the scale type should be `time` (default) or `ordinal`.  <br/>  • For _ordinal_ and _nominal_ fields, the type is always `ordinal`. <br/>Unsupported values will be ignored.  |
+
+<!-- TODO: add utc to the above table for temporal field --> 
 
 **Note:**
 For more information about scale types, please see [d3 scale documentation](https://github.com/mbostock/d3/wiki/Quantitative-Scales) for more information.
