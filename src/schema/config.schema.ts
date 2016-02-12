@@ -47,7 +47,7 @@ export const config = {
     },
     background: {
       type: 'string',
-      role: 'color',
+      format: 'color',
       default: undefined,
       description: 'CSS color property to use as background of visualization. Default is `"transparent"`.'
     },
