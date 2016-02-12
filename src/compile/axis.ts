@@ -65,9 +65,9 @@ export function compileAxis(channel: Channel, model: Model) {
   // 1.2. Add properties
   [
     // a) properties with special rules (so it has axis[property] methods) -- call rule functions
-    'grid', 'layer', 'orient', 'tickSize', 'ticks', 'title',
+    'grid', 'layer', 'offset', 'orient', 'tickSize', 'ticks', 'title',
     // b) properties without rules, only produce default values in the schema, or explicit value if specified
-    'offset', 'tickPadding', 'tickSize', 'tickSizeMajor', 'tickSizeMinor', 'tickSizeEnd',
+    'tickPadding', 'tickSize', 'tickSizeMajor', 'tickSizeMinor', 'tickSizeEnd',
     'titleOffset', 'values', 'subdivide'
   ].forEach(function(property) {
     let method: (model: Model, channel: Channel, def:any)=>any;
@@ -98,6 +98,11 @@ export function compileAxis(channel: Channel, model: Model) {
   });
 
   return def;
+}
+
+export function offset(model: Model, channel: Channel) {
+  return (channel === Y || channel === X) ||
+    (model.has(COLUMN) && model.has(ROW)) ? 8 : undefined;
 }
 
 // TODO: we need to refactor this method after we take care of config refactoring

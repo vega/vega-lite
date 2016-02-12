@@ -87,8 +87,7 @@ export function facetMixins(model: Model, marks) {
     }
     facetGroupProperties.x = {
       scale: model.scaleName(COLUMN),
-      field: model.field(COLUMN),
-      offset: model.fieldDef(COLUMN).scale.padding / 2
+      field: model.field(COLUMN)
     };
 
     facetKeys.push(model.field(COLUMN));
