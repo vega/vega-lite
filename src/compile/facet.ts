@@ -22,13 +22,10 @@ export function facetMixins(model: Model, marks) {
     util.error('Col encoding should be ordinal.');
   }
 
-  const cellWidth = getCellWidth(model);
-  const cellHeight = getCellHeight(model);
-
   return {
     marks: [].concat(
-      getFacetGuideGroups(model, cellWidth, cellHeight),
-      [getFacetGroup(model, cellWidth, cellHeight, marks)]
+      getFacetGuideGroups(model),
+      [getFacetGroup(model, marks)]
     ),
     // assuming equal cellWidth here
     scales: compileScales(
@@ -42,30 +39,6 @@ export function facetMixins(model: Model, marks) {
   };
 }
 
-function getCellWidth(model: Model) {
-  return !model.has(COLUMN) ?
-      { // cellWidth = width -- use group's
-        field: {group: 'width'},
-        // Need to offset the padding because width calculation need to overshoot
-        // by the padding size to allow padding to be integer (can't rely on
-        // ordinal scale's padding since it is fraction.)
-        offset: model.has(COLUMN) ? -model.scale(COLUMN).padding : undefined
-      } :
-    {field: {parent: 'cellWidth'}};
-}
-
-function getCellHeight(model: Model) {
-  return !model.has(ROW) ?
-      { // cellHeight = height -- use group's
-        field: {group: 'height'},
-        // Need to offset the padding because height calculation need to overshoot
-        // by the padding size to allow padding to be integer (can't rely on
-        // ordinal scale's padding since it is fraction.)
-        offset: model.has(ROW) ? -model.scale(ROW).padding : undefined
-      } :
-    {field: {parent: 'cellHeight'}};
-}
-
 function getCellAxes(model: Model) {
   const cellAxes = [];
   if (model.has(X) && model.axis(X) && gridShow(model, X)) {
@@ -77,7 +50,7 @@ function getCellAxes(model: Model) {
   return cellAxes;
 }
 
-function getFacetGroup(model: Model, cellWidth, cellHeight, marks) {
+function getFacetGroup(model: Model, marks) {
   const name = model.spec().name;
   let facetGroup: any = {
     name: (name ? name + '-' : '') + 'cell',
@@ -93,7 +66,7 @@ function getFacetGroup(model: Model, cellWidth, cellHeight, marks) {
       }]
     },
     properties: {
-      update: getFacetGroupProperties(model, cellWidth, cellHeight)
+      update: getFacetGroupProperties(model)
     },
     marks: marks
   };
@@ -105,20 +78,26 @@ function getFacetGroup(model: Model, cellWidth, cellHeight, marks) {
   return facetGroup;
 }
 
-function getFacetGroupProperties(model: Model, cellWidth, cellHeight) {
+function getFacetGroupProperties(model: Model) {
   const cellConfig = model.config().cell;
-  let facetGroupProperties: any = extend(
-    model.has(COLUMN) ? {
-      x: {scale: model.scaleName(COLUMN), field: model.field(COLUMN)}
-    } : {},
-    model.has(ROW) ? {
-      y: {scale: model.scaleName(ROW), field: model.field(ROW)}
-    } : {},
-    {
-      width: cellWidth,
-      height: cellHeight
-    }
-  );
+  let facetGroupProperties: any = {
+    x: model.has(COLUMN) ? {
+        scale: model.scaleName(COLUMN),
+        field: model.field(COLUMN),
+        // offset by the padding
+        offset: model.fieldDef(COLUMN).scale.padding / 2
+      } : {value: 16 /* TODO config.facet.scale.padding */ / 2},
+
+    y: model.has(ROW) ? {
+      scale: model.scaleName(ROW),
+      field: model.field(ROW),
+      // offset by the padding
+      offset: model.fieldDef(ROW).scale.padding / 2
+    } : {value: 16 /* TODO config.facet.scale.padding */ / 2},
+
+    width: {field: {parent: 'cellWidth'}},
+    height: {field: {parent: 'cellHeight'}}
+  };
 
   // add configs that are the resulting group marks properties
   ['clip', 'fill', 'fillOpacity', 'stroke', 'strokeWidth',
@@ -136,36 +115,36 @@ function getFacetGroupProperties(model: Model, cellWidth, cellHeight) {
 /**
  * Return groups of axes or manually drawn grids.
  */
-function getFacetGuideGroups(model: Model, cellWidth, cellHeight) {
+function getFacetGuideGroups(model: Model) {
   let rootAxesGroups = [] ;
 
   if (model.has(X)) {
     if (model.axis(X)) {
-      rootAxesGroups.push(getXAxesGroup(model, cellWidth));
+      rootAxesGroups.push(getXAxesGroup(model));
     }
   } else {
     // TODO: consider if row has axis and if row's axis.grid is true
     if (model.has(ROW)) {
       // manually draw grid (use apply to push all members of an array)
-      rootAxesGroups.push.apply(rootAxesGroups, getRowGridGroups(model, cellHeight));
+      rootAxesGroups.push.apply(rootAxesGroups, getRowGridGroups(model));
     }
   }
   if (model.has(Y)) {
     if (model.axis(Y)) {
-      rootAxesGroups.push(getYAxesGroup(model, cellHeight));
+      rootAxesGroups.push(getYAxesGroup(model));
     }
   } else {
     // TODO: consider if column has axis and if column's axis.grid is true
     if (model.has(COLUMN)) {
       // manually draw grid (use apply to push all members of an array)
-      rootAxesGroups.push.apply(rootAxesGroups, getColumnGridGroups(model, cellWidth));
+      rootAxesGroups.push.apply(rootAxesGroups, getColumnGridGroups(model));
     }
   }
 
   return rootAxesGroups;
 }
 
-function getXAxesGroup(model: Model, cellWidth) { // TODO: VgMarks
+function getXAxesGroup(model: Model) { // TODO: VgMarks
   const hasCol = model.has(COLUMN);
   const name = model.spec().name;
   return extend(
@@ -186,15 +165,19 @@ function getXAxesGroup(model: Model, cellWidth) { // TODO: VgMarks
     {
       properties: {
         update: {
-          width: cellWidth,
+          width: {field: {parent: 'cellWidth'}}, // FIXME really?
           height: {
-            field: {group: 'height'},
-            // Need to offset the padding because height calculation need to overshoot
-            // by the padding size to allow padding to be integer (can't rely on
-            // ordinal scale's padding since it is fraction.)
-            offset: model.has(ROW) ? -model.scale(ROW).padding : undefined
+            field: {group: 'height'}
           },
-          x: hasCol ? {scale: model.scaleName(COLUMN), field: model.field(COLUMN)} : {value: 0}
+          x: hasCol ? {
+            scale: model.scaleName(COLUMN),
+            field: model.field(COLUMN),
+            // offset by the padding
+            offset: model.fieldDef(COLUMN).scale.padding / 2
+          } : {
+
+            value: 16 /* TODO: config.facet.scale.padding */ / 2 // offset by the padding
+          }
         }
       }
     },
@@ -204,7 +187,7 @@ function getXAxesGroup(model: Model, cellWidth) { // TODO: VgMarks
   );
 }
 
-function getYAxesGroup(model: Model, cellHeight) { // TODO: VgMarks
+function getYAxesGroup(model: Model) { // TODO: VgMarks
   const hasRow = model.has(ROW);
   const name = model.spec().name;
   return extend(
@@ -226,14 +209,17 @@ function getYAxesGroup(model: Model, cellHeight) { // TODO: VgMarks
       properties: {
         update: {
           width: {
-            field: {group: 'width'},
-            // Need to offset the padding because width calculation need to overshoot
-            // by the padding size to allow padding to be integer (can't rely on
-            // ordinal scale's padding since it is fraction.)
-            offset: model.has(COLUMN) ? -model.scale(COLUMN).padding : undefined
+            field: {group: 'width'}
           },
-          height: cellHeight,
-          y: hasRow ? {scale: model.scaleName(ROW), field: model.field(ROW)} : {value: 0}
+          height: {field: {parent: 'cellHeight'}}, // FIXME really?
+          y: hasRow ? {
+            scale: model.scaleName(ROW),
+            field: model.field(ROW),
+            // offset by the padding
+            offset: model.fieldDef(ROW).scale.padding / 2
+          } : {
+            value: 16 /* TODO: config.facet.scale.padding */  / 2 // offset by the padding
+          }
         }
       },
     },
@@ -243,7 +229,7 @@ function getYAxesGroup(model: Model, cellHeight) { // TODO: VgMarks
   );
 }
 
-function getRowGridGroups(model: Model, cellHeight): any[] { // TODO: VgMarks
+function getRowGridGroups(model: Model): any[] { // TODO: VgMarks
   const name = model.spec().name;
   const cellConfig = model.config().cell;
 
@@ -285,7 +271,7 @@ function getRowGridGroups(model: Model, cellHeight): any[] { // TODO: VgMarks
   }];
 }
 
-function getColumnGridGroups(model: Model, cellWidth): any { // TODO: VgMarks
+function getColumnGridGroups(model: Model): any { // TODO: VgMarks
   const name = model.spec().name;
   const cellConfig = model.config().cell;
 
