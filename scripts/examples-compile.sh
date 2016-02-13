@@ -8,12 +8,7 @@ echo "compiling examples to $dir"
 mkdir $dir
 rm -f $dir/*
 
-FILES=('examples/*.json' 'examples/docs/*.json')
-for file in $FILES; do
+for file in examples/specs/*.json; do
   name=${file##*/}
-  ext="${file##*.}"
-  if [ "$ext" = "json" ] && [ "$name" != "vl-examples.json" ] && [ "$name" != "vl-docs-examples.json" ]; then  # don't compile the list json
-    echo ".. $file"
-    bin/vl2vg $file > $dir/$name
-  fi
+  bin/vl2vg $file > $dir/$name
 done
