@@ -5,6 +5,7 @@ import {compileData, source, summary, dates, layout} from '../../src/compile/dat
 import {parseModel} from '../util';
 import {mergeDeep} from '../../src/schema/schemautil';
 
+
 describe('Data', function () {
   describe('for aggregate encoding', function () {
     it('should contain two tables', function() {
@@ -350,74 +351,6 @@ describe('data.summary', function () {
 });
 
 describe('Handle fixed time unit domain.', function() {
-  it('seconds should have cardinality of 60', function() {
-    const model = parseModel({
-        "mark": "line",
-        "encoding": {
-          "x": {
-            "field": "Year",
-            "type": "temporal",
-            "timeUnit": "seconds"
-          },
-          "y": {
-            "aggregate": "mean",
-            "field": "Horsepower",
-            "type": "quantitative"
-          }
-        }
-      });
-
-    const defs = layout.def(model);
-    assert.deepEqual(defs, {
-      "name": "layout",
-      "source": "summary",
-      "transform": [
-        {
-          "type": "aggregate",
-          "summarize": [{"field": "seconds_Year","ops": ["distinct"]}]
-        },
-        {
-          "type": "formula",
-          "field": "cellWidth",
-          "expr": "(60 + 1) * 21"
-        }]
-    });
-  });
-
-  it('minutes should have cardinality of 60', function() {
-    const model = parseModel({
-        "mark": "line",
-        "encoding": {
-          "x": {
-            "field": "Year",
-            "type": "temporal",
-            "timeUnit": "minutes"
-          },
-          "y": {
-            "aggregate": "mean",
-            "field": "Horsepower",
-            "type": "quantitative"
-          }
-        }
-      });
-
-    const defs = layout.def(model);
-    assert.deepEqual(defs, {
-      "name": "layout",
-      "source": "summary",
-      "transform": [
-        {
-          "type": "aggregate",
-          "summarize": [{"field": "minutes_Year","ops": ["distinct"]}]
-        },
-        {
-          "type": "formula",
-          "field": "cellWidth",
-          "expr": "(60 + 1) * 21"
-        }]
-    });
-  });
-
   it('hours should have cardinality of 24', function() {
     const model = parseModel({
         "mark": "line",
@@ -486,41 +419,6 @@ describe('Handle fixed time unit domain.', function() {
     });
   });
 
-/*
-  it('date should have cardinality of 31', function() {
-    const model = parseModel({
-        "mark": "line",
-        "encoding": {
-          "x": {
-            "field": "Year",
-            "type": "temporal",
-            "timeUnit": "date"
-          },
-          "y": {
-            "aggregate": "mean",
-            "field": "Horsepower",
-            "type": "quantitative"
-          }
-        }
-      });
-
-    const defs = layout.def(model);
-    assert.deepEqual(defs, {
-      "name": "layout",
-      "source": "summary",
-      "transform": [
-        {
-          "type": "aggregate",
-          "summarize": [{"field": "date_Year","ops": ["distinct"]}]
-        },
-        {
-          "type": "formula",
-          "field": "cellWidth",
-          "expr": "(31 + 1) * 21"
-        }]
-    });
-  });
-*/
   it('month should have cardinality of 12', function() {
     const model = parseModel({
         "mark": "line",
