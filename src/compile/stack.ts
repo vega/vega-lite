@@ -76,7 +76,7 @@ function getStackFields(spec: Spec) {
       } else {
         const fieldDef: FieldDef = channelEncoding;
         fields.push(field(fieldDef, {
-          binSuffix: scaleType(fieldDef, channel, spec.mark) === 'ordinal' ? '_range' : '_start'
+          binSuffix: scaleType(fieldDef.scale, fieldDef, channel, spec.mark) === 'ordinal' ? '_range' : '_start'
         }));
       }
     }

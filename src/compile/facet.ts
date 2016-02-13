@@ -50,7 +50,7 @@ function getCellWidth(model: Model) {
         // Need to offset the padding because width calculation need to overshoot
         // by the padding size to allow padding to be integer (can't rely on
         // ordinal scale's padding since it is fraction.)
-        offset: model.has(COLUMN) ? -model.fieldDef(COLUMN).scale.padding : undefined
+        offset: model.has(COLUMN) ? -model.scale(COLUMN).padding : undefined
       } :
     typeof layout.cellWidth !== 'number' ?
       {field: {parent: 'cellWidth'}} : // bandSize of the scale
@@ -65,7 +65,7 @@ function getCellHeight(model: Model) {
         // Need to offset the padding because height calculation need to overshoot
         // by the padding size to allow padding to be integer (can't rely on
         // ordinal scale's padding since it is fraction.)
-        offset: model.has(ROW) ? -model.fieldDef(ROW).scale.padding : undefined
+        offset: model.has(ROW) ? -model.scale(ROW).padding : undefined
       } :
     typeof layout.cellHeight !== 'number' ?
       {field: {parent: 'cellHeight'}} :  // bandSize of the scale
@@ -198,7 +198,7 @@ function getXAxesGroup(model: Model, cellWidth) { // TODO: VgMarks
             // Need to offset the padding because height calculation need to overshoot
             // by the padding size to allow padding to be integer (can't rely on
             // ordinal scale's padding since it is fraction.)
-            offset: model.has(ROW) ? -model.fieldDef(ROW).scale.padding : undefined
+            offset: model.has(ROW) ? -model.scale(ROW).padding : undefined
           },
           x: hasCol ? {scale: model.scaleName(COLUMN), field: model.field(COLUMN)} : {value: 0}
         }
@@ -236,7 +236,7 @@ function getYAxesGroup(model: Model, cellHeight) { // TODO: VgMarks
             // Need to offset the padding because width calculation need to overshoot
             // by the padding size to allow padding to be integer (can't rely on
             // ordinal scale's padding since it is fraction.)
-            offset: model.has(COLUMN) ? -model.fieldDef(COLUMN).scale.padding : undefined
+            offset: model.has(COLUMN) ? -model.scale(COLUMN).padding : undefined
           },
           height: cellHeight,
           y: hasRow ? {scale: model.scaleName(ROW), field: model.field(ROW)} : {value: 0}

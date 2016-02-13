@@ -146,6 +146,7 @@ export namespace source {
   export function binTransform(model: Model) {
     return model.reduce(function(transform, fieldDef: FieldDef, channel: Channel) {
       const bin = model.fieldDef(channel).bin;
+      const scale = model.scale(channel);
       if (bin) {
         let binTrans = extend({
             type: 'bin',
@@ -167,7 +168,7 @@ export namespace source {
 
         transform.push(binTrans);
         // color ramp has type linear or time
-        if (scaleType(fieldDef, channel, model.mark()) === 'ordinal' || channel === COLOR) {
+        if (scaleType(scale, fieldDef, channel, model.mark()) === 'ordinal' || channel === COLOR) {
           transform.push({
             type: 'formula',
             field: field(fieldDef, {binSuffix: '_range'}),
@@ -244,7 +245,7 @@ export namespace layout {
 
     // TODO: handle "fit" mode
     if (model.has(X) && model.isOrdinalScale(X)) {
-      const xScale = model.fieldDef(X).scale;
+      const xScale = model.scale(X);
       const xHasDomain = xScale.domain instanceof Array;
       if (!xHasDomain) {
         summarize.push({
@@ -262,7 +263,7 @@ export namespace layout {
     }
 
     if (model.has(Y) && model.isOrdinalScale(Y)) {
-      const yScale = model.fieldDef(Y).scale;
+      const yScale = model.scale(Y);
       const yHasDomain = yScale.domain instanceof Array;
 
       if (!yHasDomain) {
@@ -288,7 +289,7 @@ export namespace layout {
       const cellWidth = typeof layoutCellWidth !== 'number' ?
                         'datum.' + layoutCellWidth.field :
                         layoutCellWidth;
-      const colScale = model.fieldDef(COLUMN).scale;
+      const colScale = model.scale(COLUMN);
       const colHasDomain = colScale.domain instanceof Array;
       if (!colHasDomain) {
         summarize.push({
@@ -311,7 +312,7 @@ export namespace layout {
       const cellHeight = typeof layoutCellHeight !== 'number' ?
                         'datum.' + layoutCellHeight.field :
                         layoutCellHeight;
-      const rowScale = model.fieldDef(ROW).scale;
+      const rowScale = model.scale(ROW);
       const rowHasDomain = rowScale.domain instanceof Array;
       if (!rowHasDomain) {
         summarize.push({
@@ -373,7 +374,8 @@ export namespace summary {
           dims[field(fieldDef, {binSuffix: '_mid'})] = field(fieldDef, {binSuffix: '_mid'});
           dims[field(fieldDef, {binSuffix: '_end'})] = field(fieldDef, {binSuffix: '_end'});
 
-          if (scaleType(fieldDef, channel, model.mark()) === 'ordinal') {
+          const scale = model.scale(channel);
+          if (scaleType(scale, fieldDef, channel, model.mark()) === 'ordinal') {
             // also produce bin_range if the binned field use ordinal scale
             dims[field(fieldDef, {binSuffix: '_range'})] = field(fieldDef, {binSuffix: '_range'});
           }
@@ -464,7 +466,7 @@ export namespace dates {
 
 export function filterNonPositiveForLog(dataTable, model: Model) {
   model.forEach(function(_, channel) {
-    const scale = model.fieldDef(channel).scale;
+    const scale = model.scale(channel);
     if (scale && scale.type === 'log') {
       dataTable.transform.push({
         type: 'filter',
