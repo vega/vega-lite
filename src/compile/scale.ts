@@ -55,7 +55,7 @@ export function compileScales(channels: Channel[], model: Model) {
 
       // Add additional scales needed to support ordinal legends (list of values)
       // for color ramp.
-      if (channel === COLOR && fieldDef.legend && (fieldDef.type === ORDINAL || fieldDef.bin || fieldDef.timeUnit)) {
+      if (channel === COLOR && model.legend(COLOR) && (fieldDef.type === ORDINAL || fieldDef.bin || fieldDef.timeUnit)) {
         // This scale is for producing ordinal scale for legends.
         // - For an ordinal field, provide an ordinal scale that maps rank values to field values
         // - For a field with bin or timeUnit, provide an identity ordinal scale
