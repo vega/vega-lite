@@ -23,6 +23,7 @@ export interface Axis {
   shortTimeLabels?: boolean;
   labelAngle?: number;
   titleMaxLength?: number;
+  showUnit?: string;
 }
 
 export var axis = {
@@ -146,6 +147,12 @@ export var axis = {
       minimum: 0,
       description: 'Max length for axis title if the title is automatically generated from the field\'s description.' +
       'By default, this is automatically based on cell size and characterWidth property.'
+    },
+    showUnit: {
+      type: 'string',
+      default: 'title',
+      enum: ['none', 'title', 'label-suffix', 'label-prefix'],
+      description : 'Specifies where to show the fieldDef unit'
     }
   }
 };

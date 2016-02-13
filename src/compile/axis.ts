@@ -1,4 +1,5 @@
 import {Model} from './Model';
+import {title as fieldDefTitle} from '../fielddef';
 import {contains, extend, truncate} from '../util';
 import {NOMINAL, ORDINAL, TEMPORAL} from '../type';
 import {COLUMN, ROW, X, Y, Channel} from '../channel';
@@ -193,7 +194,7 @@ export function title(model: Model, channel: Channel) {
   }
 
   // if not defined, automatically determine axis title from field def
-  const fieldTitle = model.fieldTitle(channel);
+  const fieldTitle = fieldDefTitle(model.fieldDef(channel), axis.showUnit === 'title' || !axis.showUnit);
   const layout = model.layout();
   const cellWidth = layout.cellWidth;
   const cellHeight = layout.cellHeight;
@@ -233,14 +234,24 @@ export namespace properties {
       }, labelsSpec);
     }
 
+    let textTemplate = '{{ datum.data }}';
+
     if (contains([NOMINAL, ORDINAL], fieldDef.type) && axis.labelMaxLength) {
       // TODO replace this with Vega's labelMaxLength once it is introduced
-      labelsSpec = extend({
-        text: {
-          template: '{{ datum.data | truncate:' + axis.labelMaxLength + '}}'
-        }
-      }, labelsSpec || {});
+      textTemplate = '{{ datum.data | truncate:' + axis.labelMaxLength + '}}';
     }
+
+    if(axis.showUnit === 'label-prefix') {
+        textTemplate = fieldDef.unit + textTemplate;
+    } else if(axis.showUnit === 'label-suffix') {
+        textTemplate = textTemplate + fieldDef.unit;
+    }
+
+    labelsSpec = extend({
+      text : {
+        template : textTemplate
+      }
+    }, labelsSpec || {});
 
     if (axis.labelAngle) {
       labelsSpec = extend({
@@ -248,7 +259,7 @@ export namespace properties {
       }, labelsSpec || {});
     }
 
-     // for x-axis, set ticks for Q or rotate scale for ordinal scale
+    // for x-axis, set ticks for Q or rotate scale for ordinal scale
     switch (channel) {
       case X:
         if (model.isDimension(X) || fieldDef.type === TEMPORAL) {

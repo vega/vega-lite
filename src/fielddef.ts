@@ -112,14 +112,20 @@ export function cardinality(fieldDef: FieldDef, stats, filterNull = {}) {
     (stat.missing > 0 && filterNull[type] ? 1 : 0);
 }
 
-export function title(fieldDef: FieldDef) {
+export function title(fieldDef: FieldDef, showUnit: boolean) {
   if (isCount(fieldDef)) {
     return COUNT_DISPLAYNAME;
   }
+
+  var unit = '';
+  if(fieldDef.unit && showUnit) {
+    unit = ' in ' + fieldDef.unit;
+  }
+
   var fn = fieldDef.aggregate || fieldDef.timeUnit || (fieldDef.bin && 'bin');
   if (fn) {
-    return fn.toUpperCase() + '(' + fieldDef.field + ')';
+    return fn.toUpperCase() + '(' + fieldDef.field + ')' + unit;
   } else {
-    return fieldDef.field;
+    return fieldDef.field + unit;
   }
 }

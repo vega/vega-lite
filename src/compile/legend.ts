@@ -76,9 +76,12 @@ export function title(fieldDef: FieldDef) {
   const legend = fieldDef.legend;
   if (typeof legend !== 'boolean' && legend.title) {
     return legend.title;
+  } else if ((typeof legend !== 'boolean' && legend.showUnit === 'title')
+              || (typeof legend === 'boolean' && fieldDef.unit)) {
+    return fieldTitle(fieldDef, true);
   }
 
-  return fieldTitle(fieldDef);
+  return fieldTitle(fieldDef, false);
 }
 
 export function formatMixins(model: Model, channel: Channel) {

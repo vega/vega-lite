@@ -19,6 +19,7 @@ export interface FieldDef {
   field?: string;
   type?: Type;
   value?: any;
+  unit?: string;
 
   // function
   timeUnit?: string;
@@ -62,6 +63,9 @@ const fieldDef = {
     type: {
       type: 'string',
       enum: [NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL]
+    },
+    unit : {
+      type : 'string'
     },
     bin: bin,
     timeUnit: {
