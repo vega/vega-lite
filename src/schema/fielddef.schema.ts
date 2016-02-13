@@ -73,14 +73,24 @@ const fieldDef = {
   }
 };
 
-const fieldDefWithScale = mergeDeep(duplicate(fieldDef), {
+export interface ChannelDefWithScale extends FieldDef {
+  scale?: Scale;
+  sort?: Sort;
+}
+
+const channelDefWithScale = mergeDeep(duplicate(fieldDef), {
   properties: {
     scale: typicalScale,
     sort: sort
   }
 });
 
-export const positionFieldDef = mergeDeep(duplicate(fieldDefWithScale), {
+
+export interface PositionChannelDef extends ChannelDefWithScale {
+  axis?: Axis;
+}
+
+export const positionChannelDef = mergeDeep(duplicate(channelDefWithScale), {
   required: ['field', 'type'], // TODO: remove if possible
   properties: {
     scale: {
@@ -94,17 +104,18 @@ export const positionFieldDef = mergeDeep(duplicate(fieldDefWithScale), {
   }
 });
 
-export const colorFieldDef = mergeDeep(duplicate(fieldDefWithScale), {
+export interface ChannelDefWithLegend extends ChannelDefWithScale {
+  legend?: Legend;
+}
+
+export const channelDefWithLegend = mergeDeep(duplicate(channelDefWithScale), {
   properties: {
     legend: legend
   }
 });
 
-export const sizeFieldDef = colorFieldDef;
-
 // Detail
-
-export const detailFieldDefs = {
+export const detailChannelDefs = {
   default: undefined,
   oneOf: [duplicate(fieldDef), {
     type: 'array',
@@ -114,47 +125,53 @@ export const detailFieldDefs = {
 
 // Order Path have no scale
 
-const orderFieldDef = mergeDeep(duplicate(fieldDef), {
+export interface OrderChannelDef extends FieldDef {
+  sort?: Sort;
+}
+
+const orderChannelDef = mergeDeep(duplicate(fieldDef), {
   properties: {
     sort: sortEnum
   }
 });
 
-export const orderFieldDefs = {
+export const orderChannelDefs = {
   default: undefined,
-  oneOf: [duplicate(orderFieldDef), {
+  oneOf: [duplicate(orderChannelDef), {
     type: 'array',
-    items: duplicate(orderFieldDef)
+    items: duplicate(orderChannelDef)
   }]
 };
 
 // Text has default value = `Abc`
-
-export const textFieldDef = mergeDeep(duplicate(fieldDef), {
+export const textChannelDef = mergeDeep(duplicate(fieldDef), {
   properties: {
     value: {
       type: 'string',
-      default: 'Abc'
+      default: 'Abc' // TODO: move this default into config!
     }
   }
 });
 
 // Shape / Row / Column only supports ordinal scale
 
-const fieldDefWithOrdinalScale = mergeDeep(duplicate(fieldDef), {
+const ordinalChannelDef = mergeDeep(duplicate(fieldDef), {
   properties: {
     scale: ordinalOnlyScale,
     sort: sort
   }
 });
 
-export const shapeFieldDef =  mergeDeep(duplicate(fieldDefWithOrdinalScale), {
+export const shapeChannelDef =  mergeDeep(duplicate(ordinalChannelDef), {
   properties: {
     legend: legend
   }
 });
 
-export const facetFieldDef = mergeDeep(duplicate(fieldDefWithOrdinalScale), {
+// TODO: consider if we want to distinguish ordinalOnlyScale from scale
+export type FacetChannelDef = PositionChannelDef;
+
+export const facetChannelDef = mergeDeep(duplicate(ordinalChannelDef), {
   required: ['field', 'type'],
   properties: {
     axis: axis
