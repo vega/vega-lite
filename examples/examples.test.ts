@@ -47,7 +47,7 @@ describe('Examples', function() {
   var VL_EXAMPLES = dl.json('examples/vl-examples.json');
 
   var examples = getExampleList(VL_EXAMPLES).map(function(example) {
-    example.name = 'docs/' + example.name;
+    example.name = 'specs/' + example.name;
     return example;
   });
 
