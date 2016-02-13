@@ -1,5 +1,7 @@
-.page-centered {
-  max-width: 100%;
+body {
+  margin: 20px;
+  padding: 15px;
+  font-family: Avenir, Helvetica Neue, Helvetica, Arial;
 }
 
 .viz-list {
