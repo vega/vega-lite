@@ -2,7 +2,7 @@ import {axis, Axis} from './axis.schema';
 import {bin, Bin} from './bin.schema';
 import {legend, Legend} from './legend.schema';
 import {typicalScale, ordinalOnlyScale, Scale} from './scale.schema';
-import {sort, sortEnum, Sort} from './sort.schema';
+import {sortEnum, sort, SortField, SortEnum} from './sort.schema';
 
 import {AGGREGATE_OPS} from '../aggregate';
 import {toMap, duplicate} from '../util';
@@ -25,7 +25,7 @@ export interface FieldDef {
   bin?: boolean | Bin;
 
   aggregate?: string;
-  sort?: Sort | string;
+  sort?: SortField | SortEnum;
 
   // override vega components
   axis?: Axis | boolean;
@@ -75,7 +75,7 @@ const fieldDef = {
 
 export interface ChannelDefWithScale extends FieldDef {
   scale?: Scale;
-  sort?: Sort;
+  sort?: SortField | SortEnum;
 }
 
 const channelDefWithScale = mergeDeep(duplicate(fieldDef), {
@@ -126,7 +126,7 @@ export const detailChannelDefs = {
 // Order Path have no scale
 
 export interface OrderChannelDef extends FieldDef {
-  sort?: Sort;
+  sort?: SortEnum;
 }
 
 const orderChannelDef = mergeDeep(duplicate(fieldDef), {
