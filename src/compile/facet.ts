@@ -10,9 +10,41 @@ import {compileScales} from './scale';
  * return mixins that contains marks, scales, and axes for the rootGroup
  */
 export function facetMixins(model: Model, marks) {
+  const hasRow = model.has(ROW), hasCol = model.has(COLUMN);
+
+  if (model.has(ROW) && !model.isDimension(ROW)) {
+    // TODO: add error to model instead
+    util.error('Row encoding should be ordinal.');
+  }
+
+  if (model.has(COLUMN) && !model.isDimension(COLUMN)) {
+    // TODO: add error to model instead
+    util.error('Col encoding should be ordinal.');
+  }
+
+  const cellWidth: any = getCellWidth(model);
+  const cellHeight: any = getCellHeight(model);
+
+  return {
+    marks: [].concat(
+      getFacetGuideGroups(model, cellWidth, cellHeight),
+      [getFacetGroup(model, cellWidth, cellHeight, marks)]
+    ),
+    // assuming equal cellWidth here
+    scales: compileScales(
+      model.channels(), // TODO: with nesting, not all scale might be a root-level
+      model
+    ),
+    axes: [].concat(
+      hasRow && model.fieldDef(ROW).axis ? [compileAxis(ROW, model)] : [],
+      hasCol && model.fieldDef(COLUMN).axis ? [compileAxis(COLUMN, model)] : []
+    )
+  };
+}
+
+function getCellWidth(model: Model) {
   const layout = model.layout();
-  const cellConfig = model.config().cell;
-  const cellWidth: any = !model.has(COLUMN) ?
+  return !model.has(COLUMN) ?
       { // cellWidth = width -- use group's
         field: {group: 'width'},
         // Need to offset the padding because width calculation need to overshoot
@@ -23,8 +55,11 @@ export function facetMixins(model: Model, marks) {
     typeof layout.cellWidth !== 'number' ?
       {field: {parent: 'cellWidth'}} : // bandSize of the scale
       {value: layout.cellWidth};      // static value
+}
 
-  const cellHeight: any = !model.has(ROW) ?
+function getCellHeight(model: Model) {
+  const layout = model.layout();
+  return !model.has(ROW) ?
       { // cellHeight = height -- use group's
         field: {group: 'height'},
         // Need to offset the padding because height calculation need to overshoot
@@ -35,11 +70,61 @@ export function facetMixins(model: Model, marks) {
     typeof layout.cellHeight !== 'number' ?
       {field: {parent: 'cellHeight'}} :  // bandSize of the scale
       {value: layout.cellHeight};   // static value
+}
 
-  let facetGroupProperties: any = {
-    width: cellWidth,
-    height: cellHeight
+function getCellAxes(model: Model) {
+  const cellAxes = [];
+  if (model.has(X) && model.fieldDef(X).axis && gridShow(model, X)) {
+    cellAxes.push(compileInnerAxis(X, model));
+  }
+  if (model.has(Y) && model.fieldDef(Y).axis && gridShow(model, Y)) {
+    cellAxes.push(compileInnerAxis(Y, model));
+  }
+  return cellAxes;
+}
+
+function getFacetGroup(model: Model, cellWidth, cellHeight, marks) {
+  const name = model.spec().name;
+  let facetGroup: any = {
+    name: (name ? name + '-' : '') + 'cell',
+    type: 'group',
+    from: {
+      data: model.dataTable(),
+      transform: [{
+        type: 'facet',
+        groupby: [].concat(
+          model.has(ROW) ? [model.field(ROW)] : [],
+          model.has(COLUMN) ? [model.field(COLUMN)] : []
+        )
+      }]
+    },
+    properties: {
+      update: getFacetGroupProperties(model, cellWidth, cellHeight)
+    },
+    marks: marks
   };
+
+  const cellAxes = getCellAxes(model);
+  if (cellAxes.length > 0) {
+    facetGroup.axes = cellAxes;
+  }
+  return facetGroup;
+}
+
+function getFacetGroupProperties(model: Model, cellWidth, cellHeight) {
+  const cellConfig = model.config().cell;
+  let facetGroupProperties: any = extend(
+    model.has(COLUMN) ? {
+      x: {scale: model.scaleName(COLUMN), field: model.field(COLUMN)}
+    } : {},
+    model.has(ROW) ? {
+      y: {scale: model.scaleName(ROW), field: model.field(ROW)}
+    } : {},
+    {
+      width: cellWidth,
+      height: cellHeight
+    }
+  );
 
   // add configs that are the resulting group marks properties
   ['clip', 'fill', 'fillOpacity', 'stroke', 'strokeWidth',
@@ -51,116 +136,46 @@ export function facetMixins(model: Model, marks) {
       }
     });
 
-  let rootMarks = [], rootAxes = [], facetKeys = [], cellAxes = [];
-  const hasRow = model.has(ROW), hasCol = model.has(COLUMN);
-
-  // TODO(#90): add property to keep axes in cells even if row is encoded
-  if (hasRow) {
-    if (!model.isDimension(ROW)) {
-      // TODO: add error to model instead
-      util.error('Row encoding should be ordinal.');
-    }
-    facetGroupProperties.y = {
-      scale: model.scaleName(ROW),
-      field: model.field(ROW)
-    };
-
-    facetKeys.push(model.field(ROW));
-    rootAxes.push(compileAxis(ROW, model));
-    if (model.has(X)) {
-      // If has X, prepend a group for shared x-axes in the root group's marks
-      rootMarks.push(getXAxesGroup(model, cellWidth, hasCol));
-    }
-    const rowAxis = model.fieldDef(ROW).axis;
-    if (typeof rowAxis === 'boolean' || rowAxis.grid !== false) {
-      if (model.has(X)) {
-        if (gridShow(model, X)) {
-          // If has X and a grid show be shown, add grid-only x-axis to the cell
-          cellAxes.push(compileInnerAxis(X, model));
-        }
-      } else {
-        // Otherwise, manually draw grids between cells
-        // Note: this is a weird syntax for pushing multiple items
-        rootMarks.push.apply(rootMarks, getRowGridGroups(model, cellHeight));
-      }
-    }
-  } else { // doesn't have row
-    if (model.has(X) && model.fieldDef(X).axis) { // keep x axis in the cell
-      cellAxes.push(compileInnerAxis(X, model));
-      rootMarks.push(getXAxesGroup(model, cellWidth, hasCol));
-    }
-  }
-
-  // TODO(#90): add property to keep axes in cells even if column is encoded
-  if (hasCol) {
-    if (!model.isDimension(COLUMN)) {
-      // TODO: add error to model instead
-      util.error('Col encoding should be ordinal.');
-    }
-    facetGroupProperties.x = {
-      scale: model.scaleName(COLUMN),
-      field: model.field(COLUMN)
-    };
-
-    facetKeys.push(model.field(COLUMN));
-    rootAxes.push(compileAxis(COLUMN, model));
-
-    if (model.has(Y)) {
-      // If has Y, prepend a group for shared y-axes in the root group's marks
-      rootMarks.push(getYAxesGroup(model, cellHeight, hasRow));
-    }
-
-    const colAxis = model.fieldDef(COLUMN).axis;
-    if (typeof colAxis === 'boolean' || colAxis.grid !== false) {
-      if (model.has(Y)) {
-        if (gridShow(model, Y)) {
-          // If has Y and a grid show be shown, add grid-only y-axis to the cell
-          cellAxes.push(compileInnerAxis(Y, model));
-        }
-      } else {
-        // Otherwise, manually draw grids between cells
-        // Note: this is a weird syntax for pushing multiple items
-        rootMarks.push.apply(rootMarks, getColumnGridGroups(model, cellWidth));
-      }
-    }
-  } else { // doesn't have column
-    if (model.has(Y) && model.fieldDef(Y).axis) { // keep y axis in the cell
-      cellAxes.push(compileInnerAxis(Y, model));
-      rootMarks.push(getYAxesGroup(model, cellHeight, hasRow));
-    }
-  }
-  const name = model.spec().name;
-  let facetGroup: any = {
-    name: (name ? name + '-' : '') + 'cell',
-    type: 'group',
-    from: {
-      data: model.dataTable(),
-      transform: [{type: 'facet', groupby: facetKeys}]
-    },
-    properties: {
-      update: facetGroupProperties
-    },
-    marks: marks
-  };
-  if (cellAxes.length > 0) {
-    facetGroup.axes = cellAxes;
-  }
-  rootMarks.push(facetGroup);
-
-  return {
-    marks: rootMarks,
-    axes: rootAxes,
-    // assuming equal cellWidth here
-    scales: compileScales(
-      model.channels(), // TODO: with nesting, not all scale might be a root-level
-      model
-    )
-  };
+  return facetGroupProperties;
 }
 
-function getXAxesGroup(model: Model, cellWidth, hasCol: boolean) { // TODO: VgMarks
+/**
+ * Return groups of axes or manually drawn grids.
+ */
+function getFacetGuideGroups(model: Model, cellWidth, cellHeight) {
+  let rootAxesGroups = [] ;
+
+  if (model.has(X)) {
+    if (model.fieldDef(X).axis) {
+      rootAxesGroups.push(getXAxesGroup(model, cellWidth));
+    }
+  } else {
+    // TODO: consider if row has axis and if row's axis.grid is true
+    if (model.has(ROW)) {
+      // manually draw grid (use apply to push all members of an array)
+      rootAxesGroups.push.apply(rootAxesGroups, getRowGridGroups(model, cellHeight));
+    }
+  }
+  if (model.has(Y)) {
+    if (model.fieldDef(Y).axis) {
+      rootAxesGroups.push(getYAxesGroup(model, cellHeight));
+    }
+  } else {
+    // TODO: consider if column has axis and if column's axis.grid is true
+    if (model.has(COLUMN)) {
+      // manually draw grid (use apply to push all members of an array)
+      rootAxesGroups.push.apply(rootAxesGroups, getColumnGridGroups(model, cellWidth));
+    }
+  }
+
+  return rootAxesGroups;
+}
+
+function getXAxesGroup(model: Model, cellWidth) { // TODO: VgMarks
+  const hasCol = model.has(COLUMN);
   const name = model.spec().name;
-  return extend({
+  return extend(
+    {
       name: (name ? name + '-' : '') + 'x-axes',
       type: 'group'
     },
@@ -195,9 +210,11 @@ function getXAxesGroup(model: Model, cellWidth, hasCol: boolean) { // TODO: VgMa
   );
 }
 
-function getYAxesGroup(model: Model, cellHeight, hasRow: boolean) { // TODO: VgMarks
+function getYAxesGroup(model: Model, cellHeight) { // TODO: VgMarks
+  const hasRow = model.has(ROW);
   const name = model.spec().name;
-  return extend({
+  return extend(
+    {
       name: (name ? name + '-' : '') + 'y-axes',
       type: 'group'
     },
@@ -232,7 +249,7 @@ function getYAxesGroup(model: Model, cellHeight, hasRow: boolean) { // TODO: VgM
   );
 }
 
-function getRowGridGroups(model: Model, cellHeight): any { // TODO: VgMarks
+function getRowGridGroups(model: Model, cellHeight): any[] { // TODO: VgMarks
   const name = model.spec().name;
   const cellConfig = model.config().cell;
 
