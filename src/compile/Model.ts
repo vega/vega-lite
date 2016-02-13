@@ -1,6 +1,6 @@
 import {Spec} from '../schema/schema';
 import {Axis, axis as axisSchema} from '../schema/axis.schema';
-import {Legend, legend as legendSchema} from '../schema/legend.schema';
+import {LegendProperties, defaultLegendConfig} from '../schema/legend.schema';
 import {Scale} from '../schema/scale.schema';
 import {Encoding} from '../schema/encoding.schema';
 import {FieldDef} from '../schema/fielddef.schema';
@@ -8,7 +8,7 @@ import {instantiate} from '../schema/schemautil';
 import * as schema from '../schema/schema';
 import * as schemaUtil from '../schema/schemautil';
 
-import {COLUMN, ROW, X, Y, SIZE, TEXT, PATH, ORDER, Channel, supportMark} from '../channel';
+import {COLUMN, ROW, X, Y, COLOR, SHAPE, SIZE, TEXT, PATH, ORDER, Channel, supportMark} from '../channel';
 import {SOURCE, SUMMARY} from '../data';
 import * as vlFieldDef from '../fielddef';
 import {FieldRefOption} from '../fielddef';
@@ -30,6 +30,12 @@ export class Model {
   private _spec: Spec;
   private _stack: StackProperties;
   private _layout: Layout;
+
+  private _legend: {
+    color?: LegendProperties;
+    size?: LegendProperties;
+    shape?: LegendProperties;
+  };
 
   constructor(spec: Spec) {
     var defaults = schema.instantiate();
@@ -59,10 +65,6 @@ export class Model {
         fieldDef.axis = instantiate(axisSchema);
       }
 
-      if (fieldDef.legend === true) {
-        fieldDef.legend = instantiate(legendSchema);
-      }
-
       // set default bandWidth for X and Y
       if (channel === X && fieldDef.scale.bandWidth === undefined) {
         // This should be zero for the sake of text table.
@@ -85,6 +87,22 @@ export class Model {
         fieldDef.scale.padding = this.has(X) ? 16 : 0;
       }
     }, this);
+
+    const encoding = this._spec.encoding;
+    const config = this._spec.config;
+
+    // initialize legend
+    this._legend = [COLOR, SHAPE, SIZE].reduce(function(_legend, channel) {
+      if (vlEncoding.has(encoding, channel)) {
+        const channelLegend = encoding[channel].legend;
+        if (channelLegend !== false) {
+          _legend[channel] = extend({}, defaultLegendConfig, config.legend,
+            channelLegend === true ? {} : channelLegend ||  {}
+          );
+        }
+      }
+      return _legend;
+    }, {});
 
     // calculate stack
     this._stack = compileStackProperties(this._spec);
@@ -233,23 +251,19 @@ export class Model {
   }
 
   public scale(channel: Channel): Scale {
-    return this.fieldDef(channel).scale;
+    return this._spec.encoding[channel].scale;
   }
 
   public axis(channel: Channel): Axis {
-    const axis = this.fieldDef(channel).axis;
+    const axis = this._spec.encoding[channel].axis;
 
     // This line should actually always return axis object since we already
     // replace boolean axis with properties.
-    return typeof axis !== 'boolean' ? axis : {};
+    return typeof axis !== 'boolean' ? axis : axis ? {} : null;
   }
 
-  public legend(channel: Channel): Legend {
-    const legend = this.fieldDef(channel).legend;
-
-    // This line should actually always return legend object since we already
-    // replace boolean legend with properties.
-    return typeof legend !== 'boolean' ? legend : {};
+  public legend(channel: Channel): LegendProperties {
+    return this._legend[channel];
   }
 
   /** returns scale name for a given channel */
