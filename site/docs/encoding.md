@@ -60,13 +60,13 @@ Grouping data is another important operation in visualizing data. For [aggregate
 
 Here is a scatterplot showing average horsepower and displacement for cars from different origins.  We map `Origin` to `detail` channel to use the field as a group-by field without mapping it to visual properties of the marks.
 
-<div class="vl-example" data-name="scatter_aggregate_detail" data-dir="docs"></div>
+<div class="vl-example" data-name="scatter_aggregate_detail"></div>
 
 
 Here is a line chart showing stock prices of 5 tech companies over time.  
 We map `symbol` variable (stock market ticker symbol) to `detail` to use them to group lines.  
 
-<div class="vl-example" data-name="line_detail" data-dir="docs"></div>
+<div class="vl-example" data-name="line_detail"></div>
 
 <!-- TODO Need to decide if we want to keep the two examples above since they look bad with labels / tooltips -->
 
@@ -87,13 +87,13 @@ We map `symbol` variable (stock market ticker symbol) to `detail` to use them to
 
 Given a colored scatterplot.
 
-<div class="vl-example" data-name="scatter_color" data-dir="docs"></div>
+<div class="vl-example" data-name="scatter_color"></div>
 
 By default, layer order of the data points are determined by original order of the data.  
 
 Mapping the field `Origin` to `order` channel will sort the layer of data points by the field.  
 
-<div class="vl-example" data-name="scatter_color_order" data-dir="docs"></div>
+<div class="vl-example" data-name="scatter_color_order"></div>
 
 Here we can see that data points from Origin A appear on the top.
 
@@ -107,7 +107,7 @@ By default, the stacked bar are sorted by the stack grouping fields (`color` in 
 
 Mapping the sum of yield to `order` channel will sort the layer of stacked bar by sum of yield instead.
 
-<div class="vl-example" data-name="stacked_bar_h_order" data-dir="docs"></div>
+<div class="vl-example" data-name="stacked_bar_h_order"></div>
 
 Here we can see that site with higher yields for each type of barley are put on the top of the stack (rightmost).
 
@@ -206,14 +206,14 @@ For [mark properties channels](#props-channels), if a `field` is not specified, 
 
 For example, you can set `color` and `shape` of a scatter plot to constant values.  Note that as the value is set directly to the color and shape values, there is no need to specify data `type`.  In fact, the data `type` will be ignored if specified.
 
-<span class="vl-example" data-name="scatter_color_shape_constant" data-dir="docs"></span>
+<span class="vl-example" data-name="scatter_color_shape_constant"></span>
 
 
 {:#ex-bar-size}
 
 Similarly, `value` for `size` channel of bar marks will adjust the bar's width.  By default, there will be 1 pixel offset between bars.  The following example sets the width to 10 to add more offset between bars.  
 
-<span class="vl-example" data-name="bar_aggregate_size" data-dir="docs"></span>
+<span class="vl-example" data-name="bar_aggregate_size"></span>
 
 
 

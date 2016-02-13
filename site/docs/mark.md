@@ -35,7 +35,7 @@ The rest of this page presents different chart types that can be created using e
 
 Mapping a field to either only `x` (or only `y`) of `point` mark creates a **dot plot**.
 
-<span class="vl-example" data-name="point_1d" data-dir="docs"></span>
+<span class="vl-example" data-name="point_1d"></span>
 
 ### Scatter Plot
 
@@ -49,7 +49,8 @@ By mapping a third field to the `size` channel in the [scatter plot](#scatter), 
 
 <span class="vl-example" data-name="scatter_bubble"></span>
 
-<span class="vl-example" data-name="scatter_color_shape"></span>
+<!-- TODO: does not exist
+<span class="vl-example" data-name="scatter_color_shape"></span> -->
 
 
 ### Scatter Plot with Color and/or Shape
@@ -70,9 +71,9 @@ See [this section for an example with filled `point` marks](config.html#config.m
 
 Here are some examples of scatter plots with `circle` and `square`:
 
-<span class="vl-example" data-name="circle" data-dir="docs"></span>
+<span class="vl-example" data-name="circle"></span>
 
-<span class="vl-example" data-name="square" data-dir="docs"></span>
+<span class="vl-example" data-name="square"></span>
 
 
 ## Tick
@@ -101,7 +102,7 @@ The `bar` mark represents each data point as a rectangle, where the length is ma
 
 Mapping a quantitative field to either `x` or `y` of the `bar` mark produces a single bar.  In the following example, note that the `x` channel encodes the sum of the populations.
 
-<span class="vl-example" data-name="bar_1d" data-dir="docs"></span>
+<span class="vl-example" data-name="bar_1d"></span>
 
 
 ### Bar Chart
@@ -119,7 +120,7 @@ Adding color to the bar chart (by using the `color` attribute) creates a stacked
 (See [`config.stack` for more detail about customizing stack](config.html#stack-config).)
 
 
-<span class="vl-example" data-name="stacked_bar_population" data-dir="docs"></span>
+<span class="vl-example" data-name="stacked_bar_population"></span>
 
 
 ### Layered Bar Chart
@@ -165,7 +166,7 @@ In the example below, we group points using a new field mapped to `color`. This 
 
 Alternatively, we can map the same field to `detail`, creating multiple lines but with the same color instead.
 
-<span class="vl-example" data-name="line_detail" data-dir="docs"></span>
+<span class="vl-example" data-name="line_detail"></span>
 
 ### Line Chart with Custom Path
 

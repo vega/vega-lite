@@ -28,7 +28,7 @@ This documentation outlines the syntax and semantics of Vega-Lite specifications
 }
 </div>
 
-<div class="vl-example" data-name="point_1d" data-dir="docs"></div>
+<div class="vl-example" data-name="point_1d"></div>
 
 Want to learn more? [Read the getting started tutorial]({{site.baseurl}}/tutorials/getting_started.html) and create your own visualizations in the [online editor](https://vega.github.io/vega-editor/?mode=vega-lite)
 
