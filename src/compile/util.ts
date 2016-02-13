@@ -1,5 +1,5 @@
 import {Model} from './Model';
-import {FieldDef} from '../schema/fielddef.schema';
+import {FieldDef, OrderChannelDef} from '../schema/fielddef.schema';
 import {COLUMN, ROW, X, Y, SIZE, COLOR, SHAPE, TEXT, LABEL, Channel} from '../channel';
 import {field} from '../fielddef';
 import {QUANTITATIVE, ORDINAL, TEMPORAL} from '../type';
@@ -132,8 +132,8 @@ function isAbbreviated(model: Model, channel: Channel, fieldDef: FieldDef) {
 
 
 /** Return field reference with potential "-" prefix for descending sort */
-export function sortField(fieldDef: FieldDef) {
-  return (fieldDef.sort === 'descending' ? '-' : '') + field(fieldDef);
+export function sortField(orderChannelDef: OrderChannelDef) {
+  return (orderChannelDef.sort === 'descending' ? '-' : '') + field(orderChannelDef);
 }
 
 /**

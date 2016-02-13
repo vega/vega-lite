@@ -25,9 +25,8 @@ export interface FieldDef {
   bin?: boolean | Bin;
 
   aggregate?: string;
-  sort?: SortField | SortEnum;
 
-  // override vega components
+  // TODO: remove these one by one
   axis?: Axis | boolean;
   legend?: Legend | boolean;
   scale?: Scale;

@@ -28,6 +28,7 @@ export function compileScales(channels: Channel[], model: Model) {
     .reduce(function(scales: any[], channel: Channel) {
       const fieldDef = model.fieldDef(channel);
       const scale = model.scale(channel);
+      const sort = model.sort(channel);
 
       var scaleDef: any = {
         name: model.scaleName(channel),
@@ -37,10 +38,14 @@ export function compileScales(channels: Channel[], model: Model) {
       scaleDef.domain = domain(scale, model, channel, scaleDef.type);
       extend(scaleDef, rangeMixins(scale, model, channel, scaleDef.type));
 
+      if (sort && (typeof sort === 'string' ? sort : sort.order) === 'descending') {
+        scaleDef.reverse = true;
+      }
+
       // Add optional properties
       [
         // general properties
-        'reverse', 'round',
+        'round',
         // quantitative / time
         'clamp', 'nice',
         // quantitative
@@ -242,7 +247,7 @@ export function domainSort(model: Model, channel: Channel, scaleType: string): a
     return undefined;
   }
 
-  var sort = model.fieldDef(channel).sort;
+  var sort = model.sort(channel);
   if (sort === 'ascending' || sort === 'descending') {
     return true;
   }
@@ -257,13 +262,6 @@ export function domainSort(model: Model, channel: Channel, scaleType: string): a
   return undefined;
 }
 
-export function reverse(scale: Scale, fieldDef: FieldDef, channel: Channel) {
-  var sort = fieldDef.sort;
-  return sort && (typeof sort === 'string' ?
-                    sort === 'descending' :
-                    sort.order === 'descending'
-                 ) ? true : undefined;
-}
 
 /**
  * Determine if useRawDomain should be activated for this scale.
