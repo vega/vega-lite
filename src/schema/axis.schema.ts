@@ -3,6 +3,7 @@ import {mergeDeep} from './schemautil';
 
 export interface AxisConfig {
   // General
+  axisWidth?: number;
   layer?: string;
   offset?: number;
   orient?: string;
@@ -40,6 +41,7 @@ export const defaultAxisConfig: AxisConfig = {
 };
 
 export const defaultFacetAxisConfig: AxisConfig = {
+  axisWidth: 0,
   labels: true,
   grid: false,
   tickSize: 0
@@ -55,6 +57,10 @@ export const axisConfig = {
   type: 'object',
   properties: {
     // General
+    axisWidth: {
+      type: 'integer',
+      description: 'Width of the axis line'
+    },
     layer: {
       type: 'string',
       description: 'A string indicating if the axis (and any gridlines) should be placed above or below the data marks.'

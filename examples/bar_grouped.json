@@ -4,7 +4,7 @@
   "encoding": {
     "column": {
       "field": "Cylinders","type": "ordinal",
-      "axis": {"orient": "bottom"}
+      "axis": {"orient": "bottom", "axisWidth": 1}
     },
     "x": {
       "field": "Origin", "type": "nominal",

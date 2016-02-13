@@ -213,14 +213,15 @@ export function title(model: Model, channel: Channel) {
 }
 
 export namespace properties {
-  export function axis(model: Model, channel: Channel, axisPropsSpec) {
-    if (channel === ROW || channel === COLUMN) {
-      // hide axis for facets
-      return extend({
-        opacity: {value: 0}
-      }, axisPropsSpec || {});
-    }
-    return axisPropsSpec || undefined;
+  export function axis(model: Model, channel: Channel, axisPropsSpec, def) {
+    const axis = model.axis(channel);
+
+    return extend(
+      axis.axisWidth !== undefined ?
+        { strokeWidth: {value: axis.axisWidth} } :
+        {},
+      axisPropsSpec || {}
+    );
   }
 
   export function labels(model: Model, channel: Channel, labelsSpec, def) {
