@@ -242,6 +242,7 @@ Now, let's see how to publish your visualization.
 
 To embed your visualization on a website, you can create a web page with the following content:
 
+{: .suppress-error}
 ```html
 <!DOCTYPE html>
 <head>
