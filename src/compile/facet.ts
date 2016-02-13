@@ -36,8 +36,8 @@ export function facetMixins(model: Model, marks) {
       model
     ),
     axes: [].concat(
-      hasRow && model.fieldDef(ROW).axis ? [compileAxis(ROW, model)] : [],
-      hasCol && model.fieldDef(COLUMN).axis ? [compileAxis(COLUMN, model)] : []
+      hasRow && model.axis(ROW) ? [compileAxis(ROW, model)] : [],
+      hasCol && model.axis(COLUMN) ? [compileAxis(COLUMN, model)] : []
     )
   };
 }
@@ -74,10 +74,10 @@ function getCellHeight(model: Model) {
 
 function getCellAxes(model: Model) {
   const cellAxes = [];
-  if (model.has(X) && model.fieldDef(X).axis && gridShow(model, X)) {
+  if (model.has(X) && model.axis(X) && gridShow(model, X)) {
     cellAxes.push(compileInnerAxis(X, model));
   }
-  if (model.has(Y) && model.fieldDef(Y).axis && gridShow(model, Y)) {
+  if (model.has(Y) && model.axis(Y) && gridShow(model, Y)) {
     cellAxes.push(compileInnerAxis(Y, model));
   }
   return cellAxes;
@@ -146,7 +146,7 @@ function getFacetGuideGroups(model: Model, cellWidth, cellHeight) {
   let rootAxesGroups = [] ;
 
   if (model.has(X)) {
-    if (model.fieldDef(X).axis) {
+    if (model.axis(X)) {
       rootAxesGroups.push(getXAxesGroup(model, cellWidth));
     }
   } else {
@@ -157,7 +157,7 @@ function getFacetGuideGroups(model: Model, cellWidth, cellHeight) {
     }
   }
   if (model.has(Y)) {
-    if (model.fieldDef(Y).axis) {
+    if (model.axis(Y)) {
       rootAxesGroups.push(getYAxesGroup(model, cellHeight));
     }
   } else {
@@ -204,7 +204,7 @@ function getXAxesGroup(model: Model, cellWidth) { // TODO: VgMarks
         }
       }
     },
-    model.fieldDef(X).axis ? {
+    model.axis(X) ? {
       axes: [compileAxis(X, model)]
     }: {}
   );
@@ -243,7 +243,7 @@ function getYAxesGroup(model: Model, cellHeight) { // TODO: VgMarks
         }
       },
     },
-    model.fieldDef(Y).axis ? {
+    model.axis(Y) ? {
       axes: [compileAxis(Y, model)]
     }: {}
   );

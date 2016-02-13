@@ -33,13 +33,15 @@ export function compileInnerAxis(channel: Channel, model: Model) {
     }
   };
 
+  const axis = model.axis(channel);
+
   ['layer', 'ticks', 'values', 'subdivide'].forEach(function(property) {
     let method: (model: Model, channel: Channel, def:any)=>any;
 
     const value = (method = exports[property]) ?
                   // calling axis.format, axis.grid, ...
                   method(model, channel, def) :
-                  model.fieldDef(channel).axis[property];
+                  axis[property];
     if (value !== undefined) {
       def[property] = value;
     }

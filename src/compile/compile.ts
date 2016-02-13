@@ -100,8 +100,8 @@ export function compileRootGroup(model: Model) {
     rootGroup.marks = marks;
     rootGroup.scales = compileScales(model.channels(), model);
 
-    var axes = (model.has(X) && model.fieldDef(X).axis ? [compileAxis(X, model)] : [])
-      .concat(model.has(Y) && model.fieldDef(Y).axis ? [compileAxis(Y, model)] : []);
+    var axes = (model.has(X) && model.axis(X) ? [compileAxis(X, model)] : [])
+      .concat(model.has(Y) && model.axis(Y) ? [compileAxis(Y, model)] : []);
     if (axes.length > 0) {
       rootGroup.axes = axes;
     }
