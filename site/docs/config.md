@@ -123,7 +123,7 @@ The smallest unit in Vega-Lite visualization is called a cell.  Each single (non
 By default, `point` marks have filled borders and are transparent inside.  
 Setting `config.mark.filled` to `true` creates filled marks instead.
 
-<span class="vl-example" data-name="point_filled" data-dir="docs"></span>
+<span class="vl-example" data-name="point_filled"></span>
 
 
 
@@ -190,7 +190,7 @@ vg.embed('#horizontal_line', {
 
 #### Example: interpolate with `monotone`
 
-<span class="vl-example" data-name="line_monotone" data-dir="docs"></span>
+<span class="vl-example" data-name="line_monotone"></span>
 
 ### Marks Configuration for Point Mark
 
