@@ -238,8 +238,11 @@ export namespace layout {
           ops: ['distinct']
         });
       }
+      const xTimeUnit = model.fieldDef(X).timeUnit;
+      const xTimeUnitDomain = xTimeUnit ? rawDomain(xTimeUnit, X) : null;
       const xCardinality = xHasDomain ? xScale.domain.length :
-                             model.field(X, {datum: true, prefn: 'distinct_'});
+                            xTimeUnitDomain != null ? xTimeUnitDomain.length :
+                            model.field(X, {datum: true, prefn: 'distinct_'});
       formulas.push({
         type: 'formula',
         field: 'cellWidth',
