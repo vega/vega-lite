@@ -167,7 +167,7 @@ const axisProperties = mergeDeep(duplicate(axisConfig), {
     },
     title: {
       type: 'string',
-      description: 'A title for the axis. (Shows field name and its function by default.)'
+      description: 'A title for the axis. Shows field name and its function by default.'
     },
     values: {
       type: 'array',
