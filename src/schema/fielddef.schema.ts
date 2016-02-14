@@ -1,6 +1,6 @@
 import {axis, Axis} from './axis.schema';
 import {bin, Bin} from './bin.schema';
-import {legend, Legend} from './legend.schema';
+import {legend, LegendProperties} from './legend.schema';
 import {typicalScale, ordinalOnlyScale, Scale} from './scale.schema';
 import {sortEnum, sort, SortField, SortEnum} from './sort.schema';
 
@@ -28,7 +28,6 @@ export interface FieldDef {
 
   // TODO: remove these one by one
   axis?: Axis | boolean;
-  legend?: Legend | boolean;
   scale?: Scale;
 
   // TODO: maybe extend this in other app?
@@ -104,7 +103,7 @@ export const positionChannelDef = mergeDeep(duplicate(channelDefWithScale), {
 });
 
 export interface ChannelDefWithLegend extends ChannelDefWithScale {
-  legend?: Legend;
+  legend?: LegendProperties;
 }
 
 export const channelDefWithLegend = mergeDeep(duplicate(channelDefWithScale), {

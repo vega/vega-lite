@@ -1,5 +1,5 @@
 import {FieldDef} from '../schema/fielddef.schema';
-import {Legend} from '../schema/legend.schema';
+import {LegendProperties} from '../schema/legend.schema';
 
 import {COLOR, SIZE, SHAPE, Channel} from '../channel';
 import {title as fieldTitle} from '../fielddef';
@@ -73,7 +73,7 @@ export function compileLegend(model: Model, channel: Channel, def) {
   return def;
 }
 
-export function title(legend: Legend, fieldDef: FieldDef) {
+export function title(legend: LegendProperties, fieldDef: FieldDef) {
   if (typeof legend !== 'boolean' && legend.title) {
     return legend.title;
   }
@@ -81,7 +81,7 @@ export function title(legend: Legend, fieldDef: FieldDef) {
   return fieldTitle(fieldDef);
 }
 
-export function formatMixins(legend: Legend, model: Model, channel: Channel) {
+export function formatMixins(legend: LegendProperties, model: Model, channel: Channel) {
   const fieldDef = model.fieldDef(channel);
 
   // If the channel is binned, we should not set the format because we have a range label
