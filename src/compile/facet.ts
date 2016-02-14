@@ -165,7 +165,7 @@ function getXAxesGroup(model: Model) { // TODO: VgMarks
     {
       properties: {
         update: {
-          width: {field: {parent: 'cellWidth'}}, // FIXME really?
+          width: {field: {parent: 'cellWidth'}},
           height: {
             field: {group: 'height'}
           },
@@ -175,8 +175,8 @@ function getXAxesGroup(model: Model) { // TODO: VgMarks
             // offset by the padding
             offset: model.fieldDef(COLUMN).scale.padding / 2
           } : {
-
-            value: 16 /* TODO: config.facet.scale.padding */ / 2 // offset by the padding
+            // offset by the padding
+            value: 16 /* TODO: config.facet.scale.padding */ / 2
           }
         }
       }
@@ -211,14 +211,15 @@ function getYAxesGroup(model: Model) { // TODO: VgMarks
           width: {
             field: {group: 'width'}
           },
-          height: {field: {parent: 'cellHeight'}}, // FIXME really?
+          height: {field: {parent: 'cellHeight'}},
           y: hasRow ? {
             scale: model.scaleName(ROW),
             field: model.field(ROW),
             // offset by the padding
             offset: model.fieldDef(ROW).scale.padding / 2
           } : {
-            value: 16 /* TODO: config.facet.scale.padding */  / 2 // offset by the padding
+            // offset by the padding
+            value: 16 /* TODO: config.facet.scale.padding */  / 2
           }
         }
       },

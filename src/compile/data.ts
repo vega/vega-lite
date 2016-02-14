@@ -226,12 +226,14 @@ export namespace source {
 // TODO: move this to layout.ts
 export namespace layout {
   export function def(model: Model): VgData {
-    /* Array of fields that need to calculate cardinality for */
+    /* Aggregation summary object for fields with ordinal scales
+     * that wee need to calculate cardinality for. */
     const distinctSummary = [X, Y, ROW, COLUMN].reduce(function(summary, channel: Channel) {
       if (model.has(channel) && model.isOrdinalScale(channel)) {
         const scale = model.scale(channel);
 
-        if (!(scale.domain instanceof Array)) { // if explicit domain is declared, use array length
+        if (!(scale.domain instanceof Array)) {
+          // if explicit domain is declared, use array length
           summary.push({
             field: model.field(channel),
             ops: ['distinct']

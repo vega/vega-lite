@@ -370,9 +370,16 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel, scaleT
     case X:
       // we can't use {range: "width"} here since we put scale in the root group
       // not inside the cell, so scale is reusable for axes group
-      return {rangeMin: 0, rangeMax: model.config().unit.width};
+
+      return {
+        rangeMin: 0,
+        rangeMax: model.config().unit.width // Fixed unit width for non-ordinal
+      };
     case Y:
-      return {rangeMin: model.config().unit.width, rangeMax: 0};
+      return {
+        rangeMin: model.config().unit.width, // Fixed unit width for non-ordinal
+        rangeMax: 0
+      };
     case SIZE:
       if (model.is(BAR)) {
         // TODO: determine bandSize for bin, which actually uses linear scale

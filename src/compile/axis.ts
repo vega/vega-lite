@@ -199,10 +199,10 @@ export function title(model: Model, channel: Channel) {
   if (axis.titleMaxLength) {
     maxLength = axis.titleMaxLength;
   } else if (channel === X && !model.isOrdinalScale(X)) {
-    // Guess max length if we know cell size at compile time
+    // For non-ordinal scale, we know cell size at compile time, we can guess max length
     maxLength = model.config().unit.width / model.axis(X).characterWidth;
   } else if (channel === Y && !model.isOrdinalScale(Y)) {
-    // Guess max length if we know cell size at compile time
+    // For non-ordinal scale, we know cell size at compile time, we can guess max length
     maxLength = model.config().unit.height / model.axis(Y).characterWidth;
   }
   // FIXME: we should use template to truncate instead
