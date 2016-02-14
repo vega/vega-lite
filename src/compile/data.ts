@@ -36,6 +36,9 @@ export function compileData(model: Model): VgData[] {
     def.push(summaryDef);
   }
 
+  // add rank to the last dataset
+  rankTransform(def[def.length-1], model);
+
   // append non-positive filter at the end for the data table
   filterNonPositiveForLog(def[def.length - 1], model);
 
@@ -124,8 +127,7 @@ export namespace source {
       formulaTransform(model),
       filterTransform(model),
       binTransform(model),
-      timeTransform(model),
-      rankTransform(model)
+      timeTransform(model)
     );
   }
 
@@ -217,23 +219,6 @@ export namespace source {
       transform.push(extend({type: 'formula'}, formula));
       return transform;
     }, []);
-  }
-
-  // We need to add a rank transform so that we can use the rank value as
-  // input for color ramp's linear scale.
-  export function rankTransform(model: Model) {
-    const rankColor = model.has(COLOR) && model.fieldDef(COLOR).type === ORDINAL;
-
-    return rankColor ? [{
-      type: 'sort',
-      by: model.field(COLOR)
-    },{
-      type: 'rank',
-      field: model.field(COLOR),
-      output: {
-        rank: model.field(COLOR, {prefn: 'rank_'})
-      }
-    }] : [];
   }
 }
 
@@ -461,6 +446,23 @@ export namespace dates {
       }
       return aggregator;
     }, []);
+  }
+}
+
+// We need to add a rank transform so that we can use the rank value as
+// input for color ramp's linear scale.
+export function rankTransform(dataTable, model: Model) {
+  if (model.has(COLOR) && model.fieldDef(COLOR).type === ORDINAL) {
+    dataTable.transform = dataTable.transform.concat([{
+      type: 'sort',
+      by: model.field(COLOR)
+    },{
+      type: 'rank',
+      field: model.field(COLOR),
+      output: {
+        rank: model.field(COLOR, {prefn: 'rank_'})
+      }
+    }]);
   }
 }
 
