@@ -103,56 +103,44 @@ namespace properties {
       case TICK:
       case TEXT:
         symbols.shape = {value: 'square'};
-
-        // set stroke to transparent by default unless there is a config for stroke
-        symbols.stroke = {value: 'transparent'};
-        applyMarkConfig(symbols, model, FILL_STROKE_CONFIG);
-
-        // no need to apply color to fill as they are set automatically
         break;
-
       case CIRCLE:
       case SQUARE:
         /* tslint:disable:no-switch-case-fall-through */
         symbols.shape = {value: mark};
         /* tslint:enable:no-switch-case-fall-through */
       case POINT:
-        // fill or stroke
-        if (model.config().mark.filled) { // filled
-          // set stroke to transparent by default unless there is a config for stroke
-          symbols.stroke = {value: 'transparent'};
-          applyMarkConfig(symbols, model, FILL_STROKE_CONFIG);
-
-          if (model.has(COLOR) && channel === COLOR) {
-            symbols.fill = {scale: model.scaleName(COLOR), field: 'data'};
-          } else if (model.fieldDef(COLOR).value) {
-            symbols.fill = {value: model.fieldDef(COLOR).value};
-          } else {
-            symbols.fill = {value: model.config().mark.color};
-          }
-        } else { // stroked
-          // set fill to transparent by default unless there is a config for stroke
-          symbols.fill = {value: 'transparent'};
-          applyMarkConfig(symbols, model, FILL_STROKE_CONFIG);
-
-          if (model.has(COLOR) && channel === COLOR) {
-            symbols.stroke = {scale: model.scaleName(COLOR), field: 'data'};
-          } else if (model.fieldDef(COLOR).value) {
-            symbols.stroke = {value: model.fieldDef(COLOR).value};
-          } else {
-            symbols.stroke = {value: model.config().mark.color};
-          }
-        }
-
         break;
       case LINE:
       case AREA:
-        // set stroke to transparent by default unless there is a config for stroke
-        symbols.stroke = {value: 'transparent'};
-        applyMarkConfig(symbols, model, FILL_STROKE_CONFIG);
-
-        // TODO use shape here after implementing #508
         break;
+    }
+
+    // fill or stroke
+    if (model.config().mark.filled) { // filled
+      // set stroke to transparent by default unless there is a config for stroke
+      symbols.stroke = { value: 'transparent' };
+      applyMarkConfig(symbols, model, FILL_STROKE_CONFIG);
+
+      if (model.has(COLOR) && channel === COLOR) {
+        symbols.fill = { scale: model.scaleName(COLOR), field: 'data' };
+      } else if (model.fieldDef(COLOR).value) {
+        symbols.fill = { value: model.fieldDef(COLOR).value };
+      } else {
+        symbols.fill = { value: model.config().mark.color };
+      }
+    } else { // stroked
+      // set fill to transparent by default unless there is a config for stroke
+      symbols.fill = { value: 'transparent' };
+      applyMarkConfig(symbols, model, FILL_STROKE_CONFIG);
+
+      if (model.has(COLOR) && channel === COLOR) {
+        symbols.stroke = { scale: model.scaleName(COLOR), field: 'data' };
+      } else if (model.fieldDef(COLOR).value) {
+        symbols.stroke = { value: model.fieldDef(COLOR).value };
+      } else {
+        symbols.stroke = { value: model.config().mark.color };
+      }
     }
 
     symbols = extend(symbols, symbolsSpec || {});
