@@ -1,10 +1,9 @@
 import {Spec} from '../schema/schema';
-import {Axis, axis as axisSchema} from '../schema/axis.schema';
+import {AxisProperties, defaultAxisConfig, defaultFacetAxisConfig} from '../schema/axis.schema';
 import {LegendProperties, defaultLegendConfig} from '../schema/legend.schema';
 import {Scale} from '../schema/scale.schema';
 import {Encoding} from '../schema/encoding.schema';
 import {FieldDef} from '../schema/fielddef.schema';
-import {instantiate} from '../schema/schemautil';
 import * as schema from '../schema/schema';
 import * as schemaUtil from '../schema/schemautil';
 
@@ -30,6 +29,13 @@ export class Model {
   private _spec: Spec;
   private _stack: StackProperties;
   private _layout: Layout;
+
+  private _axis: {
+    x?: AxisProperties;
+    y?: AxisProperties;
+    row?: AxisProperties;
+    column?: AxisProperties;
+  };
 
   private _legend: {
     color?: LegendProperties;
@@ -61,10 +67,6 @@ export class Model {
 
       // TODO instantiate bin here
 
-      if (fieldDef.axis === true) {
-        fieldDef.axis = instantiate(axisSchema);
-      }
-
       // set default bandWidth for X and Y
       if (channel === X && fieldDef.scale.bandWidth === undefined) {
         // This should be zero for the sake of text table.
@@ -90,6 +92,22 @@ export class Model {
 
     const encoding = this._spec.encoding;
     const config = this._spec.config;
+
+    // Initialize Axis
+    this._axis = [X, Y, ROW, COLUMN].reduce(function(_axis, channel) {
+      // Position Axis
+      if (vlEncoding.has(encoding, channel)) {
+        const channelAxis = encoding[channel].axis;
+        if (channelAxis !== false) {
+          _axis[channel] = extend({},
+            channel === X || channel === Y ? defaultAxisConfig : defaultFacetAxisConfig,
+            channel === X || channel === Y ? config.axis : config.facet.axis,
+            channelAxis === true ? {} : channelAxis ||  {}
+          );
+        }
+      }
+      return _axis;
+    }, {});
 
     // initialize legend
     this._legend = [COLOR, SHAPE, SIZE].reduce(function(_legend, channel) {
@@ -254,12 +272,8 @@ export class Model {
     return this._spec.encoding[channel].scale;
   }
 
-  public axis(channel: Channel): Axis {
-    const axis = this._spec.encoding[channel].axis;
-
-    // This line should actually always return axis object since we already
-    // replace boolean axis with properties.
-    return typeof axis !== 'boolean' ? axis : axis ? {} : null;
+  public axis(channel: Channel): AxisProperties {
+    return this._axis[channel];
   }
 
   public legend(channel: Channel): LegendProperties {

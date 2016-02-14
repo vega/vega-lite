@@ -55,6 +55,8 @@ export function compileAxis(channel: Channel, model: Model) {
     isRow = channel === ROW,
     type = isCol ? 'x' : isRow ? 'y': channel;
 
+  const axis = model.axis(channel);
+
   // TODO: replace any with Vega Axis Interface
   let def: any = {
     type: type,
@@ -77,7 +79,7 @@ export function compileAxis(channel: Channel, model: Model) {
     const value = (method = exports[property]) ?
                   // calling axis.format, axis.grid, ...
                   method(model, channel, def) :
-                  model.fieldDef(channel).axis[property];
+                  axis[property];
     if (value !== undefined) {
       def[property] = value;
     }
@@ -103,8 +105,7 @@ export function compileAxis(channel: Channel, model: Model) {
 }
 
 export function offset(model: Model, channel: Channel) {
-  return (channel === Y || channel === X) &&
-    (model.has(COLUMN) || model.has(ROW)) ? 8 : undefined;
+  return model.axis(channel).offset;
 }
 
 // TODO: we need to refactor this method after we take care of config refactoring
@@ -180,9 +181,6 @@ export function tickSize(model: Model, channel: Channel) {
   const tickSize = model.axis(channel).tickSize;
   if (tickSize !== undefined) {
     return tickSize;
-  }
-  if (channel === ROW || channel === COLUMN) {
-    return 0;
   }
   return undefined;
 }

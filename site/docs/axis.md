@@ -62,9 +62,7 @@ The `axis` property object supports the following properties:
 | format        | String        | The formatting pattern for axis labels. Vega uses [D3's format pattern](https://github.com/mbostock/d3/wiki/Formatting).|
 | labelAngle    | Number        | Rotation angle for axis labels. |
 | labelMaxLength  | Integer       | Max length for axis labels. Longer labels are truncated. (25 by default.) |
-| offset        | Number | The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle. |
 | shortTimeLabels | Boolean       | Whether month and day names should be abbreviated. |
-
 
 ### Ticks
 
