@@ -1,6 +1,7 @@
 import {Spec} from '../schema/schema';
 import {Axis, axis as axisSchema} from '../schema/axis.schema';
 import {Legend, legend as legendSchema} from '../schema/legend.schema';
+import {Scale} from '../schema/scale.schema';
 import {Encoding} from '../schema/encoding.schema';
 import {FieldDef} from '../schema/fielddef.schema';
 import {instantiate} from '../schema/schemautil';
@@ -145,9 +146,11 @@ export class Model {
   /** Get "field" reference for vega */
   public field(channel: Channel, opt: FieldRefOption = {}) {
     const fieldDef = this.fieldDef(channel);
+    const scale = this.scale(channel);
+
     if (fieldDef.bin) { // bin has default suffix that depends on scaleType
       opt = extend({
-        binSuffix: scaleType(fieldDef, channel, this.mark()) === 'ordinal' ? '_range' : '_start'
+        binSuffix: scaleType(scale, fieldDef, channel, this.mark()) === 'ordinal' ? '_range' : '_start'
       }, opt);
     }
 
@@ -176,9 +179,11 @@ export class Model {
 
   public isOrdinalScale(channel: Channel) {
     const fieldDef = this.fieldDef(channel);
+    const scale = this.scale(channel);
+
     return fieldDef && (
       contains([NOMINAL, ORDINAL], fieldDef.type) ||
-      ( fieldDef.type === TEMPORAL && scaleType(fieldDef, channel, this.mark()) === 'ordinal' )
+      ( fieldDef.type === TEMPORAL && scaleType(scale, fieldDef, channel, this.mark()) === 'ordinal' )
       );
   }
 
@@ -223,6 +228,10 @@ export class Model {
     return this._spec.config;
   }
 
+  public scale(channel: Channel): Scale {
+    return this.fieldDef(channel).scale;
+  }
+
   public axis(channel: Channel): Axis {
     const axis = this.fieldDef(channel).axis;
 
@@ -261,7 +270,7 @@ export class Model {
         return this.isOrdinalScale(channel) ?
             // For ordinal scale or single bar, we can use bandWidth - 1
             // (-1 so that the border of the bar falls on exact pixel)
-            this.fieldDef(channel).scale.bandWidth - 1 :
+            this.scale(channel).bandWidth - 1 :
           !this.has(channel) ?
             21 : /* config.scale.bandWidth */
             2; // otherwise, set to 2 by default
@@ -270,7 +279,7 @@ export class Model {
           return this.config().mark.tickWidth;
         }
         const bandWidth = this.has(channel) ?
-          this.fieldDef(channel).scale.bandWidth :
+          this.scale(channel).bandWidth :
           21; /* config.scale.bandWidth */
         return bandWidth / 1.5;
     }
