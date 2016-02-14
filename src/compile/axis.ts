@@ -194,19 +194,16 @@ export function title(model: Model, channel: Channel) {
 
   // if not defined, automatically determine axis title from field def
   const fieldTitle = model.fieldTitle(channel);
-  const layout = model.layout();
-  const cellWidth = layout.cellWidth;
-  const cellHeight = layout.cellHeight;
 
   let maxLength;
   if (axis.titleMaxLength) {
     maxLength = axis.titleMaxLength;
-  } else if (channel === X && typeof cellWidth === 'number') {
-    // Guess max length if we know cell size at compile time
-    maxLength = cellWidth / model.axis(X).characterWidth;
-  } else if (channel === Y && typeof cellHeight === 'number') {
-    // Guess max length if we know cell size at compile time
-    maxLength = cellHeight / model.axis(Y).characterWidth;
+  } else if (channel === X && !model.isOrdinalScale(X)) {
+    // For non-ordinal scale, we know cell size at compile time, we can guess max length
+    maxLength = model.config().unit.width / model.axis(X).characterWidth;
+  } else if (channel === Y && !model.isOrdinalScale(Y)) {
+    // For non-ordinal scale, we know cell size at compile time, we can guess max length
+    maxLength = model.config().unit.height / model.axis(Y).characterWidth;
   }
   // FIXME: we should use template to truncate instead
   return maxLength ? truncate(fieldTitle, maxLength) : fieldTitle;

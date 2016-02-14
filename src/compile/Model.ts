@@ -14,11 +14,10 @@ import {FieldRefOption} from '../fielddef';
 import * as vlEncoding from '../encoding';
 import {Mark, BAR, TICK, TEXT as TEXTMARK} from '../mark';
 
-import {getFullName, NOMINAL, ORDINAL, TEMPORAL, QUANTITATIVE} from '../type';
-import {contains, duplicate, extend} from '../util';
+import {getFullName, QUANTITATIVE} from '../type';
+import {duplicate, extend} from '../util';
 
 import {compileMarkConfig} from './config';
-import {compileLayout, Layout} from './layout';
 import {compileStackProperties, StackProperties} from './stack';
 import {type as scaleType} from './scale';
 
@@ -28,7 +27,6 @@ import {type as scaleType} from './scale';
 export class Model {
   private _spec: Spec;
   private _stack: StackProperties;
-  private _layout: Layout;
 
   private _axis: {
     x?: AxisProperties;
@@ -125,12 +123,6 @@ export class Model {
     // calculate stack
     this._stack = compileStackProperties(this._spec);
     this._spec.config.mark = compileMarkConfig(this._spec, this._stack);
-    this._layout = compileLayout(this);
-
-  }
-
-  public layout(): Layout {
-    return this._layout;
   }
 
   public stack(): StackProperties {
@@ -217,10 +209,7 @@ export class Model {
     const fieldDef = this.fieldDef(channel);
     const scale = this.scale(channel);
 
-    return fieldDef && (
-      contains([NOMINAL, ORDINAL], fieldDef.type) ||
-      ( fieldDef.type === TEMPORAL && scaleType(scale, fieldDef, channel, this.mark()) === 'ordinal' )
-      );
+    return fieldDef && scaleType(scale, fieldDef, channel, this.mark()) === 'ordinal';
   }
 
   public isDimension(channel: Channel) {

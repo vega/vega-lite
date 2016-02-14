@@ -8,6 +8,7 @@ import {autoMaxBins} from '../bin';
 import {Channel, X, Y, ROW, COLUMN, COLOR} from '../channel';
 import {SOURCE, STACKED_SCALE, LAYOUT, SUMMARY} from '../data';
 import {field} from '../fielddef';
+import {TEXT as TEXT_MARK} from '../mark';
 import {QUANTITATIVE, TEMPORAL, ORDINAL} from '../type';
 import {type as scaleType} from './scale';
 import {parseExpression, rawDomain} from './time';
@@ -222,114 +223,113 @@ export namespace source {
   }
 }
 
+// TODO: move this to layout.ts
 export namespace layout {
-
   export function def(model: Model): VgData {
-    let summarize = [];
-    let formulas = [];
+    /* Aggregation summary object for fields with ordinal scales
+     * that wee need to calculate cardinality for. */
+    const distinctSummary = [X, Y, ROW, COLUMN].reduce(function(summary, channel: Channel) {
+      if (model.has(channel) && model.isOrdinalScale(channel)) {
+        const scale = model.scale(channel);
+
+        if (!(scale.domain instanceof Array)) {
+          // if explicit domain is declared, use array length
+          summary.push({
+            field: model.field(channel),
+            ops: ['distinct']
+          });
+        }
+      }
+      return summary;
+    }, []);
+
 
     // TODO: handle "fit" mode
-    if (model.has(X) && model.isOrdinalScale(X)) {
-      const xScale = model.scale(X);
-      const xHasDomain = xScale.domain instanceof Array;
-      if (!xHasDomain) {
-        summarize.push({
-          field: model.field(X),
-          ops: ['distinct']
-        });
+    const cellWidthFormula = scaleWidthFormula(model, X, model.config().unit.width);
+    const cellHeightFormula = scaleWidthFormula(model, Y, model.config().unit.height);
+    const isFacet =  model.has(COLUMN) || model.has(ROW);
+
+    const formulas = [{
+      type: 'formula',
+      field: 'cellWidth',
+      expr: cellWidthFormula
+    },{
+      type: 'formula',
+      field: 'cellHeight',
+      expr: cellHeightFormula
+    },{
+      type: 'formula',
+      field: 'width',
+      expr: isFacet ?
+            facetScaleWidthFormula(model, COLUMN, 'datum.cellWidth') :
+            cellWidthFormula
+    },{
+      type: 'formula',
+      field: 'height',
+      expr: isFacet ?
+            facetScaleWidthFormula(model, ROW, 'datum.cellHeight') :
+            cellHeightFormula
+    }];
+
+    return distinctSummary.length > 0 ? {
+      name: LAYOUT,
+      source: model.dataTable(),
+      transform: [].concat(
+        [{
+          type: 'aggregate',
+          summarize: distinctSummary
+        }],
+        formulas)
+    } : {
+      name: LAYOUT,
+      values: [{}],
+      transform: formulas
+    };
+  }
+
+  function cardinalityFormula(model: Model, channel: Channel) {
+    const scale = model.scale(channel);
+    if (scale.domain instanceof Array) {
+      return scale.domain.length;
+    }
+
+    const timeUnit = model.fieldDef(channel).timeUnit;
+    const timeUnitDomain = timeUnit ? rawDomain(timeUnit, channel) : null;
+
+    return timeUnitDomain !== null ? timeUnitDomain.length :
+          model.field(channel, {datum: true, prefn: 'distinct_'});
+  }
+
+  function scaleWidthFormula(model: Model, channel: Channel, nonOrdinalSize: number): string {
+    if (model.has(channel)) {
+      if (model.isOrdinalScale(channel)) {
+        const scale = model.scale(channel);
+        return '(' + cardinalityFormula(model, channel) +
+                  ' + ' + scale.padding +
+               ') * ' + scale.bandWidth;
+      } else {
+        return nonOrdinalSize + '';
       }
-      const xCardinality = xHasDomain ? xScale.domain.length :
-                             model.field(X, {datum: true, prefn: 'distinct_'});
-      formulas.push({
-        type: 'formula',
-        field: 'cellWidth',
-        expr: '(' + xCardinality + ' + ' + xScale.padding + ') * ' + xScale.bandWidth
-      });
-    }
-
-    if (model.has(Y) && model.isOrdinalScale(Y)) {
-      const yScale = model.scale(Y);
-      const yHasDomain = yScale.domain instanceof Array;
-
-      if (!yHasDomain) {
-        summarize.push({
-          field: model.field(Y),
-          ops: ['distinct']
-        });
+    } else {
+      if (model.mark() === TEXT_MARK && channel === X) {
+        // for text table without x/y scale we need wider bandWidth
+        return 90 + ''; // TODO: config.scale.textBandWidth
       }
-
-      const yCardinality = yHasDomain ? yScale.domain.length :
-                             model.field(Y, {datum: true, prefn: 'distinct_'});
-      formulas.push({
-        type: 'formula',
-        field: 'cellHeight',
-        expr: '(' + yCardinality + ' + ' + yScale.padding + ') * ' + yScale.bandWidth
-      });
+      return 21 + ''; // TODO: config.scale.bandWidth
     }
+  }
 
-    const layout = model.layout();
+  function facetScaleWidthFormula(model: Model, channel: Channel, innerWidth: string) {
+    const scale = model.scale(channel);
+    if (model.has(channel)) {
+      const cardinality = scale.domain instanceof Array ? scale.domain.length :
+                               model.field(channel, {datum: true, prefn: 'distinct_'});
 
-    if (model.has(COLUMN)) {
-      const layoutCellWidth = layout.cellWidth;
-      const cellWidth = typeof layoutCellWidth !== 'number' ?
-                        'datum.' + layoutCellWidth.field :
-                        layoutCellWidth;
-      const colScale = model.scale(COLUMN);
-      const colHasDomain = colScale.domain instanceof Array;
-      if (!colHasDomain) {
-        summarize.push({
-          field: model.field(COLUMN),
-          ops: ['distinct']
-        });
-      }
-
-      const colCardinality = colHasDomain ? colScale.domain.length :
-                               model.field(COLUMN, {datum: true, prefn: 'distinct_'});
-      formulas.push({
-        type: 'formula',
-        field: 'width',
-        expr: '(' + cellWidth + ' + ' + colScale.padding + ')' + ' * ' + colCardinality
-      });
+      return '(' + innerWidth + ' + ' + scale.padding + ')' + ' * ' + cardinality;
+    } else {
+      // TODO: refer to facet scale config instead!
+      return innerWidth + ' + ' + 16; // need to add outer padding for facet
     }
-
-    if (model.has(ROW)) {
-      const layoutCellHeight = layout.cellHeight;
-      const cellHeight = typeof layoutCellHeight !== 'number' ?
-                        'datum.' + layoutCellHeight.field :
-                        layoutCellHeight;
-      const rowScale = model.scale(ROW);
-      const rowHasDomain = rowScale.domain instanceof Array;
-      if (!rowHasDomain) {
-        summarize.push({
-          field: model.field(ROW),
-          ops: ['distinct']
-        });
-      }
-
-      const rowCardinality = rowHasDomain ? rowScale.domain.length :
-                               model.field(ROW, {datum: true, prefn: 'distinct_'});
-      formulas.push({
-        type: 'formula',
-        field: 'height',
-        expr: '(' + cellHeight + ' + ' + rowScale.padding + ')' + ' * ' + rowCardinality
-      });
-    }
-
-    if (formulas.length > 0) {
-      return summarize.length > 0 ? {
-        name: LAYOUT,
-        source: model.dataTable(),
-        transform: [{
-            type: 'aggregate',
-            summarize: summarize
-          }].concat(formulas)
-      } : {
-        name: LAYOUT,
-        values: [{}],
-        transform: formulas
-      };
-    }
-    return null;
   }
 }
 
