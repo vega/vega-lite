@@ -1,37 +1,36 @@
 import {assert} from 'chai';
 import * as vl from '../src/vl';
 
-const zSchema = require('z-schema');
+const ZSchema = require('z-schema');
 const inspect = require('util').inspect;
 const dl = require('datalib');
+const fs = require('fs');
+const path = require('path');
 
-const validator = new zSchema();
+const validator = new ZSchema({
+  noEmptyArrays: true,
+  noEmptyStrings: true
+});
+
 const vlSchema = require('../src/schema/schema').schema,
   vgSchema = require('../node_modules/vega/vega-schema.json');
 
-function validateAgainstSchemas(vlspec, done?) {
-  var isVlValid = validator.validate(vlspec, vlSchema);
-  var errors;
-
+function validateAgainstSchemas(vlspec) {
+  const isVlValid = validator.validate(vlspec, vlSchema);
   if (!isVlValid) {
-    errors = validator.getLastErrors();
+    const errors = validator.getLastErrors();
     console.log(inspect(errors, { depth: 10, colors: true }));
   }
-  assert.deepEqual(isVlValid, true);
+  assert(isVlValid);
 
-  var vegaSpec = vl.compile(vlspec);
+  const vegaSpec = vl.compile(vlspec);
 
-  var isVgValid = validator.validate(vegaSpec, vgSchema);
-
+  const isVgValid = validator.validate(vegaSpec, vgSchema);
   if (!isVgValid) {
-    errors = validator.getLastErrors();
+    const errors = validator.getLastErrors();
     console.log(inspect(errors, { depth: 10, colors: true }));
   }
-  assert.deepEqual(isVgValid, true);
-
-  if (done) {
-    done();
-  }
+  assert(isVgValid);
 }
 
 function getExampleList(examples) {
@@ -43,19 +42,14 @@ function getExampleList(examples) {
 }
 
 describe('Examples', function() {
-  // TODO(will): read the list of files in the examples/specs directory
-  var VL_EXAMPLES = dl.json('examples/vl-examples.json');
-
-  var examples = getExampleList(VL_EXAMPLES).map(function(example) {
-    example.name = 'specs/' + example.name;
-    return example;
-  });
+  const examples = fs.readdirSync('examples/specs');
 
   examples.forEach(function(example) {
-    it('should be valid and produce valid vega for: ' + example.name, function(done) {
-      var jsonData = dl.load({url: 'examples/' + example.name + '.json'});
-      var data = dl.read(jsonData, {type: 'json', parse: 'auto'});
-      validateAgainstSchemas(data, done);
+    if (path.extname(example) != '.json') { return; }
+
+    it('should be valid and produce valid vega for: ' + example, function() {
+      const data = JSON.parse(fs.readFileSync('examples/specs/' + example));
+      validateAgainstSchemas(data);
     });
   });
 });

@@ -96,7 +96,7 @@ var typicalScaleMixin = {
       ],
       // FIXME this part might break polestar
       supportedTypes: toMap([QUANTITATIVE, TEMPORAL]),
-      description: ''
+      description: 'If specified, modifies the scale domain to use a more human-friendly value range.'
     },
 
     /* Quantitative Scale Properties */
