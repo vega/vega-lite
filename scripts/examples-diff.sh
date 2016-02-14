@@ -11,13 +11,13 @@ rm -f $diffdir/*
 # 2. Diff all examples
 changed=() # array for collecting changed examples
 FILES=('examples/*.json' 'examples/docs/*.json')
-for file in $dir; do
+for file in $FILES; do
   name=${file##*/} # filename only (no dir path)
   base=${name%.json} # exclude extension
   ext="${file##*.}"
-  if ["$ext" = "json" ] && [ "$name" != "vl-examples.json" ] && [ "$name" != "vl-docs-examples.json" ]; then
+  if [ "$ext" = "json" ] && [ "$name" != "vl-examples.json" ] && [ "$name" != "vl-docs-examples.json" ]; then
     # don't compile the list json
-
+    echo "... Diff for $name"
     diff=$(json-diff --color examples/_original/$name examples/_output/$name)
     if [ "$diff" != " undefined" ]; then
       echo "Diff for $name"
