@@ -228,6 +228,10 @@ export class Model {
     return this._spec.config;
   }
 
+  public sort(channel: Channel) {
+    return this._spec.encoding[channel].sort;
+  }
+
   public scale(channel: Channel): Scale {
     return this.fieldDef(channel).scale;
   }
