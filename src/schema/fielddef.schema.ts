@@ -1,4 +1,4 @@
-import {axis, Axis} from './axis.schema';
+import {axis, AxisProperties} from './axis.schema';
 import {bin, Bin} from './bin.schema';
 import {legend, LegendProperties} from './legend.schema';
 import {typicalScale, ordinalOnlyScale, Scale} from './scale.schema';
@@ -27,7 +27,6 @@ export interface FieldDef {
   aggregate?: string;
 
   // TODO: remove these one by one
-  axis?: Axis | boolean;
   scale?: Scale;
 
   // TODO: maybe extend this in other app?
@@ -85,7 +84,7 @@ const channelDefWithScale = mergeDeep(duplicate(fieldDef), {
 
 
 export interface PositionChannelDef extends ChannelDefWithScale {
-  axis?: Axis;
+  axis?: AxisProperties;
 }
 
 export const positionChannelDef = mergeDeep(duplicate(channelDefWithScale), {

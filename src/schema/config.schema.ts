@@ -1,7 +1,9 @@
 import {UnitConfig, unitConfig} from './config.unit.schema';
 import {CellConfig, cellConfig} from './config.cell.schema';
+import {FacetConfig, facetConfig} from './config.facet.schema';
 import {MarkConfig, markConfig} from './config.marks.schema';
 import {SceneConfig, sceneConfig} from './config.scene.schema';
+import {AxisConfig, axisConfig} from './axis.schema';
 import {LegendConfig, legendConfig} from './legend.schema';
 
 export interface Config {
@@ -17,9 +19,12 @@ export interface Config {
 
   scene?: SceneConfig;
   unit?: UnitConfig;
-  cell?: CellConfig;
   mark?: MarkConfig;
+  axis?: AxisConfig;
   legend?: LegendConfig;
+
+  facet?: FacetConfig;
+  cell?: CellConfig;
 }
 
 export const config = {
@@ -69,8 +74,11 @@ export const config = {
     // nested
     scene: sceneConfig,
     unit: unitConfig,
-    cell: cellConfig,
     mark: markConfig,
-    legend: legendConfig
+    axis: axisConfig,
+    legend: legendConfig,
+
+    facet: facetConfig,
+    cell: cellConfig,
   }
 };
