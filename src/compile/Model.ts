@@ -14,8 +14,8 @@ import {FieldRefOption} from '../fielddef';
 import * as vlEncoding from '../encoding';
 import {Mark, BAR, TICK, TEXT as TEXTMARK} from '../mark';
 
-import {getFullName, NOMINAL, ORDINAL, TEMPORAL, QUANTITATIVE} from '../type';
-import {contains, duplicate, extend} from '../util';
+import {getFullName, QUANTITATIVE} from '../type';
+import {duplicate, extend} from '../util';
 
 import {compileMarkConfig} from './config';
 import {compileStackProperties, StackProperties} from './stack';
@@ -209,10 +209,7 @@ export class Model {
     const fieldDef = this.fieldDef(channel);
     const scale = this.scale(channel);
 
-    return fieldDef && (
-      contains([NOMINAL, ORDINAL], fieldDef.type) ||
-      ( fieldDef.type === TEMPORAL && scaleType(scale, fieldDef, channel, this.mark()) === 'ordinal' )
-      );
+    return fieldDef && scaleType(scale, fieldDef, channel, this.mark()) === 'ordinal';
   }
 
   public isDimension(channel: Channel) {
