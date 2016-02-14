@@ -8,7 +8,7 @@ import {contains, extend} from '../util';
 import {Model} from './Model';
 import {SHARED_DOMAIN_OPS} from '../aggregate';
 import {COLUMN, ROW, X, Y, SHAPE, SIZE, COLOR, TEXT, hasScale, Channel} from '../channel';
-import {SOURCE, STACKED_SCALE} from '../data';
+import {SOURCE, STACKED_SCALE, LAYOUT} from '../data';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 import {Mark, BAR, TEXT as TEXT_MARK} from '../mark';
 import {rawDomain} from './time';
@@ -370,13 +370,9 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel, scaleT
     case X:
       // we can't use {range: "width"} here since we put scale in the root group
       // not inside the cell, so scale is reusable for axes group
-      return {rangeMin: 0, rangeMax: model.layout().cellWidth};
+      return {rangeMin: 0, rangeMax: model.config().unit.width};
     case Y:
-      // We can't use {range: "height"} here for the same reason
-      if (scaleType === 'ordinal') {
-        return {rangeMin: 0, rangeMax: model.layout().cellHeight};
-      }
-      return {rangeMin: model.layout().cellHeight, rangeMax: 0};
+      return {rangeMin: model.config().unit.width, rangeMax: 0};
     case SIZE:
       if (model.is(BAR)) {
         // TODO: determine bandSize for bin, which actually uses linear scale

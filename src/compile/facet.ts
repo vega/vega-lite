@@ -22,8 +22,8 @@ export function facetMixins(model: Model, marks) {
     util.error('Col encoding should be ordinal.');
   }
 
-  const cellWidth: any = getCellWidth(model);
-  const cellHeight: any = getCellHeight(model);
+  const cellWidth = getCellWidth(model);
+  const cellHeight = getCellHeight(model);
 
   return {
     marks: [].concat(
@@ -43,7 +43,6 @@ export function facetMixins(model: Model, marks) {
 }
 
 function getCellWidth(model: Model) {
-  const layout = model.layout();
   return !model.has(COLUMN) ?
       { // cellWidth = width -- use group's
         field: {group: 'width'},
@@ -52,13 +51,10 @@ function getCellWidth(model: Model) {
         // ordinal scale's padding since it is fraction.)
         offset: model.has(COLUMN) ? -model.scale(COLUMN).padding : undefined
       } :
-    typeof layout.cellWidth !== 'number' ?
-      {field: {parent: 'cellWidth'}} : // bandSize of the scale
-      {value: layout.cellWidth};      // static value
+    {field: {parent: 'cellWidth'}};
 }
 
 function getCellHeight(model: Model) {
-  const layout = model.layout();
   return !model.has(ROW) ?
       { // cellHeight = height -- use group's
         field: {group: 'height'},
@@ -67,9 +63,7 @@ function getCellHeight(model: Model) {
         // ordinal scale's padding since it is fraction.)
         offset: model.has(ROW) ? -model.scale(ROW).padding : undefined
       } :
-    typeof layout.cellHeight !== 'number' ?
-      {field: {parent: 'cellHeight'}} :  // bandSize of the scale
-      {value: layout.cellHeight};   // static value
+    {field: {parent: 'cellHeight'}};
 }
 
 function getCellAxes(model: Model) {

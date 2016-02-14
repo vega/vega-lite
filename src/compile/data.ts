@@ -266,7 +266,7 @@ export namespace layout {
       field: 'height',
       expr: isFacet ?
             facetScaleWidthFormula(model, ROW, 'datum.cellHeight') :
-            cellWidthFormula
+            cellHeightFormula
     }];
 
     return distinctSummary.length > 0 ? {
@@ -298,7 +298,7 @@ export namespace layout {
           model.field(channel, {datum: true, prefn: 'distinct_'});
   }
 
-  function scaleWidthFormula(model: Model, channel: Channel, nonOrdinalSize: number): string | number {
+  function scaleWidthFormula(model: Model, channel: Channel, nonOrdinalSize: number): string {
     if (model.has(channel)) {
       if (model.isOrdinalScale(channel)) {
         const scale = model.scale(channel);
@@ -306,14 +306,14 @@ export namespace layout {
                   ' + ' + scale.padding +
                ') * ' + scale.bandWidth;
       } else {
-        return nonOrdinalSize;
+        return nonOrdinalSize + '';
       }
     } else {
       if (model.mark() === TEXT_MARK && channel === X) {
         // for text table without x/y scale we need wider bandWidth
-        return 90; // TODO: config.scale.textBandWidth
+        return 90 + ''; // TODO: config.scale.textBandWidth
       }
-      return 21; // TODO: config.scale.bandWidth
+      return 21 + ''; // TODO: config.scale.bandWidth
     }
   }
 
@@ -326,7 +326,7 @@ export namespace layout {
       return '(' + innerWidth + ' + ' + scale.padding + ')' + ' * ' + cardinality;
     } else {
       // TODO: refer to facet scale config instead!
-      return innerWidth + ' + ' + scale.padding; // need to add outer padding for facet
+      return innerWidth + ' + ' + 16; // need to add outer padding for facet
     }
   }
 }
