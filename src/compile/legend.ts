@@ -15,16 +15,14 @@ export function compileLegends(model: Model) {
 
   if (model.has(COLOR) && model.legend(COLOR)) {
     const fieldDef = model.fieldDef(COLOR);
-    defs.push(compileLegend(model, COLOR, {
-      fill: (fieldDef.type === ORDINAL || fieldDef.bin || fieldDef.timeUnit) ?
-        // To produce ordinal legend (list, rather than linear range) with correct labels:
-        // - For an ordinal field, provide an ordinal scale that maps rank values to field values
-        // - For a field with bin or timeUnit, provide an identity ordinal scale
-        // (mapping the field values to themselves)
-        COLOR_LEGEND :
-        model.scaleName(COLOR)
-      // TODO: consider if this should be stroke for line
-    }));
+    const scale = specialScale(fieldDef) ?
+      // To produce ordinal legend (list, rather than linear range) with correct labels:
+      // - For an ordinal field, provide an ordinal scale that maps rank values to field values
+      // - For a field with bin or timeUnit, provide an identity ordinal scale
+      // (mapping the field values to themselves)
+      COLOR_LEGEND :
+      model.scaleName(COLOR);
+    defs.push(compileLegend(model, COLOR, model.config().mark.filled ? { fill: scale } : { stroke: scale }));
   }
 
   if (model.has(SIZE) && model.legend(SIZE)) {
@@ -92,6 +90,11 @@ export function formatMixins(legend: LegendProperties, model: Model, channel: Ch
   return utilFormatMixins(model, channel, typeof legend !== 'boolean' ? legend.format : undefined);
 }
 
+// we have to use special scales for ordinal or binned fields for the color channel
+export function specialScale(fieldDef: FieldDef) {
+  return fieldDef.type === ORDINAL || fieldDef.bin || fieldDef.timeUnit;
+}
+
 namespace properties {
   export function symbols(fieldDef: FieldDef, symbolsSpec, model: Model, channel: Channel) {
     let symbols:any = {};
@@ -105,40 +108,36 @@ namespace properties {
         break;
       case CIRCLE:
       case SQUARE:
-        /* tslint:disable:no-switch-case-fall-through */
-        symbols.shape = {value: mark};
-        /* tslint:enable:no-switch-case-fall-through */
-      case POINT:
+        symbols.shape = { value: mark };
         break;
+      case POINT:
       case LINE:
       case AREA:
+        // use default circle
         break;
     }
 
-    // fill or stroke
-    if (model.config().mark.filled) { // filled
-      // set stroke to transparent by default unless there is a config for stroke
-      symbols.stroke = { value: 'transparent' };
-      applyMarkConfig(symbols, model, FILL_STROKE_CONFIG);
+    applyMarkConfig(symbols, model, FILL_STROKE_CONFIG);
 
-      if (model.has(COLOR) && channel === COLOR) {
-        symbols.fill = { scale: model.scaleName(COLOR), field: 'data' };
-      } else if (model.fieldDef(COLOR).value) {
-        symbols.fill = { value: model.fieldDef(COLOR).value };
-      } else {
-        symbols.fill = { value: model.config().mark.color };
-      }
-    } else { // stroked
-      // set fill to transparent by default unless there is a config for stroke
-      symbols.fill = { value: 'transparent' };
-      applyMarkConfig(symbols, model, FILL_STROKE_CONFIG);
+    if (model.config().mark.filled) {
+      symbols.strokeWidth = { value: 0 };
+    }
 
-      if (model.has(COLOR) && channel === COLOR) {
-        symbols.stroke = { scale: model.scaleName(COLOR), field: 'data' };
-      } else if (model.fieldDef(COLOR).value) {
-        symbols.stroke = { value: model.fieldDef(COLOR).value };
+    let value;
+    if (model.has(COLOR) && channel === COLOR && specialScale(fieldDef)) {
+      value = { scale: model.scaleName(COLOR), field: 'data' };
+    } else if (model.fieldDef(COLOR).value) {
+      value = { value: model.fieldDef(COLOR).value };
+    } else if (channel !== COLOR) {
+      value = { value: model.config().mark.color };
+    }
+
+    if (value !== undefined) {
+      // apply the value
+      if (model.config().mark.filled) {
+        symbols.fill = value;
       } else {
-        symbols.stroke = { value: model.config().mark.color };
+        symbols.stroke = value;
       }
     }
 
