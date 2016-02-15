@@ -146,6 +146,10 @@ namespace properties {
       } else {
         symbols.stroke = value;
       }
+    } else {
+      // apply color config if there is no fill / stroke config
+      symbols[filled ? 'fill' : 'stroke'] = symbols[filled ? 'fill' : 'stroke'] ||
+        {value: model.config().mark.color};
     }
 
     symbols = extend(symbols, symbolsSpec || {});
