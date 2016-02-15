@@ -70,7 +70,7 @@ function mainScale(model: Model, fieldDef: FieldDef, channel: Channel) {
     // quantitative
     'exponent', 'zero',
     // ordinal
-    'outerPadding', 'padding', 'points'
+    'padding', 'points'
   ].forEach(function(property) {
     // TODO include fieldDef as part of the parameters
     const value = exports[property](scale, fieldDef, channel, scaleDef.type);
@@ -402,15 +402,6 @@ export function nice(scale: Scale, fieldDef: FieldDef, channel: Channel, scaleTy
     case ROW: /* fall through */
     case COLUMN:
       return true;
-  }
-  return undefined;
-}
-
-export function outerPadding(scale: Scale, fieldDef: FieldDef, channel: Channel, scaleType: string) {
-  if (scaleType === 'ordinal') {
-    if (scale.outerPadding !== undefined) {
-      return scale.outerPadding; // explicit value
-    }
   }
   return undefined;
 }

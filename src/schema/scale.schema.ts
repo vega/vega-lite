@@ -10,7 +10,6 @@ export interface Scale {
 
   // ordinal
   bandWidth?: number;
-  outerPadding?: number;
   padding?: number;
 
   // typical
@@ -61,11 +60,6 @@ var ordinalScaleMixin = {
       default: undefined
     },
     /* Ordinal Scale Properties */
-    outerPadding: {
-      type: 'number',
-      default: undefined
-      // TODO: add description once it is documented in Vega
-    },
     padding: {
       type: 'number',
       default: undefined,
