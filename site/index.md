@@ -1,10 +1,8 @@
 ---
-layout: page
+layout: home
+title: Vega-Lite
 permalink: /
 ---
-
-{:.hidden}
-# Vega-Lite
 
 {:.lead}
 **Vega-Lite** is a high-level visualization grammar.  It provides a concise JSON syntax for supporting rapid generation of visualizations to support analysis.  Vega-Lite specifications can be compiled to [Vega](http://vega.github.io/vega) specifications.

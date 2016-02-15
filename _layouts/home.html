@@ -1,0 +1,15 @@
+---
+layout: plain
+---
+
+<div class="showreel">
+	Hello World
+</div>
+
+<div class="page-centered page-content">
+  {% if page.title %}
+    <h1 class="hidden">{{page.title}}</h1>
+  {% endif %}
+
+  {{ content }}
+</div>
