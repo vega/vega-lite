@@ -120,6 +120,34 @@ describe('Mark: Point', function() {
       assert.deepEqual(props.size, {value: 23});
     });
   });
+
+  describe('with configs', function() {
+    it('should apply stroke config over color config', function() {
+      const model = parseModel({
+        "mark": "point",
+        "encoding": {
+          "x": {"field": "Horsepower","type": "quantitative"},
+          "y": {"field": "Miles_per_Gallon","type": "quantitative"}
+        },
+        "config": {"mark": {"color":"red", "stroke": "blue"}}
+      });
+      const props = point.properties(model);
+      assert.deepEqual(props.stroke, {value: "blue"});
+    });
+
+    it('should apply color config', function() {
+      const model = parseModel({
+        "mark": "point",
+        "encoding": {
+          "x": {"field": "Horsepower","type": "quantitative"},
+          "y": {"field": "Miles_per_Gallon","type": "quantitative"}
+        },
+        "config": {"mark": {"color":"red"}}
+      });
+      const props = point.properties(model);
+      assert.deepEqual(props.stroke, {value: "red"});
+    });
+  });
 });
 
 describe('Mark: Square', function() {
@@ -142,8 +170,8 @@ describe('Mark: Square', function() {
   it('should be filled by default', function() {
     const model = parseModel({
       "mark": "square",
-      "config": {
-        "mark": {"color": "blue"}
+      "encoding": {
+        "color": {"value": "blue"}
       }
     });
     const props = square.properties(model);
@@ -154,9 +182,11 @@ describe('Mark: Square', function() {
   it('should support config.mark.filled:false', function() {
     const model = parseModel({
       "mark": "square",
+      "encoding": {
+        "color": {"value": "blue"}
+      },
       "config" : {
         "mark" : {
-          "color": "blue",
           "filled" : false
         }
       }
@@ -176,8 +206,8 @@ describe('Mark: Circle', function() {
 
   const model = parseModel({
     "mark": "circle",
-    "config": {
-      "mark": {"color": "blue"}
+    "encoding": {
+      "color": {"value": "blue"}
     }
   });
   const props = circle.properties(model);
@@ -193,9 +223,11 @@ describe('Mark: Circle', function() {
   it('should support config.mark.filled:false', function() {
     const model = parseModel({
       "mark": "circle",
+      "encoding": {
+        "color": {"value": "blue"}
+      },
       "config" : {
         "mark" : {
-          "color": "blue",
           "filled" : false
         }
       }

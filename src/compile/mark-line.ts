@@ -1,6 +1,6 @@
 import {Model} from './Model';
 import {X, Y} from '../channel';
-import {applyColorAndOpacity, applyMarkConfig, ColorMode} from './util';
+import {applyColorAndOpacity, applyMarkConfig} from './util';
 
 
 export namespace line {
@@ -32,7 +32,7 @@ export namespace line {
       p.y = { field: { group: 'height' } };
     }
 
-    applyColorAndOpacity(p, model, ColorMode.ALWAYS_STROKED);
+    applyColorAndOpacity(p, model);
     applyMarkConfig(p, model, ['interpolate', 'tension']);
     return p;
   }
