@@ -2,13 +2,13 @@ import * as vlFieldDef from '../fielddef';
 import {extend, keys, vals, reduce} from '../util';
 import {Model} from './Model';
 import {FieldDef} from '../schema/fielddef.schema';
+import {VgData} from '../schema/vega.schema';
 import {StackProperties} from './stack';
 
 import {autoMaxBins} from '../bin';
-import {Channel, X, Y, ROW, COLUMN, COLOR} from '../channel';
-import {SOURCE, STACKED_SCALE, LAYOUT, SUMMARY} from '../data';
+import {Channel, ROW, COLUMN, COLOR} from '../channel';
+import {SOURCE, STACKED_SCALE, SUMMARY} from '../data';
 import {field} from '../fielddef';
-import {TEXT as TEXT_MARK} from '../mark';
 import {QUANTITATIVE, TEMPORAL, ORDINAL} from '../type';
 import {type as scaleType} from './scale';
 import {parseExpression, rawDomain} from './time';
@@ -43,12 +43,6 @@ export function compileData(model: Model): VgData[] {
   // append non-positive filter at the end for the data table
   filterNonPositiveForLog(def[def.length - 1], model);
 
-  // add stats for layout calculation
-  const layoutDef = layout.def(model);
-  if(layoutDef) {
-    def.push(layoutDef);
-  }
-
   // Stack
   const stackDef = model.stack();
   if (stackDef) {
@@ -58,16 +52,6 @@ export function compileData(model: Model): VgData[] {
   return def.concat(
     dates.defs(model) // Time domain tables
   );
-}
-
-// TODO: Consolidate all Vega interfaces
-interface VgData {
-  name: string;
-  source?: string;
-  values?: any;
-  format?: any;
-  url?: any;
-  transform?: any;
 }
 
 export namespace source {
@@ -220,116 +204,6 @@ export namespace source {
       transform.push(extend({type: 'formula'}, formula));
       return transform;
     }, []);
-  }
-}
-
-// TODO: move this to layout.ts
-export namespace layout {
-  export function def(model: Model): VgData {
-    /* Aggregation summary object for fields with ordinal scales
-     * that wee need to calculate cardinality for. */
-    const distinctSummary = [X, Y, ROW, COLUMN].reduce(function(summary, channel: Channel) {
-      if (model.has(channel) && model.isOrdinalScale(channel)) {
-        const scale = model.scale(channel);
-
-        if (!(scale.domain instanceof Array)) {
-          // if explicit domain is declared, use array length
-          summary.push({
-            field: model.field(channel),
-            ops: ['distinct']
-          });
-        }
-      }
-      return summary;
-    }, []);
-
-
-    // TODO: handle "fit" mode
-    const cellWidthFormula = scaleWidthFormula(model, X, model.config().unit.width);
-    const cellHeightFormula = scaleWidthFormula(model, Y, model.config().unit.height);
-    const isFacet =  model.has(COLUMN) || model.has(ROW);
-
-    const formulas = [{
-      type: 'formula',
-      field: 'cellWidth',
-      expr: cellWidthFormula
-    },{
-      type: 'formula',
-      field: 'cellHeight',
-      expr: cellHeightFormula
-    },{
-      type: 'formula',
-      field: 'width',
-      expr: isFacet ?
-            facetScaleWidthFormula(model, COLUMN, 'datum.cellWidth') :
-            cellWidthFormula
-    },{
-      type: 'formula',
-      field: 'height',
-      expr: isFacet ?
-            facetScaleWidthFormula(model, ROW, 'datum.cellHeight') :
-            cellHeightFormula
-    }];
-
-    return distinctSummary.length > 0 ? {
-      name: LAYOUT,
-      source: model.dataTable(),
-      transform: [].concat(
-        [{
-          type: 'aggregate',
-          summarize: distinctSummary
-        }],
-        formulas)
-    } : {
-      name: LAYOUT,
-      values: [{}],
-      transform: formulas
-    };
-  }
-
-  function cardinalityFormula(model: Model, channel: Channel) {
-    const scale = model.scale(channel);
-    if (scale.domain instanceof Array) {
-      return scale.domain.length;
-    }
-
-    const timeUnit = model.fieldDef(channel).timeUnit;
-    const timeUnitDomain = timeUnit ? rawDomain(timeUnit, channel) : null;
-
-    return timeUnitDomain !== null ? timeUnitDomain.length :
-          model.field(channel, {datum: true, prefn: 'distinct_'});
-  }
-
-  function scaleWidthFormula(model: Model, channel: Channel, nonOrdinalSize: number): string {
-    if (model.has(channel)) {
-      if (model.isOrdinalScale(channel)) {
-        const scale = model.scale(channel);
-        return '(' + cardinalityFormula(model, channel) +
-                  ' + ' + scale.padding +
-               ') * ' + scale.bandWidth;
-      } else {
-        return nonOrdinalSize + '';
-      }
-    } else {
-      if (model.mark() === TEXT_MARK && channel === X) {
-        // for text table without x/y scale we need wider bandWidth
-        return 90 + ''; // TODO: config.scale.textBandWidth
-      }
-      return 21 + ''; // TODO: config.scale.bandWidth
-    }
-  }
-
-  function facetScaleWidthFormula(model: Model, channel: Channel, innerWidth: string) {
-    const scale = model.scale(channel);
-    if (model.has(channel)) {
-      const cardinality = scale.domain instanceof Array ? scale.domain.length :
-                               model.field(channel, {datum: true, prefn: 'distinct_'});
-
-      return '(' + innerWidth + ' + ' + scale.padding + ')' + ' * ' + cardinality;
-    } else {
-      // TODO: refer to facet scale config instead!
-      return innerWidth + ' + ' + 16; // need to add outer padding for facet
-    }
   }
 }
 

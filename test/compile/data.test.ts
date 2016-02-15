@@ -7,7 +7,7 @@ import {mergeDeep} from '../../src/schema/schemautil';
 
 describe('Data', function () {
   describe('for aggregate encoding', function () {
-    it('should contain 3 tables', function() {
+    it('should contain 2 tables', function() {
       const model = parseModel({
           mark: "point",
           encoding: {
@@ -17,7 +17,7 @@ describe('Data', function () {
         });
 
       const data = compileData(model);
-      assert.equal(data.length, 3);
+      assert.equal(data.length, 2);
     });
   });
 
@@ -31,8 +31,8 @@ describe('Data', function () {
       });
 
     const data = compileData(model);
-    it('should contains 2 table', function() {
-      assert.equal(data.length, 2);
+    it('should contains 1 table', function() {
+      assert.equal(data.length, 1);
     });
     it('should have filter non-positive in source', function() {
       const sourceTransform = data[0].transform;
