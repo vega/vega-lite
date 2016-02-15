@@ -307,71 +307,6 @@ function _useRawDomain (scale: Scale, model: Model, channel: Channel, scaleType:
     );
 }
 
-export function bandWidth(scale: Scale, fieldDef: FieldDef, channel: Channel, scaleType: string) {
-  if (scaleType === 'ordinal') {
-    return scale.bandWidth;
-  }
-  return undefined;
-}
-
-export function clamp(scale: Scale) {
-  // only return value if explicit value is specified.
-  return scale.clamp;
-}
-
-export function exponent(scale: Scale) {
-  // only return value if explicit value is specified.
-  return scale.exponent;
-}
-
-export function nice(scale: Scale, fieldDef: FieldDef, channel: Channel, scaleType: string) {
-  if (scale.nice !== undefined) {
-    // explicit value
-    return scale.nice;
-  }
-
-  switch (channel) {
-    case X: /* fall through */
-    case Y:
-      if (scaleType === 'time' || scaleType === 'ordinal') {
-        return undefined;
-      }
-      return true;
-
-    case ROW: /* fall through */
-    case COLUMN:
-      return true;
-  }
-  return undefined;
-}
-
-export function outerPadding(scale: Scale, fieldDef: FieldDef, channel: Channel, scaleType: string) {
-  if (scaleType === 'ordinal') {
-    if (scale.outerPadding !== undefined) {
-      return scale.outerPadding; // explicit value
-    }
-  }
-  return undefined;
-}
-
-export function padding(scale: Scale, fieldDef: FieldDef, channel: Channel, scaleType: string) {
-  if (scaleType === 'ordinal' && channel !== ROW && channel !== COLUMN) {
-    return scale.padding;
-  }
-  return undefined;
-}
-
-export function points(scale: Scale, fieldDef: FieldDef, channel: Channel, scaleType: string) {
-  if (scaleType === 'ordinal') {
-    switch (channel) {
-      case X:
-      case Y:
-        return true;
-    }
-  }
-  return undefined;
-}
-
 
 export function rangeMixins(scale: Scale, model: Model, channel: Channel, scaleType: string): any {
   var fieldDef = model.fieldDef(channel);
@@ -432,6 +367,70 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel, scaleT
       return {range: 'width'};
   }
   return {};
+}
+
+export function clamp(scale: Scale) {
+  // TODO: check scale type as well
+
+  // only return value if explicit value is specified.
+  return scale.clamp;
+}
+
+export function exponent(scale: Scale) {
+  // TODO: check scale type as well
+
+  // only return value if explicit value is specified.
+  return scale.exponent;
+}
+
+export function nice(scale: Scale, fieldDef: FieldDef, channel: Channel, scaleType: string) {
+  // TODO: check scale type up here
+
+  if (scale.nice !== undefined) {
+    // explicit value
+    return scale.nice;
+  }
+
+  switch (channel) {
+    case X: /* fall through */
+    case Y:
+      if (scaleType === 'time' || scaleType === 'ordinal') {
+        return undefined;
+      }
+      return true;
+
+    case ROW: /* fall through */
+    case COLUMN:
+      return true;
+  }
+  return undefined;
+}
+
+export function outerPadding(scale: Scale, fieldDef: FieldDef, channel: Channel, scaleType: string) {
+  if (scaleType === 'ordinal') {
+    if (scale.outerPadding !== undefined) {
+      return scale.outerPadding; // explicit value
+    }
+  }
+  return undefined;
+}
+
+export function padding(scale: Scale, fieldDef: FieldDef, channel: Channel, scaleType: string) {
+  if (scaleType === 'ordinal' && channel !== ROW && channel !== COLUMN) {
+    return scale.padding;
+  }
+  return undefined;
+}
+
+export function points(scale: Scale, fieldDef: FieldDef, channel: Channel, scaleType: string) {
+  if (scaleType === 'ordinal') {
+    switch (channel) {
+      case X:
+      case Y:
+        return true;
+    }
+  }
+  return undefined;
 }
 
 export function round(scale: Scale, fieldDef: FieldDef, channel: Channel) {
