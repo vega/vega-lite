@@ -316,7 +316,8 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel, scaleT
     return {bandWidth: scale.bandWidth};
   }
 
-  if (scale.range) { // explicit value
+  if (scale.range && !contains([X, Y, ROW, COLUMN], channel)) {
+    // explicit value (Do not allow explicit values for X, Y, ROW, COLUMN)
     return {range: scale.range};
   }
 
