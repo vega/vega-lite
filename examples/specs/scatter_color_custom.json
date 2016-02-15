@@ -1,0 +1,12 @@
+{
+  "data": {"url": "data/cars.json"},
+  "mark": "point",
+  "encoding": {
+    "x": {"field": "Horsepower", "type": "quantitative"},
+    "y": {"field": "Miles_per_Gallon", "type": "quantitative"},
+    "color": {
+      "field": "Origin", "type": "nominal",
+      "scale": {"range": ["purple", "#ff0000", "teal"]}
+    }
+  }
+}

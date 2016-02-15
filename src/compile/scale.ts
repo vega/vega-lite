@@ -337,11 +337,10 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel, scaleT
       };
     case SIZE:
       if (model.is(BAR)) {
-        // TODO: determine bandSize for bin, which actually uses linear scale
         const dimension = model.config().mark.orient === 'horizontal' ? Y : X;
-        return {range: [2, model.scale(dimension).bandWidth]};
+        return {range: [2 /* TODO: config.mark.thinBarWidth*/ , model.scale(dimension).bandWidth]};
       } else if (model.is(TEXT_MARK)) {
-        return {range: [8, 40]};
+        return {range: [8, 40]}; /* TODO: config.scale.rangeFontSize */
       }
       // else -- point, square, circle
       const xIsMeasure = model.isMeasure(X);
@@ -354,7 +353,7 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel, scaleT
           model.scale(Y).bandWidth || 21 /* config.scale.bandWidth */
         );
 
-      return {range: [10, (bandWidth - 2) * (bandWidth - 2)]};
+      return {range: [9, (bandWidth - 2) * (bandWidth - 2)]};
     case SHAPE:
       return {range: 'shapes'};
     case COLOR:
