@@ -112,11 +112,11 @@
       "title": "Table Heatmap"
     },
     {
-      "name": "ordinal_color",
+      "name": "point_ordinal_color",
       "title": "Ordinal color scale"
     },
     {
-      "name": "timeunit_color",
+      "name": "point_timeunit_color",
       "title": "Color scale with time unit"
     }
   ],
