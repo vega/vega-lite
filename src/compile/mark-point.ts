@@ -1,6 +1,6 @@
 import {Model} from './Model';
 import {X, Y, SHAPE, SIZE} from '../channel';
-import {applyColorAndOpacity, ColorMode} from './util';
+import {applyColorAndOpacity} from './util';
 
 export namespace point {
   export function markType() {
@@ -55,10 +55,7 @@ export namespace point {
       p.shape = { value: model.config().mark.shape };
     }
 
-    applyColorAndOpacity(p, model,
-      // square and circle are filled by default, but point is stroked by default.
-      fixedShape ? ColorMode.FILLED_BY_DEFAULT : ColorMode.STROKED_BY_DEFAULT
-    );
+    applyColorAndOpacity(p, model);
     return p;
   }
 

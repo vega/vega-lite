@@ -6,52 +6,39 @@ import {QUANTITATIVE, ORDINAL, TEMPORAL} from '../type';
 import {format as timeFormatExpr} from './time';
 import {contains} from '../util';
 
-export enum ColorMode {
-  ALWAYS_FILLED,
-  ALWAYS_STROKED,
-  FILLED_BY_DEFAULT,
-  STROKED_BY_DEFAULT
-}
-
 export const FILL_STROKE_CONFIG = ['fill', 'fillOpacity',
   'stroke', 'strokeWidth', 'strokeDash', 'strokeDashOffset', 'strokeOpacity',
   'opacity'];
 
-export function applyColorAndOpacity(p, model: Model, colorMode: ColorMode = ColorMode.STROKED_BY_DEFAULT) {
-  const filled = colorMode === ColorMode.ALWAYS_FILLED ? true :
-    colorMode === ColorMode.ALWAYS_STROKED ? false :
-      model.config().mark.filled !== undefined ? model.config().mark.filled :
-        colorMode === ColorMode.FILLED_BY_DEFAULT ? true :
-          false; // ColorMode.STROKED_BY_DEFAULT
-
+export function applyColorAndOpacity(p, model: Model) {
+  const filled = model.config().mark.filled;
   const fieldDef = model.fieldDef(COLOR);
-  if (filled) {
-    if (model.has(COLOR)) {
-      p.fill = {
-        scale: model.scaleName(COLOR),
-        field: model.field(COLOR, fieldDef.type === ORDINAL ? {prefn: 'rank_'} : {})
-      };
-    } else if (fieldDef.value) {
-      p.fill = { value: fieldDef.value };
-    } else {
-      p.fill = { value: model.config().mark.color };
-    }
-  } else {
-    if (model.has(COLOR)) {
-      p.stroke = {
-        scale: model.scaleName(COLOR),
-        field: model.field(COLOR, fieldDef.type === ORDINAL ? {prefn: 'rank_'} : {})
-      };
-    } else if (fieldDef.value) {
-      p.stroke = { value: fieldDef.value };
-    } else {
-      p.stroke = { value: model.config().mark.color };
-    }
+
+  // Apply fill stroke config first so that color field / value can override
+  // fill / stroke
+  applyMarkConfig(p, model, FILL_STROKE_CONFIG);
+
+  let value;
+  if (model.has(COLOR)) {
+    value = {
+      scale: model.scaleName(COLOR),
+      field: model.field(COLOR, fieldDef.type === ORDINAL ? {prefn: 'rank_'} : {})
+    };
+  } else if (fieldDef.value) {
+    value = { value: fieldDef.value };
   }
 
-  // Apply fill and stroke config later
-  // `fill` and `stroke` config can override `color` config
-  applyMarkConfig(p, model, FILL_STROKE_CONFIG);
+  if (value !== undefined) {
+    if (filled) {
+      p.fill = value;
+    } else {
+      p.stroke = value;
+    }
+  } else {
+    // apply color config if there is no fill / stroke config
+    p[filled ? 'fill' : 'stroke'] = p[filled ? 'fill' : 'stroke'] ||
+      {value: model.config().mark.color};
+  }
 }
 
 export function applyMarkConfig(marksProperties, model: Model, propsList: string[]) {
