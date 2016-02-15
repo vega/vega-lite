@@ -1,8 +1,4 @@
 export interface CellConfig {
-  gridColor?: string;
-  gridOpacity?: number;
-  gridOffset?: number;
-
   fill?: string;
   fillOpacity?: number;
   stroke?: string;
@@ -21,22 +17,6 @@ export const defaultCellConfig: CellConfig = {
 export const cellConfig = {
   type: 'object',
   properties: {
-    gridColor: {
-      type: 'string',
-      format: 'color',
-      default: '#000000'
-    },
-    gridOpacity: {
-      type: 'number',
-      minimum: 0,
-      maximum: 1,
-      default: 0.4
-    },
-    gridOffset: {
-      type: 'number',
-      default: 0
-    },
-
     // Group properties
     clip: {
       type: 'boolean',
