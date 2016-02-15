@@ -119,15 +119,15 @@ namespace properties {
 
     const filled = model.config().mark.filled;
 
-    if (filled) {
-      symbols.strokeWidth = { value: 0 };
-    }
-
     applyMarkConfig(symbols, model,
       // Do not set fill (when filled) or stroke (when unfilled) property from config
       // because the value from the scale should have precedence
       without(FILL_STROKE_CONFIG, [ filled ? 'fill' : 'stroke'])
     );
+
+    if (filled) {
+      symbols.strokeWidth = { value: 0 };
+    }
 
     let value;
     if (model.has(COLOR) && channel === COLOR) {
@@ -146,8 +146,9 @@ namespace properties {
       } else {
         symbols.stroke = value;
       }
-    } else {
-      // apply color config if there is no fill / stroke config
+    } else if (channel !== COLOR) {
+      // For non-color legend, apply color config if there is no fill / stroke config.
+      // (For color, do not override scale specified!)
       symbols[filled ? 'fill' : 'stroke'] = symbols[filled ? 'fill' : 'stroke'] ||
         {value: model.config().mark.color};
     }
