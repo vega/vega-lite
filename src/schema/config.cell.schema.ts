@@ -12,6 +12,12 @@ export interface CellConfig {
   strokeDashOffset?: number;
 }
 
+export const defaultCellConfig: CellConfig = {
+  fill: 'rgba(0,0,0,0)',
+  stroke: '#ccc',
+  strokeWidth: 1
+};
+
 export const cellConfig = {
   type: 'object',
   properties: {
@@ -37,27 +43,23 @@ export const cellConfig = {
     },
     fill: {
       type: 'string',
-      format: 'color',
-      default: 'rgba(0,0,0,0)'
+      format: 'color'
     },
     fillOpacity: {
       type: 'number',
     },
     stroke: {
       type: 'string',
-      format: 'color',
-      default: '#ccc'
+      format: 'color'
     },
     strokeWidth: {
-      type: 'integer',
-      default: 1
+      type: 'integer'
     },
     strokeOpacity: {
       type: 'number'
     },
     strokeDash: {
       type: 'array',
-      default: undefined
     },
     strokeDashOffset: {
       type: 'integer',

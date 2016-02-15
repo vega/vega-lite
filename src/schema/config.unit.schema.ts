@@ -3,16 +3,19 @@ export interface UnitConfig {
   height?: number;
 }
 
+export const defaultUnitConfig: UnitConfig = {
+  width: 200,
+  height: 200
+};
+
 export const unitConfig = {
   type: 'object',
   properties: {
     width: {
-      type: 'integer',
-      default: 200
+      type: 'integer'
     },
     height: {
-      type: 'integer',
-      default: 200
+      type: 'integer'
     }
   }
 };

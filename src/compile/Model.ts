@@ -1,9 +1,10 @@
 import {Spec} from '../schema/schema';
-import {AxisProperties, defaultAxisConfig, defaultFacetAxisConfig} from '../schema/axis.schema';
-import {LegendProperties, defaultLegendConfig} from '../schema/legend.schema';
+import {AxisProperties} from '../schema/axis.schema';
+import {LegendProperties} from '../schema/legend.schema';
 import {Scale} from '../schema/scale.schema';
 import {Encoding} from '../schema/encoding.schema';
 import {FieldDef} from '../schema/fielddef.schema';
+import {defaultConfig} from '../schema/config.schema';
 import * as schema from '../schema/schema';
 import * as schemaUtil from '../schema/schemautil';
 
@@ -42,6 +43,9 @@ export class Model {
   };
 
   constructor(spec: Spec) {
+    spec.config = schemaUtil.mergeDeep(duplicate(defaultConfig), spec.config);
+
+    // TODO: remove
     var defaults = schema.instantiate();
     this._spec = schemaUtil.mergeDeep(defaults, spec);
 
@@ -98,7 +102,6 @@ export class Model {
         const channelAxis = encoding[channel].axis;
         if (channelAxis !== false) {
           _axis[channel] = extend({},
-            channel === X || channel === Y ? defaultAxisConfig : defaultFacetAxisConfig,
             channel === X || channel === Y ? config.axis : config.facet.axis,
             channelAxis === true ? {} : channelAxis ||  {}
           );
@@ -112,7 +115,7 @@ export class Model {
       if (vlEncoding.has(encoding, channel)) {
         const channelLegend = encoding[channel].legend;
         if (channelLegend !== false) {
-          _legend[channel] = extend({}, defaultLegendConfig, config.legend,
+          _legend[channel] = extend({}, config.legend,
             channelLegend === true ? {} : channelLegend ||  {}
           );
         }

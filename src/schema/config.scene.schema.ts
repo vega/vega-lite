@@ -8,6 +8,8 @@ export interface SceneConfig {
   strokeDashOffset?: number;
 }
 
+export const defaultSceneConfig: SceneConfig = {};
+
 export const sceneConfig = {
   type: 'object',
   properties: {
