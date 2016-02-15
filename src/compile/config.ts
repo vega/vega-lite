@@ -4,7 +4,7 @@ import {StackProperties} from './stack';
 import {X, Y, DETAIL} from '../channel';
 import {isAggregate, has} from '../encoding';
 import {isMeasure} from '../fielddef';
-import {POINT, TICK, CIRCLE, SQUARE} from '../mark';
+import {POINT, LINE, TICK, CIRCLE, SQUARE} from '../mark';
 import {contains, extend} from '../util';
 
 /**
@@ -17,8 +17,8 @@ export function compileMarkConfig(spec: Spec, stack: StackProperties) {
        switch (property) {
          case 'filled':
            if (value === undefined) {
-             // only point is not filled by default
-             cfg[property] = spec.mark !== POINT;
+             // Point and line are not filled by default
+             cfg[property] = spec.mark !== POINT && spec.mark !== LINE;
            }
            break;
          case 'opacity':

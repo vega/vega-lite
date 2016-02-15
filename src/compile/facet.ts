@@ -3,30 +3,100 @@ import {extend} from '../util';
 import {COLUMN, ROW, X, Y} from '../channel';
 import {Model} from './Model';
 
-import {compileAxis} from './axis';
+import {compileAxis, compileInnerAxis, gridShow} from './axis';
 import {compileScales} from './scale';
 
 /**
  * return mixins that contains marks, scales, and axes for the rootGroup
  */
 export function facetMixins(model: Model, marks) {
-  const layout = model.layout();
+  const hasRow = model.has(ROW), hasCol = model.has(COLUMN);
+
+  if (model.has(ROW) && !model.isDimension(ROW)) {
+    // TODO: add error to model instead
+    util.error('Row encoding should be ordinal.');
+  }
+
+  if (model.has(COLUMN) && !model.isDimension(COLUMN)) {
+    // TODO: add error to model instead
+    util.error('Col encoding should be ordinal.');
+  }
+
+  return {
+    marks: [].concat(
+      getFacetGuideGroups(model),
+      [getFacetGroup(model, marks)]
+    ),
+    // assuming equal cellWidth here
+    scales: compileScales(
+      model.channels(), // TODO: with nesting, not all scale might be a root-level
+      model
+    ),
+    axes: [].concat(
+      hasRow && model.axis(ROW) ? [compileAxis(ROW, model)] : [],
+      hasCol && model.axis(COLUMN) ? [compileAxis(COLUMN, model)] : []
+    )
+  };
+}
+
+function getCellAxes(model: Model) {
+  const cellAxes = [];
+  if (model.has(X) && model.axis(X) && gridShow(model, X)) {
+    cellAxes.push(compileInnerAxis(X, model));
+  }
+  if (model.has(Y) && model.axis(Y) && gridShow(model, Y)) {
+    cellAxes.push(compileInnerAxis(Y, model));
+  }
+  return cellAxes;
+}
+
+function getFacetGroup(model: Model, marks) {
+  const name = model.spec().name;
+  let facetGroup: any = {
+    name: (name ? name + '-' : '') + 'cell',
+    type: 'group',
+    from: {
+      data: model.dataTable(),
+      transform: [{
+        type: 'facet',
+        groupby: [].concat(
+          model.has(ROW) ? [model.field(ROW)] : [],
+          model.has(COLUMN) ? [model.field(COLUMN)] : []
+        )
+      }]
+    },
+    properties: {
+      update: getFacetGroupProperties(model)
+    },
+    marks: marks
+  };
+
+  const cellAxes = getCellAxes(model);
+  if (cellAxes.length > 0) {
+    facetGroup.axes = cellAxes;
+  }
+  return facetGroup;
+}
+
+function getFacetGroupProperties(model: Model) {
   const cellConfig = model.config().cell;
-  const cellWidth: any = !model.has(COLUMN) ?
-      {field: {group: 'width'}} :     // cellWidth = width -- just use group's
-    typeof layout.cellWidth !== 'number' ?
-      {scale: model.scaleName(COLUMN), band: true} : // bandSize of the scale
-      {value: layout.cellWidth};      // static value
-
-  const cellHeight: any = !model.has(ROW) ?
-      {field: {group: 'height'}} :  // cellHeight = height -- just use group's
-    typeof layout.cellHeight !== 'number' ?
-      {scale: model.scaleName(ROW), band: true} :  // bandSize of the scale
-      {value: layout.cellHeight};   // static value
-
   let facetGroupProperties: any = {
-    width: cellWidth,
-    height: cellHeight
+    x: model.has(COLUMN) ? {
+        scale: model.scaleName(COLUMN),
+        field: model.field(COLUMN),
+        // offset by the padding
+        offset: model.fieldDef(COLUMN).scale.padding / 2
+      } : {value: 16 /* TODO config.facet.scale.padding */ / 2},
+
+    y: model.has(ROW) ? {
+      scale: model.scaleName(ROW),
+      field: model.field(ROW),
+      // offset by the padding
+      offset: model.fieldDef(ROW).scale.padding / 2
+    } : {value: 16 /* TODO config.facet.scale.padding */ / 2},
+
+    width: {field: {parent: 'cellWidth'}},
+    height: {field: {parent: 'cellHeight'}}
   };
 
   // add configs that are the resulting group marks properties
@@ -39,103 +109,51 @@ export function facetMixins(model: Model, marks) {
       }
     });
 
-  let rootMarks = [], rootAxes = [], facetKeys = [], cellAxes = [];
-  const hasRow = model.has(ROW), hasCol = model.has(COLUMN);
-
-  // TODO(#90): add property to keep axes in cells even if row is encoded
-  if (hasRow) {
-    if (!model.isDimension(ROW)) {
-      // TODO: add error to model instead
-      util.error('Row encoding should be ordinal.');
-    }
-    facetGroupProperties.y = {
-      scale: model.scaleName(ROW),
-      field: model.field(ROW),
-      offset: model.fieldDef(ROW).scale.padding / 2
-    };
-
-    facetKeys.push(model.field(ROW));
-    rootAxes.push(compileAxis(ROW, model));
-    if (model.has(X)) {
-      // If has X, prepend a group for shared x-axes in the root group's marks
-      rootMarks.push(getXAxesGroup(model, cellWidth, hasCol));
-    }
-    const rowAxis = model.fieldDef(ROW).axis;
-    if (typeof rowAxis === 'boolean' || rowAxis.grid !== false) {
-      rootMarks.push(getRowGridGroup(model, cellHeight));
-    }
-  } else { // doesn't have row
-    if (model.has(X) && model.fieldDef(X).axis) { // keep x axis in the cell
-      cellAxes.push(compileAxis(X, model));
-    }
-  }
-
-  // TODO(#90): add property to keep axes in cells even if column is encoded
-  if (hasCol) {
-    if (!model.isDimension(COLUMN)) {
-      // TODO: add error to model instead
-      util.error('Col encoding should be ordinal.');
-    }
-    facetGroupProperties.x = {
-      scale: model.scaleName(COLUMN),
-      field: model.field(COLUMN),
-      offset: model.fieldDef(COLUMN).scale.padding / 2
-    };
-
-    facetKeys.push(model.field(COLUMN));
-    rootAxes.push(compileAxis(COLUMN, model));
-
-    if (model.has(Y)) {
-      // If has Y, prepend a group for shared y-axes in the root group's marks
-      rootMarks.push(getYAxesGroup(model, cellHeight, hasRow));
-    }
-
-    const colAxis = model.fieldDef(COLUMN).axis;
-    if (typeof colAxis === 'boolean' || colAxis.grid !== false) {
-      rootMarks.push(getColumnGridGroup(model, cellWidth));
-    }
-  } else { // doesn't have column
-    if (model.has(Y) && model.fieldDef(Y).axis) { // keep y axis in the cell
-      cellAxes.push(compileAxis(Y, model));
-    }
-  }
-  const name = model.spec().name;
-  let facetGroup: any = {
-    name: (name ? name + '-' : '') + 'cell',
-    type: 'group',
-    from: {
-      data: model.dataTable(),
-      transform: [{type: 'facet', groupby: facetKeys}]
-    },
-    properties: {
-      update: facetGroupProperties
-    },
-    marks: marks
-  };
-  if (cellAxes.length > 0) {
-    facetGroup.axes = cellAxes;
-  }
-  rootMarks.push(facetGroup);
-
-  return {
-    marks: rootMarks,
-    axes: rootAxes,
-    // assuming equal cellWidth here
-    scales: compileScales(
-      model.channels(), // TODO: with nesting, not all scale might be a root-level
-      model
-    )
-  };
+  return facetGroupProperties;
 }
 
-function getXAxesGroup(model: Model, cellWidth, hasCol: boolean) { // TODO: VgMarks
+/**
+ * Return groups of axes or manually drawn grids.
+ */
+function getFacetGuideGroups(model: Model) {
+  let rootAxesGroups = [] ;
+
+  if (model.has(X)) {
+    if (model.axis(X)) {
+      rootAxesGroups.push(getXAxesGroup(model));
+    }
+  } else {
+    // TODO: consider if row has axis and if row's axis.grid is true
+    if (model.has(ROW)) {
+      // manually draw grid (use apply to push all members of an array)
+      rootAxesGroups.push.apply(rootAxesGroups, getRowGridGroups(model));
+    }
+  }
+  if (model.has(Y)) {
+    if (model.axis(Y)) {
+      rootAxesGroups.push(getYAxesGroup(model));
+    }
+  } else {
+    // TODO: consider if column has axis and if column's axis.grid is true
+    if (model.has(COLUMN)) {
+      // manually draw grid (use apply to push all members of an array)
+      rootAxesGroups.push.apply(rootAxesGroups, getColumnGridGroups(model));
+    }
+  }
+
+  return rootAxesGroups;
+}
+
+function getXAxesGroup(model: Model) { // TODO: VgMarks
+  const hasCol = model.has(COLUMN);
   const name = model.spec().name;
-  return extend({
+  return extend(
+    {
       name: (name ? name + '-' : '') + 'x-axes',
       type: 'group'
     },
     hasCol ? {
-      from: {
+      from: { // TODO: if we do facet transform at the parent level we can same some transform here
         data: model.dataTable(),
         transform: [{
           type: 'aggregate',
@@ -147,21 +165,33 @@ function getXAxesGroup(model: Model, cellWidth, hasCol: boolean) { // TODO: VgMa
     {
       properties: {
         update: {
-          width: cellWidth,
-          height: {field: {group: 'height'}},
-          x: hasCol ? {scale: model.scaleName(COLUMN), field: model.field(COLUMN)} : {value: 0}
+          width: {field: {parent: 'cellWidth'}},
+          height: {
+            field: {group: 'height'}
+          },
+          x: hasCol ? {
+            scale: model.scaleName(COLUMN),
+            field: model.field(COLUMN),
+            // offset by the padding
+            offset: model.fieldDef(COLUMN).scale.padding / 2
+          } : {
+            // offset by the padding
+            value: 16 /* TODO: config.facet.scale.padding */ / 2
+          }
         }
       }
     },
-    model.fieldDef(X).axis ? {
+    model.axis(X) ? {
       axes: [compileAxis(X, model)]
     }: {}
   );
 }
 
-function getYAxesGroup(model: Model, cellHeight, hasRow: boolean) { // TODO: VgMarks
+function getYAxesGroup(model: Model) { // TODO: VgMarks
+  const hasRow = model.has(ROW);
   const name = model.spec().name;
-  return extend({
+  return extend(
+    {
       name: (name ? name + '-' : '') + 'y-axes',
       type: 'group'
     },
@@ -178,19 +208,29 @@ function getYAxesGroup(model: Model, cellHeight, hasRow: boolean) { // TODO: VgM
     {
       properties: {
         update: {
-          width: {field: {group: 'width'}},
-          height: cellHeight,
-          y: hasRow ? {scale: model.scaleName(ROW), field: model.field(ROW)} : {value: 0}
+          width: {
+            field: {group: 'width'}
+          },
+          height: {field: {parent: 'cellHeight'}},
+          y: hasRow ? {
+            scale: model.scaleName(ROW),
+            field: model.field(ROW),
+            // offset by the padding
+            offset: model.fieldDef(ROW).scale.padding / 2
+          } : {
+            // offset by the padding
+            value: 16 /* TODO: config.facet.scale.padding */  / 2
+          }
         }
       },
     },
-    model.fieldDef(Y).axis ? {
+    model.axis(Y) ? {
       axes: [compileAxis(Y, model)]
     }: {}
   );
 }
 
-function getRowGridGroup(model: Model, cellHeight): any { // TODO: VgMarks
+function getRowGridGroups(model: Model): any[] { // TODO: VgMarks
   const name = model.spec().name;
   const cellConfig = model.config().cell;
 
@@ -210,39 +250,29 @@ function getRowGridGroup(model: Model, cellHeight): any { // TODO: VgMarks
         x: {value: 0, offset: -cellConfig.gridOffset },
         x2: {field: {group: 'width'}, offset: cellConfig.gridOffset },
         stroke: { value: cellConfig.gridColor },
-        strokeOpacity: { value: cellConfig.gridOpacity }
+        strokeOpacity: { value: cellConfig.gridOpacity },
+        strokeWidth: {value: 0.5}
       }
     }
   };
 
-  const rowGridOnTop = !model.has(X) || model.axis(X).orient !== 'top';
-  if (rowGridOnTop) { // on top - no need to add offset
-    return rowGrid;
-  } // otherwise, need to offset all grid by cellHeight
-  return {
-    name: (name ? name + '-' : '') + 'row-grid-group',
-    type: 'group',
+  return [rowGrid, {
+    name: (name ? name + '-' : '') + 'row-grid-end',
+    type: 'rule',
     properties: {
       update: {
-        // add group offset = `cellHeight + padding` to avoid clashing with axis
-        y: cellHeight.value ? {
-            // If cellHeight contains value, just use it.
-            value: cellHeight,
-            offset: model.fieldDef(ROW).scale.padding
-          } : {
-            // Otherwise, need to get it from layout data in the root group
-            field: {parent: 'cellHeight'},
-            offset: model.fieldDef(ROW).scale.padding
-          },
-        // include width so it can be referred inside row-grid
-        width: {field: {group: 'width'}}
+        y: { field: {group: 'height'}},
+        x: {value: 0, offset: -cellConfig.gridOffset },
+        x2: {field: {group: 'width'}, offset: cellConfig.gridOffset },
+        stroke: { value: cellConfig.gridColor },
+        strokeOpacity: { value: cellConfig.gridOpacity },
+        strokeWidth: {value: 0.5}
       }
-    },
-    marks: [rowGrid]
-  };
+    }
+  }];
 }
 
-function getColumnGridGroup(model: Model, cellWidth): any { // TODO: VgMarks
+function getColumnGridGroups(model: Model): any { // TODO: VgMarks
   const name = model.spec().name;
   const cellConfig = model.config().cell;
 
@@ -262,34 +292,24 @@ function getColumnGridGroup(model: Model, cellWidth): any { // TODO: VgMarks
         y: {value: 0, offset: -cellConfig.gridOffset},
         y2: {field: {group: 'height'}, offset: cellConfig.gridOffset },
         stroke: { value: cellConfig.gridColor },
-        strokeOpacity: { value: cellConfig.gridOpacity }
+        strokeOpacity: { value: cellConfig.gridOpacity },
+        strokeWidth: {value: 0.5}
       }
     }
   };
 
-  const columnGridOnLeft = !model.has(Y) || model.axis(Y).orient === 'right';
-  if (columnGridOnLeft) { // on left, no need to add global offset
-    return columnGrid;
-  } // otherwise, need to offset all grid by cellWidth
-  return {
-    name: (name ? name + '-' : '') + 'column-grid-group',
-    type: 'group',
+  return [columnGrid,  {
+    name: (name ? name + '-' : '') + 'column-grid-end',
+    type: 'rule',
     properties: {
       update: {
-        // Add group offset = `cellWidth + padding` to avoid clashing with axis
-        x: cellWidth.value ? {
-             // If cellWidth contains value, just use it.
-             value: cellWidth,
-             offset: model.fieldDef(COLUMN).scale.padding
-           } : {
-             // Otherwise, need to get it from layout data in the root group
-             field: {parent: 'cellWidth'},
-             offset: model.fieldDef(COLUMN).scale.padding
-           },
-        // include height so it can be referred inside column-grid
-        height: {field: {group: 'height'}}
+        x: { field: {group: 'width'}},
+        y: {value: 0, offset: -cellConfig.gridOffset},
+        y2: {field: {group: 'height'}, offset: cellConfig.gridOffset },
+        stroke: { value: cellConfig.gridColor },
+        strokeOpacity: { value: cellConfig.gridOpacity },
+        strokeWidth: {value: 0.5}
       }
-    },
-    marks: [columnGrid]
-  };
+    }
+  }];
 }

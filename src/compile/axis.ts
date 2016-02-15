@@ -7,10 +7,55 @@ import {formatMixins} from './util';
 // https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations
 declare let exports;
 
+/**
+ * Make an inner axis for showing grid for shared axis.
+ */
+export function compileInnerAxis(channel: Channel, model: Model) {
+  const isCol = channel === COLUMN,
+    isRow = channel === ROW,
+    type = isCol ? 'x' : isRow ? 'y': channel;
+
+  // TODO: support adding ticks as well
+
+  // TODO: replace any with Vega Axis Interface
+  let def = {
+    type: type,
+    scale: model.scaleName(channel),
+    grid: true,
+    tickSize: 0,
+    properties: {
+      labels: {
+        text: {value:''}
+      },
+      axis: {
+        stroke: {value: 'transparent'}
+      }
+    }
+  };
+
+  const axis = model.axis(channel);
+
+  ['layer', 'ticks', 'values', 'subdivide'].forEach(function(property) {
+    let method: (model: Model, channel: Channel, def:any)=>any;
+
+    const value = (method = exports[property]) ?
+                  // calling axis.format, axis.grid, ...
+                  method(model, channel, def) :
+                  axis[property];
+    if (value !== undefined) {
+      def[property] = value;
+    }
+  });
+
+  return def;
+}
+
 export function compileAxis(channel: Channel, model: Model) {
   const isCol = channel === COLUMN,
     isRow = channel === ROW,
     type = isCol ? 'x' : isRow ? 'y': channel;
+
+  const axis = model.axis(channel);
 
   // TODO: replace any with Vega Axis Interface
   let def: any = {
@@ -24,9 +69,9 @@ export function compileAxis(channel: Channel, model: Model) {
   // 1.2. Add properties
   [
     // a) properties with special rules (so it has axis[property] methods) -- call rule functions
-    'grid', 'layer', 'orient', 'tickSize', 'ticks', 'title',
+    'grid', 'layer', 'offset', 'orient', 'tickSize', 'ticks', 'title',
     // b) properties without rules, only produce default values in the schema, or explicit value if specified
-    'offset', 'tickPadding', 'tickSize', 'tickSizeMajor', 'tickSizeMinor', 'tickSizeEnd',
+    'tickPadding', 'tickSize', 'tickSizeMajor', 'tickSizeMinor', 'tickSizeEnd',
     'titleOffset', 'values', 'subdivide'
   ].forEach(function(property) {
     let method: (model: Model, channel: Channel, def:any)=>any;
@@ -34,7 +79,7 @@ export function compileAxis(channel: Channel, model: Model) {
     const value = (method = exports[property]) ?
                   // calling axis.format, axis.grid, ...
                   method(model, channel, def) :
-                  model.fieldDef(channel).axis[property];
+                  axis[property];
     if (value !== undefined) {
       def[property] = value;
     }
@@ -59,21 +104,35 @@ export function compileAxis(channel: Channel, model: Model) {
   return def;
 }
 
-export function grid(model: Model, channel: Channel) {
-  const fieldDef = model.fieldDef(channel);
-  if (channel === ROW || channel === COLUMN) {
-    // never apply grid for ROW and COLUMN since we manually create rule-group for them
-    return undefined;
-  }
+export function offset(model: Model, channel: Channel) {
+  return model.axis(channel).offset;
+}
 
+// TODO: we need to refactor this method after we take care of config refactoring
+/**
+ * Default rules for whether to show a grid should be shown for a channel.
+ * If `grid` is unspecified, the default value is `true` for ordinal scales that are not binned
+ */
+export function gridShow(model: Model, channel: Channel) {
   const grid = model.axis(channel).grid;
   if (grid !== undefined) {
     return grid;
   }
 
-  // If `grid` is unspecified, the default value is `true` for ordinal scales
-  // that are not binned
-  return !model.isOrdinalScale(channel) && !fieldDef.bin;
+  return !model.isOrdinalScale(channel) && !model.fieldDef(channel).bin;
+}
+
+export function grid(model: Model, channel: Channel) {
+  if (channel === ROW || channel === COLUMN) {
+    // never apply grid for ROW and COLUMN since we manually create rule-group for them
+    return undefined;
+  }
+
+  return gridShow(model, channel) && (
+    // TODO refactor this cleanly -- essentially the condition below is whether
+    // the axis is a shared / union axis.
+    (channel === Y || channel === X) && !(model.has(COLUMN) || model.has(ROW))
+  );
 }
 
 export function layer(model: Model, channel: Channel, def) {
@@ -123,9 +182,6 @@ export function tickSize(model: Model, channel: Channel) {
   if (tickSize !== undefined) {
     return tickSize;
   }
-  if (channel === ROW || channel === COLUMN) {
-    return 0;
-  }
   return undefined;
 }
 
@@ -138,33 +194,31 @@ export function title(model: Model, channel: Channel) {
 
   // if not defined, automatically determine axis title from field def
   const fieldTitle = model.fieldTitle(channel);
-  const layout = model.layout();
-  const cellWidth = layout.cellWidth;
-  const cellHeight = layout.cellHeight;
 
   let maxLength;
   if (axis.titleMaxLength) {
     maxLength = axis.titleMaxLength;
-  } else if (channel === X && typeof cellWidth === 'number') {
-    // Guess max length if we know cell size at compile time
-    maxLength = cellWidth / model.axis(X).characterWidth;
-  } else if (channel === Y && typeof cellHeight === 'number') {
-    // Guess max length if we know cell size at compile time
-    maxLength = cellHeight / model.axis(Y).characterWidth;
+  } else if (channel === X && !model.isOrdinalScale(X)) {
+    // For non-ordinal scale, we know cell size at compile time, we can guess max length
+    maxLength = model.config().unit.width / model.axis(X).characterWidth;
+  } else if (channel === Y && !model.isOrdinalScale(Y)) {
+    // For non-ordinal scale, we know cell size at compile time, we can guess max length
+    maxLength = model.config().unit.height / model.axis(Y).characterWidth;
   }
   // FIXME: we should use template to truncate instead
   return maxLength ? truncate(fieldTitle, maxLength) : fieldTitle;
 }
 
 export namespace properties {
-  export function axis(model: Model, channel: Channel, axisPropsSpec) {
-    if (channel === ROW || channel === COLUMN) {
-      // hide axis for facets
-      return extend({
-        opacity: {value: 0}
-      }, axisPropsSpec || {});
-    }
-    return axisPropsSpec || undefined;
+  export function axis(model: Model, channel: Channel, axisPropsSpec, def) {
+    const axis = model.axis(channel);
+
+    return extend(
+      axis.axisWidth !== undefined ?
+        { strokeWidth: {value: axis.axisWidth} } :
+        {},
+      axisPropsSpec || {}
+    );
   }
 
   export function labels(model: Model, channel: Channel, labelsSpec, def) {

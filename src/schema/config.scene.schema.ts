@@ -13,14 +13,14 @@ export const sceneConfig = {
   properties: {
     fill: {
       type: 'string',
-      role: 'color'
+      format: 'color'
     },
     fillOpacity: {
       type: 'number',
     },
     stroke: {
       type: 'string',
-      role: 'color',
+      format: 'color',
     },
     strokeWidth: {
       type: 'integer'

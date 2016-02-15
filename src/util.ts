@@ -7,6 +7,13 @@ export function contains<T>(array: Array<T>, item: T) {
   return array.indexOf(item) > -1;
 }
 
+/** Returns the array without the elements in item */
+export function without<T>(array: Array<T>, items: Array<T>) {
+  return array.filter(function(item) {
+    return !contains(items, item);
+  });
+}
+
 export function forEach(obj, f: (a, d, k, o) => any, thisArg) {
   if (obj.forEach) {
     obj.forEach.call(thisArg, f);

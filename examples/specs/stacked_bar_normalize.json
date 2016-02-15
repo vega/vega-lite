@@ -1,5 +1,4 @@
 {
-  "description": "A bar chart showing the US population distribution of age groups and gender in 2000.",
   "data": { "url": "data/population.json"},
   "transform": {
     "filter": "datum.year == 2000",
@@ -7,20 +6,18 @@
   },
   "mark": "bar",
   "encoding": {
-    "x": {
-      "field": "age", "type": "ordinal",
-      "scale": {"bandWidth": 17}
-    },
     "y": {
       "aggregate": "sum", "field": "people", "type": "quantitative",
       "axis": {"title": "population"}
     },
+    "x": {
+      "field": "age", "type": "ordinal",
+      "scale": {"bandWidth": 17}
+    },
     "color": {
       "field": "gender", "type": "nominal",
-      "scale": {"range": ["#e377c2","#1f77b4"]}
+      "scale": {"range": ["#EA98D2", "#659CCA"]}
     }
   },
-  "config": {
-    "mark": {"opacity": 0.6, "stack" : "none"}
-  }
+  "config": {"mark": {"stacked": "normalize"}}
 }

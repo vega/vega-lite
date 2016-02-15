@@ -4,7 +4,7 @@ import {assert} from 'chai';
 
 import {parseModel} from '../util';
 import * as axis from '../../src/compile/axis';
-import {X, COLUMN} from '../../src/channel';
+import {X, Y, COLUMN} from '../../src/channel';
 
 describe('Axis', function() {
   // TODO: move this to model.test.ts
@@ -25,7 +25,7 @@ describe('Axis', function() {
         },
         "data": {"url": "data/movies.json"}
       });
-      assert.deepEqual(model1.spec().encoding.y.axis, model2.spec().encoding.y.axis);
+      assert.deepEqual(model1.axis(Y), model2.axis(Y));
     });
   });
 

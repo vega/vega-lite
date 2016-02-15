@@ -14,19 +14,19 @@ describe('Legend', function() {
 
   describe('title()', function () {
     it('should add explicitly specified title', function () {
-      const title = legend.title({field: 'a', legend: {title: 'Custom'}});
+      const title = legend.title({title: 'Custom'}, {field: 'a'});
       assert.deepEqual(title, 'Custom');
     });
 
     it('should add return fieldTitle by default', function () {
-      const title = legend.title({field: 'a', legend: {}});
+      const title = legend.title({}, {field: 'a'});
       assert.deepEqual(title, 'a');
     });
   });
 
   describe('formatMixins()', function() {
     it('should not be added for bin', function() {
-      assert.deepEqual(legend.formatMixins(parseModel({
+      assert.deepEqual(legend.formatMixins({}, parseModel({
         mark: "point",
         encoding: {
           x: {field:'a', bin: true}

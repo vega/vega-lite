@@ -1,7 +1,10 @@
 import {UnitConfig, unitConfig} from './config.unit.schema';
 import {CellConfig, cellConfig} from './config.cell.schema';
+import {FacetConfig, facetConfig} from './config.facet.schema';
 import {MarkConfig, markConfig} from './config.marks.schema';
 import {SceneConfig, sceneConfig} from './config.scene.schema';
+import {AxisConfig, axisConfig} from './axis.schema';
+import {LegendConfig, legendConfig} from './legend.schema';
 
 export interface Config {
   // TODO: add this back once we have top-down layout approach
@@ -14,10 +17,14 @@ export interface Config {
   numberFormat?: string;
   timeFormat?: string;
 
-  unit?: UnitConfig;
-  cell?: CellConfig;
-  mark?: MarkConfig;
   scene?: SceneConfig;
+  unit?: UnitConfig;
+  mark?: MarkConfig;
+  axis?: AxisConfig;
+  legend?: LegendConfig;
+
+  facet?: FacetConfig;
+  cell?: CellConfig;
 }
 
 export const config = {
@@ -47,7 +54,7 @@ export const config = {
     },
     background: {
       type: 'string',
-      role: 'color',
+      format: 'color',
       default: undefined,
       description: 'CSS color property to use as background of visualization. Default is `"transparent"`.'
     },
@@ -65,9 +72,13 @@ export const config = {
     },
 
     // nested
+    scene: sceneConfig,
     unit: unitConfig,
-    cell: cellConfig,
     mark: markConfig,
-    scene: sceneConfig
+    axis: axisConfig,
+    legend: legendConfig,
+
+    facet: facetConfig,
+    cell: cellConfig,
   }
 };

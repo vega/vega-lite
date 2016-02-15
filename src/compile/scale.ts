@@ -2,6 +2,7 @@
 declare var exports;
 
 import {FieldDef} from '../schema/fielddef.schema';
+import {Scale} from '../schema/scale.schema';
 
 import {contains, extend} from '../util';
 import {Model} from './Model';
@@ -26,19 +27,25 @@ export function compileScales(channels: Channel[], model: Model) {
   return channels.filter(hasScale)
     .reduce(function(scales: any[], channel: Channel) {
       const fieldDef = model.fieldDef(channel);
+      const scale = model.scale(channel);
+      const sort = model.sort(channel);
 
       var scaleDef: any = {
         name: model.scaleName(channel),
-        type: type(fieldDef, channel, model.mark()),
+        type: type(scale, fieldDef, channel, model.mark()),
       };
 
-      scaleDef.domain = domain(model, channel, scaleDef.type);
-      extend(scaleDef, rangeMixins(model, channel, scaleDef.type));
+      scaleDef.domain = domain(scale, model, channel, scaleDef.type);
+      extend(scaleDef, rangeMixins(scale, model, channel, scaleDef.type));
+
+      if (sort && (typeof sort === 'string' ? sort : sort.order) === 'descending') {
+        scaleDef.reverse = true;
+      }
 
       // Add optional properties
       [
         // general properties
-        'reverse', 'round',
+        'round',
         // quantitative / time
         'clamp', 'nice',
         // quantitative
@@ -47,7 +54,7 @@ export function compileScales(channels: Channel[], model: Model) {
         'outerPadding', 'padding', 'points'
       ].forEach(function(property) {
         // TODO include fieldDef as part of the parameters
-        const value = exports[property](model, channel, scaleDef.type);
+        const value = exports[property](scale, fieldDef, channel, scaleDef.type);
         if (value !== undefined) {
           scaleDef[property] = value;
         }
@@ -55,7 +62,7 @@ export function compileScales(channels: Channel[], model: Model) {
 
       // Add additional scales needed to support ordinal legends (list of values)
       // for color ramp.
-      if (channel === COLOR && fieldDef.legend && (fieldDef.type === ORDINAL || fieldDef.bin || fieldDef.timeUnit)) {
+      if (channel === COLOR && model.legend(COLOR) && (fieldDef.type === ORDINAL || fieldDef.bin || fieldDef.timeUnit)) {
         // This scale is for producing ordinal scale for legends.
         // - For an ordinal field, provide an ordinal scale that maps rank values to field values
         // - For a field with bin or timeUnit, provide an identity ordinal scale
@@ -99,7 +106,7 @@ export function compileScales(channels: Channel[], model: Model) {
     }, []);
 }
 
-export function type(fieldDef: FieldDef, channel: Channel, mark: Mark): string {
+export function type(scale: Scale, fieldDef: FieldDef, channel: Channel, mark: Mark): string {
   if (!hasScale(channel)) {
     // There is no scale for these channels
     return null;
@@ -110,8 +117,8 @@ export function type(fieldDef: FieldDef, channel: Channel, mark: Mark): string {
     return 'ordinal';
   }
 
-  if (fieldDef.scale.type !== undefined) {
-    return fieldDef.scale.type;
+  if (scale.type !== undefined) {
+    return scale.type;
   }
 
   switch (fieldDef.type) {
@@ -151,11 +158,11 @@ export function type(fieldDef: FieldDef, channel: Channel, mark: Mark): string {
   return null;
 }
 
-export function domain(model: Model, channel:Channel, scaleType: string) {
+export function domain(scale: Scale, model: Model, channel:Channel, scaleType: string) {
   var fieldDef = model.fieldDef(channel);
 
-  if (fieldDef.scale.domain) { // explicit value
-    return fieldDef.scale.domain;
+  if (scale.domain) { // explicit value
+    return scale.domain;
   }
 
   // special case for temporal scale
@@ -190,7 +197,7 @@ export function domain(model: Model, channel:Channel, scaleType: string) {
     };
   }
 
-  var useRawDomain = _useRawDomain(model, channel, scaleType);
+  var useRawDomain = _useRawDomain(scale, model, channel, scaleType);
   var sort = domainSort(model, channel, scaleType);
 
   if (useRawDomain) { // useRawDomain - only Q/T
@@ -240,7 +247,7 @@ export function domainSort(model: Model, channel: Channel, scaleType: string): a
     return undefined;
   }
 
-  var sort = model.fieldDef(channel).sort;
+  var sort = model.sort(channel);
   if (sort === 'ascending' || sort === 'descending') {
     return true;
   }
@@ -255,13 +262,6 @@ export function domainSort(model: Model, channel: Channel, scaleType: string): a
   return undefined;
 }
 
-export function reverse(model: Model, channel: Channel) {
-  var sort = model.fieldDef(channel).sort;
-  return sort && (typeof sort === 'string' ?
-                    sort === 'descending' :
-                    sort.order === 'descending'
-                 ) ? true : undefined;
-}
 
 /**
  * Determine if useRawDomain should be activated for this scale.
@@ -270,10 +270,10 @@ export function reverse(model: Model, channel: Channel) {
  * 2. Aggregation function is not `count` or `sum`
  * 3. The scale is quantitative or time scale.
  */
-function _useRawDomain (model: Model, channel: Channel, scaleType: string) {
+function _useRawDomain (scale: Scale, model: Model, channel: Channel, scaleType: string) {
   const fieldDef = model.fieldDef(channel);
 
-  return fieldDef.scale.useRawDomain && //  if useRawDomain is enabled
+  return scale.useRawDomain && //  if useRawDomain is enabled
     // only applied to aggregate table
     fieldDef.aggregate &&
     // only activated if used with aggregate functions that produces values ranging in the domain of the source data
@@ -289,27 +289,27 @@ function _useRawDomain (model: Model, channel: Channel, scaleType: string) {
     );
 }
 
-export function bandWidth(model: Model, channel: Channel, scaleType: string) {
+export function bandWidth(scale: Scale, fieldDef: FieldDef, channel: Channel, scaleType: string) {
   if (scaleType === 'ordinal') {
-    return model.fieldDef(channel).scale.bandWidth;
+    return scale.bandWidth;
   }
   return undefined;
 }
 
-export function clamp(model: Model, channel: Channel) {
+export function clamp(scale: Scale) {
   // only return value if explicit value is specified.
-  return model.fieldDef(channel).scale.clamp;
+  return scale.clamp;
 }
 
-export function exponent(model: Model, channel: Channel) {
+export function exponent(scale: Scale) {
   // only return value if explicit value is specified.
-  return model.fieldDef(channel).scale.exponent;
+  return scale.exponent;
 }
 
-export function nice(model: Model, channel: Channel, scaleType: string) {
-  if (model.fieldDef(channel).scale.nice !== undefined) {
+export function nice(scale: Scale, fieldDef: FieldDef, channel: Channel, scaleType: string) {
+  if (scale.nice !== undefined) {
     // explicit value
-    return model.fieldDef(channel).scale.nice;
+    return scale.nice;
   }
 
   switch (channel) {
@@ -327,23 +327,23 @@ export function nice(model: Model, channel: Channel, scaleType: string) {
   return undefined;
 }
 
-export function outerPadding(model: Model, channel: Channel, scaleType: string) {
+export function outerPadding(scale: Scale, fieldDef: FieldDef, channel: Channel, scaleType: string) {
   if (scaleType === 'ordinal') {
-    if (model.fieldDef(channel).scale.outerPadding !== undefined) {
-      return model.fieldDef(channel).scale.outerPadding; // explicit value
+    if (scale.outerPadding !== undefined) {
+      return scale.outerPadding; // explicit value
     }
   }
   return undefined;
 }
 
-export function padding(model: Model, channel: Channel, scaleType: string) {
+export function padding(scale: Scale, fieldDef: FieldDef, channel: Channel, scaleType: string) {
   if (scaleType === 'ordinal' && channel !== ROW && channel !== COLUMN) {
-    return model.fieldDef(channel).scale.padding;
+    return scale.padding;
   }
   return undefined;
 }
 
-export function points(model: Model, channel: Channel, scaleType: string) {
+export function points(scale: Scale, fieldDef: FieldDef, channel: Channel, scaleType: string) {
   if (scaleType === 'ordinal') {
     switch (channel) {
       case X:
@@ -355,33 +355,36 @@ export function points(model: Model, channel: Channel, scaleType: string) {
 }
 
 
-export function rangeMixins(model: Model, channel: Channel, scaleType: string): any {
+export function rangeMixins(scale: Scale, model: Model, channel: Channel, scaleType: string): any {
   var fieldDef = model.fieldDef(channel);
 
-  if (scaleType === 'ordinal' && fieldDef.scale.bandWidth) {
-    return {bandWidth: fieldDef.scale.bandWidth};
+  if (scaleType === 'ordinal' && scale.bandWidth) {
+    return {bandWidth: scale.bandWidth};
   }
 
-  if (fieldDef.scale.range) { // explicit value
-    return {range: fieldDef.scale.range};
+  if (scale.range) { // explicit value
+    return {range: scale.range};
   }
 
   switch (channel) {
     case X:
       // we can't use {range: "width"} here since we put scale in the root group
       // not inside the cell, so scale is reusable for axes group
-      return {rangeMin: 0, rangeMax: model.layout().cellWidth};
+
+      return {
+        rangeMin: 0,
+        rangeMax: model.config().unit.width // Fixed unit width for non-ordinal
+      };
     case Y:
-      // We can't use {range: "height"} here for the same reason
-      if (scaleType === 'ordinal') {
-        return {rangeMin: 0, rangeMax: model.layout().cellHeight};
-      }
-      return {rangeMin: model.layout().cellHeight, rangeMax: 0};
+      return {
+        rangeMin: model.config().unit.width, // Fixed unit width for non-ordinal
+        rangeMax: 0
+      };
     case SIZE:
       if (model.is(BAR)) {
         // TODO: determine bandSize for bin, which actually uses linear scale
         const dimension = model.config().mark.orient === 'horizontal' ? Y : X;
-        return {range: [2, model.fieldDef(dimension).scale.bandWidth]};
+        return {range: [2, model.scale(dimension).bandWidth]};
       } else if (model.is(TEXT_MARK)) {
         return {range: [8, 40]};
       }
@@ -390,10 +393,10 @@ export function rangeMixins(model: Model, channel: Channel, scaleType: string): 
       const yIsMeasure = model.isMeasure(Y);
 
       const bandWidth = xIsMeasure !== yIsMeasure ?
-        model.fieldDef(xIsMeasure ? Y : X).scale.bandWidth :
+        model.scale(xIsMeasure ? Y : X).bandWidth :
         Math.min(
-          model.fieldDef(X).scale.bandWidth || 21 /* config.scale.bandWidth */,
-          model.fieldDef(Y).scale.bandWidth || 21 /* config.scale.bandWidth */
+          model.scale(X).bandWidth || 21 /* config.scale.bandWidth */,
+          model.scale(Y).bandWidth || 21 /* config.scale.bandWidth */
         );
 
       return {range: [10, (bandWidth - 2) * (bandWidth - 2)]};
@@ -413,9 +416,9 @@ export function rangeMixins(model: Model, channel: Channel, scaleType: string): 
   return {};
 }
 
-export function round(model: Model, channel: Channel) {
-  if (model.fieldDef(channel).scale.round !== undefined) {
-    return model.fieldDef(channel).scale.round;
+export function round(scale: Scale, fieldDef: FieldDef, channel: Channel) {
+  if (scale.round !== undefined) {
+    return scale.round;
   }
 
   // FIXME: revise if round is already the default value
@@ -430,13 +433,12 @@ export function round(model: Model, channel: Channel) {
   return undefined;
 }
 
-export function zero(model: Model, channel: Channel) {
-  var fieldDef = model.fieldDef(channel);
+export function zero(scale: Scale, fieldDef: FieldDef, channel: Channel) {
   var timeUnit = fieldDef.timeUnit;
 
-  if (fieldDef.scale.zero !== undefined) {
+  if (scale.zero !== undefined) {
     // explicit value
-    return fieldDef.scale.zero;
+    return scale.zero;
   }
 
   if (fieldDef.type === TEMPORAL) {

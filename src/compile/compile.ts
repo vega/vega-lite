@@ -18,19 +18,15 @@ export {Model} from './Model';
 
 export function compile(spec) {
   const model = new Model(spec);
-  const layout = model.layout();
-
-  // FIXME replace FIT with appropriate mechanism once Vega has it
-  const FIT = 1;
-
   const config = model.config();
 
   // TODO: change type to become VgSpec
   const output = extend(
     spec.name ? { name: spec.name } : {},
     {
-      width: typeof layout.width !== 'number' ? FIT : layout.width,
-      height: typeof layout.height !== 'number' ? FIT : layout.height,
+      // Set size to 1 because we rely on padding anyway
+      width: 1,
+      height: 1,
       padding: 'auto'
     },
     config.viewport ? { viewport: config.viewport } : {},
@@ -62,8 +58,6 @@ function scene(config) {
 
 export function compileRootGroup(model: Model) {
   const spec = model.spec();
-  const width = model.layout().width;
-  const height = model.layout().height;
 
   let rootGroup:any = extend({
       name: spec.name ? spec.name + '-root' : 'root',
@@ -71,24 +65,14 @@ export function compileRootGroup(model: Model) {
     },
     spec.description ? {description: spec.description} : {},
     {
+      from: {data: LAYOUT},
       properties: {
         update: {
-          width: typeof width !== 'number' ?
-                 {field: width.field} :
-                 {value: width},
-          height: typeof height !== 'number' ?
-                  {field: height.field} :
-                  {value: height}
+          width: {field: 'width'},
+          height: {field: 'height'}
         }
       }
     });
-
-  // only add reference to layout if needed
-  if (typeof width !== 'number' || typeof height !== 'number') {
-    rootGroup = extend(rootGroup, {
-      from: {data: LAYOUT}
-    });
-  }
 
   const marks = compileMark(model);
 
@@ -100,8 +84,8 @@ export function compileRootGroup(model: Model) {
     rootGroup.marks = marks;
     rootGroup.scales = compileScales(model.channels(), model);
 
-    var axes = (model.has(X) && model.fieldDef(X).axis ? [compileAxis(X, model)] : [])
-      .concat(model.has(Y) && model.fieldDef(Y).axis ? [compileAxis(Y, model)] : []);
+    var axes = (model.has(X) && model.axis(X) ? [compileAxis(X, model)] : [])
+      .concat(model.has(Y) && model.axis(Y) ? [compileAxis(Y, model)] : []);
     if (axes.length > 0) {
       rootGroup.axes = axes;
     }

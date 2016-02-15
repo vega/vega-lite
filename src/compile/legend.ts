@@ -1,9 +1,10 @@
 import {FieldDef} from '../schema/fielddef.schema';
+import {LegendProperties} from '../schema/legend.schema';
 
 import {COLOR, SIZE, SHAPE, Channel} from '../channel';
 import {title as fieldTitle} from '../fielddef';
 import {AREA, BAR, TICK, TEXT, LINE, POINT, CIRCLE, SQUARE} from '../mark';
-import {extend, keys} from '../util';
+import {extend, keys, without} from '../util';
 import {Model} from './Model';
 import {applyMarkConfig, FILL_STROKE_CONFIG, formatMixins as utilFormatMixins, timeFormat} from './util';
 import {ORDINAL} from '../type';
@@ -12,27 +13,25 @@ import {COLOR_LEGEND, COLOR_LEGEND_LABEL} from './scale';
 export function compileLegends(model: Model) {
   var defs = [];
 
-  if (model.has(COLOR) && model.fieldDef(COLOR).legend) {
+  if (model.has(COLOR) && model.legend(COLOR)) {
     const fieldDef = model.fieldDef(COLOR);
-    defs.push(compileLegend(model, COLOR, {
-      fill: (fieldDef.type === ORDINAL || fieldDef.bin || fieldDef.timeUnit) ?
-        // To produce ordinal legend (list, rather than linear range) with correct labels:
-        // - For an ordinal field, provide an ordinal scale that maps rank values to field values
-        // - For a field with bin or timeUnit, provide an identity ordinal scale
-        // (mapping the field values to themselves)
-        COLOR_LEGEND :
-        model.scaleName(COLOR)
-      // TODO: consider if this should be stroke for line
-    }));
+    const scale = useColorLegendScale(fieldDef) ?
+      // To produce ordinal legend (list, rather than linear range) with correct labels:
+      // - For an ordinal field, provide an ordinal scale that maps rank values to field values
+      // - For a field with bin or timeUnit, provide an identity ordinal scale
+      // (mapping the field values to themselves)
+      COLOR_LEGEND :
+      model.scaleName(COLOR);
+    defs.push(compileLegend(model, COLOR, model.config().mark.filled ? { fill: scale } : { stroke: scale }));
   }
 
-  if (model.has(SIZE) && model.fieldDef(SIZE).legend) {
+  if (model.has(SIZE) && model.legend(SIZE)) {
     defs.push(compileLegend(model, SIZE, {
       size: model.scaleName(SIZE)
     }));
   }
 
-  if (model.has(SHAPE) && model.fieldDef(SHAPE).legend) {
+  if (model.has(SHAPE) && model.legend(SHAPE)) {
     defs.push(compileLegend(model, SHAPE, {
       shape: model.scaleName(SHAPE)
     }));
@@ -42,12 +41,12 @@ export function compileLegends(model: Model) {
 
 export function compileLegend(model: Model, channel: Channel, def) {
   const fieldDef = model.fieldDef(channel);
-  const legend = fieldDef.legend;
+  const legend = model.legend(channel);
 
   // 1.1 Add properties with special rules
-  def.title = title(fieldDef);
+  def.title = title(legend, fieldDef);
 
-  extend(def, formatMixins(model, channel));
+  extend(def, formatMixins(legend, model, channel));
 
   // 1.2 Add properties without rules
   ['orient', 'values'].forEach(function(property) {
@@ -72,8 +71,7 @@ export function compileLegend(model: Model, channel: Channel, def) {
   return def;
 }
 
-export function title(fieldDef: FieldDef) {
-  const legend = fieldDef.legend;
+export function title(legend: LegendProperties, fieldDef: FieldDef) {
   if (typeof legend !== 'boolean' && legend.title) {
     return legend.title;
   }
@@ -81,7 +79,7 @@ export function title(fieldDef: FieldDef) {
   return fieldTitle(fieldDef);
 }
 
-export function formatMixins(model: Model, channel: Channel) {
+export function formatMixins(legend: LegendProperties, model: Model, channel: Channel) {
   const fieldDef = model.fieldDef(channel);
 
   // If the channel is binned, we should not set the format because we have a range label
@@ -89,8 +87,12 @@ export function formatMixins(model: Model, channel: Channel) {
     return {};
   }
 
-  const legend = fieldDef.legend;
   return utilFormatMixins(model, channel, typeof legend !== 'boolean' ? legend.format : undefined);
+}
+
+// we have to use special scales for ordinal or binned fields for the color channel
+export function useColorLegendScale(fieldDef: FieldDef) {
+  return fieldDef.type === ORDINAL || fieldDef.bin || fieldDef.timeUnit;
 }
 
 namespace properties {
@@ -103,56 +105,52 @@ namespace properties {
       case TICK:
       case TEXT:
         symbols.shape = {value: 'square'};
-
-        // set stroke to transparent by default unless there is a config for stroke
-        symbols.stroke = {value: 'transparent'};
-        applyMarkConfig(symbols, model, FILL_STROKE_CONFIG);
-
-        // no need to apply color to fill as they are set automatically
         break;
-
       case CIRCLE:
       case SQUARE:
-        /* tslint:disable:no-switch-case-fall-through */
-        symbols.shape = {value: mark};
-        /* tslint:enable:no-switch-case-fall-through */
-      case POINT:
-        // fill or stroke
-        if (model.config().mark.filled) { // filled
-          // set stroke to transparent by default unless there is a config for stroke
-          symbols.stroke = {value: 'transparent'};
-          applyMarkConfig(symbols, model, FILL_STROKE_CONFIG);
-
-          if (model.has(COLOR) && channel === COLOR) {
-            symbols.fill = {scale: model.scaleName(COLOR), field: 'data'};
-          } else if (model.fieldDef(COLOR).value) {
-            symbols.fill = {value: model.fieldDef(COLOR).value};
-          } else {
-            symbols.fill = {value: model.config().mark.color};
-          }
-        } else { // stroked
-          // set fill to transparent by default unless there is a config for stroke
-          symbols.fill = {value: 'transparent'};
-          applyMarkConfig(symbols, model, FILL_STROKE_CONFIG);
-
-          if (model.has(COLOR) && channel === COLOR) {
-            symbols.stroke = {scale: model.scaleName(COLOR), field: 'data'};
-          } else if (model.fieldDef(COLOR).value) {
-            symbols.stroke = {value: model.fieldDef(COLOR).value};
-          } else {
-            symbols.stroke = {value: model.config().mark.color};
-          }
-        }
-
+        symbols.shape = { value: mark };
         break;
+      case POINT:
       case LINE:
       case AREA:
-        // set stroke to transparent by default unless there is a config for stroke
-        symbols.stroke = {value: 'transparent'};
-        applyMarkConfig(symbols, model, FILL_STROKE_CONFIG);
-
-        // TODO use shape here after implementing #508
+        // use default circle
         break;
+    }
+
+    const filled = model.config().mark.filled;
+
+    applyMarkConfig(symbols, model,
+      // Do not set fill (when filled) or stroke (when unfilled) property from config
+      // because the value from the scale should have precedence
+      without(FILL_STROKE_CONFIG, [ filled ? 'fill' : 'stroke'])
+    );
+
+    if (filled) {
+      symbols.strokeWidth = { value: 0 };
+    }
+
+    let value;
+    if (model.has(COLOR) && channel === COLOR) {
+      if (useColorLegendScale(fieldDef)) {
+        // for color legend scale, we need to override
+        value = { scale: model.scaleName(COLOR), field: 'data' };
+      }
+    } else if (model.fieldDef(COLOR).value) {
+      value = { value: model.fieldDef(COLOR).value };
+    }
+
+    if (value !== undefined) {
+      // apply the value
+      if (filled) {
+        symbols.fill = value;
+      } else {
+        symbols.stroke = value;
+      }
+    } else if (channel !== COLOR) {
+      // For non-color legend, apply color config if there is no fill / stroke config.
+      // (For color, do not override scale specified!)
+      symbols[filled ? 'fill' : 'stroke'] = symbols[filled ? 'fill' : 'stroke'] ||
+        {value: model.config().mark.color};
     }
 
     symbols = extend(symbols, symbolsSpec || {});

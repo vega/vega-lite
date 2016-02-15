@@ -62,7 +62,7 @@ export const markConfig = {
     },
     color: {
       type: 'string',
-      role: 'color',
+      format: 'color',
       default: '#4682b4',
       description: 'Default color.'
     },
@@ -73,7 +73,7 @@ export const markConfig = {
     },
     tickWidth: {
       type: 'string',
-      role: 'color',
+      format: 'color',
       default: undefined,
       description: 'The width of the ticks.'
     },
@@ -87,7 +87,7 @@ export const markConfig = {
     // General Vega
     fill: {
       type: 'string',
-      role: 'color',
+      format: 'color',
       default: undefined
     },
     fillOpacity: {
@@ -98,7 +98,7 @@ export const markConfig = {
     },
     stroke: {
       type: 'string',
-      role: 'color',
+      format: 'color',
       default: undefined
     },
     strokeOpacity: {
@@ -207,7 +207,7 @@ export const markConfig = {
     font: {
       type: 'string',
       default: undefined,
-      role: 'font',
+      format: 'font',
       description: 'The typeface to set the text in (e.g., Helvetica Neue).'
     },
     fontSize: {

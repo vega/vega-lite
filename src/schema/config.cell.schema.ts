@@ -17,7 +17,7 @@ export const cellConfig = {
   properties: {
     gridColor: {
       type: 'string',
-      role: 'color',
+      format: 'color',
       default: '#000000'
     },
     gridOpacity: {
@@ -37,7 +37,7 @@ export const cellConfig = {
     },
     fill: {
       type: 'string',
-      role: 'color',
+      format: 'color',
       default: 'rgba(0,0,0,0)'
     },
     fillOpacity: {
@@ -45,10 +45,12 @@ export const cellConfig = {
     },
     stroke: {
       type: 'string',
-      role: 'color',
+      format: 'color',
+      default: '#ccc'
     },
     strokeWidth: {
-      type: 'integer'
+      type: 'integer',
+      default: 1
     },
     strokeOpacity: {
       type: 'number'
