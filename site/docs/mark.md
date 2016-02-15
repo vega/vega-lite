@@ -5,7 +5,7 @@ title: Mark
 permalink: /docs/mark.html
 ---
 
-Marks are the basic visual building block of a visualization.  They provide basic shapes whose properties (such as position, size, and color) can be used to visually encode data, either from a data field, or a constant value.  The `mark` property in a Vega-Lite specification defines the visualization's mark type.  The supported mark types are [`point`](#point-mark), [`circle`](#circle-and-square-marks), [`square`](#circle-and-square-marks), [`tick`](#tick-mark), [`bar`](#bar-mark), [`line`](#line-mark), [`area`](#area), and [`text`](#text).  In general, one mark instance is generated per input data element. However, line and area mark types represent multiple data elements as a contiguous line or shape.
+Marks are the basic visual building block of a visualization.  They provide basic shapes whose properties (such as position, size, and color) can be used to visually encode data, either from a data field, or a constant value.  The `mark` property in a Vega-Lite specification defines the visualization's mark type.  The supported mark types are [`point`](#point-mark), [`circle`](#circle-and-square-marks), [`square`](#circle-and-square-marks), [`text`](#text), [`tick`](#tick-mark), [`bar`](#bar-mark), [`line`](#line-mark), and [`area`](#area).  In general, one mark instance is generated per input data element. However, line and area mark types represent multiple data elements as a contiguous line or shape.
 
 
 {: .suppress-error}
@@ -49,10 +49,6 @@ By mapping a third field to the `size` channel in the [scatter plot](#scatter), 
 
 <span class="vl-example" data-name="scatter_bubble"></span>
 
-<!-- TODO: does not exist
-<span class="vl-example" data-name="scatter_color_shape"></span> -->
-
-
 ### Scatter Plot with Color and/or Shape
 
 Fields can also be encoded in the [scatter plot](#scatter) using the `color` or `shape` channels.
@@ -76,22 +72,39 @@ Here are some examples of scatter plots with `circle` and `square`:
 <span class="vl-example" data-name="square"></span>
 
 
+## Text
+
+`text` mark represents each data point with a text instead of a point.  
+
+### Scatterplot with Text
+
+Mapping a field to `text` channel of text mark sets the mark's text value.  For example, we can modify the color scatterplot above to have each mark as text showing its Origin.  
+
+<span class="vl-example" data-name="text_scatter_colored"></span>
+
+<!--
+### Text Table Heatmap
+__TODO__
+-->
+
 ## Tick
 
 The `tick` mark represents each data point as a short line.  This is a useful mark for displaying the distribution of values in a field.
 
-### 1D Plot
+### Dot Plot
 
-<!-- TODO -->
+For example, the following dot plot use tick marks to show distribution of each car's Horsepower.
+
+<span class="vl-example" data-name="tick_dot"></span>
 
 ### Strip Plot
 
 <!-- TODO: better explain this -->
 The following strip-plot use `tick` mark to represent its data.
 
-<span class="vl-example" data-name="tick"></span>
+<span class="vl-example" data-name="tick_strip"></span>
 
-__TODO__ Colored Tick with adjusted size and thickness
+<!--__TODO__ Colored Tick with adjusted size and thickness-->
 
 ## Bar
 
@@ -113,7 +126,6 @@ If we map a different ordinal field to the `y` channel, we can produce a horizon
 
 <span class="vl-example" data-name="bar_aggregate"></span>
 
-
 ### Stacked Bar Chart
 
 Adding color to the bar chart (by using the `color` attribute) creates a stacked bar chart by default.  Here we also customize the color's scale range to make the color a little nicer.
@@ -134,15 +146,28 @@ To make it clear that bars are layered, we can make marks semi-transparent by se
 
 ### Normalized Stacked Bar Chart
 
+<!-- TODO: better explain this -->
+You can also create a normalized stacked bar chart by setting `config.mark.stack` to `"normalized"`.  Here we can easily see the percent of male and female population at different ages.  
+
+<span class="vl-example" data-name="stacked_bar_normalize"></span>
 
 
 ### Grouped Bar Chart
-<!-- [Faceting](#encoding.md) a bar chart can produce a grouped bar chart. -->
+
+<!-- TODO: better explain this -->
+[Faceting](facet.html) a bar chart produces a grouped bar chart.
+
+<span class="vl-example" data-name="bar_grouped_population"></span>
 
 <!-- ### Table Heat Map -->
 
-### Histogram
 
+
+### Histogram
+If the data is not pre-aggregated (i.e. each record in the data field represents one item),
+mapping a binned quantitative field to `x` and aggregate `count` to `y` produces a histogram.
+
+<span class="vl-example" data-name="histogram"></span>
 
 ## Line
 
@@ -170,16 +195,13 @@ Alternatively, we can map the same field to `detail`, creating multiple lines bu
 
 ### Line Chart with Custom Path
 
-By default, the line's path (order of points in the line) is determined by data values on the dimension axis (x or y) like shown in previous examples.
-However, a field can be mapped to `path` channel for determining custom path.
-For example, the following specification creates a connected scatterplot.  
+By default, the line's path (order of points in the line) is determined by data values on the dimension axis (x or y) like shown in previous examples.  However, a field can be mapped to `path` channel for determining custom path.
 
-__TODO__: Example - Connected Scatterplot using "driving.json" data
+<span class="vl-example" data-name="scatter_connected"></span>
 
 ## Area
 
-Similar to `line`, using `area` mark with one dimension (typically on `x`)
-and one measure (typically on `y`) produces an area chart.  
+Similar to `line`, using `area` mark with one dimension (typically on `x`) and one measure (typically on `y`) produces an area chart.  
 
 Similar to `line`, `area` represent multiple data element as a single area shape.  
 
@@ -199,11 +221,3 @@ Adding color to area chart creates stacked area chart by default.
 ### Streamgraph
 
 To further customize stack, please look at [`config.stack`](config.html#stack-config) for more detail.
-
-
-## Text
-
-### Scatterplot with Text
-
-### Text Table Heatmap
-__TODO__
