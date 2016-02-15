@@ -4,7 +4,7 @@ import {LegendProperties} from '../schema/legend.schema';
 import {COLOR, SIZE, SHAPE, Channel} from '../channel';
 import {title as fieldTitle} from '../fielddef';
 import {AREA, BAR, TICK, TEXT, LINE, POINT, CIRCLE, SQUARE} from '../mark';
-import {extend, keys} from '../util';
+import {extend, keys, without} from '../util';
 import {Model} from './Model';
 import {applyMarkConfig, FILL_STROKE_CONFIG, formatMixins as utilFormatMixins, timeFormat} from './util';
 import {ORDINAL} from '../type';
@@ -15,7 +15,7 @@ export function compileLegends(model: Model) {
 
   if (model.has(COLOR) && model.legend(COLOR)) {
     const fieldDef = model.fieldDef(COLOR);
-    const scale = specialScale(fieldDef) ?
+    const scale = useColorLegendScale(fieldDef) ?
       // To produce ordinal legend (list, rather than linear range) with correct labels:
       // - For an ordinal field, provide an ordinal scale that maps rank values to field values
       // - For a field with bin or timeUnit, provide an identity ordinal scale
@@ -91,7 +91,7 @@ export function formatMixins(legend: LegendProperties, model: Model, channel: Ch
 }
 
 // we have to use special scales for ordinal or binned fields for the color channel
-export function specialScale(fieldDef: FieldDef) {
+export function useColorLegendScale(fieldDef: FieldDef) {
   return fieldDef.type === ORDINAL || fieldDef.bin || fieldDef.timeUnit;
 }
 
@@ -117,14 +117,15 @@ namespace properties {
         break;
     }
 
-    applyMarkConfig(symbols, model, FILL_STROKE_CONFIG);
+    // do not set fill or stroke properties from config because the value from the scale should have precedence
+    applyMarkConfig(symbols, model, without(FILL_STROKE_CONFIG, ['fill', 'stroke']));
 
     if (model.config().mark.filled) {
       symbols.strokeWidth = { value: 0 };
     }
 
     let value;
-    if (model.has(COLOR) && channel === COLOR && specialScale(fieldDef)) {
+    if (model.has(COLOR) && channel === COLOR && useColorLegendScale(fieldDef)) {
       value = { scale: model.scaleName(COLOR), field: 'data' };
     } else if (model.fieldDef(COLOR).value) {
       value = { value: model.fieldDef(COLOR).value };
