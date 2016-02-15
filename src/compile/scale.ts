@@ -27,83 +27,101 @@ export function compileScales(channels: Channel[], model: Model) {
   return channels.filter(hasScale)
     .reduce(function(scales: any[], channel: Channel) {
       const fieldDef = model.fieldDef(channel);
-      const scale = model.scale(channel);
-      const sort = model.sort(channel);
-
-      var scaleDef: any = {
-        name: model.scaleName(channel),
-        type: type(scale, fieldDef, channel, model.mark()),
-      };
-
-      scaleDef.domain = domain(scale, model, channel, scaleDef.type);
-      extend(scaleDef, rangeMixins(scale, model, channel, scaleDef.type));
-
-      if (sort && (typeof sort === 'string' ? sort : sort.order) === 'descending') {
-        scaleDef.reverse = true;
-      }
-
-      // Add optional properties
-      [
-        // general properties
-        'round',
-        // quantitative / time
-        'clamp', 'nice',
-        // quantitative
-        'exponent', 'zero',
-        // ordinal
-        'outerPadding', 'padding', 'points'
-      ].forEach(function(property) {
-        // TODO include fieldDef as part of the parameters
-        const value = exports[property](scale, fieldDef, channel, scaleDef.type);
-        if (value !== undefined) {
-          scaleDef[property] = value;
-        }
-      });
 
       // Add additional scales needed to support ordinal legends (list of values)
       // for color ramp.
       if (channel === COLOR && model.legend(COLOR) && (fieldDef.type === ORDINAL || fieldDef.bin || fieldDef.timeUnit)) {
-        // This scale is for producing ordinal scale for legends.
-        // - For an ordinal field, provide an ordinal scale that maps rank values to field values
-        // - For a field with bin or timeUnit, provide an identity ordinal scale
-        // (mapping the field values to themselves)
-        scales.push({
-          name: COLOR_LEGEND,
-          type: 'ordinal',
-          domain: {
-            data: model.dataTable(),
-            // use rank_<field> for ordinal type, for bin and timeUnit use default field
-            field: model.field(COLOR, (fieldDef.bin || fieldDef.timeUnit) ? {} : {prefn: 'rank_'}), sort: true
-          },
-          range: {data: model.dataTable(), field: model.field(COLOR), sort: true}
-        });
-
-        // bin needs an additional scale for labels because we need to map bin_start to bin_range in legends
+        scales.push(colorLegendScale(model, fieldDef));
         if (fieldDef.bin) {
-          scales.push({
-            name: COLOR_LEGEND_LABEL,
-            type: 'ordinal',
-            domain: {
-              data: model.dataTable(),
-              field: model.field(COLOR,  {prefn: 'rank_'}),
-              sort: true
-            },
-            range: {
-              data: model.dataTable(),
-              field: field(fieldDef, {binSuffix: '_range'}),
-              sort: {
-                field: model.field(channel, { binSuffix: '_start' }),
-                op: 'min' // min or max doesn't matter since same _range would have the same _start
-              }
-            }
-          });
+          scales.push(binColorLegendLabel(model, fieldDef));
         }
       }
 
-      scales.push(scaleDef);
-
+      scales.push(mainScale(model, fieldDef, channel));
       return scales;
     }, []);
+}
+
+/**
+ * Return the main scale for each channel.  (Only color can have multiple scales.)
+ */
+function mainScale(model: Model, fieldDef: FieldDef, channel: Channel) {
+  const scale = model.scale(channel);
+  const sort = model.sort(channel);
+
+  let scaleDef: any = {
+    name: model.scaleName(channel),
+    type: type(scale, fieldDef, channel, model.mark()),
+  };
+
+  scaleDef.domain = domain(scale, model, channel, scaleDef.type);
+  extend(scaleDef, rangeMixins(scale, model, channel, scaleDef.type));
+
+  if (sort && (typeof sort === 'string' ? sort : sort.order) === 'descending') {
+    scaleDef.reverse = true;
+  }
+
+  // Add optional properties
+  [
+    // general properties
+    'round',
+    // quantitative / time
+    'clamp', 'nice',
+    // quantitative
+    'exponent', 'zero',
+    // ordinal
+    'outerPadding', 'padding', 'points'
+  ].forEach(function(property) {
+    // TODO include fieldDef as part of the parameters
+    const value = exports[property](scale, fieldDef, channel, scaleDef.type);
+    if (value !== undefined) {
+      scaleDef[property] = value;
+    }
+  });
+
+  return scaleDef;
+}
+
+/**
+ *  Return a scale  for producing ordinal scale for legends.
+ *  - For an ordinal field, provide an ordinal scale that maps rank values to field value
+ *  - For a field with bin or timeUnit, provide an identity ordinal scale
+ *    (mapping the field values to themselves)
+ */
+function colorLegendScale(model: Model, fieldDef: FieldDef) {
+  return {
+    name: COLOR_LEGEND,
+    type: 'ordinal',
+    domain: {
+      data: model.dataTable(),
+      // use rank_<field> for ordinal type, for bin and timeUnit use default field
+      field: model.field(COLOR, (fieldDef.bin || fieldDef.timeUnit) ? {} : {prefn: 'rank_'}), sort: true
+    },
+    range: {data: model.dataTable(), field: model.field(COLOR), sort: true}
+  };
+}
+
+/**
+ *  Return an additional scale for bin labels because we need to map bin_start to bin_range in legends
+ */
+function binColorLegendLabel(model: Model, fieldDef: FieldDef) {
+  return {
+    name: COLOR_LEGEND_LABEL,
+    type: 'ordinal',
+    domain: {
+      data: model.dataTable(),
+      field: model.field(COLOR,  {prefn: 'rank_'}),
+      sort: true
+    },
+    range: {
+      data: model.dataTable(),
+      field: field(fieldDef, {binSuffix: '_range'}),
+      sort: {
+        field: model.field(COLOR, { binSuffix: '_start' }),
+        op: 'min' // min or max doesn't matter since same _range would have the same _start
+      }
+    }
+  };
 }
 
 export function type(scale: Scale, fieldDef: FieldDef, channel: Channel, mark: Mark): string {
