@@ -11,7 +11,7 @@ import {COLUMN, ROW, X, Y, SHAPE, SIZE, COLOR, TEXT, hasScale, Channel} from '..
 import {SOURCE, STACKED_SCALE} from '../data';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 import {Mark, BAR, TEXT as TEXT_MARK} from '../mark';
-import {rawDomain} from './time';
+import {rawDomain, smallestUnit} from './time';
 import {field} from '../fielddef';
 
 /**
@@ -390,6 +390,9 @@ export function nice(prop: boolean|string, scaleType: string, channel: Channel, 
   if (contains(['linear', 'pow', 'sqrt', 'log', 'time', 'utc', 'quantize'], scaleType)) {
     if (prop !== undefined) {
       return prop;
+    }
+    if (contains(['time', 'utc'], scaleType)) {
+      return smallestUnit(fieldDef.timeUnit);
     }
     return contains([X, Y], channel); // return true for quantitative X/Y
   }
