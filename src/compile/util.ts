@@ -6,24 +6,12 @@ import {QUANTITATIVE, ORDINAL, TEMPORAL} from '../type';
 import {format as timeFormatExpr} from './time';
 import {contains} from '../util';
 
-export enum ColorMode {
-  ALWAYS_FILLED,
-  ALWAYS_STROKED,
-  FILLED_BY_DEFAULT,
-  STROKED_BY_DEFAULT
-}
-
 export const FILL_STROKE_CONFIG = ['fill', 'fillOpacity',
   'stroke', 'strokeWidth', 'strokeDash', 'strokeDashOffset', 'strokeOpacity',
   'opacity'];
 
-export function applyColorAndOpacity(p, model: Model, colorMode: ColorMode = ColorMode.STROKED_BY_DEFAULT) {
-  const filled = colorMode === ColorMode.ALWAYS_FILLED ? true :
-    colorMode === ColorMode.ALWAYS_STROKED ? false :
-      model.config().mark.filled !== undefined ? model.config().mark.filled :
-        colorMode === ColorMode.FILLED_BY_DEFAULT ? true :
-          false; // ColorMode.STROKED_BY_DEFAULT
-
+export function applyColorAndOpacity(p, model: Model) {
+  const filled = model.config().mark.filled;
   const fieldDef = model.fieldDef(COLOR);
   if (filled) {
     if (model.has(COLOR)) {
