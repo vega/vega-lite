@@ -1,5 +1,7 @@
 #!/bin/bash
 
+mkdir examples/images
 for file in examples/specs/*.json; do
-  bin/vl2png $file ${file%.json}.png
+  name=${file##*/}
+  bin/vl2png $file examples/images/${name}.png
 done

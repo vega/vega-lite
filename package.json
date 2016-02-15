@@ -26,6 +26,7 @@
     "start": "npm run watch & browser-sync start --server --files 'vega-lite.js' --index '_gallery.html'",
     "schema": "tsc && npm run schema:only",
     "schema:only": "node src/schema/schemagen.js > vega-lite-schema.json",
+    "presite": "scripts/generate-images.sh",
     "site": "bundle exec jekyll serve --incremental",
     "test": "tsc && mocha --recursive --require source-map-support/register test examples",
     "watch:build": "watchify src/vl.ts -p tsify -v -d -s vl -o 'exorcist vega-lite.js.map > vega-lite.js'",
