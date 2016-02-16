@@ -16,6 +16,6 @@ test/log/difflist.json
 examples/_original/*
 examples/_output/*
 examples/_diff/*
-examples/specs/*.png
+examples/images/*
 **/*.js.map
 **/*.js
