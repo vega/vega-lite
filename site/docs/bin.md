@@ -60,23 +60,24 @@ Setting `bin` groups the values into a smaller number of bins.
 }
 </div>
 
+Mapping binned values and its count to a `bar` mark produces a histogram.  
+
+<span class="vl-example" data-name="histogram"></span>
+
 
 Setting the `maxbins` parameter changes the number of output bins.
 
 <div class="vl-example">
 {
   "data": {"url": "data/cars.json"},
-  "mark": "point",
+  "mark": "bar",
   "encoding": {
     "x": {
       "bin": {"maxbins": 30},
       "field": "Horsepower",
       "type": "quantitative"
-    }
+    },
+    "y": {"aggregate": "count", "field": "*", "type": "quantitative"}
   }
 }
 </div>
-
-Mapping binned values and its count to a `bar` mark produces a histogram.  
-
-<span class="vl-example" data-name="histogram"></span>
