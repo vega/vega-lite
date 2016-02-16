@@ -10,6 +10,7 @@ import {facetMixins} from './facet';
 import {compileLegends} from './legend';
 import {compileMark} from './mark';
 import {compileScales} from './scale';
+import {applyConfig, FILL_STROKE_CONFIG} from './util';
 import {extend} from '../util';
 
 import {LAYOUT} from '../data';
@@ -68,6 +69,7 @@ export function compileRootGroup(model: Model) {
     // put the marks inside a facet cell's group
     extend(rootGroup, facetMixins(model, marks));
   } else {
+    applyConfig(rootGroup.properties.update, model.config().unit, FILL_STROKE_CONFIG.concat(['clip']));
     rootGroup.marks = marks;
     rootGroup.scales = compileScales(model.channels(), model);
 

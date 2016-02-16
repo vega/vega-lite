@@ -5,6 +5,7 @@ import {Model} from './Model';
 
 import {compileAxis, compileInnerAxis, gridShow} from './axis';
 import {compileScales} from './scale';
+import {applyConfig, FILL_STROKE_CONFIG} from './util';
 
 /**
  * return mixins that contains marks, scales, and axes for the rootGroup
@@ -79,7 +80,6 @@ function getFacetGroup(model: Model, marks) {
 }
 
 function getFacetGroupProperties(model: Model) {
-  const cellConfig = model.config().cell;
   let facetGroupProperties: any = {
     x: model.has(COLUMN) ? {
         scale: model.scaleName(COLUMN),
@@ -99,15 +99,9 @@ function getFacetGroupProperties(model: Model) {
     height: {field: {parent: 'cellHeight'}}
   };
 
-  // add configs that are the resulting group marks properties
-  ['clip', 'fill', 'fillOpacity', 'stroke', 'strokeWidth',
-    'strokeOpacity', 'strokeDash', 'strokeDashOffset']
-    .forEach(function(property) {
-      const value = cellConfig[property];
-      if (value !== undefined) {
-        facetGroupProperties[property] = {value: value};
-      }
-    });
+  // apply both config from unit and facet.unit (with higher precedence for facet.unit) 
+  applyConfig(facetGroupProperties, model.config().unit, FILL_STROKE_CONFIG.concat(['clip']));
+  applyConfig(facetGroupProperties, model.config().facet.unit, FILL_STROKE_CONFIG.concat(['clip']));
 
   return facetGroupProperties;
 }

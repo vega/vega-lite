@@ -1,5 +1,4 @@
 import {UnitConfig, unitConfig, defaultUnitConfig} from './config.unit.schema';
-import {CellConfig, cellConfig, defaultCellConfig} from './config.cell.schema';
 import {FacetConfig, facetConfig, defaultFacetConfig} from './config.facet.schema';
 import {MarkConfig, markConfig, defaultMarkConfig} from './config.marks.schema';
 import {AxisConfig, axisConfig, defaultAxisConfig} from './axis.schema';
@@ -22,7 +21,6 @@ export interface Config {
   legend?: LegendConfig;
 
   facet?: FacetConfig;
-  cell?: CellConfig;
 }
 
 export const defaultConfig: Config = {
@@ -35,7 +33,6 @@ export const defaultConfig: Config = {
   legend: defaultLegendConfig,
 
   facet: defaultFacetConfig,
-  cell: defaultCellConfig
 };
 
 export const config = {
@@ -80,8 +77,6 @@ export const config = {
     mark: markConfig,
     axis: axisConfig,
     legend: legendConfig,
-
-    facet: facetConfig,
-    cell: cellConfig,
+    facet: facetConfig
   }
 };
