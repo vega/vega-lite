@@ -1,7 +1,6 @@
 node_modules
 bower_components
 _site
-_gallery.html
 
 vega-lite*.js
 vega-lite*.map
