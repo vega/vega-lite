@@ -22,7 +22,6 @@
     "deploy": "scripts/deploy.sh",
     "deploy:gh": "scripts/deploy-gh.sh",
     "lint": "tslint -c tslint.json src/*.ts test/*.ts src/**/*.ts test/**/*.ts",
-    "prestart": "bundle exec jekyll build --config _config.yml,_config_dev.yml && cp _site/gallery.html _gallery.html",
     "start": "npm run watch & browser-sync start --server --files 'vega-lite.js' --index '_gallery.html'",
     "schema": "tsc && npm run schema:only",
     "schema:only": "node src/schema/schemagen.js > vega-lite-schema.json",

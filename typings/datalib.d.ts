@@ -17,7 +17,15 @@ declare module 'datalib/src/stats' {
   export function summary(a: Array<Array<any>>);
 }
 
+
+interface BinFunc {
+  (o: any): {
+    stop: number;
+    start: number;
+    step: number;
+  };
+}
+declare var bin: BinFunc;
 declare module 'datalib/src/bins/bins' {
-  function bin(a);
   export = bin;
 }

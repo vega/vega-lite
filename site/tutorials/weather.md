@@ -11,6 +11,7 @@ For this tutorial, we will create visualizations to explore a dataset about weat
 
 To load the CSV file with Vega-Lite, we need to provide a URL and set the format type in the data section of the specification.
 
+{: .suppress-error}
 ```json
 "data": {"url": "data/seattle-weather.csv", "formatType": "csv"}
 ```
@@ -202,4 +203,4 @@ However, the default color palette's semantics might not match our expectation. 
 }
 </div>
 
-This is the end of this tutorial where you learned different ways to discretize and aggregate data, derive new fields, and customize your charts. You can find more visualizations in the [gallery]({{site.baseurl}}/gallery.html). If you want to further customize your charts, please read the [documentation]({{site.baseurl}}/docs/). 
+This is the end of this tutorial where you learned different ways to discretize and aggregate data, derive new fields, and customize your charts. You can find more visualizations in the [gallery]({{site.baseurl}}/gallery.html). If you want to further customize your charts, please read the [documentation]({{site.baseurl}}/docs/).
