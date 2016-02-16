@@ -67,7 +67,7 @@ d3.json('examples/vl-examples.json', function(VL_SPECS) {
     vizEnter.append('div').attr('class', 'view');
 
     data.forEach(function(example) {
-      d3.json('examples/' + example.name + '.json', function(error, vlSpec) {
+      d3.json('examples/specs/' + example.name + '.json', function(error, vlSpec) {
         var embedSpec = {
           mode: 'vega-lite',
           spec: vlSpec,
