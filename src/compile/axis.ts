@@ -3,7 +3,7 @@ import {title as fieldDefTitle} from '../fielddef';
 import {contains, extend, truncate} from '../util';
 import {NOMINAL, ORDINAL, TEMPORAL} from '../type';
 import {COLUMN, ROW, X, Y, Channel} from '../channel';
-import {formatMixins} from './util';
+import {formatMixins, timeFormat} from './util';
 
 // https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations
 declare let exports;
@@ -178,25 +178,35 @@ export namespace properties {
       }, labelsSpec);
     }
 
-    let textTemplate = '{{ datum.data }}';
-
     if (contains([NOMINAL, ORDINAL], fieldDef.type) && axis.labelMaxLength) {
       // TODO replace this with Vega's labelMaxLength once it is introduced
-      textTemplate = '{{ datum.data | truncate:' + axis.labelMaxLength + '}}';
+      labelsSpec = extend({
+        text : {
+          template : '{{ datum.data | truncate:' + axis.labelMaxLength + '}}'
+        }
+      }, labelsSpec || {});
     }
 
-    if(axis.showUnit === 'label-prefix') {
-        textTemplate = fieldDef.unit + textTemplate;
+    if(fieldDef.timeUnit) {
+      labelsSpec = extend({
+        text : {
+          template : '{{ datum.data | time:\'' + timeFormat(model, channel) + '\'}}'
+        }
+      }, labelsSpec || {});
     } else if(axis.showUnit === 'label-suffix') {
-        textTemplate = textTemplate + fieldDef.unit;
+      labelsSpec = extend({
+        text : {
+          template : '{{ datum.data }}' + fieldDef.unit
+        }
+      }, labelsSpec || {});
+    } else if(axis.showUnit === 'label-prefix') {
+      labelsSpec = extend({
+        text : {
+          template : fieldDef.unit + '{{ datum.data }}'
+        }
+      }, labelsSpec || {});
     }
-
-    labelsSpec = extend({
-      text : {
-        template : textTemplate
-      }
-    }, labelsSpec || {});
-
+    
     if (axis.labelAngle) {
       labelsSpec = extend({
         angle: {value: axis.labelAngle}
