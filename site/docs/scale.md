@@ -7,7 +7,7 @@ permalink: /docs/scale.html
 
 Scales are functions that transform a domain of data values (numbers, dates, strings, etc) to a range of visual values (pixels, colors, sizes).
 
-Vega-Lite automatically creates scales for fields that are [mapped to mark properties](#props-channels).  Default scale properties are determined based on a set of rules, but [`scale`](encoding.html#scale-and-guide) property of the channel definition can be provided to customize the scale's properties.
+Vega-Lite automatically creates scales for fields that are [mapped to mark properties](#props-channels).  Supported [scale types](#type) are quantitative, time, and ordinal. Default scale properties are determined based on a set of rules for each scale type, but [`scale`](encoding.html#scale-and-guide) property of the channel definition can be provided to customize the scale's properties.
 
 {: .suppress-error}
 ```json
@@ -40,8 +40,8 @@ The rest of this page describes properties of a scale and their default behavior
 
 Vega-Lite supports the following scales types:
 
-Quantitative Scales
-: Quantitative scales take continuous, quantitative data as their input domain.  There are multiple types of quantitative scales. `linear`, `power`, and `log` scales output continuous ranges.  Meanwhile `quantize` and `quantile` scales output discrete ranges.  
+Quantitative Scale
+: A quantitative scales takes continuous, quantitative data as its input domain.  There are multiple types of quantitative scales. `linear`, `power`, and `log` scales output continuous ranges.  Meanwhile `quantize` and `quantile` scales output discrete ranges.  
 
 - `linear` scale expresses each range value _y_ as a linear function of the domain value _x_: _y = mx + b_.  This is the default scale for a quantitative field (field with `type` = `"quantitative"`).
 - `pow` scale expresses each range value _y_ as a power (exponential) function of the domain value _x_: _y = mx^k + b_, where _k_ is the exponent value.  (_k_ can be customized using [`exponent`](#quant-props) property.)
@@ -51,19 +51,23 @@ Quantitative Scales
 
 <!-- TODO: need to test if we support threshold scale correctly before writing about it-->
 
-Time Scales
-: A `time` scale is similar to a linear quantitative scale but takes date as input.  By default, a temporal field has `time` scale by default (except a temporal field with `hours`, `day`, `date`, `month` as time unit has ordinal scale by default).  
+Time Scale
+: A `time` scale is similar to a linear quantitative scale but takes date as input.  In general, a temporal field has `time` scale by default.  The exceptions are temporal fields with `hours`, `day`, `date`, `month` as time unit; they have `ordinal` scales by default.  
 <!-- <br/>`utc` is a time scale that uses [Coordinated Universal Time](https://en.wikipedia.org/wiki/Coordinated_Universal_Time) rather than local time. -->
 
-Discrete Ordinal Scale
-: A discrete ordinal scale (`ordinal`) take discrete domain as their input domain.    Ordinal (ordered) and nominal (unordered/categorical) data always use `ordinal` scale.
-<!-- TODO: talk about discrete/continuous range (modified by `ramp` property). -->
+Ordinal Scale
+: An ordinal scale (`ordinal`) takes discrete domain as their input domain.    Ordinal (ordered) and nominal (unordered/categorical) data always use `ordinal` scale.   
+
+- An ordinal `color` scale with `nominal` data outputs categorical color palette while an ordinal `color` scale with `ordinal` data outputs sequential color ramp.  ([See example](#ex-color-range).)
+- An ordinal `shape` scale always produces a categorical range since shape cannot convey order.
+- Ordinal scales for other channels (`x`, `y`, `size`) always output sequential range.  The default order for nominal data is determined by Javascript's natural order.  
+
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | type          | String        | The type of scale. <br/> •  For a _quantitative_ field, supported quantitative scale types  are `"linear"` (default), `"log"`, `"pow"`, `"sqrt"`, `"quantile"`, `"quantize"`, and `"threshold"`.  <br/> • For a _temporal_ field without `timeUnit`, the scale type should be `time` (default) or `ordinal`.  <br/>  • For _ordinal_ and _nominal_ fields, the type is always `ordinal`. <br/>Unsupported values will be ignored.  |
 
-<!-- TODO: add utc to the above table for temporal field --> 
+<!-- TODO: add utc to the above table for temporal field -->
 
 **Note:**
 For more information about scale types, please see [d3 scale documentation](https://github.com/mbostock/d3/wiki/Quantitative-Scales) for more information.
@@ -111,31 +115,54 @@ TODO: Custom Domain for quantitative
 {:#range}
 ## Scale Range
 
-By default, Vega-Lite provides the following default values:
-- For `x` and `y`, the range covers the chart's cell width and cell height respectively.  
-- For `color`, the default range is `"category10"` for nominal fields, and a green ramp (`["#AFC6A3", "#09622A"]`) for other types of fields.
-- For `shape`, the default is [Vega's `"shape"` preset](https://github.com/vega/vega/wiki/Scales#scale-range-literals).
-<!-- what is the implication of this -->
-- For `row` and `column`, the default range is `width` and `height` respectively.  
+The range of the scale represents the set of output visual values.  Vega-Lite automatically determines appropriate range for each type of scale, but `range` property can be provided to customize range values.  
 
-Custom range values can be specified via the scale's `range` property.
+For continuous `x` and `y` scales (quantitative and time), the range are always `[0, unitWidth]` and  `[0, unitHeight]` (See [config.unit](config.html#unit) for customizing unit width and height).  For ordinal `x` and `y` scales, the maximum range is a product of the field's cardinality and [`bandWidth`](#ordinal).
+
+A `color` scale of a nominal field has a categorical color palette as its range.  The default palette is `"category10"`.  Customized categorical color `range` can be either a [string literal for a palette name](#color-palette) or an array of desired output values.  
+
+A `color` scale for ordinal, temporal, and quantitative fields have a sequential color ramp as its range.  Currently, Vega-Lite only supports color ramp that interpolate between two color values.  The default color ramp is a green ramp between `["#AFC6A3", "#09622A"]`.  Customized categorical color `range` takes a two-element array of color values for the interpolation.  
+
+A `shape` scale has a list of shape type names as its range.  The default range is `["circle", "cross", "diamond", "square", "triangle-down", "triangle-up"]`.  An array of supported shapes can be provided as a customized `range`.
+
+A `size` scale has a sequential range.  For `bar`, `point`, `square`, and `circle` marks, the default size range is automatically determined based on the scale's `bandWidth`.  For `text` mark, the default font size range is `"[8, 40]"`.   Customized size `range` can be either a two-element array of color values for the interpolation or (for ordinal size scale only) an array of desired output size for each domain value.
+
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| range        | Array &#124; String  | For numeric values, the range can take the form of a two-element array with minimum and maximum values. For ordinal or quantized data, the range may be an array of desired output values, which are mapped to elements in the specified domain. [See Vega's documentation on range literals for more options](https://github.com/vega/vega/wiki/Scales#scale-range-literals). |
+| range        | Array &#124; String  | For continuous range (`linear`, `log`, `pow`, `sqrt`), the range can take the form of a two-element array with minimum and maximum values. For discrete range (`ordinal` or `quantize` scales), the range may be an array of desired output values, which are mapped to elements in the specified domain.  If there are fewer elements in the range than in the domain, the scale will reuse values from the start of the range.  |
+
+{:#color-palette}
+### Built-in Color Palettes
+
+The following built-in palettes can be used as a customized categorical color  `range` value.
+
+| Name          | Description  |
+| :------------ | :------------|
+| category10    | Set the scale range to a 10-color categorical palette: <br><br> ![1f77b4](https://raw.githubusercontent.com/wiki/mbostock/d3/1f77b4.png) #1f77b4 ![ff7f0e](https://raw.githubusercontent.com/wiki/mbostock/d3/ff7f0e.png) #ff7f0e ![2ca02c](https://raw.githubusercontent.com/wiki/mbostock/d3/2ca02c.png) #2ca02c ![d62728](https://raw.githubusercontent.com/wiki/mbostock/d3/d62728.png) #d62728 ![9467bd](https://raw.githubusercontent.com/wiki/mbostock/d3/9467bd.png) #9467bd<br> ![8c564b](https://raw.githubusercontent.com/wiki/mbostock/d3/8c564b.png) #8c564b ![e377c2](https://raw.githubusercontent.com/wiki/mbostock/d3/e377c2.png) #e377c2 ![7f7f7f](https://raw.githubusercontent.com/wiki/mbostock/d3/7f7f7f.png) #7f7f7f ![bcbd22](https://raw.githubusercontent.com/wiki/mbostock/d3/bcbd22.png) #bcbd22 ![17becf](https://raw.githubusercontent.com/wiki/mbostock/d3/17becf.png) #17becf|
+| category20    | Set the scale range to a 20-color categorical palette: <br><br> ![1f77b4](https://raw.githubusercontent.com/wiki/mbostock/d3/1f77b4.png) #1f77b4 ![aec7e8](https://raw.githubusercontent.com/wiki/mbostock/d3/aec7e8.png) #aec7e8 ![ff7f0e](https://raw.githubusercontent.com/wiki/mbostock/d3/ff7f0e.png) #ff7f0e ![ffbb78](https://raw.githubusercontent.com/wiki/mbostock/d3/ffbb78.png) #ffbb78 ![2ca02c](https://raw.githubusercontent.com/wiki/mbostock/d3/2ca02c.png) #2ca02c<br> ![98df8a](https://raw.githubusercontent.com/wiki/mbostock/d3/98df8a.png) #98df8a ![d62728](https://raw.githubusercontent.com/wiki/mbostock/d3/d62728.png) #d62728 ![ff9896](https://raw.githubusercontent.com/wiki/mbostock/d3/ff9896.png) #ff9896 ![9467bd](https://raw.githubusercontent.com/wiki/mbostock/d3/9467bd.png) #9467bd ![c5b0d5](https://raw.githubusercontent.com/wiki/mbostock/d3/c5b0d5.png) #c5b0d5<br> ![8c564b](https://raw.githubusercontent.com/wiki/mbostock/d3/8c564b.png) #8c564b ![c49c94](https://raw.githubusercontent.com/wiki/mbostock/d3/c49c94.png) #c49c94 ![e377c2](https://raw.githubusercontent.com/wiki/mbostock/d3/e377c2.png) #e377c2 ![f7b6d2](https://raw.githubusercontent.com/wiki/mbostock/d3/f7b6d2.png) #f7b6d2 ![7f7f7f](https://raw.githubusercontent.com/wiki/mbostock/d3/7f7f7f.png) #7f7f7f<br> ![c7c7c7](https://raw.githubusercontent.com/wiki/mbostock/d3/c7c7c7.png) #c7c7c7 ![bcbd22](https://raw.githubusercontent.com/wiki/mbostock/d3/bcbd22.png) #bcbd22 ![dbdb8d](https://raw.githubusercontent.com/wiki/mbostock/d3/dbdb8d.png) #dbdb8d ![17becf](https://raw.githubusercontent.com/wiki/mbostock/d3/17becf.png) #17becf ![9edae5](https://raw.githubusercontent.com/wiki/mbostock/d3/9edae5.png) #9edae5|
+| category20b    | Set the scale range to a 20-color categorical palette: <br><br> ![393b79](https://raw.githubusercontent.com/wiki/mbostock/d3/393b79.png) #393b79 ![5254a3](https://raw.githubusercontent.com/wiki/mbostock/d3/5254a3.png) #5254a3 ![6b6ecf](https://raw.githubusercontent.com/wiki/mbostock/d3/6b6ecf.png) #6b6ecf ![9c9ede](https://raw.githubusercontent.com/wiki/mbostock/d3/9c9ede.png) #9c9ede ![637939](https://raw.githubusercontent.com/wiki/mbostock/d3/637939.png) #637939<br> ![8ca252](https://raw.githubusercontent.com/wiki/mbostock/d3/8ca252.png) #8ca252 ![b5cf6b](https://raw.githubusercontent.com/wiki/mbostock/d3/b5cf6b.png) #b5cf6b ![cedb9c](https://raw.githubusercontent.com/wiki/mbostock/d3/cedb9c.png) #cedb9c ![8c6d31](https://raw.githubusercontent.com/wiki/mbostock/d3/8c6d31.png) #8c6d31 ![bd9e39](https://raw.githubusercontent.com/wiki/mbostock/d3/bd9e39.png) #bd9e39<br> ![e7ba52](https://raw.githubusercontent.com/wiki/mbostock/d3/e7ba52.png) #e7ba52 ![e7cb94](https://raw.githubusercontent.com/wiki/mbostock/d3/e7cb94.png) #e7cb94 ![843c39](https://raw.githubusercontent.com/wiki/mbostock/d3/843c39.png) #843c39 ![ad494a](https://raw.githubusercontent.com/wiki/mbostock/d3/ad494a.png) #ad494a ![d6616b](https://raw.githubusercontent.com/wiki/mbostock/d3/d6616b.png) #d6616b<br> ![e7969c](https://raw.githubusercontent.com/wiki/mbostock/d3/e7969c.png) #e7969c ![7b4173](https://raw.githubusercontent.com/wiki/mbostock/d3/7b4173.png) #7b4173 ![a55194](https://raw.githubusercontent.com/wiki/mbostock/d3/a55194.png) #a55194 ![ce6dbd](https://raw.githubusercontent.com/wiki/mbostock/d3/ce6dbd.png) #ce6dbd ![de9ed6](https://raw.githubusercontent.com/wiki/mbostock/d3/de9ed6.png) #de9ed6|
+| category20c    | Set the scale range to a 20-color categorical palette: <br><br> ![3182bd](https://raw.githubusercontent.com/wiki/mbostock/d3/3182bd.png) #3182bd ![6baed6](https://raw.githubusercontent.com/wiki/mbostock/d3/6baed6.png) #6baed6 ![9ecae1](https://raw.githubusercontent.com/wiki/mbostock/d3/9ecae1.png) #9ecae1 ![c6dbef](https://raw.githubusercontent.com/wiki/mbostock/d3/c6dbef.png) #c6dbef ![e6550d](https://raw.githubusercontent.com/wiki/mbostock/d3/e6550d.png) #e6550d<br> ![fd8d3c](https://raw.githubusercontent.com/wiki/mbostock/d3/fd8d3c.png) #fd8d3c ![fdae6b](https://raw.githubusercontent.com/wiki/mbostock/d3/fdae6b.png) #fdae6b ![fdd0a2](https://raw.githubusercontent.com/wiki/mbostock/d3/fdd0a2.png) #fdd0a2 ![31a354](https://raw.githubusercontent.com/wiki/mbostock/d3/31a354.png) #31a354 ![74c476](https://raw.githubusercontent.com/wiki/mbostock/d3/74c476.png) #74c476<br> ![a1d99b](https://raw.githubusercontent.com/wiki/mbostock/d3/a1d99b.png) #a1d99b ![c7e9c0](https://raw.githubusercontent.com/wiki/mbostock/d3/c7e9c0.png) #c7e9c0 ![756bb1](https://raw.githubusercontent.com/wiki/mbostock/d3/756bb1.png) #756bb1 ![9e9ac8](https://raw.githubusercontent.com/wiki/mbostock/d3/9e9ac8.png) #9e9ac8 ![bcbddc](https://raw.githubusercontent.com/wiki/mbostock/d3/bcbddc.png) #bcbddc<br> ![dadaeb](https://raw.githubusercontent.com/wiki/mbostock/d3/dadaeb.png) #dadaeb ![636363](https://raw.githubusercontent.com/wiki/mbostock/d3/636363.png) #636363 ![969696](https://raw.githubusercontent.com/wiki/mbostock/d3/969696.png) #969696 ![bdbdbd](https://raw.githubusercontent.com/wiki/mbostock/d3/bdbdbd.png) #bdbdbd ![d9d9d9](https://raw.githubusercontent.com/wiki/mbostock/d3/d9d9d9.png) #d9d9d9|
 
 
-#### Example: Default Color Map based on Data Type
+### Example: Default Color Ranges based on Data Types
 
-__TODO__
-<!-- Example: nominal -->
-<!-- Example: ordinal -->
-<!-- Example: quantitative -->
+A color scale of a nominal field outputs a categorical color palette.  
 
-#### Example: Custom Color Range
+<div class="vl-example" data-name="scatter_color"></div>
 
-TODO: put bar_layered_transparent.json or its variation in mark.md here
+Meanwhile, a color scale an ordinal field and a quantitative field outputs a sequential color ramp.  
 
+<div class="vl-example" data-name="scatter_color_ordinal"></div>
+<div class="vl-example" data-name="scatter_color_quantitative"></div>
+
+### Example: Custom Color Range
+
+We can customize the color range of the scatterplot above by providing `scale`'s `range` property.
+
+<div class="vl-example" data-name="scatter_color_custom"></div>
+
+<div class="vl-example" data-name="scatter_color_ordinal_custom"></div>
 
 ## Other Scale Properties
 
@@ -146,12 +173,13 @@ TODO: put bar_layered_transparent.json or its variation in mark.md here
 | round         | Boolean       | If true, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid.|
 
 {:#quant-props}
+
 ### Quantitative Scale Properties
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| clamp         | Boolean       | If true (default), values that exceed the data domain are clamped to either the minimum or maximum range value.  This property is not applicable for `quantile`, `quantize`, and `threshold` scales as they output discrete ranges. |
-| exponent      | Number        | Sets the exponent of the scale transformation. For `pow` scale types only, otherwise ignored.|
+| clamp         | Boolean       | If true (default), values that exceed the data domain are clamped to either the minimum or maximum range value.  (Not applicable for `quantile`, `quantize`, and `threshold` scales as they output discrete ranges.) |
+| exponent      | Number        | Sets the exponent of the scale transformation. (For `pow` scale types only, otherwise ignored.) |
 | nice          | Boolean       | If true, modifies the scale domain to use a more human-friendly number range (e.g., 7 instead of 6.96).|
 | zero          | Boolean       | If true, ensures that a zero baseline value is included in the scale domain. This option is ignored for non-quantitative scales.  If unspecified, zero is true by default. |
 
@@ -164,19 +192,40 @@ TODO: put bar_layered_transparent.json or its variation in mark.md here
 | clamp         | Boolean       | If true (default), values that exceed the data domain are clamped to either the minimum or maximum range value.|
 | nice          | String        | If specified, modifies the scale domain to use a more human-friendly value range. For `time` and `utc` scale types only, the nice value should be a string indicating the desired time interval; legal values are `"second"`, `"minute"`, `"hour"`, `"day"`, `"week"`, `"month"`, or `"year"`.|
 
-
+{:#ordinal}
 ### Ordinal Scale Properties
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| bandWidth     | Number        | Width for each ordinal band. |
+| bandWidth     | Number        | Width for each ordinal band.  ([See example](#ex-bandwidth).) |
 | padding       | Number        | Applies spacing among ordinal elements in the scale range. The actual effect depends on how the scale is configured. <br/> • For `x` and `y`, the padding value is interpreted as a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. <br/> • For `row` and `column`, padding is typically in the range [0, 1] and corresponds to the fraction of space in the range interval to allocate to padding. A value of 0.5 means that the range band width will be equal to the padding width. For more, see the [D3 ordinal scale documentation](https://github.com/mbostock/d3/wiki/Ordinal-Scales).|
 
-<!-- TODO: better explanation for bandWidth-->
-<!-- TODO: add outerPadding -->
+{:#ex-bandwidth}
+#### Example: Custom Band Width
 
-<!-- TODO: rewrite in "relationship to Vega"?
-<small>
-__<sup>1</sup>__ All Vega-Lite scale properties exist in Vega except `useRawDomain`, which is a special property in Vega-Lite.  Some Vega properties are excluded in Vega-Lite. For example,  `reverse` is excluded from Vega-Lite's `scale` to avoid conflicts with `sort` property.  Please use `sort` of a field definition to `"descending"` to get similar behavior to setting  `reverse` to `true` in Vega.  
-</small>
--->
+Given a bar chart:
+
+<div class="vl-example" data-name="bar"></div>
+
+We can make the band for each bar smaller by providing `scale`'s `bandWidth`.
+
+<div class="vl-example">
+{
+  "description": "A simple bar chart with embedded data.",
+  "data": {
+    "values": [
+      {"a": "A","b": 28}, {"a": "B","b": 55}, {"a": "C","b": 43},
+      {"a": "D","b": 91}, {"a": "E","b": 81}, {"a": "F","b": 53},
+      {"a": "G","b": 19}, {"a": "H","b": 87}, {"a": "I","b": 52}
+    ]
+  },
+  "mark": "bar",
+  "encoding": {
+    "x": {
+      "field": "a", "type": "ordinal",
+      "scale": {"bandWidth": 11}
+    },
+    "y": {"field": "b", "type": "quantitative"}
+  }
+}
+</div>

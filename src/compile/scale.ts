@@ -11,7 +11,7 @@ import {COLUMN, ROW, X, Y, SHAPE, SIZE, COLOR, TEXT, hasScale, Channel} from '..
 import {SOURCE, STACKED_SCALE} from '../data';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 import {Mark, BAR, TEXT as TEXT_MARK} from '../mark';
-import {rawDomain} from './time';
+import {rawDomain, smallestUnit} from './time';
 import {field} from '../fielddef';
 
 /**
@@ -70,10 +70,9 @@ function mainScale(model: Model, fieldDef: FieldDef, channel: Channel) {
     // quantitative
     'exponent', 'zero',
     // ordinal
-    'outerPadding', 'padding', 'points'
+    'padding', 'points'
   ].forEach(function(property) {
-    // TODO include fieldDef as part of the parameters
-    const value = exports[property](scale, fieldDef, channel, scaleDef.type);
+    const value = exports[property](scale[property], scaleDef.type, channel, fieldDef);
     if (value !== undefined) {
       scaleDef[property] = value;
     }
@@ -303,19 +302,22 @@ function _useRawDomain (scale: Scale, model: Model, channel: Channel, scaleType:
       // domain values from the summary table.
       (fieldDef.type === QUANTITATIVE && !fieldDef.bin) ||
       // T uses non-ordinal scale when there's no unit or when the unit is not ordinal.
-      (fieldDef.type === TEMPORAL && scaleType === 'time')
+      (fieldDef.type === TEMPORAL && contains(['time', 'utc'], scaleType))
     );
 }
 
 
 export function rangeMixins(scale: Scale, model: Model, channel: Channel, scaleType: string): any {
+  // TODO: need to add rule for quantile, quantize, threshold scale
+
   var fieldDef = model.fieldDef(channel);
 
   if (scaleType === 'ordinal' && scale.bandWidth) {
     return {bandWidth: scale.bandWidth};
   }
 
-  if (scale.range) { // explicit value
+  if (scale.range && !contains([X, Y, ROW, COLUMN], channel)) {
+    // explicit value (Do not allow explicit values for X, Y, ROW, COLUMN)
     return {range: scale.range};
   }
 
@@ -335,11 +337,10 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel, scaleT
       };
     case SIZE:
       if (model.is(BAR)) {
-        // TODO: determine bandSize for bin, which actually uses linear scale
         const dimension = model.config().mark.orient === 'horizontal' ? Y : X;
-        return {range: [2, model.scale(dimension).bandWidth]};
+        return {range: [2 /* TODO: config.mark.thinBarWidth*/ , model.scale(dimension).bandWidth]};
       } else if (model.is(TEXT_MARK)) {
-        return {range: [8, 40]};
+        return {range: [8, 40]}; /* TODO: config.scale.rangeFontSize */
       }
       // else -- point, square, circle
       const xIsMeasure = model.isMeasure(X);
@@ -352,7 +353,7 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel, scaleT
           model.scale(Y).bandWidth || 21 /* config.scale.bandWidth */
         );
 
-      return {range: [10, (bandWidth - 2) * (bandWidth - 2)]};
+      return {range: [9, (bandWidth - 2) * (bandWidth - 2)]};
     case SHAPE:
       return {range: 'shapes'};
     case COLOR:
@@ -369,112 +370,80 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel, scaleT
   return {};
 }
 
-export function clamp(scale: Scale) {
-  // TODO: check scale type as well
-
-  // only return value if explicit value is specified.
-  return scale.clamp;
-}
-
-export function exponent(scale: Scale) {
-  // TODO: check scale type as well
-
-  // only return value if explicit value is specified.
-  return scale.exponent;
-}
-
-export function nice(scale: Scale, fieldDef: FieldDef, channel: Channel, scaleType: string) {
-  // TODO: check scale type up here
-
-  if (scale.nice !== undefined) {
-    // explicit value
-    return scale.nice;
-  }
-
-  switch (channel) {
-    case X: /* fall through */
-    case Y:
-      if (scaleType === 'time' || scaleType === 'ordinal') {
-        return undefined;
-      }
-      return true;
-
-    case ROW: /* fall through */
-    case COLUMN:
-      return true;
+export function clamp(prop: boolean, scaleType: string) {
+  // Only works for scale with both continuous domain continuous range
+  // (Doesn't work for quantize, quantile, threshold, ordinal)
+  if (contains(['linear', 'pow', 'sqrt', 'log', 'time', 'utc'], scaleType)) {
+    return prop;
   }
   return undefined;
 }
 
-export function outerPadding(scale: Scale, fieldDef: FieldDef, channel: Channel, scaleType: string) {
-  if (scaleType === 'ordinal') {
-    if (scale.outerPadding !== undefined) {
-      return scale.outerPadding; // explicit value
+export function exponent(prop: number, scaleType: string) {
+  if (scaleType === 'pow') {
+    return prop;
+  }
+  return undefined;
+}
+
+export function nice(prop: boolean|string, scaleType: string, channel: Channel, fieldDef: FieldDef) {
+  if (contains(['linear', 'pow', 'sqrt', 'log', 'time', 'utc', 'quantize'], scaleType)) {
+    if (prop !== undefined) {
+      return prop;
     }
+    if (contains(['time', 'utc'], scaleType)) {
+      return smallestUnit(fieldDef.timeUnit);
+    }
+    return contains([X, Y], channel); // return true for quantitative X/Y
   }
   return undefined;
 }
 
-export function padding(scale: Scale, fieldDef: FieldDef, channel: Channel, scaleType: string) {
+
+export function padding(prop: number, scaleType: string, channel: Channel) {
+  // We do not use d3 scale's padding for row/column because padding there
+  // is a ratio ([0, 1]) and it causes the padding to be decimals.
+  // Therefore, we manually calculate padding in the layout by ourselves.
   if (scaleType === 'ordinal' && channel !== ROW && channel !== COLUMN) {
-    return scale.padding;
+    return prop;
   }
   return undefined;
 }
 
-export function points(scale: Scale, fieldDef: FieldDef, channel: Channel, scaleType: string) {
-  if (scaleType === 'ordinal') {
-    switch (channel) {
-      case X:
-      case Y:
-        return true;
-    }
+export function points(__, scaleType: string, channel: Channel) {
+  if (scaleType === 'ordinal' && contains([X, Y], channel)) {
+    // We always use ordinal point scale for x and y.
+    // Thus `points` isn't included in the scale's schema.
+    return true;
   }
   return undefined;
 }
 
-export function round(scale: Scale, fieldDef: FieldDef, channel: Channel) {
-  if (scale.round !== undefined) {
-    return scale.round;
+export function round(prop: boolean, scaleType: string, channel: Channel) {
+  if (prop !== undefined) {
+    return prop;
   }
 
-  // FIXME: revise if round is already the default value
+  // TODO: add these to config.scale, config.facet.scale
   switch (channel) {
     case X: /* fall through */
     case Y:
     case ROW:
     case COLUMN:
-    case SIZE:
       return true;
   }
   return undefined;
 }
 
-export function zero(scale: Scale, fieldDef: FieldDef, channel: Channel) {
-  var timeUnit = fieldDef.timeUnit;
-
-  if (scale.zero !== undefined) {
-    // explicit value
-    return scale.zero;
-  }
-
-  if (fieldDef.type === TEMPORAL) {
-    if (timeUnit === 'year') {
-      // year is using linear scale, but should not include zero
-      return false;
+export function zero(prop: boolean, scaleType: string, channel: Channel, fieldDef: FieldDef) {
+  // only applicable for non-ordinal scale
+  if (scaleType !== 'ordinal') {
+    if (prop !== undefined) {
+      return prop;
     }
-    // If there is no timeUnit or the timeUnit uses ordinal scale,
-    // zero property is ignored by vega so we should not generate them any way
-    return undefined;
+    // By default, return true only for non-binned, quantitative x-scale or y-scale.
+    return !(fieldDef.bin || contains(['time', 'utc'], scaleType)) &&
+      contains([X, Y], channel);
   }
-  if (fieldDef.bin) {
-    // Returns false (undefined) by default of bin
-    return false;
-  }
-
-  return channel === X || channel === Y ?
-    // if not bin / temporal, returns undefined for X and Y encoding
-    // since zero is true by default in vega for linear scale
-    undefined :
-    false;
+  return undefined;
 }
