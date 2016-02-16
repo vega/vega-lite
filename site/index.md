@@ -3,24 +3,29 @@ layout: page
 permalink: /
 
 images:
- - area
- - bar
- - line
- - circle
- - scatter
- - square
- - stacked_bar_h
- - point_filled
+ - spec: area
+   bgposition: 0 0
+   bgsize: cover
+ - spec: bar
+ - spec: line
+ - spec: circle
+ - spec: scatter
+ - spec: square
+ - spec: stacked_bar_h
+ - spec: point_filled
+ - spec: stacked_bar_h
+ - spec: point_filled
 
 ---
 
 {:.hidden}
 # Vega-Lite: a high-level visualization grammar
 
+{% include showcase.html %}
+
 {:.lead}
 **Vega-Lite** is a high-level visualization grammar.  It provides a concise JSON syntax for supporting rapid generation of visualizations to support analysis.  Vega-Lite specifications can be compiled to [Vega](http://vega.github.io/vega) specifications.
 
-{% include showcase.html %}
 
 Vega-Lite specifications describe visualizations as mappings from data to **properties of graphical marks** (e.g., points or bars).  It **automatically produces visualization components** including axes, legends, and scales. It then determines properties of these components based on a set of **carefully designed rules**.  This approach allows Vega-Lite specifications to be succinct and expressive, but also provide user control.  As Vega-Lite is designed for analysis, it supports **data transformation** such as aggregation, binning, filtering, sorting, and faceting.
 

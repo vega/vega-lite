@@ -221,6 +221,8 @@ nav a:hover {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+
+  margin: 20px 0;
 }
 .showcase .image {
   display: inline-block;
@@ -228,17 +230,13 @@ nav a:hover {
   /* Show 4 images per row, make the height depend on the width */
   height: 0;
   /* 12px  = 2*6px margin */
-  width: calc(25% - 12px - 1px);
+  width: calc(20% - 12px);
   /* hack to make height depend on width*/
-  padding-bottom: calc(20% - 12px);
-  margin: 8px 6px;
+  padding-bottom: calc(16% - 12px);
+  margin: 8px 0;
 
   background-position: center;
   background-repeat: no-repeat;
-}
-
-.showcase .image:hover {
-  background-size: contain;
 }
 
 /* Media queries */
