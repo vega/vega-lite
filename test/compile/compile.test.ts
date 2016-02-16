@@ -41,13 +41,12 @@ describe('Compile', function() {
         "title": titleName,
         "data": {
           "values": [
-            {"a": "A","b": 28}, {"a": "B","b": 55}, {"a": "C","b": 43}
+            {"a": "A"}
           ]
         },
-        "mark": "bar",
+        "mark": "point",
         "encoding": {
-          "x": {"field": "a", "type": "ordinal"},
-          "y": {"field": "b", "type": "quantitative"}
+          "x": {"field": "a", "type": "ordinal"}
         }
       });
 
