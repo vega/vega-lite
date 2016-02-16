@@ -5,7 +5,7 @@ import {QUANTITATIVE, TEMPORAL} from '../type';
 export interface Scale {
   type?: string;
   domain?: any; // TODO: declare vgDataDomain
-  range?: any; // TODO: declare vgRangeDomain
+  range?: string | number[] | string[]; // TODO: declare vgRangeDomain
   round?: boolean;
 
   // ordinal

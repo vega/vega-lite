@@ -18,7 +18,7 @@ import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL, Type} from '../type';
 export interface FieldDef {
   field?: string;
   type?: Type;
-  value?: any;
+  value?: number | string | boolean;
 
   // function
   timeUnit?: string;
@@ -84,7 +84,7 @@ const channelDefWithScale = mergeDeep(duplicate(fieldDef), {
 
 
 export interface PositionChannelDef extends ChannelDefWithScale {
-  axis?: AxisProperties;
+  axis?: boolean | AxisProperties;
 }
 
 export const positionChannelDef = mergeDeep(duplicate(channelDefWithScale), {
