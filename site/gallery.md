@@ -1,17 +1,28 @@
 ---
 layout: page
-title: Vega-Lite gallery
+title: Vega-Lite Gallery
 permalink: /gallery.html
 ---
+Testing background-image etc...
+<div class="image"
+  style="background-image: url('examples/images/area.svg')">
+</div>
 
-This is a gallery of Vega-Lite visualizations. Uses Vega-Lite version <span id="vl-version"></span> and Vega version <span id="vg-version"></span>.
 
-<div class="viz-list"></div>
+## Showcase
+Add description here.
+<div class="gallery" data-gallery-group="Showcase"></div>
 
-<label>
-  Show debug examples
-  <input type="checkbox" id="show-debug"/>
-</label>
+## Basic
+Add description here.
+<div class="gallery" data-gallery-group="Basic"></div>
 
-<script src="{{site.baseurl}}/site/static/gallery.js"></script>
-<link rel="stylesheet" href="{{site.baseurl}}/site/static/gallery.css">
+## Stack
+Add description here.
+<div class="gallery" data-gallery-group="Stack"></div>
+
+## Trellis
+Add description here.
+<div class="gallery" data-gallery-group="Trellis"></div>
+
+<script src="{{site.baseurl}}/site/static/showcasegallery.js"></script>
