@@ -33,4 +33,39 @@ describe('Compile', function() {
     });
 
   });
+
+  describe('compileTitle()', function() {
+    describe('ordinal', function() {
+      const titleName = "titleName";
+      const model = parseModel({
+        "title": titleName,
+        "data": {
+          "values": [
+            {"a": "A","b": 28}, {"a": "B","b": 55}, {"a": "C","b": 43}
+          ]
+        },
+        "mark": "bar",
+        "encoding": {
+          "x": {"field": "a", "type": "ordinal"},
+          "y": {"field": "b", "type": "quantitative"}
+        }
+      });
+
+      const titleGroup = compile.compileTitle(model);
+
+      it('should refer to layout data', function() {
+        assert.deepEqual(titleGroup.from, {"data": "layout"});
+      });
+
+      it('should have type of text', function() {
+        assert.deepEqual(titleGroup.type, "text");
+      });
+
+      it('should have title set correctly', function() {
+        assert.deepEqual(titleGroup.properties.update.text.value, titleName);
+      });
+    });
+
+  });
+
 });
