@@ -16,4 +16,4 @@ permalink: /showcasegallery.html
 ### Trellis
 <div class="gallery" data-gallery-group="Trellis"></div>
 
-<script src="{{site.baseurl}}/site/static/gallery.js"></script>
+<script src="{{site.baseurl}}/site/static/showcasegallery.js"></script>
