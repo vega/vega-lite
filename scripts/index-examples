@@ -1,0 +1,15 @@
+#!/usr/bin/env node
+// Compile a Vega-Lite spec to Vega
+
+'use strict';
+
+var fs = require('fs'),
+  path = require('path');
+
+var examples = fs.readdirSync('../examples/specs');
+
+var examples = examples.filter(function(example) {
+  return path.extname(example) === '.json'
+})
+
+process.stdout.write(JSON.stringify(examples));
