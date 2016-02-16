@@ -15,7 +15,7 @@ images:
 ---
 
 {:.hidden}
-# Vega-Lite
+# Vega-Lite: a high-level visualization grammar
 
 {:.lead}
 **Vega-Lite** is a high-level visualization grammar.  It provides a concise JSON syntax for supporting rapid generation of visualizations to support analysis.  Vega-Lite specifications can be compiled to [Vega](http://vega.github.io/vega) specifications.
