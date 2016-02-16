@@ -65,7 +65,7 @@
   },
   "dependencies": {
     "datalib": "^1.5.9",
-    "yargs": "^3.32.0"
+    "yargs": "^4.1.0"
   },
   "browserify": {
     "transform": [
