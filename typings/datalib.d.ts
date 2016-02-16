@@ -1,4 +1,4 @@
-declare module "datalib/src/util" {
+declare module 'datalib/src/util' {
   export function keys(a): Array<string>;
   export function extend(a, b, ...rest);
   export function duplicate(a);
@@ -9,15 +9,23 @@ declare module "datalib/src/util" {
   export function isObject(a): boolean;
 }
 
-declare module "datalib/src/generate" {
+declare module 'datalib/src/generate' {
   export function range(a: number, b?: number): Array<number>;
 }
 
-declare module "datalib/src/stats" {
+declare module 'datalib/src/stats' {
   export function summary(a: Array<Array<any>>);
 }
 
-declare module "datalib/src/bins/bins" {
-  function bin(a);
+
+interface BinFunc {
+  (o: any): {
+    stop: number;
+    start: number;
+    step: number;
+  };
+}
+declare var bin: BinFunc;
+declare module 'datalib/src/bins/bins' {
   export = bin;
 }

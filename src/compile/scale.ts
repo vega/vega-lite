@@ -11,7 +11,7 @@ import {COLUMN, ROW, X, Y, SHAPE, SIZE, COLOR, TEXT, hasScale, Channel} from '..
 import {SOURCE, STACKED_SCALE} from '../data';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 import {Mark, BAR, TEXT as TEXT_MARK} from '../mark';
-import {rawDomain} from './time';
+import {rawDomain, smallestUnit} from './time';
 import {field} from '../fielddef';
 
 /**
@@ -27,83 +27,100 @@ export function compileScales(channels: Channel[], model: Model) {
   return channels.filter(hasScale)
     .reduce(function(scales: any[], channel: Channel) {
       const fieldDef = model.fieldDef(channel);
-      const scale = model.scale(channel);
-      const sort = model.sort(channel);
-
-      var scaleDef: any = {
-        name: model.scaleName(channel),
-        type: type(scale, fieldDef, channel, model.mark()),
-      };
-
-      scaleDef.domain = domain(scale, model, channel, scaleDef.type);
-      extend(scaleDef, rangeMixins(scale, model, channel, scaleDef.type));
-
-      if (sort && (typeof sort === 'string' ? sort : sort.order) === 'descending') {
-        scaleDef.reverse = true;
-      }
-
-      // Add optional properties
-      [
-        // general properties
-        'round',
-        // quantitative / time
-        'clamp', 'nice',
-        // quantitative
-        'exponent', 'zero',
-        // ordinal
-        'outerPadding', 'padding', 'points'
-      ].forEach(function(property) {
-        // TODO include fieldDef as part of the parameters
-        const value = exports[property](scale, fieldDef, channel, scaleDef.type);
-        if (value !== undefined) {
-          scaleDef[property] = value;
-        }
-      });
 
       // Add additional scales needed to support ordinal legends (list of values)
       // for color ramp.
       if (channel === COLOR && model.legend(COLOR) && (fieldDef.type === ORDINAL || fieldDef.bin || fieldDef.timeUnit)) {
-        // This scale is for producing ordinal scale for legends.
-        // - For an ordinal field, provide an ordinal scale that maps rank values to field values
-        // - For a field with bin or timeUnit, provide an identity ordinal scale
-        // (mapping the field values to themselves)
-        scales.push({
-          name: COLOR_LEGEND,
-          type: 'ordinal',
-          domain: {
-            data: model.dataTable(),
-            // use rank_<field> for ordinal type, for bin and timeUnit use default field
-            field: model.field(COLOR, (fieldDef.bin || fieldDef.timeUnit) ? {} : {prefn: 'rank_'}), sort: true
-          },
-          range: {data: model.dataTable(), field: model.field(COLOR), sort: true}
-        });
-
-        // bin needs an additional scale for labels because we need to map bin_start to bin_range in legends
+        scales.push(colorLegendScale(model, fieldDef));
         if (fieldDef.bin) {
-          scales.push({
-            name: COLOR_LEGEND_LABEL,
-            type: 'ordinal',
-            domain: {
-              data: model.dataTable(),
-              field: model.field(COLOR,  {prefn: 'rank_'}),
-              sort: true
-            },
-            range: {
-              data: model.dataTable(),
-              field: field(fieldDef, {binSuffix: '_range'}),
-              sort: {
-                field: model.field(channel, { binSuffix: '_start' }),
-                op: 'min' // min or max doesn't matter since same _range would have the same _start
-              }
-            }
-          });
+          scales.push(binColorLegendLabel(model, fieldDef));
         }
       }
 
-      scales.push(scaleDef);
-
+      scales.push(mainScale(model, fieldDef, channel));
       return scales;
     }, []);
+}
+
+/**
+ * Return the main scale for each channel.  (Only color can have multiple scales.)
+ */
+function mainScale(model: Model, fieldDef: FieldDef, channel: Channel) {
+  const scale = model.scale(channel);
+  const sort = model.sort(channel);
+
+  let scaleDef: any = {
+    name: model.scaleName(channel),
+    type: type(scale, fieldDef, channel, model.mark()),
+  };
+
+  scaleDef.domain = domain(scale, model, channel, scaleDef.type);
+  extend(scaleDef, rangeMixins(scale, model, channel, scaleDef.type));
+
+  if (sort && (typeof sort === 'string' ? sort : sort.order) === 'descending') {
+    scaleDef.reverse = true;
+  }
+
+  // Add optional properties
+  [
+    // general properties
+    'round',
+    // quantitative / time
+    'clamp', 'nice',
+    // quantitative
+    'exponent', 'zero',
+    // ordinal
+    'padding', 'points'
+  ].forEach(function(property) {
+    const value = exports[property](scale[property], scaleDef.type, channel, fieldDef);
+    if (value !== undefined) {
+      scaleDef[property] = value;
+    }
+  });
+
+  return scaleDef;
+}
+
+/**
+ *  Return a scale  for producing ordinal scale for legends.
+ *  - For an ordinal field, provide an ordinal scale that maps rank values to field value
+ *  - For a field with bin or timeUnit, provide an identity ordinal scale
+ *    (mapping the field values to themselves)
+ */
+function colorLegendScale(model: Model, fieldDef: FieldDef) {
+  return {
+    name: COLOR_LEGEND,
+    type: 'ordinal',
+    domain: {
+      data: model.dataTable(),
+      // use rank_<field> for ordinal type, for bin and timeUnit use default field
+      field: model.field(COLOR, (fieldDef.bin || fieldDef.timeUnit) ? {} : {prefn: 'rank_'}), sort: true
+    },
+    range: {data: model.dataTable(), field: model.field(COLOR), sort: true}
+  };
+}
+
+/**
+ *  Return an additional scale for bin labels because we need to map bin_start to bin_range in legends
+ */
+function binColorLegendLabel(model: Model, fieldDef: FieldDef) {
+  return {
+    name: COLOR_LEGEND_LABEL,
+    type: 'ordinal',
+    domain: {
+      data: model.dataTable(),
+      field: model.field(COLOR,  {prefn: 'rank_'}),
+      sort: true
+    },
+    range: {
+      data: model.dataTable(),
+      field: field(fieldDef, {binSuffix: '_range'}),
+      sort: {
+        field: model.field(COLOR, { binSuffix: '_start' }),
+        op: 'min' // min or max doesn't matter since same _range would have the same _start
+      }
+    }
+  };
 }
 
 export function type(scale: Scale, fieldDef: FieldDef, channel: Channel, mark: Mark): string {
@@ -285,84 +302,22 @@ function _useRawDomain (scale: Scale, model: Model, channel: Channel, scaleType:
       // domain values from the summary table.
       (fieldDef.type === QUANTITATIVE && !fieldDef.bin) ||
       // T uses non-ordinal scale when there's no unit or when the unit is not ordinal.
-      (fieldDef.type === TEMPORAL && scaleType === 'time')
+      (fieldDef.type === TEMPORAL && contains(['time', 'utc'], scaleType))
     );
-}
-
-export function bandWidth(scale: Scale, fieldDef: FieldDef, channel: Channel, scaleType: string) {
-  if (scaleType === 'ordinal') {
-    return scale.bandWidth;
-  }
-  return undefined;
-}
-
-export function clamp(scale: Scale) {
-  // only return value if explicit value is specified.
-  return scale.clamp;
-}
-
-export function exponent(scale: Scale) {
-  // only return value if explicit value is specified.
-  return scale.exponent;
-}
-
-export function nice(scale: Scale, fieldDef: FieldDef, channel: Channel, scaleType: string) {
-  if (scale.nice !== undefined) {
-    // explicit value
-    return scale.nice;
-  }
-
-  switch (channel) {
-    case X: /* fall through */
-    case Y:
-      if (scaleType === 'time' || scaleType === 'ordinal') {
-        return undefined;
-      }
-      return true;
-
-    case ROW: /* fall through */
-    case COLUMN:
-      return true;
-  }
-  return undefined;
-}
-
-export function outerPadding(scale: Scale, fieldDef: FieldDef, channel: Channel, scaleType: string) {
-  if (scaleType === 'ordinal') {
-    if (scale.outerPadding !== undefined) {
-      return scale.outerPadding; // explicit value
-    }
-  }
-  return undefined;
-}
-
-export function padding(scale: Scale, fieldDef: FieldDef, channel: Channel, scaleType: string) {
-  if (scaleType === 'ordinal' && channel !== ROW && channel !== COLUMN) {
-    return scale.padding;
-  }
-  return undefined;
-}
-
-export function points(scale: Scale, fieldDef: FieldDef, channel: Channel, scaleType: string) {
-  if (scaleType === 'ordinal') {
-    switch (channel) {
-      case X:
-      case Y:
-        return true;
-    }
-  }
-  return undefined;
 }
 
 
 export function rangeMixins(scale: Scale, model: Model, channel: Channel, scaleType: string): any {
+  // TODO: need to add rule for quantile, quantize, threshold scale
+
   var fieldDef = model.fieldDef(channel);
 
   if (scaleType === 'ordinal' && scale.bandWidth) {
     return {bandWidth: scale.bandWidth};
   }
 
-  if (scale.range) { // explicit value
+  if (scale.range && !contains([X, Y, ROW, COLUMN], channel)) {
+    // explicit value (Do not allow explicit values for X, Y, ROW, COLUMN)
     return {range: scale.range};
   }
 
@@ -382,11 +337,10 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel, scaleT
       };
     case SIZE:
       if (model.is(BAR)) {
-        // TODO: determine bandSize for bin, which actually uses linear scale
         const dimension = model.config().mark.orient === 'horizontal' ? Y : X;
-        return {range: [2, model.scale(dimension).bandWidth]};
+        return {range: [2 /* TODO: config.mark.thinBarWidth*/ , model.scale(dimension).bandWidth]};
       } else if (model.is(TEXT_MARK)) {
-        return {range: [8, 40]};
+        return {range: [8, 40]}; /* TODO: config.scale.rangeFontSize */
       }
       // else -- point, square, circle
       const xIsMeasure = model.isMeasure(X);
@@ -399,7 +353,7 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel, scaleT
           model.scale(Y).bandWidth || 21 /* config.scale.bandWidth */
         );
 
-      return {range: [10, (bandWidth - 2) * (bandWidth - 2)]};
+      return {range: [9, (bandWidth - 2) * (bandWidth - 2)]};
     case SHAPE:
       return {range: 'shapes'};
     case COLOR:
@@ -416,48 +370,80 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel, scaleT
   return {};
 }
 
-export function round(scale: Scale, fieldDef: FieldDef, channel: Channel) {
-  if (scale.round !== undefined) {
-    return scale.round;
+export function clamp(prop: boolean, scaleType: string) {
+  // Only works for scale with both continuous domain continuous range
+  // (Doesn't work for quantize, quantile, threshold, ordinal)
+  if (contains(['linear', 'pow', 'sqrt', 'log', 'time', 'utc'], scaleType)) {
+    return prop;
+  }
+  return undefined;
+}
+
+export function exponent(prop: number, scaleType: string) {
+  if (scaleType === 'pow') {
+    return prop;
+  }
+  return undefined;
+}
+
+export function nice(prop: boolean|string, scaleType: string, channel: Channel, fieldDef: FieldDef) {
+  if (contains(['linear', 'pow', 'sqrt', 'log', 'time', 'utc', 'quantize'], scaleType)) {
+    if (prop !== undefined) {
+      return prop;
+    }
+    if (contains(['time', 'utc'], scaleType)) {
+      return smallestUnit(fieldDef.timeUnit);
+    }
+    return contains([X, Y], channel); // return true for quantitative X/Y
+  }
+  return undefined;
+}
+
+
+export function padding(prop: number, scaleType: string, channel: Channel) {
+  // We do not use d3 scale's padding for row/column because padding there
+  // is a ratio ([0, 1]) and it causes the padding to be decimals.
+  // Therefore, we manually calculate padding in the layout by ourselves.
+  if (scaleType === 'ordinal' && channel !== ROW && channel !== COLUMN) {
+    return prop;
+  }
+  return undefined;
+}
+
+export function points(__, scaleType: string, channel: Channel) {
+  if (scaleType === 'ordinal' && contains([X, Y], channel)) {
+    // We always use ordinal point scale for x and y.
+    // Thus `points` isn't included in the scale's schema.
+    return true;
+  }
+  return undefined;
+}
+
+export function round(prop: boolean, scaleType: string, channel: Channel) {
+  if (prop !== undefined) {
+    return prop;
   }
 
-  // FIXME: revise if round is already the default value
+  // TODO: add these to config.scale, config.facet.scale
   switch (channel) {
     case X: /* fall through */
     case Y:
     case ROW:
     case COLUMN:
-    case SIZE:
       return true;
   }
   return undefined;
 }
 
-export function zero(scale: Scale, fieldDef: FieldDef, channel: Channel) {
-  var timeUnit = fieldDef.timeUnit;
-
-  if (scale.zero !== undefined) {
-    // explicit value
-    return scale.zero;
-  }
-
-  if (fieldDef.type === TEMPORAL) {
-    if (timeUnit === 'year') {
-      // year is using linear scale, but should not include zero
-      return false;
+export function zero(prop: boolean, scaleType: string, channel: Channel, fieldDef: FieldDef) {
+  // only applicable for non-ordinal scale
+  if (scaleType !== 'ordinal') {
+    if (prop !== undefined) {
+      return prop;
     }
-    // If there is no timeUnit or the timeUnit uses ordinal scale,
-    // zero property is ignored by vega so we should not generate them any way
-    return undefined;
+    // By default, return true only for non-binned, quantitative x-scale or y-scale.
+    return !(fieldDef.bin || contains(['time', 'utc'], scaleType)) &&
+      contains([X, Y], channel);
   }
-  if (fieldDef.bin) {
-    // Returns false (undefined) by default of bin
-    return false;
-  }
-
-  return channel === X || channel === Y ?
-    // if not bin / temporal, returns undefined for X and Y encoding
-    // since zero is true by default in vega for linear scale
-    undefined :
-    false;
+  return undefined;
 }

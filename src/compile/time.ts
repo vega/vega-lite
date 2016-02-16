@@ -49,6 +49,38 @@ export function format(timeUnit, abbreviated = false): string {
   return out.length > 0 ? out.join(' ') : undefined;
 }
 
+/** returns the smallest nice unit for scale.nice */
+export function smallestUnit(timeUnit): string {
+  if (!timeUnit) {
+    return undefined;
+  }
+
+  if (timeUnit.indexOf('second') > -1) {
+    return 'second';
+  }
+
+  if (timeUnit.indexOf('minute') > -1) {
+    return 'minute';
+  }
+
+  if (timeUnit.indexOf('hour') > -1) {
+    return 'hour';
+  }
+
+  if (timeUnit.indexOf('day') > -1 || timeUnit.indexOf('date') > -1) {
+    return 'day';
+  }
+
+  if (timeUnit.indexOf('month') > -1) {
+    return 'month';
+  }
+
+  if (timeUnit.indexOf('year') > -1) {
+    return 'year';
+  }
+  return undefined;
+}
+
 export function parseExpression(timeUnit: string, fieldRef: string, onlyRef = false): string {
   let out = 'datetime(';
 

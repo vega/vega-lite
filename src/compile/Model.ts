@@ -294,7 +294,7 @@ export class Model {
             this.scale(channel).bandWidth - 1 :
           !this.has(channel) ?
             21 : /* config.scale.bandWidth */
-            2; // otherwise, set to 2 by default
+            2; /* TODO: config.mark.thinBarWidth*/  // otherwise, set to 2 by default
       case TICK:
         if (this.config().mark.tickWidth) {
           return this.config().mark.tickWidth;

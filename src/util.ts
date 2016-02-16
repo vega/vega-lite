@@ -74,7 +74,7 @@ export function all<T>(arr: Array<T>, f: (d: T, k?, i?) => boolean) {
 }
 
 // FIXME remove this
-import dlBin = require('datalib/src/bins/bins');
+import * as dlBin from 'datalib/src/bins/bins';
 export function getbins(stats, maxbins) {
   return dlBin({
     min: stats.min,

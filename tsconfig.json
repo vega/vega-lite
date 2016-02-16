@@ -76,6 +76,7 @@
     "src/schema/schemautil.ts",
     "src/schema/sort.schema.ts",
     "src/schema/transform.schema.ts",
+    "src/schema/vega.schema.ts",
     "src/shorthand.ts",
     "src/spec.ts",
     "src/timeunit.ts",
