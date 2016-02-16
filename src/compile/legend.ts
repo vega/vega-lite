@@ -76,8 +76,9 @@ export function title(fieldDef: FieldDef) {
   const legend = fieldDef.legend;
   if (typeof legend !== 'boolean' && legend.title) {
     return legend.title;
-  } else if ((typeof legend !== 'boolean' && legend.showUnit === 'title')
-              || (typeof legend === 'boolean' && fieldDef.unit)) {
+  } else if (typeof legend !== 'boolean') {
+    return fieldTitle(fieldDef, legend.showUnit === 'title');
+  } else if (typeof legend === 'boolean' && fieldDef.unit) {
     return fieldTitle(fieldDef, true);
   }
 
