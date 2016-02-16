@@ -1,5 +1,5 @@
 import * as vlFieldDef from '../fielddef';
-import {extend, keys, vals, reduce} from '../util';
+import {extend, keys, vals, reduce, contains} from '../util';
 import {Model} from './Model';
 import {FieldDef} from '../schema/fielddef.schema';
 import {VgData} from '../schema/vega.schema';
@@ -64,7 +64,14 @@ export namespace source {
       source.format = {type: 'json'};
     } else {
       source.url = model.data().url;
-      source.format = {type: model.data().formatType};
+
+      // Extract extension from URL using snippet from
+      // http://stackoverflow.com/questions/680929/how-to-extract-extension-from-filename-string-in-javascript
+      let defaultExtension = /(?:\.([^.]+))?$/.exec(source.url)[1];
+      if (!contains(['json', 'csv', 'tsv'], defaultExtension)) {
+        defaultExtension = 'json';
+      }
+      source.format = {type: model.data().formatType || defaultExtension};
     }
 
     // Set data's format.parse if needed
