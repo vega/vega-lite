@@ -165,12 +165,14 @@ namespace properties {
   }
 
   export function labels(fieldDef: FieldDef, symbolsSpec, model: Model, channel: Channel): any {
+    const legend = model.legend(channel);
+    console.log(legend);
     if (channel === COLOR) {
       if (fieldDef.type === ORDINAL) {
         return {
           text: {
             scale: COLOR_LEGEND,
-            field: 'data'
+            field: legend.showUnit === 'label-prefix' ? fieldDef.unit + 'data' : 'data'
           }
         };
       } else if (fieldDef.bin) {

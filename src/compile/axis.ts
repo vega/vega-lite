@@ -187,22 +187,21 @@ export namespace properties {
       }, labelsSpec || {});
     }
 
-    if(fieldDef.timeUnit) {
+    let datum = 'datum.data';
+
+    if (fieldDef.type === TEMPORAL) {
+      datum += '| time:\'%Y-%m-%d\''
+    }
+    if(axis.showUnit === 'label-suffix') {
       labelsSpec = extend({
         text : {
-          template : '{{ datum.data | time:\'' + timeFormat(model, channel) + '\'}}'
-        }
-      }, labelsSpec || {});
-    } else if(axis.showUnit === 'label-suffix') {
-      labelsSpec = extend({
-        text : {
-          template : '{{ datum.data }}' + fieldDef.unit
+          template : '{{ ' + datum + ' }}' + fieldDef.unit
         }
       }, labelsSpec || {});
     } else if(axis.showUnit === 'label-prefix') {
       labelsSpec = extend({
         text : {
-          template : fieldDef.unit + '{{ datum.data }}'
+          template : fieldDef.unit + '{{ ' + datum + '}}'
         }
       }, labelsSpec || {});
     }
