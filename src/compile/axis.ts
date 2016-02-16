@@ -206,7 +206,7 @@ export namespace properties {
         }
       }, labelsSpec || {});
     }
-    
+
     if (axis.labelAngle) {
       labelsSpec = extend({
         angle: {value: axis.labelAngle}
