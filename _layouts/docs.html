@@ -1,19 +1,47 @@
 ---
 layout: page_submenu
 
-navigation:
- - text: Overview
-   url: index
- - text: Data
-   url: data
- - text: Transform
-   url: transform
- - text: Mark
-   url: mark
- - text: Encoding
-   url: encoding
- - text: Config
-   url: config
+sidebar:
+- text: Overview
+  url: index
+- text: Data
+  url: data
+- text: Transform
+  url: transform
+- text: Mark
+  url: mark
+  sub-sidebar:
+  - text: Facet
+    url: facet
+  - text: Label
+    url: label
+  - text: Layer
+    url: layer
+  - text: Legend
+    url: legend
+  - text: Transform
+    url: transform
+- text: Encoding
+  url: encoding
+  sub-sidebar:
+  - text: Aggregate
+    url: aggregate
+  - text: Axis
+    url: axis
+  - text: Bin
+    url: bin
+  - text: Embed
+    url: embed
+  - text: Scale
+    url: scale
+  - text: Size
+    url: size
+  - text: Sort
+    url: sort
+- text: Timeunit
+  url: timeunit
+- text: Config
+  url: config
 
 base: /docs/
 ---
