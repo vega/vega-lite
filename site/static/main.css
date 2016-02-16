@@ -216,6 +216,31 @@ nav a:hover {
   display: none;
 }
 
+/* Showcase */
+.showcase {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.showcase .image {
+  display: inline-block;
+
+  /* Show 4 images per row, make the height depend on the width */
+  height: 0;
+  /* 12px  = 2*6px margin */
+  width: calc(100% / 4 - 12px - 1px);
+  /* hack to make height depend on width*/
+  padding-bottom: calc(100% / 5 - 12px);
+  margin: 8px 6px;
+
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.showcase .image:hover {
+  background-size: contain;
+}
+
 /* Media queries */
 
 @media (max-width:960px) {

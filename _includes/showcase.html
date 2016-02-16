@@ -1,0 +1,6 @@
+<div class="showcase">
+{% for image in page.images %}
+  <a class="image" href="https://vega.github.io/vega-editor/?mode=vega-lite&spec={{image}}" style="background-image: url('examples/images/{{image}}.svg')">
+  </a>
+{% endfor %}
+</div>

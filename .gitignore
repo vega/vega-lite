@@ -19,3 +19,4 @@ examples/_diff/*
 examples/images/*
 **/*.js.map
 **/*.js
+.jekyll-metadata
