@@ -3,17 +3,26 @@ layout: page
 title: Vega-Lite Gallery
 permalink: /showcasegallery.html
 ---
+Testing background-image etc...
+<div class="image"
+  style="background-image: url('examples/images/area.svg')">
+</div>
 
-### Showcase
+
+## Showcase
+Add description here.
 <div class="gallery" data-gallery-group="Showcase"></div>
 
-### Basic
+## Basic
+Add description here.
 <div class="gallery" data-gallery-group="Basic"></div>
 
-### Stack
+## Stack
+Add description here.
 <div class="gallery" data-gallery-group="Stack"></div>
 
-### Trellis
+## Trellis
+Add description here.
 <div class="gallery" data-gallery-group="Trellis"></div>
 
 <script src="{{site.baseurl}}/site/static/showcasegallery.js"></script>
