@@ -10,7 +10,7 @@ import {facetMixins} from './facet';
 import {compileLegends} from './legend';
 import {compileMark} from './mark';
 import {compileScales} from './scale';
-import {extend, keys} from '../util';
+import {extend} from '../util';
 
 import {LAYOUT} from '../data';
 import {COLUMN, ROW, X, Y} from '../channel';
@@ -32,7 +32,6 @@ export function compile(spec) {
     },
     config.viewport ? { viewport: config.viewport } : {},
     config.background ? { background: config.background } : {},
-    keys(config.scene).length > 0 ? scene(config) : {},
     {
       data: compileData(model).concat([compileLayoutData(model)]),
       marks: [compileRootGroup(model)]
@@ -42,19 +41,6 @@ export function compile(spec) {
     spec: output
     // TODO: add warning / errors here
   };
-}
-
-function scene(config) {
-  return ['fill', 'fillOpacity', 'stroke', 'strokeWidth',
-    'strokeOpacity', 'strokeDash', 'strokeDashOffset'].
-      reduce(function(topLevelConfig: any, property) {
-      const value = config.scene[property];
-      if (value !== undefined) {
-        topLevelConfig.scene = topLevelConfig.scene || {};
-        topLevelConfig.scene[property] = {value: value};
-      }
-      return topLevelConfig;
-  }, {});
 }
 
 export function compileRootGroup(model: Model) {

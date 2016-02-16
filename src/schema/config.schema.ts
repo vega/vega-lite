@@ -2,7 +2,6 @@ import {UnitConfig, unitConfig, defaultUnitConfig} from './config.unit.schema';
 import {CellConfig, cellConfig, defaultCellConfig} from './config.cell.schema';
 import {FacetConfig, facetConfig, defaultFacetConfig} from './config.facet.schema';
 import {MarkConfig, markConfig, defaultMarkConfig} from './config.marks.schema';
-import {SceneConfig, sceneConfig, defaultSceneConfig} from './config.scene.schema';
 import {AxisConfig, axisConfig, defaultAxisConfig} from './axis.schema';
 import {LegendConfig, legendConfig, defaultLegendConfig} from './legend.schema';
 
@@ -17,7 +16,6 @@ export interface Config {
   numberFormat?: string;
   timeFormat?: string;
 
-  scene?: SceneConfig;
   unit?: UnitConfig;
   mark?: MarkConfig;
   axis?: AxisConfig;
@@ -31,7 +29,6 @@ export const defaultConfig: Config = {
   numberFormat: 's',
   timeFormat: '%Y-%m-%d',
 
-  scene: defaultSceneConfig,
   unit: defaultUnitConfig,
   mark: defaultMarkConfig,
   axis: defaultAxisConfig,
@@ -79,7 +76,6 @@ export const config = {
     },
 
     // nested
-    scene: sceneConfig,
     unit: unitConfig,
     mark: markConfig,
     axis: axisConfig,

@@ -62,7 +62,6 @@
     "src/schema/config.cell.schema.ts",
     "src/schema/config.facet.schema.ts",
     "src/schema/config.marks.schema.ts",
-    "src/schema/config.scene.schema.ts",
     "src/schema/config.schema.ts",
     "src/schema/config.unit.schema.ts",
     "src/schema/data.schema.ts",
