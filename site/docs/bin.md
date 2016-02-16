@@ -25,10 +25,7 @@ To group quantitative, continuous data values of a particular field into smaller
 }
 ```
 
-Channel definition's `bin` property can be either a boolean value or a bin property definition object.
-If `bin` is `true`, default binning parameters will be applied.
-
-The `bin` property definition object contains the following properties:
+If `bin` is `true`, default binning parameters will be applied.  To customize binning parameters, `bin` can be set to a bin definition object, which contains the following properties:
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
@@ -41,11 +38,28 @@ The `bin` property definition object contains the following properties:
 | minstep             | Number              | A minimum allowable step size (particularly useful for integer values).|
 | div                 | Array               | Scale factors indicating allowable subdivisions. The default value is [5, 2], which indicates that for base 10 numbers (the default base), the method may consider dividing bin sizes by 5 and/or 2. For example, for an initial step size of 10, the method can check if bin sizes of 2 (= 10/5), 5 (= 10/2), or 1 (= 10/(5*2)) might also satisfy the given constraints.|
 
-#### Example
+#### Examples
 
-<!-- TODO: just show binning alone with dot-plot to get the idea first -->
+Given a field with quantitative continuous data values
 
-The following specification creates a Histogram.
-Basically, the bar marks show count of the number of data in each `bin`.
+<span class="vl-example" data-name="point_1d"></span>
+
+Applying `bin` groups the values into smaller number of bins.  
+
+<div class="vl-example">
+{
+  "data": {"url": "data/cars.json"},
+  "mark": "point",
+  "encoding": {
+    "x": {
+      "bin": {"maxbins": 15},
+      "field": "Horsepower",
+      "type": "quantitative"
+    }
+  }
+}
+</div>
+
+Mapping binned values and its count to a `bar` mark produces a histogram.  
 
 <span class="vl-example" data-name="histogram"></span>
