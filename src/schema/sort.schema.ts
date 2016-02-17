@@ -1,4 +1,3 @@
-import {AGGREGATE_OPS} from '../aggregate';
 import {ORDINAL, QUANTITATIVE} from '../type';
 import {toMap} from '../util';
 
