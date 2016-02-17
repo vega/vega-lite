@@ -58,7 +58,10 @@ export const defaultMarkConfig: MarkConfig = {
 
   fontSize: 10,
   baseline: 'middle',
-  text: 'Abc'
+  text: 'Abc',
+
+  shortTimeLabels: false,
+  applyColorToBackground: false
 };
 
 export const markConfig = {
