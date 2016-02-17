@@ -35,8 +35,12 @@ export function compile(spec) {
     keys(config.scene).length > 0 ? scene(config) : {},
     {
       data: compileData(model).concat([compileLayoutData(model)]),
-      marks: [compileRootGroup(model)]
-    });
+      marks: [].concat(
+       (model.title() !== undefined ? [compileTitle(model)] : []),
+       [compileRootGroup(model)]
+     )
+    }
+  );
 
   return {
     spec: output
@@ -57,6 +61,26 @@ function scene(config) {
   }, {});
 }
 
+export function compileTitle(model: Model) {
+  const title = model.title();
+  return {
+      name: model.name(title),
+      type: 'text',
+      from: {data: 'layout'},
+      properties: {
+        update: {
+          x: {field: 'width', mult: 0.5},
+          y: {value: 0},
+          text: {value: title},
+          fill: {value: 'black'},
+          fontSize: {value: 16},
+          align: {value: 'center'},
+          fontWeight: {value: 'bold'}
+        }
+      }
+    };
+}
+
 export function compileRootGroup(model: Model) {
   const spec = model.spec();
 
@@ -68,10 +92,13 @@ export function compileRootGroup(model: Model) {
     {
       from: {data: LAYOUT},
       properties: {
-        update: {
-          width: {field: 'width'},
-          height: {field: 'height'}
-        }
+        update: extend(
+          model.title() !== undefined ? {y: {'value': 55} }: {},
+          {
+            width: {field: 'width'},
+            height: {field: 'height'}
+          }
+        )
       }
     });
 

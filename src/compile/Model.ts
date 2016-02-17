@@ -151,6 +151,14 @@ export class Model {
     return schemaUtil.subtract(spec, defaults);
   }
 
+  public name(localName: string): string {
+    return (this._spec.name ? this._spec.name + '-' : '') + localName;
+  }
+
+  public title(): string {
+    return this._spec.title;
+  }
+
   public mark(): Mark {
     return this._spec.mark;
   }

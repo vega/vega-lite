@@ -11,6 +11,7 @@ import {transform, Transform} from './transform.schema';
 export interface Spec {
   name?: string;
   description?: string;
+  title?: string;
   data?: Data;
   transform?: Transform;
   mark?: Mark;
