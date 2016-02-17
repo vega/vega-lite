@@ -70,3 +70,8 @@ This is a Vega-Lite specification to create a bar chart that shows the average t
 
 * [JSON schema](http://json-schema.org/) specification for Vega-Lite: [vega-lite-schema.json](https://vega.github.io/vega-lite/vega-lite-schema.json)
 * Ask questions about Vega-Lite in the [Vega Discussion Group / Mailing List](https://groups.google.com/forum/?fromgroups#!forum/vega-js).
+
+
+## Team
+
+The development of Vega-Lite is led by [Kanit "Ham" Wongsuphasawat](https://twitter.com/kanitw), [Dominik Moritz](https://twitter.com/domoritz), and [Jeffrey Heer](https://twitter.com/jeffrey_heer) of the [University Washington Interactive Data Lab](http://idl.cs.washington.edu), with significant help from [Arvind Satyanarayan](https://twitter.com/arvindsatya1).  Please see the [contributors page](https://github.com/vega/vega-lite/graphs/contributors) for the full list of contributors.
