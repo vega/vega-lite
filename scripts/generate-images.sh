@@ -1,15 +1,12 @@
 #!/bin/bash
+# requires https://www.gnu.org/software/parallel/
 
-mkdir examples/images
+set -e
+
+mkdir -p examples/images
 
 echo "Generating PNGs..."
-for file in examples/specs/*.json; do
-  name=${file##*/}
-  bin/vl2png $file examples/images/${name%.*}.png
-done
+ls examples/specs/*.json | parallel --eta --halt 1 "bin/vl2png {} examples/images/{/.}.png"
 
 echo "Generating SVGs..."
-for file in examples/specs/*.json; do
-  name=${file##*/}
-  bin/vl2svg $file examples/images/${name%.*}.svg
-done
+ls examples/specs/*.json | parallel --eta --halt 1 "bin/vl2svg {} examples/images/{/.}.svg"
