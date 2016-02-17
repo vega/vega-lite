@@ -239,6 +239,30 @@ nav a:hover {
   background-repeat: no-repeat;
 }
 
+/* Gallery */
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  margin: 20px 0;
+}
+.gallery .image {
+  display: inline-block;
+
+  /* Show 4 images per row, make the height depend on the width */
+  height: 0;
+  /* 12px  = 2*6px margin */
+  width: calc(20% - 12px);
+  /* hack to make height depend on width*/
+  padding-bottom: calc(16% - 12px);
+  margin: 8px 0;
+
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 /* Media queries */
 
 @media (max-width:960px) {

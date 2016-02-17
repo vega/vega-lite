@@ -3,12 +3,6 @@ layout: page
 title: Vega-Lite Gallery
 permalink: /gallery.html
 ---
-Testing background-image etc...
-<div class="image"
-  style="background-image: url('examples/images/area.svg')">
-</div>
-
-
 ## Showcase
 Add description here.
 <div class="gallery" data-gallery-group="Showcase"></div>

@@ -16,20 +16,15 @@ d3.json('examples/vl-examples.json', function(error, VL_SPECS) {
       return;
     }
 
-    var viz = selection.selectAll('.viz').data(galleryGroupSpecs);
+    var viz = selection.selectAll('.image').data(galleryGroupSpecs);
 
     viz.exit().remove();
 
-    var vizEnter = viz
-      .enter()
+    viz.enter()
       .append('a')
-      .attr('class', 'viz')
-      .attr('width', 200)
-      .attr('height', 190);
-
-    vizEnter.append('img')
-      .attr('src', function(d){ return 'examples/images/' + d.name + '.svg'; });
-
-
+      .attr('class', 'image')
+      .attr('href', function(d){ return 'https://vega.github.io/vega-editor/?mode=vega-lite&spec=' + d.name;})
+      .style('background-image', function(d){ return 'url(examples/images/' + d.name + '.svg)'; })
+      .style('background-size', 'cover');
   }
 });
