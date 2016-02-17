@@ -1,5 +1,4 @@
 import {Spec} from '../schema/schema';
-import {schemaOLD} from '../schema/schema';
 import {AxisProperties} from '../schema/axis.schema';
 import {LegendProperties} from '../schema/legend.schema';
 import {Scale} from '../schema/scale.schema';
@@ -173,7 +172,7 @@ export class Model {
     }
 
     // remove defaults
-    return schemaUtil.subtract(spec, defaults);
+    return spec;
   }
 
   public mark(): Mark {

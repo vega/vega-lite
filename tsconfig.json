@@ -67,7 +67,6 @@
     "src/schema/encoding.schema.ts",
     "src/schema/fielddef.schema.ts",
     "src/schema/legend.schema.ts",
-    "src/schema/mark.schema.ts",
     "src/schema/scale.schema.ts",
     "src/schema/schema.ts",
     "src/schema/schemautil.ts",

@@ -1,6 +1,3 @@
-import {QUANTITATIVE} from '../type';
-import {toMap} from '../util';
-
 /**
  * Binning properties or boolean flag for determining whether to bin data or not.
  */
@@ -39,40 +36,3 @@ export interface BinProperties {
    */
   maxbins?: number;
 }
-
-
-export var binProperties = {
-  default: false, // TODO: remove this once we remove schema.instantiate
-  oneOf: [{
-    type: 'object',
-    properties: {
-      min: {
-        type: 'number'
-      },
-      max: {
-        type: 'number'
-      },
-      base: {
-        type: 'number'
-      },
-      step: {
-        type: 'number'
-      },
-      steps: {
-        type: 'array'
-      },
-      minstep: {
-        type: 'number'
-      },
-      div: {
-        type: 'array'
-      },
-      maxbins: {
-        type: 'integer'
-      }
-    },
-  }, {
-    type: 'boolean'
-  }],
-  supportedTypes: toMap([QUANTITATIVE]) // TODO: add O after finishing #81
-};

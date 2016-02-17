@@ -1,6 +1,3 @@
-import {duplicate} from '../util';
-import {mergeDeep} from './schemautil';
-
 export interface LegendConfig {
   /**
    * The orientation of the legend. One of "left" or "right". This determines how the legend is positioned within the scene. The default is "right".
@@ -11,7 +8,7 @@ export interface LegendConfig {
    */
   shortTimeLabels?: boolean;
   /**
-   * Optional mark property definitions for custom legend styling. 
+   * Optional mark property definitions for custom legend styling.
    */
   properties?: any; // TODO(#975) replace with config properties
 }
@@ -35,38 +32,3 @@ export interface LegendProperties extends LegendConfig {
 }
 
 export const defaultLegendConfig: LegendConfig = {};
-
-export const legendConfig = {
-  type: 'object',
-  properties: {
-    orient: {
-      type: 'string'
-    },
-    shortTimeLabels: {
-      type: 'boolean'
-    },
-    properties: {
-      type: 'object'
-    }
-  }
-};
-
-const legendProperties = mergeDeep(duplicate(legendConfig), {
-  properties: {
-    format: {
-      type: 'string'
-    },
-    title: {
-      type: 'string'
-    },
-    values: {
-      type: 'array'
-    }
-  }
-});
-
-export var legend = {
-  oneOf: [
-    legendProperties,
-    {type: 'boolean'}]
-};

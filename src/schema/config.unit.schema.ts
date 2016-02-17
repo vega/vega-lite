@@ -5,6 +5,9 @@ export interface UnitConfig {
   clip?: boolean;
 
   // FILL_STROKE_CONFIG
+  /**
+   * @format color
+   */
   fill?: string;
   fillOpacity?: number;
   stroke?: string;
@@ -23,44 +26,4 @@ export const defaultUnitConfig: UnitConfig = {
 export const defaultFacetUnitConfig: UnitConfig = {
   stroke: '#ccc',
   strokeWidth: 1
-};
-
-export const unitConfig = {
-  type: 'object',
-  properties: {
-    width: {
-      type: 'integer'
-    },
-    height: {
-      type: 'integer'
-    },
-    // Group properties
-    clip: {
-      type: 'boolean',
-    },
-    // FILL_STROKE_CONFIG
-    fill: {
-      type: 'string',
-      format: 'color'
-    },
-    fillOpacity: {
-      type: 'number',
-    },
-    stroke: {
-      type: 'string',
-      format: 'color'
-    },
-    strokeWidth: {
-      type: 'integer'
-    },
-    strokeOpacity: {
-      type: 'number'
-    },
-    strokeDash: {
-      type: 'array',
-    },
-    strokeDashOffset: {
-      type: 'integer'
-    }
-  }
 };

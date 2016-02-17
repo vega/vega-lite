@@ -10,23 +10,3 @@ export interface Data {
    */
   values?: any[];
 }
-
-export var data = {
-  type: 'object',
-  properties: {
-    // data source
-    formatType: {
-      type: 'string'
-    },
-    url: {
-      type: 'string'
-    },
-    values: {
-      type: 'array',
-      items: {
-        type: 'object',
-        additionalProperties: true
-      }
-    }
-  }
-};

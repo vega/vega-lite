@@ -24,29 +24,3 @@ export interface VgFormula {
    */
   expr: string;
 }
-
-export const transform = {
-  type: 'object',
-  properties: {
-    filterNull: {
-      type: 'boolean'
-    },
-    filter: {
-      type: 'string'
-    },
-    calculate: {
-      type: 'array',
-      items: {
-        type: 'object',
-        properties: {
-          field: {
-            type: 'string'
-          },
-          expr: {
-            type: 'string'
-          }
-        }
-      }
-    }
-  }
-};
