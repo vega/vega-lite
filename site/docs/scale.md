@@ -170,7 +170,7 @@ We can customize the color range of the scatterplot above by providing `scale`'s
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| round         | Boolean       | If true, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid.|
+| round         | Boolean       | If true, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid (only available for `x`, `y`, `size`, `row`, and `column` scales).|
 
 {:#quant-props}
 
@@ -181,7 +181,7 @@ We can customize the color range of the scatterplot above by providing `scale`'s
 | clamp         | Boolean       | If true (default), values that exceed the data domain are clamped to either the minimum or maximum range value.  (Not applicable for `quantile`, `quantize`, and `threshold` scales as they output discrete ranges.) |
 | exponent      | Number        | Sets the exponent of the scale transformation. (For `pow` scale types only, otherwise ignored.) |
 | nice          | Boolean       | If true, modifies the scale domain to use a more human-friendly number range (e.g., 7 instead of 6.96).|
-| zero          | Boolean       | If true, ensures that a zero baseline value is included in the scale domain. This option is ignored for non-quantitative scales.  If unspecified, zero is true by default. |
+| zero          | Boolean       | If true, ensures that a zero baseline value is included in the scale domain. If unspecified, zero is true if the quantitative field is not binned by default. |
 
 <!-- | useRawDomain<sup>1</sup>  | Boolean       | (For aggregate field only) If false (default), draw domain data the aggregate (`summary`) data table.  If true, use the raw data instead of summary data for scale domain.  This property only works with aggregate functions that produce values ranging in the domain of the source data (`"mean"`, `"average"`, `"stdev"`, `"stdevp"`, `"median"`, `"q1"`, `"q3"`, `"min"`, `"max"`).  Otherwise, this property is ignored.  If the scale's `domain` is specified, this property is also ignored. | -->
 
@@ -197,8 +197,8 @@ We can customize the color range of the scatterplot above by providing `scale`'s
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| bandWidth     | Number        | Width for each ordinal band.  ([See example](#ex-bandwidth).) |
-| padding       | Number        | Applies spacing among ordinal elements in the scale range. The actual effect depends on how the scale is configured. <br/> • For `x` and `y`, the padding value is interpreted as a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. <br/> • For `row` and `column`, padding is typically in the range [0, 1] and corresponds to the fraction of space in the range interval to allocate to padding. A value of 0.5 means that the range band width will be equal to the padding width. For more, see the [D3 ordinal scale documentation](https://github.com/mbostock/d3/wiki/Ordinal-Scales).|
+| bandWidth     | Number        | Width for each `x` or `y` ordinal band. ([See example](#ex-bandwidth).) |
+| padding       | Number        | Applies spacing among ordinal elements in the scale range. The actual effect depends on how the scale is configured (only available for `x`, `y`, `row`, and `column` scales). <br/> • For `x` and `y`, the padding value is interpreted as a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. <br/> • For `row` and `column`, padding is typically in the range [0, 1] and corresponds to the fraction of space in the range interval to allocate to padding. A value of 0.5 means that the range band width will be equal to the padding width. For more, see the [D3 ordinal scale documentation](https://github.com/mbostock/d3/wiki/Ordinal-Scales).|
 
 {:#ex-bandwidth}
 #### Example: Custom Band Width

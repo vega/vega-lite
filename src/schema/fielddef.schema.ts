@@ -25,9 +25,6 @@ export interface FieldDef {
   bin?: boolean | BinProperties;
   aggregate?: string;
 
-  // TODO: remove these one by one
-  scale?: Scale;
-
   // TODO: maybe extend this in other app?
   // unused metadata -- for other application
   displayName?: string;
@@ -89,13 +86,6 @@ export interface PositionChannelDef extends ChannelDefWithScale {
 export const positionChannelDef = mergeDeep(duplicate(channelDefWithScale), {
   required: ['field', 'type'], // TODO: remove if possible
   properties: {
-    scale: {
-      // TODO: remove
-      // replacing default values for just these two axes
-      properties: {
-        padding: {default: 1}
-      }
-    },
     axis: axis
   }
 });
@@ -112,7 +102,6 @@ export const channelDefWithLegend = mergeDeep(duplicate(channelDefWithScale), {
 
 // Detail
 export const detailChannelDefs = {
-  default: undefined,
   oneOf: [duplicate(fieldDef), {
     type: 'array',
     items: duplicate(fieldDef)
@@ -132,7 +121,6 @@ const orderChannelDef = mergeDeep(duplicate(fieldDef), {
 });
 
 export const orderChannelDefs = {
-  default: undefined,
   oneOf: [duplicate(orderChannelDef), {
     type: 'array',
     items: duplicate(orderChannelDef)

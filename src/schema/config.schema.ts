@@ -1,6 +1,7 @@
 import {UnitConfig, unitConfig, defaultUnitConfig} from './config.unit.schema';
 import {FacetConfig, facetConfig, defaultFacetConfig} from './config.facet.schema';
 import {MarkConfig, markConfig, defaultMarkConfig} from './config.marks.schema';
+import {ScaleConfig, scaleConfig, defaultScaleConfig} from './scale.schema';
 import {AxisConfig, axisConfig, defaultAxisConfig} from './axis.schema';
 import {LegendConfig, legendConfig, defaultLegendConfig} from './legend.schema';
 
@@ -17,6 +18,7 @@ export interface Config {
 
   unit?: UnitConfig;
   mark?: MarkConfig;
+  scale?: ScaleConfig;
   axis?: AxisConfig;
   legend?: LegendConfig;
 
@@ -29,6 +31,7 @@ export const defaultConfig: Config = {
 
   unit: defaultUnitConfig,
   mark: defaultMarkConfig,
+  scale: defaultScaleConfig,
   axis: defaultAxisConfig,
   legend: defaultLegendConfig,
 
@@ -75,6 +78,7 @@ export const config = {
     // nested
     unit: unitConfig,
     mark: markConfig,
+    scale: scaleConfig,
     axis: axisConfig,
     legend: legendConfig,
     facet: facetConfig

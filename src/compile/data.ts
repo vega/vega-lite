@@ -59,26 +59,32 @@ export namespace source {
     var source:VgData = {name: SOURCE};
 
     // Data source (url or inline)
-    if (model.hasValues()) {
-      source.values = model.data().values;
-      source.format = {type: 'json'};
-    } else {
-      source.url = model.data().url;
+    const data = model.data();
 
-      // Extract extension from URL using snippet from
-      // http://stackoverflow.com/questions/680929/how-to-extract-extension-from-filename-string-in-javascript
-      let defaultExtension = /(?:\.([^.]+))?$/.exec(source.url)[1];
-      if (!contains(['json', 'csv', 'tsv'], defaultExtension)) {
-        defaultExtension = 'json';
+    if (data) {
+      if (data.values && data.values.length > 0) {
+        source.values = model.data().values;
+        source.format = {type: 'json'};
+      } else if (data.url) {
+        source.url = data.url;
+
+        // Extract extension from URL using snippet from
+        // http://stackoverflow.com/questions/680929/how-to-extract-extension-from-filename-string-in-javascript
+        let defaultExtension = /(?:\.([^.]+))?$/.exec(source.url)[1];
+        if (!contains(['json', 'csv', 'tsv'], defaultExtension)) {
+          defaultExtension = 'json';
+        }
+        source.format = {type: model.data().formatType || defaultExtension};
       }
-      source.format = {type: model.data().formatType || defaultExtension};
     }
 
-    // Set data's format.parse if needed
+      // Set data's format.parse if needed
     var parse = formatParse(model);
     if (parse) {
+      source.format = source.format || {};
       source.format.parse = parse;
     }
+
 
     source.transform = transform(model);
     return source;

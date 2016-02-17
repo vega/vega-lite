@@ -24,7 +24,7 @@ export function applyColorAndOpacity(p, model: Model) {
       scale: model.scaleName(COLOR),
       field: model.field(COLOR, fieldDef.type === ORDINAL ? {prefn: 'rank_'} : {})
     };
-  } else if (fieldDef.value) {
+  } else if (fieldDef && fieldDef.value) {
     value = { value: fieldDef.value };
   }
 

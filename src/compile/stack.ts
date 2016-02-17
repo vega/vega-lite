@@ -1,7 +1,7 @@
 import {Encoding} from '../schema/encoding.schema';
 import {Config} from '../schema/config.schema';
 import {FieldDef} from '../schema/fielddef.schema';
-import {Model} from './Model';
+import {Model, ScaleMap} from './Model';
 import {Channel, X, Y, COLOR, DETAIL, ORDER} from '../channel';
 import {BAR, AREA, Mark} from '../mark';
 import {field, isMeasure} from '../fielddef';
@@ -35,8 +35,8 @@ interface StackTransform {
 }
 
 /** Compile stack properties from a given spec */
-export function compileStackProperties(mark: Mark, encoding: Encoding, config: Config) {
-  const stackFields = getStackFields(mark, encoding);
+export function compileStackProperties(mark: Mark, encoding: Encoding, scale: ScaleMap, config: Config) {
+  const stackFields = getStackFields(mark, encoding, scale);
 
   if (stackFields.length > 0 &&
       contains([BAR, AREA], mark) &&
@@ -66,7 +66,7 @@ export function compileStackProperties(mark: Mark, encoding: Encoding, config: C
 }
 
 /** Compile stack-by field names from (from 'color' and 'detail') */
-function getStackFields(mark: Mark, encoding: Encoding) {
+function getStackFields(mark: Mark, encoding: Encoding, scale: ScaleMap) {
   return [COLOR, DETAIL].reduce(function(fields, channel) {
     const channelEncoding = encoding[channel];
     if (has(encoding, channel)) {
@@ -77,7 +77,7 @@ function getStackFields(mark: Mark, encoding: Encoding) {
       } else {
         const fieldDef: FieldDef = channelEncoding;
         fields.push(field(fieldDef, {
-          binSuffix: scaleType(fieldDef.scale, fieldDef, channel, mark) === 'ordinal' ? '_range' : '_start'
+          binSuffix: scaleType(scale[channel], fieldDef, channel, mark) === 'ordinal' ? '_range' : '_start'
         }));
       }
     }

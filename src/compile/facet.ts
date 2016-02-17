@@ -85,21 +85,21 @@ function getFacetGroupProperties(model: Model) {
         scale: model.scaleName(COLUMN),
         field: model.field(COLUMN),
         // offset by the padding
-        offset: model.fieldDef(COLUMN).scale.padding / 2
-      } : {value: 16 /* TODO config.facet.scale.padding */ / 2},
+        offset: model.scale(COLUMN).padding / 2
+      } : {value: model.config().facet.scale.padding / 2},
 
     y: model.has(ROW) ? {
       scale: model.scaleName(ROW),
       field: model.field(ROW),
       // offset by the padding
-      offset: model.fieldDef(ROW).scale.padding / 2
-    } : {value: 16 /* TODO config.facet.scale.padding */ / 2},
+      offset: model.scale(ROW).padding / 2
+    } : {value: model.config().facet.scale.padding / 2},
 
     width: {field: {parent: 'cellWidth'}},
     height: {field: {parent: 'cellHeight'}}
   };
 
-  // apply both config from unit and facet.unit (with higher precedence for facet.unit) 
+  // apply both config from unit and facet.unit (with higher precedence for facet.unit)
   applyConfig(facetGroupProperties, model.config().unit, FILL_STROKE_CONFIG.concat(['clip']));
   applyConfig(facetGroupProperties, model.config().facet.unit, FILL_STROKE_CONFIG.concat(['clip']));
 
@@ -167,10 +167,10 @@ function getXAxesGroup(model: Model) { // TODO: VgMarks
             scale: model.scaleName(COLUMN),
             field: model.field(COLUMN),
             // offset by the padding
-            offset: model.fieldDef(COLUMN).scale.padding / 2
+            offset: model.scale(COLUMN).padding / 2
           } : {
             // offset by the padding
-            value: 16 /* TODO: config.facet.scale.padding */ / 2
+            value: model.config().facet.scale.padding / 2
           }
         }
       }
@@ -210,10 +210,10 @@ function getYAxesGroup(model: Model) { // TODO: VgMarks
             scale: model.scaleName(ROW),
             field: model.field(ROW),
             // offset by the padding
-            offset: model.fieldDef(ROW).scale.padding / 2
+            offset: model.scale(ROW).padding / 2
           } : {
             // offset by the padding
-            value: 16 /* TODO: config.facet.scale.padding */  / 2
+            value: model.config().facet.scale.padding / 2
           }
         }
       },
