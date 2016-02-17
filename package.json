@@ -24,7 +24,7 @@
     "lint": "tslint -c tslint.json src/*.ts test/*.ts src/**/*.ts test/**/*.ts",
     "start": "npm run watch & browser-sync start --server --files 'vega-lite.js' --index '_gallery.html'",
     "schema": "tsc && npm run schema:only",
-    "schema:only": "node_modules/typescript-json-schema/bin/typescript-json-schema/typescript-json-schema src/schema/schema.ts Spec > vega-lite-schema.json",
+    "schema:only": "node_modules/typescript-json-schema/bin/typescript-json-schema src/schema/schema.ts Spec > vega-lite-schema.json",
     "presite": "scripts/generate-images.sh",
     "images": "scripts/generate-images.sh",
     "site": "bundle exec jekyll serve --incremental",
