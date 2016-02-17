@@ -10,10 +10,22 @@ export interface Config {
   // width?: number;
   // height?: number;
   // padding?: number|string;
+  /**
+   * The width and height of the on-screen viewport, in pixels. If necessary, clipping and scrolling will be applied.
+   */
   viewport?: number;
+  /**
+   * CSS color property to use as background of visualization. Default is `"transparent"`.
+   */
   background?: string;
 
+  /**
+   * D3 Number format for axis labels and text tables. For example "s" for SI units.
+   */
   numberFormat?: string;
+  /**
+   * Default datetime format for axis and legend labels. The format can be set directly on each axis and legend.
+   */
   timeFormat?: string;
 
   unit?: UnitConfig;
@@ -56,23 +68,19 @@ export const config = {
       type: 'array',
       items: {
         type: 'integer'
-      },
-      description: 'The width and height of the on-screen viewport, in pixels. If necessary, clipping and scrolling will be applied.'
+      }
     },
     background: {
       type: 'string',
-      format: 'color',
-      description: 'CSS color property to use as background of visualization. Default is `"transparent"`.'
+      format: 'color'
     },
 
     // formats
     numberFormat: {
-      type: 'string',
-      description: 'D3 Number format for axis labels and text tables. For example "s" for SI units.'
+      type: 'string'
     },
     timeFormat: {
-      type: 'string',
-      description: 'Default datetime format for axis and legend labels. The format can be set directly on each axis and legend.'
+      type: 'string'
     },
 
     // nested

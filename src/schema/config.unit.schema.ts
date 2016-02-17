@@ -11,6 +11,7 @@ export interface UnitConfig {
   strokeWidth?: number;
   strokeOpacity? :number;
   strokeDash?: number;
+  /** The offset (in pixels) into which to begin drawing with the stroke dash array. */
   strokeDashOffset?: number;
 }
 
@@ -59,8 +60,7 @@ export const unitConfig = {
       type: 'array',
     },
     strokeDashOffset: {
-      type: 'integer',
-      description: 'The offset (in pixels) into which to begin drawing with the stroke dash array.'
+      type: 'integer'
     }
   }
 };

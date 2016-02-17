@@ -1,11 +1,11 @@
 import {Spec} from '../schema/schema';
+import {schemaOLD} from '../schema/schema';
 import {AxisProperties} from '../schema/axis.schema';
 import {LegendProperties} from '../schema/legend.schema';
 import {Scale} from '../schema/scale.schema';
 import {Encoding} from '../schema/encoding.schema';
 import {FieldDef} from '../schema/fielddef.schema';
 import {defaultConfig, Config} from '../schema/config.schema';
-import * as schema from '../schema/schema';
 import * as schemaUtil from '../schema/schemautil';
 
 import {COLUMN, ROW, X, Y, COLOR, SHAPE, SIZE, TEXT, PATH, ORDER, Channel, supportMark} from '../channel';
@@ -173,7 +173,6 @@ export class Model {
     }
 
     // remove defaults
-    var defaults = schema.instantiate();
     return schemaUtil.subtract(spec, defaults);
   }
 
