@@ -177,7 +177,7 @@ If you only want subset of these actions, you can use:
 
 ### Website
 
-`npm run site`. See details in [Documentation and Website](#Documentation_and_Website).
+`npm run site`. See details in [Documentation and Website](#documentation-and-website).
 
 ### Output diff
 
