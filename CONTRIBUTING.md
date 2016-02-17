@@ -63,18 +63,20 @@ For example, @kanitw's branch regarding scale type might be called `kw/scale-typ
 starting from smaller tasks to a larger task. You can also find
 [all tasks with "help-wanted" label in the issue tracker](https://github.com/vega/vega-lite/labels/help-wanted).
 
-## Documentation
+## Documentation and Website
 
-Our documentation also resides in our Github repository under `site/docs/` in Markdown format.
+The website is under `site/` and the documentation is under `site/docs/`.
 We use Github Pages to publish our documentation when we release a new version.
-To contribute changes to the documentation, simply submit a pull request that changes
-the corresponding markdown files in `site/docs/`.
+To contribute changes to the documentation or website, simply submit a pull request that changes
+the corresponding markdown files in `site/`.
+
+The images that are shown on the homepage and in the gallery have to be generated with `npm run images`.
+To run the script, you need to install [gnu parallel](https://www.gnu.org/software/parallel/).
 
 Since we only publish the Github Pages when we release a new version,
 it might be slightly outdated compared to `master`.
 For development, once you have [setup the repository](#repository-setup),
 you can run `npm run site` to serve the github page locally at [http://localhost:4000/vega-lite/](http://localhost:4000/vega-lite/).
-
 
 # Development Guide
 
@@ -172,6 +174,10 @@ If you only want subset of these actions, you can use:
 - `npm run watch:test` to start a watcher task that **lints and runs tests** when any `.ts` file changes.
 
 - `npm run watch:build` to start a watcher task that **re-compiles Vega-Lite** when `.ts` files related to VL change.
+
+### Website
+
+`npm run site`. See details in [Documentation and Website](#Documentation_and_Website).
 
 ### Output diff
 
