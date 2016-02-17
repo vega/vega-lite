@@ -1,8 +1,8 @@
-import {detailChannelDefs, textChannelDef, FieldDef} from './fielddef.schema';
-import {positionChannelDef, PositionChannelDef} from './fielddef.schema';
-import {facetChannelDef, FacetChannelDef} from './fielddef.schema';
-import {channelDefWithLegend, shapeChannelDef, ChannelDefWithLegend} from './fielddef.schema';
-import {orderChannelDefs, OrderChannelDef} from './fielddef.schema';
+import {FieldDef} from './fielddef.schema';
+import {PositionChannelDef} from './fielddef.schema';
+import {FacetChannelDef} from './fielddef.schema';
+import {ChannelDefWithLegend} from './fielddef.schema';
+import {OrderChannelDef} from './fielddef.schema';
 
 export interface Encoding {
   x?: PositionChannelDef;
@@ -19,21 +19,3 @@ export interface Encoding {
   path?: OrderChannelDef | OrderChannelDef[];
   order?: OrderChannelDef | OrderChannelDef[];
 }
-
-export const encoding = {
-  type: 'object',
-  properties: {
-    x: positionChannelDef,
-    y: positionChannelDef,
-    row: facetChannelDef,
-    column: facetChannelDef,
-    size: channelDefWithLegend,
-    color: channelDefWithLegend,
-    shape: shapeChannelDef,
-    text: textChannelDef,
-    detail: detailChannelDefs,
-    label: textChannelDef,
-    path: orderChannelDefs,
-    order: orderChannelDefs
-  }
-};

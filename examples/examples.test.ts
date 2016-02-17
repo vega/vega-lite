@@ -12,8 +12,8 @@ const validator = new ZSchema({
   noEmptyStrings: true
 });
 
-const vlSchema = require('../src/schema/schema').schema,
-  vgSchema = require('../node_modules/vega/vega-schema.json');
+const vlSchema = require('../vega-lite-schema.json');
+const vgSchema = require('../node_modules/vega/vega-schema.json');
 
 function validateAgainstSchemas(vlspec) {
   const isVlValid = validator.validate(vlspec, vlSchema);
