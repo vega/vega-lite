@@ -1,11 +1,11 @@
 import {Spec} from '../schema/schema';
+import {schemaOLD} from '../schema/schema';
 import {AxisProperties} from '../schema/axis.schema';
 import {LegendProperties} from '../schema/legend.schema';
 import {Scale} from '../schema/scale.schema';
 import {Encoding} from '../schema/encoding.schema';
 import {FieldDef} from '../schema/fielddef.schema';
 import {defaultConfig, Config} from '../schema/config.schema';
-import * as schema from '../schema/schema';
 import * as schemaUtil from '../schema/schemautil';
 
 import {COLUMN, ROW, X, Y, COLOR, SHAPE, SIZE, TEXT, PATH, ORDER, Channel, supportMark} from '../channel';
@@ -21,6 +21,7 @@ import {duplicate, extend} from '../util';
 import {compileMarkConfig} from './config';
 import {compileStackProperties, StackProperties} from './stack';
 import {type as scaleType} from './scale';
+
 
 /**
  * Internal model of Vega-Lite specification for the compiler.
@@ -46,7 +47,7 @@ export class Model {
 
   constructor(spec: Spec) {
     // TODO: remove
-    var defaults = schema.instantiate();
+    var defaults = this.instantiate();
     this._spec = schemaUtil.mergeDeep(defaults, spec);
 
     const mark = this._spec.mark;
@@ -151,7 +152,7 @@ export class Model {
     }
 
     // remove defaults
-    var defaults = schema.instantiate();
+    var defaults = this.instantiate();
     return schemaUtil.subtract(spec, defaults);
   }
 
@@ -162,6 +163,11 @@ export class Model {
   // TODO: remove
   public spec(): Spec {
     return this._spec;
+  }
+
+  public instantiate() {
+    const so = schemaUtil.instantiate(schemaOLD);
+    return so;
   }
 
   public is(mark: Mark) {

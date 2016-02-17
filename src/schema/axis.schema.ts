@@ -3,54 +3,102 @@ import {mergeDeep} from './schemautil';
 
 export interface AxisConfig {
   // General
-  /** Width of the axis line */
+  /**
+   * Width of the axis line
+   */
   axisWidth?: number;
-  /** A string indicating if the axis (and any gridlines) should be placed above or below the data marks. */
+  /**
+   * A string indicating if the axis (and any gridlines) should be placed above or below the data marks.
+   */
   layer?: string;
-  /** The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle. */
+  /**
+   * The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle.
+   */
   offset?: number;
-  /** The orientation of the axis. One of top, bottom, left or right. The orientation can be used to further specialize the axis type (e.g., a y axis oriented for the right edge of the chart). */
+  /**
+   * The orientation of the axis. One of top, bottom, left or right. The orientation can be used to further specialize the axis type (e.g., a y axis oriented for the right edge of the chart).
+   * @enum ["top", "right", "left", "bottom"]
+   */
   orient?: string;
 
   // Grid
-  /** A flag indicate if gridlines should be created in addition to ticks. If `grid` is unspecified, the default value is `true` for ROW and COL. For X and Y, the default value is `true` for quantitative and time fields and `false` otherwise. */
+  /**
+   * A flag indicate if gridlines should be created in addition to ticks. If `grid` is unspecified, the default value is `true` for ROW and COL. For X and Y, the default value is `true` for quantitative and time fields and `false` otherwise.
+   */
   grid?: boolean;
 
   // Labels
-  /** Enable or disable labels. */
+  /**
+   * Enable or disable labels.
+   */
   labels?: boolean;
-  /** The rotation angle of the axis labels. */
+  /**
+   * The rotation angle of the axis labels.
+   */
   labelAngle?: number;
-  /** Truncate labels that are too long. */
+  /**
+   * Truncate labels that are too long.
+   * @minimum 1
+   */
   labelMaxLength?: number;
-  /** Whether month and day names should be abbreviated. */
+  /**
+   * Whether month and day names should be abbreviated.
+   */
   shortTimeLabels?: boolean;
 
   // Ticks
-  /** If provided, sets the number of minor ticks between major ticks (the value 9 results in decimal subdivision). Only applicable for axes visualizing quantitative scales. */
+  /**
+   * If provided, sets the number of minor ticks between major ticks (the value 9 results in decimal subdivision). Only applicable for axes visualizing quantitative scales.
+   */
   subdivide?: number;
-  /** A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are "nice" (multiples of 2, 5, 10) and lie within the underlying scale's range. */
+  /**
+   * A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are "nice" (multiples of 2, 5, 10) and lie within the underlying scale's range.
+   * @minimum 0
+   */
   ticks?: number;
-  /** The padding, in pixels, between ticks and text labels. */
+  /**
+   * The padding, in pixels, between ticks and text labels.
+   */
   tickPadding?: number;
-  /** The size, in pixels, of major, minor and end ticks. */
+  /**
+   * The size, in pixels, of major, minor and end ticks.
+   * @minimum 0
+   */
   tickSize?: number;
-  /** The size, in pixels, of major ticks. */
+  /**
+   * The size, in pixels, of major ticks.
+   * @minimum 0
+   */
   tickSizeMajor?: number;
-  /** The size, in pixels, of minor ticks. */
+  /**
+   * The size, in pixels, of minor ticks.
+   * @minimum 0
+   */
   tickSizeMinor?: number;
-  /** The size, in pixels, of end ticks. */
+  /**
+   * The size, in pixels, of end ticks.
+   * @minimum 0
+   */
   tickSizeEnd?: number;
 
   // Title
-  /** A title offset value for the axis. */
+  /**
+   * A title offset value for the axis.
+   */
   titleOffset?: number;
-  /** Max length for axis title if the title is automatically generated from the field's description. By default, this is automatically based on cell size and characterWidth property. */
+  /**
+   * Max length for axis title if the title is automatically generated from the field's description. By default, this is automatically based on cell size and characterWidth property.
+   * @minimum 0
+   */
   titleMaxLength?: number;
-  /** Character width for automatically determining title max length. */
+  /**
+   * Character width for automatically determining title max length.
+   */
   characterWidth?: number;
 
-  /** Optional mark property definitions for custom axis styling. */
+  /**
+   * Optional mark property definitions for custom axis styling.
+   */
   properties?: any; // TODO: replace
 }
 
@@ -68,9 +116,13 @@ export const defaultFacetAxisConfig: AxisConfig = {
 };
 
 export interface AxisProperties extends AxisConfig {
-  /** The formatting pattern for axis labels. If undefined, a good format is automatically determined. Vega-Lite uses D3's format pattern and automatically switches to datetime formatters. */
+  /**
+   * The formatting pattern for axis labels. If undefined, a good format is automatically determined. Vega-Lite uses D3's format pattern and automatically switches to datetime formatters.
+   */
   format?: string; // default value determined by config.format anyway
-  /** A title for the axis. Shows field name and its function by default. */
+  /**
+   * A title for the axis. Shows field name and its function by default.
+   */
   title?: string;
   values?: number[];
 }
@@ -89,8 +141,7 @@ export const axisConfig = {
       type: 'number'
     },
     orient: {
-      type: 'string',
-      enum: ['top', 'right', 'left', 'bottom']
+      type: 'string'
     },
 
     // grid
@@ -105,8 +156,7 @@ export const axisConfig = {
       type: 'number'
     },
     labelMaxLength: {
-      type: 'integer',
-      minimum: 1
+      type: 'integer'
     },
     shortTimeLabels: {
       type: 'boolean'
@@ -117,27 +167,22 @@ export const axisConfig = {
       type: 'number'
     },
     ticks: {
-      type: 'integer',
-      minimum: 0
+      type: 'integer'
     },
     tickPadding: {
       type: 'integer'
     },
     tickSize: {
-      type: 'integer',
-      minimum: 0
+      type: 'integer'
     },
     tickSizeMajor: {
-      type: 'integer',
-      minimum: 0
+      type: 'integer'
     },
     tickSizeMinor: {
-      type: 'integer',
-      minimum: 0
+      type: 'integer'
     },
     tickSizeEnd: {
-      type: 'integer',
-      minimum: 0
+      type: 'integer'
     },
 
     // Title
@@ -145,8 +190,7 @@ export const axisConfig = {
       type: 'integer'
     },
     titleMaxLength: {
-      type: 'integer',
-      minimum: 0
+      type: 'integer'
     },
     characterWidth: {
       type: 'integer'

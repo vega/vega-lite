@@ -9,14 +9,22 @@ export interface Config {
   // width?: number;
   // height?: number;
   // padding?: number|string;
-  /** The width and height of the on-screen viewport, in pixels. If necessary, clipping and scrolling will be applied. */
+  /**
+   * The width and height of the on-screen viewport, in pixels. If necessary, clipping and scrolling will be applied.
+   */
   viewport?: number;
-  /** CSS color property to use as background of visualization. Default is `"transparent"`. */
+  /**
+   * CSS color property to use as background of visualization. Default is `"transparent"`.
+   */
   background?: string;
 
-  /** D3 Number format for axis labels and text tables. For example "s" for SI units. */
+  /**
+   * D3 Number format for axis labels and text tables. For example "s" for SI units.
+   */
   numberFormat?: string;
-  /** Default datetime format for axis and legend labels. The format can be set directly on each axis and legend. */
+  /**
+   * Default datetime format for axis and legend labels. The format can be set directly on each axis and legend.
+   */
   timeFormat?: string;
 
   unit?: UnitConfig;
