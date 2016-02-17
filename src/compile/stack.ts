@@ -100,7 +100,7 @@ export function imputeTransform(model: Model) {
 
 export function stackTransform(model: Model) {
   const stack = model.stack();
-  const encoding = model.spec().encoding;
+  const encoding = model.encoding();
   const sortby = model.has(ORDER) ?
     (isArray(encoding[ORDER]) ? encoding[ORDER] : [encoding[ORDER]]).map(sortField) :
     // default = descending by stackFields

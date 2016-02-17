@@ -159,6 +159,7 @@ export class Model {
     return this._spec.mark;
   }
 
+  // TODO: remove
   public spec(): Spec {
     return this._spec;
   }
@@ -169,6 +170,10 @@ export class Model {
 
   public has(channel: Channel) {
     return vlEncoding.has(this._spec.encoding, channel);
+  }
+
+  public encoding() {
+    return this._spec.encoding;
   }
 
   public fieldDef(channel: Channel): FieldDef {
