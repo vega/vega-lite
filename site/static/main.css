@@ -244,30 +244,30 @@ nav a:hover {
 .gallery {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;;
+  justify-content: flex-start;
 }
-.gallery .image {
+.gallery .imagegroup {
   display: inline-block;
   position: relative;
-  /* Show 4 images per row, make the height depend on the width */
-  height: 0;
   /* 16px margin */
-  width: calc(24% - 16px);
+  width: calc(25% - 16px);
+  margin: 16px 16px 16px 0px;
+}
+.gallery .image {
+  display: block;
+  /* Show 4 images per row, make the height depend on the width */
+  width: calc(100%);
   /* hack to make height depend on width*/
-  padding-bottom: calc(21% - 16px);
-  margin: 0px 16px 16px 0px;
+  padding-bottom: calc(100%);
   border: 1px dotted #CECECE;
-
   background-repeat: no-repeat;
   background-clip: padding-box;
 }
 .gallery .image:hover {
   border: 1px dashed orange;
 }
-.gallery .image span {
-  position: absolute;
-  bottom: 0;
-  background-color: rgba(255,255,255,0.5);
+.gallery span {
+  display: block;
 }
 
 /* Media queries */

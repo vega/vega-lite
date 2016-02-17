@@ -16,18 +16,21 @@ d3.json('examples/vl-examples.json', function(error, VL_SPECS) {
       return;
     }
 
-    let viz = selection.selectAll('.image').data(galleryGroupSpecs);
+    let viz = selection.selectAll('.imagegroup').data(galleryGroupSpecs);
 
     viz.exit().remove();
 
-    viz.enter()
+    let imageGroup = viz.enter()
       .append('a')
+      .attr('class', 'imagegroup')
+      .attr('href', function(d){ return 'https://vega.github.io/vega-editor/?mode=vega-lite&spec=' + d.name;});
+
+    imageGroup.append('a')
       .attr('class', 'image')
-      .attr('href', function(d){ return 'https://vega.github.io/vega-editor/?mode=vega-lite&spec=' + d.name;})
       .style('background-image', function(d){ return 'url(examples/images/' + d.name + '.svg)'; })
       .style('background-size', '150%')
-      .style('background-position', 'right top')
-      .append('span')
+      .style('background-position', 'right top');
+    imageGroup.append('span')
         .text(function(d) {return d.title;});
 
   }
