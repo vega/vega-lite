@@ -34,6 +34,14 @@ export interface AxisConfig {
    */
   labelAngle?: number;
   /**
+   * Text alignment for the Label. 
+   */
+  labelAlign?: string;
+  /**
+   * Text baseline for the label.
+   */
+  labelBaseline?: string;
+  /**
    * Truncate labels that are too long.
    * @minimum 1
    */
