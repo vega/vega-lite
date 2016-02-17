@@ -1,6 +1,7 @@
 export interface Data {
   formatType?: string;
   url?: string;
+  /** Pass array of objects instead of a url to a file. */
   values?: any[];
 }
 
@@ -17,7 +18,6 @@ export var data = {
     },
     values: {
       type: 'array',
-      description: 'Pass array of objects instead of a url to a file.',
       items: {
         type: 'object',
         additionalProperties: true

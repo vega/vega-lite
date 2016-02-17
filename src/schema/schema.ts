@@ -8,7 +8,9 @@ import {encoding, Encoding} from './encoding.schema';
 import {Mark} from '../mark';
 import {transform, Transform} from './transform.schema';
 
+/** Schema for Vega-Lite specification */
 export interface Spec {
+  /** A name for the specification. The name is used to annotate marks, scale names, and more. */
   name?: string;
   description?: string;
   data?: Data;
@@ -26,13 +28,11 @@ export var util = schemaUtil;
 /** @type Object Schema of a vega-lite specification */
 export var schema = {
   $schema: 'http://json-schema.org/draft-04/schema#',
-  description: 'Schema for Vega-Lite specification',
   type: 'object',
   required: ['mark', 'encoding'],
   properties: {
     name: {
-      type: 'string',
-      description: 'A name for the specification. The name is used to annotate marks, scale names, and more.'
+      type: 'string'
     },
     description: {
       type: 'string'

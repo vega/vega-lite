@@ -5,7 +5,9 @@ import {toMap} from '../util';
 export type SortEnum = string; // TODO: string literal "ascending", "descending", "none"
 
 export interface SortField {
+  /** The field name to aggregate over. */
   field: string;
+  /** The field name to aggregate over. */
   op: string;
   order?: string;
 }
@@ -20,13 +22,11 @@ const sortField = { // sort by aggregation of another field
   required: ['field', 'op'],
   properties: {
     field: {
-      type: 'string',
-      description: 'The field name to aggregate over.'
+      type: 'string'
     },
     op: {
       type: 'string',
-      enum: AGGREGATE_OPS,
-      description: 'The field name to aggregate over.'
+      enum: AGGREGATE_OPS
     },
     order: {
       type: 'string',
