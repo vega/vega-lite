@@ -1,9 +1,10 @@
 import {Spec} from '../schema/schema';
-import {AxisProperties, defaultAxisConfig, defaultFacetAxisConfig} from '../schema/axis.schema';
-import {LegendProperties, defaultLegendConfig} from '../schema/legend.schema';
+import {AxisProperties} from '../schema/axis.schema';
+import {LegendProperties} from '../schema/legend.schema';
 import {Scale} from '../schema/scale.schema';
 import {Encoding} from '../schema/encoding.schema';
 import {FieldDef} from '../schema/fielddef.schema';
+import {defaultConfig, Config} from '../schema/config.schema';
 import * as schema from '../schema/schema';
 import * as schemaUtil from '../schema/schemautil';
 
@@ -15,11 +16,21 @@ import * as vlEncoding from '../encoding';
 import {Mark, BAR, TICK, TEXT as TEXTMARK} from '../mark';
 
 import {getFullName, QUANTITATIVE} from '../type';
-import {duplicate, extend} from '../util';
+import {duplicate, extend, contains} from '../util';
 
 import {compileMarkConfig} from './config';
 import {compileStackProperties, StackProperties} from './stack';
 import {type as scaleType} from './scale';
+
+export interface ScaleMap {
+  x?: Scale;
+  y?: Scale;
+  row?: Scale;
+  column?: Scale;
+  color?: Scale;
+  size?: Scale;
+  shape?: Scale;
+};
 
 /**
  * Internal model of Vega-Lite specification for the compiler.
@@ -27,6 +38,8 @@ import {type as scaleType} from './scale';
 export class Model {
   private _spec: Spec;
   private _stack: StackProperties;
+
+  private _scale: ScaleMap;
 
   private _axis: {
     x?: AxisProperties;
@@ -41,9 +54,19 @@ export class Model {
     shape?: LegendProperties;
   };
 
+  private _config: Config;
+
   constructor(spec: Spec) {
-    var defaults = schema.instantiate();
-    this._spec = schemaUtil.mergeDeep(defaults, spec);
+    const model = this; // For self-reference in children method.
+
+    this._spec = spec;
+
+    const mark = this._spec.mark;
+
+    // TODO: remove this || {}
+    // Currently we have it to prevent null pointer exception.
+    const encoding = this._spec.encoding = this._spec.encoding || {};
+    const config = this._config = schemaUtil.mergeDeep(duplicate(defaultConfig), spec.config);
 
     vlEncoding.forEach(this._spec.encoding, function(fieldDef: FieldDef, channel: Channel) {
       if (!supportMark(channel, this._spec.mark)) {
@@ -62,34 +85,38 @@ export class Model {
       if ((channel === PATH || channel === ORDER) && !fieldDef.aggregate && fieldDef.type === QUANTITATIVE) {
         fieldDef.aggregate = 'min';
       }
-
-      // TODO instantiate bin here
-
-      // set default bandWidth for X and Y
-      if (channel === X && fieldDef.scale.bandWidth === undefined) {
-        // This should be zero for the sake of text table.
-        fieldDef.scale.bandWidth = this.isOrdinalScale(X) && this.mark() === 'text' ?
-          90 : // TODO: config.scale.textBandWidth
-          21; // TODO: config.scale.bandWidth
-      }
-      if (channel === Y && fieldDef.scale.bandWidth === undefined) {
-        // This should be zero for the sake of text table.
-        fieldDef.scale.bandWidth = 21;
-      }
-
-      // set default padding for ROW and COLUMN
-      if (channel === ROW && fieldDef.scale.padding === undefined) {
-        // This should be zero for the sake of text table.
-        fieldDef.scale.padding = this.has(Y) ? 16 : 0;
-      }
-      if (channel === COLUMN && fieldDef.scale.padding === undefined) {
-        // This should be zero for the sake of text table.
-        fieldDef.scale.padding = this.has(X) ? 16 : 0;
-      }
     }, this);
 
-    const encoding = this._spec.encoding;
-    const config = this._spec.config;
+    // Initialize Scale
+
+    const scale = this._scale = [X, Y, COLOR, SHAPE, SIZE, ROW, COLUMN].reduce(function(_scale, channel) {
+      // Position Axis
+      if (vlEncoding.has(encoding, channel)) {
+        const channelScale = encoding[channel].scale || {};
+        const channelDef = encoding[channel];
+
+        const _scaleType = scaleType(channelScale, channelDef, channel, mark);
+
+        if (contains([ROW, COLUMN], channel)) {
+            _scale[channel] = extend({
+              type: _scaleType,
+              round: config.facet.scale.round,
+              padding: (channel === ROW && model.has(Y)) || (channel === COLUMN && model.has(X)) ?
+                       config.facet.scale.padding : 0
+            }, channelScale);
+        } else {
+          _scale[channel] = extend({
+            type: _scaleType,
+            round: config.scale.round,
+            padding: config.scale.padding,
+            useRawDomain: config.scale.useRawDomain,
+            bandWidth: channel === X && _scaleType === 'ordinal' && mark === TEXTMARK ?
+                       config.scale.textBandWidth : config.scale.bandWidth
+          }, channelScale);
+        }
+      }
+      return _scale;
+    }, {});
 
     // Initialize Axis
     this._axis = [X, Y, ROW, COLUMN].reduce(function(_axis, channel) {
@@ -98,7 +125,6 @@ export class Model {
         const channelAxis = encoding[channel].axis;
         if (channelAxis !== false) {
           _axis[channel] = extend({},
-            channel === X || channel === Y ? defaultAxisConfig : defaultFacetAxisConfig,
             channel === X || channel === Y ? config.axis : config.facet.axis,
             channelAxis === true ? {} : channelAxis ||  {}
           );
@@ -112,7 +138,7 @@ export class Model {
       if (vlEncoding.has(encoding, channel)) {
         const channelLegend = encoding[channel].legend;
         if (channelLegend !== false) {
-          _legend[channel] = extend({}, defaultLegendConfig, config.legend,
+          _legend[channel] = extend({}, config.legend,
             channelLegend === true ? {} : channelLegend ||  {}
           );
         }
@@ -121,8 +147,8 @@ export class Model {
     }, {});
 
     // calculate stack
-    this._stack = compileStackProperties(this._spec);
-    this._spec.config.mark = compileMarkConfig(this._spec, this._stack);
+    this._stack = compileStackProperties(mark, encoding, scale, config);
+    this._config.mark = compileMarkConfig(mark, encoding, config, this._stack);
   }
 
   public stack(): StackProperties {
@@ -155,6 +181,7 @@ export class Model {
     return this._spec.mark;
   }
 
+  // TODO: remove
   public spec(): Spec {
     return this._spec;
   }
@@ -167,8 +194,14 @@ export class Model {
     return vlEncoding.has(this._spec.encoding, channel);
   }
 
+  public encoding() {
+    return this._spec.encoding;
+  }
+
   public fieldDef(channel: Channel): FieldDef {
-    return this._spec.encoding[channel];
+    // TODO: remove this || {}
+    // Currently we have it to prevent null pointer exception.
+    return this._spec.encoding[channel] || {};
   }
 
   /** Get "field" reference for vega */
@@ -209,7 +242,7 @@ export class Model {
     const fieldDef = this.fieldDef(channel);
     const scale = this.scale(channel);
 
-    return fieldDef && scaleType(scale, fieldDef, channel, this.mark()) === 'ordinal';
+    return this.has(channel) && scaleType(scale, fieldDef, channel, this.mark()) === 'ordinal';
   }
 
   public isDimension(channel: Channel) {
@@ -237,20 +270,14 @@ export class Model {
   }
 
   public transform() {
-    return this._spec.transform;
-  }
-
-  /** returns whether the encoding has values embedded */
-  public hasValues() {
-    var vals = this.data().values;
-    return vals && vals.length;
+    return this._spec.transform || {};
   }
 
   /**
    * Get the spec configuration.
    */
   public config() {
-    return this._spec.config;
+    return this._config;
   }
 
   public sort(channel: Channel) {
@@ -258,7 +285,7 @@ export class Model {
   }
 
   public scale(channel: Channel): Scale {
-    return this._spec.encoding[channel].scale;
+    return this._scale[channel];
   }
 
   public axis(channel: Channel): AxisProperties {
@@ -276,9 +303,9 @@ export class Model {
   }
 
   public sizeValue(channel: Channel = SIZE) {
-    const value = this.fieldDef(SIZE).value;
-    if (value !== undefined) {
-       return value;
+    const fieldDef = this.fieldDef(SIZE);
+    if (fieldDef && fieldDef.value !== undefined) {
+       return fieldDef.value;
     }
     switch (this.mark()) {
       case TEXTMARK:

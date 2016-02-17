@@ -63,6 +63,7 @@ describe('Util', function() {
         color: { field: 'cyl', type: 'ordinal' }
       },
       data: {
+        formatType: 'json',
         url: 'data/cars.json'
       }
     };

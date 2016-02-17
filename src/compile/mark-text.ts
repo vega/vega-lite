@@ -25,6 +25,11 @@ export namespace text {
   export function properties(model: Model) {
     // TODO Use Vega's marks properties interface
     let p: any = {};
+
+    applyMarkConfig(p, model,
+      ['angle', 'align', 'baseline', 'dx', 'dy', 'font', 'fontWeight',
+        'fontStyle', 'radius', 'theta', 'text']);
+
     const fieldDef = model.fieldDef(TEXT);
 
     // x
@@ -80,13 +85,9 @@ export namespace text {
       } else {
         p.text = { field: model.field(TEXT) };
       }
-    } else {
+    } else if (fieldDef.value) {
       p.text = { value: fieldDef.value };
     }
-
-    applyMarkConfig(p, model,
-      ['angle', 'align', 'baseline', 'dx', 'dy', 'font', 'fontWeight',
-        'fontStyle', 'radius', 'theta']);
 
     return p;
   }

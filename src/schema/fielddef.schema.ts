@@ -1,5 +1,5 @@
 import {axis, AxisProperties} from './axis.schema';
-import {bin, Bin} from './bin.schema';
+import {binProperties, BinProperties} from './bin.schema';
 import {legend, LegendProperties} from './legend.schema';
 import {typicalScale, ordinalOnlyScale, Scale} from './scale.schema';
 import {sortEnum, sort, SortField, SortEnum} from './sort.schema';
@@ -22,12 +22,8 @@ export interface FieldDef {
 
   // function
   timeUnit?: string;
-  bin?: boolean | Bin;
-
+  bin?: boolean | BinProperties;
   aggregate?: string;
-
-  // TODO: remove these one by one
-  scale?: Scale;
 
   // TODO: maybe extend this in other app?
   // unused metadata -- for other application
@@ -60,7 +56,7 @@ const fieldDef = {
       type: 'string',
       enum: [NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL]
     },
-    bin: bin,
+    bin: binProperties,
     timeUnit: {
       type: 'string',
       enum: TIMEUNITS,
@@ -90,13 +86,6 @@ export interface PositionChannelDef extends ChannelDefWithScale {
 export const positionChannelDef = mergeDeep(duplicate(channelDefWithScale), {
   required: ['field', 'type'], // TODO: remove if possible
   properties: {
-    scale: {
-      // TODO: remove
-      // replacing default values for just these two axes
-      properties: {
-        padding: {default: 1}
-      }
-    },
     axis: axis
   }
 });
@@ -113,7 +102,6 @@ export const channelDefWithLegend = mergeDeep(duplicate(channelDefWithScale), {
 
 // Detail
 export const detailChannelDefs = {
-  default: undefined,
   oneOf: [duplicate(fieldDef), {
     type: 'array',
     items: duplicate(fieldDef)
@@ -133,7 +121,6 @@ const orderChannelDef = mergeDeep(duplicate(fieldDef), {
 });
 
 export const orderChannelDefs = {
-  default: undefined,
   oneOf: [duplicate(orderChannelDef), {
     type: 'array',
     items: duplicate(orderChannelDef)
@@ -141,14 +128,7 @@ export const orderChannelDefs = {
 };
 
 // Text has default value = `Abc`
-export const textChannelDef = mergeDeep(duplicate(fieldDef), {
-  properties: {
-    value: {
-      type: 'string',
-      default: 'Abc' // TODO: move this default into config!
-    }
-  }
-});
+export const textChannelDef = mergeDeep(duplicate(fieldDef));
 
 // Shape / Row / Column only supports ordinal scale
 

@@ -24,7 +24,7 @@ export function applyColorAndOpacity(p, model: Model) {
       scale: model.scaleName(COLOR),
       field: model.field(COLOR, fieldDef.type === ORDINAL ? {prefn: 'rank_'} : {})
     };
-  } else if (fieldDef.value) {
+  } else if (fieldDef && fieldDef.value) {
     value = { value: fieldDef.value };
   }
 
@@ -41,13 +41,17 @@ export function applyColorAndOpacity(p, model: Model) {
   }
 }
 
-export function applyMarkConfig(marksProperties, model: Model, propsList: string[]) {
+export function applyConfig(properties, config, propsList: string[]) {
   propsList.forEach(function(property) {
-    const value = model.config().mark[property];
+    const value = config[property];
     if (value !== undefined) {
-      marksProperties[property] = { value: value };
+      properties[property] = { value: value };
     }
   });
+}
+
+export function applyMarkConfig(marksProperties, model: Model, propsList: string[]) {
+  applyConfig(marksProperties, model.config().mark, propsList);
 }
 
 

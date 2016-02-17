@@ -10,16 +10,13 @@ export var data = {
     // data source
     formatType: {
       type: 'string',
-      enum: ['json', 'csv', 'tsv'],
-      default: 'json'
+      enum: ['json', 'csv', 'tsv']
     },
     url: {
-      type: 'string',
-      default: undefined
+      type: 'string'
     },
     values: {
       type: 'array',
-      default: undefined,
       description: 'Pass array of objects instead of a url to a file.',
       items: {
         type: 'object',

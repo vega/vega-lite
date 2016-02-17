@@ -265,7 +265,7 @@ export function domainSort(model: Model, channel: Channel, scaleType: string): a
   }
 
   var sort = model.sort(channel);
-  if (sort === 'ascending' || sort === 'descending') {
+  if (contains(['ascending', 'descending', undefined /* default =ascending*/], sort)) {
     return true;
   }
 
@@ -276,6 +276,8 @@ export function domainSort(model: Model, channel: Channel, scaleType: string): a
       field: sort.field
     };
   }
+
+  // sort === 'none'
   return undefined;
 }
 
@@ -312,7 +314,7 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel, scaleT
 
   var fieldDef = model.fieldDef(channel);
 
-  if (scaleType === 'ordinal' && scale.bandWidth) {
+  if (scaleType === 'ordinal' && scale.bandWidth && contains([X, Y], channel)) {
     return {bandWidth: scale.bandWidth};
   }
 
@@ -349,8 +351,8 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel, scaleT
       const bandWidth = xIsMeasure !== yIsMeasure ?
         model.scale(xIsMeasure ? Y : X).bandWidth :
         Math.min(
-          model.scale(X).bandWidth || 21 /* config.scale.bandWidth */,
-          model.scale(Y).bandWidth || 21 /* config.scale.bandWidth */
+          model.scale(X).bandWidth || model.config().scale.bandWidth,
+          model.scale(Y).bandWidth || model.config().scale.bandWidth
         );
 
       return {range: [9, (bandWidth - 2) * (bandWidth - 2)]};
@@ -401,10 +403,15 @@ export function nice(prop: boolean|string, scaleType: string, channel: Channel, 
 
 
 export function padding(prop: number, scaleType: string, channel: Channel) {
-  // We do not use d3 scale's padding for row/column because padding there
-  // is a ratio ([0, 1]) and it causes the padding to be decimals.
-  // Therefore, we manually calculate padding in the layout by ourselves.
-  if (scaleType === 'ordinal' && channel !== ROW && channel !== COLUMN) {
+  /* Padding is only allowed for X and Y.
+   *
+   * Basically it doesn't make sense to add padding for color and size.
+   *
+   * We do not use d3 scale's padding for row/column because padding there
+   * is a ratio ([0, 1]) and it causes the padding to be decimals.
+   * Therefore, we manually calculate padding in the layout by ourselves.
+   */
+  if (scaleType === 'ordinal' && contains([X, Y], channel)) {
     return prop;
   }
   return undefined;
@@ -420,30 +427,21 @@ export function points(__, scaleType: string, channel: Channel) {
 }
 
 export function round(prop: boolean, scaleType: string, channel: Channel) {
-  if (prop !== undefined) {
+  if (contains([X, Y, ROW, COLUMN, SIZE], channel) && prop !== undefined) {
     return prop;
   }
 
-  // TODO: add these to config.scale, config.facet.scale
-  switch (channel) {
-    case X: /* fall through */
-    case Y:
-    case ROW:
-    case COLUMN:
-      return true;
-  }
   return undefined;
 }
 
 export function zero(prop: boolean, scaleType: string, channel: Channel, fieldDef: FieldDef) {
   // only applicable for non-ordinal scale
-  if (scaleType !== 'ordinal') {
+  if (!contains(['time', 'utc', 'ordinal'], scaleType)) {
     if (prop !== undefined) {
       return prop;
     }
     // By default, return true only for non-binned, quantitative x-scale or y-scale.
-    return !(fieldDef.bin || contains(['time', 'utc'], scaleType)) &&
-      contains([X, Y], channel);
+    return !fieldDef.bin && contains([X, Y], channel);
   }
   return undefined;
 }
