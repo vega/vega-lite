@@ -4,17 +4,28 @@ permalink: /
 
 images:
  - spec: area
-   bgposition: 0 0
-   bgsize: cover
- - spec: bar
- - spec: line
+   bgposition: 80% 30%
+ - spec: bar_layered_transparent
+   bgposition: 25% 0
+   bgsize: 250%
  - spec: circle
- - spec: scatter
- - spec: square
- - spec: stacked_bar_h
- - spec: point_filled
- - spec: stacked_bar_h
- - spec: point_filled
+   bgposition: 75% 30%
+ - spec: tick_strip
+   bgposition: 75% 0%
+   bgsize: 150%
+ - spec: line_color
+   bgposition: 50% 30%
+   bgsize: 150%
+ - spec: scatter_colored_with_shape
+ - spec: trellis_barley
+   bgsize: 250%
+ - spec: bar_grouped_population
+   bgposition: 75% 30%
+ - spec: trellis_stacked_bar
+   bgsize: 250%
+ - spec: trellis_scatter
+   bgposition: center 25%  
+   bgsize: 300%
 
 ---
 
