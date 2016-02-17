@@ -5,7 +5,6 @@ import {Scale} from '../schema/scale.schema';
 import {Encoding} from '../schema/encoding.schema';
 import {FieldDef} from '../schema/fielddef.schema';
 import {defaultConfig, Config} from '../schema/config.schema';
-import * as schemaUtil from '../schema/schemautil';
 
 import {COLUMN, ROW, X, Y, COLOR, SHAPE, SIZE, TEXT, PATH, ORDER, Channel, supportMark} from '../channel';
 import {SOURCE, SUMMARY} from '../data';
@@ -15,7 +14,7 @@ import * as vlEncoding from '../encoding';
 import {Mark, BAR, TICK, TEXT as TEXTMARK} from '../mark';
 
 import {getFullName, QUANTITATIVE} from '../type';
-import {duplicate, extend, contains} from '../util';
+import {duplicate, extend, contains, mergeDeep} from '../util';
 
 import {compileMarkConfig} from './config';
 import {compileStackProperties, StackProperties} from './stack';
@@ -65,7 +64,7 @@ export class Model {
     // TODO: remove this || {}
     // Currently we have it to prevent null pointer exception.
     const encoding = this._spec.encoding = this._spec.encoding || {};
-    const config = this._config = schemaUtil.mergeDeep(duplicate(defaultConfig), spec.config);
+    const config = this._config = mergeDeep(duplicate(defaultConfig), spec.config);
 
     vlEncoding.forEach(this._spec.encoding, function(fieldDef: FieldDef, channel: Channel) {
       if (!supportMark(channel, this._spec.mark)) {

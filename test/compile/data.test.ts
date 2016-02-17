@@ -3,7 +3,7 @@
 import {assert} from 'chai';
 import {compileData, source, summary, dates} from '../../src/compile/data';
 import {parseModel} from '../util';
-import {mergeDeep} from '../../src/schema/schemautil';
+import {mergeDeep} from '../../src/util';
 
 describe('Data', function () {
   describe('for aggregate encoding', function () {
