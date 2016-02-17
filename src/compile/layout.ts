@@ -94,9 +94,9 @@ function scaleWidthFormula(model: Model, channel: Channel, nonOrdinalSize: numbe
   } else {
     if (model.mark() === TEXT_MARK && channel === X) {
       // for text table without x/y scale we need wider bandWidth
-      return 90 + ''; // TODO: config.scale.textBandWidth
+      return model.config().scale.textBandWidth + '';
     }
-    return 21 + ''; // TODO: config.scale.bandWidth
+    return model.config().scale.bandWidth + '';
   }
 }
 
@@ -108,7 +108,6 @@ function facetScaleWidthFormula(model: Model, channel: Channel, innerWidth: stri
 
     return '(' + innerWidth + ' + ' + scale.padding + ')' + ' * ' + cardinality;
   } else {
-    // TODO: refer to facet scale config instead!
-    return innerWidth + ' + ' + 16; // need to add outer padding for facet
+    return innerWidth + ' + ' + model.config().facet.scale.padding; // need to add outer padding for facet
   }
 }

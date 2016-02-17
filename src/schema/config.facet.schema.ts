@@ -1,7 +1,9 @@
+import {FacetScaleConfig, facetScaleConfig, defaultFacetScaleConfig} from './scale.schema';
 import {AxisConfig, axisConfig, defaultFacetAxisConfig} from './axis.schema';
 import {UnitConfig, unitConfig, defaultFacetUnitConfig} from './config.unit.schema';
 
 export interface FacetConfig {
+  scale?: FacetScaleConfig;
   axis?: AxisConfig;
   grid?: FacetGridConfig;
   unit?: UnitConfig;
@@ -20,6 +22,7 @@ const defaultFacetGridConfig: FacetGridConfig = {
 };
 
 export const defaultFacetConfig: FacetConfig = {
+  scale: defaultFacetScaleConfig,
   axis: defaultFacetAxisConfig,
   grid: defaultFacetGridConfig,
   unit: defaultFacetUnitConfig
@@ -46,6 +49,7 @@ const facetGridConfig = {
 export const facetConfig = {
   type: 'object',
   properties: {
+    scale: facetScaleConfig,
     axis: axisConfig,
     grid: facetGridConfig,
     unit: unitConfig

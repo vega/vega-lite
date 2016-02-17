@@ -14,7 +14,6 @@ export interface BinProperties {
 
 
 export var binProperties = {
-  default: false, // TODO: remove this once we remove schema.instantiate
   description: 'binning properties or boolean flag for determining whether to bin data or not.',
   oneOf: [{
     type: 'object',

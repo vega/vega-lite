@@ -15,6 +15,7 @@ describe('Scale', function() {
         mark: 'point',
         encoding: {
           y: {
+            field: 'a',
             type: 'temporal',
             timeUnit: 'yearMonth'
           }
@@ -30,6 +31,7 @@ describe('Scale', function() {
         mark: 'point',
         encoding: {
           y: {
+            field: 'a',
             type: 'temporal',
             timeUnit: 'month'
           }
@@ -45,6 +47,7 @@ describe('Scale', function() {
         mark: 'point',
         encoding: {
           row: {
+            field: 'a',
             type: 'temporal',
             timeUnit: 'yearMonth'
           }
