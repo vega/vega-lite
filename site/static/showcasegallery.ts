@@ -16,7 +16,7 @@ d3.json('examples/vl-examples.json', function(error, VL_SPECS) {
       return;
     }
 
-    var viz = selection.selectAll('.image').data(galleryGroupSpecs);
+    let viz = selection.selectAll('.image').data(galleryGroupSpecs);
 
     viz.exit().remove();
 
@@ -25,6 +25,10 @@ d3.json('examples/vl-examples.json', function(error, VL_SPECS) {
       .attr('class', 'image')
       .attr('href', function(d){ return 'https://vega.github.io/vega-editor/?mode=vega-lite&spec=' + d.name;})
       .style('background-image', function(d){ return 'url(examples/images/' + d.name + '.svg)'; })
-      .style('background-size', 'cover');
+      .style('background-size', '150%')
+      .style('background-position', 'right top')
+      .append('span')
+        .text(function(d) {return d.title;});
+
   }
 });
