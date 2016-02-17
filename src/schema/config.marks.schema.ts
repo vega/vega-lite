@@ -45,6 +45,7 @@ export interface MarkConfig {
   // Vega-Lite only for text only
   format?: string;
   shortTimeLabels?: boolean;
+  text?: string;
 
   applyColorToBackground?: boolean;
 }
@@ -56,7 +57,8 @@ export const defaultMarkConfig: MarkConfig = {
   thickness: 1,
 
   fontSize: 10,
-  baseline: 'middle'
+  baseline: 'middle',
+  text: 'Abc'
 };
 
 export const markConfig = {
@@ -215,6 +217,10 @@ export const markConfig = {
     theta: {
       type: 'number',
       description: 'Polar coordinate angle, in radians, of the text label from the origin determined by the x and y properties. Values for theta follow the same convention of arc mark startAngle and endAngle properties: angles are measured in radians, with 0 indicating "north".'
+    },
+    text: {
+      type: 'string',
+      description: 'Placeholder Text'
     },
     // text-only & VL only
     format: {

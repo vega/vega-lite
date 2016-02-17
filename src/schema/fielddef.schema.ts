@@ -140,14 +140,7 @@ export const orderChannelDefs = {
 };
 
 // Text has default value = `Abc`
-export const textChannelDef = mergeDeep(duplicate(fieldDef), {
-  properties: {
-    value: {
-      type: 'string',
-      default: 'Abc' // TODO: move this default into config!
-    }
-  }
-});
+export const textChannelDef = mergeDeep(duplicate(fieldDef));
 
 // Shape / Row / Column only supports ordinal scale
 
