@@ -4,7 +4,7 @@ import {LegendProperties} from '../schema/legend.schema';
 import {Scale} from '../schema/scale.schema';
 import {Encoding} from '../schema/encoding.schema';
 import {FieldDef} from '../schema/fielddef.schema';
-import {defaultConfig} from '../schema/config.schema';
+import {defaultConfig, Config} from '../schema/config.schema';
 import * as schema from '../schema/schema';
 import * as schemaUtil from '../schema/schemautil';
 
@@ -42,12 +42,16 @@ export class Model {
     shape?: LegendProperties;
   };
 
-  constructor(spec: Spec) {
-    spec.config = schemaUtil.mergeDeep(duplicate(defaultConfig), spec.config);
+  private _config: Config;
 
+  constructor(spec: Spec) {
     // TODO: remove
     var defaults = schema.instantiate();
     this._spec = schemaUtil.mergeDeep(defaults, spec);
+
+    const mark = this._spec.mark;
+    const encoding = this._spec.encoding;
+    const config = this._config = schemaUtil.mergeDeep(duplicate(defaultConfig), spec.config);
 
     vlEncoding.forEach(this._spec.encoding, function(fieldDef: FieldDef, channel: Channel) {
       if (!supportMark(channel, this._spec.mark)) {
@@ -92,9 +96,6 @@ export class Model {
       }
     }, this);
 
-    const encoding = this._spec.encoding;
-    const config = this._spec.config;
-
     // Initialize Axis
     this._axis = [X, Y, ROW, COLUMN].reduce(function(_axis, channel) {
       // Position Axis
@@ -124,8 +125,8 @@ export class Model {
     }, {});
 
     // calculate stack
-    this._stack = compileStackProperties(this._spec);
-    this._spec.config.mark = compileMarkConfig(this._spec, this._stack);
+    this._stack = compileStackProperties(mark, encoding, config);
+    this._config.mark = compileMarkConfig(mark, encoding, config, this._stack);
   }
 
   public stack(): StackProperties {
@@ -253,7 +254,7 @@ export class Model {
    * Get the spec configuration.
    */
   public config() {
-    return this._spec.config;
+    return this._config;
   }
 
   public sort(channel: Channel) {

@@ -1,8 +1,9 @@
-import {Spec} from '../schema/schema';
+import {Encoding} from '../schema/encoding.schema';
+import {Config} from '../schema/config.schema';
 import {FieldDef} from '../schema/fielddef.schema';
 import {Model} from './Model';
 import {Channel, X, Y, COLOR, DETAIL, ORDER} from '../channel';
-import {BAR, AREA} from '../mark';
+import {BAR, AREA, Mark} from '../mark';
 import {field, isMeasure} from '../fielddef';
 import {has, isAggregate} from '../encoding';
 import {isArray, contains} from '../util';
@@ -34,30 +35,30 @@ interface StackTransform {
 }
 
 /** Compile stack properties from a given spec */
-export function compileStackProperties(spec: Spec) {
-  const stackFields = getStackFields(spec);
+export function compileStackProperties(mark: Mark, encoding: Encoding, config: Config) {
+  const stackFields = getStackFields(mark, encoding);
 
   if (stackFields.length > 0 &&
-      contains([BAR, AREA], spec.mark) &&
-      spec.config.mark.stacked !== 'none' &&
-      isAggregate(spec.encoding)) {
+      contains([BAR, AREA], mark) &&
+      config.mark.stacked !== 'none' &&
+      isAggregate(encoding)) {
 
-    var isXMeasure = has(spec.encoding, X) && isMeasure(spec.encoding.x);
-    var isYMeasure = has(spec.encoding, Y) && isMeasure(spec.encoding.y);
+    var isXMeasure = has(encoding, X) && isMeasure(encoding.x);
+    var isYMeasure = has(encoding, Y) && isMeasure(encoding.y);
 
     if (isXMeasure && !isYMeasure) {
       return {
         groupbyChannel: Y,
         fieldChannel: X,
         stackFields: stackFields,
-        offset: spec.config.mark.stacked
+        offset: config.mark.stacked
       };
     } else if (isYMeasure && !isXMeasure) {
       return {
         groupbyChannel: X,
         fieldChannel: Y,
         stackFields: stackFields,
-        offset: spec.config.mark.stacked
+        offset: config.mark.stacked
       };
     }
   }
@@ -65,10 +66,10 @@ export function compileStackProperties(spec: Spec) {
 }
 
 /** Compile stack-by field names from (from 'color' and 'detail') */
-function getStackFields(spec: Spec) {
+function getStackFields(mark: Mark, encoding: Encoding) {
   return [COLOR, DETAIL].reduce(function(fields, channel) {
-    const channelEncoding = spec.encoding[channel];
-    if (has(spec.encoding, channel)) {
+    const channelEncoding = encoding[channel];
+    if (has(encoding, channel)) {
       if (isArray(channelEncoding)) {
         channelEncoding.forEach(function(fieldDef) {
           fields.push(field(fieldDef));
@@ -76,7 +77,7 @@ function getStackFields(spec: Spec) {
       } else {
         const fieldDef: FieldDef = channelEncoding;
         fields.push(field(fieldDef, {
-          binSuffix: scaleType(fieldDef.scale, fieldDef, channel, spec.mark) === 'ordinal' ? '_range' : '_start'
+          binSuffix: scaleType(fieldDef.scale, fieldDef, channel, mark) === 'ordinal' ? '_range' : '_start'
         }));
       }
     }

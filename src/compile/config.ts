@@ -1,30 +1,31 @@
-import {Spec} from '../schema/schema';
+import {Encoding} from '../schema/encoding.schema';
+import {Config} from '../schema/config.schema';
 import {StackProperties} from './stack';
 
 import {X, Y, DETAIL} from '../channel';
 import {isAggregate, has} from '../encoding';
 import {isMeasure} from '../fielddef';
-import {POINT, LINE, TICK, CIRCLE, SQUARE} from '../mark';
+import {POINT, LINE, TICK, CIRCLE, SQUARE, Mark} from '../mark';
 import {contains, extend} from '../util';
 
 /**
  * Augment config.mark with rule-based default values.
  */
-export function compileMarkConfig(spec: Spec, stack: StackProperties) {
+export function compileMarkConfig(mark: Mark, encoding: Encoding, config: Config, stack: StackProperties) {
    return extend(
      ['filled', 'opacity', 'orient', 'align'].reduce(function(cfg, property: string) {
-       const value = spec.config.mark[property];
+       const value = config.mark[property];
        switch (property) {
          case 'filled':
            if (value === undefined) {
              // Point and line are not filled by default
-             cfg[property] = spec.mark !== POINT && spec.mark !== LINE;
+             cfg[property] = mark !== POINT && mark !== LINE;
            }
            break;
          case 'opacity':
-           if (value === undefined && contains([POINT, TICK, CIRCLE, SQUARE], spec.mark)) {
+           if (value === undefined && contains([POINT, TICK, CIRCLE, SQUARE], mark)) {
              // point-based marks and bar
-             if (!isAggregate(spec.encoding) || has(spec.encoding, DETAIL)) {
+             if (!isAggregate(encoding) || has(encoding, DETAIL)) {
                cfg[property] = 0.7;
              }
            }
@@ -35,7 +36,7 @@ export function compileMarkConfig(spec: Spec, stack: StackProperties) {
              cfg[property] = stack.groupbyChannel === Y ? 'horizontal' : undefined;
            }
            if (value === undefined) {
-             cfg[property] = isMeasure(spec.encoding[X]) &&  !isMeasure(spec.encoding[Y]) ?
+             cfg[property] = isMeasure(encoding[X]) &&  !isMeasure(encoding[Y]) ?
                // horizontal if X is measure and Y is dimension or unspecified
                'horizontal' :
                // vertical (undefined) otherwise.  This includes when
@@ -47,11 +48,11 @@ export function compileMarkConfig(spec: Spec, stack: StackProperties) {
          // text-only
          case 'align':
           if (value === undefined) {
-            cfg[property] = has(spec.encoding, X) ? 'center' : 'right';
+            cfg[property] = has(encoding, X) ? 'center' : 'right';
           }
        }
        return cfg;
      }, {}),
-     spec.config.mark
+     config.mark
    );
 }
