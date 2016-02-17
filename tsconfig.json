@@ -70,7 +70,6 @@
     "src/schema/mark.schema.ts",
     "src/schema/scale.schema.ts",
     "src/schema/schema.ts",
-    "src/schema/schemagen.ts",
     "src/schema/schemautil.ts",
     "src/schema/sort.schema.ts",
     "src/schema/transform.schema.ts",

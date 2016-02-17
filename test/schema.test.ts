@@ -3,9 +3,9 @@ const assert = require('assert'),
   inspect = require('util').inspect;
 
 const schema = require('../lib/schema.json');
+const specSchema = require('../vega-lite-schema.json');
 
 import * as schemautil from '../src/schema/schemautil';
-import {schema as specSchema} from '../src/schema/schema';
 
 describe('Schema', function() {
   it('should be valid', function() {
@@ -68,7 +68,7 @@ describe('Util', function() {
       }
     };
 
-    const actual = schemautil.subtract(spec, schemautil.instantiate(specSchema));
+    const actual = schemautil.subtract(spec, specSchema);
     assert.deepEqual(actual, expected);
   });
 
