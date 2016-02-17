@@ -1,5 +1,5 @@
 import {axis, AxisProperties} from './axis.schema';
-import {bin, Bin} from './bin.schema';
+import {binProperties, BinProperties} from './bin.schema';
 import {legend, LegendProperties} from './legend.schema';
 import {typicalScale, ordinalOnlyScale, Scale} from './scale.schema';
 import {sortEnum, sort, SortField, SortEnum} from './sort.schema';
@@ -22,8 +22,7 @@ export interface FieldDef {
 
   // function
   timeUnit?: string;
-  bin?: boolean | Bin;
-
+  bin?: boolean | BinProperties;
   aggregate?: string;
 
   // TODO: remove these one by one
@@ -60,7 +59,7 @@ const fieldDef = {
       type: 'string',
       enum: [NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL]
     },
-    bin: bin,
+    bin: binProperties,
     timeUnit: {
       type: 'string',
       enum: TIMEUNITS,
