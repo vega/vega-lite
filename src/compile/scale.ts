@@ -265,7 +265,7 @@ export function domainSort(model: Model, channel: Channel, scaleType: string): a
   }
 
   var sort = model.sort(channel);
-  if (sort === 'ascending' || sort === 'descending') {
+  if (contains(['ascending', 'descending', undefined /* default =ascending*/], sort)) {
     return true;
   }
 
@@ -276,6 +276,8 @@ export function domainSort(model: Model, channel: Channel, scaleType: string): a
       field: sort.field
     };
   }
+
+  // sort === 'none'
   return undefined;
 }
 
