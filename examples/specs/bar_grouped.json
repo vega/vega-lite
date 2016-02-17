@@ -1,16 +1,29 @@
 {
-  "data": {"url": "data/cars.json"},
+  "data": { "url": "data/population.json"},
+  "transform": {
+    "filter": "datum.year == 2000",
+    "calculate": [{"field": "gender", "expr": "datum.sex == 2 ? \"Female\" : \"Male\""}]
+  },
   "mark": "bar",
   "encoding": {
+    "y": {
+      "aggregate": "sum", "field": "people", "type": "quantitative",
+      "axis": {"title": "population", "grid": false}
+    },
     "column": {
-      "field": "Cylinders","type": "ordinal",
+      "field": "age", "type": "ordinal",
+      "scale": {"padding": 4},
       "axis": {"orient": "bottom", "axisWidth": 1, "offset": -8}
     },
     "x": {
-      "field": "Origin", "type": "nominal",
+      "field": "gender", "type": "nominal",
+      "scale": {"bandWidth": 6},
       "axis": false
     },
-    "y": {"aggregate": "mean", "field": "Acceleration", "type": "quantitative"},
-    "color": {"field": "Origin", "type": "nominal"}
-  }
+    "color": {
+      "field": "gender", "type": "nominal",
+      "scale": {"range": ["#EA98D2", "#659CCA"]}
+    }
+  },
+  "config": {"facet": {"unit": {"strokeWidth": 0}}}
 }

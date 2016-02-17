@@ -161,7 +161,7 @@ You can also create a normalized stacked bar chart by setting `config.mark.stack
 <!-- TODO: better explain this -->
 [Faceting](facet.html) a bar chart produces a grouped bar chart.
 
-<span class="vl-example" data-name="bar_grouped_population"></span>
+<span class="vl-example" data-name="bar_grouped"></span>
 
 <!-- ### Table Heat Map -->
 

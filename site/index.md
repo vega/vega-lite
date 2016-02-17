@@ -19,7 +19,7 @@ images:
  - spec: scatter_colored_with_shape
  - spec: trellis_barley
    bgsize: 250%
- - spec: bar_grouped_population
+ - spec: bar_grouped
    bgposition: 75% 30%
  - spec: trellis_stacked_bar
    bgsize: 250%
