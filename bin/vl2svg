@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Expects the Vega-Lite specification as the first argument. Passes everything else to vg2svg
+# Expects the path to a Vega-Lite specification as the first argument. Passes remaining argument to vg2svg
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
