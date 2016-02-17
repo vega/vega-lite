@@ -25,7 +25,7 @@ Here is a list of all properties describing `data` source:
 | :------------ |:-------------:| :------------- |
 | [values](#inline-data) | Array         | Array of object that maps field names to their values. |
 | [url](#data-from-url) | String         | A URL from which to load the data set. Use the _formatType_ property to ensure the loaded data is correctly parsed. |
-| [formatType](#data-from-url) | String  | Type of input data: `json`(default), `csv`, `tsv`. |
+| [formatType](#data-from-url) | String  | Type of input data: `"json"`, `"csv"`, `"tsv"`.  The default format type is determined by the extension of the file url.  If no extension is detected, `"json"` will be used by default.  |
 
 {:#inline}
 ## Inline Data

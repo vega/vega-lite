@@ -1,9 +1,10 @@
 import {Spec} from '../schema/schema';
-import {AxisProperties, defaultAxisConfig, defaultFacetAxisConfig} from '../schema/axis.schema';
-import {LegendProperties, defaultLegendConfig} from '../schema/legend.schema';
+import {AxisProperties} from '../schema/axis.schema';
+import {LegendProperties} from '../schema/legend.schema';
 import {Scale} from '../schema/scale.schema';
 import {Encoding} from '../schema/encoding.schema';
 import {FieldDef} from '../schema/fielddef.schema';
+import {defaultConfig, Config} from '../schema/config.schema';
 import * as schema from '../schema/schema';
 import * as schemaUtil from '../schema/schemautil';
 
@@ -41,9 +42,16 @@ export class Model {
     shape?: LegendProperties;
   };
 
+  private _config: Config;
+
   constructor(spec: Spec) {
+    // TODO: remove
     var defaults = schema.instantiate();
     this._spec = schemaUtil.mergeDeep(defaults, spec);
+
+    const mark = this._spec.mark;
+    const encoding = this._spec.encoding;
+    const config = this._config = schemaUtil.mergeDeep(duplicate(defaultConfig), spec.config);
 
     vlEncoding.forEach(this._spec.encoding, function(fieldDef: FieldDef, channel: Channel) {
       if (!supportMark(channel, this._spec.mark)) {
@@ -88,9 +96,6 @@ export class Model {
       }
     }, this);
 
-    const encoding = this._spec.encoding;
-    const config = this._spec.config;
-
     // Initialize Axis
     this._axis = [X, Y, ROW, COLUMN].reduce(function(_axis, channel) {
       // Position Axis
@@ -98,7 +103,6 @@ export class Model {
         const channelAxis = encoding[channel].axis;
         if (channelAxis !== false) {
           _axis[channel] = extend({},
-            channel === X || channel === Y ? defaultAxisConfig : defaultFacetAxisConfig,
             channel === X || channel === Y ? config.axis : config.facet.axis,
             channelAxis === true ? {} : channelAxis ||  {}
           );
@@ -112,7 +116,7 @@ export class Model {
       if (vlEncoding.has(encoding, channel)) {
         const channelLegend = encoding[channel].legend;
         if (channelLegend !== false) {
-          _legend[channel] = extend({}, defaultLegendConfig, config.legend,
+          _legend[channel] = extend({}, config.legend,
             channelLegend === true ? {} : channelLegend ||  {}
           );
         }
@@ -121,8 +125,8 @@ export class Model {
     }, {});
 
     // calculate stack
-    this._stack = compileStackProperties(this._spec);
-    this._spec.config.mark = compileMarkConfig(this._spec, this._stack);
+    this._stack = compileStackProperties(mark, encoding, config);
+    this._config.mark = compileMarkConfig(mark, encoding, config, this._stack);
   }
 
   public stack(): StackProperties {
@@ -155,6 +159,7 @@ export class Model {
     return this._spec.mark;
   }
 
+  // TODO: remove
   public spec(): Spec {
     return this._spec;
   }
@@ -165,6 +170,10 @@ export class Model {
 
   public has(channel: Channel) {
     return vlEncoding.has(this._spec.encoding, channel);
+  }
+
+  public encoding() {
+    return this._spec.encoding;
   }
 
   public fieldDef(channel: Channel): FieldDef {
@@ -250,7 +259,7 @@ export class Model {
    * Get the spec configuration.
    */
   public config() {
-    return this._spec.config;
+    return this._config;
   }
 
   public sort(channel: Channel) {

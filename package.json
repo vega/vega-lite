@@ -22,11 +22,11 @@
     "deploy": "scripts/deploy.sh",
     "deploy:gh": "scripts/deploy-gh.sh",
     "lint": "tslint -c tslint.json src/*.ts test/*.ts src/**/*.ts test/**/*.ts",
-    "prestart": "bundle exec jekyll build --config _config.yml,_config_dev.yml && cp _site/gallery.html _gallery.html",
     "start": "npm run watch & browser-sync start --server --files 'vega-lite.js' --index '_gallery.html'",
     "schema": "tsc && npm run schema:only",
     "schema:only": "node_modules/typescript-json-schema/bin/typescript-json-schema --refs true --topRef false src/schema/schema.ts Spec > vega-lite-schema.json",
     "presite": "scripts/generate-images.sh",
+    "images": "scripts/generate-images.sh",
     "site": "bundle exec jekyll serve --incremental",
     "test": "tsc && npm run schema && mocha --recursive --require source-map-support/register test examples",
     "watch:build": "watchify src/vl.ts -p tsify -v -d -s vl -o 'exorcist vega-lite.js.map > vega-lite.js'",
@@ -67,7 +67,7 @@
   },
   "dependencies": {
     "datalib": "^1.5.9",
-    "yargs": "^3.32.0"
+    "yargs": "^4.1.0"
   },
   "browserify": {
     "transform": [

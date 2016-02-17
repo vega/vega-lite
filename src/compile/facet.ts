@@ -5,6 +5,7 @@ import {Model} from './Model';
 
 import {compileAxis, compileInnerAxis, gridShow} from './axis';
 import {compileScales} from './scale';
+import {applyConfig, FILL_STROKE_CONFIG} from './util';
 
 /**
  * return mixins that contains marks, scales, and axes for the rootGroup
@@ -79,7 +80,6 @@ function getFacetGroup(model: Model, marks) {
 }
 
 function getFacetGroupProperties(model: Model) {
-  const cellConfig = model.config().cell;
   let facetGroupProperties: any = {
     x: model.has(COLUMN) ? {
         scale: model.scaleName(COLUMN),
@@ -99,15 +99,9 @@ function getFacetGroupProperties(model: Model) {
     height: {field: {parent: 'cellHeight'}}
   };
 
-  // add configs that are the resulting group marks properties
-  ['clip', 'fill', 'fillOpacity', 'stroke', 'strokeWidth',
-    'strokeOpacity', 'strokeDash', 'strokeDashOffset']
-    .forEach(function(property) {
-      const value = cellConfig[property];
-      if (value !== undefined) {
-        facetGroupProperties[property] = {value: value};
-      }
-    });
+  // apply both config from unit and facet.unit (with higher precedence for facet.unit) 
+  applyConfig(facetGroupProperties, model.config().unit, FILL_STROKE_CONFIG.concat(['clip']));
+  applyConfig(facetGroupProperties, model.config().facet.unit, FILL_STROKE_CONFIG.concat(['clip']));
 
   return facetGroupProperties;
 }
@@ -232,7 +226,7 @@ function getYAxesGroup(model: Model) { // TODO: VgMarks
 
 function getRowGridGroups(model: Model): any[] { // TODO: VgMarks
   const name = model.spec().name;
-  const cellConfig = model.config().cell;
+  const facetGridConfig = model.config().facet.grid;
 
   const rowGrid = {
     name: (name ? name + '-' : '') + 'row-grid',
@@ -247,10 +241,10 @@ function getRowGridGroups(model: Model): any[] { // TODO: VgMarks
           scale: model.scaleName(ROW),
           field: model.field(ROW)
         },
-        x: {value: 0, offset: -cellConfig.gridOffset },
-        x2: {field: {group: 'width'}, offset: cellConfig.gridOffset },
-        stroke: { value: cellConfig.gridColor },
-        strokeOpacity: { value: cellConfig.gridOpacity },
+        x: {value: 0, offset: -facetGridConfig.offset },
+        x2: {field: {group: 'width'}, offset: facetGridConfig.offset },
+        stroke: { value: facetGridConfig.color },
+        strokeOpacity: { value: facetGridConfig.opacity },
         strokeWidth: {value: 0.5}
       }
     }
@@ -262,10 +256,10 @@ function getRowGridGroups(model: Model): any[] { // TODO: VgMarks
     properties: {
       update: {
         y: { field: {group: 'height'}},
-        x: {value: 0, offset: -cellConfig.gridOffset },
-        x2: {field: {group: 'width'}, offset: cellConfig.gridOffset },
-        stroke: { value: cellConfig.gridColor },
-        strokeOpacity: { value: cellConfig.gridOpacity },
+        x: {value: 0, offset: -facetGridConfig.offset },
+        x2: {field: {group: 'width'}, offset: facetGridConfig.offset },
+        stroke: { value: facetGridConfig.color },
+        strokeOpacity: { value: facetGridConfig.opacity },
         strokeWidth: {value: 0.5}
       }
     }
@@ -274,7 +268,7 @@ function getRowGridGroups(model: Model): any[] { // TODO: VgMarks
 
 function getColumnGridGroups(model: Model): any { // TODO: VgMarks
   const name = model.spec().name;
-  const cellConfig = model.config().cell;
+  const facetGridConfig = model.config().facet.grid;
 
   const columnGrid = {
     name: (name ? name + '-' : '') + 'column-grid',
@@ -289,10 +283,10 @@ function getColumnGridGroups(model: Model): any { // TODO: VgMarks
           scale: model.scaleName(COLUMN),
           field: model.field(COLUMN)
         },
-        y: {value: 0, offset: -cellConfig.gridOffset},
-        y2: {field: {group: 'height'}, offset: cellConfig.gridOffset },
-        stroke: { value: cellConfig.gridColor },
-        strokeOpacity: { value: cellConfig.gridOpacity },
+        y: {value: 0, offset: -facetGridConfig.offset},
+        y2: {field: {group: 'height'}, offset: facetGridConfig.offset },
+        stroke: { value: facetGridConfig.color },
+        strokeOpacity: { value: facetGridConfig.opacity },
         strokeWidth: {value: 0.5}
       }
     }
@@ -304,10 +298,10 @@ function getColumnGridGroups(model: Model): any { // TODO: VgMarks
     properties: {
       update: {
         x: { field: {group: 'width'}},
-        y: {value: 0, offset: -cellConfig.gridOffset},
-        y2: {field: {group: 'height'}, offset: cellConfig.gridOffset },
-        stroke: { value: cellConfig.gridColor },
-        strokeOpacity: { value: cellConfig.gridOpacity },
+        y: {value: 0, offset: -facetGridConfig.offset},
+        y2: {field: {group: 'height'}, offset: facetGridConfig.offset },
+        stroke: { value: facetGridConfig.color },
+        strokeOpacity: { value: facetGridConfig.opacity },
         strokeWidth: {value: 0.5}
       }
     }

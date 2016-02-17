@@ -4,7 +4,7 @@ title: Binning
 permalink: /docs/bin.html
 ---
 
-Quantitative, continuous data values of a particular field are grouped into "bins" (e.g., for a histogram) with the channel definition's `bin` property.
+The channel definition's `bin` property is for grouping quantitative, continuous data values of a particular field into smaller number of "bins" (e.g., for a histogram).
 
 {: .suppress-error}
 ```json
@@ -25,7 +25,7 @@ Quantitative, continuous data values of a particular field are grouped into "bin
 }
 ```
 
-If `bin` is `true`, default binning parameters are used.  To customize binning parameters, set `bin` to a bin definition object with the following properties:
+If `bin` is `true`, default binning parameters are used.  To customize binning parameters, you can set `bin` to a bin definition object with the following properties:
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
@@ -63,3 +63,21 @@ Setting `bin` groups the values into a smaller number of bins.
 Mapping binned values and its count to a `bar` mark produces a histogram.  
 
 <span class="vl-example" data-name="histogram"></span>
+
+
+Setting the `maxbins` parameter changes the number of output bins.
+
+<div class="vl-example">
+{
+  "data": {"url": "data/cars.json"},
+  "mark": "bar",
+  "encoding": {
+    "x": {
+      "bin": {"maxbins": 30},
+      "field": "Horsepower",
+      "type": "quantitative"
+    },
+    "y": {"aggregate": "count", "field": "*", "type": "quantitative"}
+  }
+}
+</div>

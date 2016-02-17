@@ -1,41 +1,61 @@
 ---
 layout: page
-title: A High-Level Visualization Grammar
 permalink: /
+
+images:
+ - spec: area
+   bgposition: 0 0
+   bgsize: cover
+ - spec: bar
+ - spec: line
+ - spec: circle
+ - spec: scatter
+ - spec: square
+ - spec: stacked_bar_h
+ - spec: point_filled
+ - spec: stacked_bar_h
+ - spec: point_filled
+
 ---
 
-<span class="lead">
-**Vega-Lite** is a higher-level grammar for visual analysis, akin to ggplot or Tableau, that generates complete [Vega](https://vega.github.io/) specifications.
-</span>
+{:.hidden}
+# Vega-Lite: a high-level visualization grammar
 
-Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as position (`x`,`y`), `size`, `color` and `shape`. These mappings are then translated into detailed visualization specifications in the Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicitly specify these properties to override default values.  
-This documentation outlines the syntax and semantics of Vega-Lite specifications, and how you can embed Vega-Lite visualizations in your applications.
+{% include showcase.html %}
+
+{:.lead}
+**Vega-Lite** is a high-level visualization grammar.  It provides a concise JSON syntax for supporting rapid generation of visualizations to support analysis.  Vega-Lite specifications can be compiled to [Vega](http://vega.github.io/vega) specifications.
+
+
+Vega-Lite specifications describe visualizations as mappings from data to **properties of graphical marks** (e.g., points or bars).  It **automatically produces visualization components** including axes, legends, and scales. It then determines properties of these components based on a set of **carefully designed rules**.  This approach allows Vega-Lite specifications to be succinct and expressive, but also provide user control.  As Vega-Lite is designed for analysis, it supports **data transformation** such as aggregation, binning, filtering, sorting, and faceting.
+
+Try Vega-Lite in the [online editor](https://vega.github.io/vega-editor/?mode=vega-lite). To learn more about the language and how to use it, read the [getting started tutorial]({{site.baseurl}}/tutorials/getting_started.html) and the [documentation]({{site.baseurl}}/docs/).
+
+## Example
+
+This is a Vega-Lite specification to create a bar chart that shows the average temperature in Seattle for each month.
 
 <div class="vl-example">
 {
-  "data": {
-    "values": [
-      {"a":"A", "b":28}, {"a":"B", "b":55}, {"a":"C", "b":43},
-      {"a":"D", "b":91}, {"a":"E", "b":81}, {"a":"F", "b":53},
-      {"a":"G", "b":19}, {"a":"H", "b":87}, {"a":"I", "b":52}
-    ]
-  },
+  "data": {"url": "data/seattle-temps.csv", "formatType": "csv"},
   "mark": "bar",
   "encoding": {
-    "x": {"type": "ordinal","field": "a"},
-    "y": {"type": "quantitative","field": "b"}
+    "x": {
+      "timeUnit": "month",
+      "field": "date",
+      "type": "temporal",
+      "axis": {"shortTimeLabels": true}
+    },
+    "y": {
+      "aggregate": "mean",
+      "field": "temp",
+      "type": "quantitative"
+    }
   }
 }
 </div>
 
-<div class="vl-example" data-name="point_1d"></div>
+## Additional Links
 
-Want to learn more? [Read the getting started tutorial]({{site.baseurl}}/tutorials/getting_started.html) and create your own visualizations in the [online editor](https://vega.github.io/vega-editor/?mode=vega-lite)
-
-
-<!--
-## Vega-Lite, Vega, and D3
-
-Vega-Lite is a higher-level grammar for visual analysis. Common charts (bar chart, line chart, area chart, scatter plot, heatmap, trellis plots, ...) can be easily created with Vega-Lite, often in a few lines of JSON. Vega is much more expressive and also supports interactions.
-However, with more expressiveness comes complexity and more code is required to create simple charts. The Vega wiki has a detailed [comparison of Vega and D3](https://github.com/vega/vega/wiki/Vega-and-D3).
--->
+* [JSON schema](http://json-schema.org/) specification for Vega-Lite: [vega-lite-schema.json](https://vega.github.io/vega-lite/vega-lite-schema.json)
+* Ask questions about Vega-Lite in the [Vega Discussion Group / Mailing List](https://groups.google.com/forum/?fromgroups#!forum/vega-js).

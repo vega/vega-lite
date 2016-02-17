@@ -41,13 +41,17 @@ export function applyColorAndOpacity(p, model: Model) {
   }
 }
 
-export function applyMarkConfig(marksProperties, model: Model, propsList: string[]) {
+export function applyConfig(properties, config, propsList: string[]) {
   propsList.forEach(function(property) {
-    const value = model.config().mark[property];
+    const value = config[property];
     if (value !== undefined) {
-      marksProperties[property] = { value: value };
+      properties[property] = { value: value };
     }
   });
+}
+
+export function applyMarkConfig(marksProperties, model: Model, propsList: string[]) {
+  applyConfig(marksProperties, model.config().mark, propsList);
 }
 
 

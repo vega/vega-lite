@@ -11,7 +11,6 @@ export interface SortField {
 }
 
 export const sortEnum = {
-  default: 'ascending',
   type: 'string',
   enum: ['ascending', 'descending', 'none']
 };
@@ -37,7 +36,6 @@ const sortField = { // sort by aggregation of another field
 };
 
 export var sort = {
-  default: 'ascending',
   supportedTypes: toMap([QUANTITATIVE, ORDINAL]),
   oneOf: [
     sortEnum,

@@ -1,8 +1,10 @@
 import {Model} from './Model';
+import {OrderChannelDef} from '../schema/fielddef.schema';
+
 import {X, Y, COLOR, TEXT, SHAPE, PATH, ORDER, DETAIL, ROW, COLUMN, LABEL} from '../channel';
 import {AREA, LINE, TEXT as TEXTMARK} from '../mark';
 import {imputeTransform, stackTransform} from './stack';
-import {contains, extend, isArray} from '../util';
+import {contains, extend} from '../util';
 import {area} from './mark-area';
 import {bar} from './mark-bar';
 import {line} from './mark-line';
@@ -94,7 +96,7 @@ function compilePathMark(model: Model) { // TODO: extract this into compilePathM
 function compileNonPathMark(model: Model) {
   const mark = model.mark();
   const name = model.spec().name;
-  // TODO: replace this with more general case for composition 
+  // TODO: replace this with more general case for composition
   const hasParentData = model.has(ROW) || model.has(COLUMN);
   const dataFrom = {data: model.dataTable()};
 
@@ -158,12 +160,16 @@ function compileNonPathMark(model: Model) {
   return marks;
 }
 
-function sortBy(model: Model) {
+function sortBy(model: Model): string | string[] {
   if (model.has(ORDER)) {
-    var channelEncoding = model.spec().encoding[ORDER];
-    return isArray(channelEncoding) ?
-      channelEncoding.map(sortField) : // sort by multiple fields
-      sortField(channelEncoding);      // sort by one field
+    var channelDef = model.encoding().order;
+    if (channelDef instanceof Array) {
+      // sort by multiple fields
+      return channelDef.map(sortField);
+    } else {
+      // sort by one field
+      return sortField(channelDef as OrderChannelDef); // have to add OrderChannelDef to make tsify not complaining
+    }
   }
   return null; // use default order
 }
@@ -171,13 +177,17 @@ function sortBy(model: Model) {
 /**
  * Return path order for sort transform's by property
  */
-function sortPathBy(model: Model) {
+function sortPathBy(model: Model): string | string[] {
   if (model.mark() === LINE && model.has(PATH)) {
     // For only line, sort by the path field if it is specified.
-    const channelEncoding = model.spec().encoding[PATH];
-    return isArray(channelEncoding) ?
-      channelEncoding.map(sortField) : // sort by multiple fields
-      sortField(channelEncoding);
+    const channelDef = model.encoding().path;
+    if (channelDef instanceof Array) {
+      // sort by multiple fields
+      return channelDef.map(sortField);
+    } else {
+      // sort by one field
+      return sortField(channelDef as OrderChannelDef); // have to add OrderChannelDef to make tsify not complaining
+    }
   } else {
     // For both line and area, we sort values based on dimension by default
     return '-' + model.field(model.config().mark.orient === 'horizontal' ? Y : X);

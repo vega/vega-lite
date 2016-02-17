@@ -1,0 +1,7 @@
+<div class="showcase">
+{% for image in page.images %}
+  <a class="image" href="https://vega.github.io/vega-editor/?mode=vega-lite&spec={{image.spec}}"
+    style="background-image: url('examples/images/{{image.spec}}.svg'); {% if image.bgposition %} background-position: {{image.bgposition}}; {% endif %}{% if image.bgsize %} background-size: {{image.bgsize}}; {% endif %}">
+  </a>
+{% endfor %}
+</div>
