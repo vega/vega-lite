@@ -36,7 +36,7 @@ export function compile(spec) {
     {
       data: compileData(model).concat([compileLayoutData(model)]),
       marks: [].concat(
-       (spec.title ? [compileTitle(model)] : []),
+       (model.title() !== undefined ? [compileTitle(model)] : []),
        [compileRootGroup(model)]
      )
     }
@@ -62,16 +62,16 @@ function scene(config) {
 }
 
 export function compileTitle(model: Model) {
-  const spec = model.spec();
+  const title = model.title();
   return {
-      name: model.name(spec.title),
+      name: model.name(title),
       type: 'text',
       from: {data: 'layout'},
       properties: {
         update: {
           x: {field: 'width', mult: 0.5},
           y: {value: 0},
-          text: {value: spec.title},
+          text: {value: title},
           fill: {value: 'black'},
           fontSize: {value: 16},
           align: {value: 'center'},
@@ -93,7 +93,7 @@ export function compileRootGroup(model: Model) {
       from: {data: LAYOUT},
       properties: {
         update: extend(
-          spec.title ? {y: {'value': 55} }: {},
+          model.title() !== undefined ? {y: {'value': 55} }: {},
           {
             width: {field: 'width'},
             height: {field: 'height'}

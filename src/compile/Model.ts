@@ -152,7 +152,11 @@ export class Model {
   }
 
   public name(localName: string): string {
-    return (this._spec.name ?  this._spec.name + '-' : '') + localName;
+    return (this._spec.name ? this._spec.name + '-' : '') + localName;
+  }
+
+  public title(): string {
+    return this._spec.title;
   }
 
   public mark(): Mark {
