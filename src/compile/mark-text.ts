@@ -2,7 +2,7 @@ import {Model} from './Model';
 import {X, Y, COLOR, TEXT, SIZE} from '../channel';
 import {applyMarkConfig, applyColorAndOpacity, formatMixins} from './util';
 import {extend, contains} from '../util';
-import {QUANTITATIVE, TEMPORAL} from '../type';
+import {QUANTITATIVE, ORDINAL, TEMPORAL} from '../type';
 
 export namespace text {
   export function markType() {
@@ -15,13 +15,21 @@ export namespace text {
       y: { value: 0 },
       width: { field: { group: 'width' } },
       height: { field: { group: 'height' } },
-      fill: { scale: model.scaleName(COLOR), field: model.field(COLOR) }
+      fill: {
+        scale: model.scaleName(COLOR),
+        field: model.field(COLOR, model.fieldDef(COLOR).type === ORDINAL ? {prefn: 'rank_'} : {})
+      }
     };
   }
 
   export function properties(model: Model) {
     // TODO Use Vega's marks properties interface
     let p: any = {};
+
+    applyMarkConfig(p, model,
+      ['angle', 'align', 'baseline', 'dx', 'dy', 'font', 'fontWeight',
+        'fontStyle', 'radius', 'theta', 'text']);
+
     const fieldDef = model.fieldDef(TEXT);
 
     // x
@@ -77,13 +85,9 @@ export namespace text {
       } else {
         p.text = { field: model.field(TEXT) };
       }
-    } else {
+    } else if (fieldDef.value) {
       p.text = { value: fieldDef.value };
     }
-
-    applyMarkConfig(p, model,
-      ['angle', 'align', 'baseline', 'dx', 'dy', 'font', 'fontWeight',
-        'fontStyle', 'radius', 'theta']);
 
     return p;
   }

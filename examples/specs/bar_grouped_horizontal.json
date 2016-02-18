@@ -1,0 +1,18 @@
+{
+  "data": {"url": "data/cars.json"},
+  "mark": "bar",
+  "encoding": {
+    "row": {
+      "field": "Cylinders","type": "ordinal",
+      "axis": {"orient": "left", "axisWidth": 1, "offset": -8}
+    },
+    "y": {
+      "field": "Origin", "type": "nominal",
+      "axis": false
+    },
+    "x": {
+      "aggregate": "mean", "field": "Acceleration", "type": "quantitative"
+    },
+    "color": {"field": "Origin", "type": "nominal"}
+  }
+}

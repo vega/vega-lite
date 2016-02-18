@@ -1,0 +1,15 @@
+{
+  "description": "Classic Trellis Example. Shows barley yields for different years across varieties and sites.",
+  "data": {"url": "data/barley.json"},
+  "mark": "point",
+  "encoding": {
+    "row": {"field": "site", "type": "ordinal"},
+    "x": {"aggregate": "mean", "field": "yield", "type": "quantitative"},
+    "y": {
+      "field": "variety", "type": "ordinal",
+      "sort": {"field": "yield","op": "mean"},
+      "scale": {"bandWidth": 12}
+    },
+    "color": {"field": "year", "type": "nominal"}
+  }
+}

@@ -4,7 +4,7 @@ import {assert} from 'chai';
 
 import {parseModel} from '../util';
 import * as axis from '../../src/compile/axis';
-import {X, COLUMN} from '../../src/channel';
+import {X, Y, COLUMN} from '../../src/channel';
 
 describe('Axis', function() {
   // TODO: move this to model.test.ts
@@ -25,7 +25,7 @@ describe('Axis', function() {
         },
         "data": {"url": "data/movies.json"}
       });
-      assert.deepEqual(model1.spec().encoding.y.axis, model2.spec().encoding.y.axis);
+      assert.deepEqual(model1.axis(Y), model2.axis(Y));
     });
   });
 
@@ -166,6 +166,17 @@ describe('Axis', function() {
           }
         }), X, {}, null);
       assert.deepEqual(labels.text, '');
+    });
+
+    it('should rotate labels if labelAngle is defined', function() {
+      const model = parseModel({
+        mark: "point",
+        encoding: {
+          x: {field: "a", type: "quantitative", axis: {labelAngle: -45}}
+        }
+      });
+      const labels = axis.properties.labels(model, X, {}, {});
+      assert.equal(labels.angle.value, -45);
     });
 
     it('should rotate label', function() {

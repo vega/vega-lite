@@ -1,7 +1,6 @@
 node_modules
 bower_components
 _site
-_gallery.html
 
 vega-lite*.js
 vega-lite*.map
@@ -16,5 +15,7 @@ test/log/difflist.json
 examples/_original/*
 examples/_output/*
 examples/_diff/*
+examples/images/*
 **/*.js.map
 **/*.js
+.jekyll-metadata

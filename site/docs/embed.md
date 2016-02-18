@@ -18,7 +18,13 @@ To use Vega-Lite on your own web page, load the required libraries (D3, Vega, an
 <script src="//vega.github.io/vega-editor/vendor/vega-embed.js" charset="utf-8"></script>
 ```
 
-You can also download Vega-Lite: [vega-lite.min.js]({{site.baseurl}}/vega-lite.min.js).
+We suggest that you install Vega-Lite with bower or [npm](https://www.npmjs.com/package/vega-lite), to get the latest stable version of Vega-Lite. To install Vega-Lite with npm, runtime
+
+```sh
+npm install vega-lite
+```
+
+Alternatively you can [download the latest Vega-Lite release](https://github.com/vega/vega-lite/releases/latest) and add it to your project manually.
 
 Then, create an HTML element that the visualization should be attached to.
 

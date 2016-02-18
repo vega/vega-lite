@@ -1,6 +1,6 @@
 import {Model} from './Model';
 import {X, Y, SIZE} from '../channel';
-import {applyColorAndOpacity, ColorMode} from './util';
+import {applyColorAndOpacity} from './util';
 
 export namespace tick {
   export function markType() {
@@ -48,7 +48,7 @@ export namespace tick {
       p.height = { value: model.config().mark.thickness };
     }
 
-    applyColorAndOpacity(p, model, ColorMode.ALWAYS_FILLED);
+    applyColorAndOpacity(p, model);
     return p;
   }
 

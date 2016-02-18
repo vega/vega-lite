@@ -3,11 +3,11 @@
 import {assert} from 'chai';
 import {compileData, source, summary, dates} from '../../src/compile/data';
 import {parseModel} from '../util';
-import {mergeDeep} from '../../src/schema/schemautil';
+import {mergeDeep} from '../../src/util';
 
 describe('Data', function () {
   describe('for aggregate encoding', function () {
-    it('should contain two tables', function() {
+    it('should contain 2 tables', function() {
       const model = parseModel({
           mark: "point",
           encoding: {
@@ -31,7 +31,7 @@ describe('Data', function () {
       });
 
     const data = compileData(model);
-    it('should contains one table', function() {
+    it('should contains 1 table', function() {
       assert.equal(data.length, 1);
     });
     it('should have filter non-positive in source', function() {

@@ -64,6 +64,9 @@ dt {
   font-weight: bold;
   color: #777;
 }
+dd {
+  margin-bottom: 10px;
+}
 
 /* Table */
 
@@ -114,7 +117,7 @@ h1 {
   margin: 0.7em 0 0.3em 0;
 }
 h2 {
-  font-size: 1.5em;
+  font-size: 1.75em;
   font-weight: 500;
   border-bottom: 1px solid #cccccc;
   color: black;
@@ -123,10 +126,11 @@ h2 {
   /* more padding between heading and line */
 }
 h3 {
-  font-size: 1.2em;
+  font-size: 1.5em;
 }
 h4 {
-  font-size: 1.15em;
+  font-size: 1.3em;
+  color: #333;
 }
 h5 {
   font-size: 1.1em;
@@ -207,6 +211,32 @@ nav a:hover {
 }
 .float-right {
   float: right;
+}
+.hidden {
+  display: none;
+}
+
+/* Showcase */
+.showcase {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  margin: 20px 0;
+}
+.showcase .image {
+  display: inline-block;
+
+  /* Show 4 images per row, make the height depend on the width */
+  height: 0;
+  /* 12px  = 2*6px margin */
+  width: calc(20% - 12px);
+  /* hack to make height depend on width*/
+  padding-bottom: calc(16% - 12px);
+  margin: 8px 0;
+
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 /* Media queries */

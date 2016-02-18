@@ -1,35 +1,21 @@
-import {FieldDef, detailFieldDefs, facetFieldDef, orderFieldDefs, positionFieldDef, shapeFieldDef, sizeFieldDef, textFieldDef, colorFieldDef} from './fielddef.schema';
+import {FieldDef} from './fielddef.schema';
+import {PositionChannelDef} from './fielddef.schema';
+import {FacetChannelDef} from './fielddef.schema';
+import {ChannelDefWithLegend} from './fielddef.schema';
+import {OrderChannelDef} from './fielddef.schema';
 
 export interface Encoding {
-  x?: FieldDef;
-  y?: FieldDef;
-  row?: FieldDef;
-  column?: FieldDef;
-  color?: FieldDef;
-  size?: FieldDef;
-  shape?: FieldDef;
+  x?: PositionChannelDef;
+  y?: PositionChannelDef;
+  row?: FacetChannelDef;
+  column?: FacetChannelDef;
+  color?: ChannelDefWithLegend;
+  size?: ChannelDefWithLegend;
+  shape?: ChannelDefWithLegend; // TODO: maybe distinguish ordinal-only
   detail?: FieldDef | FieldDef[];
   text?: FieldDef;
   label?: FieldDef;
 
-  path?: FieldDef | FieldDef[];
-  order?: FieldDef | FieldDef[];
+  path?: OrderChannelDef | OrderChannelDef[];
+  order?: OrderChannelDef | OrderChannelDef[];
 }
-
-export const encoding = {
-  type: 'object',
-  properties: {
-    x: positionFieldDef,
-    y: positionFieldDef,
-    row: facetFieldDef,
-    column: facetFieldDef,
-    size: sizeFieldDef,
-    color: colorFieldDef,
-    shape: shapeFieldDef,
-    text: textFieldDef,
-    detail: detailFieldDefs,
-    label: textFieldDef,
-    path: orderFieldDefs,
-    order: orderFieldDefs
-  }
-};

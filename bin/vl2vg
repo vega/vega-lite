@@ -1,10 +1,10 @@
 #!/usr/bin/env node
-// Compile a vegalite spec to vega
+// Compile a Vega-Lite spec to Vega
 
 'use strict';
 
 var helpText =
-  'Compile a vega-lite spec to vega.\n\n' +
+  'Compile a Vega-Lite spec to Vega.\n\n' +
   'Usage: vl2vg [vega_lite_json_file]\n\n';
 
 // import required libraries

@@ -18,7 +18,7 @@
       var BASEURL = "{{site.baseurl}}";
     </script>
 
-    <title> {{site.title}}: {{page.title}} </title>
+    <title> {{site.title}}{% if page.title %}:{% endif %} {{page.title}} </title>
     <link rel="stylesheet" href="{{site.baseurl}}/site/static/syntax.css">
     <link rel="stylesheet" href="{{site.baseurl}}/bower_components/highlightjs/styles/github.css">
     <link rel="stylesheet" href="{{site.baseurl}}/bower_components/octicons/octicons/octicons.css">

@@ -1,8 +1,10 @@
 import {Model} from './Model';
+import {OrderChannelDef} from '../schema/fielddef.schema';
+
 import {X, Y, COLOR, TEXT, SHAPE, PATH, ORDER, DETAIL, ROW, COLUMN, LABEL} from '../channel';
 import {AREA, LINE, TEXT as TEXTMARK} from '../mark';
 import {imputeTransform, stackTransform} from './stack';
-import {contains, extend, isArray} from '../util';
+import {contains, extend} from '../util';
 import {area} from './mark-area';
 import {bar} from './mark-bar';
 import {line} from './mark-line';
@@ -34,7 +36,8 @@ export function compileMark(model: Model): any[] {
 function compilePathMark(model: Model) { // TODO: extract this into compilePathMark
   const mark = model.mark();
   const name = model.spec().name;
-  const isFaceted = model.has(ROW) || model.has(COLUMN);
+  // TODO: replace this with more general case for composition
+  const hasParentData = model.has(ROW) || model.has(COLUMN);
   const dataFrom = {data: model.dataTable()};
   const details = detailFields(model);
 
@@ -46,7 +49,7 @@ function compilePathMark(model: Model) { // TODO: extract this into compilePathM
         // If has facet, `from.data` will be added in the cell group.
         // If has subfacet for line/area group, `from.data` will be added in the outer subfacet group below.
         // If has no subfacet, add from.data.
-        isFaceted || details.length > 0 ? {} : dataFrom,
+        hasParentData || details.length > 0 ? {} : dataFrom,
 
         // sort transform
         {transform: [{ type: 'sort', by: sortPathBy(model)}]}
@@ -74,7 +77,7 @@ function compilePathMark(model: Model) { // TODO: extract this into compilePathM
       from: extend(
         // If has facet, `from.data` will be added in the cell group.
         // Otherwise, add it here.
-        isFaceted ? {} : dataFrom,
+        hasParentData ? {} : dataFrom,
         {transform: transform}
       ),
       properties: {
@@ -93,7 +96,8 @@ function compilePathMark(model: Model) { // TODO: extract this into compilePathM
 function compileNonPathMark(model: Model) {
   const mark = model.mark();
   const name = model.spec().name;
-  const isFaceted = model.has(ROW) || model.has(COLUMN);
+  // TODO: replace this with more general case for composition
+  const hasParentData = model.has(ROW) || model.has(COLUMN);
   const dataFrom = {data: model.dataTable()};
 
   let marks = []; // TODO: vgMarks
@@ -107,7 +111,7 @@ function compileNonPathMark(model: Model) {
       { type: 'rect' },
       // If has facet, `from.data` will be added in the cell group.
       // Otherwise, add it here.
-      isFaceted ? {} : {from: dataFrom},
+      hasParentData ? {} : {from: dataFrom},
       // Properties
       { properties: { update: text.background(model) } }
     ));
@@ -117,11 +121,11 @@ function compileNonPathMark(model: Model) {
     name ? { name: name + '-marks' } : {},
     { type: markCompiler[mark].markType() },
     // Add `from` if needed
-    (!isFaceted || model.stack() || model.has(ORDER)) ? {
+    (!hasParentData || model.stack() || model.has(ORDER)) ? {
       from: extend(
         // If faceted, `from.data` will be added in the cell group.
         // Otherwise, add it here
-        isFaceted ? {} : dataFrom,
+        hasParentData ? {} : dataFrom,
         // `from.transform`
         model.stack() ? // Stacked Chart need stack transform
           { transform: [stackTransform(model)] } :
@@ -146,7 +150,7 @@ function compileNonPathMark(model: Model) {
         {type: 'text'},
         // If has facet, `from.data` will be added in the cell group.
         // Otherwise, add it here.
-        isFaceted ? {} : {from: dataFrom},
+        hasParentData ? {} : {from: dataFrom},
         // Properties
         { properties: { update: labelProperties } }
       ));
@@ -156,12 +160,16 @@ function compileNonPathMark(model: Model) {
   return marks;
 }
 
-function sortBy(model: Model) {
+function sortBy(model: Model): string | string[] {
   if (model.has(ORDER)) {
-    var channelEncoding = model.spec().encoding[ORDER];
-    return isArray(channelEncoding) ?
-      channelEncoding.map(sortField) : // sort by multiple fields
-      sortField(channelEncoding);      // sort by one field
+    var channelDef = model.encoding().order;
+    if (channelDef instanceof Array) {
+      // sort by multiple fields
+      return channelDef.map(sortField);
+    } else {
+      // sort by one field
+      return sortField(channelDef as OrderChannelDef); // have to add OrderChannelDef to make tsify not complaining
+    }
   }
   return null; // use default order
 }
@@ -169,13 +177,17 @@ function sortBy(model: Model) {
 /**
  * Return path order for sort transform's by property
  */
-function sortPathBy(model: Model) {
+function sortPathBy(model: Model): string | string[] {
   if (model.mark() === LINE && model.has(PATH)) {
     // For only line, sort by the path field if it is specified.
-    const channelEncoding = model.spec().encoding[PATH];
-    return isArray(channelEncoding) ?
-      channelEncoding.map(sortField) : // sort by multiple fields
-      sortField(channelEncoding);
+    const channelDef = model.encoding().path;
+    if (channelDef instanceof Array) {
+      // sort by multiple fields
+      return channelDef.map(sortField);
+    } else {
+      // sort by one field
+      return sortField(channelDef as OrderChannelDef); // have to add OrderChannelDef to make tsify not complaining
+    }
   } else {
     // For both line and area, we sort values based on dimension by default
     return '-' + model.field(model.config().mark.orient === 'horizontal' ? Y : X);
