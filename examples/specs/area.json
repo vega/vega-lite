@@ -11,5 +11,5 @@
       "aggregate": "sum", "field": "count","type": "quantitative"
     }
   },
-  "config": {"unit": {"width": 300, "height": 200}}
+  "config": {"cell": {"width": 300, "height": 200}}
 }

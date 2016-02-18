@@ -1,4 +1,4 @@
-export interface UnitConfig {
+export interface CellConfig {
   width?: number;
   height?: number;
 
@@ -18,12 +18,12 @@ export interface UnitConfig {
   strokeDashOffset?: number;
 }
 
-export const defaultUnitConfig: UnitConfig = {
+export const defaultCellConfig: CellConfig = {
   width: 200,
   height: 200
 };
 
-export const defaultFacetUnitConfig: UnitConfig = {
+export const defaultFacetCellConfig: CellConfig = {
   stroke: '#ccc',
   strokeWidth: 1
 };

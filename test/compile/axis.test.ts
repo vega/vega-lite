@@ -140,7 +140,7 @@ describe('Axis', function() {
             x: {field: 'abcdefghijkl'}
           },
           config: {
-            unit: {width: 60}
+            cell: {width: 60}
           }
         }), X);
       assert.deepEqual(title, 'abcdefghi…');

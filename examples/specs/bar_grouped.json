@@ -25,5 +25,5 @@
       "scale": {"range": ["#EA98D2", "#659CCA"]}
     }
   },
-  "config": {"facet": {"unit": {"strokeWidth": 0}}}
+  "config": {"facet": {"cell": {"strokeWidth": 0}}}
 }

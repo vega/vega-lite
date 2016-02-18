@@ -118,6 +118,7 @@ By default, line marks order their points in their paths by the field of channel
 
 <div class="vl-example" data-name="scatter_connected"></div>
 
+{:#facet}
 ### Facet Channels
 
 `row` and `column` are special encoding channels that facets single plots into [trellis plots (or small multiples)](https://en.wikipedia.org/wiki/Small_multiple).  
