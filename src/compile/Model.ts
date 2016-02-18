@@ -11,7 +11,7 @@ import {SOURCE, SUMMARY} from '../data';
 import * as vlFieldDef from '../fielddef';
 import {FieldRefOption} from '../fielddef';
 import * as vlEncoding from '../encoding';
-import {MarkType, BAR, TICK, TEXT as TEXTMARK} from '../mark';
+import {Mark, BAR, TICK, TEXT as TEXTMARK} from '../mark';
 
 import {getFullName, QUANTITATIVE} from '../type';
 import {duplicate, extend, contains, mergeDeep} from '../util';
@@ -176,7 +176,7 @@ export class Model {
     return spec;
   }
 
-  public mark(): MarkType {
+  public mark(): Mark {
     return this._spec.mark;
   }
 
@@ -185,7 +185,7 @@ export class Model {
     return this._spec;
   }
 
-  public is(mark: MarkType) {
+  public is(mark: Mark) {
     return this._spec.mark === mark;
   }
 

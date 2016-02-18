@@ -4,7 +4,7 @@ import {FieldDef} from '../schema/fielddef.schema';
 import {Model, ScaleMap} from './Model';
 import {Channel, X, Y, COLOR, DETAIL, ORDER} from '../channel';
 import {ScaleType, StackOffset} from '../enums';
-import {BAR, AREA, MarkType} from '../mark';
+import {BAR, AREA, Mark} from '../mark';
 import {field, isMeasure} from '../fielddef';
 import {has, isAggregate} from '../encoding';
 import {isArray, contains} from '../util';
@@ -36,7 +36,7 @@ interface StackTransform {
 }
 
 /** Compile stack properties from a given spec */
-export function compileStackProperties(mark: MarkType, encoding: Encoding, scale: ScaleMap, config: Config) {
+export function compileStackProperties(mark: Mark, encoding: Encoding, scale: ScaleMap, config: Config) {
   const stackFields = getStackFields(mark, encoding, scale);
 
   if (stackFields.length > 0 &&
@@ -67,7 +67,7 @@ export function compileStackProperties(mark: MarkType, encoding: Encoding, scale
 }
 
 /** Compile stack-by field names from (from 'color' and 'detail') */
-function getStackFields(mark: MarkType, encoding: Encoding, scale: ScaleMap) {
+function getStackFields(mark: Mark, encoding: Encoding, scale: ScaleMap) {
   return [COLOR, DETAIL].reduce(function(fields, channel) {
     const channelEncoding = encoding[channel];
     if (has(encoding, channel)) {

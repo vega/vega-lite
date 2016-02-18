@@ -8,7 +8,7 @@ import {AggregateOp, AGGREGATE_OPS} from './aggregate';
 import {TIMEUNITS} from './timeunit';
 import {SHORT_TYPE, TYPE_FROM_SHORT_TYPE} from './type';
 import * as vlEncoding from './encoding';
-import {MarkType} from './mark';
+import {Mark} from './mark';
 
 export const DELIM = '|';
 export const ASSIGN = '=';
@@ -27,7 +27,7 @@ export function parse(shorthand: string, data?, config?) {
     encoding = parseEncoding(split.join(DELIM));
 
   let spec:Spec = {
-    mark: MarkType[mark],
+    mark: Mark[mark],
     encoding: encoding
   };
 

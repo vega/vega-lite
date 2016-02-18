@@ -10,7 +10,7 @@ import {SHARED_DOMAIN_OPS} from '../aggregate';
 import {COLUMN, ROW, X, Y, SHAPE, SIZE, COLOR, TEXT, hasScale, Channel} from '../channel';
 import {SOURCE, STACKED_SCALE} from '../data';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
-import {MarkType, BAR, TEXT as TEXT_MARK} from '../mark';
+import {Mark, BAR, TEXT as TEXT_MARK} from '../mark';
 import {rawDomain, smallestUnit} from './time';
 import {ScaleType, StackOffset} from '../enums';
 import {TimeUnit} from '../timeunit';
@@ -125,7 +125,7 @@ function binColorLegendLabel(model: Model, fieldDef: FieldDef) {
   };
 }
 
-export function scaleType(scale: Scale, fieldDef: FieldDef, channel: Channel, mark: MarkType): ScaleType {
+export function scaleType(scale: Scale, fieldDef: FieldDef, channel: Channel, mark: Mark): ScaleType {
   if (!hasScale(channel)) {
     // There is no scale for these channels
     return null;
