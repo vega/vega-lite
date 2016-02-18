@@ -249,16 +249,16 @@ nav a:hover {
 .gallery .imagegroup {
   display: inline-block;
   position: relative;
-  /* 16px margin */
-  width: calc(25% - 16px);
-  margin: 16px 16px 16px 0px;
+  /* Show 4 images per row, each image has 16px margin */
+  width: calc(100%/4 - 32px);
+  margin: 16px 32px 16px 0px;
 }
 .gallery .image {
   display: block;
-  /* Show 4 images per row, make the height depend on the width */
-  width: calc(100%);
+  /* Make the height depend on the width */
+  width: 100%;
   /* hack to make height depend on width*/
-  padding-bottom: calc(100%);
+  padding-bottom: 100%;
   border: 1px dotted #CECECE;
   background-repeat: no-repeat;
   background-clip: padding-box;
