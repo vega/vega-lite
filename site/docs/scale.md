@@ -17,7 +17,7 @@ Vega-Lite automatically creates scales for fields that are [mapped to mark prope
   "encoding": {     
     "x": {
       "field": ...,
-      "type": "quantitative",
+      "type": ...,
       "scale": {                // scale
         "type": ...
       },
@@ -38,7 +38,7 @@ The rest of this page describes properties of a scale and their default behavior
 {:#type}
 ## Scale Type
 
-Vega-Lite supports the following scales types:
+Vega-Lite supports the following scale types:
 
 Quantitative Scale
 : A quantitative scales takes continuous, quantitative data as its input domain.  There are multiple types of quantitative scales. `linear`, `power`, and `log` scales output continuous ranges.  Meanwhile `quantize` and `quantile` scales output discrete ranges.  
@@ -62,7 +62,6 @@ Ordinal Scale
 - An ordinal `shape` scale always produces a categorical range since shape cannot convey order.
 - Ordinal scales for other channels (`x`, `y`, `size`) always output sequential range.  The default order for nominal data is determined by Javascript's natural order.  
 
-
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | type          | String        | The type of scale. <br/> •  For a _quantitative_ field, supported quantitative scale types  are `"linear"` (default), `"log"`, `"pow"`, `"sqrt"`, `"quantile"`, `"quantize"`, and `"threshold"`.  <br/> • For a _temporal_ field without `timeUnit`, the scale type should be `time` (default) or `ordinal`.  <br/>  • For _ordinal_ and _nominal_ fields, the type is always `ordinal`. <br/>Unsupported values will be ignored.  |
@@ -70,7 +69,7 @@ Ordinal Scale
 <!-- TODO: add utc to the above table for temporal field -->
 
 **Note:**
-For more information about scale types, please see [d3 scale documentation](https://github.com/mbostock/d3/wiki/Quantitative-Scales) for more information.
+For more information about scale types, please see [d3 scale documentation](https://github.com/mbostock/d3/wiki/Quantitative-Scales).
 
 #### Example: Log Scale
 
@@ -115,22 +114,44 @@ TODO: Custom Domain for quantitative
 {:#range}
 ## Scale Range
 
-The range of the scale represents the set of output visual values.  Vega-Lite automatically determines appropriate range for each type of scale, but `range` property can be provided to customize range values.  
+The range of the scale represents the set of output visual values.  Vega-Lite automatically determines appropriate range based on the scale's channel and type, but `range` property can be provided to customize range values.  
 
-For continuous `x` and `y` scales (quantitative and time), the range are always `[0, unitWidth]` and  `[0, unitHeight]` (See [config.unit](config.html#unit) for customizing unit width and height).  For ordinal `x` and `y` scales, the maximum range is a product of the field's cardinality and [`bandWidth`](#ordinal).
+`x` and `y` Scales
+: For continuous `x` and `y` scales (quantitative and time), the range are always `[0, unitWidth]` and  `[0, unitHeight]` (See [config.unit](config.html#unit) for customizing unit width and height).  For ordinal `x` and `y` scales, the maximum range is a product of the field's cardinality and [`bandWidth`](#ordinal).  
+<span class="note-line">
+__Not Customizable__: specified `range` will be ignored.
+</span>
 
-A `color` scale of a nominal field has a categorical color palette as its range.  The default palette is `"category10"`.  Customized categorical color `range` can be either a [string literal for a palette name](#color-palette) or an array of desired output values.  
+Nominal `color` Scales
+: A `color` scale of a nominal field has a categorical color palette as its range.  Customized categorical color `range` can be either a [string literal for a palette name](#color-palette) or an array of desired output values.  
+<span class="note-line">
+__Default value:__ derived from [scale config](config.html#scale-config)'s `nominalColorRange` (`"category10"` by default).
+</span>
 
-A `color` scale for ordinal, temporal, and quantitative fields have a sequential color ramp as its range.  Currently, Vega-Lite only supports color ramp that interpolate between two color values.  The default color ramp is a green ramp between `["#AFC6A3", "#09622A"]`.  Customized categorical color `range` takes a two-element array of color values for the interpolation.  
+Sequential `color` Scales
+: A `color` scale for ordinal, temporal, and quantitative fields have a sequential color ramp as its range.  Currently, Vega-Lite only supports color ramp that interpolate between two color values.  Customized sequential color `range` takes a two-element array of color values for interpolation.
+<span class="note-line">
+__Default value:__ derived from [scale config](config.html#scale-config)'s `sequentialColorRange` (green ramp between `["#AFC6A3", "#09622A"]` by default).
+</span>
 
-A `shape` scale has a list of shape type names as its range.  The default range is `["circle", "cross", "diamond", "square", "triangle-down", "triangle-up"]`.  An array of supported shapes can be provided as a customized `range`.
+`shape` Scales
+: A `shape` scale has a list of shape type names as its range.  A customized shape  `range` is an array of supported shapes.
+<span class="note-line">
+__Default value:__ derived from [scale config](config.html#scale-config)'s `shapeRange` This is, by default, the `"shape"` palette, which is equivalent to`["circle", "cross", "diamond", "square", "triangle-down", "triangle-up"]`.
+</span>
 
-A `size` scale has a sequential range.  For `bar`, `point`, `square`, and `circle` marks, the default size range is automatically determined based on the scale's `bandWidth`.  For `text` mark, the default font size range is `"[8, 40]"`.   Customized size `range` can be either a two-element array of color values for the interpolation or (for ordinal size scale only) an array of desired output size for each domain value.
-
+`size` Scales
+: A `size` scale has a sequential range. Customized size `range` can be either a two-element array of color values for the interpolation or (for ordinal size scale only) an array of desired output size for each domain value.
+<span class="note-line">
+__Default value:__
+<br/> • for `bar`: derived from [scale config](config.html#scale-config)'s `barSizeRange`.  If both scale's `range` and the scale config's `barSizeRange` are unspecified (default), the default size range is a range from [mark config](config.mark.html)'s `thinBarWidth` to the scale's `bandWidth`.
+<br/> • for  `point`, `square`, and `circle`: derived from [scale config](config.html#scale-config)'s `pointSizeRange`.  If both scale's `range` and the scale config's `pointSizeRange` are unspecified (default), the default size range is a range from 9 to the square of the scale's `bandWidth` (_bandWidth^2_).
+<br/> • for  `text`: derived from [scale config](config.html#scale-config)'s `fontSizeRange` (`[8, 40]` by default).   
+</span>
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| range        | Array &#124; String  | For continuous range (`linear`, `log`, `pow`, `sqrt`), the range can take the form of a two-element array with minimum and maximum values. For discrete range (`ordinal` or `quantize` scales), the range may be an array of desired output values, which are mapped to elements in the specified domain.  If there are fewer elements in the range than in the domain, the scale will reuse values from the start of the range.  |
+| range        | Array &#124; String  | Customized scale range.  |
 
 {:#color-palette}
 ### Built-in Color Palettes
@@ -158,9 +179,11 @@ Meanwhile, a color scale an ordinal field and a quantitative field outputs a seq
 
 ### Example: Custom Color Range
 
-We can customize the color range of the scatterplot above by providing `scale`'s `range` property.
+We can customize the color range of the scatterplot above by providing `scale`'s `range` property.  For a nominal color field, `range` can be an array describing the desired palette.  
 
 <div class="vl-example" data-name="scatter_color_custom"></div>
+
+For ordinal, quantitative, and time fields, `range` can be a two-element array describing the two colors for interpolation.
 
 <div class="vl-example" data-name="scatter_color_ordinal_custom"></div>
 
@@ -170,7 +193,7 @@ We can customize the color range of the scatterplot above by providing `scale`'s
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| round         | Boolean       | If true, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid (only available for `x`, `y`, `size`, `row`, and `column` scales).|
+| round         | Boolean       | If true, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid (only available for `x`, `y`, `size`, `row`, and `column` scales).  <span class="note-line">__Default value:__ derived from [scale config](config.html#scale-config) (`true` by default).</span> |
 
 {:#quant-props}
 
@@ -178,10 +201,10 @@ We can customize the color range of the scatterplot above by providing `scale`'s
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| clamp         | Boolean       | If true (default), values that exceed the data domain are clamped to either the minimum or maximum range value.  (Not applicable for `quantile`, `quantize`, and `threshold` scales as they output discrete ranges.) |
+| clamp         | Boolean       | If `true`, values that exceed the data domain are clamped to either the minimum or maximum range value.  <span class="note-line">__Default value:__ derived from [scale config](config.html#scale-config) (`true` by default)<br/>__Supported Types:__ only `linear`, `pow`, `sqrt`, and `log`</span> |
 | exponent      | Number        | Sets the exponent of the scale transformation. (For `pow` scale types only, otherwise ignored.) |
-| nice          | Boolean       | If true, modifies the scale domain to use a more human-friendly number range (e.g., 7 instead of 6.96).|
-| zero          | Boolean       | If true, ensures that a zero baseline value is included in the scale domain. If unspecified, zero is true if the quantitative field is not binned by default. |
+| nice          | Boolean       | If true, modifies the scale domain to use a more human-friendly number range (e.g., 7 instead of 6.96).  <span class="note-line">__Default value:__ `true` only for quantitative x and y scales and `false` otherwise.</span> |
+| zero          | Boolean       | If true, ensures that a zero baseline value is included in the scale domain. <span class="note-line">__Default value:__ `true` if the quantitative field is not binned.</span> |
 
 <!-- | useRawDomain<sup>1</sup>  | Boolean       | (For aggregate field only) If false (default), draw domain data the aggregate (`summary`) data table.  If true, use the raw data instead of summary data for scale domain.  This property only works with aggregate functions that produce values ranging in the domain of the source data (`"mean"`, `"average"`, `"stdev"`, `"stdevp"`, `"median"`, `"q1"`, `"q3"`, `"min"`, `"max"`).  Otherwise, this property is ignored.  If the scale's `domain` is specified, this property is also ignored. | -->
 
@@ -189,7 +212,7 @@ We can customize the color range of the scatterplot above by providing `scale`'s
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| clamp         | Boolean       | If true (default), values that exceed the data domain are clamped to either the minimum or maximum range value.|
+| clamp         | Boolean       | If true, values that exceed the data domain are clamped to either the minimum or maximum range value. (Not applicable for `quantile`, `quantize`, and `threshold` scales as they output discrete ranges.) |
 | nice          | String        | If specified, modifies the scale domain to use a more human-friendly value range. For `time` and `utc` scale types only, the nice value should be a string indicating the desired time interval; legal values are `"second"`, `"minute"`, `"hour"`, `"day"`, `"week"`, `"month"`, or `"year"`.|
 
 {:#ordinal}
@@ -197,8 +220,8 @@ We can customize the color range of the scatterplot above by providing `scale`'s
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| bandWidth     | Number        | Width for each `x` or `y` ordinal band. ([See example](#ex-bandwidth).) |
-| padding       | Number        | Applies spacing among ordinal elements in the scale range. The actual effect depends on how the scale is configured (only available for `x`, `y`, `row`, and `column` scales). <br/> • For `x` and `y`, the padding value is interpreted as a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. <br/> • For `row` and `column`, padding is typically in the range [0, 1] and corresponds to the fraction of space in the range interval to allocate to padding. A value of 0.5 means that the range band width will be equal to the padding width. For more, see the [D3 ordinal scale documentation](https://github.com/mbostock/d3/wiki/Ordinal-Scales).|
+| bandWidth     | Number        | Width for each `x` or `y` ordinal band. ([See example](#ex-bandwidth).) <span class="note-line">__Default value:__ for `x` ordinal scale of a `text` mark, derived from [scale config](config.html#scale-config)'s `textBandWidth`; otherwise, derived from [scale config](config.html#scale-config)'s `bandwidth`.</span> |
+| padding       | Number        | • For `x` and `y` channels, the padding is a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points.  (See D3's [`ordinalRangePoints()`](https://github.com/mbostock/d3/wiki/Ordinal-Scales#ordinal_rangePoints) for illustration.) <span class="note-line">__Default value:__ derived from [scale config](config.html#scale-config)'s `padding`</span> <br/> • For `row` and `column`, padding is a pixel value for padding between cells in the trellis plots.  <span class="note-line">__Default value:__ derived from  [facet scale config](config.html#facet-scale-config)'s `padding`.</span>  |
 
 {:#ex-bandwidth}
 #### Example: Custom Band Width

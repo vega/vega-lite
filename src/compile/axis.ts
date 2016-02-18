@@ -93,7 +93,7 @@ export function compileAxis(channel: Channel, model: Model) {
     'grid', 'title', 'ticks', 'majorTicks', 'minorTicks' // only default values
   ].forEach(function(group) {
     const value = properties[group] ?
-      properties[group](model, channel, props[group], def) :
+      properties[group](model, channel, props[group] || {}, def) :
       props[group];
     if (value !== undefined) {
       def.properties = def.properties || {};
@@ -240,31 +240,44 @@ export namespace properties {
       }, labelsSpec || {});
     }
 
-    if (axis.labelAngle) {
-      labelsSpec = extend({
-        angle: {value: axis.labelAngle}
-      }, labelsSpec || {});
+    // Label Angle
+    if (axis.labelAngle !== undefined) {
+      labelsSpec.angle = {value: axis.labelAngle};
+    } else {
+      // auto rotate for X and Row
+      if (channel === X && (model.isDimension(X) || fieldDef.type === TEMPORAL)) {
+        labelsSpec.angle = {value: 270};
+      } else if (channel === ROW) {
+        labelsSpec.angle = {value: 90};
+      }
     }
 
-     // for x-axis, set ticks for Q or rotate scale for ordinal scale
-    switch (channel) {
-      case X:
-        if (model.isDimension(X) || fieldDef.type === TEMPORAL) {
-          labelsSpec = extend({
-            angle: {value: 270},
-            align: {value: def.orient === 'top' ? 'left': 'right'},
-            baseline: {value: 'middle'}
-          }, labelsSpec || {});
+    if (axis.labelAlign !== undefined) {
+      labelsSpec.align = {value: axis.labelAlign};
+    } else {
+      // Auto set align if rotated
+      // TODO: consider other value besides 270, 90
+      if (labelsSpec.angle) {
+        if (labelsSpec.angle.value === 270) {
+          labelsSpec.align = {value: def.orient === 'top' ? 'left': 'right'};
+        } else if (labelsSpec.angle.value === 90) {
+          labelsSpec.align = {value: 'center'};
         }
-        break;
-      case ROW:
-        if (def.orient === 'right') {
-          labelsSpec = extend({
-            angle: {value: 90},
-            align: {value: 'center'},
-            baseline: {value: 'bottom'}
-          }, labelsSpec || {});
+      }
+    }
+
+    if (axis.labelBaseline !== undefined) {
+      labelsSpec.baseline = {value: axis.labelBaseline};
+    } else {
+      if (labelsSpec.angle) {
+        // Auto set baseline if rotated
+        // TODO: consider other value besides 270, 90
+        if (labelsSpec.angle.value === 270) {
+          labelsSpec.baseline = {value: 'middle'};
+        } else if (labelsSpec.angle.value === 90) {
+          labelsSpec.baseline = {value: 'bottom'};
         }
+      }
     }
 
     return labelsSpec || undefined;

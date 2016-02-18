@@ -141,7 +141,7 @@ Adding color to the bar chart (by using the `color` attribute) creates a stacked
 
 ### Layered Bar Chart
 
-To disable stacking, you can alternatively set `config.mark.stack` to `"none"`.
+To disable stacking, you can alternatively set `config.mark.stacked` to `"none"`.
 This produces a layered bar chart.
 To make it clear that bars are layered, we can make marks semi-transparent by setting the `opacity` to 0.6.
 
@@ -151,7 +151,7 @@ To make it clear that bars are layered, we can make marks semi-transparent by se
 ### Normalized Stacked Bar Chart
 
 <!-- TODO: better explain this -->
-You can also create a normalized stacked bar chart by setting `config.mark.stack` to `"normalized"`.  Here we can easily see the percent of male and female population at different ages.  
+You can also create a normalized stacked bar chart by setting `config.mark.stacked` to `"normalize"`.  Here we can easily see the percentage of male and female population at different ages.  
 
 <span class="vl-example" data-name="stacked_bar_normalize"></span>
 
@@ -205,23 +205,29 @@ By default, the line's path (order of points in the line) is determined by data 
 
 ## Area
 
-Similar to `line`, using `area` mark with one dimension (typically on `x`) and one measure (typically on `y`) produces an area chart.  
-
 Similar to `line`, `area` represent multiple data element as a single area shape.  
 
 ### Area Chart
 
+Using `area` mark with one dimension (typically on `x`) and one measure (typically on `y`) produces an area chart.  For example, the following area chart shows a number of unemployment people in US over time.
+
+<span class="vl-example" data-name="area"></span>
 
 ### Stacked Area Chart
 
+Adding a color field to area chart creates stacked area chart by default.  For example, here we split the area chart across industry.  
 
-Adding color to area chart creates stacked area chart by default.
-
+<span class="vl-example" data-name="stacked_area"></span>
 
 ### Normalized Stacked Area Chart
-<!-- normalized area chart -->
 
+You can also create a normalized stacked area chart by setting `config.mark.stacked` to `"normalize"`.  Here we can easily see the percentage of unemployment across industry.  
+You can also create a normalized stacked area chart by setting `config.mark.stacked` to `"normalize"`.  Here we can easily see the percentage of unemployment across industry.  
+
+<span class="vl-example" data-name="stacked_area_normalize"></span>
 
 ### Streamgraph
 
-To further customize stack, please look at [`config.stack`](config.html#stack-config) for more detail.
+We can also shift the stacked area chart's baseline to center and produces a [streamgraph](http://www.leebyron.com/else/streamgraph/) by setting `config.mark.stacked` to `"center"`.  
+
+<span class="vl-example" data-name="stacked_area_stream"></span>
