@@ -1,6 +1,7 @@
 ---
 layout: page
-title: Vega-Lite Gallery
+menu: gallery
+title: Example Gallery
 permalink: /gallery.html
 ---
 
