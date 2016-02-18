@@ -43,8 +43,8 @@ A Vega-Lite `config` object can have the following top-level properties:
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| viewport      | Integer[]     | The width and height of the on-screen viewport, in pixels. If necessary, clipping and scrolling will be applied. |
-| background    | String        | CSS color property to use as background of visualization. Default is `"transparent"`. |
+| viewport      | Integer[]     | The width and height of the on-screen viewport, in pixels. If necessary, clipping and scrolling will be applied. <span class="note-line">__Default value:__ (none)</span> |
+| background    | String        | CSS color property to use as background of visualization.  <span class="note-line">__Default value:__ (none)</span> |
 | timeFormat    | String     | The default time format pattern for text and labels of axes and legends (in the form of [D3 time format pattern](https://github.com/mbostock/d3/wiki/Time-Formatting)). <span class="note-line">__Default value:__ `'%Y-%m-%d'`.</span>|
 | numberFormat  | String      | The default number format pattern for text and labels of axes and legends (in the form of [D3 number format pattern](https://github.com/mbostock/d3/wiki/Formatting)). <span class="note-line">__Default value:__ `'s'`.</span>|
 
@@ -71,13 +71,13 @@ Each unit (non-trellis) chart contains one cell.  Thus, the width and height of 
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| fill          | Color         | The fill color. |
-| fillOpacity   | Number        | The fill opacity (value between [0,1]). |
-| stroke        | Color         | The stroke color. |
-| strokeOpacity | Number        | The stroke opacity (value between [0,1]). |
-| strokeWidth   | Number        | The stroke width, in pixels. |
-| strokeDash    | Number[]      | An array of alternating stroke, space lengths for creating dashed or dotted lines.  |
-| strokeDashOffset  | Number[]  | The offset (in pixels) into which to begin drawing with the stroke dash array. |
+| fill          | Color         | The fill color. <span class="note-line">__Default value:__ (none)</span> |
+| fillOpacity   | Number        | The fill opacity (value between [0,1]). <span class="note-line">__Default value:__ (none)</span>|
+| stroke        | Color         | The stroke color. <span class="note-line">__Default value:__ (none)</span>|
+| strokeOpacity | Number        | The stroke opacity (value between [0,1]). <span class="note-line">__Default value:__ (none)</span>|
+| strokeWidth   | Number        | The stroke width, in pixels. <span class="note-line">__Default value:__ (none)</span>|
+| strokeDash    | Number[]      | An array of alternating stroke, space lengths for creating dashed or dotted lines.  <span class="note-line">__Default value:__ (none)</span>|
+| strokeDashOffset  | Number[]  | The offset (in pixels) into which to begin drawing with the stroke dash array. <span class="note-line">__Default value:__ (none)</span>|
 
 
 ## Mark Configuration (`config.mark.*`)
@@ -90,10 +90,10 @@ A mark config object can have the following properties:
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| filled        | Boolean        | Whether the shape\'s color should be used as fill color instead of stroke color.  This is only applicable for `bar`, `point`, `circle`, `square`, and `area`.  All supported marks except `point` marks are filled by default. See [mark](mark.html#scatter_filled) for a usage example. |
-| color         | color         | The color of the mark – either fill or stroke color based on the `filled` mark config.
-| fill          | Color         | The fill color.  This config will be overridden by `color` channel's specified or mapped values if `filled` is `true`.   |
-| stroke        | Color         | The stroke color.  This config will be overridden by `color` channel's specified or mapped values if `filled` is `false`. |
+| filled        | Boolean        | Whether the shape\'s color should be used as fill color instead of stroke color.  See [mark](mark.html#scatter_filled) for a usage example.  <span class="note-line">__Default value:__ `true` for all marks except `point` and `false` for `point`.</span><span class="note-line">__Applicable for:__ `bar`, `point`, `circle`, `square`, and `area` marks.</span> |
+| color         | color         | The color of the mark – either fill or stroke color based on the `filled` mark config. <span class="note-line">__Default value:__ <span style="color: #4682b4;">&#9632;</span> blue (`""#4682b4"`)</span>  |
+| fill          | Color         | The fill color.  This config will be overridden by `color` channel's specified or mapped values if `filled` is `true`.  <span class="note-line">__Default value:__ (None) </span>  |
+| stroke        | Color         | The stroke color.  This config will be overridden by `color` channel's specified or mapped values if `filled` is `false`. <span class="note-line">__Default value:__ (None) </span> |
 
 <!-- Linked from another page.  Don't remove!-->
 
@@ -109,9 +109,9 @@ By default, `point` marks have filled borders and are transparent inside. Settin
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| opacity       | Number        | The overall opacity (value between [0,1]). |
-| fillOpacity   | Number        | The fill opacity (value between [0,1]). |
-| strokeOpacity | Number        | The stroke opacity (value between [0,1]). |
+| opacity       | Number        | The overall opacity (value between [0,1]). <span class="note-line">__Default value:__ `0.7` for non-aggregate plots with `point`, `tick`, `circle`, or `square` marks and `1` otherwise.  </span>|
+| fillOpacity   | Number        | The fill opacity (value between [0,1]). <span class="note-line">__Default value:__ `1` </span>|
+| strokeOpacity | Number        | The stroke opacity (value between [0,1]). <span class="note-line">__Default value:__ `1` </span> |
 
 #### Stroke Style
 
@@ -126,9 +126,11 @@ By default, `point` marks have filled borders and are transparent inside. Settin
 {:#stacked}
 ### Stacking (for Bar and Area)
 
+<!-- TODO: -->
+
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| stacked       | string        | Stacking modes for `bar` and `area` marks.  <br/> • `zero` - stacking with baseline offset at zero value of the scale (for creating typical stacked [bar](mark.html#stacked-bar-chart) and [area](mark.html#stacked-area-chart) chart).  <br/> • `normalize` - stacking with normalized domain (for creating normalized stacked [bar](mark.html#normalized-stacked-bar-chart) and [area](mark.html#normalized-stacked-area-chart) chart).  <br/> • `center` - stacking with center baseline (for [streamgraph](mark.html#streamgraph)). <br/> • `none` - No-stacking.  This will produces layered [bar](mark.html#layered-bar-chart) and area chart.  <span class="note-line">__Default value:__ `zero`.</span>|
+| stacked       | string        | Stacking modes for `bar` and `area` marks.  <br/> • `zero` - stacking with baseline offset at zero value of the scale (for creating typical stacked [bar](mark.html#stacked-bar-chart) and [area](mark.html#stacked-area-chart) chart).  <br/> • `normalize` - stacking with normalized domain (for creating normalized stacked [bar](mark.html#normalized-stacked-bar-chart) and [area](mark.html#normalized-stacked-area-chart) chart).  <br/> • `center` - stacking with center baseline (for [streamgraph](mark.html#streamgraph)). <br/> • `none` - No-stacking.  This will produces layered [bar](mark.html#layered-bar-chart) and area chart.  <span class="note-line">__Default value:__ `zero` if applicable.</span>|
 
 {:#interpolate}
 ### Interpolation (for Line and Area Marks)
@@ -153,6 +155,8 @@ By default, `point` marks have filled borders and are transparent inside. Settin
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | orient        | String        | The orientation of a non-stacked bar, area, and line charts.  The value is either `"horizontal"`, or `"vertical"` (default).  For bar and tick, this determines whether the size of the bar and tick should be applied to x or y dimension.  For area, this property determines the orient property of the Vega output.  For line, this property determines the path order of the points in the line if `path` channel is not specified.  For stacked charts, this is always determined by the orientation of the stack; therefore explicitly specified value will be ignored. |
+
+<!-- TODO: write better explanation for default behavior -->
 
 <!-- TODO: think about better example -->
 <!--
@@ -194,21 +198,21 @@ vg.embed('#horizontal_line', {
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| barWidth      | Number        | The width of the bars.  If unspecified, the default width for bars on an ordinal scale is  `bandWidth-1`, which provides 1 pixel offset between bars.  If the dimension has linear scale, the bar's default size will be `2` instead.   |
+| barWidth      | Number        | The width of the bars. <span class="note-line">__Default value:__  `bandWidth-1` for the bar's dimension is an ordinal scale. (This provides 1 pixel offset between bars.) and `2` for if bar's dimension has linear scale.  </span>  |
 
 
 ### Point Config
 
 | Property            | Type                | Description  |
 | :------------------ |:-------------------:| :------------|
-| shape               | Number              | The symbol shape to use. One of `"circle"` (default), `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`, or `"triangle-down"` |
+| shape               | Number              | The symbol shape to use. One of `"circle"`, `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`, or `"triangle-down"`<span class="note-line">__Default value:__ `"circle"` </span> |
 
 
 ### Point Size Config (for Point, Circle, and Square Marks)
 
 | Property            | Type                | Description  |
 | :------------------ |:-------------------:| :------------|
-| size                | Number              | The pixel area each the point (30 by default). For example: in the case of circles, the radius is determined in part by the square root of the size value. |
+| size                | Number              | The pixel area each the point. For example: in the case of circles, the radius is determined in part by the square root of the size value.<span class="note-line">__Default value:__ `30` </span> |
 
 
 ### Tick Config
@@ -217,8 +221,8 @@ vg.embed('#horizontal_line', {
 
 | Property            | Type                | Description  |
 | :------------------ |:-------------------:| :------------|
-| tickWidth           | Number        | The width of the ticks.  If unspecified, the default value is `2/3*bandWidth`. This will provide offset between band equals to the width of the tick. |
-| thickness           | Number              | Thickness of the tick mark. |
+| tickWidth           | Number        | The width of the ticks. <span class="note-line">__Default value:__ `2/3*bandWidth` (This will provide offset between band equals to the width of the tick.) </span>|
+| thickness           | Number              | Thickness of the tick mark. <span class="note-line">__Default value:__ `1` </span> |
 
 <!--TODO: Example - make tick mark thicker-->
 
