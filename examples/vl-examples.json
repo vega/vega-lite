@@ -33,7 +33,7 @@
     },
     {
       "name": "bar_grouped",
-      "title": "Grouped bar chart.",
+      "title": "Grouped bar chart",
       "showInEditor": true
     },
     {
@@ -80,7 +80,7 @@
     },
     {
       "name": "line",
-      "title": "Line chart",
+      "title": "Line Chart",
       "showInEditor": true
     },
     {
