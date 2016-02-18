@@ -60,7 +60,7 @@ Ordinal Scale
 
 - An ordinal `color` scale with `nominal` data outputs categorical color palette while an ordinal `color` scale with `ordinal` data outputs sequential color ramp.  ([See example](#ex-color-range).)
 - An ordinal `shape` scale always produces a categorical range since shape cannot convey order.
-- Ordinal scales for other channels (`x`, `y`, `size`) always output sequential range.  The default order for nominal data is determined by Javascript's natural order.  
+- Ordinal scales for other channels (`x`, `y`, `size`) always output sequential range.  The default order for nominal data is determined by Javascript's natural order.  For example, `"a"` < `"b"`.
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |

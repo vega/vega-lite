@@ -25,28 +25,81 @@ permalink: /docs/sort.html
 }
 ```
 
-`sort` property of each channel's channel definition determines the order of its field values.
-For `x`, `y`, `row` and `column`, this determines the order of each value's position via the scale.
-For `color`, `shape`, `size`, this determines the order of the channel's scale.
-For `detail`, this determines the layer order of the output visualization.
+`sort` property of [a mark properties channel](encoding.html#mark-props) determines the order of the scale domain.  Supported `sort` value depends on the field's scale type.
 
-<!-- TODO add `path` -->
+## Continuous Scale
 
-`sort` property can be specified for sorting the field's values in two ways:
+If the channel has a continuous scale (quantitative or time), `sort` can have the following values:
+- `"ascending"` –  the field is sort by the field's value in ascending order.  
+- `"descending"` –  the field is sort by the field's value in descending order.
 
-1. (Supported by all types of fields) as __String__ with the following values:
-    - `"ascending"` –  the field is sort by the field's value in ascending order.  This is the default value when `sort` is not specified.
-    - `"descending"` –  the field is sort by the field's value in descending order.
-    - `"unsorted`" – The field is not sorted. (This is equivalent to specifying `sort:false` in [Vega's scales](https://github.com/vega/vega/wiki/Scales).)
+<span class="note-line">__Default value:__ `"ascending"`.</span>
 
-2. (Supported by nominal and ordinal fields only) as a __sort field definition object__ - for sorting the field by an aggregate calculation over another sort field.  A sort field object has the following properties:
+
+#### Example: Reversed X-Scale
+
+Setting x's `sort` to `"descending"` reverses the x-axis.  Thus, the following visualization's x-axis starts on the maximum value of the field "Horsepower" and ends on zero.    
+
+<div class="vl-example">
+{
+  "data": {"url": "data/cars.json"},
+  "mark": "tick",
+  "encoding": {
+    "x": {"field": "Horsepower", "type": "quantitative", "sort": "descending"}
+  }
+}
+</div>
+
+
+## Ordinal Scale
+
+If the channel has an ordinal scale, the field's values of the channel can be sorted in the following ways:
+
+1) Sorting by the values's natural order in Javascript. For example, `"a"` < `"b"`. In this case, `sort` can be:
+
+- `"ascending"` –  sort by the field's value in ascending order.  
+- `"descending"` –  sort by the field's value in descending order.  
+
+{:#sort-field}
+
+2) Sorting by aggregated value of another "sort" field.  In this case, `sort` is a __sort field definition object__, which has the following properties:
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| _sort.field_  | Field         | The field name to aggregate over.|
-| _sort.op_     | String        | A valid [aggregation operation](#aggregate) (e.g., `mean`, `median`, etc.).|
-| _sort.order_  | String        | `"ascending"` or `"descending"` order. |
+| _field_       | Field         | The field name to aggregate over.|
+| _op_          | String        | A valid [aggregation operation](#aggregate) (e.g., `mean`, `median`, etc.).|
+| _order_       | String        | `"ascending"` or `"descending"` order. |
 
-__TODO: Example -- sorting axis__
+<!-- TODO:
+support manually specify sort order
+example: sorting color mapping
+ -->
 
-__TODO: Example -- sorting color mapping__
+3) Unsorted – `"none`" – The field is not sorted.  This is equivalent to specifying `sort:false` in [Vega's scales](https://github.com/vega/vega/wiki/Scales).
+
+<span class="note-line">__Default value:__ `"ascending"`.</span>
+
+#### Example: Sorting Ordinal Scale by Another Field
+
+The following example sorts x by mean of Horsepower.
+
+<div class="vl-example">
+{
+  "data": {"url": "data/cars.json"},
+  "mark": "bar",
+  "encoding": {
+    "y": {
+      "field": "Origin", "type": "ordinal",
+      "sort": {"op": "mean", "field": "Horsepower"}
+    },
+    "x": {"aggregate": "mean", "field": "Horsepower", "type": "quantitative"}
+  }
+}
+</div>
+
+
+<!-- TODO
+
+## Sorting Layer and Stack Order
+## Sorting Line's Path
+-->
