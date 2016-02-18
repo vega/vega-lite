@@ -54,6 +54,10 @@
       }
     },
     {
+      "name": "line",
+      "title": "Line Chart"
+    },
+    {
       "name": "line_color",
       "title": "Line Chart",
       "galleryParameters": {

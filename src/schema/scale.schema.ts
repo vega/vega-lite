@@ -1,3 +1,5 @@
+import {ScaleType, NiceTime} from '../enums';
+
 export interface ScaleConfig {
   /**
    * If true, rounds numeric output values to integers.
@@ -68,10 +70,7 @@ export const defaultFacetScaleConfig: FacetScaleConfig = {
 };
 
 export interface Scale {
-  /**
-   * @enum ["linear", "log", "pow", "sqrt", "quantile", "ordinal"]
-   */
-  type?: string;
+  type?: ScaleType;
   /**
    * The domain of the scale, representing the set of data values. For quantitative data, this can take the form of a two-element array with minimum and maximum values. For ordinal/categorical data, this may be an array of valid input values. The domain may also be specified by a reference to a data source.
    */
@@ -102,9 +101,8 @@ export interface Scale {
   clamp?: boolean;
   /**
    * If specified, modifies the scale domain to use a more human-friendly value range. If specified as a true boolean, modifies the scale domain to use a more human-friendly number range (e.g., 7 instead of 6.96). If specified as a string, modifies the scale domain to use a more human-friendly value range. For time and utc scale types only, the nice value should be a string indicating the desired time interval.
-   * @enum ["second", "minute", "hour", "day", "week", "month", "year"]
    */
-  nice?: boolean | string;
+  nice?: boolean | NiceTime;
   /**
    * Sets the exponent of the scale transformation. For pow scale types only, otherwise ignored.
    */

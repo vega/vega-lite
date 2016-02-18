@@ -18,7 +18,9 @@ import {duplicate, extend, contains, mergeDeep} from '../util';
 
 import {compileMarkConfig} from './config';
 import {compileStackProperties, StackProperties} from './stack';
-import {type as scaleType} from './scale';
+import {scaleType} from './scale';
+import {ScaleType} from '../enums';
+import {AggregateOp} from '../aggregate';
 
 export interface ScaleMap {
   x?: Scale;
@@ -81,7 +83,7 @@ export class Model {
       }
 
       if ((channel === PATH || channel === ORDER) && !fieldDef.aggregate && fieldDef.type === QUANTITATIVE) {
-        fieldDef.aggregate = 'min';
+        fieldDef.aggregate = AggregateOp.MIN;
       }
     }, this);
 
@@ -108,7 +110,7 @@ export class Model {
             round: config.scale.round,
             padding: config.scale.padding,
             useRawDomain: config.scale.useRawDomain,
-            bandWidth: channel === X && _scaleType === 'ordinal' && mark === TEXTMARK ?
+            bandWidth: channel === X && _scaleType === ScaleType.ORDINAL && mark === TEXTMARK ?
                        config.scale.textBandWidth : config.scale.bandWidth
           }, channelScale);
         }
@@ -208,7 +210,7 @@ export class Model {
 
     if (fieldDef.bin) { // bin has default suffix that depends on scaleType
       opt = extend({
-        binSuffix: scaleType(scale, fieldDef, channel, this.mark()) === 'ordinal' ? '_range' : '_start'
+        binSuffix: scaleType(scale, fieldDef, channel, this.mark()) === ScaleType.ORDINAL ? '_range' : '_start'
       }, opt);
     }
 
@@ -239,7 +241,7 @@ export class Model {
     const fieldDef = this.fieldDef(channel);
     const scale = this.scale(channel);
 
-    return this.has(channel) && scaleType(scale, fieldDef, channel, this.mark()) === 'ordinal';
+    return this.has(channel) && scaleType(scale, fieldDef, channel, this.mark()) === ScaleType.ORDINAL;
   }
 
   public isDimension(channel: Channel) {

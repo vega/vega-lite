@@ -5,6 +5,7 @@ import {field} from '../fielddef';
 import {QUANTITATIVE, ORDINAL, TEMPORAL} from '../type';
 import {format as timeFormatExpr} from './time';
 import {contains} from '../util';
+import {SortOrder} from '../enums';
 
 export const FILL_STROKE_CONFIG = ['fill', 'fillOpacity',
   'stroke', 'strokeWidth', 'strokeDash', 'strokeDashOffset', 'strokeOpacity',
@@ -124,7 +125,7 @@ function isAbbreviated(model: Model, channel: Channel, fieldDef: FieldDef) {
 
 /** Return field reference with potential "-" prefix for descending sort */
 export function sortField(orderChannelDef: OrderChannelDef) {
-  return (orderChannelDef.sort === 'descending' ? '-' : '') + field(orderChannelDef);
+  return (orderChannelDef.sort === SortOrder.DESCENDING ? '-' : '') + field(orderChannelDef);
 }
 
 /**

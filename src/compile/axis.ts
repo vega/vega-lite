@@ -2,6 +2,7 @@ import {Model} from './Model';
 import {contains, extend, truncate} from '../util';
 import {NOMINAL, ORDINAL, TEMPORAL} from '../type';
 import {COLUMN, ROW, X, Y, Channel} from '../channel';
+import {AxisOrient} from '../enums';
 import {formatMixins} from './util';
 
 // https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations
@@ -153,10 +154,10 @@ export function orient(model: Model, channel: Channel) {
     return orient;
   } else if (channel === COLUMN) {
     // FIXME test and decide
-    return 'top';
+    return AxisOrient.TOP;
   } else if (channel === ROW) {
-    if (model.has(Y) && model.axis(Y).orient !== 'right') {
-      return 'right';
+    if (model.has(Y) && model.axis(Y).orient !== AxisOrient.RIGHT) {
+      return AxisOrient.RIGHT;
     }
   }
   return undefined;
