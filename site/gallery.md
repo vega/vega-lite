@@ -18,5 +18,3 @@ Add description here.
 ## Trellis
 Add description here.
 <div class="gallery" data-gallery-group="Trellis"></div>
-
-<script src="{{site.baseurl}}/site/static/showcasegallery.js"></script>
