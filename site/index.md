@@ -24,7 +24,7 @@ images:
  - spec: trellis_stacked_bar
    bgsize: 250%
  - spec: trellis_scatter
-   bgposition: center 25%  
+   bgposition: center 25%
    bgsize: 300%
 
 ---
@@ -38,9 +38,17 @@ images:
 **Vega-Lite** is a high-level visualization grammar.  It provides a concise JSON syntax for supporting rapid generation of visualizations to support analysis.  Vega-Lite specifications can be compiled to [Vega](http://vega.github.io/vega) specifications.
 
 
-Vega-Lite specifications describe visualizations as mappings from data to **properties of graphical marks** (e.g., points or bars).  It **automatically produces visualization components** including axes, legends, and scales. It then determines properties of these components based on a set of **carefully designed rules**.  This approach allows Vega-Lite specifications to be succinct and expressive, but also provide user control.  As Vega-Lite is designed for analysis, it supports **data transformation** such as aggregation, binning, filtering, sorting, and faceting.
+<span class="lead-columns">
+  <span>
+    Vega-Lite specifications describe visualizations as mappings from data to **properties of graphical marks** (e.g., points or bars).  It **automatically produces visualization components** including axes, legends, and scales. It then determines properties of these components based on a set of **carefully designed rules**.  This approach allows Vega-Lite specifications to be succinct and expressive, but also provide user control.  As Vega-Lite is designed for analysis, it supports **data transformation** such as aggregation, binning, filtering, sorting, and faceting.
+  </span>
+  <span class="lead-buttons">
+    [Get started]({{site.baseurl}}/tutorials/getting_started.html)
+    [Try online](https://vega.github.io/vega-editor/?mode=vega-lite)
+  </span>
+</span>
 
-Try Vega-Lite in the [online editor](https://vega.github.io/vega-editor/?mode=vega-lite). To learn more about the language and how to use it, read the [getting started tutorial]({{site.baseurl}}/tutorials/getting_started.html) and the [documentation]({{site.baseurl}}/docs/).
+Check out the [Documentation]({{site.baseurl}}/docs/) of Vega-Lite specifications and have a look at our [Gallery]({{site.baseurl}}/gallery.html) of example visualizations.
 
 ## Example
 

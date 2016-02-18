@@ -215,6 +215,44 @@ nav a:hover {
 .hidden {
   display: none;
 }
+.lead-columns {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: stretch;
+}
+.lead-columns > span:first-child {
+  margin-right: 60px;
+}
+.lead-buttons {
+  flex: 0 0;
+}
+.lead-buttons a {
+  display: block;
+  width: 250px;
+  padding: 8px 16px;
+  margin: 1em 0;
+
+  text-align: center;
+  background-color: steelblue;
+  border: 1px solid #357ebd;
+  color: white;
+  border-radius: 4px;
+  font-size: 1.2em;
+}
+.lead-buttons a:last-child {
+  color: #333;
+  background-color: #fff;
+  border-color: #ccc;
+}
+.lead-buttons a:hover {
+  text-decoration: none;
+  background-color: #285e8e;
+}
+.lead-buttons a:last-child:hover {
+  text-decoration: none;
+  background-color: #ebebeb;
+}
 
 /* Showcase */
 .showcase {
@@ -237,17 +275,6 @@ nav a:hover {
 
   background-position: center;
   background-repeat: no-repeat;
-}
-
-/* Media queries */
-
-@media (max-width:960px) {
-  body {
-    font-size: 14px;
-  }
-  nav a:not(:first-child) {
-    padding: 10px 10px 10px 10px;
-  }
 }
 
 /* Examples */
@@ -295,4 +322,24 @@ nav a:hover {
 }
 .hljs {
   padding: 0;
+}
+
+/* Media queries */
+
+@media (max-width:768px) {
+  body {
+    font-size: 14px;
+  }
+  nav a:not(:first-child) {
+    padding: 10px 10px 10px 10px;
+  }
+  .lead-columns {
+    flex-direction: column;
+  }
+  .lead-columns span:first-child {
+    margin-right: 0px;
+  }
+  .lead-buttons a {
+    width: inherit;
+  }
 }
