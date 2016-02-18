@@ -9,6 +9,7 @@ body {
   margin: 0;
   display: flex;
   flex-direction: column;
+  min-width: 480px;
 }
 header {
   background-color: #E6E6E6;
@@ -232,7 +233,6 @@ nav a:hover {
   width: 250px;
   padding: 8px 16px;
   margin: 1em 0;
-
   text-align: center;
   background-color: steelblue;
   border: 1px solid #357ebd;
@@ -253,7 +253,6 @@ nav a:hover {
   text-decoration: none;
   background-color: #ebebeb;
 }
-
 .note-line {
   font-size: 0.9em !important;
   margin-top: 8px;
@@ -261,16 +260,15 @@ nav a:hover {
 }
 
 /* Showcase */
+
 .showcase {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-
   margin: 20px 0;
 }
 .showcase .image {
   display: inline-block;
-
   /* Show 4 images per row, make the height depend on the width */
   height: 0;
   /* 12px  = 2*6px margin */
@@ -278,7 +276,6 @@ nav a:hover {
   /* hack to make height depend on width*/
   padding-bottom: calc(16% - 12px);
   margin: 8px 0;
-
   background-position: center;
   background-repeat: no-repeat;
 }
@@ -288,21 +285,20 @@ nav a:hover {
 .gallery {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  margin: 0 -12px;
 }
 .gallery .imagegroup {
   display: inline-block;
   position: relative;
-  /* Show 4 images per row, each image has 16px margin */
-  width: calc(100%/4 - 32px);
-  margin: 16px 32px 16px 0px;
+  /* Show 4 images per row, each image has 12px margin */
+  width: calc(25% - 24px);
+  margin: 12px;
 }
 .gallery .imagegroup:hover {
   text-decoration: none;
 }
 .gallery .image {
-  display: block;
-  /* Make the height depend on the width */
+  box-sizing: border-box;
   width: 100%;
   /* hack to make height depend on width*/
   padding-bottom: 100%;
@@ -312,9 +308,6 @@ nav a:hover {
 }
 .gallery .image:hover {
   border-color: #8c8c8c;
-}
-.gallery span {
-  display: block;
 }
 
 /* Examples */

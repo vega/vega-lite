@@ -101,7 +101,7 @@ function renderGallery() {
         .attr('class', 'imagegroup')
         .attr('href', function(d){ return 'https://vega.github.io/vega-editor/?mode=vega-lite&spec=' + d.name;});
 
-      imageGroup.append('a')
+      imageGroup.append('div')
         .attr('class', 'image')
         .style('background-image', function(d){ return 'url(examples/images/' + d.name + '.svg)'; })
         .style('background-size', function(d) {
@@ -119,8 +119,8 @@ function renderGallery() {
             return d.galleryParameters.backgroundPosition;
           }
         });
-      imageGroup.append('span')
-          .text(function(d) {return d.title;});
+      imageGroup.append('div')
+        .text(function(d) {return d.title;});
     }
   });
 }
