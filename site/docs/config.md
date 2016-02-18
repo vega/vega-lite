@@ -281,6 +281,16 @@ Axis configuration determines default properties for `x` and `y` [axes](axis.htm
 For a full list of axis configuration and their default values, please see the `AxisConfig` interface and `defaultAxisConfig` in [axis.schema.ts](https://github.com/vega/vega-lite/blob/master/src/schema/axis.schema.ts).
 </span>
 
+{:#legend-config}
+## Legend Configuration  (`config.legend.*`)
+
+Legend configuration determines default properties for [legends](axis.html).
+
+<span class="note-line">__See Code:__
+For a full list of legend configuration and their default values, please see the `LegendConfig` interface and `defaultLegendConfig` in [legend.schema.ts](https://github.com/vega/vega-lite/blob/master/src/schema/legend.schema.ts).
+</span>
+
+
 ## Facet Configuration  (`config.facet.*`)
 
 ### Facet Grid Configuration (`config.facet.grid`)
