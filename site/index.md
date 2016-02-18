@@ -48,7 +48,7 @@ images:
   </span>
 </span>
 
-Check out the [Documentation]({{site.baseurl}}/docs/) of Vega-Lite specifications and have a look at our [Gallery]({{site.baseurl}}/gallery.html) of example visualizations.
+Check out the [Documentation]({{site.baseurl}}/docs/) of Vega-Lite specifications and take a look at our [Example Gallery]({{site.baseurl}}/gallery.html).
 
 ## Example
 
