@@ -50,22 +50,22 @@ A Vega-Lite `config` object can have the following top-level properties:
 
 <!-- TODO: consider adding width, height, numberFormat, timeFormat  -->
 
-
+{:#unit-config}
 ## Unit Configuration  (`config.unit.*`)
 
-The smallest unit in Vega-Lite visualization is a unit visualization or a single chart.  
-Currently, the size
-
-Each unit (non-trellis) chart contains one cell.  Thus, the width and height of the visualization is the `width` and `height` of the cell.  For trellis plots (also called small multiples), cell `width` and `height` determine the size of one plot inside the trellis plots.  The total width and height of the visualization are the product of the unit width cardinality of the `column` and `row` field
-
-`unit` property of the `config` object can have the following properties:
+At its core, a Vega-Lite specification describes a single plot, or a _unit visualization_.  
+When a [facet channel](encoding.html#facet) is added, the visualization is faceted into a trellis plot, which contains multiple repeated sub-units.  Unit configuration allows us to customize an individual single plot and each unit of a trellis plot.  
 
 ### Unit Size Configuration
 
+`width` and `height` property of the unit configuration determine the width of a visualization with a non-ordinal x-scale and the height of a visualization with a non-ordinal y-scale respectively.  
+
+**For more information about visualization's size, please ["Customizing Size"](size.html) page.**
+
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| width         | Integer       | The width of the unit visualization (200 pixels by default).  This property is used only when `x` uses non-ordinal scale.  When `x` has an ordinal scale, the width is determined by x-scale's [`bandWidth`](scale.html#ordinal).  |
-| height        | Integer       | The height of the visualization for a single cell (200 pixels by default).  This property is used only when `y` has a non-ordinal scale.  When `y` has an ordinal scale, the height is determined by y-scale's `bandWidth`. |
+| width         | Integer       | The width of the unit visualization when the visualization has non-ordinal x-scale.  |
+| height        | Integer       | The height of the unit visualization when the visualization has non-ordinal y-scale. |
 
 ### Unit Style Configuration
 
