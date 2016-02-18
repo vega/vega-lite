@@ -55,7 +55,11 @@
     },
     {
       "name": "line",
-      "title": "Line Chart"
+      "title": "Line Chart",
+      "galleryParameters": {
+        "backgroundSize": "134%",
+        "backgroundPosition": "1% 5%"
+      }
     },
     {
       "name": "line_color",

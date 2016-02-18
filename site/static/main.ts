@@ -99,7 +99,8 @@ function renderGallery() {
       let imageGroup = viz.enter()
         .append('a')
         .attr('class', 'imagegroup')
-        .attr('href', function(d){ return 'https://vega.github.io/vega-editor/?mode=vega-lite&spec=' + d.name;});
+        .attr('href', function(d){ return 'https://vega.github.io/vega-editor/?mode=vega-lite&spec=' + d.name;})
+        .attr('target', 'blank');
 
       imageGroup.append('div')
         .attr('class', 'image')
