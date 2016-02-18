@@ -5,13 +5,13 @@ import {StackProperties} from './stack';
 import {X, Y, DETAIL} from '../channel';
 import {isAggregate, has} from '../encoding';
 import {isMeasure} from '../fielddef';
-import {POINT, LINE, TICK, CIRCLE, SQUARE, Mark} from '../mark';
+import {POINT, LINE, TICK, CIRCLE, SQUARE, MarkType} from '../mark';
 import {contains, extend} from '../util';
 
 /**
  * Augment config.mark with rule-based default values.
  */
-export function compileMarkConfig(mark: Mark, encoding: Encoding, config: Config, stack: StackProperties) {
+export function compileMarkConfig(mark: MarkType, encoding: Encoding, config: Config, stack: StackProperties) {
    return extend(
      ['filled', 'opacity', 'orient', 'align'].reduce(function(cfg, property: string) {
        const value = config.mark[property];

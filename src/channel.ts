@@ -3,7 +3,7 @@
  * such as 'x', 'y', 'color'.
  */
 
-import {Mark} from './mark';
+import {MarkType} from './mark';
 import {contains} from './util';
 
 export enum Channel {
@@ -53,7 +53,7 @@ interface SupportedMark {
  * @param mark the mark type
  * @return whether the mark supports the channel
  */
-export function supportMark(channel: Channel, mark: Mark) {
+export function supportMark(channel: Channel, mark: MarkType) {
   return !!getSupportedMark(channel)[mark];
 }
 

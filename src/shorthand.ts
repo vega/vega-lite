@@ -4,11 +4,11 @@ import {Encoding} from './schema/encoding.schema';
 import {FieldDef} from './schema/fielddef.schema';
 import {Spec} from './schema/schema';
 
-import {AGGREGATE_OPS} from './aggregate';
+import {AggregateOp, AGGREGATE_OPS} from './aggregate';
 import {TIMEUNITS} from './timeunit';
 import {SHORT_TYPE, TYPE_FROM_SHORT_TYPE} from './type';
 import * as vlEncoding from './encoding';
-import {Mark} from './mark';
+import {MarkType} from './mark';
 
 export const DELIM = '|';
 export const ASSIGN = '=';
@@ -27,7 +27,7 @@ export function parse(shorthand: string, data?, config?) {
     encoding = parseEncoding(split.join(DELIM));
 
   let spec:Spec = {
-    mark: Mark[mark],
+    mark: MarkType[mark],
     encoding: encoding
   };
 
@@ -80,8 +80,8 @@ export function parseFieldDef(fieldDefShorthand: string): FieldDef {
   for (let i = 0; i < AGGREGATE_OPS.length; i++) {
     var a = AGGREGATE_OPS[i];
     if (fieldDef.field.indexOf(a + '_') === 0) {
-      fieldDef.field = fieldDef.field.substr(a.length + 1);
-      if (a === 'count' && fieldDef.field.length === 0) {
+      fieldDef.field = fieldDef.field.substr(a.toString().length + 1);
+      if (a === AggregateOp.COUNT && fieldDef.field.length === 0) {
         fieldDef.field = '*';
       }
       fieldDef.aggregate = a;

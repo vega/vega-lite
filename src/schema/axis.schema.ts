@@ -1,3 +1,5 @@
+import {AxisOrient} from '../enums';
+
 export interface AxisConfig {
   // General
   /**
@@ -14,9 +16,8 @@ export interface AxisConfig {
   offset?: number;
   /**
    * The orientation of the axis. One of top, bottom, left or right. The orientation can be used to further specialize the axis type (e.g., a y axis oriented for the right edge of the chart).
-   * @enum ["top", "right", "left", "bottom"]
    */
-  orient?: string;
+  orient?: AxisOrient;
 
   // Grid
   /**

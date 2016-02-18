@@ -1,40 +1,43 @@
 import {contains, range} from '../util';
 import {COLUMN, ROW, SHAPE, COLOR, Channel} from '../channel';
+import {TimeUnit} from '../timeunit';
 
 /** returns the template name used for axis labels for a time unit */
-export function format(timeUnit, abbreviated = false): string {
+export function format(timeUnit: TimeUnit, abbreviated = false): string {
   if (!timeUnit) {
     return undefined;
   }
 
+  let timeString = timeUnit.toString();
+
   let dateComponents = [];
 
-  if (timeUnit.indexOf('year') > -1) {
+  if (timeString.indexOf('year') > -1) {
     dateComponents.push(abbreviated ? '%y' : '%Y');
   }
 
-  if (timeUnit.indexOf('month') > -1) {
+  if (timeString.indexOf('month') > -1) {
     dateComponents.push(abbreviated ? '%b' : '%B');
   }
 
-  if (timeUnit.indexOf('day') > -1) {
+  if (timeString.indexOf('day') > -1) {
     dateComponents.push(abbreviated ? '%a' : '%A');
-  } else if (timeUnit.indexOf('date') > -1) {
+  } else if (timeString.indexOf('date') > -1) {
     dateComponents.push('%d');
   }
 
   let timeComponents = [];
 
-  if (timeUnit.indexOf('hour') > -1) {
+  if (timeString.indexOf('hour') > -1) {
     timeComponents.push('%H');
   }
-  if (timeUnit.indexOf('minute') > -1) {
+  if (timeString.indexOf('minute') > -1) {
     timeComponents.push('%M');
   }
-  if (timeUnit.indexOf('second') > -1) {
+  if (timeString.indexOf('second') > -1) {
     timeComponents.push('%S');
   }
-  if (timeUnit.indexOf('milliseconds') > -1) {
+  if (timeString.indexOf('milliseconds') > -1) {
     timeComponents.push('%L');
   }
 
@@ -81,8 +84,9 @@ export function smallestUnit(timeUnit): string {
   return undefined;
 }
 
-export function parseExpression(timeUnit: string, fieldRef: string, onlyRef = false): string {
+export function parseExpression(timeUnit: TimeUnit, fieldRef: string, onlyRef = false): string {
   let out = 'datetime(';
+  let timeString = timeUnit.toString();
 
   function get(fun: string, addComma = true) {
     if (onlyRef) {
@@ -92,13 +96,13 @@ export function parseExpression(timeUnit: string, fieldRef: string, onlyRef = fa
     }
   }
 
-  if (timeUnit.indexOf('year') > -1) {
+  if (timeString.indexOf('year') > -1) {
     out += get('year');
   } else {
     out += '2006, '; // January 1 2006 is a Sunday
   }
 
-  if (timeUnit.indexOf('month') > -1) {
+  if (timeString.indexOf('month') > -1) {
     out += get('month');
   } else {
     // month starts at 0 in javascript
@@ -106,33 +110,33 @@ export function parseExpression(timeUnit: string, fieldRef: string, onlyRef = fa
   }
 
   // need to add 1 because days start at 1
-  if (timeUnit.indexOf('day') > -1) {
+  if (timeString.indexOf('day') > -1) {
     out += get('day', false) + '+1, ';
-  } else if (timeUnit.indexOf('date') > -1) {
+  } else if (timeString.indexOf('date') > -1) {
     out += get('date');
   } else {
     out += '1, ';
   }
 
-  if (timeUnit.indexOf('hours') > -1) {
+  if (timeString.indexOf('hours') > -1) {
     out += get('hours');
   } else {
     out += '0, ';
   }
 
-  if (timeUnit.indexOf('minutes') > -1) {
+  if (timeString.indexOf('minutes') > -1) {
     out += get('minutes');
   } else {
     out += '0, ';
   }
 
-  if (timeUnit.indexOf('seconds') > -1) {
+  if (timeString.indexOf('seconds') > -1) {
     out += get('seconds');
   } else {
     out += '0, ';
   }
 
-  if (timeUnit.indexOf('milliseconds') > -1) {
+  if (timeString.indexOf('milliseconds') > -1) {
     out += get('milliseconds', false);
   } else {
     out += '0';
@@ -142,23 +146,23 @@ export function parseExpression(timeUnit: string, fieldRef: string, onlyRef = fa
 }
 
 /** Generate the complete raw domain. */
-export function rawDomain(timeUnit: string, channel: Channel) {
+export function rawDomain(timeUnit: TimeUnit, channel: Channel) {
   if (contains([ROW, COLUMN, SHAPE, COLOR], channel)) {
     return null;
   }
 
   switch (timeUnit) {
-    case 'seconds':
+    case TimeUnit.SECONDS:
       return range(0, 60);
-    case 'minutes':
+    case TimeUnit.MINUTES:
       return range(0, 60);
-    case 'hours':
+    case TimeUnit.HOURS:
       return range(0, 24);
-    case 'day':
+    case TimeUnit.DAY:
       return range(0, 7);
-    case 'date':
+    case TimeUnit.DATE:
       return range(1, 32);
-    case 'month':
+    case TimeUnit.MONTH:
       return range(0, 12);
   }
 

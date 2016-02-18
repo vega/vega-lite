@@ -1,3 +1,5 @@
+import {ShapeKind, HorizontalAlign, VerticalAlign, FontStyle, FontWeight, StackOffset} from '../enums';
+
 export interface MarkConfig {
 
   // ---------- Color ----------
@@ -51,10 +53,7 @@ export interface MarkConfig {
   strokeDashOffset?: number[];
 
   // ---------- Stacking: Bar & Area ----------
-  /**
-   * @enum ["zero", "center", "normalize", "none"]
-   */
-  stacked?: string;
+  stacked?: StackOffset;
 
   // ---------- Orientation: Bar, Tick, Line, Area ----------
   /**
@@ -90,9 +89,8 @@ export interface MarkConfig {
   // ---------- Point ----------
   /**
    * The symbol shape to use. One of circle (default), square, cross, diamond, triangle-up, or triangle-down.
-   * @enum ["circle", "square", "cross", "diamond", "triangle-up", "triangle-down"]
    */
-  shape?: string;
+  shape?: ShapeKind;
 
   // ---------- Point Size (Point / Square / Circle) ----------
   /**
@@ -110,18 +108,16 @@ export interface MarkConfig {
   // ---------- Text ----------
   /**
    * The horizontal alignment of the text. One of left, right, center.
-   * @enum ["left", "right", "center"]
    */
-  align?: string;
+  align?: HorizontalAlign;
   /**
    * The rotation angle of the text, in degrees.
    */
   angle?: number;
   /**
    * The vertical alignment of the text. One of top, middle, bottom.
-   * @enum ["top", "middle", "bottom"]
    */
-  baseline?: string;
+  baseline?: VerticalAlign;
   /**
    * The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the angle property.
    */
@@ -148,14 +144,12 @@ export interface MarkConfig {
   fontSize?: number;
   /**
    * The font style (e.g., italic).
-   * @enum ["normal", "italic"]
    */
-  fontStyle?: string;
+  fontStyle?: FontStyle;
   /**
    * The font weight (e.g., bold).
-   * @enum ["normal", "bold"]
    */
-  fontWeight?: string;
+  fontWeight?: FontWeight;
   // Vega-Lite only for text only
   /**
    * The formatting pattern for text value. If not defined, this will be determined automatically.
@@ -183,7 +177,7 @@ export const defaultMarkConfig: MarkConfig = {
   thickness: 1,
 
   fontSize: 10,
-  baseline: 'middle',
+  baseline: VerticalAlign.MIDDLE,
   text: 'Abc',
 
   shortTimeLabels: false,

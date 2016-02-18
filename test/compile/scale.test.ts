@@ -9,7 +9,7 @@ import {Y, ROW, COLOR} from '../../src/channel';
 
 
 describe('Scale', function() {
-  describe('type()', function() {
+  describe('scaleType()', function() {
     it('should return time for yearmonth', function() {
       const model = parseModel({
         mark: 'point',
@@ -23,7 +23,7 @@ describe('Scale', function() {
       });
       const fieldDef = model.fieldDef(Y);
       const scale = model.scale(Y);
-      assert.deepEqual(vlscale.type(scale, fieldDef, Y, model.mark()), 'time');
+      assert.deepEqual(vlscale.scaleType(scale, fieldDef, Y, model.mark()), 'time');
     });
 
     it('should return ordinal for month', function() {
@@ -39,7 +39,7 @@ describe('Scale', function() {
       });
       const fieldDef = model.fieldDef(Y);
       const scale = model.scale(Y);
-      assert.deepEqual(vlscale.type(scale, fieldDef, Y, model.mark()), 'ordinal');
+      assert.deepEqual(vlscale.scaleType(scale, fieldDef, Y, model.mark()), 'ordinal');
     });
 
     it('should return ordinal for row', function() {
@@ -55,7 +55,7 @@ describe('Scale', function() {
       });
       const fieldDef = model.fieldDef(ROW);
       const scale = model.scale(ROW);
-      assert.deepEqual(vlscale.type(scale, fieldDef, ROW, model.mark()), 'ordinal');
+      assert.deepEqual(vlscale.scaleType(scale, fieldDef, ROW, model.mark()), 'ordinal');
     });
   });
 

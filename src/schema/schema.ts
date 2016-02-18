@@ -3,7 +3,7 @@
 import {Config} from './config.schema';
 import {Data} from './data.schema';
 import {Encoding} from './encoding.schema';
-import {Mark} from '../mark';
+import {MarkType} from '../mark';
 import {Transform} from './transform.schema';
 
 /**
@@ -18,7 +18,7 @@ export interface Spec {
   description?: string;
   data?: Data;
   transform?: Transform;
-  mark?: Mark;
+  mark?: MarkType;
   encoding?: Encoding;
   config?: Config;
 }
