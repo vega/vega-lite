@@ -334,7 +334,7 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel, scaleT
       };
     case Y:
       return {
-        rangeMin: model.config().unit.width, // Fixed unit width for non-ordinal
+        rangeMin: model.config().unit.height, // Fixed unit width for non-ordinal
         rangeMax: 0
       };
     case SIZE:

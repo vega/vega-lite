@@ -3,9 +3,7 @@ const assert = require('assert'),
   inspect = require('util').inspect;
 
 const schema = require('../lib/schema.json');
-
-import * as schemautil from '../src/schema/schemautil';
-import {schema as specSchema} from '../src/schema/schema';
+const specSchema = require('../vega-lite-schema.json');
 
 describe('Schema', function() {
   it('should be valid', function() {
@@ -27,77 +25,5 @@ describe('Schema', function() {
       console.log(inspect(errors, { depth: 10, colors: true }));
     }
     assert.equal(valid, true);
-  });
-});
-
-describe('Util', function() {
-  it('instantiate simple schema', function() {
-    const simpleSchema = {
-      type: 'object', required: ['fooBaz'],
-      properties: {
-        foo: {type: 'array'},
-        fooBar: {type: 'string', default: 'baz'},
-        fooBaz: {type: 'string', enum: ['a', 'b']}}};
-    assert.deepEqual(
-      schemautil.instantiate(simpleSchema),
-      {fooBar: 'baz'});
-  });
-
-  it('remove defaults', function() {
-    const spec = {
-      mark: 'point',
-      encoding: {
-        x: { field: 'dsp', type: 'quantitative'},
-        color: { field: 'cyl', type: 'ordinal' }
-      },
-      data: {
-        formatType: 'json',
-        url: 'data/cars.json'
-      }
-    };
-
-    const expected = {
-      mark: 'point',
-      encoding: {
-        x: { field: 'dsp', type: 'quantitative'},
-        color: { field: 'cyl', type: 'ordinal' }
-      },
-      data: {
-        formatType: 'json',
-        url: 'data/cars.json'
-      }
-    };
-
-    const actual = schemautil.subtract(spec, schemautil.instantiate(specSchema));
-    assert.deepEqual(actual, expected);
-  });
-
-  it('subtract with different types', function() {
-    const a = {a: 'foo', b: 'bar', 'baz': [1, 2, 3]};
-    const b = {a: 'foo', b: 'hi', 'baz': 'hi'};
-
-    assert.deepEqual(
-      schemautil.subtract(a, b),
-      {b: 'bar', baz: [1, 2, 3]});
-
-    assert.equal(schemautil.subtract(a, b).baz instanceof Array, true);
-  });
-
-  it('merge objects', function() {
-     const a = {a: 'foo', b: {'bar': 0, 'baz': [], 'qux': [1, 2, 3]}};
-    const b = {a: 'fuu'};
-
-    assert.deepEqual(
-      schemautil.mergeDeep(a, b),
-      {a: 'fuu', b: {'bar': 0, 'baz': [], 'qux': [1, 2, 3]}});
-  });
-
-  it('merge objects reversed', function() {
-    const a = {a: 'foo', b: {'bar': 0, 'baz': [], 'qux': [1, 2, 3]}};
-    const b = {a: 'fuu'};
-
-    assert.deepEqual(
-      schemautil.mergeDeep(b, a),
-      {a: 'foo', b: {'bar': 0, 'baz': [], 'qux': [1, 2, 3]}});
   });
 });

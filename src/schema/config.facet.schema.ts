@@ -1,6 +1,6 @@
-import {FacetScaleConfig, facetScaleConfig, defaultFacetScaleConfig} from './scale.schema';
-import {AxisConfig, axisConfig, defaultFacetAxisConfig} from './axis.schema';
-import {UnitConfig, unitConfig, defaultFacetUnitConfig} from './config.unit.schema';
+import {FacetScaleConfig, defaultFacetScaleConfig} from './scale.schema';
+import {AxisConfig, defaultFacetAxisConfig} from './axis.schema';
+import {UnitConfig, defaultFacetUnitConfig} from './config.unit.schema';
 
 export interface FacetConfig {
   scale?: FacetScaleConfig;
@@ -10,6 +10,7 @@ export interface FacetConfig {
 }
 
 export interface FacetGridConfig {
+  /** @format color */
   color?: string;
   opacity?: number;
   offset?: number;
@@ -26,32 +27,4 @@ export const defaultFacetConfig: FacetConfig = {
   axis: defaultFacetAxisConfig,
   grid: defaultFacetGridConfig,
   unit: defaultFacetUnitConfig
-};
-
-const facetGridConfig = {
-  type: 'object',
-  properties: {
-    color: {
-      type: 'string',
-      format: 'color',
-    },
-    opacity: {
-      type: 'number',
-      minimum: 0,
-      maximum: 1,
-    },
-    offset: {
-      type: 'number',
-    }
-  }
-};
-
-export const facetConfig = {
-  type: 'object',
-  properties: {
-    scale: facetScaleConfig,
-    axis: axisConfig,
-    grid: facetGridConfig,
-    unit: unitConfig
-  }
 };

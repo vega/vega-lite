@@ -7,8 +7,8 @@
       "Horsepower":130,
       "Weight_in_lbs":3504,
       "Acceleration":12,
-      "Year":"1970-01-01",
-      "Origin":"A"
+      "Year":1970,
+      "Origin":"USA"
    },
    {
       "Name":"buick skylark 320",
@@ -18,8 +18,8 @@
       "Horsepower":165,
       "Weight_in_lbs":3693,
       "Acceleration":11.5,
-      "Year":"1970-01-01",
-      "Origin":"A"
+      "Year":1970,
+      "Origin":"USA"
    },
    {
       "Name":"plymouth satellite",
@@ -29,8 +29,8 @@
       "Horsepower":150,
       "Weight_in_lbs":3436,
       "Acceleration":11,
-      "Year":"1970-01-01",
-      "Origin":"A"
+      "Year":1970,
+      "Origin":"USA"
    },
    {
       "Name":"amc rebel sst",
@@ -40,8 +40,8 @@
       "Horsepower":150,
       "Weight_in_lbs":3433,
       "Acceleration":12,
-      "Year":"1970-01-01",
-      "Origin":"A"
+      "Year":1970,
+      "Origin":"USA"
    },
    {
       "Name":"ford torino",
@@ -51,8 +51,8 @@
       "Horsepower":140,
       "Weight_in_lbs":3449,
       "Acceleration":10.5,
-      "Year":"1970-01-01",
-      "Origin":"A"
+      "Year":1970,
+      "Origin":"USA"
    },
    {
       "Name":"ford galaxie 500",
@@ -62,8 +62,8 @@
       "Horsepower":198,
       "Weight_in_lbs":4341,
       "Acceleration":10,
-      "Year":"1970-01-01",
-      "Origin":"A"
+      "Year":1970,
+      "Origin":"USA"
    },
    {
       "Name":"chevrolet impala",
@@ -73,8 +73,8 @@
       "Horsepower":220,
       "Weight_in_lbs":4354,
       "Acceleration":9,
-      "Year":"1970-01-01",
-      "Origin":"A"
+      "Year":1970,
+      "Origin":"USA"
    },
    {
       "Name":"plymouth fury iii",
@@ -84,8 +84,8 @@
       "Horsepower":215,
       "Weight_in_lbs":4312,
       "Acceleration":8.5,
-      "Year":"1970-01-01",
-      "Origin":"A"
+      "Year":1970,
+      "Origin":"USA"
    },
    {
       "Name":"pontiac catalina",
@@ -95,8 +95,8 @@
       "Horsepower":225,
       "Weight_in_lbs":4425,
       "Acceleration":10,
-      "Year":"1970-01-01",
-      "Origin":"A"
+      "Year":1970,
+      "Origin":"USA"
    },
    {
       "Name":"amc ambassador dpl",
@@ -106,8 +106,8 @@
       "Horsepower":190,
       "Weight_in_lbs":3850,
       "Acceleration":8.5,
-      "Year":"1970-01-01",
-      "Origin":"A"
+      "Year":1970,
+      "Origin":"USA"
    },
    {
       "Name":"citroen ds-21 pallas",
@@ -117,8 +117,8 @@
       "Horsepower":115,
       "Weight_in_lbs":3090,
       "Acceleration":17.5,
-      "Year":"1970-01-01",
-      "Origin":"B"
+      "Year":1970,
+      "Origin":"Europe"
    },
    {
       "Name":"chevrolet chevelle concours (sw)",
@@ -128,8 +128,8 @@
       "Horsepower":165,
       "Weight_in_lbs":4142,
       "Acceleration":11.5,
-      "Year":"1970-01-01",
-      "Origin":"A"
+      "Year":1970,
+      "Origin":"USA"
    },
    {
       "Name":"ford torino (sw)",
@@ -139,8 +139,8 @@
       "Horsepower":153,
       "Weight_in_lbs":4034,
       "Acceleration":11,
-      "Year":"1970-01-01",
-      "Origin":"A"
+      "Year":1970,
+      "Origin":"USA"
    },
    {
       "Name":"plymouth satellite (sw)",
@@ -150,8 +150,8 @@
       "Horsepower":175,
       "Weight_in_lbs":4166,
       "Acceleration":10.5,
-      "Year":"1970-01-01",
-      "Origin":"A"
+      "Year":1970,
+      "Origin":"USA"
    },
    {
       "Name":"amc rebel sst (sw)",
@@ -161,8 +161,8 @@
       "Horsepower":175,
       "Weight_in_lbs":3850,
       "Acceleration":11,
-      "Year":"1970-01-01",
-      "Origin":"A"
+      "Year":1970,
+      "Origin":"USA"
    },
    {
       "Name":"dodge challenger se",
@@ -172,8 +172,8 @@
       "Horsepower":170,
       "Weight_in_lbs":3563,
       "Acceleration":10,
-      "Year":"1970-01-01",
-      "Origin":"A"
+      "Year":1970,
+      "Origin":"USA"
    },
    {
       "Name":"plymouth 'cuda 340",
@@ -183,8 +183,8 @@
       "Horsepower":160,
       "Weight_in_lbs":3609,
       "Acceleration":8,
-      "Year":"1970-01-01",
-      "Origin":"A"
+      "Year":1970,
+      "Origin":"USA"
    },
    {
       "Name":"ford mustang boss 302",
@@ -194,8 +194,8 @@
       "Horsepower":140,
       "Weight_in_lbs":3353,
       "Acceleration":8,
-      "Year":"1970-01-01",
-      "Origin":"A"
+      "Year":1970,
+      "Origin":"USA"
    },
    {
       "Name":"chevrolet monte carlo",
@@ -205,8 +205,8 @@
       "Horsepower":150,
       "Weight_in_lbs":3761,
       "Acceleration":9.5,
-      "Year":"1970-01-01",
-      "Origin":"A"
+      "Year":1970,
+      "Origin":"USA"
    },
    {
       "Name":"buick estate wagon (sw)",
@@ -216,8 +216,8 @@
       "Horsepower":225,
       "Weight_in_lbs":3086,
       "Acceleration":10,
-      "Year":"1970-01-01",
-      "Origin":"A"
+      "Year":1970,
+      "Origin":"USA"
    },
    {
       "Name":"toyota corona mark ii",
@@ -227,8 +227,8 @@
       "Horsepower":95,
       "Weight_in_lbs":2372,
       "Acceleration":15,
-      "Year":"1970-01-01",
-      "Origin":"C"
+      "Year":1970,
+      "Origin":"Japan"
    },
    {
       "Name":"plymouth duster",
@@ -238,8 +238,8 @@
       "Horsepower":95,
       "Weight_in_lbs":2833,
       "Acceleration":15.5,
-      "Year":"1970-01-01",
-      "Origin":"A"
+      "Year":1970,
+      "Origin":"USA"
    },
    {
       "Name":"amc hornet",
@@ -249,8 +249,8 @@
       "Horsepower":97,
       "Weight_in_lbs":2774,
       "Acceleration":15.5,
-      "Year":"1970-01-01",
-      "Origin":"A"
+      "Year":1970,
+      "Origin":"USA"
    },
    {
       "Name":"ford maverick",
@@ -260,8 +260,8 @@
       "Horsepower":85,
       "Weight_in_lbs":2587,
       "Acceleration":16,
-      "Year":"1970-01-01",
-      "Origin":"A"
+      "Year":1970,
+      "Origin":"USA"
    },
    {
       "Name":"datsun pl510",
@@ -271,8 +271,8 @@
       "Horsepower":88,
       "Weight_in_lbs":2130,
       "Acceleration":14.5,
-      "Year":"1970-01-01",
-      "Origin":"C"
+      "Year":1970,
+      "Origin":"Japan"
    },
    {
       "Name":"volkswagen 1131 deluxe sedan",
@@ -282,8 +282,8 @@
       "Horsepower":46,
       "Weight_in_lbs":1835,
       "Acceleration":20.5,
-      "Year":"1970-01-01",
-      "Origin":"B"
+      "Year":1970,
+      "Origin":"Europe"
    },
    {
       "Name":"peugeot 504",
@@ -293,8 +293,8 @@
       "Horsepower":87,
       "Weight_in_lbs":2672,
       "Acceleration":17.5,
-      "Year":"1970-01-01",
-      "Origin":"B"
+      "Year":1970,
+      "Origin":"Europe"
    },
    {
       "Name":"audi 100 ls",
@@ -304,8 +304,8 @@
       "Horsepower":90,
       "Weight_in_lbs":2430,
       "Acceleration":14.5,
-      "Year":"1970-01-01",
-      "Origin":"B"
+      "Year":1970,
+      "Origin":"Europe"
    },
    {
       "Name":"saab 99e",
@@ -315,8 +315,8 @@
       "Horsepower":95,
       "Weight_in_lbs":2375,
       "Acceleration":17.5,
-      "Year":"1970-01-01",
-      "Origin":"B"
+      "Year":1970,
+      "Origin":"Europe"
    },
    {
       "Name":"bmw 2002",
@@ -326,8 +326,8 @@
       "Horsepower":113,
       "Weight_in_lbs":2234,
       "Acceleration":12.5,
-      "Year":"1970-01-01",
-      "Origin":"B"
+      "Year":1970,
+      "Origin":"Europe"
    },
    {
       "Name":"amc gremlin",
@@ -337,8 +337,8 @@
       "Horsepower":90,
       "Weight_in_lbs":2648,
       "Acceleration":15,
-      "Year":"1970-01-01",
-      "Origin":"A"
+      "Year":1970,
+      "Origin":"USA"
    },
    {
       "Name":"ford f250",
@@ -348,8 +348,8 @@
       "Horsepower":215,
       "Weight_in_lbs":4615,
       "Acceleration":14,
-      "Year":"1970-01-01",
-      "Origin":"A"
+      "Year":1970,
+      "Origin":"USA"
    },
    {
       "Name":"chevy c20",
@@ -359,8 +359,8 @@
       "Horsepower":200,
       "Weight_in_lbs":4376,
       "Acceleration":15,
-      "Year":"1970-01-01",
-      "Origin":"A"
+      "Year":1970,
+      "Origin":"USA"
    },
    {
       "Name":"dodge d200",
@@ -370,8 +370,8 @@
       "Horsepower":210,
       "Weight_in_lbs":4382,
       "Acceleration":13.5,
-      "Year":"1970-01-01",
-      "Origin":"A"
+      "Year":1970,
+      "Origin":"USA"
    },
    {
       "Name":"hi 1200d",
@@ -381,8 +381,8 @@
       "Horsepower":193,
       "Weight_in_lbs":4732,
       "Acceleration":18.5,
-      "Year":"1970-01-01",
-      "Origin":"A"
+      "Year":1970,
+      "Origin":"USA"
    },
    {
       "Name":"datsun pl510",
@@ -392,8 +392,8 @@
       "Horsepower":88,
       "Weight_in_lbs":2130,
       "Acceleration":14.5,
-      "Year":"1971-01-01",
-      "Origin":"C"
+      "Year":1971,
+      "Origin":"Japan"
    },
    {
       "Name":"chevrolet vega 2300",
@@ -403,8 +403,8 @@
       "Horsepower":90,
       "Weight_in_lbs":2264,
       "Acceleration":15.5,
-      "Year":"1971-01-01",
-      "Origin":"A"
+      "Year":1971,
+      "Origin":"USA"
    },
    {
       "Name":"toyota corona",
@@ -414,8 +414,8 @@
       "Horsepower":95,
       "Weight_in_lbs":2228,
       "Acceleration":14,
-      "Year":"1971-01-01",
-      "Origin":"C"
+      "Year":1971,
+      "Origin":"Japan"
    },
    {
       "Name":"ford pinto",
@@ -425,8 +425,8 @@
       "Horsepower":null,
       "Weight_in_lbs":2046,
       "Acceleration":19,
-      "Year":"1971-01-01",
-      "Origin":"A"
+      "Year":1971,
+      "Origin":"USA"
    },
    {
       "Name":"volkswagen super beetle 117",
@@ -436,8 +436,8 @@
       "Horsepower":48,
       "Weight_in_lbs":1978,
       "Acceleration":20,
-      "Year":"1971-01-01",
-      "Origin":"B"
+      "Year":1971,
+      "Origin":"Europe"
    },
    {
       "Name":"amc gremlin",
@@ -447,8 +447,8 @@
       "Horsepower":100,
       "Weight_in_lbs":2634,
       "Acceleration":13,
-      "Year":"1971-01-01",
-      "Origin":"A"
+      "Year":1971,
+      "Origin":"USA"
    },
    {
       "Name":"plymouth satellite custom",
@@ -458,8 +458,8 @@
       "Horsepower":105,
       "Weight_in_lbs":3439,
       "Acceleration":15.5,
-      "Year":"1971-01-01",
-      "Origin":"A"
+      "Year":1971,
+      "Origin":"USA"
    },
    {
       "Name":"chevrolet chevelle malibu",
@@ -469,8 +469,8 @@
       "Horsepower":100,
       "Weight_in_lbs":3329,
       "Acceleration":15.5,
-      "Year":"1971-01-01",
-      "Origin":"A"
+      "Year":1971,
+      "Origin":"USA"
    },
    {
       "Name":"ford torino 500",
@@ -480,8 +480,8 @@
       "Horsepower":88,
       "Weight_in_lbs":3302,
       "Acceleration":15.5,
-      "Year":"1971-01-01",
-      "Origin":"A"
+      "Year":1971,
+      "Origin":"USA"
    },
    {
       "Name":"amc matador",
@@ -491,8 +491,8 @@
       "Horsepower":100,
       "Weight_in_lbs":3288,
       "Acceleration":15.5,
-      "Year":"1971-01-01",
-      "Origin":"A"
+      "Year":1971,
+      "Origin":"USA"
    },
    {
       "Name":"chevrolet impala",
@@ -502,8 +502,8 @@
       "Horsepower":165,
       "Weight_in_lbs":4209,
       "Acceleration":12,
-      "Year":"1971-01-01",
-      "Origin":"A"
+      "Year":1971,
+      "Origin":"USA"
    },
    {
       "Name":"pontiac catalina brougham",
@@ -513,8 +513,8 @@
       "Horsepower":175,
       "Weight_in_lbs":4464,
       "Acceleration":11.5,
-      "Year":"1971-01-01",
-      "Origin":"A"
+      "Year":1971,
+      "Origin":"USA"
    },
    {
       "Name":"ford galaxie 500",
@@ -524,8 +524,8 @@
       "Horsepower":153,
       "Weight_in_lbs":4154,
       "Acceleration":13.5,
-      "Year":"1971-01-01",
-      "Origin":"A"
+      "Year":1971,
+      "Origin":"USA"
    },
    {
       "Name":"plymouth fury iii",
@@ -535,8 +535,8 @@
       "Horsepower":150,
       "Weight_in_lbs":4096,
       "Acceleration":13,
-      "Year":"1971-01-01",
-      "Origin":"A"
+      "Year":1971,
+      "Origin":"USA"
    },
    {
       "Name":"dodge monaco (sw)",
@@ -546,8 +546,8 @@
       "Horsepower":180,
       "Weight_in_lbs":4955,
       "Acceleration":11.5,
-      "Year":"1971-01-01",
-      "Origin":"A"
+      "Year":1971,
+      "Origin":"USA"
    },
    {
       "Name":"ford country squire (sw)",
@@ -557,8 +557,8 @@
       "Horsepower":170,
       "Weight_in_lbs":4746,
       "Acceleration":12,
-      "Year":"1971-01-01",
-      "Origin":"A"
+      "Year":1971,
+      "Origin":"USA"
    },
    {
       "Name":"pontiac safari (sw)",
@@ -568,8 +568,8 @@
       "Horsepower":175,
       "Weight_in_lbs":5140,
       "Acceleration":12,
-      "Year":"1971-01-01",
-      "Origin":"A"
+      "Year":1971,
+      "Origin":"USA"
    },
    {
       "Name":"amc hornet sportabout (sw)",
@@ -579,8 +579,8 @@
       "Horsepower":110,
       "Weight_in_lbs":2962,
       "Acceleration":13.5,
-      "Year":"1971-01-01",
-      "Origin":"A"
+      "Year":1971,
+      "Origin":"USA"
    },
    {
       "Name":"chevrolet vega (sw)",
@@ -590,8 +590,8 @@
       "Horsepower":72,
       "Weight_in_lbs":2408,
       "Acceleration":19,
-      "Year":"1971-01-01",
-      "Origin":"A"
+      "Year":1971,
+      "Origin":"USA"
    },
    {
       "Name":"pontiac firebird",
@@ -601,8 +601,8 @@
       "Horsepower":100,
       "Weight_in_lbs":3282,
       "Acceleration":15,
-      "Year":"1971-01-01",
-      "Origin":"A"
+      "Year":1971,
+      "Origin":"USA"
    },
    {
       "Name":"ford mustang",
@@ -612,8 +612,8 @@
       "Horsepower":88,
       "Weight_in_lbs":3139,
       "Acceleration":14.5,
-      "Year":"1971-01-01",
-      "Origin":"A"
+      "Year":1971,
+      "Origin":"USA"
    },
    {
       "Name":"mercury capri 2000",
@@ -623,8 +623,8 @@
       "Horsepower":86,
       "Weight_in_lbs":2220,
       "Acceleration":14,
-      "Year":"1971-01-01",
-      "Origin":"A"
+      "Year":1971,
+      "Origin":"USA"
    },
    {
       "Name":"opel 1900",
@@ -634,8 +634,8 @@
       "Horsepower":90,
       "Weight_in_lbs":2123,
       "Acceleration":14,
-      "Year":"1971-01-01",
-      "Origin":"B"
+      "Year":1971,
+      "Origin":"Europe"
    },
    {
       "Name":"peugeot 304",
@@ -645,8 +645,8 @@
       "Horsepower":70,
       "Weight_in_lbs":2074,
       "Acceleration":19.5,
-      "Year":"1971-01-01",
-      "Origin":"B"
+      "Year":1971,
+      "Origin":"Europe"
    },
    {
       "Name":"fiat 124b",
@@ -656,8 +656,8 @@
       "Horsepower":76,
       "Weight_in_lbs":2065,
       "Acceleration":14.5,
-      "Year":"1971-01-01",
-      "Origin":"B"
+      "Year":1971,
+      "Origin":"Europe"
    },
    {
       "Name":"toyota corolla 1200",
@@ -667,8 +667,8 @@
       "Horsepower":65,
       "Weight_in_lbs":1773,
       "Acceleration":19,
-      "Year":"1971-01-01",
-      "Origin":"C"
+      "Year":1971,
+      "Origin":"Japan"
    },
    {
       "Name":"datsun 1200",
@@ -678,8 +678,8 @@
       "Horsepower":69,
       "Weight_in_lbs":1613,
       "Acceleration":18,
-      "Year":"1971-01-01",
-      "Origin":"C"
+      "Year":1971,
+      "Origin":"Japan"
    },
    {
       "Name":"volkswagen model 111",
@@ -689,8 +689,8 @@
       "Horsepower":60,
       "Weight_in_lbs":1834,
       "Acceleration":19,
-      "Year":"1971-01-01",
-      "Origin":"B"
+      "Year":1971,
+      "Origin":"Europe"
    },
    {
       "Name":"plymouth cricket",
@@ -700,8 +700,8 @@
       "Horsepower":70,
       "Weight_in_lbs":1955,
       "Acceleration":20.5,
-      "Year":"1971-01-01",
-      "Origin":"A"
+      "Year":1971,
+      "Origin":"USA"
    },
    {
       "Name":"toyota corona hardtop",
@@ -711,8 +711,8 @@
       "Horsepower":95,
       "Weight_in_lbs":2278,
       "Acceleration":15.5,
-      "Year":"1972-01-01",
-      "Origin":"C"
+      "Year":1972,
+      "Origin":"Japan"
    },
    {
       "Name":"dodge colt hardtop",
@@ -722,8 +722,8 @@
       "Horsepower":80,
       "Weight_in_lbs":2126,
       "Acceleration":17,
-      "Year":"1972-01-01",
-      "Origin":"A"
+      "Year":1972,
+      "Origin":"USA"
    },
    {
       "Name":"volkswagen type 3",
@@ -733,8 +733,8 @@
       "Horsepower":54,
       "Weight_in_lbs":2254,
       "Acceleration":23.5,
-      "Year":"1972-01-01",
-      "Origin":"B"
+      "Year":1972,
+      "Origin":"Europe"
    },
    {
       "Name":"chevrolet vega",
@@ -744,8 +744,8 @@
       "Horsepower":90,
       "Weight_in_lbs":2408,
       "Acceleration":19.5,
-      "Year":"1972-01-01",
-      "Origin":"A"
+      "Year":1972,
+      "Origin":"USA"
    },
    {
       "Name":"ford pinto runabout",
@@ -755,8 +755,8 @@
       "Horsepower":86,
       "Weight_in_lbs":2226,
       "Acceleration":16.5,
-      "Year":"1972-01-01",
-      "Origin":"A"
+      "Year":1972,
+      "Origin":"USA"
    },
    {
       "Name":"chevrolet impala",
@@ -766,8 +766,8 @@
       "Horsepower":165,
       "Weight_in_lbs":4274,
       "Acceleration":12,
-      "Year":"1972-01-01",
-      "Origin":"A"
+      "Year":1972,
+      "Origin":"USA"
    },
    {
       "Name":"pontiac catalina",
@@ -777,8 +777,8 @@
       "Horsepower":175,
       "Weight_in_lbs":4385,
       "Acceleration":12,
-      "Year":"1972-01-01",
-      "Origin":"A"
+      "Year":1972,
+      "Origin":"USA"
    },
    {
       "Name":"plymouth fury iii",
@@ -788,8 +788,8 @@
       "Horsepower":150,
       "Weight_in_lbs":4135,
       "Acceleration":13.5,
-      "Year":"1972-01-01",
-      "Origin":"A"
+      "Year":1972,
+      "Origin":"USA"
    },
    {
       "Name":"ford galaxie 500",
@@ -799,8 +799,8 @@
       "Horsepower":153,
       "Weight_in_lbs":4129,
       "Acceleration":13,
-      "Year":"1972-01-01",
-      "Origin":"A"
+      "Year":1972,
+      "Origin":"USA"
    },
    {
       "Name":"amc ambassador sst",
@@ -810,8 +810,8 @@
       "Horsepower":150,
       "Weight_in_lbs":3672,
       "Acceleration":11.5,
-      "Year":"1972-01-01",
-      "Origin":"A"
+      "Year":1972,
+      "Origin":"USA"
    },
    {
       "Name":"mercury marquis",
@@ -821,8 +821,8 @@
       "Horsepower":208,
       "Weight_in_lbs":4633,
       "Acceleration":11,
-      "Year":"1972-01-01",
-      "Origin":"A"
+      "Year":1972,
+      "Origin":"USA"
    },
    {
       "Name":"buick lesabre custom",
@@ -832,8 +832,8 @@
       "Horsepower":155,
       "Weight_in_lbs":4502,
       "Acceleration":13.5,
-      "Year":"1972-01-01",
-      "Origin":"A"
+      "Year":1972,
+      "Origin":"USA"
    },
    {
       "Name":"oldsmobile delta 88 royale",
@@ -843,8 +843,8 @@
       "Horsepower":160,
       "Weight_in_lbs":4456,
       "Acceleration":13.5,
-      "Year":"1972-01-01",
-      "Origin":"A"
+      "Year":1972,
+      "Origin":"USA"
    },
    {
       "Name":"chrysler newport royal",
@@ -854,8 +854,8 @@
       "Horsepower":190,
       "Weight_in_lbs":4422,
       "Acceleration":12.5,
-      "Year":"1972-01-01",
-      "Origin":"A"
+      "Year":1972,
+      "Origin":"USA"
    },
    {
       "Name":"mazda rx2 coupe",
@@ -865,8 +865,8 @@
       "Horsepower":97,
       "Weight_in_lbs":2330,
       "Acceleration":13.5,
-      "Year":"1972-01-01",
-      "Origin":"C"
+      "Year":1972,
+      "Origin":"Japan"
    },
    {
       "Name":"amc matador (sw)",
@@ -876,8 +876,8 @@
       "Horsepower":150,
       "Weight_in_lbs":3892,
       "Acceleration":12.5,
-      "Year":"1972-01-01",
-      "Origin":"A"
+      "Year":1972,
+      "Origin":"USA"
    },
    {
       "Name":"chevrolet chevelle concours (sw)",
@@ -887,8 +887,8 @@
       "Horsepower":130,
       "Weight_in_lbs":4098,
       "Acceleration":14,
-      "Year":"1972-01-01",
-      "Origin":"A"
+      "Year":1972,
+      "Origin":"USA"
    },
    {
       "Name":"ford gran torino (sw)",
@@ -898,8 +898,8 @@
       "Horsepower":140,
       "Weight_in_lbs":4294,
       "Acceleration":16,
-      "Year":"1972-01-01",
-      "Origin":"A"
+      "Year":1972,
+      "Origin":"USA"
    },
    {
       "Name":"plymouth satellite custom (sw)",
@@ -909,8 +909,8 @@
       "Horsepower":150,
       "Weight_in_lbs":4077,
       "Acceleration":14,
-      "Year":"1972-01-01",
-      "Origin":"A"
+      "Year":1972,
+      "Origin":"USA"
    },
    {
       "Name":"volvo 145e (sw)",
@@ -920,8 +920,8 @@
       "Horsepower":112,
       "Weight_in_lbs":2933,
       "Acceleration":14.5,
-      "Year":"1972-01-01",
-      "Origin":"B"
+      "Year":1972,
+      "Origin":"Europe"
    },
    {
       "Name":"volkswagen 411 (sw)",
@@ -931,8 +931,8 @@
       "Horsepower":76,
       "Weight_in_lbs":2511,
       "Acceleration":18,
-      "Year":"1972-01-01",
-      "Origin":"B"
+      "Year":1972,
+      "Origin":"Europe"
    },
    {
       "Name":"peugeot 504 (sw)",
@@ -942,8 +942,8 @@
       "Horsepower":87,
       "Weight_in_lbs":2979,
       "Acceleration":19.5,
-      "Year":"1972-01-01",
-      "Origin":"B"
+      "Year":1972,
+      "Origin":"Europe"
    },
    {
       "Name":"renault 12 (sw)",
@@ -953,8 +953,8 @@
       "Horsepower":69,
       "Weight_in_lbs":2189,
       "Acceleration":18,
-      "Year":"1972-01-01",
-      "Origin":"B"
+      "Year":1972,
+      "Origin":"Europe"
    },
    {
       "Name":"ford pinto (sw)",
@@ -964,8 +964,8 @@
       "Horsepower":86,
       "Weight_in_lbs":2395,
       "Acceleration":16,
-      "Year":"1972-01-01",
-      "Origin":"A"
+      "Year":1972,
+      "Origin":"USA"
    },
    {
       "Name":"datsun 510 (sw)",
@@ -975,8 +975,8 @@
       "Horsepower":92,
       "Weight_in_lbs":2288,
       "Acceleration":17,
-      "Year":"1972-01-01",
-      "Origin":"C"
+      "Year":1972,
+      "Origin":"Japan"
    },
    {
       "Name":"toyouta corona mark ii (sw)",
@@ -986,8 +986,8 @@
       "Horsepower":97,
       "Weight_in_lbs":2506,
       "Acceleration":14.5,
-      "Year":"1972-01-01",
-      "Origin":"C"
+      "Year":1972,
+      "Origin":"Japan"
    },
    {
       "Name":"dodge colt (sw)",
@@ -997,8 +997,8 @@
       "Horsepower":80,
       "Weight_in_lbs":2164,
       "Acceleration":15,
-      "Year":"1972-01-01",
-      "Origin":"A"
+      "Year":1972,
+      "Origin":"USA"
    },
    {
       "Name":"toyota corolla 1600 (sw)",
@@ -1008,8 +1008,8 @@
       "Horsepower":88,
       "Weight_in_lbs":2100,
       "Acceleration":16.5,
-      "Year":"1972-01-01",
-      "Origin":"C"
+      "Year":1972,
+      "Origin":"Japan"
    },
    {
       "Name":"buick century 350",
@@ -1019,8 +1019,8 @@
       "Horsepower":175,
       "Weight_in_lbs":4100,
       "Acceleration":13,
-      "Year":"1973-01-01",
-      "Origin":"A"
+      "Year":1973,
+      "Origin":"USA"
    },
    {
       "Name":"amc matador",
@@ -1030,8 +1030,8 @@
       "Horsepower":150,
       "Weight_in_lbs":3672,
       "Acceleration":11.5,
-      "Year":"1973-01-01",
-      "Origin":"A"
+      "Year":1973,
+      "Origin":"USA"
    },
    {
       "Name":"chevrolet malibu",
@@ -1041,8 +1041,8 @@
       "Horsepower":145,
       "Weight_in_lbs":3988,
       "Acceleration":13,
-      "Year":"1973-01-01",
-      "Origin":"A"
+      "Year":1973,
+      "Origin":"USA"
    },
    {
       "Name":"ford gran torino",
@@ -1052,8 +1052,8 @@
       "Horsepower":137,
       "Weight_in_lbs":4042,
       "Acceleration":14.5,
-      "Year":"1973-01-01",
-      "Origin":"A"
+      "Year":1973,
+      "Origin":"USA"
    },
    {
       "Name":"dodge coronet custom",
@@ -1063,8 +1063,8 @@
       "Horsepower":150,
       "Weight_in_lbs":3777,
       "Acceleration":12.5,
-      "Year":"1973-01-01",
-      "Origin":"A"
+      "Year":1973,
+      "Origin":"USA"
    },
    {
       "Name":"mercury marquis brougham",
@@ -1074,8 +1074,8 @@
       "Horsepower":198,
       "Weight_in_lbs":4952,
       "Acceleration":11.5,
-      "Year":"1973-01-01",
-      "Origin":"A"
+      "Year":1973,
+      "Origin":"USA"
    },
    {
       "Name":"chevrolet caprice classic",
@@ -1085,8 +1085,8 @@
       "Horsepower":150,
       "Weight_in_lbs":4464,
       "Acceleration":12,
-      "Year":"1973-01-01",
-      "Origin":"A"
+      "Year":1973,
+      "Origin":"USA"
    },
    {
       "Name":"ford ltd",
@@ -1096,8 +1096,8 @@
       "Horsepower":158,
       "Weight_in_lbs":4363,
       "Acceleration":13,
-      "Year":"1973-01-01",
-      "Origin":"A"
+      "Year":1973,
+      "Origin":"USA"
    },
    {
       "Name":"plymouth fury gran sedan",
@@ -1107,8 +1107,8 @@
       "Horsepower":150,
       "Weight_in_lbs":4237,
       "Acceleration":14.5,
-      "Year":"1973-01-01",
-      "Origin":"A"
+      "Year":1973,
+      "Origin":"USA"
    },
    {
       "Name":"chrysler new yorker brougham",
@@ -1118,8 +1118,8 @@
       "Horsepower":215,
       "Weight_in_lbs":4735,
       "Acceleration":11,
-      "Year":"1973-01-01",
-      "Origin":"A"
+      "Year":1973,
+      "Origin":"USA"
    },
    {
       "Name":"buick electra 225 custom",
@@ -1129,8 +1129,8 @@
       "Horsepower":225,
       "Weight_in_lbs":4951,
       "Acceleration":11,
-      "Year":"1973-01-01",
-      "Origin":"A"
+      "Year":1973,
+      "Origin":"USA"
    },
    {
       "Name":"amc ambassador brougham",
@@ -1140,8 +1140,8 @@
       "Horsepower":175,
       "Weight_in_lbs":3821,
       "Acceleration":11,
-      "Year":"1973-01-01",
-      "Origin":"A"
+      "Year":1973,
+      "Origin":"USA"
    },
    {
       "Name":"plymouth valiant",
@@ -1151,8 +1151,8 @@
       "Horsepower":105,
       "Weight_in_lbs":3121,
       "Acceleration":16.5,
-      "Year":"1973-01-01",
-      "Origin":"A"
+      "Year":1973,
+      "Origin":"USA"
    },
    {
       "Name":"chevrolet nova custom",
@@ -1162,8 +1162,8 @@
       "Horsepower":100,
       "Weight_in_lbs":3278,
       "Acceleration":18,
-      "Year":"1973-01-01",
-      "Origin":"A"
+      "Year":1973,
+      "Origin":"USA"
    },
    {
       "Name":"amc hornet",
@@ -1173,8 +1173,8 @@
       "Horsepower":100,
       "Weight_in_lbs":2945,
       "Acceleration":16,
-      "Year":"1973-01-01",
-      "Origin":"A"
+      "Year":1973,
+      "Origin":"USA"
    },
    {
       "Name":"ford maverick",
@@ -1184,8 +1184,8 @@
       "Horsepower":88,
       "Weight_in_lbs":3021,
       "Acceleration":16.5,
-      "Year":"1973-01-01",
-      "Origin":"A"
+      "Year":1973,
+      "Origin":"USA"
    },
    {
       "Name":"plymouth duster",
@@ -1195,8 +1195,8 @@
       "Horsepower":95,
       "Weight_in_lbs":2904,
       "Acceleration":16,
-      "Year":"1973-01-01",
-      "Origin":"A"
+      "Year":1973,
+      "Origin":"USA"
    },
    {
       "Name":"volkswagen super beetle",
@@ -1206,8 +1206,8 @@
       "Horsepower":46,
       "Weight_in_lbs":1950,
       "Acceleration":21,
-      "Year":"1973-01-01",
-      "Origin":"B"
+      "Year":1973,
+      "Origin":"Europe"
    },
    {
       "Name":"chevrolet impala",
@@ -1217,8 +1217,8 @@
       "Horsepower":150,
       "Weight_in_lbs":4997,
       "Acceleration":14,
-      "Year":"1973-01-01",
-      "Origin":"A"
+      "Year":1973,
+      "Origin":"USA"
    },
    {
       "Name":"ford country",
@@ -1228,8 +1228,8 @@
       "Horsepower":167,
       "Weight_in_lbs":4906,
       "Acceleration":12.5,
-      "Year":"1973-01-01",
-      "Origin":"A"
+      "Year":1973,
+      "Origin":"USA"
    },
    {
       "Name":"plymouth custom suburb",
@@ -1239,8 +1239,8 @@
       "Horsepower":170,
       "Weight_in_lbs":4654,
       "Acceleration":13,
-      "Year":"1973-01-01",
-      "Origin":"A"
+      "Year":1973,
+      "Origin":"USA"
    },
    {
       "Name":"oldsmobile vista cruiser",
@@ -1250,8 +1250,8 @@
       "Horsepower":180,
       "Weight_in_lbs":4499,
       "Acceleration":12.5,
-      "Year":"1973-01-01",
-      "Origin":"A"
+      "Year":1973,
+      "Origin":"USA"
    },
    {
       "Name":"amc gremlin",
@@ -1261,8 +1261,8 @@
       "Horsepower":100,
       "Weight_in_lbs":2789,
       "Acceleration":15,
-      "Year":"1973-01-01",
-      "Origin":"A"
+      "Year":1973,
+      "Origin":"USA"
    },
    {
       "Name":"toyota carina",
@@ -1272,8 +1272,8 @@
       "Horsepower":88,
       "Weight_in_lbs":2279,
       "Acceleration":19,
-      "Year":"1973-01-01",
-      "Origin":"C"
+      "Year":1973,
+      "Origin":"Japan"
    },
    {
       "Name":"chevrolet vega",
@@ -1283,8 +1283,8 @@
       "Horsepower":72,
       "Weight_in_lbs":2401,
       "Acceleration":19.5,
-      "Year":"1973-01-01",
-      "Origin":"A"
+      "Year":1973,
+      "Origin":"USA"
    },
    {
       "Name":"datsun 610",
@@ -1294,8 +1294,8 @@
       "Horsepower":94,
       "Weight_in_lbs":2379,
       "Acceleration":16.5,
-      "Year":"1973-01-01",
-      "Origin":"C"
+      "Year":1973,
+      "Origin":"Japan"
    },
    {
       "Name":"maxda rx3",
@@ -1305,8 +1305,8 @@
       "Horsepower":90,
       "Weight_in_lbs":2124,
       "Acceleration":13.5,
-      "Year":"1973-01-01",
-      "Origin":"C"
+      "Year":1973,
+      "Origin":"Japan"
    },
    {
       "Name":"ford pinto",
@@ -1316,8 +1316,8 @@
       "Horsepower":85,
       "Weight_in_lbs":2310,
       "Acceleration":18.5,
-      "Year":"1973-01-01",
-      "Origin":"A"
+      "Year":1973,
+      "Origin":"USA"
    },
    {
       "Name":"mercury capri v6",
@@ -1327,8 +1327,8 @@
       "Horsepower":107,
       "Weight_in_lbs":2472,
       "Acceleration":14,
-      "Year":"1973-01-01",
-      "Origin":"A"
+      "Year":1973,
+      "Origin":"USA"
    },
    {
       "Name":"fiat 124 sport coupe",
@@ -1338,8 +1338,8 @@
       "Horsepower":90,
       "Weight_in_lbs":2265,
       "Acceleration":15.5,
-      "Year":"1973-01-01",
-      "Origin":"B"
+      "Year":1973,
+      "Origin":"Europe"
    },
    {
       "Name":"chevrolet monte carlo s",
@@ -1349,8 +1349,8 @@
       "Horsepower":145,
       "Weight_in_lbs":4082,
       "Acceleration":13,
-      "Year":"1973-01-01",
-      "Origin":"A"
+      "Year":1973,
+      "Origin":"USA"
    },
    {
       "Name":"pontiac grand prix",
@@ -1360,8 +1360,8 @@
       "Horsepower":230,
       "Weight_in_lbs":4278,
       "Acceleration":9.5,
-      "Year":"1973-01-01",
-      "Origin":"A"
+      "Year":1973,
+      "Origin":"USA"
    },
    {
       "Name":"fiat 128",
@@ -1371,8 +1371,8 @@
       "Horsepower":49,
       "Weight_in_lbs":1867,
       "Acceleration":19.5,
-      "Year":"1973-01-01",
-      "Origin":"B"
+      "Year":1973,
+      "Origin":"Europe"
    },
    {
       "Name":"opel manta",
@@ -1382,8 +1382,8 @@
       "Horsepower":75,
       "Weight_in_lbs":2158,
       "Acceleration":15.5,
-      "Year":"1973-01-01",
-      "Origin":"B"
+      "Year":1973,
+      "Origin":"Europe"
    },
    {
       "Name":"audi 100ls",
@@ -1393,8 +1393,8 @@
       "Horsepower":91,
       "Weight_in_lbs":2582,
       "Acceleration":14,
-      "Year":"1973-01-01",
-      "Origin":"B"
+      "Year":1973,
+      "Origin":"Europe"
    },
    {
       "Name":"volvo 144ea",
@@ -1404,8 +1404,8 @@
       "Horsepower":112,
       "Weight_in_lbs":2868,
       "Acceleration":15.5,
-      "Year":"1973-01-01",
-      "Origin":"B"
+      "Year":1973,
+      "Origin":"Europe"
    },
    {
       "Name":"dodge dart custom",
@@ -1415,8 +1415,8 @@
       "Horsepower":150,
       "Weight_in_lbs":3399,
       "Acceleration":11,
-      "Year":"1973-01-01",
-      "Origin":"A"
+      "Year":1973,
+      "Origin":"USA"
    },
    {
       "Name":"saab 99le",
@@ -1426,8 +1426,8 @@
       "Horsepower":110,
       "Weight_in_lbs":2660,
       "Acceleration":14,
-      "Year":"1973-01-01",
-      "Origin":"B"
+      "Year":1973,
+      "Origin":"Europe"
    },
    {
       "Name":"toyota mark ii",
@@ -1437,8 +1437,8 @@
       "Horsepower":122,
       "Weight_in_lbs":2807,
       "Acceleration":13.5,
-      "Year":"1973-01-01",
-      "Origin":"C"
+      "Year":1973,
+      "Origin":"Japan"
    },
    {
       "Name":"oldsmobile omega",
@@ -1448,8 +1448,8 @@
       "Horsepower":180,
       "Weight_in_lbs":3664,
       "Acceleration":11,
-      "Year":"1973-01-01",
-      "Origin":"A"
+      "Year":1973,
+      "Origin":"USA"
    },
    {
       "Name":"plymouth duster",
@@ -1459,8 +1459,8 @@
       "Horsepower":95,
       "Weight_in_lbs":3102,
       "Acceleration":16.5,
-      "Year":"1974-01-01",
-      "Origin":"A"
+      "Year":1974,
+      "Origin":"USA"
    },
    {
       "Name":"ford maverick",
@@ -1470,8 +1470,8 @@
       "Horsepower":null,
       "Weight_in_lbs":2875,
       "Acceleration":17,
-      "Year":"1974-01-01",
-      "Origin":"A"
+      "Year":1974,
+      "Origin":"USA"
    },
    {
       "Name":"amc hornet",
@@ -1481,8 +1481,8 @@
       "Horsepower":100,
       "Weight_in_lbs":2901,
       "Acceleration":16,
-      "Year":"1974-01-01",
-      "Origin":"A"
+      "Year":1974,
+      "Origin":"USA"
    },
    {
       "Name":"chevrolet nova",
@@ -1492,8 +1492,8 @@
       "Horsepower":100,
       "Weight_in_lbs":3336,
       "Acceleration":17,
-      "Year":"1974-01-01",
-      "Origin":"A"
+      "Year":1974,
+      "Origin":"USA"
    },
    {
       "Name":"datsun b210",
@@ -1503,8 +1503,8 @@
       "Horsepower":67,
       "Weight_in_lbs":1950,
       "Acceleration":19,
-      "Year":"1974-01-01",
-      "Origin":"C"
+      "Year":1974,
+      "Origin":"Japan"
    },
    {
       "Name":"ford pinto",
@@ -1514,8 +1514,8 @@
       "Horsepower":80,
       "Weight_in_lbs":2451,
       "Acceleration":16.5,
-      "Year":"1974-01-01",
-      "Origin":"A"
+      "Year":1974,
+      "Origin":"USA"
    },
    {
       "Name":"toyota corolla 1200",
@@ -1525,8 +1525,8 @@
       "Horsepower":65,
       "Weight_in_lbs":1836,
       "Acceleration":21,
-      "Year":"1974-01-01",
-      "Origin":"C"
+      "Year":1974,
+      "Origin":"Japan"
    },
    {
       "Name":"chevrolet vega",
@@ -1536,8 +1536,8 @@
       "Horsepower":75,
       "Weight_in_lbs":2542,
       "Acceleration":17,
-      "Year":"1974-01-01",
-      "Origin":"A"
+      "Year":1974,
+      "Origin":"USA"
    },
    {
       "Name":"chevrolet chevelle malibu classic",
@@ -1547,8 +1547,8 @@
       "Horsepower":100,
       "Weight_in_lbs":3781,
       "Acceleration":17,
-      "Year":"1974-01-01",
-      "Origin":"A"
+      "Year":1974,
+      "Origin":"USA"
    },
    {
       "Name":"amc matador",
@@ -1558,8 +1558,8 @@
       "Horsepower":110,
       "Weight_in_lbs":3632,
       "Acceleration":18,
-      "Year":"1974-01-01",
-      "Origin":"A"
+      "Year":1974,
+      "Origin":"USA"
    },
    {
       "Name":"plymouth satellite sebring",
@@ -1569,8 +1569,8 @@
       "Horsepower":105,
       "Weight_in_lbs":3613,
       "Acceleration":16.5,
-      "Year":"1974-01-01",
-      "Origin":"A"
+      "Year":1974,
+      "Origin":"USA"
    },
    {
       "Name":"ford gran torino",
@@ -1580,8 +1580,8 @@
       "Horsepower":140,
       "Weight_in_lbs":4141,
       "Acceleration":14,
-      "Year":"1974-01-01",
-      "Origin":"A"
+      "Year":1974,
+      "Origin":"USA"
    },
    {
       "Name":"buick century luxus (sw)",
@@ -1591,8 +1591,8 @@
       "Horsepower":150,
       "Weight_in_lbs":4699,
       "Acceleration":14.5,
-      "Year":"1974-01-01",
-      "Origin":"A"
+      "Year":1974,
+      "Origin":"USA"
    },
    {
       "Name":"dodge coronet custom (sw)",
@@ -1602,8 +1602,8 @@
       "Horsepower":150,
       "Weight_in_lbs":4457,
       "Acceleration":13.5,
-      "Year":"1974-01-01",
-      "Origin":"A"
+      "Year":1974,
+      "Origin":"USA"
    },
    {
       "Name":"ford gran torino (sw)",
@@ -1613,8 +1613,8 @@
       "Horsepower":140,
       "Weight_in_lbs":4638,
       "Acceleration":16,
-      "Year":"1974-01-01",
-      "Origin":"A"
+      "Year":1974,
+      "Origin":"USA"
    },
    {
       "Name":"amc matador (sw)",
@@ -1624,8 +1624,8 @@
       "Horsepower":150,
       "Weight_in_lbs":4257,
       "Acceleration":15.5,
-      "Year":"1974-01-01",
-      "Origin":"A"
+      "Year":1974,
+      "Origin":"USA"
    },
    {
       "Name":"audi fox",
@@ -1635,8 +1635,8 @@
       "Horsepower":83,
       "Weight_in_lbs":2219,
       "Acceleration":16.5,
-      "Year":"1974-01-01",
-      "Origin":"B"
+      "Year":1974,
+      "Origin":"Europe"
    },
    {
       "Name":"volkswagen dasher",
@@ -1646,8 +1646,8 @@
       "Horsepower":67,
       "Weight_in_lbs":1963,
       "Acceleration":15.5,
-      "Year":"1974-01-01",
-      "Origin":"B"
+      "Year":1974,
+      "Origin":"Europe"
    },
    {
       "Name":"opel manta",
@@ -1657,8 +1657,8 @@
       "Horsepower":78,
       "Weight_in_lbs":2300,
       "Acceleration":14.5,
-      "Year":"1974-01-01",
-      "Origin":"B"
+      "Year":1974,
+      "Origin":"Europe"
    },
    {
       "Name":"toyota corona",
@@ -1668,8 +1668,8 @@
       "Horsepower":52,
       "Weight_in_lbs":1649,
       "Acceleration":16.5,
-      "Year":"1974-01-01",
-      "Origin":"C"
+      "Year":1974,
+      "Origin":"Japan"
    },
    {
       "Name":"datsun 710",
@@ -1679,8 +1679,8 @@
       "Horsepower":61,
       "Weight_in_lbs":2003,
       "Acceleration":19,
-      "Year":"1974-01-01",
-      "Origin":"C"
+      "Year":1974,
+      "Origin":"Japan"
    },
    {
       "Name":"dodge colt",
@@ -1690,8 +1690,8 @@
       "Horsepower":75,
       "Weight_in_lbs":2125,
       "Acceleration":14.5,
-      "Year":"1974-01-01",
-      "Origin":"A"
+      "Year":1974,
+      "Origin":"USA"
    },
    {
       "Name":"fiat 128",
@@ -1701,8 +1701,8 @@
       "Horsepower":75,
       "Weight_in_lbs":2108,
       "Acceleration":15.5,
-      "Year":"1974-01-01",
-      "Origin":"B"
+      "Year":1974,
+      "Origin":"Europe"
    },
    {
       "Name":"fiat 124 tc",
@@ -1712,8 +1712,8 @@
       "Horsepower":75,
       "Weight_in_lbs":2246,
       "Acceleration":14,
-      "Year":"1974-01-01",
-      "Origin":"B"
+      "Year":1974,
+      "Origin":"Europe"
    },
    {
       "Name":"honda civic",
@@ -1723,8 +1723,8 @@
       "Horsepower":97,
       "Weight_in_lbs":2489,
       "Acceleration":15,
-      "Year":"1974-01-01",
-      "Origin":"C"
+      "Year":1974,
+      "Origin":"Japan"
    },
    {
       "Name":"subaru",
@@ -1734,8 +1734,8 @@
       "Horsepower":93,
       "Weight_in_lbs":2391,
       "Acceleration":15.5,
-      "Year":"1974-01-01",
-      "Origin":"C"
+      "Year":1974,
+      "Origin":"Japan"
    },
    {
       "Name":"fiat x1.9",
@@ -1745,8 +1745,8 @@
       "Horsepower":67,
       "Weight_in_lbs":2000,
       "Acceleration":16,
-      "Year":"1974-01-01",
-      "Origin":"B"
+      "Year":1974,
+      "Origin":"Europe"
    },
    {
       "Name":"plymouth valiant custom",
@@ -1756,8 +1756,8 @@
       "Horsepower":95,
       "Weight_in_lbs":3264,
       "Acceleration":16,
-      "Year":"1975-01-01",
-      "Origin":"A"
+      "Year":1975,
+      "Origin":"USA"
    },
    {
       "Name":"chevrolet nova",
@@ -1767,8 +1767,8 @@
       "Horsepower":105,
       "Weight_in_lbs":3459,
       "Acceleration":16,
-      "Year":"1975-01-01",
-      "Origin":"A"
+      "Year":1975,
+      "Origin":"USA"
    },
    {
       "Name":"mercury monarch",
@@ -1778,8 +1778,8 @@
       "Horsepower":72,
       "Weight_in_lbs":3432,
       "Acceleration":21,
-      "Year":"1975-01-01",
-      "Origin":"A"
+      "Year":1975,
+      "Origin":"USA"
    },
    {
       "Name":"ford maverick",
@@ -1789,8 +1789,8 @@
       "Horsepower":72,
       "Weight_in_lbs":3158,
       "Acceleration":19.5,
-      "Year":"1975-01-01",
-      "Origin":"A"
+      "Year":1975,
+      "Origin":"USA"
    },
    {
       "Name":"pontiac catalina",
@@ -1800,8 +1800,8 @@
       "Horsepower":170,
       "Weight_in_lbs":4668,
       "Acceleration":11.5,
-      "Year":"1975-01-01",
-      "Origin":"A"
+      "Year":1975,
+      "Origin":"USA"
    },
    {
       "Name":"chevrolet bel air",
@@ -1811,8 +1811,8 @@
       "Horsepower":145,
       "Weight_in_lbs":4440,
       "Acceleration":14,
-      "Year":"1975-01-01",
-      "Origin":"A"
+      "Year":1975,
+      "Origin":"USA"
    },
    {
       "Name":"plymouth grand fury",
@@ -1822,8 +1822,8 @@
       "Horsepower":150,
       "Weight_in_lbs":4498,
       "Acceleration":14.5,
-      "Year":"1975-01-01",
-      "Origin":"A"
+      "Year":1975,
+      "Origin":"USA"
    },
    {
       "Name":"ford ltd",
@@ -1833,8 +1833,8 @@
       "Horsepower":148,
       "Weight_in_lbs":4657,
       "Acceleration":13.5,
-      "Year":"1975-01-01",
-      "Origin":"A"
+      "Year":1975,
+      "Origin":"USA"
    },
    {
       "Name":"buick century",
@@ -1844,8 +1844,8 @@
       "Horsepower":110,
       "Weight_in_lbs":3907,
       "Acceleration":21,
-      "Year":"1975-01-01",
-      "Origin":"A"
+      "Year":1975,
+      "Origin":"USA"
    },
    {
       "Name":"chevroelt chevelle malibu",
@@ -1855,8 +1855,8 @@
       "Horsepower":105,
       "Weight_in_lbs":3897,
       "Acceleration":18.5,
-      "Year":"1975-01-01",
-      "Origin":"A"
+      "Year":1975,
+      "Origin":"USA"
    },
    {
       "Name":"amc matador",
@@ -1866,8 +1866,8 @@
       "Horsepower":110,
       "Weight_in_lbs":3730,
       "Acceleration":19,
-      "Year":"1975-01-01",
-      "Origin":"A"
+      "Year":1975,
+      "Origin":"USA"
    },
    {
       "Name":"plymouth fury",
@@ -1877,8 +1877,8 @@
       "Horsepower":95,
       "Weight_in_lbs":3785,
       "Acceleration":19,
-      "Year":"1975-01-01",
-      "Origin":"A"
+      "Year":1975,
+      "Origin":"USA"
    },
    {
       "Name":"buick skyhawk",
@@ -1888,8 +1888,8 @@
       "Horsepower":110,
       "Weight_in_lbs":3039,
       "Acceleration":15,
-      "Year":"1975-01-01",
-      "Origin":"A"
+      "Year":1975,
+      "Origin":"USA"
    },
    {
       "Name":"chevrolet monza 2+2",
@@ -1899,8 +1899,8 @@
       "Horsepower":110,
       "Weight_in_lbs":3221,
       "Acceleration":13.5,
-      "Year":"1975-01-01",
-      "Origin":"A"
+      "Year":1975,
+      "Origin":"USA"
    },
    {
       "Name":"ford mustang ii",
@@ -1910,8 +1910,8 @@
       "Horsepower":129,
       "Weight_in_lbs":3169,
       "Acceleration":12,
-      "Year":"1975-01-01",
-      "Origin":"A"
+      "Year":1975,
+      "Origin":"USA"
    },
    {
       "Name":"toyota corolla",
@@ -1921,8 +1921,8 @@
       "Horsepower":75,
       "Weight_in_lbs":2171,
       "Acceleration":16,
-      "Year":"1975-01-01",
-      "Origin":"C"
+      "Year":1975,
+      "Origin":"Japan"
    },
    {
       "Name":"ford pinto",
@@ -1932,8 +1932,8 @@
       "Horsepower":83,
       "Weight_in_lbs":2639,
       "Acceleration":17,
-      "Year":"1975-01-01",
-      "Origin":"A"
+      "Year":1975,
+      "Origin":"USA"
    },
    {
       "Name":"amc gremlin",
@@ -1943,8 +1943,8 @@
       "Horsepower":100,
       "Weight_in_lbs":2914,
       "Acceleration":16,
-      "Year":"1975-01-01",
-      "Origin":"A"
+      "Year":1975,
+      "Origin":"USA"
    },
    {
       "Name":"pontiac astro",
@@ -1954,8 +1954,8 @@
       "Horsepower":78,
       "Weight_in_lbs":2592,
       "Acceleration":18.5,
-      "Year":"1975-01-01",
-      "Origin":"A"
+      "Year":1975,
+      "Origin":"USA"
    },
    {
       "Name":"toyota corona",
@@ -1965,8 +1965,8 @@
       "Horsepower":96,
       "Weight_in_lbs":2702,
       "Acceleration":13.5,
-      "Year":"1975-01-01",
-      "Origin":"C"
+      "Year":1975,
+      "Origin":"Japan"
    },
    {
       "Name":"volkswagen dasher",
@@ -1976,8 +1976,8 @@
       "Horsepower":71,
       "Weight_in_lbs":2223,
       "Acceleration":16.5,
-      "Year":"1975-01-01",
-      "Origin":"B"
+      "Year":1975,
+      "Origin":"Europe"
    },
    {
       "Name":"datsun 710",
@@ -1987,8 +1987,8 @@
       "Horsepower":97,
       "Weight_in_lbs":2545,
       "Acceleration":17,
-      "Year":"1975-01-01",
-      "Origin":"C"
+      "Year":1975,
+      "Origin":"Japan"
    },
    {
       "Name":"ford pinto",
@@ -1998,8 +1998,8 @@
       "Horsepower":97,
       "Weight_in_lbs":2984,
       "Acceleration":14.5,
-      "Year":"1975-01-01",
-      "Origin":"A"
+      "Year":1975,
+      "Origin":"USA"
    },
    {
       "Name":"volkswagen rabbit",
@@ -2009,8 +2009,8 @@
       "Horsepower":70,
       "Weight_in_lbs":1937,
       "Acceleration":14,
-      "Year":"1975-01-01",
-      "Origin":"B"
+      "Year":1975,
+      "Origin":"Europe"
    },
    {
       "Name":"amc pacer",
@@ -2020,8 +2020,8 @@
       "Horsepower":90,
       "Weight_in_lbs":3211,
       "Acceleration":17,
-      "Year":"1975-01-01",
-      "Origin":"A"
+      "Year":1975,
+      "Origin":"USA"
    },
    {
       "Name":"audi 100ls",
@@ -2031,8 +2031,8 @@
       "Horsepower":95,
       "Weight_in_lbs":2694,
       "Acceleration":15,
-      "Year":"1975-01-01",
-      "Origin":"B"
+      "Year":1975,
+      "Origin":"Europe"
    },
    {
       "Name":"peugeot 504",
@@ -2042,8 +2042,8 @@
       "Horsepower":88,
       "Weight_in_lbs":2957,
       "Acceleration":17,
-      "Year":"1975-01-01",
-      "Origin":"B"
+      "Year":1975,
+      "Origin":"Europe"
    },
    {
       "Name":"volvo 244dl",
@@ -2053,8 +2053,8 @@
       "Horsepower":98,
       "Weight_in_lbs":2945,
       "Acceleration":14.5,
-      "Year":"1975-01-01",
-      "Origin":"B"
+      "Year":1975,
+      "Origin":"Europe"
    },
    {
       "Name":"saab 99le",
@@ -2064,8 +2064,8 @@
       "Horsepower":115,
       "Weight_in_lbs":2671,
       "Acceleration":13.5,
-      "Year":"1975-01-01",
-      "Origin":"B"
+      "Year":1975,
+      "Origin":"Europe"
    },
    {
       "Name":"honda civic cvcc",
@@ -2075,8 +2075,8 @@
       "Horsepower":53,
       "Weight_in_lbs":1795,
       "Acceleration":17.5,
-      "Year":"1975-01-01",
-      "Origin":"C"
+      "Year":1975,
+      "Origin":"Japan"
    },
    {
       "Name":"fiat 131",
@@ -2086,8 +2086,8 @@
       "Horsepower":86,
       "Weight_in_lbs":2464,
       "Acceleration":15.5,
-      "Year":"1976-01-01",
-      "Origin":"B"
+      "Year":1976,
+      "Origin":"Europe"
    },
    {
       "Name":"opel 1900",
@@ -2097,8 +2097,8 @@
       "Horsepower":81,
       "Weight_in_lbs":2220,
       "Acceleration":16.9,
-      "Year":"1976-01-01",
-      "Origin":"B"
+      "Year":1976,
+      "Origin":"Europe"
    },
    {
       "Name":"capri ii",
@@ -2108,8 +2108,8 @@
       "Horsepower":92,
       "Weight_in_lbs":2572,
       "Acceleration":14.9,
-      "Year":"1976-01-01",
-      "Origin":"A"
+      "Year":1976,
+      "Origin":"USA"
    },
    {
       "Name":"dodge colt",
@@ -2119,8 +2119,8 @@
       "Horsepower":79,
       "Weight_in_lbs":2255,
       "Acceleration":17.7,
-      "Year":"1976-01-01",
-      "Origin":"A"
+      "Year":1976,
+      "Origin":"USA"
    },
    {
       "Name":"renault 12tl",
@@ -2130,8 +2130,8 @@
       "Horsepower":83,
       "Weight_in_lbs":2202,
       "Acceleration":15.3,
-      "Year":"1976-01-01",
-      "Origin":"B"
+      "Year":1976,
+      "Origin":"Europe"
    },
    {
       "Name":"chevrolet chevelle malibu classic",
@@ -2141,8 +2141,8 @@
       "Horsepower":140,
       "Weight_in_lbs":4215,
       "Acceleration":13,
-      "Year":"1976-01-01",
-      "Origin":"A"
+      "Year":1976,
+      "Origin":"USA"
    },
    {
       "Name":"dodge coronet brougham",
@@ -2152,8 +2152,8 @@
       "Horsepower":150,
       "Weight_in_lbs":4190,
       "Acceleration":13,
-      "Year":"1976-01-01",
-      "Origin":"A"
+      "Year":1976,
+      "Origin":"USA"
    },
    {
       "Name":"amc matador",
@@ -2163,8 +2163,8 @@
       "Horsepower":120,
       "Weight_in_lbs":3962,
       "Acceleration":13.9,
-      "Year":"1976-01-01",
-      "Origin":"A"
+      "Year":1976,
+      "Origin":"USA"
    },
    {
       "Name":"ford gran torino",
@@ -2174,8 +2174,8 @@
       "Horsepower":152,
       "Weight_in_lbs":4215,
       "Acceleration":12.8,
-      "Year":"1976-01-01",
-      "Origin":"A"
+      "Year":1976,
+      "Origin":"USA"
    },
    {
       "Name":"plymouth valiant",
@@ -2185,8 +2185,8 @@
       "Horsepower":100,
       "Weight_in_lbs":3233,
       "Acceleration":15.4,
-      "Year":"1976-01-01",
-      "Origin":"A"
+      "Year":1976,
+      "Origin":"USA"
    },
    {
       "Name":"chevrolet nova",
@@ -2196,8 +2196,8 @@
       "Horsepower":105,
       "Weight_in_lbs":3353,
       "Acceleration":14.5,
-      "Year":"1976-01-01",
-      "Origin":"A"
+      "Year":1976,
+      "Origin":"USA"
    },
    {
       "Name":"ford maverick",
@@ -2207,8 +2207,8 @@
       "Horsepower":81,
       "Weight_in_lbs":3012,
       "Acceleration":17.6,
-      "Year":"1976-01-01",
-      "Origin":"A"
+      "Year":1976,
+      "Origin":"USA"
    },
    {
       "Name":"amc hornet",
@@ -2218,8 +2218,8 @@
       "Horsepower":90,
       "Weight_in_lbs":3085,
       "Acceleration":17.6,
-      "Year":"1976-01-01",
-      "Origin":"A"
+      "Year":1976,
+      "Origin":"USA"
    },
    {
       "Name":"chevrolet chevette",
@@ -2229,8 +2229,8 @@
       "Horsepower":52,
       "Weight_in_lbs":2035,
       "Acceleration":22.2,
-      "Year":"1976-01-01",
-      "Origin":"A"
+      "Year":1976,
+      "Origin":"USA"
    },
    {
       "Name":"chevrolet woody",
@@ -2240,8 +2240,8 @@
       "Horsepower":60,
       "Weight_in_lbs":2164,
       "Acceleration":22.1,
-      "Year":"1976-01-01",
-      "Origin":"A"
+      "Year":1976,
+      "Origin":"USA"
    },
    {
       "Name":"vw rabbit",
@@ -2251,8 +2251,8 @@
       "Horsepower":70,
       "Weight_in_lbs":1937,
       "Acceleration":14.2,
-      "Year":"1976-01-01",
-      "Origin":"B"
+      "Year":1976,
+      "Origin":"Europe"
    },
    {
       "Name":"honda civic",
@@ -2262,8 +2262,8 @@
       "Horsepower":53,
       "Weight_in_lbs":1795,
       "Acceleration":17.4,
-      "Year":"1976-01-01",
-      "Origin":"C"
+      "Year":1976,
+      "Origin":"Japan"
    },
    {
       "Name":"dodge aspen se",
@@ -2273,8 +2273,8 @@
       "Horsepower":100,
       "Weight_in_lbs":3651,
       "Acceleration":17.7,
-      "Year":"1976-01-01",
-      "Origin":"A"
+      "Year":1976,
+      "Origin":"USA"
    },
    {
       "Name":"ford granada ghia",
@@ -2284,8 +2284,8 @@
       "Horsepower":78,
       "Weight_in_lbs":3574,
       "Acceleration":21,
-      "Year":"1976-01-01",
-      "Origin":"A"
+      "Year":1976,
+      "Origin":"USA"
    },
    {
       "Name":"pontiac ventura sj",
@@ -2295,8 +2295,8 @@
       "Horsepower":110,
       "Weight_in_lbs":3645,
       "Acceleration":16.2,
-      "Year":"1976-01-01",
-      "Origin":"A"
+      "Year":1976,
+      "Origin":"USA"
    },
    {
       "Name":"amc pacer d/l",
@@ -2306,8 +2306,8 @@
       "Horsepower":95,
       "Weight_in_lbs":3193,
       "Acceleration":17.8,
-      "Year":"1976-01-01",
-      "Origin":"A"
+      "Year":1976,
+      "Origin":"USA"
    },
    {
       "Name":"volkswagen rabbit",
@@ -2317,8 +2317,8 @@
       "Horsepower":71,
       "Weight_in_lbs":1825,
       "Acceleration":12.2,
-      "Year":"1976-01-01",
-      "Origin":"B"
+      "Year":1976,
+      "Origin":"Europe"
    },
    {
       "Name":"datsun b-210",
@@ -2328,8 +2328,8 @@
       "Horsepower":70,
       "Weight_in_lbs":1990,
       "Acceleration":17,
-      "Year":"1976-01-01",
-      "Origin":"C"
+      "Year":1976,
+      "Origin":"Japan"
    },
    {
       "Name":"toyota corolla",
@@ -2339,8 +2339,8 @@
       "Horsepower":75,
       "Weight_in_lbs":2155,
       "Acceleration":16.4,
-      "Year":"1976-01-01",
-      "Origin":"C"
+      "Year":1976,
+      "Origin":"Japan"
    },
    {
       "Name":"ford pinto",
@@ -2350,8 +2350,8 @@
       "Horsepower":72,
       "Weight_in_lbs":2565,
       "Acceleration":13.6,
-      "Year":"1976-01-01",
-      "Origin":"A"
+      "Year":1976,
+      "Origin":"USA"
    },
    {
       "Name":"volvo 245",
@@ -2361,8 +2361,8 @@
       "Horsepower":102,
       "Weight_in_lbs":3150,
       "Acceleration":15.7,
-      "Year":"1976-01-01",
-      "Origin":"B"
+      "Year":1976,
+      "Origin":"Europe"
    },
    {
       "Name":"plymouth volare premier v8",
@@ -2372,8 +2372,8 @@
       "Horsepower":150,
       "Weight_in_lbs":3940,
       "Acceleration":13.2,
-      "Year":"1976-01-01",
-      "Origin":"A"
+      "Year":1976,
+      "Origin":"USA"
    },
    {
       "Name":"peugeot 504",
@@ -2383,8 +2383,8 @@
       "Horsepower":88,
       "Weight_in_lbs":3270,
       "Acceleration":21.9,
-      "Year":"1976-01-01",
-      "Origin":"B"
+      "Year":1976,
+      "Origin":"Europe"
    },
    {
       "Name":"toyota mark ii",
@@ -2394,8 +2394,8 @@
       "Horsepower":108,
       "Weight_in_lbs":2930,
       "Acceleration":15.5,
-      "Year":"1976-01-01",
-      "Origin":"C"
+      "Year":1976,
+      "Origin":"Japan"
    },
    {
       "Name":"mercedes-benz 280s",
@@ -2405,8 +2405,8 @@
       "Horsepower":120,
       "Weight_in_lbs":3820,
       "Acceleration":16.7,
-      "Year":"1976-01-01",
-      "Origin":"B"
+      "Year":1976,
+      "Origin":"Europe"
    },
    {
       "Name":"cadillac seville",
@@ -2416,8 +2416,8 @@
       "Horsepower":180,
       "Weight_in_lbs":4380,
       "Acceleration":12.1,
-      "Year":"1976-01-01",
-      "Origin":"A"
+      "Year":1976,
+      "Origin":"USA"
    },
    {
       "Name":"chevy c10",
@@ -2427,8 +2427,8 @@
       "Horsepower":145,
       "Weight_in_lbs":4055,
       "Acceleration":12,
-      "Year":"1976-01-01",
-      "Origin":"A"
+      "Year":1976,
+      "Origin":"USA"
    },
    {
       "Name":"ford f108",
@@ -2438,8 +2438,8 @@
       "Horsepower":130,
       "Weight_in_lbs":3870,
       "Acceleration":15,
-      "Year":"1976-01-01",
-      "Origin":"A"
+      "Year":1976,
+      "Origin":"USA"
    },
    {
       "Name":"dodge d100",
@@ -2449,8 +2449,8 @@
       "Horsepower":150,
       "Weight_in_lbs":3755,
       "Acceleration":14,
-      "Year":"1976-01-01",
-      "Origin":"A"
+      "Year":1976,
+      "Origin":"USA"
    },
    {
       "Name":"honda Accelerationord cvcc",
@@ -2460,8 +2460,8 @@
       "Horsepower":68,
       "Weight_in_lbs":2045,
       "Acceleration":18.5,
-      "Year":"1977-01-01",
-      "Origin":"C"
+      "Year":1977,
+      "Origin":"Japan"
    },
    {
       "Name":"buick opel isuzu deluxe",
@@ -2471,8 +2471,8 @@
       "Horsepower":80,
       "Weight_in_lbs":2155,
       "Acceleration":14.8,
-      "Year":"1977-01-01",
-      "Origin":"A"
+      "Year":1977,
+      "Origin":"USA"
    },
    {
       "Name":"renault 5 gtl",
@@ -2482,8 +2482,8 @@
       "Horsepower":58,
       "Weight_in_lbs":1825,
       "Acceleration":18.6,
-      "Year":"1977-01-01",
-      "Origin":"B"
+      "Year":1977,
+      "Origin":"Europe"
    },
    {
       "Name":"plymouth arrow gs",
@@ -2493,8 +2493,8 @@
       "Horsepower":96,
       "Weight_in_lbs":2300,
       "Acceleration":15.5,
-      "Year":"1977-01-01",
-      "Origin":"A"
+      "Year":1977,
+      "Origin":"USA"
    },
    {
       "Name":"datsun f-10 hatchback",
@@ -2504,8 +2504,8 @@
       "Horsepower":70,
       "Weight_in_lbs":1945,
       "Acceleration":16.8,
-      "Year":"1977-01-01",
-      "Origin":"C"
+      "Year":1977,
+      "Origin":"Japan"
    },
    {
       "Name":"chevrolet caprice classic",
@@ -2515,8 +2515,8 @@
       "Horsepower":145,
       "Weight_in_lbs":3880,
       "Acceleration":12.5,
-      "Year":"1977-01-01",
-      "Origin":"A"
+      "Year":1977,
+      "Origin":"USA"
    },
    {
       "Name":"oldsmobile cutlass supreme",
@@ -2526,8 +2526,8 @@
       "Horsepower":110,
       "Weight_in_lbs":4060,
       "Acceleration":19,
-      "Year":"1977-01-01",
-      "Origin":"A"
+      "Year":1977,
+      "Origin":"USA"
    },
    {
       "Name":"dodge monaco brougham",
@@ -2537,8 +2537,8 @@
       "Horsepower":145,
       "Weight_in_lbs":4140,
       "Acceleration":13.7,
-      "Year":"1977-01-01",
-      "Origin":"A"
+      "Year":1977,
+      "Origin":"USA"
    },
    {
       "Name":"mercury cougar brougham",
@@ -2548,8 +2548,8 @@
       "Horsepower":130,
       "Weight_in_lbs":4295,
       "Acceleration":14.9,
-      "Year":"1977-01-01",
-      "Origin":"A"
+      "Year":1977,
+      "Origin":"USA"
    },
    {
       "Name":"chevrolet concours",
@@ -2559,8 +2559,8 @@
       "Horsepower":110,
       "Weight_in_lbs":3520,
       "Acceleration":16.4,
-      "Year":"1977-01-01",
-      "Origin":"A"
+      "Year":1977,
+      "Origin":"USA"
    },
    {
       "Name":"buick skylark",
@@ -2570,8 +2570,8 @@
       "Horsepower":105,
       "Weight_in_lbs":3425,
       "Acceleration":16.9,
-      "Year":"1977-01-01",
-      "Origin":"A"
+      "Year":1977,
+      "Origin":"USA"
    },
    {
       "Name":"plymouth volare custom",
@@ -2581,8 +2581,8 @@
       "Horsepower":100,
       "Weight_in_lbs":3630,
       "Acceleration":17.7,
-      "Year":"1977-01-01",
-      "Origin":"A"
+      "Year":1977,
+      "Origin":"USA"
    },
    {
       "Name":"ford granada",
@@ -2592,8 +2592,8 @@
       "Horsepower":98,
       "Weight_in_lbs":3525,
       "Acceleration":19,
-      "Year":"1977-01-01",
-      "Origin":"A"
+      "Year":1977,
+      "Origin":"USA"
    },
    {
       "Name":"pontiac grand prix lj",
@@ -2603,8 +2603,8 @@
       "Horsepower":180,
       "Weight_in_lbs":4220,
       "Acceleration":11.1,
-      "Year":"1977-01-01",
-      "Origin":"A"
+      "Year":1977,
+      "Origin":"USA"
    },
    {
       "Name":"chevrolet monte carlo landau",
@@ -2614,8 +2614,8 @@
       "Horsepower":170,
       "Weight_in_lbs":4165,
       "Acceleration":11.4,
-      "Year":"1977-01-01",
-      "Origin":"A"
+      "Year":1977,
+      "Origin":"USA"
    },
    {
       "Name":"chrysler cordoba",
@@ -2625,8 +2625,8 @@
       "Horsepower":190,
       "Weight_in_lbs":4325,
       "Acceleration":12.2,
-      "Year":"1977-01-01",
-      "Origin":"A"
+      "Year":1977,
+      "Origin":"USA"
    },
    {
       "Name":"ford thunderbird",
@@ -2636,8 +2636,8 @@
       "Horsepower":149,
       "Weight_in_lbs":4335,
       "Acceleration":14.5,
-      "Year":"1977-01-01",
-      "Origin":"A"
+      "Year":1977,
+      "Origin":"USA"
    },
    {
       "Name":"volkswagen rabbit custom",
@@ -2647,8 +2647,8 @@
       "Horsepower":78,
       "Weight_in_lbs":1940,
       "Acceleration":14.5,
-      "Year":"1977-01-01",
-      "Origin":"B"
+      "Year":1977,
+      "Origin":"Europe"
    },
    {
       "Name":"pontiac sunbird coupe",
@@ -2658,8 +2658,8 @@
       "Horsepower":88,
       "Weight_in_lbs":2740,
       "Acceleration":16,
-      "Year":"1977-01-01",
-      "Origin":"A"
+      "Year":1977,
+      "Origin":"USA"
    },
    {
       "Name":"toyota corolla liftback",
@@ -2669,8 +2669,8 @@
       "Horsepower":75,
       "Weight_in_lbs":2265,
       "Acceleration":18.2,
-      "Year":"1977-01-01",
-      "Origin":"C"
+      "Year":1977,
+      "Origin":"Japan"
    },
    {
       "Name":"ford mustang ii 2+2",
@@ -2680,8 +2680,8 @@
       "Horsepower":89,
       "Weight_in_lbs":2755,
       "Acceleration":15.8,
-      "Year":"1977-01-01",
-      "Origin":"A"
+      "Year":1977,
+      "Origin":"USA"
    },
    {
       "Name":"chevrolet chevette",
@@ -2691,8 +2691,8 @@
       "Horsepower":63,
       "Weight_in_lbs":2051,
       "Acceleration":17,
-      "Year":"1977-01-01",
-      "Origin":"A"
+      "Year":1977,
+      "Origin":"USA"
    },
    {
       "Name":"dodge colt m/m",
@@ -2702,8 +2702,8 @@
       "Horsepower":83,
       "Weight_in_lbs":2075,
       "Acceleration":15.9,
-      "Year":"1977-01-01",
-      "Origin":"A"
+      "Year":1977,
+      "Origin":"USA"
    },
    {
       "Name":"subaru dl",
@@ -2713,8 +2713,8 @@
       "Horsepower":67,
       "Weight_in_lbs":1985,
       "Acceleration":16.4,
-      "Year":"1977-01-01",
-      "Origin":"C"
+      "Year":1977,
+      "Origin":"Japan"
    },
    {
       "Name":"volkswagen dasher",
@@ -2724,8 +2724,8 @@
       "Horsepower":78,
       "Weight_in_lbs":2190,
       "Acceleration":14.1,
-      "Year":"1977-01-01",
-      "Origin":"B"
+      "Year":1977,
+      "Origin":"Europe"
    },
    {
       "Name":"datsun 810",
@@ -2735,8 +2735,8 @@
       "Horsepower":97,
       "Weight_in_lbs":2815,
       "Acceleration":14.5,
-      "Year":"1977-01-01",
-      "Origin":"C"
+      "Year":1977,
+      "Origin":"Japan"
    },
    {
       "Name":"bmw 320i",
@@ -2746,8 +2746,8 @@
       "Horsepower":110,
       "Weight_in_lbs":2600,
       "Acceleration":12.8,
-      "Year":"1977-01-01",
-      "Origin":"B"
+      "Year":1977,
+      "Origin":"Europe"
    },
    {
       "Name":"mazda rx-4",
@@ -2757,8 +2757,8 @@
       "Horsepower":110,
       "Weight_in_lbs":2720,
       "Acceleration":13.5,
-      "Year":"1977-01-01",
-      "Origin":"C"
+      "Year":1977,
+      "Origin":"Japan"
    },
    {
       "Name":"volkswagen rabbit custom diesel",
@@ -2768,8 +2768,8 @@
       "Horsepower":48,
       "Weight_in_lbs":1985,
       "Acceleration":21.5,
-      "Year":"1978-01-01",
-      "Origin":"B"
+      "Year":1978,
+      "Origin":"Europe"
    },
    {
       "Name":"ford fiesta",
@@ -2779,8 +2779,8 @@
       "Horsepower":66,
       "Weight_in_lbs":1800,
       "Acceleration":14.4,
-      "Year":"1978-01-01",
-      "Origin":"A"
+      "Year":1978,
+      "Origin":"USA"
    },
    {
       "Name":"mazda glc deluxe",
@@ -2790,8 +2790,8 @@
       "Horsepower":52,
       "Weight_in_lbs":1985,
       "Acceleration":19.4,
-      "Year":"1978-01-01",
-      "Origin":"C"
+      "Year":1978,
+      "Origin":"Japan"
    },
    {
       "Name":"datsun b210 gx",
@@ -2801,8 +2801,8 @@
       "Horsepower":70,
       "Weight_in_lbs":2070,
       "Acceleration":18.6,
-      "Year":"1978-01-01",
-      "Origin":"C"
+      "Year":1978,
+      "Origin":"Japan"
    },
    {
       "Name":"honda civic cvcc",
@@ -2812,8 +2812,8 @@
       "Horsepower":60,
       "Weight_in_lbs":1800,
       "Acceleration":16.4,
-      "Year":"1978-01-01",
-      "Origin":"C"
+      "Year":1978,
+      "Origin":"Japan"
    },
    {
       "Name":"oldsmobile cutlass salon brougham",
@@ -2823,8 +2823,8 @@
       "Horsepower":110,
       "Weight_in_lbs":3365,
       "Acceleration":15.5,
-      "Year":"1978-01-01",
-      "Origin":"A"
+      "Year":1978,
+      "Origin":"USA"
    },
    {
       "Name":"dodge diplomat",
@@ -2834,8 +2834,8 @@
       "Horsepower":140,
       "Weight_in_lbs":3735,
       "Acceleration":13.2,
-      "Year":"1978-01-01",
-      "Origin":"A"
+      "Year":1978,
+      "Origin":"USA"
    },
    {
       "Name":"mercury monarch ghia",
@@ -2845,8 +2845,8 @@
       "Horsepower":139,
       "Weight_in_lbs":3570,
       "Acceleration":12.8,
-      "Year":"1978-01-01",
-      "Origin":"A"
+      "Year":1978,
+      "Origin":"USA"
    },
    {
       "Name":"pontiac phoenix lj",
@@ -2856,8 +2856,8 @@
       "Horsepower":105,
       "Weight_in_lbs":3535,
       "Acceleration":19.2,
-      "Year":"1978-01-01",
-      "Origin":"A"
+      "Year":1978,
+      "Origin":"USA"
    },
    {
       "Name":"chevrolet malibu",
@@ -2867,8 +2867,8 @@
       "Horsepower":95,
       "Weight_in_lbs":3155,
       "Acceleration":18.2,
-      "Year":"1978-01-01",
-      "Origin":"A"
+      "Year":1978,
+      "Origin":"USA"
    },
    {
       "Name":"ford fairmont (auto)",
@@ -2878,8 +2878,8 @@
       "Horsepower":85,
       "Weight_in_lbs":2965,
       "Acceleration":15.8,
-      "Year":"1978-01-01",
-      "Origin":"A"
+      "Year":1978,
+      "Origin":"USA"
    },
    {
       "Name":"ford fairmont (man)",
@@ -2889,8 +2889,8 @@
       "Horsepower":88,
       "Weight_in_lbs":2720,
       "Acceleration":15.4,
-      "Year":"1978-01-01",
-      "Origin":"A"
+      "Year":1978,
+      "Origin":"USA"
    },
    {
       "Name":"plymouth volare",
@@ -2900,8 +2900,8 @@
       "Horsepower":100,
       "Weight_in_lbs":3430,
       "Acceleration":17.2,
-      "Year":"1978-01-01",
-      "Origin":"A"
+      "Year":1978,
+      "Origin":"USA"
    },
    {
       "Name":"amc concord",
@@ -2911,8 +2911,8 @@
       "Horsepower":90,
       "Weight_in_lbs":3210,
       "Acceleration":17.2,
-      "Year":"1978-01-01",
-      "Origin":"A"
+      "Year":1978,
+      "Origin":"USA"
    },
    {
       "Name":"buick century special",
@@ -2922,8 +2922,8 @@
       "Horsepower":105,
       "Weight_in_lbs":3380,
       "Acceleration":15.8,
-      "Year":"1978-01-01",
-      "Origin":"A"
+      "Year":1978,
+      "Origin":"USA"
    },
    {
       "Name":"mercury zephyr",
@@ -2933,8 +2933,8 @@
       "Horsepower":85,
       "Weight_in_lbs":3070,
       "Acceleration":16.7,
-      "Year":"1978-01-01",
-      "Origin":"A"
+      "Year":1978,
+      "Origin":"USA"
    },
    {
       "Name":"dodge aspen",
@@ -2944,8 +2944,8 @@
       "Horsepower":110,
       "Weight_in_lbs":3620,
       "Acceleration":18.7,
-      "Year":"1978-01-01",
-      "Origin":"A"
+      "Year":1978,
+      "Origin":"USA"
    },
    {
       "Name":"amc concord d/l",
@@ -2955,8 +2955,8 @@
       "Horsepower":120,
       "Weight_in_lbs":3410,
       "Acceleration":15.1,
-      "Year":"1978-01-01",
-      "Origin":"A"
+      "Year":1978,
+      "Origin":"USA"
    },
    {
       "Name":"chevrolet monte carlo landau",
@@ -2966,8 +2966,8 @@
       "Horsepower":145,
       "Weight_in_lbs":3425,
       "Acceleration":13.2,
-      "Year":"1978-01-01",
-      "Origin":"A"
+      "Year":1978,
+      "Origin":"USA"
    },
    {
       "Name":"buick regal sport coupe (turbo)",
@@ -2977,8 +2977,8 @@
       "Horsepower":165,
       "Weight_in_lbs":3445,
       "Acceleration":13.4,
-      "Year":"1978-01-01",
-      "Origin":"A"
+      "Year":1978,
+      "Origin":"USA"
    },
    {
       "Name":"ford futura",
@@ -2988,8 +2988,8 @@
       "Horsepower":139,
       "Weight_in_lbs":3205,
       "Acceleration":11.2,
-      "Year":"1978-01-01",
-      "Origin":"A"
+      "Year":1978,
+      "Origin":"USA"
    },
    {
       "Name":"dodge magnum xe",
@@ -2999,8 +2999,8 @@
       "Horsepower":140,
       "Weight_in_lbs":4080,
       "Acceleration":13.7,
-      "Year":"1978-01-01",
-      "Origin":"A"
+      "Year":1978,
+      "Origin":"USA"
    },
    {
       "Name":"chevrolet chevette",
@@ -3010,8 +3010,8 @@
       "Horsepower":68,
       "Weight_in_lbs":2155,
       "Acceleration":16.5,
-      "Year":"1978-01-01",
-      "Origin":"A"
+      "Year":1978,
+      "Origin":"USA"
    },
    {
       "Name":"toyota corona",
@@ -3021,8 +3021,8 @@
       "Horsepower":95,
       "Weight_in_lbs":2560,
       "Acceleration":14.2,
-      "Year":"1978-01-01",
-      "Origin":"C"
+      "Year":1978,
+      "Origin":"Japan"
    },
    {
       "Name":"datsun 510",
@@ -3032,8 +3032,8 @@
       "Horsepower":97,
       "Weight_in_lbs":2300,
       "Acceleration":14.7,
-      "Year":"1978-01-01",
-      "Origin":"C"
+      "Year":1978,
+      "Origin":"Japan"
    },
    {
       "Name":"dodge omni",
@@ -3043,8 +3043,8 @@
       "Horsepower":75,
       "Weight_in_lbs":2230,
       "Acceleration":14.5,
-      "Year":"1978-01-01",
-      "Origin":"A"
+      "Year":1978,
+      "Origin":"USA"
    },
    {
       "Name":"toyota celica gt liftback",
@@ -3054,8 +3054,8 @@
       "Horsepower":95,
       "Weight_in_lbs":2515,
       "Acceleration":14.8,
-      "Year":"1978-01-01",
-      "Origin":"C"
+      "Year":1978,
+      "Origin":"Japan"
    },
    {
       "Name":"plymouth sapporo",
@@ -3065,8 +3065,8 @@
       "Horsepower":105,
       "Weight_in_lbs":2745,
       "Acceleration":16.7,
-      "Year":"1978-01-01",
-      "Origin":"A"
+      "Year":1978,
+      "Origin":"USA"
    },
    {
       "Name":"oldsmobile starfire sx",
@@ -3076,8 +3076,8 @@
       "Horsepower":85,
       "Weight_in_lbs":2855,
       "Acceleration":17.6,
-      "Year":"1978-01-01",
-      "Origin":"A"
+      "Year":1978,
+      "Origin":"USA"
    },
    {
       "Name":"datsun 200-sx",
@@ -3087,8 +3087,8 @@
       "Horsepower":97,
       "Weight_in_lbs":2405,
       "Acceleration":14.9,
-      "Year":"1978-01-01",
-      "Origin":"C"
+      "Year":1978,
+      "Origin":"Japan"
    },
    {
       "Name":"audi 5000",
@@ -3098,8 +3098,8 @@
       "Horsepower":103,
       "Weight_in_lbs":2830,
       "Acceleration":15.9,
-      "Year":"1978-01-01",
-      "Origin":"B"
+      "Year":1978,
+      "Origin":"Europe"
    },
    {
       "Name":"volvo 264gl",
@@ -3109,8 +3109,8 @@
       "Horsepower":125,
       "Weight_in_lbs":3140,
       "Acceleration":13.6,
-      "Year":"1978-01-01",
-      "Origin":"B"
+      "Year":1978,
+      "Origin":"Europe"
    },
    {
       "Name":"saab 99gle",
@@ -3120,8 +3120,8 @@
       "Horsepower":115,
       "Weight_in_lbs":2795,
       "Acceleration":15.7,
-      "Year":"1978-01-01",
-      "Origin":"B"
+      "Year":1978,
+      "Origin":"Europe"
    },
    {
       "Name":"peugeot 604sl",
@@ -3131,8 +3131,8 @@
       "Horsepower":133,
       "Weight_in_lbs":3410,
       "Acceleration":15.8,
-      "Year":"1978-01-01",
-      "Origin":"B"
+      "Year":1978,
+      "Origin":"Europe"
    },
    {
       "Name":"volkswagen scirocco",
@@ -3142,8 +3142,8 @@
       "Horsepower":71,
       "Weight_in_lbs":1990,
       "Acceleration":14.9,
-      "Year":"1978-01-01",
-      "Origin":"B"
+      "Year":1978,
+      "Origin":"Europe"
    },
    {
       "Name":"honda Accelerationord lx",
@@ -3153,8 +3153,8 @@
       "Horsepower":68,
       "Weight_in_lbs":2135,
       "Acceleration":16.6,
-      "Year":"1978-01-01",
-      "Origin":"C"
+      "Year":1978,
+      "Origin":"Japan"
    },
    {
       "Name":"pontiac lemans v6",
@@ -3164,8 +3164,8 @@
       "Horsepower":115,
       "Weight_in_lbs":3245,
       "Acceleration":15.4,
-      "Year":"1979-01-01",
-      "Origin":"A"
+      "Year":1979,
+      "Origin":"USA"
    },
    {
       "Name":"mercury zephyr 6",
@@ -3175,8 +3175,8 @@
       "Horsepower":85,
       "Weight_in_lbs":2990,
       "Acceleration":18.2,
-      "Year":"1979-01-01",
-      "Origin":"A"
+      "Year":1979,
+      "Origin":"USA"
    },
    {
       "Name":"ford fairmont 4",
@@ -3186,8 +3186,8 @@
       "Horsepower":88,
       "Weight_in_lbs":2890,
       "Acceleration":17.3,
-      "Year":"1979-01-01",
-      "Origin":"A"
+      "Year":1979,
+      "Origin":"USA"
    },
    {
       "Name":"amc concord dl 6",
@@ -3197,8 +3197,8 @@
       "Horsepower":90,
       "Weight_in_lbs":3265,
       "Acceleration":18.2,
-      "Year":"1979-01-01",
-      "Origin":"A"
+      "Year":1979,
+      "Origin":"USA"
    },
    {
       "Name":"dodge aspen 6",
@@ -3208,8 +3208,8 @@
       "Horsepower":110,
       "Weight_in_lbs":3360,
       "Acceleration":16.6,
-      "Year":"1979-01-01",
-      "Origin":"A"
+      "Year":1979,
+      "Origin":"USA"
    },
    {
       "Name":"chevrolet caprice classic",
@@ -3219,8 +3219,8 @@
       "Horsepower":130,
       "Weight_in_lbs":3840,
       "Acceleration":15.4,
-      "Year":"1979-01-01",
-      "Origin":"A"
+      "Year":1979,
+      "Origin":"USA"
    },
    {
       "Name":"ford ltd landau",
@@ -3230,8 +3230,8 @@
       "Horsepower":129,
       "Weight_in_lbs":3725,
       "Acceleration":13.4,
-      "Year":"1979-01-01",
-      "Origin":"A"
+      "Year":1979,
+      "Origin":"USA"
    },
    {
       "Name":"mercury grand marquis",
@@ -3241,8 +3241,8 @@
       "Horsepower":138,
       "Weight_in_lbs":3955,
       "Acceleration":13.2,
-      "Year":"1979-01-01",
-      "Origin":"A"
+      "Year":1979,
+      "Origin":"USA"
    },
    {
       "Name":"dodge st. regis",
@@ -3252,8 +3252,8 @@
       "Horsepower":135,
       "Weight_in_lbs":3830,
       "Acceleration":15.2,
-      "Year":"1979-01-01",
-      "Origin":"A"
+      "Year":1979,
+      "Origin":"USA"
    },
    {
       "Name":"buick estate wagon (sw)",
@@ -3263,8 +3263,8 @@
       "Horsepower":155,
       "Weight_in_lbs":4360,
       "Acceleration":14.9,
-      "Year":"1979-01-01",
-      "Origin":"A"
+      "Year":1979,
+      "Origin":"USA"
    },
    {
       "Name":"ford country squire (sw)",
@@ -3274,8 +3274,8 @@
       "Horsepower":142,
       "Weight_in_lbs":4054,
       "Acceleration":14.3,
-      "Year":"1979-01-01",
-      "Origin":"A"
+      "Year":1979,
+      "Origin":"USA"
    },
    {
       "Name":"chevrolet malibu classic (sw)",
@@ -3285,8 +3285,8 @@
       "Horsepower":125,
       "Weight_in_lbs":3605,
       "Acceleration":15,
-      "Year":"1979-01-01",
-      "Origin":"A"
+      "Year":1979,
+      "Origin":"USA"
    },
    {
       "Name":"chrysler lebaron town @ country (sw)",
@@ -3296,8 +3296,8 @@
       "Horsepower":150,
       "Weight_in_lbs":3940,
       "Acceleration":13,
-      "Year":"1979-01-01",
-      "Origin":"A"
+      "Year":1979,
+      "Origin":"USA"
    },
    {
       "Name":"vw rabbit custom",
@@ -3307,8 +3307,8 @@
       "Horsepower":71,
       "Weight_in_lbs":1925,
       "Acceleration":14,
-      "Year":"1979-01-01",
-      "Origin":"B"
+      "Year":1979,
+      "Origin":"Europe"
    },
    {
       "Name":"maxda glc deluxe",
@@ -3318,8 +3318,8 @@
       "Horsepower":65,
       "Weight_in_lbs":1975,
       "Acceleration":15.2,
-      "Year":"1979-01-01",
-      "Origin":"C"
+      "Year":1979,
+      "Origin":"Japan"
    },
    {
       "Name":"dodge colt hatchback custom",
@@ -3329,8 +3329,8 @@
       "Horsepower":80,
       "Weight_in_lbs":1915,
       "Acceleration":14.4,
-      "Year":"1979-01-01",
-      "Origin":"A"
+      "Year":1979,
+      "Origin":"USA"
    },
    {
       "Name":"amc spirit dl",
@@ -3340,8 +3340,8 @@
       "Horsepower":80,
       "Weight_in_lbs":2670,
       "Acceleration":15,
-      "Year":"1979-01-01",
-      "Origin":"A"
+      "Year":1979,
+      "Origin":"USA"
    },
    {
       "Name":"mercedes benz 300d",
@@ -3351,8 +3351,8 @@
       "Horsepower":77,
       "Weight_in_lbs":3530,
       "Acceleration":20.1,
-      "Year":"1979-01-01",
-      "Origin":"B"
+      "Year":1979,
+      "Origin":"Europe"
    },
    {
       "Name":"cadillac eldorado",
@@ -3362,8 +3362,8 @@
       "Horsepower":125,
       "Weight_in_lbs":3900,
       "Acceleration":17.4,
-      "Year":"1979-01-01",
-      "Origin":"A"
+      "Year":1979,
+      "Origin":"USA"
    },
    {
       "Name":"peugeot 504",
@@ -3373,8 +3373,8 @@
       "Horsepower":71,
       "Weight_in_lbs":3190,
       "Acceleration":24.8,
-      "Year":"1979-01-01",
-      "Origin":"B"
+      "Year":1979,
+      "Origin":"Europe"
    },
    {
       "Name":"oldsmobile cutlass salon brougham",
@@ -3384,8 +3384,8 @@
       "Horsepower":90,
       "Weight_in_lbs":3420,
       "Acceleration":22.2,
-      "Year":"1979-01-01",
-      "Origin":"A"
+      "Year":1979,
+      "Origin":"USA"
    },
    {
       "Name":"plymouth horizon",
@@ -3395,8 +3395,8 @@
       "Horsepower":70,
       "Weight_in_lbs":2200,
       "Acceleration":13.2,
-      "Year":"1979-01-01",
-      "Origin":"A"
+      "Year":1979,
+      "Origin":"USA"
    },
    {
       "Name":"plymouth horizon tc3",
@@ -3406,8 +3406,8 @@
       "Horsepower":70,
       "Weight_in_lbs":2150,
       "Acceleration":14.9,
-      "Year":"1979-01-01",
-      "Origin":"A"
+      "Year":1979,
+      "Origin":"USA"
    },
    {
       "Name":"datsun 210",
@@ -3417,8 +3417,8 @@
       "Horsepower":65,
       "Weight_in_lbs":2020,
       "Acceleration":19.2,
-      "Year":"1979-01-01",
-      "Origin":"C"
+      "Year":1979,
+      "Origin":"Japan"
    },
    {
       "Name":"fiat strada custom",
@@ -3428,8 +3428,8 @@
       "Horsepower":69,
       "Weight_in_lbs":2130,
       "Acceleration":14.7,
-      "Year":"1979-01-01",
-      "Origin":"B"
+      "Year":1979,
+      "Origin":"Europe"
    },
    {
       "Name":"buick skylark limited",
@@ -3439,8 +3439,8 @@
       "Horsepower":90,
       "Weight_in_lbs":2670,
       "Acceleration":16,
-      "Year":"1979-01-01",
-      "Origin":"A"
+      "Year":1979,
+      "Origin":"USA"
    },
    {
       "Name":"chevrolet citation",
@@ -3450,8 +3450,8 @@
       "Horsepower":115,
       "Weight_in_lbs":2595,
       "Acceleration":11.3,
-      "Year":"1979-01-01",
-      "Origin":"A"
+      "Year":1979,
+      "Origin":"USA"
    },
    {
       "Name":"oldsmobile omega brougham",
@@ -3461,8 +3461,8 @@
       "Horsepower":115,
       "Weight_in_lbs":2700,
       "Acceleration":12.9,
-      "Year":"1979-01-01",
-      "Origin":"A"
+      "Year":1979,
+      "Origin":"USA"
    },
    {
       "Name":"pontiac phoenix",
@@ -3472,8 +3472,8 @@
       "Horsepower":90,
       "Weight_in_lbs":2556,
       "Acceleration":13.2,
-      "Year":"1979-01-01",
-      "Origin":"A"
+      "Year":1979,
+      "Origin":"USA"
    },
    {
       "Name":"vw rabbit",
@@ -3483,8 +3483,8 @@
       "Horsepower":76,
       "Weight_in_lbs":2144,
       "Acceleration":14.7,
-      "Year":"1980-01-01",
-      "Origin":"B"
+      "Year":1980,
+      "Origin":"Europe"
    },
    {
       "Name":"toyota corolla tercel",
@@ -3494,8 +3494,8 @@
       "Horsepower":60,
       "Weight_in_lbs":1968,
       "Acceleration":18.8,
-      "Year":"1980-01-01",
-      "Origin":"C"
+      "Year":1980,
+      "Origin":"Japan"
    },
    {
       "Name":"chevrolet chevette",
@@ -3505,8 +3505,8 @@
       "Horsepower":70,
       "Weight_in_lbs":2120,
       "Acceleration":15.5,
-      "Year":"1980-01-01",
-      "Origin":"A"
+      "Year":1980,
+      "Origin":"USA"
    },
    {
       "Name":"datsun 310",
@@ -3516,8 +3516,8 @@
       "Horsepower":65,
       "Weight_in_lbs":2019,
       "Acceleration":16.4,
-      "Year":"1980-01-01",
-      "Origin":"C"
+      "Year":1980,
+      "Origin":"Japan"
    },
    {
       "Name":"chevrolet citation",
@@ -3527,8 +3527,8 @@
       "Horsepower":90,
       "Weight_in_lbs":2678,
       "Acceleration":16.5,
-      "Year":"1980-01-01",
-      "Origin":"A"
+      "Year":1980,
+      "Origin":"USA"
    },
    {
       "Name":"ford fairmont",
@@ -3538,8 +3538,8 @@
       "Horsepower":88,
       "Weight_in_lbs":2870,
       "Acceleration":18.1,
-      "Year":"1980-01-01",
-      "Origin":"A"
+      "Year":1980,
+      "Origin":"USA"
    },
    {
       "Name":"amc concord",
@@ -3549,8 +3549,8 @@
       "Horsepower":90,
       "Weight_in_lbs":3003,
       "Acceleration":20.1,
-      "Year":"1980-01-01",
-      "Origin":"A"
+      "Year":1980,
+      "Origin":"USA"
    },
    {
       "Name":"dodge aspen",
@@ -3560,8 +3560,8 @@
       "Horsepower":90,
       "Weight_in_lbs":3381,
       "Acceleration":18.7,
-      "Year":"1980-01-01",
-      "Origin":"A"
+      "Year":1980,
+      "Origin":"USA"
    },
    {
       "Name":"audi 4000",
@@ -3571,8 +3571,8 @@
       "Horsepower":78,
       "Weight_in_lbs":2188,
       "Acceleration":15.8,
-      "Year":"1980-01-01",
-      "Origin":"B"
+      "Year":1980,
+      "Origin":"Europe"
    },
    {
       "Name":"toyota corona liftback",
@@ -3582,8 +3582,8 @@
       "Horsepower":90,
       "Weight_in_lbs":2711,
       "Acceleration":15.5,
-      "Year":"1980-01-01",
-      "Origin":"C"
+      "Year":1980,
+      "Origin":"Japan"
    },
    {
       "Name":"mazda 626",
@@ -3593,8 +3593,8 @@
       "Horsepower":75,
       "Weight_in_lbs":2542,
       "Acceleration":17.5,
-      "Year":"1980-01-01",
-      "Origin":"C"
+      "Year":1980,
+      "Origin":"Japan"
    },
    {
       "Name":"datsun 510 hatchback",
@@ -3604,8 +3604,8 @@
       "Horsepower":92,
       "Weight_in_lbs":2434,
       "Acceleration":15,
-      "Year":"1980-01-01",
-      "Origin":"C"
+      "Year":1980,
+      "Origin":"Japan"
    },
    {
       "Name":"toyota corolla",
@@ -3615,8 +3615,8 @@
       "Horsepower":75,
       "Weight_in_lbs":2265,
       "Acceleration":15.2,
-      "Year":"1980-01-01",
-      "Origin":"C"
+      "Year":1980,
+      "Origin":"Japan"
    },
    {
       "Name":"mazda glc",
@@ -3626,8 +3626,8 @@
       "Horsepower":65,
       "Weight_in_lbs":2110,
       "Acceleration":17.9,
-      "Year":"1980-01-01",
-      "Origin":"C"
+      "Year":1980,
+      "Origin":"Japan"
    },
    {
       "Name":"dodge colt",
@@ -3637,8 +3637,8 @@
       "Horsepower":105,
       "Weight_in_lbs":2800,
       "Acceleration":14.4,
-      "Year":"1980-01-01",
-      "Origin":"A"
+      "Year":1980,
+      "Origin":"USA"
    },
    {
       "Name":"datsun 210",
@@ -3648,8 +3648,8 @@
       "Horsepower":65,
       "Weight_in_lbs":2110,
       "Acceleration":19.2,
-      "Year":"1980-01-01",
-      "Origin":"C"
+      "Year":1980,
+      "Origin":"Japan"
    },
    {
       "Name":"vw rabbit c (diesel)",
@@ -3659,8 +3659,8 @@
       "Horsepower":48,
       "Weight_in_lbs":2085,
       "Acceleration":21.7,
-      "Year":"1980-01-01",
-      "Origin":"B"
+      "Year":1980,
+      "Origin":"Europe"
    },
    {
       "Name":"vw dasher (diesel)",
@@ -3670,8 +3670,8 @@
       "Horsepower":48,
       "Weight_in_lbs":2335,
       "Acceleration":23.7,
-      "Year":"1980-01-01",
-      "Origin":"B"
+      "Year":1980,
+      "Origin":"Europe"
    },
    {
       "Name":"audi 5000s (diesel)",
@@ -3681,8 +3681,8 @@
       "Horsepower":67,
       "Weight_in_lbs":2950,
       "Acceleration":19.9,
-      "Year":"1980-01-01",
-      "Origin":"B"
+      "Year":1980,
+      "Origin":"Europe"
    },
    {
       "Name":"mercedes-benz 240d",
@@ -3692,8 +3692,8 @@
       "Horsepower":67,
       "Weight_in_lbs":3250,
       "Acceleration":21.8,
-      "Year":"1980-01-01",
-      "Origin":"B"
+      "Year":1980,
+      "Origin":"Europe"
    },
    {
       "Name":"honda civic 1500 gl",
@@ -3703,8 +3703,8 @@
       "Horsepower":67,
       "Weight_in_lbs":1850,
       "Acceleration":13.8,
-      "Year":"1980-01-01",
-      "Origin":"C"
+      "Year":1980,
+      "Origin":"Japan"
    },
    {
       "Name":"renault lecar deluxe",
@@ -3714,8 +3714,8 @@
       "Horsepower":null,
       "Weight_in_lbs":1835,
       "Acceleration":17.3,
-      "Year":"1980-01-01",
-      "Origin":"B"
+      "Year":1980,
+      "Origin":"Europe"
    },
    {
       "Name":"subaru dl",
@@ -3725,8 +3725,8 @@
       "Horsepower":67,
       "Weight_in_lbs":2145,
       "Acceleration":18,
-      "Year":"1980-01-01",
-      "Origin":"C"
+      "Year":1980,
+      "Origin":"Japan"
    },
    {
       "Name":"vokswagen rabbit",
@@ -3736,8 +3736,8 @@
       "Horsepower":62,
       "Weight_in_lbs":1845,
       "Acceleration":15.3,
-      "Year":"1980-01-01",
-      "Origin":"B"
+      "Year":1980,
+      "Origin":"Europe"
    },
    {
       "Name":"datsun 280-zx",
@@ -3747,8 +3747,8 @@
       "Horsepower":132,
       "Weight_in_lbs":2910,
       "Acceleration":11.4,
-      "Year":"1980-01-01",
-      "Origin":"C"
+      "Year":1980,
+      "Origin":"Japan"
    },
    {
       "Name":"mazda rx-7 gs",
@@ -3758,8 +3758,8 @@
       "Horsepower":100,
       "Weight_in_lbs":2420,
       "Acceleration":12.5,
-      "Year":"1980-01-01",
-      "Origin":"C"
+      "Year":1980,
+      "Origin":"Japan"
    },
    {
       "Name":"triumph tr7 coupe",
@@ -3769,8 +3769,8 @@
       "Horsepower":88,
       "Weight_in_lbs":2500,
       "Acceleration":15.1,
-      "Year":"1980-01-01",
-      "Origin":"B"
+      "Year":1980,
+      "Origin":"Europe"
    },
    {
       "Name":"ford mustang cobra",
@@ -3780,8 +3780,8 @@
       "Horsepower":null,
       "Weight_in_lbs":2905,
       "Acceleration":14.3,
-      "Year":"1980-01-01",
-      "Origin":"A"
+      "Year":1980,
+      "Origin":"USA"
    },
    {
       "Name":"honda Accelerationord",
@@ -3791,8 +3791,8 @@
       "Horsepower":72,
       "Weight_in_lbs":2290,
       "Acceleration":17,
-      "Year":"1980-01-01",
-      "Origin":"C"
+      "Year":1980,
+      "Origin":"Japan"
    },
    {
       "Name":"plymouth reliant",
@@ -3802,8 +3802,8 @@
       "Horsepower":84,
       "Weight_in_lbs":2490,
       "Acceleration":15.7,
-      "Year":"1982-01-01",
-      "Origin":"A"
+      "Year":1982,
+      "Origin":"USA"
    },
    {
       "Name":"buick skylark",
@@ -3813,8 +3813,8 @@
       "Horsepower":84,
       "Weight_in_lbs":2635,
       "Acceleration":16.4,
-      "Year":"1982-01-01",
-      "Origin":"A"
+      "Year":1982,
+      "Origin":"USA"
    },
    {
       "Name":"dodge aries wagon (sw)",
@@ -3824,8 +3824,8 @@
       "Horsepower":92,
       "Weight_in_lbs":2620,
       "Acceleration":14.4,
-      "Year":"1982-01-01",
-      "Origin":"A"
+      "Year":1982,
+      "Origin":"USA"
    },
    {
       "Name":"chevrolet citation",
@@ -3835,8 +3835,8 @@
       "Horsepower":110,
       "Weight_in_lbs":2725,
       "Acceleration":12.6,
-      "Year":"1982-01-01",
-      "Origin":"A"
+      "Year":1982,
+      "Origin":"USA"
    },
    {
       "Name":"plymouth reliant",
@@ -3846,8 +3846,8 @@
       "Horsepower":84,
       "Weight_in_lbs":2385,
       "Acceleration":12.9,
-      "Year":"1982-01-01",
-      "Origin":"A"
+      "Year":1982,
+      "Origin":"USA"
    },
    {
       "Name":"toyota starlet",
@@ -3857,8 +3857,8 @@
       "Horsepower":58,
       "Weight_in_lbs":1755,
       "Acceleration":16.9,
-      "Year":"1982-01-01",
-      "Origin":"C"
+      "Year":1982,
+      "Origin":"Japan"
    },
    {
       "Name":"plymouth champ",
@@ -3868,8 +3868,8 @@
       "Horsepower":64,
       "Weight_in_lbs":1875,
       "Acceleration":16.4,
-      "Year":"1982-01-01",
-      "Origin":"A"
+      "Year":1982,
+      "Origin":"USA"
    },
    {
       "Name":"honda civic 1300",
@@ -3879,8 +3879,8 @@
       "Horsepower":60,
       "Weight_in_lbs":1760,
       "Acceleration":16.1,
-      "Year":"1982-01-01",
-      "Origin":"C"
+      "Year":1982,
+      "Origin":"Japan"
    },
    {
       "Name":"subaru",
@@ -3890,8 +3890,8 @@
       "Horsepower":67,
       "Weight_in_lbs":2065,
       "Acceleration":17.8,
-      "Year":"1982-01-01",
-      "Origin":"C"
+      "Year":1982,
+      "Origin":"Japan"
    },
    {
       "Name":"datsun 210",
@@ -3901,8 +3901,8 @@
       "Horsepower":65,
       "Weight_in_lbs":1975,
       "Acceleration":19.4,
-      "Year":"1982-01-01",
-      "Origin":"C"
+      "Year":1982,
+      "Origin":"Japan"
    },
    {
       "Name":"toyota tercel",
@@ -3912,8 +3912,8 @@
       "Horsepower":62,
       "Weight_in_lbs":2050,
       "Acceleration":17.3,
-      "Year":"1982-01-01",
-      "Origin":"C"
+      "Year":1982,
+      "Origin":"Japan"
    },
    {
       "Name":"mazda glc 4",
@@ -3923,8 +3923,8 @@
       "Horsepower":68,
       "Weight_in_lbs":1985,
       "Acceleration":16,
-      "Year":"1982-01-01",
-      "Origin":"C"
+      "Year":1982,
+      "Origin":"Japan"
    },
    {
       "Name":"plymouth horizon 4",
@@ -3934,8 +3934,8 @@
       "Horsepower":63,
       "Weight_in_lbs":2215,
       "Acceleration":14.9,
-      "Year":"1982-01-01",
-      "Origin":"A"
+      "Year":1982,
+      "Origin":"USA"
    },
    {
       "Name":"ford escort 4w",
@@ -3945,8 +3945,8 @@
       "Horsepower":65,
       "Weight_in_lbs":2045,
       "Acceleration":16.2,
-      "Year":"1982-01-01",
-      "Origin":"A"
+      "Year":1982,
+      "Origin":"USA"
    },
    {
       "Name":"ford escort 2h",
@@ -3956,8 +3956,8 @@
       "Horsepower":65,
       "Weight_in_lbs":2380,
       "Acceleration":20.7,
-      "Year":"1982-01-01",
-      "Origin":"A"
+      "Year":1982,
+      "Origin":"USA"
    },
    {
       "Name":"volkswagen jetta",
@@ -3967,8 +3967,8 @@
       "Horsepower":74,
       "Weight_in_lbs":2190,
       "Acceleration":14.2,
-      "Year":"1982-01-01",
-      "Origin":"B"
+      "Year":1982,
+      "Origin":"Europe"
    },
    {
       "Name":"renault 18i",
@@ -3978,8 +3978,8 @@
       "Horsepower":null,
       "Weight_in_lbs":2320,
       "Acceleration":15.8,
-      "Year":"1982-01-01",
-      "Origin":"B"
+      "Year":1982,
+      "Origin":"Europe"
    },
    {
       "Name":"honda prelude",
@@ -3989,8 +3989,8 @@
       "Horsepower":75,
       "Weight_in_lbs":2210,
       "Acceleration":14.4,
-      "Year":"1982-01-01",
-      "Origin":"C"
+      "Year":1982,
+      "Origin":"Japan"
    },
    {
       "Name":"toyota corolla",
@@ -4000,8 +4000,8 @@
       "Horsepower":75,
       "Weight_in_lbs":2350,
       "Acceleration":16.8,
-      "Year":"1982-01-01",
-      "Origin":"C"
+      "Year":1982,
+      "Origin":"Japan"
    },
    {
       "Name":"datsun 200sx",
@@ -4011,8 +4011,8 @@
       "Horsepower":100,
       "Weight_in_lbs":2615,
       "Acceleration":14.8,
-      "Year":"1982-01-01",
-      "Origin":"C"
+      "Year":1982,
+      "Origin":"Japan"
    },
    {
       "Name":"mazda 626",
@@ -4022,8 +4022,8 @@
       "Horsepower":74,
       "Weight_in_lbs":2635,
       "Acceleration":18.3,
-      "Year":"1982-01-01",
-      "Origin":"C"
+      "Year":1982,
+      "Origin":"Japan"
    },
    {
       "Name":"peugeot 505s turbo diesel",
@@ -4033,8 +4033,8 @@
       "Horsepower":80,
       "Weight_in_lbs":3230,
       "Acceleration":20.4,
-      "Year":"1982-01-01",
-      "Origin":"B"
+      "Year":1982,
+      "Origin":"Europe"
    },
    {
       "Name":"saab 900s",
@@ -4044,8 +4044,8 @@
       "Horsepower":110,
       "Weight_in_lbs":2800,
       "Acceleration":15.4,
-      "Year":"1982-01-01",
-      "Origin":"B"
+      "Year":1982,
+      "Origin":"Europe"
    },
    {
       "Name":"volvo diesel",
@@ -4055,8 +4055,8 @@
       "Horsepower":76,
       "Weight_in_lbs":3160,
       "Acceleration":19.6,
-      "Year":"1982-01-01",
-      "Origin":"B"
+      "Year":1982,
+      "Origin":"Europe"
    },
    {
       "Name":"toyota cressida",
@@ -4066,8 +4066,8 @@
       "Horsepower":116,
       "Weight_in_lbs":2900,
       "Acceleration":12.6,
-      "Year":"1982-01-01",
-      "Origin":"C"
+      "Year":1982,
+      "Origin":"Japan"
    },
    {
       "Name":"datsun 810 maxima",
@@ -4077,8 +4077,8 @@
       "Horsepower":120,
       "Weight_in_lbs":2930,
       "Acceleration":13.8,
-      "Year":"1982-01-01",
-      "Origin":"C"
+      "Year":1982,
+      "Origin":"Japan"
    },
    {
       "Name":"buick century",
@@ -4088,8 +4088,8 @@
       "Horsepower":110,
       "Weight_in_lbs":3415,
       "Acceleration":15.8,
-      "Year":"1982-01-01",
-      "Origin":"A"
+      "Year":1982,
+      "Origin":"USA"
    },
    {
       "Name":"oldsmobile cutlass ls",
@@ -4099,8 +4099,8 @@
       "Horsepower":105,
       "Weight_in_lbs":3725,
       "Acceleration":19,
-      "Year":"1982-01-01",
-      "Origin":"A"
+      "Year":1982,
+      "Origin":"USA"
    },
    {
       "Name":"ford granada gl",
@@ -4110,8 +4110,8 @@
       "Horsepower":88,
       "Weight_in_lbs":3060,
       "Acceleration":17.1,
-      "Year":"1982-01-01",
-      "Origin":"A"
+      "Year":1982,
+      "Origin":"USA"
    },
    {
       "Name":"chrysler lebaron salon",
@@ -4121,8 +4121,8 @@
       "Horsepower":85,
       "Weight_in_lbs":3465,
       "Acceleration":16.6,
-      "Year":"1982-01-01",
-      "Origin":"A"
+      "Year":1982,
+      "Origin":"USA"
    },
    {
       "Name":"chevrolet cavalier",
@@ -4132,8 +4132,8 @@
       "Horsepower":88,
       "Weight_in_lbs":2605,
       "Acceleration":19.6,
-      "Year":"1982-01-01",
-      "Origin":"A"
+      "Year":1982,
+      "Origin":"USA"
    },
    {
       "Name":"chevrolet cavalier wagon",
@@ -4143,8 +4143,8 @@
       "Horsepower":88,
       "Weight_in_lbs":2640,
       "Acceleration":18.6,
-      "Year":"1982-01-01",
-      "Origin":"A"
+      "Year":1982,
+      "Origin":"USA"
    },
    {
       "Name":"chevrolet cavalier 2-door",
@@ -4154,8 +4154,8 @@
       "Horsepower":88,
       "Weight_in_lbs":2395,
       "Acceleration":18,
-      "Year":"1982-01-01",
-      "Origin":"A"
+      "Year":1982,
+      "Origin":"USA"
    },
    {
       "Name":"pontiac j2000 se hatchback",
@@ -4165,8 +4165,8 @@
       "Horsepower":85,
       "Weight_in_lbs":2575,
       "Acceleration":16.2,
-      "Year":"1982-01-01",
-      "Origin":"A"
+      "Year":1982,
+      "Origin":"USA"
    },
    {
       "Name":"dodge aries se",
@@ -4176,8 +4176,8 @@
       "Horsepower":84,
       "Weight_in_lbs":2525,
       "Acceleration":16,
-      "Year":"1982-01-01",
-      "Origin":"A"
+      "Year":1982,
+      "Origin":"USA"
    },
    {
       "Name":"pontiac phoenix",
@@ -4187,8 +4187,8 @@
       "Horsepower":90,
       "Weight_in_lbs":2735,
       "Acceleration":18,
-      "Year":"1982-01-01",
-      "Origin":"A"
+      "Year":1982,
+      "Origin":"USA"
    },
    {
       "Name":"ford fairmont futura",
@@ -4198,8 +4198,8 @@
       "Horsepower":92,
       "Weight_in_lbs":2865,
       "Acceleration":16.4,
-      "Year":"1982-01-01",
-      "Origin":"A"
+      "Year":1982,
+      "Origin":"USA"
    },
    {
       "Name":"amc concord dl",
@@ -4209,8 +4209,8 @@
       "Horsepower":null,
       "Weight_in_lbs":3035,
       "Acceleration":20.5,
-      "Year":"1982-01-01",
-      "Origin":"A"
+      "Year":1982,
+      "Origin":"USA"
    },
    {
       "Name":"volkswagen rabbit l",
@@ -4220,8 +4220,8 @@
       "Horsepower":74,
       "Weight_in_lbs":1980,
       "Acceleration":15.3,
-      "Year":"1982-01-01",
-      "Origin":"B"
+      "Year":1982,
+      "Origin":"Europe"
    },
    {
       "Name":"mazda glc custom l",
@@ -4231,8 +4231,8 @@
       "Horsepower":68,
       "Weight_in_lbs":2025,
       "Acceleration":18.2,
-      "Year":"1982-01-01",
-      "Origin":"C"
+      "Year":1982,
+      "Origin":"Japan"
    },
    {
       "Name":"mazda glc custom",
@@ -4242,8 +4242,8 @@
       "Horsepower":68,
       "Weight_in_lbs":1970,
       "Acceleration":17.6,
-      "Year":"1982-01-01",
-      "Origin":"C"
+      "Year":1982,
+      "Origin":"Japan"
    },
    {
       "Name":"plymouth horizon miser",
@@ -4253,8 +4253,8 @@
       "Horsepower":63,
       "Weight_in_lbs":2125,
       "Acceleration":14.7,
-      "Year":"1982-01-01",
-      "Origin":"A"
+      "Year":1982,
+      "Origin":"USA"
    },
    {
       "Name":"mercury lynx l",
@@ -4264,8 +4264,8 @@
       "Horsepower":70,
       "Weight_in_lbs":2125,
       "Acceleration":17.3,
-      "Year":"1982-01-01",
-      "Origin":"A"
+      "Year":1982,
+      "Origin":"USA"
    },
    {
       "Name":"nissan stanza xe",
@@ -4275,8 +4275,8 @@
       "Horsepower":88,
       "Weight_in_lbs":2160,
       "Acceleration":14.5,
-      "Year":"1982-01-01",
-      "Origin":"C"
+      "Year":1982,
+      "Origin":"Japan"
    },
    {
       "Name":"honda Accelerationord",
@@ -4286,8 +4286,8 @@
       "Horsepower":75,
       "Weight_in_lbs":2205,
       "Acceleration":14.5,
-      "Year":"1982-01-01",
-      "Origin":"C"
+      "Year":1982,
+      "Origin":"Japan"
    },
    {
       "Name":"toyota corolla",
@@ -4297,8 +4297,8 @@
       "Horsepower":70,
       "Weight_in_lbs":2245,
       "Acceleration":16.9,
-      "Year":"1982-01-01",
-      "Origin":"C"
+      "Year":1982,
+      "Origin":"Japan"
    },
    {
       "Name":"honda civic",
@@ -4308,8 +4308,8 @@
       "Horsepower":67,
       "Weight_in_lbs":1965,
       "Acceleration":15,
-      "Year":"1982-01-01",
-      "Origin":"C"
+      "Year":1982,
+      "Origin":"Japan"
    },
    {
       "Name":"honda civic (auto)",
@@ -4319,8 +4319,8 @@
       "Horsepower":67,
       "Weight_in_lbs":1965,
       "Acceleration":15.7,
-      "Year":"1982-01-01",
-      "Origin":"C"
+      "Year":1982,
+      "Origin":"Japan"
    },
    {
       "Name":"datsun 310 gx",
@@ -4330,8 +4330,8 @@
       "Horsepower":67,
       "Weight_in_lbs":1995,
       "Acceleration":16.2,
-      "Year":"1982-01-01",
-      "Origin":"C"
+      "Year":1982,
+      "Origin":"Japan"
    },
    {
       "Name":"buick century limited",
@@ -4341,8 +4341,8 @@
       "Horsepower":110,
       "Weight_in_lbs":2945,
       "Acceleration":16.4,
-      "Year":"1982-01-01",
-      "Origin":"A"
+      "Year":1982,
+      "Origin":"USA"
    },
    {
       "Name":"oldsmobile cutlass ciera (diesel)",
@@ -4352,8 +4352,8 @@
       "Horsepower":85,
       "Weight_in_lbs":3015,
       "Acceleration":17,
-      "Year":"1982-01-01",
-      "Origin":"A"
+      "Year":1982,
+      "Origin":"USA"
    },
    {
       "Name":"chrysler lebaron medallion",
@@ -4363,8 +4363,8 @@
       "Horsepower":92,
       "Weight_in_lbs":2585,
       "Acceleration":14.5,
-      "Year":"1982-01-01",
-      "Origin":"A"
+      "Year":1982,
+      "Origin":"USA"
    },
    {
       "Name":"ford granada l",
@@ -4374,8 +4374,8 @@
       "Horsepower":112,
       "Weight_in_lbs":2835,
       "Acceleration":14.7,
-      "Year":"1982-01-01",
-      "Origin":"A"
+      "Year":1982,
+      "Origin":"USA"
    },
    {
       "Name":"toyota celica gt",
@@ -4385,8 +4385,8 @@
       "Horsepower":96,
       "Weight_in_lbs":2665,
       "Acceleration":13.9,
-      "Year":"1982-01-01",
-      "Origin":"C"
+      "Year":1982,
+      "Origin":"Japan"
    },
    {
       "Name":"dodge charger 2.2",
@@ -4396,8 +4396,8 @@
       "Horsepower":84,
       "Weight_in_lbs":2370,
       "Acceleration":13,
-      "Year":"1982-01-01",
-      "Origin":"A"
+      "Year":1982,
+      "Origin":"USA"
    },
    {
       "Name":"chevrolet camaro",
@@ -4407,8 +4407,8 @@
       "Horsepower":90,
       "Weight_in_lbs":2950,
       "Acceleration":17.3,
-      "Year":"1982-01-01",
-      "Origin":"A"
+      "Year":1982,
+      "Origin":"USA"
    },
    {
       "Name":"ford mustang gl",
@@ -4418,8 +4418,8 @@
       "Horsepower":86,
       "Weight_in_lbs":2790,
       "Acceleration":15.6,
-      "Year":"1982-01-01",
-      "Origin":"A"
+      "Year":1982,
+      "Origin":"USA"
    },
    {
       "Name":"vw pickup",
@@ -4429,8 +4429,8 @@
       "Horsepower":52,
       "Weight_in_lbs":2130,
       "Acceleration":24.6,
-      "Year":"1982-01-01",
-      "Origin":"B"
+      "Year":1982,
+      "Origin":"Europe"
    },
    {
       "Name":"dodge rampage",
@@ -4440,8 +4440,8 @@
       "Horsepower":84,
       "Weight_in_lbs":2295,
       "Acceleration":11.6,
-      "Year":"1982-01-01",
-      "Origin":"A"
+      "Year":1982,
+      "Origin":"USA"
    },
    {
       "Name":"ford ranger",
@@ -4451,8 +4451,8 @@
       "Horsepower":79,
       "Weight_in_lbs":2625,
       "Acceleration":18.6,
-      "Year":"1982-01-01",
-      "Origin":"A"
+      "Year":1982,
+      "Origin":"USA"
    },
    {
       "Name":"chevy s-10",
@@ -4462,7 +4462,7 @@
       "Horsepower":82,
       "Weight_in_lbs":2720,
       "Acceleration":19.4,
-      "Year":"1982-01-01",
-      "Origin":"A"
+      "Year":1982,
+      "Origin":"USA"
    }
 ]
