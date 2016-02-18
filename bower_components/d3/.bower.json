@@ -15,6 +15,7 @@
     "bin",
     "component.json",
     "composer.json",
+    "d3.zip",
     "index.js",
     "lib",
     "node_modules",
@@ -22,15 +23,15 @@
     "src",
     "test"
   ],
-  "homepage": "https://github.com/mbostock/d3",
-  "version": "3.5.14",
-  "_release": "3.5.14",
+  "homepage": "https://github.com/mbostock-bower/d3-bower",
+  "version": "3.5.15",
+  "_release": "3.5.15",
   "_resolution": {
     "type": "version",
-    "tag": "v3.5.14",
-    "commit": "aebc597b0541294be28134c024275c838716f1dd"
+    "tag": "v3.5.15",
+    "commit": "b0a33ccc22b8d3f42a812b82fb18fe249373b201"
   },
-  "_source": "git://github.com/mbostock/d3.git",
+  "_source": "git://github.com/mbostock-bower/d3-bower.git",
   "_target": "^3.5.11",
   "_originalSource": "d3"
 }
