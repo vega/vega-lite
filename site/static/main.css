@@ -253,18 +253,21 @@ nav a:hover {
   width: calc(100%/4 - 32px);
   margin: 16px 32px 16px 0px;
 }
+.gallery .imagegroup:hover {
+  text-decoration: none;
+}
 .gallery .image {
   display: block;
   /* Make the height depend on the width */
   width: 100%;
   /* hack to make height depend on width*/
   padding-bottom: 100%;
-  border: 1px dotted #CECECE;
+  border: 2px solid #CECECE;
   background-repeat: no-repeat;
   background-clip: padding-box;
 }
 .gallery .image:hover {
-  border: 1px dashed orange;
+  border-color: #8c8c8c;
 }
 .gallery span {
   display: block;
