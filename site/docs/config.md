@@ -254,28 +254,29 @@ __TODO: Example - make tick mark thicker__
 <!-- TODO: expand format detail -->
 <!-- TODO: example of customized text -->
 
-## Stack Configuration  (`config.stack.*`)
+{:#scale-config}
+## Scale Configuration  (`config.scale.*`)
 
-When either `"bar"` or `"area"` mark type is used with either `"color"` or `"detail"`
-channel, a stacked (bar or area) chart is automatically created.  
-For a stacked chart, `stack` property can be used to customize the stacking.
+Scale configuration determines default properties for all [scales](scale.html) except for `row` and `column` (which are determined by [facet scale configuration](#facet-scale-config) instead).  
+
+<span class="note-line">__See Code:__
+For a full list of scale configuration and their default values, please see the `ScaleConfig` interface and `defaultScaleConfig` in [scale.schema.ts](https://github.com/vega/vega-lite/blob/master/src/schema/scale.schema.ts).
+</span>
+
+## Facet Configuration  (`config.facet.*`)
+
+### Facet Grid Configuration (`config.facet.grid`)
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| stack         | Boolean &#124; StackConfig |  If `"stack"` is `false`, stacking is disabled.  Otherwise, if `"stack"` is either `true` or a stack property object, stacking is enabled.|
+| gridColor     | Color         | Color of the grid between facets. |
+| gridOpacity   | Number        | Opacity of the grid between facets. |
+| gridOffset    | Number        | Offset for grid between facets.  |
 
-A stack config object can contain the following properties:
+{:#facet-scale-config}
+### Facet Scale Configuration (`config.facet.scale`)
 
-| Property      | Type          | Description    |
-| :------------ |:-------------:| :------------- |
-| offset        | String        | The baseline offset style. One of `"zero"` (default), `"center"` <!--, or `"normalize"` -->. The `"center"` offset will center the stacks. The `"normalize"` offset will compute percentage values for each stack point; the output values will be in the range [0,1].|
-
-#### Example: Normalized Stacked Bar Chart
-
-__TODO__
-
-#### Example: Streamgraph
-
-__TODO__
-
-<!--| sort          | String &#124; Array<field> | Order of the stack.  This can be either a string (either "descending" or "ascending") or a list of fields to determine the order of stack layers.By default, stack uses descending order. |-->
+Scale configuration determines default properties for `row` and `column` [scales](scale.html).
+<span class="note-line">__See Code:__
+For a full list of scale configuration and their default values, please see the `FacetScaleConfig` interface and `defaultFacetScaleConfig` in [scale.schema.ts](https://github.com/vega/vega-lite/blob/master/src/schema/scale.schema.ts).
+</span>

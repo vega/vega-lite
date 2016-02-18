@@ -1,12 +1,44 @@
 export interface ScaleConfig {
-  /* If true, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid. */
+  /**
+   * If true, rounds numeric output values to integers.
+   * This can be helpful for snapping to the pixel grid.
+   * (Only available for `x`, `y`, `size`, `row`, and `column` scales.)
+   */
   round?: boolean;
-  /* @minimum 0 */
+  /**
+   *  Default band width for `x` ordinal scale when is mark is `text`.
+   *  @minimum 0
+   */
   textBandWidth?: number;
-  /* @minimum 0 */
+  /**
+   * Default band width for (1) `y` ordinal scale,
+   * and (2) `x` ordinal scale when the mark is not `text`.
+   * @minimum 0
+   */
   bandWidth?: number;
+  /**
+   * Default padding for `x` and `y` ordinal scales.
+   */
   padding?: number;
+
+  // Experimental Feature
   useRawDomain?: boolean;
+
+  /** Default range for nominal color scale */
+  nominalColorRange?: string | string[];
+  /** Default range for ordinal / continuous color scale */
+  sequentialColorRange?: string | string[];
+  /** Default range for shape */
+  shapeRange?: string|string[];
+
+  /** Default range for bar size scale */
+  barSizeRange?: number[];
+
+  /** Default range for font size scale */
+  fontSizeRange?: number[];
+
+  /** Default range for bar size scale */
+  pointSizeRange?: number[];
 
   // nice should depends on type (quantitative or temporal), so
   // let's not make a config.
@@ -17,7 +49,12 @@ export const defaultScaleConfig: ScaleConfig = {
   textBandWidth: 90,
   bandWidth: 21,
   padding: 1,
-  useRawDomain: false
+  useRawDomain: false,
+
+  nominalColorRange: 'category10',
+  sequentialColorRange: ['#AFC6A3', '#09622A'], // tableau greens
+  shapeRange: 'shapes',
+  fontSizeRange: [8, 40]
 };
 
 export interface FacetScaleConfig {

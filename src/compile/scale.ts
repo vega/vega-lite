@@ -313,6 +313,7 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel, scaleT
   // TODO: need to add rule for quantile, quantize, threshold scale
 
   var fieldDef = model.fieldDef(channel);
+  const scaleConfig = model.config().scale;
 
   if (scaleType === 'ordinal' && scale.bandWidth && contains([X, Y], channel)) {
     return {bandWidth: scale.bandWidth};
@@ -339,31 +340,38 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel, scaleT
       };
     case SIZE:
       if (model.is(BAR)) {
+        if (scaleConfig.barSizeRange !== undefined) {
+          return {range: scaleConfig.barSizeRange};
+        }
         const dimension = model.config().mark.orient === 'horizontal' ? Y : X;
         return {range: [2 /* TODO: config.mark.thinBarWidth*/ , model.scale(dimension).bandWidth]};
       } else if (model.is(TEXT_MARK)) {
-        return {range: [8, 40]}; /* TODO: config.scale.rangeFontSize */
+        return {range: scaleConfig.fontSizeRange };
       }
       // else -- point, square, circle
+      if (scaleConfig.pointSizeRange !== undefined) {
+        return {range: scaleConfig.pointSizeRange};
+      }
+
       const xIsMeasure = model.isMeasure(X);
       const yIsMeasure = model.isMeasure(Y);
 
       const bandWidth = xIsMeasure !== yIsMeasure ?
         model.scale(xIsMeasure ? Y : X).bandWidth :
         Math.min(
-          model.scale(X).bandWidth || model.config().scale.bandWidth,
-          model.scale(Y).bandWidth || model.config().scale.bandWidth
+          model.scale(X).bandWidth || scaleConfig.bandWidth,
+          model.scale(Y).bandWidth || scaleConfig.bandWidth
         );
 
-      return {range: [9, (bandWidth - 2) * (bandWidth - 2)]};
+      return {range: [9, bandWidth * bandWidth]};
     case SHAPE:
-      return {range: 'shapes'};
+      return {range: scaleConfig.shapeRange};
     case COLOR:
       if (fieldDef.type === NOMINAL) {
-        return {range: 'category10'};
+        return {range: scaleConfig.nominalColorRange};
       }
       // else -- ordinal, time, or quantitative
-      return {range: ['#AFC6A3', '#09622A']}; // tableau greens
+      return {range: scaleConfig.sequentialColorRange};
     case ROW:
       return {range: 'height'};
     case COLUMN:

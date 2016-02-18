@@ -216,6 +216,12 @@ nav a:hover {
   display: none;
 }
 
+.note-line {
+  font-size: 0.9em !important;
+  margin-top: 8px;
+  display: block;
+}
+
 /* Showcase */
 .showcase {
   display: flex;
