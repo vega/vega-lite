@@ -83,7 +83,7 @@ export namespace source {
       // Set data's format.parse if needed
     var parse = formatParse(model);
     if (parse) {
-      source.format = source.format || {};
+      source.format = source.format || {type: 'json'};
       source.format.parse = parse;
     }
 
