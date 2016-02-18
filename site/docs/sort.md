@@ -25,8 +25,8 @@ permalink: /docs/sort.html
 }
 ```
 
-`sort` property of each channel's channel definition determines the order of its field values.
-For `x`, `y`, `row` and `column`, this determines the order of each value's position via the scale.
+`sort` property of the channel definition determines the order of its field values.
+For mark properties channels (e.g., `x`, `y`, `color`), this determines the order of the scale domain.  For rod
 For `color`, `shape`, `size`, this determines the order of the channel's scale.
 For `detail`, this determines the layer order of the output visualization.
 
