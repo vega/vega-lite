@@ -15,6 +15,7 @@ git add bower_components/* -f
 npm run build:all
 git add vega-lite* -f
 git add site/static/*.js -f
+git add examples/images/*.svg -f
 
 # commit if things changed
 if [ -n "$(git status --porcelain)" ]; then
