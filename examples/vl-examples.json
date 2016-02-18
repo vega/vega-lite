@@ -43,7 +43,7 @@
       "title": "Scatter Plot with Log Scale",
       "galleryParameters": {
         "backgroundSize": "160%",
-        "backgroundPosition": "left"
+        "backgroundPosition": "15% 20%"
       }
     },
     {
@@ -63,11 +63,19 @@
     },
     {
       "name": "histogram",
-      "title": "Histogram"
+      "title": "Histogram",
+      "galleryParameters": {
+        "backgroundSize": "120%",
+        "backgroundPosition": "50% 50%"
+      }
     },
     {
       "name": "area",
-      "title": "Area Chart"
+      "title": "Area Chart",
+      "galleryParameters": {
+        "backgroundSize": "170%",
+        "backgroundPosition": "60% 50%"
+      }
     },
     {
       "name": "text_table_heatmap",
@@ -132,8 +140,8 @@
       "name": "trellis_scatter",
       "title": "Trellis Scatter Plot",
       "galleryParameters": {
-        "backgroundSize": "550%",
-        "backgroundPosition": "6% 40%"
+        "backgroundSize": "450%",
+        "backgroundPosition": "6% 50%"
       }
     },
     {
