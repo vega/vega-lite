@@ -99,7 +99,7 @@ function getFacetGroupProperties(model: Model) {
     height: {field: {parent: 'cellHeight'}}
   };
 
-  // apply both config from cell and facet.cell (with higher precedence for facet.unit)
+  // apply both config from cell and facet.cell (with higher precedence for facet.cell)
   applyConfig(facetGroupProperties, model.config().cell, FILL_STROKE_CONFIG.concat(['clip']));
   applyConfig(facetGroupProperties, model.config().facet.cell, FILL_STROKE_CONFIG.concat(['clip']));
 
