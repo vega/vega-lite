@@ -117,7 +117,7 @@ TODO: Custom Domain for quantitative
 The range of the scale represents the set of output visual values.  Vega-Lite automatically determines appropriate range based on the scale's channel and type, but `range` property can be provided to customize range values.  
 
 `x` and `y` Scales
-: For continuous `x` and `y` scales (quantitative and time), the range are always `[0, unitWidth]` and  `[0, unitHeight]` (See [config.unit](config.html#unit) for customizing unit width and height).  For ordinal `x` and `y` scales, the maximum range is a product of the field's cardinality and [`bandWidth`](#ordinal).  
+: For continuous `x` and `y` scales (quantitative and time), the range are always `[0, cellWidth]` and  `[0, cellHeight]` (See [config.cell](config.html#cell-config) for customizing cell width and height).  For ordinal `x` and `y` scales, the maximum range is a product of the field's cardinality and [`bandWidth`](#ordinal).  
 <span class="note-line">
 __Not Customizable__: specified `range` will be ignored.
 </span>

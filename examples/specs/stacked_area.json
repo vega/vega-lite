@@ -13,5 +13,5 @@
     },
     "color": {"field":"series", "type":"nominal", "scale":{"range": "category20b"}}
   },
-  "config": {"unit": {"width": 300, "height": 200}}
+  "config": {"cell": {"width": 300, "height": 200}}
 }

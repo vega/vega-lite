@@ -13,7 +13,7 @@ permalink: /docs/config.html
   "encoding": ... ,
   "config": {          // Configuration Object
     ...                // - Top-level Configuration
-    "unit": { ... },   // - Unit Configuration
+    "cell": { ... },   // - Cell Configuration
     "mark": { ... },   // - Mark Configuration
     "scale": { ... },  // - Scale Configuration
     "axis": { ... },   // - Axis Configuration
@@ -27,7 +27,7 @@ Vega-Lite's `config` object lists configuration properties of a visualization.
 This page outlines different types of config properties:
 
 - [Top-level Configuration](#top-level-config)
-- [Unit Configuration](#unit-config)
+- [Cell Configuration](#cell-config)
 - [Mark Configuration](#mark-config)
 - [Scale Configuration](#scale-config)
 - [Axis Configuration](#axis-config)
@@ -50,24 +50,24 @@ A Vega-Lite `config` object can have the following top-level properties:
 
 <!-- TODO: consider adding width, height, numberFormat, timeFormat  -->
 
-{:#unit-config}
-## Unit Configuration  (`config.unit.*`)
+{:#cell-config}
+## Cell Configuration  (`config.cell.*`)
 
-At its core, a Vega-Lite specification describes a single plot, or a _unit visualization_.  
-When a [facet channel](encoding.html#facet) is added, the visualization is faceted into a trellis plot, which contains multiple repeated sub-units.  Unit configuration allows us to customize an individual single plot and each unit of a trellis plot.  
+At its core, a Vega-Lite specification describes a single plot.  When a [facet channel](encoding.html#facet) is added, the visualization is faceted into a trellis plot, which contains multiple plots.
+Each plot in either a single plot or a trellis plot is called a _cell_. Cell configuration allows us to customize each individual single plot and each plot in a trellis plot.  
 
-### Unit Size Configuration
+### Cell Size Configuration
 
-`width` and `height` property of the unit configuration determine the width of a visualization with a non-ordinal x-scale and the height of a visualization with a non-ordinal y-scale respectively.  
-
-**For more information about visualization's size, please ["Customizing Size"](size.html) page.**
+`width` and `height` property of the cell configuration determine the width of a visualization with a continuous x-scale and the height of a visualization with a continuous y-scale respectively.  
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| width         | Integer       | The width of the unit visualization when the visualization has non-ordinal x-scale.  |
-| height        | Integer       | The height of the unit visualization when the visualization has non-ordinal y-scale. |
+| width         | Integer       | The width of the single plot or each plot in a trellis plot when the visualization has continuous x-scale.  (If the visualization has ordinal x-scale, the width is determined by the x-scale's [`bandWidth`](scale.html#ordinal) and the cardinality of the x-scale.) <span class="note-line">__Default value:__ `200`</span> |
+| height        | Integer       | The height of the single plot or each plot in a trellis plot when the visualization has continuous y-scale.  (If the visualization has ordinal y-scale, the height is determined by the `bandWidth` and the cardinality of the y-scale.) <span class="note-line">__Default value:__ `200`</span> |
 
-### Unit Style Configuration
+**For more information about visualization's size, please see [Customizing Size](size.html) page.**
+
+### Cell Style Configuration
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
@@ -293,7 +293,12 @@ For a full list of legend configuration and their default values, please see the
 
 ## Facet Configuration  (`config.facet.*`)
 
-### Facet Grid Configuration (`config.facet.grid`)
+### Cell Configuration (`config.facet.cell.*`)
+
+Facet cell configuration overrides [cell config](#cell-config) for faceted (trellis) plots.  
+Please see [cell config](#cell-config) for each property name and default values.
+
+### Facet Grid Configuration (`config.facet.grid.*`)
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
