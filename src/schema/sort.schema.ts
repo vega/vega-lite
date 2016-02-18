@@ -1,4 +1,5 @@
-export type SortEnum = string; // TODO: string literal "ascending", "descending", "none"
+import {SortOrder} from '../enums';
+import {AggregateOp} from '../aggregate';
 
 export interface SortField {
   /**
@@ -6,17 +7,9 @@ export interface SortField {
    */
   field: string;
   /**
-   * The field name to aggregate over.
-   * @enum ["values", "count", "valid", "missing", "distinct",
-   *   "sum", "mean", "average", "variance", "variancep", "stdev",
-   *   "stdevp", "median", "q1", "q3", "modeskew", "min", "max",
-   *   "argmin", "argmax"]
-   *
+   * The sort aggregation operator
    */
-  op: string;
+  op: AggregateOp;
 
-  /**
-   * @enum: ["ascending", "descending"]
-   */
-  order?: string;
+  order?: SortOrder;
 }

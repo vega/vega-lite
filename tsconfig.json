@@ -55,6 +55,7 @@
     "src/compile/util.ts",
     "src/data.ts",
     "src/encoding.ts",
+    "src/enums.ts",
     "src/fielddef.ts",
     "src/mark.ts",
     "src/schema/axis.schema.ts",

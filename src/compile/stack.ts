@@ -3,13 +3,14 @@ import {Config} from '../schema/config.schema';
 import {FieldDef} from '../schema/fielddef.schema';
 import {Model, ScaleMap} from './Model';
 import {Channel, X, Y, COLOR, DETAIL, ORDER} from '../channel';
+import {ScaleType, StackOffset} from '../enums';
 import {BAR, AREA, Mark} from '../mark';
 import {field, isMeasure} from '../fielddef';
 import {has, isAggregate} from '../encoding';
 import {isArray, contains} from '../util';
 import {sortField} from './util';
 
-import {type as scaleType} from './scale';
+import {scaleType} from './scale';
 
 export interface StackProperties {
   /** Dimension axis of the stack ('x' or 'y'). */
@@ -21,7 +22,7 @@ export interface StackProperties {
   stackFields: string[];
 
   /** Stack offset property. */
-  offset: string;
+  offset: StackOffset;
 }
 
 // TODO: put all vega interface in one place
@@ -40,7 +41,7 @@ export function compileStackProperties(mark: Mark, encoding: Encoding, scale: Sc
 
   if (stackFields.length > 0 &&
       contains([BAR, AREA], mark) &&
-      config.mark.stacked !== 'none' &&
+      config.mark.stacked !== StackOffset.NONE &&
       isAggregate(encoding)) {
 
     var isXMeasure = has(encoding, X) && isMeasure(encoding.x);
@@ -77,7 +78,7 @@ function getStackFields(mark: Mark, encoding: Encoding, scale: ScaleMap) {
       } else {
         const fieldDef: FieldDef = channelEncoding;
         fields.push(field(fieldDef, {
-          binSuffix: scaleType(scale[channel], fieldDef, channel, mark) === 'ordinal' ? '_range' : '_start'
+          binSuffix: scaleType(scale[channel], fieldDef, channel, mark) === ScaleType.ORDINAL ? '_range' : '_start'
         }));
       }
     }

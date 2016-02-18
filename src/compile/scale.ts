@@ -12,6 +12,8 @@ import {SOURCE, STACKED_SCALE} from '../data';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 import {Mark, BAR, TEXT as TEXT_MARK} from '../mark';
 import {rawDomain, smallestUnit} from './time';
+import {ScaleType, StackOffset} from '../enums';
+import {TimeUnit} from '../timeunit';
 import {field} from '../fielddef';
 
 /**
@@ -51,7 +53,7 @@ function mainScale(model: Model, fieldDef: FieldDef, channel: Channel) {
 
   let scaleDef: any = {
     name: model.scaleName(channel),
-    type: type(scale, fieldDef, channel, model.mark()),
+    type: scaleType(scale, fieldDef, channel, model.mark()),
   };
 
   scaleDef.domain = domain(scale, model, channel, scaleDef.type);
@@ -123,7 +125,7 @@ function binColorLegendLabel(model: Model, fieldDef: FieldDef) {
   };
 }
 
-export function type(scale: Scale, fieldDef: FieldDef, channel: Channel, mark: Mark): string {
+export function scaleType(scale: Scale, fieldDef: FieldDef, channel: Channel, mark: Mark): ScaleType {
   if (!hasScale(channel)) {
     // There is no scale for these channels
     return null;
@@ -131,7 +133,7 @@ export function type(scale: Scale, fieldDef: FieldDef, channel: Channel, mark: M
 
   // We can't use linear/time for row, column or shape
   if (contains([ROW, COLUMN, SHAPE], channel)) {
-    return 'ordinal';
+    return ScaleType.ORDINAL;
   }
 
   if (scale.type !== undefined) {
@@ -140,35 +142,35 @@ export function type(scale: Scale, fieldDef: FieldDef, channel: Channel, mark: M
 
   switch (fieldDef.type) {
     case NOMINAL:
-      return 'ordinal';
+      return ScaleType.ORDINAL;
     case ORDINAL:
       if (channel === COLOR) {
-        return 'linear'; // time has order, so use interpolated ordinal color scale.
+        return ScaleType.LINEAR; // time has order, so use interpolated ordinal color scale.
       }
-      return 'ordinal';
+      return ScaleType.ORDINAL;
     case TEMPORAL:
       if (channel === COLOR) {
-        return 'time'; // time has order, so use interpolated ordinal color scale.
+        return ScaleType.TIME; // time has order, so use interpolated ordinal color scale.
       }
 
       if (fieldDef.timeUnit) {
         switch (fieldDef.timeUnit) {
-          case 'hours':
-          case 'day':
-          case 'month':
-            return 'ordinal';
+          case TimeUnit.HOURS:
+          case TimeUnit.DAY:
+          case TimeUnit.MONTH:
+            return ScaleType.ORDINAL;
           default:
             // date, year, minute, second, yearmonth, monthday, ...
-            return 'time';
+            return ScaleType.TIME;
         }
       }
-      return 'time';
+      return ScaleType.TIME;
 
     case QUANTITATIVE:
       if (fieldDef.bin) {
-        return contains([X, Y, COLOR], channel) ? 'linear' : 'ordinal';
+        return contains([X, Y, COLOR], channel) ? ScaleType.LINEAR : ScaleType.ORDINAL;
       }
-      return 'linear';
+      return ScaleType.LINEAR;
   }
 
   // should never reach this
@@ -204,7 +206,7 @@ export function domain(scale: Scale, model: Model, channel:Channel, scaleType: s
   // For stack, use STACKED data.
   var stack = model.stack();
   if (stack && channel === stack.fieldChannel) {
-    if(stack.offset === 'normalize') {
+    if(stack.offset === StackOffset.NORMALIZE) {
       return [0, 1];
     }
     return {

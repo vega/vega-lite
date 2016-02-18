@@ -3,6 +3,8 @@
 import {FieldDef} from './schema/fielddef.schema';
 import {contains, getbins} from './util';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from './type';
+import {TimeUnit} from './timeunit';
+import {AggregateOp} from './aggregate';
 
 
 export interface FieldRefOption {
@@ -58,11 +60,11 @@ export function isMeasure(fieldDef: FieldDef) {
 export const COUNT_DISPLAYNAME = 'Number of Records';
 
 export function count(): FieldDef {
-  return { field: '*', aggregate: 'count', type: QUANTITATIVE, displayName: COUNT_DISPLAYNAME };
+  return { field: '*', aggregate: AggregateOp.COUNT, type: QUANTITATIVE, displayName: COUNT_DISPLAYNAME };
 }
 
 export function isCount(fieldDef: FieldDef) {
-  return fieldDef.aggregate === 'count';
+  return fieldDef.aggregate === AggregateOp.COUNT;
 }
 
 // FIXME remove this, and the getbins method
@@ -87,13 +89,13 @@ export function cardinality(fieldDef: FieldDef, stats, filterNull = {}) {
   if (fieldDef.type === TEMPORAL) {
     var timeUnit = fieldDef.timeUnit;
     switch (timeUnit) {
-      case 'seconds': return 60;
-      case 'minutes': return 60;
-      case 'hours': return 24;
-      case 'day': return 7;
-      case 'date': return 31;
-      case 'month': return 12;
-      case 'year':
+      case TimeUnit.SECONDS: return 60;
+      case TimeUnit.MINUTES: return 60;
+      case TimeUnit.HOURS: return 24;
+      case TimeUnit.DAY: return 7;
+      case TimeUnit.DATE: return 31;
+      case TimeUnit.MONTH: return 12;
+      case TimeUnit.YEAR:
         var yearstat = stats['year_' + fieldDef.field];
 
         if (!yearstat) { return null; }
@@ -118,7 +120,7 @@ export function title(fieldDef: FieldDef) {
   }
   var fn = fieldDef.aggregate || fieldDef.timeUnit || (fieldDef.bin && 'bin');
   if (fn) {
-    return fn.toUpperCase() + '(' + fieldDef.field + ')';
+    return fn.toString().toUpperCase() + '(' + fieldDef.field + ')';
   } else {
     return fieldDef.field;
   }
