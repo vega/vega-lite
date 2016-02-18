@@ -3,7 +3,6 @@
     {
       "name": "bar_layered_transparent",
       "title": "Bar chart with transparent layers",
-      "showInEditor": true,
       "galleryParameters": {
         "backgroundSize": "310%",
         "backgroundPosition": "6% 0%"
@@ -20,7 +19,6 @@
     {
       "name": "trellis_barley",
       "title": "Trellis Plot",
-      "showInEditor": true,
       "galleryParameters": {
         "backgroundSize": "150%",
         "backgroundPosition": "30% 0%"
@@ -30,23 +28,19 @@
   "Basic": [
     {
       "name": "bar",
-      "title": "Simple Bar Chart",
-      "showInEditor": true
+      "title": "Simple Bar Chart"
     },
     {
       "name": "bar_filter_calc",
-      "title": "Bar with filter and calculation",
-      "showInEditor": true
+      "title": "Bar with filter and calculation"
     },
     {
       "name": "bar_aggregate",
-      "title": "Aggregate Bar Chart",
-      "showInEditor": true
+      "title": "Aggregate Bar Chart"
     },
     {
       "name": "bar_grouped",
       "title": "Grouped bar chart.",
-      "showInEditor": true,
       "galleryParameters": {
         "backgroundSize": "220%",
         "backgroundPosition": "22% 60%"
@@ -55,7 +49,6 @@
     {
       "name": "bar_yearmonth",
       "title": "Temperature in Seattle",
-      "showInEditor": true,
       "galleryParameters": {
         "backgroundSize": "160%",
         "backgroundPosition": "top"
@@ -63,13 +56,11 @@
     },
     {
       "name": "scatter",
-      "title": "A scatterplot",
-      "showInEditor": true
+      "title": "A scatterplot"
     },
     {
       "name": "scatter_binned_axes",
       "title": "Scatterplot with binned axes",
-      "showInEditor": true,
       "galleryParameters": {
         "backgroundPosition": "left"
       }
@@ -91,7 +82,6 @@
     {
       "name": "scatter_bubble",
       "title": "Bubble Scatterplot",
-      "showInEditor": true,
       "galleryParameters": {
         "backgroundPosition": "left"
       }
@@ -107,7 +97,6 @@
     {
       "name": "scatter_log",
       "title": "Scatter plot with log scale and large numbers",
-      "showInEditor": true,
       "galleryParameters": {
         "backgroundSize": "160%",
         "backgroundPosition": "left"
@@ -115,13 +104,11 @@
     },
     {
       "name": "tick",
-      "title": "Tick marks",
-      "showInEditor": true
+      "title": "Tick marks"
     },
     {
       "name": "line",
       "title": "Line chart",
-      "showInEditor": true,
       "galleryParameters": {
         "backgroundSize": "160%",
         "backgroundPosition": "85% 10%"
@@ -130,7 +117,6 @@
     {
       "name": "line_color",
       "title": "Colored Line chart",
-      "showInEditor": true,
       "galleryParameters": {
         "backgroundSize": "170%",
         "backgroundPosition": "40% 15%"
@@ -139,7 +125,6 @@
     {
       "name": "line_month",
       "title": "Temperature in Seattle",
-      "showInEditor": true,
       "galleryParameters": {
         "backgroundSize": "160%",
         "backgroundPosition": "top"
@@ -147,13 +132,11 @@
     },
     {
       "name": "histogram",
-      "title": "Histogram",
-      "showInEditor": true
+      "title": "Histogram"
     },
     {
       "name": "area",
-      "title": "Area Chart",
-      "showInEditor": true
+      "title": "Area Chart"
     },
     {
       "name": "area_vertical",
@@ -179,13 +162,11 @@
   "Stack": [
     {
       "name": "stacked_area",
-      "title": "Stacked Area Chart",
-      "showInEditor": true
+      "title": "Stacked Area Chart"
     },
     {
       "name": "stacked_bar_v",
       "title": "Vertical Stacked Bar Chart",
-      "showInEditor": true,
       "galleryParameters": {
         "backgroundSize": "220%",
         "backgroundPosition": "35% 12%"
@@ -212,7 +193,6 @@
     {
       "name": "trellis_stacked_bar",
       "title": "Trellis Stacked Bar Chart",
-      "showInEditor": true,
       "galleryParameters": {
         "backgroundSize": "230%"
       }
