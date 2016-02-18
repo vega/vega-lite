@@ -317,7 +317,7 @@ export class Model {
         return this.isOrdinalScale(channel) ?
             // For ordinal scale or single bar, we can use bandWidth - 1
             // (-1 so that the border of the bar falls on exact pixel)
-            this.scale(channel).bandWidth - 1 :
+            this.scale(channel).bandSize - 1 :
           !this.has(channel) ?
             21 : /* config.scale.bandWidth */
             2; /* TODO: config.mark.thinBarWidth*/  // otherwise, set to 2 by default
@@ -326,7 +326,7 @@ export class Model {
           return this.config().mark.tickWidth;
         }
         const bandWidth = this.has(channel) ?
-          this.scale(channel).bandWidth :
+          this.scale(channel).bandSize :
           21; /* config.scale.bandWidth */
         return bandWidth / 1.5;
     }

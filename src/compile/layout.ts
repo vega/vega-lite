@@ -87,7 +87,7 @@ function scaleWidthFormula(model: Model, channel: Channel, nonOrdinalSize: numbe
       const scale = model.scale(channel);
       return '(' + cardinalityFormula(model, channel) +
                 ' + ' + scale.padding +
-             ') * ' + scale.bandWidth;
+             ') * ' + scale.bandSize;
     } else {
       return nonOrdinalSize + '';
     }
@@ -96,7 +96,7 @@ function scaleWidthFormula(model: Model, channel: Channel, nonOrdinalSize: numbe
       // for text table without x/y scale we need wider bandWidth
       return model.config().scale.textBandWidth + '';
     }
-    return model.config().scale.bandWidth + '';
+    return model.config().scale.bandSize + '';
   }
 }
 

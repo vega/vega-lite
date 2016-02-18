@@ -317,8 +317,8 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel, scaleT
   var fieldDef = model.fieldDef(channel);
   const scaleConfig = model.config().scale;
 
-  if (scaleType === 'ordinal' && scale.bandWidth && contains([X, Y], channel)) {
-    return {bandWidth: scale.bandWidth};
+  if (scaleType === 'ordinal' && scale.bandSize && contains([X, Y], channel)) {
+    return {bandWidth: scale.bandSize};
   }
 
   if (scale.range && !contains([X, Y, ROW, COLUMN], channel)) {
@@ -346,7 +346,7 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel, scaleT
           return {range: scaleConfig.barSizeRange};
         }
         const dimension = model.config().mark.orient === 'horizontal' ? Y : X;
-        return {range: [2 /* TODO: config.mark.thinBarWidth*/ , model.scale(dimension).bandWidth]};
+        return {range: [2 /* TODO: config.mark.thinBarWidth*/ , model.scale(dimension).bandSize]};
       } else if (model.is(TEXT_MARK)) {
         return {range: scaleConfig.fontSizeRange };
       }
@@ -359,10 +359,10 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel, scaleT
       const yIsMeasure = model.isMeasure(Y);
 
       const bandWidth = xIsMeasure !== yIsMeasure ?
-        model.scale(xIsMeasure ? Y : X).bandWidth :
+        model.scale(xIsMeasure ? Y : X).bandSize :
         Math.min(
-          model.scale(X).bandWidth || scaleConfig.bandWidth,
-          model.scale(Y).bandWidth || scaleConfig.bandWidth
+          model.scale(X).bandSize || scaleConfig.bandSize,
+          model.scale(Y).bandSize || scaleConfig.bandSize
         );
 
       return {range: [9, bandWidth * bandWidth]};
