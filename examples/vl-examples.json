@@ -13,7 +13,7 @@
     },
     {
       "name": "bar_grouped",
-      "title": "Grouped Bar Chart.",
+      "title": "Grouped Bar Chart",
       "galleryParameters": {
         "backgroundSize": "220%",
         "backgroundPosition": "22% 60%"
@@ -55,7 +55,7 @@
     },
     {
       "name": "line_color",
-      "title": "Line chart",
+      "title": "Line Chart",
       "galleryParameters": {
         "backgroundSize": "170%",
         "backgroundPosition": "40% 15%"
@@ -123,7 +123,7 @@
   "Trellis": [
     {
       "name": "trellis_bar",
-      "title": "Population distribution of age groups and gender in 2000",
+      "title": "Population Distribution of Age Groups and Gender in 2000",
       "galleryParameters": {
         "backgroundSize": "130%",
         "backgroundPosition": "10% 10%"
