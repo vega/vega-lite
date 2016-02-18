@@ -28,8 +28,21 @@ d3.json('examples/vl-examples.json', function(error, VL_SPECS) {
     imageGroup.append('a')
       .attr('class', 'image')
       .style('background-image', function(d){ return 'url(examples/images/' + d.name + '.svg)'; })
-      .style('background-size', '150%')
-      .style('background-position', 'right top');
+      .style('background-size', function(d) {
+        const bgSizeDefault = 'cover';
+        if (!d.galleryParameters || !d.galleryParameters.backgroundSize) {
+          return bgSizeDefault;
+        } else {
+          return d.galleryParameters.backgroundSize;
+        }})
+      .style('background-position', function(d) {
+        const bgPositionDefault = 'center';
+        if (!d.galleryParameters || !d.galleryParameters.backgroundPosition) {
+          return bgPositionDefault;
+        } else {
+          return d.galleryParameters.backgroundPosition;
+        }
+      });
     imageGroup.append('span')
         .text(function(d) {return d.title;});
 

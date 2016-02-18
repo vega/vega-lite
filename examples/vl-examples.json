@@ -3,16 +3,28 @@
     {
       "name": "bar_layered_transparent",
       "title": "Bar chart with transparent layers",
-      "showInEditor": true
+      "showInEditor": true,
+      "galleryParameters": {
+        "backgroundSize": "310%",
+        "backgroundPosition": "6% 0%"
+      }
     },
     {
       "name": "stacked_bar_h",
-      "title": "Horizontal Stacked Bar Chart"
+      "title": "Horizontal Stacked Bar Chart",
+      "galleryParameters": {
+        "backgroundSize": "200%",
+        "backgroundPosition": "55% 25%"
+      }
     },
     {
       "name": "trellis_barley",
       "title": "Trellis Plot",
-      "showInEditor": true
+      "showInEditor": true,
+      "galleryParameters": {
+        "backgroundSize": "150%",
+        "backgroundPosition": "30% 0%"
+      }
     }
   ],
   "Basic": [
@@ -34,12 +46,20 @@
     {
       "name": "bar_grouped",
       "title": "Grouped bar chart.",
-      "showInEditor": true
+      "showInEditor": true,
+      "galleryParameters": {
+        "backgroundSize": "220%",
+        "backgroundPosition": "22% 60%"
+      }
     },
     {
       "name": "bar_yearmonth",
       "title": "Temperature in Seattle",
-      "showInEditor": true
+      "showInEditor": true,
+      "galleryParameters": {
+        "backgroundSize": "160%",
+        "backgroundPosition": "top"
+      }
     },
     {
       "name": "scatter",
@@ -49,29 +69,49 @@
     {
       "name": "scatter_binned_axes",
       "title": "Scatterplot with binned axes",
-      "showInEditor": true
+      "showInEditor": true,
+      "galleryParameters": {
+        "backgroundPosition": "left"
+      }
     },
     {
       "name": "scatter_binned_color",
-      "title": "Scatterplot with binned color"
+      "title": "Scatterplot with binned color",
+      "galleryParameters": {
+        "backgroundPosition": "left"
+      }
     },
     {
       "name": "scatter_binned_size",
-      "title": "Bubble Scatterplot with binned size"
+      "title": "Bubble Scatterplot with binned size",
+      "galleryParameters": {
+        "backgroundPosition": "left"
+      }
     },
     {
       "name": "scatter_bubble",
       "title": "Bubble Scatterplot",
-      "showInEditor": true
+      "showInEditor": true,
+      "galleryParameters": {
+        "backgroundPosition": "left"
+      }
     },
     {
       "name": "scatter_colored_with_shape",
-      "title": "Scatterplot with shape and color encoding"
+      "title": "Scatterplot with shape and color encoding",
+      "galleryParameters": {
+        "backgroundSize": "300%",
+        "backgroundPosition": "40% 40%"
+      }
     },
     {
       "name": "scatter_log",
       "title": "Scatter plot with log scale and large numbers",
-      "showInEditor": true
+      "showInEditor": true,
+      "galleryParameters": {
+        "backgroundSize": "160%",
+        "backgroundPosition": "left"
+      }
     },
     {
       "name": "tick",
@@ -81,17 +121,29 @@
     {
       "name": "line",
       "title": "Line chart",
-      "showInEditor": true
+      "showInEditor": true,
+      "galleryParameters": {
+        "backgroundSize": "160%",
+        "backgroundPosition": "85% 10%"
+      }
     },
     {
       "name": "line_color",
       "title": "Colored Line chart",
-      "showInEditor": true
+      "showInEditor": true,
+      "galleryParameters": {
+        "backgroundSize": "170%",
+        "backgroundPosition": "40% 15%"
+      }
     },
     {
       "name": "line_month",
       "title": "Temperature in Seattle",
-      "showInEditor": true
+      "showInEditor": true,
+      "galleryParameters": {
+        "backgroundSize": "160%",
+        "backgroundPosition": "top"
+      }
     },
     {
       "name": "histogram",
@@ -109,7 +161,11 @@
     },
     {
       "name": "text_table_heatmap",
-      "title": "Table Heatmap"
+      "title": "Table Heatmap",
+      "galleryParameters": {
+        "backgroundSize": "250%",
+        "backgroundPosition": "35% 40%"
+      }
     },
     {
       "name": "point_ordinal_color",
@@ -129,30 +185,53 @@
     {
       "name": "stacked_bar_v",
       "title": "Vertical Stacked Bar Chart",
-      "showInEditor": true
+      "showInEditor": true,
+      "galleryParameters": {
+        "backgroundSize": "220%",
+        "backgroundPosition": "35% 12%"
+      }
     },
     {
       "name": "stacked_bar_1d",
-      "title": "1D Stacked Bar Chart"
+      "title": "1D Stacked Bar Chart",
+      "galleryParameters": {
+        "backgroundSize": "200%",
+        "backgroundPosition": "left"
+      }
     }
   ],
   "Trellis": [
     {
       "name": "trellis_bar",
-      "title": "Population distribution of age groups and gender in 2000"
+      "title": "Population distribution of age groups and gender in 2000",
+      "galleryParameters": {
+        "backgroundSize": "130%",
+        "backgroundPosition": "10% 10%"
+      }
     },
     {
       "name": "trellis_stacked_bar",
       "title": "Trellis Stacked Bar Chart",
-      "showInEditor": true
+      "showInEditor": true,
+      "galleryParameters": {
+        "backgroundSize": "230%"
+      }
     },
     {
       "name": "trellis_scatter",
-      "title": "Trellis Scatter Plot"
+      "title": "Trellis Scatter Plot",
+      "galleryParameters": {
+        "backgroundSize": "550%",
+        "backgroundPosition": "6% 40%"
+      }
     },
     {
       "name": "trellis_scatter_binned_row",
-      "title": "Trellis Scatter Plot, faceted by Binned Row"
+      "title": "Trellis Scatter Plot, faceted by Binned Row",
+      "galleryParameters": {
+        "backgroundSize": "115%",
+        "backgroundPosition": "45% 45%"
+      }
     }
   ]
 }
