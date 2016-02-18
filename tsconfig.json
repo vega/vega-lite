@@ -60,7 +60,7 @@
     "src/schema/axis.schema.ts",
     "src/schema/bin.schema.ts",
     "src/schema/config.facet.schema.ts",
-    "src/schema/config.marks.schema.ts",
+    "src/schema/config.mark.schema.ts",
     "src/schema/config.schema.ts",
     "src/schema/config.unit.schema.ts",
     "src/schema/data.schema.ts",

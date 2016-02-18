@@ -34,6 +34,7 @@ This page outlines different types of config properties:
 - [Legend Configuration](#legend-config)
 - [Facet Configuration](#facet-config)
 
+{:#top-level-config}
 ## Top-level Configuration  (`config.*`)
 
 A Vega-Lite `config` object can have the following top-level properties:
@@ -85,19 +86,24 @@ Each unit (non-trellis) chart contains one cell.  Thus, the width and height of 
 
 A mark config object can have the following properties:
 
-### General Marks Configuration
-
-| Property      | Type          | Description    |
-| :------------ |:-------------:| :------------- |
-| filled        | Boolean        | Whether the shape\'s color should be used as fill color instead of stroke color.  This is only applicable for `bar`, `point`, `circle`, `square`, and `area`.  All supported marks except `point` marks are filled by default. See [mark](mark.html#scatter_filled) for a usage example. |
-
 #### Color
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
+| filled        | Boolean        | Whether the shape\'s color should be used as fill color instead of stroke color.  This is only applicable for `bar`, `point`, `circle`, `square`, and `area`.  All supported marks except `point` marks are filled by default. See [mark](mark.html#scatter_filled) for a usage example. |
 | color         | color         | The color of the mark – either fill or stroke color based on the `filled` mark config.
 | fill          | Color         | The fill color.  This config will be overridden by `color` channel's specified or mapped values if `filled` is `true`.   |
 | stroke        | Color         | The stroke color.  This config will be overridden by `color` channel's specified or mapped values if `filled` is `false`. |
+
+<!-- Linked from another page.  Don't remove!-->
+
+{:#config.mark.filled}
+##### Example: `filled` Points
+
+By default, `point` marks have filled borders and are transparent inside. Setting `config.mark.filled` to `true` creates filled marks instead.
+
+<span class="vl-example" data-name="point_filled"></span>
+
 
 #### Opacity
 
@@ -117,24 +123,32 @@ A mark config object can have the following properties:
 
 <!-- one example for custom fill/stroke -->
 
-<!-- Linked from another page.  Don't remove!-->
-<a id="config.mark.filled"></a>
-#### Example: `filled` Points
-
-By default, `point` marks have filled borders and are transparent inside. Setting `config.mark.filled` to `true` creates filled marks instead.
-
-<span class="vl-example" data-name="point_filled"></span>
-
-
-### Marks Configuration for Bar
+{:#stacked}
+### Stacking (for Bar and Area)
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| barWidth      | Number        | The width of the bars.  If unspecified, the default width for bars on an ordinal scale is  `bandWidth-1`, which provides 1 pixel offset between bars.  If the dimension has linear scale, the bar's default size will be `2` instead.   |
+| stacked       | string        | Stacking modes for `bar` and `area` marks.  <br/> • `zero` - stacking with baseline offset at zero value of the scale (for creating typical stacked [bar](mark.html#stacked-bar-chart) and [area](mark.html#stacked-area-chart) chart).  <br/> • `normalize` - stacking with normalized domain (for creating normalized stacked [bar](mark.html#normalized-stacked-bar-chart) and [area](mark.html#normalized-stacked-area-chart) chart).  <br/> • `center` - stacking with center baseline (for [streamgraph](mark.html#streamgraph)). <br/> • `none` - No-stacking.  This will produces layered [bar](mark.html#layered-bar-chart) and area chart.  <span class="note-line">__Default value:__ `zero`.</span>|
+
+{:#interpolate}
+### Interpolation (for Line and Area Marks)
+
+| Property      | Type          | Description    |
+| :------------ |:-------------:| :------------- |
+| interpolate   | String        | The line interpolation method to use. One of `"linear"`, `"step-before"`, `"step-after"`, `"basis"`, `"basis-open"`, `"basis-closed"`, `"bundle"`, `"cardinal"`, `"cardinal-open"`, `"cardinal-closed"`, `"monotone"`.  For more information about each interpolation method, please see [D3's line interpolation](https://github.com/mbostock/d3/wiki/SVG-Shapes#line_interpolate). |
+| tension       | Number        | Depending on the interpolation type, sets the tension parameter.  (See [D3's line interpolation](https://github.com/mbostock/d3/wiki/SVG-Shapes#line_interpolate).) |
+
+#### Example: interpolate with `monotone`
+
+<span class="vl-example" data-name="line_monotone"></span>
+
+#### Example: interpolate with `line-step` (Step-Chart)
+
+<span class="vl-example" data-name="line_step"></span>
+
 
 {:#orient}
-### Marks Configuration for Bar, Tick, Line, and Area Marks
-
+### Orientation (for Bar, Tick, Line, and Area Marks)
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
@@ -176,37 +190,28 @@ vg.embed('#horizontal_line', {
 <div id="horizontal_line"></div>
 ---->
 
-{:#interpolate}
-### Marks Configuration for Line and Area Marks
+### Bar Config
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| interpolate   | String        | The line interpolation method to use. One of `"linear"`, `"step-before"`, `"step-after"`, `"basis"`, `"basis-open"`, `"basis-closed"`, `"bundle"`, `"cardinal"`, `"cardinal-open"`, `"cardinal-closed"`, `"monotone"`.  For more information about each interpolation method, please look at [D3's line interpolation document](https://github.com/mbostock/d3/wiki/SVG-Shapes#line_interpolate). |
-| tension       | Number        | Depending on the interpolation type, sets the tension parameter.  [D3's line interpolation document](https://github.com/mbostock/d3/wiki/SVG-Shapes#line_interpolate) |
+| barWidth      | Number        | The width of the bars.  If unspecified, the default width for bars on an ordinal scale is  `bandWidth-1`, which provides 1 pixel offset between bars.  If the dimension has linear scale, the bar's default size will be `2` instead.   |
 
-#### Example: interpolate with `monotone`
 
-<span class="vl-example" data-name="line_monotone"></span>
-
-#### Example: interpolate with `line-step` (Step-Chart)
-
-<span class="vl-example" data-name="line_step"></span>
-
-### Marks Configuration for Point Mark
+### Point Config
 
 | Property            | Type                | Description  |
 | :------------------ |:-------------------:| :------------|
 | shape               | Number              | The symbol shape to use. One of `"circle"` (default), `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`, or `"triangle-down"` |
 
 
-### Marks Configuration for Point, Circle, and Square Marks
+### Point Size Config (for Point, Circle, and Square Marks)
 
 | Property            | Type                | Description  |
 | :------------------ |:-------------------:| :------------|
 | size                | Number              | The pixel area each the point (30 by default). For example: in the case of circles, the radius is determined in part by the square root of the size value. |
 
 
-### Marks Configuration for Tick Marks
+### Tick Config
 
 <div id="thickness"></div>
 
@@ -215,9 +220,9 @@ vg.embed('#horizontal_line', {
 | tickWidth           | Number        | The width of the ticks.  If unspecified, the default value is `2/3*bandWidth`. This will provide offset between band equals to the width of the tick. |
 | thickness           | Number              | Thickness of the tick mark. |
 
-__TODO: Example - make tick mark thicker__
+<!--TODO: Example - make tick mark thicker-->
 
-### Marks Configuration for Text Marks
+### Text Config
 
 <div id="text"></div>
 
@@ -242,7 +247,7 @@ __TODO: Example - make tick mark thicker__
 | fontStyle           | String  | The font style (e.g., `italic`).|
 | fontWeight          | String  | The font weight (e.g., `bold`).|
 
-#### Text
+#### Text Value and Format
 
 | Property            | Type                | Description  |
 | :------------------ |:-------------------:| :------------|
@@ -274,9 +279,16 @@ For a full list of scale configuration and their default values, please see the 
 | gridOffset    | Number        | Offset for grid between facets.  |
 
 {:#facet-scale-config}
-### Facet Scale Configuration (`config.facet.scale`)
+### Facet Scale Configuration (`config.facet.scale.*`)
 
-Scale configuration determines default properties for `row` and `column` [scales](scale.html).
+Facet scale configuration determines default properties for `row` and `column` [scales](scale.html).
 <span class="note-line">__See Code:__
 For a full list of scale configuration and their default values, please see the `FacetScaleConfig` interface and `defaultFacetScaleConfig` in [scale.schema.ts](https://github.com/vega/vega-lite/blob/master/src/schema/scale.schema.ts).
+
+{:#facet-axis-config}
+### Facet Axis Configuration (`config.facet.axis.*`)
+
+Facet axis configuration determines default properties for `row` and `column` [axes](axis.html).
+<span class="note-line">__See Code:__
+For a full list of facet axis configuration and their default values, please see the `AxisConfig` interface and `defaultFacetAxisConfig` in [axis.schema.ts](https://github.com/vega/vega-lite/blob/master/src/schema/axis.schema.ts).
 </span>

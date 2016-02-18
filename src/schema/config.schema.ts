@@ -1,6 +1,6 @@
 import {UnitConfig, defaultUnitConfig} from './config.unit.schema';
 import {FacetConfig, defaultFacetConfig} from './config.facet.schema';
-import {MarkConfig, defaultMarkConfig} from './config.marks.schema';
+import {MarkConfig, defaultMarkConfig} from './config.mark.schema';
 import {ScaleConfig, defaultScaleConfig} from './scale.schema';
 import {AxisConfig, defaultAxisConfig} from './axis.schema';
 import {LegendConfig, defaultLegendConfig} from './legend.schema';
