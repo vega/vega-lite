@@ -69,7 +69,7 @@ Ordinal Scale
 <!-- TODO: add utc to the above table for temporal field -->
 
 **Note:**
-For more information about scale types, please see [d3 scale documentation](https://github.com/mbostock/d3/wiki/Quantitative-Scales) for more information.
+For more information about scale types, please see [d3 scale documentation](https://github.com/mbostock/d3/wiki/Quantitative-Scales).
 
 #### Example: Log Scale
 
