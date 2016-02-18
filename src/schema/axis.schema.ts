@@ -1,7 +1,7 @@
 import {AxisOrient} from '../enums';
 
 export interface AxisConfig {
-  // General
+  // ---------- General ----------
   /**
    * Width of the axis line
    */
@@ -14,18 +14,14 @@ export interface AxisConfig {
    * The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle.
    */
   offset?: number;
-  /**
-   * The orientation of the axis. One of top, bottom, left or right. The orientation can be used to further specialize the axis type (e.g., a y axis oriented for the right edge of the chart).
-   */
-  orient?: AxisOrient;
 
-  // Grid
+  // ---------- Grid ----------
   /**
    * A flag indicate if gridlines should be created in addition to ticks. If `grid` is unspecified, the default value is `true` for ROW and COL. For X and Y, the default value is `true` for quantitative and time fields and `false` otherwise.
    */
   grid?: boolean;
 
-  // Labels
+  // ---------- Labels ----------
   /**
    * Enable or disable labels.
    */
@@ -35,7 +31,7 @@ export interface AxisConfig {
    */
   labelAngle?: number;
   /**
-   * Text alignment for the Label. 
+   * Text alignment for the Label.
    */
   labelAlign?: string;
   /**
@@ -52,7 +48,7 @@ export interface AxisConfig {
    */
   shortTimeLabels?: boolean;
 
-  // Ticks
+  // ---------- Ticks ----------
   /**
    * If provided, sets the number of minor ticks between major ticks (the value 9 results in decimal subdivision). Only applicable for axes visualizing quantitative scales.
    */
@@ -87,7 +83,7 @@ export interface AxisConfig {
    */
   tickSizeEnd?: number;
 
-  // Title
+  // ---------- Title ----------
   /**
    * A title offset value for the axis.
    */
@@ -102,15 +98,22 @@ export interface AxisConfig {
    */
   characterWidth?: number;
 
+  // ---------- Other ----------
   /**
    * Optional mark property definitions for custom axis styling.
    */
   properties?: any; // TODO: replace
 }
 
+// TODO: add comment for properties that we rely on Vega's default to produce
+// more concise Vega output.
+
 export const defaultAxisConfig: AxisConfig = {
+  offset: undefined, // implicitly 0
+  grid: undefined, // automatically determined
   labels: true,
   labelMaxLength: 25,
+  tickSize: undefined, // implicitly 6
   characterWidth: 6
 };
 
@@ -123,9 +126,17 @@ export const defaultFacetAxisConfig: AxisConfig = {
 
 export interface AxisProperties extends AxisConfig {
   /**
-   * The formatting pattern for axis labels. If undefined, a good format is automatically determined. Vega-Lite uses D3's format pattern and automatically switches to datetime formatters.
+   * The rotation angle of the axis labels.
+   */
+  labelAngle?: number;
+  /**
+   * The formatting pattern for axis labels.
    */
   format?: string; // default value determined by config.format anyway
+  /**
+   * The orientation of the axis. One of top, bottom, left or right. The orientation can be used to further specialize the axis type (e.g., a y axis oriented for the right edge of the chart).
+   */
+  orient?: AxisOrient;
   /**
    * A title for the axis. Shows field name and its function by default.
    */

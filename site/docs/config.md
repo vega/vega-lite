@@ -10,6 +10,7 @@ permalink: /docs/config.html
 {
   "data": ... ,
   "mark": ... ,
+  "encoding": ... ,
   "config": {          // Configuration Object
     ...                // - Top-level Configuration
     "unit": { ... },   // - Unit Configuration
@@ -21,7 +22,6 @@ permalink: /docs/config.html
   }
 }
 ```
-
 
 Vega-Lite's `config` object lists configuration properties of a visualization.
 This page outlines different types of config properties:
@@ -272,6 +272,15 @@ Scale configuration determines default properties for all [scales](scale.html) e
 For a full list of scale configuration and their default values, please see the `ScaleConfig` interface and `defaultScaleConfig` in [scale.schema.ts](https://github.com/vega/vega-lite/blob/master/src/schema/scale.schema.ts).
 </span>
 
+{:#axis-config}
+## Axis Configuration  (`config.axis.*`)
+
+Axis configuration determines default properties for `x` and `y` [axes](axis.html). (For `row` and `column` axes, see [facet axis configuration](#facet-axis-config)).  
+
+<span class="note-line">__See Code:__
+For a full list of axis configuration and their default values, please see the `AxisConfig` interface and `defaultAxisConfig` in [axis.schema.ts](https://github.com/vega/vega-lite/blob/master/src/schema/axis.schema.ts).
+</span>
+
 ## Facet Configuration  (`config.facet.*`)
 
 ### Facet Grid Configuration (`config.facet.grid`)
@@ -282,12 +291,14 @@ For a full list of scale configuration and their default values, please see the 
 | gridOpacity   | Number        | Opacity of the grid between facets. |
 | gridOffset    | Number        | Offset for grid between facets.  |
 
+
 {:#facet-scale-config}
 ### Facet Scale Configuration (`config.facet.scale.*`)
 
 Facet scale configuration determines default properties for `row` and `column` [scales](scale.html).
 <span class="note-line">__See Code:__
 For a full list of scale configuration and their default values, please see the `FacetScaleConfig` interface and `defaultFacetScaleConfig` in [scale.schema.ts](https://github.com/vega/vega-lite/blob/master/src/schema/scale.schema.ts).
+
 
 {:#facet-axis-config}
 ### Facet Axis Configuration (`config.facet.axis.*`)
