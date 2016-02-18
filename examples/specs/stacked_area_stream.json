@@ -1,17 +1,17 @@
 {
-  "description": "Area chart showing weight of cars over time.",
   "data": {"url": "data/unemployment-industry.json"},
   "mark": "area",
   "encoding": {
     "x": {
       "timeUnit": "yearmonth", "field": "date", "type": "temporal",
       "scale": {"nice": "month"},
-      "axis": {"axisWidth": 0, "format": "%Y", "labelAngle": 0}
+      "axis": {"axisWidth": 0, "format": "%Y", "labelAngle": 0, "tickSize": 0}
     },
     "y": {
-      "aggregate": "sum", "field": "count","type": "quantitative"
+      "aggregate": "sum", "field": "count","type": "quantitative",
+      "axis": false
     },
     "color": {"field":"series", "type":"nominal", "scale":{"range": "category20b"}}
   },
-  "config": {"unit": {"width": 300, "height": 200}}
+  "config": {"unit": {"width": 300, "height": 200}, "mark": {"stacked": "center"}}
 }

@@ -8,8 +8,10 @@
       "axis": {"axisWidth": 0, "format": "%Y", "labelAngle": 0}
     },
     "y": {
-      "aggregate": "sum", "field": "count","type": "quantitative"
-    }
+      "aggregate": "sum", "field": "count","type": "quantitative",
+      "axis": false
+    },
+    "color": {"field":"series", "type":"nominal", "scale":{"range": "category20b"}}
   },
-  "config": {"unit": {"width": 300, "height": 200}}
+  "config": {"unit": {"width": 300, "height": 200}, "mark": {"stacked": "normalize"}}
 }
