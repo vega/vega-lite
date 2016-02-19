@@ -9,13 +9,17 @@ At its core, a Vega-Lite specification describes a single plot.  When a [facet c
 
 ## Width and Height of a Single Plot
 
-The width of a single plot or each cell of a trellis plot is determined based on the following rules:
+The width of a single plot or each cell of a trellis plot is determined by the properties of `y` channel:
 
 - If `x` channel has an ordinal scale, the width is a product of the scale's [`bandSize`]((scale.html#ordinal)) and the field's cardinality, or number of possible distinct values of the field mapped to `x` channel, plus the scale's padding.  (_xBandWidth * (xCardinality + xPadding)_).
 - If `x` has a continuous scale (either quantitative or time), the width is drawn directly from `width` property of the [cell configuration](config.html#cell-config).   
-- If `x` is not mapped to a field, the width is derived from [scale config](#scale-config)'s  `bandSize`.
+- If `x` is not mapped to a field, the width is derived from [scale config](#scale-config)'s  `bandSize` for all marks except `text` and from [scale config](#scale-config)'s `textBandWidth` for `text` mark.  
 
-The plot's height is determined by properties of the `y` channel in a similar fashion.  
+Similarly, the height of a single plot or each cell of a trellis plot is determined by the properties of the `y` channel:
+
+- If `y` channel has an ordinal scale, the height is a product of the scale's [`bandSize`]((scale.html#ordinal)) and the field's cardinality, or number of possible distinct values of the field mapped to `y` channel, plus the scale's padding.  (_yBandWidth * (yCardinality + yPadding)_).
+- If `y` has a continuous scale (either quantitative or time), the height is drawn directly from `height` property of the [cell configuration](config.html#cell-config).   
+- If `y` is not mapped to a field, the height is derived from [scale config](#scale-config)'s  `bandSize`.  
 
 ## Total Width and Height of a Trellis Plots
 
