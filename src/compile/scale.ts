@@ -177,7 +177,7 @@ export function scaleType(scale: Scale, fieldDef: FieldDef, channel: Channel, ma
   return null;
 }
 
-export function domain(scale: Scale, model: Model, channel:Channel, scaleType: string) {
+export function domain(scale: Scale, model: Model, channel:Channel, scaleType: string): any {
   var fieldDef = model.fieldDef(channel);
 
   if (scale.domain) { // explicit value
