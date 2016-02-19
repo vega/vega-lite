@@ -172,35 +172,6 @@ For the last visualization in this tutorial, we will explore the `weather` field
 
 However, the default color palette's semantics might not match our expectation.  For example, we probably do not expect "sun" (sunny) to be purple.  We can further tune the chart by providing a color [scale range]({{site.baseurl}}/docs/scale.html#range) that maps the values from the `weather` field to meaningful colors.  In addition, we can customize the [axis]({{site.baseurl}}/docs/axis.html) and [legend]({{site.baseurl}}/docs/legend.html) titles.  
 
-<div class="vl-example">
-{
-  "data": {"url": "data/seattle-weather.csv", "formatType": "csv"},
-  "mark": "bar",
-  "encoding": {
-    "x": {
-      "field": "date",
-      "type": "temporal",
-      "timeUnit": "month",
-      "axis": {"title": "Month of the year"}
-    },
-    "y": {
-      "field": "*",
-      "type": "quantitative",
-      "aggregate": "count"
-    },
-    "color": {
-      "field": "weather",
-      "type": "nominal",
-      "scale": {
-        "domain": ["sun","fog","drizzle","rain","snow"],
-        "range": ["#e7ba52","#c7c7c7","#aec7e8","#1f77b4","#9467bd"]
-      },
-      "legend": {
-        "title": "Weather type"
-      }
-    }
-  }
-}
-</div>
+<div class="vl-example" data-name="stacked_bar_weather"></div>
 
 This is the end of this tutorial where you learned different ways to discretize and aggregate data, derive new fields, and customize your charts. You can find more visualizations in the [gallery]({{site.baseurl}}/gallery.html). If you want to further customize your charts, please read the [documentation]({{site.baseurl}}/docs/).

@@ -11,11 +11,20 @@ export interface MarkConfig {
    * for usage example.
    */
   filled?: boolean;
-  /** Default color. */
+  /**
+   * Default color.
+   * @format color
+   */
   color?: string;
-  /** Default Fill Color.  This has higher precedence than config.color */
+  /**
+   * Default Fill Color.  This has higher precedence than config.color
+   * @format color
+   */
   fill?: string;
-  /** Default Stroke Color.  This has higher precedence than config.color */
+  /**
+   * Default Stroke Color.  This has higher precedence than config.color
+   * @format color
+   */
   stroke?: string;
 
 
