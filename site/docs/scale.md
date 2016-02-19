@@ -220,7 +220,7 @@ For ordinal, quantitative, and time fields, `range` can be a two-element array d
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| bandSize     | Number        | Width for each `x` or `y` ordinal band. ([See example](#ex-bandwidth).) <span class="note-line">__Default value:__ for `x` ordinal scale of a `text` mark, derived from [scale config](config.html#scale-config)'s `textBandWidth`; otherwise, derived from [scale config](config.html#scale-config)'s `bandSize`.</span> |
+| bandSize     | Number        | Width for each `x` or `y` ordinal band. ([See example](#ex-bandsize).) <span class="note-line">__Default value:__ for `x` ordinal scale of a `text` mark, derived from [scale config](config.html#scale-config)'s `textBandWidth`; otherwise, derived from [scale config](config.html#scale-config)'s `bandSize`.</span> |
 | padding       | Number        | • For `x` and `y` channels, the padding is a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points.  (See D3's [`ordinalRangePoints()`](https://github.com/mbostock/d3/wiki/Ordinal-Scales#ordinal_rangePoints) for illustration.) <span class="note-line">__Default value:__ derived from [scale config](config.html#scale-config)'s `padding`</span> <br/> • For `row` and `column`, padding is a pixel value for padding between cells in the trellis plots.  <span class="note-line">__Default value:__ derived from  [facet scale config](config.html#facet-scale-config)'s `padding`.</span>  |
 
 {:#ex-bandwidth}
