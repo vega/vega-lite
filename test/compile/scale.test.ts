@@ -390,7 +390,7 @@ describe('Scale', function() {
     // FIXME
   });
 
-  describe('bandWidth()', function() {
+  describe('bandSize()', function() {
     // FIXME
   });
 

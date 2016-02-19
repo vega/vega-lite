@@ -110,8 +110,8 @@ export class Model {
             round: config.scale.round,
             padding: config.scale.padding,
             useRawDomain: config.scale.useRawDomain,
-            bandWidth: channel === X && _scaleType === ScaleType.ORDINAL && mark === TEXTMARK ?
-                       config.scale.textBandWidth : config.scale.bandWidth
+            bandSize: channel === X && _scaleType === ScaleType.ORDINAL && mark === TEXTMARK ?
+                       config.scale.textBandWidth : config.scale.bandSize
           }, channelScale);
         }
       }
@@ -318,7 +318,7 @@ export class Model {
         }
         // BAR's size is applied on either X or Y
         return this.isOrdinalScale(channel) ?
-            // For ordinal scale or single bar, we can use bandWidth - 1
+            // For ordinal scale or single bar, we can use bandSize - 1
             // (-1 so that the border of the bar falls on exact pixel)
             this.scale(channel).bandSize - 1 :
           !this.has(channel) ?
@@ -329,10 +329,10 @@ export class Model {
         if (this.config().mark.tickSize) {
           return this.config().mark.tickSize;
         }
-        const bandWidth = this.has(channel) ?
+        const bandSize = this.has(channel) ?
           this.scale(channel).bandSize :
           scaleConfig.bandSize;
-        return bandWidth / 1.5;
+        return bandSize / 1.5;
     }
     return this.config().mark.size;
   }

@@ -212,7 +212,7 @@ For example, you can set `color` and `shape` of a scatter plot to constant value
 
 {:#ex-bar-size}
 
-Similarly, `value` for `size` channel of bar marks will adjust the bar's width.  By default, there will be 1 pixel offset between bars.  The following example sets the width to 10 to add more offset between bars.  
+Similarly, `value` for `size` channel of bar marks will adjust the bar's size.  By default, there will be 1 pixel offset between bars.  The following example sets the size to 10 to add more offset between bars.  
 
 <span class="vl-example" data-name="bar_aggregate_size"></span>
 

@@ -17,7 +17,7 @@ export namespace tick {
         field: model.field(X, { binSuffix: '_mid' })
       };
     } else {
-      p.xc = { value: 21 /* config.scale.bandWidth */ / 2 };
+      p.xc = { value: model.config().scale.bandSize / 2 };
     }
 
     // y
@@ -27,7 +27,7 @@ export namespace tick {
         field: model.field(Y, { binSuffix: '_mid' })
       };
     } else {
-      p.yc = { value: 21 /* config.scale.bandWidth */ / 2 };
+      p.yc = { value: model.config().scale.bandSize / 2 };
     }
 
     if (model.config().mark.orient === 'horizontal') {

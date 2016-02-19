@@ -81,7 +81,7 @@ export interface MarkConfig {
 
   // ---------- Bar ----------
   /**
-   * The size of the bars.  If unspecified, the default width is  `bandWidth-1`,
+   * The size of the bars.  If unspecified, the default size is  `bandSize-1`,
    * which provides 1 pixel offset between bars.
    */
   barSize?: number;

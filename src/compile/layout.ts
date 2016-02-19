@@ -93,7 +93,7 @@ function scaleWidthFormula(model: Model, channel: Channel, nonOrdinalSize: numbe
     }
   } else {
     if (model.mark() === TEXT_MARK && channel === X) {
-      // for text table without x/y scale we need wider bandWidth
+      // for text table without x/y scale we need wider bandSize
       return model.config().scale.textBandWidth + '';
     }
     return model.config().scale.bandSize + '';

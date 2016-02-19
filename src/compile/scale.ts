@@ -346,7 +346,7 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel, scaleT
           return {range: scaleConfig.barSizeRange};
         }
         const dimension = model.config().mark.orient === 'horizontal' ? Y : X;
-        return {range: [2 /* TODO: config.mark.thinBarWidth*/ , model.scale(dimension).bandSize]};
+        return {range: [ model.config().mark.thinBarWidth , model.scale(dimension).bandSize]};
       } else if (model.is(TEXT_MARK)) {
         return {range: scaleConfig.fontSizeRange };
       }
@@ -358,14 +358,14 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel, scaleT
       const xIsMeasure = model.isMeasure(X);
       const yIsMeasure = model.isMeasure(Y);
 
-      const bandWidth = xIsMeasure !== yIsMeasure ?
+      const bandSize = xIsMeasure !== yIsMeasure ?
         model.scale(xIsMeasure ? Y : X).bandSize :
         Math.min(
           model.scale(X).bandSize || scaleConfig.bandSize,
           model.scale(Y).bandSize || scaleConfig.bandSize
         );
 
-      return {range: [9, bandWidth * bandWidth]};
+      return {range: [9, (bandSize - 2) * (bandSize - 2)]};
     case SHAPE:
       return {range: scaleConfig.shapeRange};
     case COLOR:
