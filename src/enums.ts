@@ -44,7 +44,7 @@ export enum FontWeight {
     BOLD = 'bold' as any
 }
 
-export enum ShapeKind {
+export enum Shape {
     CIRCLE = 'circle' as any,
     SQUARE = 'square' as any,
     CROSS = 'cross' as any,
@@ -76,5 +76,3 @@ export enum StackOffset {
     NORMALIZE = 'normalize' as any,
     NONE = 'none' as any,
 }
-
-
