@@ -25,7 +25,6 @@ export namespace text {
   export function properties(model: Model) {
     // TODO Use Vega's marks properties interface
     let p: any = {};
-    const scaleConfig = model.config().scale.bandSize;
 
     applyMarkConfig(p, model,
       ['angle', 'align', 'baseline', 'dx', 'dy', 'font', 'fontWeight',

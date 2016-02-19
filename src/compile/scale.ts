@@ -346,7 +346,7 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel, scaleT
           return {range: scaleConfig.barSizeRange};
         }
         const dimension = model.config().mark.orient === 'horizontal' ? Y : X;
-        return {range: [ model.config().mark.thinBarWidth , model.scale(dimension).bandSize]};
+        return {range: [ model.config().mark.barThinSize, model.scale(dimension).bandSize]};
       } else if (model.is(TEXT_MARK)) {
         return {range: scaleConfig.fontSizeRange };
       }
