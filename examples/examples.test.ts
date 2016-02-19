@@ -1,18 +1,10 @@
 import {assert} from 'chai';
 import * as vl from '../src/vl';
+import {zSchema} from '../test/util';
 
-const zSchema = require('z-schema');
 const inspect = require('util').inspect;
-const dl = require('datalib');
 const fs = require('fs');
 const path = require('path');
-
-zSchema.registerFormat('color', function (str) {
-  return false;
-});
-zSchema.registerFormat('font', function (str) {
-  return false;
-});
 
 const validator = new zSchema({
   noEmptyArrays: true,
