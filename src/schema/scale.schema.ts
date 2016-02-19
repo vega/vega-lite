@@ -13,11 +13,11 @@ export interface ScaleConfig {
    */
   textBandWidth?: number;
   /**
-   * Default band width for (1) `y` ordinal scale,
+   * Default band size for (1) `y` ordinal scale,
    * and (2) `x` ordinal scale when the mark is not `text`.
    * @minimum 0
    */
-  bandWidth?: number;
+  bandSize?: number;
   /**
    * Default padding for `x` and `y` ordinal scales.
    */
@@ -49,7 +49,7 @@ export interface ScaleConfig {
 export const defaultScaleConfig: ScaleConfig = {
   round: true,
   textBandWidth: 90,
-  bandWidth: 21,
+  bandSize: 21,
   padding: 1,
   useRawDomain: false,
 
@@ -88,7 +88,7 @@ export interface Scale {
   /**
    * @minimum 0
    */
-  bandWidth?: number;
+  bandSize?: number;
   /**
    * Applies spacing among ordinal elements in the scale range. The actual effect depends on how the scale is configured. If the __points__ parameter is `true`, the padding value is interpreted as a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. Otherwise, padding is typically in the range [0, 1] and corresponds to the fraction of space in the range interval to allocate to padding. A value of 0.5 means that the range band width will be equal to the padding width. For more, see the [D3 ordinal scale documentation](https://github.com/mbostock/d3/wiki/Ordinal-Scales).
    */

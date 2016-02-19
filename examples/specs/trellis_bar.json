@@ -14,7 +14,7 @@
     },
     "x": {
       "field": "age", "type": "ordinal",
-      "scale": {"bandWidth": 17}
+      "scale": {"bandSize": 17}
     },
     "color": {
       "field": "gender", "type": "nominal",

@@ -117,7 +117,7 @@ TODO: Custom Domain for quantitative
 The range of the scale represents the set of output visual values.  Vega-Lite automatically determines appropriate range based on the scale's channel and type, but `range` property can be provided to customize range values.  
 
 `x` and `y` Scales
-: For continuous `x` and `y` scales (quantitative and time), the range are always `[0, cellWidth]` and  `[0, cellHeight]` (See [config.cell](config.html#cell-config) for customizing cell width and height).  For ordinal `x` and `y` scales, the maximum range is a product of the field's cardinality and [`bandWidth`](#ordinal).  
+: For continuous `x` and `y` scales (quantitative and time), the range are always `[0, cellWidth]` and  `[0, cellHeight]` (See [config.cell](config.html#cell-config) for customizing cell width and height).  For ordinal `x` and `y` scales, the maximum range is a product of the field's cardinality and [`bandSize`](#ordinal).  
 <span class="note-line">
 __Not Customizable__: specified `range` will be ignored.
 </span>
@@ -144,8 +144,8 @@ __Default value:__ derived from [scale config](config.html#scale-config)'s `shap
 : A `size` scale has a sequential range. Customized size `range` can be either a two-element array of color values for the interpolation or (for ordinal size scale only) an array of desired output size for each domain value.
 <span class="note-line">
 __Default value:__
-<br/> • for `bar`: derived from [scale config](config.html#scale-config)'s `barSizeRange`.  If both scale's `range` and the scale config's `barSizeRange` are unspecified (default), the default size range is a range from [mark config](config.mark.html)'s `thinBarWidth` to the scale's `bandWidth`.
-<br/> • for  `point`, `square`, and `circle`: derived from [scale config](config.html#scale-config)'s `pointSizeRange`.  If both scale's `range` and the scale config's `pointSizeRange` are unspecified (default), the default size range is a range from 9 to the square of the scale's `bandWidth` (_bandWidth^2_).
+<br/> • for `bar`: derived from [scale config](config.html#scale-config)'s `barSizeRange`.  If both scale's `range` and the scale config's `barSizeRange` are unspecified (default), the default size range is a range from [mark config](config.mark.html)'s `thinBarWidth` to the scale's `bandSize`.
+<br/> • for  `point`, `square`, and `circle`: derived from [scale config](config.html#scale-config)'s `pointSizeRange`.  If both scale's `range` and the scale config's `pointSizeRange` are unspecified (default), the default size range is a range from 9 to the square of the scale's `bandSize` (_bandSize^2_).
 <br/> • for  `text`: derived from [scale config](config.html#scale-config)'s `fontSizeRange` (`[8, 40]` by default).   
 </span>
 
@@ -220,7 +220,7 @@ For ordinal, quantitative, and time fields, `range` can be a two-element array d
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| bandWidth     | Number        | Width for each `x` or `y` ordinal band. ([See example](#ex-bandwidth).) <span class="note-line">__Default value:__ for `x` ordinal scale of a `text` mark, derived from [scale config](config.html#scale-config)'s `textBandWidth`; otherwise, derived from [scale config](config.html#scale-config)'s `bandwidth`.</span> |
+| bandSize     | Number        | Width for each `x` or `y` ordinal band. ([See example](#ex-bandsize).) <span class="note-line">__Default value:__ for `x` ordinal scale of a `text` mark, derived from [scale config](config.html#scale-config)'s `textBandWidth`; otherwise, derived from [scale config](config.html#scale-config)'s `bandSize`.</span> |
 | padding       | Number        | • For `x` and `y` channels, the padding is a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points.  (See D3's [`ordinalRangePoints()`](https://github.com/mbostock/d3/wiki/Ordinal-Scales#ordinal_rangePoints) for illustration.) <span class="note-line">__Default value:__ derived from [scale config](config.html#scale-config)'s `padding`</span> <br/> • For `row` and `column`, padding is a pixel value for padding between cells in the trellis plots.  <span class="note-line">__Default value:__ derived from  [facet scale config](config.html#facet-scale-config)'s `padding`.</span>  |
 
 {:#ex-bandwidth}
@@ -230,7 +230,7 @@ Given a bar chart:
 
 <div class="vl-example" data-name="bar"></div>
 
-We can make the band for each bar smaller by providing `scale`'s `bandWidth`.
+We can make the band for each bar smaller by providing `scale`'s `bandSize`.
 
 <div class="vl-example">
 {
@@ -246,7 +246,7 @@ We can make the band for each bar smaller by providing `scale`'s `bandWidth`.
   "encoding": {
     "x": {
       "field": "a", "type": "ordinal",
-      "scale": {"bandWidth": 11}
+      "scale": {"bandSize": 11}
     },
     "y": {"field": "b", "type": "quantitative"}
   }

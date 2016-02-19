@@ -81,10 +81,14 @@ export interface MarkConfig {
 
   // ---------- Bar ----------
   /**
-   * The width of the bars.  If unspecified, the default width is  `bandWidth-1`,
+   * The size of the bars.  If unspecified, the default width is  `bandWidth-1`,
    * which provides 1 pixel offset between bars.
    */
-  barWidth?: number;
+  barSize?: number;
+  /**
+   * The size of the bars on continuous scales.
+   */
+  barThinSize?: number;
 
   // ---------- Point ----------
   /**
@@ -100,10 +104,10 @@ export interface MarkConfig {
 
   // ---------- Tick ----------
   /** The width of the ticks. */
-  tickWidth?: number;
+  tickSize?: number;
 
   /** Thickness of the tick mark. */
-  thickness?: number;
+  tickThickness?: number;
 
   // ---------- Text ----------
   /**
@@ -174,7 +178,8 @@ export const defaultMarkConfig: MarkConfig = {
   color: '#4682b4',
   strokeWidth: 2,
   size: 30,
-  thickness: 1,
+  barThinSize: 2,
+  tickThickness: 1,
 
   fontSize: 10,
   baseline: VerticalAlign.MIDDLE,

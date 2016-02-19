@@ -306,28 +306,32 @@ export class Model {
     if (fieldDef && fieldDef.value !== undefined) {
        return fieldDef.value;
     }
+
+    const scaleConfig = this.config().scale;
+
     switch (this.mark()) {
       case TEXTMARK:
         return this.config().mark.fontSize; // font size 10 by default
       case BAR:
-        if (this.config().mark.barWidth) {
-          return this.config().mark.barWidth;
+        if (this.config().mark.barSize) {
+          return this.config().mark.barSize;
         }
         // BAR's size is applied on either X or Y
         return this.isOrdinalScale(channel) ?
             // For ordinal scale or single bar, we can use bandWidth - 1
             // (-1 so that the border of the bar falls on exact pixel)
-            this.scale(channel).bandWidth - 1 :
+            this.scale(channel).bandSize - 1 :
           !this.has(channel) ?
-            21 : /* config.scale.bandWidth */
-            2; /* TODO: config.mark.thinBarWidth*/  // otherwise, set to 2 by default
+            scaleConfig.bandSize - 1 :
+            // otherwise, set to thinBarWidth by default
+            this.config().mark.barThinSize;
       case TICK:
-        if (this.config().mark.tickWidth) {
-          return this.config().mark.tickWidth;
+        if (this.config().mark.tickSize) {
+          return this.config().mark.tickSize;
         }
         const bandWidth = this.has(channel) ?
-          this.scale(channel).bandWidth :
-          21; /* config.scale.bandWidth */
+          this.scale(channel).bandSize :
+          scaleConfig.bandSize;
         return bandWidth / 1.5;
     }
     return this.config().mark.size;

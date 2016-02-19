@@ -31,7 +31,7 @@ export namespace tick {
     }
 
     if (model.config().mark.orient === 'horizontal') {
-      p.width = { value: model.config().mark.thickness };
+      p.width = { value: model.config().mark.tickThickness };
       p.height = model.has(SIZE)? {
             scale: model.scaleName(SIZE),
             field: model.field(SIZE)
@@ -45,7 +45,7 @@ export namespace tick {
         } : {
           value: model.sizeValue(X)
         };
-      p.height = { value: model.config().mark.thickness };
+      p.height = { value: model.config().mark.tickThickness };
     }
 
     applyColorAndOpacity(p, model);

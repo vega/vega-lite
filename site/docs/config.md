@@ -62,8 +62,8 @@ Each plot in either a single plot or a trellis plot is called a _cell_. Cell con
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| width         | Integer       | The width of the single plot or each plot in a trellis plot when the visualization has continuous x-scale.  (If the visualization has ordinal x-scale, the width is determined by the x-scale's [`bandWidth`](scale.html#ordinal) and the cardinality of the x-scale.) <span class="note-line">__Default value:__ `200`</span> |
-| height        | Integer       | The height of the single plot or each plot in a trellis plot when the visualization has continuous y-scale.  (If the visualization has ordinal y-scale, the height is determined by the `bandWidth` and the cardinality of the y-scale.) <span class="note-line">__Default value:__ `200`</span> |
+| width         | Integer       | The width of the single plot or each plot in a trellis plot when the visualization has continuous x-scale.  (If the plot has ordinal x-scale, the width is determined by the x-scale's [`bandSize`](scale.html#ordinal) and the cardinality of the x-scale.  If the plot does not have a field on `x`, the width is [scale config](#scale-config)'s `bandSize`.) <span class="note-line">__Default value:__ `200`</span> |
+| height        | Integer       | The height of the single plot or each plot in a trellis plot when the visualization has continuous y-scale.  (If the visualization has ordinal y-scale, the height is determined by the `bandSize` and the cardinality of the y-scale.  If the plot does not have a field on `y`, the height is [scale config](#scale-config)'s `bandSize`.) <span class="note-line">__Default value:__ `200`</span> |
 
 **For more information about visualization's size, please see [Customizing Size](size.html) page.**
 
@@ -198,7 +198,7 @@ vg.embed('#horizontal_line', {
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| barWidth      | Number        | The width of the bars. <span class="note-line">__Default value:__  `bandWidth-1` for the bar's dimension is an ordinal scale. (This provides 1 pixel offset between bars.) and `2` for if bar's dimension has linear scale.  </span>  |
+| barSize      | Number        | The size of the bars (width for vertical bar charts and height for horizontal bar chart). <span class="note-line">__Default value:__  `bandSize-1` for the bar's dimension is an ordinal scale. (This provides 1 pixel offset between bars.) and `2` for if bar's dimension has linear scale.  </span>  |
 
 
 ### Point Config
@@ -217,14 +217,16 @@ vg.embed('#horizontal_line', {
 
 ### Tick Config
 
-<div id="thickness"></div>
+{:#tick-thickness}
 
 | Property            | Type                | Description  |
 | :------------------ |:-------------------:| :------------|
-| tickWidth           | Number        | The width of the ticks. <span class="note-line">__Default value:__ `2/3*bandWidth` (This will provide offset between band equals to the width of the tick.) </span>|
-| thickness           | Number              | Thickness of the tick mark. <span class="note-line">__Default value:__ `1` </span> |
+| tickSize           | Number        | The size of the ticks  (height of the ticks for horizontal dot plots and strip plots and width of the ticks for vertical dot plots and strip plots). <span class="note-line">__Default value:__ `2/3*bandSize` (This will provide offset between band equals to the width of the tick.) </span>|
+| tickThickness           | Number              | Thickness of the tick mark. <span class="note-line">__Default value:__ `1` </span> |
 
-<!--TODO: Example - make tick mark thicker-->
+#### Example Customizing Tick's Size and Thickness
+
+<span class="vl-example" data-name="tick_dot_thickness"></span>
 
 ### Text Config
 

@@ -1,0 +1,13 @@
+{
+  "data": {"url": "data/cars.json"},
+  "mark": "tick",
+  "encoding": {
+    "x": {"field": "Horsepower","type": "quantitative"}
+  },
+  "config": {
+    "mark": {
+      "tickThickness": 2,
+      "tickSize": 10
+    }
+  }
+}

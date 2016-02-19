@@ -8,7 +8,7 @@
     "y": {
       "field": "variety", "type": "ordinal",
       "sort": {"field": "yield","op": "mean"},
-      "scale": {"bandWidth": 12}
+      "scale": {"bandSize": 12}
     },
     "color": {"field": "year", "type": "nominal"}
   }
