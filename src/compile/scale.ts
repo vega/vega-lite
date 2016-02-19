@@ -318,7 +318,7 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel, scaleT
   const scaleConfig = model.config().scale;
 
   if (scaleType === 'ordinal' && scale.bandSize && contains([X, Y], channel)) {
-    return {bandWidth: scale.bandSize};
+    return {bandSize: scale.bandSize};
   }
 
   if (scale.range && !contains([X, Y, ROW, COLUMN], channel)) {
