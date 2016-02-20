@@ -7,6 +7,10 @@ export interface AxisConfig {
    */
   axisWidth?: number;
   /**
+   * // TODO: write good comment
+   */
+  axisColor?: string;
+  /**
    * A string indicating if the axis (and any gridlines) should be placed above or below the data marks.
    */
   layer?: string;

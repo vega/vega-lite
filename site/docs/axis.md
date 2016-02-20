@@ -47,6 +47,15 @@ The `axis` property object supports the following properties:
 | offset        | Number | The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle.  <span class="note-line">__Default value:__ derived from  [axis config](config.html#facet-scale-config)'s `offset` (`0` by default)</span>|
 | orient        | String        | The orientation of the axis. One of `top` or `bottom` for `y` and `row` channels, and `left` or `right` for `x` and `column` channels.  <span class="note-line">__Default value:__ `x` axis is placed on the bottom, `y` axis is placed on the left, `column`"s x-axis is placed on the top, `row`"s y-axis is placed on the right. </span> |
 
+
+
+### General
+
+| Property      | Type          | Description    |
+| :------------ |:-------------:| :------------- |
+| axisColor     | Number        | TODO <span class="note-line">__Default value:__ TODO. </span> |
+| axisWidth     | Number        | TODO <span class="note-line">__Default value:__ TODO. </span> |
+
 ### Grid
 
 | Property      | Type          | Description    |

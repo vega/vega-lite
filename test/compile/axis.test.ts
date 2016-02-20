@@ -147,6 +147,12 @@ describe('Axis', function() {
     });
   });
 
+  describe('properties.axis()', function() {
+    it('axisColor should change axis\'s color', function() {
+      // TODO: call axis.properties.axis with a spec that contains axis.axisColor
+    });
+  });
+
   describe('properties.labels()', function () {
     it('should show labels by default', function () {
       const labels = axis.properties.labels(parseModel({
