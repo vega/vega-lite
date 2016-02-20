@@ -14,8 +14,8 @@ images:
    bgposition: 75% 0%
    bgsize: 150%
  - spec: line_color
-   bgposition: 50% 30%
-   bgsize: 150%
+   bgposition: 40% 30%
+   bgsize: 170%
  - spec: scatter_colored_with_shape
  - spec: trellis_barley
    bgsize: 250%

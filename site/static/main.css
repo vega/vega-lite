@@ -316,6 +316,8 @@ nav a:hover {
   /* hack to make height depend on width*/
   padding-bottom: calc(16% - 12px);
   margin: 8px 0;
+  border: 1px solid #ddd;
+  background-clip: padding-box;
   background-position: center;
   background-repeat: no-repeat;
 }
@@ -342,12 +344,12 @@ nav a:hover {
   width: 100%;
   /* hack to make height depend on width*/
   padding-bottom: 100%;
-  border: 2px solid #CECECE;
+  border: 1px solid #ddd;
   background-repeat: no-repeat;
   background-clip: padding-box;
 }
 .gallery .image:hover {
-  border-color: #8c8c8c;
+  border-color: #bfbfbf;
 }
 
 /* Examples */
