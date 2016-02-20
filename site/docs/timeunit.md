@@ -31,7 +31,6 @@ Currently supported values are: `'year'`, `'month'`, `'day'`, `'date'`, `'hours'
 
 <!-- TODO: explain more distinction between `'month'`, `'day'`, `'date'`, `'hours'`, `'minutes'`, `'seconds'`, `'milliseconds'` and yearmonth, .. -->
 
-----
 #### Example
 
 This example shows temperature in Seattle over the months.

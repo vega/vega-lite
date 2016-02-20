@@ -127,7 +127,7 @@ By default, line marks order their points in their paths by the field of channel
 | :------------ |:-------------:| :------------- |
 | row, column   | [ChannelDef](#def)| Vertical and horizontal facets for vertical and horizontal [trellis plots](https://en.wikipedia.org/wiki/Small_multiple). |
 
-For more information, please see [facet](facet.html) page.
+For more information, please see [facet page](facet.html).
 
 **Note**: Since `row` and `column` represent actual data fields that are used to partition the data, they cannot encode constant `value`.  In addition, in aggregate plots, they should not have `aggregate` function specified.  
 
