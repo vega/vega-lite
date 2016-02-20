@@ -12,7 +12,7 @@ export interface CellConfig {
   fillOpacity?: number;
   stroke?: string;
   strokeWidth?: number;
-  strokeOpacity? :number;
+  strokeOpacity?: number;
   strokeDash?: number;
   /** The offset (in pixels) into which to begin drawing with the stroke dash array. */
   strokeDashOffset?: number;
