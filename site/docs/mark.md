@@ -43,7 +43,7 @@ Mapping a field to either only `x` (or only `y`) of `point` mark creates a **dot
 
 ### Scatter Plot
 
-Mapping fields to both the `x` and `y` dimensions creates a scatter plot.
+Mapping fields to both the `x` and `y` channels creates a scatter plot.
 
 <span class="vl-example" data-name="scatter"></span>
 
@@ -179,7 +179,7 @@ The `line` mark represents the data points stored in a field with a line connect
 
 ### Line Chart
 
-Using `line` with one dimension (typically on `x`) and one measure (typically on `y`) produces a simple line chart with a single line.
+Using `line` with one ordinal field (typically on `x`) and another quantitative field (typically on `y`) produces a simple line chart with a single line.
 
 <span class="vl-example" data-name="line"></span>
 
@@ -199,17 +199,17 @@ Alternatively, we can map the same field to `detail`, creating multiple lines bu
 
 ### Line Chart with Custom Path
 
-By default, the line's path (order of points in the line) is determined by data values on the dimension axis (x or y) like shown in previous examples.  However, a field can be mapped to `path` channel for determining custom path.
+By default, the line's path (order of points in the line) is determined by data values on the ordinal dimension (x or y) like shown in previous examples.  However, a field can be mapped to `path` channel for determining custom path.
 
 <span class="vl-example" data-name="scatter_connected"></span>
 
 ## Area
 
-Similar to `line`, `area` represent multiple data element as a single area shape.  
+`area` represent multiple data element as a single area shape.  
 
 ### Area Chart
 
-Using `area` mark with one dimension (typically on `x`) and one measure (typically on `y`) produces an area chart.  For example, the following area chart shows a number of unemployment people in US over time.
+Using `area` mark with one ordinal field (typically on `x`) and one quantitative field (typically on `y`) produces an area chart.  For example, the following area chart shows a number of unemployment people in US over time.
 
 <span class="vl-example" data-name="area"></span>
 
