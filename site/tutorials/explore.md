@@ -1,8 +1,8 @@
 ---
 layout: tutorials
 menu: tutorials
-title: Visualizing Weather Data
-permalink: /tutorials/weather.html
+title: Exploring Data
+permalink: /tutorials/explore.html
 ---
 
 In this tutorial, you'll learn a few more techniques for creating visualizations in Vega-Lite. If you are not familiar with Vega-Lite, please read the [getting started tutorial](/tutorials/getting_started.html) first.
