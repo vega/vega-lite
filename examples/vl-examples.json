@@ -153,6 +153,14 @@
       }
     },
     {
+      "name": "trellis_bar_histogram",
+      "title": "Trellis Histograms",
+      "galleryParameters": {
+        "backgroundSize": "104%",
+        "backgroundPosition": "0% 30%"
+      }
+    },
+    {
       "name": "trellis_barley",
       "title": "Becker's Barley",
       "galleryParameters": {

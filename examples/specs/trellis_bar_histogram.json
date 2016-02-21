@@ -1,0 +1,17 @@
+{
+  "data": {"url": "data/cars.json"},
+  "mark": "bar",
+  "encoding": {
+    "x": {
+      "bin": {"maxbins": 15},
+      "field": "Horsepower",
+      "type": "quantitative"
+    },
+    "y": {
+      "aggregate": "count",
+      "field": "*",
+      "type": "quantitative"
+    },
+    "row": {"field": "Origin","type": "nominal"}
+  }
+}
