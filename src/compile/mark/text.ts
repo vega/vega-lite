@@ -1,6 +1,6 @@
 import {Model} from '../Model';
 import {X, Y, COLOR, TEXT, SIZE} from '../../channel';
-import {applyMarkConfig, applyColorAndOpacity, formatMixins} from '../util';
+import {applyMarkConfig, applyColorAndOpacity, formatMixins} from '../common';
 import {extend, contains} from '../../util';
 import {QUANTITATIVE, ORDINAL, TEMPORAL} from '../../type';
 

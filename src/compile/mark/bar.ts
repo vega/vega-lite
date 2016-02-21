@@ -1,6 +1,6 @@
 import {Model} from '../Model';
 import {X, Y, SIZE} from '../../channel';
-import {applyColorAndOpacity} from '../util';
+import {applyColorAndOpacity} from '../common';
 
 
 export namespace bar {

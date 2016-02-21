@@ -1,6 +1,6 @@
 import {Model} from '../Model';
 import {X, Y} from '../../channel';
-import {applyColorAndOpacity, applyMarkConfig} from '../util';
+import {applyColorAndOpacity, applyMarkConfig} from '../common';
 
 
 export namespace line {

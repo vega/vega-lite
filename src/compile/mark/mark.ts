@@ -11,7 +11,7 @@ import {line} from './line';
 import {point, circle, square} from './point';
 import {text} from './text';
 import {tick} from './tick';
-import {sortField} from '../util';
+import {sortField} from '../common';
 
 
 const markCompiler = {

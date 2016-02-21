@@ -5,7 +5,7 @@ import {Model} from './Model';
 
 import {compileAxis, compileInnerAxis, gridShow} from './axis';
 import {compileScales} from './scale';
-import {applyConfig, FILL_STROKE_CONFIG} from './util';
+import {applyConfig, FILL_STROKE_CONFIG} from './common';
 
 /**
  * return mixins that contains marks, scales, and axes for the rootGroup

@@ -3,7 +3,7 @@ import {contains, extend, truncate} from '../util';
 import {NOMINAL, ORDINAL, TEMPORAL} from '../type';
 import {COLUMN, ROW, X, Y, Channel} from '../channel';
 import {AxisOrient} from '../enums';
-import {formatMixins} from './util';
+import {formatMixins} from './common';
 
 // https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations
 declare let exports;
