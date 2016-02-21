@@ -57,7 +57,7 @@
     "tsify": "^0.13.2",
     "tslint": "^3.3.0",
     "typescript": "^1.8.0",
-    "typescript-json-schema": "domoritz/typescript-json-schema#patch-1",
+    "typescript-json-schema": "^0.0.6",
     "uglify-js": "^2.6.1",
     "vega": "^2.4.2",
     "vega-datasets": "vega/vega-datasets#gh-pages",
