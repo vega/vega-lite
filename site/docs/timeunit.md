@@ -1,6 +1,6 @@
 ---
 layout: docs
-title: Time Unit Conversion
+title: Time Unit
 permalink: /docs/timeunit.html
 ---
 
@@ -23,11 +23,9 @@ permalink: /docs/timeunit.html
 }
 ```
 
+`timeUnit` property of a channel definition sets the level of specificity for a temporal field.  Currently supported values are: `'year'`, `'month'`, `'day'`, `'date'`, `'hours'`, `'minutes'`, `'seconds'`, `'milliseconds'`, `'yearmonth'`, `'yearmonthday'`, `'yearmonthdate'`, `'yearday'`, `'yeardate'`, `'yearmonthdayhours'`, `'yearmonthdayhoursminutes'`, `'hoursminutes'`, `'hoursminutesseconds'`, `'minutesseconds'`, `'secondsmilliseconds'`.
 
-New time unit fields can be derived from existing temporal fields using each channel definition's `timeUnit` property.  
-
-Currently supported values are: `'year'`, `'month'`, `'day'`, `'date'`, `'hours'`, `'minutes'`, `'seconds'`, `'milliseconds'`, `'yearmonth'`, `'yearmonthday'`, `'yearmonthdate'`, `'yearday'`, `'yeardate'`, `'yearmonthdayhours'`, `'yearmonthdayhoursminutes'`, `'hoursminutes'`,
-`'hoursminutesseconds'`, `'minutesseconds'`, `'secondsmilliseconds'`.
+<!-- TODO: given a example datetime, show examples show each different time unit property transforms the original time -->
 
 <!-- TODO: explain more distinction between `'month'`, `'day'`, `'date'`, `'hours'`, `'minutes'`, `'seconds'`, `'milliseconds'` and yearmonth, .. -->
 
