@@ -25,16 +25,20 @@
         }
     },
     "definitions": {
+        "DataFormat": {
+            "type": "string",
+            "title": "DataFormat",
+            "enum": [
+                "json",
+                "csv",
+                "tsv"
+            ]
+        },
         "Data": {
             "type": "object",
             "properties": {
                 "formatType": {
-                    "type": "string",
-                    "enum": [
-                        "json",
-                        "csv",
-                        "tsv"
-                    ]
+                    "$ref": "#/definitions/DataFormat"
                 },
                 "url": {
                     "type": "string"
@@ -95,12 +99,30 @@
                 "square"
             ]
         },
+        "AxisOrient": {
+            "type": "string",
+            "title": "AxisOrient",
+            "enum": [
+                "top",
+                "right",
+                "left",
+                "bottom"
+            ]
+        },
         "AxisProperties": {
             "type": "object",
             "properties": {
+                "labelAngle": {
+                    "type": "number",
+                    "description": "The rotation angle of the axis labels."
+                },
                 "format": {
                     "type": "string",
-                    "description": "The formatting pattern for axis labels. If undefined, a good format is automatically determined. Vega-Lite uses D3's format pattern and automatically switches to datetime formatters."
+                    "description": "The formatting pattern for axis labels."
+                },
+                "orient": {
+                    "$ref": "#/definitions/AxisOrient",
+                    "description": "The orientation of the axis. One of top, bottom, left or right. The orientation can be used to further specialize the axis type (e.g., a y axis oriented for the right edge of the chart)."
                 },
                 "title": {
                     "type": "string",
@@ -124,16 +146,6 @@
                     "type": "number",
                     "description": "The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle."
                 },
-                "orient": {
-                    "type": "string",
-                    "description": "The orientation of the axis. One of top, bottom, left or right. The orientation can be used to further specialize the axis type (e.g., a y axis oriented for the right edge of the chart).",
-                    "enum": [
-                        "top",
-                        "right",
-                        "left",
-                        "bottom"
-                    ]
-                },
                 "grid": {
                     "type": "boolean",
                     "description": "A flag indicate if gridlines should be created in addition to ticks. If `grid` is unspecified, the default value is `true` for ROW and COL. For X and Y, the default value is `true` for quantitative and time fields and `false` otherwise."
@@ -142,9 +154,13 @@
                     "type": "boolean",
                     "description": "Enable or disable labels."
                 },
-                "labelAngle": {
-                    "type": "number",
-                    "description": "The rotation angle of the axis labels."
+                "labelAlign": {
+                    "type": "string",
+                    "description": "Text alignment for the Label."
+                },
+                "labelBaseline": {
+                    "type": "string",
+                    "description": "Text baseline for the label."
                 },
                 "labelMaxLength": {
                     "type": "number",
@@ -207,22 +223,56 @@
                 }
             }
         },
+        "ScaleType": {
+            "type": "string",
+            "title": "ScaleType",
+            "enum": [
+                "linear",
+                "log",
+                "pow",
+                "sqrt",
+                "quantile",
+                "ordinal",
+                "time"
+            ]
+        },
+        "NiceTime": {
+            "type": "string",
+            "title": "NiceTime",
+            "enum": [
+                "second",
+                "minute",
+                "hour",
+                "day",
+                "week",
+                "month",
+                "year"
+            ]
+        },
         "Scale": {
             "type": "object",
             "properties": {
                 "type": {
-                    "type": "string",
-                    "enum": [
-                        "linear",
-                        "log",
-                        "pow",
-                        "sqrt",
-                        "quantile",
-                        "ordinal"
-                    ]
+                    "$ref": "#/definitions/ScaleType"
                 },
                 "domain": {
-                    "type": "object",
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "array",
+                            "items": {
+                                "type": "number"
+                            }
+                        },
+                        {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    ],
                     "description": "The domain of the scale, representing the set of data values. For quantitative data, this can take the form of a two-element array with minimum and maximum values. For ordinal/categorical data, this may be an array of valid input values. The domain may also be specified by a reference to a data source."
                 },
                 "range": {
@@ -249,7 +299,7 @@
                     "type": "boolean",
                     "description": "If true, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid."
                 },
-                "bandWidth": {
+                "bandSize": {
                     "type": "number",
                     "minimum": 0
                 },
@@ -267,19 +317,10 @@
                             "type": "boolean"
                         },
                         {
-                            "type": "string"
+                            "$ref": "#/definitions/NiceTime"
                         }
                     ],
-                    "description": "If specified, modifies the scale domain to use a more human-friendly value range. If specified as a true boolean, modifies the scale domain to use a more human-friendly number range (e.g., 7 instead of 6.96). If specified as a string, modifies the scale domain to use a more human-friendly value range. For time and utc scale types only, the nice value should be a string indicating the desired time interval.",
-                    "enum": [
-                        "second",
-                        "minute",
-                        "hour",
-                        "day",
-                        "week",
-                        "month",
-                        "year"
-                    ]
+                    "description": "If specified, modifies the scale domain to use a more human-friendly value range. If specified as a true boolean, modifies the scale domain to use a more human-friendly number range (e.g., 7 instead of 6.96). If specified as a string, modifies the scale domain to use a more human-friendly value range. For time and utc scale types only, the nice value should be a string indicating the desired time interval."
                 },
                 "exponent": {
                     "type": "number",
@@ -295,6 +336,41 @@
                 }
             }
         },
+        "AggregateOp": {
+            "type": "string",
+            "title": "AggregateOp",
+            "enum": [
+                "values",
+                "count",
+                "valid",
+                "missing",
+                "distinct",
+                "sum",
+                "mean",
+                "average",
+                "variance",
+                "variancep",
+                "stdev",
+                "stdevp",
+                "median",
+                "q1",
+                "q3",
+                "modeskew",
+                "min",
+                "max",
+                "argmin",
+                "argmax"
+            ]
+        },
+        "SortOrder": {
+            "type": "string",
+            "title": "SortOrder",
+            "enum": [
+                "ascending",
+                "descending",
+                "none"
+            ]
+        },
         "SortField": {
             "type": "object",
             "properties": {
@@ -303,44 +379,47 @@
                     "description": "The field name to aggregate over."
                 },
                 "op": {
-                    "type": "string",
-                    "description": "The field name to aggregate over.",
-                    "enum": [
-                        "values",
-                        "count",
-                        "valid",
-                        "missing",
-                        "distinct",
-                        "sum",
-                        "mean",
-                        "average",
-                        "variance",
-                        "variancep",
-                        "stdev",
-                        "stdevp",
-                        "median",
-                        "q1",
-                        "q3",
-                        "modeskew",
-                        "min",
-                        "max",
-                        "argmin",
-                        "argmax"
-                    ]
+                    "$ref": "#/definitions/AggregateOp",
+                    "description": "The sort aggregation operator"
                 },
                 "order": {
-                    "type": "string"
+                    "$ref": "#/definitions/SortOrder"
                 }
             }
         },
-        "Type": {
+        "DataType": {
             "type": "string",
-            "title": "Type",
+            "title": "DataType",
             "enum": [
                 "quantitative",
                 "ordinal",
                 "temporal",
                 "nominal"
+            ]
+        },
+        "TimeUnit": {
+            "type": "string",
+            "title": "TimeUnit",
+            "enum": [
+                "year",
+                "month",
+                "day",
+                "date",
+                "hours",
+                "minutes",
+                "seconds",
+                "milliseconds",
+                "yearmonth",
+                "yearmonthday",
+                "yearmonthdate",
+                "yearday",
+                "yeardate",
+                "yearmonthdayhours",
+                "yearmonthdayhoursminutes",
+                "hoursminutes",
+                "hoursminutesseconds",
+                "minutesseconds",
+                "secondsmilliseconds"
             ]
         },
         "BinProperties": {
@@ -409,7 +488,7 @@
                             "$ref": "#/definitions/SortField"
                         },
                         {
-                            "type": "string"
+                            "$ref": "#/definitions/SortOrder"
                         }
                     ]
                 },
@@ -417,7 +496,7 @@
                     "type": "string"
                 },
                 "type": {
-                    "$ref": "#/definitions/Type"
+                    "$ref": "#/definitions/DataType"
                 },
                 "value": {
                     "oneOf": [
@@ -433,7 +512,7 @@
                     ]
                 },
                 "timeUnit": {
-                    "type": "string"
+                    "$ref": "#/definitions/TimeUnit"
                 },
                 "bin": {
                     "oneOf": [
@@ -446,7 +525,7 @@
                     ]
                 },
                 "aggregate": {
-                    "type": "string"
+                    "$ref": "#/definitions/AggregateOp"
                 },
                 "displayName": {
                     "type": "string"
@@ -500,7 +579,7 @@
                             "$ref": "#/definitions/SortField"
                         },
                         {
-                            "type": "string"
+                            "$ref": "#/definitions/SortOrder"
                         }
                     ]
                 },
@@ -508,7 +587,7 @@
                     "type": "string"
                 },
                 "type": {
-                    "$ref": "#/definitions/Type"
+                    "$ref": "#/definitions/DataType"
                 },
                 "value": {
                     "oneOf": [
@@ -524,7 +603,7 @@
                     ]
                 },
                 "timeUnit": {
-                    "type": "string"
+                    "$ref": "#/definitions/TimeUnit"
                 },
                 "bin": {
                     "oneOf": [
@@ -537,7 +616,7 @@
                     ]
                 },
                 "aggregate": {
-                    "type": "string"
+                    "$ref": "#/definitions/AggregateOp"
                 },
                 "displayName": {
                     "type": "string"
@@ -551,7 +630,7 @@
                     "type": "string"
                 },
                 "type": {
-                    "$ref": "#/definitions/Type"
+                    "$ref": "#/definitions/DataType"
                 },
                 "value": {
                     "oneOf": [
@@ -567,7 +646,7 @@
                     ]
                 },
                 "timeUnit": {
-                    "type": "string"
+                    "$ref": "#/definitions/TimeUnit"
                 },
                 "bin": {
                     "oneOf": [
@@ -580,7 +659,7 @@
                     ]
                 },
                 "aggregate": {
-                    "type": "string"
+                    "$ref": "#/definitions/AggregateOp"
                 },
                 "displayName": {
                     "type": "string"
@@ -591,13 +670,13 @@
             "type": "object",
             "properties": {
                 "sort": {
-                    "type": "string"
+                    "$ref": "#/definitions/SortOrder"
                 },
                 "field": {
                     "type": "string"
                 },
                 "type": {
-                    "$ref": "#/definitions/Type"
+                    "$ref": "#/definitions/DataType"
                 },
                 "value": {
                     "oneOf": [
@@ -613,7 +692,7 @@
                     ]
                 },
                 "timeUnit": {
-                    "type": "string"
+                    "$ref": "#/definitions/TimeUnit"
                 },
                 "bin": {
                     "oneOf": [
@@ -626,7 +705,7 @@
                     ]
                 },
                 "aggregate": {
-                    "type": "string"
+                    "$ref": "#/definitions/AggregateOp"
                 },
                 "displayName": {
                     "type": "string"
@@ -704,7 +783,7 @@
                 }
             }
         },
-        "UnitConfig": {
+        "CellConfig": {
             "type": "object",
             "properties": {
                 "width": {
@@ -741,35 +820,95 @@
                 }
             }
         },
+        "StackOffset": {
+            "type": "string",
+            "title": "StackOffset",
+            "enum": [
+                "zero",
+                "center",
+                "normalize",
+                "none"
+            ]
+        },
+        "Shape": {
+            "type": "string",
+            "title": "Shape",
+            "enum": [
+                "circle",
+                "square",
+                "cross",
+                "diamond",
+                "triangle-up",
+                "triangle-down"
+            ]
+        },
+        "HorizontalAlign": {
+            "type": "string",
+            "title": "HorizontalAlign",
+            "enum": [
+                "left",
+                "right",
+                "center"
+            ]
+        },
+        "VerticalAlign": {
+            "type": "string",
+            "title": "VerticalAlign",
+            "enum": [
+                "top",
+                "middle",
+                "bottom"
+            ]
+        },
+        "FontStyle": {
+            "type": "string",
+            "title": "FontStyle",
+            "enum": [
+                "normal",
+                "italic"
+            ]
+        },
+        "FontWeight": {
+            "type": "string",
+            "title": "FontWeight",
+            "enum": [
+                "normal",
+                "bold"
+            ]
+        },
         "MarkConfig": {
             "type": "object",
             "properties": {
                 "filled": {
                     "type": "boolean",
-                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color. This is only applicable for \"bar\", \"point\", and \"area\". All marks except \"point\" marks are filled by default."
+                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color.\n\nThis is only applicable for \"bar\", \"point\", and \"area\".\n\nAll marks except \"point\" marks are filled by default.\n\nSee Mark Documentation (http://vega.github.io/vega-lite/docs/marks.html)\n\nfor usage example."
                 },
                 "color": {
                     "type": "string",
-                    "description": "Default color."
+                    "description": "Default color.",
+                    "format": "color"
                 },
-                "barWidth": {
-                    "type": "number",
-                    "description": "The width of the bars.  If unspecified, the default width is  `bandWidth-1`, which provides 1 pixel offset between bars."
-                },
-                "tickWidth": {
-                    "type": "number",
-                    "description": "The width of the ticks."
-                },
-                "stacked": {
+                "fill": {
                     "type": "string",
-                    "enum": [
-                        "zero",
-                        "center",
-                        "normalize",
-                        "none"
-                    ]
+                    "description": "Default Fill Color.  This has higher precedence than config.color",
+                    "format": "color"
+                },
+                "stroke": {
+                    "type": "string",
+                    "description": "Default Stroke Color.  This has higher precedence than config.color",
+                    "format": "color"
                 },
                 "opacity": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                },
+                "fillOpacity": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                },
+                "strokeOpacity": {
                     "type": "number",
                     "minimum": 0,
                     "maximum": 1
@@ -792,25 +931,12 @@
                     },
                     "description": "The offset (in pixels) into which to begin drawing with the stroke dash array."
                 },
-                "fill": {
-                    "type": "string"
-                },
-                "fillOpacity": {
-                    "type": "number",
-                    "minimum": 0,
-                    "maximum": 1
-                },
-                "stroke": {
-                    "type": "string"
-                },
-                "strokeOpacity": {
-                    "type": "number",
-                    "minimum": 0,
-                    "maximum": 1
+                "stacked": {
+                    "$ref": "#/definitions/StackOffset"
                 },
                 "orient": {
                     "type": "string",
-                    "description": "The orientation of a non-stacked bar, tick, area, and line charts. The value is either horizontal (default) or vertical. For bar and tick, this determines whether the size of the bar and tick should be applied to x or y dimension. For area, this property determines the orient property of the Vega output. For line, this property determines the sort order of the points in the line if `config.sortLineBy` is not specified. For stacked charts, this is always determined by the orientation of the stack; therefore explicitly specified value will be ignored."
+                    "description": "The orientation of a non-stacked bar, tick, area, and line charts.\n\nThe value is either horizontal (default) or vertical.\n\n- For bar and tick, this determines whether the size of the bar and tick\n\nshould be applied to x or y dimension.\n\n- For area, this property determines the orient property of the Vega output.\n\n- For line, this property determines the sort order of the points in the line\n\nif `config.sortLineBy` is not specified.\n\nFor stacked charts, this is always determined by the orientation of the stack;\n\ntherefore explicitly specified value will be ignored."
                 },
                 "interpolate": {
                     "type": "string",
@@ -820,47 +946,41 @@
                     "type": "number",
                     "description": "Depending on the interpolation type, sets the tension parameter."
                 },
+                "barSize": {
+                    "type": "number",
+                    "description": "The size of the bars.  If unspecified, the default size is  `bandSize-1`,\n\nwhich provides 1 pixel offset between bars."
+                },
+                "barThinSize": {
+                    "type": "number",
+                    "description": "The size of the bars on continuous scales."
+                },
                 "shape": {
-                    "type": "string",
-                    "description": "The symbol shape to use. One of circle (default), square, cross, diamond, triangle-up, or triangle-down.",
-                    "enum": [
-                        "circle",
-                        "square",
-                        "cross",
-                        "diamond",
-                        "triangle-up",
-                        "triangle-down"
-                    ]
+                    "$ref": "#/definitions/Shape",
+                    "description": "The symbol shape to use. One of circle (default), square, cross, diamond, triangle-up, or triangle-down."
                 },
                 "size": {
                     "type": "number",
                     "description": "The pixel area each the point. For example: in the case of circles, the radius is determined in part by the square root of the size value."
                 },
-                "thickness": {
+                "tickSize": {
+                    "type": "number",
+                    "description": "The width of the ticks."
+                },
+                "tickThickness": {
                     "type": "number",
                     "description": "Thickness of the tick mark."
                 },
                 "align": {
-                    "type": "string",
-                    "description": "The horizontal alignment of the text. One of left, right, center.",
-                    "enum": [
-                        "left",
-                        "right",
-                        "center"
-                    ]
+                    "$ref": "#/definitions/HorizontalAlign",
+                    "description": "The horizontal alignment of the text. One of left, right, center."
                 },
                 "angle": {
                     "type": "number",
                     "description": "The rotation angle of the text, in degrees."
                 },
                 "baseline": {
-                    "type": "string",
-                    "description": "The vertical alignment of the text. One of top, middle, bottom.",
-                    "enum": [
-                        "top",
-                        "middle",
-                        "bottom"
-                    ]
+                    "$ref": "#/definitions/VerticalAlign",
+                    "description": "The vertical alignment of the text. One of top, middle, bottom."
                 },
                 "dx": {
                     "type": "number",
@@ -887,20 +1007,12 @@
                     "description": "The font size, in pixels."
                 },
                 "fontStyle": {
-                    "type": "string",
-                    "description": "The font style (e.g., italic).",
-                    "enum": [
-                        "normal",
-                        "italic"
-                    ]
+                    "$ref": "#/definitions/FontStyle",
+                    "description": "The font style (e.g., italic)."
                 },
                 "fontWeight": {
-                    "type": "string",
-                    "description": "The font weight (e.g., bold).",
-                    "enum": [
-                        "normal",
-                        "bold"
-                    ]
+                    "$ref": "#/definitions/FontWeight",
+                    "description": "The font weight (e.g., bold)."
                 },
                 "format": {
                     "type": "string",
@@ -924,19 +1036,88 @@
             "type": "object",
             "properties": {
                 "round": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "If true, rounds numeric output values to integers.\n\nThis can be helpful for snapping to the pixel grid.\n\n(Only available for `x`, `y`, `size`, `row`, and `column` scales.)"
                 },
                 "textBandWidth": {
-                    "type": "number"
+                    "type": "number",
+                    "description": "Default band width for `x` ordinal scale when is mark is `text`.",
+                    "minimum": 0
                 },
-                "bandWidth": {
-                    "type": "number"
+                "bandSize": {
+                    "type": "number",
+                    "description": "Default band size for (1) `y` ordinal scale,\n\nand (2) `x` ordinal scale when the mark is not `text`.",
+                    "minimum": 0
                 },
                 "padding": {
-                    "type": "number"
+                    "type": "number",
+                    "description": "Default padding for `x` and `y` ordinal scales."
                 },
                 "useRawDomain": {
                     "type": "boolean"
+                },
+                "nominalColorRange": {
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    ],
+                    "description": "Default range for nominal color scale"
+                },
+                "sequentialColorRange": {
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    ],
+                    "description": "Default range for ordinal / continuous color scale"
+                },
+                "shapeRange": {
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    ],
+                    "description": "Default range for shape"
+                },
+                "barSizeRange": {
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    },
+                    "description": "Default range for bar size scale"
+                },
+                "fontSizeRange": {
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    },
+                    "description": "Default range for font size scale"
+                },
+                "pointSizeRange": {
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    },
+                    "description": "Default range for bar size scale"
                 }
             }
         },
@@ -955,16 +1136,6 @@
                     "type": "number",
                     "description": "The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle."
                 },
-                "orient": {
-                    "type": "string",
-                    "description": "The orientation of the axis. One of top, bottom, left or right. The orientation can be used to further specialize the axis type (e.g., a y axis oriented for the right edge of the chart).",
-                    "enum": [
-                        "top",
-                        "right",
-                        "left",
-                        "bottom"
-                    ]
-                },
                 "grid": {
                     "type": "boolean",
                     "description": "A flag indicate if gridlines should be created in addition to ticks. If `grid` is unspecified, the default value is `true` for ROW and COL. For X and Y, the default value is `true` for quantitative and time fields and `false` otherwise."
@@ -976,6 +1147,14 @@
                 "labelAngle": {
                     "type": "number",
                     "description": "The rotation angle of the axis labels."
+                },
+                "labelAlign": {
+                    "type": "string",
+                    "description": "Text alignment for the Label."
+                },
+                "labelBaseline": {
+                    "type": "string",
+                    "description": "Text baseline for the label."
                 },
                 "labelMaxLength": {
                     "type": "number",
@@ -1093,8 +1272,8 @@
                 "grid": {
                     "$ref": "#/definitions/FacetGridConfig"
                 },
-                "unit": {
-                    "$ref": "#/definitions/UnitConfig"
+                "cell": {
+                    "$ref": "#/definitions/CellConfig"
                 }
             }
         },
@@ -1117,8 +1296,8 @@
                     "type": "string",
                     "description": "Default datetime format for axis and legend labels. The format can be set directly on each axis and legend."
                 },
-                "unit": {
-                    "$ref": "#/definitions/UnitConfig"
+                "cell": {
+                    "$ref": "#/definitions/CellConfig"
                 },
                 "mark": {
                     "$ref": "#/definitions/MarkConfig"
