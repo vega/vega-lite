@@ -25,6 +25,8 @@ An integral part of the data visualization process is encoding data with visual 
 }
 ```
 
+* TOC
+{:toc}
 
 {:#channels}
 ## Encoding Channels
@@ -169,6 +171,7 @@ Nominal
 
 **Note**:
 Data `type` here describes semantic of the data rather than primitive data types in programming language sense (`number`, `string`, etc.).  The same primitive data type can have different type of measurement.  For example, numeric data can represent quantitative, ordinal, or nominal data.  
+
 {:#inline}
 ### Field Transforms
 
@@ -178,7 +181,7 @@ To facilitate data exploration, Vega-Lite provides inline field transforms as a 
 | :------------ |:-------------:| :------------- |
 | [bin](bin.html)<sup>1</sup> | Boolean &#124; Object | Boolean flag for binning a `quantitative` field, or a bin property object for binning parameters.  <span class="note-line"> __Default value:__ `false`</span>|
 | [timeUnit](timeunit.html)<sup>1</sup>| String        | Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`). <span class="note-line"> __Default value:__ `undefined` (None) </span> |
-| [aggregate](aggregate.html)<sup>1,2</sup> | String        | Aggregation function for the field (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).  <span class="note-line"> __Default value:__ `undefined` (No aggregation) </span> |
+| [aggregate](aggregate.html)<sup>1,2</sup> | String        | Aggregation function for the field (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).  <span class="note-line"> __Default value:__ `undefined` (None) </span> |
 | [sort](sort.html)<sup>1,2</sup> | String &#124; Object        | Sort order for a particular field.  <br/> • For quantitative or temporal fields, this can be either `"ascending"` or , `"descending"` <br/> • For quantitative or temporal fields, this can be `"ascending"`, `"descending"`, `"none"`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field. <span class="note-line"> __Default value:__ `"ascending"` </span> |
 
 <!-- TODO: re-explain sort + make it clear that text does not support sorting -->

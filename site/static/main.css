@@ -45,7 +45,7 @@ a:not(:hover) {
 }
 footer {
   border-top: 1px solid #eee;
-  padding: 1em 2em 1em 2em;
+  padding: 1em 0 1em 0;
   font-size: small;
   color: #aaa;
   /* for safari */
@@ -186,9 +186,51 @@ nav a:hover {
   margin: 0 auto;
   padding: 0 20px;
 }
+.page-main {
+  display: flex;
+  flex-direction: column;
+  flex-flow: initial;
+}
 .page-content {
   padding-bottom: 3em;
+  flex: 1 1 auto;
 }
+.page-sidebar {
+  width: 200px;
+  flex: 0 0 auto;
+  margin-top: 1.7em;
+  padding-right: .2em;
+}
+.sub-nav {
+  background-color: #F7F7F7;
+}
+
+.sidebar-nav {
+  display: block;
+  padding: 0;
+  margin: 0;
+}
+
+.sub-sub-nav {
+  padding-left: 1em;
+  border-left: 4px solid #eee;
+}
+
+.sidebar-nav-item {
+  display: block;
+  padding: 0.5em 0;
+}
+.sidebar-nav-item a {
+  color: #666;
+}
+.sidebar-nav-item a.active {
+  font-weight: bold;
+}
+.sidebar-nav-item a:hover {
+  color: black;
+  text-decoration: none;
+}
+
 .vl-title {
   font-weight: bold;
   font-size: 1.4em;
@@ -197,9 +239,7 @@ nav a:hover {
   /* hack */
   margin-right: 8px;
 }
-.sub-nav {
-  background-color: #F7F7F7;
-}
+
 .lead {
   font-size: 1.3em;
   font-weight: 300;
@@ -325,7 +365,9 @@ nav a:hover {
     flex-direction: column;
   }
   .example .example-code {
-    margin-bottom: 1em;
+    margin-bottom: 1em !important;
+    max-width: 550px;
+    width: auto !important;
   }
 }
 .example .example-vis {
@@ -362,6 +404,10 @@ nav a:hover {
 @media (max-width:768px) {
   body {
     font-size: 14px;
+  }
+  .page-main {
+    flex-direction: row;
+    flex-wrap: wrap;
   }
   nav a:not(:first-child) {
     padding: 10px 10px 10px 10px;
