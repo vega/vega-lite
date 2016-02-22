@@ -316,6 +316,8 @@ nav a:hover {
   /* hack to make height depend on width*/
   padding-bottom: calc(16% - 12px);
   margin: 8px 0;
+  border: 1px solid #ddd;
+  background-clip: padding-box;
   background-position: center;
   background-repeat: no-repeat;
 }
@@ -330,10 +332,11 @@ nav a:hover {
 .gallery .imagegroup {
   display: inline-block;
   position: relative;
-  /* Show 4 images per row, each image has 12px margin */
-  width: calc(25% - 24px);
-  margin: 12px;
+  /* Show 4 images per row, each image has 18px horizontal margin*/
+  width: calc(25% - 36px);
+  margin: 12px 18px;
 }
+
 .gallery .imagegroup:hover {
   text-decoration: none;
 }
@@ -342,12 +345,17 @@ nav a:hover {
   width: 100%;
   /* hack to make height depend on width*/
   padding-bottom: 100%;
-  border: 2px solid #CECECE;
+  border: 1px solid #ddd;
   background-repeat: no-repeat;
   background-clip: padding-box;
+  margin-bottom: 5px;
 }
 .gallery .image:hover {
-  border-color: #8c8c8c;
+  border-color: #bfbfbf;
+}
+
+.gallery .image-title {
+  font-size: .95em;
 }
 
 /* Examples */

@@ -131,7 +131,7 @@
   "Trellis": [
     {
       "name": "trellis_bar",
-      "title": "Population Distribution of Age Groups and Gender in 2000",
+      "title": "Trellis Bar Chart",
       "galleryParameters": {
         "backgroundSize": "130%",
         "backgroundPosition": "10% 10%"

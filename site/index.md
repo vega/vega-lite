@@ -14,13 +14,14 @@ images:
    bgposition: 75% 0%
    bgsize: 150%
  - spec: line_color
-   bgposition: 50% 30%
-   bgsize: 150%
+   bgposition: 40% 30%
+   bgsize: 170%
  - spec: scatter_colored_with_shape
+   bgposition: 50% 30%
  - spec: trellis_barley
    bgsize: 250%
  - spec: bar_grouped
-   bgposition: 75% 30%
+   bgposition: 75% 50%
  - spec: trellis_stacked_bar
    bgsize: 250%
  - spec: trellis_scatter

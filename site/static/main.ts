@@ -121,6 +121,7 @@ function renderGallery() {
           }
         });
       imageGroup.append('div')
+        .attr('class', 'image-title')
         .text(function(d) {return d.title;});
     }
   });
