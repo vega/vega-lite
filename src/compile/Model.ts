@@ -176,6 +176,16 @@ export class Model {
     return spec;
   }
 
+  public cellWidth(): number {
+    return (this.isFacet() ? this.config().facet.cell.width : null) ||
+      this.config().cell.width;
+  }
+
+  public cellHeight(): number {
+    return (this.isFacet() ? this.config().facet.cell.height : null) ||
+      this.config().cell.height;
+  }
+
   public mark(): Mark {
     return this._spec.mark;
   }
