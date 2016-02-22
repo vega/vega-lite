@@ -260,7 +260,11 @@ export namespace properties {
       // TODO: consider other value besides 270, 90
       if (labelsSpec.angle) {
         if (labelsSpec.angle.value === 270) {
-          labelsSpec.align = {value: def.orient === 'top' ? 'left': 'right'};
+          labelsSpec.align = {
+            value: def.orient === 'top' ? 'left':
+                   def.type === 'x' ? 'right' :
+                   'center'
+          };
         } else if (labelsSpec.angle.value === 90) {
           labelsSpec.align = {value: 'center'};
         }
