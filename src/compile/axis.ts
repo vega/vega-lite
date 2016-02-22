@@ -248,7 +248,7 @@ export namespace properties {
       // auto rotate for X and Row
       if (channel === X && (model.isDimension(X) || fieldDef.type === TEMPORAL)) {
         labelsSpec.angle = {value: 270};
-      } else if (channel === ROW) {
+      } else if (channel === ROW && model.has(X)) {
         labelsSpec.angle = {value: 90};
       }
     }
