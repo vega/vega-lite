@@ -18,7 +18,7 @@ export interface Spec {
   description?: string;
   data?: Data;
   transform?: Transform;
-  mark?: Mark;
-  encoding?: Encoding;
+  mark: Mark;
+  encoding: Encoding;
   config?: Config;
 }
