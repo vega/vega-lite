@@ -9,6 +9,7 @@ body {
   margin: 0;
   display: flex;
   flex-direction: column;
+  min-width: 480px;
 }
 header {
   background-color: #E6E6E6;
@@ -44,7 +45,7 @@ a:not(:hover) {
 }
 footer {
   border-top: 1px solid #eee;
-  padding: 1em 2em 1em 2em;
+  padding: 1em 0 1em 0;
   font-size: small;
   color: #aaa;
   /* for safari */
@@ -185,9 +186,51 @@ nav a:hover {
   margin: 0 auto;
   padding: 0 20px;
 }
+.page-main {
+  display: flex;
+  flex-direction: column;
+  flex-flow: initial;
+}
 .page-content {
   padding-bottom: 3em;
+  flex: 1 1 auto;
 }
+.page-sidebar {
+  width: 200px;
+  flex: 0 0 auto;
+  margin-top: 1.7em;
+  padding-right: .2em;
+}
+.sub-nav {
+  background-color: #F7F7F7;
+}
+
+.sidebar-nav {
+  display: block;
+  padding: 0;
+  margin: 0;
+}
+
+.sub-sub-nav {
+  padding-left: 1em;
+  border-left: 4px solid #eee;
+}
+
+.sidebar-nav-item {
+  display: block;
+  padding: 0.5em 0;
+}
+.sidebar-nav-item a {
+  color: #666;
+}
+.sidebar-nav-item a.active {
+  font-weight: bold;
+}
+.sidebar-nav-item a:hover {
+  color: black;
+  text-decoration: none;
+}
+
 .vl-title {
   font-weight: bold;
   font-size: 1.4em;
@@ -196,9 +239,7 @@ nav a:hover {
   /* hack */
   margin-right: 8px;
 }
-.sub-nav {
-  background-color: #F7F7F7;
-}
+
 .lead {
   font-size: 1.3em;
   font-weight: 300;
@@ -215,18 +256,59 @@ nav a:hover {
 .hidden {
   display: none;
 }
+.lead-columns {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: stretch;
+}
+.lead-columns > span:first-child {
+  margin-right: 60px;
+}
+.lead-buttons {
+  flex: 0 0;
+}
+.lead-buttons a {
+  display: block;
+  width: 250px;
+  padding: 8px 16px;
+  margin: 1em 0;
+  text-align: center;
+  background-color: steelblue;
+  border: 1px solid #357ebd;
+  color: white;
+  border-radius: 4px;
+  font-size: 1.2em;
+}
+.lead-buttons a:last-child {
+  color: #333;
+  background-color: #fff;
+  border-color: #ccc;
+}
+.lead-buttons a:hover {
+  text-decoration: none;
+  background-color: #285e8e;
+}
+.lead-buttons a:last-child:hover {
+  text-decoration: none;
+  background-color: #ebebeb;
+}
+.note-line {
+  font-size: 0.9em !important;
+  margin-top: 8px;
+  display: block;
+}
 
 /* Showcase */
+
 .showcase {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-
   margin: 20px 0;
 }
 .showcase .image {
   display: inline-block;
-
   /* Show 4 images per row, make the height depend on the width */
   height: 0;
   /* 12px  = 2*6px margin */
@@ -234,20 +316,38 @@ nav a:hover {
   /* hack to make height depend on width*/
   padding-bottom: calc(16% - 12px);
   margin: 8px 0;
-
   background-position: center;
   background-repeat: no-repeat;
 }
 
-/* Media queries */
+/* Gallery */
 
-@media (max-width:960px) {
-  body {
-    font-size: 14px;
-  }
-  nav a:not(:first-child) {
-    padding: 10px 10px 10px 10px;
-  }
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -12px;
+}
+.gallery .imagegroup {
+  display: inline-block;
+  position: relative;
+  /* Show 4 images per row, each image has 12px margin */
+  width: calc(25% - 24px);
+  margin: 12px;
+}
+.gallery .imagegroup:hover {
+  text-decoration: none;
+}
+.gallery .image {
+  box-sizing: border-box;
+  width: 100%;
+  /* hack to make height depend on width*/
+  padding-bottom: 100%;
+  border: 2px solid #CECECE;
+  background-repeat: no-repeat;
+  background-clip: padding-box;
+}
+.gallery .image:hover {
+  border-color: #8c8c8c;
 }
 
 /* Examples */
@@ -265,7 +365,9 @@ nav a:hover {
     flex-direction: column;
   }
   .example .example-code {
-    margin-bottom: 1em;
+    margin-bottom: 1em !important;
+    max-width: 550px;
+    width: auto !important;
   }
 }
 .example .example-vis {
@@ -295,4 +397,28 @@ nav a:hover {
 }
 .hljs {
   padding: 0;
+}
+
+/* Media queries */
+
+@media (max-width:768px) {
+  body {
+    font-size: 14px;
+  }
+  .page-main {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  nav a:not(:first-child) {
+    padding: 10px 10px 10px 10px;
+  }
+  .lead-columns {
+    flex-direction: column;
+  }
+  .lead-columns span:first-child {
+    margin-right: 0px;
+  }
+  .lead-buttons a {
+    width: inherit;
+  }
 }

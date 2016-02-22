@@ -69,7 +69,7 @@ export function compileRootGroup(model: Model) {
     // put the marks inside a facet cell's group
     extend(rootGroup, facetMixins(model, marks));
   } else {
-    applyConfig(rootGroup.properties.update, model.config().unit, FILL_STROKE_CONFIG.concat(['clip']));
+    applyConfig(rootGroup.properties.update, model.config().cell, FILL_STROKE_CONFIG.concat(['clip']));
     rootGroup.marks = marks;
     rootGroup.scales = compileScales(model.channels(), model);
 

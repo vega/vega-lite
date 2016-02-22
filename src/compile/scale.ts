@@ -12,6 +12,8 @@ import {SOURCE, STACKED_SCALE} from '../data';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 import {Mark, BAR, TEXT as TEXT_MARK} from '../mark';
 import {rawDomain, smallestUnit} from './time';
+import {ScaleType, StackOffset} from '../enums';
+import {TimeUnit} from '../timeunit';
 import {field} from '../fielddef';
 
 /**
@@ -51,7 +53,7 @@ function mainScale(model: Model, fieldDef: FieldDef, channel: Channel) {
 
   let scaleDef: any = {
     name: model.scaleName(channel),
-    type: type(scale, fieldDef, channel, model.mark()),
+    type: scaleType(scale, fieldDef, channel, model.mark()),
   };
 
   scaleDef.domain = domain(scale, model, channel, scaleDef.type);
@@ -123,7 +125,7 @@ function binColorLegendLabel(model: Model, fieldDef: FieldDef) {
   };
 }
 
-export function type(scale: Scale, fieldDef: FieldDef, channel: Channel, mark: Mark): string {
+export function scaleType(scale: Scale, fieldDef: FieldDef, channel: Channel, mark: Mark): ScaleType {
   if (!hasScale(channel)) {
     // There is no scale for these channels
     return null;
@@ -131,7 +133,7 @@ export function type(scale: Scale, fieldDef: FieldDef, channel: Channel, mark: M
 
   // We can't use linear/time for row, column or shape
   if (contains([ROW, COLUMN, SHAPE], channel)) {
-    return 'ordinal';
+    return ScaleType.ORDINAL;
   }
 
   if (scale.type !== undefined) {
@@ -140,42 +142,42 @@ export function type(scale: Scale, fieldDef: FieldDef, channel: Channel, mark: M
 
   switch (fieldDef.type) {
     case NOMINAL:
-      return 'ordinal';
+      return ScaleType.ORDINAL;
     case ORDINAL:
       if (channel === COLOR) {
-        return 'linear'; // time has order, so use interpolated ordinal color scale.
+        return ScaleType.LINEAR; // time has order, so use interpolated ordinal color scale.
       }
-      return 'ordinal';
+      return ScaleType.ORDINAL;
     case TEMPORAL:
       if (channel === COLOR) {
-        return 'time'; // time has order, so use interpolated ordinal color scale.
+        return ScaleType.TIME; // time has order, so use interpolated ordinal color scale.
       }
 
       if (fieldDef.timeUnit) {
         switch (fieldDef.timeUnit) {
-          case 'hours':
-          case 'day':
-          case 'month':
-            return 'ordinal';
+          case TimeUnit.HOURS:
+          case TimeUnit.DAY:
+          case TimeUnit.MONTH:
+            return ScaleType.ORDINAL;
           default:
             // date, year, minute, second, yearmonth, monthday, ...
-            return 'time';
+            return ScaleType.TIME;
         }
       }
-      return 'time';
+      return ScaleType.TIME;
 
     case QUANTITATIVE:
       if (fieldDef.bin) {
-        return contains([X, Y, COLOR], channel) ? 'linear' : 'ordinal';
+        return contains([X, Y, COLOR], channel) ? ScaleType.LINEAR : ScaleType.ORDINAL;
       }
-      return 'linear';
+      return ScaleType.LINEAR;
   }
 
   // should never reach this
   return null;
 }
 
-export function domain(scale: Scale, model: Model, channel:Channel, scaleType: string) {
+export function domain(scale: Scale, model: Model, channel:Channel, scaleType: string): any {
   var fieldDef = model.fieldDef(channel);
 
   if (scale.domain) { // explicit value
@@ -204,7 +206,7 @@ export function domain(scale: Scale, model: Model, channel:Channel, scaleType: s
   // For stack, use STACKED data.
   var stack = model.stack();
   if (stack && channel === stack.fieldChannel) {
-    if(stack.offset === 'normalize') {
+    if(stack.offset === StackOffset.NORMALIZE) {
       return [0, 1];
     }
     return {
@@ -313,9 +315,10 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel, scaleT
   // TODO: need to add rule for quantile, quantize, threshold scale
 
   var fieldDef = model.fieldDef(channel);
+  const scaleConfig = model.config().scale;
 
-  if (scaleType === 'ordinal' && scale.bandWidth && contains([X, Y], channel)) {
-    return {bandWidth: scale.bandWidth};
+  if (scaleType === 'ordinal' && scale.bandSize && contains([X, Y], channel)) {
+    return {bandSize: scale.bandSize};
   }
 
   if (scale.range && !contains([X, Y, ROW, COLUMN], channel)) {
@@ -330,40 +333,47 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel, scaleT
 
       return {
         rangeMin: 0,
-        rangeMax: model.config().unit.width // Fixed unit width for non-ordinal
+        rangeMax: model.config().cell.width // Fixed cell width for non-ordinal
       };
     case Y:
       return {
-        rangeMin: model.config().unit.height, // Fixed unit width for non-ordinal
+        rangeMin: model.config().cell.height, // Fixed cell height for non-ordinal
         rangeMax: 0
       };
     case SIZE:
       if (model.is(BAR)) {
+        if (scaleConfig.barSizeRange !== undefined) {
+          return {range: scaleConfig.barSizeRange};
+        }
         const dimension = model.config().mark.orient === 'horizontal' ? Y : X;
-        return {range: [2 /* TODO: config.mark.thinBarWidth*/ , model.scale(dimension).bandWidth]};
+        return {range: [ model.config().mark.barThinSize, model.scale(dimension).bandSize]};
       } else if (model.is(TEXT_MARK)) {
-        return {range: [8, 40]}; /* TODO: config.scale.rangeFontSize */
+        return {range: scaleConfig.fontSizeRange };
       }
       // else -- point, square, circle
+      if (scaleConfig.pointSizeRange !== undefined) {
+        return {range: scaleConfig.pointSizeRange};
+      }
+
       const xIsMeasure = model.isMeasure(X);
       const yIsMeasure = model.isMeasure(Y);
 
-      const bandWidth = xIsMeasure !== yIsMeasure ?
-        model.scale(xIsMeasure ? Y : X).bandWidth :
+      const bandSize = xIsMeasure !== yIsMeasure ?
+        model.scale(xIsMeasure ? Y : X).bandSize :
         Math.min(
-          model.scale(X).bandWidth || model.config().scale.bandWidth,
-          model.scale(Y).bandWidth || model.config().scale.bandWidth
+          model.scale(X).bandSize || scaleConfig.bandSize,
+          model.scale(Y).bandSize || scaleConfig.bandSize
         );
 
-      return {range: [9, (bandWidth - 2) * (bandWidth - 2)]};
+      return {range: [9, (bandSize - 2) * (bandSize - 2)]};
     case SHAPE:
-      return {range: 'shapes'};
+      return {range: scaleConfig.shapeRange};
     case COLOR:
       if (fieldDef.type === NOMINAL) {
-        return {range: 'category10'};
+        return {range: scaleConfig.nominalColorRange};
       }
       // else -- ordinal, time, or quantitative
-      return {range: ['#AFC6A3', '#09622A']}; // tableau greens
+      return {range: scaleConfig.sequentialColorRange};
     case ROW:
       return {range: 'height'};
     case COLUMN:

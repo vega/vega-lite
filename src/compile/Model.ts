@@ -18,7 +18,9 @@ import {duplicate, extend, contains, mergeDeep} from '../util';
 
 import {compileMarkConfig} from './config';
 import {compileStackProperties, StackProperties} from './stack';
-import {type as scaleType} from './scale';
+import {scaleType} from './scale';
+import {ScaleType} from '../enums';
+import {AggregateOp} from '../aggregate';
 
 export interface ScaleMap {
   x?: Scale;
@@ -81,7 +83,7 @@ export class Model {
       }
 
       if ((channel === PATH || channel === ORDER) && !fieldDef.aggregate && fieldDef.type === QUANTITATIVE) {
-        fieldDef.aggregate = 'min';
+        fieldDef.aggregate = AggregateOp.MIN;
       }
     }, this);
 
@@ -108,8 +110,8 @@ export class Model {
             round: config.scale.round,
             padding: config.scale.padding,
             useRawDomain: config.scale.useRawDomain,
-            bandWidth: channel === X && _scaleType === 'ordinal' && mark === TEXTMARK ?
-                       config.scale.textBandWidth : config.scale.bandWidth
+            bandSize: channel === X && _scaleType === ScaleType.ORDINAL && mark === TEXTMARK ?
+                       config.scale.textBandWidth : config.scale.bandSize
           }, channelScale);
         }
       }
@@ -208,7 +210,7 @@ export class Model {
 
     if (fieldDef.bin) { // bin has default suffix that depends on scaleType
       opt = extend({
-        binSuffix: scaleType(scale, fieldDef, channel, this.mark()) === 'ordinal' ? '_range' : '_start'
+        binSuffix: scaleType(scale, fieldDef, channel, this.mark()) === ScaleType.ORDINAL ? '_range' : '_start'
       }, opt);
     }
 
@@ -239,7 +241,7 @@ export class Model {
     const fieldDef = this.fieldDef(channel);
     const scale = this.scale(channel);
 
-    return this.has(channel) && scaleType(scale, fieldDef, channel, this.mark()) === 'ordinal';
+    return this.has(channel) && scaleType(scale, fieldDef, channel, this.mark()) === ScaleType.ORDINAL;
   }
 
   public isDimension(channel: Channel) {
@@ -304,29 +306,33 @@ export class Model {
     if (fieldDef && fieldDef.value !== undefined) {
        return fieldDef.value;
     }
+
+    const scaleConfig = this.config().scale;
+
     switch (this.mark()) {
       case TEXTMARK:
         return this.config().mark.fontSize; // font size 10 by default
       case BAR:
-        if (this.config().mark.barWidth) {
-          return this.config().mark.barWidth;
+        if (this.config().mark.barSize) {
+          return this.config().mark.barSize;
         }
         // BAR's size is applied on either X or Y
         return this.isOrdinalScale(channel) ?
-            // For ordinal scale or single bar, we can use bandWidth - 1
+            // For ordinal scale or single bar, we can use bandSize - 1
             // (-1 so that the border of the bar falls on exact pixel)
-            this.scale(channel).bandWidth - 1 :
+            this.scale(channel).bandSize - 1 :
           !this.has(channel) ?
-            21 : /* config.scale.bandWidth */
-            2; /* TODO: config.mark.thinBarWidth*/  // otherwise, set to 2 by default
+            scaleConfig.bandSize - 1 :
+            // otherwise, set to thinBarWidth by default
+            this.config().mark.barThinSize;
       case TICK:
-        if (this.config().mark.tickWidth) {
-          return this.config().mark.tickWidth;
+        if (this.config().mark.tickSize) {
+          return this.config().mark.tickSize;
         }
-        const bandWidth = this.has(channel) ?
-          this.scale(channel).bandWidth :
-          21; /* config.scale.bandWidth */
-        return bandWidth / 1.5;
+        const bandSize = this.has(channel) ?
+          this.scale(channel).bandSize :
+          scaleConfig.bandSize;
+        return bandSize / 1.5;
     }
     return this.config().mark.size;
   }

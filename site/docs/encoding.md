@@ -25,6 +25,8 @@ An integral part of the data visualization process is encoding data with visual 
 }
 ```
 
+* TOC
+{:toc}
 
 {:#channels}
 ## Encoding Channels
@@ -41,7 +43,7 @@ Mark properties channels map data fields directly to visual properties of the ma
 | x, y          | [ChannelDef](#def)| X and Y coordinates for `point`, `circle`, `square`, `line`, `text`, and `tick`. (or to width and height for `bar` and `area` marks). |
 | color         | [ChannelDef](#def)| Color of the marks – either fill or stroke color based on mark type. (By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /   stroke color for `line` and `point`.) (See [scale range](scale.html#range) for more detail about color palettes.)  |
 | shape  | [ChannelDef](#def)| The symbol's shape (only for `point` marks).  The supported values are `"circle"` (default), `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`, or `"triangle-down"`. |
-| size  | [ChannelDef](#def)| Size of the mark.  <br/>     • For `point`, `square` and `circle` – the symbol size, or pixel area of the mark.  <br/> • For `bar` and `tick` – the bar and tick width respectively.  <br/>      • For `text` – the text's font size. <br/>      • Size is currently unsupported for `line` and `area`.|
+| size  | [ChannelDef](#def)| Size of the mark.  <br/>     • For `point`, `square` and `circle` – the symbol size, or pixel area of the mark.  <br/> • For `bar` and `tick` – the bar and tick's size.  <br/>      • For `text` – the text's font size. <br/>      • Size is currently unsupported for `line` and `area`.|
 | text  | [ChannelDef](#def)| Text of the `text` mark. |
 
 ### Additional Level of Detail Channel
@@ -118,6 +120,7 @@ By default, line marks order their points in their paths by the field of channel
 
 <div class="vl-example" data-name="scatter_connected"></div>
 
+{:#facet}
 ### Facet Channels
 
 `row` and `column` are special encoding channels that facets single plots into [trellis plots (or small multiples)](https://en.wikipedia.org/wiki/Small_multiple).  
@@ -126,7 +129,7 @@ By default, line marks order their points in their paths by the field of channel
 | :------------ |:-------------:| :------------- |
 | row, column   | [ChannelDef](#def)| Vertical and horizontal facets for vertical and horizontal [trellis plots](https://en.wikipedia.org/wiki/Small_multiple). |
 
-For more information, please see [facet](facet.html) page.
+For more information, please see [facet page](facet.html).
 
 **Note**: Since `row` and `column` represent actual data fields that are used to partition the data, they cannot encode constant `value`.  In addition, in aggregate plots, they should not have `aggregate` function specified.  
 
@@ -168,6 +171,7 @@ Nominal
 
 **Note**:
 Data `type` here describes semantic of the data rather than primitive data types in programming language sense (`number`, `string`, etc.).  The same primitive data type can have different type of measurement.  For example, numeric data can represent quantitative, ordinal, or nominal data.  
+
 {:#inline}
 ### Field Transforms
 
@@ -175,10 +179,10 @@ To facilitate data exploration, Vega-Lite provides inline field transforms as a 
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| [bin](bin.html)<sup>1</sup> | Boolean &#124; Object | Boolean flag for binning a `quantitative` field (`false` by default), or a bin property object for binning parameters. |
-| [timeUnit](timeunit.html)<sup>1</sup>| String        | Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`). |
-| [aggregate](aggregate.html)<sup>1,2</sup> | String        | Aggregation function for the field (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).  |
-| [sort](sort.html)<sup>1,2</sup> | String &#124; Object        | Sort order for a particular field.  This can be string (`"ascending"`, `"descending"`, or `"unsorted"`) or a sort field definition object for sorting by an aggregate calculation of a specified sort field.  If unspecified, the default value is `ascending`. |
+| [bin](bin.html)<sup>1</sup> | Boolean &#124; Object | Boolean flag for binning a `quantitative` field, or a bin property object for binning parameters.  <span class="note-line"> __Default value:__ `false`</span>|
+| [timeUnit](timeunit.html)<sup>1</sup>| String        | Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`). <span class="note-line"> __Default value:__ `undefined` (None) </span> |
+| [aggregate](aggregate.html)<sup>1,2</sup> | String        | Aggregation function for the field (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).  <span class="note-line"> __Default value:__ `undefined` (None) </span> |
+| [sort](sort.html)<sup>1,2</sup> | String &#124; Object        | Sort order for a particular field.  <br/> • For quantitative or temporal fields, this can be either `"ascending"` or , `"descending"` <br/> • For quantitative or temporal fields, this can be `"ascending"`, `"descending"`, `"none"`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field. <span class="note-line"> __Default value:__ `"ascending"` </span> |
 
 <!-- TODO: re-explain sort + make it clear that text does not support sorting -->
 
@@ -211,7 +215,7 @@ For example, you can set `color` and `shape` of a scatter plot to constant value
 
 {:#ex-bar-size}
 
-Similarly, `value` for `size` channel of bar marks will adjust the bar's width.  By default, there will be 1 pixel offset between bars.  The following example sets the width to 10 to add more offset between bars.  
+Similarly, `value` for `size` channel of bar marks will adjust the bar's size.  By default, there will be 1 pixel offset between bars.  The following example sets the size to 10 to add more offset between bars.  
 
 <span class="vl-example" data-name="bar_aggregate_size"></span>
 

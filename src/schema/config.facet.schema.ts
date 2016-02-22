@@ -1,12 +1,12 @@
 import {FacetScaleConfig, defaultFacetScaleConfig} from './scale.schema';
 import {AxisConfig, defaultFacetAxisConfig} from './axis.schema';
-import {UnitConfig, defaultFacetUnitConfig} from './config.unit.schema';
+import {CellConfig, defaultFacetCellConfig} from './config.cell.schema';
 
 export interface FacetConfig {
   scale?: FacetScaleConfig;
   axis?: AxisConfig;
   grid?: FacetGridConfig;
-  unit?: UnitConfig;
+  cell?: CellConfig;
 }
 
 export interface FacetGridConfig {
@@ -26,5 +26,5 @@ export const defaultFacetConfig: FacetConfig = {
   scale: defaultFacetScaleConfig,
   axis: defaultFacetAxisConfig,
   grid: defaultFacetGridConfig,
-  unit: defaultFacetUnitConfig
+  cell: defaultFacetCellConfig
 };

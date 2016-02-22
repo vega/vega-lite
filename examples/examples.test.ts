@@ -1,13 +1,12 @@
 import {assert} from 'chai';
 import * as vl from '../src/vl';
+import {zSchema} from '../test/util';
 
-const ZSchema = require('z-schema');
 const inspect = require('util').inspect;
-const dl = require('datalib');
 const fs = require('fs');
 const path = require('path');
 
-const validator = new ZSchema({
+const validator = new zSchema({
   noEmptyArrays: true,
   noEmptyStrings: true
 });
@@ -33,19 +32,11 @@ function validateAgainstSchemas(vlspec) {
   assert(isVgValid);
 }
 
-function getExampleList(examples) {
-  return dl.keys(examples).reduce(function(specs, groupName) {
-    var group = examples[groupName];
-    return dl.isArray(group) ? // need to exclude __types__: {}
-      specs.concat(group) : specs;
-  }, []);
-}
-
 describe('Examples', function() {
   const examples = fs.readdirSync('examples/specs');
 
   examples.forEach(function(example) {
-    if (path.extname(example) != '.json') { return; }
+    if (path.extname(example) !== '.json') { return; }
 
     it('should be valid and produce valid vega for: ' + example, function() {
       const data = JSON.parse(fs.readFileSync('examples/specs/' + example));

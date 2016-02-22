@@ -18,7 +18,7 @@ export namespace point {
         field: model.field(X, { binSuffix: '_mid' })
       };
     } else {
-      p.x = { value: 21 /* config.scale.bandWidth */ / 2 };
+      p.x = { value: model.config().scale.bandSize / 2 };
     }
 
     // y
@@ -28,7 +28,7 @@ export namespace point {
         field: model.field(Y, { binSuffix: '_mid' })
       };
     } else {
-      p.y = { value: 21 /* config.scale.bandWidth */ / 2 };
+      p.y = { value: model.config().scale.bandSize / 2 };
     }
 
     // size

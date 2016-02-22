@@ -2,11 +2,13 @@ import {AxisProperties} from './axis.schema';
 import {BinProperties} from './bin.schema';
 import {LegendProperties} from './legend.schema';
 import {Scale} from './scale.schema';
-import {SortField, SortEnum} from './sort.schema';
+import {SortField} from './sort.schema';
+import {SortOrder} from '../enums';
 
-import {AGGREGATE_OPS} from '../aggregate';
+import {AggregateOp, AGGREGATE_OPS} from '../aggregate';
 import {toMap} from '../util';
-import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL, Type} from '../type';
+import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL, DataType} from '../type';
+import {TimeUnit} from '../timeunit';
 
 /**
  *  Interface for any kind of FieldDef;
@@ -15,13 +17,13 @@ import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL, Type} from '../type';
  */
 export interface FieldDef {
   field?: string;
-  type?: Type;
+  type?: DataType;
   value?: number | string | boolean;
 
   // function
-  timeUnit?: string;
+  timeUnit?: TimeUnit;
   bin?: boolean | BinProperties;
-  aggregate?: string;
+  aggregate?: AggregateOp;
 
   // TODO: maybe extend this in other app?
   // unused metadata -- for other application
@@ -42,7 +44,7 @@ export const aggregate = {
 };
 export interface ChannelDefWithScale extends FieldDef {
   scale?: Scale;
-  sort?: SortField | SortEnum;
+  sort?: SortField | SortOrder;
 }
 
 export interface PositionChannelDef extends ChannelDefWithScale {
@@ -57,7 +59,7 @@ export interface ChannelDefWithLegend extends ChannelDefWithScale {
 // Order Path have no scale
 
 export interface OrderChannelDef extends FieldDef {
-  sort?: SortEnum;
+  sort?: SortOrder;
 }
 
 // TODO: consider if we want to distinguish ordinalOnlyScale from scale

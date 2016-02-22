@@ -20,7 +20,7 @@ export interface LegendProperties extends LegendConfig {
   /**
    * An optional formatting pattern for legend labels. Vega uses D3\'s format pattern.
    */
-  format?: string; // default value determined by config.format anyway
+  format?: string;
   /**
    * A title for the legend. (Shows field name and its function by default.)
    */
@@ -31,4 +31,7 @@ export interface LegendProperties extends LegendConfig {
   values?: Array<any>;
 }
 
-export const defaultLegendConfig: LegendConfig = {};
+export const defaultLegendConfig: LegendConfig = {
+  orient: undefined, // implicitly "right"
+  shortTimeLabels: false
+};

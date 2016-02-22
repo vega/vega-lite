@@ -42,7 +42,7 @@ export namespace text {
       if (model.has(TEXT) && model.fieldDef(TEXT).type === QUANTITATIVE) {
         p.x = { field: { group: 'width' }, offset: -5 };
       } else {
-        p.x = { value: 90 / 2 }; // TODO: config.scale.textBandWidth
+        p.x = { value: model.config().scale.textBandWidth / 2 };
       }
     }
 
@@ -53,7 +53,7 @@ export namespace text {
         field: model.field(Y, { binSuffix: '_mid' })
       };
     } else {
-      p.y = { value: 21 / 2 }; // TODO: config.scale.bandWidth
+      p.y = { value: model.config().scale.bandSize / 2 };
     }
 
     // size

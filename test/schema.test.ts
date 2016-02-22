@@ -1,20 +1,12 @@
 const assert = require('assert'),
-  zSchema = require('z-schema'),
   inspect = require('util').inspect;
 
 const schema = require('../lib/schema.json');
 const specSchema = require('../vega-lite-schema.json');
+import {zSchema} from './util';
 
 describe('Schema', function() {
   it('should be valid', function() {
-    // formatters are not used, just registered to we can validate the schema
-    zSchema.registerFormat('color', function (str) {
-      return false;
-    });
-    zSchema.registerFormat('font', function (str) {
-      return false;
-    });
-
     const validator = new zSchema();
 
     // now validate our data against the schema

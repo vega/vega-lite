@@ -4,14 +4,16 @@ import {Model} from './Model';
 import {FieldDef} from '../schema/fielddef.schema';
 import {VgData} from '../schema/vega.schema';
 import {StackProperties} from './stack';
+import {ScaleType} from '../enums';
 
 import {autoMaxBins} from '../bin';
 import {Channel, ROW, COLUMN, COLOR} from '../channel';
 import {SOURCE, STACKED_SCALE, SUMMARY} from '../data';
 import {field} from '../fielddef';
 import {QUANTITATIVE, TEMPORAL, ORDINAL} from '../type';
-import {type as scaleType} from './scale';
+import {scaleType} from './scale';
 import {parseExpression, rawDomain} from './time';
+import {AggregateOp} from '../aggregate';
 
 const DEFAULT_NULL_FILTERS = {
   nominal: false,
@@ -168,7 +170,7 @@ export namespace source {
 
         transform.push(binTrans);
         // color ramp has type linear or time
-        if (scaleType(scale, fieldDef, channel, model.mark()) === 'ordinal' || channel === COLOR) {
+        if (scaleType(scale, fieldDef, channel, model.mark()) === ScaleType.ORDINAL || channel === COLOR) {
           transform.push({
             type: 'formula',
             field: field(fieldDef, {binSuffix: '_range'}),
@@ -233,7 +235,7 @@ export namespace summary {
     model.forEach(function(fieldDef: FieldDef, channel: Channel) {
       if (fieldDef.aggregate) {
         hasAggregate = true;
-        if (fieldDef.aggregate === 'count') {
+        if (fieldDef.aggregate === AggregateOp.COUNT) {
           meas['*'] = meas['*'] || {};
           meas['*'].count = true;
         } else {
@@ -247,7 +249,7 @@ export namespace summary {
           dims[field(fieldDef, {binSuffix: '_end'})] = field(fieldDef, {binSuffix: '_end'});
 
           const scale = model.scale(channel);
-          if (scaleType(scale, fieldDef, channel, model.mark()) === 'ordinal') {
+          if (scaleType(scale, fieldDef, channel, model.mark()) === ScaleType.ORDINAL) {
             // also produce bin_range if the binned field use ordinal scale
             dims[field(fieldDef, {binSuffix: '_range'})] = field(fieldDef, {binSuffix: '_range'});
           }
@@ -356,7 +358,7 @@ export function rankTransform(dataTable, model: Model) {
 export function filterNonPositiveForLog(dataTable, model: Model) {
   model.forEach(function(_, channel) {
     const scale = model.scale(channel);
-    if (scale && scale.type === 'log') {
+    if (scale && scale.type === ScaleType.LOG) {
       dataTable.transform.push({
         type: 'filter',
         test: model.field(channel, {datum: true}) + ' > 0'

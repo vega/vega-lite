@@ -26,8 +26,8 @@ export function compileLayoutData(model: Model): VgData {
 
 
   // TODO: handle "fit" mode
-  const cellWidthFormula = scaleWidthFormula(model, X, model.config().unit.width);
-  const cellHeightFormula = scaleWidthFormula(model, Y, model.config().unit.height);
+  const cellWidthFormula = scaleWidthFormula(model, X, model.config().cell.width);
+  const cellHeightFormula = scaleWidthFormula(model, Y, model.config().cell.height);
   const isFacet =  model.has(COLUMN) || model.has(ROW);
 
   const formulas = [{
@@ -87,16 +87,16 @@ function scaleWidthFormula(model: Model, channel: Channel, nonOrdinalSize: numbe
       const scale = model.scale(channel);
       return '(' + cardinalityFormula(model, channel) +
                 ' + ' + scale.padding +
-             ') * ' + scale.bandWidth;
+             ') * ' + scale.bandSize;
     } else {
       return nonOrdinalSize + '';
     }
   } else {
     if (model.mark() === TEXT_MARK && channel === X) {
-      // for text table without x/y scale we need wider bandWidth
+      // for text table without x/y scale we need wider bandSize
       return model.config().scale.textBandWidth + '';
     }
-    return model.config().scale.bandWidth + '';
+    return model.config().scale.bandSize + '';
   }
 }
 

@@ -1,17 +1,18 @@
 ---
 layout: page
-title: Vega-Lite gallery
+menu: gallery
+title: Example Gallery
 permalink: /gallery.html
 ---
 
-This is a gallery of Vega-Lite visualizations. Uses Vega-Lite version <span id="vl-version"></span> and Vega version <span id="vg-version"></span>.
+## Basic
 
-<div class="viz-list"></div>
+<div class="gallery" data-gallery-group="Basic"></div>
 
-<label>
-  Show debug examples
-  <input type="checkbox" id="show-debug"/>
-</label>
+## Stacked and Layered Plots
 
-<script src="{{site.baseurl}}/site/static/gallery.js"></script>
-<link rel="stylesheet" href="{{site.baseurl}}/site/static/gallery.css">
+<div class="gallery" data-gallery-group="Stack"></div>
+
+## Trellis Plots
+
+<div class="gallery" data-gallery-group="Trellis"></div>

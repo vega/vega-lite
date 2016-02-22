@@ -17,7 +17,7 @@ export namespace tick {
         field: model.field(X, { binSuffix: '_mid' })
       };
     } else {
-      p.xc = { value: 21 /* config.scale.bandWidth */ / 2 };
+      p.xc = { value: model.config().scale.bandSize / 2 };
     }
 
     // y
@@ -27,11 +27,11 @@ export namespace tick {
         field: model.field(Y, { binSuffix: '_mid' })
       };
     } else {
-      p.yc = { value: 21 /* config.scale.bandWidth */ / 2 };
+      p.yc = { value: model.config().scale.bandSize / 2 };
     }
 
     if (model.config().mark.orient === 'horizontal') {
-      p.width = { value: model.config().mark.thickness };
+      p.width = { value: model.config().mark.tickThickness };
       p.height = model.has(SIZE)? {
             scale: model.scaleName(SIZE),
             field: model.field(SIZE)
@@ -45,7 +45,7 @@ export namespace tick {
         } : {
           value: model.sizeValue(X)
         };
-      p.height = { value: model.config().mark.thickness };
+      p.height = { value: model.config().mark.tickThickness };
     }
 
     applyColorAndOpacity(p, model);
