@@ -82,7 +82,7 @@ Here are some examples of scatter plots with `circle` and `square`:
 
 ### Scatterplot with Text
 
-Mapping a field to `text` channel of text mark sets the mark's text value.  For example, we can modify the color scatterplot above to have each mark as text showing its Origin.  
+Mapping a field to `text` channel of text mark sets the mark's text value.  For example, we can modify the color scatterplot above to have each mark as text showing the initial character of its origin.  
 
 <span class="vl-example" data-name="text_scatter_colored"></span>
 
