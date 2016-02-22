@@ -249,7 +249,7 @@ export namespace properties {
       if (channel === X && (model.isDimension(X) || fieldDef.type === TEMPORAL)) {
         labelsSpec.angle = {value: 270};
       } else if (channel === ROW && model.has(X)) {
-        labelsSpec.angle = {value: 90};
+        labelsSpec.angle = {value: def.orient === 'left' ? 270 : 90};
       }
     }
 
@@ -274,7 +274,7 @@ export namespace properties {
         // Auto set baseline if rotated
         // TODO: consider other value besides 270, 90
         if (labelsSpec.angle.value === 270) {
-          labelsSpec.baseline = {value: 'middle'};
+          labelsSpec.baseline = {value: def.type === 'x' ? 'middle' : 'bottom'};
         } else if (labelsSpec.angle.value === 90) {
           labelsSpec.baseline = {value: 'bottom'};
         }
