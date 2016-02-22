@@ -218,9 +218,10 @@ nav a:hover {
 
 .sidebar-nav-item {
   display: block;
-  padding: 0.5em 0;
 }
 .sidebar-nav-item a {
+  display: block;
+  padding: 0.5em 0;
   color: #666;
 }
 .sidebar-nav-item a.active {
