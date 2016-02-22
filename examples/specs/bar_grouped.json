@@ -6,14 +6,14 @@
   },
   "mark": "bar",
   "encoding": {
-    "y": {
-      "aggregate": "sum", "field": "people", "type": "quantitative",
-      "axis": {"title": "population", "grid": false}
-    },
     "column": {
       "field": "age", "type": "ordinal",
       "scale": {"padding": 4},
       "axis": {"orient": "bottom", "axisWidth": 1, "offset": -8}
+    },
+    "y": {
+      "aggregate": "sum", "field": "people", "type": "quantitative",
+      "axis": {"title": "population", "grid": false}
     },
     "x": {
       "field": "gender", "type": "nominal",
