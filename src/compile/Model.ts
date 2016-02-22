@@ -156,8 +156,8 @@ export class Model {
   }
 
   public toSpec(excludeConfig?, excludeData?) {
-    var encoding = duplicate(this._spec.encoding),
-      spec: any;
+    const encoding = duplicate(this._spec.encoding);
+    let spec: any;
 
     spec = {
       mark: this._spec.mark,
@@ -174,6 +174,16 @@ export class Model {
 
     // remove defaults
     return spec;
+  }
+
+  public cellWidth(): number {
+    return (this.isFacet() ? this.config().facet.cell.width : null) ||
+      this.config().cell.width;
+  }
+
+  public cellHeight(): number {
+    return (this.isFacet() ? this.config().facet.cell.height : null) ||
+      this.config().cell.height;
   }
 
   public mark(): Mark {

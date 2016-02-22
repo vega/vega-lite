@@ -7,7 +7,7 @@ import {SortOrder} from '../enums';
 
 import {AggregateOp, AGGREGATE_OPS} from '../aggregate';
 import {toMap} from '../util';
-import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL, DataType} from '../type';
+import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL, Type} from '../type';
 import {TimeUnit} from '../timeunit';
 
 /**
@@ -17,7 +17,7 @@ import {TimeUnit} from '../timeunit';
  */
 export interface FieldDef {
   field?: string;
-  type?: DataType;
+  type?: Type;
   value?: number | string | boolean;
 
   // function

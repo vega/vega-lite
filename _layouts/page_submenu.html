@@ -25,6 +25,9 @@ layout: plain
   <aside class="page-sidebar">
     <ul class="sidebar-nav">
       {% for link in page.sidebar %}
+      {% if link.break %}
+      <br>
+      {% else %}
       <li class="sidebar-nav-item"><a {% if (url == link.url) %}class="active"{% endif %}
           href="{{site.baseurl}}{{page.base}}{% if link.url != 'index' %}{{link.url}}.html{% endif %}" title="{{link.title}}">{{link.text}}
       </a></li>
@@ -36,6 +39,7 @@ layout: plain
         </a></li>
         {% endfor %}
       </ul>
+      {% endif %}
       {% endif %}
       {% endfor %}
     </nav>

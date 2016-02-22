@@ -26,8 +26,8 @@ export function compileLayoutData(model: Model): VgData {
 
 
   // TODO: handle "fit" mode
-  const cellWidthFormula = scaleWidthFormula(model, X, model.config().cell.width);
-  const cellHeightFormula = scaleWidthFormula(model, Y, model.config().cell.height);
+  const cellWidthFormula = scaleWidthFormula(model, X, model.cellWidth());
+  const cellHeightFormula = scaleWidthFormula(model, Y, model.cellHeight());
   const isFacet =  model.has(COLUMN) || model.has(ROW);
 
   const formulas = [{

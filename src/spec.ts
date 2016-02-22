@@ -35,8 +35,8 @@ export function isStack(spec: Spec): boolean {
 
 // TODO revise
 export function transpose(spec: Spec): Spec {
-  var oldenc = spec.encoding,
-    encoding = duplicate(spec.encoding);
+  const oldenc = spec.encoding;
+  let encoding = duplicate(spec.encoding);
   encoding.x = oldenc.y;
   encoding.y = oldenc.x;
   encoding.row = oldenc.column;

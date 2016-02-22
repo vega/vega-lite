@@ -18,7 +18,7 @@ export function forEach(obj, f: (a, d, k, o) => any, thisArg) {
   if (obj.forEach) {
     obj.forEach.call(thisArg, f);
   } else {
-    for (var k in obj) {
+    for (let k in obj) {
       if (obj.hasOwnProperty(k)) {
         f.call(thisArg, obj[k], k, obj);
       }
@@ -30,7 +30,7 @@ export function reduce(obj, f: (a, i, d, k, o) => any, init, thisArg?) {
   if (obj.reduce) {
     return obj.reduce.call(thisArg, f, init);
   } else {
-    for (var k in obj) {
+    for (let k in obj) {
       if (obj.hasOwnProperty(k)) {
         init = f.call(thisArg, init, obj[k], k, obj);
       }
@@ -43,8 +43,8 @@ export function map(obj, f: (a, d, k, o) => any, thisArg?) {
   if (obj.map) {
     return obj.map.call(thisArg, f);
   } else {
-    var output = [];
-    for (var k in obj) {
+    let output = [];
+    for (let k in obj) {
       if (obj.hasOwnProperty(k)) {
         output.push(f.call(thisArg, obj[k], k, obj));
       }
@@ -54,7 +54,7 @@ export function map(obj, f: (a, d, k, o) => any, thisArg?) {
 }
 
 export function any<T>(arr: Array<T>, f: (d: T, k?, i?) => boolean) {
-  var i = 0;
+  let i = 0;
   for (let k = 0; k<arr.length; k++) {
     if (f(arr[k], k, i++)) {
       return true;
@@ -64,7 +64,7 @@ export function any<T>(arr: Array<T>, f: (d: T, k?, i?) => boolean) {
 }
 
 export function all<T>(arr: Array<T>, f: (d: T, k?, i?) => boolean) {
-  var i = 0;
+  let i = 0;
   for (let k = 0; k<arr.length; k++) {
     if (!f(arr[k], k, i++)) {
       return false;
@@ -74,7 +74,7 @@ export function all<T>(arr: Array<T>, f: (d: T, k?, i?) => boolean) {
 }
 
 export function mergeDeep(dest, ...src: any[]) {
-  for (var i = 0; i < src.length; i++) {
+  for (let i = 0; i < src.length; i++) {
     dest = deepMerge_(dest, src[i]);
   }
   return dest;
@@ -86,7 +86,7 @@ function deepMerge_(dest, src) {
     return dest;
   }
 
-  for (var p in src) {
+  for (let p in src) {
     if (!src.hasOwnProperty(p)) {
       continue;
     }

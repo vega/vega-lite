@@ -162,7 +162,7 @@ function compileNonPathMark(model: Model) {
 
 function sortBy(model: Model): string | string[] {
   if (model.has(ORDER)) {
-    var channelDef = model.encoding().order;
+    let channelDef = model.encoding().order;
     if (channelDef instanceof Array) {
       // sort by multiple fields
       return channelDef.map(sortField);
