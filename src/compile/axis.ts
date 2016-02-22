@@ -215,6 +215,8 @@ export namespace properties {
     const axis = model.axis(channel);
 
     return extend(
+      axis.axisColor !== undefined ?
+        { stroke: {value: axis.axisColor}} : {},
       axis.axisWidth !== undefined ?
         { strokeWidth: {value: axis.axisWidth} } :
         {},
