@@ -11,7 +11,7 @@ import {ORDINAL} from '../type';
 import {COLOR_LEGEND, COLOR_LEGEND_LABEL} from './scale';
 
 export function compileLegends(model: Model) {
-  var defs = [];
+  let defs = [];
 
   if (model.has(COLOR) && model.legend(COLOR)) {
     const fieldDef = model.fieldDef(COLOR);

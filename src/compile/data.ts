@@ -58,7 +58,7 @@ export function compileData(model: Model): VgData[] {
 
 export namespace source {
   export function def(model: Model): VgData {
-    var source:VgData = {name: SOURCE};
+    let source:VgData = {name: SOURCE};
 
     // Data source (url or inline)
     const data = model.data();
@@ -81,7 +81,7 @@ export namespace source {
     }
 
       // Set data's format.parse if needed
-    var parse = formatParse(model);
+    const parse = formatParse(model);
     if (parse) {
       source.format = source.format || {};
       source.format.parse = parse;
@@ -207,7 +207,7 @@ export namespace source {
   }
 
   export function filterTransform(model: Model) {
-    var filter = model.transform().filter;
+    const filter = model.transform().filter;
     return filter ? [{
         type: 'filter',
         test: filter
@@ -225,12 +225,12 @@ export namespace source {
 export namespace summary {
   export function def(model: Model):VgData {
     /* dict set for dimensions */
-    var dims = {};
+    let dims = {};
 
     /* dictionary mapping field name => dict set of aggregation functions */
-    var meas = {};
+    let meas = {};
 
-    var hasAggregate = false;
+    let hasAggregate = false;
 
     model.forEach(function(fieldDef: FieldDef, channel: Channel) {
       if (fieldDef.aggregate) {
@@ -259,11 +259,11 @@ export namespace summary {
       }
     });
 
-    var groupby = vals(dims);
+    const groupby = vals(dims);
 
     // short-format summarize object for Vega's aggregate transform
     // https://github.com/vega/vega/wiki/Data-Transforms#-aggregate
-    var summarize = reduce(meas, function(aggregator, fnDictSet, field) {
+    const summarize = reduce(meas, function(aggregator, fnDictSet, field) {
       aggregator[field] = keys(fnDictSet);
       return aggregator;
     }, {});
@@ -289,12 +289,12 @@ export namespace stack {
    * Add stacked data source, for feeding the shared scale.
    */
   export function def(model: Model, stackProps: StackProperties):VgData {
-    var groupbyChannel = stackProps.groupbyChannel;
-    var fieldChannel = stackProps.fieldChannel;
-    var facetFields = (model.has(COLUMN) ? [model.field(COLUMN)] : [])
+    const groupbyChannel = stackProps.groupbyChannel,
+    fieldChannel = stackProps.fieldChannel,
+    facetFields = (model.has(COLUMN) ? [model.field(COLUMN)] : [])
                       .concat((model.has(ROW) ? [model.field(ROW)] : []));
 
-    var stacked:VgData = {
+    const stacked:VgData = {
       name: STACKED_SCALE,
       source: model.dataTable(),
       transform: [{

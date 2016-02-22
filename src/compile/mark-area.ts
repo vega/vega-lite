@@ -9,7 +9,7 @@ export namespace area {
 
   export function properties(model: Model) {
     // TODO Use Vega's marks properties interface
-    var p: any = {};
+    let p: any = {};
 
     const orient = model.config().mark.orient;
     if (orient !== undefined) {

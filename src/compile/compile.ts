@@ -73,7 +73,7 @@ export function compileRootGroup(model: Model) {
     rootGroup.marks = marks;
     rootGroup.scales = compileScales(model.channels(), model);
 
-    var axes = (model.has(X) && model.axis(X) ? [compileAxis(X, model)] : [])
+    const axes = (model.has(X) && model.axis(X) ? [compileAxis(X, model)] : [])
       .concat(model.has(Y) && model.axis(Y) ? [compileAxis(Y, model)] : []);
     if (axes.length > 0) {
       rootGroup.axes = axes;
@@ -81,7 +81,7 @@ export function compileRootGroup(model: Model) {
   }
 
   // legends (similar for either facets or non-facets
-  var legends = compileLegends(model);
+  const legends = compileLegends(model);
   if (legends.length > 0) {
     rootGroup.legends = legends;
   }

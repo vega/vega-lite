@@ -62,7 +62,7 @@ d3.selectAll('.vl-example').each(function() {
       }
     });
   } else {
-    var spec = trim(sel.text());
+    let spec = trim(sel.text());
     renderExample(sel, spec);
   }
 });
@@ -83,10 +83,11 @@ function renderGallery() {
 
     function renderGalleryGroup (selection) {
       const galleryGroupName = selection.attr('data-gallery-group');
+      let galleryGroupSpecs;
 
       // try to retrieve specs for a gallery group from in vl-examples.json
       try {
-        var galleryGroupSpecs = VL_SPECS[galleryGroupName];
+        galleryGroupSpecs = VL_SPECS[galleryGroupName];
       } catch (error){
         console.log(error.message);
         return;
