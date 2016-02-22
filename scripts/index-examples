@@ -6,10 +6,19 @@
 var fs = require('fs'),
   path = require('path');
 
-var examples = fs.readdirSync('../examples/specs');
+var DIR = __dirname + '/..';
+var SPECS = '/examples/specs';
+var OUTPUT = '/examples/all-examples.json';
+
+var examples = fs.readdirSync(DIR + SPECS);
 
 var examples = examples.filter(function(example) {
   return path.extname(example) === '.json'
+}).map(function(example){
+  return path.basename(example, '.json');
 })
 
-process.stdout.write(JSON.stringify(examples));
+fs.writeFile(DIR + OUTPUT, JSON.stringify(examples), function (err) {
+  if (err) return console.log(err);
+  console.log('Indexed all examples [source: ' + SPECS + ', index: ' + OUTPUT + ']');
+});
