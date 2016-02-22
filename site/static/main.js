@@ -21,7 +21,7 @@ function renderExample($target, text) {
     }
     var spec = JSON.parse(text);
     if (spec.data.url) {
-        spec.data.url = BASEURL + '/' + spec.data.url;
+        spec.data.url = '//' + window.location.host + window.location.pathname + spec.data.url;
     }
     vg.embed(vis.node(), {
         mode: 'vega-lite',
@@ -66,8 +66,9 @@ function renderGallery() {
         });
         function renderGalleryGroup(selection) {
             var galleryGroupName = selection.attr('data-gallery-group');
+            var galleryGroupSpecs;
             try {
-                var galleryGroupSpecs = VL_SPECS[galleryGroupName];
+                galleryGroupSpecs = VL_SPECS[galleryGroupName];
             }
             catch (error) {
                 console.log(error.message);
@@ -102,6 +103,7 @@ function renderGallery() {
                 }
             });
             imageGroup.append('div')
+                .attr('class', 'image-title')
                 .text(function (d) { return d.title; });
         }
     });

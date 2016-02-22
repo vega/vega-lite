@@ -387,9 +387,9 @@
                 }
             }
         },
-        "DataType": {
+        "Type": {
             "type": "string",
-            "title": "DataType",
+            "title": "Type",
             "enum": [
                 "quantitative",
                 "ordinal",
@@ -496,7 +496,7 @@
                     "type": "string"
                 },
                 "type": {
-                    "$ref": "#/definitions/DataType"
+                    "$ref": "#/definitions/Type"
                 },
                 "value": {
                     "oneOf": [
@@ -587,7 +587,7 @@
                     "type": "string"
                 },
                 "type": {
-                    "$ref": "#/definitions/DataType"
+                    "$ref": "#/definitions/Type"
                 },
                 "value": {
                     "oneOf": [
@@ -630,7 +630,7 @@
                     "type": "string"
                 },
                 "type": {
-                    "$ref": "#/definitions/DataType"
+                    "$ref": "#/definitions/Type"
                 },
                 "value": {
                     "oneOf": [
@@ -676,7 +676,7 @@
                     "type": "string"
                 },
                 "type": {
-                    "$ref": "#/definitions/DataType"
+                    "$ref": "#/definitions/Type"
                 },
                 "value": {
                     "oneOf": [
