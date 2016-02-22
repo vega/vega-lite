@@ -5,7 +5,7 @@ import {Channel, CHANNELS} from './channel';
 import {isArray, any as anyIn} from './util';
 
 export function countRetinal(encoding: Encoding) {
-  var count = 0;
+  let count = 0;
   if (encoding.color) { count++; }
   if (encoding.size) { count++; }
   if (encoding.shape) { count++; }
@@ -36,7 +36,7 @@ export function isAggregate(encoding: Encoding) {
 }
 
 export function fieldDefs(encoding: Encoding): FieldDef[] {
-  var arr = [];
+  let arr = [];
   CHANNELS.forEach(function(channel) {
     if (has(encoding, channel)) {
       if (isArray(encoding[channel])) {
@@ -54,7 +54,7 @@ export function fieldDefs(encoding: Encoding): FieldDef[] {
 export function forEach(encoding: Encoding,
     f: (fd: FieldDef, c: Channel, i: number) => void,
     thisArg?: any) {
-  var i = 0;
+  let i = 0;
   CHANNELS.forEach(function(channel) {
     if (has(encoding, channel)) {
       if (isArray(encoding[channel])) {
@@ -71,7 +71,7 @@ export function forEach(encoding: Encoding,
 export function map(encoding: Encoding,
     f: (fd: FieldDef, c: Channel, e: Encoding) => any,
     thisArg?: any) {
-  var arr = [];
+  let arr = [];
   CHANNELS.forEach(function(channel) {
     if (has(encoding, channel)) {
       if (isArray(encoding[channel])) {
@@ -90,7 +90,7 @@ export function reduce(encoding: Encoding,
     f: (acc: any, fd: FieldDef, c: Channel, e: Encoding) => any,
     init,
     thisArg?: any) {
-  var r = init;
+  let r = init;
   CHANNELS.forEach(function(channel) {
     if (has(encoding, channel)) {
       if (isArray(encoding[channel])) {

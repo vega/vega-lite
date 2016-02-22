@@ -48,7 +48,7 @@ export function shortenEncoding(encoding: Encoding): string {
 
 export function parseEncoding(encodingShorthand: string): Encoding {
   return encodingShorthand.split(DELIM).reduce(function(m, e) {
-    var split = e.split(ASSIGN),
+    const split = e.split(ASSIGN),
         enctype = split[0].trim(),
         fieldDefShorthand = split[1];
 
@@ -69,16 +69,16 @@ export function shortenFieldDefs(fieldDefs: FieldDef[], delim = DELIM): string {
 }
 
 export function parseFieldDef(fieldDefShorthand: string): FieldDef {
-  var split = fieldDefShorthand.split(TYPE);
+  const split = fieldDefShorthand.split(TYPE);
 
-  var fieldDef: FieldDef = {
+  let fieldDef: FieldDef = {
     field: split[0].trim(),
     type: TYPE_FROM_SHORT_TYPE[split[1].trim()]
   };
 
   // check aggregate type
   for (let i = 0; i < AGGREGATE_OPS.length; i++) {
-    var a = AGGREGATE_OPS[i];
+    let a = AGGREGATE_OPS[i];
     if (fieldDef.field.indexOf(a + '_') === 0) {
       fieldDef.field = fieldDef.field.substr(a.toString().length + 1);
       if (a === AggregateOp.COUNT && fieldDef.field.length === 0) {
@@ -90,7 +90,7 @@ export function parseFieldDef(fieldDefShorthand: string): FieldDef {
   }
 
   for (let i = 0; i < TIMEUNITS.length; i++) {
-    var tu = TIMEUNITS[i];
+    let tu = TIMEUNITS[i];
     if (fieldDef.field && fieldDef.field.indexOf(tu + '_') === 0) {
       fieldDef.field = fieldDef.field.substr(fieldDef.field.length + 1);
       fieldDef.timeUnit = tu;

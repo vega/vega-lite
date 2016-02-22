@@ -44,8 +44,8 @@ export function compileStackProperties(mark: Mark, encoding: Encoding, scale: Sc
       config.mark.stacked !== StackOffset.NONE &&
       isAggregate(encoding)) {
 
-    var isXMeasure = has(encoding, X) && isMeasure(encoding.x);
-    var isYMeasure = has(encoding, Y) && isMeasure(encoding.y);
+    const isXMeasure = has(encoding, X) && isMeasure(encoding.x),
+    isYMeasure = has(encoding, Y) && isMeasure(encoding.y);
 
     if (isXMeasure && !isYMeasure) {
       return {
@@ -112,7 +112,7 @@ export function stackTransform(model: Model) {
   const valName = model.field(stack.fieldChannel);
 
   // add stack transform to mark
-  var transform: StackTransform = {
+  let transform: StackTransform = {
     type: 'stack',
     groupby: [model.field(stack.groupbyChannel)],
     field: model.field(stack.fieldChannel),

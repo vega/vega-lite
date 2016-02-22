@@ -178,7 +178,7 @@ export function scaleType(scale: Scale, fieldDef: FieldDef, channel: Channel, ma
 }
 
 export function domain(scale: Scale, model: Model, channel:Channel, scaleType: string): any {
-  var fieldDef = model.fieldDef(channel);
+  const fieldDef = model.fieldDef(channel);
 
   if (scale.domain) { // explicit value
     return scale.domain;
@@ -204,7 +204,7 @@ export function domain(scale: Scale, model: Model, channel:Channel, scaleType: s
   }
 
   // For stack, use STACKED data.
-  var stack = model.stack();
+  const stack = model.stack();
   if (stack && channel === stack.fieldChannel) {
     if(stack.offset === StackOffset.NORMALIZE) {
       return [0, 1];
@@ -216,8 +216,8 @@ export function domain(scale: Scale, model: Model, channel:Channel, scaleType: s
     };
   }
 
-  var useRawDomain = _useRawDomain(scale, model, channel, scaleType);
-  var sort = domainSort(model, channel, scaleType);
+  const useRawDomain = _useRawDomain(scale, model, channel, scaleType),
+  sort = domainSort(model, channel, scaleType);
 
   if (useRawDomain) { // useRawDomain - only Q/T
     return {
@@ -266,7 +266,7 @@ export function domainSort(model: Model, channel: Channel, scaleType: string): a
     return undefined;
   }
 
-  var sort = model.sort(channel);
+  const sort = model.sort(channel);
   if (contains(['ascending', 'descending', undefined /* default =ascending*/], sort)) {
     return true;
   }
@@ -314,8 +314,8 @@ function _useRawDomain (scale: Scale, model: Model, channel: Channel, scaleType:
 export function rangeMixins(scale: Scale, model: Model, channel: Channel, scaleType: string): any {
   // TODO: need to add rule for quantile, quantize, threshold scale
 
-  var fieldDef = model.fieldDef(channel);
-  const scaleConfig = model.config().scale;
+  const fieldDef = model.fieldDef(channel),
+  scaleConfig = model.config().scale;
 
   if (scaleType === 'ordinal' && scale.bandSize && contains([X, Y], channel)) {
     return {bandSize: scale.bandSize};

@@ -8,7 +8,7 @@ export namespace tick {
   }
 
   export function properties(model: Model) {
-    var p: any = {};
+    let p: any = {};
 
     // x
     if (model.has(X)) {

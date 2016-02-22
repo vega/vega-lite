@@ -9,7 +9,7 @@ export namespace point {
 
   export function properties(model: Model, fixedShape?: string) {
     // TODO Use Vega's marks properties interface
-    var p: any = {};
+    let p: any = {};
 
     // x
     if (model.has(X)) {

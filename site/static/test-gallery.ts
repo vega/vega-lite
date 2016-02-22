@@ -5,11 +5,11 @@ d3.json('examples/all-examples.json', function(examples) {
   render();
 
   function render() {
-    var viz = d3.select('div.viz-list').selectAll('.viz').data(examples);
+    let viz = d3.select('div.viz-list').selectAll('.viz').data(examples);
 
     viz.exit().remove();
 
-    var vizEnter = viz
+    let vizEnter = viz
       .enter()
       .append('div')
       .attr('class', 'viz')
@@ -21,7 +21,7 @@ d3.json('examples/all-examples.json', function(examples) {
 
     examples.forEach(function(example) {
       d3.json('examples/specs/' + example + '.json', function(error, vlSpec) {
-        var embedSpec = {
+        let embedSpec = {
           mode: 'vega-lite',
           spec: vlSpec,
           actions: {

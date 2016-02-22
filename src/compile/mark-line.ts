@@ -10,7 +10,7 @@ export namespace line {
 
   export function properties(model: Model) {
     // TODO Use Vega's marks properties interface
-    var p: any = {};
+    let p: any = {};
 
     // x
     if (model.has(X)) {

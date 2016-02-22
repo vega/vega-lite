@@ -72,8 +72,8 @@ export function isCount(fieldDef: FieldDef) {
 export function cardinality(fieldDef: FieldDef, stats, filterNull = {}) {
   // FIXME need to take filter into account
 
-  var stat = stats[fieldDef.field];
-  var type = fieldDef.type;
+  const stat = stats[fieldDef.field],
+  type = fieldDef.type;
 
   if (fieldDef.bin) {
     // need to reassign bin, otherwise compilation will fail due to a TS bug.
@@ -83,11 +83,11 @@ export function cardinality(fieldDef: FieldDef, stats, filterNull = {}) {
       maxbins = 10;
     }
 
-    var bins = getbins(stat, maxbins);
+    const bins = getbins(stat, maxbins);
     return (bins.stop - bins.start) / bins.step;
   }
-  if (fieldDef.type === TEMPORAL) {
-    var timeUnit = fieldDef.timeUnit;
+  if (type === TEMPORAL) {
+    const timeUnit = fieldDef.timeUnit;
     switch (timeUnit) {
       case TimeUnit.SECONDS: return 60;
       case TimeUnit.MINUTES: return 60;
@@ -96,7 +96,7 @@ export function cardinality(fieldDef: FieldDef, stats, filterNull = {}) {
       case TimeUnit.DATE: return 31;
       case TimeUnit.MONTH: return 12;
       case TimeUnit.YEAR:
-        var yearstat = stats['year_' + fieldDef.field];
+        const yearstat = stats['year_' + fieldDef.field];
 
         if (!yearstat) { return null; }
 
@@ -118,7 +118,7 @@ export function title(fieldDef: FieldDef) {
   if (isCount(fieldDef)) {
     return COUNT_DISPLAYNAME;
   }
-  var fn = fieldDef.aggregate || fieldDef.timeUnit || (fieldDef.bin && 'bin');
+  const fn = fieldDef.aggregate || fieldDef.timeUnit || (fieldDef.bin && 'bin');
   if (fn) {
     return fn.toString().toUpperCase() + '(' + fieldDef.field + ')';
   } else {

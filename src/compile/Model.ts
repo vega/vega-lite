@@ -156,8 +156,8 @@ export class Model {
   }
 
   public toSpec(excludeConfig?, excludeData?) {
-    var encoding = duplicate(this._spec.encoding),
-      spec: any;
+    const encoding = duplicate(this._spec.encoding);
+    let spec: any;
 
     spec = {
       mark: this._spec.mark,
