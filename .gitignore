@@ -16,6 +16,7 @@ examples/_original/*
 examples/_output/*
 examples/_diff/*
 examples/images/*
+examples/all-examples.json
 **/*.js.map
 **/*.js
 .jekyll-metadata
