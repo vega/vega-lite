@@ -14,29 +14,6 @@ body {
 header {
   background-color: #E6E6E6;
 }
-code, tt {
-  margin: 0 2px;
-  padding: 0 4px;
-  white-space: nowrap;
-  background: #f6f6f6;
-  border: 1px solid #ddd;
-  font-family: monospace;
-  font-size: 0.8em;
-}
-pre code {
-  margin: 0;
-  padding: 0;
-  white-space: pre;
-  border: none;
-  background: transparent;
-}
-pre {
-  line-height: 1em;
-  font-family: monospace;
-  background: #f6f6f6;
-  padding: 8px;
-  border: 1px solid #ddd;
-}
 a {
   color: #4682B4;
 }
@@ -156,6 +133,35 @@ h2:hover .anchor .octicon-link, h3:hover .anchor .octicon-link, h4:hover .anchor
   visibility: visible;
 }
 
+/* Code */
+code, tt {
+  margin: 0 2px;
+  padding: 0 4px;
+  white-space: nowrap;
+  background: #f6f6f6;
+  border: 1px solid #ddd;
+  font-family: monospace;
+  font-size: 0.8em;
+}
+pre code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+  font-family: monospace;
+}
+pre {
+  line-height: 1em;
+  background: #F9F9F9;
+  border: 1px solid #eee;
+  padding: 8px 10px;
+}
+.hljs {
+  padding: 0;
+  background-color: transparent;
+}
+
 /* Nav */
 
 nav {
@@ -267,7 +273,7 @@ nav a:hover {
   margin-right: 60px;
 }
 .lead-buttons {
-  flex: 0 0;
+  flex: 0 0 auto;
 }
 .lead-buttons a {
   display: block;
@@ -311,16 +317,22 @@ nav a:hover {
 .showcase .image {
   display: inline-block;
   /* Show 4 images per row, make the height depend on the width */
-  height: 0;
+  height: auto;
   /* 12px  = 2*6px margin */
   width: calc(20% - 12px);
   /* hack to make height depend on width*/
-  padding-bottom: calc(16% - 12px);
   margin: 8px 0;
   border: 1px solid #ddd;
   background-clip: padding-box;
   background-position: center;
   background-repeat: no-repeat;
+}
+
+.showcase .image:before{
+  /* fixes FF display bug */
+  content: "";
+  display: block;
+  padding-top: 100%; 	/* initial ratio of 1:1*/
 }
 
 /* Gallery */
@@ -359,37 +371,27 @@ nav a:hover {
   font-size: .95em;
 }
 
-/* Examples */
-
+/* Code Examples */
 .example {
   display: flex;
-  flex-direction: column;
-  margin: 1em 0;
-}
-.example.side {
-  flex-direction: row-reverse;
-}
-@media (max-width: 640px) {
-  .example.side {
-    flex-direction: column;
-  }
-  .example .example-code {
-    margin-bottom: 1em !important;
-    max-width: 550px;
-    width: auto !important;
-  }
+  align-items: stretch;
+  justify-content: space-around;
+  margin-top: 1em;
+  flex-flow: row wrap;
 }
 .example .example-vis {
-  flex: 1 0 auto;
-  align-self: center;
+  flex: 1 1 0%;
+  margin-right: 10px;
   text-align: center;
   background-color: white;
-  padding-right: 10px;
+  margin-bottom: 1em;
+  align-self: center;
 }
 .example .example-code {
-  width: 550px;
+  flex: 1.618 1 0%;
   margin: 0;
   align-self: flex-start;
+  min-width: 350px;
 }
 .example .example-code code {
   white-space: pre-wrap;
@@ -404,12 +406,8 @@ nav a:hover {
 .example canvas, .example svg {
   border: 1px dashed #ddd;
 }
-.hljs {
-  padding: 0;
-}
 
 /* Media queries */
-
 @media (max-width:768px) {
   body {
     font-size: 14px;

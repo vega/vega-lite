@@ -7,9 +7,9 @@ permalink: /docs/sort.html
 {: .suppress-error}
 ```json
 {
-  "data": ... ,       
-  "mark": ... ,       
-  "encoding": {     
+  "data": ... ,
+  "mark": ... ,
+  "encoding": {
     "x": {
       "field": ...,
       "type": ...,
@@ -30,7 +30,7 @@ permalink: /docs/sort.html
 ## Continuous Scale
 
 If the channel has a continuous scale (quantitative or time), `sort` can have the following values:
-- `"ascending"` –  the field is sort by the field's value in ascending order.  
+- `"ascending"` –  the field is sort by the field's value in ascending order.
 - `"descending"` –  the field is sort by the field's value in descending order.
 
 <span class="note-line">__Default value:__ `"ascending"`.</span>
@@ -38,7 +38,7 @@ If the channel has a continuous scale (quantitative or time), `sort` can have th
 
 #### Example: Reversed X-Scale
 
-Setting x's `sort` to `"descending"` reverses the x-axis.  Thus, the following visualization's x-axis starts on the maximum value of the field "Horsepower" and ends on zero.    
+Setting x's `sort` to `"descending"` reverses the x-axis.  Thus, the following visualization's x-axis starts on the maximum value of the field "Horsepower" and ends on zero.
 
 <div class="vl-example">
 {
@@ -57,8 +57,8 @@ If the channel has an ordinal scale, the field's values of the channel can be so
 
 1) Sorting by the values's natural order in Javascript. For example, `"a"` < `"b"`. In this case, `sort` can be:
 
-- `"ascending"` –  sort by the field's value in ascending order.  
-- `"descending"` –  sort by the field's value in descending order.  
+- `"ascending"` –  sort by the field's value in ascending order.
+- `"descending"` –  sort by the field's value in descending order.
 
 {:#sort-field}
 

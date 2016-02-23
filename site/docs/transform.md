@@ -7,7 +7,7 @@ permalink: /docs/transform.html
 
 Data Transformation in Vega-Lite are described via either top-level transforms (the `transform` property) or [inline transforms inside `encoding`](encoding.html#inline) (`aggregate`, `bin`, `timeUnit`, and `sort`).
 
-When both types of transforms are specified, the top-level transforms are executed first in this order: `filterNull`, `calculate`, and then `filter`.  Then the inline transforms are executed in this order: `bin`, `timeUnit`, `aggregate`, and `sort`.  
+When both types of transforms are specified, the top-level transforms are executed first in this order: `filterNull`, `calculate`, and then `filter`.  Then the inline transforms are executed in this order: `bin`, `timeUnit`, `aggregate`, and `sort`.
 
 The rest of this page describes the top-level `transform` property.  For more information about inline transforms, please see the following pages: [`bin`](bin.html), [`timeUnit`](timeUnit.html), [`aggregate`](aggregate.html), and [`sort`](sort.html).
 
@@ -16,12 +16,12 @@ The rest of this page describes the top-level `transform` property.  For more in
 {: .suppress-error}
 ```json
 {
-  "data": ... ,        
+  "data": ... ,
   "transform": {       // transform
     "filterNull": ...,
     "calculate": ...,
-    "filter": ...  
-  },       
+    "filter": ...
+  },
   "mark": ... ,
   "encoding": ... ,
   ...
@@ -41,7 +41,7 @@ Since `calculate` is before `filter`, derived fields can be used in `filter`'s e
 
 __Example__
 
-This example use `calculate` to derive a new field, then `filter` data based on the new field.  
+This example use `calculate` to derive a new field, then `filter` data based on the new field.
 
 <span class="vl-example" data-name="bar_filter_calc"></span>
 

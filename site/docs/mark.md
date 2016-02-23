@@ -5,14 +5,14 @@ title: Mark
 permalink: /docs/mark.html
 ---
 
-Marks are the basic visual building block of a visualization.  They provide basic shapes whose properties (such as position, size, and color) can be used to visually encode data, either from a data field, or a constant value.  The `mark` property in a Vega-Lite specification defines the visualization's mark type.  
+Marks are the basic visual building block of a visualization.  They provide basic shapes whose properties (such as position, size, and color) can be used to visually encode data, either from a data field, or a constant value.  The `mark` property in a Vega-Lite specification defines the visualization's mark type.
 
 The supported mark types are [`point`](#point-mark), [`circle`](#circle-and-square-marks), [`square`](#circle-and-square-marks), [`text`](#text), [`tick`](#tick-mark), [`bar`](#bar-mark), [`line`](#line-mark), and [`area`](#area).  In general, one mark instance is generated per input data element. However, line and area mark types represent multiple data elements as a contiguous line or shape.
 
 {: .suppress-error}
 ```json
 {
-  "data": ... ,       
+  "data": ... ,
   "mark": ... ,       // mark
   "encoding": ... ,
   ...
@@ -33,7 +33,7 @@ The rest of this page presents different chart types that can be created using e
 
 ## Point
 
-`point` mark represents each data point with a symbol.  
+`point` mark represents each data point with a symbol.
 
 ### Dot Plot
 
@@ -78,11 +78,11 @@ Here are some examples of scatter plots with `circle` and `square`:
 
 ## Text
 
-`text` mark represents each data point with a text instead of a point.  
+`text` mark represents each data point with a text instead of a point.
 
 ### Scatterplot with Text
 
-Mapping a field to `text` channel of text mark sets the mark's text value.  For example, we can modify the color scatterplot above to have each mark as text showing the initial character of its origin.  
+Mapping a field to `text` channel of text mark sets the mark's text value.  For example, we can modify the color scatterplot above to have each mark as text showing the initial character of its origin.
 
 <span class="vl-example" data-name="text_scatter_colored"></span>
 
@@ -151,7 +151,7 @@ To make it clear that bars are layered, we can make marks semi-transparent by se
 ### Normalized Stacked Bar Chart
 
 <!-- TODO: better explain this -->
-You can also create a normalized stacked bar chart by setting `config.mark.stacked` to `"normalize"`.  Here we can easily see the percentage of male and female population at different ages.  
+You can also create a normalized stacked bar chart by setting `config.mark.stacked` to `"normalize"`.  Here we can easily see the percentage of male and female population at different ages.
 
 <span class="vl-example" data-name="stacked_bar_normalize"></span>
 
@@ -175,7 +175,7 @@ mapping a binned quantitative field to `x` and aggregate `count` to `y` produces
 
 ## Line
 
-The `line` mark represents the data points stored in a field with a line connecting all of these points.  Unlike other marks except `area` that represents one data element per mark, one line mark represent multiple data element as a single line.  
+The `line` mark represents the data points stored in a field with a line connecting all of these points.  Unlike other marks except `area` that represents one data element per mark, one line mark represent multiple data element as a single line.
 
 ### Line Chart
 
@@ -205,7 +205,7 @@ By default, the line's path (order of points in the line) is determined by data 
 
 ## Area
 
-`area` represent multiple data element as a single area shape.  
+`area` represent multiple data element as a single area shape.
 
 ### Area Chart
 
@@ -215,19 +215,19 @@ Using `area` mark with one ordinal field (typically on `x`) and one quantitative
 
 ### Stacked Area Chart
 
-Adding a color field to area chart creates stacked area chart by default.  For example, here we split the area chart across industry.  
+Adding a color field to area chart creates stacked area chart by default.  For example, here we split the area chart across industry.
 
 <span class="vl-example" data-name="stacked_area"></span>
 
 ### Normalized Stacked Area Chart
 
-You can also create a normalized stacked area chart by setting `config.mark.stacked` to `"normalize"`.  Here we can easily see the percentage of unemployment across industry.  
-You can also create a normalized stacked area chart by setting `config.mark.stacked` to `"normalize"`.  Here we can easily see the percentage of unemployment across industry.  
+You can also create a normalized stacked area chart by setting `config.mark.stacked` to `"normalize"`.  Here we can easily see the percentage of unemployment across industry.
+You can also create a normalized stacked area chart by setting `config.mark.stacked` to `"normalize"`.  Here we can easily see the percentage of unemployment across industry.
 
 <span class="vl-example" data-name="stacked_area_normalize"></span>
 
 ### Streamgraph
 
-We can also shift the stacked area chart's baseline to center and produces a [streamgraph](http://www.leebyron.com/else/streamgraph/) by setting `config.mark.stacked` to `"center"`.  
+We can also shift the stacked area chart's baseline to center and produces a [streamgraph](http://www.leebyron.com/else/streamgraph/) by setting `config.mark.stacked` to `"center"`.
 
 <span class="vl-example" data-name="stacked_area_stream"></span>

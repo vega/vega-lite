@@ -7,7 +7,7 @@ permalink: /docs/
 
 **Vega-Lite** is a high-level visualization grammar.  It provides a concise JSON syntax for supporting rapid generation of visualizations to support analysis.  Vega-Lite can serve as a declarative format for describing and creating data visualizations.  Vega-Lite specifications can be compiled to a lower-level, more detailed [Vega](http://vega.github.io/vega) specifications and rendered using Vega's compiler.
 
-This documentation describes the [JSON specification language](#spec) and how to [embed Vega-Lite visualizations](#lib).
+This documentation describes the [JSON specification language](#spec) and how to [embed Vega-Lite visualizations](#lib) in a web application.
 
 {:#spec}
 ## Vega-Lite Specifications
@@ -19,11 +19,11 @@ As it is designed for analysis, Vega-Lite also supports data transformation such
 {: .suppress-error}
 ```json
 {
-  "description": ... ,       
-  "data": ... ,       
-  "mark": ... ,   
-  "transform": ...,    
-  "encoding": {     
+  "description": ... ,
+  "data": ... ,
+  "mark": ... ,
+  "transform": ...,
+  "encoding": {
     "x": {
       "field": ...,
       "type": ...,
@@ -41,7 +41,7 @@ In Vega-Lite, a specification can have the following top-level properties.
 
 | Property             | Type          | Description    |
 | :------------        |:-------------:| :------------- |
-| description   | String     | An optional description of this mark for commenting purpose. This property has no effect on the output visualization. |
+| description   | String     | An _optional_ description of this mark for commenting purpose. This property has no effect on the output visualization. |
 | [data](data.html)    | Object        | An object describing the data source. |
 | [transform](transform.html) | Object | An object describing filter and new field calculation. |
 | [mark](mark.html)    | String        | The mark type.  One of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`, `"area"`, `"point"`, and `"text"`. |

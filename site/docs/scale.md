@@ -12,9 +12,9 @@ Vega-Lite automatically creates scales for fields that are [mapped to mark prope
 {: .suppress-error}
 ```json
 {
-  "data": ... ,       
-  "mark": ... ,       
-  "encoding": {     
+  "data": ... ,
+  "mark": ... ,
+  "encoding": {
     "x": {
       "field": ...,
       "type": ...,
@@ -30,7 +30,7 @@ Vega-Lite automatically creates scales for fields that are [mapped to mark prope
 }
 ```
 
-The rest of this page describes properties of a scale and their default behavior.  
+The rest of this page describes properties of a scale and their default behavior.
 
 * TOC
 {:toc}
@@ -41,22 +41,22 @@ The rest of this page describes properties of a scale and their default behavior
 Vega-Lite supports the following scale types:
 
 Quantitative Scale
-: A quantitative scales takes continuous, quantitative data as its input domain.  There are multiple types of quantitative scales. `linear`, `power`, and `log` scales output continuous ranges.  Meanwhile `quantize` and `quantile` scales output discrete ranges.  
+: A quantitative scales takes continuous, quantitative data as its input domain.  There are multiple types of quantitative scales. `linear`, `power`, and `log` scales output continuous ranges.  Meanwhile `quantize` and `quantile` scales output discrete ranges.
 
 - `linear` scale expresses each range value _y_ as a linear function of the domain value _x_: _y = mx + b_.  This is the default scale for a quantitative field (field with `type` = `"quantitative"`).
 - `pow` scale expresses each range value _y_ as a power (exponential) function of the domain value _x_: _y = mx^k + b_, where _k_ is the exponent value.  (_k_ can be customized using [`exponent`](#quant-props) property.)
-- `log` scale expresses each range value _y_ as a logarithmic function of the domain value _x_: _y = mlog(x) + b_.  As _log(0) = -∞_, a log scale domain must be strictly-positive or strictly-negative; the domain must not include or cross zero.  Vega-Lite automatically filters zero values from the field mapped to a log scale.  
-- `quantize` scale maps continuous value to a discrete range by dividing the domain into uniform segments based on the number of values in (i.e., the cardinality of) the output range.  Each range value _y_ can be expressed as a quantized linear function of the domain value _x_: _y = m round(x) + b_.  
+- `log` scale expresses each range value _y_ as a logarithmic function of the domain value _x_: _y = mlog(x) + b_.  As _log(0) = -∞_, a log scale domain must be strictly-positive or strictly-negative; the domain must not include or cross zero.  Vega-Lite automatically filters zero values from the field mapped to a log scale.
+- `quantize` scale maps continuous value to a discrete range by dividing the domain into uniform segments based on the number of values in (i.e., the cardinality of) the output range.  Each range value _y_ can be expressed as a quantized linear function of the domain value _x_: _y = m round(x) + b_.
 - `quantile` scale maps a sampled input domain to a discrete range by sorting the domain and compute the quantiles.  The cardinality of the output range determines the number of quantiles that will be computed.
 
 <!-- TODO: need to test if we support threshold scale correctly before writing about it-->
 
 Time Scale
-: A `time` scale is similar to a linear quantitative scale but takes date as input.  In general, a temporal field has `time` scale by default.  The exceptions are temporal fields with `hours`, `day`, `date`, `month` as time unit; they have `ordinal` scales by default.  
+: A `time` scale is similar to a linear quantitative scale but takes date as input.  In general, a temporal field has `time` scale by default.  The exceptions are temporal fields with `hours`, `day`, `date`, `month` as time unit; they have `ordinal` scales by default.
 <!-- <br/>`utc` is a time scale that uses [Coordinated Universal Time](https://en.wikipedia.org/wiki/Coordinated_Universal_Time) rather than local time. -->
 
 Ordinal Scale
-: An ordinal scale (`ordinal`) takes discrete domain as their input domain.    Ordinal (ordered) and nominal (unordered/categorical) data always use `ordinal` scale.   
+: An ordinal scale (`ordinal`) takes discrete domain as their input domain.    Ordinal (ordered) and nominal (unordered/categorical) data always use `ordinal` scale.
 
 - An ordinal `color` scale with `nominal` data outputs categorical color palette while an ordinal `color` scale with `ordinal` data outputs sequential color ramp.  ([See example](#ex-color-range).)
 - An ordinal `shape` scale always produces a categorical range since shape cannot convey order.
@@ -68,8 +68,7 @@ Ordinal Scale
 
 <!-- TODO: add utc to the above table for temporal field -->
 
-**Note:**
-For more information about scale types, please see [d3 scale documentation](https://github.com/mbostock/d3/wiki/Quantitative-Scales).
+**Note:** For more information about scale types, please see [d3 scale documentation](https://github.com/mbostock/d3/wiki/Quantitative-Scales).
 
 #### Example: Log Scale
 
@@ -87,8 +86,8 @@ TODO: example utc scale with utc time unit (once implemented)
 {:#domain}
 ## Scale Domain
 
-By default, a scale draws domain values directly from the channel field.  
-Custom domain values can be specified via the scale's `domain` property.  
+By default, a scale draws domain values directly from the channel field.
+Custom domain values can be specified via the scale's `domain` property.
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
@@ -96,13 +95,12 @@ Custom domain values can be specified via the scale's `domain` property.
 
 <!-- TODO:
 - Decide if we should write about custom domain for ordinal scale.
-- Write about default domain for `month`, `day`, `hour`, `minute`.  
+- Write about default domain for `month`, `day`, `hour`, `minute`.
 - Piecewise scale.
 - Quantize scale?
 -->
 
-**Note:**
-To sort the order mapping between the domain values and range, please use the channel definition's [`sort`](sort.html) property.
+**Note:** To sort the order mapping between the domain values and range, please use the channel definition's [`sort`](sort.html) property.
 
 <!--
 #### Example: Custom Domain
@@ -114,16 +112,16 @@ TODO: Custom Domain for quantitative
 {:#range}
 ## Scale Range
 
-The range of the scale represents the set of output visual values.  Vega-Lite automatically determines appropriate range based on the scale's channel and type, but `range` property can be provided to customize range values.  
+The range of the scale represents the set of output visual values.  Vega-Lite automatically determines appropriate range based on the scale's channel and type, but `range` property can be provided to customize range values.
 
 `x` and `y` Scales
-: For continuous `x` and `y` scales (quantitative and time), the range are always `[0, cellWidth]` and  `[0, cellHeight]` (See [config.cell](config.html#cell-config) for customizing cell width and height).  For ordinal `x` and `y` scales, the maximum range is a product of the field's cardinality and [`bandSize`](#ordinal).  
+: For continuous `x` and `y` scales (quantitative and time), the range are always `[0, cellWidth]` and  `[0, cellHeight]` (See [config.cell](config.html#cell-config) for customizing cell width and height).  For ordinal `x` and `y` scales, the maximum range is a product of the field's cardinality and [`bandSize`](#ordinal).
 <span class="note-line">
 __Not Customizable__: specified `range` will be ignored.
 </span>
 
 Nominal `color` Scales
-: A `color` scale of a nominal field has a categorical color palette as its range.  Customized categorical color `range` can be either a [string literal for a palette name](#color-palette) or an array of desired output values.  
+: A `color` scale of a nominal field has a categorical color palette as its range.  Customized categorical color `range` can be either a [string literal for a palette name](#color-palette) or an array of desired output values.
 <span class="note-line">
 __Default value:__ derived from [scale config](config.html#scale-config)'s `nominalColorRange` (`"category10"` by default).
 </span>
@@ -146,7 +144,7 @@ __Default value:__ derived from [scale config](config.html#scale-config)'s `shap
 __Default value:__
 <br/> • for `bar`: derived from [scale config](config.html#scale-config)'s `barSizeRange`.  If both scale's `range` and the scale config's `barSizeRange` are unspecified (default), the default size range is a range from [mark config](config.mark.html)'s `thinBarWidth` to the scale's `bandSize`.
 <br/> • for  `point`, `square`, and `circle`: derived from [scale config](config.html#scale-config)'s `pointSizeRange`.  If both scale's `range` and the scale config's `pointSizeRange` are unspecified (default), the default size range is a range from 9 to the square of the scale's `bandSize` (_bandSize^2_).
-<br/> • for  `text`: derived from [scale config](config.html#scale-config)'s `fontSizeRange` (`[8, 40]` by default).   
+<br/> • for  `text`: derived from [scale config](config.html#scale-config)'s `fontSizeRange` (`[8, 40]` by default).
 </span>
 
 | Property      | Type          | Description    |
@@ -160,26 +158,26 @@ The following built-in palettes can be used as a customized categorical color  `
 
 | Name          | Description  |
 | :------------ | :------------|
-| category10    | Set the scale range to a 10-color categorical palette: <br><br> ![1f77b4](https://raw.githubusercontent.com/wiki/mbostock/d3/1f77b4.png) #1f77b4 ![ff7f0e](https://raw.githubusercontent.com/wiki/mbostock/d3/ff7f0e.png) #ff7f0e ![2ca02c](https://raw.githubusercontent.com/wiki/mbostock/d3/2ca02c.png) #2ca02c ![d62728](https://raw.githubusercontent.com/wiki/mbostock/d3/d62728.png) #d62728 ![9467bd](https://raw.githubusercontent.com/wiki/mbostock/d3/9467bd.png) #9467bd<br> ![8c564b](https://raw.githubusercontent.com/wiki/mbostock/d3/8c564b.png) #8c564b ![e377c2](https://raw.githubusercontent.com/wiki/mbostock/d3/e377c2.png) #e377c2 ![7f7f7f](https://raw.githubusercontent.com/wiki/mbostock/d3/7f7f7f.png) #7f7f7f ![bcbd22](https://raw.githubusercontent.com/wiki/mbostock/d3/bcbd22.png) #bcbd22 ![17becf](https://raw.githubusercontent.com/wiki/mbostock/d3/17becf.png) #17becf|
-| category20    | Set the scale range to a 20-color categorical palette: <br><br> ![1f77b4](https://raw.githubusercontent.com/wiki/mbostock/d3/1f77b4.png) #1f77b4 ![aec7e8](https://raw.githubusercontent.com/wiki/mbostock/d3/aec7e8.png) #aec7e8 ![ff7f0e](https://raw.githubusercontent.com/wiki/mbostock/d3/ff7f0e.png) #ff7f0e ![ffbb78](https://raw.githubusercontent.com/wiki/mbostock/d3/ffbb78.png) #ffbb78 ![2ca02c](https://raw.githubusercontent.com/wiki/mbostock/d3/2ca02c.png) #2ca02c<br> ![98df8a](https://raw.githubusercontent.com/wiki/mbostock/d3/98df8a.png) #98df8a ![d62728](https://raw.githubusercontent.com/wiki/mbostock/d3/d62728.png) #d62728 ![ff9896](https://raw.githubusercontent.com/wiki/mbostock/d3/ff9896.png) #ff9896 ![9467bd](https://raw.githubusercontent.com/wiki/mbostock/d3/9467bd.png) #9467bd ![c5b0d5](https://raw.githubusercontent.com/wiki/mbostock/d3/c5b0d5.png) #c5b0d5<br> ![8c564b](https://raw.githubusercontent.com/wiki/mbostock/d3/8c564b.png) #8c564b ![c49c94](https://raw.githubusercontent.com/wiki/mbostock/d3/c49c94.png) #c49c94 ![e377c2](https://raw.githubusercontent.com/wiki/mbostock/d3/e377c2.png) #e377c2 ![f7b6d2](https://raw.githubusercontent.com/wiki/mbostock/d3/f7b6d2.png) #f7b6d2 ![7f7f7f](https://raw.githubusercontent.com/wiki/mbostock/d3/7f7f7f.png) #7f7f7f<br> ![c7c7c7](https://raw.githubusercontent.com/wiki/mbostock/d3/c7c7c7.png) #c7c7c7 ![bcbd22](https://raw.githubusercontent.com/wiki/mbostock/d3/bcbd22.png) #bcbd22 ![dbdb8d](https://raw.githubusercontent.com/wiki/mbostock/d3/dbdb8d.png) #dbdb8d ![17becf](https://raw.githubusercontent.com/wiki/mbostock/d3/17becf.png) #17becf ![9edae5](https://raw.githubusercontent.com/wiki/mbostock/d3/9edae5.png) #9edae5|
-| category20b    | Set the scale range to a 20-color categorical palette: <br><br> ![393b79](https://raw.githubusercontent.com/wiki/mbostock/d3/393b79.png) #393b79 ![5254a3](https://raw.githubusercontent.com/wiki/mbostock/d3/5254a3.png) #5254a3 ![6b6ecf](https://raw.githubusercontent.com/wiki/mbostock/d3/6b6ecf.png) #6b6ecf ![9c9ede](https://raw.githubusercontent.com/wiki/mbostock/d3/9c9ede.png) #9c9ede ![637939](https://raw.githubusercontent.com/wiki/mbostock/d3/637939.png) #637939<br> ![8ca252](https://raw.githubusercontent.com/wiki/mbostock/d3/8ca252.png) #8ca252 ![b5cf6b](https://raw.githubusercontent.com/wiki/mbostock/d3/b5cf6b.png) #b5cf6b ![cedb9c](https://raw.githubusercontent.com/wiki/mbostock/d3/cedb9c.png) #cedb9c ![8c6d31](https://raw.githubusercontent.com/wiki/mbostock/d3/8c6d31.png) #8c6d31 ![bd9e39](https://raw.githubusercontent.com/wiki/mbostock/d3/bd9e39.png) #bd9e39<br> ![e7ba52](https://raw.githubusercontent.com/wiki/mbostock/d3/e7ba52.png) #e7ba52 ![e7cb94](https://raw.githubusercontent.com/wiki/mbostock/d3/e7cb94.png) #e7cb94 ![843c39](https://raw.githubusercontent.com/wiki/mbostock/d3/843c39.png) #843c39 ![ad494a](https://raw.githubusercontent.com/wiki/mbostock/d3/ad494a.png) #ad494a ![d6616b](https://raw.githubusercontent.com/wiki/mbostock/d3/d6616b.png) #d6616b<br> ![e7969c](https://raw.githubusercontent.com/wiki/mbostock/d3/e7969c.png) #e7969c ![7b4173](https://raw.githubusercontent.com/wiki/mbostock/d3/7b4173.png) #7b4173 ![a55194](https://raw.githubusercontent.com/wiki/mbostock/d3/a55194.png) #a55194 ![ce6dbd](https://raw.githubusercontent.com/wiki/mbostock/d3/ce6dbd.png) #ce6dbd ![de9ed6](https://raw.githubusercontent.com/wiki/mbostock/d3/de9ed6.png) #de9ed6|
-| category20c    | Set the scale range to a 20-color categorical palette: <br><br> ![3182bd](https://raw.githubusercontent.com/wiki/mbostock/d3/3182bd.png) #3182bd ![6baed6](https://raw.githubusercontent.com/wiki/mbostock/d3/6baed6.png) #6baed6 ![9ecae1](https://raw.githubusercontent.com/wiki/mbostock/d3/9ecae1.png) #9ecae1 ![c6dbef](https://raw.githubusercontent.com/wiki/mbostock/d3/c6dbef.png) #c6dbef ![e6550d](https://raw.githubusercontent.com/wiki/mbostock/d3/e6550d.png) #e6550d<br> ![fd8d3c](https://raw.githubusercontent.com/wiki/mbostock/d3/fd8d3c.png) #fd8d3c ![fdae6b](https://raw.githubusercontent.com/wiki/mbostock/d3/fdae6b.png) #fdae6b ![fdd0a2](https://raw.githubusercontent.com/wiki/mbostock/d3/fdd0a2.png) #fdd0a2 ![31a354](https://raw.githubusercontent.com/wiki/mbostock/d3/31a354.png) #31a354 ![74c476](https://raw.githubusercontent.com/wiki/mbostock/d3/74c476.png) #74c476<br> ![a1d99b](https://raw.githubusercontent.com/wiki/mbostock/d3/a1d99b.png) #a1d99b ![c7e9c0](https://raw.githubusercontent.com/wiki/mbostock/d3/c7e9c0.png) #c7e9c0 ![756bb1](https://raw.githubusercontent.com/wiki/mbostock/d3/756bb1.png) #756bb1 ![9e9ac8](https://raw.githubusercontent.com/wiki/mbostock/d3/9e9ac8.png) #9e9ac8 ![bcbddc](https://raw.githubusercontent.com/wiki/mbostock/d3/bcbddc.png) #bcbddc<br> ![dadaeb](https://raw.githubusercontent.com/wiki/mbostock/d3/dadaeb.png) #dadaeb ![636363](https://raw.githubusercontent.com/wiki/mbostock/d3/636363.png) #636363 ![969696](https://raw.githubusercontent.com/wiki/mbostock/d3/969696.png) #969696 ![bdbdbd](https://raw.githubusercontent.com/wiki/mbostock/d3/bdbdbd.png) #bdbdbd ![d9d9d9](https://raw.githubusercontent.com/wiki/mbostock/d3/d9d9d9.png) #d9d9d9|
+| `"category10"`    | Set the scale range to a 10-color categorical palette: <br><br> ![1f77b4](https://raw.githubusercontent.com/wiki/mbostock/d3/1f77b4.png) #1f77b4 ![ff7f0e](https://raw.githubusercontent.com/wiki/mbostock/d3/ff7f0e.png) #ff7f0e ![2ca02c](https://raw.githubusercontent.com/wiki/mbostock/d3/2ca02c.png) #2ca02c ![d62728](https://raw.githubusercontent.com/wiki/mbostock/d3/d62728.png) #d62728 ![9467bd](https://raw.githubusercontent.com/wiki/mbostock/d3/9467bd.png) #9467bd<br> ![8c564b](https://raw.githubusercontent.com/wiki/mbostock/d3/8c564b.png) #8c564b ![e377c2](https://raw.githubusercontent.com/wiki/mbostock/d3/e377c2.png) #e377c2 ![7f7f7f](https://raw.githubusercontent.com/wiki/mbostock/d3/7f7f7f.png) #7f7f7f ![bcbd22](https://raw.githubusercontent.com/wiki/mbostock/d3/bcbd22.png) #bcbd22 ![17becf](https://raw.githubusercontent.com/wiki/mbostock/d3/17becf.png) #17becf|
+| `"category20"`    | Set the scale range to a 20-color categorical palette: <br><br> ![1f77b4](https://raw.githubusercontent.com/wiki/mbostock/d3/1f77b4.png) #1f77b4 ![aec7e8](https://raw.githubusercontent.com/wiki/mbostock/d3/aec7e8.png) #aec7e8 ![ff7f0e](https://raw.githubusercontent.com/wiki/mbostock/d3/ff7f0e.png) #ff7f0e ![ffbb78](https://raw.githubusercontent.com/wiki/mbostock/d3/ffbb78.png) #ffbb78 ![2ca02c](https://raw.githubusercontent.com/wiki/mbostock/d3/2ca02c.png) #2ca02c<br> ![98df8a](https://raw.githubusercontent.com/wiki/mbostock/d3/98df8a.png) #98df8a ![d62728](https://raw.githubusercontent.com/wiki/mbostock/d3/d62728.png) #d62728 ![ff9896](https://raw.githubusercontent.com/wiki/mbostock/d3/ff9896.png) #ff9896 ![9467bd](https://raw.githubusercontent.com/wiki/mbostock/d3/9467bd.png) #9467bd ![c5b0d5](https://raw.githubusercontent.com/wiki/mbostock/d3/c5b0d5.png) #c5b0d5<br> ![8c564b](https://raw.githubusercontent.com/wiki/mbostock/d3/8c564b.png) #8c564b ![c49c94](https://raw.githubusercontent.com/wiki/mbostock/d3/c49c94.png) #c49c94 ![e377c2](https://raw.githubusercontent.com/wiki/mbostock/d3/e377c2.png) #e377c2 ![f7b6d2](https://raw.githubusercontent.com/wiki/mbostock/d3/f7b6d2.png) #f7b6d2 ![7f7f7f](https://raw.githubusercontent.com/wiki/mbostock/d3/7f7f7f.png) #7f7f7f<br> ![c7c7c7](https://raw.githubusercontent.com/wiki/mbostock/d3/c7c7c7.png) #c7c7c7 ![bcbd22](https://raw.githubusercontent.com/wiki/mbostock/d3/bcbd22.png) #bcbd22 ![dbdb8d](https://raw.githubusercontent.com/wiki/mbostock/d3/dbdb8d.png) #dbdb8d ![17becf](https://raw.githubusercontent.com/wiki/mbostock/d3/17becf.png) #17becf ![9edae5](https://raw.githubusercontent.com/wiki/mbostock/d3/9edae5.png) #9edae5|
+| `"category20b"`    | Set the scale range to a 20-color categorical palette: <br><br> ![393b79](https://raw.githubusercontent.com/wiki/mbostock/d3/393b79.png) #393b79 ![5254a3](https://raw.githubusercontent.com/wiki/mbostock/d3/5254a3.png) #5254a3 ![6b6ecf](https://raw.githubusercontent.com/wiki/mbostock/d3/6b6ecf.png) #6b6ecf ![9c9ede](https://raw.githubusercontent.com/wiki/mbostock/d3/9c9ede.png) #9c9ede ![637939](https://raw.githubusercontent.com/wiki/mbostock/d3/637939.png) #637939<br> ![8ca252](https://raw.githubusercontent.com/wiki/mbostock/d3/8ca252.png) #8ca252 ![b5cf6b](https://raw.githubusercontent.com/wiki/mbostock/d3/b5cf6b.png) #b5cf6b ![cedb9c](https://raw.githubusercontent.com/wiki/mbostock/d3/cedb9c.png) #cedb9c ![8c6d31](https://raw.githubusercontent.com/wiki/mbostock/d3/8c6d31.png) #8c6d31 ![bd9e39](https://raw.githubusercontent.com/wiki/mbostock/d3/bd9e39.png) #bd9e39<br> ![e7ba52](https://raw.githubusercontent.com/wiki/mbostock/d3/e7ba52.png) #e7ba52 ![e7cb94](https://raw.githubusercontent.com/wiki/mbostock/d3/e7cb94.png) #e7cb94 ![843c39](https://raw.githubusercontent.com/wiki/mbostock/d3/843c39.png) #843c39 ![ad494a](https://raw.githubusercontent.com/wiki/mbostock/d3/ad494a.png) #ad494a ![d6616b](https://raw.githubusercontent.com/wiki/mbostock/d3/d6616b.png) #d6616b<br> ![e7969c](https://raw.githubusercontent.com/wiki/mbostock/d3/e7969c.png) #e7969c ![7b4173](https://raw.githubusercontent.com/wiki/mbostock/d3/7b4173.png) #7b4173 ![a55194](https://raw.githubusercontent.com/wiki/mbostock/d3/a55194.png) #a55194 ![ce6dbd](https://raw.githubusercontent.com/wiki/mbostock/d3/ce6dbd.png) #ce6dbd ![de9ed6](https://raw.githubusercontent.com/wiki/mbostock/d3/de9ed6.png) #de9ed6|
+| `"category20c"`    | Set the scale range to a 20-color categorical palette: <br><br> ![3182bd](https://raw.githubusercontent.com/wiki/mbostock/d3/3182bd.png) #3182bd ![6baed6](https://raw.githubusercontent.com/wiki/mbostock/d3/6baed6.png) #6baed6 ![9ecae1](https://raw.githubusercontent.com/wiki/mbostock/d3/9ecae1.png) #9ecae1 ![c6dbef](https://raw.githubusercontent.com/wiki/mbostock/d3/c6dbef.png) #c6dbef ![e6550d](https://raw.githubusercontent.com/wiki/mbostock/d3/e6550d.png) #e6550d<br> ![fd8d3c](https://raw.githubusercontent.com/wiki/mbostock/d3/fd8d3c.png) #fd8d3c ![fdae6b](https://raw.githubusercontent.com/wiki/mbostock/d3/fdae6b.png) #fdae6b ![fdd0a2](https://raw.githubusercontent.com/wiki/mbostock/d3/fdd0a2.png) #fdd0a2 ![31a354](https://raw.githubusercontent.com/wiki/mbostock/d3/31a354.png) #31a354 ![74c476](https://raw.githubusercontent.com/wiki/mbostock/d3/74c476.png) #74c476<br> ![a1d99b](https://raw.githubusercontent.com/wiki/mbostock/d3/a1d99b.png) #a1d99b ![c7e9c0](https://raw.githubusercontent.com/wiki/mbostock/d3/c7e9c0.png) #c7e9c0 ![756bb1](https://raw.githubusercontent.com/wiki/mbostock/d3/756bb1.png) #756bb1 ![9e9ac8](https://raw.githubusercontent.com/wiki/mbostock/d3/9e9ac8.png) #9e9ac8 ![bcbddc](https://raw.githubusercontent.com/wiki/mbostock/d3/bcbddc.png) #bcbddc<br> ![dadaeb](https://raw.githubusercontent.com/wiki/mbostock/d3/dadaeb.png) #dadaeb ![636363](https://raw.githubusercontent.com/wiki/mbostock/d3/636363.png) #636363 ![969696](https://raw.githubusercontent.com/wiki/mbostock/d3/969696.png) #969696 ![bdbdbd](https://raw.githubusercontent.com/wiki/mbostock/d3/bdbdbd.png) #bdbdbd ![d9d9d9](https://raw.githubusercontent.com/wiki/mbostock/d3/d9d9d9.png) #d9d9d9|
 
 
 ### Example: Default Color Ranges based on Data Types
 
-A color scale of a nominal field outputs a categorical color palette.  
+A color scale of a nominal field outputs a categorical color palette.
 
 <div class="vl-example" data-name="scatter_color"></div>
 
-Meanwhile, a color scale an ordinal field and a quantitative field outputs a sequential color ramp.  
+Meanwhile, a color scale an ordinal field and a quantitative field outputs a sequential color ramp.
 
 <div class="vl-example" data-name="scatter_color_ordinal"></div>
 <div class="vl-example" data-name="scatter_color_quantitative"></div>
 
 ### Example: Custom Color Range
 
-We can customize the color range of the scatterplot above by providing `scale`'s `range` property.  For a nominal color field, `range` can be an array describing the desired palette.  
+We can customize the color range of the scatterplot above by providing `scale`'s `range` property.  For a nominal color field, `range` can be an array describing the desired palette.
 
 <div class="vl-example" data-name="scatter_color_custom"></div>
 
@@ -220,7 +218,7 @@ For ordinal, quantitative, and time fields, `range` can be a two-element array d
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| bandSize     | Number        | Width for each `x` or `y` ordinal band. ([See example](#ex-bandsize).) <span class="note-line">__Default value:__ for `x` ordinal scale of a `text` mark, derived from [scale config](config.html#scale-config)'s `textBandWidth`; otherwise, derived from [scale config](config.html#scale-config)'s `bandSize`.</span> |
+| bandSize     | Number        | Width for each `x` or `y` ordinal band. <span class="note-line">__Default value:__ for `x` ordinal scale of a `text` mark, derived from [scale config](config.html#scale-config)'s `textBandWidth`; otherwise, derived from [scale config](config.html#scale-config)'s `bandSize`.</span> |
 | padding       | Number        | • For `x` and `y` channels, the padding is a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points.  (See D3's [`ordinalRangePoints()`](https://github.com/mbostock/d3/wiki/Ordinal-Scales#ordinal_rangePoints) for illustration.) <span class="note-line">__Default value:__ derived from [scale config](config.html#scale-config)'s `padding`</span> <br/> • For `row` and `column`, padding is a pixel value for padding between cells in the trellis plots.  <span class="note-line">__Default value:__ derived from  [facet scale config](config.html#facet-scale-config)'s `padding`.</span>  |
 
 {:#ex-bandwidth}
