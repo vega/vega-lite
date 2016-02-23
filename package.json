@@ -51,6 +51,7 @@
     "browserify-shim": "^3.8.12",
     "browserify-versionify": "^1.0.6",
     "chai": "^3.5.0",
+    "exorcist": "^0.4.0",
     "istanbul": "^0.4.2",
     "json-diff": "^0.3.1",
     "mocha": "^2.4.5",
