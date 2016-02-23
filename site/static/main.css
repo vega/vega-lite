@@ -273,7 +273,7 @@ nav a:hover {
   margin-right: 60px;
 }
 .lead-buttons {
-  flex: 0 0;
+  flex: 0 0 auto;
 }
 .lead-buttons a {
   display: block;
@@ -317,16 +317,22 @@ nav a:hover {
 .showcase .image {
   display: inline-block;
   /* Show 4 images per row, make the height depend on the width */
-  height: 0;
+  height: auto;
   /* 12px  = 2*6px margin */
   width: calc(20% - 12px);
   /* hack to make height depend on width*/
-  padding-bottom: calc(16% - 12px);
   margin: 8px 0;
   border: 1px solid #ddd;
   background-clip: padding-box;
   background-position: center;
   background-repeat: no-repeat;
+}
+
+.showcase .image:before{
+  /* fixes FF display bug */
+  content: "";
+  display: block;
+  padding-top: 100%; 	/* initial ratio of 1:1*/
 }
 
 /* Gallery */

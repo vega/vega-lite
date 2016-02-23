@@ -41,7 +41,7 @@ In Vega-Lite, a specification can have the following top-level properties.
 
 | Property             | Type          | Description    |
 | :------------        |:-------------:| :------------- |
-| description   | String     | An optional description of this mark for commenting purpose. This property has no effect on the output visualization. |
+| description   | String     | An _optional_ description of this mark for commenting purpose. This property has no effect on the output visualization. |
 | [data](data.html)    | Object        | An object describing the data source. |
 | [transform](transform.html) | Object | An object describing filter and new field calculation. |
 | [mark](mark.html)    | String        | The mark type.  One of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`, `"area"`, `"point"`, and `"text"`. |
