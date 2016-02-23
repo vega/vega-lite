@@ -90,7 +90,7 @@ function mainScale(model: Model, fieldDef: FieldDef, channel: Channel) {
  */
 function colorLegendScale(model: Model, fieldDef: FieldDef) {
   return {
-    name: COLOR_LEGEND,
+    name: model.scaleName(COLOR_LEGEND),
     type: 'ordinal',
     domain: {
       data: model.dataTable(),
@@ -106,7 +106,7 @@ function colorLegendScale(model: Model, fieldDef: FieldDef) {
  */
 function binColorLegendLabel(model: Model, fieldDef: FieldDef) {
   return {
-    name: COLOR_LEGEND_LABEL,
+    name: model.scaleName(COLOR_LEGEND_LABEL),
     type: 'ordinal',
     domain: {
       data: model.dataTable(),

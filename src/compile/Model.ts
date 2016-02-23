@@ -286,7 +286,7 @@ export class Model {
   }
 
   /** returns scale name for a given channel */
-  public scaleName(channel: Channel): string {
+  public scaleName(channel: Channel|string): string {
     const name = this.spec().name;
     return (name ? name + '-' : '') + channel;
   }
