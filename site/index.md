@@ -51,7 +51,7 @@ images:
   </span>
 </span>
 
-Check out the [Documentation]({{site.baseurl}}/docs/) of Vega-Lite specifications and take a look at our [Example Gallery]({{site.baseurl}}/gallery.html).
+Read our [introduction article on Medium](https://medium.com/p/438f9215f09e), check out the [documentation]({{site.baseurl}}/docs/) and take a look at our [example gallery]({{site.baseurl}}/gallery.html).
 
 ## Example
 
