@@ -149,10 +149,10 @@ pre code {
   white-space: pre;
   border: none;
   background: transparent;
+  font-family: monospace;
 }
 pre {
   line-height: 1em;
-  font-family: monospace;
   background: #f6f6f6;
   padding: 8px;
   border: 1px solid #ddd;
@@ -365,36 +365,27 @@ nav a:hover {
   font-size: .95em;
 }
 
-/* Examples */
-
+/* Code Examples */
 .example {
   display: flex;
-  flex-direction: column;
-  margin: 1em 0;
-}
-.example.side {
-  flex-direction: row-reverse;
-}
-@media (max-width: 640px) {
-  .example.side {
-    flex-direction: column;
-  }
-  .example .example-code {
-    margin-bottom: 1em !important;
-    max-width: 550px;
-    width: auto !important;
-  }
+  align-items: stretch;
+  justify-content: space-around;
+  margin-top: 1em;
+  flex-flow: row wrap;
 }
 .example .example-vis {
-  flex: 1 0 auto;
-  align-self: center;
+  flex: 1;
+  margin-right: 10px;
   text-align: center;
   background-color: white;
-  padding-right: 10px;
+  margin-bottom: 1em;
+  align-self: center;
 }
 .example .example-code {
+  flex: 1.618;
   margin: 0;
   align-self: flex-start;
+  min-width: 350px;
 }
 .example .example-code code {
   white-space: pre-wrap;
@@ -411,7 +402,6 @@ nav a:hover {
 }
 
 /* Media queries */
-
 @media (max-width:768px) {
   body {
     font-size: 14px;
