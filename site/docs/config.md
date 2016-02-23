@@ -54,11 +54,11 @@ A Vega-Lite `config` object can have the following top-level properties:
 ## Cell Configuration  (`config.cell.*`)
 
 At its core, a Vega-Lite specification describes a single plot.  When a [facet channel](encoding.html#facet) is added, the visualization is faceted into a trellis plot, which contains multiple plots.
-Each plot in either a single plot or a trellis plot is called a _cell_. Cell configuration allows us to customize each individual single plot and each plot in a trellis plot.  
+Each plot in either a single plot or a trellis plot is called a _cell_. Cell configuration allows us to customize each individual single plot and each plot in a trellis plot.
 
 ### Cell Size Configuration
 
-`width` and `height` property of the cell configuration determine the width of a visualization with a continuous x-scale and the height of a visualization with a continuous y-scale respectively.  
+`width` and `height` property of the cell configuration determine the width of a visualization with a continuous x-scale and the height of a visualization with a continuous y-scale respectively.
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
@@ -82,7 +82,7 @@ Each plot in either a single plot or a trellis plot is called a _cell_. Cell con
 
 ## Mark Configuration (`config.mark.*`)
 
-`mark` property of the `config` is a mark config object, which sets the default properties of the visualization's marks.  Some of these properties will be overridden by data mapped to [mark properties channels](encoding.html#props-channels).  
+`mark` property of the `config` is a mark config object, which sets the default properties of the visualization's marks.  Some of these properties will be overridden by data mapped to [mark properties channels](encoding.html#props-channels).
 
 A mark config object can have the following properties:
 
@@ -268,7 +268,7 @@ vg.embed('#horizontal_line', {
 {:#scale-config}
 ## Scale Configuration  (`config.scale.*`)
 
-Scale configuration determines default properties for all [scales](scale.html) except for `row` and `column` (which are determined by [facet scale configuration](#facet-scale-config) instead).  
+Scale configuration determines default properties for all [scales](scale.html) except for `row` and `column` (which are determined by [facet scale configuration](#facet-scale-config) instead).
 
 <span class="note-line">__See Code:__
 For a full list of scale configuration and their default values, please see the `ScaleConfig` interface and `defaultScaleConfig` in [scale.schema.ts](https://github.com/vega/vega-lite/blob/master/src/schema/scale.schema.ts).
@@ -277,7 +277,7 @@ For a full list of scale configuration and their default values, please see the 
 {:#axis-config}
 ## Axis Configuration  (`config.axis.*`)
 
-Axis configuration determines default properties for `x` and `y` [axes](axis.html). (For `row` and `column` axes, see [facet axis configuration](#facet-axis-config)).  
+Axis configuration determines default properties for `x` and `y` [axes](axis.html). (For `row` and `column` axes, see [facet axis configuration](#facet-axis-config)).
 
 <span class="note-line">__See Code:__
 For a full list of axis configuration and their default values, please see the `AxisConfig` interface and `defaultAxisConfig` in [axis.schema.ts](https://github.com/vega/vega-lite/blob/master/src/schema/axis.schema.ts).
@@ -297,7 +297,7 @@ For a full list of legend configuration and their default values, please see the
 
 ### Cell Configuration (`config.facet.cell.*`)
 
-Facet cell configuration overrides [cell config](#cell-config) for faceted (trellis) plots.  
+Facet cell configuration overrides [cell config](#cell-config) for faceted (trellis) plots.
 Please see [cell config](#cell-config) for each property name and default values.
 
 ### Facet Grid Configuration (`config.facet.grid.*`)

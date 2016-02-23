@@ -9,9 +9,9 @@ permalink: /docs/aggregate.html
 {: .suppress-error}
 ```json
 {
-  "data": ... ,       
-  "mark": ... ,       
-  "encoding": {     
+  "data": ... ,
+  "mark": ... ,
+  "encoding": {
     "x": {
       "aggregate": ...,               // aggregate
       "field": ...,
@@ -27,7 +27,7 @@ permalink: /docs/aggregate.html
 
 Vega-Lite supports all [Vega aggregation operations](https://github.com/vega/vega/wiki/Data-Transforms#-aggregate) (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).
 
-If at least one fields in the specified encoding channels contain `aggregate`, the resulting visualization will show aggregate data.  In this case, all fields without aggregation function specified are treated as group-by fields in the aggregation process; Additional summary and group-by fields can be specified using the `detail` channel.  
+If at least one fields in the specified encoding channels contain `aggregate`, the resulting visualization will show aggregate data.  In this case, all fields without aggregation function specified are treated as group-by fields in the aggregation process; Additional summary and group-by fields can be specified using the `detail` channel.
 
 Otherwise, if none of the specified encoding channel contains `aggregate`,
 the resulting visualization shows raw data without aggregation.

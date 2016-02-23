@@ -7,9 +7,9 @@ permalink: /docs/timeunit.html
 {: .suppress-error}
 ```json
 {
-  "data": ... ,       
-  "mark": ... ,       
-  "encoding": {     
+  "data": ... ,
+  "mark": ... ,
+  "encoding": {
     "x": {
       "timeUnit": ...,               // time unit
       "field": ...,

@@ -10,8 +10,8 @@ An integral part of the data visualization process is encoding data with visual 
 {: .suppress-error}
 ```json
 {
-  "data": ... ,       
-  "mark": ... ,       
+  "data": ... ,
+  "mark": ... ,
   "encoding": {     // Encoding
     "x": ...,
     "y": ...,
@@ -31,7 +31,7 @@ An integral part of the data visualization process is encoding data with visual 
 {:#channels}
 ## Encoding Channels
 
-The keys in the encoding object are encoding channels. This section lists supported encoding channels in Vega-Lite.  
+The keys in the encoding object are encoding channels. This section lists supported encoding channels in Vega-Lite.
 
 {:#props-channels}
 ### Mark Properties Channels
@@ -48,7 +48,7 @@ Mark properties channels map data fields directly to visual properties of the ma
 
 ### Additional Level of Detail Channel
 
-Grouping data is another important operation in visualizing data. For [aggregated plots](aggregate.html), all encoded fields without `aggregate` functions are used as grouping fields in the aggregation (similar to fields in `GROUP BY` in SQL).  For line and area marks, mapping a data field to color or shape channel will group the lines and stacked areas by the field.  
+Grouping data is another important operation in visualizing data. For [aggregated plots](aggregate.html), all encoded fields without `aggregate` functions are used as grouping fields in the aggregation (similar to fields in `GROUP BY` in SQL).  For line and area marks, mapping a data field to color or shape channel will group the lines and stacked areas by the field.
 
 `detail` channel allows providing an additional grouping field (level) for grouping data in aggregation without mapping data to a specific visual channel.
 
@@ -65,8 +65,8 @@ Here is a scatterplot showing average horsepower and displacement for cars from 
 <div class="vl-example" data-name="scatter_aggregate_detail"></div>
 
 
-Here is a line chart showing stock prices of 5 tech companies over time.  
-We map `symbol` variable (stock market ticker symbol) to `detail` to use them to group lines.  
+Here is a line chart showing stock prices of 5 tech companies over time.
+We map `symbol` variable (stock market ticker symbol) to `detail` to use them to group lines.
 
 <div class="vl-example" data-name="line_detail"></div>
 
@@ -82,7 +82,7 @@ We map `symbol` variable (stock market ticker symbol) to `detail` to use them to
 | order | [ChannelDef](#def)| Layer order for non-stacked marks, or stack order for stacked marks. |
 | path   | [ChannelDef](#def)| Order of data points in line marks. |
 
-**Note**: Since `order` and `path` represent actual data fields that are used to sort the data, they cannot encode constant `value`.  In addition, in aggregate plots, they should have `aggregate` function specified.  
+**Note**: Since `order` and `path` represent actual data fields that are used to sort the data, they cannot encode constant `value`.  In addition, in aggregate plots, they should have `aggregate` function specified.
 
 {:#ex-order}
 #### Example: Sorting Layer Order
@@ -91,9 +91,9 @@ Given a colored scatterplot.
 
 <div class="vl-example" data-name="scatter_color"></div>
 
-By default, layer order of the data points are determined by original order of the data.  
+By default, layer order of the data points are determined by original order of the data.
 
-Mapping the field `Origin` to `order` channel will sort the layer of data points by the field.  
+Mapping the field `Origin` to `order` channel will sort the layer of data points by the field.
 
 <div class="vl-example" data-name="scatter_color_order"></div>
 
@@ -105,7 +105,7 @@ Given a stacked bar chart:
 
 <div class="vl-example" data-name="stacked_bar_h"></div>
 
-By default, the stacked bar are sorted by the stack grouping fields (`color` in this example).  
+By default, the stacked bar are sorted by the stack grouping fields (`color` in this example).
 
 Mapping the sum of yield to `order` channel will sort the layer of stacked bar by sum of yield instead.
 
@@ -123,7 +123,7 @@ By default, line marks order their points in their paths by the field of channel
 {:#facet}
 ### Facet Channels
 
-`row` and `column` are special encoding channels that facets single plots into [trellis plots (or small multiples)](https://en.wikipedia.org/wiki/Small_multiple).  
+`row` and `column` are special encoding channels that facets single plots into [trellis plots (or small multiples)](https://en.wikipedia.org/wiki/Small_multiple).
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
@@ -131,7 +131,7 @@ By default, line marks order their points in their paths by the field of channel
 
 For more information, please see [facet page](facet.html).
 
-**Note**: Since `row` and `column` represent actual data fields that are used to partition the data, they cannot encode constant `value`.  In addition, in aggregate plots, they should not have `aggregate` function specified.  
+**Note**: Since `row` and `column` represent actual data fields that are used to partition the data, they cannot encode constant `value`.  In addition, in aggregate plots, they should not have `aggregate` function specified.
 
 {:#def}
 ## Channel Definition
@@ -163,14 +163,14 @@ Ordinal
 : Ordinal data represents ranked order (1st, 2nd, ...) by which the data can be sorted. However, as opposed to quantitative data, there is no notion of *relative degree of difference* between them. For illustration, a "size" variable might have the following values `small`, `medium`, `large`, `extra-large`.  We know that medium is larger than small and same for extra-large larger than large.  However, we cannot claim that compare the magnitude of difference, for example, between (1) small and medium and (2) medium and large.
 
 Nominal
-: Nominal data, also known as categorical data, differentiates between values based only on their names or categories.  For example, gender, nationality, music genre, names are all nominal data.  Numbers maybe used to represent the variables but the number do not determine magnitude or ordering.  For example, if a nominal variable contains three values 1, 2, and 3.  We cannot claim that 1 is less than 2 nor 3.    
+: Nominal data, also known as categorical data, differentiates between values based only on their names or categories.  For example, gender, nationality, music genre, names are all nominal data.  Numbers maybe used to represent the variables but the number do not determine magnitude or ordering.  For example, if a nominal variable contains three values 1, 2, and 3.  We cannot claim that 1 is less than 2 nor 3.
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | type          | String        | The encoded field's type of measurement.  This can be either a full type name (`"quantitative"`, `"temporal"`, `"ordinal"`,  and `"nominal"`) or an initial character of the type name (`"Q"`, `"T"`, `"O"`, `"N"`).  This property is case insensitive. |
 
 **Note**:
-Data `type` here describes semantic of the data rather than primitive data types in programming language sense (`number`, `string`, etc.).  The same primitive data type can have different type of measurement.  For example, numeric data can represent quantitative, ordinal, or nominal data.  
+Data `type` here describes semantic of the data rather than primitive data types in programming language sense (`number`, `string`, etc.).  The same primitive data type can have different type of measurement.  For example, numeric data can represent quantitative, ordinal, or nominal data.
 
 {:#inline}
 ### Field Transforms
@@ -193,12 +193,12 @@ For more information about these field transforms, please see the following page
 
 <sup>1</sup>  Inline field transforms are executed after the top-level `transform`s are executed, and are executed in this order: `bin`, `timeUnit`, `aggregate`, and `sort`.
 
-<sup>2</sup> `detail` does not support `aggregate` and `sort`.  When using `path` and `detail`, with non-grouping variables in aggregate plots, they should be aggregated to prevent additional groupings.  
+<sup>2</sup> `detail` does not support `aggregate` and `sort`.  When using `path` and `detail`, with non-grouping variables in aggregate plots, they should be aggregated to prevent additional groupings.
 
 {:#value}
 ### Constant Value
 
-For [mark properties channels](#props-channels), if a `field` is not specified, constant values for the properties (e.g., color, size) can be also set directly with the channel definition's `value` property.  
+For [mark properties channels](#props-channels), if a `field` is not specified, constant values for the properties (e.g., color, size) can be also set directly with the channel definition's `value` property.
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
@@ -215,7 +215,7 @@ For example, you can set `color` and `shape` of a scatter plot to constant value
 
 {:#ex-bar-size}
 
-Similarly, `value` for `size` channel of bar marks will adjust the bar's size.  By default, there will be 1 pixel offset between bars.  The following example sets the size to 10 to add more offset between bars.  
+Similarly, `value` for `size` channel of bar marks will adjust the bar's size.  By default, there will be 1 pixel offset between bars.  The following example sets the size to 10 to add more offset between bars.
 
 <span class="vl-example" data-name="bar_aggregate_size"></span>
 
@@ -223,7 +223,7 @@ Similarly, `value` for `size` channel of bar marks will adjust the bar's size.  
 
 ### Scale and Guide
 
-For encoding channels that map data directly to visual properties of the marks, they must provide [scales](scale.html), or functions that transform values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes).  
+For encoding channels that map data directly to visual properties of the marks, they must provide [scales](scale.html), or functions that transform values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes).
 
 In addition, visualizations typically provide guides to aid interpretation of scales. There are two types of guides: [axes](axis.html) and [legends](legend.html). Axes produces lines, ticks, and labels to convey how a spatial range represent a data range in position channel (`x` and `y`).    Meanwhile, legends aid interpretation of `color`, `size`, and `shape`'s scales.
 

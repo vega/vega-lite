@@ -9,9 +9,9 @@ The channel definition's `bin` property is for grouping quantitative, continuous
 {: .suppress-error}
 ```json
 {
-  "data": ... ,       
-  "mark": ... ,       
-  "encoding": {     
+  "data": ... ,
+  "mark": ... ,
+  "encoding": {
     "x": {
       "bin": ...,               // bin
       "field": ...,
@@ -44,7 +44,7 @@ Given a field with quantitative continuous data values
 
 <span class="vl-example" data-name="point_1d"></span>
 
-Setting `bin` groups the values into a smaller number of bins.  
+Setting `bin` groups the values into a smaller number of bins.
 
 <div class="vl-example">
 {
@@ -60,7 +60,7 @@ Setting `bin` groups the values into a smaller number of bins.
 }
 </div>
 
-Mapping binned values and its count to a `bar` mark produces a histogram.  
+Mapping binned values and its count to a `bar` mark produces a histogram.
 
 <span class="vl-example" data-name="histogram"></span>
 

@@ -19,11 +19,11 @@ As it is designed for analysis, Vega-Lite also supports data transformation such
 {: .suppress-error}
 ```json
 {
-  "description": ... ,       
-  "data": ... ,       
-  "mark": ... ,   
-  "transform": ...,    
-  "encoding": {     
+  "description": ... ,
+  "data": ... ,
+  "mark": ... ,
+  "transform": ...,
+  "encoding": {
     "x": {
       "field": ...,
       "type": ...,

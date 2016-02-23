@@ -7,14 +7,14 @@ permalink: /docs/axis.html
 
 Axes provide axis lines, ticks and labels to convey how a spatial range represents a data range. Simply put, axes visualize scales.
 
-By default, Vega-Lite automatically creates axes for `x`, `y`, `row`, and `column` channels when they are encoded.  Axis can be customized via the `axis` property of a channel definition.  
+By default, Vega-Lite automatically creates axes for `x`, `y`, `row`, and `column` channels when they are encoded.  Axis can be customized via the `axis` property of a channel definition.
 
 {: .suppress-error}
 ```json
 {
-  "data": ... ,       
-  "mark": ... ,       
-  "encoding": {     
+  "data": ... ,
+  "mark": ... ,
+  "encoding": {
     "x": {
       "field": ...,
       "type": ...,
