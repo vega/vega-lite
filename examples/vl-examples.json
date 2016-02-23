@@ -90,6 +90,14 @@
       }
     },
     {
+      "name": "line_slope",
+      "title": "Slope Graph",
+      "galleryParameters": {
+        "backgroundSize": "170%",
+        "backgroundPosition": "40% 15%"
+      }
+    },
+    {
       "name": "histogram",
       "title": "Histogram",
       "galleryParameters": {
