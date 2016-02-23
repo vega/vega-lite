@@ -19,17 +19,13 @@ d3.selectAll('h2, h3, h4, h5, h6').each(function() {
 
 function renderExample($target: d3.Selection<any>, text: string) {
   $target.classed('example', true);
-  $target.classed('side', true);
   $target.text('');
 
-  const code = $target.insert('pre', 'div.example-vis').attr('class', 'example-code')
+  const vis = $target.append('div').attr('class', 'example-vis');
+
+  const code = $target.append('pre').attr('class', 'example-code')
     .append('code').attr('class', 'json').text(text);
   hljs.highlightBlock(code.node());
-
-  let vis = $target.select('div.example-vis');
-  if (vis.empty()) {
-    vis = $target.append('div').attr('class', 'example-vis');
-  }
 
   const spec = JSON.parse(text);
   if (spec.data.url) {
