@@ -24,6 +24,10 @@
       "title": "Scatterplot"
     },
     {
+      "name": "circle",
+      "title": "Scatterplot with Circles"
+    },
+    {
       "name": "scatter_colored_with_shape",
       "title": "Colored Scatterplot",
       "galleryParameters": {
