@@ -1,7 +1,7 @@
 {
   "name": "vega-lite",
   "author": "Jeffrey Heer, Dominik Moritz, Kanit \"Ham\" Wongsuphasawat",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "collaborators": [
     "Kanit Wongsuphasawat <kanitw@gmail.com> (http://kanitw.yellowpigz.com)",
     "Dominik Moritz <domoritz@cs.washington.edu> (http://domoritz.de)",
@@ -13,12 +13,12 @@
     "test": "test"
   },
   "scripts": {
-    "postinstall": "cp node_modules/vega-datasets/data/* data",
     "build": "browserify src/vl.ts -p tsify -d -s vl > vega-lite.js",
     "postbuild": "uglifyjs vega-lite.js -cm --source-map vega-lite.min.js.map > vega-lite.min.js && npm run schema",
     "build:all": "npm run clean && npm run build && npm test && npm run lint && npm run images",
     "cover": "tsc && istanbul cover node_modules/.bin/_mocha -- --recursive",
     "clean": "rm -f vega-lite.* vega-lite-schema.json & find src -name '*.js*' -type f -delete & find test -name '*.js*' -type f -delete & find site -name '*.js*' -type f -delete & rm -rf examples/_diff examples/_original examples/_output examples/images",
+    "data": "cp node_modules/vega-datasets/data/* data",
     "deploy": "scripts/deploy.sh",
     "deploy:gh": "scripts/deploy-gh.sh",
     "lint": "tslint -c tslint.json src/*.ts test/*.ts src/**/*.ts test/**/*.ts",
