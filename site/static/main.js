@@ -10,15 +10,11 @@ d3.selectAll('h2, h3, h4, h5, h6').each(function () {
 });
 function renderExample($target, text) {
     $target.classed('example', true);
-    $target.classed('side', true);
     $target.text('');
-    var code = $target.insert('pre', 'div.example-vis').attr('class', 'example-code')
+    var vis = $target.append('div').attr('class', 'example-vis');
+    var code = $target.append('pre').attr('class', 'example-code')
         .append('code').attr('class', 'json').text(text);
     hljs.highlightBlock(code.node());
-    var vis = $target.select('div.example-vis');
-    if (vis.empty()) {
-        vis = $target.append('div').attr('class', 'example-vis');
-    }
     var spec = JSON.parse(text);
     if (spec.data.url) {
         spec.data.url = window.location.origin + BASEURL + '/' + spec.data.url;
