@@ -62,7 +62,7 @@ Each plot in either a single plot or a trellis plot is called a _cell_. Cell con
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| width         | Integer       | The width of the single plot or each plot in a trellis plot when the visualization has continuous x-scale.  (If the plot has ordinal x-scale, the width is determined by the x-scale's [`bandSize`](scale.html#ordinal) and the cardinality of the x-scale.  If the plot does not have a field on `x`, the width is [scale config](#scale-config)'s `bandSize`.) <span class="note-line">__Default value:__ `200`</span> |
+| width         | Integer       | The width of the single plot or each plot in a trellis plot when the visualization has continuous x-scale.  (If the plot has ordinal x-scale, the width is determined by the x-scale's [`bandSize`](scale.html#ordinal) and the cardinality of the x-scale.  If the plot does not have a field on `x`, the width is derived from [scale config](#scale-config)'s  `bandSize` for all marks except `text` and from [scale config](#scale-config)'s `textBandWidth` for `text` mark.) <span class="note-line">__Default value:__ `200`</span> |
 | height        | Integer       | The height of the single plot or each plot in a trellis plot when the visualization has continuous y-scale.  (If the visualization has ordinal y-scale, the height is determined by the `bandSize` and the cardinality of the y-scale.  If the plot does not have a field on `y`, the height is [scale config](#scale-config)'s `bandSize`.) <span class="note-line">__Default value:__ `200`</span> |
 
 **For more information about visualization's size, please see [Customizing Size](size.html) page.**

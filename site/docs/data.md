@@ -44,7 +44,10 @@ For example, the following specification loads data from a relative `url`: `data
 
 <span class="vl-example" data-name="scatter"></span>
 
+<!---
+
 {:#runtime}
 ## Binding Data at Run-time
 
 __TODO: Example__
+---->
