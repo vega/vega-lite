@@ -21,7 +21,7 @@ function renderExample($target, text) {
     }
     var spec = JSON.parse(text);
     if (spec.data.url) {
-        spec.data.url = '//' + window.location.host + window.location.pathname + spec.data.url;
+        spec.data.url = window.location.origin + BASEURL + '/' + spec.data.url;
     }
     vg.embed(vis.node(), {
         mode: 'vega-lite',

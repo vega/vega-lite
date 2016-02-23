@@ -24,6 +24,10 @@
             "$ref": "#/definitions/Config"
         }
     },
+    "required": [
+        "mark",
+        "encoding"
+    ],
     "definitions": {
         "DataFormat": {
             "type": "string",
@@ -63,7 +67,11 @@
                     "type": "string",
                     "description": "A string containing an expression for the formula. Use the variable `datum` to to refer to the current data object."
                 }
-            }
+            },
+            "required": [
+                "field",
+                "expr"
+            ]
         },
         "Transform": {
             "type": "object",
@@ -385,7 +393,11 @@
                 "order": {
                     "$ref": "#/definitions/SortOrder"
                 }
-            }
+            },
+            "required": [
+                "field",
+                "op"
+            ]
         },
         "Type": {
             "type": "string",
