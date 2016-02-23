@@ -83,7 +83,7 @@
     },
     {
       "name": "line_color",
-      "title": "Line Chart",
+      "title": "Multi Series Line Chart",
       "galleryParameters": {
         "backgroundSize": "170%",
         "backgroundPosition": "40% 15%"
