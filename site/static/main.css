@@ -153,9 +153,9 @@ pre code {
 }
 pre {
   line-height: 1em;
-  background: #f6f6f6;
-  padding: 8px;
-  border: 1px solid #ddd;
+  background: #F9F9F9;
+  border: 1px solid #eee;
+  padding: 8px 10px;
 }
 .hljs {
   padding: 0;
