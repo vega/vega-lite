@@ -5,15 +5,18 @@ docs
 examples/_original
 examples/_output
 examples/_diff
+examples/images
 scripts
 site
 test
 coverage
 _site
 _layouts
+_includes
 
 npm-debug.log
 instance.json
+test-gallery.html
 Gemfile.lock
 gallery.html
 Gemfile
@@ -22,3 +25,4 @@ tslint.json
 bower.json
 _config.yml
 .travis.yml
+.jekyll-metadata
