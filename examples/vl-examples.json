@@ -4,7 +4,7 @@
       "name": "bar",
       "title": "Simple Bar Chart",
       "galleryParameters": {
-        "backgroundPosition": "-5% 50%"
+        "backgroundPosition": "25% 50%"
       }
     },
     {
@@ -25,7 +25,15 @@
     },
     {
       "name": "circle",
-      "title": "Scatterplot with Circles"
+      "title": "Scatterplot with Filled Circles"
+    },
+    {
+      "name": "scatter_binned",
+      "title": "Binned Scatterplot",
+      "galleryParameters": {
+        "backgroundSize": "150%",
+        "backgroundPosition": "1% 26%"
+      }
     },
     {
       "name": "scatter_colored_with_shape",
@@ -181,7 +189,7 @@
     },
     {
       "name": "trellis_barley",
-      "title": "Becker's Barley",
+      "title": "Becker's Barley Trellis Plot",
       "galleryParameters": {
         "backgroundSize": "150%",
         "backgroundPosition": "30% 0%"

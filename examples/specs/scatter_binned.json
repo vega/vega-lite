@@ -1,9 +1,21 @@
 {
-  "data": {"url": "data/cars.json"},
+  "data": {"url": "data/movies.json"},
   "mark": "point",
   "encoding": {
-    "x": {"bin": {"maxbins": 10}, "field": "Displacement", "type": "quantitative"},
-    "y": {"bin": {"maxbins": 10}, "field": "Miles_per_Gallon", "type": "quantitative"},
-    "size": {"aggregate": "count", "field": "*", "type": "quantitative"}
+    "x": {
+      "bin": {"maxbins": 10},
+      "field": "IMDB_Rating",
+      "type": "quantitative"
+    },
+    "y": {
+      "bin": {"maxbins": 10},
+      "field": "Rotten_Tomatoes_Rating",
+      "type": "quantitative"
+    },
+    "size": {
+      "aggregate": "count",
+      "field": "*", "type":
+      "quantitative"
+    }
   }
 }
