@@ -3,13 +3,13 @@ layout: page
 permalink: /
 
 images:
- - spec: area
-   bgposition: 80% 30%
+ - spec: stacked_area_stream
+   bgposition: 44% 22%
+ - spec: circle
+   bgposition: 75% 30%
  - spec: bar_layered_transparent
    bgposition: 25% 0
    bgsize: 250%
- - spec: circle
-   bgposition: 75% 30%
  - spec: tick_strip
    bgposition: 75% 0%
    bgsize: 150%
@@ -19,14 +19,16 @@ images:
  - spec: scatter_colored_with_shape
    bgposition: 50% 30%
  - spec: trellis_barley
-   bgsize: 250%
+   bgsize: 226%
+   bgposition: 40% 5%
  - spec: bar_grouped
    bgposition: 75% 50%
- - spec: trellis_stacked_bar
-   bgsize: 250%
- - spec: trellis_scatter
-   bgposition: center 25%
-   bgsize: 300%
+ - spec: stacked_bar_weather
+   bgsize: 170%
+   bgposition: 31% 14%
+ - spec: trellis_bar_histogram
+   bgposition: 75% 82%
+   bgsize: 100%
 
 ---
 
