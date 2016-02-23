@@ -6,15 +6,17 @@ permalink: /comparison.html
 
 ## Vega and D3
 
-Vega-Lite is a higher-level grammar for visual analysis. It supports common chart types (bar chart, line chart, area chart, scatter plot, heatmap, trellis plots, ...) and common data transformations (sorting, aggregation, faceting). Vega is much more expressive and also supports interactions. However, Vega does not provide as many defaults as Vega-Lite and thus more code is required for simple charts. The Vega wiki has a detailed [comparison of Vega and D3](https://github.com/vega/vega/wiki/Vega-and-D3).
+Vega-Lite is a higher-level grammar for visual analysis. It supports common chart types (bar chart, line chart, area chart, scatter plot, heatmap, trellis plots, ...) and common data transformations (sorting, aggregation, faceting). In Vega, you have to manually construct axis and legends and you have to decide how to map the data to visual properties. Vega-Lite automates the construction of axes, legends, and scales from a high level encoding specification. This makes Vega-Lite specifications significantly shorter (about 1/10th). Vega-Lite is compiled to Vega and some Visualizations that are expressible in Vega cannot be expressed in Vega-Lite. For instance, as of now Vega-Lite does not support interactions.
 
-## GGPlot
+Vega-Lite and Vega are visualization specification languages in JSON. The Vega wiki has a detailed [comparison of Vega and D3](https://github.com/vega/vega/wiki/Vega-and-D3).
 
-GGPlot and Vega-Lite both use a compositional approach to visualization design and are both grounded in the [Grammar of Graphics](http://www.amazon.com/The-Grammar-Graphics-Statistics-Computing/dp/0387245448). Vega-Lite adds common data analysis transformations such as aggregation. Moreover, Vega-Lite is implemented in Java-Script and thus available in all modern browsers.
 
-## Tableau
+## Grammar of Graphics, GGPlot and Tableau
 
-[Tableau](https://www.tableau.com/) is a graphical interface. The underlying formalism ([VizQL](https://www.tableau.com/products/technology)) is similar to Vega-Lite. Vega-Lite and Tableau both provide smart defaults.
+GGPlot and Vega-Lite both use a compositional approach to visualization design and are both grounded in the [Grammar of Graphics](http://www.amazon.com/The-Grammar-Graphics-Statistics-Computing/dp/0387245448).  Vega-Lite adds common data analysis transformations such as aggregation. GGPlot is embedded in R so that data can be transformed outside of the visualization specification. Vega-Lite is implemented in Java-Script and thus available in all modern browsers.
+
+[Tableau](https://www.tableau.com/) is a graphical interface. The underlying formalism ([VizQL](https://www.tableau.com/products/technology)) heavily influenced the design of Vega-Lite. Vega-Lite and Tableau both provide smart defaults.
+
 
 ## Highcharts and plotly
 
