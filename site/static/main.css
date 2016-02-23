@@ -14,29 +14,6 @@ body {
 header {
   background-color: #E6E6E6;
 }
-code, tt {
-  margin: 0 2px;
-  padding: 0 4px;
-  white-space: nowrap;
-  background: #f6f6f6;
-  border: 1px solid #ddd;
-  font-family: monospace;
-  font-size: 0.8em;
-}
-pre code {
-  margin: 0;
-  padding: 0;
-  white-space: pre;
-  border: none;
-  background: transparent;
-}
-pre {
-  line-height: 1em;
-  font-family: monospace;
-  background: #f6f6f6;
-  padding: 8px;
-  border: 1px solid #ddd;
-}
 a {
   color: #4682B4;
 }
@@ -154,6 +131,35 @@ h2 .octicon-link, h3 .octicon-link, h4 .octicon-link, h5 .octicon-link, h6 .octi
 }
 h2:hover .anchor .octicon-link, h3:hover .anchor .octicon-link, h4:hover .anchor .octicon-link, h5:hover .anchor .octicon-link, h6:hover .anchor .octicon-link {
   visibility: visible;
+}
+
+/* Code */
+code, tt {
+  margin: 0 2px;
+  padding: 0 4px;
+  white-space: nowrap;
+  background: #f6f6f6;
+  border: 1px solid #ddd;
+  font-family: monospace;
+  font-size: 0.8em;
+}
+pre code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+pre {
+  line-height: 1em;
+  font-family: monospace;
+  background: #f6f6f6;
+  padding: 8px;
+  border: 1px solid #ddd;
+}
+.hljs {
+  padding: 0;
+  background-color: transparent;
 }
 
 /* Nav */
@@ -387,7 +393,6 @@ nav a:hover {
   padding-right: 10px;
 }
 .example .example-code {
-  width: 550px;
   margin: 0;
   align-self: flex-start;
 }
@@ -403,9 +408,6 @@ nav a:hover {
 }
 .example canvas, .example svg {
   border: 1px dashed #ddd;
-}
-.hljs {
-  padding: 0;
 }
 
 /* Media queries */
