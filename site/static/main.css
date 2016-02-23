@@ -374,7 +374,7 @@ nav a:hover {
   flex-flow: row wrap;
 }
 .example .example-vis {
-  flex: 1;
+  flex: 1 1 0%;
   margin-right: 10px;
   text-align: center;
   background-color: white;
@@ -382,7 +382,7 @@ nav a:hover {
   align-self: center;
 }
 .example .example-code {
-  flex: 1.618;
+  flex: 1.618 1 0%;
   margin: 0;
   align-self: flex-start;
   min-width: 350px;
