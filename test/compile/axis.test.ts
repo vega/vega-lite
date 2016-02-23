@@ -186,7 +186,7 @@ describe('Axis', function() {
           x: {field: "a", type: "temporal", timeUnit: "month"}
         }
       });
-      const labels = axis.properties.labels(model, X, {}, {});
+      const labels = axis.properties.labels(model, X, {}, {type: 'x'});
       assert.equal(labels.angle.value, 270);
       assert.equal(labels.baseline.value, 'middle');
     });

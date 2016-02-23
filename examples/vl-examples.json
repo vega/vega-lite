@@ -32,6 +32,14 @@
       }
     },
     {
+      "name": "text_scatter_colored",
+      "title": "Colored Text Scatter Plot",
+      "galleryParameters": {
+        "backgroundSize": "180%",
+        "backgroundPosition": "50% 20%"
+      }
+    },
+    {
       "name": "scatter_bubble",
       "title": "Bubble Plot",
       "galleryParameters": {
@@ -96,8 +104,15 @@
   ],
   "Stack": [
     {
-      "name": "stacked_bar_h",
+      "name": "stacked_bar_weather",
       "title": "Stacked Bar Chart",
+      "galleryParameters": {
+        "backgroundSize": "150%"
+      }
+    },
+    {
+      "name": "stacked_bar_h",
+      "title": "Horizontal Stacked Bar Chart",
       "galleryParameters": {
         "backgroundSize": "200%",
         "backgroundPosition": "55% 25%"

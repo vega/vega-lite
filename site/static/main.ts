@@ -34,7 +34,7 @@ function renderExample($target: d3.Selection<any>, text: string) {
   const spec = JSON.parse(text);
   if (spec.data.url) {
     // make url absolute
-    spec.data.url = '//' + window.location.host + window.location.pathname + spec.data.url;
+    spec.data.url = window.location.origin + BASEURL + '/' + spec.data.url;
   }
 
   vg.embed(vis.node(), {
