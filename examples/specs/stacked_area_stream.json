@@ -1,5 +1,5 @@
 {
-  "data": {"url": "data/unemployment-industry.json"},
+  "data": {"url": "data/unemployment-across-industries.json"},
   "mark": "area",
   "encoding": {
     "x": {
