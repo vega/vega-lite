@@ -23,11 +23,13 @@ permalink: /docs/timeunit.html
 }
 ```
 
-`timeUnit` property of a channel definition sets the level of specificity for a temporal field.  Currently supported values are: `'year'`, `'month'`, `'day'`, `'date'`, `'hours'`, `'minutes'`, `'seconds'`, `'milliseconds'`, `'yearmonth'`, `'yearmonthday'`, `'yearmonthdate'`, `'yearday'`, `'yeardate'`, `'yearmonthdayhours'`, `'yearmonthdayhoursminutes'`, `'hoursminutes'`, `'hoursminutesseconds'`, `'minutesseconds'`, `'secondsmilliseconds'`.
+`timeUnit` property of a channel definition sets the level of specificity for a temporal field.  Currently supported values are:
+
+- Non-periodic Time Unit: `'year'`, `'yearmonth'`, `'yearmonthday'`, `'yearmonthdate'`, `'yearday'`, `'yeardate'`, `'yearmonthdayhours'`, `'yearmonthdayhoursminutes'`.  
+
+- Periodic Time Unit: `'month'`, `'day'`, `'date'`, `'hours'`, `'minutes'`, `'seconds'`, `'milliseconds'`,  `'hoursminutes'`, `'hoursminutesseconds'`, `'minutesseconds'`, `'secondsmilliseconds'`.
 
 <!-- TODO: given a example datetime, show examples show each different time unit property transforms the original time -->
-
-<!-- TODO: explain more distinction between `'month'`, `'day'`, `'date'`, `'hours'`, `'minutes'`, `'seconds'`, `'milliseconds'` and yearmonth, .. -->
 
 #### Example
 

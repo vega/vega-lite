@@ -297,8 +297,7 @@ For a full list of legend configuration and their default values, please see the
 
 ### Cell Configuration (`config.facet.cell.*`)
 
-Facet cell configuration overrides [cell config](#cell-config) for faceted (trellis) plots.
-Please see [cell config](#cell-config) for each property name and default values.
+Facet cell configuration overrides [cell config](#cell-config) for faceted (trellis) plots. Please see [cell config](#cell-config) for each property name and default values.
 
 ### Facet Grid Configuration (`config.facet.grid.*`)
 

@@ -34,8 +34,7 @@ By default, Vega-Lite automatically creates axes for `x`, `y`, `row`, and `colum
 
 The field's axis can be removed by setting `axis` to `false`.  If `axis` is `true`, default axis properties are applied.
 
-Axis properties can be customized by setting `axis` to an axis property object.
-The `axis` property object supports the following properties:
+Axis properties can be customized by setting `axis` to an axis property object.  The `axis` property object supports the following properties:
 
 <!--TODO: add default behavior for each property -->
 
