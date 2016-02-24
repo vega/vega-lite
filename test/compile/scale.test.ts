@@ -6,6 +6,7 @@ import * as vlscale from '../../src/compile/scale';
 import {SOURCE, SUMMARY} from '../../src/data';
 import {parseModel} from '../util';
 import {Y, ROW, COLOR} from '../../src/channel';
+import {ScaleType} from '../../src/enums';
 
 
 describe('Scale', function() {
@@ -23,7 +24,7 @@ describe('Scale', function() {
       });
       const fieldDef = model.fieldDef(Y);
       const scale = model.scale(Y);
-      assert.deepEqual(vlscale.scaleType(scale, fieldDef, Y, model.mark()), 'time');
+      assert.deepEqual(vlscale.scaleType(scale, fieldDef, Y, model.mark()), ScaleType.TIME);
     });
 
     it('should return ordinal for month', function() {
@@ -39,7 +40,7 @@ describe('Scale', function() {
       });
       const fieldDef = model.fieldDef(Y);
       const scale = model.scale(Y);
-      assert.deepEqual(vlscale.scaleType(scale, fieldDef, Y, model.mark()), 'ordinal');
+      assert.deepEqual(vlscale.scaleType(scale, fieldDef, Y, model.mark()), ScaleType.ORDINAL);
     });
 
     it('should return ordinal for row', function() {
@@ -55,7 +56,7 @@ describe('Scale', function() {
       });
       const fieldDef = model.fieldDef(ROW);
       const scale = model.scale(ROW);
-      assert.deepEqual(vlscale.scaleType(scale, fieldDef, ROW, model.mark()), 'ordinal');
+      assert.deepEqual(vlscale.scaleType(scale, fieldDef, ROW, model.mark()), ScaleType.ORDINAL);
     });
   });
 
@@ -74,7 +75,7 @@ describe('Scale', function() {
         }
       });
 
-      const domain = vlscale.domain(model.scale(Y), model, Y, 'linear');
+      const domain = vlscale.domain(model.scale(Y), model, Y, ScaleType.LINEAR);
 
       assert.deepEqual(domain, {
         data: 'stacked_scale',
@@ -96,7 +97,7 @@ describe('Scale', function() {
               }
             }
           });
-          const domain = vlscale.domain(model.scale(Y), model, Y, 'ordinal');
+          const domain = vlscale.domain(model.scale(Y), model, Y, ScaleType.ORDINAL);
 
           assert.deepEqual(domain, {
             data: SOURCE,
@@ -121,7 +122,7 @@ describe('Scale', function() {
               }
             }
           });
-          const domain = vlscale.domain(model.scale(Y), model, Y, 'linear');
+          const domain = vlscale.domain(model.scale(Y), model, Y, ScaleType.LINEAR);
 
           assert.deepEqual(domain.data, SOURCE);
         });
@@ -139,7 +140,7 @@ describe('Scale', function() {
               }
             }
           });
-          const domain = vlscale.domain(model.scale(Y), model, Y, 'linear');
+          const domain = vlscale.domain(model.scale(Y), model, Y, ScaleType.LINEAR);
 
           assert.deepEqual(domain.data, SUMMARY);
         });
@@ -157,7 +158,7 @@ describe('Scale', function() {
               }
             }
           });
-          const domain = vlscale.domain(model.scale(Y), model, Y, 'linear');
+          const domain = vlscale.domain(model.scale(Y), model, Y, ScaleType.LINEAR);
 
           assert.deepEqual(domain.data, SUMMARY);
         });
@@ -176,7 +177,7 @@ describe('Scale', function() {
               }
             }
           });
-          const domain = vlscale.domain(model.scale(Y), model, Y, 'time');
+          const domain = vlscale.domain(model.scale(Y), model, Y, ScaleType.TIME);
 
           assert.deepEqual(domain.data, SOURCE);
         });
@@ -194,7 +195,7 @@ describe('Scale', function() {
               }
             }
           });
-          const domain = vlscale.domain(model.scale(Y), model, Y, 'ordinal');
+          const domain = vlscale.domain(model.scale(Y), model, Y, ScaleType.ORDINAL);
 
           assert.deepEqual(domain.data, SOURCE);
           assert.operator(domain.field.indexOf('year'), '>', -1);
@@ -213,7 +214,7 @@ describe('Scale', function() {
               }
             }
           });
-          const domain = vlscale.domain(model.scale(Y), model, Y, 'ordinal');
+          const domain = vlscale.domain(model.scale(Y), model, Y, ScaleType.ORDINAL);
 
           assert.deepEqual(domain, { data: 'month', field: 'date' });
         });
@@ -231,7 +232,7 @@ describe('Scale', function() {
                 }
               }
             });
-            const domain = vlscale.domain(model.scale(Y), model, Y, 'ordinal');
+            const domain = vlscale.domain(model.scale(Y), model, Y, ScaleType.ORDINAL);
 
             assert.deepEqual(domain, {
               data: 'source', field: 'yearmonth_origin',
@@ -250,7 +251,7 @@ describe('Scale', function() {
             }
           });
 
-        assert.deepEqual(vlscale.domain(model.scale(Y), model, Y, 'ordinal'), {
+        assert.deepEqual(vlscale.domain(model.scale(Y), model, Y, ScaleType.ORDINAL), {
             data: "source",
             field: 'origin',
             sort: sortDef
@@ -265,7 +266,7 @@ describe('Scale', function() {
             }
           });
 
-        assert.deepEqual(vlscale.domain(model.scale(Y), model, Y, 'ordinal'), {
+        assert.deepEqual(vlscale.domain(model.scale(Y), model, Y, ScaleType.ORDINAL), {
             data: "source",
             field: 'origin',
             sort: true

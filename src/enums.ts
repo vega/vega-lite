@@ -12,8 +12,10 @@ export enum ScaleType {
     POW = 'pow' as any,
     SQRT = 'sqrt' as any,
     QUANTILE = 'quantile' as any,
+    QUANTIZE = 'quantize' as any,
     ORDINAL = 'ordinal' as any,
     TIME = 'time' as any,
+    UTC  = 'utc' as any,
 }
 
 export enum NiceTime {
