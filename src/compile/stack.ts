@@ -8,7 +8,7 @@ import {BAR, AREA, Mark} from '../mark';
 import {field, isMeasure} from '../fielddef';
 import {has, isAggregate} from '../encoding';
 import {isArray, contains} from '../util';
-import {sortField} from './util';
+import {sortField} from './common';
 
 import {scaleType} from './scale';
 

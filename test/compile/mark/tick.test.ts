@@ -5,9 +5,9 @@
 // After finishing all test, make sure all lines in mark-tick.ts is tested
 // (except the scaffold labels() method)
 import {assert} from 'chai';
-import {parseModel} from '../util';
-import {X, Y, SIZE} from '../../src/channel';
-import {tick} from '../../src/compile/mark-tick';
+import {parseModel} from '../../util';
+import {X, Y, SIZE} from '../../../src/channel';
+import {tick} from '../../../src/compile/mark/tick';
 
 describe('Mark: Tick', function() {
   it('should return the correct mark type', function() {
