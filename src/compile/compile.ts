@@ -8,7 +8,7 @@ import {compileData} from './data';
 import {compileLayoutData} from './layout';
 import {facetMixins} from './facet';
 import {compileLegends} from './legend';
-import {compileMark} from './mark';
+import {compileMark} from './mark/mark';
 import {compileScales} from './scale';
 import {applyConfig, FILL_STROKE_CONFIG} from './util';
 import {extend} from '../util';

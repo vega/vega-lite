@@ -1,17 +1,17 @@
-import {Model} from './Model';
-import {OrderChannelDef} from '../schema/fielddef.schema';
+import {Model} from '../Model';
+import {OrderChannelDef} from '../../schema/fielddef.schema';
 
-import {X, Y, COLOR, TEXT, SHAPE, PATH, ORDER, DETAIL, ROW, COLUMN, LABEL} from '../channel';
-import {AREA, LINE, TEXT as TEXTMARK} from '../mark';
-import {imputeTransform, stackTransform} from './stack';
-import {contains, extend} from '../util';
-import {area} from './mark-area';
-import {bar} from './mark-bar';
-import {line} from './mark-line';
-import {point, circle, square} from './mark-point';
-import {text} from './mark-text';
-import {tick} from './mark-tick';
-import {sortField} from './util';
+import {X, Y, COLOR, TEXT, SHAPE, PATH, ORDER, DETAIL, ROW, COLUMN, LABEL} from '../../channel';
+import {AREA, LINE, TEXT as TEXTMARK} from '../../mark';
+import {imputeTransform, stackTransform} from '../stack';
+import {contains, extend} from '../../util';
+import {area} from './area';
+import {bar} from './bar';
+import {line} from './line';
+import {point, circle, square} from './point';
+import {text} from './text';
+import {tick} from './tick';
+import {sortField} from '../util';
 
 
 const markCompiler = {

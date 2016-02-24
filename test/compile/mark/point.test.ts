@@ -1,10 +1,10 @@
 /* tslint:disable quote */
 
 import {assert} from 'chai';
-import {parseModel} from '../util';
-import {extend} from '../../src/util'
-import {X, Y, SIZE, COLOR, SHAPE} from '../../src/channel';
-import {point, square, circle} from '../../src/compile/mark-point';
+import {parseModel} from '../../util';
+import {extend} from '../../../src/util'
+import {X, Y, SIZE, COLOR, SHAPE} from '../../../src/channel';
+import {point, square, circle} from '../../../src/compile/mark/point';
 
 describe('Mark: Point', function() {
   it('should return the correct mark type', function() {

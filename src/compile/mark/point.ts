@@ -1,6 +1,6 @@
-import {Model} from './Model';
-import {X, Y, SHAPE, SIZE} from '../channel';
-import {applyColorAndOpacity} from './util';
+import {Model} from '../Model';
+import {X, Y, SHAPE, SIZE} from '../../channel';
+import {applyColorAndOpacity} from '../util';
 
 export namespace point {
   export function markType() {
