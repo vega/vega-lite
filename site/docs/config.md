@@ -271,7 +271,7 @@ vg.embed('#horizontal_line', {
 Scale configuration determines default properties for all [scales](scale.html) except for `row` and `column` (which are determined by [facet scale configuration](#facet-scale-config) instead).
 
 <span class="note-line">__See Code:__
-For a full list of scale configuration and their default values, please see the `ScaleConfig` interface and `defaultScaleConfig` in [scale.schema.ts](https://github.com/vega/vega-lite/blob/master/src/schema/scale.schema.ts).
+For a full list of scale configuration and their default values, please see the `ScaleConfig` interface and `defaultScaleConfig` in [scale.ts](https://github.com/vega/vega-lite/blob/master/src/scale.ts).
 </span>
 
 {:#axis-config}
@@ -280,7 +280,7 @@ For a full list of scale configuration and their default values, please see the 
 Axis configuration determines default properties for `x` and `y` [axes](axis.html). (For `row` and `column` axes, see [facet axis configuration](#facet-axis-config)).
 
 <span class="note-line">__See Code:__
-For a full list of axis configuration and their default values, please see the `AxisConfig` interface and `defaultAxisConfig` in [axis.schema.ts](https://github.com/vega/vega-lite/blob/master/src/schema/axis.schema.ts).
+For a full list of axis configuration and their default values, please see the `AxisConfig` interface and `defaultAxisConfig` in [axis.ts](https://github.com/vega/vega-lite/blob/master/src/axis.ts).
 </span>
 
 {:#legend-config}
@@ -289,7 +289,7 @@ For a full list of axis configuration and their default values, please see the `
 Legend configuration determines default properties for [legends](axis.html).
 
 <span class="note-line">__See Code:__
-For a full list of legend configuration and their default values, please see the `LegendConfig` interface and `defaultLegendConfig` in [legend.schema.ts](https://github.com/vega/vega-lite/blob/master/src/schema/legend.schema.ts).
+For a full list of legend configuration and their default values, please see the `LegendConfig` interface and `defaultLegendConfig` in [legend.ts](https://github.com/vega/vega-lite/blob/master/src/legend.ts).
 </span>
 
 
@@ -313,7 +313,7 @@ Facet cell configuration overrides [cell config](#cell-config) for faceted (trel
 
 Facet scale configuration determines default properties for `row` and `column` [scales](scale.html).
 <span class="note-line">__See Code:__
-For a full list of scale configuration and their default values, please see the `FacetScaleConfig` interface and `defaultFacetScaleConfig` in [scale.schema.ts](https://github.com/vega/vega-lite/blob/master/src/schema/scale.schema.ts).
+For a full list of scale configuration and their default values, please see the `FacetScaleConfig` interface and `defaultFacetScaleConfig` in [scale.ts](https://github.com/vega/vega-lite/blob/master/src/scale.ts).
 
 
 {:#facet-axis-config}
@@ -321,5 +321,5 @@ For a full list of scale configuration and their default values, please see the 
 
 Facet axis configuration determines default properties for `row` and `column` [axes](axis.html).
 <span class="note-line">__See Code:__
-For a full list of facet axis configuration and their default values, please see the `AxisConfig` interface and `defaultFacetAxisConfig` in [axis.schema.ts](https://github.com/vega/vega-lite/blob/master/src/schema/axis.schema.ts).
+For a full list of facet axis configuration and their default values, please see the `AxisConfig` interface and `defaultFacetAxisConfig` in [axis.ts](https://github.com/vega/vega-lite/blob/master/src/axis.ts).
 </span>
