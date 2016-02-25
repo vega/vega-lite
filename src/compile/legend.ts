@@ -15,14 +15,17 @@ export function compileLegends(model: Model) {
 
   if (model.has(COLOR) && model.legend(COLOR)) {
     const fieldDef = model.fieldDef(COLOR);
-    const scale = useColorLegendScale(fieldDef) ?
+    const scale = model.scaleName(useColorLegendScale(fieldDef) ?
       // To produce ordinal legend (list, rather than linear range) with correct labels:
       // - For an ordinal field, provide an ordinal scale that maps rank values to field values
       // - For a field with bin or timeUnit, provide an identity ordinal scale
       // (mapping the field values to themselves)
       COLOR_LEGEND :
-      model.scaleName(COLOR);
-    defs.push(compileLegend(model, COLOR, model.config().mark.filled ? { fill: scale } : { stroke: scale }));
+      COLOR
+    );
+
+    const def = model.config().mark.filled ? { fill: scale } : { stroke: scale };
+    defs.push(compileLegend(model, COLOR, def));
   }
 
   if (model.has(SIZE) && model.legend(SIZE)) {
@@ -163,14 +166,14 @@ namespace properties {
       if (fieldDef.type === ORDINAL) {
         return {
           text: {
-            scale: COLOR_LEGEND,
+            scale: model.scaleName(COLOR_LEGEND),
             field: 'data'
           }
         };
       } else if (fieldDef.bin) {
         return {
           text: {
-            scale: COLOR_LEGEND_LABEL,
+            scale: model.scaleName(COLOR_LEGEND_LABEL),
             field: 'data'
           }
         };
