@@ -3,11 +3,10 @@ import {FieldDef, PositionChannelDef, FacetChannelDef, ChannelDefWithLegend, Ord
 import {Channel, CHANNELS} from './channel';
 import {isArray, any as anyIn} from './util';
 
-export interface Encoding {
+// TODO: once we decompose facet, rename this to Encoding
+export interface UnitEncoding {
   x?: PositionChannelDef;
   y?: PositionChannelDef;
-  row?: FacetChannelDef;
-  column?: FacetChannelDef;
   color?: ChannelDefWithLegend;
   size?: ChannelDefWithLegend;
   shape?: ChannelDefWithLegend; // TODO: maybe distinguish ordinal-only
@@ -19,6 +18,11 @@ export interface Encoding {
   order?: OrderChannelDef | OrderChannelDef[];
 }
 
+// TODO: once we decompose facet, rename this to ExtendedEncoding
+export interface Encoding extends UnitEncoding {
+  row?: FacetChannelDef;
+  column?: FacetChannelDef;
+}
 
 export function countRetinal(encoding: Encoding) {
   let count = 0;
