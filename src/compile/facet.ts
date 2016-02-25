@@ -1,9 +1,9 @@
-import * as util from '../util';
-import {extend} from '../util';
 import {COLUMN, ROW, X, Y} from '../channel';
 import {isDimension} from '../fielddef';
-import {Model} from './Model';
+import * as util from '../util';
+import {extend} from '../util';
 
+import {UnitModel} from './Model';
 import {compileAxis, compileInnerAxis, gridShow} from './axis';
 import {compileScales} from './scale';
 import {applyConfig, FILL_STROKE_CONFIG} from './common';
@@ -11,7 +11,7 @@ import {applyConfig, FILL_STROKE_CONFIG} from './common';
 /**
  * return mixins that contains marks, scales, and axes for the rootGroup
  */
-export function facetMixins(model: Model, marks) {
+export function facetMixins(model: UnitModel, marks) {
   const hasRow = model.has(ROW), hasCol = model.has(COLUMN);
 
   if (model.has(ROW) && !isDimension(model.encoding().row)) {
@@ -38,7 +38,7 @@ export function facetMixins(model: Model, marks) {
   };
 }
 
-function getCellAxes(model: Model) {
+function getCellAxes(model: UnitModel) {
   const cellAxes = [];
   if (model.has(X) && model.axis(X) && gridShow(model, X)) {
     cellAxes.push(compileInnerAxis(X, model));
@@ -49,7 +49,7 @@ function getCellAxes(model: Model) {
   return cellAxes;
 }
 
-function getFacetGroup(model: Model, marks) {
+function getFacetGroup(model: UnitModel, marks) {
   const name = model.spec().name;
   let facetGroup: any = {
     name: (name ? name + '-' : '') + 'cell',
@@ -77,7 +77,7 @@ function getFacetGroup(model: Model, marks) {
   return facetGroup;
 }
 
-function getFacetGroupProperties(model: Model) {
+function getFacetGroupProperties(model: UnitModel) {
   let facetGroupProperties: any = {
     x: model.has(COLUMN) ? {
         scale: model.scaleName(COLUMN),
@@ -107,7 +107,7 @@ function getFacetGroupProperties(model: Model) {
 /**
  * Return groups of axes or manually drawn grids.
  */
-function getFacetGuideGroups(model: Model) {
+function getFacetGuideGroups(model: UnitModel) {
   let rootAxesGroups = [] ;
 
   if (model.has(X)) {
@@ -136,7 +136,7 @@ function getFacetGuideGroups(model: Model) {
   return rootAxesGroups;
 }
 
-function getXAxesGroup(model: Model) { // TODO: VgMarks
+function getXAxesGroup(model: UnitModel) { // TODO: VgMarks
   const hasCol = model.has(COLUMN);
   const name = model.spec().name;
   return extend(
@@ -179,7 +179,7 @@ function getXAxesGroup(model: Model) { // TODO: VgMarks
   );
 }
 
-function getYAxesGroup(model: Model) { // TODO: VgMarks
+function getYAxesGroup(model: UnitModel) { // TODO: VgMarks
   const hasRow = model.has(ROW);
   const name = model.spec().name;
   return extend(
@@ -222,7 +222,7 @@ function getYAxesGroup(model: Model) { // TODO: VgMarks
   );
 }
 
-function getRowGridGroups(model: Model): any[] { // TODO: VgMarks
+function getRowGridGroups(model: UnitModel): any[] { // TODO: VgMarks
   const name = model.spec().name;
   const facetGridConfig = model.config().facet.grid;
 
@@ -264,7 +264,7 @@ function getRowGridGroups(model: Model): any[] { // TODO: VgMarks
   }];
 }
 
-function getColumnGridGroups(model: Model): any { // TODO: VgMarks
+function getColumnGridGroups(model: UnitModel): any { // TODO: VgMarks
   const name = model.spec().name;
   const facetGridConfig = model.config().facet.grid;
 

@@ -1,4 +1,4 @@
-import {Model} from '../Model';
+import {UnitModel} from '../Model';
 import {OrderChannelDef} from '../../fielddef';
 
 import {X, Y, COLOR, TEXT, SHAPE, PATH, ORDER, DETAIL, ROW, COLUMN, LABEL} from '../../channel';
@@ -25,7 +25,7 @@ const markCompiler = {
   square: square
 };
 
-export function compileMark(model: Model): any[] {
+export function compileMark(model: UnitModel): any[] {
   if (contains([LINE, AREA], model.mark())) {
     return compilePathMark(model);
   } else {
@@ -33,7 +33,7 @@ export function compileMark(model: Model): any[] {
   }
 }
 
-function compilePathMark(model: Model) { // TODO: extract this into compilePathMark
+function compilePathMark(model: UnitModel) { // TODO: extract this into compilePathMark
   const mark = model.mark();
   const name = model.spec().name;
   // TODO: replace this with more general case for composition
@@ -93,7 +93,7 @@ function compilePathMark(model: Model) { // TODO: extract this into compilePathM
   }
 }
 
-function compileNonPathMark(model: Model) {
+function compileNonPathMark(model: UnitModel) {
   const mark = model.mark();
   const name = model.spec().name;
   // TODO: replace this with more general case for composition
@@ -160,7 +160,7 @@ function compileNonPathMark(model: Model) {
   return marks;
 }
 
-function sortBy(model: Model): string | string[] {
+function sortBy(model: UnitModel): string | string[] {
   if (model.has(ORDER)) {
     let channelDef = model.encoding().order;
     if (channelDef instanceof Array) {
@@ -177,7 +177,7 @@ function sortBy(model: Model): string | string[] {
 /**
  * Return path order for sort transform's by property
  */
-function sortPathBy(model: Model): string | string[] {
+function sortPathBy(model: UnitModel): string | string[] {
   if (model.mark() === LINE && model.has(PATH)) {
     // For only line, sort by the path field if it is specified.
     const channelDef = model.encoding().path;
@@ -198,7 +198,7 @@ function sortPathBy(model: Model): string | string[] {
  * Returns list of detail fields (for 'color', 'shape', or 'detail' channels)
  * that the model's spec contains.
  */
-function detailFields(model: Model): string[] {
+function detailFields(model: UnitModel): string[] {
   return [COLOR, DETAIL, SHAPE].reduce(function(details, channel) {
     if (model.has(channel) && !model.fieldDef(channel).aggregate) {
       details.push(model.field(channel));

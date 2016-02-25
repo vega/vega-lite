@@ -15,7 +15,10 @@ import {BAR, AREA} from './mark';
 import {duplicate} from './util';
 
 /**
- * Schema for Vega-Lite specification
+ * Schema for a single Vega-Lite specification.
+ *
+ * Note: the spec could contain facet.
+ * 
  * @required ["mark", "encoding"]
  */
 export interface SingleSpec {

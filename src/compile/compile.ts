@@ -1,7 +1,7 @@
 /**
  * Module for compiling Vega-lite spec into Vega spec.
  */
-import {Model} from './Model';
+import {UnitModel} from './Model';
 
 import {compileAxis} from './axis';
 import {compileData} from './data';
@@ -16,10 +16,10 @@ import {extend} from '../util';
 import {LAYOUT} from '../data';
 import {COLUMN, ROW, X, Y} from '../channel';
 
-export {Model} from './Model';
+export {UnitModel} from './Model';
 
 export function compile(spec) {
-  const model = new Model(spec);
+  const model = new UnitModel(spec);
   const config = model.config();
 
   // TODO: change type to become VgSpec
@@ -44,7 +44,7 @@ export function compile(spec) {
   };
 }
 
-export function compileRootGroup(model: Model) {
+export function compileRootGroup(model: UnitModel) {
   const spec = model.spec();
 
   let rootGroup:any = extend({

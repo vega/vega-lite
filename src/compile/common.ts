@@ -1,4 +1,4 @@
-import {Model} from './Model';
+import {UnitModel} from './Model';
 import {FieldDef, OrderChannelDef} from '../fielddef';
 import {COLUMN, ROW, X, Y, SIZE, COLOR, SHAPE, TEXT, LABEL, Channel} from '../channel';
 import {field} from '../fielddef';
@@ -11,7 +11,7 @@ export const FILL_STROKE_CONFIG = ['fill', 'fillOpacity',
   'stroke', 'strokeWidth', 'strokeDash', 'strokeDashOffset', 'strokeOpacity',
   'opacity'];
 
-export function applyColorAndOpacity(p, model: Model) {
+export function applyColorAndOpacity(p, model: UnitModel) {
   const filled = model.config().mark.filled;
   const fieldDef = model.fieldDef(COLOR);
 
@@ -51,7 +51,7 @@ export function applyConfig(properties, config, propsList: string[]) {
   });
 }
 
-export function applyMarkConfig(marksProperties, model: Model, propsList: string[]) {
+export function applyMarkConfig(marksProperties, model: UnitModel, propsList: string[]) {
   applyConfig(marksProperties, model.config().mark, propsList);
 }
 
@@ -61,7 +61,7 @@ export function applyMarkConfig(marksProperties, model: Model, propsList: string
  *
  * @param format explicitly specified format
  */
-export function formatMixins(model: Model, channel: Channel, format: string) {
+export function formatMixins(model: UnitModel, channel: Channel, format: string) {
   const fieldDef = model.fieldDef(channel);
 
   if(!contains([QUANTITATIVE, TEMPORAL], fieldDef.type)) {
@@ -102,7 +102,7 @@ export function formatMixins(model: Model, channel: Channel, format: string) {
   return def;
 }
 
-function isAbbreviated(model: Model, channel: Channel, fieldDef: FieldDef) {
+function isAbbreviated(model: UnitModel, channel: Channel, fieldDef: FieldDef) {
   switch (channel) {
     case ROW:
     case COLUMN:
@@ -131,7 +131,7 @@ export function sortField(orderChannelDef: OrderChannelDef) {
 /**
  * Returns the time format used for axis labels for a time unit.
  */
-export function timeFormat(model: Model, channel: Channel): string {
+export function timeFormat(model: UnitModel, channel: Channel): string {
   const fieldDef = model.fieldDef(channel);
   return timeFormatExpr(fieldDef.timeUnit, isAbbreviated(model, channel, fieldDef));
 }

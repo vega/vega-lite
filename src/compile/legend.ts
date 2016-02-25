@@ -5,12 +5,12 @@ import {COLOR, SIZE, SHAPE, Channel} from '../channel';
 import {title as fieldTitle} from '../fielddef';
 import {AREA, BAR, TICK, TEXT, LINE, POINT, CIRCLE, SQUARE} from '../mark';
 import {extend, keys, without} from '../util';
-import {Model} from './Model';
+import {UnitModel} from './Model';
 import {applyMarkConfig, FILL_STROKE_CONFIG, formatMixins as utilFormatMixins, timeFormat} from './common';
 import {ORDINAL} from '../type';
 import {COLOR_LEGEND, COLOR_LEGEND_LABEL} from './scale';
 
-export function compileLegends(model: Model) {
+export function compileLegends(model: UnitModel) {
   let defs = [];
 
   if (model.has(COLOR) && model.legend(COLOR)) {
@@ -42,7 +42,7 @@ export function compileLegends(model: Model) {
   return defs;
 }
 
-export function compileLegend(model: Model, channel: Channel, def) {
+export function compileLegend(model: UnitModel, channel: Channel, def) {
   const fieldDef = model.fieldDef(channel);
   const legend = model.legend(channel);
 
@@ -82,7 +82,7 @@ export function title(legend: LegendProperties, fieldDef: FieldDef) {
   return fieldTitle(fieldDef);
 }
 
-export function formatMixins(legend: LegendProperties, model: Model, channel: Channel) {
+export function formatMixins(legend: LegendProperties, model: UnitModel, channel: Channel) {
   const fieldDef = model.fieldDef(channel);
 
   // If the channel is binned, we should not set the format because we have a range label
@@ -99,7 +99,7 @@ export function useColorLegendScale(fieldDef: FieldDef) {
 }
 
 namespace properties {
-  export function symbols(fieldDef: FieldDef, symbolsSpec, model: Model, channel: Channel) {
+  export function symbols(fieldDef: FieldDef, symbolsSpec, model: UnitModel, channel: Channel) {
     let symbols:any = {};
     const mark = model.mark();
 
@@ -161,7 +161,7 @@ namespace properties {
     return keys(symbols).length > 0 ? symbols : undefined;
   }
 
-  export function labels(fieldDef: FieldDef, symbolsSpec, model: Model, channel: Channel): any {
+  export function labels(fieldDef: FieldDef, symbolsSpec, model: UnitModel, channel: Channel): any {
     if (channel === COLOR) {
       if (fieldDef.type === ORDINAL) {
         return {

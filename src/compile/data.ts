@@ -1,6 +1,6 @@
 import * as vlFieldDef from '../fielddef';
 import {extend, keys, vals, reduce, contains} from '../util';
-import {Model} from './Model';
+import {UnitModel} from './Model';
 import {FieldDef} from '../fielddef';
 import {VgData} from '../vega.schema';
 import {StackProperties} from './stack';
@@ -31,7 +31,7 @@ const DEFAULT_NULL_FILTERS = {
  *                 If the model contains aggregate value, this will also create
  *                 aggregate table as well.
  */
-export function compileData(model: Model): VgData[] {
+export function compileData(model: UnitModel): VgData[] {
   const def = [source.def(model)];
 
   const summaryDef = summary.def(model);
@@ -57,7 +57,7 @@ export function compileData(model: Model): VgData[] {
 }
 
 export namespace source {
-  export function def(model: Model): VgData {
+  export function def(model: UnitModel): VgData {
     let source:VgData = {name: SOURCE};
 
     // Data source (url or inline)
@@ -92,7 +92,7 @@ export namespace source {
     return source;
   }
 
-  function formatParse(model: Model) {
+  function formatParse(model: UnitModel) {
     const calcFieldMap = (model.transform().calculate || []).reduce(function(fieldMap, formula) {
       fieldMap[formula.field] = true;
       return fieldMap;
@@ -120,7 +120,7 @@ export namespace source {
    * Generate Vega transforms for the source data table.  This can include
    * transforms for time unit, binning and filtering.
    */
-  export function transform(model: Model) {
+  export function transform(model: UnitModel) {
     // null filter comes first so transforms are not performed on null values
     // time and bin should come before filter so we can filter by time and bin
     return nullFilterTransform(model).concat(
@@ -131,7 +131,7 @@ export namespace source {
     );
   }
 
-  export function timeTransform(model: Model) {
+  export function timeTransform(model: UnitModel) {
     return model.reduce(function(transform, fieldDef: FieldDef, channel: Channel) {
       const ref = field(fieldDef, { nofn: true, datum: true });
       if (fieldDef.type === TEMPORAL && fieldDef.timeUnit) {
@@ -145,7 +145,7 @@ export namespace source {
     }, []);
   }
 
-  export function binTransform(model: Model) {
+  export function binTransform(model: UnitModel) {
     return model.reduce(function(transform, fieldDef: FieldDef, channel: Channel) {
       const bin = model.fieldDef(channel).bin;
       const scale = model.scale(channel);
@@ -187,7 +187,7 @@ export namespace source {
   /**
    * @return An array that might contain a filter transform for filtering null value based on filterNul config
    */
-  export function nullFilterTransform(model: Model) {
+  export function nullFilterTransform(model: UnitModel) {
     const filterNull = model.transform().filterNull;
     const filteredFields = keys(model.reduce(function(aggregator, fieldDef: FieldDef) {
       if (filterNull ||
@@ -206,7 +206,7 @@ export namespace source {
       }] : [];
   }
 
-  export function filterTransform(model: Model) {
+  export function filterTransform(model: UnitModel) {
     const filter = model.transform().filter;
     return filter ? [{
         type: 'filter',
@@ -214,7 +214,7 @@ export namespace source {
     }] : [];
   }
 
-  export function formulaTransform(model: Model) {
+  export function formulaTransform(model: UnitModel) {
     return (model.transform().calculate || []).reduce(function(transform, formula) {
       transform.push(extend({type: 'formula'}, formula));
       return transform;
@@ -223,7 +223,7 @@ export namespace source {
 }
 
 export namespace summary {
-  export function def(model: Model):VgData {
+  export function def(model: UnitModel):VgData {
     /* dict set for dimensions */
     let dims = {};
 
@@ -288,7 +288,7 @@ export namespace stack {
   /**
    * Add stacked data source, for feeding the shared scale.
    */
-  export function def(model: Model, stackProps: StackProperties):VgData {
+  export function def(model: UnitModel, stackProps: StackProperties):VgData {
     const groupbyChannel = stackProps.groupbyChannel,
     fieldChannel = stackProps.fieldChannel,
     facetFields = (model.has(COLUMN) ? [model.field(COLUMN)] : [])
@@ -314,7 +314,7 @@ export namespace dates {
   /**
    * Add data source for with dates for all months, days, hours, ... as needed.
    */
-  export function defs(model: Model) {
+  export function defs(model: UnitModel) {
     let alreadyAdded = {};
 
     return model.reduce(function(aggregator, fieldDef: FieldDef, channel: Channel) {
@@ -340,7 +340,7 @@ export namespace dates {
 
 // We need to add a rank transform so that we can use the rank value as
 // input for color ramp's linear scale.
-export function rankTransform(dataTable, model: Model) {
+export function rankTransform(dataTable, model: UnitModel) {
   if (model.has(COLOR) && model.fieldDef(COLOR).type === ORDINAL) {
     dataTable.transform = dataTable.transform.concat([{
       type: 'sort',
@@ -355,7 +355,7 @@ export function rankTransform(dataTable, model: Model) {
   }
 }
 
-export function filterNonPositiveForLog(dataTable, model: Model) {
+export function filterNonPositiveForLog(dataTable, model: UnitModel) {
   model.forEach(function(_, channel) {
     const scale = model.scale(channel);
     if (scale && scale.type === ScaleType.LOG) {

@@ -1,7 +1,7 @@
 import {Encoding} from '../encoding';
 import {Config} from '../config';
 import {FieldDef} from '../fielddef';
-import {Model, ScaleMap} from './Model';
+import {UnitModel, ScaleMap} from './Model';
 import {Channel, X, Y, COLOR, DETAIL, ORDER} from '../channel';
 import {ScaleType} from '../scale';
 import {StackOffset} from '../config';
@@ -88,7 +88,7 @@ function getStackFields(mark: Mark, encoding: Encoding, scale: ScaleMap) {
 }
 
 // impute data for stacked area
-export function imputeTransform(model: Model) {
+export function imputeTransform(model: UnitModel) {
   const stack = model.stack();
   return {
     type: 'impute',
@@ -100,7 +100,7 @@ export function imputeTransform(model: Model) {
   };
 }
 
-export function stackTransform(model: Model) {
+export function stackTransform(model: UnitModel) {
   const stack = model.stack();
   const encoding = model.encoding();
   const sortby = model.has(ORDER) ?

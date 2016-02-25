@@ -1,4 +1,4 @@
-import {Model} from '../Model';
+import {UnitModel} from '../Model';
 import {X, Y, COLOR, TEXT, SIZE} from '../../channel';
 import {applyMarkConfig, applyColorAndOpacity, formatMixins} from '../common';
 import {extend, contains} from '../../util';
@@ -9,7 +9,7 @@ export namespace text {
     return 'text';
   }
 
-  export function background(model: Model) {
+  export function background(model: UnitModel) {
     return {
       x: { value: 0 },
       y: { value: 0 },
@@ -22,7 +22,7 @@ export namespace text {
     };
   }
 
-  export function properties(model: Model) {
+  export function properties(model: UnitModel) {
     // TODO Use Vega's marks properties interface
     let p: any = {};
 
@@ -92,7 +92,7 @@ export namespace text {
     return p;
   }
 
-  function sizeValue(model: Model) {
+  function sizeValue(model: UnitModel) {
     const fieldDef = model.fieldDef(SIZE);
     if (fieldDef && fieldDef.value !== undefined) {
        return fieldDef.value;

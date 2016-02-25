@@ -1,26 +1,21 @@
-import {SingleSpec} from '../spec';
+import {AggregateOp} from '../aggregate';
 import {AxisProperties} from '../axis';
-import {LegendProperties} from '../legend';
-import {Scale} from '../scale';
-import {Encoding} from '../encoding';
-import {FieldDef} from '../fielddef';
+import {COLUMN, ROW, X, Y, COLOR, SHAPE, SIZE, TEXT, PATH, ORDER, Channel, CHANNELS, supportMark} from '../channel';
 import {defaultConfig, Config} from '../config';
-
-import {COLUMN, ROW, X, Y, COLOR, SHAPE, SIZE, TEXT, PATH, ORDER, Channel, supportMark} from '../channel';
-import {SOURCE, SUMMARY} from '../data';
-import {FieldRefOption, field} from '../fielddef';
-import * as vlEncoding from '../encoding';
+import {Data, SOURCE, SUMMARY} from '../data';
+import {Encoding} from '../encoding';
+import * as vlEncoding from '../encoding'; // TODO: remove
+import {FieldDef, FieldRefOption, field} from '../fielddef';
+import {LegendProperties} from '../legend';
 import {Mark, TEXT as TEXTMARK} from '../mark';
-
+import {Scale, ScaleType} from '../scale';
+import {SingleSpec} from '../spec';
 import {getFullName, QUANTITATIVE} from '../type';
 import {duplicate, extend, contains, mergeDeep} from '../util';
 
 import {compileMarkConfig} from './config';
 import {compileStackProperties, StackProperties} from './stack';
 import {scaleType} from './scale';
-import {ScaleType} from '../scale';
-import {AggregateOp} from '../aggregate';
-import {CHANNELS} from '../channel';
 
 export interface ScaleMap {
   x?: Scale;
@@ -32,31 +27,46 @@ export interface ScaleMap {
   shape?: Scale;
 };
 
-/**
- * Internal model of Vega-Lite specification for the compiler.
- */
-export class Model {
-  private _spec: SingleSpec;
-  private _stack: StackProperties;
+export class BaseModel {
+  protected _data: Data;
 
-  private _scale: ScaleMap;
+  // TODO: add _layout
 
-  private _axis: {
+  protected _scale: ScaleMap;
+
+  protected _axis: {
     x?: AxisProperties;
     y?: AxisProperties;
     row?: AxisProperties;
     column?: AxisProperties;
   };
 
-  private _legend: {
+  protected _legend: {
     color?: LegendProperties;
     size?: LegendProperties;
     shape?: LegendProperties;
   };
 
-  private _config: Config;
+  protected _config: Config;
+
+  /**
+   * Get the spec configuration.
+   */
+  public config() {
+    return this._config;
+  }
+}
+
+/**
+ * Internal model of Vega-Lite specification for the compiler.
+ */
+export class UnitModel extends BaseModel {
+  private _spec: SingleSpec;
+  private _stack: StackProperties;
 
   constructor(spec: SingleSpec) {
+    super();
+
     const model = this; // For self-reference in children method.
 
     this._spec = spec;
@@ -259,13 +269,6 @@ export class Model {
 
   public transform() {
     return this._spec.transform || {};
-  }
-
-  /**
-   * Get the spec configuration.
-   */
-  public config() {
-    return this._config;
   }
 
   public sort(channel: Channel) {
