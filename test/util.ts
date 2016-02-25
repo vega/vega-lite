@@ -1,5 +1,5 @@
 import {Model} from '../src/compile/Model';
-import {Spec} from '../src/schema/schema';
+import {Spec} from '../src/spec';
 import {contains} from '../src/util';
 
 /**

@@ -1,5 +1,5 @@
-import {Encoding} from '../schema/encoding.schema';
-import {Config} from '../schema/config.schema';
+import {Encoding} from '../encoding';
+import {Config} from '../config';
 import {StackProperties} from './stack';
 
 import {X, Y, DETAIL} from '../channel';

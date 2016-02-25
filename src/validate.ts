@@ -1,4 +1,4 @@
-import {Spec} from './schema/schema';
+import {Spec} from './spec';
 
 // TODO: move to vl.spec.validator?
 

@@ -1,5 +1,10 @@
-import {SortOrder} from '../enums';
-import {AggregateOp} from '../aggregate';
+import {AggregateOp} from './aggregate';
+
+export enum SortOrder {
+    ASCENDING = 'ascending' as any,
+    DESCENDING = 'descending' as any,
+    NONE = 'none' as any,
+}
 
 export interface SortField {
   /**

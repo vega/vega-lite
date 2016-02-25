@@ -1,4 +1,101 @@
-import {Shape, HorizontalAlign, VerticalAlign, FontStyle, FontWeight, StackOffset} from '../enums';
+import {ScaleConfig, FacetScaleConfig, defaultScaleConfig, defaultFacetScaleConfig} from './scale';
+import {AxisConfig, defaultAxisConfig, defaultFacetAxisConfig} from './axis';
+import {LegendConfig, defaultLegendConfig} from './legend';
+
+export interface CellConfig {
+  width?: number;
+  height?: number;
+
+  clip?: boolean;
+
+  // FILL_STROKE_CONFIG
+  /**
+   * @format color
+   */
+  fill?: string;
+  fillOpacity?: number;
+  stroke?: string;
+  strokeWidth?: number;
+  strokeOpacity?: number;
+  strokeDash?: number;
+  /** The offset (in pixels) into which to begin drawing with the stroke dash array. */
+  strokeDashOffset?: number;
+}
+
+export const defaultCellConfig: CellConfig = {
+  width: 200,
+  height: 200
+};
+
+export const defaultFacetCellConfig: CellConfig = {
+  stroke: '#ccc',
+  strokeWidth: 1
+};
+
+export interface FacetConfig {
+  scale?: FacetScaleConfig;
+  axis?: AxisConfig;
+  grid?: FacetGridConfig;
+  cell?: CellConfig;
+}
+
+export interface FacetGridConfig {
+  /** @format color */
+  color?: string;
+  opacity?: number;
+  offset?: number;
+}
+
+const defaultFacetGridConfig: FacetGridConfig = {
+  color: '#000000',
+  opacity: 0.4,
+  offset: 0
+};
+
+export const defaultFacetConfig: FacetConfig = {
+  scale: defaultFacetScaleConfig,
+  axis: defaultFacetAxisConfig,
+  grid: defaultFacetGridConfig,
+  cell: defaultFacetCellConfig
+};
+
+export enum FontWeight {
+    NORMAL = 'normal' as any,
+    BOLD = 'bold' as any
+}
+
+export enum Shape {
+    CIRCLE = 'circle' as any,
+    SQUARE = 'square' as any,
+    CROSS = 'cross' as any,
+    DIAMOND = 'diamond' as any,
+    TRIANGLEUP = 'triangle-up' as any,
+    TRIANGLEDOWN = 'triangle-down' as any,
+}
+
+export enum HorizontalAlign {
+    LEFT = 'left' as any,
+    RIGHT = 'right' as any,
+    CENTER = 'center' as any,
+}
+
+export enum VerticalAlign {
+    TOP = 'top' as any,
+    MIDDLE = 'middle' as any,
+    BOTTOM = 'bottom' as any,
+}
+
+export enum FontStyle {
+    NORMAL = 'normal' as any,
+    ITALIC = 'italic' as any,
+}
+
+export enum StackOffset {
+    ZERO = 'zero' as any,
+    CENTER = 'center' as any,
+    NORMALIZE = 'normalize' as any,
+    NONE = 'none' as any,
+}
 
 export interface MarkConfig {
 
@@ -196,4 +293,50 @@ export const defaultMarkConfig: MarkConfig = {
 
   shortTimeLabels: false,
   applyColorToBackground: false
+};
+
+
+export interface Config {
+  // TODO: add this back once we have top-down layout approach
+  // width?: number;
+  // height?: number;
+  // padding?: number|string;
+  /**
+   * The width and height of the on-screen viewport, in pixels. If necessary, clipping and scrolling will be applied.
+   */
+  viewport?: number;
+  /**
+   * CSS color property to use as background of visualization. Default is `"transparent"`.
+   */
+  background?: string;
+
+  /**
+   * D3 Number format for axis labels and text tables. For example "s" for SI units.
+   */
+  numberFormat?: string;
+  /**
+   * Default datetime format for axis and legend labels. The format can be set directly on each axis and legend.
+   */
+  timeFormat?: string;
+
+  cell?: CellConfig;
+  mark?: MarkConfig;
+  scale?: ScaleConfig;
+  axis?: AxisConfig;
+  legend?: LegendConfig;
+
+  facet?: FacetConfig;
+}
+
+export const defaultConfig: Config = {
+  numberFormat: 's',
+  timeFormat: '%Y-%m-%d',
+
+  cell: defaultCellConfig,
+  mark: defaultMarkConfig,
+  scale: defaultScaleConfig,
+  axis: defaultAxisConfig,
+  legend: defaultLegendConfig,
+
+  facet: defaultFacetConfig,
 };

@@ -1,4 +1,4 @@
-import {VgData} from '../schema/vega.schema';
+import {VgData} from '../vega.schema';
 
 import {Model} from './Model';
 import {Channel, X, Y, ROW, COLUMN} from '../channel';

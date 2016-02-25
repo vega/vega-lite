@@ -1,8 +1,8 @@
 /** module for shorthand */
 
-import {Encoding} from './schema/encoding.schema';
-import {FieldDef} from './schema/fielddef.schema';
-import {Spec} from './schema/schema';
+import {Encoding} from './encoding';
+import {FieldDef} from './fielddef';
+import {Spec} from './spec';
 
 import {AggregateOp, AGGREGATE_OPS} from './aggregate';
 import {TIMEUNITS} from './timeunit';

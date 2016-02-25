@@ -36,7 +36,7 @@ export const ORDER = Channel.ORDER;
 
 export const CHANNELS = [X, Y, ROW, COLUMN, SIZE, SHAPE, COLOR, PATH, ORDER, TEXT, DETAIL, LABEL];
 
-interface SupportedMark {
+export interface SupportedMark {
   point?: boolean;
   tick?: boolean;
   circle?: boolean;
@@ -90,7 +90,7 @@ export function getSupportedMark(channel: Channel): SupportedMark {
   return {};
 }
 
-interface SupportedRole {
+export interface SupportedRole {
   measure: boolean;
   dimension: boolean;
 };

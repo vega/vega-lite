@@ -1,9 +1,10 @@
-import {Encoding} from '../schema/encoding.schema';
-import {Config} from '../schema/config.schema';
-import {FieldDef} from '../schema/fielddef.schema';
+import {Encoding} from '../encoding';
+import {Config} from '../config';
+import {FieldDef} from '../fielddef';
 import {Model, ScaleMap} from './Model';
 import {Channel, X, Y, COLOR, DETAIL, ORDER} from '../channel';
-import {ScaleType, StackOffset} from '../enums';
+import {ScaleType} from '../scale';
+import {StackOffset} from '../config';
 import {BAR, AREA, Mark} from '../mark';
 import {field, isMeasure} from '../fielddef';
 import {has, isAggregate} from '../encoding';
@@ -26,7 +27,7 @@ export interface StackProperties {
 }
 
 // TODO: put all vega interface in one place
-interface StackTransform {
+export interface StackTransform {
   type: string;
   offset?: any;
   groupby: any;
