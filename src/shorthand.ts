@@ -2,7 +2,7 @@
 
 import {Encoding} from './encoding';
 import {FieldDef} from './fielddef';
-import {Spec} from './spec';
+import {SingleSpec} from './spec';
 
 import {AggregateOp, AGGREGATE_OPS} from './aggregate';
 import {TIMEUNITS} from './timeunit';
@@ -16,7 +16,7 @@ export const TYPE = ',';
 export const FUNC = '_';
 
 
-export function shorten(spec: Spec): string {
+export function shorten(spec: SingleSpec): string {
   return 'mark' + ASSIGN + spec.mark +
     DELIM + shortenEncoding(spec.encoding);
 }
@@ -26,7 +26,7 @@ export function parse(shorthand: string, data?, config?) {
     mark = split.shift().split(ASSIGN)[1].trim(),
     encoding = parseEncoding(split.join(DELIM));
 
-  let spec:Spec = {
+  let spec:SingleSpec = {
     mark: Mark[mark],
     encoding: encoding
   };

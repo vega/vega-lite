@@ -1,4 +1,4 @@
-import {Spec} from '../spec';
+import {SingleSpec} from '../spec';
 import {AxisProperties} from '../axis';
 import {LegendProperties} from '../legend';
 import {Scale} from '../scale';
@@ -36,7 +36,7 @@ export interface ScaleMap {
  * Internal model of Vega-Lite specification for the compiler.
  */
 export class Model {
-  private _spec: Spec;
+  private _spec: SingleSpec;
   private _stack: StackProperties;
 
   private _scale: ScaleMap;
@@ -56,7 +56,7 @@ export class Model {
 
   private _config: Config;
 
-  constructor(spec: Spec) {
+  constructor(spec: SingleSpec) {
     const model = this; // For self-reference in children method.
 
     this._spec = spec;
@@ -191,7 +191,7 @@ export class Model {
   }
 
   // TODO: remove
-  public spec(): Spec {
+  public spec(): SingleSpec {
     return this._spec;
   }
 
