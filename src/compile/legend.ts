@@ -1,12 +1,12 @@
-import {FieldDef} from '../schema/fielddef.schema';
-import {LegendProperties} from '../schema/legend.schema';
+import {FieldDef} from '../fielddef';
+import {LegendProperties} from '../legend';
 
 import {COLOR, SIZE, SHAPE, Channel} from '../channel';
 import {title as fieldTitle} from '../fielddef';
 import {AREA, BAR, TICK, TEXT, LINE, POINT, CIRCLE, SQUARE} from '../mark';
 import {extend, keys, without} from '../util';
 import {Model} from './Model';
-import {applyMarkConfig, FILL_STROKE_CONFIG, formatMixins as utilFormatMixins, timeFormat} from './util';
+import {applyMarkConfig, FILL_STROKE_CONFIG, formatMixins as utilFormatMixins, timeFormat} from './common';
 import {ORDINAL} from '../type';
 import {COLOR_LEGEND, COLOR_LEGEND_LABEL} from './scale';
 

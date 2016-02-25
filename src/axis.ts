@@ -1,4 +1,10 @@
-import {AxisOrient} from '../enums';
+
+export enum AxisOrient {
+    TOP = 'top' as any,
+    RIGHT = 'right' as any,
+    LEFT = 'left' as any,
+    BOTTOM = 'bottom' as any
+}
 
 export interface AxisConfig {
   // ---------- General ----------

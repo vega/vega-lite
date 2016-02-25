@@ -1,8 +1,7 @@
 // https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations
 declare var exports;
 
-import {FieldDef} from '../schema/fielddef.schema';
-import {Scale} from '../schema/scale.schema';
+import {FieldDef} from '../fielddef';
 
 import {contains, extend} from '../util';
 import {Model} from './Model';
@@ -12,9 +11,10 @@ import {SOURCE, STACKED_SCALE} from '../data';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 import {Mark, BAR, TEXT as TEXT_MARK} from '../mark';
 import {rawDomain, smallestUnit} from './time';
-import {ScaleType, StackOffset} from '../enums';
+import {Scale, ScaleType} from '../scale';
+import {StackOffset} from '../config';
 import {TimeUnit} from '../timeunit';
-import {field} from '../fielddef';
+import {field, isMeasure} from '../fielddef';
 
 /**
  * Color Ramp's scale for legends.  This scale has to be ordinal so that its
@@ -25,9 +25,8 @@ export const COLOR_LEGEND = 'color_legend';
 // scale used to get labels for binned color scales
 export const COLOR_LEGEND_LABEL = 'color_legend_label';
 
-export function compileScales(channels: Channel[], model: Model) {
-  return channels.filter(hasScale)
-    .reduce(function(scales: any[], channel: Channel) {
+export function compileScales(model: Model) {
+  return model.channelWithScales().reduce(function(scales: any[], channel: Channel) {
       const fieldDef = model.fieldDef(channel);
 
       // Add additional scales needed to support ordinal legends (list of values)
@@ -177,7 +176,7 @@ export function scaleType(scale: Scale, fieldDef: FieldDef, channel: Channel, ma
   return null;
 }
 
-export function domain(scale: Scale, model: Model, channel:Channel, scaleType: string): any {
+export function domain(scale: Scale, model: Model, channel:Channel, scaleType: ScaleType): any {
   const fieldDef = model.fieldDef(channel);
 
   if (scale.domain) { // explicit value
@@ -225,7 +224,7 @@ export function domain(scale: Scale, model: Model, channel:Channel, scaleType: s
       field: model.field(channel, {noAggregate: true})
     };
   } else if (fieldDef.bin) { // bin
-    return scaleType === 'ordinal' ? {
+    return scaleType === ScaleType.ORDINAL ? {
       // ordinal bin scale takes domain from bin_range, ordered by bin_start
       data: model.dataTable(),
       field: model.field(channel, { binSuffix: '_range' }),
@@ -261,8 +260,8 @@ export function domain(scale: Scale, model: Model, channel:Channel, scaleType: s
   }
 }
 
-export function domainSort(model: Model, channel: Channel, scaleType: string): any {
-  if (scaleType !== 'ordinal') {
+export function domainSort(model: Model, channel: Channel, scaleType: ScaleType): any {
+  if (scaleType !== ScaleType.ORDINAL) {
     return undefined;
   }
 
@@ -291,7 +290,7 @@ export function domainSort(model: Model, channel: Channel, scaleType: string): a
  * 2. Aggregation function is not `count` or `sum`
  * 3. The scale is quantitative or time scale.
  */
-function _useRawDomain (scale: Scale, model: Model, channel: Channel, scaleType: string) {
+function _useRawDomain (scale: Scale, model: Model, channel: Channel, scaleType: ScaleType) {
   const fieldDef = model.fieldDef(channel);
 
   return scale.useRawDomain && //  if useRawDomain is enabled
@@ -306,18 +305,18 @@ function _useRawDomain (scale: Scale, model: Model, channel: Channel, scaleType:
       // domain values from the summary table.
       (fieldDef.type === QUANTITATIVE && !fieldDef.bin) ||
       // T uses non-ordinal scale when there's no unit or when the unit is not ordinal.
-      (fieldDef.type === TEMPORAL && contains(['time', 'utc'], scaleType))
+      (fieldDef.type === TEMPORAL && contains([ScaleType.TIME, ScaleType.UTC], scaleType))
     );
 }
 
 
-export function rangeMixins(scale: Scale, model: Model, channel: Channel, scaleType: string): any {
+export function rangeMixins(scale: Scale, model: Model, channel: Channel, scaleType: ScaleType): any {
   // TODO: need to add rule for quantile, quantize, threshold scale
 
   const fieldDef = model.fieldDef(channel),
   scaleConfig = model.config().scale;
 
-  if (scaleType === 'ordinal' && scale.bandSize && contains([X, Y], channel)) {
+  if (scaleType === ScaleType.ORDINAL && scale.bandSize && contains([X, Y], channel)) {
     return {bandSize: scale.bandSize};
   }
 
@@ -341,13 +340,13 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel, scaleT
         rangeMax: 0
       };
     case SIZE:
-      if (model.is(BAR)) {
+      if (model.mark() === BAR) {
         if (scaleConfig.barSizeRange !== undefined) {
           return {range: scaleConfig.barSizeRange};
         }
         const dimension = model.config().mark.orient === 'horizontal' ? Y : X;
         return {range: [ model.config().mark.barThinSize, model.scale(dimension).bandSize]};
-      } else if (model.is(TEXT_MARK)) {
+      } else if (model.mark() === TEXT_MARK) {
         return {range: scaleConfig.fontSizeRange };
       }
       // else -- point, square, circle
@@ -355,8 +354,8 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel, scaleT
         return {range: scaleConfig.pointSizeRange};
       }
 
-      const xIsMeasure = model.isMeasure(X);
-      const yIsMeasure = model.isMeasure(Y);
+      const xIsMeasure = isMeasure(model.encoding().x);
+      const yIsMeasure = isMeasure(model.encoding().y);
 
       const bandSize = xIsMeasure !== yIsMeasure ?
         model.scale(xIsMeasure ? Y : X).bandSize :
@@ -382,28 +381,30 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel, scaleT
   return {};
 }
 
-export function clamp(prop: boolean, scaleType: string) {
+export function clamp(prop: boolean, scaleType: ScaleType) {
   // Only works for scale with both continuous domain continuous range
   // (Doesn't work for quantize, quantile, threshold, ordinal)
-  if (contains(['linear', 'pow', 'sqrt', 'log', 'time', 'utc'], scaleType)) {
+  if (contains([ScaleType.LINEAR, ScaleType.POW, ScaleType.SQRT,
+        ScaleType.LOG, ScaleType.TIME, ScaleType.UTC], scaleType)) {
     return prop;
   }
   return undefined;
 }
 
-export function exponent(prop: number, scaleType: string) {
-  if (scaleType === 'pow') {
+export function exponent(prop: number, scaleType: ScaleType) {
+  if (scaleType === ScaleType.POW) {
     return prop;
   }
   return undefined;
 }
 
-export function nice(prop: boolean|string, scaleType: string, channel: Channel, fieldDef: FieldDef) {
-  if (contains(['linear', 'pow', 'sqrt', 'log', 'time', 'utc', 'quantize'], scaleType)) {
+export function nice(prop: boolean|string, scaleType: ScaleType, channel: Channel, fieldDef: FieldDef) {
+  if (contains([ScaleType.LINEAR, ScaleType.POW, ScaleType.SQRT, ScaleType.LOG,
+        ScaleType.TIME, ScaleType.UTC, ScaleType.QUANTIZE], scaleType)) {
     if (prop !== undefined) {
       return prop;
     }
-    if (contains(['time', 'utc'], scaleType)) {
+    if (contains([ScaleType.TIME, ScaleType.UTC], scaleType)) {
       return smallestUnit(fieldDef.timeUnit);
     }
     return contains([X, Y], channel); // return true for quantitative X/Y
@@ -412,7 +413,7 @@ export function nice(prop: boolean|string, scaleType: string, channel: Channel, 
 }
 
 
-export function padding(prop: number, scaleType: string, channel: Channel) {
+export function padding(prop: number, scaleType: ScaleType, channel: Channel) {
   /* Padding is only allowed for X and Y.
    *
    * Basically it doesn't make sense to add padding for color and size.
@@ -421,14 +422,14 @@ export function padding(prop: number, scaleType: string, channel: Channel) {
    * is a ratio ([0, 1]) and it causes the padding to be decimals.
    * Therefore, we manually calculate padding in the layout by ourselves.
    */
-  if (scaleType === 'ordinal' && contains([X, Y], channel)) {
+  if (scaleType === ScaleType.ORDINAL && contains([X, Y], channel)) {
     return prop;
   }
   return undefined;
 }
 
-export function points(__, scaleType: string, channel: Channel) {
-  if (scaleType === 'ordinal' && contains([X, Y], channel)) {
+export function points(__, scaleType: ScaleType, channel: Channel) {
+  if (scaleType === ScaleType.ORDINAL && contains([X, Y], channel)) {
     // We always use ordinal point scale for x and y.
     // Thus `points` isn't included in the scale's schema.
     return true;
@@ -436,7 +437,7 @@ export function points(__, scaleType: string, channel: Channel) {
   return undefined;
 }
 
-export function round(prop: boolean, scaleType: string, channel: Channel) {
+export function round(prop: boolean, scaleType: ScaleType, channel: Channel) {
   if (contains([X, Y, ROW, COLUMN, SIZE], channel) && prop !== undefined) {
     return prop;
   }
@@ -444,9 +445,9 @@ export function round(prop: boolean, scaleType: string, channel: Channel) {
   return undefined;
 }
 
-export function zero(prop: boolean, scaleType: string, channel: Channel, fieldDef: FieldDef) {
+export function zero(prop: boolean, scaleType: ScaleType, channel: Channel, fieldDef: FieldDef) {
   // only applicable for non-ordinal scale
-  if (!contains(['time', 'utc', 'ordinal'], scaleType)) {
+  if (!contains([ScaleType.TIME, ScaleType.UTC, ScaleType.ORDINAL], scaleType)) {
     if (prop !== undefined) {
       return prop;
     }

@@ -1,10 +1,10 @@
 /* tslint:disable quote */
 
 import {assert} from 'chai';
-import {parseModel} from '../util';
-import {extend} from '../../src/util'
-import {X, Y, COLOR} from '../../src/channel';
-import {area} from '../../src/compile/mark-area';
+import {parseModel} from '../../util';
+import {extend} from '../../../src/util'
+import {X, Y, COLOR} from '../../../src/channel';
+import {area} from '../../../src/compile/mark/area';
 
 describe('Mark: Area', function() {
   it('should return the correct mark type', function() {

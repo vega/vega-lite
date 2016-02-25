@@ -1,8 +1,8 @@
-import {Model} from './Model';
-import {X, Y, COLOR, TEXT, SIZE} from '../channel';
-import {applyMarkConfig, applyColorAndOpacity, formatMixins} from './util';
-import {extend, contains} from '../util';
-import {QUANTITATIVE, ORDINAL, TEMPORAL} from '../type';
+import {Model} from '../Model';
+import {X, Y, COLOR, TEXT, SIZE} from '../../channel';
+import {applyMarkConfig, applyColorAndOpacity, formatMixins} from '../common';
+import {extend, contains} from '../../util';
+import {QUANTITATIVE, ORDINAL, TEMPORAL} from '../../type';
 
 export namespace text {
   export function markType() {
@@ -63,7 +63,7 @@ export namespace text {
         field: model.field(SIZE)
       };
     } else {
-      p.fontSize = { value: model.sizeValue() };
+      p.fontSize = { value: sizeValue(model) };
     }
 
     if (model.config().mark.applyColorToBackground && !model.has(X) && !model.has(Y)) {
@@ -90,5 +90,14 @@ export namespace text {
     }
 
     return p;
+  }
+
+  function sizeValue(model: Model) {
+    const fieldDef = model.fieldDef(SIZE);
+    if (fieldDef && fieldDef.value !== undefined) {
+       return fieldDef.value;
+    }
+
+    return model.config().mark.fontSize;
   }
 }

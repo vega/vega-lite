@@ -1,10 +1,10 @@
 /* tslint:disable quote */
 
 import {assert} from 'chai';
-import {parseModel} from '../util';
-import {extend} from '../../src/util'
-import {X, Y, COLOR} from '../../src/channel';
-import {line} from '../../src/compile/mark-line';
+import {parseModel} from '../../util';
+import {extend} from '../../../src/util'
+import {X, Y, COLOR} from '../../../src/channel';
+import {line} from '../../../src/compile/mark/line';
 
 describe('Mark: Line', function() {
   it('should return the correct mark type', function() {

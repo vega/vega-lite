@@ -1,11 +1,11 @@
 import {Model} from './Model';
-import {FieldDef, OrderChannelDef} from '../schema/fielddef.schema';
+import {FieldDef, OrderChannelDef} from '../fielddef';
 import {COLUMN, ROW, X, Y, SIZE, COLOR, SHAPE, TEXT, LABEL, Channel} from '../channel';
 import {field} from '../fielddef';
+import {SortOrder} from '../sort';
 import {QUANTITATIVE, ORDINAL, TEMPORAL} from '../type';
 import {format as timeFormatExpr} from './time';
 import {contains} from '../util';
-import {SortOrder} from '../enums';
 
 export const FILL_STROKE_CONFIG = ['fill', 'fillOpacity',
   'stroke', 'strokeWidth', 'strokeDash', 'strokeDashOffset', 'strokeOpacity',

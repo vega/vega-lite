@@ -3,7 +3,7 @@
 import {assert} from 'chai';
 import {parseModel} from '../util';
 import {X} from '../../src/channel';
-import {timeFormat, formatMixins} from '../../src/compile/util';
+import {timeFormat, formatMixins} from '../../src/compile/common';
 
 describe('Model', function() {
   describe('timeFormat()', function() {

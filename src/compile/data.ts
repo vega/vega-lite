@@ -1,10 +1,10 @@
 import * as vlFieldDef from '../fielddef';
 import {extend, keys, vals, reduce, contains} from '../util';
 import {Model} from './Model';
-import {FieldDef} from '../schema/fielddef.schema';
-import {VgData} from '../schema/vega.schema';
+import {FieldDef} from '../fielddef';
+import {VgData} from '../vega.schema';
 import {StackProperties} from './stack';
-import {ScaleType} from '../enums';
+import {ScaleType} from '../scale';
 
 import {autoMaxBins} from '../bin';
 import {Channel, ROW, COLUMN, COLOR} from '../channel';

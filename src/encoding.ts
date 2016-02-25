@@ -1,8 +1,24 @@
 // utility for encoding mapping
-import {Encoding} from './schema/encoding.schema';
-import {FieldDef} from './schema/fielddef.schema';
+import {FieldDef, PositionChannelDef, FacetChannelDef, ChannelDefWithLegend, OrderChannelDef} from './fielddef';
 import {Channel, CHANNELS} from './channel';
 import {isArray, any as anyIn} from './util';
+
+export interface Encoding {
+  x?: PositionChannelDef;
+  y?: PositionChannelDef;
+  row?: FacetChannelDef;
+  column?: FacetChannelDef;
+  color?: ChannelDefWithLegend;
+  size?: ChannelDefWithLegend;
+  shape?: ChannelDefWithLegend; // TODO: maybe distinguish ordinal-only
+  detail?: FieldDef | FieldDef[];
+  text?: FieldDef;
+  label?: FieldDef;
+
+  path?: OrderChannelDef | OrderChannelDef[];
+  order?: OrderChannelDef | OrderChannelDef[];
+}
+
 
 export function countRetinal(encoding: Encoding) {
   let count = 0;
