@@ -21,6 +21,7 @@ import {compileStackProperties, StackProperties} from './stack';
 import {scaleType} from './scale';
 import {ScaleType} from '../scale';
 import {AggregateOp} from '../aggregate';
+import {CHANNELS} from '../channel';
 
 export interface ScaleMap {
   x?: Scale;
@@ -223,8 +224,11 @@ export class Model {
     return vlFieldDef.field(fieldDef, opt);
   }
 
-  public channels(): Channel[] {
-    return vlEncoding.channels(this._spec.encoding);
+  public channelWithScales(): Channel[] {
+    const model = this;
+    return CHANNELS.filter(function(channel) {
+      return !!model.scale(channel);
+    });
   }
 
   public reduce(f: (acc: any, fd: FieldDef, c: Channel, e: Encoding) => any, init, t?: any) {

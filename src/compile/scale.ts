@@ -25,9 +25,8 @@ export const COLOR_LEGEND = 'color_legend';
 // scale used to get labels for binned color scales
 export const COLOR_LEGEND_LABEL = 'color_legend_label';
 
-export function compileScales(channels: Channel[], model: Model) {
-  return channels.filter(hasScale)
-    .reduce(function(scales: any[], channel: Channel) {
+export function compileScales(model: Model) {
+  return model.channelWithScales().reduce(function(scales: any[], channel: Channel) {
       const fieldDef = model.fieldDef(channel);
 
       // Add additional scales needed to support ordinal legends (list of values)

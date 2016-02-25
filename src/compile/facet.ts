@@ -29,10 +29,7 @@ export function facetMixins(model: Model, marks) {
       [getFacetGroup(model, marks)]
     ),
     // assuming equal cellWidth here
-    scales: compileScales(
-      model.channels(), // TODO: with nesting, not all scale might be a root-level
-      model
-    ),
+    scales: compileScales(model),
     axes: [].concat(
       hasRow && model.axis(ROW) ? [compileAxis(ROW, model)] : [],
       hasCol && model.axis(COLUMN) ? [compileAxis(COLUMN, model)] : []
