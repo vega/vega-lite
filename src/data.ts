@@ -2,10 +2,14 @@
  * Constants and utilities for data.
  */
 import {Type} from './type';
-import {DataFormat} from './enums';
+
+export enum DataFormat {
+    JSON = 'json' as any,
+    CSV = 'csv' as any,
+    TSV = 'tsv' as any,
+}
 
 export interface Data {
-
   formatType?: DataFormat;
   url?: string;
   /**

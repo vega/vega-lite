@@ -59,7 +59,43 @@ export const defaultFacetConfig: FacetConfig = {
   cell: defaultFacetCellConfig
 };
 
-import {Shape, HorizontalAlign, VerticalAlign, FontStyle, FontWeight, StackOffset} from './enums';
+export enum FontWeight {
+    NORMAL = 'normal' as any,
+    BOLD = 'bold' as any
+}
+
+export enum Shape {
+    CIRCLE = 'circle' as any,
+    SQUARE = 'square' as any,
+    CROSS = 'cross' as any,
+    DIAMOND = 'diamond' as any,
+    TRIANGLEUP = 'triangle-up' as any,
+    TRIANGLEDOWN = 'triangle-down' as any,
+}
+
+export enum HorizontalAlign {
+    LEFT = 'left' as any,
+    RIGHT = 'right' as any,
+    CENTER = 'center' as any,
+}
+
+export enum VerticalAlign {
+    TOP = 'top' as any,
+    MIDDLE = 'middle' as any,
+    BOTTOM = 'bottom' as any,
+}
+
+export enum FontStyle {
+    NORMAL = 'normal' as any,
+    ITALIC = 'italic' as any,
+}
+
+export enum StackOffset {
+    ZERO = 'zero' as any,
+    CENTER = 'center' as any,
+    NORMALIZE = 'normalize' as any,
+    NONE = 'none' as any,
+}
 
 export interface MarkConfig {
 

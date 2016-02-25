@@ -19,7 +19,7 @@ import {duplicate, extend, contains, mergeDeep} from '../util';
 import {compileMarkConfig} from './config';
 import {compileStackProperties, StackProperties} from './stack';
 import {scaleType} from './scale';
-import {ScaleType} from '../enums';
+import {ScaleType} from '../scale';
 import {AggregateOp} from '../aggregate';
 
 export interface ScaleMap {

@@ -4,7 +4,7 @@ import {Model} from './Model';
 import {FieldDef} from '../fielddef';
 import {VgData} from '../vega.schema';
 import {StackProperties} from './stack';
-import {ScaleType} from '../enums';
+import {ScaleType} from '../scale';
 
 import {autoMaxBins} from '../bin';
 import {Channel, ROW, COLUMN, COLOR} from '../channel';

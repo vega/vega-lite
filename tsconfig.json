@@ -57,7 +57,6 @@
     "src/config.ts",
     "src/data.ts",
     "src/encoding.ts",
-    "src/enums.ts",
     "src/fielddef.ts",
     "src/legend.ts",
     "src/mark.ts",

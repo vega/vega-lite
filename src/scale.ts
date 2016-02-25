@@ -1,4 +1,24 @@
-import {ScaleType, NiceTime} from './enums';
+export enum ScaleType {
+    LINEAR = 'linear' as any,
+    LOG = 'log' as any,
+    POW = 'pow' as any,
+    SQRT = 'sqrt' as any,
+    QUANTILE = 'quantile' as any,
+    QUANTIZE = 'quantize' as any,
+    ORDINAL = 'ordinal' as any,
+    TIME = 'time' as any,
+    UTC  = 'utc' as any,
+}
+
+export enum NiceTime {
+    SECOND = 'second' as any,
+    MINUTE = 'minute' as any,
+    HOUR = 'hour' as any,
+    DAY = 'day' as any,
+    WEEK = 'week' as any,
+    MONTH = 'month' as any,
+    YEAR = 'year' as any,
+}
 
 export interface ScaleConfig {
   /**

@@ -2,7 +2,6 @@
 declare var exports;
 
 import {FieldDef} from '../fielddef';
-import {Scale} from '../scale';
 
 import {contains, extend} from '../util';
 import {Model} from './Model';
@@ -12,7 +11,8 @@ import {SOURCE, STACKED_SCALE} from '../data';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 import {Mark, BAR, TEXT as TEXT_MARK} from '../mark';
 import {rawDomain, smallestUnit} from './time';
-import {ScaleType, StackOffset} from '../enums';
+import {Scale, ScaleType} from '../scale';
+import {StackOffset} from '../config';
 import {TimeUnit} from '../timeunit';
 import {field} from '../fielddef';
 

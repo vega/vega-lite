@@ -6,7 +6,7 @@ import * as vlscale from '../../src/compile/scale';
 import {SOURCE, SUMMARY} from '../../src/data';
 import {parseModel} from '../util';
 import {Y, ROW, COLOR} from '../../src/channel';
-import {ScaleType} from '../../src/enums';
+import {ScaleType} from '../../src/scale';
 
 
 describe('Scale', function() {
