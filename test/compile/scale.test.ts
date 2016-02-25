@@ -5,7 +5,7 @@ import {assert} from 'chai';
 import * as vlscale from '../../src/compile/scale';
 import {SOURCE, SUMMARY} from '../../src/data';
 import {parseModel} from '../util';
-import {Y, ROW, COLOR} from '../../src/channel';
+import {Y, ROW} from '../../src/channel';
 import {ScaleType} from '../../src/scale';
 
 
@@ -276,14 +276,14 @@ describe('Scale', function() {
   });
 
   describe('ordinal with color', function() {
-    const encoding = parseModel({
+    const model = parseModel({
       mark: "point",
       encoding: {
         color: { field: 'origin', type: "ordinal"}
       }
     });
 
-    const scales = vlscale.compileScales([COLOR], encoding);
+    const scales = vlscale.compileScales(model);
 
     it('should create color and inverse scales', function() {
       assert.equal(scales.length, 2);
@@ -315,14 +315,14 @@ describe('Scale', function() {
   });
 
   describe('color with bin', function() {
-    const encoding = parseModel({
+    const model = parseModel({
         mark: "point",
         encoding: {
           color: { field: 'origin', type: "quantitative", bin: true}
         }
       });
 
-    const scales = vlscale.compileScales([COLOR], encoding);
+    const scales = vlscale.compileScales(model);
 
     it('should add correct scales', function() {
       assert.equal(scales.length, 3);
@@ -356,14 +356,14 @@ describe('Scale', function() {
   });
 
   describe('color with time unit', function() {
-    const encoding = parseModel({
+    const model = parseModel({
         mark: "point",
         encoding: {
           color: {field: 'origin', type: "temporal", timeUnit: "year"}
         }
       });
 
-    const scales = vlscale.compileScales([COLOR], encoding);
+    const scales = vlscale.compileScales(model);
 
     it('should add correct scales', function() {
       assert.equal(scales.length, 2);

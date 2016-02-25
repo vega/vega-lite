@@ -14,7 +14,7 @@ import {rawDomain, smallestUnit} from './time';
 import {Scale, ScaleType} from '../scale';
 import {StackOffset} from '../config';
 import {TimeUnit} from '../timeunit';
-import {field} from '../fielddef';
+import {field, isMeasure} from '../fielddef';
 
 /**
  * Color Ramp's scale for legends.  This scale has to be ordinal so that its
@@ -25,9 +25,8 @@ export const COLOR_LEGEND = 'color_legend';
 // scale used to get labels for binned color scales
 export const COLOR_LEGEND_LABEL = 'color_legend_label';
 
-export function compileScales(channels: Channel[], model: Model) {
-  return channels.filter(hasScale)
-    .reduce(function(scales: any[], channel: Channel) {
+export function compileScales(model: Model) {
+  return model.channelWithScales().reduce(function(scales: any[], channel: Channel) {
       const fieldDef = model.fieldDef(channel);
 
       // Add additional scales needed to support ordinal legends (list of values)
@@ -341,13 +340,13 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel, scaleT
         rangeMax: 0
       };
     case SIZE:
-      if (model.is(BAR)) {
+      if (model.mark() === BAR) {
         if (scaleConfig.barSizeRange !== undefined) {
           return {range: scaleConfig.barSizeRange};
         }
         const dimension = model.config().mark.orient === 'horizontal' ? Y : X;
         return {range: [ model.config().mark.barThinSize, model.scale(dimension).bandSize]};
-      } else if (model.is(TEXT_MARK)) {
+      } else if (model.mark() === TEXT_MARK) {
         return {range: scaleConfig.fontSizeRange };
       }
       // else -- point, square, circle
@@ -355,8 +354,8 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel, scaleT
         return {range: scaleConfig.pointSizeRange};
       }
 
-      const xIsMeasure = model.isMeasure(X);
-      const yIsMeasure = model.isMeasure(Y);
+      const xIsMeasure = isMeasure(model.encoding().x);
+      const yIsMeasure = isMeasure(model.encoding().y);
 
       const bandSize = xIsMeasure !== yIsMeasure ?
         model.scale(xIsMeasure ? Y : X).bandSize :

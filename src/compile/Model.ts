@@ -8,10 +8,9 @@ import {defaultConfig, Config} from '../config';
 
 import {COLUMN, ROW, X, Y, COLOR, SHAPE, SIZE, TEXT, PATH, ORDER, Channel, supportMark} from '../channel';
 import {SOURCE, SUMMARY} from '../data';
-import * as vlFieldDef from '../fielddef';
-import {FieldRefOption} from '../fielddef';
+import {FieldRefOption, field} from '../fielddef';
 import * as vlEncoding from '../encoding';
-import {Mark, BAR, TICK, TEXT as TEXTMARK} from '../mark';
+import {Mark, TEXT as TEXTMARK} from '../mark';
 
 import {getFullName, QUANTITATIVE} from '../type';
 import {duplicate, extend, contains, mergeDeep} from '../util';
@@ -21,6 +20,7 @@ import {compileStackProperties, StackProperties} from './stack';
 import {scaleType} from './scale';
 import {ScaleType} from '../scale';
 import {AggregateOp} from '../aggregate';
+import {CHANNELS} from '../channel';
 
 export interface ScaleMap {
   x?: Scale;
@@ -195,10 +195,6 @@ export class Model {
     return this._spec;
   }
 
-  public is(mark: Mark) {
-    return this._spec.mark === mark;
-  }
-
   public has(channel: Channel) {
     return vlEncoding.has(this._spec.encoding, channel);
   }
@@ -224,19 +220,14 @@ export class Model {
       }, opt);
     }
 
-    return vlFieldDef.field(fieldDef, opt);
+    return field(fieldDef, opt);
   }
 
-  public fieldTitle(channel: Channel): string {
-    return vlFieldDef.title(this._spec.encoding[channel]);
-  }
-
-  public channels(): Channel[] {
-    return vlEncoding.channels(this._spec.encoding);
-  }
-
-  public map(f: (fd: FieldDef, c: Channel, e: Encoding) => any, t?: any) {
-    return vlEncoding.map(this._spec.encoding, f, t);
+  public channelWithScales(): Channel[] {
+    const model = this;
+    return CHANNELS.filter(function(channel) {
+      return !!model.scale(channel);
+    });
   }
 
   public reduce(f: (acc: any, fd: FieldDef, c: Channel, e: Encoding) => any, init, t?: any) {
@@ -254,24 +245,12 @@ export class Model {
     return this.has(channel) && scaleType(scale, fieldDef, channel, this.mark()) === ScaleType.ORDINAL;
   }
 
-  public isDimension(channel: Channel) {
-    return vlFieldDef.isDimension(this.fieldDef(channel));
-  }
-
-  public isMeasure(channel: Channel) {
-    return vlFieldDef.isMeasure(this.fieldDef(channel));
-  }
-
-  public isAggregate() {
-    return vlEncoding.isAggregate(this._spec.encoding);
-  }
-
   public isFacet() {
     return this.has(ROW) || this.has(COLUMN);
   }
 
   public dataTable() {
-    return this.isAggregate() ? SUMMARY : SOURCE;
+    return vlEncoding.isAggregate(this._spec.encoding) ? SUMMARY : SOURCE;
   }
 
   public data() {
@@ -297,6 +276,7 @@ export class Model {
     return this._scale[channel];
   }
 
+
   public axis(channel: Channel): AxisProperties {
     return this._axis[channel];
   }
@@ -309,41 +289,5 @@ export class Model {
   public scaleName(channel: Channel): string {
     const name = this.spec().name;
     return (name ? name + '-' : '') + channel;
-  }
-
-  public sizeValue(channel: Channel = SIZE) {
-    const fieldDef = this.fieldDef(SIZE);
-    if (fieldDef && fieldDef.value !== undefined) {
-       return fieldDef.value;
-    }
-
-    const scaleConfig = this.config().scale;
-
-    switch (this.mark()) {
-      case TEXTMARK:
-        return this.config().mark.fontSize; // font size 10 by default
-      case BAR:
-        if (this.config().mark.barSize) {
-          return this.config().mark.barSize;
-        }
-        // BAR's size is applied on either X or Y
-        return this.isOrdinalScale(channel) ?
-            // For ordinal scale or single bar, we can use bandSize - 1
-            // (-1 so that the border of the bar falls on exact pixel)
-            this.scale(channel).bandSize - 1 :
-          !this.has(channel) ?
-            scaleConfig.bandSize - 1 :
-            // otherwise, set to thinBarWidth by default
-            this.config().mark.barThinSize;
-      case TICK:
-        if (this.config().mark.tickSize) {
-          return this.config().mark.tickSize;
-        }
-        const bandSize = this.has(channel) ?
-          this.scale(channel).bandSize :
-          scaleConfig.bandSize;
-        return bandSize / 1.5;
-    }
-    return this.config().mark.size;
   }
 }

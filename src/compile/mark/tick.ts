@@ -1,5 +1,5 @@
 import {Model} from '../Model';
-import {X, Y, SIZE} from '../../channel';
+import {X, Y, SIZE, Channel} from '../../channel';
 import {applyColorAndOpacity} from '../common';
 
 export namespace tick {
@@ -36,20 +36,38 @@ export namespace tick {
             scale: model.scaleName(SIZE),
             field: model.field(SIZE)
         } : {
-            value: model.sizeValue(Y)
+            value: sizeValue(model, Y)
         };
     } else {
       p.width = model.has(SIZE)? {
           scale: model.scaleName(SIZE),
           field: model.field(SIZE)
         } : {
-          value: model.sizeValue(X)
+          value: sizeValue(model, X)
         };
       p.height = { value: model.config().mark.tickThickness };
     }
 
     applyColorAndOpacity(p, model);
     return p;
+  }
+
+  function sizeValue(model: Model, channel: Channel) {
+    const fieldDef = model.fieldDef(SIZE);
+    if (fieldDef && fieldDef.value !== undefined) {
+       return fieldDef.value;
+    }
+
+    const scaleConfig = model.config().scale;
+    const markConfig = model.config().mark;
+
+    if (markConfig.tickSize) {
+      return markConfig.tickSize;
+    }
+    const bandSize = model.has(channel) ?
+      model.scale(channel).bandSize :
+      scaleConfig.bandSize;
+    return bandSize / 1.5;
   }
 
   export function labels(model: Model) {

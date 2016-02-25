@@ -71,7 +71,7 @@ export function compileRootGroup(model: Model) {
   } else {
     applyConfig(rootGroup.properties.update, model.config().cell, FILL_STROKE_CONFIG.concat(['clip']));
     rootGroup.marks = marks;
-    rootGroup.scales = compileScales(model.channels(), model);
+    rootGroup.scales = compileScales(model);
 
     const axes = (model.has(X) && model.axis(X) ? [compileAxis(X, model)] : [])
       .concat(model.has(Y) && model.axis(Y) ? [compileAxis(Y, model)] : []);

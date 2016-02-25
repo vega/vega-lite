@@ -38,7 +38,7 @@ export namespace point {
         field: model.field(SIZE)
       };
     } else {
-      p.size = { value: model.sizeValue() };
+      p.size = { value: sizeValue(model) };
     }
 
     // shape
@@ -57,6 +57,15 @@ export namespace point {
 
     applyColorAndOpacity(p, model);
     return p;
+  }
+
+  function sizeValue(model: Model) {
+    const fieldDef = model.fieldDef(SIZE);
+    if (fieldDef && fieldDef.value !== undefined) {
+       return fieldDef.value;
+    }
+
+    return model.config().mark.size;
   }
 
   export function labels(model: Model) {

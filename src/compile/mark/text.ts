@@ -63,7 +63,7 @@ export namespace text {
         field: model.field(SIZE)
       };
     } else {
-      p.fontSize = { value: model.sizeValue() };
+      p.fontSize = { value: sizeValue(model) };
     }
 
     if (model.config().mark.applyColorToBackground && !model.has(X) && !model.has(Y)) {
@@ -90,5 +90,14 @@ export namespace text {
     }
 
     return p;
+  }
+
+  function sizeValue(model: Model) {
+    const fieldDef = model.fieldDef(SIZE);
+    if (fieldDef && fieldDef.value !== undefined) {
+       return fieldDef.value;
+    }
+
+    return model.config().mark.fontSize;
   }
 }
