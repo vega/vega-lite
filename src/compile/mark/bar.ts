@@ -1,5 +1,5 @@
 import {Model} from '../Model';
-import {X, Y, SIZE} from '../../channel';
+import {X, Y, SIZE, Channel} from '../../channel';
 import {applyColorAndOpacity} from '../common';
 
 
@@ -41,7 +41,7 @@ export namespace bar {
           scale: model.scaleName(X),
           field: model.field(X)
         };
-        p.width = {value: model.sizeValue(X)};
+        p.width = {value: sizeValue(model, X)};
       }
     } else if (model.fieldDef(X).bin) {
       if (model.has(SIZE) && orient !== 'horizontal') {
@@ -82,7 +82,7 @@ export namespace bar {
           field: model.field(SIZE)
         } : {
           // otherwise, use fixed size
-          value: model.sizeValue(X)
+          value: sizeValue(model, (X))
         };
     }
 
@@ -111,7 +111,7 @@ export namespace bar {
           scale: model.scaleName(Y),
           field: model.field(Y)
         };
-        p.height = { value: model.sizeValue(Y) };
+        p.height = { value: sizeValue(model, Y) };
       }
     } else if (model.fieldDef(Y).bin) {
       if (model.has(SIZE) && orient === 'horizontal') {
@@ -156,12 +156,33 @@ export namespace bar {
           scale: model.scaleName(SIZE),
           field: model.field(SIZE)
         } : {
-          value: model.sizeValue(Y)
+          value: sizeValue(model, Y)
         };
     }
 
     applyColorAndOpacity(p, model);
     return p;
+  }
+
+  function sizeValue(model: Model, channel: Channel) {
+    const fieldDef = model.fieldDef(SIZE);
+    if (fieldDef && fieldDef.value !== undefined) {
+       return fieldDef.value;
+    }
+
+    const markConfig = model.config().mark;
+    if (markConfig.barSize) {
+      return markConfig.barSize;
+    }
+    // BAR's size is applied on either X or Y
+    return model.isOrdinalScale(channel) ?
+        // For ordinal scale or single bar, we can use bandSize - 1
+        // (-1 so that the border of the bar falls on exact pixel)
+        model.scale(channel).bandSize - 1 :
+      !model.has(channel) ?
+        model.config().scale.bandSize - 1 :
+        // otherwise, set to thinBarWidth by default
+        markConfig.barThinSize;
   }
 
   export function labels(model: Model) {

@@ -11,7 +11,7 @@ import {SOURCE, SUMMARY} from '../data';
 import * as vlFieldDef from '../fielddef';
 import {FieldRefOption} from '../fielddef';
 import * as vlEncoding from '../encoding';
-import {Mark, BAR, TICK, TEXT as TEXTMARK} from '../mark';
+import {Mark, TEXT as TEXTMARK} from '../mark';
 
 import {getFullName, QUANTITATIVE} from '../type';
 import {duplicate, extend, contains, mergeDeep} from '../util';
@@ -298,41 +298,5 @@ export class Model {
   public scaleName(channel: Channel): string {
     const name = this.spec().name;
     return (name ? name + '-' : '') + channel;
-  }
-
-  public sizeValue(channel: Channel = SIZE) {
-    const fieldDef = this.fieldDef(SIZE);
-    if (fieldDef && fieldDef.value !== undefined) {
-       return fieldDef.value;
-    }
-
-    const scaleConfig = this.config().scale;
-
-    switch (this.mark()) {
-      case TEXTMARK:
-        return this.config().mark.fontSize; // font size 10 by default
-      case BAR:
-        if (this.config().mark.barSize) {
-          return this.config().mark.barSize;
-        }
-        // BAR's size is applied on either X or Y
-        return this.isOrdinalScale(channel) ?
-            // For ordinal scale or single bar, we can use bandSize - 1
-            // (-1 so that the border of the bar falls on exact pixel)
-            this.scale(channel).bandSize - 1 :
-          !this.has(channel) ?
-            scaleConfig.bandSize - 1 :
-            // otherwise, set to thinBarWidth by default
-            this.config().mark.barThinSize;
-      case TICK:
-        if (this.config().mark.tickSize) {
-          return this.config().mark.tickSize;
-        }
-        const bandSize = this.has(channel) ?
-          this.scale(channel).bandSize :
-          scaleConfig.bandSize;
-        return bandSize / 1.5;
-    }
-    return this.config().mark.size;
   }
 }
