@@ -195,10 +195,6 @@ export class Model {
     return this._spec;
   }
 
-  public is(mark: Mark) {
-    return this._spec.mark === mark;
-  }
-
   public has(channel: Channel) {
     return vlEncoding.has(this._spec.encoding, channel);
   }
@@ -227,16 +223,8 @@ export class Model {
     return vlFieldDef.field(fieldDef, opt);
   }
 
-  public fieldTitle(channel: Channel): string {
-    return vlFieldDef.title(this._spec.encoding[channel]);
-  }
-
   public channels(): Channel[] {
     return vlEncoding.channels(this._spec.encoding);
-  }
-
-  public map(f: (fd: FieldDef, c: Channel, e: Encoding) => any, t?: any) {
-    return vlEncoding.map(this._spec.encoding, f, t);
   }
 
   public reduce(f: (acc: any, fd: FieldDef, c: Channel, e: Encoding) => any, init, t?: any) {
@@ -262,16 +250,12 @@ export class Model {
     return vlFieldDef.isMeasure(this.fieldDef(channel));
   }
 
-  public isAggregate() {
-    return vlEncoding.isAggregate(this._spec.encoding);
-  }
-
   public isFacet() {
     return this.has(ROW) || this.has(COLUMN);
   }
 
   public dataTable() {
-    return this.isAggregate() ? SUMMARY : SOURCE;
+    return vlEncoding.isAggregate(this._spec.encoding) ? SUMMARY : SOURCE;
   }
 
   public data() {
@@ -296,6 +280,7 @@ export class Model {
   public scale(channel: Channel): Scale {
     return this._scale[channel];
   }
+
 
   public axis(channel: Channel): AxisProperties {
     return this._axis[channel];

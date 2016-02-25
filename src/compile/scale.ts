@@ -341,13 +341,13 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel, scaleT
         rangeMax: 0
       };
     case SIZE:
-      if (model.is(BAR)) {
+      if (model.mark() === BAR) {
         if (scaleConfig.barSizeRange !== undefined) {
           return {range: scaleConfig.barSizeRange};
         }
         const dimension = model.config().mark.orient === 'horizontal' ? Y : X;
         return {range: [ model.config().mark.barThinSize, model.scale(dimension).bandSize]};
-      } else if (model.is(TEXT_MARK)) {
+      } else if (model.mark() === TEXT_MARK) {
         return {range: scaleConfig.fontSizeRange };
       }
       // else -- point, square, circle

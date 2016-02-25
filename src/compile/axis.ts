@@ -1,9 +1,11 @@
-import {Model} from './Model';
-import {contains, extend, truncate} from '../util';
-import {NOMINAL, ORDINAL, TEMPORAL} from '../type';
-import {COLUMN, ROW, X, Y, Channel} from '../channel';
 import {AxisOrient} from '../axis';
+import {COLUMN, ROW, X, Y, Channel} from '../channel';
+import {title as fieldDefTitle} from '../fielddef';
+import {NOMINAL, ORDINAL, TEMPORAL} from '../type';
+import {contains, extend, truncate} from '../util';
+
 import {formatMixins} from './common';
+import {Model} from './Model';
 
 // https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations
 declare let exports;
@@ -194,7 +196,7 @@ export function title(model: Model, channel: Channel) {
   }
 
   // if not defined, automatically determine axis title from field def
-  const fieldTitle = model.fieldTitle(channel);
+  const fieldTitle = fieldDefTitle(model.fieldDef(channel));
 
   let maxLength;
   if (axis.titleMaxLength) {
