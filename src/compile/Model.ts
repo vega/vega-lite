@@ -109,7 +109,7 @@ export class Model {
             type: _scaleType,
             round: config.scale.round,
             padding: config.scale.padding,
-            useRawDomain: config.scale.useRawDomain,
+            includeRawDomain: config.scale.includeRawDomain,
             bandSize: channel === X && _scaleType === ScaleType.ORDINAL && mark === TEXTMARK ?
                        config.scale.textBandWidth : config.scale.bandSize
           }, channelScale);

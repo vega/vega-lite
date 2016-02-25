@@ -44,7 +44,7 @@ export interface ScaleConfig {
   padding?: number;
 
   // Experimental Feature
-  useRawDomain?: boolean;
+  includeRawDomain?: boolean;
 
   /** Default range for nominal color scale */
   nominalColorRange?: string | string[];
@@ -71,7 +71,7 @@ export const defaultScaleConfig: ScaleConfig = {
   textBandWidth: 90,
   bandSize: 21,
   padding: 1,
-  useRawDomain: false,
+  includeRawDomain: false,
 
   nominalColorRange: 'category10',
   sequentialColorRange: ['#AFC6A3', '#09622A'], // tableau greens
@@ -136,5 +136,5 @@ export interface Scale {
   /**
    * Uses the source data range as scale domain instead of aggregated data for aggregate axis. This option does not work with sum or count aggregate as they might have a substantially larger scale range.
    */
-  useRawDomain?: boolean;
+  includeRawDomain?: boolean;
 }
