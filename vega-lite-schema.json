@@ -240,8 +240,10 @@
                 "pow",
                 "sqrt",
                 "quantile",
+                "quantize",
                 "ordinal",
-                "time"
+                "time",
+                "utc"
             ]
         },
         "NiceTime": {
