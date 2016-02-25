@@ -14,7 +14,7 @@ import {rawDomain, smallestUnit} from './time';
 import {Scale, ScaleType} from '../scale';
 import {StackOffset} from '../config';
 import {TimeUnit} from '../timeunit';
-import {field} from '../fielddef';
+import {field, isMeasure} from '../fielddef';
 
 /**
  * Color Ramp's scale for legends.  This scale has to be ordinal so that its
@@ -354,8 +354,8 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel, scaleT
         return {range: scaleConfig.pointSizeRange};
       }
 
-      const xIsMeasure = model.isMeasure(X);
-      const yIsMeasure = model.isMeasure(Y);
+      const xIsMeasure = isMeasure(model.encoding().x);
+      const yIsMeasure = isMeasure(model.encoding().y);
 
       const bandSize = xIsMeasure !== yIsMeasure ?
         model.scale(xIsMeasure ? Y : X).bandSize :

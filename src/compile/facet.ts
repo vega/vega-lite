@@ -1,6 +1,7 @@
 import * as util from '../util';
 import {extend} from '../util';
 import {COLUMN, ROW, X, Y} from '../channel';
+import {isDimension} from '../fielddef';
 import {Model} from './Model';
 
 import {compileAxis, compileInnerAxis, gridShow} from './axis';
@@ -13,12 +14,12 @@ import {applyConfig, FILL_STROKE_CONFIG} from './common';
 export function facetMixins(model: Model, marks) {
   const hasRow = model.has(ROW), hasCol = model.has(COLUMN);
 
-  if (model.has(ROW) && !model.isDimension(ROW)) {
+  if (model.has(ROW) && !isDimension(model.encoding().row)) {
     // TODO: add error to model instead
     util.error('Row encoding should be ordinal.');
   }
 
-  if (model.has(COLUMN) && !model.isDimension(COLUMN)) {
+  if (model.has(COLUMN) && !isDimension(model.encoding().column)) {
     // TODO: add error to model instead
     util.error('Col encoding should be ordinal.');
   }

@@ -1,5 +1,6 @@
 import {Model} from '../Model';
 import {X, Y} from '../../channel';
+import {isDimension, isMeasure} from '../../fielddef';
 import {applyColorAndOpacity, applyMarkConfig} from '../common';
 
 export namespace area {
@@ -17,15 +18,16 @@ export namespace area {
     }
 
     const stack = model.stack();
+    const xFieldDef = model.encoding().x;
     // x
     if (stack && X === stack.fieldChannel) { // Stacked Measure
       p.x = {
         scale: model.scaleName(X),
         field: model.field(X, { suffix: '_start' })
       };
-    } else if (model.isMeasure(X)) { // Measure
+    } else if (isMeasure(xFieldDef)) { // Measure
       p.x = { scale: model.scaleName(X), field: model.field(X) };
-    } else if (model.isDimension(X)) {
+    } else if (isDimension(xFieldDef)) {
       p.x = {
         scale: model.scaleName(X),
         field: model.field(X, { binSuffix: '_mid' })
@@ -48,17 +50,18 @@ export namespace area {
     }
 
     // y
+    const yFieldDef = model.encoding().y;
     if (stack && Y === stack.fieldChannel) { // Stacked Measure
       p.y = {
         scale: model.scaleName(Y),
         field: model.field(Y, { suffix: '_start' })
       };
-    } else if (model.isMeasure(Y)) {
+    } else if (isMeasure(yFieldDef)) {
       p.y = {
         scale: model.scaleName(Y),
         field: model.field(Y)
       };
-    } else if (model.isDimension(Y)) {
+    } else if (isDimension(yFieldDef)) {
       p.y = {
         scale: model.scaleName(Y),
         field: model.field(Y, { binSuffix: '_mid' })

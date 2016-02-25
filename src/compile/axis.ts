@@ -1,6 +1,6 @@
 import {AxisOrient} from '../axis';
 import {COLUMN, ROW, X, Y, Channel} from '../channel';
-import {title as fieldDefTitle} from '../fielddef';
+import {title as fieldDefTitle, isDimension} from '../fielddef';
 import {NOMINAL, ORDINAL, TEMPORAL} from '../type';
 import {contains, extend, truncate} from '../util';
 
@@ -248,7 +248,7 @@ export namespace properties {
       labelsSpec.angle = {value: axis.labelAngle};
     } else {
       // auto rotate for X and Row
-      if (channel === X && (model.isDimension(X) || fieldDef.type === TEMPORAL)) {
+      if (channel === X && (isDimension(fieldDef) || fieldDef.type === TEMPORAL)) {
         labelsSpec.angle = {value: 270};
       } else if (channel === ROW && model.has(X)) {
         labelsSpec.angle = {value: def.orient === 'left' ? 270 : 90};

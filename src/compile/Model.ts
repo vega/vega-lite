@@ -8,8 +8,7 @@ import {defaultConfig, Config} from '../config';
 
 import {COLUMN, ROW, X, Y, COLOR, SHAPE, SIZE, TEXT, PATH, ORDER, Channel, supportMark} from '../channel';
 import {SOURCE, SUMMARY} from '../data';
-import * as vlFieldDef from '../fielddef';
-import {FieldRefOption} from '../fielddef';
+import {FieldRefOption, field} from '../fielddef';
 import * as vlEncoding from '../encoding';
 import {Mark, TEXT as TEXTMARK} from '../mark';
 
@@ -221,7 +220,7 @@ export class Model {
       }, opt);
     }
 
-    return vlFieldDef.field(fieldDef, opt);
+    return field(fieldDef, opt);
   }
 
   public channelWithScales(): Channel[] {
@@ -244,14 +243,6 @@ export class Model {
     const scale = this.scale(channel);
 
     return this.has(channel) && scaleType(scale, fieldDef, channel, this.mark()) === ScaleType.ORDINAL;
-  }
-
-  public isDimension(channel: Channel) {
-    return vlFieldDef.isDimension(this.fieldDef(channel));
-  }
-
-  public isMeasure(channel: Channel) {
-    return vlFieldDef.isMeasure(this.fieldDef(channel));
   }
 
   public isFacet() {
