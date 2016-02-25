@@ -1,0 +1,278 @@
+import {AggregateOp} from '../aggregate';
+import {COLUMN, ROW, X, Y, COLOR, SHAPE, SIZE, TEXT, PATH, ORDER, Channel, UNIT_CHANNELS, supportMark} from '../channel';
+import {defaultConfig, Config, CellConfig} from '../config';
+import {SOURCE, SUMMARY} from '../data';
+import {Encoding} from '../encoding';
+import * as vlEncoding from '../encoding'; // TODO: remove
+import {FieldDef, FieldRefOption, field} from '../fielddef';
+import {Mark, TEXT as TEXTMARK} from '../mark';
+import {ScaleType} from '../scale';
+import {SingleSpec} from '../spec';
+import {getFullName, QUANTITATIVE} from '../type';
+import {duplicate, extend, mergeDeep} from '../util';
+import {VgData} from '../vega.schema';
+
+import {compileAxis} from './axis';
+import {applyConfig, FILL_STROKE_CONFIG} from './common';
+import {compileMarkConfig} from './config';
+import {assembleData, compileUnitData} from './data';
+import {compileLegends} from './legend';
+import {assembleLayout, compileUnitLayout} from './layout';
+import {Model} from './model';
+import {compileMark} from './mark/mark';
+import {compileScale, scaleType} from './scale';
+import {compileStackProperties, StackProperties} from './stack';
+
+/**
+ * Internal model of Vega-Lite specification for the compiler.
+ */
+export class UnitModel extends Model {
+
+  private _mark: Mark;
+  private _encoding: Encoding;
+  private _stack: StackProperties;
+
+  constructor(spec: SingleSpec, parent: Model, parentGivenName: string) {
+    super(spec, parent, parentGivenName);
+
+    const mark = this._mark = spec.mark;
+    const encoding = this._encoding = this._initEncoding(mark, spec.encoding || {});
+    const config = this._config = this._initConfig(spec.config, parent, mark, encoding);
+
+
+    const scale = this._scale =  this._initScale(mark, encoding, config);
+    this._axis = this._initAxis(encoding, config);
+    this._legend = this._initLegend(encoding, config);
+
+    // calculate stack
+    this._stack = compileStackProperties(mark, encoding, scale, config);
+  }
+
+  private _initEncoding(mark: Mark, encoding: Encoding) {
+    // clone to prevent side effect to the original spec
+    encoding = duplicate(encoding);
+
+    vlEncoding.forEach(encoding, function(fieldDef: FieldDef, channel: Channel) {
+      if (!supportMark(channel, mark)) {
+        // Drop unsupported channel
+
+        // FIXME consolidate warning method
+        console.warn(channel, 'dropped as it is incompatible with', mark);
+        delete fieldDef.field;
+        return;
+      }
+
+      if (fieldDef.type) {
+        // convert short type to full type
+        fieldDef.type = getFullName(fieldDef.type);
+      }
+
+      if ((channel === PATH || channel === ORDER) && !fieldDef.aggregate && fieldDef.type === QUANTITATIVE) {
+        fieldDef.aggregate = AggregateOp.MIN;
+      }
+    });
+    return encoding;
+  }
+
+  private _initConfig(specConfig: Config, parent: Model, mark: Mark, encoding: Encoding) {
+    let config = mergeDeep(duplicate(defaultConfig), specConfig, parent ? parent.config() : {});
+    config.mark = compileMarkConfig(mark, encoding, config);
+    return config;
+  }
+
+  private _initScale(mark: Mark, encoding: Encoding, config: Config) {
+    return [X, Y, COLOR, SHAPE, SIZE].reduce(function(_scale, channel) {
+      if (vlEncoding.has(encoding, channel)) {
+        const scaleSpec = encoding[channel].scale || {};
+        const channelDef = encoding[channel];
+
+        const _scaleType = scaleType(scaleSpec, channelDef, channel, mark);
+
+        _scale[channel] = extend({
+          type: _scaleType,
+          round: config.scale.round,
+          padding: config.scale.padding,
+          includeRawDomain: config.scale.includeRawDomain,
+          bandSize: channel === X && _scaleType === ScaleType.ORDINAL && mark === TEXTMARK ?
+                     config.scale.textBandWidth : config.scale.bandSize
+        }, scaleSpec);
+      }
+      return _scale;
+    }, {});
+  }
+
+  private _initAxis(encoding: Encoding, config: Config) {
+    return [X, Y].reduce(function(_axis, channel) {
+      // Position Axis
+      if (vlEncoding.has(encoding, channel)) {
+        const axisSpec = encoding[channel].axis;
+        if (axisSpec !== false) {
+          _axis[channel] = extend({},
+            config.axis,
+            axisSpec === true ? {} : axisSpec ||  {}
+          );
+        }
+      }
+      return _axis;
+    }, {});
+  }
+
+  private _initLegend(encoding: Encoding, config: Config) {
+    return [COLOR, SHAPE, SIZE].reduce(function(_legend, channel) {
+      if (vlEncoding.has(encoding, channel)) {
+        const legendSpec = encoding[channel].legend;
+        if (legendSpec !== false) {
+          _legend[channel] = extend({}, config.legend,
+            legendSpec === true ? {} : legendSpec ||  {}
+          );
+        }
+      }
+      return _legend;
+    }, {});
+  }
+
+  public compileData() {
+    this.component.data = compileUnitData(this);
+  }
+
+  public compileSelection() {
+    // TODO: @arvind can write this
+    // We might need to split this into compileSelectionData and compileSelectionSignals?
+  }
+
+  public compileLayout() {
+    this.component.layout = compileUnitLayout(this);
+  }
+
+  public compileScale() {
+    this.component.scale = compileScale(this);
+  }
+
+  public compileMark() {
+    this.component.mark = compileMark(this);
+  }
+
+  public compileAxis() {
+    let axis: any = this.component.axis = {};
+    if (this.axis(X)) {
+      axis.x = compileAxis(X, this);
+    }
+    if (this.axis(Y)) {
+      axis.y = compileAxis(Y, this);
+    }
+  }
+
+  public compileAxisGroup() {
+    return null;
+  }
+
+  public compileGridGroup() {
+    return null;
+  }
+
+  public compileLegend() {
+    this.component.legend = compileLegends(this);
+  }
+
+  public assembleData(data: VgData[]): VgData[] {
+    return assembleData(this, data);
+  }
+
+  public assembleLayout(layoutData: VgData[]): VgData[] {
+    return assembleLayout(this, layoutData);
+  }
+
+  public assembleMarks() {
+    return this.component.mark;
+  }
+
+  public assembleParentGroupProperties(cellConfig: CellConfig) {
+    return applyConfig({}, cellConfig, FILL_STROKE_CONFIG.concat(['clip']));
+  }
+
+  public channels() {
+    return UNIT_CHANNELS;
+  }
+
+  protected mapping() {
+    return this.encoding();
+  }
+
+  public stack(): StackProperties {
+    return this._stack;
+  }
+
+  public toSpec(excludeConfig?, excludeData?) {
+    const encoding = duplicate(this._encoding);
+    let spec: any;
+
+    spec = {
+      mark: this._mark,
+      encoding: encoding
+    };
+
+    if (!excludeConfig) {
+      spec.config = duplicate(this._config);
+    }
+
+    if (!excludeData) {
+      spec.data = duplicate(this._data);
+    }
+
+    // remove defaults
+    return spec;
+  }
+
+  // TODO: remove
+  public cellWidth(): number {
+    return (this.isFacet() ? this.config().facet.cell.width : null) ||
+      this.config().cell.width;
+  }
+
+  // TODO: remove
+  public cellHeight(): number {
+    return (this.isFacet() ? this.config().facet.cell.height : null) ||
+      this.config().cell.height;
+  }
+
+  public mark(): Mark {
+    return this._mark;
+  }
+
+  public has(channel: Channel) {
+    return vlEncoding.has(this._encoding, channel);
+  }
+
+  public encoding() {
+    return this._encoding;
+  }
+
+  public fieldDef(channel: Channel): FieldDef {
+    // TODO: remove this || {}
+    // Currently we have it to prevent null pointer exception.
+    return this._encoding[channel] || {};
+  }
+
+  /** Get "field" reference for vega */
+  public field(channel: Channel, opt: FieldRefOption = {}) {
+    const fieldDef = this.fieldDef(channel);
+
+    if (fieldDef.bin) { // bin has default suffix that depends on scaleType
+      opt = extend({
+        binSuffix: this.scale(channel).type === ScaleType.ORDINAL ? '_range' : '_start'
+      }, opt);
+    }
+
+    return field(fieldDef, opt);
+  }
+
+  // TODO: remove
+  public isFacet() {
+    return this.has(ROW) || this.has(COLUMN);
+  }
+
+  public dataTable() {
+    return (vlEncoding.isAggregate(this._encoding) ? SUMMARY : SOURCE)+'';
+  }
+
+}

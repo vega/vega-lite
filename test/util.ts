@@ -1,13 +1,23 @@
-import {Model} from '../src/compile/Model';
-import {Spec} from '../src/spec';
+import {buildModel} from '../src/compile/common';
+import {UnitModel} from '../src/compile/unit';
+import {SingleSpec, normalize} from '../src/spec';
 import {contains} from '../src/util';
 
+// TODO: rename to parseModel
+export function parseAnyModel(inputSpec) {
+  const spec = normalize(inputSpec);
+  return buildModel(spec, null, '');
+}
+
+
+// TODO: rename to parseUnitModel
 /**
  * Call new Model without worrying about types.
  * We use this in tests to allow using raw JSON.
  */
 export function parseModel(spec) {
-  return new Model(spec as Spec);
+  // TODO: support other type of model as well
+  return new UnitModel(spec as SingleSpec, null, '');
 }
 
 export const zSchema = require('z-schema');

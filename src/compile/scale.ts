@@ -1,20 +1,21 @@
 // https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations
 declare var exports;
 
-import {FieldDef} from '../fielddef';
-
-import {contains, extend} from '../util';
-import {Model} from './Model';
 import {SHARED_DOMAIN_OPS} from '../aggregate';
 import {COLUMN, ROW, X, Y, SHAPE, SIZE, COLOR, TEXT, hasScale, Channel} from '../channel';
-import {SOURCE, STACKED_SCALE} from '../data';
-import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
-import {Mark, BAR, TEXT as TEXT_MARK} from '../mark';
-import {rawDomain, smallestUnit} from './time';
-import {Scale, ScaleType} from '../scale';
 import {StackOffset} from '../config';
+import {SOURCE, STACKED_SCALE} from '../data';
+import {FieldDef, field, isMeasure} from '../fielddef';
+import {Mark, BAR, TEXT as TEXT_MARK} from '../mark';
+import {Scale, ScaleType} from '../scale';
 import {TimeUnit} from '../timeunit';
-import {field, isMeasure} from '../fielddef';
+import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
+import {contains, extend, Dict} from '../util';
+import {VgScale} from '../vega.schema';
+
+import {Model} from './model';
+import {rawDomain, smallestUnit} from './time';
+import {UnitModel} from './unit';
 
 /**
  * Color Ramp's scale for legends.  This scale has to be ordinal so that its
@@ -25,22 +26,33 @@ export const COLOR_LEGEND = 'color_legend';
 // scale used to get labels for binned color scales
 export const COLOR_LEGEND_LABEL = 'color_legend_label';
 
-export function compileScales(model: Model) {
-  return model.channelWithScales().reduce(function(scales: any[], channel: Channel) {
-      const fieldDef = model.fieldDef(channel);
 
-      // Add additional scales needed to support ordinal legends (list of values)
-      // for color ramp.
-      if (channel === COLOR && model.legend(COLOR) && (fieldDef.type === ORDINAL || fieldDef.bin || fieldDef.timeUnit)) {
-        scales.push(colorLegendScale(model, fieldDef));
-        if (fieldDef.bin) {
-          scales.push(binColorLegendLabel(model, fieldDef));
+// FIXME: With layer and concat, scaleComponent should decompose between
+// ScaleSignature and ScaleDomain[].
+// Basically, if two unit specs has the same scale, signature for a particular channel,
+// the scale can be unioned by combining the domain.
+export type ScaleComponent = VgScale;
+
+export function compileScale(model: Model): Dict<ScaleComponent> {
+  return model.channels().reduce(function(scale: Dict<ScaleComponent>, channel: Channel) {
+      if (model.scale(channel)) {
+        const fieldDef = model.fieldDef(channel);
+        const scales = [];
+
+        // Add additional scales needed to support ordinal legends (list of values)
+        // for color ramp.
+        if (channel === COLOR && model.legend(COLOR) && (fieldDef.type === ORDINAL || fieldDef.bin || fieldDef.timeUnit)) {
+          scales.push(colorLegendScale(model, fieldDef));
+          if (fieldDef.bin) {
+            scales.push(binColorLegendLabel(model, fieldDef));
+          }
         }
-      }
 
-      scales.push(mainScale(model, fieldDef, channel));
-      return scales;
-    }, []);
+        scales.push(mainScale(model, fieldDef, channel));
+        scale[channel] = scales;
+      }
+      return scale;
+    }, {});
 }
 
 /**
@@ -52,7 +64,7 @@ function mainScale(model: Model, fieldDef: FieldDef, channel: Channel) {
 
   let scaleDef: any = {
     name: model.scaleName(channel),
-    type: scaleType(scale, fieldDef, channel, model.mark()),
+    type: scale.type,
   };
 
   scaleDef.domain = domain(scale, model, channel, scaleDef.type);
@@ -209,7 +221,7 @@ export function domain(scale: Scale, model: Model, channel:Channel, scaleType: S
       return [0, 1];
     }
     return {
-      data: STACKED_SCALE,
+      data: model.dataName(STACKED_SCALE),
       // STACKED_SCALE produces sum of the field's value e.g., sum of sum, sum of distinct
       field: model.field(channel, {prefn: 'sum_'})
     };
@@ -324,7 +336,15 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel, scaleT
     // explicit value (Do not allow explicit values for X, Y, ROW, COLUMN)
     return {range: scale.range};
   }
+  switch (channel) {
+    case ROW:
+      return {range: 'height'};
+    case COLUMN:
+      return {range: 'width'};
+  }
 
+  // If not ROW / COLUMN, we can assume that this is a unit spec.
+  const unitModel = model as UnitModel;
   switch (channel) {
     case X:
       // we can't use {range: "width"} here since we put scale in the root group
@@ -332,21 +352,22 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel, scaleT
 
       return {
         rangeMin: 0,
-        rangeMax: model.cellWidth() // Fixed cell width for non-ordinal
+        rangeMax: unitModel.cellWidth() // Fixed cell width for non-ordinal
       };
     case Y:
       return {
-        rangeMin: model.cellHeight(), // Fixed cell height for non-ordinal
+        rangeMin: unitModel.cellHeight(), // Fixed cell height for non-ordinal
         rangeMax: 0
       };
     case SIZE:
-      if (model.mark() === BAR) {
+
+      if (unitModel.mark() === BAR) {
         if (scaleConfig.barSizeRange !== undefined) {
           return {range: scaleConfig.barSizeRange};
         }
         const dimension = model.config().mark.orient === 'horizontal' ? Y : X;
-        return {range: [ model.config().mark.barThinSize, model.scale(dimension).bandSize]};
-      } else if (model.mark() === TEXT_MARK) {
+        return {range: [model.config().mark.barThinSize, model.scale(dimension).bandSize]};
+      } else if (unitModel.mark() === TEXT_MARK) {
         return {range: scaleConfig.fontSizeRange };
       }
       // else -- point, square, circle
@@ -354,8 +375,8 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel, scaleT
         return {range: scaleConfig.pointSizeRange};
       }
 
-      const xIsMeasure = isMeasure(model.encoding().x);
-      const yIsMeasure = isMeasure(model.encoding().y);
+      const xIsMeasure = isMeasure(unitModel.encoding().x);
+      const yIsMeasure = isMeasure(unitModel.encoding().y);
 
       const bandSize = xIsMeasure !== yIsMeasure ?
         model.scale(xIsMeasure ? Y : X).bandSize :
@@ -373,10 +394,6 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel, scaleT
       }
       // else -- ordinal, time, or quantitative
       return {range: scaleConfig.sequentialColorRange};
-    case ROW:
-      return {range: 'height'};
-    case COLUMN:
-      return {range: 'width'};
   }
   return {};
 }

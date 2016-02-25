@@ -10,11 +10,11 @@ export interface Transform {
   /**
    * Calculate new field(s) using the provided expresssion(s). Calculation are applied before filter.
    */
-  calculate?: VgFormula[];
+  calculate?: Formula[];
 }
 
 // TODO move all Vega interfaces to one central position
-export interface VgFormula {
+export interface Formula {
   /**
    * The field in which to store the computed formula value.
    */

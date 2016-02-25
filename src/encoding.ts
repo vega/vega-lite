@@ -3,11 +3,10 @@ import {FieldDef, PositionChannelDef, FacetChannelDef, ChannelDefWithLegend, Ord
 import {Channel, CHANNELS} from './channel';
 import {isArray, any as anyIn} from './util';
 
-export interface Encoding {
+// TODO: once we decompose facet, rename this to Encoding
+export interface UnitEncoding {
   x?: PositionChannelDef;
   y?: PositionChannelDef;
-  row?: FacetChannelDef;
-  column?: FacetChannelDef;
   color?: ChannelDefWithLegend;
   size?: ChannelDefWithLegend;
   shape?: ChannelDefWithLegend; // TODO: maybe distinguish ordinal-only
@@ -19,6 +18,11 @@ export interface Encoding {
   order?: OrderChannelDef | OrderChannelDef[];
 }
 
+// TODO: once we decompose facet, rename this to ExtendedEncoding
+export interface Encoding extends UnitEncoding {
+  row?: FacetChannelDef;
+  column?: FacetChannelDef;
+}
 
 export function countRetinal(encoding: Encoding) {
   let count = 0;
@@ -70,51 +74,69 @@ export function fieldDefs(encoding: Encoding): FieldDef[] {
 export function forEach(encoding: Encoding,
     f: (fd: FieldDef, c: Channel, i: number) => void,
     thisArg?: any) {
+  channelMappingForEach(CHANNELS, encoding, f, thisArg);
+}
+
+export function channelMappingForEach(channels: Channel[], mapping: any,
+    f: (fd: FieldDef, c: Channel, i: number) => void,
+    thisArg?: any) {
   let i = 0;
-  CHANNELS.forEach(function(channel) {
-    if (has(encoding, channel)) {
-      if (isArray(encoding[channel])) {
-        encoding[channel].forEach(function(fieldDef) {
+  channels.forEach(function(channel) {
+    if (has(mapping, channel)) {
+      if (isArray(mapping[channel])) {
+        mapping[channel].forEach(function(fieldDef) {
             f.call(thisArg, fieldDef, channel, i++);
         });
       } else {
-        f.call(thisArg, encoding[channel], channel, i++);
+        f.call(thisArg, mapping[channel], channel, i++);
       }
     }
   });
 }
 
 export function map(encoding: Encoding,
-    f: (fd: FieldDef, c: Channel, e: Encoding) => any,
+    f: (fd: FieldDef, c: Channel, i: number) => void,
+    thisArg?: any) {
+  return channelMappingMap(CHANNELS, encoding, f , thisArg);
+}
+
+export function channelMappingMap(channels: Channel[], mapping: any,
+    f: (fd: FieldDef, c: Channel, i: number) => any,
     thisArg?: any) {
   let arr = [];
-  CHANNELS.forEach(function(channel) {
-    if (has(encoding, channel)) {
-      if (isArray(encoding[channel])) {
-        encoding[channel].forEach(function(fieldDef) {
-          arr.push(f.call(thisArg, fieldDef, channel, encoding));
+  channels.forEach(function(channel) {
+    if (has(mapping, channel)) {
+      if (isArray(mapping[channel])) {
+        mapping[channel].forEach(function(fieldDef) {
+          arr.push(f.call(thisArg, fieldDef, channel));
         });
       } else {
-        arr.push(f.call(thisArg, encoding[channel], channel, encoding));
+        arr.push(f.call(thisArg, mapping[channel], channel));
       }
     }
   });
   return arr;
 }
-
 export function reduce(encoding: Encoding,
-    f: (acc: any, fd: FieldDef, c: Channel, e: Encoding) => any,
+    f: (acc: any, fd: FieldDef, c: Channel) => any,
+    init,
+    thisArg?: any) {
+  return channelMappingReduce(CHANNELS, encoding, f, init, thisArg);
+}
+
+export function channelMappingReduce(channels: Channel[], mapping: any,
+    f: (acc: any, fd: FieldDef, c: Channel) => any,
     init,
     thisArg?: any) {
   let r = init;
   CHANNELS.forEach(function(channel) {
-    if (has(encoding, channel)) {
-      if (isArray(encoding[channel])) {
-        encoding[channel].forEach(function(fieldDef) {
-            r = f.call(thisArg, r, fieldDef, channel, encoding);
+    if (has(mapping, channel)) {
+      if (isArray(mapping[channel])) {
+        mapping[channel].forEach(function(fieldDef) {
+            r = f.call(thisArg, r, fieldDef, channel);
         });
       } else {
-        r = f.call(thisArg, r, encoding[channel], channel, encoding);
+        r = f.call(thisArg, r, mapping[channel], channel);
       }
     }
   });

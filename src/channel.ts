@@ -4,7 +4,7 @@
  */
 
 import {Mark} from './mark';
-import {contains} from './util';
+import {contains, without} from './util';
 
 export enum Channel {
   X = 'x' as any,
@@ -35,6 +35,10 @@ export const PATH = Channel.PATH;
 export const ORDER = Channel.ORDER;
 
 export const CHANNELS = [X, Y, ROW, COLUMN, SIZE, SHAPE, COLOR, PATH, ORDER, TEXT, DETAIL, LABEL];
+
+export const UNIT_CHANNELS = without(CHANNELS, [ROW, COLUMN]);
+export const UNIT_SCALE_CHANNELS = without(UNIT_CHANNELS, [PATH, ORDER, DETAIL, TEXT, LABEL]);
+export const NONSPATIAL_CHANNELS = without(UNIT_CHANNELS, [X, Y]);
 
 export interface SupportedMark {
   point?: boolean;

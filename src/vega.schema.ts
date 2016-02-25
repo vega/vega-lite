@@ -6,3 +6,10 @@ export interface VgData {
   url?: any;
   transform?: any;
 }
+
+// TODO: declare
+export type VgScale = any;
+export type VgMarkGroup = any;
+export type VgAxis = any;
+export type VgLegend = any;
+export type VgTransform = any;

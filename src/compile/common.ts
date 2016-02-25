@@ -1,17 +1,27 @@
-import {Model} from './Model';
-import {FieldDef, OrderChannelDef} from '../fielddef';
 import {COLUMN, ROW, X, Y, SIZE, COLOR, SHAPE, TEXT, LABEL, Channel} from '../channel';
-import {field} from '../fielddef';
+import {FieldDef, field, OrderChannelDef} from '../fielddef';
 import {SortOrder} from '../sort';
 import {QUANTITATIVE, ORDINAL, TEMPORAL} from '../type';
-import {format as timeFormatExpr} from './time';
 import {contains} from '../util';
+
+import {FacetModel} from './facet';
+import {Model} from './model';
+import {format as timeFormatExpr} from './time';
+import {UnitModel} from './unit';
+
+
+export function buildModel(spec, parent: Model, parentGivenName: string): Model {
+  if ('facet' in spec) {
+    return new FacetModel(spec, parent, parentGivenName);
+  }
+  return new UnitModel(spec, parent, parentGivenName);
+}
 
 export const FILL_STROKE_CONFIG = ['fill', 'fillOpacity',
   'stroke', 'strokeWidth', 'strokeDash', 'strokeDashOffset', 'strokeOpacity',
   'opacity'];
 
-export function applyColorAndOpacity(p, model: Model) {
+export function applyColorAndOpacity(p, model: UnitModel) {
   const filled = model.config().mark.filled;
   const fieldDef = model.fieldDef(COLOR);
 
@@ -49,10 +59,11 @@ export function applyConfig(properties, config, propsList: string[]) {
       properties[property] = { value: value };
     }
   });
+  return properties;
 }
 
-export function applyMarkConfig(marksProperties, model: Model, propsList: string[]) {
-  applyConfig(marksProperties, model.config().mark, propsList);
+export function applyMarkConfig(marksProperties, model: UnitModel, propsList: string[]) {
+  return applyConfig(marksProperties, model.config().mark, propsList);
 }
 
 

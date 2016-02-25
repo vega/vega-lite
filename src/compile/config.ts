@@ -1,8 +1,6 @@
-import {Encoding} from '../encoding';
+import {X, DETAIL} from '../channel';
 import {Config} from '../config';
-import {StackProperties} from './stack';
-
-import {X, Y, DETAIL} from '../channel';
+import {Encoding} from '../encoding';
 import {isAggregate, has} from '../encoding';
 import {isMeasure} from '../fielddef';
 import {POINT, LINE, TICK, CIRCLE, SQUARE, Mark} from '../mark';
@@ -11,7 +9,7 @@ import {contains, extend} from '../util';
 /**
  * Augment config.mark with rule-based default values.
  */
-export function compileMarkConfig(mark: Mark, encoding: Encoding, config: Config, stack: StackProperties) {
+export function compileMarkConfig(mark: Mark, encoding: Encoding, config: Config) {
    return extend(
      ['filled', 'opacity', 'orient', 'align'].reduce(function(cfg, property: string) {
        const value = config.mark[property];
@@ -31,19 +29,18 @@ export function compileMarkConfig(mark: Mark, encoding: Encoding, config: Config
            }
            break;
          case 'orient':
-           if (stack) {
-             // For stacked chart, explicitly specified orient property will be ignored.
-             cfg[property] = stack.groupbyChannel === Y ? 'horizontal' : undefined;
+           const xIsMeasure = isMeasure(encoding.x);
+           const yIsMeasure = isMeasure(encoding.y);
+
+           // When unambiguous, do not allow overriding
+           if (xIsMeasure && !yIsMeasure) {
+             cfg[property] = 'horizontal'; // implicitly vertical
+           } else if (!xIsMeasure && yIsMeasure) {
+             cfg[property] = undefined; // implicitly vertical
            }
-           if (value === undefined) {
-             cfg[property] = isMeasure(encoding[X]) &&  !isMeasure(encoding[Y]) ?
-               // horizontal if X is measure and Y is dimension or unspecified
-               'horizontal' :
-               // vertical (undefined) otherwise.  This includes when
-               // - Y is measure and X is dimension or unspecified
-               // - both X and Y are measures or both are dimension
-               undefined;  //
-           }
+
+           // In ambiguous cases (QxQ or OxO) use specified value
+           // (and implicitly vertical by default.)
            break;
          // text-only
          case 'align':

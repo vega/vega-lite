@@ -1,7 +1,7 @@
-import {Model} from '../Model';
+import {UnitModel} from '../unit';
 import {OrderChannelDef} from '../../fielddef';
 
-import {X, Y, COLOR, TEXT, SHAPE, PATH, ORDER, DETAIL, ROW, COLUMN, LABEL} from '../../channel';
+import {X, Y, COLOR, TEXT, SHAPE, PATH, ORDER, DETAIL, LABEL} from '../../channel';
 import {AREA, LINE, TEXT as TEXTMARK} from '../../mark';
 import {imputeTransform, stackTransform} from '../stack';
 import {contains, extend} from '../../util';
@@ -25,7 +25,7 @@ const markCompiler = {
   square: square
 };
 
-export function compileMark(model: Model): any[] {
+export function compileMark(model: UnitModel): any[] {
   if (contains([LINE, AREA], model.mark())) {
     return compilePathMark(model);
   } else {
@@ -33,17 +33,16 @@ export function compileMark(model: Model): any[] {
   }
 }
 
-function compilePathMark(model: Model) { // TODO: extract this into compilePathMark
+function compilePathMark(model: UnitModel) { // TODO: extract this into compilePathMark
   const mark = model.mark();
-  const name = model.spec().name;
   // TODO: replace this with more general case for composition
-  const hasParentData = model.has(ROW) || model.has(COLUMN);
+  const hasParentData = !!model.parent();
   const dataFrom = {data: model.dataTable()};
   const details = detailFields(model);
 
-  let pathMarks: any = [extend(
-    name ? { name: name + '-marks' } : {},
+  let pathMarks: any = [
     {
+      name: model.name('marks'),
       type: markCompiler[mark].markType(),
       from: extend(
         // If has facet, `from.data` will be added in the cell group.
@@ -56,7 +55,7 @@ function compilePathMark(model: Model) { // TODO: extract this into compilePathM
       ),
       properties: { update: markCompiler[mark].properties(model) }
     }
-  )];
+  ];
 
   if (details.length > 0) { // have level of details - need to facet line into subgroups
     const facetTransform = { type: 'facet', groupby: details };
@@ -72,7 +71,7 @@ function compilePathMark(model: Model) { // TODO: extract this into compilePathM
       );
 
     return [{
-      name: (name ? name + '-' : '') + mark + '-facet',
+      name: model.name('-path-group'),
       type: 'group',
       from: extend(
         // If has facet, `from.data` will be added in the cell group.
@@ -93,11 +92,9 @@ function compilePathMark(model: Model) { // TODO: extract this into compilePathM
   }
 }
 
-function compileNonPathMark(model: Model) {
+function compileNonPathMark(model: UnitModel) {
   const mark = model.mark();
-  const name = model.spec().name;
-  // TODO: replace this with more general case for composition
-  const hasParentData = model.has(ROW) || model.has(COLUMN);
+  const hasParentData = !!model.parent();
   const dataFrom = {data: model.dataTable()};
 
   let marks = []; // TODO: vgMarks
@@ -107,8 +104,10 @@ function compileNonPathMark(model: Model) {
   ) {
     // add background to 'text' marks if has color
     marks.push(extend(
-      name ? { name: name + '-background' } : {},
-      { type: 'rect' },
+      {
+        name: model.name('background'),
+        type: 'rect'
+      },
       // If has facet, `from.data` will be added in the cell group.
       // Otherwise, add it here.
       hasParentData ? {} : {from: dataFrom},
@@ -118,8 +117,10 @@ function compileNonPathMark(model: Model) {
   }
 
   marks.push(extend(
-    name ? { name: name + '-marks' } : {},
-    { type: markCompiler[mark].markType() },
+    {
+      name: model.name('marks'),
+      type: markCompiler[mark].markType()
+    },
     // Add `from` if needed
     (!hasParentData || model.stack() || model.has(ORDER)) ? {
       from: extend(
@@ -146,8 +147,10 @@ function compileNonPathMark(model: Model) {
     if (labelProperties !== undefined) { // If label is supported
       // add label group
       marks.push(extend(
-        name ? { name: name + '-label' } : {},
-        {type: 'text'},
+        {
+          name: model.name('label'),
+          type: 'text'
+        },
         // If has facet, `from.data` will be added in the cell group.
         // Otherwise, add it here.
         hasParentData ? {} : {from: dataFrom},
@@ -160,7 +163,7 @@ function compileNonPathMark(model: Model) {
   return marks;
 }
 
-function sortBy(model: Model): string | string[] {
+function sortBy(model: UnitModel): string | string[] {
   if (model.has(ORDER)) {
     let channelDef = model.encoding().order;
     if (channelDef instanceof Array) {
@@ -177,7 +180,7 @@ function sortBy(model: Model): string | string[] {
 /**
  * Return path order for sort transform's by property
  */
-function sortPathBy(model: Model): string | string[] {
+function sortPathBy(model: UnitModel): string | string[] {
   if (model.mark() === LINE && model.has(PATH)) {
     // For only line, sort by the path field if it is specified.
     const channelDef = model.encoding().path;
@@ -198,7 +201,7 @@ function sortPathBy(model: Model): string | string[] {
  * Returns list of detail fields (for 'color', 'shape', or 'detail' channels)
  * that the model's spec contains.
  */
-function detailFields(model: Model): string[] {
+function detailFields(model: UnitModel): string[] {
   return [COLOR, DETAIL, SHAPE].reduce(function(details, channel) {
     if (model.has(channel) && !model.fieldDef(channel).aggregate) {
       details.push(model.field(channel));

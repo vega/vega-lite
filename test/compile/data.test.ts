@@ -1,213 +1,66 @@
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
-import {compileData, source, summary, dates} from '../../src/compile/data';
+import {assembleData} from '../../src/compile/data';
+import {bin} from '../../src/compile/data';
+import {filter} from '../../src/compile/data';
+import {nullFilter} from '../../src/compile/data';
+import {source} from '../../src/compile/data';
+import {stackScale} from '../../src/compile/data';
+import {summary} from '../../src/compile/data';
+import {timeUnit} from '../../src/compile/data';
+import {timeUnitDomain} from '../../src/compile/data';
+import {formatParse} from '../../src/compile/data';
+import {nonPositiveFilter} from '../../src/compile/data';
 import {parseModel} from '../util';
-import {mergeDeep} from '../../src/util';
+import {mergeDeep, vals} from '../../src/util';
 
-describe('Data', function () {
-  describe('for aggregate encoding', function () {
-    it('should contain 2 tables', function() {
+function compileAssembleData(model) {
+  model.compileData();
+  return assembleData(model, []);
+}
+
+describe('data', function () {
+  describe('compileData & assembleData', function () {
+    describe('for aggregate encoding', function () {
+      it('should contain 2 tables', function() {
+        const model = parseModel({
+            mark: "point",
+            encoding: {
+              x: {field: 'a', type: "temporal"},
+              y: {field: 'b', type: "quantitative", scale: {type: 'log'}, aggregate: 'sum'}
+            }
+          });
+
+        const data = compileAssembleData(model);
+        assert.equal(data.length, 2);
+      });
+    });
+
+    describe('when contains log in non-aggregate', function () {
       const model = parseModel({
           mark: "point",
           encoding: {
             x: {field: 'a', type: "temporal"},
-            y: {field: 'b', type: "quantitative", scale: {type: 'log'}, aggregate: 'sum'}
+            y: {field: 'b', type: "quantitative", scale: {type: 'log'}}
           }
         });
 
-      const data = compileData(model);
-      assert.equal(data.length, 2);
-    });
-  });
-
-  describe('when contains log in non-aggregate', function () {
-    const model = parseModel({
-        mark: "point",
-        encoding: {
-          x: {field: 'a', type: "temporal"},
-          y: {field: 'b', type: "quantitative", scale: {type: 'log'}}
-        }
+      const data = compileAssembleData(model);
+      it('should contains 1 table', function() {
+        assert.equal(data.length, 1);
       });
-
-    const data = compileData(model);
-    it('should contains 1 table', function() {
-      assert.equal(data.length, 1);
-    });
-    it('should have filter non-positive in source', function() {
-      const sourceTransform = data[0].transform;
-      assert.deepEqual(sourceTransform[sourceTransform.length - 1], {
-        type: 'filter',
-        test: 'datum.b > 0'
-      });
-    });
-  });
-});
-
-describe('data.source', function() {
-  describe('with explicit values', function() {
-    const model = parseModel({
-      data: {
-        values: [{a: 1, b:2, c:3}, {a: 4, b:5, c:6}]
-      }
-    });
-
-    const sourceDef = source.def(model);
-
-    it('should have values', function() {
-      assert.equal(sourceDef.name, 'source');
-      assert.deepEqual(sourceDef.values, [{a: 1, b:2, c:3}, {a: 4, b:5, c:6}]);
-    });
-
-    it('should have source.format', function(){
-      assert.deepEqual(sourceDef.format, {type: 'json'});
-    });
-  });
-
-  describe('with link to url', function() {
-    const model = parseModel({
-        data: {
-          url: 'http://foo.bar'
-        }
-      });
-
-    const sourceDef = source.def(model);
-
-    it('should have format json', function() {
-      assert.equal(sourceDef.name, 'source');
-      assert.equal(sourceDef.format.type, 'json');
-    });
-    it('should have correct url', function() {
-      assert.equal(sourceDef.url, 'http://foo.bar');
-    });
-  });
-
-  describe('formatParse', function () {
-    it('should include parse for all applicable fields, and exclude calculated fields', function() {
-      const model = parseModel({
-          transform: {
-            calculate: [
-              {field: 'b2', expr: 'datum.b * 2'}
-            ]
-          },
-          mark: "point",
-          encoding: {
-            x: {field: 'a', type: "temporal"},
-            y: {field: 'b', type: "quantitative"},
-            color: {field: '*', type: "quantitative", aggregate: 'count'},
-            size: {field: 'b2', type: "quantitative"},
-          }
-        });
-
-      const sourceDef = source.def(model);
-      assert.deepEqual(sourceDef.format.parse, {
-        'a': 'date',
-        'b': 'number'
-      });
-    });
-  });
-
-  describe('transform', function () {
-    describe('bin', function() {
-      const model = parseModel({
-        mark: "point",
-        encoding: {
-          y: {
-            bin: { min: 0, max: 100 },
-            'field': 'Acceleration',
-            'type': "quantitative"
-          }
-        }
-      });
-      it('should add bin transform and correctly apply bin', function() {
-        const transform = source.binTransform(model);
-
-        assert.deepEqual(transform[0], {
-          type: 'bin',
-          field: 'Acceleration',
-          output: {
-            start: 'bin_Acceleration_start',
-            mid: 'bin_Acceleration_mid',
-            end: 'bin_Acceleration_end'
-          },
-          maxbins: 10,
-          min: 0,
-          max: 100
-        });
-      });
-    });
-
-    describe('nullFilter', function() {
-      const spec = {
-          mark: "point",
-          encoding: {
-            y: {field: 'qq', type: "quantitative"},
-            x: {field: 'tt', type: "temporal"},
-            color: {field: 'oo', type: "ordinal"}
-          }
-        };
-
-      it('should add filterNull for Q and T by default', function () {
-        const model = parseModel(spec);
-        assert.deepEqual(source.nullFilterTransform(model), [{
+      it('should have filter non-positive in source', function() {
+        const sourceTransform = data[0].transform;
+        assert.deepEqual(sourceTransform[sourceTransform.length - 1], {
           type: 'filter',
-          test: 'datum.tt!==null && datum.qq!==null'
-        }]);
-      });
-
-      it('should add filterNull for O when specified', function () {
-        const model = parseModel(mergeDeep(spec, {
-          transform: {
-            filterNull: true
-          }
-        }));
-        assert.deepEqual(source.nullFilterTransform(model), [{
-          type: 'filter',
-          test:'datum.tt!==null && datum.qq!==null && datum.oo!==null'
-        }]);
-      });
-
-      it('should add no null filter if filterNull is false', function () {
-        const model = parseModel(mergeDeep(spec, {
-          transform: {
-            filterNull: false
-          }
-        }));
-        assert.deepEqual(source.nullFilterTransform(model), []);
-      });
-    });
-
-    describe('filter', function () {
-      const model = parseModel({
-        transform: {
-          filter: 'datum.a > datum.b && datum.c === datum.d'
-        }
-      });
-      it('should return array that contains a filter transform', function () {
-        assert.deepEqual(source.filterTransform(model), [{
-          type: 'filter',
-          test: 'datum.a > datum.b && datum.c === datum.d'
-        }]);
-      });
-    });
-
-    describe('time', function() {
-      const model = parseModel({
-        mark: "point",
-        encoding: {
-          x: {field: 'a', type: "temporal", timeUnit: 'year'}
-        }
-      });
-      it('should add formula transform', function() {
-        const transform = source.timeTransform(model);
-        assert.deepEqual(transform[0], {
-          type: 'formula',
-          field: 'year_a',
-          expr: 'datetime(year(datum.a), 0, 1, 0, 0, 0, 0)'
+          test: 'datum.b > 0'
         });
       });
     });
+  });
 
+  describe('assemble', function () {
     it('should have correct order of transforms (null filter, timeUnit, bin then filter)', function () {
       const model = parseModel({
         transform: {
@@ -231,120 +84,479 @@ describe('data.source', function() {
           size: {field: 'b2', type:'quantitative'}
         }
       });
-      const transform = source.transform(model);
+      const transform = compileAssembleData(model)[0].transform;
       assert.deepEqual(transform[0].type, 'filter');
       assert.deepEqual(transform[1].type, 'formula');
       assert.deepEqual(transform[2].type, 'filter');
       assert.deepEqual(transform[3].type, 'bin');
       assert.deepEqual(transform[4].type, 'formula');
     });
-
   });
 });
 
-describe('data.dates', function() {
-  it('should add data source with raw domain data', function() {
-    const model = parseModel({
-        mark: "point",
-        encoding: {
-          'y': {
-            'aggregate': 'sum',
-            'field': 'Acceleration',
-            'type': "quantitative"
-          },
-          'x': {
-            'field': 'date',
-            'type': "temporal",
-            'timeUnit': 'day'
+describe('data: source', function() {
+  describe('compileUnit', function() {
+    describe('with explicit values', function() {
+      const model = parseModel({
+        data: {
+          values: [{a: 1, b:2, c:3}, {a: 4, b:5, c:6}]
+        }
+      });
+
+      const sourceComponent = source.compileUnit(model);
+
+      it('should have values', function() {
+        assert.equal(sourceComponent.name, 'source');
+        assert.deepEqual(sourceComponent.values, [{a: 1, b:2, c:3}, {a: 4, b:5, c:6}]);
+      });
+
+      it('should have source.format', function(){
+        assert.deepEqual(sourceComponent.format, {type: 'json'});
+      });
+    });
+
+    describe('with link to url', function() {
+      const model = parseModel({
+          data: {
+            url: 'http://foo.bar'
           }
-        }
+        });
+
+      const sourceComponent = source.compileUnit(model);
+
+      it('should have format json', function() {
+        assert.equal(sourceComponent.name, 'source');
+        assert.equal(sourceComponent.format.type, 'json');
       });
+      it('should have correct url', function() {
+        assert.equal(sourceComponent.url, 'http://foo.bar');
+      });
+    });
 
-    const defs = dates.defs(model);
-
-    assert.deepEqual(defs, [{
-      name: 'day',
-      transform: [
-        {
-          expr: 'datetime(2006, 0, datum.data+1, 0, 0, 0, 0)',
-          field: 'date',
-          type: 'formula'
-        }
-      ],
-      values: [0,1,2,3,4,5,6]
-    }]);
+    describe('with no data specified', function() {
+      const model = parseModel({});
+      const sourceComponent = source.compileUnit(model);
+      it('should provide placeholder source data', function() {
+        assert.deepEqual(sourceComponent, {name: 'source'});
+      });
+    });
   });
 });
 
-describe('data.summary', function () {
-  it('should return correct aggregation', function() {
-    const model = parseModel({
+
+describe('data: formatParse', function () {
+  describe('compileUnit', function() {
+    it('should include parse for all applicable fields, and exclude calculated fields', function() {
+      const model = parseModel({
+        transform: {
+          calculate: [
+            {field: 'b2', expr: 'datum.b * 2'}
+          ]
+        },
         mark: "point",
         encoding: {
-          'y': {
-            'aggregate': 'sum',
-            'field': 'Acceleration',
-            'type': "quantitative"
-          },
-          'x': {
-            'field': 'origin',
-            'type': "ordinal"
-          },
-          color: {field: '*', type: "quantitative", aggregate: 'count'}
+          x: {field: 'a', type: "temporal"},
+          y: {field: 'b', type: "quantitative"},
+          color: {field: '*', type: "quantitative", aggregate: 'count'},
+          size: {field: 'b2', type: "quantitative"},
         }
       });
 
-    const aggregated = summary.def(model);
-    assert.deepEqual(aggregated, {
-      'name': "summary",
-      'source': 'source',
-      'transform': [{
-        'type': 'aggregate',
-        'groupby': ['origin'],
-        'summarize': {
-          '*': ['count'],
-          'Acceleration': ['sum']
-        }
-      }]
+      const formatParseComponent = formatParse.compileUnit(model);
+      assert.deepEqual(formatParseComponent, {
+        'a': 'date',
+        'b': 'number'
+      });
     });
   });
 
-  it('should return correct aggregation for detail arrays', function() {
-    const model = parseModel({
-        mark: "point",
-        encoding: {
-          'y': {
-            'aggregate': 'mean',
-            'field': 'Acceleration',
-            'type': "quantitative"
-          },
-          'x': {
-            'aggregate': 'mean',
-            'field': 'Displacement',
-            'type': "quantitative"
-          },
-          'detail': [{
-            'field': 'Origin',
-            'type': "ordinal"
-          },{
-            'field': 'Cylinders',
-            'type': "quantitative"
-          }]
-        }
-      });
 
-    const aggregated = summary.def(model);
-    assert.deepEqual(aggregated, {
-      'name': "summary",
-      'source': 'source',
-      'transform': [{
-        'type': 'aggregate',
-        'groupby': ['Origin', 'Cylinders'],
-        'summarize': {
-          'Displacement': ['mean'],
-          'Acceleration': ['mean']
+  describe('assemble', function() {
+    // TODO: write test
+  });
+});
+
+describe('data: bin', function() {
+  describe('compileUnit', function() {
+    const model = parseModel({
+      mark: "point",
+      encoding: {
+        y: {
+          bin: { min: 0, max: 100 },
+          'field': 'Acceleration',
+          'type': "quantitative"
         }
-      }]
+      }
+    });
+    it('should add bin transform and correctly apply bin', function() {
+      const transform = vals(bin.compileUnit(model))[0];
+
+      assert.deepEqual(transform[0], {
+        type: 'bin',
+        field: 'Acceleration',
+        output: {
+          start: 'bin_Acceleration_start',
+          mid: 'bin_Acceleration_mid',
+          end: 'bin_Acceleration_end'
+        },
+        maxbins: 10,
+        min: 0,
+        max: 100
+      });
+    });
+  });
+
+  describe('assemble', function() {
+    // TODO: write test
+  });
+});
+
+describe('data: nullFilter', function() {
+  describe('compileUnit', function() {
+    const spec = {
+      mark: "point",
+      encoding: {
+        y: {field: 'qq', type: "quantitative"},
+        x: {field: 'tt', type: "temporal"},
+        color: {field: 'oo', type: "ordinal"}
+      }
+    };
+
+    it('should add filterNull for Q and T by default', function () {
+      const model = parseModel(spec);
+      assert.deepEqual(nullFilter.compileUnit(model), {
+        qq: true,
+        tt: true
+      });
+    });
+
+    it('should add filterNull for O when specified', function () {
+      const model = parseModel(mergeDeep(spec, {
+        transform: {
+          filterNull: true
+        }
+      }));
+      assert.deepEqual(nullFilter.compileUnit(model), {
+        qq: true,
+        tt: true,
+        oo: true
+      });
+    });
+
+    it('should add no null filter if filterNull is false', function () {
+      const model = parseModel(mergeDeep(spec, {
+        transform: {
+          filterNull: false
+        }
+      }));
+      assert.deepEqual(nullFilter.compileUnit(model), {});
+    });
+  });
+
+  describe('compileFacet', function() {
+    it('should produce child\'s filter if child has no source and the facet has no filter', function() {
+      // TODO: write
+    });
+
+    it('should produce child\'s filter and its own filter if child has no source and the facet has filter', function() {
+      // TODO: write
+    });
+  });
+
+  describe('assemble', function() {
+    // TODO: write
+  });
+});
+
+describe('data: filter', function () {
+  describe('compileUnit', function () {
+    const model = parseModel({
+      transform: {
+        filter: 'datum.a > datum.b && datum.c === datum.d'
+      }
+    });
+    it('should return array that contains a filter transform', function () {
+      assert.deepEqual(filter.compileUnit(model), 'datum.a > datum.b && datum.c === datum.d');
+    });
+  });
+
+  describe('assemble', function() {
+    // TODO: write
+  });
+});
+
+describe('data: formula', function() {
+  describe('unit', function() {
+    // FIXME: write
+  });
+
+  describe('facet', function() {
+    // FIXME: write
+  });
+});
+
+describe('data: timeUnit', function () {
+  describe('compileUnit', function() {
+    const model = parseModel({
+      mark: "point",
+      encoding: {
+        x: {field: 'a', type: "temporal", timeUnit: 'year'}
+      }
+    });
+    it('should add formula transform', function() {
+      const transform = vals(timeUnit.compileUnit(model));
+      assert.deepEqual(transform[0], {
+        type: 'formula',
+        field: 'year_a',
+        expr: 'datetime(year(datum.a), 0, 1, 0, 0, 0, 0)'
+      });
+    });
+  });
+
+  describe('compileFacet', function() {
+    // TODO: write
+  });
+
+  describe('assemble', function() {
+    // TODO: write
+  });
+});
+
+
+describe('data: timeUnitDomain', function() {
+  describe('unit: day', function() {
+    const model = parseModel({
+      mark: "point",
+      encoding: {
+        'y': {
+          'aggregate': 'sum',
+          'field': 'Acceleration',
+          'type': "quantitative"
+        },
+        'x': {
+          'field': 'date',
+          'type': "temporal",
+          'timeUnit': 'day'
+        }
+      }
+    });
+
+    it('should be compiled into correct string set', function() {
+      model.component.data.timeUnitDomain = timeUnitDomain.compileUnit(model);
+      assert.deepEqual(model.component.data.timeUnitDomain, {day: true});
+    });
+
+    it('should assemble data source with raw domain data', function() {
+      const defs = timeUnitDomain.assemble(model.component.data);
+
+      assert.deepEqual(defs, [{
+        name: 'day',
+        transform: [
+          {
+            expr: 'datetime(2006, 0, datum.data+1, 0, 0, 0, 0)',
+            field: 'date',
+            type: 'formula'
+          }
+        ],
+        values: [0,1,2,3,4,5,6]
+      }]);
+    });
+  });
+
+  describe('unit: day', function() {
+    // TODO: write more unit test for other timeUnit domain, for both ones that produces
+    // custom domain and one that do not.
+  });
+
+  describe('facet', function() {
+    // TODO: write
+  });
+});
+
+describe('data: colorRank', function () {
+  // TODO: write
+});
+
+describe('data: nonPositiveFilter', function () {
+  describe('unit (with log scale)', function() {
+    const model = parseModel({
+      mark: "point",
+      encoding: {
+        x: {field: 'a', type: "temporal"},
+        y: {field: 'b', type: "quantitative", scale: {type: 'log'}}
+      }
+    });
+    it('should produce the correct nonPositiveFilter component' ,function (){
+      model.component.data.nonPositiveFilter = nonPositiveFilter.compileUnit(model);
+      assert.deepEqual(model.component.data.nonPositiveFilter, {
+        b: true
+      });
+    });
+
+    it('should assemble the correct filter transform', function() {
+      const filterTransform = nonPositiveFilter.assemble(model.component.data)[0];
+      assert.deepEqual(filterTransform, {
+        type: 'filter',
+        test: 'datum.b > 0'
+      });
+    });
+  });
+
+  describe('unit (with aggregated log scale)', function() {
+    // TODO: write
+  });
+
+  describe('facet', function() {
+    // TODO: write
+  });
+});
+
+describe('data: stack', function() {
+  describe('unit without stack', function() {
+    const model = parseModel({
+      "mark": "point",
+      "encoding": {}
+    });
+
+    it('should not produce stack component', function() {
+      model.component.data.stackScale = stackScale.compileUnit(model);
+      assert.equal(model.component.data.stackScale, null);
+    });
+  });
+
+  describe('unit with color and binned x', function() {
+    const model = parseModel({
+      "mark": "bar",
+      "encoding": {
+        "x": {"type": "quantitative", "field": "Cost__Other", "aggregate": "sum"},
+        "y": {"bin": true, "type": "quantitative", "field": "Cost__Total_$"},
+        "color": {"type": "ordinal", "field": "Effect__Amount_of_damage"}
+      }
+    });
+    model.component.data.stackScale = stackScale.compileUnit(model);
+
+    it('should produce the correct stack component', function() {
+      const stackedData = model.component.data.stackScale;
+      assert.equal(stackedData.transform[0].groupby[0], 'bin_Cost__Total_$_start');
+    });
+
+    it('should assemble stack summary data correctly', function() {
+      // simply return identity
+      const summaryData = stackScale.assemble(model.component.data);
+      assert.deepEqual(summaryData, model.component.data.stackScale);
+    });
+  });
+
+  describe('unit with color and binned y', function() {
+    const model = parseModel({
+      "mark": "bar",
+      "encoding": {
+        "y": {"type": "quantitative", "field": "Cost__Other", "aggregate": "sum"},
+        "x": {"bin": true, "type": "quantitative", "field": "Cost__Total_$"},
+        "color": {"type": "ordinal", "field": "Effect__Amount_of_damage"}
+      }
+    });
+
+    model.component.data.stackScale = stackScale.compileUnit(model);
+
+    it('should produce the correct stack component', function() {
+      const stackedData = model.component.data.stackScale;
+      assert.equal(stackedData.transform[0].groupby[0], 'bin_Cost__Total_$_start');
+    });
+
+    it('should assemble stack summary data correctly', function() {
+      // simply return identity
+      const summaryData = stackScale.assemble(model.component.data);
+      assert.deepEqual(summaryData, model.component.data.stackScale);
+    });
+  });
+
+  describe('facet', function() {
+    // TODO: write
+  });
+});
+
+describe('data: summary', function () {
+  describe('unit (aggregated)', function() {
+    const model = parseModel({
+      mark: "point",
+      encoding: {
+        'y': {
+          'aggregate': 'sum',
+          'field': 'Acceleration',
+          'type': "quantitative"
+        },
+        'x': {
+          'field': 'Origin',
+          'type': "ordinal"
+        },
+        color: {field: '*', type: "quantitative", aggregate: 'count'}
+      }
+    });
+
+    model.component.data.summary = summary.compileUnit(model);
+
+    it('should produce the correct summary component' ,function() {
+      assert.deepEqual(model.component.data.summary, [{
+        name: 'summary',
+        source: 'source',
+        dimensions: {Origin: true},
+        measures: {'*':{count: true}, Acceleration: {sum: true}}
+      }]);
+    });
+
+    it('should assemble the correct aggregate transform', function() {
+      const summaryData = summary.assemble(model.component.data)[0];
+      assert.deepEqual(summaryData, {
+        'name': "summary",
+        'source': 'source',
+        'transform': [{
+          'type': 'aggregate',
+          'groupby': ['Origin'],
+          'summarize': {
+            '*': ['count'],
+            'Acceleration': ['sum']
+          }
+        }]
+      });
+    });
+  });
+
+  describe('unit (aggregated with detail arrays)', function() {
+    const model = parseModel({
+      mark: "point",
+      encoding: {
+        'x': { 'aggregate': 'mean', 'field': 'Displacement', 'type': "quantitative"},
+        'detail': [
+          {'field': 'Origin', 'type': "ordinal"},
+          {'field': 'Cylinders', 'type': "quantitative"}
+        ]
+      }
+    });
+
+    it('should produce the correct summary component', function() {
+      model.component.data.summary = summary.compileUnit(model);
+      assert.deepEqual(model.component.data.summary, [{
+        name: 'summary',
+        source: 'source',
+        dimensions: {Origin: true, Cylinders: true},
+        measures: {Displacement: {mean: true}}
+      }]);
+    });
+
+    it('should assemble the correct summary data', function() {
+      const summaryData = summary.assemble(model.component.data)[0];
+      assert.deepEqual(summaryData, {
+        'name': "summary",
+        'source': 'source',
+        'transform': [{
+          'type': 'aggregate',
+          'groupby': ['Origin', 'Cylinders'],
+          'summarize': {
+            'Displacement': ['mean']
+          }
+        }]
+      });
     });
   });
 });

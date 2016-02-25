@@ -2,7 +2,7 @@
 
 import {assert} from 'chai';
 
-import {parseModel} from '../util';
+import {parseModel, parseAnyModel} from '../util';
 import * as axis from '../../src/compile/axis';
 import {X, Y, COLUMN} from '../../src/channel';
 
@@ -70,7 +70,7 @@ describe('Axis', function() {
     });
 
     it('should return top for COL', function () {
-      const orient = axis.orient(parseModel({
+      const orient = axis.orient(parseAnyModel({
           mark: "point",
           encoding: {
             x: {field: 'a'},

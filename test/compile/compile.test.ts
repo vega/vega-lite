@@ -2,7 +2,7 @@
 
 import {assert} from 'chai';
 import {parseModel} from '../util';
-import * as compile from '../../src/compile/compile';
+import {assembleRootGroup} from '../../src/compile/compile';
 
 describe('Compile', function() {
 
@@ -24,7 +24,7 @@ describe('Compile', function() {
         }
       });
 
-      const rootGroup = compile.compileRootGroup(model);
+      const rootGroup = assembleRootGroup(model);
 
       it('should refer to layout data', function() {
         assert.deepEqual(rootGroup.from, {"data": "layout"});

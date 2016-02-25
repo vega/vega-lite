@@ -1,7 +1,6 @@
 import {Encoding} from '../encoding';
 import {Config} from '../config';
 import {FieldDef} from '../fielddef';
-import {Model, ScaleMap} from './Model';
 import {Channel, X, Y, COLOR, DETAIL, ORDER} from '../channel';
 import {ScaleType} from '../scale';
 import {StackOffset} from '../config';
@@ -9,9 +8,12 @@ import {BAR, AREA, Mark} from '../mark';
 import {field, isMeasure} from '../fielddef';
 import {has, isAggregate} from '../encoding';
 import {isArray, contains} from '../util';
-import {sortField} from './common';
 
-import {scaleType} from './scale';
+import {sortField} from './common';
+import {Model} from './model';
+import {ScaleMap} from './model';
+import {UnitModel} from './unit';
+
 
 export interface StackProperties {
   /** Dimension axis of the stack ('x' or 'y'). */
@@ -68,7 +70,7 @@ export function compileStackProperties(mark: Mark, encoding: Encoding, scale: Sc
 }
 
 /** Compile stack-by field names from (from 'color' and 'detail') */
-function getStackFields(mark: Mark, encoding: Encoding, scale: ScaleMap) {
+function getStackFields(mark: Mark, encoding: Encoding, scaleMap: ScaleMap) {
   return [COLOR, DETAIL].reduce(function(fields, channel) {
     const channelEncoding = encoding[channel];
     if (has(encoding, channel)) {
@@ -78,8 +80,9 @@ function getStackFields(mark: Mark, encoding: Encoding, scale: ScaleMap) {
         });
       } else {
         const fieldDef: FieldDef = channelEncoding;
+        const scale = scaleMap[channel];
         fields.push(field(fieldDef, {
-          binSuffix: scaleType(scale[channel], fieldDef, channel, mark) === ScaleType.ORDINAL ? '_range' : '_start'
+          binSuffix: scale && scale.type === ScaleType.ORDINAL ? '_range' : '_start'
         }));
       }
     }
@@ -100,7 +103,7 @@ export function imputeTransform(model: Model) {
   };
 }
 
-export function stackTransform(model: Model) {
+export function stackTransform(model: UnitModel) {
   const stack = model.stack();
   const encoding = model.encoding();
   const sortby = model.has(ORDER) ?
