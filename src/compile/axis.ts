@@ -2,7 +2,7 @@ import {Model} from './Model';
 import {contains, extend, truncate} from '../util';
 import {NOMINAL, ORDINAL, TEMPORAL} from '../type';
 import {COLUMN, ROW, X, Y, Channel} from '../channel';
-import {AxisOrient} from '../enums';
+import {AxisOrient} from '../axis';
 import {formatMixins} from './common';
 
 // https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations

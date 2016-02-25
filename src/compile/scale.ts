@@ -1,8 +1,8 @@
 // https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations
 declare var exports;
 
-import {FieldDef} from '../schema/fielddef.schema';
-import {Scale} from '../schema/scale.schema';
+import {FieldDef} from '../fielddef';
+import {Scale} from '../scale';
 
 import {contains, extend} from '../util';
 import {Model} from './Model';

@@ -1,5 +1,5 @@
 import {Model} from '../Model';
-import {OrderChannelDef} from '../../schema/fielddef.schema';
+import {OrderChannelDef} from '../../fielddef';
 
 import {X, Y, COLOR, TEXT, SHAPE, PATH, ORDER, DETAIL, ROW, COLUMN, LABEL} from '../../channel';
 import {AREA, LINE, TEXT as TEXTMARK} from '../../mark';

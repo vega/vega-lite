@@ -1,11 +1,5 @@
 /** Miscellaneous enum declarations */
 
-export enum SortOrder {
-    ASCENDING = 'ascending' as any,
-    DESCENDING = 'descending' as any,
-    NONE = 'none' as any,
-}
-
 export enum ScaleType {
     LINEAR = 'linear' as any,
     LOG = 'log' as any,
@@ -34,12 +28,6 @@ export enum DataFormat {
     TSV = 'tsv' as any,
 }
 
-export enum AxisOrient {
-    TOP = 'top' as any,
-    RIGHT = 'right' as any,
-    LEFT = 'left' as any,
-    BOTTOM = 'bottom' as any
-}
 
 export enum FontWeight {
     NORMAL = 'normal' as any,

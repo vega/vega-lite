@@ -1,5 +1,5 @@
-import {FieldDef} from '../schema/fielddef.schema';
-import {LegendProperties} from '../schema/legend.schema';
+import {FieldDef} from '../fielddef';
+import {LegendProperties} from '../legend';
 
 import {COLOR, SIZE, SHAPE, Channel} from '../channel';
 import {title as fieldTitle} from '../fielddef';

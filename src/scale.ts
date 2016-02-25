@@ -1,4 +1,4 @@
-import {ScaleType, NiceTime} from '../enums';
+import {ScaleType, NiceTime} from './enums';
 
 export interface ScaleConfig {
   /**

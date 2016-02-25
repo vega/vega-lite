@@ -1,10 +1,10 @@
-import {Spec} from '../schema/schema';
-import {AxisProperties} from '../schema/axis.schema';
-import {LegendProperties} from '../schema/legend.schema';
-import {Scale} from '../schema/scale.schema';
-import {Encoding} from '../schema/encoding.schema';
-import {FieldDef} from '../schema/fielddef.schema';
-import {defaultConfig, Config} from '../schema/config.schema';
+import {Spec} from '../spec';
+import {AxisProperties} from '../axis';
+import {LegendProperties} from '../legend';
+import {Scale} from '../scale';
+import {Encoding} from '../encoding';
+import {FieldDef} from '../fielddef';
+import {defaultConfig, Config} from '../config';
 
 import {COLUMN, ROW, X, Y, COLOR, SHAPE, SIZE, TEXT, PATH, ORDER, Channel, supportMark} from '../channel';
 import {SOURCE, SUMMARY} from '../data';
