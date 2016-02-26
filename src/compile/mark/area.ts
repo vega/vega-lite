@@ -13,10 +13,6 @@ export namespace area {
     let p: any = {};
 
     const orient = model.config().mark.orient;
-    if (orient !== undefined) {
-      p.orient = { value: orient };
-    }
-
     const stack = model.stack();
     const xFieldDef = model.encoding().x;
     // x
