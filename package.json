@@ -9,6 +9,11 @@
   ],
   "description": "Vega-lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications.",
   "main": "src/vl.js",
+  "bin": {
+    "vl2png": "./bin/vl2png",
+    "vl2svg": "./bin/vl2svg",
+    "vl2vg": "./bin/vl2vg"
+  },
   "directories": {
     "test": "test"
   },
