@@ -5,5 +5,9 @@ set -e
 
 mkdir -p examples/images
 
+# Put `vega-lite.js` on the Node search path so the `vl2svg` script can
+# require it without needing it to be installed globally.
+export NODE_PATH=.
+
 echo "Generating SVGs..."
 ls examples/specs/*.json | parallel --eta --halt 1 "bin/vl2svg {} examples/images/{/.}.svg"
