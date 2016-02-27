@@ -13,6 +13,7 @@ git add bower_components/* -f
 
 # build
 npm run build:all
+git add data/* -f
 git add vega-lite* -f
 git add site/static/*.js -f
 git add examples/images/*.svg -f
