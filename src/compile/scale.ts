@@ -90,7 +90,7 @@ function mainScale(model: Model, fieldDef: FieldDef, channel: Channel) {
  */
 function colorLegendScale(model: Model, fieldDef: FieldDef) {
   return {
-    name: COLOR_LEGEND,
+    name: model.scaleName(COLOR_LEGEND),
     type: 'ordinal',
     domain: {
       data: model.dataTable(),
@@ -106,7 +106,7 @@ function colorLegendScale(model: Model, fieldDef: FieldDef) {
  */
 function binColorLegendLabel(model: Model, fieldDef: FieldDef) {
   return {
-    name: COLOR_LEGEND_LABEL,
+    name: model.scaleName(COLOR_LEGEND_LABEL),
     type: 'ordinal',
     domain: {
       data: model.dataTable(),
@@ -215,10 +215,10 @@ export function domain(scale: Scale, model: Model, channel:Channel, scaleType: S
     };
   }
 
-  const useRawDomain = _useRawDomain(scale, model, channel, scaleType),
+  const includeRawDomain = _includeRawDomain(scale, model, channel, scaleType),
   sort = domainSort(model, channel, scaleType);
 
-  if (useRawDomain) { // useRawDomain - only Q/T
+  if (includeRawDomain) { // includeRawDomain - only Q/T
     return {
       data: SOURCE,
       field: model.field(channel, {noAggregate: true})
@@ -284,16 +284,16 @@ export function domainSort(model: Model, channel: Channel, scaleType: ScaleType)
 
 
 /**
- * Determine if useRawDomain should be activated for this scale.
+ * Determine if includeRawDomain should be activated for this scale.
  * @return {Boolean} Returns true if all of the following conditons applies:
- * 1. `useRawDomain` is enabled either through scale or config
+ * 1. `includeRawDomain` is enabled either through scale or config
  * 2. Aggregation function is not `count` or `sum`
  * 3. The scale is quantitative or time scale.
  */
-function _useRawDomain (scale: Scale, model: Model, channel: Channel, scaleType: ScaleType) {
+function _includeRawDomain (scale: Scale, model: Model, channel: Channel, scaleType: ScaleType) {
   const fieldDef = model.fieldDef(channel);
 
-  return scale.useRawDomain && //  if useRawDomain is enabled
+  return scale.includeRawDomain && //  if includeRawDomain is enabled
     // only applied to aggregate table
     fieldDef.aggregate &&
     // only activated if used with aggregate functions that produces values ranging in the domain of the source data

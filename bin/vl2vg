@@ -9,7 +9,7 @@ var helpText =
 
 // import required libraries
 var fs = require('fs'),
-    vl = require('../vega-lite.js');
+    vl = require('vega-lite');
 
 // arguments
 var args = require('yargs')

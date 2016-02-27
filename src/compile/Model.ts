@@ -109,7 +109,7 @@ export class Model {
             type: _scaleType,
             round: config.scale.round,
             padding: config.scale.padding,
-            useRawDomain: config.scale.useRawDomain,
+            includeRawDomain: config.scale.includeRawDomain,
             bandSize: channel === X && _scaleType === ScaleType.ORDINAL && mark === TEXTMARK ?
                        config.scale.textBandWidth : config.scale.bandSize
           }, channelScale);
@@ -286,7 +286,7 @@ export class Model {
   }
 
   /** returns scale name for a given channel */
-  public scaleName(channel: Channel): string {
+  public scaleName(channel: Channel|string): string {
     const name = this.spec().name;
     return (name ? name + '-' : '') + channel;
   }

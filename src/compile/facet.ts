@@ -150,7 +150,7 @@ function getXAxesGroup(model: Model) { // TODO: VgMarks
         transform: [{
           type: 'aggregate',
           groupby: [model.field(COLUMN)],
-          summarize: {'*': 'count'} // just a placeholder aggregation
+          summarize: {'*': ['count']} // just a placeholder aggregation
         }]
       }
     } : {},
@@ -193,7 +193,7 @@ function getYAxesGroup(model: Model) { // TODO: VgMarks
         transform: [{
           type: 'aggregate',
           groupby: [model.field(ROW)],
-          summarize: {'*': 'count'} // just a placeholder aggregation
+          summarize: {'*': ['count']} // just a placeholder aggregation
         }]
       }
     } : {},
