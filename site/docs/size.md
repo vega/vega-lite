@@ -9,7 +9,7 @@ At its core, a Vega-Lite specification describes a single plot.  When a [facet c
 
 ## Width and Height of a Single Plot
 
-The width of a single plot or each cell of a trellis plot is determined by the properties of `y` channel:
+The width of a single plot or each cell of a trellis plot is determined by the properties of `x` channel:
 
 - If `x` channel has an ordinal scale, the width is a product of the scale's [`bandSize`]((scale.html#ordinal)) and the field's cardinality, or number of possible distinct values of the field mapped to `x` channel, plus the scale's padding.  (_bandWidth * (xCardinality + xPadding)_).
 - If `x` has a continuous scale (either quantitative or time), the width is drawn directly from `width` property of the [cell configuration](config.html#cell-config).
