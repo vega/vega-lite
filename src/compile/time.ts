@@ -28,13 +28,13 @@ export function format(timeUnit: TimeUnit, abbreviated = false): string {
 
   let timeComponents = [];
 
-  if (timeString.indexOf('hour') > -1) {
+  if (timeString.indexOf('hours') > -1) {
     timeComponents.push('%H');
   }
-  if (timeString.indexOf('minute') > -1) {
+  if (timeString.indexOf('minutes') > -1) {
     timeComponents.push('%M');
   }
-  if (timeString.indexOf('second') > -1) {
+  if (timeString.indexOf('seconds') > -1) {
     timeComponents.push('%S');
   }
   if (timeString.indexOf('milliseconds') > -1) {
