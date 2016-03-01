@@ -48,7 +48,7 @@ export function compileRootGroup(model: Model) {
   const spec = model.spec();
 
   let rootGroup:any = extend({
-      name: spec.name ? spec.name + '-root' : 'root',
+      name: spec.name ? spec.name + '-rootCell' : 'rootCell',
       type: 'group',
     },
     spec.description ? {description: spec.description} : {},
