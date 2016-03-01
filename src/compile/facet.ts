@@ -187,7 +187,33 @@ export class FacetModel extends Model {
 
   public compileMark() {
     this.child().compileMark();
-    this.component.mark = getFacetGroup(this);
+
+    this.component.mark = extend(
+      {
+        name: this.name('cell'),
+        type: 'group',
+        from: extend(
+          this.dataTable() ? {data: this.dataTable()} : {},
+          {
+            transform: [{
+              type: 'facet',
+              groupby: [].concat(
+                this.has(ROW) ? [this.field(ROW)] : [],
+                this.has(COLUMN) ? [this.field(COLUMN)] : []
+              )
+            }]
+          }
+        ),
+        properties: {
+          update: getFacetGroupProperties(this)
+        }
+      },
+      // Call child's assembleGroup to add marks, scales, axes, and legends.
+      // Note that we can call child's assembleGroup() here because compileMark()
+      // is the last method in compile() and thus the child is completely compiled
+      // at this point.
+      this.child().assembleGroup()
+    );
   }
 
   public compileAxis() {
@@ -275,31 +301,6 @@ export class FacetModel extends Model {
 
 // TODO: move the rest of the file into FacetModel if possible
 
-function getFacetGroup(model: FacetModel) {
-  let facetGroup: any = {
-    name: model.name('cell'),
-    type: 'group',
-    from: extend(
-      model.dataTable() ? {data: model.dataTable()} : {},
-      {
-        transform: [{
-          type: 'facet',
-          groupby: [].concat(
-            model.has(ROW) ? [model.field(ROW)] : [],
-            model.has(COLUMN) ? [model.field(COLUMN)] : []
-          )
-        }]
-      }
-    ),
-    properties: {
-      update: getFacetGroupProperties(model)
-    }
-  };
-
-  extend(facetGroup, model.child().assembleGroup());
-
-  return facetGroup;
-}
 function getFacetGroupProperties(model: FacetModel) {
   const child = model.child();
   const mergedCellConfig = extend({}, child.config().cell, child.config().facet.cell);
