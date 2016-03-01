@@ -22,7 +22,7 @@ function validateAgainstSchemas(vlspec) {
   }
   assert(isVlValid);
 
-  const vegaSpec = vl.compile(vlspec);
+  const vegaSpec = vl.compile(vlspec).spec;
 
   const isVgValid = validator.validate(vegaSpec, vgSchema);
   if (!isVgValid) {
