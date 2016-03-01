@@ -177,7 +177,7 @@ export interface MarkConfig {
 
   // ---------- Interpolation: Line / area ----------
   /**
-   * The line interpolation method to use. One of linear, step-before, step-after, basis, basis-open, basis-closed, bundle, cardinal, cardinal-open, cardinal-closed, monotone.
+   * The line interpolation method to use. One of linear, step-before, step-after, basis, basis-open, cardinal, cardinal-open, monotone.
    */
   interpolate?: string;
   /**
