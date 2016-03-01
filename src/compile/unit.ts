@@ -7,7 +7,7 @@ import * as vlEncoding from '../encoding'; // TODO: remove
 import {FieldDef, FieldRefOption, field} from '../fielddef';
 import {Mark, TEXT as TEXTMARK} from '../mark';
 import {ScaleType} from '../scale';
-import {SingleSpec} from '../spec';
+import {ExtendedUnitSpec} from '../spec';
 import {getFullName, QUANTITATIVE} from '../type';
 import {duplicate, extend, mergeDeep} from '../util';
 import {VgData} from '../vega.schema';
@@ -32,7 +32,7 @@ export class UnitModel extends Model {
   private _encoding: Encoding;
   private _stack: StackProperties;
 
-  constructor(spec: SingleSpec, parent: Model, parentGivenName: string) {
+  constructor(spec: ExtendedUnitSpec, parent: Model, parentGivenName: string) {
     super(spec, parent, parentGivenName);
 
     const mark = this._mark = spec.mark;

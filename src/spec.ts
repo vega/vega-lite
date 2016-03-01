@@ -29,13 +29,15 @@ export interface UnitSpec extends BaseSpec {
 }
 
 /**
- * Schema for a single Vega-Lite specification.
+ * Schema for a unit Vega-Lite specification, with the syntactic sugar extensions:
+ * - `row` and `column` are included in the encoding.
+ * - (Future) label, box plot
  *
  * Note: the spec could contain facet.
  *
  * @required ["mark", "encoding"]
  */
-export interface SingleSpec extends BaseSpec {
+export interface ExtendedUnitSpec extends BaseSpec {
   /**
    * A name for the specification. The name is used to annotate marks, scale names, and more.
    */
@@ -46,19 +48,19 @@ export interface SingleSpec extends BaseSpec {
 export interface FacetSpec extends BaseSpec {
   facet: Facet;
   // FIXME: Ideally FacetSpec but this leads to infinite loop in generating schema
-  spec: SingleSpec;
+  spec: ExtendedUnitSpec;
 }
 
-export type Spec = SingleSpec | FacetSpec;
+export type Spec = ExtendedUnitSpec | FacetSpec;
 
 // TODO: type Spec doesn't work with the schema yet so use the following as a
 // hack for the schema.
-export interface SpecSchema extends SingleSpec, FacetSpec {}
+export interface SpecSchema extends ExtendedUnitSpec, FacetSpec {}
 
 /**
  * Decompose extended unit specs into composition of pure unit specs.
  */
-export function normalize(spec: SingleSpec): Spec {
+export function normalize(spec: ExtendedUnitSpec): Spec {
   const hasRow = has(spec.encoding, ROW);
   const hasColumn = has(spec.encoding, COLUMN);
 
@@ -91,22 +93,22 @@ export function normalize(spec: SingleSpec): Spec {
 
 // TODO: add vl.spec.validate & move stuff from vl.validate to here
 
-export function alwaysNoOcclusion(spec: SingleSpec): boolean {
+export function alwaysNoOcclusion(spec: ExtendedUnitSpec): boolean {
   // FIXME raw OxQ with # of rows = # of O
   return vlEncoding.isAggregate(spec.encoding);
 }
 
-export function fieldDefs(spec: SingleSpec): FieldDef[] {
+export function fieldDefs(spec: ExtendedUnitSpec): FieldDef[] {
   // TODO: refactor this once we have composition
   return vlEncoding.fieldDefs(spec.encoding);
 };
 
-export function getCleanSpec(spec: SingleSpec): SingleSpec {
+export function getCleanSpec(spec: ExtendedUnitSpec): ExtendedUnitSpec {
   // TODO: move toSpec to here!
   return spec;
 }
 
-export function isStack(spec: SingleSpec): boolean {
+export function isStack(spec: ExtendedUnitSpec): boolean {
   return (vlEncoding.has(spec.encoding, COLOR) || vlEncoding.has(spec.encoding, SHAPE)) &&
     (spec.mark === BAR || spec.mark === AREA) &&
     (!spec.config || !spec.config.mark.stacked !== false) &&
@@ -114,7 +116,7 @@ export function isStack(spec: SingleSpec): boolean {
 }
 
 // TODO revise
-export function transpose(spec: SingleSpec): SingleSpec {
+export function transpose(spec: ExtendedUnitSpec): ExtendedUnitSpec {
   const oldenc = spec.encoding;
   let encoding = duplicate(spec.encoding);
   encoding.x = oldenc.y;

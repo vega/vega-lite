@@ -31,7 +31,7 @@
     "prestart": "npm run build && npm run data && scripts/index-examples",
     "start": "npm run watch & browser-sync start --server --files 'vega-lite.js' --index 'test-gallery.html'",
     "poststart": "rm examples/all-examples.json",
-    "schema": "typescript-json-schema --required true src/spec.ts SingleSpec > vega-lite-schema.json",
+    "schema": "typescript-json-schema --required true src/spec.ts ExtendedUnitSpec > vega-lite-schema.json",
     "presite": "tsc && npm run build && bower install",
     "site": "bundle exec jekyll serve --incremental",
     "pretest": "tsc && npm run data",

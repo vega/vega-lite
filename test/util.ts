@@ -1,6 +1,6 @@
 import {buildModel} from '../src/compile/common';
 import {UnitModel} from '../src/compile/unit';
-import {SingleSpec, normalize} from '../src/spec';
+import {ExtendedUnitSpec, normalize} from '../src/spec';
 import {contains} from '../src/util';
 
 // TODO: rename to parseModel
@@ -17,7 +17,7 @@ export function parseAnyModel(inputSpec) {
  */
 export function parseModel(spec) {
   // TODO: support other type of model as well
-  return new UnitModel(spec as SingleSpec, null, '');
+  return new UnitModel(spec as ExtendedUnitSpec, null, '');
 }
 
 export const zSchema = require('z-schema');
