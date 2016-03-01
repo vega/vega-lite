@@ -47,15 +47,18 @@ export interface ExtendedUnitSpec extends BaseSpec {
 
 export interface FacetSpec extends BaseSpec {
   facet: Facet;
-  // FIXME: Ideally FacetSpec but this leads to infinite loop in generating schema
+  spec: UnitSpec; // TODO: LayerSpec | UnitSpec
+}
+
+/** This is for the future schema */
+export interface ExtendedFacetSpec extends BaseSpec {
+  facet: Facet;
+
+  // FIXME: Ideally "ExtendedUnitSpec | FacetSpec" but this leads to infinite loop in generating schema
   spec: ExtendedUnitSpec;
 }
 
 export type Spec = ExtendedUnitSpec | FacetSpec;
-
-// TODO: type Spec doesn't work with the schema yet so use the following as a
-// hack for the schema.
-export interface SpecSchema extends ExtendedUnitSpec, FacetSpec {}
 
 /**
  * Decompose extended unit specs into composition of pure unit specs.
