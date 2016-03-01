@@ -5,7 +5,7 @@ title: Embedding Vega-Lite in a Web Page
 permalink: /docs/embed.html
 ---
 
-This document assumes that you have a Vega-Lite specification as a JSON object in a variable called `vlSpec`. You can find an example specification in our [getting started tutorial](/tutorials/getting_started.html#embed).
+This document assumes that you have a Vega-Lite specification as a JSON object in a variable called `vlSpec`. You can find an example specification in our [getting started tutorial](https://vega.github.io/vega-lite/tutorials/getting_started.html).
 
 ## Load the Required Libraries
 
