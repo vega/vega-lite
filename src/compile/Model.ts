@@ -1,26 +1,22 @@
-import {Spec} from '../spec';
+import {AggregateOp} from '../aggregate';
 import {AxisProperties} from '../axis';
-import {LegendProperties} from '../legend';
-import {Scale} from '../scale';
-import {Encoding} from '../encoding';
-import {FieldDef} from '../fielddef';
+import {COLUMN, ROW, X, Y, COLOR, SHAPE, SIZE, TEXT, PATH, ORDER, Channel, CHANNELS, supportMark} from '../channel';
 import {defaultConfig, Config} from '../config';
-
-import {COLUMN, ROW, X, Y, COLOR, SHAPE, SIZE, TEXT, PATH, ORDER, Channel, supportMark} from '../channel';
-import {SOURCE, SUMMARY} from '../data';
-import {FieldRefOption, field} from '../fielddef';
-import * as vlEncoding from '../encoding';
+import {Data, SOURCE, SUMMARY} from '../data';
+import {Encoding} from '../encoding';
+import * as vlEncoding from '../encoding'; // TODO: remove
+import {FieldDef, FieldRefOption, field} from '../fielddef';
+import {LegendProperties} from '../legend';
 import {Mark, TEXT as TEXTMARK} from '../mark';
-
+import {Scale, ScaleType} from '../scale';
+import {BaseSpec, SingleSpec} from '../spec';
+import {Transform} from '../transform';
 import {getFullName, QUANTITATIVE} from '../type';
 import {duplicate, extend, contains, mergeDeep} from '../util';
 
 import {compileMarkConfig} from './config';
 import {compileStackProperties, StackProperties} from './stack';
 import {scaleType} from './scale';
-import {ScaleType} from '../scale';
-import {AggregateOp} from '../aggregate';
-import {CHANNELS} from '../channel';
 
 export interface ScaleMap {
   x?: Scale;
@@ -32,31 +28,82 @@ export interface ScaleMap {
   shape?: Scale;
 };
 
-/**
- * Internal model of Vega-Lite specification for the compiler.
- */
-export class Model {
-  private _spec: Spec;
-  private _stack: StackProperties;
+export class BaseModel {
+  protected _name: string;
+  protected _description: string;
+  protected _data: Data;
+  protected _transform: Transform;
+  // TODO: add _layout
 
-  private _scale: ScaleMap;
+  protected _scale: ScaleMap;
 
-  private _axis: {
+  protected _axis: {
     x?: AxisProperties;
     y?: AxisProperties;
     row?: AxisProperties;
     column?: AxisProperties;
   };
 
-  private _legend: {
+  protected _legend: {
     color?: LegendProperties;
     size?: LegendProperties;
     shape?: LegendProperties;
   };
 
-  private _config: Config;
+  protected _config: Config;
 
-  constructor(spec: Spec) {
+  constructor(spec: BaseSpec) {
+    this._name = spec.name;
+    this._data = spec.data;
+    this._description = spec.description;
+    this._transform = spec.transform;
+  }
+
+  public data() {
+    return this._data;
+  }
+
+  public transform() {
+    return this._transform || {};
+  }
+
+  public scale(channel: Channel): Scale {
+    return this._scale[channel];
+  }
+
+  /** returns scale name for a given channel */
+  public scaleName(channel: Channel|string): string {
+    const name = this._name;
+    return (name ? name + '-' : '') + channel;
+  }
+
+  public axis(channel: Channel): AxisProperties {
+    return this._axis[channel];
+  }
+
+  public legend(channel: Channel): LegendProperties {
+    return this._legend[channel];
+  }
+
+  /**
+   * Get the spec configuration.
+   */
+  public config() {
+    return this._config;
+  }
+}
+
+/**
+ * Internal model of Vega-Lite specification for the compiler.
+ */
+export class UnitModel extends BaseModel {
+  // TODO: decompose this into FacetModel
+  private _spec: SingleSpec;
+  private _stack: StackProperties;
+
+  constructor(spec: SingleSpec) {
+    super(spec);
+
     const model = this; // For self-reference in children method.
 
     this._spec = spec;
@@ -191,7 +238,7 @@ export class Model {
   }
 
   // TODO: remove
-  public spec(): Spec {
+  public spec(): SingleSpec {
     return this._spec;
   }
 
@@ -253,41 +300,7 @@ export class Model {
     return vlEncoding.isAggregate(this._spec.encoding) ? SUMMARY : SOURCE;
   }
 
-  public data() {
-    return this._spec.data;
-  }
-
-  public transform() {
-    return this._spec.transform || {};
-  }
-
-  /**
-   * Get the spec configuration.
-   */
-  public config() {
-    return this._config;
-  }
-
   public sort(channel: Channel) {
     return this._spec.encoding[channel].sort;
-  }
-
-  public scale(channel: Channel): Scale {
-    return this._scale[channel];
-  }
-
-
-  public axis(channel: Channel): AxisProperties {
-    return this._axis[channel];
-  }
-
-  public legend(channel: Channel): LegendProperties {
-    return this._legend[channel];
-  }
-
-  /** returns scale name for a given channel */
-  public scaleName(channel: Channel|string): string {
-    const name = this.spec().name;
-    return (name ? name + '-' : '') + channel;
   }
 }

@@ -1,4 +1,4 @@
-import {Model} from '../Model';
+import {UnitModel} from '../Model';
 import {X, Y} from '../../channel';
 import {isDimension, isMeasure} from '../../fielddef';
 import {applyColorAndOpacity, applyMarkConfig} from '../common';
@@ -8,7 +8,7 @@ export namespace area {
     return 'area';
   }
 
-  export function properties(model: Model) {
+  export function properties(model: UnitModel) {
     // TODO Use Vega's marks properties interface
     let p: any = {};
 
@@ -87,7 +87,7 @@ export namespace area {
     return p;
   }
 
-  export function labels(model: Model) {
+  export function labels(model: UnitModel) {
     // TODO(#240): fill this method
     return undefined;
   }

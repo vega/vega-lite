@@ -5,7 +5,7 @@ import {NOMINAL, ORDINAL, TEMPORAL} from '../type';
 import {contains, extend, truncate} from '../util';
 
 import {formatMixins} from './common';
-import {Model} from './Model';
+import {UnitModel} from './Model';
 
 // https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations
 declare let exports;
@@ -13,7 +13,7 @@ declare let exports;
 /**
  * Make an inner axis for showing grid for shared axis.
  */
-export function compileInnerAxis(channel: Channel, model: Model) {
+export function compileInnerAxis(channel: Channel, model: UnitModel) {
   const isCol = channel === COLUMN,
     isRow = channel === ROW,
     type = isCol ? 'x' : isRow ? 'y': channel;
@@ -39,7 +39,7 @@ export function compileInnerAxis(channel: Channel, model: Model) {
   const axis = model.axis(channel);
 
   ['layer', 'ticks', 'values', 'subdivide'].forEach(function(property) {
-    let method: (model: Model, channel: Channel, def:any)=>any;
+    let method: (model: UnitModel, channel: Channel, def:any)=>any;
 
     const value = (method = exports[property]) ?
                   // calling axis.format, axis.grid, ...
@@ -53,7 +53,7 @@ export function compileInnerAxis(channel: Channel, model: Model) {
   return def;
 }
 
-export function compileAxis(channel: Channel, model: Model) {
+export function compileAxis(channel: Channel, model: UnitModel) {
   const isCol = channel === COLUMN,
     isRow = channel === ROW,
     type = isCol ? 'x' : isRow ? 'y': channel;
@@ -77,7 +77,7 @@ export function compileAxis(channel: Channel, model: Model) {
     'tickPadding', 'tickSize', 'tickSizeMajor', 'tickSizeMinor', 'tickSizeEnd',
     'titleOffset', 'values', 'subdivide'
   ].forEach(function(property) {
-    let method: (model: Model, channel: Channel, def:any)=>any;
+    let method: (model: UnitModel, channel: Channel, def:any)=>any;
 
     const value = (method = exports[property]) ?
                   // calling axis.format, axis.grid, ...
@@ -107,7 +107,7 @@ export function compileAxis(channel: Channel, model: Model) {
   return def;
 }
 
-export function offset(model: Model, channel: Channel) {
+export function offset(model: UnitModel, channel: Channel) {
   return model.axis(channel).offset;
 }
 
@@ -116,7 +116,7 @@ export function offset(model: Model, channel: Channel) {
  * Default rules for whether to show a grid should be shown for a channel.
  * If `grid` is unspecified, the default value is `true` for ordinal scales that are not binned
  */
-export function gridShow(model: Model, channel: Channel) {
+export function gridShow(model: UnitModel, channel: Channel) {
   const grid = model.axis(channel).grid;
   if (grid !== undefined) {
     return grid;
@@ -125,7 +125,7 @@ export function gridShow(model: Model, channel: Channel) {
   return !model.isOrdinalScale(channel) && !model.fieldDef(channel).bin;
 }
 
-export function grid(model: Model, channel: Channel) {
+export function grid(model: UnitModel, channel: Channel) {
   if (channel === ROW || channel === COLUMN) {
     // never apply grid for ROW and COLUMN since we manually create rule-group for them
     return undefined;
@@ -138,7 +138,7 @@ export function grid(model: Model, channel: Channel) {
   );
 }
 
-export function layer(model: Model, channel: Channel, def) {
+export function layer(model: UnitModel, channel: Channel, def) {
   const layer = model.axis(channel).layer;
   if (layer !== undefined) {
     return layer;
@@ -150,7 +150,7 @@ export function layer(model: Model, channel: Channel, def) {
   return undefined; // otherwise return undefined and use Vega's default.
 };
 
-export function orient(model: Model, channel: Channel) {
+export function orient(model: UnitModel, channel: Channel) {
   const orient = model.axis(channel).orient;
   if (orient) {
     return orient;
@@ -165,7 +165,7 @@ export function orient(model: Model, channel: Channel) {
   return undefined;
 }
 
-export function ticks(model: Model, channel: Channel) {
+export function ticks(model: UnitModel, channel: Channel) {
   const ticks = model.axis(channel).ticks;
   if (ticks !== undefined) {
     return ticks;
@@ -180,7 +180,7 @@ export function ticks(model: Model, channel: Channel) {
   return undefined;
 }
 
-export function tickSize(model: Model, channel: Channel) {
+export function tickSize(model: UnitModel, channel: Channel) {
   const tickSize = model.axis(channel).tickSize;
   if (tickSize !== undefined) {
     return tickSize;
@@ -189,7 +189,7 @@ export function tickSize(model: Model, channel: Channel) {
 }
 
 
-export function title(model: Model, channel: Channel) {
+export function title(model: UnitModel, channel: Channel) {
   const axis = model.axis(channel);
   if (axis.title !== undefined) {
     return axis.title;
@@ -213,7 +213,7 @@ export function title(model: Model, channel: Channel) {
 }
 
 export namespace properties {
-  export function axis(model: Model, channel: Channel, axisPropsSpec, def) {
+  export function axis(model: UnitModel, channel: Channel, axisPropsSpec, def) {
     const axis = model.axis(channel);
 
     return extend(
@@ -224,7 +224,7 @@ export namespace properties {
     );
   }
 
-  export function labels(model: Model, channel: Channel, labelsSpec, def) {
+  export function labels(model: UnitModel, channel: Channel, labelsSpec, def) {
     const fieldDef = model.fieldDef(channel);
     const axis = model.axis(channel);
 

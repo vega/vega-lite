@@ -57,6 +57,7 @@
     "src/config.ts",
     "src/data.ts",
     "src/encoding.ts",
+    "src/facet.ts",
     "src/fielddef.ts",
     "src/legend.ts",
     "src/mark.ts",

@@ -4,7 +4,7 @@ declare var exports;
 import {FieldDef} from '../fielddef';
 
 import {contains, extend} from '../util';
-import {Model} from './Model';
+import {UnitModel} from './Model';
 import {SHARED_DOMAIN_OPS} from '../aggregate';
 import {COLUMN, ROW, X, Y, SHAPE, SIZE, COLOR, TEXT, hasScale, Channel} from '../channel';
 import {SOURCE, STACKED_SCALE} from '../data';
@@ -25,7 +25,7 @@ export const COLOR_LEGEND = 'color_legend';
 // scale used to get labels for binned color scales
 export const COLOR_LEGEND_LABEL = 'color_legend_label';
 
-export function compileScales(model: Model) {
+export function compileScales(model: UnitModel) {
   return model.channelWithScales().reduce(function(scales: any[], channel: Channel) {
       const fieldDef = model.fieldDef(channel);
 
@@ -46,7 +46,7 @@ export function compileScales(model: Model) {
 /**
  * Return the main scale for each channel.  (Only color can have multiple scales.)
  */
-function mainScale(model: Model, fieldDef: FieldDef, channel: Channel) {
+function mainScale(model: UnitModel, fieldDef: FieldDef, channel: Channel) {
   const scale = model.scale(channel);
   const sort = model.sort(channel);
 
@@ -88,7 +88,7 @@ function mainScale(model: Model, fieldDef: FieldDef, channel: Channel) {
  *  - For a field with bin or timeUnit, provide an identity ordinal scale
  *    (mapping the field values to themselves)
  */
-function colorLegendScale(model: Model, fieldDef: FieldDef) {
+function colorLegendScale(model: UnitModel, fieldDef: FieldDef) {
   return {
     name: model.scaleName(COLOR_LEGEND),
     type: 'ordinal',
@@ -104,7 +104,7 @@ function colorLegendScale(model: Model, fieldDef: FieldDef) {
 /**
  *  Return an additional scale for bin labels because we need to map bin_start to bin_range in legends
  */
-function binColorLegendLabel(model: Model, fieldDef: FieldDef) {
+function binColorLegendLabel(model: UnitModel, fieldDef: FieldDef) {
   return {
     name: model.scaleName(COLOR_LEGEND_LABEL),
     type: 'ordinal',
@@ -176,7 +176,7 @@ export function scaleType(scale: Scale, fieldDef: FieldDef, channel: Channel, ma
   return null;
 }
 
-export function domain(scale: Scale, model: Model, channel:Channel, scaleType: ScaleType): any {
+export function domain(scale: Scale, model: UnitModel, channel:Channel, scaleType: ScaleType): any {
   const fieldDef = model.fieldDef(channel);
 
   if (scale.domain) { // explicit value
@@ -260,7 +260,7 @@ export function domain(scale: Scale, model: Model, channel:Channel, scaleType: S
   }
 }
 
-export function domainSort(model: Model, channel: Channel, scaleType: ScaleType): any {
+export function domainSort(model: UnitModel, channel: Channel, scaleType: ScaleType): any {
   if (scaleType !== ScaleType.ORDINAL) {
     return undefined;
   }
@@ -290,7 +290,7 @@ export function domainSort(model: Model, channel: Channel, scaleType: ScaleType)
  * 2. Aggregation function is not `count` or `sum`
  * 3. The scale is quantitative or time scale.
  */
-function _includeRawDomain (scale: Scale, model: Model, channel: Channel, scaleType: ScaleType) {
+function _includeRawDomain (scale: Scale, model: UnitModel, channel: Channel, scaleType: ScaleType) {
   const fieldDef = model.fieldDef(channel);
 
   return scale.includeRawDomain && //  if includeRawDomain is enabled
@@ -310,7 +310,7 @@ function _includeRawDomain (scale: Scale, model: Model, channel: Channel, scaleT
 }
 
 
-export function rangeMixins(scale: Scale, model: Model, channel: Channel, scaleType: ScaleType): any {
+export function rangeMixins(scale: Scale, model: UnitModel, channel: Channel, scaleType: ScaleType): any {
   // TODO: need to add rule for quantile, quantize, threshold scale
 
   const fieldDef = model.fieldDef(channel),

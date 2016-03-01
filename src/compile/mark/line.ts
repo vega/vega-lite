@@ -1,4 +1,4 @@
-import {Model} from '../Model';
+import {UnitModel} from '../Model';
 import {X, Y} from '../../channel';
 import {applyColorAndOpacity, applyMarkConfig} from '../common';
 
@@ -8,7 +8,7 @@ export namespace line {
     return 'line';
   }
 
-  export function properties(model: Model) {
+  export function properties(model: UnitModel) {
     // TODO Use Vega's marks properties interface
     let p: any = {};
 
@@ -37,7 +37,7 @@ export namespace line {
     return p;
   }
 
-  export function labels(model: Model) {
+  export function labels(model: UnitModel) {
     // TODO(#240): fill this method
     return undefined;
   }

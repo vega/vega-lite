@@ -1,12 +1,12 @@
 import {VgData} from '../vega.schema';
 
-import {Model} from './Model';
+import {UnitModel} from './Model';
 import {Channel, X, Y, ROW, COLUMN} from '../channel';
 import {LAYOUT} from '../data';
 import {TEXT as TEXT_MARK} from '../mark';
 import {rawDomain} from './time';
 
-export function compileLayoutData(model: Model): VgData {
+export function compileLayoutData(model: UnitModel): VgData {
   /* Aggregation summary object for fields with ordinal scales
    * that wee need to calculate cardinality for. */
   const distinctSummary = [X, Y, ROW, COLUMN].reduce(function(summary, channel: Channel) {
@@ -68,7 +68,7 @@ export function compileLayoutData(model: Model): VgData {
   };
 }
 
-function cardinalityFormula(model: Model, channel: Channel) {
+function cardinalityFormula(model: UnitModel, channel: Channel) {
   const scale = model.scale(channel);
   if (scale.domain instanceof Array) {
     return scale.domain.length;
@@ -81,7 +81,7 @@ function cardinalityFormula(model: Model, channel: Channel) {
         model.field(channel, {datum: true, prefn: 'distinct_'});
 }
 
-function scaleWidthFormula(model: Model, channel: Channel, nonOrdinalSize: number): string {
+function scaleWidthFormula(model: UnitModel, channel: Channel, nonOrdinalSize: number): string {
   if (model.has(channel)) {
     if (model.isOrdinalScale(channel)) {
       const scale = model.scale(channel);
@@ -100,7 +100,7 @@ function scaleWidthFormula(model: Model, channel: Channel, nonOrdinalSize: numbe
   }
 }
 
-function facetScaleWidthFormula(model: Model, channel: Channel, innerWidth: string) {
+function facetScaleWidthFormula(model: UnitModel, channel: Channel, innerWidth: string) {
   const scale = model.scale(channel);
   if (model.has(channel)) {
     const cardinality = scale.domain instanceof Array ? scale.domain.length :

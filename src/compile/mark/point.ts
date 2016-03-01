@@ -1,4 +1,4 @@
-import {Model} from '../Model';
+import {UnitModel} from '../Model';
 import {X, Y, SHAPE, SIZE} from '../../channel';
 import {applyColorAndOpacity} from '../common';
 
@@ -7,7 +7,7 @@ export namespace point {
     return 'symbol';
   }
 
-  export function properties(model: Model, fixedShape?: string) {
+  export function properties(model: UnitModel, fixedShape?: string) {
     // TODO Use Vega's marks properties interface
     let p: any = {};
 
@@ -59,7 +59,7 @@ export namespace point {
     return p;
   }
 
-  function sizeValue(model: Model) {
+  function sizeValue(model: UnitModel) {
     const fieldDef = model.fieldDef(SIZE);
     if (fieldDef && fieldDef.value !== undefined) {
        return fieldDef.value;
@@ -68,7 +68,7 @@ export namespace point {
     return model.config().mark.size;
   }
 
-  export function labels(model: Model) {
+  export function labels(model: UnitModel) {
     // TODO(#240): fill this method
   }
 }
@@ -78,11 +78,11 @@ export namespace circle {
     return 'symbol';
   }
 
-  export function properties(model: Model) {
+  export function properties(model: UnitModel) {
     return point.properties(model, 'circle');
   }
 
-  export function labels(model: Model) {
+  export function labels(model: UnitModel) {
     // TODO(#240): fill this method
     return undefined;
   }
@@ -93,11 +93,11 @@ export namespace square {
     return 'symbol';
   }
 
-  export function properties(model: Model) {
+  export function properties(model: UnitModel) {
     return point.properties(model, 'square');
   }
 
-  export function labels(model: Model) {
+  export function labels(model: UnitModel) {
     // TODO(#240): fill this method
     return undefined;
   }
