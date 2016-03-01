@@ -5,6 +5,6 @@
     "x": {"aggregate": "sum", "field": "yield", "type": "quantitative"},
     "y": {"field": "variety", "type": "nominal"},
     "color": {"field": "site", "type": "nominal"},
-    "order": {"aggregate": "sum", "field": "yield", "type": "nominal"}
+    "order": {"aggregate": "sum", "field": "yield", "type": "quantitative"}
   }
 }

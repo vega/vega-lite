@@ -156,7 +156,7 @@ export interface MarkConfig {
   /**
    * The offset (in pixels) into which to begin drawing with the stroke dash array.
    */
-  strokeDashOffset?: number[];
+  strokeDashOffset?: number;
 
   // ---------- Stacking: Bar & Area ----------
   stacked?: StackOffset;
