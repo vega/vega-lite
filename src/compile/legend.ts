@@ -13,40 +13,41 @@ import {VgLegend} from '../vega.schema';
 
 
 export function parseLegendComponent(model: UnitModel): Dict<VgLegend> {
-  let legendMap: Dict<VgLegend> = {};
-
-  if (model.has(COLOR) && model.legend(COLOR)) {
-    const fieldDef = model.fieldDef(COLOR);
-    const scale = model.scaleName(useColorLegendScale(fieldDef) ?
-      // To produce ordinal legend (list, rather than linear range) with correct labels:
-      // - For an ordinal field, provide an ordinal scale that maps rank values to field values
-      // - For a field with bin or timeUnit, provide an identity ordinal scale
-      // (mapping the field values to themselves)
-      COLOR_LEGEND :
-      COLOR
-    );
-
-    const def = model.config().mark.filled ? { fill: scale } : { stroke: scale };
-    legendMap['color'] = parseLegend(model, COLOR, def);
-  }
-
-  if (model.has(SIZE) && model.legend(SIZE)) {
-    legendMap['size'] = parseLegend(model, SIZE, {
-      size: model.scaleName(SIZE)
-    });
-  }
-
-  if (model.has(SHAPE) && model.legend(SHAPE)) {
-    legendMap['shape'] = parseLegend(model, SHAPE, {
-      shape: model.scaleName(SHAPE)
-    });
-  }
-  return legendMap;
+  return [COLOR, SIZE, SHAPE].reduce(function(legendComponent, channel) {
+    if (model.legend(channel)) {
+      legendComponent[channel] = parseLegend(model, channel);
+    }
+    return legendComponent;
+  }, {} as Dict<VgLegend>);
 }
 
-export function parseLegend(model: UnitModel, channel: Channel, def): VgLegend {
+function getLegendDefWithScale(model: UnitModel, channel: Channel): VgLegend {
+  switch (channel) {
+    case COLOR:
+      const fieldDef = model.fieldDef(COLOR);
+      const scale = model.scaleName(useColorLegendScale(fieldDef) ?
+        // To produce ordinal legend (list, rather than linear range) with correct labels:
+        // - For an ordinal field, provide an ordinal scale that maps rank values to field values
+        // - For a field with bin or timeUnit, provide an identity ordinal scale
+        // (mapping the field values to themselves)
+        COLOR_LEGEND :
+        COLOR
+      );
+
+      return model.config().mark.filled ? { fill: scale } : { stroke: scale };
+    case SIZE:
+      return { size: model.scaleName(SIZE) };
+    case SHAPE:
+      return { shape: model.scaleName(SHAPE) };
+  }
+  return null;
+}
+
+export function parseLegend(model: UnitModel, channel: Channel): VgLegend {
   const fieldDef = model.fieldDef(channel);
   const legend = model.legend(channel);
+
+  let def: VgLegend = getLegendDefWithScale(model, channel);
 
   // 1.1 Add properties with special rules
   def.title = title(legend, fieldDef);
