@@ -16,11 +16,11 @@ import {parseAxis} from './axis';
 import {applyConfig, FILL_STROKE_CONFIG} from './common';
 import {initMarkConfig} from './config';
 import {assembleData, parseUnitData} from './data';
-import {parseLegends} from './legend';
+import {parseLegendComponent} from './legend';
 import {assembleLayout, parseUnitLayout} from './layout';
 import {Model} from './model';
 import {parseMark} from './mark/mark';
-import {parseScales, scaleType} from './scale';
+import {parseScaleComponent, scaleType} from './scale';
 import {compileStackProperties, StackProperties} from './stack';
 
 /**
@@ -145,7 +145,7 @@ export class UnitModel extends Model {
   }
 
   public parseScale() {
-    this.component.scale = parseScales(this);
+    this.component.scale = parseScaleComponent(this);
   }
 
   public parseMark() {
@@ -171,7 +171,7 @@ export class UnitModel extends Model {
   }
 
   public parseLegend() {
-    this.component.legend = parseLegends(this);
+    this.component.legend = parseLegendComponent(this);
   }
 
   public assembleData(data: VgData[]): VgData[] {

@@ -16,7 +16,7 @@ import {buildModel} from './common';
 import {assembleData, parseFacetData} from './data';
 import {assembleLayout, parseFacetLayout} from './layout';
 import {Model} from './model';
-import {parseScales} from './scale';
+import {parseScaleComponent} from './scale';
 
 export class FacetModel extends Model {
   private _facet: Facet;
@@ -163,7 +163,7 @@ export class FacetModel extends Model {
     // TODO: support scales for field reference of parent data (e.g., for SPLOM)
 
     // First, add scale for row and column.
-    let scaleComponent = this.component.scale = parseScales(this);
+    let scaleComponent = this.component.scale = parseScaleComponent(this);
 
     // Then, move shared/union from its child spec.
     keys(child.component.scale).forEach(function(channel) {

@@ -12,7 +12,7 @@ import {UnitModel} from './unit';
 import {VgLegend} from '../vega.schema';
 
 
-export function parseLegends(model: UnitModel): Dict<VgLegend> {
+export function parseLegendComponent(model: UnitModel): Dict<VgLegend> {
   let legendMap: Dict<VgLegend> = {};
 
   if (model.has(COLOR) && model.legend(COLOR)) {
