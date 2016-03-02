@@ -1,6 +1,6 @@
 import {AggregateOp} from '../aggregate';
 import {AxisProperties} from '../axis';
-import {COLUMN, ROW, X, Y, COLOR, SHAPE, SIZE, TEXT, PATH, ORDER, Channel, UNIT_CHANNELS, supportMark} from '../channel';
+import {COLUMN, ROW, X, Y, TEXT, PATH, ORDER, Channel, UNIT_CHANNELS,  UNIT_SCALE_CHANNELS, NONSPATIAL_SCALE_CHANNELS, supportMark} from '../channel';
 import {defaultConfig, Config, CellConfig} from '../config';
 import {SOURCE, SUMMARY} from '../data';
 import {Encoding} from '../encoding';
@@ -83,7 +83,7 @@ export class UnitModel extends Model {
   }
 
   private _initScale(mark: Mark, encoding: Encoding, config: Config): Dict<Scale> {
-    return [X, Y, COLOR, SHAPE, SIZE].reduce(function(_scale, channel) {
+    return UNIT_SCALE_CHANNELS.reduce(function(_scale, channel) {
       if (vlEncoding.has(encoding, channel)) {
         const scaleSpec = encoding[channel].scale || {};
         const channelDef = encoding[channel];
@@ -120,7 +120,7 @@ export class UnitModel extends Model {
   }
 
   private _initLegend(encoding: Encoding, config: Config): Dict<LegendProperties> {
-    return [COLOR, SHAPE, SIZE].reduce(function(_legend, channel) {
+    return NONSPATIAL_SCALE_CHANNELS.reduce(function(_legend, channel) {
       if (vlEncoding.has(encoding, channel)) {
         const legendSpec = encoding[channel].legend;
         if (legendSpec !== false) {

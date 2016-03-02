@@ -39,6 +39,7 @@ export const CHANNELS = [X, Y, ROW, COLUMN, SIZE, SHAPE, COLOR, PATH, ORDER, TEX
 export const UNIT_CHANNELS = without(CHANNELS, [ROW, COLUMN]);
 export const UNIT_SCALE_CHANNELS = without(UNIT_CHANNELS, [PATH, ORDER, DETAIL, TEXT, LABEL]);
 export const NONSPATIAL_CHANNELS = without(UNIT_CHANNELS, [X, Y]);
+export const NONSPATIAL_SCALE_CHANNELS = without(UNIT_SCALE_CHANNELS, [X, Y]);
 
 export interface SupportedMark {
   point?: boolean;
