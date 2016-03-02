@@ -123,9 +123,11 @@ namespace properties {
     const filled = model.config().mark.filled;
 
     applyMarkConfig(symbols, model,
-      // Do not set fill (when filled) or stroke (when unfilled) property from config
-      // because the value from the scale should have precedence
-      without(FILL_STROKE_CONFIG, [ filled ? 'fill' : 'stroke'])
+      channel === COLOR ?
+        /* For color's legend, do not set fill (when filled) or stroke (when unfilled) property from config because the the legend's `fill` or `stroke` scale should have precedence */
+        without(FILL_STROKE_CONFIG, [ filled ? 'fill' : 'stroke']) :
+        /* For other legend, no need to omit. */
+        FILL_STROKE_CONFIG
     );
 
     if (filled) {
