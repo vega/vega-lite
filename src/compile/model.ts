@@ -15,17 +15,6 @@ import {DataComponent} from './data';
 import {LayoutComponent} from './layout';
 import {ScaleComponent} from './scale';
 
-// FIXME remove this
-export interface ScaleMap {
-  x?: Scale;
-  y?: Scale;
-  row?: Scale;
-  column?: Scale;
-  color?: Scale;
-  size?: Scale;
-  shape?: Scale;
-};
-
 /**
  * Composable Components that are intermediate results from parsing phase of the
  * compilations.  These composable components will be assembled in the last phase
@@ -91,20 +80,11 @@ export abstract class Model {
   protected _sizeNameMap: NameMap;
 
   protected _transform: Transform;
-  protected _scale: ScaleMap;
+  protected _scale: Dict<Scale>;
 
-  protected _axis: {
-    x?: AxisProperties;
-    y?: AxisProperties;
-    row?: AxisProperties;
-    column?: AxisProperties;
-  };
+  protected _axis: Dict<AxisProperties>;
 
-  protected _legend: {
-    color?: LegendProperties;
-    size?: LegendProperties;
-    shape?: LegendProperties;
-  };
+  protected _legend: Dict<LegendProperties>;
 
   protected _config: Config;
 

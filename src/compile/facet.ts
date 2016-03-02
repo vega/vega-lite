@@ -1,14 +1,14 @@
-import {AxisOrient} from '../axis';
+import {AxisOrient, AxisProperties} from '../axis';
 import {COLUMN, ROW, X, Y, Channel} from '../channel';
 import {defaultConfig, Config} from '../config';
 import {SOURCE, SUMMARY} from '../data';
 import {Facet} from '../facet';
 import {channelMappingForEach} from '../encoding';
 import {FieldDef, isDimension} from '../fielddef';
-import {ScaleType} from '../scale';
+import {Scale, ScaleType} from '../scale';
 import {FacetSpec} from '../spec';
 import {getFullName} from '../type';
-import {extend, keys, vals, flatten, duplicate, mergeDeep} from '../util';
+import {extend, keys, vals, flatten, duplicate, mergeDeep, Dict} from '../util';
 import {VgData, VgMarkGroup} from '../vega.schema';
 
 import {parseAxis, parseInnerAxis, gridShow, parseAxisComponent} from './axis';
@@ -61,7 +61,7 @@ export class FacetModel extends Model {
     return facet;
   }
 
-  private _initScale(facet: Facet, config: Config, child: Model) {
+  private _initScale(facet: Facet, config: Config, child: Model): Dict<Scale> {
     return [ROW, COLUMN].reduce(function(_scale, channel) {
       if (facet[channel]) {
 
@@ -76,10 +76,10 @@ export class FacetModel extends Model {
         }, scaleSpec);
       }
       return _scale;
-    }, {});
+    }, {} as Dict<Scale>);
   }
 
-  private _initAxis(facet: Facet, config: Config, child: Model) {
+  private _initAxis(facet: Facet, config: Config, child: Model): Dict<AxisProperties> {
     return [ROW, COLUMN].reduce(function(_axis, channel) {
       if (facet[channel]) {
         const axisSpec = facet[channel].axis;
@@ -101,7 +101,7 @@ export class FacetModel extends Model {
         }
       }
       return _axis;
-    }, {});
+    }, {} as Dict<AxisProperties>);
   }
 
   public facet() {

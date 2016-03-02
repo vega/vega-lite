@@ -2,16 +2,15 @@ import {Encoding} from '../encoding';
 import {Config} from '../config';
 import {FieldDef} from '../fielddef';
 import {Channel, X, Y, COLOR, DETAIL, ORDER} from '../channel';
-import {ScaleType} from '../scale';
+import {Scale, ScaleType} from '../scale';
 import {StackOffset} from '../config';
 import {BAR, AREA, Mark} from '../mark';
 import {field, isMeasure} from '../fielddef';
 import {has, isAggregate} from '../encoding';
-import {isArray, contains} from '../util';
+import {isArray, contains, Dict} from '../util';
 
 import {sortField} from './common';
 import {Model} from './model';
-import {ScaleMap} from './model';
 import {UnitModel} from './unit';
 
 
@@ -39,7 +38,7 @@ export interface StackTransform {
 }
 
 /** Compile stack properties from a given spec */
-export function compileStackProperties(mark: Mark, encoding: Encoding, scale: ScaleMap, config: Config) {
+export function compileStackProperties(mark: Mark, encoding: Encoding, scale: Dict<Scale>, config: Config) {
   const stackFields = getStackFields(mark, encoding, scale);
 
   if (stackFields.length > 0 &&
@@ -70,7 +69,7 @@ export function compileStackProperties(mark: Mark, encoding: Encoding, scale: Sc
 }
 
 /** Compile stack-by field names from (from 'color' and 'detail') */
-function getStackFields(mark: Mark, encoding: Encoding, scaleMap: ScaleMap) {
+function getStackFields(mark: Mark, encoding: Encoding, scaleMap: Dict<Scale>) {
   return [COLOR, DETAIL].reduce(function(fields, channel) {
     const channelEncoding = encoding[channel];
     if (has(encoding, channel)) {

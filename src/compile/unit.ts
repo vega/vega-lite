@@ -1,15 +1,17 @@
 import {AggregateOp} from '../aggregate';
+import {AxisProperties} from '../axis';
 import {COLUMN, ROW, X, Y, COLOR, SHAPE, SIZE, TEXT, PATH, ORDER, Channel, UNIT_CHANNELS, supportMark} from '../channel';
 import {defaultConfig, Config, CellConfig} from '../config';
 import {SOURCE, SUMMARY} from '../data';
 import {Encoding} from '../encoding';
 import * as vlEncoding from '../encoding'; // TODO: remove
 import {FieldDef, FieldRefOption, field} from '../fielddef';
+import {LegendProperties} from '../legend';
 import {Mark, TEXT as TEXTMARK} from '../mark';
-import {ScaleType} from '../scale';
+import {Scale, ScaleType} from '../scale';
 import {ExtendedUnitSpec} from '../spec';
 import {getFullName, QUANTITATIVE} from '../type';
-import {duplicate, extend, mergeDeep} from '../util';
+import {duplicate, extend, mergeDeep, Dict} from '../util';
 import {VgData} from '../vega.schema';
 
 import {parseAxisComponent} from './axis';
@@ -80,7 +82,7 @@ export class UnitModel extends Model {
     return config;
   }
 
-  private _initScale(mark: Mark, encoding: Encoding, config: Config) {
+  private _initScale(mark: Mark, encoding: Encoding, config: Config): Dict<Scale> {
     return [X, Y, COLOR, SHAPE, SIZE].reduce(function(_scale, channel) {
       if (vlEncoding.has(encoding, channel)) {
         const scaleSpec = encoding[channel].scale || {};
@@ -98,10 +100,10 @@ export class UnitModel extends Model {
         }, scaleSpec);
       }
       return _scale;
-    }, {});
+    }, {} as Dict<Scale>);
   }
 
-  private _initAxis(encoding: Encoding, config: Config) {
+  private _initAxis(encoding: Encoding, config: Config): Dict<AxisProperties> {
     return [X, Y].reduce(function(_axis, channel) {
       // Position Axis
       if (vlEncoding.has(encoding, channel)) {
@@ -114,10 +116,10 @@ export class UnitModel extends Model {
         }
       }
       return _axis;
-    }, {});
+    }, {} as Dict<AxisProperties>);
   }
 
-  private _initLegend(encoding: Encoding, config: Config) {
+  private _initLegend(encoding: Encoding, config: Config): Dict<LegendProperties> {
     return [COLOR, SHAPE, SIZE].reduce(function(_legend, channel) {
       if (vlEncoding.has(encoding, channel)) {
         const legendSpec = encoding[channel].legend;
@@ -128,7 +130,7 @@ export class UnitModel extends Model {
         }
       }
       return _legend;
-    }, {});
+    }, {} as Dict<LegendProperties>);
   }
 
   public parseData() {
