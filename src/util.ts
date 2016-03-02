@@ -76,7 +76,7 @@ export function all<T>(arr: Array<T>, f: (d: T, k?, i?) => boolean) {
   return true;
 }
 
-export function mergeArrays(arrays: any[]) {
+export function flatten(arrays: any[]) {
   return [].concat.apply([], arrays);
 }
 

@@ -8,7 +8,7 @@ import {LegendProperties} from '../legend';
 import {Scale, ScaleType} from '../scale';
 import {BaseSpec} from '../spec';
 import {Transform} from '../transform';
-import {extend, mergeArrays, vals, Dict} from '../util';
+import {extend, flatten, vals, Dict} from '../util';
 import {VgData, VgMarkGroup, VgScale, VgAxis, VgLegend} from '../vega.schema';
 
 import {DataComponent} from './data';
@@ -162,7 +162,7 @@ export abstract class Model {
 
   public assembleScales(): VgScale[] {
     // FIXME: this should help assemble scale domains with scale signature as well
-    return mergeArrays(vals(this.component.scale));
+    return flatten(vals(this.component.scale));
   }
 
   public abstract assembleMarks(): any[]; // TODO: VgMarkGroup[]

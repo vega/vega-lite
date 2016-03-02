@@ -8,7 +8,7 @@ import {FieldDef, isDimension} from '../fielddef';
 import {ScaleType} from '../scale';
 import {FacetSpec} from '../spec';
 import {getFullName} from '../type';
-import {extend, keys, vals, mergeArrays, duplicate, mergeDeep} from '../util';
+import {extend, keys, vals, flatten, duplicate, mergeDeep} from '../util';
 import {VgData, VgMarkGroup} from '../vega.schema';
 
 import {parseAxis, parseInnerAxis, gridShow, parseAxisComponent} from './axis';
@@ -278,7 +278,7 @@ export class FacetModel extends Model {
     return [].concat(
       // axisGroup is a mapping to VgMarkGroup
       vals(this.component.axisGroup),
-      mergeArrays(vals(this.component.gridGroup)),
+      flatten(vals(this.component.gridGroup)),
       this.component.mark
     );
   }

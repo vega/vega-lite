@@ -7,7 +7,7 @@ import {ScaleType} from '../scale';
 import {TimeUnit} from '../timeunit';
 import {Formula} from '../transform';
 import {QUANTITATIVE, TEMPORAL, ORDINAL} from '../type';
-import {extend, keys, vals, reduce, contains, mergeArrays, Dict, StringSet} from '../util';
+import {extend, keys, vals, reduce, contains, flatten, Dict, StringSet} from '../util';
 import {VgData, VgTransform} from '../vega.schema';
 
 import {FacetModel} from './facet';
@@ -384,7 +384,7 @@ export namespace bin {
   }
 
   export function assemble(component: DataComponent) {
-    return mergeArrays(vals(component.bin));
+    return flatten(vals(component.bin));
   }
 }
 
@@ -737,7 +737,7 @@ export namespace colorRank {
   }
 
   export function assemble(component: DataComponent) {
-    return mergeArrays(vals(component.colorRank));
+    return flatten(vals(component.colorRank));
   }
 }
 
