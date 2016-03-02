@@ -8,10 +8,10 @@ import {FieldDef, isDimension} from '../fielddef';
 import {ScaleType} from '../scale';
 import {FacetSpec} from '../spec';
 import {getFullName} from '../type';
-import {extend, keys, vals, mergeArrays, duplicate, mergeDeep, Dict} from '../util';
-import {VgData, VgAxis, VgMarkGroup} from '../vega.schema';
+import {extend, keys, vals, mergeArrays, duplicate, mergeDeep} from '../util';
+import {VgData, VgMarkGroup} from '../vega.schema';
 
-import {parseAxis, parseInnerAxis, gridShow} from './axis';
+import {parseAxis, parseInnerAxis, gridShow, parseAxisComponent} from './axis';
 import {buildModel} from './common';
 import {assembleData, parseFacetData} from './data';
 import {assembleLayout, parseFacetLayout} from './layout';
@@ -218,14 +218,7 @@ export class FacetModel extends Model {
 
   public parseAxis() {
     this.child().parseAxis();
-
-    let axis: Dict<VgAxis> = this.component.axis = {};
-    if (this.axis(ROW)) {
-      axis['row'] = parseAxis(ROW, this);
-    }
-    if (this.axis(COLUMN)) {
-      axis['column'] = parseAxis(COLUMN, this);
-    }
+    this.component.axis = parseAxisComponent(this, [ROW, COLUMN]);
   }
 
   public parseAxisGroup() {

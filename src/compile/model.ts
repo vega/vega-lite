@@ -30,13 +30,15 @@ export interface Component {
   data: DataComponent;
   layout: LayoutComponent;
   scale: Dict<ScaleComponent>;
-  mark: VgMarkGroup[];
   axis: Dict<VgAxis>;
+  legend: Dict<VgLegend>;
 
   /** storing axes group for facet and concat */
   axisGroup: Dict<VgMarkGroup>;
+  /** storing grid group for facet (and concat?) */
   gridGroup: Dict<VgMarkGroup[]>;
-  legend: Dict<VgLegend>;
+
+  mark: VgMarkGroup[];
 }
 
 class NameMap {
@@ -126,7 +128,7 @@ export abstract class Model {
     this.parseScale(); // depends on data name
     this.parseAxis(); // depends on scale name
     this.parseLegend(); // depends on scale name
-    this.parseAxisGroup();
+    this.parseAxisGroup(); // depends on child axis
     this.parseGridGroup();
     this.parseMark(); // depends on data name and scale name, axisGroup, gridGroup and children's scale, axis, legend and mark.
   }

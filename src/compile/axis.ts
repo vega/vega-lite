@@ -2,7 +2,8 @@ import {AxisOrient} from '../axis';
 import {COLUMN, ROW, X, Y, Channel} from '../channel';
 import {title as fieldDefTitle, isDimension} from '../fielddef';
 import {NOMINAL, ORDINAL, TEMPORAL} from '../type';
-import {contains, extend, truncate} from '../util';
+import {contains, extend, truncate, Dict} from '../util';
+import {VgAxis} from '../vega.schema';
 
 import {formatMixins} from './common';
 import {Model} from './model';
@@ -11,11 +12,19 @@ import {UnitModel} from './unit';
 // https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations
 declare let exports;
 
+export function parseAxisComponent(model: Model, axisChannels: Channel[]): Dict<VgAxis> {
+  return axisChannels.reduce(function(axis, channel) {
+    if (model.axis(channel)) {
+      axis[channel] = parseAxis(channel, model);
+    }
+    return axis;
+  }, {} as Dict<VgAxis>);
+}
 
 /**
  * Make an inner axis for showing grid for shared axis.
  */
-export function parseInnerAxis(channel: Channel, model: Model) {
+export function parseInnerAxis(channel: Channel, model: Model): VgAxis {
   const isCol = channel === COLUMN,
     isRow = channel === ROW,
     type = isCol ? 'x' : isRow ? 'y': channel;
@@ -55,7 +64,7 @@ export function parseInnerAxis(channel: Channel, model: Model) {
   return def;
 }
 
-export function parseAxis(channel: Channel, model: Model) {
+export function parseAxis(channel: Channel, model: Model): VgAxis {
   const isCol = channel === COLUMN,
     isRow = channel === ROW,
     type = isCol ? 'x' : isRow ? 'y': channel;

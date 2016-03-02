@@ -12,7 +12,7 @@ import {getFullName, QUANTITATIVE} from '../type';
 import {duplicate, extend, mergeDeep} from '../util';
 import {VgData} from '../vega.schema';
 
-import {parseAxis} from './axis';
+import {parseAxisComponent} from './axis';
 import {applyConfig, FILL_STROKE_CONFIG} from './common';
 import {initMarkConfig} from './config';
 import {assembleData, parseUnitData} from './data';
@@ -153,13 +153,7 @@ export class UnitModel extends Model {
   }
 
   public parseAxis() {
-    let axis: any = this.component.axis = {};
-    if (this.axis(X)) {
-      axis.x = parseAxis(X, this);
-    }
-    if (this.axis(Y)) {
-      axis.y = parseAxis(Y, this);
-    }
+    this.component.axis = parseAxisComponent(this, [X, Y]);
   }
 
   public parseAxisGroup() {
