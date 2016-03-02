@@ -40,6 +40,7 @@ export namespace point {
       }
       // TODO: fieldDef.value (for layering)
     }
+    // TODO: allow this to fit
     return { value: config.scale.bandSize / 2 };
   }
 
@@ -54,6 +55,7 @@ export namespace point {
       }
       // TODO: fieldDef.value (for layering)
     }
+    // TODO: allow this to fit
     return { value: config.scale.bandSize / 2 };
   }
 

@@ -71,6 +71,7 @@ export namespace text {
     if (textFieldDef && textFieldDef.type === QUANTITATIVE) {
       return { field: { group: 'width' }, offset: -5 };
     } else {
+      // TODO: allow this to fit
       return { value: config.scale.textBandWidth / 2 };
     }
   }
@@ -85,6 +86,7 @@ export namespace text {
         };
       }
     }
+    // TODO: allow this to fit
     // TODO consider if this should support group: height case too.
     return { value: config.scale.bandSize / 2 };
   }

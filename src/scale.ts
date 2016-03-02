@@ -20,6 +20,12 @@ export enum NiceTime {
     YEAR = 'year' as any,
 }
 
+export enum BandSize {
+  FIT = 'fit' as any
+}
+
+export const BANDSIZE_FIT = BandSize.FIT;
+
 export interface ScaleConfig {
   /**
    * If true, rounds numeric output values to integers.
@@ -37,7 +43,7 @@ export interface ScaleConfig {
    * and (2) `x` ordinal scale when the mark is not `text`.
    * @minimum 0
    */
-  bandSize?: number;
+  bandSize?: number | BandSize;
   /**
    * Default range for opacity.
    */
@@ -124,7 +130,7 @@ export interface Scale {
   /**
    * @minimum 0
    */
-  bandSize?: number;
+  bandSize?: number | BandSize;
   /**
    * Applies spacing among ordinal elements in the scale range. The actual effect depends on how the scale is configured. If the __points__ parameter is `true`, the padding value is interpreted as a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. Otherwise, padding is typically in the range [0, 1] and corresponds to the fraction of space in the range interval to allocate to padding. A value of 0.5 means that the range band width will be equal to the padding width. For more, see the [D3 ordinal scale documentation](https://github.com/mbostock/d3/wiki/Ordinal-Scales).
    */

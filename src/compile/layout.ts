@@ -1,7 +1,7 @@
 
 import {Channel, X, Y, ROW, COLUMN} from '../channel';
 import {LAYOUT} from '../data';
-import {ScaleType} from '../scale';
+import {ScaleType, BANDSIZE_FIT} from '../scale';
 import {Formula} from '../transform';
 import {extend, keys, StringSet} from '../util';
 import {VgData} from '../vega.schema';
@@ -87,7 +87,7 @@ function parseUnitSizeLayout(model: UnitModel, channel: Channel): SizeComponent 
 
 function unitSizeExpr(model: UnitModel, channel: Channel, nonOrdinalSize: number): string {
   if (model.scale(channel)) {
-    if (model.isOrdinalScale(channel)) {
+    if (model.isOrdinalScale(channel) && model.scale(channel).bandSize !== BANDSIZE_FIT) {
       const scale = model.scale(channel);
       return '(' + cardinalityFormula(model, channel) +
         ' + ' + scale.padding +
@@ -96,6 +96,7 @@ function unitSizeExpr(model: UnitModel, channel: Channel, nonOrdinalSize: number
       return nonOrdinalSize + '';
     }
   } else {
+    // TODO: need a way to set this to fit when using with layering.
     if (model.mark() === TEXTMARK && channel === X) {
       // for text table without x/y scale we need wider bandSize
       return model.config().scale.textBandWidth + '';
