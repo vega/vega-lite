@@ -119,35 +119,35 @@ export abstract class Model {
   }
 
 
-  public compile() {
-    this.compileData();
-    this.compileSelection();
-    this.compileLayout();
-    this.compileScale(); // depends on data name
-    this.compileAxis(); // depends on scale name
-    this.compileLegend(); // depends on scale name
-    this.compileAxisGroup();
-    this.compileGridGroup();
-    this.compileMark(); // depends on data name and scale name, axisGroup, gridGroup and children's scale, axis, legend and mark.
+  public parse() {
+    this.parseData();
+    this.parseSelectionData();
+    this.parseLayoutData();
+    this.parseScale(); // depends on data name
+    this.parseAxis(); // depends on scale name
+    this.parseLegend(); // depends on scale name
+    this.parseAxisGroup();
+    this.parseGridGroup();
+    this.parseMark(); // depends on data name and scale name, axisGroup, gridGroup and children's scale, axis, legend and mark.
   }
 
-  public abstract compileData();
+  public abstract parseData();
 
-  public abstract compileSelection();
+  public abstract parseSelectionData();
 
-  public abstract compileLayout();
+  public abstract parseLayoutData();
 
-  public abstract compileScale();
+  public abstract parseScale();
 
-  public abstract compileMark();
+  public abstract parseMark();
 
-  public abstract compileAxis();
+  public abstract parseAxis();
 
-  public abstract compileLegend();
+  public abstract parseLegend();
 
   // TODO: revise if these two methods make sense for shared scale concat
-  public abstract compileAxisGroup();
-  public abstract compileGridGroup();
+  public abstract parseAxisGroup();
+  public abstract parseGridGroup();
 
 
   public abstract assembleData(data: VgData[]): VgData[];

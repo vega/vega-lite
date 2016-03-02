@@ -64,14 +64,14 @@ export function assembleLayout(model: Model, layoutData: VgData[]): VgData[] {
 
 // FIXME: for nesting x and y, we need to declare x,y layout separately before joining later
 // For now, let's always assume shared scale
-export function compileUnitLayout(model: UnitModel): LayoutComponent {
+export function parseUnitLayout(model: UnitModel): LayoutComponent {
   return {
-    width: compileUnitSizeLayout(model, X),
-    height: compileUnitSizeLayout(model, Y)
+    width: parseUnitSizeLayout(model, X),
+    height: parseUnitSizeLayout(model, Y)
   };
 }
 
-function compileUnitSizeLayout(model: UnitModel, channel: Channel): SizeComponent {
+function parseUnitSizeLayout(model: UnitModel, channel: Channel): SizeComponent {
   const nonOrdinalSize = channel === X ? model.cellWidth() : model.cellHeight();
 
   return {
@@ -102,14 +102,14 @@ function unitSizeExpr(model: UnitModel, channel: Channel, nonOrdinalSize: number
   }
 }
 
-export function compileFacetLayout(model: FacetModel): LayoutComponent {
+export function parseFacetLayout(model: FacetModel): LayoutComponent {
   return {
-    width: compileFacetSizeLayout(model, COLUMN),
-    height: compileFacetSizeLayout(model, ROW)
+    width: parseFacetSizeLayout(model, COLUMN),
+    height: parseFacetSizeLayout(model, ROW)
   };
 }
 
-function compileFacetSizeLayout(model: FacetModel, channel: Channel): SizeComponent {
+function parseFacetSizeLayout(model: FacetModel, channel: Channel): SizeComponent {
   const childLayoutComponent = model.child().component.layout;
   const sizeType = channel === ROW ? 'height' : 'width';
   const childSizeComponent: SizeComponent = childLayoutComponent[sizeType];

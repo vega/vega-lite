@@ -6,7 +6,7 @@ import {X} from '../../src/channel';
 import * as legend from '../../src/compile/legend';
 
 describe('Legend', function() {
-  describe('compileLegend()', function() {
+  describe('parseLegend()', function() {
     it('should output explicitly specified properties', function() {
       // FIXME test this
     });

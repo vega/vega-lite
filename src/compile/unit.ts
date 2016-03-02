@@ -12,15 +12,15 @@ import {getFullName, QUANTITATIVE} from '../type';
 import {duplicate, extend, mergeDeep} from '../util';
 import {VgData} from '../vega.schema';
 
-import {compileAxis} from './axis';
+import {parseAxis} from './axis';
 import {applyConfig, FILL_STROKE_CONFIG} from './common';
-import {compileMarkConfig} from './config';
-import {assembleData, compileUnitData} from './data';
-import {compileLegends} from './legend';
-import {assembleLayout, compileUnitLayout} from './layout';
+import {initMarkConfig} from './config';
+import {assembleData, parseUnitData} from './data';
+import {parseLegends} from './legend';
+import {assembleLayout, parseUnitLayout} from './layout';
 import {Model} from './model';
-import {compileMark} from './mark/mark';
-import {compileScale, scaleType} from './scale';
+import {parseMark} from './mark/mark';
+import {parseScales, scaleType} from './scale';
 import {compileStackProperties, StackProperties} from './stack';
 
 /**
@@ -76,7 +76,7 @@ export class UnitModel extends Model {
 
   private _initConfig(specConfig: Config, parent: Model, mark: Mark, encoding: Encoding) {
     let config = mergeDeep(duplicate(defaultConfig), specConfig, parent ? parent.config() : {});
-    config.mark = compileMarkConfig(mark, encoding, config);
+    config.mark = initMarkConfig(mark, encoding, config);
     return config;
   }
 
@@ -131,47 +131,47 @@ export class UnitModel extends Model {
     }, {});
   }
 
-  public compileData() {
-    this.component.data = compileUnitData(this);
+  public parseData() {
+    this.component.data = parseUnitData(this);
   }
 
-  public compileSelection() {
+  public parseSelectionData() {
     // TODO: @arvind can write this
     // We might need to split this into compileSelectionData and compileSelectionSignals?
   }
 
-  public compileLayout() {
-    this.component.layout = compileUnitLayout(this);
+  public parseLayoutData() {
+    this.component.layout = parseUnitLayout(this);
   }
 
-  public compileScale() {
-    this.component.scale = compileScale(this);
+  public parseScale() {
+    this.component.scale = parseScales(this);
   }
 
-  public compileMark() {
-    this.component.mark = compileMark(this);
+  public parseMark() {
+    this.component.mark = parseMark(this);
   }
 
-  public compileAxis() {
+  public parseAxis() {
     let axis: any = this.component.axis = {};
     if (this.axis(X)) {
-      axis.x = compileAxis(X, this);
+      axis.x = parseAxis(X, this);
     }
     if (this.axis(Y)) {
-      axis.y = compileAxis(Y, this);
+      axis.y = parseAxis(Y, this);
     }
   }
 
-  public compileAxisGroup() {
+  public parseAxisGroup() {
     return null;
   }
 
-  public compileGridGroup() {
+  public parseGridGroup() {
     return null;
   }
 
-  public compileLegend() {
-    this.component.legend = compileLegends(this);
+  public parseLegend() {
+    this.component.legend = parseLegends(this);
   }
 
   public assembleData(data: VgData[]): VgData[] {

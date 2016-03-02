@@ -11,12 +11,12 @@ import {getFullName} from '../type';
 import {extend, keys, vals, mergeArrays, duplicate, mergeDeep, Dict} from '../util';
 import {VgData, VgAxis, VgMarkGroup} from '../vega.schema';
 
-import {compileAxis, compileInnerAxis, gridShow} from './axis';
+import {parseAxis, parseInnerAxis, gridShow} from './axis';
 import {buildModel} from './common';
-import {assembleData, compileFacetData} from './data';
-import {assembleLayout, compileFacetLayout} from './layout';
+import {assembleData, parseFacetData} from './data';
+import {assembleLayout, parseFacetLayout} from './layout';
 import {Model} from './model';
-import {compileScale} from './scale';
+import {parseScales} from './scale';
 
 export class FacetModel extends Model {
   private _facet: Facet;
@@ -139,31 +139,31 @@ export class FacetModel extends Model {
   }
 
 
-  public compileData() {
-    this.child().compileData();
-    this.component.data = compileFacetData(this);
+  public parseData() {
+    this.child().parseData();
+    this.component.data = parseFacetData(this);
   }
 
-  public compileSelection() {
+  public parseSelectionData() {
     // TODO: @arvind can write this
     // We might need to split this into compileSelectionData and compileSelectionSignals?
   }
 
-  public compileLayout() {
-    this.child().compileLayout();
-    this.component.layout = compileFacetLayout(this);
+  public parseLayoutData() {
+    this.child().parseLayoutData();
+    this.component.layout = parseFacetLayout(this);
   }
 
-  public compileScale() {
+  public parseScale() {
     const child = this.child();
     const model = this;
 
-    child.compileScale();
+    child.parseScale();
 
     // TODO: support scales for field reference of parent data (e.g., for SPLOM)
 
     // First, add scale for row and column.
-    let scaleComponent = this.component.scale = compileScale(this);
+    let scaleComponent = this.component.scale = parseScales(this);
 
     // Then, move shared/union from its child spec.
     keys(child.component.scale).forEach(function(channel) {
@@ -185,8 +185,8 @@ export class FacetModel extends Model {
     });
   }
 
-  public compileMark() {
-    this.child().compileMark();
+  public parseMark() {
+    this.child().parseMark();
 
     this.component.mark = extend(
       {
@@ -209,31 +209,31 @@ export class FacetModel extends Model {
         }
       },
       // Call child's assembleGroup to add marks, scales, axes, and legends.
-      // Note that we can call child's assembleGroup() here because compileMark()
+      // Note that we can call child's assembleGroup() here because parseMark()
       // is the last method in compile() and thus the child is completely compiled
       // at this point.
       this.child().assembleGroup()
     );
   }
 
-  public compileAxis() {
-    this.child().compileAxis();
+  public parseAxis() {
+    this.child().parseAxis();
 
     let axis: Dict<VgAxis> = this.component.axis = {};
     if (this.axis(ROW)) {
-      axis['row'] = compileAxis(ROW, this);
+      axis['row'] = parseAxis(ROW, this);
     }
     if (this.axis(COLUMN)) {
-      axis['column'] = compileAxis(COLUMN, this);
+      axis['column'] = parseAxis(COLUMN, this);
     }
   }
 
-  public compileAxisGroup() {
+  public parseAxisGroup() {
     // TODO: with nesting, we might need to consider calling child
-    // this.child().compileAxisGroup();
+    // this.child().parseAxisGroup();
 
-    const xAxisGroup = compileAxisGroup(this, X);
-    const yAxisGroup = compileAxisGroup(this, Y);
+    const xAxisGroup = parseAxisGroup(this, X);
+    const yAxisGroup = parseAxisGroup(this, Y);
 
     this.component.axisGroup = extend(
       xAxisGroup ? {x: xAxisGroup} : {},
@@ -241,9 +241,9 @@ export class FacetModel extends Model {
     );
   }
 
-  public compileGridGroup() {
+  public parseGridGroup() {
     // TODO: with nesting, we might need to consider calling child
-    // this.child().compileGridGroup();
+    // this.child().parseGridGroup();
 
     const child = this.child();
 
@@ -253,8 +253,8 @@ export class FacetModel extends Model {
     );
   }
 
-  public compileLegend() {
-    this.child().compileLegend();
+  public parseLegend() {
+    this.child().parseLegend();
 
     // TODO: support legend for independent non-position scale across facets
     // TODO: support legend for field reference of parent data (e.g., for SPLOM)
@@ -327,7 +327,7 @@ function getFacetGroupProperties(model: FacetModel) {
   );
 }
 
-function compileAxisGroup(model: FacetModel, channel: Channel) {
+function parseAxisGroup(model: FacetModel, channel: Channel) {
   // TODO: add a case where inner spec is not a unit (facet/layer/concat)
   let axisGroup = null;
 
@@ -341,7 +341,7 @@ function compileAxisGroup(model: FacetModel, channel: Channel) {
 
         if (child.axis(channel) && gridShow(child, channel)) { // show inner grid
           // add inner axis (aka axis that shows only grid to )
-          child.component.axis[channel] = compileInnerAxis(channel, child);
+          child.component.axis[channel] = parseInnerAxis(channel, child);
         } else {
           delete child.component.axis[channel];
         }
@@ -389,7 +389,7 @@ function getXAxesGroup(model: FacetModel): VgMarkGroup {
           }
         }
       },
-      axes: [compileAxis(X, model.child())]
+      axes: [parseAxis(X, model.child())]
     }
   );
 }
@@ -429,7 +429,7 @@ function getYAxesGroup(model: FacetModel): VgMarkGroup {
           }
         }
       },
-      axes: [compileAxis(Y, model.child())]
+      axes: [parseAxis(Y, model.child())]
     }
   );
 }

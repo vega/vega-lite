@@ -3,7 +3,7 @@
 import {assert} from 'chai';
 
 import {parseModel} from '../../util';
-import {compileMark} from '../../../src/compile/mark/mark';
+import {parseMark} from '../../../src/compile/mark/mark';
 import {SUMMARY} from '../../../src/data';
 
 describe('Mark (Non-path based Mark)', function() {
@@ -19,7 +19,7 @@ describe('Mark (Non-path based Mark)', function() {
       });
 
       it('should stack data correctly', function() {
-        const markGroup = compileMark(model);
+        const markGroup = parseMark(model);
         const stackTransform = markGroup[0].from.transform[0];
         assert.equal(stackTransform.type, 'stack');
 
@@ -40,7 +40,7 @@ describe('Mark (Non-path based Mark)', function() {
       });
 
       it('should stack data correctly', function() {
-        const markGroup = compileMark(model);
+        const markGroup = parseMark(model);
         const stackTransform = markGroup[0].from.transform[0];
         assert.equal(stackTransform.type, 'stack');
 

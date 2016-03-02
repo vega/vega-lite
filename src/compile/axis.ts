@@ -15,7 +15,7 @@ declare let exports;
 /**
  * Make an inner axis for showing grid for shared axis.
  */
-export function compileInnerAxis(channel: Channel, model: Model) {
+export function parseInnerAxis(channel: Channel, model: Model) {
   const isCol = channel === COLUMN,
     isRow = channel === ROW,
     type = isCol ? 'x' : isRow ? 'y': channel;
@@ -55,7 +55,7 @@ export function compileInnerAxis(channel: Channel, model: Model) {
   return def;
 }
 
-export function compileAxis(channel: Channel, model: Model) {
+export function parseAxis(channel: Channel, model: Model) {
   const isCol = channel === COLUMN,
     isRow = channel === ROW,
     type = isCol ? 'x' : isRow ? 'y': channel;

@@ -283,7 +283,7 @@ describe('Scale', function() {
       }
     });
 
-    const scales = vlscale.compileScale(model)['color'];
+    const scales = vlscale.parseScales(model)['color'];
 
     it('should create color and inverse scales', function() {
       assert.equal(scales.length, 2);
@@ -322,7 +322,7 @@ describe('Scale', function() {
         }
       });
 
-    const scales = vlscale.compileScale(model)['color'];
+    const scales = vlscale.parseScales(model)['color'];
 
     it('should add correct scales', function() {
       assert.equal(scales.length, 3);
@@ -363,7 +363,7 @@ describe('Scale', function() {
         }
       });
 
-    const scales = vlscale.compileScale(model)['color'];
+    const scales = vlscale.parseScales(model)['color'];
 
     it('should add correct scales', function() {
       assert.equal(scales.length, 2);

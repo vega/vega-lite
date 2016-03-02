@@ -16,7 +16,7 @@ import {parseModel} from '../util';
 import {mergeDeep, vals} from '../../src/util';
 
 function compileAssembleData(model) {
-  model.compileData();
+  model.parseData();
   return assembleData(model, []);
 }
 
@@ -103,7 +103,7 @@ describe('data: source', function() {
         }
       });
 
-      const sourceComponent = source.compileUnit(model);
+      const sourceComponent = source.parseUnit(model);
 
       it('should have values', function() {
         assert.equal(sourceComponent.name, 'source');
@@ -122,7 +122,7 @@ describe('data: source', function() {
           }
         });
 
-      const sourceComponent = source.compileUnit(model);
+      const sourceComponent = source.parseUnit(model);
 
       it('should have format json', function() {
         assert.equal(sourceComponent.name, 'source');
@@ -135,7 +135,7 @@ describe('data: source', function() {
 
     describe('with no data specified', function() {
       const model = parseModel({});
-      const sourceComponent = source.compileUnit(model);
+      const sourceComponent = source.parseUnit(model);
       it('should provide placeholder source data', function() {
         assert.deepEqual(sourceComponent, {name: 'source'});
       });
@@ -162,7 +162,7 @@ describe('data: formatParse', function () {
         }
       });
 
-      const formatParseComponent = formatParse.compileUnit(model);
+      const formatParseComponent = formatParse.parseUnit(model);
       assert.deepEqual(formatParseComponent, {
         'a': 'date',
         'b': 'number'
@@ -189,7 +189,7 @@ describe('data: bin', function() {
       }
     });
     it('should add bin transform and correctly apply bin', function() {
-      const transform = vals(bin.compileUnit(model))[0];
+      const transform = vals(bin.parseUnit(model))[0];
 
       assert.deepEqual(transform[0], {
         type: 'bin',
@@ -224,7 +224,7 @@ describe('data: nullFilter', function() {
 
     it('should add filterNull for Q and T by default', function () {
       const model = parseModel(spec);
-      assert.deepEqual(nullFilter.compileUnit(model), {
+      assert.deepEqual(nullFilter.parseUnit(model), {
         qq: true,
         tt: true
       });
@@ -236,7 +236,7 @@ describe('data: nullFilter', function() {
           filterNull: true
         }
       }));
-      assert.deepEqual(nullFilter.compileUnit(model), {
+      assert.deepEqual(nullFilter.parseUnit(model), {
         qq: true,
         tt: true,
         oo: true
@@ -249,7 +249,7 @@ describe('data: nullFilter', function() {
           filterNull: false
         }
       }));
-      assert.deepEqual(nullFilter.compileUnit(model), {});
+      assert.deepEqual(nullFilter.parseUnit(model), {});
     });
   });
 
@@ -276,7 +276,7 @@ describe('data: filter', function () {
       }
     });
     it('should return array that contains a filter transform', function () {
-      assert.deepEqual(filter.compileUnit(model), 'datum.a > datum.b && datum.c === datum.d');
+      assert.deepEqual(filter.parseUnit(model), 'datum.a > datum.b && datum.c === datum.d');
     });
   });
 
@@ -304,7 +304,7 @@ describe('data: timeUnit', function () {
       }
     });
     it('should add formula transform', function() {
-      const transform = vals(timeUnit.compileUnit(model));
+      const transform = vals(timeUnit.parseUnit(model));
       assert.deepEqual(transform[0], {
         type: 'formula',
         field: 'year_a',
@@ -342,7 +342,7 @@ describe('data: timeUnitDomain', function() {
     });
 
     it('should be compiled into correct string set', function() {
-      model.component.data.timeUnitDomain = timeUnitDomain.compileUnit(model);
+      model.component.data.timeUnitDomain = timeUnitDomain.parseUnit(model);
       assert.deepEqual(model.component.data.timeUnitDomain, {day: true});
     });
 
@@ -387,7 +387,7 @@ describe('data: nonPositiveFilter', function () {
       }
     });
     it('should produce the correct nonPositiveFilter component' ,function (){
-      model.component.data.nonPositiveFilter = nonPositiveFilter.compileUnit(model);
+      model.component.data.nonPositiveFilter = nonPositiveFilter.parseUnit(model);
       assert.deepEqual(model.component.data.nonPositiveFilter, {
         b: true
       });
@@ -419,7 +419,7 @@ describe('data: stack', function() {
     });
 
     it('should not produce stack component', function() {
-      model.component.data.stackScale = stackScale.compileUnit(model);
+      model.component.data.stackScale = stackScale.parseUnit(model);
       assert.equal(model.component.data.stackScale, null);
     });
   });
@@ -433,7 +433,7 @@ describe('data: stack', function() {
         "color": {"type": "ordinal", "field": "Effect__Amount_of_damage"}
       }
     });
-    model.component.data.stackScale = stackScale.compileUnit(model);
+    model.component.data.stackScale = stackScale.parseUnit(model);
 
     it('should produce the correct stack component', function() {
       const stackedData = model.component.data.stackScale;
@@ -457,7 +457,7 @@ describe('data: stack', function() {
       }
     });
 
-    model.component.data.stackScale = stackScale.compileUnit(model);
+    model.component.data.stackScale = stackScale.parseUnit(model);
 
     it('should produce the correct stack component', function() {
       const stackedData = model.component.data.stackScale;
@@ -494,7 +494,7 @@ describe('data: summary', function () {
       }
     });
 
-    model.component.data.summary = summary.compileUnit(model);
+    model.component.data.summary = summary.parseUnit(model);
 
     it('should produce the correct summary component' ,function() {
       assert.deepEqual(model.component.data.summary, [{
@@ -535,7 +535,7 @@ describe('data: summary', function () {
     });
 
     it('should produce the correct summary component', function() {
-      model.component.data.summary = summary.compileUnit(model);
+      model.component.data.summary = summary.parseUnit(model);
       assert.deepEqual(model.component.data.summary, [{
         name: 'summary',
         source: 'source',

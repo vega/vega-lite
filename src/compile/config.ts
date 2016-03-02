@@ -9,7 +9,7 @@ import {contains, extend} from '../util';
 /**
  * Augment config.mark with rule-based default values.
  */
-export function compileMarkConfig(mark: Mark, encoding: Encoding, config: Config) {
+export function initMarkConfig(mark: Mark, encoding: Encoding, config: Config) {
    return extend(
      ['filled', 'opacity', 'orient', 'align'].reduce(function(cfg, property: string) {
        const value = config.mark[property];

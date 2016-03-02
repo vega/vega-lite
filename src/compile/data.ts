@@ -29,7 +29,7 @@ export interface DataComponent {
   source?: VgData;
 
   /** Mapping from field name to primitive data type.  */
-  formatParse?: Dict<string>; // TODO: VgFormatParse
+  formatParse?: Dict<string>;
 
   /** String set of fields for null filtering */
   nullFilter?: StringSet;
@@ -83,37 +83,37 @@ interface SummaryComponent {
 // TODO: split this file into multiple files and remove this linter flag
 /* tslint:disable:no-use-before-declare */
 
-export function compileUnitData(model: UnitModel): DataComponent {
+export function parseUnitData(model: UnitModel): DataComponent {
   let data: DataComponent = {};
-  data.source = source.compileUnit(model);
-  data.formatParse = formatParse.compileUnit(model);
-  data.nullFilter = nullFilter.compileUnit(model);
-  data.filter = filter.compileUnit(model);
-  data.bin = bin.compileUnit(model);
-  data.calculate = formula.compileUnit(model);
-  data.timeUnit = timeUnit.compileUnit(model);
-  data.timeUnitDomain = timeUnitDomain.compileUnit(model);
-  data.summary = summary.compileUnit(model);
-  data.stackScale = stackScale.compileUnit(model);
-  data.colorRank = colorRank.compileUnit(model);
-  data.nonPositiveFilter = nonPositiveFilter.compileUnit(model);
+  data.source = source.parseUnit(model);
+  data.formatParse = formatParse.parseUnit(model);
+  data.nullFilter = nullFilter.parseUnit(model);
+  data.filter = filter.parseUnit(model);
+  data.bin = bin.parseUnit(model);
+  data.calculate = formula.parseUnit(model);
+  data.timeUnit = timeUnit.parseUnit(model);
+  data.timeUnitDomain = timeUnitDomain.parseUnit(model);
+  data.summary = summary.parseUnit(model);
+  data.stackScale = stackScale.parseUnit(model);
+  data.colorRank = colorRank.parseUnit(model);
+  data.nonPositiveFilter = nonPositiveFilter.parseUnit(model);
   return data;
 }
 
-export function compileFacetData(model: FacetModel): DataComponent {
+export function parseFacetData(model: FacetModel): DataComponent {
   let data: DataComponent = {};
-  data.source = source.compileFacet(model);
-  data.formatParse = formatParse.compileFacet(model);
-  data.nullFilter = nullFilter.compileFacet(model);
-  data.filter = filter.compileFacet(model);
-  data.bin = bin.compileFacet(model);
-  data.calculate = formula.compileFacet(model);
-  data.timeUnit = timeUnit.compileFacet(model);
-  data.timeUnitDomain = timeUnitDomain.compileFacet(model);
-  data.summary = summary.compileFacet(model);
-  data.stackScale = stackScale.compileFacet(model);
-  data.colorRank = colorRank.compileFacet(model);
-  data.nonPositiveFilter = nonPositiveFilter.compileFacet(model);
+  data.source = source.parseFacet(model);
+  data.formatParse = formatParse.parseFacet(model);
+  data.nullFilter = nullFilter.parseFacet(model);
+  data.filter = filter.parseFacet(model);
+  data.bin = bin.parseFacet(model);
+  data.calculate = formula.parseFacet(model);
+  data.timeUnit = timeUnit.parseFacet(model);
+  data.timeUnitDomain = timeUnitDomain.parseFacet(model);
+  data.summary = summary.parseFacet(model);
+  data.stackScale = stackScale.parseFacet(model);
+  data.colorRank = colorRank.parseFacet(model);
+  data.nonPositiveFilter = nonPositiveFilter.parseFacet(model);
   return data;
 }
 /* tslint:enable:no-use-before-declare */
@@ -173,7 +173,7 @@ export function assembleData(model: Model, data: VgData[]) {
 }
 
 export namespace source {
-  function compile(model: Model): VgData {
+  function parse(model: Model): VgData {
     let data = model.data();
 
     if (data) {
@@ -204,10 +204,10 @@ export namespace source {
     return undefined;
   }
 
-  export const compileUnit = compile;
+  export const parseUnit = parse;
 
-  export function compileFacet(model: FacetModel) {
-    let sourceData = compile(model);
+  export function parseFacet(model: FacetModel) {
+    let sourceData = parse(model);
     if (!model.child().component.data.source) {
       // If the child does not have its own source, have to rename its source.
       model.child().renameData(model.child().dataName(SOURCE), model.dataName(SOURCE));
@@ -243,42 +243,42 @@ export namespace source {
 
 export namespace formatParse {
   // TODO: need to take calculate into account across levels when merging
-  function compile(model: Model) {
+  function parse(model: Model) {
     const calcFieldMap = (model.transform().calculate || []).reduce(function(fieldMap, formula) {
         fieldMap[formula.field] = true;
         return fieldMap;
     }, {});
 
-    let parse;
+    let parseComponent;
     // use forEach rather than reduce so that it can return undefined
     // if there is no parse needed
     model.forEach(function(fieldDef: FieldDef) {
       if (fieldDef.type === TEMPORAL) {
-        parse = parse || {};
-        parse[fieldDef.field] = 'date';
+        parseComponent = parseComponent || {};
+        parseComponent[fieldDef.field] = 'date';
       } else if (fieldDef.type === QUANTITATIVE) {
         if (isCount(fieldDef) || calcFieldMap[fieldDef.field]) {
             return;
         }
-        parse = parse || {};
-        parse[fieldDef.field] = 'number';
+        parseComponent = parseComponent || {};
+        parseComponent[fieldDef.field] = 'number';
       }
     });
-    return parse;
+    return parseComponent;
   }
 
-  export const compileUnit = compile;
+  export const parseUnit = parse;
 
-  export function compileFacet(model: FacetModel) {
-    let parse = compile(model);
+  export function parseFacet(model: FacetModel) {
+    let parseComponent = parse(model);
 
     // If child doesn't have its own data source, but has its own parse, then merge
     const childDataComponent = model.child().component.data;
     if (!childDataComponent.source && childDataComponent.formatParse) {
-      parse = extend(parse || {}, childDataComponent.formatParse);
+      parseComponent = extend(parseComponent || {}, childDataComponent.formatParse);
       delete childDataComponent.formatParse;
     }
-    return parse;
+    return parseComponent;
   }
 
   // Assemble for formatParse is an identity functio, no need to declare
@@ -286,7 +286,7 @@ export namespace formatParse {
 
 
 export namespace timeUnit {
-  function compile(model: Model) {
+  function parse(model: Model) {
     return model.reduce(function(timeUnitComponent, fieldDef: FieldDef, channel: Channel) {
       const ref = field(fieldDef, { nofn: true, datum: true });
       if (fieldDef.type === TEMPORAL && fieldDef.timeUnit) {
@@ -303,10 +303,10 @@ export namespace timeUnit {
     }, {});
   }
 
-  export const compileUnit = compile;
+  export const parseUnit = parse;
 
-  export function compileFacet(model: FacetModel) {
-    let timeUnitComponent = compile(model);
+  export function parseFacet(model: FacetModel) {
+    let timeUnitComponent = parse(model);
 
     const childDataComponent = model.child().component.data;
 
@@ -325,7 +325,7 @@ export namespace timeUnit {
 }
 
 export namespace bin {
-  function compile(model: Model) {
+  function parse(model: Model) {
     return model.reduce(function(binComponent, fieldDef: FieldDef, channel: Channel) {
       const bin = model.fieldDef(channel).bin;
       if (bin) {
@@ -367,10 +367,10 @@ export namespace bin {
     }, {});
   }
 
-  export const compileUnit = compile;
+  export const parseUnit = parse;
 
-  export function compileFacet(model: FacetModel) {
-    let binComponent = compile(model);
+  export function parseFacet(model: FacetModel) {
+    let binComponent = parse(model);
 
     const childDataComponent = model.child().component.data;
 
@@ -390,7 +390,7 @@ export namespace bin {
 
 export namespace nullFilter {
   /** Return Hashset of fields for null filtering (key=field, value = true). */
-  function compile(model: Model) {
+  function parse(model: Model) {
     const filterNull = model.transform().filterNull;
     return model.reduce(function(aggregator, fieldDef: FieldDef) {
       if (filterNull ||
@@ -401,10 +401,10 @@ export namespace nullFilter {
     }, {});
   }
 
-  export const compileUnit = compile;
+  export const parseUnit = parse;
 
-  export function compileFacet(model: FacetModel) {
-    let nullFilterComponent = compile(model);
+  export function parseFacet(model: FacetModel) {
+    let nullFilterComponent = parse(model);
 
     const childDataComponent = model.child().component.data;
 
@@ -430,14 +430,14 @@ export namespace nullFilter {
 }
 
 export namespace filter {
-  function compile(model: Model): string {
+  function parse(model: Model): string {
     return model.transform().filter;
   }
 
-  export const compileUnit = compile;
+  export const parseUnit = parse;
 
-  export function compileFacet(model: FacetModel) {
-    let filterComponent = compile(model);
+  export function parseFacet(model: FacetModel) {
+    let filterComponent = parse(model);
 
     const childDataComponent = model.child().component.data;
 
@@ -462,17 +462,17 @@ export namespace filter {
 }
 
 export namespace formula {
-  function compile(model: Model): Dict<Formula> {
+  function parse(model: Model): Dict<Formula> {
     return (model.transform().calculate || []).reduce(function(formulaComponent, formula) {
       formulaComponent[JSON.stringify(formula)] = formula;
       return formulaComponent;
     }, {} as Dict<Formula>);
   }
 
-  export const compileUnit = compile;
+  export const parseUnit = parse;
 
-  export function compileFacet(model: FacetModel) {
-    let formulaComponent = compile(model);
+  export function parseFacet(model: FacetModel) {
+    let formulaComponent = parse(model);
 
     const childDataComponent = model.child().component.data;
 
@@ -510,7 +510,7 @@ export namespace summary {
     return dims;
   }
 
-  export function compileUnit(model: Model): SummaryComponent[] {
+  export function parseUnit(model: Model): SummaryComponent[] {
     /* string set for dimensions */
     let dims: StringSet = {};
 
@@ -541,7 +541,7 @@ export namespace summary {
     }];
   }
 
-  export function compileFacet(model: FacetModel): SummaryComponent[] {
+  export function parseFacet(model: FacetModel): SummaryComponent[] {
     const childDataComponent = model.child().component.data;
 
     // If child doesn't have its own data source but have a summary data source, then merge
@@ -601,7 +601,7 @@ export namespace summary {
  * Stacked scale data source, for feeding the shared scale.
  */
 export namespace stackScale {
-  export function compileUnit(model: UnitModel):VgData {
+  export function parseUnit(model: UnitModel):VgData {
     const stackProps = model.stack();
 
     if (stackProps) {
@@ -623,7 +623,7 @@ export namespace stackScale {
     return null;
   };
 
-  export function compileFacet(model: FacetModel) {
+  export function parseFacet(model: FacetModel) {
     const child = model.child();
     const childDataComponent = child.component.data;
 
@@ -657,7 +657,7 @@ export namespace stackScale {
 
 
 export namespace timeUnitDomain {
-  function compile(model: Model) {
+  function parse(model: Model) {
     return model.reduce(function(timeUnitDomainMap, fieldDef: FieldDef, channel: Channel) {
       if (fieldDef.timeUnit) {
         const domain = rawDomain(fieldDef.timeUnit, channel);
@@ -669,11 +669,11 @@ export namespace timeUnitDomain {
     }, {});
   }
 
-  export const compileUnit = compile;
+  export const parseUnit = parse;
 
-  export function compileFacet(model: FacetModel) {
+  export function parseFacet(model: FacetModel) {
     // always merge with child
-    return extend(compile(model), model.child().component.data.timeUnitDomain);
+    return extend(parse(model), model.child().component.data.timeUnitDomain);
   }
 
   export function assemble(component: DataComponent): VgData[] {
@@ -704,7 +704,7 @@ export namespace colorRank {
   /**
    * Return hash dict from a color field's name to the sort and rank transforms
    */
-  export function compileUnit(model: Model) {
+  export function parseUnit(model: Model) {
     let colorRankComponent: Dict<VgTransform[]> = {};
     if (model.has(COLOR) && model.fieldDef(COLOR).type === ORDINAL) {
       colorRankComponent[model.field(COLOR)] = [{
@@ -721,7 +721,7 @@ export namespace colorRank {
     return colorRankComponent;
   }
 
-  export function compileFacet(model: FacetModel) {
+  export function parseFacet(model: FacetModel) {
     const childDataComponent = model.child().component.data;
 
     // If child doesn't have its own data source, then consider merging
@@ -746,7 +746,7 @@ export namespace colorRank {
  * Filter non-positive value for log scale
  */
 export namespace nonPositiveFilter {
-  export function compileUnit(model: Model) {
+  export function parseUnit(model: Model) {
     return model.channels().reduce(function(nonPositiveComponent, channel) {
       const scale = model.scale(channel);
       if (scale && scale.type === ScaleType.LOG) {
@@ -756,7 +756,7 @@ export namespace nonPositiveFilter {
     }, {} as StringSet);
   }
 
-  export function compileFacet(model: FacetModel) {
+  export function parseFacet(model: FacetModel) {
     const childDataComponent = model.child().component.data;
 
     // If child doesn't have its own data source, then consider merging

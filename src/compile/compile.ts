@@ -17,13 +17,13 @@ export function compile(inputSpec) {
   // 2. Instantiate the model with default properties
   const model = buildModel(spec, null, '');
 
-  // 3. Compile each part of the model to produce components that will be assembled later
-  // We traverse the tree to compile once for each type of components
+  // 3. Parse each part of the model to produce components that will be assembled later
+  // We traverse the whole tree to parse once for each type of components
   // (e.g., data, layout, mark, scale).
-  // Please see inside model.compile() for order for compilation.
-  model.compile();
+  // Please see inside model.parse() for order for compilation.
+  model.parse();
 
-  // 4. Assemble a Vega Spec from the compiled components in 3.
+  // 4. Assemble a Vega Spec from the parsed components in 3.
   return assemble(model);
 }
 

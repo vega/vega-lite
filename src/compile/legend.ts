@@ -12,7 +12,7 @@ import {UnitModel} from './unit';
 import {VgLegend} from '../vega.schema';
 
 
-export function compileLegends(model: UnitModel): Dict<VgLegend> {
+export function parseLegends(model: UnitModel): Dict<VgLegend> {
   let legendMap: Dict<VgLegend> = {};
 
   if (model.has(COLOR) && model.legend(COLOR)) {
@@ -27,24 +27,24 @@ export function compileLegends(model: UnitModel): Dict<VgLegend> {
     );
 
     const def = model.config().mark.filled ? { fill: scale } : { stroke: scale };
-    legendMap['color'] = compileLegend(model, COLOR, def);
+    legendMap['color'] = parseLegend(model, COLOR, def);
   }
 
   if (model.has(SIZE) && model.legend(SIZE)) {
-    legendMap['size'] = compileLegend(model, SIZE, {
+    legendMap['size'] = parseLegend(model, SIZE, {
       size: model.scaleName(SIZE)
     });
   }
 
   if (model.has(SHAPE) && model.legend(SHAPE)) {
-    legendMap['shape'] = compileLegend(model, SHAPE, {
+    legendMap['shape'] = parseLegend(model, SHAPE, {
       shape: model.scaleName(SHAPE)
     });
   }
   return legendMap;
 }
 
-export function compileLegend(model: UnitModel, channel: Channel, def): VgLegend {
+export function parseLegend(model: UnitModel, channel: Channel, def): VgLegend {
   const fieldDef = model.fieldDef(channel);
   const legend = model.legend(channel);
 

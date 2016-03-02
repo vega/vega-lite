@@ -25,15 +25,15 @@ const markCompiler = {
   square: square
 };
 
-export function compileMark(model: UnitModel): any[] {
+export function parseMark(model: UnitModel): any[] {
   if (contains([LINE, AREA], model.mark())) {
-    return compilePathMark(model);
+    return parsePathMark(model);
   } else {
-    return compileNonPathMark(model);
+    return parseNonPathMark(model);
   }
 }
 
-function compilePathMark(model: UnitModel) { // TODO: extract this into compilePathMark
+function parsePathMark(model: UnitModel) { // TODO: extract this into compilePathMark
   const mark = model.mark();
   // TODO: replace this with more general case for composition
   const hasParentData = !!model.parent();
@@ -92,7 +92,7 @@ function compilePathMark(model: UnitModel) { // TODO: extract this into compileP
   }
 }
 
-function compileNonPathMark(model: UnitModel) {
+function parseNonPathMark(model: UnitModel) {
   const mark = model.mark();
   const hasParentData = !!model.parent();
   const dataFrom = {data: model.dataTable()};
