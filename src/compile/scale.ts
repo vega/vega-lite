@@ -33,8 +33,8 @@ export const COLOR_LEGEND_LABEL = 'color_legend_label';
 // the scale can be unioned by combining the domain.
 export type ScaleComponent = VgScale;
 
-export function parseScaleComponent(model: Model): Dict<ScaleComponent> {
-  return model.channels().reduce(function(scale: Dict<ScaleComponent>, channel: Channel) {
+export function parseScaleComponent(model: Model): Dict<ScaleComponent[]> {
+  return model.channels().reduce(function(scale: Dict<ScaleComponent[]>, channel: Channel) {
       if (model.scale(channel)) {
         const fieldDef = model.fieldDef(channel);
         const scales = [];
@@ -52,7 +52,7 @@ export function parseScaleComponent(model: Model): Dict<ScaleComponent> {
         scale[channel] = scales;
       }
       return scale;
-    }, {});
+    }, {} as Dict<ScaleComponent[]>);
 }
 
 /**

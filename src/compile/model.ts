@@ -26,16 +26,27 @@ export interface ScaleMap {
   shape?: Scale;
 };
 
+/**
+ * Composable Components that are intermediate results from parsing phase of the
+ * compilations.  These composable components will be assembled in the last phase
+ * of compilations.
+ */
 export interface Component {
   data: DataComponent;
   layout: LayoutComponent;
-  scale: Dict<ScaleComponent>;
+  scale: Dict<ScaleComponent[]>;
+
+  /** Dictionary mapping channel to VgAxis definition */
+  // TODO: if we allow multiple axes (e.g., dual axis), this will become VgAxis[]
   axis: Dict<VgAxis>;
+
+  /** Dictionary mapping channel to VgLegend definition */
   legend: Dict<VgLegend>;
 
-  /** storing axes group for facet and concat */
+  /** Dictionary mapping channel to axis mark group for facet and concat */
   axisGroup: Dict<VgMarkGroup>;
-  /** storing grid group for facet (and concat?) */
+
+  /** Dictionary mapping channel to grid mark group for facet (and concat?) */
   gridGroup: Dict<VgMarkGroup[]>;
 
   mark: VgMarkGroup[];
@@ -161,7 +172,8 @@ export abstract class Model {
   // public abstract assembleSelectionData(layoutData: VgData[]): VgData[];
 
   public assembleScales(): VgScale[] {
-    // FIXME: this should help assemble scale domains with scale signature as well
+    // FIXME: write assembleScales() in scale.ts that
+    // help assemble scale domains with scale signature as well
     return flatten(vals(this.component.scale));
   }
 
