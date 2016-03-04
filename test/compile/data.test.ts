@@ -12,6 +12,7 @@ import {timeUnit} from '../../src/compile/data';
 import {timeUnitDomain} from '../../src/compile/data';
 import {formatParse} from '../../src/compile/data';
 import {nonPositiveFilter} from '../../src/compile/data';
+import {DataComponent} from '../../src/compile/data';
 import {parseModel} from '../util';
 import {mergeDeep, vals} from '../../src/util';
 
@@ -342,6 +343,7 @@ describe('data: timeUnitDomain', function() {
     });
 
     it('should be compiled into correct string set', function() {
+      model.component.data = {} as DataComponent;
       model.component.data.timeUnitDomain = timeUnitDomain.parseUnit(model);
       assert.deepEqual(model.component.data.timeUnitDomain, {day: true});
     });
@@ -386,7 +388,8 @@ describe('data: nonPositiveFilter', function () {
         y: {field: 'b', type: "quantitative", scale: {type: 'log'}}
       }
     });
-    it('should produce the correct nonPositiveFilter component' ,function (){
+    it('should produce the correct nonPositiveFilter component' ,function () {
+      model.component.data = {} as DataComponent;
       model.component.data.nonPositiveFilter = nonPositiveFilter.parseUnit(model);
       assert.deepEqual(model.component.data.nonPositiveFilter, {
         b: true
@@ -419,6 +422,7 @@ describe('data: stack', function() {
     });
 
     it('should not produce stack component', function() {
+      model.component.data = {} as DataComponent;
       model.component.data.stackScale = stackScale.parseUnit(model);
       assert.equal(model.component.data.stackScale, null);
     });
@@ -433,6 +437,7 @@ describe('data: stack', function() {
         "color": {"type": "ordinal", "field": "Effect__Amount_of_damage"}
       }
     });
+    model.component.data = {} as DataComponent;
     model.component.data.stackScale = stackScale.parseUnit(model);
 
     it('should produce the correct stack component', function() {
@@ -457,6 +462,7 @@ describe('data: stack', function() {
       }
     });
 
+    model.component.data = {} as DataComponent;
     model.component.data.stackScale = stackScale.parseUnit(model);
 
     it('should produce the correct stack component', function() {
@@ -494,6 +500,7 @@ describe('data: summary', function () {
       }
     });
 
+    model.component.data = {} as DataComponent;
     model.component.data.summary = summary.parseUnit(model);
 
     it('should produce the correct summary component' ,function() {
@@ -535,6 +542,7 @@ describe('data: summary', function () {
     });
 
     it('should produce the correct summary component', function() {
+      model.component.data = {} as DataComponent;
       model.component.data.summary = summary.parseUnit(model);
       assert.deepEqual(model.component.data.summary, [{
         name: 'summary',
