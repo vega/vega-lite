@@ -281,7 +281,7 @@ export namespace formatParse {
     return parseComponent;
   }
 
-  // Assemble for formatParse is an identity functio, no need to declare
+  // Assemble for formatParse is an identity function, no need to declare
 }
 
 
