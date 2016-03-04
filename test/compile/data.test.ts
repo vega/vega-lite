@@ -13,7 +13,7 @@ import {timeUnitDomain} from '../../src/compile/data';
 import {formatParse} from '../../src/compile/data';
 import {nonPositiveFilter} from '../../src/compile/data';
 import {DataComponent} from '../../src/compile/data';
-import {parseModel} from '../util';
+import {parseUnitModel} from '../util';
 import {mergeDeep, vals} from '../../src/util';
 
 function compileAssembleData(model) {
@@ -25,7 +25,7 @@ describe('data', function () {
   describe('compileData & assembleData', function () {
     describe('for aggregate encoding', function () {
       it('should contain 2 tables', function() {
-        const model = parseModel({
+        const model = parseUnitModel({
             mark: "point",
             encoding: {
               x: {field: 'a', type: "temporal"},
@@ -39,7 +39,7 @@ describe('data', function () {
     });
 
     describe('when contains log in non-aggregate', function () {
-      const model = parseModel({
+      const model = parseUnitModel({
           mark: "point",
           encoding: {
             x: {field: 'a', type: "temporal"},
@@ -63,7 +63,7 @@ describe('data', function () {
 
   describe('assemble', function () {
     it('should have correct order of transforms (null filter, timeUnit, bin then filter)', function () {
-      const model = parseModel({
+      const model = parseUnitModel({
         transform: {
           calculate: [{
             field: 'b2',
@@ -98,7 +98,7 @@ describe('data', function () {
 describe('data: source', function() {
   describe('compileUnit', function() {
     describe('with explicit values', function() {
-      const model = parseModel({
+      const model = parseUnitModel({
         data: {
           values: [{a: 1, b:2, c:3}, {a: 4, b:5, c:6}]
         }
@@ -117,7 +117,7 @@ describe('data: source', function() {
     });
 
     describe('with link to url', function() {
-      const model = parseModel({
+      const model = parseUnitModel({
           data: {
             url: 'http://foo.bar'
           }
@@ -135,7 +135,7 @@ describe('data: source', function() {
     });
 
     describe('with no data specified', function() {
-      const model = parseModel({});
+      const model = parseUnitModel({});
       const sourceComponent = source.parseUnit(model);
       it('should provide placeholder source data', function() {
         assert.deepEqual(sourceComponent, {name: 'source'});
@@ -148,7 +148,7 @@ describe('data: source', function() {
 describe('data: formatParse', function () {
   describe('compileUnit', function() {
     it('should include parse for all applicable fields, and exclude calculated fields', function() {
-      const model = parseModel({
+      const model = parseUnitModel({
         transform: {
           calculate: [
             {field: 'b2', expr: 'datum.b * 2'}
@@ -179,7 +179,7 @@ describe('data: formatParse', function () {
 
 describe('data: bin', function() {
   describe('compileUnit', function() {
-    const model = parseModel({
+    const model = parseUnitModel({
       mark: "point",
       encoding: {
         y: {
@@ -224,7 +224,7 @@ describe('data: nullFilter', function() {
     };
 
     it('should add filterNull for Q and T by default', function () {
-      const model = parseModel(spec);
+      const model = parseUnitModel(spec);
       assert.deepEqual(nullFilter.parseUnit(model), {
         qq: true,
         tt: true
@@ -232,7 +232,7 @@ describe('data: nullFilter', function() {
     });
 
     it('should add filterNull for O when specified', function () {
-      const model = parseModel(mergeDeep(spec, {
+      const model = parseUnitModel(mergeDeep(spec, {
         transform: {
           filterNull: true
         }
@@ -245,7 +245,7 @@ describe('data: nullFilter', function() {
     });
 
     it('should add no null filter if filterNull is false', function () {
-      const model = parseModel(mergeDeep(spec, {
+      const model = parseUnitModel(mergeDeep(spec, {
         transform: {
           filterNull: false
         }
@@ -271,7 +271,7 @@ describe('data: nullFilter', function() {
 
 describe('data: filter', function () {
   describe('compileUnit', function () {
-    const model = parseModel({
+    const model = parseUnitModel({
       transform: {
         filter: 'datum.a > datum.b && datum.c === datum.d'
       }
@@ -298,7 +298,7 @@ describe('data: formula', function() {
 
 describe('data: timeUnit', function () {
   describe('compileUnit', function() {
-    const model = parseModel({
+    const model = parseUnitModel({
       mark: "point",
       encoding: {
         x: {field: 'a', type: "temporal", timeUnit: 'year'}
@@ -326,7 +326,7 @@ describe('data: timeUnit', function () {
 
 describe('data: timeUnitDomain', function() {
   describe('unit: day', function() {
-    const model = parseModel({
+    const model = parseUnitModel({
       mark: "point",
       encoding: {
         'y': {
@@ -381,7 +381,7 @@ describe('data: colorRank', function () {
 
 describe('data: nonPositiveFilter', function () {
   describe('unit (with log scale)', function() {
-    const model = parseModel({
+    const model = parseUnitModel({
       mark: "point",
       encoding: {
         x: {field: 'a', type: "temporal"},
@@ -416,7 +416,7 @@ describe('data: nonPositiveFilter', function () {
 
 describe('data: stack', function() {
   describe('unit without stack', function() {
-    const model = parseModel({
+    const model = parseUnitModel({
       "mark": "point",
       "encoding": {}
     });
@@ -429,7 +429,7 @@ describe('data: stack', function() {
   });
 
   describe('unit with color and binned x', function() {
-    const model = parseModel({
+    const model = parseUnitModel({
       "mark": "bar",
       "encoding": {
         "x": {"type": "quantitative", "field": "Cost__Other", "aggregate": "sum"},
@@ -453,7 +453,7 @@ describe('data: stack', function() {
   });
 
   describe('unit with color and binned y', function() {
-    const model = parseModel({
+    const model = parseUnitModel({
       "mark": "bar",
       "encoding": {
         "y": {"type": "quantitative", "field": "Cost__Other", "aggregate": "sum"},
@@ -484,7 +484,7 @@ describe('data: stack', function() {
 
 describe('data: summary', function () {
   describe('unit (aggregated)', function() {
-    const model = parseModel({
+    const model = parseUnitModel({
       mark: "point",
       encoding: {
         'y': {
@@ -530,7 +530,7 @@ describe('data: summary', function () {
   });
 
   describe('unit (aggregated with detail arrays)', function() {
-    const model = parseModel({
+    const model = parseUnitModel({
       mark: "point",
       encoding: {
         'x': { 'aggregate': 'mean', 'field': 'Displacement', 'type': "quantitative"},

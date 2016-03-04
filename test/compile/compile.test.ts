@@ -1,14 +1,14 @@
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
-import {parseModel} from '../util';
+import {parseUnitModel} from '../util';
 import {assembleRootGroup} from '../../src/compile/compile';
 
 describe('Compile', function() {
 
   describe('compileRootGroup()', function() {
     describe('ordinal', function() {
-      const model = parseModel({
+      const model = parseUnitModel({
         "description": "A simple bar chart with embedded data.",
         "data": {
           "values": [

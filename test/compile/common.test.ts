@@ -1,28 +1,28 @@
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
-import {parseModel} from '../util';
+import {parseUnitModel} from '../util';
 import {X} from '../../src/channel';
 import {timeFormat, formatMixins} from '../../src/compile/common';
 
 describe('Model', function() {
   describe('timeFormat()', function() {
     it('should get the right time template', function() {
-      assert.equal(timeFormat(parseModel({
+      assert.equal(timeFormat(parseUnitModel({
         mark: "point",
         encoding: {
           x: {timeUnit: 'month', field:'a', type: "temporal", axis: {shortTimeLabels: true}}
         }
       }), X), '%b');
 
-      assert.equal(timeFormat(parseModel({
+      assert.equal(timeFormat(parseUnitModel({
         mark: "point",
         encoding: {
           x: {timeUnit: 'month', field:'a', type: "temporal"}
         }
       }), X), '%B');
 
-      assert.equal(timeFormat(parseModel({
+      assert.equal(timeFormat(parseUnitModel({
         mark: "point",
         encoding: {
           x: {timeUnit: 'week', field:'a', type: "temporal", axis: {shortTimeLabels: true}}
@@ -33,7 +33,7 @@ describe('Model', function() {
 
   describe('format()', function() {
     it('should use time format type for time scale', function() {
-      assert.deepEqual(formatMixins(parseModel({
+      assert.deepEqual(formatMixins(parseUnitModel({
         mark: "point",
         encoding: {
           x: {timeUnit: 'month', field:'a', type: "temporal"}
@@ -45,7 +45,7 @@ describe('Model', function() {
     });
 
     it('should use default time format if we don\'t have a good format', function() {
-      assert.deepEqual(formatMixins(parseModel({
+      assert.deepEqual(formatMixins(parseUnitModel({
         mark: "point",
         encoding: {
           x: {timeUnit: 'week', field:'a', type: "temporal"}
@@ -57,7 +57,7 @@ describe('Model', function() {
     });
 
     it('should use number format for quantitative scale', function() {
-      assert.deepEqual(formatMixins(parseModel({
+      assert.deepEqual(formatMixins(parseUnitModel({
         mark: "point",
         encoding: {
           x: {field:'a', type: "quantitative"}
@@ -71,7 +71,7 @@ describe('Model', function() {
     });
 
     it('should support empty number format', function() {
-      assert.deepEqual(formatMixins(parseModel({
+      assert.deepEqual(formatMixins(parseUnitModel({
         mark: "point",
         encoding: {
           x: {field:'a', type: "quantitative"}
@@ -85,7 +85,7 @@ describe('Model', function() {
     });
 
     it('should use format if provided', function() {
-      assert.deepEqual(formatMixins(parseModel({
+      assert.deepEqual(formatMixins(parseUnitModel({
         mark: "point",
         encoding: {
           x: {field:'a', type: "quantitative"}

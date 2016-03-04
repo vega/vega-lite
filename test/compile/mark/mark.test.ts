@@ -2,14 +2,14 @@
 
 import {assert} from 'chai';
 
-import {parseModel} from '../../util';
+import {parseUnitModel} from '../../util';
 import {parseMark} from '../../../src/compile/mark/mark';
 import {SUMMARY} from '../../../src/data';
 
 describe('Mark (Non-path based Mark)', function() {
   describe('Bar', function() {
     describe('Aggregated with a color with binned x', function () {
-      const model = parseModel({
+      const model = parseUnitModel({
         "mark": "bar",
         "encoding": {
           "x": {"type": "quantitative", "field": "Cost__Other", "aggregate": "sum"},
@@ -30,7 +30,7 @@ describe('Mark (Non-path based Mark)', function() {
     });
 
     describe('Aggregated with a color with binned x', function () {
-      const model = parseModel({
+      const model = parseUnitModel({
         "mark": "bar",
         "encoding": {
           "y": {"type": "quantitative", "field": "Cost__Other", "aggregate": "sum"},

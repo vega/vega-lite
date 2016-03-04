@@ -1,7 +1,7 @@
 /* tslint:disable quote */
 
 import {assert} from 'chai';
-import {parseModel} from '../../util';
+import {parseUnitModel} from '../../util';
 import {extend} from '../../../src/util'
 import {X, Y, SIZE, COLOR, SHAPE} from '../../../src/channel';
 import {bar} from '../../../src/compile/mark/bar';
@@ -16,7 +16,7 @@ describe('Mark: Bar', function() {
   });
 
   describe('vertical, with log', function() {
-    const model = parseModel({
+    const model = parseUnitModel({
       "mark": "bar",
       "encoding": {
         "x": {"bin": true, "type": "quantitative", "field": "IMDB_Rating"},
@@ -36,7 +36,7 @@ describe('Mark: Bar', function() {
   });
 
   describe('horizontal, with log', function() {
-    const model = parseModel({
+    const model = parseUnitModel({
       "mark": "bar",
       "encoding": {
         "y": {"bin": true, "type": "quantitative", "field": "IMDB_Rating"},
@@ -57,7 +57,7 @@ describe('Mark: Bar', function() {
   });
 
   describe('vertical', function() {
-    const model = parseModel({
+    const model = parseUnitModel({
         "mark": "bar",
         "encoding": {"y": {"type": "quantitative", "field": 'US_Gross', "aggregate": "sum"}},
         "data": {"url": 'data/movies.json'}
@@ -78,7 +78,7 @@ describe('Mark: Bar', function() {
   });
 
   describe('horizontal', function() {
-    const model = parseModel({
+    const model = parseUnitModel({
         "mark": "bar",
         "encoding": {"x": {"type": "quantitative", "field": 'US_Gross', "aggregate": 'sum'}},
         "data": {"url": 'data/movies.json'}
