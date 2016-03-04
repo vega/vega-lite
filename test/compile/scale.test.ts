@@ -75,7 +75,7 @@ describe('Scale', function() {
         }
       });
 
-      const domain = vlscale.domain(model.scale(Y), model, Y, ScaleType.LINEAR);
+      const domain = vlscale.domain(model.scale(Y), model, Y);
 
       assert.deepEqual(domain, {
         data: 'stacked_scale',
@@ -97,15 +97,14 @@ describe('Scale', function() {
               }
             }
           });
-          const domain = vlscale.domain(model.scale(Y), model, Y, ScaleType.ORDINAL);
+          const domain = vlscale.domain(model.scale(Y), model, Y);
 
           assert.deepEqual(domain, {
             data: SOURCE,
-            field: 'bin_origin_range',
-            sort: {
-              field: 'bin_origin_start',
-              op: 'min'
-            }
+            field: [
+              'bin_origin_start',
+              'bin_origin_end'
+            ]
           });
         });
 
@@ -122,7 +121,7 @@ describe('Scale', function() {
               }
             }
           });
-          const domain = vlscale.domain(model.scale(Y), model, Y, ScaleType.LINEAR);
+          const domain = vlscale.domain(model.scale(Y), model, Y);
 
           assert.deepEqual(domain.data, SOURCE);
         });
@@ -140,7 +139,7 @@ describe('Scale', function() {
               }
             }
           });
-          const domain = vlscale.domain(model.scale(Y), model, Y, ScaleType.LINEAR);
+          const domain = vlscale.domain(model.scale(Y), model, Y);
 
           assert.deepEqual(domain.data, SUMMARY);
         });
@@ -158,7 +157,7 @@ describe('Scale', function() {
               }
             }
           });
-          const domain = vlscale.domain(model.scale(Y), model, Y, ScaleType.LINEAR);
+          const domain = vlscale.domain(model.scale(Y), model, Y);
 
           assert.deepEqual(domain.data, SUMMARY);
         });
@@ -177,7 +176,7 @@ describe('Scale', function() {
               }
             }
           });
-          const domain = vlscale.domain(model.scale(Y), model, Y, ScaleType.TIME);
+          const domain = vlscale.domain(model.scale(Y), model, Y);
 
           assert.deepEqual(domain.data, SOURCE);
         });
@@ -195,7 +194,7 @@ describe('Scale', function() {
               }
             }
           });
-          const domain = vlscale.domain(model.scale(Y), model, Y, ScaleType.ORDINAL);
+          const domain = vlscale.domain(model.scale(Y), model, Y);
 
           assert.deepEqual(domain.data, SOURCE);
           assert.operator(domain.field.indexOf('year'), '>', -1);
@@ -214,7 +213,7 @@ describe('Scale', function() {
               }
             }
           });
-          const domain = vlscale.domain(model.scale(Y), model, Y, ScaleType.ORDINAL);
+          const domain = vlscale.domain(model.scale(Y), model, Y);
 
           assert.deepEqual(domain, { data: 'month', field: 'date' });
         });
@@ -232,7 +231,7 @@ describe('Scale', function() {
                 }
               }
             });
-            const domain = vlscale.domain(model.scale(Y), model, Y, ScaleType.ORDINAL);
+            const domain = vlscale.domain(model.scale(Y), model, Y);
 
             assert.deepEqual(domain, {
               data: 'source', field: 'yearmonth_origin',
@@ -251,7 +250,7 @@ describe('Scale', function() {
             }
           });
 
-        assert.deepEqual(vlscale.domain(model.scale(Y), model, Y, ScaleType.ORDINAL), {
+        assert.deepEqual(vlscale.domain(model.scale(Y), model, Y), {
             data: "source",
             field: 'origin',
             sort: sortDef
@@ -266,7 +265,7 @@ describe('Scale', function() {
             }
           });
 
-        assert.deepEqual(vlscale.domain(model.scale(Y), model, Y, ScaleType.ORDINAL), {
+        assert.deepEqual(vlscale.domain(model.scale(Y), model, Y), {
             data: "source",
             field: 'origin',
             sort: true
