@@ -108,7 +108,7 @@ export abstract class Model {
     this._description = spec.description;
     this._transform = spec.transform;
 
-    this.component = {data: {}, layout: null, mark: null, scale: null, axis: null, axisGroup: null, gridGroup: null, legend: null};
+    this.component = {data: null, layout: null, mark: null, scale: null, axis: null, axisGroup: null, gridGroup: null, legend: null};
   }
 
 

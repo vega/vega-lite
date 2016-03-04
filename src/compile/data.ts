@@ -26,41 +26,41 @@ const DEFAULT_NULL_FILTERS = {
  * Composable component instance of a model's data.
  */
 export interface DataComponent {
-  source?: VgData;
+  source: VgData;
 
   /** Mapping from field name to primitive data type.  */
-  formatParse?: Dict<string>;
+  formatParse: Dict<string>;
 
   /** String set of fields for null filtering */
-  nullFilter?: StringSet;
+  nullFilter: StringSet;
 
   /** Hashset of a formula object */
-  calculate?: Dict<Formula>;
+  calculate: Dict<Formula>;
 
   /** Filter test expression */
-  filter?: string;
+  filter: string;
 
   /** Dictionary mapping a bin parameter hash to transforms of the binned field */
-  bin?: Dict<VgTransform[]>;
+  bin: Dict<VgTransform[]>;
 
   /** Dictionary mapping an output field name (hash) to the time unit transform  */
-  timeUnit?: Dict<VgTransform>;
+  timeUnit: Dict<VgTransform>;
 
   /** String set of fields to be filtered */
-  nonPositiveFilter?: StringSet;
+  nonPositiveFilter: StringSet;
 
   /** Data source for feeding stacked scale. */
   // TODO: need to revise if single VgData is sufficient with layer / concat
-  stackScale?: VgData;
+  stackScale: VgData;
 
   /** Dictionary mapping an output field name (hash) to the sort and rank transforms  */
-  colorRank?: Dict<VgTransform[]>;
+  colorRank: Dict<VgTransform[]>;
 
   /** String set of time units that need their own data sources for scale domain */
-  timeUnitDomain?: StringSet;
+  timeUnitDomain: StringSet;
 
   /** Array of summary component object for producing summary (aggregate) data source */
-  summary?: SummaryComponent[];
+  summary: SummaryComponent[];
 }
 
 /**
@@ -84,37 +84,37 @@ interface SummaryComponent {
 /* tslint:disable:no-use-before-declare */
 
 export function parseUnitData(model: UnitModel): DataComponent {
-  let data: DataComponent = {};
-  data.source = source.parseUnit(model);
-  data.formatParse = formatParse.parseUnit(model);
-  data.nullFilter = nullFilter.parseUnit(model);
-  data.filter = filter.parseUnit(model);
-  data.bin = bin.parseUnit(model);
-  data.calculate = formula.parseUnit(model);
-  data.timeUnit = timeUnit.parseUnit(model);
-  data.timeUnitDomain = timeUnitDomain.parseUnit(model);
-  data.summary = summary.parseUnit(model);
-  data.stackScale = stackScale.parseUnit(model);
-  data.colorRank = colorRank.parseUnit(model);
-  data.nonPositiveFilter = nonPositiveFilter.parseUnit(model);
-  return data;
+  return {
+    source: source.parseUnit(model),
+    formatParse: formatParse.parseUnit(model),
+    nullFilter: nullFilter.parseUnit(model),
+    filter: filter.parseUnit(model),
+    bin: bin.parseUnit(model),
+    calculate: formula.parseUnit(model),
+    timeUnit: timeUnit.parseUnit(model),
+    timeUnitDomain: timeUnitDomain.parseUnit(model),
+    summary: summary.parseUnit(model),
+    stackScale: stackScale.parseUnit(model),
+    colorRank: colorRank.parseUnit(model),
+    nonPositiveFilter: nonPositiveFilter.parseUnit(model)
+  };
 }
 
 export function parseFacetData(model: FacetModel): DataComponent {
-  let data: DataComponent = {};
-  data.source = source.parseFacet(model);
-  data.formatParse = formatParse.parseFacet(model);
-  data.nullFilter = nullFilter.parseFacet(model);
-  data.filter = filter.parseFacet(model);
-  data.bin = bin.parseFacet(model);
-  data.calculate = formula.parseFacet(model);
-  data.timeUnit = timeUnit.parseFacet(model);
-  data.timeUnitDomain = timeUnitDomain.parseFacet(model);
-  data.summary = summary.parseFacet(model);
-  data.stackScale = stackScale.parseFacet(model);
-  data.colorRank = colorRank.parseFacet(model);
-  data.nonPositiveFilter = nonPositiveFilter.parseFacet(model);
-  return data;
+  return {
+    source: source.parseFacet(model),
+    formatParse: formatParse.parseFacet(model),
+    nullFilter: nullFilter.parseFacet(model),
+    filter: filter.parseFacet(model),
+    bin: bin.parseFacet(model),
+    calculate: formula.parseFacet(model),
+    timeUnit: timeUnit.parseFacet(model),
+    timeUnitDomain: timeUnitDomain.parseFacet(model),
+    summary: summary.parseFacet(model),
+    stackScale: stackScale.parseFacet(model),
+    colorRank: colorRank.parseFacet(model),
+    nonPositiveFilter: nonPositiveFilter.parseFacet(model)
+  };
 }
 /* tslint:enable:no-use-before-declare */
 
