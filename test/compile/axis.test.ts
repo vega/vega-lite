@@ -2,7 +2,7 @@
 
 import {assert} from 'chai';
 
-import {parseModel} from '../util';
+import {parseModel, parseAnyModel} from '../util';
 import * as axis from '../../src/compile/axis';
 import {X, Y, COLUMN} from '../../src/channel';
 
@@ -29,7 +29,7 @@ describe('Axis', function() {
     });
   });
 
-  describe('compileAxis', function() {
+  describe('parseAxis', function() {
     it('should produce a Vega axis object with correct type and scale', function() {
       const model = parseModel({
         mark: "point",
@@ -37,7 +37,7 @@ describe('Axis', function() {
           x: {field: "a", type: "quantitative"}
         }
       });
-      const def = axis.compileAxis(X, model);
+      const def = axis.parseAxis(X, model);
       assert.isObject(def);
       assert.equal(def.type, 'x');
       assert.equal(def.scale, 'x');
@@ -70,7 +70,7 @@ describe('Axis', function() {
     });
 
     it('should return top for COL', function () {
-      const orient = axis.orient(parseModel({
+      const orient = axis.orient(parseAnyModel({
           mark: "point",
           encoding: {
             x: {field: 'a'},

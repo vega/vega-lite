@@ -2,18 +2,29 @@ import {AxisOrient} from '../axis';
 import {COLUMN, ROW, X, Y, Channel} from '../channel';
 import {title as fieldDefTitle, isDimension} from '../fielddef';
 import {NOMINAL, ORDINAL, TEMPORAL} from '../type';
-import {contains, extend, truncate} from '../util';
+import {contains, extend, truncate, Dict} from '../util';
+import {VgAxis} from '../vega.schema';
 
 import {formatMixins} from './common';
-import {Model} from './Model';
+import {Model} from './model';
+import {UnitModel} from './unit';
 
 // https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations
 declare let exports;
 
+export function parseAxisComponent(model: Model, axisChannels: Channel[]): Dict<VgAxis> {
+  return axisChannels.reduce(function(axis, channel) {
+    if (model.axis(channel)) {
+      axis[channel] = parseAxis(channel, model);
+    }
+    return axis;
+  }, {} as Dict<VgAxis>);
+}
+
 /**
  * Make an inner axis for showing grid for shared axis.
  */
-export function compileInnerAxis(channel: Channel, model: Model) {
+export function parseInnerAxis(channel: Channel, model: Model): VgAxis {
   const isCol = channel === COLUMN,
     isRow = channel === ROW,
     type = isCol ? 'x' : isRow ? 'y': channel;
@@ -28,7 +39,7 @@ export function compileInnerAxis(channel: Channel, model: Model) {
     tickSize: 0,
     properties: {
       labels: {
-        text: {value:''}
+        text: {value: ''}
       },
       axis: {
         stroke: {value: 'transparent'}
@@ -53,7 +64,7 @@ export function compileInnerAxis(channel: Channel, model: Model) {
   return def;
 }
 
-export function compileAxis(channel: Channel, model: Model) {
+export function parseAxis(channel: Channel, model: Model): VgAxis {
   const isCol = channel === COLUMN,
     isRow = channel === ROW,
     type = isCol ? 'x' : isRow ? 'y': channel;
@@ -134,7 +145,7 @@ export function grid(model: Model, channel: Channel) {
   return gridShow(model, channel) && (
     // TODO refactor this cleanly -- essentially the condition below is whether
     // the axis is a shared / union axis.
-    (channel === Y || channel === X) && !(model.has(COLUMN) || model.has(ROW))
+    (channel === Y || channel === X) && !model.parent()
   );
 }
 
@@ -157,10 +168,6 @@ export function orient(model: Model, channel: Channel) {
   } else if (channel === COLUMN) {
     // FIXME test and decide
     return AxisOrient.TOP;
-  } else if (channel === ROW) {
-    if (model.has(Y) && model.axis(Y).orient !== AxisOrient.RIGHT) {
-      return AxisOrient.RIGHT;
-    }
   }
   return undefined;
 }
@@ -202,12 +209,15 @@ export function title(model: Model, channel: Channel) {
   if (axis.titleMaxLength) {
     maxLength = axis.titleMaxLength;
   } else if (channel === X && !model.isOrdinalScale(X)) {
+    const unitModel: UnitModel = model as any; // only unit model has channel x
     // For non-ordinal scale, we know cell size at compile time, we can guess max length
-    maxLength = model.cellWidth() / model.axis(X).characterWidth;
+    maxLength = unitModel.cellWidth() / model.axis(X).characterWidth;
   } else if (channel === Y && !model.isOrdinalScale(Y)) {
+    const unitModel: UnitModel = model as any; // only unit model has channel y
     // For non-ordinal scale, we know cell size at compile time, we can guess max length
-    maxLength = model.cellHeight() / model.axis(Y).characterWidth;
+    maxLength = unitModel.cellHeight() / model.axis(Y).characterWidth;
   }
+
   // FIXME: we should use template to truncate instead
   return maxLength ? truncate(fieldTitle, maxLength) : fieldTitle;
 }
@@ -250,8 +260,6 @@ export namespace properties {
       // auto rotate for X and Row
       if (channel === X && (isDimension(fieldDef) || fieldDef.type === TEMPORAL)) {
         labelsSpec.angle = {value: 270};
-      } else if (channel === ROW && model.has(X)) {
-        labelsSpec.angle = {value: def.orient === 'left' ? 270 : 90};
       }
     }
 

@@ -1,50 +1,53 @@
+import {COLOR, SIZE, SHAPE, Channel} from '../channel';
 import {FieldDef} from '../fielddef';
 import {LegendProperties} from '../legend';
-
-import {COLOR, SIZE, SHAPE, Channel} from '../channel';
 import {title as fieldTitle} from '../fielddef';
 import {AREA, BAR, TICK, TEXT, LINE, POINT, CIRCLE, SQUARE} from '../mark';
-import {extend, keys, without} from '../util';
-import {Model} from './Model';
-import {applyMarkConfig, FILL_STROKE_CONFIG, formatMixins as utilFormatMixins, timeFormat} from './common';
 import {ORDINAL} from '../type';
+import {extend, keys, without, Dict} from '../util';
+
+import {applyMarkConfig, FILL_STROKE_CONFIG, formatMixins as utilFormatMixins, timeFormat} from './common';
 import {COLOR_LEGEND, COLOR_LEGEND_LABEL} from './scale';
+import {UnitModel} from './unit';
+import {VgLegend} from '../vega.schema';
 
-export function compileLegends(model: Model) {
-  let defs = [];
 
-  if (model.has(COLOR) && model.legend(COLOR)) {
-    const fieldDef = model.fieldDef(COLOR);
-    const scale = model.scaleName(useColorLegendScale(fieldDef) ?
-      // To produce ordinal legend (list, rather than linear range) with correct labels:
-      // - For an ordinal field, provide an ordinal scale that maps rank values to field values
-      // - For a field with bin or timeUnit, provide an identity ordinal scale
-      // (mapping the field values to themselves)
-      COLOR_LEGEND :
-      COLOR
-    );
-
-    const def = model.config().mark.filled ? { fill: scale } : { stroke: scale };
-    defs.push(compileLegend(model, COLOR, def));
-  }
-
-  if (model.has(SIZE) && model.legend(SIZE)) {
-    defs.push(compileLegend(model, SIZE, {
-      size: model.scaleName(SIZE)
-    }));
-  }
-
-  if (model.has(SHAPE) && model.legend(SHAPE)) {
-    defs.push(compileLegend(model, SHAPE, {
-      shape: model.scaleName(SHAPE)
-    }));
-  }
-  return defs;
+export function parseLegendComponent(model: UnitModel): Dict<VgLegend> {
+  return [COLOR, SIZE, SHAPE].reduce(function(legendComponent, channel) {
+    if (model.legend(channel)) {
+      legendComponent[channel] = parseLegend(model, channel);
+    }
+    return legendComponent;
+  }, {} as Dict<VgLegend>);
 }
 
-export function compileLegend(model: Model, channel: Channel, def) {
+function getLegendDefWithScale(model: UnitModel, channel: Channel): VgLegend {
+  switch (channel) {
+    case COLOR:
+      const fieldDef = model.fieldDef(COLOR);
+      const scale = model.scaleName(useColorLegendScale(fieldDef) ?
+        // To produce ordinal legend (list, rather than linear range) with correct labels:
+        // - For an ordinal field, provide an ordinal scale that maps rank values to field values
+        // - For a field with bin or timeUnit, provide an identity ordinal scale
+        // (mapping the field values to themselves)
+        COLOR_LEGEND :
+        COLOR
+      );
+
+      return model.config().mark.filled ? { fill: scale } : { stroke: scale };
+    case SIZE:
+      return { size: model.scaleName(SIZE) };
+    case SHAPE:
+      return { shape: model.scaleName(SHAPE) };
+  }
+  return null;
+}
+
+export function parseLegend(model: UnitModel, channel: Channel): VgLegend {
   const fieldDef = model.fieldDef(channel);
   const legend = model.legend(channel);
+
+  let def: VgLegend = getLegendDefWithScale(model, channel);
 
   // 1.1 Add properties with special rules
   def.title = title(legend, fieldDef);
@@ -82,7 +85,7 @@ export function title(legend: LegendProperties, fieldDef: FieldDef) {
   return fieldTitle(fieldDef);
 }
 
-export function formatMixins(legend: LegendProperties, model: Model, channel: Channel) {
+export function formatMixins(legend: LegendProperties, model: UnitModel, channel: Channel) {
   const fieldDef = model.fieldDef(channel);
 
   // If the channel is binned, we should not set the format because we have a range label
@@ -99,7 +102,7 @@ export function useColorLegendScale(fieldDef: FieldDef) {
 }
 
 namespace properties {
-  export function symbols(fieldDef: FieldDef, symbolsSpec, model: Model, channel: Channel) {
+  export function symbols(fieldDef: FieldDef, symbolsSpec, model: UnitModel, channel: Channel) {
     let symbols:any = {};
     const mark = model.mark();
 
@@ -163,7 +166,7 @@ namespace properties {
     return keys(symbols).length > 0 ? symbols : undefined;
   }
 
-  export function labels(fieldDef: FieldDef, symbolsSpec, model: Model, channel: Channel): any {
+  export function labels(fieldDef: FieldDef, symbolsSpec, model: UnitModel, channel: Channel): any {
     if (channel === COLOR) {
       if (fieldDef.type === ORDINAL) {
         return {
