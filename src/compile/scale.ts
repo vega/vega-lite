@@ -481,7 +481,7 @@ export function nice(scale: Scale, channel: Channel, fieldDef: FieldDef): boolea
 }
 
 
-export function padding(scale: Scale, channel: Channel, scaleDef) {
+export function padding(scale: Scale, channel: Channel, __, ___, scaleDef) {
   /* Padding is only allowed for X and Y.
    *
    * Basically it doesn't make sense to add padding for color and size.
@@ -492,7 +492,7 @@ export function padding(scale: Scale, channel: Channel, scaleDef) {
    */
   if (scale.type === ScaleType.ORDINAL && contains([X, Y], channel)) {
     // TODO: design config for this
-    return scaleDef.points ? scale.padding : 0;
+    return scaleDef.points ? 1 : scale.padding;
   }
   return undefined;
 }

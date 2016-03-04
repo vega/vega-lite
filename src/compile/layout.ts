@@ -74,26 +74,26 @@ export function parseUnitLayout(model: UnitModel): LayoutComponent {
 function parseUnitSizeLayout(model: UnitModel, channel: Channel): SizeComponent {
   // TODO: think about whether this config has to be the cell or facet cell config
   const cellConfig = model.config().cell;
-  const nonOrdinalSize = channel === X ? cellConfig.width : cellConfig.height;
+  const staticCellSize = channel === X ? cellConfig.width : cellConfig.height;
 
   return {
     distinct: getDistinct(model, channel),
     formula: [{
       field: model.channelSizeName(channel),
-      expr: unitSizeExpr(model, channel, nonOrdinalSize)
+      expr: unitSizeExpr(model, channel, staticCellSize)
     }]
   };
 }
 
-function unitSizeExpr(model: UnitModel, channel: Channel, nonOrdinalSize: number): string {
+function unitSizeExpr(model: UnitModel, channel: Channel, staticCellSize: number): string {
   if (model.scale(channel)) {
     if (model.isOrdinalScale(channel) && model.scale(channel).bandSize !== BANDSIZE_FIT) {
       const scale = model.scale(channel);
       return '(' + cardinalityFormula(model, channel) +
-        ' + ' + scale.padding +
+        ' + ' + 1 +
         ') * ' + scale.bandSize;
     } else {
-      return nonOrdinalSize + '';
+      return staticCellSize + '';
     }
   } else {
     // TODO: need a way to set this to fit when using with layering.

@@ -89,7 +89,7 @@ export const defaultScaleConfig: ScaleConfig = {
   round: true,
   textBandWidth: 90,
   bandSize: 21,
-  padding: 1,
+  padding: 0.1,
   useRawDomain: false,
   opacity: [0.3, 0.8],
 
