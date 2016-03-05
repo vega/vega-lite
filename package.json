@@ -61,11 +61,11 @@
     "istanbul": "^0.4.2",
     "json-diff": "^0.3.1",
     "mocha": "^2.4.5",
-    "nodemon": "^1.9.0",
+    "nodemon": "^1.9.1",
     "source-map-support": "^0.4.0",
     "tsify": "^0.13.2",
-    "tslint": "^3.4.0",
-    "typescript": "^1.8.2",
+    "tslint": "^3.5.0",
+    "typescript": "^1.8.7",
     "typescript-json-schema": "^0.0.8",
     "uglify-js": "^2.6.2",
     "vega": "^2.5.1",
@@ -74,8 +74,8 @@
     "z-schema": "^3.16.1"
   },
   "dependencies": {
-    "datalib": "^1.6.1",
-    "yargs": "^4.1.0"
+    "datalib": "^1.6.3",
+    "yargs": "^4.2.0"
   },
   "browserify": {
     "transform": [
