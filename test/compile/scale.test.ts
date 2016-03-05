@@ -346,6 +346,11 @@ describe('Scale', function() {
     });
 
     it('should sort range of color labels', function() {
+      assert.deepEqual(scales[1].domain, {
+        data: 'source',
+        field: 'bin_origin_start',
+        sort: true
+      });
       assert.deepEqual(scales[1].range, {
         data: 'source',
         field: 'bin_origin_range',
