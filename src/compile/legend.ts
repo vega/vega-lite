@@ -68,7 +68,7 @@ export function parseLegend(model: UnitModel, channel: Channel): VgLegend {
     let value = properties[group] ?
       properties[group](fieldDef, props[group], model, channel) : // apply rule
       props[group]; // no rule -- just default values
-    if (value !== undefined) {
+    if (value !== undefined && keys(value).length > 0) {
       def.properties = def.properties || {};
       def.properties[group] = value;
     }
