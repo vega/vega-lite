@@ -5,7 +5,7 @@
 // After finishing all test, make sure all lines in mark-tick.ts is tested
 // (except the scaffold labels() method)
 import {assert} from 'chai';
-import {parseModel} from '../../util';
+import {parseUnitModel} from '../../util';
 import {X, Y, SIZE} from '../../../src/channel';
 import {tick} from '../../../src/compile/mark/tick';
 
@@ -15,7 +15,7 @@ describe('Mark: Tick', function() {
   });
 
   describe('with quantitative x', function() {
-    const model = parseModel({
+    const model = parseUnitModel({
       'mark': 'tick',
       'encoding': {'x': {'field': 'Horsepower', 'type': 'quantitative'}},
       'data': {'url': 'data/cars.json'}
@@ -32,7 +32,7 @@ describe('Mark: Tick', function() {
   });
 
   describe('with quantitative y', function() {
-    const model = parseModel({
+    const model = parseUnitModel({
       'mark': 'tick',
       'encoding': {'y': {'field': 'Cylinders','type': 'quantitative'}},
       'data': {'url': 'data/cars.json'}
@@ -49,7 +49,7 @@ describe('Mark: Tick', function() {
   });
 
   describe('with quantitative x and ordinal y', function() {
-    const model = parseModel({
+    const model = parseUnitModel({
       'mark': 'tick',
       'encoding':
         {
@@ -70,7 +70,7 @@ describe('Mark: Tick', function() {
   });
 
   describe('width should be mapped to size', function() {
-    const model = parseModel({
+    const model = parseUnitModel({
       'mark': 'tick',
       'config': {'mark': {'orient': 'vertical'}},
       'encoding':
@@ -88,7 +88,7 @@ describe('Mark: Tick', function() {
   });
 
   describe('height should be mapped to size', function() {
-    const model = parseModel({
+    const model = parseUnitModel({
       'mark': 'tick',
       'config': {'mark': {'orient': 'horizontal'}},
       'encoding':

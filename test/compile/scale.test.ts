@@ -4,7 +4,7 @@ import {assert} from 'chai';
 
 import * as vlscale from '../../src/compile/scale';
 import {SOURCE, SUMMARY} from '../../src/data';
-import {parseModel} from '../util';
+import {parseUnitModel} from '../util';
 import {Y, ROW} from '../../src/channel';
 import {ScaleType} from '../../src/scale';
 
@@ -12,7 +12,7 @@ import {ScaleType} from '../../src/scale';
 describe('Scale', function() {
   describe('scaleType()', function() {
     it('should return time for yearmonth', function() {
-      const model = parseModel({
+      const model = parseUnitModel({
         mark: 'point',
         encoding: {
           y: {
@@ -28,7 +28,7 @@ describe('Scale', function() {
     });
 
     it('should return ordinal for month', function() {
-      const model = parseModel({
+      const model = parseUnitModel({
         mark: 'point',
         encoding: {
           y: {
@@ -44,7 +44,7 @@ describe('Scale', function() {
     });
 
     it('should return ordinal for row', function() {
-      const model = parseModel({
+      const model = parseUnitModel({
         mark: 'point',
         encoding: {
           row: {
@@ -62,7 +62,7 @@ describe('Scale', function() {
 
   describe('domain()', function() {
     it('should return domain for stack', function() {
-      const model = parseModel({
+      const model = parseUnitModel({
         mark: "bar",
         encoding: {
           y: {
@@ -86,7 +86,7 @@ describe('Scale', function() {
     describe('for quantitative', function() {
       it('should return the right domain for binned Q',
         function() {
-          const model = parseModel({
+          const model = parseUnitModel({
             mark: "point",
             encoding: {
               y: {
@@ -110,7 +110,7 @@ describe('Scale', function() {
 
       it('should return the raw domain if includeRawDomain is true for non-bin, non-sum Q',
         function() {
-          const model = parseModel({
+          const model = parseUnitModel({
             mark: "point",
             encoding: {
               y: {
@@ -128,7 +128,7 @@ describe('Scale', function() {
 
       it('should return the aggregate domain for sum Q',
         function() {
-          const model = parseModel({
+          const model = parseUnitModel({
             mark: "point",
             encoding: {
               y: {
@@ -146,7 +146,7 @@ describe('Scale', function() {
 
 
       it('should return the aggregated domain if includeRawDomain is false', function() {
-          const model = parseModel({
+          const model = parseUnitModel({
             mark: "point",
             encoding: {
               y: {
@@ -166,7 +166,7 @@ describe('Scale', function() {
     describe('for time', function() {
       it('should return the raw domain if includeRawDomain is true for raw T',
         function() {
-          const model = parseModel({
+          const model = parseUnitModel({
             mark: "point",
             encoding: {
               y: {
@@ -183,7 +183,7 @@ describe('Scale', function() {
 
       it('should return the raw domain if includeRawDomain is true for year T',
         function() {
-          const model = parseModel({
+          const model = parseUnitModel({
             mark: "point",
             encoding: {
               y: {
@@ -202,7 +202,7 @@ describe('Scale', function() {
 
       it('should return the correct domain for month T',
         function() {
-          const model = parseModel({
+          const model = parseUnitModel({
             mark: "point",
             encoding: {
               y: {
@@ -220,7 +220,7 @@ describe('Scale', function() {
 
         it('should return the correct domain for yearmonth T',
           function() {
-            const model = parseModel({
+            const model = parseUnitModel({
               mark: "point",
               encoding: {
                 y: {
@@ -243,7 +243,7 @@ describe('Scale', function() {
     describe('for ordinal', function() {
       it('should return correct domain with the provided sort property', function() {
         const sortDef = {op: 'min', field:'Acceleration'};
-        const model = parseModel({
+        const model = parseUnitModel({
             mark: "point",
             encoding: {
               y: { field: 'origin', type: "ordinal", sort: sortDef}
@@ -258,7 +258,7 @@ describe('Scale', function() {
       });
 
       it('should return correct domain without sort if sort is not provided', function() {
-        const model = parseModel({
+        const model = parseUnitModel({
             mark: "point",
             encoding: {
               y: { field: 'origin', type: "ordinal"}
@@ -275,7 +275,7 @@ describe('Scale', function() {
   });
 
   describe('ordinal with color', function() {
-    const model = parseModel({
+    const model = parseUnitModel({
       mark: "point",
       encoding: {
         color: { field: 'origin', type: "ordinal"}
@@ -314,7 +314,7 @@ describe('Scale', function() {
   });
 
   describe('color with bin', function() {
-    const model = parseModel({
+    const model = parseUnitModel({
         mark: "point",
         encoding: {
           color: { field: 'origin', type: "quantitative", bin: true}
@@ -355,7 +355,7 @@ describe('Scale', function() {
   });
 
   describe('color with time unit', function() {
-    const model = parseModel({
+    const model = parseUnitModel({
         mark: "point",
         encoding: {
           color: {field: 'origin', type: "temporal", timeUnit: "year"}

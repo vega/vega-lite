@@ -1,7 +1,7 @@
 /* tslint:disable quote */
 
 import {assert} from 'chai';
-import {parseModel} from '../../util';
+import {parseUnitModel} from '../../util';
 import {extend} from '../../../src/util';
 import {text} from '../../../src/compile/mark/text';
 import {X, Y} from '../../../src/channel';
@@ -17,7 +17,7 @@ describe('Mark: Text', function() {
       "encoding": {},
       "data": {"url": "data/cars.json"}
     };
-    const model = parseModel(spec);
+    const model = parseUnitModel(spec);
     const props = text.properties(model);
 
     it('should have placeholder text', function() {
@@ -37,7 +37,7 @@ describe('Mark: Text', function() {
         }
       }
     };
-    const model = parseModel(spec);
+    const model = parseUnitModel(spec);
     const props = text.properties(model);
 
     it('should use number template', function() {
@@ -52,7 +52,7 @@ describe('Mark: Text', function() {
         "text": {"field": "foo", "type": "temporal"}
       }
     };
-    const model = parseModel(spec);
+    const model = parseUnitModel(spec);
     const props = text.properties(model);
 
     it('should use date template', function() {
@@ -70,7 +70,7 @@ describe('Mark: Text', function() {
       },
       "data": {"url": "data/cars.json"}
     };
-    const model = parseModel(spec);
+    const model = parseUnitModel(spec);
     const props = text.properties(model);
 
     it('should scale on x', function() {
@@ -101,7 +101,7 @@ describe('Mark: Text', function() {
         },
         "data": {"url": "data/cars.json"}
       };
-    const model = parseModel(spec);
+    const model = parseUnitModel(spec);
     const props = text.properties(model);
 
     it('should fit cell on x', function() {
@@ -151,7 +151,7 @@ describe('Mark: Text', function() {
         },
         "data": {"url": "data/cars.json"}
       };
-    const model = parseModel(spec);
+    const model = parseUnitModel(spec);
     const props = text.properties(model);
     it('should fill black', function() {
       assert.deepEqual(props.fill, {value: 'black'});

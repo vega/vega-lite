@@ -1,7 +1,7 @@
 /* tslint:disable quote */
 
 import {assert} from 'chai';
-import {parseModel} from '../../util';
+import {parseUnitModel} from '../../util';
 import {extend} from '../../../src/util'
 import {X, Y, COLOR} from '../../../src/channel';
 import {area} from '../../../src/compile/mark/area';
@@ -26,7 +26,7 @@ describe('Mark: Area', function() {
   }
 
   describe('with x, y', function() {
-    const model = parseModel(areaXY());
+    const model = parseUnitModel(areaXY());
     const props = area.properties(model);
 
     it('should have scale for x', function() {
@@ -39,7 +39,7 @@ describe('Mark: Area', function() {
   });
 
   describe('with x, y, color', function () {
-    const model = parseModel(areaXY({
+    const model = parseUnitModel(areaXY({
       "color": {"field": "Miles_per_Gallon", "type": "quantitative"}
     }));
 

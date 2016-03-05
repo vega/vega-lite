@@ -1,7 +1,7 @@
 /* tslint:disable quote */
 
 import {assert} from 'chai';
-import {parseModel} from '../../util';
+import {parseUnitModel} from '../../util';
 import {extend} from '../../../src/util'
 import {X, Y, SIZE, COLOR, SHAPE} from '../../../src/channel';
 import {point, square, circle} from '../../../src/compile/mark/point';
@@ -27,7 +27,7 @@ describe('Mark: Point', function() {
   }
 
   describe('with x', function() {
-    const model = parseModel({
+    const model = parseUnitModel({
       "mark": "point",
       "encoding": {"x": {"field": "year", "type": "ordinal"}},
       "data": {"url": "data/barley.json"}
@@ -45,7 +45,7 @@ describe('Mark: Point', function() {
   });
 
   describe('with y', function() {
-    const model = parseModel({
+    const model = parseUnitModel({
       "mark": "point",
       "encoding": {"y": {"field": "year", "type": "ordinal"}},
       "data": {"url": "data/barley.json"}
@@ -63,7 +63,7 @@ describe('Mark: Point', function() {
   });
 
   describe('with x and y', function() {
-    const model = parseModel(pointXY());
+    const model = parseUnitModel(pointXY());
     const props = point.properties(model);
 
     it('should scale on x', function() {
@@ -75,7 +75,7 @@ describe('Mark: Point', function() {
   });
 
   describe('with x, y, size', function () {
-    const model = parseModel(pointXY({
+    const model = parseUnitModel(pointXY({
       "size": {"field": "*", "type": "quantitative", "aggregate": "count"}
     }));
     const props = point.properties(model);
@@ -86,7 +86,7 @@ describe('Mark: Point', function() {
   });
 
   describe('with x, y, color', function () {
-    const model = parseModel(pointXY({
+    const model = parseUnitModel(pointXY({
       "color": {"field": "yield", "type": "quantitative"}
     }));
     const props = point.properties(model);
@@ -97,7 +97,7 @@ describe('Mark: Point', function() {
   });
 
   describe('with x, y, shape', function () {
-    const model = parseModel(pointXY({
+    const model = parseUnitModel(pointXY({
       "shape": {"bin": {"maxbins": 15}, "field": "yield", "type": "quantitative"}
     }));
     const props = point.properties(model);
@@ -108,7 +108,7 @@ describe('Mark: Point', function() {
   });
 
   describe('with constant color, shape, and size', function() {
-    const model = parseModel(pointXY({
+    const model = parseUnitModel(pointXY({
       "shape": {"value": "circle"},
       "color": {"value": "red"},
       "size": {"value": 23}
@@ -123,7 +123,7 @@ describe('Mark: Point', function() {
 
   describe('with configs', function() {
     it('should apply stroke config over color config', function() {
-      const model = parseModel({
+      const model = parseUnitModel({
         "mark": "point",
         "encoding": {
           "x": {"field": "Horsepower","type": "quantitative"},
@@ -136,7 +136,7 @@ describe('Mark: Point', function() {
     });
 
     it('should apply color config', function() {
-      const model = parseModel({
+      const model = parseUnitModel({
         "mark": "point",
         "encoding": {
           "x": {"field": "Horsepower","type": "quantitative"},
@@ -156,7 +156,7 @@ describe('Mark: Square', function() {
   });
 
   it('should have correct shape', function() {
-    const model = parseModel({
+    const model = parseUnitModel({
       "mark": "square",
       "encoding": {
         "color": {"value": "blue"}
@@ -168,7 +168,7 @@ describe('Mark: Square', function() {
   });
 
   it('should be filled by default', function() {
-    const model = parseModel({
+    const model = parseUnitModel({
       "mark": "square",
       "encoding": {
         "color": {"value": "blue"}
@@ -180,7 +180,7 @@ describe('Mark: Square', function() {
   });
 
   it('should support config.mark.filled:false', function() {
-    const model = parseModel({
+    const model = parseUnitModel({
       "mark": "square",
       "encoding": {
         "color": {"value": "blue"}
@@ -204,7 +204,7 @@ describe('Mark: Circle', function() {
     assert.equal(circle.markType(), 'symbol');
   });
 
-  const model = parseModel({
+  const model = parseUnitModel({
     "mark": "circle",
     "encoding": {
       "color": {"value": "blue"}
@@ -221,7 +221,7 @@ describe('Mark: Circle', function() {
   });
 
   it('should support config.mark.filled:false', function() {
-    const model = parseModel({
+    const model = parseUnitModel({
       "mark": "circle",
       "encoding": {
         "color": {"value": "blue"}
