@@ -2,7 +2,7 @@ import {AxisOrient} from '../axis';
 import {COLUMN, ROW, X, Y, Channel} from '../channel';
 import {title as fieldDefTitle, isDimension} from '../fielddef';
 import {NOMINAL, ORDINAL, TEMPORAL} from '../type';
-import {contains, extend, truncate, Dict} from '../util';
+import {contains, keys, extend, truncate, Dict} from '../util';
 import {VgAxis} from '../vega.schema';
 
 import {formatMixins} from './common';
@@ -109,7 +109,7 @@ export function parseAxis(channel: Channel, model: Model): VgAxis {
     const value = properties[group] ?
       properties[group](model, channel, props[group] || {}, def) :
       props[group];
-    if (value !== undefined) {
+    if (value !== undefined && keys(value).length > 0) {
       def.properties = def.properties || {};
       def.properties[group] = value;
     }
