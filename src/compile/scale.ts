@@ -107,7 +107,8 @@ function parseColorLegendScale(model: Model, fieldDef: FieldDef) {
     domain: {
       data: model.dataTable(),
       // use rank_<field> for ordinal type, for bin and timeUnit use default field
-      field: model.field(COLOR, (fieldDef.bin || fieldDef.timeUnit) ? {} : {prefn: 'rank_'}), sort: true
+      field: model.field(COLOR, (fieldDef.bin || fieldDef.timeUnit) ? {} : {prefn: 'rank_'}),
+      sort: true
     },
     range: {data: model.dataTable(), field: model.field(COLOR), sort: true}
   };
@@ -122,7 +123,7 @@ function parseBinColorLegendLabel(model: Model, fieldDef: FieldDef) {
     type: 'ordinal',
     domain: {
       data: model.dataTable(),
-      field: model.field(COLOR,  {prefn: 'rank_'}),
+      field: model.field(COLOR),
       sort: true
     },
     range: {
