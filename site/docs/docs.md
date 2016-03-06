@@ -47,10 +47,3 @@ In Vega-Lite, a specification can have the following top-level properties.
 | [mark](mark.html)    | String        | The mark type.  One of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`, `"area"`, `"point"`, and `"text"`. |
 | [encoding](encoding.html) | Object   | A key-value mapping between encoding channels and definition of fields. |
 | [config](config.html)   | Object     | Configuration object. |
-
-{:#lib}
-## Using Vega-Lite
-
-<!--TODO more about API -->
-
-You can create visualizations in the [online editor](https://vega.github.io/vega-editor/?mode=vega-lite) or read about how to [embed Vega-Lite visualizations in a web page](embed.html).
