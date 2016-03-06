@@ -445,7 +445,7 @@ nav a:hover {
     flex-direction: row;
     flex-wrap: wrap;
   }
-  .page-centered {
+  .page-centered, .page-content {
     max-width: 100%;
   }
   .lead-columns {
@@ -459,5 +459,8 @@ nav a:hover {
   }
   .example .example-vis, .example .example-code {
     flex: 1 1 auto;
+  }
+  .highlight {
+    overflow-x: auto;
   }
 }
