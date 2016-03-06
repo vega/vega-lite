@@ -171,7 +171,7 @@ nav {
   align-content: flex-start;
   flex-direction: row;
   flex-wrap: wrap;
-  line-height: 3em;
+  line-height: 54px;
 }
 
 nav a {
@@ -252,7 +252,7 @@ nav a:hover {
   margin-right: 8px;
   flex: 0 0 auto;
   display: inline-block;
-  line-height: 3em;
+  line-height: 54px;
 }
 
 .vl-links {
