@@ -57,7 +57,9 @@ Read our [introduction article on Medium](https://medium.com/p/438f9215f09e), ch
 
 <!--TODO more about API -->
 
-To get started quickly, you can create visualizations in our [online editor](https://vega.github.io/vega-editor/?mode=vega-lite). If you want to embed a Vega-Lite visualization in your webpage we highly suggest using our easy-to-use library, [vega-embed](https://github.com/vega/vega-embed). To learn more about using Vega-Lite and other methods of compiling Vega-Lite specifications, visit our [usage instructions]({{site.baseurl}}/docs/using.html).
+To get started quickly, you can create visualizations in our [online editor](https://vega.github.io/vega-editor/?mode=vega-lite).
+
+There are many ways to use Vega-Lite in your webpage or project. You can use the included compile function, the bundled command-line tools, our easy-to-use [embed library](https://github.com/vega/vega-embed), or a multitude of third party tools. To learn more about using Vega-Lite and other methods of compiling Vega-Lite specifications, visit our [usage instructions]({{site.baseurl}}/docs/usage.html).
 
 ## Example
 
