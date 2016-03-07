@@ -21,7 +21,7 @@ An integral part of the data visualization process is encoding data with visual 
     "size": ...,
     "shape": ...,
     "text": ...,
-    "detail": ...,
+    "detail": ...
   },
   ...
 }
