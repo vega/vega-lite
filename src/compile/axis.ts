@@ -186,6 +186,14 @@ export function tickSize(model: Model, channel: Channel) {
   return undefined;
 }
 
+export function tickSizeEnd(model: Model, channel: Channel) {
+    const tickSizeEnd = model.axis(channel).tickSizeEnd;
+    if (tickSizeEnd !== undefined) {
+        return tickSizeEnd;
+    }
+    return undefined;
+}
+
 
 export function title(model: Model, channel: Channel) {
   const axis = model.axis(channel);
@@ -210,15 +218,39 @@ export function title(model: Model, channel: Channel) {
   return maxLength ? truncate(fieldTitle, maxLength) : fieldTitle;
 }
 
+export function titleOffset(model: Model, channel: Channel) {
+    const titleOffset = model.axis(channel).titleOffset;
+    if (titleOffset !== undefined) {
+        return titleOffset;
+    }
+    return undefined;
+}
+
 export namespace properties {
   export function axis(model: Model, channel: Channel, axisPropsSpec, def) {
     const axis = model.axis(channel);
 
     return extend(
+      axis.axisColor !== undefined ?
+      {stroke: {value: axis.axisColor}} : {},
       axis.axisWidth !== undefined ?
-        { strokeWidth: {value: axis.axisWidth} } :
-        {},
+        {strokeWidth: {value: axis.axisWidth }} : {},
+
+      axis.tickColor !== undefined ? { ticks: {stroke : {value: axis.tickColor} } } : {},
+      axis.titleColor !== undefined ? { title: {stroke : {value: axis.titleColor} } } : {},
       axisPropsSpec || {}
+    );
+  }
+
+  export function grid(model: Model, channel: Channel, gridPropsSpec, def) {
+    const axis = model.axis(channel);
+
+    return extend(
+      axis.gridColor !== undefined ? { stroke: {value: axis.gridColor}} : {},
+      axis.gridOpacity !== undefined ? {strokeOpacity: {value: axis.gridOpacity} } : {},
+      axis.gridWidth !== undefined ? {strokeWidth : {value: axis.gridWidth} } : {},
+      axis.gridDash !== undefined ? {strokeDashOffset : {value: axis.gridDash} } : {},
+      gridPropsSpec || {}
     );
   }
 
@@ -281,6 +313,47 @@ export namespace properties {
       }
     }
 
+    if (axis.tickLabelColor !== undefined) {
+        labelsSpec.stroke = {value: axis.tickLabelColor};
+    } else {
+        labelsSpec.stroke = {};
+    }
+
+    if (axis.tickLabelFont !== undefined) {
+        labelsSpec.font = {value: axis.tickLabelFont};
+    } else {
+        labelsSpec.font = {};
+    }
+
+    if (axis.tickLabelFontSize !== undefined) {
+        labelsSpec.fontSize = {value: axis.tickLabelFontSize};
+    } else {
+        labelsSpec.fontSize = {};
+    }
+
     return labelsSpec || undefined;
+  }
+
+  export function ticks(model: Model, channel: Channel, ticksPropsSpec, def) {
+      const axis = model.axis(channel);
+
+      return extend(
+        axis.tickColor !== undefined ? {stroke : {value: axis.tickColor} } : {},
+        axis.tickWidth !== undefined ? {strokeWidth: {value: axis.tickWidth} } : {},
+        ticksPropsSpec || {}
+      );
+  }
+
+  export function title(model: Model, channel: Channel, titlePropsSpec, def) {
+    const axis = model.axis(channel);
+
+    return extend(
+        axis.titleColor !== undefined ? {stroke : {value: axis.titleColor} } : {},
+        axis.titleFont !== undefined ? {font: {value: axis.titleFont}} : {},
+        axis.titleFontSize !== undefined ? {fontSize: {value: axis.titleFontSize}} : {},
+        axis.titleFontWeight !== undefined ? {fontWeight: {value: axis.titleFontWeight}} : {},
+
+        titlePropsSpec || {}
+    );
   }
 }
