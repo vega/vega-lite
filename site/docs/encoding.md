@@ -13,6 +13,8 @@ An integral part of the data visualization process is encoding data with visual 
   "data": ... ,
   "mark": ... ,
   "encoding": {     // Encoding
+    "column": ...,
+    "row": ...,
     "x": ...,
     "y": ...,
     "color": ...,
@@ -45,6 +47,8 @@ Mark properties channels map data fields directly to visual properties of the ma
 | shape  | [ChannelDef](#def)| The symbol's shape (only for `point` marks).  The supported values are `"circle"` (default), `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`, or `"triangle-down"`. |
 | size  | [ChannelDef](#def)| Size of the mark.  <br/>     • For `point`, `square` and `circle` – the symbol size, or pixel area of the mark.  <br/> • For `bar` and `tick` – the bar and tick's size.  <br/>      • For `text` – the text's font size. <br/>      • Size is currently unsupported for `line` and `area`.|
 | text  | [ChannelDef](#def)| Text of the `text` mark. |
+| column, row  | [ChannelDef](#def)| `row` and `column` are special encoding channels for [faceting](#facet). |
+
 
 ### Additional Level of Detail Channel
 
