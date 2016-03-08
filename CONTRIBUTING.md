@@ -36,8 +36,8 @@ Here are some guides:
   - All lint and test should pass.
   - Run `npm run lint` and `npm run test`.
   - Update the documentation under `site/docs/` to reflect the changes.
-  - Make sure you have merged `master` into your branch.  If you are not a git command line ninja, we recommend [SourceTree](https://www.sourcetreeapp.com/).
-  - Provide a concise description for the pull request so that we can copy the description and simply paste in  [our release note](https://github.com/vega/vega-lite/releases).  When writing description for a pull request or a commit, please:
+  - Make sure you have merged `master` into your branch. If you are not a git command line ninja, we recommend [SourceTree](https://www.sourcetreeapp.com/).
+  - Provide a concise description for the pull request so that we can copy the description and simply paste in  [our release note](https://github.com/vega/vega-lite/releases). When writing description for a pull request or a commit, please:
     - Use imperative mood and present tense ([Why?](http://stackoverflow.com/questions/13861318/why-is-it-considered-good-practice-to-describe-git-commits-in-the-present-tense)).
     - Mention relevant issues using github's # syntax. (e.g., `#1` for mentioning issue #1)
     - Focus on _what_ and _why_ rather than _how_
@@ -71,7 +71,7 @@ To contribute changes to the documentation or website, simply submit a pull requ
 the corresponding markdown files in `site/`.
 
 The images that are shown on the homepage and in the gallery have to be generated with `npm run images`.
-To run the script, you need to install [gnu parallel](https://www.gnu.org/software/parallel/).  (For Mac, you can simply do `brew install parallel`.)
+To run the script, you need to install [gnu parallel](https://www.gnu.org/software/parallel/). (For Mac, you can simply do `brew install parallel`.)
 
 Since we only publish the Github Pages when we release a new version,
 it might be slightly outdated compared to `master`.
@@ -116,7 +116,7 @@ Then, run `gem install bundler`. Finally, simply run `bundle install` to install
 - `site/` – Vega-Lite website including documentation.
 - `examples/` – Example Vega-Lite specifications.
   - `examples/docs/` contains examples that are used in the documetnation, but should not be shown in the gallery.
-  - `examples/vl-examples.json` lists all examples under `examples/`.  Similarly, `examples/docs/vl-docs-examples.json` lists all examples under `examples/docs`.
+  - `examples/vl-examples.json` lists all examples under `examples/`. Similarly, `examples/docs/vl-docs-examples.json` lists all examples under `examples/docs`.
 
 - `lib/` contains JSON schema's `schema.json`
 - `scripts/` - Scripts for NPM commands.
@@ -130,7 +130,7 @@ Then, run `gem install bundler`. Finally, simply run `bundle install` to install
   - `src/schema/` contains JSON schema and TypeScript interface declaration.
   We compile `schema` variable inside `src/schema/schema.ts` to generate the JSON schema.
 
-- `test/` - Code for unit testing.  `test`'s structure reflects `src`'s' directory structure.
+- `test/` - Code for unit testing. `test`'s structure reflects `src`'s' directory structure.
 For example, `test/compile/` test files inside `src/compile/`.
   - Note that we prepend `/* tslint:disable:quotemark */` to all files under `test/compile`
   to allow putting JSON spec in tests directly without getting lint errors.
@@ -140,7 +140,7 @@ Some of them are downloaded from the TypeStrong community.
 
 ## Commands
 
-This section lists commands that are commonly used during development.  See `package.json` for other commands.
+This section lists commands that are commonly used during development. See `package.json` for other commands.
 
 ### Build
 
@@ -148,7 +148,7 @@ You can run `npm run build` to compile Vega-Lite and regenerate `vega-lite-schem
 
 ### Basic Lint & Test
 
-`npm run lint` and `npm run test` run ts-lint and all unit-tests respectively.  These two commands are automatically run by `npm start` and `npm run watch`.
+`npm run lint` and `npm run test` run ts-lint and all unit-tests respectively. These two commands are automatically run by `npm start` and `npm run watch`.
 
 ### Test Coverage
 
@@ -189,7 +189,7 @@ x-compile`. All compiled specs will be in `examples/_original`.
 
 Once you develop some features and would like to diff the compiled specs, run `npm x-diff`.
 This will compile all examples again and output the diff for changed examples in the console.
-All compiled specs will be in `examples/_output`.  For changed examples,
+All compiled specs will be in `examples/_output`. For changed examples,
 SVG files will be created in `examples/_diff` for comparison.
 You can open those files to inspect visual changes, or run a diff command
 (e.g., `diff examples/_diff/area-base.svg examples/_diff/area.svg`).
@@ -208,7 +208,7 @@ i.e., running `brew install jq` if you use [homebrew](http://brew.sh) on mac.
 
 We use the [atom](atom.io) editor with the following plug-ins:
 - `atom-typescript` - This provides us IDE-like features for TS inside Atom including renaming, go to definition, find all references.
-- `linter` and `linter-tslint` – These shows tslint errors inside the editor.  This is quite important since our Travis run includes linting too. Therefore, if your branch has a linting error, Travis test will fail too.
+- `linter` and `linter-tslint` – These shows tslint errors inside the editor. This is quite important since our Travis run includes linting too. Therefore, if your branch has a linting error, Travis test will fail too.
 
 __Tips:__ If you don't want to see intermediate files (`.js`, `.js.map`), you can "Hide VCS Ignored Files" in the `tree-view` plugin.
 
@@ -237,7 +237,7 @@ Now all the changes you make in Datalib are reflected in your Vega-Lite automati
 
 # Note
 
-Vega-Lite enables a number of open-source applications including user interface tools ([PoleStar](https://github.com/uwdata/polestar) and [Voyager](https://github.com/uwdata/voyager)) and visualization recommender ([Compass](https://github.com/uwdata/compass)).  Look at their contribute pages if you are interested!
+Vega-Lite enables a number of open-source applications including user interface tools ([PoleStar](https://github.com/uwdata/polestar) and [Voyager](https://github.com/uwdata/voyager)) and visualization recommender ([Compass](https://github.com/uwdata/compass)). Look at their contribute pages if you are interested!
 
 - [PoleStar: Contribute](https://github.com/uwdata/polestar/wiki/Contribute)
 - [Voyager: Contribute](https://github.com/uwdata/voyager/wiki/Contribute)

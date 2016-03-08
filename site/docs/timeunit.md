@@ -23,9 +23,9 @@ permalink: /docs/timeunit.html
 }
 ```
 
-`timeUnit` property of a channel definition sets the level of specificity for a temporal field.  Currently supported values are:
+`timeUnit` property of a channel definition sets the level of specificity for a temporal field. Currently supported values are:
 
-- Non-periodic Time Unit: `'year'`, `'yearmonth'`, `'yearmonthday'`, `'yearmonthdate'`, `'yearday'`, `'yeardate'`, `'yearmonthdayhours'`, `'yearmonthdayhoursminutes'`.  
+- Non-periodic Time Unit: `'year'`, `'yearmonth'`, `'yearmonthday'`, `'yearmonthdate'`, `'yearday'`, `'yeardate'`, `'yearmonthdayhours'`, `'yearmonthdayhoursminutes'`. 
 
 - Periodic Time Unit: `'month'`, `'day'`, `'date'`, `'hours'`, `'minutes'`, `'seconds'`, `'milliseconds'`,  `'hoursminutes'`, `'hoursminutesseconds'`, `'minutesseconds'`, `'secondsmilliseconds'`.
 

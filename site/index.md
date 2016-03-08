@@ -38,12 +38,12 @@ images:
 {% include showcase.html %}
 
 {:.lead}
-**Vega-Lite** is a high-level visualization grammar.  It provides a concise JSON syntax for supporting rapid generation of visualizations to support analysis.  Vega-Lite specifications can be compiled to [Vega](http://vega.github.io/vega) specifications.
+**Vega-Lite** is a high-level visualization grammar. It provides a concise JSON syntax for supporting rapid generation of visualizations to support analysis. Vega-Lite specifications can be compiled to [Vega](http://vega.github.io/vega) specifications.
 
 
 <span class="lead-columns">
   <span>
-    Vega-Lite specifications describe visualizations as mappings from data to **properties of graphical marks** (e.g., points or bars).  It **automatically produces visualization components** including axes, legends, and scales. It then determines properties of these components based on a set of **carefully designed rules**.  This approach allows Vega-Lite specifications to be succinct and expressive, but also provide user control.  As Vega-Lite is designed for analysis, it supports **data transformations** such as aggregation, binning, filtering, sorting, and **visual transformations** including stacking and faceting.
+    Vega-Lite specifications describe visualizations as mappings from data to **properties of graphical marks** (e.g., points or bars). It **automatically produces visualization components** including axes, legends, and scales. It then determines properties of these components based on a set of **carefully designed rules**. This approach allows Vega-Lite specifications to be succinct and expressive, but also provide user control. As Vega-Lite is designed for analysis, it supports **data transformations** such as aggregation, binning, filtering, sorting, and **visual transformations** including stacking and faceting.
   </span>
   <span class="lead-buttons">
     [Get started]({{site.baseurl}}/tutorials/getting_started.html)
@@ -85,4 +85,4 @@ This is a Vega-Lite specification to create a bar chart that shows the average t
 
 ## Team
 
-The development of Vega-Lite is led by [Kanit "Ham" Wongsuphasawat](https://twitter.com/kanitw), [Dominik Moritz](https://twitter.com/domoritz), and [Jeffrey Heer](https://twitter.com/jeffrey_heer) of the [University Washington Interactive Data Lab](http://idl.cs.washington.edu), with significant help from [Arvind Satyanarayan](https://twitter.com/arvindsatya1).  Please see the [contributors page](https://github.com/vega/vega-lite/graphs/contributors) for the full list of contributors.
+The development of Vega-Lite is led by [Kanit "Ham" Wongsuphasawat](https://twitter.com/kanitw), [Dominik Moritz](https://twitter.com/domoritz), and [Jeffrey Heer](https://twitter.com/jeffrey_heer) of the [University Washington Interactive Data Lab](http://idl.cs.washington.edu), with significant help from [Arvind Satyanarayan](https://twitter.com/arvindsatya1). Please see the [contributors page](https://github.com/vega/vega-lite/graphs/contributors) for the full list of contributors.

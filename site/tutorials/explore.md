@@ -151,7 +151,7 @@ We can use the new field `temp_range` just like any other field. You can find mo
 }
 </div>
 
-For the last visualization in this tutorial, we will explore the `weather` field. We might wish to know how different kinds of weather (e.g. sunny days or rainy days) are distributed throughout the year. To answer this, we discretize the `date` by month and then count the number of records on the y-Axis. We then break down the bars by the weather type by adding a color channel with nominal data.  When a field is mapped to color for a bar mark, Vega-Lite automatically stacks the bars atop eachother.
+For the last visualization in this tutorial, we will explore the `weather` field. We might wish to know how different kinds of weather (e.g. sunny days or rainy days) are distributed throughout the year. To answer this, we discretize the `date` by month and then count the number of records on the y-Axis. We then break down the bars by the weather type by adding a color channel with nominal data. When a field is mapped to color for a bar mark, Vega-Lite automatically stacks the bars atop eachother.
 <!-- TODO: link to stacking config once we finish moving it -->
 
 <div class="vl-example">
@@ -170,7 +170,7 @@ For the last visualization in this tutorial, we will explore the `weather` field
 }
 </div>
 
-However, the default color palette's semantics might not match our expectation.  For example, we probably do not expect "sun" (sunny) to be purple.  We can further tune the chart by providing a color [scale range]({{site.baseurl}}/docs/scale.html#range) that maps the values from the `weather` field to meaningful colors.  In addition, we can customize the [axis]({{site.baseurl}}/docs/axis.html) and [legend]({{site.baseurl}}/docs/legend.html) titles.  
+However, the default color palette's semantics might not match our expectation. For example, we probably do not expect "sun" (sunny) to be purple. We can further tune the chart by providing a color [scale range]({{site.baseurl}}/docs/scale.html#range) that maps the values from the `weather` field to meaningful colors. In addition, we can customize the [axis]({{site.baseurl}}/docs/axis.html) and [legend]({{site.baseurl}}/docs/legend.html) titles. 
 
 <div class="vl-example" data-name="stacked_bar_weather"></div>
 

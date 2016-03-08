@@ -12,7 +12,7 @@ permalink: /docs/config.html
   "mark": ... ,
   "encoding": ... ,
   "config": {          // Configuration Object
-    ...                // - Top-level Configuration
+    ...               // - Top-level Configuration
     "cell": { ... },   // - Cell Configuration
     "mark": { ... },   // - Mark Configuration
     "scale": { ... },  // - Scale Configuration
@@ -44,7 +44,7 @@ A Vega-Lite `config` object can have the following top-level properties:
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | viewport      | Integer[]     | The width and height of the on-screen viewport, in pixels. If necessary, clipping and scrolling will be applied. <span class="note-line">__Default value:__ (none)</span> |
-| background    | String        | CSS color property to use as background of visualization.  <span class="note-line">__Default value:__ (none)</span> |
+| background    | String        | CSS color property to use as background of visualization. <span class="note-line">__Default value:__ (none)</span> |
 | timeFormat    | String     | The default time format pattern for text and labels of axes and legends (in the form of [D3 time format pattern](https://github.com/mbostock/d3/wiki/Time-Formatting)). <span class="note-line">__Default value:__ `'%Y-%m-%d'`.</span>|
 | numberFormat  | String      | The default number format pattern for text and labels of axes and legends (in the form of [D3 number format pattern](https://github.com/mbostock/d3/wiki/Formatting)). <span class="note-line">__Default value:__ `'s'`.</span>|
 
@@ -53,7 +53,7 @@ A Vega-Lite `config` object can have the following top-level properties:
 {:#cell-config}
 ## Cell Configuration  (`config.cell.*`)
 
-At its core, a Vega-Lite specification describes a single plot.  When a [facet channel](encoding.html#facet) is added, the visualization is faceted into a trellis plot, which contains multiple plots.
+At its core, a Vega-Lite specification describes a single plot. When a [facet channel](encoding.html#facet) is added, the visualization is faceted into a trellis plot, which contains multiple plots.
 Each plot in either a single plot or a trellis plot is called a _cell_. Cell configuration allows us to customize each individual single plot and each plot in a trellis plot.
 
 ### Cell Size Configuration
@@ -62,8 +62,8 @@ Each plot in either a single plot or a trellis plot is called a _cell_. Cell con
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| width         | Integer       | The width of the single plot or each plot in a trellis plot when the visualization has continuous x-scale.  (If the plot has ordinal x-scale, the width is determined by the x-scale's [`bandSize`](scale.html#ordinal) and the cardinality of the x-scale.  If the plot does not have a field on `x`, the width is derived from [scale config](#scale-config)'s  `bandSize` for all marks except `text` and from [scale config](#scale-config)'s `textBandWidth` for `text` mark.) <span class="note-line">__Default value:__ `200`</span> |
-| height        | Integer       | The height of the single plot or each plot in a trellis plot when the visualization has continuous y-scale.  (If the visualization has ordinal y-scale, the height is determined by the `bandSize` and the cardinality of the y-scale.  If the plot does not have a field on `y`, the height is [scale config](#scale-config)'s `bandSize`.) <span class="note-line">__Default value:__ `200`</span> |
+| width         | Integer       | The width of the single plot or each plot in a trellis plot when the visualization has continuous x-scale. (If the plot has ordinal x-scale, the width is determined by the x-scale's [`bandSize`](scale.html#ordinal) and the cardinality of the x-scale. If the plot does not have a field on `x`, the width is derived from [scale config](#scale-config)'s  `bandSize` for all marks except `text` and from [scale config](#scale-config)'s `textBandWidth` for `text` mark.) <span class="note-line">__Default value:__ `200`</span> |
+| height        | Integer       | The height of the single plot or each plot in a trellis plot when the visualization has continuous y-scale. (If the visualization has ordinal y-scale, the height is determined by the `bandSize` and the cardinality of the y-scale. If the plot does not have a field on `y`, the height is [scale config](#scale-config)'s `bandSize`.) <span class="note-line">__Default value:__ `200`</span> |
 
 **For more information about visualization's size, please see [Customizing Size](size.html) page.**
 
@@ -76,13 +76,13 @@ Each plot in either a single plot or a trellis plot is called a _cell_. Cell con
 | stroke        | Color         | The stroke color. <span class="note-line">__Default value:__ (none)</span>|
 | strokeOpacity | Number        | The stroke opacity (value between [0,1]). <span class="note-line">__Default value:__ (none)</span>|
 | strokeWidth   | Number        | The stroke width, in pixels. <span class="note-line">__Default value:__ (none)</span>|
-| strokeDash    | Number[]      | An array of alternating stroke, space lengths for creating dashed or dotted lines.  <span class="note-line">__Default value:__ (none)</span>|
+| strokeDash    | Number[]      | An array of alternating stroke, space lengths for creating dashed or dotted lines. <span class="note-line">__Default value:__ (none)</span>|
 | strokeDashOffset  | Number[]  | The offset (in pixels) into which to begin drawing with the stroke dash array. <span class="note-line">__Default value:__ (none)</span>|
 
 
 ## Mark Configuration (`config.mark.*`)
 
-`mark` property of the `config` is a mark config object, which sets the default properties of the visualization's marks.  Some of these properties will be overridden by data mapped to [mark properties channels](encoding.html#props-channels).
+`mark` property of the `config` is a mark config object, which sets the default properties of the visualization's marks. Some of these properties will be overridden by data mapped to [mark properties channels](encoding.html#props-channels).
 
 A mark config object can have the following properties:
 
@@ -90,12 +90,12 @@ A mark config object can have the following properties:
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| filled        | Boolean        | Whether the shape\'s color should be used as fill color instead of stroke color.  See [mark](mark.html#scatter_filled) for a usage example.  <span class="note-line">__Default value:__ `true` for all marks except `point` and `false` for `point`.</span><span class="note-line">__Applicable for:__ `bar`, `point`, `circle`, `square`, and `area` marks.</span> |
+| filled        | Boolean        | Whether the shape\'s color should be used as fill color instead of stroke color. See [mark](mark.html#scatter_filled) for a usage example. <span class="note-line">__Default value:__ `true` for all marks except `point` and `false` for `point`.</span><span class="note-line">__Applicable for:__ `bar`, `point`, `circle`, `square`, and `area` marks.</span> |
 | color         | color         | The color of the mark – either fill or stroke color based on the `filled` mark config. <span class="note-line">__Default value:__ <span style="color: #4682b4;">&#9632;</span> blue (`""#4682b4"`)</span>  |
-| fill          | Color         | The fill color.  This config will be overridden by `color` channel's specified or mapped values if `filled` is `true`.  <span class="note-line">__Default value:__ (None) </span>  |
-| stroke        | Color         | The stroke color.  This config will be overridden by `color` channel's specified or mapped values if `filled` is `false`. <span class="note-line">__Default value:__ (None) </span> |
+| fill          | Color         | The fill color. This config will be overridden by `color` channel's specified or mapped values if `filled` is `true`. <span class="note-line">__Default value:__ (None) </span>  |
+| stroke        | Color         | The stroke color. This config will be overridden by `color` channel's specified or mapped values if `filled` is `false`. <span class="note-line">__Default value:__ (None) </span> |
 
-<!-- Linked from another page.  Don't remove!-->
+<!-- Linked from another page. Don't remove!-->
 
 {:#config.mark.filled}
 ##### Example: `filled` Points
@@ -109,7 +109,7 @@ By default, `point` marks have filled borders and are transparent inside. Settin
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| opacity       | Number        | The overall opacity (value between [0,1]). <span class="note-line">__Default value:__ `0.7` for non-aggregate plots with `point`, `tick`, `circle`, or `square` marks and `1` otherwise.  </span>|
+| opacity       | Number        | The overall opacity (value between [0,1]). <span class="note-line">__Default value:__ `0.7` for non-aggregate plots with `point`, `tick`, `circle`, or `square` marks and `1` otherwise. </span>|
 | fillOpacity   | Number        | The fill opacity (value between [0,1]). <span class="note-line">__Default value:__ `1` </span>|
 | strokeOpacity | Number        | The stroke opacity (value between [0,1]). <span class="note-line">__Default value:__ `1` </span> |
 
@@ -118,7 +118,7 @@ By default, `point` marks have filled borders and are transparent inside. Settin
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | strokeWidth   | Number        | The stroke width, in pixels. |
-| strokeDash    | Number[]      | An array of alternating stroke, space lengths for creating dashed or dotted lines.  |
+| strokeDash    | Number[]      | An array of alternating stroke, space lengths for creating dashed or dotted lines. |
 | strokeDashOffset  | Number[]  | The offset (in pixels) into which to begin drawing with the stroke dash array. |
 
 <!-- one example for custom fill/stroke -->
@@ -130,15 +130,15 @@ By default, `point` marks have filled borders and are transparent inside. Settin
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| stacked       | string        | Stacking modes for `bar` and `area` marks.  <br/> • `zero` - stacking with baseline offset at zero value of the scale (for creating typical stacked [bar](mark.html#stacked-bar-chart) and [area](mark.html#stacked-area-chart) chart).  <br/> • `normalize` - stacking with normalized domain (for creating normalized stacked [bar](mark.html#normalized-stacked-bar-chart) and [area](mark.html#normalized-stacked-area-chart) chart).  <br/> • `center` - stacking with center baseline (for [streamgraph](mark.html#streamgraph)). <br/> • `none` - No-stacking.  This will produces layered [bar](mark.html#layered-bar-chart) and area chart.  <span class="note-line">__Default value:__ `zero` if applicable.</span>|
+| stacked       | string        | Stacking modes for `bar` and `area` marks. <br/> • `zero` - stacking with baseline offset at zero value of the scale (for creating typical stacked [bar](mark.html#stacked-bar-chart) and [area](mark.html#stacked-area-chart) chart). <br/> • `normalize` - stacking with normalized domain (for creating normalized stacked [bar](mark.html#normalized-stacked-bar-chart) and [area](mark.html#normalized-stacked-area-chart) chart). <br/> • `center` - stacking with center baseline (for [streamgraph](mark.html#streamgraph)). <br/> • `none` - No-stacking. This will produces layered [bar](mark.html#layered-bar-chart) and area chart. <span class="note-line">__Default value:__ `zero` if applicable.</span>|
 
 {:#interpolate}
 ### Interpolation (for Line and Area Marks)
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| interpolate   | String        | The line interpolation method to use. One of `"linear"`, `"step-before"`, `"step-after"`, `"basis"`, `"basis-open"`, `"basis-closed"`, `"bundle"`, `"cardinal"`, `"cardinal-open"`, `"cardinal-closed"`, `"monotone"`.  For more information about each interpolation method, please see [D3's line interpolation](https://github.com/mbostock/d3/wiki/SVG-Shapes#line_interpolate). |
-| tension       | Number        | Depending on the interpolation type, sets the tension parameter.  (See [D3's line interpolation](https://github.com/mbostock/d3/wiki/SVG-Shapes#line_interpolate).) |
+| interpolate   | String        | The line interpolation method to use. One of `"linear"`, `"step-before"`, `"step-after"`, `"basis"`, `"basis-open"`, `"basis-closed"`, `"bundle"`, `"cardinal"`, `"cardinal-open"`, `"cardinal-closed"`, `"monotone"`. For more information about each interpolation method, please see [D3's line interpolation](https://github.com/mbostock/d3/wiki/SVG-Shapes#line_interpolate). |
+| tension       | Number        | Depending on the interpolation type, sets the tension parameter. (See [D3's line interpolation](https://github.com/mbostock/d3/wiki/SVG-Shapes#line_interpolate).) |
 
 #### Example: interpolate with `monotone`
 
@@ -154,7 +154,7 @@ By default, `point` marks have filled borders and are transparent inside. Settin
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| orient        | String        | The orientation of a non-stacked bar, area, and line charts.  The value is either `"horizontal"`, or `"vertical"` (default).  For bar and tick, this determines whether the size of the bar and tick should be applied to x or y dimension.  For area, this property determines the orient property of the Vega output.  For line, this property determines the path order of the points in the line if `path` channel is not specified.  For stacked charts, this is always determined by the orientation of the stack; therefore explicitly specified value will be ignored. |
+| orient        | String        | The orientation of a non-stacked bar, area, and line charts. The value is either `"horizontal"`, or `"vertical"` (default). For bar and tick, this determines whether the size of the bar and tick should be applied to x or y dimension. For area, this property determines the orient property of the Vega output. For line, this property determines the path order of the points in the line if `path` channel is not specified. For stacked charts, this is always determined by the orientation of the stack; therefore explicitly specified value will be ignored. |
 
 <!-- TODO: write better explanation for default behavior -->
 
@@ -198,7 +198,7 @@ vg.embed('#horizontal_line', {
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| barSize      | Number        | The size of the bars (width for vertical bar charts and height for horizontal bar chart). <span class="note-line">__Default value:__  `bandSize-1` if  the bar's x or y axis is an ordinal scale. (This provides 1 pixel offset between bars.) and `2` for if both x and y scales have linear scales.  </span>  |
+| barSize      | Number        | The size of the bars (width for vertical bar charts and height for horizontal bar chart). <span class="note-line">__Default value:__  `bandSize-1` if  the bar's x or y axis is an ordinal scale. (This provides 1 pixel offset between bars.) and `2` for if both x and y scales have linear scales. </span>  |
 
 
 ### Point Config
@@ -249,7 +249,7 @@ vg.embed('#horizontal_line', {
 | Property            | Type                | Description  |
 | :------------------ |:-------------------:| :------------|
 | font                | String  | The typeface to set the text in (e.g., `Helvetica Neue`).|
-| fontSize            | Number  | The font size, in pixels.  The default value is 10. |
+| fontSize            | Number  | The font size, in pixels. The default value is 10. |
 | fontStyle           | String  | The font style (e.g., `italic`).|
 | fontWeight          | String  | The font weight (e.g., `bold`).|
 
@@ -258,7 +258,7 @@ vg.embed('#horizontal_line', {
 | Property            | Type                | Description  |
 | :------------------ |:-------------------:| :------------|
 | text                | String |  Placeholder text if the `text` channel is not specified (`"Abc"` by default). |
-| format              | String  | The formatting pattern for text value.  If not defined, this will be determined automatically |
+| format              | String  | The formatting pattern for text value. If not defined, this will be determined automatically |
 | shortTimeLabels     | Boolean | Whether month names and weekday names should be abbreviated. |
 
 
@@ -305,7 +305,7 @@ Facet cell configuration overrides [cell config](#cell-config) for faceted (trel
 | :------------ |:-------------:| :------------- |
 | gridColor     | Color         | Color of the grid between facets. |
 | gridOpacity   | Number        | Opacity of the grid between facets. |
-| gridOffset    | Number        | Offset for grid between facets.  |
+| gridOffset    | Number        | Offset for grid between facets. |
 
 
 {:#facet-scale-config}

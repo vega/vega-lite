@@ -5,9 +5,9 @@ title: Mark
 permalink: /docs/mark.html
 ---
 
-Marks are the basic visual building block of a visualization.  They provide basic shapes whose properties (such as position, size, and color) can be used to visually encode data, either from a data field, or a constant value.  The `mark` property in a Vega-Lite specification defines the visualization's mark type.
+Marks are the basic visual building block of a visualization. They provide basic shapes whose properties (such as position, size, and color) can be used to visually encode data, either from a data field, or a constant value. The `mark` property in a Vega-Lite specification defines the visualization's mark type.
 
-The supported mark types are [`point`](#point-mark), [`circle`](#circle-and-square-marks), [`square`](#circle-and-square-marks), [`text`](#text), [`tick`](#tick-mark), [`bar`](#bar-mark), [`line`](#line-mark), and [`area`](#area).  In general, one mark instance is generated per input data element. However, line and area mark types represent multiple data elements as a contiguous line or shape.
+The supported mark types are [`point`](#point-mark), [`circle`](#circle-and-square-marks), [`square`](#circle-and-square-marks), [`text`](#text), [`tick`](#tick-mark), [`bar`](#bar-mark), [`line`](#line-mark), and [`area`](#area). In general, one mark instance is generated per input data element. However, line and area mark types represent multiple data elements as a contiguous line or shape.
 
 {: .suppress-error}
 ```json
@@ -21,7 +21,7 @@ The supported mark types are [`point`](#point-mark), [`circle`](#circle-and-squa
 
 | Property             | Type          | Description    |
 | :------------        |:-------------:| :------------- |
-| [mark](mark.html)    | String        | The mark type.  One of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`, `"area"`, `"point"`, and `"text"` (text table). |
+| [mark](mark.html)    | String        | The mark type. One of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`, `"area"`, `"point"`, and `"text"` (text table). |
 
 <!-- why mark-based approach over chart typology + but we support variety of chart types -->
 
@@ -82,7 +82,7 @@ Here are some examples of scatter plots with `circle` and `square`:
 
 ### Scatterplot with Text
 
-Mapping a field to `text` channel of text mark sets the mark's text value.  For example, we can modify the color scatterplot above to have each mark as text showing the initial character of its origin.
+Mapping a field to `text` channel of text mark sets the mark's text value. For example, we can modify the color scatterplot above to have each mark as text showing the initial character of its origin.
 
 <span class="vl-example" data-name="text_scatter_colored"></span>
 
@@ -93,7 +93,7 @@ __TODO__
 
 ## Tick
 
-The `tick` mark represents each data point as a short line.  This is a useful mark for displaying the distribution of values in a field.
+The `tick` mark represents each data point as a short line. This is a useful mark for displaying the distribution of values in a field.
 
 ### Dot Plot
 
@@ -117,14 +117,14 @@ The `bar` mark represents each data point as a rectangle, where the length is ma
 
 ### Single Bar Chart
 
-Mapping a quantitative field to either `x` or `y` of the `bar` mark produces a single bar.  In the following example, note that the `x` channel encodes the sum of the populations.
+Mapping a quantitative field to either `x` or `y` of the `bar` mark produces a single bar. In the following example, note that the `x` channel encodes the sum of the populations.
 
 <span class="vl-example" data-name="bar_1d"></span>
 
 
 ### Bar Chart
 
-If we map a different ordinal field to the `y` channel, we can produce a horizontal bar chart. Specifying `scale.bandSize` of an ordinal field will adjust the [ordinal scale's band size](https://github.com/mbostock/d3/wiki/Ordinal-Scales#ordinal_rangeBands).  By default, there will be a 1 pixel offset between bars.  (See [an example that customizes size of the bars](encoding.html#ex-bar-size).)
+If we map a different ordinal field to the `y` channel, we can produce a horizontal bar chart. Specifying `scale.bandSize` of an ordinal field will adjust the [ordinal scale's band size](https://github.com/mbostock/d3/wiki/Ordinal-Scales#ordinal_rangeBands). By default, there will be a 1 pixel offset between bars. (See [an example that customizes size of the bars](encoding.html#ex-bar-size).)
 
 <!-- TODO: Need to update docs our and Vega's scale.bandSize property and link there instead -->
 
@@ -132,7 +132,7 @@ If we map a different ordinal field to the `y` channel, we can produce a horizon
 
 ### Stacked Bar Chart
 
-Adding color to the bar chart (by using the `color` attribute) creates a stacked bar chart by default.  Here we also customize the color's scale range to make the color a little nicer.
+Adding color to the bar chart (by using the `color` attribute) creates a stacked bar chart by default. Here we also customize the color's scale range to make the color a little nicer.
 (See [`config.stack` for more detail about customizing stack](config.html#stack-config).)
 
 
@@ -151,7 +151,7 @@ To make it clear that bars are layered, we can make marks semi-transparent by se
 ### Normalized Stacked Bar Chart
 
 <!-- TODO: better explain this -->
-You can also create a normalized stacked bar chart by setting `config.mark.stacked` to `"normalize"`.  Here we can easily see the percentage of male and female population at different ages.
+You can also create a normalized stacked bar chart by setting `config.mark.stacked` to `"normalize"`. Here we can easily see the percentage of male and female population at different ages.
 
 <span class="vl-example" data-name="stacked_bar_normalize"></span>
 
@@ -175,7 +175,7 @@ mapping a binned quantitative field to `x` and aggregate `count` to `y` produces
 
 ## Line
 
-The `line` mark represents the data points stored in a field with a line connecting all of these points.  Unlike other marks except `area` that represents one data element per mark, one line mark represent multiple data element as a single line.
+The `line` mark represents the data points stored in a field with a line connecting all of these points. Unlike other marks except `area` that represents one data element per mark, one line mark represent multiple data element as a single line.
 
 ### Line Chart
 
@@ -199,7 +199,7 @@ Alternatively, we can map the same field to `detail`, creating multiple lines bu
 
 ### Line Chart with Custom Path
 
-By default, the line's path (order of points in the line) is determined by data values on the ordinal dimension (x or y) like shown in previous examples.  However, a field can be mapped to `path` channel for determining custom path.
+By default, the line's path (order of points in the line) is determined by data values on the ordinal dimension (x or y) like shown in previous examples. However, a field can be mapped to `path` channel for determining custom path.
 
 <span class="vl-example" data-name="scatter_connected"></span>
 
@@ -209,20 +209,20 @@ By default, the line's path (order of points in the line) is determined by data 
 
 ### Area Chart
 
-Using `area` mark with one ordinal field (typically on `x`) and one quantitative field (typically on `y`) produces an area chart.  For example, the following area chart shows a number of unemployment people in US over time.
+Using `area` mark with one ordinal field (typically on `x`) and one quantitative field (typically on `y`) produces an area chart. For example, the following area chart shows a number of unemployment people in US over time.
 
 <span class="vl-example" data-name="area"></span>
 
 ### Stacked Area Chart
 
-Adding a color field to area chart creates stacked area chart by default.  For example, here we split the area chart across industry.
+Adding a color field to area chart creates stacked area chart by default. For example, here we split the area chart across industry.
 
 <span class="vl-example" data-name="stacked_area"></span>
 
 ### Normalized Stacked Area Chart
 
-You can also create a normalized stacked area chart by setting `config.mark.stacked` to `"normalize"`.  Here we can easily see the percentage of unemployment across industry.
-You can also create a normalized stacked area chart by setting `config.mark.stacked` to `"normalize"`.  Here we can easily see the percentage of unemployment across industry.
+You can also create a normalized stacked area chart by setting `config.mark.stacked` to `"normalize"`. Here we can easily see the percentage of unemployment across industry.
+You can also create a normalized stacked area chart by setting `config.mark.stacked` to `"normalize"`. Here we can easily see the percentage of unemployment across industry.
 
 <span class="vl-example" data-name="stacked_area_normalize"></span>
 
