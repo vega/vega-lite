@@ -462,6 +462,9 @@ nav a:hover {
     max-width: 100%;
     overflow-x: auto;
   }
+  .example .example-code code {
+    min-width: 600px;
+  }
   .highlight {
     overflow-x: auto;
   }
