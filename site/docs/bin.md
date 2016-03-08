@@ -25,14 +25,14 @@ The channel definition's `bin` property is for grouping quantitative, continuous
 }
 ```
 
-If `bin` is `true`, default binning parameters are used.  To customize binning parameters, you can set `bin` to a bin definition object, which can have the following properties:
+If `bin` is `true`, default binning parameters are used. To customize binning parameters, you can set `bin` to a bin definition object, which can have the following properties:
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| maxbins       | Integer       | The maximum number of allowable bins.  <span class="note-line">__Default value:__ `6` for `row`, `column` and `shape` channels; `10` for other channels.</span> |
+| maxbins       | Integer       | The maximum number of allowable bins. <span class="note-line">__Default value:__ `6` for `row`, `column` and `shape` channels; `10` for other channels.</span> |
 | min                 | Number              | The minimum bin value to consider. <span class="note-line">__Default value:__ the minimum value of the specified field </span>|
 | max                 | Number              | The maximum bin value to consider. <span class="note-line">__Default value:__ the maximum value of the specified field is used.</span>|
-| base                | Number              | The number base to use for automatic bin determination.  <span class="note-line">__Default value:__ `10`</span> |
+| base                | Number              | The number base to use for automatic bin determination. <span class="note-line">__Default value:__ `10`</span> |
 | step                | Number              | An exact step size to use between bins. <span class="note-line">__Note:__ If provided, options such as maxbins will be ignored. </span>|
 | steps               | Array               | An array of allowable step sizes to choose from.|
 | minstep             | Number              | A minimum allowable step size (particularly useful for integer values).|
