@@ -459,6 +459,8 @@ nav a:hover {
   }
   .example .example-vis, .example .example-code {
     flex: 1 1 auto;
+    max-width: 100%;
+    overflow-x: auto;
   }
   .highlight {
     overflow-x: auto;
