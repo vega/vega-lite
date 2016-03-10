@@ -175,6 +175,9 @@ export function cardinality(fieldDef: FieldDef, stats, filterNull = {}) {
 }
 
 export function title(fieldDef: FieldDef) {
+  if (fieldDef.displayName != null) {
+    return fieldDef.displayName;
+  }
   if (isCount(fieldDef)) {
     return COUNT_DISPLAYNAME;
   }
