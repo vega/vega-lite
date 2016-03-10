@@ -292,13 +292,15 @@ Legend configuration determines default properties for [legends](axis.html).
 For a full list of legend configuration and their default values, please see the `LegendConfig` interface and `defaultLegendConfig` in [legend.ts](https://github.com/vega/vega-lite/blob/master/src/legend.ts).
 </span>
 
-
+{:#facet-config}
 ## Facet Configuration  (`config.facet.*`)
 
+{:#facet-cell-config}
 ### Cell Configuration (`config.facet.cell.*`)
 
 Facet cell configuration overrides [cell config](#cell-config) for faceted (trellis) plots. Please see [cell config](#cell-config) for each property name and default values.
 
+{:#facet-grid-config}
 ### Facet Grid Configuration (`config.facet.grid.*`)
 
 | Property      | Type          | Description    |
