@@ -6,7 +6,7 @@ import {contains} from '../util';
 
 import {FacetModel} from './facet';
 import {Model} from './model';
-import {format as timeFormatExpr} from './time';
+import {format as timeFormatExpr} from '../timeunit';
 import {UnitModel} from './unit';
 
 
