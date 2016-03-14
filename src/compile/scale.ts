@@ -103,7 +103,7 @@ function parseMainScale(model: Model, fieldDef: FieldDef, channel: Channel) {
 function parseColorLegendScale(model: Model, fieldDef: FieldDef) {
   return {
     name: model.scaleName(COLOR_LEGEND),
-    type: 'ordinal',
+    type: ScaleType.ORDINAL,
     domain: {
       data: model.dataTable(),
       // use rank_<field> for ordinal type, for bin and timeUnit use default field
@@ -120,7 +120,7 @@ function parseColorLegendScale(model: Model, fieldDef: FieldDef) {
 function parseBinColorLegendLabel(model: Model, fieldDef: FieldDef) {
   return {
     name: model.scaleName(COLOR_LEGEND_LABEL),
-    type: 'ordinal',
+    type: ScaleType.ORDINAL,
     domain: {
       data: model.dataTable(),
       field: model.field(COLOR),
