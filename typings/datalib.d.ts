@@ -1,8 +1,8 @@
 declare module 'datalib/src/util' {
   export function keys(a): Array<string>;
   export function extend(a, b, ...rest);
-  export function duplicate(a);
-  export function isArray(a): boolean;
+  export function duplicate<T>(a: T): T;
+  export function isArray(a: any | any[]): a is any[];
   export function vals(a);
   export function truncate(a: string, length: number): string;
   export function toMap(a);

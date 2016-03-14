@@ -126,7 +126,7 @@ export function error(message: any) {
 }
 
 export interface Dict<T> {
-    [key: string]: T;
+  [key: string]: T;
 }
 
 export type StringSet = Dict<boolean>;

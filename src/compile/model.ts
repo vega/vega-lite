@@ -16,9 +16,9 @@ import {LayoutComponent} from './layout';
 import {ScaleComponent} from './scale';
 
 /**
- * Composable Components that are intermediate results from parsing phase of the
- * compilations.  These composable components will be assembled in the last phase
- * of compilations.
+ * Composable Components that are intermediate results of the parsing phase of the
+ * compilations.  These composable components will be assembled in the last
+ * compilation step.
  */
 export interface Component {
   data: DataComponent;
@@ -48,12 +48,12 @@ class NameMap {
     this._nameMap = {} as Dict<string>;
   }
 
-  public rename(oldName, newName) {
+  public rename(oldName: string, newName: string) {
     this._nameMap[oldName] = newName;
   }
 
-  public get(name) {
-    // If the name appear in the _nameMap, we need to read its new name.
+  public get(name: string): string {
+    // If the name appears in the _nameMap, we need to read its new name.
     // We have to loop over the dict just in case, the new name also gets renamed.
     while (this._nameMap[name]) {
       name = this._nameMap[name];
@@ -211,7 +211,7 @@ export abstract class Model {
     return this._parent;
   }
 
-  public name(text: string, delimiter: string = '-') {
+  public name(text: string, delimiter: string = '_') {
     return (this._name ? this._name + delimiter : '') + text;
   }
 
@@ -241,17 +241,17 @@ export abstract class Model {
     this._sizeNameMap.rename(oldName, newName);
   }
 
-  public channelSizeName(channel: Channel) {
+  public channelSizeName(channel: Channel): string {
     return this.sizeName(channel === X || channel === COLUMN ? 'width' : 'height');
   }
 
-  public sizeName(size: string) {
+  public sizeName(size: string): string {
      return this._sizeNameMap.get(this.name(size, '_'));
   }
 
   public abstract dataTable(): string;
 
-  public transform() {
+  public transform(): Transform {
     return this._transform || {};
   }
 
@@ -306,7 +306,7 @@ export abstract class Model {
   /**
    * Get the spec configuration.
    */
-  public config() {
+  public config(): Config {
     return this._config;
   }
 

@@ -5,16 +5,28 @@ import {QUANTITATIVE, ORDINAL, TEMPORAL} from '../type';
 import {contains} from '../util';
 
 import {FacetModel} from './facet';
+import {LayerModel} from './layer';
 import {Model} from './model';
 import {format as timeFormatExpr} from './time';
 import {UnitModel} from './unit';
+import {Spec, isUnitSpec, isFacetSpec, isLayerSpec} from '../spec';
 
 
-export function buildModel(spec, parent: Model, parentGivenName: string): Model {
-  if ('facet' in spec) {
+export function buildModel(spec: Spec, parent: Model, parentGivenName: string): Model {
+  if (isFacetSpec(spec)) {
     return new FacetModel(spec, parent, parentGivenName);
   }
-  return new UnitModel(spec, parent, parentGivenName);
+
+  if (isLayerSpec(spec)) {
+    return new LayerModel(spec, parent, parentGivenName);
+  }
+
+  if (isUnitSpec(spec)) {
+    return new UnitModel(spec, parent, parentGivenName);
+  }
+
+  console.error('Invalid spec.');
+  return null;
 }
 
 export const FILL_STROKE_CONFIG = ['fill', 'fillOpacity',

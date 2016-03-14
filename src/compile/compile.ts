@@ -4,12 +4,12 @@
 
 import {LAYOUT} from '../data';
 import {Model} from './model';
-import {normalize} from '../spec';
+import {normalize, ExtendedSpec} from '../spec';
 import {extend} from '../util';
 
 import {buildModel} from './common';
 
-export function compile(inputSpec) {
+export function compile(inputSpec: ExtendedSpec) {
   // 1. Convert input spec into a normal form
   // (Decompose all extended unit specs into composition of unit spec.)
   const spec = normalize(inputSpec);

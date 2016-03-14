@@ -41,6 +41,7 @@
     "src/compile/config.ts",
     "src/compile/data.ts",
     "src/compile/facet.ts",
+    "src/compile/layer.ts",
     "src/compile/layout.ts",
     "src/compile/legend.ts",
     "src/compile/mark/area.ts",

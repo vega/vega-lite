@@ -12,7 +12,7 @@ import {point, circle, square} from './point';
 import {text} from './text';
 import {tick} from './tick';
 import {sortField} from '../common';
-
+import {FacetModel} from '../facet';
 
 const markCompiler = {
   area: area,
@@ -36,7 +36,7 @@ export function parseMark(model: UnitModel): any[] {
 function parsePathMark(model: UnitModel) { // TODO: extract this into compilePathMark
   const mark = model.mark();
   // TODO: replace this with more general case for composition
-  const hasParentData = !!model.parent();
+  const hasParentData = model.parent() instanceof FacetModel;
   const dataFrom = {data: model.dataTable()};
   const details = detailFields(model);
 
@@ -94,7 +94,7 @@ function parsePathMark(model: UnitModel) { // TODO: extract this into compilePat
 
 function parseNonPathMark(model: UnitModel) {
   const mark = model.mark();
-  const hasParentData = !!model.parent();
+  const hasParentData = model.parent() instanceof FacetModel;
   const dataFrom = {data: model.dataTable()};
 
   let marks = []; // TODO: vgMarks

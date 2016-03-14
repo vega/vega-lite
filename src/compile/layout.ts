@@ -6,8 +6,8 @@ import {Formula} from '../transform';
 import {extend, keys, StringSet} from '../util';
 import {VgData} from '../vega.schema';
 
-
 import {FacetModel} from './facet';
+import {LayerModel} from './layer';
 import {TEXT as TEXT_MARK} from '../mark';
 import {Model} from './model';
 import {rawDomain} from './time';
@@ -141,6 +141,34 @@ function facetSizeFormula(model: Model, channel: Channel, innerSize: string) {
     return '(datum.' + innerSize + ' + ' + scale.padding + ')' + ' * ' + cardinalityFormula(model, channel);
   } else {
     return 'datum.' + innerSize + ' + ' + model.config().facet.scale.padding; // need to add outer padding for facet
+  }
+}
+
+export function parseLayerLayout(model: LayerModel): LayoutComponent {
+  return {
+    width: parseLayerSizeLayout(model, X),
+    height: parseLayerSizeLayout(model, Y)
+  };
+}
+
+function parseLayerSizeLayout(model: LayerModel, channel: Channel): SizeComponent {
+  if (true) {
+    // assume shared scales
+    if (false && model.isOrdinalScale(channel)) {
+      return null;
+    } else {
+      const maxFormula = {
+        field: '',
+        expr: 'max(' + model.children().map((child) => {
+          return child.channelSizeName(channel);
+        }).join(', ') + ')'
+      };
+
+      return {
+        distinct: null,
+        formula: [maxFormula]
+      }
+    }
   }
 }
 

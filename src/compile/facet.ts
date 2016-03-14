@@ -50,7 +50,7 @@ export class FacetModel extends Model {
       // TODO: if has no field / datum, then drop the field
 
       if (!isDimension(fieldDef)) {
-        model.addWarning(channel+' encoding should be ordinal.');
+        model.addWarning(channel + ' encoding should be ordinal.');
       }
 
       if (fieldDef.type) {
@@ -137,7 +137,6 @@ export class FacetModel extends Model {
   public stack() {
     return null; // this is only a property for UnitModel
   }
-
 
   public parseData() {
     this.child().parseData();

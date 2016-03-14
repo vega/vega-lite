@@ -11,6 +11,7 @@ import {extend, keys, vals, reduce, contains, flatten, Dict, StringSet} from '..
 import {VgData, VgTransform} from '../vega.schema';
 
 import {FacetModel} from './facet';
+import {LayerModel} from './layer';
 import {Model} from './model';
 import {parseExpression, rawDomain} from './time';
 import {UnitModel} from './unit';
@@ -116,6 +117,25 @@ export function parseFacetData(model: FacetModel): DataComponent {
     nonPositiveFilter: nonPositiveFilter.parseFacet(model)
   };
 }
+
+export function parseLayerData(model: LayerModel): DataComponent {
+  return {
+    source: source.parseLayer(model),
+    formatParse: formatParse.parseLayer(model),
+    nullFilter: nullFilter.parseLayer(model),
+    filter: filter.parseLayer(model),
+    bin: bin.parseLayer(model),
+    calculate: formula.parseLayer(model),
+    timeUnit: timeUnit.parseLayer(model),
+    timeUnitDomain: timeUnitDomain.parseLayer(model),
+    summary: summary.parseLayer(model),
+    stackScale: stackScale.parseLayer(model),
+    colorRank: colorRank.parseLayer(model),
+    nonPositiveFilter: nonPositiveFilter.parseLayer(model)
+  };
+}
+
+
 /* tslint:enable:no-use-before-declare */
 
 /**
@@ -216,6 +236,12 @@ export namespace source {
     return sourceData;
   }
 
+  export function parseLayer(model: LayerModel) {
+    let sourceData = parse(model);
+    // TODO: rename?
+    return sourceData;
+  }
+
   export function assemble(component: DataComponent) {
     if (component.source) {
       let sourceData: VgData = component.source;
@@ -281,6 +307,12 @@ export namespace formatParse {
     return parseComponent;
   }
 
+  export function parseLayer(model: LayerModel) {
+    let parseComponent = parse(model);
+    // TODO: merge
+    return parseComponent;
+  }
+
   // Assemble for formatParse is an identity function, no need to declare
 }
 
@@ -316,6 +348,10 @@ export namespace timeUnit {
       delete childDataComponent.timeUnit;
     }
     return timeUnitComponent;
+  }
+
+  export function parseLayer(model: LayerModel) {
+    return null;
   }
 
   export function assemble(component: DataComponent) {
@@ -383,6 +419,11 @@ export namespace bin {
     return binComponent;
   }
 
+  export function parseLayer(model: LayerModel) {
+    return null;
+  }
+
+
   export function assemble(component: DataComponent) {
     return flatten(vals(component.bin));
   }
@@ -413,6 +454,11 @@ export namespace nullFilter {
       extend(nullFilterComponent, childDataComponent.nullFilter);
       delete childDataComponent.nullFilter;
     }
+    return nullFilterComponent;
+  }
+
+  export function parseLayer(model: LayerModel) {
+    let nullFilterComponent = parse(model);
     return nullFilterComponent;
   }
 
@@ -452,6 +498,11 @@ export namespace filter {
     return filterComponent;
   }
 
+  export function parseLayer(model: LayerModel) {
+    let filterComponent = parse(model);
+    return filterComponent;
+  }
+
   export function assemble(component: DataComponent) {
     const filter = component.filter;
     return filter ? [{
@@ -481,6 +532,11 @@ export namespace formula {
       extend(formulaComponent, childDataComponent.calculate);
       delete childDataComponent.calculate;
     }
+    return formulaComponent;
+  }
+
+  export function parseLayer(model: LayerModel) {
+    let formulaComponent = parse(model);
     return formulaComponent;
   }
 
@@ -561,6 +617,10 @@ export namespace summary {
       delete childDataComponent.summary;
       return summaryComponents;
     }
+    return [];
+  }
+
+  export function parseLayer(model: LayerModel): SummaryComponent[] {
     return [];
   }
 
@@ -650,6 +710,10 @@ export namespace stackScale {
     return null;
   }
 
+  export function parseLayer(model: LayerModel) {
+    return null;
+  }
+
   export function assemble(component: DataComponent) {
     return component.stackScale;
   }
@@ -674,6 +738,13 @@ export namespace timeUnitDomain {
   export function parseFacet(model: FacetModel) {
     // always merge with child
     return extend(parse(model), model.child().component.data.timeUnitDomain);
+  }
+
+  export function parseLayer(model: LayerModel) {
+    // always merge with children
+    return extend(parse(model), model.children().forEach((child) => {
+      return child.component.data.timeUnitDomain;
+    }));
   }
 
   export function assemble(component: DataComponent): VgData[] {
@@ -736,6 +807,10 @@ export namespace colorRank {
     return {} as Dict<VgTransform[]>;
   }
 
+  export function parseLayer(model: LayerModel) {
+    return {} as Dict<VgTransform[]>;
+  }
+
   export function assemble(component: DataComponent) {
     return flatten(vals(component.colorRank));
   }
@@ -766,6 +841,10 @@ export namespace nonPositiveFilter {
       delete childDataComponent.nonPositiveFilter;
       return nonPositiveFilterComponent;
     }
+    return {} as StringSet;
+  }
+
+  export function parseLayer(model: LayerModel) {
     return {} as StringSet;
   }
 

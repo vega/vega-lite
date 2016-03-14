@@ -47,50 +47,88 @@ export interface ExtendedUnitSpec extends BaseSpec {
 
 export interface FacetSpec extends BaseSpec {
   facet: Facet;
-  spec: UnitSpec; // TODO: LayerSpec | UnitSpec
+  spec: LayerSpec | UnitSpec;
+}
+
+export interface LayerSpec extends BaseSpec {
+  layers: UnitSpec[];
 }
 
 /** This is for the future schema */
 export interface ExtendedFacetSpec extends BaseSpec {
   facet: Facet;
 
-  // FIXME: Ideally "ExtendedUnitSpec | FacetSpec" but this leads to infinite loop in generating schema
-  spec: ExtendedUnitSpec;
+  spec: ExtendedUnitSpec | FacetSpec;
 }
 
-export type Spec = ExtendedUnitSpec | FacetSpec;
+export type ExtendedSpec = ExtendedUnitSpec | FacetSpec | LayerSpec;
+export type Spec = UnitSpec | FacetSpec | LayerSpec;
+
+/* Custom type guards */
+
+export function isFacetSpec(spec: ExtendedSpec): spec is FacetSpec {
+  return spec['facet'] !== undefined;
+}
+
+export function isExtendedUnitSpec(spec: ExtendedSpec): spec is ExtendedUnitSpec {
+  if (isSomeUnitSpec(spec)) {
+    const hasRow = has(spec.encoding, ROW);
+    const hasColumn = has(spec.encoding, COLUMN);
+
+    return hasRow || hasColumn;
+  }
+
+  return false;
+}
+
+export function isUnitSpec(spec: ExtendedSpec): spec is UnitSpec {
+  if (isSomeUnitSpec(spec)) {
+    return !isExtendedUnitSpec(spec);
+  }
+
+  return false;
+}
+
+export function isSomeUnitSpec(spec: ExtendedSpec): spec is ExtendedUnitSpec | UnitSpec {
+  return spec['encoding'] !== undefined;
+}
+
+export function isLayerSpec(spec: ExtendedSpec): spec is LayerSpec {
+  return spec['layers'] !== undefined;
+}
 
 /**
  * Decompose extended unit specs into composition of pure unit specs.
  */
-export function normalize(spec: ExtendedUnitSpec): Spec {
-  const hasRow = has(spec.encoding, ROW);
-  const hasColumn = has(spec.encoding, COLUMN);
+export function normalize(spec: ExtendedSpec): Spec {
+  if (isExtendedUnitSpec(spec)) {
+    const hasRow = has(spec.encoding, ROW);
+    const hasColumn = has(spec.encoding, COLUMN);
 
-  if (hasRow || hasColumn) {
     // TODO: @arvind please  add interaction syntax here
     let encoding = duplicate(spec.encoding);
     delete encoding.column;
     delete encoding.row;
 
     return extend(
-      spec.name ? {name: spec.name} : {},
-      spec.description ? {description: spec.description} : {},
-      {data: spec.data},
-      spec.transform ? {transform: spec.transform} : {},
+      spec.name ? { name: spec.name } : {},
+      spec.description ? { description: spec.description } : {},
+      { data: spec.data },
+      spec.transform ? { transform: spec.transform } : {},
       {
         facet: extend(
-          hasRow ? {row: spec.encoding.row } : {},
-          hasColumn ? {column: spec.encoding.column } : {}
+          hasRow ? { row: spec.encoding.row } : {},
+          hasColumn ? { column: spec.encoding.column } : {}
         ),
         spec: {
           mark: spec.mark,
           encoding: encoding
         }
       },
-      spec.config ? {config: spec.config} : {}
+      spec.config ? { config: spec.config } : {}
     );
   }
+
   return spec;
 }
 

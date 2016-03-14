@@ -8,7 +8,7 @@ export interface VgData {
 }
 
 // TODO: declare
-export type VgScale = any;
+export type VgScale = any | {fields: any[]};
 export type VgMarkGroup = any;
 export type VgAxis = any;
 export type VgLegend = any;
