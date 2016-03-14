@@ -1,6 +1,6 @@
 import {AggregateOp} from '../aggregate';
 import {AxisProperties} from '../axis';
-import {COLUMN, ROW, X, Y, TEXT, PATH, ORDER, Channel, UNIT_CHANNELS,  UNIT_SCALE_CHANNELS, NONSPATIAL_SCALE_CHANNELS, supportMark} from '../channel';
+import {X, Y, TEXT, PATH, ORDER, Channel, UNIT_CHANNELS,  UNIT_SCALE_CHANNELS, NONSPATIAL_SCALE_CHANNELS, supportMark} from '../channel';
 import {defaultConfig, Config, CellConfig} from '../config';
 import {SOURCE, SUMMARY} from '../data';
 import {Encoding} from '../encoding';
@@ -219,18 +219,6 @@ export class UnitModel extends Model {
     return spec;
   }
 
-  // TODO: remove
-  public cellWidth(): number {
-    return (this.isFacet() ? this.config().facet.cell.width : null) ||
-      this.config().cell.width;
-  }
-
-  // TODO: remove
-  public cellHeight(): number {
-    return (this.isFacet() ? this.config().facet.cell.height : null) ||
-      this.config().cell.height;
-  }
-
   public mark(): Mark {
     return this._mark;
   }
@@ -260,11 +248,6 @@ export class UnitModel extends Model {
     }
 
     return field(fieldDef, opt);
-  }
-
-  // TODO: remove
-  public isFacet() {
-    return this.has(ROW) || this.has(COLUMN);
   }
 
   public dataTable() {

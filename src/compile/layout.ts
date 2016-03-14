@@ -72,7 +72,9 @@ export function parseUnitLayout(model: UnitModel): LayoutComponent {
 }
 
 function parseUnitSizeLayout(model: UnitModel, channel: Channel): SizeComponent {
-  const nonOrdinalSize = channel === X ? model.cellWidth() : model.cellHeight();
+  // TODO: think about whether this config has to be the cell or facet cell config
+  const cellConfig = model.config().cell;
+  const nonOrdinalSize = channel === X ? cellConfig.width : cellConfig.height;
 
   return {
     distinct: getDistinct(model, channel),

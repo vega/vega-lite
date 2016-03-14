@@ -211,11 +211,11 @@ export function title(model: Model, channel: Channel) {
   } else if (channel === X && !model.isOrdinalScale(X)) {
     const unitModel: UnitModel = model as any; // only unit model has channel x
     // For non-ordinal scale, we know cell size at compile time, we can guess max length
-    maxLength = unitModel.cellWidth() / model.axis(X).characterWidth;
+    maxLength = unitModel.config().cell.width / model.axis(X).characterWidth;
   } else if (channel === Y && !model.isOrdinalScale(Y)) {
     const unitModel: UnitModel = model as any; // only unit model has channel y
     // For non-ordinal scale, we know cell size at compile time, we can guess max length
-    maxLength = unitModel.cellHeight() / model.axis(Y).characterWidth;
+    maxLength = unitModel.config().cell.height / model.axis(Y).characterWidth;
   }
 
   // FIXME: we should use template to truncate instead

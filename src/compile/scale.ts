@@ -353,11 +353,11 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel): any {
 
       return {
         rangeMin: 0,
-        rangeMax: unitModel.cellWidth() // Fixed cell width for non-ordinal
+        rangeMax: unitModel.config().cell.width // Fixed cell width for non-ordinal
       };
     case Y:
       return {
-        rangeMin: unitModel.cellHeight(), // Fixed cell height for non-ordinal
+        rangeMin: unitModel.config().cell.height, // Fixed cell height for non-ordinal
         rangeMax: 0
       };
     case SIZE:
