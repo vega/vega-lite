@@ -3,6 +3,7 @@ bower_components
 _site
 data/*
 *.sublime-workspace
+.vscode
 
 vega-lite*.js
 vega-lite*.map
