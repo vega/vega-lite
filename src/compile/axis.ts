@@ -7,6 +7,7 @@ import {VgAxis} from '../vega.schema';
 
 import {formatMixins} from './common';
 import {Model} from './model';
+import {FacetModel} from './facet';
 import {UnitModel} from './unit';
 
 // https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations
@@ -145,7 +146,7 @@ export function grid(model: Model, channel: Channel) {
   return gridShow(model, channel) && (
     // TODO refactor this cleanly -- essentially the condition below is whether
     // the axis is a shared / union axis.
-    (channel === Y || channel === X) && !model.parent()
+    (channel === Y || channel === X) && !(model.parent() instanceof FacetModel)
   );
 }
 

@@ -423,7 +423,6 @@ export namespace bin {
     return null;
   }
 
-
   export function assemble(component: DataComponent) {
     return flatten(vals(component.bin));
   }

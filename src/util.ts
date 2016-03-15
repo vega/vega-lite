@@ -17,7 +17,7 @@ export function without<T>(array: Array<T>, excludedItems: Array<T>) {
   });
 }
 
-export function forEach(obj, f: (a, d, k, o) => any, thisArg) {
+export function forEach(obj, f: (a, d, k, o) => any, thisArg?) {
   if (obj.forEach) {
     obj.forEach.call(thisArg, f);
   } else {

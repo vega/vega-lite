@@ -24,7 +24,7 @@ export interface SizeComponent {
   /** Field that we need to calculate distinct */
   distinct: StringSet;
 
-  /** Dict from field name to expression */
+  /** Array of formulas */
   formula: Formula[];
 }
 
@@ -154,20 +154,20 @@ export function parseLayerLayout(model: LayerModel): LayoutComponent {
 function parseLayerSizeLayout(model: LayerModel, channel: Channel): SizeComponent {
   if (true) {
     // assume shared scales
-    if (false && model.isOrdinalScale(channel)) {
-      return null;
+    if (model.isOrdinalScale(channel)) {
+      return null;  // hack: we copy from the frist child for now
     } else {
       const maxFormula = {
-        field: '',
+        field: model.channelSizeName(channel),
         expr: 'max(' + model.children().map((child) => {
-          return child.channelSizeName(channel);
+          return 'datum.' + child.channelSizeName(channel);
         }).join(', ') + ')'
       };
 
       return {
-        distinct: null,
+        distinct: getDistinct(model, channel),
         formula: [maxFormula]
-      }
+      };
     }
   }
 }
