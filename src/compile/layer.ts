@@ -230,7 +230,21 @@ export class LayerModel extends Model {
   }
 
   public parseLegend() {
-    // TODO
+    let legendComponent = this.component.legend = {} as Dict<VgLegend>;
+
+    this._children.forEach(function(child) {
+      child.parseLegend();
+
+      // TODO: correctly implement independent axes
+      if (true) { // if shared/union scale
+        keys(child.component.legend).forEach(function(channel) {
+          // just use the first legend definition for each channel
+          if (!legendComponent[channel]) {
+            legendComponent[channel] = child.component.legend[channel];
+          }
+        });
+      }
+    });
   }
 
   public assembleParentGroupProperties() {
