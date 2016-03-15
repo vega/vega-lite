@@ -238,7 +238,12 @@ export namespace source {
 
   export function parseLayer(model: LayerModel) {
     let sourceData = parse(model);
-    // TODO: rename?
+    model.children().forEach((child) => {
+      if (!child.component.data.source) {
+        // If the child does not have its own source, have to rename its source.
+        child.renameData(child.dataName(SOURCE), model.dataName(SOURCE));
+      }
+    });
     return sourceData;
   }
 
@@ -361,7 +366,7 @@ export namespace timeUnit {
 }
 
 export namespace bin {
-  function parse(model: Model) {
+  function parse(model: Model): Dict<VgTransform[]> {
     return model.reduce(function(binComponent, fieldDef: FieldDef, channel: Channel) {
       const bin = model.fieldDef(channel).bin;
       if (bin) {
@@ -430,7 +435,7 @@ export namespace bin {
 
 export namespace nullFilter {
   /** Return Hashset of fields for null filtering (key=field, value = true). */
-  function parse(model: Model) {
+  function parse(model: Model): StringSet {
     const filterNull = model.transform().filterNull;
     return model.reduce(function(aggregator, fieldDef: FieldDef) {
       if (filterNull ||
@@ -720,7 +725,7 @@ export namespace stackScale {
 
 
 export namespace timeUnitDomain {
-  function parse(model: Model) {
+  function parse(model: Model): StringSet {
     return model.reduce(function(timeUnitDomainMap, fieldDef: FieldDef, channel: Channel) {
       if (fieldDef.timeUnit) {
         const domain = rawDomain(fieldDef.timeUnit, channel);

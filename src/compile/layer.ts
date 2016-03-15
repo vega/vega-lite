@@ -1,6 +1,6 @@
 import {X, Y, Channel} from '../channel';
 import {SOURCE, SUMMARY} from '../data';
-import {keys, duplicate, mergeDeep, Dict, forEach} from '../util';
+import {keys, duplicate, mergeDeep, flatten, Dict, forEach} from '../util';
 import {defaultConfig, Config} from '../config';
 import {LayerSpec} from '../spec';
 import {assembleData, parseLayerData} from './data';
@@ -11,7 +11,7 @@ import {buildModel} from './common';
 import {FieldDef} from '../fielddef';
 import {ScaleComponent} from './scale';
 import {ScaleType} from '../scale';
-import {VgData,VgAxis} from '../vega.schema';
+import {VgData, VgAxis, VgLegend} from '../vega.schema';
 
 
 export class LayerModel extends Model {
@@ -41,7 +41,8 @@ export class LayerModel extends Model {
   }
 
   private hasSummary() {
-    const summary = this.component.data.summary;
+    // TODO: don't just use the first child
+    const summary = this._children[0].component.data.summary;
     for (let i = 0; i < summary.length; i++) {
       if (keys(summary[i].measures).length > 0) {
         return true;
@@ -56,6 +57,7 @@ export class LayerModel extends Model {
   }
 
   public dataTable(): string {
+    // TODO: think about what this should return, used by layout
     return (this.hasSummary() ? SUMMARY : SOURCE) + '';
   }
 
@@ -70,7 +72,6 @@ export class LayerModel extends Model {
   public parseData() {
     this._children.forEach((child) => {
       child.parseData();
-      console.log(child.component.data);
     });
 
     this.component.data = parseLayerData(this);
@@ -194,12 +195,8 @@ export class LayerModel extends Model {
   }
 
   public parseMark() {
-    const model = this;
-    this.component.mark = [];
-
     this._children.forEach(function(child) {
       child.parseMark();
-      model.component.mark = model.component.mark.concat(child.component.mark);
     });
   }
 
@@ -259,14 +256,15 @@ export class LayerModel extends Model {
   }
 
   public assembleLayout(layoutData: VgData[]): VgData[] {
-    this._children.reduce((childLayoutData, child) => {
-      return child.assembleLayout(childLayoutData);
-    }, layoutData);
+    // no need to look into children because everything should have been copied here already
     return assembleLayout(this, layoutData);
   }
 
   public assembleMarks(): any[] {
-    return this.component.mark;
+    // only children have marks
+    return flatten(this._children.map((child) => {
+      return child.assembleMarks();
+    }));
   }
 
   public channels() {

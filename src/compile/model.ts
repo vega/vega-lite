@@ -234,7 +234,7 @@ export abstract class Model {
    * However, for composite specs, data sources might get merged, thus we have to
    */
   public dataName(dataSourceType: DataTable): string {
-    return this._dataNameMap.get(this.name(dataSourceType + ''));
+    return this._dataNameMap.get(this.name(String(dataSourceType)));
   }
 
   public renameSize(oldName: string, newName: string) {
