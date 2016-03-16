@@ -2,7 +2,7 @@ import {COLUMN, ROW, X, Y, SIZE, COLOR, SHAPE, TEXT, LABEL, Channel} from '../ch
 import {FieldDef, field, OrderChannelDef} from '../fielddef';
 import {SortOrder} from '../sort';
 import {QUANTITATIVE, ORDINAL, TEMPORAL} from '../type';
-import {contains} from '../util';
+import {contains, union} from '../util';
 
 import {FacetModel} from './facet';
 import {LayerModel} from './layer';
@@ -29,9 +29,13 @@ export function buildModel(spec: Spec, parent: Model, parentGivenName: string): 
   return null;
 }
 
-export const FILL_STROKE_CONFIG = ['fill', 'fillOpacity',
-  'stroke', 'strokeWidth', 'strokeDash', 'strokeDashOffset', 'strokeOpacity',
+export const STROKE_CONFIG = ['stroke', 'strokeWidth',
+  'strokeDash', 'strokeDashOffset', 'strokeOpacity', 'opacity'];
+
+export const FILL_CONFIG = ['fill', 'fillOpacity',
   'opacity'];
+
+export const FILL_STROKE_CONFIG = union(STROKE_CONFIG, FILL_CONFIG);
 
 export function applyColorAndOpacity(p, model: UnitModel) {
   const filled = model.config().mark.filled;
@@ -39,7 +43,11 @@ export function applyColorAndOpacity(p, model: UnitModel) {
 
   // Apply fill stroke config first so that color field / value can override
   // fill / stroke
-  applyMarkConfig(p, model, FILL_STROKE_CONFIG);
+  if (filled) {
+    applyMarkConfig(p, model, FILL_CONFIG);
+  } else {
+    applyMarkConfig(p, model, STROKE_CONFIG);
+  }
 
   let value;
   if (model.has(COLOR)) {

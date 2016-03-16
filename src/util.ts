@@ -17,6 +17,10 @@ export function without<T>(array: Array<T>, excludedItems: Array<T>) {
   });
 }
 
+export function union<T>(array: Array<T>, other: Array<T>) {
+  return array.concat(without(other, array));
+}
+
 export function forEach(obj, f: (a, d, k, o) => any, thisArg?) {
   if (obj.forEach) {
     obj.forEach.call(thisArg, f);

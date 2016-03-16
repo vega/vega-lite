@@ -153,7 +153,9 @@ export function assembleData(model: Model, data: VgData[]) {
     data.push(sourceData);
   }
 
-  summary.assemble(component).forEach(function(summaryData) {
+  summary.assemble(component, (name: string) => {
+    return model.dataRename(name);
+  }).forEach(function(summaryData) {
     data.push(summaryData);
   });
 
@@ -314,7 +316,13 @@ export namespace formatParse {
 
   export function parseLayer(model: LayerModel) {
     let parseComponent = parse(model);
-    // TODO: merge
+    model.children().forEach((child) => {
+      const childDataComponent = child.component.data;
+      if (!childDataComponent.source && childDataComponent.formatParse) {
+        parseComponent = extend(parseComponent || {}, childDataComponent.formatParse);
+        delete childDataComponent.formatParse;
+      }
+    });
     return parseComponent;
   }
 
@@ -604,7 +612,7 @@ export namespace summary {
   export function parseFacet(model: FacetModel): SummaryComponent[] {
     const childDataComponent = model.child().component.data;
 
-    // If child doesn't have its own data source but have a summary data source, then merge
+    // If child doesn't have its own data source but has a summary data source, merge
     if (!childDataComponent.source && childDataComponent.summary) {
       let summaryComponents = childDataComponent.summary.map(function(summaryComponent) {
         // FIXME: the name and source aren't always correct yet when faceting layer/concat
@@ -628,7 +636,11 @@ export namespace summary {
     return [];
   }
 
-  export function assemble(component: DataComponent): VgData[] {
+  /**
+   * Assemble the summary. Needs a rename function because we cannot guarantee that the
+   * parent data before the children data.
+   */
+  export function assemble(component: DataComponent, rename: (name: string) => string): VgData[] {
     if (!component.summary) {
       return [];
     }
@@ -647,8 +659,8 @@ export namespace summary {
 
       if (keys(meas).length > 0) { // has aggregate
         summaryData.push({
-          name: summaryComponent.name,
-          source: summaryComponent.source,
+          name: rename(summaryComponent.name),
+          source: rename(summaryComponent.source),
           transform: [{
             type: 'aggregate',
             groupby: groupby,

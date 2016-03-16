@@ -98,7 +98,7 @@ export abstract class Model {
     // If name is not provided, always use parent's givenName to avoid name conflicts.
     this._name = spec.name || parentGivenName;
 
-    // Have a shared name maps
+    // Shared name maps
     this._dataNameMap = parent ? parent._dataNameMap : new NameMap();
     this._scaleNameMap = parent ? parent._scaleNameMap : new NameMap();
     this._sizeNameMap = parent ? parent._sizeNameMap : new NameMap();
@@ -231,10 +231,17 @@ export abstract class Model {
    * Return the data source name for the given data source type.
    *
    * For unit spec, this is always simply the spec.name + '-' + dataSourceType.
-   * However, for composite specs, data sources might get merged, thus we have to
+   * We already use the name map so that marks and scales use the correct data.
    */
   public dataName(dataSourceType: DataTable): string {
     return this._dataNameMap.get(this.name(String(dataSourceType)));
+  }
+
+  /**
+   * Function to rename the dataset name using the name map. Used in the assemble step.
+   */
+  public dataRename(name: string): string {
+    return this._dataNameMap.get(name);
   }
 
   public renameSize(oldName: string, newName: string) {

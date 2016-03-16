@@ -23,7 +23,7 @@ export class LayerModel extends Model {
     this._config = this._initConfig(spec.config, parent);
     this._children = spec.layers.map((layer, i) => {
       // we know that the model has to be a unit model beacuse we pass in a unit spec
-      return buildModel(layer, this, this.name('layer' + i)) as UnitModel;
+      return buildModel(layer, this, this.name('layer_' + i)) as UnitModel;
     });
   }
 
@@ -73,7 +73,6 @@ export class LayerModel extends Model {
     this._children.forEach((child) => {
       child.parseData();
     });
-
     this.component.data = parseLayerData(this);
   }
 
@@ -106,8 +105,6 @@ export class LayerModel extends Model {
             return;
           }
 
-          let allScales;
-
           const existingScales = scaleComponent[channel];
           if (existingScales && newScales[0].type === ScaleType.ORDINAL) {
             // Ordinal scales are unioned by combining the domain of the first scale. Other scales are appended.
@@ -118,13 +115,15 @@ export class LayerModel extends Model {
             };
             if (existingScales.length > 1) {
               delete existingScales[0];
-              allScales = newScales.concat(existingScales);
+              scaleComponent[channel] = newScales.concat(existingScales);
             } else {
-              allScales = newScales;
+              scaleComponent[channel] = newScales;
             }
           } else {
-            // Quantitative scales are simply overridden.
-            allScales = newScales;
+            // Use the first quantitative scale
+            if (!scaleComponent[channel]) {
+              scaleComponent[channel] = newScales;
+            }
           }
 
           // for each new scale, need to rename old scales
@@ -134,8 +133,6 @@ export class LayerModel extends Model {
             child.renameScale(scale.name, newName);
             scale.name = newName;
           });
-
-          scaleComponent[channel] = allScales;
         });
       }
     });
