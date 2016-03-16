@@ -11,6 +11,8 @@ export namespace tick {
   export function properties(model: UnitModel) {
     let p: any = {};
 
+    // TODO: support explicit value
+
     // x
     if (model.has(X)) {
       p.xc = {

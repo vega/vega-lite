@@ -483,6 +483,8 @@ describe('data: stack', function() {
 });
 
 describe('data: summary', function () {
+  function identity(name) { return name; }
+
   describe('unit (aggregated)', function() {
     const model = parseUnitModel({
       mark: "point",
@@ -513,7 +515,7 @@ describe('data: summary', function () {
     });
 
     it('should assemble the correct aggregate transform', function() {
-      const summaryData = summary.assemble(model.component.data)[0];
+      const summaryData = summary.assemble(model.component.data, identity)[0];
       assert.deepEqual(summaryData, {
         'name': "summary",
         'source': 'source',
@@ -553,7 +555,7 @@ describe('data: summary', function () {
     });
 
     it('should assemble the correct summary data', function() {
-      const summaryData = summary.assemble(model.component.data)[0];
+      const summaryData = summary.assemble(model.component.data, identity)[0];
       assert.deepEqual(summaryData, {
         'name': "summary",
         'source': 'source',
