@@ -1,10 +1,10 @@
 import {X, Y, Channel} from '../channel';
 import {SOURCE, SUMMARY} from '../data';
-import {keys, duplicate, mergeDeep, flatten, Dict, forEach} from '../util';
+import {keys, duplicate, mergeDeep, flatten, Dict} from '../util';
 import {defaultConfig, Config} from '../config';
 import {LayerSpec} from '../spec';
 import {assembleData, parseLayerData} from './data';
-import {assembleLayout, parseLayerLayout, LayoutComponent} from './layout';
+import {assembleLayout, parseLayerLayout} from './layout';
 import {Model} from './model';
 import {UnitModel} from './unit';
 import {buildModel} from './common';
@@ -82,65 +82,12 @@ export class LayerModel extends Model {
     // We might need to split this into compileSelectionData and compileSelectionSignals?
   }
 
-  private _mergeLayout(target: LayoutComponent, source: LayoutComponent, channel: Channel) {
-    if (channel === X) {
-      forEach(source.width.distinct, (_, field) => {
-        target.width.distinct[field] = true;
-      });
-      source.width.formula.forEach((formula) => {
-        target.width.formula.push(formula);
-      });
-    } else if (channel === Y) {
-      // height
-      forEach(source.height.distinct, (_, field) => {
-        target.height.distinct[field] = true;
-      });
-      source.height.formula.forEach((formula) => {
-        target.height.formula.push(formula);
-      });
-    }
-    return target;
-  }
-
   public parseLayoutData() {
     // TODO: correctly union ordinal scales rather than just using the layout of the first child
-    const model = this;
-    let layoutComponent = this.component.layout = {
-      width: {
-        distinct: {},
-        formula: []
-      },
-      height: {
-        distinct: {},
-        formula: []
-      }
-    };
-
     this._children.forEach((child, i) => {
       child.parseLayoutData();
-
-      [X, Y].forEach((channel) => {
-        if (model.isOrdinalScale(channel)) {
-          if (i === 0) {
-            if (channel === X) {
-              layoutComponent.width = child.component.layout.width;
-              layoutComponent.width.formula[0].field = 'width';
-            } else {
-              layoutComponent.height = child.component.layout.height;
-              layoutComponent.height.formula[0].field = 'height';
-            }
-          }
-        } else {
-          layoutComponent = model._mergeLayout(layoutComponent, child.component.layout, channel);
-        }
-      });
     });
-
-    [X, Y].forEach((channel) => {
-      if (!model.isOrdinalScale(channel)) {
-        layoutComponent = this._mergeLayout(layoutComponent, parseLayerLayout(this), channel);
-      }
-    });
+    this.component.layout = parseLayerLayout(this);
   }
 
   public parseScale() {
@@ -250,13 +197,15 @@ export class LayerModel extends Model {
 
   public assembleData(data: VgData[]): VgData[] {
     assembleData(this, data);
-    return this._children.reduce((childData, child) => {
-      return child.assembleData(childData);
+    return this._children.reduce((aggregator, child) => {
+      return child.assembleData(aggregator);
     }, data);
   }
 
   public assembleLayout(layoutData: VgData[]): VgData[] {
-    // no need to look into children because everything should have been copied here already
+    layoutData = this._children.reduce((aggregator, child) => {
+      return child.assembleLayout(aggregator);
+    }, layoutData);
     return assembleLayout(this, layoutData);
   }
 

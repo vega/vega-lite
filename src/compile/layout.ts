@@ -153,22 +153,27 @@ export function parseLayerLayout(model: LayerModel): LayoutComponent {
 
 function parseLayerSizeLayout(model: LayerModel, channel: Channel): SizeComponent {
   if (true) {
-    // assume shared scales
-    if (model.isOrdinalScale(channel)) {
-      return null;  // hack: we copy from the frist child for now
-    } else {
-      const maxFormula = {
-        field: model.channelSizeName(channel),
-        expr: 'max(' + model.children().map((child) => {
-          return 'datum.' + child.channelSizeName(channel);
-        }).join(', ') + ')'
-      };
+    // For shared scale, we can simply merge the layout into one data source
+    // TODO: don't just take the layout from the frist child
 
-      return {
-        distinct: getDistinct(model, channel),
-        formula: [maxFormula]
-      };
-    }
+    const childLayoutComponent = model.children()[0].component.layout;
+    const sizeType = channel === Y ? 'height' : 'width';
+    const childSizeComponent: SizeComponent = childLayoutComponent[sizeType];
+
+    const distinct = childSizeComponent.distinct;
+    const formula = [{
+      field: model.channelSizeName(channel),
+      expr: childSizeComponent.formula[0].expr
+    }];
+
+    model.children().forEach((child) => {
+      delete child.component.layout[sizeType];
+    });
+
+    return {
+      distinct: distinct,
+      formula: formula
+    };
   }
 }
 
