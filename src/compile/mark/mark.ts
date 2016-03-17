@@ -73,7 +73,7 @@ function parsePathMark(model: UnitModel) { // TODO: extract this into compilePat
       );
 
     return [{
-      name: model.name('-path-group'),
+      name: model.name('pathgroup'),
       type: 'group',
       from: extend(
         // If has facet, `from.data` will be added in the cell group.
