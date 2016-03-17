@@ -72,22 +72,18 @@ export function getSupportedMark(channel: Channel): SupportedMark {
   switch (channel) {
     case X:
     case Y:
-      return { // all marks
-        point: true, tick: true, rule: true, circle: true, square: true,
-        bar: true, line: true, area: true, text: true
-      };
     case COLOR:
     case DETAIL:
     case ORDER:
     case ROW:
     case COLUMN:
-      return { // all marks except rule
-        point: true, tick: true, circle: true, square: true,
+      return { // all marks
+        point: true, tick: true, rule: true, circle: true, square: true,
         bar: true, line: true, area: true, text: true
       };
     case SIZE:
       return {
-        point: true, tick: true, circle: true, square: true,
+        point: true, tick: true, rule: true, circle: true, square: true,
         bar: true, text: true
       };
     case SHAPE:

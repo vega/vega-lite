@@ -59,6 +59,9 @@ export interface ScaleConfig {
   /** Default range for font size scale */
   fontSizeRange?: number[];
 
+  /** Default range for line stroke widths */
+  lineSizeRange?: number[];
+
   /** Default range for bar size scale */
   pointSizeRange?: number[];
 
@@ -76,7 +79,8 @@ export const defaultScaleConfig: ScaleConfig = {
   nominalColorRange: 'category10',
   sequentialColorRange: ['#AFC6A3', '#09622A'], // tableau greens
   shapeRange: 'shapes',
-  fontSizeRange: [8, 40]
+  fontSizeRange: [8, 40],
+  lineSizeRange: [1, 10]
 };
 
 export interface FacetScaleConfig {

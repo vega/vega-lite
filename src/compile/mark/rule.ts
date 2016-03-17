@@ -1,4 +1,4 @@
-import {X, Y, Channel} from '../../channel';
+import {X, Y, SIZE, Channel} from '../../channel';
 
 import {UnitModel} from '../unit';
 import {applyColorAndOpacity} from '../common';
@@ -33,7 +33,19 @@ export namespace rule {
         };
     }
 
+    // FIXME: this function would overwrite strokeWidth but shouldn't
     applyColorAndOpacity(p, model);
+
+    // size
+    if (model.has(SIZE)) {
+      p.strokeWidth = {
+        scale: model.scaleName(SIZE),
+        field: model.field(SIZE)
+      };
+    } else {
+      p.strokeWidth = { value: sizeValue(model) };
+    }
+
     return p;
   }
 
@@ -42,6 +54,15 @@ export namespace rule {
         scale: model.scaleName(channel),
         field: model.field(channel, { binSuffix: '_mid' })
       };
+  }
+
+  function sizeValue(model: UnitModel) {
+    const fieldDef = model.fieldDef(SIZE);
+    if (fieldDef && fieldDef.value !== undefined) {
+       return fieldDef.value;
+    }
+
+    return model.config().mark.size;
   }
 
   export function labels(model: UnitModel) {
