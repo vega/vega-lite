@@ -221,4 +221,8 @@ export class LayerModel extends Model {
   protected mapping() {
     return null;
   }
+
+  public isLayer() {
+    return true;
+  }
 }

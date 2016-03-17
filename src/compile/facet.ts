@@ -289,6 +289,10 @@ export class FacetModel extends Model {
   protected mapping() {
     return this.facet();
   }
+
+  public isFacet() {
+    return true;
+  }
 }
 
 // TODO: move the rest of the file into FacetModel if possible

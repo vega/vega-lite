@@ -252,4 +252,8 @@ export class UnitModel extends Model {
   public dataTable() {
     return this.dataName(vlEncoding.isAggregate(this._encoding) ? SUMMARY : SOURCE);
   }
+
+  public isUnit() {
+    return true;
+  }
 }

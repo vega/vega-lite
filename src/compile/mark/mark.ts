@@ -38,7 +38,7 @@ export function parseMark(model: UnitModel): any[] {
 function parsePathMark(model: UnitModel) { // TODO: extract this into compilePathMark
   const mark = model.mark();
   // TODO: replace this with more general case for composition
-  const hasParentData = model.parent() instanceof FacetModel;
+  const isFaceted = model.parent() && model.parent().isFacet();
   const dataFrom = {data: model.dataTable()};
   const details = detailFields(model);
 
@@ -50,7 +50,7 @@ function parsePathMark(model: UnitModel) { // TODO: extract this into compilePat
         // If has facet, `from.data` will be added in the cell group.
         // If has subfacet for line/area group, `from.data` will be added in the outer subfacet group below.
         // If has no subfacet, add from.data.
-        hasParentData || details.length > 0 ? {} : dataFrom,
+        isFaceted || details.length > 0 ? {} : dataFrom,
 
         // sort transform
         {transform: [{ type: 'sort', by: sortPathBy(model)}]}
@@ -78,7 +78,7 @@ function parsePathMark(model: UnitModel) { // TODO: extract this into compilePat
       from: extend(
         // If has facet, `from.data` will be added in the cell group.
         // Otherwise, add it here.
-        hasParentData ? {} : dataFrom,
+        isFaceted ? {} : dataFrom,
         {transform: transform}
       ),
       properties: {
@@ -96,7 +96,7 @@ function parsePathMark(model: UnitModel) { // TODO: extract this into compilePat
 
 function parseNonPathMark(model: UnitModel) {
   const mark = model.mark();
-  const isFaceted = model.parent() instanceof FacetModel;
+  const isFaceted = model.parent() && model.parent().isFacet();
   const dataFrom = {data: model.dataTable()};
 
   let marks = []; // TODO: vgMarks

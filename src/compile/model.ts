@@ -324,4 +324,17 @@ export abstract class Model {
   public warnings(): string[] {
     return this._warnings;
   }
+
+  /**
+   * Type checks
+   */
+  public isUnit() {
+    return false;
+  }
+  public isFacet() {
+    return false;
+  }
+  public isLayer() {
+    return false;
+  }
 }

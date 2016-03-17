@@ -146,7 +146,7 @@ export function grid(model: Model, channel: Channel) {
   return gridShow(model, channel) && (
     // TODO refactor this cleanly -- essentially the condition below is whether
     // the axis is a shared / union axis.
-    (channel === Y || channel === X) && !(model.parent() instanceof FacetModel)
+    (channel === Y || channel === X) && !(model.parent() && model.parent().isFacet())
   );
 }
 
