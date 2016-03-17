@@ -74,6 +74,7 @@ export class LayerModel extends Model {
       child.parseData();
     });
     this.component.data = parseLayerData(this);
+    console.log(this.component.data);
   }
 
   public parseSelectionData() {

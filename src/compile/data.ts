@@ -276,13 +276,13 @@ export namespace source {
 
 export namespace formatParse {
   // TODO: need to take calculate into account across levels when merging
-  function parse(model: Model) {
+  function parse(model: Model): Dict<string> {
     const calcFieldMap = (model.transform().calculate || []).reduce(function(fieldMap, formula) {
         fieldMap[formula.field] = true;
         return fieldMap;
     }, {});
 
-    let parseComponent;
+    let parseComponent: Dict<string> = {};
     // use forEach rather than reduce so that it can return undefined
     // if there is no parse needed
     model.forEach(function(fieldDef: FieldDef) {
@@ -308,7 +308,7 @@ export namespace formatParse {
     // If child doesn't have its own data source, but has its own parse, then merge
     const childDataComponent = model.child().component.data;
     if (!childDataComponent.source && childDataComponent.formatParse) {
-      parseComponent = extend(parseComponent || {}, childDataComponent.formatParse);
+      extend(parseComponent || {}, childDataComponent.formatParse);
       delete childDataComponent.formatParse;
     }
     return parseComponent;
@@ -319,7 +319,7 @@ export namespace formatParse {
     model.children().forEach((child) => {
       const childDataComponent = child.component.data;
       if (!childDataComponent.source && childDataComponent.formatParse) {
-        parseComponent = extend(parseComponent || {}, childDataComponent.formatParse);
+         extend(parseComponent || {}, childDataComponent.formatParse);
         delete childDataComponent.formatParse;
       }
     });
@@ -331,7 +331,7 @@ export namespace formatParse {
 
 
 export namespace timeUnit {
-  function parse(model: Model) {
+  function parse(model: Model): Dict<VgTransform> {
     return model.reduce(function(timeUnitComponent, fieldDef: FieldDef, channel: Channel) {
       const ref = field(fieldDef, { nofn: true, datum: true });
       if (fieldDef.type === TEMPORAL && fieldDef.timeUnit) {
@@ -364,7 +364,15 @@ export namespace timeUnit {
   }
 
   export function parseLayer(model: LayerModel) {
-    return null;
+    let timeUnitComponent = parse(model);
+    model.children().forEach((child) => {
+      const childDataComponent = child.component.data;
+      if (!childDataComponent.source && childDataComponent.timeUnit) {
+        extend(timeUnitComponent || {}, childDataComponent.timeUnit);
+        delete childDataComponent.timeUnit;
+      }
+    });
+    return timeUnitComponent;
   }
 
   export function assemble(component: DataComponent) {
@@ -433,6 +441,7 @@ export namespace bin {
   }
 
   export function parseLayer(model: LayerModel) {
+    // TODO
     return null;
   }
 
@@ -471,6 +480,15 @@ export namespace nullFilter {
 
   export function parseLayer(model: LayerModel) {
     let nullFilterComponent = parse(model);
+
+    model.children().forEach((child) => {
+      const childDataComponent = child.component.data;
+      if (!childDataComponent.source && childDataComponent.nullFilter) {
+        extend(nullFilterComponent || {}, childDataComponent.nullFilter);
+        delete childDataComponent.nullFilter;
+      }
+    });
+
     return nullFilterComponent;
   }
 
@@ -512,6 +530,16 @@ export namespace filter {
 
   export function parseLayer(model: LayerModel) {
     let filterComponent = parse(model);
+    model.children().forEach((child) => {
+      const childDataComponent = child.component.data;
+      if (!childDataComponent.source && childDataComponent.filter) {
+        // merge by adding &&
+        filterComponent =
+          (filterComponent ?  filterComponent + ' && ' : '') +
+          childDataComponent.filter;
+        delete childDataComponent.filter;
+      }
+    });
     return filterComponent;
   }
 
@@ -549,6 +577,13 @@ export namespace formula {
 
   export function parseLayer(model: LayerModel) {
     let formulaComponent = parse(model);
+    model.children().forEach((child) => {
+      const childDataComponent = child.component.data;
+      if (!childDataComponent.source && childDataComponent.calculate) {
+        extend(formulaComponent || {}, childDataComponent.calculate);
+        delete childDataComponent.calculate;
+      }
+    });
     return formulaComponent;
   }
 
@@ -633,6 +668,7 @@ export namespace summary {
   }
 
   export function parseLayer(model: LayerModel): SummaryComponent[] {
+    // we create new data sources for each summary in a layer
     return [];
   }
 
@@ -727,6 +763,7 @@ export namespace stackScale {
   }
 
   export function parseLayer(model: LayerModel) {
+    // TODO
     return null;
   }
 
@@ -824,6 +861,7 @@ export namespace colorRank {
   }
 
   export function parseLayer(model: LayerModel) {
+    // TODO
     return {} as Dict<VgTransform[]>;
   }
 
@@ -861,6 +899,7 @@ export namespace nonPositiveFilter {
   }
 
   export function parseLayer(model: LayerModel) {
+    // TODO
     return {} as StringSet;
   }
 
