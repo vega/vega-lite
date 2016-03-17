@@ -371,7 +371,7 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel): any {
       } else if (unitModel.mark() === TEXT_MARK) {
         return {range: scaleConfig.fontSizeRange };
       } else if (unitModel.mark() === RULE) {
-        return {range: scaleConfig.lineSizeRange };
+        return {range: scaleConfig.ruleSizeRange };
       }
       // else -- point, square, circle
       if (scaleConfig.pointSizeRange !== undefined) {

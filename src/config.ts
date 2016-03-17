@@ -185,6 +185,18 @@ export interface MarkConfig {
    */
   tension?: number;
 
+  // ---------- Line ---------
+  /**
+   * Size of line mark.
+   */
+  lineSize?: number;
+
+  // ---------- Rule ---------
+  /**
+   * Size of rule mark.
+   */
+  ruleSize?: number;
+  
   // ---------- Bar ----------
   /**
    * The size of the bars.  If unspecified, the default size is  `bandSize-1`,
@@ -285,6 +297,8 @@ export const defaultMarkConfig: MarkConfig = {
   strokeWidth: 2,
   size: 30,
   barThinSize: 2,
+  // lineSize is undefined by default, and refer to value from strokeWidth
+  ruleSize: 1,
   tickThickness: 1,
 
   fontSize: 10,

@@ -62,7 +62,7 @@ export namespace rule {
        return fieldDef.value;
     }
 
-    return model.config().mark.size;
+    return model.config().mark.ruleSize;
   }
 
   export function labels(model: UnitModel) {
