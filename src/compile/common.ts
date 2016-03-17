@@ -29,6 +29,7 @@ export function buildModel(spec: Spec, parent: Model, parentGivenName: string): 
   return null;
 }
 
+// TODO: figure if we really need opacity in both
 export const STROKE_CONFIG = ['stroke', 'strokeWidth',
   'strokeDash', 'strokeDashOffset', 'strokeOpacity', 'opacity'];
 

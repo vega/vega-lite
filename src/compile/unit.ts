@@ -76,7 +76,7 @@ export class UnitModel extends Model {
   }
 
   private _initConfig(specConfig: Config, parent: Model, mark: Mark, encoding: Encoding) {
-    let config = mergeDeep(duplicate(defaultConfig), specConfig, parent ? parent.config() : {});
+    let config = mergeDeep(duplicate(defaultConfig), parent ? parent.config() : {}, specConfig);
     config.mark = initMarkConfig(mark, encoding, config);
     return config;
   }
