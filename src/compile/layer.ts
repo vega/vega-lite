@@ -1,4 +1,4 @@
-import {X, Y, Channel} from '../channel';
+import {Channel} from '../channel';
 import {keys, duplicate, mergeDeep, flatten, unique, isArray, vals, hash, Dict} from '../util';
 import {defaultConfig, Config} from '../config';
 import {LayerSpec} from '../spec';
@@ -8,7 +8,7 @@ import {Model} from './model';
 import {UnitModel} from './unit';
 import {buildModel} from './common';
 import {FieldDef} from '../fielddef';
-import { ScaleComponents} from './scale';
+import {ScaleComponents} from './scale';
 import {VgData, VgAxis, VgLegend, isUnionedDomain, isDataRefDomain, VgDataRef} from '../vega.schema';
 
 

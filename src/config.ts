@@ -196,7 +196,7 @@ export interface MarkConfig {
    * Size of rule mark.
    */
   ruleSize?: number;
-  
+
   // ---------- Bar ----------
   /**
    * The size of the bars.  If unspecified, the default size is  `bandSize-1`,

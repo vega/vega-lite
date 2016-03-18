@@ -13,7 +13,6 @@ import {text} from './text';
 import {tick} from './tick';
 import {rule} from './rule';
 import {sortField} from '../common';
-import {FacetModel} from '../facet';
 
 const markCompiler = {
   area: area,

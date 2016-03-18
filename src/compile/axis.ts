@@ -7,7 +7,6 @@ import {VgAxis} from '../vega.schema';
 
 import {formatMixins} from './common';
 import {Model} from './model';
-import {FacetModel} from './facet';
 import {UnitModel} from './unit';
 
 // https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations
