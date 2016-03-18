@@ -274,9 +274,9 @@ export namespace source {
       sourceData.transform = [].concat(
         nullFilter.assemble(component),
         formula.assemble(component),
+        filter.assemble(component),
         bin.assemble(component),
-        timeUnit.assemble(component),
-        filter.assemble(component)
+        timeUnit.assemble(component)
       );
 
       return sourceData;
@@ -959,7 +959,11 @@ export namespace nonPositiveFilter {
   export function parseUnit(model: Model): StringSet {
     return model.channels().reduce(function(nonPositiveComponent, channel) {
       const scale = model.scale(channel);
-      nonPositiveComponent[model.field(channel)] = scale && scale.type === ScaleType.LOG;
+      if (!model.field(channel) || !scale) {
+        // don't set anything
+        return nonPositiveComponent;
+      }
+      nonPositiveComponent[model.field(channel)] = scale.type === ScaleType.LOG;
       return nonPositiveComponent;
     }, {} as StringSet);
   }

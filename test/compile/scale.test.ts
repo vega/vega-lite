@@ -285,19 +285,19 @@ describe('Scale', function() {
     const scales = vlscale.parseScaleComponent(model)['color'];
 
     it('should create color and inverse scales', function() {
-      assert.equal(scales.length, 2);
-      assert.equal(scales[0].name, 'color_legend');
-      assert.equal(scales[1].name, 'color');
+      assert.equal(scales.main.name, 'color');
+      assert.equal(scales.colorLegend.name, 'color_legend');
+      assert.equal(scales.binColorLegend, undefined);
     });
 
     it('should create correct inverse scale', function() {
-      assert.equal(scales[0].type, 'ordinal');
-      assert.deepEqual(scales[0].domain, {
+      assert.equal(scales.colorLegend.type, 'ordinal');
+      assert.deepEqual(scales.colorLegend.domain, {
         data: 'source',
         field: 'rank_origin',
         sort: true
       });
-      assert.deepEqual(scales[0].range, {
+      assert.deepEqual(scales.colorLegend.range, {
         data: 'source',
         field: 'origin',
         sort: true
@@ -305,8 +305,8 @@ describe('Scale', function() {
     });
 
     it('should create correct color scale', function() {
-      assert.equal(scales[1].type, 'linear');
-      assert.deepEqual(scales[1].domain, {
+      assert.equal(scales.main.type, 'linear');
+      assert.deepEqual(scales.main.domain, {
         data: 'source',
         field: 'rank_origin'
       });
@@ -324,21 +324,19 @@ describe('Scale', function() {
     const scales = vlscale.parseScaleComponent(model)['color'];
 
     it('should add correct scales', function() {
-      assert.equal(scales.length, 3);
-
-      assert.equal(scales[0].name, 'color_legend');
-      assert.equal(scales[1].name, 'color_legend_label');
-      assert.equal(scales[2].name, 'color');
+      assert.equal(scales.main.name, 'color');
+      assert.equal(scales.colorLegend.name, 'color_legend');
+      assert.equal(scales.binColorLegend.name, 'color_legend_label');
     });
 
     it('should create correct identity scale', function() {
-      assert.equal(scales[0].type, 'ordinal');
-      assert.deepEqual(scales[0].domain, {
+      assert.equal(scales.colorLegend.type, 'ordinal');
+      assert.deepEqual(scales.colorLegend.domain, {
         data: 'source',
         field: 'bin_origin_start',
         sort: true
       });
-      assert.deepEqual(scales[0].range, {
+      assert.deepEqual(scales.colorLegend.range, {
         data: 'source',
         field: 'bin_origin_start',
         sort: true
@@ -346,12 +344,12 @@ describe('Scale', function() {
     });
 
     it('should sort range of color labels', function() {
-      assert.deepEqual(scales[1].domain, {
+      assert.deepEqual(scales.binColorLegend.domain, {
         data: 'source',
         field: 'bin_origin_start',
         sort: true
       });
-      assert.deepEqual(scales[1].range, {
+      assert.deepEqual(scales.binColorLegend.range, {
         data: 'source',
         field: 'bin_origin_range',
         sort: {"field": "bin_origin_start","op": "min"}
@@ -370,20 +368,19 @@ describe('Scale', function() {
     const scales = vlscale.parseScaleComponent(model)['color'];
 
     it('should add correct scales', function() {
-      assert.equal(scales.length, 2);
-
-      assert.equal(scales[0].name, 'color_legend');
-      assert.equal(scales[1].name, 'color');
+      assert.equal(scales.main.name, 'color');
+      assert.equal(scales.colorLegend.name, 'color_legend');
+      assert.equal(scales.binColorLegend, undefined);
     });
 
     it('should create correct identity scale', function() {
-      assert.equal(scales[0].type, 'ordinal');
-      assert.deepEqual(scales[0].domain, {
+      assert.equal(scales.colorLegend.type, 'ordinal');
+      assert.deepEqual(scales.colorLegend.domain, {
         data: 'source',
         field: 'year_origin',
         sort: true
       });
-      assert.deepEqual(scales[0].range, {
+      assert.deepEqual(scales.colorLegend.range, {
         data: 'source',
         field: 'year_origin',
         sort: true

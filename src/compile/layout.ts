@@ -154,7 +154,7 @@ export function parseLayerLayout(model: LayerModel): LayoutComponent {
 function parseLayerSizeLayout(model: LayerModel, channel: Channel): SizeComponent {
   if (true) {
     // For shared scale, we can simply merge the layout into one data source
-    // TODO: don't just take the layout from the frist child
+    // TODO: don't just take the layout from the first child
 
     const childLayoutComponent = model.children()[0].component.layout;
     const sizeType = channel === Y ? 'height' : 'width';
