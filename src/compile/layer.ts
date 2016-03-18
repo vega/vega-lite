@@ -163,6 +163,8 @@ export class LayerModel extends Model {
       // TODO: correctly implement independent axes
       if (true) { // if shared/union scale
         keys(child.component.axis).forEach(function(channel) {
+          // TODO: support multiple axes for shared scale
+          
           // just use the first axis definition for each channel
           if (!axisComponent[channel]) {
             axisComponent[channel] = child.component.axis[channel];

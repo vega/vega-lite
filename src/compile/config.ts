@@ -16,7 +16,7 @@ export function initMarkConfig(mark: Mark, encoding: Encoding, config: Config) {
        switch (property) {
          case 'filled':
            if (value === undefined) {
-             // Point and line are not filled by default
+             // Point, line, and rule are not filled by default
              cfg[property] = mark !== POINT && mark !== LINE && mark !== RULE;
            }
            break;
