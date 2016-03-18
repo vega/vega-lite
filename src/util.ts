@@ -134,3 +134,22 @@ export interface Dict<T> {
 }
 
 export type StringSet = Dict<boolean>;
+
+/**
+ * Returns true if the two dicitonaries disagree. Applies only to defioned values.
+ */
+export function differ<T>(dict: Dict<T>, other: Dict<T>) {
+  for (let key in dict) {
+    if (dict.hasOwnProperty(key)) {
+      if (other[key] && dict[key] && other[key] !== dict[key]) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+export function stringSetHash(dict: StringSet): string {
+  const keys = Object.keys(dict).sort();
+  return keys.join('#');
+}

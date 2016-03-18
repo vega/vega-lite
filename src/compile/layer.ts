@@ -40,25 +40,14 @@ export class LayerModel extends Model {
     return this._children;
   }
 
-  private hasSummary() {
-    // TODO: don't just use the first child
-    const summary = this._children[0].component.data.summary;
-    for (let i = 0; i < summary.length; i++) {
-      if (keys(summary[i].measures).length > 0) {
-        return true;
-      }
-    }
-    return false;
-  }
-
   public isOrdinalScale(channel: Channel) {
     // since we assume shared scales we can just ask the first child
     return this._children[0].isOrdinalScale(channel);
   }
 
   public dataTable(): string {
-    // TODO: think about what this should return, used by layout
-    return (this.hasSummary() ? SUMMARY : SOURCE) + '';
+    // TODO: don't just use the first child
+    return this._children[0].dataTable();
   }
 
   public fieldDef(channel: Channel): FieldDef {
@@ -74,7 +63,6 @@ export class LayerModel extends Model {
       child.parseData();
     });
     this.component.data = parseLayerData(this);
-    console.log(this.component.data);
   }
 
   public parseSelectionData() {
@@ -225,4 +213,17 @@ export class LayerModel extends Model {
   public isLayer() {
     return true;
   }
+
+  /**
+   * Returns true if the child either has no source defined or uses the same url.
+   * This is useful if you want to know whether it is possible to move a filter up.
+   * 
+   * This function can only be called once th child has been parsed.
+   */
+  public compatibleSource(child: UnitModel) {
+    const sourceUrl = this.data().url;
+    const childData = child.component.data;
+    const compatible = !childData.source || sourceUrl && sourceUrl === childData.source.url;
+    return compatible;
+}
 }

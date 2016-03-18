@@ -237,13 +237,6 @@ export abstract class Model {
     return this._dataNameMap.get(this.name(String(dataSourceType)));
   }
 
-  /**
-   * Function to rename the dataset name using the name map. Used in the assemble step.
-   */
-  public dataRename(name: string): string {
-    return this._dataNameMap.get(name);
-  }
-
   public renameSize(oldName: string, newName: string) {
     this._sizeNameMap.rename(oldName, newName);
   }
