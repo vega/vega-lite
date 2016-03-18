@@ -8,12 +8,12 @@ import {LegendProperties} from '../legend';
 import {Scale, ScaleType} from '../scale';
 import {BaseSpec} from '../spec';
 import {Transform} from '../transform';
-import {extend, flatten, vals, Dict} from '../util';
+import {extend, flatten, vals, warning, Dict} from '../util';
 import {VgData, VgMarkGroup, VgScale, VgAxis, VgLegend} from '../vega.schema';
 
 import {DataComponent} from './data';
 import {LayoutComponent} from './layout';
-import {ScaleComponent} from './scale';
+import {ScaleComponents} from './scale';
 
 /**
  * Composable Components that are intermediate results of the parsing phase of the
@@ -23,7 +23,7 @@ import {ScaleComponent} from './scale';
 export interface Component {
   data: DataComponent;
   layout: LayoutComponent;
-  scale: Dict<ScaleComponent[]>;
+  scale: Dict<ScaleComponents>;
 
   /** Dictionary mapping channel to VgAxis definition */
   // TODO: if we allow multiple axes (e.g., dual axis), this will become VgAxis[]
@@ -154,7 +154,16 @@ export abstract class Model {
   public assembleScales(): VgScale[] {
     // FIXME: write assembleScales() in scale.ts that
     // help assemble scale domains with scale signature as well
-    return flatten(vals(this.component.scale));
+    return flatten(vals(this.component.scale).map((scales: ScaleComponents) => {
+      let arr = [scales.main];
+      if (scales.colorLegend) {
+        arr.push(scales.colorLegend);
+      }
+      if (scales.binColorLegend) {
+        arr.push(scales.binColorLegend);
+      }
+      return arr;
+    }));
   }
 
   public abstract assembleMarks(): any[]; // TODO: VgMarkGroup[]
@@ -311,6 +320,7 @@ export abstract class Model {
   }
 
   public addWarning(message: string) {
+    warning(message);
     this._warnings.push(message);
   }
 

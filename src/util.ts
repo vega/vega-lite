@@ -1,10 +1,17 @@
 /// <reference path="../typings/datalib.d.ts"/>
+/// <reference path="../typings/json-stable-stringify.d.ts"/>
 
+import * as stringify from 'json-stable-stringify';
 export {keys, extend, duplicate, isArray, vals, truncate, toMap, isObject} from 'datalib/src/util';
 export {range} from 'datalib/src/generate';
 export {has} from './encoding'
 export {FieldDef} from './fielddef';
 export {Channel} from './channel';
+
+/**
+ * A stable JSON stringify version that can be used to hash objects.
+ */
+export const hash = stringify;
 
 export function contains<T>(array: Array<T>, item: T) {
   return array.indexOf(item) > -1;
@@ -125,6 +132,24 @@ export function getbins(stats, maxbins) {
   });
 }
 
+export function unique<T>(values: T[], f?: (item: T) => string) {
+  let results = [];
+  var u = {}, v, i, n;
+  for (i = 0, n = values.length; i < n; ++i) {
+    v = f ? f(values[i]) : values[i];
+    if (v in u) {
+      continue;
+    }
+    u[v] = 1;
+    results.push(values[i]);
+  }
+  return results;
+};
+
+export function warning(message: any) {
+  console.warn('[VL Warning]', message);
+}
+
 export function error(message: any) {
   console.error('[VL Error]', message);
 }
@@ -147,9 +172,4 @@ export function differ<T>(dict: Dict<T>, other: Dict<T>) {
     }
   }
   return false;
-}
-
-export function stringSetHash(dict: StringSet): string {
-  const keys = Object.keys(dict).sort();
-  return keys.join('#');
 }

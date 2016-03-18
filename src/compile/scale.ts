@@ -33,26 +33,33 @@ export const COLOR_LEGEND_LABEL = 'color_legend_label';
 // the scale can be unioned by combining the domain.
 export type ScaleComponent = VgScale;
 
-export function parseScaleComponent(model: Model): Dict<ScaleComponent[]> {
-  return model.channels().reduce(function(scale: Dict<ScaleComponent[]>, channel: Channel) {
+export type ScaleComponents = {
+  main: ScaleComponent;
+  colorLegend?: ScaleComponent,
+  binColorLegend?: ScaleComponent
+}
+
+export function parseScaleComponent(model: Model): Dict<ScaleComponents> {
+  return model.channels().reduce(function(scale: Dict<ScaleComponents>, channel: Channel) {
       if (model.scale(channel)) {
         const fieldDef = model.fieldDef(channel);
-        const scales = [];
+        const scales: ScaleComponents = {
+          main: parseMainScale(model, fieldDef, channel)
+        };
 
         // Add additional scales needed to support ordinal legends (list of values)
         // for color ramp.
         if (channel === COLOR && model.legend(COLOR) && (fieldDef.type === ORDINAL || fieldDef.bin || fieldDef.timeUnit)) {
-          scales.push(parseColorLegendScale(model, fieldDef));
+          scales.colorLegend = parseColorLegendScale(model, fieldDef);
           if (fieldDef.bin) {
-            scales.push(parseBinColorLegendLabel(model, fieldDef));
+            scales.binColorLegend = parseBinColorLegendLabel(model, fieldDef);
           }
         }
 
-        scales.push(parseMainScale(model, fieldDef, channel));
         scale[channel] = scales;
       }
       return scale;
-    }, {} as Dict<ScaleComponent[]>);
+    }, {} as Dict<ScaleComponents>);
 }
 
 /**
@@ -100,7 +107,7 @@ function parseMainScale(model: Model, fieldDef: FieldDef, channel: Channel) {
  *  - For a field with bin or timeUnit, provide an identity ordinal scale
  *    (mapping the field values to themselves)
  */
-function parseColorLegendScale(model: Model, fieldDef: FieldDef) {
+function parseColorLegendScale(model: Model, fieldDef: FieldDef): ScaleComponent {
   return {
     name: model.scaleName(COLOR_LEGEND),
     type: ScaleType.ORDINAL,
@@ -117,7 +124,7 @@ function parseColorLegendScale(model: Model, fieldDef: FieldDef) {
 /**
  *  Return an additional scale for bin labels because we need to map bin_start to bin_range in legends
  */
-function parseBinColorLegendLabel(model: Model, fieldDef: FieldDef) {
+function parseBinColorLegendLabel(model: Model, fieldDef: FieldDef): ScaleComponent {
   return {
     name: model.scaleName(COLOR_LEGEND_LABEL),
     type: ScaleType.ORDINAL,

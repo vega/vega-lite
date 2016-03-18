@@ -7,7 +7,7 @@ import {ScaleType} from '../scale';
 import {TimeUnit} from '../timeunit';
 import {Formula} from '../transform';
 import {QUANTITATIVE, TEMPORAL, ORDINAL} from '../type';
-import {extend, keys, vals, reduce, contains, flatten, differ, stringSetHash, Dict, StringSet} from '../util';
+import {extend, keys, vals, reduce, contains, flatten, differ, hash, Dict, StringSet} from '../util';
 import {VgData, VgTransform} from '../vega.schema';
 
 import {FacetModel} from './facet';
@@ -429,8 +429,8 @@ export namespace bin {
           });
         }
         // FIXME: current merging logic can produce redundant transforms when a field is binned for color and for non-color
-        const hash = JSON.stringify(bin) + '_' + fieldDef.field + 'oc:' + isOrdinalColor;
-        binComponent[hash] = transform;
+        const key = hash(bin) + '_' + fieldDef.field + 'oc:' + isOrdinalColor;
+        binComponent[key] = transform;
       }
       return binComponent;
     }, {});
@@ -583,7 +583,7 @@ export namespace filter {
 export namespace formula {
   function parse(model: Model): Dict<Formula> {
     return (model.transform().calculate || []).reduce(function(formulaComponent, formula) {
-      formulaComponent[JSON.stringify(formula)] = formula;
+      formulaComponent[hash(formula)] = formula;
       return formulaComponent;
     }, {} as Dict<Formula>);
   }
@@ -721,7 +721,7 @@ export namespace summary {
         childDataComponent.summary.forEach((summary) => {
           // the key is a key of the dimensions
           // we use it to find out whether we have a summary that uses the same group by fields
-          const key = stringSetHash(summary.dimensions);
+          const key = hash(summary.dimensions);
           if (key in summaries) {
             // yes, there is a summary hat we need to merge into
             // we know that the dimensions are the same so we only need to merge the measures

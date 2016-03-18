@@ -1,6 +1,5 @@
 import {X, Y, Channel} from '../channel';
-import {SOURCE, SUMMARY} from '../data';
-import {keys, duplicate, mergeDeep, flatten, Dict} from '../util';
+import {keys, duplicate, mergeDeep, flatten, unique, isArray, vals, hash, Dict} from '../util';
 import {defaultConfig, Config} from '../config';
 import {LayerSpec} from '../spec';
 import {assembleData, parseLayerData} from './data';
@@ -9,9 +8,8 @@ import {Model} from './model';
 import {UnitModel} from './unit';
 import {buildModel} from './common';
 import {FieldDef} from '../fielddef';
-import {ScaleComponent} from './scale';
-import {ScaleType} from '../scale';
-import {VgData, VgAxis, VgLegend} from '../vega.schema';
+import { ScaleComponents} from './scale';
+import {VgData, VgAxis, VgLegend, isUnionedDomain, isDataRefDomain, VgDataRef} from '../vega.schema';
 
 
 export class LayerModel extends Model {
@@ -81,7 +79,7 @@ export class LayerModel extends Model {
   public parseScale() {
     const model = this;
 
-    let scaleComponent = this.component.scale = {} as Dict<ScaleComponent[]>;
+    let scaleComponent = this.component.scale = {} as Dict<ScaleComponents>;
 
     this._children.forEach(function(child) {
       child.parseScale();
@@ -89,39 +87,62 @@ export class LayerModel extends Model {
       // TODO: correctly implement independent scale
       if (true) { // if shared/union scale
         keys(child.component.scale).forEach(function(channel) {
-          let newScales = child.component.scale[channel] as ScaleComponent[];
-          if (!newScales) {
+          let childScales: ScaleComponents = child.component.scale[channel];
+          if (!childScales) {
+            // the child does not have any scales so we have nothing to merge
             return;
           }
 
-          const existingScales = scaleComponent[channel];
-          if (existingScales && newScales[0].type === ScaleType.ORDINAL) {
-            // Ordinal scales are unioned by combining the domain of the first scale. Other scales are appended.
-            const existingDomain = existingScales[0].domain.fields ? existingScales[0].domain : { fields: [existingScales[0].domain] };
-            newScales[0].domain = {
-              // assumes that the new scale domain is not a list
-              fields: existingDomain.fields.concat([newScales[0].domain])
-            };
-            if (existingScales.length > 1) {
-              delete existingScales[0];
-              scaleComponent[channel] = newScales.concat(existingScales);
+          const modelScales: ScaleComponents = scaleComponent[channel];
+          if (modelScales && modelScales.main) {
+            // Scales are unioned by combining the domain of the first scale (the main scale).
+            // Other scales that are used for ordinal legends are appended.
+            const modelDomain = modelScales.main.domain;
+            const childDomain = childScales.main.domain;
+
+            if (isArray(modelDomain)) {
+              if (isArray(childScales.main.domain)) {
+                modelScales.main.domain = modelDomain.concat(childDomain);
+              } else {
+                model.addWarning('scales cannot be unioned with explicit domain');
+              }
             } else {
-              scaleComponent[channel] = newScales;
+              const unionedFields = isUnionedDomain(modelDomain) ? modelDomain.fields : [modelDomain] as VgDataRef[];
+
+              if (isArray(childDomain)) {
+                model.addWarning('scales cannot be unioned with explicit domain');
+              }
+
+              let fields = isDataRefDomain(childDomain) ? unionedFields.concat([childDomain]) :
+                // if the domain is itself a union domain, concat
+                isUnionedDomain(childDomain) ? unionedFields.concat(childDomain.fields) :
+                  // we have to ignore explicit data domains for now because vega does not support unioning them
+                  unionedFields;
+              fields = unique(fields, hash);
+              // TODO: if all domains use the same data, we can merge them
+              if (fields.length > 1) {
+                modelScales.main.domain = { fields: fields };
+              } else {
+                modelScales.main.domain = fields[0];
+              }
             }
+
+            // create color legend and color legend bin scales if we don't have them yet
+            modelScales.colorLegend = modelScales.colorLegend ? modelScales.colorLegend : childScales.colorLegend;
+            modelScales.binColorLegend = modelScales.binColorLegend ? modelScales.binColorLegend : childScales.binColorLegend;
           } else {
-            // Use the first quantitative scale
-            if (!scaleComponent[channel]) {
-              scaleComponent[channel] = newScales;
-            }
+            scaleComponent[channel] = childScales;
           }
 
-          // for each new scale, need to rename old scales
-          newScales.forEach(function(scale) {
+          // rename child scales to parent scales
+          vals(childScales).forEach(function(scale) {
             const scaleNameWithoutPrefix = scale.name.substr(child.name('').length);
             const newName = model.scaleName(scaleNameWithoutPrefix);
             child.renameScale(scale.name, newName);
             scale.name = newName;
           });
+
+          delete childScales[channel];
         });
       }
     });

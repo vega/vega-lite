@@ -10,13 +10,8 @@ declare module 'datalib/src/util' {
 }
 
 declare module 'datalib/src/generate' {
-  export function range(a: number, b?: number): Array<number>;
+  export function range(a: number, b?: number, step?: number): Array<number>;
 }
-
-declare module 'datalib/src/stats' {
-  export function summary(a: Array<Array<any>>);
-}
-
 
 interface BinFunc {
   (o: any): {

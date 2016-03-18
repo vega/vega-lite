@@ -1,3 +1,6 @@
+import {isArray} from './util';
+import {ScaleType} from './scale';
+
 export interface VgData {
   name: string;
   source?: string;
@@ -7,8 +10,53 @@ export interface VgData {
   transform?: any;
 }
 
+type VgParentRef = {
+  parent: string
+};
+
+type VgFieldRef = string | VgParentRef | VgParentRef[];
+
+export type VgDataRef = {
+  data: string,
+  field: VgFieldRef,
+  sort: boolean | {
+    field: VgFieldRef,
+    op: string
+  }
+};
+
+export type UnionedDomain = {
+  fields: VgDataRef[]
+};
+
+export type VgScale = {
+  name: string,
+  type: ScaleType,
+  domain?: any[] | UnionedDomain | VgDataRef,
+  domainMin?: any,
+  domainMax?: any
+  range?: any[] | VgDataRef,
+  rangeMin?: any,
+  rangeMax?: any,
+  reverse?: boolean,
+  round?: boolean
+}
+
+export function isUnionedDomain(domain: any[] | UnionedDomain | VgDataRef): domain is UnionedDomain {
+  if (!isArray(domain)) {
+    return 'fields' in domain;
+  }
+  return false;
+}
+
+export function isDataRefDomain(domain: any[] | UnionedDomain | VgDataRef): domain is VgDataRef {
+  if (!isArray(domain)) {
+    return 'data' in domain;
+  }
+  return false;
+}
+
 // TODO: declare
-export type VgScale = any | {fields: any[]};
 export type VgMarkGroup = any;
 export type VgAxis = any;
 export type VgLegend = any;
