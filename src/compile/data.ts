@@ -679,11 +679,13 @@ export namespace summary {
       let summaryComponents = childDataComponent.summary.map(function(summaryComponent) {
         // add facet fields as dimensions
         summaryComponent.dimensions = model.reduce(addDimension, summaryComponent.dimensions);
+
+        const summaryNameWithoutPrefix = summaryComponent.name.substr(model.child().name('').length);
+        model.child().renameData(summaryComponent.name, summaryNameWithoutPrefix);
+        summaryComponent.name = summaryNameWithoutPrefix;
         return summaryComponent;
       });
 
-      // FIXME revise if this line is correct
-      model.child().renameData(model.child().dataName(SUMMARY), model.dataName(SUMMARY));
       delete childDataComponent.summary;
       return summaryComponents;
     }
