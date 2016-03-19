@@ -206,15 +206,16 @@ export class LayerModel extends Model {
 
   public assembleData(data: VgData[]): VgData[] {
     assembleData(this, data);
-    return this._children.reduce((aggregator, child) => {
-      return child.assembleData(aggregator);
-    }, data);
+    this._children.forEach((child) => {
+      child.assembleData(data);
+    });
+    return data;
   }
 
   public assembleLayout(layoutData: VgData[]): VgData[] {
-    layoutData = this._children.reduce((aggregator, child) => {
-      return child.assembleLayout(aggregator);
-    }, layoutData);
+    this._children.forEach((child) => {
+      child.assembleLayout(layoutData);
+    });
     return assembleLayout(this, layoutData);
   }
 
