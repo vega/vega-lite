@@ -262,13 +262,13 @@ export class FacetModel extends Model {
   }
 
   public assembleData(data: VgData[]): VgData[] {
-    // Top-down data order (prefix traversal)
+    // Prefix traversal – parent data might be referred by children data
     assembleData(this, data);
     return this._child.assembleData(data);
   }
 
   public assembleLayout(layoutData: VgData[]): VgData[] {
-    // Bottom-up data order (post-fix traversal)
+    // Postfix traversal – layout is assembled bottom-up 
     this._child.assembleLayout(layoutData);
     return assembleLayout(this, layoutData);
   }

@@ -205,6 +205,7 @@ export class LayerModel extends Model {
   }
 
   public assembleData(data: VgData[]): VgData[] {
+    // Prefix traversal – parent data might be referred by children data  
     assembleData(this, data);
     this._children.forEach((child) => {
       child.assembleData(data);
@@ -213,6 +214,7 @@ export class LayerModel extends Model {
   }
 
   public assembleLayout(layoutData: VgData[]): VgData[] {
+    // Postfix traversal – layout is assembled bottom-up 
     this._children.forEach((child) => {
       child.assembleLayout(layoutData);
     });
