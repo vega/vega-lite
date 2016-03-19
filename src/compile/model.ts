@@ -114,7 +114,6 @@ export abstract class Model {
 
   public parse() {
     this.parseData();
-    this.parseSelectionData();
     this.parseLayoutData();
     this.parseScale(); // depends on data name
     this.parseAxis(); // depends on scale name
@@ -125,8 +124,6 @@ export abstract class Model {
   }
 
   public abstract parseData();
-
-  public abstract parseSelectionData();
 
   public abstract parseLayoutData();
 
@@ -147,9 +144,8 @@ export abstract class Model {
 
   public abstract assembleLayout(layoutData: VgData[]): VgData[];
 
-  // TODO: for Arvind to write
-  // public abstract assembleSelectionSignal(layoutData: VgData[]): VgData[];
-  // public abstract assembleSelectionData(layoutData: VgData[]): VgData[];
+  public assembleSelectionData(data): VgData[] { return []; }
+  public assembleSignals(signals) { return []; }
 
   public assembleScales(): VgScale[] {
     // FIXME: write assembleScales() in scale.ts that

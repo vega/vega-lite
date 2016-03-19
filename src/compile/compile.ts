@@ -41,11 +41,11 @@ function assemble(model: Model) {
     config.viewport ? { viewport: config.viewport } : {},
     config.background ? { background: config.background } : {},
     {
-      // TODO: signal: model.assembleSelectionSignal
+      signals: model.assembleSignals([]),
       data: [].concat(
         model.assembleData([]),
-        model.assembleLayout([])
-        // TODO: model.assembleSelectionData
+        model.assembleLayout([]),
+        model.assembleSelectionData([])
       ),
       marks: [assembleRootGroup(model)]
     });

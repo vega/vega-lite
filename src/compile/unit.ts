@@ -25,6 +25,8 @@ import {parseMark} from './mark/mark';
 import {parseScaleComponent, scaleType} from './scale';
 import {compileStackProperties, StackProperties} from './stack';
 
+import * as selections from './selections';
+
 /**
  * Internal model of Vega-Lite specification for the compiler.
  */
@@ -33,6 +35,7 @@ export class UnitModel extends Model {
   private _mark: Mark;
   private _encoding: Encoding;
   private _stack: StackProperties;
+  private _selections: selections.Selection[];
 
   constructor(spec: ExtendedUnitSpec, parent: Model, parentGivenName: string) {
     super(spec, parent, parentGivenName);
@@ -47,6 +50,8 @@ export class UnitModel extends Model {
 
     // calculate stack
     this._stack = compileStackProperties(mark, encoding, scale, config);
+
+    this._selections = selections.parse(spec.select, this);
   }
 
   private _initEncoding(mark: Mark, encoding: Encoding) {
@@ -136,11 +141,6 @@ export class UnitModel extends Model {
     this.component.data = parseUnitData(this);
   }
 
-  public parseSelectionData() {
-    // TODO: @arvind can write this
-    // We might need to split this into compileSelectionData and compileSelectionSignals?
-  }
-
   public parseLayoutData() {
     this.component.layout = parseUnitLayout(this);
   }
@@ -175,6 +175,14 @@ export class UnitModel extends Model {
 
   public assembleLayout(layoutData: VgData[]): VgData[] {
     return assembleLayout(this, layoutData);
+  }
+
+  public assembleSelectionData(data: VgData[]): VgData[] {
+    return selections.assembleData(this, data);
+  }
+
+  public assembleSignals(signals) {
+    return selections.assembleSignals(this, signals);
   }
 
   public assembleMarks() {
@@ -228,6 +236,10 @@ export class UnitModel extends Model {
 
   public encoding() {
     return this._encoding;
+  }
+
+  public selections() {
+    return this._selections;
   }
 
   public fieldDef(channel: Channel): FieldDef {

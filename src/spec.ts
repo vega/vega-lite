@@ -24,6 +24,7 @@ export interface BaseSpec {
 }
 
 export interface UnitSpec extends BaseSpec {
+  select?: any;
   mark: Mark;
   encoding: UnitEncoding;
 }
@@ -41,6 +42,7 @@ export interface ExtendedUnitSpec extends BaseSpec {
   /**
    * A name for the specification. The name is used to annotate marks, scale names, and more.
    */
+  select?: any;
   mark: Mark;
   encoding: Encoding;
 }

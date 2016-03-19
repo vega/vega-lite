@@ -7,6 +7,10 @@ declare module 'datalib/src/util' {
   export function truncate(a: string, length: number): string;
   export function toMap(a);
   export function isObject(a): boolean;
+  export function isString(a): boolean;
+  export function isNumber(a): boolean;
+  export function str(a): string;
+  export function array(a);
 }
 
 declare module 'datalib/src/generate' {
