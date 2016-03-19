@@ -1,5 +1,5 @@
 import {isArray} from './util';
-import {ScaleType} from './scale';
+import {ScaleType, NiceTime} from './scale';
 
 export interface VgData {
   name: string;
@@ -35,11 +35,19 @@ export type VgScale = {
   domain?: any[] | UnionedDomain | VgDataRef,
   domainMin?: any,
   domainMax?: any
-  range?: any[] | VgDataRef,
+  range?: any[] | VgDataRef | string,
   rangeMin?: any,
   rangeMax?: any,
+  
+  bandSize?: number,
+  clamp?: boolean,
+  exponent?: number,
+  nice?: boolean | NiceTime,
+  padding?: number,
+  points?: boolean,
   reverse?: boolean,
-  round?: boolean
+  round?: boolean,
+  zero?: boolean
 }
 
 export function isUnionedDomain(domain: any[] | UnionedDomain | VgDataRef): domain is UnionedDomain {
