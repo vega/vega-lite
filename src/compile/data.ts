@@ -48,7 +48,7 @@ export interface DataComponent {
   timeUnit: Dict<VgTransform>;
 
   /** String set of fields to be filtered */
-  nonPositiveFilter: StringSet;
+  nonPositiveFilter: Dict<boolean>;
 
   /** Data source for feeding stacked scale. */
   // TODO: need to revise if single VgData is sufficient with layer / concat
@@ -526,6 +526,7 @@ export namespace nullFilter {
   /** Convert the hashset of fields to a filter transform.  */
   export function assemble(component: DataComponent) {
     const filteredFields = keys(component.nullFilter).filter((field) => {
+      // only include fields that has value = true 
       return component.nullFilter[field];
     });
     return filteredFields.length > 0 ?
@@ -562,7 +563,7 @@ export namespace filter {
   }
 
   export function parseLayer(model: LayerModel) {
-    // note that we run this before source.parseLayer
+    // Note that this `filter.parseLayer` method is called before `source.parseLayer`
     let filterComponent = parse(model);
     model.children().forEach((child) => {
       const childDataComponent = child.component.data;
@@ -695,12 +696,12 @@ export namespace summary {
     return [];
   }
 
-  function mergeMeasures(parentMeasures, childMeasures) {
-    for (var field in childMeasures) {
+  function mergeMeasures(parentMeasures: Dict<Dict<boolean>>, childMeasures: Dict<Dict<boolean>>) {
+    for (const field in childMeasures) {
       if (childMeasures.hasOwnProperty(field)) {
         // when we merge a measure, we either have to add an aggregation operator or even a new field
-        var ops = childMeasures[field];
-        for (var op in ops) {
+        const ops = childMeasures[field];
+        for (const op in ops) {
           if (ops.hasOwnProperty(op)) {
             if (field in parentMeasures) {
               // add operator to existing measure field
@@ -715,26 +716,27 @@ export namespace summary {
   }
 
   export function parseLayer(model: LayerModel): SummaryComponent[] {
-    // indx by the fields we are grouping by
+    // Index by the fields we are grouping by
     let summaries = {} as Dict<SummaryComponent>;
 
-    // combine summaries for children that don't have a source
+    // Combine summaries for children that don't have a distinct source
+    // (either having its own data source, or its own tranformation of the same data source).
     model.children().forEach((child) => {
       const childDataComponent = child.component.data;
       if (!childDataComponent.source && childDataComponent.summary) {
-        // let's try to merge the summaries if we can
-        childDataComponent.summary.forEach((summary) => {
-          // the key is a key of the dimensions
-          // we use it to find out whether we have a summary that uses the same group by fields
-          const key = hash(summary.dimensions);
+        // Merge the summaries if we can
+        childDataComponent.summary.forEach((childSummary) => {
+          // The key is a hash based on the dimensions;
+          // we use it to find out whether we have a summary that uses the same group by fields.
+          const key = hash(childSummary.dimensions);
           if (key in summaries) {
             // yes, there is a summary hat we need to merge into
             // we know that the dimensions are the same so we only need to merge the measures
-            mergeMeasures(summaries[key].measures, summary.measures);
+            mergeMeasures(summaries[key].measures, childSummary.measures);
           } else {
             // give the summary a new name
-            summary.name = model.dataName(SUMMARY) + '_' + keys(summaries).length;
-            summaries[key] = summary;
+            childSummary.name = model.dataName(SUMMARY) + '_' + keys(summaries).length;
+            summaries[key] = childSummary;
           }
 
           // remove summary from child
@@ -961,7 +963,7 @@ export namespace colorRank {
  * Filter non-positive value for log scale
  */
 export namespace nonPositiveFilter {
-  export function parseUnit(model: Model): StringSet {
+  export function parseUnit(model: Model): Dict<boolean> {
     return model.channels().reduce(function(nonPositiveComponent, channel) {
       const scale = model.scale(channel);
       if (!model.field(channel) || !scale) {
@@ -970,7 +972,7 @@ export namespace nonPositiveFilter {
       }
       nonPositiveComponent[model.field(channel)] = scale.type === ScaleType.LOG;
       return nonPositiveComponent;
-    }, {} as StringSet);
+    }, {} as Dict<boolean>);
   }
 
   export function parseFacet(model: FacetModel) {
@@ -983,12 +985,12 @@ export namespace nonPositiveFilter {
       delete childDataComponent.nonPositiveFilter;
       return nonPositiveFilterComponent;
     }
-    return {} as StringSet;
+    return {} as Dict<boolean>;
   }
 
   export function parseLayer(model: LayerModel) {
     // note that we run this before source.parseLayer
-    let nonPositiveFilter = {} as StringSet;
+    let nonPositiveFilter = {} as Dict<boolean>;
 
     model.children().forEach((child) => {
       const childDataComponent = child.component.data;
@@ -1003,6 +1005,7 @@ export namespace nonPositiveFilter {
 
   export function assemble(component: DataComponent) {
     return keys(component.nonPositiveFilter).filter((field) => {
+      // Only filter fields (keys) with value = true 
       return component.nonPositiveFilter[field];
     }).map(function(field) {
       return {

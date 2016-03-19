@@ -44,7 +44,7 @@ export class LayerModel extends Model {
   }
 
   public dataTable(): string {
-    // TODO: don't just use the first child
+    // FIXME: don't just use the first child
     return this._children[0].dataTable();
   }
 
@@ -84,7 +84,7 @@ export class LayerModel extends Model {
     this._children.forEach(function(child) {
       child.parseScale();
 
-      // TODO: correctly implement independent scale
+      // FIXME: correctly implement independent scale
       if (true) { // if shared/union scale
         keys(child.component.scale).forEach(function(channel) {
           let childScales: ScaleComponents = child.component.scale[channel];
@@ -95,7 +95,7 @@ export class LayerModel extends Model {
 
           const modelScales: ScaleComponents = scaleComponent[channel];
           if (modelScales && modelScales.main) {
-            // Scales are unioned by combining the domain of the first scale (the main scale).
+            // Scales are unioned by combining the domain of the main scale.
             // Other scales that are used for ordinal legends are appended.
             const modelDomain = modelScales.main.domain;
             const childDomain = childScales.main.domain;
