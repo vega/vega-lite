@@ -104,13 +104,13 @@ export class LayerModel extends Model {
               if (isArray(childScales.main.domain)) {
                 modelScales.main.domain = modelDomain.concat(childDomain);
               } else {
-                model.addWarning('scales cannot be unioned with explicit domain');
+                model.addWarning('custom domain scale cannot be unioned with default field-based domain');
               }
             } else {
               const unionedFields = isUnionedDomain(modelDomain) ? modelDomain.fields : [modelDomain] as VgDataRef[];
 
               if (isArray(childDomain)) {
-                model.addWarning('scales cannot be unioned with explicit domain');
+                model.addWarning('custom domain scale cannot be unioned with default field-based domain');
               }
 
               let fields = isDataRefDomain(childDomain) ? unionedFields.concat([childDomain]) :

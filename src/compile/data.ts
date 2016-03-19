@@ -816,7 +816,7 @@ export namespace stackScale {
     const child = model.child();
     const childDataComponent = child.component.data;
 
-    // If child doesn't have its own data source, but have stack scale source, then merge
+    // If child doesn't have its own data source, but has stack scale source, then merge
     if (!childDataComponent.source && childDataComponent.stackScale) {
       let stackComponent = childDataComponent.stackScale;
 
