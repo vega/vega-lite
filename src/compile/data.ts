@@ -83,35 +83,37 @@ interface SummaryComponent {
 
 export function parseUnitData(model: UnitModel): DataComponent {
   return {
-    source: source.parseUnit(model),
-    formatParse: formatParse.parseUnit(model),
+     formatParse: formatParse.parseUnit(model),
     nullFilter: nullFilter.parseUnit(model),
     filter: filter.parseUnit(model),
+    nonPositiveFilter: nonPositiveFilter.parseUnit(model),
+
+    source: source.parseUnit(model),
     bin: bin.parseUnit(model),
     calculate: formula.parseUnit(model),
     timeUnit: timeUnit.parseUnit(model),
     timeUnitDomain: timeUnitDomain.parseUnit(model),
     summary: summary.parseUnit(model),
     stackScale: stackScale.parseUnit(model),
-    colorRank: colorRank.parseUnit(model),
-    nonPositiveFilter: nonPositiveFilter.parseUnit(model)
+    colorRank: colorRank.parseUnit(model)
   };
 }
 
 export function parseFacetData(model: FacetModel): DataComponent {
   return {
-    source: source.parseFacet(model),
     formatParse: formatParse.parseFacet(model),
     nullFilter: nullFilter.parseFacet(model),
     filter: filter.parseFacet(model),
+    nonPositiveFilter: nonPositiveFilter.parseFacet(model),
+
+    source: source.parseFacet(model),
     bin: bin.parseFacet(model),
     calculate: formula.parseFacet(model),
     timeUnit: timeUnit.parseFacet(model),
     timeUnitDomain: timeUnitDomain.parseFacet(model),
     summary: summary.parseFacet(model),
     stackScale: stackScale.parseFacet(model),
-    colorRank: colorRank.parseFacet(model),
-    nonPositiveFilter: nonPositiveFilter.parseFacet(model)
+    colorRank: colorRank.parseFacet(model)
   };
 }
 
@@ -122,13 +124,13 @@ export function parseLayerData(model: LayerModel): DataComponent {
     filter: filter.parseLayer(model),
     formatParse: formatParse.parseLayer(model),
     nullFilter: nullFilter.parseLayer(model),
-    timeUnit: timeUnit.parseLayer(model),
     nonPositiveFilter: nonPositiveFilter.parseLayer(model),
 
     // everything after here does not affect whether we can merge child data into parent or not
     source: source.parseLayer(model),
     bin: bin.parseLayer(model),
     calculate: formula.parseLayer(model),
+    timeUnit: timeUnit.parseLayer(model),
     timeUnitDomain: timeUnitDomain.parseLayer(model),
     summary: summary.parseLayer(model),
     stackScale: stackScale.parseLayer(model),
@@ -375,11 +377,10 @@ export namespace timeUnit {
   }
 
   export function parseLayer(model: LayerModel) {
-    // note that we run this before source.parseLayer
     let timeUnitComponent = parse(model);
     model.children().forEach((child) => {
       const childDataComponent = child.component.data;
-      if (model.compatibleSource(child) && !differ(childDataComponent.timeUnit, timeUnitComponent)) {
+      if (!childDataComponent.source) {
         extend(timeUnitComponent, childDataComponent.timeUnit);
         delete childDataComponent.timeUnit;
       }
@@ -507,6 +508,8 @@ export namespace nullFilter {
 
   export function parseLayer(model: LayerModel) {
     // note that we run this before source.parseLayer
+
+    // FIXME: null filters are not properly propagated right now
     let nullFilterComponent = parse(model);
 
     model.children().forEach((child) => {

@@ -248,5 +248,5 @@ export class LayerModel extends Model {
     const childData = child.component.data;
     const compatible = !childData.source || (sourceUrl && sourceUrl === childData.source.url);
     return compatible;
-}
+  }
 }
