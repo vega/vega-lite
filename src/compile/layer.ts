@@ -246,7 +246,7 @@ export class LayerModel extends Model {
   public compatibleSource(child: UnitModel) {
     const sourceUrl = this.data().url;
     const childData = child.component.data;
-    const compatible = !childData.source || sourceUrl && sourceUrl === childData.source.url;
+    const compatible = !childData.source || (sourceUrl && sourceUrl === childData.source.url);
     return compatible;
 }
 }
