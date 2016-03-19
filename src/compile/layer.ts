@@ -205,7 +205,7 @@ export class LayerModel extends Model {
   }
 
   public assembleData(data: VgData[]): VgData[] {
-    // Prefix traversal – parent data might be referred by children data  
+    // Prefix traversal – parent data might be referred to by children data
     assembleData(this, data);
     this._children.forEach((child) => {
       child.assembleData(data);
@@ -214,7 +214,7 @@ export class LayerModel extends Model {
   }
 
   public assembleLayout(layoutData: VgData[]): VgData[] {
-    // Postfix traversal – layout is assembled bottom-up 
+    // Postfix traversal – layout is assembled bottom-up
     this._children.forEach((child) => {
       child.assembleLayout(layoutData);
     });
@@ -243,7 +243,7 @@ export class LayerModel extends Model {
   /**
    * Returns true if the child either has no source defined or uses the same url.
    * This is useful if you want to know whether it is possible to move a filter up.
-   * 
+   *
    * This function can only be called once th child has been parsed.
    */
   public compatibleSource(child: UnitModel) {

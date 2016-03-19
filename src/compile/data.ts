@@ -526,7 +526,7 @@ export namespace nullFilter {
   /** Convert the hashset of fields to a filter transform.  */
   export function assemble(component: DataComponent) {
     const filteredFields = keys(component.nullFilter).filter((field) => {
-      // only include fields that has value = true 
+      // only include fields that has value = true
       return component.nullFilter[field];
     });
     return filteredFields.length > 0 ?
@@ -1005,7 +1005,7 @@ export namespace nonPositiveFilter {
 
   export function assemble(component: DataComponent) {
     return keys(component.nonPositiveFilter).filter((field) => {
-      // Only filter fields (keys) with value = true 
+      // Only filter fields (keys) with value = true
       return component.nonPositiveFilter[field];
     }).map(function(field) {
       return {
