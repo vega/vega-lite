@@ -2,16 +2,20 @@
 /// <reference path="../typings/json-stable-stringify.d.ts"/>
 
 import * as stringify from 'json-stable-stringify';
-export {keys, extend, duplicate, isArray, vals, truncate, toMap, isObject} from 'datalib/src/util';
+export {keys, extend, duplicate, isArray, vals, truncate, toMap, isObject, isString, isNumber, isBoolean} from 'datalib/src/util';
 export {range} from 'datalib/src/generate';
 export {has} from './encoding'
 export {FieldDef} from './fielddef';
 export {Channel} from './channel';
 
-/**
- * A stable JSON stringify version that can be used to hash objects.
- */
-export const hash = stringify;
+import {isString, isNumber, isBoolean} from 'datalib/src/util';
+
+export function hash(a: any) {
+  if (isString(a) || isNumber(a) || isBoolean(a)) {
+    return String(a);
+  }
+  return stringify(a);
+}
 
 export function contains<T>(array: Array<T>, item: T) {
   return array.indexOf(item) > -1;
