@@ -51,7 +51,8 @@ export function parse(spec, model: UnitModel) {
     }
 
     if (!sel.project) {
-      sel.project = sel.scales ? { channels: ['x', 'y'] } : { fields: ['_id'] };
+      sel.project = (sel.scales || sel.interval) ?
+        { channels: ['x', 'y'] } : { fields: ['_id'] };
     }
 
     // Parse transformations.

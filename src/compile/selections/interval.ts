@@ -12,7 +12,7 @@ function endName(sel: s.Selection) {
   return sel.name + '_end';
 }
 
-// TODO: should respect projections, resolve arg.
+// TODO: resolve arg.
 export function parse(model: UnitModel, sel: s.Selection) {
   sel.predicate = 'inrangeselection(' + u.str(s.storeName(sel)) + ', datum, "union", group._id)';
 }
@@ -21,7 +21,13 @@ export function assembleSignals(model: UnitModel, sel: s.Selection, trigger, cle
   var on = parseEvents(sel.on)[0],
     start = startName(sel), end = endName(sel),
     expr = '{x: clamp(eventX(unit), 0, unit.width), ' +
-      'y: clamp(eventY(unit), 0, unit.height), unit: unit}';
+      'y: clamp(eventY(unit), 0, unit.height), unit: unit}',
+    x = false, y = false;
+
+  sel.project.forEach(function(p) {
+    if (p.channel === X) x = true;
+    if (p.channel === Y) y = true;
+  });
 
   signals.push({
     name: start,
@@ -46,7 +52,8 @@ export function assembleSignals(model: UnitModel, sel: s.Selection, trigger, cle
     'start_y: iscale("y", ' + start + '.y, unit), ' +
     'end_x: iscale("x", ' + end + '.x, unit), ' +
     'end_y: iscale("y", ' + end + '.y, unit), ' +
-    'x: ' + u.str(model.field(X)) + ', y: ' + u.str(model.field(Y)) + ', ' +
+    (x ? 'x: ' + u.str(model.field(X)) + ', ' : '') +
+    (y ? 'y: ' + u.str(model.field(Y)) + ', ' : '') +
     '_unitID: ' + start + '.unit._id}'
   };
 
