@@ -2,24 +2,41 @@ import {COLUMN, ROW, X, Y, SIZE, COLOR, SHAPE, TEXT, LABEL, Channel} from '../ch
 import {FieldDef, field, OrderChannelDef} from '../fielddef';
 import {SortOrder} from '../sort';
 import {QUANTITATIVE, ORDINAL, TEMPORAL} from '../type';
-import {contains} from '../util';
+import {contains, union} from '../util';
 
 import {FacetModel} from './facet';
+import {LayerModel} from './layer';
 import {Model} from './model';
 import {format as timeFormatExpr} from './time';
 import {UnitModel} from './unit';
+import {Spec, isUnitSpec, isFacetSpec, isLayerSpec} from '../spec';
 
 
-export function buildModel(spec, parent: Model, parentGivenName: string): Model {
-  if ('facet' in spec) {
+export function buildModel(spec: Spec, parent: Model, parentGivenName: string): Model {
+  if (isFacetSpec(spec)) {
     return new FacetModel(spec, parent, parentGivenName);
   }
-  return new UnitModel(spec, parent, parentGivenName);
+
+  if (isLayerSpec(spec)) {
+    return new LayerModel(spec, parent, parentGivenName);
+  }
+
+  if (isUnitSpec(spec)) {
+    return new UnitModel(spec, parent, parentGivenName);
+  }
+
+  console.error('Invalid spec.');
+  return null;
 }
 
-export const FILL_STROKE_CONFIG = ['fill', 'fillOpacity',
-  'stroke', 'strokeWidth', 'strokeDash', 'strokeDashOffset', 'strokeOpacity',
+// TODO: figure if we really need opacity in both
+export const STROKE_CONFIG = ['stroke', 'strokeWidth',
+  'strokeDash', 'strokeDashOffset', 'strokeOpacity', 'opacity'];
+
+export const FILL_CONFIG = ['fill', 'fillOpacity',
   'opacity'];
+
+export const FILL_STROKE_CONFIG = union(STROKE_CONFIG, FILL_CONFIG);
 
 export function applyColorAndOpacity(p, model: UnitModel) {
   const filled = model.config().mark.filled;
@@ -27,7 +44,11 @@ export function applyColorAndOpacity(p, model: UnitModel) {
 
   // Apply fill stroke config first so that color field / value can override
   // fill / stroke
-  applyMarkConfig(p, model, FILL_STROKE_CONFIG);
+  if (filled) {
+    applyMarkConfig(p, model, FILL_CONFIG);
+  } else {
+    applyMarkConfig(p, model, STROKE_CONFIG);
+  }
 
   let value;
   if (model.has(COLOR)) {

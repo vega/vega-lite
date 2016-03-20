@@ -13,6 +13,7 @@ import {timeUnitDomain} from '../../src/compile/data';
 import {formatParse} from '../../src/compile/data';
 import {nonPositiveFilter} from '../../src/compile/data';
 import {DataComponent} from '../../src/compile/data';
+import {Model} from '../../src/compile/model';
 import {parseUnitModel} from '../util';
 import {mergeDeep, vals} from '../../src/util';
 
@@ -227,7 +228,8 @@ describe('data: nullFilter', function() {
       const model = parseUnitModel(spec);
       assert.deepEqual(nullFilter.parseUnit(model), {
         qq: true,
-        tt: true
+        tt: true,
+        oo: false
       });
     });
 
@@ -250,7 +252,11 @@ describe('data: nullFilter', function() {
           filterNull: false
         }
       }));
-      assert.deepEqual(nullFilter.parseUnit(model), {});
+      assert.deepEqual(nullFilter.parseUnit(model), {
+        qq: false,
+        tt: false,
+        oo: false
+      });
     });
   });
 
@@ -392,7 +398,8 @@ describe('data: nonPositiveFilter', function () {
       model.component.data = {} as DataComponent;
       model.component.data.nonPositiveFilter = nonPositiveFilter.parseUnit(model);
       assert.deepEqual(model.component.data.nonPositiveFilter, {
-        b: true
+        b: true,
+        a: false
       });
     });
 
@@ -483,6 +490,12 @@ describe('data: stack', function() {
 });
 
 describe('data: summary', function () {
+  const identity = {
+    dataName(data) {
+      return 'source';
+    }
+  } as Model;
+
   describe('unit (aggregated)', function() {
     const model = parseUnitModel({
       mark: "point",
@@ -506,14 +519,14 @@ describe('data: summary', function () {
     it('should produce the correct summary component' ,function() {
       assert.deepEqual(model.component.data.summary, [{
         name: 'summary',
-        source: 'source',
+        // source will be added in assemble step
         dimensions: {Origin: true},
         measures: {'*':{count: true}, Acceleration: {sum: true}}
       }]);
     });
 
     it('should assemble the correct aggregate transform', function() {
-      const summaryData = summary.assemble(model.component.data)[0];
+      const summaryData = summary.assemble(model.component.data, identity)[0];
       assert.deepEqual(summaryData, {
         'name': "summary",
         'source': 'source',
@@ -546,14 +559,14 @@ describe('data: summary', function () {
       model.component.data.summary = summary.parseUnit(model);
       assert.deepEqual(model.component.data.summary, [{
         name: 'summary',
-        source: 'source',
+        // source will be added in assemble step
         dimensions: {Origin: true, Cylinders: true},
         measures: {Displacement: {mean: true}}
       }]);
     });
 
     it('should assemble the correct summary data', function() {
-      const summaryData = summary.assemble(model.component.data)[0];
+      const summaryData = summary.assemble(model.component.data, identity)[0];
       assert.deepEqual(summaryData, {
         'name': "summary",
         'source': 'source',

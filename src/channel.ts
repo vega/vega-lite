@@ -44,6 +44,7 @@ export const NONSPATIAL_SCALE_CHANNELS = without(UNIT_SCALE_CHANNELS, [X, Y]);
 export interface SupportedMark {
   point?: boolean;
   tick?: boolean;
+  rule?: boolean;
   circle?: boolean;
   square?: boolean;
   bar?: boolean;
@@ -77,12 +78,12 @@ export function getSupportedMark(channel: Channel): SupportedMark {
     case ROW:
     case COLUMN:
       return { // all marks
-        point: true, tick: true, circle: true, square: true,
+        point: true, tick: true, rule: true, circle: true, square: true,
         bar: true, line: true, area: true, text: true
       };
     case SIZE:
       return {
-        point: true, tick: true, circle: true, square: true,
+        point: true, tick: true, rule: true, circle: true, square: true,
         bar: true, text: true
       };
     case SHAPE:

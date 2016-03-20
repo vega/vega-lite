@@ -6,7 +6,7 @@ import {COLUMN, ROW, X, Y, SHAPE, SIZE, COLOR, TEXT, hasScale, Channel} from '..
 import {StackOffset} from '../config';
 import {SOURCE, STACKED_SCALE} from '../data';
 import {FieldDef, field, isMeasure} from '../fielddef';
-import {Mark, BAR, TEXT as TEXT_MARK} from '../mark';
+import {Mark, BAR, TEXT as TEXT_MARK, RULE} from '../mark';
 import {Scale, ScaleType, NiceTime} from '../scale';
 import {TimeUnit} from '../timeunit';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
@@ -33,26 +33,33 @@ export const COLOR_LEGEND_LABEL = 'color_legend_label';
 // the scale can be unioned by combining the domain.
 export type ScaleComponent = VgScale;
 
-export function parseScaleComponent(model: Model): Dict<ScaleComponent[]> {
-  return model.channels().reduce(function(scale: Dict<ScaleComponent[]>, channel: Channel) {
+export type ScaleComponents = {
+  main: ScaleComponent;
+  colorLegend?: ScaleComponent,
+  binColorLegend?: ScaleComponent
+}
+
+export function parseScaleComponent(model: Model): Dict<ScaleComponents> {
+  return model.channels().reduce(function(scale: Dict<ScaleComponents>, channel: Channel) {
       if (model.scale(channel)) {
         const fieldDef = model.fieldDef(channel);
-        const scales = [];
+        const scales: ScaleComponents = {
+          main: parseMainScale(model, fieldDef, channel)
+        };
 
         // Add additional scales needed to support ordinal legends (list of values)
         // for color ramp.
         if (channel === COLOR && model.legend(COLOR) && (fieldDef.type === ORDINAL || fieldDef.bin || fieldDef.timeUnit)) {
-          scales.push(parseColorLegendScale(model, fieldDef));
+          scales.colorLegend = parseColorLegendScale(model, fieldDef);
           if (fieldDef.bin) {
-            scales.push(parseBinColorLegendLabel(model, fieldDef));
+            scales.binColorLegend = parseBinColorLegendLabel(model, fieldDef);
           }
         }
 
-        scales.push(parseMainScale(model, fieldDef, channel));
         scale[channel] = scales;
       }
       return scale;
-    }, {} as Dict<ScaleComponent[]>);
+    }, {} as Dict<ScaleComponents>);
 }
 
 /**
@@ -100,10 +107,10 @@ function parseMainScale(model: Model, fieldDef: FieldDef, channel: Channel) {
  *  - For a field with bin or timeUnit, provide an identity ordinal scale
  *    (mapping the field values to themselves)
  */
-function parseColorLegendScale(model: Model, fieldDef: FieldDef) {
+function parseColorLegendScale(model: Model, fieldDef: FieldDef): ScaleComponent {
   return {
     name: model.scaleName(COLOR_LEGEND),
-    type: 'ordinal',
+    type: ScaleType.ORDINAL,
     domain: {
       data: model.dataTable(),
       // use rank_<field> for ordinal type, for bin and timeUnit use default field
@@ -117,10 +124,10 @@ function parseColorLegendScale(model: Model, fieldDef: FieldDef) {
 /**
  *  Return an additional scale for bin labels because we need to map bin_start to bin_range in legends
  */
-function parseBinColorLegendLabel(model: Model, fieldDef: FieldDef) {
+function parseBinColorLegendLabel(model: Model, fieldDef: FieldDef): ScaleComponent {
   return {
     name: model.scaleName(COLOR_LEGEND_LABEL),
-    type: 'ordinal',
+    type: ScaleType.ORDINAL,
     domain: {
       data: model.dataTable(),
       field: model.field(COLOR),
@@ -353,11 +360,11 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel): any {
 
       return {
         rangeMin: 0,
-        rangeMax: unitModel.cellWidth() // Fixed cell width for non-ordinal
+        rangeMax: unitModel.config().cell.width // Fixed cell width for non-ordinal
       };
     case Y:
       return {
-        rangeMin: unitModel.cellHeight(), // Fixed cell height for non-ordinal
+        rangeMin: unitModel.config().cell.height, // Fixed cell height for non-ordinal
         rangeMax: 0
       };
     case SIZE:
@@ -370,6 +377,8 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel): any {
         return {range: [model.config().mark.barThinSize, model.scale(dimension).bandSize]};
       } else if (unitModel.mark() === TEXT_MARK) {
         return {range: scaleConfig.fontSizeRange };
+      } else if (unitModel.mark() === RULE) {
+        return {range: scaleConfig.ruleSizeRange };
       }
       // else -- point, square, circle
       if (scaleConfig.pointSizeRange !== undefined) {

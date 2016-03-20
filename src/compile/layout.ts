@@ -6,8 +6,8 @@ import {Formula} from '../transform';
 import {extend, keys, StringSet} from '../util';
 import {VgData} from '../vega.schema';
 
-
 import {FacetModel} from './facet';
+import {LayerModel} from './layer';
 import {TEXT as TEXT_MARK} from '../mark';
 import {Model} from './model';
 import {rawDomain} from './time';
@@ -24,7 +24,7 @@ export interface SizeComponent {
   /** Field that we need to calculate distinct */
   distinct: StringSet;
 
-  /** Dict from field name to expression */
+  /** Array of formulas */
   formula: Formula[];
 }
 
@@ -72,7 +72,9 @@ export function parseUnitLayout(model: UnitModel): LayoutComponent {
 }
 
 function parseUnitSizeLayout(model: UnitModel, channel: Channel): SizeComponent {
-  const nonOrdinalSize = channel === X ? model.cellWidth() : model.cellHeight();
+  // TODO: think about whether this config has to be the cell or facet cell config
+  const cellConfig = model.config().cell;
+  const nonOrdinalSize = channel === X ? cellConfig.width : cellConfig.height;
 
   return {
     distinct: getDistinct(model, channel),
@@ -139,6 +141,39 @@ function facetSizeFormula(model: Model, channel: Channel, innerSize: string) {
     return '(datum.' + innerSize + ' + ' + scale.padding + ')' + ' * ' + cardinalityFormula(model, channel);
   } else {
     return 'datum.' + innerSize + ' + ' + model.config().facet.scale.padding; // need to add outer padding for facet
+  }
+}
+
+export function parseLayerLayout(model: LayerModel): LayoutComponent {
+  return {
+    width: parseLayerSizeLayout(model, X),
+    height: parseLayerSizeLayout(model, Y)
+  };
+}
+
+function parseLayerSizeLayout(model: LayerModel, channel: Channel): SizeComponent {
+  if (true) {
+    // For shared scale, we can simply merge the layout into one data source
+    // TODO: don't just take the layout from the first child
+
+    const childLayoutComponent = model.children()[0].component.layout;
+    const sizeType = channel === Y ? 'height' : 'width';
+    const childSizeComponent: SizeComponent = childLayoutComponent[sizeType];
+
+    const distinct = childSizeComponent.distinct;
+    const formula = [{
+      field: model.channelSizeName(channel),
+      expr: childSizeComponent.formula[0].expr
+    }];
+
+    model.children().forEach((child) => {
+      delete child.component.layout[sizeType];
+    });
+
+    return {
+      distinct: distinct,
+      formula: formula
+    };
   }
 }
 

@@ -11,8 +11,8 @@ import {line} from './line';
 import {point, circle, square} from './point';
 import {text} from './text';
 import {tick} from './tick';
+import {rule} from './rule';
 import {sortField} from '../common';
-
 
 const markCompiler = {
   area: area,
@@ -21,6 +21,7 @@ const markCompiler = {
   point: point,
   text: text,
   tick: tick,
+  rule: rule,
   circle: circle,
   square: square
 };
@@ -36,7 +37,7 @@ export function parseMark(model: UnitModel): any[] {
 function parsePathMark(model: UnitModel) { // TODO: extract this into compilePathMark
   const mark = model.mark();
   // TODO: replace this with more general case for composition
-  const hasParentData = !!model.parent();
+  const isFaceted = model.parent() && model.parent().isFacet();
   const dataFrom = {data: model.dataTable()};
   const details = detailFields(model);
 
@@ -48,7 +49,7 @@ function parsePathMark(model: UnitModel) { // TODO: extract this into compilePat
         // If has facet, `from.data` will be added in the cell group.
         // If has subfacet for line/area group, `from.data` will be added in the outer subfacet group below.
         // If has no subfacet, add from.data.
-        hasParentData || details.length > 0 ? {} : dataFrom,
+        isFaceted || details.length > 0 ? {} : dataFrom,
 
         // sort transform
         {transform: [{ type: 'sort', by: sortPathBy(model)}]}
@@ -71,12 +72,12 @@ function parsePathMark(model: UnitModel) { // TODO: extract this into compilePat
       );
 
     return [{
-      name: model.name('-path-group'),
+      name: model.name('pathgroup'),
       type: 'group',
       from: extend(
         // If has facet, `from.data` will be added in the cell group.
         // Otherwise, add it here.
-        hasParentData ? {} : dataFrom,
+        isFaceted ? {} : dataFrom,
         {transform: transform}
       ),
       properties: {
@@ -94,7 +95,7 @@ function parsePathMark(model: UnitModel) { // TODO: extract this into compilePat
 
 function parseNonPathMark(model: UnitModel) {
   const mark = model.mark();
-  const hasParentData = !!model.parent();
+  const isFaceted = model.parent() && model.parent().isFacet();
   const dataFrom = {data: model.dataTable()};
 
   let marks = []; // TODO: vgMarks
@@ -110,7 +111,7 @@ function parseNonPathMark(model: UnitModel) {
       },
       // If has facet, `from.data` will be added in the cell group.
       // Otherwise, add it here.
-      hasParentData ? {} : {from: dataFrom},
+      isFaceted ? {} : {from: dataFrom},
       // Properties
       { properties: { update: text.background(model) } }
     ));
@@ -122,11 +123,11 @@ function parseNonPathMark(model: UnitModel) {
       type: markCompiler[mark].markType()
     },
     // Add `from` if needed
-    (!hasParentData || model.stack() || model.has(ORDER)) ? {
+    (!isFaceted || model.stack() || model.has(ORDER)) ? {
       from: extend(
         // If faceted, `from.data` will be added in the cell group.
         // Otherwise, add it here
-        hasParentData ? {} : dataFrom,
+        isFaceted ? {} : dataFrom,
         // `from.transform`
         model.stack() ? // Stacked Chart need stack transform
           { transform: [stackTransform(model)] } :
@@ -153,7 +154,7 @@ function parseNonPathMark(model: UnitModel) {
         },
         // If has facet, `from.data` will be added in the cell group.
         // Otherwise, add it here.
-        hasParentData ? {} : {from: dataFrom},
+        isFaceted ? {} : {from: dataFrom},
         // Properties
         { properties: { update: labelProperties } }
       ));

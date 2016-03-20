@@ -1,6 +1,6 @@
 import {AggregateOp} from '../aggregate';
 import {AxisProperties} from '../axis';
-import {COLUMN, ROW, X, Y, TEXT, PATH, ORDER, Channel, UNIT_CHANNELS,  UNIT_SCALE_CHANNELS, NONSPATIAL_SCALE_CHANNELS, supportMark} from '../channel';
+import {X, Y, TEXT, PATH, ORDER, Channel, UNIT_CHANNELS,  UNIT_SCALE_CHANNELS, NONSPATIAL_SCALE_CHANNELS, supportMark} from '../channel';
 import {defaultConfig, Config, CellConfig} from '../config';
 import {SOURCE, SUMMARY} from '../data';
 import {Encoding} from '../encoding';
@@ -41,7 +41,6 @@ export class UnitModel extends Model {
     const encoding = this._encoding = this._initEncoding(mark, spec.encoding || {});
     const config = this._config = this._initConfig(spec.config, parent, mark, encoding);
 
-
     const scale = this._scale =  this._initScale(mark, encoding, config);
     this._axis = this._initAxis(encoding, config);
     this._legend = this._initLegend(encoding, config);
@@ -77,7 +76,7 @@ export class UnitModel extends Model {
   }
 
   private _initConfig(specConfig: Config, parent: Model, mark: Mark, encoding: Encoding) {
-    let config = mergeDeep(duplicate(defaultConfig), specConfig, parent ? parent.config() : {});
+    let config = mergeDeep(duplicate(defaultConfig), parent ? parent.config() : {}, specConfig);
     config.mark = initMarkConfig(mark, encoding, config);
     return config;
   }
@@ -219,18 +218,6 @@ export class UnitModel extends Model {
     return spec;
   }
 
-  // TODO: remove
-  public cellWidth(): number {
-    return (this.isFacet() ? this.config().facet.cell.width : null) ||
-      this.config().cell.width;
-  }
-
-  // TODO: remove
-  public cellHeight(): number {
-    return (this.isFacet() ? this.config().facet.cell.height : null) ||
-      this.config().cell.height;
-  }
-
   public mark(): Mark {
     return this._mark;
   }
@@ -262,13 +249,11 @@ export class UnitModel extends Model {
     return field(fieldDef, opt);
   }
 
-  // TODO: remove
-  public isFacet() {
-    return this.has(ROW) || this.has(COLUMN);
-  }
-
   public dataTable() {
-    return (vlEncoding.isAggregate(this._encoding) ? SUMMARY : SOURCE)+'';
+    return this.dataName(vlEncoding.isAggregate(this._encoding) ? SUMMARY : SOURCE);
   }
 
+  public isUnit() {
+    return true;
+  }
 }

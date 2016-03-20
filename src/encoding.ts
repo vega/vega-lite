@@ -95,7 +95,7 @@ export function channelMappingForEach(channels: Channel[], mapping: any,
 }
 
 export function map(encoding: Encoding,
-    f: (fd: FieldDef, c: Channel, i: number) => void,
+    f: (fd: FieldDef, c: Channel, i: number) => any,
     thisArg?: any) {
   return channelMappingMap(CHANNELS, encoding, f , thisArg);
 }

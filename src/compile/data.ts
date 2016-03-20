@@ -7,10 +7,11 @@ import {ScaleType} from '../scale';
 import {TimeUnit} from '../timeunit';
 import {Formula} from '../transform';
 import {QUANTITATIVE, TEMPORAL, ORDINAL} from '../type';
-import {extend, keys, vals, reduce, contains, flatten, Dict, StringSet} from '../util';
+import {extend, keys, vals, reduce, contains, flatten, differ, hash, Dict, StringSet} from '../util';
 import {VgData, VgTransform} from '../vega.schema';
 
 import {FacetModel} from './facet';
+import {LayerModel} from './layer';
 import {Model} from './model';
 import {parseExpression, rawDomain} from './time';
 import {UnitModel} from './unit';
@@ -32,7 +33,7 @@ export interface DataComponent {
   formatParse: Dict<string>;
 
   /** String set of fields for null filtering */
-  nullFilter: StringSet;
+  nullFilter: Dict<boolean>;
 
   /** Hashset of a formula object */
   calculate: Dict<Formula>;
@@ -47,7 +48,7 @@ export interface DataComponent {
   timeUnit: Dict<VgTransform>;
 
   /** String set of fields to be filtered */
-  nonPositiveFilter: StringSet;
+  nonPositiveFilter: Dict<boolean>;
 
   /** Data source for feeding stacked scale. */
   // TODO: need to revise if single VgData is sufficient with layer / concat
@@ -70,9 +71,6 @@ interface SummaryComponent {
   /** Name of the summary data source */
   name: string;
 
-  /** Source for the summary data source */
-  source: string;
-
   /** String set for all dimension fields  */
   dimensions: StringSet;
 
@@ -85,37 +83,62 @@ interface SummaryComponent {
 
 export function parseUnitData(model: UnitModel): DataComponent {
   return {
-    source: source.parseUnit(model),
-    formatParse: formatParse.parseUnit(model),
+     formatParse: formatParse.parseUnit(model),
     nullFilter: nullFilter.parseUnit(model),
     filter: filter.parseUnit(model),
+    nonPositiveFilter: nonPositiveFilter.parseUnit(model),
+
+    source: source.parseUnit(model),
     bin: bin.parseUnit(model),
     calculate: formula.parseUnit(model),
     timeUnit: timeUnit.parseUnit(model),
     timeUnitDomain: timeUnitDomain.parseUnit(model),
     summary: summary.parseUnit(model),
     stackScale: stackScale.parseUnit(model),
-    colorRank: colorRank.parseUnit(model),
-    nonPositiveFilter: nonPositiveFilter.parseUnit(model)
+    colorRank: colorRank.parseUnit(model)
   };
 }
 
 export function parseFacetData(model: FacetModel): DataComponent {
   return {
-    source: source.parseFacet(model),
     formatParse: formatParse.parseFacet(model),
     nullFilter: nullFilter.parseFacet(model),
     filter: filter.parseFacet(model),
+    nonPositiveFilter: nonPositiveFilter.parseFacet(model),
+
+    source: source.parseFacet(model),
     bin: bin.parseFacet(model),
     calculate: formula.parseFacet(model),
     timeUnit: timeUnit.parseFacet(model),
     timeUnitDomain: timeUnitDomain.parseFacet(model),
     summary: summary.parseFacet(model),
     stackScale: stackScale.parseFacet(model),
-    colorRank: colorRank.parseFacet(model),
-    nonPositiveFilter: nonPositiveFilter.parseFacet(model)
+    colorRank: colorRank.parseFacet(model)
   };
 }
+
+export function parseLayerData(model: LayerModel): DataComponent {
+  return {
+    // filter and formatParse could cause us to not be able to merge into parent
+    // so let's parse them first
+    filter: filter.parseLayer(model),
+    formatParse: formatParse.parseLayer(model),
+    nullFilter: nullFilter.parseLayer(model),
+    nonPositiveFilter: nonPositiveFilter.parseLayer(model),
+
+    // everything after here does not affect whether we can merge child data into parent or not
+    source: source.parseLayer(model),
+    bin: bin.parseLayer(model),
+    calculate: formula.parseLayer(model),
+    timeUnit: timeUnit.parseLayer(model),
+    timeUnitDomain: timeUnitDomain.parseLayer(model),
+    summary: summary.parseLayer(model),
+    stackScale: stackScale.parseLayer(model),
+    colorRank: colorRank.parseLayer(model)
+  };
+}
+
+
 /* tslint:enable:no-use-before-declare */
 
 /**
@@ -128,12 +151,12 @@ export function parseFacetData(model: FacetModel): DataComponent {
 export function assembleData(model: Model, data: VgData[]) {
   const component = model.component.data;
 
-  const sourceData = source.assemble(component);
+  const sourceData = source.assemble(model, component);
   if (sourceData) {
     data.push(sourceData);
   }
 
-  summary.assemble(component).forEach(function(summaryData) {
+  summary.assemble(component, model).forEach(function(summaryData) {
     data.push(summaryData);
   });
 
@@ -198,7 +221,6 @@ export namespace source {
     } else if (!model.parent()) {
       // If data is not explicitly provided but the model is a root,
       // need to produce a source as well
-
       return { name: model.dataName(SOURCE) };
     }
     return undefined;
@@ -216,7 +238,31 @@ export namespace source {
     return sourceData;
   }
 
-  export function assemble(component: DataComponent) {
+  export function parseLayer(model: LayerModel) {
+    let sourceData = parse(model);
+    model.children().forEach((child) => {
+      const childData = child.component.data;
+
+      if (model.compatibleSource(child)) {
+        // we cannot merge if the child has filters defined even after we tried to move them up
+        const canMerge = !childData.filter && !childData.formatParse && !childData.nullFilter;
+        if (canMerge) {
+          // rename source because we can just remove it
+          child.renameData(child.dataName(SOURCE), model.dataName(SOURCE));
+          delete childData.source;
+        } else {
+          // child does not have data defined or the same source so just use the parents source
+          childData.source = {
+            name: child.dataName(SOURCE),
+            source: model.dataName(SOURCE)
+          };
+        }
+      }
+    });
+    return sourceData;
+  }
+
+  export function assemble(model: Model, component: DataComponent) {
     if (component.source) {
       let sourceData: VgData = component.source;
 
@@ -243,24 +289,22 @@ export namespace source {
 
 export namespace formatParse {
   // TODO: need to take calculate into account across levels when merging
-  function parse(model: Model) {
+  function parse(model: Model): Dict<string> {
     const calcFieldMap = (model.transform().calculate || []).reduce(function(fieldMap, formula) {
         fieldMap[formula.field] = true;
         return fieldMap;
     }, {});
 
-    let parseComponent;
+    let parseComponent: Dict<string> = {};
     // use forEach rather than reduce so that it can return undefined
     // if there is no parse needed
     model.forEach(function(fieldDef: FieldDef) {
       if (fieldDef.type === TEMPORAL) {
-        parseComponent = parseComponent || {};
         parseComponent[fieldDef.field] = 'date';
       } else if (fieldDef.type === QUANTITATIVE) {
         if (isCount(fieldDef) || calcFieldMap[fieldDef.field]) {
             return;
         }
-        parseComponent = parseComponent || {};
         parseComponent[fieldDef.field] = 'number';
       }
     });
@@ -275,9 +319,23 @@ export namespace formatParse {
     // If child doesn't have its own data source, but has its own parse, then merge
     const childDataComponent = model.child().component.data;
     if (!childDataComponent.source && childDataComponent.formatParse) {
-      parseComponent = extend(parseComponent || {}, childDataComponent.formatParse);
+      extend(parseComponent, childDataComponent.formatParse);
       delete childDataComponent.formatParse;
     }
+    return parseComponent;
+  }
+
+  export function parseLayer(model: LayerModel) {
+    // note that we run this before source.parseLayer
+    let parseComponent = parse(model);
+    model.children().forEach((child) => {
+      const childDataComponent = child.component.data;
+      if (model.compatibleSource(child) && !differ(childDataComponent.formatParse, parseComponent)) {
+        // merge parse up if the child does not have an incompatible parse
+        extend(parseComponent, childDataComponent.formatParse);
+        delete childDataComponent.formatParse;
+      }
+    });
     return parseComponent;
   }
 
@@ -286,7 +344,7 @@ export namespace formatParse {
 
 
 export namespace timeUnit {
-  function parse(model: Model) {
+  function parse(model: Model): Dict<VgTransform> {
     return model.reduce(function(timeUnitComponent, fieldDef: FieldDef, channel: Channel) {
       const ref = field(fieldDef, { nofn: true, datum: true });
       if (fieldDef.type === TEMPORAL && fieldDef.timeUnit) {
@@ -318,6 +376,18 @@ export namespace timeUnit {
     return timeUnitComponent;
   }
 
+  export function parseLayer(model: LayerModel) {
+    let timeUnitComponent = parse(model);
+    model.children().forEach((child) => {
+      const childDataComponent = child.component.data;
+      if (!childDataComponent.source) {
+        extend(timeUnitComponent, childDataComponent.timeUnit);
+        delete childDataComponent.timeUnit;
+      }
+    });
+    return timeUnitComponent;
+  }
+
   export function assemble(component: DataComponent) {
     // just join the values, which are already transforms
     return vals(component.timeUnit);
@@ -325,7 +395,7 @@ export namespace timeUnit {
 }
 
 export namespace bin {
-  function parse(model: Model) {
+  function parse(model: Model): Dict<VgTransform[]> {
     return model.reduce(function(binComponent, fieldDef: FieldDef, channel: Channel) {
       const bin = model.fieldDef(channel).bin;
       if (bin) {
@@ -360,8 +430,8 @@ export namespace bin {
           });
         }
         // FIXME: current merging logic can produce redundant transforms when a field is binned for color and for non-color
-        const hash = JSON.stringify(bin) + '_' + fieldDef.field + 'oc:' + isOrdinalColor;
-        binComponent[hash] = transform;
+        const key = hash(bin) + '_' + fieldDef.field + 'oc:' + isOrdinalColor;
+        binComponent[key] = transform;
       }
       return binComponent;
     }, {});
@@ -383,6 +453,22 @@ export namespace bin {
     return binComponent;
   }
 
+  export function parseLayer(model: LayerModel) {
+    let binComponent = parse(model);
+
+    model.children().forEach((child) => {
+      const childDataComponent = child.component.data;
+
+      // If child doesn't have its own data source, then merge
+      if (!childDataComponent.source) {
+        extend(binComponent, childDataComponent.bin);
+        delete childDataComponent.bin;
+      }
+    });
+
+    return binComponent;
+  }
+
   export function assemble(component: DataComponent) {
     return flatten(vals(component.bin));
   }
@@ -390,12 +476,16 @@ export namespace bin {
 
 export namespace nullFilter {
   /** Return Hashset of fields for null filtering (key=field, value = true). */
-  function parse(model: Model) {
+  function parse(model: Model): Dict<boolean> {
     const filterNull = model.transform().filterNull;
     return model.reduce(function(aggregator, fieldDef: FieldDef) {
       if (filterNull ||
         (filterNull === undefined && fieldDef.field && fieldDef.field !== '*' && DEFAULT_NULL_FILTERS[fieldDef.type])) {
         aggregator[fieldDef.field] = true;
+      } else {
+        // define this so we know that we don't filter nulls for this field
+        // this makes it easier to merge into parents
+        aggregator[fieldDef.field] = false;
       }
       return aggregator;
     }, {});
@@ -416,9 +506,29 @@ export namespace nullFilter {
     return nullFilterComponent;
   }
 
+  export function parseLayer(model: LayerModel) {
+    // note that we run this before source.parseLayer
+
+    // FIXME: null filters are not properly propagated right now
+    let nullFilterComponent = parse(model);
+
+    model.children().forEach((child) => {
+      const childDataComponent = child.component.data;
+      if (model.compatibleSource(child) && !differ(childDataComponent.nullFilter, nullFilterComponent)) {
+        extend(nullFilterComponent, childDataComponent.nullFilter);
+        delete childDataComponent.nullFilter;
+      }
+    });
+
+    return nullFilterComponent;
+  }
+
   /** Convert the hashset of fields to a filter transform.  */
   export function assemble(component: DataComponent) {
-    const filteredFields = keys(component.nullFilter);
+    const filteredFields = keys(component.nullFilter).filter((field) => {
+      // only include fields that has value = true
+      return component.nullFilter[field];
+    });
     return filteredFields.length > 0 ?
       [{
         type: 'filter',
@@ -452,6 +562,19 @@ export namespace filter {
     return filterComponent;
   }
 
+  export function parseLayer(model: LayerModel) {
+    // Note that this `filter.parseLayer` method is called before `source.parseLayer`
+    let filterComponent = parse(model);
+    model.children().forEach((child) => {
+      const childDataComponent = child.component.data;
+      if (model.compatibleSource(child) && childDataComponent.filter && childDataComponent.filter === filterComponent) {
+        // same filter in child so we can just delete it
+        delete childDataComponent.filter;
+      }
+    });
+    return filterComponent;
+  }
+
   export function assemble(component: DataComponent) {
     const filter = component.filter;
     return filter ? [{
@@ -464,7 +587,7 @@ export namespace filter {
 export namespace formula {
   function parse(model: Model): Dict<Formula> {
     return (model.transform().calculate || []).reduce(function(formulaComponent, formula) {
-      formulaComponent[JSON.stringify(formula)] = formula;
+      formulaComponent[hash(formula)] = formula;
       return formulaComponent;
     }, {} as Dict<Formula>);
   }
@@ -481,6 +604,18 @@ export namespace formula {
       extend(formulaComponent, childDataComponent.calculate);
       delete childDataComponent.calculate;
     }
+    return formulaComponent;
+  }
+
+  export function parseLayer(model: LayerModel) {
+    let formulaComponent = parse(model);
+    model.children().forEach((child) => {
+      const childDataComponent = child.component.data;
+      if (!childDataComponent.source && childDataComponent.calculate) {
+        extend(formulaComponent || {}, childDataComponent.calculate);
+        delete childDataComponent.calculate;
+      }
+    });
     return formulaComponent;
   }
 
@@ -535,7 +670,6 @@ export namespace summary {
 
     return [{
       name: model.dataName(SUMMARY),
-      source: model.dataName(SOURCE),
       dimensions: dims,
       measures: meas
     }];
@@ -544,27 +678,82 @@ export namespace summary {
   export function parseFacet(model: FacetModel): SummaryComponent[] {
     const childDataComponent = model.child().component.data;
 
-    // If child doesn't have its own data source but have a summary data source, then merge
+    // If child doesn't have its own data source but has a summary data source, merge
     if (!childDataComponent.source && childDataComponent.summary) {
       let summaryComponents = childDataComponent.summary.map(function(summaryComponent) {
-        // FIXME: the name and source aren't always correct yet when faceting layer/concat
-        summaryComponent.name = model.dataName(SUMMARY);
-        summaryComponent.source = model.dataName(SOURCE);
-
         // add facet fields as dimensions
         summaryComponent.dimensions = model.reduce(addDimension, summaryComponent.dimensions);
+
+        const summaryNameWithoutPrefix = summaryComponent.name.substr(model.child().name('').length);
+        model.child().renameData(summaryComponent.name, summaryNameWithoutPrefix);
+        summaryComponent.name = summaryNameWithoutPrefix;
         return summaryComponent;
       });
 
-      // FIXME revise if this line is correct
-      model.child().renameData(model.child().dataName(SUMMARY), model.dataName(SUMMARY));
       delete childDataComponent.summary;
       return summaryComponents;
     }
     return [];
   }
 
-  export function assemble(component: DataComponent): VgData[] {
+  function mergeMeasures(parentMeasures: Dict<Dict<boolean>>, childMeasures: Dict<Dict<boolean>>) {
+    for (const field in childMeasures) {
+      if (childMeasures.hasOwnProperty(field)) {
+        // when we merge a measure, we either have to add an aggregation operator or even a new field
+        const ops = childMeasures[field];
+        for (const op in ops) {
+          if (ops.hasOwnProperty(op)) {
+            if (field in parentMeasures) {
+              // add operator to existing measure field
+              parentMeasures[field][op] = true;
+            } else {
+              parentMeasures[field] = {op: true};
+            }
+          }
+        }
+      }
+    }
+  }
+
+  export function parseLayer(model: LayerModel): SummaryComponent[] {
+    // Index by the fields we are grouping by
+    let summaries = {} as Dict<SummaryComponent>;
+
+    // Combine summaries for children that don't have a distinct source
+    // (either having its own data source, or its own tranformation of the same data source).
+    model.children().forEach((child) => {
+      const childDataComponent = child.component.data;
+      if (!childDataComponent.source && childDataComponent.summary) {
+        // Merge the summaries if we can
+        childDataComponent.summary.forEach((childSummary) => {
+          // The key is a hash based on the dimensions;
+          // we use it to find out whether we have a summary that uses the same group by fields.
+          const key = hash(childSummary.dimensions);
+          if (key in summaries) {
+            // yes, there is a summary hat we need to merge into
+            // we know that the dimensions are the same so we only need to merge the measures
+            mergeMeasures(summaries[key].measures, childSummary.measures);
+          } else {
+            // give the summary a new name
+            childSummary.name = model.dataName(SUMMARY) + '_' + keys(summaries).length;
+            summaries[key] = childSummary;
+          }
+
+          // remove summary from child
+          child.renameData(child.dataName(SUMMARY), summaries[key].name);
+          delete childDataComponent.summary;
+        });
+      }
+    });
+
+    return vals(summaries);
+  }
+
+  /**
+   * Assemble the summary. Needs a rename function because we cannot guarantee that the
+   * parent data before the children data.
+   */
+  export function assemble(component: DataComponent, model: Model): VgData[] {
     if (!component.summary) {
       return [];
     }
@@ -584,7 +773,7 @@ export namespace summary {
       if (keys(meas).length > 0) { // has aggregate
         summaryData.push({
           name: summaryComponent.name,
-          source: summaryComponent.source,
+          source: model.dataName(SOURCE),
           transform: [{
             type: 'aggregate',
             groupby: groupby,
@@ -627,7 +816,7 @@ export namespace stackScale {
     const child = model.child();
     const childDataComponent = child.component.data;
 
-    // If child doesn't have its own data source, but have stack scale source, then merge
+    // If child doesn't have its own data source, but has stack scale source, then merge
     if (!childDataComponent.source && childDataComponent.stackScale) {
       let stackComponent = childDataComponent.stackScale;
 
@@ -650,6 +839,11 @@ export namespace stackScale {
     return null;
   }
 
+  export function parseLayer(model: LayerModel) {
+    // TODO
+    return null;
+  }
+
   export function assemble(component: DataComponent) {
     return component.stackScale;
   }
@@ -657,7 +851,7 @@ export namespace stackScale {
 
 
 export namespace timeUnitDomain {
-  function parse(model: Model) {
+  function parse(model: Model): StringSet {
     return model.reduce(function(timeUnitDomainMap, fieldDef: FieldDef, channel: Channel) {
       if (fieldDef.timeUnit) {
         const domain = rawDomain(fieldDef.timeUnit, channel);
@@ -674,6 +868,13 @@ export namespace timeUnitDomain {
   export function parseFacet(model: FacetModel) {
     // always merge with child
     return extend(parse(model), model.child().component.data.timeUnitDomain);
+  }
+
+  export function parseLayer(model: LayerModel) {
+    // always merge with children
+    return extend(parse(model), model.children().forEach((child) => {
+      return child.component.data.timeUnitDomain;
+    }));
   }
 
   export function assemble(component: DataComponent): VgData[] {
@@ -736,6 +937,22 @@ export namespace colorRank {
     return {} as Dict<VgTransform[]>;
   }
 
+  export function parseLayer(model: LayerModel) {
+    let colorRankComponent = {} as Dict<VgTransform[]>;
+
+    model.children().forEach((child) => {
+      const childDataComponent = child.component.data;
+
+      // If child doesn't have its own data source, then merge
+      if (!childDataComponent.source) {
+        extend(colorRankComponent, childDataComponent.colorRank);
+        delete childDataComponent.colorRank;
+      }
+    });
+
+    return colorRankComponent;
+  }
+
   export function assemble(component: DataComponent) {
     return flatten(vals(component.colorRank));
   }
@@ -746,14 +963,16 @@ export namespace colorRank {
  * Filter non-positive value for log scale
  */
 export namespace nonPositiveFilter {
-  export function parseUnit(model: Model) {
+  export function parseUnit(model: Model): Dict<boolean> {
     return model.channels().reduce(function(nonPositiveComponent, channel) {
       const scale = model.scale(channel);
-      if (scale && scale.type === ScaleType.LOG) {
-        nonPositiveComponent[model.field(channel)] = true;
+      if (!model.field(channel) || !scale) {
+        // don't set anything
+        return nonPositiveComponent;
       }
+      nonPositiveComponent[model.field(channel)] = scale.type === ScaleType.LOG;
       return nonPositiveComponent;
-    }, {} as StringSet);
+    }, {} as Dict<boolean>);
   }
 
   export function parseFacet(model: FacetModel) {
@@ -766,11 +985,29 @@ export namespace nonPositiveFilter {
       delete childDataComponent.nonPositiveFilter;
       return nonPositiveFilterComponent;
     }
-    return {} as StringSet;
+    return {} as Dict<boolean>;
+  }
+
+  export function parseLayer(model: LayerModel) {
+    // note that we run this before source.parseLayer
+    let nonPositiveFilter = {} as Dict<boolean>;
+
+    model.children().forEach((child) => {
+      const childDataComponent = child.component.data;
+      if (model.compatibleSource(child) && !differ(childDataComponent.nonPositiveFilter, nonPositiveFilter)) {
+        extend(nonPositiveFilter, childDataComponent.nonPositiveFilter);
+        delete childDataComponent.nonPositiveFilter;
+      }
+    });
+
+    return nonPositiveFilter;
   }
 
   export function assemble(component: DataComponent) {
-    return keys(component.nonPositiveFilter).map(function(field) {
+    return keys(component.nonPositiveFilter).filter((field) => {
+      // Only filter fields (keys) with value = true
+      return component.nonPositiveFilter[field];
+    }).map(function(field) {
       return {
         type: 'filter',
         test: 'datum.' + field + ' > 0'
