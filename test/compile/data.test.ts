@@ -1,18 +1,18 @@
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
-import {assembleData} from '../../src/compile/data';
-import {bin} from '../../src/compile/data';
-import {filter} from '../../src/compile/data';
-import {nullFilter} from '../../src/compile/data';
-import {source} from '../../src/compile/data';
-import {stackScale} from '../../src/compile/data';
-import {summary} from '../../src/compile/data';
-import {timeUnit} from '../../src/compile/data';
-import {timeUnitDomain} from '../../src/compile/data';
-import {formatParse} from '../../src/compile/data';
-import {nonPositiveFilter} from '../../src/compile/data';
-import {DataComponent} from '../../src/compile/data';
+import {assembleData} from '../../src/compile/data/data';
+import {bin} from '../../src/compile/data/bin';
+import {filter} from '../../src/compile/data/filter';
+import {nullFilter} from '../../src/compile/data/nullfilter';
+import {source} from '../../src/compile/data/source';
+import {stackScale} from '../../src/compile/data/stackscale';
+import {summary} from '../../src/compile/data/summary';
+import {timeUnit} from '../../src/compile/data/timeunit';
+import {timeUnitDomain} from '../../src/compile/data/timeunitdomain';
+import {formatParse} from '../../src/compile/data/formatparse';
+import {nonPositiveFilter} from '../../src/compile/data/nonpositivenullfilter';
+import {DataComponent} from '../../src/compile/data/data';
 import {Model} from '../../src/compile/model';
 import {parseUnitModel} from '../util';
 import {mergeDeep, vals} from '../../src/util';

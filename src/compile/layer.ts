@@ -2,7 +2,7 @@ import {Channel} from '../channel';
 import {keys, duplicate, mergeDeep, flatten, unique, isArray, vals, hash, Dict} from '../util';
 import {defaultConfig, Config} from '../config';
 import {LayerSpec} from '../spec';
-import {assembleData, parseLayerData} from './data';
+import {assembleData, parseLayerData} from './data/data';
 import {assembleLayout, parseLayerLayout} from './layout';
 import {Model} from './model';
 import {UnitModel} from './unit';

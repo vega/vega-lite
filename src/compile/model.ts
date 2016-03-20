@@ -11,7 +11,7 @@ import {Transform} from '../transform';
 import {extend, flatten, vals, warning, Dict} from '../util';
 import {VgData, VgMarkGroup, VgScale, VgAxis, VgLegend} from '../vega.schema';
 
-import {DataComponent} from './data';
+import {DataComponent} from './data/data';
 import {LayoutComponent} from './layout';
 import {ScaleComponents} from './scale';
 
