@@ -17,7 +17,7 @@ import {VgData} from '../vega.schema';
 import {parseAxisComponent} from './axis';
 import {applyConfig, FILL_STROKE_CONFIG} from './common';
 import {initMarkConfig} from './config';
-import {assembleData, parseUnitData} from './data';
+import {assembleData, parseUnitData} from './data/data';
 import {parseLegendComponent} from './legend';
 import {assembleLayout, parseUnitLayout} from './layout';
 import {Model} from './model';
