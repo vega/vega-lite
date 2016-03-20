@@ -56,18 +56,25 @@ export function assembleSignals(model: UnitModel, sel: s.Selection, trigger, __,
 
   signals.push({
     name: anchor,
-    init: {},
+    init: {expr: '{unit: unit}'},
     verbose: true,
-    streams: [{
-      type: '('+on.start.str+'), ('+on.str+')',
-      expr: '{x: eventX(), y: eventY()}'
-    }]
+    streams: [
+      {
+        type: on.start.str,
+        expr: '{unit: unit}'
+      },
+      {
+        type: '('+on.start.str+'), ('+on.str+')',
+        expr: '{x: eventX(), y: eventY(), unit: '+anchor+'.unit}'
+      }
+    ]
   });
 }
 
-var DIMS = {x: 'unit.width', y: 'unit.height'};
 export function assembleData(model: UnitModel, sel: s.Selection, db) {
   var tx = db.transform, anchor = anchorName(sel), delta = deltaName(sel);
+  var DIMS = { x: anchor + '.unit.width', y: anchor + '.unit.height' };
+
   sel.project.forEach(function(p) {
     var field = p.field, channel = p.channel,
         min = 'datum._min_'+field, max = 'datum._max_'+field;
