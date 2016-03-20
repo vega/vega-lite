@@ -3,6 +3,7 @@ import {keys, Dict, StringSet} from '../../util';
 import {VgData, VgTransform} from '../../vega.schema';
 
 import {FacetModel} from './../facet';
+import {RepeatModel} from './../repeat';
 import {LayerModel} from './../layer';
 import {Model} from './../model';
 import {UnitModel} from './../unit';
@@ -113,6 +114,10 @@ export function parseFacetData(model: FacetModel): DataComponent {
     stackScale: stackScale.parseFacet(model),
     colorRank: colorRank.parseFacet(model)
   };
+}
+
+export function parseRepeatData(model: RepeatModel): DataComponent {
+  return null;
 }
 
 export function parseLayerData(model: LayerModel): DataComponent {

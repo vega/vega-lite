@@ -7,6 +7,7 @@ import {extend, keys, StringSet} from '../util';
 import {VgData} from '../vega.schema';
 
 import {FacetModel} from './facet';
+import {RepeatModel} from './repeat';
 import {LayerModel} from './layer';
 import {TEXT as TEXT_MARK} from '../mark';
 import {Model} from './model';
@@ -142,6 +143,13 @@ function facetSizeFormula(model: Model, channel: Channel, innerSize: string) {
   } else {
     return 'datum.' + innerSize + ' + ' + model.config().facet.scale.padding; // need to add outer padding for facet
   }
+}
+
+export function parseRepeatLayout(model: RepeatModel): LayoutComponent {
+  return {
+    width: null,
+    height: null
+  };
 }
 
 export function parseLayerLayout(model: LayerModel): LayoutComponent {
