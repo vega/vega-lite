@@ -50,7 +50,7 @@ export class FacetModel extends Model {
       // TODO: if has no field / datum, then drop the field
 
       if (!isDimension(fieldDef)) {
-        model.addWarning(channel+' encoding should be ordinal.');
+        model.addWarning(channel + ' encoding should be ordinal.');
       }
 
       if (fieldDef.type) {
@@ -138,7 +138,6 @@ export class FacetModel extends Model {
     return null; // this is only a property for UnitModel
   }
 
-
   public parseData() {
     this.child().parseData();
     this.component.data = parseFacetData(this);
@@ -172,7 +171,7 @@ export class FacetModel extends Model {
         scaleComponent[channel] = child.component.scale[channel];
 
         // for each scale, need to rename
-        scaleComponent[channel].forEach(function(scale) {
+        vals(scaleComponent[channel]).forEach(function(scale) {
           const scaleNameWithoutPrefix = scale.name.substr(child.name('').length);
           const newName = model.scaleName(scaleNameWithoutPrefix);
           child.renameScale(scale.name, newName);
@@ -263,13 +262,13 @@ export class FacetModel extends Model {
   }
 
   public assembleData(data: VgData[]): VgData[] {
-    // Top-down data order (prefix traversal)
+    // Prefix traversal – parent data might be referred by children data
     assembleData(this, data);
     return this._child.assembleData(data);
   }
 
   public assembleLayout(layoutData: VgData[]): VgData[] {
-    // Bottom-up data order (post-fix traversal)
+    // Postfix traversal – layout is assembled bottom-up 
     this._child.assembleLayout(layoutData);
     return assembleLayout(this, layoutData);
   }
@@ -289,6 +288,10 @@ export class FacetModel extends Model {
 
   protected mapping() {
     return this.facet();
+  }
+
+  public isFacet() {
+    return true;
   }
 }
 

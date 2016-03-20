@@ -1,8 +1,8 @@
 declare module 'datalib/src/util' {
   export function keys(a): Array<string>;
   export function extend(a, b, ...rest);
-  export function duplicate(a);
-  export function isArray(a): boolean;
+  export function duplicate<T>(a: T): T;
+  export function isArray(a: any | any[]): a is any[];
   export function vals(a);
   export function truncate(a: string, length: number): string;
   export function toMap(a);
@@ -10,13 +10,8 @@ declare module 'datalib/src/util' {
 }
 
 declare module 'datalib/src/generate' {
-  export function range(a: number, b?: number): Array<number>;
+  export function range(a: number, b?: number, step?: number): Array<number>;
 }
-
-declare module 'datalib/src/stats' {
-  export function summary(a: Array<Array<any>>);
-}
-
 
 interface BinFunc {
   (o: any): {

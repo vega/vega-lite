@@ -3,7 +3,7 @@ import {Config} from '../config';
 import {Encoding} from '../encoding';
 import {isAggregate, has} from '../encoding';
 import {isMeasure} from '../fielddef';
-import {POINT, LINE, TICK, CIRCLE, SQUARE, Mark} from '../mark';
+import {POINT, LINE, TICK, CIRCLE, SQUARE, RULE, Mark} from '../mark';
 import {contains, extend} from '../util';
 
 /**
@@ -16,8 +16,8 @@ export function initMarkConfig(mark: Mark, encoding: Encoding, config: Config) {
        switch (property) {
          case 'filled':
            if (value === undefined) {
-             // Point and line are not filled by default
-             cfg[property] = mark !== POINT && mark !== LINE;
+             // Point, line, and rule are not filled by default
+             cfg[property] = mark !== POINT && mark !== LINE && mark !== RULE;
            }
            break;
          case 'opacity':

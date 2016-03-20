@@ -16,23 +16,23 @@ const vgSchema = require('../node_modules/vega/vega-schema.json');
 
 function validateVL(spec) {
   const valid = validator.validate(spec, vlSchema);
+  const errors = validator.getLastErrors();
   if (!valid) {
-    const errors = validator.getLastErrors();
     console.log(inspect(errors, { depth: 10, colors: true }));
   }
-  assert(valid);
+  assert(valid, errors && errors.map((err) => {return err.message; }).join(', '));
 }
 
 function validateVega(spec) {
   const vegaSpec = vl.compile(spec).spec;
 
   const valid = validator.validate(vegaSpec, vgSchema);
+  const errors = validator.getLastErrors();
   if (!valid) {
     console.log(vegaSpec.marks[0].marks[0].properties);
-    const errors = validator.getLastErrors();
     console.log(inspect(errors, { depth: 10, colors: true }));
   }
-  assert(valid);
+  assert(valid, errors && errors.map((err) => {return err.message; }).join(', '));
 }
 
 describe('Examples', function() {

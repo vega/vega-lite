@@ -8,22 +8,22 @@ import {LegendProperties} from '../legend';
 import {Scale, ScaleType} from '../scale';
 import {BaseSpec} from '../spec';
 import {Transform} from '../transform';
-import {extend, flatten, vals, Dict} from '../util';
+import {extend, flatten, vals, warning, Dict} from '../util';
 import {VgData, VgMarkGroup, VgScale, VgAxis, VgLegend} from '../vega.schema';
 
 import {DataComponent} from './data';
 import {LayoutComponent} from './layout';
-import {ScaleComponent} from './scale';
+import {ScaleComponents} from './scale';
 
 /**
- * Composable Components that are intermediate results from parsing phase of the
- * compilations.  These composable components will be assembled in the last phase
- * of compilations.
+ * Composable Components that are intermediate results of the parsing phase of the
+ * compilations.  These composable components will be assembled in the last
+ * compilation step.
  */
 export interface Component {
   data: DataComponent;
   layout: LayoutComponent;
-  scale: Dict<ScaleComponent[]>;
+  scale: Dict<ScaleComponents>;
 
   /** Dictionary mapping channel to VgAxis definition */
   // TODO: if we allow multiple axes (e.g., dual axis), this will become VgAxis[]
@@ -48,12 +48,12 @@ class NameMap {
     this._nameMap = {} as Dict<string>;
   }
 
-  public rename(oldName, newName) {
+  public rename(oldName: string, newName: string) {
     this._nameMap[oldName] = newName;
   }
 
-  public get(name) {
-    // If the name appear in the _nameMap, we need to read its new name.
+  public get(name: string): string {
+    // If the name appears in the _nameMap, we need to read its new name.
     // We have to loop over the dict just in case, the new name also gets renamed.
     while (this._nameMap[name]) {
       name = this._nameMap[name];
@@ -98,7 +98,7 @@ export abstract class Model {
     // If name is not provided, always use parent's givenName to avoid name conflicts.
     this._name = spec.name || parentGivenName;
 
-    // Have a shared name maps
+    // Shared name maps
     this._dataNameMap = parent ? parent._dataNameMap : new NameMap();
     this._scaleNameMap = parent ? parent._scaleNameMap : new NameMap();
     this._sizeNameMap = parent ? parent._sizeNameMap : new NameMap();
@@ -154,7 +154,16 @@ export abstract class Model {
   public assembleScales(): VgScale[] {
     // FIXME: write assembleScales() in scale.ts that
     // help assemble scale domains with scale signature as well
-    return flatten(vals(this.component.scale));
+    return flatten(vals(this.component.scale).map((scales: ScaleComponents) => {
+      let arr = [scales.main];
+      if (scales.colorLegend) {
+        arr.push(scales.colorLegend);
+      }
+      if (scales.binColorLegend) {
+        arr.push(scales.binColorLegend);
+      }
+      return arr;
+    }));
   }
 
   public abstract assembleMarks(): any[]; // TODO: VgMarkGroup[]
@@ -211,7 +220,7 @@ export abstract class Model {
     return this._parent;
   }
 
-  public name(text: string, delimiter: string = '-') {
+  public name(text: string, delimiter: string = '_') {
     return (this._name ? this._name + delimiter : '') + text;
   }
 
@@ -231,27 +240,27 @@ export abstract class Model {
    * Return the data source name for the given data source type.
    *
    * For unit spec, this is always simply the spec.name + '-' + dataSourceType.
-   * However, for composite specs, data sources might get merged, thus we have to
+   * We already use the name map so that marks and scales use the correct data.
    */
   public dataName(dataSourceType: DataTable): string {
-    return this._dataNameMap.get(this.name(dataSourceType + ''));
+    return this._dataNameMap.get(this.name(String(dataSourceType)));
   }
 
   public renameSize(oldName: string, newName: string) {
     this._sizeNameMap.rename(oldName, newName);
   }
 
-  public channelSizeName(channel: Channel) {
+  public channelSizeName(channel: Channel): string {
     return this.sizeName(channel === X || channel === COLUMN ? 'width' : 'height');
   }
 
-  public sizeName(size: string) {
+  public sizeName(size: string): string {
      return this._sizeNameMap.get(this.name(size, '_'));
   }
 
   public abstract dataTable(): string;
 
-  public transform() {
+  public transform(): Transform {
     return this._transform || {};
   }
 
@@ -306,15 +315,29 @@ export abstract class Model {
   /**
    * Get the spec configuration.
    */
-  public config() {
+  public config(): Config {
     return this._config;
   }
 
   public addWarning(message: string) {
+    warning(message);
     this._warnings.push(message);
   }
 
   public warnings(): string[] {
     return this._warnings;
+  }
+
+  /**
+   * Type checks
+   */
+  public isUnit() {
+    return false;
+  }
+  public isFacet() {
+    return false;
+  }
+  public isLayer() {
+    return false;
   }
 }
