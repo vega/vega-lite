@@ -89,15 +89,16 @@ export function assembleSignals(model: UnitModel, signals) {
       tx[k].assembleSignals(model, sel, trigger, clear, signals);
     });
 
+    if (trigger.name) signals.push(trigger);
+
     // We only need the clear signal if we're using a points store.
     // Transforms can clear out signal names to not have them added.
     if (sel.type === Types.MULTI && clear.name) {
-      signals.unshift(clear);
+      signals.push(clear);
     }
-
-    if (trigger.name) signals.unshift(trigger);
   });
 
+  // TODO: Get correct name for unit's enclosing group (where scales are defined).
   if (unit) {
     signals.unshift({
       name: 'unit',

@@ -7,5 +7,8 @@ export {toggle};
 import * as scales from './scales';
 export {scales};
 
+import * as interval from './interval';
+export {interval};
+
 import * as translate from './translate';
 export {translate};

@@ -34,7 +34,7 @@ export function parse(_, sel: s.Selection) {
   }
 }
 
-export function assembleSignals(model: UnitModel, sel: s.Selection, trigger, __, signals) {
+export function assembleSignals(model: UnitModel, sel: s.Selection, _, __, signals) {
   var on = sel.translate.on,
       anchor = anchorName(sel),
       delta = deltaName(sel);

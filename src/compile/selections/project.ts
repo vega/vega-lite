@@ -33,5 +33,5 @@ export function assembleSignals(_, sel: s.Selection, trigger) {
     return fieldName(p) + ': datum.' + p.field;
   }).join(', ');
 
-  trigger.streams[0].expr = '{_unit: unit._id, ' + expr + '}';
+  trigger.streams[0].expr = '{_unitID: unit._id, ' + expr + '}';
 }
