@@ -293,7 +293,7 @@ export abstract class Model {
   }
 
   public sort(channel: Channel) {
-    return (this.mapping()[channel] || {}).sort;
+    return (this.fieldDef(channel) as any).sort;
   }
 
   public abstract stack();

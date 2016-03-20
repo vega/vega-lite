@@ -89,12 +89,13 @@ export class UnitModel extends Model {
   }
 
   private _initScale(mark: Mark, encoding: Encoding, config: Config): Dict<Scale> {
+    var model = this;
     return UNIT_SCALE_CHANNELS.reduce(function(_scale, channel) {
       if (vlEncoding.has(encoding, channel)) {
-        const scaleSpec = encoding[channel].scale || {};
-        const channelDef = encoding[channel];
+        const fieldDef = model.fieldDef(channel),
+              scaleSpec = (fieldDef as any).scale || {};
 
-        const _scaleType = scaleType(scaleSpec, channelDef, channel, mark);
+        const _scaleType = scaleType(scaleSpec, fieldDef, channel, mark);
 
         _scale[channel] = extend({
           type: _scaleType,
@@ -241,7 +242,7 @@ export class UnitModel extends Model {
   }
 
   public selection(name:string = undefined) {
-    return this._select[name] || this._selections;
+    return (this._select && this._select[name]) || this._selections;
   }
 
   public fieldDef(channel: Channel, getRule: boolean = false): FieldDef {
