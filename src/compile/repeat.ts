@@ -31,7 +31,6 @@ export class RepeatModel extends Model {
 
     const repeat  = this._repeat = spec.repeat;
     this._scale  = this._initScale(repeat, config, child);
-    this._axis   = this._initAxis(repeat, config, child);
   }
 
   private _initConfig(specConfig: Config, parent: Model) {
@@ -42,26 +41,17 @@ export class RepeatModel extends Model {
     return [ROW, COLUMN].reduce(function(_scale, channel) {
       if (repeat[channel]) {
 
-        _scale[channel] = extend({
+        _scale[channel] = {
           type: ScaleType.ORDINAL,
-          round: config.facet.scale.round,
+          domain: repeat[channel],
 
           // TODO: revise this rule for multiple level of nesting
           padding: (channel === ROW && child.has(Y)) || (channel === COLUMN && child.has(X)) ?
                    config.facet.scale.padding : 0
-        }, {});
+        };
       }
       return _scale;
     }, {} as Dict<Scale>);
-  }
-
-  private _initAxis(repeat: Repeat, config: Config, child: Model): Dict<AxisProperties> {
-    return [ROW, COLUMN].reduce(function(_axis, channel) {
-      if (repeat[channel]) {
-          _axis[channel] = config.facet.axis;
-      }
-      return _axis;
-    }, {} as Dict<AxisProperties>);
   }
 
   public repeat() {
@@ -119,8 +109,6 @@ export class RepeatModel extends Model {
 
     child.parseScale();
 
-    // TODO: support scales for field reference of parent data (e.g., for SPLOM)
-
     // First, add scale for row and column.
     let scaleComponent = this.component.scale = parseScaleComponent(this);
 
@@ -177,7 +165,6 @@ export class RepeatModel extends Model {
 
   public parseAxis() {
     this.child().parseAxis();
-    this.component.axis = parseAxisComponent(this, [ROW, COLUMN]);
   }
 
   public parseAxisGroup() {
@@ -228,7 +215,7 @@ export class RepeatModel extends Model {
   }
 
   public assembleLayout(layoutData: VgData[]): VgData[] {
-    // Postfix traversal – layout is assembled bottom-up 
+    // Postfix traversal – layout is assembled bottom-up
     this._child.assembleLayout(layoutData);
     return assembleLayout(this, layoutData);
   }

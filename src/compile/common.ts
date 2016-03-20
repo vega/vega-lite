@@ -101,7 +101,7 @@ export function applyMarkConfig(marksProperties, model: UnitModel, propsList: st
 export function formatMixins(model: Model, channel: Channel, format: string) {
   const fieldDef = model.fieldDef(channel);
 
-  if(!contains([QUANTITATIVE, TEMPORAL], fieldDef.type)) {
+  if(!fieldDef || !contains([QUANTITATIVE, TEMPORAL], fieldDef.type)) {
     return {};
   }
 

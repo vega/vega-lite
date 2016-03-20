@@ -2,6 +2,7 @@ import {ScaleType} from '../../scale';
 import {extend, keys, differ, Dict} from '../../util';
 
 import {FacetModel} from './../facet';
+import {RepeatModel} from './../repeat';
 import {LayerModel} from './../layer';
 import {Model} from './../model';
 
@@ -24,6 +25,19 @@ export namespace nonPositiveFilter {
   }
 
   export function parseFacet(model: FacetModel) {
+    const childDataComponent = model.child().component.data;
+
+    // If child doesn't have its own data source, then consider merging
+    if (!childDataComponent.source) {
+      // For now, let's assume it always has union scale
+      const nonPositiveFilterComponent = childDataComponent.nonPositiveFilter;
+      delete childDataComponent.nonPositiveFilter;
+      return nonPositiveFilterComponent;
+    }
+    return {} as Dict<boolean>;
+  }
+
+  export function parseRepeat(model: RepeatModel) {
     const childDataComponent = model.child().component.data;
 
     // If child doesn't have its own data source, then consider merging

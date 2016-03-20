@@ -233,6 +233,7 @@ export class LayerModel extends Model {
   }
 
   protected mapping() {
+    // TODO: what is this?
     return null;
   }
 

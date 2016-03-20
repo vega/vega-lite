@@ -5,6 +5,7 @@ import {extend, vals, Dict} from '../../util';
 import {VgTransform} from '../../vega.schema';
 
 import {FacetModel} from './../facet';
+import {RepeatModel} from './../repeat';
 import {LayerModel} from './../layer';
 import {Model} from './../model';
 import {parseExpression} from './../time';
@@ -33,6 +34,19 @@ export namespace timeUnit {
   export const parseUnit = parse;
 
   export function parseFacet(model: FacetModel) {
+    let timeUnitComponent = parse(model);
+
+    const childDataComponent = model.child().component.data;
+
+    // If child doesn't have its own data source, then merge
+    if (!childDataComponent.source) {
+      extend(timeUnitComponent, childDataComponent.timeUnit);
+      delete childDataComponent.timeUnit;
+    }
+    return timeUnitComponent;
+  }
+
+  export function parseRepeat(model: RepeatModel) {
     let timeUnitComponent = parse(model);
 
     const childDataComponent = model.child().component.data;

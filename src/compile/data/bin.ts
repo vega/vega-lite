@@ -5,6 +5,7 @@ import {extend, vals, flatten, hash, Dict} from '../../util';
 import {VgTransform} from '../../vega.schema';
 
 import {FacetModel} from './../facet';
+import {RepeatModel} from './../repeat';
 import {LayerModel} from './../layer';
 import {Model} from './../model';
 
@@ -55,7 +56,7 @@ export namespace bin {
 
   export const parseUnit = parse;
 
-  export function parseFacet(model: FacetModel) {
+  export function parseFacet(model: FacetModel): Dict<VgTransform[]> {
     let binComponent = parse(model);
 
     const childDataComponent = model.child().component.data;
@@ -69,7 +70,21 @@ export namespace bin {
     return binComponent;
   }
 
-  export function parseLayer(model: LayerModel) {
+  export function parseRepeat(model: RepeatModel): Dict<VgTransform[]> {
+    let binComponent = {} as Dict<VgTransform[]>;
+
+    const childDataComponent = model.child().component.data;
+
+    // If child doesn't have its own data source, then merge
+    if (!childDataComponent.source) {
+      // FIXME: current merging logic can produce redundant transforms when a field is binned for color and for non-color
+      extend(binComponent, childDataComponent.bin);
+      delete childDataComponent.bin;
+    }
+    return binComponent;
+  }
+
+  export function parseLayer(model: LayerModel): Dict<VgTransform[]> {
     let binComponent = parse(model);
 
     model.children().forEach((child) => {

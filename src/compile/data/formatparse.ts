@@ -3,6 +3,7 @@ import {QUANTITATIVE, TEMPORAL} from '../../type';
 import {extend, differ, Dict} from '../../util';
 
 import {FacetModel} from './../facet';
+import {RepeatModel} from './../repeat';
 import {LayerModel} from './../layer';
 import {Model} from './../model';
 
@@ -33,6 +34,18 @@ export namespace formatParse {
   export const parseUnit = parse;
 
   export function parseFacet(model: FacetModel) {
+    let parseComponent = parse(model);
+
+    // If child doesn't have its own data source, but has its own parse, then merge
+    const childDataComponent = model.child().component.data;
+    if (!childDataComponent.source && childDataComponent.formatParse) {
+      extend(parseComponent, childDataComponent.formatParse);
+      delete childDataComponent.formatParse;
+    }
+    return parseComponent;
+  }
+
+  export function parseRepeat(model: RepeatModel) {
     let parseComponent = parse(model);
 
     // If child doesn't have its own data source, but has its own parse, then merge

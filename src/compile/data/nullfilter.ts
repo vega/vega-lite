@@ -2,6 +2,7 @@ import {FieldDef} from '../../fielddef';
 import {extend, keys, differ, Dict} from '../../util';
 
 import {FacetModel} from './../facet';
+import {RepeatModel} from './../repeat';
 import {LayerModel} from './../layer';
 import {Model} from './../model';
 
@@ -34,6 +35,19 @@ export namespace nullFilter {
   export const parseUnit = parse;
 
   export function parseFacet(model: FacetModel) {
+    let nullFilterComponent = parse(model);
+
+    const childDataComponent = model.child().component.data;
+
+    // If child doesn't have its own data source, then merge
+    if (!childDataComponent.source) {
+      extend(nullFilterComponent, childDataComponent.nullFilter);
+      delete childDataComponent.nullFilter;
+    }
+    return nullFilterComponent;
+  }
+
+  export function parseRepeat(model: RepeatModel) {
     let nullFilterComponent = parse(model);
 
     const childDataComponent = model.child().component.data;

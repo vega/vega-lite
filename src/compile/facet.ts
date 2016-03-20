@@ -90,7 +90,7 @@ export class FacetModel extends Model {
           );
 
           if (channel === ROW) {
-            const yAxis: any = child.axis(Y);
+            const yAxis = child.axis(Y);
             if (yAxis && yAxis.orient !== AxisOrient.RIGHT && !modelAxis.orient) {
               modelAxis.orient = AxisOrient.RIGHT;
             }
@@ -158,8 +158,6 @@ export class FacetModel extends Model {
     const model = this;
 
     child.parseScale();
-
-    // TODO: support scales for field reference of parent data (e.g., for SPLOM)
 
     // First, add scale for row and column.
     let scaleComponent = this.component.scale = parseScaleComponent(this);
@@ -249,7 +247,6 @@ export class FacetModel extends Model {
     this.child().parseLegend();
 
     // TODO: support legend for independent non-position scale across facets
-    // TODO: support legend for field reference of parent data (e.g., for SPLOM)
 
     // For now, assuming that non-positional scales are always shared across facets
     // Thus, just move all legends from its child

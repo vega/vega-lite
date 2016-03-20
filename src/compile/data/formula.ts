@@ -2,6 +2,7 @@ import {Formula} from '../../transform';
 import {extend, vals, hash, Dict} from '../../util';
 
 import {FacetModel} from './../facet';
+import {RepeatModel} from './../repeat';
 import {LayerModel} from './../layer';
 import {Model} from './../model';
 
@@ -19,6 +20,19 @@ export namespace formula {
   export const parseUnit = parse;
 
   export function parseFacet(model: FacetModel) {
+    let formulaComponent = parse(model);
+
+    const childDataComponent = model.child().component.data;
+
+    // If child doesn't have its own data source, then merge
+    if (!childDataComponent.source) {
+      extend(formulaComponent, childDataComponent.calculate);
+      delete childDataComponent.calculate;
+    }
+    return formulaComponent;
+  }
+
+  export function parseRepeat(model: RepeatModel) {
     let formulaComponent = parse(model);
 
     const childDataComponent = model.child().component.data;

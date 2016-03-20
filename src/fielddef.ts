@@ -132,6 +132,10 @@ export function isCount(fieldDef: FieldDef) {
 export function cardinality(fieldDef: FieldDef, stats, filterNull = {}) {
   // FIXME need to take filter into account
 
+  if (!fieldDef) {
+    return null;
+  }
+
   const stat = stats[fieldDef.field],
   type = fieldDef.type;
 

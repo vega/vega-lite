@@ -117,7 +117,21 @@ export function parseFacetData(model: FacetModel): DataComponent {
 }
 
 export function parseRepeatData(model: RepeatModel): DataComponent {
-  return null;
+  return {
+    formatParse: formatParse.parseRepeat(model),
+    nullFilter: nullFilter.parseRepeat(model),
+    filter: filter.parseRepeat(model),
+    nonPositiveFilter: nonPositiveFilter.parseRepeat(model),
+
+    source: source.parseRepeat(model),
+    bin: bin.parseRepeat(model),
+    calculate: formula.parseRepeat(model),
+    timeUnit: timeUnit.parseRepeat(model),
+    timeUnitDomain: timeUnitDomain.parseRepeat(model),
+    summary: summary.parseRepeat(model),
+    stackScale: stackScale.parseRepeat(model),
+    colorRank: colorRank.parseRepeat(model)
+  };
 }
 
 export function parseLayerData(model: LayerModel): DataComponent {

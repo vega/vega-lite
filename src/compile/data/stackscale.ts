@@ -3,6 +3,7 @@ import {field} from '../../fielddef';
 import {VgData} from '../../vega.schema';
 
 import {FacetModel} from './../facet';
+import {RepeatModel} from './../repeat';
 import {LayerModel} from './../layer';
 import {UnitModel} from './../unit';
 
@@ -59,6 +60,11 @@ export namespace stackScale {
       delete childDataComponent.stackScale;
       return stackComponent;
     }
+    return null;
+  }
+
+  export function parseRepeat(model: RepeatModel) {
+    // TODO
     return null;
   }
 
