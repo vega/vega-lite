@@ -2,7 +2,7 @@ import {COLUMN, ROW, X, Y, SIZE, COLOR, SHAPE, TEXT, LABEL, Channel} from '../ch
 import {FieldDef, field, OrderChannelDef} from '../fielddef';
 import {SortOrder} from '../sort';
 import {QUANTITATIVE, ORDINAL, TEMPORAL} from '../type';
-import {contains, union} from '../util';
+import {contains, union, isArray, array, extend, keys} from '../util';
 
 import {FacetModel} from './facet';
 import {LayerModel} from './layer';
@@ -10,6 +10,7 @@ import {Model} from './model';
 import {format as timeFormatExpr} from './time';
 import {UnitModel} from './unit';
 import {Spec, isUnitSpec, isFacetSpec, isLayerSpec} from '../spec';
+import {Selection} from './selections';
 
 
 export function buildModel(spec: Spec, parent: Model, parentGivenName: string): Model {
@@ -29,6 +30,25 @@ export function buildModel(spec: Spec, parent: Model, parentGivenName: string): 
   return null;
 }
 
+export function compileIfThenElse(model: UnitModel, channel: Channel, output, cb) {
+  const ruleDef = model.fieldDef(channel, true);
+
+  // RuleDef is just a regular FieldDef.
+  if (!isArray(ruleDef)) return extend(output, cb(ruleDef));
+
+  array(ruleDef).forEach(function(fieldDef) {
+    var selName = fieldDef.if || fieldDef.elseif,
+        sel:Selection = selName && model.selection(selName);
+
+    const property = cb(fieldDef);
+    keys(property).forEach(function(k) {
+      const o = isArray(output[k]) && output[k] || (output[k] = []);
+      if (selName) property[k].test = sel.predicate;
+      o.push(property[k]);
+    });
+  });
+}
+
 // TODO: figure if we really need opacity in both
 export const STROKE_CONFIG = ['stroke', 'strokeWidth',
   'strokeDash', 'strokeDashOffset', 'strokeOpacity', 'opacity'];
@@ -39,8 +59,8 @@ export const FILL_CONFIG = ['fill', 'fillOpacity',
 export const FILL_STROKE_CONFIG = union(STROKE_CONFIG, FILL_CONFIG);
 
 export function applyColorAndOpacity(p, model: UnitModel) {
-  const filled = model.config().mark.filled;
-  const fieldDef = model.fieldDef(COLOR);
+  const filled = model.config().mark.filled,
+        property = filled ? 'fill' : 'stroke';
 
   // Apply fill stroke config first so that color field / value can override
   // fill / stroke
@@ -50,27 +70,21 @@ export function applyColorAndOpacity(p, model: UnitModel) {
     applyMarkConfig(p, model, STROKE_CONFIG);
   }
 
-  let value;
-  if (model.has(COLOR)) {
-    value = {
-      scale: model.scaleName(COLOR),
-      field: model.field(COLOR, fieldDef.type === ORDINAL ? {prefn: 'rank_'} : {})
-    };
-  } else if (fieldDef && fieldDef.value) {
-    value = { value: fieldDef.value };
-  }
-
-  if (value !== undefined) {
-    if (filled) {
-      p.fill = value;
+  compileIfThenElse(model, COLOR, p, function(fieldDef) {
+    let props = {};
+    if (fieldDef.field) {
+      props[property] = {
+        scale: model.scaleName(COLOR),
+        field: model.field(COLOR,
+          fieldDef.type === ORDINAL ? {prefn: 'rank_'} : {}, fieldDef)
+      };
+    } else if (fieldDef.value) {
+      props[property] = { value: fieldDef.value };
     } else {
-      p.stroke = value;
+      props[property] = p[property] || { value: model.config().mark.color };
     }
-  } else {
-    // apply color config if there is no fill / stroke config
-    p[filled ? 'fill' : 'stroke'] = p[filled ? 'fill' : 'stroke'] ||
-      {value: model.config().mark.color};
-  }
+    return props;
+  });
 }
 
 export function applyConfig(properties, config, propsList: string[]) {

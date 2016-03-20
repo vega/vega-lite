@@ -67,7 +67,7 @@ export function parse(spec, model: UnitModel) {
 export function assembleSignals(model: UnitModel, signals) {
   var unit = !signals.length;
 
-  model.selections().forEach(function(sel: Selection) {
+  model.selection().forEach(function(sel: Selection) {
     var trigger = {
       name: sel.name,
       verbose: true,  // TODO: how do we do better than this?
@@ -112,7 +112,7 @@ export function assembleSignals(model: UnitModel, signals) {
 }
 
 export function assembleData(model: UnitModel, data) {
-  model.selections().forEach(function(sel: Selection) {
+  model.selection().forEach(function(sel: Selection) {
     if (sel.type !== Types.MULTI) return;
     var db = {
       name: storeName(sel),
@@ -133,7 +133,7 @@ export function assembleData(model: UnitModel, data) {
 }
 
 export function assembleMarks(model: UnitModel, marks: any[]) {
-  model.selections().forEach(function(sel: Selection) {
+  model.selection().forEach(function(sel: Selection) {
     transforms.forEach(function(k) {
       if (!tx[k].assembleMarks || !sel[k]) return;
       tx[k].assembleMarks(model, sel, marks);

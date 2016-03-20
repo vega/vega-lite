@@ -11,7 +11,7 @@ import {Mark, TEXT as TEXTMARK} from '../mark';
 import {Scale, ScaleType} from '../scale';
 import {ExtendedUnitSpec} from '../spec';
 import {getFullName, QUANTITATIVE} from '../type';
-import {duplicate, extend, mergeDeep, Dict} from '../util';
+import {duplicate, extend, mergeDeep, Dict, isArray} from '../util';
 import {VgData} from '../vega.schema';
 
 import {parseAxisComponent} from './axis';
@@ -35,6 +35,7 @@ export class UnitModel extends Model {
   private _mark: Mark;
   private _encoding: Encoding;
   private _stack: StackProperties;
+  private _select: any;
   private _selections: selections.Selection[];
 
   constructor(spec: ExtendedUnitSpec, parent: Model, parentGivenName: string) {
@@ -51,6 +52,7 @@ export class UnitModel extends Model {
     // calculate stack
     this._stack = compileStackProperties(mark, encoding, scale, config);
 
+    this._select = spec.select;
     this._selections = selections.parse(spec.select, this);
   }
 
@@ -238,27 +240,18 @@ export class UnitModel extends Model {
     return this._encoding;
   }
 
-  public selections() {
-    return this._selections;
+  public selection(name:string = undefined) {
+    return this._select[name] || this._selections;
   }
 
-  public fieldDef(channel: Channel): FieldDef {
+  public fieldDef(channel: Channel, getRule: boolean = false): FieldDef {
     // TODO: remove this || {}
     // Currently we have it to prevent null pointer exception.
-    return this._encoding[channel] || {};
-  }
-
-  /** Get "field" reference for vega */
-  public field(channel: Channel, opt: FieldRefOption = {}) {
-    const fieldDef = this.fieldDef(channel);
-
-    if (fieldDef.bin) { // bin has default suffix that depends on scaleType
-      opt = extend({
-        binSuffix: this.scale(channel).type === ScaleType.ORDINAL ? '_range' : '_start'
-      }, opt);
-    }
-
-    return field(fieldDef, opt);
+    // TODO(domoritz/kanitw): This is a hack for if-then-else rules -- only the
+    // first field will be returned. What should the right thing be?
+    var fieldDef = this._encoding[channel] || {};
+    if (isArray(fieldDef) && !getRule) fieldDef = fieldDef[0];
+    return fieldDef;
   }
 
   public dataTable() {

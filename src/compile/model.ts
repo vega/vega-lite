@@ -260,10 +260,8 @@ export abstract class Model {
     return this._transform || {};
   }
 
-  /** Get "field" reference for vega */
-  public field(channel: Channel, opt: FieldRefOption = {}) {
-    const fieldDef = this.fieldDef(channel);
-
+  /** Get "field" reference for vega. */
+  public field(channel: Channel, opt: FieldRefOption = {}, fieldDef = this.fieldDef(channel)) {
     if (fieldDef.bin) { // bin has default suffix that depends on scaleType
       opt = extend({
         binSuffix: this.scale(channel).type === ScaleType.ORDINAL ? '_range' : '_start'
