@@ -21,6 +21,17 @@ export function parse(_, sel: s.Selection) {
       on = parseEvents(u.isString(trans) ? trans :
         '[mousedown, window:mouseup] > window:mousemove');
   sel.translate = {on: on[0]};
+
+  // Unset scale properties to allow smooth panning.
+  if (sel.scales) {
+    sel.project.forEach(function(p) {
+      u.extend(p.scale, {
+        round: false,  // Rounded scales round inversions too.
+        nice: false,   // Causes "snapped" panning.
+        zero: false    // Otherwise only the max extent will vary.
+      });
+    });
+  }
 }
 
 export function assembleSignals(model: UnitModel, sel: s.Selection, trigger, __, signals) {
