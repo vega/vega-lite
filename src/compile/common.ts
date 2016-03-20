@@ -5,16 +5,21 @@ import {QUANTITATIVE, ORDINAL, TEMPORAL} from '../type';
 import {contains, union} from '../util';
 
 import {FacetModel} from './facet';
+import {RepeatModel} from './repeat';
 import {LayerModel} from './layer';
 import {Model} from './model';
 import {format as timeFormatExpr} from './time';
 import {UnitModel} from './unit';
-import {Spec, isUnitSpec, isFacetSpec, isLayerSpec} from '../spec';
+import {Spec, isUnitSpec, isFacetSpec, isRepeatSpec, isLayerSpec} from '../spec';
 
 
 export function buildModel(spec: Spec, parent: Model, parentGivenName: string): Model {
   if (isFacetSpec(spec)) {
     return new FacetModel(spec, parent, parentGivenName);
+  }
+
+  if (isRepeatSpec(spec)) {
+    return new RepeatModel(spec, parent, parentGivenName);
   }
 
   if (isLayerSpec(spec)) {
