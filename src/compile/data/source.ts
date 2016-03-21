@@ -3,6 +3,7 @@ import {contains} from '../../util';
 import {VgData} from '../../vega.schema';
 
 import {FacetModel} from './../facet';
+import {RepeatModel} from './../repeat';
 import {LayerModel} from './../layer';
 import {Model} from './../model';
 
@@ -46,7 +47,7 @@ export namespace source {
 
   export const parseUnit = parse;
 
-  export function parseFacet(model: FacetModel) {
+  export function parseFacet(model: FacetModel): VgData {
     let sourceData = parse(model);
     if (!model.child().component.data.source) {
       // If the child does not have its own source, have to rename its source.
@@ -56,7 +57,17 @@ export namespace source {
     return sourceData;
   }
 
-  export function parseLayer(model: LayerModel) {
+  export function parseRepeat(model: RepeatModel): VgData {
+    let sourceData = parse(model);
+    if (!model.child().component.data.source) {
+      // If the child does not have its own source, have to rename its source.
+      model.child().renameData(model.child().dataName(SOURCE), model.dataName(SOURCE));
+    }
+
+    return sourceData;
+  }
+
+  export function parseLayer(model: LayerModel): VgData {
     let sourceData = parse(model);
     model.children().forEach((child) => {
       const childData = child.component.data;

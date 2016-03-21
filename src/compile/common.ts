@@ -5,16 +5,21 @@ import {QUANTITATIVE, ORDINAL, TEMPORAL} from '../type';
 import {contains, union} from '../util';
 
 import {FacetModel} from './facet';
+import {RepeatModel} from './repeat';
 import {LayerModel} from './layer';
 import {Model} from './model';
 import {format as timeFormatExpr} from './time';
 import {UnitModel} from './unit';
-import {Spec, isUnitSpec, isFacetSpec, isLayerSpec} from '../spec';
+import {Spec, isUnitSpec, isFacetSpec, isRepeatSpec, isLayerSpec} from '../spec';
 
 
 export function buildModel(spec: Spec, parent: Model, parentGivenName: string): Model {
   if (isFacetSpec(spec)) {
     return new FacetModel(spec, parent, parentGivenName);
+  }
+
+  if (isRepeatSpec(spec)) {
+    return new RepeatModel(spec, parent, parentGivenName);
   }
 
   if (isLayerSpec(spec)) {
@@ -53,7 +58,7 @@ export function applyColorAndOpacity(p, model: UnitModel) {
   let value;
   if (model.has(COLOR)) {
     value = {
-      scale: model.scaleName(COLOR),
+      scale: model.scaleName(COLOR, fieldDef),
       field: model.field(COLOR, fieldDef.type === ORDINAL ? {prefn: 'rank_'} : {})
     };
   } else if (fieldDef && fieldDef.value) {
@@ -96,7 +101,7 @@ export function applyMarkConfig(marksProperties, model: UnitModel, propsList: st
 export function formatMixins(model: Model, channel: Channel, format: string) {
   const fieldDef = model.fieldDef(channel);
 
-  if(!contains([QUANTITATIVE, TEMPORAL], fieldDef.type)) {
+  if(!fieldDef || !contains([QUANTITATIVE, TEMPORAL], fieldDef.type)) {
     return {};
   }
 
@@ -126,7 +131,7 @@ export function formatMixins(model: Model, channel: Channel, format: string) {
     const filter = (def.formatType || 'number') + (def.format ? ':\'' + def.format + '\'' : '');
     return {
       text: {
-        template: '{{' + model.field(channel, { datum: true }) + ' | ' + filter + '}}'
+        template: '{{' + field(fieldDef, { datum: true }) + ' | ' + filter + '}}'
       }
     };
   }

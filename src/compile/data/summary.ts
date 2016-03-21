@@ -2,10 +2,11 @@ import {AggregateOp} from '../../aggregate';
 import {Channel} from '../../channel';
 import {SOURCE, SUMMARY} from '../../data';
 import {field, FieldDef} from '../../fielddef';
-import {keys, vals, reduce, hash, Dict, StringSet} from '../../util';
+import {keys, vals, reduce, hash, isString, Dict, StringSet} from '../../util';
 import {VgData} from '../../vega.schema';
 
 import {FacetModel} from './../facet';
+import {RepeatModel} from './../repeat';
 import {LayerModel} from './../layer';
 import {Model} from './../model';
 
@@ -45,8 +46,11 @@ export namespace summary {
           meas['*']['count'] = true;
           /* tslint:enable:no-string-literal */
         } else {
-          meas[fieldDef.field] = meas[fieldDef.field] || {};
-          meas[fieldDef.field][fieldDef.aggregate] = true;
+          const field = fieldDef.field;
+          if (isString(field)) {
+            meas[field] = meas[field] || {};
+            meas[field][fieldDef.aggregate] = true;
+          }
         }
       } else {
         addDimension(dims, fieldDef);
@@ -61,6 +65,27 @@ export namespace summary {
   }
 
   export function parseFacet(model: FacetModel): SummaryComponent[] {
+    const childDataComponent = model.child().component.data;
+
+    // If child doesn't have its own data source but has a summary data source, merge
+    if (!childDataComponent.source && childDataComponent.summary) {
+      let summaryComponents = childDataComponent.summary.map(function(summaryComponent) {
+        // add facet fields as dimensions
+        summaryComponent.dimensions = model.reduce(addDimension, summaryComponent.dimensions);
+
+        const summaryNameWithoutPrefix = summaryComponent.name.substr(model.child().name('').length);
+        model.child().renameData(summaryComponent.name, summaryNameWithoutPrefix);
+        summaryComponent.name = summaryNameWithoutPrefix;
+        return summaryComponent;
+      });
+
+      delete childDataComponent.summary;
+      return summaryComponents;
+    }
+    return [];
+  }
+
+  export function parseRepeat(model: RepeatModel): SummaryComponent[] {
     const childDataComponent = model.child().component.data;
 
     // If child doesn't have its own data source but has a summary data source, merge

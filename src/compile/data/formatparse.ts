@@ -1,8 +1,9 @@
 import {FieldDef, isCount} from '../../fielddef';
 import {QUANTITATIVE, TEMPORAL} from '../../type';
-import {extend, differ, Dict} from '../../util';
+import {extend, differ, isString, Dict} from '../../util';
 
 import {FacetModel} from './../facet';
+import {RepeatModel} from './../repeat';
 import {LayerModel} from './../layer';
 import {Model} from './../model';
 
@@ -18,13 +19,16 @@ export namespace formatParse {
     // use forEach rather than reduce so that it can return undefined
     // if there is no parse needed
     model.forEach(function(fieldDef: FieldDef) {
-      if (fieldDef.type === TEMPORAL) {
-        parseComponent[fieldDef.field] = 'date';
-      } else if (fieldDef.type === QUANTITATIVE) {
-        if (isCount(fieldDef) || calcFieldMap[fieldDef.field]) {
-          return;
+      const field = fieldDef.field;
+      if (isString(field)) {
+        if (fieldDef.type === TEMPORAL) {
+          parseComponent[field] = 'date';
+        } else if (fieldDef.type === QUANTITATIVE) {
+          if (isCount(fieldDef) || calcFieldMap[field]) {
+            return;
+          }
+          parseComponent[field] = 'number';
         }
-        parseComponent[fieldDef.field] = 'number';
       }
     });
     return parseComponent;
@@ -33,6 +37,18 @@ export namespace formatParse {
   export const parseUnit = parse;
 
   export function parseFacet(model: FacetModel) {
+    let parseComponent = parse(model);
+
+    // If child doesn't have its own data source, but has its own parse, then merge
+    const childDataComponent = model.child().component.data;
+    if (!childDataComponent.source && childDataComponent.formatParse) {
+      extend(parseComponent, childDataComponent.formatParse);
+      delete childDataComponent.formatParse;
+    }
+    return parseComponent;
+  }
+
+  export function parseRepeat(model: RepeatModel) {
     let parseComponent = parse(model);
 
     // If child doesn't have its own data source, but has its own parse, then merge

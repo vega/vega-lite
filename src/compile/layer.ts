@@ -97,12 +97,12 @@ export class LayerModel extends Model {
           if (modelScales && modelScales.main) {
             // Scales are unioned by combining the domain of the main scale.
             // Other scales that are used for ordinal legends are appended.
-            const modelDomain = modelScales.main.domain;
-            const childDomain = childScales.main.domain;
+            const modelDomain = modelScales.main[0].domain;
+            const childDomain = childScales.main[0].domain;
 
             if (isArray(modelDomain)) {
-              if (isArray(childScales.main.domain)) {
-                modelScales.main.domain = modelDomain.concat(childDomain);
+              if (isArray(childScales.main[0].domain)) {
+                modelScales.main[0].domain = modelDomain.concat(childDomain);
               } else {
                 model.addWarning('custom domain scale cannot be unioned with default field-based domain');
               }
@@ -121,9 +121,9 @@ export class LayerModel extends Model {
               fields = unique(fields, hash);
               // TODO: if all domains use the same data, we can merge them
               if (fields.length > 1) {
-                modelScales.main.domain = { fields: fields };
+                modelScales.main[0].domain = { fields: fields };
               } else {
-                modelScales.main.domain = fields[0];
+                modelScales.main[0].domain = fields[0];
               }
             }
 
@@ -233,6 +233,7 @@ export class LayerModel extends Model {
   }
 
   protected mapping() {
+    // TODO: what is this?
     return null;
   }
 

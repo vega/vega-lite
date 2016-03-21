@@ -5,8 +5,10 @@ import {ScaleType} from '../scale';
 import {Formula} from '../transform';
 import {extend, keys, StringSet} from '../util';
 import {VgData} from '../vega.schema';
+import {field, FieldDef} from '../fielddef';
 
 import {FacetModel} from './facet';
+import {RepeatModel} from './repeat';
 import {LayerModel} from './layer';
 import {TEXT as TEXT_MARK} from '../mark';
 import {Model} from './model';
@@ -77,7 +79,7 @@ function parseUnitSizeLayout(model: UnitModel, channel: Channel): SizeComponent 
   const nonOrdinalSize = channel === X ? cellConfig.width : cellConfig.height;
 
   return {
-    distinct: getDistinct(model, channel),
+    distinct: getDistinct(model, channel, model.fieldDef(channel)),
     formula: [{
       field: model.channelSizeName(channel),
       expr: unitSizeExpr(model, channel, nonOrdinalSize)
@@ -89,7 +91,7 @@ function unitSizeExpr(model: UnitModel, channel: Channel, nonOrdinalSize: number
   if (model.has(channel)) {
     if (model.isOrdinalScale(channel)) {
       const scale = model.scale(channel);
-      return '(' + cardinalityFormula(model, channel) +
+      return '(' + cardinalityFormula(model, channel, model.fieldDef(channel)) +
         ' + ' + scale.padding +
         ') * ' + scale.bandSize;
     } else {
@@ -119,7 +121,7 @@ function parseFacetSizeLayout(model: FacetModel, channel: Channel): SizeComponen
   if (true) { // assume shared scale
     // For shared scale, we can simply merge the layout into one data source
 
-    const distinct = extend(getDistinct(model, channel), childSizeComponent.distinct);
+    const distinct = extend(getDistinct(model, channel, model.fieldDef(channel)), childSizeComponent.distinct);
     const formula = childSizeComponent.formula.concat([{
       field: model.channelSizeName(channel),
       expr: facetSizeFormula(model, channel, model.child().channelSizeName(channel))
@@ -138,11 +140,53 @@ function parseFacetSizeLayout(model: FacetModel, channel: Channel): SizeComponen
 function facetSizeFormula(model: Model, channel: Channel, innerSize: string) {
   const scale = model.scale(channel);
   if (model.has(channel)) {
-    return '(datum.' + innerSize + ' + ' + scale.padding + ')' + ' * ' + cardinalityFormula(model, channel);
+    return '(datum.' + innerSize + ' + ' + scale.padding + ')' + ' * ' + cardinalityFormula(model, channel, model.fieldDef(channel));
   } else {
     return 'datum.' + innerSize + ' + ' + model.config().facet.scale.padding; // need to add outer padding for facet
   }
 }
+
+
+export function parseRepeatLayout(model: RepeatModel): LayoutComponent {
+  return {
+    width: parseRepeatSizeLayout(model, COLUMN),
+    height: parseRepeatSizeLayout(model, ROW),
+  };
+}
+
+function parseRepeatSizeLayout(model: RepeatModel, channel: Channel): SizeComponent {
+  const childLayoutComponent = model.child().component.layout;
+  const sizeType = channel === ROW ? 'height' : 'width';
+  const childSizeComponent: SizeComponent = childLayoutComponent[sizeType];
+
+  if (true) { // assume shared scale
+    // For shared scale, we can simply merge the layout into one data source
+
+    const distinct = extend(getDistinct(model, channel, model.fieldDef(channel)), childSizeComponent.distinct);
+    const formula = childSizeComponent.formula.concat([{
+      field: model.channelSizeName(channel),
+      expr: repeatSizeFormula(model, channel, model.child().channelSizeName(channel))
+    }]);
+
+    delete childLayoutComponent[sizeType];
+    return {
+      distinct: distinct,
+      formula: formula
+    };
+  }
+  // FIXME implement independent scale as well
+  // TODO: - also consider when children have different data source
+}
+
+function repeatSizeFormula(model: Model, channel: Channel, innerSize: string) {
+  const scale = model.scale(channel);
+  if (model.has(channel)) {
+    return '(datum.' + innerSize + ' + ' + scale.padding + ')' + ' * ' + cardinalityFormula(model, channel, model.fieldDef(channel));
+  } else {
+    return 'datum.' + innerSize + ' + ' + model.config().facet.scale.padding; // need to add outer padding for facet
+  }
+}
+
 
 export function parseLayerLayout(model: LayerModel): LayoutComponent {
   return {
@@ -177,12 +221,13 @@ function parseLayerSizeLayout(model: LayerModel, channel: Channel): SizeComponen
   }
 }
 
-function getDistinct(model: Model, channel: Channel): StringSet {
+function getDistinct(model: Model, channel: Channel, fieldDef: FieldDef): StringSet {
   if (model.has(channel) && model.isOrdinalScale(channel)) {
     const scale = model.scale(channel);
+    const opt = fieldDef.bin ? {binSuffix: scale.type === ScaleType.ORDINAL ? '_range' : '_start'} : {};
     if (scale.type === ScaleType.ORDINAL && !(scale.domain instanceof Array)) {
       // if explicit domain is declared, use array length
-      const distinctField = model.field(channel);
+      const distinctField = field(fieldDef, opt);
       let distinct: StringSet = {};
       distinct[distinctField] = true;
       return distinct;
@@ -192,8 +237,9 @@ function getDistinct(model: Model, channel: Channel): StringSet {
 }
 
 // TODO: rename to cardinalityExpr
-function cardinalityFormula(model: Model, channel: Channel) {
+function cardinalityFormula(model: Model, channel: Channel, fieldDef: FieldDef) {
   const scale = model.scale(channel);
+  const opt = fieldDef.bin ? {binSuffix: scale.type === ScaleType.ORDINAL ? '_range' : '_start'} : {};
   if (scale.domain instanceof Array) {
     return scale.domain.length;
   }
@@ -202,5 +248,5 @@ function cardinalityFormula(model: Model, channel: Channel) {
   const timeUnitDomain = timeUnit ? rawDomain(timeUnit, channel) : null;
 
   return timeUnitDomain !== null ? timeUnitDomain.length :
-        model.field(channel, {datum: true, prefn: 'distinct_'});
+        field(fieldDef, extend(opt, {datum: true, prefn: 'distinct_'}));
 }

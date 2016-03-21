@@ -71,7 +71,7 @@ export function shortenFieldDefs(fieldDefs: FieldDef[], delim = DELIM): string {
 export function parseFieldDef(fieldDefShorthand: string): FieldDef {
   const split = fieldDefShorthand.split(TYPE);
 
-  let fieldDef: FieldDef = {
+  let fieldDef: any = {
     field: split[0].trim(),
     type: TYPE_FROM_SHORT_TYPE[split[1].trim()]
   };

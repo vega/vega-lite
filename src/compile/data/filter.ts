@@ -1,4 +1,5 @@
 import {FacetModel} from './../facet';
+import {RepeatModel} from './../repeat';
 import {LayerModel} from './../layer';
 import {Model} from './../model';
 
@@ -13,6 +14,22 @@ export namespace filter {
   export const parseUnit = parse;
 
   export function parseFacet(model: FacetModel) {
+    let filterComponent = parse(model);
+
+    const childDataComponent = model.child().component.data;
+
+    // If child doesn't have its own data source but has filter, then merge
+    if (!childDataComponent.source && childDataComponent.filter) {
+      // merge by adding &&
+      filterComponent =
+        (filterComponent ? filterComponent + ' && ' : '') +
+        childDataComponent.filter;
+      delete childDataComponent.filter;
+    }
+    return filterComponent;
+  }
+
+  export function parseRepeat(model: RepeatModel) {
     let filterComponent = parse(model);
 
     const childDataComponent = model.child().component.data;

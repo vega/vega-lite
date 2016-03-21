@@ -5,6 +5,7 @@ import {extend, keys, StringSet} from '../../util';
 import {VgData} from '../../vega.schema';
 
 import {FacetModel} from './../facet';
+import {RepeatModel} from './../repeat';
 import {LayerModel} from './../layer';
 import {Model} from './../model';
 import {parseExpression, rawDomain} from './../time';
@@ -28,6 +29,11 @@ export namespace timeUnitDomain {
   export const parseUnit = parse;
 
   export function parseFacet(model: FacetModel) {
+    // always merge with child
+    return extend(parse(model), model.child().component.data.timeUnitDomain);
+  }
+
+   export function parseRepeat(model: RepeatModel) {
     // always merge with child
     return extend(parse(model), model.child().component.data.timeUnitDomain);
   }

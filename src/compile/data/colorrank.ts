@@ -2,10 +2,13 @@ import {COLOR} from '../../channel';
 import {ORDINAL} from '../../type';
 import {extend, vals, flatten, Dict} from '../../util';
 import {VgTransform} from '../../vega.schema';
+import {field} from '../../fieldDef';
+import {ScaleType} from '../../scale';
 
-import {FacetModel} from './../facet';
-import {LayerModel} from './../layer';
-import {Model} from './../model';
+import {FacetModel} from '../facet';
+import {RepeatModel} from '../repeat';
+import {LayerModel} from '../layer';
+import {Model} from '../model';
 
 import {DataComponent} from './data';
 
@@ -21,14 +24,16 @@ export namespace colorRank {
   export function parseUnit(model: Model) {
     let colorRankComponent: Dict<VgTransform[]> = {};
     if (model.has(COLOR) && model.fieldDef(COLOR).type === ORDINAL) {
-      colorRankComponent[model.field(COLOR)] = [{
+      const fieldDef = model.fieldDef(COLOR);
+      const opt = fieldDef.bin ? {binSuffix: model.scale(COLOR).type === ScaleType.ORDINAL ? '_range' : '_start'} : {};
+      colorRankComponent[field(fieldDef)] = [{
         type: 'sort',
-        by: model.field(COLOR)
+        by: field(fieldDef, opt)
       }, {
         type: 'rank',
-        field: model.field(COLOR),
+        field: field(fieldDef, opt),
         output: {
-          rank: model.field(COLOR, { prefn: 'rank_' })
+          rank: field(fieldDef, extend(opt, { prefn: 'rank_' }))
         }
       }];
     }
@@ -36,6 +41,21 @@ export namespace colorRank {
   }
 
   export function parseFacet(model: FacetModel) {
+    const childDataComponent = model.child().component.data;
+
+    // If child doesn't have its own data source, then consider merging
+    if (!childDataComponent.source) {
+      // TODO: we have to see if color has union scale here
+
+      // For now, let's assume it always has union scale
+      const colorRankComponent = childDataComponent.colorRank;
+      delete childDataComponent.colorRank;
+      return colorRankComponent;
+    }
+    return {} as Dict<VgTransform[]>;
+  }
+
+  export function parseRepeat(model: RepeatModel) {
     const childDataComponent = model.child().component.data;
 
     // If child doesn't have its own data source, then consider merging

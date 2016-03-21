@@ -4,11 +4,23 @@ import {AggregateOp, AGGREGATE_OPS} from './aggregate';
 import {AxisProperties} from './axis';
 import {BinProperties} from './bin';
 import {LegendProperties} from './legend';
-import {Scale} from './scale';
+import {Scale, ScaleType} from './scale';
 import {SortField, SortOrder} from './sort';
 import {TimeUnit} from './timeunit';
 import {Type, NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from './type';
-import {contains, getbins, toMap} from './util';
+import {contains, getbins, toMap, isObject, isString, extend} from './util';
+
+export type RepeatRef = {
+  repeat: string
+}
+export type Field = string | RepeatRef;
+
+export function isRepeatRef(field: Field): field is RepeatRef {
+  if (isObject(field)) {
+    return 'repeat' in (field as any);
+  }
+  return false;
+}
 
 /**
  *  Interface for any kind of FieldDef;
@@ -16,7 +28,7 @@ import {contains, getbins, toMap} from './util';
  *  we do for JSON schema.
  */
 export interface FieldDef {
-  field?: string;
+  field?: string | {repeat: string};
   type?: Type;
   value?: number | string | boolean;
 
@@ -60,6 +72,10 @@ export interface ChannelDefWithLegend extends ChannelDefWithScale {
 
 export interface OrderChannelDef extends FieldDef {
   sort?: SortOrder;
+}
+
+export interface SingleFieldDef extends FieldDef {
+  field?: string;
 }
 
 // TODO: consider if we want to distinguish ordinalOnlyScale from scale
@@ -132,46 +148,55 @@ export function isCount(fieldDef: FieldDef) {
 export function cardinality(fieldDef: FieldDef, stats, filterNull = {}) {
   // FIXME need to take filter into account
 
-  const stat = stats[fieldDef.field],
-  type = fieldDef.type;
+  if (!fieldDef) {
+    return null;
+  }
 
-  if (fieldDef.bin) {
-    // need to reassign bin, otherwise compilation will fail due to a TS bug.
-    const bin = fieldDef.bin;
-    let maxbins = (typeof bin === 'boolean') ? undefined : bin.maxbins;
-    if (maxbins === undefined) {
-      maxbins = 10;
+  const field = fieldDef.field;
+  if (isString(field)) {
+    const stat = stats[field],
+    type = fieldDef.type;
+
+    if (fieldDef.bin) {
+      // need to reassign bin, otherwise compilation will fail due to a TS bug.
+      const bin = fieldDef.bin;
+      let maxbins = (typeof bin === 'boolean') ? undefined : bin.maxbins;
+      if (maxbins === undefined) {
+        maxbins = 10;
+      }
+
+      const bins = getbins(stat, maxbins);
+      return (bins.stop - bins.start) / bins.step;
+    }
+    if (type === TEMPORAL) {
+      const timeUnit = fieldDef.timeUnit;
+      switch (timeUnit) {
+        case TimeUnit.SECONDS: return 60;
+        case TimeUnit.MINUTES: return 60;
+        case TimeUnit.HOURS: return 24;
+        case TimeUnit.DAY: return 7;
+        case TimeUnit.DATE: return 31;
+        case TimeUnit.MONTH: return 12;
+        case TimeUnit.YEAR:
+          const yearstat = stats['year_' + fieldDef.field];
+
+          if (!yearstat) { return null; }
+
+          return yearstat.distinct -
+            (stat.missing > 0 && filterNull[type] ? 1 : 0);
+      }
+      // otherwise use calculation below
+    }
+    if (fieldDef.aggregate) {
+      return 1;
     }
 
-    const bins = getbins(stat, maxbins);
-    return (bins.stop - bins.start) / bins.step;
+    // remove null
+    return stat.distinct -
+      (stat.missing > 0 && filterNull[type] ? 1 : 0);
+  } else {
+    return null;
   }
-  if (type === TEMPORAL) {
-    const timeUnit = fieldDef.timeUnit;
-    switch (timeUnit) {
-      case TimeUnit.SECONDS: return 60;
-      case TimeUnit.MINUTES: return 60;
-      case TimeUnit.HOURS: return 24;
-      case TimeUnit.DAY: return 7;
-      case TimeUnit.DATE: return 31;
-      case TimeUnit.MONTH: return 12;
-      case TimeUnit.YEAR:
-        const yearstat = stats['year_' + fieldDef.field];
-
-        if (!yearstat) { return null; }
-
-        return yearstat.distinct -
-          (stat.missing > 0 && filterNull[type] ? 1 : 0);
-    }
-    // otherwise use calculation below
-  }
-  if (fieldDef.aggregate) {
-    return 1;
-  }
-
-  // remove null
-  return stat.distinct -
-    (stat.missing > 0 && filterNull[type] ? 1 : 0);
 }
 
 export function title(fieldDef: FieldDef) {

@@ -155,7 +155,7 @@ export abstract class Model {
     // FIXME: write assembleScales() in scale.ts that
     // help assemble scale domains with scale signature as well
     return flatten(vals(this.component.scale).map((scales: ScaleComponents) => {
-      let arr = [scales.main];
+      let arr = scales.main;
       if (scales.colorLegend) {
         arr.push(scales.colorLegend);
       }
@@ -264,19 +264,6 @@ export abstract class Model {
     return this._transform || {};
   }
 
-  /** Get "field" reference for vega */
-  public field(channel: Channel, opt: FieldRefOption = {}) {
-    const fieldDef = this.fieldDef(channel);
-
-    if (fieldDef.bin) { // bin has default suffix that depends on scaleType
-      opt = extend({
-        binSuffix: this.scale(channel).type === ScaleType.ORDINAL ? '_range' : '_start'
-      }, opt);
-    }
-
-    return field(fieldDef, opt);
-  }
-
   public abstract fieldDef(channel: Channel): FieldDef;
 
   public scale(channel: Channel): Scale {
@@ -294,8 +281,15 @@ export abstract class Model {
   }
 
   /** returns scale name for a given channel */
-  public scaleName(channel: Channel|string): string {
-    return this._scaleNameMap.get(this.name(channel + ''));
+  public scaleName(channel: Channel | string, fieldDef: FieldDef): string {
+    // HACK
+    let name;
+    if (this.fieldDef(channel as Channel)) {
+      name = String(channel) + '_' + fieldDef.field;
+    } else {
+      name = String(channel);
+    }
+    return this._scaleNameMap.get(this.name(name));
   }
 
   public sort(channel: Channel) {
@@ -335,6 +329,9 @@ export abstract class Model {
     return false;
   }
   public isFacet() {
+    return false;
+  }
+  public isRepeat() {
     return false;
   }
   public isLayer() {
