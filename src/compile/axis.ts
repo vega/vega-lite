@@ -1,8 +1,8 @@
 import {AxisOrient} from '../axis';
 import {COLUMN, ROW, X, Y, Channel} from '../channel';
-import {title as fieldDefTitle, isDimension} from '../fielddef';
+import {title as fieldDefTitle, isDimension, Field} from '../fielddef';
 import {NOMINAL, ORDINAL, TEMPORAL} from '../type';
-import {contains, keys, extend, truncate, Dict} from '../util';
+import {contains, keys, extend, truncate, isString, Dict} from '../util';
 import {VgAxis} from '../vega.schema';
 
 import {formatMixins} from './common';
@@ -196,8 +196,9 @@ export function tickSize(model: Model, channel: Channel) {
 }
 
 
-export function title(model: Model, channel: Channel) {
+export function title(model: Model, channel: Channel): Field {
   const axis = model.axis(channel);
+
   if (axis.title !== undefined) {
     return axis.title;
   }
@@ -219,7 +220,11 @@ export function title(model: Model, channel: Channel) {
   }
 
   // FIXME: we should use template to truncate instead
-  return maxLength ? truncate(fieldTitle, maxLength) : fieldTitle;
+  if(isString(fieldTitle)) {
+    return maxLength ? truncate(fieldTitle, maxLength) : fieldTitle;
+  } else {
+    return fieldTitle;
+  }
 }
 
 export namespace properties {

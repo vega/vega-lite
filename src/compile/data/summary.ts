@@ -2,7 +2,7 @@ import {AggregateOp} from '../../aggregate';
 import {Channel} from '../../channel';
 import {SOURCE, SUMMARY} from '../../data';
 import {field, FieldDef} from '../../fielddef';
-import {keys, vals, reduce, hash, Dict, StringSet} from '../../util';
+import {keys, vals, reduce, hash, isString, Dict, StringSet} from '../../util';
 import {VgData} from '../../vega.schema';
 
 import {FacetModel} from './../facet';
@@ -46,8 +46,11 @@ export namespace summary {
           meas['*']['count'] = true;
           /* tslint:enable:no-string-literal */
         } else {
-          meas[fieldDef.field] = meas[fieldDef.field] || {};
-          meas[fieldDef.field][fieldDef.aggregate] = true;
+          const field = fieldDef.field;
+          if (isString(field)) {
+            meas[field] = meas[field] || {};
+            meas[field][fieldDef.aggregate] = true;
+          }
         }
       } else {
         addDimension(dims, fieldDef);

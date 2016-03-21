@@ -1,6 +1,6 @@
 import {FieldDef, isCount} from '../../fielddef';
 import {QUANTITATIVE, TEMPORAL} from '../../type';
-import {extend, differ, Dict} from '../../util';
+import {extend, differ, isString, Dict} from '../../util';
 
 import {FacetModel} from './../facet';
 import {RepeatModel} from './../repeat';
@@ -19,13 +19,16 @@ export namespace formatParse {
     // use forEach rather than reduce so that it can return undefined
     // if there is no parse needed
     model.forEach(function(fieldDef: FieldDef) {
-      if (fieldDef.type === TEMPORAL) {
-        parseComponent[fieldDef.field] = 'date';
-      } else if (fieldDef.type === QUANTITATIVE) {
-        if (isCount(fieldDef) || calcFieldMap[fieldDef.field]) {
-          return;
+      const field = fieldDef.field;
+      if (isString(field)) {
+        if (fieldDef.type === TEMPORAL) {
+          parseComponent[field] = 'date';
+        } else if (fieldDef.type === QUANTITATIVE) {
+          if (isCount(fieldDef) || calcFieldMap[field]) {
+            return;
+          }
+          parseComponent[field] = 'number';
         }
-        parseComponent[fieldDef.field] = 'number';
       }
     });
     return parseComponent;

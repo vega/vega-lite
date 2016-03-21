@@ -1,5 +1,5 @@
 import {FieldDef} from '../../fielddef';
-import {extend, keys, differ, Dict} from '../../util';
+import {extend, keys, differ, hash, isString, Dict} from '../../util';
 
 import {FacetModel} from './../facet';
 import {RepeatModel} from './../repeat';
@@ -20,13 +20,16 @@ export namespace nullFilter {
   function parse(model: Model): Dict<boolean> {
     const filterNull = model.transform().filterNull;
     return model.reduce(function(aggregator, fieldDef: FieldDef) {
-      if (filterNull ||
-        (filterNull === undefined && fieldDef.field && fieldDef.field !== '*' && DEFAULT_NULL_FILTERS[fieldDef.type])) {
-        aggregator[fieldDef.field] = true;
-      } else {
-        // define this so we know that we don't filter nulls for this field
-        // this makes it easier to merge into parents
-        aggregator[fieldDef.field] = false;
+      const field = fieldDef.field;
+      if(isString(field)) {
+        if (filterNull ||
+          (filterNull === undefined && fieldDef.field && fieldDef.field !== '*' && DEFAULT_NULL_FILTERS[fieldDef.type])) {
+          aggregator[field] = true;
+        } else {
+          // define this so we know that we don't filter nulls for this field
+          // this makes it easier to merge into parents
+          aggregator[field] = false;
+        }
       }
       return aggregator;
     }, {});

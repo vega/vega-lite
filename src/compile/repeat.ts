@@ -1,4 +1,4 @@
-import {AxisProperties} from '../axis';
+import {AxisOrient, AxisProperties} from '../axis';
 import {COLUMN, ROW, X, Y, Channel} from '../channel';
 import {defaultConfig, Config} from '../config';
 import {SOURCE, SUMMARY} from '../data';
@@ -11,7 +11,7 @@ import {VgData, VgMarkGroup} from '../vega.schema';
 
 import {parseAxis, parseInnerAxis, gridShow, parseAxisComponent} from './axis';
 import {buildModel} from './common';
-import {assembleData, parseRepeatData} from './data/data';
+import {assembleData} from './data/data';
 import {assembleLayout, parseRepeatLayout} from './layout';
 import {Model} from './model';
 import {parseScaleComponent} from './scale';
@@ -29,8 +29,8 @@ export class RepeatModel extends Model {
 
     const child  = this._child = buildModel(spec.spec, this, this.name('child'));
 
-    const repeat  = this._repeat = spec.repeat;
-    this._scale  = this._initScale(repeat, config, child);
+    const repeat = this._repeat = spec.repeat;
+    this._scale = this._initScale(repeat, config, child);
   }
 
   private _initConfig(specConfig: Config, parent: Model) {
@@ -54,6 +54,10 @@ export class RepeatModel extends Model {
     }, {} as Dict<Scale>);
   }
 
+  private hasMultipleDimensions() {
+    return this.has(ROW) && this.has(COLUMN);
+  }
+
   public repeat() {
     return this._repeat;
   }
@@ -62,22 +66,27 @@ export class RepeatModel extends Model {
     return !!this._repeat[channel];
   }
 
+  public field(channel: Channel): string | any {
+    return {
+      parent: this.hasMultipleDimensions() ? channel + '.data' : 'data'
+    };
+  }
+
+  public repeatFields(channel: Channel): string[] {
+    return this._repeat[channel];
+  }
+
   public child() {
     return this._child;
   }
 
   private hasSummary() {
-    const summary = this.component.data.summary;
-    for (let i = 0 ; i < summary.length ; i++) {
-      if (keys(summary[i].measures).length > 0) {
-        return true;
-      }
-    }
+    // TODO
     return false;
   }
 
   public dataTable(): string {
-    return (this.hasSummary() ? SUMMARY : SOURCE) + '';
+    return this.has(ROW) ? 'fields_row' : 'fields_column';
   }
 
   public fieldDef(channel: Channel): FieldDef {
@@ -90,7 +99,6 @@ export class RepeatModel extends Model {
 
   public parseData() {
     this.child().parseData();
-    this.component.data = parseRepeatData(this);
   }
 
   public parseSelectionData() {
@@ -140,19 +148,17 @@ export class RepeatModel extends Model {
         name: this.name('cell'),
         type: 'group',
         from: extend(
-          this.dataTable() ? {data: this.dataTable()} : {},
-          {
+          {data: this.dataTable()},
+          this.hasMultipleDimensions() ? {
             transform: [{
-              type: 'facet',
-              groupby: [].concat(
-                this.has(ROW) ? [this.field(ROW)] : [],
-                this.has(COLUMN) ? [this.field(COLUMN)] : []
-              )
+              type: 'cross',
+              with: 'fields_column',
+              output: {left: 'row', right: 'column'}
             }]
-          }
+          } : {}
         ),
         properties: {
-          update: getFacetGroupProperties(this)
+          update: getRepeatGroupProperties(this)
         }
       },
       // Call child's assembleGroup to add marks, scales, axes, and legends.
@@ -209,8 +215,15 @@ export class RepeatModel extends Model {
   }
 
   public assembleData(data: VgData[]): VgData[] {
-    // Prefix traversal – parent data might be referred by children data
-    assembleData(this, data);
+    [COLUMN, ROW].forEach((channel) => {
+      if (this.has(channel)) {
+        data.push({
+          name: 'fields_' + channel,
+          values: this._repeat[channel]
+        });
+      }
+    });
+
     return this._child.assembleData(data);
   }
 
@@ -238,28 +251,28 @@ export class RepeatModel extends Model {
     return this.repeat();
   }
 
-  public isFacet() {
+  public isRepeat() {
     return true;
   }
 }
 
 // TODO: move the rest of the file into RepeatModel if possible
 
-function getFacetGroupProperties(model: RepeatModel) {
+function getRepeatGroupProperties(model: RepeatModel) {
   const child = model.child();
   const mergedCellConfig = extend({}, child.config().cell, child.config().facet.cell);
 
   return extend({
       x: model.has(COLUMN) ? {
           scale: model.scaleName(COLUMN),
-          field: model.field(COLUMN),
+          field: 'data',
           // offset by the padding
           offset: model.scale(COLUMN).padding / 2
         } : {value: model.config().facet.scale.padding / 2},
 
       y: model.has(ROW) ? {
         scale: model.scaleName(ROW),
-        field: model.field(ROW),
+        field: 'data',
         // offset by the padding
         offset: model.scale(ROW).padding / 2
       } : {value: model.config().facet.scale.padding / 2},
@@ -307,12 +320,7 @@ function getXAxesGroup(model: RepeatModel): VgMarkGroup {
     },
     hasCol ? {
       from: { // TODO: if we do facet transform at the parent level we can same some transform here
-        data: model.dataTable(),
-        transform: [{
-          type: 'aggregate',
-          groupby: [model.field(COLUMN)],
-          summarize: {'*': ['count']} // just a placeholder aggregation
-        }]
+        data: 'fields_column',
       }
     } : {},
     {
@@ -324,7 +332,7 @@ function getXAxesGroup(model: RepeatModel): VgMarkGroup {
           },
           x: hasCol ? {
             scale: model.scaleName(COLUMN),
-            field: model.field(COLUMN),
+            field: 'data',
             // offset by the padding
             offset: model.scale(COLUMN).padding / 2
           } : {
@@ -347,12 +355,7 @@ function getYAxesGroup(model: RepeatModel): VgMarkGroup {
     },
     hasRow ? {
       from: {
-        data: model.dataTable(),
-        transform: [{
-          type: 'aggregate',
-          groupby: [model.field(ROW)],
-          summarize: {'*': ['count']} // just a placeholder aggregation
-        }]
+        data: 'fields_row'
       }
     } : {},
     {
@@ -364,7 +367,7 @@ function getYAxesGroup(model: RepeatModel): VgMarkGroup {
           height: {field: {parent: model.child().sizeName('height')}},
           y: hasRow ? {
             scale: model.scaleName(ROW),
-            field: model.field(ROW),
+            field: 'data',
             // offset by the padding
             offset: model.scale(ROW).padding / 2
           } : {

@@ -337,6 +337,9 @@ export abstract class Model {
   public isFacet() {
     return false;
   }
+  public isRepeat() {
+    return false;
+  }
   public isLayer() {
     return false;
   }
