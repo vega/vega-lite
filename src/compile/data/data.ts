@@ -135,24 +135,26 @@ export function parseRepeatData(model: RepeatModel): DataComponent {
 }
 
 export function parseLayerData(model: LayerModel): DataComponent {
-  return {
-    // filter and formatParse could cause us to not be able to merge into parent
-    // so let's parse them first
-    filter: filter.parseLayer(model),
-    formatParse: formatParse.parseLayer(model),
-    nullFilter: nullFilter.parseLayer(model),
-    nonPositiveFilter: nonPositiveFilter.parseLayer(model),
+  return null;
+  // TODO: do we need this?
+  // return {
+  //   // filter and formatParse could cause us to not be able to merge into parent
+  //   // so let's parse them first
+  //   filter: filter.parseLayer(model),
+  //   formatParse: formatParse.parseLayer(model),
+  //   nullFilter: nullFilter.parseLayer(model),
+  //   nonPositiveFilter: nonPositiveFilter.parseLayer(model),
 
-    // everything after here does not affect whether we can merge child data into parent or not
-    source: source.parseLayer(model),
-    bin: bin.parseLayer(model),
-    calculate: formula.parseLayer(model),
-    timeUnit: timeUnit.parseLayer(model),
-    timeUnitDomain: timeUnitDomain.parseLayer(model),
-    summary: summary.parseLayer(model),
-    stackScale: stackScale.parseLayer(model),
-    colorRank: colorRank.parseLayer(model)
-  };
+  //   // everything after here does not affect whether we can merge child data into parent or not
+  //   source: source.parseLayer(model),
+  //   bin: bin.parseLayer(model),
+  //   calculate: formula.parseLayer(model),
+  //   timeUnit: timeUnit.parseLayer(model),
+  //   timeUnitDomain: timeUnitDomain.parseLayer(model),
+  //   summary: summary.parseLayer(model),
+  //   stackScale: stackScale.parseLayer(model),
+  //   colorRank: colorRank.parseLayer(model)
+  // };
 }
 
 

@@ -1,5 +1,6 @@
 import {ScaleType} from '../../scale';
 import {extend, keys, differ, Dict} from '../../util';
+import {field} from '../../fielddef';
 
 import {FacetModel} from './../facet';
 import {RepeatModel} from './../repeat';
@@ -15,11 +16,13 @@ export namespace nonPositiveFilter {
   export function parseUnit(model: Model): Dict<boolean> {
     return model.channels().reduce(function(nonPositiveComponent, channel) {
       const scale = model.scale(channel);
-      if (!model.field(channel) || !scale) {
+      const fieldDef = model.fieldDef(channel);
+      if (!fieldDef || !fieldDef.field || !scale) {
         // don't set anything
         return nonPositiveComponent;
       }
-      nonPositiveComponent[model.field(channel)] = scale.type === ScaleType.LOG;
+      const opt = fieldDef.bin ? {binSuffix: scale.type === ScaleType.ORDINAL ? '_range' : '_start'} : {};
+      nonPositiveComponent[field(fieldDef, opt)] = scale.type === ScaleType.LOG;
       return nonPositiveComponent;
     }, {} as Dict<boolean>);
   }

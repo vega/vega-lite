@@ -5,7 +5,7 @@ import {defaultConfig, Config, CellConfig} from '../config';
 import {SOURCE, SUMMARY} from '../data';
 import {Encoding} from '../encoding';
 import * as vlEncoding from '../encoding'; // TODO: remove
-import {FieldDef, FieldRefOption, field} from '../fielddef';
+import {FieldDef, FieldRefOption, field, isRepeatRef} from '../fielddef';
 import {LegendProperties} from '../legend';
 import {Mark, TEXT as TEXTMARK} from '../mark';
 import {Scale, ScaleType} from '../scale';
@@ -21,6 +21,7 @@ import {assembleData, parseUnitData} from './data/data';
 import {parseLegendComponent} from './legend';
 import {assembleLayout, parseUnitLayout} from './layout';
 import {Model} from './model';
+import {RepeatModel} from './repeat';
 import {parseMark} from './mark/mark';
 import {parseScaleComponent, scaleType} from './scale';
 import {compileStackProperties, StackProperties} from './stack';

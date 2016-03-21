@@ -4,11 +4,11 @@ import {AggregateOp, AGGREGATE_OPS} from './aggregate';
 import {AxisProperties} from './axis';
 import {BinProperties} from './bin';
 import {LegendProperties} from './legend';
-import {Scale} from './scale';
+import {Scale, ScaleType} from './scale';
 import {SortField, SortOrder} from './sort';
 import {TimeUnit} from './timeunit';
 import {Type, NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from './type';
-import {contains, getbins, toMap, isObject, isString, hash} from './util';
+import {contains, getbins, toMap, isObject, isString, extend} from './util';
 
 export type RepeatRef = {
   repeat: string
@@ -100,7 +100,7 @@ export interface FieldRefOption {
   suffix?: string;
 }
 
-export function field(fieldDef: SingleFieldDef, opt: FieldRefOption = {}) {
+export function field(fieldDef: FieldDef, opt: FieldRefOption = {}) {
   const prefix = (opt.datum ? 'datum.' : '') + (opt.prefn || '');
   const suffix = opt.suffix || '';
   const field = fieldDef.field;

@@ -1,6 +1,6 @@
 import {AxisOrient} from '../axis';
 import {COLUMN, ROW, X, Y, Channel} from '../channel';
-import {title as fieldDefTitle, isDimension, Field} from '../fielddef';
+import {title as fieldDefTitle, isDimension, Field, FieldDef} from '../fielddef';
 import {NOMINAL, ORDINAL, TEMPORAL} from '../type';
 import {contains, keys, extend, truncate, isString, Dict} from '../util';
 import {VgAxis} from '../vega.schema';
@@ -12,10 +12,10 @@ import {UnitModel} from './unit';
 // https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations
 declare let exports;
 
-export function parseAxisComponent(model: Model, axisChannels: Channel[]): Dict<VgAxis> {
+export function parseAxisComponent(model: Model, fieldDef: FieldDef, axisChannels: Channel[]): Dict<VgAxis> {
   return axisChannels.reduce(function(axis, channel) {
     if (model.axis(channel)) {
-      axis[channel] = parseAxis(channel, model);
+      axis[channel] = parseAxis(channel, fieldDef, model);
     }
     return axis;
   }, {} as Dict<VgAxis>);
@@ -24,7 +24,7 @@ export function parseAxisComponent(model: Model, axisChannels: Channel[]): Dict<
 /**
  * Make an inner axis for showing grid for shared axis.
  */
-export function parseInnerAxis(channel: Channel, model: Model): VgAxis {
+export function parseInnerAxis(channel: Channel, fieldDef: FieldDef, model: Model): VgAxis {
   const isCol = channel === COLUMN,
     isRow = channel === ROW,
     type = isCol ? 'x' : isRow ? 'y': channel;
@@ -34,7 +34,7 @@ export function parseInnerAxis(channel: Channel, model: Model): VgAxis {
   // TODO: replace any with Vega Axis Interface
   let def = {
     type: type,
-    scale: model.scaleName(channel),
+    scale: model.scaleName(channel, fieldDef),
     grid: true,
     tickSize: 0,
     properties: {
@@ -64,7 +64,7 @@ export function parseInnerAxis(channel: Channel, model: Model): VgAxis {
   return def;
 }
 
-export function parseAxis(channel: Channel, model: Model): VgAxis {
+export function parseAxis(channel: Channel, fieldDef: FieldDef, model: Model): VgAxis {
   const isCol = channel === COLUMN,
     isRow = channel === ROW,
     type = isCol ? 'x' : isRow ? 'y': channel;
@@ -74,7 +74,7 @@ export function parseAxis(channel: Channel, model: Model): VgAxis {
   // TODO: replace any with Vega Axis Interface
   let def: any = {
     type: type,
-    scale: model.scaleName(channel)
+    scale: model.scaleName(channel, fieldDef)
   };
 
   // format mixins (add format and formatType)

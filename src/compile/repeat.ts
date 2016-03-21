@@ -14,7 +14,7 @@ import {buildModel} from './common';
 import {assembleData} from './data/data';
 import {assembleLayout, parseRepeatLayout} from './layout';
 import {Model} from './model';
-import {parseScaleComponent} from './scale';
+import {parseScaleComponent, ScaleComponents} from './scale';
 
 export class RepeatModel extends Model {
   private _repeat: Repeat;
@@ -66,16 +66,6 @@ export class RepeatModel extends Model {
     return !!this._repeat[channel];
   }
 
-  public field(channel: Channel): string | any {
-    return {
-      parent: this.hasMultipleDimensions() ? channel + '.data' : 'data'
-    };
-  }
-
-  public repeatFields(channel: Channel): string[] {
-    return this._repeat[channel];
-  }
-
   public child() {
     return this._child;
   }
@@ -90,7 +80,13 @@ export class RepeatModel extends Model {
   }
 
   public fieldDef(channel: Channel): FieldDef {
-    return null; // repeat does not have field defs
+    // HACK
+    if (this.has(channel)) {
+      return {
+        field: this.repeat()[channel][0]
+      };
+    }
+    return null;
   }
 
   public stack() {
@@ -124,10 +120,11 @@ export class RepeatModel extends Model {
     keys(child.component.scale).forEach(function(channel) {
       // TODO: correctly implement independent scale
       if (true) { // if shared/union scale
-        scaleComponent[channel] = child.component.scale[channel];
-
+        const scales: ScaleComponents = scaleComponent[channel] = child.component.scale[channel];
         // for each scale, need to rename
-        vals(scaleComponent[channel]).forEach(function(scale) {
+        scales.main.concat([scales.binColorLegend]).concat([scales.colorLegend]).filter((scale) => {
+          return !!scale;
+        }).forEach(function(scale) {
           const scaleNameWithoutPrefix = scale.name.substr(child.name('').length);
           const newName = model.scaleName(scaleNameWithoutPrefix);
           child.renameScale(scale.name, newName);
@@ -381,7 +378,7 @@ function getYAxesGroup(model: RepeatModel): VgMarkGroup {
   );
 }
 
-function getRowGridGroups(model: Model): any[] { // TODO: VgMarks
+function getRowGridGroups(model: RepeatModel): any[] { // TODO: VgMarks
   const facetGridConfig = model.config().facet.grid;
 
   const rowGrid = {
@@ -389,13 +386,13 @@ function getRowGridGroups(model: Model): any[] { // TODO: VgMarks
     type: 'rule',
     from: {
       data: model.dataTable(),
-      transform: [{type: 'facet', groupby: [model.field(ROW)]}]
+      transform: [{type: 'facet', groupby: [model.repeat()[ROW]]}]
     },
     properties: {
       update: {
         y: {
           scale: model.scaleName(ROW),
-          field: model.field(ROW)
+          field: model.repeat()[ROW]
         },
         x: {value: 0, offset: -facetGridConfig.offset },
         x2: {field: {group: 'width'}, offset: facetGridConfig.offset },
@@ -422,7 +419,7 @@ function getRowGridGroups(model: Model): any[] { // TODO: VgMarks
   }];
 }
 
-function getColumnGridGroups(model: Model): any { // TODO: VgMarks
+function getColumnGridGroups(model: RepeatModel): any { // TODO: VgMarks
   const facetGridConfig = model.config().facet.grid;
 
   const columnGrid = {
@@ -430,13 +427,13 @@ function getColumnGridGroups(model: Model): any { // TODO: VgMarks
     type: 'rule',
     from: {
       data: model.dataTable(),
-      transform: [{type: 'facet', groupby: [model.field(COLUMN)]}]
+      transform: [{type: 'facet', groupby: [model.repeat()[COLUMN]]}]
     },
     properties: {
       update: {
         x: {
           scale: model.scaleName(COLUMN),
-          field: model.field(COLUMN)
+          field: model.repeat()[COLUMN]
         },
         y: {value: 0, offset: -facetGridConfig.offset},
         y2: {field: {group: 'height'}, offset: facetGridConfig.offset },

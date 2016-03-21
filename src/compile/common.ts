@@ -131,7 +131,7 @@ export function formatMixins(model: Model, channel: Channel, format: string) {
     const filter = (def.formatType || 'number') + (def.format ? ':\'' + def.format + '\'' : '');
     return {
       text: {
-        template: '{{' + model.field(channel, { datum: true }) + ' | ' + filter + '}}'
+        template: '{{' + field(fieldDef, { datum: true }) + ' | ' + filter + '}}'
       }
     };
   }

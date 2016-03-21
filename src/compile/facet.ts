@@ -4,7 +4,7 @@ import {defaultConfig, Config} from '../config';
 import {SOURCE, SUMMARY} from '../data';
 import {Facet} from '../facet';
 import {channelMappingForEach} from '../encoding';
-import {FieldDef, isDimension} from '../fielddef';
+import {FieldDef, isDimension, field} from '../fielddef';
 import {Scale, ScaleType} from '../scale';
 import {FacetSpec} from '../spec';
 import {getFullName} from '../type';
@@ -106,6 +106,17 @@ export class FacetModel extends Model {
 
   public facet() {
     return this._facet;
+  }
+
+  public field(channel: Channel) {
+    const fieldDef = this.fieldDef(channel);
+    let opt = {};
+    if (fieldDef.bin) { // bin has default suffix that depends on scaleType
+      opt = extend(opt, {
+        binSuffix: this.scale(channel) === ScaleType.ORDINAL ? '_range' : '_start'
+      });
+    }
+    return field(fieldDef, opt);
   }
 
   public has(channel: Channel): boolean {
@@ -427,7 +438,7 @@ function getYAxesGroup(model: FacetModel): VgMarkGroup {
   );
 }
 
-function getRowGridGroups(model: Model): any[] { // TODO: VgMarks
+function getRowGridGroups(model: FacetModel): any[] { // TODO: VgMarks
   const facetGridConfig = model.config().facet.grid;
 
   const rowGrid = {
@@ -468,7 +479,7 @@ function getRowGridGroups(model: Model): any[] { // TODO: VgMarks
   }];
 }
 
-function getColumnGridGroups(model: Model): any { // TODO: VgMarks
+function getColumnGridGroups(model: FacetModel): any { // TODO: VgMarks
   const facetGridConfig = model.config().facet.grid;
 
   const columnGrid = {

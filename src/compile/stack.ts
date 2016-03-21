@@ -94,9 +94,9 @@ export function imputeTransform(model: Model) {
   const stack = model.stack();
   return {
     type: 'impute',
-    field: model.field(stack.fieldChannel),
+    field: field(model.fieldDef(stack.fieldChannel)),
     groupby: stack.stackFields,
-    orderby: [model.field(stack.groupbyChannel)],
+    orderby: [field(model.fieldDef(stack.groupbyChannel))],
     method: 'value',
     value: 0
   };
