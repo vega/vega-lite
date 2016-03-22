@@ -5,7 +5,7 @@ import {defaultConfig, Config, CellConfig} from '../config';
 import {SOURCE, SUMMARY} from '../data';
 import {Encoding} from '../encoding';
 import * as vlEncoding from '../encoding'; // TODO: remove
-import {FieldDef, FieldRefOption, field} from '../fielddef';
+import {FieldDef} from '../fielddef';
 import {LegendProperties} from '../legend';
 import {Mark, TEXT as TEXTMARK} from '../mark';
 import {Scale, ScaleType} from '../scale';
@@ -234,19 +234,6 @@ export class UnitModel extends Model {
     // TODO: remove this || {}
     // Currently we have it to prevent null pointer exception.
     return this._encoding[channel] || {};
-  }
-
-  /** Get "field" reference for vega */
-  public field(channel: Channel, opt: FieldRefOption = {}) {
-    const fieldDef = this.fieldDef(channel);
-
-    if (fieldDef.bin) { // bin has default suffix that depends on scaleType
-      opt = extend({
-        binSuffix: this.scale(channel).type === ScaleType.ORDINAL ? '_range' : '_start'
-      }, opt);
-    }
-
-    return field(fieldDef, opt);
   }
 
   public dataTable() {

@@ -16,7 +16,7 @@ export namespace line {
     if (model.has(X)) {
       p.x = {
         scale: model.scaleName(X),
-        field: model.field(X, { binSuffix: '_mid' })
+        field: model.fieldRef(X, { binSuffix: '_mid' })
       };
     } else {
       p.x = { value: 0 };
@@ -26,7 +26,7 @@ export namespace line {
     if (model.has(Y)) {
       p.y = {
         scale: model.scaleName(Y),
-        field: model.field(Y, { binSuffix: '_mid' })
+        field: model.fieldRef(Y, { binSuffix: '_mid' })
       };
     } else {
       p.y = { field: { group: 'height' } };
@@ -34,7 +34,7 @@ export namespace line {
 
     applyColorAndOpacity(p, model);
     applyMarkConfig(p, model, ['interpolate', 'tension']);
-      
+
     // size as a channel is not supported in Vega yet.
     const size = sizeValue(model);
     if (size) {
@@ -42,7 +42,7 @@ export namespace line {
     }
     return p;
   }
-  
+
   function sizeValue(model: UnitModel) {
     const fieldDef = model.fieldDef(SIZE);
     if (fieldDef && fieldDef.value !== undefined) {

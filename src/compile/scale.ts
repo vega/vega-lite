@@ -41,25 +41,30 @@ export type ScaleComponents = {
 
 export function parseScaleComponent(model: Model): Dict<ScaleComponents> {
   return model.channels().reduce(function(scale: Dict<ScaleComponents>, channel: Channel) {
-      if (model.scale(channel)) {
-        const fieldDef = model.fieldDef(channel);
-        const scales: ScaleComponents = {
-          main: parseMainScale(model, fieldDef, channel)
-        };
+    function makeScales(channel) {
+      const fieldDef = model.fieldDef(channel);
+      const scales: ScaleComponents = {
+        main: parseMainScale(model, fieldDef, channel)
+      };
 
-        // Add additional scales needed to support ordinal legends (list of values)
-        // for color ramp.
-        if (channel === COLOR && model.legend(COLOR) && (fieldDef.type === ORDINAL || fieldDef.bin || fieldDef.timeUnit)) {
-          scales.colorLegend = parseColorLegendScale(model, fieldDef);
-          if (fieldDef.bin) {
-            scales.binColorLegend = parseBinColorLegendLabel(model, fieldDef);
-          }
+      // Add additional scales needed to support ordinal legends (list of values)
+      // for color ramp.
+      if (channel === COLOR && model.legend(COLOR) && (fieldDef.type === ORDINAL || fieldDef.bin || fieldDef.timeUnit)) {
+        scales.colorLegend = parseColorLegendScale(model, fieldDef);
+        if (fieldDef.bin) {
+          scales.binColorLegend = parseBinColorLegendLabel(model, fieldDef);
         }
-
-        scale[channel] = scales;
       }
-      return scale;
-    }, {} as Dict<ScaleComponents>);
+      return scales;
+    }
+
+    if (model.scale(channel)) {
+      model.repeat(channel, function(field) {
+        scale[channel + '_' + field] = makeScales(channel);
+      });
+    }
+    return scale;
+  }, {} as Dict<ScaleComponents>);
 }
 
 /**
@@ -114,10 +119,10 @@ function parseColorLegendScale(model: Model, fieldDef: FieldDef): ScaleComponent
     domain: {
       data: model.dataTable(),
       // use rank_<field> for ordinal type, for bin and timeUnit use default field
-      field: model.field(COLOR, (fieldDef.bin || fieldDef.timeUnit) ? {} : {prefn: 'rank_'}),
+      field: model.fieldRef(COLOR, (fieldDef.bin || fieldDef.timeUnit) ? {} : {prefn: 'rank_'}),
       sort: true
     },
-    range: {data: model.dataTable(), field: model.field(COLOR), sort: true}
+    range: {data: model.dataTable(), field: model.fieldRef(COLOR), sort: true}
   };
 }
 
@@ -130,14 +135,14 @@ function parseBinColorLegendLabel(model: Model, fieldDef: FieldDef): ScaleCompon
     type: ScaleType.ORDINAL,
     domain: {
       data: model.dataTable(),
-      field: model.field(COLOR),
+      field: model.fieldRef(COLOR),
       sort: true
     },
     range: {
       data: model.dataTable(),
       field: field(fieldDef, {binSuffix: '_range'}),
       sort: {
-        field: model.field(COLOR, { binSuffix: '_start' }),
+        field: model.fieldRef(COLOR, { binSuffix: '_start' }),
         op: 'min' // min or max doesn't matter since same _range would have the same _start
       }
     }
@@ -214,9 +219,9 @@ export function domain(scale: Scale, model: Model, channel:Channel): any {
 
     return {
       data: model.dataTable(),
-      field: model.field(channel),
+      field: model.fieldRef(channel),
       sort: {
-        field: model.field(channel),
+        field: model.fieldRef(channel),
         op: 'min'
       }
     };
@@ -231,7 +236,7 @@ export function domain(scale: Scale, model: Model, channel:Channel): any {
     return {
       data: model.dataName(STACKED_SCALE),
       // STACKED_SCALE produces sum of the field's value e.g., sum of sum, sum of distinct
-      field: model.field(channel, {prefn: 'sum_'})
+      field: model.fieldRef(channel, {prefn: 'sum_'})
     };
   }
 
@@ -241,27 +246,27 @@ export function domain(scale: Scale, model: Model, channel:Channel): any {
   if (includeRawDomain) { // includeRawDomain - only Q/T
     return {
       data: SOURCE,
-      field: model.field(channel, {noAggregate: true})
+      field: model.fieldRef(channel, {noAggregate: true})
     };
   } else if (fieldDef.bin) { // bin
     return scale.type === ScaleType.ORDINAL ? {
       // ordinal bin scale takes domain from bin_range, ordered by bin_start
       data: model.dataTable(),
-      field: model.field(channel, { binSuffix: '_range' }),
+      field: model.fieldRef(channel, { binSuffix: '_range' }),
       sort: {
-        field: model.field(channel, { binSuffix: '_start' }),
+        field: model.fieldRef(channel, { binSuffix: '_start' }),
         op: 'min' // min or max doesn't matter since same _range would have the same _start
       }
     } : channel === COLOR ? {
       // Currently, binned on color uses linear scale and thus use _start point
       data: model.dataTable(),
-      field: model.field(channel, { binSuffix: '_start' })
+      field: model.fieldRef(channel, { binSuffix: '_start' })
     } : {
       // other linear bin scale merges both bin_start and bin_end for non-ordinal scale
       data: model.dataTable(),
       field: [
-        model.field(channel, { binSuffix: '_start' }),
-        model.field(channel, { binSuffix: '_end' })
+        model.fieldRef(channel, { binSuffix: '_start' }),
+        model.fieldRef(channel, { binSuffix: '_end' })
       ]
     };
   } else if (sort) { // have sort -- only for ordinal
@@ -269,13 +274,13 @@ export function domain(scale: Scale, model: Model, channel:Channel): any {
       // If sort by aggregation of a specified sort field, we need to use SOURCE table,
       // so we can aggregate values for the scale independently from the main aggregation.
       data: sort.op ? SOURCE : model.dataTable(),
-      field: (fieldDef.type === ORDINAL && channel === COLOR) ? model.field(channel, {prefn: 'rank_'}) : model.field(channel),
+      field: (fieldDef.type === ORDINAL && channel === COLOR) ? model.fieldRef(channel, {prefn: 'rank_'}) : model.fieldExpr(channel),
       sort: sort
     };
   } else {
     return {
       data: model.dataTable(),
-      field: (fieldDef.type === ORDINAL && channel === COLOR) ? model.field(channel, {prefn: 'rank_'}) : model.field(channel),
+      field: (fieldDef.type === ORDINAL && channel === COLOR) ? model.fieldRef(channel, {prefn: 'rank_'}) : model.fieldExpr(channel),
     };
   }
 }
