@@ -106,7 +106,7 @@ export function assembleSignals(model: UnitModel, signals) {
       init: { _id: -1, width: 1, height: 1 },
       streams: [{
         type: 'mousemove',
-        expr: 'eventGroup(' + u.str(model.name('root')) + ')'
+        expr: 'eventGroup()'
       }]
     });
   }

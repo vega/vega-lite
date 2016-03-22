@@ -24,6 +24,8 @@ export function parse(model: UnitModel, sel: s.Selection) {
 
     sel.project[i].scale = scale;
   });
+
+  if (sel.translate === undefined) sel.translate = true;
 }
 
 export function assembleSignals(_, sel: s.Selection, trigger, clear) {

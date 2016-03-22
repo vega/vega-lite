@@ -4,6 +4,8 @@ import * as s from './';
 import * as u from '../../util';
 import {parse as parseEvents} from 'vega-event-selector';
 
+var START = 'min_', END = 'max_', SIZE = 'size_';
+
 function startName(sel: s.Selection) {
   return sel.name + '_start';
 }
@@ -25,8 +27,13 @@ export function assembleSignals(model: UnitModel, sel: s.Selection, trigger, cle
     x = null, y = null;
 
   sel.project.forEach(function(p) {
-    if (p.channel === X) x = u.str(model.scaleName(X));
-    if (p.channel === Y) y = u.str(model.scaleName(Y));
+    if (p.channel === X) {
+      x = { scale: u.str(model.scaleName(X)), field: p.field };
+    }
+
+    if (p.channel === Y) {
+      y = { scale: u.str(model.scaleName(Y)), field: p.field };
+    }
   });
 
   signals.push({
@@ -48,24 +55,33 @@ export function assembleSignals(model: UnitModel, sel: s.Selection, trigger, cle
   trigger.streams[0] = {
     type: start + ', ' + end,
     expr: '{' +
-    (x ? 'start_x: iscale(' + x + ', ' + start + '.x, unit), ' : '') +
-    (y ? 'start_y: iscale(' + y + ', ' + start + '.y, unit), ' : '') +
-    (x ? 'end_x: iscale(' + x + ', ' + end + '.x, unit), ' : '') +
-    (y ? 'end_y: iscale(' + y + ', ' + end + '.y, unit), ' : '') +
-    (x ? 'x: ' + u.str(model.field(X)) + ', ' : '') +
-    (y ? 'y: ' + u.str(model.field(Y)) + ', ' : '') +
-    '_unitID: ' + start + '.unit._id}'
+    (x ? START + x.field + ': iscale(' + x.scale + ', ' + start + '.x, unit), ' : '') +
+    (y ? START + y.field + ': iscale(' + y.scale + ', ' + start + '.y, unit), ' : '') +
+    (x ? END + x.field + ': iscale(' + x.scale + ', ' + end + '.x, unit), ' : '') +
+    (y ? END + y.field + ': iscale(' + y.scale + ', ' + end + '.y, unit), ' : '') +
+    (x ? SIZE + x.field + ': abs(' + start + '.x - ' + end + '.x), ' : '') +
+    (y ? SIZE + y.field + ': abs(' + start + '.y - ' + end + '.y), ' : '') +
+    (x ? 'x: ' + u.str(x.field) + ', ' : '') +
+    (y ? 'y: ' + u.str(y.field) + ', ' : '') +
+    '_unitID: ' + start + '.unit._id, ts: now()}'
   };
 
   clear.name = null;  // Brushes are upserted.
 }
 
 export function assembleData(model: UnitModel, sel: s.Selection, db) {
+  // TODO, if we only want the most recent interval, we can keep the clear around.
   db.modify = [{ type: 'upsert', signal: sel.name, field: '_unitID' }];
 }
 
 // TODO: Move to config?
 export function assembleMarks(model: UnitModel, sel: s.Selection, marks) {
+  var x = null, y = null;
+  sel.project.forEach(function(p) {
+    if (p.channel === X) x = p.field;
+    if (p.channel === Y) y = p.field;
+  });
+
   marks.push({
     type: 'rect',
     from: { data: s.storeName(sel) },
@@ -76,31 +92,23 @@ export function assembleMarks(model: UnitModel, sel: s.Selection, marks) {
       },
       update: {
         x: [
-          {
-            test: 'datum._unitID === group._id',
-            scale: model.scaleName(X), field: 'start_x'
-          },
+          u.extend({test: 'datum._unitID === group._id'},
+            (x ? { scale: model.scaleName(X), field: START+x } : {value:0})),
           { value: 0 }
         ],
         x2: [
-          {
-            test: 'datum._unitID === group._id',
-            scale: model.scaleName(X), field: 'end_x'
-          },
+          u.extend({test: 'datum._unitID === group._id'},
+            (x ? { scale: model.scaleName(X), field: END+x } : {field: {group: 'width'}})),
           { value: 0 }
         ],
         y: [
-          {
-            test: 'datum._unitID === group._id',
-            scale: model.scaleName(Y), field: 'start_y'
-          },
+          u.extend({ test: 'datum._unitID === group._id' },
+            (y ? { scale: model.scaleName(Y), field: START + y } : { value: 0 })),
           { value: 0 }
         ],
         y2: [
-          {
-            test: 'datum._unitID === group._id',
-            scale: model.scaleName(Y), field: 'end_y'
-          },
+          u.extend({ test: 'datum._unitID === group._id' },
+            (y ? { scale: model.scaleName(Y), field: END + y } : { field: {group: 'height'} })),
           { value: 0 }
         ]
       }

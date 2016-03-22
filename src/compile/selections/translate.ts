@@ -45,11 +45,11 @@ export function assembleSignals(model: UnitModel, sel: s.Selection, _, __, signa
     streams: [
       {
         type: on.start.str,
-        expr: '{x: 0, y: 0}'
+        expr: '{x: 0, y: 0, ts: now()}'
       },
       {
         type: on.str,
-        expr: '{x: '+anchor+'.x - eventX(), y: eventY() - '+anchor+'.y}'
+        expr: '{x: '+anchor+'.x - eventX(), y: eventY() - '+anchor+'.y, ts: now()}'
       }
     ]
   });
@@ -61,10 +61,10 @@ export function assembleSignals(model: UnitModel, sel: s.Selection, _, __, signa
     streams: [
       {
         type: on.start.str,
-        expr: '{unit: unit}'
+        expr: '{x: eventX(), y: eventY(), unit: unit}'
       },
       {
-        type: '('+on.start.str+'), ('+on.str+')',
+        type: on.str,
         expr: '{x: eventX(), y: eventY(), unit: '+anchor+'.unit}'
       }
     ]
@@ -72,40 +72,68 @@ export function assembleSignals(model: UnitModel, sel: s.Selection, _, __, signa
 }
 
 export function assembleData(model: UnitModel, sel: s.Selection, db) {
-  var tx = db.transform, anchor = anchorName(sel), delta = deltaName(sel);
-  var DIMS = { x: anchor + '.unit.width', y: anchor + '.unit.height' };
+  var tx = db.transform,
+      name = sel.name,
+      anchor = anchorName(sel),
+      delta = deltaName(sel);
+
+  // The delta is relative to what dimension?
+  var DIMS = {
+    x: anchor + '.unit.width',
+    y: anchor + '.unit.height'
+  };
+
+  // Translating scales/viewport and brush work in opposite directions.
+  var DIR = {
+    min: sel.scales ? 'min' : 'max',
+    max: sel.scales ? 'max' : 'min'
+  };
 
   sel.project.forEach(function(p) {
     var field = p.field, channel = p.channel,
-        min = 'datum._min_'+field, max = 'datum._max_'+field;
+      n = 'min_' + field,
+      x = 'max_' + field,
+      dmin = 'datum.' + n,
+      dmax = 'datum.' + x,
+      _dmin = 'datum._' + n,
+      _dmax = 'datum._' + x;
 
-    // To prevent aspect ratio drift, capture the current extents
-    // and use them in the offset calculation. We need to insert the
-    // delta signal in there to force recomputation. Start scale at
-    // zero if there's no anchor.
-    var expr = 'datum.min_'+field+'*(('+delta+'.x/'+delta+'.x)||1)';
-    if (sel.scales) {
-      expr = anchor+'.x ? ' + expr + ' : 0';
-      p.scale.zero = false;
-      p.scale.nice = false;
+    // We need to shim in the delta or brush signals to trigger a reeval
+    var reeval = '((' + delta + '.ts/' + delta + '.ts) || ' +
+      (sel.interval ? '(' + sel.name + '.ts/' + sel.name + '.ts) || ' : '') +
+      '1)';
+
+    var init = '(datum.min_' + field + ', datum.max_' + field + ') *' + reeval;
+
+    // For intervals, the delta should be interpretted based on the brush size.
+    if (sel.interval) {
+      DIMS[channel] = name + '.size_' + field
     }
 
+    // To prevent aspect ratio drift, capture the current extents (dmin, dmax)
+    // and use them in the offset calculation (_dmin, _dmax).
     tx.push.apply(tx, [
-      {type: 'formula', field: '_min_'+field, expr: expr},
       {
         type: 'formula',
-        field: '_max_'+field,
-        expr: 'datum.max_'+field+'*(('+delta+'.x/'+delta+'.x)||1)'
+        field: '_' + n,
+        expr: (sel.scales) ? // Start scale at zero if there's no anchor.
+          anchor + '.x ? ' + DIR.min + init + ' : 0' :
+          DIR.min + init
       },
       {
         type: 'formula',
-        field: 'min_'+field,
-        expr: min + ' + (' + max+'-'+min + ')*'+delta+'.'+channel+'/'+DIMS[channel]
+        field: '_' + x,
+        expr: DIR.max + '(datum.max_' + field + ', datum.min_' + field + ') *' + reeval
       },
       {
         type: 'formula',
-        field: 'max_'+field,
-        expr: max + ' + (' + max+'-'+min + ')*'+delta+'.'+channel+'/'+DIMS[channel]
+        field: n,
+        expr: _dmin + ' + (' + _dmax+'-'+_dmin + ')*'+delta+'.'+channel+'/'+DIMS[channel]
+      },
+      {
+        type: 'formula',
+        field: x,
+        expr: _dmax + ' + (' + _dmax+'-'+_dmin + ')*'+delta+'.'+channel+'/'+DIMS[channel]
       }
     ]);
   });
@@ -120,6 +148,7 @@ export function assembleMarks(model: UnitModel, sel: s.Selection, marks: any[]) 
       update: {
         width: {field: {group: 'width'}},
         height: {field: {group: 'height'}},
+        fill: {value: 'transparent'},
         clip: {value: true}
       }
     },
