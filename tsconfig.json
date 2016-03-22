@@ -106,7 +106,6 @@
     "test/compile/scale.test.ts",
     "test/compile/stack.test.ts",
     "test/compile/unit.test.ts",
-    "test/fielddef.test.ts",
     "test/schema.test.ts",
     "test/spec.test.ts",
     "test/type.test.ts",

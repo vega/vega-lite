@@ -116,10 +116,6 @@ export function parseFacetData(model: FacetModel): DataComponent {
   };
 }
 
-export function parseRepeatData(model: RepeatModel): DataComponent {
-  return null;
-}
-
 export function parseLayerData(model: LayerModel): DataComponent {
   return {
     // filter and formatParse could cause us to not be able to merge into parent

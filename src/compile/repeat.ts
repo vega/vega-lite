@@ -1,18 +1,15 @@
-import {AxisProperties} from '../axis';
 import {COLUMN, ROW, X, Y, Channel} from '../channel';
 import {defaultConfig, Config} from '../config';
-import {SOURCE, SUMMARY} from '../data';
 import {Repeat} from '../repeat';
 import {FieldDef} from '../fielddef';
 import {Scale, ScaleType} from '../scale';
 import {RepeatSpec} from '../spec';
 import {extend, keys, vals, flatten, duplicate, mergeDeep, contains, Dict} from '../util';
-import {VgData, VgMarkGroup} from '../vega.schema';
+import {VgData} from '../vega.schema';
 import {ORDINAL} from '../type';
 
-import {parseAxis, parseInnerAxis, gridShow, parseAxisComponent} from './axis';
+import {parseAxisComponent} from './axis';
 import {buildModel} from './common';
-import {assembleData, parseRepeatData} from './data/data';
 import {assembleLayout, parseRepeatLayout} from './layout';
 import {Model} from './model';
 import {parseScaleComponent} from './scale';
@@ -69,11 +66,6 @@ export class RepeatModel extends Model {
 
   public child() {
     return this._child;
-  }
-
-  private hasSummary() {
-    // TODO
-    return false;
   }
 
   public dataTable(): string {
