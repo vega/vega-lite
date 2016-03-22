@@ -17,6 +17,8 @@ function endName(sel: s.Selection) {
 // TODO: resolve arg.
 export function parse(model: UnitModel, sel: s.Selection) {
   sel.predicate = 'inrangeselection(' + u.str(s.storeName(sel)) + ', datum, "union", group._id)';
+
+  if (sel.translate === undefined) sel.translate = true;
 }
 
 export function assembleSignals(model: UnitModel, sel: s.Selection, trigger, clear, signals) {
@@ -83,6 +85,7 @@ export function assembleMarks(model: UnitModel, sel: s.Selection, marks) {
   });
 
   marks.push({
+    name: 'brush',
     type: 'rect',
     from: { data: s.storeName(sel) },
     properties: {

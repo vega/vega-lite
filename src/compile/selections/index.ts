@@ -43,7 +43,7 @@ export function parse(spec, model: UnitModel) {
 
     if (!sel.on) {
       sel.on = sel.interval ?
-        '[mousedown, window:mouseup] > window:mousemove' : 'click';
+        '[mousedown[!event.vg.name.brush], window:mouseup] > window:mousemove' : 'click';
     }
 
     if (sel.type === Types.MULTI && !sel.scales && !sel.interval) {
