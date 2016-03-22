@@ -45,8 +45,9 @@ export namespace summary {
           meas['*']['count'] = true;
           /* tslint:enable:no-string-literal */
         } else {
-          meas[fieldDef.field] = meas[fieldDef.field] || {};
-          meas[fieldDef.field][fieldDef.aggregate] = true;
+          const field = model.fieldExpr(channel);
+          meas[field] = meas[field] || {};
+          meas[field][fieldDef.aggregate] = true;
         }
       } else {
         addDimension(dims, fieldDef);

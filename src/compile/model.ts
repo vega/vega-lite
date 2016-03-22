@@ -3,7 +3,7 @@ import {Channel, X, COLUMN} from '../channel';
 import {Config, CellConfig} from '../config';
 import {Data, DataTable} from '../data';
 import {channelMappingReduce, channelMappingForEach} from '../encoding';
-import {FieldDef, FieldRefOption, field, Field, isRepeatRef} from '../fielddef';
+import {FieldDef, FieldRefOption, field, isRepeatRef, RepeatRef} from '../fielddef';
 import {LegendProperties} from '../legend';
 import {Scale, ScaleType} from '../scale';
 import {BaseSpec} from '../spec';
@@ -91,6 +91,8 @@ export abstract class Model {
 
   protected _warnings: string[] = [];
 
+  protected _iterators: Dict<string>;
+
   public component: Component;
 
   constructor(spec: BaseSpec, parent: Model, parentGivenName: string) {
@@ -108,6 +110,8 @@ export abstract class Model {
 
     this._description = spec.description;
     this._transform = spec.transform;
+
+    this._iterators = {};
 
     this.component = {data: null, layout: null, mark: null, scale: null, axis: null, axisGroup: null, gridGroup: null, legend: null};
   }
@@ -265,32 +269,37 @@ export abstract class Model {
     return this._transform || {};
   }
 
-  protected _iterators = null;
-
   public repeat(channel: Channel, f: (field: string) => any) {
-    const parent = this.parent() as RepeatModel;
+    if (!this.parent() || !this.parent().isRepeat() || !isRepeatRef(this.fieldDef(channel).field)) {
+      return f(this.fieldOrig(channel));  // no repeat
+    }
 
-    parent.repeat()[channel].forEach((field) => {
-      this._iterators[channel] = field;
+    const parent = this.parent() as RepeatModel;
+    const repeat = this.fieldDef(channel).field as RepeatRef;
+
+    parent.repeat()[repeat.repeat].forEach((field) => {
+      this._iterators[repeat.repeat] = field;
       f(field);
     });
 
-    delete this._iterators[channel];
+    delete this._iterators[repeat.repeat];
   }
 
   /**
-   * Just the field.
+   * Just the raw field.
    */
-  // public field(channel: Channel) {
-  //   let fieldDef = this.fieldDef(channel);
-  //   if (isRepeatRef(fieldDef.field)) {
-  //     if (channel in this._iterators) {
-  //       console.error('we are not iterating');
-  //     }
-  //     return this._iterators[channel];
-  //   }
-  //   return fieldDef.field;
-  // }
+  public fieldOrig(channel: Channel): string {
+    const field = this.fieldDef(channel).field;
+    if (isRepeatRef(field)) {
+      if (field.repeat in this._iterators) {
+         return this._iterators[field.repeat];
+      } else {
+        console.error('we are not iterating');
+      }
+    }
+
+    return field as string;
+  }
 
   /**
    * Get the field without reference to the parent (for scales, axes, legends)
@@ -318,16 +327,20 @@ export abstract class Model {
   }
 
   /**
-   * Get the field or a reference to the parent (for marks)
+   * Get the field or a reference to the parent (for marks). If we are iterating, get the actual value.
    */
   public fieldRef(channel: Channel, opt:  FieldRefOption = {}): string | any {
     const fieldDef = this.fieldDef(channel);
 
     const field = fieldDef.field;
     if (isRepeatRef(field)) {
-      return {
-        parent: field.repeat
-      };
+      if (!(field.repeat in this._iterators)) {
+        return {
+          parent: field.repeat
+        };
+      } else {
+        // we are iterating so let's return the reference
+      }
     }
 
     return this.fieldExpr(channel, opt);
@@ -351,13 +364,16 @@ export abstract class Model {
 
   /** returns scale name for a given channel */
   public scaleName(channel: Channel|string): string {
-    const field = this.fieldDef(channel as Channel).field;
+    const fieldDef = this.fieldDef(channel as Channel);
     let postfix = '';
-    if (isRepeatRef(field)) {
-      if (field.repeat in this._iterators) {
-         postfix = '_' + this._iterators[field.repeat];
-      } else {
-        console.error('we are not iterating');
+    if (fieldDef) {
+      const field = fieldDef.field;
+      if (isRepeatRef(field)) {
+        if (field.repeat in this._iterators) {
+          postfix = '_' + this._iterators[field.repeat];
+        } else {
+          console.error('we are not iterating');
+        }
       }
     }
     return this._scaleNameMap.get(this.name(channel + postfix));

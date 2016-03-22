@@ -94,9 +94,9 @@ export function imputeTransform(model: Model) {
   const stack = model.stack();
   return {
     type: 'impute',
-    field: model.field(stack.fieldChannel),
+    field: model.fieldExpr(stack.fieldChannel),
     groupby: stack.stackFields,
-    orderby: [model.field(stack.groupbyChannel)],
+    orderby: [model.fieldExpr(stack.groupbyChannel)],
     method: 'value',
     value: 0
   };
@@ -112,13 +112,13 @@ export function stackTransform(model: UnitModel) {
      return '-' + field;
     });
 
-  const valName = model.field(stack.fieldChannel);
+  const valName = model.fieldExpr(stack.fieldChannel);
 
   // add stack transform to mark
   let transform: StackTransform = {
     type: 'stack',
-    groupby: [model.field(stack.groupbyChannel)],
-    field: model.field(stack.fieldChannel),
+    groupby: [model.fieldExpr(stack.groupbyChannel)],
+    field: model.fieldExpr(stack.fieldChannel),
     sortby: sortby,
     output: {
       start: valName + '_start',

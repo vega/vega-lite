@@ -8,7 +8,7 @@ import {Scale} from './scale';
 import {SortField, SortOrder} from './sort';
 import {TimeUnit} from './timeunit';
 import {Type, NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from './type';
-import {contains, isObject, toMap} from './util';
+import {contains, isObject, toMap, hash} from './util';
 
 export type RepeatRef = {
   repeat: string
@@ -140,7 +140,7 @@ export function isCount(fieldDef: FieldDef) {
 }
 
 
-export function title(fieldDef: FieldDef) {
+export function title(fieldDef: FieldDef): string {
   if (isCount(fieldDef)) {
     return COUNT_DISPLAYNAME;
   }
@@ -148,6 +148,7 @@ export function title(fieldDef: FieldDef) {
   if (fn) {
     return fn.toString().toUpperCase() + '(' + fieldDef.field + ')';
   } else {
-    return fieldDef.field;
+    // FIXME
+    return hash(fieldDef.field);
   }
 }

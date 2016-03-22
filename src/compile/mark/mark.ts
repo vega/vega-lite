@@ -194,7 +194,8 @@ function sortPathBy(model: UnitModel): string | string[] {
     }
   } else {
     // For both line and area, we sort values based on dimension by default
-    return '-' + model.field(model.config().mark.orient === 'horizontal' ? Y : X);
+    // FIXME: need to make sure we always get a text
+    return '-' + model.fieldRef(model.config().mark.orient === 'horizontal' ? Y : X);
   }
 }
 
@@ -205,7 +206,7 @@ function sortPathBy(model: UnitModel): string | string[] {
 function detailFields(model: UnitModel): string[] {
   return [COLOR, DETAIL, SHAPE].reduce(function(details, channel) {
     if (model.has(channel) && !model.fieldDef(channel).aggregate) {
-      details.push(model.field(channel));
+      details.push(model.fieldRef(channel));
     }
     return details;
   }, []);

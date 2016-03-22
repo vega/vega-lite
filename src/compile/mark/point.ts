@@ -15,7 +15,7 @@ export namespace point {
     if (model.has(X)) {
       p.x = {
         scale: model.scaleName(X),
-        field: model.field(X, { binSuffix: '_mid' })
+        field: model.fieldRef(X, { binSuffix: '_mid' })
       };
     } else {
       p.x = { value: model.config().scale.bandSize / 2 };
@@ -25,7 +25,7 @@ export namespace point {
     if (model.has(Y)) {
       p.y = {
         scale: model.scaleName(Y),
-        field: model.field(Y, { binSuffix: '_mid' })
+        field: model.fieldRef(Y, { binSuffix: '_mid' })
       };
     } else {
       p.y = { value: model.config().scale.bandSize / 2 };
@@ -35,7 +35,7 @@ export namespace point {
     if (model.has(SIZE)) {
       p.size = {
         scale: model.scaleName(SIZE),
-        field: model.field(SIZE)
+        field: model.fieldRef(SIZE)
       };
     } else {
       p.size = { value: sizeValue(model) };
@@ -47,7 +47,7 @@ export namespace point {
     } else if (model.has(SHAPE)) {
       p.shape = {
         scale: model.scaleName(SHAPE),
-        field: model.field(SHAPE)
+        field: model.fieldRef(SHAPE)
       };
     } else if (model.fieldDef(SHAPE).value) {
       p.shape = { value: model.fieldDef(SHAPE).value };

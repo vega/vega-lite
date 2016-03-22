@@ -197,8 +197,8 @@ export class FacetModel extends Model {
             transform: [{
               type: 'facet',
               groupby: [].concat(
-                this.has(ROW) ? [this.field(ROW)] : [],
-                this.has(COLUMN) ? [this.field(COLUMN)] : []
+                this.has(ROW) ? [this.fieldExpr(ROW)] : [],
+                this.has(COLUMN) ? [this.fieldExpr(COLUMN)] : []
               )
             }]
           }
@@ -304,14 +304,14 @@ function getFacetGroupProperties(model: FacetModel) {
   return extend({
       x: model.has(COLUMN) ? {
           scale: model.scaleName(COLUMN),
-          field: model.field(COLUMN),
+          field: model.fieldExpr(COLUMN),
           // offset by the padding
           offset: model.scale(COLUMN).padding / 2
         } : {value: model.config().facet.scale.padding / 2},
 
       y: model.has(ROW) ? {
         scale: model.scaleName(ROW),
-        field: model.field(ROW),
+        field: model.fieldExpr(ROW),
         // offset by the padding
         offset: model.scale(ROW).padding / 2
       } : {value: model.config().facet.scale.padding / 2},
@@ -362,7 +362,7 @@ function getXAxesGroup(model: FacetModel): VgMarkGroup {
         data: model.dataTable(),
         transform: [{
           type: 'aggregate',
-          groupby: [model.field(COLUMN)],
+          groupby: [model.fieldExpr(COLUMN)],
           summarize: {'*': ['count']} // just a placeholder aggregation
         }]
       }
@@ -376,7 +376,7 @@ function getXAxesGroup(model: FacetModel): VgMarkGroup {
           },
           x: hasCol ? {
             scale: model.scaleName(COLUMN),
-            field: model.field(COLUMN),
+            field: model.fieldExpr(COLUMN),
             // offset by the padding
             offset: model.scale(COLUMN).padding / 2
           } : {
@@ -402,7 +402,7 @@ function getYAxesGroup(model: FacetModel): VgMarkGroup {
         data: model.dataTable(),
         transform: [{
           type: 'aggregate',
-          groupby: [model.field(ROW)],
+          groupby: [model.fieldExpr(ROW)],
           summarize: {'*': ['count']} // just a placeholder aggregation
         }]
       }
@@ -416,7 +416,7 @@ function getYAxesGroup(model: FacetModel): VgMarkGroup {
           height: {field: {parent: model.child().sizeName('height')}},
           y: hasRow ? {
             scale: model.scaleName(ROW),
-            field: model.field(ROW),
+            field: model.fieldExpr(ROW),
             // offset by the padding
             offset: model.scale(ROW).padding / 2
           } : {
@@ -438,13 +438,13 @@ function getRowGridGroups(model: Model): any[] { // TODO: VgMarks
     type: 'rule',
     from: {
       data: model.dataTable(),
-      transform: [{type: 'facet', groupby: [model.field(ROW)]}]
+      transform: [{type: 'facet', groupby: [model.fieldExpr(ROW)]}]
     },
     properties: {
       update: {
         y: {
           scale: model.scaleName(ROW),
-          field: model.field(ROW)
+          field: model.fieldExpr(ROW)
         },
         x: {value: 0, offset: -facetGridConfig.offset },
         x2: {field: {group: 'width'}, offset: facetGridConfig.offset },
@@ -479,13 +479,13 @@ function getColumnGridGroups(model: Model): any { // TODO: VgMarks
     type: 'rule',
     from: {
       data: model.dataTable(),
-      transform: [{type: 'facet', groupby: [model.field(COLUMN)]}]
+      transform: [{type: 'facet', groupby: [model.fieldExpr(COLUMN)]}]
     },
     properties: {
       update: {
         x: {
           scale: model.scaleName(COLUMN),
-          field: model.field(COLUMN)
+          field: model.fieldExpr(COLUMN)
         },
         y: {value: 0, offset: -facetGridConfig.offset},
         y2: {field: {group: 'height'}, offset: facetGridConfig.offset },

@@ -14,11 +14,11 @@ export namespace nonPositiveFilter {
   export function parseUnit(model: Model): Dict<boolean> {
     return model.channels().reduce(function(nonPositiveComponent, channel) {
       const scale = model.scale(channel);
-      if (!model.field(channel) || !scale) {
+      if (!model.fieldExpr(channel) || !scale) {
         // don't set anything
         return nonPositiveComponent;
       }
-      nonPositiveComponent[model.field(channel)] = scale.type === ScaleType.LOG;
+      nonPositiveComponent[model.fieldExpr(channel)] = scale.type === ScaleType.LOG;
       return nonPositiveComponent;
     }, {} as Dict<boolean>);
   }

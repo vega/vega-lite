@@ -21,14 +21,14 @@ export namespace colorRank {
   export function parseUnit(model: Model) {
     let colorRankComponent: Dict<VgTransform[]> = {};
     if (model.has(COLOR) && model.fieldDef(COLOR).type === ORDINAL) {
-      colorRankComponent[model.field(COLOR)] = [{
+      colorRankComponent[model.fieldExpr(COLOR)] = [{
         type: 'sort',
-        by: model.field(COLOR)
+        by: model.fieldExpr(COLOR)
       }, {
         type: 'rank',
-        field: model.field(COLOR),
+        field: model.fieldExpr(COLOR),
         output: {
-          rank: model.field(COLOR, { prefn: 'rank_' })
+          rank: model.fieldExpr(COLOR, { prefn: 'rank_' })
         }
       }];
     }
