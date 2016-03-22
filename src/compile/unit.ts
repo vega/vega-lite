@@ -236,19 +236,6 @@ export class UnitModel extends Model {
     return this._encoding[channel] || {};
   }
 
-  /** Get "field" reference for vega */
-  public field(channel: Channel, opt: FieldRefOption = {}) {
-    const fieldDef = this.fieldDef(channel);
-
-    if (fieldDef.bin) { // bin has default suffix that depends on scaleType
-      opt = extend({
-        binSuffix: this.scale(channel).type === ScaleType.ORDINAL ? '_range' : '_start'
-      }, opt);
-    }
-
-    return field(fieldDef, opt);
-  }
-
   public dataTable() {
     return this.dataName(vlEncoding.isAggregate(this._encoding) ? SUMMARY : SOURCE);
   }

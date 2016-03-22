@@ -1,4 +1,5 @@
 import {FieldDef, isCount} from '../../fielddef';
+import {Channel} from '../../channel';
 import {QUANTITATIVE, TEMPORAL} from '../../type';
 import {extend, differ, Dict} from '../../util';
 
@@ -17,15 +18,17 @@ export namespace formatParse {
     let parseComponent: Dict<string> = {};
     // use forEach rather than reduce so that it can return undefined
     // if there is no parse needed
-    model.forEach(function(fieldDef: FieldDef) {
-      if (fieldDef.type === TEMPORAL) {
-        parseComponent[fieldDef.field] = 'date';
-      } else if (fieldDef.type === QUANTITATIVE) {
-        if (isCount(fieldDef) || calcFieldMap[fieldDef.field]) {
-          return;
+    model.forEach(function(fieldDef: FieldDef, channel: Channel) {
+      model.enumerateFields(channel).forEach((field) => {
+        if (fieldDef.type === TEMPORAL) {
+          parseComponent[field] = 'date';
+        } else if (fieldDef.type === QUANTITATIVE) {
+          if (isCount(fieldDef) || calcFieldMap[field]) {
+            return;
+          }
+          parseComponent[field] = 'number';
         }
-        parseComponent[fieldDef.field] = 'number';
-      }
+      });
     });
     return parseComponent;
   }

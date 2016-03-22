@@ -45,8 +45,11 @@ export namespace summary {
           meas['*']['count'] = true;
           /* tslint:enable:no-string-literal */
         } else {
-          meas[fieldDef.field] = meas[fieldDef.field] || {};
-          meas[fieldDef.field][fieldDef.aggregate] = true;
+          // TODO: think about this
+          model.enumerateFields(channel).forEach((field) => {
+            meas[field] = meas[field] || {};
+            meas[field][fieldDef.aggregate] = true;
+          });
         }
       } else {
         addDimension(dims, fieldDef);

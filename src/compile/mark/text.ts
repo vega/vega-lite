@@ -17,7 +17,7 @@ export namespace text {
       height: { field: { group: 'height' } },
       fill: {
         scale: model.scaleName(COLOR),
-        field: model.field(COLOR, model.fieldDef(COLOR).type === ORDINAL ? {prefn: 'rank_'} : {})
+        field: model.fieldRef(COLOR, model.fieldDef(COLOR).type === ORDINAL ? {prefn: 'rank_'} : {})
       }
     };
   }
@@ -36,7 +36,7 @@ export namespace text {
     if (model.has(X)) {
       p.x = {
         scale: model.scaleName(X),
-        field: model.field(X, { binSuffix: '_mid' })
+        field: model.fieldRef(X, { binSuffix: '_mid' })
       };
     } else { // TODO: support x.value, x.datum
       if (model.has(TEXT) && model.fieldDef(TEXT).type === QUANTITATIVE) {
@@ -50,7 +50,7 @@ export namespace text {
     if (model.has(Y)) {
       p.y = {
         scale: model.scaleName(Y),
-        field: model.field(Y, { binSuffix: '_mid' })
+        field: model.fieldRef(Y, { binSuffix: '_mid' })
       };
     } else {
       p.y = { value: model.config().scale.bandSize / 2 };
@@ -60,7 +60,7 @@ export namespace text {
     if (model.has(SIZE)) {
       p.fontSize = {
         scale: model.scaleName(SIZE),
-        field: model.field(SIZE)
+        field: model.fieldRef(SIZE)
       };
     } else {
       p.fontSize = { value: sizeValue(model) };
@@ -83,7 +83,7 @@ export namespace text {
         const format = model.config().mark.format;
         extend(p, formatMixins(model, TEXT, format));
       } else {
-        p.text = { field: model.field(TEXT) };
+        p.text = { field: model.fieldRef(TEXT) };
       }
     } else if (fieldDef.value) {
       p.text = { value: fieldDef.value };

@@ -10,17 +10,28 @@ export interface VgData {
   transform?: any;
 }
 
-type VgParentRef = {
+// Reference to field, only used in mark proeprties
+export type VgFieldRef = string | {
+  datum: VgParentRef | VgGroupRef
+}
+
+// Reference to parent
+export type VgParentRef = {
   parent: string
 };
 
-type VgFieldRef = string | VgParentRef | VgParentRef[];
+// Reference to group
+type VgGroupRef = {
+  group: string
+}
+
+export type VgField = string | VgParentRef | VgParentRef[];
 
 export type VgDataRef = {
   data: string,
-  field: VgFieldRef,
+  field: VgField,
   sort: boolean | {
-    field: VgFieldRef,
+    field: VgField,
     op: string
   }
 };

@@ -1,6 +1,6 @@
 import {COLOR} from '../../channel';
 import {ORDINAL} from '../../type';
-import {extend, vals, flatten, Dict} from '../../util';
+import {extend, vals, flatten, hash, Dict} from '../../util';
 import {VgTransform} from '../../vega.schema';
 
 import {FacetModel} from './../facet';
@@ -21,7 +21,8 @@ export namespace colorRank {
   export function parseUnit(model: Model) {
     let colorRankComponent: Dict<VgTransform[]> = {};
     if (model.has(COLOR) && model.fieldDef(COLOR).type === ORDINAL) {
-      colorRankComponent[model.field(COLOR)] = [{
+      // TODO: what is the right thing?
+      colorRankComponent[hash(model.field(COLOR))] = [{
         type: 'sort',
         by: model.field(COLOR)
       }, {

@@ -3,17 +3,18 @@ import {Channel, X, COLUMN} from '../channel';
 import {Config, CellConfig} from '../config';
 import {Data, DataTable} from '../data';
 import {channelMappingReduce, channelMappingForEach} from '../encoding';
-import {FieldDef, FieldRefOption, field} from '../fielddef';
+import {FieldDef, FieldRefOption, isRepeatRef, Field, field} from '../fielddef';
 import {LegendProperties} from '../legend';
 import {Scale, ScaleType} from '../scale';
 import {BaseSpec} from '../spec';
 import {Transform} from '../transform';
 import {extend, flatten, vals, warning, Dict} from '../util';
-import {VgData, VgMarkGroup, VgScale, VgAxis, VgLegend} from '../vega.schema';
+import {VgData, VgMarkGroup, VgScale, VgAxis, VgLegend, VgFieldRef, VgField} from '../vega.schema';
 
 import {DataComponent} from './data/data';
 import {LayoutComponent} from './layout';
 import {ScaleComponents} from './scale';
+import {RepeatModel} from './repeat';
 
 /**
  * Composable Components that are intermediate results of the parsing phase of the
@@ -264,10 +265,18 @@ export abstract class Model {
     return this._transform || {};
   }
 
-  /** Get "field" reference for vega */
-  public field(channel: Channel, opt: FieldRefOption = {}) {
-    const fieldDef = this.fieldDef(channel);
+  public enumerateFields(channel: Channel): string[] {
+    const field = this.fieldDef(channel).field;
+    if (isRepeatRef(field)) {
+      const parent = this.parent() as RepeatModel;
+      return parent.repeat()[field.repeat];
+    } else {
+      return [field as string];
+    }
+  }
 
+  private _field(channel: Channel, opt: FieldRefOption = {}): string {
+    const fieldDef = this.fieldDef(channel);
     if (fieldDef.bin) { // bin has default suffix that depends on scaleType
       opt = extend({
         binSuffix: this.scale(channel).type === ScaleType.ORDINAL ? '_range' : '_start'
@@ -275,6 +284,40 @@ export abstract class Model {
     }
 
     return field(fieldDef, opt);
+  }
+
+  /**
+   * Get field for vega.
+   */
+  public field(channel: Channel, opt: FieldRefOption = {}): VgField {
+    const f = this.fieldDef(channel).field;
+    if (isRepeatRef(f)) {
+      const parent = this.parent() as RepeatModel;
+      if (parent.hasMultipleDimensions()) {
+        return {parent: f.repeat + '.data'};
+      } else {
+        return {parent: 'data'};
+      }
+    }
+
+    return this._field(channel, opt);
+  }
+
+  /**
+   * Get a field reference for vega. Used in mark properties.
+   */
+  public fieldRef(channel: Channel, opt: FieldRefOption = {}): VgFieldRef {
+    const f = this.fieldDef(channel).field;
+    if (isRepeatRef(f)) {
+      const parent = this.parent() as RepeatModel;
+      if (parent.hasMultipleDimensions()) {
+        return { datum: { parent: f.repeat + '.data' } };
+      } else {
+        return { datum: { parent: 'data' } };
+      }
+    }
+
+    return this._field(channel, opt);
   }
 
   public abstract fieldDef(channel: Channel): FieldDef;
@@ -338,6 +381,9 @@ export abstract class Model {
     return false;
   }
   public isLayer() {
+    return false;
+  }
+  public isRepeat() {
     return false;
   }
 }

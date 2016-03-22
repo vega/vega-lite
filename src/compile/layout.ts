@@ -147,9 +147,41 @@ function facetSizeFormula(model: Model, channel: Channel, innerSize: string) {
 
 export function parseRepeatLayout(model: RepeatModel): LayoutComponent {
   return {
-    width: null,
-    height: null
+    width: parseRepeatSizeLayout(model, COLUMN),
+    height: parseRepeatSizeLayout(model, ROW),
   };
+}
+
+function parseRepeatSizeLayout(model: RepeatModel, channel: Channel): SizeComponent {
+  const childLayoutComponent = model.child().component.layout;
+  const sizeType = channel === ROW ? 'height' : 'width';
+  const childSizeComponent: SizeComponent = childLayoutComponent[sizeType];
+
+  // FIXME: should be distinct
+  if (true) { // assume shared scale
+    // For shared scale, we can simply merge the layout into one data source
+
+    const distinct = extend(getDistinct(model, channel), childSizeComponent.distinct);
+    const formula = childSizeComponent.formula.concat([{
+      field: model.channelSizeName(channel),
+      expr: repeatSizeFormula(model, channel, model.child().channelSizeName(channel))
+    }]);
+
+    delete childLayoutComponent[sizeType];
+    return {
+      distinct: distinct,
+      formula: formula
+    };
+  }
+}
+
+function repeatSizeFormula(model: Model, channel: Channel, innerSize: string) {
+  const scale = model.scale(channel);
+  if (model.has(channel)) {
+    return '(datum.' + innerSize + ' + ' + scale.padding + ')' + ' * ' + cardinalityFormula(model, channel);
+  } else {
+    return 'datum.' + innerSize + ' + ' + model.config().facet.scale.padding; // need to add outer padding for facet
+  }
 }
 
 export function parseLayerLayout(model: LayerModel): LayoutComponent {
@@ -190,9 +222,10 @@ function getDistinct(model: Model, channel: Channel): StringSet {
     const scale = model.scale(channel);
     if (scale.type === ScaleType.ORDINAL && !(scale.domain instanceof Array)) {
       // if explicit domain is declared, use array length
-      const distinctField = model.field(channel);
       let distinct: StringSet = {};
-      distinct[distinctField] = true;
+      model.enumerateFields(channel).forEach((distinctField) => {
+        distinct[distinctField] = true;
+      });
       return distinct;
     }
   }
