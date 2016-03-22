@@ -113,8 +113,8 @@ export function assembleData(model: UnitModel, sel: s.Selection, db) {
 
 // Wrap our marks in a clipped group
 export function assembleMarks(model: UnitModel, sel: s.Selection, marks: any[]) {
-  var mark = marks[0];
-  marks[0] = {
+  var children = marks.splice(0);
+  marks.push({
     type: 'group',
     properties: {
       update: {
@@ -123,6 +123,6 @@ export function assembleMarks(model: UnitModel, sel: s.Selection, marks: any[]) 
         clip: {value: true}
       }
     },
-    marks: [mark]
-  };
+    marks: children
+  });
 }

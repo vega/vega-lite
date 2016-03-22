@@ -142,4 +142,5 @@ export function assembleMarks(model: UnitModel, marks: any[]) {
       tx[k].assembleMarks(model, sel, marks);
     });
   });
+  return marks;
 }

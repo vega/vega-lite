@@ -22,11 +22,11 @@ export function assembleSignals(model: UnitModel, sel: s.Selection, trigger, cle
     start = startName(sel), end = endName(sel),
     expr = '{x: clamp(eventX(unit), 0, unit.width), ' +
       'y: clamp(eventY(unit), 0, unit.height), unit: unit}',
-    x = false, y = false;
+    x = null, y = null;
 
   sel.project.forEach(function(p) {
-    if (p.channel === X) x = true;
-    if (p.channel === Y) y = true;
+    if (p.channel === X) x = u.str(model.scaleName(X));
+    if (p.channel === Y) y = u.str(model.scaleName(Y));
   });
 
   signals.push({
@@ -48,10 +48,10 @@ export function assembleSignals(model: UnitModel, sel: s.Selection, trigger, cle
   trigger.streams[0] = {
     type: start + ', ' + end,
     expr: '{' +
-    'start_x: iscale("x", ' + start + '.x, unit), ' +
-    'start_y: iscale("y", ' + start + '.y, unit), ' +
-    'end_x: iscale("x", ' + end + '.x, unit), ' +
-    'end_y: iscale("y", ' + end + '.y, unit), ' +
+    (x ? 'start_x: iscale(' + x + ', ' + start + '.x, unit), ' : '') +
+    (y ? 'start_y: iscale(' + y + ', ' + start + '.y, unit), ' : '') +
+    (x ? 'end_x: iscale(' + x + ', ' + end + '.x, unit), ' : '') +
+    (y ? 'end_y: iscale(' + y + ', ' + end + '.y, unit), ' : '') +
     (x ? 'x: ' + u.str(model.field(X)) + ', ' : '') +
     (y ? 'y: ' + u.str(model.field(Y)) + ', ' : '') +
     '_unitID: ' + start + '.unit._id}'
@@ -62,4 +62,48 @@ export function assembleSignals(model: UnitModel, sel: s.Selection, trigger, cle
 
 export function assembleData(model: UnitModel, sel: s.Selection, db) {
   db.modify = [{ type: 'upsert', signal: sel.name, field: '_unitID' }];
+}
+
+// TODO: Move to config?
+export function assembleMarks(model: UnitModel, sel: s.Selection, marks) {
+  marks.push({
+    type: 'rect',
+    from: { data: s.storeName(sel) },
+    properties: {
+      enter: {
+        fill: { value: 'grey' },
+        fillOpacity: { value: 0.2 }
+      },
+      update: {
+        x: [
+          {
+            test: 'datum._unitID === group._id',
+            scale: model.scaleName(X), field: 'start_x'
+          },
+          { value: 0 }
+        ],
+        x2: [
+          {
+            test: 'datum._unitID === group._id',
+            scale: model.scaleName(X), field: 'end_x'
+          },
+          { value: 0 }
+        ],
+        y: [
+          {
+            test: 'datum._unitID === group._id',
+            scale: model.scaleName(Y), field: 'start_y'
+          },
+          { value: 0 }
+        ],
+        y2: [
+          {
+            test: 'datum._unitID === group._id',
+            scale: model.scaleName(Y), field: 'end_y'
+          },
+          { value: 0 }
+        ]
+      }
+    }
+  });
 }

@@ -189,7 +189,7 @@ export class UnitModel extends Model {
   }
 
   public assembleMarks() {
-    return this.component.mark;
+    return selections.assembleMarks(this, this.component.mark);
   }
 
   public assembleParentGroupProperties(cellConfig: CellConfig) {
