@@ -247,11 +247,10 @@ export class RepeatModel extends Model {
   }
 
   protected mapping() {
-    // TODO: what is this?
-    return this.repeat();
+    return null;
   }
 
-  public isFacet() {
+  public isRepeat() {
     return true;
   }
 }
