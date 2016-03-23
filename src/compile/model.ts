@@ -16,6 +16,7 @@ import {LayoutComponent} from './layout';
 import {ScaleComponents} from './scale';
 import {RepeatModel} from './repeat';
 
+
 /**
  * Composable Components that are intermediate results of the parsing phase of the
  * compilations.  These composable components will be assembled in the last
@@ -265,10 +266,29 @@ export abstract class Model {
     return this._transform || {};
   }
 
+  /**
+   * Get the first child that defines the channel in repeat.
+   */
+  private _getRepeatParent(channel: Channel | string) {
+    let parent: Model = this.parent();
+    while (true) {
+      if (parent === null) {
+        return null;
+      }
+      if (isRepeatModel(parent) && channel in parent.repeat()) {
+        return parent;
+      }
+      parent = parent.parent();
+    }
+  }
+
+  /**
+   * Enumerate all fields for a repeated field. If the field is not repeated, return only the one field.
+   */
   public enumerateFields(channel: Channel): string[] {
     const field = this.fieldDef(channel).field;
     if (isRepeatRef(field)) {
-      const parent = this.parent() as RepeatModel;
+      const parent = this._getRepeatParent(field.repeat);
       return parent.repeat()[field.repeat];
     } else {
       return [field as string];
@@ -292,12 +312,9 @@ export abstract class Model {
   public field(channel: Channel, opt: FieldRefOption = {}): VgField {
     const f = this.fieldDef(channel).field;
     if (isRepeatRef(f)) {
-      const parent = this.parent() as RepeatModel;
-      if (parent.hasMultipleDimensions()) {
-        return {parent: f.repeat + '.data'};
-      } else {
-        return {parent: 'data'};
-      }
+      const parent = this._getRepeatParent(f.repeat);
+      const prefix = parent.hasMultipleDimensions() ? f.repeat + '.' : '';
+      return {parent: prefix + 'data'};
     }
 
     return this._field(channel, opt);
@@ -309,12 +326,9 @@ export abstract class Model {
   public fieldRef(channel: Channel, opt: FieldRefOption = {}): VgFieldRef {
     const f = this.fieldDef(channel).field;
     if (isRepeatRef(f)) {
-      const parent = this.parent() as RepeatModel;
-      if (parent.hasMultipleDimensions()) {
-        return { datum: { parent: f.repeat + '.data' } };
-      } else {
-        return { datum: { parent: 'data' } };
-      }
+      const parent = this._getRepeatParent(f.repeat);
+      const prefix = parent.hasMultipleDimensions() ? f.repeat + '.' : '';
+      return {datum: {parent: prefix + 'data'}};
     }
 
     return this._field(channel, opt);
@@ -386,4 +400,8 @@ export abstract class Model {
   public isRepeat() {
     return false;
   }
+}
+
+export function isRepeatModel(model: Model): model is RepeatModel {
+  return model.isRepeat();
 }
