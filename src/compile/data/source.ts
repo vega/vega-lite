@@ -2,9 +2,10 @@ import {SOURCE} from '../../data';
 import {contains} from '../../util';
 import {VgData} from '../../vega.schema';
 
-import {FacetModel} from './../facet';
-import {LayerModel} from './../layer';
-import {Model} from './../model';
+import {FacetModel} from '../facet';
+import {LayerModel} from '../layer';
+import {RepeatModel} from './../repeat';
+import {Model} from '../model';
 
 import {DataComponent} from './data';
 import {nullFilter} from './nullfilter';
@@ -75,6 +76,29 @@ export namespace source {
             source: model.dataName(SOURCE)
           };
         }
+      }
+    });
+    return sourceData;
+  }
+
+  export function parseRepeat(model: RepeatModel) {
+    let sourceData = parse(model.children()[0]);
+    sourceData.name = model.dataName(SOURCE);
+
+    model.children().forEach((child) => {
+      const childData = child.component.data;
+
+      const canMerge = !childData.filter && !childData.formatParse && !childData.nullFilter;
+      if (canMerge) {
+        // rename source because we can just remove it
+        child.renameData(child.dataName(SOURCE), model.dataName(SOURCE));
+        delete childData.source;
+      } else {
+        // child does not have data defined or the same source so just use the parents source
+        childData.source = {
+          name: child.dataName(SOURCE),
+          source: model.dataName(SOURCE)
+        };
       }
     });
     return sourceData;

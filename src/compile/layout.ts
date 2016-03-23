@@ -19,6 +19,12 @@ import {UnitModel} from './unit';
 export interface LayoutComponent {
   width: SizeComponent;
   height: SizeComponent;
+
+  // optional layout for the child (only if all children have the same dimensions)
+  childLayout?: {
+    width: SizeComponent,
+    height: SizeComponent
+  };
 }
 
 export interface SizeComponent {
@@ -31,7 +37,7 @@ export interface SizeComponent {
 
 export function assembleLayout(model: Model, layoutData: VgData[]): VgData[] {
   const layoutComponent = model.component.layout;
-  if (!layoutComponent.width && !layoutComponent.height) {
+  if (!layoutComponent.width && !layoutComponent.height && !layoutComponent.childLayout) {
     return layoutData; // Do nothing
   }
 
@@ -42,7 +48,7 @@ export function assembleLayout(model: Model, layoutData: VgData[]): VgData[] {
         return extend({type: 'formula'}, formula);
       });
 
-    return [
+    layoutData.push(
       distinctFields.length > 0 ? {
         name: model.dataName(LAYOUT),
         source: model.dataTable(),
@@ -57,7 +63,8 @@ export function assembleLayout(model: Model, layoutData: VgData[]): VgData[] {
         values: [{}],
         transform: formula
       }
-    ];
+    );
+    return layoutData;
   }
   // FIXME: implement
   // otherwise, we need to join width and height (cross)
@@ -153,26 +160,21 @@ export function parseRepeatLayout(model: RepeatModel): LayoutComponent {
 }
 
 function parseRepeatSizeLayout(model: RepeatModel, channel: Channel): SizeComponent {
-  const childLayoutComponent = model.child().component.layout;
+  const childLayoutComponent = model.children()[0].component.layout;
   const sizeType = channel === ROW ? 'height' : 'width';
   const childSizeComponent: SizeComponent = childLayoutComponent[sizeType];
 
-  // FIXME: should be distinct
-  if (true) { // assume shared scale
-    // For shared scale, we can simply merge the layout into one data source
+  // TODO: avoid redundancy
+  const distinct = extend(getDistinct(model, channel), childSizeComponent.distinct);
+  const formula = childSizeComponent.formula.concat([{
+    field: model.channelSizeName(channel),
+    expr: repeatSizeFormula(model, channel, model.children()[0].channelSizeName(channel))
+  }]);
 
-    const distinct = extend(getDistinct(model, channel), childSizeComponent.distinct);
-    const formula = childSizeComponent.formula.concat([{
-      field: model.channelSizeName(channel),
-      expr: repeatSizeFormula(model, channel, model.child().channelSizeName(channel))
-    }]);
-
-    delete childLayoutComponent[sizeType];
-    return {
-      distinct: distinct,
-      formula: formula
-    };
-  }
+  return {
+    distinct: distinct,
+    formula: formula
+  };
 }
 
 function repeatSizeFormula(model: Model, channel: Channel, innerSize: string) {

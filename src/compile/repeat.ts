@@ -5,16 +5,18 @@ import {FieldDef} from '../fielddef';
 import {Scale, ScaleType} from '../scale';
 import {RepeatSpec} from '../spec';
 import {extend, keys, vals, flatten, duplicate, mergeDeep, contains, Dict} from '../util';
-import {VgData} from '../vega.schema';
+import {VgData, VgLegend} from '../vega.schema';
 import {ORDINAL} from '../type';
+import {LAYOUT} from '../data';
 
 import {parseAxisComponent} from './axis';
 import {buildModel} from './common';
+import {assembleData, parseRepeatData} from './data/data';
 import {assembleLayout, parseRepeatLayout} from './layout';
 import {Model} from './model';
 import {parseScaleComponent} from './scale';
 
-type FieldValues = {
+export type RepeatValues = {
   row: string,
   column: string
 }
@@ -22,26 +24,17 @@ type FieldValues = {
 export class RepeatModel extends Model {
   private _repeat: Repeat;
 
-  private _child: Model;
+  private _children: Model[];
 
-  private _repeatValues: FieldValues[];
-
-  /**
-   * Current iterator value over the repeat value. Indexed by the channel we are repeating over (row, column).
-   */
-  private _iterator: FieldValues = null;
-
-  constructor(spec: RepeatSpec, parent: Model, parentGivenName: string) {
-    super(spec, parent, parentGivenName);
+  constructor(spec: RepeatSpec, parent: Model, parentGivenName: string, repeatValues: RepeatValues) {
+    super(spec, parent, parentGivenName, repeatValues);
 
     // Config must be initialized before child as it gets cascaded to the child
     const config = this._config = this._initConfig(spec.config, parent);
 
-    const child  = this._child = buildModel(spec.spec, this, this.name('child'));
-
     const repeat  = this._repeat = spec.repeat;
-    this._repeatValues = this._initValues(repeat);
-    this._scale  = this._initScale(repeat, config, child);
+    this._children = this._initChildren(spec, repeat, repeatValues);
+    this._scale  = this._initScale(repeat, config);
     this._axis = {};
   }
 
@@ -49,7 +42,7 @@ export class RepeatModel extends Model {
     return mergeDeep(duplicate(defaultConfig), specConfig, parent ? parent.config() : {});
   }
 
-  private _initScale(repeat: Repeat, config: Config, child: Model): Dict<Scale> {
+  private _initScale(repeat: Repeat, config: Config): Dict<Scale> {
     return [ROW, COLUMN].reduce(function(_scale, channel) {
       if (repeat[channel]) {
 
@@ -58,64 +51,39 @@ export class RepeatModel extends Model {
           round: config.facet.scale.round,
           domain: repeat[channel],
 
-          padding: 50
+          padding: 60
         }, {});
       }
       return _scale;
     }, {} as Dict<Scale>);
   }
 
-  private _initValues(repeat: Repeat): FieldValues[] {
-    let values = [];
-    const row = repeat.row || [null];
-    const column = repeat.column || [null];
+  private _initChildren(spec: RepeatSpec, repeat: Repeat, repeatValues: RepeatValues): Model[] {
+    let children = [];
+    const row = repeat.row || [repeatValues ? repeatValues.row : null];
+    const column = repeat.column || [repeatValues ? repeatValues.column : null];
 
     // cross product
-    for (var r = 0; r < row.length; r++) {
-      var rowField = row[r];
-      for (var c = 0; c < column.length; c++) {
-        var columnField = column[c];
-        values.push({
+    for (let r = 0; r < row.length; r++) {
+      const rowField = row[r];
+      for (let c = 0; c < column.length; c++) {
+        const columnField = column[c];
+
+        const name = (rowField ? '_' + rowField : '') + (columnField ? '_' + columnField : '');
+
+        const childRepRepeatValues = {
           row: rowField,
           column: columnField
-        });
+        };
+        children.push(buildModel(spec.spec, this, this.name('child' + name), childRepRepeatValues));
       }
     }
 
-    return values;
+    return children;
   }
 
   public repeat() {
     return this._repeat;
-  }
-
-  /**
-   * Iterate over all values of the repeated channel. If the field is not repeated, call the callback once.
-   */
-  public repeatFields(channel: Channel, f: (field: string) => any) {
-    this._iterator = {row: null, column: null};
-    this.repeat()[channel].forEach((field) => {
-      this._iterator[channel] = field;
-      f(field);
-    });
-    this._iterator = null;
-  }
-
-  public repeatFieldCombinations(f: (rowField: string, columnField: string) => void) {
-    for (var i = 0; i < this._repeatValues.length; i++) {
-      const iter = this._iterator = this._repeatValues[i];
-      f(iter.row, iter.column);
-    }
-    this._iterator = null;
-  }
-
-  public fieldIterator(channel: Channel) {
-    if (this._iterator) {
-      return this._iterator[channel];
-    } else {
-      console.error('we are not iterating');
-      return null;
-    }
   }
 
   public hasMultipleDimensions() {
@@ -126,8 +94,8 @@ export class RepeatModel extends Model {
     return !!this._repeat[channel];
   }
 
-  public child() {
-    return this._child;
+  public children() {
+    return this._children;
   }
 
   public dataTable(): string {
@@ -145,10 +113,10 @@ export class RepeatModel extends Model {
   }
 
   public parseData() {
-    this.repeatFieldCombinations((row, column) => {
-      console.log(row, column);
-      this.child().parseData();
+    this._children.forEach((child) => {
+      child.parseData();
     });
+    this.component.data = parseRepeatData(this);
   }
 
   public parseSelectionData() {
@@ -157,34 +125,27 @@ export class RepeatModel extends Model {
   }
 
   public parseLayoutData() {
-    this.child().parseLayoutData();
+    this._children.forEach((child, i) => {
+      child.parseLayoutData();
+    });
     this.component.layout = parseRepeatLayout(this);
   }
 
   public parseScale() {
-    const child = this.child();
     const model = this;
-
-    // enumerate scales
-    [ROW, COLUMN].forEach((channel) => {
-      if (this.has(channel)) {
-        this.repeatFields(channel, (field) => {
-          child.parseScale();
-        });
-      }
-    });
 
     // First, add scale for row and column.
     let scaleComponent = this.component.scale = parseScaleComponent(this);
 
-    // Then, move shared/union from its child spec.
-    keys(child.component.scale).forEach(function(channel) {
-      // TODO: correctly implement independent scales
-      if (!contains([String(X), String(Y)], channel)) {  // union everything except X and Y
-        scaleComponent[channel] = child.component.scale[channel];
+    this._children.forEach(function(child) {
+      child.parseScale();
+      // move all scales up
+
+      keys(child.component.scale).forEach(function(key) {
+        scaleComponent[key] = child.component.scale[key];
 
         // for each scale, need to rename
-        vals(scaleComponent[channel]).forEach(function(scale) {
+        vals(scaleComponent[key]).forEach(function(scale) {
           const scaleNameWithoutPrefix = scale.name.substr(child.name('').length);
           const newName = model.scaleName(scaleNameWithoutPrefix);
           child.renameScale(scale.name, newName);
@@ -192,33 +153,21 @@ export class RepeatModel extends Model {
         });
 
         // Once put in parent, just remove the child's scale.
-        delete child.component.scale[channel];
-      }
+        delete child.component.scale[key];
+      });
     });
   }
 
   public parseMark() {
-    this.child().parseMark();
-
-    this.component.mark = extend(
-      {
-        name: this.name('cell'),
-        type: 'group',
-        from: {data: this.dataTable()},
-        properties: {
-          update: getRepeatGroupProperties(this)
-        }
-      },
-      // Call child's assembleGroup to add marks, scales, axes, and legends.
-      // Note that we can call child's assembleGroup() here because parseMark()
-      // is the last method in compile() and thus the child is completely compiled
-      // at this point.
-      this.child().assembleGroup()
-    );
+    this._children.forEach(function(child) {
+      child.parseMark();
+    });
   }
 
   public parseAxis() {
-    this.child().parseAxis();
+    this._children.forEach(function(child) {
+      child.parseAxis();
+    });
     this.component.axis = parseAxisComponent(this, [ROW, COLUMN]);
   }
 
@@ -231,15 +180,20 @@ export class RepeatModel extends Model {
   }
 
   public parseLegend() {
-    this.child().parseLegend();
+    let legendComponent = this.component.legend = {} as Dict<VgLegend>;
 
-    // TODO: support legend for independent non-position scale across facets
-    // TODO: support legend for field reference of parent data (e.g., for SPLOM)
+    this._children.forEach(function(child) {
+      child.parseLegend();
 
-    // For now, assuming that non-positional scales are always shared across facets
-    // Thus, just move all legends from its child
-    this.component.legend = this._child.component.legend;
-    this._child.component.legend = {};
+      // TODO: merge one legend per channel + field
+      keys(child.component.legend).forEach(function(channel) {
+        // just use the first legend definition for each channel
+        if (!legendComponent[channel]) {
+          legendComponent[channel] = child.component.legend[channel];
+        }
+        delete child.component.legend[channel];
+      });
+    });
   }
 
   public assembleParentGroupProperties() {
@@ -247,30 +201,40 @@ export class RepeatModel extends Model {
   }
 
   public assembleData(data: VgData[]): VgData[] {
-    [COLUMN, ROW].forEach((channel) => {
-      if (this.has(channel)) {
-        data.push({
-          name: 'fields_' + channel,
-          values: this._repeat[channel]
-        });
-      }
+    assembleData(this, data);
+    this._children.forEach((child) => {
+      child.assembleData(data);
     });
-    return this._child.assembleData(data);
+    return data;
   }
 
   public assembleLayout(layoutData: VgData[]): VgData[] {
     // Postfix traversal – layout is assembled bottom-up 
-    this._child.assembleLayout(layoutData);
+    this._children.forEach((child) => {
+      child.assembleLayout(layoutData);
+    });
     return assembleLayout(this, layoutData);
   }
 
   public assembleMarks(): any[] {
-    return [].concat(
-      // axisGroup is a mapping to VgMarkGroup
-      vals(this.component.axisGroup),
-      flatten(vals(this.component.gridGroup)),
-      this.component.mark
-    );
+    // only children have marks
+    return flatten(this._children.map((child) => {
+      return extend(
+        {
+          name: this.name('cell'),
+          type: 'group',
+          from: {data: child.dataName(LAYOUT)},
+          properties: {
+            update: getRepeatGroupProperties(this, child)
+          }
+        },
+        // Call child's assembleGroup to add marks and axes (legends and scales should have been moved up).
+        // Note that we can call child's assembleGroup() here because parseMark()
+        // is the last method in compile() and thus the child is completely compiled
+        // at this point.
+        child.assembleGroup()
+      );
+    }));
   }
 
   public channels() {
@@ -288,27 +252,26 @@ export class RepeatModel extends Model {
 
 // TODO: move into RepeatModel if possible
 
-function getRepeatGroupProperties(model: RepeatModel) {
-  const child = model.child();
+function getRepeatGroupProperties(model: RepeatModel, child: Model) {
   const mergedCellConfig = extend({}, child.config().cell, child.config().facet.cell);
 
   return extend({
       x: model.has(COLUMN) ? {
           scale: model.scaleName(COLUMN),
-          field: model.field(COLUMN),
+          value: child.repeatValue(COLUMN),
           // offset by the padding
           offset: model.scale(COLUMN).padding / 2
         } : {value: model.config().facet.scale.padding / 2},
 
       y: model.has(ROW) ? {
         scale: model.scaleName(ROW),
-        field: model.field(ROW),
+        value: child.repeatValue(ROW),
         // offset by the padding
         offset: model.scale(ROW).padding / 2
       } : {value: model.config().facet.scale.padding / 2},
 
-      width: {field: {parent: model.child().sizeName('width')}},
-      height: {field: {parent: model.child().sizeName('height')}}
+      width: {field: child.sizeName('width')},
+      height: {field: child.sizeName('height')}
     },
     child.assembleParentGroupProperties(mergedCellConfig)
   );

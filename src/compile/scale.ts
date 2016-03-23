@@ -5,7 +5,7 @@ import {SHARED_DOMAIN_OPS} from '../aggregate';
 import {COLUMN, ROW, X, Y, SHAPE, SIZE, COLOR, TEXT, hasScale, Channel} from '../channel';
 import {StackOffset} from '../config';
 import {SOURCE, STACKED_SCALE} from '../data';
-import {FieldDef, field, isMeasure} from '../fielddef';
+import {FieldDef, field, isMeasure, isRepeatRef} from '../fielddef';
 import {Mark, BAR, TEXT as TEXT_MARK, RULE} from '../mark';
 import {Scale, ScaleType, NiceTime} from '../scale';
 import {TimeUnit} from '../timeunit';
@@ -56,7 +56,15 @@ export function parseScaleComponent(model: Model): Dict<ScaleComponents> {
         }
       }
 
-      scale[channel] = scales;
+      const key = String(channel) + model.fieldOrig(channel);
+
+      // const field = fieldDef.field;
+      // if (isRepeatRef(field)) {
+      //   // include the field name in the scale key
+      //   key += '_' + model.repeatValue(field.repeat);
+      // }
+
+      scale[key] = scales;
     }
     return scale;
   }, {} as Dict<ScaleComponents>);

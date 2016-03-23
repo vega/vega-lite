@@ -4,10 +4,11 @@ import {TimeUnit} from '../../timeunit';
 import {extend, keys, StringSet} from '../../util';
 import {VgData} from '../../vega.schema';
 
-import {FacetModel} from './../facet';
-import {LayerModel} from './../layer';
-import {Model} from './../model';
-import {parseExpression, rawDomain} from './../time';
+import {FacetModel} from '../facet';
+import {LayerModel} from '../layer';
+import {RepeatModel} from './../repeat';
+import {Model} from '../model';
+import {parseExpression, rawDomain} from '../time';
 
 import {DataComponent} from './data';
 
@@ -33,6 +34,13 @@ export namespace timeUnitDomain {
   }
 
   export function parseLayer(model: LayerModel) {
+    // always merge with children
+    return extend(parse(model), model.children().forEach((child) => {
+      return child.component.data.timeUnitDomain;
+    }));
+  }
+
+  export function parseRepeat(model: RepeatModel) {
     // always merge with children
     return extend(parse(model), model.children().forEach((child) => {
       return child.component.data.timeUnitDomain;

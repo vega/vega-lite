@@ -4,9 +4,10 @@ import {field, FieldDef} from '../../fielddef';
 import {extend, vals, flatten, hash, Dict} from '../../util';
 import {VgTransform} from '../../vega.schema';
 
-import {FacetModel} from './../facet';
-import {LayerModel} from './../layer';
-import {Model} from './../model';
+import {FacetModel} from '../facet';
+import {LayerModel} from '../layer';
+import {RepeatModel} from './../repeat';
+import {Model} from '../model';
 
 import {DataComponent} from './data';
 
@@ -70,6 +71,22 @@ export namespace bin {
   }
 
   export function parseLayer(model: LayerModel) {
+    let binComponent = parse(model);
+
+    model.children().forEach((child) => {
+      const childDataComponent = child.component.data;
+
+      // If child doesn't have its own data source, then merge
+      if (!childDataComponent.source) {
+        extend(binComponent, childDataComponent.bin);
+        delete childDataComponent.bin;
+      }
+    });
+
+    return binComponent;
+  }
+
+  export function parseRepeat(model: RepeatModel) {
     let binComponent = parse(model);
 
     model.children().forEach((child) => {

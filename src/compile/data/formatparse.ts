@@ -5,6 +5,7 @@ import {extend, differ, Dict} from '../../util';
 
 import {FacetModel} from './../facet';
 import {LayerModel} from './../layer';
+import {RepeatModel} from './../repeat';
 import {Model} from './../model';
 
 export namespace formatParse {
@@ -52,6 +53,19 @@ export namespace formatParse {
     model.children().forEach((child) => {
       const childDataComponent = child.component.data;
       if (model.compatibleSource(child) && !differ(childDataComponent.formatParse, parseComponent)) {
+        // merge parse up if the child does not have an incompatible parse
+        extend(parseComponent, childDataComponent.formatParse);
+        delete childDataComponent.formatParse;
+      }
+    });
+    return parseComponent;
+  }
+
+  export function parseRepeat(model: RepeatModel) {
+    let parseComponent = parse(model);
+    model.children().forEach((child) => {
+      const childDataComponent = child.component.data;
+      if (!differ(childDataComponent.formatParse, parseComponent)) {
         // merge parse up if the child does not have an incompatible parse
         extend(parseComponent, childDataComponent.formatParse);
         delete childDataComponent.formatParse;

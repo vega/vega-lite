@@ -10,18 +10,18 @@ import {buildModel} from './common';
 import {FieldDef} from '../fielddef';
 import {ScaleComponents} from './scale';
 import {VgData, VgAxis, VgLegend, isUnionedDomain, isDataRefDomain, VgDataRef} from '../vega.schema';
-
+import {RepeatValues} from './repeat';
 
 export class LayerModel extends Model {
   private _children: UnitModel[];
 
-  constructor(spec: LayerSpec, parent: Model, parentGivenName: string) {
-    super(spec, parent, parentGivenName);
+  constructor(spec: LayerSpec, parent: Model, parentGivenName: string, repeatValues: RepeatValues) {
+    super(spec, parent, parentGivenName, repeatValues);
 
     this._config = this._initConfig(spec.config, parent);
     this._children = spec.layers.map((layer, i) => {
       // we know that the model has to be a unit model beacuse we pass in a unit spec
-      return buildModel(layer, this, this.name('layer_' + i)) as UnitModel;
+      return buildModel(layer, this, this.name('layer_' + i), repeatValues) as UnitModel;
     });
   }
 

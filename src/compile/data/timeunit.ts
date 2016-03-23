@@ -4,10 +4,11 @@ import {TEMPORAL} from '../../type';
 import {extend, vals, Dict} from '../../util';
 import {VgTransform} from '../../vega.schema';
 
-import {FacetModel} from './../facet';
-import {LayerModel} from './../layer';
-import {Model} from './../model';
-import {parseExpression} from './../time';
+import {FacetModel} from '../facet';
+import {LayerModel} from '../layer';
+import {RepeatModel} from './../repeat';
+import {Model} from '../model';
+import {parseExpression} from '../time';
 
 import {DataComponent} from './data';
 
@@ -46,6 +47,18 @@ export namespace timeUnit {
   }
 
   export function parseLayer(model: LayerModel) {
+    let timeUnitComponent = parse(model);
+    model.children().forEach((child) => {
+      const childDataComponent = child.component.data;
+      if (!childDataComponent.source) {
+        extend(timeUnitComponent, childDataComponent.timeUnit);
+        delete childDataComponent.timeUnit;
+      }
+    });
+    return timeUnitComponent;
+  }
+
+  export function parseRepeat(model: RepeatModel) {
     let timeUnitComponent = parse(model);
     model.children().forEach((child) => {
       const childDataComponent = child.component.data;

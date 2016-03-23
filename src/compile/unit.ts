@@ -24,6 +24,7 @@ import {Model} from './model';
 import {parseMark} from './mark/mark';
 import {parseScaleComponent, scaleType} from './scale';
 import {compileStackProperties, StackProperties} from './stack';
+import {RepeatValues} from './repeat';
 
 /**
  * Internal model of Vega-Lite specification for the compiler.
@@ -34,8 +35,8 @@ export class UnitModel extends Model {
   private _encoding: Encoding;
   private _stack: StackProperties;
 
-  constructor(spec: ExtendedUnitSpec, parent: Model, parentGivenName: string) {
-    super(spec, parent, parentGivenName);
+  constructor(spec: ExtendedUnitSpec, parent: Model, parentGivenName: string, repeatValues: RepeatValues) {
+    super(spec, parent, parentGivenName, repeatValues);
 
     const mark = this._mark = spec.mark;
     const encoding = this._encoding = this._initEncoding(mark, spec.encoding || {});

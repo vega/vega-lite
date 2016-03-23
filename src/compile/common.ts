@@ -5,7 +5,7 @@ import {QUANTITATIVE, ORDINAL, TEMPORAL} from '../type';
 import {contains, union} from '../util';
 
 import {FacetModel} from './facet';
-import {RepeatModel} from './repeat';
+import {RepeatModel, RepeatValues} from './repeat';
 import {LayerModel} from './layer';
 import {Model} from './model';
 import {format as timeFormatExpr} from './time';
@@ -13,21 +13,21 @@ import {UnitModel} from './unit';
 import {Spec, isUnitSpec, isFacetSpec, isRepeatSpec, isLayerSpec} from '../spec';
 
 
-export function buildModel(spec: Spec, parent: Model, parentGivenName: string): Model {
+export function buildModel(spec: Spec, parent: Model, parentGivenName: string, repeatValues: RepeatValues): Model {
   if (isFacetSpec(spec)) {
-    return new FacetModel(spec, parent, parentGivenName);
+    return new FacetModel(spec, parent, parentGivenName, repeatValues);
   }
 
   if (isRepeatSpec(spec)) {
-    return new RepeatModel(spec, parent, parentGivenName);
+    return new RepeatModel(spec, parent, parentGivenName, repeatValues);
   }
 
   if (isLayerSpec(spec)) {
-    return new LayerModel(spec, parent, parentGivenName);
+    return new LayerModel(spec, parent, parentGivenName, repeatValues);
   }
 
   if (isUnitSpec(spec)) {
-    return new UnitModel(spec, parent, parentGivenName);
+    return new UnitModel(spec, parent, parentGivenName, repeatValues);
   }
 
   console.error('Invalid spec.');

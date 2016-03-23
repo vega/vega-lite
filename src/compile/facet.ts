@@ -17,19 +17,20 @@ import {assembleData, parseFacetData} from './data/data';
 import {assembleLayout, parseFacetLayout} from './layout';
 import {Model} from './model';
 import {parseScaleComponent} from './scale';
+import {RepeatValues} from './repeat';
 
 export class FacetModel extends Model {
   private _facet: Facet;
 
   private _child: Model;
 
-  constructor(spec: FacetSpec, parent: Model, parentGivenName: string) {
-    super(spec, parent, parentGivenName);
+  constructor(spec: FacetSpec, parent: Model, parentGivenName: string, repeatValues: RepeatValues) {
+    super(spec, parent, parentGivenName, repeatValues);
 
     // Config must be initialized before child as it gets cascaded to the child
     const config = this._config = this._initConfig(spec.config, parent);
 
-    const child  = this._child = buildModel(spec.spec, this, this.name('child'));
+    const child  = this._child = buildModel(spec.spec, this, this.name('child'), repeatValues);
 
     const facet  = this._facet = this._initFacet(spec.facet);
     this._scale  = this._initScale(facet, config, child);

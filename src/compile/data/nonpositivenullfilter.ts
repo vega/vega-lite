@@ -1,9 +1,10 @@
 import {ScaleType} from '../../scale';
 import {extend, keys, differ, Dict} from '../../util';
 
-import {FacetModel} from './../facet';
-import {LayerModel} from './../layer';
-import {Model} from './../model';
+import {FacetModel} from '../facet';
+import {LayerModel} from '../layer';
+import {RepeatModel} from '../repeat';
+import {Model} from '../model';
 
 import {DataComponent} from './data';
 
@@ -42,6 +43,21 @@ export namespace nonPositiveFilter {
     model.children().forEach((child) => {
       const childDataComponent = child.component.data;
       if (model.compatibleSource(child) && !differ(childDataComponent.nonPositiveFilter, nonPositiveFilter)) {
+        extend(nonPositiveFilter, childDataComponent.nonPositiveFilter);
+        delete childDataComponent.nonPositiveFilter;
+      }
+    });
+
+    return nonPositiveFilter;
+  }
+
+  export function parseRepeat(model: RepeatModel) {
+    // note that we run this before source.parseLayer
+    let nonPositiveFilter = {} as Dict<boolean>;
+
+    model.children().forEach((child) => {
+      const childDataComponent = child.component.data;
+      if (!differ(childDataComponent.nonPositiveFilter, nonPositiveFilter)) {
         extend(nonPositiveFilter, childDataComponent.nonPositiveFilter);
         delete childDataComponent.nonPositiveFilter;
       }

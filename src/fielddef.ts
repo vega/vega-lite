@@ -1,6 +1,6 @@
 // utility for a field definition object
 
-import {ROW, COLUMN, Channel} from './channel';
+import {Channel} from './channel';
 import {AggregateOp, AGGREGATE_OPS} from './aggregate';
 import {AxisProperties} from './axis';
 import {BinProperties} from './bin';
@@ -9,7 +9,7 @@ import {Scale} from './scale';
 import {SortField, SortOrder} from './sort';
 import {TimeUnit} from './timeunit';
 import {Type, NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from './type';
-import {contains, toMap, isObject, hash} from './util';
+import {contains, toMap, isObject} from './util';
 
 export type RepeatRef = {
   repeat: Channel
@@ -138,17 +138,4 @@ export function count(): FieldDef {
 
 export function isCount(fieldDef: FieldDef) {
   return fieldDef.aggregate === AggregateOp.COUNT;
-}
-
-export function title(fieldDef: FieldDef) {
-  if (isCount(fieldDef)) {
-    return COUNT_DISPLAYNAME;
-  }
-  const fn = fieldDef.aggregate || fieldDef.timeUnit || (fieldDef.bin && 'bin');
-  if (fn) {
-    return fn.toString().toUpperCase() + '(' + fieldDef.field + ')';
-  } else {
-    // FIXME
-    return hash(fieldDef.field);
-  }
 }

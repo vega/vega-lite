@@ -1,6 +1,6 @@
 import {AxisOrient} from '../axis';
 import {COLUMN, ROW, X, Y, Channel} from '../channel';
-import {title as fieldDefTitle, isDimension} from '../fielddef';
+import {isDimension} from '../fielddef';
 import {NOMINAL, ORDINAL, TEMPORAL} from '../type';
 import {contains, keys, extend, truncate, Dict} from '../util';
 import {VgAxis} from '../vega.schema';
@@ -203,7 +203,7 @@ export function title(model: Model, channel: Channel) {
   }
 
   // if not defined, automatically determine axis title from field def
-  const fieldTitle = fieldDefTitle(model.fieldDef(channel));
+  const fieldTitle = model.title(channel);
 
   let maxLength;
   if (axis.titleMaxLength) {

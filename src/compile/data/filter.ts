@@ -1,6 +1,7 @@
-import {FacetModel} from './../facet';
-import {LayerModel} from './../layer';
-import {Model} from './../model';
+import {FacetModel} from '../facet';
+import {LayerModel} from '../layer';
+import {RepeatModel} from '../repeat';
+import {Model} from '../model';
 
 import {DataComponent} from './data';
 
@@ -35,6 +36,18 @@ export namespace filter {
       const childDataComponent = child.component.data;
       if (model.compatibleSource(child) && childDataComponent.filter && childDataComponent.filter === filterComponent) {
         // same filter in child so we can just delete it
+        delete childDataComponent.filter;
+      }
+    });
+    return filterComponent;
+  }
+
+  export function parseRepeat(model: RepeatModel) {
+    // Note that this `filter.parseLayer` method is called before `source.parseLayer`
+    let filterComponent = parse(model);
+    model.children().forEach((child) => {
+      const childDataComponent = child.component.data;
+      if (childDataComponent.filter) {
         delete childDataComponent.filter;
       }
     });

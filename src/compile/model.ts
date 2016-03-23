@@ -3,7 +3,7 @@ import {Channel, X, COLUMN} from '../channel';
 import {Config, CellConfig} from '../config';
 import {Data, DataTable} from '../data';
 import {channelMappingReduce, channelMappingForEach} from '../encoding';
-import {FieldDef, FieldRefOption, isRepeatRef, field} from '../fielddef';
+import {FieldDef, FieldRefOption, isRepeatRef, field, isCount, COUNT_DISPLAYNAME} from '../fielddef';
 import {LegendProperties} from '../legend';
 import {Scale, ScaleType} from '../scale';
 import {BaseSpec} from '../spec';
@@ -14,7 +14,7 @@ import {VgData, VgMarkGroup, VgScale, VgAxis, VgLegend, VgFieldRef, VgField} fro
 import {DataComponent} from './data/data';
 import {LayoutComponent} from './layout';
 import {ScaleComponents} from './scale';
-import {RepeatModel} from './repeat';
+import {RepeatModel, RepeatValues} from './repeat';
 
 
 /**
@@ -92,13 +92,20 @@ export abstract class Model {
 
   protected _warnings: string[] = [];
 
+  /**
+   * Current iterator value over the repeat value. Indexed by the channel we are repeating over (row, column).
+   */
+  private _repeatValues: RepeatValues = null;
+
   public component: Component;
 
-  constructor(spec: BaseSpec, parent: Model, parentGivenName: string) {
+  constructor(spec: BaseSpec, parent: Model, parentGivenName: string, repeatValues: RepeatValues) {
     this._parent = parent;
 
     // If name is not provided, always use parent's givenName to avoid name conflicts.
     this._name = spec.name || parentGivenName;
+
+    this._repeatValues = repeatValues;
 
     // Shared name maps
     this._dataNameMap = parent ? parent._dataNameMap : new NameMap();
@@ -267,29 +274,12 @@ export abstract class Model {
   }
 
   /**
-   * Get the first child that defines the channel in repeat.
-   */
-  public repeatParent(channel: Channel): RepeatModel {
-    let parent: Model = this;  // check this first in case it already is a repeat model
-    while (true) {
-      if (parent === null) {
-        return null;
-      }
-      if (isRepeatModel(parent) && parent.has(channel)) {
-        return parent;
-      }
-      parent = parent.parent();
-    }
-  }
-
-  /**
    * Just the raw field. Get's the value from the iterator if the parent is iterating.
    */
   public fieldOrig(channel: Channel): string {
     const field = this.fieldDef(channel).field;
     if (isRepeatRef(field)) {
-      const parent = this.repeatParent(field.repeat);
-      return parent.fieldIterator(field.repeat);
+      return this.repeatValue(field.repeat);
     }
     return field as string;
   }
@@ -303,8 +293,7 @@ export abstract class Model {
     const f = fieldDef.field;
     if (isRepeatRef(f)) {
       fieldDef = duplicate(fieldDef);
-      const parent = this.repeatParent(f.repeat);
-      fieldDef.field = parent.fieldIterator(f.repeat);
+      fieldDef.field = this.repeatValue(f.repeat);
     }
 
     if (fieldDef.bin) { // bin has default suffix that depends on scaleType
@@ -314,6 +303,13 @@ export abstract class Model {
     }
 
     return field(fieldDef, opt);
+  }
+
+  /**
+   * Get teh value of teh repeater or undefined if the model des not have repeat values set.
+   */
+  public repeatValue(channel: Channel) {
+    return this._repeatValues && this._repeatValues[channel];
   }
 
   public abstract fieldDef(channel: Channel): FieldDef;
@@ -342,8 +338,7 @@ export abstract class Model {
       // add the name of the field if it is repeating
       const field = fieldDef.field;
       if (isRepeatRef(field)) {
-        const parent = this.repeatParent(field.repeat);
-        postfix = '_' + parent.fieldIterator(field.repeat);
+        postfix = '_' + this.repeatValue(field.repeat);
       }
     }
     return this._scaleNameMap.get(this.name(channel + postfix));
@@ -361,6 +356,19 @@ export abstract class Model {
 
   public legend(channel: Channel): LegendProperties {
     return this._legend[channel];
+  }
+
+  public title(channel: Channel) {
+    const fieldDef = this.fieldDef(channel);
+    if (isCount(fieldDef)) {
+      return COUNT_DISPLAYNAME;
+    }
+    const fn = fieldDef.aggregate || fieldDef.timeUnit || (fieldDef.bin && 'bin');
+    if (fn) {
+      return fn.toString().toUpperCase() + '(' + fieldDef.field + ')';
+    } else {
+      return this.fieldOrig(channel);
+    }
   }
 
   /**
