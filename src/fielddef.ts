@@ -1,5 +1,6 @@
 // utility for a field definition object
 
+import {ROW, COLUMN, Channel} from './channel';
 import {AggregateOp, AGGREGATE_OPS} from './aggregate';
 import {AxisProperties} from './axis';
 import {BinProperties} from './bin';
@@ -11,7 +12,7 @@ import {Type, NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from './type';
 import {contains, toMap, isObject, hash} from './util';
 
 export type RepeatRef = {
-  repeat: string
+  repeat: Channel
 }
 export type Field = string | RepeatRef;
 

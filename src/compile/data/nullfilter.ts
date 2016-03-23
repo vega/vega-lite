@@ -19,16 +19,15 @@ export namespace nullFilter {
   function parse(model: Model): Dict<boolean> {
     const filterNull = model.transform().filterNull;
     return model.reduce(function(aggregator, fieldDef: FieldDef, channel) {
-      model.repeatFields(channel, function(field) {
-        if (filterNull ||
-          (filterNull === undefined && field !== '*' && DEFAULT_NULL_FILTERS[fieldDef.type])) {
-          aggregator[field] = true;
-        } else {
-          // define this so we know that we don't filter nulls for this field
-          // this makes it easier to merge into parents
-          aggregator[field] = false;
-        }
-      });
+      const field = model.fieldOrig(channel);
+      if (filterNull ||
+        (filterNull === undefined && field !== '*' && DEFAULT_NULL_FILTERS[fieldDef.type])) {
+        aggregator[field] = true;
+      } else {
+        // define this so we know that we don't filter nulls for this field
+        // this makes it easier to merge into parents
+        aggregator[field] = false;
+      }
       return aggregator;
     }, {});
   }

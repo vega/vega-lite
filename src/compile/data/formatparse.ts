@@ -19,16 +19,15 @@ export namespace formatParse {
     // use forEach rather than reduce so that it can return undefined
     // if there is no parse needed
     model.forEach(function(fieldDef: FieldDef, channel: Channel) {
-      model.repeatFields(channel, function(field) {
-        if (fieldDef.type === TEMPORAL) {
-          parseComponent[field] = 'date';
-        } else if (fieldDef.type === QUANTITATIVE) {
-          if (isCount(fieldDef) || calcFieldMap[field]) {
-            return;
-          }
-          parseComponent[field] = 'number';
+      const field = model.fieldOrig(channel);
+      if (fieldDef.type === TEMPORAL) {
+        parseComponent[field] = 'date';
+      } else if (fieldDef.type === QUANTITATIVE) {
+        if (isCount(fieldDef) || calcFieldMap[field]) {
+          return;
         }
-      });
+        parseComponent[field] = 'number';
+      }
     });
     return parseComponent;
   }

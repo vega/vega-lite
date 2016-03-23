@@ -41,7 +41,7 @@ export type ScaleComponents = {
 
 export function parseScaleComponent(model: Model): Dict<ScaleComponents> {
   return model.channels().reduce(function(scale: Dict<ScaleComponents>, channel: Channel) {
-    function makeScales() {
+    if (model.scale(channel)) {
       const fieldDef = model.fieldDef(channel);
       const scales: ScaleComponents = {
         main: parseMainScale(model, fieldDef, channel)
@@ -55,13 +55,8 @@ export function parseScaleComponent(model: Model): Dict<ScaleComponents> {
           scales.binColorLegend = parseBinColorLegendLabel(model, fieldDef);
         }
       }
-      return scales;
-    }
 
-    if (model.scale(channel)) {
-      model.repeatFields(channel, function(field) {
-        scale[channel + '_' + field] = makeScales();
-      });
+      scale[channel] = scales;
     }
     return scale;
   }, {} as Dict<ScaleComponents>);

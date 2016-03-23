@@ -14,10 +14,22 @@ import {assembleLayout, parseRepeatLayout} from './layout';
 import {Model} from './model';
 import {parseScaleComponent} from './scale';
 
+type FieldValues = {
+  row: string,
+  column: string
+}
+
 export class RepeatModel extends Model {
   private _repeat: Repeat;
 
   private _child: Model;
+
+  private _repeatValues: FieldValues[];
+
+  /**
+   * Current iterator value over the repeat value. Indexed by the channel we are repeating over (row, column).
+   */
+  private _iterator: FieldValues = null;
 
   constructor(spec: RepeatSpec, parent: Model, parentGivenName: string) {
     super(spec, parent, parentGivenName);
@@ -28,6 +40,7 @@ export class RepeatModel extends Model {
     const child  = this._child = buildModel(spec.spec, this, this.name('child'));
 
     const repeat  = this._repeat = spec.repeat;
+    this._repeatValues = this._initValues(repeat);
     this._scale  = this._initScale(repeat, config, child);
     this._axis = {};
   }
@@ -52,8 +65,57 @@ export class RepeatModel extends Model {
     }, {} as Dict<Scale>);
   }
 
+  private _initValues(repeat: Repeat): FieldValues[] {
+    let values = [];
+    const row = repeat.row || [null];
+    const column = repeat.column || [null];
+
+    // cross product
+    for (var r = 0; r < row.length; r++) {
+      var rowField = row[r];
+      for (var c = 0; c < column.length; c++) {
+        var columnField = column[c];
+        values.push({
+          row: rowField,
+          column: columnField
+        });
+      }
+    }
+
+    return values;
+  }
+
   public repeat() {
     return this._repeat;
+  }
+
+  /**
+   * Iterate over all values of the repeated channel. If the field is not repeated, call the callback once.
+   */
+  public repeatFields(channel: Channel, f: (field: string) => any) {
+    this._iterator = {row: null, column: null};
+    this.repeat()[channel].forEach((field) => {
+      this._iterator[channel] = field;
+      f(field);
+    });
+    this._iterator = null;
+  }
+
+  public repeatFieldCombinations(f: (rowField: string, columnField: string) => void) {
+    for (var i = 0; i < this._repeatValues.length; i++) {
+      const iter = this._iterator = this._repeatValues[i];
+      f(iter.row, iter.column);
+    }
+    this._iterator = null;
+  }
+
+  public fieldIterator(channel: Channel) {
+    if (this._iterator) {
+      return this._iterator[channel];
+    } else {
+      console.error('we are not iterating');
+      return null;
+    }
   }
 
   public hasMultipleDimensions() {
@@ -83,7 +145,10 @@ export class RepeatModel extends Model {
   }
 
   public parseData() {
-    this.child().parseData();
+    this.repeatFieldCombinations((row, column) => {
+      console.log(row, column);
+      this.child().parseData();
+    });
   }
 
   public parseSelectionData() {
@@ -100,7 +165,14 @@ export class RepeatModel extends Model {
     const child = this.child();
     const model = this;
 
-    child.parseScale();
+    // enumerate scales
+    [ROW, COLUMN].forEach((channel) => {
+      if (this.has(channel)) {
+        this.repeatFields(channel, (field) => {
+          child.parseScale();
+        });
+      }
+    });
 
     // First, add scale for row and column.
     let scaleComponent = this.component.scale = parseScaleComponent(this);

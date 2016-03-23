@@ -92,8 +92,6 @@ export abstract class Model {
 
   protected _warnings: string[] = [];
 
-  protected _iterators: Dict<string> = {};
-
   public component: Component;
 
   constructor(spec: BaseSpec, parent: Model, parentGivenName: string) {
@@ -271,13 +269,13 @@ export abstract class Model {
   /**
    * Get the first child that defines the channel in repeat.
    */
-  public getRepeatParent(channel: Channel | string): RepeatModel {
-    let parent: Model = this.parent();
+  public repeatParent(channel: Channel): RepeatModel {
+    let parent: Model = this;  // check this first in case it already is a repeat model
     while (true) {
       if (parent === null) {
         return null;
       }
-      if (isRepeatModel(parent)) {
+      if (isRepeatModel(parent) && parent.has(channel)) {
         return parent;
       }
       parent = parent.parent();
@@ -285,36 +283,14 @@ export abstract class Model {
   }
 
   /**
-   * Iterate over all values of the repeated channel. If the field is not repeated, call the callback once.
-   */
-  public repeatFields(channel: Channel, f: (field: string) => any) {
-    const repeatField = this.has(channel) && this.fieldDef(channel).field;
-    if (isRepeatRef(repeatField)) {
-      const parent = this.getRepeatParent(channel);
-      parent.repeat()[repeatField.repeat].forEach((field) => {
-        this._iterators[repeatField.repeat] = field;
-        f(field);
-      });
-      delete this._iterators[repeatField.repeat];
-    } else {
-      return f(this.fieldOrig(channel));  // no repeat
-    }
-  }
-
-  /**
-   * Just the raw field.
+   * Just the raw field. Get's the value from the iterator if the parent is iterating.
    */
   public fieldOrig(channel: Channel): string {
     const field = this.fieldDef(channel).field;
     if (isRepeatRef(field)) {
-      if (field.repeat in this._iterators) {
-         return this._iterators[field.repeat];
-      } else {
-        console.error('we are not iterating');
-        return null;
-      }
+      const parent = this.repeatParent(field.repeat);
+      return parent.fieldIterator(field.repeat);
     }
-
     return field as string;
   }
 
@@ -326,13 +302,9 @@ export abstract class Model {
 
     const f = fieldDef.field;
     if (isRepeatRef(f)) {
-      if (f.repeat in this._iterators) {
-        fieldDef = duplicate(fieldDef);
-        fieldDef.field = this._iterators[f.repeat];
-      } else {
-        console.error('we are not iterating');
-        return null;
-      }
+      fieldDef = duplicate(fieldDef);
+      const parent = this.repeatParent(f.repeat);
+      fieldDef.field = parent.fieldIterator(f.repeat);
     }
 
     if (fieldDef.bin) { // bin has default suffix that depends on scaleType
@@ -370,11 +342,8 @@ export abstract class Model {
       // add the name of the field if it is repeating
       const field = fieldDef.field;
       if (isRepeatRef(field)) {
-        if (field.repeat in this._iterators) {
-          postfix = '_' + this._iterators[field.repeat];
-        } else {
-          console.error('we are not iterating');
-        }
+        const parent = this.repeatParent(field.repeat);
+        postfix = '_' + parent.fieldIterator(field.repeat);
       }
     }
     return this._scaleNameMap.get(this.name(channel + postfix));
