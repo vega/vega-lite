@@ -2,7 +2,7 @@ import {COLUMN, ROW, X, Y, SIZE, COLOR, SHAPE, TEXT, LABEL, Channel} from '../ch
 import {FieldDef, field, OrderChannelDef} from '../fielddef';
 import {SortOrder} from '../sort';
 import {QUANTITATIVE, ORDINAL, TEMPORAL} from '../type';
-import {contains, union, isArray, array, extend, keys} from '../util';
+import {contains, union, isArray, array, extend, keys, isString} from '../util';
 
 import {FacetModel} from './facet';
 import {LayerModel} from './layer';
@@ -30,6 +30,14 @@ export function buildModel(spec: Spec, parent: Model, parentGivenName: string): 
   return null;
 }
 
+export function compileSelectionPredicate(model: UnitModel, sel) {
+  var recurse = compileSelectionPredicate.bind(null, model);
+  if (isArray(sel)) sel = { or: sel };  // Default OR.
+  return isString(sel) ? model.selection(sel).predicate :
+    sel.or ? array(sel.or).map(recurse).join(' || ') :
+      sel.and ? array(sel.and).map(recurse).join(' && ') : null;
+}
+
 export function compileIfThenElse(model: UnitModel, channel: Channel, output, cb) {
   const ruleDef = model.fieldDef(channel, true);
 
@@ -37,13 +45,13 @@ export function compileIfThenElse(model: UnitModel, channel: Channel, output, cb
   if (!isArray(ruleDef)) return extend(output, cb(ruleDef));
 
   array(ruleDef).forEach(function(fieldDef) {
-    var selName = fieldDef.if || fieldDef.elseif,
-        sel:Selection = selName && model.selection(selName);
+    var selection = fieldDef.if || fieldDef.elseif,
+        predicate = selection && compileSelectionPredicate(model, selection);
 
     const property = cb(fieldDef);
     keys(property).forEach(function(k) {
       const o = isArray(output[k]) && output[k] || (output[k] = []);
-      if (selName) property[k].test = sel.predicate;
+      if (predicate) property[k].test = predicate;
       o.push(property[k]);
     });
   });
