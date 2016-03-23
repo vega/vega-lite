@@ -19,9 +19,9 @@ export namespace nullFilter {
   function parse(model: Model): Dict<boolean> {
     const filterNull = model.transform().filterNull;
     return model.reduce(function(aggregator, fieldDef: FieldDef, channel) {
-      model.enumerateFields(channel).forEach((field) => {
+      model.repeatFields(channel, function(field) {
         if (filterNull ||
-          (filterNull === undefined && fieldDef.field && fieldDef.field !== '*' && DEFAULT_NULL_FILTERS[fieldDef.type])) {
+          (filterNull === undefined && field !== '*' && DEFAULT_NULL_FILTERS[fieldDef.type])) {
           aggregator[field] = true;
         } else {
           // define this so we know that we don't filter nulls for this field

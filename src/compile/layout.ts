@@ -222,10 +222,9 @@ function getDistinct(model: Model, channel: Channel): StringSet {
     const scale = model.scale(channel);
     if (scale.type === ScaleType.ORDINAL && !(scale.domain instanceof Array)) {
       // if explicit domain is declared, use array length
+      const distinctField = model.field(channel);
       let distinct: StringSet = {};
-      model.enumerateFields(channel).forEach((distinctField) => {
-        distinct[distinctField] = true;
-      });
+      distinct[distinctField] = true;
       return distinct;
     }
   }

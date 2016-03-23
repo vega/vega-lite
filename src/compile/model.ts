@@ -8,7 +8,7 @@ import {LegendProperties} from '../legend';
 import {Scale, ScaleType} from '../scale';
 import {BaseSpec} from '../spec';
 import {Transform} from '../transform';
-import {extend, flatten, vals, warning, Dict} from '../util';
+import {extend, flatten, vals, warning, duplicate, Dict} from '../util';
 import {VgData, VgMarkGroup, VgScale, VgAxis, VgLegend, VgFieldRef, VgField} from '../vega.schema';
 
 import {DataComponent} from './data/data';
@@ -91,6 +91,8 @@ export abstract class Model {
   protected _config: Config;
 
   protected _warnings: string[] = [];
+
+  protected _iterators: Dict<string> = {};
 
   public component: Component;
 
@@ -269,13 +271,13 @@ export abstract class Model {
   /**
    * Get the first child that defines the channel in repeat.
    */
-  private _getRepeatParent(channel: Channel | string) {
+  public getRepeatParent(channel: Channel | string): RepeatModel {
     let parent: Model = this.parent();
     while (true) {
       if (parent === null) {
         return null;
       }
-      if (isRepeatModel(parent) && channel in parent.repeat()) {
+      if (isRepeatModel(parent)) {
         return parent;
       }
       parent = parent.parent();
@@ -283,20 +285,56 @@ export abstract class Model {
   }
 
   /**
-   * Enumerate all fields for a repeated field. If the field is not repeated, return only the one field.
+   * Iterate over all values of the repeated channel. If the field is not repeated, call the callback once.
    */
-  public enumerateFields(channel: Channel): string[] {
-    const field = this.fieldDef(channel).field;
-    if (isRepeatRef(field)) {
-      const parent = this._getRepeatParent(field.repeat);
-      return parent.repeat()[field.repeat];
+  public repeatFields(channel: Channel, f: (field: string) => any) {
+    const repeatField = this.has(channel) && this.fieldDef(channel).field;
+    if (isRepeatRef(repeatField)) {
+      const parent = this.getRepeatParent(channel);
+      parent.repeat()[repeatField.repeat].forEach((field) => {
+        this._iterators[repeatField.repeat] = field;
+        f(field);
+      });
+      delete this._iterators[repeatField.repeat];
     } else {
-      return [field as string];
+      return f(this.fieldOrig(channel));  // no repeat
     }
   }
 
-  private _field(channel: Channel, opt: FieldRefOption = {}): string {
-    const fieldDef = this.fieldDef(channel);
+  /**
+   * Just the raw field.
+   */
+  public fieldOrig(channel: Channel): string {
+    const field = this.fieldDef(channel).field;
+    if (isRepeatRef(field)) {
+      if (field.repeat in this._iterators) {
+         return this._iterators[field.repeat];
+      } else {
+        console.error('we are not iterating');
+        return null;
+      }
+    }
+
+    return field as string;
+  }
+
+  /**
+   * Get the field reference for vega
+   */
+  public field(channel: Channel, opt: FieldRefOption = {}): string {
+    let fieldDef = this.fieldDef(channel);
+
+    const f = fieldDef.field;
+    if (isRepeatRef(f)) {
+      if (f.repeat in this._iterators) {
+        fieldDef = duplicate(fieldDef);
+        fieldDef.field = this._iterators[f.repeat];
+      } else {
+        console.error('we are not iterating');
+        return null;
+      }
+    }
+
     if (fieldDef.bin) { // bin has default suffix that depends on scaleType
       opt = extend({
         binSuffix: this.scale(channel).type === ScaleType.ORDINAL ? '_range' : '_start'
@@ -304,34 +342,6 @@ export abstract class Model {
     }
 
     return field(fieldDef, opt);
-  }
-
-  /**
-   * Get field for vega.
-   */
-  public field(channel: Channel, opt: FieldRefOption = {}): VgField {
-    const f = this.fieldDef(channel).field;
-    if (isRepeatRef(f)) {
-      const parent = this._getRepeatParent(f.repeat);
-      const prefix = parent.hasMultipleDimensions() ? f.repeat + '.' : '';
-      return {parent: prefix + 'data'};
-    }
-
-    return this._field(channel, opt);
-  }
-
-  /**
-   * Get a field reference for vega. Used in mark properties.
-   */
-  public fieldRef(channel: Channel, opt: FieldRefOption = {}): VgFieldRef {
-    const f = this.fieldDef(channel).field;
-    if (isRepeatRef(f)) {
-      const parent = this._getRepeatParent(f.repeat);
-      const prefix = parent.hasMultipleDimensions() ? f.repeat + '.' : '';
-      return {datum: {parent: prefix + 'data'}};
-    }
-
-    return this._field(channel, opt);
   }
 
   public abstract fieldDef(channel: Channel): FieldDef;
@@ -350,9 +360,24 @@ export abstract class Model {
     this._scaleNameMap.rename(oldName, newName);
   }
 
-  /** returns scale name for a given channel */
+  /**
+   * returns scale name for a given channel
+   */
   public scaleName(channel: Channel|string): string {
-    return this._scaleNameMap.get(this.name(channel + ''));
+    const fieldDef = this.fieldDef(channel as Channel);
+    let postfix = '';
+    if (fieldDef) {
+      // add the name of the field if it is repeating
+      const field = fieldDef.field;
+      if (isRepeatRef(field)) {
+        if (field.repeat in this._iterators) {
+          postfix = '_' + this._iterators[field.repeat];
+        } else {
+          console.error('we are not iterating');
+        }
+      }
+    }
+    return this._scaleNameMap.get(this.name(channel + postfix));
   }
 
   public sort(channel: Channel) {

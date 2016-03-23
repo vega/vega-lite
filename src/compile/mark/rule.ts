@@ -40,7 +40,7 @@ export namespace rule {
     if (model.has(SIZE)) {
       p.strokeWidth = {
         scale: model.scaleName(SIZE),
-        field: model.fieldRef(SIZE)
+        field: model.field(SIZE)
       };
     } else {
       p.strokeWidth = { value: sizeValue(model) };
@@ -52,7 +52,7 @@ export namespace rule {
   function position(model: UnitModel, channel: Channel) {
     return {
         scale: model.scaleName(channel),
-        field: model.fieldRef(channel, { binSuffix: '_mid' })
+        field: model.field(channel, { binSuffix: '_mid' })
       };
   }
 

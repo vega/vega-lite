@@ -132,16 +132,7 @@ export class RepeatModel extends Model {
       {
         name: this.name('cell'),
         type: 'group',
-        from: extend(
-          {data: this.dataTable()},
-          this.hasMultipleDimensions() ? {
-            transform: [{
-              type: 'cross',
-              with: 'fields_column',
-              output: {left: 'row', right: 'column'}
-            }]
-          } : {}
-        ),
+        from: {data: this.dataTable()},
         properties: {
           update: getRepeatGroupProperties(this)
         }
@@ -223,7 +214,7 @@ export class RepeatModel extends Model {
   }
 }
 
-// TODO: move the rest of the file into RepeatModel if possible
+// TODO: move into RepeatModel if possible
 
 function getRepeatGroupProperties(model: RepeatModel) {
   const child = model.child();
@@ -232,14 +223,14 @@ function getRepeatGroupProperties(model: RepeatModel) {
   return extend({
       x: model.has(COLUMN) ? {
           scale: model.scaleName(COLUMN),
-          field: model.hasMultipleDimensions() ? 'column.data' : 'data',
+          field: model.field(COLUMN),
           // offset by the padding
           offset: model.scale(COLUMN).padding / 2
         } : {value: model.config().facet.scale.padding / 2},
 
       y: model.has(ROW) ? {
         scale: model.scaleName(ROW),
-        field: model.hasMultipleDimensions() ? 'row.data' : 'data',
+        field: model.field(ROW),
         // offset by the padding
         offset: model.scale(ROW).padding / 2
       } : {value: model.config().facet.scale.padding / 2},

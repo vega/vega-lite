@@ -19,7 +19,7 @@ export namespace formatParse {
     // use forEach rather than reduce so that it can return undefined
     // if there is no parse needed
     model.forEach(function(fieldDef: FieldDef, channel: Channel) {
-      model.enumerateFields(channel).forEach((field) => {
+      model.repeatFields(channel, function(field) {
         if (fieldDef.type === TEMPORAL) {
           parseComponent[field] = 'date';
         } else if (fieldDef.type === QUANTITATIVE) {

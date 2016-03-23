@@ -41,26 +41,32 @@ export type ScaleComponents = {
 
 export function parseScaleComponent(model: Model): Dict<ScaleComponents> {
   return model.channels().reduce(function(scale: Dict<ScaleComponents>, channel: Channel) {
-      if (model.scale(channel)) {
-        const fieldDef = model.fieldDef(channel);
-        const scales: ScaleComponents = {
-          main: parseMainScale(model, fieldDef, channel)
-        };
+    function makeScales() {
+      const fieldDef = model.fieldDef(channel);
+      const scales: ScaleComponents = {
+        main: parseMainScale(model, fieldDef, channel)
+      };
 
-        // Add additional scales needed to support ordinal legends (list of values)
-        // for color ramp.
-        if (channel === COLOR && model.legend(COLOR) && (fieldDef.type === ORDINAL || fieldDef.bin || fieldDef.timeUnit)) {
-          scales.colorLegend = parseColorLegendScale(model, fieldDef);
-          if (fieldDef.bin) {
-            scales.binColorLegend = parseBinColorLegendLabel(model, fieldDef);
-          }
+      // Add additional scales needed to support ordinal legends (list of values)
+      // for color ramp.
+      if (channel === COLOR && model.legend(COLOR) && (fieldDef.type === ORDINAL || fieldDef.bin || fieldDef.timeUnit)) {
+        scales.colorLegend = parseColorLegendScale(model, fieldDef);
+        if (fieldDef.bin) {
+          scales.binColorLegend = parseBinColorLegendLabel(model, fieldDef);
         }
-
-        scale[channel] = scales;
       }
-      return scale;
-    }, {} as Dict<ScaleComponents>);
+      return scales;
+    }
+
+    if (model.scale(channel)) {
+      model.repeatFields(channel, function(field) {
+        scale[channel + '_' + field] = makeScales();
+      });
+    }
+    return scale;
+  }, {} as Dict<ScaleComponents>);
 }
+
 
 /**
  * Return the main scale for each channel.  (Only color can have multiple scales.)

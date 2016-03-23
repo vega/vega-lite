@@ -147,6 +147,7 @@ export function title(fieldDef: FieldDef) {
   if (fn) {
     return fn.toString().toUpperCase() + '(' + fieldDef.field + ')';
   } else {
+    // FIXME
     return hash(fieldDef.field);
   }
 }

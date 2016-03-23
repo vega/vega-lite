@@ -16,7 +16,7 @@ export namespace line {
     if (model.has(X)) {
       p.x = {
         scale: model.scaleName(X),
-        field: model.fieldRef(X, { binSuffix: '_mid' })
+        field: model.field(X, { binSuffix: '_mid' })
       };
     } else {
       p.x = { value: 0 };
@@ -26,7 +26,7 @@ export namespace line {
     if (model.has(Y)) {
       p.y = {
         scale: model.scaleName(Y),
-        field: model.fieldRef(Y, { binSuffix: '_mid' })
+        field: model.field(Y, { binSuffix: '_mid' })
       };
     } else {
       p.y = { field: { group: 'height' } };

@@ -13,7 +13,7 @@ import {DataComponent} from './data';
 export namespace nonPositiveFilter {
   export function parseUnit(model: Model): Dict<boolean> {
     return model.channels().reduce(function(nonPositiveComponent, channel) {
-      model.enumerateFields(channel).forEach((field) => {
+      model.repeatFields(channel, function(field) {
         const scale = model.scale(channel);
         if (model.field(channel) && scale) {
           nonPositiveComponent[field] = scale.type === ScaleType.LOG;

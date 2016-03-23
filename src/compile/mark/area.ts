@@ -23,14 +23,14 @@ export namespace area {
     if (stack && X === stack.fieldChannel) { // Stacked Measure
       p.x = {
         scale: model.scaleName(X),
-        field: model.fieldRef(X, { suffix: '_start' })
+        field: model.field(X, { suffix: '_start' })
       };
     } else if (isMeasure(xFieldDef)) { // Measure
-      p.x = { scale: model.scaleName(X), field: model.fieldRef(X) };
+      p.x = { scale: model.scaleName(X), field: model.field(X) };
     } else if (isDimension(xFieldDef)) {
       p.x = {
         scale: model.scaleName(X),
-        field: model.fieldRef(X, { binSuffix: '_mid' })
+        field: model.field(X, { binSuffix: '_mid' })
       };
     }
 
@@ -39,7 +39,7 @@ export namespace area {
       if (stack && X === stack.fieldChannel) {
         p.x2 = {
           scale: model.scaleName(X),
-          field: model.fieldRef(X, { suffix: '_end' })
+          field: model.field(X, { suffix: '_end' })
         };
       } else {
         p.x2 = {
@@ -54,17 +54,17 @@ export namespace area {
     if (stack && Y === stack.fieldChannel) { // Stacked Measure
       p.y = {
         scale: model.scaleName(Y),
-        field: model.fieldRef(Y, { suffix: '_start' })
+        field: model.field(Y, { suffix: '_start' })
       };
     } else if (isMeasure(yFieldDef)) {
       p.y = {
         scale: model.scaleName(Y),
-        field: model.fieldRef(Y)
+        field: model.field(Y)
       };
     } else if (isDimension(yFieldDef)) {
       p.y = {
         scale: model.scaleName(Y),
-        field: model.fieldRef(Y, { binSuffix: '_mid' })
+        field: model.field(Y, { binSuffix: '_mid' })
       };
     }
 
@@ -72,7 +72,7 @@ export namespace area {
       if (stack && Y === stack.fieldChannel) {
         p.y2 = {
           scale: model.scaleName(Y),
-          field: model.fieldRef(Y, { suffix: '_end' })
+          field: model.field(Y, { suffix: '_end' })
         };
       } else {
         p.y2 = {

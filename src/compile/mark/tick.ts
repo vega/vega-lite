@@ -17,7 +17,7 @@ export namespace tick {
     if (model.has(X)) {
       p.xc = {
         scale: model.scaleName(X),
-        field: model.fieldRef(X, { binSuffix: '_mid' })
+        field: model.field(X, { binSuffix: '_mid' })
       };
     } else {
       p.xc = { value: model.config().scale.bandSize / 2 };
@@ -27,7 +27,7 @@ export namespace tick {
     if (model.has(Y)) {
       p.yc = {
         scale: model.scaleName(Y),
-        field: model.fieldRef(Y, { binSuffix: '_mid' })
+        field: model.field(Y, { binSuffix: '_mid' })
       };
     } else {
       p.yc = { value: model.config().scale.bandSize / 2 };
@@ -37,14 +37,14 @@ export namespace tick {
       p.width = { value: model.config().mark.tickThickness };
       p.height = model.has(SIZE)? {
             scale: model.scaleName(SIZE),
-            field: model.fieldRef(SIZE)
+            field: model.field(SIZE)
         } : {
             value: sizeValue(model, Y)
         };
     } else {
       p.width = model.has(SIZE)? {
           scale: model.scaleName(SIZE),
-          field: model.fieldRef(SIZE)
+          field: model.field(SIZE)
         } : {
           value: sizeValue(model, X)
         };
