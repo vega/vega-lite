@@ -134,4 +134,6 @@ export function assembleMarks(model: UnitModel, sel: s.Selection, marks, childre
       }
     }
   });
+
+  return children;
 }

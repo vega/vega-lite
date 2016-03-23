@@ -27,6 +27,8 @@ export interface Selection {
   scales?: any;
   interval?: any;
   translate?: any;
+  zoom?: any;
+  nearest?: any;
 }
 
 export function storeName(sel: Selection) {

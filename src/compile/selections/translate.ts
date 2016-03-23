@@ -156,7 +156,7 @@ export function assembleMarks(model: UnitModel, sel: s.Selection, marks: any[], 
     up = props && props.update,
     clip = up && up.clip;
 
-  if (clip) return;
+  if (clip) return _;
 
   var children = marks.splice(0);
   marks.push({

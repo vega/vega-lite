@@ -15,3 +15,6 @@ export {translate};
 
 import * as zoom from './zoom';
 export {zoom};
+
+import * as nearest from './nearest';
+export {nearest};

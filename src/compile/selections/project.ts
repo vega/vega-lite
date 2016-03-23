@@ -29,8 +29,10 @@ export function parse(model:UnitModel, sel: s.Selection) {
 }
 
 export function assembleSignals(_, sel: s.Selection, trigger) {
+  var datum = '(eventItem().isVoronoi ? datum.datum : datum)';
+
   var expr = sel.project.map(function(p) {
-    return fieldName(p) + ': datum.' + p.field;
+    return fieldName(p) + ': ' + datum + '.' + p.field;
   }).join(', ');
 
   trigger.streams[0].expr = '{_unitID: unit._id, ' + expr + ', ts: now()}';
