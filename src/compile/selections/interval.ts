@@ -16,6 +16,14 @@ function endName(sel: s.Selection) {
 
 // TODO: resolve arg.
 export function parse(model: UnitModel, sel: s.Selection) {
+  var on = parseEvents(sel.on)[0];
+  if (!on.start) {
+    sel.on = '[mousedown[!event.vg.name.brush], window:mouseup] > window:mousemove';
+  } else if (!on.start.str.match('event.vg.name')) {
+    on.start.str += '[!event.vg.name.brush]'
+    sel.on = '[' + on.start.str + ', ' + on.end.str + '] > ' + on.middle.str;
+  }
+
   sel.predicate = 'inrangeselection(' + u.str(s.storeName(sel)) + ', datum, "union", group._id)';
 
   if (sel.translate === undefined) sel.translate = true;
@@ -77,14 +85,14 @@ export function assembleData(model: UnitModel, sel: s.Selection, db) {
 }
 
 // TODO: Move to config?
-export function assembleMarks(model: UnitModel, sel: s.Selection, marks) {
+export function assembleMarks(model: UnitModel, sel: s.Selection, marks, children) {
   var x = null, y = null;
   sel.project.forEach(function(p) {
     if (p.channel === X) x = p.field;
     if (p.channel === Y) y = p.field;
   });
 
-  marks.push({
+  children.push({
     name: 'brush',
     type: 'rect',
     from: { data: s.storeName(sel) },

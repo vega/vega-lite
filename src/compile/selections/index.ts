@@ -40,11 +40,7 @@ export function parse(spec, model: UnitModel) {
     // Set default properties and instantiate default transforms.
     sel.name = k;
     sel.level = sel.level || Levels.DATA;
-
-    if (!sel.on) {
-      sel.on = sel.interval ?
-        '[mousedown[!event.vg.name.brush], window:mouseup] > window:mousemove' : 'click';
-    }
+    sel.on = sel.on || 'click';
 
     if (sel.type === Types.MULTI && !sel.scales && !sel.interval) {
       sel.toggle = sel.toggle || true;
@@ -136,10 +132,11 @@ export function assembleData(model: UnitModel, data) {
 }
 
 export function assembleMarks(model: UnitModel, marks: any[]) {
+  var children = marks;
   model.selection().forEach(function(sel: Selection) {
     transforms.forEach(function(k) {
       if (!tx[k].assembleMarks || !sel[k]) return;
-      tx[k].assembleMarks(model, sel, marks);
+      children = tx[k].assembleMarks(model, sel, marks, children);
     });
   });
   return marks;

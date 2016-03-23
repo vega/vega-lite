@@ -5,23 +5,28 @@ import * as u from '../../util';
 import {parse as parseEvents} from 'vega-event-selector';
 
 function anchorName(sel: s.Selection) {
-  return sel.name + '_anchor';
+  return sel.name + '_translate_anchor';
 }
 
 function deltaName(sel: s.Selection) {
-  return sel.name + '_delta';
+  return sel.name + '_translate_delta';
 }
 
 function zeroName(sel: s.Selection) {
-  return sel.name + '_zero';
+  return sel.name + '_translate_zero';
 }
 
 export function parse(_, sel: s.Selection) {
-  var md = sel.interval ? '@brush:mousedown' : 'mousedown',
+  var md = sel.interval ? '@brush:mousedown' : 'mousedown[!event.vg.name.brush]',
       trans = sel.translate,
       on = parseEvents(u.isString(trans) ? trans :
-        '[' + md + ', window:mouseup] > window:mousemove');
-  sel.translate = {on: on[0]};
+        '[' + md + ', window:mouseup] > window:mousemove')[0];
+
+  if (!sel.interval && !on.start.str.match('event.vg.name')) {
+    on.start.str += '[!event.vg.name.brush]';
+  }
+
+  sel.translate = {on: on};
 
   // Unset scale properties to allow smooth panning.
   if (sel.scales) {
@@ -49,7 +54,7 @@ export function assembleSignals(model: UnitModel, sel: s.Selection, _, __, signa
         expr: '{x: 0, y: 0, ts: now()}'
       },
       {
-        type: on.str,
+        type: '[' + on.start.str + ', ' + on.end.str + '] > ' + on.middle.str,
         expr: '{x: '+anchor+'.x - eventX(), y: eventY() - '+anchor+'.y, ts: now()}'
       }
     ]
@@ -65,7 +70,7 @@ export function assembleSignals(model: UnitModel, sel: s.Selection, _, __, signa
         expr: '{x: eventX(), y: eventY(), unit: unit}'
       },
       {
-        type: on.str,
+        type: '[' + on.start.str + ', ' + on.end.str + '] > ' + on.middle.str,
         expr: '{x: eventX(), y: eventY(), unit: '+anchor+'.unit}'
       }
     ]
@@ -91,7 +96,8 @@ export function assembleData(model: UnitModel, sel: s.Selection, db) {
   };
 
   sel.project.forEach(function(p) {
-    var field = p.field, channel = p.channel,
+    var field = p.field,
+      channel = p.channel,
       n = 'min_' + field,
       x = 'max_' + field,
       dmin = 'datum.' + n,
@@ -141,7 +147,14 @@ export function assembleData(model: UnitModel, sel: s.Selection, db) {
 }
 
 // Wrap our marks in a clipped group
-export function assembleMarks(model: UnitModel, sel: s.Selection, marks: any[]) {
+export function assembleMarks(model: UnitModel, sel: s.Selection, marks: any[], _) {
+  var mark = marks[0],
+    props = mark && mark.properties,
+    up = props && props.update,
+    clip = up && up.clip;
+
+  if (clip) return;
+
   var children = marks.splice(0);
   marks.push({
     type: 'group',
@@ -155,4 +168,5 @@ export function assembleMarks(model: UnitModel, sel: s.Selection, marks: any[]) 
     },
     marks: children
   });
+  return children;
 }
