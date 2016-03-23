@@ -110,7 +110,7 @@ export function assembleData(model: UnitModel, sel: s.Selection, db) {
       (sel.interval ? '(' + sel.name + '.ts/' + sel.name + '.ts) || ' : '') +
       '1)';
 
-    var init = '(datum.min_' + field + ', datum.max_' + field + ') *' + reeval;
+    var init = '(datum.min_' + field + ', datum.max_' + field + ') * ' + reeval;
 
     // For intervals, the delta should be interpretted based on the brush size.
     if (sel.interval) {
@@ -130,7 +130,7 @@ export function assembleData(model: UnitModel, sel: s.Selection, db) {
       {
         type: 'formula',
         field: '_' + x,
-        expr: DIR.max + '(datum.max_' + field + ', datum.min_' + field + ') *' + reeval
+        expr: DIR.max + '(datum.max_' + field + ', datum.min_' + field + ') * ' + reeval
       },
       {
         type: 'formula',

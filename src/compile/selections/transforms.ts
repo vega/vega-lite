@@ -12,3 +12,6 @@ export {interval};
 
 import * as translate from './translate';
 export {translate};
+
+import * as zoom from './zoom';
+export {zoom};
