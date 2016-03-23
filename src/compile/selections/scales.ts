@@ -3,6 +3,7 @@ import * as s from './';
 import * as u from '../../util';
 import {domain as scaleDomain, scaleType} from '../scale';
 import {ScaleType} from '../../scale';
+import {SOURCE} from '../../data';
 
 // TODO: Support ordinal scales.
 export function parse(model: UnitModel, sel: s.Selection) {
@@ -33,12 +34,12 @@ export function assembleSignals(_, sel: s.Selection, trigger, clear) {
   trigger.name = clear.name = null;
 }
 
-export function assembleData(_, sel: s.Selection, db) {
+export function assembleData(model: UnitModel, sel: s.Selection, db) {
   var summarize = sel.project.reduce(function(obj, d) {
     return (obj[d.field] = ['min', 'max'], obj);
   }, {});
 
-  db.source = 'source';  // TODO: should ref the enclosing unit's datasource.
+  db.source = model.dataName(SOURCE);
   db.transform.push({ type: 'aggregate', summarize: summarize });
   db.modify.splice(0);   // Domain initialized selections don't need any modifiers.
 }

@@ -2,6 +2,7 @@ import {UnitModel} from '../unit';
 import {X, Y} from '../../channel';
 import * as s from './';
 import * as u from '../../util';
+import {brushName, brushFilter} from './interval';
 
 function anchorName(sel: s.Selection) {
   return sel.name + '_zoom_anchor';
@@ -23,8 +24,8 @@ export function assembleSignals(model: UnitModel, sel: s.Selection, trigger, _, 
     }
   });
 
-  var on = (sel.interval ? '@brush:' : '') + 'wheel' +
-    (!sel.interval ? '[!event.vg.name.brush]' : '');
+  var on = (sel.interval ? '@' + brushName(sel) + ':' : '') + 'wheel' +
+    (!sel.interval ? brushFilter() : '');
 
   signals.push({
     name: anchorName(sel),

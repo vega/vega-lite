@@ -3,6 +3,7 @@ import {UnitModel} from '../unit';
 import * as s from './';
 import * as u from '../../util';
 import {parse as parseEvents} from 'vega-event-selector';
+import {brushName, brushFilter} from './interval';
 
 function anchorName(sel: s.Selection) {
   return sel.name + '_translate_anchor';
@@ -17,13 +18,15 @@ function zeroName(sel: s.Selection) {
 }
 
 export function parse(_, sel: s.Selection) {
-  var md = sel.interval ? '@brush:mousedown' : 'mousedown[!event.vg.name.brush]',
-      trans = sel.translate,
+  var md = sel.interval ? '@' + brushName(sel) + ':mousedown' :
+    'mousedown' + brushFilter();
+
+  var trans = sel.translate,
       on = parseEvents(u.isString(trans) ? trans :
         '[' + md + ', window:mouseup] > window:mousemove')[0];
 
-  if (!sel.interval && !on.start.str.match('event.vg.name')) {
-    on.start.str += '[!event.vg.name.brush]';
+  if (!sel.interval && on.start.str.indexOf(brushFilter()) < 0) {
+    on.start.str += brushFilter();
   }
 
   sel.translate = {on: on};

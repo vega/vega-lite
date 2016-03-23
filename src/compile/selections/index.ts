@@ -38,7 +38,7 @@ export function parse(spec, model: UnitModel) {
     var sel:Selection = spec[k];
 
     // Set default properties and instantiate default transforms.
-    sel.name = k;
+    sel.name = model.name(k);
     sel.level = sel.level || Levels.DATA;
     sel.on = sel.on || 'click';
 
@@ -117,7 +117,7 @@ export function assembleData(model: UnitModel, data) {
       name: storeName(sel),
       transform: [],
       modify: [
-        {type: 'clear', test: sel.name+'_clear'}
+        {type: 'clear', test: sel.name + '_clear'}
       ]
     };
 

@@ -6,6 +6,14 @@ import {parse as parseEvents} from 'vega-event-selector';
 
 var START = 'min_', END = 'max_', SIZE = 'size_';
 
+export function brushName(sel: s.Selection) {
+  return sel.name + '_brush';
+}
+
+export function brushFilter() {
+  return '[!eventItem().isBrush]';
+}
+
 function startName(sel: s.Selection) {
   return sel.name + '_start';
 }
@@ -18,9 +26,9 @@ function endName(sel: s.Selection) {
 export function parse(model: UnitModel, sel: s.Selection) {
   var on = parseEvents(sel.on)[0];
   if (!on.start) {
-    sel.on = '[mousedown[!event.vg.name.brush], window:mouseup] > window:mousemove';
-  } else if (!on.start.str.match('event.vg.name')) {
-    on.start.str += '[!event.vg.name.brush]'
+    sel.on = '[mousedown' + brushFilter() + ', window:mouseup] > window:mousemove';
+  } else if (on.start.str.indexOf(brushFilter()) < 0) {
+    on.start.str += brushFilter();
     sel.on = '[' + on.start.str + ', ' + on.end.str + '] > ' + on.middle.str;
   }
 
@@ -93,11 +101,12 @@ export function assembleMarks(model: UnitModel, sel: s.Selection, marks, childre
   });
 
   children.push({
-    name: 'brush',
+    name: brushName(sel),
     type: 'rect',
     from: { data: s.storeName(sel) },
     properties: {
       enter: {
+        isBrush: {value: true},  // To easily identify brushes w/diff names.
         fill: { value: 'grey' },
         fillOpacity: { value: 0.2 }
       },
