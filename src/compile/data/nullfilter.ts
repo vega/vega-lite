@@ -66,18 +66,26 @@ export namespace nullFilter {
     return nullFilterComponent;
   }
 
-  export function parseRepeat(model: RepeatModel) {
+  export function parseRepeat(model: RepeatModel): Dict<boolean> {
     // note that we run this before source.parseLayer
 
-    // FIXME: null filters are not properly propagated right now
     let nullFilterComponent = {} as Dict<boolean>;
 
-    model.children().forEach((child) => {
-      const childDataComponent = child.component.data;
+    const children = model.children();
+    for (let i = 0; i < children.length; i++) {
+      const childDataComponent = children[i].component.data;
       if (!differ(childDataComponent.nullFilter, nullFilterComponent)) {
         extend(nullFilterComponent, childDataComponent.nullFilter);
-        delete childDataComponent.nullFilter;
+      } else {
+        // children are incompatible
+        return {};
       }
+    }
+
+    // children are compatible so let's delete their null filters
+    model.children().forEach((child) => {
+      const childDataComponent = child.component.data;
+      delete childDataComponent.nullFilter;
     });
 
     return nullFilterComponent;
