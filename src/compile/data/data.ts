@@ -84,8 +84,8 @@ export function parseUnitData(model: UnitModel): DataComponent {
   return {
     formatParse: formatParse.parseUnit(model),
     nullFilter: nullFilter.parseUnit(model),
-    nonPositiveFilter: nonPositiveFilter.parseUnit(model),
     filter: filter.parseUnit(model),
+    nonPositiveFilter: nonPositiveFilter.parseUnit(model),
 
     source: source.parseUnit(model),
     bin: bin.parseUnit(model),
@@ -102,8 +102,8 @@ export function parseFacetData(model: FacetModel): DataComponent {
   return {
     formatParse: formatParse.parseFacet(model),
     nullFilter: nullFilter.parseFacet(model),
-    nonPositiveFilter: nonPositiveFilter.parseFacet(model),
     filter: filter.parseFacet(model),
+    nonPositiveFilter: nonPositiveFilter.parseFacet(model),
 
     source: source.parseFacet(model),
     bin: bin.parseFacet(model),
@@ -122,8 +122,8 @@ export function parseLayerData(model: LayerModel): DataComponent {
     // so let's parse them first
     formatParse: formatParse.parseLayer(model),
     nullFilter: nullFilter.parseLayer(model),
-    nonPositiveFilter: nonPositiveFilter.parseLayer(model),
     filter: filter.parseLayer(model),
+    nonPositiveFilter: nonPositiveFilter.parseLayer(model),
 
     // everything after here does not affect whether we can merge child data into parent or not
     source: source.parseLayer(model),
@@ -141,8 +141,8 @@ export function parseRepeatData(model: RepeatModel): DataComponent {
   return {
     formatParse: formatParse.parseRepeat(model),
     nullFilter: nullFilter.parseRepeat(model),
-    nonPositiveFilter: nonPositiveFilter.parseRepeat(model),
     filter: filter.parseRepeat(model),
+    nonPositiveFilter: nonPositiveFilter.parseRepeat(model),
 
     source: source.parseRepeat(model),
     bin: bin.parseRepeat(model),
