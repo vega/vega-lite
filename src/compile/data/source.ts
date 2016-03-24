@@ -123,8 +123,8 @@ export namespace source {
         // had to move formula before null filter because we cannot null filter something that does not exist
         formula.assemble(component),
         nullFilter.assemble(component),
-        filter.assemble(component),
         bin.assemble(component),
+        filter.assemble(component),
         timeUnit.assemble(component)
       );
 
