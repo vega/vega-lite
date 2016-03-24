@@ -2,9 +2,10 @@ import {SOURCE} from '../../data';
 import {contains} from '../../util';
 import {VgData} from '../../vega.schema';
 
-import {FacetModel} from './../facet';
-import {LayerModel} from './../layer';
-import {Model} from './../model';
+import {FacetModel} from '../facet';
+import {LayerModel} from '../layer';
+import {RepeatModel} from './../repeat';
+import {Model} from '../model';
 
 import {DataComponent} from './data';
 import {nullFilter} from './nullfilter';
@@ -80,6 +81,33 @@ export namespace source {
     return sourceData;
   }
 
+  export function parseRepeat(model: RepeatModel) {
+    let sourceData = parse(model.children()[0]);
+    if (!sourceData) {
+      // cannot merge from child because the direct child does not have any data
+      return;
+    }
+    sourceData.name = model.dataName(SOURCE);
+
+    model.children().forEach((child) => {
+      const childData = child.component.data;
+
+      const canMerge = !childData.filter && !childData.formatParse && !childData.nullFilter;
+      if (canMerge) {
+        // rename source because we can just remove it
+        child.renameData(child.dataName(SOURCE), model.dataName(SOURCE));
+        delete childData.source;
+      } else {
+        // child does not have data defined or the same source so just use the parents source
+        childData.source = {
+          name: child.dataName(SOURCE),
+          source: model.dataName(SOURCE)
+        };
+      }
+    });
+    return sourceData;
+  }
+
   export function assemble(model: Model, component: DataComponent) {
     if (component.source) {
       let sourceData: VgData = component.source;
@@ -92,10 +120,11 @@ export namespace source {
       // null filter comes first so transforms are not performed on null values
       // time and bin should come before filter so we can filter by time and bin
       sourceData.transform = [].concat(
-        nullFilter.assemble(component),
+        // had to move formula before null filter because we cannot null filter something that does not exist
         formula.assemble(component),
-        filter.assemble(component),
+        nullFilter.assemble(component),
         bin.assemble(component),
+        filter.assemble(component),
         timeUnit.assemble(component)
       );
 

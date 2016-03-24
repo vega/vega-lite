@@ -3,6 +3,7 @@ import {extend, vals, hash, Dict} from '../../util';
 
 import {FacetModel} from './../facet';
 import {LayerModel} from './../layer';
+import {RepeatModel} from './../repeat';
 import {Model} from './../model';
 
 import {DataComponent} from './data';
@@ -35,8 +36,20 @@ export namespace formula {
     let formulaComponent = parse(model);
     model.children().forEach((child) => {
       const childDataComponent = child.component.data;
-      if (!childDataComponent.source && childDataComponent.calculate) {
-        extend(formulaComponent || {}, childDataComponent.calculate);
+      if (!childDataComponent.source) {
+        extend(formulaComponent, childDataComponent.calculate);
+        delete childDataComponent.calculate;
+      }
+    });
+    return formulaComponent;
+  }
+
+  export function parseRepeat(model: RepeatModel) {
+    let formulaComponent = parse(model);
+    model.children().forEach((child) => {
+      const childDataComponent = child.component.data;
+      if (!childDataComponent.source) {
+        extend(formulaComponent, childDataComponent.calculate);
         delete childDataComponent.calculate;
       }
     });

@@ -3,17 +3,19 @@ import {Channel, X, COLUMN} from '../channel';
 import {Config, CellConfig} from '../config';
 import {Data, DataTable} from '../data';
 import {channelMappingReduce, channelMappingForEach} from '../encoding';
-import {FieldDef, FieldRefOption, field} from '../fielddef';
+import {FieldDef, FieldRefOption, isRepeatRef, field, isCount, COUNT_DISPLAYNAME} from '../fielddef';
 import {LegendProperties} from '../legend';
 import {Scale, ScaleType} from '../scale';
 import {BaseSpec} from '../spec';
 import {Transform} from '../transform';
 import {extend, flatten, vals, warning, Dict} from '../util';
-import {VgData, VgMarkGroup, VgScale, VgAxis, VgLegend} from '../vega.schema';
+import {VgData, VgMarkGroup, VgScale, VgAxis, VgLegend, VgFieldRef, VgField} from '../vega.schema';
 
 import {DataComponent} from './data/data';
 import {LayoutComponent} from './layout';
 import {ScaleComponents} from './scale';
+import {RepeatModel, RepeatValues} from './repeat';
+
 
 /**
  * Composable Components that are intermediate results of the parsing phase of the
@@ -90,13 +92,20 @@ export abstract class Model {
 
   protected _warnings: string[] = [];
 
+  /**
+   * Current iterator value over the repeat value. Indexed by the channel we are repeating over (row, column).
+   */
+  private _repeatValues: RepeatValues = null;
+
   public component: Component;
 
-  constructor(spec: BaseSpec, parent: Model, parentGivenName: string) {
+  constructor(spec: BaseSpec, parent: Model, parentGivenName: string, repeatValues: RepeatValues) {
     this._parent = parent;
 
     // If name is not provided, always use parent's givenName to avoid name conflicts.
     this._name = spec.name || parentGivenName;
+
+    this._repeatValues = repeatValues;
 
     // Shared name maps
     this._dataNameMap = parent ? parent._dataNameMap : new NameMap();
@@ -207,11 +216,21 @@ export abstract class Model {
   protected abstract mapping();
 
   public reduce(f: (acc: any, fd: FieldDef, c: Channel) => any, init, t?: any) {
-    return channelMappingReduce(this.channels(), this.mapping(), f, init, t);
+    const model = this;
+    // wrap function to replace with correct fieldDef
+    function func(acc: any, fd: FieldDef, c: Channel) {
+      return f(acc, model.fieldDef(c), c);
+    }
+    return channelMappingReduce(this.channels(), this.mapping(), func, init, t);
   }
 
   public forEach(f: (fd: FieldDef, c: Channel, i:number) => void, t?: any) {
-    channelMappingForEach(this.channels(), this.mapping(), f, t);
+    const model = this;
+    // wrap function to replace with correct fieldDef
+    function func(fd: FieldDef, c: Channel, i:number) {
+      f(model.fieldDef(c), c, i);
+    }
+    channelMappingForEach(this.channels(), this.mapping(), func, t);
   }
 
   public abstract has(channel: Channel): boolean;
@@ -264,17 +283,36 @@ export abstract class Model {
     return this._transform || {};
   }
 
-  /** Get "field" reference for vega */
-  public field(channel: Channel, opt: FieldRefOption = {}) {
-    const fieldDef = this.fieldDef(channel);
+  /**
+   * Just the raw field. Get's the value from the iterator if the parent is iterating.
+   */
+  public fieldOrig(channel: Channel): string {
+    const field = this.fieldDef(channel).field;
+    return field as string;
+  }
+
+  public abstract isRepeatRef(channel: Channel): boolean;
+
+  /**
+   * Get the field reference for vega
+   */
+  public field(channel: Channel, opt: FieldRefOption = {}): string {
+    let fieldDef = this.fieldDef(channel);
 
     if (fieldDef.bin) { // bin has default suffix that depends on scaleType
-      opt = extend({
+      opt = extend({}, {
         binSuffix: this.scale(channel).type === ScaleType.ORDINAL ? '_range' : '_start'
       }, opt);
     }
 
     return field(fieldDef, opt);
+  }
+
+  /**
+   * Get the value of the repeater or undefined if the model des not have repeat values set.
+   */
+  public repeatValue(channel: Channel) {
+    return this._repeatValues && this._repeatValues[channel];
   }
 
   public abstract fieldDef(channel: Channel): FieldDef;
@@ -293,9 +331,12 @@ export abstract class Model {
     this._scaleNameMap.rename(oldName, newName);
   }
 
-  /** returns scale name for a given channel */
-  public scaleName(channel: Channel|string): string {
-    return this._scaleNameMap.get(this.name(channel + ''));
+  /**
+   * returns scale name for a given channel
+   */
+  public scaleName(channel: Channel | string): string {
+    const postfix = this.isRepeatRef(channel as Channel) ? ('_' + this.fieldOrig(channel as Channel)) : '';
+    return this._scaleNameMap.get(this.name(channel + postfix));
   }
 
   public sort(channel: Channel) {
@@ -310,6 +351,19 @@ export abstract class Model {
 
   public legend(channel: Channel): LegendProperties {
     return this._legend[channel];
+  }
+
+  public title(channel: Channel) {
+    const fieldDef = this.fieldDef(channel);
+    if (isCount(fieldDef)) {
+      return COUNT_DISPLAYNAME;
+    }
+    const fn = fieldDef.aggregate || fieldDef.timeUnit || (fieldDef.bin && 'bin');
+    if (fn) {
+      return fn.toString().toUpperCase() + '(' + fieldDef.field + ')';
+    } else {
+      return this.fieldOrig(channel);
+    }
   }
 
   /**
@@ -340,4 +394,11 @@ export abstract class Model {
   public isLayer() {
     return false;
   }
+  public isRepeat() {
+    return false;
+  }
+}
+
+export function isRepeatModel(model: Model): model is RepeatModel {
+  return model.isRepeat();
 }

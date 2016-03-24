@@ -7,6 +7,7 @@ import {extend, keys, StringSet} from '../util';
 import {VgData} from '../vega.schema';
 
 import {FacetModel} from './facet';
+import {RepeatModel} from './repeat';
 import {LayerModel} from './layer';
 import {TEXT as TEXT_MARK} from '../mark';
 import {Model} from './model';
@@ -18,6 +19,12 @@ import {UnitModel} from './unit';
 export interface LayoutComponent {
   width: SizeComponent;
   height: SizeComponent;
+
+  // optional layout for the child (only if all children have the same dimensions)
+  childLayout?: {
+    width: SizeComponent,
+    height: SizeComponent
+  };
 }
 
 export interface SizeComponent {
@@ -30,7 +37,7 @@ export interface SizeComponent {
 
 export function assembleLayout(model: Model, layoutData: VgData[]): VgData[] {
   const layoutComponent = model.component.layout;
-  if (!layoutComponent.width && !layoutComponent.height) {
+  if (!layoutComponent.width && !layoutComponent.height && !layoutComponent.childLayout) {
     return layoutData; // Do nothing
   }
 
@@ -41,7 +48,7 @@ export function assembleLayout(model: Model, layoutData: VgData[]): VgData[] {
         return extend({type: 'formula'}, formula);
       });
 
-    return [
+    layoutData.push(
       distinctFields.length > 0 ? {
         name: model.dataName(LAYOUT),
         source: model.dataTable(),
@@ -56,7 +63,8 @@ export function assembleLayout(model: Model, layoutData: VgData[]): VgData[] {
         values: [{}],
         transform: formula
       }
-    ];
+    );
+    return layoutData;
   }
   // FIXME: implement
   // otherwise, we need to join width and height (cross)
@@ -136,6 +144,40 @@ function parseFacetSizeLayout(model: FacetModel, channel: Channel): SizeComponen
 }
 
 function facetSizeFormula(model: Model, channel: Channel, innerSize: string) {
+  const scale = model.scale(channel);
+  if (model.has(channel)) {
+    return '(datum.' + innerSize + ' + ' + scale.padding + ')' + ' * ' + cardinalityFormula(model, channel);
+  } else {
+    return 'datum.' + innerSize + ' + ' + model.config().facet.scale.padding; // need to add outer padding for facet
+  }
+}
+
+export function parseRepeatLayout(model: RepeatModel): LayoutComponent {
+  return {
+    width: parseRepeatSizeLayout(model, COLUMN),
+    height: parseRepeatSizeLayout(model, ROW),
+  };
+}
+
+function parseRepeatSizeLayout(model: RepeatModel, channel: Channel): SizeComponent {
+  const childLayoutComponent = model.children()[0].component.layout;
+  const sizeType = channel === ROW ? 'height' : 'width';
+  const childSizeComponent: SizeComponent = childLayoutComponent[sizeType];
+
+  // TODO: avoid redundancy
+  const distinct = extend(getDistinct(model, channel), childSizeComponent.distinct);
+  const formula = childSizeComponent.formula.concat([{
+    field: model.channelSizeName(channel),
+    expr: repeatSizeFormula(model, channel, model.children()[0].channelSizeName(channel))
+  }]);
+
+  return {
+    distinct: distinct,
+    formula: formula
+  };
+}
+
+function repeatSizeFormula(model: Model, channel: Channel, innerSize: string) {
   const scale = model.scale(channel);
   if (model.has(channel)) {
     return '(datum.' + innerSize + ' + ' + scale.padding + ')' + ' * ' + cardinalityFormula(model, channel);

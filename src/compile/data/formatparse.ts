@@ -1,9 +1,11 @@
 import {FieldDef, isCount} from '../../fielddef';
+import {Channel} from '../../channel';
 import {QUANTITATIVE, TEMPORAL} from '../../type';
 import {extend, differ, Dict} from '../../util';
 
 import {FacetModel} from './../facet';
 import {LayerModel} from './../layer';
+import {RepeatModel} from './../repeat';
 import {Model} from './../model';
 
 export namespace formatParse {
@@ -17,14 +19,15 @@ export namespace formatParse {
     let parseComponent: Dict<string> = {};
     // use forEach rather than reduce so that it can return undefined
     // if there is no parse needed
-    model.forEach(function(fieldDef: FieldDef) {
+    model.forEach(function(fieldDef: FieldDef, channel: Channel) {
+      const field = model.fieldOrig(channel);
       if (fieldDef.type === TEMPORAL) {
-        parseComponent[fieldDef.field] = 'date';
+        parseComponent[field] = 'date';
       } else if (fieldDef.type === QUANTITATIVE) {
-        if (isCount(fieldDef) || calcFieldMap[fieldDef.field]) {
+        if (isCount(fieldDef) || calcFieldMap[field]) {
           return;
         }
-        parseComponent[fieldDef.field] = 'number';
+        parseComponent[field] = 'number';
       }
     });
     return parseComponent;
@@ -50,6 +53,19 @@ export namespace formatParse {
     model.children().forEach((child) => {
       const childDataComponent = child.component.data;
       if (model.compatibleSource(child) && !differ(childDataComponent.formatParse, parseComponent)) {
+        // merge parse up if the child does not have an incompatible parse
+        extend(parseComponent, childDataComponent.formatParse);
+        delete childDataComponent.formatParse;
+      }
+    });
+    return parseComponent;
+  }
+
+  export function parseRepeat(model: RepeatModel) {
+    let parseComponent = parse(model);
+    model.children().forEach((child) => {
+      const childDataComponent = child.component.data;
+      if (!differ(childDataComponent.formatParse, parseComponent)) {
         // merge parse up if the child does not have an incompatible parse
         extend(parseComponent, childDataComponent.formatParse);
         delete childDataComponent.formatParse;

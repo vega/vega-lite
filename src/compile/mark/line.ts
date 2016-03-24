@@ -34,7 +34,7 @@ export namespace line {
 
     applyColorAndOpacity(p, model);
     applyMarkConfig(p, model, ['interpolate', 'tension']);
-      
+
     // size as a channel is not supported in Vega yet.
     const size = sizeValue(model);
     if (size) {
@@ -42,7 +42,7 @@ export namespace line {
     }
     return p;
   }
-  
+
   function sizeValue(model: UnitModel) {
     const fieldDef = model.fieldDef(SIZE);
     if (fieldDef && fieldDef.value !== undefined) {

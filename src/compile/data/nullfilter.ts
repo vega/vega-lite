@@ -1,9 +1,11 @@
-import {FieldDef} from '../../fielddef';
 import {extend, keys, differ, Dict} from '../../util';
+import {FieldDef} from '../../fielddef';
+import {Channel} from '../../channel';
 
-import {FacetModel} from './../facet';
-import {LayerModel} from './../layer';
-import {Model} from './../model';
+import {FacetModel} from '../facet';
+import {LayerModel} from '../layer';
+import {RepeatModel} from '../repeat';
+import {Model} from '../model';
 
 import {DataComponent} from './data';
 
@@ -18,14 +20,15 @@ export namespace nullFilter {
   /** Return Hashset of fields for null filtering (key=field, value = true). */
   function parse(model: Model): Dict<boolean> {
     const filterNull = model.transform().filterNull;
-    return model.reduce(function(aggregator, fieldDef: FieldDef) {
+    return model.reduce(function(aggregator, fieldDef: FieldDef, channel: Channel) {
+      const field = model.fieldOrig(channel);
       if (filterNull ||
-        (filterNull === undefined && fieldDef.field && fieldDef.field !== '*' && DEFAULT_NULL_FILTERS[fieldDef.type])) {
-        aggregator[fieldDef.field] = true;
+        (filterNull === undefined && field !== '*' && DEFAULT_NULL_FILTERS[fieldDef.type])) {
+        aggregator[field] = true;
       } else {
         // define this so we know that we don't filter nulls for this field
         // this makes it easier to merge into parents
-        aggregator[fieldDef.field] = false;
+        aggregator[field] = false;
       }
       return aggregator;
     }, {});
@@ -55,6 +58,23 @@ export namespace nullFilter {
     model.children().forEach((child) => {
       const childDataComponent = child.component.data;
       if (model.compatibleSource(child) && !differ(childDataComponent.nullFilter, nullFilterComponent)) {
+        extend(nullFilterComponent, childDataComponent.nullFilter);
+        delete childDataComponent.nullFilter;
+      }
+    });
+
+    return nullFilterComponent;
+  }
+
+  export function parseRepeat(model: RepeatModel) {
+    // note that we run this before source.parseLayer
+
+    // FIXME: null filters are not properly propagated right now
+    let nullFilterComponent = {} as Dict<boolean>;
+
+    model.children().forEach((child) => {
+      const childDataComponent = child.component.data;
+      if (!differ(childDataComponent.nullFilter, nullFilterComponent)) {
         extend(nullFilterComponent, childDataComponent.nullFilter);
         delete childDataComponent.nullFilter;
       }

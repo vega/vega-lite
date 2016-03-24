@@ -5,7 +5,7 @@ import {SHARED_DOMAIN_OPS} from '../aggregate';
 import {COLUMN, ROW, X, Y, SHAPE, SIZE, COLOR, TEXT, hasScale, Channel} from '../channel';
 import {StackOffset} from '../config';
 import {SOURCE, STACKED_SCALE} from '../data';
-import {FieldDef, field, isMeasure} from '../fielddef';
+import {FieldDef, field, isMeasure, isRepeatRef} from '../fielddef';
 import {Mark, BAR, TEXT as TEXT_MARK, RULE} from '../mark';
 import {Scale, ScaleType, NiceTime} from '../scale';
 import {TimeUnit} from '../timeunit';
@@ -41,26 +41,28 @@ export type ScaleComponents = {
 
 export function parseScaleComponent(model: Model): Dict<ScaleComponents> {
   return model.channels().reduce(function(scale: Dict<ScaleComponents>, channel: Channel) {
-      if (model.scale(channel)) {
-        const fieldDef = model.fieldDef(channel);
-        const scales: ScaleComponents = {
-          main: parseMainScale(model, fieldDef, channel)
-        };
+    if (model.scale(channel)) {
+      const fieldDef = model.fieldDef(channel);
+      const scales: ScaleComponents = {
+        main: parseMainScale(model, fieldDef, channel)
+      };
 
-        // Add additional scales needed to support ordinal legends (list of values)
-        // for color ramp.
-        if (channel === COLOR && model.legend(COLOR) && (fieldDef.type === ORDINAL || fieldDef.bin || fieldDef.timeUnit)) {
-          scales.colorLegend = parseColorLegendScale(model, fieldDef);
-          if (fieldDef.bin) {
-            scales.binColorLegend = parseBinColorLegendLabel(model, fieldDef);
-          }
+      // Add additional scales needed to support ordinal legends (list of values)
+      // for color ramp.
+      if (channel === COLOR && model.legend(COLOR) && (fieldDef.type === ORDINAL || fieldDef.bin || fieldDef.timeUnit)) {
+        scales.colorLegend = parseColorLegendScale(model, fieldDef);
+        if (fieldDef.bin) {
+          scales.binColorLegend = parseBinColorLegendLabel(model, fieldDef);
         }
-
-        scale[channel] = scales;
       }
-      return scale;
-    }, {} as Dict<ScaleComponents>);
+
+      const key = String(channel) + (model.isRepeatRef(channel) ? ('_' + model.fieldOrig(channel)) : '');
+      scale[key] = scales;
+    }
+    return scale;
+  }, {} as Dict<ScaleComponents>);
 }
+
 
 /**
  * Return the main scale for each channel.  (Only color can have multiple scales.)
@@ -135,7 +137,7 @@ function parseBinColorLegendLabel(model: Model, fieldDef: FieldDef): ScaleCompon
     },
     range: {
       data: model.dataTable(),
-      field: field(fieldDef, {binSuffix: '_range'}),
+      field: model.field(COLOR, {binSuffix: '_range'}),
       sort: {
         field: model.field(COLOR, { binSuffix: '_start' }),
         op: 'min' // min or max doesn't matter since same _range would have the same _start

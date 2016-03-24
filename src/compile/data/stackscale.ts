@@ -2,9 +2,10 @@ import {STACKED_SCALE, SUMMARY} from '../../data';
 import {field} from '../../fielddef';
 import {VgData} from '../../vega.schema';
 
-import {FacetModel} from './../facet';
-import {LayerModel} from './../layer';
-import {UnitModel} from './../unit';
+import {FacetModel} from '../facet';
+import {LayerModel} from '../layer';
+import {RepeatModel} from './../repeat';
+import {UnitModel} from '../unit';
 
 import {DataComponent} from './data';
 
@@ -63,6 +64,11 @@ export namespace stackScale {
   }
 
   export function parseLayer(model: LayerModel) {
+    // TODO
+    return null;
+  }
+  
+  export function parseRepeat(model: RepeatModel) {
     // TODO
     return null;
   }

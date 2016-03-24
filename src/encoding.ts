@@ -94,6 +94,7 @@ export function channelMappingForEach(channels: Channel[], mapping: any,
   });
 }
 
+// TODO: delete once shorhand has been extracted
 export function map(encoding: Encoding,
     f: (fd: FieldDef, c: Channel, i: number) => any,
     thisArg?: any) {
