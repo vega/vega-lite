@@ -82,6 +82,7 @@ export class LayerModel extends Model {
   }
 
   public parseScale() {
+    // TODO:(kanitw): move logic of this function to `scale.ts` for easier readability.
     const model = this;
 
     let scaleComponent = this.component.scale = {} as Dict<ScaleComponents>;
@@ -144,12 +145,14 @@ export class LayerModel extends Model {
           }
 
           // rename child scales to parent scales
-          [childScales.main, childScales.colorLegend, childScales.binColorLegend].filter((x) => !!x).forEach(function(scale) {
-            const scaleNameWithoutPrefix = scale.name.substr(child.name('').length);
-            const newName = model.scaleName(scaleNameWithoutPrefix);
-            child.renameScale(scale.name, newName);
-            scale.name = newName;
-          });
+          [childScales.main, childScales.colorLegend, childScales.binColorLegend]
+            .filter((x) => !!x)
+            .forEach(function(scale) {
+              const scaleNameWithoutPrefix = scale.name.substr(child.name('').length);
+              const newName = model.scaleName(scaleNameWithoutPrefix);
+              child.renameScale(scale.name, newName);
+              scale.name = newName;
+            });
 
           delete childScales[channel];
         });

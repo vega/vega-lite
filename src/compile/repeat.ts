@@ -48,10 +48,10 @@ export class RepeatModel extends Model {
 
         _scale[channel] = extend({
           type: ScaleType.ORDINAL,
-          round: config.facet.scale.round,
+          round: config.facet.scale.round,  // TODO(kanitw): separate `config.repeat` from  `config.facet` 
           domain: repeat[channel],
 
-          padding: 60
+          padding: 60  // TODO(kanitw): put in `config.repeat` from  `config.facet`
         }, {});
       }
       return _scale;
@@ -137,6 +137,8 @@ export class RepeatModel extends Model {
   }
 
   public parseScale() {
+    // TODO(kanitw): move this logic to scale.ts for readability & comparability?
+    
     const model = this;
 
     // First, add scale for row and column.

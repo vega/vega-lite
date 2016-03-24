@@ -354,7 +354,7 @@ export abstract class Model {
   public legend(channel: Channel): LegendProperties {
     return this._legend[channel];
   }
-
+  
   public title(channel: Channel) {
     const fieldDef = this.fieldDef(channel);
     if (isCount(fieldDef)) {

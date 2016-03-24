@@ -22,7 +22,7 @@ export namespace colorRank {
   export function parseUnit(model: Model) {
     let colorRankComponent: Dict<VgTransform[]> = {};
     if (model.has(COLOR) && model.fieldDef(COLOR).type === ORDINAL) {
-      // TODO: what is the right thing?
+      // TODO(domoritz): what is the right thing?
       colorRankComponent[hash(model.field(COLOR))] = [{
         type: 'sort',
         by: model.field(COLOR)
@@ -71,6 +71,7 @@ export namespace colorRank {
   export function parseRepeat(model: RepeatModel) {
     let colorRankComponent = {} as Dict<VgTransform[]>;
 
+    // TODO(kanitw): consider merging multiple transform into one? 
     model.children().forEach((child) => {
       const childDataComponent = child.component.data;
 
