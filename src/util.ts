@@ -2,7 +2,7 @@
 /// <reference path="../typings/json-stable-stringify.d.ts"/>
 
 import * as stringify from 'json-stable-stringify';
-export {keys, extend, duplicate, isArray, vals, truncate, toMap, isObject, isString, isNumber, isBoolean} from 'datalib/src/util';
+export {keys, extend, duplicate, isArray, vals, truncate, toMap, isObject, isString, isNumber, isBoolean, array, str} from 'datalib/src/util';
 export {range} from 'datalib/src/generate';
 export {has} from './encoding'
 export {FieldDef} from './fielddef';

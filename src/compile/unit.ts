@@ -11,7 +11,7 @@ import {Mark, TEXT as TEXTMARK} from '../mark';
 import {Scale, ScaleType} from '../scale';
 import {ExtendedUnitSpec} from '../spec';
 import {getFullName, QUANTITATIVE} from '../type';
-import {duplicate, extend, mergeDeep, Dict} from '../util';
+import {duplicate, extend, mergeDeep, Dict, isArray, array} from '../util';
 import {VgData} from '../vega.schema';
 import {isRepeatRef} from '../fielddef';
 
@@ -27,6 +27,8 @@ import {parseScaleComponent, scaleType} from './scale';
 import {compileStackProperties, StackProperties} from './stack';
 import {RepeatValues} from './repeat';
 
+import * as selections from './selections';
+
 /**
  * Internal model of Vega-Lite specification for the compiler.
  */
@@ -35,6 +37,8 @@ export class UnitModel extends Model {
   private _mark: Mark;
   private _encoding: Encoding;
   private _stack: StackProperties;
+  private _select: any;
+  private _selections: selections.Selection[];
 
   constructor(spec: ExtendedUnitSpec, parent: Model, parentGivenName: string, repeatValues: RepeatValues) {
     super(spec, parent, parentGivenName, repeatValues);
@@ -49,6 +53,9 @@ export class UnitModel extends Model {
 
     // calculate stack
     this._stack = compileStackProperties(mark, encoding, scale, config);
+
+    this._select = spec.select;
+    this._selections = selections.parse(spec.select, this);
   }
 
   private _initEncoding(mark: Mark, encoding: Encoding) {
@@ -84,12 +91,13 @@ export class UnitModel extends Model {
   }
 
   private _initScale(mark: Mark, encoding: Encoding, config: Config): Dict<Scale> {
+    var model = this;
     return UNIT_SCALE_CHANNELS.reduce(function(_scale, channel) {
       if (vlEncoding.has(encoding, channel)) {
-        const scaleSpec = encoding[channel].scale || {};
-        const channelDef = encoding[channel];
+        const fieldDef = model.fieldDef(channel),
+              scaleSpec = (fieldDef as any).scale || {};
 
-        const _scaleType = scaleType(scaleSpec, channelDef, channel, mark);
+        const _scaleType = scaleType(scaleSpec, fieldDef, channel, mark);
 
         _scale[channel] = extend({
           type: _scaleType,
@@ -138,11 +146,6 @@ export class UnitModel extends Model {
     this.component.data = parseUnitData(this);
   }
 
-  public parseSelectionData() {
-    // TODO: @arvind can write this
-    // We might need to split this into compileSelectionData and compileSelectionSignals?
-  }
-
   public parseLayoutData() {
     this.component.layout = parseUnitLayout(this);
   }
@@ -179,8 +182,16 @@ export class UnitModel extends Model {
     return assembleLayout(this, layoutData);
   }
 
+  public assembleSelectionData(data: VgData[]): VgData[] {
+    return selections.assembleData(this, data);
+  }
+
+  public assembleSignals(signals) {
+    return selections.assembleSignals(this, signals);
+  }
+
   public assembleMarks() {
-    return this.component.mark;
+    return selections.assembleMarks(this, this.component.mark);
   }
 
   public assembleParentGroupProperties(cellConfig: CellConfig) {
@@ -244,6 +255,7 @@ export class UnitModel extends Model {
     // TODO: remove this || {}
     // Currently we have it to prevent null pointer exception.
     let fieldDef = this._encoding[channel] || {};
+    if (isArray(fieldDef)) fieldDef = fieldDef[0];  // HACK for InfoVis!
 
     // replace references to repeated value
     if (fieldDef) {
@@ -254,6 +266,23 @@ export class UnitModel extends Model {
       }
     }
     return fieldDef;
+  }
+
+  public fieldDefs(channel: Channel): FieldDef[] {
+    var fieldDefs = this._encoding[channel] || {};
+    return array(fieldDefs).map((fieldDef) => {
+      const field = fieldDef.field;
+      if (isRepeatRef(field)) {
+        fieldDef = duplicate(fieldDef);
+        fieldDef.field = this.repeatValue(field.repeat);
+      }
+
+      return fieldDef;
+    });
+  }
+
+  public selection(name: string = undefined) {
+    return (this._select && this._select[name]) || this._selections;
   }
 
   public dataTable() {

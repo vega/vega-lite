@@ -10,6 +10,8 @@ declare module 'datalib/src/util' {
   export function isString(a): a is string;
   export function isNumber(a): a is number;
   export function isBoolean(a): a is boolean;
+  export function str(a): string;
+  export function array(a);
 }
 
 declare module 'datalib/src/generate' {
