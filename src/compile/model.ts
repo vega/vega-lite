@@ -8,7 +8,7 @@ import {LegendProperties} from '../legend';
 import {Scale, ScaleType} from '../scale';
 import {BaseSpec} from '../spec';
 import {Transform} from '../transform';
-import {extend, flatten, vals, warning, duplicate, Dict} from '../util';
+import {extend, flatten, vals, warning, Dict} from '../util';
 import {VgData, VgMarkGroup, VgScale, VgAxis, VgLegend, VgFieldRef, VgField} from '../vega.schema';
 
 import {DataComponent} from './data/data';
@@ -216,11 +216,21 @@ export abstract class Model {
   protected abstract mapping();
 
   public reduce(f: (acc: any, fd: FieldDef, c: Channel) => any, init, t?: any) {
-    return channelMappingReduce(this.channels(), this.mapping(), f, init, t);
+    const model = this;
+    // wrap function to replace with correct fieldDef
+    function func(acc: any, fd: FieldDef, c: Channel) {
+      return f(acc, model.fieldDef(c), c);
+    }
+    return channelMappingReduce(this.channels(), this.mapping(), func, init, t);
   }
 
   public forEach(f: (fd: FieldDef, c: Channel, i:number) => void, t?: any) {
-    channelMappingForEach(this.channels(), this.mapping(), f, t);
+    const model = this;
+    // wrap function to replace with correct fieldDef
+    function func(fd: FieldDef, c: Channel, i:number) {
+      f(model.fieldDef(c), c, i);
+    }
+    channelMappingForEach(this.channels(), this.mapping(), func, t);
   }
 
   public abstract has(channel: Channel): boolean;
@@ -278,11 +288,10 @@ export abstract class Model {
    */
   public fieldOrig(channel: Channel): string {
     const field = this.fieldDef(channel).field;
-    if (isRepeatRef(field)) {
-      return this.repeatValue(field.repeat);
-    }
     return field as string;
   }
+
+  public abstract isRepeatRef(channel: Channel): boolean;
 
   /**
    * Get the field reference for vega
@@ -290,14 +299,8 @@ export abstract class Model {
   public field(channel: Channel, opt: FieldRefOption = {}): string {
     let fieldDef = this.fieldDef(channel);
 
-    const f = fieldDef.field;
-    if (isRepeatRef(f)) {
-      fieldDef = duplicate(fieldDef);
-      fieldDef.field = this.repeatValue(f.repeat);
-    }
-
     if (fieldDef.bin) { // bin has default suffix that depends on scaleType
-      opt = extend({
+      opt = extend({}, {
         binSuffix: this.scale(channel).type === ScaleType.ORDINAL ? '_range' : '_start'
       }, opt);
     }
@@ -306,7 +309,7 @@ export abstract class Model {
   }
 
   /**
-   * Get teh value of teh repeater or undefined if the model des not have repeat values set.
+   * Get the value of the repeater or undefined if the model des not have repeat values set.
    */
   public repeatValue(channel: Channel) {
     return this._repeatValues && this._repeatValues[channel];
@@ -331,16 +334,8 @@ export abstract class Model {
   /**
    * returns scale name for a given channel
    */
-  public scaleName(channel: Channel|string): string {
-    const fieldDef = this.fieldDef(channel as Channel);
-    let postfix = '';
-    if (fieldDef) {
-      // add the name of the field if it is repeating
-      const field = fieldDef.field;
-      if (isRepeatRef(field)) {
-        postfix = '_' + this.repeatValue(field.repeat);
-      }
-    }
+  public scaleName(channel: Channel | string): string {
+    const postfix = this.isRepeatRef(channel as Channel) ? ('_' + this.fieldOrig(channel as Channel)) : '';
     return this._scaleNameMap.get(this.name(channel + postfix));
   }
 

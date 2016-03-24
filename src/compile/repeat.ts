@@ -4,7 +4,7 @@ import {Repeat} from '../repeat';
 import {FieldDef} from '../fielddef';
 import {Scale, ScaleType} from '../scale';
 import {RepeatSpec} from '../spec';
-import {extend, keys, vals, flatten, duplicate, mergeDeep, contains, Dict} from '../util';
+import {extend, keys, vals, flatten, duplicate, mergeDeep, contains, forEach, Dict} from '../util';
 import {VgData, VgLegend} from '../vega.schema';
 import {ORDINAL} from '../type';
 import {LAYOUT} from '../data';
@@ -102,6 +102,11 @@ export class RepeatModel extends Model {
     return this.has(ROW) ? 'fields_row' : 'fields_column';
   }
 
+  public isRepeatRef(channel: Channel) {
+    // todo
+    return false;
+  }
+
   public fieldDef(channel: Channel): FieldDef {
     return {
       type: ORDINAL
@@ -141,8 +146,8 @@ export class RepeatModel extends Model {
       child.parseScale();
       // move all scales up
 
-      keys(child.component.scale).forEach(function(key) {
-        scaleComponent[key] = child.component.scale[key];
+      forEach(child.component.scale, function(value, key) {
+        scaleComponent[key] = value;
 
         // for each scale, need to rename
         vals(scaleComponent[key]).forEach(function(scale) {

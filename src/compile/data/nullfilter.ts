@@ -1,5 +1,6 @@
-import {FieldDef} from '../../fielddef';
 import {extend, keys, differ, Dict} from '../../util';
+import {FieldDef} from '../../fielddef';
+import {Channel} from '../../channel';
 
 import {FacetModel} from '../facet';
 import {LayerModel} from '../layer';
@@ -19,7 +20,7 @@ export namespace nullFilter {
   /** Return Hashset of fields for null filtering (key=field, value = true). */
   function parse(model: Model): Dict<boolean> {
     const filterNull = model.transform().filterNull;
-    return model.reduce(function(aggregator, fieldDef: FieldDef, channel) {
+    return model.reduce(function(aggregator, fieldDef: FieldDef, channel: Channel) {
       const field = model.fieldOrig(channel);
       if (filterNull ||
         (filterNull === undefined && field !== '*' && DEFAULT_NULL_FILTERS[fieldDef.type])) {
@@ -69,7 +70,7 @@ export namespace nullFilter {
     // note that we run this before source.parseLayer
 
     // FIXME: null filters are not properly propagated right now
-    let nullFilterComponent = parse(model);
+    let nullFilterComponent = {} as Dict<boolean>;
 
     model.children().forEach((child) => {
       const childDataComponent = child.component.data;

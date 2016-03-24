@@ -16,10 +16,11 @@ import {DataComponent} from './data';
 export namespace timeUnitDomain {
   function parse(model: Model): StringSet {
     return model.reduce(function(timeUnitDomainMap, fieldDef: FieldDef, channel: Channel) {
-      if (fieldDef.timeUnit) {
-        const domain = rawDomain(fieldDef.timeUnit, channel);
+      const timeUnit = fieldDef.timeUnit;
+      if (timeUnit) {
+        const domain = rawDomain(timeUnit, channel);
         if (domain) {
-          timeUnitDomainMap[fieldDef.timeUnit] = true;
+          timeUnitDomainMap[timeUnit] = true;
         }
       }
       return timeUnitDomainMap;

@@ -96,8 +96,8 @@ export function formatMixins(legend: LegendProperties, model: UnitModel, channel
 }
 
 // we have to use special scales for ordinal or binned fields for the color channel
-export function useColorLegendScale(fieldDef: FieldDef) {
-  return fieldDef.type === ORDINAL || fieldDef.bin || fieldDef.timeUnit;
+export function useColorLegendScale(fieldDef: FieldDef): boolean {
+  return fieldDef.type === ORDINAL || !!fieldDef.bin || !!fieldDef.timeUnit;
 }
 
 namespace properties {

@@ -97,6 +97,9 @@ export interface FieldRefOption {
   suffix?: string;
 }
 
+/**
+ * If you call this function, make sure you know that the field is not a reference to a repeated field.
+ */
 export function field(fieldDef: FieldDef, opt: FieldRefOption = {}) {
   const prefix = (opt.datum ? 'datum.' : '') + (opt.prefn || '');
   const suffix = opt.suffix || '';

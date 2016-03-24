@@ -56,14 +56,7 @@ export function parseScaleComponent(model: Model): Dict<ScaleComponents> {
         }
       }
 
-      const key = String(channel) + model.fieldOrig(channel);
-
-      // const field = fieldDef.field;
-      // if (isRepeatRef(field)) {
-      //   // include the field name in the scale key
-      //   key += '_' + model.repeatValue(field.repeat);
-      // }
-
+      const key = String(channel) + (model.isRepeatRef(channel) ? ('_' + model.fieldOrig(channel)) : '');
       scale[key] = scales;
     }
     return scale;
@@ -144,7 +137,7 @@ function parseBinColorLegendLabel(model: Model, fieldDef: FieldDef): ScaleCompon
     },
     range: {
       data: model.dataTable(),
-      field: field(fieldDef, {binSuffix: '_range'}),
+      field: model.field(COLOR, {binSuffix: '_range'}),
       sort: {
         field: model.field(COLOR, { binSuffix: '_start' }),
         op: 'min' // min or max doesn't matter since same _range would have the same _start

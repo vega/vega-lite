@@ -131,6 +131,11 @@ export class FacetModel extends Model {
     return (this.hasSummary() ? SUMMARY : SOURCE) + '';
   }
 
+  public isRepeatRef(channel: Channel) {
+    // todo
+    return false;
+  }
+
   public fieldDef(channel: Channel): FieldDef {
     return this.facet()[channel];
   }

@@ -1,5 +1,5 @@
 import {Channel} from '../channel';
-import {keys, duplicate, mergeDeep, flatten, unique, isArray, vals, hash, Dict} from '../util';
+import {keys, duplicate, mergeDeep, flatten, unique, isArray, vals, forEach, hash, Dict} from '../util';
 import {defaultConfig, Config} from '../config';
 import {LayerSpec} from '../spec';
 import {assembleData, parseLayerData} from './data/data';
@@ -48,6 +48,11 @@ export class LayerModel extends Model {
     return this._children[0].dataTable();
   }
 
+  public isRepeatRef(channel: Channel) {
+    // todo
+    return false;
+  }
+
   public fieldDef(channel: Channel): FieldDef {
     return null; // layer does not have field defs
   }
@@ -86,14 +91,14 @@ export class LayerModel extends Model {
 
       // FIXME: correctly implement independent scale
       if (true) { // if shared/union scale
-        keys(child.component.scale).forEach(function(channel) {
-          let childScales: ScaleComponents = child.component.scale[channel];
+        forEach(child.component.scale, function(value, key) {
+          let childScales: ScaleComponents = value;
           if (!childScales) {
             // the child does not have any scales so we have nothing to merge
             return;
           }
 
-          const modelScales: ScaleComponents = scaleComponent[channel];
+          const modelScales: ScaleComponents = scaleComponent[key];
           if (modelScales && modelScales.main) {
             // Scales are unioned by combining the domain of the main scale.
             // Other scales that are used for ordinal legends are appended.
@@ -128,10 +133,14 @@ export class LayerModel extends Model {
             }
 
             // create color legend and color legend bin scales if we don't have them yet
-            modelScales.colorLegend = modelScales.colorLegend ? modelScales.colorLegend : childScales.colorLegend;
-            modelScales.binColorLegend = modelScales.binColorLegend ? modelScales.binColorLegend : childScales.binColorLegend;
+            if (childScales.colorLegend) {
+              modelScales.colorLegend = modelScales.colorLegend ? modelScales.colorLegend : childScales.colorLegend;
+            }
+            if (childScales.binColorLegend) {
+              modelScales.binColorLegend = modelScales.binColorLegend ? modelScales.binColorLegend : childScales.binColorLegend;
+            }
           } else {
-            scaleComponent[channel] = childScales;
+            scaleComponent[key] = childScales;
           }
 
           // rename child scales to parent scales
@@ -142,7 +151,7 @@ export class LayerModel extends Model {
             scale.name = newName;
           });
 
-          delete childScales[channel];
+          delete childScales[key];
         });
       }
     });

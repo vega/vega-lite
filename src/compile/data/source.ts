@@ -83,6 +83,10 @@ export namespace source {
 
   export function parseRepeat(model: RepeatModel) {
     let sourceData = parse(model.children()[0]);
+    if (!sourceData) {
+      // cannot merge from child because the direct child does not have any data
+      return;
+    }
     sourceData.name = model.dataName(SOURCE);
 
     model.children().forEach((child) => {
@@ -116,8 +120,9 @@ export namespace source {
       // null filter comes first so transforms are not performed on null values
       // time and bin should come before filter so we can filter by time and bin
       sourceData.transform = [].concat(
-        nullFilter.assemble(component),
+        // had to move formula before null filter because we cannot null filter something that does not exist
         formula.assemble(component),
+        nullFilter.assemble(component),
         filter.assemble(component),
         bin.assemble(component),
         timeUnit.assemble(component)
