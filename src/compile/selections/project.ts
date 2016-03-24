@@ -16,11 +16,11 @@ export function parse(model:UnitModel, sel: s.Selection) {
       return { channel: c, field: model.field(c) };
     }));
 
-  if (sel.type === s.Types.SINGLE) {
+  if (sel.type === s.Types.POINT) {
     sel.predicate = sel.project.map(function(p) {
       return 'datum.' + p.field + ' === ' + sel.name + '.' + fieldName(p)
     }).join(' && ');
-  } else if (sel.type === s.Types.MULTI) {
+  } else if (sel.type === s.Types.SET) {
     sel.predicate = sel.project.map(function(p) {
       return 'indata(' + u.str(s.storeName(sel)) + ', datum.' + p.field +
         ', ' + u.str(fieldName(p)) + ')';

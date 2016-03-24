@@ -5,8 +5,8 @@ export {tx as transforms};
 const transforms = u.keys(tx);
 
 export enum Types {
-  SINGLE = 'single' as any,
-  MULTI  = 'multi' as any
+  POINT = 'point' as any,
+  SET = 'set' as any
 }
 
 export enum Levels {
@@ -32,7 +32,7 @@ export interface Selection {
 }
 
 export function storeName(sel: Selection) {
-  return sel.name + (sel.type === Types.MULTI ? '_db' : '');
+  return sel.name + (sel.type === Types.SET ? '_db' : '');
 }
 
 export function parse(spec, model: UnitModel) {
@@ -44,7 +44,7 @@ export function parse(spec, model: UnitModel) {
     sel.level = sel.level || Levels.DATA;
     sel.on = sel.on || 'click';
 
-    if (sel.type === Types.MULTI && !sel.scales && !sel.interval) {
+    if (sel.type === Types.SET && !sel.scales && !sel.interval) {
       sel.toggle = sel.toggle || true;
     }
 
@@ -92,7 +92,7 @@ export function assembleSignals(model: UnitModel, signals) {
 
     // We only need the clear signal if we're using a points store.
     // Transforms can clear out signal names to not have them added.
-    if (sel.type === Types.MULTI && clear.name) {
+    if (sel.type === Types.SET && clear.name) {
       signals.push(clear);
     }
   });
@@ -114,7 +114,7 @@ export function assembleSignals(model: UnitModel, signals) {
 
 export function assembleData(model: UnitModel, data) {
   model.selection().forEach(function(sel: Selection) {
-    if (sel.type !== Types.MULTI) return;
+    if (sel.type !== Types.SET) return;
     var db = {
       name: storeName(sel),
       transform: [],
