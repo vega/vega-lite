@@ -51,21 +51,17 @@ class NameMap {
   }
 
   public rename(oldName: string, newName: string) {
+    if (oldName === newName) {
+      return console.error('cannot rename ' + oldName + ' to itself');
+    }
     this._nameMap[oldName] = newName;
   }
 
   public get(name: string): string {
     // If the name appears in the _nameMap, we need to read its new name.
     // We have to loop over the dict just in case, the new name also gets renamed.
-    let i = 0;
     while (this._nameMap[name]) {
       name = this._nameMap[name];
-
-      // to keep us sane
-      if (i++ > 100) {
-        debugger;
-        return null;
-      }
     }
 
     return name;
@@ -342,7 +338,7 @@ export abstract class Model {
    * returns scale name for a given channel
    */
   public scaleName(channel: Channel | string): string {
-    return this._scaleNameMap.get(this.name(channel + ''));
+    return this._scaleNameMap.get(this.name(String(channel)));
   }
 
   public sort(channel: Channel) {

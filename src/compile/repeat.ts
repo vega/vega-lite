@@ -153,25 +153,20 @@ export class RepeatModel extends Model {
           // positional scales are just appended because they should be independent
           scaleComponent[child.name(key)] = childScales;
         } else {
+          const scaleNameWithoutPrefix = childScales.main.name.substr(child.name('').length);
+          const newName = model.scaleName(scaleNameWithoutPrefix);
+          const oldName = childScales.main.name;
+
           if (channel in scaleComponent) {
             // scale already exists, so merge
 
             // const modelScales = scaleComponent[channel];
             // TODO: merge scales, I'm too lazy right now and we don't need it for the examples
-
-            // and rename reference
-            const scaleNameWithoutPrefix = childScales.main.name.substr(child.name('').length);
-            const newName = model.scaleName(scaleNameWithoutPrefix);
-            child.renameScale(childScales.main.name, newName);
           } else {
-            const scaleNameWithoutPrefix = childScales.main.name.substr(child.name('').length);
-            const newName = model.scaleName(scaleNameWithoutPrefix);
-
             childScales.main.name = newName;
             scaleComponent[channel] = childScales;
-
-            child.renameScale(childScales.main.name, newName);
           }
+          child.renameScale(oldName, newName);
         }
 
         // Once put in parent, just remove the child's scale.
