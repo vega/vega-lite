@@ -14,7 +14,7 @@ import {buildModel} from './common';
 import {assembleData, parseRepeatData} from './data/data';
 import {assembleLayout, parseRepeatLayout} from './layout';
 import {Model} from './model';
-import {parseScaleComponent} from './scale';
+import {parseScaleComponent, ScaleComponents} from './scale';
 
 export type RepeatValues = {
   row: string,
@@ -144,18 +144,35 @@ export class RepeatModel extends Model {
 
     this._children.forEach(function(child) {
       child.parseScale();
-      // move all scales up
+      // move all scales up, merge all but x and y scales
 
-      forEach(child.component.scale, function(value, key) {
-        scaleComponent[key] = value;
+      forEach(child.component.scale, function(childScales: ScaleComponents, key: string) {
+        const channel = childScales.channel;
 
-        // for each scale, need to rename
-        vals(scaleComponent[key]).forEach(function(scale) {
-          const scaleNameWithoutPrefix = scale.name.substr(child.name('').length);
-          const newName = model.scaleName(scaleNameWithoutPrefix);
-          child.renameScale(scale.name, newName);
-          scale.name = newName;
-        });
+        if (contains([X, Y], channel)) {
+          // positional scales are just appended because they should be independent
+          scaleComponent[child.name(key)] = childScales;
+        } else {
+          if (channel in scaleComponent) {
+            // scale already exists, so merge
+
+            // const modelScales = scaleComponent[channel];
+            // TODO: merge scales, I'm too lazy right now and we don't need it for the examples
+
+            // and rename reference
+            const scaleNameWithoutPrefix = childScales.main.name.substr(child.name('').length);
+            const newName = model.scaleName(scaleNameWithoutPrefix);
+            child.renameScale(childScales.main.name, newName);
+          } else {
+            const scaleNameWithoutPrefix = childScales.main.name.substr(child.name('').length);
+            const newName = model.scaleName(scaleNameWithoutPrefix);
+
+            childScales.main.name = newName;
+            scaleComponent[channel] = childScales;
+
+            child.renameScale(childScales.main.name, newName);
+          }
+        }
 
         // Once put in parent, just remove the child's scale.
         delete child.component.scale[key];

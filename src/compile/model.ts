@@ -1,5 +1,5 @@
 import {AxisProperties} from '../axis';
-import {Channel, X, COLUMN} from '../channel';
+import {Channel, X, Y, COLUMN} from '../channel';
 import {Config, CellConfig} from '../config';
 import {Data, DataTable} from '../data';
 import {channelMappingReduce, channelMappingForEach} from '../encoding';
@@ -8,7 +8,7 @@ import {LegendProperties} from '../legend';
 import {Scale, ScaleType} from '../scale';
 import {BaseSpec} from '../spec';
 import {Transform} from '../transform';
-import {extend, flatten, vals, warning, Dict} from '../util';
+import {extend, flatten, vals, warning, contains, Dict} from '../util';
 import {VgData, VgMarkGroup, VgScale, VgAxis, VgLegend, VgFieldRef, VgField} from '../vega.schema';
 
 import {DataComponent} from './data/data';
@@ -57,8 +57,15 @@ class NameMap {
   public get(name: string): string {
     // If the name appears in the _nameMap, we need to read its new name.
     // We have to loop over the dict just in case, the new name also gets renamed.
+    let i = 0;
     while (this._nameMap[name]) {
       name = this._nameMap[name];
+
+      // to keep us sane
+      if (i++ > 100) {
+        debugger;
+        return null;
+      }
     }
 
     return name;
@@ -335,8 +342,7 @@ export abstract class Model {
    * returns scale name for a given channel
    */
   public scaleName(channel: Channel | string): string {
-    const postfix = this.isRepeatRef(channel as Channel) ? ('_' + this.fieldOrig(channel as Channel)) : '';
-    return this._scaleNameMap.get(this.name(channel + postfix));
+    return this._scaleNameMap.get(this.name(channel + ''));
   }
 
   public sort(channel: Channel) {
