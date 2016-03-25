@@ -35,8 +35,8 @@ export function assembleSignals(model: UnitModel, sel: s.Selection, trigger, _, 
     streams: [{
       type: on,
       expr: s.expr(model, 'unit', anchor, '{' +
-       (x ? 'x: iscale(' + x.scale + ', eventX(), unit), ' : '') +
-       (y ? 'y: iscale(' + y.scale + ', eventY(), unit)' : '') + ', unit: unit}')
+       (x ? 'x: iscale(' + x.scale + ', eventX(unit), unit), ' : '') +
+       (y ? 'y: iscale(' + y.scale + ', eventY(unit), unit)' : '') + ', unit: unit}')
     }]
   });
 

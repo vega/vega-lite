@@ -91,6 +91,7 @@ export function assembleSignals(model: UnitModel, sel: s.Selection, trigger, cle
   if (sel.resolve === s.Resolutions.SINGLE) {
     clear.streams[0].type = start;
     clear.streams.push({ type: '@' + brushName(sel) + ':' + on.start.event, expr: 'false' });
+    clear.streams.push({ type: '@' + brushName(sel) + ':wheel', expr: 'false' });
   } else {
     clear.name = null;  // Brushes are upserted.
   }
