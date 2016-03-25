@@ -8,7 +8,7 @@ import {LegendProperties} from '../legend';
 import {Scale, ScaleType} from '../scale';
 import {BaseSpec} from '../spec';
 import {Transform} from '../transform';
-import {extend, flatten, vals, warning, Dict} from '../util';
+import {extend, flatten, vals, warning, Dict, array} from '../util';
 import {VgData, VgMarkGroup, VgScale, VgAxis, VgLegend, VgFieldRef, VgField} from '../vega.schema';
 
 import {DataComponent} from './data/data';
@@ -94,6 +94,9 @@ export abstract class Model {
 
   protected _warnings: string[] = [];
 
+  protected _children: Model[];  // LayerModel | RepeatModel
+  protected _child: Model;       // FacetModel
+
   /**
    * Current iterator value over the repeat value. Indexed by the channel we are repeating over (row, column).
    */
@@ -120,6 +123,7 @@ export abstract class Model {
     this._transform = spec.transform;
 
     this.component = {data: null, layout: null, selection: null, mark: null, scale: null, axis: null, axisGroup: null, gridGroup: null, legend: null};
+    this._children = [];
   }
 
   public parse() {
@@ -375,6 +379,10 @@ export abstract class Model {
 
   public warnings(): string[] {
     return this._warnings;
+  }
+
+  public children() {
+    return this._children.length ? this._children : array(this._child);
   }
 
   /**

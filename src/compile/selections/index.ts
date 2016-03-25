@@ -25,6 +25,7 @@ export enum Resolutions {
 
 export interface Selection {
   name:  string;
+  _name: string;
   type:  Types;
   level: Levels;
   on: string;
@@ -65,9 +66,10 @@ export function parse(model: UnitModel, spec) {
 
     // Set default properties and instantiate default transforms.
     // We don't namespace the selection to facilitate merging during assembly.
-    sel.name = k;
-    sel.level = sel.level || Levels.DATA;
     sel.resolve = sel.resolve || Resolutions.SINGLE;
+    sel.level = sel.level || Levels.DATA;
+    sel.name  = sel.resolve === Resolutions.SINGLE ? k : model.name(k);
+    sel._name = k;
 
     if (sel.on) {
       var on = parseEvents(sel.on);

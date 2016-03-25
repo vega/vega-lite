@@ -25,8 +25,6 @@ export type RepeatValues = {
 export class RepeatModel extends Model {
   private _repeat: Repeat;
 
-  private _children: Model[];
-
   constructor(spec: RepeatSpec, parent: Model, parentGivenName: string, repeatValues: RepeatValues) {
     super(spec, parent, parentGivenName, repeatValues);
 
@@ -93,10 +91,6 @@ export class RepeatModel extends Model {
 
   public has(channel: Channel): boolean {
     return !!this._repeat[channel];
-  }
-
-  public children() {
-    return this._children;
   }
 
   public dataTable(): string {

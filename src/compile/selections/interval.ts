@@ -36,7 +36,7 @@ export function parse(model: UnitModel, sel: s.Selection) {
   }
 
   sel.predicate = 'inrangeselection(' + u.str(s.storeName(sel)) +
-    ', datum, ' + u.str(sel.resolve) + ', group._id)';
+    ', datum, ' + u.str(sel.resolve) + ')';
 
   if (sel.translate === undefined) sel.translate = true;
 }
@@ -90,6 +90,7 @@ export function assembleSignals(model: UnitModel, sel: s.Selection, trigger, cle
 
   if (sel.resolve === s.Resolutions.SINGLE) {
     clear.streams[0].type = start;
+    clear.streams.push({ type: '@' + brushName(sel) + ':' + on.start.event, expr: 'false' });
   } else {
     clear.name = null;  // Brushes are upserted.
   }

@@ -11,7 +11,7 @@ import {Model} from './model';
 import {format as timeFormatExpr} from './time';
 import {UnitModel} from './unit';
 import {Spec, isUnitSpec, isFacetSpec, isRepeatSpec, isLayerSpec} from '../spec';
-import {Selection} from './selections';
+import {Selection, Resolutions} from './selections';
 
 export function buildModel(spec: Spec, parent: Model, parentGivenName: string, repeatValues: RepeatValues): Model {
   if (isFacetSpec(spec)) {
@@ -34,10 +34,33 @@ export function buildModel(spec: Spec, parent: Model, parentGivenName: string, r
   return null;
 }
 
+var RESOLVE_OPS = {};
+RESOLVE_OPS[Resolutions.UNION] = RESOLVE_OPS[Resolutions.UNION_OTHERS] = ' || ';
+RESOLVE_OPS[Resolutions.INTERSECT] = RESOLVE_OPS[Resolutions.INTERSECT_OTHERS] = ' && ';
 export function compileSelectionPredicate(model: UnitModel, sel) {
-  var recurse = compileSelectionPredicate.bind(null, model);
-  if (isArray(sel)) sel = { or: sel };  // Default OR.
-  return isString(sel) ? model.selection(sel).predicate :
+  var recurse = compileSelectionPredicate.bind(null, model),
+      predicate, children;
+
+  if (isArray(sel)) {
+    sel = { or: sel };  // Default OR.
+  }
+
+  if (isString(sel)) {
+    sel = model.selection(sel);
+    if (sel.resolve === Resolutions.SINGLE) {
+      predicate = sel.predicate;
+    } else {
+      children = model.parent().children();
+      if (sel.resolve === Resolutions.UNION_OTHERS || sel.resolve == Resolutions.INTERSECT_OTHERS) {
+        children = children.filter((c) => c !== model);
+      }
+
+      predicate = children.map((c) => c.selection(sel._name).predicate)
+        .join(RESOLVE_OPS[sel.resolve]);
+    }
+  }
+
+  return predicate ? '(' + predicate + ')' :
     sel.or ? array(sel.or).map(recurse).join(' || ') :
       sel.and ? array(sel.and).map(recurse).join(' && ') : null;
 }

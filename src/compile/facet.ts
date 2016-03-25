@@ -22,8 +22,6 @@ import {RepeatValues} from './repeat';
 export class FacetModel extends Model {
   private _facet: Facet;
 
-  private _child: Model;
-
   constructor(spec: FacetSpec, parent: Model, parentGivenName: string, repeatValues: RepeatValues) {
     super(spec, parent, parentGivenName, repeatValues);
 

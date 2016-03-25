@@ -13,8 +13,6 @@ import {VgData, VgAxis, VgLegend, isUnionedDomain, isDataRefDomain, VgDataRef} f
 import {RepeatValues} from './repeat';
 
 export class LayerModel extends Model {
-  private _children: UnitModel[];
-
   constructor(spec: LayerSpec, parent: Model, parentGivenName: string, repeatValues: RepeatValues) {
     super(spec, parent, parentGivenName, repeatValues);
 
@@ -32,10 +30,6 @@ export class LayerModel extends Model {
   public has(channel: Channel): boolean {
     // layer does not have any channels
     return false;
-  }
-
-  public children() {
-    return this._children;
   }
 
   public isOrdinalScale(channel: Channel) {
