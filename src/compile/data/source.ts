@@ -10,6 +10,7 @@ import {DataComponent} from './data';
 import {nullFilter} from './nullfilter';
 import {filter} from './filter';
 import {bin} from './bin';
+import {lookup} from './lookup';
 import {formula} from './formula';
 import {timeUnit} from './timeunit';
 
@@ -96,6 +97,7 @@ export namespace source {
         formula.assemble(component),
         filter.assemble(component),
         bin.assemble(component),
+        lookup.assemble(component),
         timeUnit.assemble(component)
       );
 

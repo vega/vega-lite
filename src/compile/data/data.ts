@@ -1,4 +1,4 @@
-import {Formula} from '../../transform';
+import {Formula, Lookup} from '../../transform';
 import {keys, Dict, StringSet} from '../../util';
 import {VgData, VgTransform} from '../../vega.schema';
 
@@ -12,6 +12,7 @@ import {formatParse} from './formatparse';
 import {nullFilter} from './nullfilter';
 import {filter} from './filter';
 import {bin} from './bin';
+import {lookup} from './lookup';
 import {formula} from './formula';
 import {nonPositiveFilter} from './nonpositivenullfilter';
 import {summary} from './summary';
@@ -41,6 +42,9 @@ export interface DataComponent {
 
   /** Dictionary mapping a bin parameter hash to transforms of the binned field */
   bin: Dict<VgTransform[]>;
+
+  /** Hashset of looup objects */
+  lookup: Dict<Lookup>;
 
   /** Dictionary mapping an output field name (hash) to the time unit transform  */
   timeUnit: Dict<VgTransform>;
@@ -88,6 +92,7 @@ export function parseUnitData(model: UnitModel): DataComponent {
 
     source: source.parseUnit(model),
     bin: bin.parseUnit(model),
+    lookup: lookup.parseUnit(model),
     calculate: formula.parseUnit(model),
     timeUnit: timeUnit.parseUnit(model),
     timeUnitDomain: timeUnitDomain.parseUnit(model),
@@ -106,6 +111,7 @@ export function parseFacetData(model: FacetModel): DataComponent {
 
     source: source.parseFacet(model),
     bin: bin.parseFacet(model),
+    lookup: lookup.parseFacet(model),
     calculate: formula.parseFacet(model),
     timeUnit: timeUnit.parseFacet(model),
     timeUnitDomain: timeUnitDomain.parseFacet(model),
@@ -127,6 +133,7 @@ export function parseLayerData(model: LayerModel): DataComponent {
     // everything after here does not affect whether we can merge child data into parent or not
     source: source.parseLayer(model),
     bin: bin.parseLayer(model),
+    lookup: lookup.parseLayer(model),
     calculate: formula.parseLayer(model),
     timeUnit: timeUnit.parseLayer(model),
     timeUnitDomain: timeUnitDomain.parseLayer(model),
