@@ -1,9 +1,10 @@
 import {ScaleType} from '../../scale';
 import {extend, keys, differ, Dict} from '../../util';
 
-import {FacetModel} from './../facet';
-import {LayerModel} from './../layer';
-import {Model} from './../model';
+import {FacetModel} from '../facet';
+import {LayerModel} from '../layer';
+import {RepeatModel} from '../repeat';
+import {Model} from '../model';
 
 import {DataComponent} from './data';
 
@@ -13,12 +14,11 @@ import {DataComponent} from './data';
 export namespace nonPositiveFilter {
   export function parseUnit(model: Model): Dict<boolean> {
     return model.channels().reduce(function(nonPositiveComponent, channel) {
+      const field = model.fieldOrig(channel);
       const scale = model.scale(channel);
-      if (!model.field(channel) || !scale) {
-        // don't set anything
-        return nonPositiveComponent;
+      if (model.field(channel) && scale) {
+        nonPositiveComponent[field] = scale.type === ScaleType.LOG;
       }
-      nonPositiveComponent[model.field(channel)] = scale.type === ScaleType.LOG;
       return nonPositiveComponent;
     }, {} as Dict<boolean>);
   }
@@ -46,6 +46,30 @@ export namespace nonPositiveFilter {
         extend(nonPositiveFilter, childDataComponent.nonPositiveFilter);
         delete childDataComponent.nonPositiveFilter;
       }
+    });
+
+    return nonPositiveFilter;
+  }
+
+  export function parseRepeat(model: RepeatModel): Dict<boolean> {
+    // note that we run this before source.parseLayer
+    let nonPositiveFilter = {} as Dict<boolean>;
+
+    const children = model.children();
+    for (let i = 0; i < children.length; i++) {
+      const childDataComponent = children[i].component.data;
+      if (!differ(childDataComponent.nonPositiveFilter, nonPositiveFilter)) {
+        extend(nonPositiveFilter, childDataComponent.nonPositiveFilter);
+      } else {
+        // children are incompatible
+        return {};
+      }
+    }
+
+    // children are compatible so let's delete their null filters
+    model.children().forEach((child) => {
+      const childDataComponent = child.component.data;
+      delete childDataComponent.nonPositiveFilter;
     });
 
     return nonPositiveFilter;

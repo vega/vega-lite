@@ -5,7 +5,7 @@ import {defaultConfig, Config, CellConfig} from '../config';
 import {SOURCE, SUMMARY} from '../data';
 import {Encoding} from '../encoding';
 import * as vlEncoding from '../encoding'; // TODO: remove
-import {FieldDef, FieldRefOption, field} from '../fielddef';
+import {FieldDef} from '../fielddef';
 import {LegendProperties} from '../legend';
 import {Mark, TEXT as TEXTMARK} from '../mark';
 import {Scale, ScaleType} from '../scale';
@@ -13,6 +13,7 @@ import {ExtendedUnitSpec} from '../spec';
 import {getFullName, QUANTITATIVE} from '../type';
 import {duplicate, extend, mergeDeep, Dict} from '../util';
 import {VgData} from '../vega.schema';
+import {isRepeatRef} from '../fielddef';
 
 import {parseAxisComponent} from './axis';
 import {applyConfig, FILL_STROKE_CONFIG} from './common';
@@ -24,6 +25,7 @@ import {Model} from './model';
 import {parseMark} from './mark/mark';
 import {parseScaleComponent, scaleType} from './scale';
 import {compileStackProperties, StackProperties} from './stack';
+import {RepeatValues} from './repeat';
 
 /**
  * Internal model of Vega-Lite specification for the compiler.
@@ -34,8 +36,8 @@ export class UnitModel extends Model {
   private _encoding: Encoding;
   private _stack: StackProperties;
 
-  constructor(spec: ExtendedUnitSpec, parent: Model, parentGivenName: string) {
-    super(spec, parent, parentGivenName);
+  constructor(spec: ExtendedUnitSpec, parent: Model, parentGivenName: string, repeatValues: RepeatValues) {
+    super(spec, parent, parentGivenName, repeatValues);
 
     const mark = this._mark = spec.mark;
     const encoding = this._encoding = this._initEncoding(mark, spec.encoding || {});
@@ -230,23 +232,28 @@ export class UnitModel extends Model {
     return this._encoding;
   }
 
+  public isRepeatRef(channel: Channel) {
+    if (channel in this._encoding) {
+      const field = this._encoding[channel].field;
+      return isRepeatRef(field);
+    }
+    return false;
+  }
+
   public fieldDef(channel: Channel): FieldDef {
     // TODO: remove this || {}
     // Currently we have it to prevent null pointer exception.
-    return this._encoding[channel] || {};
-  }
+    let fieldDef = this._encoding[channel] || {};
 
-  /** Get "field" reference for vega */
-  public field(channel: Channel, opt: FieldRefOption = {}) {
-    const fieldDef = this.fieldDef(channel);
-
-    if (fieldDef.bin) { // bin has default suffix that depends on scaleType
-      opt = extend({
-        binSuffix: this.scale(channel).type === ScaleType.ORDINAL ? '_range' : '_start'
-      }, opt);
+    // replace references to repeated value
+    if (fieldDef) {
+      const field = fieldDef.field;
+      if (isRepeatRef(field)) {
+        fieldDef = duplicate(fieldDef);
+        fieldDef.field = this.repeatValue(field.repeat);
+      }
     }
-
-    return field(fieldDef, opt);
+    return fieldDef;
   }
 
   public dataTable() {

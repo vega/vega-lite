@@ -15,7 +15,7 @@ export function compile(inputSpec: ExtendedSpec) {
   const spec = normalize(inputSpec);
 
   // 2. Instantiate the model with default properties
-  const model = buildModel(spec, null, '');
+  const model = buildModel(spec, null, '', null);
 
   // 3. Parse each part of the model to produce components that will be assembled later
   // We traverse the whole tree to parse once for each type of components

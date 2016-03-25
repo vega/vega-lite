@@ -17,19 +17,20 @@ import {assembleData, parseFacetData} from './data/data';
 import {assembleLayout, parseFacetLayout} from './layout';
 import {Model} from './model';
 import {parseScaleComponent} from './scale';
+import {RepeatValues} from './repeat';
 
 export class FacetModel extends Model {
   private _facet: Facet;
 
   private _child: Model;
 
-  constructor(spec: FacetSpec, parent: Model, parentGivenName: string) {
-    super(spec, parent, parentGivenName);
+  constructor(spec: FacetSpec, parent: Model, parentGivenName: string, repeatValues: RepeatValues) {
+    super(spec, parent, parentGivenName, repeatValues);
 
     // Config must be initialized before child as it gets cascaded to the child
     const config = this._config = this._initConfig(spec.config, parent);
 
-    const child  = this._child = buildModel(spec.spec, this, this.name('child'));
+    const child  = this._child = buildModel(spec.spec, this, this.name('child'), repeatValues);
 
     const facet  = this._facet = this._initFacet(spec.facet);
     this._scale  = this._initScale(facet, config, child);
@@ -130,6 +131,11 @@ export class FacetModel extends Model {
     return (this.hasSummary() ? SUMMARY : SOURCE) + '';
   }
 
+  public isRepeatRef(channel: Channel) {
+    // todo
+    return false;
+  }
+
   public fieldDef(channel: Channel): FieldDef {
     return this.facet()[channel];
   }
@@ -171,7 +177,11 @@ export class FacetModel extends Model {
         scaleComponent[channel] = child.component.scale[channel];
 
         // for each scale, need to rename
-        vals(scaleComponent[channel]).forEach(function(scale) {
+        const modelScales = scaleComponent[channel];
+        [modelScales.main, modelScales.colorLegend, modelScales.binColorLegend].forEach(function(scale) {
+          if (!scale) {
+            return;
+          }
           const scaleNameWithoutPrefix = scale.name.substr(child.name('').length);
           const newName = model.scaleName(scaleNameWithoutPrefix);
           child.renameScale(scale.name, newName);

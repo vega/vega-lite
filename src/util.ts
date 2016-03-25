@@ -6,7 +6,6 @@ export {keys, extend, duplicate, isArray, vals, truncate, toMap, isObject, isStr
 export {range} from 'datalib/src/generate';
 export {has} from './encoding'
 export {FieldDef} from './fielddef';
-export {Channel} from './channel';
 
 import {isString, isNumber, isBoolean} from 'datalib/src/util';
 
@@ -29,7 +28,7 @@ export function without<T>(array: Array<T>, excludedItems: Array<T>) {
 }
 
 export function union<T>(array: Array<T>, other: Array<T>) {
-  return array.concat(without(other, array));
+  return unique(array.concat(other));
 }
 
 export function forEach(obj, f: (a, d, k, o) => any, thisArg?) {
@@ -126,17 +125,7 @@ function deepMerge_(dest, src) {
   return dest;
 }
 
-// FIXME remove this
-import * as dlBin from 'datalib/src/bins/bins';
-export function getbins(stats, maxbins) {
-  return dlBin({
-    min: stats.min,
-    max: stats.max,
-    maxbins: maxbins
-  });
-}
-
-export function unique<T>(values: T[], f?: (item: T) => string) {
+export function unique<T>(values: T[], f?: (item: T) => string): T[] {
   let results = [];
   var u = {}, v, i, n;
   for (i = 0, n = values.length; i < n; ++i) {
@@ -165,7 +154,7 @@ export interface Dict<T> {
 export type StringSet = Dict<boolean>;
 
 /**
- * Returns true if the two dicitonaries disagree. Applies only to defioned values.
+ * Returns true if the two dicts disagree. Applies only to defined values.
  */
 export function differ<T>(dict: Dict<T>, other: Dict<T>) {
   for (let key in dict) {

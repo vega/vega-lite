@@ -1,9 +1,11 @@
 import {FieldDef, isCount} from '../../fielddef';
+import {Channel} from '../../channel';
 import {QUANTITATIVE, TEMPORAL} from '../../type';
 import {extend, differ, Dict} from '../../util';
 
 import {FacetModel} from './../facet';
 import {LayerModel} from './../layer';
+import {RepeatModel} from './../repeat';
 import {Model} from './../model';
 
 export namespace formatParse {
@@ -17,14 +19,15 @@ export namespace formatParse {
     let parseComponent: Dict<string> = {};
     // use forEach rather than reduce so that it can return undefined
     // if there is no parse needed
-    model.forEach(function(fieldDef: FieldDef) {
+    model.forEach(function(fieldDef: FieldDef, channel: Channel) {
+      const field = model.fieldOrig(channel);
       if (fieldDef.type === TEMPORAL) {
-        parseComponent[fieldDef.field] = 'date';
+        parseComponent[field] = 'date';
       } else if (fieldDef.type === QUANTITATIVE) {
-        if (isCount(fieldDef) || calcFieldMap[fieldDef.field]) {
+        if (isCount(fieldDef) || calcFieldMap[field]) {
           return;
         }
-        parseComponent[fieldDef.field] = 'number';
+        parseComponent[field] = 'number';
       }
     });
     return parseComponent;
@@ -55,6 +58,29 @@ export namespace formatParse {
         delete childDataComponent.formatParse;
       }
     });
+    return parseComponent;
+  }
+
+  export function parseRepeat(model: RepeatModel): Dict<string> {
+    let parseComponent = {} as Dict<string>;
+
+    const children = model.children();
+    for (let i = 0; i < children.length; i++) {
+      const childDataComponent = children[i].component.data;
+      if (!differ(childDataComponent.formatParse, parseComponent)) {
+        extend(parseComponent, childDataComponent.formatParse);
+      } else {
+        // children are incompatible
+        return {};
+      }
+    }
+
+    // children are compatible so let's delete their null filters
+    model.children().forEach((child) => {
+      const childDataComponent = child.component.data;
+      delete childDataComponent.formatParse;
+    });
+
     return parseComponent;
   }
 

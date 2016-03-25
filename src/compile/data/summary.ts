@@ -5,25 +5,23 @@ import {field, FieldDef} from '../../fielddef';
 import {keys, vals, reduce, hash, Dict, StringSet} from '../../util';
 import {VgData} from '../../vega.schema';
 
-import {FacetModel} from './../facet';
-import {LayerModel} from './../layer';
-import {Model} from './../model';
+import {FacetModel} from '../facet';
+import {LayerModel} from '../layer';
+import {RepeatModel} from './../repeat';
+import {Model} from '../model';
 
 import {DataComponent, SummaryComponent} from './data';
 
 
 export namespace summary {
-  function addDimension(dims: { [field: string]: boolean }, fieldDef: FieldDef) {
+  function addDimension(dims: { [field: string]: boolean }, fieldDef: FieldDef, channel: Channel) {
     if (fieldDef.bin) {
       dims[field(fieldDef, { binSuffix: '_start' })] = true;
       dims[field(fieldDef, { binSuffix: '_mid' })] = true;
       dims[field(fieldDef, { binSuffix: '_end' })] = true;
 
-      // const scale = model.scale(channel);
-      // if (scaleType(scale, fieldDef, channel, model.mark()) === ScaleType.ORDINAL) {
-      // also produce bin_range if the binned field use ordinal scale
+      // TODO: don't add this if we don't use range
       dims[field(fieldDef, { binSuffix: '_range' })] = true;
-      // }
     } else {
       dims[field(fieldDef)] = true;
     }
@@ -45,11 +43,12 @@ export namespace summary {
           meas['*']['count'] = true;
           /* tslint:enable:no-string-literal */
         } else {
-          meas[fieldDef.field] = meas[fieldDef.field] || {};
-          meas[fieldDef.field][fieldDef.aggregate] = true;
+          const field = model.fieldOrig(channel);
+          meas[field] = meas[field] || {};
+          meas[field][fieldDef.aggregate] = true;
         }
       } else {
-        addDimension(dims, fieldDef);
+        addDimension(dims, fieldDef, channel);
       }
     });
 
@@ -79,25 +78,6 @@ export namespace summary {
       return summaryComponents;
     }
     return [];
-  }
-
-  function mergeMeasures(parentMeasures: Dict<Dict<boolean>>, childMeasures: Dict<Dict<boolean>>) {
-    for (const field in childMeasures) {
-      if (childMeasures.hasOwnProperty(field)) {
-        // when we merge a measure, we either have to add an aggregation operator or even a new field
-        const ops = childMeasures[field];
-        for (const op in ops) {
-          if (ops.hasOwnProperty(op)) {
-            if (field in parentMeasures) {
-              // add operator to existing measure field
-              parentMeasures[field][op] = true;
-            } else {
-              parentMeasures[field] = { op: true };
-            }
-          }
-        }
-      }
-    }
   }
 
   export function parseLayer(model: LayerModel): SummaryComponent[] {
@@ -133,6 +113,60 @@ export namespace summary {
 
     return vals(summaries);
   }
+
+  export function parseRepeat(model: RepeatModel): SummaryComponent[] {
+    // Index by the fields we are grouping by
+    let summaries = {} as Dict<SummaryComponent>;
+
+    // Combine summaries for children that don't have a distinct source
+    // (either having its own data source, or its own tranformation of the same data source).
+    model.children().forEach((child) => {
+      const childDataComponent = child.component.data;
+      if (!childDataComponent.source && childDataComponent.summary) {
+        // Merge the summaries if we can
+        childDataComponent.summary.forEach((childSummary) => {
+          // The key is a hash based on the dimensions;
+          // we use it to find out whether we have a summary that uses the same group by fields.
+          const key = hash(childSummary.dimensions);
+          if (key in summaries) {
+            // yes, there is a summary hat we need to merge into
+            // we know that the dimensions are the same so we only need to merge the measures
+            mergeMeasures(summaries[key].measures, childSummary.measures);
+          } else {
+            // give the summary a new name
+            childSummary.name = model.dataName(SUMMARY) + '_' + keys(summaries).length;
+            summaries[key] = childSummary;
+          }
+
+          // remove summary from child
+          child.renameData(child.dataName(SUMMARY), summaries[key].name);
+          delete childDataComponent.summary;
+        });
+      }
+    });
+
+    return vals(summaries);
+  }
+
+  function mergeMeasures(parentMeasures: Dict<Dict<boolean>>, childMeasures: Dict<Dict<boolean>>) {
+    for (const field in childMeasures) {
+      if (childMeasures.hasOwnProperty(field)) {
+        // when we merge a measure, we either have to add an aggregation operator or even a new field
+        const ops = childMeasures[field];
+        for (const op in ops) {
+          if (ops.hasOwnProperty(op)) {
+            if (field in parentMeasures) {
+              // add operator to existing measure field
+              parentMeasures[field][op] = true;
+            } else {
+              parentMeasures[field] = { op: true };
+            }
+          }
+        }
+      }
+    }
+  }
+
 
   /**
    * Assemble the summary. Needs a rename function because we cannot guarantee that the

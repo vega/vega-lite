@@ -1,7 +1,7 @@
 import {COLOR, SIZE, SHAPE, Channel} from '../channel';
 import {FieldDef} from '../fielddef';
-import {LegendProperties} from '../legend';
 import {title as fieldTitle} from '../fielddef';
+import {LegendProperties} from '../legend';
 import {AREA, BAR, TICK, TEXT, LINE, POINT, CIRCLE, SQUARE} from '../mark';
 import {ORDINAL} from '../type';
 import {extend, keys, without, Dict} from '../util';
@@ -97,8 +97,8 @@ export function formatMixins(legend: LegendProperties, model: UnitModel, channel
 }
 
 // we have to use special scales for ordinal or binned fields for the color channel
-export function useColorLegendScale(fieldDef: FieldDef) {
-  return fieldDef.type === ORDINAL || fieldDef.bin || fieldDef.timeUnit;
+export function useColorLegendScale(fieldDef: FieldDef): boolean {
+  return fieldDef.type === ORDINAL || !!fieldDef.bin || !!fieldDef.timeUnit;
 }
 
 namespace properties {

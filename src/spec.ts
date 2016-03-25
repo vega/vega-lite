@@ -7,6 +7,7 @@ import {Config} from './config';
 import {Data} from './data';
 import {Encoding, UnitEncoding, has} from './encoding';
 import {Facet} from './facet';
+import {Repeat} from './repeat';
 import {Mark} from './mark';
 import {Transform} from './transform';
 
@@ -50,6 +51,14 @@ export interface FacetSpec extends BaseSpec {
   spec: LayerSpec | UnitSpec;
 }
 
+export interface RepeatSpec {
+  name?: string;
+  description?: string;
+  repeat: Repeat;
+  spec: LayerSpec | UnitSpec;
+  config?: Config;
+}
+
 export interface LayerSpec extends BaseSpec {
   layers: UnitSpec[];
 }
@@ -61,13 +70,17 @@ export interface ExtendedFacetSpec extends BaseSpec {
   spec: ExtendedUnitSpec | FacetSpec;
 }
 
-export type ExtendedSpec = ExtendedUnitSpec | FacetSpec | LayerSpec;
-export type Spec = UnitSpec | FacetSpec | LayerSpec;
+export type ExtendedSpec = ExtendedUnitSpec | FacetSpec | RepeatSpec | LayerSpec;
+export type Spec = UnitSpec | FacetSpec | RepeatSpec | LayerSpec;
 
 /* Custom type guards */
 
 export function isFacetSpec(spec: ExtendedSpec): spec is FacetSpec {
   return spec['facet'] !== undefined;
+}
+
+export function isRepeatSpec(spec: ExtendedSpec): spec is RepeatSpec {
+  return spec['repeat'] !== undefined;
 }
 
 export function isExtendedUnitSpec(spec: ExtendedSpec): spec is ExtendedUnitSpec {

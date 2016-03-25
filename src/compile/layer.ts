@@ -1,5 +1,5 @@
 import {Channel} from '../channel';
-import {keys, duplicate, mergeDeep, flatten, unique, isArray, vals, hash, Dict} from '../util';
+import {keys, duplicate, mergeDeep, flatten, unique, isArray, vals, forEach, hash, Dict} from '../util';
 import {defaultConfig, Config} from '../config';
 import {LayerSpec} from '../spec';
 import {assembleData, parseLayerData} from './data/data';
@@ -10,18 +10,18 @@ import {buildModel} from './common';
 import {FieldDef} from '../fielddef';
 import {ScaleComponents} from './scale';
 import {VgData, VgAxis, VgLegend, isUnionedDomain, isDataRefDomain, VgDataRef} from '../vega.schema';
-
+import {RepeatValues} from './repeat';
 
 export class LayerModel extends Model {
   private _children: UnitModel[];
 
-  constructor(spec: LayerSpec, parent: Model, parentGivenName: string) {
-    super(spec, parent, parentGivenName);
+  constructor(spec: LayerSpec, parent: Model, parentGivenName: string, repeatValues: RepeatValues) {
+    super(spec, parent, parentGivenName, repeatValues);
 
     this._config = this._initConfig(spec.config, parent);
     this._children = spec.layers.map((layer, i) => {
       // we know that the model has to be a unit model beacuse we pass in a unit spec
-      return buildModel(layer, this, this.name('layer_' + i)) as UnitModel;
+      return buildModel(layer, this, this.name('layer_' + i), repeatValues) as UnitModel;
     });
   }
 
@@ -46,6 +46,11 @@ export class LayerModel extends Model {
   public dataTable(): string {
     // FIXME: don't just use the first child
     return this._children[0].dataTable();
+  }
+
+  public isRepeatRef(channel: Channel) {
+    // todo
+    return false;
   }
 
   public fieldDef(channel: Channel): FieldDef {
@@ -77,6 +82,7 @@ export class LayerModel extends Model {
   }
 
   public parseScale() {
+    // TODO:(kanitw): move logic of this function to `scale.ts` for easier readability.
     const model = this;
 
     let scaleComponent = this.component.scale = {} as Dict<ScaleComponents>;
@@ -86,8 +92,8 @@ export class LayerModel extends Model {
 
       // FIXME: correctly implement independent scale
       if (true) { // if shared/union scale
-        keys(child.component.scale).forEach(function(channel) {
-          let childScales: ScaleComponents = child.component.scale[channel];
+        forEach(child.component.scale, function(value, channel) {
+          let childScales: ScaleComponents = value;
           if (!childScales) {
             // the child does not have any scales so we have nothing to merge
             return;
@@ -128,19 +134,25 @@ export class LayerModel extends Model {
             }
 
             // create color legend and color legend bin scales if we don't have them yet
-            modelScales.colorLegend = modelScales.colorLegend ? modelScales.colorLegend : childScales.colorLegend;
-            modelScales.binColorLegend = modelScales.binColorLegend ? modelScales.binColorLegend : childScales.binColorLegend;
+            if (childScales.colorLegend) {
+              modelScales.colorLegend = modelScales.colorLegend ? modelScales.colorLegend : childScales.colorLegend;
+            }
+            if (childScales.binColorLegend) {
+              modelScales.binColorLegend = modelScales.binColorLegend ? modelScales.binColorLegend : childScales.binColorLegend;
+            }
           } else {
             scaleComponent[channel] = childScales;
           }
 
           // rename child scales to parent scales
-          vals(childScales).forEach(function(scale) {
-            const scaleNameWithoutPrefix = scale.name.substr(child.name('').length);
-            const newName = model.scaleName(scaleNameWithoutPrefix);
-            child.renameScale(scale.name, newName);
-            scale.name = newName;
-          });
+          [childScales.main, childScales.colorLegend, childScales.binColorLegend]
+            .filter((x) => !!x)
+            .forEach(function(scale) {
+              const scaleNameWithoutPrefix = scale.name.substr(child.name('').length);
+              const newName = model.scaleName(scaleNameWithoutPrefix);
+              child.renameScale(scale.name, newName);
+              scale.name = newName;
+            });
 
           delete childScales[channel];
         });
@@ -247,7 +259,7 @@ export class LayerModel extends Model {
    * This function can only be called once th child has been parsed.
    */
   public compatibleSource(child: UnitModel) {
-    const sourceUrl = this.data().url;
+    const sourceUrl = this.data() && this.data().url;
     const childData = child.component.data;
     const compatible = !childData.source || (sourceUrl && sourceUrl === childData.source.url);
     return compatible;

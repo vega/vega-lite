@@ -5,9 +5,10 @@ import {LayerSpec} from '../../src/spec';
 
 describe('Layer', function() {
   it('should say it is layer', function() {
-    const model = new LayerModel({layers: []} as LayerSpec, null, null);
+    const model = new LayerModel({layers: []} as LayerSpec, null, null, null);
     assert(!model.isUnit());
     assert(!model.isFacet());
     assert(model.isLayer());
+    assert(!model.isRepeat());
   });
 });
