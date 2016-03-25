@@ -8,14 +8,11 @@
   "showOutput": "silent",
   "tasks": [
     {
-      // "npm run build"
       "taskName": "build",
       "isBuildCommand": true,
       "problemMatcher": "$tsc"
     },
     {
-      // Test task, Ctrl+Shift+T
-      // "npm test"
       "taskName": "test",
       "isTestCommand": true
     }
