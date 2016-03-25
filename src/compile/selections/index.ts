@@ -15,12 +15,21 @@ export enum Levels {
   VISUAL = 'visual' as any
 }
 
+export enum Resolutions {
+  SINGLE = 'single' as any,
+  UNION  = 'union'  as any,
+  INTERSECT = 'intersect' as any,
+  UNION_OTHERS = 'union_others' as any,
+  INTERSECT_OTHERS = 'intersect_others' as any
+}
+
 export interface Selection {
   name:  string;
   type:  Types;
   level: Levels;
   on: string;
   predicate: string;
+  resolve?: Resolutions;
 
   // Transforms
   project?: any;
@@ -58,6 +67,7 @@ export function parse(model: UnitModel, spec) {
     // We don't namespace the selection to facilitate merging during assembly.
     sel.name = k;
     sel.level = sel.level || Levels.DATA;
+    sel.resolve = sel.resolve || Resolutions.SINGLE;
 
     if (sel.on) {
       var on = parseEvents(sel.on);
@@ -141,21 +151,28 @@ export function assembleUnitSignals(model: UnitModel, signals) {
 }
 
 export function assembleCompositeSignals(model, units) {
-  var signals = {};
+  var signals = {}, registry = {}, h;
 
-  units.forEach(function(sg) {
-    var s = signals[sg.name];
+  units.forEach(function(unit) {
+    var s = signals[unit.name],
+        r = registry[unit.name] || (registry[unit.name] = {});
     if (s && s.name !== 'unit') {
-      s.streams.push.apply(s.streams, sg.streams);
+      unit.streams.forEach(function(stream) {
+        if (!r[h=u.hash(stream)]) {
+          s.streams.push(stream);
+          r[h] = true;
+        }
+      });
     } else {
-      signals[sg.name] = sg;
+      signals[unit.name] = unit;
+      unit.streams.forEach((stream) => r[u.hash(stream)] = true);
     }
   });
 
   return u.vals(signals);
 }
 
-export function assembleData(model: UnitModel, data) {
+export function assembleUnitData(model: UnitModel, data) {
   model.selection().forEach(function(sel: Selection) {
     if (sel.type !== Types.SET) return;
     var db = {
@@ -174,6 +191,34 @@ export function assembleData(model: UnitModel, data) {
     data.unshift(db);
   });
   return data;
+}
+
+export function assembleCompositeData(model, units) {
+  var data = {}, registry = {};
+
+  units.forEach(function(unit) {
+    var d = data[unit.name],
+        r = registry[unit.name] || (registry[unit.name] = {}),
+        h;
+
+    var mergeTransforms = function(t) {
+      if (!r[h=u.hash(t)]) {
+        d.transform.push(t);
+        r[h] = true;
+      }
+    }
+
+    if (!d) {
+      unit.transform.forEach((t) => r[u.hash(t)] = true);
+      unit.modify.forEach((t) => r[u.hash(t)] = true);
+      return (data[unit.name] = unit);
+    } else {
+      unit.transform.forEach(mergeTransforms);
+      unit.modify.forEach(mergeTransforms);
+    }
+  });
+
+  return u.vals(data);
 }
 
 export function assembleMarks(model: UnitModel, marks: any[]) {

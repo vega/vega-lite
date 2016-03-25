@@ -35,7 +35,8 @@ export function parse(model: UnitModel, sel: s.Selection) {
     sel.on = '[' + on.start.str + ', ' + on.end.str + '] > ' + on.middle.str;
   }
 
-  sel.predicate = 'inrangeselection(' + u.str(s.storeName(sel)) + ', datum, "union", group._id)';
+  sel.predicate = 'inrangeselection(' + u.str(s.storeName(sel)) +
+    ', datum, ' + u.str(sel.resolve) + ', group._id)';
 
   if (sel.translate === undefined) sel.translate = true;
 }
@@ -87,12 +88,20 @@ export function assembleSignals(model: UnitModel, sel: s.Selection, trigger, cle
     'unitName: unit.unitName}')
   };
 
-  clear.name = null;  // Brushes are upserted.
+  if (sel.resolve === s.Resolutions.SINGLE) {
+    clear.streams[0].type = start;
+  } else {
+    clear.name = null;  // Brushes are upserted.
+  }
 }
 
 export function assembleData(model: UnitModel, sel: s.Selection, db) {
-  // TODO, if we only want the most recent interval, we can keep the clear around.
-  db.modify = [{ type: 'upsert', signal: sel.name, field: 'unitName' }];
+  var upsert = { type: 'upsert', signal: sel.name, field: 'unitName' };
+  if (sel.resolve === s.Resolutions.SINGLE) {
+    db.modify.push(upsert);
+  } else {
+    db.modify = [upsert];
+  }
 }
 
 // TODO: Move to config?

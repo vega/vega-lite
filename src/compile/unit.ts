@@ -187,7 +187,7 @@ export class UnitModel extends Model {
   }
 
   public assembleSelectionData(data: VgData[]): VgData[] {
-    return selections.assembleData(this, data);
+    return selections.assembleUnitData(this, data);
   }
 
   public assembleSignals(signals) {

@@ -217,6 +217,11 @@ export class RepeatModel extends Model {
     return assembleLayout(this, layoutData);
   }
 
+  public assembleSelectionData(data: VgData[]): VgData[] {
+    this._children.forEach((child) => child.assembleSelectionData(data));
+    return selections.assembleCompositeData(this, data);
+  }
+
   public assembleSignals(signals) {
     this._children.forEach((child) => child.assembleSignals(signals));
     return selections.assembleCompositeSignals(this, signals);
