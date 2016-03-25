@@ -99,7 +99,7 @@ export class RepeatModel extends Model {
   }
 
   public dataTable(): string {
-    // TODO: fixme
+    // FIXME: remove this hack
     return this.dataName(SOURCE);
   }
 

@@ -148,18 +148,20 @@ function facetSizeFormula(model: Model, channel: Channel, innerSize: string) {
 
 export function parseRepeatLayout(model: RepeatModel): LayoutComponent {
   const childLayouts = model.children().map((child) => child.component.layout);
-  const allTheSame = unique(childLayouts.map((layout: LayoutComponent) => {
-    return hash({
-      width : {
-        distinct: layout.width.distinct,
-        expr: layout.width.formula.map((f) => f.expr)
-      },
-      height : {
-        distinct: layout.height.distinct,
-        expr: layout.height.formula.map((f) => f.expr)
-      }
-    });
-  })).length === 1;
+  const allTheSame = unique(
+    childLayouts.map((layout: LayoutComponent) => {
+      return hash({
+        width : {
+          distinct: layout.width.distinct,
+          expr: layout.width.formula.map((f) => f.expr)
+        },
+        height : {
+          distinct: layout.height.distinct,
+          expr: layout.height.formula.map((f) => f.expr)
+        }
+      });
+    })
+  ).length === 1;
 
   const layout = {
     width: parseRepeatSizeLayout(model, COLUMN, allTheSame),

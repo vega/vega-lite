@@ -14,7 +14,7 @@ import {DataComponent, SummaryComponent} from './data';
 
 
 export namespace summary {
-  function addDimension(dims: { [field: string]: boolean }, fieldDef: FieldDef, channel) {
+  function addDimension(dims: { [field: string]: boolean }, fieldDef: FieldDef, channel: Channel) {
     if (fieldDef.bin) {
       dims[field(fieldDef, { binSuffix: '_start' })] = true;
       dims[field(fieldDef, { binSuffix: '_mid' })] = true;
