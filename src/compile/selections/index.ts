@@ -203,16 +203,27 @@ export function assembleCompositeData(model, units) {
         r = registry[unit.name] || (registry[unit.name] = {}),
         h;
 
-    var mergeTransforms = function(t) {
-      if (!r[h=u.hash(t)]) {
+    function mergeTransforms(t) {
+      if (t.type === 'aggregate') {
+        if (!r.aggregate) {
+          d.transform.push(r.aggregate = t);
+        }
+
+        u.extend(r.aggregate.summarize, t.summarize);
+      } else if (!r[h=u.hash(t)]) {
         d.transform.push(t);
         r[h] = true;
       }
+    };
+
+    function populateRegistry(t) {
+      if (t.type === 'aggregate') r.aggregate = t;
+      else r[u.hash(t)] = true;
     }
 
     if (!d) {
-      unit.transform.forEach((t) => r[u.hash(t)] = true);
-      unit.modify.forEach((t) => r[u.hash(t)] = true);
+      unit.transform.forEach(populateRegistry);
+      unit.modify.forEach(populateRegistry);
       return (data[unit.name] = unit);
     } else {
       unit.transform.forEach(mergeTransforms);
