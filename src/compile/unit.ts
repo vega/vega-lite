@@ -54,8 +54,8 @@ export class UnitModel extends Model {
     // calculate stack
     this._stack = compileStackProperties(mark, encoding, scale, config);
 
-    this._select = spec.select;
-    this._selections = selections.parse(spec.select, this);
+    this._select = duplicate(spec.select);
+    this.parseSelection();
   }
 
   private _initEncoding(mark: Mark, encoding: Encoding) {
@@ -140,6 +140,10 @@ export class UnitModel extends Model {
       }
       return _legend;
     }, {} as Dict<LegendProperties>);
+  }
+
+  public parseSelection() {
+    this.component.selection = selections.parse(this, this._select);
   }
 
   public parseData() {
@@ -281,8 +285,8 @@ export class UnitModel extends Model {
     });
   }
 
-  public selection(name: string = undefined) {
-    return (this._select && this._select[name]) || this._selections;
+  public selection(name?: string) {
+    return (this._select && this._select[name]) || this.component.selection || [];
   }
 
   public dataTable() {

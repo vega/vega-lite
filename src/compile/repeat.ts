@@ -124,11 +124,6 @@ export class RepeatModel extends Model {
     this.component.data = parseRepeatData(this);
   }
 
-  public parseSelectionData() {
-    // TODO: @arvind can write this
-    // We might need to split this into compileSelectionData and compileSelectionSignals?
-  }
-
   public parseLayoutData() {
     this._children.forEach((child, i) => {
       child.parseLayoutData();
@@ -214,7 +209,7 @@ export class RepeatModel extends Model {
   }
 
   public assembleLayout(layoutData: VgData[]): VgData[] {
-    // Postfix traversal – layout is assembled bottom-up 
+    // Postfix traversal – layout is assembled bottom-up
     this._children.forEach((child) => {
       child.assembleLayout(layoutData);
     });

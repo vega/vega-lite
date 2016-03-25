@@ -16,6 +16,7 @@ import {LayoutComponent} from './layout';
 import {ScaleComponents} from './scale';
 import {RepeatModel, RepeatValues} from './repeat';
 
+import * as selections from './selections';
 
 /**
  * Composable Components that are intermediate results of the parsing phase of the
@@ -25,6 +26,7 @@ import {RepeatModel, RepeatValues} from './repeat';
 export interface Component {
   data: DataComponent;
   layout: LayoutComponent;
+  selection: selections.Selection[];
   scale: Dict<ScaleComponents>;
 
   /** Dictionary mapping channel to VgAxis definition */
@@ -117,9 +119,8 @@ export abstract class Model {
     this._description = spec.description;
     this._transform = spec.transform;
 
-    this.component = {data: null, layout: null, mark: null, scale: null, axis: null, axisGroup: null, gridGroup: null, legend: null};
+    this.component = {data: null, layout: null, selection: null, mark: null, scale: null, axis: null, axisGroup: null, gridGroup: null, legend: null};
   }
-
 
   public parse() {
     this.parseData();

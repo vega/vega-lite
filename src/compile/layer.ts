@@ -68,11 +68,6 @@ export class LayerModel extends Model {
     this.component.data = parseLayerData(this);
   }
 
-  public parseSelectionData() {
-    // TODO: @arvind can write this
-    // We might need to split this into compileSelectionData and compileSelectionSignals?
-  }
-
   public parseLayoutData() {
     // TODO: correctly union ordinal scales rather than just using the layout of the first child
     this._children.forEach((child, i) => {

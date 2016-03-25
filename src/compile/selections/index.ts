@@ -35,12 +35,13 @@ export function storeName(sel: Selection) {
   return sel.name + (sel.type === Types.SET ? '_db' : '');
 }
 
-export function parse(spec, model: UnitModel) {
+export function parse(model: UnitModel, spec) {
   return u.keys(spec).map(function(k) {
     var sel:Selection = spec[k];
 
     // Set default properties and instantiate default transforms.
-    sel.name = model.name(k);
+    // We don't namespace the selection to facilitate merging during assembly.
+    sel.name = k;
     sel.level = sel.level || Levels.DATA;
     sel.on = sel.on || 'click';
 
