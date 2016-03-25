@@ -20,6 +20,7 @@ export namespace summary {
       dims[field(fieldDef, { binSuffix: '_mid' })] = true;
       dims[field(fieldDef, { binSuffix: '_end' })] = true;
 
+      // TODO: don't add this if we don't use range
       dims[field(fieldDef, { binSuffix: '_range' })] = true;
     } else {
       dims[field(fieldDef)] = true;
