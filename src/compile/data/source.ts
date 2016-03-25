@@ -85,12 +85,15 @@ export namespace source {
     let sourceData = parse(model.children()[0]);
     if (!sourceData) {
       // cannot merge from child because the direct child does not have any data
+      // For example, when the child is a layer spec. 
       return;
     }
     sourceData.name = model.dataName(SOURCE);
 
     model.children().forEach((child) => {
       const childData = child.component.data;
+      
+      // TODO: merge children into different groups that are mergable.  (Current we only merge into one.) 
 
       const canMerge = !childData.filter && !childData.formatParse && !childData.nullFilter;
       if (canMerge) {

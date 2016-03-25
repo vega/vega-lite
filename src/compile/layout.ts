@@ -160,6 +160,8 @@ export function parseRepeatLayout(model: RepeatModel): LayoutComponent {
 }
 
 function parseRepeatSizeLayout(model: RepeatModel, channel: Channel): SizeComponent {
+  // FIXME: support when each repeated unit do not have the same size 
+  
   const childLayoutComponent = model.children()[0].component.layout;
   const sizeType = channel === ROW ? 'height' : 'width';
   const childSizeComponent: SizeComponent = childLayoutComponent[sizeType];

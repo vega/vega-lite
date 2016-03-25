@@ -61,16 +61,26 @@ export namespace formatParse {
     return parseComponent;
   }
 
-  export function parseRepeat(model: RepeatModel) {
-    let parseComponent = parse(model);
+  export function parseRepeat(model: RepeatModel): Dict<string> {
+    let parseComponent = {} as Dict<string>;
+
+    const children = model.children();
+    for (let i = 0; i < children.length; i++) {
+      const childDataComponent = children[i].component.data;
+      if (!differ(childDataComponent.formatParse, parseComponent)) {
+        extend(parseComponent, childDataComponent.formatParse);
+      } else {
+        // children are incompatible
+        return {};
+      }
+    }
+
+    // children are compatible so let's delete their null filters
     model.children().forEach((child) => {
       const childDataComponent = child.component.data;
-      if (!differ(childDataComponent.formatParse, parseComponent)) {
-        // merge parse up if the child does not have an incompatible parse
-        extend(parseComponent, childDataComponent.formatParse);
-        delete childDataComponent.formatParse;
-      }
+      delete childDataComponent.formatParse;
     });
+
     return parseComponent;
   }
 

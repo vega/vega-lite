@@ -71,6 +71,7 @@ export class LayerModel extends Model {
   }
 
   public parseScale() {
+    // TODO:(kanitw): move logic of this function to `scale.ts` for easier readability.
     const model = this;
 
     let scaleComponent = this.component.scale = {} as Dict<ScaleComponents>;
@@ -80,14 +81,14 @@ export class LayerModel extends Model {
 
       // FIXME: correctly implement independent scale
       if (true) { // if shared/union scale
-        forEach(child.component.scale, function(value, key) {
+        forEach(child.component.scale, function(value, channel) {
           let childScales: ScaleComponents = value;
           if (!childScales) {
             // the child does not have any scales so we have nothing to merge
             return;
           }
 
-          const modelScales: ScaleComponents = scaleComponent[key];
+          const modelScales: ScaleComponents = scaleComponent[channel];
           if (modelScales && modelScales.main) {
             // Scales are unioned by combining the domain of the main scale.
             // Other scales that are used for ordinal legends are appended.
@@ -129,18 +130,20 @@ export class LayerModel extends Model {
               modelScales.binColorLegend = modelScales.binColorLegend ? modelScales.binColorLegend : childScales.binColorLegend;
             }
           } else {
-            scaleComponent[key] = childScales;
+            scaleComponent[channel] = childScales;
           }
 
           // rename child scales to parent scales
-          vals(childScales).forEach(function(scale) {
-            const scaleNameWithoutPrefix = scale.name.substr(child.name('').length);
-            const newName = model.scaleName(scaleNameWithoutPrefix);
-            child.renameScale(scale.name, newName);
-            scale.name = newName;
-          });
+          [childScales.main, childScales.colorLegend, childScales.binColorLegend]
+            .filter((x) => !!x)
+            .forEach(function(scale) {
+              const scaleNameWithoutPrefix = scale.name.substr(child.name('').length);
+              const newName = model.scaleName(scaleNameWithoutPrefix);
+              child.renameScale(scale.name, newName);
+              scale.name = newName;
+            });
 
-          delete childScales[key];
+          delete childScales[channel];
         });
       }
     });

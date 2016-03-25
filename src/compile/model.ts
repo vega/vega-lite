@@ -1,5 +1,5 @@
 import {AxisProperties} from '../axis';
-import {Channel, X, COLUMN} from '../channel';
+import {Channel, X, Y, COLUMN} from '../channel';
 import {Config, CellConfig} from '../config';
 import {Data, DataTable} from '../data';
 import {channelMappingReduce, channelMappingForEach} from '../encoding';
@@ -8,7 +8,7 @@ import {LegendProperties} from '../legend';
 import {Scale, ScaleType} from '../scale';
 import {BaseSpec} from '../spec';
 import {Transform} from '../transform';
-import {extend, flatten, vals, warning, Dict, array} from '../util';
+import {extend, flatten, vals, warning, contains, Dict, array} from '../util';
 import {VgData, VgMarkGroup, VgScale, VgAxis, VgLegend, VgFieldRef, VgField} from '../vega.schema';
 
 import {DataComponent} from './data/data';
@@ -53,6 +53,9 @@ class NameMap {
   }
 
   public rename(oldName: string, newName: string) {
+    if (oldName === newName) {
+      return console.error('cannot rename ' + oldName + ' to itself');
+    }
     this._nameMap[oldName] = newName;
   }
 
@@ -286,6 +289,7 @@ export abstract class Model {
 
   /**
    * Just the raw field. Get's the value from the iterator if the parent is iterating.
+   * TODO: this is the same as model.field(channel, {nofn: true}). We should maybe remove that option and use optional args.
    */
   public fieldOrig(channel: Channel): string {
     const field = this.fieldDef(channel).field;
@@ -299,7 +303,7 @@ export abstract class Model {
    */
   public field(channel: Channel, opt: FieldRefOption = {}, fieldDef = this.fieldDef(channel)): string {
     if (fieldDef.bin) { // bin has default suffix that depends on scaleType
-      opt = extend({}, {
+      opt = extend({
         binSuffix: this.scale(channel).type === ScaleType.ORDINAL ? '_range' : '_start'
       }, opt);
     }
@@ -334,8 +338,7 @@ export abstract class Model {
    * returns scale name for a given channel
    */
   public scaleName(channel: Channel | string): string {
-    const postfix = this.isRepeatRef(channel as Channel) ? ('_' + this.fieldOrig(channel as Channel)) : '';
-    return this._scaleNameMap.get(this.name(channel + postfix));
+    return this._scaleNameMap.get(this.name(String(channel)));
   }
 
   public sort(channel: Channel) {

@@ -14,7 +14,7 @@ import {buildModel} from './common';
 import {assembleData, parseRepeatData} from './data/data';
 import {assembleLayout, parseRepeatLayout} from './layout';
 import {Model} from './model';
-import {parseScaleComponent} from './scale';
+import {parseScaleComponent, ScaleComponents} from './scale';
 import * as selections from './selections';
 
 export type RepeatValues = {
@@ -47,10 +47,10 @@ export class RepeatModel extends Model {
 
         _scale[channel] = extend({
           type: ScaleType.ORDINAL,
-          round: config.facet.scale.round,
+          round: config.facet.scale.round,  // TODO(kanitw): separate `config.repeat` from  `config.facet`
           domain: repeat[channel],
 
-          padding: 60
+          padding: 60  // TODO(kanitw): put in `config.repeat` from  `config.facet`
         }, {});
       }
       return _scale;
@@ -94,7 +94,7 @@ export class RepeatModel extends Model {
   }
 
   public dataTable(): string {
-    return this.has(ROW) ? 'fields_row' : 'fields_column';
+    return null;
   }
 
   public isRepeatRef(channel: Channel) {
@@ -127,6 +127,8 @@ export class RepeatModel extends Model {
   }
 
   public parseScale() {
+    // TODO(kanitw): move this logic to scale.ts for readability & comparability?
+
     const model = this;
 
     // First, add scale for row and column.
@@ -134,18 +136,30 @@ export class RepeatModel extends Model {
 
     this._children.forEach(function(child) {
       child.parseScale();
-      // move all scales up
+      // move all scales up, merge all but x and y scales
 
-      forEach(child.component.scale, function(value, key) {
-        scaleComponent[key] = value;
+      forEach(child.component.scale, function(childScales: ScaleComponents, key: string) {
+        const channel = childScales.channel;
 
-        // for each scale, need to rename
-        vals(scaleComponent[key]).forEach(function(scale) {
-          const scaleNameWithoutPrefix = scale.name.substr(child.name('').length);
+        if (contains([X, Y], channel)) {
+          // positional scales are just appended because they should be independent
+          scaleComponent[child.name(key)] = childScales;
+        } else {
+          const scaleNameWithoutPrefix = childScales.main.name.substr(child.name('').length);
           const newName = model.scaleName(scaleNameWithoutPrefix);
-          child.renameScale(scale.name, newName);
-          scale.name = newName;
-        });
+          const oldName = childScales.main.name;
+
+          if (channel in scaleComponent) {
+            // scale already exists, so merge
+
+            // const modelScales = scaleComponent[channel];
+            // TODO: merge scales, I'm too lazy right now and we don't need it for the examples
+          } else {
+            childScales.main.name = newName;
+            scaleComponent[channel] = childScales;
+          }
+          child.renameScale(oldName, newName);
+        }
 
         // Once put in parent, just remove the child's scale.
         delete child.component.scale[key];

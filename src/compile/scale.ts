@@ -34,6 +34,10 @@ export const COLOR_LEGEND_LABEL = 'color_legend_label';
 export type ScaleComponent = VgScale;
 
 export type ScaleComponents = {
+  // chat channel are these scales for
+  channel: Channel,
+
+  // the scales
   main: ScaleComponent;
   colorLegend?: ScaleComponent,
   binColorLegend?: ScaleComponent
@@ -44,6 +48,7 @@ export function parseScaleComponent(model: Model): Dict<ScaleComponents> {
     if (model.scale(channel)) {
       const fieldDef = model.fieldDef(channel);
       const scales: ScaleComponents = {
+        channel: channel,
         main: parseMainScale(model, fieldDef, channel)
       };
 
@@ -56,8 +61,7 @@ export function parseScaleComponent(model: Model): Dict<ScaleComponents> {
         }
       }
 
-      const key = String(channel) + (model.isRepeatRef(channel) ? ('_' + model.fieldOrig(channel)) : '');
-      scale[key] = scales;
+      scale[channel] = scales;
     }
     return scale;
   }, {} as Dict<ScaleComponents>);
