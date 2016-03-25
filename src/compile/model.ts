@@ -288,6 +288,7 @@ export abstract class Model {
 
   /**
    * Just the raw field. Get's the value from the iterator if the parent is iterating.
+   * TODO: this is the same as model.field(channel, {nofn: true}). We should maybe remove that option and use optional args.
    */
   public fieldOrig(channel: Channel): string {
     const field = this.fieldDef(channel).field;
@@ -303,7 +304,7 @@ export abstract class Model {
     let fieldDef = this.fieldDef(channel);
 
     if (fieldDef.bin) { // bin has default suffix that depends on scaleType
-      opt = extend({}, {
+      opt = extend({
         binSuffix: this.scale(channel).type === ScaleType.ORDINAL ? '_range' : '_start'
       }, opt);
     }

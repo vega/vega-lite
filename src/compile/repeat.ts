@@ -99,7 +99,7 @@ export class RepeatModel extends Model {
   }
 
   public dataTable(): string {
-    return this.has(ROW) ? 'fields_row' : 'fields_column';
+    return null;
   }
 
   public isRepeatRef(channel: Channel) {
