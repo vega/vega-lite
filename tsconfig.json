@@ -45,6 +45,7 @@
     "src/compile/data/filter.ts",
     "src/compile/data/formatparse.ts",
     "src/compile/data/formula.ts",
+    "src/compile/data/lookup.ts",
     "src/compile/data/nonpositivenullfilter.ts",
     "src/compile/data/nullfilter.ts",
     "src/compile/data/source.ts",
