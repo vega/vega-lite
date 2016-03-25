@@ -54,7 +54,7 @@ export class UnitModel extends Model {
     // calculate stack
     this._stack = compileStackProperties(mark, encoding, scale, config);
 
-    this._select = duplicate(spec.select);
+    this._select = duplicate(spec.select || {});
     this.parseSelection();
   }
 
@@ -199,7 +199,10 @@ export class UnitModel extends Model {
   }
 
   public assembleParentGroupProperties(cellConfig: CellConfig) {
-    return applyConfig({}, cellConfig, FILL_STROKE_CONFIG.concat(['clip']));
+    var props = applyConfig({}, cellConfig, FILL_STROKE_CONFIG.concat(['clip']));
+    return extend(props, {
+      _name: { value: this.name() }
+    });
   }
 
   public channels() {

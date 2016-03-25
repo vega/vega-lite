@@ -160,8 +160,12 @@ export function assembleMarks(model: UnitModel, sel: s.Selection, marks: any[], 
 
   var children = marks.splice(0);
   marks.push({
+    name: model.name('cell'),
     type: 'group',
     properties: {
+      enter: {
+        _name: {value: model.name()}
+      },
       update: {
         width: {field: {group: 'width'}},
         height: {field: {group: 'height'}},

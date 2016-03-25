@@ -236,8 +236,8 @@ export abstract class Model {
     return this._parent;
   }
 
-  public name(text: string, delimiter: string = '_') {
-    return (this._name ? this._name + delimiter : '') + text;
+  public name(text?: string, delimiter: string = '_') {
+    return (this._name ? this._name + delimiter : '') + (text || '');
   }
 
   public description() {
