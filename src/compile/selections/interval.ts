@@ -24,11 +24,14 @@ function endName(sel: s.Selection) {
 
 // TODO: resolve arg.
 export function parse(model: UnitModel, sel: s.Selection) {
-  var on = parseEvents(sel.on)[0];
+  var eventName = s.eventName.bind(null, model),
+    on = parseEvents(sel.on)[0];
+
   if (!on.start) {
-    sel.on = '[mousedown' + brushFilter() + ', window:mouseup] > window:mousemove';
-  } else if (on.start.str.indexOf(brushFilter()) < 0) {
-    on.start.str += brushFilter();
+    sel.on = '[' + eventName('mousedown') + brushFilter() + ', window:mouseup] > window:mousemove';
+  } else if (on.start.str) {
+    on.start.str = eventName(on.start.str);
+    if (on.start.str.indexOf(brushFilter()) < 0) on.start.str += brushFilter();
     sel.on = '[' + on.start.str + ', ' + on.end.str + '] > ' + on.middle.str;
   }
 

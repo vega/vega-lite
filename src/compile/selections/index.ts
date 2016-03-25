@@ -1,6 +1,7 @@
 import {UnitModel} from '../unit';
 import * as u from '../../util';
 import * as tx from './transforms';
+import {parse as parseEvents} from 'vega-event-selector';
 export {tx as transforms};
 const transforms = u.keys(tx);
 
@@ -35,6 +36,14 @@ export function storeName(sel: Selection) {
   return sel.name + (sel.type === Types.SET ? '_db' : '');
 }
 
+// Namespace triggering events to occur in a specific unit
+export function eventName(model: UnitModel, event?) {
+  event = event || '';
+  var cell = model.parent() ? 'cell' : 'root';
+  return event.indexOf(':') < 0 ?
+    '@' + model.name(cell) + ':' + event : event;
+}
+
 export function parse(model: UnitModel, spec) {
   return u.keys(spec).map(function(k) {
     var sel:Selection = spec[k];
@@ -43,7 +52,19 @@ export function parse(model: UnitModel, spec) {
     // We don't namespace the selection to facilitate merging during assembly.
     sel.name = k;
     sel.level = sel.level || Levels.DATA;
-    sel.on = sel.on || 'click';
+
+    if (sel.on) {
+      var on = parseEvents(sel.on);
+      sel.on = on.map(function(s) {
+        if (s.event) {
+          return eventName(model, s.event);
+        } else if (s.start && s.start.event) {
+          return '[' + eventName(model, s.start.str) + ', ' + s.end.str + '] > ' + s.middle.str;
+        }
+      }).join(', ');
+    } else {
+      sel.on = eventName(model, 'click');
+    }
 
     if (sel.type === Types.SET && !sel.scales && !sel.interval) {
       sel.toggle = sel.toggle || true;

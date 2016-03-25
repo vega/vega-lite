@@ -17,9 +17,9 @@ function zeroName(sel: s.Selection) {
   return sel.name + '_translate_zero';
 }
 
-export function parse(_, sel: s.Selection) {
+export function parse(model: UnitModel, sel: s.Selection) {
   var md = sel.interval ? '@' + brushName(sel) + ':mousedown' :
-    'mousedown' + brushFilter();
+    s.eventName(model, 'mousedown') + brushFilter();
 
   var trans = sel.translate,
       on = parseEvents(u.isString(trans) ? trans :
@@ -29,6 +29,8 @@ export function parse(_, sel: s.Selection) {
     on.start.str += brushFilter();
   }
 
+  on.start.str = s.eventName(model, on.start.str);
+  on.str = '[' + on.start.str + ', ' + on.end.str + '] > ' + on.middle.str;
   sel.translate = {on: on};
 
   // Unset scale properties to allow smooth panning.

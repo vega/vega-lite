@@ -24,7 +24,7 @@ export function assembleSignals(model: UnitModel, sel: s.Selection, trigger, _, 
     }
   });
 
-  var on = (sel.interval ? '@' + brushName(sel) + ':' : '') + 'wheel' +
+  var on = (sel.interval ? '@' + brushName(sel) + ':' : s.eventName(model)) + 'wheel' +
     (!sel.interval ? brushFilter() : '');
 
   signals.push({
