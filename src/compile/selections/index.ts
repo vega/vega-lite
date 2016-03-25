@@ -91,7 +91,7 @@ export function parse(model: UnitModel, spec) {
   });
 }
 
-export function assembleSignals(model: UnitModel, signals) {
+export function assembleUnitSignals(model: UnitModel, signals) {
   var unit = !signals.length;
 
   model.selection().forEach(function(sel: Selection) {
@@ -138,6 +138,21 @@ export function assembleSignals(model: UnitModel, signals) {
   }
 
   return signals;
+}
+
+export function assembleCompositeSignals(model, units) {
+  var signals = {};
+
+  units.forEach(function(sg) {
+    var s = signals[sg.name];
+    if (s && s.name !== 'unit') {
+      s.streams.push.apply(s.streams, sg.streams);
+    } else {
+      signals[sg.name] = sg;
+    }
+  });
+
+  return u.vals(signals);
 }
 
 export function assembleData(model: UnitModel, data) {

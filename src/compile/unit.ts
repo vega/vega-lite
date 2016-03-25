@@ -191,7 +191,7 @@ export class UnitModel extends Model {
   }
 
   public assembleSignals(signals) {
-    return selections.assembleSignals(this, signals);
+    return selections.assembleUnitSignals(this, signals);
   }
 
   public assembleMarks() {

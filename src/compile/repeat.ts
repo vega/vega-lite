@@ -15,6 +15,7 @@ import {assembleData, parseRepeatData} from './data/data';
 import {assembleLayout, parseRepeatLayout} from './layout';
 import {Model} from './model';
 import {parseScaleComponent} from './scale';
+import * as selections from './selections';
 
 export type RepeatValues = {
   row: string,
@@ -216,12 +217,17 @@ export class RepeatModel extends Model {
     return assembleLayout(this, layoutData);
   }
 
+  public assembleSignals(signals) {
+    this._children.forEach((child) => child.assembleSignals(signals));
+    return selections.assembleCompositeSignals(this, signals);
+  }
+
   public assembleMarks(): any[] {
     // only children have marks
     return flatten(this._children.map((child) => {
       return extend(
         {
-          name: this.name('cell'),
+          name: child.name('cell'),
           type: 'group',
           from: {data: child.dataName(LAYOUT)},
           properties: {
