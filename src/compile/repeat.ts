@@ -8,6 +8,7 @@ import {extend, keys, vals, flatten, duplicate, mergeDeep, contains, forEach, Di
 import {VgData, VgLegend} from '../vega.schema';
 import {ORDINAL} from '../type';
 import {LAYOUT} from '../data';
+import {SOURCE} from '../data';
 
 import {parseAxisComponent} from './axis';
 import {buildModel} from './common';
@@ -98,7 +99,8 @@ export class RepeatModel extends Model {
   }
 
   public dataTable(): string {
-    return null;
+    // TODO: fixme
+    return this.dataName(SOURCE);
   }
 
   public isRepeatRef(channel: Channel) {
