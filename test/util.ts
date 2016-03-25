@@ -6,7 +6,7 @@ import {contains} from '../src/util';
 // TODO: rename to parseModel
 export function parseModel(inputSpec) {
   const spec = normalize(inputSpec);
-  return buildModel(spec, null, '');
+  return buildModel(spec, null, '', null);
 }
 
 
@@ -17,7 +17,7 @@ export function parseModel(inputSpec) {
  */
 export function parseUnitModel(spec) {
   // TODO: support other type of model as well
-  return new UnitModel(spec as ExtendedUnitSpec, null, '');
+  return new UnitModel(spec as ExtendedUnitSpec, null, '', null);
 }
 
 export const zSchema = require('z-schema');

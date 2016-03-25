@@ -142,3 +142,18 @@ export function count(): FieldDef {
 export function isCount(fieldDef: FieldDef) {
   return fieldDef.aggregate === AggregateOp.COUNT;
 }
+
+/**
+ * Generate a title from a fieldDef. Make sure that the field is not repeated.
+ */
+export function title(fieldDef: FieldDef): string {
+  if (isCount(fieldDef)) {
+    return COUNT_DISPLAYNAME;
+  }
+  const fn = fieldDef.aggregate || fieldDef.timeUnit || (fieldDef.bin && 'bin');
+  if (fn) {
+    return fn.toString().toUpperCase() + '(' + fieldDef.field + ')';
+  } else {
+    return fieldDef.field as string;
+  }
+}

@@ -44,8 +44,7 @@ export class RepeatModel extends Model {
 
   private _initScale(repeat: Repeat, config: Config): Dict<Scale> {
     return [ROW, COLUMN].reduce(function(_scale, channel) {
-      if (repeat[channel]) {
-
+      if (channel in repeat) {
         _scale[channel] = extend({
           type: ScaleType.ORDINAL,
           round: config.facet.scale.round,  // TODO(kanitw): separate `config.repeat` from  `config.facet` 
@@ -138,7 +137,7 @@ export class RepeatModel extends Model {
 
   public parseScale() {
     // TODO(kanitw): move this logic to scale.ts for readability & comparability?
-    
+
     const model = this;
 
     // First, add scale for row and column.

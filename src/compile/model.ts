@@ -222,7 +222,11 @@ export abstract class Model {
     const model = this;
     // wrap function to replace with correct fieldDef
     function func(acc: any, fd: FieldDef, c: Channel) {
-      return f(acc, model.fieldDef(c), c);
+      if (isRepeatRef(fd.field)) {
+        return f(acc, model.fieldDef(c), c);
+      } else {
+        return f(acc, fd, c);
+      }
     }
     return channelMappingReduce(this.channels(), this.mapping(), func, init, t);
   }
@@ -231,7 +235,11 @@ export abstract class Model {
     const model = this;
     // wrap function to replace with correct fieldDef
     function func(fd: FieldDef, c: Channel, i:number) {
-      f(model.fieldDef(c), c, i);
+      if (isRepeatRef(fd.field)) {
+        f(model.fieldDef(c), c, i);
+      } else {
+        f(fd, c, i);
+      }
     }
     channelMappingForEach(this.channels(), this.mapping(), func, t);
   }
@@ -354,19 +362,6 @@ export abstract class Model {
 
   public legend(channel: Channel): LegendProperties {
     return this._legend[channel];
-  }
-  
-  public title(channel: Channel) {
-    const fieldDef = this.fieldDef(channel);
-    if (isCount(fieldDef)) {
-      return COUNT_DISPLAYNAME;
-    }
-    const fn = fieldDef.aggregate || fieldDef.timeUnit || (fieldDef.bin && 'bin');
-    if (fn) {
-      return fn.toString().toUpperCase() + '(' + fieldDef.field + ')';
-    } else {
-      return this.fieldOrig(channel);
-    }
   }
 
   /**
