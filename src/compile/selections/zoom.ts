@@ -13,7 +13,9 @@ function deltaName(sel: s.Selection) {
 }
 
 export function assembleSignals(model: UnitModel, sel: s.Selection, trigger, _, signals) {
-  var x = null, y = null;
+  var anchor = anchorName(sel),
+      delta  = deltaName(sel),
+      x = null, y = null;
   sel.project.forEach(function(p) {
     if (p.channel === X) {
       x = { scale: u.str(model.scaleName(X)), field: p.field };
@@ -28,22 +30,22 @@ export function assembleSignals(model: UnitModel, sel: s.Selection, trigger, _, 
     (!sel.interval ? brushFilter() : '');
 
   signals.push({
-    name: anchorName(sel),
-    init: {x: 0, y: 0},
+    name: anchor,
+    init: {expr: '{x: 0, y: 0, unit: unit}'},
     streams: [{
       type: on,
-      expr: '{' +
+      expr: s.expr(model, 'unit', anchor, '{' +
        (x ? 'x: iscale(' + x.scale + ', eventX(), unit), ' : '') +
-       (y ? 'y: iscale(' + y.scale + ', eventY(), unit)' : '') + '}'
+       (y ? 'y: iscale(' + y.scale + ', eventY(), unit)' : '') + ', unit: unit}')
     }]
   });
 
   signals.push({
-    name: deltaName(sel),
+    name: delta,
     init: 1.0,
     streams: [{
       type: on,
-      expr: 'pow(1.001, event.deltaY*pow(16, event.deltaMode))'
+      expr: s.expr(model, 'unit', delta, 'pow(1.001, event.deltaY*pow(16, event.deltaMode))')
     }]
   });
 }
@@ -51,7 +53,8 @@ export function assembleSignals(model: UnitModel, sel: s.Selection, trigger, _, 
 export function assembleData(model: UnitModel, sel: s.Selection, db) {
   var tx = db.transform,
       anchor = anchorName(sel),
-      delta  = deltaName(sel);
+      delta  = deltaName(sel),
+      unit = anchor + '.unit';
 
   sel.project.forEach(function(p) {
     var field = p.field,
@@ -62,12 +65,14 @@ export function assembleData(model: UnitModel, sel: s.Selection, db) {
       {
         type:  'formula',
         field: 'min_' + field,
-        expr: '(datum.min_' + field + ' - ' + anch + ') * ' + delta + ' + ' + anch
+        expr: s.expr(model, unit, 'datum.min_' + field,
+          '(datum.min_' + field + ' - ' + anch + ') * ' + delta + ' + ' + anch)
       },
       {
         type:  'formula',
         field: 'max_' + field,
-        expr: '(datum.max_' + field + ' - ' + anch + ') * ' + delta + ' + ' + anch
+        expr: s.expr(model, unit, 'datum.max_' + field,
+          '(datum.max_' + field + ' - ' + anch + ') * ' + delta + ' + ' + anch)
       },
     ]);
   });

@@ -60,7 +60,7 @@ export function assembleSignals(model: UnitModel, sel: s.Selection, trigger, cle
   signals.push({
     name: start,
     init: { expr: '{unit: unit}' },
-    streams: [{ type: on.start.str, expr: expr }]
+    streams: [{ type: on.start.str, expr: s.expr(model, 'unit', start, expr) }]
   });
 
   signals.push({
@@ -68,14 +68,14 @@ export function assembleSignals(model: UnitModel, sel: s.Selection, trigger, cle
     init: {},
     streams: [
       { type: start, expr: start },
-      { type: on.str, expr: expr }
+      { type: on.str, expr: s.expr(model, 'unit', end, expr) }
     ]
   });
 
   // Trigger will now contain the data extents of the brush
   trigger.streams[0] = {
     type: start + ', ' + end,
-    expr: '{' +
+    expr: s.expr(model, 'unit', trigger.name, '{' +
     (x ? START + x.field + ': iscale(' + x.scale + ', ' + start + '.x, unit), ' : '') +
     (y ? START + y.field + ': iscale(' + y.scale + ', ' + start + '.y, unit), ' : '') +
     (x ? END + x.field + ': iscale(' + x.scale + ', ' + end + '.x, unit), ' : '') +
@@ -84,7 +84,7 @@ export function assembleSignals(model: UnitModel, sel: s.Selection, trigger, cle
     (y ? SIZE + y.field + ': abs(' + start + '.y - ' + end + '.y), ' : '') +
     (x ? 'x: ' + u.str(x.field) + ', ' : '') +
     (y ? 'y: ' + u.str(y.field) + ', ' : '') +
-    '_unitID: ' + start + '.unit._id, ts: now()}'
+    'unitName: unit.unitName}')
   };
 
   clear.name = null;  // Brushes are upserted.
@@ -92,12 +92,12 @@ export function assembleSignals(model: UnitModel, sel: s.Selection, trigger, cle
 
 export function assembleData(model: UnitModel, sel: s.Selection, db) {
   // TODO, if we only want the most recent interval, we can keep the clear around.
-  db.modify = [{ type: 'upsert', signal: sel.name, field: '_unitID' }];
+  db.modify = [{ type: 'upsert', signal: sel.name, field: 'unitName' }];
 }
 
 // TODO: Move to config?
 export function assembleMarks(model: UnitModel, sel: s.Selection, marks, children) {
-  var x = null, y = null;
+  var x = null, y = null, name = u.str(model.name());
   sel.project.forEach(function(p) {
     if (p.channel === X) x = p.field;
     if (p.channel === Y) y = p.field;
@@ -115,22 +115,22 @@ export function assembleMarks(model: UnitModel, sel: s.Selection, marks, childre
       },
       update: {
         x: [
-          u.extend({test: 'datum._unitID === group._id'},
+          u.extend({test: 'datum.unitName === ' + name},
             (x ? { scale: model.scaleName(X), field: START+x } : {value:0})),
           { value: 0 }
         ],
         x2: [
-          u.extend({test: 'datum._unitID === group._id'},
+          u.extend({test: 'datum.unitName === ' + name},
             (x ? { scale: model.scaleName(X), field: END+x } : {field: {group: 'width'}})),
           { value: 0 }
         ],
         y: [
-          u.extend({ test: 'datum._unitID === group._id' },
+          u.extend({ test: 'datum.unitName === ' + name },
             (y ? { scale: model.scaleName(Y), field: START + y } : { value: 0 })),
           { value: 0 }
         ],
         y2: [
-          u.extend({ test: 'datum._unitID === group._id' },
+          u.extend({ test: 'datum.unitName === ' + name },
             (y ? { scale: model.scaleName(Y), field: END + y } : { field: {group: 'height'} })),
           { value: 0 }
         ]

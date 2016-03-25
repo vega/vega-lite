@@ -201,7 +201,7 @@ export class UnitModel extends Model {
   public assembleParentGroupProperties(cellConfig: CellConfig) {
     var props = applyConfig({}, cellConfig, FILL_STROKE_CONFIG.concat(['clip']));
     return extend(props, {
-      _name: { value: this.name() }
+      unitName: { value: this.name() }
     });
   }
 

@@ -44,6 +44,12 @@ export function eventName(model: UnitModel, event?) {
     '@' + model.name(cell) + ':' + event : event;
 }
 
+// "Namespace" expressions such that they're only evaluated in a specific unit
+export function expr(model, datum, name, expr) {
+  return 'if(' + datum + '.unitName === ' + u.str(model.name()) + ', ' +
+    expr + ', ' + name + ')';
+}
+
 export function parse(model: UnitModel, spec) {
   return u.keys(spec).map(function(k) {
     var sel:Selection = spec[k];

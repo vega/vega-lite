@@ -48,7 +48,8 @@ export function parse(model: UnitModel, sel: s.Selection) {
 export function assembleSignals(model: UnitModel, sel: s.Selection, _, __, signals) {
   var on = sel.translate.on,
       anchor = anchorName(sel),
-      delta = deltaName(sel);
+      delta = deltaName(sel),
+      unit = 'unit';
 
   signals.push({
     name: delta,
@@ -56,11 +57,11 @@ export function assembleSignals(model: UnitModel, sel: s.Selection, _, __, signa
     streams: [
       {
         type: on.start.str,
-        expr: '{x: 0, y: 0, ts: now()}'
+        expr: s.expr(model, unit, delta, '{x: 0, y: 0}')
       },
       {
         type: '[' + on.start.str + ', ' + on.end.str + '] > ' + on.middle.str,
-        expr: '{x: '+anchor+'.x - eventX(), y: eventY() - '+anchor+'.y, ts: now()}'
+        expr: s.expr(model, unit, delta, '{x: '+anchor+'.x - eventX(), y: eventY() - '+anchor+'.y}')
       }
     ]
   });
@@ -72,11 +73,11 @@ export function assembleSignals(model: UnitModel, sel: s.Selection, _, __, signa
     streams: [
       {
         type: on.start.str,
-        expr: '{x: eventX(), y: eventY(), unit: unit}'
+        expr: s.expr(model, unit, anchor, '{x: eventX(), y: eventY(), unit: unit}')
       },
       {
         type: '[' + on.start.str + ', ' + on.end.str + '] > ' + on.middle.str,
-        expr: '{x: eventX(), y: eventY(), unit: '+anchor+'.unit}'
+        expr: s.expr(model, unit, anchor, '{x: eventX(), y: eventY(), unit: '+anchor+'.unit}')
       }
     ]
   });
@@ -86,12 +87,13 @@ export function assembleData(model: UnitModel, sel: s.Selection, db) {
   var tx = db.transform,
       name = sel.name,
       anchor = anchorName(sel),
-      delta = deltaName(sel);
+      delta = deltaName(sel),
+      unit = anchor + '.unit';
 
   // The delta is relative to what dimension?
   var DIMS = {
-    x: anchor + '.unit.width',
-    y: anchor + '.unit.height'
+    x: unit + '.width',
+    y: unit + '.height'
   };
 
   // Translating scales/viewport and brush work in opposite directions.
@@ -128,24 +130,27 @@ export function assembleData(model: UnitModel, sel: s.Selection, db) {
       {
         type: 'formula',
         field: '_' + n,
-        expr: (sel.scales) ? // Start scale at zero if there's no anchor.
+        expr: s.expr(model, unit, 'datum._' + n, (sel.scales) ? // Start scale at zero if there's no anchor.
           anchor + '.x ? ' + DIR.min + init + ' : 0' :
-          DIR.min + init
+          DIR.min + init)
       },
       {
         type: 'formula',
         field: '_' + x,
-        expr: DIR.max + '(datum.max_' + field + ', datum.min_' + field + ') * ' + reeval
+        expr: s.expr(model, unit, 'datum._' + x,
+          DIR.max + '(datum.max_' + field + ', datum.min_' + field + ') * ' + reeval)
       },
       {
         type: 'formula',
         field: n,
-        expr: _dmin + ' + (' + _dmax+'-'+_dmin + ')*'+delta+'.'+channel+'/'+DIMS[channel]
+        expr: s.expr(model, unit, 'datum.' + n,
+          _dmin + ' + (' + _dmax+'-'+_dmin + ')*'+delta+'.'+channel+'/'+DIMS[channel])
       },
       {
         type: 'formula',
         field: x,
-        expr: _dmax + ' + (' + _dmax+'-'+_dmin + ')*'+delta+'.'+channel+'/'+DIMS[channel]
+        expr: s.expr(model, unit, 'datum.' + x,
+          _dmax + ' + (' + _dmax+'-'+_dmin + ')*'+delta+'.'+channel+'/'+DIMS[channel])
       }
     ]);
   });
@@ -166,7 +171,7 @@ export function assembleMarks(model: UnitModel, sel: s.Selection, marks: any[], 
     type: 'group',
     properties: {
       enter: {
-        _name: {value: model.name()}
+        unitName: {value: model.name()}
       },
       update: {
         width: {field: {group: 'width'}},
