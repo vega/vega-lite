@@ -47,7 +47,7 @@ export function compileSelectionPredicate(model: UnitModel, sel) {
 
   if (isString(sel)) {
     sel = model.selection(sel);
-    if (sel.resolve === Resolutions.SINGLE) {
+    if (sel.resolve === Resolutions.SINGLE || sel.resolve === Resolutions.SELF) {
       predicate = sel.predicate;
     } else {
       children = model.parent().children();

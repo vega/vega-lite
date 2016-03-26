@@ -17,6 +17,7 @@ export enum Levels {
 
 export enum Resolutions {
   SINGLE = 'single' as any,
+  SELF = 'self' as any,
   UNION  = 'union'  as any,
   INTERSECT = 'intersect' as any,
   UNION_OTHERS = 'union_others' as any,
