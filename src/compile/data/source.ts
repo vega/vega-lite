@@ -10,6 +10,7 @@ import {Model} from '../model';
 import {DataComponent} from './data';
 import {nullFilter} from './nullfilter';
 import {filter} from './filter';
+import {filterWith} from './filterwith';
 import {bin} from './bin';
 import {formula} from './formula';
 import {timeUnit} from './timeunit';
@@ -64,7 +65,7 @@ export namespace source {
 
       if (model.compatibleSource(child)) {
         // we cannot merge if the child has filters defined even after we tried to move them up
-        const canMerge = !childData.filter && !childData.formatParse && !childData.nullFilter;
+        const canMerge = !childData.filter && !childData.formatParse && !childData.nullFilter && !childData.filterWith;
         if (canMerge) {
           // rename source because we can just remove it
           child.renameData(child.dataName(SOURCE), model.dataName(SOURCE));
@@ -95,7 +96,7 @@ export namespace source {
       
       // TODO: merge children into different groups that are mergable.  (Current we only merge into one.) 
 
-      const canMerge = !childData.filter && !childData.formatParse && !childData.nullFilter;
+      const canMerge = !childData.filter && !childData.formatParse && !childData.nullFilter && !childData.filterWith;
       if (canMerge) {
         // rename source because we can just remove it
         child.renameData(child.dataName(SOURCE), model.dataName(SOURCE));
@@ -128,7 +129,8 @@ export namespace source {
         nullFilter.assemble(component),
         bin.assemble(component),
         filter.assemble(component),
-        timeUnit.assemble(component)
+        timeUnit.assemble(component),
+        filterWith.assemble(component)
       );
 
       return sourceData;

@@ -8,6 +8,10 @@ export interface Transform {
    */
   filterNull?: boolean;
   /**
+   * Filter with a selection.
+   */
+  filterWith?: string;
+  /**
    * Calculate new field(s) using the provided expresssion(s). Calculation are applied before filter.
    */
   calculate?: Formula[];

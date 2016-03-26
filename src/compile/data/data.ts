@@ -12,6 +12,7 @@ import {source} from './source';
 import {formatParse} from './formatparse';
 import {nullFilter} from './nullfilter';
 import {filter} from './filter';
+import {filterWith} from './filterwith';
 import {bin} from './bin';
 import {formula} from './formula';
 import {nonPositiveFilter} from './nonpositivenullfilter';
@@ -39,6 +40,9 @@ export interface DataComponent {
 
   /** Filter test expression */
   filter: string;
+
+  /** Filter test expression against selections */
+  filterWith: string;
 
   /** Dictionary mapping a bin parameter hash to transforms of the binned field */
   bin: Dict<VgTransform[]>;
@@ -86,6 +90,7 @@ export function parseUnitData(model: UnitModel): DataComponent {
     nullFilter: nullFilter.parseUnit(model),
     filter: filter.parseUnit(model),
     nonPositiveFilter: nonPositiveFilter.parseUnit(model),
+    filterWith: filterWith.parseUnit(model),
 
     source: source.parseUnit(model),
     bin: bin.parseUnit(model),
@@ -104,6 +109,7 @@ export function parseFacetData(model: FacetModel): DataComponent {
     nullFilter: nullFilter.parseFacet(model),
     filter: filter.parseFacet(model),
     nonPositiveFilter: nonPositiveFilter.parseFacet(model),
+    filterWith: filterWith.parseFacet(model),
 
     source: source.parseFacet(model),
     bin: bin.parseFacet(model),
@@ -124,6 +130,7 @@ export function parseLayerData(model: LayerModel): DataComponent {
     nullFilter: nullFilter.parseLayer(model),
     filter: filter.parseLayer(model),
     nonPositiveFilter: nonPositiveFilter.parseLayer(model),
+    filterWith: filterWith.parseLayer(model),
 
     // everything after here does not affect whether we can merge child data into parent or not
     source: source.parseLayer(model),
@@ -143,6 +150,7 @@ export function parseRepeatData(model: RepeatModel): DataComponent {
     nullFilter: nullFilter.parseRepeat(model),
     filter: filter.parseRepeat(model),
     nonPositiveFilter: nonPositiveFilter.parseRepeat(model),
+    filterWith: filterWith.parseRepeat(model),
 
     source: source.parseRepeat(model),
     bin: bin.parseRepeat(model),
