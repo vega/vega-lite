@@ -1,5 +1,5 @@
 import {Formula} from '../../transform';
-import {keys, Dict, StringSet} from '../../util';
+import {keys, Dict, StringSet, extend} from '../../util';
 import {VgData, VgTransform} from '../../vega.schema';
 
 import {FacetModel} from '../facet';
@@ -145,7 +145,7 @@ export function parseLayerData(model: LayerModel): DataComponent {
 }
 
 export function parseRepeatData(model: RepeatModel): DataComponent {
-  return {
+  const repeatData = {
     formatParse: formatParse.parseRepeat(model),
     nullFilter: nullFilter.parseRepeat(model),
     filter: filter.parseRepeat(model),
@@ -161,6 +161,26 @@ export function parseRepeatData(model: RepeatModel): DataComponent {
     stackScale: stackScale.parseRepeat(model),
     colorRank: colorRank.parseRepeat(model)
   };
+
+  // remove as soon as you can: überhack: add same binning to all source two children deep
+  let binComponent = {} as Dict<VgTransform[]>;
+
+  function iterate(f) {
+    model.children().forEach((child: Model) => {
+      child.children().forEach((child2) => {
+        f(child2);
+      });
+    });
+  }
+
+  iterate((child) => {
+    extend(binComponent, child.component.data.bin);
+  });
+  iterate((child) => {
+    child.component.data.bin = binComponent;
+  });
+
+  return repeatData;
 }
 
 
