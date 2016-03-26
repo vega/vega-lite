@@ -24,7 +24,8 @@ export interface CellConfig {
 
 export const defaultCellConfig: CellConfig = {
   width: 200,
-  height: 200
+  height: 200,
+  fill: 'transparent'
 };
 
 export const defaultFacetCellConfig: CellConfig = {

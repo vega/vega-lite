@@ -226,7 +226,9 @@ export class LayerModel extends Model {
   }
 
   public assembleParentGroupProperties() {
-    return null;
+    return {
+      unitName: { value: this.name() }
+    };
   }
 
   public assembleData(data: VgData[]): VgData[] {

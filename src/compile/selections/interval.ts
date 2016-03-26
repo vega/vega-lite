@@ -112,7 +112,7 @@ export function assembleData(model: UnitModel, sel: s.Selection, db) {
 
 // TODO: Move to config?
 export function assembleMarks(model: UnitModel, sel: s.Selection, marks, children) {
-  var x = null, y = null, name = u.str(model.name());
+  var x = null, y = null, name = u.str(s.modelName(model)());
   sel.project.forEach(function(p) {
     if (p.channel === X) x = p.field;
     if (p.channel === Y) y = p.field;

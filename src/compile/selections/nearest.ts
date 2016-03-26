@@ -7,7 +7,10 @@ export function parse(_, sel: s.Selection) {
 }
 
 export function assembleMarks(model: UnitModel, sel: s.Selection, _, children) {
-  var voronoi, marks, name = model.name('marks');
+  var modelName = s.modelName(model),
+      name = modelName('marks'),
+      voronoi, marks;
+
   for (var i = 0, len = children.length, c; i < len; ++i) {
     c = children[i];
     if (c.from.mark) voronoi = c;
@@ -21,10 +24,10 @@ export function assembleMarks(model: UnitModel, sel: s.Selection, _, children) {
   // Add the voronoi right after the marks so that we do not interfere with any
   // additional layers or selections (e.g., brush).
   children.splice(i, 0, {
-    name: model.name('voronoi'),
+    name: modelName('voronoi'),
     type: 'path',
     from: {
-      mark: model.name('marks'),
+      mark: modelName('marks'),
       transform: [
         // {type: 'formula', field: 'mid_x', expr: 'datum.bounds.x1 + (datum.bounds.x2 - datum.bounds.x1)/2'},
         // {type: 'formula', field: 'mid_y', expr: 'datum.bounds.y1 + (datum.bounds.y2 - datum.bounds.y1)/2'},

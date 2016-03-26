@@ -3,6 +3,7 @@ import {UnitModel} from '../unit';
 import * as s from './';
 import * as u from '../../util';
 import {parse as parseEvtSelector} from 'vega-event-selector';
+import {isLayerModel} from '../model';
 import {brushName, brushFilter} from './interval';
 
 function anchorName(sel: s.Selection) {
@@ -165,13 +166,14 @@ export function assembleMarks(model: UnitModel, sel: s.Selection, marks: any[], 
 
   if (clip) return _;
 
+  var name = s.modelName(model);
   var children = marks.splice(0);
   marks.push({
-    name: model.name('cell'),
+    name: name('cell'),
     type: 'group',
     properties: {
       enter: {
-        unitName: {value: model.name()}
+        unitName: {value: name()}
       },
       update: {
         width: {field: {group: 'width'}},

@@ -21,7 +21,7 @@ import {initMarkConfig} from './config';
 import {assembleData, parseUnitData} from './data/data';
 import {parseLegendComponent} from './legend';
 import {assembleLayout, parseUnitLayout} from './layout';
-import {Model, isLayerModel} from './model';
+import {Model} from './model';
 import {parseMark} from './mark/mark';
 import {parseScaleComponent, scaleType} from './scale';
 import {compileStackProperties, StackProperties} from './stack';
@@ -202,10 +202,9 @@ export class UnitModel extends Model {
 
   public assembleParentGroupProperties(cellConfig: CellConfig) {
     var props = applyConfig({}, cellConfig, FILL_STROKE_CONFIG.concat(['clip']));
-    return extend(props,
-      { unitName: { value: this.name() } },
-      (!isLayerModel(this.parent())) ? {fill: {value: 'transparent'}} : {}
-    );
+    return extend(props, {
+      unitName: { value: this.name() }
+    });
   }
 
   public channels() {

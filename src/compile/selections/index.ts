@@ -2,6 +2,7 @@ import {UnitModel} from '../unit';
 import * as u from '../../util';
 import * as tx from './transforms';
 import {parse as parseEvtSelector} from 'vega-event-selector';
+import {isLayerModel} from '../model';
 export {tx as transforms};
 const transforms = u.keys(tx);
 
@@ -43,6 +44,12 @@ export interface Selection {
   nearest?: any;
 }
 
+export function modelName(model: UnitModel) {
+  var parent = model.parent();
+  return parent && isLayerModel(parent) ?
+    parent.name.bind(parent) : model.name.bind(model);
+}
+
 export function storeName(sel: Selection) {
   return sel.name + (sel.type === Types.SET ? '_db' : '');
 }
@@ -51,13 +58,14 @@ export function storeName(sel: Selection) {
 export function eventName(model: UnitModel, event?) {
   event = event || '';
   var cell = model.parent() ? 'cell' : 'root';
+
   return event.indexOf(':') < 0 ?
-    '@' + model.name(cell) + ':' + event : event;
+    '@' + modelName(model)(cell) + ':' + event : event;
 }
 
 // "Namespace" expressions such that they're only evaluated in a specific unit
 export function expr(model, datum, name, expr) {
-  return 'if(' + datum + '.unitName === ' + u.str(model.name()) + ', ' +
+  return 'if(' + datum + '.unitName === ' + u.str(modelName(model)()) + ', ' +
     expr + ', ' + name + ')';
 }
 
