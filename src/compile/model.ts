@@ -161,7 +161,8 @@ export abstract class Model {
 
   public abstract assembleLayout(layoutData: VgData[]): VgData[];
 
-  public assembleSelectionData(data): VgData[] { return []; }
+  public assemblePreSelectionData(data): VgData[] { return []; }
+  public assemblePostSelectionData(data): VgData[] { return []; }
   public assembleSignals(signals) { return []; }
 
   public assembleScales(): VgScale[] {

@@ -186,8 +186,12 @@ export class UnitModel extends Model {
     return assembleLayout(this, layoutData);
   }
 
-  public assembleSelectionData(data: VgData[]): VgData[] {
-    return selections.assembleUnitData(this, data);
+  public assemblePreSelectionData(data: VgData[]): VgData[] {
+    return selections.assembleUnitData(this, data, true);
+  }
+
+  public assemblePostSelectionData(data: VgData[]): VgData[] {
+    return selections.assembleUnitData(this, data, false);
   }
 
   public assembleSignals(signals) {

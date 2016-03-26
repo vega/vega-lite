@@ -175,9 +175,12 @@ export function assembleCompositeSignals(model, units) {
   return u.vals(signals);
 }
 
-export function assembleUnitData(model: UnitModel, data) {
+export function assembleUnitData(model: UnitModel, data, pre) {
   model.selection().forEach(function(sel: Selection) {
     if (sel.type !== Types.SET) return;
+
+    // Compile scales selections after source data
+    if ((pre && sel.scales) || (!pre && !sel.scales)) return;
     var db = {
       name: storeName(sel),
       transform: [],

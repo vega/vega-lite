@@ -43,9 +43,10 @@ function assemble(model: Model) {
     {
       signals: model.assembleSignals([]),
       data: [].concat(
+        model.assemblePreSelectionData([]),
         model.assembleData([]),
         model.assembleLayout([]),
-        model.assembleSelectionData([])
+        model.assemblePostSelectionData([])
       ),
       marks: [assembleRootGroup(model)]
     });
