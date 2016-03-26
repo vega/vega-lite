@@ -264,9 +264,19 @@ export class LayerModel extends Model {
   }
 
   public assembleMarks(): any[] {
-    // only children have marks
-    return flatten(this._children.map((child) => {
+    var children = this._children;
+
+    // First get the actual marks
+    var marks = flatten(children.map((child) => {
       return child.assembleMarks();
+    }));
+
+    return flatten(children.map(function(child) {
+      if (isUnitModel(child)) {
+        return child.assembleSelectionMarks(marks);
+      }
+
+      return [];
     }));
   }
 

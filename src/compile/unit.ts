@@ -21,7 +21,7 @@ import {initMarkConfig} from './config';
 import {assembleData, parseUnitData} from './data/data';
 import {parseLegendComponent} from './legend';
 import {assembleLayout, parseUnitLayout} from './layout';
-import {Model} from './model';
+import {Model, isLayerModel} from './model';
 import {parseMark} from './mark/mark';
 import {parseScaleComponent, scaleType} from './scale';
 import {compileStackProperties, StackProperties} from './stack';
@@ -197,7 +197,13 @@ export class UnitModel extends Model {
   }
 
   public assembleMarks() {
-    return selections.assembleMarks(this, this.component.mark);
+    var parent = this.parent();
+    return parent && isLayerModel(parent) ? this.component.mark :
+      this.assembleSelectionMarks(this.component.mark);
+  }
+
+  public assembleSelectionMarks(marks) {
+    return selections.assembleMarks(this, marks);
   }
 
   public assembleParentGroupProperties(cellConfig: CellConfig) {

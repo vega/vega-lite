@@ -2,7 +2,7 @@ import {UnitModel} from '../unit';
 import * as u from '../../util';
 import * as tx from './transforms';
 import {parse as parseEvtSelector} from 'vega-event-selector';
-import {isLayerModel} from '../model';
+import {Model, isLayerModel} from '../model';
 export {tx as transforms};
 const transforms = u.keys(tx);
 
@@ -28,6 +28,7 @@ export enum Resolutions {
 export interface Selection {
   name:  string;
   _name: string;
+  _model: Model;
   type:  Types;
   level: Levels;
   on: string;
@@ -80,6 +81,7 @@ export function parse(model: UnitModel, spec) {
     sel.level = sel.level || Levels.DATA;
     sel.name  = sel.resolve === Resolutions.SINGLE ? k : model.name(k);
     sel._name = k;
+    sel._model = model;
 
     if (sel.type === Types.SET && !sel.scales && !sel.interval) {
       sel.toggle = sel.toggle || true;
@@ -254,6 +256,7 @@ export function assembleCompositeData(model, units) {
 export function assembleMarks(model: UnitModel, marks: any[]) {
   var children = marks;
   model.selection().forEach(function(sel: Selection) {
+    if (sel._model !== model) return;
     transforms.forEach(function(k) {
       if (!tx[k].assembleMarks || !sel[k]) return;
       children = tx[k].assembleMarks(model, sel, marks, children);
