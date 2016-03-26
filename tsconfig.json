@@ -103,6 +103,7 @@
     "test/compile/mark/point.test.ts",
     "test/compile/mark/text.test.ts",
     "test/compile/mark/tick.test.ts",
+    "test/compile/repeat.test.ts",
     "test/compile/scale.test.ts",
     "test/compile/stack.test.ts",
     "test/compile/unit.test.ts",

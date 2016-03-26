@@ -14,17 +14,14 @@ import {DataComponent, SummaryComponent} from './data';
 
 
 export namespace summary {
-  function addDimension(dims: { [field: string]: boolean }, fieldDef: FieldDef) {
+  function addDimension(dims: { [field: string]: boolean }, fieldDef: FieldDef, channel: Channel) {
     if (fieldDef.bin) {
       dims[field(fieldDef, { binSuffix: '_start' })] = true;
       dims[field(fieldDef, { binSuffix: '_mid' })] = true;
       dims[field(fieldDef, { binSuffix: '_end' })] = true;
 
-      // const scale = model.scale(channel);
-      // if (scaleType(scale, fieldDef, channel, model.mark()) === ScaleType.ORDINAL) {
-      // also produce bin_range if the binned field use ordinal scale
+      // TODO: don't add this if we don't use range
       dims[field(fieldDef, { binSuffix: '_range' })] = true;
-      // }
     } else {
       dims[field(fieldDef)] = true;
     }
@@ -46,12 +43,12 @@ export namespace summary {
           meas['*']['count'] = true;
           /* tslint:enable:no-string-literal */
         } else {
-          const field = model.field(channel);
+          const field = model.fieldOrig(channel);
           meas[field] = meas[field] || {};
           meas[field][fieldDef.aggregate] = true;
         }
       } else {
-        addDimension(dims, fieldDef);
+        addDimension(dims, fieldDef, channel);
       }
     });
 

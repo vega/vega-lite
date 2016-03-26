@@ -3,7 +3,7 @@ import {Channel, X, Y, ROW, COLUMN} from '../channel';
 import {LAYOUT} from '../data';
 import {ScaleType} from '../scale';
 import {Formula} from '../transform';
-import {extend, keys, StringSet} from '../util';
+import {extend, keys, hash, unique, StringSet} from '../util';
 import {VgData} from '../vega.schema';
 
 import {FacetModel} from './facet';
@@ -19,12 +19,6 @@ import {UnitModel} from './unit';
 export interface LayoutComponent {
   width: SizeComponent;
   height: SizeComponent;
-
-  // optional layout for the child (only if all children have the same dimensions)
-  childLayout?: {
-    width: SizeComponent,
-    height: SizeComponent
-  };
 }
 
 export interface SizeComponent {
@@ -37,7 +31,7 @@ export interface SizeComponent {
 
 export function assembleLayout(model: Model, layoutData: VgData[]): VgData[] {
   const layoutComponent = model.component.layout;
-  if (!layoutComponent.width && !layoutComponent.height && !layoutComponent.childLayout) {
+  if (!layoutComponent || (!layoutComponent.width && !layoutComponent.height)) {
     return layoutData; // Do nothing
   }
 
@@ -153,30 +147,66 @@ function facetSizeFormula(model: Model, channel: Channel, innerSize: string) {
 }
 
 export function parseRepeatLayout(model: RepeatModel): LayoutComponent {
-  return {
-    width: parseRepeatSizeLayout(model, COLUMN),
-    height: parseRepeatSizeLayout(model, ROW),
+  const childLayouts = model.children().map((child) => child.component.layout);
+  const allTheSame = unique(
+    childLayouts.map((layout: LayoutComponent) => {
+      return hash({
+        width : {
+          distinct: layout.width.distinct,
+          expr: layout.width.formula.map((f) => f.expr)
+        },
+        height : {
+          distinct: layout.height.distinct,
+          expr: layout.height.formula.map((f) => f.expr)
+        }
+      });
+    })
+  ).length === 1;
+
+  const layout = {
+    width: parseRepeatSizeLayout(model, COLUMN, allTheSame),
+    height: parseRepeatSizeLayout(model, ROW, allTheSame),
   };
+
+  if (allTheSame) {
+    model.children().forEach((child) => {
+      model.renameData(child.dataName(LAYOUT), model.dataName(LAYOUT));
+      model.renameSize(child.sizeName('width'), model.sizeName('child_width'));
+      model.renameSize(child.sizeName('height'), model.sizeName('child_height'));
+      delete child.component.layout;
+    });
+  }
+
+  return layout;
 }
 
-function parseRepeatSizeLayout(model: RepeatModel, channel: Channel): SizeComponent {
-  // FIXME: support when each repeated unit do not have the same size 
-  
-  const childLayoutComponent = model.children()[0].component.layout;
+function parseRepeatSizeLayout(model: RepeatModel, channel: Channel, allTheSame: boolean): SizeComponent {
+  // FIXME: support different sizes
+
   const sizeType = channel === ROW ? 'height' : 'width';
-  const childSizeComponent: SizeComponent = childLayoutComponent[sizeType];
 
-  // TODO: avoid redundancy
-  const distinct = extend(getDistinct(model, channel), childSizeComponent.distinct);
-  const formula = childSizeComponent.formula.concat([{
-    field: model.channelSizeName(channel),
-    expr: repeatSizeFormula(model, channel, model.children()[0].channelSizeName(channel))
-  }]);
+  if (allTheSame) {
+    const childLayoutComponent = model.children()[0].component.layout;
+    const childSizeComponent: SizeComponent = childLayoutComponent[sizeType];
+    const childFieldName = model.sizeName('child_' + sizeType);
 
-  return {
-    distinct: distinct,
-    formula: formula
-  };
+    const distinct = extend(getDistinct(model, channel), childSizeComponent.distinct);
+    const formula = [{
+      field: childFieldName,
+      expr: childSizeComponent.formula[0].expr
+    },{
+      field: model.channelSizeName(channel),
+      expr: repeatSizeFormula(model, channel, childFieldName)
+    }];
+
+    return {
+      distinct: distinct,
+      formula: formula
+    };
+  }
+
+  console.error('cannot have different layouts in repeated children');
+  return null;
 }
 
 function repeatSizeFormula(model: Model, channel: Channel, innerSize: string) {

@@ -1,5 +1,6 @@
 import {COLOR, SIZE, SHAPE, Channel} from '../channel';
 import {FieldDef} from '../fielddef';
+import {title as fieldTitle} from '../fielddef';
 import {LegendProperties} from '../legend';
 import {AREA, BAR, TICK, TEXT, LINE, POINT, CIRCLE, SQUARE} from '../mark';
 import {ORDINAL} from '../type';
@@ -49,7 +50,7 @@ export function parseLegend(model: UnitModel, channel: Channel): VgLegend {
   let def: VgLegend = getLegendDefWithScale(model, channel);
 
   // 1.1 Add properties with special rules
-  def.title = title(legend, model, channel);
+  def.title = title(legend, fieldDef);
 
   extend(def, formatMixins(legend, model, channel));
 
@@ -76,12 +77,12 @@ export function parseLegend(model: UnitModel, channel: Channel): VgLegend {
   return def;
 }
 
-export function title(legend: LegendProperties, model: UnitModel, channel: Channel) {
+export function title(legend: LegendProperties, fieldDef: FieldDef) {
   if (typeof legend !== 'boolean' && legend.title) {
     return legend.title;
   }
 
-  return model.title(channel);
+  return fieldTitle(fieldDef);
 }
 
 export function formatMixins(legend: LegendProperties, model: UnitModel, channel: Channel) {

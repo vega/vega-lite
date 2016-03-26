@@ -6,7 +6,6 @@ export {keys, extend, duplicate, isArray, vals, truncate, toMap, isObject, isStr
 export {range} from 'datalib/src/generate';
 export {has} from './encoding'
 export {FieldDef} from './fielddef';
-export {Channel} from './channel';
 
 import {isString, isNumber, isBoolean} from 'datalib/src/util';
 

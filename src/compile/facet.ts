@@ -170,7 +170,11 @@ export class FacetModel extends Model {
         scaleComponent[channel] = child.component.scale[channel];
 
         // for each scale, need to rename
-        vals(scaleComponent[channel]).forEach(function(scale) {
+        const modelScales = scaleComponent[channel];
+        [modelScales.main, modelScales.colorLegend, modelScales.binColorLegend].forEach(function(scale) {
+          if (!scale) {
+            return;
+          }
           const scaleNameWithoutPrefix = scale.name.substr(child.name('').length);
           const newName = model.scaleName(scaleNameWithoutPrefix);
           child.renameScale(scale.name, newName);
