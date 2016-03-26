@@ -22,8 +22,6 @@ import {RepeatValues} from './repeat';
 export class FacetModel extends Model {
   private _facet: Facet;
 
-  private _child: Model;
-
   constructor(spec: FacetSpec, parent: Model, parentGivenName: string, repeatValues: RepeatValues) {
     super(spec, parent, parentGivenName, repeatValues);
 
@@ -147,11 +145,6 @@ export class FacetModel extends Model {
   public parseData() {
     this.child().parseData();
     this.component.data = parseFacetData(this);
-  }
-
-  public parseSelectionData() {
-    // TODO: @arvind can write this
-    // We might need to split this into compileSelectionData and compileSelectionSignals?
   }
 
   public parseLayoutData() {
@@ -278,7 +271,7 @@ export class FacetModel extends Model {
   }
 
   public assembleLayout(layoutData: VgData[]): VgData[] {
-    // Postfix traversal – layout is assembled bottom-up 
+    // Postfix traversal – layout is assembled bottom-up
     this._child.assembleLayout(layoutData);
     return assembleLayout(this, layoutData);
   }

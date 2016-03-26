@@ -16,6 +16,7 @@ import {assembleData, parseRepeatData} from './data/data';
 import {assembleLayout, parseRepeatLayout} from './layout';
 import {Model} from './model';
 import {parseScaleComponent, ScaleComponents} from './scale';
+import * as selections from './selections';
 
 export type RepeatValues = {
   row: string,
@@ -24,8 +25,6 @@ export type RepeatValues = {
 
 export class RepeatModel extends Model {
   private _repeat: Repeat;
-
-  private _children: Model[];
 
   constructor(spec: RepeatSpec, parent: Model, parentGivenName: string, repeatValues: RepeatValues) {
     super(spec, parent, parentGivenName, repeatValues);
@@ -48,7 +47,7 @@ export class RepeatModel extends Model {
       if (channel in repeat) {
         _scale[channel] = extend({
           type: ScaleType.ORDINAL,
-          round: config.facet.scale.round,  // TODO(kanitw): separate `config.repeat` from  `config.facet` 
+          round: config.facet.scale.round,  // TODO(kanitw): separate `config.repeat` from  `config.facet`
           domain: repeat[channel],
 
           padding: 60  // TODO(kanitw): put in `config.repeat` from  `config.facet`
@@ -94,10 +93,6 @@ export class RepeatModel extends Model {
     return !!this._repeat[channel];
   }
 
-  public children() {
-    return this._children;
-  }
-
   public dataTable(): string {
     // FIXME: remove this hack
     return this.dataName(SOURCE);
@@ -123,11 +118,6 @@ export class RepeatModel extends Model {
       child.parseData();
     });
     this.component.data = parseRepeatData(this);
-  }
-
-  public parseSelectionData() {
-    // TODO: @arvind can write this
-    // We might need to split this into compileSelectionData and compileSelectionSignals?
   }
 
   public parseLayoutData() {
@@ -229,11 +219,21 @@ export class RepeatModel extends Model {
   }
 
   public assembleLayout(layoutData: VgData[]): VgData[] {
-    // Postfix traversal – layout is assembled bottom-up 
+    // Postfix traversal – layout is assembled bottom-up
     this._children.forEach((child) => {
       child.assembleLayout(layoutData);
     });
     return assembleLayout(this, layoutData);
+  }
+
+  public assembleSelectionData(data: VgData[]): VgData[] {
+    this._children.forEach((child) => child.assembleSelectionData(data));
+    return selections.assembleCompositeData(this, data);
+  }
+
+  public assembleSignals(signals) {
+    this._children.forEach((child) => child.assembleSignals(signals));
+    return selections.assembleCompositeSignals(this, signals);
   }
 
   public assembleMarks(): any[] {
@@ -241,7 +241,7 @@ export class RepeatModel extends Model {
     return flatten(this._children.map((child) => {
       return extend(
         {
-          name: this.name('cell'),
+          name: child.name('cell'),
           type: 'group',
           from: {data: child.dataName(LAYOUT)},
           properties: {

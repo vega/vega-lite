@@ -8,7 +8,7 @@ import {LegendProperties} from '../legend';
 import {Scale, ScaleType} from '../scale';
 import {BaseSpec} from '../spec';
 import {Transform} from '../transform';
-import {extend, flatten, vals, warning, contains, Dict} from '../util';
+import {extend, flatten, vals, warning, contains, Dict, array} from '../util';
 import {VgData, VgMarkGroup, VgScale, VgAxis, VgLegend, VgFieldRef, VgField} from '../vega.schema';
 
 import {DataComponent} from './data/data';
@@ -16,6 +16,7 @@ import {LayoutComponent} from './layout';
 import {ScaleComponents} from './scale';
 import {RepeatModel, RepeatValues} from './repeat';
 
+import * as selections from './selections';
 
 /**
  * Composable Components that are intermediate results of the parsing phase of the
@@ -25,6 +26,7 @@ import {RepeatModel, RepeatValues} from './repeat';
 export interface Component {
   data: DataComponent;
   layout: LayoutComponent;
+  selection: selections.Selection[];
   scale: Dict<ScaleComponents>;
 
   /** Dictionary mapping channel to VgAxis definition */
@@ -95,6 +97,9 @@ export abstract class Model {
 
   protected _warnings: string[] = [];
 
+  protected _children: Model[];  // LayerModel | RepeatModel
+  protected _child: Model;       // FacetModel
+
   /**
    * Current iterator value over the repeat value. Indexed by the channel we are repeating over (row, column).
    */
@@ -120,13 +125,12 @@ export abstract class Model {
     this._description = spec.description;
     this._transform = spec.transform;
 
-    this.component = {data: null, layout: null, mark: null, scale: null, axis: null, axisGroup: null, gridGroup: null, legend: null};
+    this.component = {data: null, layout: null, selection: null, mark: null, scale: null, axis: null, axisGroup: null, gridGroup: null, legend: null};
+    this._children = [];
   }
-
 
   public parse() {
     this.parseData();
-    this.parseSelectionData();
     this.parseLayoutData();
     this.parseScale(); // depends on data name
     this.parseAxis(); // depends on scale name
@@ -137,8 +141,6 @@ export abstract class Model {
   }
 
   public abstract parseData();
-
-  public abstract parseSelectionData();
 
   public abstract parseLayoutData();
 
@@ -159,9 +161,8 @@ export abstract class Model {
 
   public abstract assembleLayout(layoutData: VgData[]): VgData[];
 
-  // TODO: for Arvind to write
-  // public abstract assembleSelectionSignal(layoutData: VgData[]): VgData[];
-  // public abstract assembleSelectionData(layoutData: VgData[]): VgData[];
+  public assembleSelectionData(data): VgData[] { return []; }
+  public assembleSignals(signals) { return []; }
 
   public assembleScales(): VgScale[] {
     // FIXME: write assembleScales() in scale.ts that
@@ -250,8 +251,8 @@ export abstract class Model {
     return this._parent;
   }
 
-  public name(text: string, delimiter: string = '_') {
-    return (this._name ? this._name + delimiter : '') + text;
+  public name(text?: string, delimiter: string = '_') {
+    return (this._name ? this._name + delimiter : '') + (text || '');
   }
 
   public description() {
@@ -308,9 +309,7 @@ export abstract class Model {
   /**
    * Get the field reference for vega
    */
-  public field(channel: Channel, opt: FieldRefOption = {}): string {
-    let fieldDef = this.fieldDef(channel);
-
+  public field(channel: Channel, opt: FieldRefOption = {}, fieldDef = this.fieldDef(channel)): string {
     if (fieldDef.bin) { // bin has default suffix that depends on scaleType
       opt = extend({
         binSuffix: this.scale(channel).type === ScaleType.ORDINAL ? '_range' : '_start'
@@ -351,7 +350,7 @@ export abstract class Model {
   }
 
   public sort(channel: Channel) {
-    return (this.mapping()[channel] || {}).sort;
+    return (this.fieldDef(channel) as any).sort;
   }
 
   public abstract stack();
@@ -378,6 +377,10 @@ export abstract class Model {
 
   public warnings(): string[] {
     return this._warnings;
+  }
+
+  public children() {
+    return this._children.length ? this._children : array(this._child);
   }
 
   /**
