@@ -10,7 +10,8 @@ import {DataComponent} from './data';
 
 export namespace filterWith {
   function parse(model: UnitModel): string {
-    return compileSelectionPredicate(model, model.transform().filterWith);
+    var fw = model.transform().filterWith;
+    return fw ? compileSelectionPredicate(model, model.transform().filterWith) : null;
   }
 
   export const parseUnit = parse;
