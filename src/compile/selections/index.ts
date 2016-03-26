@@ -1,7 +1,7 @@
 import {UnitModel} from '../unit';
 import * as u from '../../util';
 import * as tx from './transforms';
-import {parse as parseEvents} from 'vega-event-selector';
+import {parse as parseEvtSelector} from 'vega-event-selector';
 export {tx as transforms};
 const transforms = u.keys(tx);
 
@@ -64,6 +64,7 @@ export function expr(model, datum, name, expr) {
 export function parse(model: UnitModel, spec) {
   return u.keys(spec).map(function(k) {
     var sel:Selection = spec[k];
+    if (sel.name) return sel;
 
     // Set default properties and instantiate default transforms.
     // We don't namespace the selection to facilitate merging during assembly.
@@ -71,19 +72,6 @@ export function parse(model: UnitModel, spec) {
     sel.level = sel.level || Levels.DATA;
     sel.name  = sel.resolve === Resolutions.SINGLE ? k : model.name(k);
     sel._name = k;
-
-    if (sel.on) {
-      var on = parseEvents(sel.on);
-      sel.on = on.map(function(s) {
-        if (s.event) {
-          return eventName(model, s.event);
-        } else if (s.start && s.start.event) {
-          return '[' + eventName(model, s.start.str) + ', ' + s.end.str + '] > ' + s.middle.str;
-        }
-      }).join(', ');
-    } else {
-      sel.on = eventName(model, 'click');
-    }
 
     if (sel.type === Types.SET && !sel.scales && !sel.interval) {
       sel.toggle = sel.toggle || true;
@@ -104,15 +92,32 @@ export function parse(model: UnitModel, spec) {
   });
 }
 
+export function assembleEvent(model: UnitModel, sel: Selection) {
+  if (sel.on) {
+    var on = parseEvtSelector(sel.on);
+    return on.map(function(s) {
+      if (s.event) {
+        return eventName(model, s.event);
+      } else if (s.start && s.start.event) {
+        return '[' + eventName(model, s.start.str) + ', ' + s.end.str + '] > ' + s.middle.str;
+      }
+    }).join(', ');
+  } else {
+    return eventName(model, 'click');
+  }
+}
+
 export function assembleUnitSignals(model: UnitModel, signals) {
   var unit = !signals.length;
 
   model.selection().forEach(function(sel: Selection) {
+    var on = assembleEvent(model, sel);
+
     var trigger = {
       name: sel.name,
       verbose: true,  // TODO: how do we do better than this?
       init: {},
-      streams: [{type: sel.on, expr: ''}]
+      streams: [{type: on, expr: ''}]
     };
 
     var clear = {
@@ -120,7 +125,7 @@ export function assembleUnitSignals(model: UnitModel, signals) {
       verbose: true,
       init: true,
       streams: [
-        {type: sel.on, expr: 'true'}
+        {type: on, expr: 'true'}
       ]
     };
 

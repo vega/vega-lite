@@ -7,7 +7,7 @@ import {contains, union, isArray, array, extend, keys, isString} from '../util';
 import {FacetModel} from './facet';
 import {RepeatModel, RepeatValues} from './repeat';
 import {LayerModel} from './layer';
-import {Model} from './model';
+import {Model, isLayerModel} from './model';
 import {format as timeFormatExpr} from './time';
 import {UnitModel} from './unit';
 import {Spec, isUnitSpec, isFacetSpec, isRepeatSpec, isLayerSpec} from '../spec';
@@ -39,7 +39,7 @@ RESOLVE_OPS[Resolutions.UNION] = RESOLVE_OPS[Resolutions.UNION_OTHERS] = ' || ';
 RESOLVE_OPS[Resolutions.INTERSECT] = RESOLVE_OPS[Resolutions.INTERSECT_OTHERS] = ' && ';
 export function compileSelectionPredicate(model: UnitModel, sel) {
   var recurse = compileSelectionPredicate.bind(null, model),
-      predicate, children;
+      predicate, children, parent;
 
   if (isArray(sel)) {
     sel = { or: sel };  // Default OR.
@@ -50,7 +50,12 @@ export function compileSelectionPredicate(model: UnitModel, sel) {
     if (sel.resolve === Resolutions.SINGLE || sel.resolve === Resolutions.SELF) {
       predicate = sel.predicate;
     } else {
-      children = model.parent().children();
+      // Layer children build up selections, so only get the last child.
+      // Resolution happens across other composites.
+      parent = model.parent();
+      if (isLayerModel(parent)) parent = parent.parent();
+
+      children = parent.children();
       if (sel.resolve === Resolutions.UNION_OTHERS || sel.resolve == Resolutions.INTERSECT_OTHERS) {
         children = children.filter((c) => c !== model);
       }

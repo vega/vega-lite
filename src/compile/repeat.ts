@@ -3,7 +3,7 @@ import {defaultConfig, Config} from '../config';
 import {Repeat} from '../repeat';
 import {FieldDef} from '../fielddef';
 import {Scale, ScaleType} from '../scale';
-import {RepeatSpec} from '../spec';
+import {RepeatSpec, isUnitSpec} from '../spec';
 import {extend, keys, vals, flatten, duplicate, mergeDeep, contains, forEach, Dict} from '../util';
 import {VgData, VgLegend} from '../vega.schema';
 import {ORDINAL} from '../type';
@@ -74,7 +74,8 @@ export class RepeatModel extends Model {
           row: rowField,
           column: columnField
         };
-        children.push(buildModel(spec.spec, this, this.name('child' + name), childRepRepeatValues));
+
+        children.push(buildModel(duplicate(spec.spec), this, this.name('child' + name), childRepRepeatValues));
       }
     }
 
@@ -111,6 +112,10 @@ export class RepeatModel extends Model {
 
   public stack() {
     return null; // this is only a property for UnitModel
+  }
+
+  public parseSelection() {
+    this._children.forEach((child) => child.parseSelection());
   }
 
   public parseData() {

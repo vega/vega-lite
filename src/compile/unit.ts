@@ -21,7 +21,7 @@ import {initMarkConfig} from './config';
 import {assembleData, parseUnitData} from './data/data';
 import {parseLegendComponent} from './legend';
 import {assembleLayout, parseUnitLayout} from './layout';
-import {Model} from './model';
+import {Model, isLayerModel} from './model';
 import {parseMark} from './mark/mark';
 import {parseScaleComponent, scaleType} from './scale';
 import {compileStackProperties, StackProperties} from './stack';
@@ -37,8 +37,7 @@ export class UnitModel extends Model {
   private _mark: Mark;
   private _encoding: Encoding;
   private _stack: StackProperties;
-  private _select: any;
-  private _selections: selections.Selection[];
+  public _select: any;
 
   constructor(spec: ExtendedUnitSpec, parent: Model, parentGivenName: string, repeatValues: RepeatValues) {
     super(spec, parent, parentGivenName, repeatValues);
@@ -54,8 +53,7 @@ export class UnitModel extends Model {
     // calculate stack
     this._stack = compileStackProperties(mark, encoding, scale, config);
 
-    this._select = duplicate(spec.select || {});
-    this.parseSelection();
+    this._select = spec.select || {};
   }
 
   private _initEncoding(mark: Mark, encoding: Encoding) {
@@ -204,9 +202,10 @@ export class UnitModel extends Model {
 
   public assembleParentGroupProperties(cellConfig: CellConfig) {
     var props = applyConfig({}, cellConfig, FILL_STROKE_CONFIG.concat(['clip']));
-    return extend(props, {
-      unitName: { value: this.name() }
-    });
+    return extend(props,
+      { unitName: { value: this.name() } },
+      (!isLayerModel(this.parent())) ? {fill: {value: 'transparent'}} : {}
+    );
   }
 
   public channels() {

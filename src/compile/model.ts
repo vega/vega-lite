@@ -15,6 +15,8 @@ import {DataComponent} from './data/data';
 import {LayoutComponent} from './layout';
 import {ScaleComponents} from './scale';
 import {RepeatModel, RepeatValues} from './repeat';
+import {UnitModel} from './unit';
+import {LayerModel} from './layer';
 
 import * as selections from './selections';
 
@@ -130,6 +132,7 @@ export abstract class Model {
   }
 
   public parse() {
+    this.parseSelection();
     this.parseData();
     this.parseLayoutData();
     this.parseScale(); // depends on data name
@@ -139,6 +142,8 @@ export abstract class Model {
     this.parseGridGroup();
     this.parseMark(); // depends on data name and scale name, axisGroup, gridGroup and children's scale, axis, legend and mark.
   }
+
+  public parseSelection() {}
 
   public abstract parseData();
 
@@ -399,6 +404,14 @@ export abstract class Model {
   public isRepeat() {
     return false;
   }
+}
+
+export function isUnitModel(model: Model): model is UnitModel {
+  return model.isUnit();
+}
+
+export function isLayerModel(model: Model): model is LayerModel {
+  return model.isLayer();
 }
 
 export function isRepeatModel(model: Model): model is RepeatModel {

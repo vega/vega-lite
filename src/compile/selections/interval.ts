@@ -2,7 +2,7 @@ import {UnitModel} from '../unit';
 import {X, Y} from '../../channel';
 import * as s from './';
 import * as u from '../../util';
-import {parse as parseEvents} from 'vega-event-selector';
+import {parse as parseEvtSelector} from 'vega-event-selector';
 
 var START = 'min_', END = 'max_', SIZE = 'size_';
 
@@ -24,17 +24,6 @@ function endName(sel: s.Selection) {
 
 // TODO: resolve arg.
 export function parse(model: UnitModel, sel: s.Selection) {
-  var eventName = s.eventName.bind(null, model),
-    on = parseEvents(sel.on)[0];
-
-  if (!on.start) {
-    sel.on = '[' + eventName('mousedown') + brushFilter() + ', window:mouseup] > window:mousemove';
-  } else if (on.start.str) {
-    on.start.str = eventName(on.start.str);
-    if (on.start.str.indexOf(brushFilter()) < 0) on.start.str += brushFilter();
-    sel.on = '[' + on.start.str + ', ' + on.end.str + '] > ' + on.middle.str;
-  }
-
   sel.predicate = 'inrangeselection(' + u.str(s.storeName(sel)) +
     ', datum, ' + u.str(sel.resolve) + ')';
 
@@ -42,8 +31,23 @@ export function parse(model: UnitModel, sel: s.Selection) {
 }
 
 export function assembleSignals(model: UnitModel, sel: s.Selection, trigger, clear, signals) {
-  var on = parseEvents(sel.on)[0],
-    start = startName(sel), end = endName(sel),
+  var eventName = s.eventName.bind(null, model), on;
+
+  if (sel.on) {
+    on = parseEvtSelector(s.assembleEvent(model, sel))[0];
+  }
+
+  if (!on || !on.start) {
+    on = '[' + eventName('mousedown') + brushFilter() + ', window:mouseup] > window:mousemove';
+    on = parseEvtSelector(on)[0];
+  } else if (on.start.str) {
+    on.start.str = eventName(on.start.str);
+    if (on.start.str.indexOf(brushFilter()) < 0) on.start.str += brushFilter();
+    on = '[' + on.start.str + ', ' + on.end.str + '] > ' + on.middle.str;
+    on = parseEvtSelector(on)[0];
+  }
+
+  var start = startName(sel), end = endName(sel),
     expr = '{x: clamp(eventX(unit), 0, unit.width), ' +
       'y: clamp(eventY(unit), 0, unit.height), unit: unit}',
     x = null, y = null;

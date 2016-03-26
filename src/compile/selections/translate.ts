@@ -2,7 +2,7 @@
 import {UnitModel} from '../unit';
 import * as s from './';
 import * as u from '../../util';
-import {parse as parseEvents} from 'vega-event-selector';
+import {parse as parseEvtSelector} from 'vega-event-selector';
 import {brushName, brushFilter} from './interval';
 
 function anchorName(sel: s.Selection) {
@@ -22,7 +22,7 @@ export function parse(model: UnitModel, sel: s.Selection) {
     s.eventName(model, 'mousedown') + brushFilter();
 
   var trans = sel.translate,
-      on = parseEvents(u.isString(trans) ? trans :
+      on = parseEvtSelector(u.isString(trans) ? trans :
         '[' + md + ', window:mouseup] > window:mousemove')[0];
 
   if (!sel.interval && on.start.str.indexOf(brushFilter()) < 0) {

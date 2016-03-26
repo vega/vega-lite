@@ -1,23 +1,33 @@
 import {Channel} from '../channel';
-import {keys, duplicate, mergeDeep, flatten, unique, isArray, vals, forEach, hash, Dict} from '../util';
+import {keys, duplicate, mergeDeep, flatten, unique, isArray, vals, forEach, hash, Dict, extend} from '../util';
 import {defaultConfig, Config} from '../config';
-import {LayerSpec} from '../spec';
+import {LayerSpec, isUnitSpec} from '../spec';
 import {assembleData, parseLayerData} from './data/data';
 import {assembleLayout, parseLayerLayout} from './layout';
-import {Model} from './model';
+import {Model, isUnitModel} from './model';
 import {UnitModel} from './unit';
 import {buildModel} from './common';
 import {FieldDef} from '../fielddef';
 import {ScaleComponents} from './scale';
 import {VgData, VgAxis, VgLegend, isUnionedDomain, isDataRefDomain, VgDataRef} from '../vega.schema';
 import {RepeatValues} from './repeat';
+import * as selections from './selections';
 
 export class LayerModel extends Model {
+  public _select: any;  // To collate all the child selections
+
   constructor(spec: LayerSpec, parent: Model, parentGivenName: string, repeatValues: RepeatValues) {
     super(spec, parent, parentGivenName, repeatValues);
 
+    this._select = {};
+
     this._config = this._initConfig(spec.config, parent);
     this._children = spec.layers.map((layer, i) => {
+      if (isUnitSpec(layer)) {
+        layer.select = extend(this._select, layer.select);
+        extend(this._select, layer.select);
+      }
+
       // we know that the model has to be a unit model beacuse we pass in a unit spec
       return buildModel(layer, this, this.name('layer_' + i), repeatValues) as UnitModel;
     });
@@ -53,6 +63,20 @@ export class LayerModel extends Model {
 
   public stack() {
     return null; // this is only a property for UnitModel
+  }
+
+  public parseSelection() {
+    this._select = {};
+    this.component.selection = [];
+    this._children.forEach((child) => {
+      // Children within layers can reference selections defined prior.
+      // We first parse a child's selections, then extend them with their siblings'.
+      child.parseSelection();
+      if (isUnitModel(child)) {
+        extend(this._select, child._select);
+        this.component.selection.push.apply(this.component.selection, child.selection());
+      }
+    });
   }
 
   public parseData() {
@@ -214,6 +238,21 @@ export class LayerModel extends Model {
     return data;
   }
 
+  public assemblePreSelectionData(data: VgData[]): VgData[] {
+    this._children.forEach((child) => child.assemblePreSelectionData(data));
+    return selections.assembleCompositeData(this, data);
+  }
+
+  public assemblePostSelectionData(data: VgData[]): VgData[] {
+    this._children.forEach((child) => child.assemblePostSelectionData(data));
+    return selections.assembleCompositeData(this, data);
+  }
+
+  public assembleSignals(signals) {
+    this._children.forEach((child) => child.assembleSignals(signals));
+    return selections.assembleCompositeSignals(this, signals);
+  }
+
   public assembleLayout(layoutData: VgData[]): VgData[] {
     // Postfix traversal – layout is assembled bottom-up
     this._children.forEach((child) => {
@@ -231,6 +270,10 @@ export class LayerModel extends Model {
 
   public channels() {
     return [];
+  }
+
+  public selection(name?: string) {
+    return (this._select && this._select[name]) || this.component.selection || [];
   }
 
   protected mapping() {
