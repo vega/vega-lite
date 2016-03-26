@@ -167,6 +167,7 @@ export function parseRepeatData(model: RepeatModel): DataComponent {
 
   function iterate(f) {
     model.children().forEach((child: Model) => {
+      f(child);
       child.children().forEach((child2) => {
         f(child2);
       });
