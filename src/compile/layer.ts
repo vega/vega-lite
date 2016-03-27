@@ -271,13 +271,13 @@ export class LayerModel extends Model {
       return child.assembleMarks();
     }));
 
-    return flatten(children.map(function(child) {
+    children.forEach(function(child) {
       if (isUnitModel(child)) {
-        return child.assembleSelectionMarks(marks);
+        child.assembleSelectionMarks(marks);
       }
+    });
 
-      return [];
-    }));
+    return marks;
   }
 
   public channels() {
