@@ -121,6 +121,7 @@ export function assembleUnitSignals(model: UnitModel, signals) {
   var unit = !signals.length;
 
   model.selection().forEach(function(sel: Selection) {
+    if (sel._model !== model) return;
     var on = assembleEvent(model, sel);
 
     var trigger = {
@@ -193,6 +194,7 @@ export function assembleCompositeSignals(model, units) {
 export function assembleUnitData(model: UnitModel, data, pre) {
   model.selection().forEach(function(sel: Selection) {
     if (sel.type !== Types.SET) return;
+    if (sel._model !== model) return;
 
     // Compile scales selections after source data
     if ((pre && sel.scales) || (!pre && !sel.scales)) return;
@@ -221,6 +223,7 @@ export function assembleCompositeData(model, units) {
     var d = data[unit.name],
         r = registry[unit.name] || (registry[unit.name] = {}),
         h;
+
 
     function mergeTransforms(t) {
       if (t.type === 'aggregate') {
