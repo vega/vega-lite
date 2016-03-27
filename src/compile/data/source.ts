@@ -1,11 +1,11 @@
 import {SOURCE} from '../../data';
-import {contains} from '../../util';
+import {contains, duplicate, keys, extend} from '../../util';
 import {VgData} from '../../vega.schema';
 
 import {FacetModel} from '../facet';
 import {LayerModel} from '../layer';
 import {RepeatModel} from './../repeat';
-import {Model} from '../model';
+import {Model, isUnitModel} from '../model';
 
 import {DataComponent} from './data';
 import {nullFilter} from './nullfilter';
@@ -14,6 +14,7 @@ import {filterWith} from './filterwith';
 import {bin} from './bin';
 import {formula} from './formula';
 import {timeUnit} from './timeunit';
+import {compileSelectionPredicate} from '../common';
 
 export namespace source {
   function parse(model: Model): VgData {
@@ -86,15 +87,15 @@ export namespace source {
     let sourceData = parse(model.children()[0]);
     if (!sourceData) {
       // cannot merge from child because the direct child does not have any data
-      // For example, when the child is a layer spec. 
+      // For example, when the child is a layer spec.
       return;
     }
     sourceData.name = model.dataName(SOURCE);
 
     model.children().forEach((child) => {
       const childData = child.component.data;
-      
-      // TODO: merge children into different groups that are mergable.  (Current we only merge into one.) 
+
+      // TODO: merge children into different groups that are mergable.  (Current we only merge into one.)
 
       const canMerge = !childData.filter && !childData.formatParse && !childData.nullFilter && !childData.filterWith;
       if (canMerge) {
@@ -112,9 +113,13 @@ export namespace source {
     return sourceData;
   }
 
+  var PRELOOKUP = '_preLookup', LOOKUP = '_lookup_', POSTLOOKUP = '_postLookup';
   export function assemble(model: Model, component: DataComponent) {
     if (component.source) {
-      let sourceData: VgData = component.source;
+      let sourceData: VgData = component.source,
+          name = sourceData.name,
+          lookupDef = component.lookup,
+          lookupData = [], transforms = [];
 
       if (component.formatParse) {
         component.source.format = component.source.format || {};
@@ -133,7 +138,42 @@ export namespace source {
         filterWith.assemble(component)
       );
 
-      return sourceData;
+      // HACK FOR INFOVIS
+      if (component.lookup && isUnitModel(model)) {
+        sourceData.name = name + PRELOOKUP;
+        transforms = sourceData.transform.splice(0);
+        lookupData.push(sourceData);
+
+        keys(lookupDef).forEach(function(k) {
+          lookupData.push({
+            name: name + LOOKUP + k,
+            source: name + PRELOOKUP,
+            transform: [{
+              type: 'filter',
+              test: compileSelectionPredicate(model, lookupDef[k].selection)
+            }]
+          })
+        });
+
+        sourceData = duplicate(sourceData);
+        sourceData.name = name;
+        sourceData.source = name + PRELOOKUP;
+        sourceData.transform = keys(lookupDef).map(function(k) {
+          var keys = lookupDef[k].keys;
+          return {
+            type: 'lookup',
+            on: name + LOOKUP + k,
+            onKey: keys, keys: keys,
+            as: [k], default: {}
+          }
+        }).concat(transforms);
+
+        lookupData.push(sourceData);
+
+        return lookupData;
+      } else {
+        return [sourceData];
+      }
     }
     return null;
   }

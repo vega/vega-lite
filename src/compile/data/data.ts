@@ -1,5 +1,5 @@
-import {Formula} from '../../transform';
-import {keys, Dict, StringSet, extend} from '../../util';
+import {Formula, Lookup} from '../../transform';
+import {keys, Dict, StringSet, extend, isArray, isObject} from '../../util';
 import {VgData, VgTransform} from '../../vega.schema';
 
 import {FacetModel} from '../facet';
@@ -21,6 +21,7 @@ import {stackScale} from './stackscale';
 import {timeUnit} from './timeunit';
 import {timeUnitDomain} from './timeunitdomain';
 import {colorRank} from './colorrank';
+import {lookup} from './lookup';
 
 
 /**
@@ -65,6 +66,9 @@ export interface DataComponent {
 
   /** Array of summary component object for producing summary (aggregate) data source */
   summary: SummaryComponent[];
+
+  /** Hashset of looup objects */
+  lookup?: Dict<Lookup>;
 }
 
 /**
@@ -93,6 +97,7 @@ export function parseUnitData(model: UnitModel): DataComponent {
     filterWith: filterWith.parseUnit(model),
 
     source: source.parseUnit(model),
+    lookup: lookup.parseUnit(model),
     bin: bin.parseUnit(model),
     calculate: formula.parseUnit(model),
     timeUnit: timeUnit.parseUnit(model),
@@ -112,6 +117,7 @@ export function parseFacetData(model: FacetModel): DataComponent {
     filterWith: filterWith.parseFacet(model),
 
     source: source.parseFacet(model),
+    lookup: lookup.parseFacet(model),
     bin: bin.parseFacet(model),
     calculate: formula.parseFacet(model),
     timeUnit: timeUnit.parseFacet(model),
@@ -134,6 +140,7 @@ export function parseLayerData(model: LayerModel): DataComponent {
 
     // everything after here does not affect whether we can merge child data into parent or not
     source: source.parseLayer(model),
+    lookup: lookup.parseLayer(model),
     bin: bin.parseLayer(model),
     calculate: formula.parseLayer(model),
     timeUnit: timeUnit.parseLayer(model),
@@ -197,8 +204,12 @@ export function parseRepeatData(model: RepeatModel): DataComponent {
 export function assembleData(model: Model, data: VgData[]) {
   const component = model.component.data;
 
+  console.log(component.lookup);
+
   const sourceData = source.assemble(model, component);
-  if (sourceData) {
+  if (isArray(sourceData)) {
+    data.push.apply(data, sourceData);
+  } else if (isObject(sourceData)) {
     data.push(sourceData);
   }
 

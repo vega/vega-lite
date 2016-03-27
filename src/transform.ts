@@ -1,3 +1,4 @@
+import {Dict} from './util';
 export interface Transform {
   /**
    * A string containing the filter Vega expression. Use `datum` to refer to the current data object.
@@ -15,6 +16,8 @@ export interface Transform {
    * Calculate new field(s) using the provided expresssion(s). Calculation are applied before filter.
    */
   calculate?: Formula[];
+
+  lookup?: Dict<Lookup>;
 }
 
 // TODO move all Vega interfaces to one central position
@@ -27,4 +30,9 @@ export interface Formula {
    * A string containing an expression for the formula. Use the variable `datum` to to refer to the current data object.
    */
   expr: string;
+}
+
+export interface Lookup {
+  selection: string;
+  keys: string[];
 }
