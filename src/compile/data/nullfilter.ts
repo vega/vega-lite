@@ -22,6 +22,7 @@ export namespace nullFilter {
     const filterNull = model.transform().filterNull;
     return model.reduce(function(aggregator, fieldDef: FieldDef, channel: Channel) {
       const field = model.fieldOrig(channel);
+      if (!field) return aggregator;
       if (filterNull ||
         (filterNull === undefined && field !== '*' && DEFAULT_NULL_FILTERS[fieldDef.type])) {
         aggregator[field] = true;

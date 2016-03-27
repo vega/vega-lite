@@ -1,7 +1,7 @@
 import {X, Y, SIZE, Channel} from '../../channel';
-
 import {UnitModel} from '../unit';
 import {applyColorAndOpacity} from '../common';
+import * as u from '../../util';
 
 export namespace rule {
   export function markType() {
@@ -50,10 +50,18 @@ export namespace rule {
   }
 
   function position(model: UnitModel, channel: Channel) {
-    return {
-        scale: model.scaleName(channel),
+    var def = { scale: model.scaleName(channel) },
+      fieldDef = model.fieldDef(channel);
+
+    if (fieldDef.field) {
+      return u.extend(def, {
         field: model.field(channel, { binSuffix: '_mid' })
-      };
+      });
+    } else if (fieldDef.selection) {
+      return u.extend(def, {
+        signal: fieldDef.selection
+      });
+    }
   }
 
   function sizeValue(model: UnitModel) {

@@ -32,6 +32,7 @@ export interface FieldDef {
   field?: Field;
   type?: Type;
   value?: number | string | boolean;
+  selection?: string;
 
   // function
   timeUnit?: TimeUnit;
@@ -153,6 +154,8 @@ export function title(fieldDef: FieldDef): string {
   const fn = fieldDef.aggregate || fieldDef.timeUnit || (fieldDef.bin && 'bin');
   if (fn) {
     return fn.toString().toUpperCase() + '(' + fieldDef.field + ')';
+  } else if (fieldDef.selection) {
+    return fieldDef.selection as string;
   } else {
     return fieldDef.field as string;
   }

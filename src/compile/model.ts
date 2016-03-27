@@ -306,8 +306,8 @@ export abstract class Model {
    * TODO: this is the same as model.field(channel, {nofn: true}). We should maybe remove that option and use optional args.
    */
   public fieldOrig(channel: Channel): string {
-    const field = this.fieldDef(channel).field;
-    return field as string;
+    const fieldDef = this.fieldDef(channel);
+    return fieldDef.field as string;
   }
 
   public abstract isRepeatRef(channel: Channel): boolean;
