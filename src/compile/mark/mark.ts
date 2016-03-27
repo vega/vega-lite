@@ -83,7 +83,8 @@ function parsePathMark(model: UnitModel) { // TODO: extract this into compilePat
       properties: {
         update: {
           width: { field: { group: 'width' } },
-          height: { field: { group: 'height' } }
+          height: { field: { group: 'height' } },
+          unitName: { value: model.name() }
         }
       },
       marks: pathMarks

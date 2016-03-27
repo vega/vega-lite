@@ -9,7 +9,13 @@ export function parse(_, sel: s.Selection) {
 export function assembleMarks(model: UnitModel, sel: s.Selection, _, children) {
   var modelName = s.modelName(model),
       name = modelName('marks'),
-      voronoi, marks;
+      mark = model.mark(),
+      voronoi, marks, pathgroup;
+
+  if (children[0].name === model.name('pathgroup')) {
+    pathgroup = children;
+    children = children[0].marks;
+  }
 
   for (var i = 0, len = children.length, c; i < len; ++i) {
     c = children[i];
@@ -17,6 +23,7 @@ export function assembleMarks(model: UnitModel, sel: s.Selection, _, children) {
     if (c.name === name) marks = i;
     if (voronoi && marks) break;
   }
+
 
   // Don't add multiple voronois to the same unit
   if (voronoi) return children;

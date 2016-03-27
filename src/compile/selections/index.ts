@@ -3,6 +3,7 @@ import * as u from '../../util';
 import * as tx from './transforms';
 import {parse as parseEvtSelector} from 'vega-event-selector';
 import {Model, isLayerModel} from '../model';
+import {AREA, LINE} from '../../mark';
 export {tx as transforms};
 const transforms = u.keys(tx);
 
@@ -46,8 +47,9 @@ export interface Selection {
 }
 
 export function modelName(model: UnitModel) {
-  var parent = model.parent();
-  return parent && isLayerModel(parent) ?
+  var parent = model.parent(),
+      mark = model.mark();
+  return parent && isLayerModel(parent) && mark !== AREA && mark !== LINE ?
     parent.name.bind(parent) : model.name.bind(model);
 }
 
@@ -58,7 +60,10 @@ export function storeName(sel: Selection) {
 // Namespace triggering events to occur in a specific unit
 export function eventName(model: UnitModel, event?) {
   event = event || '';
-  var cell = model.parent() ? 'cell' : 'root';
+  var mark = model.mark(),
+    cell = model.parent() ?
+      mark === AREA || mark === LINE ? 'pathgroup' : 'cell' :
+      'root';
 
   return event.indexOf(':') < 0 ?
     '@' + modelName(model)(cell) + ':' + event : event;
