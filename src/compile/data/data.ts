@@ -204,8 +204,6 @@ export function parseRepeatData(model: RepeatModel): DataComponent {
 export function assembleData(model: Model, data: VgData[]) {
   const component = model.component.data;
 
-  console.log(component.lookup);
-
   const sourceData = source.assemble(model, component);
   if (isArray(sourceData)) {
     data.push.apply(data, sourceData);
