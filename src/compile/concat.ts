@@ -15,9 +15,12 @@ import {LAYOUT} from '../data';
 import * as selections from './selections';
 
 export class ConcatModel extends Model {
+  _direction;
+
   constructor(spec: ConcatSpec, parent: Model, parentGivenName: string, repeatValues: RepeatValues) {
     super(spec, parent, parentGivenName, repeatValues);
 
+    this._direction = spec.direction;
     this._config = this._initConfig(spec.config, parent);
     this._children = spec.concat.map((child, i) => {
       return buildModel(child, this, this.name('child_' + i), repeatValues);
@@ -38,7 +41,8 @@ export class ConcatModel extends Model {
   }
 
   public dataTable(): string {
-    return null;
+    // FIXME: remove this hack
+    return this._children[0].dataTable();
   }
 
   public isRepeatRef(channel: Channel) {
@@ -100,20 +104,10 @@ export class ConcatModel extends Model {
   }
 
   public parseLegend() {
-    let legendComponent = this.component.legend = {} as Dict<VgLegend>;
+    this.component.legend = {} as Dict<VgLegend>;
 
     this._children.forEach(function(child) {
       child.parseLegend();
-
-      // TODO: correctly implement independent axes
-      if (true) { // if shared/union scale
-        keys(child.component.legend).forEach(function(channel) {
-          // just use the first legend definition for each channel
-          if (!legendComponent[channel]) {
-            legendComponent[channel] = child.component.legend[channel];
-          }
-        });
-      }
     });
   }
 
@@ -163,7 +157,7 @@ export class ConcatModel extends Model {
           type: 'group',
           from: {data: child.dataName(LAYOUT)},
           properties: {
-            update: getConcatGroupProperties(this, child, i > 0 ? 250: 0)
+            update: getConcatGroupProperties(this, child, i > 0 ? (this._direction === 'vertical' ? 250 : 440): 0)
           }
         },
         // Call child's assembleGroup to add marks and axes (legends and scales should have been moved up).
@@ -195,11 +189,15 @@ export class ConcatModel extends Model {
   }
 }
 
-function getConcatGroupProperties(model: ConcatModel, child: Model, y: number) {
+function getConcatGroupProperties(model: ConcatModel, child: Model, offset: number) {
   const mergedCellConfig = extend({}, child.config().cell, child.config().facet.cell);
 
-  return extend({
-      y: {value: y},
+  return extend(model._direction === 'vertical' ? {
+      y: {value: offset},
+      width: {field: child.sizeName('width')},
+      height: {field: child.sizeName('height')}
+    }:{
+      x: {value: offset},
       width: {field: child.sizeName('width')},
       height: {field: child.sizeName('height')}
     },

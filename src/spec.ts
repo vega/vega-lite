@@ -66,7 +66,7 @@ export interface LayerSpec extends BaseSpec {
 }
 
 export interface ConcatSpec extends BaseSpec {
-  // TODO: direction: 'horizontal' | 'vertical';
+  direction: 'horizontal' | 'vertical';
   concat: Spec[];
 }
 
