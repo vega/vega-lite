@@ -87,15 +87,7 @@ export function parse(model: UnitModel, spec) {
     sel.name  = sel.resolve === Resolutions.SINGLE ? k : model.name(k);
     sel._name = k;
     sel._model = model;
-
-    if (sel.type === Types.SET && !sel.scales && !sel.interval) {
-      sel.toggle = sel.toggle || true;
-    }
-
-    if (!sel.project) {
-      sel.project = (sel.scales || sel.interval) ?
-        { channels: ['x', 'y'] } : { fields: ['_id'] };
-    }
+    parseSelectionType(model, sel);
 
     // Parse transformations.
     transforms.forEach(function(k) {
@@ -105,6 +97,27 @@ export function parse(model: UnitModel, spec) {
 
     return sel;
   });
+}
+
+// HACK FOR INFOVIS: Maps new syntax to old syntax.
+// TODO: Migrate selections codebase to new syntax entirely.
+function parseSelectionType(model: Model, sel) {
+  if (sel.type === 'list') {
+    sel.type = Types.SET;
+    sel.toggle = sel.toggle || true;
+  } else if (sel.type === 'interval') {
+    sel.type = Types.SET;
+    if (sel.init && sel.init.scales) {
+      sel.scales = true;
+    } else {
+      sel.interval = true;
+    }
+  }
+
+  if (!sel.project) {
+    sel.project = (sel.scales || sel.interval) ?
+      { channels: ['x', 'y'] } : { fields: ['_id'] };
+  }
 }
 
 export function assembleEvent(model: UnitModel, sel: Selection) {
