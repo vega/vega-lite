@@ -5,6 +5,7 @@ import {VgData} from '../../vega.schema';
 import {FacetModel} from '../facet';
 import {LayerModel} from '../layer';
 import {RepeatModel} from './../repeat';
+import {ConcatModel} from './../concat';
 import {Model, isUnitModel} from '../model';
 
 import {DataComponent} from './data';
@@ -84,6 +85,36 @@ export namespace source {
   }
 
   export function parseRepeat(model: RepeatModel) {
+    let sourceData = parse(model.children()[0]);
+    if (!sourceData) {
+      // cannot merge from child because the direct child does not have any data
+      // For example, when the child is a layer spec.
+      return;
+    }
+    sourceData.name = model.dataName(SOURCE);
+
+    model.children().forEach((child) => {
+      const childData = child.component.data;
+
+      // TODO: merge children into different groups that are mergable.  (Current we only merge into one.)
+
+      const canMerge = !childData.filter && !childData.formatParse && !childData.nullFilter && !childData.filterWith;
+      if (canMerge) {
+        // rename source because we can just remove it
+        child.renameData(child.dataName(SOURCE), model.dataName(SOURCE));
+        delete childData.source;
+      } else {
+        // child does not have data defined or the same source so just use the parents source
+        childData.source = {
+          name: child.dataName(SOURCE),
+          source: model.dataName(SOURCE)
+        };
+      }
+    });
+    return sourceData;
+  }
+
+  export function parseConcat(model: ConcatModel) {
     let sourceData = parse(model.children()[0]);
     if (!sourceData) {
       // cannot merge from child because the direct child does not have any data

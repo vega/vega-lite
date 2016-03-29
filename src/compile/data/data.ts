@@ -5,6 +5,7 @@ import {VgData, VgTransform} from '../../vega.schema';
 import {FacetModel} from '../facet';
 import {RepeatModel} from '../repeat';
 import {LayerModel} from '../layer';
+import {ConcatModel} from './../concat';
 import {Model} from '../model';
 import {UnitModel} from '../unit';
 
@@ -189,6 +190,26 @@ export function parseRepeatData(model: RepeatModel): DataComponent {
   });
 
   return repeatData;
+}
+
+export function parseConcatData(model: ConcatModel): DataComponent {
+  return {
+    formatParse: formatParse.parseConcat(model),
+    nullFilter: nullFilter.parseConcat(model),
+    filter: filter.parseConcat(model),
+    nonPositiveFilter: nonPositiveFilter.parseConcat(model),
+    filterWith: filterWith.parseConcat(model),
+
+    source: source.parseConcat(model),
+    lookup: lookup.parseConcat(model),
+    bin: bin.parseConcat(model),
+    calculate: formula.parseConcat(model),
+    timeUnit: timeUnit.parseConcat(model),
+    timeUnitDomain: timeUnitDomain.parseConcat(model),
+    summary: summary.parseConcat(model),
+    stackScale: stackScale.parseConcat(model),
+    colorRank: colorRank.parseConcat(model)
+  };
 }
 
 

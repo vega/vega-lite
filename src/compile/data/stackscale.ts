@@ -5,6 +5,7 @@ import {VgData} from '../../vega.schema';
 import {FacetModel} from '../facet';
 import {LayerModel} from '../layer';
 import {RepeatModel} from './../repeat';
+import {ConcatModel} from './../concat';
 import {UnitModel} from '../unit';
 
 import {DataComponent} from './data';
@@ -69,6 +70,11 @@ export namespace stackScale {
   }
   
   export function parseRepeat(model: RepeatModel) {
+    // TODO
+    return null;
+  }
+  
+  export function parseConcat(model: ConcatModel) {
     // TODO
     return null;
   }

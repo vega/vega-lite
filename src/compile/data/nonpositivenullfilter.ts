@@ -4,6 +4,7 @@ import {extend, keys, differ, Dict} from '../../util';
 import {FacetModel} from '../facet';
 import {LayerModel} from '../layer';
 import {RepeatModel} from '../repeat';
+import {ConcatModel} from './../concat';
 import {Model} from '../model';
 
 import {DataComponent} from './data';
@@ -52,6 +53,30 @@ export namespace nonPositiveFilter {
   }
 
   export function parseRepeat(model: RepeatModel): Dict<boolean> {
+    // note that we run this before source.parseLayer
+    let nonPositiveFilter = {} as Dict<boolean>;
+
+    const children = model.children();
+    for (let i = 0; i < children.length; i++) {
+      const childDataComponent = children[i].component.data;
+      if (!differ(childDataComponent.nonPositiveFilter, nonPositiveFilter)) {
+        extend(nonPositiveFilter, childDataComponent.nonPositiveFilter);
+      } else {
+        // children are incompatible
+        return {};
+      }
+    }
+
+    // children are compatible so let's delete their null filters
+    model.children().forEach((child) => {
+      const childDataComponent = child.component.data;
+      delete childDataComponent.nonPositiveFilter;
+    });
+
+    return nonPositiveFilter;
+  }
+
+  export function parseConcat(model: ConcatModel): Dict<boolean> {
     // note that we run this before source.parseLayer
     let nonPositiveFilter = {} as Dict<boolean>;
 

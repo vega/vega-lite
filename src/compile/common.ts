@@ -7,10 +7,11 @@ import {contains, union, isArray, array, extend, keys, isString} from '../util';
 import {FacetModel} from './facet';
 import {RepeatModel, RepeatValues} from './repeat';
 import {LayerModel} from './layer';
+import {ConcatModel} from './concat';
 import {Model, isLayerModel} from './model';
 import {format as timeFormatExpr} from './time';
 import {UnitModel} from './unit';
-import {Spec, isUnitSpec, isFacetSpec, isRepeatSpec, isLayerSpec} from '../spec';
+import {Spec, isUnitSpec, isFacetSpec, isRepeatSpec, isLayerSpec, isConcatSpec} from '../spec';
 import {Selection, Resolutions} from './selections';
 
 export function buildModel(spec: Spec, parent: Model, parentGivenName: string, repeatValues: RepeatValues): Model {
@@ -24,6 +25,10 @@ export function buildModel(spec: Spec, parent: Model, parentGivenName: string, r
 
   if (isLayerSpec(spec)) {
     return new LayerModel(spec, parent, parentGivenName, repeatValues);
+  }
+
+  if (isConcatSpec(spec)) {
+    return new ConcatModel(spec, parent, parentGivenName, repeatValues);
   }
 
   if (isUnitSpec(spec)) {
