@@ -155,12 +155,10 @@ export namespace summary {
         const ops = childMeasures[field];
         for (const op in ops) {
           if (ops.hasOwnProperty(op)) {
-            if (field in parentMeasures) {
-              // add operator to existing measure field
-              parentMeasures[field][op] = true;
-            } else {
-              parentMeasures[field] = { op: true };
+            if (!(field in parentMeasures)) {
+              parentMeasures[field] = {};
             }
+            parentMeasures[field][op] = true;
           }
         }
       }
