@@ -4,6 +4,7 @@ import {extend, vals, hash, Dict} from '../../util';
 import {FacetModel} from './../facet';
 import {LayerModel} from './../layer';
 import {RepeatModel} from './../repeat';
+import {ConcatModel} from './../concat';
 import {Model} from './../model';
 
 import {DataComponent} from './data';
@@ -45,6 +46,18 @@ export namespace formula {
   }
 
   export function parseRepeat(model: RepeatModel) {
+    let formulaComponent = parse(model);
+    model.children().forEach((child) => {
+      const childDataComponent = child.component.data;
+      if (!childDataComponent.source) {
+        extend(formulaComponent, childDataComponent.calculate);
+        delete childDataComponent.calculate;
+      }
+    });
+    return formulaComponent;
+  }
+
+  export function parseConcat(model: ConcatModel) {
     let formulaComponent = parse(model);
     model.children().forEach((child) => {
       const childDataComponent = child.component.data;

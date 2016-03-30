@@ -1,6 +1,7 @@
 import {FacetModel} from '../facet';
 import {LayerModel} from '../layer';
 import {RepeatModel} from '../repeat';
+import {ConcatModel} from './../concat';
 import {Model} from '../model';
 import {unique} from '../../util';
 
@@ -46,6 +47,20 @@ export namespace filter {
   export function parseRepeat(model: RepeatModel) {
     // Note that this `filter.parseLayer` method is called before `source.parseLayer`
 
+    const filters = model.children().map((child) => child.component.data.filter);
+    if (unique(filters).length === 1) {
+      // all filters are the same
+      model.children().forEach((child) => {
+        const childDataComponent = child.component.data;
+        delete childDataComponent.filter;
+      });
+      return filters[0];
+    }
+
+    return null;
+  }
+
+  export function parseConcat(model: ConcatModel) {
     const filters = model.children().map((child) => child.component.data.filter);
     if (unique(filters).length === 1) {
       // all filters are the same

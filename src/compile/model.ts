@@ -404,6 +404,9 @@ export abstract class Model {
   public isRepeat() {
     return false;
   }
+  public isConcat() {
+    return false;
+  }
 }
 
 export function isUnitModel(model: Model): model is UnitModel {

@@ -9,6 +9,7 @@ import {VgData} from '../vega.schema';
 import {FacetModel} from './facet';
 import {RepeatModel} from './repeat';
 import {LayerModel} from './layer';
+import {ConcatModel} from './concat';
 import {TEXT as TEXT_MARK} from '../mark';
 import {Model} from './model';
 import {rawDomain} from './time';
@@ -249,6 +250,30 @@ function parseLayerSizeLayout(model: LayerModel, channel: Channel): SizeComponen
       formula: formula
     };
   }
+}
+
+export function parseConcatLayout(model: ConcatModel): LayoutComponent {
+  return {
+    width: parseConcatSizeLayout(model, X),
+    height: parseConcatSizeLayout(model, Y)
+  };
+}
+
+function parseConcatSizeLayout(model: ConcatModel, channel: Channel): SizeComponent {
+  const sizeType = channel === Y ? 'height' : 'width';
+  const childLayoutComponent = model.children()[0].component.layout;
+  const childSizeComponent: SizeComponent = childLayoutComponent[sizeType];
+
+  const distinct = childSizeComponent.distinct;
+  const formula = [{
+    field: model.channelSizeName(channel),
+    expr: childSizeComponent.formula[0].expr
+  }];
+
+  return {
+    distinct: distinct,
+    formula: formula
+  };
 }
 
 function getDistinct(model: Model, channel: Channel): StringSet {

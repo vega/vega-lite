@@ -3,6 +3,7 @@ import {Lookup} from '../../transform';
 
 import {FacetModel} from './../facet';
 import {LayerModel} from './../layer';
+import {ConcatModel} from './../concat';
 import {Model} from './../model';
 
 import {DataComponent} from './data';
@@ -28,6 +29,22 @@ export namespace lookup {
   }
 
   export function parseLayer(model: LayerModel) {
+    let lookupComponent = parse(model);
+
+    model.children().forEach((child) => {
+      const childDataComponent = child.component.data;
+
+      // If child doesn't have its own data source, then merge
+      if (!childDataComponent.source) {
+        extend(lookupComponent, childDataComponent.lookup);
+        delete childDataComponent.lookup;
+      }
+    });
+
+    return lookupComponent;
+  }
+
+  export function parseConcat(model: ConcatModel) {
     let lookupComponent = parse(model);
 
     model.children().forEach((child) => {

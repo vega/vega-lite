@@ -8,6 +8,7 @@ import {VgData} from '../../vega.schema';
 import {FacetModel} from '../facet';
 import {LayerModel} from '../layer';
 import {RepeatModel} from './../repeat';
+import {ConcatModel} from './../concat';
 import {Model} from '../model';
 
 import {DataComponent, SummaryComponent} from './data';
@@ -115,6 +116,40 @@ export namespace summary {
   }
 
   export function parseRepeat(model: RepeatModel): SummaryComponent[] {
+    // Index by the fields we are grouping by
+    let summaries = {} as Dict<SummaryComponent>;
+
+    // Combine summaries for children that don't have a distinct source
+    // (either having its own data source, or its own tranformation of the same data source).
+    model.children().forEach((child) => {
+      const childDataComponent = child.component.data;
+      if (!childDataComponent.source && childDataComponent.summary) {
+        // Merge the summaries if we can
+        childDataComponent.summary.forEach((childSummary) => {
+          // The key is a hash based on the dimensions;
+          // we use it to find out whether we have a summary that uses the same group by fields.
+          const key = hash(childSummary.dimensions);
+          if (key in summaries) {
+            // yes, there is a summary hat we need to merge into
+            // we know that the dimensions are the same so we only need to merge the measures
+            mergeMeasures(summaries[key].measures, childSummary.measures);
+          } else {
+            // give the summary a new name
+            childSummary.name = model.dataName(SUMMARY) + '_' + keys(summaries).length;
+            summaries[key] = childSummary;
+          }
+
+          // remove summary from child
+          child.renameData(child.dataName(SUMMARY), summaries[key].name);
+          delete childDataComponent.summary;
+        });
+      }
+    });
+
+    return vals(summaries);
+  }
+
+  export function parseConcat(model: ConcatModel): SummaryComponent[] {
     // Index by the fields we are grouping by
     let summaries = {} as Dict<SummaryComponent>;
 

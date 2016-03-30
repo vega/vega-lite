@@ -6,6 +6,7 @@ import {extend, differ, Dict} from '../../util';
 import {FacetModel} from './../facet';
 import {LayerModel} from './../layer';
 import {RepeatModel} from './../repeat';
+import {ConcatModel} from './../concat';
 import {Model} from './../model';
 
 export namespace formatParse {
@@ -62,6 +63,29 @@ export namespace formatParse {
   }
 
   export function parseRepeat(model: RepeatModel): Dict<string> {
+    let parseComponent = {} as Dict<string>;
+
+    const children = model.children();
+    for (let i = 0; i < children.length; i++) {
+      const childDataComponent = children[i].component.data;
+      if (!differ(childDataComponent.formatParse, parseComponent)) {
+        extend(parseComponent, childDataComponent.formatParse);
+      } else {
+        // children are incompatible
+        return {};
+      }
+    }
+
+    // children are compatible so let's delete their null filters
+    model.children().forEach((child) => {
+      const childDataComponent = child.component.data;
+      delete childDataComponent.formatParse;
+    });
+
+    return parseComponent;
+  }
+
+  export function parseConcat(model: ConcatModel): Dict<string> {
     let parseComponent = {} as Dict<string>;
 
     const children = model.children();

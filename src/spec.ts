@@ -50,19 +50,24 @@ export interface ExtendedUnitSpec extends BaseSpec {
 
 export interface FacetSpec extends BaseSpec {
   facet: Facet;
-  spec: LayerSpec | UnitSpec;
+  spec: Spec;
 }
 
 export interface RepeatSpec {
   name?: string;
   description?: string;
   repeat: Repeat;
-  spec: LayerSpec | UnitSpec;
+  spec: Spec;
   config?: Config;
 }
 
 export interface LayerSpec extends BaseSpec {
   layers: UnitSpec[];
+}
+
+export interface ConcatSpec extends BaseSpec {
+  direction: 'horizontal' | 'vertical';
+  concat: Spec[];
 }
 
 /** This is for the future schema */
@@ -72,8 +77,8 @@ export interface ExtendedFacetSpec extends BaseSpec {
   spec: ExtendedUnitSpec | FacetSpec;
 }
 
-export type ExtendedSpec = ExtendedUnitSpec | FacetSpec | RepeatSpec | LayerSpec;
-export type Spec = UnitSpec | FacetSpec | RepeatSpec | LayerSpec;
+export type ExtendedSpec = ExtendedUnitSpec | FacetSpec | RepeatSpec | LayerSpec | ConcatSpec;
+export type Spec = UnitSpec | FacetSpec | RepeatSpec | LayerSpec | ConcatSpec;
 
 /* Custom type guards */
 
@@ -110,6 +115,10 @@ export function isSomeUnitSpec(spec: ExtendedSpec): spec is ExtendedUnitSpec | U
 
 export function isLayerSpec(spec: ExtendedSpec): spec is LayerSpec {
   return spec['layers'] !== undefined;
+}
+
+export function isConcatSpec(spec: ExtendedSpec): spec is ConcatSpec {
+  return spec['concat'] !== undefined;
 }
 
 /**

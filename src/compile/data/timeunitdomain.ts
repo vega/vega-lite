@@ -7,6 +7,7 @@ import {VgData} from '../../vega.schema';
 import {FacetModel} from '../facet';
 import {LayerModel} from '../layer';
 import {RepeatModel} from './../repeat';
+import {ConcatModel} from './../concat';
 import {Model} from '../model';
 import {parseExpression, rawDomain} from '../time';
 
@@ -42,6 +43,13 @@ export namespace timeUnitDomain {
   }
 
   export function parseRepeat(model: RepeatModel) {
+    // always merge with children
+    return extend(parse(model), model.children().forEach((child) => {
+      return child.component.data.timeUnitDomain;
+    }));
+  }
+
+  export function parseConcat(model: ConcatModel) {
     // always merge with children
     return extend(parse(model), model.children().forEach((child) => {
       return child.component.data.timeUnitDomain;

@@ -6,6 +6,7 @@ import {VgTransform} from '../../vega.schema';
 import {FacetModel} from '../facet';
 import {LayerModel} from '../layer';
 import {RepeatModel} from './../repeat';
+import {ConcatModel} from './../concat';
 import {Model} from '../model';
 
 import {DataComponent} from './data';
@@ -69,6 +70,23 @@ export namespace colorRank {
   }
 
   export function parseRepeat(model: RepeatModel) {
+    let colorRankComponent = {} as Dict<VgTransform[]>;
+
+    // TODO(kanitw): consider merging multiple transform into one? 
+    model.children().forEach((child) => {
+      const childDataComponent = child.component.data;
+
+      // If child doesn't have its own data source, then merge
+      if (!childDataComponent.source) {
+        extend(colorRankComponent, childDataComponent.colorRank);
+        delete childDataComponent.colorRank;
+      }
+    });
+
+    return colorRankComponent;
+  }
+
+  export function parseConcat(model: ConcatModel) {
     let colorRankComponent = {} as Dict<VgTransform[]>;
 
     // TODO(kanitw): consider merging multiple transform into one? 
