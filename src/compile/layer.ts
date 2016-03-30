@@ -1,5 +1,5 @@
-import {Channel} from '../channel';
-import {keys, duplicate, mergeDeep, flatten, unique, isArray, vals, forEach, hash, Dict, extend} from '../util';
+import {Channel, X, Y, COLOR} from '../channel';
+import {keys, duplicate, mergeDeep, flatten, unique, isArray, vals, contains, forEach, hash, Dict, extend} from '../util';
 import {defaultConfig, Config} from '../config';
 import {LayerSpec, isUnitSpec} from '../spec';
 import {assembleData, parseLayerData} from './data/data';
@@ -15,12 +15,14 @@ import * as selections from './selections';
 
 export class LayerModel extends Model {
   public _select: any;  // To collate all the child selections
+  private _resolve;
 
   constructor(spec: LayerSpec, parent: Model, parentGivenName: string, repeatValues: RepeatValues) {
     super(spec, parent, parentGivenName, repeatValues);
 
     this._select = {};
 
+    this._resolve = spec.resolve || {};
     this._config = this._initConfig(spec.config, parent);
     this._children = spec.layers.map((layer, i) => {
       if (isUnitSpec(layer)) {
@@ -112,6 +114,11 @@ export class LayerModel extends Model {
             return;
           }
 
+          if (channel in model._resolve && model._resolve[channel].scale === 'independent') {
+            scaleComponent[child.name(channel)] = childScales;
+            return;
+          }
+
           const modelScales: ScaleComponents = scaleComponent[channel];
           if (modelScales && modelScales.main) {
             // Scales are unioned by combining the domain of the main scale.
@@ -180,7 +187,11 @@ export class LayerModel extends Model {
   }
 
   public parseAxis() {
+    const model = this;
     let axisComponent = this.component.axis = {} as Dict<VgAxis[]>;
+
+    // do we already have an axis for this channel?
+    let channels = {};
 
     this._children.forEach(function(child) {
       child.parseAxis();
@@ -190,10 +201,24 @@ export class LayerModel extends Model {
         keys(child.component.axis).forEach(function(channel) {
           // TODO: support multiple axes for shared scale
 
-          // just use the first axis definition for each channel
-          if (!axisComponent[channel]) {
-            axisComponent[channel] = child.component.axis[channel];
+          if (channel in model._resolve && model._resolve[channel].scale === 'independent') {
+            const axis = child.component.axis[channel];
+            if (channels[channel]) {
+              axis.orient = 'right';
+            }
+            axis.properties = {
+              title: {
+                fill: {value: child.fieldDef(COLOR).value}
+              }
+            };
+            axisComponent[child.name(channel)] = axis;
+          } else {
+            // just use the first axis definition for each channel
+            if (!axisComponent[channel]) {
+              axisComponent[channel] = child.component.axis[channel];
+            }
           }
+          channels[channel] = true;
         });
       }
     });

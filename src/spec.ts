@@ -61,8 +61,19 @@ export interface RepeatSpec {
   config?: Config;
 }
 
+export interface Resolve {
+  scale: 'independent' | 'shared';
+  guide?: 'independent' | 'shared';
+}
+
+export interface ResolveMapping {
+  x?: Resolve;
+  y?: Resolve;
+}
+
 export interface LayerSpec extends BaseSpec {
   layers: UnitSpec[];
+  resolve?: ResolveMapping;
 }
 
 export interface ConcatSpec extends BaseSpec {
