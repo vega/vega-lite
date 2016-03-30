@@ -10,12 +10,13 @@ import {Mark, BAR, TEXT as TEXT_MARK, RULE} from '../mark';
 import {Scale, ScaleType, NiceTime} from '../scale';
 import {TimeUnit} from '../timeunit';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
-import {contains, extend, Dict} from '../util';
+import {contains, extend, Dict, flatten} from '../util';
 import {VgScale} from '../vega.schema';
 
-import {Model} from './model';
+import {Model, isUnitModel} from './model';
 import {rawDomain, smallestUnit} from './time';
 import {UnitModel} from './unit';
+import {storeName} from './selections';
 
 /**
  * Color Ramp's scale for legends.  This scale has to be ordinal so that its
@@ -204,9 +205,18 @@ export function scaleType(scale: Scale, fieldDef: FieldDef, channel: Channel, ma
 
 export function domain(scale: Scale, model: Model, channel:Channel): any {
   const fieldDef = model.fieldDef(channel);
-
   if (scale.domain) { // explicit value
-    return scale.domain;
+    if (scale.domain.selection && isUnitModel(model)) {
+      const sel = model.selection(scale.domain.selection);
+      sel._marks = model;
+      return {
+        data: storeName(sel),
+        field: flatten(sel.project.filter((p) => p.channel === channel)
+          .map((p) => ['min_' + p.field, 'max_' + p.field]))
+      }
+    } else {
+      return scale.domain;
+    }
   }
 
   // special case for temporal scale

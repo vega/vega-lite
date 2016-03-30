@@ -1,7 +1,7 @@
 import {Channel} from '../channel';
 import {keys, duplicate, mergeDeep, flatten, unique, isArray, vals, forEach, hash, Dict, extend} from '../util';
 import {defaultConfig, Config} from '../config';
-import {ConcatSpec, isConcatSpec} from '../spec';
+import {ConcatSpec, isConcatSpec, isUnitSpec} from '../spec';
 import {assembleData, parseConcatData} from './data/data';
 import {assembleLayout, parseConcatLayout} from './layout';
 import {Model, isUnitModel} from './model';
@@ -16,13 +16,20 @@ import * as selections from './selections';
 
 export class ConcatModel extends Model {
   _direction;
+  public _select: any;  // To collate all the child selections
 
   constructor(spec: ConcatSpec, parent: Model, parentGivenName: string, repeatValues: RepeatValues) {
     super(spec, parent, parentGivenName, repeatValues);
 
+    this._select = {};
     this._direction = spec.direction;
     this._config = this._initConfig(spec.config, parent);
     this._children = spec.concat.map((child, i) => {
+      if (isUnitSpec(child)) {
+        child.select = extend(this._select, child.select);
+        extend(this._select, child.select);
+      }
+
       return buildModel(child, this, this.name('child_' + i), repeatValues);
     });
   }
@@ -59,7 +66,17 @@ export class ConcatModel extends Model {
   }
 
   public parseSelection() {
-    // TODO
+    this._select = {};
+    this.component.selection = [];
+    this._children.forEach((child) => {
+      // Children within layers can reference selections defined prior.
+      // We first parse a child's selections, then extend them with their siblings'.
+      child.parseSelection();
+      if (isUnitModel(child)) {
+        extend(this._select, child._select);
+        this.component.selection.push.apply(this.component.selection, child.selection());
+      }
+    });
   }
 
   public parseData() {

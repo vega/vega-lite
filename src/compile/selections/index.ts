@@ -30,6 +30,7 @@ export interface Selection {
   name:  string;
   _name: string;
   _model: Model;
+  _marks: Model;  // HACK to assembleMark for O+D detail unit.
   type:  Types;
   level: Levels;
   on: string;
@@ -49,7 +50,7 @@ export interface Selection {
 export function modelName(model: UnitModel) {
   var parent = model.parent(),
       mark = model.mark();
-  return parent && isLayerModel(parent) && mark !== AREA && mark !== LINE ?
+  return parent && isLayerModel(parent) && /*mark !== AREA && */mark !== LINE ?
     parent.name.bind(parent) : model.name.bind(model);
 }
 
@@ -62,7 +63,7 @@ export function eventName(model: UnitModel, event?) {
   event = event || '';
   var mark = model.mark(),
     cell = model.parent() ?
-      mark === AREA || mark === LINE ? 'pathgroup' : 'cell' :
+      /*mark === AREA || */mark === LINE ? 'pathgroup' : 'cell' :
       'root';
 
   return event.indexOf(':') < 0 ?
@@ -277,7 +278,7 @@ export function assembleCompositeData(model, units) {
 export function assembleMarks(model: UnitModel, marks: any[]) {
   var children = marks;
   model.selection().forEach(function(sel: Selection) {
-    if (sel._model !== model) return;
+    if (sel._model !== model && sel._marks !== model) return;
     transforms.forEach(function(k) {
       if (!tx[k].assembleMarks || !sel[k]) return;
       children = tx[k].assembleMarks(model, sel, marks, children);
