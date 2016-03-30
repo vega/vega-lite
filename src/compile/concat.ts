@@ -22,9 +22,9 @@ export class ConcatModel extends Model {
     super(spec, parent, parentGivenName, repeatValues);
 
     this._select = {};
-    this._direction = spec.direction;
+    this._direction = 'vertical';
     this._config = this._initConfig(spec.config, parent);
-    this._children = spec.concat.map((child, i) => {
+    this._children = spec.vconcat.map((child, i) => {
       if (isUnitSpec(child)) {
         child.select = extend(this._select, child.select);
         extend(this._select, child.select);

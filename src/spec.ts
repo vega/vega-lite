@@ -66,8 +66,8 @@ export interface LayerSpec extends BaseSpec {
 }
 
 export interface ConcatSpec extends BaseSpec {
-  direction: 'horizontal' | 'vertical';
-  concat: Spec[];
+  // direction: 'horizontal' | 'vertical';
+  vconcat: Spec[];
 }
 
 /** This is for the future schema */
@@ -118,7 +118,7 @@ export function isLayerSpec(spec: ExtendedSpec): spec is LayerSpec {
 }
 
 export function isConcatSpec(spec: ExtendedSpec): spec is ConcatSpec {
-  return spec['concat'] !== undefined;
+  return spec['vconcat'] !== undefined;
 }
 
 /**
