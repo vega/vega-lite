@@ -72,7 +72,8 @@ export function compileSelectionPredicate(model: UnitModel, sel) {
 
   return predicate ? '(' + predicate + ')' :
     sel.or ? array(sel.or).map(recurse).join(' || ') :
-      sel.and ? array(sel.and).map(recurse).join(' && ') : null;
+      sel.and ? array(sel.and).map(recurse).join(' && ') :
+        sel.not ? '(!' + recurse(sel.not) + ')' : null;
 }
 
 export function compileIfThenElse(model: UnitModel, channel: Channel, output, cb) {
