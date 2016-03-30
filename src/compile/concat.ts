@@ -167,6 +167,7 @@ export class ConcatModel extends Model {
   }
 
   public assembleMarks(): any[] {
+    const offset = +this.children()[0].component.layout.height.formula[0].expr + 60;
     return flatten(this._children.map((child, i) => {
       return extend(
         {
@@ -174,7 +175,7 @@ export class ConcatModel extends Model {
           type: 'group',
           from: {data: child.dataName(LAYOUT)},
           properties: {
-            update: getConcatGroupProperties(this, child, i > 0 ? (this._direction === 'vertical' ? 250 : 440): 0)
+            update: getConcatGroupProperties(this, child, i > 0 ? offset: 0)
           }
         },
         // Call child's assembleGroup to add marks and axes (legends and scales should have been moved up).
