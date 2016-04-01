@@ -7,7 +7,7 @@ import {contains, union} from '../util';
 import {FacetModel} from './facet';
 import {LayerModel} from './layer';
 import {Model} from './model';
-import {format as timeFormatExpr} from './time';
+import {format as timeFormatExpr} from '../timeunit';
 import {UnitModel} from './unit';
 import {Spec, isUnitSpec, isFacetSpec, isLayerSpec} from '../spec';
 
