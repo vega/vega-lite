@@ -27,7 +27,7 @@
     "data": "rsync -r node_modules/vega-datasets/data/* data",
     "deploy": "scripts/deploy.sh",
     "deploy:gh": "scripts/deploy-gh.sh",
-    "lint": "tslint -c tslint.json src/*.ts test/*.ts src/**/*.ts test/**/*.ts",
+    "lint": "tslint src/**.ts test/**.ts",
     "prestart": "npm run build && npm run data && scripts/index-examples",
     "start": "npm run watch & browser-sync start --server --files 'vega-lite.js' --index 'test-gallery.html'",
     "poststart": "rm examples/all-examples.json",
@@ -52,7 +52,7 @@
   },
   "homepage": "https://github.com/vega/vega-lite",
   "devDependencies": {
-    "browser-sync": "^2.11.1",
+    "browser-sync": "^2.11.2",
     "browserify": "^13.0.0",
     "browserify-shim": "^3.8.12",
     "browserify-versionify": "^1.0.6",
@@ -64,11 +64,11 @@
     "nodemon": "^1.9.1",
     "source-map-support": "^0.4.0",
     "tsify": "^0.14.1",
-    "tslint": "^3.5.0",
-    "typescript": "^1.8.7",
+    "tslint": "^3.7.0",
+    "typescript": "^1.8.9",
     "typescript-json-schema": "^0.1.0",
     "uglify-js": "^2.6.2",
-    "vega": "^2.5.1",
+    "vega": "^2.5.2",
     "vega-datasets": "vega/vega-datasets#gh-pages",
     "watchify": "^3.7.0",
     "z-schema": "^3.16.1"
@@ -76,7 +76,7 @@
   "dependencies": {
     "datalib": "^1.6.3",
     "json-stable-stringify": "^1.0.1",
-    "yargs": "^4.2.0"
+    "yargs": "^4.3.2"
   },
   "browserify": {
     "transform": [
