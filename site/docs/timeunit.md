@@ -34,18 +34,16 @@ permalink: /docs/timeunit.html
 
 Vega-Lite supports the following time units, which can be combined into the `timeUnit` properties above (e.g. `yearmonthday`, `hoursminutes`).
 
-| Function      | Description    |  Example time unit of `Monday April 4, 2016 11:52:34:0201`  |
+| Function      | Description    |  Example value for `Monday April 4, 2016 11:52:34:0201`  |
 | :------------ | :------------- | :-----------------------------------------------|
-| `date`        | returns the day of the month for a given date input, in local time | `4` |
-| `day`   | return the day of the week for a given date input, in local time | `1` |
-| `year`        | returns the year for a given date input, in local time | `2016` |
-| `month`       | returns the (zero-based) month for a given date input, in local time | `3` |
-| `hours`       | returns the hours component for a given date input, in local time | `11` |
-| `minutes`     | returns the minutes component for a given date input, in local time | `52` |
-| `seconds`     | returns the seconds component for a given date input, in local time | `34` |
-| `milliseconds`| returns the milliseconds component for a given date input, in local time | `0201` |
-
-<!-- TODO: given a example datetime, show examples show each different time unit property transforms the original time -->
+| `date`        | returns the day of the month for a given date input, in local time. | `4` |
+| `day`         | returns the day of the week for a given date input, in local time.  (`0` for Sunday, `1` for Monday, `2` for Tuesday, and so on.)   | `1` |
+| `year`        | returns the year for a given date input, in local time. | `2016` |
+| `month`       | returns the (zero-based) month for a given date input, in local time (e.g., `0` for January).   | `3` |
+| `hours`       | returns the hours component for a given date input, in local time (number between `0` and `23`). | `11` |
+| `minutes`     | returns the minutes component for a given date input, in local time (number between `0` and `59`). | `52` |
+| `seconds`     | returns the seconds component for a given date input, in local time (number between `0` and `59`). | `34` |
+| `milliseconds`| returns the milliseconds component for a given date input, in local time  (number between `0` and `999`). | `0201` |
 
 #### Example
 
