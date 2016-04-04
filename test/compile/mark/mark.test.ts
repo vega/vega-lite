@@ -4,7 +4,6 @@ import {assert} from 'chai';
 
 import {parseUnitModel} from '../../util';
 import {parseMark} from '../../../src/compile/mark/mark';
-import {SUMMARY} from '../../../src/data';
 
 describe('Mark (Non-path based Mark)', function() {
   describe('Bar', function() {
