@@ -25,9 +25,25 @@ permalink: /docs/timeunit.html
 
 `timeUnit` property of a channel definition sets the level of specificity for a temporal field. Currently supported values are:
 
-- Non-periodic Time Unit: `'year'`, `'yearmonth'`, `'yearmonthday'`, `'yearmonthdate'`, `'yearday'`, `'yeardate'`, `'yearmonthdayhours'`, `'yearmonthdayhoursminutes'`. 
-
+- Non-periodic Time Unit: `'year'`, `'yearmonth'`, `'yearmonthday'`, `'yearmonthdate'`, `'yearday'`, `'yeardate'`, `'yearmonthdayhours'`, `'yearmonthdayhoursminutes'`.
+  - For example the `yearmonth` of `April 4, 2016 11:52:34` is `April 2016`.
 - Periodic Time Unit: `'month'`, `'day'`, `'date'`, `'hours'`, `'minutes'`, `'seconds'`, `'milliseconds'`,  `'hoursminutes'`, `'hoursminutesseconds'`, `'minutesseconds'`, `'secondsmilliseconds'`.
+
+
+## Date/Time Units
+
+Vega-Lite supports the following time units, which can be combined into the `timeUnit` properties above (e.g. `yearmonthday`, `hoursminutes`).
+
+| Function      | Description    |  Example time unit of `Monday April 4, 2016 11:52:34:0201`  |
+| :------------ | :------------- | :-----------------------------------------------|
+| `date`        | returns the day of the month for a given date input, in local time | `4` |
+| `day`   | return the day of the week for a given date input, in local time | `1` |
+| `year`        | returns the year for a given date input, in local time | `2016` |
+| `month`       | returns the (zero-based) month for a given date input, in local time | `3` |
+| `hours`       | returns the hours component for a given date input, in local time | `11` |
+| `minutes`     | returns the minutes component for a given date input, in local time | `52` |
+| `seconds`     | returns the seconds component for a given date input, in local time | `34` |
+| `milliseconds`| returns the milliseconds component for a given date input, in local time | `0201` |
 
 <!-- TODO: given a example datetime, show examples show each different time unit property transforms the original time -->
 
