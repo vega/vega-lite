@@ -27,6 +27,7 @@ permalink: /docs/timeunit.html
 
 - Non-periodic Time Unit: `'year'`, `'yearmonth'`, `'yearmonthday'`, `'yearmonthdate'`, `'yearday'`, `'yeardate'`, `'yearmonthdayhours'`, `'yearmonthdayhoursminutes'`.
   - For example the `yearmonth` of `April 4, 2016 11:52:34` is `April 2016`.
+  
 - Periodic Time Unit: `'month'`, `'day'`, `'date'`, `'hours'`, `'minutes'`, `'seconds'`, `'milliseconds'`,  `'hoursminutes'`, `'hoursminutesseconds'`, `'minutesseconds'`, `'secondsmilliseconds'`.
 
 
@@ -43,7 +44,7 @@ Vega-Lite supports the following time units, which can be combined into the `tim
 | `hours`       | returns the hours component for a given date input, in local time (number between `0` and `23`). | `11` |
 | `minutes`     | returns the minutes component for a given date input, in local time (number between `0` and `59`). | `52` |
 | `seconds`     | returns the seconds component for a given date input, in local time (number between `0` and `59`). | `34` |
-| `milliseconds`| returns the milliseconds component for a given date input, in local time  (number between `0` and `999`). | `0201` |
+| `milliseconds`| returns the milliseconds component for a given date input, in local time  (number between `0` and `999`). | `201` |
 
 #### Example
 
