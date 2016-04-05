@@ -2,10 +2,10 @@
 layout: examples
 menu: examples
 title: Users
-permalink: /examples/users.html
+permalink: /examples/applications.html
 ---
 
-An incomplete list of users of the Vega-Lite language and compiler. If you want to add a tool or library, [edit this file and sent us a pull request](https://github.com/vega/vega-lite/edit/master/site/examples/users.md).
+An incomplete list of applications, users, and extensions of the Vega-Lite language and compiler. If you want to add a tool or library, [edit this file and sent us a pull request](https://github.com/vega/vega-lite/edit/master/site/examples/users.md).
 
 ## Bindings for programming languages
 
