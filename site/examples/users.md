@@ -13,9 +13,12 @@ An incomplete list of users of the Vega-Lite language and compiler. If you want 
 * [Vega-Lite for Julia](https://github.com/fredo-dedup/VegaLite.jl)
 * [vegaliteR](https://github.com/hrbrmstr/vegalite) provides HTML widgets for Vega-Lite in R.
 
-## UI tools
+## Tools
 
 * [Polestar](https://github.com/vega/polestar), lightweight Tableau-style interface for visual analysis
 * [Voyager](https://github.com/vega/voyager), visualization browser for open-ended data exploration
 * [Lyra](https://github.com/vega/lyra), an interactive, graphical Visualization Design Environment (VDE)
+
+## Libraries
+
 * [Tooltips for Vega and Vega-Lite](https://github.com/vega/vega-lite-tooltip)
