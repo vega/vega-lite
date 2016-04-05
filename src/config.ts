@@ -27,11 +27,7 @@ export const defaultCellConfig: CellConfig = {
   height: 200
 };
 
-export const defaultFacetCellConfig: CellConfig = {
-  stroke: '#ccc',
-  strokeWidth: 1
-};
-
+int
 export interface FacetConfig {
   scale?: FacetScaleConfig;
   axis?: AxisConfig;
@@ -95,6 +91,19 @@ export enum StackOffset {
     CENTER = 'center' as any,
     NORMALIZE = 'normalize' as any,
     NONE = 'none' as any,
+}
+
+export enum LineInterpolation {
+    LINEAR = 'linear' as any,
+    BUNDLE = 'bundle' as any,
+    MONOTONE = 'monotone' as any,
+    STEP_BEFORE = 'step-before' as any,
+    STEP_AFTER = 'step-after' as any,
+    BASIS = 'basis' as any,
+    BASIS_OPEN = 'basis-open' as any,
+    BASIS_CLOSED = 'basis-closed' as any,
+    CARDINAL = 'cardinal' as any,
+    CARDINAL_OPEN = 'cardinal-open' as any,
 }
 
 export interface MarkConfig {
@@ -179,7 +188,7 @@ export interface MarkConfig {
   /**
    * The line interpolation method to use. One of linear, step-before, step-after, basis, basis-open, cardinal, cardinal-open, monotone.
    */
-  interpolate?: string;
+  interpolate?: LineInterpolation;
   /**
    * Depending on the interpolation type, sets the tension parameter.
    */
