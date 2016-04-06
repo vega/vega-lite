@@ -18,11 +18,17 @@ export interface Data {
   values?: any[];
 }
 
+export enum DataTable {
+  SOURCE = 'source' as any,
+  SUMMARY = 'summary' as any,
+  STACKED_SCALE = 'stacked_scale' as any,
+  LAYOUT = 'layout' as any
+}
 
-export const SUMMARY = 'summary';
-export const SOURCE = 'source';
-export const STACKED_SCALE = 'stacked_scale';
-export const LAYOUT = 'layout';
+export const SUMMARY = DataTable.SUMMARY;
+export const SOURCE = DataTable.SOURCE;
+export const STACKED_SCALE = DataTable.STACKED_SCALE;
+export const LAYOUT = DataTable.LAYOUT;
 
 /** Mapping from datalib's inferred type to Vega-lite's type */
 // TODO: consider if we can remove

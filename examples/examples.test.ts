@@ -14,22 +14,25 @@ const validator = new zSchema({
 const vlSchema = require('../vega-lite-schema.json');
 const vgSchema = require('../node_modules/vega/vega-schema.json');
 
-function validateAgainstSchemas(vlspec) {
-  const isVlValid = validator.validate(vlspec, vlSchema);
-  if (!isVlValid) {
-    const errors = validator.getLastErrors();
+function validateVL(spec) {
+  const valid = validator.validate(spec, vlSchema);
+  const errors = validator.getLastErrors();
+  if (!valid) {
     console.log(inspect(errors, { depth: 10, colors: true }));
   }
-  assert(isVlValid);
+  assert(valid, errors && errors.map((err) => {return err.message; }).join(', '));
+}
 
-  const vegaSpec = vl.compile(vlspec).spec;
+function validateVega(spec) {
+  const vegaSpec = vl.compile(spec).spec;
 
-  const isVgValid = validator.validate(vegaSpec, vgSchema);
-  if (!isVgValid) {
-    const errors = validator.getLastErrors();
+  const valid = validator.validate(vegaSpec, vgSchema);
+  const errors = validator.getLastErrors();
+  if (!valid) {
+    console.log(vegaSpec.marks[0].marks[0].properties);
     console.log(inspect(errors, { depth: 10, colors: true }));
   }
-  assert(isVgValid);
+  assert(valid, errors && errors.map((err) => {return err.message; }).join(', '));
 }
 
 describe('Examples', function() {
@@ -37,10 +40,16 @@ describe('Examples', function() {
 
   examples.forEach(function(example) {
     if (path.extname(example) !== '.json') { return; }
+    const jsonSpec = JSON.parse(fs.readFileSync('examples/specs/' + example));
 
-    it('should be valid and produce valid vega for: ' + example, function() {
-      const data = JSON.parse(fs.readFileSync('examples/specs/' + example));
-      validateAgainstSchemas(data);
+    describe(example, function() {
+      it('should be valid vega-lite', function() {
+        validateVL(jsonSpec);
+      });
+
+      it('should produce valid vega', function() {
+        validateVega(jsonSpec);
+      });
     });
   });
 });

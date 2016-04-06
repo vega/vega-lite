@@ -29,12 +29,12 @@
     "example/_diff/*"
   ],
   "dependencies": {
-    "vega": "^2.5.0"
+    "vega": "^2.5.1"
   },
   "devDependencies": {
-    "vega-embed": "~2.0.0",
-    "d3": "~3.5.14",
-    "highlightjs": "~9.1.0",
-    "octicons": "^3.4.1"
+    "vega-embed": "~2.1.0",
+    "d3": "~3.5.16",
+    "highlightjs": "~9.2.0",
+    "octicons": "^3.5.0"
   }
 }

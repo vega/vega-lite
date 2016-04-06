@@ -1,0 +1,8 @@
+// Place your settings in this file to overwrite default and user settings.
+{
+  "editor.tabSize": 2,
+  "files.exclude": {
+    "**/*.js": {"when": "$(basename).ts"},
+    "**/*.js.map": true
+  }
+}

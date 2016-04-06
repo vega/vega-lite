@@ -1,12 +1,12 @@
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
-import {parseModel} from '../util';
+import {parseUnitModel} from '../util';
 import {X} from '../../src/channel';
 import * as legend from '../../src/compile/legend';
 
 describe('Legend', function() {
-  describe('compileLegend()', function() {
+  describe('parseLegend()', function() {
     it('should output explicitly specified properties', function() {
       // FIXME test this
     });
@@ -26,7 +26,7 @@ describe('Legend', function() {
 
   describe('formatMixins()', function() {
     it('should not be added for bin', function() {
-      assert.deepEqual(legend.formatMixins({}, parseModel({
+      assert.deepEqual(legend.formatMixins({}, parseUnitModel({
         mark: "point",
         encoding: {
           x: {field:'a', bin: true}

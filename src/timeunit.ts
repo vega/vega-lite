@@ -44,3 +44,53 @@ export const TIMEUNITS = [
     TimeUnit.MINUTESSECONDS,
     TimeUnit.SECONDSMILLISECONDS,
 ];
+
+/** returns the template name used for axis labels for a time unit */
+export function format(timeUnit: TimeUnit, abbreviated = false): string {
+  if (!timeUnit) {
+    return undefined;
+  }
+
+  let timeString = timeUnit.toString();
+
+  let dateComponents = [];
+
+  if (timeString.indexOf('year') > -1) {
+    dateComponents.push(abbreviated ? '%y' : '%Y');
+  }
+
+  if (timeString.indexOf('month') > -1) {
+    dateComponents.push(abbreviated ? '%b' : '%B');
+  }
+
+  if (timeString.indexOf('day') > -1) {
+    dateComponents.push(abbreviated ? '%a' : '%A');
+  } else if (timeString.indexOf('date') > -1) {
+    dateComponents.push('%d');
+  }
+
+  let timeComponents = [];
+
+  if (timeString.indexOf('hours') > -1) {
+    timeComponents.push('%H');
+  }
+  if (timeString.indexOf('minutes') > -1) {
+    timeComponents.push('%M');
+  }
+  if (timeString.indexOf('seconds') > -1) {
+    timeComponents.push('%S');
+  }
+  if (timeString.indexOf('milliseconds') > -1) {
+    timeComponents.push('%L');
+  }
+
+  let out = [];
+  if (dateComponents.length > 0) {
+    out.push(dateComponents.join('-'));
+  }
+  if (timeComponents.length > 0) {
+    out.push(timeComponents.join(':'));
+  }
+
+  return out.length > 0 ? out.join(' ') : undefined;
+}

@@ -1,15 +1,15 @@
-import {Model} from '../Model';
 import {X, Y, SIZE, Channel} from '../../channel';
 import {isMeasure} from '../../fielddef';
-import {applyColorAndOpacity} from '../common';
 
+import {UnitModel} from '../unit';
+import {applyColorAndOpacity} from '../common';
 
 export namespace bar {
   export function markType() {
     return 'rect';
   }
 
-  export function properties(model: Model) {
+  export function properties(model: UnitModel) {
     // TODO Use Vega's marks properties interface
     let p: any = {};
 
@@ -167,7 +167,7 @@ export namespace bar {
     return p;
   }
 
-  function sizeValue(model: Model, channel: Channel) {
+  function sizeValue(model: UnitModel, channel: Channel) {
     const fieldDef = model.fieldDef(SIZE);
     if (fieldDef && fieldDef.value !== undefined) {
        return fieldDef.value;
@@ -188,7 +188,7 @@ export namespace bar {
         markConfig.barThinSize;
   }
 
-  export function labels(model: Model) {
+  export function labels(model: UnitModel) {
     // TODO(#64): fill this method
     return undefined;
   }

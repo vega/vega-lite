@@ -5,7 +5,7 @@ title: Faceting a plot into a Trellis Plot.
 permalink: /docs/facet.html
 ---
 
-[A Trellis plot (or small multiple)](https://en.wikipedia.org/wiki/Small_multiple) is a series of similar plots that displays different subsets of the same data, facilitating comparison across subsets.  Adding a field to the [`column` or `row` channel](encoding.html#facet) produces a trellis plot that facets the plots into columns or rows respectively.
+[A Trellis plot (or small multiple)](https://en.wikipedia.org/wiki/Small_multiple) is a series of similar plots that displays different subsets of the same data, facilitating comparison across subsets. Adding a field to the [`column` or `row` channel](encoding.html#facet) produces a trellis plot that facets the plots into columns or rows respectively.
 
 ## Example
 

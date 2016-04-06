@@ -1,0 +1,37 @@
+{
+  "data": {"url": "data/flights-2k.json"},
+  "layers": [
+    {
+      "mark": "bar",
+      "encoding": {
+        "x": {
+          "field": "distance",
+          "type": "quantitative",
+          "bin": true
+        },
+        "y": {
+          "aggregate": "count",
+          "field": "*",
+          "type": "quantitative"
+        }
+      }
+    },
+    {
+      "transform": {"filter": "datum.delay < 5"},
+      "mark": "bar",
+      "encoding": {
+        "x": {
+          "field": "distance",
+          "type": "quantitative",
+          "bin": true
+        },
+        "y": {
+          "aggregate": "count",
+          "field": "*",
+          "type": "quantitative"
+        },
+        "color": {"value": "goldenrod"}
+      }
+    }
+  ]
+}

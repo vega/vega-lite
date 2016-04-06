@@ -1,5 +1,6 @@
 html, body {
   height: 100%;
+  width: 100%;
 }
 body {
   font: 16px/1.5em "Helvetica Neue", Helvetica, sans-serif;
@@ -9,7 +10,7 @@ body {
   margin: 0;
   display: flex;
   flex-direction: column;
-  min-width: 480px;
+  max-width: 100%;
 }
 header {
   background-color: #E6E6E6;
@@ -168,13 +169,17 @@ nav {
   display: flex;
   align-items: baseline;
   align-content: flex-start;
+  flex-direction: row;
+  flex-wrap: wrap;
+  line-height: 54px;
 }
+
 nav a {
   color: #666;
-  padding: 12px 16px 12px 16px;
+  padding-right: 2em;
 }
-nav a:first-child {
-  padding-left: 0px;
+nav a:last-child {
+  padding-right: 0px;
 }
 nav a.active {
   font-weight: bold;
@@ -245,6 +250,30 @@ nav a:hover {
   margin-top: -4px;
   /* hack */
   margin-right: 8px;
+  flex: 0 0 auto;
+  display: inline-block;
+  line-height: 54px;
+}
+
+.vl-links {
+  flex: 1 0 auto;
+  max-width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.primary-links {
+  float: left;
+  text-align: left;
+  display: inline-block;
+  flex: 1 0 auto;
+}
+
+.secondary-links {
+  float: right;
+  text-align: right;
+  flex: 0 0 auto;
 }
 
 .lead {
@@ -380,7 +409,7 @@ nav a:hover {
   flex-flow: row wrap;
 }
 .example .example-vis {
-  flex: 1 1 0%;
+  flex: 1 1 0;
   margin-right: 10px;
   text-align: center;
   background-color: white;
@@ -388,7 +417,7 @@ nav a:hover {
   align-self: center;
 }
 .example .example-code {
-  flex: 1.618 1 0%;
+  flex: 1.618 1 0;
   margin: 0;
   align-self: flex-start;
   min-width: 350px;
@@ -416,8 +445,8 @@ nav a:hover {
     flex-direction: row;
     flex-wrap: wrap;
   }
-  nav a:not(:first-child) {
-    padding: 10px 10px 10px 10px;
+  .page-centered, .page-content {
+    max-width: 100%;
   }
   .lead-columns {
     flex-direction: column;
@@ -427,5 +456,16 @@ nav a:hover {
   }
   .lead-buttons a {
     width: inherit;
+  }
+  .example .example-vis, .example .example-code {
+    flex: 1 1 auto;
+    max-width: 100%;
+    overflow-x: auto;
+  }
+  .example .example-code code {
+    min-width: 600px;
+  }
+  .highlight {
+    overflow-x: auto;
   }
 }

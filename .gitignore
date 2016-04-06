@@ -2,6 +2,7 @@ node_modules
 bower_components
 _site
 data/*
+*.sublime-workspace
 
 vega-lite*.js
 vega-lite*.map

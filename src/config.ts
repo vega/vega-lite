@@ -165,7 +165,7 @@ export interface MarkConfig {
   /**
    * The orientation of a non-stacked bar, tick, area, and line charts.
    * The value is either horizontal (default) or vertical.
-   * - For bar and tick, this determines whether the size of the bar and tick
+   * - For bar, rule and tick, this determines whether the size of the bar and tick
    * should be applied to x or y dimension.
    * - For area, this property determines the orient property of the Vega output.
    * - For line, this property determines the sort order of the points in the line
@@ -184,6 +184,18 @@ export interface MarkConfig {
    * Depending on the interpolation type, sets the tension parameter.
    */
   tension?: number;
+
+  // ---------- Line ---------
+  /**
+   * Size of line mark.
+   */
+  lineSize?: number;
+
+  // ---------- Rule ---------
+  /**
+   * Size of rule mark.
+   */
+  ruleSize?: number;
 
   // ---------- Bar ----------
   /**
@@ -285,6 +297,8 @@ export const defaultMarkConfig: MarkConfig = {
   strokeWidth: 2,
   size: 30,
   barThinSize: 2,
+  // lineSize is undefined by default, and refer to value from strokeWidth
+  ruleSize: 1,
   tickThickness: 1,
 
   fontSize: 10,

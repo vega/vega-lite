@@ -1,14 +1,14 @@
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
-import {parseModel} from '../util';
-import * as compile from '../../src/compile/compile';
+import {parseUnitModel} from '../util';
+import {assembleRootGroup} from '../../src/compile/compile';
 
 describe('Compile', function() {
 
   describe('compileRootGroup()', function() {
     describe('ordinal', function() {
-      const model = parseModel({
+      const model = parseUnitModel({
         "description": "A simple bar chart with embedded data.",
         "data": {
           "values": [
@@ -24,7 +24,7 @@ describe('Compile', function() {
         }
       });
 
-      const rootGroup = compile.compileRootGroup(model);
+      const rootGroup = assembleRootGroup(model);
 
       it('should refer to layout data', function() {
         assert.deepEqual(rootGroup.from, {"data": "layout"});

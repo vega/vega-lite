@@ -1,9 +1,12 @@
 ---
-layout: page
-menu: gallery
+layout: examples
+menu: examples
 title: Example Gallery
-permalink: /gallery.html
+permalink: /examples/gallery.html
 ---
+
+* TOC
+{:toc}
 
 ## Basic
 

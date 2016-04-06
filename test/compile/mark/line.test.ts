@@ -1,7 +1,7 @@
 /* tslint:disable quote */
 
 import {assert} from 'chai';
-import {parseModel} from '../../util';
+import {parseUnitModel} from '../../util';
 import {extend} from '../../../src/util'
 import {X, Y, COLOR} from '../../../src/channel';
 import {line} from '../../../src/compile/mark/line';
@@ -27,7 +27,7 @@ describe('Mark: Line', function() {
   }
 
   describe('with x, y', function() {
-    const model = parseModel(lineXY());
+    const model = parseUnitModel(lineXY());
     const props = line.properties(model);
 
     it('should have scale for x', function() {
@@ -40,7 +40,7 @@ describe('Mark: Line', function() {
   });
 
   describe('with x, y, color', function () {
-    const model = parseModel(lineXY({
+    const model = parseUnitModel(lineXY({
       "color": {"field": "Acceleration", "type": "quantitative"}
     }));
     const props = line.properties(model);

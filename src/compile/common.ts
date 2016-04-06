@@ -1,23 +1,54 @@
-import {Model} from './Model';
-import {FieldDef, OrderChannelDef} from '../fielddef';
 import {COLUMN, ROW, X, Y, SIZE, COLOR, SHAPE, TEXT, LABEL, Channel} from '../channel';
-import {field} from '../fielddef';
+import {FieldDef, field, OrderChannelDef} from '../fielddef';
 import {SortOrder} from '../sort';
 import {QUANTITATIVE, ORDINAL, TEMPORAL} from '../type';
-import {format as timeFormatExpr} from './time';
-import {contains} from '../util';
+import {contains, union} from '../util';
 
-export const FILL_STROKE_CONFIG = ['fill', 'fillOpacity',
-  'stroke', 'strokeWidth', 'strokeDash', 'strokeDashOffset', 'strokeOpacity',
+import {FacetModel} from './facet';
+import {LayerModel} from './layer';
+import {Model} from './model';
+import {format as timeFormatExpr} from '../timeunit';
+import {UnitModel} from './unit';
+import {Spec, isUnitSpec, isFacetSpec, isLayerSpec} from '../spec';
+
+
+export function buildModel(spec: Spec, parent: Model, parentGivenName: string): Model {
+  if (isFacetSpec(spec)) {
+    return new FacetModel(spec, parent, parentGivenName);
+  }
+
+  if (isLayerSpec(spec)) {
+    return new LayerModel(spec, parent, parentGivenName);
+  }
+
+  if (isUnitSpec(spec)) {
+    return new UnitModel(spec, parent, parentGivenName);
+  }
+
+  console.error('Invalid spec.');
+  return null;
+}
+
+// TODO: figure if we really need opacity in both
+export const STROKE_CONFIG = ['stroke', 'strokeWidth',
+  'strokeDash', 'strokeDashOffset', 'strokeOpacity', 'opacity'];
+
+export const FILL_CONFIG = ['fill', 'fillOpacity',
   'opacity'];
 
-export function applyColorAndOpacity(p, model: Model) {
+export const FILL_STROKE_CONFIG = union(STROKE_CONFIG, FILL_CONFIG);
+
+export function applyColorAndOpacity(p, model: UnitModel) {
   const filled = model.config().mark.filled;
   const fieldDef = model.fieldDef(COLOR);
 
   // Apply fill stroke config first so that color field / value can override
   // fill / stroke
-  applyMarkConfig(p, model, FILL_STROKE_CONFIG);
+  if (filled) {
+    applyMarkConfig(p, model, FILL_CONFIG);
+  } else {
+    applyMarkConfig(p, model, STROKE_CONFIG);
+  }
 
   let value;
   if (model.has(COLOR)) {
@@ -49,10 +80,11 @@ export function applyConfig(properties, config, propsList: string[]) {
       properties[property] = { value: value };
     }
   });
+  return properties;
 }
 
-export function applyMarkConfig(marksProperties, model: Model, propsList: string[]) {
-  applyConfig(marksProperties, model.config().mark, propsList);
+export function applyMarkConfig(marksProperties, model: UnitModel, propsList: string[]) {
+  return applyConfig(marksProperties, model.config().mark, propsList);
 }
 
 

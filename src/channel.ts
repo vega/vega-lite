@@ -4,7 +4,7 @@
  */
 
 import {Mark} from './mark';
-import {contains} from './util';
+import {contains, without} from './util';
 
 export enum Channel {
   X = 'x' as any,
@@ -36,9 +36,15 @@ export const ORDER = Channel.ORDER;
 
 export const CHANNELS = [X, Y, ROW, COLUMN, SIZE, SHAPE, COLOR, PATH, ORDER, TEXT, DETAIL, LABEL];
 
+export const UNIT_CHANNELS = without(CHANNELS, [ROW, COLUMN]);
+export const UNIT_SCALE_CHANNELS = without(UNIT_CHANNELS, [PATH, ORDER, DETAIL, TEXT, LABEL]);
+export const NONSPATIAL_CHANNELS = without(UNIT_CHANNELS, [X, Y]);
+export const NONSPATIAL_SCALE_CHANNELS = without(UNIT_SCALE_CHANNELS, [X, Y]);
+
 export interface SupportedMark {
   point?: boolean;
   tick?: boolean;
+  rule?: boolean;
   circle?: boolean;
   square?: boolean;
   bar?: boolean;
@@ -72,12 +78,12 @@ export function getSupportedMark(channel: Channel): SupportedMark {
     case ROW:
     case COLUMN:
       return { // all marks
-        point: true, tick: true, circle: true, square: true,
+        point: true, tick: true, rule: true, circle: true, square: true,
         bar: true, line: true, area: true, text: true
       };
     case SIZE:
       return {
-        point: true, tick: true, circle: true, square: true,
+        point: true, tick: true, rule: true, circle: true, square: true,
         bar: true, text: true
       };
     case SHAPE:
