@@ -63,20 +63,20 @@
     "mocha": "^2.4.5",
     "nodemon": "^1.9.1",
     "source-map-support": "^0.4.0",
-    "tsify": "^0.14.1",
-    "tslint": "^3.7.0",
+    "tsify": "^0.14.2",
+    "tslint": "^3.7.1",
     "typescript": "^1.8.9",
     "typescript-json-schema": "^0.1.0",
     "uglify-js": "^2.6.2",
     "vega": "^2.5.2",
     "vega-datasets": "vega/vega-datasets#gh-pages",
     "watchify": "^3.7.0",
-    "z-schema": "^3.16.1"
+    "z-schema": "^3.17.0"
   },
   "dependencies": {
     "datalib": "^1.6.3",
     "json-stable-stringify": "^1.0.1",
-    "yargs": "^4.3.2"
+    "yargs": "^4.4.0"
   },
   "browserify": {
     "transform": [
