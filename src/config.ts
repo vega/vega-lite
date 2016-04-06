@@ -27,7 +27,11 @@ export const defaultCellConfig: CellConfig = {
   height: 200
 };
 
-int
+export const defaultFacetCellConfig: CellConfig = {
+  stroke: '#ccc',
+  strokeWidth: 1
+};
+ 
 export interface FacetConfig {
   scale?: FacetScaleConfig;
   axis?: AxisConfig;
