@@ -94,16 +94,32 @@ export enum StackOffset {
 }
 
 export enum LineInterpolation {
+    /** piecewise linear segments, as in a polyline */
     LINEAR = 'linear' as any,
-    BUNDLE = 'bundle' as any,
-    MONOTONE = 'monotone' as any,
+    /** close the linear segments to form a polygon */
+    LINEAR_CLOSED = 'linear-closed' as any,
+    /** alternate between horizontal and vertical segments, as in a step function */
+    STEP = 'step' as any,
+    /** alternate between vertical and horizontal segments, as in a step function */
     STEP_BEFORE = 'step-before' as any,
+    /** alternate between horizontal and vertical segments, as in a step function */
     STEP_AFTER = 'step-after' as any,
+    /** a B-spline, with control point duplication on the ends */
     BASIS = 'basis' as any,
+    /** an open B-spline; may not intersect the start or end */
     BASIS_OPEN = 'basis-open' as any,
+    /** a closed B-spline, as in a loop */
     BASIS_CLOSED = 'basis-closed' as any,
+    /** a Cardinal spline, with control point duplication on the ends */
     CARDINAL = 'cardinal' as any,
+    /** an open Cardinal spline; may not intersect the start or end, but will intersect other control points */
     CARDINAL_OPEN = 'cardinal-open' as any,
+    /** a closed Cardinal spline, as in a loop */
+    CARDINAL_CLOSED = 'cardinal-closed' as any,
+    /** equivalent to basis, except the tension parameter is used to straighten the spline */
+    BUNDLE = 'bundle' as any,
+    /** cubic interpolation that preserves monotonicity in y */
+    MONOTONE = 'monotone' as any,
 }
 
 export interface MarkConfig {
