@@ -1,0 +1,40 @@
+{
+  "name": "vega-lite",
+  "main": "vega-lite.js",
+  "homepage": "https://github.com/vega/vega-lite",
+  "authors": [
+    "Kanit Wongsuphasawat <kanitw@gmail.com> (http://kanitw.yellowpigz.com)",
+    "Dominik Moritz <domoritz@cs.washington.edu> (http://domoritz.de)",
+    "Jeffrey Heer <jheer@uw.edu> (http://jheer.org)"
+  ],
+  "description": "Vega-lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications.",
+  "moduleType": [
+    "amd",
+    "globals",
+    "node"
+  ],
+  "keywords": [
+    "visualization",
+    "grammar"
+  ],
+  "license": "BSD-3-Clause",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "_site",
+    "example/_original/*",
+    "example/_output/*",
+    "example/_diff/*"
+  ],
+  "dependencies": {
+    "vega": "^2.5.0"
+  },
+  "devDependencies": {
+    "vega-embed": "~2.0.0",
+    "d3": "~3.5.14",
+    "highlightjs": "~9.1.0",
+    "octicons": "^3.4.1"
+  }
+}

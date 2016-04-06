@@ -1,0 +1,87 @@
+{
+  "name": "vega-lite",
+  "author": "Jeffrey Heer, Dominik Moritz, Kanit \"Ham\" Wongsuphasawat",
+  "version": "1.0.8",
+  "collaborators": [
+    "Kanit Wongsuphasawat <kanitw@gmail.com> (http://kanitw.yellowpigz.com)",
+    "Dominik Moritz <domoritz@cs.washington.edu> (http://domoritz.de)",
+    "Jeffrey Heer <jheer@uw.edu> (http://jheer.org)"
+  ],
+  "description": "Vega-lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications.",
+  "main": "src/vl.js",
+  "bin": {
+    "vl2png": "./bin/vl2png",
+    "vl2svg": "./bin/vl2svg",
+    "vl2vg": "./bin/vl2vg"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "build": "browserify src/vl.ts -p tsify -d -s vl > vega-lite.js",
+    "postbuild": "uglifyjs vega-lite.js -cm --source-map vega-lite.min.js.map > vega-lite.min.js && npm run schema",
+    "build:all": "npm run clean && npm run data && npm run build && npm test && npm run lint && npm run build:images",
+    "build:images": "npm run data && scripts/generate-images.sh",
+    "cover": "npm run pretest && istanbul cover node_modules/.bin/_mocha -- --recursive",
+    "clean": "rm -f vega-lite.* vega-lite-schema.json & find src -name '*.js*' -type f -delete & find test -name '*.js*' -type f -delete & find site -name '*.js*' -type f -delete & rm -rf examples/_diff examples/_original examples/_output examples/images && rm -rf data",
+    "data": "rsync -r node_modules/vega-datasets/data/* data",
+    "deploy": "scripts/deploy.sh",
+    "deploy:gh": "scripts/deploy-gh.sh",
+    "lint": "tslint -c tslint.json src/*.ts test/*.ts src/**/*.ts test/**/*.ts",
+    "prestart": "npm run build && npm run data && scripts/index-examples",
+    "start": "npm run watch & browser-sync start --server --files 'vega-lite.js' --index 'test-gallery.html'",
+    "poststart": "rm examples/all-examples.json",
+    "schema": "typescript-json-schema --required true src/spec.ts Spec > vega-lite-schema.json",
+    "presite": "tsc && npm run build && bower install && npm run data",
+    "site": "bundle exec jekyll serve --incremental",
+    "pretest": "tsc && npm run data",
+    "test": "npm run schema && mocha --recursive --require source-map-support/register test examples",
+    "watch:build": "watchify src/vl.ts -p tsify -v -d -s vl -o 'exorcist vega-lite.js.map > vega-lite.js'",
+    "watch:test": "nodemon -x 'npm test && npm run lint'",
+    "watch": "nodemon -x 'npm run build && npm test && npm run lint'",
+    "x-compile": "./scripts/examples-compile.sh",
+    "x-diff": "./scripts/examples-diff.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vega/vega-lite.git"
+  },
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/vega/vega-lite/issues"
+  },
+  "homepage": "https://github.com/vega/vega-lite",
+  "devDependencies": {
+    "browser-sync": "^2.11.1",
+    "browserify": "^13.0.0",
+    "browserify-shim": "^3.8.12",
+    "browserify-versionify": "^1.0.6",
+    "chai": "^3.5.0",
+    "exorcist": "^0.4.0",
+    "istanbul": "^0.4.2",
+    "json-diff": "^0.3.1",
+    "mocha": "^2.4.5",
+    "nodemon": "^1.9.0",
+    "source-map-support": "^0.4.0",
+    "tsify": "^0.13.2",
+    "tslint": "^3.4.0",
+    "typescript": "^1.8.2",
+    "typescript-json-schema": "^0.0.8",
+    "uglify-js": "^2.6.2",
+    "vega": "^2.5.1",
+    "vega-datasets": "vega/vega-datasets#gh-pages",
+    "watchify": "^3.7.0",
+    "z-schema": "^3.16.1"
+  },
+  "dependencies": {
+    "datalib": "^1.6.1",
+    "yargs": "^4.1.0"
+  },
+  "browserify": {
+    "transform": [
+      "browserify-shim",
+      "browserify-versionify"
+    ]
+  },
+  "browserify-shim": {}
+}

@@ -1,0 +1,28 @@
+# Github Pages' Jekyll Site settings
+title: Vega-Lite
+description: Vega-Lite - a high-level grammar for statistical graphics.
+  Vega-Lite provides a higher-level grammar for visual analysis,
+  comparable to ggplot or Tableau, that generates complete Vega specifications.
+
+  Vega-Lite specifications consist of simple mappings of variables
+  in a data set to visual encoding channels such as x, y, color, and size.
+  These mappings are then translated into detailed visualization
+  specifications in the form of Vega specification language.
+  Vega-Lite produces default values for visualization components
+  (e.g., scales, axes, and legends) in the output Vega specification
+  using a rule-based approach, but users can explicit specify these properties
+  to override default values.
+
+baseurl: "/vega-lite" # the subpath of your site, e.g. /blog/
+url: "http://vega.github.io" # the base hostname & protocol for your site
+exclude: [bin, coverage, examples/_original, examples/_output, examples/_diff, Gemfile, Gemfile.lock, gulp,
+  lib/schema.json, node_modules, scripts, test, typings, package.json, bower.json, src, tsconfig.json, tslint.json,
+  nodemon.json, CONTRIBUTING.md, README.md, LICENSE, bower_components/vega/node_modules, bower_components/vega-embed/node_modules]
+
+markdown: kramdown
+highlighter: rouge
+
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+  auto_id_stripping: true

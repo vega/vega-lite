@@ -1,0 +1,69 @@
+{
+  "rules": {
+    "ban": true,
+    "class-name": true,
+    "eofline": true,
+    "indent": [true, "spaces"],
+    "comment-format": [true, "check-space"],
+    "curly": true,
+    "forin": true,
+    "label-position": true,
+    "label-undefined": true,
+    "no-arg": true,
+    "no-any": false,
+    "jsdoc-format": true,
+    "member-access": true,
+    "semicolon": true,
+    "no-duplicate-key": true,
+    "no-duplicate-variable": true,
+    "no-unreachable": true,
+    "no-conditional-assignment": true,
+    "no-bitwise": true,
+    "no-consecutive-blank-lines": false,
+    "no-console": [
+      true,
+      "debug",
+      "info",
+      "time",
+      "timeEnd",
+      "trace"
+    ],
+    "no-construct": true,
+    "no-constructor-vars": true,
+    "no-debugger": true,
+    "no-duplicate-key": true,
+    "no-duplicate-variable": true,
+    "no-empty": true,
+    "no-eval": true,
+    "no-inferrable-types": false,
+    "no-internal-module": true,
+    "no-shadowed-variable": true,
+    "no-string-literal": true,
+    "no-trailing-whitespace": true,
+    "no-unreachable": true,
+    "no-unused-expression": true,
+    "no-unused-variable": true,
+    "no-use-before-declare": true,
+    "one-line": [
+      true,
+      "check-open-brace",
+      "check-catch",
+      "check-else",
+      "check-whitespace"
+    ],
+    "typedef-whitespace": [
+      true,
+      {
+        "call-signature": "nospace",
+        "index-signature": "nospace",
+        "parameter": "nospace",
+        "property-declaration": "nospace",
+        "variable-declaration": "nospace"
+      }
+    ],
+    "no-switch-case-fall-through": true,
+    "quotemark": [true, "single"],
+    "triple-equals": [true, "allow-null-check"],
+    "variable-name": [true, "check-format", "allow-leading-underscore", "ban-keywords"]
+  }
+}

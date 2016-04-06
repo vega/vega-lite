@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <link rel="shortcut icon" href="https://vega.github.io/favicon.ico"/>
+    <meta name="description" content="{{ site.description }}">
+
+    <script src="{{site.baseurl}}/bower_components/d3/d3.min.js"></script>
+    <script src="{{site.baseurl}}/bower_components/vega/vega.min.js"></script>
+    <script src="{{site.baseurl}}/vega-lite.min.js"></script>
+    <script src="{{site.baseurl}}/bower_components/vega-embed/vega-embed.js"></script>
+    <script src="{{site.baseurl}}/bower_components/highlightjs/highlight.pack.js"></script>
+
+    <script>
+      var BASEURL = "{{site.baseurl}}";
+    </script>
+
+    <title> {{site.title}}{% if page.title %}:{% endif %} {{page.title}} </title>
+    <link rel="stylesheet" href="{{site.baseurl}}/site/static/syntax.css">
+    <link rel="stylesheet" href="{{site.baseurl}}/bower_components/highlightjs/styles/github.css">
+    <link rel="stylesheet" href="{{site.baseurl}}/bower_components/octicons/octicons/octicons.css">
+    <link rel="stylesheet" href="{{site.baseurl}}/site/static/main.css">
+  </head>
+  <body>
+    {{ content }}
+    <script src="{{site.baseurl}}/site/static/main.js"></script>
+    <script>
+      // Google Analytics
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-44428446-6', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </body>
+</html>

@@ -1,0 +1,7 @@
+{
+  "data": {"url": "data/cars.json"},
+  "mark": "tick",
+  "encoding": {
+    "x": {"field": "Horsepower", "type": "quantitative"}
+  }
+}

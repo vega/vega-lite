@@ -1,0 +1,31 @@
+---
+layout: base
+---
+
+<div class="fill">
+  <header>
+    <nav class="page-centered">
+      <a class="vl-title" href="{{site.baseurl}}/">{{site.title}}</a>
+      <a href="{{site.baseurl}}/tutorials/getting_started.html" {% if page.menu == 'tutorials' %}class="active"{% endif %}>Tutorials</a>
+      <a href="{{site.baseurl}}/docs/" {% if page.menu == 'docs' %}class="active"{% endif %}>Documentation</a>
+      <a href="{{site.baseurl}}/gallery.html" {% if page.menu == 'gallery' %}class="active"{% endif %}>Examples</a>
+      <span class="fill"></span>
+      <a href="https://www.github.com/vega/vega-lite" target="_blank">GitHub</a>
+      <a href="https://vega.github.io/vega-editor/?mode=vega-lite" target="_blank">Try Online</a>
+    </nav>
+  </header>
+
+  <section>
+    {{ content }}
+  </section>
+</div>
+
+<footer>
+  <div class="page-centered">
+    <span>
+      <a href="https://github.com/vega/vega-lite/edit/master/{{page.path}}">Edit this page</a> and submit a pull request!
+    </span>
+    <span class="fill"></span>
+    <a href="http://idl.cs.washington.edu" title="UW Interactive Data Lab" class="idl-logo"><img src="{{site.baseurl}}/site/static/idl-logo.png"/></a>
+  </div>
+</footer>

@@ -1,0 +1,41 @@
+#!/usr/bin/env node
+// Compile a Vega-Lite spec to Vega
+
+'use strict';
+
+var helpText =
+  'Compile a Vega-Lite spec to Vega.\n\n' +
+  'Usage: vl2vg [vega_lite_json_file]\n\n';
+
+// import required libraries
+var fs = require('fs'),
+    vl = require('vega-lite');
+
+// arguments
+var args = require('yargs')
+  .usage(helpText)
+  .demand(0)
+  .boolean('p').alias('p', 'pretty')
+  .describe('p', 'Output human readable/pretty spec.')
+  .argv;
+
+// input file
+var specFile = args._[0] || '/dev/stdin';
+
+// load spec, compile vg spec
+fs.readFile(specFile, 'utf8', function(err, text) {
+  if (err) throw err;
+  var spec = JSON.parse(text);
+  compile(spec);
+});
+
+function compile(vlSpec) {
+  var result =  vl.compile(vlSpec);
+  // TODO: deal with error
+  var vgSpec = result.spec;
+  if (args.p) {
+    process.stdout.write(JSON.stringify(vgSpec, null, 4));
+  } else {
+    process.stdout.write(JSON.stringify(vgSpec));
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "data": {"values": [{"a": 2}]},
+  "mark": "point",
+  "encoding": {},
+  "config": {"mark": {"color": "purple"}}
+}

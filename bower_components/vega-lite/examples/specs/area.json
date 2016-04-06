@@ -1,0 +1,15 @@
+{
+  "data": {"url": "data/unemployment-across-industries.json"},
+  "mark": "area",
+  "encoding": {
+    "x": {
+      "timeUnit": "yearmonth", "field": "date", "type": "temporal",
+      "scale": {"nice": "month"},
+      "axis": {"axisWidth": 0, "format": "%Y", "labelAngle": 0}
+    },
+    "y": {
+      "aggregate": "sum", "field": "count","type": "quantitative"
+    }
+  },
+  "config": {"cell": {"width": 300, "height": 200}}
+}

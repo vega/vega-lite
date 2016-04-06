@@ -1,0 +1,10 @@
+{
+  "data": {"url": "data/cars.json"},
+  "mark": "area",
+  "encoding": {
+    "x": {"timeUnit": "year", "field": "Year", "type": "temporal"},
+    "y": {"aggregate": "sum", "field": "Weight_in_lbs", "type": "quantitative"},
+    "color": {"field": "Cylinders", "type": "ordinal"}
+  },
+  "config": {"mark": {"interpolate": "monotone"}}
+}

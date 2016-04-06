@@ -15,8 +15,9 @@
   ],
   "license": "BSD-3-Clause",
   "dependencies": {
-    "d3": "^3.5.11",
-    "vega": "^2.4.1"
+    "d3": "^3.5.16",
+    "vega": "^2.5.0",
+    "vega-lite": "^1.0.7"
   },
   "ignore": [
     ".DS_Store",
@@ -35,14 +36,14 @@
     "src",
     "test"
   ],
-  "version": "2.0.0",
-  "_release": "2.0.0",
+  "version": "2.1.0",
+  "_release": "2.1.0",
   "_resolution": {
     "type": "version",
-    "tag": "v2.0.0",
-    "commit": "e4e3ad6d2084a375c1a8f5d7250c90e4b06bb7a3"
+    "tag": "v2.1.0",
+    "commit": "18cf2dcaaa274b6311c15a7800d166d6c01b257e"
   },
   "_source": "git://github.com/vega/vega-embed.git",
-  "_target": "~2.0.0",
+  "_target": "~2.1.0",
   "_originalSource": "vega-embed"
 }

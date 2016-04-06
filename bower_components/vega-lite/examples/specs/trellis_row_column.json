@@ -1,0 +1,10 @@
+{
+  "data": {"url": "data/cars.json"},
+  "mark": "point",
+  "encoding": {
+    "row": {"field": "Cylinders","type": "ordinal"},
+    "column": {"field": "Origin","type": "ordinal"},
+    "x": {"field": "Horsepower","type": "quantitative"},
+    "y": {"field": "Miles_per_Gallon","type": "quantitative"}
+  }
+}

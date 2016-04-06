@@ -1,0 +1,29 @@
+{
+  "data": { "url": "data/population.json"},
+  "transform": {
+    "filter": "datum.year == 2000",
+    "calculate": [{"field": "gender", "expr": "datum.sex == 2 ? \"Female\" : \"Male\""}]
+  },
+  "mark": "bar",
+  "encoding": {
+    "column": {
+      "field": "age", "type": "ordinal",
+      "scale": {"padding": 4},
+      "axis": {"orient": "bottom", "axisWidth": 1, "offset": -8}
+    },
+    "y": {
+      "aggregate": "sum", "field": "people", "type": "quantitative",
+      "axis": {"title": "population", "grid": false}
+    },
+    "x": {
+      "field": "gender", "type": "nominal",
+      "scale": {"bandSize": 6},
+      "axis": false
+    },
+    "color": {
+      "field": "gender", "type": "nominal",
+      "scale": {"range": ["#EA98D2", "#659CCA"]}
+    }
+  },
+  "config": {"facet": {"cell": {"strokeWidth": 0}}}
+}
