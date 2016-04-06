@@ -4,6 +4,15 @@ If you find a bug in the code or a mistake in the [documentation](https://vega.g
 or want a new feature, you can help us by creating an issue to [our repository](http://github.com/vega/vega-lite),
 or even better, submit a pull request.
 
+- For small fixes, please feel free to submit a pull request. No worry about creating an issue first.
+
+- For major changes, please discuss with us via [our mailing list] and Github first,
+so we can better coordinate our efforts, prevent duplication of work,
+and help you to craft the change so that it is successfully accepted into the project.
+
+- Generally we name a branch using this pattern `<your 2-3 letters initial>/<topic>`.
+For example, @kanitw's branch regarding scale type might be called `kw/scale-type`.
+
 See our [issue](.github/ISSUE_TEMPLATE.md) and [pull request](.github/PULL_REQUEST_TEMPLATE.md) templates for more information. 
 
 ### Looking for a Task to Contribute
