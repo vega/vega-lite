@@ -333,8 +333,8 @@ function _includeRawDomain (scale: Scale, model: Model, channel: Channel) {
 export function rangeMixins(scale: Scale, model: Model, channel: Channel): any {
   // TODO: need to add rule for quantile, quantize, threshold scale
 
-  const fieldDef = model.fieldDef(channel),
-  scaleConfig = model.config().scale;
+  const fieldDef = model.fieldDef(channel);
+  const scaleConfig = model.config().scale;
 
   if (scale.type === ScaleType.ORDINAL && scale.bandSize && contains([X, Y], channel)) {
     return {bandSize: scale.bandSize};
@@ -385,15 +385,7 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel): any {
         return {range: scaleConfig.pointSizeRange};
       }
 
-      const xIsMeasure = isMeasure(unitModel.encoding().x);
-      const yIsMeasure = isMeasure(unitModel.encoding().y);
-
-      const bandSize = xIsMeasure !== yIsMeasure ?
-        model.scale(xIsMeasure ? Y : X).bandSize :
-        Math.min(
-          model.scale(X).bandSize || scaleConfig.bandSize,
-          model.scale(Y).bandSize || scaleConfig.bandSize
-        );
+      const bandSize = pointBandSize(unitModel);
 
       return {range: [9, (bandSize - 2) * (bandSize - 2)]};
     case SHAPE:
@@ -406,6 +398,30 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel): any {
       return {range: scaleConfig.sequentialColorRange};
   }
   return {};
+}
+
+function pointBandSize(model: UnitModel) {
+  const scaleConfig = model.config().scale;
+
+  const hasX = model.has(X);
+  const hasY = model.has(Y);
+
+  const xIsMeasure = isMeasure(model.encoding().x);
+  const yIsMeasure = isMeasure(model.encoding().y);
+
+  if (hasX && hasY) {
+    return xIsMeasure !== yIsMeasure ?
+      model.scale(xIsMeasure ? Y : X).bandSize :
+      Math.min(
+        model.scale(X).bandSize || scaleConfig.bandSize,
+        model.scale(Y).bandSize || scaleConfig.bandSize
+      );
+  } else if (hasY) {
+    return yIsMeasure ? model.config().scale.bandSize : model.scale(Y).bandSize;
+  } else if (hasX) {
+    return xIsMeasure ? model.config().scale.bandSize : model.scale(X).bandSize;
+  }
+  return model.config().scale.bandSize;
 }
 
 export function clamp(scale: Scale) {
@@ -428,6 +444,7 @@ export function exponent(scale: Scale) {
 export function nice(scale: Scale, channel: Channel, fieldDef: FieldDef): boolean | NiceTime {
   if (contains([ScaleType.LINEAR, ScaleType.POW, ScaleType.SQRT, ScaleType.LOG,
         ScaleType.TIME, ScaleType.UTC, ScaleType.QUANTIZE], scale.type)) {
+
     if (scale.nice !== undefined) {
       return scale.nice;
     }
