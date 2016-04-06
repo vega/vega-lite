@@ -6,7 +6,7 @@ or even better, submit a pull request.
 
 - For small fixes, please feel free to submit a pull request. No worry about creating an issue first.
 
-- For major changes, please discuss with us via [our mailing list] and Github first,
+- For major changes, please discuss with us via [our mailing list](https://groups.google.com/forum/#!forum/vega-js) and Github first,
 so we can better coordinate our efforts, prevent duplication of work,
 and help you to craft the change so that it is successfully accepted into the project.
 
