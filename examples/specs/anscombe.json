@@ -1,5 +1,5 @@
 {
-  "description": "Anscombe's Quarter (https://en.wikipedia.org/wiki/Anscombe%27s_quartet)",
+  "description": "Anscombe's Quartert",
   "data": {
     "values": [
       {"Series":"I", "X":10.0, "Y":8.04},
