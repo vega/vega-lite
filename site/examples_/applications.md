@@ -1,7 +1,7 @@
 ---
 layout: examples
 menu: examples
-title: Users
+title: Example Vega-Lite Applications
 permalink: /examples/applications.html
 ---
 
