@@ -170,8 +170,8 @@ For the last visualization in this tutorial, we will explore the `weather` field
 }
 </div>
 
-However, the default color palette's semantics might not match our expectation. For example, we probably do not expect "sun" (sunny) to be purple. We can further tune the chart by providing a color [scale range]({{site.baseurl}}/docs/scale.html#range) that maps the values from the `weather` field to meaningful colors. In addition, we can customize the [axis]({{site.baseurl}}/docs/axis.html) and [legend]({{site.baseurl}}/docs/legend.html) titles. 
+However, the default color palette's semantics might not match our expectation. For example, we probably do not expect "sun" (sunny) to be purple. We can further tune the chart by providing a color [scale range]({{site.baseurl}}/docs/scale.html#range) that maps the values from the `weather` field to meaningful colors. In addition, we can customize the [axis]({{site.baseurl}}/docs/axis.html) and [legend]({{site.baseurl}}/docs/legend.html) titles.
 
 <div class="vl-example" data-name="stacked_bar_weather"></div>
 
-This is the end of this tutorial where you learned different ways to discretize and aggregate data, derive new fields, and customize your charts. You can find more visualizations in the [gallery]({{site.baseurl}}/gallery.html). If you want to further customize your charts, please read the [documentation]({{site.baseurl}}/docs/).
+This is the end of this tutorial where you learned different ways to discretize and aggregate data, derive new fields, and customize your charts. You can find more visualizations in the [gallery]({{site.baseurl}}/examples/gallery.html). If you want to further customize your charts, please read the [documentation]({{site.baseurl}}/docs/).
