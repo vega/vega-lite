@@ -167,7 +167,7 @@
     { "name": "trellis_anscombe",
       "title": "Anscombe's Quarter",
       "galleryParameters": {
-        "backgroundSize": 130%"
+        "backgroundSize": "130%"
       }
     },
     {
