@@ -1,0 +1,20 @@
+{
+  "description": "Anscombe's Quartert",
+  "data": {
+    "url":"data/anscombe.json"
+  },
+  "mark": "circle",
+  "encoding": {
+    "column": {"field": "Series","type": "nominal"},
+    "x": {"field": "X","type": "quantitative",
+      "scale":{"zero": false, "range":[4,20]}
+    },
+    "y": {"field": "Y","type": "quantitative",
+      "scale": {"zero": false, "range": [3,13]}
+    }
+  },
+  "config":{
+    "mark": {"opacity": 1}
+  
+  }
+}
