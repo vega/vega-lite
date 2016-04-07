@@ -21,11 +21,37 @@ export interface AxisConfig {
    */
   offset?: number;
 
+  // ---------- Axis ----------
+  /**
+   * A string indicating the color of the axis. The string can be hex color code
+   */
+  axisColor?: string;
+
   // ---------- Grid ----------
   /**
    * A flag indicate if gridlines should be created in addition to ticks. If `grid` is unspecified, the default value is `true` for ROW and COL. For X and Y, the default value is `true` for quantitative and time fields and `false` otherwise.
    */
   grid?: boolean;
+
+  /**
+   * A string indicating the color of the grid. The string can be hex color code
+   */
+  gridColor?: string;
+
+  /**
+   * 
+   */
+  gridDash?: number[];
+
+  /**
+   * A number represents the opacity of the grid. Numebr vary from 0 to 1
+   */
+  gridOpacity?: number;
+
+  /**
+   * A number represent the width of the grid
+   */
+  gridWidth?: number;
 
   // ---------- Labels ----------
   /**
@@ -64,6 +90,27 @@ export interface AxisConfig {
    * @minimum 0
    */
   ticks?: number;
+
+  /**
+   * The color, can be in hex color code or regular color name.
+   */
+  tickColor?: string;
+
+  /**
+   * The color of the tick label, can be in hex color code or regular color name.
+   */
+  tickLabelColor?: string;
+
+  /**
+   * The font of the tick label.
+   */
+  tickLabelFont?: string;
+
+  /**
+   * The font size of the label.
+   */
+  tickLabelFontSize?: number;
+
   /**
    * The padding, in pixels, between ticks and text labels.
    */
@@ -89,7 +136,32 @@ export interface AxisConfig {
    */
   tickSizeEnd?: number;
 
+  /**
+   * Width of the ticks
+   */
+  tickWidth?: number;
+
   // ---------- Title ----------
+  /**
+   * Color of the title, can be in hex color code or regular color name.
+   */
+  titleColor?: string;
+
+  /**
+   * Font of the title.
+   */
+  titleFont?: string;
+
+  /**
+   * Size of the title.
+   */
+  titleFontSize?: number;
+
+  /**
+   * Weight of the title.
+   */
+  titleFontWeight?: string;
+
   /**
    * A title offset value for the axis.
    */
