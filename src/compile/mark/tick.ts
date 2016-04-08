@@ -41,7 +41,7 @@ export namespace tick {
           value: sizeValue(model, X)
         };
       p.height = { value: model.config().mark.tickThickness };
-      
+
     } else {
       p.width = { value: model.config().mark.tickThickness };
       p.height = model.has(SIZE)? {
