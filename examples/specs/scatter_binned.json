@@ -4,12 +4,12 @@
   "encoding": {
     "x": {
       "bin": {"maxbins": 10},
-      "field": "IMDB_Rating",
+      "field": "Rotten_Tomatoes_Rating",
       "type": "quantitative"
     },
     "y": {
-      "bin": {"maxbins": 10},
-      "field": "Rotten_Tomatoes_Rating",
+      "bin": {"maxbins": 10},  
+      "field": "IMDB_Rating",
       "type": "quantitative"
     },
     "size": {
