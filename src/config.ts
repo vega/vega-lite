@@ -97,7 +97,7 @@ export enum StackOffset {
     NONE = 'none' as any,
 }
 
-export enum LineInterpolation {
+export enum Interpolate {
     /** piecewise linear segments, as in a polyline */
     LINEAR = 'linear' as any,
     /** close the linear segments to form a polygon */
@@ -208,7 +208,7 @@ export interface MarkConfig {
   /**
    * The line interpolation method to use. One of linear, step-before, step-after, basis, basis-open, cardinal, cardinal-open, monotone.
    */
-  interpolate?: LineInterpolation;
+  interpolate?: Interpolate;
   /**
    * Depending on the interpolation type, sets the tension parameter.
    */
