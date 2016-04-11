@@ -1,6 +1,4 @@
 #!/usr/bin/env node
-// Compile a Vega-Lite spec to Vega
-
 'use strict';
 
 var fs = require('fs'),
