@@ -25,8 +25,7 @@ export interface FieldDef {
   bin?: boolean | BinProperties;
   aggregate?: AggregateOp;
 
-  // TODO: maybe extend this in other app?
-  // unused metadata -- for other application
+  // metadata
   title?: string;
 }
 
