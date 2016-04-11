@@ -27,7 +27,7 @@ export interface FieldDef {
 
   // TODO: maybe extend this in other app?
   // unused metadata -- for other application
-  displayName?: string;
+  title?: string;
 }
 
 export const aggregate = {
@@ -117,10 +117,10 @@ export function isMeasure(fieldDef: FieldDef) {
   return fieldDef && fieldDef.field && !_isFieldDimension(fieldDef);
 }
 
-export const COUNT_DISPLAYNAME = 'Number of Records';
+export const COUNT_TITLE = 'Number of Records';
 
 export function count(): FieldDef {
-  return { field: '*', aggregate: AggregateOp.COUNT, type: QUANTITATIVE, displayName: COUNT_DISPLAYNAME };
+  return { field: '*', aggregate: AggregateOp.COUNT, type: QUANTITATIVE, title: COUNT_TITLE };
 }
 
 export function isCount(fieldDef: FieldDef) {
@@ -175,8 +175,11 @@ export function cardinality(fieldDef: FieldDef, stats, filterNull = {}) {
 }
 
 export function title(fieldDef: FieldDef) {
+  if (fieldDef.title != null) {
+    return fieldDef.title;
+  }
   if (isCount(fieldDef)) {
-    return COUNT_DISPLAYNAME;
+    return COUNT_TITLE;
   }
   const fn = fieldDef.aggregate || fieldDef.timeUnit || (fieldDef.bin && 'bin');
   if (fn) {
