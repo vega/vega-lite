@@ -2,7 +2,7 @@
 layout: examples
 menu: examples
 title: Example Gallery
-permalink: /examples/gallery.html
+permalink: /examples/
 ---
 
 * TOC
