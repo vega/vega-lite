@@ -5,14 +5,14 @@ title: Compiling Vega-Lite to Vega
 permalink: /usage/compile.html
 ---
 
-If you would rather compile your Vega-Lite specifications into Vega, you can simply  utilize Vega-Lite's included [javascript compiler](#javascript) or one of several bundled [command line utilities](#cli).
+If you would rather compile your Vega-Lite specifications into Vega, you can use Vega-Lite's included [javascript compiler](#javascript) or one of several bundled [command line utilities](#cli).
 
 First install Vega-Lite using npm (`npm install vega-lite`) or by [downloading the latest release](https://github.com/vega/vega-lite/releases/latest).
 
 {:#javascript}
 ## Using Javascript
 
-If you want access to the compiled Vega spec from a Javascript program, you can compile your Vega-Lite spec using its provided `vl.compile` function.
+If you want access to the compiled Vega spec from a Javascript program, you can compile your Vega-Lite spec using the `vl.compile` function.
 
 ```js
 var vgSpec = vl.compile(vlSpec).spec;
