@@ -80,6 +80,7 @@ Each plot in either a single plot or a trellis plot is called a _cell_. Cell con
 | strokeDashOffset  | Number[]  | The offset (in pixels) into which to begin drawing with the stroke dash array. <span class="note-line">__Default value:__ (none)</span>|
 
 
+{:#mark-config}
 ## Mark Configuration (`config.mark.*`)
 
 `mark` property of the `config` is a mark config object, which sets the default properties of the visualization's marks. Some of these properties will be overridden by data mapped to [mark properties channels](encoding.html#props-channels).
