@@ -44,7 +44,7 @@
     "tag": "v2.5.2",
     "commit": "0805388c7667fc4e892c2af172e7bb048c484e45"
   },
-  "_source": "git://github.com/vega/vega.git",
+  "_source": "https://github.com/vega/vega.git",
   "_target": "^2.5.1",
   "_originalSource": "vega"
 }

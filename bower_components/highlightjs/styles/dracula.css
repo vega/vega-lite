@@ -1,6 +1,16 @@
 /*
 
-Dark style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Org>
+Dracula Theme v1.2.0
+
+https://github.com/zenorocha/dracula-theme
+
+Copyright 2015, All rights reserved
+
+Code licensed under the MIT license
+http://zenorocha.mit-license.org
+
+@author Éverton Ribeiro <nuxlli@gmail.com>
+@author Zeno Rocha <hi@zenorocha.com>
 
 */
 
@@ -8,7 +18,7 @@ Dark style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Or
   display: block;
   overflow-x: auto;
   padding: 0.5em;
-  background: #444;
+  background: #282a36;
 }
 
 .hljs-keyword,
@@ -16,12 +26,16 @@ Dark style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Or
 .hljs-literal,
 .hljs-section,
 .hljs-link {
-  color: white;
+  color: #8be9fd;
+}
+
+.hljs-function .hljs-keyword {
+  color: #ff79c6;
 }
 
 .hljs,
 .hljs-subst {
-  color: #ddd;
+  color: #f8f8f2;
 }
 
 .hljs-string,
@@ -31,19 +45,18 @@ Dark style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Or
 .hljs-attribute,
 .hljs-symbol,
 .hljs-bullet,
-.hljs-built_in,
 .hljs-addition,
 .hljs-variable,
 .hljs-template-tag,
 .hljs-template-variable {
-  color: #d88;
+  color: #f1fa8c;
 }
 
 .hljs-comment,
 .hljs-quote,
 .hljs-deletion,
 .hljs-meta {
-  color: #777;
+  color: #6272a4;
 }
 
 .hljs-keyword,

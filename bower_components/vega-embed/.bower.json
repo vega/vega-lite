@@ -43,7 +43,7 @@
     "tag": "v2.1.0",
     "commit": "18cf2dcaaa274b6311c15a7800d166d6c01b257e"
   },
-  "_source": "git://github.com/vega/vega-embed.git",
+  "_source": "https://github.com/vega/vega-embed.git",
   "_target": "~2.1.0",
   "_originalSource": "vega-embed"
 }

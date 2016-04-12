@@ -189,7 +189,7 @@
                 "aggregate": {
                     "$ref": "#/definitions/AggregateOp"
                 },
-                "displayName": {
+                "title": {
                     "type": "string"
                 }
             }
@@ -622,7 +622,7 @@
                 "aggregate": {
                     "$ref": "#/definitions/AggregateOp"
                 },
-                "displayName": {
+                "title": {
                     "type": "string"
                 }
             }
@@ -697,7 +697,7 @@
                 "aggregate": {
                     "$ref": "#/definitions/AggregateOp"
                 },
-                "displayName": {
+                "title": {
                     "type": "string"
                 }
             }
@@ -743,7 +743,7 @@
                 "aggregate": {
                     "$ref": "#/definitions/AggregateOp"
                 },
-                "displayName": {
+                "title": {
                     "type": "string"
                 }
             }
@@ -948,8 +948,8 @@
                     "description": "The orientation of a non-stacked bar, tick, area, and line charts.\n\nThe value is either horizontal (default) or vertical.\n\n- For bar, rule and tick, this determines whether the size of the bar and tick\n\nshould be applied to x or y dimension.\n\n- For area, this property determines the orient property of the Vega output.\n\n- For line, this property determines the sort order of the points in the line\n\nif `config.sortLineBy` is not specified.\n\nFor stacked charts, this is always determined by the orientation of the stack;\n\ntherefore explicitly specified value will be ignored."
                 },
                 "interpolate": {
-                    "type": "string",
-                    "description": "The line interpolation method to use. One of linear, step-before, step-after, basis, basis-open, basis-closed, bundle, cardinal, cardinal-open, cardinal-closed, monotone."
+                    "$ref": "#/definitions/Interpolate",
+                    "description": "The line interpolation method to use. One of linear, step-before, step-after, basis, basis-open, cardinal, cardinal-open, monotone."
                 },
                 "tension": {
                     "type": "number",
@@ -1057,6 +1057,25 @@
                 "center",
                 "normalize",
                 "none"
+            ]
+        },
+        "Interpolate": {
+            "type": "string",
+            "title": "Interpolate",
+            "enum": [
+                "linear",
+                "linear-closed",
+                "step",
+                "step-before",
+                "step-after",
+                "basis",
+                "basis-open",
+                "basis-closed",
+                "cardinal",
+                "cardinal-open",
+                "cardinal-closed",
+                "bundle",
+                "monotone"
             ]
         },
         "Shape": {
