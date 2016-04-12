@@ -1,44 +1,35 @@
 ---
 layout: usage
 menu: usage
-title: Compiling Vega-Lite
+title: Compiling Vega-Lite to Vega
 permalink: /usage/compile.html
 ---
 
-If you would rather hand compile your Vega-Lite specifications into Vega, you can use Vega-Lite's provided `vl.compile` function.
+If you would rather compile your Vega-Lite specifications into Vega, you can simply  utilize Vega-Lite's included [javascript compiler](#javascript) or one of several bundled [command line utilities](#cli).
 
-First, load the required libraries (D3, Vega, Vega-Lite).
+First install Vega-Lite using npm (`npm install vega-lite`) or by [downloading the latest release](https://github.com/vega/vega-lite/releases/latest).
 
-```html
-<script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
-<script src="//vega.github.io/vega/vega.js" charset="utf-8"></script>
-<script src="//vega.github.io/vega-lite/vega-lite.js" charset="utf-8"></script>
-```
+{:#javascript}
+## Using Javascript
 
-We suggest that you install Vega-Lite with [npm](https://www.npmjs.com/package/vega-lite) to get the latest stable version. To install Vega-Lite with npm, simply install it as you would any other npm module.
-
-```sh
-npm install vega-lite
-```
-
-Alternatively you can [download the latest Vega-Lite release](https://github.com/vega/vega-lite/releases/latest) and add it to your project manually.
-
-Then, create an HTML element that the visualization should be attached to.
-
-```html
-<div id="vis"></div>
-```
-
-To actually compile the spec, use `vl.compile`
+If you want access to the compiled Vega spec from a Javascript program, you can compile your Vega-Lite spec using its provided `vl.compile` function.
 
 ```js
 var vgSpec = vl.compile(vlSpec).spec;
 ```
 
-You can then continue to use the [Vega runtime](https://github.com/vega/vega/wiki/Runtime)'s `vg.parse.spec` method to render your Vega spec.
+Then, you can continue to use the [Vega runtime](https://github.com/vega/vega/wiki/Runtime)'s `vg.parse.spec` method to render your Vega spec.
 
 ```js
 vg.parse.spec(vgSpec, function(chart) {
   chart({el:"#vis"}).update();
 });
 ```
+
+{:#cli}
+## From the Command Line
+If you want to compile your Vega-Lite specs from the command line, we provide a set of scripts which make it easy to go from Vega-Lite to Vega, SVG, or PNG. These scripts are `vl2vg`, `vl2svg`, and `vl2png` respectively.
+
+Each script simply accepts your Vega-Lite specification as its first argument.
+
+`vl2svg vlSpec`
