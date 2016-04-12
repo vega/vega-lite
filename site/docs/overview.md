@@ -9,6 +9,10 @@ permalink: /docs/
 
 This documentation describes the [JSON specification language](#spec) and how to [use Vega-Lite visualizations](usage.html) in a web application.
 
+{:#toc}
+## Table of Contents
+{% include docs_toc.md %}
+
 {:#spec}
 ## Vega-Lite Specifications
 
