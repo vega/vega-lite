@@ -9,8 +9,12 @@ permalink: /docs/
 
 This documentation describes the [JSON specification language](#spec) and how to [use Vega-Lite visualizations](usage.html) in a web application.
 
+
 {:#toc}
 ## Table of Contents
+
+Below is the an overview of the documentation for Vega-Lite properties. See [below](#spec) for an overview of Vega-Lite specifications.
+
 {% include docs_toc.md %}
 
 {:#spec}
@@ -51,3 +55,4 @@ In Vega-Lite, a specification can have the following top-level properties.
 | [mark](mark.html)    | String        | The mark type. One of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`, `"area"`, `"point"`, and `"text"`. |
 | [encoding](encoding.html) | Object   | A key-value mapping between encoding channels and definition of fields. |
 | [config](config.html)   | Object     | Configuration object. |
+
