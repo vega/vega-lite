@@ -65,9 +65,9 @@
     "mocha": "^2.4.5",
     "nodemon": "^1.9.1",
     "source-map-support": "^0.4.0",
-    "tsify": "^0.14.2",
-    "tslint": "^3.7.2",
-    "typescript": "^1.8.9",
+    "tsify": "^0.14.7",
+    "tslint": "^3.7.4",
+    "typescript": "^1.8.10",
     "typescript-json-schema": "^0.1.0",
     "uglify-js": "^2.6.2",
     "vega": "^2.5.2",
@@ -79,7 +79,7 @@
   "dependencies": {
     "datalib": "^1.6.3",
     "json-stable-stringify": "^1.0.1",
-    "yargs": "^4.4.0"
+    "yargs": "^4.6.0"
   },
   "browserify": {
     "transform": [
