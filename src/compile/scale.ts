@@ -6,7 +6,7 @@ import {COLUMN, ROW, X, Y, SHAPE, SIZE, COLOR, TEXT, hasScale, Channel} from '..
 import {StackOffset} from '../config';
 import {SOURCE, STACKED_SCALE} from '../data';
 import {FieldDef, field, isMeasure} from '../fielddef';
-import {Mark, BAR, TEXT as TEXT_MARK, RULE} from '../mark';
+import {Mark, BAR, TEXT as TEXT_MARK, RULE, TICK} from '../mark';
 import {Scale, ScaleType, NiceTime} from '../scale';
 import {TimeUnit} from '../timeunit';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
@@ -379,6 +379,8 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel): any {
         return {range: scaleConfig.fontSizeRange };
       } else if (unitModel.mark() === RULE) {
         return {range: scaleConfig.ruleSizeRange };
+      } else if (unitModel.mark() === TICK) {
+        return {range: scaleConfig.tickSizeRange };
       }
       // else -- point, square, circle
       if (scaleConfig.pointSizeRange !== undefined) {
