@@ -389,11 +389,51 @@ describe('Scale', function() {
   });
 
   describe('rangeMixins()', function() {
-    // FIXME
+    describe('row', function() {
+      // TODO:
+    });
+
+    describe('column', function() {
+      // TODO:
+    });
+
+    describe('x', function() {
+      // TODO: X
+    });
+
+    describe('y', function() {
+      // TODO: Y
+    });
+
+    describe('size', function() {
+      describe('bar', function() {
+        // TODO:
+      });
+
+      describe('text', function() {
+        // TODO:
+      });
+
+      describe('rule', function() {
+        // TODO:
+      });
+
+      describe('point, square, circle', function() {
+        // TODO:
+      });
+    });
+
+    describe('shape', function() {
+      // TODO:
+    });
+
+    describe('color', function() {
+      // TODO:
+    });
   });
 
   describe('bandSize()', function() {
-    // FIXME
+    // TODO:
   });
 
   describe('nice()', function() {
