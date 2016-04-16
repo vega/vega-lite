@@ -19,6 +19,8 @@ export interface FieldDef {
   field?: string;
   type?: Type;
   value?: number | string | boolean;
+  unit?: string;
+  unitPosition?: string;
 
   // function
   timeUnit?: TimeUnit;
@@ -175,13 +177,16 @@ export function cardinality(fieldDef: FieldDef, stats, filterNull = {}) {
 }
 
 export function title(fieldDef: FieldDef) {
+  const unit = (fieldDef.unit && (fieldDef.unitPosition == 'title' || !fieldDef.unitPosition))
+                ? ' in ' + fieldDef.unit : '';
   if (isCount(fieldDef)) {
-    return COUNT_DISPLAYNAME;
+    return COUNT_DISPLAYNAME + unit;
   }
   const fn = fieldDef.aggregate || fieldDef.timeUnit || (fieldDef.bin && 'bin');
+  console.log('Hey I am testing unit for ' + fieldDef.field + ': ' +  unit);
   if (fn) {
-    return fn.toString().toUpperCase() + '(' + fieldDef.field + ')';
+    return fn.toString().toUpperCase() + '(' + fieldDef.field + ')' + unit;
   } else {
-    return fieldDef.field;
+    return fieldDef.field + unit;
   }
 }

@@ -79,16 +79,25 @@ export namespace text {
 
     // text
     if (model.has(TEXT)) {
+      let textTemplate = model.field(TEXT);
+      let datum = model.field(TEXT);
       if (contains([QUANTITATIVE, TEMPORAL], model.fieldDef(TEXT).type)) {
         const format = model.config().mark.format;
-        extend(p, formatMixins(model, TEXT, format));
-      } else {
-        p.text = { field: model.field(TEXT) };
+        datum = formatMixins(model, TEXT, format).text.template;
+      }
+      if (fieldDef.unit) {
+        if (!fieldDef.unitPosition || fieldDef.unitPosition == 'suffix') {
+          textTemplate = datum + fieldDef.unit;
+        } else if (fieldDef.unitPosition == 'prefix') {
+          textTemplate = fieldDef.unit + datum;
+        }
+      }
+      p.text = {
+        template : textTemplate
       }
     } else if (fieldDef.value) {
       p.text = { value: fieldDef.value };
     }
-
     return p;
   }
 

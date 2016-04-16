@@ -51,7 +51,6 @@ export function parseLegend(model: UnitModel, channel: Channel): VgLegend {
 
   // 1.1 Add properties with special rules
   def.title = title(legend, fieldDef);
-
   extend(def, formatMixins(legend, model, channel));
 
   // 1.2 Add properties without rules
@@ -81,7 +80,6 @@ export function title(legend: LegendProperties, fieldDef: FieldDef) {
   if (typeof legend !== 'boolean' && legend.title) {
     return legend.title;
   }
-
   return fieldTitle(fieldDef);
 }
 
@@ -167,29 +165,45 @@ namespace properties {
   }
 
   export function labels(fieldDef: FieldDef, symbolsSpec, model: UnitModel, channel: Channel): any {
+    let datum = '{{ datum.data }}';
+    let textTemplate = '{{ datum.data }}';
+
+    if(fieldDef.timeUnit) {
+      datum = '{{ datum.data | time:\'' + timeFormat(model, channel) + '\'}}'
+    }
+
+    if (fieldDef.unit) {
+      if (fieldDef.unitPosition == 'prefix') {
+        textTemplate = fieldDef.unit + datum;
+      } else if (fieldDef.unitPosition == 'suffix') {
+        textTemplate = datum + fieldDef.unit;
+      }
+    }
+
     if (channel === COLOR) {
       if (fieldDef.type === ORDINAL) {
         return {
           text: {
-            scale: model.scaleName(COLOR_LEGEND),
-            field: 'data'
+            template: textTemplate,
+            scale: model.scaleName(COLOR_LEGEND)
+            // field: 'data'
           }
         };
       } else if (fieldDef.bin) {
         return {
           text: {
-            scale: model.scaleName(COLOR_LEGEND_LABEL),
-            field: 'data'
-          }
-        };
-      } else if (fieldDef.timeUnit) {
-        return {
-          text: {
-            template: '{{ datum.data | time:\'' + timeFormat(model, channel) + '\'}}'
+            template: textTemplate,
+            scale: model.scaleName(COLOR_LEGEND_LABEL)
+            // field: 'data'
           }
         };
       }
     }
-    return undefined;
+
+    return {
+      text : {
+        template : textTemplate
+      }
+    };
   }
 }
