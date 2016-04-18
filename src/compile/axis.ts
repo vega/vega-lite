@@ -238,7 +238,7 @@ export function titleOffset(model: Model, channel: Channel) {
 }
 
 export namespace properties {
-  export function axis(model: Model, channel: Channel, axisPropsSpec, def) {
+  export function axis(model: Model, channel: Channel, axisPropsSpec) {
     const axis = model.axis(channel);
 
     return extend(
@@ -252,7 +252,7 @@ export namespace properties {
     );
   }
 
-  export function grid(model: Model, channel: Channel, gridPropsSpec, def) {
+  export function grid(model: Model, channel: Channel, gridPropsSpec) {
     const axis = model.axis(channel);
 
     return extend(
@@ -337,10 +337,10 @@ export namespace properties {
         labelsSpec.fontSize = {value: axis.tickLabelFontSize};
     }
 
-    return labelsSpec || undefined;
+    return keys(labelsSpec).length === 0 ? undefined : labelsSpec;
   }
 
-  export function ticks(model: Model, channel: Channel, ticksPropsSpec, def) {
+  export function ticks(model: Model, channel: Channel, ticksPropsSpec) {
     const axis = model.axis(channel);
 
     return extend(
@@ -350,7 +350,7 @@ export namespace properties {
     );
   }
 
-  export function title(model: Model, channel: Channel, titlePropsSpec, def) {
+  export function title(model: Model, channel: Channel, titlePropsSpec) {
     const axis = model.axis(channel);
 
     return extend(

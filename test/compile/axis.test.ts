@@ -313,7 +313,7 @@ describe('Axis', function() {
           x: {field: "a", type: "quantitative", axis: {axisColor: '#fff'}}
         }
       });
-        const axes = axis.properties.axis(model, X, {}, {});
+        const axes = axis.properties.axis(model, X, {});
         assert.equal(axes.stroke.value, '#fff');
     });
 
@@ -324,7 +324,7 @@ describe('Axis', function() {
           x: {field: "a", type: "quantitative", axis: {axisWidth: 2}}
         }
       });
-        const axes = axis.properties.axis(model, X, {}, {});
+        const axes = axis.properties.axis(model, X, {});
         assert.equal(axes.strokeWidth.value, 2);
     });
   });
@@ -337,7 +337,7 @@ describe('Axis', function() {
           x: {field: "a", type: "quantitative", axis: {gridColor: '#fff'}}
         }
       });
-        const axes = axis.properties.grid(model, X, {}, {});
+        const axes = axis.properties.grid(model, X, {});
         assert.equal(axes.stroke.value, '#fff');
     });
 
@@ -348,7 +348,7 @@ describe('Axis', function() {
           x: {field: "a", type: "quantitative", axis: {grid: true, gridOpacity: 0.6}}
         }
       });
-        const axes = axis.properties.grid(model, X, {}, {});
+        const axes = axis.properties.grid(model, X, {});
         assert.equal(axes.strokeOpacity.value, 0.6);
     });
 
@@ -359,7 +359,7 @@ describe('Axis', function() {
           x: {field: "a", type: "quantitative", axis: {grid: true, gridWidth: 2}}
         }
       });
-        const axes = axis.properties.grid(model, X, {}, {});
+        const axes = axis.properties.grid(model, X, {});
         assert.equal(axes.strokeWidth.value, 2);
     });
 
@@ -370,7 +370,7 @@ describe('Axis', function() {
           x: {field: "a", type: "quantitative", axis: {grid: true, gridDash: [2]}}
         }
       });
-        const axes = axis.properties.grid(model, X, {}, {});
+        const axes = axis.properties.grid(model, X, {});
         assert.deepEqual(axes.strokeDashOffset.value, [2]);
     });
   });
@@ -461,7 +461,7 @@ describe('Axis', function() {
           x: {field: "a", type: "quantitative", axis: {tickColor: '#123'}}
         }
       });
-        const axes = axis.properties.ticks(model, X, {}, {});
+        const axes = axis.properties.ticks(model, X, {});
         assert.equal(axes.stroke.value, '#123');
     });
 
@@ -472,7 +472,7 @@ describe('Axis', function() {
           x: {field: "a", type: "quantitative", axis: {tickWidth: 13}}
         }
       });
-        const axes = axis.properties.ticks(model, X, {}, {});
+        const axes = axis.properties.ticks(model, X, {});
         assert.equal(axes.strokeWidth.value, 13);
     });
   });
@@ -485,7 +485,7 @@ describe('Axis', function() {
           x: {field: "a", type: "quantitative", axis: {titleColor: '#abc'}}
         }
       });
-        const axes = axis.properties.title(model, X, {}, {});
+        const axes = axis.properties.title(model, X, {});
         assert.equal(axes.stroke.value, '#abc');
     });
 
@@ -496,7 +496,7 @@ describe('Axis', function() {
           x: {field: "a", type: "quantitative", axis: {titleFont: 'anything'}}
         }
       });
-        const axes = axis.properties.title(model, X, {}, {});
+        const axes = axis.properties.title(model, X, {});
         assert.equal(axes.font.value, 'anything');
     });
 
@@ -507,7 +507,7 @@ describe('Axis', function() {
           x: {field: "a", type: "quantitative", axis: {titleFontSize: 56}}
         }
       });
-        const axes = axis.properties.title(model, X, {}, {});
+        const axes = axis.properties.title(model, X, {});
         assert.equal(axes.fontSize.value, 56);
     });
 
@@ -518,7 +518,7 @@ describe('Axis', function() {
           x: {field: "a", type: "quantitative", axis: {titleFontWeight: 'bold'}}
         }
       });
-        const axes = axis.properties.title(model, X, {}, {});
+        const axes = axis.properties.title(model, X, {});
         assert.equal(axes.fontWeight.value, 'bold');
     });
   });
