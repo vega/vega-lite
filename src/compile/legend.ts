@@ -91,7 +91,7 @@ export function orient(legend: LegendProperties, fieldDef: FieldDef) {
   if (orient) {
     return orient;
   }
-  return undefined;
+  return 'vertical';
 }
 
 export function title(legend: LegendProperties, fieldDef: FieldDef) {

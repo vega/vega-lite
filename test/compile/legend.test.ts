@@ -9,6 +9,42 @@ describe('Legend', function() {
   describe('parseLegend()', function() {
     it('should output explicitly specified properties', function() {
       // FIXME test this
+      it('should produce a Vega axis object with correct type and scale', function() {
+        const model = parseUnitModel({
+          mark: "point",
+          encoding: {
+            x: {field: "a", type: "nominal"},
+            color: {field: "a", type: "nominal"}
+          }
+        });
+        const def = legend.parseLegend(model, X);
+        assert.isObject(def);
+        assert.equal(def.title, "a");
+      });
+    });
+  });
+
+  describe('offset()', function () {
+    it('should add explicitly specified offset', function () {
+      const offset = legend.offset({offset: 10}, {field: 'a'});
+      assert.deepEqual(offset, 10);
+    });
+
+    it('should return 0 by default', function () {
+      const offset = legend.offset({}, {field: 'a'});
+      assert.deepEqual(offset, 0);
+    });
+  });
+
+  describe('orient()', function () {
+    it('should add explicitly specified orient', function () {
+      const orient = legend.orient({orient: "horizontal"}, {field: 'a'});
+      assert.deepEqual(orient, "horizontal");
+    });
+
+    it('should return vertical by default', function () {
+      const orient = legend.orient({}, {field: 'a'});
+      assert.deepEqual(orient, "vertical");
     });
   });
 
@@ -36,6 +72,14 @@ describe('Legend', function() {
   });
 
   describe('properties.symbols', function() {
-    // FIXME test
+    it('should initialize if filled', function() {
+      const symbol = legend.properties.symbols({field: 'a'}, {}, parseUnitModel({
+          mark: "point",
+          encoding: {
+            x: {field: "a", type: "nominal"},
+            color: {field: "a", type: "nominal", }
+          }
+        }), X);
+    });
   });
 });
