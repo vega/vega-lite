@@ -20,6 +20,7 @@ export enum TimeUnit {
     HOURSMINUTESSECONDS = 'hoursminutesseconds' as any,
     MINUTESSECONDS = 'minutesseconds' as any,
     SECONDSMILLISECONDS = 'secondsmilliseconds' as any,
+    QUARTER = 'quarter' as any,
 }
 
 export const TIMEUNITS = [
@@ -43,6 +44,7 @@ export const TIMEUNITS = [
     TimeUnit.HOURSMINUTESSECONDS,
     TimeUnit.MINUTESSECONDS,
     TimeUnit.SECONDSMILLISECONDS,
+    TimeUnit.QUARTER,
 ];
 
 /** returns the template name used for axis labels for a time unit */

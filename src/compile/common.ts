@@ -3,6 +3,7 @@ import {FieldDef, field, OrderChannelDef} from '../fielddef';
 import {SortOrder} from '../sort';
 import {QUANTITATIVE, ORDINAL, TEMPORAL} from '../type';
 import {contains, union} from '../util';
+//import {TimeUnit} from '../timeunit';
 
 import {FacetModel} from './facet';
 import {LayerModel} from './layer';
@@ -102,7 +103,7 @@ export function formatMixins(model: Model, channel: Channel, format: string) {
 
   let def: any = {};
 
-  if (fieldDef.type === TEMPORAL) {
+  if (fieldDef.type === TEMPORAL && fieldDef.timeUnit === undefined) {
     def.formatType = 'time';
   }
 
@@ -114,7 +115,9 @@ export function formatMixins(model: Model, channel: Channel, format: string) {
         def.format = model.config().numberFormat;
         break;
       case TEMPORAL:
-        def.format = timeFormat(model, channel) || model.config().timeFormat;
+        if (fieldDef.timeUnit === undefined) {
+          def.format = timeFormat(model, channel) || model.config().timeFormat;
+        }
         break;
     }
   }

@@ -4,8 +4,9 @@ import {title as fieldDefTitle, isDimension} from '../fielddef';
 import {NOMINAL, ORDINAL, TEMPORAL} from '../type';
 import {contains, keys, extend, truncate, Dict} from '../util';
 import {VgAxis} from '../vega.schema';
+import {TimeUnit} from '../timeunit';
 
-import {formatMixins} from './common';
+import {formatMixins, timeFormat} from './common';
 import {Model} from './model';
 import {UnitModel} from './unit';
 
@@ -293,6 +294,18 @@ export namespace properties {
           labelsSpec.baseline = {value: 'bottom'};
         }
       }
+    }
+
+    if (fieldDef.timeUnit) {
+      var templateText = '{{datum.data | time:\'' + timeFormat(model, channel) + '\'}}';
+      if (fieldDef.timeUnit === TimeUnit.QUARTER) {
+        templateText = '{{datum.data | quarter}}';
+      }
+      labelsSpec = extend({
+        text: {
+          template: templateText
+        }
+      }, labelsSpec);
     }
 
     return labelsSpec || undefined;

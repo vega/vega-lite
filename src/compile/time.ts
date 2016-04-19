@@ -114,6 +114,8 @@ export function rawDomain(timeUnit: TimeUnit, channel: Channel) {
       return range(1, 32);
     case TimeUnit.MONTH:
       return range(0, 12);
+    case TimeUnit.QUARTER:
+      return [0,3,6,9];
   }
 
   return null;
