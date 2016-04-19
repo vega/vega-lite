@@ -50,8 +50,27 @@ export interface FacetSpec extends BaseSpec {
   spec: LayerSpec | UnitSpec;
 }
 
-export interface LayerSpec extends BaseSpec {
+export enum ResolveStrategy {
+  INDEPENDENT = 'independent' as any,
+  SHARED = 'shared' as any
+}
+
+export const INDEPENDENT = ResolveStrategy.INDEPENDENT;
+export const SHARED = ResolveStrategy.SHARED;
+
+export interface Resolve {
+  scale: ResolveStrategy;
+  guide?: ResolveStrategy;
+}
+
+export interface ResolveMapping {
+  x?: Resolve;
+  y?: Resolve;
+}
+
+export interface LayerSpec {
   layers: UnitSpec[];
+  resolve?: ResolveMapping;
 }
 
 /** This is for the future schema */

@@ -10,12 +10,14 @@ import {Mark, BAR, TEXT as TEXT_MARK, RULE, TICK} from '../mark';
 import {Scale, ScaleType, NiceTime} from '../scale';
 import {TimeUnit} from '../timeunit';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
-import {contains, extend, Dict} from '../util';
-import {VgScale} from '../vega.schema';
+import {contains, extend, Dict, hash, vals} from '../util';
+import {VgScale, isUnionedDomain} from '../vega.schema';
+
 
 import {Model} from './model';
 import {rawDomain, smallestUnit} from './time';
 import {UnitModel} from './unit';
+import {LayerModel} from './layer';
 
 /**
  * Color Ramp's scale for legends.  This scale has to be ordinal so that its
@@ -501,4 +503,79 @@ export function zero(scale: Scale, channel: Channel, fieldDef: FieldDef) {
     return !fieldDef.bin && contains([X, Y], channel);
   }
   return undefined;
+}
+
+/**
+ * Merge scales from children by unioning their domains
+ */
+export function mergeScales(model: LayerModel, channel: string) {
+  let scaleComp: ScaleComponents = null;
+
+  let domains = {};
+
+  model.children().forEach((child) => {
+    const childScales = child.component.scale[channel];
+    if (!childScales) {
+      return;
+    }
+
+    // range and other things will just be defined by the first scale
+    if (!scaleComp) {
+      scaleComp = childScales;
+    }
+
+    // the child domain may itself be a union of domains
+    const childDomain = childScales.main.domain;
+    if (isUnionedDomain(childDomain)) {
+      // if the domain is itself a union domain, concat
+      childDomain.fields.forEach((domain) => {
+        domains[hash(domain)] = domain;
+      });
+    } else {
+      domains[hash(childDomain)] = childDomain;
+    }
+
+    // add color legend and color legend bin scales if we don't have them yet
+    if (childScales.colorLegend) {
+      scaleComp.colorLegend = scaleComp.colorLegend ? scaleComp.colorLegend : childScales.colorLegend;
+    }
+    if (childScales.binColorLegend) {
+      scaleComp.binColorLegend = scaleComp.binColorLegend ? scaleComp.binColorLegend : childScales.binColorLegend;
+    }
+
+    // rename scale references to merged scales
+    [childScales.main, childScales.colorLegend, childScales.binColorLegend]
+      .filter((x) => !!x)
+      .forEach(function (scale) {
+        const scaleNameWithoutPrefix = scale.name.substr(child.name('').length);
+        const newName = model.scaleName(scaleNameWithoutPrefix);
+        child.renameScale(scale.name, newName);
+        scale.name = newName;
+      });
+
+    delete child.component.scale[channel];
+  });
+
+  // construct the domain that will be used for all scales
+  const domainArr = vals(domains);
+  let domain;
+  if (domainArr.length ===  1) {
+    domain = domainArr[0];
+  } else {
+    // Fixme: we have to ignore explicit data domains for now because vega does not support unioning them
+    domain = {
+      fields: domainArr
+    };
+  }
+
+  // set domains for all scales
+  scaleComp.main.domain = domain;
+  if (scaleComp.colorLegend) {
+    scaleComp.colorLegend.domain = domain;
+  }
+  if (scaleComp.binColorLegend) {
+    scaleComp.binColorLegend.domain = domain;
+  }
+
+  return scaleComp;
 }

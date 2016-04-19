@@ -136,7 +136,7 @@ export function getbins(stats, maxbins) {
   });
 }
 
-export function unique<T>(values: T[], f?: (item: T) => string) {
+export function unique<T>(values: T[], f?: (item: T) => string): T[] {
   let results = [];
   var u = {}, v, i, n;
   for (i = 0, n = values.length; i < n; ++i) {

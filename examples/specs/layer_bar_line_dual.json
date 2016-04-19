@@ -1,0 +1,32 @@
+{
+  "layers": [
+    {
+      "data": {"url": "data/seattle-weather.csv","formatType": "csv"},
+      "mark": "bar",
+      "encoding": {
+        "x": {
+          "field": "date", "type": "temporal",
+          "timeUnit": "month" },
+        "y": {
+          "field": "precipitation", "type": "quantitative",
+          "aggregate": "mean", "axis": {"grid": false} },
+        "color": {"value": "#77b2c7"} }
+    }, {
+      "data": {"url": "data/seattle-weather.csv","formatType": "csv"},
+      "mark": "line",
+      "encoding": {
+        "x": {
+          "field": "date", "type": "temporal",
+          "timeUnit": "month" },
+        "y": {
+          "field": "temp_max", "type": "quantitative",
+          "aggregate": "mean", "axis": {"grid": false} },
+        "color": {"value": "#ce323c"} }
+    }
+  ],
+  "resolve": {
+    "y": {
+      "scale": "independent"
+    }
+  }
+}
