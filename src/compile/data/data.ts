@@ -81,37 +81,35 @@ export interface SummaryComponent {
 
 export function parseUnitData(model: UnitModel): DataComponent {
   return {
-    formatParse: formatParse.parseUnit(model),
-    nullFilter: nullFilter.parseUnit(model),
-    filter: filter.parseUnit(model),
-    nonPositiveFilter: nonPositiveFilter.parseUnit(model),
-
     source: source.parseUnit(model),
-    bin: bin.parseUnit(model),
+    formatParse: formatParse.parseUnit(model),
     calculate: formula.parseUnit(model),
+    filter: filter.parseUnit(model),
+    bin: bin.parseUnit(model),
     timeUnit: timeUnit.parseUnit(model),
-    timeUnitDomain: timeUnitDomain.parseUnit(model),
     summary: summary.parseUnit(model),
+    colorRank: colorRank.parseUnit(model),
     stackScale: stackScale.parseUnit(model),
-    colorRank: colorRank.parseUnit(model)
+    nonPositiveFilter: nonPositiveFilter.parseUnit(model),
+    nullFilter: nullFilter.parseUnit(model),
+    timeUnitDomain: timeUnitDomain.parseUnit(model)
   };
 }
 
 export function parseFacetData(model: FacetModel): DataComponent {
   return {
-    formatParse: formatParse.parseFacet(model),
-    nullFilter: nullFilter.parseFacet(model),
-    filter: filter.parseFacet(model),
-    nonPositiveFilter: nonPositiveFilter.parseFacet(model),
-
     source: source.parseFacet(model),
-    bin: bin.parseFacet(model),
+    formatParse: formatParse.parseFacet(model),
     calculate: formula.parseFacet(model),
+    filter: filter.parseFacet(model),
+    bin: bin.parseFacet(model),
     timeUnit: timeUnit.parseFacet(model),
-    timeUnitDomain: timeUnitDomain.parseFacet(model),
     summary: summary.parseFacet(model),
+    colorRank: colorRank.parseFacet(model),
     stackScale: stackScale.parseFacet(model),
-    colorRank: colorRank.parseFacet(model)
+    nonPositiveFilter: nonPositiveFilter.parseFacet(model),
+    nullFilter: nullFilter.parseFacet(model),
+    timeUnitDomain: timeUnitDomain.parseFacet(model)
   };
 }
 
@@ -120,22 +118,18 @@ export function parseFacetData(model: FacetModel): DataComponent {
  */
 export function parseLayerData(model: LayerModel): DataComponent {
   return {
-    // filter and formatParse could cause us to not be able to merge into parent
-    // so let's parse them first
-    filter: filter.parseLayer(model),
-    formatParse: formatParse.parseLayer(model),
-    nullFilter: nullFilter.parseLayer(model),
-    nonPositiveFilter: nonPositiveFilter.parseLayer(model),
-
-    // everything after here does not affect whether we can merge child data into parent or not
     source: source.parseLayer(model),
-    bin: bin.parseLayer(model),
+    formatParse: formatParse.parseLayer(model),
     calculate: formula.parseLayer(model),
+    filter: filter.parseLayer(model),
+    bin: bin.parseLayer(model),
     timeUnit: timeUnit.parseLayer(model),
-    timeUnitDomain: timeUnitDomain.parseLayer(model),
     summary: summary.parseLayer(model),
+    colorRank: colorRank.parseLayer(model),
     stackScale: stackScale.parseLayer(model),
-    colorRank: colorRank.parseLayer(model)
+    nonPositiveFilter: nonPositiveFilter.parseLayer(model),
+    nullFilter: nullFilter.parseLayer(model),
+    timeUnitDomain: timeUnitDomain.parseLayer(model)
   };
 }
 
