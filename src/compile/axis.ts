@@ -297,9 +297,13 @@ export namespace properties {
     }
 
     if (fieldDef.timeUnit) {
-      var templateText = '{{datum.data | time:\'' + timeFormat(model, channel) + '\'}}';
-      if (fieldDef.timeUnit === TimeUnit.QUARTER) {
+      let templateText = '{{datum.data | time:\'' + timeFormat(model, channel) + '\'}}';
+      if (fieldDef.timeUnit.toString().indexOf('quarter') > -1) {
         templateText = '{{datum.data | quarter}}';
+        if (fieldDef.timeUnit === TimeUnit.YEARQUARTER) {
+          templateText = '{{datum.data | time:\'%Y\'}}-'
+              + templateText;
+        }
       }
       labelsSpec = extend({
         text: {
