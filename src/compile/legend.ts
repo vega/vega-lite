@@ -172,7 +172,7 @@ namespace properties {
       datum = '{{ datum.data | time:\'' + timeFormat(model, channel) + '\'}}'
     }
 
-    if (fieldDef.unit) {
+    if (fieldDef.unit && !fieldDef.bin) {
       if (fieldDef.unitPosition == 'prefix') {
         textTemplate = fieldDef.unit + datum;
       } else if (fieldDef.unitPosition == 'suffix') {
