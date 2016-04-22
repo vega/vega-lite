@@ -139,7 +139,7 @@ __Default value:__ derived from [scale config](config.html#scale-config)'s `shap
 </span>
 
 `size` Scales
-: A `size` scale has a sequential range. Customized size `range` can be either a two-element array of color values for the interpolation or (for ordinal size scale only) an array of desired output size for each domain value.
+: A `size` scale has a sequential range. Customized size `range` can be either a two-element array of size values for the interpolation or (for ordinal size scale only) an array of desired output size for each domain value.
 <span class="note-line">
 __Default value:__
 <br/> • for `bar`: derived from [scale config](config.html#scale-config)'s `barSizeRange`. If both scale's `range` and the scale config's `barSizeRange` are unspecified (default), the default size range is a range from [mark config](config.mark.html)'s `thinBarWidth` to the scale's `bandSize`.
