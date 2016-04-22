@@ -79,12 +79,13 @@ export namespace text {
 
     // text
     if (model.has(TEXT)) {
-      let textTemplate = model.field(TEXT);
       let datum = model.field(TEXT);
       if (contains([QUANTITATIVE, TEMPORAL], model.fieldDef(TEXT).type)) {
         const format = model.config().mark.format;
         datum = formatMixins(model, TEXT, format).text.template;
       }
+      
+      let textTemplate = datum;
       if (fieldDef.unit) {
         if (!fieldDef.unitPosition || fieldDef.unitPosition == 'suffix') {
           textTemplate = datum + fieldDef.unit;

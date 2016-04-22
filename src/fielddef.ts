@@ -180,7 +180,7 @@ export function title(fieldDef: FieldDef) {
     return fieldDef.title;
   }
   const unit = (fieldDef.unit && (fieldDef.unitPosition == 'title' || !fieldDef.unitPosition))
-                ? ' in ' + fieldDef.unit : '';
+                ? (' in ' + fieldDef.unit) : '';
   if (isCount(fieldDef)) {
     return COUNT_TITLE + unit;
   }
