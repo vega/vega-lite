@@ -1,7 +1,7 @@
 import {UnitModel} from '../unit';
 import {X, Y, COLOR, TEXT, SIZE} from '../../channel';
 import {applyMarkConfig, applyColorAndOpacity, formatMixins} from '../common';
-import {extend, contains} from '../../util';
+import {contains} from '../../util';
 import {QUANTITATIVE, ORDINAL, TEMPORAL} from '../../type';
 
 export namespace text {
@@ -84,18 +84,18 @@ export namespace text {
         const format = model.config().mark.format;
         datum = formatMixins(model, TEXT, format).text.template;
       }
-      
+
       let textTemplate = datum;
       if (fieldDef.unit) {
-        if (!fieldDef.unitPosition || fieldDef.unitPosition == 'suffix') {
+        if (!fieldDef.unitPosition || fieldDef.unitPosition === 'suffix') {
           textTemplate = datum + fieldDef.unit;
-        } else if (fieldDef.unitPosition == 'prefix') {
+        } else if (fieldDef.unitPosition === 'prefix') {
           textTemplate = fieldDef.unit + datum;
         }
       }
       p.text = {
         template : textTemplate
-      }
+      };
     } else if (fieldDef.value) {
       p.text = { value: fieldDef.value };
     }

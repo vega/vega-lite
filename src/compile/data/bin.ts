@@ -40,7 +40,7 @@ export namespace bin {
           let exprStart = field(fieldDef, { datum: true, binSuffix: '_start' });
           let exprEnd = field(fieldDef, { datum: true, binSuffix: '_end' });
           if (fieldDef.unit) {
-            if (fieldDef.unitPosition == 'prefix') {
+            if (fieldDef.unitPosition === 'prefix') {
               exprStart = '\''+ fieldDef.unit +'\' + ' + exprStart;
               exprEnd = '\'' + fieldDef.unit +'\' + ' + exprEnd;
             } else {

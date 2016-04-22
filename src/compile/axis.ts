@@ -245,18 +245,18 @@ export namespace properties {
     }
 
     let datum = '{{ datum.data }}';
-    
+
     if (contains([NOMINAL, ORDINAL], fieldDef.type) && axis.labelMaxLength) {
       // TODO replace this with Vega's labelMaxLength once it is introduced
       datum = '{{ datum.data | truncate:' + axis.labelMaxLength + '}}';
     }
-    
+
     let textTemplate = datum;
-    
+
     if (fieldDef.unit) {
-      if (fieldDef.unitPosition == 'suffix') {
+      if (fieldDef.unitPosition === 'suffix') {
         textTemplate = datum + fieldDef.unit;
-      } else if (fieldDef.unitPosition == 'prefix') {
+      } else if (fieldDef.unitPosition === 'prefix') {
         textTemplate = fieldDef.unit + datum;
       }
     }

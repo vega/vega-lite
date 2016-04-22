@@ -169,13 +169,13 @@ namespace properties {
     let textTemplate = '{{ datum.data }}';
 
     if(fieldDef.timeUnit) {
-      datum = '{{ datum.data | time:\'' + timeFormat(model, channel) + '\'}}'
+      datum = '{{ datum.data | time:\'' + timeFormat(model, channel) + '\'}}';
     }
 
     if (fieldDef.unit && !fieldDef.bin) {
-      if (fieldDef.unitPosition == 'prefix') {
+      if (fieldDef.unitPosition === 'prefix') {
         textTemplate = fieldDef.unit + datum;
-      } else if (fieldDef.unitPosition == 'suffix') {
+      } else if (fieldDef.unitPosition === 'suffix') {
         textTemplate = datum + fieldDef.unit;
       }
     }

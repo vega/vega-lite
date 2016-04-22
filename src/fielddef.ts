@@ -179,13 +179,13 @@ export function title(fieldDef: FieldDef) {
   if (fieldDef.title != null) {
     return fieldDef.title;
   }
-  const unit = (fieldDef.unit && (fieldDef.unitPosition == 'title' || !fieldDef.unitPosition))
+  const unit = (fieldDef.unit && (fieldDef.unitPosition === 'title' || !fieldDef.unitPosition))
                 ? (' in ' + fieldDef.unit) : '';
   if (isCount(fieldDef)) {
     return COUNT_TITLE + unit;
   }
   const fn = fieldDef.aggregate || fieldDef.timeUnit || (fieldDef.bin && 'bin');
-  
+
   if (fn) {
     return fn.toString().toUpperCase() + '(' + fieldDef.field + ')' + unit;
   } else {
