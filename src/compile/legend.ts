@@ -118,7 +118,7 @@ export function useColorLegendScale(fieldDef: FieldDef) {
   return fieldDef.type === ORDINAL || fieldDef.bin || fieldDef.timeUnit;
 }
 
-namespace properties {
+export namespace properties {
   export function symbols(fieldDef: FieldDef, symbolsSpec, model: UnitModel, channel: Channel) {
     let symbols:any = {};
     const mark = model.mark();
