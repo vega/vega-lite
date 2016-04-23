@@ -177,6 +177,7 @@ export function scaleType(scale: Scale, fieldDef: FieldDef, channel: Channel, ma
           case TimeUnit.HOURS:
           case TimeUnit.DAY:
           case TimeUnit.MONTH:
+          case TimeUnit.QUARTER:
             return ScaleType.ORDINAL;
           default:
             // date, year, minute, second, yearmonth, monthday, ...

@@ -42,7 +42,13 @@ export function parseExpression(timeUnit: TimeUnit, fieldRef: string, onlyRef = 
     if (onlyRef) {
       return fieldRef + (addComma ? ', ' : '');
     } else {
-      return fun + '(' + fieldRef + ')' + (addComma ? ', ' : '');
+      let res = '';
+      if (fun === 'quarter') {
+        res = 'floor(month(' + fieldRef + ')' + '/3)*3';
+      } else {
+        res = fun + '(' + fieldRef + ')' ;
+      }
+      return res + (addComma ? ', ' : '');
     }
   }
 
@@ -54,6 +60,8 @@ export function parseExpression(timeUnit: TimeUnit, fieldRef: string, onlyRef = 
 
   if (timeString.indexOf('month') > -1) {
     out += get('month');
+  } else if (timeString.indexOf('quarter') > -1) {
+    out += get('quarter');
   } else {
     // month starts at 0 in javascript
     out += '0, ';
