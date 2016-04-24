@@ -5,7 +5,7 @@ import {NOMINAL, ORDINAL, TEMPORAL} from '../type';
 import {contains, keys, extend, truncate, Dict} from '../util';
 import {VgAxis} from '../vega.schema';
 
-import {formatMixins, timeFormat} from './common';
+import {formatMixins} from './common';
 import {Model} from './model';
 import {UnitModel} from './unit';
 
@@ -295,17 +295,14 @@ export namespace properties {
       }
     }
 
-    if (fieldDef.timeUnit) {
-      let templateText = '{{datum.data | time:\'' + timeFormat(model, channel) + '\'}}';
-      if (fieldDef.timeUnit.toString().indexOf('quarter') > -1) {
-        templateText = '{{datum.data | quarter}}';
-        if (fieldDef.timeUnit.toString().indexOf('year') > -1) {
-          templateText = '{{datum.data | time:\'%Y\'}}-'
-              + templateText;
-        }
-        if (fieldDef.timeUnit.toString().indexOf('month') > -1) {
-          templateText = templateText + '-{{datum.data | time:\'%b\'}}';
-        }
+    if (fieldDef.timeUnit && fieldDef.timeUnit.toString().indexOf('quarter') > -1) {
+      let templateText = '{{datum.data | quarter}}';
+      if (fieldDef.timeUnit.toString().indexOf('year') > -1) {
+        templateText = '{{datum.data | time:\'%Y\'}}-'
+            + templateText;
+      }
+      if (fieldDef.timeUnit.toString().indexOf('month') > -1) {
+        templateText = templateText + '-{{datum.data | time:\'%b\'}}';
       }
       labelsSpec = extend({
         text: {
