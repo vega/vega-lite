@@ -102,9 +102,11 @@ export function formatMixins(model: Model, channel: Channel, format: string) {
 
   let def: any = {};
 
-  if (fieldDef.type === TEMPORAL && fieldDef.timeUnit &&
-        fieldDef.timeUnit.toString().indexOf('quarter') === -1 ) {
-    def.formatType = 'time';
+  if (fieldDef.type === TEMPORAL) {
+    if ((!fieldDef.timeUnit) || (fieldDef.timeUnit &&
+        fieldDef.timeUnit.toString().indexOf('quarter') === -1)) {
+      def.formatType = 'time';
+    }
   }
 
   if (format !== undefined) {
@@ -115,8 +117,8 @@ export function formatMixins(model: Model, channel: Channel, format: string) {
         def.format = model.config().numberFormat;
         break;
       case TEMPORAL:
-        if (fieldDef.timeUnit &&
-              fieldDef.timeUnit.toString().indexOf('quarter') === -1) {
+        if ((!fieldDef.timeUnit) || (fieldDef.timeUnit &&
+              fieldDef.timeUnit.toString().indexOf('quarter') === -1)) {
           def.format = timeFormat(model, channel) || model.config().timeFormat;
         }
         break;
