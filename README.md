@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/vega/vega-lite.png?label=ready&title=Ready)](https://waffle.io/vega/vega-lite)
 # Vega-Lite
 
 [![Build Status](https://travis-ci.org/vega/vega-lite.svg?branch=master)](https://travis-ci.org/vega/vega-lite)
