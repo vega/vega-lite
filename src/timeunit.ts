@@ -102,3 +102,13 @@ export function format(timeUnit: TimeUnit, abbreviated = false): string {
 
   return out.length > 0 ? out.join(' ') : undefined;
 }
+
+/** Returns true if timeUnit contains the keyword, false otherwise. */
+export function hasTimeUnit(keyword: string, timeUnit: TimeUnit) {
+  let timeUnitString = timeUnit.toString();
+  if (timeUnitString.indexOf(keyword) > -1) {
+    return true;
+  } else {
+    return false;
+  }
+}

@@ -7,7 +7,7 @@ import {contains, union} from '../util';
 import {FacetModel} from './facet';
 import {LayerModel} from './layer';
 import {Model} from './model';
-import {format as timeFormatExpr} from '../timeunit';
+import {format as timeFormatExpr, hasTimeUnit} from '../timeunit';
 import {UnitModel} from './unit';
 import {Spec, isUnitSpec, isFacetSpec, isLayerSpec} from '../spec';
 
@@ -117,8 +117,7 @@ export function formatMixins(model: Model, channel: Channel, format: string) {
         def.format = model.config().numberFormat;
         break;
       case TEMPORAL:
-        if ((!fieldDef.timeUnit) || (fieldDef.timeUnit &&
-              fieldDef.timeUnit.toString().indexOf('quarter') === -1)) {
+        if (!fieldDef.timeUnit || !hasTimeUnit('quarter', fieldDef.timeUnit)) {
           def.format = timeFormat(model, channel) || model.config().timeFormat;
         }
         break;

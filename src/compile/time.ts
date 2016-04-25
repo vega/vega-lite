@@ -1,6 +1,6 @@
 import {contains, range} from '../util';
 import {COLUMN, ROW, SHAPE, COLOR, Channel} from '../channel';
-import {TimeUnit} from '../timeunit';
+import {TimeUnit, hasTimeUnit} from '../timeunit';
 
 /** returns the smallest nice unit for scale.nice */
 export function smallestUnit(timeUnit): string {
@@ -60,7 +60,7 @@ export function parseExpression(timeUnit: TimeUnit, fieldRef: string, onlyRef = 
 
   if (timeString.indexOf('month') > -1) {
     out += get('month');
-  } else if (timeString.indexOf('quarter') > -1) {
+  } else if (hasTimeUnit('quarter', timeUnit)) {
     out += get('quarter');
   } else {
     // month starts at 0 in javascript
