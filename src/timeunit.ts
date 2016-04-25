@@ -22,6 +22,8 @@ export enum TimeUnit {
     SECONDSMILLISECONDS = 'secondsmilliseconds' as any,
     QUARTER = 'quarter' as any,
     YEARQUARTER = 'yearquarter' as any,
+    QUARTERMONTH = 'quartermonth' as any,
+    YEARQUARTERMONTH = 'yearquartermonth' as any,
 }
 
 export const TIMEUNITS = [
@@ -47,6 +49,8 @@ export const TIMEUNITS = [
     TimeUnit.SECONDSMILLISECONDS,
     TimeUnit.QUARTER,
     TimeUnit.YEARQUARTER,
+    TimeUnit.QUARTERMONTH,
+    TimeUnit.YEARQUARTERMONTH,
 ];
 
 /** returns the template name used for axis labels for a time unit */

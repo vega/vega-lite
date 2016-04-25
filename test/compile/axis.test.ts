@@ -190,5 +190,28 @@ describe('Axis', function() {
       assert.equal(labels.angle.value, 270);
       assert.equal(labels.baseline.value, 'middle');
     });
+
+    it('should have correct text.template for quarter timeUnits', function () {
+      const model = parseUnitModel({
+        mark: "point",
+        encoding: {
+          x: {field: "a", type: "temporal", timeUnit: "quarter"}
+        }
+      });
+      const labels = axis.properties.labels(model, X, {}, {type: 'x'});
+      assert.deepEqual(labels.text.template, '{{datum.data | quarter}}');
+    });
+
+    it('should have correct text.template for yearquartermonth timeUnits', function () {
+      const model = parseUnitModel({
+        mark: "point",
+        encoding: {
+          x: {field: "a", type: "temporal", timeUnit: "yearquartermonth"}
+        }
+      });
+      const labels = axis.properties.labels(model, X, {}, {type: 'x'});
+      let expected = '{{datum.data | time:\'%Y\'}}-{{datum.data | quarter}}-{{datum.data | time:\'%b\'}}';
+      assert.deepEqual(labels.text.template, expected);
+    });
   });
 });
