@@ -1,4 +1,4 @@
-import {COLUMN, ROW, X, Y, SIZE, COLOR, SHAPE, TEXT, LABEL, Channel} from '../channel';
+import {COLUMN, ROW, X, Y, SIZE, COLOR, OPACITY, SHAPE, TEXT, LABEL, Channel} from '../channel';
 import {FieldDef, field, OrderChannelDef} from '../fielddef';
 import {SortOrder} from '../sort';
 import {QUANTITATIVE, ORDINAL, TEMPORAL} from '../type';
@@ -50,26 +50,42 @@ export function applyColorAndOpacity(p, model: UnitModel) {
     applyMarkConfig(p, model, STROKE_CONFIG);
   }
 
-  let value;
+  let colorValue;
+  let opacityValue;
   if (model.has(COLOR)) {
-    value = {
+    colorValue = {
       scale: model.scaleName(COLOR),
       field: model.field(COLOR, fieldDef.type === ORDINAL ? {prefn: 'rank_'} : {})
     };
   } else if (fieldDef && fieldDef.value) {
-    value = { value: fieldDef.value };
+    colorValue = { value: fieldDef.value };
+  }
+  
+  if (model.has(OPACITY)) {
+    opacityValue = {
+      scale: model.scaleName(OPACITY),
+      field: model.field(OPACITY, fieldDef.type === ORDINAL ? {prefn: 'rank_'} : {})
+    };
+  } else if (fieldDef && fieldDef.value) {
+    opacityValue = { value: fieldDef.value };
   }
 
-  if (value !== undefined) {
+  if (colorValue !== undefined) {
     if (filled) {
-      p.fill = value;
+      p.fill = colorValue;
     } else {
-      p.stroke = value;
+      p.stroke = colorValue;
     }
   } else {
     // apply color config if there is no fill / stroke config
     p[filled ? 'fill' : 'stroke'] = p[filled ? 'fill' : 'stroke'] ||
       {value: model.config().mark.color};
+  }
+  
+  if (opacityValue !== undefined) {
+    p.opacity = opacityValue;
+  } else {
+    p.opacity = {value: model.config().mark.opacity};
   }
 }
 
@@ -142,6 +158,7 @@ function isAbbreviated(model: Model, channel: Channel, fieldDef: FieldDef) {
     case Y:
       return model.axis(channel).shortTimeLabels;
     case COLOR:
+    case OPACITY:
     case SHAPE:
     case SIZE:
       return model.legend(channel).shortTimeLabels;

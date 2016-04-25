@@ -1,7 +1,7 @@
 import {UnitModel} from '../unit';
 import {OrderChannelDef} from '../../fielddef';
 
-import {X, Y, COLOR, TEXT, SHAPE, PATH, ORDER, DETAIL, LABEL} from '../../channel';
+import {X, Y, COLOR, TEXT, SHAPE, PATH, ORDER, OPACITY, DETAIL, LABEL} from '../../channel';
 import {AREA, LINE, TEXT as TEXTMARK} from '../../mark';
 import {imputeTransform, stackTransform} from '../stack';
 import {contains, extend} from '../../util';
@@ -203,7 +203,7 @@ function sortPathBy(model: UnitModel): string | string[] {
  * that the model's spec contains.
  */
 function detailFields(model: UnitModel): string[] {
-  return [COLOR, DETAIL, SHAPE].reduce(function(details, channel) {
+  return [COLOR, DETAIL, OPACITY, SHAPE].reduce(function(details, channel) {
     if (model.has(channel) && !model.fieldDef(channel).aggregate) {
       details.push(model.field(channel));
     }
