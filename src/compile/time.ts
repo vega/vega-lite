@@ -1,6 +1,6 @@
 import {contains, range} from '../util';
 import {COLUMN, ROW, SHAPE, COLOR, Channel} from '../channel';
-import {TimeUnit, hasTimeUnit} from '../timeunit';
+import {TimeUnit, containsTimeUnit} from '../timeunit';
 
 /** returns the smallest nice unit for scale.nice */
 export function smallestUnit(timeUnit): string {
@@ -8,27 +8,28 @@ export function smallestUnit(timeUnit): string {
     return undefined;
   }
 
-  if (timeUnit.indexOf('second') > -1) {
+  if (containsTimeUnit(timeUnit, TimeUnit.SECONDS)) {
     return 'second';
   }
 
-  if (timeUnit.indexOf('minute') > -1) {
+  if (containsTimeUnit(timeUnit, TimeUnit.MINUTES)) {
     return 'minute';
   }
 
-  if (timeUnit.indexOf('hour') > -1) {
+  if (containsTimeUnit(timeUnit, TimeUnit.HOURS)) {
     return 'hour';
   }
 
-  if (timeUnit.indexOf('day') > -1 || timeUnit.indexOf('date') > -1) {
+  if (containsTimeUnit(timeUnit, TimeUnit.DAY) ||
+      containsTimeUnit(timeUnit, TimeUnit.DATE)) {
     return 'day';
   }
 
-  if (timeUnit.indexOf('month') > -1) {
+  if (containsTimeUnit(timeUnit, TimeUnit.MONTH)) {
     return 'month';
   }
 
-  if (timeUnit.indexOf('year') > -1) {
+  if (containsTimeUnit(timeUnit, TimeUnit.YEAR)) {
     return 'year';
   }
   return undefined;
@@ -36,7 +37,6 @@ export function smallestUnit(timeUnit): string {
 
 export function parseExpression(timeUnit: TimeUnit, fieldRef: string, onlyRef = false): string {
   let out = 'datetime(';
-  let timeString = timeUnit.toString();
 
   function get(fun: string, addComma = true) {
     if (onlyRef) {
@@ -52,15 +52,15 @@ export function parseExpression(timeUnit: TimeUnit, fieldRef: string, onlyRef = 
     }
   }
 
-  if (timeString.indexOf('year') > -1) {
+  if (containsTimeUnit(timeUnit, TimeUnit.YEAR)) {
     out += get('year');
   } else {
     out += '2006, '; // January 1 2006 is a Sunday
   }
 
-  if (timeString.indexOf('month') > -1) {
+  if (containsTimeUnit(timeUnit, TimeUnit.MONTH)) {
     out += get('month');
-  } else if (hasTimeUnit('quarter', timeUnit)) {
+  } else if (containsTimeUnit(timeUnit, TimeUnit.QUARTER)) {
     out += get('quarter');
   } else {
     // month starts at 0 in javascript
@@ -68,33 +68,33 @@ export function parseExpression(timeUnit: TimeUnit, fieldRef: string, onlyRef = 
   }
 
   // need to add 1 because days start at 1
-  if (timeString.indexOf('day') > -1) {
+  if (containsTimeUnit(timeUnit, TimeUnit.DAY)) {
     out += get('day', false) + '+1, ';
-  } else if (timeString.indexOf('date') > -1) {
+  } else if (containsTimeUnit(timeUnit, TimeUnit.DATE)) {
     out += get('date');
   } else {
     out += '1, ';
   }
 
-  if (timeString.indexOf('hours') > -1) {
+  if (containsTimeUnit(timeUnit, TimeUnit.HOURS)) {
     out += get('hours');
   } else {
     out += '0, ';
   }
 
-  if (timeString.indexOf('minutes') > -1) {
+  if (containsTimeUnit(timeUnit, TimeUnit.MINUTES)) {
     out += get('minutes');
   } else {
     out += '0, ';
   }
 
-  if (timeString.indexOf('seconds') > -1) {
+  if (containsTimeUnit(timeUnit, TimeUnit.SECONDS)) {
     out += get('seconds');
   } else {
     out += '0, ';
   }
 
-  if (timeString.indexOf('milliseconds') > -1) {
+  if (containsTimeUnit(timeUnit, TimeUnit.MILLISECONDS)) {
     out += get('milliseconds', false);
   } else {
     out += '0';

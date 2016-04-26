@@ -59,36 +59,34 @@ export function format(timeUnit: TimeUnit, abbreviated = false): string {
     return undefined;
   }
 
-  let timeString = timeUnit.toString();
-
   let dateComponents = [];
 
-  if (timeString.indexOf('year') > -1) {
+  if (containsTimeUnit(timeUnit, TimeUnit.YEAR)) {
     dateComponents.push(abbreviated ? '%y' : '%Y');
   }
 
-  if (timeString.indexOf('month') > -1) {
+  if (containsTimeUnit(timeUnit, TimeUnit.MONTH)) {
     dateComponents.push(abbreviated ? '%b' : '%B');
   }
 
-  if (timeString.indexOf('day') > -1) {
+  if (containsTimeUnit(timeUnit, TimeUnit.DAY)) {
     dateComponents.push(abbreviated ? '%a' : '%A');
-  } else if (timeString.indexOf('date') > -1) {
+  } else if (containsTimeUnit(timeUnit, TimeUnit.DATE)) {
     dateComponents.push('%d');
   }
 
   let timeComponents = [];
 
-  if (timeString.indexOf('hours') > -1) {
+  if (containsTimeUnit(timeUnit, TimeUnit.HOURS)) {
     timeComponents.push('%H');
   }
-  if (timeString.indexOf('minutes') > -1) {
+  if (containsTimeUnit(timeUnit, TimeUnit.MINUTES)) {
     timeComponents.push('%M');
   }
-  if (timeString.indexOf('seconds') > -1) {
+  if (containsTimeUnit(timeUnit, TimeUnit.SECONDS)) {
     timeComponents.push('%S');
   }
-  if (timeString.indexOf('milliseconds') > -1) {
+  if (containsTimeUnit(timeUnit, TimeUnit.MILLISECONDS)) {
     timeComponents.push('%L');
   }
 
@@ -103,10 +101,11 @@ export function format(timeUnit: TimeUnit, abbreviated = false): string {
   return out.length > 0 ? out.join(' ') : undefined;
 }
 
-/** Returns true if timeUnit contains the keyword, false otherwise. */
-export function hasTimeUnit(keyword: string, timeUnit: TimeUnit) {
-  let timeUnitString = timeUnit.toString();
-  if (timeUnitString.indexOf(keyword) > -1) {
+/** Returns true if container contains the containee, false otherwise. */
+export function containsTimeUnit(container: TimeUnit, containee: TimeUnit) {
+  let containerStr = container.toString();
+  let containeeStr = containee.toString();
+  if (containerStr.indexOf(containeeStr) > -1) {
     return true;
   } else {
     return false;

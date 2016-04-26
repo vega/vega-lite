@@ -4,6 +4,7 @@ import {title as fieldDefTitle, isDimension} from '../fielddef';
 import {NOMINAL, ORDINAL, TEMPORAL} from '../type';
 import {contains, keys, extend, truncate, Dict} from '../util';
 import {VgAxis} from '../vega.schema';
+import {TimeUnit, containsTimeUnit} from '../timeunit';
 
 import {formatMixins} from './common';
 import {Model} from './model';
@@ -295,13 +296,13 @@ export namespace properties {
       }
     }
 
-    if (fieldDef.timeUnit && fieldDef.timeUnit.toString().indexOf('quarter') > -1) {
+    if (fieldDef.timeUnit && containsTimeUnit(fieldDef.timeUnit, TimeUnit.QUARTER)) {
       let templateText = '{{datum.data | quarter}}';
-      if (fieldDef.timeUnit.toString().indexOf('year') > -1) {
+      if (containsTimeUnit(fieldDef.timeUnit, TimeUnit.YEAR)) {
         templateText = '{{datum.data | time:\'%Y\'}}-'
             + templateText;
       }
-      if (fieldDef.timeUnit.toString().indexOf('month') > -1) {
+      if (containsTimeUnit(fieldDef.timeUnit, TimeUnit.MONTH)) {
         templateText = templateText + '-{{datum.data | time:\'%b\'}}';
       }
       labelsSpec = extend({

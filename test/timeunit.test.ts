@@ -1,23 +1,23 @@
 import {assert} from 'chai';
 
-import {TimeUnit, hasTimeUnit} from '../src/timeunit';
+import {TimeUnit, containsTimeUnit} from '../src/timeunit';
 
-describe('For hasTimeUnit', function () {
+describe('For containsTimeUnit', function () {
   it('should return true for quarter given quarter', function() {
-    const keyword = 'quarter';
-    const timeUnit = TimeUnit.QUARTER;
-    assert.equal(hasTimeUnit(keyword, timeUnit), true);
+    const container = TimeUnit.QUARTER;
+    const containee = TimeUnit.QUARTER;
+    assert.equal(containsTimeUnit(container, containee), true);
   });
 
   it('should return true for yearquarter given quarter', function() {
-    const keyword = 'quarter';
-    const timeUnit = TimeUnit.YEARQUARTER;
-    assert.equal(hasTimeUnit(keyword, timeUnit), true);
+    const container = TimeUnit.YEARQUARTER;
+    const containee = TimeUnit.QUARTER;
+    assert.equal(containsTimeUnit(container, containee), true);
   });
 
   it('should return false for quarter given year', function() {
-    const keyword = 'quarter';
-    const timeUnit = TimeUnit.YEAR;
-    assert.equal(hasTimeUnit(keyword, timeUnit), false);
+    const container = TimeUnit.YEAR;
+    const containee = TimeUnit.QUARTER;
+    assert.equal(containsTimeUnit(container, containee), false);
   });
 });
