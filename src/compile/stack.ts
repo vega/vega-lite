@@ -1,7 +1,7 @@
 import {Encoding} from '../encoding';
 import {Config} from '../config';
 import {FieldDef} from '../fielddef';
-import {Channel, X, Y, COLOR, DETAIL, ORDER} from '../channel';
+import {Channel, X, Y, COLOR, DETAIL, ORDER, SIZE} from '../channel';
 import {Scale, ScaleType} from '../scale';
 import {StackOffset} from '../config';
 import {BAR, AREA, Mark} from '../mark';
@@ -70,7 +70,7 @@ export function compileStackProperties(mark: Mark, encoding: Encoding, scale: Di
 
 /** Compile stack-by field names from (from 'color' and 'detail') */
 function getStackFields(mark: Mark, encoding: Encoding, scaleMap: Dict<Scale>) {
-  return [COLOR, DETAIL].reduce(function(fields, channel) {
+  return [COLOR, DETAIL, SIZE].reduce(function(fields, channel) {
     const channelEncoding = encoding[channel];
     if (has(encoding, channel)) {
       if (isArray(channelEncoding)) {
