@@ -38,12 +38,14 @@ export function smallestUnit(timeUnit): string {
 export function parseExpression(timeUnit: TimeUnit, fieldRef: string, onlyRef = false): string {
   let out = 'datetime(';
 
-  function get(fun: string, addComma = true) {
+  function func(fun: string, addComma = true) {
     if (onlyRef) {
       return fieldRef + (addComma ? ', ' : '');
     } else {
       let res = '';
       if (fun === 'quarter') {
+        // Divide by 3 to get the corresponding quarter number, multiply by 3
+        // to scale to the first month of the corresponding quarter(0,3,6,9).
         res = 'floor(month(' + fieldRef + ')' + '/3)*3';
       } else {
         res = fun + '(' + fieldRef + ')' ;
@@ -53,15 +55,15 @@ export function parseExpression(timeUnit: TimeUnit, fieldRef: string, onlyRef = 
   }
 
   if (containsTimeUnit(timeUnit, TimeUnit.YEAR)) {
-    out += get('year');
+    out += func('year');
   } else {
     out += '2006, '; // January 1 2006 is a Sunday
   }
 
   if (containsTimeUnit(timeUnit, TimeUnit.MONTH)) {
-    out += get('month');
+    out += func('month');
   } else if (containsTimeUnit(timeUnit, TimeUnit.QUARTER)) {
-    out += get('quarter');
+    out += func('quarter');
   } else {
     // month starts at 0 in javascript
     out += '0, ';
@@ -69,33 +71,33 @@ export function parseExpression(timeUnit: TimeUnit, fieldRef: string, onlyRef = 
 
   // need to add 1 because days start at 1
   if (containsTimeUnit(timeUnit, TimeUnit.DAY)) {
-    out += get('day', false) + '+1, ';
+    out += func('day', false) + '+1, ';
   } else if (containsTimeUnit(timeUnit, TimeUnit.DATE)) {
-    out += get('date');
+    out += func('date');
   } else {
     out += '1, ';
   }
 
   if (containsTimeUnit(timeUnit, TimeUnit.HOURS)) {
-    out += get('hours');
+    out += func('hours');
   } else {
     out += '0, ';
   }
 
   if (containsTimeUnit(timeUnit, TimeUnit.MINUTES)) {
-    out += get('minutes');
+    out += func('minutes');
   } else {
     out += '0, ';
   }
 
   if (containsTimeUnit(timeUnit, TimeUnit.SECONDS)) {
-    out += get('seconds');
+    out += func('seconds');
   } else {
     out += '0, ';
   }
 
   if (containsTimeUnit(timeUnit, TimeUnit.MILLISECONDS)) {
-    out += get('milliseconds', false);
+    out += func('milliseconds', false);
   } else {
     out += '0';
   }

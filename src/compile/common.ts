@@ -104,6 +104,9 @@ export function formatMixins(model: Model, channel: Channel, format: string) {
 
   if (fieldDef.type === TEMPORAL) {
     if ((!fieldDef.timeUnit) || !containsTimeUnit(fieldDef.timeUnit, TimeUnit.QUARTER)) {
+      // Use formatType of (YEAR-MONTH-DAY) when no timeUnit is specified.
+      // Use formatType for timeUnits that do not contains QUARTER. For QUARTER
+      // related timeunits, we use template for the time format.
       def.formatType = 'time';
     }
   }
