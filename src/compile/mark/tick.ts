@@ -34,6 +34,15 @@ export namespace tick {
     }
 
     if (model.config().mark.orient === 'horizontal') {
+       p.width = model.has(SIZE)? {
+          scale: model.scaleName(SIZE),
+          field: model.field(SIZE)
+        } : {
+          value: sizeValue(model, X)
+        };
+      p.height = { value: model.config().mark.tickThickness };
+
+    } else {
       p.width = { value: model.config().mark.tickThickness };
       p.height = model.has(SIZE)? {
             scale: model.scaleName(SIZE),
@@ -41,14 +50,6 @@ export namespace tick {
         } : {
             value: sizeValue(model, Y)
         };
-    } else {
-      p.width = model.has(SIZE)? {
-          scale: model.scaleName(SIZE),
-          field: model.field(SIZE)
-        } : {
-          value: sizeValue(model, X)
-        };
-      p.height = { value: model.config().mark.tickThickness };
     }
 
     applyColorAndOpacity(p, model);

@@ -83,7 +83,7 @@ describe('Mark: Tick', function() {
     });
     const props = tick.properties(model);
     it('width should change with size field', function() {
-      assert.deepEqual(props.width, {'field': 'Acceleration', 'scale': SIZE});
+      assert.deepEqual(props.height, {'field': 'Acceleration', 'scale': SIZE});
     });
   });
 
@@ -101,7 +101,7 @@ describe('Mark: Tick', function() {
     });
     const props = tick.properties(model);
     it('height should change with size field', function() {
-      assert.deepEqual(props.height, {'field': 'Acceleration', 'scale': SIZE});
+      assert.deepEqual(props.width, {'field': 'Acceleration', 'scale': SIZE});
     });
   });
 });
