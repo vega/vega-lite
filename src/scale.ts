@@ -77,7 +77,7 @@ export const defaultScaleConfig: ScaleConfig = {
   textBandWidth: 90,
   bandSize: 21,
   padding: 1,
-  includeRawDomain: false,
+  includeRawDomain: true,
 
   nominalColorRange: 'category10',
   sequentialColorRange: ['#AFC6A3', '#09622A'], // tableau greens
