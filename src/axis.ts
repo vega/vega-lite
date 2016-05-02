@@ -39,12 +39,12 @@ export interface AxisConfig {
   gridColor?: string;
 
   /**
-   * 
+   * The offset (in pixels) into which to begin drawing with the stroke dash array.
    */
   gridDash?: number[];
 
   /**
-   * A number represents the opacity of the grid. Numebr vary from 0 to 1
+   * The stroke opacity of grid (value between [0,1])
    */
   gridOpacity?: number;
 
