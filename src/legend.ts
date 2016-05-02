@@ -60,6 +60,10 @@ export interface LegendConfig {
    */
   shortTimeLabels?: boolean;
   /**
+   * The color of the legend symbol, 
+   */
+  symbolColor?: string;
+  /**
    * The shape of the legend symbol, can be the 'circle', 'square', 'cross', 'diamond',
    * 'triangle-up', 'triangle-down'.
    */
@@ -68,10 +72,6 @@ export interface LegendConfig {
    * The size of the lengend symbol, in pixels.
    */
   symbolSize?: number;
-  /**
-   * The color of the legend symbol, 
-   */
-  symbolColor?: string;
   /**
    * The width of the symbol's stroke.
    */
