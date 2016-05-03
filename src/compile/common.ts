@@ -66,8 +66,6 @@ export function applyColorAndOpacity(p, model: UnitModel) {
       scale: model.scaleName(OPACITY),
       field: model.field(OPACITY, fieldDef.type === ORDINAL ? {prefn: 'rank_'} : {})
     };
-  } else if (fieldDef && fieldDef.value) {
-    opacityValue = { value: fieldDef.value };
   }
 
   if (colorValue !== undefined) {
@@ -84,8 +82,6 @@ export function applyColorAndOpacity(p, model: UnitModel) {
   
   if (opacityValue !== undefined) {
     p.opacity = opacityValue;
-  } else {
-    p.opacity = {value: model.config().mark.opacity};
   }
 }
 
