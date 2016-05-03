@@ -249,7 +249,7 @@ vg.embed('#horizontal_line', {
 | Property            | Type                | Description  |
 | :------------------ |:-------------------:| :------------|
 | font                | String  | The typeface to set the text in (e.g., `Helvetica Neue`).|
-  | fontSize            | Number  | The font size, in pixels. The default value is 10. |
+| fontSize            | Number  | The font size, in pixels. The default value is 10. |
 | fontStyle           | String  | The font style (e.g., `italic`).|
 | fontWeight          | String  | The font weight (e.g., `bold`).|
 
