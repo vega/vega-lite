@@ -8,7 +8,6 @@ import * as legend from '../../src/compile/legend';
 describe('Legend', function() {
   describe('parseLegend()', function() {
     it('should output explicitly specified properties', function() {
-      // FIXME test this
       it('should produce a Vega axis object with correct type and scale', function() {
         const model = parseUnitModel({
           mark: "point",
