@@ -60,7 +60,7 @@ export function applyColorAndOpacity(p, model: UnitModel) {
   } else if (fieldDef && fieldDef.value) {
     colorValue = { value: fieldDef.value };
   }
-  
+
   if (model.has(OPACITY)) {
     opacityValue = {
       scale: model.scaleName(OPACITY),
@@ -79,7 +79,7 @@ export function applyColorAndOpacity(p, model: UnitModel) {
     p[filled ? 'fill' : 'stroke'] = p[filled ? 'fill' : 'stroke'] ||
       {value: model.config().mark.color};
   }
-  
+
   if (opacityValue !== undefined) {
     p.opacity = opacityValue;
   }
