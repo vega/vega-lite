@@ -37,12 +37,22 @@ export namespace bin {
         const isOrdinalColor = model.isOrdinalScale(channel) || channel === COLOR;
         // color ramp has type linear or time
         if (isOrdinalColor) {
+          let exprStart = field(fieldDef, { datum: true, binSuffix: '_start' });
+          let exprEnd = field(fieldDef, { datum: true, binSuffix: '_end' });
+          if (fieldDef.unit) {
+            if (fieldDef.unitPosition === 'prefix') {
+              exprStart = '\''+ fieldDef.unit +'\' + ' + exprStart;
+              exprEnd = '\'' + fieldDef.unit +'\' + ' + exprEnd;
+            } else {
+              exprStart += ' + \'' + fieldDef.unit +'\'';
+              exprEnd += ' + \'' + fieldDef.unit + '\'';
+            }
+          }
+          let expr = exprStart + ' + \'-\' + ' + exprEnd;
           transform.push({
             type: 'formula',
             field: field(fieldDef, { binSuffix: '_range' }),
-            expr: field(fieldDef, { datum: true, binSuffix: '_start' }) +
-            ' + \'-\' + ' +
-            field(fieldDef, { datum: true, binSuffix: '_end' })
+            expr: expr
           });
         }
         // FIXME: current merging logic can produce redundant transforms when a field is binned for color and for non-color

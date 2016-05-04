@@ -244,14 +244,28 @@ export namespace properties {
       }, labelsSpec);
     }
 
+    let datum = '{{ datum.data }}';
+
     if (contains([NOMINAL, ORDINAL], fieldDef.type) && axis.labelMaxLength) {
       // TODO replace this with Vega's labelMaxLength once it is introduced
-      labelsSpec = extend({
-        text: {
-          template: '{{ datum.data | truncate:' + axis.labelMaxLength + '}}'
-        }
-      }, labelsSpec || {});
+      datum = '{{ datum.data | truncate:' + axis.labelMaxLength + '}}';
     }
+
+    let textTemplate = datum;
+
+    if (fieldDef.unit) {
+      if (fieldDef.unitPosition === 'suffix') {
+        textTemplate = datum + fieldDef.unit;
+      } else if (fieldDef.unitPosition === 'prefix') {
+        textTemplate = fieldDef.unit + datum;
+      }
+    }
+
+    labelsSpec = extend({
+      text: {
+        template: textTemplate
+      }
+    }, labelsSpec || {});
 
     // Label Angle
     if (axis.labelAngle !== undefined) {
