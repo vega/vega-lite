@@ -23,7 +23,7 @@ export interface AxisConfig {
 
   // ---------- Axis ----------
   /**
-   * A string indicating the color of the axis. The string can be hex color code
+   * Color of axis line. 
    */
   axisColor?: string;
 
@@ -34,12 +34,12 @@ export interface AxisConfig {
   grid?: boolean;
 
   /**
-   * A string indicating the color of the grid. The string can be hex color code
+   * Color of gridlines.
    */
   gridColor?: string;
 
   /**
-   * The offset (in pixels) into which to begin drawing with the stroke dash array.
+   * The offset (in pixels) into which to begin drawing with the grid dash array.
    */
   gridDash?: number[];
 
@@ -49,7 +49,7 @@ export interface AxisConfig {
   gridOpacity?: number;
 
   /**
-   * A number represent the width of the grid
+   * The grid width, in pixels.
    */
   gridWidth?: number;
 
@@ -92,7 +92,7 @@ export interface AxisConfig {
   ticks?: number;
 
   /**
-   * The color, can be in hex color code or regular color name.
+   * The color of the axis's tick.
    */
   tickColor?: string;
 
@@ -107,7 +107,7 @@ export interface AxisConfig {
   tickLabelFont?: string;
 
   /**
-   * The font size of the label.
+   * The font size of label, in pixels.
    */
   tickLabelFontSize?: number;
 
@@ -137,7 +137,7 @@ export interface AxisConfig {
   tickSizeEnd?: number;
 
   /**
-   * Width of the ticks
+   * The width, in pixels, of ticks.
    */
   tickWidth?: number;
 
