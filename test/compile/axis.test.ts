@@ -4,7 +4,7 @@ import {assert} from 'chai';
 
 import {parseUnitModel, parseModel} from '../util';
 import * as axis from '../../src/compile/axis';
-import {X, Y, COLUMN} from '../../src/channel';
+import {X, Y, COLUMN, ROW} from '../../src/channel';
 
 describe('Axis', function() {
   // TODO: move this to model.test.ts
@@ -45,7 +45,77 @@ describe('Axis', function() {
   });
 
   describe('grid()', function () {
-    // FIXME(kanitw): Jul 19, 2015 - write test
+    it('should return specified orient', function () {
+      const grid = axis.grid(parseModel({
+          mark: "point",
+          encoding: {
+            x: {field: 'a', axis:{grid: false}}
+          }
+        }), X);
+      assert.deepEqual(grid, false);
+    });
+
+    it('should return true by default', function () {
+      const grid = axis.grid(parseModel({
+          mark: "point",
+          encoding: {
+            x: {field: 'a'}
+          }
+        }), X);
+      assert.deepEqual(grid, true);
+    });
+
+    it('should return undefined for COLUMN', function () {
+      const grid = axis.grid(parseModel({
+          mark: "point",
+          encoding: {
+            x: {field: 'a'}
+          }
+        }), COLUMN);
+      assert.deepEqual(grid, undefined);
+    });
+
+    it('should return undefined for ROW', function () {
+      const grid = axis.grid(parseModel({
+          mark: "point",
+          encoding: {
+            x: {field: 'a'}
+          }
+        }), ROW);
+      assert.deepEqual(grid, undefined);
+    });
+  });
+
+  describe('layer()', function () {
+    it('should return undefined by default without grid defined', function () {
+      const layer = axis.layer(parseModel({
+          mark: "point",
+          encoding: {
+            x: {field: 'a'}
+          }
+        }), X, Y);
+      assert.deepEqual(layer, undefined);
+    });
+
+    it('should return back by default with grid defined', function () {
+      const layer = axis.layer(parseModel({
+          mark: "point",
+          encoding: {
+            x: {field: 'a'}
+          }
+        }), X, {grid: true});
+      assert.deepEqual(layer, "back");
+    });
+
+    it('should return specified layer', function () {
+      const layer = axis.layer(parseModel({
+          mark: "point",
+          encoding: {
+            x: {field: 'a', axis: {layer: "front"}}
+          }
+        }), X, {grid: true});
+      assert.deepEqual(layer, "front");
+    });
   });
 
   describe('orient()', function () {
@@ -82,13 +152,79 @@ describe('Axis', function() {
   });
 
   describe('ticks', function() {
-    // FIXME: write test
+    it('should return undefined by default', function () {
+      const ticks = axis.ticks(parseModel({
+          mark: "point",
+          encoding: {
+            y: {field: 'a'}
+          }
+        }), Y);
+      assert.deepEqual(ticks, undefined);
+    });
+
+    it('should return 5 by default', function () {
+      const ticks = axis.ticks(parseModel({
+          mark: "point",
+          encoding: {
+            x: {field: 'a'}
+          }
+        }), X);
+      assert.deepEqual(ticks, 5);
+    });
+
+    it('should return specified ticks', function () {
+      const ticks = axis.ticks(parseModel({
+          mark: "point",
+          encoding: {
+            x: {field: 'a', axis: {ticks: 10}}
+          }
+        }), X);
+      assert.deepEqual(ticks, 10);
+    });
   });
 
   describe('tickSize', function() {
-    // FIXME: write test
-    // - it should return explicitly specified tickSize
-    // - otherwise it should return 0 for ROW and COLUMN and undefined for other channels
+    it('should return undefined by default', function () {
+      const tickSize = axis.tickSize(parseModel({
+          mark: "point",
+          encoding: {
+            y: {field: 'a'}
+          }
+        }), Y);
+      assert.deepEqual(tickSize, undefined);
+    });
+
+    it('should return specified ticks', function () {
+      const tickSize = axis.tickSize(parseModel({
+          mark: "point",
+          encoding: {
+            y: {field: 'a', axis: {tickSize: 10}}
+          }
+        }), Y);
+      assert.deepEqual(tickSize, 10);
+    });
+  });
+
+  describe('tickSizeEnd', function() {
+    it('should return undefined by default', function () {
+      const tickSizeEnd = axis.tickSizeEnd(parseModel({
+          mark: "point",
+          encoding: {
+            y: {field: 'a'}
+          }
+        }), Y);
+      assert.deepEqual(tickSizeEnd, undefined);
+    });
+
+    it('should return specified ticks', function () {
+      const tickSizeEnd = axis.tickSizeEnd(parseModel({
+          mark: "point",
+          encoding: {
+            y: {field: 'a', axis: {tickSizeEnd: 5}}
+          }
+        }), Y);
+      assert.deepEqual(tickSizeEnd, 5);
+    });
   });
 
   describe('title()', function () {
@@ -147,6 +283,98 @@ describe('Axis', function() {
     });
   });
 
+  describe('titleOffset', function() {
+    it('should return undefined by default', function () {
+      const titleOffset = axis.titleOffset(parseModel({
+          mark: "point",
+          encoding: {
+            y: {field: 'a'}
+          }
+        }), Y);
+      assert.deepEqual(titleOffset, undefined);
+    });
+
+    it('should return specified ticks', function () {
+      const titleOffset = axis.titleOffset(parseModel({
+          mark: "point",
+          encoding: {
+            y: {field: 'a', axis: {tickSize: 10, titleOffset: 15}}
+          }
+        }), Y);
+      assert.deepEqual(titleOffset, 15);
+    });
+  });
+
+  describe('properties.axis()', function() {
+    it('axisColor should change axis\'s color', function() {
+        const model = parseModel({
+        mark: "point",
+        encoding: {
+          x: {field: "a", type: "quantitative", axis: {axisColor: '#fff'}}
+        }
+      });
+        const axes = axis.properties.axis(model, X, {});
+        assert.equal(axes.stroke.value, '#fff');
+    });
+
+    it('axisWidth should change axis\'s width', function() {
+        const model = parseModel({
+        mark: "point",
+        encoding: {
+          x: {field: "a", type: "quantitative", axis: {axisWidth: 2}}
+        }
+      });
+        const axes = axis.properties.axis(model, X, {});
+        assert.equal(axes.strokeWidth.value, 2);
+    });
+  });
+
+  describe('properties.grid()', function(){
+      it('gridColor should change grid\'s color', function() {
+        const model = parseModel({
+        mark: "point",
+        encoding: {
+          x: {field: "a", type: "quantitative", axis: {gridColor: '#fff'}}
+        }
+      });
+        const axes = axis.properties.grid(model, X, {});
+        assert.equal(axes.stroke.value, '#fff');
+    });
+
+    it('gridOpacity should change grid\'s opacity', function(){
+        const model = parseModel({
+        mark: "point",
+        encoding: {
+          x: {field: "a", type: "quantitative", axis: {grid: true, gridOpacity: 0.6}}
+        }
+      });
+        const axes = axis.properties.grid(model, X, {});
+        assert.equal(axes.strokeOpacity.value, 0.6);
+    });
+
+     it('gridWidth should change grid\'s width', function(){
+        const model = parseModel({
+        mark: "point",
+        encoding: {
+          x: {field: "a", type: "quantitative", axis: {grid: true, gridWidth: 2}}
+        }
+      });
+        const axes = axis.properties.grid(model, X, {});
+        assert.equal(axes.strokeWidth.value, 2);
+    });
+
+    it('gridDash should change grid\'s dash offset', function(){
+        const model = parseModel({
+        mark: "point",
+        encoding: {
+          x: {field: "a", type: "quantitative", axis: {grid: true, gridDash: [2]}}
+        }
+      });
+        const axes = axis.properties.grid(model, X, {});
+        assert.deepEqual(axes.strokeDashOffset.value, [2]);
+    });
+  });
+
   describe('properties.labels()', function () {
     it('should show labels by default', function () {
       const labels = axis.properties.labels(parseUnitModel({
@@ -189,6 +417,109 @@ describe('Axis', function() {
       const labels = axis.properties.labels(model, X, {}, {type: 'x'});
       assert.equal(labels.angle.value, 270);
       assert.equal(labels.baseline.value, 'middle');
+    });
+
+    it('tickLabelColor should change with axis\'s label\' color', function() {
+      const model = parseModel({
+        mark: "point",
+        encoding: {
+          x: {field: "a", axis:{tickLabelColor: "blue"}}
+        }
+      });
+      const labels = axis.properties.labels(model, X, {}, {});
+      assert.equal(labels.stroke.value, "blue");
+    });
+
+    it('tickLabelFont should change with axis\'s label\'s font', function() {
+      const model = parseModel({
+        mark: "point",
+        encoding: {
+          x: {field: "a", axis:{tickLabelFont: "Helvetica Neue"}}
+        }
+      });
+      const labels = axis.properties.labels(model, X, {}, {});
+      assert.equal(labels.font.value, "Helvetica Neue");
+    });
+
+    it('tickLabelFontSize should change with axis\'s label\'s font size', function() {
+      const model = parseModel({
+        mark: "point",
+        encoding: {
+          x: {field: "a", axis:{tickLabelFontSize: 20}}
+        }
+      });
+      const labels = axis.properties.labels(model, X, {}, {});
+      assert.equal(labels.fontSize.value, 20);
+    });
+  });
+
+  describe('properties.ticks()', function() {
+    it('tickColor should change axis\'s ticks\'s color', function() {
+        const model = parseModel({
+        mark: "point",
+        encoding: {
+          x: {field: "a", type: "quantitative", axis: {tickColor: '#123'}}
+        }
+      });
+        const axes = axis.properties.ticks(model, X, {});
+        assert.equal(axes.stroke.value, '#123');
+    });
+
+    it('tickWidth should change axis\'s ticks\'s color', function() {
+        const model = parseModel({
+        mark: "point",
+        encoding: {
+          x: {field: "a", type: "quantitative", axis: {tickWidth: 13}}
+        }
+      });
+        const axes = axis.properties.ticks(model, X, {});
+        assert.equal(axes.strokeWidth.value, 13);
+    });
+  });
+
+  describe('properties.title()', function() {
+    it('titleColor should change axis\'s title\'s color', function() {
+        const model = parseModel({
+        mark: "point",
+        encoding: {
+          x: {field: "a", type: "quantitative", axis: {titleColor: '#abc'}}
+        }
+      });
+        const axes = axis.properties.title(model, X, {});
+        assert.equal(axes.stroke.value, '#abc');
+    });
+
+    it('titleFont should change axis\'s title\'s font', function() {
+        const model = parseModel({
+        mark: "point",
+        encoding: {
+          x: {field: "a", type: "quantitative", axis: {titleFont: 'anything'}}
+        }
+      });
+        const axes = axis.properties.title(model, X, {});
+        assert.equal(axes.font.value, 'anything');
+    });
+
+    it('titleFontSize should change axis\'s title\'s font size', function() {
+        const model = parseModel({
+        mark: "point",
+        encoding: {
+          x: {field: "a", type: "quantitative", axis: {titleFontSize: 56}}
+        }
+      });
+        const axes = axis.properties.title(model, X, {});
+        assert.equal(axes.fontSize.value, 56);
+    });
+
+    it('titleFontWeight should change axis\'s title\'s font weight', function() {
+        const model = parseModel({
+        mark: "point",
+        encoding: {
+          x: {field: "a", type: "quantitative", axis: {titleFontWeight: 'bold'}}
+        }
+      });
+        const axes = axis.properties.title(model, X, {});
+        assert.equal(axes.fontWeight.value, 'bold');
     });
   });
 });
