@@ -75,11 +75,6 @@ export class LayerModel extends Model {
     return this._children[0].isOrdinalScale(channel);
   }
 
-  public dataTable(): string {
-    // FIXME: don't just use the first child
-    return this._children[0].dataTable();
-  }
-
   public fieldDef(channel: Channel): FieldDef {
     console.error('weird');
     return null; // layer does not have field defs

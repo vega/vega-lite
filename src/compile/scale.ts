@@ -4,7 +4,7 @@ declare var exports;
 import {SHARED_DOMAIN_OPS} from '../aggregate';
 import {COLUMN, ROW, X, Y, SHAPE, SIZE, COLOR, TEXT, hasScale, Channel} from '../channel';
 import {StackOffset} from '../config';
-import {SOURCE, STACKED_SCALE} from '../data';
+import {SCALE, STACKED_SCALE} from '../data';
 import {FieldDef, field, isMeasure} from '../fielddef';
 import {Mark, BAR, TEXT as TEXT_MARK, RULE, TICK} from '../mark';
 import {Scale, ScaleType, NiceTime} from '../scale';
@@ -114,12 +114,12 @@ function parseColorLegendScale(model: Model, fieldDef: FieldDef): ScaleComponent
     name: model.scaleName(COLOR_LEGEND),
     type: ScaleType.ORDINAL,
     domain: {
-      data: model.dataTable(),
+      data: model.dataName(SCALE),
       // use rank_<field> for ordinal type, for bin and timeUnit use default field
       field: model.field(COLOR, (fieldDef.bin || fieldDef.timeUnit) ? {} : {prefn: 'rank_'}),
       sort: true
     },
-    range: {data: model.dataTable(), field: model.field(COLOR), sort: true}
+    range: {data: model.dataName(SCALE), field: model.field(COLOR), sort: true}
   };
 }
 
@@ -131,12 +131,12 @@ function parseBinColorLegendLabel(model: Model, fieldDef: FieldDef): ScaleCompon
     name: model.scaleName(COLOR_LEGEND_LABEL),
     type: ScaleType.ORDINAL,
     domain: {
-      data: model.dataTable(),
+      data: model.dataName(SCALE),
       field: model.field(COLOR),
       sort: true
     },
     range: {
-      data: model.dataTable(),
+      data: model.dataName(SCALE),
       field: field(fieldDef, {binSuffix: '_range'}),
       sort: {
         field: model.field(COLOR, { binSuffix: '_start' }),
@@ -215,7 +215,7 @@ export function domain(scale: Scale, model: Model, channel:Channel): any {
     }
 
     return {
-      data: model.dataTable(),
+      data: model.dataName(SCALE),
       field: model.field(channel),
       sort: {
         field: model.field(channel),
@@ -242,13 +242,13 @@ export function domain(scale: Scale, model: Model, channel:Channel): any {
 
   if (includeRawDomain) { // includeRawDomain - only Q/T
     return {
-      data: SOURCE,
+      data: SCALE,
       field: model.field(channel, {noAggregate: true})
     };
   } else if (fieldDef.bin) { // bin
     return scale.type === ScaleType.ORDINAL ? {
       // ordinal bin scale takes domain from bin_range, ordered by bin_start
-      data: model.dataTable(),
+      data: model.dataName(SCALE),
       field: model.field(channel, { binSuffix: '_range' }),
       sort: {
         field: model.field(channel, { binSuffix: '_start' }),
@@ -256,11 +256,11 @@ export function domain(scale: Scale, model: Model, channel:Channel): any {
       }
     } : channel === COLOR ? {
       // Currently, binned on color uses linear scale and thus use _start point
-      data: model.dataTable(),
+      data: model.dataName(SCALE),
       field: model.field(channel, { binSuffix: '_start' })
     } : {
       // other linear bin scale merges both bin_start and bin_end for non-ordinal scale
-      data: model.dataTable(),
+      data: model.dataName(SCALE),
       field: [
         model.field(channel, { binSuffix: '_start' }),
         model.field(channel, { binSuffix: '_end' })
@@ -268,15 +268,15 @@ export function domain(scale: Scale, model: Model, channel:Channel): any {
     };
   } else if (sort) { // have sort -- only for ordinal
     return {
-      // If sort by aggregation of a specified sort field, we need to use SOURCE table,
+      // If sort by aggregation of a specified sort field, we need to use SCALE table,
       // so we can aggregate values for the scale independently from the main aggregation.
-      data: sort.op ? SOURCE : model.dataTable(),
+      data: sort.op ? SCALE : model.dataName(SCALE),
       field: (fieldDef.type === ORDINAL && channel === COLOR) ? model.field(channel, {prefn: 'rank_'}) : model.field(channel),
       sort: sort
     };
   } else {
     return {
-      data: model.dataTable(),
+      data: model.dataName(SCALE),
       field: (fieldDef.type === ORDINAL && channel === COLOR) ? model.field(channel, {prefn: 'rank_'}) : model.field(channel),
     };
   }
@@ -318,11 +318,11 @@ function _includeRawDomain (scale: Scale, model: Model, channel: Channel) {
   return scale.includeRawDomain && //  if includeRawDomain is enabled
     // only applied to aggregate table
     fieldDef.aggregate &&
-    // only activated if used with aggregate functions that produces values ranging in the domain of the source data
+    // only activated if used with aggregate functions that produces values ranging in the domain of the SCALE data
     SHARED_DOMAIN_OPS.indexOf(fieldDef.aggregate) >= 0 &&
     (
       // Q always uses quantitative scale except when it's binned.
-      // Binned field has similar values in both the source table and the summary table
+      // Binned field has similar values in both the SCALE table and the summary table
       // but the summary table has fewer values, therefore binned fields draw
       // domain values from the summary table.
       (fieldDef.type === QUANTITATIVE && !fieldDef.bin) ||

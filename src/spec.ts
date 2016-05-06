@@ -15,15 +15,18 @@ import * as vlEncoding from './encoding';
 import {BAR, AREA} from './mark';
 import {duplicate, extend} from './util';
 
-export interface BaseSpec {
+interface BaseSpec {
   name?: string;
   description?: string;
-  data?: Data;
   transform?: Transform;
   config?: Config;
 }
 
-export interface UnitSpec extends BaseSpec {
+export interface DataSpec extends BaseSpec {
+  data?: Data;
+}
+
+export interface UnitSpec extends DataSpec {
   mark: Mark;
   encoding: UnitEncoding;
 }
@@ -37,7 +40,7 @@ export interface UnitSpec extends BaseSpec {
  *
  * @required ["mark", "encoding"]
  */
-export interface ExtendedUnitSpec extends BaseSpec {
+export interface ExtendedUnitSpec extends DataSpec {
   /**
    * A name for the specification. The name is used to annotate marks, scale names, and more.
    */
@@ -45,7 +48,7 @@ export interface ExtendedUnitSpec extends BaseSpec {
   encoding: Encoding;
 }
 
-export interface FacetSpec extends BaseSpec {
+export interface FacetSpec extends DataSpec {
   facet: Facet;
   spec: LayerSpec | UnitSpec;
 }
@@ -68,7 +71,7 @@ export interface ResolveMapping {
   y?: Resolve;
 }
 
-export interface LayerSpec {
+export interface LayerSpec extends BaseSpec {
   layers: UnitSpec[];
   resolve?: ResolveMapping;
 }
@@ -124,25 +127,31 @@ export function normalize(spec: ExtendedSpec): Spec {
     const hasRow = has(spec.encoding, ROW);
     const hasColumn = has(spec.encoding, COLUMN);
 
+    const isFacet = hasColumn || hasRow;
+
     // TODO: @arvind please  add interaction syntax here
     let encoding = duplicate(spec.encoding);
     delete encoding.column;
     delete encoding.row;
 
+    const data = extend(
+      { data: spec.data },
+      spec.transform ? { transform: spec.transform } : {}
+    );
+
     return extend(
       spec.name ? { name: spec.name } : {},
       spec.description ? { description: spec.description } : {},
-      { data: spec.data },
-      spec.transform ? { transform: spec.transform } : {},
+      isFacet ? {} : data,
       {
         facet: extend(
           hasRow ? { row: spec.encoding.row } : {},
           hasColumn ? { column: spec.encoding.column } : {}
         ),
-        spec: {
+        spec: extend(isFacet ? data : {}, {
           mark: spec.mark,
           encoding: encoding
-        }
+        })
       },
       spec.config ? { config: spec.config } : {}
     );

@@ -13,6 +13,7 @@ import {text} from './text';
 import {tick} from './tick';
 import {rule} from './rule';
 import {sortField} from '../common';
+import {SOURCE} from '../../data';
 
 const markCompiler = {
   area: area,
@@ -38,7 +39,7 @@ function parsePathMark(model: UnitModel) { // TODO: extract this into compilePat
   const mark = model.mark();
   // TODO: replace this with more general case for composition
   const isFaceted = model.parent() && model.parent().isFacet();
-  const dataFrom = {data: model.dataTable()};
+  const dataFrom = {data: model.dataName(SOURCE)};
   const details = detailFields(model);
 
   let pathMarks: any = [
@@ -96,7 +97,7 @@ function parsePathMark(model: UnitModel) { // TODO: extract this into compilePat
 function parseNonPathMark(model: UnitModel) {
   const mark = model.mark();
   const isFaceted = model.parent() && model.parent().isFacet();
-  const dataFrom = {data: model.dataTable()};
+  const dataFrom = {data: model.dataName(SOURCE)};
 
   let marks = []; // TODO: vgMarks
   if (mark === TEXTMARK &&

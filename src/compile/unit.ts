@@ -2,7 +2,7 @@ import {AggregateOp} from '../aggregate';
 import {AxisProperties} from '../axis';
 import {X, Y, TEXT, PATH, ORDER, Channel, UNIT_CHANNELS,  UNIT_SCALE_CHANNELS, NONSPATIAL_SCALE_CHANNELS, supportMark} from '../channel';
 import {defaultConfig, Config, CellConfig} from '../config';
-import {SOURCE, SUMMARY} from '../data';
+import {SOURCE} from '../data';
 import {Encoding} from '../encoding';
 import * as vlEncoding from '../encoding'; // TODO: remove
 import {FieldDef, FieldRefOption, field} from '../fielddef';
@@ -247,10 +247,6 @@ export class UnitModel extends Model {
     }
 
     return field(fieldDef, opt);
-  }
-
-  public dataTable() {
-    return this.dataName(vlEncoding.isAggregate(this._encoding) ? SUMMARY : SOURCE);
   }
 
   public isUnit() {

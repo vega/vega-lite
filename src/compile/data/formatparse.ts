@@ -32,31 +32,5 @@ export namespace formatParse {
 
   export const parseUnit = parse;
 
-  export function parseFacet(model: FacetModel) {
-    let parseComponent = parse(model);
-
-    // If child doesn't have its own data source, but has its own parse, then merge
-    const childDataComponent = model.child().component.data;
-    if (!childDataComponent.source && childDataComponent.formatParse) {
-      extend(parseComponent, childDataComponent.formatParse);
-      delete childDataComponent.formatParse;
-    }
-    return parseComponent;
-  }
-
-  export function parseLayer(model: LayerModel) {
-    // note that we run this before source.parseLayer
-    let parseComponent = parse(model);
-    model.children().forEach((child) => {
-      const childDataComponent = child.component.data;
-      if (model.compatibleSource(child) && !differ(childDataComponent.formatParse, parseComponent)) {
-        // merge parse up if the child does not have an incompatible parse
-        extend(parseComponent, childDataComponent.formatParse);
-        delete childDataComponent.formatParse;
-      }
-    });
-    return parseComponent;
-  }
-
   // Assemble for formatParse is an identity function, no need to declare
 }

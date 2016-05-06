@@ -1,7 +1,7 @@
 import {AxisOrient, AxisProperties} from '../axis';
 import {COLUMN, ROW, X, Y, Channel} from '../channel';
 import {defaultConfig, Config} from '../config';
-import {SOURCE, SUMMARY} from '../data';
+import {SOURCE} from '../data';
 import {Facet} from '../facet';
 import {channelMappingForEach} from '../encoding';
 import {FieldDef, isDimension} from '../fielddef';
@@ -116,20 +116,6 @@ export class FacetModel extends Model {
     return this._child;
   }
 
-  private hasSummary() {
-    const summary = this.component.data.summary;
-    for (let i = 0 ; i < summary.length ; i++) {
-      if (keys(summary[i].measures).length > 0) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  public dataTable(): string {
-    return (this.hasSummary() ? SUMMARY : SOURCE) + '';
-  }
-
   public fieldDef(channel: Channel): FieldDef {
     return this.facet()[channel];
   }
@@ -158,8 +144,6 @@ export class FacetModel extends Model {
     const model = this;
 
     child.parseScale();
-
-    // TODO: support scales for field reference of parent data (e.g., for SPLOM)
 
     // First, add scale for row and column.
     let scaleComponent = this.component.scale = parseScaleComponent(this);
@@ -192,7 +176,7 @@ export class FacetModel extends Model {
         name: this.name('cell'),
         type: 'group',
         from: extend(
-          this.dataTable() ? {data: this.dataTable()} : {},
+          {data: this.dataName(SOURCE)},
           {
             transform: [{
               type: 'facet',
@@ -359,7 +343,7 @@ function getXAxesGroup(model: FacetModel): VgMarkGroup {
     },
     hasCol ? {
       from: { // TODO: if we do facet transform at the parent level we can same some transform here
-        data: model.dataTable(),
+        data: model.dataName(SOURCE),
         transform: [{
           type: 'aggregate',
           groupby: [model.field(COLUMN)],
@@ -399,7 +383,7 @@ function getYAxesGroup(model: FacetModel): VgMarkGroup {
     },
     hasRow ? {
       from: {
-        data: model.dataTable(),
+        data: model.dataName(SOURCE),
         transform: [{
           type: 'aggregate',
           groupby: [model.field(ROW)],
@@ -437,7 +421,7 @@ function getRowGridGroups(model: Model): any[] { // TODO: VgMarks
     name: model.name('row-grid'),
     type: 'rule',
     from: {
-      data: model.dataTable(),
+      data: model.dataName(SOURCE),
       transform: [{type: 'facet', groupby: [model.field(ROW)]}]
     },
     properties: {
@@ -478,7 +462,7 @@ function getColumnGridGroups(model: Model): any { // TODO: VgMarks
     name: model.name('column-grid'),
     type: 'rule',
     from: {
-      data: model.dataTable(),
+      data: model.dataName(SOURCE),
       transform: [{type: 'facet', groupby: [model.field(COLUMN)]}]
     },
     properties: {

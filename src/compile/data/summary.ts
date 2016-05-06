@@ -1,6 +1,6 @@
 import {AggregateOp} from '../../aggregate';
 import {Channel} from '../../channel';
-import {SOURCE, SUMMARY} from '../../data';
+import {SOURCE} from '../../data';
 import {field, FieldDef} from '../../fielddef';
 import {keys, vals, reduce, hash, Dict, StringSet} from '../../util';
 import {VgData} from '../../vega.schema';
@@ -30,7 +30,7 @@ export namespace summary {
     return dims;
   }
 
-  export function parseUnit(model: Model): SummaryComponent[] {
+  export function parseUnit(model: Model): SummaryComponent {
     /* string set for dimensions */
     let dims: StringSet = {};
 
@@ -53,32 +53,10 @@ export namespace summary {
       }
     });
 
-    return [{
-      name: model.dataName(SUMMARY),
+    return {
       dimensions: dims,
       measures: meas
-    }];
-  }
-
-  export function parseFacet(model: FacetModel): SummaryComponent[] {
-    const childDataComponent = model.child().component.data;
-
-    // If child doesn't have its own data source but has a summary data source, merge
-    if (!childDataComponent.source && childDataComponent.summary) {
-      let summaryComponents = childDataComponent.summary.map(function(summaryComponent) {
-        // add facet fields as dimensions
-        summaryComponent.dimensions = model.reduce(addDimension, summaryComponent.dimensions);
-
-        const summaryNameWithoutPrefix = summaryComponent.name.substr(model.child().name('').length);
-        model.child().renameData(summaryComponent.name, summaryNameWithoutPrefix);
-        summaryComponent.name = summaryNameWithoutPrefix;
-        return summaryComponent;
-      });
-
-      delete childDataComponent.summary;
-      return summaryComponents;
-    }
-    return [];
+    };
   }
 
   function mergeMeasures(parentMeasures: Dict<Dict<boolean>>, childMeasures: Dict<Dict<boolean>>) {
@@ -100,73 +78,36 @@ export namespace summary {
     }
   }
 
-  export function parseLayer(model: LayerModel): SummaryComponent[] {
-    // Index by the fields we are grouping by
-    let summaries = {} as Dict<SummaryComponent>;
-
-    // Combine summaries for children that don't have a distinct source
-    // (either having its own data source, or its own tranformation of the same data source).
-    model.children().forEach((child) => {
-      const childDataComponent = child.component.data;
-      if (!childDataComponent.source && childDataComponent.summary) {
-        // Merge the summaries if we can
-        childDataComponent.summary.forEach((childSummary) => {
-          // The key is a hash based on the dimensions;
-          // we use it to find out whether we have a summary that uses the same group by fields.
-          const key = hash(childSummary.dimensions);
-          if (key in summaries) {
-            // yes, there is a summary hat we need to merge into
-            // we know that the dimensions are the same so we only need to merge the measures
-            mergeMeasures(summaries[key].measures, childSummary.measures);
-          } else {
-            // give the summary a new name
-            childSummary.name = model.dataName(SUMMARY) + '_' + keys(summaries).length;
-            summaries[key] = childSummary;
-          }
-
-          // remove summary from child
-          child.renameData(child.dataName(SUMMARY), summaries[key].name);
-          delete childDataComponent.summary;
-        });
-      }
-    });
-
-    return vals(summaries);
+  /**
+   * Add facet fields as dimensions.
+   */
+  export function parseFacet(model: FacetModel, summaryComponent: SummaryComponent) {
+    summaryComponent.dimensions = model.reduce(addDimension, summaryComponent.dimensions);
   }
 
   /**
    * Assemble the summary. Needs a rename function because we cannot guarantee that the
    * parent data before the children data.
    */
-  export function assemble(component: DataComponent, model: Model): VgData[] {
-    if (!component.summary) {
-      return [];
+  export function assemble(component: DataComponent, model: Model) {
+    const summaryComponent = component.summary;
+    const dims = summaryComponent.dimensions;
+    const meas = summaryComponent.measures;
+
+    // short-format summarize object for Vega's aggregate transform
+    // https://github.com/vega/vega/wiki/Data-Transforms#-aggregate
+    const summarize = reduce(meas, function (aggregator, fnDictSet, field) {
+      aggregator[field] = keys(fnDictSet);
+      return aggregator;
+    }, {});
+
+    if (keys(meas).length > 0) { // has aggregate
+      return [{
+        type: 'aggregate',
+        groupby: keys(dims),
+        summarize: summarize
+      }];
     }
-    return component.summary.reduce(function(summaryData, summaryComponent) {
-      const dims = summaryComponent.dimensions;
-      const meas = summaryComponent.measures;
-
-      const groupby = keys(dims);
-
-      // short-format summarize object for Vega's aggregate transform
-      // https://github.com/vega/vega/wiki/Data-Transforms#-aggregate
-      const summarize = reduce(meas, function(aggregator, fnDictSet, field) {
-        aggregator[field] = keys(fnDictSet);
-        return aggregator;
-      }, {});
-
-      if (keys(meas).length > 0) { // has aggregate
-        summaryData.push({
-          name: summaryComponent.name,
-          source: model.dataName(SOURCE),
-          transform: [{
-            type: 'aggregate',
-            groupby: groupby,
-            summarize: summarize
-          }]
-        });
-      }
-      return summaryData;
-    }, []);
+    return [];
   }
 }
