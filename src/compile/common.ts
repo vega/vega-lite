@@ -40,7 +40,8 @@ export const FILL_STROKE_CONFIG = union(STROKE_CONFIG, FILL_CONFIG);
 
 export function applyColorAndOpacity(p, model: UnitModel) {
   const filled = model.config().mark.filled;
-  const fieldDef = model.fieldDef(COLOR);
+  const colorFieldDef = model.fieldDef(COLOR);
+  const opacityFieldDef = model.fieldDef(OPACITY);
 
   // Apply fill stroke config first so that color field / value can override
   // fill / stroke
@@ -55,17 +56,19 @@ export function applyColorAndOpacity(p, model: UnitModel) {
   if (model.has(COLOR)) {
     colorValue = {
       scale: model.scaleName(COLOR),
-      field: model.field(COLOR, fieldDef.type === ORDINAL ? {prefn: 'rank_'} : {})
+      field: model.field(COLOR, colorFieldDef.type === ORDINAL ? {prefn: 'rank_'} : {})
     };
-  } else if (fieldDef && fieldDef.value) {
-    colorValue = { value: fieldDef.value };
+  } else if (colorFieldDef && colorFieldDef.value) {
+    colorValue = { value: colorFieldDef.value };
   }
 
   if (model.has(OPACITY)) {
     opacityValue = {
       scale: model.scaleName(OPACITY),
-      field: model.field(OPACITY, fieldDef.type === ORDINAL ? {prefn: 'rank_'} : {})
+      field: model.field(OPACITY, opacityFieldDef.type === ORDINAL ? {prefn: 'rank_'} : {})
     };
+  } else if (opacityFieldDef && opacityFieldDef.value) {
+    opacityValue = { value: opacityFieldDef.value };
   }
 
   if (colorValue !== undefined) {
