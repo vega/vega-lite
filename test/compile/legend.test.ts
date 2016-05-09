@@ -22,6 +22,16 @@ describe('Legend', function() {
       const title = legend.title({}, {field: 'a'});
       assert.deepEqual(title, 'a');
     });
+    
+   it('should add unit to title by default', function () {
+      const title = legend.title({}, {field: 'a', unit: '$'});
+      assert.deepEqual(title, 'a in $');
+    });
+    
+    it('should add unit to title by if specified as in unitPosition', function () {
+      const title = legend.title({}, {field: 'a', unit: '$', unitPosition: 'title'});
+      assert.deepEqual(title, 'a in $');
+    });
   });
 
   describe('formatMixins()', function() {
@@ -32,6 +42,15 @@ describe('Legend', function() {
           x: {field:'a', bin: true}
         }
       }), X), {});
+    });
+  });
+
+  describe('labels()', function () {
+    let modelSpec = {
+      
+    }
+    it('should add prefix when unit is defined and unitPosition if prefix', function() {
+      
     });
   });
 

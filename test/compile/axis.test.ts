@@ -145,6 +145,26 @@ describe('Axis', function() {
         }), X);
       assert.deepEqual(title, 'abcdefghi…');
     });
+    
+    it('should add unit to title by default', function () {
+      const title = axis.title(parseUnitModel({
+          mark: "bar",
+          encoding : {
+            x : {field: 'dataField', unit : '$'}
+          }
+      }), X);
+      assert.deepEqual(title, 'dataField in $');
+    });
+    
+    it('should add unit to title by if specified as in unitPosition', function () {
+      const title = axis.title(parseUnitModel({
+          mark: "bar",
+          encoding : {
+            x : {field: 'dataField', unit : '$', unitPosition: 'title'}
+          }
+      }), X);
+      assert.deepEqual(title, 'dataField in $');
+    });
   });
 
   describe('properties.labels()', function () {
@@ -189,6 +209,26 @@ describe('Axis', function() {
       const labels = axis.properties.labels(model, X, {}, {type: 'x'});
       assert.equal(labels.angle.value, 270);
       assert.equal(labels.baseline.value, 'middle');
+    });
+    
+    it('should have prefix unit if unit and unitPosition is defined', function() {
+      const labels = axis.properties.labels(parseUnitModel({
+        mark: "point",
+        encoding: {
+          x: {field: "a", type: "quantitative", unit: "$", unitPosition: "prefix"}
+        }
+      }), X, {}, null);
+      assert.deepEqual(labels.text.template, '${{ datum.data }}');
+    });
+    
+    it('should have suffix unit if unit and unitPosition is defined', function() {
+      const labels = axis.properties.labels(parseUnitModel({
+        mark: "point",
+        encoding: {
+          x: {field: "a", type: "quantitative", unit: "kg", unitPosition: "suffix"}
+        }
+      }), X, {}, null);
+      assert.deepEqual(labels.text.template, '{{ datum.data }}kg');
     });
   });
 });
