@@ -97,7 +97,7 @@ describe('Model', function() {
   });
 
   describe('applyColorAndOpacity()', function() {
-    it('opacity should set filed if specified', function() {
+    it('opacity should be mapped to a field if specified', function() {
       const model = parseUnitModel({
         "mark": "bar",
         "encoding": {
@@ -112,7 +112,7 @@ describe('Model', function() {
       assert.deepEqual(p.opacity.field, 'US_Gross');
     });
 
-    it('opacity should set value if specified', function() {
+    it('opacity should be mapped to a value if specified', function() {
       const model = parseUnitModel({
         "mark": "bar",
         "encoding": {
