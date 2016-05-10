@@ -34,7 +34,7 @@ export function initMarkConfig(mark: Mark, encoding: Encoding, config: Config) {
 
            // When unambiguous, do not allow overriding
            if (xIsMeasure && !yIsMeasure) {
-             cfg[property] = 'horizontal'; // implicitly vertical
+             cfg[property] = 'vertical'; // implicitly vertical
            } else if (!xIsMeasure && yIsMeasure) {
              cfg[property] = undefined; // implicitly vertical
            }

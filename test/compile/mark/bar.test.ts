@@ -42,7 +42,12 @@ describe('Mark: Bar', function() {
         "y": {"bin": true, "type": "quantitative", "field": "IMDB_Rating"},
         "x": {"scale": {"type": 'log'}, "type": "quantitative", "field": 'US_Gross', "aggregate": "mean"}
       },
-      "data": {"url": 'data/movies.json'}
+      "data": {"url": 'data/movies.json'},
+      "config": {
+        "mark": {
+          "orient": "horizontal"
+        }
+      }
     });
 
     const props = bar.properties(model);
@@ -81,7 +86,12 @@ describe('Mark: Bar', function() {
     const model = parseUnitModel({
         "mark": "bar",
         "encoding": {"x": {"type": "quantitative", "field": 'US_Gross', "aggregate": 'sum'}},
-        "data": {"url": 'data/movies.json'}
+        "data": {"url": 'data/movies.json'},
+        "config": {
+          "mark": {
+            "orient": "horizontal"
+          }
+        }
       });
     const props = bar.properties(model);
 
