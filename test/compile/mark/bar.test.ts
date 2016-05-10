@@ -35,29 +35,24 @@ describe('Mark: Bar', function() {
     });
   });
 
-  describe('horizontal, with log', function() {
+  describe('vertical, with log', function() {
     const model = parseUnitModel({
       "mark": "bar",
       "encoding": {
         "y": {"bin": true, "type": "quantitative", "field": "IMDB_Rating"},
         "x": {"scale": {"type": 'log'}, "type": "quantitative", "field": 'US_Gross', "aggregate": "mean"}
       },
-      "data": {"url": 'data/movies.json'},
-      "config": {
-        "mark": {
-          "orient": "horizontal"
-        }
-      }
+      "data": {"url": 'data/movies.json'}
     });
 
     const props = bar.properties(model);
 
-    it('should end on axis', function() {
-      assert.deepEqual(props.x2, {scale: 'x', value: 0});
+    it('should have y offset', function() {
+      assert.deepEqual(props.y2.offset, 1);
     });
 
-    it('should have no width', function(){
-      assert.isUndefined(props.width);
+    it('should have no height', function(){
+      assert.isUndefined(props.height);
     });
   });
 
@@ -86,21 +81,12 @@ describe('Mark: Bar', function() {
     const model = parseUnitModel({
         "mark": "bar",
         "encoding": {"x": {"type": "quantitative", "field": 'US_Gross', "aggregate": 'sum'}},
-        "data": {"url": 'data/movies.json'},
-        "config": {
-          "mark": {
-            "orient": "horizontal"
-          }
-        }
+        "data": {"url": 'data/movies.json'}
       });
     const props = bar.properties(model);
 
-    it('should end on axis', function() {
-      assert.deepEqual(props.x2, {scale: 'x', value: 0});
-    });
-
-    it('should have no width', function(){
-      assert.isUndefined(props.width);
+    it('should have y-offset', function() {
+      assert.deepEqual(props.y2.offset, -1);
     });
 
     it('should have y-offset', function(){
