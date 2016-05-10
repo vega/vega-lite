@@ -18,7 +18,8 @@ export enum Channel {
   DETAIL = 'detail' as any,
   LABEL = 'label' as any,
   PATH = 'path' as any,
-  ORDER = 'order' as any
+  ORDER = 'order' as any,
+  OPACITY = 'opacity' as any
 }
 
 export const X = Channel.X;
@@ -33,8 +34,9 @@ export const DETAIL = Channel.DETAIL;
 export const LABEL = Channel.LABEL;
 export const PATH = Channel.PATH;
 export const ORDER = Channel.ORDER;
+export const OPACITY = Channel.OPACITY;
 
-export const CHANNELS = [X, Y, ROW, COLUMN, SIZE, SHAPE, COLOR, PATH, ORDER, TEXT, DETAIL, LABEL];
+export const CHANNELS = [X, Y, ROW, COLUMN, SIZE, SHAPE, COLOR, PATH, ORDER, OPACITY, TEXT, DETAIL, LABEL];
 
 export const UNIT_CHANNELS = without(CHANNELS, [ROW, COLUMN]);
 export const UNIT_SCALE_CHANNELS = without(UNIT_CHANNELS, [PATH, ORDER, DETAIL, TEXT, LABEL]);
@@ -75,6 +77,7 @@ export function getSupportedMark(channel: Channel): SupportedMark {
     case COLOR:
     case DETAIL:
     case ORDER:
+    case OPACITY:
     case ROW:
     case COLUMN:
       return { // all marks
@@ -111,6 +114,7 @@ export function getSupportedRole(channel: Channel): SupportedRole {
     case X:
     case Y:
     case COLOR:
+    case OPACITY:
     case LABEL:
       return {
         measure: true,

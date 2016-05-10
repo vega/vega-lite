@@ -3,7 +3,7 @@
 import {assert} from 'chai';
 import {parseUnitModel} from '../util';
 import {X} from '../../src/channel';
-import {timeFormat, formatMixins} from '../../src/compile/common';
+import {timeFormat, formatMixins, applyColorAndOpacity} from '../../src/compile/common';
 
 describe('Model', function() {
   describe('timeFormat()', function() {
@@ -93,6 +93,38 @@ describe('Model', function() {
       }), X, 'foo'), {
         format: 'foo'
       });
+    });
+  });
+
+  describe('applyColorAndOpacity()', function() {
+    it('opacity should be mapped to a field if specified', function() {
+      const model = parseUnitModel({
+        "mark": "bar",
+        "encoding": {
+          "y": {"type": "quantitative", "field": 'US_Gross', "aggregate": "sum", "axis": true},
+          "opacity": {"field": "US_Gross", "type": "quantitative"}
+        },
+        "data": {"url": "data/movies.json"}
+      });
+
+      let p: any = {};
+      applyColorAndOpacity(p, model);
+      assert.deepEqual(p.opacity.field, 'US_Gross');
+    });
+
+    it('opacity should be mapped to a value if specified', function() {
+      const model = parseUnitModel({
+        "mark": "bar",
+        "encoding": {
+          "y": {"type": "quantitative", "field": 'US_Gross', "aggregate": "sum", "axis": true},
+          "opacity": {"value": 0.5}
+        },
+        "data": {"url": "data/movies.json"}
+      });
+
+      let p: any = {};
+      applyColorAndOpacity(p, model);
+      assert.deepEqual(p.opacity.value, 0.5);
     });
   });
 });
