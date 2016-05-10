@@ -146,9 +146,9 @@ export namespace properties {
     applyMarkConfig(symbols, model,
       channel === COLOR ?
         /* For color's legend, do not set fill (when filled) or stroke (when unfilled) property from config because the the legend's `fill` or `stroke` scale should have precedence */
-        without(FILL_STROKE_CONFIG, [ filled ? 'fill' : 'stroke']) :
+        without(FILL_STROKE_CONFIG, [ filled ? 'fill' : 'stroke', 'strokeDash', 'strokeDashOffset']) :
         /* For other legend, no need to omit. */
-        FILL_STROKE_CONFIG
+         without(FILL_STROKE_CONFIG, ['strokeDash', 'strokeDashOffset'])
     );
 
     if (filled) {
