@@ -231,9 +231,32 @@
                     "type": "number",
                     "description": "The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle."
                 },
+                "axisColor": {
+                    "type": "string",
+                    "description": "Color of axis line."
+                },
                 "grid": {
                     "type": "boolean",
                     "description": "A flag indicate if gridlines should be created in addition to ticks. If `grid` is unspecified, the default value is `true` for ROW and COL. For X and Y, the default value is `true` for quantitative and time fields and `false` otherwise."
+                },
+                "gridColor": {
+                    "type": "string",
+                    "description": "Color of gridlines."
+                },
+                "gridDash": {
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    },
+                    "description": "The offset (in pixels) into which to begin drawing with the grid dash array."
+                },
+                "gridOpacity": {
+                    "type": "number",
+                    "description": "The stroke opacity of grid (value between [0,1])"
+                },
+                "gridWidth": {
+                    "type": "number",
+                    "description": "The grid width, in pixels."
                 },
                 "labels": {
                     "type": "boolean",
@@ -265,6 +288,22 @@
                     "description": "A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are \"nice\" (multiples of 2, 5, 10) and lie within the underlying scale's range.",
                     "minimum": 0
                 },
+                "tickColor": {
+                    "type": "string",
+                    "description": "The color of the axis's tick."
+                },
+                "tickLabelColor": {
+                    "type": "string",
+                    "description": "The color of the tick label, can be in hex color code or regular color name."
+                },
+                "tickLabelFont": {
+                    "type": "string",
+                    "description": "The font of the tick label."
+                },
+                "tickLabelFontSize": {
+                    "type": "number",
+                    "description": "The font size of label, in pixels."
+                },
                 "tickPadding": {
                     "type": "number",
                     "description": "The padding, in pixels, between ticks and text labels."
@@ -288,6 +327,26 @@
                     "type": "number",
                     "description": "The size, in pixels, of end ticks.",
                     "minimum": 0
+                },
+                "tickWidth": {
+                    "type": "number",
+                    "description": "The width, in pixels, of ticks."
+                },
+                "titleColor": {
+                    "type": "string",
+                    "description": "Color of the title, can be in hex color code or regular color name."
+                },
+                "titleFont": {
+                    "type": "string",
+                    "description": "Font of the title."
+                },
+                "titleFontSize": {
+                    "type": "number",
+                    "description": "Size of the title."
+                },
+                "titleFontWeight": {
+                    "type": "string",
+                    "description": "Weight of the title."
                 },
                 "titleOffset": {
                     "type": "number",
@@ -649,9 +708,93 @@
                     "type": "string",
                     "description": "The orientation of the legend. One of \"left\" or \"right\". This determines how the legend is positioned within the scene. The default is \"right\"."
                 },
+                "offset": {
+                    "type": "number",
+                    "description": "The offset, in pixels, by which to displace the legend from the edge of the enclosing group or data rectangle."
+                },
+                "padding": {
+                    "type": "number",
+                    "description": "The padding, in pixels, between the lengend and axis."
+                },
+                "margin": {
+                    "type": "number",
+                    "description": "The margin around the legend, in pixels"
+                },
+                "gradientStrokeColor": {
+                    "type": "string",
+                    "description": "The color of the gradient stroke, can be in hex color code or regular color name."
+                },
+                "gradientStrokeWidth": {
+                    "type": "number",
+                    "description": "The width of the gradient stroke, in pixels."
+                },
+                "gradientHeight": {
+                    "type": "number",
+                    "description": "The height of the gradient, in pixels."
+                },
+                "gradientWidth": {
+                    "type": "number",
+                    "description": "The width of the gradient, in pixels."
+                },
+                "labelAlign": {
+                    "type": "string",
+                    "description": "The alignment of the legend label, can be left, middle or right."
+                },
+                "labelBaseline": {
+                    "type": "string",
+                    "description": "The position of the baseline of legend label, can be top, middle or bottom."
+                },
+                "labelColor": {
+                    "type": "string",
+                    "description": "The color of the legend label, can be in hex color code or regular color name."
+                },
+                "labelFont": {
+                    "type": "string",
+                    "description": "The font of the lengend label."
+                },
+                "labelFontSize": {
+                    "type": "number",
+                    "description": "The font size of lengend lable."
+                },
+                "labelOffset": {
+                    "type": "number",
+                    "description": "The offset of the legend label."
+                },
                 "shortTimeLabels": {
                     "type": "boolean",
                     "description": "Whether month names and weekday names should be abbreviated."
+                },
+                "symbolColor": {
+                    "type": "string",
+                    "description": "The color of the legend symbol,"
+                },
+                "symbolShape": {
+                    "type": "string",
+                    "description": "The shape of the legend symbol, can be the 'circle', 'square', 'cross', 'diamond',\n\n'triangle-up', 'triangle-down'."
+                },
+                "symbolSize": {
+                    "type": "number",
+                    "description": "The size of the lengend symbol, in pixels."
+                },
+                "symbolStrokeWidth": {
+                    "type": "number",
+                    "description": "The width of the symbol's stroke."
+                },
+                "titleColor": {
+                    "type": "string",
+                    "description": "Optional mark property definitions for custom legend styling.\n\nThe color of the legend title, can be in hex color code or regular color name."
+                },
+                "titleFont": {
+                    "type": "string",
+                    "description": "The font of the legend title."
+                },
+                "titleFontSize": {
+                    "type": "number",
+                    "description": "The font size of the legend title."
+                },
+                "titleFontWeight": {
+                    "type": "string",
+                    "description": "The font weight of the legend title."
                 },
                 "properties": {
                     "type": "object",
@@ -880,7 +1023,11 @@
                     "type": "number"
                 },
                 "strokeDash": {
-                    "type": "number"
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    },
+                    "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines."
                 },
                 "strokeDashOffset": {
                     "type": "number",
@@ -1211,6 +1358,13 @@
                     },
                     "description": "Default range for rule stroke widths"
                 },
+                "tickSizeRange": {
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    },
+                    "description": "Default range for tick spans"
+                },
                 "pointSizeRange": {
                     "type": "array",
                     "items": {
@@ -1235,9 +1389,32 @@
                     "type": "number",
                     "description": "The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle."
                 },
+                "axisColor": {
+                    "type": "string",
+                    "description": "Color of axis line."
+                },
                 "grid": {
                     "type": "boolean",
                     "description": "A flag indicate if gridlines should be created in addition to ticks. If `grid` is unspecified, the default value is `true` for ROW and COL. For X and Y, the default value is `true` for quantitative and time fields and `false` otherwise."
+                },
+                "gridColor": {
+                    "type": "string",
+                    "description": "Color of gridlines."
+                },
+                "gridDash": {
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    },
+                    "description": "The offset (in pixels) into which to begin drawing with the grid dash array."
+                },
+                "gridOpacity": {
+                    "type": "number",
+                    "description": "The stroke opacity of grid (value between [0,1])"
+                },
+                "gridWidth": {
+                    "type": "number",
+                    "description": "The grid width, in pixels."
                 },
                 "labels": {
                     "type": "boolean",
@@ -1273,6 +1450,22 @@
                     "description": "A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are \"nice\" (multiples of 2, 5, 10) and lie within the underlying scale's range.",
                     "minimum": 0
                 },
+                "tickColor": {
+                    "type": "string",
+                    "description": "The color of the axis's tick."
+                },
+                "tickLabelColor": {
+                    "type": "string",
+                    "description": "The color of the tick label, can be in hex color code or regular color name."
+                },
+                "tickLabelFont": {
+                    "type": "string",
+                    "description": "The font of the tick label."
+                },
+                "tickLabelFontSize": {
+                    "type": "number",
+                    "description": "The font size of label, in pixels."
+                },
                 "tickPadding": {
                     "type": "number",
                     "description": "The padding, in pixels, between ticks and text labels."
@@ -1296,6 +1489,26 @@
                     "type": "number",
                     "description": "The size, in pixels, of end ticks.",
                     "minimum": 0
+                },
+                "tickWidth": {
+                    "type": "number",
+                    "description": "The width, in pixels, of ticks."
+                },
+                "titleColor": {
+                    "type": "string",
+                    "description": "Color of the title, can be in hex color code or regular color name."
+                },
+                "titleFont": {
+                    "type": "string",
+                    "description": "Font of the title."
+                },
+                "titleFontSize": {
+                    "type": "number",
+                    "description": "Size of the title."
+                },
+                "titleFontWeight": {
+                    "type": "string",
+                    "description": "Weight of the title."
                 },
                 "titleOffset": {
                     "type": "number",
@@ -1323,9 +1536,93 @@
                     "type": "string",
                     "description": "The orientation of the legend. One of \"left\" or \"right\". This determines how the legend is positioned within the scene. The default is \"right\"."
                 },
+                "offset": {
+                    "type": "number",
+                    "description": "The offset, in pixels, by which to displace the legend from the edge of the enclosing group or data rectangle."
+                },
+                "padding": {
+                    "type": "number",
+                    "description": "The padding, in pixels, between the lengend and axis."
+                },
+                "margin": {
+                    "type": "number",
+                    "description": "The margin around the legend, in pixels"
+                },
+                "gradientStrokeColor": {
+                    "type": "string",
+                    "description": "The color of the gradient stroke, can be in hex color code or regular color name."
+                },
+                "gradientStrokeWidth": {
+                    "type": "number",
+                    "description": "The width of the gradient stroke, in pixels."
+                },
+                "gradientHeight": {
+                    "type": "number",
+                    "description": "The height of the gradient, in pixels."
+                },
+                "gradientWidth": {
+                    "type": "number",
+                    "description": "The width of the gradient, in pixels."
+                },
+                "labelAlign": {
+                    "type": "string",
+                    "description": "The alignment of the legend label, can be left, middle or right."
+                },
+                "labelBaseline": {
+                    "type": "string",
+                    "description": "The position of the baseline of legend label, can be top, middle or bottom."
+                },
+                "labelColor": {
+                    "type": "string",
+                    "description": "The color of the legend label, can be in hex color code or regular color name."
+                },
+                "labelFont": {
+                    "type": "string",
+                    "description": "The font of the lengend label."
+                },
+                "labelFontSize": {
+                    "type": "number",
+                    "description": "The font size of lengend lable."
+                },
+                "labelOffset": {
+                    "type": "number",
+                    "description": "The offset of the legend label."
+                },
                 "shortTimeLabels": {
                     "type": "boolean",
                     "description": "Whether month names and weekday names should be abbreviated."
+                },
+                "symbolColor": {
+                    "type": "string",
+                    "description": "The color of the legend symbol,"
+                },
+                "symbolShape": {
+                    "type": "string",
+                    "description": "The shape of the legend symbol, can be the 'circle', 'square', 'cross', 'diamond',\n\n'triangle-up', 'triangle-down'."
+                },
+                "symbolSize": {
+                    "type": "number",
+                    "description": "The size of the lengend symbol, in pixels."
+                },
+                "symbolStrokeWidth": {
+                    "type": "number",
+                    "description": "The width of the symbol's stroke."
+                },
+                "titleColor": {
+                    "type": "string",
+                    "description": "Optional mark property definitions for custom legend styling.\n\nThe color of the legend title, can be in hex color code or regular color name."
+                },
+                "titleFont": {
+                    "type": "string",
+                    "description": "The font of the legend title."
+                },
+                "titleFontSize": {
+                    "type": "number",
+                    "description": "The font size of the legend title."
+                },
+                "titleFontWeight": {
+                    "type": "string",
+                    "description": "The font weight of the legend title."
                 },
                 "properties": {
                     "type": "object",
