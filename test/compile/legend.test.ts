@@ -82,7 +82,7 @@ describe('Legend', function() {
         assert.deepEqual(symbol.strokeWidth.value, 2);
     });
 
-    it('should not have strokeDash and strokeDashOffset for any mark', function() {
+    it('should not have strokeDash and strokeDashOffset', function() {
       const symbol = legend.properties.symbols({field: 'a'}, {}, parseUnitModel({
           mark: "point",
           encoding: {
