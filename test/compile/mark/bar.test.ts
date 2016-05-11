@@ -35,7 +35,7 @@ describe('Mark: Bar', function() {
     });
   });
 
-  describe('vertical, with log', function() {
+  describe('horizontal, with log', function() {
     const model = parseUnitModel({
       "mark": "bar",
       "encoding": {
@@ -47,12 +47,12 @@ describe('Mark: Bar', function() {
 
     const props = bar.properties(model);
 
-    it('should have y offset', function() {
-      assert.deepEqual(props.y2.offset, 1);
+    it('should end on axis', function() {
+      assert.deepEqual(props.x2, {scale: 'x', value: 0});
     });
 
-    it('should have no height', function(){
-      assert.isUndefined(props.height);
+    it('should have no width', function(){
+      assert.isUndefined(props.width);
     });
   });
 
@@ -85,8 +85,12 @@ describe('Mark: Bar', function() {
       });
     const props = bar.properties(model);
 
-    it('should have y-offset', function() {
-      assert.deepEqual(props.y2.offset, -1);
+    it('should end on axis', function() {
+      assert.deepEqual(props.x2, {scale: 'x', value: 0});
+    });
+
+    it('should have no width', function(){
+      assert.isUndefined(props.width);
     });
 
     it('should have y-offset', function(){
