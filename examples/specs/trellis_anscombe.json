@@ -1,5 +1,5 @@
 {
-  "description": "Anscombe's Quartert",
+  "description": "Anscombe's Quartet",
   "data": {"url": "data/anscombe.json"},
   "mark": "circle",
   "encoding": {
