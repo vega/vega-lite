@@ -77,7 +77,7 @@ Each plot in either a single plot or a trellis plot is called a _cell_. Cell con
 | strokeOpacity | Number        | The stroke opacity (value between [0,1]). <span class="note-line">__Default value:__ (none)</span>|
 | strokeWidth   | Number        | The stroke width, in pixels. <span class="note-line">__Default value:__ (none)</span>|
 | strokeDash    | Number[]      | An array of alternating stroke, space lengths for creating dashed or dotted lines. <span class="note-line">__Default value:__ (none)</span>|
-| strokeDashOffset  | Number[]  | The offset (in pixels) into which to begin drawing with the stroke dash array. <span class="note-line">__Default value:__ (none)</span>|
+| strokeDashOffset  | Number    | The offset (in pixels) into which to begin drawing with the stroke dash array. <span class="note-line">__Default value:__ (none)</span>|
 
 
 {:#mark-config}
@@ -120,7 +120,7 @@ By default, `point` marks have filled borders and are transparent inside. Settin
 | :------------ |:-------------:| :------------- |
 | strokeWidth   | Number        | The stroke width, in pixels. |
 | strokeDash    | Number[]      | An array of alternating stroke, space lengths for creating dashed or dotted lines. |
-| strokeDashOffset  | Number[]  | The offset (in pixels) into which to begin drawing with the stroke dash array. |
+| strokeDashOffset  | Number    | The offset (in pixels) into which to begin drawing with the stroke dash array. |
 
 <!-- one example for custom fill/stroke -->
 
