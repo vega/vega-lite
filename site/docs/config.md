@@ -306,9 +306,9 @@ Facet cell configuration overrides [cell config](#cell-config) for faceted (trel
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| gridColor     | Color         | Color of the grid between facets. |
-| gridOpacity   | Number        | Opacity of the grid between facets. |
-| gridOffset    | Number        | Offset for grid between facets. |
+| color         | Color         | Color of the grid between facets. |
+| opacity       | Number        | Opacity of the grid between facets. |
+| offset        | Number        | Offset for grid between facets. |
 
 
 {:#facet-scale-config}
