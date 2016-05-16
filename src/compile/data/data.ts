@@ -387,6 +387,10 @@ export function assembleData(model: Model, data: VgData[]) {
     dataSource.transform = (dataSource.transform || []).concat(rank);
   }
 
+  if (empty(dataSource.transform)) {
+    delete dataSource.transform;
+  }
+
   // stack
   const stackData = stackScale.assemble(component);
   if (stackData) {

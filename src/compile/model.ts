@@ -162,6 +162,7 @@ export abstract class Model {
       if (scales.binColorLegend) {
         arr.push(scales.binColorLegend);
       }
+
       return arr;
     }));
   }

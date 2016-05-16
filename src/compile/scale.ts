@@ -370,7 +370,6 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel): any {
         rangeMax: 0
       };
     case SIZE:
-
       if (unitModel.mark() === BAR) {
         if (scaleConfig.barSizeRange !== undefined) {
           return {range: scaleConfig.barSizeRange};
