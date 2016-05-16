@@ -29,6 +29,10 @@ describe('Mark: Tick', function() {
     it('should scale on x', function() {
       assert.deepEqual(props.xc, {scale: X, field: 'Horsepower'});
     });
+
+    it('width should tick thickness with orient vertical', function() {
+      assert.deepEqual(props.width, { value: 1});
+    });
   });
 
   describe('with quantitative y', function() {
@@ -45,6 +49,10 @@ describe('Mark: Tick', function() {
 
     it('should scale on y', function() {
       assert.deepEqual(props.yc, {scale: Y, field: 'Cylinders'});
+    });
+
+    it('height should tick thickness with orient horizontal', function() {
+      assert.deepEqual(props.height, { value: 1});
     });
   });
 
@@ -67,6 +75,14 @@ describe('Mark: Tick', function() {
     it('should scale on y', function() {
       assert.deepEqual(props.yc, {scale: Y, field: 'Cylinders'});
     });
+
+    it('wiidth should be tick thickness with default orient vertical', function() {
+      assert.deepEqual(props.width, { value: 1});
+    });
+
+    it('height should be matched to field with default orient vertical', function() {
+      assert.deepEqual(props.height, { value: 14});
+    });
   });
 
   describe('width should be mapped to size', function() {
@@ -83,7 +99,7 @@ describe('Mark: Tick', function() {
     });
     const props = tick.properties(model);
     it('width should change with size field', function() {
-      assert.deepEqual(props.width, {'field': 'Acceleration', 'scale': SIZE});
+      assert.deepEqual(props.height, {'field': 'Acceleration', 'scale': SIZE});
     });
   });
 
@@ -101,7 +117,7 @@ describe('Mark: Tick', function() {
     });
     const props = tick.properties(model);
     it('height should change with size field', function() {
-      assert.deepEqual(props.height, {'field': 'Acceleration', 'scale': SIZE});
+      assert.deepEqual(props.width, {'field': 'Acceleration', 'scale': SIZE});
     });
   });
 });

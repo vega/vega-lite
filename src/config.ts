@@ -17,7 +17,8 @@ export interface CellConfig {
   stroke?: string;
   strokeWidth?: number;
   strokeOpacity?: number;
-  strokeDash?: number;
+  /** An array of alternating stroke, space lengths for creating dashed or dotted lines. */
+  strokeDash?: number[];
   /** The offset (in pixels) into which to begin drawing with the stroke dash array. */
   strokeDashOffset?: number;
 }
