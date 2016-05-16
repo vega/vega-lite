@@ -59,19 +59,17 @@ export namespace summary {
     };
   }
 
-  function mergeMeasures(parentMeasures: Dict<Dict<boolean>>, childMeasures: Dict<Dict<boolean>>) {
+  export function mergeMeasures(parentMeasures: Dict<Dict<boolean>>, childMeasures: Dict<Dict<boolean>>) {
     for (const field in childMeasures) {
       if (childMeasures.hasOwnProperty(field)) {
         // when we merge a measure, we either have to add an aggregation operator or even a new field
         const ops = childMeasures[field];
         for (const op in ops) {
           if (ops.hasOwnProperty(op)) {
-            if (field in parentMeasures) {
-              // add operator to existing measure field
-              parentMeasures[field][op] = true;
-            } else {
-              parentMeasures[field] = { op: true };
+            if (!(field in parentMeasures)) {
+              parentMeasures[field] = {};
             }
+            parentMeasures[field][op] = true;
           }
         }
       }
@@ -91,6 +89,11 @@ export namespace summary {
    */
   export function assemble(component: DataComponent, model: Model) {
     const summaryComponent = component.summary;
+
+    if (!summaryComponent) {
+      return [];
+    }
+
     const dims = summaryComponent.dimensions;
     const meas = summaryComponent.measures;
 

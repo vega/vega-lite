@@ -1,5 +1,5 @@
 import {SOURCE} from '../../data';
-import {contains} from '../../util';
+import {contains, empty} from '../../util';
 import {VgData, isVgData} from '../../vega.schema';
 
 import {FacetModel} from './../facet';
@@ -39,12 +39,9 @@ export namespace source {
 
   export function assemble(model: Model, component: DataComponent) {
     if (component.source) {
-      let sourceData: VgData = {};
-      if (isVgData(component.source)) {
-        sourceData = component.source;
-      }
+      let sourceData: VgData = component.source;
 
-      if (component.formatParse) {
+      if (component.formatParse && !empty(component.formatParse)) {
         sourceData.format = sourceData.format || {};
         sourceData.format.parse = component.formatParse;
       }

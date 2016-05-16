@@ -45,18 +45,6 @@ export namespace timeUnit {
     return timeUnitComponent;
   }
 
-  export function parseLayer(model: LayerModel) {
-    let timeUnitComponent = parse(model);
-    model.children().forEach((child) => {
-      const childDataComponent = child.component.data;
-      if (!childDataComponent.source) {
-        extend(timeUnitComponent, childDataComponent.timeUnit);
-        delete childDataComponent.timeUnit;
-      }
-    });
-    return timeUnitComponent;
-  }
-
   export function assemble(component: DataComponent) {
     // just join the values, which are already transforms
     return vals(component.timeUnit);

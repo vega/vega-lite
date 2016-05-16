@@ -4,7 +4,7 @@ import {VgData} from '../../vega.schema';
 
 import {FacetModel} from './../facet';
 import {LayerModel} from './../layer';
-import {UnitModel} from './../unit';
+import {Model} from './../model';
 
 import {DataComponent} from './data';
 
@@ -13,7 +13,7 @@ import {DataComponent} from './data';
  * Stacked scale data source, for feeding the shared scale.
  */
 export namespace stackScale {
-  export function parseUnit(model: UnitModel): VgData {
+  export function parseUnit(model: Model): VgData {
     const stackProps = model.stack();
 
     if (stackProps) {

@@ -11,7 +11,8 @@ import {DataComponent} from './data';
 export namespace formula {
   function parse(model: Model): Dict<Formula> {
     return (model.transform().calculate || []).reduce(function(formulaComponent, formula) {
-      formulaComponent[hash(formula)] = formula;
+      // index by the field that is created so that we make sure that we don't write it multiple times
+      formulaComponent[formula.field] = formula;
       return formulaComponent;
     }, {} as Dict<Formula>);
   }

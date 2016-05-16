@@ -6,7 +6,7 @@ import {channelMappingReduce, channelMappingForEach} from '../encoding';
 import {FieldDef, FieldRefOption, field} from '../fielddef';
 import {LegendProperties} from '../legend';
 import {Scale, ScaleType} from '../scale';
-import {DataSpec} from '../spec';
+import {BaseSpec} from '../spec';
 import {Transform} from '../transform';
 import {extend, flatten, vals, warning, Dict} from '../util';
 import {VgData, VgMarkGroup, VgScale, VgAxis, VgLegend} from '../vega.schema';
@@ -92,7 +92,7 @@ export abstract class Model {
 
   public component: Component;
 
-  constructor(spec: DataSpec, parent: Model, parentGivenName: string) {
+  constructor(spec: BaseSpec, parent: Model, parentGivenName: string) {
     this._parent = parent;
 
     // If name is not provided, always use parent's givenName to avoid name conflicts.

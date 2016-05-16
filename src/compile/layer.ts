@@ -217,16 +217,6 @@ export class LayerModel extends Model {
     return true;
   }
 
-  /**
-   * Returns true if the child either has no source defined or uses the same url.
-   * This is useful if you want to know whether it is possible to move a filter up.
-   *
-   * This function can only be called once th child has been parsed.
-   */
-  public compatibleSource(child: UnitModel) {
-    const sourceUrl = this.data() && this.data().url;
-    const childData = child.component.data;
-    const compatible = !childData.source || (sourceUrl && sourceUrl === childData.source.url);
-    return compatible;
-  }
+  // Delete
+  public compatibleSource(a: any) {}
 }

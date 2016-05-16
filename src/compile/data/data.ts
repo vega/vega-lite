@@ -1,5 +1,5 @@
 import {Formula} from '../../transform';
-import {keys, Dict, StringSet} from '../../util';
+import {keys, Dict, StringSet, unique, hash, allSame, differ, any, all, map, extend, forEach, empty, duplicate} from '../../util';
 import {VgData, VgTransform} from '../../vega.schema';
 import {SOURCE, RAW, RANK, SCALE, STACKED_SCALE} from '../../data';
 
@@ -82,9 +82,9 @@ export interface SummaryComponent {
 /* tslint:disable:no-use-before-declare */
 
 /**
- * Create components for data source and transforms/ aggregates.
+ * Parses a model with data.
  */
-export function parseUnitData(model: UnitModel): DataComponent {
+function parseData(model: Model): DataComponent {
   return {
     source: source.parseUnit(model),
     formatParse: formatParse.parseUnit(model),
@@ -103,10 +103,19 @@ export function parseUnitData(model: UnitModel): DataComponent {
 }
 
 /**
+ * Create components for data source and transforms/ aggregates.
+ */
+export function parseUnitData(model: UnitModel): DataComponent {
+  return parseData(model);
+}
+
+/**
  * The data component for a facet is the data component of its child.
  * We only need to add the facet fields as dimensions to the summary component.
  */
 export function parseFacetData(model: FacetModel): DataComponent {
+  // TODO: treat data in the facet and in the child differently
+
   const child = model.child();
   const dataComponent = child.component.data;
   delete child.component.data;
@@ -115,8 +124,172 @@ export function parseFacetData(model: FacetModel): DataComponent {
     model.renameData(child.dataName(data), model.dataName(data));
   });
 
-  summary.parseFacet(model, dataComponent.summary);
-  stackScale.parseFacet(model, dataComponent.stackScale);
+  if (dataComponent.summary) {
+    summary.parseFacet(model, dataComponent.summary);
+  }
+  if (dataComponent.stackScale) {
+    stackScale.parseFacet(model, dataComponent.stackScale);
+  }
+
+  return dataComponent;
+}
+
+function mergeChildren(model: Model, dataComponent: DataComponent, children: UnitModel[]): DataComponent {
+  if (children.length === 0) {
+    return dataComponent;
+  }
+
+  const childDataComponents = children.map((child: UnitModel) => child.component.data);
+
+  // set the parent source as child source
+  childDataComponents.forEach((data) => {
+    if (data.source === undefined) {
+      // child does not define its own source
+      data.source = {
+        source: model.dataName(SOURCE)
+      };
+    } else {
+      data.source.source = model.dataName(SOURCE);
+    }
+    delete data.source.format;
+    delete data.source.url;
+  });
+
+  // merge up parse
+  dataComponent.formatParse = childDataComponents.reduce((collector, data) => {
+    if (data.formatParse) {
+      forEach(data.formatParse, (parse, field) => {
+        if (parse === collector[field] || collector[field] === undefined) {
+          collector[field] = parse;
+          delete data.formatParse[field];
+        }
+      });
+    }
+    return collector;
+  }, dataComponent.formatParse);
+
+  // merge up formulas
+  // for each formula, try to move it up but don't if there already is a different formula
+
+  let allMerged = true;
+  dataComponent.calculate = childDataComponents.reduce((collector, data) => {
+    forEach(data.calculate, (formula, field) => {
+      if (!(field in collector)) {
+        collector[field] = formula;
+        delete data.calculate[field];
+      } else {
+        if (formula.expr !== collector[field]) {
+          allMerged = false;
+          // don't delete formula in child
+        } else {
+          delete data.calculate[field];
+        }
+      }
+    });
+    return collector;
+  }, dataComponent.calculate);
+
+  if (!allMerged) {
+    // we could not merge all formula up so we have to stop merging because other
+    // transforms depend on this
+    return dataComponent;
+  }
+
+  // merge up time unit
+  childDataComponents.forEach((data) => {
+    extend(dataComponent.timeUnit, data.timeUnit);
+    delete data.timeUnit;
+  });
+
+  // merge up filter if all filters are the same
+  const sameFilter = allSame(childDataComponents, (data) => {
+    return data.filter;
+  });
+
+  if (sameFilter) {
+    // combine filter at layer
+    dataComponent.filter = (dataComponent.filter ? dataComponent.filter + '&&': '') + (childDataComponents[0].filter || '');
+    childDataComponents.forEach((data) => {
+      delete data.filter;
+    });
+  }
+
+  // merge up nullfilter
+  const nullFilterComponent = childDataComponents.reduce((collector, data) => {
+    extend(collector, data.nullFilter);
+    return collector;
+  }, dataComponent.nullFilter);
+
+  const compatibleNullfilter = all(childDataComponents, (data) => {
+    return !differ(data.nullFilter, nullFilterComponent);
+  });
+
+  if (compatibleNullfilter) {
+    dataComponent.nullFilter = nullFilterComponent;
+    childDataComponents.forEach((data) => {
+      delete data.nullFilter;
+    });
+  }
+
+  // merge up bin if the children have no nullfilter or filter defined
+  // and the binning is the same
+  const compatibleBin = all(childDataComponents, (data) => {
+    return !data.nullFilter && !data.filter;
+  });
+
+  if (compatibleBin) {
+    childDataComponents.forEach((data) => {
+      extend(dataComponent.bin, data.bin);
+      delete data.bin;
+    });
+  } else {
+    // since we cannot merge the binning up, we have to stop merging
+    return dataComponent;
+  }
+
+  // TODO: selectionfilter
+
+  // merge aggregate
+  const dimensions = childDataComponents.reduce((collector, data) => {
+    return collector.concat(hash(keys(data.summary.dimensions)));
+  }, keys(dataComponent.summary.dimensions).length ? [hash(keys(dataComponent.summary.dimensions))] : []);
+
+  if (allSame(dimensions)) {
+    dataComponent.summary.measures = childDataComponents.reduce((collector, data) => {
+      summary.mergeMeasures(collector, data.summary.measures);
+      return collector;
+    }, dataComponent.summary.measures);
+
+    if (empty(dataComponent.summary.dimensions)) {
+      dataComponent.summary.dimensions = childDataComponents[0].summary.dimensions;
+    }
+    childDataComponents.forEach((data) => {
+      delete data.summary;
+    });
+  }
+
+  // merge rank scale
+  childDataComponents.forEach((data) => {
+    extend(dataComponent.colorRank, data.colorRank);
+    delete data.colorRank;
+  });
+
+  // merge non positive filter
+  const nonPosComponent = childDataComponents.reduce((collector, data) => {
+    extend(collector, data.nonPositiveFilter);
+    return collector;
+  }, dataComponent.nonPositiveFilter);
+
+  const compatibleNonPosFilter = all(childDataComponents, (data) => {
+    return !differ(data.nonPositiveFilter, nonPosComponent);
+  });
+
+  if (compatibleNonPosFilter) {
+    dataComponent.nonPositiveFilter = nonPosComponent;
+    childDataComponents.forEach((data) => {
+      delete data.nonPositiveFilter;
+    });
+  }
 
   return dataComponent;
 }
@@ -125,7 +298,41 @@ export function parseFacetData(model: FacetModel): DataComponent {
  * Merges data from children up if possible.
  */
 export function parseLayerData(model: LayerModel): DataComponent {
-  return null;
+  const dataComponent = parseData(model);
+
+  // function to compare the data sources
+  function dataHash(component: DataComponent) {
+    const source = component.source;
+    if (source.values) {
+      return hash(source.values);
+    }
+    return hash(source.url + source.format);
+  }
+
+  // move time unit domain by moving it up
+  model.children().forEach((child) => {
+    extend(dataComponent.timeUnitDomain, child.component.data.timeUnitDomain);
+    delete child.component.data.timeUnitDomain;
+  });
+
+  if (dataComponent.source) {
+    // merge up what we can from the children that have the same source as the layer data
+    const parentHash = dataHash(dataComponent);
+    return mergeChildren(model, dataComponent, model.children().filter((child) => {
+      return child.component.data.source === undefined || parentHash === dataHash(child.component.data);
+    }));
+  } else {
+    const sameSources = allSame(model.children().map((child: UnitModel) => {
+      return dataHash(child.component.data);
+    }));
+    if (sameSources) {
+      dataComponent.source = duplicate(model.children()[0].component.data.source);
+
+      return mergeChildren(model, dataComponent, model.children());
+    }
+    // the children have different sources so let's give up
+    return dataComponent;
+  }
 }
 
 
@@ -174,14 +381,10 @@ export function assembleData(model: Model, data: VgData[]) {
     dataSource.transform = (dataSource.transform || []).concat(aggregate);
   }
 
-  // add rank data source if needed
+  // add rank transform
   const rank = colorRank.assemble(component);
   if (rank.length > 0) {
-    data.push({
-      name: model.dataName(RANK),
-      source: dataSource.name,
-      transform: [rank]
-    });
+    dataSource.transform = (dataSource.transform || []).concat(rank);
   }
 
   // stack

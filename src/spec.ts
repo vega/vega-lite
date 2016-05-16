@@ -15,18 +15,15 @@ import * as vlEncoding from './encoding';
 import {BAR, AREA} from './mark';
 import {duplicate, extend} from './util';
 
-interface BaseSpec {
+export interface BaseSpec {
   name?: string;
   description?: string;
   transform?: Transform;
   config?: Config;
-}
-
-export interface DataSpec extends BaseSpec {
   data?: Data;
 }
 
-export interface UnitSpec extends DataSpec {
+export interface UnitSpec extends BaseSpec {
   mark: Mark;
   encoding: UnitEncoding;
 }
@@ -40,7 +37,7 @@ export interface UnitSpec extends DataSpec {
  *
  * @required ["mark", "encoding"]
  */
-export interface ExtendedUnitSpec extends DataSpec {
+export interface ExtendedUnitSpec extends BaseSpec {
   /**
    * A name for the specification. The name is used to annotate marks, scale names, and more.
    */
@@ -48,7 +45,7 @@ export interface ExtendedUnitSpec extends DataSpec {
   encoding: Encoding;
 }
 
-export interface FacetSpec extends DataSpec {
+export interface FacetSpec extends BaseSpec {
   facet: Facet;
   spec: LayerSpec | UnitSpec;
 }

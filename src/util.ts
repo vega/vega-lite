@@ -2,6 +2,7 @@
 /// <reference path="../typings/json-stable-stringify.d.ts"/>
 
 import * as stringify from 'json-stable-stringify';
+import {keys} from 'datalib/src/util';
 export {keys, extend, duplicate, isArray, vals, truncate, toMap, isObject, isString, isNumber, isBoolean} from 'datalib/src/util';
 export {range} from 'datalib/src/generate';
 export {has} from './encoding'
@@ -15,6 +16,10 @@ export function hash(a: any) {
     return String(a);
   }
   return stringify(a);
+}
+
+export function empty(a: any) {
+  return !a || keys(a).length === 0;
 }
 
 export function contains<T>(array: Array<T>, item: T) {
@@ -57,7 +62,7 @@ export function reduce(obj, f: (a, i, d, k, o) => any, init, thisArg?) {
   }
 }
 
-export function map(obj, f: (a, d, k, o) => any, thisArg?) {
+export function map<T>(obj, f: (a, d, k, o) => T, thisArg?): T[] {
   if (obj.map) {
     return obj.map.call(thisArg, f);
   } else {
@@ -71,6 +76,9 @@ export function map(obj, f: (a, d, k, o) => any, thisArg?) {
   }
 }
 
+/**
+ * Returns true if any item returns true.
+ */
 export function any<T>(arr: Array<T>, f: (d: T, k?, i?) => boolean) {
   let i = 0;
   for (let k = 0; k<arr.length; k++) {
@@ -81,6 +89,9 @@ export function any<T>(arr: Array<T>, f: (d: T, k?, i?) => boolean) {
   return false;
 }
 
+/**
+ * Returns true if all items return true.
+ */
 export function all<T>(arr: Array<T>, f: (d: T, k?, i?) => boolean) {
   let i = 0;
   for (let k = 0; k<arr.length; k++) {
@@ -102,7 +113,9 @@ export function mergeDeep(dest, ...src: any[]) {
   return dest;
 };
 
-// recursively merges src into dest
+/**
+ * recursively merges src into dest
+ */
 function deepMerge_(dest, src) {
   if (typeof src !== 'object' || src === null) {
     return dest;
@@ -136,10 +149,31 @@ export function getbins(stats, maxbins) {
   });
 }
 
-export function unique<T>(values: T[], f?: (item: T) => string): T[] {
+/**
+ * Returns true if all items are the same.
+ */
+export function allSame<T>(values: T[], f?: (item: T) => string | number | boolean) {
+  if (values.length < 2) {
+    return true;
+  }
+  let v, i;
+  const first = f ? f(values[0]) : values[0];
+  for (i = 1; i < values.length; ++i) {
+    v = f ? f(values[i]) : values[i];
+    if (v !== first) {
+      return false;
+    }
+  }
+  return true;
+}
+
+/**
+ * Makes an array unique.
+ */
+export function unique<T>(values: T[], f?: (item: T) => string | number | boolean): T[] {
   let results = [];
-  var u = {}, v, i, n;
-  for (i = 0, n = values.length; i < n; ++i) {
+  let u = {}, v, i;
+  for (i = 0; i < values.length; ++i) {
     v = f ? f(values[i]) : values[i];
     if (v in u) {
       continue;
@@ -165,7 +199,7 @@ export interface Dict<T> {
 export type StringSet = Dict<boolean>;
 
 /**
- * Returns true if the two dicitonaries disagree. Applies only to defioned values.
+ * Returns true if the two dicitonaries disagree. Applies only to defined values.
  */
 export function differ<T>(dict: Dict<T>, other: Dict<T>) {
   for (let key in dict) {
