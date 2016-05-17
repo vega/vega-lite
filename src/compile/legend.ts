@@ -52,6 +52,8 @@ export function parseLegend(model: UnitModel, channel: Channel): VgLegend {
   // 1.1 Add properties with special rules
   def.title = title(legend, fieldDef);
 
+  def.offset = offset(legend, fieldDef);
+
   extend(def, formatMixins(legend, model, channel));
 
   // 1.2 Add properties without rules
@@ -75,6 +77,21 @@ export function parseLegend(model: UnitModel, channel: Channel): VgLegend {
   });
 
   return def;
+}
+
+export function offset(legend: LegendProperties, fieldDef: FieldDef) {
+  if (legend.offset !== undefined) {
+    return legend.offset;
+  }
+  return 0;
+}
+
+export function orient(legend: LegendProperties, fieldDef: FieldDef) {
+  const orient = legend.orient;
+  if (orient) {
+    return orient;
+  }
+  return 'vertical';
 }
 
 export function title(legend: LegendProperties, fieldDef: FieldDef) {
@@ -101,10 +118,11 @@ export function useColorLegendScale(fieldDef: FieldDef) {
   return fieldDef.type === ORDINAL || fieldDef.bin || fieldDef.timeUnit;
 }
 
-namespace properties {
+export namespace properties {
   export function symbols(fieldDef: FieldDef, symbolsSpec, model: UnitModel, channel: Channel) {
     let symbols:any = {};
     const mark = model.mark();
+    const legend = model.legend(channel);
 
     switch (mark) {
       case BAR:
@@ -161,35 +179,104 @@ namespace properties {
         {value: model.config().mark.color};
     }
 
+    if (legend.symbolColor !== undefined) {
+      symbols.fill = {value: legend.symbolColor};
+    }
+
+    if (legend.symbolShape !== undefined) {
+      symbols.shape = {value: legend.symbolShape};
+    }
+
+    if (legend.symbolSize !== undefined) {
+      symbols.size = {value: legend.symbolSize};
+    }
+
+    if (legend.symbolStrokeWidth !== undefined) {
+      symbols.strokeWidth = {value: legend.symbolStrokeWidth};
+    }
+
     symbols = extend(symbols, symbolsSpec || {});
 
     return keys(symbols).length > 0 ? symbols : undefined;
   }
 
-  export function labels(fieldDef: FieldDef, symbolsSpec, model: UnitModel, channel: Channel): any {
+  export function labels(fieldDef: FieldDef, labelsSpec, model: UnitModel, channel: Channel) {
+    const legend = model.legend(channel);
+
+    let labels:any = {};
+
     if (channel === COLOR) {
       if (fieldDef.type === ORDINAL) {
-        return {
+        labelsSpec = extend({
           text: {
             scale: model.scaleName(COLOR_LEGEND),
             field: 'data'
           }
-        };
+        }, labelsSpec || {});
       } else if (fieldDef.bin) {
-        return {
+        labelsSpec = extend({
           text: {
             scale: model.scaleName(COLOR_LEGEND_LABEL),
             field: 'data'
           }
-        };
+        }, labelsSpec || {});
       } else if (fieldDef.timeUnit) {
-        return {
+        labelsSpec = extend({
           text: {
             template: '{{ datum.data | time:\'' + timeFormat(model, channel) + '\'}}'
           }
-        };
+        }, labelsSpec || {});
       }
     }
-    return undefined;
+
+    if (legend.labelAlign !== undefined) {
+      labels.align = {value: legend.labelAlign};
+    }
+
+    if (legend.labelColor !== undefined) {
+      labels.stroke = {value: legend.labelColor};
+    }
+
+    if (legend.labelFont !== undefined) {
+      labels.font = {value: legend.labelFont};
+    }
+
+    if (legend.labelFontSize !== undefined) {
+      labels.fontSize = {value: legend.labelFontSize};
+    }
+
+    if (legend.labelBaseline !== undefined) {
+      labels.baseline = {value: legend.labelBaseline};
+    }
+
+    labels = extend(labels, labelsSpec || {});
+
+    return keys(labels).length > 0 ? labels : undefined;
+  }
+
+  export function title(fieldDef: FieldDef, titleSpec, model: UnitModel, channel: Channel) {
+    const legend = model.legend(channel);
+
+    let titles:any = {};
+
+    if (legend.titleColor !== undefined) {
+      titles.stroke = {value: legend.titleColor};
+    }
+
+    if (legend.titleFont !== undefined) {
+      titles.font = {value: legend.titleFont};
+    }
+
+    if (legend.titleFontSize !== undefined) {
+      titles.fontSize = {value: legend.titleFontSize};
+    }
+
+    if (legend.titleFontWeight !== undefined) {
+      titles.fontWeight = {value: legend.titleFontWeight};
+    }
+
+    titles = extend(titles, titleSpec || {});
+
+    return keys(titles).length > 0 ? titles : undefined;
   }
 }

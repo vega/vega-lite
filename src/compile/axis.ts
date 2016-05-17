@@ -83,10 +83,9 @@ export function parseAxis(channel: Channel, model: Model): VgAxis {
   // 1.2. Add properties
   [
     // a) properties with special rules (so it has axis[property] methods) -- call rule functions
-    'grid', 'layer', 'offset', 'orient', 'tickSize', 'ticks', 'title',
+    'grid', 'layer', 'offset', 'orient', 'tickSize', 'ticks', 'tickSizeEnd', 'title', 'titleOffset',
     // b) properties without rules, only produce default values in the schema, or explicit value if specified
-    'tickPadding', 'tickSize', 'tickSizeMajor', 'tickSizeMinor', 'tickSizeEnd',
-    'titleOffset', 'values', 'subdivide'
+    'tickPadding', 'tickSize', 'tickSizeMajor', 'tickSizeMinor', 'values', 'subdivide'
   ].forEach(function(property) {
     let method: (model: Model, channel: Channel, def:any)=>any;
 
@@ -195,6 +194,14 @@ export function tickSize(model: Model, channel: Channel) {
   return undefined;
 }
 
+export function tickSizeEnd(model: Model, channel: Channel) {
+  const tickSizeEnd = model.axis(channel).tickSizeEnd;
+  if (tickSizeEnd !== undefined) {
+      return tickSizeEnd;
+  }
+  return undefined;
+}
+
 
 export function title(model: Model, channel: Channel) {
   const axis = model.axis(channel);
@@ -222,15 +229,38 @@ export function title(model: Model, channel: Channel) {
   return maxLength ? truncate(fieldTitle, maxLength) : fieldTitle;
 }
 
+export function titleOffset(model: Model, channel: Channel) {
+  const titleOffset = model.axis(channel).titleOffset;
+  if (titleOffset !== undefined) {
+      return titleOffset;
+  }
+  return undefined;
+}
+
 export namespace properties {
-  export function axis(model: Model, channel: Channel, axisPropsSpec, def) {
+  export function axis(model: Model, channel: Channel, axisPropsSpec) {
     const axis = model.axis(channel);
 
     return extend(
+      axis.axisColor !== undefined ?
+        { stroke: {value: axis.axisColor} } :
+        {},
       axis.axisWidth !== undefined ?
         { strokeWidth: {value: axis.axisWidth} } :
         {},
       axisPropsSpec || {}
+    );
+  }
+
+  export function grid(model: Model, channel: Channel, gridPropsSpec) {
+    const axis = model.axis(channel);
+
+    return extend(
+      axis.gridColor !== undefined ? { stroke: {value: axis.gridColor}} : {},
+      axis.gridOpacity !== undefined ? {strokeOpacity: {value: axis.gridOpacity} } : {},
+      axis.gridWidth !== undefined ? {strokeWidth : {value: axis.gridWidth} } : {},
+      axis.gridDash !== undefined ? {strokeDashOffset : {value: axis.gridDash} } : {},
+      gridPropsSpec || {}
     );
   }
 
@@ -295,6 +325,41 @@ export namespace properties {
       }
     }
 
-    return labelsSpec || undefined;
+    if (axis.tickLabelColor !== undefined) {
+        labelsSpec.stroke = {value: axis.tickLabelColor};
+    }
+
+    if (axis.tickLabelFont !== undefined) {
+        labelsSpec.font = {value: axis.tickLabelFont};
+    }
+
+    if (axis.tickLabelFontSize !== undefined) {
+        labelsSpec.fontSize = {value: axis.tickLabelFontSize};
+    }
+
+    return keys(labelsSpec).length === 0 ? undefined : labelsSpec;
+  }
+
+  export function ticks(model: Model, channel: Channel, ticksPropsSpec) {
+    const axis = model.axis(channel);
+
+    return extend(
+      axis.tickColor !== undefined ? {stroke : {value: axis.tickColor} } : {},
+      axis.tickWidth !== undefined ? {strokeWidth: {value: axis.tickWidth} } : {},
+      ticksPropsSpec || {}
+    );
+  }
+
+  export function title(model: Model, channel: Channel, titlePropsSpec) {
+    const axis = model.axis(channel);
+
+    return extend(
+      axis.titleColor !== undefined ? {stroke : {value: axis.titleColor} } : {},
+      axis.titleFont !== undefined ? {font: {value: axis.titleFont}} : {},
+      axis.titleFontSize !== undefined ? {fontSize: {value: axis.titleFontSize}} : {},
+      axis.titleFontWeight !== undefined ? {fontWeight: {value: axis.titleFontWeight}} : {},
+
+      titlePropsSpec || {}
+    );
   }
 }

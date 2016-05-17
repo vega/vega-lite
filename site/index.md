@@ -14,7 +14,7 @@ images:
    bgposition: 75% 0%
    bgsize: 150%
  - spec: line_color
-   bgposition: 40% 30%
+   bgposition: 41% 26%
    bgsize: 170%
  - spec: scatter_colored_with_shape
    bgposition: 50% 30%
@@ -22,7 +22,7 @@ images:
    bgsize: 226%
    bgposition: 40% 5%
  - spec: bar_grouped
-   bgposition: 75% 50%
+   bgposition: 75% 59%
  - spec: stacked_bar_weather
    bgsize: 170%
    bgposition: 31% 14%
