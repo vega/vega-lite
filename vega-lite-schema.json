@@ -39,8 +39,7 @@
                 }
             },
             "required": [
-                "mark",
-                "encoding"
+                "mark"
             ]
         },
         "Mark": {
@@ -1769,8 +1768,7 @@
                 }
             },
             "required": [
-                "mark",
-                "encoding"
+                "mark"
             ]
         },
         "UnitEncoding": {
