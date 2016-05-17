@@ -82,6 +82,18 @@ describe('Legend', function() {
         assert.deepEqual(symbol.strokeWidth.value, 2);
     });
 
+    it('should not have strokeDash and strokeDashOffset', function() {
+      const symbol = legend.properties.symbols({field: 'a'}, {}, parseUnitModel({
+          mark: "point",
+          encoding: {
+            x: {field: "a", type: "nominal"},
+            color: {field: "a", type: "nominal"}
+          }
+        }), COLOR);
+        assert.isUndefined(symbol.strokeDash);
+        assert.isUndefined(symbol.strokeDashOffset);
+    });
+
     it('should return specific color value', function() {
       const symbol = legend.properties.symbols({field: 'a'}, {}, parseUnitModel({
           mark: "point",

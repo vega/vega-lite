@@ -34,9 +34,17 @@ export function initMarkConfig(mark: Mark, encoding: Encoding, config: Config) {
 
            // When unambiguous, do not allow overriding
            if (xIsMeasure && !yIsMeasure) {
-             cfg[property] = 'horizontal'; // implicitly vertical
+             if (mark === TICK) {
+               cfg[property] = 'vertical'; // implicitly vertical
+             } else {
+               cfg[property] = 'horizontal'; // implicitly horizontal
+             }
            } else if (!xIsMeasure && yIsMeasure) {
-             cfg[property] = undefined; // implicitly vertical
+             if (mark === TICK) {
+               cfg[property] = 'horizontal';
+             } else {
+               cfg[property] = 'vertical';
+             }
            }
 
            // In ambiguous cases (QxQ or OxO) use specified value

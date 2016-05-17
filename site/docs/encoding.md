@@ -18,6 +18,7 @@ An integral part of the data visualization process is encoding data with visual 
     "x": ...,
     "y": ...,
     "color": ...,
+    "opacity": ...,
     "size": ...,
     "shape": ...,
     "text": ...,
@@ -44,6 +45,7 @@ Mark properties channels map data fields directly to visual properties of the ma
 | :------------ |:-------------:| :------------- |
 | x, y          | [ChannelDef](#def)| X and Y coordinates for `point`, `circle`, `square`, `line`, `text`, and `tick`. (or to width and height for `bar` and `area` marks). |
 | color         | [ChannelDef](#def)| Color of the marks – either fill or stroke color based on mark type. (By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /   stroke color for `line` and `point`.) (See [scale range](scale.html#range) for more detail about color palettes.)  |
+| opacity         | [ChannelDef](#def)| Opacity of the marks – either can be a value or in a range. <span class="note-line"> __Default value:__ `[0.3, 0.8]` </span>.)  |
 | shape  | [ChannelDef](#def)| The symbol's shape (only for `point` marks). The supported values are `"circle"` (default), `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`, or `"triangle-down"`. |
 | size  | [ChannelDef](#def)| Size of the mark. <br/>     • For `point`, `square` and `circle` – the symbol size, or pixel area of the mark. <br/> • For `bar` and `tick` – the bar and tick's size. <br/>      • For `text` – the text's font size. <br/>      • Size is currently unsupported for `line` and `area`.|
 | text  | [ChannelDef](#def)| Text of the `text` mark. |

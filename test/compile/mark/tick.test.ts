@@ -29,6 +29,10 @@ describe('Mark: Tick', function() {
     it('should scale on x', function() {
       assert.deepEqual(props.xc, {scale: X, field: 'Horsepower'});
     });
+
+    it('width should tick thickness with orient vertical', function() {
+      assert.deepEqual(props.width, { value: 1});
+    });
   });
 
   describe('with quantitative y', function() {
@@ -45,6 +49,10 @@ describe('Mark: Tick', function() {
 
     it('should scale on y', function() {
       assert.deepEqual(props.yc, {scale: Y, field: 'Cylinders'});
+    });
+
+    it('height should tick thickness with orient horizontal', function() {
+      assert.deepEqual(props.height, { value: 1});
     });
   });
 
@@ -66,6 +74,14 @@ describe('Mark: Tick', function() {
 
     it('should scale on y', function() {
       assert.deepEqual(props.yc, {scale: Y, field: 'Cylinders'});
+    });
+
+    it('wiidth should be tick thickness with default orient vertical', function() {
+      assert.deepEqual(props.width, { value: 1});
+    });
+
+    it('height should be matched to field with default orient vertical', function() {
+      assert.deepEqual(props.height, { value: 14});
     });
   });
 
