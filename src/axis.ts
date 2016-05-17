@@ -21,11 +21,37 @@ export interface AxisConfig {
    */
   offset?: number;
 
+  // ---------- Axis ----------
+  /**
+   * Color of axis line. 
+   */
+  axisColor?: string;
+
   // ---------- Grid ----------
   /**
    * A flag indicate if gridlines should be created in addition to ticks. If `grid` is unspecified, the default value is `true` for ROW and COL. For X and Y, the default value is `true` for quantitative and time fields and `false` otherwise.
    */
   grid?: boolean;
+
+  /**
+   * Color of gridlines.
+   */
+  gridColor?: string;
+
+  /**
+   * The offset (in pixels) into which to begin drawing with the grid dash array.
+   */
+  gridDash?: number[];
+
+  /**
+   * The stroke opacity of grid (value between [0,1])
+   */
+  gridOpacity?: number;
+
+  /**
+   * The grid width, in pixels.
+   */
+  gridWidth?: number;
 
   // ---------- Labels ----------
   /**
@@ -64,6 +90,27 @@ export interface AxisConfig {
    * @minimum 0
    */
   ticks?: number;
+
+  /**
+   * The color of the axis's tick.
+   */
+  tickColor?: string;
+
+  /**
+   * The color of the tick label, can be in hex color code or regular color name.
+   */
+  tickLabelColor?: string;
+
+  /**
+   * The font of the tick label.
+   */
+  tickLabelFont?: string;
+
+  /**
+   * The font size of label, in pixels.
+   */
+  tickLabelFontSize?: number;
+
   /**
    * The padding, in pixels, between ticks and text labels.
    */
@@ -89,7 +136,32 @@ export interface AxisConfig {
    */
   tickSizeEnd?: number;
 
+  /**
+   * The width, in pixels, of ticks.
+   */
+  tickWidth?: number;
+
   // ---------- Title ----------
+  /**
+   * Color of the title, can be in hex color code or regular color name.
+   */
+  titleColor?: string;
+
+  /**
+   * Font of the title.
+   */
+  titleFont?: string;
+
+  /**
+   * Size of the title.
+   */
+  titleFontSize?: number;
+
+  /**
+   * Weight of the title.
+   */
+  titleFontWeight?: string;
+
   /**
    * A title offset value for the axis.
    */

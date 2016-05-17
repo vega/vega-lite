@@ -39,6 +39,10 @@ export interface ScaleConfig {
    */
   bandSize?: number;
   /**
+   * Default range for opacity.
+   */
+  opacity?: number[];
+  /**
    * Default padding for `x` and `y` ordinal scales.
    */
   padding?: number;
@@ -78,6 +82,7 @@ export const defaultScaleConfig: ScaleConfig = {
   bandSize: 21,
   padding: 1,
   includeRawDomain: false,
+  opacity: [0.3, 0.8],
 
   nominalColorRange: 'category10',
   sequentialColorRange: ['#AFC6A3', '#09622A'], // tableau greens
