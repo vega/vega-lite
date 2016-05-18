@@ -48,6 +48,7 @@ The `legend` property object supports the following properties:
 | values        | Array         | Explicitly set the visible legend values.|
 
 ### Labels
+
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | format        | String        | The formatting pattern for legend labels. This is D3's [number format pattern](https://github.com/mbostock/d3/wiki/Formatting) for quantitative axis and D3's [time format pattern](https://github.com/mbostock/d3/wiki/Time-Formatting) for time axis. <span class="note-line">__Default value:__  derived from [`numberFormat`](config.html#format) config for quantitative axis and from [`timeFormat`](config.html#format) config for time axis.</span>. |
@@ -59,6 +60,7 @@ The `legend` property object supports the following properties:
 | shortTimeLabels | Boolean       | Whether month and day names should be abbreviated. <span class="note-line">__Default value:__  derived from [legend config](config.html#legend-config)'s `shortTimeLabels` (`false` by default).</span>|
 
 ### Symbols
+
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | symbolColor   | String        | The color of the symbol. |
@@ -66,12 +68,12 @@ The `legend` property object supports the following properties:
 | symbolSize    | Number        | The size of the symbol, in pixels.  |
 | symbolStrokeWidth   | Number      | The width of the symbol's stroke. |
 
-
 ### Title
+
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | title         | String        | The title for the legend. <span class="note-line">__Default value:__  derived from the field's name and transformation function applied e.g, "field_name", "SUM(field_name)", "BIN(field_name)", "YEAR(field_name)".</span> |
 | titleColor    | String        | The color of the title. |
 | titleFont     | String        | The font of the title (e.g., `Helvetica Neue`). |
 | titleFontSize | Number        | The font size of the title. |
-| titleFontWeight   | String        | The font weight of the title (e.g., `bold`). | 
+| titleFontWeight   | String        | The font weight of the title (e.g., `bold`). |
