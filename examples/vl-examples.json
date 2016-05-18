@@ -59,6 +59,14 @@
       }
     },
     {
+      "name": "bubble_health_income",
+      "title": "Gapminder Bubble Plot",
+      "galleryParameters": {
+        "backgroundSize": "230%",
+        "backgroundPosition": "40% 20%"
+      }
+    },
+    {
       "name": "tick_strip",
       "title": "Strip Plot",
       "galleryParameters": {
@@ -112,6 +120,10 @@
         "backgroundSize": "250%",
         "backgroundPosition": "35% 40%"
       }
+    },
+    {
+      "name": "github_punchcard",
+      "title": "Github punch card visualization"
     }
   ],
   "Stack": [
@@ -157,7 +169,7 @@
   ],
   "Trellis": [
     { "name": "trellis_anscombe",
-      "title": "Anscombe's Quarter",
+      "title": "Anscombe's Quartet",
       "galleryParameters": {
         "backgroundSize": "130%"
       }
