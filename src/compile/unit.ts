@@ -93,7 +93,7 @@ export class UnitModel extends Model {
           type: _scaleType,
           round: config.scale.round,
           padding: config.scale.padding,
-          includeRawDomain: config.scale.includeRawDomain,
+          useRawDomain: config.scale.useRawDomain,
           bandSize: channel === X && _scaleType === ScaleType.ORDINAL && mark === TEXTMARK ?
                      config.scale.textBandWidth : config.scale.bandSize
         }, scaleSpec);

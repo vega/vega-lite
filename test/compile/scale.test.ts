@@ -92,7 +92,7 @@ describe('Scale', function() {
               y: {
                 bin: {maxbins: 15},
                 field: 'origin',
-                scale: {includeRawDomain: true},
+                scale: {useRawDomain: true},
                 type: "quantitative"
               }
             }
@@ -108,7 +108,7 @@ describe('Scale', function() {
           });
         });
 
-      it('should return the raw domain if includeRawDomain is true for non-bin, non-sum Q',
+      it('should return the raw domain if useRawDomain is true for non-bin, non-sum Q',
         function() {
           const model = parseUnitModel({
             mark: "point",
@@ -116,7 +116,7 @@ describe('Scale', function() {
               y: {
                 aggregate: 'mean',
                 field: 'origin',
-                scale: {includeRawDomain: true},
+                scale: {useRawDomain: true},
                 type: "quantitative"
               }
             }
@@ -134,7 +134,7 @@ describe('Scale', function() {
               y: {
                 aggregate: 'sum',
                 field: 'origin',
-                scale: {includeRawDomain: true},
+                scale: {useRawDomain: true},
                 type: "quantitative"
               }
             }
@@ -145,14 +145,14 @@ describe('Scale', function() {
         });
 
 
-      it('should return the aggregated domain if includeRawDomain is false', function() {
+      it('should return the aggregated domain if useRawDomain is false', function() {
           const model = parseUnitModel({
             mark: "point",
             encoding: {
               y: {
                 aggregate: 'min',
                 field: 'origin',
-                scale: {includeRawDomain: false},
+                scale: {useRawDomain: false},
                 type: "quantitative"
               }
             }
@@ -164,14 +164,14 @@ describe('Scale', function() {
     });
 
     describe('for time', function() {
-      it('should return the raw domain if includeRawDomain is true for raw T',
+      it('should return the raw domain if useRawDomain is true for raw T',
         function() {
           const model = parseUnitModel({
             mark: "point",
             encoding: {
               y: {
                 field: 'origin',
-                scale: {includeRawDomain: true},
+                scale: {useRawDomain: true},
                 type: "temporal"
               }
             }
@@ -181,14 +181,14 @@ describe('Scale', function() {
           assert.deepEqual(domain.data, SOURCE);
         });
 
-      it('should return the raw domain if includeRawDomain is true for year T',
+      it('should return the raw domain if useRawDomain is true for year T',
         function() {
           const model = parseUnitModel({
             mark: "point",
             encoding: {
               y: {
                 field: 'origin',
-                scale: {includeRawDomain: true},
+                scale: {useRawDomain: true},
                 type: "temporal",
                 timeUnit: 'year'
               }
@@ -207,7 +207,7 @@ describe('Scale', function() {
             encoding: {
               y: {
                 field: 'origin',
-                scale: {includeRawDomain: true},
+                scale: {useRawDomain: true},
                 type: "temporal",
                 timeUnit: 'month'
               }
@@ -225,7 +225,7 @@ describe('Scale', function() {
               encoding: {
                 y: {
                   field: 'origin',
-                  scale: {includeRawDomain: true},
+                  scale: {useRawDomain: true},
                   type: "temporal",
                   timeUnit: 'yearmonth'
                 }
