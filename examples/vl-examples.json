@@ -169,7 +169,7 @@
   ],
   "Trellis": [
     { "name": "trellis_anscombe",
-      "title": "Anscombe's Quarter",
+      "title": "Anscombe's Quartet",
       "galleryParameters": {
         "backgroundSize": "130%"
       }
