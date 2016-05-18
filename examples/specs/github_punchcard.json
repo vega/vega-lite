@@ -1,0 +1,21 @@
+{
+  "data": { "url": "data/github.csv"},
+  "mark": "circle",
+  "encoding": {
+    "y": {
+      "field": "time",
+      "type": "temporal",
+      "timeUnit": "day"
+    },
+    "x": {
+      "field": "time",
+      "type": "temporal",
+      "timeUnit": "hours"
+    },
+    "size": {
+      "field": "count",
+      "type": "quantitative",
+      "aggregate": "sum"
+    }
+  }
+}

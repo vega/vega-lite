@@ -25,7 +25,7 @@ export interface BaseSpec {
 
 export interface UnitSpec extends BaseSpec {
   mark: Mark;
-  encoding: UnitEncoding;
+  encoding?: UnitEncoding;
 }
 
 /**
@@ -42,7 +42,7 @@ export interface ExtendedUnitSpec extends BaseSpec {
    * A name for the specification. The name is used to annotate marks, scale names, and more.
    */
   mark: Mark;
-  encoding: Encoding;
+  encoding?: Encoding;
 }
 
 export interface FacetSpec extends BaseSpec {
@@ -90,7 +90,7 @@ export function isUnitSpec(spec: ExtendedSpec): spec is UnitSpec {
 }
 
 export function isSomeUnitSpec(spec: ExtendedSpec): spec is ExtendedUnitSpec | UnitSpec {
-  return spec['encoding'] !== undefined;
+  return spec['mark'] !== undefined;
 }
 
 export function isLayerSpec(spec: ExtendedSpec): spec is LayerSpec {

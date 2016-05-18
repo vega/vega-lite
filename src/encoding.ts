@@ -8,6 +8,7 @@ export interface UnitEncoding {
   x?: PositionChannelDef;
   y?: PositionChannelDef;
   color?: ChannelDefWithLegend;
+  opacity?: ChannelDefWithLegend;
   size?: ChannelDefWithLegend;
   shape?: ChannelDefWithLegend; // TODO: maybe distinguish ordinal-only
   detail?: FieldDef | FieldDef[];
@@ -27,6 +28,7 @@ export interface Encoding extends UnitEncoding {
 export function countRetinal(encoding: Encoding) {
   let count = 0;
   if (encoding.color) { count++; }
+  if (encoding.opacity) { count++; }
   if (encoding.size) { count++; }
   if (encoding.shape) { count++; }
   return count;

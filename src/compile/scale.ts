@@ -2,7 +2,7 @@
 declare var exports;
 
 import {SHARED_DOMAIN_OPS} from '../aggregate';
-import {COLUMN, ROW, X, Y, SHAPE, SIZE, COLOR, TEXT, hasScale, Channel} from '../channel';
+import {COLUMN, ROW, X, Y, SHAPE, SIZE, COLOR, OPACITY, TEXT, hasScale, Channel} from '../channel';
 import {StackOffset} from '../config';
 import {SOURCE, STACKED_SCALE} from '../data';
 import {FieldDef, field, isMeasure} from '../fielddef';
@@ -398,6 +398,8 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel): any {
       }
       // else -- ordinal, time, or quantitative
       return {range: scaleConfig.sequentialColorRange};
+    case OPACITY:
+      return {range: scaleConfig.opacity};
   }
   return {};
 }
