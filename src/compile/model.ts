@@ -142,7 +142,6 @@ export abstract class Model {
   public abstract parseAxisGroup();
   public abstract parseGridGroup();
 
-
   public abstract assembleData(data: VgData[]): VgData[];
 
   public abstract assembleLayout(layoutData: VgData[]): VgData[];

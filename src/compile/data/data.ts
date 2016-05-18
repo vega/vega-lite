@@ -63,8 +63,11 @@ export interface DataComponent {
   /** Array of summary component object for producing aggregates */
   summary: SummaryComponent;
 
-  /** Whether we need the unaggrgeated data source or not. */
-  usesRaw: boolean;
+  /**
+   * Whether we need the unaggrgeated data source or not.
+   * Should be set when we parse the scales.
+   */
+  includeRawDomain?: boolean;
 }
 
 /**
@@ -97,8 +100,7 @@ function parseData(model: Model): DataComponent {
     stackScale: stackScale.parseUnit(model),
     nonPositiveFilter: nonPositiveFilter.parseUnit(model),
     nullFilter: nullFilter.parseUnit(model),
-    timeUnitDomain: timeUnitDomain.parseUnit(model),
-    usesRaw: false,
+    timeUnitDomain: timeUnitDomain.parseUnit(model)
   };
 }
 
@@ -364,7 +366,7 @@ export function assembleData(model: Model, data: VgData[]) {
     timeUnit.assemble(component)
   );
 
-  if (component.usesRaw) {
+  if (component.includeRawDomain) {
     // create an intermediate data source for raw data
     const sourceName = dataSource.name;
     const rawName = model.dataName(RAW);
@@ -400,7 +402,7 @@ export function assembleData(model: Model, data: VgData[]) {
   }
 
   // scale
-  const scaleSource = component.usesRaw ? model.dataName(RAW) : dataSource.name;
+  const scaleSource = component.includeRawDomain ? model.dataName(RAW) : dataSource.name;
   const posFilter = nonPositiveFilter.assemble(component);
   if (posFilter.length > 0) {
     data.push({

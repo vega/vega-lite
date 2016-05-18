@@ -241,6 +241,7 @@ export function domain(scale: Scale, model: Model, channel:Channel): any {
   sort = domainSort(model, channel, scale.type);
 
   if (includeRawDomain) { // includeRawDomain - only Q/T
+    model.component.data.includeRawDomain = true;
     return {
       data: SCALE,
       field: model.field(channel, {noAggregate: true})
