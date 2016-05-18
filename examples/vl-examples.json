@@ -59,6 +59,14 @@
       }
     },
     {
+      "name": "bubble_health_income",
+      "title": "Gapminder Bubble Plot",
+      "galleryParameters": {
+        "backgroundSize": "230%",
+        "backgroundPosition": "40% 20%"
+      }
+    },
+    {
       "name": "tick_strip",
       "title": "Strip Plot",
       "galleryParameters": {
