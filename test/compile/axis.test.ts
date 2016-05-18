@@ -427,7 +427,9 @@ describe('Axis', function() {
         }
       });
       const labels = axis.properties.labels(model, X, {}, {type: 'x'});
-      assert.deepEqual(labels.text.template, '{{datum.data | quarter}}');
+      let quarterPrefix = 'Q';
+      let expected = quarterPrefix + '{{datum.data | quarter}}';
+      assert.deepEqual(labels.text.template, expected);
     });
 
     it('should have correct text.template for yearquartermonth timeUnits', function () {
@@ -438,7 +440,8 @@ describe('Axis', function() {
         }
       });
       const labels = axis.properties.labels(model, X, {}, {type: 'x'});
-      let expected = '{{datum.data | time:\'%Y\'}}-{{datum.data | quarter}}-{{datum.data | time:\'%b\'}}';
+      let quarterPrefix = 'Q';
+      let expected = '{{datum.data | time:\'%Y\'}}-' + quarterPrefix + '{{datum.data | quarter}}-{{datum.data | time:\'%b\'}}';
       assert.deepEqual(labels.text.template, expected);
     });
 
