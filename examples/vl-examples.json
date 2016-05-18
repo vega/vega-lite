@@ -112,6 +112,10 @@
         "backgroundSize": "250%",
         "backgroundPosition": "35% 40%"
       }
+    },
+    {
+      "name": "github_punchcard",
+      "title": "Github punch card visualization"
     }
   ],
   "Stack": [

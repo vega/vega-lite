@@ -4,7 +4,7 @@
   "version": "1.0.8",
   "collaborators": [
     "Kanit Wongsuphasawat <kanitw@gmail.com> (http://kanitw.yellowpigz.com)",
-    "Dominik Moritz <domoritz@cs.washington.edu> (http://domoritz.de)",
+    "Dominik Moritz <domoritz@cs.washington.edu> (http://www.domoritz.de)",
     "Jeffrey Heer <jheer@uw.edu> (http://jheer.org)"
   ],
   "description": "Vega-lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications.",
