@@ -3,36 +3,75 @@ var channel_1 = require('../channel');
 var fielddef_1 = require('../fielddef');
 var sort_1 = require('../sort');
 var type_1 = require('../type');
-var time_1 = require('./time');
 var util_1 = require('../util');
-exports.FILL_STROKE_CONFIG = ['fill', 'fillOpacity',
-    'stroke', 'strokeWidth', 'strokeDash', 'strokeDashOffset', 'strokeOpacity',
+var facet_1 = require('./facet');
+var layer_1 = require('./layer');
+var timeunit_1 = require('../timeunit');
+var unit_1 = require('./unit');
+var spec_1 = require('../spec');
+function buildModel(spec, parent, parentGivenName) {
+    if (spec_1.isFacetSpec(spec)) {
+        return new facet_1.FacetModel(spec, parent, parentGivenName);
+    }
+    if (spec_1.isLayerSpec(spec)) {
+        return new layer_1.LayerModel(spec, parent, parentGivenName);
+    }
+    if (spec_1.isUnitSpec(spec)) {
+        return new unit_1.UnitModel(spec, parent, parentGivenName);
+    }
+    console.error('Invalid spec.');
+    return null;
+}
+exports.buildModel = buildModel;
+exports.STROKE_CONFIG = ['stroke', 'strokeWidth',
+    'strokeDash', 'strokeDashOffset', 'strokeOpacity', 'opacity'];
+exports.FILL_CONFIG = ['fill', 'fillOpacity',
     'opacity'];
+exports.FILL_STROKE_CONFIG = util_1.union(exports.STROKE_CONFIG, exports.FILL_CONFIG);
 function applyColorAndOpacity(p, model) {
     var filled = model.config().mark.filled;
-    var fieldDef = model.fieldDef(channel_1.COLOR);
-    applyMarkConfig(p, model, exports.FILL_STROKE_CONFIG);
-    var value;
+    var colorFieldDef = model.fieldDef(channel_1.COLOR);
+    var opacityFieldDef = model.fieldDef(channel_1.OPACITY);
+    if (filled) {
+        applyMarkConfig(p, model, exports.FILL_CONFIG);
+    }
+    else {
+        applyMarkConfig(p, model, exports.STROKE_CONFIG);
+    }
+    var colorValue;
+    var opacityValue;
     if (model.has(channel_1.COLOR)) {
-        value = {
+        colorValue = {
             scale: model.scaleName(channel_1.COLOR),
-            field: model.field(channel_1.COLOR, fieldDef.type === type_1.ORDINAL ? { prefn: 'rank_' } : {})
+            field: model.field(channel_1.COLOR, colorFieldDef.type === type_1.ORDINAL ? { prefn: 'rank_' } : {})
         };
     }
-    else if (fieldDef && fieldDef.value) {
-        value = { value: fieldDef.value };
+    else if (colorFieldDef && colorFieldDef.value) {
+        colorValue = { value: colorFieldDef.value };
     }
-    if (value !== undefined) {
+    if (model.has(channel_1.OPACITY)) {
+        opacityValue = {
+            scale: model.scaleName(channel_1.OPACITY),
+            field: model.field(channel_1.OPACITY, opacityFieldDef.type === type_1.ORDINAL ? { prefn: 'rank_' } : {})
+        };
+    }
+    else if (opacityFieldDef && opacityFieldDef.value) {
+        opacityValue = { value: opacityFieldDef.value };
+    }
+    if (colorValue !== undefined) {
         if (filled) {
-            p.fill = value;
+            p.fill = colorValue;
         }
         else {
-            p.stroke = value;
+            p.stroke = colorValue;
         }
     }
     else {
         p[filled ? 'fill' : 'stroke'] = p[filled ? 'fill' : 'stroke'] ||
             { value: model.config().mark.color };
+    }
+    if (opacityValue !== undefined) {
+        p.opacity = opacityValue;
     }
 }
 exports.applyColorAndOpacity = applyColorAndOpacity;
@@ -43,10 +82,11 @@ function applyConfig(properties, config, propsList) {
             properties[property] = { value: value };
         }
     });
+    return properties;
 }
 exports.applyConfig = applyConfig;
 function applyMarkConfig(marksProperties, model, propsList) {
-    applyConfig(marksProperties, model.config().mark, propsList);
+    return applyConfig(marksProperties, model.config().mark, propsList);
 }
 exports.applyMarkConfig = applyMarkConfig;
 function formatMixins(model, channel, format) {
@@ -90,6 +130,7 @@ function isAbbreviated(model, channel, fieldDef) {
         case channel_1.Y:
             return model.axis(channel).shortTimeLabels;
         case channel_1.COLOR:
+        case channel_1.OPACITY:
         case channel_1.SHAPE:
         case channel_1.SIZE:
             return model.legend(channel).shortTimeLabels;
@@ -105,7 +146,7 @@ function sortField(orderChannelDef) {
 exports.sortField = sortField;
 function timeFormat(model, channel) {
     var fieldDef = model.fieldDef(channel);
-    return time_1.format(fieldDef.timeUnit, isAbbreviated(model, channel, fieldDef));
+    return timeunit_1.format(fieldDef.timeUnit, isAbbreviated(model, channel, fieldDef));
 }
 exports.timeFormat = timeFormat;
 //# sourceMappingURL=common.js.map

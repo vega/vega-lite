@@ -2,48 +2,6 @@
 var util_1 = require('../util');
 var channel_1 = require('../channel');
 var timeunit_1 = require('../timeunit');
-function format(timeUnit, abbreviated) {
-    if (abbreviated === void 0) { abbreviated = false; }
-    if (!timeUnit) {
-        return undefined;
-    }
-    var timeString = timeUnit.toString();
-    var dateComponents = [];
-    if (timeString.indexOf('year') > -1) {
-        dateComponents.push(abbreviated ? '%y' : '%Y');
-    }
-    if (timeString.indexOf('month') > -1) {
-        dateComponents.push(abbreviated ? '%b' : '%B');
-    }
-    if (timeString.indexOf('day') > -1) {
-        dateComponents.push(abbreviated ? '%a' : '%A');
-    }
-    else if (timeString.indexOf('date') > -1) {
-        dateComponents.push('%d');
-    }
-    var timeComponents = [];
-    if (timeString.indexOf('hours') > -1) {
-        timeComponents.push('%H');
-    }
-    if (timeString.indexOf('minutes') > -1) {
-        timeComponents.push('%M');
-    }
-    if (timeString.indexOf('seconds') > -1) {
-        timeComponents.push('%S');
-    }
-    if (timeString.indexOf('milliseconds') > -1) {
-        timeComponents.push('%L');
-    }
-    var out = [];
-    if (dateComponents.length > 0) {
-        out.push(dateComponents.join('-'));
-    }
-    if (timeComponents.length > 0) {
-        out.push(timeComponents.join(':'));
-    }
-    return out.length > 0 ? out.join(' ') : undefined;
-}
-exports.format = format;
 function smallestUnit(timeUnit) {
     if (!timeUnit) {
         return undefined;

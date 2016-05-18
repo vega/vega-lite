@@ -5,7 +5,16 @@ var fielddef_1 = require('../fielddef');
 var type_1 = require('../type');
 var util_1 = require('../util');
 var common_1 = require('./common');
-function compileInnerAxis(channel, model) {
+function parseAxisComponent(model, axisChannels) {
+    return axisChannels.reduce(function (axis, channel) {
+        if (model.axis(channel)) {
+            axis[channel] = parseAxis(channel, model);
+        }
+        return axis;
+    }, {});
+}
+exports.parseAxisComponent = parseAxisComponent;
+function parseInnerAxis(channel, model) {
     var isCol = channel === channel_1.COLUMN, isRow = channel === channel_1.ROW, type = isCol ? 'x' : isRow ? 'y' : channel;
     var def = {
         type: type,
@@ -33,8 +42,8 @@ function compileInnerAxis(channel, model) {
     });
     return def;
 }
-exports.compileInnerAxis = compileInnerAxis;
-function compileAxis(channel, model) {
+exports.parseInnerAxis = parseInnerAxis;
+function parseAxis(channel, model) {
     var isCol = channel === channel_1.COLUMN, isRow = channel === channel_1.ROW, type = isCol ? 'x' : isRow ? 'y' : channel;
     var axis = model.axis(channel);
     var def = {
@@ -43,9 +52,8 @@ function compileAxis(channel, model) {
     };
     util_1.extend(def, common_1.formatMixins(model, channel, model.axis(channel).format));
     [
-        'grid', 'layer', 'offset', 'orient', 'tickSize', 'ticks', 'title',
-        'tickPadding', 'tickSize', 'tickSizeMajor', 'tickSizeMinor', 'tickSizeEnd',
-        'titleOffset', 'values', 'subdivide'
+        'grid', 'layer', 'offset', 'orient', 'tickSize', 'ticks', 'tickSizeEnd', 'title', 'titleOffset',
+        'tickPadding', 'tickSize', 'tickSizeMajor', 'tickSizeMinor', 'values', 'subdivide'
     ].forEach(function (property) {
         var method;
         var value = (method = exports[property]) ?
@@ -63,14 +71,14 @@ function compileAxis(channel, model) {
         var value = properties[group] ?
             properties[group](model, channel, props[group] || {}, def) :
             props[group];
-        if (value !== undefined) {
+        if (value !== undefined && util_1.keys(value).length > 0) {
             def.properties = def.properties || {};
             def.properties[group] = value;
         }
     });
     return def;
 }
-exports.compileAxis = compileAxis;
+exports.parseAxis = parseAxis;
 function offset(model, channel) {
     return model.axis(channel).offset;
 }
@@ -87,7 +95,7 @@ function grid(model, channel) {
     if (channel === channel_1.ROW || channel === channel_1.COLUMN) {
         return undefined;
     }
-    return gridShow(model, channel) && ((channel === channel_1.Y || channel === channel_1.X) && !(model.has(channel_1.COLUMN) || model.has(channel_1.ROW)));
+    return gridShow(model, channel) && ((channel === channel_1.Y || channel === channel_1.X) && !(model.parent() && model.parent().isFacet()));
 }
 exports.grid = grid;
 function layer(model, channel, def) {
@@ -109,11 +117,6 @@ function orient(model, channel) {
     }
     else if (channel === channel_1.COLUMN) {
         return axis_1.AxisOrient.TOP;
-    }
-    else if (channel === channel_1.ROW) {
-        if (model.has(channel_1.Y) && model.axis(channel_1.Y).orient !== axis_1.AxisOrient.RIGHT) {
-            return axis_1.AxisOrient.RIGHT;
-        }
     }
     return undefined;
 }
@@ -137,6 +140,14 @@ function tickSize(model, channel) {
     return undefined;
 }
 exports.tickSize = tickSize;
+function tickSizeEnd(model, channel) {
+    var tickSizeEnd = model.axis(channel).tickSizeEnd;
+    if (tickSizeEnd !== undefined) {
+        return tickSizeEnd;
+    }
+    return undefined;
+}
+exports.tickSizeEnd = tickSizeEnd;
 function title(model, channel) {
     var axis = model.axis(channel);
     if (axis.title !== undefined) {
@@ -148,23 +159,40 @@ function title(model, channel) {
         maxLength = axis.titleMaxLength;
     }
     else if (channel === channel_1.X && !model.isOrdinalScale(channel_1.X)) {
-        maxLength = model.cellWidth() / model.axis(channel_1.X).characterWidth;
+        var unitModel = model;
+        maxLength = unitModel.config().cell.width / model.axis(channel_1.X).characterWidth;
     }
     else if (channel === channel_1.Y && !model.isOrdinalScale(channel_1.Y)) {
-        maxLength = model.cellHeight() / model.axis(channel_1.Y).characterWidth;
+        var unitModel = model;
+        maxLength = unitModel.config().cell.height / model.axis(channel_1.Y).characterWidth;
     }
     return maxLength ? util_1.truncate(fieldTitle, maxLength) : fieldTitle;
 }
 exports.title = title;
+function titleOffset(model, channel) {
+    var titleOffset = model.axis(channel).titleOffset;
+    if (titleOffset !== undefined) {
+        return titleOffset;
+    }
+    return undefined;
+}
+exports.titleOffset = titleOffset;
 var properties;
 (function (properties) {
-    function axis(model, channel, axisPropsSpec, def) {
+    function axis(model, channel, axisPropsSpec) {
         var axis = model.axis(channel);
-        return util_1.extend(axis.axisWidth !== undefined ?
+        return util_1.extend(axis.axisColor !== undefined ?
+            { stroke: { value: axis.axisColor } } :
+            {}, axis.axisWidth !== undefined ?
             { strokeWidth: { value: axis.axisWidth } } :
             {}, axisPropsSpec || {});
     }
     properties.axis = axis;
+    function grid(model, channel, gridPropsSpec) {
+        var axis = model.axis(channel);
+        return util_1.extend(axis.gridColor !== undefined ? { stroke: { value: axis.gridColor } } : {}, axis.gridOpacity !== undefined ? { strokeOpacity: { value: axis.gridOpacity } } : {}, axis.gridWidth !== undefined ? { strokeWidth: { value: axis.gridWidth } } : {}, axis.gridDash !== undefined ? { strokeDashOffset: { value: axis.gridDash } } : {}, gridPropsSpec || {});
+    }
+    properties.grid = grid;
     function labels(model, channel, labelsSpec, def) {
         var fieldDef = model.fieldDef(channel);
         var axis = model.axis(channel);
@@ -186,9 +214,6 @@ var properties;
         else {
             if (channel === channel_1.X && (fielddef_1.isDimension(fieldDef) || fieldDef.type === type_1.TEMPORAL)) {
                 labelsSpec.angle = { value: 270 };
-            }
-            else if (channel === channel_1.ROW && model.has(channel_1.X)) {
-                labelsSpec.angle = { value: def.orient === 'left' ? 270 : 90 };
             }
         }
         if (axis.labelAlign !== undefined) {
@@ -221,8 +246,27 @@ var properties;
                 }
             }
         }
-        return labelsSpec || undefined;
+        if (axis.tickLabelColor !== undefined) {
+            labelsSpec.stroke = { value: axis.tickLabelColor };
+        }
+        if (axis.tickLabelFont !== undefined) {
+            labelsSpec.font = { value: axis.tickLabelFont };
+        }
+        if (axis.tickLabelFontSize !== undefined) {
+            labelsSpec.fontSize = { value: axis.tickLabelFontSize };
+        }
+        return util_1.keys(labelsSpec).length === 0 ? undefined : labelsSpec;
     }
     properties.labels = labels;
+    function ticks(model, channel, ticksPropsSpec) {
+        var axis = model.axis(channel);
+        return util_1.extend(axis.tickColor !== undefined ? { stroke: { value: axis.tickColor } } : {}, axis.tickWidth !== undefined ? { strokeWidth: { value: axis.tickWidth } } : {}, ticksPropsSpec || {});
+    }
+    properties.ticks = ticks;
+    function title(model, channel, titlePropsSpec) {
+        var axis = model.axis(channel);
+        return util_1.extend(axis.titleColor !== undefined ? { stroke: { value: axis.titleColor } } : {}, axis.titleFont !== undefined ? { font: { value: axis.titleFont } } : {}, axis.titleFontSize !== undefined ? { fontSize: { value: axis.titleFontSize } } : {}, axis.titleFontWeight !== undefined ? { fontWeight: { value: axis.titleFontWeight } } : {}, titlePropsSpec || {});
+    }
+    properties.title = title;
 })(properties = exports.properties || (exports.properties = {}));
 //# sourceMappingURL=axis.js.map

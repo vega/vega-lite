@@ -1,30 +1,37 @@
 /**
  * Module for compiling Vega-lite spec into Vega spec.
  */
-import {Model} from './Model';
-
-import {compileAxis} from './axis';
-import {compileData} from './data';
-import {compileLayoutData} from './layout';
-import {facetMixins} from './facet';
-import {compileLegends} from './legend';
-import {compileMark} from './mark/mark';
-import {compileScales} from './scale';
-import {applyConfig, FILL_STROKE_CONFIG} from './common';
-import {extend} from '../util';
 
 import {LAYOUT} from '../data';
-import {COLUMN, ROW, X, Y} from '../channel';
+import {Model} from './model';
+import {normalize, ExtendedSpec} from '../spec';
+import {extend} from '../util';
 
-export {Model} from './Model';
+import {buildModel} from './common';
 
-export function compile(spec) {
-  const model = new Model(spec);
+export function compile(inputSpec: ExtendedSpec) {
+  // 1. Convert input spec into a normal form
+  // (Decompose all extended unit specs into composition of unit spec.)
+  const spec = normalize(inputSpec);
+
+  // 2. Instantiate the model with default properties
+  const model = buildModel(spec, null, '');
+
+  // 3. Parse each part of the model to produce components that will be assembled later
+  // We traverse the whole tree to parse once for each type of components
+  // (e.g., data, layout, mark, scale).
+  // Please see inside model.parse() for order for compilation.
+  model.parse();
+
+  // 4. Assemble a Vega Spec from the parsed components in 3.
+  return assemble(model);
+}
+
+function assemble(model: Model) {
   const config = model.config();
 
   // TODO: change type to become VgSpec
   const output = extend(
-    spec.name ? { name: spec.name } : {},
     {
       // Set size to 1 because we rely on padding anyway
       width: 1,
@@ -34,8 +41,13 @@ export function compile(spec) {
     config.viewport ? { viewport: config.viewport } : {},
     config.background ? { background: config.background } : {},
     {
-      data: compileData(model).concat([compileLayoutData(model)]),
-      marks: [compileRootGroup(model)]
+      // TODO: signal: model.assembleSelectionSignal
+      data: [].concat(
+        model.assembleData([]),
+        model.assembleLayout([])
+        // TODO: model.assembleSelectionData
+      ),
+      marks: [assembleRootGroup(model)]
     });
 
   return {
@@ -44,46 +56,24 @@ export function compile(spec) {
   };
 }
 
-export function compileRootGroup(model: Model) {
-  const spec = model.spec();
-
+export function assembleRootGroup(model: Model) {
   let rootGroup:any = extend({
-      name: spec.name ? spec.name + '-root' : 'root',
+      name: model.name('root'),
       type: 'group',
     },
-    spec.description ? {description: spec.description} : {},
+    model.description() ? {description: model.description()} : {},
     {
       from: {data: LAYOUT},
       properties: {
-        update: {
-          width: {field: 'width'},
-          height: {field: 'height'}
-        }
+        update: extend(
+          {
+            width: {field: 'width'},
+            height: {field: 'height'}
+          },
+          model.assembleParentGroupProperties(model.config().cell)
+        )
       }
     });
 
-  const marks = compileMark(model);
-
-  // Small Multiples
-  if (model.has(ROW) || model.has(COLUMN)) {
-    // put the marks inside a facet cell's group
-    extend(rootGroup, facetMixins(model, marks));
-  } else {
-    applyConfig(rootGroup.properties.update, model.config().cell, FILL_STROKE_CONFIG.concat(['clip']));
-    rootGroup.marks = marks;
-    rootGroup.scales = compileScales(model);
-
-    const axes = (model.has(X) && model.axis(X) ? [compileAxis(X, model)] : [])
-      .concat(model.has(Y) && model.axis(Y) ? [compileAxis(Y, model)] : []);
-    if (axes.length > 0) {
-      rootGroup.axes = axes;
-    }
-  }
-
-  // legends (similar for either facets or non-facets
-  const legends = compileLegends(model);
-  if (legends.length > 0) {
-    rootGroup.legends = legends;
-  }
-  return rootGroup;
+  return extend(rootGroup, model.assembleGroup());
 }

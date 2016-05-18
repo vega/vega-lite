@@ -27,11 +27,11 @@ permalink: /docs/aggregate.html
 
 `aggregate` property of the channel definition can be used to compute aggregate summary statistics (e.g., median, min, max) over groups of data.
 
-If at least one fields in the specified encoding channels contain `aggregate`, the resulting visualization will show aggregate data.  In this case, all fields without aggregation function specified are treated as group-by fields<sup>1</sup> in the aggregation process.  Additional summary and group-by fields can be specified using the `detail` channel.  
+If at least one fields in the specified encoding channels contain `aggregate`, the resulting visualization will show aggregate data. In this case, all fields without aggregation function specified are treated as group-by fields<sup>1</sup> in the aggregation process. Additional summary and group-by fields can be specified using the `detail` channel. 
 
 Otherwise, if none of the specified encoding channel contains `aggregate`, the resulting visualization shows raw data without aggregation.
 
-<span class="note-line"><sup>1</sup>The group-by fields are also known as [independent/condition variables](https://en.wikipedia.org/wiki/Dependent_and_independent_variables) in statistics and [dimensions](https://en.wikipedia.org/wiki/Dimension_(data_warehouse)) in Business Intelligence.  Similarly, the aggregate fields are known as [dependent variables](https://en.wikipedia.org/wiki/Dependent_and_independent_variables) and [measures](https://en.wikipedia.org/wiki/Measure_(data_warehouse)). </span>
+<span class="note-line"><sup>1</sup>The group-by fields are also known as [independent/condition variables](https://en.wikipedia.org/wiki/Dependent_and_independent_variables) in statistics and [dimensions](https://en.wikipedia.org/wiki/Dimension_(data_warehouse)) in Business Intelligence. Similarly, the aggregate fields are known as [dependent variables](https://en.wikipedia.org/wiki/Dependent_and_independent_variables) and [measures](https://en.wikipedia.org/wiki/Measure_(data_warehouse)). </span>
 
 #### Supported Aggregation Operations
 

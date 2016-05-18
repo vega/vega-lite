@@ -1,5 +1,5 @@
-import {Model} from '../Model';
-import {X, Y} from '../../channel';
+import {UnitModel} from '../unit';
+import {X, Y, SIZE} from '../../channel';
 import {applyColorAndOpacity, applyMarkConfig} from '../common';
 
 
@@ -8,7 +8,7 @@ export namespace line {
     return 'line';
   }
 
-  export function properties(model: Model) {
+  export function properties(model: UnitModel) {
     // TODO Use Vega's marks properties interface
     let p: any = {};
 
@@ -34,10 +34,24 @@ export namespace line {
 
     applyColorAndOpacity(p, model);
     applyMarkConfig(p, model, ['interpolate', 'tension']);
+
+    // size as a channel is not supported in Vega yet.
+    const size = sizeValue(model);
+    if (size) {
+      p.strokeWidth = { value: size };
+    }
     return p;
   }
 
-  export function labels(model: Model) {
+  function sizeValue(model: UnitModel) {
+    const fieldDef = model.fieldDef(SIZE);
+    if (fieldDef && fieldDef.value !== undefined) {
+       return fieldDef.value;
+    }
+    return model.config().mark.lineSize;
+  }
+
+  export function labels(model: UnitModel) {
     // TODO(#240): fill this method
     return undefined;
   }

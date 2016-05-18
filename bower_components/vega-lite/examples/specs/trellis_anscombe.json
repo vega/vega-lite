@@ -1,0 +1,19 @@
+{
+  "description": "Anscombe's Quartet",
+  "data": {"url": "data/anscombe.json"},
+  "mark": "circle",
+  "encoding": {
+    "column": {"field": "Series", "type": "nominal"},
+    "x": {
+      "field": "X",
+      "type": "quantitative",
+      "scale": {"zero": false}
+    },
+    "y": {
+      "field": "Y",
+      "type": "quantitative",
+      "scale": {"zero": false}
+    }
+  },
+  "config": {"mark": {"opacity": 1}}
+}

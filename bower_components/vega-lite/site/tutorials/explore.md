@@ -7,7 +7,7 @@ permalink: /tutorials/explore.html
 
 In this tutorial, you'll learn a few more techniques for creating visualizations in Vega-Lite. If you are not familiar with Vega-Lite, please read the [getting started tutorial](/tutorials/getting_started.html) first.
 
-For this tutorial, we will create visualizations to explore a dataset about weather in Seattle. The [dataset](/data/seattle-weather.csv) is a [CSV file](https://en.wikipedia.org/wiki/Comma-separated_values) with columns for the temperature (in Celsius), precipitation (in centimeter), wind (in meter/second), and weather type. We have one row for each day from January 1st, 2012 to December 31st, 2015.
+For this tutorial, we will create visualizations to explore weather data for Seattle, taken from [NOAA](https://www.ncdc.noaa.gov/cdo-web/). The [dataset](/data/seattle-weather.csv) is a [CSV file](https://en.wikipedia.org/wiki/Comma-separated_values) with columns for the temperature (in Celsius), precipitation (in centimeter), wind (in meter/second), and weather type. We have one row for each day from January 1st, 2012 to December 31st, 2015.
 
 To load the CSV file with Vega-Lite, we need to provide a URL and set the format type in the data section of the specification.
 
@@ -36,14 +36,14 @@ It looks as though precipitation is skewed towards lower values; that is, when i
   "mark": "bar",
   "encoding": {
     "x": {
+      "bin": true,
       "field": "precipitation",
-      "type": "quantitative",
-      "bin": true
+      "type": "quantitative"
       },
     "y": {
+      "aggregate": "count",
       "field": "*",
-      "type": "quantitative",
-      "aggregate": "count"
+      "type": "quantitative"
     }
   }
 }
@@ -56,19 +56,23 @@ Next, let's look at how precipitation in Seattle changes throughout the year. Ve
   "data": {"url": "data/seattle-weather.csv", "formatType": "csv"},
   "mark": "line",
   "encoding": {
-    "x": {"field": "date", "type": "temporal", "timeUnit": "month"},
+    "x": {
+      "timeUnit": "month",
+      "field": "date",
+      "type": "temporal"
+    },
     "y": {
+      "aggregate": "mean",
       "field": "precipitation",
-      "type": "quantitative",
-      "aggregate": "sum"
+      "type": "quantitative"
     }
   }
 }
 </div>
 
-This chart shows that in Seattle the precipitation in the winter is much higher than during the summer. You can now create similar charts for the other variables on your own!
+This chart shows that in Seattle the precipitation in the winter is, on average, much higher than summer. You can now create similar charts for the other variables on your own!
 
-When looking at precipitation and temperature, we might want to aggregate by year and month rather than just month. This allows us to see seasonal trends but for each year separately. You can find more about [time units in the documentation]({{site.baseurl}}/docs/timeUnit.html). Note that we set the aggregation to `max` in order to see the maximum temperature in each month.
+When looking at precipitation and temperature, we might want to aggregate by year and month (`yearmonth`) rather than just month. This allows us to see seasonal trends but for each year separately. You can find more about [time units in the documentation]({{site.baseurl}}/docs/timeUnit.html). We can also set the `aggregate` to `max` in order to see the maximum temperature in each month.
 
 <div class="vl-example">
 {
@@ -76,14 +80,14 @@ When looking at precipitation and temperature, we might want to aggregate by yea
   "mark": "line",
   "encoding": {
     "x": {
+      "timeUnit": "yearmonth",
       "field": "date",
-      "type": "temporal",
-      "timeUnit": "yearmonth"
+      "type": "temporal"
     },
     "y": {
+      "aggregate": "max",
       "field": "temp_max",
-      "type": "quantitative",
-      "aggregate": "max"
+      "type": "quantitative"
     }
   },
   "config": {
@@ -99,11 +103,15 @@ In this chart, it looks as though the maximum temperature is increasing from yea
   "data": {"url": "data/seattle-weather.csv", "formatType": "csv"},
   "mark": "line",
   "encoding": {
-    "x": {"field": "date", "type": "temporal", "timeUnit": "year"},
+    "x": {
+      "timeUnit": "year",
+      "field": "date",
+      "type": "temporal"
+    },
     "y": {
+      "aggregate": "mean",
       "field": "temp_max",
-      "type": "quantitative",
-      "aggregate": "mean"
+      "type": "quantitative"
     }
   }
 }
@@ -138,20 +146,21 @@ We can use the new field `temp_range` just like any other field. You can find mo
   "mark": "line",
   "encoding": {
     "x": {
+      "timeUnit": "month",
       "field": "date",
-      "type": "temporal",
-      "timeUnit": "month"
+      "type": "temporal"
+
     },
     "y": {
+      "aggregate": "mean",
       "field": "temp_range",
-      "type": "quantitative",
-      "aggregate": "mean"
+      "type": "quantitative"
     }
   }
 }
 </div>
 
-For the last visualization in this tutorial, we will explore the `weather` field. We might wish to know how different kinds of weather (e.g. sunny days or rainy days) are distributed throughout the year. To answer this, we discretize the `date` by month and then count the number of records on the y-Axis. We then break down the bars by the weather type by adding a color channel with nominal data.  When a field is mapped to color for a bar mark, Vega-Lite automatically stacks the bars atop eachother.
+For the last visualization in this tutorial, we will explore the `weather` field. We might wish to know how different kinds of weather (e.g. sunny days or rainy days) are distributed throughout the year. To answer this, we discretize the `date` by month and then count the number of records on the y-Axis. We then break down the bars by the weather type by adding a color channel with nominal data. When a field is mapped to color for a bar mark, Vega-Lite automatically stacks the bars atop eachother.
 <!-- TODO: link to stacking config once we finish moving it -->
 
 <div class="vl-example">
@@ -159,19 +168,26 @@ For the last visualization in this tutorial, we will explore the `weather` field
   "data": {"url": "data/seattle-weather.csv", "formatType": "csv"},
   "mark": "bar",
   "encoding": {
-    "x": {"field": "date", "type": "temporal", "timeUnit": "month"},
-    "y": {
-      "field": "*",
-      "type": "quantitative",
-      "aggregate": "count"
+    "x": {
+      "timeUnit": "month",
+      "field": "date",
+      "type": "temporal"
     },
-    "color": {"field": "weather", "type": "nominal"}
+    "y": {
+      "aggregate": "count",
+      "field": "*",
+      "type": "quantitative"
+    },
+    "color": {
+      "field": "weather",
+      "type": "nominal"
+    }
   }
 }
 </div>
 
-However, the default color palette's semantics might not match our expectation.  For example, we probably do not expect "sun" (sunny) to be purple.  We can further tune the chart by providing a color [scale range]({{site.baseurl}}/docs/scale.html#range) that maps the values from the `weather` field to meaningful colors.  In addition, we can customize the [axis]({{site.baseurl}}/docs/axis.html) and [legend]({{site.baseurl}}/docs/legend.html) titles.  
+However, the default color palette's semantics might not match our expectation. For example, we probably do not expect "sun" (sunny) to be purple. We can further tune the chart by providing a color [scale range]({{site.baseurl}}/docs/scale.html#range) that maps the values from the `weather` field to meaningful colors. In addition, we can customize the [axis]({{site.baseurl}}/docs/axis.html) and [legend]({{site.baseurl}}/docs/legend.html) titles.
 
 <div class="vl-example" data-name="stacked_bar_weather"></div>
 
-This is the end of this tutorial where you learned different ways to discretize and aggregate data, derive new fields, and customize your charts. You can find more visualizations in the [gallery]({{site.baseurl}}/gallery.html). If you want to further customize your charts, please read the [documentation]({{site.baseurl}}/docs/).
+This is the end of this tutorial where you learned different ways to discretize and aggregate data, derive new fields, and customize your charts. You can find more visualizations in the [gallery]({{site.baseurl}}/examples/gallery.html). If you want to further customize your charts, please read the [documentation]({{site.baseurl}}/docs/).

@@ -29,20 +29,20 @@
     "example/_diff/*"
   ],
   "dependencies": {
-    "vega": "^2.5.0"
+    "vega": "^2.5.1"
   },
   "devDependencies": {
-    "vega-embed": "~2.0.0",
-    "d3": "~3.5.14",
-    "highlightjs": "~9.1.0",
-    "octicons": "^3.4.1"
+    "vega-embed": "~2.1.0",
+    "d3": "~3.5.16",
+    "highlightjs": "~9.2.0",
+    "octicons": "^3.5.0"
   },
-  "version": "1.0.8",
-  "_release": "1.0.8",
+  "version": "1.0.9",
+  "_release": "1.0.9",
   "_resolution": {
     "type": "version",
-    "tag": "v1.0.8",
-    "commit": "2c15b60be406bf8ebbc1e2694d19586b8c855c5a"
+    "tag": "v1.0.9",
+    "commit": "18885a52e154a774ac121d5abe684ccdb0372776"
   },
   "_source": "https://github.com/uwdata/vega-lite.git",
   "_target": "^1.0.7",

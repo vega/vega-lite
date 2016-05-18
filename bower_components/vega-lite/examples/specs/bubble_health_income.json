@@ -1,0 +1,23 @@
+{
+  "description": "A bubble plot showing the correlation between health and income for 187 countries in the world.",
+  "data": {
+    "url": "data/gapminder-health-income.csv",
+    "formatType": "csv"
+  },
+  "mark": "circle",
+  "encoding": {
+    "y": {
+      "field": "health",
+      "type": "quantitative",
+      "scale": {"zero": false}
+    },
+    "x": {
+      "field": "income",
+      "type": "quantitative",
+      "scale": {"type": "log"}
+    },
+    "size": {"field": "population","type": "quantitative"},
+    "color": {"value": "#000"}
+  },
+  "config": {"cell": {"width": 500,"height": 300}}
+}

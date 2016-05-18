@@ -7,7 +7,6 @@ var fielddef_1 = require('../fielddef');
 var encoding_1 = require('../encoding');
 var util_1 = require('../util');
 var common_1 = require('./common');
-var scale_2 = require('./scale');
 function compileStackProperties(mark, encoding, scale, config) {
     var stackFields = getStackFields(mark, encoding, scale);
     if (stackFields.length > 0 &&
@@ -35,8 +34,8 @@ function compileStackProperties(mark, encoding, scale, config) {
     return null;
 }
 exports.compileStackProperties = compileStackProperties;
-function getStackFields(mark, encoding, scale) {
-    return [channel_1.COLOR, channel_1.DETAIL].reduce(function (fields, channel) {
+function getStackFields(mark, encoding, scaleMap) {
+    return [channel_1.COLOR, channel_1.DETAIL, channel_1.OPACITY, channel_1.SIZE].reduce(function (fields, channel) {
         var channelEncoding = encoding[channel];
         if (encoding_1.has(encoding, channel)) {
             if (util_1.isArray(channelEncoding)) {
@@ -46,8 +45,9 @@ function getStackFields(mark, encoding, scale) {
             }
             else {
                 var fieldDef = channelEncoding;
+                var scale = scaleMap[channel];
                 fields.push(fielddef_1.field(fieldDef, {
-                    binSuffix: scale_2.scaleType(scale[channel], fieldDef, channel, mark) === scale_1.ScaleType.ORDINAL ? '_range' : '_start'
+                    binSuffix: scale && scale.type === scale_1.ScaleType.ORDINAL ? '_range' : '_start'
                 }));
             }
         }

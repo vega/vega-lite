@@ -59,11 +59,11 @@
       }
     },
     {
-      "name": "scatter_log",
-      "title": "Scatter Plot with Log Scale",
+      "name": "bubble_health_income",
+      "title": "Gapminder Bubble Plot",
       "galleryParameters": {
-        "backgroundSize": "160%",
-        "backgroundPosition": "15% 20%"
+        "backgroundSize": "230%",
+        "backgroundPosition": "40% 20%"
       }
     },
     {
@@ -120,6 +120,10 @@
         "backgroundSize": "250%",
         "backgroundPosition": "35% 40%"
       }
+    },
+    {
+      "name": "github_punchcard",
+      "title": "Github punch card visualization"
     }
   ],
   "Stack": [
@@ -164,6 +168,12 @@
     }
   ],
   "Trellis": [
+    { "name": "trellis_anscombe",
+      "title": "Anscombe's Quartet",
+      "galleryParameters": {
+        "backgroundSize": "130%"
+      }
+    },
     {
       "name": "trellis_bar",
       "title": "Trellis Bar Chart",

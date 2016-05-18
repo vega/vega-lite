@@ -13,7 +13,7 @@
     "no-any": false,
     "jsdoc-format": true,
     "member-access": true,
-    "semicolon": true,
+    "semicolon": [true, "always"],
     "no-duplicate-key": true,
     "no-duplicate-variable": true,
     "no-unreachable": true,
@@ -38,7 +38,7 @@
     "no-inferrable-types": false,
     "no-internal-module": true,
     "no-shadowed-variable": true,
-    "no-string-literal": true,
+    "no-string-literal": false,
     "no-trailing-whitespace": true,
     "no-unreachable": true,
     "no-unused-expression": true,
@@ -62,7 +62,7 @@
       }
     ],
     "no-switch-case-fall-through": true,
-    "quotemark": [true, "single"],
+    "quotemark": [true, "single", "avoid-escape"],
     "triple-equals": [true, "allow-null-check"],
     "variable-name": [true, "check-format", "allow-leading-underscore", "ban-keywords"]
   }

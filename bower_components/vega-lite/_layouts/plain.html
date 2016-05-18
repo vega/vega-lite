@@ -6,12 +6,18 @@ layout: base
   <header>
     <nav class="page-centered">
       <a class="vl-title" href="{{site.baseurl}}/">{{site.title}}</a>
-      <a href="{{site.baseurl}}/tutorials/getting_started.html" {% if page.menu == 'tutorials' %}class="active"{% endif %}>Tutorials</a>
-      <a href="{{site.baseurl}}/docs/" {% if page.menu == 'docs' %}class="active"{% endif %}>Documentation</a>
-      <a href="{{site.baseurl}}/gallery.html" {% if page.menu == 'gallery' %}class="active"{% endif %}>Examples</a>
-      <span class="fill"></span>
-      <a href="https://www.github.com/vega/vega-lite" target="_blank">GitHub</a>
-      <a href="https://vega.github.io/vega-editor/?mode=vega-lite" target="_blank">Try Online</a>
+      <div class="vl-links">
+        <div class="primary-links">
+          <a href="{{site.baseurl}}/tutorials/getting_started.html" {% if page.menu == 'tutorials' %}class="active"{% endif %}>Tutorials</a>
+          <a href="{{site.baseurl}}/usage/embed.html" {% if page.menu == 'usage' %}class="active"{% endif %}>Usage</a>
+          <a href="{{site.baseurl}}/docs/" {% if page.menu == 'docs' %}class="active"{% endif %}>Documentation</a>
+          <a href="{{site.baseurl}}/examples/" {% if page.menu == 'examples' %}class="active"{% endif %}>Examples</a>
+        </div>
+        <div class="secondary-links">
+          <a href="https://www.github.com/vega/vega-lite" target="_blank">GitHub</a>
+          <a href="https://vega.github.io/vega-editor/?mode=vega-lite" target="_blank">Try Online</a>
+        </div>
+      </div>
     </nav>
   </header>
 

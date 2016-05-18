@@ -1,5 +1,6 @@
-import {Model} from '../Model';
 import {X, Y, SIZE, Channel} from '../../channel';
+
+import {UnitModel} from '../unit';
 import {applyColorAndOpacity} from '../common';
 
 export namespace tick {
@@ -7,8 +8,10 @@ export namespace tick {
     return 'rect';
   }
 
-  export function properties(model: Model) {
+  export function properties(model: UnitModel) {
     let p: any = {};
+
+    // TODO: support explicit value
 
     // x
     if (model.has(X)) {
@@ -31,6 +34,15 @@ export namespace tick {
     }
 
     if (model.config().mark.orient === 'horizontal') {
+       p.width = model.has(SIZE)? {
+          scale: model.scaleName(SIZE),
+          field: model.field(SIZE)
+        } : {
+          value: sizeValue(model, X)
+        };
+      p.height = { value: model.config().mark.tickThickness };
+
+    } else {
       p.width = { value: model.config().mark.tickThickness };
       p.height = model.has(SIZE)? {
             scale: model.scaleName(SIZE),
@@ -38,21 +50,13 @@ export namespace tick {
         } : {
             value: sizeValue(model, Y)
         };
-    } else {
-      p.width = model.has(SIZE)? {
-          scale: model.scaleName(SIZE),
-          field: model.field(SIZE)
-        } : {
-          value: sizeValue(model, X)
-        };
-      p.height = { value: model.config().mark.tickThickness };
     }
 
     applyColorAndOpacity(p, model);
     return p;
   }
 
-  function sizeValue(model: Model, channel: Channel) {
+  function sizeValue(model: UnitModel, channel: Channel) {
     const fieldDef = model.fieldDef(SIZE);
     if (fieldDef && fieldDef.value !== undefined) {
        return fieldDef.value;
@@ -70,7 +74,7 @@ export namespace tick {
     return bandSize / 1.5;
   }
 
-  export function labels(model: Model) {
+  export function labels(model: UnitModel) {
     // TODO(#240): fill this method
     return undefined;
   }

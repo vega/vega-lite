@@ -2,18 +2,29 @@ import {AxisOrient} from '../axis';
 import {COLUMN, ROW, X, Y, Channel} from '../channel';
 import {title as fieldDefTitle, isDimension} from '../fielddef';
 import {NOMINAL, ORDINAL, TEMPORAL} from '../type';
-import {contains, extend, truncate} from '../util';
+import {contains, keys, extend, truncate, Dict} from '../util';
+import {VgAxis} from '../vega.schema';
 
 import {formatMixins} from './common';
-import {Model} from './Model';
+import {Model} from './model';
+import {UnitModel} from './unit';
 
 // https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations
 declare let exports;
 
+export function parseAxisComponent(model: Model, axisChannels: Channel[]): Dict<VgAxis> {
+  return axisChannels.reduce(function(axis, channel) {
+    if (model.axis(channel)) {
+      axis[channel] = parseAxis(channel, model);
+    }
+    return axis;
+  }, {} as Dict<VgAxis>);
+}
+
 /**
  * Make an inner axis for showing grid for shared axis.
  */
-export function compileInnerAxis(channel: Channel, model: Model) {
+export function parseInnerAxis(channel: Channel, model: Model): VgAxis {
   const isCol = channel === COLUMN,
     isRow = channel === ROW,
     type = isCol ? 'x' : isRow ? 'y': channel;
@@ -28,7 +39,7 @@ export function compileInnerAxis(channel: Channel, model: Model) {
     tickSize: 0,
     properties: {
       labels: {
-        text: {value:''}
+        text: {value: ''}
       },
       axis: {
         stroke: {value: 'transparent'}
@@ -53,7 +64,7 @@ export function compileInnerAxis(channel: Channel, model: Model) {
   return def;
 }
 
-export function compileAxis(channel: Channel, model: Model) {
+export function parseAxis(channel: Channel, model: Model): VgAxis {
   const isCol = channel === COLUMN,
     isRow = channel === ROW,
     type = isCol ? 'x' : isRow ? 'y': channel;
@@ -72,10 +83,9 @@ export function compileAxis(channel: Channel, model: Model) {
   // 1.2. Add properties
   [
     // a) properties with special rules (so it has axis[property] methods) -- call rule functions
-    'grid', 'layer', 'offset', 'orient', 'tickSize', 'ticks', 'title',
+    'grid', 'layer', 'offset', 'orient', 'tickSize', 'ticks', 'tickSizeEnd', 'title', 'titleOffset',
     // b) properties without rules, only produce default values in the schema, or explicit value if specified
-    'tickPadding', 'tickSize', 'tickSizeMajor', 'tickSizeMinor', 'tickSizeEnd',
-    'titleOffset', 'values', 'subdivide'
+    'tickPadding', 'tickSize', 'tickSizeMajor', 'tickSizeMinor', 'values', 'subdivide'
   ].forEach(function(property) {
     let method: (model: Model, channel: Channel, def:any)=>any;
 
@@ -98,7 +108,7 @@ export function compileAxis(channel: Channel, model: Model) {
     const value = properties[group] ?
       properties[group](model, channel, props[group] || {}, def) :
       props[group];
-    if (value !== undefined) {
+    if (value !== undefined && keys(value).length > 0) {
       def.properties = def.properties || {};
       def.properties[group] = value;
     }
@@ -134,7 +144,7 @@ export function grid(model: Model, channel: Channel) {
   return gridShow(model, channel) && (
     // TODO refactor this cleanly -- essentially the condition below is whether
     // the axis is a shared / union axis.
-    (channel === Y || channel === X) && !(model.has(COLUMN) || model.has(ROW))
+    (channel === Y || channel === X) && !(model.parent() && model.parent().isFacet())
   );
 }
 
@@ -157,10 +167,6 @@ export function orient(model: Model, channel: Channel) {
   } else if (channel === COLUMN) {
     // FIXME test and decide
     return AxisOrient.TOP;
-  } else if (channel === ROW) {
-    if (model.has(Y) && model.axis(Y).orient !== AxisOrient.RIGHT) {
-      return AxisOrient.RIGHT;
-    }
   }
   return undefined;
 }
@@ -188,6 +194,14 @@ export function tickSize(model: Model, channel: Channel) {
   return undefined;
 }
 
+export function tickSizeEnd(model: Model, channel: Channel) {
+  const tickSizeEnd = model.axis(channel).tickSizeEnd;
+  if (tickSizeEnd !== undefined) {
+      return tickSizeEnd;
+  }
+  return undefined;
+}
+
 
 export function title(model: Model, channel: Channel) {
   const axis = model.axis(channel);
@@ -202,25 +216,51 @@ export function title(model: Model, channel: Channel) {
   if (axis.titleMaxLength) {
     maxLength = axis.titleMaxLength;
   } else if (channel === X && !model.isOrdinalScale(X)) {
+    const unitModel: UnitModel = model as any; // only unit model has channel x
     // For non-ordinal scale, we know cell size at compile time, we can guess max length
-    maxLength = model.cellWidth() / model.axis(X).characterWidth;
+    maxLength = unitModel.config().cell.width / model.axis(X).characterWidth;
   } else if (channel === Y && !model.isOrdinalScale(Y)) {
+    const unitModel: UnitModel = model as any; // only unit model has channel y
     // For non-ordinal scale, we know cell size at compile time, we can guess max length
-    maxLength = model.cellHeight() / model.axis(Y).characterWidth;
+    maxLength = unitModel.config().cell.height / model.axis(Y).characterWidth;
   }
+
   // FIXME: we should use template to truncate instead
   return maxLength ? truncate(fieldTitle, maxLength) : fieldTitle;
 }
 
+export function titleOffset(model: Model, channel: Channel) {
+  const titleOffset = model.axis(channel).titleOffset;
+  if (titleOffset !== undefined) {
+      return titleOffset;
+  }
+  return undefined;
+}
+
 export namespace properties {
-  export function axis(model: Model, channel: Channel, axisPropsSpec, def) {
+  export function axis(model: Model, channel: Channel, axisPropsSpec) {
     const axis = model.axis(channel);
 
     return extend(
+      axis.axisColor !== undefined ?
+        { stroke: {value: axis.axisColor} } :
+        {},
       axis.axisWidth !== undefined ?
         { strokeWidth: {value: axis.axisWidth} } :
         {},
       axisPropsSpec || {}
+    );
+  }
+
+  export function grid(model: Model, channel: Channel, gridPropsSpec) {
+    const axis = model.axis(channel);
+
+    return extend(
+      axis.gridColor !== undefined ? { stroke: {value: axis.gridColor}} : {},
+      axis.gridOpacity !== undefined ? {strokeOpacity: {value: axis.gridOpacity} } : {},
+      axis.gridWidth !== undefined ? {strokeWidth : {value: axis.gridWidth} } : {},
+      axis.gridDash !== undefined ? {strokeDashOffset : {value: axis.gridDash} } : {},
+      gridPropsSpec || {}
     );
   }
 
@@ -250,8 +290,6 @@ export namespace properties {
       // auto rotate for X and Row
       if (channel === X && (isDimension(fieldDef) || fieldDef.type === TEMPORAL)) {
         labelsSpec.angle = {value: 270};
-      } else if (channel === ROW && model.has(X)) {
-        labelsSpec.angle = {value: def.orient === 'left' ? 270 : 90};
       }
     }
 
@@ -287,6 +325,41 @@ export namespace properties {
       }
     }
 
-    return labelsSpec || undefined;
+    if (axis.tickLabelColor !== undefined) {
+        labelsSpec.stroke = {value: axis.tickLabelColor};
+    }
+
+    if (axis.tickLabelFont !== undefined) {
+        labelsSpec.font = {value: axis.tickLabelFont};
+    }
+
+    if (axis.tickLabelFontSize !== undefined) {
+        labelsSpec.fontSize = {value: axis.tickLabelFontSize};
+    }
+
+    return keys(labelsSpec).length === 0 ? undefined : labelsSpec;
+  }
+
+  export function ticks(model: Model, channel: Channel, ticksPropsSpec) {
+    const axis = model.axis(channel);
+
+    return extend(
+      axis.tickColor !== undefined ? {stroke : {value: axis.tickColor} } : {},
+      axis.tickWidth !== undefined ? {strokeWidth: {value: axis.tickWidth} } : {},
+      ticksPropsSpec || {}
+    );
+  }
+
+  export function title(model: Model, channel: Channel, titlePropsSpec) {
+    const axis = model.axis(channel);
+
+    return extend(
+      axis.titleColor !== undefined ? {stroke : {value: axis.titleColor} } : {},
+      axis.titleFont !== undefined ? {font: {value: axis.titleFont}} : {},
+      axis.titleFontSize !== undefined ? {fontSize: {value: axis.titleFontSize}} : {},
+      axis.titleFontWeight !== undefined ? {fontWeight: {value: axis.titleFontWeight}} : {},
+
+      titlePropsSpec || {}
+    );
   }
 }

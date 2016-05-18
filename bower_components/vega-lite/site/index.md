@@ -14,7 +14,7 @@ images:
    bgposition: 75% 0%
    bgsize: 150%
  - spec: line_color
-   bgposition: 40% 30%
+   bgposition: 41% 26%
    bgsize: 170%
  - spec: scatter_colored_with_shape
    bgposition: 50% 30%
@@ -22,7 +22,7 @@ images:
    bgsize: 226%
    bgposition: 40% 5%
  - spec: bar_grouped
-   bgposition: 75% 50%
+   bgposition: 75% 59%
  - spec: stacked_bar_weather
    bgsize: 170%
    bgposition: 31% 14%
@@ -38,12 +38,12 @@ images:
 {% include showcase.html %}
 
 {:.lead}
-**Vega-Lite** is a high-level visualization grammar.  It provides a concise JSON syntax for supporting rapid generation of visualizations to support analysis.  Vega-Lite specifications can be compiled to [Vega](http://vega.github.io/vega) specifications.
+**Vega-Lite** is a high-level visualization grammar. It provides a concise JSON syntax for supporting rapid generation of visualizations to support analysis. Vega-Lite specifications can be compiled to [Vega](http://vega.github.io/vega) specifications.
 
 
 <span class="lead-columns">
   <span>
-    Vega-Lite specifications describe visualizations as mappings from data to **properties of graphical marks** (e.g., points or bars).  It **automatically produces visualization components** including axes, legends, and scales. It then determines properties of these components based on a set of **carefully designed rules**.  This approach allows Vega-Lite specifications to be succinct and expressive, but also provide user control.  As Vega-Lite is designed for analysis, it supports **data transformations** such as aggregation, binning, filtering, sorting, and **visual transformations** including stacking and faceting.
+    Vega-Lite specifications describe visualizations as mappings from data to **properties of graphical marks** (e.g., points or bars). It **automatically produces visualization components** including axes, legends, and scales. It then determines properties of these components based on a set of **carefully designed rules**. This approach allows Vega-Lite specifications to be succinct and expressive, but also provide user control. As Vega-Lite is designed for analysis, it supports **data transformations** such as aggregation, binning, filtering, sorting, and **visual transformations** including stacking and faceting.
   </span>
   <span class="lead-buttons">
     [Get started]({{site.baseurl}}/tutorials/getting_started.html)
@@ -51,7 +51,7 @@ images:
   </span>
 </span>
 
-Read our [introduction article on Medium](https://medium.com/p/438f9215f09e), check out the [documentation]({{site.baseurl}}/docs/) and take a look at our [example gallery]({{site.baseurl}}/gallery.html).
+Read our [introduction article on Medium](https://medium.com/p/438f9215f09e), check out the [documentation]({{site.baseurl}}/docs/) and take a look at our [example gallery]({{site.baseurl}}/examples/).
 
 ## Example
 
@@ -85,4 +85,4 @@ This is a Vega-Lite specification to create a bar chart that shows the average t
 
 ## Team
 
-The development of Vega-Lite is led by [Kanit "Ham" Wongsuphasawat](https://twitter.com/kanitw), [Dominik Moritz](https://twitter.com/domoritz), and [Jeffrey Heer](https://twitter.com/jeffrey_heer) of the [University Washington Interactive Data Lab](http://idl.cs.washington.edu), with significant help from [Arvind Satyanarayan](https://twitter.com/arvindsatya1).  Please see the [contributors page](https://github.com/vega/vega-lite/graphs/contributors) for the full list of contributors.
+The development of Vega-Lite is led by [Kanit "Ham" Wongsuphasawat](https://twitter.com/kanitw), [Dominik Moritz](https://twitter.com/domoritz), and [Jeffrey Heer](https://twitter.com/jeffrey_heer) of the [University Washington Interactive Data Lab](http://idl.cs.washington.edu), with significant help from [Arvind Satyanarayan](https://twitter.com/arvindsatya1). Please see the [contributors page](https://github.com/vega/vega-lite/graphs/contributors) for the full list of contributors.
