@@ -77,7 +77,7 @@
     "z-schema": "^3.17.0"
   },
   "dependencies": {
-    "datalib": "^1.6.4",
+    "datalib": "^1.7.0",
     "json-stable-stringify": "^1.0.1",
     "yargs": "^4.6.0"
   },

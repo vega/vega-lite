@@ -340,7 +340,7 @@ export namespace properties {
 
     if (fieldDef.timeUnit && containsTimeUnit(fieldDef.timeUnit, TimeUnit.QUARTER)) {
       let quarterPrefix = 'Q';
-      let templateText = quarterPrefix + '{{datum.data | quarter}}';
+      let templateText = quarterPrefix + '{{datum.data | time:\'%m\' | quarter}}';
       if (containsTimeUnit(fieldDef.timeUnit, TimeUnit.YEAR)) {
         templateText = '{{datum.data | time:\'%Y\'}}-'
             + templateText;
