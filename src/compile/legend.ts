@@ -1,4 +1,4 @@
-import {COLOR, SIZE, SHAPE, Channel} from '../channel';
+import {COLOR, SIZE, SHAPE, OPACITY, Channel} from '../channel';
 import {FieldDef} from '../fielddef';
 import {LegendProperties} from '../legend';
 import {title as fieldTitle} from '../fielddef';
@@ -13,7 +13,7 @@ import {VgLegend} from '../vega.schema';
 
 
 export function parseLegendComponent(model: UnitModel): Dict<VgLegend> {
-  return [COLOR, SIZE, SHAPE].reduce(function(legendComponent, channel) {
+  return [COLOR, SIZE, SHAPE, OPACITY].reduce(function(legendComponent, channel) {
     if (model.legend(channel)) {
       legendComponent[channel] = parseLegend(model, channel);
     }
@@ -39,6 +39,8 @@ function getLegendDefWithScale(model: UnitModel, channel: Channel): VgLegend {
       return { size: model.scaleName(SIZE) };
     case SHAPE:
       return { shape: model.scaleName(SHAPE) };
+    case OPACITY:
+      return { opacity: model.scaleName(OPACITY)}
   }
   return null;
 }
