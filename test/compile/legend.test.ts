@@ -4,7 +4,7 @@ import {assert} from 'chai';
 import {parseUnitModel} from '../util';
 import {COLOR, X} from '../../src/channel';
 import * as legend from '../../src/compile/legend';
-import {TimeUnit} from '../../src/timeUnit';
+import {TimeUnit} from '../../src/timeunit';
 import {TEMPORAL} from '../../src/type';
 
 describe('Legend', function() {
