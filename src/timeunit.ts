@@ -104,12 +104,12 @@ export function format(timeUnit: TimeUnit, abbreviated = false): string {
 /** Returns the template text to format the timeUnit that contains TimeUnit.QUARTER */
 export function formatQuarter(timeUnit: TimeUnit): string {
     let quarterPrefix = 'Q';
-    let templateText = quarterPrefix + '{{datum.data | time:\'%m\' | quarter}}';
+    let templateText = quarterPrefix + '{{ datum.data | time:\'%m\' | quarter }}';
     if (containsTimeUnit(timeUnit, TimeUnit.YEAR)) {
-      templateText = '{{datum.data | time:\'%Y\'}}-' + templateText;
+      templateText = '{{ datum.data | time:\'%Y\' }}-' + templateText;
     }
     if (containsTimeUnit(timeUnit, TimeUnit.MONTH)) {
-      templateText = templateText + '-{{datum.data | time:\'%b\'}}';
+      templateText = templateText + '-{{ datum.data | time:\'%b\' }}';
     }
     return templateText;
 }

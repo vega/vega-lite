@@ -7,6 +7,7 @@ import {ORDINAL} from '../type';
 import {extend, keys, without, Dict} from '../util';
 
 import {applyMarkConfig, FILL_STROKE_CONFIG, formatMixins as utilFormatMixins, timeFormat} from './common';
+import {TimeUnit, containsTimeUnit, formatQuarter} from '../timeunit';
 import {COLOR_LEGEND, COLOR_LEGEND_LABEL} from './scale';
 import {UnitModel} from './unit';
 import {VgLegend} from '../vega.schema';
@@ -224,9 +225,15 @@ export namespace properties {
           }
         }, labelsSpec || {});
       } else if (fieldDef.timeUnit) {
+        let templateText = '';
+        if (containsTimeUnit(fieldDef.timeUnit, TimeUnit.QUARTER)) {
+          templateText = formatQuarter(fieldDef.timeUnit);
+        } else {
+          templateText = '{{ datum.data | time:\'' + timeFormat(model, channel) + '\' }}';
+        }
         labelsSpec = extend({
           text: {
-            template: '{{ datum.data | time:\'' + timeFormat(model, channel) + '\'}}'
+            template: templateText
           }
         }, labelsSpec || {});
       }
