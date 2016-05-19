@@ -40,7 +40,7 @@ function getLegendDefWithScale(model: UnitModel, channel: Channel): VgLegend {
     case SHAPE:
       return { shape: model.scaleName(SHAPE) };
     case OPACITY:
-      return { opacity: model.scaleName(OPACITY)}
+      return { opacity: model.scaleName(OPACITY) };
   }
   return null;
 }
@@ -158,6 +158,10 @@ export namespace properties {
 
     if (filled) {
       symbols.strokeWidth = { value: 0 };
+    }
+
+    if (channel === OPACITY) {
+      delete symbols.opacity;
     }
 
     let value;
