@@ -40,39 +40,45 @@ you can run `npm run site` to serve the github page locally at [http://localhost
 
 ## Repository Setup
 
-1. Make sure you have [node.js](https://nodejs.org/en/). For mac users, we recommend using
-[homebrew](http://brew.sh) and simply run:
-```sh
-brew install node
-```
+1. Make sure you have [node.js](https://nodejs.org/en/). For mac users, we recommend using [homebrew](http://brew.sh) and simply run:
+
+  ```sh
+  brew install node
+  ```
 
 2. Clone this repository and cd into your local clone of the repository, and install all the npm dependencies:
-```sh
-git clone https://github.com/vega/vega-lite.git
-cd vega-lite
-npm install
-```
-Now you should be able to build and test the code.
 
+  ```sh
+  git clone https://github.com/vega/vega-lite.git
+  cd vega-lite
+  npm install
+  ```
+
+  Now you should be able to build and test the code.
+  
 3. To make the gallery work, you need to install [bower](http://bower.io/) and its dependencies:
-```sh
-npm install -g bower
-bower install
-```
 
+  ```sh
+  npm install -g bower
+  bower install
+  ```
+  
 4. To serve the website and documentation, you will need [ruby](https://www.ruby-lang.org/en/), [bundler](http://bundler.io/) and [Jekyll](https://help.github.com/articles/using-jekyll-as-a-static-site-generator-with-github-pages/). 
-For ruby, Mac users can use [homebrew](http://brew.sh) to add it:
-```sh
-brew install ruby
-```
-For bundler: 
-```sh
-gem install bundler
-```
-For jekyll and its dependencies, because we already have the `Gemfile` in the repo, you can simply run:
-```sh
-bundle install
-```
+
+  For ruby, Mac users can use [homebrew](http://brew.sh) to add it:
+  ```sh
+  brew install ruby
+  ```
+
+  For bundler: 
+  ```sh
+  gem install bundler
+  ```
+
+  For jekyll and its dependencies, because we already have the `Gemfile` in the repo, you can simply run:
+  ```sh
+  bundle install
+  ```
 
 ## Directory Structure
 
