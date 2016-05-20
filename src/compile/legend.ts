@@ -3,11 +3,10 @@ import {FieldDef} from '../fielddef';
 import {LegendProperties} from '../legend';
 import {title as fieldTitle} from '../fielddef';
 import {AREA, BAR, TICK, TEXT, LINE, POINT, CIRCLE, SQUARE} from '../mark';
-import {ORDINAL} from '../type';
+import {ORDINAL, TEMPORAL} from '../type';
 import {extend, keys, without, Dict} from '../util';
 
-import {applyMarkConfig, FILL_STROKE_CONFIG, formatMixins as utilFormatMixins, timeFormat} from './common';
-import {TimeUnit, containsTimeUnit, formatQuarter} from '../timeunit';
+import {applyMarkConfig, FILL_STROKE_CONFIG, formatMixins as utilFormatMixins, timeFormatTemplate} from './common';
 import {COLOR_LEGEND, COLOR_LEGEND_LABEL} from './scale';
 import {UnitModel} from './unit';
 import {VgLegend} from '../vega.schema';
@@ -224,16 +223,10 @@ export namespace properties {
             field: 'data'
           }
         }, labelsSpec || {});
-      } else if (fieldDef.timeUnit) {
-        let templateText = '';
-        if (containsTimeUnit(fieldDef.timeUnit, TimeUnit.QUARTER)) {
-          templateText = formatQuarter(fieldDef.timeUnit);
-        } else {
-          templateText = '{{ datum.data | time:\'' + timeFormat(model, channel) + '\' }}';
-        }
+      } else if (fieldDef.type === TEMPORAL) {
         labelsSpec = extend({
           text: {
-            template: templateText
+            template: timeFormatTemplate(model, channel)
           }
         }, labelsSpec || {});
       }
