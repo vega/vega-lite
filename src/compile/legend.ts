@@ -160,6 +160,7 @@ export namespace properties {
       symbols.strokeWidth = { value: 0 };
     }
 
+    // Avoid override default mapping for opacity channel
     if (channel === OPACITY) {
       delete symbols.opacity;
     }
