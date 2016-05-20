@@ -60,7 +60,7 @@ export interface LegendConfig {
    */
   shortTimeLabels?: boolean;
   /**
-   * The color of the legend symbol, 
+   * The color of the legend symbol,
    */
   symbolColor?: string;
   /**
@@ -104,7 +104,7 @@ export interface LegendConfig {
 /**
  * Properties of a legend or boolean flag for determining whether to show it.
  */
-export interface LegendProperties extends LegendConfig {
+export interface Legend extends LegendConfig {
   /**
    * An optional formatting pattern for legend labels. Vega uses D3\'s format pattern.
    */

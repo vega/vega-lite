@@ -1,12 +1,12 @@
 import {AggregateOp} from '../aggregate';
-import {AxisProperties} from '../axis';
+import {Axis} from '../axis';
 import {X, Y, TEXT, PATH, ORDER, Channel, UNIT_CHANNELS,  UNIT_SCALE_CHANNELS, NONSPATIAL_SCALE_CHANNELS, supportMark} from '../channel';
 import {defaultConfig, Config, CellConfig} from '../config';
 import {SOURCE, SUMMARY} from '../data';
 import {Encoding} from '../encoding';
 import * as vlEncoding from '../encoding'; // TODO: remove
 import {FieldDef, FieldRefOption, field} from '../fielddef';
-import {LegendProperties} from '../legend';
+import {Legend} from '../legend';
 import {Mark, TEXT as TEXTMARK} from '../mark';
 import {Scale, ScaleType} from '../scale';
 import {ExtendedUnitSpec} from '../spec';
@@ -102,7 +102,7 @@ export class UnitModel extends Model {
     }, {} as Dict<Scale>);
   }
 
-  private _initAxis(encoding: Encoding, config: Config): Dict<AxisProperties> {
+  private _initAxis(encoding: Encoding, config: Config): Dict<Axis> {
     return [X, Y].reduce(function(_axis, channel) {
       // Position Axis
       if (vlEncoding.has(encoding, channel)) {
@@ -115,10 +115,10 @@ export class UnitModel extends Model {
         }
       }
       return _axis;
-    }, {} as Dict<AxisProperties>);
+    }, {} as Dict<Axis>);
   }
 
-  private _initLegend(encoding: Encoding, config: Config): Dict<LegendProperties> {
+  private _initLegend(encoding: Encoding, config: Config): Dict<Legend> {
     return NONSPATIAL_SCALE_CHANNELS.reduce(function(_legend, channel) {
       if (vlEncoding.has(encoding, channel)) {
         const legendSpec = encoding[channel].legend;
@@ -129,7 +129,7 @@ export class UnitModel extends Model {
         }
       }
       return _legend;
-    }, {} as Dict<LegendProperties>);
+    }, {} as Dict<Legend>);
   }
 
   public parseData() {
