@@ -199,7 +199,7 @@ describe('Legend', function() {
       });
       const fieldDef = {field: 'a', type: TEMPORAL, timeUnit: TimeUnit.MONTH};
       const label = legend.properties.labels(fieldDef, {}, model, COLOR);
-      let expected = "{{ datum.data | time:'%B' }}";
+      let expected = "{{datum.data | time:'%B'}}";
       assert.deepEqual(label.text.template, expected);
     });
 
@@ -213,7 +213,7 @@ describe('Legend', function() {
       const fieldDef = {field: 'a', type: TEMPORAL, timeUnit: TimeUnit.QUARTER};
       const label = legend.properties.labels(fieldDef, {}, model, COLOR);
       let quarterPrefix = 'Q';
-      let expected = quarterPrefix + "{{ datum.data | time:'%m' | quarter }}";
+      let expected = quarterPrefix + "{{datum.data | time:'%m' | quarter}}";
       assert.deepEqual(label.text.template, expected);
     });
   });

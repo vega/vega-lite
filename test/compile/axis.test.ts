@@ -383,7 +383,7 @@ describe('Axis', function() {
             x: {field: 'a', type: "ordinal"}
           }
         }), X, {}, {orient: 'top'});
-      assert.deepEqual(labels.text.template, '{{ datum.data | truncate:25}}');
+      assert.deepEqual(labels.text.template, '{{ datum.data | truncate:25 }}');
     });
 
     it('should hide labels if labels are set to false', function () {
@@ -428,7 +428,7 @@ describe('Axis', function() {
       });
       const labels = axis.properties.labels(model, X, {}, {type: 'x'});
       let quarterPrefix = 'Q';
-      let expected = quarterPrefix + '{{ datum.data | time:\'%m\' | quarter }}';
+      let expected = quarterPrefix + '{{datum.data | time:\'%m\' | quarter}}';
       assert.deepEqual(labels.text.template, expected);
     });
 
@@ -441,7 +441,7 @@ describe('Axis', function() {
       });
       const labels = axis.properties.labels(model, X, {}, {type: 'x'});
       let quarterPrefix = 'Q';
-      let expected = '{{ datum.data | time:\'%Y\' }}-' + quarterPrefix + '{{ datum.data | time:\'%m\' | quarter }}-{{ datum.data | time:\'%b\' }}';
+      let expected = '{{datum.data | time:\'%Y-\'}}' + quarterPrefix + '{{datum.data | time:\'%m\' | quarter}}{{datum.data | time:\'-%B\'}}';
       assert.deepEqual(labels.text.template, expected);
     });
 

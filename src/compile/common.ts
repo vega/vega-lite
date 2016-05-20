@@ -7,7 +7,7 @@ import {contains, union} from '../util';
 import {FacetModel} from './facet';
 import {LayerModel} from './layer';
 import {Model} from './model';
-import {format as timeFormatExpr, containsTimeUnit, TimeUnit} from '../timeunit';
+import {format as timeFormatTmpl} from '../timeunit';
 import {UnitModel} from './unit';
 import {Spec, isUnitSpec, isFacetSpec, isLayerSpec} from '../spec';
 
@@ -117,14 +117,7 @@ export function formatMixins(model: Model, channel: Channel, format: string) {
 
   let def: any = {};
 
-  if (fieldDef.type === TEMPORAL) {
-    if ((!fieldDef.timeUnit) || !containsTimeUnit(fieldDef.timeUnit, TimeUnit.QUARTER)) {
-      // Use formatType of (YEAR-MONTH-DAY) when no timeUnit is specified.
-      // Use formatType for timeUnits that do not contains QUARTER. For QUARTER
-      // related timeunits, we use template for the time format.
-      def.formatType = 'time';
-    }
-  }
+  // no need to set format type for temporal since we use templates anyway
 
   if (format !== undefined) {
     def.format = format;
@@ -132,11 +125,6 @@ export function formatMixins(model: Model, channel: Channel, format: string) {
     switch (fieldDef.type) {
       case QUANTITATIVE:
         def.format = model.config().numberFormat;
-        break;
-      case TEMPORAL:
-        if (!fieldDef.timeUnit || !containsTimeUnit(fieldDef.timeUnit, TimeUnit.QUARTER)) {
-          def.format = timeFormat(model, channel) || model.config().timeFormat;
-        }
         break;
     }
   }
@@ -186,7 +174,11 @@ export function sortField(orderChannelDef: OrderChannelDef) {
 /**
  * Returns the time format used for axis labels for a time unit.
  */
-export function timeFormat(model: Model, channel: Channel): string {
+export function timeFormatTemplate(model: Model, channel: Channel): string {
   const fieldDef = model.fieldDef(channel);
-  return timeFormatExpr(fieldDef.timeUnit, isAbbreviated(model, channel, fieldDef));
+  if (!fieldDef.timeUnit) {
+   return '{{datum.data | time:\'' + model.config().timeFormat + '\'}}';
+  } else {
+    return timeFormatTmpl(fieldDef.timeUnit, isAbbreviated(model, channel, fieldDef));
+  }
 }

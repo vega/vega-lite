@@ -65,6 +65,11 @@ export function format(timeUnit: TimeUnit, abbreviated = false): string {
     dateComponents.push(abbreviated ? '%y' : '%Y');
   }
 
+  if (containsTimeUnit(timeUnit, TimeUnit.QUARTER)) {
+   // special template for quarter
+   dateComponents.push('\'}}Q{{datum.data | time:\'%m\' | quarter}}{{datum.data | time:\'');
+  }
+
   if (containsTimeUnit(timeUnit, TimeUnit.MONTH)) {
     dateComponents.push(abbreviated ? '%b' : '%B');
   }
@@ -98,20 +103,13 @@ export function format(timeUnit: TimeUnit, abbreviated = false): string {
     out.push(timeComponents.join(':'));
   }
 
-  return out.length > 0 ? out.join(' ') : undefined;
-}
-
-/** Returns the template text to format the timeUnit that contains TimeUnit.QUARTER */
-export function formatQuarter(timeUnit: TimeUnit): string {
-    let quarterPrefix = 'Q';
-    let templateText = quarterPrefix + '{{ datum.data | time:\'%m\' | quarter }}';
-    if (containsTimeUnit(timeUnit, TimeUnit.YEAR)) {
-      templateText = '{{ datum.data | time:\'%Y\' }}-' + templateText;
-    }
-    if (containsTimeUnit(timeUnit, TimeUnit.MONTH)) {
-      templateText = templateText + '-{{ datum.data | time:\'%b\' }}';
-    }
-    return templateText;
+  if (out.length > 0) {
+  // clean up quarter formatting remainders
+   const template = '{{datum.data | time:\'' + out.join(' ') + '\'}}';
+   return template.replace(new RegExp('{{datum.data \\| time:\'\'}}', 'g'), '');
+  } else {
+   return undefined;
+  }
 }
 
 /** Returns true if container contains the containee, false otherwise. */

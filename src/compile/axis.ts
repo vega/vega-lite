@@ -4,9 +4,8 @@ import {title as fieldDefTitle, isDimension} from '../fielddef';
 import {NOMINAL, ORDINAL, TEMPORAL} from '../type';
 import {contains, keys, extend, truncate, Dict} from '../util';
 import {VgAxis} from '../vega.schema';
-import {TimeUnit, containsTimeUnit, formatQuarter} from '../timeunit';
 
-import {formatMixins} from './common';
+import {formatMixins, timeFormatTemplate} from './common';
 import {Model} from './model';
 import {UnitModel} from './unit';
 
@@ -279,7 +278,7 @@ export namespace properties {
       // TODO replace this with Vega's labelMaxLength once it is introduced
       labelsSpec = extend({
         text: {
-          template: '{{ datum.data | truncate:' + axis.labelMaxLength + '}}'
+          template: '{{ datum.data | truncate:' + axis.labelMaxLength + ' }}'
         }
       }, labelsSpec || {});
     }
@@ -338,11 +337,10 @@ export namespace properties {
         labelsSpec.fontSize = {value: axis.tickLabelFontSize};
     }
 
-    if (fieldDef.timeUnit && containsTimeUnit(fieldDef.timeUnit, TimeUnit.QUARTER)) {
-      let templateText = formatQuarter(fieldDef.timeUnit);
+    if (fieldDef.type === TEMPORAL) {
       labelsSpec = extend({
         text: {
-          template: templateText
+          template: timeFormatTemplate(model, channel)
         }
       }, labelsSpec);
     }

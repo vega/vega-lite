@@ -1,7 +1,7 @@
 import {UnitModel} from '../unit';
 import {X, Y, COLOR, TEXT, SIZE} from '../../channel';
-import {applyMarkConfig, applyColorAndOpacity, formatMixins} from '../common';
-import {extend, contains} from '../../util';
+import {applyMarkConfig, applyColorAndOpacity, formatMixins, timeFormatTemplate} from '../common';
+import {extend} from '../../util';
 import {QUANTITATIVE, ORDINAL, TEMPORAL} from '../../type';
 
 export namespace text {
@@ -79,9 +79,14 @@ export namespace text {
 
     // text
     if (model.has(TEXT)) {
-      if (contains([QUANTITATIVE, TEMPORAL], model.fieldDef(TEXT).type)) {
+      if (QUANTITATIVE === model.fieldDef(TEXT).type) {
         const format = model.config().mark.format;
         extend(p, formatMixins(model, TEXT, format));
+      } else if (TEMPORAL === model.fieldDef(TEXT).type) {
+        p.text = {
+         // need to replace datum.data -> datum.FIELD_NAME
+          template: timeFormatTemplate(model, TEXT).replace(new RegExp('datum.data', 'g'), model.field(TEXT, { datum: true }))
+        };
       } else {
         p.text = { field: model.field(TEXT) };
       }
