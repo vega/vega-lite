@@ -1,6 +1,6 @@
 import {COLOR, SIZE, SHAPE, Channel} from '../channel';
 import {FieldDef} from '../fielddef';
-import {LegendProperties} from '../legend';
+import {Legend} from '../legend';
 import {title as fieldTitle} from '../fielddef';
 import {AREA, BAR, TICK, TEXT, LINE, POINT, CIRCLE, SQUARE} from '../mark';
 import {ORDINAL} from '../type';
@@ -79,14 +79,14 @@ export function parseLegend(model: UnitModel, channel: Channel): VgLegend {
   return def;
 }
 
-export function offset(legend: LegendProperties, fieldDef: FieldDef) {
+export function offset(legend: Legend, fieldDef: FieldDef) {
   if (legend.offset !== undefined) {
     return legend.offset;
   }
   return 0;
 }
 
-export function orient(legend: LegendProperties, fieldDef: FieldDef) {
+export function orient(legend: Legend, fieldDef: FieldDef) {
   const orient = legend.orient;
   if (orient) {
     return orient;
@@ -94,7 +94,7 @@ export function orient(legend: LegendProperties, fieldDef: FieldDef) {
   return 'vertical';
 }
 
-export function title(legend: LegendProperties, fieldDef: FieldDef) {
+export function title(legend: Legend, fieldDef: FieldDef) {
   if (typeof legend !== 'boolean' && legend.title) {
     return legend.title;
   }
@@ -102,7 +102,7 @@ export function title(legend: LegendProperties, fieldDef: FieldDef) {
   return fieldTitle(fieldDef);
 }
 
-export function formatMixins(legend: LegendProperties, model: UnitModel, channel: Channel) {
+export function formatMixins(legend: Legend, model: UnitModel, channel: Channel) {
   const fieldDef = model.fieldDef(channel);
 
   // If the channel is binned, we should not set the format because we have a range label
