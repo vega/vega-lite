@@ -32,7 +32,7 @@ export function parseInnerAxis(channel: Channel, model: Model): VgAxis {
   // TODO: support adding ticks as well
 
   // TODO: replace any with Vega Axis Interface
-  let def:any = {
+  let def: any = {
     type: type,
     scale: model.scaleName(channel),
     grid: true,
@@ -63,7 +63,8 @@ export function parseInnerAxis(channel: Channel, model: Model): VgAxis {
 
   const props = model.axis(channel).properties || {};
 
-  // it might have more to be included here.
+  // For now, only need to add grid properties here because innerAxis is only for rendering grid.
+  // TODO: support add other properties for innerAxis
   ['grid'].forEach(function(group) {
     const value = properties[group] ?
       properties[group](model, channel, props[group] || {}, def) :
