@@ -27,14 +27,14 @@ describe('Model', function() {
         encoding: {
           x: {timeUnit: 'quarter', field:'a', type: "temporal", axis: {shortTimeLabels: true}}
         }
-      }), X), 'Q{{datum.data | time:\'%m\' | quarter}}');
+      }), X), 'Q{{datum.data | quarter}}');
 
       assert.equal(timeFormatTemplate(parseUnitModel({
         mark: "point",
         encoding: {
           x: {timeUnit: 'yearquarter', field:'a', type: "temporal", axis: {shortTimeLabels: true}}
         }
-      }), X), '{{datum.data | time:\'%y-\'}}Q{{datum.data | time:\'%m\' | quarter}}');
+      }), X), '{{datum.data | time:\'%y-\'}}Q{{datum.data | quarter}}');
 
       assert.equal(timeFormatTemplate(parseUnitModel({
         mark: "point",

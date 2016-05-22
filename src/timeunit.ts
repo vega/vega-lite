@@ -67,7 +67,7 @@ export function format(timeUnit: TimeUnit, abbreviated = false): string {
 
   if (containsTimeUnit(timeUnit, TimeUnit.QUARTER)) {
    // special template for quarter
-   dateComponents.push('\'}}Q{{datum.data | time:\'%m\' | quarter}}{{datum.data | time:\'');
+   dateComponents.push('\'}}Q{{datum.data | quarter}}{{datum.data | time:\'');
   }
 
   if (containsTimeUnit(timeUnit, TimeUnit.MONTH)) {

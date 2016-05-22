@@ -213,7 +213,7 @@ describe('Legend', function() {
       const fieldDef = {field: 'a', type: TEMPORAL, timeUnit: TimeUnit.QUARTER};
       const label = legend.properties.labels(fieldDef, {}, model, COLOR);
       let quarterPrefix = 'Q';
-      let expected = quarterPrefix + "{{datum.data | time:'%m' | quarter}}";
+      let expected = quarterPrefix + "{{datum.data | quarter}}";
       assert.deepEqual(label.text.template, expected);
     });
   });
