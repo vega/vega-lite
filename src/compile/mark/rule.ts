@@ -1,4 +1,4 @@
-import {X, Y, SIZE, Channel} from '../../channel';
+import {X, Y, X2, Y2, SIZE, Channel} from '../../channel';
 
 import {UnitModel} from '../unit';
 import {applyColorAndOpacity} from '../common';
@@ -13,23 +13,29 @@ export namespace rule {
 
     // TODO: support explicit value
 
-    // vertical
-    if (model.has(X)) {
+    if (model.has(X) && model.has(Y) && model.has(Y2)) { // vertical range
       p.x = position(model, X);
-
-      p.y = { value: 0 };
-      p.y2 = {
-          field: {group: 'height'}
-        };
-    }
-
-    // horizontal
-    if (model.has(Y)) {
       p.y = position(model, Y);
-
+      p.y2 = {
+        scale: model.scaleName(Y),
+        field: model.field(Y2)
+      };
+    } else if (model.has(Y) && model.has(X) && model.has(X2)) { // horizontal range
+      p.y = position(model, Y);
+      p.x = position(model, X);
+      p.x2 = {
+        scale: model.scaleName(X),
+        field: model.field(X2)
+      };
+    } else if (model.has(X)) { // vertical
+      p.x = position(model, X);
+      p.y = { value: 0 };
+      p.y2 = { field: { group: 'height' } };
+    } else if (model.has(Y)) { // horizontal
+      p.y = position(model, Y);
       p.x = { value: 0 };
       p.x2 = {
-          field: {group: 'width'}
+          field: { group: 'width' }
         };
     }
 
@@ -45,7 +51,6 @@ export namespace rule {
     } else {
       p.strokeWidth = { value: sizeValue(model) };
     }
-
     return p;
   }
 
