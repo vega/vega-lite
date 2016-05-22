@@ -9,7 +9,7 @@
     },
     "y": {
       "aggregate": "sum", "field": "count","type": "quantitative",
-      "axis": false
+      "axis": null
     },
     "color": {"field":"series", "type":"nominal", "scale":{"range": "category20b"}}
   },
