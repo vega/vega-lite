@@ -18,7 +18,7 @@
     "x": {
       "field": "gender", "type": "nominal",
       "scale": {"bandSize": 6},
-      "axis": false
+      "axis": null
     },
     "color": {
       "field": "gender", "type": "nominal",
