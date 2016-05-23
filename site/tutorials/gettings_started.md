@@ -321,5 +321,4 @@ Now you can create a website that embeds a Vega-Lite specification. If you want 
 - See the [examples gallery]({{site.baseurl}}/examples/gallery.html).
 - Build your own visualizations in the [online editor](https://vega.github.io/vega-editor/?mode=vega-lite).
 - Browse through the [documentation]({{site.baseurl}}/docs/).
-- Learn [how to manually compile Vega-Lite specifications into Vega specifications](https://vega.github.io/vega-lite/usage/compile.html).
 - See the [list of applications](https://vega.github.io/vega-lite/usage/applications.html) that you can use Vega-Lite with.
