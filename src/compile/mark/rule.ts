@@ -12,31 +12,34 @@ export namespace rule {
     let p: any = {};
 
     // TODO: support explicit value
+    const orient = model.config().mark.orient;
 
-    if (model.has(X) && model.has(Y) && model.has(Y2)) { // vertical range
-      p.x = position(model, X);
-      p.y = position(model, Y);
-      p.y2 = {
-        scale: model.scaleName(Y),
-        field: model.field(Y2)
-      };
-    } else if (model.has(Y) && model.has(X) && model.has(X2)) { // horizontal range
-      p.y = position(model, Y);
-      p.x = position(model, X);
-      p.x2 = {
-        scale: model.scaleName(X),
-        field: model.field(X2)
-      };
-    } else if (model.has(X)) { // vertical
-      p.x = position(model, X);
-      p.y = { value: 0 };
-      p.y2 = { field: { group: 'height' } };
-    } else if (model.has(Y)) { // horizontal
-      p.y = position(model, Y);
-      p.x = { value: 0 };
-      p.x2 = {
-          field: { group: 'width' }
+    if (orient === 'vertical') {
+      if (model.has(X) && model.has(Y) && model.has(Y2)) {
+        p.x = position(model, X);
+        p.y = position(model, Y);
+        p.y2 = {
+          scale: model.scaleName(Y),
+          field: model.field(Y2)
         };
+      } else if (model.has(X) && model.has(Y)) {
+          p.x = position(model, X);
+          p.y = { field: { group: 'height' } };
+          p.y2 = position(model, Y);
+      }
+    } else if (orient === 'horizontal') {
+      if (model.has(Y) && model.has(X) && model.has(X2)) {
+        p.x = position(model, X);
+        p.x2 = {
+          scale: model.scaleName(X),
+          field: model.field(X2)
+        };
+        p.y = position(model, Y);
+      } else if (model.has(X) && model.has(Y)) {
+        p.x = { value: 0 };
+        p.x2 = position(model, X);
+        p.y = position(model, Y);
+      }
     }
 
     // FIXME: this function would overwrite strokeWidth but shouldn't
