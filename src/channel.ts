@@ -78,8 +78,6 @@ export function getSupportedMark(channel: Channel): SupportedMark {
   switch (channel) {
     case X:
     case Y:
-    case X2:
-    case Y2:
     case COLOR:
     case DETAIL:
     case ORDER:
@@ -89,6 +87,11 @@ export function getSupportedMark(channel: Channel): SupportedMark {
       return { // all marks
         point: true, tick: true, rule: true, circle: true, square: true,
         bar: true, line: true, area: true, text: true
+      };
+    case X2:
+    case Y2:
+      return {
+        rule: true, bar: true, area: true
       };
     case SIZE:
       return {
@@ -119,8 +122,6 @@ export function getSupportedRole(channel: Channel): SupportedRole {
   switch (channel) {
     case X:
     case Y:
-    case X2:
-    case Y2:
     case COLOR:
     case OPACITY:
     case LABEL:
@@ -136,6 +137,8 @@ export function getSupportedRole(channel: Channel): SupportedRole {
         measure: false,
         dimension: true
       };
+    case X2:
+    case Y2:
     case SIZE:
     case TEXT:
       return {
