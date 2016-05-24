@@ -9,10 +9,10 @@ import {FacetModel} from './../facet';
 import {LayerModel} from './../layer';
 import {Model} from './../model';
 
-import {DataComponent, SummaryComponent} from './data';
+import {DataComponent, AggregateComponent} from './data';
 
 
-export namespace summary {
+export namespace aggregate {
   function addDimension(dims: { [field: string]: boolean }, fieldDef: FieldDef) {
     if (fieldDef.bin) {
       dims[field(fieldDef, { binSuffix: '_start' })] = true;
@@ -30,7 +30,7 @@ export namespace summary {
     return dims;
   }
 
-  export function parseUnit(model: Model): SummaryComponent {
+  export function parseUnit(model: Model): AggregateComponent {
     /* string set for dimensions */
     let dims: StringSet = {};
 
@@ -79,8 +79,8 @@ export namespace summary {
   /**
    * Add facet fields as dimensions.
    */
-  export function parseFacet(model: FacetModel, summaryComponent: SummaryComponent) {
-    summaryComponent.dimensions = model.reduce(addDimension, summaryComponent.dimensions);
+  export function parseFacet(model: FacetModel, aggregateComponent: AggregateComponent) {
+    aggregateComponent.dimensions = model.reduce(addDimension, aggregateComponent.dimensions);
   }
 
   /**
@@ -88,37 +88,37 @@ export namespace summary {
    */
   export function merge(dataComponent: DataComponent, childDataComponents: DataComponent[]) {
     const dimensions = childDataComponents.reduce((collector, data) => {
-      return collector.concat(hash(keys(data.summary.dimensions)));
-    }, keys(dataComponent.summary.dimensions).length ? [hash(keys(dataComponent.summary.dimensions))] : []);
+      return collector.concat(hash(keys(data.aggregate.dimensions)));
+    }, keys(dataComponent.aggregate.dimensions).length ? [hash(keys(dataComponent.aggregate.dimensions))] : []);
 
     if (allSame(dimensions)) {
-      dataComponent.summary.measures = childDataComponents.reduce((collector, data) => {
-        mergeMeasures(collector, data.summary.measures);
+      dataComponent.aggregate.measures = childDataComponents.reduce((collector, data) => {
+        mergeMeasures(collector, data.aggregate.measures);
         return collector;
-      }, dataComponent.summary.measures);
+      }, dataComponent.aggregate.measures);
 
-      if (empty(dataComponent.summary.dimensions)) {
-        dataComponent.summary.dimensions = childDataComponents[0].summary.dimensions;
+      if (empty(dataComponent.aggregate.dimensions)) {
+        dataComponent.aggregate.dimensions = childDataComponents[0].aggregate.dimensions;
       }
       childDataComponents.forEach((data) => {
-        delete data.summary;
+        delete data.aggregate;
       });
     }
   }
 
   /**
-   * Assemble the summary. Needs a rename function because we cannot guarantee that the
+   * Assemble the aggregate. Needs a rename function because we cannot guarantee that the
    * parent data before the children data.
    */
   export function assemble(component: DataComponent, model: Model) {
-    const summaryComponent = component.summary;
+    const aggregateComponent = component.aggregate;
 
-    if (!summaryComponent) {
+    if (!aggregateComponent) {
       return [];
     }
 
-    const dims = summaryComponent.dimensions;
-    const meas = summaryComponent.measures;
+    const dims = aggregateComponent.dimensions;
+    const meas = aggregateComponent.measures;
 
     // short-format summarize object for Vega's aggregate transform
     // https://github.com/vega/vega/wiki/Data-Transforms#-aggregate

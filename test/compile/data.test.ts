@@ -514,10 +514,10 @@ describe('data: summary', function () {
     });
 
     model.component.data = {} as DataComponent;
-    model.component.data.summary = summary.parseUnit(model);
+    model.component.data.aggregate = summary.parseUnit(model);
 
     it('should produce the correct summary component' ,function() {
-      assert.deepEqual(model.component.data.summary, [{
+      assert.deepEqual(model.component.data.aggregate, [{
         name: 'summary',
         // source will be added in assemble step
         dimensions: {Origin: true},
@@ -556,8 +556,8 @@ describe('data: summary', function () {
 
     it('should produce the correct summary component', function() {
       model.component.data = {} as DataComponent;
-      model.component.data.summary = summary.parseUnit(model);
-      assert.deepEqual(model.component.data.summary, [{
+      model.component.data.aggregate = summary.parseUnit(model);
+      assert.deepEqual(model.component.data.aggregate, [{
         name: 'summary',
         // source will be added in assemble step
         dimensions: {Origin: true, Cylinders: true},

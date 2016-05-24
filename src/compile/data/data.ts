@@ -15,7 +15,7 @@ import {filter} from './filter';
 import {bin} from './bin';
 import {calculate} from './calculate';
 import {nonPositiveFilter} from './nonpositivenullfilter';
-import {summary} from './summary';
+import {aggregate} from './aggregate';
 import {stackScale} from './stackscale';
 import {timeUnit} from './timeunit';
 import {timeUnitDomain} from './timeunitdomain';
@@ -61,7 +61,7 @@ export interface DataComponent {
   timeUnitDomain: StringSet;
 
   /** Array of summary component object for producing aggregates */
-  summary: SummaryComponent;
+  aggregate: AggregateComponent;
 
   /**
    * Whether we need the unaggrgeated data source or not.
@@ -71,9 +71,9 @@ export interface DataComponent {
 }
 
 /**
- * Composable component for a model's summary data
+ * Component for aggregations.
  */
-export interface SummaryComponent {
+export interface AggregateComponent {
   /** String set for all dimension fields  */
   dimensions: StringSet;
 
@@ -95,7 +95,7 @@ function parseData(model: Model): DataComponent {
     filter: filter.parseUnit(model),
     bin: bin.parseUnit(model),
     timeUnit: timeUnit.parseUnit(model),
-    summary: summary.parseUnit(model),
+    aggregate: aggregate.parseUnit(model),
     colorRank: colorRank.parseUnit(model),
     stackScale: stackScale.parseUnit(model),
     nonPositiveFilter: nonPositiveFilter.parseUnit(model),
@@ -126,8 +126,8 @@ export function parseFacetData(model: FacetModel): DataComponent {
     model.renameData(child.dataName(data), model.dataName(data));
   });
 
-  if (dataComponent.summary) {
-    summary.parseFacet(model, dataComponent.summary);
+  if (dataComponent.aggregate) {
+    aggregate.parseFacet(model, dataComponent.aggregate);
   }
   if (dataComponent.stackScale) {
     stackScale.parseFacet(model, dataComponent.stackScale);
@@ -182,7 +182,7 @@ function mergeChildren(model: Model, dataComponent: DataComponent, children: Uni
 
   // TODO: selectionfilter
 
-  summary.merge(dataComponent, childDataComponents);
+  aggregate.merge(dataComponent, childDataComponents);
   colorRank.merge(dataComponent, childDataComponents);
 
   nonPositiveFilter.mergeIfCompatible(dataComponent, childDataComponents);
@@ -272,9 +272,9 @@ export function assembleData(model: Model, data: VgData[]) {
     data.push(dataSource);
   }
 
-  const aggregate = summary.assemble(component, model);
-  if (aggregate.length > 0) {
-    dataSource.transform = (dataSource.transform || []).concat(aggregate);
+  const aggregates = aggregate.assemble(component, model);
+  if (aggregates.length > 0) {
+    dataSource.transform = (dataSource.transform || []).concat(aggregates);
   }
 
   // add rank transform
