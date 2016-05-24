@@ -36,21 +36,6 @@ export namespace nonPositiveFilter {
     return {} as Dict<boolean>;
   }
 
-  export function parseLayer(model: LayerModel) {
-    // note that we run this before source.parseLayer
-    let nonPositiveFilter = {} as Dict<boolean>;
-
-    model.children().forEach((child) => {
-      const childDataComponent = child.component.data;
-      if (model.compatibleSource(child) && !differ(childDataComponent.nonPositiveFilter, nonPositiveFilter)) {
-        extend(nonPositiveFilter, childDataComponent.nonPositiveFilter);
-        delete childDataComponent.nonPositiveFilter;
-      }
-    });
-
-    return nonPositiveFilter;
-  }
-
   export function assemble(component: DataComponent) {
     return keys(component.nonPositiveFilter).filter((field) => {
       // Only filter fields (keys) with value = true

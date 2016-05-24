@@ -32,18 +32,6 @@ export namespace formula {
     return formulaComponent;
   }
 
-  export function parseLayer(model: LayerModel) {
-    let formulaComponent = parse(model);
-    model.children().forEach((child) => {
-      const childDataComponent = child.component.data;
-      if (!childDataComponent.source && childDataComponent.calculate) {
-        extend(formulaComponent || {}, childDataComponent.calculate);
-        delete childDataComponent.calculate;
-      }
-    });
-    return formulaComponent;
-  }
-
   export function assemble(component: DataComponent) {
     return vals(component.calculate).reduce(function(transform, formula) {
       transform.push(extend({ type: 'formula' }, formula));

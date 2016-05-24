@@ -46,23 +46,6 @@ export namespace nullFilter {
     return nullFilterComponent;
   }
 
-  export function parseLayer(model: LayerModel) {
-    // note that we run this before source.parseLayer
-
-    // FIXME: null filters are not properly propagated right now
-    let nullFilterComponent = parse(model);
-
-    model.children().forEach((child) => {
-      const childDataComponent = child.component.data;
-      if (model.compatibleSource(child) && !differ(childDataComponent.nullFilter, nullFilterComponent)) {
-        extend(nullFilterComponent, childDataComponent.nullFilter);
-        delete childDataComponent.nullFilter;
-      }
-    });
-
-    return nullFilterComponent;
-  }
-
   /** Convert the hashset of fields to a filter transform.  */
   export function assemble(component: DataComponent) {
     const filteredFields = keys(component.nullFilter).filter((field) => {

@@ -1,7 +1,7 @@
 import {autoMaxBins} from '../../bin';
 import {Channel, COLOR} from '../../channel';
 import {field, FieldDef} from '../../fielddef';
-import {extend, vals, flatten, hash, Dict} from '../../util';
+import {extend, vals, flatten, hash, Dict, isObject} from '../../util';
 import {VgTransform} from '../../vega.schema';
 
 import {FacetModel} from './../facet';
@@ -66,22 +66,6 @@ export namespace bin {
       extend(binComponent, childDataComponent.bin);
       delete childDataComponent.bin;
     }
-    return binComponent;
-  }
-
-  export function parseLayer(model: LayerModel) {
-    let binComponent = parse(model);
-
-    model.children().forEach((child) => {
-      const childDataComponent = child.component.data;
-
-      // If child doesn't have its own data source, then merge
-      if (!childDataComponent.source) {
-        extend(binComponent, childDataComponent.bin);
-        delete childDataComponent.bin;
-      }
-    });
-
     return binComponent;
   }
 

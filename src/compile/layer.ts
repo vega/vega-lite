@@ -76,12 +76,12 @@ export class LayerModel extends Model {
   }
 
   public fieldDef(channel: Channel): FieldDef {
-    console.error('weird');
+    console.error('weird field def');
     return null; // layer does not have field defs
   }
 
   public stack() {
-    console.error('weird');
+    console.error('weird stack');
     return null; // this is only a property for UnitModel
   }
 
@@ -216,7 +216,4 @@ export class LayerModel extends Model {
   public isLayer() {
     return true;
   }
-
-  // Delete
-  public compatibleSource(a: any) {}
 }

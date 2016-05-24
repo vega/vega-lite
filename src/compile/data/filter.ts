@@ -28,19 +28,6 @@ export namespace filter {
     return filterComponent;
   }
 
-  export function parseLayer(model: LayerModel) {
-    // Note that this `filter.parseLayer` method is called before `source.parseLayer`
-    let filterComponent = parse(model);
-    model.children().forEach((child) => {
-      const childDataComponent = child.component.data;
-      if (model.compatibleSource(child) && childDataComponent.filter && childDataComponent.filter === filterComponent) {
-        // same filter in child so we can just delete it
-        delete childDataComponent.filter;
-      }
-    });
-    return filterComponent;
-  }
-
   export function assemble(component: DataComponent) {
     const filter = component.filter;
     return filter ? [{

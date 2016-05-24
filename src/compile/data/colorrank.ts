@@ -51,22 +51,6 @@ export namespace colorRank {
     return {} as Dict<VgTransform[]>;
   }
 
-  export function parseLayer(model: LayerModel) {
-    let colorRankComponent = {} as Dict<VgTransform[]>;
-
-    model.children().forEach((child) => {
-      const childDataComponent = child.component.data;
-
-      // If child doesn't have its own data source, then merge
-      if (!childDataComponent.source) {
-        extend(colorRankComponent, childDataComponent.colorRank);
-        delete childDataComponent.colorRank;
-      }
-    });
-
-    return colorRankComponent;
-  }
-
   export function assemble(component: DataComponent) {
     return flatten(vals(component.colorRank));
   }
