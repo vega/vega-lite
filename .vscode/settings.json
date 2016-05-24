@@ -4,6 +4,7 @@
   "files.exclude": {
     "**/*.js": {"when": "$(basename).ts"},
     "**/*.js.map": true,
-    "coverage/**/*": true
+    "coverage/**/*": true,
+    "_site/**/*": true
   }
 }
