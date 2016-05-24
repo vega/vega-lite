@@ -13,7 +13,7 @@ import {formatParse} from './formatparse';
 import {nullFilter} from './nullfilter';
 import {filter} from './filter';
 import {bin} from './bin';
-import {formula} from './formula';
+import {calculate} from './calculate';
 import {nonPositiveFilter} from './nonpositivenullfilter';
 import {summary} from './summary';
 import {stackScale} from './stackscale';
@@ -91,7 +91,7 @@ function parseData(model: Model): DataComponent {
   return {
     source: source.parseUnit(model),
     formatParse: formatParse.parseUnit(model),
-    calculate: formula.parseUnit(model),
+    calculate: calculate.parseUnit(model),
     filter: filter.parseUnit(model),
     bin: bin.parseUnit(model),
     timeUnit: timeUnit.parseUnit(model),
@@ -159,7 +159,7 @@ function mergeChildren(model: Model, dataComponent: DataComponent, children: Uni
 
   formatParse.merge(dataComponent, childDataComponents);
 
-  const mergedAllFormulas = formula.merge(dataComponent, childDataComponents);
+  const mergedAllFormulas = calculate.merge(dataComponent, childDataComponents);
 
   if (!mergedAllFormulas) {
     // we could not merge all formula up so we have to stop merging because other
@@ -253,7 +253,7 @@ export function assembleData(model: Model, data: VgData[]) {
   data.push(dataSource);
 
   dataSource.transform = [].concat(
-    formula.assemble(component),
+    calculate.assemble(component),
     filter.assemble(component),
     nullFilter.assemble(component),
     bin.assemble(component),

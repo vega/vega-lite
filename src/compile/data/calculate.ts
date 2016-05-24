@@ -8,12 +8,12 @@ import {Model} from './../model';
 import {DataComponent} from './data';
 
 
-export namespace formula {
+export namespace calculate {
   function parse(model: Model): Dict<Formula> {
-    return (model.transform().calculate || []).reduce(function(formulaComponent, formula) {
+    return (model.transform().calculate || []).reduce(function(calculateComponent, formula) {
       // index by the field that is created so that we make sure that we don't write it multiple times
-      formulaComponent[formula.field] = formula;
-      return formulaComponent;
+      calculateComponent[formula.field] = formula;
+      return calculateComponent;
     }, {} as Dict<Formula>);
   }
 
@@ -48,8 +48,8 @@ export namespace formula {
   }
 
   export function assemble(component: DataComponent) {
-    return vals(component.calculate).reduce(function(transform, formula) {
-      transform.push(extend({ type: 'formula' }, formula));
+    return vals(component.calculate).reduce(function(transform, calculate) {
+      transform.push(extend({ type: 'formula' }, calculate));
       return transform;
     }, []);
   }

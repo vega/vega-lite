@@ -10,7 +10,7 @@ import {DataComponent} from './data';
 import {nullFilter} from './nullfilter';
 import {filter} from './filter';
 import {bin} from './bin';
-import {formula} from './formula';
+import {calculate} from './calculate';
 import {timeUnit} from './timeunit';
 import {formatParse} from './formatparse';
 
