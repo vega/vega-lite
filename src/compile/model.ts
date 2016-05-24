@@ -8,7 +8,7 @@ import {LegendProperties} from '../legend';
 import {Scale, ScaleType} from '../scale';
 import {BaseSpec} from '../spec';
 import {Transform} from '../transform';
-import {extend, flatten, vals, warning, Dict} from '../util';
+import {extend, flatten, vals, warning, Dict, forEach} from '../util';
 import {VgData, VgMarkGroup, VgScale, VgAxis, VgLegend} from '../vega.schema';
 
 import {DataComponent} from './data/data';
@@ -41,7 +41,7 @@ export interface Component {
   mark: VgMarkGroup[];
 }
 
-class NameMap {
+export class NameMap {
   private _nameMap: Dict<string>;
 
   constructor() {
@@ -49,16 +49,31 @@ class NameMap {
   }
 
   public rename(oldName: string, newName: string) {
+    if (this._nameMap[newName] === oldName) {
+      console.error('Cannot rename ' + oldName + ' to ' + newName);
+      return;
+    }
+
+    if (newName in this._nameMap) {
+      // since we already have a new name for the target, we need to change it
+      newName = this._nameMap[newName];
+    } else {
+      // update existing renames
+      forEach(this._nameMap, (existingNewName, existingOldName) => {
+        if (existingNewName === oldName) {
+          this._nameMap[existingOldName] = newName;
+        }
+      });
+    }
+
     this._nameMap[oldName] = newName;
   }
 
   public get(name: string): string {
-    // If the name appears in the _nameMap, we need to read its new name.
-    // We have to loop over the dict just in case, the new name also gets renamed.
-    while (this._nameMap[name]) {
-      name = this._nameMap[name];
+    if (name in this._nameMap) {
+      return this._nameMap[name];
     }
-
+    // no rename
     return name;
   }
 }
