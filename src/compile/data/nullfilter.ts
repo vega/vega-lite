@@ -33,19 +33,6 @@ export namespace nullFilter {
 
   export const parseUnit = parse;
 
-  export function parseFacet(model: FacetModel) {
-    let nullFilterComponent = parse(model);
-
-    const childDataComponent = model.child().component.data;
-
-    // If child doesn't have its own data source, then merge
-    if (!childDataComponent.source) {
-      extend(nullFilterComponent, childDataComponent.nullFilter);
-      delete childDataComponent.nullFilter;
-    }
-    return nullFilterComponent;
-  }
-
   /** Convert the hashset of fields to a filter transform.  */
   export function assemble(component: DataComponent) {
     const filteredFields = keys(component.nullFilter).filter((field) => {

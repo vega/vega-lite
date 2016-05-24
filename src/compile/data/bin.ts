@@ -55,20 +55,6 @@ export namespace bin {
 
   export const parseUnit = parse;
 
-  export function parseFacet(model: FacetModel) {
-    let binComponent = parse(model);
-
-    const childDataComponent = model.child().component.data;
-
-    // If child doesn't have its own data source, then merge
-    if (!childDataComponent.source) {
-      // FIXME: current merging logic can produce redundant transforms when a field is binned for color and for non-color
-      extend(binComponent, childDataComponent.bin);
-      delete childDataComponent.bin;
-    }
-    return binComponent;
-  }
-
   export function assemble(component: DataComponent) {
     return flatten(vals(component.bin));
   }

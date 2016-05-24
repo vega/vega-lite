@@ -19,19 +19,6 @@ export namespace formula {
 
   export const parseUnit = parse;
 
-  export function parseFacet(model: FacetModel) {
-    let formulaComponent = parse(model);
-
-    const childDataComponent = model.child().component.data;
-
-    // If child doesn't have its own data source, then merge
-    if (!childDataComponent.source) {
-      extend(formulaComponent, childDataComponent.calculate);
-      delete childDataComponent.calculate;
-    }
-    return formulaComponent;
-  }
-
   export function assemble(component: DataComponent) {
     return vals(component.calculate).reduce(function(transform, formula) {
       transform.push(extend({ type: 'formula' }, formula));

@@ -23,19 +23,6 @@ export namespace nonPositiveFilter {
     }, {} as Dict<boolean>);
   }
 
-  export function parseFacet(model: FacetModel) {
-    const childDataComponent = model.child().component.data;
-
-    // If child doesn't have its own data source, then consider merging
-    if (!childDataComponent.source) {
-      // For now, let's assume it always has union scale
-      const nonPositiveFilterComponent = childDataComponent.nonPositiveFilter;
-      delete childDataComponent.nonPositiveFilter;
-      return nonPositiveFilterComponent;
-    }
-    return {} as Dict<boolean>;
-  }
-
   export function assemble(component: DataComponent) {
     return keys(component.nonPositiveFilter).filter((field) => {
       // Only filter fields (keys) with value = true

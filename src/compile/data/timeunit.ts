@@ -32,19 +32,6 @@ export namespace timeUnit {
 
   export const parseUnit = parse;
 
-  export function parseFacet(model: FacetModel) {
-    let timeUnitComponent = parse(model);
-
-    const childDataComponent = model.child().component.data;
-
-    // If child doesn't have its own data source, then merge
-    if (!childDataComponent.source) {
-      extend(timeUnitComponent, childDataComponent.timeUnit);
-      delete childDataComponent.timeUnit;
-    }
-    return timeUnitComponent;
-  }
-
   export function assemble(component: DataComponent) {
     // just join the values, which are already transforms
     return vals(component.timeUnit);
