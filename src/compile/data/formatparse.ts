@@ -1,6 +1,7 @@
 import {FieldDef, isCount} from '../../fielddef';
 import {QUANTITATIVE, TEMPORAL} from '../../type';
-import {extend, differ, Dict} from '../../util';
+import {extend, differ, Dict, forEach} from '../../util';
+import {DataComponent} from './data';
 
 import {FacetModel} from './../facet';
 import {LayerModel} from './../layer';
@@ -25,12 +26,45 @@ export namespace formatParse {
           return;
         }
         parseComponent[fieldDef.field] = 'number';
+      } else {
+        // the field should not be parsed
+        parseComponent[fieldDef.field] = null;
       }
     });
     return parseComponent;
   }
 
+  /**
+   * Merge the format parse from the parent and all components into parent.
+   *
+   * Format parse is only merged up if the parent either does not define a parse or the same parse.
+   */
+  export function merge(dataComponent: DataComponent, childDataComponents: DataComponent[]) {
+    childDataComponents.reduce((collector, data) => {
+      if (data.formatParse) {
+        forEach(data.formatParse, (parse, field) => {
+          if (parse === collector[field] || collector[field] === undefined) {
+            collector[field] = parse;
+            delete data.formatParse[field];
+          }
+        });
+      }
+      return collector;
+    }, dataComponent.formatParse);
+  }
+
   export const parseUnit = parse;
 
-  // Assemble for formatParse is an identity function, no need to declare
+  /**
+   * Assemble only removes null because we only used it to indicate that a field should not be parsed.
+   */
+  export function assemble(component: DataComponent) {
+    const parse = component.formatParse;
+    forEach(parse, (type, field) => {
+      if (type === null) {
+        delete parse[field];
+      }
+    });
+    return parse;
+  }
 }

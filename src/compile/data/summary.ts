@@ -2,7 +2,7 @@ import {AggregateOp} from '../../aggregate';
 import {Channel} from '../../channel';
 import {SOURCE} from '../../data';
 import {field, FieldDef} from '../../fielddef';
-import {keys, vals, reduce, hash, Dict, StringSet} from '../../util';
+import {keys, vals, reduce, hash, Dict, StringSet, allSame, empty} from '../../util';
 import {VgData} from '../../vega.schema';
 
 import {FacetModel} from './../facet';
@@ -37,7 +37,7 @@ export namespace summary {
     /* dictionary mapping field name => dict set of aggregation functions */
     let meas: Dict<StringSet> = {};
 
-    model.forEach(function(fieldDef: FieldDef, channel: Channel) {
+    model.forEach(function (fieldDef: FieldDef, channel: Channel) {
       if (fieldDef.aggregate) {
         if (fieldDef.aggregate === AggregateOp.COUNT) {
           meas['*'] = meas['*'] || {};
@@ -81,6 +81,29 @@ export namespace summary {
    */
   export function parseFacet(model: FacetModel, summaryComponent: SummaryComponent) {
     summaryComponent.dimensions = model.reduce(addDimension, summaryComponent.dimensions);
+  }
+
+  /**
+   * Merges the aggregates from the children into the data component.
+   */
+  export function merge(dataComponent: DataComponent, childDataComponents: DataComponent[]) {
+    const dimensions = childDataComponents.reduce((collector, data) => {
+      return collector.concat(hash(keys(data.summary.dimensions)));
+    }, keys(dataComponent.summary.dimensions).length ? [hash(keys(dataComponent.summary.dimensions))] : []);
+
+    if (allSame(dimensions)) {
+      dataComponent.summary.measures = childDataComponents.reduce((collector, data) => {
+        mergeMeasures(collector, data.summary.measures);
+        return collector;
+      }, dataComponent.summary.measures);
+
+      if (empty(dataComponent.summary.dimensions)) {
+        dataComponent.summary.dimensions = childDataComponents[0].summary.dimensions;
+      }
+      childDataComponents.forEach((data) => {
+        delete data.summary;
+      });
+    }
   }
 
   /**

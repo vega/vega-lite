@@ -157,141 +157,35 @@ function mergeChildren(model: Model, dataComponent: DataComponent, children: Uni
     delete data.source.url;
   });
 
-  // merge up parse
-  dataComponent.formatParse = childDataComponents.reduce((collector, data) => {
-    if (data.formatParse) {
-      forEach(data.formatParse, (parse, field) => {
-        if (parse === collector[field] || collector[field] === undefined) {
-          collector[field] = parse;
-          delete data.formatParse[field];
-        }
-      });
-    }
-    return collector;
-  }, dataComponent.formatParse);
+  formatParse.merge(dataComponent, childDataComponents);
 
-  // merge up formulas
-  // for each formula, try to move it up but don't if there already is a different formula
+  const mergedAllFormulas = formula.merge(dataComponent, childDataComponents);
 
-  let allMerged = true;
-  dataComponent.calculate = childDataComponents.reduce((collector, data) => {
-    forEach(data.calculate, (formula, field) => {
-      if (!(field in collector)) {
-        collector[field] = formula;
-        delete data.calculate[field];
-      } else {
-        if (formula.expr !== collector[field]) {
-          allMerged = false;
-          // don't delete formula in child
-        } else {
-          delete data.calculate[field];
-        }
-      }
-    });
-    return collector;
-  }, dataComponent.calculate);
-
-  if (!allMerged) {
+  if (!mergedAllFormulas) {
     // we could not merge all formula up so we have to stop merging because other
     // transforms depend on this
     return dataComponent;
   }
 
-  // merge up time unit
-  childDataComponents.forEach((data) => {
-    extend(dataComponent.timeUnit, data.timeUnit);
-    delete data.timeUnit;
-  });
+  timeUnit.merge(dataComponent, childDataComponents);
 
-  // merge up filter if all filters are the same
-  const sameFilter = allSame(childDataComponents, (data) => {
-    return data.filter;
-  });
+  const sameFilter = filter.mergeIfEqual(dataComponent, childDataComponents);
+  const compatibleNullFilter = nullFilter.mergeIfCompatible(dataComponent, childDataComponents);
 
-  if (sameFilter) {
-    // combine filter at layer
-    dataComponent.filter = (dataComponent.filter ? dataComponent.filter + '&&': '') + (childDataComponents[0].filter || '');
-    childDataComponents.forEach((data) => {
-      delete data.filter;
-    });
-  }
-
-  // merge up nullfilter
-  const nullFilterComponent = childDataComponents.reduce((collector, data) => {
-    extend(collector, data.nullFilter);
-    return collector;
-  }, dataComponent.nullFilter);
-
-  const compatibleNullfilter = all(childDataComponents, (data) => {
-    return !differ(data.nullFilter, nullFilterComponent);
-  });
-
-  if (compatibleNullfilter) {
-    dataComponent.nullFilter = nullFilterComponent;
-    childDataComponents.forEach((data) => {
-      delete data.nullFilter;
-    });
+  if (!sameFilter || !compatibleNullFilter) {
+    return dataComponent;
   }
 
   // merge up bin if the children have no nullfilter or filter defined
   // and the binning is the same
-  const compatibleBin = all(childDataComponents, (data) => {
-    return !data.nullFilter && !data.filter;
-  });
-
-  if (compatibleBin) {
-    childDataComponents.forEach((data) => {
-      extend(dataComponent.bin, data.bin);
-      delete data.bin;
-    });
-  } else {
-    // since we cannot merge the binning up, we have to stop merging
-    return dataComponent;
-  }
+  bin.merge(dataComponent, childDataComponents);
 
   // TODO: selectionfilter
 
-  // merge aggregate
-  const dimensions = childDataComponents.reduce((collector, data) => {
-    return collector.concat(hash(keys(data.summary.dimensions)));
-  }, keys(dataComponent.summary.dimensions).length ? [hash(keys(dataComponent.summary.dimensions))] : []);
+  summary.merge(dataComponent, childDataComponents);
+  colorRank.merge(dataComponent, childDataComponents);
 
-  if (allSame(dimensions)) {
-    dataComponent.summary.measures = childDataComponents.reduce((collector, data) => {
-      summary.mergeMeasures(collector, data.summary.measures);
-      return collector;
-    }, dataComponent.summary.measures);
-
-    if (empty(dataComponent.summary.dimensions)) {
-      dataComponent.summary.dimensions = childDataComponents[0].summary.dimensions;
-    }
-    childDataComponents.forEach((data) => {
-      delete data.summary;
-    });
-  }
-
-  // merge rank scale
-  childDataComponents.forEach((data) => {
-    extend(dataComponent.colorRank, data.colorRank);
-    delete data.colorRank;
-  });
-
-  // merge non positive filter
-  const nonPosComponent = childDataComponents.reduce((collector, data) => {
-    extend(collector, data.nonPositiveFilter);
-    return collector;
-  }, dataComponent.nonPositiveFilter);
-
-  const compatibleNonPosFilter = all(childDataComponents, (data) => {
-    return !differ(data.nonPositiveFilter, nonPosComponent);
-  });
-
-  if (compatibleNonPosFilter) {
-    dataComponent.nonPositiveFilter = nonPosComponent;
-    childDataComponents.forEach((data) => {
-      delete data.nonPositiveFilter;
-    });
-  }
+  nonPositiveFilter.mergeIfCompatible(dataComponent, childDataComponents);
 
   return dataComponent;
 }

@@ -1,5 +1,5 @@
 import {Formula} from '../../transform';
-import {extend, vals, hash, Dict} from '../../util';
+import {extend, vals, hash, Dict, forEach} from '../../util';
 
 import {FacetModel} from './../facet';
 import {LayerModel} from './../layer';
@@ -18,6 +18,34 @@ export namespace formula {
   }
 
   export const parseUnit = parse;
+
+  /**
+   * Merge the formulas from the parent and all components into parent.
+   *
+   * Returns whether all formulas could be merged.
+   */
+  export function merge(dataComponent: DataComponent, childDataComponents: DataComponent[]) {
+    let allMerged = true;
+
+    childDataComponents.reduce((collector, data) => {
+      forEach(data.calculate, (formula, field) => {
+        if (!(field in collector)) {
+          collector[field] = formula;
+          delete data.calculate[field];
+        } else {
+          if (formula.expr !== collector[field]) {
+            allMerged = false;
+            // don't delete formula in child because we have a conflict
+          } else {
+            delete data.calculate[field];
+          }
+        }
+      });
+      return collector;
+    }, dataComponent.calculate);
+
+    return allMerged;
+  }
 
   export function assemble(component: DataComponent) {
     return vals(component.calculate).reduce(function(transform, formula) {

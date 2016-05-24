@@ -12,6 +12,7 @@ import {filter} from './filter';
 import {bin} from './bin';
 import {formula} from './formula';
 import {timeUnit} from './timeunit';
+import {formatParse} from './formatparse';
 
 export namespace source {
   export function parseUnit(model: Model): VgData {
@@ -41,9 +42,10 @@ export namespace source {
     if (component.source) {
       let sourceData: VgData = component.source;
 
-      if (component.formatParse && !empty(component.formatParse)) {
+      const parse = formatParse.assemble(component);
+      if (parse && !empty(parse)) {
         sourceData.format = sourceData.format || {};
-        sourceData.format.parse = component.formatParse;
+        sourceData.format.parse = parse;
       }
 
       return sourceData;

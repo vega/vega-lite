@@ -1,6 +1,7 @@
 import {FacetModel} from './../facet';
 import {LayerModel} from './../layer';
 import {Model} from './../model';
+import {allSame} from '../../util';
 
 import {DataComponent} from './data';
 
@@ -11,6 +12,23 @@ export namespace filter {
   }
 
   export const parseUnit = parse;
+
+  /**
+   * Combines the filter in the data component if all child data components define the same filter.
+   */
+  export function mergeIfEqual(dataComponent: DataComponent, childDataComponents: DataComponent[]) {
+    const sameFilter = allSame(childDataComponents, (data) => data.filter);
+
+    if (sameFilter) {
+      // combine filter at parent
+      dataComponent.filter = (dataComponent.filter ? dataComponent.filter + '&&' : '') + (childDataComponents[0].filter || '');
+      childDataComponents.forEach((data) => {
+        delete data.filter;
+      });
+    }
+
+    return sameFilter;
+  }
 
   export function assemble(component: DataComponent) {
     const filter = component.filter;

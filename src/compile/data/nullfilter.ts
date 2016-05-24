@@ -1,5 +1,5 @@
 import {FieldDef} from '../../fielddef';
-import {extend, keys, differ, Dict} from '../../util';
+import {extend, keys, differ, Dict, forEach, all, duplicate} from '../../util';
 
 import {FacetModel} from './../facet';
 import {LayerModel} from './../layer';
@@ -29,6 +29,26 @@ export namespace nullFilter {
       }
       return aggregator;
     }, {});
+  }
+
+  export function mergeIfCompatible(dataComponent: DataComponent, childDataComponents: DataComponent[]) {
+    const nullFilterComponent = childDataComponents.reduce((collector, data) => {
+      extend(collector, data.nullFilter);
+      return collector;
+    }, duplicate(dataComponent.nullFilter));
+
+    const compatibleNullfilter = all(childDataComponents, (data) => {
+      return !differ(data.nullFilter, nullFilterComponent);
+    });
+
+    if (compatibleNullfilter) {
+      dataComponent.nullFilter = nullFilterComponent;
+      childDataComponents.forEach((data) => {
+        delete data.nullFilter;
+      });
+    }
+
+    return compatibleNullfilter;
   }
 
   export const parseUnit = parse;

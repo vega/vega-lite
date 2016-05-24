@@ -53,6 +53,13 @@ export namespace bin {
     }, {});
   }
 
+  export function merge(dataComponent: DataComponent, childDataComponents: DataComponent[]) {
+    childDataComponents.forEach((data) => {
+      extend(dataComponent.bin, data.bin);
+      delete data.bin;
+    });
+  }
+
   export const parseUnit = parse;
 
   export function assemble(component: DataComponent) {

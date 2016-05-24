@@ -1,5 +1,5 @@
 import {ScaleType} from '../../scale';
-import {extend, keys, differ, Dict} from '../../util';
+import {extend, keys, differ, Dict, all, duplicate} from '../../util';
 
 import {FacetModel} from './../facet';
 import {LayerModel} from './../layer';
@@ -21,6 +21,26 @@ export namespace nonPositiveFilter {
       nonPositiveComponent[model.field(channel)] = scale.type === ScaleType.LOG;
       return nonPositiveComponent;
     }, {} as Dict<boolean>);
+  }
+
+  export function mergeIfCompatible(dataComponent: DataComponent, childDataComponents: DataComponent[]) {
+    const nonPosComponent = childDataComponents.reduce((collector, data) => {
+      extend(collector, data.nonPositiveFilter);
+      return collector;
+    }, duplicate(dataComponent.nonPositiveFilter));
+
+    const compatibleNonPosFilter = all(childDataComponents, (data) => {
+      return !differ(data.nonPositiveFilter, nonPosComponent);
+    });
+
+    if (compatibleNonPosFilter) {
+      dataComponent.nonPositiveFilter = nonPosComponent;
+      childDataComponents.forEach((data) => {
+        delete data.nonPositiveFilter;
+      });
+    }
+
+    return compatibleNonPosFilter;
   }
 
   export function assemble(component: DataComponent) {

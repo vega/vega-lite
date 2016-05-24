@@ -18,16 +18,25 @@ export namespace timeUnit {
       const ref = field(fieldDef, { nofn: true, datum: true });
       if (fieldDef.type === TEMPORAL && fieldDef.timeUnit) {
 
-        const hash = field(fieldDef);
-
-        timeUnitComponent[hash] = {
+        const f = field(fieldDef);
+        timeUnitComponent[f] = {
           type: 'formula',
-          field: field(fieldDef),
+          field: f,
           expr: parseExpression(fieldDef.timeUnit, ref)
         };
       }
       return timeUnitComponent;
     }, {});
+  }
+
+  /**
+   * Merge up time unit. Since the map keys describes the field and the expression, we can just extend.
+   */
+  export function merge(dataComponent: DataComponent, childDataComponents: DataComponent[]) {
+    childDataComponents.forEach((data) => {
+      extend(dataComponent.timeUnit, data.timeUnit);
+      delete data.timeUnit;
+    });
   }
 
   export const parseUnit = parse;

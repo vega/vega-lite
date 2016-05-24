@@ -36,6 +36,13 @@ export namespace colorRank {
     return colorRankComponent;
   }
 
+  export function merge(dataComponent: DataComponent, childDataComponents: DataComponent[]) {
+    childDataComponents.forEach((data) => {
+      extend(dataComponent.colorRank, data.colorRank);
+      delete data.colorRank;
+    });
+  }
+
   export function assemble(component: DataComponent) {
     return flatten(vals(component.colorRank));
   }
