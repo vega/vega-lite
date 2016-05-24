@@ -18,12 +18,7 @@ export namespace aggregate {
       dims[field(fieldDef, { binSuffix: '_start' })] = true;
       dims[field(fieldDef, { binSuffix: '_mid' })] = true;
       dims[field(fieldDef, { binSuffix: '_end' })] = true;
-
-      // const scale = model.scale(channel);
-      // if (scaleType(scale, fieldDef, channel, model.mark()) === ScaleType.ORDINAL) {
-      // also produce bin_range if the binned field use ordinal scale
       dims[field(fieldDef, { binSuffix: '_range' })] = true;
-      // }
     } else {
       dims[field(fieldDef)] = true;
     }

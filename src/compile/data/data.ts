@@ -51,7 +51,6 @@ export interface DataComponent {
   nonPositiveFilter: Dict<boolean>;
 
   /** Data source for feeding stacked scale. */
-  // TODO: need to revise if single VgData is sufficient with layer / concat
   stackScale: VgData;
 
   /** Dictionary mapping an output field name (hash) to the sort and rank transforms  */

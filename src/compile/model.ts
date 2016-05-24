@@ -233,7 +233,11 @@ export abstract class Model {
   }
 
   public renameData(oldName: string, newName: string) {
-     this._dataNameMap.rename(oldName, newName);
+    if (oldName === newName) {
+      console.error('Cannot rename ' + oldName + ' to itself.');
+      return;
+    }
+    this._dataNameMap.rename(oldName, newName);
   }
 
   /**
