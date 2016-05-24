@@ -34,26 +34,23 @@ export function initMarkConfig(mark: Mark, encoding: Encoding, config: Config) {
 
            // When unambiguous, do not allow overriding
            if (xIsMeasure && !yIsMeasure) {
-             if (mark === TICK) {
-               cfg[property] = 'vertical'; // implicitly vertical
-             } else {
-               cfg[property] = 'horizontal'; // implicitly horizontal
-             }
              if (contains([RULE, BAR, AREA], mark)) {
                cfg[property] = 'horizontal';
-             } else {
+             } else if (mark === TICK) {
                cfg[property] = 'vertical';
+             } else {
+               cfg[property] = 'vertical';  // implicitly vertical
              }
            } else if (!xIsMeasure && yIsMeasure) {
-             if (mark === TICK) {
-               cfg[property] = 'horizontal';
-             } else {
+             {
                cfg[property] = 'vertical';
              }
              if (contains([RULE, BAR, AREA], mark)) {
                cfg[property] = 'vertical';
-             } else {
+             } else if (mark === TICK) {
                cfg[property] = 'horizontal';
+             } else {
+               cfg[property] = 'horizontal';  // implicitly horizontal
              }
            }
 
