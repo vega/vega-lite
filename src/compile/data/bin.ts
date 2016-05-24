@@ -25,7 +25,7 @@ export namespace bin {
           }
         },
           // if bin is an object, load parameter here!
-          typeof bin === 'boolean' ? {} : bin
+          isObject(bin) ? bin : {}
         );
 
         if (!binTrans.maxbins && !binTrans.step) {
@@ -46,7 +46,7 @@ export namespace bin {
           });
         }
         // FIXME: current merging logic can produce redundant transforms when a field is binned for color and for non-color
-        const key = hash(bin) + '_' + fieldDef.field + 'oc:' + isOrdinalColor;
+        const key = (typeof bin !== 'boolean' ? hash(bin) + '_' : '') + fieldDef.field + 'oc:' + isOrdinalColor;
         binComponent[key] = transform;
       }
       return binComponent;
