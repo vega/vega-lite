@@ -229,6 +229,7 @@ export abstract class Model {
     channelMappingForEach(this.channels(), this.mapping(), f, t);
   }
 
+  // FIXME: eliminate this method
   public abstract has(channel: Channel): boolean;
 
   public parent(): Model {
@@ -294,13 +295,14 @@ export abstract class Model {
     return field(fieldDef, opt);
   }
 
+  // FIXME: eliminate this method
   public abstract fieldDef(channel: Channel): FieldDef;
 
   public scale(channel: Channel): Scale {
     return this._scale[channel];
   }
 
-  // TODO: rename to hasOrdinalScale
+  // FIXME: eliminate this method
   public isOrdinalScale(channel: Channel) {
     const scale = this.scale(channel);
     return scale && scale.type === ScaleType.ORDINAL;

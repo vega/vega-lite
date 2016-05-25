@@ -63,7 +63,6 @@ export class LayerModel extends Model {
 
   public has(channel: Channel): boolean {
     // layer does not have any channels
-    console.error('weird');
     return false;
   }
 
@@ -73,18 +72,17 @@ export class LayerModel extends Model {
 
   public isOrdinalScale(channel: Channel) {
     // doesn't make sense to ask this
-    console.error('weird');
     return this._children[0].isOrdinalScale(channel);
   }
 
   public fieldDef(channel: Channel): FieldDef {
-    console.error('weird field def');
     return null; // layer does not have field defs
   }
 
   public stack() {
-    console.error('weird stack');
-    return null; // this is only a property for UnitModel
+    // This is only a property for UnitModel, but in certain part of code
+    // that treats generic model. They might ask this method, and we just return null for layer.
+    return null;
   }
 
   public parseData() {
