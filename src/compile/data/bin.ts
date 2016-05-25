@@ -54,9 +54,9 @@ export namespace bin {
   }
 
   export function merge(dataComponent: DataComponent, childDataComponents: DataComponent[]) {
-    childDataComponents.forEach((data) => {
-      extend(dataComponent.bin, data.bin);
-      delete data.bin;
+    childDataComponents.forEach((childData) => {
+      extend(dataComponent.bin, childData.bin);
+      delete childData.bin;
     });
   }
 

@@ -15,6 +15,8 @@ import {DataComponent, AggregateComponent} from './data';
 export namespace aggregate {
   function addDimension(dims: { [field: string]: boolean }, fieldDef: FieldDef) {
     if (fieldDef.bin) {
+      // To avoid confusion, group by all types of bin values, so we always have them to use.
+      // TODO: handle if bin parameters are different
       dims[field(fieldDef, { binSuffix: '_start' })] = true;
       dims[field(fieldDef, { binSuffix: '_mid' })] = true;
       dims[field(fieldDef, { binSuffix: '_end' })] = true;
@@ -36,9 +38,7 @@ export namespace aggregate {
       if (fieldDef.aggregate) {
         if (fieldDef.aggregate === AggregateOp.COUNT) {
           meas['*'] = meas['*'] || {};
-          /* tslint:disable:no-string-literal */
-          meas['*']['count'] = true;
-          /* tslint:enable:no-string-literal */
+          meas['*']['count'] = true; // tslint:disable-line:no-string-literal
         } else {
           meas[fieldDef.field] = meas[fieldDef.field] || {};
           meas[fieldDef.field][fieldDef.aggregate] = true;
@@ -95,8 +95,8 @@ export namespace aggregate {
       if (empty(dataComponent.aggregate.dimensions)) {
         dataComponent.aggregate.dimensions = childDataComponents[0].aggregate.dimensions;
       }
-      childDataComponents.forEach((data) => {
-        delete data.aggregate;
+      childDataComponents.forEach((childData) => {
+        delete childData.aggregate;
       });
     }
   }

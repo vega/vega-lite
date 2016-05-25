@@ -27,17 +27,17 @@ export namespace calculate {
   export function merge(dataComponent: DataComponent, childDataComponents: DataComponent[]) {
     let allMerged = true;
 
-    childDataComponents.reduce((collector, data) => {
-      forEach(data.calculate, (formula, field) => {
+    childDataComponents.reduce((collector, childData) => {
+      forEach(childData.calculate, (formula, field) => {
         if (!(field in collector)) {
           collector[field] = formula;
-          delete data.calculate[field];
+          delete childData.calculate[field];
         } else {
           if (formula.expr !== collector[field]) {
             allMerged = false;
             // don't delete formula in child because we have a conflict
           } else {
-            delete data.calculate[field];
+            delete childData.calculate[field];
           }
         }
       });

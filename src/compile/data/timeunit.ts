@@ -33,9 +33,9 @@ export namespace timeUnit {
    * Merge up time unit. Since the map keys describes the field and the expression, we can just extend.
    */
   export function merge(dataComponent: DataComponent, childDataComponents: DataComponent[]) {
-    childDataComponents.forEach((data) => {
-      extend(dataComponent.timeUnit, data.timeUnit);
-      delete data.timeUnit;
+    childDataComponents.forEach((childData) => {
+      extend(dataComponent.timeUnit, childData.timeUnit);
+      delete childData.timeUnit;
     });
   }
 

@@ -564,7 +564,7 @@ export function mergeScales(model: LayerModel, channel: string) {
   if (domainArr.length ===  1) {
     domain = domainArr[0];
   } else {
-    // Fixme: we have to ignore explicit data domains for now because vega does not support unioning them
+    // FIXME: we have to ignore explicit data domains for now because vega does not support unioning them
     domain = {
       fields: domainArr
     };

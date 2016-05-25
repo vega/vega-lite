@@ -24,19 +24,19 @@ export namespace nonPositiveFilter {
   }
 
   export function mergeIfCompatible(dataComponent: DataComponent, childDataComponents: DataComponent[]) {
-    const nonPosComponent = childDataComponents.reduce((collector, data) => {
-      extend(collector, data.nonPositiveFilter);
+    const nonPosComponent = childDataComponents.reduce((collector, childData) => {
+      extend(collector, childData.nonPositiveFilter);
       return collector;
     }, duplicate(dataComponent.nonPositiveFilter));
 
-    const compatibleNonPosFilter = all(childDataComponents, (data) => {
-      return !differ(data.nonPositiveFilter, nonPosComponent);
+    const compatibleNonPosFilter = all(childDataComponents, (childData) => {
+      return !differ(childData.nonPositiveFilter, nonPosComponent);
     });
 
     if (compatibleNonPosFilter) {
       dataComponent.nonPositiveFilter = nonPosComponent;
-      childDataComponents.forEach((data) => {
-        delete data.nonPositiveFilter;
+      childDataComponents.forEach((childData) => {
+        delete childData.nonPositiveFilter;
       });
     }
 

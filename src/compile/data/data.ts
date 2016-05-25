@@ -121,8 +121,8 @@ export function parseFacetData(model: FacetModel): DataComponent {
   const dataComponent = child.component.data;
   delete child.component.data;
 
-  [SOURCE, RAW, RANK, SCALE, STACKED_SCALE].forEach((data) => {
-    model.renameData(child.dataName(data), model.dataName(data));
+  [SOURCE, RAW, RANK, SCALE, STACKED_SCALE].forEach((dataSrcType) => {
+    model.renameData(child.dataName(dataSrcType), model.dataName(dataSrcType));
   });
 
   if (dataComponent.aggregate) {
@@ -143,17 +143,17 @@ function mergeChildren(model: Model, dataComponent: DataComponent, children: Uni
   const childDataComponents = children.map((child: UnitModel) => child.component.data);
 
   // set the parent source as child source
-  childDataComponents.forEach((data) => {
-    if (data.source === undefined) {
+  childDataComponents.forEach((childData) => {
+    if (childData.source === undefined) {
       // child does not define its own source
-      data.source = {
+      childData.source = {
         source: model.dataName(SOURCE)
       };
     } else {
-      data.source.source = model.dataName(SOURCE);
+      childData.source.source = model.dataName(SOURCE);
     }
-    delete data.source.format;
-    delete data.source.url;
+    delete childData.source.format;
+    delete childData.source.url;
   });
 
   formatParse.merge(dataComponent, childDataComponents);

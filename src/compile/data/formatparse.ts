@@ -40,12 +40,12 @@ export namespace formatParse {
    * Format parse is only merged up if the parent either does not define a parse or the same parse.
    */
   export function merge(dataComponent: DataComponent, childDataComponents: DataComponent[]) {
-    childDataComponents.reduce((collector, data) => {
-      if (data.formatParse) {
-        forEach(data.formatParse, (parse, field) => {
+    childDataComponents.reduce((collector, childData) => {
+      if (childData.formatParse) {
+        forEach(childData.formatParse, (parse, field) => {
           if (parse === collector[field] || collector[field] === undefined) {
             collector[field] = parse;
-            delete data.formatParse[field];
+            delete childData.formatParse[field];
           }
         });
       }

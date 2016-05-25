@@ -19,7 +19,6 @@ export namespace colorRank {
    * Return hash dict from a color field's name to the sort and rank transforms
    */
   export function parseUnit(model: Model) {
-    // FIXME: why is this an array?
     let colorRankComponent: Dict<VgTransform[]> = {};
     if (model.has(COLOR) && model.fieldDef(COLOR).type === ORDINAL) {
       colorRankComponent[model.field(COLOR)] = [{
@@ -37,9 +36,9 @@ export namespace colorRank {
   }
 
   export function merge(dataComponent: DataComponent, childDataComponents: DataComponent[]) {
-    childDataComponents.forEach((data) => {
-      extend(dataComponent.colorRank, data.colorRank);
-      delete data.colorRank;
+    childDataComponents.forEach((childData) => {
+      extend(dataComponent.colorRank, childData.colorRank);
+      delete childData.colorRank;
     });
   }
 

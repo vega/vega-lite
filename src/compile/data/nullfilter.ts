@@ -32,19 +32,19 @@ export namespace nullFilter {
   }
 
   export function mergeIfCompatible(dataComponent: DataComponent, childDataComponents: DataComponent[]) {
-    const nullFilterComponent = childDataComponents.reduce((collector, data) => {
-      extend(collector, data.nullFilter);
+    const nullFilterComponent = childDataComponents.reduce((collector, childData) => {
+      extend(collector, childData.nullFilter);
       return collector;
     }, duplicate(dataComponent.nullFilter));
 
-    const compatibleNullfilter = all(childDataComponents, (data) => {
-      return !differ(data.nullFilter, nullFilterComponent);
+    const compatibleNullfilter = all(childDataComponents, (childData) => {
+      return !differ(childData.nullFilter, nullFilterComponent);
     });
 
     if (compatibleNullfilter) {
       dataComponent.nullFilter = nullFilterComponent;
-      childDataComponents.forEach((data) => {
-        delete data.nullFilter;
+      childDataComponents.forEach((childData) => {
+        delete childData.nullFilter;
       });
     }
 

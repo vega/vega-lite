@@ -29,20 +29,21 @@ export class LayerModel extends Model {
     this._resolve = this._initResolve(spec.resolve || {});
   }
 
+  /**
+   * Figure out which fields have different field types and make those independent.
+   * Use resolve for all other fields with default shared.
+   */
   private _initResolve(resolve: ResolveMapping): ResolveMapping {
-    // Figure out which fields have different field types and make those independent.
-    // Use resolve for all other fields with default shared.
-
-    for (var i = 0; i < CHANNELS.length; i++) {
-      var channel = CHANNELS[i];
-      var types = unique(this.children().map((child: UnitModel) => {
-        const fd = child.fieldDef(channel);
-        if (fd) {
-          return fd.type;
+    CHANNELS.forEach((channel) => {
+      const types = unique(this.children().map((child: UnitModel) => {
+        const fieldDef = child.fieldDef(channel);
+        if (fieldDef) {
+          return fieldDef.type;
         }
         return undefined;
       }).filter((type) => !!type));
 
+      // TODO: read explicit resolve property
       if (types.length > 1) {
         resolve[channel] = {
           scale: INDEPENDENT,
@@ -54,7 +55,8 @@ export class LayerModel extends Model {
           guide: SHARED
         }, resolve[channel]);
       }
-    }
+      // If length = 0, this channel is not used.  No need to create ChannelResolve
+    });
 
     return resolve;
   }

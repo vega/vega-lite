@@ -70,7 +70,7 @@ export function assembleRootGroup(model: Model) {
             width: {field: 'width'},
             height: {field: 'height'}
           },
-          // what is this?
+          // TODO: revise if this is always correct to be here
           model.config() ? model.assembleParentGroupProperties(model.config().cell) : {}
         )
       }

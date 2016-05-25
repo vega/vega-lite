@@ -17,13 +17,13 @@ export namespace filter {
    * Combines the filter in the data component if all child data components define the same filter.
    */
   export function mergeIfEqual(dataComponent: DataComponent, childDataComponents: DataComponent[]) {
-    const sameFilter = allSame(childDataComponents, (data) => data.filter);
+    const sameFilter = allSame(childDataComponents, (childData) => childData.filter);
 
     if (sameFilter) {
       // combine filter at parent
       dataComponent.filter = (dataComponent.filter ? dataComponent.filter + '&&' : '') + (childDataComponents[0].filter || '');
-      childDataComponents.forEach((data) => {
-        delete data.filter;
+      childDataComponents.forEach((childData) => {
+        delete childData.filter;
       });
     }
 

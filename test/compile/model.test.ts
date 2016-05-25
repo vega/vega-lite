@@ -4,7 +4,7 @@ import {NameMap} from '../../src/compile/model';
 
 
 describe('NameMap', function () {
-  it.only('should rename correctly', function () {
+  it('should rename correctly', function () {
     const map = new NameMap();
     assert.equal(map.get('a'), 'a');
 
