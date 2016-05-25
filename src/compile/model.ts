@@ -1,10 +1,10 @@
-import {AxisProperties} from '../axis';
+import {Axis} from '../axis';
 import {Channel, X, COLUMN} from '../channel';
 import {Config, CellConfig} from '../config';
 import {Data, DataTable} from '../data';
 import {channelMappingReduce, channelMappingForEach} from '../encoding';
 import {FieldDef, FieldRefOption, field} from '../fielddef';
-import {LegendProperties} from '../legend';
+import {Legend} from '../legend';
 import {Scale, ScaleType} from '../scale';
 import {BaseSpec} from '../spec';
 import {Transform} from '../transform';
@@ -82,9 +82,9 @@ export abstract class Model {
   protected _transform: Transform;
   protected _scale: Dict<Scale>;
 
-  protected _axis: Dict<AxisProperties>;
+  protected _axis: Dict<Axis>;
 
-  protected _legend: Dict<LegendProperties>;
+  protected _legend: Dict<Legend>;
 
   protected _config: Config;
 
@@ -304,11 +304,11 @@ export abstract class Model {
 
   public abstract stack();
 
-  public axis(channel: Channel): AxisProperties {
+  public axis(channel: Channel): Axis {
     return this._axis[channel];
   }
 
-  public legend(channel: Channel): LegendProperties {
+  public legend(channel: Channel): Legend {
     return this._legend[channel];
   }
 

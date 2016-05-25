@@ -240,7 +240,7 @@ Vega-Lite automatically provides default properties for the visualization. You c
 You have learned about basic components of a Vega-Lite specification.
 Now, let's see how to publish your visualization.
 
-To embed your visualization on a website, you can create a web page with the following content:
+You can use [Vega-Embed](https://github.com/vega/vega-embed) to embed your Vega-Lite visualization in a webpage.  For example, you can create a web page with the following content:
 
 {: .suppress-error}
 ```html
@@ -262,10 +262,13 @@ To embed your visualization on a website, you can create a web page with the fol
   </style>
 </head>
 <body>
+  <h1>Template for Embedding Vega-Lite Visualization</h1>
+  <div>See code at <a href="https://github.com/vega/vega-lite-demo">https://github.com/vega/vega-lite-demo</a></div>
   <!-- Container for the visualization -->
   <div id="vis"></div>
 
   <script>
+  // Assign the specification to a local variable vlSpec.
   var vlSpec = {
     "data": {
       "values": [
@@ -289,6 +292,8 @@ To embed your visualization on a website, you can create a web page with the fol
   var embedSpec = {
     mode: "vega-lite",  // Instruct Vega-Embed to use the Vega-Lite compiler
     spec: vlSpec
+    // You can add more vega-embed configuration properties here.
+    // See https://github.com/vega/vega/wiki/Embed-Vega-Web-Components#configuration-propeties for more information.
   };
 
   // Embed the visualization in the container with id `vis`
@@ -305,7 +310,8 @@ In this webpage, we first load the dependencies for Vega-Lite (D3, Vega-Embed, V
 
 In the JavaScript code, we create a variable `vlSpec` that holds the Vega-Lite specification in JSON format. The `vl.embed` method translates a Vega-Lite specification into a Vega specification and then calls the [Vega Runtime](https://github.com/vega/vega/wiki/Runtime) to display visualization in the container `<div/>` element.
 
-If viewed in a browser, this page displays our bar chart. You can also see it [here]({{site.baseurl}}/site/demo.html).
+If viewed in a browser, this page displays our bar chart.
+You can also see the html page [here]({{site.baseurl}}/site/demo.html), or fork it from our [vega-lite-demo](https://github.com/vega/vega-lite-demo) repository.
 
 ## Next Steps
 
@@ -315,3 +321,4 @@ Now you can create a website that embeds a Vega-Lite specification. If you want 
 - See the [examples gallery]({{site.baseurl}}/examples/gallery.html).
 - Build your own visualizations in the [online editor](https://vega.github.io/vega-editor/?mode=vega-lite).
 - Browse through the [documentation]({{site.baseurl}}/docs/).
+- See the [list of applications](https://vega.github.io/vega-lite/usage/applications.html) that you can use Vega-Lite with.

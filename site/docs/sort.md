@@ -13,9 +13,7 @@ permalink: /docs/sort.html
     "x": {
       "field": ...,
       "type": ...,
-      "sort": {                // sort
-        ...
-      },
+      "sort": ...,         // sort
       ...
     },
     "y": ...,
@@ -75,7 +73,7 @@ support manually specify sort order
 example: sorting color mapping
  -->
 
-3) Unsorted – `"none`" – The field is not sorted. This is equivalent to specifying `sort:false` in [Vega's scales](https://github.com/vega/vega/wiki/Scales).
+3) Unsorted – `"none`" – The field is not sorted. This is equivalent to specifying `sort: false` in [Vega's scales](https://github.com/vega/vega/wiki/Scales).
 
 <span class="note-line">__Default value:__ `"ascending"`.</span>
 

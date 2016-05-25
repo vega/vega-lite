@@ -244,26 +244,32 @@ export function domain(scale: Scale, model: Model, channel:Channel): any {
       field: model.field(channel, {noAggregate: true})
     };
   } else if (fieldDef.bin) { // bin
-    return scale.type === ScaleType.ORDINAL ? {
+    if (scale.type === ScaleType.ORDINAL) {
       // ordinal bin scale takes domain from bin_range, ordered by bin_start
-      data: model.dataTable(),
-      field: model.field(channel, { binSuffix: '_range' }),
-      sort: {
-        field: model.field(channel, { binSuffix: '_start' }),
-        op: 'min' // min or max doesn't matter since same _range would have the same _start
-      }
-    } : channel === COLOR ? {
+      return {
+        data: model.dataTable(),
+        field: model.field(channel, { binSuffix: '_range' }),
+        sort: {
+          field: model.field(channel, { binSuffix: '_start' }),
+          op: 'min' // min or max doesn't matter since same _range would have the same _start
+        }
+      };
+    } else if (channel === COLOR) {
       // Currently, binned on color uses linear scale and thus use _start point
-      data: model.dataTable(),
-      field: model.field(channel, { binSuffix: '_start' })
-    } : {
+      return {
+        data: model.dataTable(),
+        field: model.field(channel, { binSuffix: '_start' })
+      };
+    } else {
       // other linear bin scale merges both bin_start and bin_end for non-ordinal scale
-      data: model.dataTable(),
-      field: [
-        model.field(channel, { binSuffix: '_start' }),
-        model.field(channel, { binSuffix: '_end' })
-      ]
-    };
+      return {
+        data: model.dataTable(),
+        field: [
+          model.field(channel, { binSuffix: '_start' }),
+          model.field(channel, { binSuffix: '_end' })
+        ]
+      };
+    }
   } else if (sort) { // have sort -- only for ordinal
     return {
       // If sort by aggregation of a specified sort field, we need to use SOURCE table,
