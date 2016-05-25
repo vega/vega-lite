@@ -1,9 +1,9 @@
 // utility for a field definition object
 
 import {AggregateOp, AGGREGATE_OPS} from './aggregate';
-import {AxisProperties} from './axis';
-import {BinProperties} from './bin';
-import {LegendProperties} from './legend';
+import {Axis} from './axis';
+import {Bin} from './bin';
+import {Legend} from './legend';
 import {Scale} from './scale';
 import {SortField, SortOrder} from './sort';
 import {TimeUnit} from './timeunit';
@@ -22,7 +22,7 @@ export interface FieldDef {
 
   // function
   timeUnit?: TimeUnit;
-  bin?: boolean | BinProperties;
+  bin?: boolean | Bin;
   aggregate?: AggregateOp;
 
   // metadata
@@ -47,10 +47,10 @@ export interface ChannelDefWithScale extends FieldDef {
 }
 
 export interface PositionChannelDef extends ChannelDefWithScale {
-  axis?: boolean | AxisProperties;
+  axis?: boolean | Axis;
 }
 export interface ChannelDefWithLegend extends ChannelDefWithScale {
-  legend?: LegendProperties;
+  legend?: Legend;
 }
 
 // Detail

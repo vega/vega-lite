@@ -168,23 +168,31 @@ function domain(scale, model, channel) {
         };
     }
     else if (fieldDef.bin) {
-        return scale.type === scale_1.ScaleType.ORDINAL ? {
-            data: model.dataTable(),
-            field: model.field(channel, { binSuffix: '_range' }),
-            sort: {
-                field: model.field(channel, { binSuffix: '_start' }),
-                op: 'min'
-            }
-        } : channel === channel_1.COLOR ? {
-            data: model.dataTable(),
-            field: model.field(channel, { binSuffix: '_start' })
-        } : {
-            data: model.dataTable(),
-            field: [
-                model.field(channel, { binSuffix: '_start' }),
-                model.field(channel, { binSuffix: '_end' })
-            ]
-        };
+        if (scale.type === scale_1.ScaleType.ORDINAL) {
+            return {
+                data: model.dataTable(),
+                field: model.field(channel, { binSuffix: '_range' }),
+                sort: {
+                    field: model.field(channel, { binSuffix: '_start' }),
+                    op: 'min'
+                }
+            };
+        }
+        else if (channel === channel_1.COLOR) {
+            return {
+                data: model.dataTable(),
+                field: model.field(channel, { binSuffix: '_start' })
+            };
+        }
+        else {
+            return {
+                data: model.dataTable(),
+                field: [
+                    model.field(channel, { binSuffix: '_start' }),
+                    model.field(channel, { binSuffix: '_end' })
+                ]
+            };
+        }
     }
     else if (sort) {
         return {

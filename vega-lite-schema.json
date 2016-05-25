@@ -141,7 +141,7 @@
                             "type": "boolean"
                         },
                         {
-                            "$ref": "#/definitions/AxisProperties"
+                            "$ref": "#/definitions/Axis"
                         }
                     ]
                 },
@@ -186,7 +186,7 @@
                             "type": "boolean"
                         },
                         {
-                            "$ref": "#/definitions/BinProperties",
+                            "$ref": "#/definitions/Bin",
                             "description": "Binning properties or boolean flag for determining whether to bin data or not."
                         }
                     ]
@@ -199,7 +199,7 @@
                 }
             }
         },
-        "AxisProperties": {
+        "Axis": {
             "type": "object",
             "properties": {
                 "labelAngle": {
@@ -580,7 +580,7 @@
                 "secondsmilliseconds"
             ]
         },
-        "BinProperties": {
+        "Bin": {
             "type": "object",
             "properties": {
                 "min": {
@@ -628,7 +628,7 @@
             "type": "object",
             "properties": {
                 "legend": {
-                    "$ref": "#/definitions/LegendProperties"
+                    "$ref": "#/definitions/Legend"
                 },
                 "scale": {
                     "$ref": "#/definitions/Scale"
@@ -671,7 +671,7 @@
                             "type": "boolean"
                         },
                         {
-                            "$ref": "#/definitions/BinProperties",
+                            "$ref": "#/definitions/Bin",
                             "description": "Binning properties or boolean flag for determining whether to bin data or not."
                         }
                     ]
@@ -684,7 +684,7 @@
                 }
             }
         },
-        "LegendProperties": {
+        "Legend": {
             "type": "object",
             "properties": {
                 "format": {
@@ -828,7 +828,7 @@
                             "type": "boolean"
                         },
                         {
-                            "$ref": "#/definitions/BinProperties",
+                            "$ref": "#/definitions/Bin",
                             "description": "Binning properties or boolean flag for determining whether to bin data or not."
                         }
                     ]
@@ -875,7 +875,7 @@
                             "type": "boolean"
                         },
                         {
-                            "$ref": "#/definitions/BinProperties",
+                            "$ref": "#/definitions/Bin",
                             "description": "Binning properties or boolean flag for determining whether to bin data or not."
                         }
                     ]

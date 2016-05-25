@@ -1,4 +1,4 @@
-import {AxisOrient, AxisProperties} from '../axis';
+import {AxisOrient, Axis} from '../axis';
 import {COLUMN, ROW, X, Y, Channel} from '../channel';
 import {defaultConfig, Config} from '../config';
 import {SOURCE, SUMMARY} from '../data';
@@ -79,7 +79,7 @@ export class FacetModel extends Model {
     }, {} as Dict<Scale>);
   }
 
-  private _initAxis(facet: Facet, config: Config, child: Model): Dict<AxisProperties> {
+  private _initAxis(facet: Facet, config: Config, child: Model): Dict<Axis> {
     return [ROW, COLUMN].reduce(function(_axis, channel) {
       if (facet[channel]) {
         const axisSpec = facet[channel].axis;
@@ -101,7 +101,7 @@ export class FacetModel extends Model {
         }
       }
       return _axis;
-    }, {} as Dict<AxisProperties>);
+    }, {} as Dict<Axis>);
   }
 
   public facet() {
@@ -268,7 +268,7 @@ export class FacetModel extends Model {
   }
 
   public assembleLayout(layoutData: VgData[]): VgData[] {
-    // Postfix traversal – layout is assembled bottom-up 
+    // Postfix traversal – layout is assembled bottom-up
     this._child.assembleLayout(layoutData);
     return assembleLayout(this, layoutData);
   }

@@ -40,6 +40,16 @@ function parseInnerAxis(channel, model) {
             def[property] = value;
         }
     });
+    var props = model.axis(channel).properties || {};
+    ['grid'].forEach(function (group) {
+        var value = properties[group] ?
+            properties[group](model, channel, props[group] || {}, def) :
+            props[group];
+        if (value !== undefined && util_1.keys(value).length > 0) {
+            def.properties = def.properties || {};
+            def.properties[group] = value;
+        }
+    });
     return def;
 }
 exports.parseInnerAxis = parseInnerAxis;

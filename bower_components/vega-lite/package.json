@@ -1,7 +1,7 @@
 {
   "name": "vega-lite",
   "author": "Jeffrey Heer, Dominik Moritz, Kanit \"Ham\" Wongsuphasawat",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "collaborators": [
     "Kanit Wongsuphasawat <kanitw@gmail.com> (http://kanitw.yellowpigz.com)",
     "Dominik Moritz <domoritz@cs.washington.edu> (http://www.domoritz.de)",
@@ -37,6 +37,7 @@
     "site": "bundle exec jekyll serve --incremental",
     "pretest": "tsc && npm run data",
     "test": "npm run schema && mocha --recursive --require source-map-support/register test examples",
+    "test:debug": "npm run schema && mocha --debug-brk --recursive --require source-map-support/register test examples",
     "watch:build": "watchify src/vl.ts -p tsify -v -d -s vl -o 'exorcist vega-lite.js.map > vega-lite.js'",
     "watch:test": "nodemon -x 'npm test && npm run lint'",
     "watch": "nodemon -x 'npm run build && npm test && npm run lint'",
