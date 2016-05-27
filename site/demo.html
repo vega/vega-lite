@@ -16,10 +16,13 @@
   </style>
 </head>
 <body>
+  <h1>Template for Embedding Vega-Lite Visualization</h1>
+  <div>See code at <a href="https://github.com/vega/vega-lite-demo">https://github.com/vega/vega-lite-demo</a></div>
   <!-- Container for the visualization -->
   <div id="vis"></div>
 
   <script>
+  // Assign the specification to a local variable vlSpec.
   var vlSpec = {
     "data": {
       "values": [
@@ -39,12 +42,12 @@
       }
     }
   };
-
   var embedSpec = {
     mode: "vega-lite",  // Instruct Vega-Embed to use the Vega-Lite compiler
     spec: vlSpec
+    // You can add more vega-embed configuration properties here.
+    // See https://github.com/vega/vega/wiki/Embed-Vega-Web-Components#configuration-propeties for more information.
   };
-
   // Embed the visualization in the container with id `vis`
   vg.embed("#vis", embedSpec, function(error, result) {
     // Callback receiving the View instance and parsed Vega spec
