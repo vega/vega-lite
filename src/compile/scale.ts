@@ -79,13 +79,13 @@ function parseMainScale(model: Model, fieldDef: FieldDef, channel: Channel) {
     if (model.has(X)) {
       scaleDef.domain = { fields : [domain(scale, model, X), domain(scale, model, X2)] };
     } else {
-      scaleDef.domain = { fields : [domain(scale, model, X2)] };
+      scaleDef.domain = domain(scale, model, X2);
     }
   } else if (channel === Y && model.has(Y2)) {
       if (model.has(Y)) {
         scaleDef.domain = { fields : [domain(scale, model, Y), domain(scale, model, Y2)] };
       } else {
-        scaleDef.domain = { fields : [domain(scale, model, Y2)] };
+        scaleDef.domain = domain(scale, model, Y2);
       }
   } else {
     scaleDef.domain = domain(scale, model, channel);
