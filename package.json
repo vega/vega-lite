@@ -56,7 +56,6 @@
   "devDependencies": {
     "browser-sync": "^2.12.8",
     "browserify": "^13.0.1",
-    "browserify-shim": "^3.8.12",
     "browserify-versionify": "^1.0.6",
     "chai": "^3.5.0",
     "cheerio": "^0.20.0",
@@ -84,9 +83,7 @@
   },
   "browserify": {
     "transform": [
-      "browserify-shim",
       "browserify-versionify"
     ]
-  },
-  "browserify-shim": {}
+  }
 }
