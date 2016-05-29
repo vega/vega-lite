@@ -40,6 +40,12 @@ export type ScaleComponents = {
 }
 
 export function parseScaleComponent(model: Model): Dict<ScaleComponents> {
+  // We get all the channels and create a scale for it.
+  // However, in case of X/X2 or Y/Y2 we will have to map two channels to
+  // a single scale with union of the domain.
+  // Each scale consist of a name, type, domain, props, range
+  // We will need to union the domain, and maybe the range
+  // 
   return model.channels().reduce(function(scale: Dict<ScaleComponents>, channel: Channel) {
       if (model.scale(channel)) {
         const fieldDef = model.fieldDef(channel);
@@ -68,7 +74,6 @@ export function parseScaleComponent(model: Model): Dict<ScaleComponents> {
 function parseMainScale(model: Model, fieldDef: FieldDef, channel: Channel) {
   const scale = model.scale(channel);
   const sort = model.sort(channel);
-
   let scaleDef: any = {
     name: model.scaleName(channel),
     type: scale.type,

@@ -7,6 +7,8 @@ import {isArray, any as anyIn} from './util';
 export interface UnitEncoding {
   x?: PositionChannelDef;
   y?: PositionChannelDef;
+  x2?: PositionChannelDef;
+  y2?: PositionChannelDef;
   color?: ChannelDefWithLegend;
   opacity?: ChannelDefWithLegend;
   size?: ChannelDefWithLegend;
