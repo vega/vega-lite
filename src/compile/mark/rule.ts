@@ -27,7 +27,7 @@ export namespace rule {
 
       if (model.has(Y2)) {
         p.y2 = {
-          scale: model.scaleName(Y2),
+          scale: model.scaleName(Y),
           field: model.field(Y2)
         };
       } else {
@@ -48,7 +48,7 @@ export namespace rule {
 
       if (model.has(X2)) {
         p.x2 = {
-          scale: model.scaleName(X2),
+          scale: model.scaleName(X),
           field: model.field(X2)
         };
       } else {

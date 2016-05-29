@@ -2,7 +2,7 @@
 declare var exports;
 
 import {SHARED_DOMAIN_OPS} from '../aggregate';
-import {COLUMN, ROW, X, Y, SHAPE, SIZE, COLOR, OPACITY, TEXT, hasScale, Channel} from '../channel';
+import {COLUMN, ROW, X, Y, X2, Y2, SHAPE, SIZE, COLOR, OPACITY, TEXT, hasScale, Channel} from '../channel';
 import {StackOffset} from '../config';
 import {SOURCE, STACKED_SCALE} from '../data';
 import {FieldDef, field, isMeasure} from '../fielddef';
@@ -40,12 +40,7 @@ export type ScaleComponents = {
 }
 
 export function parseScaleComponent(model: Model): Dict<ScaleComponents> {
-  // We get all the channels and create a scale for it.
-  // However, in case of X/X2 or Y/Y2 we will have to map two channels to
-  // a single scale with union of the domain.
-  // Each scale consist of a name, type, domain, props, range
-  // We will need to union the domain, and maybe the range
-  // 
+  // TODO: should model.channels() inlcude X2/Y2?
   return model.channels().reduce(function(scale: Dict<ScaleComponents>, channel: Channel) {
       if (model.scale(channel)) {
         const fieldDef = model.fieldDef(channel);
@@ -79,9 +74,24 @@ function parseMainScale(model: Model, fieldDef: FieldDef, channel: Channel) {
     type: scale.type,
   };
 
-  scaleDef.domain = domain(scale, model, channel);
-  extend(scaleDef, rangeMixins(scale, model, channel));
+  // If channel is either X or Y then union them with X2 & Y2 if they exist 
+  if (channel === X && model.has(X2)) {
+    if (model.has(X)) {
+      scaleDef.domain = { fields : [domain(scale, model, X), domain(scale, model, X2)] };
+    } else {
+      scaleDef.domain = { fields : [domain(scale, model, X2)] };
+    }
+  } else if (channel === Y && model.has(Y2)) {
+      if (model.has(Y)) {
+        scaleDef.domain = { fields : [domain(scale, model, Y), domain(scale, model, Y2)] };
+      } else {
+        scaleDef.domain = { fields : [domain(scale, model, Y2)] };
+      }
+  } else {
+    scaleDef.domain = domain(scale, model, channel);
+  }
 
+  extend(scaleDef, rangeMixins(scale, model, channel));
   if (sort && (typeof sort === 'string' ? sort : sort.order) === 'descending') {
     scaleDef.reverse = true;
   }

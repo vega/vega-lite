@@ -1,6 +1,6 @@
 import {AggregateOp} from '../aggregate';
 import {Axis} from '../axis';
-import {X, Y, TEXT, PATH, ORDER, Channel, UNIT_CHANNELS,  UNIT_SCALE_CHANNELS, NONSPATIAL_SCALE_CHANNELS, supportMark} from '../channel';
+import {X, Y, X2, Y2, TEXT, PATH, ORDER, Channel, UNIT_CHANNELS,  UNIT_SCALE_CHANNELS, NONSPATIAL_SCALE_CHANNELS, supportMark} from '../channel';
 import {defaultConfig, Config, CellConfig} from '../config';
 import {SOURCE, SUMMARY} from '../data';
 import {Encoding} from '../encoding';
@@ -83,11 +83,18 @@ export class UnitModel extends Model {
 
   private _initScale(mark: Mark, encoding: Encoding, config: Config): Dict<Scale> {
     return UNIT_SCALE_CHANNELS.reduce(function(_scale, channel) {
-      if (vlEncoding.has(encoding, channel)) {
-        const scaleSpec = encoding[channel].scale || {};
-        const channelDef = encoding[channel];
+      if (vlEncoding.has(encoding, channel) ||
+          (channel === X && vlEncoding.has(encoding, X2)) ||
+          (channel === Y && vlEncoding.has(encoding, Y2))) {
 
-        const _scaleType = scaleType(scaleSpec, channelDef, channel, mark);
+        let targetChannel = channel;
+        if (!vlEncoding.has(encoding, channel)) {
+          targetChannel = channel === X ? X2 : Y2;
+        }
+        const channelDef = encoding[targetChannel];
+        const scaleSpec = channelDef.scale || {};
+
+        const _scaleType = scaleType(scaleSpec, channelDef, targetChannel, mark);
 
         _scale[channel] = extend({
           type: _scaleType,
