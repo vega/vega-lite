@@ -3,7 +3,7 @@ import {Config} from '../config';
 import {Encoding} from '../encoding';
 import {isAggregate, has} from '../encoding';
 import {isMeasure} from '../fielddef';
-import {POINT, LINE, TICK, CIRCLE, SQUARE, RULE, BAR, AREA, Mark} from '../mark';
+import {POINT, LINE, TICK, CIRCLE, SQUARE, RULE, Mark} from '../mark';
 import {contains, extend} from '../util';
 
 /**
@@ -31,26 +31,21 @@ export function initMarkConfig(mark: Mark, encoding: Encoding, config: Config) {
          case 'orient':
            const xIsMeasure = isMeasure(encoding.x);
            const yIsMeasure = isMeasure(encoding.y);
+           const x2IsMeasure = isMeasure(encoding.x2);
+           const y2IsMeasure = isMeasure(encoding.y2);
 
            // When unambiguous, do not allow overriding
-           if (xIsMeasure && !yIsMeasure) {
-             if (contains([RULE, BAR, AREA], mark)) {
-               cfg[property] = 'horizontal';
-             } else if (mark === TICK) {
+           if ((xIsMeasure || x2IsMeasure) && !(yIsMeasure || y2IsMeasure)) {
+             if (mark === TICK) {
                cfg[property] = 'vertical';
              } else {
-               cfg[property] = 'vertical';  // implicitly vertical
+               cfg[property] = 'horizontal';  // implicitly vertical
              }
-           } else if (!xIsMeasure && yIsMeasure) {
-             {
-               cfg[property] = 'vertical';
-             }
-             if (contains([RULE, BAR, AREA], mark)) {
-               cfg[property] = 'vertical';
-             } else if (mark === TICK) {
+           } else if (!(xIsMeasure || x2IsMeasure) && (yIsMeasure || y2IsMeasure)) {
+             if (mark === TICK) {
                cfg[property] = 'horizontal';
              } else {
-               cfg[property] = 'horizontal';  // implicitly horizontal
+               cfg[property] = 'vertical';  // implicitly horizontal
              }
            }
 

@@ -12,33 +12,47 @@ export namespace rule {
     let p: any = {};
 
     // TODO: support explicit value
-    const orient = model.config().mark.orient;
-
-    if (orient === 'vertical') {
-      if (model.has(X) && model.has(Y) && model.has(Y2)) {
+    if(model.config().mark.orient === 'vertical') {
+      if (model.has(X)) {
         p.x = position(model, X);
+      } else {
+        p.x = { value : 0};
+      }
+
+      if (model.has(Y)) {
         p.y = position(model, Y);
+      } else {
+        p.y = { field: { group: 'height' } };
+      }
+
+      if (model.has(Y2)) {
         p.y2 = {
-          scale: model.scaleName(Y),
+          scale: model.scaleName(Y2),
           field: model.field(Y2)
         };
-      } else if (model.has(X) && model.has(Y)) {
-          p.x = position(model, X);
-          p.y = { field: { group: 'height' } };
-          p.y2 = position(model, Y);
+      } else {
+        p.y2 = { field: { group: 'height' } };
       }
-    } else if (orient === 'horizontal') {
-      if (model.has(Y) && model.has(X) && model.has(X2)) {
+    } else {
+      if (model.has(Y)) {
+        p.y = position(model, Y);
+      } else {
+        p.y = { value: 0 };
+      }
+
+      if (model.has(X)) {
         p.x = position(model, X);
+      } else {
+        p.x = { value: 0 };
+      }
+
+      if (model.has(X2)) {
         p.x2 = {
-          scale: model.scaleName(X),
+          scale: model.scaleName(X2),
           field: model.field(X2)
         };
-        p.y = position(model, Y);
-      } else if (model.has(X) && model.has(Y)) {
-        p.x = { value: 0 };
-        p.x2 = position(model, X);
-        p.y = position(model, Y);
+      } else {
+        p.x2 = { field: { group: 'width' } };
       }
     }
 
