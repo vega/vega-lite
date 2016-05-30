@@ -1,5 +1,5 @@
 
-import {Channel, X, Y, ROW, COLUMN} from '../channel';
+import {Channel, X, Y, X2, Y2, ROW, COLUMN} from '../channel';
 import {LAYOUT} from '../data';
 import {ScaleType} from '../scale';
 import {Formula} from '../transform';
@@ -86,7 +86,7 @@ function parseUnitSizeLayout(model: UnitModel, channel: Channel): SizeComponent 
 }
 
 function unitSizeExpr(model: UnitModel, channel: Channel, nonOrdinalSize: number): string {
-  if (model.has(channel)) {
+  if (model.has(channel) || (channel === X && model.has(X2)) || (channel === Y && model.has(Y2))) {
     if (model.isOrdinalScale(channel)) {
       const scale = model.scale(channel);
       return '(' + cardinalityFormula(model, channel) +
