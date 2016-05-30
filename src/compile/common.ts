@@ -108,6 +108,7 @@ export function applyMarkConfig(marksProperties, model: UnitModel, propsList: st
  *
  * @param format explicitly specified format
  */
+// FIXME: replace channel: Channel with fieldDef: FieldDef
 export function formatMixins(model: Model, channel: Channel, format: string) {
   const fieldDef = model.fieldDef(channel);
 
@@ -134,6 +135,7 @@ export function formatMixins(model: Model, channel: Channel, format: string) {
     }
   }
 
+  // FIXME: this is only used when we call this from text.ts, let's extract this condition as a method for text.ts
   if (channel === TEXT) {
     // text does not support format and formatType
     // https://github.com/vega/vega/issues/505
@@ -141,6 +143,7 @@ export function formatMixins(model: Model, channel: Channel, format: string) {
     const filter = (def.formatType || 'number') + (def.format ? ':\'' + def.format + '\'' : '');
     return {
       text: {
+        // FIXME: remove model.field  use fielddef.ts's field and pass in fieldDef
         template: '{{' + model.field(channel, { datum: true }) + ' | ' + filter + '}}'
       }
     };
@@ -149,6 +152,7 @@ export function formatMixins(model: Model, channel: Channel, format: string) {
   return def;
 }
 
+// FIXME: Change the channel: Channel signature to just shortTimeLabels: boolean
 function isAbbreviated(model: Model, channel: Channel, fieldDef: FieldDef) {
   switch (channel) {
     case ROW:
@@ -179,6 +183,11 @@ export function sortField(orderChannelDef: OrderChannelDef) {
 /**
  * Returns the time format used for axis labels for a time unit.
  */
+
+// FIXME: Change the signature
+// - remove channel: Channel
+// - add fieldDef: FieldDef, and shortTimeLabels: boolean
+
 export function timeFormat(model: Model, channel: Channel): string {
   const fieldDef = model.fieldDef(channel);
   return timeFormatExpr(fieldDef.timeUnit, isAbbreviated(model, channel, fieldDef));
