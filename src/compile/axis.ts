@@ -1,5 +1,5 @@
 import {AxisOrient} from '../axis';
-import {COLUMN, ROW, X, Y, Channel} from '../channel';
+import {COLUMN, ROW, X, Y, X2, Y2, Channel} from '../channel';
 import {title as fieldDefTitle, isDimension} from '../fielddef';
 import {NOMINAL, ORDINAL, TEMPORAL} from '../type';
 import {contains, keys, extend, truncate, Dict} from '../util';
@@ -92,8 +92,14 @@ export function parseAxis(channel: Channel, model: Model): VgAxis {
   };
 
   // format mixins (add format and formatType)
-  extend(def, formatMixins(model, channel, model.axis(channel).format));
-
+  // In case we need to get the fielddef axis for X2 or Y2
+  // if X or Y doesn't exist in the model. Use targetChannel
+  // to access X2 or Y2.
+  let targetChannel = channel;
+  if (!model.has(channel)) {
+    targetChannel = channel === X ? X2 : Y2;
+  }
+  extend(def, formatMixins(model, targetChannel, model.axis(channel).format));
   // 1.2. Add properties
   [
     // a) properties with special rules (so it has axis[property] methods) -- call rule functions

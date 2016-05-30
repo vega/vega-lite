@@ -112,8 +112,15 @@ export class UnitModel extends Model {
   private _initAxis(encoding: Encoding, config: Config): Dict<Axis> {
     return [X, Y].reduce(function(_axis, channel) {
       // Position Axis
-      if (vlEncoding.has(encoding, channel)) {
-        const axisSpec = encoding[channel].axis;
+      if (vlEncoding.has(encoding, channel) ||
+          (channel === X && vlEncoding.has(encoding, X2)) ||
+          (channel === Y && vlEncoding.has(encoding, Y2))) {
+
+        let targetChannel = channel;
+        if (!vlEncoding.has(encoding, channel)) {
+          targetChannel = channel === X ? X2 : Y2;
+        }
+        const axisSpec = encoding[targetChannel].axis;
         if (axisSpec !== false) {
           _axis[channel] = extend({},
             config.axis,
