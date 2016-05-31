@@ -13,7 +13,7 @@ import {VgData, VgMarkGroup, VgScale, VgAxis, VgLegend} from '../vega.schema';
 
 import {DataComponent} from './data/data';
 import {LayoutComponent} from './layout';
-import {ScaleComponents} from './scale';
+import {ScaleComponents, renameScaleData} from './scale';
 
 /**
  * Composable Components that are intermediate results of the parsing phase of the
@@ -131,12 +131,12 @@ export abstract class Model {
     this.parseData();
     this.parseSelectionData();
     this.parseLayoutData();
-    this.parseScale(); // depends on data name
-    this.parseAxis(); // depends on scale name
-    this.parseLegend(); // depends on scale name
-    this.parseAxisGroup(); // depends on child axis
+    this.parseScale();
+    this.parseAxis();
+    this.parseLegend();
+    this.parseAxisGroup();
     this.parseGridGroup();
-    this.parseMark(); // depends on data name and scale name, axisGroup, gridGroup and children's scale, axis, legend and mark.
+    this.parseMark();
   }
 
   public abstract parseData();
@@ -157,6 +157,20 @@ export abstract class Model {
   public abstract parseAxisGroup();
   public abstract parseGridGroup();
 
+  /**
+   * Set the flag to assemble a raw data source to true.
+   *
+   * We need a raw data source for example when we want to sort the domain of a
+   * scale by an aggregated value.
+   */
+  public setAssembleRaw() {
+    if (this.component.data && this.component.data.aggregate) {
+      this.component.data.aggregate.assembleRaw = true;
+    } else {
+      this.parent().setAssembleRaw();
+    }
+  }
+
   public abstract assembleData(data: VgData[]): VgData[];
 
   public abstract assembleLayout(layoutData: VgData[]): VgData[];
@@ -169,12 +183,12 @@ export abstract class Model {
     // FIXME: write assembleScales() in scale.ts that
     // help assemble scale domains with scale signature as well
     return flatten(vals(this.component.scale).map((scales: ScaleComponents) => {
-      let arr = [scales.main];
+      let arr = [renameScaleData(this, scales.main)];
       if (scales.colorLegend) {
-        arr.push(scales.colorLegend);
+        arr.push(renameScaleData(this, scales.colorLegend));
       }
       if (scales.binColorLegend) {
-        arr.push(scales.binColorLegend);
+        arr.push(renameScaleData(this, scales.binColorLegend));
       }
 
       return arr;
@@ -260,10 +274,17 @@ export abstract class Model {
    * Return the data source name for the given data source type.
    *
    * For unit spec, this is always simply the spec.name + '-' + dataSourceType.
-   * We already use the name map so that marks and scales use the correct data.
+   * The data name has not been renamed yet. Call `dataName` to get the final name.
    */
   public dataName(dataSourceType: DataTable): string {
-    return this._dataNameMap.get(this.name(String(dataSourceType)));
+    return this.name(String(dataSourceType));
+  }
+
+  /**
+   * Returns the renamed data name after renaming.
+   */
+  public renamedDataName(dataName: string) {
+    return this._dataNameMap.get(dataName);
   }
 
   public renameSize(oldName: string, newName: string) {

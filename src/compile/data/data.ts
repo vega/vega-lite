@@ -1,7 +1,7 @@
 import {Formula} from '../../transform';
 import {keys, Dict, StringSet, unique, hash, allSame, differ, any, all, map, extend, forEach, empty, duplicate} from '../../util';
 import {VgData, VgTransform} from '../../vega.schema';
-import {SOURCE, RAW, RANK, SCALE, STACKED_SCALE} from '../../data';
+import {SOURCE, RAW, STACKED_SCALE} from '../../data';
 
 import {FacetModel} from './../facet';
 import {LayerModel} from './../layer';
@@ -61,12 +61,6 @@ export interface DataComponent {
 
   /** Array of summary component object for producing aggregates */
   aggregate: AggregateComponent;
-
-  /**
-   * Whether we need the unaggrgeated data source or not.
-   * Should be set when we parse the scales.
-   */
-  includeRawDomain?: boolean;
 }
 
 /**
@@ -78,6 +72,12 @@ export interface AggregateComponent {
 
   /** dictionary mapping field name to string set of aggregate ops */
   measures: Dict<StringSet>;
+
+  /**
+   * Whether we need the unaggrgeated data source.
+   * Should be set when we parse the scales.
+   */
+  assembleRaw?: boolean;
 }
 
 // TODO: split this file into multiple files and remove this linter flag
@@ -121,8 +121,8 @@ export function parseFacetData(model: FacetModel): DataComponent {
   const dataComponent = child.component.data;
   delete child.component.data;
 
-  [SOURCE, RAW, RANK, SCALE, STACKED_SCALE].forEach((dataSrcType) => {
-    model.renameData(child.dataName(dataSrcType), model.dataName(dataSrcType));
+  [SOURCE, RAW, STACKED_SCALE].forEach((data) => {
+    model.renameData(child.dataName(data), model.dataName(data));
   });
 
   if (dataComponent.aggregate) {
@@ -243,7 +243,7 @@ export function parseLayerData(model: LayerModel): DataComponent {
 export function assembleData(model: Model, data: VgData[]) {
   const component = model.component.data;
 
-  if (!component) {
+  if (!component || !component.source) {
     return data;
   }
 
@@ -259,11 +259,15 @@ export function assembleData(model: Model, data: VgData[]) {
     timeUnit.assemble(component)
   );
 
-  if (component.includeRawDomain) {
+  let rawSource;
+  const assembleRaw = component.aggregate && component.aggregate.assembleRaw;
+  if (assembleRaw) {
     // create an intermediate data source for raw data
     const sourceName = dataSource.name;
     const rawName = model.dataName(RAW);
+    rawSource = dataSource;
     dataSource.name = rawName;
+
     dataSource = {
       source: rawName,
       name: sourceName
@@ -295,25 +299,30 @@ export function assembleData(model: Model, data: VgData[]) {
   }
 
   // scale
-  const scaleSource = component.includeRawDomain ? model.dataName(RAW) : dataSource.name;
   const posFilter = nonPositiveFilter.assemble(component);
-  if (posFilter.length > 0) {
-    data.push({
-      source: scaleSource,
-      name: model.dataName(SCALE),
-      transform: posFilter
-    });
-  } else {
-    data.push({
-      source: scaleSource,
-      name: model.dataName(SCALE),
-    });
+  if (posFilter) {
+    if (assembleRaw) {
+      rawSource.transform = (rawSource.transform || []).concat(posFilter);
+    } else {
+      dataSource.transform = (dataSource.transform || []).concat(posFilter);
+    }
   }
 
   // time unit domain
   const tuDomain = timeUnitDomain.assemble(component);
   if (tuDomain) {
     data.push.apply(data, tuDomain);
+  }
+
+  // remove data sources that are not needed
+  let index = data.length - 1;
+  while (index >= 0) {
+    const ds = data[index];
+    if (empty(ds.transform) && ds.source) {
+      model.renameData(ds.name, ds.source);
+      data.splice(index, 1);
+    }
+    index -= 1;
   }
 
   return data;

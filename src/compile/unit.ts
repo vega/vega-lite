@@ -178,7 +178,13 @@ export class UnitModel extends Model {
   }
 
   public assembleMarks() {
-    return this.component.mark;
+    const marks = this.component.mark;
+    marks.forEach((mark) => {
+      if (mark.from) {
+        mark.from.data = this.renamedDataName(mark.from.data);
+      }
+    });
+    return marks;
   }
 
   public assembleParentGroupProperties(cellConfig: CellConfig) {

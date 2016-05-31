@@ -23,7 +23,6 @@ export enum DataTable {
   SOURCE = 'source' as any,
   STACKED_SCALE = 'stacked_scale' as any,
   LAYOUT = 'layout' as any,
-  RANK = 'rank' as any,
   SCALE = 'scale' as any,
 }
 
@@ -31,8 +30,6 @@ export const RAW = DataTable.RAW;
 export const SOURCE = DataTable.SOURCE;
 export const STACKED_SCALE = DataTable.STACKED_SCALE;
 export const LAYOUT = DataTable.LAYOUT;
-export const RANK = DataTable.RANK;
-export const SCALE = DataTable.SCALE;
 
 /** Mapping from datalib's inferred type to Vega-lite's type */
 // TODO: consider if we can remove

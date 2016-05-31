@@ -4,15 +4,14 @@ declare var exports;
 import {SHARED_DOMAIN_OPS} from '../aggregate';
 import {COLUMN, ROW, X, Y, SHAPE, SIZE, COLOR, OPACITY, TEXT, hasScale, Channel} from '../channel';
 import {StackOffset} from '../config';
-import {SCALE, STACKED_SCALE} from '../data';
+import {RAW, SOURCE, STACKED_SCALE} from '../data';
 import {FieldDef, field, isMeasure} from '../fielddef';
 import {Mark, BAR, TEXT as TEXT_MARK, RULE, TICK} from '../mark';
 import {Scale, ScaleType, NiceTime} from '../scale';
 import {TimeUnit} from '../timeunit';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
-import {contains, extend, Dict, hash, vals} from '../util';
-import {VgScale, isUnionedDomain} from '../vega.schema';
-
+import {contains, extend, Dict, hash, vals, isBoolean} from '../util';
+import {VgScale, isUnionedDomain, isDataRefDomain} from '../vega.schema';
 
 import {Model} from './model';
 import {rawDomain, smallestUnit} from './time';
@@ -39,6 +38,18 @@ export type ScaleComponents = {
   main: ScaleComponent;
   colorLegend?: ScaleComponent,
   binColorLegend?: ScaleComponent
+}
+
+export function renameScaleData(model: Model, scale: ScaleComponent): ScaleComponent {
+  const domain = scale.domain;
+  if (isUnionedDomain(domain)) {
+    domain.fields.forEach((field) => {
+      field.data = model.renamedDataName(field.data);
+    });
+  } else if (isDataRefDomain(domain)) {
+    domain.data = model.renamedDataName(domain.data);
+  }
+  return scale;
 }
 
 export function parseScaleComponent(model: Model): Dict<ScaleComponents> {
@@ -114,12 +125,12 @@ function parseColorLegendScale(model: Model, fieldDef: FieldDef): ScaleComponent
     name: model.scaleName(COLOR_LEGEND),
     type: ScaleType.ORDINAL,
     domain: {
-      data: model.dataName(SCALE),
+      data: model.dataName(SOURCE),
       // use rank_<field> for ordinal type, for bin and timeUnit use default field
       field: model.field(COLOR, (fieldDef.bin || fieldDef.timeUnit) ? {} : {prefn: 'rank_'}),
       sort: true
     },
-    range: {data: model.dataName(SCALE), field: model.field(COLOR), sort: true}
+    range: {data: model.dataName(SOURCE), field: model.field(COLOR), sort: true}
   };
 }
 
@@ -131,12 +142,12 @@ function parseBinColorLegendLabel(model: Model, fieldDef: FieldDef): ScaleCompon
     name: model.scaleName(COLOR_LEGEND_LABEL),
     type: ScaleType.ORDINAL,
     domain: {
-      data: model.dataName(SCALE),
+      data: model.dataName(SOURCE),
       field: model.field(COLOR),
       sort: true
     },
     range: {
-      data: model.dataName(SCALE),
+      data: model.dataName(SOURCE),
       field: field(fieldDef, {binSuffix: '_range'}),
       sort: {
         field: model.field(COLOR, { binSuffix: '_start' }),
@@ -215,7 +226,7 @@ export function domain(scale: Scale, model: Model, channel:Channel): any {
     }
 
     return {
-      data: model.dataName(SCALE),
+      data: model.dataName(SOURCE),
       field: model.field(channel),
       sort: {
         field: model.field(channel),
@@ -241,15 +252,16 @@ export function domain(scale: Scale, model: Model, channel:Channel): any {
   sort = domainSort(model, channel, scale.type);
 
   if (includeRawDomain) { // includeRawDomain - only Q/T
-    model.component.data.includeRawDomain = true;
+    // FIXME: might have already been merged up
+    model.setAssembleRaw();
     return {
-      data: SCALE,
+      data: model.dataName(RAW),
       field: model.field(channel, {noAggregate: true})
     };
   } else if (fieldDef.bin) { // bin
     return scale.type === ScaleType.ORDINAL ? {
       // ordinal bin scale takes domain from bin_range, ordered by bin_start
-      data: model.dataName(SCALE),
+      data: model.dataName(SOURCE),
       field: model.field(channel, { binSuffix: '_range' }),
       sort: {
         field: model.field(channel, { binSuffix: '_start' }),
@@ -257,33 +269,37 @@ export function domain(scale: Scale, model: Model, channel:Channel): any {
       }
     } : channel === COLOR ? {
       // Currently, binned on color uses linear scale and thus use _start point
-      data: model.dataName(SCALE),
+      data: model.dataName(SOURCE),
       field: model.field(channel, { binSuffix: '_start' })
     } : {
       // other linear bin scale merges both bin_start and bin_end for non-ordinal scale
-      data: model.dataName(SCALE),
+      data: model.dataName(SOURCE),
       field: [
         model.field(channel, { binSuffix: '_start' }),
         model.field(channel, { binSuffix: '_end' })
       ]
     };
   } else if (sort) { // have sort -- only for ordinal
+    // If sort by aggregation of a specified sort field, we need to use raw data,
+    // so we can aggregate values for the scale independently from the main aggregation.
+    const aggSort = !isBoolean(sort);
+    if (aggSort) {
+      model.setAssembleRaw();
+    }
     return {
-      // If sort by aggregation of a specified sort field, we need to use SCALE table,
-      // so we can aggregate values for the scale independently from the main aggregation.
-      data: sort.op ? SCALE : model.dataName(SCALE),
+      data: aggSort ? model.dataName(RAW) : model.dataName(SOURCE),
       field: (fieldDef.type === ORDINAL && channel === COLOR) ? model.field(channel, {prefn: 'rank_'}) : model.field(channel),
       sort: sort
     };
   } else {
     return {
-      data: model.dataName(SCALE),
+      data: model.dataName(SOURCE),
       field: (fieldDef.type === ORDINAL && channel === COLOR) ? model.field(channel, {prefn: 'rank_'}) : model.field(channel),
     };
   }
 }
 
-export function domainSort(model: Model, channel: Channel, scaleType: ScaleType): any {
+export function domainSort(model: Model, channel: Channel, scaleType: ScaleType): boolean | {op: string, field: string} {
   if (scaleType !== ScaleType.ORDINAL) {
     return undefined;
   }
