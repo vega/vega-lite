@@ -77,13 +77,13 @@ function parseMainScale(model: Model, fieldDef: FieldDef, channel: Channel) {
   // If channel is either X or Y then union them with X2 & Y2 if they exist 
   if (channel === X && model.has(X2)) {
     if (model.has(X)) {
-      scaleDef.domain = { fields : [domain(scale, model, X), domain(scale, model, X2)] };
+      scaleDef.domain = { fields: [domain(scale, model, X), domain(scale, model, X2)] };
     } else {
       scaleDef.domain = domain(scale, model, X2);
     }
   } else if (channel === Y && model.has(Y2)) {
       if (model.has(Y)) {
-        scaleDef.domain = { fields : [domain(scale, model, Y), domain(scale, model, Y2)] };
+        scaleDef.domain = { fields: [domain(scale, model, Y), domain(scale, model, Y2)] };
       } else {
         scaleDef.domain = domain(scale, model, Y2);
       }

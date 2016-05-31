@@ -94,7 +94,7 @@ export class UnitModel extends Model {
         const channelDef = encoding[targetChannel];
         const scaleSpec = channelDef.scale || {};
 
-        const _scaleType = scaleType(scaleSpec, channelDef, targetChannel, mark);
+        const _scaleType = scaleType(scaleSpec, channelDef, channel, mark);
 
         _scale[channel] = extend({
           type: _scaleType,

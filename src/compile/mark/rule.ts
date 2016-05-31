@@ -31,7 +31,7 @@ export namespace rule {
           field: model.field(Y2)
         };
       } else {
-        p.y2 = { field: { group: 'height' } };
+        p.y2 = { value: 0 };
       }
     } else {
       if (model.has(Y)) {
