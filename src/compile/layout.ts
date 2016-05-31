@@ -86,7 +86,7 @@ function parseUnitSizeLayout(model: UnitModel, channel: Channel): SizeComponent 
 }
 
 function unitSizeExpr(model: UnitModel, channel: Channel, nonOrdinalSize: number): string {
-  if (model.scale(channel) !== null || (channel === X && model.has(X2)) || (channel === Y && model.has(Y2))) {
+  if (model.scale(channel) !== null) {
     if (model.isOrdinalScale(channel)) {
       const scale = model.scale(channel);
       return '(' + cardinalityFormula(model, channel) +

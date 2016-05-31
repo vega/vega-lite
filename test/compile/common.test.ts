@@ -4,38 +4,8 @@ import {assert} from 'chai';
 import {parseUnitModel} from '../util';
 import {X} from '../../src/channel';
 import {formatMixins, applyColorAndOpacity} from '../../src/compile/common';
-import {format} from '../../src/timeunit';
 
-describe('Model', function() {
-  describe('format()', function() {
-    it('should get the right time template', function() {
-      let model = parseUnitModel({
-        mark: "point",
-        encoding: {
-          x: {timeUnit: 'month', field:'a', type: "temporal", axis: {shortTimeLabels: true}}
-        }
-      });
-      assert.equal(format(model.fieldDef(X).timeUnit, model.axis(X).shortTimeLabels), '%b');
-
-      model = parseUnitModel({
-        mark: "point",
-        encoding: {
-          x: {timeUnit: 'month', field:'a', type: "temporal"}
-        }
-      });
-      assert.equal(format(model.fieldDef(X).timeUnit, model.axis(X).shortTimeLabels), '%B');
-
-      model = parseUnitModel({
-        mark: "point",
-        encoding: {
-          x: {timeUnit: 'week', field:'a', type: "temporal", axis: {shortTimeLabels: true}}
-        }
-      });
-
-      assert.equal(format(model.fieldDef(X).timeUnit, model.axis(X).shortTimeLabels), undefined);
-    });
-  });
-
+describe('Common', function() {
   describe('formatMixins()', function() {
     it('should use time format type for time scale', function() {
       const model = parseUnitModel({

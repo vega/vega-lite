@@ -80,8 +80,10 @@ export namespace text {
     // text
     if (model.has(TEXT)) {
       if (contains([QUANTITATIVE, TEMPORAL], model.fieldDef(TEXT).type)) {
-        const format = model.config().mark.format;
-        const def = formatMixins(model, fieldDef, format, model.config().mark.shortTimeLabels);
+        const def = formatMixins(model, fieldDef,
+                                 model.config().mark.format,
+                                 model.config().mark.shortTimeLabels);
+
         extend(p, formatMixinsText(model, def));
       } else {
         p.text = { field: model.field(TEXT) };

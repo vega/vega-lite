@@ -7,7 +7,7 @@ import {contains, union} from '../util';
 import {FacetModel} from './facet';
 import {LayerModel} from './layer';
 import {Model} from './model';
-import {format as timeFormatExpr} from '../timeunit';
+import {format as timeFormat} from '../timeunit';
 import {UnitModel} from './unit';
 import {Spec, isUnitSpec, isFacetSpec, isLayerSpec} from '../spec';
 
@@ -127,7 +127,7 @@ export function formatMixins(model: Model, fieldDef: FieldDef, format: string, s
         def.format = model.config().numberFormat;
         break;
       case TEMPORAL:
-        def.format = timeFormatExpr(fieldDef.timeUnit, shortTimeLabels) || model.config().timeFormat;
+        def.format = timeFormat(fieldDef.timeUnit, shortTimeLabels) || model.config().timeFormat;
         break;
     }
   }

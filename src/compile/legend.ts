@@ -229,7 +229,7 @@ export namespace properties {
       } else if (fieldDef.timeUnit) {
         labelsSpec = extend({
           text: {
-            template: '{{ datum.data | time:\'' + timeFormat(fieldDef.timeUnit, model.legend(channel).shortTimeLabels) + '\'}}'
+            template: '{{ datum.data | time:\'' + timeFormat(fieldDef.timeUnit, legend.shortTimeLabels) + '\'}}'
           }
         }, labelsSpec || {});
       }
