@@ -27,14 +27,15 @@ const markCompiler = {
 };
 
 export function parseMark(model: UnitModel): any[] {
+  // TODO: new branch here parsePathMark()
   if (contains([LINE, AREA], model.mark())) {
-    return parsePathMark(model);
+    return parseLineOrArea(model);
   } else {
     return parseNonPathMark(model);
   }
 }
 
-function parsePathMark(model: UnitModel) { // TODO: extract this into compilePathMark
+function parseLineOrArea(model: UnitModel) { // TODO: extract this into compilePathMark
   const mark = model.mark();
   // TODO: replace this with more general case for composition
   const isFaceted = model.parent() && model.parent().isFacet();
@@ -92,6 +93,8 @@ function parsePathMark(model: UnitModel) { // TODO: extract this into compilePat
     return pathMarks;
   }
 }
+
+
 
 function parseNonPathMark(model: UnitModel) {
   const mark = model.mark();
