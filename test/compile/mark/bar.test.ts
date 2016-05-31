@@ -119,7 +119,7 @@ describe('Mark: Bar', function() {
       assert.deepEqual(props.y2, { scale: 'y', field: 'q3_people' });
     });
     
-    it('vertical bars should work with aggregate', function() {
+    it('horizontal bars should work with aggregate', function() {
       const model = parseUnitModel({
         "data": { "url": "data/population.json" },
         "mark": "bar",
