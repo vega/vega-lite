@@ -29,19 +29,17 @@ export function initMarkConfig(mark: Mark, encoding: Encoding, config: Config) {
            }
            break;
          case 'orient':
-           const xIsMeasure = isMeasure(encoding.x);
-           const yIsMeasure = isMeasure(encoding.y);
-           const x2IsMeasure = isMeasure(encoding.x2);
-           const y2IsMeasure = isMeasure(encoding.y2);
+           const xIsMeasure = isMeasure(encoding.x) || isMeasure(encoding.x2);
+           const yIsMeasure = isMeasure(encoding.y) || isMeasure(encoding.y2);
 
            // When unambiguous, do not allow overriding
-           if ((xIsMeasure || x2IsMeasure) && !(yIsMeasure || y2IsMeasure)) {
+           if (xIsMeasure && !yIsMeasure) {
              if (mark === TICK) {
                cfg[property] = 'vertical';
              } else {
                cfg[property] = 'horizontal';  // implicitly vertical
              }
-           } else if (!(xIsMeasure || x2IsMeasure) && (yIsMeasure || y2IsMeasure)) {
+           } else if (!xIsMeasure && yIsMeasure) {
              if (mark === TICK) {
                cfg[property] = 'horizontal';
              } else {
