@@ -4,7 +4,7 @@ import {AggregateOp, AGGREGATE_OPS} from './aggregate';
 import {Axis} from './axis';
 import {Bin} from './bin';
 import {Legend} from './legend';
-import {Scale} from './scale';
+import {Scale, ScaleType} from './scale';
 import {SortField, SortOrder} from './sort';
 import {TimeUnit} from './timeunit';
 import {Type, NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from './type';
@@ -77,6 +77,8 @@ export interface FieldRefOption {
   fn?: string;
   /** prepend fn with custom function prefix */
   prefn?: string;
+  /** scaleType */
+  scaleType?: ScaleType;
   /** append suffix to the field ref for bin (default='_start') */
   binSuffix?: string;
   /** append suffix to the field ref (general) */
@@ -93,7 +95,14 @@ export function field(fieldDef: FieldDef, opt: FieldRefOption = {}) {
   } else if (opt.fn) {
     return prefix + opt.fn + '_' + field + suffix;
   } else if (!opt.nofn && fieldDef.bin) {
-    return prefix + 'bin_' + field + (opt.binSuffix || suffix || '_start');
+    const binSuffix = opt.binSuffix || (
+      opt.scaleType === ScaleType.ORDINAL ?
+        // For ordinal scale type, use `_range` as suffix.
+        '_range' :
+        // For non-ordinal scale or unknown, use `_start` as suffix.
+        '_start'
+    );
+    return prefix + 'bin_' + field + binSuffix;
   } else if (!opt.nofn && !opt.noAggregate && fieldDef.aggregate) {
     return prefix + fieldDef.aggregate + '_' + field + suffix;
   } else if (!opt.nofn && fieldDef.timeUnit) {
