@@ -16,8 +16,7 @@
         "x2": {
           "aggregate": "max",
           "field": "people",
-          "type": "quantitative",
-          "axis": {"title": "population"}
+          "type": "quantitative"
         }
       }
     },

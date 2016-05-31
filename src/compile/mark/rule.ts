@@ -1,4 +1,4 @@
-import {X, Y, X2, Y2, SIZE, Channel} from '../../channel';
+import {X, Y, X2, Y2, SIZE} from '../../channel';
 
 import {UnitModel} from '../unit';
 import {applyColorAndOpacity} from '../common';
@@ -14,13 +14,19 @@ export namespace rule {
     // TODO: support explicit value
     if(model.config().mark.orient === 'vertical') {
       if (model.has(X)) {
-        p.x = position(model, X);
+        p.x = {
+          scale: model.scaleName(X),
+          field: model.field(X, { binSuffix: '_mid' })
+        };
       } else {
         p.x = { value : 0};
       }
 
       if (model.has(Y)) {
-        p.y = position(model, Y);
+        p.y = {
+          scale: model.scaleName(Y),
+          field: model.field(Y, { binSuffix: '_mid' })
+        };
       } else {
         p.y = { field: { group: 'height' } };
       }
@@ -28,20 +34,26 @@ export namespace rule {
       if (model.has(Y2)) {
         p.y2 = {
           scale: model.scaleName(Y),
-          field: model.field(Y2)
+          field: model.field(Y2, { binSuffix: '_mid' })
         };
       } else {
         p.y2 = { value: 0 };
       }
     } else {
       if (model.has(Y)) {
-        p.y = position(model, Y);
+        p.y = {
+          scale: model.scaleName(Y),
+          field: model.field(Y, { binSuffix: '_mid' })
+        };
       } else {
         p.y = { value: 0 };
       }
 
       if (model.has(X)) {
-        p.x = position(model, X);
+        p.x = {
+          scale: model.scaleName(X),
+          field: model.field(X, { binSuffix: '_mid' })
+        };
       } else {
         p.x = { value: 0 };
       }
@@ -49,7 +61,7 @@ export namespace rule {
       if (model.has(X2)) {
         p.x2 = {
           scale: model.scaleName(X),
-          field: model.field(X2)
+          field: model.field(X2, { binSuffix: '_mid' })
         };
       } else {
         p.x2 = { field: { group: 'width' } };
@@ -69,13 +81,6 @@ export namespace rule {
       p.strokeWidth = { value: sizeValue(model) };
     }
     return p;
-  }
-
-  function position(model: UnitModel, channel: Channel) {
-    return {
-        scale: model.scaleName(channel),
-        field: model.field(channel, { binSuffix: '_mid' })
-      };
   }
 
   function sizeValue(model: UnitModel) {
