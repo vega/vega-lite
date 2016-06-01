@@ -1,6 +1,10 @@
-import {UnitModel} from '../unit';
 import {X, Y, SHAPE, SIZE} from '../../channel';
+import {Config} from '../../config';
+import {ChannelDefWithLegend, FieldDef, field} from '../../fielddef';
+import {Scale} from '../../scale';
+
 import {applyColorAndOpacity} from '../common';
+import {UnitModel} from '../unit';
 
 export namespace point {
   export function markType() {
@@ -10,66 +14,77 @@ export namespace point {
   export function properties(model: UnitModel, fixedShape?: string) {
     // TODO Use Vega's marks properties interface
     let p: any = {};
+    const config = model.config();
 
-    // x
-    if (model.has(X)) {
-      p.x = {
-        scale: model.scaleName(X),
-        field: model.field(X, { binSuffix: '_mid' })
-      };
-    } else {
-      p.x = { value: model.config().scale.bandSize / 2 };
-    }
+    p.x = x(model.encoding().x, model.scaleName(X), config);
 
-    // y
-    if (model.has(Y)) {
-      p.y = {
-        scale: model.scaleName(Y),
-        field: model.field(Y, { binSuffix: '_mid' })
-      };
-    } else {
-      p.y = { value: model.config().scale.bandSize / 2 };
-    }
+    p.y = y(model.encoding().y, model.scaleName(Y), config);
 
-    // size
-    if (model.has(SIZE)) {
-      p.size = {
-        scale: model.scaleName(SIZE),
-        field: model.field(SIZE)
-      };
-    } else {
-      p.size = { value: sizeValue(model) };
-    }
+    p.size = size(model.encoding().size, model.scaleName(SIZE), model.scale(SIZE), config);
 
-    // shape
-    if (fixedShape) { // square and circle marks
-      p.shape = { value: fixedShape };
-    } else if (model.has(SHAPE)) {
-      p.shape = {
-        scale: model.scaleName(SHAPE),
-        field: model.field(SHAPE)
-      };
-    } else if (model.fieldDef(SHAPE).value) {
-      p.shape = { value: model.fieldDef(SHAPE).value };
-    } else if (model.config().mark.shape) {
-      p.shape = { value: model.config().mark.shape };
-    }
+    p.shape = shape(model.encoding().shape, model.scaleName(SHAPE), model.scale(SHAPE), config, fixedShape);
 
     applyColorAndOpacity(p, model);
     return p;
   }
 
-  function sizeValue(model: UnitModel) {
-    const fieldDef = model.fieldDef(SIZE);
-    if (fieldDef && fieldDef.value !== undefined) {
-       return fieldDef.value;
+  function x(fieldDef: FieldDef, scaleName: string, config: Config): any {
+    // x
+    if (fieldDef) {
+      if (fieldDef.field) {
+        return {
+          scale: scaleName,
+          field: field(fieldDef, { binSuffix: '_mid' })
+        };
+      }
+      // TODO: fieldDef.value (for layering)
     }
-
-    return model.config().mark.size;
+    return { value: config.scale.bandSize / 2 };
   }
 
-  export function labels(model: UnitModel) {
-    // TODO(#240): fill this method
+  function y(fieldDef: FieldDef, scaleName: string, config: Config): any {
+    // y
+    if (fieldDef) {
+      if (fieldDef.field) {
+        return {
+          scale: scaleName,
+          field: field(fieldDef, { binSuffix: '_mid' })
+        };
+      }
+      // TODO: fieldDef.value (for layering)
+    }
+    return { value: config.scale.bandSize / 2 };
+  }
+
+  function size(fieldDef: ChannelDefWithLegend, scaleName: string, scale: Scale, config: Config): any {
+    if (fieldDef) {
+      if (fieldDef.field) {
+        return {
+          scale: scaleName,
+          field: field(fieldDef, {scaleType: scale.type})
+        };
+      } else if (fieldDef.value !== undefined) {
+        return { value: fieldDef.value };
+      }
+    }
+    return { value: config.mark.size };
+  }
+
+  function shape(fieldDef: ChannelDefWithLegend, scaleName: string, scale: Scale, config: Config, fixedShape?: string): any {
+    // shape
+    if (fixedShape) { // square and circle marks
+      return { value: fixedShape };
+    } else if (fieldDef) {
+      if (fieldDef.field) {
+        return {
+          scale: scaleName,
+          field: field(fieldDef, {scaleType: scale.type})
+        };
+      } else if (fieldDef.value) {
+        return { value: fieldDef.value };
+      }
+    }
+    return { value: config.mark.shape };
   }
 }
 
