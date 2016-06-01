@@ -7,7 +7,7 @@ import {filter} from '../../src/compile/data/filter';
 import {nullFilter} from '../../src/compile/data/nullfilter';
 import {source} from '../../src/compile/data/source';
 import {stackScale} from '../../src/compile/data/stackscale';
-import {summary} from '../../src/compile/data/summary';
+import {aggregate} from '../../src/compile/data/aggregate';
 import {timeUnit} from '../../src/compile/data/timeunit';
 import {timeUnitDomain} from '../../src/compile/data/timeunitdomain';
 import {formatParse} from '../../src/compile/data/formatparse';
@@ -514,7 +514,7 @@ describe('data: summary', function () {
     });
 
     model.component.data = {} as DataComponent;
-    model.component.data.aggregate = summary.parseUnit(model);
+    model.component.data.aggregate = aggregate.parseUnit(model);
 
     it('should produce the correct summary component' ,function() {
       assert.deepEqual(model.component.data.aggregate, [{
@@ -526,7 +526,7 @@ describe('data: summary', function () {
     });
 
     it('should assemble the correct aggregate transform', function() {
-      const summaryData = summary.assemble(model.component.data, identity)[0];
+      const summaryData = aggregate.assemble(model.component.data, identity)[0];
       assert.deepEqual(summaryData, {
         'name': "summary",
         'source': 'source',
@@ -556,7 +556,7 @@ describe('data: summary', function () {
 
     it('should produce the correct summary component', function() {
       model.component.data = {} as DataComponent;
-      model.component.data.aggregate = summary.parseUnit(model);
+      model.component.data.aggregate = aggregate.parseUnit(model);
       assert.deepEqual(model.component.data.aggregate, [{
         name: 'summary',
         // source will be added in assemble step
@@ -566,7 +566,7 @@ describe('data: summary', function () {
     });
 
     it('should assemble the correct summary data', function() {
-      const summaryData = summary.assemble(model.component.data, identity)[0];
+      const summaryData = aggregate.assemble(model.component.data, identity)[0];
       assert.deepEqual(summaryData, {
         'name': "summary",
         'source': 'source',

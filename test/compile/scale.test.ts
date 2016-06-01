@@ -3,13 +3,13 @@
 import {assert} from 'chai';
 
 import * as vlscale from '../../src/compile/scale';
-import {SOURCE, SUMMARY} from '../../src/data';
+import {SOURCE} from '../../src/data';
 import {parseUnitModel} from '../util';
 import {Y, ROW} from '../../src/channel';
 import {ScaleType} from '../../src/scale';
 
 
-describe('Scale', function() {
+describe('scale', function() {
   describe('scaleType()', function() {
     it('should return time for yearmonth', function() {
       const model = parseUnitModel({
@@ -141,7 +141,7 @@ describe('Scale', function() {
           });
           const domain = vlscale.domain(model.scale(Y), model, Y);
 
-          assert.deepEqual(domain.data, SUMMARY);
+          assert.deepEqual(domain.data, SOURCE);
         });
 
 
@@ -159,7 +159,7 @@ describe('Scale', function() {
           });
           const domain = vlscale.domain(model.scale(Y), model, Y);
 
-          assert.deepEqual(domain.data, SUMMARY);
+          assert.deepEqual(domain.data, SOURCE);
         });
     });
 
@@ -234,7 +234,7 @@ describe('Scale', function() {
             const domain = vlscale.domain(model.scale(Y), model, Y);
 
             assert.deepEqual(domain, {
-              data: 'source', field: 'yearmonth_origin',
+              data: SOURCE, field: 'yearmonth_origin',
               sort: {field: 'yearmonth_origin', op: 'min'}
             });
           });
@@ -251,7 +251,7 @@ describe('Scale', function() {
           });
 
         assert.deepEqual(vlscale.domain(model.scale(Y), model, Y), {
-            data: "source",
+            data: SOURCE,
             field: 'origin',
             sort: sortDef
           });
@@ -266,7 +266,7 @@ describe('Scale', function() {
           });
 
         assert.deepEqual(vlscale.domain(model.scale(Y), model, Y), {
-            data: "source",
+            data: SOURCE,
             field: 'origin',
             sort: true
           });
@@ -293,12 +293,12 @@ describe('Scale', function() {
     it('should create correct inverse scale', function() {
       assert.equal(scales.colorLegend.type, 'ordinal');
       assert.deepEqual(scales.colorLegend.domain, {
-        data: 'source',
+        data: SOURCE,
         field: 'rank_origin',
         sort: true
       });
       assert.deepEqual(scales.colorLegend.range, {
-        data: 'source',
+        data: SOURCE,
         field: 'origin',
         sort: true
       });
@@ -307,7 +307,7 @@ describe('Scale', function() {
     it('should create correct color scale', function() {
       assert.equal(scales.main.type, 'linear');
       assert.deepEqual(scales.main.domain, {
-        data: 'source',
+        data: SOURCE,
         field: 'rank_origin'
       });
     });
@@ -332,12 +332,12 @@ describe('Scale', function() {
     it('should create correct identity scale', function() {
       assert.equal(scales.colorLegend.type, 'ordinal');
       assert.deepEqual(scales.colorLegend.domain, {
-        data: 'source',
+        data: SOURCE,
         field: 'bin_origin_start',
         sort: true
       });
       assert.deepEqual(scales.colorLegend.range, {
-        data: 'source',
+        data: SOURCE,
         field: 'bin_origin_start',
         sort: true
       });
@@ -345,12 +345,12 @@ describe('Scale', function() {
 
     it('should sort range of color labels', function() {
       assert.deepEqual(scales.binColorLegend.domain, {
-        data: 'source',
+        data: SOURCE,
         field: 'bin_origin_start',
         sort: true
       });
       assert.deepEqual(scales.binColorLegend.range, {
-        data: 'source',
+        data: SOURCE,
         field: 'bin_origin_range',
         sort: {"field": "bin_origin_start","op": "min"}
       });
@@ -376,12 +376,12 @@ describe('Scale', function() {
     it('should create correct identity scale', function() {
       assert.equal(scales.colorLegend.type, 'ordinal');
       assert.deepEqual(scales.colorLegend.domain, {
-        data: 'source',
+        data: SOURCE,
         field: 'year_origin',
         sort: true
       });
       assert.deepEqual(scales.colorLegend.range, {
-        data: 'source',
+        data: SOURCE,
         field: 'year_origin',
         sort: true
       });
