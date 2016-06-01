@@ -320,8 +320,11 @@ export abstract class Model {
   public abstract fieldDef(channel: Channel): FieldDef;
 
   public scale(channel: Channel): Scale {
-    return this._scale[channel];
+    return this._scale && this._scale[channel];
   }
+
+  public abstract hasScale(channel: Channel): boolean;
+  public abstract hasAxis(channel: Channel): boolean;
 
   // FIXME: eliminate this method
   public isOrdinalScale(channel: Channel) {
@@ -345,7 +348,7 @@ export abstract class Model {
   public abstract stack();
 
   public axis(channel: Channel): AxisProperties {
-    return this._axis[channel];
+    return this._axis && this._axis[channel];
   }
 
   public legend(channel: Channel): LegendProperties {

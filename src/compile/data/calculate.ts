@@ -19,6 +19,9 @@ export namespace calculate {
 
   export const parseUnit = parse;
 
+  // children have no transform so no need to merge anything up
+  export const parseFacet = parse;
+
   /**
    * Merge the formulas from the parent and all components into parent.
    *

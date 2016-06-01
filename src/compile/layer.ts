@@ -1,5 +1,5 @@
 import {Channel, CHANNELS} from '../channel';
-import {keys, flatten, unique, Dict, forEach, extend} from '../util';
+import {keys, flatten, unique, Dict, forEach, extend, mergeDeep, duplicate, any} from '../util';
 import {defaultConfig, Config} from '../config';
 import {LayerSpec, ResolveMapping, Resolve, INDEPENDENT, SHARED} from '../spec';
 import {assembleData, parseLayerData} from './data/data';
@@ -21,12 +21,18 @@ export class LayerModel extends Model {
   constructor(spec: LayerSpec, parent: Model, parentGivenName: string) {
     super(spec, parent, parentGivenName);
 
+    this._config = this._initConfig(spec.config, parent);
+
     this._children = spec.layers.map((layer, i) => {
       // we know that the model has to be a unit model beacuse we pass in a unit spec
       return buildModel(layer, this, this.name('layer_' + i)) as UnitModel;
     });
 
     this._resolve = this._initResolve(spec.resolve || {});
+  }
+
+  private _initConfig(specConfig: Config, parent: Model) {
+    return mergeDeep(duplicate(defaultConfig), specConfig, parent ? parent.config() : {});
   }
 
   /**
@@ -64,6 +70,24 @@ export class LayerModel extends Model {
   public has(channel: Channel): boolean {
     // layer does not have any channels
     return false;
+  }
+
+  public hasScale(channel: Channel): boolean {
+    if (this.scale(channel)) {
+      return true;
+    }
+    return any(this._children, (child) => {
+      return child.hasScale(channel);
+    });
+  }
+
+  public hasAxis(channel: Channel): boolean {
+    if (this.axis(channel)) {
+      return true;
+    }
+    return any(this._children, (child) => {
+      return child.hasAxis(channel);
+    });
   }
 
   public children() {

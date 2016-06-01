@@ -12,6 +12,7 @@ import {parseExpression} from './../time';
 import {DataComponent} from './data';
 
 
+// should be similar to timeUnitDomain
 export namespace timeUnit {
   function parse(model: Model): Dict<VgTransform> {
     return model.reduce(function(timeUnitComponent, fieldDef: FieldDef, channel: Channel) {
@@ -29,6 +30,19 @@ export namespace timeUnit {
     }, {});
   }
 
+  export const parseUnit = parse;
+
+  export function parseFacet(model: FacetModel) {
+    // merge since both child an facet can define time unit
+    let timeUnitComponent = parse(model);
+
+    const childDataComponent = model.child().component.data;
+    extend(timeUnitComponent, childDataComponent.timeUnit);
+    delete childDataComponent.timeUnit;
+
+    return timeUnitComponent;
+  }
+
   /**
    * Merge up time unit. Since the map keys describes the field and the expression, we can just extend.
    */
@@ -38,8 +52,6 @@ export namespace timeUnit {
       delete childData.timeUnit;
     });
   }
-
-  export const parseUnit = parse;
 
   export function assemble(component: DataComponent) {
     // just join the values, which are already transforms

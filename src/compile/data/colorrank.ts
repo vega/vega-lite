@@ -35,6 +35,14 @@ export namespace colorRank {
     return colorRankComponent;
   }
 
+  export function parseFacet(model: FacetModel) {
+    // facet cannot have color channel so always merge up
+
+    const childDataComponent = model.child().component.data;
+    delete childDataComponent.colorRank;
+    return childDataComponent.colorRank;
+  }
+
   export function merge(dataComponent: DataComponent, childDataComponents: DataComponent[]) {
     childDataComponents.forEach((childData) => {
       extend(dataComponent.colorRank, childData.colorRank);

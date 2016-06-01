@@ -15,7 +15,7 @@ import {timeUnit} from './timeunit';
 import {formatParse} from './formatparse';
 
 export namespace source {
-  export function parseUnit(model: Model): VgData {
+  export function parse(model: Model): VgData {
     let data = model.data();
     if (data) {
       let sourceData: VgData = {};
@@ -37,6 +37,11 @@ export namespace source {
     }
     return undefined;
   }
+
+  export const parseUnit = parse;
+
+  // child cannot define data source so no need to merge up
+  export const parseFacet = parse;
 
   export function assemble(model: Model, component: DataComponent) {
     if (component.source) {

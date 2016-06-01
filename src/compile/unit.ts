@@ -132,6 +132,14 @@ export class UnitModel extends Model {
     }, {} as Dict<LegendProperties>);
   }
 
+  public hasScale(channel: Channel): boolean {
+    return !!this.scale(channel);
+  }
+
+  public hasAxis(channel: Channel): boolean {
+    return !!this.axis(channel);
+  }
+
   public parseData() {
     this.component.data = parseUnitData(this);
   }
@@ -179,11 +187,13 @@ export class UnitModel extends Model {
 
   public assembleMarks() {
     const marks = this.component.mark;
-    marks.forEach((mark) => {
-      if (mark.from) {
-        mark.from.data = this.renamedDataName(mark.from.data);
-      }
-    });
+    if (marks) {
+      marks.forEach((mark) => {
+        if (mark.from) {
+          mark.from.data = this.renamedDataName(mark.from.data);
+        }
+      });
+    }
     return marks;
   }
 

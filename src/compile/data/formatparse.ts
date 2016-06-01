@@ -34,6 +34,18 @@ export namespace formatParse {
     return parseComponent;
   }
 
+  export const parseUnit = parse;
+
+  export function parseFacet(model: FacetModel) {
+    const formatComponent = parse(model);
+    const childDataComponent = model.child().component.data;
+
+    extend(formatComponent, childDataComponent.formatParse);
+    delete childDataComponent.formatParse;
+
+    return formatComponent;
+  }
+
   /**
    * Merge the format parse from the parent and all components into parent.
    *
@@ -52,8 +64,6 @@ export namespace formatParse {
       return collector;
     }, dataComponent.formatParse);
   }
-
-  export const parseUnit = parse;
 
   /**
    * Assemble only removes null because we only used it to indicate that a field should not be parsed.

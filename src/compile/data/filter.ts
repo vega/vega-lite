@@ -13,6 +13,9 @@ export namespace filter {
 
   export const parseUnit = parse;
 
+  // children have no transform so nothing to merge up
+  export const parseFacet = parse;
+
   /**
    * Combines the filter in the data component if all child data components define the same filter.
    */

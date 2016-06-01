@@ -31,6 +31,16 @@ export namespace nullFilter {
     }, {});
   }
 
+  export const parseUnit = parse;
+
+  export function parseFacet(model: FacetModel) {
+    const nullFilterComponent = parse(model);
+    const childDataComponent = model.child().component.data;
+
+    extend(nullFilterComponent, childDataComponent.nullFilter);
+    return nullFilterComponent;
+  }
+
   export function mergeIfCompatible(dataComponent: DataComponent, childDataComponents: DataComponent[]) {
     const nullFilterComponent = childDataComponents.reduce((collector, childData) => {
       extend(collector, childData.nullFilter);
@@ -50,8 +60,6 @@ export namespace nullFilter {
 
     return compatibleNullfilter;
   }
-
-  export const parseUnit = parse;
 
   /** Convert the hashset of fields to a filter transform.  */
   export function assemble(component: DataComponent) {

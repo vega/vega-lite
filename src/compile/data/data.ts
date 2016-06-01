@@ -50,8 +50,8 @@ export interface DataComponent {
   /** String set of fields to be filtered */
   nonPositiveFilter: Dict<boolean>;
 
-  /** Data source for feeding stacked scale. */
-  stackScale: VgData;
+  /** Data transform for stacked scale. */
+  stackScale: {type: string, groupby: string[], summarize: any[]};
 
   /** Dictionary mapping an output field name (hash) to the sort and rank transforms  */
   colorRank: Dict<VgTransform[]>;
@@ -115,26 +115,42 @@ export function parseUnitData(model: UnitModel): DataComponent {
  * We only need to add the facet fields as dimensions to the summary component.
  */
 export function parseFacetData(model: FacetModel): DataComponent {
-  // TODO: treat data in the facet and in the child differently
-
   const child = model.child();
-  const dataComponent = child.component.data;
-  delete child.component.data;
 
-  [SOURCE, RAW, STACKED_SCALE].forEach((data) => {
+  // TODO: enforce this in the schema
+  if (child.data() || !empty(child.transform())) {
+    model.addWarning('Facet child should not define data source or transform.');
+  }
+
+  // rename all references to child data, everything should have been merged up
+  [RAW, SOURCE, STACKED_SCALE].forEach((data) => {
     model.renameData(child.dataName(data), model.dataName(data));
   });
 
-  if (dataComponent.aggregate) {
-    aggregate.parseFacet(model, dataComponent.aggregate);
-  }
-  if (dataComponent.stackScale) {
-    stackScale.parseFacet(model, dataComponent.stackScale);
-  }
+  // we should completely move the data component to the facet because
+  // the child does not need its own data
 
-  return dataComponent;
+  return {
+    source: source.parseFacet(model),
+    formatParse: formatParse.parseFacet(model),
+    calculate: calculate.parseFacet(model),
+    filter: filter.parseFacet(model),
+    bin: bin.parseFacet(model),
+    timeUnit: timeUnit.parseFacet(model),
+    aggregate: aggregate.parseFacet(model),
+    colorRank: colorRank.parseFacet(model),
+    stackScale: stackScale.parseFacet(model),
+    nonPositiveFilter: nonPositiveFilter.parseFacet(model),
+    nullFilter: nullFilter.parseFacet(model),
+    timeUnitDomain: timeUnitDomain.parseFacet(model)
+  };
 }
 
+/**
+ * Merge data components from children into data component.
+ * Expects that a single source is either defined in the parent or in all
+ * sources (has to be the same source).
+ */
 function mergeChildren(model: Model, dataComponent: DataComponent, children: UnitModel[]): DataComponent {
   if (children.length === 0) {
     return dataComponent;
@@ -196,19 +212,19 @@ export function parseLayerData(model: LayerModel): DataComponent {
   const dataComponent = parseData(model);
 
   // function to compare the data sources
-  function dataHash(component: DataComponent) {
+  function dataHash(component: DataComponent): string {
     const source = component.source;
+    if (!source) {
+      return null;
+    }
     if (source.values) {
       return hash(source.values);
     }
     return hash(source.url + source.format);
   }
 
-  // move time unit domain by moving it up
-  model.children().forEach((child) => {
-    extend(dataComponent.timeUnitDomain, child.component.data.timeUnitDomain);
-    delete child.component.data.timeUnitDomain;
-  });
+  // merge time unit domains by moving them up
+  timeUnitDomain.merge(dataComponent, model.children());
 
   if (dataComponent.source) {
     // merge up what we can from the children that have the same source as the layer data
@@ -221,10 +237,16 @@ export function parseLayerData(model: LayerModel): DataComponent {
       return dataHash(child.component.data);
     }));
     if (sameSources) {
-      dataComponent.source = duplicate(model.children()[0].component.data.source);
+      const source = model.children()[0].component.data.source;
+      dataComponent.source = source ? duplicate(source) : source;
 
       return mergeChildren(model, dataComponent, model.children());
     }
+
+    // Children have different sources but they could be undefined and thus need to be linked up.
+    // The specific case is a layer inside a facet where one layer has a data source.
+    // debugger;
+
     // the children have different sources so let's give up
     return dataComponent;
   }
@@ -291,11 +313,13 @@ export function assembleData(model: Model, data: VgData[]) {
   }
 
   // stack
-  const stackData = stackScale.assemble(component);
-  if (stackData) {
-    stackData.name = model.dataName(STACKED_SCALE);
-    stackData.source = dataSource.name;
-    data.push(stackData);
+  const stackTransform = stackScale.assemble(component);
+  if (stackTransform) {
+    data.push({
+      name: model.dataName(STACKED_SCALE),
+      source: dataSource.name,
+      transform: [stackTransform]
+    });
   }
 
   // scale
@@ -318,7 +342,19 @@ export function assembleData(model: Model, data: VgData[]) {
   let index = data.length - 1;
   while (index >= 0) {
     const ds = data[index];
-    if (empty(ds.transform) && ds.source) {
+
+    // delete empty transforms
+    if (empty(ds.transform)) {
+      delete ds.transform;
+    }
+
+    // rename sources to close gaps
+    if (ds.source) {
+      ds.source = model.renamedDataName(ds.source);
+    }
+
+    // delete data sources that are empty
+    if (!ds.transform && ds.source) {
       model.renameData(ds.name, ds.source);
       data.splice(index, 1);
     }

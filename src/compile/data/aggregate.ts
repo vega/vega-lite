@@ -27,7 +27,7 @@ export namespace aggregate {
     return dims;
   }
 
-  export function parseUnit(model: Model): AggregateComponent {
+  export function parse(model: Model): AggregateComponent {
     /* string set for dimensions */
     let dims: StringSet = {};
 
@@ -54,6 +54,8 @@ export namespace aggregate {
     };
   }
 
+  export const parseUnit = parse;
+
   export function mergeMeasures(parentMeasures: Dict<Dict<boolean>>, childMeasures: Dict<Dict<boolean>>) {
     for (const field in childMeasures) {
       if (childMeasures.hasOwnProperty(field)) {
@@ -74,8 +76,17 @@ export namespace aggregate {
   /**
    * Add facet fields as dimensions.
    */
-  export function parseFacet(model: FacetModel, aggregateComponent: AggregateComponent) {
-    aggregateComponent.dimensions = model.reduce(addDimension, aggregateComponent.dimensions);
+  export function parseFacet(model: FacetModel): AggregateComponent {
+    const childComponent = model.child().component;
+    const aggregateComponent = childComponent.data.aggregate;
+
+    if (aggregateComponent) {
+      // add facet fields as dimensions
+      aggregateComponent.dimensions = model.reduce(addDimension, aggregateComponent.dimensions);
+      delete childComponent.data.aggregate;
+    }
+
+    return aggregateComponent;
   }
 
   /**

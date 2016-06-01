@@ -139,13 +139,13 @@ export function normalize(spec: ExtendedSpec): Spec {
     return extend(
       spec.name ? { name: spec.name } : {},
       spec.description ? { description: spec.description } : {},
-      isFacet ? {} : data,
+      isFacet ? data : {},
       {
         facet: extend(
           hasRow ? { row: spec.encoding.row } : {},
           hasColumn ? { column: spec.encoding.column } : {}
         ),
-        spec: extend(isFacet ? data : {}, {
+        spec: extend(isFacet ? {} : data, {
           mark: spec.mark,
           encoding: encoding
         })

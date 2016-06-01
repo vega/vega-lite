@@ -14,13 +14,21 @@ export namespace nonPositiveFilter {
   export function parseUnit(model: Model): Dict<boolean> {
     return model.channels().reduce(function(nonPositiveComponent, channel) {
       const scale = model.scale(channel);
-      if (!model.field(channel) || !scale) {
+      if (!model.has(channel) || !scale) {
         // don't set anything
         return nonPositiveComponent;
       }
       nonPositiveComponent[model.field(channel)] = scale.type === ScaleType.LOG;
       return nonPositiveComponent;
     }, {} as Dict<boolean>);
+  }
+
+  export function parseFacet(model: FacetModel): Dict<boolean> {
+    // facet cannot have log so we only need to move up
+
+    const childDataComponent = model.child().component.data;
+    delete childDataComponent.nonPositiveFilter;
+    return childDataComponent.nonPositiveFilter;
   }
 
   export function mergeIfCompatible(dataComponent: DataComponent, childDataComponents: DataComponent[]) {

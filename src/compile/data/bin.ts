@@ -53,6 +53,14 @@ export namespace bin {
     }, {});
   }
 
+  export function parseFacet(model: FacetModel) {
+    const binComponent = parse(model);
+    const childDataComponent = model.child().component.data;
+
+    extend(binComponent, childDataComponent.bin);
+    return binComponent;
+  }
+
   export function merge(dataComponent: DataComponent, childDataComponents: DataComponent[]) {
     childDataComponents.forEach((childData) => {
       extend(dataComponent.bin, childData.bin);

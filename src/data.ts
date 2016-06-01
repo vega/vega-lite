@@ -22,8 +22,7 @@ export enum DataTable {
   RAW = 'raw' as any,
   SOURCE = 'source' as any,
   STACKED_SCALE = 'stacked_scale' as any,
-  LAYOUT = 'layout' as any,
-  SCALE = 'scale' as any,
+  LAYOUT = 'layout' as any
 }
 
 export const RAW = DataTable.RAW;

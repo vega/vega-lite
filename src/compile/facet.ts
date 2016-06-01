@@ -71,7 +71,7 @@ export class FacetModel extends Model {
           round: config.facet.scale.round,
 
           // TODO: revise this rule for multiple level of nesting
-          padding: (channel === ROW && child.has(Y)) || (channel === COLUMN && child.has(X)) ?
+          padding: (channel === ROW && child.hasScale(Y)) || (channel === COLUMN && child.hasScale(X)) ?
                    config.facet.scale.padding : 0
         }, scaleSpec);
       }
@@ -90,11 +90,10 @@ export class FacetModel extends Model {
           );
 
           if (channel === ROW) {
-            const yAxis: any = child.axis(Y);
-            if (yAxis && yAxis.orient !== AxisOrient.RIGHT && !modelAxis.orient) {
+            if (child.hasAxis(Y) && !modelAxis.orient) {
               modelAxis.orient = AxisOrient.RIGHT;
             }
-            if( child.has(X) && !modelAxis.labelAngle) {
+            if(child.hasAxis(X) && !modelAxis.labelAngle) {
               modelAxis.labelAngle = modelAxis.orient === AxisOrient.RIGHT ? 90 : 270;
             }
           }
@@ -110,6 +109,20 @@ export class FacetModel extends Model {
 
   public has(channel: Channel): boolean {
     return !!this._facet[channel];
+  }
+
+  public hasScale(channel: Channel): boolean {
+    if (this.scale(channel)) {
+      return true;
+    }
+    return this.child().hasScale(channel);
+  }
+
+  public hasAxis(channel: Channel): boolean {
+    if (this.axis(channel)) {
+      return true;
+    }
+    return this.child().hasAxis(channel);
   }
 
   public child() {
@@ -224,8 +237,8 @@ export class FacetModel extends Model {
     const child = this.child();
 
     this.component.gridGroup = extend(
-      !child.has(X) && this.has(COLUMN) ? { column: getColumnGridGroups(this) } : {},
-      !child.has(Y) && this.has(ROW) ? { row: getRowGridGroups(this) } : {}
+      !child.hasScale(X) && this.has(COLUMN) ? { column: getColumnGridGroups(this) } : {},
+      !child.hasScale(Y) && this.has(ROW) ? { row: getRowGridGroups(this) } : {}
     );
   }
 
@@ -252,7 +265,7 @@ export class FacetModel extends Model {
   }
 
   public assembleLayout(layoutData: VgData[]): VgData[] {
-    // Postfix traversal – layout is assembled bottom-up 
+    // Postfix traversal – layout is assembled bottom-up
     this._child.assembleLayout(layoutData);
     return assembleLayout(this, layoutData);
   }
@@ -312,22 +325,20 @@ function parseAxisGroup(model: FacetModel, channel: Channel) {
   let axisGroup = null;
 
   const child = model.child();
-  if (child.has(channel)) {
-    if (child.axis(channel)) {
-      if (true) { // the channel has shared axes
+  if (child.hasAxis(channel)) {
+    if (true) { // the channel has shared axes
 
-        // add a group for the shared axes
-        axisGroup = channel === X ? getXAxesGroup(model) : getYAxesGroup(model);
+      // add a group for the shared axes
+      axisGroup = channel === X ? getXAxesGroup(model) : getYAxesGroup(model);
 
-        if (child.axis(channel) && gridShow(child, channel)) { // show inner grid
-          // add inner axis (aka axis that shows only grid to )
-          child.component.axis[channel] = parseInnerAxis(channel, child);
-        } else {
-          delete child.component.axis[channel];
-        }
+      if (child.axis(channel) && gridShow(child, channel)) { // show inner grid
+        // add inner axis (aka axis that shows only grid to )
+        child.component.axis[channel] = parseInnerAxis(channel, child);
       } else {
-        // TODO: implement independent axes support
+        delete child.component.axis[channel];
       }
+    } else {
+      // TODO: implement independent axes support
     }
   }
   return axisGroup;
@@ -369,7 +380,7 @@ function getXAxesGroup(model: FacetModel): VgMarkGroup {
           }
         }
       },
-      axes: [parseAxis(X, model.child())]
+      axes: [model.child().component.axis[X]]
     }
   );
 }
@@ -409,7 +420,7 @@ function getYAxesGroup(model: FacetModel): VgMarkGroup {
           }
         }
       },
-      axes: [parseAxis(Y, model.child())]
+      axes: [model.child().component.axis[Y]]
     }
   );
 }
