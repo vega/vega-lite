@@ -15,8 +15,7 @@
         "y2": {
           "aggregate": "max",
           "field": "people",
-          "type": "quantitative",
-          "axis": {"title": "population"}
+          "type": "quantitative"
         }
       }
     },
@@ -27,8 +26,7 @@
         "y": {
           "aggregate": "min",
           "field": "people",
-          "type": "quantitative",
-          "axis": {"title": "population"}
+          "type": "quantitative"
         },
         "size": {"value": 5}
       }
@@ -40,8 +38,7 @@
         "y": {
           "aggregate": "max",
           "field": "people",
-          "type": "quantitative",
-          "axis": {"title": "population"}
+          "type": "quantitative"
         },
         "size": {"value": 5}
       }
@@ -70,8 +67,7 @@
         "y": {
           "aggregate": "mean",
           "field": "people",
-          "type": "quantitative",
-          "axis": {"title": "population"}
+          "type": "quantitative"
         },
         "size": {"value": 5},
         "color": { "value" : "white" }
