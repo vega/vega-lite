@@ -1,6 +1,6 @@
 import {AxisOrient} from '../axis';
 import {COLUMN, ROW, X, Y, X2, Y2, Channel} from '../channel';
-import {title as fieldDefTitle, isDimension} from '../fielddef';
+import {FieldDef, title as fieldDefTitle, isDimension} from '../fielddef';
 import {NOMINAL, ORDINAL, TEMPORAL} from '../type';
 import {contains, keys, extend, truncate, Dict} from '../util';
 import {VgAxis} from '../vega.schema';
@@ -95,11 +95,7 @@ export function parseAxis(channel: Channel, model: Model): VgAxis {
   // In case we need to get the fielddef axis for X2 or Y2
   // if X or Y doesn't exist in the model. Use targetChannel
   // to access X2 or Y2.
-  let targetChannel = channel;
-  if (!model.has(channel)) {
-    targetChannel = channel === X ? X2 : Y2;
-  }
-  extend(def, formatMixins(model, model.fieldDef(targetChannel), axis.format, axis.shortTimeLabels));
+  extend(def, formatMixins(model, axisFieldDef(model, channel), axis.format, axis.shortTimeLabels));
   // 1.2. Add properties
   [
     // a) properties with special rules (so it has axis[property] methods) -- call rule functions
@@ -137,6 +133,14 @@ export function parseAxis(channel: Channel, model: Model): VgAxis {
   return def;
 }
 
+function axisFieldDef(model: Model, channel: Channel): FieldDef {
+  let targetChannel = channel;
+  if (!model.has(channel)) {
+    targetChannel = channel === X ? X2 : Y2;
+  }
+  return model.fieldDef(targetChannel);
+}
+
 export function offset(model: Model, channel: Channel) {
   return model.axis(channel).offset;
 }
@@ -152,7 +156,7 @@ export function gridShow(model: Model, channel: Channel) {
     return grid;
   }
 
-  return !model.isOrdinalScale(channel) && !model.fieldDef(channel).bin;
+  return !model.isOrdinalScale(channel) && !axisFieldDef(model, channel).bin;
 }
 
 export function grid(model: Model, channel: Channel) {
@@ -198,7 +202,7 @@ export function ticks(model: Model, channel: Channel) {
   }
 
   // FIXME depends on scale type too
-  if (channel === X && !model.fieldDef(channel).bin) {
+  if (channel === X && !axisFieldDef(model, channel).bin) {
     // Vega's default ticks often lead to a lot of label occlusion on X without 90 degree rotation
     return 5;
   }
@@ -222,7 +226,6 @@ export function tickSizeEnd(model: Model, channel: Channel) {
   return undefined;
 }
 
-
 export function title(model: Model, channel: Channel) {
   const axis = model.axis(channel);
   if (axis.title !== undefined) {
@@ -230,7 +233,7 @@ export function title(model: Model, channel: Channel) {
   }
 
   // if not defined, automatically determine axis title from field def
-  const fieldTitle = fieldDefTitle(model.fieldDef(channel));
+  const fieldTitle = fieldDefTitle(axisFieldDef(model, channel));
 
   let maxLength;
   if (axis.titleMaxLength) {
@@ -285,7 +288,7 @@ export namespace properties {
   }
 
   export function labels(model: Model, channel: Channel, labelsSpec, def) {
-    const fieldDef = model.fieldDef(channel);
+    const fieldDef = axisFieldDef(model, channel);
     const axis = model.axis(channel);
 
     if (!axis.labels) {
