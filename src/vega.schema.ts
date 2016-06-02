@@ -25,6 +25,15 @@ export type VgDataRef = {
   }
 };
 
+export type VgValueRef = {
+  value?: any,
+  field?: string, // TODO: object 
+  scale?: string, // TODO: object
+  mult?: number,
+  offset?: number,
+  band?: boolean
+}
+
 export type UnionedDomain = {
   fields: VgDataRef[]
 };
