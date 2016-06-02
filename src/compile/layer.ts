@@ -149,8 +149,8 @@ export class LayerModel extends Model {
   }
 
   public parseMark() {
-    this._children.forEach(function(child) {
-      child.parseMark();
+    this._children.forEach(function(child, _, siblings) {
+      child.parseMark(siblings);
     });
   }
 

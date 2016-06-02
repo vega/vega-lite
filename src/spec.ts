@@ -75,9 +75,8 @@ export function isExtendedUnitSpec(spec: ExtendedSpec): spec is ExtendedUnitSpec
   if (isSomeUnitSpec(spec)) {
     const hasRow = has(spec.encoding, ROW);
     const hasColumn = has(spec.encoding, COLUMN);
-    const hasRef = spec['ref'] !== undefined;
     
-    return (hasRow || hasColumn) || hasRef;
+    return hasRow || hasColumn;
   }
 
   return false;
@@ -117,6 +116,7 @@ export function normalize(spec: ExtendedSpec): Spec {
       spec.name ? { name: spec.name } : {},
       spec.description ? { description: spec.description } : {},
       { data: spec.data },
+      { ref: spec.ref },
       spec.transform ? { transform: spec.transform } : {},
       {
         facet: extend(

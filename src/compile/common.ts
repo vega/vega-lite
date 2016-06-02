@@ -1,4 +1,4 @@
-import {COLUMN, ROW, X, Y, SIZE, COLOR, SHAPE, TEXT, LABEL, Channel} from '../channel';
+import {COLUMN, ROW, X, Y, SIZE, COLOR, SHAPE, TEXT, ANCHOR, OFFSET, Channel} from '../channel';
 import {FieldDef, field, OrderChannelDef} from '../fielddef';
 import {SortOrder} from '../sort';
 import {QUANTITATIVE, ORDINAL, TEMPORAL} from '../type';
@@ -24,7 +24,8 @@ export function buildModel(spec: Spec, parent: Model, parentGivenName: string): 
   if (isUnitSpec(spec)) {
     return new UnitModel(spec, parent, parentGivenName);
   }
-
+  
+  console.log(spec);
   console.error('Invalid spec.');
   return null;
 }
@@ -147,8 +148,7 @@ function isAbbreviated(model: Model, channel: Channel, fieldDef: FieldDef) {
       return model.legend(channel).shortTimeLabels;
     case TEXT:
       return model.config().mark.shortTimeLabels;
-    case LABEL:
-      // TODO(#897): implement when we have label
+
   }
   return false;
 }

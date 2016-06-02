@@ -22,24 +22,27 @@ export namespace text {
     };
   }
 
-  export function properties(model: UnitModel) {
+  export function properties(model: UnitModel, referencedModel?: UnitModel) {
     // TODO Use Vega's marks properties interface
     let p: any = {};
 
     applyMarkConfig(p, model,
       ['angle', 'align', 'baseline', 'dx', 'dy', 'font', 'fontWeight',
         'fontStyle', 'radius', 'theta', 'text']);
-
+        
     const fieldDef = model.fieldDef(TEXT);
-
-    // ref
-    if (model.isReferential()) {
+    
+    if (referencedModel) {
+      const markType = referencedModel.mark();
+  
+      // anchor
       if (model.has(ANCHOR)) {
         // based on mark type, place with x and y (reactive)
       } else {
         // default anchor
       }
-      
+    
+      // offset
       if (model.has(OFFSET)) {
         // based on mark type, place with x and y (reactive)
       } else {

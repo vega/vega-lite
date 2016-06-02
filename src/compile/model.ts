@@ -132,7 +132,7 @@ export abstract class Model {
 
   public abstract parseScale();
 
-  public abstract parseMark();
+  public abstract parseMark(siblings?: Model[]);
 
   public abstract parseAxis();
 
@@ -220,8 +220,8 @@ export abstract class Model {
     return this._parent;
   }
 
-  public name(text: string, delimiter: string = '_') {
-    return (this._name ? this._name + delimiter : '') + text;
+  public name(suffix: string, delimiter: string = '_') {
+    return (this._name ? this._name + delimiter : '') + suffix;
   }
 
   public description() {

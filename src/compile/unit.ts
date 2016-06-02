@@ -151,8 +151,8 @@ export class UnitModel extends Model {
     this.component.scale = parseScaleComponent(this);
   }
 
-  public parseMark() {
-    this.component.mark = parseMark(this);
+  public parseMark(siblings?: UnitModel[]) {    
+    this.component.mark = parseMark(this, siblings);
   }
 
   public parseAxis() {
@@ -228,8 +228,8 @@ export class UnitModel extends Model {
     return vlEncoding.has(this._encoding, channel);
   }
   
-  public ref(): string {
-    return this._ref;
+  public ref(suffix: string, delimiter: string = '_') {
+    return (this._ref ? this._ref + delimiter : '') + suffix;
   }
   
   public isReferential() {

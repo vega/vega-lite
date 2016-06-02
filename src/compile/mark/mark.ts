@@ -4,7 +4,7 @@ import {OrderChannelDef} from '../../fielddef';
 import {X, Y, COLOR, TEXT, SHAPE, PATH, ORDER, DETAIL, ANCHOR, OFFSET} from '../../channel';
 import {AREA, LINE, TEXT as TEXTMARK} from '../../mark';
 import {imputeTransform, stackTransform} from '../stack';
-import {contains, extend} from '../../util';
+import {contains, extend, forEach} from '../../util';
 import {area} from './area';
 import {bar} from './bar';
 import {line} from './line';
@@ -26,19 +26,19 @@ const markCompiler = {
   square: square
 };
 
-export function parseMark(model: UnitModel): any[] {
+export function parseMark(model: UnitModel, siblings: UnitModel[]): any[] {
   if (contains([LINE, AREA], model.mark())) {
-    return parsePathMark(model);
+    return parsePathMark(model, siblings);
   } else {
-    return parseNonPathMark(model);
+    return parseNonPathMark(model, siblings);
   }
 }
 
-function parsePathMark(model: UnitModel) { // TODO: extract this into compilePathMark
+function parsePathMark(model: UnitModel, siblings: UnitModel[]) { // TODO: extract this into compilePathMark
   const mark = model.mark();
   // TODO: replace this with more general case for composition
   const isFaceted = model.parent() && model.parent().isFacet();
-  const dataFrom = {data: model.dataTable()};
+  const dataFrom = model.isReferential() ? {mark: model.ref('marks')} : {data: model.dataTable()};
   const details = detailFields(model);
 
   let pathMarks: any = [
@@ -93,12 +93,20 @@ function parsePathMark(model: UnitModel) { // TODO: extract this into compilePat
   }
 }
 
-function parseNonPathMark(model: UnitModel) {
+function parseNonPathMark(model: UnitModel, siblings: UnitModel[]) {
   const mark = model.mark();
   const isFaceted = model.parent() && model.parent().isFacet();
-  const dataFrom = {data: model.dataTable()};
-  const ref = model.ref();
-
+  let dataFrom:any = {data: model.dataTable()};
+  
+  const referential = model.isReferential() && siblings !== undefined;
+  let referencedModel:UnitModel;
+  if (referential) {
+    referencedModel = siblings.filter((s) => {
+      return s.name('marks') == model.ref('marks');
+    })[0];
+    dataFrom = {mark: referencedModel.name('marks')};
+  }
+  
   let marks = []; // TODO: vgMarks
   if (mark === TEXTMARK &&
     model.has(COLOR) &&
@@ -139,10 +147,19 @@ function parseNonPathMark(model: UnitModel) {
       )
     } : {},
     // properties groups
-    { properties: { update: markCompiler[mark].properties(model) } }
+    { properties: { update: referential ? applyReference(markCompiler[mark].properties(model, referencedModel)) : markCompiler[mark].properties(model) } }
   ));
 
   return marks;
+}
+
+function applyReference(properties: {}) {
+  forEach(properties, function(v, k) {
+    if (v.hasOwnProperty('field')) {
+      v['field'] = v['field'].includes('ref.') ? v['field'].replace('ref.', '') : 'datum.' + v['field'];
+    }
+  });
+  return properties;
 }
 
 function sortBy(model: UnitModel): string | string[] {
