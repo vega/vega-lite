@@ -1,6 +1,6 @@
 // utility for encoding mapping
 import {FieldDef, PositionChannelDef, FacetChannelDef, ChannelDefWithLegend, OrderChannelDef} from './fielddef';
-import {Channel, CHANNELS} from './channel';
+import {X, Y, X2, Y2, Channel, CHANNELS} from './channel';
 import {isArray, any as anyIn} from './util';
 
 // TODO: once we decompose facet, rename this to Encoding
@@ -57,6 +57,11 @@ export function isAggregate(encoding: Encoding) {
     }
     return false;
   });
+}
+
+export function isRanged(encoding: Encoding) {
+  return (has(encoding, X) && has(encoding, X2)) ||
+    (has(encoding, Y) && has(encoding, Y2));
 }
 
 export function fieldDefs(encoding: Encoding): FieldDef[] {
