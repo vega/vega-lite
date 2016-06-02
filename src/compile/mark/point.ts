@@ -97,7 +97,7 @@ export namespace square {
     return point.properties(model, 'square');
   }
 
-  export function labels(model: UnitModel) {
+  export function ref(model: UnitModel) {
     // TODO(#240): fill this method
     return undefined;
   }

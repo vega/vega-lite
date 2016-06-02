@@ -43,6 +43,7 @@ export interface ExtendedUnitSpec extends BaseSpec {
    */
   mark: Mark;
   encoding: Encoding;
+  ref?: string;
 }
 
 export interface FacetSpec extends BaseSpec {
@@ -74,8 +75,9 @@ export function isExtendedUnitSpec(spec: ExtendedSpec): spec is ExtendedUnitSpec
   if (isSomeUnitSpec(spec)) {
     const hasRow = has(spec.encoding, ROW);
     const hasColumn = has(spec.encoding, COLUMN);
-
-    return hasRow || hasColumn;
+    const hasRef = spec['ref'] !== undefined;
+    
+    return (hasRow || hasColumn) || hasRef;
   }
 
   return false;
@@ -104,8 +106,9 @@ export function normalize(spec: ExtendedSpec): Spec {
   if (isExtendedUnitSpec(spec)) {
     const hasRow = has(spec.encoding, ROW);
     const hasColumn = has(spec.encoding, COLUMN);
+    const hasRef = spec['ref'] !== undefined; // TODO: @willium implement normalization for ref
 
-    // TODO: @arvind please  add interaction syntax here
+    // TODO: @arvind please add interaction syntax here
     let encoding = duplicate(spec.encoding);
     delete encoding.column;
     delete encoding.row;

@@ -16,7 +16,8 @@ export enum Channel {
   COLOR = 'color' as any,
   TEXT = 'text' as any,
   DETAIL = 'detail' as any,
-  LABEL = 'label' as any,
+  ANCHOR = 'anchor' as any,
+  OFFSET = 'offset' as any,
   PATH = 'path' as any,
   ORDER = 'order' as any
 }
@@ -30,14 +31,15 @@ export const SIZE = Channel.SIZE;
 export const COLOR = Channel.COLOR;
 export const TEXT = Channel.TEXT;
 export const DETAIL = Channel.DETAIL;
-export const LABEL = Channel.LABEL;
+export const ANCHOR = Channel.ANCHOR;
+export const OFFSET = Channel.OFFSET;
 export const PATH = Channel.PATH;
 export const ORDER = Channel.ORDER;
 
-export const CHANNELS = [X, Y, ROW, COLUMN, SIZE, SHAPE, COLOR, PATH, ORDER, TEXT, DETAIL, LABEL];
+export const CHANNELS = [X, Y, ROW, COLUMN, SIZE, SHAPE, COLOR, PATH, ORDER, TEXT, DETAIL, ANCHOR, OFFSET];
 
 export const UNIT_CHANNELS = without(CHANNELS, [ROW, COLUMN]);
-export const UNIT_SCALE_CHANNELS = without(UNIT_CHANNELS, [PATH, ORDER, DETAIL, TEXT, LABEL]);
+export const UNIT_SCALE_CHANNELS = without(UNIT_CHANNELS, [PATH, ORDER, DETAIL, TEXT, ANCHOR, OFFSET]);
 export const NONSPATIAL_CHANNELS = without(UNIT_CHANNELS, [X, Y]);
 export const NONSPATIAL_SCALE_CHANNELS = without(UNIT_SCALE_CHANNELS, [X, Y]);
 
@@ -89,6 +91,8 @@ export function getSupportedMark(channel: Channel): SupportedMark {
     case SHAPE:
       return {point: true};
     case TEXT:
+    case ANCHOR:
+    case OFFSET:
       return {text: true};
     case PATH:
       return {line: true};
@@ -111,7 +115,8 @@ export function getSupportedRole(channel: Channel): SupportedRole {
     case X:
     case Y:
     case COLOR:
-    case LABEL:
+    case ANCHOR:
+    case OFFSET:
       return {
         measure: true,
         dimension: true
@@ -140,5 +145,5 @@ export function getSupportedRole(channel: Channel): SupportedRole {
 }
 
 export function hasScale(channel: Channel) {
-  return !contains([DETAIL, PATH, TEXT, LABEL, ORDER], channel);
+  return !contains([DETAIL, PATH, TEXT, ANCHOR, OFFSET, ORDER], channel);
 }

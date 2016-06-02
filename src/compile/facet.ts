@@ -111,7 +111,7 @@ export class FacetModel extends Model {
   public has(channel: Channel): boolean {
     return !!this._facet[channel];
   }
-
+  
   public child() {
     return this._child;
   }

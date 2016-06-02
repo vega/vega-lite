@@ -33,11 +33,13 @@ export class UnitModel extends Model {
   private _mark: Mark;
   private _encoding: Encoding;
   private _stack: StackProperties;
+  private _ref: string;
 
   constructor(spec: ExtendedUnitSpec, parent: Model, parentGivenName: string) {
     super(spec, parent, parentGivenName);
 
     const mark = this._mark = spec.mark;
+    this._ref = spec.ref;
     const encoding = this._encoding = this._initEncoding(mark, spec.encoding || {});
     const config = this._config = this._initConfig(spec.config, parent, mark, encoding);
 
@@ -224,6 +226,14 @@ export class UnitModel extends Model {
 
   public has(channel: Channel) {
     return vlEncoding.has(this._encoding, channel);
+  }
+  
+  public ref(): string {
+    return this._ref;
+  }
+  
+  public isReferential() {
+    return this._ref !== undefined;
   }
 
   public encoding() {

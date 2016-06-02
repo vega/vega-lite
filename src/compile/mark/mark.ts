@@ -1,7 +1,7 @@
 import {UnitModel} from '../unit';
 import {OrderChannelDef} from '../../fielddef';
 
-import {X, Y, COLOR, TEXT, SHAPE, PATH, ORDER, DETAIL, LABEL} from '../../channel';
+import {X, Y, COLOR, TEXT, SHAPE, PATH, ORDER, DETAIL, ANCHOR, OFFSET} from '../../channel';
 import {AREA, LINE, TEXT as TEXTMARK} from '../../mark';
 import {imputeTransform, stackTransform} from '../stack';
 import {contains, extend} from '../../util';
@@ -97,6 +97,7 @@ function parseNonPathMark(model: UnitModel) {
   const mark = model.mark();
   const isFaceted = model.parent() && model.parent().isFacet();
   const dataFrom = {data: model.dataTable()};
+  const ref = model.ref();
 
   let marks = []; // TODO: vgMarks
   if (mark === TEXTMARK &&
@@ -140,26 +141,6 @@ function parseNonPathMark(model: UnitModel) {
     // properties groups
     { properties: { update: markCompiler[mark].properties(model) } }
   ));
-
-  if (model.has(LABEL) && markCompiler[mark].labels) {
-    const labelProperties = markCompiler[mark].labels(model);
-
-    // check if we have label method for current mark type.
-    if (labelProperties !== undefined) { // If label is supported
-      // add label group
-      marks.push(extend(
-        {
-          name: model.name('label'),
-          type: 'text'
-        },
-        // If has facet, `from.data` will be added in the cell group.
-        // Otherwise, add it here.
-        isFaceted ? {} : {from: dataFrom},
-        // Properties
-        { properties: { update: labelProperties } }
-      ));
-    }
-  }
 
   return marks;
 }

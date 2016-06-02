@@ -87,7 +87,7 @@ export namespace area {
     return p;
   }
 
-  export function labels(model: UnitModel) {
+  export function ref(model: UnitModel) {
     // TODO(#240): fill this method
     return undefined;
   }

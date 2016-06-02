@@ -188,7 +188,7 @@ export namespace bar {
         markConfig.barThinSize;
   }
 
-  export function labels(model: UnitModel) {
+  export function ref(model: UnitModel) {
     // TODO(#64): fill this method
     return undefined;
   }

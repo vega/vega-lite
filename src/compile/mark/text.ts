@@ -1,5 +1,5 @@
 import {UnitModel} from '../unit';
-import {X, Y, COLOR, TEXT, SIZE} from '../../channel';
+import {X, Y, COLOR, TEXT, SIZE, ANCHOR, OFFSET} from '../../channel';
 import {applyMarkConfig, applyColorAndOpacity, formatMixins} from '../common';
 import {extend, contains} from '../../util';
 import {QUANTITATIVE, ORDINAL, TEMPORAL} from '../../type';
@@ -31,6 +31,21 @@ export namespace text {
         'fontStyle', 'radius', 'theta', 'text']);
 
     const fieldDef = model.fieldDef(TEXT);
+
+    // ref
+    if (model.isReferential()) {
+      if (model.has(ANCHOR)) {
+        // based on mark type, place with x and y (reactive)
+      } else {
+        // default anchor
+      }
+      
+      if (model.has(OFFSET)) {
+        // based on mark type, place with x and y (reactive)
+      } else {
+        // default anchor
+      }
+    }
 
     // x
     if (model.has(X)) {
@@ -99,5 +114,10 @@ export namespace text {
     }
 
     return model.config().mark.fontSize;
+  }
+  
+  export function ref(model: UnitModel) {
+    // TODO(#240): fill this method
+    return undefined;
   }
 }
