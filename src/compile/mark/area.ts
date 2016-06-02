@@ -2,7 +2,6 @@ import {UnitModel} from '../unit';
 import {X, Y} from '../../channel';
 import {isDimension, isMeasure, FieldDef, field} from '../../fielddef';
 import {VgValueRef} from '../../vega.schema';
-
 import {applyColorAndOpacity, applyMarkConfig} from '../common';
 import {StackProperties} from '../stack';
 
@@ -13,43 +12,61 @@ export namespace area {
 
   export function properties(model: UnitModel) {
     // TODO Use Vega's marks properties interface
+    // TODO Use Vega's marks properties interface
     let p: any = {};
-    const config = model.config();
-
-    const _orient = orient(config.mark.orient);
+    const orient = model.config().mark.orient;
+    const _orient = orientValue(orient);
     if (_orient) { p.orient = _orient; }
 
-    p.x = x(model.encoding().x, model.scaleName(X), model.stack());
+    const stack = model.stack();
 
-    const _x2 = x2(model.encoding().x, model.scaleName(X), model.stack(), config.mark.orient);
+    const _x = x(model.encoding().x, model.scaleName(X), orient, stack);
+    if (_x) { p.x = _x; }
+    const _y = y(model.encoding().y, model.scaleName(Y), orient, stack);
+    if (_y) { p.y = _y; }
+    const _x2 = x2(model.encoding().x, model.encoding().x2, model.scaleName(X), orient, stack);
     if (_x2) { p.x2 = _x2; }
-
-    p.y = y(model.encoding().y, model.scaleName(Y), model.stack());
-
-    const _y2 = y2(model.encoding().y, model.scaleName(Y), model.stack(), config.mark.orient);
+    const _y2 = y2(model.encoding().y, model.encoding().y2, model.scaleName(Y), orient, stack);
     if (_y2) { p.y2 = _y2; }
+
 
     applyColorAndOpacity(p, model);
     applyMarkConfig(p, model, ['interpolate', 'tension']);
     return p;
   }
 
-  function orient(orient: string): VgValueRef {
+  function orientValue(orient: string): VgValueRef {
     if (orient) {
       return { value: orient };
     }
     return undefined;
   }
-
-  function x(fieldDef: FieldDef, scaleName: string, stack: StackProperties): VgValueRef {
-    // x
+export function x(fieldDef: FieldDef, scaleName: string, orient: string, stack: StackProperties): VgValueRef {
     if (stack && X === stack.fieldChannel) { // Stacked Measure
       return {
         scale: scaleName,
         field: field(fieldDef, { suffix: '_start' })
       };
     } else if (isMeasure(fieldDef)) { // Measure
-      return { scale: scaleName, field: field(fieldDef) };
+      if (orient === 'horizontal') {
+        // x
+        if (fieldDef && fieldDef.field) {
+          return {
+            scale: scaleName,
+            field: field(fieldDef)
+          };
+        } else {
+          return {
+            scale: scaleName,
+            value: 0
+          };
+        }
+      } else {
+        return {
+          scale: scaleName,
+          field: field(fieldDef)
+        };
+      }
     } else if (isDimension(fieldDef)) {
       return {
         scale: scaleName,
@@ -59,36 +76,56 @@ export namespace area {
     return undefined;
   }
 
-  function x2(fieldDef: FieldDef, scaleName: string, stack: StackProperties, orient: string): VgValueRef {
-    // x2
-    if (orient === 'horizontal') {
-      if (stack && X === stack.fieldChannel) {
+  export function x2(xFieldDef: FieldDef, x2FieldDef: FieldDef, scaleName: string, orient: string, stack: StackProperties): VgValueRef {
+    // x
+    if (stack && X === stack.fieldChannel) { // Stacked Measure
+      if (orient === 'horizontal') {
         return {
           scale: scaleName,
-          field: field(fieldDef, { suffix: '_end' })
+          field: field(xFieldDef, { suffix: '_end' })
         };
-      } else {
-        return {
-          scale: scaleName,
-          value: 0
-        };
+      }
+    } else if (isMeasure(x2FieldDef)) { // Measure
+      if (orient === 'horizontal') {
+        if (x2FieldDef && x2FieldDef.field) {
+          return {
+            scale: scaleName,
+            field: field(x2FieldDef)
+          };
+        } else {
+          return {
+            scale: scaleName,
+            value: 0
+          };
+        }
       }
     }
     return undefined;
   }
 
-  function y(fieldDef: FieldDef, scaleName: string, stack: StackProperties): VgValueRef {
-    // y
+  export function y(fieldDef: FieldDef, scaleName: string, orient: string, stack: StackProperties): VgValueRef {
     if (stack && Y === stack.fieldChannel) { // Stacked Measure
       return {
         scale: scaleName,
         field: field(fieldDef, { suffix: '_start' })
       };
     } else if (isMeasure(fieldDef)) {
-      return {
-        scale: scaleName,
-        field: field(fieldDef)
-      };
+      if (orient !== 'horizontal') {
+        // y
+        if (fieldDef && fieldDef.field) {
+          return {
+            scale: scaleName,
+            field: field(fieldDef)
+          };
+        } else {
+          return { field: { group: 'height' } };
+        }
+      } else {
+        return {
+          scale: scaleName,
+          field: field(fieldDef)
+        };
+      }
     } else if (isDimension(fieldDef)) {
       return {
         scale: scaleName,
@@ -98,18 +135,28 @@ export namespace area {
     return undefined;
   }
 
-  function y2(fieldDef: FieldDef, scaleName: string, stack: StackProperties, orient: string): VgValueRef {
-    if (orient !== 'horizontal') { // 'vertical' or undefined are vertical
-      if (stack && Y === stack.fieldChannel) {
+  export function y2(yFieldDef: FieldDef, y2FieldDef: FieldDef, scaleName: string, orient: string, stack: StackProperties): VgValueRef {
+    if (stack && Y === stack.fieldChannel) { // Stacked Measure
+      if (orient !== 'horizontal') {
         return {
           scale: scaleName,
-          field: field(fieldDef, { suffix: '_end' })
+          field: field(yFieldDef, { suffix: '_end' })
         };
-      } else {
-        return {
-          scale: scaleName,
-          value: 0
-        };
+      }
+    } else if (isMeasure(yFieldDef)) {
+      if (orient !== 'horizontal') {
+        // y2
+        if (y2FieldDef && y2FieldDef.field) {
+          return {
+            scale: scaleName,
+            field: field(y2FieldDef)
+          };
+        } else {
+          return {
+            scale: scaleName,
+            value: 0
+          };
+        }
       }
     }
     return undefined;
