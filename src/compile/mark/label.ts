@@ -62,13 +62,15 @@ export namespace label {
   }
   
   export function transforms(model: UnitModel) {
-    const opacity = model.config().mark.opacity;
-    
+    const opacity        = model.config().mark.opacity;
+    const anchorFieldDef = model.encoding()['anchor'];
+    const offsetFieldDef = model.encoding()['offset'];
+    const colorFieldDef  = model.encoding()['color'];
     let t: any = { 
       type: 'label',
-      anchor: model.has(ANCHOR) ? ANCHOR : 'bottom-center',
-      offset: model.has(OFFSET) ? OFFSET : 10,
-      color: model.has(COLOR) ? COLOR : 'black',
+      anchor: anchorFieldDef? anchorFieldDef.value : 'bottom-center',
+      offset: offsetFieldDef ? offsetFieldDef.value : 10,
+      color: colorFieldDef ? colorFieldDef.value : 'black',
       opacity: opacity ? opacity : 1,
       align: 'center',
       buffer: 10 // minimum spacing between labels
