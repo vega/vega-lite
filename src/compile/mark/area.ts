@@ -19,7 +19,6 @@ export namespace area {
 
     const stack = model.stack();
     const xFieldDef = model.encoding().x;
-    const x2FieldDef = model.encoding().x2;
     // x
     if (stack && X === stack.fieldChannel) { // Stacked Measure
       p.x = {
@@ -32,7 +31,7 @@ export namespace area {
           field: model.field(X, { suffix: '_end' })
         };
       }
-    } else if (isMeasure(xFieldDef) || isMeasure(x2FieldDef)) { // Measure
+    } else if (isMeasure(xFieldDef)) { // Measure
       if (orient === 'horizontal') {
         // x
         if (model.has(X)) {
@@ -60,35 +59,20 @@ export namespace area {
           };
         }
       } else {
-        if (model.has(X)) {
-          p.x = {
-            scale: model.scaleName(X),
-            field: model.field(X)
-          };
-        } else if (model.has(X2)) {
-          p.x = {
-            scale: model.scaleName(X),
-            field: model.field(X2)
-          };
-        }
-      }
-    } else if (isDimension(xFieldDef) || isDimension(x2FieldDef)) {
-      if (model.has(X)) {
         p.x = {
           scale: model.scaleName(X),
-          field: model.field(X, { binSuffix: '_mid' })
-        };
-      } else if (model.has(X2)) {
-        p.x = {
-          scale: model.scaleName(X),
-          field: model.field(X2, { binSuffix: '_mid' })
+          field: model.field(X)
         };
       }
+    } else if (isDimension(xFieldDef)) {
+      p.x = {
+        scale: model.scaleName(X),
+        field: model.field(X, { binSuffix: '_mid' })
+      };
     }
 
     // y
     const yFieldDef = model.encoding().y;
-    const y2FieldDef = model.encoding().y2;
     if (stack && Y === stack.fieldChannel) { // Stacked Measure
       p.y = {
         scale: model.scaleName(Y),
@@ -100,7 +84,7 @@ export namespace area {
           field: model.field(Y, { suffix: '_end' })
         };
       }
-    } else if (isMeasure(yFieldDef) || isMeasure(y2FieldDef)) {
+    } else if (isMeasure(yFieldDef)) {
       if (orient !== 'horizontal') {
         // y
         if (model.has(Y)) {
@@ -125,30 +109,16 @@ export namespace area {
           };
         }
       } else {
-        if (model.has(Y)) {
-          p.y = {
-            scale: model.scaleName(Y),
-            field: model.field(Y)
-          };
-        } else if (model.has(Y2)) {
-          p.y = {
-            scale: model.scaleName(Y),
-            field: model.field(Y2)
-          };
-        }
+        p.y = {
+          scale: model.scaleName(Y),
+          field: model.field(Y)
+        };
       }
     } else if (isDimension(yFieldDef)) {
-      if (model.has(Y)) {
-        p.y = {
-          scale: model.scaleName(Y),
-          field: model.field(Y, { binSuffix: '_mid' })
-        };
-      } else if (model.has(Y2)) {
-        p.y = {
-          scale: model.scaleName(Y),
-          field: model.field(Y2, { binSuffix: '_mid' })
-        };
-      }
+      p.y = {
+        scale: model.scaleName(Y),
+        field: model.field(Y, { binSuffix: '_mid' })
+      };
     }
 
     applyColorAndOpacity(p, model);
