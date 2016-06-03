@@ -19,7 +19,6 @@ export namespace area {
     if (_orient) { p.orient = _orient; }
 
     const stack = model.stack();
-
     const _x = x(model.encoding().x, model.scaleName(X), orient, stack);
     if (_x) { p.x = _x; }
     const _y = y(model.encoding().y, model.scaleName(Y), orient, stack);
@@ -41,7 +40,8 @@ export namespace area {
     }
     return undefined;
   }
-export function x(fieldDef: FieldDef, scaleName: string, orient: string, stack: StackProperties): VgValueRef {
+
+  export function x(fieldDef: FieldDef, scaleName: string, orient: string, stack: StackProperties): VgValueRef {
     if (stack && X === stack.fieldChannel) { // Stacked Measure
       return {
         scale: scaleName,
@@ -161,6 +161,7 @@ export function x(fieldDef: FieldDef, scaleName: string, orient: string, stack: 
     }
     return undefined;
   }
+
 
   export function labels(model: UnitModel) {
     // TODO(#240): fill this method
