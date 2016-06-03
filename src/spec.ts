@@ -9,6 +9,7 @@ import {Encoding, UnitEncoding, has} from './encoding';
 import {Facet} from './facet';
 import {Mark} from './mark';
 import {Transform} from './transform';
+import {Projection} from './projection';
 
 import {COLOR, SHAPE, ROW, COLUMN} from './channel';
 import * as vlEncoding from './encoding';
@@ -21,6 +22,7 @@ export interface BaseSpec {
   data?: Data;
   transform?: Transform;
   config?: Config;
+  projection?: Projection;
 }
 
 export interface UnitSpec extends BaseSpec {

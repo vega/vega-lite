@@ -4,13 +4,19 @@ export enum Type {
   QUANTITATIVE = 'quantitative' as any,
   ORDINAL = 'ordinal' as any,
   TEMPORAL = 'temporal' as any,
-  NOMINAL = 'nominal' as any
+  NOMINAL = 'nominal' as any,
+  GEOJSON = 'geojson' as any,
+  LONGITUDE = 'longitude' as any,
+  LATITUDE = 'latitude' as any
 }
 
 export const QUANTITATIVE = Type.QUANTITATIVE;
 export const ORDINAL = Type.ORDINAL;
 export const TEMPORAL = Type.TEMPORAL;
 export const NOMINAL = Type.NOMINAL;
+export const GEOJSON = Type.GEOJSON;
+export const LONGITUDE = Type.LONGITUDE;
+export const LATITUDE = Type.LATITUDE;
 
 /**
  * Mapping from full type names to short type names.
