@@ -100,11 +100,30 @@ function parseNonPathMark(model: UnitModel, siblings: UnitModel[]) {
   
   const referential = model.isReferential() && siblings !== undefined;
   let referencedModel:UnitModel;
+  
   if (referential) {
     referencedModel = siblings.filter((s) => {
       return s.name('marks') == model.ref('marks');
     })[0];
     dataFrom = {mark: referencedModel.name('marks')};
+  }
+  
+  if (!!referencedModel) {
+      const markType = referencedModel.mark();
+  
+      // anchor
+      if (model.has(ANCHOR)) {
+        // based on mark type, place with x and y (reactive)
+      } else {
+        // default anchor
+      }
+    
+      // offset
+      if (model.has(OFFSET)) {
+        // based on mark type, place with x and y (reactive)
+      } else {
+        // default anchor
+      }
   }
   
   let marks = []; // TODO: vgMarks

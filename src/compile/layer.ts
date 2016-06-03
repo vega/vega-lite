@@ -85,7 +85,7 @@ export class LayerModel extends Model {
       child.parseScale();
 
       // FIXME: correctly implement independent scale
-      if (true) { // if shared/union scale
+      if (true && !child.isReferential()) { // if shared/union scale
         keys(child.component.scale).forEach(function(channel) {
           let childScales: ScaleComponents = child.component.scale[channel];
           if (!childScales) {

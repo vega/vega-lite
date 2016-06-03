@@ -1,12 +1,12 @@
 import {UnitModel} from '../unit';
-import {X, Y, COLOR, TEXT, SIZE} from '../../channel';
+import {X, Y, COLOR, TEXT, SIZE, ANCHOR, OFFSET} from '../../channel';
 import {applyMarkConfig, applyColorAndOpacity, formatMixins} from '../common';
 import {extend, contains} from '../../util';
 import {QUANTITATIVE, ORDINAL, TEMPORAL} from '../../type';
 
-export namespace text {
+export namespace label {
   export function markType() {
-    return 'text';
+    return 'label';
   }
 
   export function background(model: UnitModel) {
@@ -32,34 +32,6 @@ export namespace text {
         
     const fieldDef = model.fieldDef(TEXT);
 
-    // x
-    if (model.has(X)) {
-      p.x = {
-        field: model.field(X, { binSuffix: '_mid' })
-      }
-      if (!referencedModel) {
-        p.x.scale = model.scaleName(X);
-      }
-    } else { // TODO: support x.value, x.datum
-      if (model.has(TEXT) && model.fieldDef(TEXT).type === QUANTITATIVE) {
-        p.x = { field: { group: 'width' }, offset: -5 };
-      } else {
-        p.x = { value: model.config().scale.textBandWidth / 2 };
-      }
-    }
-
-    // y
-    if (model.has(Y)) {
-      p.y = {
-        field: model.field(Y, { binSuffix: '_mid' })
-      };
-      if (!referencedModel) {
-        p.y.scale = model.scaleName(Y);
-      }
-    } else {
-      p.y = { value: model.config().scale.bandSize / 2 };
-    }
-
     // size
     if (model.has(SIZE)) {
       p.fontSize = {
@@ -81,7 +53,6 @@ export namespace text {
     } else {
       applyColorAndOpacity(p, model);
     }
-
 
     // text
     if (model.has(TEXT)) {
