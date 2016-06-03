@@ -6,7 +6,7 @@ import {QUANTITATIVE, ORDINAL, TEMPORAL} from '../../type';
 
 export namespace label {
   export function markType() {
-    return 'label';
+    return 'text';
   }
 
   export function background(model: UnitModel) {
