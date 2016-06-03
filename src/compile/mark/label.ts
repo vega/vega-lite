@@ -66,7 +66,7 @@ export namespace label {
     
     let t: any = { 
       type: 'label',
-      anchor: model.has(ANCHOR) ? ANCHOR : 10,
+      anchor: model.has(ANCHOR) ? ANCHOR : 'bottom-center',
       offset: model.has(OFFSET) ? OFFSET : 10,
       color: model.has(COLOR) ? COLOR : 'black',
       opacity: opacity ? opacity : 1,
