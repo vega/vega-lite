@@ -2,7 +2,7 @@ import {UnitModel} from '../unit';
 import {OrderChannelDef} from '../../fielddef';
 
 import {X, Y, COLOR, TEXT, SHAPE, PATH, ORDER, OPACITY, DETAIL, ANCHOR, OFFSET} from '../../channel';
-import {AREA, LINE, TEXT as TEXTMARK} from '../../mark';
+import {AREA, LINE, TEXT as TEXTMARK, LABEL} from '../../mark';
 import {imputeTransform, stackTransform} from '../stack';
 import {contains, extend} from '../../util';
 import {area} from './area';
@@ -98,7 +98,8 @@ function parsePathMark(model: UnitModel) { // TODO: extract this into compilePat
 function parseNonPathMark(model: UnitModel) {
   const mark = model.mark();
   const isFaceted = model.parent() && model.parent().isFacet();
-  const dataFrom = {data: model.dataTable()};
+  const referenceMark = model.dataRef('marks');
+  const dataFrom = mark === LABEL && referenceMark ? {mark: referenceMark} : {data: model.dataTable()};
 
   let marks = []; // TODO: vgMarks
   if (mark === TEXTMARK &&
@@ -136,6 +137,9 @@ function parseNonPathMark(model: UnitModel) {
         model.has(ORDER) ?
           // if non-stacked, detail field determines the layer order of each mark
           { transform: [{type:'sort', by: sortBy(model)}] } :
+          {},
+        mark === LABEL && referenceMark ?
+          { transform: markCompiler[mark].transforms(model) } : 
           {}
       )
     } : {},

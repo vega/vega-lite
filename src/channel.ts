@@ -85,17 +85,17 @@ export function getSupportedMark(channel: Channel): SupportedMark {
     case COLUMN:
       return { // all marks
         point: true, tick: true, rule: true, circle: true, square: true,
-        bar: true, line: true, area: true, text: true
+        bar: true, line: true, area: true, text: true, label: true
       };
     case SIZE:
       return {
         point: true, tick: true, rule: true, circle: true, square: true,
-        bar: true, text: true
+        bar: true, text: true, label: true
       };
     case SHAPE:
       return {point: true};
     case TEXT:
-      return {text: true};
+      return {text: true, label: true};
     case ANCHOR:
     case OFFSET:
       return {label: true};

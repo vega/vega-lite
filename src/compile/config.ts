@@ -3,7 +3,7 @@ import {Config} from '../config';
 import {Encoding} from '../encoding';
 import {isAggregate, has} from '../encoding';
 import {isMeasure} from '../fielddef';
-import {POINT, LINE, TICK, CIRCLE, SQUARE, RULE, Mark} from '../mark';
+import {POINT, LINE, TICK, CIRCLE, SQUARE, RULE, LABEL, Mark} from '../mark';
 import {contains, extend} from '../util';
 
 /**
@@ -54,6 +54,8 @@ export function initMarkConfig(mark: Mark, encoding: Encoding, config: Config) {
          case 'align':
           if (value === undefined) {
             cfg[property] = has(encoding, X) ? 'center' : 'right';
+          } else if (mark === LABEL) {
+            cfg[property] = 'center';
           }
        }
        return cfg;

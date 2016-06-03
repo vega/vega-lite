@@ -231,6 +231,10 @@ export abstract class Model {
   public data() {
     return this._data;
   }
+  
+  public dataRef(suffix?: string, delimiter: string = '_') {
+    return this._data !== undefined && this._data.hasOwnProperty('ref') ? this._data['ref'] + (suffix ? delimiter + suffix : '') : false;
+  }
 
   public renameData(oldName: string, newName: string) {
      this._dataNameMap.rename(oldName, newName);

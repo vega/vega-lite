@@ -24,7 +24,10 @@ export namespace label {
 
   export function properties(model: UnitModel) {
     // TODO Use Vega's marks properties interface
-    let p: any = {};
+    let p: any = {
+      xc: {field: 'label_xc'},
+      yc: {field: 'label_yc'}
+    };
 
     applyMarkConfig(p, model,
       ['angle', 'align', 'baseline', 'dx', 'dy', 'font', 'fontWeight',
@@ -34,7 +37,7 @@ export namespace label {
 
     // size
     if (model.has(SIZE)) {
-      p.fontSize = { field: model.field(SIZE) };
+      p.fontSize = { field: model.field(SIZE, {datum: true}) };
     } else {
       p.fontSize = { value: sizeValue(model) };
     }
@@ -55,7 +58,7 @@ export namespace label {
         const format = model.config().mark.format;
         extend(p, formatMixins(model, TEXT, format));
       } else {
-        p.text = { field: model.field(TEXT) };
+        p.text = { field: model.field(TEXT, {datum: true}) };
       }
     } else if (fieldDef.value) {
       p.text = { value: fieldDef.value };
@@ -64,8 +67,15 @@ export namespace label {
     return p;
   }
   
-  export function transform(model: UnitModel) {
-  
+  export function transforms(model: UnitModel) {
+    let t: any = { 
+      type: 'label',
+      anchor: model.has(ANCHOR) ? ANCHOR : 10,
+      offset: model.has(OFFSET) ? OFFSET : 10,
+      buffer: 10 // minimum spacing between labels
+    };
+    
+    return [t];
   }
 
   function sizeValue(model: UnitModel) {
