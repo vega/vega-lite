@@ -28,10 +28,11 @@ export namespace label {
       xc: {field: 'label_xc'},
       yc: {field: 'label_yc'},
       align: {field: 'label_align'},
+      fill: {field: 'label_color'}
     };
 
     applyMarkConfig(p, model,
-      ['angle', 'align', 'baseline', 'dx', 'dy', 'font', 'fontWeight',
+      ['angle', 'baseline', 'dx', 'dy', 'font', 'fontWeight',
         'fontStyle', 'radius', 'theta', 'text']);
         
     const fieldDef = model.fieldDef(TEXT);
@@ -43,15 +44,8 @@ export namespace label {
       p.fontSize = { value: sizeValue(model) };
     }
 
-    if (model.config().mark.applyColorToBackground && !model.has(X) && !model.has(Y)) {
-      p.fill = {field: 'label_color'}; // TODO: add rules for swapping between black and white
-
-      // opacity
-      const opacity = model.config().mark.opacity;
-      if (opacity) { p.opacity = { value: opacity }; };
-    } else {
-      applyColorAndOpacity(p, model);
-    }
+    const opacity = model.config().mark.opacity;
+    if (opacity) { p.opacity = {field: 'label_opacity'} };
 
     // text
     if (model.has(TEXT)) {
@@ -69,11 +63,14 @@ export namespace label {
   }
   
   export function transforms(model: UnitModel) {
+    const opacity = model.config().mark.opacity;
+    
     let t: any = { 
       type: 'label',
       anchor: model.has(ANCHOR) ? ANCHOR : 10,
       offset: model.has(OFFSET) ? OFFSET : 10,
       color: model.has(COLOR) ? COLOR : 'black',
+      opacity: opacity ? opacity : 1,
       align: 'center',
       buffer: 10 // minimum spacing between labels
     };
