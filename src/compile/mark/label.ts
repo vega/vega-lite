@@ -44,8 +44,7 @@ export namespace label {
       p.fontSize = { value: sizeValue(model) };
     }
 
-    const opacity = model.config().mark.opacity;
-    if (opacity) { p.opacity = {field: 'label_opacity'} };
+    p.opacity = {field: 'label_opacity'};
 
     // text
     if (model.has(TEXT)) {
