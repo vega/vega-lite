@@ -10,8 +10,8 @@ import {Legend} from '../legend';
 import {Mark, TEXT as TEXTMARK} from '../mark';
 import {Scale, ScaleType} from '../scale';
 import {ExtendedUnitSpec} from '../spec';
-import {getFullName, QUANTITATIVE} from '../type';
-import {duplicate, extend, mergeDeep, Dict} from '../util';
+import {getFullName, QUANTITATIVE, LATITUDE, LONGITUDE, GEOJSON} from '../type';
+import {contains, duplicate, extend, mergeDeep, Dict} from '../util';
 import {VgData} from '../vega.schema';
 
 import {parseAxisComponent} from './axis';
@@ -83,7 +83,13 @@ export class UnitModel extends Model {
 
   private _initScale(mark: Mark, encoding: Encoding, config: Config): Dict<Scale> {
     return UNIT_SCALE_CHANNELS.reduce(function(_scale, channel) {
-      if (vlEncoding.has(encoding, channel)) {
+      const fieldDef = encoding[channel];
+      if (fieldDef && fieldDef.field && 
+          // These types do not require scale
+          !contains([LATITUDE, LONGITUDE, GEOJSON], fieldDef.type) &&  
+          // User explicitly set scale to null to disable scale
+          fieldDef.scale !== null   
+        ) {
         const scaleSpec = encoding[channel].scale || {};
         const channelDef = encoding[channel];
 
