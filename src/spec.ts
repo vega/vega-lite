@@ -10,7 +10,7 @@ import {Facet} from './facet';
 import {Mark} from './mark';
 import {Transform} from './transform';
 
-import {COLOR, SHAPE, ROW, COLUMN} from './channel';
+import {COLOR, SHAPE, ROW, COLUMN, X, Y, X2, Y2} from './channel';
 import * as vlEncoding from './encoding';
 import {BAR, AREA} from './mark';
 import {duplicate, extend} from './util';
@@ -102,6 +102,15 @@ export function isLayerSpec(spec: ExtendedSpec): spec is LayerSpec {
  */
 export function normalize(spec: ExtendedSpec): Spec {
   if (isExtendedUnitSpec(spec)) {
+    return normalizeExtendedUnitSpec(spec);
+  }
+  if (isUnitSpec(spec)) {
+    return normalizeUnitSpec(spec);
+  }
+  return spec;
+}
+
+export function normalizeExtendedUnitSpec(spec: ExtendedUnitSpec): Spec {
     const hasRow = has(spec.encoding, ROW);
     const hasColumn = has(spec.encoding, COLUMN);
 
@@ -127,8 +136,27 @@ export function normalize(spec: ExtendedSpec): Spec {
       },
       spec.config ? { config: spec.config } : {}
     );
-  }
+}
 
+export function normalizeUnitSpec(spec: UnitSpec): Spec {
+  if (spec.encoding) {
+    const hasX = has(spec.encoding, X);
+    const hasY = has(spec.encoding, Y);
+    const hasX2 = has(spec.encoding, X2);
+    const hasY2 = has(spec.encoding, Y2);
+
+    let normalizedSpec = duplicate(spec);
+    if (hasX2 && !hasX) {
+      normalizedSpec.encoding.x = duplicate(normalizedSpec.encoding.x2);
+      delete normalizedSpec.encoding.x2;
+    }
+    if (hasY2 && !hasY) {
+      normalizedSpec.encoding.y = duplicate(normalizedSpec.encoding.y2);
+      delete normalizedSpec.encoding.y2;
+    }
+
+    return normalizedSpec;
+  }
   return spec;
 }
 
