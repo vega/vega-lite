@@ -2,6 +2,7 @@ import {X, Y, SHAPE, SIZE} from '../../channel';
 import {Config} from '../../config';
 import {ChannelDefWithLegend, FieldDef, field} from '../../fielddef';
 import {Scale} from '../../scale';
+import {VgValueRef} from '../../vega.schema';
 
 import {applyColorAndOpacity} from '../common';
 import {UnitModel} from '../unit';
@@ -28,7 +29,7 @@ export namespace point {
     return p;
   }
 
-  function x(fieldDef: FieldDef, scaleName: string, config: Config): any {
+  function x(fieldDef: FieldDef, scaleName: string, config: Config): VgValueRef {
     // x
     if (fieldDef) {
       if (fieldDef.field) {
@@ -42,7 +43,7 @@ export namespace point {
     return { value: config.scale.bandSize / 2 };
   }
 
-  function y(fieldDef: FieldDef, scaleName: string, config: Config): any {
+  function y(fieldDef: FieldDef, scaleName: string, config: Config): VgValueRef {
     // y
     if (fieldDef) {
       if (fieldDef.field) {
@@ -56,7 +57,7 @@ export namespace point {
     return { value: config.scale.bandSize / 2 };
   }
 
-  function size(fieldDef: ChannelDefWithLegend, scaleName: string, scale: Scale, config: Config): any {
+  function size(fieldDef: ChannelDefWithLegend, scaleName: string, scale: Scale, config: Config): VgValueRef {
     if (fieldDef) {
       if (fieldDef.field) {
         return {
@@ -70,7 +71,7 @@ export namespace point {
     return { value: config.mark.size };
   }
 
-  function shape(fieldDef: ChannelDefWithLegend, scaleName: string, scale: Scale, config: Config, fixedShape?: string): any {
+  function shape(fieldDef: ChannelDefWithLegend, scaleName: string, scale: Scale, config: Config, fixedShape?: string): VgValueRef {
     // shape
     if (fixedShape) { // square and circle marks
       return { value: fixedShape };
