@@ -18,16 +18,14 @@ export namespace area {
 
     const _orient = orient(config.mark.orient);
     if (_orient) { p.orient = _orient; }
-    
-    const _x = x(model.encoding().x, model.scaleName(X), model.stack());
-    if (_x) { p.x = _x; }
+
+    p.x = x(model.encoding().x, model.scaleName(X), model.stack());
 
     const _x2 = x2(model.encoding().x, model.scaleName(X), model.stack(), config.mark.orient);
     if (_x2) { p.x2 = _x2; }
-    
-    const _y = y(model.encoding().y, model.scaleName(Y), model.stack());
-    if (_y) { p.y = _y; }
- 
+
+    p.y = y(model.encoding().y, model.scaleName(Y), model.stack());
+
     const _y2 = y2(model.encoding().y, model.scaleName(Y), model.stack(), config.mark.orient);
     if (_y2) { p.y2 = _y2; }
 
@@ -35,14 +33,14 @@ export namespace area {
     applyMarkConfig(p, model, ['interpolate', 'tension']);
     return p;
   }
-  
+
   function orient(orient: string): VgValueRef {
     if (orient) {
       return { value: orient };
     }
     return undefined;
   }
-  
+
   function x(fieldDef: FieldDef, scaleName: string, stack: StackProperties): VgValueRef {
     // x
     if (stack && X === stack.fieldChannel) { // Stacked Measure
@@ -61,7 +59,7 @@ export namespace area {
     return undefined;
   }
 
-  function x2(fieldDef: FieldDef, scaleName: string, stack: StackProperties, orient: string): VgValueRef {  
+  function x2(fieldDef: FieldDef, scaleName: string, stack: StackProperties, orient: string): VgValueRef {
     // x2
     if (orient === 'horizontal') {
       if (stack && X === stack.fieldChannel) {
@@ -99,8 +97,8 @@ export namespace area {
     }
     return undefined;
   }
-  
-  function y2(fieldDef: FieldDef, scaleName: string, stack: StackProperties, orient: string): VgValueRef {  
+
+  function y2(fieldDef: FieldDef, scaleName: string, stack: StackProperties, orient: string): VgValueRef {
     if (orient !== 'horizontal') { // 'vertical' or undefined are vertical
       if (stack && Y === stack.fieldChannel) {
         return {

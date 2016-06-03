@@ -1,6 +1,6 @@
-import {X, Y, SIZE} from '../../channel';
+import {X, Y} from '../../channel';
 import {Config} from '../../config';
-import {ChannelDefWithLegend, FieldDef, field} from '../../fielddef';
+import {FieldDef, field} from '../../fielddef';
 import {VgValueRef} from '../../vega.schema';
 
 import {applyColorAndOpacity, applyMarkConfig} from '../common';
@@ -21,13 +21,13 @@ export namespace line {
     p.y = y(model.encoding().y, model.scaleName(Y), config);
 
     const _size = size(model.encoding().size, config);
-    if (_size) p.strokeWidth = _size;
-    
+    if (_size) { p.strokeWidth = _size; }
+
     applyColorAndOpacity(p, model);
     applyMarkConfig(p, model, ['interpolate', 'tension']);
     return p;
   }
-  
+
   function x(fieldDef: FieldDef, scaleName: string, config: Config): VgValueRef {
     // x
     if (fieldDef) {
@@ -41,8 +41,8 @@ export namespace line {
     }
     return { value: 0 };
   }
-  
-  function y(fieldDef: FieldDef, scaleName: string, config: Config): VgValueRef {  
+
+  function y(fieldDef: FieldDef, scaleName: string, config: Config): VgValueRef {
     // y
     if (fieldDef) {
       if (fieldDef.field) {

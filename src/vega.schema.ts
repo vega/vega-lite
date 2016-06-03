@@ -29,7 +29,7 @@ export type VgValueRef = {
   value?: any,
   field?: string | {
     datum?: string,
-    group?: string, 
+    group?: string,
     parent?: string
   } ,
   scale?: string, // TODO: object
