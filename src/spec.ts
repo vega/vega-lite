@@ -144,18 +144,19 @@ export function normalizeUnitSpec(spec: UnitSpec): Spec {
     const hasY = has(spec.encoding, Y);
     const hasX2 = has(spec.encoding, X2);
     const hasY2 = has(spec.encoding, Y2);
+    if ((hasX2 && !hasX) || (hasY2 && !hasY)) {
+      let normalizedSpec = duplicate(spec);
+      if (hasX2 && !hasX) {
+        normalizedSpec.encoding.x = duplicate(normalizedSpec.encoding.x2);
+        delete normalizedSpec.encoding.x2;
+      }
+      if (hasY2 && !hasY) {
+        normalizedSpec.encoding.y = duplicate(normalizedSpec.encoding.y2);
+        delete normalizedSpec.encoding.y2;
+      }
 
-    let normalizedSpec = duplicate(spec);
-    if (hasX2 && !hasX) {
-      normalizedSpec.encoding.x = duplicate(normalizedSpec.encoding.x2);
-      delete normalizedSpec.encoding.x2;
+      return normalizedSpec;
     }
-    if (hasY2 && !hasY) {
-      normalizedSpec.encoding.y = duplicate(normalizedSpec.encoding.y2);
-      delete normalizedSpec.encoding.y2;
-    }
-
-    return normalizedSpec;
   }
   return spec;
 }
