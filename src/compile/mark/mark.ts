@@ -1,7 +1,7 @@
 import {UnitModel} from '../unit';
 import {OrderChannelDef} from '../../fielddef';
 
-import {X, Y, COLOR, TEXT, SHAPE, PATH, ORDER, OPACITY, DETAIL, LABEL} from '../../channel';
+import {X, Y, COLOR, TEXT, SHAPE, PATH, ORDER, OPACITY, DETAIL, ANCHOR, OFFSET} from '../../channel';
 import {AREA, LINE, TEXT as TEXTMARK} from '../../mark';
 import {imputeTransform, stackTransform} from '../stack';
 import {contains, extend} from '../../util';
@@ -10,6 +10,7 @@ import {bar} from './bar';
 import {line} from './line';
 import {point, circle, square} from './point';
 import {text} from './text';
+import {label} from './label';
 import {tick} from './tick';
 import {rule} from './rule';
 import {sortField} from '../common';
@@ -20,6 +21,7 @@ const markCompiler = {
   line: line,
   point: point,
   text: text,
+  label: label,
   tick: tick,
   rule: rule,
   circle: circle,
@@ -140,26 +142,6 @@ function parseNonPathMark(model: UnitModel) {
     // properties groups
     { properties: { update: markCompiler[mark].properties(model) } }
   ));
-
-  if (model.has(LABEL) && markCompiler[mark].labels) {
-    const labelProperties = markCompiler[mark].labels(model);
-
-    // check if we have label method for current mark type.
-    if (labelProperties !== undefined) { // If label is supported
-      // add label group
-      marks.push(extend(
-        {
-          name: model.name('label'),
-          type: 'text'
-        },
-        // If has facet, `from.data` will be added in the cell group.
-        // Otherwise, add it here.
-        isFaceted ? {} : {from: dataFrom},
-        // Properties
-        { properties: { update: labelProperties } }
-      ));
-    }
-  }
 
   return marks;
 }
