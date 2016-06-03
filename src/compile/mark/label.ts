@@ -26,7 +26,8 @@ export namespace label {
     // TODO Use Vega's marks properties interface
     let p: any = {
       xc: {field: 'label_xc'},
-      yc: {field: 'label_yc'}
+      yc: {field: 'label_yc'},
+      align: {field: 'label_align'},
     };
 
     applyMarkConfig(p, model,
@@ -43,7 +44,7 @@ export namespace label {
     }
 
     if (model.config().mark.applyColorToBackground && !model.has(X) && !model.has(Y)) {
-      p.fill = {value: 'black'}; // TODO: add rules for swapping between black and white
+      p.fill = {field: 'label_color'}; // TODO: add rules for swapping between black and white
 
       // opacity
       const opacity = model.config().mark.opacity;
@@ -72,6 +73,8 @@ export namespace label {
       type: 'label',
       anchor: model.has(ANCHOR) ? ANCHOR : 10,
       offset: model.has(OFFSET) ? OFFSET : 10,
+      color: model.has(COLOR) ? COLOR : 'black',
+      align: 'center',
       buffer: 10 // minimum spacing between labels
     };
     
