@@ -16,7 +16,6 @@ export enum Channel {
   COLOR = 'color' as any,
   TEXT = 'text' as any,
   DETAIL = 'detail' as any,
-  LABEL = 'label' as any,
   PATH = 'path' as any,
   ORDER = 'order' as any,
   OPACITY = 'opacity' as any
@@ -31,15 +30,14 @@ export const SIZE = Channel.SIZE;
 export const COLOR = Channel.COLOR;
 export const TEXT = Channel.TEXT;
 export const DETAIL = Channel.DETAIL;
-export const LABEL = Channel.LABEL;
 export const PATH = Channel.PATH;
 export const ORDER = Channel.ORDER;
 export const OPACITY = Channel.OPACITY;
 
-export const CHANNELS = [X, Y, ROW, COLUMN, SIZE, SHAPE, COLOR, PATH, ORDER, OPACITY, TEXT, DETAIL, LABEL];
+export const CHANNELS = [X, Y, ROW, COLUMN, SIZE, SHAPE, COLOR, PATH, ORDER, OPACITY, TEXT, DETAIL];
 
 export const UNIT_CHANNELS = without(CHANNELS, [ROW, COLUMN]);
-export const UNIT_SCALE_CHANNELS = without(UNIT_CHANNELS, [PATH, ORDER, DETAIL, TEXT, LABEL]);
+export const UNIT_SCALE_CHANNELS = without(UNIT_CHANNELS, [PATH, ORDER, DETAIL, TEXT]);
 export const NONSPATIAL_CHANNELS = without(UNIT_CHANNELS, [X, Y]);
 export const NONSPATIAL_SCALE_CHANNELS = without(UNIT_SCALE_CHANNELS, [X, Y]);
 
@@ -115,7 +113,6 @@ export function getSupportedRole(channel: Channel): SupportedRole {
     case Y:
     case COLOR:
     case OPACITY:
-    case LABEL:
     case DETAIL:
       return {
         measure: true,
@@ -144,5 +141,5 @@ export function getSupportedRole(channel: Channel): SupportedRole {
 }
 
 export function hasScale(channel: Channel) {
-  return !contains([DETAIL, PATH, TEXT, LABEL, ORDER], channel);
+  return !contains([DETAIL, PATH, TEXT, ORDER], channel);
 }

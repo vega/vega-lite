@@ -1,4 +1,4 @@
-import {COLUMN, ROW, X, Y, SIZE, COLOR, OPACITY, SHAPE, TEXT, LABEL, Channel} from '../channel';
+import {COLUMN, ROW, X, Y, SIZE, COLOR, OPACITY, SHAPE, TEXT, Channel} from '../channel';
 import {FieldDef, field, OrderChannelDef} from '../fielddef';
 import {SortOrder} from '../sort';
 import {QUANTITATIVE, ORDINAL, TEMPORAL} from '../type';
@@ -163,8 +163,6 @@ function isAbbreviated(model: Model, channel: Channel, fieldDef: FieldDef) {
       return model.legend(channel).shortTimeLabels;
     case TEXT:
       return model.config().mark.shortTimeLabels;
-    case LABEL:
-      // TODO(#897): implement when we have label
   }
   return false;
 }
