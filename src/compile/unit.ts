@@ -3,7 +3,7 @@ import {Axis} from '../axis';
 import {X, Y, TEXT, PATH, ORDER, Channel, UNIT_CHANNELS,  UNIT_SCALE_CHANNELS, NONSPATIAL_SCALE_CHANNELS, supportMark} from '../channel';
 import {defaultConfig, Config, CellConfig} from '../config';
 import {SOURCE, SUMMARY} from '../data';
-import {Encoding} from '../encoding';
+import {Encoding, containsLatLong} from '../encoding';
 import * as vlEncoding from '../encoding'; // TODO: remove
 import {FieldDef, FieldRefOption, field} from '../fielddef';
 import {Legend} from '../legend';
@@ -122,7 +122,8 @@ export class UnitModel extends Model {
       // Position Axis
       if (vlEncoding.has(encoding, channel)) {
         const axisSpec = encoding[channel].axis;
-        if (axisSpec !== false) {
+        // We no longer support false in the schema, but we keep false here for backward compatability.
+        if (axisSpec !== null && axisSpec !== false && (!containsLatLong(encoding) || axisSpec)) {
           _axis[channel] = extend({},
             config.axis,
             axisSpec === true ? {} : axisSpec ||  {}

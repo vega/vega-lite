@@ -128,6 +128,7 @@ function parseNonPathMark(model: UnitModel) {
       name: model.name('marks'),
       type: markCompiler[mark].markType()
     },
+
     // Add `from` if needed
     (!isFaceted || model.stack() || model.has(ORDER)) ? {
       from: extend(
@@ -140,12 +141,11 @@ function parseNonPathMark(model: UnitModel) {
         model.has(ORDER) ?
           // if non-stacked, detail field determines the layer order of each mark
           { transform: [{type:'sort', by: sortBy(model)}] } :
-          {}
+        (model.projection() && hasGeoTransform(model)) ?
+          { transform: [geoTransform(model)] } :
+        {}
       )
-    } :
-    (model.projection() && hasGeoTransform(model)) ?
-      { transform: geoTransform(model) } :
-      {},
+    } : {},
     // properties groups
     { properties: { update: markCompiler[mark].properties(model) } }
   ));

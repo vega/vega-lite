@@ -224,19 +224,20 @@ export function geoTransform(model: UnitModel) {
     const xFieldDef = model.encoding().x;
     const yFieldDef = model.encoding().y;
     spec = extend(spec,
-        xFieldDef === LATITUDE ? { lat : xFieldDef.field }
-            : xFieldDef === LONGITUDE ? { lon : xFieldDef.field }
+        xFieldDef.type === LATITUDE ? { lat : xFieldDef.field }
+            : xFieldDef.type === LONGITUDE ? { lon : xFieldDef.field }
             : {});
     spec = extend(spec,
-    yFieldDef === LATITUDE ? { lat : yFieldDef.field }
-        : yFieldDef === LONGITUDE ? { lon : yFieldDef.field }
+    yFieldDef.type === LATITUDE ? { lat : yFieldDef.field }
+        : yFieldDef.type === LONGITUDE ? { lon : yFieldDef.field }
         : {});
   }
-    spec = extend(spec, translate ? { translate : translate} : {});
-    spec = extend(spec, scale ? { scale : scale } : {});
-    spec = extend(spec, center ? { center : center } : {});
-    spec = extend(spec, rotate ? { rotate : rotate } : {});
-    spec = extend(spec, precision ? { precision : precision } : {});
-    spec = extend(spec, clipAngle ? { clipAngle : clipAngle } : {});
+    spec = extend(spec, { projection : model.projection().type});
+    spec = extend(spec, translate !== undefined ? { translate : translate} : {});
+    spec = extend(spec, scale !== undefined ? { scale : scale } : {});
+    spec = extend(spec, center !== undefined ? { center : center } : {});
+    spec = extend(spec, rotate !== undefined ? { rotate : rotate } : {});
+    spec = extend(spec, precision !== undefined ? { precision : precision } : {});
+    spec = extend(spec, clipAngle !== undefined ? { clipAngle : clipAngle } : {});
     return spec;
 }

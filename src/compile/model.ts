@@ -110,6 +110,7 @@ export abstract class Model {
 
     this._data = spec.data;
 
+    this._projection = spec.projection;
     this._description = spec.description;
     this._transform = spec.transform;
 

@@ -1,6 +1,7 @@
 // utility for encoding mapping
 import {FieldDef, PositionChannelDef, FacetChannelDef, ChannelDefWithLegend, OrderChannelDef} from './fielddef';
 import {Channel, CHANNELS} from './channel';
+import {LATITUDE, LONGITUDE} from './type';
 import {isArray, any as anyIn} from './util';
 
 // TODO: once we decompose facet, rename this to Encoding
@@ -144,4 +145,19 @@ export function channelMappingReduce(channels: Channel[], mapping: any,
     }
   });
   return r;
+}
+
+export function containsLatLong(encoding: Encoding): boolean {
+  if (encoding.x) {
+    const xType = encoding.x.type;
+    if (xType === LATITUDE || xType === LONGITUDE) {
+      return true;
+    }
+  } else if (encoding.y) {
+    const yType = encoding.y.type;
+    if (yType === LATITUDE || yType === LONGITUDE) {
+      return true;
+    }
+  }
+  return false;
 }
