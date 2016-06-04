@@ -99,7 +99,7 @@ function parseNonPathMark(model: UnitModel) {
   const mark = model.mark();
   const isFaceted = model.parent() && model.parent().isFacet();
   const referenceMark = model.dataRef('marks');
-  const dataFrom = mark === LABEL && referenceMark ? {mark: referenceMark} : {data: model.dataTable()};
+  const dataFrom = {data: model.dataTable()};
 
   let marks = []; // TODO: vgMarks
   if (mark === TEXTMARK &&
@@ -130,22 +130,48 @@ function parseNonPathMark(model: UnitModel) {
       from: extend(
         // If faceted, `from.data` will be added in the cell group.
         // Otherwise, add it here
-        isFaceted ? {} : dataFrom,
+        isFaceted ? {} : mark === LABEL && referenceMark ? {mark: referenceMark} : dataFrom,
         // `from.transform`
         model.stack() ? // Stacked Chart need stack transform
           { transform: [stackTransform(model)] } :
         model.has(ORDER) ?
           // if non-stacked, detail field determines the layer order of each mark
           { transform: [{type:'sort', by: sortBy(model)}] } :
-          {},
-        mark === LABEL && referenceMark ?
-          { transform: markCompiler[mark].transforms(model) } : 
           {}
       )
     } : {},
     // properties groups
     { properties: { update: markCompiler[mark].properties(model) } }
   ));
+  
+  if (mark === LABEL) { // make another mark
+    marks.push(extend(
+      {
+        name: model.name('marks_visible'),
+        type: markCompiler[mark].markType()
+      },
+      // Add `from` if needed
+      (!isFaceted || model.stack() || model.has(ORDER)) ? {
+        from: extend(
+          // If faceted, `from.data` will be added in the cell group.
+          // Otherwise, add it here
+          isFaceted ? {} : {mark: model.name('marks')},
+          // `from.transform`
+          model.stack() ? // Stacked Chart need stack transform
+            { transform: [stackTransform(model)] } :
+          model.has(ORDER) ?
+            // if non-stacked, detail field determines the layer order of each mark
+            { transform: [{type:'sort', by: sortBy(model)}] } :
+            {},
+          mark === LABEL && referenceMark ?
+            { transform: markCompiler[mark].transforms(model) } : 
+            {}
+        )
+      } : {},
+        // properties groups
+        { properties: { update: markCompiler[mark].properties(model, true) } }
+    ));
+  }
 
   return marks;
 }

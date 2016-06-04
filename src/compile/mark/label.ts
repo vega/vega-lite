@@ -21,15 +21,15 @@ export namespace label {
       }
     };
   }
-
-  export function properties(model: UnitModel) {
+  
+  export function properties(model: UnitModel, visible: boolean=false) {
     // TODO Use Vega's marks properties interface
-    let p: any = {
-      xc: {field: 'label_xc'},
-      yc: {field: 'label_yc'},
+    let p: any = visible ? {
+      xc:    {field: 'label_xc'}, // presets so transform can change values
+      yc:    {field: 'label_yc'},
       align: {field: 'label_align'},
-      fill: {field: 'label_color'}
-    };
+      fill:  {field: 'label_color'}
+    } : {};
 
     applyMarkConfig(p, model,
       ['angle', 'baseline', 'dx', 'dy', 'font', 'fontWeight',
@@ -43,8 +43,8 @@ export namespace label {
     } else {
       p.fontSize = { value: sizeValue(model) };
     }
-
-    p.opacity = {field: 'label_opacity'};
+    
+    p.opacity = visible ? {field: 'label_opacity'} : {value: 0};
 
     // text
     if (model.has(TEXT)) {
@@ -63,9 +63,10 @@ export namespace label {
   
   export function transforms(model: UnitModel) {
     const opacity        = model.config().mark.opacity;
-    const anchorFieldDef = model.encoding()['anchor'];
-    const offsetFieldDef = model.encoding()['offset'];
-    const colorFieldDef  = model.encoding()['color'];
+    const anchorFieldDef = model.encoding().anchor;
+    const offsetFieldDef = model.encoding().offset;
+    const colorFieldDef  = model.encoding().color;
+    
     let t: any = { 
       type: 'label',
       anchor: anchorFieldDef? anchorFieldDef.value : 'bottom-center',

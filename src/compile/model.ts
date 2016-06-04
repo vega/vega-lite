@@ -233,7 +233,8 @@ export abstract class Model {
   }
   
   public dataRef(suffix?: string, delimiter: string = '_') {
-    return this._data !== undefined && this._data.hasOwnProperty('ref') ? this._data['ref'] + (suffix ? delimiter + suffix : '') : false;
+    return this._data && this._data.ref ? this._data.ref + (suffix ? delimiter + suffix : '') : false;
+
   }
 
   public renameData(oldName: string, newName: string) {
