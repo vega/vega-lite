@@ -13,6 +13,7 @@ import {ExtendedUnitSpec} from '../spec';
 import {getFullName, QUANTITATIVE, LATITUDE, LONGITUDE, GEOJSON} from '../type';
 import {contains, duplicate, extend, mergeDeep, Dict} from '../util';
 import {VgData} from '../vega.schema';
+import {Projection} from '../projection';
 
 import {parseAxisComponent} from './axis';
 import {applyConfig, FILL_STROKE_CONFIG} from './common';
@@ -41,6 +42,7 @@ export class UnitModel extends Model {
     const encoding = this._encoding = this._initEncoding(mark, spec.encoding || {});
     const config = this._config = this._initConfig(spec.config, parent, mark, encoding);
 
+    this._projection = this._initProjection(config);
     const scale = this._scale =  this._initScale(mark, encoding, config);
     this._axis = this._initAxis(encoding, config);
     this._legend = this._initLegend(encoding, config);
@@ -81,14 +83,21 @@ export class UnitModel extends Model {
     return config;
   }
 
+  private _initProjection(config: Config): Projection {
+    return extend({},
+      config.projection,
+      this._projection
+    );
+  }
+
   private _initScale(mark: Mark, encoding: Encoding, config: Config): Dict<Scale> {
     return UNIT_SCALE_CHANNELS.reduce(function(_scale, channel) {
       const fieldDef = encoding[channel];
-      if (fieldDef && fieldDef.field && 
+      if (fieldDef && fieldDef.field &&
           // These types do not require scale
-          !contains([LATITUDE, LONGITUDE, GEOJSON], fieldDef.type) &&  
+          !contains([LATITUDE, LONGITUDE, GEOJSON], fieldDef.type) &&
           // User explicitly set scale to null to disable scale
-          fieldDef.scale !== null   
+          fieldDef.scale !== null
         ) {
         const scaleSpec = encoding[channel].scale || {};
         const channelDef = encoding[channel];
