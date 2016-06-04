@@ -1,8 +1,10 @@
-// Add new interface in a new file
-
 export interface Projection {
   /*
-   *The center of the projection. 
+   * The type of the projection.
+   */
+  type?: string;
+  /*
+   * The center of the projection.
    */
   center?: number[];
   /*
@@ -16,7 +18,7 @@ export interface Projection {
   /**
    * The rotation of the projection.
    */
-  rotate?:  number;
+  rotate?: number;
   /*
    * The desired precision of the projection.
    */
