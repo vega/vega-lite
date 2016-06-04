@@ -137,7 +137,10 @@ function parseNonPathMark(model: UnitModel) {
         model.has(ORDER) ?
           // if non-stacked, detail field determines the layer order of each mark
           { transform: [{type:'sort', by: sortBy(model)}] } :
-          {}
+          {},
+          mark === LABEL && referenceMark ?
+            { transform: markCompiler[mark].transforms(model) } : 
+            {}
       )
     } : {},
     // properties groups

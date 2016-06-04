@@ -24,12 +24,12 @@ export namespace label {
   
   export function properties(model: UnitModel, visible: boolean=false) {
     // TODO Use Vega's marks properties interface
-    let p: any = visible ? {
+    let p: any = {
       xc:    {field: 'label_xc'}, // presets so transform can change values
       yc:    {field: 'label_yc'},
       align: {field: 'label_align'},
       fill:  {field: 'label_color'}
-    } : {};
+    };
 
     applyMarkConfig(p, model,
       ['angle', 'baseline', 'dx', 'dy', 'font', 'fontWeight',
