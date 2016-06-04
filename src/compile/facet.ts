@@ -184,32 +184,25 @@ export class FacetModel extends Model {
   public parseMark() {
     this.child().parseMark();
 
-    this.component.mark = extend(
-      {
-        name: this.name('cell'),
-        type: 'group',
-        from: extend(
-          {data: this.dataName(SOURCE)},
-          {
-            transform: [{
-              type: 'facet',
-              groupby: [].concat(
-                this.has(ROW) ? [this.field(ROW)] : [],
-                this.has(COLUMN) ? [this.field(COLUMN)] : []
-              )
-            }]
-          }
-        ),
-        properties: {
-          update: getFacetGroupProperties(this)
+    this.component.mark = [{
+      name: this.name('cell'),
+      type: 'group',
+      from: extend(
+        {data: this.dataName(SOURCE)},
+        {
+          transform: [{
+            type: 'facet',
+            groupby: [].concat(
+              this.has(ROW) ? [this.field(ROW)] : [],
+              this.has(COLUMN) ? [this.field(COLUMN)] : []
+            )
+          }]
         }
-      },
-      // Call child's assembleGroup to add marks, scales, axes, and legends.
-      // Note that we can call child's assembleGroup() here because parseMark()
-      // is the last method in compile() and thus the child is completely compiled
-      // at this point.
-      this.child().assembleGroup()
-    );
+      ),
+      properties: {
+        update: getFacetGroupProperties(this)
+      }
+    }];
   }
 
   public parseAxis() {
@@ -275,7 +268,10 @@ export class FacetModel extends Model {
       // axisGroup is a mapping to VgMarkGroup
       vals(this.component.axisGroup),
       flatten(vals(this.component.gridGroup)),
-      this.component.mark
+      extend(
+        this.component.mark[0],
+        // Call child's assembleGroup to add marks, scales, axes, and legends.
+        this.child().assembleGroup())
     );
   }
 

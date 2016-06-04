@@ -245,10 +245,8 @@ export function parseLayerData(model: LayerModel): DataComponent {
 
     // Children have different sources but they could be undefined and thus need to be linked up.
     // The specific case is a layer inside a facet where one layer has a data source.
-    // debugger;
-
-    // the children have different sources so let's give up
-    return dataComponent;
+    const noSourceChildren = model.children().filter((child) => !child.component.data.source);
+    return mergeChildren(model, dataComponent, noSourceChildren);
   }
 }
 

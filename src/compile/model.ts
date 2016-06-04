@@ -371,6 +371,21 @@ export abstract class Model {
     return this._warnings;
   }
 
+  // Determined whether the model is faceted by going up until either
+  // the model defines a data source or is a facet model.
+  public isFaceted() {
+    if (this.isFacet()) {
+      return true;
+    }
+    if (this.data()) {
+      return false;
+    }
+    if (!this.parent()) {
+      return false;
+    }
+    return this.parent().isFaceted();
+  }
+
   /**
    * Type checks
    */

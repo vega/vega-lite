@@ -37,8 +37,7 @@ export function parseMark(model: UnitModel): any[] {
 
 function parsePathMark(model: UnitModel) { // TODO: extract this into compilePathMark
   const mark = model.mark();
-  // TODO: replace this with more general case for composition
-  const isFaceted = model.parent() && model.parent().isFacet();
+  const isFaceted = model.isFaceted();
   const dataFrom = {data: model.dataName(SOURCE)};
   const details = detailFields(model);
 
@@ -96,7 +95,7 @@ function parsePathMark(model: UnitModel) { // TODO: extract this into compilePat
 
 function parseNonPathMark(model: UnitModel) {
   const mark = model.mark();
-  const isFaceted = model.parent() && model.parent().isFacet();
+  const isFaceted = model.isFaceted();
   const dataFrom = {data: model.dataName(SOURCE)};
 
   let marks = []; // TODO: vgMarks
