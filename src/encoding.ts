@@ -14,6 +14,7 @@ export interface UnitEncoding {
   detail?: FieldDef | FieldDef[];
   text?: FieldDef;
   label?: FieldDef;
+  geopath?: FieldDef;
 
   path?: OrderChannelDef | OrderChannelDef[];
   order?: OrderChannelDef | OrderChannelDef[];
