@@ -21,8 +21,8 @@ export interface BaseSpec {
   description?: string;
   data?: Data;
   transform?: Transform;
-  config?: Config;
   projection?: Projection;
+  config?: Config;
 }
 
 export interface UnitSpec extends BaseSpec {
