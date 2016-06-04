@@ -2,7 +2,10 @@ import {COLUMN, ROW, X, Y, SIZE, COLOR, OPACITY, SHAPE, TEXT, LABEL, Channel} fr
 import {FieldDef, field, OrderChannelDef} from '../fielddef';
 import {SortOrder} from '../sort';
 import {QUANTITATIVE, ORDINAL, TEMPORAL} from '../type';
-import {contains, union} from '../util';
+import {contains, union, extend} from '../util';
+import {Mark, PATH} from '../Mark';
+import {PATH as PATHMARK} from '../mark';
+import {GEOJSON, LATITUDE, LONGITUDE} from '../type';
 
 import {FacetModel} from './facet';
 import {LayerModel} from './layer';
@@ -182,4 +185,58 @@ export function sortField(orderChannelDef: OrderChannelDef) {
 export function timeFormat(model: Model, channel: Channel): string {
   const fieldDef = model.fieldDef(channel);
   return timeFormatExpr(fieldDef.timeUnit, isAbbreviated(model, channel, fieldDef));
+}
+
+export function hasGeoTransform(model: UnitModel): boolean {
+  const geoPathFieldDef = model.encoding().geopath;
+  if (model.mark() === PATHMARK) {
+    if (geoPathFieldDef && geoPathFieldDef.type === GEOJSON) {
+      return true;
+    }
+  }
+  const xFieldDef = model.encoding().x;
+  const yFieldDef = model.encoding().y;
+  if (xFieldDef &&
+      (xFieldDef.type === LATITUDE || xFieldDef.type === LONGITUDE)) {
+    return true;
+  }
+  if (yFieldDef &&
+      (yFieldDef.type === LATITUDE || yFieldDef.type === LONGITUDE)) {
+    return true;
+  }
+  return false;
+}
+
+export function geoTransform(model: UnitModel) {
+  const translate = model.projection().translate;
+  const scale     = model.projection().scale;
+  const center    = model.projection().center;
+  const rotate    = model.projection().rotate;
+  const precision = model.projection().precision;
+  const clipAngle = model.projection().clipAngle;
+  let spec = {};
+  if (model.mark() === PATHMARK) {
+    // return geoPath transform
+    const geoPathFieldDef = model.encoding().geopath;
+    spec = { type: 'geopath', field: geoPathFieldDef.field };
+  } else {
+    spec = { type: 'geo' };
+    const xFieldDef = model.encoding().x;
+    const yFieldDef = model.encoding().y;
+    spec = extend(spec,
+        xFieldDef === LATITUDE ? { lat : xFieldDef.field }
+            : xFieldDef === LONGITUDE ? { lon : xFieldDef.field }
+            : {});
+    spec = extend(spec,
+    yFieldDef === LATITUDE ? { lat : yFieldDef.field }
+        : yFieldDef === LONGITUDE ? { lon : yFieldDef.field }
+        : {});
+  }
+    spec = extend(spec, translate ? { translate : translate} : {});
+    spec = extend(spec, scale ? { scale : scale } : {});
+    spec = extend(spec, center ? { center : center } : {});
+    spec = extend(spec, rotate ? { rotate : rotate } : {});
+    spec = extend(spec, precision ? { precision : precision } : {});
+    spec = extend(spec, clipAngle ? { clipAngle : clipAngle } : {});
+    return spec;
 }
