@@ -247,9 +247,9 @@ export class LayerModel extends Model {
    * This function can only be called once th child has been parsed.
    */
   public compatibleSource(child: UnitModel) {
-    const sourceUrl = this.data().url;
+    const data = this.data();
     const childData = child.component.data;
-    const compatible = !childData.source || (sourceUrl && sourceUrl === childData.source.url);
+    const compatible = !childData.source || (data && data.url === childData.source.url);
     return compatible;
   }
 }
