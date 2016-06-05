@@ -103,9 +103,12 @@ function parseNonPathMark(model: UnitModel, siblings?: UnitModel[]) {
   const mark = model.mark();
   const isFaceted = model.parent() && model.parent().isFacet();
   
-  const referenceMark = siblings.filter(function(sibling) {
-    return sibling.name('marks') === model.dataRef('marks');
-  })[0];
+  let referenceMark;
+  if (siblings) {
+    referenceMark = siblings.filter(function(sibling) {
+      return sibling.name('marks') === model.dataRef('marks');
+    })[0];
+  }
   
   const dataFrom = {data: model.dataTable()};
 
