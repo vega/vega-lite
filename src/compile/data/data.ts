@@ -1,5 +1,5 @@
 import {Formula} from '../../transform';
-import {keys, Dict, StringSet, unique, stableStringify, allSame, differ, any, all, map, extend, forEach, empty, duplicate} from '../../util';
+import {Dict, StringSet, stableStringify, allSame, empty, duplicate} from '../../util';
 import {VgData, VgTransform} from '../../vega.schema';
 import {SOURCE, RAW, STACKED_SCALE} from '../../data';
 

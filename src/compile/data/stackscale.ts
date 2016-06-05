@@ -1,9 +1,6 @@
-import {STACKED_SCALE} from '../../data';
 import {field} from '../../fielddef';
-import {VgData} from '../../vega.schema';
 
 import {FacetModel} from './../facet';
-import {LayerModel} from './../layer';
 import {Model} from './../model';
 
 import {DataComponent} from './data';

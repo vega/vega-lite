@@ -1,5 +1,3 @@
-import {FacetModel} from './../facet';
-import {LayerModel} from './../layer';
 import {Model} from './../model';
 import {allSame} from '../../util';
 

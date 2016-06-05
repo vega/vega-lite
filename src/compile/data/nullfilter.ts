@@ -1,8 +1,7 @@
 import {FieldDef} from '../../fielddef';
-import {extend, keys, differ, Dict, forEach, all, duplicate} from '../../util';
+import {extend, keys, differ, Dict, all, duplicate} from '../../util';
 
 import {FacetModel} from './../facet';
-import {LayerModel} from './../layer';
 import {Model} from './../model';
 
 import {DataComponent} from './data';

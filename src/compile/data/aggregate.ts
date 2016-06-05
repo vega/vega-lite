@@ -1,12 +1,9 @@
 import {AggregateOp} from '../../aggregate';
 import {Channel} from '../../channel';
-import {SOURCE} from '../../data';
 import {field, FieldDef} from '../../fielddef';
-import {keys, vals, reduce, stableStringify, Dict, StringSet, allSame, empty} from '../../util';
-import {VgData} from '../../vega.schema';
+import {keys, reduce, stableStringify, Dict, StringSet, allSame, empty} from '../../util';
 
 import {FacetModel} from './../facet';
-import {LayerModel} from './../layer';
 import {Model} from './../model';
 
 import {DataComponent, AggregateComponent} from './data';

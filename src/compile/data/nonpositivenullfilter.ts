@@ -2,7 +2,6 @@ import {ScaleType} from '../../scale';
 import {extend, keys, differ, Dict, all, duplicate} from '../../util';
 
 import {FacetModel} from './../facet';
-import {LayerModel} from './../layer';
 import {Model} from './../model';
 
 import {DataComponent} from './data';

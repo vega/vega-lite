@@ -6,7 +6,6 @@ import {extend, keys, StringSet} from '../../util';
 import {VgData} from '../../vega.schema';
 
 import {FacetModel} from './../facet';
-import {LayerModel} from './../layer';
 import {Model} from './../model';
 import {parseExpression, rawDomain} from './../time';
 

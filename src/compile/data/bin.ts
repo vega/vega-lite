@@ -5,7 +5,6 @@ import {extend, vals, flatten, stableStringify, Dict, isObject} from '../../util
 import {VgTransform} from '../../vega.schema';
 
 import {FacetModel} from './../facet';
-import {LayerModel} from './../layer';
 import {Model} from './../model';
 
 import {DataComponent} from './data';

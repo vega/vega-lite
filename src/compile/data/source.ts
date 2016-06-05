@@ -1,17 +1,10 @@
 import {SOURCE} from '../../data';
 import {contains, empty} from '../../util';
-import {VgData, isVgData} from '../../vega.schema';
+import {VgData} from '../../vega.schema';
 
-import {FacetModel} from './../facet';
-import {LayerModel} from './../layer';
 import {Model} from './../model';
 
 import {DataComponent, SourceComponent} from './data';
-import {nullFilter} from './nullfilter';
-import {filter} from './filter';
-import {bin} from './bin';
-import {calculate} from './calculate';
-import {timeUnit} from './timeunit';
 import {formatParse} from './formatparse';
 
 export namespace source {

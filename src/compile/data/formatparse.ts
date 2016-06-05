@@ -1,10 +1,9 @@
 import {FieldDef, isCount} from '../../fielddef';
 import {QUANTITATIVE, TEMPORAL} from '../../type';
-import {extend, differ, Dict, forEach} from '../../util';
+import {extend, Dict, forEach} from '../../util';
 import {DataComponent} from './data';
 
 import {FacetModel} from './../facet';
-import {LayerModel} from './../layer';
 import {Model} from './../model';
 
 export namespace formatParse {

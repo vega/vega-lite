@@ -1,8 +1,6 @@
 import {Formula} from '../../transform';
-import {extend, vals, stableStringify, Dict, forEach} from '../../util';
+import {extend, vals, Dict, forEach} from '../../util';
 
-import {FacetModel} from './../facet';
-import {LayerModel} from './../layer';
 import {Model} from './../model';
 
 import {DataComponent} from './data';

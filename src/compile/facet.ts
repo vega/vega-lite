@@ -11,7 +11,7 @@ import {getFullName} from '../type';
 import {extend, keys, vals, flatten, duplicate, mergeDeep, Dict} from '../util';
 import {VgData, VgMarkGroup} from '../vega.schema';
 
-import {parseAxis, parseInnerAxis, gridShow, parseAxisComponent} from './axis';
+import {parseInnerAxis, gridShow, parseAxisComponent} from './axis';
 import {buildModel} from './common';
 import {assembleData, parseFacetData} from './data/data';
 import {assembleLayout, parseFacetLayout} from './layout';
