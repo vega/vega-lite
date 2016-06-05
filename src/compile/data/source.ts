@@ -30,10 +30,14 @@ export namespace source {
         // Extract extension from URL using snippet from
         // http://stackoverflow.com/questions/680929/how-to-extract-extension-from-filename-string-in-javascript
         let defaultExtension = /(?:\.([^.]+))?$/.exec(sourceData.url)[1];
-        if (!contains(['json', 'csv', 'tsv'], defaultExtension)) {
+        if (!contains(['json', 'csv', 'tsv', 'topojson'], defaultExtension)) {
           defaultExtension = 'json';
         }
-        sourceData.format = { type: model.data().formatType || defaultExtension };
+        const dataFormat = model.data().format;
+        sourceData.format =
+          ( dataFormat !== undefined && dataFormat.type) ?
+            { type: model.data().format.type } :
+            { type: defaultExtension };
       }
       return sourceData;
     } else if (!model.parent()) {

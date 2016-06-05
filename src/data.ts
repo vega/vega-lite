@@ -7,16 +7,19 @@ export enum DataFormat {
     JSON = 'json' as any,
     CSV = 'csv' as any,
     TSV = 'tsv' as any,
+    TOPOJSON = 'topojson' as any
 }
 
 export interface Data {
-  formatType?: DataFormat;
-
-
   /**
    * A URL from which to load the data set. Use the formatType property
    * to ensure the loaded data is correctly parsed.
    */
+  format?: {
+    type?: DataFormat;
+    feature?: string;
+    mesh?: string;
+  }
   url?: string;
   /**
    * Pass array of objects instead of a url to a file.
