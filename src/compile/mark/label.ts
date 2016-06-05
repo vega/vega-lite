@@ -24,12 +24,12 @@ export namespace label {
   
   export function properties(model: UnitModel, visible: boolean=false) {
     // TODO Use Vega's marks properties interface
-    let p: any = {
+    let p: any = visible ? {
       xc:    {field: 'label_xc'}, // presets so transform can change values
       yc:    {field: 'label_yc'},
       align: {field: 'label_align'},
       fill:  {field: 'label_color'}
-    };
+    } : {};
 
     applyMarkConfig(p, model,
       ['angle', 'baseline', 'dx', 'dy', 'font', 'fontWeight',
@@ -39,7 +39,7 @@ export namespace label {
 
     // size
     if (model.has(SIZE)) {
-      p.fontSize = { field: model.field(SIZE, {datum: true}) };
+      p.fontSize = { field: model.field(SIZE, extend({datum: true}, visible?{prefn: 'datum.'}:{})) };
     } else {
       p.fontSize = { value: sizeValue(model) };
     }
@@ -52,7 +52,7 @@ export namespace label {
         const format = model.config().mark.format;
         extend(p, formatMixins(model, TEXT, format));
       } else {
-        p.text = { field: model.field(TEXT, {datum: true}) };
+        p.text = { field: model.field(TEXT, extend({datum: true}, visible?{prefn: 'datum.'}:{})) };
       }
     } else if (fieldDef.value) {
       p.text = { value: fieldDef.value };
@@ -69,7 +69,7 @@ export namespace label {
     
     let t: any = { 
       type: 'label',
-      anchor: anchorFieldDef? anchorFieldDef.value : 'bottom-center',
+      anchor: anchorFieldDef? anchorFieldDef.value : 'bottom',
       offset: offsetFieldDef ? offsetFieldDef.value : 10,
       color: colorFieldDef ? colorFieldDef.value : 'black',
       opacity: opacity ? opacity : 1,
