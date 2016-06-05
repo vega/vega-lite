@@ -62,7 +62,7 @@ export namespace label {
     return p;
   }
   
-  export function transforms(model: UnitModel, reference?: UnitModel) {
+  export function transform(model: UnitModel, reference?: UnitModel) {
     const opacity        = model.config().mark.opacity;
     const anchorFieldDef = model.encoding().anchor;
     const offsetFieldDef = model.encoding().offset;

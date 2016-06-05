@@ -175,7 +175,7 @@ function parseNonPathMark(model: UnitModel, siblings?: UnitModel[]) {
             { transform: [{type:'sort', by: sortBy(model)}] } :
             {},
           mark === LABEL && referenceMark ?
-            { transform: markCompiler[mark].transforms(model, referenceMark) } : 
+            { transform: markCompiler[mark].transform(model, referenceMark) } : 
             {}
         )
       } : {},
