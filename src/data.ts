@@ -15,7 +15,7 @@ export interface Data {
     type?: DataFormat;
     feature?: string;
     mesh?: string;
-  }
+  };
   url?: string;
   /**
    * Pass array of objects instead of a url to a file.
