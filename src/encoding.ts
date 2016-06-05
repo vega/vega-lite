@@ -147,6 +147,11 @@ export function channelMappingReduce(channels: Channel[], mapping: any,
   return r;
 }
 
+/*
+ * Check if the encoding contains any x/y of type LATITUDE or
+ * LONGITUDE. This can be used to determine if a geo transform
+ * should be produced.
+ */
 export function containsLatLong(encoding: Encoding): boolean {
   if (encoding.x) {
     const xType = encoding.x.type;

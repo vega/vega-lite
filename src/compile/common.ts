@@ -1,4 +1,5 @@
 import {COLUMN, ROW, X, Y, SIZE, COLOR, OPACITY, SHAPE, TEXT, LABEL, Channel} from '../channel';
+import {containsLatLong} from '../encoding';
 import {FieldDef, field, OrderChannelDef} from '../fielddef';
 import {SortOrder} from '../sort';
 import {QUANTITATIVE, ORDINAL, TEMPORAL} from '../type';
@@ -191,20 +192,14 @@ export function hasGeoTransform(model: UnitModel): boolean {
   const geoPathFieldDef = model.encoding().geopath;
   if (model.mark() === PATHMARK) {
     if (geoPathFieldDef && geoPathFieldDef.type === GEOJSON) {
+      // If the mark is path and geopath encoding is defined with geojson type,
+      // it means the user wants to have geopath transform.
       return true;
     }
   }
-  const xFieldDef = model.encoding().x;
-  const yFieldDef = model.encoding().y;
-  if (xFieldDef &&
-      (xFieldDef.type === LATITUDE || xFieldDef.type === LONGITUDE)) {
-    return true;
-  }
-  if (yFieldDef &&
-      (yFieldDef.type === LATITUDE || yFieldDef.type === LONGITUDE)) {
-    return true;
-  }
-  return false;
+  // For geo transform, we only plot latitude/longitude against
+  // x/y because it would not make sense for other measures like color.
+  return containsLatLong(model.encoding);
 }
 
 export function geoTransform(model: UnitModel) {
