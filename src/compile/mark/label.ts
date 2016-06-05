@@ -69,8 +69,8 @@ export namespace label {
     
     let t: any = { 
       type: 'label',
-      anchor: anchorFieldDef ? anchorFieldDef.value : 'bottom',
-      offset: offsetFieldDef ? offsetFieldDef.value : 10,
+      anchor: anchorFieldDef ? anchorFieldDef.value : 'auto',
+      offset: offsetFieldDef ? offsetFieldDef.value : 'auto',
       color: colorFieldDef ? colorFieldDef.value : 'black',
       opacity: opacity ? opacity : 1,
       align: 'center',
