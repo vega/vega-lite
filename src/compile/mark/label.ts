@@ -39,12 +39,12 @@ export namespace label {
 
     // size
     if (model.has(SIZE)) {
-      p.fontSize = { field: model.field(SIZE, extend({datum: true}, visible?{prefn: 'datum.'}:{})) };
+      p.fontSize = { field: model.field(SIZE, extend({ datum: true }, visible ? { prefn: 'datum.' } : {} )) };
     } else {
       p.fontSize = { value: sizeValue(model) };
     }
     
-    p.opacity = visible ? {field: 'label_opacity'} : {value: 0};
+    p.opacity = visible ? { field: 'label_opacity' } : { value: 0 };
 
     // text
     if (model.has(TEXT)) {
@@ -52,7 +52,7 @@ export namespace label {
         const format = model.config().mark.format;
         extend(p, formatMixins(model, TEXT, format));
       } else {
-        p.text = { field: model.field(TEXT, extend({datum: true}, visible?{prefn: 'datum.'}:{})) };
+        p.text = { field: model.field(TEXT, extend({datum: true}, visible ? { prefn: 'datum.' } : {} )) };
       }
     } else if (fieldDef.value) {
       p.text = { value: fieldDef.value };
@@ -61,7 +61,7 @@ export namespace label {
     return p;
   }
   
-  export function transforms(model: UnitModel) {
+  export function transforms(model: UnitModel, reference?: UnitModel) {
     const opacity        = model.config().mark.opacity;
     const anchorFieldDef = model.encoding().anchor;
     const offsetFieldDef = model.encoding().offset;
@@ -69,13 +69,17 @@ export namespace label {
     
     let t: any = { 
       type: 'label',
-      anchor: anchorFieldDef? anchorFieldDef.value : 'bottom',
+      anchor: anchorFieldDef ? anchorFieldDef.value : 'bottom',
       offset: offsetFieldDef ? offsetFieldDef.value : 10,
       color: colorFieldDef ? colorFieldDef.value : 'black',
       opacity: opacity ? opacity : 1,
       align: 'center',
       buffer: 10 // minimum spacing between labels
     };
+    
+    if (reference && reference.config().mark.orient) {
+      t.orientation = reference.config().mark.orient;
+    }
     
     return [t];
   }

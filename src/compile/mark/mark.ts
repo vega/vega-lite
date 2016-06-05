@@ -28,11 +28,15 @@ const markCompiler = {
   square: square
 };
 
-export function parseMark(model: UnitModel): any[] {
+export function parseMark(model: UnitModel, siblings?: UnitModel[]): any[] {
   if (contains([LINE, AREA], model.mark())) {
     return parsePathMark(model);
   } else {
-    return parseNonPathMark(model);
+    if (siblings) {
+      return parseNonPathMark(model, siblings);
+    } else {
+      return parseNonPathMark(model);
+    }
   }
 }
 
@@ -95,10 +99,14 @@ function parsePathMark(model: UnitModel) { // TODO: extract this into compilePat
   }
 }
 
-function parseNonPathMark(model: UnitModel) {
+function parseNonPathMark(model: UnitModel, siblings?: UnitModel[]) {
   const mark = model.mark();
   const isFaceted = model.parent() && model.parent().isFacet();
-  const referenceMark = model.dataRef('marks');
+  
+  const referenceMark = siblings.filter(function(sibling) {
+    return sibling.name('marks') === model.dataRef('marks');
+  })[0];
+  
   const dataFrom = {data: model.dataTable()};
 
   let marks = []; // TODO: vgMarks
@@ -130,7 +138,7 @@ function parseNonPathMark(model: UnitModel) {
       from: extend(
         // If faceted, `from.data` will be added in the cell group.
         // Otherwise, add it here
-        isFaceted ? {} : mark === LABEL && referenceMark ? {mark: referenceMark} : dataFrom,
+        isFaceted ? {} : mark === LABEL && referenceMark ? {mark: referenceMark.name('marks')} : dataFrom,
         // `from.transform`
         model.stack() ? // Stacked Chart need stack transform
           { transform: [stackTransform(model)] } :
@@ -164,7 +172,7 @@ function parseNonPathMark(model: UnitModel) {
             { transform: [{type:'sort', by: sortBy(model)}] } :
             {},
           mark === LABEL && referenceMark ?
-            { transform: markCompiler[mark].transforms(model) } : 
+            { transform: markCompiler[mark].transforms(model, referenceMark) } : 
             {}
         )
       } : {},

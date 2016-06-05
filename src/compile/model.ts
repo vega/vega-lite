@@ -10,6 +10,7 @@ import {BaseSpec} from '../spec';
 import {Transform} from '../transform';
 import {extend, flatten, vals, warning, Dict} from '../util';
 import {VgData, VgMarkGroup, VgScale, VgAxis, VgLegend} from '../vega.schema';
+import {UnitModel} from './unit.ts';
 
 import {DataComponent} from './data/data';
 import {LayoutComponent} from './layout';
@@ -132,8 +133,8 @@ export abstract class Model {
 
   public abstract parseScale();
 
-  public abstract parseMark();
-
+  public abstract parseMark(siblings?: UnitModel[]);
+ 
   public abstract parseAxis();
 
   public abstract parseLegend();

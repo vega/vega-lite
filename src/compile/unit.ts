@@ -149,8 +149,12 @@ export class UnitModel extends Model {
     this.component.scale = parseScaleComponent(this);
   }
 
-  public parseMark() {
-    this.component.mark = parseMark(this);
+  public parseMark(siblings?: UnitModel[]) {
+    if (siblings) {
+      this.component.mark = parseMark(this, siblings);
+    } else {
+      this.component.mark = parseMark(this);
+    }
   }
 
   public parseAxis() {
