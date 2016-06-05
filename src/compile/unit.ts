@@ -189,7 +189,7 @@ export class UnitModel extends Model {
     const marks = this.component.mark;
     if (marks) {
       marks.forEach((mark) => {
-        if (mark.from) {
+        if (mark.from && mark.from.data) {
           mark.from.data = this.renamedDataName(mark.from.data);
         }
       });
