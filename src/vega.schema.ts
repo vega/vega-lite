@@ -2,7 +2,7 @@ import {isArray, isObject} from './util';
 import {ScaleType, NiceTime} from './scale';
 
 export interface VgData {
-  name?: string;  // TODO: make required
+  name: string;
   source?: string;
   values?: any;
   format?: any;

@@ -37,8 +37,7 @@ export namespace aggregate {
     model.forEach(function (fieldDef: FieldDef, channel: Channel) {
       if (fieldDef.aggregate) {
         if (fieldDef.aggregate === AggregateOp.COUNT) {
-          meas['*'] = meas['*'] || {};
-          meas['*']['count'] = true; // tslint:disable-line:no-string-literal
+          meas['*'] = {count: true};
         } else {
           meas[fieldDef.field] = meas[fieldDef.field] || {};
           meas[fieldDef.field][fieldDef.aggregate] = true;

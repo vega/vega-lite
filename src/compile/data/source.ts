@@ -6,7 +6,7 @@ import {FacetModel} from './../facet';
 import {LayerModel} from './../layer';
 import {Model} from './../model';
 
-import {DataComponent} from './data';
+import {DataComponent, SourceComponent} from './data';
 import {nullFilter} from './nullfilter';
 import {filter} from './filter';
 import {bin} from './bin';
@@ -15,10 +15,10 @@ import {timeUnit} from './timeunit';
 import {formatParse} from './formatparse';
 
 export namespace source {
-  export function parse(model: Model): VgData {
+  export function parse(model: Model): SourceComponent {
     let data = model.data();
     if (data) {
-      let sourceData: VgData = {};
+      let sourceData: SourceComponent = {};
       if (data.values && data.values.length > 0) {
         sourceData.values = model.data().values;
         sourceData.format = { type: 'json' };
@@ -43,9 +43,11 @@ export namespace source {
   // child cannot define data source so no need to merge up
   export const parseFacet = parse;
 
-  export function assemble(model: Model, component: DataComponent) {
+  export function assemble(model: Model, component: DataComponent): VgData {
     if (component.source) {
-      let sourceData: VgData = component.source;
+      let sourceData: VgData = component.source as VgData;
+      // VgData requires name
+      sourceData.name = model.dataName(SOURCE);
 
       const parse = formatParse.assemble(component);
       if (parse && !empty(parse)) {

@@ -27,7 +27,7 @@ import {colorRank} from './colorrank';
  */
 export interface DataComponent {
   // data source or reference to data source
-  source: VgData;
+  source: SourceComponent;
 
   /** Mapping from field name to primitive data type.  */
   formatParse: Dict<string>;
@@ -78,6 +78,13 @@ export interface AggregateComponent {
    * Should be set when we parse the scales.
    */
   assembleRaw?: boolean;
+}
+
+export interface SourceComponent {
+  source?: string;
+  values?: any;
+  format?: any;
+  url?: any;
 }
 
 // TODO: split this file into multiple files and remove this linter flag
@@ -268,7 +275,6 @@ export function assembleData(model: Model, data: VgData[]) {
   }
 
   let dataSource = source.assemble(model, component);
-  dataSource.name = model.dataName(SOURCE);
   data.push(dataSource);
 
   dataSource.transform = [].concat(

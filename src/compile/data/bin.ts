@@ -46,7 +46,7 @@ export namespace bin {
           });
         }
         // FIXME: current merging logic can produce redundant transforms when a field is binned for color and for non-color
-        const key = (typeof bin !== 'boolean' ? stableStringify(bin) + '_' : '') + fieldDef.field + 'oc:' + isOrdinalColor;
+        const key = (isObject(bin) ? stableStringify(bin) + '_' : '') + fieldDef.field + 'oc:' + isOrdinalColor;
         binComponent[key] = transform;
       }
       return binComponent;
