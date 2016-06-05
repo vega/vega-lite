@@ -109,7 +109,7 @@ export function isUnitSpec(spec: ExtendedSpec): spec is UnitSpec {
 }
 
 export function isSomeUnitSpec(spec: ExtendedSpec): spec is ExtendedUnitSpec | UnitSpec {
-  return spec['encoding'] !== undefined;
+  return spec['layer'] === undefined && spec['facet'] === undefined;
 }
 
 export function isLayerSpec(spec: ExtendedSpec): spec is LayerSpec {

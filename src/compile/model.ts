@@ -166,7 +166,7 @@ export abstract class Model {
   public setAssembleRaw() {
     if (this.component.data && this.component.data.aggregate) {
       this.component.data.aggregate.assembleRaw = true;
-    } else {
+    } else if (this.parent()) {
       this.parent().setAssembleRaw();
     }
   }

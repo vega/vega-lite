@@ -25,8 +25,9 @@ function compileAssembleData(model) {
 describe('data', function () {
   describe('compileData & assembleData', function () {
     describe('for aggregate encoding', function () {
-      it('should contain 2 tables', function() {
+      it('should contain a table', function() {
         const model = parseUnitModel({
+            data: {values: []},
             mark: "point",
             encoding: {
               x: {field: 'a', type: "temporal"},
@@ -35,12 +36,13 @@ describe('data', function () {
           });
 
         const data = compileAssembleData(model);
-        assert.equal(data.length, 2);
+        assert.equal(data.length, 1);
       });
     });
 
     describe('when contains log in non-aggregate', function () {
       const model = parseUnitModel({
+          data: {values: []},
           mark: "point",
           encoding: {
             x: {field: 'a', type: "temporal"},
@@ -63,8 +65,9 @@ describe('data', function () {
   });
 
   describe('assemble', function () {
-    it('should have correct order of transforms (null filter, timeUnit, bin then filter)', function () {
+    it('should have correct order of transforms (formulat, filter, null filter, bin, timeUnit)', function () {
       const model = parseUnitModel({
+        data: {values: []},
         transform: {
           calculate: [{
             field: 'b2',
@@ -87,8 +90,9 @@ describe('data', function () {
         }
       });
       const transform = compileAssembleData(model)[0].transform;
-      assert.deepEqual(transform[0].type, 'filter');
-      assert.deepEqual(transform[1].type, 'formula');
+
+      assert.deepEqual(transform[0].type, 'formula');
+      assert.deepEqual(transform[1].type, 'filter');
       assert.deepEqual(transform[2].type, 'filter');
       assert.deepEqual(transform[3].type, 'bin');
       assert.deepEqual(transform[4].type, 'formula');
@@ -100,15 +104,15 @@ describe('data: source', function() {
   describe('compileUnit', function() {
     describe('with explicit values', function() {
       const model = parseUnitModel({
-        data: {
-          values: [{a: 1, b:2, c:3}, {a: 4, b:5, c:6}]
-        }
+        "data": {
+          "values": [{"a": 1,"b": 2,"c": 3},{"a": 4,"b": 5,"c": 6}]
+        },
+        "mark": "point"
       });
 
       const sourceComponent = source.parseUnit(model);
 
       it('should have values', function() {
-        assert.equal(sourceComponent.name, 'source');
         assert.deepEqual(sourceComponent.values, [{a: 1, b:2, c:3}, {a: 4, b:5, c:6}]);
       });
 
@@ -119,15 +123,15 @@ describe('data: source', function() {
 
     describe('with link to url', function() {
       const model = parseUnitModel({
-          data: {
-            url: 'http://foo.bar'
-          }
-        });
+        "data": {
+          "url": "http://foo.bar"
+        },
+        "mark": "point"
+      });
 
       const sourceComponent = source.parseUnit(model);
 
       it('should have format json', function() {
-        assert.equal(sourceComponent.name, 'source');
         assert.equal(sourceComponent.format.type, 'json');
       });
       it('should have correct url', function() {
@@ -136,10 +140,10 @@ describe('data: source', function() {
     });
 
     describe('with no data specified', function() {
-      const model = parseUnitModel({});
+      const model = parseUnitModel({mark: "point"});
       const sourceComponent = source.parseUnit(model);
-      it('should provide placeholder source data', function() {
-        assert.deepEqual(sourceComponent, {name: 'source'});
+      it('should be undefined', function() {
+        assert.deepEqual(sourceComponent, undefined);
       });
     });
   });
@@ -449,7 +453,7 @@ describe('data: stack', function() {
 
     it('should produce the correct stack component', function() {
       const stackedData = model.component.data.stackScale;
-      assert.equal(stackedData.transform[0].groupby[0], 'bin_Cost__Total_$_start');
+      assert.equal(stackedData.groupby[0], 'bin_Cost__Total_$_start');
     });
 
     it('should assemble stack summary data correctly', function() {
@@ -474,7 +478,7 @@ describe('data: stack', function() {
 
     it('should produce the correct stack component', function() {
       const stackedData = model.component.data.stackScale;
-      assert.equal(stackedData.transform[0].groupby[0], 'bin_Cost__Total_$_start');
+      assert.equal(stackedData.groupby[0], 'bin_Cost__Total_$_start');
     });
 
     it('should assemble stack summary data correctly', function() {
@@ -489,7 +493,7 @@ describe('data: stack', function() {
   });
 });
 
-describe('data: summary', function () {
+describe('data: aggregate', function () {
   const identity = {
     dataName(data) {
       return 'source';
@@ -516,28 +520,23 @@ describe('data: summary', function () {
     model.component.data = {} as DataComponent;
     model.component.data.aggregate = aggregate.parseUnit(model);
 
-    it('should produce the correct summary component' ,function() {
-      assert.deepEqual(model.component.data.aggregate, [{
-        name: 'summary',
+    it('should produce the correct aggregate component' ,function() {
+      assert.deepEqual(model.component.data.aggregate, {
         // source will be added in assemble step
         dimensions: {Origin: true},
         measures: {'*':{count: true}, Acceleration: {sum: true}}
-      }]);
+      });
     });
 
     it('should assemble the correct aggregate transform', function() {
       const summaryData = aggregate.assemble(model.component.data, identity)[0];
       assert.deepEqual(summaryData, {
-        'name': "summary",
-        'source': 'source',
-        'transform': [{
-          'type': 'aggregate',
-          'groupby': ['Origin'],
-          'summarize': {
-            '*': ['count'],
-            'Acceleration': ['sum']
-          }
-        }]
+        'type': 'aggregate',
+        'groupby': ['Origin'],
+        'summarize': {
+          '*': ['count'],
+          'Acceleration': ['sum']
+        }
       });
     });
   });
@@ -554,29 +553,23 @@ describe('data: summary', function () {
       }
     });
 
-    it('should produce the correct summary component', function() {
+    it('should produce the correct aggregate component', function() {
       model.component.data = {} as DataComponent;
       model.component.data.aggregate = aggregate.parseUnit(model);
-      assert.deepEqual(model.component.data.aggregate, [{
-        name: 'summary',
-        // source will be added in assemble step
+      assert.deepEqual(model.component.data.aggregate, {
         dimensions: {Origin: true, Cylinders: true},
         measures: {Displacement: {mean: true}}
-      }]);
+      });
     });
 
-    it('should assemble the correct summary data', function() {
+    it('should assemble the correct aggregate data', function() {
       const summaryData = aggregate.assemble(model.component.data, identity)[0];
       assert.deepEqual(summaryData, {
-        'name': "summary",
-        'source': 'source',
-        'transform': [{
-          'type': 'aggregate',
-          'groupby': ['Origin', 'Cylinders'],
-          'summarize': {
-            'Displacement': ['mean']
-          }
-        }]
+        'type': 'aggregate',
+        'groupby': ['Origin', 'Cylinders'],
+        'summarize': {
+          'Displacement': ['mean']
+        }
       });
     });
   });

@@ -3,7 +3,7 @@
 import {assert} from 'chai';
 
 import * as vlscale from '../../src/compile/scale';
-import {SOURCE} from '../../src/data';
+import {SOURCE, RAW} from '../../src/data';
 import {parseUnitModel} from '../util';
 import {Y, ROW} from '../../src/channel';
 import {ScaleType} from '../../src/scale';
@@ -123,7 +123,7 @@ describe('scale', function() {
           });
           const domain = vlscale.domain(model.scale(Y), model, Y);
 
-          assert.deepEqual(domain.data, SOURCE);
+          assert.deepEqual(domain.data, RAW);
         });
 
       it('should return the aggregate domain for sum Q',
@@ -251,7 +251,7 @@ describe('scale', function() {
           });
 
         assert.deepEqual(vlscale.domain(model.scale(Y), model, Y), {
-            data: SOURCE,
+            data: RAW,
             field: 'origin',
             sort: sortDef
           });
