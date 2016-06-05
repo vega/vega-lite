@@ -1,5 +1,5 @@
 import {Formula} from '../../transform';
-import {keys, Dict, StringSet, unique, hash, allSame, differ, any, all, map, extend, forEach, empty, duplicate} from '../../util';
+import {keys, Dict, StringSet, unique, stableStringify, allSame, differ, any, all, map, extend, forEach, empty, duplicate} from '../../util';
 import {VgData, VgTransform} from '../../vega.schema';
 import {SOURCE, RAW, STACKED_SCALE} from '../../data';
 
@@ -218,9 +218,9 @@ export function parseLayerData(model: LayerModel): DataComponent {
       return null;
     }
     if (source.values) {
-      return hash(source.values);
+      return stableStringify(source.values);
     }
-    return hash(source.url + source.format);
+    return stableStringify(source.url + source.format);
   }
 
   // merge time unit domains by moving them up

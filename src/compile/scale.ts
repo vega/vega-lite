@@ -10,7 +10,7 @@ import {Mark, BAR, TEXT as TEXT_MARK, RULE, TICK} from '../mark';
 import {Scale, ScaleType, NiceTime} from '../scale';
 import {TimeUnit} from '../timeunit';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
-import {contains, extend, Dict, hash, vals, isBoolean} from '../util';
+import {contains, extend, Dict, stableStringify, vals, isBoolean} from '../util';
 import {VgScale, isUnionedDomain, isDataRefDomain} from '../vega.schema';
 
 import {Model} from './model';
@@ -547,10 +547,10 @@ export function mergeScales(model: LayerModel, channel: string) {
     if (isUnionedDomain(childDomain)) {
       // if the domain is itself a union domain, concat
       childDomain.fields.forEach((domain) => {
-        domains[hash(domain)] = domain;
+        domains[stableStringify(domain)] = domain;
       });
     } else {
-      domains[hash(childDomain)] = childDomain;
+      domains[stableStringify(childDomain)] = childDomain;
     }
 
     // add color legend and color legend bin scales if we don't have them yet

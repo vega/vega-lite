@@ -2,7 +2,7 @@ import {AggregateOp} from '../../aggregate';
 import {Channel} from '../../channel';
 import {SOURCE} from '../../data';
 import {field, FieldDef} from '../../fielddef';
-import {keys, vals, reduce, hash, Dict, StringSet, allSame, empty} from '../../util';
+import {keys, vals, reduce, stableStringify, Dict, StringSet, allSame, empty} from '../../util';
 import {VgData} from '../../vega.schema';
 
 import {FacetModel} from './../facet';
@@ -94,8 +94,8 @@ export namespace aggregate {
    */
   export function merge(dataComponent: DataComponent, childDataComponents: DataComponent[]) {
     const dimensions = childDataComponents.reduce((collector, data) => {
-      return collector.concat(hash(keys(data.aggregate.dimensions)));
-    }, keys(dataComponent.aggregate.dimensions).length ? [hash(keys(dataComponent.aggregate.dimensions))] : []);
+      return collector.concat(stableStringify(keys(data.aggregate.dimensions)));
+    }, keys(dataComponent.aggregate.dimensions).length ? [stableStringify(keys(dataComponent.aggregate.dimensions))] : []);
 
     if (allSame(dimensions)) {
       dataComponent.aggregate.measures = childDataComponents.reduce((collector, data) => {

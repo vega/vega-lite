@@ -1,7 +1,7 @@
 import {autoMaxBins} from '../../bin';
 import {Channel, COLOR} from '../../channel';
 import {field, FieldDef} from '../../fielddef';
-import {extend, vals, flatten, hash, Dict, isObject} from '../../util';
+import {extend, vals, flatten, stableStringify, Dict, isObject} from '../../util';
 import {VgTransform} from '../../vega.schema';
 
 import {FacetModel} from './../facet';
@@ -46,7 +46,7 @@ export namespace bin {
           });
         }
         // FIXME: current merging logic can produce redundant transforms when a field is binned for color and for non-color
-        const key = (typeof bin !== 'boolean' ? hash(bin) + '_' : '') + fieldDef.field + 'oc:' + isOrdinalColor;
+        const key = (typeof bin !== 'boolean' ? stableStringify(bin) + '_' : '') + fieldDef.field + 'oc:' + isOrdinalColor;
         binComponent[key] = transform;
       }
       return binComponent;

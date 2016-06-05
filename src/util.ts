@@ -11,7 +11,7 @@ export {Channel} from './channel';
 
 import {isString, isNumber, isBoolean} from 'datalib/src/util';
 
-export function hash(a: any) {
+export function stableStringify(a: any) {
   if (isString(a) || isNumber(a) || isBoolean(a)) {
     return String(a);
   }
