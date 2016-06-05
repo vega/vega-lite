@@ -1,5 +1,5 @@
 import {SOURCE} from '../../data';
-import {contains} from '../../util';
+import {contains, extend} from '../../util';
 import {VgData} from '../../vega.schema';
 
 import {FacetModel} from './../facet';
@@ -35,9 +35,14 @@ export namespace source {
         }
         const dataFormat = model.data().format;
         sourceData.format =
-          ( dataFormat !== undefined && dataFormat.type) ?
-            { type: model.data().format.type } :
-            { type: defaultExtension };
+            extend({ type: (dataFormat && dataFormat.type) ?
+                  model.data().format.type :
+                  defaultExtension },
+                  (dataFormat && dataFormat.feature) ?
+                  { feature : dataFormat.feature} : {},
+                  (dataFormat && dataFormat.mesh) ?
+                  { mesh : dataFormat.mesh} : {}
+                  );
       }
       return sourceData;
     } else if (!model.parent()) {
