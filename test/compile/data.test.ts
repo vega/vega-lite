@@ -113,7 +113,7 @@ describe('data: source', function() {
       });
 
       it('should have source.format', function(){
-        assert.deepEqual(sourceComponent.format, {type: 'json'});
+        assert.deepEqual(sourceComponent.format.type, 'json');
       });
     });
 

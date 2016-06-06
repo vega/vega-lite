@@ -1,5 +1,5 @@
 import {SOURCE} from '../../data';
-import {contains} from '../../util';
+import {contains, extend} from '../../util';
 import {VgData} from '../../vega.schema';
 
 import {FacetModel} from './../facet';
@@ -30,10 +30,19 @@ export namespace source {
         // Extract extension from URL using snippet from
         // http://stackoverflow.com/questions/680929/how-to-extract-extension-from-filename-string-in-javascript
         let defaultExtension = /(?:\.([^.]+))?$/.exec(sourceData.url)[1];
-        if (!contains(['json', 'csv', 'tsv'], defaultExtension)) {
+        if (!contains(['json', 'csv', 'tsv', 'topojson'], defaultExtension)) {
           defaultExtension = 'json';
         }
-        sourceData.format = { type: model.data().formatType || defaultExtension };
+        const dataFormat = model.data().format;
+        sourceData.format =
+            extend({ type: (dataFormat && dataFormat.type) ?
+                  model.data().format.type :
+                  defaultExtension },
+                  (dataFormat && dataFormat.feature) ?
+                  { feature : dataFormat.feature} : {},
+                  (dataFormat && dataFormat.mesh) ?
+                  { mesh : dataFormat.mesh} : {}
+                  );
       }
       return sourceData;
     } else if (!model.parent()) {
