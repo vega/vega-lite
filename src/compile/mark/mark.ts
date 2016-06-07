@@ -31,10 +31,29 @@ const markCompiler = {
 
 export function parseMark(model: UnitModel): any[] {
   // TODO: new branch here parsePathMark()
+  let marks = null;
   if (contains([LINE, AREA], model.mark())) {
-    return parseLineOrArea(model);
+    marks = parseLineOrArea(model);
   } else {
-    return parseNonPathMark(model);
+    marks = parseNonLineOrArea(model);
+  }
+  // TODO check there is a projection
+  if (hasGeoTransform(model)) {
+    return [{
+      // TODO(ylin): Give it a good name
+      name: model.name('marks-xxx'),
+      type: 'group',
+      properties: {
+        update: {
+          width: {field: {group: "width"}},
+          height: {field: {group: "height"}},
+          clip: {value: true}
+        }
+      },
+      marks: [marks]
+    }];
+  } else {
+    return marks;
   }
 }
 
@@ -99,7 +118,7 @@ function parseLineOrArea(model: UnitModel) { // TODO: extract this into compileP
 
 
 
-function parseNonPathMark(model: UnitModel) {
+function parseNonLineOrArea(model: UnitModel) {
   const mark = model.mark();
   const isFaceted = model.parent() && model.parent().isFacet();
   const dataFrom = {data: model.dataTable()};
