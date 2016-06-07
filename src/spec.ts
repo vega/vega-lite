@@ -129,10 +129,10 @@ export function normalizeExtendedUnitSpec(spec: ExtendedUnitSpec): Spec {
           hasRow ? { row: spec.encoding.row } : {},
           hasColumn ? { column: spec.encoding.column } : {}
         ),
-        spec: {
+        spec: normalizeUnitSpec({
           mark: spec.mark,
           encoding: encoding
-        }
+        })
       },
       spec.config ? { config: spec.config } : {}
     );
