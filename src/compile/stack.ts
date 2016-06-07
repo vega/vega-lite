@@ -6,7 +6,7 @@ import {Scale, ScaleType} from '../scale';
 import {StackOffset} from '../config';
 import {BAR, AREA, Mark} from '../mark';
 import {field, isMeasure} from '../fielddef';
-import {has, isAggregate} from '../encoding';
+import {has, isAggregate, isRanged} from '../encoding';
 import {isArray, contains, Dict} from '../util';
 
 import {sortField} from './common';
@@ -44,7 +44,7 @@ export function compileStackProperties(mark: Mark, encoding: Encoding, scale: Di
   if (stackFields.length > 0 &&
       contains([BAR, AREA], mark) &&
       config.mark.stacked !== StackOffset.NONE &&
-      isAggregate(encoding)) {
+      isAggregate(encoding) && !isRanged(encoding)) {
 
     const isXMeasure = has(encoding, X) && isMeasure(encoding.x),
     isYMeasure = has(encoding, Y) && isMeasure(encoding.y);

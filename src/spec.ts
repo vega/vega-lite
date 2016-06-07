@@ -10,10 +10,10 @@ import {Facet} from './facet';
 import {Mark} from './mark';
 import {Transform} from './transform';
 
-import {COLOR, SHAPE, ROW, COLUMN} from './channel';
+import {COLOR, SHAPE, ROW, COLUMN, X, Y, X2, Y2} from './channel';
 import * as vlEncoding from './encoding';
-import {BAR, AREA} from './mark';
-import {duplicate, extend} from './util';
+import {TICK, RULE, BAR, AREA, ERRORBAR} from './mark';
+import {duplicate, extend, contains} from './util';
 
 export interface BaseSpec {
   name?: string;
@@ -102,6 +102,15 @@ export function isLayerSpec(spec: ExtendedSpec): spec is LayerSpec {
  */
 export function normalize(spec: ExtendedSpec): Spec {
   if (isExtendedUnitSpec(spec)) {
+    return normalizeExtendedUnitSpec(spec);
+  }
+  if (isUnitSpec(spec)) {
+    return normalizeUnitSpec(spec);
+  }
+  return spec;
+}
+
+export function normalizeExtendedUnitSpec(spec: ExtendedUnitSpec): Spec {
     const hasRow = has(spec.encoding, ROW);
     const hasColumn = has(spec.encoding, COLUMN);
 
@@ -120,16 +129,79 @@ export function normalize(spec: ExtendedSpec): Spec {
           hasRow ? { row: spec.encoding.row } : {},
           hasColumn ? { column: spec.encoding.column } : {}
         ),
-        spec: {
+        spec: normalizeUnitSpec({
           mark: spec.mark,
           encoding: encoding
-        }
+        })
       },
       spec.config ? { config: spec.config } : {}
     );
+}
+
+export function normalizeUnitSpec(spec: UnitSpec): Spec {
+  if (contains([ERRORBAR], spec.mark)) {
+    return normalizeCompositeUnitSpec(spec);
+  }
+  return normalizeRangedUnitSpec(spec);
+}
+
+export function normalizeRangedUnitSpec(spec: UnitSpec): Spec {
+  if (spec.encoding) {
+    const hasX = has(spec.encoding, X);
+    const hasY = has(spec.encoding, Y);
+    const hasX2 = has(spec.encoding, X2);
+    const hasY2 = has(spec.encoding, Y2);
+    if ((hasX2 && !hasX) || (hasY2 && !hasY)) {
+      let normalizedSpec = duplicate(spec);
+      if (hasX2 && !hasX) {
+        normalizedSpec.encoding.x = duplicate(normalizedSpec.encoding.x2);
+        delete normalizedSpec.encoding.x2;
+      }
+      if (hasY2 && !hasY) {
+        normalizedSpec.encoding.y = duplicate(normalizedSpec.encoding.y2);
+        delete normalizedSpec.encoding.y2;
+      }
+
+      return normalizedSpec;
+    }
+  }
+  return spec;
+}
+
+export function normalizeCompositeUnitSpec(spec: UnitSpec): Spec {
+  let layerSpec = extend(spec.name ? {name: spec.name} : {},
+    spec.description ? {description: spec.description} : {},
+    spec.data ? {data: spec.data} : {},
+    spec.transform ? {transform: spec.transform} : {},
+    spec.config ? {config: spec.config} : {}, {layers: []});
+  if (!spec.encoding) {
+    return normalize(layerSpec);
+  }
+  if (spec.mark === ERRORBAR) {
+    let ruleSpec = {
+      mark: RULE,
+      encoding: duplicate(spec.encoding)
+    };
+    let lowerTickSpec = {
+      mark: TICK,
+      encoding: {
+        x: duplicate(spec.encoding.x),
+        y: duplicate(spec.encoding.y)
+      }
+    };
+    let upperTickSpec = {
+      mark: TICK,
+      encoding: {
+        x: spec.encoding.x2 ? duplicate(spec.encoding.x2) : duplicate(spec.encoding.x),
+        y: spec.encoding.y2 ? duplicate(spec.encoding.y2) : duplicate(spec.encoding.y)
+      }
+    };
+    layerSpec.layers.push(normalizeUnitSpec(ruleSpec));
+    layerSpec.layers.push(normalizeUnitSpec(lowerTickSpec));
+    layerSpec.layers.push(normalizeUnitSpec(upperTickSpec));
   }
 
-  return spec;
+  return layerSpec;
 }
 
 // TODO: add vl.spec.validate & move stuff from vl.validate to here

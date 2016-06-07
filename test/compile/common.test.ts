@@ -3,61 +3,38 @@
 import {assert} from 'chai';
 import {parseUnitModel} from '../util';
 import {X} from '../../src/channel';
-import {timeFormat, formatMixins, applyColorAndOpacity} from '../../src/compile/common';
+import {formatMixins, applyColorAndOpacity} from '../../src/compile/common';
 
-describe('Model', function() {
-  describe('timeFormat()', function() {
-    it('should get the right time template', function() {
-      assert.equal(timeFormat(parseUnitModel({
-        mark: "point",
-        encoding: {
-          x: {timeUnit: 'month', field:'a', type: "temporal", axis: {shortTimeLabels: true}}
-        }
-      }), X), '%b');
-
-      assert.equal(timeFormat(parseUnitModel({
-        mark: "point",
-        encoding: {
-          x: {timeUnit: 'month', field:'a', type: "temporal"}
-        }
-      }), X), '%B');
-
-      assert.equal(timeFormat(parseUnitModel({
-        mark: "point",
-        encoding: {
-          x: {timeUnit: 'week', field:'a', type: "temporal", axis: {shortTimeLabels: true}}
-        }
-      }), X), undefined);
-    });
-  });
-
-  describe('format()', function() {
+describe('Common', function() {
+  describe('formatMixins()', function() {
     it('should use time format type for time scale', function() {
-      assert.deepEqual(formatMixins(parseUnitModel({
+      const model = parseUnitModel({
         mark: "point",
         encoding: {
           x: {timeUnit: 'month', field:'a', type: "temporal"}
         }
-      }), X, undefined), {
+      });
+      assert.deepEqual(formatMixins(model, model.fieldDef(X), undefined, model.axis(X).shortTimeLabels), {
         formatType: 'time',
         format: '%B'
       });
     });
 
     it('should use default time format if we don\'t have a good format', function() {
-      assert.deepEqual(formatMixins(parseUnitModel({
+      const model = parseUnitModel({
         mark: "point",
         encoding: {
           x: {timeUnit: 'week', field:'a', type: "temporal"}
         }
-      }), X, undefined), {
+      });
+      assert.deepEqual(formatMixins(model, model.fieldDef(X), undefined, model.axis(X).shortTimeLabels), {
         formatType: 'time',
         format: '%Y-%m-%d'
       });
     });
 
     it('should use number format for quantitative scale', function() {
-      assert.deepEqual(formatMixins(parseUnitModel({
+      const model = parseUnitModel({
         mark: "point",
         encoding: {
           x: {field:'a', type: "quantitative"}
@@ -65,13 +42,14 @@ describe('Model', function() {
         config: {
           numberFormat: 'd'
         }
-      }), X, undefined), {
+      });
+      assert.deepEqual(formatMixins(model, model.fieldDef(X), undefined, model.axis(X).shortTimeLabels), {
         format: 'd'
       });
     });
 
     it('should support empty number format', function() {
-      assert.deepEqual(formatMixins(parseUnitModel({
+      const model = parseUnitModel({
         mark: "point",
         encoding: {
           x: {field:'a', type: "quantitative"}
@@ -79,18 +57,20 @@ describe('Model', function() {
         config: {
           numberFormat: ''
         }
-      }), X, undefined), {
+      });
+      assert.deepEqual(formatMixins(model, model.fieldDef(X), undefined, model.axis(X).shortTimeLabels), {
         format: ''
       });
     });
 
     it('should use format if provided', function() {
-      assert.deepEqual(formatMixins(parseUnitModel({
+      const model = parseUnitModel({
         mark: "point",
         encoding: {
           x: {field:'a', type: "quantitative"}
         }
-      }), X, 'foo'), {
+      });
+      assert.deepEqual(formatMixins(model, model.fieldDef(X), 'foo', model.axis(X).shortTimeLabels), {
         format: 'foo'
       });
     });

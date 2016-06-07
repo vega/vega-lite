@@ -6,7 +6,8 @@ import {AREA, BAR, TICK, TEXT, LINE, POINT, CIRCLE, SQUARE} from '../mark';
 import {ORDINAL} from '../type';
 import {extend, keys, without, Dict} from '../util';
 
-import {applyMarkConfig, FILL_STROKE_CONFIG, formatMixins as utilFormatMixins, timeFormat} from './common';
+import {applyMarkConfig, FILL_STROKE_CONFIG, formatMixins as utilFormatMixins} from './common';
+import {format as timeFormat} from '../timeunit';
 import {COLOR_LEGEND, COLOR_LEGEND_LABEL} from './scale';
 import {UnitModel} from './unit';
 import {VgLegend} from '../vega.schema';
@@ -110,7 +111,9 @@ export function formatMixins(legend: Legend, model: UnitModel, channel: Channel)
     return {};
   }
 
-  return utilFormatMixins(model, channel, typeof legend !== 'boolean' ? legend.format : undefined);
+  return utilFormatMixins(model, fieldDef,
+    typeof legend !== 'boolean' ? legend.format : undefined,
+    model.legend(channel).shortTimeLabels);
 }
 
 // we have to use special scales for ordinal or binned fields for the color channel
@@ -226,7 +229,7 @@ export namespace properties {
       } else if (fieldDef.timeUnit) {
         labelsSpec = extend({
           text: {
-            template: '{{ datum.data | time:\'' + timeFormat(model, channel) + '\'}}'
+            template: '{{ datum.data | time:\'' + timeFormat(fieldDef.timeUnit, legend.shortTimeLabels) + '\'}}'
           }
         }, labelsSpec || {});
       }
