@@ -8,7 +8,7 @@ import {VgData} from '../vega.schema';
 
 import {FacetModel} from './facet';
 import {LayerModel} from './layer';
-import {TEXT as TEXT_MARK} from '../mark';
+import {TEXT as TEXTMARK} from '../mark';
 import {Model} from './model';
 import {rawDomain} from './time';
 import {UnitModel} from './unit';
@@ -96,7 +96,7 @@ function unitSizeExpr(model: UnitModel, channel: Channel, nonOrdinalSize: number
       return nonOrdinalSize + '';
     }
   } else {
-    if (model.mark() === TEXT_MARK && channel === X) {
+    if (model.mark() === TEXTMARK && channel === X) {
       // for text table without x/y scale we need wider bandSize
       return model.config().scale.textBandWidth + '';
     }

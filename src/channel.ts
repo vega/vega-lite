@@ -125,6 +125,7 @@ export function getSupportedRole(channel: Channel): SupportedRole {
     case COLOR:
     case OPACITY:
     case LABEL:
+    case DETAIL:
       return {
         measure: true,
         dimension: true
@@ -132,7 +133,6 @@ export function getSupportedRole(channel: Channel): SupportedRole {
     case ROW:
     case COLUMN:
     case SHAPE:
-    case DETAIL:
       return {
         measure: false,
         dimension: true
