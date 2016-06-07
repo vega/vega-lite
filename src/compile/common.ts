@@ -199,7 +199,7 @@ export function hasGeoTransform(model: UnitModel): boolean {
   }
   // For geo transform, we only plot latitude/longitude against
   // x/y because it would not make sense for other measures like color.
-  return containsLatLong(model.encoding);
+  return containsLatLong(model.encoding());
 }
 
 export function geoTransform(model: UnitModel) {

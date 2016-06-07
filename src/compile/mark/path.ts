@@ -20,9 +20,17 @@ export namespace path {
     const config = model.config();
 
     p.path = path(model.encoding().geopath);
-
+    p.stroke = stroke(config);
     applyColorAndOpacity(p, model);
     return p;
+  }
+
+  function stroke(config: Config) {
+    if (config && config.mark && config.mark.stroke) {
+      return { value: config.mark.stroke};
+    }
+    // TODO: Default stroke is white ?
+    return { value: "white"};
   }
 
   function path(fieldDef: FieldDef) {

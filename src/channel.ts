@@ -55,6 +55,7 @@ export interface SupportedMark {
   line?: boolean;
   area?: boolean;
   text?: boolean;
+  path?: boolean;
 };
 
 /**
@@ -97,6 +98,8 @@ export function getSupportedMark(channel: Channel): SupportedMark {
       return {text: true};
     case PATH:
       return {line: true};
+    case GEOPATH:
+      return {path: false};
   }
   return {};
 }
