@@ -14,7 +14,7 @@ export interface Projection {
   /*
    * The scale of the projection.
    */
-  scale?: number;
+  zoom?: number;
   /**
    * The rotation of the projection.
    */

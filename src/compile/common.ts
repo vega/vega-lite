@@ -204,7 +204,7 @@ export function hasGeoTransform(model: UnitModel): boolean {
 
 export function geoTransform(model: UnitModel) {
   const translate = model.projection().translate;
-  const scale     = model.projection().scale;
+  const zoom     = model.projection().zoom;
   const center    = model.projection().center;
   const rotate    = model.projection().rotate;
   const precision = model.projection().precision;
@@ -229,7 +229,7 @@ export function geoTransform(model: UnitModel) {
   }
     spec = extend(spec, { projection : model.projection().type});
     spec = extend(spec, translate !== undefined ? { translate : translate} : {});
-    spec = extend(spec, scale !== undefined ? { scale : scale } : {});
+    spec = extend(spec, zoom !== undefined ? { scale : zoom } : {});
     spec = extend(spec, center !== undefined ? { center : center } : {});
     spec = extend(spec, rotate !== undefined ? { rotate : rotate } : {});
     spec = extend(spec, precision !== undefined ? { precision : precision } : {});
