@@ -178,31 +178,33 @@ export function normalizeCompositeUnitSpec(spec: UnitSpec): Spec {
     spec.transform ? {transform: spec.transform} : {},
     spec.config ? {config: spec.config} : {}, {layers: []}
   );
+  if (!spec.encoding) {
+    return layerSpec;
+  }
   if (spec.mark === ERRORBAR) {
     const ruleSpec = {
       mark: RULE,
-      encoding: {
-        x: duplicate(spec.encoding.x),
-        y: duplicate(spec.encoding.y),
-        x2: duplicate(spec.encoding.x2),
-        y2: duplicate(spec.encoding.y2)
-      }
+      encoding: extend(
+        spec.encoding.x ? {x: duplicate(spec.encoding.x)} : {},
+        spec.encoding.y ? {y: duplicate(spec.encoding.y)} : {},
+        spec.encoding.x2 ? {x2: duplicate(spec.encoding.x2)} : {},
+        spec.encoding.y2 ? {y2: duplicate(spec.encoding.y2)} : {},
+        {})
     };
     const lowerTickSpec = {
       mark: TICK,
-      encoding: {
-        x: duplicate(spec.encoding.x),
-        y: duplicate(spec.encoding.y),
-        size: duplicate(spec.encoding.size)
-      }
+      encoding: extend(
+        spec.encoding.x ? {x: duplicate(spec.encoding.x)} : {},
+        spec.encoding.y ? {y: duplicate(spec.encoding.y)} : {},
+        spec.encoding.size ? {size: duplicate(spec.encoding.size)} : {},
+        {})
     };
     const upperTickSpec = {
       mark: TICK,
-      encoding: {
+      encoding: extend({
         x: spec.encoding.x2 ? duplicate(spec.encoding.x2) : duplicate(spec.encoding.x),
-        y: spec.encoding.y2 ? duplicate(spec.encoding.y2) : duplicate(spec.encoding.y),
-        size: duplicate(spec.encoding.size)
-      }
+        y: spec.encoding.y2 ? duplicate(spec.encoding.y2) : duplicate(spec.encoding.y)
+      }, spec.encoding.size ? {size: duplicate(spec.encoding.size)} : {})
     };
     layerSpec.layers.push(normalizeUnitSpec(ruleSpec));
     layerSpec.layers.push(normalizeUnitSpec(lowerTickSpec));
