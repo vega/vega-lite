@@ -5,7 +5,7 @@ import {FieldDef} from './fielddef';
 
 import {Config} from './config';
 import {Data} from './data';
-import {Encoding, UnitEncoding, has} from './encoding';
+import {Encoding, UnitEncoding, has, isRanged} from './encoding';
 import {Facet} from './facet';
 import {Mark} from './mark';
 import {Transform} from './transform';
@@ -142,7 +142,10 @@ export function normalizeUnitSpec(spec: UnitSpec): Spec {
   if (contains([ERRORBAR], spec.mark)) {
     return normalizeCompositeUnitSpec(spec);
   }
-  return normalizeRangedUnitSpec(spec);
+  if (isRanged(spec.encoding)) {
+    return normalizeRangedUnitSpec(spec);
+  }
+  return spec;
 }
 
 export function normalizeRangedUnitSpec(spec: UnitSpec): Spec {
@@ -173,27 +176,32 @@ export function normalizeCompositeUnitSpec(spec: UnitSpec): Spec {
     spec.description ? {description: spec.description} : {},
     spec.data ? {data: spec.data} : {},
     spec.transform ? {transform: spec.transform} : {},
-    spec.config ? {config: spec.config} : {}, {layers: []});
-  if (!spec.encoding) {
-    return normalize(layerSpec);
-  }
+    spec.config ? {config: spec.config} : {}, {layers: []}
+  );
   if (spec.mark === ERRORBAR) {
-    let ruleSpec = {
+    const ruleSpec = {
       mark: RULE,
-      encoding: duplicate(spec.encoding)
+      encoding: {
+        x: duplicate(spec.encoding.x),
+        y: duplicate(spec.encoding.y),
+        x2: duplicate(spec.encoding.x2),
+        y2: duplicate(spec.encoding.y2)
+      }
     };
-    let lowerTickSpec = {
+    const lowerTickSpec = {
       mark: TICK,
       encoding: {
         x: duplicate(spec.encoding.x),
-        y: duplicate(spec.encoding.y)
+        y: duplicate(spec.encoding.y),
+        size: duplicate(spec.encoding.size)
       }
     };
-    let upperTickSpec = {
+    const upperTickSpec = {
       mark: TICK,
       encoding: {
         x: spec.encoding.x2 ? duplicate(spec.encoding.x2) : duplicate(spec.encoding.x),
-        y: spec.encoding.y2 ? duplicate(spec.encoding.y2) : duplicate(spec.encoding.y)
+        y: spec.encoding.y2 ? duplicate(spec.encoding.y2) : duplicate(spec.encoding.y),
+        size: duplicate(spec.encoding.size)
       }
     };
     layerSpec.layers.push(normalizeUnitSpec(ruleSpec));
