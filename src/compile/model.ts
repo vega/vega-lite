@@ -10,6 +10,7 @@ import {BaseSpec} from '../spec';
 import {Transform} from '../transform';
 import {extend, flatten, vals, warning, Dict} from '../util';
 import {VgData, VgMarkGroup, VgScale, VgAxis, VgLegend} from '../vega.schema';
+import {Projection} from '../projection';
 
 import {DataComponent} from './data/data';
 import {LayoutComponent} from './layout';
@@ -80,6 +81,10 @@ export abstract class Model {
   protected _sizeNameMap: NameMap;
 
   protected _transform: Transform;
+
+  // TODO: maybe move unit
+  protected _projection: Projection;
+
   protected _scale: Dict<Scale>;
 
   protected _axis: Dict<Axis>;
@@ -105,6 +110,7 @@ export abstract class Model {
 
     this._data = spec.data;
 
+    this._projection = spec.projection;
     this._description = spec.description;
     this._transform = spec.transform;
 
@@ -278,6 +284,10 @@ export abstract class Model {
   }
 
   public abstract fieldDef(channel: Channel): FieldDef;
+
+  public projection(): Projection {
+    return this._projection;
+  }
 
   public scale(channel: Channel): Scale {
     return this._scale[channel];

@@ -19,7 +19,8 @@ export enum Channel {
   LABEL = 'label' as any,
   PATH = 'path' as any,
   ORDER = 'order' as any,
-  OPACITY = 'opacity' as any
+  OPACITY = 'opacity' as any,
+  GEOPATH = 'geopath' as any
 }
 
 export const X = Channel.X;
@@ -35,8 +36,9 @@ export const LABEL = Channel.LABEL;
 export const PATH = Channel.PATH;
 export const ORDER = Channel.ORDER;
 export const OPACITY = Channel.OPACITY;
+export const GEOPATH = Channel.GEOPATH;
 
-export const CHANNELS = [X, Y, ROW, COLUMN, SIZE, SHAPE, COLOR, PATH, ORDER, OPACITY, TEXT, DETAIL, LABEL];
+export const CHANNELS = [X, Y, ROW, COLUMN, SIZE, SHAPE, COLOR, PATH, ORDER, OPACITY, TEXT, DETAIL, LABEL, GEOPATH];
 
 export const UNIT_CHANNELS = without(CHANNELS, [ROW, COLUMN]);
 export const UNIT_SCALE_CHANNELS = without(UNIT_CHANNELS, [PATH, ORDER, DETAIL, TEXT, LABEL]);
@@ -53,6 +55,7 @@ export interface SupportedMark {
   line?: boolean;
   area?: boolean;
   text?: boolean;
+  path?: boolean;
 };
 
 /**
@@ -95,6 +98,8 @@ export function getSupportedMark(channel: Channel): SupportedMark {
       return {text: true};
     case PATH:
       return {line: true};
+    case GEOPATH:
+      return {path: false};
   }
   return {};
 }

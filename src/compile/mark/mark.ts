@@ -2,7 +2,8 @@ import {UnitModel} from '../unit';
 import {OrderChannelDef} from '../../fielddef';
 
 import {X, Y, COLOR, TEXT, SHAPE, PATH, ORDER, OPACITY, DETAIL, LABEL} from '../../channel';
-import {AREA, LINE, TEXT as TEXTMARK} from '../../mark';
+import {AREA, LINE, TEXT as TEXTMARK, PATH as PATHMARK} from '../../mark';
+import {GEOJSON, LATITUDE, LONGITUDE} from '../../type';
 import {imputeTransform, stackTransform} from '../stack';
 import {contains, extend} from '../../util';
 import {area} from './area';
@@ -12,7 +13,8 @@ import {point, circle, square} from './point';
 import {text} from './text';
 import {tick} from './tick';
 import {rule} from './rule';
-import {sortField} from '../common';
+import {path} from './path';
+import {sortField, hasGeoTransform, geoTransform} from '../common';
 
 const markCompiler = {
   area: area,
@@ -23,18 +25,39 @@ const markCompiler = {
   tick: tick,
   rule: rule,
   circle: circle,
-  square: square
+  square: square,
+  path: path
 };
 
 export function parseMark(model: UnitModel): any[] {
+  // TODO: new branch here parsePathMark()
+  let marks = null;
   if (contains([LINE, AREA], model.mark())) {
-    return parsePathMark(model);
+    marks = parseLineOrArea(model);
   } else {
-    return parseNonPathMark(model);
+    marks = parseNonLineOrArea(model);
+  }
+  // TODO check there is a projection
+  if (hasGeoTransform(model)) {
+    return [{
+      // TODO(ylin): Give it a good name
+      name: model.name('marks-xxx'),
+      type: 'group',
+      properties: {
+        update: {
+          width: {field: {group: "width"}},
+          height: {field: {group: "height"}},
+          clip: {value: true}
+        }
+      },
+      marks: marks
+    }];
+  } else {
+    return marks;
   }
 }
 
-function parsePathMark(model: UnitModel) { // TODO: extract this into compilePathMark
+function parseLineOrArea(model: UnitModel) { // TODO: extract this into compilePathMark
   const mark = model.mark();
   // TODO: replace this with more general case for composition
   const isFaceted = model.parent() && model.parent().isFacet();
@@ -93,7 +116,9 @@ function parsePathMark(model: UnitModel) { // TODO: extract this into compilePat
   }
 }
 
-function parseNonPathMark(model: UnitModel) {
+
+
+function parseNonLineOrArea(model: UnitModel) {
   const mark = model.mark();
   const isFaceted = model.parent() && model.parent().isFacet();
   const dataFrom = {data: model.dataTable()};
@@ -122,6 +147,7 @@ function parseNonPathMark(model: UnitModel) {
       name: model.name('marks'),
       type: markCompiler[mark].markType()
     },
+
     // Add `from` if needed
     (!isFaceted || model.stack() || model.has(ORDER)) ? {
       from: extend(
@@ -134,7 +160,9 @@ function parseNonPathMark(model: UnitModel) {
         model.has(ORDER) ?
           // if non-stacked, detail field determines the layer order of each mark
           { transform: [{type:'sort', by: sortBy(model)}] } :
-          {}
+        (model.projection() && hasGeoTransform(model)) ?
+          { transform: [geoTransform(model)] } :
+        {}
       )
     } : {},
     // properties groups
