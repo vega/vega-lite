@@ -50,7 +50,7 @@ export function parseMark(model: UnitModel): any[] {
           clip: {value: true}
         }
       },
-      marks: [marks]
+      marks: marks
     }];
   } else {
     return marks;
