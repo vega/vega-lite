@@ -380,10 +380,7 @@ export abstract class Model {
     if (this.data()) {
       return false;
     }
-    if (!this.parent()) {
-      return false;
-    }
-    return this.parent().isFaceted();
+    return this.parent() && this.parent().isFaceted();
   }
 
   /**
