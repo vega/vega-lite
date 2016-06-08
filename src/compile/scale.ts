@@ -555,10 +555,10 @@ export function mergeScales(model: LayerModel, channel: string) {
 
     // add color legend and color legend bin scales if we don't have them yet
     if (childScales.colorLegend) {
-      scaleComp.colorLegend = scaleComp.colorLegend ? scaleComp.colorLegend : childScales.colorLegend;
+      scaleComp.colorLegend = scaleComp.colorLegend || childScales.colorLegend;
     }
     if (childScales.binColorLegend) {
-      scaleComp.binColorLegend = scaleComp.binColorLegend ? scaleComp.binColorLegend : childScales.binColorLegend;
+      scaleComp.binColorLegend = scaleComp.binColorLegend || childScales.binColorLegend;
     }
 
     // rename scale references to merged scales

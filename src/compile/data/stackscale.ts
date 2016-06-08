@@ -10,7 +10,7 @@ import {DataComponent} from './data';
  * Stacked scale data transform, for feeding the shared scale.
  */
 export namespace stackScale {
-  export function parseUnit(model: Model) {
+  export function parse(model: Model) {
     const stackProps = model.stack();
 
     if (stackProps) {

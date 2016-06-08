@@ -103,7 +103,7 @@ function parseData(model: Model): DataComponent {
     timeUnit: timeUnit.parseUnit(model),
     aggregate: aggregate.parseUnit(model),
     colorRank: colorRank.parseUnit(model),
-    stackScale: stackScale.parseUnit(model),
+    stackScale: stackScale.parse(model),
     nonPositiveFilter: nonPositiveFilter.parseUnit(model),
     nullFilter: nullFilter.parseUnit(model),
     timeUnitDomain: timeUnitDomain.parseUnit(model)

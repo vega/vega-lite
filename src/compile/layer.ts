@@ -1,7 +1,7 @@
 import {Channel, CHANNELS} from '../channel';
 import {keys, flatten, unique, Dict, forEach, extend, mergeDeep, duplicate, any} from '../util';
 import {defaultConfig, Config} from '../config';
-import {LayerSpec, ResolveMapping, Resolve, INDEPENDENT, SHARED} from '../spec';
+import {LayerSpec, ResolveMapping, ChannelResolve, INDEPENDENT, SHARED} from '../spec';
 import {assembleData, parseLayerData} from './data/data';
 import {assembleLayout, parseLayerLayout} from './layout';
 import {Model} from './model';
@@ -53,12 +53,14 @@ export class LayerModel extends Model {
       if (types.length > 1) {
         resolve[channel] = {
           scale: INDEPENDENT,
-          guide: INDEPENDENT
+          axis: INDEPENDENT,
+          legend: INDEPENDENT
         };
       } else if (types.length === 1) {
         resolve[channel] = extend({
           scale: SHARED,
-          guide: SHARED
+          axis: INDEPENDENT,
+          legend: INDEPENDENT
         }, resolve[channel]);
       }
       // If length = 0, this channel is not used.  No need to create ChannelResolve
@@ -136,7 +138,7 @@ export class LayerModel extends Model {
 
     let scaleComponent = this.component.scale = {} as Dict<ScaleComponents>;
 
-    forEach(this._resolve, (resolve: Resolve, channel: string) => {
+    forEach(this._resolve, (resolve: ChannelResolve, channel: string) => {
       if (resolve.scale === INDEPENDENT) {
         // independent scales are simply moved up with a new key that includes the child name
         this.children().forEach((child)=> {
