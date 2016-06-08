@@ -89,8 +89,8 @@ export namespace aggregate {
    * Merges the aggregates from the children into the data component.
    */
   export function merge(dataComponent: DataComponent, childDataComponents: DataComponent[]) {
-    const dimensions = childDataComponents.reduce((collector, data) => {
-      return collector.concat(stableStringify(keys(data.aggregate.dimensions)));
+    const dimensions = childDataComponents.reduce((collector, childData) => {
+      return collector.concat(stableStringify(keys(childData.aggregate.dimensions)));
     }, keys(dataComponent.aggregate.dimensions).length ? [stableStringify(keys(dataComponent.aggregate.dimensions))] : []);
 
     if (allSame(dimensions)) {
@@ -109,10 +109,9 @@ export namespace aggregate {
   }
 
   /**
-   * Assemble the aggregate. Needs a rename function because we cannot guarantee that the
-   * parent data before the children data.
+   * Assemble the aggregate.
    */
-  export function assemble(component: DataComponent, model: Model) {
+  export function assemble(component: DataComponent) {
     const aggregateComponent = component.aggregate;
 
     if (!aggregateComponent) {

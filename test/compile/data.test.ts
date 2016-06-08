@@ -13,7 +13,6 @@ import {timeUnitDomain} from '../../src/compile/data/timeunitdomain';
 import {formatParse} from '../../src/compile/data/formatparse';
 import {nonPositiveFilter} from '../../src/compile/data/nonpositivenullfilter';
 import {DataComponent} from '../../src/compile/data/data';
-import {Model} from '../../src/compile/model';
 import {parseUnitModel} from '../util';
 import {mergeDeep, vals} from '../../src/util';
 
@@ -494,12 +493,6 @@ describe('data: stack', function() {
 });
 
 describe('data: aggregate', function () {
-  const identity = {
-    dataName(data) {
-      return 'source';
-    }
-  } as Model;
-
   describe('unit (aggregated)', function() {
     const model = parseUnitModel({
       mark: "point",
@@ -529,7 +522,7 @@ describe('data: aggregate', function () {
     });
 
     it('should assemble the correct aggregate transform', function() {
-      const summaryData = aggregate.assemble(model.component.data, identity)[0];
+      const summaryData = aggregate.assemble(model.component.data)[0];
       assert.deepEqual(summaryData, {
         'type': 'aggregate',
         'groupby': ['Origin'],
@@ -563,7 +556,7 @@ describe('data: aggregate', function () {
     });
 
     it('should assemble the correct aggregate data', function() {
-      const summaryData = aggregate.assemble(model.component.data, identity)[0];
+      const summaryData = aggregate.assemble(model.component.data)[0];
       assert.deepEqual(summaryData, {
         'type': 'aggregate',
         'groupby': ['Origin', 'Cylinders'],

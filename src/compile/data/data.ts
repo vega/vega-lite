@@ -118,8 +118,7 @@ export function parseUnitData(model: UnitModel): DataComponent {
 }
 
 /**
- * The data component for a facet is the data component of its child.
- * We only need to add the facet fields as dimensions to the summary component.
+ * Add the facet fields as dimensions to the summary component.
  */
 export function parseFacetData(model: FacetModel): DataComponent {
   const child = model.child();
@@ -167,16 +166,9 @@ function mergeChildren(model: Model, dataComponent: DataComponent, children: Uni
 
   // set the parent source as child source
   childDataComponents.forEach((childData) => {
-    if (childData.source === undefined) {
-      // child does not define its own source
-      childData.source = {
-        source: model.dataName(SOURCE)
-      };
-    } else {
-      childData.source.source = model.dataName(SOURCE);
-    }
-    delete childData.source.format;
-    delete childData.source.url;
+    childData.source = {
+      source: model.dataName(SOURCE)
+    };
   });
 
   formatParse.merge(dataComponent, childDataComponents);
@@ -301,7 +293,7 @@ export function assembleData(model: Model, data: VgData[]) {
     data.push(dataSource);
   }
 
-  const aggregates = aggregate.assemble(component, model);
+  const aggregates = aggregate.assemble(component);
   if (aggregates.length > 0) {
     dataSource.transform = (dataSource.transform || []).concat(aggregates);
   }
