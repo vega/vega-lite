@@ -171,7 +171,11 @@ function mergeChildren(model: Model, dataComponent: DataComponent, children: Uni
     };
   });
 
-  formatParse.merge(dataComponent, childDataComponents);
+  const compatibleParse = formatParse.merge(dataComponent, childDataComponents);
+  if (!compatibleParse) {
+    // if the parse is incompatible, we have to abort merging
+    return dataComponent;
+  }
 
   const mergedAllFormulas = calculate.merge(dataComponent, childDataComponents);
 

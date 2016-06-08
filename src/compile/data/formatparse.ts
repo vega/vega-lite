@@ -47,21 +47,27 @@ export namespace formatParse {
 
   /**
    * Merge the format parse from the parent and all components into parent.
+   * Returns whether parse is compatible. It is defined to be compatible if no
+   * child defines a parse that differens from any other.
    *
    * Format parse is only merged up if the parent either does not define a parse or the same parse.
    */
   export function merge(dataComponent: DataComponent, childDataComponents: DataComponent[]) {
+    let compatible = true;
     childDataComponents.reduce((collector, childData) => {
       if (childData.formatParse) {
         forEach(childData.formatParse, (parse, field) => {
           if (parse === collector[field] || collector[field] === undefined) {
             collector[field] = parse;
             delete childData.formatParse[field];
+          } else {
+            compatible = false;
           }
         });
       }
       return collector;
     }, dataComponent.formatParse);
+    return compatible;
   }
 
   /**
