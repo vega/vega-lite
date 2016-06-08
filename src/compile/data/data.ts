@@ -218,7 +218,7 @@ function mergeChildren(model: Model, dataComponent: DataComponent, children: Uni
 export function parseLayerData(model: LayerModel): DataComponent {
   const dataComponent = parseData(model);
 
-  // function to compare the data sources
+  /** function to compare the data sources */
   function dataHash(component: DataComponent): string {
     const source = component.source;
     if (!source) {
