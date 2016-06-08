@@ -1,6 +1,7 @@
 // utility for encoding mapping
 import {FieldDef, PositionChannelDef, FacetChannelDef, ChannelDefWithLegend, OrderChannelDef} from './fielddef';
 import {Channel, CHANNELS} from './channel';
+import {LATITUDE, LONGITUDE} from './type';
 import {isArray, any as anyIn} from './util';
 
 // TODO: once we decompose facet, rename this to Encoding
@@ -14,6 +15,7 @@ export interface UnitEncoding {
   detail?: FieldDef | FieldDef[];
   text?: FieldDef;
   label?: FieldDef;
+  geopath?: FieldDef;
 
   path?: OrderChannelDef | OrderChannelDef[];
   order?: OrderChannelDef | OrderChannelDef[];
@@ -143,4 +145,24 @@ export function channelMappingReduce(channels: Channel[], mapping: any,
     }
   });
   return r;
+}
+
+/*
+ * Check if the encoding contains any x/y of type LATITUDE or
+ * LONGITUDE. This can be used to determine if a geo transform
+ * should be produced.
+ */
+export function containsLatLong(encoding: Encoding): boolean {
+  if (encoding.x) {
+    const xType = encoding.x.type;
+    if (xType === LATITUDE || xType === LONGITUDE) {
+      return true;
+    }
+  } else if (encoding.y) {
+    const yType = encoding.y.type;
+    if (yType === LATITUDE || yType === LONGITUDE) {
+      return true;
+    }
+  }
+  return false;
 }
