@@ -7,13 +7,14 @@ import {isArray, any as anyIn} from './util';
 export interface UnitEncoding {
   x?: PositionChannelDef;
   y?: PositionChannelDef;
+  anchor?: PositionChannelDef;
+  offset?: PositionChannelDef;
   color?: ChannelDefWithLegend;
   opacity?: ChannelDefWithLegend;
   size?: ChannelDefWithLegend;
   shape?: ChannelDefWithLegend; // TODO: maybe distinguish ordinal-only
   detail?: FieldDef | FieldDef[];
   text?: FieldDef;
-  label?: FieldDef;
 
   path?: OrderChannelDef | OrderChannelDef[];
   order?: OrderChannelDef | OrderChannelDef[];

@@ -12,6 +12,7 @@ export enum DataFormat {
 export interface Data {
   formatType?: DataFormat;
   url?: string;
+  ref?: string;
   /**
    * Pass array of objects instead of a url to a file.
    */

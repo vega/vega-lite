@@ -97,11 +97,6 @@ export namespace circle {
   export function properties(model: UnitModel) {
     return point.properties(model, 'circle');
   }
-
-  export function labels(model: UnitModel) {
-    // TODO(#240): fill this method
-    return undefined;
-  }
 }
 
 export namespace square {
@@ -111,10 +106,5 @@ export namespace square {
 
   export function properties(model: UnitModel) {
     return point.properties(model, 'square');
-  }
-
-  export function labels(model: UnitModel) {
-    // TODO(#240): fill this method
-    return undefined;
   }
 }

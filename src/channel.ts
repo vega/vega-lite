@@ -15,8 +15,9 @@ export enum Channel {
   SIZE = 'size' as any,
   COLOR = 'color' as any,
   TEXT = 'text' as any,
+  ANCHOR = 'anchor' as any,
+  OFFSET = 'offset' as any,
   DETAIL = 'detail' as any,
-  LABEL = 'label' as any,
   PATH = 'path' as any,
   ORDER = 'order' as any,
   OPACITY = 'opacity' as any
@@ -30,16 +31,17 @@ export const SHAPE = Channel.SHAPE;
 export const SIZE = Channel.SIZE;
 export const COLOR = Channel.COLOR;
 export const TEXT = Channel.TEXT;
+export const ANCHOR = Channel.ANCHOR;
+export const OFFSET = Channel.OFFSET;
 export const DETAIL = Channel.DETAIL;
-export const LABEL = Channel.LABEL;
 export const PATH = Channel.PATH;
 export const ORDER = Channel.ORDER;
 export const OPACITY = Channel.OPACITY;
 
-export const CHANNELS = [X, Y, ROW, COLUMN, SIZE, SHAPE, COLOR, PATH, ORDER, OPACITY, TEXT, DETAIL, LABEL];
+export const CHANNELS = [X, Y, ROW, COLUMN, SIZE, SHAPE, COLOR, PATH, ORDER, TEXT, DETAIL, ANCHOR, OFFSET];
 
 export const UNIT_CHANNELS = without(CHANNELS, [ROW, COLUMN]);
-export const UNIT_SCALE_CHANNELS = without(UNIT_CHANNELS, [PATH, ORDER, DETAIL, TEXT, LABEL]);
+export const UNIT_SCALE_CHANNELS = without(UNIT_CHANNELS, [PATH, ORDER, DETAIL, TEXT]);
 export const NONSPATIAL_CHANNELS = without(UNIT_CHANNELS, [X, Y]);
 export const NONSPATIAL_SCALE_CHANNELS = without(UNIT_SCALE_CHANNELS, [X, Y]);
 
@@ -53,6 +55,7 @@ export interface SupportedMark {
   line?: boolean;
   area?: boolean;
   text?: boolean;
+  label?: boolean;
 };
 
 /**
@@ -82,17 +85,20 @@ export function getSupportedMark(channel: Channel): SupportedMark {
     case COLUMN:
       return { // all marks
         point: true, tick: true, rule: true, circle: true, square: true,
-        bar: true, line: true, area: true, text: true
+        bar: true, line: true, area: true, text: true, label: true
       };
     case SIZE:
       return {
         point: true, tick: true, rule: true, circle: true, square: true,
-        bar: true, text: true
+        bar: true, text: true, label: true
       };
     case SHAPE:
       return {point: true};
     case TEXT:
-      return {text: true};
+      return {text: true, label: true};
+    case ANCHOR:
+    case OFFSET:
+      return {label: true};
     case PATH:
       return {line: true};
   }
@@ -115,8 +121,9 @@ export function getSupportedRole(channel: Channel): SupportedRole {
     case Y:
     case COLOR:
     case OPACITY:
-    case LABEL:
     case DETAIL:
+    case ANCHOR:
+    case OFFSET:
       return {
         measure: true,
         dimension: true
@@ -144,5 +151,5 @@ export function getSupportedRole(channel: Channel): SupportedRole {
 }
 
 export function hasScale(channel: Channel) {
-  return !contains([DETAIL, PATH, TEXT, LABEL, ORDER], channel);
+  return !contains([DETAIL, PATH, TEXT, ORDER], channel);
 }

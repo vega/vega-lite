@@ -4,6 +4,7 @@ export enum Mark {
   LINE = 'line' as any,
   POINT = 'point' as any,
   TEXT = 'text' as any,
+  LABEL = 'label' as any,
   TICK = 'tick' as any,
   RULE = 'rule' as any,
   CIRCLE = 'circle' as any,
@@ -15,6 +16,7 @@ export const BAR = Mark.BAR;
 export const LINE = Mark.LINE;
 export const POINT = Mark.POINT;
 export const TEXT = Mark.TEXT;
+export const LABEL = Mark.LABEL;
 export const TICK = Mark.TICK;
 export const RULE = Mark.RULE;
 
