@@ -1,0 +1,36 @@
+{
+  "description": "A simple bar chart with embedded data.",
+  "layers": [
+    {
+      "name": "myScatter",
+      "data": {
+        "values": [
+          {"a": 10,"b": 28},
+          {"a": 41,"b": 55},
+          {"a": 12,"b": 43},
+          {"a": 21,"b": 91},
+          {"a": 34,"b": 81},
+          {"a": 51,"b": 53},
+          {"a": 15,"b": 8},
+          {"a": 64,"b": 61},
+          {"a": 36,"b": 52}
+        ]
+      },
+      "mark": "point",
+      "encoding": {
+        "x": {"field": "a","type": "quantitative"},
+        "y": {"field": "b","type": "quantitative"}
+      }
+    },
+    {
+      "mark": "label",
+      "data": {"ref": "myScatter"},
+      "encoding": {
+        "color": {"value": "#000"},
+        "text": {"field": "a"},
+        "anchor": {"value": "auto"},
+        "offset": {"value": 7}
+      }
+    }
+  ]
+}

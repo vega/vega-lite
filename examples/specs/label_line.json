@@ -1,0 +1,25 @@
+{
+  "description": "Google's stock price over time.",
+  "layers": [
+    {
+      "name": "myLines",
+      "data": {"url": "data/stocks.csv","formatType": "csv"},
+      "transform": {"filter": "datum.symbol==='GOOG'"},
+      "mark": "line",
+      "encoding": {
+        "x": {"field": "date","type": "temporal"},
+        "y": {"field": "price","type": "quantitative"}
+      }
+    },
+    {
+      "mark": "label",
+      "data": {"ref": "myLines"},
+      "encoding": {
+        "color": {"value": "#000"},
+        "text": {"field": "price"},
+        "anchor": {"value": "auto"},
+        "offset": {"value": 15}
+      }
+    }
+  ]
+}
