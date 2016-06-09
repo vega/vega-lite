@@ -8,7 +8,8 @@ export enum Mark {
   RULE = 'rule' as any,
   CIRCLE = 'circle' as any,
   SQUARE = 'square' as any,
-  ERRORBAR = 'errorBar' as any
+  ERRORBAR = 'errorBar' as any,
+  BOXPLOT = 'boxPlot' as any
 }
 
 export const AREA = Mark.AREA;
@@ -23,3 +24,4 @@ export const CIRCLE = Mark.CIRCLE;
 export const SQUARE = Mark.SQUARE;
 
 export const ERRORBAR = Mark.ERRORBAR;
+export const BOXPLOT = Mark.BOXPLOT;

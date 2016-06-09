@@ -1,5 +1,5 @@
 import {UnitModel} from '../unit';
-import {X, Y} from '../../channel';
+import {X, Y, X2, Y2} from '../../channel';
 import {isDimension, isMeasure} from '../../fielddef';
 import {applyColorAndOpacity, applyMarkConfig} from '../common';
 
@@ -25,28 +25,50 @@ export namespace area {
         scale: model.scaleName(X),
         field: model.field(X, { suffix: '_start' })
       };
+      if (orient === 'horizontal') {
+        p.x2 = {
+          scale: model.scaleName(X),
+          field: model.field(X, { suffix: '_end' })
+        };
+      }
     } else if (isMeasure(xFieldDef)) { // Measure
-      p.x = { scale: model.scaleName(X), field: model.field(X) };
+      if (orient === 'horizontal') {
+        // x
+        if (model.has(X)) {
+          p.x = {
+            scale: model.scaleName(X),
+            field: model.field(X)
+          };
+        } else {
+          p.x = {
+            scale: model.scaleName(X),
+            value: 0
+          };
+        }
+
+        // x2
+        if (model.has(X2)) {
+          p.x2 = {
+            scale: model.scaleName(X),
+            field: model.field(X2)
+          };
+        } else {
+          p.x2 = {
+            scale: model.scaleName(X),
+            value: 0
+          };
+        }
+      } else {
+        p.x = {
+          scale: model.scaleName(X),
+          field: model.field(X)
+        };
+      }
     } else if (isDimension(xFieldDef)) {
       p.x = {
         scale: model.scaleName(X),
         field: model.field(X, { binSuffix: '_mid' })
       };
-    }
-
-    // x2
-    if (orient === 'horizontal') {
-      if (stack && X === stack.fieldChannel) {
-        p.x2 = {
-          scale: model.scaleName(X),
-          field: model.field(X, { suffix: '_end' })
-        };
-      } else {
-        p.x2 = {
-          scale: model.scaleName(X),
-          value: 0
-        };
-      }
     }
 
     // y
@@ -56,30 +78,47 @@ export namespace area {
         scale: model.scaleName(Y),
         field: model.field(Y, { suffix: '_start' })
       };
+      if (orient !== 'horizontal') {
+        p.y2 = {
+          scale: model.scaleName(Y),
+          field: model.field(Y, { suffix: '_end' })
+        };
+      }
     } else if (isMeasure(yFieldDef)) {
-      p.y = {
-        scale: model.scaleName(Y),
-        field: model.field(Y)
-      };
+      if (orient !== 'horizontal') {
+        // y
+        if (model.has(Y)) {
+          p.y = {
+            scale: model.scaleName(Y),
+            field: model.field(Y)
+          };
+        } else {
+          p.y = { field: { group: 'height' } };
+        }
+
+        // y2
+        if (model.has(Y2)) {
+          p.y2 = {
+            scale: model.scaleName(Y),
+            field: model.field(Y2)
+          };
+        } else {
+          p.y2 = {
+            scale: model.scaleName(Y),
+            value: 0
+          };
+        }
+      } else {
+        p.y = {
+          scale: model.scaleName(Y),
+          field: model.field(Y)
+        };
+      }
     } else if (isDimension(yFieldDef)) {
       p.y = {
         scale: model.scaleName(Y),
         field: model.field(Y, { binSuffix: '_mid' })
       };
-    }
-
-    if (orient !== 'horizontal') { // 'vertical' or undefined are vertical
-      if (stack && Y === stack.fieldChannel) {
-        p.y2 = {
-          scale: model.scaleName(Y),
-          field: model.field(Y, { suffix: '_end' })
-        };
-      } else {
-        p.y2 = {
-          scale: model.scaleName(Y),
-          value: 0
-        };
-      }
     }
 
     applyColorAndOpacity(p, model);

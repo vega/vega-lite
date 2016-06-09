@@ -9,10 +9,11 @@ import {Encoding, UnitEncoding, has, isRanged} from './encoding';
 import {Facet} from './facet';
 import {Mark} from './mark';
 import {Transform} from './transform';
+import {QUANTITATIVE} from './type';
 
 import {COLOR, SHAPE, ROW, COLUMN, X, Y, X2, Y2} from './channel';
 import * as vlEncoding from './encoding';
-import {TICK, RULE, BAR, AREA, ERRORBAR} from './mark';
+import {TICK, RULE, BAR, AREA, ERRORBAR, BOXPLOT} from './mark';
 import {duplicate, extend, contains} from './util';
 
 export interface BaseSpec {
@@ -139,7 +140,7 @@ export function normalizeExtendedUnitSpec(spec: ExtendedUnitSpec): Spec {
 }
 
 export function normalizeUnitSpec(spec: UnitSpec): Spec {
-  if (contains([ERRORBAR], spec.mark)) {
+  if (contains([ERRORBAR, BOXPLOT], spec.mark)) {
     return normalizeCompositeUnitSpec(spec);
   }
   if (isRanged(spec.encoding)) {
@@ -209,6 +210,66 @@ export function normalizeCompositeUnitSpec(spec: UnitSpec): Spec {
     layerSpec.layers.push(normalizeUnitSpec(ruleSpec));
     layerSpec.layers.push(normalizeUnitSpec(lowerTickSpec));
     layerSpec.layers.push(normalizeUnitSpec(upperTickSpec));
+  } else if (spec.mark === BOXPLOT) {
+    if (!spec.encoding.x || !spec.encoding.y ||
+        !(spec.encoding.x.type === QUANTITATIVE ||
+          spec.encoding.y.type === QUANTITATIVE)) {
+      return layerSpec;
+    }
+    const orient = spec.encoding.x.aggregate && spec.encoding.x.type === QUANTITATIVE? 'horizontal' : 'vertical';
+    let ruleSpec = {
+      mark: RULE,
+      encoding: extend(
+        {x: duplicate(spec.encoding.x)},
+        {y: duplicate(spec.encoding.y)},
+        orient === 'vertical' ? {y2: duplicate(spec.encoding.y)} : {x2: duplicate(spec.encoding.x)},
+        {})
+    };
+    let upperTickSpec = {
+      mark: TICK,
+      encoding: extend(
+        {x: duplicate(spec.encoding.x)},
+        {y: duplicate(spec.encoding.y)},
+        {})
+    };
+    let lowerTickSpec = {
+      mark: TICK,
+      encoding: extend(
+        {x: duplicate(spec.encoding.x)},
+        {y: duplicate(spec.encoding.y)},
+        {})
+    };
+    let loweBarSpec = {
+      mark: BAR,
+      encoding: extend(
+        {x: duplicate(spec.encoding.x)},
+        {y: duplicate(spec.encoding.y)},
+        orient === 'vertical' ? {y2: duplicate(spec.encoding.y)} : {x2: duplicate(spec.encoding.x)},
+        {color: {value: 'orange'}})
+    };
+    let upperBarSpec = {
+      mark: BAR,
+      encoding: extend(
+        {x: duplicate(spec.encoding.x)},
+        {y: duplicate(spec.encoding.y)},
+        orient === 'vertical' ? {y2: duplicate(spec.encoding.y)} : {x2: duplicate(spec.encoding.x)},
+        {})
+    };
+    const aggaxis = orient === 'vertical' ? 'y' : 'x';
+    const aggaxis2 = orient === 'vertical' ? 'y2' : 'x2';
+    ruleSpec.encoding[aggaxis].aggregate = 'min';
+    ruleSpec.encoding[aggaxis2].aggregate = 'max';
+    upperTickSpec.encoding[aggaxis].aggregate = 'max';
+    lowerTickSpec.encoding[aggaxis].aggregate = 'min';
+    loweBarSpec.encoding[aggaxis].aggregate = 'q1';
+    loweBarSpec.encoding[aggaxis2].aggregate = 'median';
+    upperBarSpec.encoding[aggaxis].aggregate = 'median';
+    upperBarSpec.encoding[aggaxis2].aggregate = 'q3';
+    layerSpec.layers.push(normalizeUnitSpec(ruleSpec));
+    layerSpec.layers.push(normalizeUnitSpec(lowerTickSpec));
+    layerSpec.layers.push(normalizeUnitSpec(upperTickSpec));
+    layerSpec.layers.push(normalizeUnitSpec(loweBarSpec));
+    layerSpec.layers.push(normalizeUnitSpec(upperBarSpec));
   }
 
   return layerSpec;

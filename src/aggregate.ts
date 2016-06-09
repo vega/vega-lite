@@ -20,6 +20,7 @@ export enum AggregateOp {
     MAX = 'max' as any,
     ARGMIN = 'argmin' as any,
     ARGMAX = 'argmax' as any,
+    BOXMINMAX = 'boxMinMax' as any,
 }
 
 export const AGGREGATE_OPS = [
@@ -43,6 +44,7 @@ export const AGGREGATE_OPS = [
     AggregateOp.MAX,
     AggregateOp.ARGMIN,
     AggregateOp.ARGMAX,
+    AggregateOp.BOXMINMAX
 ];
 
 export const SHARED_DOMAIN_OPS = [
