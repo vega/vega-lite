@@ -180,6 +180,24 @@
       "galleryParameters": {
         "backgroundSize": "150%"
       }
+    }, {
+      "name": "box_plot",
+      "title": "Box Plot",
+      "galleryParameters": {
+        "backgroundSize": "150%"
+      }
+    }, {
+      "name": "box_plot_horizontal",
+      "title": "Horizontal Box Plot",
+      "galleryParameters": {
+        "backgroundSize": "150%"
+      }
+    }, {
+      "name": "confidence_interval",
+      "title": "Confidence Interval",
+      "galleryParameters": {
+        "backgroundSize": "150%"
+      }
     }
   ],
   "Trellis": [
