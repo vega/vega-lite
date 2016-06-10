@@ -28,6 +28,8 @@ export namespace stackScale {
     return null;
   };
 
+  export const parseUnit = parse;
+
   /**
    * Add facet fields as dimensions and move stack transform up.
    */
