@@ -35,14 +35,16 @@ export namespace source {
         }
         const dataFormat = model.data().format;
         sourceData.format =
-            extend({ type: (dataFormat && dataFormat.type) ?
+            extend({ 
+              type: (dataFormat && dataFormat.type) ?
                   model.data().format.type :
-                  defaultExtension },
-                  (dataFormat && dataFormat.feature) ?
-                  { feature : dataFormat.feature} : {},
-                  (dataFormat && dataFormat.mesh) ?
-                  { mesh : dataFormat.mesh} : {}
-                  );
+                  defaultExtension 
+              },
+              (dataFormat && dataFormat.feature) ?
+                { feature : dataFormat.feature } : {},
+              (dataFormat && dataFormat.mesh) ?
+                { mesh : dataFormat.mesh} : {}
+            );
       }
       return sourceData;
     } else if (!model.parent()) {
