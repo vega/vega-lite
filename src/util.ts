@@ -2,7 +2,6 @@
 /// <reference path="../typings/json-stable-stringify.d.ts"/>
 
 import * as stringify from 'json-stable-stringify';
-import {keys, isArray} from 'datalib/src/util';
 export {keys, extend, duplicate, isArray, vals, truncate, toMap, isObject, isString, isNumber, isBoolean} from 'datalib/src/util';
 export {range} from 'datalib/src/generate';
 export {has} from './encoding'
@@ -16,16 +15,6 @@ export function stableStringify(a: any) {
     return String(a);
   }
   return stringify(a);
-}
-
-export function empty(a: any) {
-  if (!a) {
-    return true;
-  }
-  if (isArray(a)) {
-    return a.length === 0;
-  }
-  return keys(a).length === 0;
 }
 
 export function contains<T>(array: Array<T>, item: T) {

@@ -1,5 +1,5 @@
 import {Formula} from '../../transform';
-import {Dict, StringSet, stableStringify, allSame, empty, duplicate} from '../../util';
+import {Dict, StringSet, stableStringify, allSame, duplicate, keys} from '../../util';
 import {VgData, VgTransform} from '../../vega.schema';
 import {SOURCE, RAW, STACKED_SCALE} from '../../data';
 
@@ -124,7 +124,7 @@ export function parseFacetData(model: FacetModel): DataComponent {
   const child = model.child();
 
   // TODO: enforce this in the schema
-  if (child.data() || !empty(child.transform())) {
+  if (child.data() || keys(child.transform()).length !== 0) {
     model.addWarning('Facet child should not define data source or transform.');
   }
 
@@ -308,7 +308,7 @@ export function assembleData(model: Model, data: VgData[]) {
     dataSource.transform = (dataSource.transform || []).concat(rank);
   }
 
-  if (empty(dataSource.transform)) {
+  if (keys(dataSource.transform).length === 0) {
     delete dataSource.transform;
   }
 
@@ -344,7 +344,7 @@ export function assembleData(model: Model, data: VgData[]) {
     const ds = data[index];
 
     // delete empty transforms
-    if (empty(ds.transform)) {
+    if (keys(ds.transform).length === 0) {
       delete ds.transform;
     }
 

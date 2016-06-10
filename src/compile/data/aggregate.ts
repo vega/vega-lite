@@ -1,7 +1,7 @@
 import {AggregateOp} from '../../aggregate';
 import {Channel} from '../../channel';
 import {field, FieldDef} from '../../fielddef';
-import {keys, reduce, stableStringify, Dict, StringSet, allSame, empty} from '../../util';
+import {keys, reduce, stableStringify, Dict, StringSet, allSame} from '../../util';
 
 import {FacetModel} from './../facet';
 import {Model} from './../model';
@@ -99,7 +99,7 @@ export namespace aggregate {
         return collector;
       }, dataComponent.aggregate.measures);
 
-      if (empty(dataComponent.aggregate.dimensions)) {
+      if (keys((dataComponent.aggregate.dimensions)).length === 0) {
         dataComponent.aggregate.dimensions = childDataComponents[0].aggregate.dimensions;
       }
       childDataComponents.forEach((childData) => {

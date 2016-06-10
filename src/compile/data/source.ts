@@ -1,5 +1,5 @@
 import {SOURCE} from '../../data';
-import {contains, empty} from '../../util';
+import {contains, keys} from '../../util';
 import {VgData} from '../../vega.schema';
 
 import {Model} from './../model';
@@ -43,7 +43,7 @@ export namespace source {
       sourceData.name = model.dataName(SOURCE);
 
       const parse = formatParse.assemble(component);
-      if (parse && !empty(parse)) {
+      if (parse && keys(parse).length !== 0) {
         sourceData.format = sourceData.format || {};
         sourceData.format.parse = parse;
       }
