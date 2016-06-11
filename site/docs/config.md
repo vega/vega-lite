@@ -71,6 +71,7 @@ Each plot in either a single plot or a trellis plot is called a _cell_. Cell con
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
+| clip          | boolean       | Whether the view should be clipped. |
 | fill          | Color         | The fill color. <span class="note-line">__Default value:__ (none)</span> |
 | fillOpacity   | Number        | The fill opacity (value between [0,1]). <span class="note-line">__Default value:__ (none)</span>|
 | stroke        | Color         | The stroke color. <span class="note-line">__Default value:__ (none)</span>|
