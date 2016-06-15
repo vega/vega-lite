@@ -12,6 +12,7 @@ import {TEXT as TEXTMARK} from '../mark';
 import {Model} from './model';
 import {rawDomain} from './time';
 import {UnitModel} from './unit';
+import {hasGeoTransform} from './common';
 
 // FIXME: for nesting x and y, we need to declare x,y layout separately before joining later
 // For now, let's always assume shared scale
@@ -86,6 +87,15 @@ function parseUnitSizeLayout(model: UnitModel, channel: Channel): SizeComponent 
 }
 
 function unitSizeExpr(model: UnitModel, channel: Channel, nonOrdinalSize: number): string {
+  // Check if projection is specified, if specific, use
+  // config.cell.width/height as layout's width/height.
+  if (model instanceof UnitModel && hasGeoTransform(model)) {
+    if (channel === X) {
+      return model.config().cell.width + '';
+    } else if (channel === Y) {
+      return model.config().cell.height + '';
+    }
+  }
   if (model.has(channel)) {
     if (model.isOrdinalScale(channel)) {
       const scale = model.scale(channel);
