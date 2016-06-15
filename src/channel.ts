@@ -56,6 +56,7 @@ export interface SupportedMark {
   area?: boolean;
   text?: boolean;
   path?: boolean;
+  geopath?: boolean;
 };
 
 /**
@@ -99,7 +100,7 @@ export function getSupportedMark(channel: Channel): SupportedMark {
     case PATH:
       return {line: true};
     case GEOPATH:
-      return {path: false};
+      return {path: true};
   }
   return {};
 }
@@ -143,6 +144,11 @@ export function getSupportedRole(channel: Channel): SupportedRole {
       return {
         measure: false,
         dimension: true
+      };
+    case GEOPATH:
+      return {
+        measure: false,
+        dimension: false
       };
   }
   throw new Error('Invalid encoding channel' + channel);
