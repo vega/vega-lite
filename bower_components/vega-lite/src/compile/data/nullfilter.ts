@@ -73,7 +73,8 @@ export namespace nullFilter {
       [{
         type: 'filter',
         test: filteredFields.map(function(fieldName) {
-          return 'datum.' + fieldName + '!==null';
+          return '(datum.' + fieldName + '!==null' +
+            ' && !isNaN(datum.'+ fieldName + '))';
         }).join(' && ')
       }] : [];
   }

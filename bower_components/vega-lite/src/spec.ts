@@ -16,15 +16,44 @@ import {BAR, AREA} from './mark';
 import {duplicate, extend} from './util';
 
 export interface BaseSpec {
+  /**
+   * Name of the visualization for later reference.
+   */
   name?: string;
+
+  /**
+   * An optional description of this mark for commenting purpose.
+   * This property has no effect on the output visualization.
+   */
   description?: string;
+
+  /**
+   * An object describing the data source
+   */
   data?: Data;
+
+  /**
+   * An object describing filter and new field calculation.
+   */
   transform?: Transform;
+
+  /**
+   * Configuration object
+   */
   config?: Config;
 }
 
 export interface UnitSpec extends BaseSpec {
+  /**
+   * The mark type.
+   * One of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
+   * `"area"`, `"point"`, `"rule"`, and `"text"`.
+   */
   mark: Mark;
+
+  /**
+   * A key-value mapping between encoding channels and definition of fields.
+   */
   encoding?: UnitEncoding;
 }
 
@@ -39,9 +68,15 @@ export interface UnitSpec extends BaseSpec {
  */
 export interface ExtendedUnitSpec extends BaseSpec {
   /**
-   * A name for the specification. The name is used to annotate marks, scale names, and more.
+   * The mark type.
+   * One of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
+   * `"area"`, `"point"`, `"rule"`, and `"text"`.
    */
   mark: Mark;
+
+  /**
+   * A key-value mapping between encoding channels and definition of fields.
+   */
   encoding?: Encoding;
 }
 
@@ -51,6 +86,9 @@ export interface FacetSpec extends BaseSpec {
 }
 
 export interface LayerSpec extends BaseSpec {
+  /**
+   * Unit specs that will be layered.
+   */
   layers: UnitSpec[];
 }
 

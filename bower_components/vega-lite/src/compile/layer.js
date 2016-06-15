@@ -180,9 +180,9 @@ var LayerModel = (function (_super) {
         return true;
     };
     LayerModel.prototype.compatibleSource = function (child) {
-        var sourceUrl = this.data().url;
+        var data = this.data();
         var childData = child.component.data;
-        var compatible = !childData.source || (sourceUrl && sourceUrl === childData.source.url);
+        var compatible = !childData.source || (data && data.url === childData.source.url);
         return compatible;
     };
     return LayerModel;
