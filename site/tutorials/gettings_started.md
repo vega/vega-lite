@@ -318,7 +318,7 @@ You can also see the html page [here]({{site.baseurl}}/site/demo.html), or fork 
 Now you can create a website that embeds a Vega-Lite specification. If you want to learn more about Vega-Lite, please feel free to:
 
 - Read the [next tutorial]({{site.baseurl}}/tutorials/explore.html).
-- See the [examples gallery]({{site.baseurl}}/examples/gallery.html).
+- See the [examples gallery]({{site.baseurl}}/examples/).
 - Build your own visualizations in the [online editor](https://vega.github.io/vega-editor/?mode=vega-lite).
 - Browse through the [documentation]({{site.baseurl}}/docs/).
 - See the [list of applications](https://vega.github.io/vega-lite/usage/applications.html) that you can use Vega-Lite with.
