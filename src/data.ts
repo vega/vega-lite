@@ -11,6 +11,12 @@ export enum DataFormat {
 
 export interface Data {
   formatType?: DataFormat;
+
+
+  /**
+   * A URL from which to load the data set. Use the formatType property
+   * to ensure the loaded data is correctly parsed.
+   */
   url?: string;
   /**
    * Pass array of objects instead of a url to a file.

@@ -16,16 +16,46 @@ import {contains, getbins, toMap} from './util';
  *  we do for JSON schema.
  */
 export interface FieldDef {
+  /**
+   * Name of the field from which to pull a data value.
+   */
   field?: string;
+
+  /**
+   * The encoded field's type of measurement. This can be either a full type
+   * name (`"quantitative"`, `"temporal"`, `"ordinal"`,  and `"nominal"`)
+   * or an initial character of the type name (`"Q"`, `"T"`, `"O"`, `"N"`).
+   * This property is case insensitive.
+   */
   type?: Type;
+
+  /**
+   * A constant value in visual domain.
+   */
   value?: number | string | boolean;
 
   // function
+
+  /**
+   * Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).
+   */
   timeUnit?: TimeUnit;
+
+  /**
+   * Flag for binning a `quantitative` field, or a bin property object
+   * for binning parameters.
+   */
   bin?: boolean | Bin;
+
+  /**
+   * Aggregation function for the field
+   * (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).
+   */
   aggregate?: AggregateOp;
 
-  // metadata
+  /**
+   * Title for axis or legend.
+   */
   title?: string;
 }
 

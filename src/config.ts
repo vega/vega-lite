@@ -10,15 +10,26 @@ export interface CellConfig {
 
   // FILL_STROKE_CONFIG
   /**
+   * The fill color.
    * @format color
    */
   fill?: string;
+
+  /** The fill opacity (value between [0,1]). */
   fillOpacity?: number;
+
+  /** The stroke color. */
   stroke?: string;
-  strokeWidth?: number;
+
+  /** The stroke opacity (value between [0,1]). */
   strokeOpacity?: number;
+
+  /** The stroke width, in pixels. */
+  strokeWidth?: number;
+
   /** An array of alternating stroke, space lengths for creating dashed or dotted lines. */
   strokeDash?: number[];
+
   /** The offset (in pixels) into which to begin drawing with the stroke dash array. */
   strokeDashOffset?: number;
 }
@@ -34,9 +45,16 @@ export const defaultFacetCellConfig: CellConfig = {
 };
 
 export interface FacetConfig {
+  /** Facet Scale Config */
   scale?: FacetScaleConfig;
+
+  /** Facet Axis Config */
   axis?: AxisConfig;
+
+  /** Facet Grid Config */
   grid?: FacetGridConfig;
+
+  /** Facet Cell Config */
   cell?: CellConfig;
 }
 
@@ -138,22 +156,24 @@ export interface MarkConfig {
    * for usage example.
    */
   filled?: boolean;
+
   /**
    * Default color.
    * @format color
    */
   color?: string;
+
   /**
    * Default Fill Color.  This has higher precedence than config.color
    * @format color
    */
   fill?: string;
+
   /**
    * Default Stroke Color.  This has higher precedence than config.color
    * @format color
    */
   stroke?: string;
-
 
   // ---------- Opacity ----------
   /**
@@ -179,10 +199,12 @@ export interface MarkConfig {
    * @minimum 0
    */
   strokeWidth?: number;
+
   /**
    * An array of alternating stroke, space lengths for creating dashed or dotted lines.
    */
   strokeDash?: number[];
+
   /**
    * The offset (in pixels) into which to begin drawing with the stroke dash array.
    */
@@ -233,6 +255,7 @@ export interface MarkConfig {
    * which provides 1 pixel offset between bars.
    */
   barSize?: number;
+
   /**
    * The size of the bars on continuous scales.
    */
@@ -359,17 +382,28 @@ export interface Config {
    * D3 Number format for axis labels and text tables. For example "s" for SI units.
    */
   numberFormat?: string;
+
   /**
    * Default datetime format for axis and legend labels. The format can be set directly on each axis and legend.
    */
   timeFormat?: string;
 
+  /** Cell Config */
   cell?: CellConfig;
+
+  /** Mark Config */
   mark?: MarkConfig;
+
+  /** Scale Config */
   scale?: ScaleConfig;
+
+  /** Axis Config */
   axis?: AxisConfig;
+
+  /** Legend Config */
   legend?: LegendConfig;
 
+  /** Facet Config */
   facet?: FacetConfig;
 }
 
