@@ -148,7 +148,7 @@ export function getSupportedRole(channel: Channel): SupportedRole {
     case GEOPATH:
       return {
         measure: false,
-        dimension: false
+        dimension: true
       };
   }
   throw new Error('Invalid encoding channel' + channel);
