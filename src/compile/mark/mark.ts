@@ -161,7 +161,9 @@ function parseNonLineOrArea(model: UnitModel) {
         model.has(ORDER) ?
           // if non-stacked, detail field determines the layer order of each mark
           { transform: [{type:'sort', by: sortBy(model)}] } :
+        {},
         (model.projection() && hasGeoTransform(model)) ?
+          // If geo projected, add transform
           { transform: [geoTransform(model)] } :
         {}
       )
