@@ -203,36 +203,38 @@ export function hasGeoTransform(model: UnitModel): boolean {
 }
 
 export function geoTransform(model: UnitModel) {
-  const translate = model.projection().translate;
-  const scale     = model.projection().scale;
-  const center    = model.projection().center;
-  const rotate    = model.projection().rotate;
-  const precision = model.projection().precision;
-  const clipAngle = model.projection().clipAngle;
-  let spec = {};
+  let projection = model.projection();
+  let transform : any;
+
   if (model.mark() === PATHMARK) {
     // return geoPath transform
     const geoPathFieldDef = model.encoding().geopath;
-    spec = { type: 'geopath', field: geoPathFieldDef.field };
+    transform = { type: 'geopath', field: geoPathFieldDef.field };
   } else {
-    spec = { type: 'geo' };
+    transform = { type: 'geo' };
     const xFieldDef = model.encoding().x;
     const yFieldDef = model.encoding().y;
-    spec = extend(spec,
-        xFieldDef.type === LATITUDE ? { lat : xFieldDef.field }
-            : xFieldDef.type === LONGITUDE ? { lon : xFieldDef.field }
-            : {});
-    spec = extend(spec,
-    yFieldDef.type === LATITUDE ? { lat : yFieldDef.field }
-        : yFieldDef.type === LONGITUDE ? { lon : yFieldDef.field }
-        : {});
+    if (xFieldDef.type === LATITUDE) {
+      transform.lat = xFieldDef.field;
+    }
+    if (xFieldDef.type === LONGITUDE) {
+      transform.lon = xFieldDef.field;
+    }
+    if (yFieldDef.type === LATITUDE) {
+      transform.lat = yFieldDef.field;
+    }
+    if (yFieldDef.type === LONGITUDE) {
+      transform.lon = yFieldDef.field;
+    }
   }
-    spec = extend(spec, { projection : model.projection().type});
-    spec = extend(spec, translate !== undefined ? { translate : translate} : {});
-    spec = extend(spec, scale !== undefined ? { scale : scale } : {});
-    spec = extend(spec, center !== undefined ? { center : center } : {});
-    spec = extend(spec, rotate !== undefined ? { rotate : rotate } : {});
-    spec = extend(spec, precision !== undefined ? { precision : precision } : {});
-    spec = extend(spec, clipAngle !== undefined ? { clipAngle : clipAngle } : {});
-    return spec;
+  transform = extend(transform, { projection : model.projection().type});
+
+  // Set all the projection properties if specified.
+  ['translate', 'scale', 'center', 'rotate', 'precision', 'clipAngle']
+      .forEach((prop) => {
+        if (projection[prop] !== undefined) {
+          transform[prop] = projection[prop];
+        }
+      });
+  return transform;
 }
