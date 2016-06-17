@@ -45,7 +45,7 @@ export namespace point {
     return { value: config.scale.bandSize / 2 };
   }
 
-  function y(fieldDef: FieldDef, scaleName: string, scale: Scale, config: Config): any {
+  function y(fieldDef: FieldDef, scaleName: string, scale: Scale, config: Config): VgValueRef {
     // y
     if (fieldDef) {
       if (fieldDef.field) {
