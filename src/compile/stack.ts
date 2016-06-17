@@ -96,7 +96,7 @@ export function imputeTransform(model: Model) {
     type: 'impute',
     field: model.field(stack.fieldChannel),
     groupby: stack.stackFields,
-    orderby: [model.field(stack.groupbyChannel)],
+    orderby: [model.field(stack.groupbyChannel, {binSuffix: '_mid'})],
     method: 'value',
     value: 0
   };
@@ -117,7 +117,7 @@ export function stackTransform(model: UnitModel) {
   // add stack transform to mark
   let transform: StackTransform = {
     type: 'stack',
-    groupby: [model.field(stack.groupbyChannel)],
+    groupby: [model.field(stack.groupbyChannel, {binSuffix: '_mid'})],
     field: model.field(stack.fieldChannel),
     sortby: sortby,
     output: {

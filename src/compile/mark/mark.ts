@@ -194,7 +194,7 @@ function sortPathBy(model: UnitModel): string | string[] {
     }
   } else {
     // For both line and area, we sort values based on dimension by default
-    return '-' + model.field(model.config().mark.orient === 'horizontal' ? Y : X);
+    return '-' + model.field(model.config().mark.orient === 'horizontal' ? Y : X, {binSuffix: '_mid'});
   }
 }
 

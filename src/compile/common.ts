@@ -173,7 +173,8 @@ function isAbbreviated(model: Model, channel: Channel, fieldDef: FieldDef) {
 
 /** Return field reference with potential "-" prefix for descending sort */
 export function sortField(orderChannelDef: OrderChannelDef) {
-  return (orderChannelDef.sort === SortOrder.DESCENDING ? '-' : '') + field(orderChannelDef);
+  return (orderChannelDef.sort === SortOrder.DESCENDING ? '-' : '') +
+    field(orderChannelDef, {binSuffix: '_mid'});
 }
 
 /**
