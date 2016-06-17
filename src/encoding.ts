@@ -1,7 +1,7 @@
 // utility for encoding mapping
 import {FieldDef, PositionChannelDef, FacetChannelDef, ChannelDefWithLegend, OrderChannelDef} from './fielddef';
 import {Channel, CHANNELS} from './channel';
-import {isArray, any as anyIn} from './util';
+import {isArray, some} from './util';
 
 // TODO: once we decompose facet, rename this to Encoding
 export interface UnitEncoding {
@@ -108,7 +108,7 @@ export function has(encoding: Encoding, channel: Channel): boolean {
 }
 
 export function isAggregate(encoding: Encoding) {
-  return anyIn(CHANNELS, (channel) => {
+  return some(CHANNELS, (channel) => {
     if (has(encoding, channel) && encoding[channel].aggregate) {
       return true;
     }

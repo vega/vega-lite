@@ -71,7 +71,7 @@ export function map(obj, f: (a, d, k, o) => any, thisArg?) {
   }
 }
 
-export function any<T>(arr: Array<T>, f: (d: T, k?, i?) => boolean) {
+export function some<T>(arr: Array<T>, f: (d: T, k?, i?) => boolean) {
   let i = 0;
   for (let k = 0; k<arr.length; k++) {
     if (f(arr[k], k, i++)) {
@@ -81,7 +81,7 @@ export function any<T>(arr: Array<T>, f: (d: T, k?, i?) => boolean) {
   return false;
 }
 
-export function all<T>(arr: Array<T>, f: (d: T, k?, i?) => boolean) {
+export function every<T>(arr: Array<T>, f: (d: T, k?, i?) => boolean) {
   let i = 0;
   for (let k = 0; k<arr.length; k++) {
     if (!f(arr[k], k, i++)) {
