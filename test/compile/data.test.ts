@@ -112,7 +112,7 @@ describe('data: source', function() {
         assert.deepEqual(sourceComponent.values, [{a: 1, b:2, c:3}, {a: 4, b:5, c:6}]);
       });
 
-      it('should have source.format', function(){
+      it('should have source.format.type', function(){
         assert.deepEqual(sourceComponent.format.type, 'json');
       });
     });
@@ -126,7 +126,7 @@ describe('data: source', function() {
 
       const sourceComponent = source.parseUnit(model);
 
-      it('should have format json', function() {
+      it('should have format.type json', function() {
         assert.equal(sourceComponent.name, 'source');
         assert.equal(sourceComponent.format.type, 'json');
       });
