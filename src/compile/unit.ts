@@ -23,7 +23,7 @@ import {assembleLayout, parseUnitLayout} from './layout';
 import {Model} from './model';
 import {parseMark} from './mark/mark';
 import {parseScaleComponent, scaleType} from './scale';
-import {compileStackProperties, StackProperties} from './stack';
+import {stack, StackProperties} from '../stack';
 
 /**
  * Internal model of Vega-Lite specification for the compiler.
@@ -41,12 +41,12 @@ export class UnitModel extends Model {
     const encoding = this._encoding = this._initEncoding(mark, spec.encoding || {});
     const config = this._config = this._initConfig(spec.config, parent, mark, encoding);
 
-    const scale = this._scale =  this._initScale(mark, encoding, config);
+    this._scale =  this._initScale(mark, encoding, config);
     this._axis = this._initAxis(encoding, config);
     this._legend = this._initLegend(encoding, config);
 
-    // calculate stack
-    this._stack = compileStackProperties(mark, encoding, scale, config);
+    // calculate stack properties
+    this._stack = stack(mark, encoding, config);
   }
 
   private _initEncoding(mark: Mark, encoding: Encoding) {

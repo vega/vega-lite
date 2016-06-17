@@ -42,6 +42,8 @@ export const UNIT_CHANNELS = without(CHANNELS, [ROW, COLUMN]);
 export const UNIT_SCALE_CHANNELS = without(UNIT_CHANNELS, [PATH, ORDER, DETAIL, TEXT, LABEL]);
 export const NONSPATIAL_CHANNELS = without(UNIT_CHANNELS, [X, Y]);
 export const NONSPATIAL_SCALE_CHANNELS = without(UNIT_SCALE_CHANNELS, [X, Y]);
+/** Channels that can serve as groupings for stacked charts. */
+export const STACK_GROUP_CHANNELS = [COLOR, DETAIL, ORDER, OPACITY, SIZE];
 
 export interface SupportedMark {
   point?: boolean;

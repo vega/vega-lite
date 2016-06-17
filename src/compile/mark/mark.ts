@@ -3,7 +3,7 @@ import {OrderChannelDef} from '../../fielddef';
 
 import {X, Y, COLOR, TEXT, SHAPE, PATH, ORDER, OPACITY, DETAIL, LABEL} from '../../channel';
 import {AREA, LINE, TEXT as TEXTMARK} from '../../mark';
-import {imputeTransform, stackTransform} from '../stack';
+import {stackTransforms} from '../stack';
 import {contains, extend} from '../../util';
 import {area} from './area';
 import {bar} from './bar';
@@ -63,7 +63,7 @@ function parsePathMark(model: UnitModel) { // TODO: extract this into compilePat
     const transform: any[] = mark === AREA && model.stack() ?
       // For stacked area, we need to impute missing tuples and stack values
       // (Mark layer order does not matter for stacked charts)
-      [imputeTransform(model), stackTransform(model), facetTransform] :
+      stackTransforms(model, true).concat(facetTransform) :
       // For non-stacked path (line/area), we need to facet and possibly sort
       [].concat(
         facetTransform,
@@ -130,7 +130,7 @@ function parseNonPathMark(model: UnitModel) {
         isFaceted ? {} : dataFrom,
         // `from.transform`
         model.stack() ? // Stacked Chart need stack transform
-          { transform: [stackTransform(model)] } :
+          { transform: stackTransforms(model, false) } :
         model.has(ORDER) ?
           // if non-stacked, detail field determines the layer order of each mark
           { transform: [{type:'sort', by: sortBy(model)}] } :

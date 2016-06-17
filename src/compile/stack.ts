@@ -1,31 +1,10 @@
-import {Encoding} from '../encoding';
-import {Config} from '../config';
-import {FieldDef} from '../fielddef';
-import {Channel, X, Y, COLOR, DETAIL, ORDER, OPACITY, SIZE} from '../channel';
-import {Scale, ScaleType} from '../scale';
-import {StackOffset} from '../config';
-import {BAR, AREA, Mark} from '../mark';
-import {field, isMeasure} from '../fielddef';
-import {has, isAggregate} from '../encoding';
-import {isArray, contains, Dict} from '../util';
-
+import {ORDER, STACK_GROUP_CHANNELS} from '../channel';
 import {sortField} from './common';
-import {Model} from './model';
+import {has} from '../encoding';
+import {FieldDef, field} from '../fielddef';
+import {ScaleType} from '../scale';
 import {UnitModel} from './unit';
-
-
-export interface StackProperties {
-  /** Dimension axis of the stack ('x' or 'y'). */
-  groupbyChannel: Channel;
-  /** Measure axis of the stack ('x' or 'y'). */
-  fieldChannel: Channel;
-
-  /** Stack-by field names (from 'color' and 'detail') */
-  stackFields: string[];
-
-  /** Stack offset property. */
-  offset: StackOffset;
-}
+import {isArray} from '../util';
 
 // TODO: put all vega interface in one place
 export interface StackTransform {
@@ -37,40 +16,11 @@ export interface StackTransform {
   output: any;
 }
 
-/** Compile stack properties from a given spec */
-export function compileStackProperties(mark: Mark, encoding: Encoding, scale: Dict<Scale>, config: Config) {
-  const stackFields = getStackFields(mark, encoding, scale);
-
-  if (stackFields.length > 0 &&
-      contains([BAR, AREA], mark) &&
-      config.mark.stacked !== StackOffset.NONE &&
-      isAggregate(encoding)) {
-
-    const isXMeasure = has(encoding, X) && isMeasure(encoding.x),
-    isYMeasure = has(encoding, Y) && isMeasure(encoding.y);
-
-    if (isXMeasure && !isYMeasure) {
-      return {
-        groupbyChannel: Y,
-        fieldChannel: X,
-        stackFields: stackFields,
-        offset: config.mark.stacked
-      };
-    } else if (isYMeasure && !isXMeasure) {
-      return {
-        groupbyChannel: X,
-        fieldChannel: Y,
-        stackFields: stackFields,
-        offset: config.mark.stacked
-      };
-    }
-  }
-  return null;
-}
-
 /** Compile stack-by field names from (from 'color' and 'detail') */
-function getStackFields(mark: Mark, encoding: Encoding, scaleMap: Dict<Scale>) {
-  return [COLOR, DETAIL, OPACITY, SIZE].reduce(function(fields, channel) {
+function getStackFields(model: UnitModel) {
+  const encoding = model.encoding();
+
+  return STACK_GROUP_CHANNELS.reduce(function(fields, channel) {
     const channelEncoding = encoding[channel];
     if (has(encoding, channel)) {
       if (isArray(channelEncoding)) {
@@ -79,7 +29,7 @@ function getStackFields(mark: Mark, encoding: Encoding, scaleMap: Dict<Scale>) {
         });
       } else {
         const fieldDef: FieldDef = channelEncoding;
-        const scale = scaleMap[channel];
+        const scale = model.scale(channel);
         fields.push(field(fieldDef, {
           binSuffix: scale && scale.type === ScaleType.ORDINAL ? '_range' : '_start'
         }));
@@ -89,26 +39,34 @@ function getStackFields(mark: Mark, encoding: Encoding, scaleMap: Dict<Scale>) {
   }, []);
 }
 
+export function stackTransforms(model: UnitModel, impute: boolean): any[] {
+  const stackFields = getStackFields(model);
+  if (impute) {
+    return [imputeTransform(model, stackFields), stackTransform(model, stackFields)];
+  }
+  return [stackTransform(model, stackFields)];
+}
+
 // impute data for stacked area
-export function imputeTransform(model: Model) {
+export function imputeTransform(model: UnitModel, stackFields: string[]) {
   const stack = model.stack();
   return {
     type: 'impute',
     field: model.field(stack.fieldChannel),
-    groupby: stack.stackFields,
+    groupby: stackFields,
     orderby: [model.field(stack.groupbyChannel, {binSuffix: '_mid'})],
     method: 'value',
     value: 0
   };
 }
 
-export function stackTransform(model: UnitModel) {
+export function stackTransform(model: UnitModel, stackFields: string[]) {
   const stack = model.stack();
   const encoding = model.encoding();
   const sortby = model.has(ORDER) ?
     (isArray(encoding[ORDER]) ? encoding[ORDER] : [encoding[ORDER]]).map(sortField) :
     // default = descending by stackFields
-    stack.stackFields.map(function(field) {
+    stackFields.map(function(field) {
      return '-' + field;
     });
 
