@@ -36,8 +36,8 @@ export namespace source {
         const dataFormat: DataFormat = model.data().format || {};
         sourceData.format =
           extend(
-            { type: dataFormat.type ?
-              model.data().format.type : defaultExtension },
+            { type: dataFormat.type ? model.data().format.type : defaultExtension },
+            dataFormat.property ? { property: dataFormat.property } : {},
             // Feature and mesh are two mutually exclusive properties
             dataFormat.feature ?
               { feature : dataFormat.feature } :

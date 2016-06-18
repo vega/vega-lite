@@ -12,6 +12,14 @@ export interface DataFormat {
   type?: DataFormatType;
 
   /**
+   * JSON only) The JSON property containing the desired data.
+   * This parameter can be used when the loaded JSON file may have surrounding structure or meta-data.
+   * For example `"property": "values.features"` is equivalent to retrieving `json.values.features`
+   * from the loaded JSON object.
+   */
+  property?: string;
+
+  /**
    * The name of the TopoJSON object set to convert to a GeoJSON feature collection.
    * For example, in a map of the world, there may be an object set named `"countries"`.
    * Using the feature property, we can extract this set and generate a GeoJSON feature object for each country.

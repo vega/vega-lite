@@ -120,7 +120,7 @@ describe('data: source', function() {
     describe('with link to url', function() {
       const model = parseUnitModel({
           data: {
-            url: 'http://foo.bar'
+            url: 'http://foo.bar',
           }
         });
 
@@ -143,42 +143,57 @@ describe('data: source', function() {
       });
     });
 
-    describe('data format in topojson type', function() {
-      describe('feature property is specified', function() {
-        const model = parseUnitModel({
+    describe('data format', function() {
+      describe('json', () => {
+        it('should include property if specified', function() {
+          const model = parseUnitModel({
             data: {
               url: 'http://foo.bar',
-              format: {type: 'topojson', feature: 'baz'}
+              format: {type: 'json', property: 'baz'}
             }
           });
-
-        const sourceComponent = source.parseUnit(model);
-
-        it('should have format.type topojson', function() {
-          assert.equal(sourceComponent.name, 'source');
-          assert.equal(sourceComponent.format.type, 'topojson');
-        });
-        it('should have format.feature baz', function() {
-          assert.equal(sourceComponent.format.feature, 'baz');
+          const sourceComponent = source.parseUnit(model);
+          assert.equal(sourceComponent.format.property, 'baz');
         });
       });
 
-      describe('mesh property is specified', function() {
-        const model = parseUnitModel({
-            data: {
-              url: 'http://foo.bar',
-              format: {type: 'topojson', mesh: 'baz'}
-            }
+      describe('topojson', () => {
+        describe('feature property is specified', function() {
+          const model = parseUnitModel({
+              data: {
+                url: 'http://foo.bar',
+                format: {type: 'topojson', feature: 'baz'}
+              }
+            });
+
+          const sourceComponent = source.parseUnit(model);
+
+          it('should have format.type topojson', function() {
+            assert.equal(sourceComponent.name, 'source');
+            assert.equal(sourceComponent.format.type, 'topojson');
           });
-
-        const sourceComponent = source.parseUnit(model);
-
-        it('should have format.type topojson', function() {
-          assert.equal(sourceComponent.name, 'source');
-          assert.equal(sourceComponent.format.type, 'topojson');
+          it('should have format.feature baz', function() {
+            assert.equal(sourceComponent.format.feature, 'baz');
+          });
         });
-        it('should have format.mesh baz', function() {
-          assert.equal(sourceComponent.format.mesh, 'baz');
+
+        describe('mesh property is specified', function() {
+          const model = parseUnitModel({
+              data: {
+                url: 'http://foo.bar',
+                format: {type: 'topojson', mesh: 'baz'}
+              }
+            });
+
+          const sourceComponent = source.parseUnit(model);
+
+          it('should have format.type topojson', function() {
+            assert.equal(sourceComponent.name, 'source');
+            assert.equal(sourceComponent.format.type, 'topojson');
+          });
+          it('should have format.mesh baz', function() {
+            assert.equal(sourceComponent.format.mesh, 'baz');
+          });
         });
       });
     });
