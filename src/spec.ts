@@ -138,36 +138,41 @@ export function isLayerSpec(spec: ExtendedSpec): spec is LayerSpec {
 /**
  * Decompose extended unit specs into composition of pure unit specs.
  */
+// TODO: consider moving this to another file.  Maybe vl.spec.normalize or vl.normalize
 export function normalize(spec: ExtendedSpec): Spec {
   if (isExtendedUnitSpec(spec)) {
-    const hasRow = has(spec.encoding, ROW);
-    const hasColumn = has(spec.encoding, COLUMN);
-
-    // TODO: @arvind please  add interaction syntax here
-    let encoding = duplicate(spec.encoding);
-    delete encoding.column;
-    delete encoding.row;
-
-    return extend(
-      spec.name ? { name: spec.name } : {},
-      spec.description ? { description: spec.description } : {},
-      { data: spec.data },
-      spec.transform ? { transform: spec.transform } : {},
-      {
-        facet: extend(
-          hasRow ? { row: spec.encoding.row } : {},
-          hasColumn ? { column: spec.encoding.column } : {}
-        ),
-        spec: {
-          mark: spec.mark,
-          encoding: encoding
-        }
-      },
-      spec.config ? { config: spec.config } : {}
-    );
+    return normalizeExtendedUnitSpec(spec);
   }
 
   return spec;
+}
+
+export function normalizeExtendedUnitSpec(spec: ExtendedUnitSpec) {
+  const hasRow = has(spec.encoding, ROW);
+  const hasColumn = has(spec.encoding, COLUMN);
+
+  // TODO: @arvind please  add interaction syntax here
+  let encoding = duplicate(spec.encoding);
+  delete encoding.column;
+  delete encoding.row;
+
+  return extend(
+    spec.name ? { name: spec.name } : {},
+    spec.description ? { description: spec.description } : {},
+    { data: spec.data },
+    spec.transform ? { transform: spec.transform } : {},
+    {
+      facet: extend(
+        hasRow ? { row: spec.encoding.row } : {},
+        hasColumn ? { column: spec.encoding.column } : {}
+      ),
+      spec: {
+        mark: spec.mark,
+        encoding: encoding
+      }
+    },
+    spec.config ? { config: spec.config } : {}
+  );
 }
 
 // TODO: add vl.spec.validate & move stuff from vl.validate to here
