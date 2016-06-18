@@ -1,9 +1,9 @@
-import {SOURCE} from '../../data';
+import {DataFormat, SOURCE} from '../../data';
 import {contains, extend} from '../../util';
 import {VgData} from '../../vega.schema';
 
-import {FacetModel} from './../facet';
-import {LayerModel} from './../layer';
+import {FacetModel} from '../facet';
+import {LayerModel} from '../layer';
 import {Model} from './../model';
 
 import {DataComponent} from './data';
@@ -33,16 +33,17 @@ export namespace source {
         if (!contains(['json', 'csv', 'tsv', 'topojson'], defaultExtension)) {
           defaultExtension = 'json';
         }
-        const dataFormat = model.data().format;
+        const dataFormat: DataFormat = model.data().format || {};
         sourceData.format =
           extend(
-            { type: (dataFormat && dataFormat.type) ?
+            { type: dataFormat.type ?
               model.data().format.type : defaultExtension },
-            (dataFormat && dataFormat.feature) ?
-              // Feature and mesh are two mutually exclusive properties
-              { feature : dataFormat.feature} :
-            (dataFormat && dataFormat.mesh) ?
-              { mesh : dataFormat.mesh } : {}
+            // Feature and mesh are two mutually exclusive properties
+            dataFormat.feature ?
+              { feature : dataFormat.feature } :
+            dataFormat.mesh ?
+              { mesh : dataFormat.mesh } :
+              {}
           );
       }
       return sourceData;
