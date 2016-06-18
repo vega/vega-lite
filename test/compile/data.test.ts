@@ -161,9 +161,6 @@ describe('data: source', function() {
         it('should have format.feature baz', function() {
           assert.equal(sourceComponent.format.feature, 'baz');
         });
-        it('should have correct url', function() {
-          assert.equal(sourceComponent.url, 'http://foo.bar');
-        });
       });
 
       describe('mesh property is specified', function() {
@@ -182,9 +179,6 @@ describe('data: source', function() {
         });
         it('should have format.mesh baz', function() {
           assert.equal(sourceComponent.format.mesh, 'baz');
-        });
-        it('should have correct url', function() {
-          assert.equal(sourceComponent.url, 'http://foo.bar');
         });
       });
     });
