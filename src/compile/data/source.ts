@@ -39,9 +39,10 @@ export namespace source {
             { type: (dataFormat && dataFormat.type) ?
               model.data().format.type : defaultExtension },
             (dataFormat && dataFormat.feature) ?
-              { feature : dataFormat.feature} : {},
+              // Feature and mesh are two mutually exclusive properties
+              { feature : dataFormat.feature} :
             (dataFormat && dataFormat.mesh) ?
-              { mesh : dataFormat.mesh} : {}
+              { mesh : dataFormat.mesh } : {}
           );
       }
       return sourceData;

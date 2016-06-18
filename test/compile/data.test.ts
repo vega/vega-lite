@@ -142,6 +142,53 @@ describe('data: source', function() {
         assert.deepEqual(sourceComponent, {name: 'source'});
       });
     });
+
+    describe('data format in topojson type', function() {
+      describe('feature property is specified', function() {
+        const model = parseUnitModel({
+            data: {
+              url: 'http://foo.bar',
+              format: {type: 'topojson', feature: 'baz'}
+            }
+          });
+
+        const sourceComponent = source.parseUnit(model);
+
+        it('should have format.type topojson', function() {
+          assert.equal(sourceComponent.name, 'source');
+          assert.equal(sourceComponent.format.type, 'topojson');
+        });
+        it('should have format.feature baz', function() {
+          assert.equal(sourceComponent.format.feature, 'baz');
+        });
+        it('should have correct url', function() {
+          assert.equal(sourceComponent.url, 'http://foo.bar');
+        });
+      });
+
+      describe('mesh property is specified', function() {
+        const model = parseUnitModel({
+            data: {
+              url: 'http://foo.bar',
+              format: {type: 'topojson', mesh: 'baz'}
+            }
+          });
+
+        const sourceComponent = source.parseUnit(model);
+
+        it('should have format.type topojson', function() {
+          assert.equal(sourceComponent.name, 'source');
+          assert.equal(sourceComponent.format.type, 'topojson');
+        });
+        it('should have format.mesh baz', function() {
+          assert.equal(sourceComponent.format.mesh, 'baz');
+        });
+        it('should have correct url', function() {
+          assert.equal(sourceComponent.url, 'http://foo.bar');
+        });
+      });
+    });
+
   });
 });
 
