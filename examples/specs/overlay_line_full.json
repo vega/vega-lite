@@ -1,0 +1,25 @@
+{
+  "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
+  "transform": {"filter": "datum.symbol==='GOOG'"},
+  "layers": [
+    {
+      "description": "Google's stock price over time.",
+      "mark": "line",
+      "encoding": {
+        "x": {"field": "date","type": "temporal"},
+        "y": {"field": "price","type": "quantitative"},
+        "color": {"field": "symbol", "type": "nominal"}
+      }
+    },
+    {
+      "description": "Google's stock price over time.",
+      "mark": "point",
+      "encoding": {
+        "x": {"field": "date","type": "temporal"},
+        "y": {"field": "price","type": "quantitative"},
+        "color": {"field": "symbol", "type": "nominal"}
+      },
+      "config": {"mark": {"filled": true}}
+    }
+  ]
+}
