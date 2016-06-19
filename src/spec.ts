@@ -11,7 +11,7 @@ import {stack} from './stack';
 import {Transform} from './transform';
 
 import * as vlEncoding from './encoding';
-import {duplicate, extend} from './util';
+import {duplicate, extend, pick} from './util';
 
 export interface BaseSpec {
   /**
@@ -146,24 +146,15 @@ export function normalize(spec: ExtendedSpec): Spec {
 }
 
 export function normalizeExtendedUnitSpec(spec: ExtendedUnitSpec) {
-  const hasRow = has(spec.encoding, ROW);
-  const hasColumn = has(spec.encoding, COLUMN);
-
   // TODO: @arvind please  add interaction syntax here
   let encoding = duplicate(spec.encoding);
   delete encoding.column;
   delete encoding.row;
 
   return extend(
-    spec.name ? { name: spec.name } : {},
-    spec.description ? { description: spec.description } : {},
-    { data: spec.data },
-    spec.transform ? { transform: spec.transform } : {},
+    pick(spec, ['name', 'description', 'data', 'transform']),
     {
-      facet: extend(
-        hasRow ? { row: spec.encoding.row } : {},
-        hasColumn ? { column: spec.encoding.column } : {}
-      ),
+      facet: pick(spec.encoding, ['row', 'column']),
       spec: {
         mark: spec.mark,
         encoding: encoding
