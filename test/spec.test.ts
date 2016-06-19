@@ -4,6 +4,7 @@ import {assert} from 'chai';
 
 import {normalize} from '../src/spec';
 
+// describe('isStacked()') -- tested as part of stackOffset in stack.test.ts
 
 describe('normalize()', function () {
   describe('normalizeExtendedUnitSpec', () => {

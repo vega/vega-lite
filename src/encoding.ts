@@ -99,10 +99,12 @@ export function channels(encoding: Encoding) {
   });
 }
 
+// TOD: rename this to hasChannelField and only use we really want it.
 export function has(encoding: Encoding, channel: Channel): boolean {
   const channelEncoding = encoding && encoding[channel];
   return channelEncoding && (
     channelEncoding.field !== undefined ||
+    // TODO: check that we have field in the array
     (isArray(channelEncoding) && channelEncoding.length > 0)
   );
 }
