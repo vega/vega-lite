@@ -64,4 +64,127 @@ describe('normalize()', function () {
       });
     });
   });
+
+  describe('normalizeOverlay', () => {
+    describe('line', () => {
+      it('should be normalized correctly', () => {
+        const spec: any = {
+          "description": "Google's stock price over time.",
+          "data": {"url": "data/stocks.csv", "format": {"type": "csv"}},
+          "transform": {"filter": "datum.symbol==='GOOG'"},
+          "mark": "line",
+          "encoding": {
+            "x": {"field": "date", "type": "temporal"},
+            "y": {"field": "price", "type": "quantitative"}
+          },
+          "config": {"overlay": {"line": true}}
+        };
+        const normalizedSpec = normalize(spec);
+        assert.deepEqual(normalizedSpec, {
+          "description": "Google's stock price over time.",
+          "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
+          "transform": {"filter": "datum.symbol==='GOOG'"},
+          "layers": [
+            {
+              "mark": "line",
+              "encoding": {
+                "x": {"field": "date","type": "temporal"},
+                "y": {"field": "price","type": "quantitative"}
+              }
+            },
+            {
+              "mark": "point",
+              "encoding": {
+                "x": {"field": "date","type": "temporal"},
+                "y": {"field": "price","type": "quantitative"}
+              },
+              "config": {"mark": {"filled": true}}
+            }
+          ]
+        });
+      });
+    });
+
+    describe('area', () => {
+      it('with linepoint should be normalized correctly', () => {
+        const spec: any = {
+          "description": "Google's stock price over time.",
+          "data": {"url": "data/stocks.csv", "format": {"type": "csv"}},
+          "transform": {"filter": "datum.symbol==='GOOG'"},
+          "mark": "area",
+          "encoding": {
+            "x": {"field": "date", "type": "temporal"},
+            "y": {"field": "price", "type": "quantitative"}
+          },
+          "config": {"overlay": {"area": 'linepoint'}}
+        };
+        const normalizedSpec = normalize(spec);
+        assert.deepEqual(normalizedSpec, {
+          "description": "Google's stock price over time.",
+          "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
+          "transform": {"filter": "datum.symbol==='GOOG'"},
+          "layers": [
+            {
+              "mark": "area",
+              "encoding": {
+                "x": {"field": "date","type": "temporal"},
+                "y": {"field": "price","type": "quantitative"}
+              }
+            },
+            {
+              "mark": "line",
+              "encoding": {
+                "x": {"field": "date","type": "temporal"},
+                "y": {"field": "price","type": "quantitative"}
+              }
+            },
+            {
+              "mark": "point",
+              "encoding": {
+                "x": {"field": "date","type": "temporal"},
+                "y": {"field": "price","type": "quantitative"}
+              },
+              "config": {"mark": {"filled": true}}
+            }
+          ]
+        });
+      });
+
+      it('with linepoint should be normalized correctly', () => {
+        const spec: any = {
+          "description": "Google's stock price over time.",
+          "data": {"url": "data/stocks.csv", "format": {"type": "csv"}},
+          "transform": {"filter": "datum.symbol==='GOOG'"},
+          "mark": "area",
+          "encoding": {
+            "x": {"field": "date", "type": "temporal"},
+            "y": {"field": "price", "type": "quantitative"}
+          },
+          "config": {"overlay": {"area": 'line'}}
+        };
+        const normalizedSpec = normalize(spec);
+        assert.deepEqual(normalizedSpec, {
+          "description": "Google's stock price over time.",
+          "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
+          "transform": {"filter": "datum.symbol==='GOOG'"},
+          "layers": [
+            {
+              "mark": "area",
+              "encoding": {
+                "x": {"field": "date","type": "temporal"},
+                "y": {"field": "price","type": "quantitative"}
+              }
+            },
+            {
+              "mark": "line",
+              "encoding": {
+                "x": {"field": "date","type": "temporal"},
+                "y": {"field": "price","type": "quantitative"}
+              }
+            }
+          ]
+        });
+      });
+    });
+  });
 });

@@ -1,17 +1,17 @@
 /* Package of defining Vega-lite Specification's json schema at its utility functions */
 
 import {ROW, COLUMN} from './channel';
-import {Config} from './config';
+import {Config, defaultOverlayConfig, AreaOverlay} from './config';
 import {Data} from './data';
 import {Encoding, UnitEncoding, has} from './encoding';
 import {Facet} from './facet';
 import {FieldDef} from './fielddef';
-import {Mark} from './mark';
+import {Mark, LINE, AREA, POINT} from './mark';
 import {stack} from './stack';
 import {Transform} from './transform';
 
 import * as vlEncoding from './encoding';
-import {duplicate, extend, pick} from './util';
+import {contains, duplicate, extend, keys, pick, omit} from './util';
 
 export interface BaseSpec {
   /**
@@ -133,6 +133,7 @@ export function isLayerSpec(spec: ExtendedSpec): spec is LayerSpec {
   return spec['layers'] !== undefined;
 }
 
+
 /**
  * Decompose extended unit specs into composition of pure unit specs.
  */
@@ -140,6 +141,8 @@ export function isLayerSpec(spec: ExtendedSpec): spec is LayerSpec {
 export function normalize(spec: ExtendedSpec): Spec {
   if (isExtendedUnitSpec(spec)) {
     return normalizeExtendedUnitSpec(spec);
+  } else if (isUnitSpec(spec)) {
+    return normalizeUnitSpec(spec as any);
   }
 
   return spec;
@@ -162,6 +165,67 @@ export function normalizeExtendedUnitSpec(spec: ExtendedUnitSpec) {
     },
     spec.config ? { config: spec.config } : {}
   );
+}
+
+export function normalizeUnitSpec(spec: UnitSpec): Spec {
+  const config = spec.config;
+  const overlayConfig = config && config.overlay;
+  const overlayWithLine = overlayConfig  && spec.mark === AREA &&
+    contains([AreaOverlay.LINEPOINT, AreaOverlay.LINE], overlayConfig.area);
+  const overlayWithPoint = overlayConfig && (
+    (overlayConfig.line && spec.mark === LINE) ||
+    (overlayConfig.area === AreaOverlay.LINEPOINT && spec.mark === AREA)
+  );
+
+  if (isStacked(spec)) {
+    // We can't overlay stacked area yet!
+    return spec;
+  }
+
+  if (overlayWithPoint || overlayWithLine) {
+    return normalizeOverlay(spec, overlayWithPoint, overlayWithLine);
+  }
+  return spec;
+}
+
+export function normalizeOverlay(spec: UnitSpec, overlayWithPoint: boolean, overlayWithLine: boolean): LayerSpec {
+  let outerProps = ['name', 'description', 'data', 'transform'];
+  let baseSpec = omit(spec, outerProps.concat('config'));
+
+  let baseConfig = duplicate(spec.config);
+  delete baseConfig.overlay;
+  // TODO: remove shape, size
+
+  const layerSpec = extend(
+    pick(spec, outerProps),
+    { layers: [baseSpec] },
+    keys(baseConfig).length > 0 ? { config: baseConfig } : {}
+  );
+
+  if (overlayWithLine) {
+    // TODO: add name with suffix
+    let lineSpec = duplicate(baseSpec);
+    lineSpec.mark = LINE;
+    // TODO: remove shape, size
+    let markConfig = extend({}, defaultOverlayConfig.lineStyle, spec.config.overlay.lineStyle);
+    if (keys(markConfig).length > 0) {
+      lineSpec.config = {mark: markConfig};
+    }
+
+    layerSpec.layers.push(lineSpec);
+  }
+
+  if (overlayWithPoint) {
+    // TODO: add name with suffix
+    let pointSpec = duplicate(baseSpec);
+    pointSpec.mark = POINT;
+    let markConfig = extend({}, defaultOverlayConfig.pointStyle, spec.config.overlay.pointStyle);;
+    if (keys(markConfig).length > 0) {
+      pointSpec.config = {mark: markConfig};
+    }
+    layerSpec.layers.push(pointSpec);
+  }
+  return layerSpec;
 }
 
 // TODO: add vl.spec.validate & move stuff from vl.validate to here
