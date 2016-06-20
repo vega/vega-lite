@@ -52,12 +52,10 @@ export function parseLegend(model: UnitModel, channel: Channel): VgLegend {
   // 1.1 Add properties with special rules
   def.title = title(legend, fieldDef);
 
-  def.offset = offset(legend, fieldDef);
-
   extend(def, formatMixins(legend, model, channel));
 
   // 1.2 Add properties without rules
-  ['orient', 'values'].forEach(function(property) {
+  ['offset', 'orient', 'values'].forEach(function(property) {
     const value = legend[property];
     if (value !== undefined) {
       def[property] = value;
@@ -77,13 +75,6 @@ export function parseLegend(model: UnitModel, channel: Channel): VgLegend {
   });
 
   return def;
-}
-
-export function offset(legend: Legend, fieldDef: FieldDef) {
-  if (legend.offset !== undefined) {
-    return legend.offset;
-  }
-  return 0;
 }
 
 export function title(legend: Legend, fieldDef: FieldDef) {

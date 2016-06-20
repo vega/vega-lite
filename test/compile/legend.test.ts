@@ -23,18 +23,6 @@ describe('Legend', function() {
     });
   });
 
-  describe('offset()', function () {
-    it('should add explicitly specified offset', function () {
-      const offset = legend.offset({offset: 10}, {field: 'a'});
-      assert.deepEqual(offset, 10);
-    });
-
-    it('should return 0 by default', function () {
-      const offset = legend.offset({}, {field: 'a'});
-      assert.deepEqual(offset, 0);
-    });
-  });
-
   describe('title()', function () {
     it('should add explicitly specified title', function () {
       const title = legend.title({title: 'Custom'}, {field: 'a'});
