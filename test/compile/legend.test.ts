@@ -35,18 +35,6 @@ describe('Legend', function() {
     });
   });
 
-  describe('orient()', function () {
-    it('should add explicitly specified orient', function () {
-      const orient = legend.orient({orient: "horizontal"}, {field: 'a'});
-      assert.deepEqual(orient, "horizontal");
-    });
-
-    it('should return vertical by default', function () {
-      const orient = legend.orient({}, {field: 'a'});
-      assert.deepEqual(orient, "vertical");
-    });
-  });
-
   describe('title()', function () {
     it('should add explicitly specified title', function () {
       const title = legend.title({title: 'Custom'}, {field: 'a'});

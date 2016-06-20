@@ -86,14 +86,6 @@ export function offset(legend: Legend, fieldDef: FieldDef) {
   return 0;
 }
 
-export function orient(legend: Legend, fieldDef: FieldDef) {
-  const orient = legend.orient;
-  if (orient) {
-    return orient;
-  }
-  return 'vertical';
-}
-
 export function title(legend: Legend, fieldDef: FieldDef) {
   if (typeof legend !== 'boolean' && legend.title) {
     return legend.title;
