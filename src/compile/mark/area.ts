@@ -4,7 +4,7 @@ import {isDimension, isMeasure, FieldDef, field} from '../../fielddef';
 import {VgValueRef} from '../../vega.schema';
 
 import {applyColorAndOpacity, applyMarkConfig} from '../common';
-import {StackProperties} from '../stack';
+import {StackProperties} from '../../stack';
 
 export namespace area {
   export function markType() {

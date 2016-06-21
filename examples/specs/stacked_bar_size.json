@@ -1,5 +1,5 @@
 {
-  "data": {"url": "data/seattle-weather.csv", "formatType": "csv"},
+  "data": {"url": "data/seattle-weather.csv", "format": {"type": "csv"}},
   "mark": "bar",
   "config": {
     "mark": { "opacity": 0.5 }

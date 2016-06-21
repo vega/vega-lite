@@ -1,6 +1,6 @@
 {
   "description": "Stock prices of 5 Tech Companies Over Time.",
-  "data": {"url": "data/stocks.csv", "formatType":"csv"},
+  "data": {"url": "data/stocks.csv", "format": {"type": "csv"}},
   "mark": "line",
   "encoding": {
     "x": {"field": "date", "type": "temporal"},

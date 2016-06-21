@@ -98,6 +98,7 @@ you can run `npm run site` to serve the github page locally at [http://localhost
   All methods for `vl.xxx` will be in either `src/xxx.ts` or `src/xxx/xxx.ts`.
   For example, `vl.channel.*` methods are in `src/channel.ts`.
   `vl.compile` is in `src/compile/compile.ts`.
+  - All interface for Vega-Lite syntax should be declared at the top-level of the `src/` folder.
 
 - `test/` - Code for unit testing. `test`'s structure reflects `src`'s' directory structure.
 For example, `test/compile/` test files inside `src/compile/`.

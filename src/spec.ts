@@ -1,18 +1,16 @@
-/* Utilities for a Vega-Lite specificiation */
+/* Package of defining Vega-lite Specification's json schema at its utility functions */
 
-import {FieldDef} from './fielddef';
-// Package of defining Vega-lite Specification's json schema
-
+import {ROW, COLUMN} from './channel';
 import {Config} from './config';
 import {Data} from './data';
 import {Encoding, UnitEncoding, has} from './encoding';
 import {Facet} from './facet';
+import {FieldDef} from './fielddef';
 import {Mark} from './mark';
+import {stack} from './stack';
 import {Transform} from './transform';
 
-import {COLOR, SHAPE, ROW, COLUMN} from './channel';
 import * as vlEncoding from './encoding';
-import {BAR, AREA} from './mark';
 import {duplicate, extend} from './util';
 
 export interface BaseSpec {
@@ -138,36 +136,41 @@ export function isLayerSpec(spec: ExtendedSpec): spec is LayerSpec {
 /**
  * Decompose extended unit specs into composition of pure unit specs.
  */
+// TODO: consider moving this to another file.  Maybe vl.spec.normalize or vl.normalize
 export function normalize(spec: ExtendedSpec): Spec {
   if (isExtendedUnitSpec(spec)) {
-    const hasRow = has(spec.encoding, ROW);
-    const hasColumn = has(spec.encoding, COLUMN);
-
-    // TODO: @arvind please  add interaction syntax here
-    let encoding = duplicate(spec.encoding);
-    delete encoding.column;
-    delete encoding.row;
-
-    return extend(
-      spec.name ? { name: spec.name } : {},
-      spec.description ? { description: spec.description } : {},
-      { data: spec.data },
-      spec.transform ? { transform: spec.transform } : {},
-      {
-        facet: extend(
-          hasRow ? { row: spec.encoding.row } : {},
-          hasColumn ? { column: spec.encoding.column } : {}
-        ),
-        spec: {
-          mark: spec.mark,
-          encoding: encoding
-        }
-      },
-      spec.config ? { config: spec.config } : {}
-    );
+    return normalizeExtendedUnitSpec(spec);
   }
 
   return spec;
+}
+
+export function normalizeExtendedUnitSpec(spec: ExtendedUnitSpec) {
+  const hasRow = has(spec.encoding, ROW);
+  const hasColumn = has(spec.encoding, COLUMN);
+
+  // TODO: @arvind please  add interaction syntax here
+  let encoding = duplicate(spec.encoding);
+  delete encoding.column;
+  delete encoding.row;
+
+  return extend(
+    spec.name ? { name: spec.name } : {},
+    spec.description ? { description: spec.description } : {},
+    { data: spec.data },
+    spec.transform ? { transform: spec.transform } : {},
+    {
+      facet: extend(
+        hasRow ? { row: spec.encoding.row } : {},
+        hasColumn ? { column: spec.encoding.column } : {}
+      ),
+      spec: {
+        mark: spec.mark,
+        encoding: encoding
+      }
+    },
+    spec.config ? { config: spec.config } : {}
+  );
 }
 
 // TODO: add vl.spec.validate & move stuff from vl.validate to here
@@ -187,11 +190,8 @@ export function getCleanSpec(spec: ExtendedUnitSpec): ExtendedUnitSpec {
   return spec;
 }
 
-export function isStack(spec: ExtendedUnitSpec): boolean {
-  return (vlEncoding.has(spec.encoding, COLOR) || vlEncoding.has(spec.encoding, SHAPE)) &&
-    (spec.mark === BAR || spec.mark === AREA) &&
-    (!spec.config || !spec.config.mark.stacked !== false) &&
-    vlEncoding.isAggregate(spec.encoding);
+export function isStacked(spec: ExtendedUnitSpec): boolean {
+  return stack(spec.mark, spec.encoding, spec.config) !== null;
 }
 
 // TODO revise

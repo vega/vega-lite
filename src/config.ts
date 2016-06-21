@@ -1,6 +1,7 @@
 import {ScaleConfig, FacetScaleConfig, defaultScaleConfig, defaultFacetScaleConfig} from './scale';
 import {AxisConfig, defaultAxisConfig, defaultFacetAxisConfig} from './axis';
 import {LegendConfig, defaultLegendConfig} from './legend';
+import {StackOffset} from './stack';
 
 export interface CellConfig {
   width?: number;
@@ -109,12 +110,7 @@ export enum FontStyle {
     ITALIC = 'italic' as any,
 }
 
-export enum StackOffset {
-    ZERO = 'zero' as any,
-    CENTER = 'center' as any,
-    NORMALIZE = 'normalize' as any,
-    NONE = 'none' as any,
-}
+
 
 export enum Interpolate {
     /** piecewise linear segments, as in a polyline */
