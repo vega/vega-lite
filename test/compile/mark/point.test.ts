@@ -148,6 +148,32 @@ describe('Mark: Point', function() {
       assert.deepEqual(props.stroke, {value: "red"});
     });
   });
+
+  describe('with x of type longitude', function() {
+    const model = parseUnitModel({
+      "mark": "point",
+      "encoding": {"x": {"field": "year", "type": "longitude"}},
+      "data": {"url": "data/barley.json"}
+    });
+
+    const props = point.properties(model);
+    it('should not have scale on x', function() {
+      assert.deepEqual(props.x.scale, undefined);
+    });
+  });
+
+  describe('with y of type latitude', function() {
+    const model = parseUnitModel({
+      "mark": "point",
+      "encoding": {"x": {"field": "year", "type": "latitude"}},
+      "data": {"url": "data/barley.json"}
+    });
+
+    const props = point.properties(model);
+    it('should not have scale on y', function() {
+      assert.deepEqual(props.y.scale, undefined);
+    });
+  });
 });
 
 describe('Mark: Square', function() {
