@@ -108,11 +108,11 @@ export function field(fieldDef: FieldDef, opt: FieldRefOption = {}) {
   } else if (!opt.nofn && fieldDef.timeUnit) {
     return prefix + fieldDef.timeUnit + '_' + field + suffix;
   } else if (fieldDef.type === LATITUDE) {
-    return prefix + "layout_y";
+    return prefix + 'layout_y';
   } else if (fieldDef.type === LONGITUDE) {
-    return prefix + "layout_x";
+    return prefix + 'layout_x';
   } else if (fieldDef.type === GEOJSON) {
-    return prefix + "layout_path";
+    return prefix + 'layout_path';
   } else {
     return prefix + field;
   }

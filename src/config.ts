@@ -56,7 +56,7 @@ const defaultFacetGridConfig: FacetGridConfig = {
 
 const defaultProjectionConfig: ProjectionConfig = {
   type: 'mercator'
-}
+};
 
 export const defaultFacetConfig: FacetConfig = {
   scale: defaultFacetScaleConfig,

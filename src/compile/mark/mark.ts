@@ -2,8 +2,7 @@ import {UnitModel} from '../unit';
 import {OrderChannelDef} from '../../fielddef';
 
 import {X, Y, COLOR, TEXT, SHAPE, PATH, ORDER, OPACITY, DETAIL, LABEL} from '../../channel';
-import {AREA, LINE, TEXT as TEXTMARK, PATH as PATHMARK} from '../../mark';
-import {GEOJSON, LATITUDE, LONGITUDE} from '../../type';
+import {AREA, LINE, TEXT as TEXTMARK} from '../../mark';
 import {imputeTransform, stackTransform} from '../stack';
 import {contains, extend} from '../../util';
 import {area} from './area';
@@ -46,8 +45,8 @@ export function parseMark(model: UnitModel): any[] {
       type: 'group',
       properties: {
         update: {
-          width: {field: {group: "width"}},
-          height: {field: {group: "height"}},
+          width: {field: {group: 'width'}},
+          height: {field: {group: 'height'}},
           clip: {value: true}
         }
       },

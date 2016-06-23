@@ -4,7 +4,7 @@ import {FieldDef, field, OrderChannelDef} from '../fielddef';
 import {SortOrder} from '../sort';
 import {QUANTITATIVE, ORDINAL, TEMPORAL} from '../type';
 import {contains, union, extend} from '../util';
-import {Mark, PATH} from '../Mark';
+import {PATH} from '../Mark';
 import {PATH as PATHMARK} from '../mark';
 import {GEOJSON, LATITUDE, LONGITUDE} from '../type';
 
@@ -204,7 +204,7 @@ export function hasGeoTransform(model: UnitModel): boolean {
 
 export function geoTransform(model: UnitModel) {
   let projection = model.projection();
-  let transform : any;
+  let transform: any;
 
   if (model.mark() === PATHMARK) {
     // return geoPath transform

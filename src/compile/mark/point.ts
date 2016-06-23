@@ -2,7 +2,6 @@ import {X, Y, SHAPE, SIZE} from '../../channel';
 import {Config} from '../../config';
 import {ChannelDefWithLegend, FieldDef, field} from '../../fielddef';
 import {Scale} from '../../scale';
-import {LATITUDE, LONGITUDE} from '../../type';
 import {VgValueRef} from '../../vega.schema';
 
 import {applyColorAndOpacity} from '../common';

@@ -35,10 +35,10 @@ export namespace source {
         }
         const dataFormat = model.data().format;
         sourceData.format =
-            extend({ 
+            extend({
               type: (dataFormat && dataFormat.type) ?
                   model.data().format.type :
-                  defaultExtension 
+                  defaultExtension
               },
               (dataFormat && dataFormat.feature) ?
                 { feature : dataFormat.feature } : {},

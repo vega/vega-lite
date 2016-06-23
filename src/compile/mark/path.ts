@@ -1,8 +1,5 @@
-import {X, Y, SHAPE, SIZE} from '../../channel';
 import {Config} from '../../config';
-import {ChannelDefWithLegend, FieldDef, field} from '../../fielddef';
-import {Scale} from '../../scale';
-import {VgValueRef} from '../../vega.schema';
+import {FieldDef} from '../../fielddef';
 import {GEOJSON} from '../../type';
 
 import {applyColorAndOpacity} from '../common';
@@ -30,12 +27,12 @@ export namespace path {
       return { value: config.mark.stroke};
     }
     // TODO: Default stroke is white ?
-    return { value: "white"};
+    return { value: 'white'};
   }
 
   function path(fieldDef: FieldDef) {
     if (fieldDef && fieldDef.type === GEOJSON) {
-      return { field: "layout_path" }
+      return { field: 'layout_path' };
     }
     return undefined;
   }

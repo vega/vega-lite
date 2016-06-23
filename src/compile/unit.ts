@@ -85,7 +85,7 @@ export class UnitModel extends Model {
 
   private _initProjection(config: Config): Projection {
     return extend({},
-      config.projection, 
+      config.projection,
       this._projection   // override the config
     );
   }

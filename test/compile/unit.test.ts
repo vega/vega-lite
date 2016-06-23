@@ -14,30 +14,31 @@ describe('Unit', function() {
     assert(!model.isFacet());
     assert(!model.isLayer());
   });
-  
+
   describe('_initScale', function() {
-    it('should not initialize the scale if has type of LONGITUDE or LATITUDE')
-    const model = new UnitModel({
-      mark: POINT,
-      encoding: {
-        x: {field: 'long', type: LONGITUDE},
-        y: {field: 'lat', type: LATITUDE}
-      }
-    } as ExtendedUnitSpec, null, null);
-    
-    assert.isUndefined(model.scale(X));
-    assert.isUndefined(model.scale(Y));
-  });
-  
-  describe('_initScale', function() {
-    it('should not have the scale if user set it explicitly')
-    const model = new UnitModel({
-      mark: POINT,
-      encoding: {
-        x: {field: 'long', type: QUANTITATIVE, scale: null},
-      }
-    } as ExtendedUnitSpec, null, null);
-    
-    assert.isUndefined(model.scale(X));
+    it('should not initialize the scale if has type of LONGITUDE or LATITUDE', function() {
+      const model = new UnitModel({
+        mark: POINT,
+        encoding: {
+          x: {field: 'long', type: LONGITUDE},
+          y: {field: 'lat', type: LATITUDE}
+        }
+      } as ExtendedUnitSpec, null, null);
+
+      assert.isUndefined(model.scale(X));
+      assert.isUndefined(model.scale(Y));
+    });
+
+    it('should not have the scale if user set it explicitly', function() {
+      const model = new UnitModel({
+        mark: POINT,
+        encoding: {
+          x: {field: 'long', type: QUANTITATIVE, scale: null},
+        }
+      } as ExtendedUnitSpec, null, null);
+
+      assert.isUndefined(model.scale(X));
+    });
   });
 });
+
