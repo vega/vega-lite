@@ -214,16 +214,16 @@ export function geoTransform(model: UnitModel) {
     transform = { type: 'geo' };
     const xFieldDef = model.encoding().x;
     const yFieldDef = model.encoding().y;
-    if (xFieldDef.type === LATITUDE) {
+    if (xFieldDef && xFieldDef.type === LATITUDE) {
       transform.lat = xFieldDef.field;
     }
-    if (xFieldDef.type === LONGITUDE) {
+    if (xFieldDef && xFieldDef.type === LONGITUDE) {
       transform.lon = xFieldDef.field;
     }
-    if (yFieldDef.type === LATITUDE) {
+    if (yFieldDef && yFieldDef.type === LATITUDE) {
       transform.lat = yFieldDef.field;
     }
-    if (yFieldDef.type === LONGITUDE) {
+    if (yFieldDef && yFieldDef.type === LONGITUDE) {
       transform.lon = yFieldDef.field;
     }
   }
