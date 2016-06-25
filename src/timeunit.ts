@@ -54,7 +54,7 @@ export const TIMEUNITS = [
 ];
 
 /** returns the template name used for axis labels for a time unit */
-export function format(timeUnit: TimeUnit, shortTimeLabels = false, field='datum.data'): string {
+export function template(timeUnit: TimeUnit, field: string, shortTimeLabels: boolean): string {
   if (!timeUnit) {
     return undefined;
   }

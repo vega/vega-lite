@@ -84,7 +84,7 @@ describe('Mark: Text', function() {
       assert.deepEqual(props.align, {value: "center"});
     });
 
-    it('should map text with template', function() {
+    it('should map text without template', function() {
       assert.deepEqual(props.text, {field: "Origin"});
     });
   });

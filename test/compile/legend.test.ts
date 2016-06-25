@@ -37,17 +37,6 @@ describe('Legend', function() {
     });
   });
 
-  describe('formatMixins()', function() {
-    it('should not be added for bin', function() {
-      assert.deepEqual(legend.formatMixins({}, parseUnitModel({
-        mark: "point",
-        encoding: {
-          x: {field:'a', bin: true}
-        }
-      }), X), {});
-    });
-  });
-
   describe('properties.symbols', function() {
     it('should initialize if filled', function() {
       const symbol = legend.properties.symbols({field: 'a'}, {}, parseUnitModel({
