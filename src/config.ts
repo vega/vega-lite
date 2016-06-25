@@ -377,7 +377,7 @@ export interface MarkConfig {
 
 export const defaultMarkConfig: MarkConfig = {
   color: '#4682b4',
-  shape: "circle",
+  shape: 'circle',
   strokeWidth: 2,
   size: 30,
   barThinSize: 2,
