@@ -295,7 +295,7 @@ export interface MarkConfig {
   /**
    * The symbol shape to use. One of circle (default), square, cross, diamond, triangle-up, or triangle-down, or a custom SVG path.
    */
-  shape?: string;
+  shape?: Shape | string;
 
   // ---------- Point Size (Point / Square / Circle) ----------
   /**
@@ -377,7 +377,7 @@ export interface MarkConfig {
 
 export const defaultMarkConfig: MarkConfig = {
   color: '#4682b4',
-  shape: 'circle',
+  shape: Shape.CIRCLE,
   strokeWidth: 2,
   size: 30,
   barThinSize: 2,
