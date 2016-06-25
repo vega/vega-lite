@@ -295,7 +295,7 @@ export interface MarkConfig {
   /**
    * The symbol shape to use. One of circle (default), square, cross, diamond, triangle-up, or triangle-down.
    */
-  shape?: Shape;
+  shape?: string;
 
   // ---------- Point Size (Point / Square / Circle) ----------
   /**
