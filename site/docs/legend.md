@@ -64,7 +64,7 @@ The `legend` property object supports the following properties:
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | symbolColor   | String        | The color of the symbol. |
-| symbolShape   | String        | The shape of the legend symbol. One of `"circle"`, `"square"`, `"cross"`, `"diamond"`, `"triangle-up"` or `"triangle-down"` |
+| symbolShape   | String        | The shape of the legend symbol. One of `"circle"`, `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`, `"triangle-down"`, or else a custom SVG path string |
 | symbolSize    | Number        | The size of the symbol, in pixels.  |
 | symbolStrokeWidth   | Number      | The width of the symbol's stroke. |
 
