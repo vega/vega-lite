@@ -67,7 +67,7 @@ export namespace text {
         };
       }
     }
-
+    // TODO: support x.value, x.datum
     if (textFieldDef && textFieldDef.type === QUANTITATIVE) {
       return { field: { group: 'width' }, offset: -5 };
     } else {
@@ -98,27 +98,9 @@ export namespace text {
           field: field(sizeFieldDef)
         };
       }
-<<<<<<< HEAD
       if (sizeFieldDef.value) {
         return {value: sizeFieldDef.value};
       }
-=======
-    } else {
-      return { value: sizeValue(fieldDefSize, config) };
-    }
-  }
-
-  // when color is apply to background, only set opacity here.
-  function applyColorAndOpacity(p, model: UnitModel) {
-    if (model.config().mark.applyColorToBackground && !model.has(X) && !model.has(Y)) {
-      p.fill = {value: 'black'}; // TODO: add rules for swapping between black and white
-
-      // opacity
-      const opacity = model.config().mark.opacity;
-      if (opacity) { p.opacity = { value: opacity }; };
-    } else {
-      applyColorAndOpacity(p, model);
->>>>>>> Add local applyColorAndOpacity method
     }
     return { value: config.mark.fontSize };
   }
