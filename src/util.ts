@@ -3,12 +3,45 @@
 
 import * as stringify from 'json-stable-stringify';
 export {keys, extend, duplicate, isArray, vals, truncate, toMap, isObject, isString, isNumber, isBoolean} from 'datalib/src/util';
+import {duplicate as _duplicate} from 'datalib/src/util';
 export {range} from 'datalib/src/generate';
 export {has} from './encoding'
 export {FieldDef} from './fielddef';
 export {Channel} from './channel';
 
 import {isString, isNumber, isBoolean} from 'datalib/src/util';
+
+/**
+ * Creates an object composed of the picked object properties.
+ *
+ * Example:  (from lodash)
+ *
+ * var object = { 'a': 1, 'b': '2', 'c': 3 };
+ * pick(object, ['a', 'c']);
+ * // → { 'a': 1, 'c': 3 }
+ *
+ */
+export function pick(obj: any, props: string[]) {
+  let copy = {};
+  props.forEach((prop) => {
+    if (obj.hasOwnProperty(prop)) {
+      copy[prop] = obj[prop];
+    }
+  });
+  return copy;
+}
+
+/**
+ * The opposite of _.pick; this method creates an object composed of the own
+ * and inherited enumerable string keyed properties of object that are not omitted.
+ */
+export function omit(obj: any, props: string[]) {
+  let copy = _duplicate(obj);
+  props.forEach((prop) => {
+    delete copy[prop];
+  });
+  return copy;
+}
 
 export function hash(a: any) {
   if (isString(a) || isNumber(a) || isBoolean(a)) {
@@ -71,7 +104,7 @@ export function map(obj, f: (a, d, k, o) => any, thisArg?) {
   }
 }
 
-export function any<T>(arr: Array<T>, f: (d: T, k?, i?) => boolean) {
+export function some<T>(arr: Array<T>, f: (d: T, k?, i?) => boolean) {
   let i = 0;
   for (let k = 0; k<arr.length; k++) {
     if (f(arr[k], k, i++)) {
@@ -81,7 +114,7 @@ export function any<T>(arr: Array<T>, f: (d: T, k?, i?) => boolean) {
   return false;
 }
 
-export function all<T>(arr: Array<T>, f: (d: T, k?, i?) => boolean) {
+export function every<T>(arr: Array<T>, f: (d: T, k?, i?) => boolean) {
   let i = 0;
   for (let k = 0; k<arr.length; k++) {
     if (!f(arr[k], k, i++)) {

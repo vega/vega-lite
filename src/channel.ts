@@ -47,6 +47,9 @@ export const UNIT_SCALE_CHANNELS = without(UNIT_CHANNELS, [PATH, ORDER, DETAIL, 
 export const NONSPATIAL_CHANNELS = without(UNIT_CHANNELS, [X, Y, X2, Y2]);
 export const NONSPATIAL_SCALE_CHANNELS = without(UNIT_SCALE_CHANNELS, [X, Y, X2, Y2]);
 
+/** Channels that can serve as groupings for stacked charts. */
+export const STACK_GROUP_CHANNELS = [COLOR, DETAIL, ORDER, OPACITY, SIZE];
+
 export interface SupportedMark {
   point?: boolean;
   tick?: boolean;
@@ -125,6 +128,7 @@ export function getSupportedRole(channel: Channel): SupportedRole {
     case COLOR:
     case OPACITY:
     case LABEL:
+    case DETAIL:
       return {
         measure: true,
         dimension: true
@@ -132,7 +136,6 @@ export function getSupportedRole(channel: Channel): SupportedRole {
     case ROW:
     case COLUMN:
     case SHAPE:
-    case DETAIL:
       return {
         measure: false,
         dimension: true

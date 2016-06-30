@@ -1,5 +1,5 @@
 {
-  "data": {"url": "data/seattle-temps.csv","formatType": "csv"},
+  "data": {"url": "data/seattle-temps.csv","format": {"type": "csv"}},
   "mark": "line",
   "encoding": {
     "x": {

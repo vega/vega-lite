@@ -23,3 +23,4 @@ export const CIRCLE = Mark.CIRCLE;
 export const SQUARE = Mark.SQUARE;
 
 export const ERRORBAR = Mark.ERRORBAR;
+export const PRIMITIVE_MARKS = [AREA, BAR, LINE, POINT, TEXT, TICK, RULE, CIRCLE, SQUARE];

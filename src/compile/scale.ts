@@ -3,11 +3,11 @@ declare var exports;
 
 import {SHARED_DOMAIN_OPS} from '../aggregate';
 import {COLUMN, ROW, X, Y, X2, Y2, SHAPE, SIZE, COLOR, OPACITY, TEXT, hasScale, Channel} from '../channel';
-import {StackOffset} from '../config';
 import {SOURCE, STACKED_SCALE} from '../data';
 import {FieldDef, field, isMeasure} from '../fielddef';
-import {Mark, BAR, TEXT as TEXT_MARK, RULE, TICK} from '../mark';
+import {Mark, BAR, TEXT as TEXTMARK, RULE, TICK} from '../mark';
 import {Scale, ScaleType, NiceTime} from '../scale';
+import {StackOffset} from '../stack';
 import {TimeUnit} from '../timeunit';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 import {contains, extend, Dict} from '../util';
@@ -396,7 +396,7 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel): any {
         }
         const dimension = model.config().mark.orient === 'horizontal' ? Y : X;
         return {range: [model.config().mark.barThinSize, model.scale(dimension).bandSize]};
-      } else if (unitModel.mark() === TEXT_MARK) {
+      } else if (unitModel.mark() === TEXTMARK) {
         return {range: scaleConfig.fontSizeRange };
       } else if (unitModel.mark() === RULE) {
         return {range: scaleConfig.ruleSizeRange };

@@ -136,5 +136,6 @@ export function formatMixins(model: Model, fieldDef: FieldDef, format: string, s
 
 /** Return field reference with potential "-" prefix for descending sort */
 export function sortField(orderChannelDef: OrderChannelDef) {
-  return (orderChannelDef.sort === SortOrder.DESCENDING ? '-' : '') + field(orderChannelDef);
+  return (orderChannelDef.sort === SortOrder.DESCENDING ? '-' : '') +
+    field(orderChannelDef, {binSuffix: '_mid'});
 }

@@ -1,30 +1,56 @@
-/* Utilities for a Vega-Lite specificiation */
+/* Package of defining Vega-lite Specification's json schema at its utility functions */
 
-import {FieldDef} from './fielddef';
-// Package of defining Vega-lite Specification's json schema
-
-import {Config} from './config';
+import {Config, defaultOverlayConfig, AreaOverlay} from './config';
 import {Data} from './data';
 import {Encoding, UnitEncoding, has, isRanged} from './encoding';
 import {Facet} from './facet';
-import {Mark} from './mark';
+import {FieldDef} from './fielddef';
+import {Mark, ERRORBAR, TICK, AREA, RULE, LINE, POINT} from './mark';
+import {stack} from './stack';
 import {Transform} from './transform';
-
-import {COLOR, SHAPE, ROW, COLUMN, X, Y, X2, Y2} from './channel';
+import {ROW, COLUMN, X, Y, X2, Y2} from './channel';
 import * as vlEncoding from './encoding';
-import {TICK, RULE, BAR, AREA, ERRORBAR} from './mark';
-import {duplicate, extend, contains} from './util';
+import {contains, duplicate, extend, keys, omit, pick} from './util';
 
 export interface BaseSpec {
+  /**
+   * Name of the visualization for later reference.
+   */
   name?: string;
+
+  /**
+   * An optional description of this mark for commenting purpose.
+   * This property has no effect on the output visualization.
+   */
   description?: string;
+
+  /**
+   * An object describing the data source
+   */
   data?: Data;
+
+  /**
+   * An object describing filter and new field calculation.
+   */
   transform?: Transform;
+
+  /**
+   * Configuration object
+   */
   config?: Config;
 }
 
 export interface UnitSpec extends BaseSpec {
+  /**
+   * The mark type.
+   * One of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
+   * `"area"`, `"point"`, `"rule"`, and `"text"`.
+   */
   mark: Mark;
+
+  /**
+   * A key-value mapping between encoding channels and definition of fields.
+   */
   encoding?: UnitEncoding;
 }
 
@@ -39,9 +65,15 @@ export interface UnitSpec extends BaseSpec {
  */
 export interface ExtendedUnitSpec extends BaseSpec {
   /**
-   * A name for the specification. The name is used to annotate marks, scale names, and more.
+   * The mark type.
+   * One of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
+   * `"area"`, `"point"`, `"rule"`, and `"text"`.
    */
   mark: Mark;
+
+  /**
+   * A key-value mapping between encoding channels and definition of fields.
+   */
   encoding?: Encoding;
 }
 
@@ -51,6 +83,9 @@ export interface FacetSpec extends BaseSpec {
 }
 
 export interface LayerSpec extends BaseSpec {
+  /**
+   * Unit specs that will be layered.
+   */
   layers: UnitSpec[];
 }
 
@@ -97,9 +132,11 @@ export function isLayerSpec(spec: ExtendedSpec): spec is LayerSpec {
   return spec['layers'] !== undefined;
 }
 
+
 /**
  * Decompose extended unit specs into composition of pure unit specs.
  */
+// TODO: consider moving this to another file.  Maybe vl.spec.normalize or vl.normalize
 export function normalize(spec: ExtendedSpec): Spec {
   if (isExtendedUnitSpec(spec)) {
     return normalizeExtendedUnitSpec(spec);
@@ -139,11 +176,30 @@ export function normalizeExtendedUnitSpec(spec: ExtendedUnitSpec): Spec {
 }
 
 export function normalizeUnitSpec(spec: UnitSpec): Spec {
+  const config = spec.config;
+  const overlayConfig = config && config.overlay;
+  const overlayWithLine = overlayConfig  && spec.mark === AREA &&
+    contains([AreaOverlay.LINEPOINT, AreaOverlay.LINE], overlayConfig.area);
+  const overlayWithPoint = overlayConfig && (
+    (overlayConfig.line && spec.mark === LINE) ||
+    (overlayConfig.area === AreaOverlay.LINEPOINT && spec.mark === AREA)
+  );
+
+  // TODO: The below logic is not entirely correct or tested.
   if (contains([ERRORBAR], spec.mark)) {
     return normalizeCompositeUnitSpec(spec);
   }
   if (isRanged(spec.encoding)) {
     return normalizeRangedUnitSpec(spec);
+  }
+
+  if (isStacked(spec)) {
+    // We can't overlay stacked area yet!
+    return spec;
+  }
+
+  if (overlayWithPoint || overlayWithLine) {
+    return normalizeOverlay(spec, overlayWithPoint, overlayWithLine);
   }
   return spec;
 }
@@ -210,7 +266,46 @@ export function normalizeCompositeUnitSpec(spec: UnitSpec): Spec {
     layerSpec.layers.push(normalizeUnitSpec(lowerTickSpec));
     layerSpec.layers.push(normalizeUnitSpec(upperTickSpec));
   }
+  return layerSpec;
+}
 
+export function normalizeOverlay(spec: UnitSpec, overlayWithPoint: boolean, overlayWithLine: boolean): LayerSpec {
+  let outerProps = ['name', 'description', 'data', 'transform'];
+  let baseSpec = omit(spec, outerProps.concat('config'));
+
+  let baseConfig = duplicate(spec.config);
+  delete baseConfig.overlay;
+  // TODO: remove shape, size
+
+  const layerSpec = extend(
+    pick(spec, outerProps),
+    { layers: [baseSpec] },
+    keys(baseConfig).length > 0 ? { config: baseConfig } : {}
+  );
+
+  if (overlayWithLine) {
+    // TODO: add name with suffix
+    let lineSpec = duplicate(baseSpec);
+    lineSpec.mark = LINE;
+    // TODO: remove shape, size
+    let markConfig = extend({}, defaultOverlayConfig.lineStyle, spec.config.overlay.lineStyle);
+    if (keys(markConfig).length > 0) {
+      lineSpec.config = {mark: markConfig};
+    }
+
+    layerSpec.layers.push(lineSpec);
+  }
+
+  if (overlayWithPoint) {
+    // TODO: add name with suffix
+    let pointSpec = duplicate(baseSpec);
+    pointSpec.mark = POINT;
+    let markConfig = extend({}, defaultOverlayConfig.pointStyle, spec.config.overlay.pointStyle);;
+    if (keys(markConfig).length > 0) {
+      pointSpec.config = {mark: markConfig};
+    }
+    layerSpec.layers.push(pointSpec);
+  }
   return layerSpec;
 }
 
@@ -231,11 +326,8 @@ export function getCleanSpec(spec: ExtendedUnitSpec): ExtendedUnitSpec {
   return spec;
 }
 
-export function isStack(spec: ExtendedUnitSpec): boolean {
-  return (vlEncoding.has(spec.encoding, COLOR) || vlEncoding.has(spec.encoding, SHAPE)) &&
-    (spec.mark === BAR || spec.mark === AREA) &&
-    (!spec.config || !spec.config.mark.stacked !== false) &&
-    vlEncoding.isAggregate(spec.encoding);
+export function isStacked(spec: ExtendedUnitSpec): boolean {
+  return stack(spec.mark, spec.encoding, spec.config) !== null;
 }
 
 // TODO revise

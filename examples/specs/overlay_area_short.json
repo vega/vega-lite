@@ -2,10 +2,10 @@
   "description": "Google's stock price over time.",
   "data": {"url": "data/stocks.csv", "format": {"type": "csv"}},
   "transform": {"filter": "datum.symbol==='GOOG'"},
-  "mark": "line",
+  "mark": "area",
   "encoding": {
     "x": {"field": "date", "type": "temporal"},
     "y": {"field": "price", "type": "quantitative"}
   },
-  "config": {"mark": {"interpolate": "step-after"}}
+  "config": {"overlay": {"point": true, "line": true}}
 }

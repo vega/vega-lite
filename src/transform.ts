@@ -1,3 +1,6 @@
+/**
+ * Top-level transform object.
+ */
 export interface Transform {
   /**
    * A string containing the filter Vega expression. Use `datum` to refer to the current data object.
@@ -13,7 +16,9 @@ export interface Transform {
   calculate?: Formula[];
 }
 
-// TODO move all Vega interfaces to one central position
+/**
+ * Formula object for calculate.
+ */
 export interface Formula {
   /**
    * The field in which to store the computed formula value.
