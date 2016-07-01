@@ -42,13 +42,13 @@ export function initMarkConfig(mark: Mark, encoding: Encoding, config: Config) {
              if (mark === TICK) {
                cfg[property] = 'vertical';
              } else {
-               cfg[property] = 'horizontal';  // implicitly vertical
+               cfg[property] = 'horizontal';
              }
            } else if (!xIsMeasure && yIsMeasure) {
              if (mark === TICK) {
                cfg[property] = 'horizontal';
              } else {
-               cfg[property] = 'vertical';  // implicitly horizontal
+               cfg[property] = 'vertical';
              }
            }
 

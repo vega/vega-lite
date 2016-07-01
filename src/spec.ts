@@ -185,10 +185,11 @@ export function normalizeUnitSpec(spec: UnitSpec): Spec {
     (overlayConfig.area === AreaOverlay.LINEPOINT && spec.mark === AREA)
   );
 
-  // TODO: The below logic is not entirely correct or tested.
-  if (contains([ERRORBAR], spec.mark)) {
-    return normalizeCompositeUnitSpec(spec);
+  // TODO: thoroughly test
+  if (spec.mark === ERRORBAR) {
+    return normalizeErrorBarUnitSpec(spec);
   }
+  // TODO: thoroughly test
   if (isRanged(spec.encoding)) {
     return normalizeRangedUnitSpec(spec);
   }
@@ -213,11 +214,11 @@ export function normalizeRangedUnitSpec(spec: UnitSpec): Spec {
     if ((hasX2 && !hasX) || (hasY2 && !hasY)) {
       let normalizedSpec = duplicate(spec);
       if (hasX2 && !hasX) {
-        normalizedSpec.encoding.x = duplicate(normalizedSpec.encoding.x2);
+        normalizedSpec.encoding.x = normalizedSpec.encoding.x2;
         delete normalizedSpec.encoding.x2;
       }
       if (hasY2 && !hasY) {
-        normalizedSpec.encoding.y = duplicate(normalizedSpec.encoding.y2);
+        normalizedSpec.encoding.y = normalizedSpec.encoding.y2;
         delete normalizedSpec.encoding.y2;
       }
 
@@ -227,7 +228,9 @@ export function normalizeRangedUnitSpec(spec: UnitSpec): Spec {
   return spec;
 }
 
-export function normalizeCompositeUnitSpec(spec: UnitSpec): Spec {
+export function normalizeErrorBarUnitSpec(spec: UnitSpec): Spec {
+  // FIXME correctly deal with color and opacity
+
   let layerSpec = extend(spec.name ? {name: spec.name} : {},
     spec.description ? {description: spec.description} : {},
     spec.data ? {data: spec.data} : {},

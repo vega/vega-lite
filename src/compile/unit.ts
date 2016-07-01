@@ -85,15 +85,11 @@ export class UnitModel extends Model {
     return UNIT_SCALE_CHANNELS.reduce(function(_scale, channel) {
       if (vlEncoding.has(encoding, channel) ||
           (channel === X && vlEncoding.has(encoding, X2)) ||
-          (channel === Y && vlEncoding.has(encoding, Y2))) {
+          (channel === Y && vlEncoding.has(encoding, Y2))
+        ) {
 
-        let targetChannel = channel;
-        if (!vlEncoding.has(encoding, channel)) {
-          targetChannel = channel === X ? X2 : Y2;
-        }
-        const channelDef = encoding[targetChannel];
-        const scaleSpec = channelDef.scale || {};
-
+        const channelDef = encoding[channel];
+        const scaleSpec = (channelDef || {}).scale || {};
         const _scaleType = scaleType(scaleSpec, channelDef, channel, mark);
 
         _scale[channel] = extend({
@@ -116,11 +112,7 @@ export class UnitModel extends Model {
           (channel === X && vlEncoding.has(encoding, X2)) ||
           (channel === Y && vlEncoding.has(encoding, Y2))) {
 
-        let targetChannel = channel;
-        if (!vlEncoding.has(encoding, channel)) {
-          targetChannel = channel === X ? X2 : Y2;
-        }
-        const axisSpec = encoding[targetChannel].axis;
+        const axisSpec = (encoding[channel] || {}).axis;
         if (axisSpec !== false) {
           _axis[channel] = extend({},
             config.axis,

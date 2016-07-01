@@ -129,8 +129,7 @@ export function isAggregate(encoding: Encoding) {
 }
 
 export function isRanged(encoding: Encoding) {
-  return (has(encoding, X) && has(encoding, X2)) ||
-    (has(encoding, Y) && has(encoding, Y2));
+  return (!!encoding.x && !!encoding.x2) || (!!encoding.y && !!encoding.y2);
 }
 
 export function fieldDefs(encoding: Encoding): FieldDef[] {
