@@ -7,7 +7,7 @@ import {contains, union} from '../util';
 import {FacetModel} from './facet';
 import {LayerModel} from './layer';
 import {Model} from './model';
-import {format as timeFormatExpr} from '../timeunit';
+import {format as timeFormatTmpl} from '../timeunit';
 import {UnitModel} from './unit';
 import {Spec, isUnitSpec, isFacetSpec, isLayerSpec} from '../spec';
 
@@ -117,9 +117,7 @@ export function formatMixins(model: Model, channel: Channel, format: string) {
 
   let def: any = {};
 
-  if (fieldDef.type === TEMPORAL) {
-    def.formatType = 'time';
-  }
+  // no need to set format type for temporal since we use templates anyway
 
   if (format !== undefined) {
     def.format = format;
@@ -127,9 +125,6 @@ export function formatMixins(model: Model, channel: Channel, format: string) {
     switch (fieldDef.type) {
       case QUANTITATIVE:
         def.format = model.config().numberFormat;
-        break;
-      case TEMPORAL:
-        def.format = timeFormat(model, channel) || model.config().timeFormat;
         break;
     }
   }
@@ -149,7 +144,7 @@ export function formatMixins(model: Model, channel: Channel, format: string) {
   return def;
 }
 
-function isAbbreviated(model: Model, channel: Channel, fieldDef: FieldDef) {
+export function isAbbreviated(model: Model, channel: Channel, fieldDef: FieldDef) {
   switch (channel) {
     case ROW:
     case COLUMN:
@@ -180,7 +175,11 @@ export function sortField(orderChannelDef: OrderChannelDef) {
 /**
  * Returns the time format used for axis labels for a time unit.
  */
-export function timeFormat(model: Model, channel: Channel): string {
+export function timeFormatTemplate(model: Model, channel: Channel, field = 'datum.data'): string {
   const fieldDef = model.fieldDef(channel);
-  return timeFormatExpr(fieldDef.timeUnit, isAbbreviated(model, channel, fieldDef));
+  if (!fieldDef.timeUnit) {
+    return '{{' + field + ' | time:\'' + model.config().timeFormat + '\'}}';
+  } else {
+    return timeFormatTmpl(fieldDef.timeUnit, isAbbreviated(model, channel, fieldDef), field);
+  }
 }

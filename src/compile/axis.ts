@@ -5,7 +5,7 @@ import {NOMINAL, ORDINAL, TEMPORAL} from '../type';
 import {contains, keys, extend, truncate, Dict} from '../util';
 import {VgAxis} from '../vega.schema';
 
-import {formatMixins} from './common';
+import {formatMixins, timeFormatTemplate} from './common';
 import {Model} from './model';
 import {UnitModel} from './unit';
 
@@ -292,7 +292,7 @@ export namespace properties {
       // TODO replace this with Vega's labelMaxLength once it is introduced
       labelsSpec = extend({
         text: {
-          template: '{{ datum.data | truncate:' + axis.labelMaxLength + '}}'
+          template: '{{ datum.data | truncate:' + axis.labelMaxLength + ' }}'
         }
       }, labelsSpec || {});
     }
@@ -349,6 +349,14 @@ export namespace properties {
 
     if (axis.tickLabelFontSize !== undefined) {
         labelsSpec.fontSize = {value: axis.tickLabelFontSize};
+    }
+
+    if (fieldDef.type === TEMPORAL) {
+      labelsSpec = extend({
+        text: {
+          template: timeFormatTemplate(model, channel)
+        }
+      }, labelsSpec);
     }
 
     return keys(labelsSpec).length === 0 ? undefined : labelsSpec;

@@ -4,6 +4,8 @@ import {assert} from 'chai';
 import {parseUnitModel} from '../util';
 import {COLOR, X} from '../../src/channel';
 import * as legend from '../../src/compile/legend';
+import {TimeUnit} from '../../src/timeunit';
+import {TEMPORAL} from '../../src/type';
 
 describe('Legend', function() {
   describe('parseLegend()', function() {
@@ -162,6 +164,33 @@ describe('Legend', function() {
             color: {field: "a", type: "nominal", legend: {"labelBaseline": "middle"}}}
         }), COLOR);
         assert.deepEqual(label.baseline.value, "middle");
+    });
+
+    it('should return correct template for the timeUnit: TimeUnit.MONTH', function() {
+      const model = parseUnitModel({
+        mark: "point",
+        encoding: {
+          x: {field: "a", type: "temporal"},
+          color: {field: "a", type: "temporal", timeUnit: "month"}}
+      });
+      const fieldDef = {field: 'a', type: TEMPORAL, timeUnit: TimeUnit.MONTH};
+      const label = legend.properties.labels(fieldDef, {}, model, COLOR);
+      let expected = "{{datum.data | time:'%B'}}";
+      assert.deepEqual(label.text.template, expected);
+    });
+
+    it('should return correct template for the timeUnit: TimeUnit.QUARTER', function() {
+      const model = parseUnitModel({
+        mark: "point",
+        encoding: {
+          x: {field: "a", type: "temporal"},
+          color: {field: "a", type: "temporal", timeUnit: "quarter"}}
+      });
+      const fieldDef = {field: 'a', type: TEMPORAL, timeUnit: TimeUnit.QUARTER};
+      const label = legend.properties.labels(fieldDef, {}, model, COLOR);
+      let quarterPrefix = 'Q';
+      let expected = quarterPrefix + "{{datum.data | quarter}}";
+      assert.deepEqual(label.text.template, expected);
     });
   });
 

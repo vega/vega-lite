@@ -3,10 +3,10 @@ import {FieldDef} from '../fielddef';
 import {Legend} from '../legend';
 import {title as fieldTitle} from '../fielddef';
 import {AREA, BAR, TICK, TEXT, LINE, POINT, CIRCLE, SQUARE} from '../mark';
-import {ORDINAL} from '../type';
+import {ORDINAL, TEMPORAL} from '../type';
 import {extend, keys, without, Dict} from '../util';
 
-import {applyMarkConfig, FILL_STROKE_CONFIG, formatMixins as utilFormatMixins, timeFormat} from './common';
+import {applyMarkConfig, FILL_STROKE_CONFIG, formatMixins as utilFormatMixins, timeFormatTemplate} from './common';
 import {COLOR_LEGEND, COLOR_LEGEND_LABEL} from './scale';
 import {UnitModel} from './unit';
 import {VgLegend} from '../vega.schema';
@@ -206,10 +206,10 @@ export namespace properties {
             field: 'data'
           }
         }, labelsSpec || {});
-      } else if (fieldDef.timeUnit) {
+      } else if (fieldDef.type === TEMPORAL) {
         labelsSpec = extend({
           text: {
-            template: '{{ datum.data | time:\'' + timeFormat(model, channel) + '\'}}'
+            template: timeFormatTemplate(model, channel)
           }
         }, labelsSpec || {});
       }

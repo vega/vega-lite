@@ -106,6 +106,7 @@
     "test/fielddef.test.ts",
     "test/schema.test.ts",
     "test/spec.test.ts",
+    "test/timeunit.test.ts",
     "test/stack.test.ts",
     "test/type.test.ts",
     "test/util.ts",
