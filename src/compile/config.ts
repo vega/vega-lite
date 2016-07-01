@@ -29,7 +29,7 @@ export function initMarkConfig(mark: Mark, encoding: Encoding, config: Config) {
               }
             }
             if (mark === AREA) {
-              cfg[property] = 0.6; // inspired by Tableau
+              cfg[property] = 0.7; // inspired by Tableau
             }
            }
            break;
