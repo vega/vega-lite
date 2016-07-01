@@ -93,7 +93,9 @@ export function formatMixins(legend: Legend, model: UnitModel, channel: Channel)
     return {};
   }
 
-  return utilFormatMixins(model, channel, typeof legend !== 'boolean' ? legend.format : undefined);
+  return utilFormatMixins(model, fieldDef,
+    typeof legend !== 'boolean' ? legend.format : undefined,
+    model.legend(channel).shortTimeLabels);
 }
 
 // we have to use special scales for ordinal or binned fields for the color channel
@@ -209,7 +211,7 @@ export namespace properties {
       } else if (fieldDef.type === TEMPORAL) {
         labelsSpec = extend({
           text: {
-            template: timeFormatTemplate(model, channel)
+            template: timeFormatTemplate(model, channel, legend.shortTimeLabels)
           }
         }, labelsSpec || {});
       }

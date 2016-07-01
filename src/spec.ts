@@ -1,17 +1,16 @@
 /* Package of defining Vega-lite Specification's json schema at its utility functions */
 
-import {ROW, COLUMN} from './channel';
 import {Config, defaultOverlayConfig, AreaOverlay} from './config';
 import {Data} from './data';
-import {Encoding, UnitEncoding, has} from './encoding';
+import {Encoding, UnitEncoding, has, isRanged} from './encoding';
 import {Facet} from './facet';
 import {FieldDef} from './fielddef';
-import {Mark, LINE, AREA, POINT} from './mark';
+import {Mark, ERRORBAR, TICK, AREA, RULE, LINE, POINT} from './mark';
 import {stack} from './stack';
 import {Transform} from './transform';
-
+import {ROW, COLUMN, X, Y, X2, Y2} from './channel';
 import * as vlEncoding from './encoding';
-import {contains, duplicate, extend, keys, pick, omit} from './util';
+import {contains, duplicate, extend, keys, omit, pick} from './util';
 
 export interface BaseSpec {
   /**
@@ -141,30 +140,39 @@ export function isLayerSpec(spec: ExtendedSpec): spec is LayerSpec {
 export function normalize(spec: ExtendedSpec): Spec {
   if (isExtendedUnitSpec(spec)) {
     return normalizeExtendedUnitSpec(spec);
-  } else if (isUnitSpec(spec)) {
-    return normalizeUnitSpec(spec as any);
   }
-
+  if (isUnitSpec(spec)) {
+    return normalizeUnitSpec(spec);
+  }
   return spec;
 }
 
-export function normalizeExtendedUnitSpec(spec: ExtendedUnitSpec) {
-  // TODO: @arvind please  add interaction syntax here
-  let encoding = duplicate(spec.encoding);
-  delete encoding.column;
-  delete encoding.row;
+export function normalizeExtendedUnitSpec(spec: ExtendedUnitSpec): Spec {
+    const hasRow = has(spec.encoding, ROW);
+    const hasColumn = has(spec.encoding, COLUMN);
 
-  return extend(
-    pick(spec, ['name', 'description', 'data', 'transform']),
-    {
-      facet: pick(spec.encoding, ['row', 'column']),
-      spec: {
-        mark: spec.mark,
-        encoding: encoding
-      }
-    },
-    spec.config ? { config: spec.config } : {}
-  );
+    // TODO: @arvind please  add interaction syntax here
+    let encoding = duplicate(spec.encoding);
+    delete encoding.column;
+    delete encoding.row;
+
+    return extend(
+      spec.name ? { name: spec.name } : {},
+      spec.description ? { description: spec.description } : {},
+      { data: spec.data },
+      spec.transform ? { transform: spec.transform } : {},
+      {
+        facet: extend(
+          hasRow ? { row: spec.encoding.row } : {},
+          hasColumn ? { column: spec.encoding.column } : {}
+        ),
+        spec: normalizeUnitSpec({
+          mark: spec.mark,
+          encoding: encoding
+        })
+      },
+      spec.config ? { config: spec.config } : {}
+    );
 }
 
 export function normalizeUnitSpec(spec: UnitSpec): Spec {
@@ -177,6 +185,15 @@ export function normalizeUnitSpec(spec: UnitSpec): Spec {
     (overlayConfig.area === AreaOverlay.LINEPOINT && spec.mark === AREA)
   );
 
+  // TODO: thoroughly test
+  if (spec.mark === ERRORBAR) {
+    return normalizeErrorBarUnitSpec(spec);
+  }
+  // TODO: thoroughly test
+  if (isRanged(spec.encoding)) {
+    return normalizeRangedUnitSpec(spec);
+  }
+
   if (isStacked(spec)) {
     // We can't overlay stacked area yet!
     return spec;
@@ -186,6 +203,73 @@ export function normalizeUnitSpec(spec: UnitSpec): Spec {
     return normalizeOverlay(spec, overlayWithPoint, overlayWithLine);
   }
   return spec;
+}
+
+export function normalizeRangedUnitSpec(spec: UnitSpec): Spec {
+  if (spec.encoding) {
+    const hasX = has(spec.encoding, X);
+    const hasY = has(spec.encoding, Y);
+    const hasX2 = has(spec.encoding, X2);
+    const hasY2 = has(spec.encoding, Y2);
+    if ((hasX2 && !hasX) || (hasY2 && !hasY)) {
+      let normalizedSpec = duplicate(spec);
+      if (hasX2 && !hasX) {
+        normalizedSpec.encoding.x = normalizedSpec.encoding.x2;
+        delete normalizedSpec.encoding.x2;
+      }
+      if (hasY2 && !hasY) {
+        normalizedSpec.encoding.y = normalizedSpec.encoding.y2;
+        delete normalizedSpec.encoding.y2;
+      }
+
+      return normalizedSpec;
+    }
+  }
+  return spec;
+}
+
+export function normalizeErrorBarUnitSpec(spec: UnitSpec): Spec {
+  // FIXME correctly deal with color and opacity
+
+  let layerSpec = extend(spec.name ? {name: spec.name} : {},
+    spec.description ? {description: spec.description} : {},
+    spec.data ? {data: spec.data} : {},
+    spec.transform ? {transform: spec.transform} : {},
+    spec.config ? {config: spec.config} : {}, {layers: []}
+  );
+  if (!spec.encoding) {
+    return layerSpec;
+  }
+  if (spec.mark === ERRORBAR) {
+    const ruleSpec = {
+      mark: RULE,
+      encoding: extend(
+        spec.encoding.x ? {x: duplicate(spec.encoding.x)} : {},
+        spec.encoding.y ? {y: duplicate(spec.encoding.y)} : {},
+        spec.encoding.x2 ? {x2: duplicate(spec.encoding.x2)} : {},
+        spec.encoding.y2 ? {y2: duplicate(spec.encoding.y2)} : {},
+        {})
+    };
+    const lowerTickSpec = {
+      mark: TICK,
+      encoding: extend(
+        spec.encoding.x ? {x: duplicate(spec.encoding.x)} : {},
+        spec.encoding.y ? {y: duplicate(spec.encoding.y)} : {},
+        spec.encoding.size ? {size: duplicate(spec.encoding.size)} : {},
+        {})
+    };
+    const upperTickSpec = {
+      mark: TICK,
+      encoding: extend({
+        x: spec.encoding.x2 ? duplicate(spec.encoding.x2) : duplicate(spec.encoding.x),
+        y: spec.encoding.y2 ? duplicate(spec.encoding.y2) : duplicate(spec.encoding.y)
+      }, spec.encoding.size ? {size: duplicate(spec.encoding.size)} : {})
+    };
+    layerSpec.layers.push(normalizeUnitSpec(ruleSpec));
+    layerSpec.layers.push(normalizeUnitSpec(lowerTickSpec));
+    layerSpec.layers.push(normalizeUnitSpec(upperTickSpec));
+  }
+  return layerSpec;
 }
 
 export function normalizeOverlay(spec: UnitSpec, overlayWithPoint: boolean, overlayWithLine: boolean): LayerSpec {

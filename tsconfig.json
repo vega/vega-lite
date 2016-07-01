@@ -89,6 +89,7 @@
     "src/vl.ts",
     "test/compile/axis.test.ts",
     "test/compile/common.test.ts",
+    "test/compile/timeunit.test.ts",
     "test/compile/compile.test.ts",
     "test/compile/data.test.ts",
     "test/compile/facet.test.ts",

@@ -5,7 +5,7 @@ import {parseUnitModel} from '../util';
 import {X} from '../../src/channel';
 import {timeFormatTemplate, formatMixins, applyColorAndOpacity} from '../../src/compile/common';
 
-describe('Model', function() {
+describe('Common', function() {
   describe('timeFormat()', function() {
     it('should get the right time template', function() {
       assert.equal(timeFormatTemplate(parseUnitModel({
@@ -13,48 +13,48 @@ describe('Model', function() {
         encoding: {
           x: {timeUnit: 'month', field:'a', type: "temporal", axis: {shortTimeLabels: true}}
         }
-      }), X), '{{datum.data | time:\'%b\'}}');
+      }), X, true), '{{datum.data | time:\'%b\'}}');
 
       assert.equal(timeFormatTemplate(parseUnitModel({
         mark: "point",
         encoding: {
           x: {timeUnit: 'month', field:'a', type: "temporal", axis: {shortTimeLabels: true}}
         }
-      }), X, 'datum.foo'), '{{datum.foo | time:\'%b\'}}');
+      }), X, true, 'datum.foo'), '{{datum.foo | time:\'%b\'}}');
 
       assert.equal(timeFormatTemplate(parseUnitModel({
         mark: "point",
         encoding: {
           x: {timeUnit: 'month', field:'a', type: "temporal"}
         }
-      }), X), '{{datum.data | time:\'%B\'}}');
+      }), X, false), '{{datum.data | time:\'%B\'}}');
 
       assert.equal(timeFormatTemplate(parseUnitModel({
         mark: "point",
         encoding: {
           x: {timeUnit: 'quarter', field:'a', type: "temporal", axis: {shortTimeLabels: true}}
         }
-      }), X), 'Q{{datum.data | quarter}}');
+      }), X, true), 'Q{{datum.data | quarter}}');
 
       assert.equal(timeFormatTemplate(parseUnitModel({
         mark: "point",
         encoding: {
           x: {timeUnit: 'yearquarter', field:'a', type: "temporal", axis: {shortTimeLabels: true}}
         }
-      }), X), '{{datum.data | time:\'%y-\'}}Q{{datum.data | quarter}}');
+      }), X, true), '{{datum.data | time:\'%y-\'}}Q{{datum.data | quarter}}');
 
       assert.equal(timeFormatTemplate(parseUnitModel({
         mark: "point",
         encoding: {
           x: {timeUnit: 'week', field:'a', type: "temporal", axis: {shortTimeLabels: true}}
         }
-      }), X), undefined);
+      }), X, true), undefined);
     });
   });
 
-  describe('format()', function() {
+  describe('formatMixins()', function() {
     it('should use number format for quantitative scale', function() {
-      assert.deepEqual(formatMixins(parseUnitModel({
+      const model = parseUnitModel({
         mark: "point",
         encoding: {
           x: {field:'a', type: "quantitative"}
@@ -62,13 +62,14 @@ describe('Model', function() {
         config: {
           numberFormat: 'd'
         }
-      }), X, undefined), {
+      });
+      assert.deepEqual(formatMixins(model, model.fieldDef(X), undefined, model.axis(X).shortTimeLabels), {
         format: 'd'
       });
     });
 
     it('should support empty number format', function() {
-      assert.deepEqual(formatMixins(parseUnitModel({
+      const model = parseUnitModel({
         mark: "point",
         encoding: {
           x: {field:'a', type: "quantitative"}
@@ -76,18 +77,20 @@ describe('Model', function() {
         config: {
           numberFormat: ''
         }
-      }), X, undefined), {
+      });
+      assert.deepEqual(formatMixins(model, model.fieldDef(X), undefined, model.axis(X).shortTimeLabels), {
         format: ''
       });
     });
 
     it('should use format if provided', function() {
-      assert.deepEqual(formatMixins(parseUnitModel({
+      const model = parseUnitModel({
         mark: "point",
         encoding: {
           x: {field:'a', type: "quantitative"}
         }
-      }), X, 'foo'), {
+      });
+      assert.deepEqual(formatMixins(model, model.fieldDef(X), 'foo', model.axis(X).shortTimeLabels), {
         format: 'foo'
       });
     });

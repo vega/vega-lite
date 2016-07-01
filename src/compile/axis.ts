@@ -92,8 +92,7 @@ export function parseAxis(channel: Channel, model: Model): VgAxis {
   };
 
   // format mixins (add format and formatType)
-  extend(def, formatMixins(model, channel, model.axis(channel).format));
-
+  extend(def, formatMixins(model, channel, axis.format, axis.shortTimeLabels));
   // 1.2. Add properties
   [
     // a) properties with special rules (so it has axis[property] methods) -- call rule functions
@@ -354,7 +353,7 @@ export namespace properties {
     if (fieldDef.type === TEMPORAL) {
       labelsSpec = extend({
         text: {
-          template: timeFormatTemplate(model, channel)
+          template: timeFormatTemplate(model, channel, axis.shortTimeLabels)
         }
       }, labelsSpec);
     }

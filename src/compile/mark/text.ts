@@ -80,11 +80,14 @@ export namespace text {
     // text
     if (model.has(TEXT)) {
       if (QUANTITATIVE === model.fieldDef(TEXT).type) {
-        const format = model.config().mark.format;
-        extend(p, formatMixins(model, TEXT, format));
+        const def = formatMixins(model, fieldDef,
+                          model.config().mark.format,
+                          model.config().mark.shortTimeLabels);
+
+        extend(p, formatMixinsText(model, def));
       } else if (TEMPORAL === model.fieldDef(TEXT).type) {
         p.text = {
-          template: timeFormatTemplate(model, TEXT, model.field(TEXT, { datum: true }))
+          template: timeFormatTemplate(model, TEXT, model.config().mark.shortTimeLabels, model.field(TEXT, { datum: true }))
         };
       } else {
         p.text = { field: model.field(TEXT) };
@@ -104,4 +107,14 @@ export namespace text {
 
     return model.config().mark.fontSize;
   }
+
+  function formatMixinsText(model: UnitModel, def: any) {
+  const filter = (def.formatType || 'number') + (def.format ? ':\'' + def.format + '\'' : '');
+  return {
+    text: {
+      // FIXME: remove model.field  use fielddef.ts's field and pass in fieldDef
+      template: '{{' + model.field(TEXT, { datum: true }) + ' | ' + filter + '}}'
+    }
+  };
+}
 }

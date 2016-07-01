@@ -54,7 +54,7 @@ export const TIMEUNITS = [
 ];
 
 /** returns the template name used for axis labels for a time unit */
-export function format(timeUnit: TimeUnit, abbreviated = false, field='datum.data'): string {
+export function format(timeUnit: TimeUnit, shortTimeLabels = false, field='datum.data'): string {
   if (!timeUnit) {
     return undefined;
   }
@@ -62,7 +62,7 @@ export function format(timeUnit: TimeUnit, abbreviated = false, field='datum.dat
   let dateComponents = [];
 
   if (containsTimeUnit(timeUnit, TimeUnit.YEAR)) {
-    dateComponents.push(abbreviated ? '%y' : '%Y');
+    dateComponents.push(shortTimeLabels ? '%y' : '%Y');
   }
 
   if (containsTimeUnit(timeUnit, TimeUnit.QUARTER)) {
@@ -71,11 +71,11 @@ export function format(timeUnit: TimeUnit, abbreviated = false, field='datum.dat
   }
 
   if (containsTimeUnit(timeUnit, TimeUnit.MONTH)) {
-    dateComponents.push(abbreviated ? '%b' : '%B');
+    dateComponents.push(shortTimeLabels ? '%b' : '%B');
   }
 
   if (containsTimeUnit(timeUnit, TimeUnit.DAY)) {
-    dateComponents.push(abbreviated ? '%a' : '%A');
+    dateComponents.push(shortTimeLabels ? '%a' : '%A');
   } else if (containsTimeUnit(timeUnit, TimeUnit.DATE)) {
     dateComponents.push('%d');
   }
@@ -114,7 +114,7 @@ export function format(timeUnit: TimeUnit, abbreviated = false, field='datum.dat
 
 /** Returns true if container contains the containee, false otherwise. */
 export function containsTimeUnit(fullTimeUnit: TimeUnit, timeUnit: TimeUnit) {
-  let containerStr = fullTimeUnit.toString();
-  let containeeStr = timeUnit.toString();
-  return containerStr.indexOf(containeeStr) > -1;
+  let fullTimeUnitStr = fullTimeUnit.toString();
+  let timeUnitStr = timeUnit.toString();
+  return fullTimeUnitStr.indexOf(timeUnitStr) > -1;
 }

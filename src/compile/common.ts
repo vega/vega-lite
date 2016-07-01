@@ -1,4 +1,4 @@
-import {COLUMN, ROW, X, Y, SIZE, COLOR, OPACITY, SHAPE, TEXT, LABEL, Channel} from '../channel';
+import {COLOR, OPACITY, Channel} from '../channel';
 import {FieldDef, field, OrderChannelDef} from '../fielddef';
 import {SortOrder} from '../sort';
 import {QUANTITATIVE, ORDINAL, TEMPORAL} from '../type';
@@ -7,7 +7,7 @@ import {contains, union} from '../util';
 import {FacetModel} from './facet';
 import {LayerModel} from './layer';
 import {Model} from './model';
-import {format as timeFormatTmpl} from '../timeunit';
+import {format as timeUnitTemplate} from '../timeunit';
 import {UnitModel} from './unit';
 import {Spec, isUnitSpec, isFacetSpec, isLayerSpec} from '../spec';
 
@@ -102,15 +102,12 @@ export function applyMarkConfig(marksProperties, model: UnitModel, propsList: st
   return applyConfig(marksProperties, model.config().mark, propsList);
 }
 
-
 /**
  * Builds an object with format and formatType properties.
  *
  * @param format explicitly specified format
  */
-export function formatMixins(model: Model, channel: Channel, format: string) {
-  const fieldDef = model.fieldDef(channel);
-
+export function formatMixins(model: Model, fieldDef: FieldDef, format: string, shortTimeLabels: boolean) {
   if(!contains([QUANTITATIVE, TEMPORAL], fieldDef.type)) {
     return {};
   }
@@ -128,43 +125,8 @@ export function formatMixins(model: Model, channel: Channel, format: string) {
         break;
     }
   }
-
-  if (channel === TEXT) {
-    // text does not support format and formatType
-    // https://github.com/vega/vega/issues/505
-
-    const filter = (def.formatType || 'number') + (def.format ? ':\'' + def.format + '\'' : '');
-    return {
-      text: {
-        template: '{{' + model.field(channel, { datum: true }) + ' | ' + filter + '}}'
-      }
-    };
-  }
-
   return def;
 }
-
-export function isAbbreviated(model: Model, channel: Channel, fieldDef: FieldDef) {
-  switch (channel) {
-    case ROW:
-    case COLUMN:
-    case X:
-    case Y:
-      return model.axis(channel).shortTimeLabels;
-    case COLOR:
-    case OPACITY:
-    case SHAPE:
-    case SIZE:
-      return model.legend(channel).shortTimeLabels;
-    case TEXT:
-      return model.config().mark.shortTimeLabels;
-    case LABEL:
-      // TODO(#897): implement when we have label
-  }
-  return false;
-}
-
-
 
 /** Return field reference with potential "-" prefix for descending sort */
 export function sortField(orderChannelDef: OrderChannelDef) {
@@ -175,11 +137,11 @@ export function sortField(orderChannelDef: OrderChannelDef) {
 /**
  * Returns the time format used for axis labels for a time unit.
  */
-export function timeFormatTemplate(model: Model, channel: Channel, field = 'datum.data'): string {
+export function timeFormatTemplate(model: Model, channel: Channel, shortTimeLabels: boolean, field = 'datum.data'): string {
   const fieldDef = model.fieldDef(channel);
   if (!fieldDef.timeUnit) {
     return '{{' + field + ' | time:\'' + model.config().timeFormat + '\'}}';
   } else {
-    return timeFormatTmpl(fieldDef.timeUnit, isAbbreviated(model, channel, fieldDef), field);
+    return timeUnitTemplate(fieldDef.timeUnit, shortTimeLabels, field);
   }
 }

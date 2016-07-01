@@ -187,4 +187,48 @@ describe('normalize()', function () {
       });
     });
   });
+
+  it('should convert y2 -> y if there is no y in the encoding', function() {
+    const spec: any = {
+      "data": {"url": "data/population.json"},
+      "mark": "rule",
+      "encoding": {
+        "y2": {"field": "age","type": "ordinal"},
+        "x": { "aggregate": "min", "field": "people", "type": "quantitative" },
+        "x2": { "aggregate": "max", "field": "people", "type": "quantitative" }
+      }
+    };
+
+    assert.deepEqual(normalize(spec), {
+      "data": {"url": "data/population.json"},
+      "mark": "rule",
+      "encoding": {
+        "y": {"field": "age","type": "ordinal"},
+        "x": { "aggregate": "min", "field": "people", "type": "quantitative" },
+        "x2": { "aggregate": "max", "field": "people", "type": "quantitative" }
+      }
+    });
+  });
+
+  it('should convert x2 -> x if there is no x in the encoding', function() {
+    const spec: any = {
+      "data": {"url": "data/population.json"},
+      "mark": "rule",
+      "encoding": {
+        "x2": {"field": "age","type": "ordinal"},
+        "y": { "aggregate": "min", "field": "people", "type": "quantitative" },
+        "y2": { "aggregate": "max", "field": "people", "type": "quantitative" }
+      }
+    };
+
+    assert.deepEqual(normalize(spec), {
+      "data": {"url": "data/population.json"},
+      "mark": "rule",
+      "encoding": {
+        "x": {"field": "age","type": "ordinal"},
+        "y": { "aggregate": "min", "field": "people", "type": "quantitative" },
+        "y2": { "aggregate": "max", "field": "people", "type": "quantitative" }
+      }
+    });
+  });
 });
