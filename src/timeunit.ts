@@ -113,12 +113,8 @@ export function format(timeUnit: TimeUnit, abbreviated = false): string {
 }
 
 /** Returns true if container contains the containee, false otherwise. */
-export function containsTimeUnit(container: TimeUnit, containee: TimeUnit) {
-  let containerStr = container.toString();
-  let containeeStr = containee.toString();
-  if (containerStr.indexOf(containeeStr) > -1) {
-    return true;
-  } else {
-    return false;
-  }
+export function containsTimeUnit(fullTimeUnit: TimeUnit, timeUnit: TimeUnit) {
+  let containerStr = fullTimeUnit.toString();
+  let containeeStr = timeUnit.toString();
+  return containerStr.indexOf(containeeStr) > -1;
 }
