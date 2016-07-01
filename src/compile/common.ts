@@ -102,7 +102,6 @@ export function applyMarkConfig(marksProperties, model: UnitModel, propsList: st
   return applyConfig(marksProperties, model.config().mark, propsList);
 }
 
-
 /**
  * Builds an object with format and formatType properties.
  *

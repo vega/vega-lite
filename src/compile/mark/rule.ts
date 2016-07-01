@@ -19,7 +19,7 @@ export namespace rule {
           field: model.field(X, { binSuffix: '_mid' })
         };
       } else {
-        p.x = { value : 0};
+        p.x = { value : 0 };
       }
 
       if (model.has(Y)) {
