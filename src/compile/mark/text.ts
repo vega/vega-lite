@@ -84,7 +84,6 @@ export namespace text {
         extend(p, formatMixins(model, TEXT, format));
       } else if (TEMPORAL === model.fieldDef(TEXT).type) {
         p.text = {
-         // need to replace datum.data -> datum.FIELD_NAME
           template: timeFormatTemplate(model, TEXT, model.field(TEXT, { datum: true }))
         };
       } else {
