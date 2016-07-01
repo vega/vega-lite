@@ -92,7 +92,8 @@ export function parseAxis(channel: Channel, model: Model): VgAxis {
   };
 
   // format mixins (add format and formatType)
-  extend(def, formatMixins(model, channel, axis.format, axis.shortTimeLabels));
+  extend(def, formatMixins(model, model.fieldDef(channel), axis.format, axis.shortTimeLabels));
+
   // 1.2. Add properties
   [
     // a) properties with special rules (so it has axis[property] methods) -- call rule functions
