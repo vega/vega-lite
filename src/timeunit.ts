@@ -54,7 +54,7 @@ export const TIMEUNITS = [
 ];
 
 /** returns the template name used for axis labels for a time unit */
-export function format(timeUnit: TimeUnit, abbreviated = false): string {
+export function format(timeUnit: TimeUnit, abbreviated = false, field='datum.data'): string {
   if (!timeUnit) {
     return undefined;
   }
@@ -67,7 +67,7 @@ export function format(timeUnit: TimeUnit, abbreviated = false): string {
 
   if (containsTimeUnit(timeUnit, TimeUnit.QUARTER)) {
    // special template for quarter
-   dateComponents.push('\'}}Q{{datum.data | quarter}}{{datum.data | time:\'');
+   dateComponents.push('\'}}Q{{' + field + ' | quarter}}{{' + field + ' | time:\'');
   }
 
   if (containsTimeUnit(timeUnit, TimeUnit.MONTH)) {
@@ -105,8 +105,8 @@ export function format(timeUnit: TimeUnit, abbreviated = false): string {
 
   if (out.length > 0) {
   // clean up quarter formatting remainders
-   const template = '{{datum.data | time:\'' + out.join(' ') + '\'}}';
-   return template.replace(new RegExp('{{datum.data \\| time:\'\'}}', 'g'), '');
+   const template = '{{' + field + ' | time:\'' + out.join(' ') + '\'}}';
+   return template.replace(new RegExp('{{' + field + ' \\| time:\'\'}}', 'g'), '');
   } else {
    return undefined;
   }

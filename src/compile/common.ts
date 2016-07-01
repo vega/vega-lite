@@ -175,11 +175,11 @@ export function sortField(orderChannelDef: OrderChannelDef) {
 /**
  * Returns the time format used for axis labels for a time unit.
  */
-export function timeFormatTemplate(model: Model, channel: Channel): string {
+export function timeFormatTemplate(model: Model, channel: Channel, field = 'datum.data'): string {
   const fieldDef = model.fieldDef(channel);
   if (!fieldDef.timeUnit) {
-   return '{{datum.data | time:\'' + model.config().timeFormat + '\'}}';
+    return '{{' + field + ' | time:\'' + model.config().timeFormat + '\'}}';
   } else {
-    return timeFormatTmpl(fieldDef.timeUnit, isAbbreviated(model, channel, fieldDef));
+    return timeFormatTmpl(fieldDef.timeUnit, isAbbreviated(model, channel, fieldDef), field);
   }
 }

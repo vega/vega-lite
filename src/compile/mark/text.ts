@@ -85,7 +85,7 @@ export namespace text {
       } else if (TEMPORAL === model.fieldDef(TEXT).type) {
         p.text = {
          // need to replace datum.data -> datum.FIELD_NAME
-          template: timeFormatTemplate(model, TEXT).replace(new RegExp('datum.data', 'g'), model.field(TEXT, { datum: true }))
+          template: timeFormatTemplate(model, TEXT, model.field(TEXT, { datum: true }))
         };
       } else {
         p.text = { field: model.field(TEXT) };

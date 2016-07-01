@@ -18,6 +18,13 @@ describe('Model', function() {
       assert.equal(timeFormatTemplate(parseUnitModel({
         mark: "point",
         encoding: {
+          x: {timeUnit: 'month', field:'a', type: "temporal", axis: {shortTimeLabels: true}}
+        }
+      }), X, 'datum.foo'), '{{datum.foo | time:\'%b\'}}');
+
+      assert.equal(timeFormatTemplate(parseUnitModel({
+        mark: "point",
+        encoding: {
           x: {timeUnit: 'month', field:'a', type: "temporal"}
         }
       }), X), '{{datum.data | time:\'%B\'}}');
