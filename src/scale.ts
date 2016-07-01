@@ -47,8 +47,11 @@ export interface ScaleConfig {
    */
   padding?: number;
 
-  // Experimental Feature
-  includeRawDomain?: boolean;
+  /**
+   * Uses the source data range as scale domain instead of aggregated data for aggregate axis.
+   * This property only works with aggregate functions that produce values within the raw data domain (`"mean"`, `"average"`, `"stdev"`, `"stdevp"`, `"median"`, `"q1"`, `"q3"`, `"min"`, `"max"`). For other aggregations that produce values outside of the raw data domain (e.g. `"count"`, `"sum"`), this property is ignored.
+   */
+  useRawDomain?: boolean;
 
   /** Default range for nominal color scale */
   nominalColorRange?: string | string[];
@@ -81,7 +84,7 @@ export const defaultScaleConfig: ScaleConfig = {
   textBandWidth: 90,
   bandSize: 21,
   padding: 1,
-  includeRawDomain: false,
+  useRawDomain: false,
   opacity: [0.3, 0.8],
 
   nominalColorRange: 'category10',
@@ -147,7 +150,8 @@ export interface Scale {
 
   // Vega-Lite only
   /**
-   * Uses the source data range as scale domain instead of aggregated data for aggregate axis. This option does not work with sum or count aggregate as they might have a substantially larger scale range.
+   * Uses the source data range as scale domain instead of aggregated data for aggregate axis.
+   * This property only works with aggregate functions that produce values within the raw data domain (`"mean"`, `"average"`, `"stdev"`, `"stdevp"`, `"median"`, `"q1"`, `"q3"`, `"min"`, `"max"`). For other aggregations that produce values outside of the raw data domain (e.g. `"count"`, `"sum"`), this property is ignored.
    */
-  includeRawDomain?: boolean;
+  useRawDomain?: boolean;
 }

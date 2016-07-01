@@ -1,6 +1,6 @@
 {
   "description": "Google's stock price over time.",
-  "data": {"url": "data/stocks.csv", "formatType":"csv"},
+  "data": {"url": "data/stocks.csv", "format": {"type": "csv"}},
   "transform": {"filter": "datum.symbol==='GOOG'"},
   "mark": "line",
   "encoding": {

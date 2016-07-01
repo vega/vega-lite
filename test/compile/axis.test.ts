@@ -29,6 +29,26 @@ describe('Axis', function() {
     });
   });
 
+  describe('parseInnerAxis', function() {
+    it('should produce a Vega inner axis object with correct type, scale and grid properties', function() {
+      const model = parseUnitModel({
+        mark: "point",
+        encoding: {
+          x:
+          {field: "a",
+           type: "quantitative",
+           axis: {grid: true, gridColor: "blue", gridWidth: 20}
+          }
+        }
+      });
+      const def = axis.parseInnerAxis(X, model);
+      assert.isObject(def);
+      assert.equal(def.type, 'x');
+      assert.equal(def.scale, 'x');
+      assert.deepEqual(def.properties.grid, {stroke: {value: "blue"}, strokeWidth: {value: 20}});
+    });
+  });
+
   describe('parseAxis', function() {
     it('should produce a Vega axis object with correct type and scale', function() {
       const model = parseUnitModel({

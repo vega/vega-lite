@@ -23,7 +23,7 @@ export interface AxisConfig {
 
   // ---------- Axis ----------
   /**
-   * Color of axis line. 
+   * Color of axis line.
    */
   axisColor?: string;
 
@@ -202,7 +202,7 @@ export const defaultFacetAxisConfig: AxisConfig = {
   tickSize: 0
 };
 
-export interface AxisProperties extends AxisConfig {
+export interface Axis extends AxisConfig {
   /**
    * The rotation angle of the axis labels.
    */

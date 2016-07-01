@@ -4,6 +4,8 @@
 [![npm dependencies](https://david-dm.org/vega/vega-lite.svg)](https://www.npmjs.com/package/vega-lite)
 [![npm version](https://img.shields.io/npm/v/vega-lite.svg)](https://www.npmjs.com/package/vega-lite)
 
+![Teaser](site/static/teaser.png)
+
 Vega-Lite provides a higher-level grammar for visual analysis, akin to ggplot or Tableau, that generates complete [Vega](https://vega.github.io/) specifications.
 
 You can find more details, [documentation](https://vega.github.io/vega-lite/docs/), [examples](https://vega.github.io/vega-lite/examples/), [usage instructions](https://vega.github.io/vega-lite/usage/embed.html), and [tutorials](https://vega.github.io/vega-lite/tutorials/getting_started.html) on the [Vega-Lite website](https://vega.github.io/vega-lite/).
