@@ -5,7 +5,7 @@ import {NOMINAL, ORDINAL, TEMPORAL} from '../type';
 import {contains, keys, extend, truncate, Dict} from '../util';
 import {VgAxis} from '../vega.schema';
 
-import {formatMixins} from './common';
+import {formatMixins, timeFormatTemplate} from './common';
 import {Model} from './model';
 import {UnitModel} from './unit';
 
@@ -32,7 +32,7 @@ export function parseInnerAxis(channel: Channel, model: Model): VgAxis {
   // TODO: support adding ticks as well
 
   // TODO: replace any with Vega Axis Interface
-  let def = {
+  let def: any = {
     type: type,
     scale: model.scaleName(channel),
     grid: true,
@@ -61,6 +61,20 @@ export function parseInnerAxis(channel: Channel, model: Model): VgAxis {
     }
   });
 
+  const props = model.axis(channel).properties || {};
+
+  // For now, only need to add grid properties here because innerAxis is only for rendering grid.
+  // TODO: support add other properties for innerAxis
+  ['grid'].forEach(function(group) {
+    const value = properties[group] ?
+      properties[group](model, channel, props[group] || {}, def) :
+      props[group];
+    if (value !== undefined && keys(value).length > 0) {
+      def.properties = def.properties || {};
+      def.properties[group] = value;
+    }
+  });
+
   return def;
 }
 
@@ -78,7 +92,7 @@ export function parseAxis(channel: Channel, model: Model): VgAxis {
   };
 
   // format mixins (add format and formatType)
-  extend(def, formatMixins(model, channel, model.axis(channel).format));
+  extend(def, formatMixins(model, model.fieldDef(channel), axis.format, axis.shortTimeLabels));
 
   // 1.2. Add properties
   [
@@ -278,7 +292,7 @@ export namespace properties {
       // TODO replace this with Vega's labelMaxLength once it is introduced
       labelsSpec = extend({
         text: {
-          template: '{{ datum.data | truncate:' + axis.labelMaxLength + '}}'
+          template: '{{ datum.data | truncate:' + axis.labelMaxLength + ' }}'
         }
       }, labelsSpec || {});
     }
@@ -335,6 +349,14 @@ export namespace properties {
 
     if (axis.tickLabelFontSize !== undefined) {
         labelsSpec.fontSize = {value: axis.tickLabelFontSize};
+    }
+
+    if (fieldDef.type === TEMPORAL) {
+      labelsSpec = extend({
+        text: {
+          template: timeFormatTemplate(model, channel, axis.format, axis.shortTimeLabels)
+        }
+      }, labelsSpec);
     }
 
     return keys(labelsSpec).length === 0 ? undefined : labelsSpec;

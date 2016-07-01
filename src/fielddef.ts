@@ -1,10 +1,10 @@
 // utility for a field definition object
 
 import {AggregateOp, AGGREGATE_OPS} from './aggregate';
-import {AxisProperties} from './axis';
-import {BinProperties} from './bin';
-import {LegendProperties} from './legend';
-import {Scale} from './scale';
+import {Axis} from './axis';
+import {Bin} from './bin';
+import {Legend} from './legend';
+import {Scale, ScaleType} from './scale';
 import {SortField, SortOrder} from './sort';
 import {TimeUnit} from './timeunit';
 import {Type, NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from './type';
@@ -16,16 +16,46 @@ import {contains, getbins, toMap} from './util';
  *  we do for JSON schema.
  */
 export interface FieldDef {
+  /**
+   * Name of the field from which to pull a data value.
+   */
   field?: string;
+
+  /**
+   * The encoded field's type of measurement. This can be either a full type
+   * name (`"quantitative"`, `"temporal"`, `"ordinal"`,  and `"nominal"`)
+   * or an initial character of the type name (`"Q"`, `"T"`, `"O"`, `"N"`).
+   * This property is case insensitive.
+   */
   type?: Type;
+
+  /**
+   * A constant value in visual domain.
+   */
   value?: number | string | boolean;
 
   // function
+
+  /**
+   * Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).
+   */
   timeUnit?: TimeUnit;
-  bin?: boolean | BinProperties;
+
+  /**
+   * Flag for binning a `quantitative` field, or a bin property object
+   * for binning parameters.
+   */
+  bin?: boolean | Bin;
+
+  /**
+   * Aggregation function for the field
+   * (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).
+   */
   aggregate?: AggregateOp;
 
-  // metadata
+  /**
+   * Title for axis or legend.
+   */
   title?: string;
 }
 
@@ -47,10 +77,10 @@ export interface ChannelDefWithScale extends FieldDef {
 }
 
 export interface PositionChannelDef extends ChannelDefWithScale {
-  axis?: boolean | AxisProperties;
+  axis?: boolean | Axis;
 }
 export interface ChannelDefWithLegend extends ChannelDefWithScale {
-  legend?: LegendProperties;
+  legend?: Legend;
 }
 
 // Detail
@@ -77,6 +107,8 @@ export interface FieldRefOption {
   fn?: string;
   /** prepend fn with custom function prefix */
   prefn?: string;
+  /** scaleType */
+  scaleType?: ScaleType;
   /** append suffix to the field ref for bin (default='_start') */
   binSuffix?: string;
   /** append suffix to the field ref (general) */
@@ -93,7 +125,14 @@ export function field(fieldDef: FieldDef, opt: FieldRefOption = {}) {
   } else if (opt.fn) {
     return prefix + opt.fn + '_' + field + suffix;
   } else if (!opt.nofn && fieldDef.bin) {
-    return prefix + 'bin_' + field + (opt.binSuffix || suffix || '_start');
+    const binSuffix = opt.binSuffix || (
+      opt.scaleType === ScaleType.ORDINAL ?
+        // For ordinal scale type, use `_range` as suffix.
+        '_range' :
+        // For non-ordinal scale or unknown, use `_start` as suffix.
+        '_start'
+    );
+    return prefix + 'bin_' + field + binSuffix;
   } else if (!opt.nofn && !opt.noAggregate && fieldDef.aggregate) {
     return prefix + fieldDef.aggregate + '_' + field + suffix;
   } else if (!opt.nofn && fieldDef.timeUnit) {
@@ -154,6 +193,7 @@ export function cardinality(fieldDef: FieldDef, stats, filterNull = {}) {
       case TimeUnit.DAY: return 7;
       case TimeUnit.DATE: return 31;
       case TimeUnit.MONTH: return 12;
+      case TimeUnit.QUARTER: return 4;
       case TimeUnit.YEAR:
         const yearstat = stats['year_' + fieldDef.field];
 

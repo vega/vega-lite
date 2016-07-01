@@ -2,12 +2,13 @@
 declare var exports;
 
 import {SHARED_DOMAIN_OPS} from '../aggregate';
-import {COLUMN, ROW, X, Y, SHAPE, SIZE, COLOR, OPACITY, TEXT, hasScale, Channel} from '../channel';
+import {COLUMN, ROW, X, Y, X2, Y2, SHAPE, SIZE, COLOR, OPACITY, TEXT, hasScale, Channel} from '../channel';
 import {StackOffset} from '../config';
-import {RAW, SOURCE, STACKED_SCALE} from '../data';
+import {SOURCE, STACKED_SCALE} from '../data';
 import {FieldDef, field, isMeasure} from '../fielddef';
-import {Mark, BAR, TEXT as TEXT_MARK, RULE, TICK} from '../mark';
+import {Mark, BAR, TEXT as TEXTMARK, RULE, TICK} from '../mark';
 import {Scale, ScaleType, NiceTime} from '../scale';
+import {StackOffset} from '../stack';
 import {TimeUnit} from '../timeunit';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 import {contains, extend, Dict, stableStringify, vals, isBoolean} from '../util';
@@ -53,6 +54,7 @@ export function renameScaleData(model: Model, scale: ScaleComponent): ScaleCompo
 }
 
 export function parseScaleComponent(model: Model): Dict<ScaleComponents> {
+  // TODO: should model.channels() inlcude X2/Y2?
   return model.channels().reduce(function(scale: Dict<ScaleComponents>, channel: Channel) {
       if (model.scale(channel)) {
         const fieldDef = model.fieldDef(channel);
@@ -81,15 +83,29 @@ export function parseScaleComponent(model: Model): Dict<ScaleComponents> {
 function parseMainScale(model: Model, fieldDef: FieldDef, channel: Channel) {
   const scale = model.scale(channel);
   const sort = model.sort(channel);
-
   let scaleDef: any = {
     name: model.scaleName(channel),
     type: scale.type,
   };
 
-  scaleDef.domain = domain(scale, model, channel);
-  extend(scaleDef, rangeMixins(scale, model, channel));
+  // If channel is either X or Y then union them with X2 & Y2 if they exist
+  if (channel === X && model.has(X2)) {
+    if (model.has(X)) {
+      scaleDef.domain = { fields: [domain(scale, model, X), domain(scale, model, X2)] };
+    } else {
+      scaleDef.domain = domain(scale, model, X2);
+    }
+  } else if (channel === Y && model.has(Y2)) {
+    if (model.has(Y)) {
+      scaleDef.domain = { fields: [domain(scale, model, Y), domain(scale, model, Y2)] };
+    } else {
+      scaleDef.domain = domain(scale, model, Y2);
+    }
+  } else {
+    scaleDef.domain = domain(scale, model, channel);
+  }
 
+  extend(scaleDef, rangeMixins(scale, model, channel));
   if (sort && (typeof sort === 'string' ? sort : sort.order) === 'descending') {
     scaleDef.reverse = true;
   }
@@ -190,6 +206,7 @@ export function scaleType(scale: Scale, fieldDef: FieldDef, channel: Channel, ma
           case TimeUnit.HOURS:
           case TimeUnit.DAY:
           case TimeUnit.MONTH:
+          case TimeUnit.QUARTER:
             return ScaleType.ORDINAL;
           default:
             // date, year, minute, second, yearmonth, monthday, ...
@@ -248,10 +265,10 @@ export function domain(scale: Scale, model: Model, channel:Channel): any {
     };
   }
 
-  const includeRawDomain = _includeRawDomain(scale, model, channel),
+  const useRawDomain = _useRawDomain(scale, model, channel),
   sort = domainSort(model, channel, scale.type);
 
-  if (includeRawDomain) { // includeRawDomain - only Q/T
+  if (useRawDomain) { // useRawDomain - only Q/T
     // FIXME: might have already been merged up
     model.setAssembleRaw();
     return {
@@ -259,7 +276,7 @@ export function domain(scale: Scale, model: Model, channel:Channel): any {
       field: model.field(channel, {noAggregate: true})
     };
   } else if (fieldDef.bin) { // bin
-    return scale.type === ScaleType.ORDINAL ? {
+    if (scale.type === ScaleType.ORDINAL) {
       // ordinal bin scale takes domain from bin_range, ordered by bin_start
       data: model.dataName(SOURCE),
       field: model.field(channel, { binSuffix: '_range' }),
@@ -323,16 +340,16 @@ export function domainSort(model: Model, channel: Channel, scaleType: ScaleType)
 
 
 /**
- * Determine if includeRawDomain should be activated for this scale.
+ * Determine if useRawDomain should be activated for this scale.
  * @return {Boolean} Returns true if all of the following conditons applies:
- * 1. `includeRawDomain` is enabled either through scale or config
+ * 1. `useRawDomain` is enabled either through scale or config
  * 2. Aggregation function is not `count` or `sum`
  * 3. The scale is quantitative or time scale.
  */
-function _includeRawDomain (scale: Scale, model: Model, channel: Channel) {
+function _useRawDomain (scale: Scale, model: Model, channel: Channel) {
   const fieldDef = model.fieldDef(channel);
 
-  return scale.includeRawDomain && //  if includeRawDomain is enabled
+  return scale.useRawDomain && //  if useRawDomain is enabled
     // only applied to aggregate table
     fieldDef.aggregate &&
     // only activated if used with aggregate functions that produces values ranging in the domain of the SCALE data
@@ -393,7 +410,7 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel): any {
         }
         const dimension = model.config().mark.orient === 'horizontal' ? Y : X;
         return {range: [model.config().mark.barThinSize, model.scale(dimension).bandSize]};
-      } else if (unitModel.mark() === TEXT_MARK) {
+      } else if (unitModel.mark() === TEXTMARK) {
         return {range: scaleConfig.fontSizeRange };
       } else if (unitModel.mark() === RULE) {
         return {range: scaleConfig.ruleSizeRange };

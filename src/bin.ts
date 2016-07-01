@@ -3,7 +3,7 @@ import {Channel, ROW, COLUMN, SHAPE, SIZE} from './channel';
 /**
  * Binning properties or boolean flag for determining whether to bin data or not.
  */
-export interface BinProperties {
+export interface Bin {
   /**
    * The minimum bin value to consider. If unspecified, the minimum value of the specified field is used.
    */
