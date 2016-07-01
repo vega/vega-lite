@@ -403,7 +403,7 @@ describe('Axis', function() {
             x: {field: 'a', type: "ordinal"}
           }
         }), X, {}, {orient: 'top'});
-      assert.deepEqual(labels.text.template, '{{ datum.data | truncate:25}}');
+      assert.deepEqual(labels.text.template, '{{ datum.data | truncate:25 }}');
     });
 
     it('should hide labels if labels are set to false', function () {
@@ -437,6 +437,32 @@ describe('Axis', function() {
       const labels = axis.properties.labels(model, X, {}, {type: 'x'});
       assert.equal(labels.angle.value, 270);
       assert.equal(labels.baseline.value, 'middle');
+    });
+
+    it('should have correct text.template for quarter timeUnits', function () {
+      const model = parseUnitModel({
+        mark: "point",
+        encoding: {
+          x: {field: "a", type: "temporal", timeUnit: "quarter"}
+        }
+      });
+      const labels = axis.properties.labels(model, X, {}, {type: 'x'});
+      let quarterPrefix = 'Q';
+      let expected = quarterPrefix + '{{datum.data | quarter}}';
+      assert.deepEqual(labels.text.template, expected);
+    });
+
+    it('should have correct text.template for yearquartermonth timeUnits', function () {
+      const model = parseUnitModel({
+        mark: "point",
+        encoding: {
+          x: {field: "a", type: "temporal", timeUnit: "yearquartermonth"}
+        }
+      });
+      const labels = axis.properties.labels(model, X, {}, {type: 'x'});
+      let quarterPrefix = 'Q';
+      let expected = '{{datum.data | time:\'%Y-\'}}' + quarterPrefix + '{{datum.data | quarter}}{{datum.data | time:\'-%B\'}}';
+      assert.deepEqual(labels.text.template, expected);
     });
 
     it('tickLabelColor should change with axis\'s label\' color', function() {

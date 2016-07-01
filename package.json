@@ -65,19 +65,19 @@
     "mocha": "^2.4.5",
     "nodemon": "^1.9.2",
     "source-map-support": "^0.4.0",
-    "tsify": "^0.15.5",
+    "tsify": "^0.16.0",
     "tslint": "^3.10.2",
     "typescript": "^1.8.10",
     "typescript-json-schema": "^0.1.1",
     "uglify-js": "^2.6.2",
-    "vega": "^2.5.2",
+    "vega": "^2.6.0",
     "vega-datasets": "vega/vega-datasets#gh-pages",
     "watchify": "^3.7.0",
     "yaml-front-matter": "^3.4.0",
     "z-schema": "^3.17.0"
   },
   "dependencies": {
-    "datalib": "^1.6.3",
+    "datalib": "^1.7.0",
     "json-stable-stringify": "^1.0.1",
     "yargs": "^4.7.1"
   },

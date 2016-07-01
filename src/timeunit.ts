@@ -20,6 +20,10 @@ export enum TimeUnit {
     HOURSMINUTESSECONDS = 'hoursminutesseconds' as any,
     MINUTESSECONDS = 'minutesseconds' as any,
     SECONDSMILLISECONDS = 'secondsmilliseconds' as any,
+    QUARTER = 'quarter' as any,
+    YEARQUARTER = 'yearquarter' as any,
+    QUARTERMONTH = 'quartermonth' as any,
+    YEARQUARTERMONTH = 'yearquartermonth' as any,
 }
 
 export const TIMEUNITS = [
@@ -43,44 +47,51 @@ export const TIMEUNITS = [
     TimeUnit.HOURSMINUTESSECONDS,
     TimeUnit.MINUTESSECONDS,
     TimeUnit.SECONDSMILLISECONDS,
+    TimeUnit.QUARTER,
+    TimeUnit.YEARQUARTER,
+    TimeUnit.QUARTERMONTH,
+    TimeUnit.YEARQUARTERMONTH,
 ];
 
 /** returns the template name used for axis labels for a time unit */
-export function format(timeUnit: TimeUnit, abbreviated = false): string {
+export function format(timeUnit: TimeUnit, abbreviated = false, field='datum.data'): string {
   if (!timeUnit) {
     return undefined;
   }
 
-  let timeString = timeUnit.toString();
-
   let dateComponents = [];
 
-  if (timeString.indexOf('year') > -1) {
+  if (containsTimeUnit(timeUnit, TimeUnit.YEAR)) {
     dateComponents.push(abbreviated ? '%y' : '%Y');
   }
 
-  if (timeString.indexOf('month') > -1) {
+  if (containsTimeUnit(timeUnit, TimeUnit.QUARTER)) {
+   // special template for quarter
+   dateComponents.push('\'}}Q{{' + field + ' | quarter}}{{' + field + ' | time:\'');
+  }
+
+  if (containsTimeUnit(timeUnit, TimeUnit.MONTH)) {
     dateComponents.push(abbreviated ? '%b' : '%B');
   }
 
-  if (timeString.indexOf('day') > -1) {
+  if (containsTimeUnit(timeUnit, TimeUnit.DAY)) {
     dateComponents.push(abbreviated ? '%a' : '%A');
-  } else if (timeString.indexOf('date') > -1) {
+  } else if (containsTimeUnit(timeUnit, TimeUnit.DATE)) {
     dateComponents.push('%d');
   }
 
   let timeComponents = [];
 
-  if (timeString.indexOf('hours') > -1) {
+  if (containsTimeUnit(timeUnit, TimeUnit.HOURS)) {
     timeComponents.push('%H');
   }
-  if (timeString.indexOf('minutes') > -1) {
+  if (containsTimeUnit(timeUnit, TimeUnit.MINUTES)) {
     timeComponents.push('%M');
   }
-  if (timeString.indexOf('seconds') > -1) {
+  if (containsTimeUnit(timeUnit, TimeUnit.SECONDS)) {
     timeComponents.push('%S');
   }
-  if (timeString.indexOf('milliseconds') > -1) {
+  if (containsTimeUnit(timeUnit, TimeUnit.MILLISECONDS)) {
     timeComponents.push('%L');
   }
 
@@ -92,5 +103,18 @@ export function format(timeUnit: TimeUnit, abbreviated = false): string {
     out.push(timeComponents.join(':'));
   }
 
-  return out.length > 0 ? out.join(' ') : undefined;
+  if (out.length > 0) {
+  // clean up quarter formatting remainders
+   const template = '{{' + field + ' | time:\'' + out.join(' ') + '\'}}';
+   return template.replace(new RegExp('{{' + field + ' \\| time:\'\'}}', 'g'), '');
+  } else {
+   return undefined;
+  }
+}
+
+/** Returns true if container contains the containee, false otherwise. */
+export function containsTimeUnit(fullTimeUnit: TimeUnit, timeUnit: TimeUnit) {
+  let containerStr = fullTimeUnit.toString();
+  let containeeStr = timeUnit.toString();
+  return containerStr.indexOf(containeeStr) > -1;
 }
