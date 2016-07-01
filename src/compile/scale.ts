@@ -580,7 +580,7 @@ export function mergeScales(model: LayerModel, channel: string) {
     // rename scale references to merged scales
     [childScales.main, childScales.colorLegend, childScales.binColorLegend]
       .filter((x) => !!x)
-      .forEach(function (scale) {
+      .forEach((scale) => {
         const scaleNameWithoutPrefix = scale.name.substr(child.name('').length);
         const newName = model.scaleName(scaleNameWithoutPrefix);
         child.renameScale(scale.name, newName);
