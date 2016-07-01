@@ -1,5 +1,5 @@
 import {ScaleType} from '../../scale';
-import {extend, keys, differ, Dict, all, duplicate} from '../../util';
+import {extend, keys, differ, Dict, every, duplicate} from '../../util';
 
 import {FacetModel} from './../facet';
 import {Model} from './../model';
@@ -36,7 +36,7 @@ export namespace nonPositiveFilter {
       return collector;
     }, duplicate(dataComponent.nonPositiveFilter));
 
-    const compatibleNonPosFilter = all(childDataComponents, (childData) => {
+    const compatibleNonPosFilter = every(childDataComponents, (childData) => {
       return !differ(childData.nonPositiveFilter, nonPosComponent);
     });
 

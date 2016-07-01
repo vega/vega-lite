@@ -3,8 +3,7 @@ declare var exports;
 
 import {SHARED_DOMAIN_OPS} from '../aggregate';
 import {COLUMN, ROW, X, Y, X2, Y2, SHAPE, SIZE, COLOR, OPACITY, TEXT, hasScale, Channel} from '../channel';
-import {StackOffset} from '../config';
-import {SOURCE, STACKED_SCALE} from '../data';
+import {RAW, SOURCE, STACKED_SCALE} from '../data';
 import {FieldDef, field, isMeasure} from '../fielddef';
 import {Mark, BAR, TEXT as TEXTMARK, RULE, TICK} from '../mark';
 import {Scale, ScaleType, NiceTime} from '../scale';
@@ -276,7 +275,7 @@ export function domain(scale: Scale, model: Model, channel:Channel): any {
       field: model.field(channel, {noAggregate: true})
     };
   } else if (fieldDef.bin) { // bin
-    if (scale.type === ScaleType.ORDINAL) {
+    return scale.type === ScaleType.ORDINAL ? {
       // ordinal bin scale takes domain from bin_range, ordered by bin_start
       data: model.dataName(SOURCE),
       field: model.field(channel, { binSuffix: '_range' }),

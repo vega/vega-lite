@@ -171,7 +171,6 @@ describe('data: source', function() {
           const sourceComponent = source.parseUnit(model);
 
           it('should have format.type topojson', function() {
-            assert.equal(sourceComponent.name, 'source');
             assert.equal(sourceComponent.format.type, 'topojson');
           });
           it('should have format.feature baz', function() {
@@ -190,7 +189,6 @@ describe('data: source', function() {
           const sourceComponent = source.parseUnit(model);
 
           it('should have format.type topojson', function() {
-            assert.equal(sourceComponent.name, 'source');
             assert.equal(sourceComponent.format.type, 'topojson');
           });
           it('should have format.mesh baz', function() {

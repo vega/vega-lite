@@ -1,5 +1,5 @@
 import {Channel, CHANNELS} from '../channel';
-import {keys, flatten, unique, Dict, forEach, extend, mergeDeep, duplicate, any} from '../util';
+import {keys, flatten, unique, Dict, forEach, extend, mergeDeep, duplicate, some} from '../util';
 import {defaultConfig, Config} from '../config';
 import {LayerSpec, ResolveMapping, ChannelResolve, INDEPENDENT, SHARED} from '../spec';
 import {assembleData, parseLayerData} from './data/data';
@@ -78,7 +78,7 @@ export class LayerModel extends Model {
     if (this.scale(channel)) {
       return true;
     }
-    return any(this._children, (child) => {
+    return some(this._children, (child) => {
       return child.hasScale(channel);
     });
   }
@@ -87,7 +87,7 @@ export class LayerModel extends Model {
     if (this.axis(channel)) {
       return true;
     }
-    return any(this._children, (child) => {
+    return some(this._children, (child) => {
       return child.hasAxis(channel);
     });
   }

@@ -1,5 +1,5 @@
 import {FieldDef} from '../../fielddef';
-import {extend, keys, differ, Dict, all, duplicate} from '../../util';
+import {extend, keys, differ, Dict, every, duplicate} from '../../util';
 
 import {FacetModel} from './../facet';
 import {Model} from './../model';
@@ -46,7 +46,7 @@ export namespace nullFilter {
       return collector;
     }, duplicate(dataComponent.nullFilter));
 
-    const compatibleNullfilter = all(childDataComponents, (childData) => {
+    const compatibleNullfilter = every(childDataComponents, (childData) => {
       return !differ(childData.nullFilter, nullFilterComponent);
     });
 

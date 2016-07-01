@@ -5,13 +5,12 @@ import {AREA, LINE, TEXT as TEXTMARK} from '../../mark';
 import {ScaleType} from '../../scale';
 import {contains, extend, isArray} from '../../util';
 import {VgStackTransform} from '../../vega.schema';
+import {UnitModel} from '../unit';
 
 import {area} from './area';
 import {bar} from './bar';
-import {sortField} from '../common';
 import {line} from './line';
 import {point, circle, square} from './point';
-import {rule} from './rule';
 import {text} from './text';
 import {tick} from './tick';
 import {rule} from './rule';
