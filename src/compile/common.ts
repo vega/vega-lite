@@ -136,11 +136,13 @@ export function sortField(orderChannelDef: OrderChannelDef) {
 
 /**
  * Returns the time format used for axis labels for a time unit.
+ *
+ * @param format time format that shoudl be used, pass undefined to generate format
  */
-export function timeFormatTemplate(model: Model, channel: Channel, shortTimeLabels: boolean, field = 'datum.data'): string {
+export function timeFormatTemplate(model: Model, channel: Channel, format: string, shortTimeLabels: boolean, field = 'datum.data'): string {
   const fieldDef = model.fieldDef(channel);
-  if (!fieldDef.timeUnit) {
-    return '{{' + field + ' | time:\'' + model.config().timeFormat + '\'}}';
+  if (!fieldDef.timeUnit || format) {
+    return '{{' + field + ' | time:\'' + (format || model.config().timeFormat) + '\'}}';
   } else {
     return timeUnitTemplate(fieldDef.timeUnit, shortTimeLabels, field);
   }

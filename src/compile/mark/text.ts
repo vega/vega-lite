@@ -87,7 +87,7 @@ export namespace text {
         extend(p, formatMixinsText(model, def));
       } else if (TEMPORAL === model.fieldDef(TEXT).type) {
         p.text = {
-          template: timeFormatTemplate(model, TEXT, model.config().mark.shortTimeLabels, model.field(TEXT, { datum: true }))
+          template: timeFormatTemplate(model, TEXT, model.config().mark.format, model.config().mark.shortTimeLabels, model.field(TEXT, { datum: true }))
         };
       } else {
         p.text = { field: model.field(TEXT) };

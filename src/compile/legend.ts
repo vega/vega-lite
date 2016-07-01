@@ -211,7 +211,7 @@ export namespace properties {
       } else if (fieldDef.type === TEMPORAL) {
         labelsSpec = extend({
           text: {
-            template: timeFormatTemplate(model, channel, legend.shortTimeLabels)
+            template: timeFormatTemplate(model, channel, legend.format, legend.shortTimeLabels)
           }
         }, labelsSpec || {});
       }

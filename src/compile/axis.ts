@@ -353,7 +353,7 @@ export namespace properties {
     if (fieldDef.type === TEMPORAL) {
       labelsSpec = extend({
         text: {
-          template: timeFormatTemplate(model, channel, axis.shortTimeLabels)
+          template: timeFormatTemplate(model, channel, axis.format, axis.shortTimeLabels)
         }
       }, labelsSpec);
     }
