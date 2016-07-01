@@ -1,4 +1,4 @@
-import {COLUMN, ROW, X, Y, SIZE, COLOR, OPACITY, SHAPE, TEXT, LABEL, Channel} from '../channel';
+import {COLOR, OPACITY, Channel} from '../channel';
 import {FieldDef, field, OrderChannelDef} from '../fielddef';
 import {SortOrder} from '../sort';
 import {QUANTITATIVE, ORDINAL, TEMPORAL} from '../type';
@@ -128,26 +128,6 @@ export function formatMixins(model: Model, fieldDef: FieldDef, format: string, s
   return def;
 }
 
-export function isAbbreviated(model: Model, channel: Channel, fieldDef: FieldDef) {
-  switch (channel) {
-    case ROW:
-    case COLUMN:
-    case X:
-    case Y:
-      return model.axis(channel).shortTimeLabels;
-    case COLOR:
-    case OPACITY:
-    case SHAPE:
-    case SIZE:
-      return model.legend(channel).shortTimeLabels;
-    case TEXT:
-      return model.config().mark.shortTimeLabels;
-    case LABEL:
-      // TODO(#897): implement when we have label
-  }
-  return false;
-}
-
 /** Return field reference with potential "-" prefix for descending sort */
 export function sortField(orderChannelDef: OrderChannelDef) {
   return (orderChannelDef.sort === SortOrder.DESCENDING ? '-' : '') +
@@ -157,11 +137,11 @@ export function sortField(orderChannelDef: OrderChannelDef) {
 /**
  * Returns the time format used for axis labels for a time unit.
  */
-export function timeFormatTemplate(model: Model, channel: Channel, field = 'datum.data'): string {
+export function timeFormatTemplate(model: Model, channel: Channel, shortTimeLabels: boolean, field = 'datum.data'): string {
   const fieldDef = model.fieldDef(channel);
   if (!fieldDef.timeUnit) {
     return '{{' + field + ' | time:\'' + model.config().timeFormat + '\'}}';
   } else {
-    return timeUnitTemplate(fieldDef.timeUnit, isAbbreviated(model, channel, fieldDef), field);
+    return timeUnitTemplate(fieldDef.timeUnit, shortTimeLabels, field);
   }
 }

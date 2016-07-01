@@ -13,42 +13,42 @@ describe('Common', function() {
         encoding: {
           x: {timeUnit: 'month', field:'a', type: "temporal", axis: {shortTimeLabels: true}}
         }
-      }), X), '{{datum.data | time:\'%b\'}}');
+      }), X, true), '{{datum.data | time:\'%b\'}}');
 
       assert.equal(timeFormatTemplate(parseUnitModel({
         mark: "point",
         encoding: {
           x: {timeUnit: 'month', field:'a', type: "temporal", axis: {shortTimeLabels: true}}
         }
-      }), X, 'datum.foo'), '{{datum.foo | time:\'%b\'}}');
+      }), X, true, 'datum.foo'), '{{datum.foo | time:\'%b\'}}');
 
       assert.equal(timeFormatTemplate(parseUnitModel({
         mark: "point",
         encoding: {
           x: {timeUnit: 'month', field:'a', type: "temporal"}
         }
-      }), X), '{{datum.data | time:\'%B\'}}');
+      }), X, false), '{{datum.data | time:\'%B\'}}');
 
       assert.equal(timeFormatTemplate(parseUnitModel({
         mark: "point",
         encoding: {
           x: {timeUnit: 'quarter', field:'a', type: "temporal", axis: {shortTimeLabels: true}}
         }
-      }), X), 'Q{{datum.data | quarter}}');
+      }), X, true), 'Q{{datum.data | quarter}}');
 
       assert.equal(timeFormatTemplate(parseUnitModel({
         mark: "point",
         encoding: {
           x: {timeUnit: 'yearquarter', field:'a', type: "temporal", axis: {shortTimeLabels: true}}
         }
-      }), X), '{{datum.data | time:\'%y-\'}}Q{{datum.data | quarter}}');
+      }), X, true), '{{datum.data | time:\'%y-\'}}Q{{datum.data | quarter}}');
 
       assert.equal(timeFormatTemplate(parseUnitModel({
         mark: "point",
         encoding: {
           x: {timeUnit: 'week', field:'a', type: "temporal", axis: {shortTimeLabels: true}}
         }
-      }), X), undefined);
+      }), X, true), undefined);
     });
   });
 
