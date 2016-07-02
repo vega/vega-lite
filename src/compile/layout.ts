@@ -96,7 +96,7 @@ function unitSizeExpr(model: UnitModel, channel: Channel, nonOrdinalSize: number
       return model.config().cell.height + '';
     }
   }
-  if (model.has(channel)) {
+  if (model.scale(channel)) {
     if (model.isOrdinalScale(channel)) {
       const scale = model.scale(channel);
       return '(' + cardinalityFormula(model, channel) +

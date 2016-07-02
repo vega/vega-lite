@@ -1,32 +1,61 @@
-/* Utilities for a Vega-Lite specificiation */
+/* Package of defining Vega-lite Specification's json schema at its utility functions */
 
-import {FieldDef} from './fielddef';
-// Package of defining Vega-lite Specification's json schema
-
-import {Config} from './config';
+import {Config, defaultOverlayConfig, AreaOverlay} from './config';
 import {Data} from './data';
-import {Encoding, UnitEncoding, has} from './encoding';
+import {Encoding, UnitEncoding, has, isRanged} from './encoding';
 import {Facet} from './facet';
-import {Mark} from './mark';
+import {FieldDef} from './fielddef';
+import {Mark, ERRORBAR, TICK, AREA, RULE, LINE, POINT} from './mark';
+import {stack} from './stack';
 import {Transform} from './transform';
 import {Projection} from './projection';
 
-import {COLOR, SHAPE, ROW, COLUMN} from './channel';
+import {ROW, COLUMN, X, Y, X2, Y2} from './channel';
 import * as vlEncoding from './encoding';
-import {BAR, AREA} from './mark';
-import {duplicate, extend} from './util';
+import {contains, duplicate, extend, keys, omit, pick} from './util';
 
 export interface BaseSpec {
+  /**
+   * Name of the visualization for later reference.
+   */
   name?: string;
+
+  /**
+   * An optional description of this mark for commenting purpose.
+   * This property has no effect on the output visualization.
+   */
   description?: string;
+
+  /**
+   * An object describing the data source
+   */
   data?: Data;
+
+  /**
+   * An object describing filter and new field calculation.
+   */
   transform?: Transform;
+
+
   projection?: Projection;
+
+  /**
+   * Configuration object
+   */
   config?: Config;
 }
 
 export interface UnitSpec extends BaseSpec {
+  /**
+   * The mark type.
+   * One of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
+   * `"area"`, `"point"`, `"rule"`, and `"text"`.
+   */
   mark: Mark;
+
+  /**
+   * A key-value mapping between encoding channels and definition of fields.
+   */
   encoding?: UnitEncoding;
 }
 
@@ -41,9 +70,15 @@ export interface UnitSpec extends BaseSpec {
  */
 export interface ExtendedUnitSpec extends BaseSpec {
   /**
-   * A name for the specification. The name is used to annotate marks, scale names, and more.
+   * The mark type.
+   * One of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
+   * `"area"`, `"point"`, `"rule"`, and `"text"`.
    */
   mark: Mark;
+
+  /**
+   * A key-value mapping between encoding channels and definition of fields.
+   */
   encoding?: Encoding;
 }
 
@@ -53,6 +88,9 @@ export interface FacetSpec extends BaseSpec {
 }
 
 export interface LayerSpec extends BaseSpec {
+  /**
+   * Unit specs that will be layered.
+   */
   layers: UnitSpec[];
 }
 
@@ -99,11 +137,22 @@ export function isLayerSpec(spec: ExtendedSpec): spec is LayerSpec {
   return spec['layers'] !== undefined;
 }
 
+
 /**
  * Decompose extended unit specs into composition of pure unit specs.
  */
+// TODO: consider moving this to another file.  Maybe vl.spec.normalize or vl.normalize
 export function normalize(spec: ExtendedSpec): Spec {
   if (isExtendedUnitSpec(spec)) {
+    return normalizeExtendedUnitSpec(spec);
+  }
+  if (isUnitSpec(spec)) {
+    return normalizeUnitSpec(spec);
+  }
+  return spec;
+}
+
+export function normalizeExtendedUnitSpec(spec: ExtendedUnitSpec): Spec {
     const hasRow = has(spec.encoding, ROW);
     const hasColumn = has(spec.encoding, COLUMN);
 
@@ -122,16 +171,150 @@ export function normalize(spec: ExtendedSpec): Spec {
           hasRow ? { row: spec.encoding.row } : {},
           hasColumn ? { column: spec.encoding.column } : {}
         ),
-        spec: {
+        spec: normalizeUnitSpec({
           mark: spec.mark,
           encoding: encoding
-        }
+        })
       },
       spec.config ? { config: spec.config } : {}
     );
+}
+
+export function normalizeUnitSpec(spec: UnitSpec): Spec {
+  const config = spec.config;
+  const overlayConfig = config && config.overlay;
+  const overlayWithLine = overlayConfig  && spec.mark === AREA &&
+    contains([AreaOverlay.LINEPOINT, AreaOverlay.LINE], overlayConfig.area);
+  const overlayWithPoint = overlayConfig && (
+    (overlayConfig.line && spec.mark === LINE) ||
+    (overlayConfig.area === AreaOverlay.LINEPOINT && spec.mark === AREA)
+  );
+
+  // TODO: thoroughly test
+  if (spec.mark === ERRORBAR) {
+    return normalizeErrorBarUnitSpec(spec);
+  }
+  // TODO: thoroughly test
+  if (isRanged(spec.encoding)) {
+    return normalizeRangedUnitSpec(spec);
   }
 
+  if (isStacked(spec)) {
+    // We can't overlay stacked area yet!
+    return spec;
+  }
+
+  if (overlayWithPoint || overlayWithLine) {
+    return normalizeOverlay(spec, overlayWithPoint, overlayWithLine);
+  }
   return spec;
+}
+
+export function normalizeRangedUnitSpec(spec: UnitSpec): Spec {
+  if (spec.encoding) {
+    const hasX = has(spec.encoding, X);
+    const hasY = has(spec.encoding, Y);
+    const hasX2 = has(spec.encoding, X2);
+    const hasY2 = has(spec.encoding, Y2);
+    if ((hasX2 && !hasX) || (hasY2 && !hasY)) {
+      let normalizedSpec = duplicate(spec);
+      if (hasX2 && !hasX) {
+        normalizedSpec.encoding.x = normalizedSpec.encoding.x2;
+        delete normalizedSpec.encoding.x2;
+      }
+      if (hasY2 && !hasY) {
+        normalizedSpec.encoding.y = normalizedSpec.encoding.y2;
+        delete normalizedSpec.encoding.y2;
+      }
+
+      return normalizedSpec;
+    }
+  }
+  return spec;
+}
+
+export function normalizeErrorBarUnitSpec(spec: UnitSpec): Spec {
+  // FIXME correctly deal with color and opacity
+
+  let layerSpec = extend(spec.name ? {name: spec.name} : {},
+    spec.description ? {description: spec.description} : {},
+    spec.data ? {data: spec.data} : {},
+    spec.transform ? {transform: spec.transform} : {},
+    spec.config ? {config: spec.config} : {}, {layers: []}
+  );
+  if (!spec.encoding) {
+    return layerSpec;
+  }
+  if (spec.mark === ERRORBAR) {
+    const ruleSpec = {
+      mark: RULE,
+      encoding: extend(
+        spec.encoding.x ? {x: duplicate(spec.encoding.x)} : {},
+        spec.encoding.y ? {y: duplicate(spec.encoding.y)} : {},
+        spec.encoding.x2 ? {x2: duplicate(spec.encoding.x2)} : {},
+        spec.encoding.y2 ? {y2: duplicate(spec.encoding.y2)} : {},
+        {})
+    };
+    const lowerTickSpec = {
+      mark: TICK,
+      encoding: extend(
+        spec.encoding.x ? {x: duplicate(spec.encoding.x)} : {},
+        spec.encoding.y ? {y: duplicate(spec.encoding.y)} : {},
+        spec.encoding.size ? {size: duplicate(spec.encoding.size)} : {},
+        {})
+    };
+    const upperTickSpec = {
+      mark: TICK,
+      encoding: extend({
+        x: spec.encoding.x2 ? duplicate(spec.encoding.x2) : duplicate(spec.encoding.x),
+        y: spec.encoding.y2 ? duplicate(spec.encoding.y2) : duplicate(spec.encoding.y)
+      }, spec.encoding.size ? {size: duplicate(spec.encoding.size)} : {})
+    };
+    layerSpec.layers.push(normalizeUnitSpec(ruleSpec));
+    layerSpec.layers.push(normalizeUnitSpec(lowerTickSpec));
+    layerSpec.layers.push(normalizeUnitSpec(upperTickSpec));
+  }
+  return layerSpec;
+}
+
+export function normalizeOverlay(spec: UnitSpec, overlayWithPoint: boolean, overlayWithLine: boolean): LayerSpec {
+  let outerProps = ['name', 'description', 'data', 'transform'];
+  let baseSpec = omit(spec, outerProps.concat('config'));
+
+  let baseConfig = duplicate(spec.config);
+  delete baseConfig.overlay;
+  // TODO: remove shape, size
+
+  const layerSpec = extend(
+    pick(spec, outerProps),
+    { layers: [baseSpec] },
+    keys(baseConfig).length > 0 ? { config: baseConfig } : {}
+  );
+
+  if (overlayWithLine) {
+    // TODO: add name with suffix
+    let lineSpec = duplicate(baseSpec);
+    lineSpec.mark = LINE;
+    // TODO: remove shape, size
+    let markConfig = extend({}, defaultOverlayConfig.lineStyle, spec.config.overlay.lineStyle);
+    if (keys(markConfig).length > 0) {
+      lineSpec.config = {mark: markConfig};
+    }
+
+    layerSpec.layers.push(lineSpec);
+  }
+
+  if (overlayWithPoint) {
+    // TODO: add name with suffix
+    let pointSpec = duplicate(baseSpec);
+    pointSpec.mark = POINT;
+    let markConfig = extend({}, defaultOverlayConfig.pointStyle, spec.config.overlay.pointStyle);;
+    if (keys(markConfig).length > 0) {
+      pointSpec.config = {mark: markConfig};
+    }
+    layerSpec.layers.push(pointSpec);
+  }
+  return layerSpec;
 }
 
 // TODO: add vl.spec.validate & move stuff from vl.validate to here
@@ -151,11 +334,8 @@ export function getCleanSpec(spec: ExtendedUnitSpec): ExtendedUnitSpec {
   return spec;
 }
 
-export function isStack(spec: ExtendedUnitSpec): boolean {
-  return (vlEncoding.has(spec.encoding, COLOR) || vlEncoding.has(spec.encoding, SHAPE)) &&
-    (spec.mark === BAR || spec.mark === AREA) &&
-    (!spec.config || !spec.config.mark.stacked !== false) &&
-    vlEncoding.isAggregate(spec.encoding);
+export function isStacked(spec: ExtendedUnitSpec): boolean {
+  return stack(spec.mark, spec.encoding, spec.config) !== null;
 }
 
 // TODO revise

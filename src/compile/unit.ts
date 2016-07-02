@@ -1,6 +1,6 @@
 import {AggregateOp} from '../aggregate';
 import {Axis} from '../axis';
-import {X, Y, TEXT, PATH, ORDER, Channel, UNIT_CHANNELS,  UNIT_SCALE_CHANNELS, NONSPATIAL_SCALE_CHANNELS, supportMark} from '../channel';
+import {X, Y, X2, Y2, TEXT, PATH, ORDER, Channel, UNIT_CHANNELS,  UNIT_SCALE_CHANNELS, NONSPATIAL_SCALE_CHANNELS, supportMark} from '../channel';
 import {defaultConfig, Config, CellConfig} from '../config';
 import {SOURCE, SUMMARY} from '../data';
 import {Encoding, containsLatLong} from '../encoding';
@@ -24,7 +24,7 @@ import {assembleLayout, parseUnitLayout} from './layout';
 import {Model} from './model';
 import {parseMark} from './mark/mark';
 import {parseScaleComponent, scaleType} from './scale';
-import {compileStackProperties, StackProperties} from './stack';
+import {stack, StackProperties} from '../stack';
 
 /**
  * Internal model of Vega-Lite specification for the compiler.
@@ -43,12 +43,12 @@ export class UnitModel extends Model {
     const config = this._config = this._initConfig(spec.config, parent, mark, encoding);
 
     this._projection = this._initProjection(config);
-    const scale = this._scale =  this._initScale(mark, encoding, config);
+    this._scale =  this._initScale(mark, encoding, config);
     this._axis = this._initAxis(encoding, config);
     this._legend = this._initLegend(encoding, config);
 
-    // calculate stack
-    this._stack = compileStackProperties(mark, encoding, scale, config);
+    // calculate stack properties
+    this._stack = stack(mark, encoding, config);
   }
 
   private _initEncoding(mark: Mark, encoding: Encoding) {
@@ -93,15 +93,20 @@ export class UnitModel extends Model {
   private _initScale(mark: Mark, encoding: Encoding, config: Config): Dict<Scale> {
     return UNIT_SCALE_CHANNELS.reduce(function(_scale, channel) {
       const fieldDef = encoding[channel];
-      if (fieldDef && fieldDef.field &&
-          // These types do not require scale
-          !contains([LATITUDE, LONGITUDE, GEOJSON], fieldDef.type) &&
-          // User explicitly set scale to null to disable scale
-          fieldDef.scale !== null
+      if (
+          (
+            fieldDef && fieldDef.field &&
+            // These types do not require scale
+            !contains([LATITUDE, LONGITUDE, GEOJSON], fieldDef.type) &&
+            // User explicitly set scale to null to disable scale
+            fieldDef.scale !== null
+          ) ||
+          (channel === X && encoding.x2 && encoding.x2.field) ||
+          (channel === Y && encoding.y2 && encoding.y2.field)
         ) {
-        const scaleSpec = encoding[channel].scale || {};
-        const channelDef = encoding[channel];
 
+        const channelDef = encoding[channel];
+        const scaleSpec = (channelDef || {}).scale || {};
         const _scaleType = scaleType(scaleSpec, channelDef, channel, mark);
 
         _scale[channel] = extend({
@@ -120,8 +125,11 @@ export class UnitModel extends Model {
   private _initAxis(encoding: Encoding, config: Config): Dict<Axis> {
     return [X, Y].reduce(function(_axis, channel) {
       // Position Axis
-      if (vlEncoding.has(encoding, channel)) {
-        const axisSpec = encoding[channel].axis;
+      if (vlEncoding.has(encoding, channel) ||
+          (channel === X && vlEncoding.has(encoding, X2)) ||
+          (channel === Y && vlEncoding.has(encoding, Y2))) {
+
+        const axisSpec = (encoding[channel] || {}).axis;
         // We no longer support false in the schema, but we keep false here for backward compatability.
         if (axisSpec !== null && axisSpec !== false && (!containsLatLong(encoding) || axisSpec)) {
           _axis[channel] = extend({},

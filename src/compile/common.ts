@@ -1,17 +1,18 @@
-import {COLUMN, ROW, X, Y, SIZE, COLOR, OPACITY, SHAPE, TEXT, LABEL, Channel} from '../channel';
+import {COLOR, OPACITY} from '../channel';
+import {Config} from '../config';
 import {containsLatLong} from '../encoding';
 import {FieldDef, field, OrderChannelDef} from '../fielddef';
 import {SortOrder} from '../sort';
-import {QUANTITATIVE, ORDINAL, TEMPORAL} from '../type';
-import {contains, union, extend} from '../util';
-import {PATH} from '../Mark';
+import {TimeUnit} from '../timeunit';
+import {QUANTITATIVE, ORDINAL} from '../type';
+import {union, extend} from '../util';
 import {PATH as PATHMARK} from '../mark';
 import {GEOJSON, LATITUDE, LONGITUDE} from '../type';
 
 import {FacetModel} from './facet';
 import {LayerModel} from './layer';
 import {Model} from './model';
-import {format as timeFormatExpr} from '../timeunit';
+import {template as timeUnitTemplate} from '../timeunit';
 import {UnitModel} from './unit';
 import {Spec, isUnitSpec, isFacetSpec, isLayerSpec} from '../spec';
 
@@ -106,86 +107,35 @@ export function applyMarkConfig(marksProperties, model: UnitModel, propsList: st
   return applyConfig(marksProperties, model.config().mark, propsList);
 }
 
-
 /**
- * Builds an object with format and formatType properties.
+ * Returns number format for a fieldDef
  *
  * @param format explicitly specified format
  */
-export function formatMixins(model: Model, channel: Channel, format: string) {
-  const fieldDef = model.fieldDef(channel);
-
-  if(!contains([QUANTITATIVE, TEMPORAL], fieldDef.type)) {
-    return {};
+export function numberFormat(fieldDef: FieldDef, format: string, config: Config) {
+  if (fieldDef.type === QUANTITATIVE && !fieldDef.bin) {
+    // add number format for quantitative type only
+    // TODO: need to make this work correctly for numeric ordinal / nominal type
+    return format || config.numberFormat;
   }
-
-  let def: any = {};
-
-  if (fieldDef.type === TEMPORAL) {
-    def.formatType = 'time';
-  }
-
-  if (format !== undefined) {
-    def.format = format;
-  } else {
-    switch (fieldDef.type) {
-      case QUANTITATIVE:
-        def.format = model.config().numberFormat;
-        break;
-      case TEMPORAL:
-        def.format = timeFormat(model, channel) || model.config().timeFormat;
-        break;
-    }
-  }
-
-  if (channel === TEXT) {
-    // text does not support format and formatType
-    // https://github.com/vega/vega/issues/505
-
-    const filter = (def.formatType || 'number') + (def.format ? ':\'' + def.format + '\'' : '');
-    return {
-      text: {
-        template: '{{' + model.field(channel, { datum: true }) + ' | ' + filter + '}}'
-      }
-    };
-  }
-
-  return def;
+  return undefined;
 }
-
-function isAbbreviated(model: Model, channel: Channel, fieldDef: FieldDef) {
-  switch (channel) {
-    case ROW:
-    case COLUMN:
-    case X:
-    case Y:
-      return model.axis(channel).shortTimeLabels;
-    case COLOR:
-    case OPACITY:
-    case SHAPE:
-    case SIZE:
-      return model.legend(channel).shortTimeLabels;
-    case TEXT:
-      return model.config().mark.shortTimeLabels;
-    case LABEL:
-      // TODO(#897): implement when we have label
-  }
-  return false;
-}
-
-
 
 /** Return field reference with potential "-" prefix for descending sort */
 export function sortField(orderChannelDef: OrderChannelDef) {
-  return (orderChannelDef.sort === SortOrder.DESCENDING ? '-' : '') + field(orderChannelDef);
+  return (orderChannelDef.sort === SortOrder.DESCENDING ? '-' : '') +
+    field(orderChannelDef, {binSuffix: '_mid'});
 }
 
 /**
- * Returns the time format used for axis labels for a time unit.
+ * Returns the time template used for axis/legend labels or text mark for a temporal field
  */
-export function timeFormat(model: Model, channel: Channel): string {
-  const fieldDef = model.fieldDef(channel);
-  return timeFormatExpr(fieldDef.timeUnit, isAbbreviated(model, channel, fieldDef));
+export function timeTemplate(templateField: string, timeUnit: TimeUnit, format: string, shortTimeLabels: boolean, config: Config): string {
+  if (!timeUnit || format) {
+    return '{{' + templateField + ' | time:\'' + (format || config.timeFormat) + '\'}}';
+  } else {
+    return timeUnitTemplate(timeUnit, templateField, shortTimeLabels);
+  }
 }
 
 export function hasGeoTransform(model: UnitModel): boolean {
