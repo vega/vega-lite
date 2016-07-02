@@ -1,4 +1,4 @@
-import {Channel, CHANNELS} from '../channel';
+import {Channel, UNIT_SCALE_CHANNELS} from '../channel';
 import {keys, flatten, unique, Dict, forEach, extend, mergeDeep, duplicate, some} from '../util';
 import {defaultConfig, Config} from '../config';
 import {LayerSpec, ResolveMapping, ChannelResolve, INDEPENDENT, SHARED} from '../spec';
@@ -40,7 +40,7 @@ export class LayerModel extends Model {
    * Use resolve for all other fields with default shared.
    */
   private _initResolve(resolve: ResolveMapping): ResolveMapping {
-    CHANNELS.forEach((channel) => {
+    UNIT_SCALE_CHANNELS.forEach((channel) => {
       const types = unique(this.children().map((child: UnitModel) => {
         const fieldDef = child.fieldDef(channel);
         if (fieldDef) {
