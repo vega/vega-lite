@@ -2,8 +2,6 @@ import {DataFormat, SOURCE} from '../../data';
 import {contains, extend, keys} from '../../util';
 import {VgData} from '../../vega.schema';
 
-import {FacetModel} from '../facet';
-import {LayerModel} from '../layer';
 import {Model} from './../model';
 
 import {DataComponent, SourceComponent} from './data';
