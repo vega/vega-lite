@@ -4,7 +4,7 @@ import {assert} from 'chai';
 import {parseUnitModel} from '../util';
 import {defaultConfig} from '../../src/config';
 import {TimeUnit} from '../../src/timeunit';
-import {field, FieldDef} from '../../src/fieldDef';
+import {field, FieldDef} from '../../src/fielddef';
 import {TEMPORAL, QUANTITATIVE, ORDINAL, NOMINAL} from '../../src/type';
 import {numberFormat, timeTemplate, applyColorAndOpacity} from '../../src/compile/common';
 
