@@ -174,22 +174,16 @@ export function normalizeExtendedUnitSpec(spec: ExtendedUnitSpec): Spec {
     const hasRow = has(spec.encoding, ROW);
     const hasColumn = has(spec.encoding, COLUMN);
 
-    const isFacet = hasColumn || hasRow;
-
     // TODO: @arvind please  add interaction syntax here
     let encoding = duplicate(spec.encoding);
     delete encoding.column;
     delete encoding.row;
 
-    const data = extend(
-      { data: spec.data },
-      spec.transform ? { transform: spec.transform } : {}
-    );
-
     return extend(
       spec.name ? { name: spec.name } : {},
       spec.description ? { description: spec.description } : {},
-      isFacet ? data : {},
+      { data: spec.data },
+      spec.transform ? { transform: spec.transform } : {},
       {
         facet: extend(
           hasRow ? { row: spec.encoding.row } : {},
