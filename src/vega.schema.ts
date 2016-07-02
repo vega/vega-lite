@@ -31,7 +31,8 @@ export type VgValueRef = {
     datum?: string,
     group?: string,
     parent?: string
-  } ,
+  },
+  template?: string,
   scale?: string, // TODO: object
   mult?: number,
   offset?: number,

@@ -5,7 +5,7 @@ import {NOMINAL, ORDINAL, TEMPORAL} from '../type';
 import {contains, keys, extend, truncate, Dict} from '../util';
 import {VgAxis} from '../vega.schema';
 
-import {formatMixins, timeFormatTemplate} from './common';
+import {numberFormat, timeTemplate} from './common';
 import {Model} from './model';
 import {UnitModel} from './unit';
 
@@ -91,13 +91,10 @@ export function parseAxis(channel: Channel, model: Model): VgAxis {
     scale: model.scaleName(channel)
   };
 
-  // format mixins (add format and formatType)
-  extend(def, formatMixins(model, model.fieldDef(channel), axis.format, axis.shortTimeLabels));
-
   // 1.2. Add properties
   [
     // a) properties with special rules (so it has axis[property] methods) -- call rule functions
-    'grid', 'layer', 'offset', 'orient', 'tickSize', 'ticks', 'tickSizeEnd', 'title', 'titleOffset',
+    'format', 'grid', 'layer', 'offset', 'orient', 'tickSize', 'ticks', 'tickSizeEnd', 'title', 'titleOffset',
     // b) properties without rules, only produce default values in the schema, or explicit value if specified
     'tickPadding', 'tickSize', 'tickSizeMajor', 'tickSizeMinor', 'values', 'subdivide'
   ].forEach(function(property) {
@@ -129,6 +126,10 @@ export function parseAxis(channel: Channel, model: Model): VgAxis {
   });
 
   return def;
+}
+
+export function format(model: Model, channel: Channel) {
+  return numberFormat(model.fieldDef(channel), model.axis(channel).format, model.config());
 }
 
 export function offset(model: Model, channel: Channel) {
@@ -281,6 +282,7 @@ export namespace properties {
   export function labels(model: Model, channel: Channel, labelsSpec, def) {
     const fieldDef = model.fieldDef(channel);
     const axis = model.axis(channel);
+    const config = model.config();
 
     if (!axis.labels) {
       return extend({
@@ -288,6 +290,7 @@ export namespace properties {
       }, labelsSpec);
     }
 
+    // Text
     if (contains([NOMINAL, ORDINAL], fieldDef.type) && axis.labelMaxLength) {
       // TODO replace this with Vega's labelMaxLength once it is introduced
       labelsSpec = extend({
@@ -295,6 +298,12 @@ export namespace properties {
           template: '{{ datum.data | truncate:' + axis.labelMaxLength + ' }}'
         }
       }, labelsSpec || {});
+    } else if (fieldDef.type === TEMPORAL) {
+      labelsSpec = extend({
+        text: {
+          template: timeTemplate('datum.data', fieldDef.timeUnit, axis.format, axis.shortTimeLabels, config)
+        }
+      }, labelsSpec);
     }
 
     // Label Angle
@@ -349,14 +358,6 @@ export namespace properties {
 
     if (axis.tickLabelFontSize !== undefined) {
         labelsSpec.fontSize = {value: axis.tickLabelFontSize};
-    }
-
-    if (fieldDef.type === TEMPORAL) {
-      labelsSpec = extend({
-        text: {
-          template: timeFormatTemplate(model, channel, axis.format, axis.shortTimeLabels)
-        }
-      }, labelsSpec);
     }
 
     return keys(labelsSpec).length === 0 ? undefined : labelsSpec;

@@ -2,104 +2,65 @@
 
 import {assert} from 'chai';
 import {parseUnitModel} from '../util';
-import {X} from '../../src/channel';
-import {timeFormatTemplate, formatMixins, applyColorAndOpacity} from '../../src/compile/common';
+import {defaultConfig} from '../../src/config';
+import {TimeUnit} from '../../src/timeunit';
+import {field, FieldDef} from '../../src/fielddef';
+import {TEMPORAL, QUANTITATIVE, ORDINAL, NOMINAL} from '../../src/type';
+import {numberFormat, timeTemplate, applyColorAndOpacity} from '../../src/compile/common';
 
 describe('Common', function() {
   describe('timeFormat()', function() {
-    it('should get the right time template', function() {
-      assert.equal(timeFormatTemplate(parseUnitModel({
-        mark: "point",
-        encoding: {
-          x: {timeUnit: 'month', field:'a', type: "temporal", axis: {shortTimeLabels: true}}
-        }
-      }), X, undefined, true), '{{datum.data | time:\'%b\'}}');
+    it('should get the right time template for month with shortTimeLabels=true', function() {
+      const fieldDef: FieldDef = {timeUnit: TimeUnit.MONTH, field: 'a', type: TEMPORAL};
+      const template = timeTemplate(field(fieldDef, {datum: true}), TimeUnit.MONTH, undefined, true, defaultConfig);
+      assert.equal(template,'{{datum.month_a | time:\'%b\'}}');
+    });
 
-      assert.equal(timeFormatTemplate(parseUnitModel({
-        mark: "point",
-        encoding: {
-          x: {timeUnit: 'month', field:'a', type: "temporal", axis: {shortTimeLabels: true}}
-        }
-      }), X, undefined, true, 'datum.foo'), '{{datum.foo | time:\'%b\'}}');
+    it('should get the right time template for month with shortTimeLabels=false', function() {
+      const fieldDef: FieldDef = {timeUnit: TimeUnit.MONTH, field: 'a', type: TEMPORAL};
+      const template = timeTemplate(field(fieldDef, {datum: true}), TimeUnit.MONTH, undefined, false, defaultConfig);
+      assert.equal(template,'{{datum.month_a | time:\'%B\'}}');
+    });
 
-      assert.equal(timeFormatTemplate(parseUnitModel({
-        mark: "point",
-        encoding: {
-          x: {timeUnit: 'month', field:'a', type: "temporal", axis: {shortTimeLabels: true}}
-        }
-      }), X, '%Y', true), '{{datum.data | time:\'%Y\'}}');
+    it('should get the right time template for yearmonth with custom format', function() {
+      const fieldDef: FieldDef = {timeUnit: TimeUnit.YEARMONTH, field: 'a', type: TEMPORAL};
+      const template = timeTemplate(field(fieldDef, {datum: true}), TimeUnit.MONTH, '%Y', true, defaultConfig);
+      assert.equal(template,'{{datum.yearmonth_a | time:\'%Y\'}}');
+    });
 
-      assert.equal(timeFormatTemplate(parseUnitModel({
-        mark: "point",
-        encoding: {
-          x: {timeUnit: 'month', field:'a', type: "temporal"}
-        }
-      }), X, undefined, false), '{{datum.data | time:\'%B\'}}');
+    it('should get the right time template for quarter', function() {
+      const fieldDef: FieldDef = {timeUnit: TimeUnit.QUARTER, field: 'a', type: TEMPORAL};
+      const template = timeTemplate(field(fieldDef, {datum: true}), TimeUnit.QUARTER, undefined, true, defaultConfig);
+      assert.equal(template, 'Q{{datum.quarter_a | quarter}}');
+    });
 
-      assert.equal(timeFormatTemplate(parseUnitModel({
-        mark: "point",
-        encoding: {
-          x: {timeUnit: 'quarter', field:'a', type: "temporal", axis: {shortTimeLabels: true}}
-        }
-      }), X, undefined, true), 'Q{{datum.data | quarter}}');
-
-      assert.equal(timeFormatTemplate(parseUnitModel({
-        mark: "point",
-        encoding: {
-          x: {timeUnit: 'yearquarter', field:'a', type: "temporal", axis: {shortTimeLabels: true}}
-        }
-      }), X, undefined, true), '{{datum.data | time:\'%y-\'}}Q{{datum.data | quarter}}');
-
-      assert.equal(timeFormatTemplate(parseUnitModel({
-        mark: "point",
-        encoding: {
-          x: {timeUnit: 'week', field:'a', type: "temporal", axis: {shortTimeLabels: true}}
-        }
-      }), X, undefined, true), undefined);
+    it('should get the right time template for yearquarter', function() {
+      const template = timeTemplate('datum.data', TimeUnit.YEARQUARTER, undefined, true, defaultConfig);
+      assert.equal(template, '{{datum.data | time:\'%y-\'}}Q{{datum.data | quarter}}');
     });
   });
 
-  describe('formatMixins()', function() {
+  describe('numberFormat()', function() {
     it('should use number format for quantitative scale', function() {
-      const model = parseUnitModel({
-        mark: "point",
-        encoding: {
-          x: {field:'a', type: "quantitative"}
-        },
-        config: {
-          numberFormat: 'd'
-        }
-      });
-      assert.deepEqual(formatMixins(model, model.fieldDef(X), undefined, model.axis(X).shortTimeLabels), {
-        format: 'd'
-      });
+      assert.equal(numberFormat({field: 'a', type: QUANTITATIVE}, undefined, {numberFormat: 'd'}), 'd');
     });
 
     it('should support empty number format', function() {
-      const model = parseUnitModel({
-        mark: "point",
-        encoding: {
-          x: {field:'a', type: "quantitative"}
-        },
-        config: {
-          numberFormat: ''
-        }
-      });
-      assert.deepEqual(formatMixins(model, model.fieldDef(X), undefined, model.axis(X).shortTimeLabels), {
-        format: ''
-      });
+      assert.equal(numberFormat({field: 'a', type: QUANTITATIVE}, undefined, {numberFormat: ''}), '');
     });
 
     it('should use format if provided', function() {
-      const model = parseUnitModel({
-        mark: "point",
-        encoding: {
-          x: {field:'a', type: "quantitative"}
-        }
-      });
-      assert.deepEqual(formatMixins(model, model.fieldDef(X), 'foo', model.axis(X).shortTimeLabels), {
-        format: 'foo'
-      });
+      assert.equal(numberFormat({field: 'a', type: QUANTITATIVE}, 'a', 'd'), 'a');
+    });
+
+    it('should not use number format for binned quantitative scale', function() {
+      assert.equal(numberFormat({bin: true, field: 'a', type: QUANTITATIVE}, undefined, 'd'), undefined);
+    });
+
+    it('should not use number format for non-quantitative scale', function() {
+      for (let type of [TEMPORAL, NOMINAL, ORDINAL]) {
+        assert.equal(numberFormat({bin: true, field: 'a', type: type}, undefined, 'd'), undefined);
+      }
     });
   });
 
