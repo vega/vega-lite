@@ -34,26 +34,7 @@ export function initMarkConfig(mark: Mark, encoding: Encoding, config: Config) {
            }
            break;
          case 'orient':
-           const xIsMeasure = isMeasure(encoding.x) || isMeasure(encoding.x2);
-           const yIsMeasure = isMeasure(encoding.y) || isMeasure(encoding.y2);
-
-           // When unambiguous, do not allow overriding
-           if (xIsMeasure && !yIsMeasure) {
-             if (mark === TICK) {
-               cfg[property] = 'vertical';
-             } else {
-               cfg[property] = 'horizontal';
-             }
-           } else if (!xIsMeasure && yIsMeasure) {
-             if (mark === TICK) {
-               cfg[property] = 'horizontal';
-             } else {
-               cfg[property] = 'vertical';
-             }
-           }
-
-           // In ambiguous cases (QxQ or OxO) use specified value
-           // (and implicitly vertical by default.)
+           cfg[property] = isVertical(mark, encoding) ? 'vertical' : 'horizontal';
            break;
          // text-only
          case 'align':
@@ -65,4 +46,30 @@ export function initMarkConfig(mark: Mark, encoding: Encoding, config: Config) {
      }, {}),
      config.mark
    );
+}
+
+export function isVertical(mark: Mark, encoding: Encoding) {
+  const xIsMeasure = isMeasure(encoding.x) || isMeasure(encoding.x2);
+  const yIsMeasure = isMeasure(encoding.y) || isMeasure(encoding.y2);
+
+  const xIsRange = encoding.x && encoding.x2;
+  const yIsRange = encoding.y && encoding.y2;
+
+  // In ambiguous cases (QxQ or OxO) use specified value
+  // (and implicitly vertical by default.)
+  let vertical = true;
+
+  if (xIsMeasure && !yIsMeasure) {
+    vertical = false;
+  } else if (!xIsMeasure && yIsMeasure) {
+    vertical = true;
+  }
+
+  if (TICK === mark) {
+    vertical = !vertical;
+  } else if (RULE === mark && !xIsRange && !yIsRange) {
+    vertical = !vertical;
+  }
+
+  return vertical;
 }
