@@ -39,13 +39,13 @@ export function initMarkConfig(mark: Mark, encoding: Encoding, config: Config) {
 
            // When unambiguous, do not allow overriding
            if (xIsMeasure && !yIsMeasure) {
-             if (mark === TICK) {
+             if (contains([TICK, RULE], mark)) {
                cfg[property] = 'vertical';
              } else {
                cfg[property] = 'horizontal';
              }
            } else if (!xIsMeasure && yIsMeasure) {
-             if (mark === TICK) {
+             if (contains([TICK, RULE], mark)) {
                cfg[property] = 'horizontal';
              } else {
                cfg[property] = 'vertical';
