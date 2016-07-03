@@ -22,7 +22,14 @@ export namespace filter {
 
     if (sameFilter) {
       // combine filter at parent
-      dataComponent.filter = (dataComponent.filter ? dataComponent.filter + '&&' : '') + (childDataComponents[0].filter || '');
+      let filters = [];
+      if (dataComponent.filter) {
+        filters.push(dataComponent.filter);
+      }
+      if (childDataComponents[0].filter) {
+        filters.push(childDataComponents[0].filter);
+      }
+      dataComponent.filter = filters.join('&&');
       childDataComponents.forEach((childData) => {
         delete childData.filter;
       });
