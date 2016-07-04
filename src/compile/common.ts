@@ -129,7 +129,9 @@ export function sortField(orderChannelDef: OrderChannelDef) {
  */
 export function timeTemplate(templateField: string, timeUnit: TimeUnit, format: string, shortTimeLabels: boolean, config: Config): string {
   if (!timeUnit || format) {
-    return '{{' + templateField + ' | time:\'' + (format || config.timeFormat) + '\'}}';
+    // If there is not time unit, or if user explicitly specify format for axis/legend/text.
+    const _format = format || config.timeFormat; // only use config.timeFormat if there is no timeUnit.
+    return '{{' + templateField + ' | time:\'' + _format + '\'}}';
   } else {
     return timeUnitTemplate(timeUnit, templateField, shortTimeLabels);
   }
