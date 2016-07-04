@@ -1,10 +1,13 @@
 import {COLOR, OPACITY} from '../channel';
 import {Config} from '../config';
+import {containsLatLong} from '../encoding';
 import {FieldDef, field, OrderChannelDef} from '../fielddef';
 import {SortOrder} from '../sort';
 import {TimeUnit} from '../timeunit';
 import {QUANTITATIVE, ORDINAL} from '../type';
-import { union} from '../util';
+import {union, extend} from '../util';
+import {PATH as PATHMARK} from '../mark';
+import {GEOJSON, LATITUDE, LONGITUDE} from '../type';
 
 import {FacetModel} from './facet';
 import {LayerModel} from './layer';
@@ -133,4 +136,55 @@ export function timeTemplate(templateField: string, timeUnit: TimeUnit, format: 
   } else {
     return timeUnitTemplate(timeUnit, templateField, shortTimeLabels);
   }
+}
+
+export function hasGeoTransform(model: UnitModel): boolean {
+  const geoPathFieldDef = model.encoding().geopath;
+  if (model.mark() === PATHMARK) {
+    if (geoPathFieldDef && geoPathFieldDef.type === GEOJSON) {
+      // If the mark is path and geopath encoding is defined with geojson type,
+      // it means the user wants to have geopath transform.
+      return true;
+    }
+  }
+  // For geo transform, we only plot latitude/longitude against
+  // x/y because it would not make sense for other measures like color.
+  return containsLatLong(model.encoding());
+}
+
+export function geoTransform(model: UnitModel) {
+  let projection = model.projection();
+  let transform: any;
+
+  if (model.mark() === PATHMARK) {
+    // return geoPath transform
+    const geoPathFieldDef = model.encoding().geopath;
+    transform = { type: 'geopath', field: geoPathFieldDef.field };
+  } else {
+    transform = { type: 'geo' };
+    const xFieldDef = model.encoding().x;
+    const yFieldDef = model.encoding().y;
+    if (xFieldDef && xFieldDef.type === LATITUDE) {
+      transform.lat = xFieldDef.field;
+    }
+    if (xFieldDef && xFieldDef.type === LONGITUDE) {
+      transform.lon = xFieldDef.field;
+    }
+    if (yFieldDef && yFieldDef.type === LATITUDE) {
+      transform.lat = yFieldDef.field;
+    }
+    if (yFieldDef && yFieldDef.type === LONGITUDE) {
+      transform.lon = yFieldDef.field;
+    }
+  }
+  transform = extend(transform, { projection : model.projection().type});
+
+  // Set all the projection properties if specified.
+  ['translate', 'scale', 'center', 'rotate', 'precision', 'clipAngle']
+      .forEach((prop) => {
+        if (projection[prop] !== undefined) {
+          transform[prop] = projection[prop];
+        }
+      });
+  return transform;
 }

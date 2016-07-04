@@ -7,7 +7,7 @@ import {Legend} from './legend';
 import {Scale, ScaleType} from './scale';
 import {SortField, SortOrder} from './sort';
 import {TimeUnit} from './timeunit';
-import {Type, NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from './type';
+import {Type, NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL, GEOJSON, LATITUDE, LONGITUDE} from './type';
 import {contains, getbins, toMap} from './util';
 
 /**
@@ -137,6 +137,12 @@ export function field(fieldDef: FieldDef, opt: FieldRefOption = {}) {
     return prefix + fieldDef.aggregate + '_' + field + suffix;
   } else if (!opt.nofn && fieldDef.timeUnit) {
     return prefix + fieldDef.timeUnit + '_' + field + suffix;
+  } else if (fieldDef.type === LATITUDE) {
+    return prefix + 'layout_y';
+  } else if (fieldDef.type === LONGITUDE) {
+    return prefix + 'layout_x';
+  } else if (fieldDef.type === GEOJSON) {
+    return prefix + 'layout_path';
   } else {
     return prefix + field;
   }

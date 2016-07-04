@@ -1,0 +1,23 @@
+{
+  "data":{
+   "url":"data/us-10m.json",
+   "format": {"type": "topojson", "feature": "states"}
+  },
+  "mark":"path",
+  "projection":{
+     "type":"albersUsa",
+     "scale":1000,
+     "translate":[400, 250],
+     "center":[0, 0]
+  },
+  "encoding":{
+     "geopath":{
+        "type":"geojson"
+     },
+     "color": { "value": "#dedede"}
+  },
+  "config": {
+    "mark": {"stroke": "white"},
+    "cell": {"width": 800, "height": 500}
+  }
+}

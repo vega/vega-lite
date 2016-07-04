@@ -33,6 +33,7 @@ export namespace source {
         if (!contains(['json', 'csv', 'tsv', 'topojson'], defaultExtension)) {
           defaultExtension = 'json';
         }
+
         const dataFormat: DataFormat = model.data().format || {};
         sourceData.format =
           extend(

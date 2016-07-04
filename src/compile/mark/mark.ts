@@ -8,12 +8,13 @@ import {VgStackTransform} from '../../vega.schema';
 
 import {area} from './area';
 import {bar} from './bar';
-import {sortField} from '../common';
+import {sortField, hasGeoTransform, geoTransform} from '../common';
 import {line} from './line';
 import {point, circle, square} from './point';
 import {rule} from './rule';
 import {text} from './text';
 import {tick} from './tick';
+import {path} from './path';
 import {UnitModel} from '../unit';
 
 const markCompiler = {
@@ -25,18 +26,40 @@ const markCompiler = {
   tick: tick,
   rule: rule,
   circle: circle,
-  square: square
+  square: square,
+  path: path
 };
 
 export function parseMark(model: UnitModel): any[] {
+  // TODO: new branch here parsePathMark()
+  let marks = null;
   if (contains([LINE, AREA], model.mark())) {
-    return parsePathMark(model);
+    marks = parseLineOrArea(model);
   } else {
-    return parseNonPathMark(model);
+    marks = parseNonLineOrArea(model);
+  }
+
+  // Check if there is a projection
+  if (hasGeoTransform(model)) {
+    return [{
+      // TODO(ylin): Give it a better name
+      name: model.name('marks-wrapper-geo'),
+      type: 'group',
+      properties: {
+        update: {
+          width: {field: {group: 'width'}},
+          height: {field: {group: 'height'}},
+          clip: {value: true}
+        }
+      },
+      marks: marks
+    }];
+  } else {
+    return marks;
   }
 }
 
-function parsePathMark(model: UnitModel) { // TODO: extract this into compilePathMark
+function parseLineOrArea(model: UnitModel) { // TODO: extract this into compilePathMark
   const mark = model.mark();
   // TODO: replace this with more general case for composition
   const isFaceted = model.parent() && model.parent().isFacet();
@@ -95,7 +118,9 @@ function parsePathMark(model: UnitModel) { // TODO: extract this into compilePat
   }
 }
 
-function parseNonPathMark(model: UnitModel) {
+
+
+function parseNonLineOrArea(model: UnitModel) {
   const mark = model.mark();
   const isFaceted = model.parent() && model.parent().isFacet();
   const dataFrom = {data: model.dataTable()};
@@ -124,6 +149,7 @@ function parseNonPathMark(model: UnitModel) {
       name: model.name('marks'),
       type: markCompiler[mark].markType()
     },
+
     // Add `from` if needed
     (!isFaceted || model.stack() || model.has(ORDER)) ? {
       from: extend(
@@ -135,8 +161,11 @@ function parseNonPathMark(model: UnitModel) {
           { transform: stackTransforms(model, false) } :
         model.has(ORDER) ?
           // if non-stacked, detail field determines the layer order of each mark
-          { transform: [{type:'sort', by: sortBy(model)}] } :
-          {}
+          { transform: [{type:'sort', by: sortBy(model)}] } : {},
+        (model.projection() && hasGeoTransform(model)) ?
+          // If geo projected, add transform
+          { transform: [geoTransform(model)] } :
+        {}
       )
     } : {},
     // properties groups

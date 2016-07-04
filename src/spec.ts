@@ -8,6 +8,8 @@ import {FieldDef} from './fielddef';
 import {Mark, ERRORBAR, TICK, AREA, RULE, LINE, POINT} from './mark';
 import {stack} from './stack';
 import {Transform} from './transform';
+import {Projection} from './projection';
+
 import {ROW, COLUMN, X, Y, X2, Y2} from './channel';
 import * as vlEncoding from './encoding';
 import {contains, duplicate, extend, keys, omit, pick} from './util';
@@ -33,6 +35,9 @@ export interface BaseSpec {
    * An object describing filter and new field calculation.
    */
   transform?: Transform;
+
+
+  projection?: Projection;
 
   /**
    * Configuration object

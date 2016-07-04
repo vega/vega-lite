@@ -1,6 +1,7 @@
 import {ScaleConfig, FacetScaleConfig, defaultScaleConfig, defaultFacetScaleConfig} from './scale';
 import {AxisConfig, defaultAxisConfig, defaultFacetAxisConfig} from './axis';
 import {LegendConfig, defaultLegendConfig} from './legend';
+import {Projection as ProjectionConfig} from './projection';
 import {StackOffset} from './stack';
 
 export interface CellConfig {
@@ -70,6 +71,10 @@ const defaultFacetGridConfig: FacetGridConfig = {
   color: '#000000',
   opacity: 0.4,
   offset: 0
+};
+
+const defaultProjectionConfig: ProjectionConfig = {
+  type: 'mercator'
 };
 
 export const defaultFacetConfig: FacetConfig = {
@@ -435,6 +440,7 @@ export interface Config {
 
   /** Legend Config */
   legend?: LegendConfig;
+  projection?: ProjectionConfig;
 
   /** Facet Config */
   facet?: FacetConfig;
@@ -450,6 +456,6 @@ export const defaultConfig: Config = {
   scale: defaultScaleConfig,
   axis: defaultAxisConfig,
   legend: defaultLegendConfig,
-
+  projection: defaultProjectionConfig,
   facet: defaultFacetConfig,
 };

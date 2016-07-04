@@ -3,16 +3,17 @@ import {Axis} from '../axis';
 import {X, Y, X2, Y2, TEXT, PATH, ORDER, Channel, UNIT_CHANNELS,  UNIT_SCALE_CHANNELS, NONSPATIAL_SCALE_CHANNELS, supportMark} from '../channel';
 import {defaultConfig, Config, CellConfig} from '../config';
 import {SOURCE, SUMMARY} from '../data';
-import {Encoding} from '../encoding';
+import {Encoding, containsLatLong} from '../encoding';
 import * as vlEncoding from '../encoding'; // TODO: remove
 import {FieldDef, FieldRefOption, field} from '../fielddef';
 import {Legend} from '../legend';
 import {Mark, TEXT as TEXTMARK} from '../mark';
 import {Scale, ScaleType} from '../scale';
 import {ExtendedUnitSpec} from '../spec';
-import {getFullName, QUANTITATIVE} from '../type';
-import {duplicate, extend, mergeDeep, Dict} from '../util';
+import {getFullName, QUANTITATIVE, LATITUDE, LONGITUDE, GEOJSON} from '../type';
+import {contains, duplicate, extend, mergeDeep, Dict} from '../util';
 import {VgData} from '../vega.schema';
+import {Projection} from '../projection';
 
 import {parseAxisComponent} from './axis';
 import {applyConfig, FILL_STROKE_CONFIG} from './common';
@@ -41,6 +42,7 @@ export class UnitModel extends Model {
     const encoding = this._encoding = this._initEncoding(mark, spec.encoding || {});
     const config = this._config = this._initConfig(spec.config, parent, mark, encoding);
 
+    this._projection = this._initProjection(config);
     this._scale =  this._initScale(mark, encoding, config);
     this._axis = this._initAxis(encoding, config);
     this._legend = this._initLegend(encoding, config);
@@ -81,11 +83,26 @@ export class UnitModel extends Model {
     return config;
   }
 
+  private _initProjection(config: Config): Projection {
+    return extend({},
+      config.projection,
+      this._projection   // override the config
+    );
+  }
+
   private _initScale(mark: Mark, encoding: Encoding, config: Config): Dict<Scale> {
     return UNIT_SCALE_CHANNELS.reduce(function(_scale, channel) {
-      if (vlEncoding.has(encoding, channel) ||
-          (channel === X && vlEncoding.has(encoding, X2)) ||
-          (channel === Y && vlEncoding.has(encoding, Y2))
+      const fieldDef = encoding[channel];
+      if (
+          (
+            fieldDef && fieldDef.field &&
+            // These types do not require scale
+            !contains([LATITUDE, LONGITUDE, GEOJSON], fieldDef.type) &&
+            // User explicitly set scale to null to disable scale
+            fieldDef.scale !== null
+          ) ||
+          (channel === X && encoding.x2 && encoding.x2.field) ||
+          (channel === Y && encoding.y2 && encoding.y2.field)
         ) {
 
         const channelDef = encoding[channel];
@@ -113,7 +130,8 @@ export class UnitModel extends Model {
           (channel === Y && vlEncoding.has(encoding, Y2))) {
 
         const axisSpec = (encoding[channel] || {}).axis;
-        if (axisSpec !== false) {
+        // We no longer support false in the schema, but we keep false here for backward compatability.
+        if (axisSpec !== null && axisSpec !== false && (!containsLatLong(encoding) || axisSpec)) {
           _axis[channel] = extend({},
             config.axis,
             axisSpec === true ? {} : axisSpec ||  {}

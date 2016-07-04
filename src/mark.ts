@@ -8,6 +8,7 @@ export enum Mark {
   RULE = 'rule' as any,
   CIRCLE = 'circle' as any,
   SQUARE = 'square' as any,
+  PATH = 'path' as any,
   ERRORBAR = 'errorBar' as any
 }
 
@@ -18,6 +19,7 @@ export const POINT = Mark.POINT;
 export const TEXT = Mark.TEXT;
 export const TICK = Mark.TICK;
 export const RULE = Mark.RULE;
+export const PATH = Mark.PATH;
 
 export const CIRCLE = Mark.CIRCLE;
 export const SQUARE = Mark.SQUARE;

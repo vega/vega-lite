@@ -1,6 +1,7 @@
 // utility for encoding mapping
 import {FieldDef, PositionChannelDef, FacetChannelDef, ChannelDefWithLegend, OrderChannelDef} from './fielddef';
 import {Channel, CHANNELS} from './channel';
+import {LATITUDE, LONGITUDE} from './type';
 import {isArray, some} from './util';
 
 // TODO: once we decompose facet, rename this to Encoding
@@ -69,6 +70,7 @@ export interface UnitEncoding {
   text?: FieldDef;
 
   label?: FieldDef;
+  geopath?: FieldDef;
 
   /**
    * Order of data points in line marks.
@@ -110,6 +112,15 @@ export function channels(encoding: Encoding) {
 }
 
 // TOD: rename this to hasChannelField and only use we really want it.
+export function hasChannelField(encoding: Encoding, channel: Channel): boolean {
+  const channelEncoding = encoding && encoding[channel];
+  return channelEncoding && (
+    channelEncoding.field !== undefined ||
+    // TODO: check that we have field in the array
+    (isArray(channelEncoding) && channelEncoding.length > 0)
+  );
+}
+
 export function has(encoding: Encoding, channel: Channel): boolean {
   const channelEncoding = encoding && encoding[channel];
   return channelEncoding && (
@@ -218,4 +229,24 @@ export function channelMappingReduce(channels: Channel[], mapping: any,
     }
   });
   return r;
+}
+
+/*
+ * Check if the encoding contains any x/y of type LATITUDE or
+ * LONGITUDE. This can be used to determine if a geo transform
+ * should be produced.
+ */
+export function containsLatLong(encoding: Encoding): boolean {
+  if (encoding.x) {
+    const xType = encoding.x.type;
+    if (xType === LATITUDE || xType === LONGITUDE) {
+      return true;
+    }
+  } else if (encoding.y) {
+    const yType = encoding.y.type;
+    if (yType === LATITUDE || yType === LONGITUDE) {
+      return true;
+    }
+  }
+  return false;
 }
