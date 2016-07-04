@@ -193,6 +193,7 @@ export function cardinality(fieldDef: FieldDef, stats, filterNull = {}) {
       case TimeUnit.DAY: return 7;
       case TimeUnit.DATE: return 31;
       case TimeUnit.MONTH: return 12;
+      case TimeUnit.QUARTER: return 4;
       case TimeUnit.YEAR:
         const yearstat = stats['year_' + fieldDef.field];
 

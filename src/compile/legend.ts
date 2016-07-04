@@ -3,10 +3,10 @@ import {FieldDef} from '../fielddef';
 import {Legend} from '../legend';
 import {title as fieldTitle} from '../fielddef';
 import {AREA, BAR, TICK, TEXT, LINE, POINT, CIRCLE, SQUARE} from '../mark';
-import {ORDINAL} from '../type';
+import {ORDINAL, TEMPORAL} from '../type';
 import {extend, keys, without, Dict} from '../util';
 
-import {applyMarkConfig, FILL_STROKE_CONFIG, formatMixins as utilFormatMixins, timeFormat} from './common';
+import {applyMarkConfig, FILL_STROKE_CONFIG, numberFormat, timeTemplate} from './common';
 import {COLOR_LEGEND, COLOR_LEGEND_LABEL} from './scale';
 import {UnitModel} from './unit';
 import {VgLegend} from '../vega.schema';
@@ -46,13 +46,16 @@ function getLegendDefWithScale(model: UnitModel, channel: Channel): VgLegend {
 export function parseLegend(model: UnitModel, channel: Channel): VgLegend {
   const fieldDef = model.fieldDef(channel);
   const legend = model.legend(channel);
+  const config = model.config();
 
   let def: VgLegend = getLegendDefWithScale(model, channel);
 
   // 1.1 Add properties with special rules
   def.title = title(legend, fieldDef);
-
-  extend(def, formatMixins(legend, model, channel));
+  const format = numberFormat(fieldDef, legend.format, config);
+  if (format) {
+    def.format = format;
+  }
 
   // 1.2 Add properties without rules
   ['offset', 'orient', 'values'].forEach(function(property) {
@@ -83,17 +86,6 @@ export function title(legend: Legend, fieldDef: FieldDef) {
   }
 
   return fieldTitle(fieldDef);
-}
-
-export function formatMixins(legend: Legend, model: UnitModel, channel: Channel) {
-  const fieldDef = model.fieldDef(channel);
-
-  // If the channel is binned, we should not set the format because we have a range label
-  if (fieldDef.bin) {
-    return {};
-  }
-
-  return utilFormatMixins(model, channel, typeof legend !== 'boolean' ? legend.format : undefined);
 }
 
 // we have to use special scales for ordinal or binned fields for the color channel
@@ -188,6 +180,7 @@ export namespace properties {
 
   export function labels(fieldDef: FieldDef, labelsSpec, model: UnitModel, channel: Channel) {
     const legend = model.legend(channel);
+    const config = model.config();
 
     let labels:any = {};
 
@@ -206,10 +199,10 @@ export namespace properties {
             field: 'data'
           }
         }, labelsSpec || {});
-      } else if (fieldDef.timeUnit) {
+      } else if (fieldDef.type === TEMPORAL) {
         labelsSpec = extend({
           text: {
-            template: '{{ datum.data | time:\'' + timeFormat(model, channel) + '\'}}'
+            template: timeTemplate('datum.data', fieldDef.timeUnit, legend.format, legend.shortTimeLabels, config)
           }
         }, labelsSpec || {});
       }

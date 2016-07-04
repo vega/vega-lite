@@ -141,6 +141,40 @@ export enum Interpolate {
     MONOTONE = 'monotone' as any,
 }
 
+export enum AreaOverlay {
+  LINE = 'line' as any,
+  LINEPOINT = 'linepoint' as any,
+  NONE = 'none' as any
+}
+
+export interface OverlayConfig {
+  /**
+   * Whether to overlay line with point.
+   */
+  line?: boolean;
+
+  /**
+   * Type of overlay for area mark (line or linepoint)
+   */
+  area?: AreaOverlay;
+
+  /**
+   * Default style for the overlayed point.
+   */
+  pointStyle?: MarkConfig;
+
+  /**
+   * Default style for the overlayed point.
+   */
+  lineStyle?: MarkConfig;
+}
+
+export const defaultOverlayConfig: OverlayConfig = {
+  line: false,
+  pointStyle: {filled: true},
+  lineStyle: {}
+};
+
 export interface MarkConfig {
 
   // ---------- Color ----------
@@ -390,6 +424,9 @@ export interface Config {
   /** Mark Config */
   mark?: MarkConfig;
 
+  /** Mark Overlay Config */
+  overlay?: OverlayConfig;
+
   /** Scale Config */
   scale?: ScaleConfig;
 
@@ -409,6 +446,7 @@ export const defaultConfig: Config = {
 
   cell: defaultCellConfig,
   mark: defaultMarkConfig,
+  overlay: defaultOverlayConfig,
   scale: defaultScaleConfig,
   axis: defaultAxisConfig,
   legend: defaultLegendConfig,

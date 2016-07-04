@@ -20,6 +20,16 @@ export interface UnitEncoding {
   y?: PositionChannelDef;
 
   /**
+   * X2 coordinates for ranged `bar`, `rule`, `area`
+   */
+  x2?: PositionChannelDef;
+
+  /**
+   * Y2 coordinates for ranged `bar`, `rule`, `area`
+   */
+  y2?: PositionChannelDef;
+
+  /**
    * Color of the marks – either fill or stroke color based on mark type.
    * (By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /
    * stroke color for `line` and `point`.)
@@ -116,6 +126,10 @@ export function isAggregate(encoding: Encoding) {
     }
     return false;
   });
+}
+
+export function isRanged(encoding: Encoding) {
+  return encoding && ((!!encoding.x && !!encoding.x2) || (!!encoding.y && !!encoding.y2));
 }
 
 export function fieldDefs(encoding: Encoding): FieldDef[] {

@@ -5,9 +5,9 @@ node_js:
   - "5"
 install: npm install
 script:
-  - npm run lint
-  - npm test
   - npm run clean && npm run build
+  - npm run lint
+  - npm run cover
 notifications:
   email:
     on_success: never
