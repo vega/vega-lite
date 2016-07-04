@@ -1,6 +1,7 @@
 import {ScaleConfig, FacetScaleConfig, defaultScaleConfig, defaultFacetScaleConfig} from './scale';
 import {AxisConfig, defaultAxisConfig, defaultFacetAxisConfig} from './axis';
 import {LegendConfig, defaultLegendConfig} from './legend';
+import {StackOffset} from './stack';
 
 export interface CellConfig {
   width?: number;
@@ -109,12 +110,7 @@ export enum FontStyle {
     ITALIC = 'italic' as any,
 }
 
-export enum StackOffset {
-    ZERO = 'zero' as any,
-    CENTER = 'center' as any,
-    NORMALIZE = 'normalize' as any,
-    NONE = 'none' as any,
-}
+
 
 export enum Interpolate {
     /** piecewise linear segments, as in a polyline */
@@ -144,6 +140,40 @@ export enum Interpolate {
     /** cubic interpolation that preserves monotonicity in y */
     MONOTONE = 'monotone' as any,
 }
+
+export enum AreaOverlay {
+  LINE = 'line' as any,
+  LINEPOINT = 'linepoint' as any,
+  NONE = 'none' as any
+}
+
+export interface OverlayConfig {
+  /**
+   * Whether to overlay line with point.
+   */
+  line?: boolean;
+
+  /**
+   * Type of overlay for area mark (line or linepoint)
+   */
+  area?: AreaOverlay;
+
+  /**
+   * Default style for the overlayed point.
+   */
+  pointStyle?: MarkConfig;
+
+  /**
+   * Default style for the overlayed point.
+   */
+  lineStyle?: MarkConfig;
+}
+
+export const defaultOverlayConfig: OverlayConfig = {
+  line: false,
+  pointStyle: {filled: true},
+  lineStyle: {}
+};
 
 export interface MarkConfig {
 
@@ -394,6 +424,9 @@ export interface Config {
   /** Mark Config */
   mark?: MarkConfig;
 
+  /** Mark Overlay Config */
+  overlay?: OverlayConfig;
+
   /** Scale Config */
   scale?: ScaleConfig;
 
@@ -413,6 +446,7 @@ export const defaultConfig: Config = {
 
   cell: defaultCellConfig,
   mark: defaultMarkConfig,
+  overlay: defaultOverlayConfig,
   scale: defaultScaleConfig,
   axis: defaultAxisConfig,
   legend: defaultLegendConfig,

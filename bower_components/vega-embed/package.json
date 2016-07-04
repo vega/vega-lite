@@ -1,6 +1,6 @@
 {
   "name": "vega-embed",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Publish Vega visualizations as embedded web components.",
   "keywords": [
     "vega",
@@ -17,21 +17,26 @@
     "name": "Jeffrey Heer",
     "url": "http://idl.cs.washington.edu"
   },
+  "contributors": [{
+    "name": "Arvind Satyanarayan",
+    "url": "http://arvindsatya.com"
+  }],
   "license": "BSD-3-Clause",
   "main": "src/embed.js",
   "devDependencies": {
-    "d3": "^3.5.16",
-    "d3-geo-projection": "^0.2.16",
-    "topojson": "^1.6.24",
-    "vega": "^2.5.0",
-    "vega-lite": "^1.0.7",
     "browserify": "^13.0.0",
     "browserify-shim": "^3.8.12",
     "chai": "^3.5.0",
+    "d3": "^3.5.16",
+    "d3-geo-projection": "^0.2.16",
     "jshint": "^2.9.1",
     "mocha": "^2.4.5",
+    "topojson": "^1.6.24",
     "tv4": "^1.2.7",
-    "uglify-js": "^2.6.2"
+    "uglify-js": "^2.6.2",
+    "vega": "^2.5.0",
+    "vega-lite": "^1.0.7",
+    "watchify": "^3.7.0"
   },
   "scripts": {
     "deploy": "npm run lint && npm run test && scripts/deploy.sh",

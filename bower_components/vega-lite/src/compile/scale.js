@@ -1,11 +1,11 @@
 "use strict";
 var aggregate_1 = require('../aggregate');
 var channel_1 = require('../channel');
-var config_1 = require('../config');
 var data_1 = require('../data');
 var fielddef_1 = require('../fielddef');
 var mark_1 = require('../mark');
 var scale_1 = require('../scale');
+var stack_1 = require('../stack');
 var timeunit_1 = require('../timeunit');
 var type_1 = require('../type');
 var util_1 = require('../util');
@@ -38,7 +38,25 @@ function parseMainScale(model, fieldDef, channel) {
         name: model.scaleName(channel),
         type: scale.type,
     };
-    scaleDef.domain = domain(scale, model, channel);
+    if (channel === channel_1.X && model.has(channel_1.X2)) {
+        if (model.has(channel_1.X)) {
+            scaleDef.domain = { fields: [domain(scale, model, channel_1.X), domain(scale, model, channel_1.X2)] };
+        }
+        else {
+            scaleDef.domain = domain(scale, model, channel_1.X2);
+        }
+    }
+    else if (channel === channel_1.Y && model.has(channel_1.Y2)) {
+        if (model.has(channel_1.Y)) {
+            scaleDef.domain = { fields: [domain(scale, model, channel_1.Y), domain(scale, model, channel_1.Y2)] };
+        }
+        else {
+            scaleDef.domain = domain(scale, model, channel_1.Y2);
+        }
+    }
+    else {
+        scaleDef.domain = domain(scale, model, channel);
+    }
     util_1.extend(scaleDef, rangeMixins(scale, model, channel));
     if (sort && (typeof sort === 'string' ? sort : sort.order) === 'descending') {
         scaleDef.reverse = true;
@@ -114,6 +132,7 @@ function scaleType(scale, fieldDef, channel, mark) {
                     case timeunit_1.TimeUnit.HOURS:
                     case timeunit_1.TimeUnit.DAY:
                     case timeunit_1.TimeUnit.MONTH:
+                    case timeunit_1.TimeUnit.QUARTER:
                         return scale_1.ScaleType.ORDINAL;
                     default:
                         return scale_1.ScaleType.TIME;
@@ -152,7 +171,7 @@ function domain(scale, model, channel) {
     }
     var stack = model.stack();
     if (stack && channel === stack.fieldChannel) {
-        if (stack.offset === config_1.StackOffset.NORMALIZE) {
+        if (stack.offset === stack_1.StackOffset.NORMALIZE) {
             return [0, 1];
         }
         return {

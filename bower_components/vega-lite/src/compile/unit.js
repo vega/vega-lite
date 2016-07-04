@@ -23,7 +23,7 @@ var layout_1 = require('./layout');
 var model_1 = require('./model');
 var mark_2 = require('./mark/mark');
 var scale_2 = require('./scale');
-var stack_1 = require('./stack');
+var stack_1 = require('../stack');
 var UnitModel = (function (_super) {
     __extends(UnitModel, _super);
     function UnitModel(spec, parent, parentGivenName) {
@@ -31,10 +31,10 @@ var UnitModel = (function (_super) {
         var mark = this._mark = spec.mark;
         var encoding = this._encoding = this._initEncoding(mark, spec.encoding || {});
         var config = this._config = this._initConfig(spec.config, parent, mark, encoding);
-        var scale = this._scale = this._initScale(mark, encoding, config);
+        this._scale = this._initScale(mark, encoding, config);
         this._axis = this._initAxis(encoding, config);
         this._legend = this._initLegend(encoding, config);
-        this._stack = stack_1.compileStackProperties(mark, encoding, scale, config);
+        this._stack = stack_1.stack(mark, encoding, config);
     }
     UnitModel.prototype._initEncoding = function (mark, encoding) {
         encoding = util_1.duplicate(encoding);
@@ -60,9 +60,11 @@ var UnitModel = (function (_super) {
     };
     UnitModel.prototype._initScale = function (mark, encoding, config) {
         return channel_1.UNIT_SCALE_CHANNELS.reduce(function (_scale, channel) {
-            if (vlEncoding.has(encoding, channel)) {
-                var scaleSpec = encoding[channel].scale || {};
+            if (vlEncoding.has(encoding, channel) ||
+                (channel === channel_1.X && vlEncoding.has(encoding, channel_1.X2)) ||
+                (channel === channel_1.Y && vlEncoding.has(encoding, channel_1.Y2))) {
                 var channelDef = encoding[channel];
+                var scaleSpec = (channelDef || {}).scale || {};
                 var _scaleType = scale_2.scaleType(scaleSpec, channelDef, channel, mark);
                 _scale[channel] = util_1.extend({
                     type: _scaleType,
@@ -78,8 +80,10 @@ var UnitModel = (function (_super) {
     };
     UnitModel.prototype._initAxis = function (encoding, config) {
         return [channel_1.X, channel_1.Y].reduce(function (_axis, channel) {
-            if (vlEncoding.has(encoding, channel)) {
-                var axisSpec = encoding[channel].axis;
+            if (vlEncoding.has(encoding, channel) ||
+                (channel === channel_1.X && vlEncoding.has(encoding, channel_1.X2)) ||
+                (channel === channel_1.Y && vlEncoding.has(encoding, channel_1.Y2))) {
+                var axisSpec = (encoding[channel] || {}).axis;
                 if (axisSpec !== false) {
                     _axis[channel] = util_1.extend({}, config.axis, axisSpec === true ? {} : axisSpec || {});
                 }

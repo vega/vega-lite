@@ -6,22 +6,23 @@ function smallestUnit(timeUnit) {
     if (!timeUnit) {
         return undefined;
     }
-    if (timeUnit.indexOf('second') > -1) {
+    if (timeunit_1.containsTimeUnit(timeUnit, timeunit_1.TimeUnit.SECONDS)) {
         return 'second';
     }
-    if (timeUnit.indexOf('minute') > -1) {
+    if (timeunit_1.containsTimeUnit(timeUnit, timeunit_1.TimeUnit.MINUTES)) {
         return 'minute';
     }
-    if (timeUnit.indexOf('hour') > -1) {
+    if (timeunit_1.containsTimeUnit(timeUnit, timeunit_1.TimeUnit.HOURS)) {
         return 'hour';
     }
-    if (timeUnit.indexOf('day') > -1 || timeUnit.indexOf('date') > -1) {
+    if (timeunit_1.containsTimeUnit(timeUnit, timeunit_1.TimeUnit.DAY) ||
+        timeunit_1.containsTimeUnit(timeUnit, timeunit_1.TimeUnit.DATE)) {
         return 'day';
     }
-    if (timeUnit.indexOf('month') > -1) {
+    if (timeunit_1.containsTimeUnit(timeUnit, timeunit_1.TimeUnit.MONTH)) {
         return 'month';
     }
-    if (timeUnit.indexOf('year') > -1) {
+    if (timeunit_1.containsTimeUnit(timeUnit, timeunit_1.TimeUnit.YEAR)) {
         return 'year';
     }
     return undefined;
@@ -30,57 +31,66 @@ exports.smallestUnit = smallestUnit;
 function parseExpression(timeUnit, fieldRef, onlyRef) {
     if (onlyRef === void 0) { onlyRef = false; }
     var out = 'datetime(';
-    var timeString = timeUnit.toString();
-    function get(fun, addComma) {
+    function func(fun, addComma) {
         if (addComma === void 0) { addComma = true; }
         if (onlyRef) {
             return fieldRef + (addComma ? ', ' : '');
         }
         else {
-            return fun + '(' + fieldRef + ')' + (addComma ? ', ' : '');
+            var res = '';
+            if (fun === 'quarter') {
+                res = 'floor(month(' + fieldRef + ')' + '/3)*3';
+            }
+            else {
+                res = fun + '(' + fieldRef + ')';
+            }
+            return res + (addComma ? ', ' : '');
         }
     }
-    if (timeString.indexOf('year') > -1) {
-        out += get('year');
+    if (timeunit_1.containsTimeUnit(timeUnit, timeunit_1.TimeUnit.YEAR)) {
+        out += func('year');
     }
     else {
         out += '2006, ';
     }
-    if (timeString.indexOf('month') > -1) {
-        out += get('month');
+    if (timeunit_1.containsTimeUnit(timeUnit, timeunit_1.TimeUnit.MONTH)) {
+        out += func('month');
+    }
+    else if (timeunit_1.containsTimeUnit(timeUnit, timeunit_1.TimeUnit.QUARTER)) {
+        out += func('quarter');
     }
     else {
         out += '0, ';
     }
-    if (timeString.indexOf('day') > -1) {
-        out += get('day', false) + '+1, ';
+    if (timeunit_1.containsTimeUnit(timeUnit, timeunit_1.TimeUnit.DAY)) {
+        out += func('day', false) + '+1, ';
     }
-    else if (timeString.indexOf('date') > -1) {
-        out += get('date');
+    else if (timeunit_1.containsTimeUnit(timeUnit, timeunit_1.TimeUnit.DATE)) {
+        out += func('date');
     }
     else {
         out += '1, ';
     }
-    if (timeString.indexOf('hours') > -1) {
-        out += get('hours');
+    if (timeunit_1.containsTimeUnit(timeUnit, timeunit_1.TimeUnit.HOURS)) {
+        out += func('hours');
     }
     else {
         out += '0, ';
     }
-    if (timeString.indexOf('minutes') > -1) {
-        out += get('minutes');
+    if (timeunit_1.containsTimeUnit(timeUnit, timeunit_1.TimeUnit.MINUTES)) {
+        out += func('minutes');
     }
     else {
         out += '0, ';
     }
-    if (timeString.indexOf('seconds') > -1) {
-        out += get('seconds');
+    if (timeunit_1.containsTimeUnit(timeUnit, timeunit_1.TimeUnit.SECONDS)) {
+        out += func('seconds');
     }
     else {
         out += '0, ';
     }
-    if (timeString.indexOf('milliseconds') > -1) {
-        out += get('milliseconds', false);
+    if (timeunit_1.containsTimeUnit(timeUnit, timeunit_1.TimeUnit.MILLISECONDS)) {
+        out += func('milliseconds', false);
     }
     else {
         out += '0';
@@ -105,6 +115,8 @@ function rawDomain(timeUnit, channel) {
             return util_1.range(1, 32);
         case timeunit_1.TimeUnit.MONTH:
             return util_1.range(0, 12);
+        case timeunit_1.TimeUnit.QUARTER:
+            return [0, 3, 6, 9];
     }
     return null;
 }

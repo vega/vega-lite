@@ -60,9 +60,8 @@ function parseAxis(channel, model) {
         type: type,
         scale: model.scaleName(channel)
     };
-    util_1.extend(def, common_1.formatMixins(model, channel, model.axis(channel).format));
     [
-        'grid', 'layer', 'offset', 'orient', 'tickSize', 'ticks', 'tickSizeEnd', 'title', 'titleOffset',
+        'format', 'grid', 'layer', 'offset', 'orient', 'tickSize', 'ticks', 'tickSizeEnd', 'title', 'titleOffset',
         'tickPadding', 'tickSize', 'tickSizeMajor', 'tickSizeMinor', 'values', 'subdivide'
     ].forEach(function (property) {
         var method;
@@ -89,6 +88,10 @@ function parseAxis(channel, model) {
     return def;
 }
 exports.parseAxis = parseAxis;
+function format(model, channel) {
+    return common_1.numberFormat(model.fieldDef(channel), model.axis(channel).format, model.config());
+}
+exports.format = format;
 function offset(model, channel) {
     return model.axis(channel).offset;
 }
@@ -206,6 +209,7 @@ var properties;
     function labels(model, channel, labelsSpec, def) {
         var fieldDef = model.fieldDef(channel);
         var axis = model.axis(channel);
+        var config = model.config();
         if (!axis.labels) {
             return util_1.extend({
                 text: ''
@@ -214,9 +218,16 @@ var properties;
         if (util_1.contains([type_1.NOMINAL, type_1.ORDINAL], fieldDef.type) && axis.labelMaxLength) {
             labelsSpec = util_1.extend({
                 text: {
-                    template: '{{ datum.data | truncate:' + axis.labelMaxLength + '}}'
+                    template: '{{ datum.data | truncate:' + axis.labelMaxLength + ' }}'
                 }
             }, labelsSpec || {});
+        }
+        else if (fieldDef.type === type_1.TEMPORAL) {
+            labelsSpec = util_1.extend({
+                text: {
+                    template: common_1.timeTemplate('datum.data', fieldDef.timeUnit, axis.format, axis.shortTimeLabels, config)
+                }
+            }, labelsSpec);
         }
         if (axis.labelAngle !== undefined) {
             labelsSpec.angle = { value: axis.labelAngle };

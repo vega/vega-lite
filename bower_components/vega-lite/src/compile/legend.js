@@ -33,11 +33,14 @@ function getLegendDefWithScale(model, channel) {
 function parseLegend(model, channel) {
     var fieldDef = model.fieldDef(channel);
     var legend = model.legend(channel);
+    var config = model.config();
     var def = getLegendDefWithScale(model, channel);
     def.title = title(legend, fieldDef);
-    def.offset = offset(legend, fieldDef);
-    util_1.extend(def, formatMixins(legend, model, channel));
-    ['orient', 'values'].forEach(function (property) {
+    var format = common_1.numberFormat(fieldDef, legend.format, config);
+    if (format) {
+        def.format = format;
+    }
+    ['offset', 'orient', 'values'].forEach(function (property) {
         var value = legend[property];
         if (value !== undefined) {
             def[property] = value;
@@ -56,21 +59,6 @@ function parseLegend(model, channel) {
     return def;
 }
 exports.parseLegend = parseLegend;
-function offset(legend, fieldDef) {
-    if (legend.offset !== undefined) {
-        return legend.offset;
-    }
-    return 0;
-}
-exports.offset = offset;
-function orient(legend, fieldDef) {
-    var orient = legend.orient;
-    if (orient) {
-        return orient;
-    }
-    return 'vertical';
-}
-exports.orient = orient;
 function title(legend, fieldDef) {
     if (typeof legend !== 'boolean' && legend.title) {
         return legend.title;
@@ -78,14 +66,6 @@ function title(legend, fieldDef) {
     return fielddef_1.title(fieldDef);
 }
 exports.title = title;
-function formatMixins(legend, model, channel) {
-    var fieldDef = model.fieldDef(channel);
-    if (fieldDef.bin) {
-        return {};
-    }
-    return common_1.formatMixins(model, channel, typeof legend !== 'boolean' ? legend.format : undefined);
-}
-exports.formatMixins = formatMixins;
 function useColorLegendScale(fieldDef) {
     return fieldDef.type === type_1.ORDINAL || fieldDef.bin || fieldDef.timeUnit;
 }
@@ -159,6 +139,7 @@ var properties;
     properties.symbols = symbols;
     function labels(fieldDef, labelsSpec, model, channel) {
         var legend = model.legend(channel);
+        var config = model.config();
         var labels = {};
         if (channel === channel_1.COLOR) {
             if (fieldDef.type === type_1.ORDINAL) {
@@ -177,10 +158,10 @@ var properties;
                     }
                 }, labelsSpec || {});
             }
-            else if (fieldDef.timeUnit) {
+            else if (fieldDef.type === type_1.TEMPORAL) {
                 labelsSpec = util_1.extend({
                     text: {
-                        template: '{{ datum.data | time:\'' + common_1.timeFormat(model, channel) + '\'}}'
+                        template: common_1.timeTemplate('datum.data', fieldDef.timeUnit, legend.format, legend.shortTimeLabels, config)
                     }
                 }, labelsSpec || {});
             }

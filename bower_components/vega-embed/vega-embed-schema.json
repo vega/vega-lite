@@ -26,6 +26,16 @@
             "vega-lite"
           ]
         },
+        "config": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object"
+            }
+          ]
+        },
         "actions": {
           "oneOf": [
             {
@@ -78,6 +88,16 @@
             "vega-lite"
           ]
         },
+        "config": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object"
+            }
+          ]
+        },
         "actions": {
           "oneOf": [
             {
@@ -127,6 +147,16 @@
           "enum": [
             "vega",
             "vega-lite"
+          ]
+        },
+        "config": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object"
+            }
           ]
         },
         "actions": {

@@ -59,7 +59,8 @@
                 "tick",
                 "rule",
                 "circle",
-                "square"
+                "square",
+                "errorBar"
             ]
         },
         "Encoding": {
@@ -80,6 +81,14 @@
                 "y": {
                     "$ref": "#/definitions/PositionChannelDef",
                     "description": "Y coordinates for `point`, `circle`, `square`,\n\n`line`, `rule`, `text`, and `tick`\n\n(or to width and height for `bar` and `area` marks)."
+                },
+                "x2": {
+                    "$ref": "#/definitions/PositionChannelDef",
+                    "description": "X2 coordinates for ranged `bar`, `rule`, `area`"
+                },
+                "y2": {
+                    "$ref": "#/definitions/PositionChannelDef",
+                    "description": "Y2 coordinates for ranged `bar`, `rule`, `area`"
                 },
                 "color": {
                     "$ref": "#/definitions/ChannelDefWithLegend",
@@ -602,7 +611,11 @@
                 "hoursminutes",
                 "hoursminutesseconds",
                 "minutesseconds",
-                "secondsmilliseconds"
+                "secondsmilliseconds",
+                "quarter",
+                "yearquarter",
+                "quartermonth",
+                "yearquartermonth"
             ]
         },
         "Bin": {
@@ -937,8 +950,9 @@
         "Data": {
             "type": "object",
             "properties": {
-                "formatType": {
-                    "$ref": "#/definitions/DataFormat"
+                "format": {
+                    "$ref": "#/definitions/DataFormat",
+                    "description": "An object that specifies the format for the data file or values."
                 },
                 "url": {
                     "description": "A URL from which to load the data set. Use the formatType property\n\nto ensure the loaded data is correctly parsed.",
@@ -952,11 +966,33 @@
             }
         },
         "DataFormat": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "$ref": "#/definitions/DataFormatType",
+                    "description": "Type of input data: `\"json\"`, `\"csv\"`, `\"tsv\"`.\n\nThe default format type is determined by the extension of the file url.\n\nIf no extension is detected, `\"json\"` will be used by default."
+                },
+                "property": {
+                    "description": "JSON only) The JSON property containing the desired data.\n\nThis parameter can be used when the loaded JSON file may have surrounding structure or meta-data.\n\nFor example `\"property\": \"values.features\"` is equivalent to retrieving `json.values.features`\n\nfrom the loaded JSON object.",
+                    "type": "string"
+                },
+                "feature": {
+                    "description": "The name of the TopoJSON object set to convert to a GeoJSON feature collection.\n\nFor example, in a map of the world, there may be an object set named `\"countries\"`.\n\nUsing the feature property, we can extract this set and generate a GeoJSON feature object for each country.",
+                    "type": "string"
+                },
+                "mesh": {
+                    "description": "The name of the TopoJSON object set to convert to a mesh.\n\nSimilar to the `feature` option, `mesh` extracts a named TopoJSON object set.\n\nUnlike the `feature` option, the corresponding geo data is returned as a single, unified mesh instance, not as inidividual GeoJSON features.\n\nExtracting a mesh is useful for more efficiently drawing borders or other geographic elements that you do not need to associate with specific regions such as individual countries, states or counties.",
+                    "type": "string"
+                }
+            }
+        },
+        "DataFormatType": {
             "type": "string",
             "enum": [
                 "json",
                 "csv",
-                "tsv"
+                "tsv",
+                "topojson"
             ]
         },
         "Transform": {
@@ -1023,6 +1059,10 @@
                 "mark": {
                     "$ref": "#/definitions/MarkConfig",
                     "description": "Mark Config"
+                },
+                "overlay": {
+                    "$ref": "#/definitions/OverlayConfig",
+                    "description": "Mark Overlay Config"
                 },
                 "scale": {
                     "$ref": "#/definitions/ScaleConfig",
@@ -1315,6 +1355,35 @@
             "enum": [
                 "normal",
                 "bold"
+            ]
+        },
+        "OverlayConfig": {
+            "type": "object",
+            "properties": {
+                "line": {
+                    "description": "Whether to overlay line with point.",
+                    "type": "boolean"
+                },
+                "area": {
+                    "$ref": "#/definitions/AreaOverlay",
+                    "description": "Type of overlay for area mark (line or linepoint)"
+                },
+                "pointStyle": {
+                    "$ref": "#/definitions/MarkConfig",
+                    "description": "Default style for the overlayed point."
+                },
+                "lineStyle": {
+                    "$ref": "#/definitions/MarkConfig",
+                    "description": "Default style for the overlayed point."
+                }
+            }
+        },
+        "AreaOverlay": {
+            "type": "string",
+            "enum": [
+                "line",
+                "linepoint",
+                "none"
             ]
         },
         "ScaleConfig": {
@@ -1863,6 +1932,14 @@
                 "y": {
                     "$ref": "#/definitions/PositionChannelDef",
                     "description": "Y coordinates for `point`, `circle`, `square`,\n\n`line`, `rule`, `text`, and `tick`\n\n(or to width and height for `bar` and `area` marks)."
+                },
+                "x2": {
+                    "$ref": "#/definitions/PositionChannelDef",
+                    "description": "X2 coordinates for ranged `bar`, `rule`, `area`"
+                },
+                "y2": {
+                    "$ref": "#/definitions/PositionChannelDef",
+                    "description": "Y2 coordinates for ranged `bar`, `rule`, `area`"
                 },
                 "color": {
                     "$ref": "#/definitions/ChannelDefWithLegend",

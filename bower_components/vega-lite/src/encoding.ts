@@ -1,7 +1,7 @@
 // utility for encoding mapping
 import {FieldDef, PositionChannelDef, FacetChannelDef, ChannelDefWithLegend, OrderChannelDef} from './fielddef';
 import {Channel, CHANNELS} from './channel';
-import {isArray, any as anyIn} from './util';
+import {isArray, some} from './util';
 
 // TODO: once we decompose facet, rename this to Encoding
 export interface UnitEncoding {
@@ -18,6 +18,16 @@ export interface UnitEncoding {
    * (or to width and height for `bar` and `area` marks).
    */
   y?: PositionChannelDef;
+
+  /**
+   * X2 coordinates for ranged `bar`, `rule`, `area`
+   */
+  x2?: PositionChannelDef;
+
+  /**
+   * Y2 coordinates for ranged `bar`, `rule`, `area`
+   */
+  y2?: PositionChannelDef;
 
   /**
    * Color of the marks – either fill or stroke color based on mark type.
@@ -99,21 +109,27 @@ export function channels(encoding: Encoding) {
   });
 }
 
+// TOD: rename this to hasChannelField and only use we really want it.
 export function has(encoding: Encoding, channel: Channel): boolean {
   const channelEncoding = encoding && encoding[channel];
   return channelEncoding && (
     channelEncoding.field !== undefined ||
+    // TODO: check that we have field in the array
     (isArray(channelEncoding) && channelEncoding.length > 0)
   );
 }
 
 export function isAggregate(encoding: Encoding) {
-  return anyIn(CHANNELS, (channel) => {
+  return some(CHANNELS, (channel) => {
     if (has(encoding, channel) && encoding[channel].aggregate) {
       return true;
     }
     return false;
   });
+}
+
+export function isRanged(encoding: Encoding) {
+  return encoding && ((!!encoding.x && !!encoding.x2) || (!!encoding.y && !!encoding.y2));
 }
 
 export function fieldDefs(encoding: Encoding): FieldDef[] {

@@ -14,15 +14,20 @@ function initMarkConfig(mark, encoding, config) {
                 }
                 break;
             case 'opacity':
-                if (value === undefined && util_1.contains([mark_1.POINT, mark_1.TICK, mark_1.CIRCLE, mark_1.SQUARE], mark)) {
-                    if (!encoding_1.isAggregate(encoding) || encoding_1.has(encoding, channel_1.DETAIL)) {
+                if (value === undefined) {
+                    if (util_1.contains([mark_1.POINT, mark_1.TICK, mark_1.CIRCLE, mark_1.SQUARE], mark)) {
+                        if (!encoding_1.isAggregate(encoding) || encoding_1.has(encoding, channel_1.DETAIL)) {
+                            cfg[property] = 0.7;
+                        }
+                    }
+                    if (mark === mark_1.AREA) {
                         cfg[property] = 0.7;
                     }
                 }
                 break;
             case 'orient':
-                var xIsMeasure = fielddef_1.isMeasure(encoding.x);
-                var yIsMeasure = fielddef_1.isMeasure(encoding.y);
+                var xIsMeasure = fielddef_1.isMeasure(encoding.x) || fielddef_1.isMeasure(encoding.x2);
+                var yIsMeasure = fielddef_1.isMeasure(encoding.y) || fielddef_1.isMeasure(encoding.y2);
                 if (xIsMeasure && !yIsMeasure) {
                     if (mark === mark_1.TICK) {
                         cfg[property] = 'vertical';

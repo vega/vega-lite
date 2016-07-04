@@ -1,6 +1,6 @@
 import {contains, range} from '../util';
 import {COLUMN, ROW, SHAPE, COLOR, Channel} from '../channel';
-import {TimeUnit} from '../timeunit';
+import {TimeUnit, containsTimeUnit} from '../timeunit';
 
 /** returns the smallest nice unit for scale.nice */
 export function smallestUnit(timeUnit): string {
@@ -8,27 +8,28 @@ export function smallestUnit(timeUnit): string {
     return undefined;
   }
 
-  if (timeUnit.indexOf('second') > -1) {
+  if (containsTimeUnit(timeUnit, TimeUnit.SECONDS)) {
     return 'second';
   }
 
-  if (timeUnit.indexOf('minute') > -1) {
+  if (containsTimeUnit(timeUnit, TimeUnit.MINUTES)) {
     return 'minute';
   }
 
-  if (timeUnit.indexOf('hour') > -1) {
+  if (containsTimeUnit(timeUnit, TimeUnit.HOURS)) {
     return 'hour';
   }
 
-  if (timeUnit.indexOf('day') > -1 || timeUnit.indexOf('date') > -1) {
+  if (containsTimeUnit(timeUnit, TimeUnit.DAY) ||
+      containsTimeUnit(timeUnit, TimeUnit.DATE)) {
     return 'day';
   }
 
-  if (timeUnit.indexOf('month') > -1) {
+  if (containsTimeUnit(timeUnit, TimeUnit.MONTH)) {
     return 'month';
   }
 
-  if (timeUnit.indexOf('year') > -1) {
+  if (containsTimeUnit(timeUnit, TimeUnit.YEAR)) {
     return 'year';
   }
   return undefined;
@@ -36,58 +37,67 @@ export function smallestUnit(timeUnit): string {
 
 export function parseExpression(timeUnit: TimeUnit, fieldRef: string, onlyRef = false): string {
   let out = 'datetime(';
-  let timeString = timeUnit.toString();
 
-  function get(fun: string, addComma = true) {
+  function func(fun: string, addComma = true) {
     if (onlyRef) {
       return fieldRef + (addComma ? ', ' : '');
     } else {
-      return fun + '(' + fieldRef + ')' + (addComma ? ', ' : '');
+      let res = '';
+      if (fun === 'quarter') {
+        // Divide by 3 to get the corresponding quarter number, multiply by 3
+        // to scale to the first month of the corresponding quarter(0,3,6,9).
+        res = 'floor(month(' + fieldRef + ')' + '/3)*3';
+      } else {
+        res = fun + '(' + fieldRef + ')' ;
+      }
+      return res + (addComma ? ', ' : '');
     }
   }
 
-  if (timeString.indexOf('year') > -1) {
-    out += get('year');
+  if (containsTimeUnit(timeUnit, TimeUnit.YEAR)) {
+    out += func('year');
   } else {
     out += '2006, '; // January 1 2006 is a Sunday
   }
 
-  if (timeString.indexOf('month') > -1) {
-    out += get('month');
+  if (containsTimeUnit(timeUnit, TimeUnit.MONTH)) {
+    out += func('month');
+  } else if (containsTimeUnit(timeUnit, TimeUnit.QUARTER)) {
+    out += func('quarter');
   } else {
     // month starts at 0 in javascript
     out += '0, ';
   }
 
   // need to add 1 because days start at 1
-  if (timeString.indexOf('day') > -1) {
-    out += get('day', false) + '+1, ';
-  } else if (timeString.indexOf('date') > -1) {
-    out += get('date');
+  if (containsTimeUnit(timeUnit, TimeUnit.DAY)) {
+    out += func('day', false) + '+1, ';
+  } else if (containsTimeUnit(timeUnit, TimeUnit.DATE)) {
+    out += func('date');
   } else {
     out += '1, ';
   }
 
-  if (timeString.indexOf('hours') > -1) {
-    out += get('hours');
+  if (containsTimeUnit(timeUnit, TimeUnit.HOURS)) {
+    out += func('hours');
   } else {
     out += '0, ';
   }
 
-  if (timeString.indexOf('minutes') > -1) {
-    out += get('minutes');
+  if (containsTimeUnit(timeUnit, TimeUnit.MINUTES)) {
+    out += func('minutes');
   } else {
     out += '0, ';
   }
 
-  if (timeString.indexOf('seconds') > -1) {
-    out += get('seconds');
+  if (containsTimeUnit(timeUnit, TimeUnit.SECONDS)) {
+    out += func('seconds');
   } else {
     out += '0, ';
   }
 
-  if (timeString.indexOf('milliseconds') > -1) {
-    out += get('milliseconds', false);
+  if (containsTimeUnit(timeUnit, TimeUnit.MILLISECONDS)) {
+    out += func('milliseconds', false);
   } else {
     out += '0';
   }
@@ -114,6 +124,8 @@ export function rawDomain(timeUnit: TimeUnit, channel: Channel) {
       return range(1, 32);
     case TimeUnit.MONTH:
       return range(0, 12);
+    case TimeUnit.QUARTER:
+      return [0,3,6,9];
   }
 
   return null;

@@ -5,6 +5,8 @@ title: Embedding Vega-Lite
 permalink: /usage/embed.html
 ---
 
+See [this repository](https://github.com/vega/vega-lite-demo) for full code of this page.
+
 The easiest way to use Vega-Lite on your own web page is with [vega-embed](https://github.com/vega/vega-embed), a library we built to make the process as painless as possible.
 
 To embed a Vega-Lite specification on your web page first load the required libraries (D3, Vega, Vega-Lite, **Vega-Embed**).

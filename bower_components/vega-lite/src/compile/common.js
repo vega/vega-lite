@@ -89,64 +89,25 @@ function applyMarkConfig(marksProperties, model, propsList) {
     return applyConfig(marksProperties, model.config().mark, propsList);
 }
 exports.applyMarkConfig = applyMarkConfig;
-function formatMixins(model, channel, format) {
-    var fieldDef = model.fieldDef(channel);
-    if (!util_1.contains([type_1.QUANTITATIVE, type_1.TEMPORAL], fieldDef.type)) {
-        return {};
+function numberFormat(fieldDef, format, config) {
+    if (fieldDef.type === type_1.QUANTITATIVE && !fieldDef.bin) {
+        return format || config.numberFormat;
     }
-    var def = {};
-    if (fieldDef.type === type_1.TEMPORAL) {
-        def.formatType = 'time';
-    }
-    if (format !== undefined) {
-        def.format = format;
-    }
-    else {
-        switch (fieldDef.type) {
-            case type_1.QUANTITATIVE:
-                def.format = model.config().numberFormat;
-                break;
-            case type_1.TEMPORAL:
-                def.format = timeFormat(model, channel) || model.config().timeFormat;
-                break;
-        }
-    }
-    if (channel === channel_1.TEXT) {
-        var filter = (def.formatType || 'number') + (def.format ? ':\'' + def.format + '\'' : '');
-        return {
-            text: {
-                template: '{{' + model.field(channel, { datum: true }) + ' | ' + filter + '}}'
-            }
-        };
-    }
-    return def;
+    return undefined;
 }
-exports.formatMixins = formatMixins;
-function isAbbreviated(model, channel, fieldDef) {
-    switch (channel) {
-        case channel_1.ROW:
-        case channel_1.COLUMN:
-        case channel_1.X:
-        case channel_1.Y:
-            return model.axis(channel).shortTimeLabels;
-        case channel_1.COLOR:
-        case channel_1.OPACITY:
-        case channel_1.SHAPE:
-        case channel_1.SIZE:
-            return model.legend(channel).shortTimeLabels;
-        case channel_1.TEXT:
-            return model.config().mark.shortTimeLabels;
-        case channel_1.LABEL:
-    }
-    return false;
-}
+exports.numberFormat = numberFormat;
 function sortField(orderChannelDef) {
-    return (orderChannelDef.sort === sort_1.SortOrder.DESCENDING ? '-' : '') + fielddef_1.field(orderChannelDef);
+    return (orderChannelDef.sort === sort_1.SortOrder.DESCENDING ? '-' : '') +
+        fielddef_1.field(orderChannelDef, { binSuffix: '_mid' });
 }
 exports.sortField = sortField;
-function timeFormat(model, channel) {
-    var fieldDef = model.fieldDef(channel);
-    return timeunit_1.format(fieldDef.timeUnit, isAbbreviated(model, channel, fieldDef));
+function timeTemplate(templateField, timeUnit, format, shortTimeLabels, config) {
+    if (!timeUnit || format) {
+        return '{{' + templateField + ' | time:\'' + (format || config.timeFormat) + '\'}}';
+    }
+    else {
+        return timeunit_1.template(timeUnit, templateField, shortTimeLabels);
+    }
 }
-exports.timeFormat = timeFormat;
+exports.timeTemplate = timeTemplate;
 //# sourceMappingURL=common.js.map

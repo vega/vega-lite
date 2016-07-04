@@ -54,7 +54,7 @@ function parseUnitSizeLayout(model, channel) {
     };
 }
 function unitSizeExpr(model, channel, nonOrdinalSize) {
-    if (model.has(channel)) {
+    if (model.scale(channel)) {
         if (model.isOrdinalScale(channel)) {
             var scale = model.scale(channel);
             return '(' + cardinalityFormula(model, channel) +

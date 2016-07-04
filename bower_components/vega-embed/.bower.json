@@ -36,14 +36,14 @@
     "src",
     "test"
   ],
-  "version": "2.1.0",
-  "_release": "2.1.0",
+  "version": "2.2.0",
+  "_release": "2.2.0",
   "_resolution": {
     "type": "version",
-    "tag": "v2.1.0",
-    "commit": "18cf2dcaaa274b6311c15a7800d166d6c01b257e"
+    "tag": "v2.2.0",
+    "commit": "06c7a2956014e0ebdae7b0af5bb39131c08bf353"
   },
   "_source": "https://github.com/vega/vega-embed.git",
-  "_target": "~2.1.0",
+  "_target": "~2.2.0",
   "_originalSource": "vega-embed"
 }

@@ -31,7 +31,8 @@ export type VgValueRef = {
     datum?: string,
     group?: string,
     parent?: string
-  } ,
+  },
+  template?: string,
   scale?: string, // TODO: object
   mult?: number,
   offset?: number,
@@ -82,3 +83,12 @@ export type VgMarkGroup = any;
 export type VgAxis = any;
 export type VgLegend = any;
 export type VgTransform = any;
+
+export interface VgStackTransform {
+  type: string;
+  offset?: any;
+  groupby: any;
+  field: any;
+  sortby: any;
+  output: any;
+}

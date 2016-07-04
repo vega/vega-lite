@@ -1,4 +1,4 @@
-import {X, Y, SIZE, Channel} from '../../channel';
+import {X, Y, X2, Y2, SIZE, Channel} from '../../channel';
 import {isMeasure} from '../../fielddef';
 
 import {UnitModel} from '../unit';
@@ -17,6 +17,10 @@ export namespace bar {
 
     const stack = model.stack();
     const xFieldDef = model.encoding().x;
+    const x2FieldDef = model.encoding().x2;
+
+    const xIsMeasure = isMeasure(xFieldDef) || isMeasure(x2FieldDef);
+
     // x, x2, and width -- we must specify two of these in all conditions
     if (stack && X === stack.fieldChannel) {
       // 'x' is a stacked measure, thus use <field>_start and <field>_end for x, x2.
@@ -28,16 +32,31 @@ export namespace bar {
         scale: model.scaleName(X),
         field: model.field(X, { suffix: '_end' })
       };
-    } else if (isMeasure(xFieldDef)) {
+    } else if (xIsMeasure) {
       if (orient === 'horizontal') {
-        p.x = {
-          scale: model.scaleName(X),
-          field: model.field(X)
-        };
-        p.x2 = {
-          scale: model.scaleName(X),
-          value: 0
-        };
+        if (model.has(X)) {
+          p.x = {
+            scale: model.scaleName(X),
+            field: model.field(X)
+          };
+        } else {
+          p.x = {
+            scale: model.scaleName(X),
+            value: 0
+          };
+        }
+
+        if (model.has(X2)) {
+          p.x2 = {
+            scale: model.scaleName(X),
+            field: model.field(X2)
+          };
+        } else {
+          p.x2 = {
+            scale: model.scaleName(X),
+            value: 0
+          };
+        }
       } else { // vertical
         p.xc = {
           scale: model.scaleName(X),
@@ -89,6 +108,9 @@ export namespace bar {
     }
 
     const yFieldDef = model.encoding().y;
+    const y2FieldDef = model.encoding().y2;
+
+    const yIsMeasure = isMeasure(yFieldDef) || isMeasure(y2FieldDef);
     // y, y2 & height -- we must specify two of these in all conditions
     if (stack && Y === stack.fieldChannel) { // y is stacked measure
       p.y = {
@@ -99,16 +121,31 @@ export namespace bar {
         scale: model.scaleName(Y),
         field: model.field(Y, { suffix: '_end' })
       };
-    } else if (isMeasure(yFieldDef)) {
+    } else if (yIsMeasure) {
       if (orient !== 'horizontal') { // vertical (explicit 'vertical' or undefined)
-        p.y = {
-          scale: model.scaleName(Y),
-          field: model.field(Y)
-        };
-        p.y2 = {
-          scale: model.scaleName(Y),
-          value: 0
-        };
+        if (model.has(Y)) {
+          p.y = {
+            scale: model.scaleName(Y),
+            field: model.field(Y)
+          };
+        } else {
+          p.y = {
+            scale: model.scaleName(Y),
+            value: 0
+          };
+        }
+
+        if (model.has(Y2)) {
+          p.y2 = {
+            scale: model.scaleName(Y),
+            field: model.field(Y2)
+          };
+        } else {
+          p.y2 = {
+            scale: model.scaleName(Y),
+            value: 0
+          };
+        }
       } else {
         p.yc = {
           scale: model.scaleName(Y),

@@ -1,3 +1,53 @@
+### HEAD
+
+Adds:
+
+- Keywords.json file that has an index of all octicons with alias names
+
+### 4.1.1 (June 16, 2016)
+
+Fixes:
+
+- Putting the `$octicons-font-path` back in the scss file.
+
+### 4.1.0 (June 6, 2016)
+
+Adds:
+
+- Installation docs https://github.com/primer/octicons/pull/94
+- `grabber`
+- `plus-small`
+
+Modifies:
+
+- `smiley`
+
+Refines:
+
+- Renames `mail-reply` to `reply` and refines its shape.
+
+Fixes:
+
+- Revert license back to SPDX standard
+
+### 4.0.0 (June 6, 2016)
+
+Adds:
+
+- Whole new grunt build system including svg sprite sheet.
+- adding css min https://github.com/primer/octicons/pull/60
+- adding woff2 format https://github.com/primer/octicons/issues/3
+- creates spritesheet of svg files https://github.com/primer/octicons/issues/88
+
+Removes:
+
+- Bower support
+
+Fixes:
+
+- all svg icons include viewBox https://github.com/primer/octicons/issues/87
+- license in package.json https://github.com/primer/octicons/issues/85
+
 ### 3.5.0 (February 12, 2016)
 
 Adds:
