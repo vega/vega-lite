@@ -55,15 +55,8 @@ export function isVertical(mark: Mark, encoding: Encoding) {
   const xIsRange = encoding.x && encoding.x2;
   const yIsRange = encoding.y && encoding.y2;
 
-  // In ambiguous cases (QxQ or OxO) use specified value
-  // (and implicitly vertical by default.)
-  let vertical = true;
-
-  if (xIsMeasure && !yIsMeasure) {
-    vertical = false;
-  } else if (!xIsMeasure && yIsMeasure) {
-    vertical = true;
-  }
+  // In ambiguous cases (QxQ or OxO), use vertical by default.
+  let vertical = !xIsMeasure || yIsMeasure;
 
   if (TICK === mark) {
     vertical = !vertical;
