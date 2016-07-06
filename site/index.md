@@ -59,7 +59,7 @@ This is a Vega-Lite specification to create a bar chart that shows the average t
 
 <div class="vl-example">
 {
-  "data": {"url": "data/seattle-temps.csv", "formatType": "csv"},
+  "data": {"url": "data/seattle-temps.csv"},
   "mark": "bar",
   "encoding": {
     "x": {
