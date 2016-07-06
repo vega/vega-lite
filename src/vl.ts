@@ -12,6 +12,7 @@ import * as vlType from './type';
 import * as vlValidate from './validate';
 import * as vlUtil from './util';
 
+export import aggregate = require('./aggregate');
 export const bin = vlBin;
 export const channel = vlChannel;
 export const compile = vlCompile.compile;
