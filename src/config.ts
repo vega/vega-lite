@@ -418,6 +418,12 @@ export interface Config {
    */
   timeFormat?: string;
 
+  /**
+   * Default axis and legend title for count fields.
+   * @type {string}
+   */
+  countTitle?: string;
+
   /** Cell Config */
   cell?: CellConfig;
 
@@ -443,6 +449,7 @@ export interface Config {
 export const defaultConfig: Config = {
   numberFormat: 's',
   timeFormat: '%Y-%m-%d',
+  countTitle: 'Number of Records',
 
   cell: defaultCellConfig,
   mark: defaultMarkConfig,

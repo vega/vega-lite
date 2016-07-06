@@ -3,6 +3,7 @@
 import {AggregateOp, AGGREGATE_OPS} from './aggregate';
 import {Axis} from './axis';
 import {Bin} from './bin';
+import {Config} from './config';
 import {Legend} from './legend';
 import {Scale, ScaleType} from './scale';
 import {SortField, SortOrder} from './sort';
@@ -155,10 +156,8 @@ export function isMeasure(fieldDef: FieldDef) {
   return fieldDef && fieldDef.field && !_isFieldDimension(fieldDef);
 }
 
-export const COUNT_TITLE = 'Number of Records';
-
 export function count(): FieldDef {
-  return { field: '*', aggregate: AggregateOp.COUNT, type: QUANTITATIVE, title: COUNT_TITLE };
+  return { field: '*', aggregate: AggregateOp.COUNT, type: QUANTITATIVE};
 }
 
 export function isCount(fieldDef: FieldDef) {
@@ -213,12 +212,12 @@ export function cardinality(fieldDef: FieldDef, stats, filterNull = {}) {
     (stat.missing > 0 && filterNull[type] ? 1 : 0);
 }
 
-export function title(fieldDef: FieldDef) {
+export function title(fieldDef: FieldDef, config: Config) {
   if (fieldDef.title != null) {
     return fieldDef.title;
   }
   if (isCount(fieldDef)) {
-    return COUNT_TITLE;
+    return config.countTitle;
   }
   const fn = fieldDef.aggregate || fieldDef.timeUnit || (fieldDef.bin && 'bin');
   if (fn) {
