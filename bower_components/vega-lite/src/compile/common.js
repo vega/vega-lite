@@ -103,7 +103,8 @@ function sortField(orderChannelDef) {
 exports.sortField = sortField;
 function timeTemplate(templateField, timeUnit, format, shortTimeLabels, config) {
     if (!timeUnit || format) {
-        return '{{' + templateField + ' | time:\'' + (format || config.timeFormat) + '\'}}';
+        var _format = format || config.timeFormat;
+        return '{{' + templateField + ' | time:\'' + _format + '\'}}';
     }
     else {
         return timeunit_1.template(timeUnit, templateField, shortTimeLabels);
