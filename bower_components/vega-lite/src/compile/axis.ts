@@ -225,7 +225,7 @@ export function title(model: Model, channel: Channel) {
   }
 
   // if not defined, automatically determine axis title from field def
-  const fieldTitle = fieldDefTitle(model.fieldDef(channel));
+  const fieldTitle = fieldDefTitle(model.fieldDef(channel), model.config());
 
   let maxLength;
   if (axis.titleMaxLength) {

@@ -166,7 +166,7 @@ function title(model, channel) {
     if (axis.title !== undefined) {
         return axis.title;
     }
-    var fieldTitle = fielddef_1.title(model.fieldDef(channel));
+    var fieldTitle = fielddef_1.title(model.fieldDef(channel), model.config());
     var maxLength;
     if (axis.titleMaxLength) {
         maxLength = axis.titleMaxLength;

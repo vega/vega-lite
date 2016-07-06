@@ -35,7 +35,7 @@ function parseLegend(model, channel) {
     var legend = model.legend(channel);
     var config = model.config();
     var def = getLegendDefWithScale(model, channel);
-    def.title = title(legend, fieldDef);
+    def.title = title(legend, fieldDef, config);
     var format = common_1.numberFormat(fieldDef, legend.format, config);
     if (format) {
         def.format = format;
@@ -59,11 +59,11 @@ function parseLegend(model, channel) {
     return def;
 }
 exports.parseLegend = parseLegend;
-function title(legend, fieldDef) {
+function title(legend, fieldDef, config) {
     if (typeof legend !== 'boolean' && legend.title) {
         return legend.title;
     }
-    return fielddef_1.title(fieldDef);
+    return fielddef_1.title(fieldDef, config);
 }
 exports.title = title;
 function useColorLegendScale(fieldDef) {

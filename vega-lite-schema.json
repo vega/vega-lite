@@ -1052,6 +1052,10 @@
                     "description": "Default datetime format for axis and legend labels. The format can be set directly on each axis and legend.",
                     "type": "string"
                 },
+                "countTitle": {
+                    "description": "Default axis and legend title for count fields.",
+                    "type": "string"
+                },
                 "cell": {
                     "$ref": "#/definitions/CellConfig",
                     "description": "Cell Config"

@@ -1,4 +1,5 @@
 import {COLOR, SIZE, SHAPE, Channel} from '../channel';
+import {Config} from '../config';
 import {FieldDef} from '../fielddef';
 import {Legend} from '../legend';
 import {title as fieldTitle} from '../fielddef';
@@ -51,7 +52,7 @@ export function parseLegend(model: UnitModel, channel: Channel): VgLegend {
   let def: VgLegend = getLegendDefWithScale(model, channel);
 
   // 1.1 Add properties with special rules
-  def.title = title(legend, fieldDef);
+  def.title = title(legend, fieldDef, config);
   const format = numberFormat(fieldDef, legend.format, config);
   if (format) {
     def.format = format;
@@ -80,12 +81,12 @@ export function parseLegend(model: UnitModel, channel: Channel): VgLegend {
   return def;
 }
 
-export function title(legend: Legend, fieldDef: FieldDef) {
+export function title(legend: Legend, fieldDef: FieldDef, config: Config) {
   if (typeof legend !== 'boolean' && legend.title) {
     return legend.title;
   }
 
-  return fieldTitle(fieldDef);
+  return fieldTitle(fieldDef, config);
 }
 
 // we have to use special scales for ordinal or binned fields for the color channel

@@ -45,8 +45,9 @@ A Vega-Lite `config` object can have the following top-level properties:
 | :------------ |:-------------:| :------------- |
 | viewport      | Integer[]     | The width and height of the on-screen viewport, in pixels. If necessary, clipping and scrolling will be applied. <span class="note-line">__Default value:__ (none)</span> |
 | background    | String        | CSS color property to use as background of visualization. <span class="note-line">__Default value:__ (none)</span> |
-| timeFormat    | String     | The default time format pattern for text and labels of axes and legends (in the form of [D3 time format pattern](https://github.com/mbostock/d3/wiki/Time-Formatting)). <span class="note-line">__Default value:__ `'%Y-%m-%d'`.</span>|
+| countTitle    | String      | The default title for count field (`{field:'*', aggregate:'count', type: 'QUANTITATIVE'}`). <span class="note-line">__Default value:__ `'Number of Records'`.</span>|
 | numberFormat  | String      | The default number format pattern for text and labels of axes and legends (in the form of [D3 number format pattern](https://github.com/mbostock/d3/wiki/Formatting)). <span class="note-line">__Default value:__ `'s'`.</span>|
+| timeFormat    | String     | The default time format pattern for temporal field without time unit in the text mark and labels of axes and legends (in the form of [D3 time format pattern](https://github.com/mbostock/d3/wiki/Time-Formatting)). <span class="note-line">__Default value:__ `'%Y-%m-%d'`.</span>|
 
 <!-- TODO: consider adding width, height, numberFormat, timeFormat  -->
 
