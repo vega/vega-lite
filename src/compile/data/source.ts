@@ -22,7 +22,7 @@ export namespace source {
 
       let sourceData: VgData = { name: model.dataName(SOURCE) };
       if (data.values && data.values.length > 0) {
-        sourceData.values = model.data().values;
+        sourceData.values = data.values;
         sourceData.format = { type: 'json' };
       } else if (data.url) {
         sourceData.url = data.url;
@@ -33,10 +33,13 @@ export namespace source {
         if (!contains(['json', 'csv', 'tsv', 'topojson'], defaultExtension)) {
           defaultExtension = 'json';
         }
-        const dataFormat: DataFormat = model.data().format || {};
+        const dataFormat: DataFormat = data.format || {};
+
+        // For backward compatability
+        const formatType: DataFormat = dataFormat.type || data['formatType'];
         sourceData.format =
           extend(
-            { type: dataFormat.type ? model.data().format.type : defaultExtension },
+            { type: formatType ? formatType : defaultExtension },
             dataFormat.property ? { property: dataFormat.property } : {},
             // Feature and mesh are two mutually exclusive properties
             dataFormat.feature ?
