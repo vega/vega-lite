@@ -955,7 +955,7 @@
                     "description": "An object that specifies the format for the data file or values."
                 },
                 "url": {
-                    "description": "A URL from which to load the data set. Use the formatType property\n\nto ensure the loaded data is correctly parsed.",
+                    "description": "A URL from which to load the data set. Use the format.type property\n\nto ensure the loaded data is correctly parsed.",
                     "type": "string"
                 },
                 "values": {
