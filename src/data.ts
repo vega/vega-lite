@@ -43,6 +43,15 @@ export enum DataFormatType {
 
 export interface Data {
   /**
+   * Type of input data: `"json"`, `"csv"`, `"tsv"`.
+   * The default format type is determined by the extension of the file url.
+   * If no extension is detected, `"json"` will be used by default.
+   * @type {DataFormatType}
+   * @deprecated
+   */
+  formatType?: DataFormatType;
+
+  /**
    * An object that specifies the format for the data file or values.
    */
   format?: DataFormat;
