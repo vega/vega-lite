@@ -156,16 +156,6 @@ function deepMerge_(dest, src) {
   return dest;
 }
 
-// FIXME remove this
-import * as dlBin from 'datalib/src/bins/bins';
-export function getbins(stats, maxbins) {
-  return dlBin({
-    min: stats.min,
-    max: stats.max,
-    maxbins: maxbins
-  });
-}
-
 export function unique<T>(values: T[], f?: (item: T) => string) {
   let results = [];
   var u = {}, v, i, n;

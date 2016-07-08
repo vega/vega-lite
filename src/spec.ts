@@ -332,20 +332,10 @@ export function normalizeOverlay(spec: UnitSpec, overlayWithPoint: boolean, over
 
 // TODO: add vl.spec.validate & move stuff from vl.validate to here
 
-export function alwaysNoOcclusion(spec: ExtendedUnitSpec): boolean {
-  // FIXME raw OxQ with # of rows = # of O
-  return vlEncoding.isAggregate(spec.encoding);
-}
-
 export function fieldDefs(spec: ExtendedUnitSpec): FieldDef[] {
   // TODO: refactor this once we have composition
   return vlEncoding.fieldDefs(spec.encoding);
 };
-
-export function getCleanSpec(spec: ExtendedUnitSpec): ExtendedUnitSpec {
-  // TODO: move toSpec to here!
-  return spec;
-}
 
 export function isStacked(spec: ExtendedUnitSpec): boolean {
   return stack(spec.mark, spec.encoding, spec.config) !== null;
