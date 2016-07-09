@@ -7,6 +7,7 @@ import {SOURCE, STACKED_SCALE} from '../data';
 import {FieldDef, field, isMeasure} from '../fielddef';
 import {Mark, BAR, TEXT as TEXTMARK, RULE, TICK} from '../mark';
 import {Scale, ScaleType, NiceTime} from '../scale';
+import {isSortField, SortOrder} from '../sort';
 import {StackOffset} from '../stack';
 import {TimeUnit} from '../timeunit';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
@@ -92,7 +93,7 @@ function parseMainScale(model: Model, fieldDef: FieldDef, channel: Channel) {
   }
 
   extend(scaleDef, rangeMixins(scale, model, channel));
-  if (sort && (typeof sort === 'string' ? sort : sort.order) === 'descending') {
+  if (sort && (isSortField(sort) ? sort.order : sort) === SortOrder.DESCENDING) {
     scaleDef.reverse = true;
   }
 
@@ -308,16 +309,17 @@ export function domainSort(model: Model, channel: Channel, scaleType: ScaleType)
   }
 
   const sort = model.sort(channel);
-  if (contains(['ascending', 'descending', undefined /* default =ascending*/], sort)) {
-    return true;
-  }
 
   // Sorted based on an aggregate calculation over a specified sort field (only for ordinal scale)
-  if (typeof sort !== 'string') {
+  if (isSortField(sort)) {
     return {
       op: sort.op,
       field: sort.field
     };
+  }
+
+  if (contains([SortOrder.ASCENDING, SortOrder.DESCENDING, undefined /* default =ascending*/], sort)) {
+    return true;
   }
 
   // sort === 'none'
