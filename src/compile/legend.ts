@@ -1,4 +1,4 @@
-import {COLOR, SIZE, SHAPE, Channel} from '../channel';
+import {COLOR, SIZE, SHAPE, OPACITY, Channel} from '../channel';
 import {Config} from '../config';
 import {FieldDef} from '../fielddef';
 import {Legend} from '../legend';
@@ -14,7 +14,7 @@ import {VgLegend} from '../vega.schema';
 
 
 export function parseLegendComponent(model: UnitModel): Dict<VgLegend> {
-  return [COLOR, SIZE, SHAPE].reduce(function(legendComponent, channel) {
+  return [COLOR, SIZE, SHAPE, OPACITY].reduce(function(legendComponent, channel) {
     if (model.legend(channel)) {
       legendComponent[channel] = parseLegend(model, channel);
     }
@@ -40,6 +40,8 @@ function getLegendDefWithScale(model: UnitModel, channel: Channel): VgLegend {
       return { size: model.scaleName(SIZE) };
     case SHAPE:
       return { shape: model.scaleName(SHAPE) };
+    case OPACITY:
+      return { opacity: model.scaleName(OPACITY) };
   }
   return null;
 }
@@ -132,6 +134,11 @@ export namespace properties {
 
     if (filled) {
       symbols.strokeWidth = { value: 0 };
+    }
+
+    // Avoid override default mapping for opacity channel
+    if (channel === OPACITY) {
+      delete symbols.opacity;
     }
 
     let value;
