@@ -523,8 +523,9 @@ export function zero(scale: Scale, channel: Channel, fieldDef: FieldDef) {
     if (scale.zero !== undefined) {
       return scale.zero;
     }
-    // By default, return true only for non-binned, quantitative x-scale or y-scale.
-    return !fieldDef.bin && contains([X, Y], channel);
+    // By default, return true only for non-binned, quantitative x-scale or y-scale
+    // If no custom domain is provided.
+    return !scale.domain && !fieldDef.bin && contains([X, Y], channel);
   }
   return undefined;
 }
