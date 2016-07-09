@@ -1,5 +1,6 @@
 import {X, Y, X2, Y2, SIZE, Channel} from '../../channel';
 import {isMeasure} from '../../fielddef';
+import {ScaleType} from '../../scale';
 
 import {UnitModel} from '../unit';
 import {applyColorAndOpacity} from '../common';
@@ -52,10 +53,15 @@ export namespace bar {
             field: model.field(X2)
           };
         } else {
-          p.x2 = {
-            scale: model.scaleName(X),
-            value: 0
-          };
+          if (model.scale(X).type === ScaleType.LOG) {
+            p.x2 = { value: 0 };
+          } else {
+            p.x2 = {
+              scale: model.scaleName(X),
+              value: 0
+            };
+          }
+
         }
       } else { // vertical
         p.xc = {
@@ -141,10 +147,17 @@ export namespace bar {
             field: model.field(Y2)
           };
         } else {
-          p.y2 = {
-            scale: model.scaleName(Y),
-            value: 0
-          };
+          if (model.scale(Y).type === ScaleType.LOG) {
+            // end on axis
+            p.y2 = {
+              field: {group: 'height'}
+            };
+          } else {
+            p.y2 = {
+              scale: model.scaleName(Y),
+              value: 0
+            };
+          }
         }
       } else {
         p.yc = {
