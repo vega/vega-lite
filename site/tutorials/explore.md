@@ -13,14 +13,14 @@ To load the CSV file with Vega-Lite, we need to provide a URL and set the format
 
 {: .suppress-error}
 ```json
-"data": {"url": "data/seattle-weather.csv", "formatType": "csv"}
+"data": {"url": "data/seattle-weather.csv"}
 ```
 
 Let's start by looking at the precipitation. Precipitation is a quantitative variable. Let's use a tick mark to show the distribution of precipitation.
 
 <div class="vl-example">
 {
-  "data": {"url": "data/seattle-weather.csv", "formatType": "csv"},
+  "data": {"url": "data/seattle-weather.csv"},
   "mark": "tick",
   "encoding": {
     "x": {"field": "precipitation", "type": "quantitative"}
@@ -32,7 +32,7 @@ It looks as though precipitation is skewed towards lower values; that is, when i
 
 <div class="vl-example">
 {
-  "data": {"url": "data/seattle-weather.csv", "formatType": "csv"},
+  "data": {"url": "data/seattle-weather.csv"},
   "mark": "bar",
   "encoding": {
     "x": {
@@ -53,7 +53,7 @@ Next, let's look at how precipitation in Seattle changes throughout the year. Ve
 
 <div class="vl-example">
 {
-  "data": {"url": "data/seattle-weather.csv", "formatType": "csv"},
+  "data": {"url": "data/seattle-weather.csv"},
   "mark": "line",
   "encoding": {
     "x": {
@@ -76,7 +76,7 @@ When looking at precipitation and temperature, we might want to aggregate by yea
 
 <div class="vl-example">
 {
-  "data": {"url": "data/seattle-weather.csv", "formatType": "csv"},
+  "data": {"url": "data/seattle-weather.csv"},
   "mark": "line",
   "encoding": {
     "x": {
@@ -100,7 +100,7 @@ In this chart, it looks as though the maximum temperature is increasing from yea
 
 <div class="vl-example">
 {
-  "data": {"url": "data/seattle-weather.csv", "formatType": "csv"},
+  "data": {"url": "data/seattle-weather.csv"},
   "mark": "line",
   "encoding": {
     "x": {
@@ -134,7 +134,7 @@ We can use the new field `temp_range` just like any other field. You can find mo
 
 <div class="vl-example">
 {
-  "data": {"url": "data/seattle-weather.csv", "formatType": "csv"},
+  "data": {"url": "data/seattle-weather.csv"},
   "transform": {
     "calculate": [
       {
@@ -165,7 +165,7 @@ For the last visualization in this tutorial, we will explore the `weather` field
 
 <div class="vl-example">
 {
-  "data": {"url": "data/seattle-weather.csv", "formatType": "csv"},
+  "data": {"url": "data/seattle-weather.csv"},
   "mark": "bar",
   "encoding": {
     "x": {

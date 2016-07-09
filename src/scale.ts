@@ -144,7 +144,9 @@ export interface Scale {
    */
   exponent?: number;
   /**
-   * If true, ensures that a zero baseline value is included in the scale domain. This option is ignored for non-quantitative scales.
+   * If `true`, ensures that a zero baseline value is included in the scale domain.
+   * Default value: `true` for `x` and `y` channel if the quantitative field is not binned
+   * and no custom `domain` is provided; `false` otherwise.
    */
   zero?: boolean;
 

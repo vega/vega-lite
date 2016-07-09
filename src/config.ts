@@ -1,6 +1,7 @@
 import {ScaleConfig, FacetScaleConfig, defaultScaleConfig, defaultFacetScaleConfig} from './scale';
 import {AxisConfig, defaultAxisConfig, defaultFacetAxisConfig} from './axis';
 import {LegendConfig, defaultLegendConfig} from './legend';
+import {StackOffset} from './stack';
 
 export interface CellConfig {
   width?: number;
@@ -10,15 +11,26 @@ export interface CellConfig {
 
   // FILL_STROKE_CONFIG
   /**
+   * The fill color.
    * @format color
    */
   fill?: string;
+
+  /** The fill opacity (value between [0,1]). */
   fillOpacity?: number;
+
+  /** The stroke color. */
   stroke?: string;
-  strokeWidth?: number;
+
+  /** The stroke opacity (value between [0,1]). */
   strokeOpacity?: number;
+
+  /** The stroke width, in pixels. */
+  strokeWidth?: number;
+
   /** An array of alternating stroke, space lengths for creating dashed or dotted lines. */
   strokeDash?: number[];
+
   /** The offset (in pixels) into which to begin drawing with the stroke dash array. */
   strokeDashOffset?: number;
 }
@@ -34,9 +46,16 @@ export const defaultFacetCellConfig: CellConfig = {
 };
 
 export interface FacetConfig {
+  /** Facet Scale Config */
   scale?: FacetScaleConfig;
+
+  /** Facet Axis Config */
   axis?: AxisConfig;
+
+  /** Facet Grid Config */
   grid?: FacetGridConfig;
+
+  /** Facet Cell Config */
   cell?: CellConfig;
 }
 
@@ -91,12 +110,7 @@ export enum FontStyle {
     ITALIC = 'italic' as any,
 }
 
-export enum StackOffset {
-    ZERO = 'zero' as any,
-    CENTER = 'center' as any,
-    NORMALIZE = 'normalize' as any,
-    NONE = 'none' as any,
-}
+
 
 export enum Interpolate {
     /** piecewise linear segments, as in a polyline */
@@ -127,6 +141,40 @@ export enum Interpolate {
     MONOTONE = 'monotone' as any,
 }
 
+export enum AreaOverlay {
+  LINE = 'line' as any,
+  LINEPOINT = 'linepoint' as any,
+  NONE = 'none' as any
+}
+
+export interface OverlayConfig {
+  /**
+   * Whether to overlay line with point.
+   */
+  line?: boolean;
+
+  /**
+   * Type of overlay for area mark (line or linepoint)
+   */
+  area?: AreaOverlay;
+
+  /**
+   * Default style for the overlayed point.
+   */
+  pointStyle?: MarkConfig;
+
+  /**
+   * Default style for the overlayed point.
+   */
+  lineStyle?: MarkConfig;
+}
+
+export const defaultOverlayConfig: OverlayConfig = {
+  line: false,
+  pointStyle: {filled: true},
+  lineStyle: {}
+};
+
 export interface MarkConfig {
 
   // ---------- Color ----------
@@ -138,22 +186,24 @@ export interface MarkConfig {
    * for usage example.
    */
   filled?: boolean;
+
   /**
    * Default color.
    * @format color
    */
   color?: string;
+
   /**
    * Default Fill Color.  This has higher precedence than config.color
    * @format color
    */
   fill?: string;
+
   /**
    * Default Stroke Color.  This has higher precedence than config.color
    * @format color
    */
   stroke?: string;
-
 
   // ---------- Opacity ----------
   /**
@@ -179,10 +229,12 @@ export interface MarkConfig {
    * @minimum 0
    */
   strokeWidth?: number;
+
   /**
    * An array of alternating stroke, space lengths for creating dashed or dotted lines.
    */
   strokeDash?: number[];
+
   /**
    * The offset (in pixels) into which to begin drawing with the stroke dash array.
    */
@@ -233,6 +285,7 @@ export interface MarkConfig {
    * which provides 1 pixel offset between bars.
    */
   barSize?: number;
+
   /**
    * The size of the bars on continuous scales.
    */
@@ -324,6 +377,7 @@ export interface MarkConfig {
 
 export const defaultMarkConfig: MarkConfig = {
   color: '#4682b4',
+  shape: Shape.CIRCLE,
   strokeWidth: 2,
   size: 30,
   barThinSize: 2,
@@ -358,26 +412,48 @@ export interface Config {
    * D3 Number format for axis labels and text tables. For example "s" for SI units.
    */
   numberFormat?: string;
+
   /**
    * Default datetime format for axis and legend labels. The format can be set directly on each axis and legend.
    */
   timeFormat?: string;
 
+  /**
+   * Default axis and legend title for count fields.
+   * @type {string}
+   */
+  countTitle?: string;
+
+  /** Cell Config */
   cell?: CellConfig;
+
+  /** Mark Config */
   mark?: MarkConfig;
+
+  /** Mark Overlay Config */
+  overlay?: OverlayConfig;
+
+  /** Scale Config */
   scale?: ScaleConfig;
+
+  /** Axis Config */
   axis?: AxisConfig;
+
+  /** Legend Config */
   legend?: LegendConfig;
 
+  /** Facet Config */
   facet?: FacetConfig;
 }
 
 export const defaultConfig: Config = {
   numberFormat: 's',
   timeFormat: '%Y-%m-%d',
+  countTitle: 'Number of Records',
 
   cell: defaultCellConfig,
   mark: defaultMarkConfig,
+  overlay: defaultOverlayConfig,
   scale: defaultScaleConfig,
   axis: defaultAxisConfig,
   legend: defaultLegendConfig,

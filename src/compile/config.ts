@@ -3,7 +3,7 @@ import {Config} from '../config';
 import {Encoding} from '../encoding';
 import {isAggregate, has} from '../encoding';
 import {isMeasure} from '../fielddef';
-import {POINT, LINE, TICK, CIRCLE, SQUARE, RULE, Mark} from '../mark';
+import {AREA, POINT, LINE, TICK, CIRCLE, SQUARE, RULE, Mark} from '../mark';
 import {contains, extend} from '../util';
 
 /**
@@ -21,23 +21,28 @@ export function initMarkConfig(mark: Mark, encoding: Encoding, config: Config) {
            }
            break;
          case 'opacity':
-           if (value === undefined && contains([POINT, TICK, CIRCLE, SQUARE], mark)) {
-             // point-based marks and bar
-             if (!isAggregate(encoding) || has(encoding, DETAIL)) {
-               cfg[property] = 0.7;
-             }
+           if (value === undefined) {
+            if (contains([POINT, TICK, CIRCLE, SQUARE], mark)) {
+              // point-based marks and bar
+              if (!isAggregate(encoding) || has(encoding, DETAIL)) {
+                cfg[property] = 0.7;
+              }
+            }
+            if (mark === AREA) {
+              cfg[property] = 0.7; // inspired by Tableau
+            }
            }
            break;
          case 'orient':
-           const xIsMeasure = isMeasure(encoding.x);
-           const yIsMeasure = isMeasure(encoding.y);
+           const xIsMeasure = isMeasure(encoding.x) || isMeasure(encoding.x2);
+           const yIsMeasure = isMeasure(encoding.y) || isMeasure(encoding.y2);
 
            // When unambiguous, do not allow overriding
            if (xIsMeasure && !yIsMeasure) {
              if (mark === TICK) {
-               cfg[property] = 'vertical'; // implicitly vertical
+               cfg[property] = 'vertical';
              } else {
-               cfg[property] = 'horizontal'; // implicitly horizontal
+               cfg[property] = 'horizontal';
              }
            } else if (!xIsMeasure && yIsMeasure) {
              if (mark === TICK) {

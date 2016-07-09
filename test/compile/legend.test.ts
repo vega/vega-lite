@@ -3,7 +3,10 @@
 import {assert} from 'chai';
 import {parseUnitModel} from '../util';
 import {COLOR, X} from '../../src/channel';
+import {defaultConfig} from '../../src/config';
 import * as legend from '../../src/compile/legend';
+import {TimeUnit} from '../../src/timeunit';
+import {TEMPORAL} from '../../src/type';
 
 describe('Legend', function() {
   describe('parseLegend()', function() {
@@ -23,50 +26,15 @@ describe('Legend', function() {
     });
   });
 
-  describe('offset()', function () {
-    it('should add explicitly specified offset', function () {
-      const offset = legend.offset({offset: 10}, {field: 'a'});
-      assert.deepEqual(offset, 10);
-    });
-
-    it('should return 0 by default', function () {
-      const offset = legend.offset({}, {field: 'a'});
-      assert.deepEqual(offset, 0);
-    });
-  });
-
-  describe('orient()', function () {
-    it('should add explicitly specified orient', function () {
-      const orient = legend.orient({orient: "horizontal"}, {field: 'a'});
-      assert.deepEqual(orient, "horizontal");
-    });
-
-    it('should return vertical by default', function () {
-      const orient = legend.orient({}, {field: 'a'});
-      assert.deepEqual(orient, "vertical");
-    });
-  });
-
   describe('title()', function () {
     it('should add explicitly specified title', function () {
-      const title = legend.title({title: 'Custom'}, {field: 'a'});
+      const title = legend.title({title: 'Custom'}, {field: 'a'}, defaultConfig);
       assert.deepEqual(title, 'Custom');
     });
 
     it('should add return fieldTitle by default', function () {
-      const title = legend.title({}, {field: 'a'});
+      const title = legend.title({}, {field: 'a'}, defaultConfig);
       assert.deepEqual(title, 'a');
-    });
-  });
-
-  describe('formatMixins()', function() {
-    it('should not be added for bin', function() {
-      assert.deepEqual(legend.formatMixins({}, parseUnitModel({
-        mark: "point",
-        encoding: {
-          x: {field:'a', bin: true}
-        }
-      }), X), {});
     });
   });
 
@@ -186,6 +154,33 @@ describe('Legend', function() {
             color: {field: "a", type: "nominal", legend: {"labelBaseline": "middle"}}}
         }), COLOR);
         assert.deepEqual(label.baseline.value, "middle");
+    });
+
+    it('should return correct template for the timeUnit: TimeUnit.MONTH', function() {
+      const model = parseUnitModel({
+        mark: "point",
+        encoding: {
+          x: {field: "a", type: "temporal"},
+          color: {field: "a", type: "temporal", timeUnit: "month"}}
+      });
+      const fieldDef = {field: 'a', type: TEMPORAL, timeUnit: TimeUnit.MONTH};
+      const label = legend.properties.labels(fieldDef, {}, model, COLOR);
+      let expected = "{{datum.data | time:'%B'}}";
+      assert.deepEqual(label.text.template, expected);
+    });
+
+    it('should return correct template for the timeUnit: TimeUnit.QUARTER', function() {
+      const model = parseUnitModel({
+        mark: "point",
+        encoding: {
+          x: {field: "a", type: "temporal"},
+          color: {field: "a", type: "temporal", timeUnit: "quarter"}}
+      });
+      const fieldDef = {field: 'a', type: TEMPORAL, timeUnit: TimeUnit.QUARTER};
+      const label = legend.properties.labels(fieldDef, {}, model, COLOR);
+      let quarterPrefix = 'Q';
+      let expected = quarterPrefix + "{{datum.data | quarter}}";
+      assert.deepEqual(label.text.template, expected);
     });
   });
 

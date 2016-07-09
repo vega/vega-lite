@@ -5,7 +5,7 @@ import {NOMINAL, ORDINAL, TEMPORAL} from '../type';
 import {contains, keys, extend, truncate, Dict} from '../util';
 import {VgAxis} from '../vega.schema';
 
-import {formatMixins} from './common';
+import {numberFormat, timeTemplate} from './common';
 import {Model} from './model';
 import {UnitModel} from './unit';
 
@@ -32,7 +32,7 @@ export function parseInnerAxis(channel: Channel, model: Model): VgAxis {
   // TODO: support adding ticks as well
 
   // TODO: replace any with Vega Axis Interface
-  let def = {
+  let def: any = {
     type: type,
     scale: model.scaleName(channel),
     grid: true,
@@ -61,6 +61,20 @@ export function parseInnerAxis(channel: Channel, model: Model): VgAxis {
     }
   });
 
+  const props = model.axis(channel).properties || {};
+
+  // For now, only need to add grid properties here because innerAxis is only for rendering grid.
+  // TODO: support add other properties for innerAxis
+  ['grid'].forEach(function(group) {
+    const value = properties[group] ?
+      properties[group](model, channel, props[group] || {}, def) :
+      props[group];
+    if (value !== undefined && keys(value).length > 0) {
+      def.properties = def.properties || {};
+      def.properties[group] = value;
+    }
+  });
+
   return def;
 }
 
@@ -77,13 +91,10 @@ export function parseAxis(channel: Channel, model: Model): VgAxis {
     scale: model.scaleName(channel)
   };
 
-  // format mixins (add format and formatType)
-  extend(def, formatMixins(model, channel, model.axis(channel).format));
-
   // 1.2. Add properties
   [
     // a) properties with special rules (so it has axis[property] methods) -- call rule functions
-    'grid', 'layer', 'offset', 'orient', 'tickSize', 'ticks', 'tickSizeEnd', 'title', 'titleOffset',
+    'format', 'grid', 'layer', 'offset', 'orient', 'tickSize', 'ticks', 'tickSizeEnd', 'title', 'titleOffset',
     // b) properties without rules, only produce default values in the schema, or explicit value if specified
     'tickPadding', 'tickSize', 'tickSizeMajor', 'tickSizeMinor', 'values', 'subdivide'
   ].forEach(function(property) {
@@ -115,6 +126,10 @@ export function parseAxis(channel: Channel, model: Model): VgAxis {
   });
 
   return def;
+}
+
+export function format(model: Model, channel: Channel) {
+  return numberFormat(model.fieldDef(channel), model.axis(channel).format, model.config());
 }
 
 export function offset(model: Model, channel: Channel) {
@@ -210,7 +225,7 @@ export function title(model: Model, channel: Channel) {
   }
 
   // if not defined, automatically determine axis title from field def
-  const fieldTitle = fieldDefTitle(model.fieldDef(channel));
+  const fieldTitle = fieldDefTitle(model.fieldDef(channel), model.config());
 
   let maxLength;
   if (axis.titleMaxLength) {
@@ -267,6 +282,7 @@ export namespace properties {
   export function labels(model: Model, channel: Channel, labelsSpec, def) {
     const fieldDef = model.fieldDef(channel);
     const axis = model.axis(channel);
+    const config = model.config();
 
     if (!axis.labels) {
       return extend({
@@ -274,13 +290,20 @@ export namespace properties {
       }, labelsSpec);
     }
 
+    // Text
     if (contains([NOMINAL, ORDINAL], fieldDef.type) && axis.labelMaxLength) {
       // TODO replace this with Vega's labelMaxLength once it is introduced
       labelsSpec = extend({
         text: {
-          template: '{{ datum.data | truncate:' + axis.labelMaxLength + '}}'
+          template: '{{ datum.data | truncate:' + axis.labelMaxLength + ' }}'
         }
       }, labelsSpec || {});
+    } else if (fieldDef.type === TEMPORAL) {
+      labelsSpec = extend({
+        text: {
+          template: timeTemplate('datum.data', fieldDef.timeUnit, axis.format, axis.shortTimeLabels, config)
+        }
+      }, labelsSpec);
     }
 
     // Label Angle

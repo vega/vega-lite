@@ -1,9 +1,9 @@
-import {SOURCE} from '../../data';
-import {contains} from '../../util';
+import {DataFormat, SOURCE} from '../../data';
+import {contains, extend} from '../../util';
 import {VgData} from '../../vega.schema';
 
-import {FacetModel} from './../facet';
-import {LayerModel} from './../layer';
+import {FacetModel} from '../facet';
+import {LayerModel} from '../layer';
 import {Model} from './../model';
 
 import {DataComponent} from './data';
@@ -22,7 +22,7 @@ export namespace source {
 
       let sourceData: VgData = { name: model.dataName(SOURCE) };
       if (data.values && data.values.length > 0) {
-        sourceData.values = model.data().values;
+        sourceData.values = data.values;
         sourceData.format = { type: 'json' };
       } else if (data.url) {
         sourceData.url = data.url;
@@ -30,10 +30,24 @@ export namespace source {
         // Extract extension from URL using snippet from
         // http://stackoverflow.com/questions/680929/how-to-extract-extension-from-filename-string-in-javascript
         let defaultExtension = /(?:\.([^.]+))?$/.exec(sourceData.url)[1];
-        if (!contains(['json', 'csv', 'tsv'], defaultExtension)) {
+        if (!contains(['json', 'csv', 'tsv', 'topojson'], defaultExtension)) {
           defaultExtension = 'json';
         }
-        sourceData.format = { type: model.data().formatType || defaultExtension };
+        const dataFormat: DataFormat = data.format || {};
+
+        // For backward compatability for former `data.formatType` property
+        const formatType: DataFormat = dataFormat.type || data['formatType'];
+        sourceData.format =
+          extend(
+            { type: formatType ? formatType : defaultExtension },
+            dataFormat.property ? { property: dataFormat.property } : {},
+            // Feature and mesh are two mutually exclusive properties
+            dataFormat.feature ?
+              { feature : dataFormat.feature } :
+            dataFormat.mesh ?
+              { mesh : dataFormat.mesh } :
+              {}
+          );
       }
       return sourceData;
     } else if (!model.parent()) {

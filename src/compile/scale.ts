@@ -2,12 +2,13 @@
 declare var exports;
 
 import {SHARED_DOMAIN_OPS} from '../aggregate';
-import {COLUMN, ROW, X, Y, SHAPE, SIZE, COLOR, OPACITY, TEXT, hasScale, Channel} from '../channel';
-import {StackOffset} from '../config';
+import {COLUMN, ROW, X, Y, X2, Y2, SHAPE, SIZE, COLOR, OPACITY, TEXT, hasScale, Channel} from '../channel';
 import {SOURCE, STACKED_SCALE} from '../data';
 import {FieldDef, field, isMeasure} from '../fielddef';
-import {Mark, BAR, TEXT as TEXT_MARK, RULE, TICK} from '../mark';
+import {Mark, BAR, TEXT as TEXTMARK, RULE, TICK} from '../mark';
 import {Scale, ScaleType, NiceTime} from '../scale';
+import {isSortField, SortOrder} from '../sort';
+import {StackOffset} from '../stack';
 import {TimeUnit} from '../timeunit';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 import {contains, extend, Dict} from '../util';
@@ -40,6 +41,7 @@ export type ScaleComponents = {
 }
 
 export function parseScaleComponent(model: Model): Dict<ScaleComponents> {
+  // TODO: should model.channels() inlcude X2/Y2?
   return model.channels().reduce(function(scale: Dict<ScaleComponents>, channel: Channel) {
       if (model.scale(channel)) {
         const fieldDef = model.fieldDef(channel);
@@ -68,16 +70,30 @@ export function parseScaleComponent(model: Model): Dict<ScaleComponents> {
 function parseMainScale(model: Model, fieldDef: FieldDef, channel: Channel) {
   const scale = model.scale(channel);
   const sort = model.sort(channel);
-
   let scaleDef: any = {
     name: model.scaleName(channel),
     type: scale.type,
   };
 
-  scaleDef.domain = domain(scale, model, channel);
-  extend(scaleDef, rangeMixins(scale, model, channel));
+  // If channel is either X or Y then union them with X2 & Y2 if they exist
+  if (channel === X && model.has(X2)) {
+    if (model.has(X)) {
+      scaleDef.domain = { fields: [domain(scale, model, X), domain(scale, model, X2)] };
+    } else {
+      scaleDef.domain = domain(scale, model, X2);
+    }
+  } else if (channel === Y && model.has(Y2)) {
+    if (model.has(Y)) {
+      scaleDef.domain = { fields: [domain(scale, model, Y), domain(scale, model, Y2)] };
+    } else {
+      scaleDef.domain = domain(scale, model, Y2);
+    }
+  } else {
+    scaleDef.domain = domain(scale, model, channel);
+  }
 
-  if (sort && (typeof sort === 'string' ? sort : sort.order) === 'descending') {
+  extend(scaleDef, rangeMixins(scale, model, channel));
+  if (sort && (isSortField(sort) ? sort.order : sort) === SortOrder.DESCENDING) {
     scaleDef.reverse = true;
   }
 
@@ -177,6 +193,7 @@ export function scaleType(scale: Scale, fieldDef: FieldDef, channel: Channel, ma
           case TimeUnit.HOURS:
           case TimeUnit.DAY:
           case TimeUnit.MONTH:
+          case TimeUnit.QUARTER:
             return ScaleType.ORDINAL;
           default:
             // date, year, minute, second, yearmonth, monthday, ...
@@ -244,26 +261,32 @@ export function domain(scale: Scale, model: Model, channel:Channel): any {
       field: model.field(channel, {noAggregate: true})
     };
   } else if (fieldDef.bin) { // bin
-    return scale.type === ScaleType.ORDINAL ? {
+    if (scale.type === ScaleType.ORDINAL) {
       // ordinal bin scale takes domain from bin_range, ordered by bin_start
-      data: model.dataTable(),
-      field: model.field(channel, { binSuffix: '_range' }),
-      sort: {
-        field: model.field(channel, { binSuffix: '_start' }),
-        op: 'min' // min or max doesn't matter since same _range would have the same _start
-      }
-    } : channel === COLOR ? {
+      return {
+        data: model.dataTable(),
+        field: model.field(channel, { binSuffix: '_range' }),
+        sort: {
+          field: model.field(channel, { binSuffix: '_start' }),
+          op: 'min' // min or max doesn't matter since same _range would have the same _start
+        }
+      };
+    } else if (channel === COLOR) {
       // Currently, binned on color uses linear scale and thus use _start point
-      data: model.dataTable(),
-      field: model.field(channel, { binSuffix: '_start' })
-    } : {
+      return {
+        data: model.dataTable(),
+        field: model.field(channel, { binSuffix: '_start' })
+      };
+    } else {
       // other linear bin scale merges both bin_start and bin_end for non-ordinal scale
-      data: model.dataTable(),
-      field: [
-        model.field(channel, { binSuffix: '_start' }),
-        model.field(channel, { binSuffix: '_end' })
-      ]
-    };
+      return {
+        data: model.dataTable(),
+        field: [
+          model.field(channel, { binSuffix: '_start' }),
+          model.field(channel, { binSuffix: '_end' })
+        ]
+      };
+    }
   } else if (sort) { // have sort -- only for ordinal
     return {
       // If sort by aggregation of a specified sort field, we need to use SOURCE table,
@@ -286,16 +309,17 @@ export function domainSort(model: Model, channel: Channel, scaleType: ScaleType)
   }
 
   const sort = model.sort(channel);
-  if (contains(['ascending', 'descending', undefined /* default =ascending*/], sort)) {
-    return true;
-  }
 
   // Sorted based on an aggregate calculation over a specified sort field (only for ordinal scale)
-  if (typeof sort !== 'string') {
+  if (isSortField(sort)) {
     return {
       op: sort.op,
       field: sort.field
     };
+  }
+
+  if (contains([SortOrder.ASCENDING, SortOrder.DESCENDING, undefined /* default =ascending*/], sort)) {
+    return true;
   }
 
   // sort === 'none'
@@ -375,7 +399,7 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel): any {
         }
         const dimension = model.config().mark.orient === 'horizontal' ? Y : X;
         return {range: [model.config().mark.barThinSize, model.scale(dimension).bandSize]};
-      } else if (unitModel.mark() === TEXT_MARK) {
+      } else if (unitModel.mark() === TEXTMARK) {
         return {range: scaleConfig.fontSizeRange };
       } else if (unitModel.mark() === RULE) {
         return {range: scaleConfig.ruleSizeRange };
@@ -499,8 +523,9 @@ export function zero(scale: Scale, channel: Channel, fieldDef: FieldDef) {
     if (scale.zero !== undefined) {
       return scale.zero;
     }
-    // By default, return true only for non-binned, quantitative x-scale or y-scale.
-    return !fieldDef.bin && contains([X, Y], channel);
+    // By default, return true only for non-binned, quantitative x-scale or y-scale
+    // If no custom domain is provided.
+    return !scale.domain && !fieldDef.bin && contains([X, Y], channel);
   }
   return undefined;
 }

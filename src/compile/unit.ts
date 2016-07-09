@@ -1,12 +1,12 @@
 import {AggregateOp} from '../aggregate';
-import {AxisProperties} from '../axis';
-import {X, Y, TEXT, PATH, ORDER, Channel, UNIT_CHANNELS,  UNIT_SCALE_CHANNELS, NONSPATIAL_SCALE_CHANNELS, supportMark} from '../channel';
+import {Axis} from '../axis';
+import {X, Y, X2, Y2, TEXT, PATH, ORDER, Channel, UNIT_CHANNELS,  UNIT_SCALE_CHANNELS, NONSPATIAL_SCALE_CHANNELS, supportMark} from '../channel';
 import {defaultConfig, Config, CellConfig} from '../config';
 import {SOURCE, SUMMARY} from '../data';
 import {Encoding} from '../encoding';
 import * as vlEncoding from '../encoding'; // TODO: remove
 import {FieldDef, FieldRefOption, field} from '../fielddef';
-import {LegendProperties} from '../legend';
+import {Legend} from '../legend';
 import {Mark, TEXT as TEXTMARK} from '../mark';
 import {Scale, ScaleType} from '../scale';
 import {ExtendedUnitSpec} from '../spec';
@@ -23,7 +23,7 @@ import {assembleLayout, parseUnitLayout} from './layout';
 import {Model} from './model';
 import {parseMark} from './mark/mark';
 import {parseScaleComponent, scaleType} from './scale';
-import {compileStackProperties, StackProperties} from './stack';
+import {stack, StackProperties} from '../stack';
 
 /**
  * Internal model of Vega-Lite specification for the compiler.
@@ -41,12 +41,12 @@ export class UnitModel extends Model {
     const encoding = this._encoding = this._initEncoding(mark, spec.encoding || {});
     const config = this._config = this._initConfig(spec.config, parent, mark, encoding);
 
-    const scale = this._scale =  this._initScale(mark, encoding, config);
+    this._scale =  this._initScale(mark, encoding, config);
     this._axis = this._initAxis(encoding, config);
     this._legend = this._initLegend(encoding, config);
 
-    // calculate stack
-    this._stack = compileStackProperties(mark, encoding, scale, config);
+    // calculate stack properties
+    this._stack = stack(mark, encoding, config);
   }
 
   private _initEncoding(mark: Mark, encoding: Encoding) {
@@ -83,10 +83,13 @@ export class UnitModel extends Model {
 
   private _initScale(mark: Mark, encoding: Encoding, config: Config): Dict<Scale> {
     return UNIT_SCALE_CHANNELS.reduce(function(_scale, channel) {
-      if (vlEncoding.has(encoding, channel)) {
-        const scaleSpec = encoding[channel].scale || {};
-        const channelDef = encoding[channel];
+      if (vlEncoding.has(encoding, channel) ||
+          (channel === X && vlEncoding.has(encoding, X2)) ||
+          (channel === Y && vlEncoding.has(encoding, Y2))
+        ) {
 
+        const channelDef = encoding[channel];
+        const scaleSpec = (channelDef || {}).scale || {};
         const _scaleType = scaleType(scaleSpec, channelDef, channel, mark);
 
         _scale[channel] = extend({
@@ -102,11 +105,14 @@ export class UnitModel extends Model {
     }, {} as Dict<Scale>);
   }
 
-  private _initAxis(encoding: Encoding, config: Config): Dict<AxisProperties> {
+  private _initAxis(encoding: Encoding, config: Config): Dict<Axis> {
     return [X, Y].reduce(function(_axis, channel) {
       // Position Axis
-      if (vlEncoding.has(encoding, channel)) {
-        const axisSpec = encoding[channel].axis;
+      if (vlEncoding.has(encoding, channel) ||
+          (channel === X && vlEncoding.has(encoding, X2)) ||
+          (channel === Y && vlEncoding.has(encoding, Y2))) {
+
+        const axisSpec = (encoding[channel] || {}).axis;
         if (axisSpec !== false) {
           _axis[channel] = extend({},
             config.axis,
@@ -115,10 +121,10 @@ export class UnitModel extends Model {
         }
       }
       return _axis;
-    }, {} as Dict<AxisProperties>);
+    }, {} as Dict<Axis>);
   }
 
-  private _initLegend(encoding: Encoding, config: Config): Dict<LegendProperties> {
+  private _initLegend(encoding: Encoding, config: Config): Dict<Legend> {
     return NONSPATIAL_SCALE_CHANNELS.reduce(function(_legend, channel) {
       if (vlEncoding.has(encoding, channel)) {
         const legendSpec = encoding[channel].legend;
@@ -129,7 +135,7 @@ export class UnitModel extends Model {
         }
       }
       return _legend;
-    }, {} as Dict<LegendProperties>);
+    }, {} as Dict<Legend>);
   }
 
   public parseData() {

@@ -45,6 +45,13 @@ export const AGGREGATE_OPS = [
     AggregateOp.ARGMAX,
 ];
 
+/** Additive-based aggregation operations.  These can be applied to stack. */
+export const SUM_OPS = [
+    AggregateOp.COUNT,
+    AggregateOp.SUM,
+    AggregateOp.DISTINCT
+];
+
 export const SHARED_DOMAIN_OPS = [
     AggregateOp.MEAN,
     AggregateOp.AVERAGE,
