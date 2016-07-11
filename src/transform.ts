@@ -1,3 +1,5 @@
+import {Filter} from './filter';
+
 /**
  * Top-level transform object.
  */
@@ -5,7 +7,7 @@ export interface Transform {
   /**
    * A string containing the filter Vega expression. Use `datum` to refer to the current data object.
    */
-  filter?: string;
+  filter?: string | Filter | (string | Filter)[];
   /**
    * Filter null values from the data. If set to true, all rows with null values are filtered. If false, no rows are filtered. Set the property to undefined to filter only quantitative and temporal fields.
    */
