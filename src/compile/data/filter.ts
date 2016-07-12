@@ -1,13 +1,36 @@
-import {FacetModel} from './../facet';
-import {LayerModel} from './../layer';
-import {Model} from './../model';
+import {field} from '../../fielddef';
+import {isEqualFilter, isInFilter, isRangeFilter, Filter} from '../../filter';
+import {isArray} from '../../util';
+
+import {FacetModel} from '../facet';
+import {LayerModel} from '../layer';
+import {Model} from '../model';
 
 import {DataComponent} from './data';
 
 
 export namespace filter {
-  function parse(model: Model): string {
-    return model.transform().filter;
+  const s = JSON.stringify;
+
+  export function getFilterExpression(filter: Filter | string) {
+    if (isEqualFilter(filter)) {
+      // Using field method so we get support for aggregate, timeUnit and bin for free in the future
+      return field(filter, {datum: true}) + '===' + s(filter.equal);
+    } else if (isInFilter(filter)) {
+      return 'indexof(' + s(filter.in) + ', ' + field(filter, {datum: true}) + ') !== -1';
+    } else if (isRangeFilter(filter)) {
+      return 'inrange(' + field(filter, {datum: true}) + ', ' + s(filter.range[0]) + ', ' + s(filter.range[1]) + ')';
+    }
+    return filter as string;
+  }
+
+  export function parse(model: Model): string {
+    const filter = model.transform().filter;
+    if (isArray(filter)) {
+      return '(' + filter.map((f) => getFilterExpression(f)).join(') && (') + ')';
+    } else {
+      return getFilterExpression(filter);
+    }
   }
 
   export const parseUnit = parse;
