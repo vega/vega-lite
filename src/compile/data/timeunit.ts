@@ -1,16 +1,15 @@
 import {Channel} from '../../channel';
 import {field, FieldDef} from '../../fielddef';
+import {expression} from '../../timeunit';
 import {TEMPORAL} from '../../type';
 import {extend, vals, Dict} from '../../util';
 import {VgTransform} from '../../vega.schema';
 
-import {FacetModel} from './../facet';
-import {LayerModel} from './../layer';
-import {Model} from './../model';
-import {parseExpression} from './../time';
+import {FacetModel} from '../facet';
+import {LayerModel} from '../layer';
+import {Model} from '../model';
 
 import {DataComponent} from './data';
-
 
 export namespace timeUnit {
   function parse(model: Model): Dict<VgTransform> {
@@ -23,7 +22,7 @@ export namespace timeUnit {
         timeUnitComponent[hash] = {
           type: 'formula',
           field: field(fieldDef),
-          expr: parseExpression(fieldDef.timeUnit, ref)
+          expr: expression(fieldDef.timeUnit, ref)
         };
       }
       return timeUnitComponent;

@@ -15,7 +15,7 @@ import {contains, extend, Dict} from '../util';
 import {VgScale} from '../vega.schema';
 
 import {Model} from './model';
-import {rawDomain, smallestUnit} from './time';
+import {rawDomain, smallestUnit} from '../timeunit';
 import {UnitModel} from './unit';
 
 /**
