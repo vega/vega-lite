@@ -51,7 +51,7 @@ This example use `calculate` to derive a new field, then `filter` data based on 
 
 ### Filter
 
-Vega-Lite's `transform.filter` property can be (1) a filter predicate object, (2) [Vega Expression](https://github.com/vega/vega/wiki/Expressions) string or (3) an array of filter predicates.  
+Vega-Lite's `transform.filter` property can be (1) a filter predicate object, (2) [Vega Expression](https://github.com/vega/vega/wiki/Expressions) string or (3) an array of filter predicates (either predicate object or expression string) that must be all true for a datum to be include.  
 
 #### Filter Object
 
