@@ -23,18 +23,14 @@ export namespace filter {
       if (!!filter.range) {
         filterString = 'inrange(' + field(filter, {datum: true}) + ', ' + s(filter.range[0]) + ', ' + s(filter.range[1]) + ')';
       } else {
-        if (filter.gt !== undefined) {
-          filterString = field(filter, {datum: true}) + ' > ' + filter.gt;
-        } else if (filter.gte !== undefined) {
-          filterString = field(filter, {datum: true}) + ' >= ' + filter.gte;
-        }
-        if (filter.lt !== undefined) {
-          filterString += filterString === '' ? '' : ' && ';
-          filterString += field(filter, {datum: true}) + ' < ' + filter.lt;
-        } else if (filter.lte !== undefined) {
-          filterString += filterString === '' ? '' : ' && ';
-          filterString += field(filter, {datum: true}) + ' <= ' + filter.lte;
-        }
+        let comparisons = [];
+        let operators = ['>','>=','<','<='];
+        ['gt','gte','lt','lte'].map(function (operator,idx) {
+          if (filter[operator] !== undefined) {
+            comparisons.push(field(filter, {datum: true}) + ' ' + operators[idx] + ' ' + filter[operator]);
+          }
+        });
+        filterString = comparisons.join(' && ');
       }
     } else {
       return filter as string;
