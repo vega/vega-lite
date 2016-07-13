@@ -17,6 +17,10 @@ export interface EqualFilter {
    * Value that the field should be equal to.
    */
   equal: string | number | boolean;
+
+  /**
+   * If `true`, negate the logic. Default value : `false`
+   */
   negate?: boolean;
 }
 
@@ -38,11 +42,30 @@ export interface RangeFilter {
    * @minItems 2
    */
   range?: any;
+
+  /**
+   * Value that the `field`'s value should be less than 
+   */
   lt?: number;
+
+  /**
+   * Value that the `field`'s value should be less than or equal to
+   */
   lte?: number;
+
+  /**
+   * Value that the `field`'s value should be greater than
+   */
   gt?: number;
+
+  /**
+   * Value that the `field`'s value should be greater than or equal to
+   */
   gte?: number;
 
+  /**
+   * If `true`, negate the logic. Default value : `false`
+   */
   negate?: boolean;
 }
 
@@ -70,6 +93,10 @@ export interface InFilter {
    * @minItems 1
    */
   in: any[];
+
+  /**
+   * If `true`, negate the logic. Default value : `false`
+   */
   negate?: boolean;
 }
 

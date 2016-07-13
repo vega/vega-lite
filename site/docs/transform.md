@@ -64,6 +64,7 @@ For a filter object, a `field` must be provided with one of the filter operators
 | range          | Number[]      | Array of length describing (inclusive) minimum and maximum values for the `field`'s value to be included in the filtered data. |
 | gt/gte/lt/lte | Number | Value that the `field`'s value should be **g**reater **t**han / **g**reater **t**han or **e**qual / **l**ess **t**han / **l**ess **t**han or **e**qual to. |
 | in         | Array         | A set of values that the `field`'s value should be a member of, for a data item included in the filtered data. |
+| negate         | Boolean         | If `true`, negate the logic. Default value : `false` |
 
 
 **Examples**
