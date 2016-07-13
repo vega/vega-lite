@@ -23,11 +23,13 @@ export namespace filter {
       if (!!filter.range) {
         filterString = 'inrange(' + field(filter, {datum: true}) + ', ' + s(filter.range[0]) + ', ' + s(filter.range[1]) + ')';
       } else {
-        let comparisons = [];
-        let operators = ['>','>=','<','<='];
-        ['gt','gte','lt','lte'].map(function (operator,idx) {
-          if (filter[operator] !== undefined) {
-            comparisons.push(field(filter, {datum: true}) + ' ' + operators[idx] + ' ' + filter[operator]);
+        const comparisons = [];
+        const operators = ['>','>=','<','<='];
+        ['gt','gte','lt','lte'].forEach(function (opName, idx) {
+          if (filter[opName] !== undefined) {
+            comparisons.push(field(filter, {datum: true}) + ' ' +
+              operators[idx] + // get actual operator
+              ' ' + filter[opName]);
           }
         });
         filterString = comparisons.join(' && ');
