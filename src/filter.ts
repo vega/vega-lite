@@ -1,5 +1,9 @@
 import {isArray} from './util';
 
+function XOR(a,b) {
+  return ( a || b ) && !( a && b );
+}
+
 export type Filter = EqualFilter | RangeFilter | InFilter;
 
 export interface EqualFilter {
@@ -33,12 +37,24 @@ export interface RangeFilter {
    * @maxItems 2
    * @minItems 2
    */
-  range: any;
+  range?: any;
+  lt?: number;
+  lte?: number;
+  gt?: number;
+  gte?: number;
+
   negate?: boolean;
 }
 
 export function isRangeFilter(filter: any): filter is RangeFilter {
-  return filter && !!filter.field && isArray(filter.range) && filter.range.length === 2;
+  if (filter && !!filter.field) {
+    if(isArray(filter.range) && filter.range.length === 2 ){
+      return true;
+    } else if (XOR(filter.gt !==undefined, filter.gte!==undefined) || XOR(filter.lt!==undefined, filter.lte!==undefined) ) {
+      return true;
+    }
+  }
+  return false;
 }
 
 export interface InFilter {

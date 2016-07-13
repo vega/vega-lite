@@ -13,19 +13,32 @@ export namespace filter {
   const s = JSON.stringify;
 
   export function getFilterExpression(filter: Filter | string) {
-    var filterString = "";
+    let filterString = "";
     if (isEqualFilter(filter)) {
       // Using field method so we get support for aggregate, timeUnit and bin for free in the future
       filterString = field(filter, {datum: true}) + '===' + s(filter.equal);
     } else if (isInFilter(filter)) {
       filterString = 'indexof(' + s(filter.in) + ', ' + field(filter, {datum: true}) + ') !== -1';
     } else if (isRangeFilter(filter)) {
-      filter.negate
-      filterString = 'inrange(' + field(filter, {datum: true}) + ', ' + s(filter.range[0]) + ', ' + s(filter.range[1]) + ')';
+      if (!!filter.range) {
+        filterString = 'inrange(' + field(filter, {datum: true}) + ', ' + s(filter.range[0]) + ', ' + s(filter.range[1]) + ')';  
+      } else {
+        if (filter.gt !== undefined){
+          filterString = field(filter, {datum: true}) + ' > ' + filter.gt;
+        } else if (filter.gte !== undefined) {
+          filterString = field(filter, {datum: true}) + ' >= ' + filter.gte;
+        }
+        if (filter.lt !== undefined){
+          filterString += filterString === "" ? "" : " && ";
+          filterString += field(filter, {datum: true}) + ' < ' + filter.lt;
+        } else if (filter.lte !== undefined) {
+          filterString += filterString === "" ? "" : " && ";
+          filterString += field(filter, {datum: true}) + ' <= ' + filter.lte;
+        }
+      }
     } else {
       return filter as string;
     }
-    
     if ((filter as Filter).negate) {
       filterString = '!(' + filterString + ')';
     }
