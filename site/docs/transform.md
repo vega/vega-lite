@@ -51,11 +51,11 @@ This example use `calculate` to derive a new field, then `filter` data based on 
 
 ### Filter
 
-Vega-Lite's `transform.filter` property can be (1) a filter object, (2) [Vega Expression](https://github.com/vega/vega/wiki/Expressions) string or (3) an array with filter objects and/or Vega Expresssion strings as members, which will be concatenated with `&&` operator. 
+Vega-Lite's `transform.filter` property can be (1) a filter predicate object, (2) [Vega Expression](https://github.com/vega/vega/wiki/Expressions) string or (3) an array of filter predicates.  
 
 #### Filter Object
 
-For a filter object, a `field` must be provided with one of the filter operators (`equal`, `in`, `range`, `gt`/`gte`, `lt`/`lte`). Here, `gt`/`gte` and `lt`/`lte` can be combinated. The following table describes each of these properties.
+For a filter object, a `field` must be provided with one of the filter operators (`equal`, `in`, `range`, `gt`, `gte`, `lt`, `lte` or a combination of `gt`, `gte`, `lt` or `lte`).  The following table describes each of these properties.
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
@@ -80,5 +80,4 @@ For a [Vega Expression](https://github.com/vega/vega/wiki/Expressions) string, e
 
 #### Filter Array
 
-For a filter array, the array's members should be either filter objects or filter expresssions.  All of member predicates should be satisfied for a data item to be included
-in the filtered data.
+For a filter array, the array's members should be either filter objects or filter expresssions.  All of member predicates should be satisfied for a data item to be included in the filtered data.  In other words, the `filter` array will form a conjunctive predicate that join all predicates with "and" operators.
