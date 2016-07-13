@@ -13,15 +13,23 @@ export namespace filter {
   const s = JSON.stringify;
 
   export function getFilterExpression(filter: Filter | string) {
+    var filterString = "";
     if (isEqualFilter(filter)) {
       // Using field method so we get support for aggregate, timeUnit and bin for free in the future
-      return field(filter, {datum: true}) + '===' + s(filter.equal);
+      filterString = field(filter, {datum: true}) + '===' + s(filter.equal);
     } else if (isInFilter(filter)) {
-      return 'indexof(' + s(filter.in) + ', ' + field(filter, {datum: true}) + ') !== -1';
+      filterString = 'indexof(' + s(filter.in) + ', ' + field(filter, {datum: true}) + ') !== -1';
     } else if (isRangeFilter(filter)) {
-      return 'inrange(' + field(filter, {datum: true}) + ', ' + s(filter.range[0]) + ', ' + s(filter.range[1]) + ')';
+      filter.negate
+      filterString = 'inrange(' + field(filter, {datum: true}) + ', ' + s(filter.range[0]) + ', ' + s(filter.range[1]) + ')';
+    } else {
+      return filter as string;
     }
-    return filter as string;
+    
+    if ((filter as Filter).negate) {
+      filterString = '!(' + filterString + ')';
+    }
+    return filterString;
   }
 
   export function parse(model: Model): string {

@@ -13,6 +13,7 @@ export interface EqualFilter {
    * Value that the field should be equal to.
    */
   equal: string | number | boolean;
+  negate?: boolean;
 }
 
 export function isEqualFilter(filter: any): filter is EqualFilter {
@@ -33,6 +34,7 @@ export interface RangeFilter {
    * @minItems 2
    */
   range: any;
+  negate?: boolean;
 }
 
 export function isRangeFilter(filter: any): filter is RangeFilter {
@@ -52,6 +54,7 @@ export interface InFilter {
    * @minItems 1
    */
   in: any[];
+  negate?: boolean;
 }
 
 export function isInFilter(filter: any): filter is InFilter {
