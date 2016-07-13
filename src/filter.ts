@@ -13,6 +13,11 @@ export interface EqualFilter {
    * Value that the field should be equal to.
    */
   equal: string | number | boolean;
+
+  /**
+   * If `true`, negate the logic. Default value : `false`
+   */
+  negate?: boolean;
 }
 
 export function isEqualFilter(filter: any): filter is EqualFilter {
@@ -32,11 +37,43 @@ export interface RangeFilter {
    * @maxItems 2
    * @minItems 2
    */
-  range: any;
+  range?: any;
+
+  /**
+   * Value that the `field`'s value should be less than 
+   */
+  lt?: number;
+
+  /**
+   * Value that the `field`'s value should be less than or equal to
+   */
+  lte?: number;
+
+  /**
+   * Value that the `field`'s value should be greater than
+   */
+  gt?: number;
+
+  /**
+   * Value that the `field`'s value should be greater than or equal to
+   */
+  gte?: number;
+
+  /**
+   * If `true`, negate the logic. Default value : `false`
+   */
+  negate?: boolean;
 }
 
 export function isRangeFilter(filter: any): filter is RangeFilter {
-  return filter && !!filter.field && isArray(filter.range) && filter.range.length === 2;
+  if (filter && !!filter.field) {
+    if (isArray(filter.range) && filter.range.length === 2) {
+      return true;
+    } else if (filter.gt !==undefined || filter.gte!==undefined || filter.lt!==undefined || filter.lte!==undefined ) {
+      return true;
+    }
+  }
+  return false;
 }
 
 export interface InFilter {
@@ -52,6 +89,11 @@ export interface InFilter {
    * @minItems 1
    */
   in: any[];
+
+  /**
+   * If `true`, negate the logic. Default value : `false`
+   */
+  negate?: boolean;
 }
 
 export function isInFilter(filter: any): filter is InFilter {

@@ -5,6 +5,8 @@ describe('filter', () => {
   const equalFilter = {field: 'color', equal: 'red'};
   const inFilter = {field: 'color', in: ['red', 'yellow']};
   const rangeFilter = {field: 'x', range: [0, 5]};
+  const rangeFilter2 = {field: 'x', gte: 0};
+  const rangeFilter3 = {field: 'x', gte: 0, lt: 5 };
   const exprFilter = 'datum.x===5';
 
   describe('isEqualFilter', () => {
@@ -32,8 +34,10 @@ describe('filter', () => {
   });
 
   describe('isRangeFilter', () => {
-    it('should return true for an equal filter', () => {
+    it('should return true for an range filter', () => {
       assert.isTrue(isRangeFilter(rangeFilter));
+      assert.isTrue(isRangeFilter(rangeFilter2));
+      assert.isTrue(isRangeFilter(rangeFilter3));
     });
 
     it('should return false for other filters', () => {
