@@ -160,7 +160,6 @@ export interface InFilter {
   /**
    * A set of values that the `field`'s value should be a member of,
    * for a data item included in the filtered data.
-   * @minItems 1
    */
   in: any[];
 
