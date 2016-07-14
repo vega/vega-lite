@@ -35,7 +35,7 @@ describe('compile/data/filter', () => {
       const expr = filter.getFilterExpression({field: 'x', range: [0, 5], negate: true});
       assert.equal(expr, '!(inrange(datum.x, 0, 5))');
     });
-    
+
     it('should return a correct expression for an expression filter', () => {
       const expr = filter.getFilterExpression('datum.x===5');
       assert.equal(expr, 'datum.x===5');
