@@ -24,7 +24,7 @@ export namespace filter {
     } else {
       return filter as string;
     }
-    
+
     return filterString;
   }
 
