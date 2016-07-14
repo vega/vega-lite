@@ -24,9 +24,7 @@ export namespace filter {
     } else {
       return filter as string;
     }
-    if ((filter as Filter).negate) {
-      filterString = '!(' + filterString + ')';
-    }
+    
     return filterString;
   }
 

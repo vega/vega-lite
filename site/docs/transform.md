@@ -63,7 +63,6 @@ For a filter object, a `field` must be provided with one of the filter operators
 | equal         | String | Number | Boolean | Value that the `field`'s value should be equal to. |
 | range          | Number[]      | Array of length describing (inclusive) minimum and maximum values for the `field`'s value to be included in the filtered data. |
 | in         | Array         | A set of values that the `field`'s value should be a member of, for a data item included in the filtered data. |
-| negate         | Boolean         | If `true`, negate the logic. Default value : `false` |
 
 
 **Examples**

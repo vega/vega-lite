@@ -14,10 +14,6 @@ export interface EqualFilter {
    */
   equal: string | number | boolean;
 
-  /**
-   * If `true`, negate the logic. Default value : `false`
-   */
-  negate?: boolean;
 }
 
 export function isEqualFilter(filter: any): filter is EqualFilter {
@@ -39,10 +35,6 @@ export interface RangeFilter {
    */
   range: any;
 
-  /**
-   * If `true`, negate the logic. Default value : `false`
-   */
-  negate?: boolean;
 }
 
 export function isRangeFilter(filter: any): filter is RangeFilter {
@@ -68,10 +60,6 @@ export interface InFilter {
    */
   in: any[];
 
-  /**
-   * If `true`, negate the logic. Default value : `false`
-   */
-  negate?: boolean;
 }
 
 export function isInFilter(filter: any): filter is InFilter {
