@@ -1,5 +1,5 @@
 import {field} from '../../fielddef';
-import {isEqualFilter, isInFilter, isRangeFilter, Filter} from '../../filter';
+import {isEqualFilter, isInFilter, isRangeFilter, isCompareFilter, Filter} from '../../filter';
 import {isArray} from '../../util';
 
 import {FacetModel} from '../facet';
@@ -20,20 +20,18 @@ export namespace filter {
     } else if (isInFilter(filter)) {
       filterString = 'indexof(' + s(filter.in) + ', ' + field(filter, {datum: true}) + ') !== -1';
     } else if (isRangeFilter(filter)) {
-      if (!!filter.range) {
-        filterString = 'inrange(' + field(filter, {datum: true}) + ', ' + s(filter.range[0]) + ', ' + s(filter.range[1]) + ')';
-      } else {
-        const comparisons = [];
-        const operators = ['>','>=','<','<='];
-        ['gt','gte','lt','lte'].forEach(function (opName, idx) {
-          if (filter[opName] !== undefined) {
-            comparisons.push(field(filter, {datum: true}) + ' ' +
-              operators[idx] + // get actual operator
-              ' ' + filter[opName]);
-          }
-        });
-        filterString = comparisons.join(' && ');
-      }
+      filterString = 'inrange(' + field(filter, {datum: true}) + ', ' + s(filter.range[0]) + ', ' + s(filter.range[1]) + ')';
+    } else if (isCompareFilter(filter)) {
+      const comparisons = [];
+      const operators = ['>','>=','<','<='];
+      ['gt','gte','lt','lte'].forEach(function (opName, idx) {
+        if (filter[opName] !== undefined) {
+          comparisons.push(field(filter, {datum: true}) + ' ' +
+            operators[idx] + // get actual operator
+            ' ' + filter[opName]);
+        }
+      });
+      filterString = comparisons.join(' && ');
     } else {
       return filter as string;
     }
