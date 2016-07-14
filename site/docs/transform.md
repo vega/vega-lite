@@ -55,16 +55,14 @@ Vega-Lite's `transform.filter` property can be (1) a filter predicate object, (2
 
 #### Filter Object
 
-For a filter object, a `field` must be provided with one of the filter operators (`equal`, `in`, `range`, `gt`, `gte`, `lt`, `lte` or a combination of `gt`, `gte`, `lt` or `lte`).  The following table describes each of these properties.
+For a filter object, a `field` must be provided with one of the filter operators (`equal`, `in`, `range`).  The following table describes each of these properties.
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | field         | String        | Field to be filtered. |
 | equal         | String | Number | Boolean | Value that the `field`'s value should be equal to. |
 | range          | Number[]      | Array of length describing (inclusive) minimum and maximum values for the `field`'s value to be included in the filtered data. |
-| gt/gte/lt/lte | Number | Value that the `field`'s value should be **g**reater **t**han / **g**reater **t**han or **e**qual / **l**ess **t**han / **l**ess **t**han or **e**qual to. |
 | in         | Array         | A set of values that the `field`'s value should be a member of, for a data item included in the filtered data. |
-| negate         | Boolean         | If `true`, negate the logic. Default value : `false` |
 
 
 **Examples**
@@ -72,8 +70,6 @@ For a filter object, a `field` must be provided with one of the filter operators
 - `{"field": "car_color", "equal": "red"}` checks if the `car_color` field's value is equal to `"red"`.
 - `{"field": "car_color", "in":["red", "yellow"]}` checks if the `car_color` field's value is `"red"` or `"yellow"`.
 - `{"field": "x", "range": [0, 5]}` checks if the `x` field's value is in range `[0,5]` (0 ≤ x ≤ 5).
-- `{"field": "height", "lt": 6}` checks if the `height` field's value is less than 6. (height < 6).
-- `{"field": "cost", "gt": 0, "lte" : 36}` checks if the `cost` field's value is greater than 0 and less than or equal to 36. (0 < cost ≤ 36).
 
 #### Filter Expresssion
 
