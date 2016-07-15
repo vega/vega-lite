@@ -1,6 +1,6 @@
 import {Channel} from '../../channel';
 import {field, FieldDef} from '../../fielddef';
-import {expression} from '../../timeunit';
+import {fieldExpr} from '../../timeunit';
 import {TEMPORAL} from '../../type';
 import {extend, vals, Dict} from '../../util';
 import {VgTransform} from '../../vega.schema';
@@ -21,7 +21,7 @@ export namespace timeUnit {
         timeUnitComponent[hash] = {
           type: 'formula',
           field: field(fieldDef),
-          expr: expression(fieldDef.timeUnit, fieldDef.field)
+          expr: fieldExpr(fieldDef.timeUnit, fieldDef.field)
         };
       }
       return timeUnitComponent;

@@ -1,7 +1,7 @@
 import {assert} from 'chai';
 
 import {ScaleType} from '../src/scale';
-import {TimeUnit, containsTimeUnit, defaultScaleType} from '../src/timeunit';
+import {TimeUnit, containsTimeUnit, defaultScaleType, fieldExpr} from '../src/timeunit';
 
 
 describe('timeUnit', () => {
@@ -56,6 +56,36 @@ describe('timeUnit', () => {
       for (const timeUnit of TIMEUNITS) {
         assert.equal(defaultScaleType(timeUnit), ScaleType.TIME);
       }
+    });
+  });
+
+  describe('fieldExpr', () => {
+    it('should return correct field expression for YEARMONTHDATEHOURSMINUTESSECONDS', () => {
+      assert.equal(
+        fieldExpr(TimeUnit.YEARMONTHDATEHOURSMINUTESSECONDS, 'x'),
+        'datetime(year(datum.x), month(datum.x), date(datum.x), hours(datum.x), minutes(datum.x), seconds(datum.x), 0)'
+      );
+    });
+
+    it('should return correct field expression for QUARTER', () => {
+      assert.equal(
+        fieldExpr(TimeUnit.QUARTER, 'x'),
+        'datetime(0, floor(month(datum.x)/3)*3, 1, 0, 0, 0, 0)'
+      );
+    });
+
+    it('should return correct field expression for DAY', () => {
+      assert.equal(
+        fieldExpr(TimeUnit.DAY, 'x'),
+        'datetime(2006, 0, day(datum.x)+1, 0, 0, 0, 0)'
+      );
+    });
+
+    it('should return correct field expression for MILLISECONDS', () => {
+      assert.equal(
+        fieldExpr(TimeUnit.MILLISECONDS, 'x'),
+        'datetime(0, 0, 1, 0, 0, 0, milliseconds(datum.x))'
+      );
     });
   });
 });

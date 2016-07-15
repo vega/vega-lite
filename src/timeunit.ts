@@ -54,7 +54,13 @@ export const TIMEUNITS = [
 export function containsTimeUnit(fullTimeUnit: TimeUnit, timeUnit: TimeUnit) {
   let fullTimeUnitStr = fullTimeUnit.toString();
   let timeUnitStr = timeUnit.toString();
-  return fullTimeUnitStr.indexOf(timeUnitStr) > -1;
+  const index = fullTimeUnitStr.indexOf(timeUnitStr);
+  return index > -1 &&
+    (
+      timeUnit !== TimeUnit.SECONDS ||
+      index === 0 ||
+      fullTimeUnitStr.charAt(index-1) !== 'i' // exclude milliseconds
+    );
 }
 
 export function defaultScaleType(timeUnit: TimeUnit) {
@@ -72,7 +78,7 @@ export function defaultScaleType(timeUnit: TimeUnit) {
 /**
  * Returns Vega expresssion for a given timeUnit and fieldRef
  */
-export function expression(timeUnit: TimeUnit, field: string, onlyRef = false): string {
+export function fieldExpr(timeUnit: TimeUnit, field: string, onlyRef = false): string {
   let out = 'datetime(';
   const fieldRef = 'datum.' + field;
 
@@ -94,8 +100,10 @@ export function expression(timeUnit: TimeUnit, field: string, onlyRef = false): 
 
   if (containsTimeUnit(timeUnit, TimeUnit.YEAR)) {
     out += func('year');
-  } else {
+  } else if (timeUnit === TimeUnit.DAY) {
     out += '2006, '; // January 1 2006 is a Sunday
+  } else {
+    out += '0, ';
   }
 
   if (containsTimeUnit(timeUnit, TimeUnit.MONTH)) {

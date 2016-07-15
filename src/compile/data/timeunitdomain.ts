@@ -7,7 +7,7 @@ import {VgData} from '../../vega.schema';
 import {FacetModel} from './../facet';
 import {LayerModel} from './../layer';
 import {Model} from './../model';
-import {expression, rawDomain} from '../../timeunit';
+import {fieldExpr, rawDomain} from '../../timeunit';
 
 import {DataComponent} from './data';
 
@@ -50,7 +50,7 @@ export namespace timeUnitDomain {
           transform: [{
             type: 'formula',
             field: 'date',
-            expr: expression(timeUnit, 'data', true)
+            expr: fieldExpr(timeUnit, 'data', true)
           }]
         });
       }
