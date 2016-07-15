@@ -72,8 +72,9 @@ export function defaultScaleType(timeUnit: TimeUnit) {
 /**
  * Returns Vega expresssion for a given timeUnit and fieldRef
  */
-export function expression(timeUnit: TimeUnit, fieldRef: string, onlyRef = false): string {
+export function expression(timeUnit: TimeUnit, field: string, onlyRef = false): string {
   let out = 'datetime(';
+  const fieldRef = 'datum.' + field;
 
   function func(fun: string, addComma = true) {
     if (onlyRef) {

@@ -50,7 +50,7 @@ export namespace timeUnitDomain {
           transform: [{
             type: 'formula',
             field: 'date',
-            expr: expression(timeUnit, 'datum.data', true)
+            expr: expression(timeUnit, 'data', true)
           }]
         });
       }

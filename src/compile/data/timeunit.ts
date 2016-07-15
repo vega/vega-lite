@@ -14,7 +14,6 @@ import {DataComponent} from './data';
 export namespace timeUnit {
   function parse(model: Model): Dict<VgTransform> {
     return model.reduce(function(timeUnitComponent, fieldDef: FieldDef, channel: Channel) {
-      const ref = field(fieldDef, { nofn: true, datum: true });
       if (fieldDef.type === TEMPORAL && fieldDef.timeUnit) {
 
         const hash = field(fieldDef);
@@ -22,7 +21,7 @@ export namespace timeUnit {
         timeUnitComponent[hash] = {
           type: 'formula',
           field: field(fieldDef),
-          expr: expression(fieldDef.timeUnit, ref)
+          expr: expression(fieldDef.timeUnit, fieldDef.field)
         };
       }
       return timeUnitComponent;
