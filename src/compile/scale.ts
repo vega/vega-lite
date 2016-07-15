@@ -167,6 +167,10 @@ export function scaleType(scale: Scale, fieldDef: FieldDef, channel: Channel, ma
 
   // We can't use linear/time for row, column or shape
   if (contains([ROW, COLUMN, SHAPE], channel)) {
+    if (scale && scale.type !== undefined && scale.type !== ScaleType.ORDINAL) {
+      // TODO: consolidate warning
+      console.warn('Channel', channel, 'does not work with scale type =', scale.type);
+    }
     return ScaleType.ORDINAL;
   }
 
