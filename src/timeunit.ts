@@ -14,7 +14,6 @@ export enum TimeUnit {
     YEARMONTHDAY = 'yearmonthday' as any,
     YEARMONTHDATE = 'yearmonthdate' as any,
     YEARDAY = 'yearday' as any,
-    YEARDATE = 'yeardate' as any,
     YEARMONTHDAYHOURS = 'yearmonthdayhours' as any,
     YEARMONTHDAYHOURSMINUTES = 'yearmonthdayhoursminutes' as any,
     YEARMONTHDAYHOURSMINUTESSECONDS = 'yearmonthdayhoursminutesseconds' as any,
