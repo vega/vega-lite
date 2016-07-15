@@ -1,5 +1,6 @@
 import {contains, range} from './util';
 import {COLUMN, ROW, SHAPE, COLOR, Channel} from './channel';
+import {ScaleType} from './scale';
 
 export enum TimeUnit {
     YEAR = 'year' as any,
@@ -49,11 +50,23 @@ export const TIMEUNITS = [
     TimeUnit.YEARQUARTERMONTH,
 ];
 
-/** Returns true if container contains the containee, false otherwise. */
+/** Returns true if fullTimeUnit contains the timeUnit, false otherwise. */
 export function containsTimeUnit(fullTimeUnit: TimeUnit, timeUnit: TimeUnit) {
   let fullTimeUnitStr = fullTimeUnit.toString();
   let timeUnitStr = timeUnit.toString();
   return fullTimeUnitStr.indexOf(timeUnitStr) > -1;
+}
+
+export function defaultScaleType(timeUnit: TimeUnit) {
+   switch (timeUnit) {
+    case TimeUnit.HOURS:
+    case TimeUnit.DAY:
+    case TimeUnit.MONTH:
+    case TimeUnit.QUARTER:
+      return ScaleType.ORDINAL;
+  }
+  // date, year, minute, second, yearmonth, monthday, ...
+  return ScaleType.TIME;
 }
 
 /**

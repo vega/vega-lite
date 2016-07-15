@@ -9,13 +9,12 @@ import {Mark, BAR, TEXT as TEXTMARK, RULE, TICK} from '../mark';
 import {Scale, ScaleType, NiceTime} from '../scale';
 import {isSortField, SortOrder} from '../sort';
 import {StackOffset} from '../stack';
-import {TimeUnit} from '../timeunit';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 import {contains, extend, Dict} from '../util';
 import {VgScale} from '../vega.schema';
 
 import {Model} from './model';
-import {rawDomain, smallestUnit} from '../timeunit';
+import {defaultScaleType, rawDomain, smallestUnit} from '../timeunit';
 import {UnitModel} from './unit';
 
 /**
@@ -189,16 +188,7 @@ export function scaleType(scale: Scale, fieldDef: FieldDef, channel: Channel, ma
       }
 
       if (fieldDef.timeUnit) {
-        switch (fieldDef.timeUnit) {
-          case TimeUnit.HOURS:
-          case TimeUnit.DAY:
-          case TimeUnit.MONTH:
-          case TimeUnit.QUARTER:
-            return ScaleType.ORDINAL;
-          default:
-            // date, year, minute, second, yearmonth, monthday, ...
-            return ScaleType.TIME;
-        }
+        return defaultScaleType(fieldDef.timeUnit);
       }
       return ScaleType.TIME;
 
