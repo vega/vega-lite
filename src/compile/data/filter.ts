@@ -1,6 +1,8 @@
+import {DateTime, dateTimeExpr, isDateTime} from '../../datetime';
 import {field} from '../../fielddef';
 import {isEqualFilter, isInFilter, isRangeFilter, Filter} from '../../filter';
-import {isArray} from '../../util';
+import {TimeUnit, fieldExpr as timeUnitFieldExpr, isSingleTimeUnit} from '../../timeunit';
+import {isArray, isString} from '../../util';
 
 import {FacetModel} from '../facet';
 import {LayerModel} from '../layer';
@@ -8,23 +10,53 @@ import {Model} from '../model';
 
 import {DataComponent} from './data';
 
-
 export namespace filter {
-  const s = JSON.stringify;
+  /**
+   * @param v value to be converted into Vega Expression
+   * @param timeUnit
+   * @return Vega Expression of the value v. This could be one of:
+   * - a timestamp value of datetime object
+   * - a timestamp value of casted single time unit value
+   * - stringified value
+   */
+  function valueExpr(v: any, timeUnit: TimeUnit) {
+    if (isDateTime(v)) {
+      const expr = dateTimeExpr(v, true);
+      return 'time(' + expr + ')';
+    }
+    if (isSingleTimeUnit(timeUnit)) {
+      const datetime: DateTime = {};
+      datetime[timeUnit] = v;
+      const expr = dateTimeExpr(datetime, true);
+      return 'time(' + expr + ')';
+    }
+    return JSON.stringify(v);
+  }
 
   export function getFilterExpression(filter: Filter | string) {
     let filterString = '';
-    if (isEqualFilter(filter)) {
-      // Using field method so we get support for aggregate, timeUnit and bin for free in the future
-      filterString = field(filter, {datum: true}) + '===' + s(filter.equal);
-    } else if (isInFilter(filter)) {
-      filterString = 'indexof(' + s(filter.in) + ', ' + field(filter, {datum: true}) + ') !== -1';
-    } else if (isRangeFilter(filter)) {
-      filterString = 'inrange(' + field(filter, {datum: true}) + ', ' + s(filter.range[0]) + ', ' + s(filter.range[1]) + ')';
-    } else {
+    if (isString(filter)) {
       return filter as string;
-    }
+    } else { // Filter Object
+      const fieldExpr = filter.timeUnit ?
+        // For timeUnit, cast into integer with time() so we can use ===, inrange, indexOf to compare values directly.
+          // TODO: We calculate timeUnit on the fly here. Consider if we would like to consolidate this with timeUnit pipeline
+          // TODO: support utc
+        ('time(' + timeUnitFieldExpr(filter.timeUnit, filter.field) + ')') :
+        field(filter, {datum: true});
 
+      if (isEqualFilter(filter)) {
+        filterString = fieldExpr + '===' + valueExpr(filter.equal, filter.timeUnit);
+      } else if (isInFilter(filter)) {
+        filterString = 'indexof([' +
+          filter.in.map((v) => valueExpr(v, filter.timeUnit)).join(',') +
+          '], ' + fieldExpr + ') !== -1';
+      } else if (isRangeFilter(filter)) {
+        filterString = 'inrange(' + fieldExpr + ', ' +
+          valueExpr(filter.range[0], filter.timeUnit) + ', ' +
+          valueExpr(filter.range[1], filter.timeUnit) + ')';
+      }
+    }
     return filterString;
   }
 
@@ -32,9 +64,10 @@ export namespace filter {
     const filter = model.transform().filter;
     if (isArray(filter)) {
       return '(' + filter.map((f) => getFilterExpression(f)).join(') && (') + ')';
-    } else {
+    } else if (filter) {
       return getFilterExpression(filter);
     }
+    return undefined;
   }
 
   export const parseUnit = parse;

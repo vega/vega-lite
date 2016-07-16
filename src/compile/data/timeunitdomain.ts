@@ -1,13 +1,13 @@
 import {Channel} from '../../channel';
+import {dateTimeExpr, DateTimeExpr} from '../../datetime';
 import {FieldDef} from '../../fielddef';
-import {TimeUnit} from '../../timeunit';
+import {TimeUnit, rawDomain} from '../../timeunit';
 import {extend, keys, StringSet} from '../../util';
 import {VgData} from '../../vega.schema';
 
 import {FacetModel} from './../facet';
 import {LayerModel} from './../layer';
 import {Model} from './../model';
-import {fieldExpr, rawDomain} from '../../timeunit';
 
 import {DataComponent} from './data';
 
@@ -44,13 +44,16 @@ export namespace timeUnitDomain {
       const timeUnit: TimeUnit = tu; // cast string back to enum
       const domain = rawDomain(timeUnit, null); // FIXME fix rawDomain signature
       if (domain) {
+        let datetime: DateTimeExpr = {};
+        datetime[timeUnit] = 'datum.data';
+
         timeUnitData.push({
           name: timeUnit,
           values: domain,
           transform: [{
             type: 'formula',
             field: 'date',
-            expr: fieldExpr(timeUnit, 'data', true)
+            expr: dateTimeExpr(datetime)
           }]
         });
       }
