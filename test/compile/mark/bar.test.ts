@@ -27,7 +27,7 @@ describe('Mark: Bar', function() {
     const props = bar.properties(model);
 
     it('should end on axis', function() {
-      assert.deepEqual(props.y2, { scale: 'y', value: 0});
+      assert.deepEqual(props.y2, {field: {group: 'height'}});
     });
 
     it('should has no height', function(){
@@ -48,7 +48,7 @@ describe('Mark: Bar', function() {
     const props = bar.properties(model);
 
     it('should end on axis', function() {
-      assert.deepEqual(props.x2, {scale: 'x', value: 0});
+      assert.deepEqual(props.x2, {value: 0});
     });
 
     it('should have no width', function(){
@@ -100,7 +100,7 @@ describe('Mark: Bar', function() {
       });
     });
   });
-  
+
   describe('ranged bar', function() {
     it('vertical bars should work with aggregate', function() {
       const model = parseUnitModel({
@@ -118,7 +118,7 @@ describe('Mark: Bar', function() {
       assert.deepEqual(props.y, { scale: 'y', field: 'q1_people' });
       assert.deepEqual(props.y2, { scale: 'y', field: 'q3_people' });
     });
-    
+
     it('horizontal bars should work with aggregate', function() {
       const model = parseUnitModel({
         "data": { "url": "data/population.json" },

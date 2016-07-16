@@ -7,14 +7,14 @@ import {RAW, SOURCE, STACKED_SCALE} from '../data';
 import {FieldDef, field, isMeasure} from '../fielddef';
 import {Mark, BAR, TEXT as TEXTMARK, RULE, TICK} from '../mark';
 import {Scale, ScaleType, NiceTime} from '../scale';
+import {isSortField, SortOrder, SortField} from '../sort';
 import {StackOffset} from '../stack';
-import {TimeUnit} from '../timeunit';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
 import {contains, extend, Dict, stableStringify, vals, isBoolean} from '../util';
 import {VgScale, isUnionedDomain, isDataRefDomain} from '../vega.schema';
 
 import {Model} from './model';
-import {rawDomain, smallestUnit} from './time';
+import {defaultScaleType, rawDomain, smallestUnit} from '../timeunit';
 import {UnitModel} from './unit';
 import {LayerModel} from './layer';
 
@@ -105,7 +105,7 @@ function parseMainScale(model: Model, fieldDef: FieldDef, channel: Channel) {
   }
 
   extend(scaleDef, rangeMixins(scale, model, channel));
-  if (sort && (typeof sort === 'string' ? sort : sort.order) === 'descending') {
+  if (sort && (isSortField(sort) ? sort.order : sort) === SortOrder.DESCENDING) {
     scaleDef.reverse = true;
   }
 
@@ -180,6 +180,10 @@ export function scaleType(scale: Scale, fieldDef: FieldDef, channel: Channel, ma
 
   // We can't use linear/time for row, column or shape
   if (contains([ROW, COLUMN, SHAPE], channel)) {
+    if (scale && scale.type !== undefined && scale.type !== ScaleType.ORDINAL) {
+      // TODO: consolidate warning
+      console.warn('Channel', channel, 'does not work with scale type =', scale.type);
+    }
     return ScaleType.ORDINAL;
   }
 
@@ -201,16 +205,7 @@ export function scaleType(scale: Scale, fieldDef: FieldDef, channel: Channel, ma
       }
 
       if (fieldDef.timeUnit) {
-        switch (fieldDef.timeUnit) {
-          case TimeUnit.HOURS:
-          case TimeUnit.DAY:
-          case TimeUnit.MONTH:
-          case TimeUnit.QUARTER:
-            return ScaleType.ORDINAL;
-          default:
-            // date, year, minute, second, yearmonth, monthday, ...
-            return ScaleType.TIME;
-        }
+        return defaultScaleType(fieldDef.timeUnit);
       }
       return ScaleType.TIME;
 
@@ -315,22 +310,23 @@ export function domain(scale: Scale, model: Model, channel:Channel): any {
   }
 }
 
-export function domainSort(model: Model, channel: Channel, scaleType: ScaleType): boolean | {op: string, field: string} {
+export function domainSort(model: Model, channel: Channel, scaleType: ScaleType): boolean | SortField {
   if (scaleType !== ScaleType.ORDINAL) {
     return undefined;
   }
 
   const sort = model.sort(channel);
-  if (contains(['ascending', 'descending', undefined /* default =ascending*/], sort)) {
-    return true;
-  }
 
   // Sorted based on an aggregate calculation over a specified sort field (only for ordinal scale)
-  if (typeof sort !== 'string') {
+  if (isSortField(sort)) {
     return {
       op: sort.op,
       field: sort.field
     };
+  }
+
+  if (contains([SortOrder.ASCENDING, SortOrder.DESCENDING, undefined /* default =ascending*/], sort)) {
+    return true;
   }
 
   // sort === 'none'
@@ -533,8 +529,9 @@ export function zero(scale: Scale, channel: Channel, fieldDef: FieldDef) {
     if (scale.zero !== undefined) {
       return scale.zero;
     }
-    // By default, return true only for non-binned, quantitative x-scale or y-scale.
-    return !fieldDef.bin && contains([X, Y], channel);
+    // By default, return true only for non-binned, quantitative x-scale or y-scale
+    // If no custom domain is provided.
+    return !scale.domain && !fieldDef.bin && contains([X, Y], channel);
   }
   return undefined;
 }

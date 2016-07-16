@@ -1,6 +1,6 @@
 {
   "description": "Stock price mean per quarter broken down by years.",
-  "data": {"url": "data/stocks.csv", "formatType":"csv"},
+  "data": {"url": "data/stocks.csv"},
   "mark": "point",
   "encoding": {
     "x": {"field": "date", "type": "temporal", "timeUnit": "quarter"},

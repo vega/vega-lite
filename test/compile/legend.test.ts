@@ -3,6 +3,7 @@
 import {assert} from 'chai';
 import {parseUnitModel} from '../util';
 import {COLOR, X} from '../../src/channel';
+import {defaultConfig} from '../../src/config';
 import * as legend from '../../src/compile/legend';
 import {TimeUnit} from '../../src/timeunit';
 import {TEMPORAL} from '../../src/type';
@@ -27,24 +28,13 @@ describe('Legend', function() {
 
   describe('title()', function () {
     it('should add explicitly specified title', function () {
-      const title = legend.title({title: 'Custom'}, {field: 'a'});
+      const title = legend.title({title: 'Custom'}, {field: 'a'}, defaultConfig);
       assert.deepEqual(title, 'Custom');
     });
 
     it('should add return fieldTitle by default', function () {
-      const title = legend.title({}, {field: 'a'});
+      const title = legend.title({}, {field: 'a'}, defaultConfig);
       assert.deepEqual(title, 'a');
-    });
-  });
-
-  describe('formatMixins()', function() {
-    it('should not be added for bin', function() {
-      assert.deepEqual(legend.formatMixins({}, parseUnitModel({
-        mark: "point",
-        encoding: {
-          x: {field:'a', bin: true}
-        }
-      }), X), {});
     });
   });
 

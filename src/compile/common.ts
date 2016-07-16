@@ -1,13 +1,16 @@
-import {COLOR, OPACITY, Channel} from '../channel';
+import {BAR, POINT, CIRCLE, SQUARE} from '../mark';
+import {COLOR, OPACITY} from '../channel';
+import {Config} from '../config';
 import {FieldDef, field, OrderChannelDef} from '../fielddef';
 import {SortOrder} from '../sort';
-import {QUANTITATIVE, ORDINAL, TEMPORAL} from '../type';
+import {TimeUnit} from '../timeunit';
+import {QUANTITATIVE, ORDINAL} from '../type';
 import {contains, union} from '../util';
 
 import {FacetModel} from './facet';
 import {LayerModel} from './layer';
 import {Model} from './model';
-import {format as timeUnitTemplate} from '../timeunit';
+import {template as timeUnitTemplate} from '../timeunit';
 import {UnitModel} from './unit';
 import {Spec, isUnitSpec, isFacetSpec, isLayerSpec} from '../spec';
 
@@ -42,6 +45,11 @@ export function applyColorAndOpacity(p, model: UnitModel) {
   const filled = model.config().mark.filled;
   const colorFieldDef = model.fieldDef(COLOR);
   const opacityFieldDef = model.fieldDef(OPACITY);
+
+  // Always fill symbols with transparent fills https://github.com/vega/vega-lite/issues/1316
+  if (contains([BAR, POINT, CIRCLE, SQUARE], model.mark())) {
+    p.fill = {value: 'transparent'};
+  }
 
   // Apply fill stroke config first so that color field / value can override
   // fill / stroke
@@ -103,29 +111,17 @@ export function applyMarkConfig(marksProperties, model: UnitModel, propsList: st
 }
 
 /**
- * Builds an object with format and formatType properties.
+ * Returns number format for a fieldDef
  *
  * @param format explicitly specified format
  */
-export function formatMixins(model: Model, fieldDef: FieldDef, format: string, shortTimeLabels: boolean) {
-  if(!contains([QUANTITATIVE, TEMPORAL], fieldDef.type)) {
-    return {};
+export function numberFormat(fieldDef: FieldDef, format: string, config: Config) {
+  if (fieldDef.type === QUANTITATIVE && !fieldDef.bin) {
+    // add number format for quantitative type only
+    // TODO: need to make this work correctly for numeric ordinal / nominal type
+    return format || config.numberFormat;
   }
-
-  let def: any = {};
-
-  // no need to set format type for temporal since we use templates anyway
-
-  if (format !== undefined) {
-    def.format = format;
-  } else {
-    switch (fieldDef.type) {
-      case QUANTITATIVE:
-        def.format = model.config().numberFormat;
-        break;
-    }
-  }
-  return def;
+  return undefined;
 }
 
 /** Return field reference with potential "-" prefix for descending sort */
@@ -135,15 +131,14 @@ export function sortField(orderChannelDef: OrderChannelDef) {
 }
 
 /**
- * Returns the time format used for axis labels for a time unit.
- *
- * @param format time format that shoudl be used, pass undefined to generate format
+ * Returns the time template used for axis/legend labels or text mark for a temporal field
  */
-export function timeFormatTemplate(model: Model, channel: Channel, format: string, shortTimeLabels: boolean, field = 'datum.data'): string {
-  const fieldDef = model.fieldDef(channel);
-  if (!fieldDef.timeUnit || format) {
-    return '{{' + field + ' | time:\'' + (format || model.config().timeFormat) + '\'}}';
+export function timeTemplate(templateField: string, timeUnit: TimeUnit, format: string, shortTimeLabels: boolean, config: Config): string {
+  if (!timeUnit || format) {
+    // If there is not time unit, or if user explicitly specify format for axis/legend/text.
+    const _format = format || config.timeFormat; // only use config.timeFormat if there is no timeUnit.
+    return '{{' + templateField + ' | time:\'' + _format + '\'}}';
   } else {
-    return timeUnitTemplate(fieldDef.timeUnit, shortTimeLabels, field);
+    return timeUnitTemplate(timeUnit, templateField, shortTimeLabels);
   }
 }

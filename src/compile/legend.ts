@@ -1,4 +1,5 @@
-import {COLOR, SIZE, SHAPE, Channel} from '../channel';
+import {COLOR, SIZE, SHAPE, OPACITY, Channel} from '../channel';
+import {Config} from '../config';
 import {FieldDef} from '../fielddef';
 import {Legend} from '../legend';
 import {title as fieldTitle} from '../fielddef';
@@ -6,14 +7,14 @@ import {AREA, BAR, TICK, TEXT, LINE, POINT, CIRCLE, SQUARE} from '../mark';
 import {ORDINAL, TEMPORAL} from '../type';
 import {extend, keys, without, Dict} from '../util';
 
-import {applyMarkConfig, FILL_STROKE_CONFIG, formatMixins as utilFormatMixins, timeFormatTemplate} from './common';
+import {applyMarkConfig, FILL_STROKE_CONFIG, numberFormat, timeTemplate} from './common';
 import {COLOR_LEGEND, COLOR_LEGEND_LABEL} from './scale';
 import {UnitModel} from './unit';
 import {VgLegend} from '../vega.schema';
 
 
 export function parseLegendComponent(model: UnitModel): Dict<VgLegend> {
-  return [COLOR, SIZE, SHAPE].reduce(function(legendComponent, channel) {
+  return [COLOR, SIZE, SHAPE, OPACITY].reduce(function(legendComponent, channel) {
     if (model.legend(channel)) {
       legendComponent[channel] = parseLegend(model, channel);
     }
@@ -39,6 +40,8 @@ function getLegendDefWithScale(model: UnitModel, channel: Channel): VgLegend {
       return { size: model.scaleName(SIZE) };
     case SHAPE:
       return { shape: model.scaleName(SHAPE) };
+    case OPACITY:
+      return { opacity: model.scaleName(OPACITY) };
   }
   return null;
 }
@@ -46,13 +49,16 @@ function getLegendDefWithScale(model: UnitModel, channel: Channel): VgLegend {
 export function parseLegend(model: UnitModel, channel: Channel): VgLegend {
   const fieldDef = model.fieldDef(channel);
   const legend = model.legend(channel);
+  const config = model.config();
 
   let def: VgLegend = getLegendDefWithScale(model, channel);
 
   // 1.1 Add properties with special rules
-  def.title = title(legend, fieldDef);
-
-  extend(def, formatMixins(legend, model, channel));
+  def.title = title(legend, fieldDef, config);
+  const format = numberFormat(fieldDef, legend.format, config);
+  if (format) {
+    def.format = format;
+  }
 
   // 1.2 Add properties without rules
   ['offset', 'orient', 'values'].forEach(function(property) {
@@ -77,25 +83,12 @@ export function parseLegend(model: UnitModel, channel: Channel): VgLegend {
   return def;
 }
 
-export function title(legend: Legend, fieldDef: FieldDef) {
+export function title(legend: Legend, fieldDef: FieldDef, config: Config) {
   if (typeof legend !== 'boolean' && legend.title) {
     return legend.title;
   }
 
-  return fieldTitle(fieldDef);
-}
-
-export function formatMixins(legend: Legend, model: UnitModel, channel: Channel) {
-  const fieldDef = model.fieldDef(channel);
-
-  // If the channel is binned, we should not set the format because we have a range label
-  if (fieldDef.bin) {
-    return {};
-  }
-
-  return utilFormatMixins(model, fieldDef,
-    typeof legend !== 'boolean' ? legend.format : undefined,
-    model.legend(channel).shortTimeLabels);
+  return fieldTitle(fieldDef, config);
 }
 
 // we have to use special scales for ordinal or binned fields for the color channel
@@ -141,6 +134,11 @@ export namespace properties {
 
     if (filled) {
       symbols.strokeWidth = { value: 0 };
+    }
+
+    // Avoid override default mapping for opacity channel
+    if (channel === OPACITY) {
+      delete symbols.opacity;
     }
 
     let value;
@@ -190,6 +188,7 @@ export namespace properties {
 
   export function labels(fieldDef: FieldDef, labelsSpec, model: UnitModel, channel: Channel) {
     const legend = model.legend(channel);
+    const config = model.config();
 
     let labels:any = {};
 
@@ -211,7 +210,7 @@ export namespace properties {
       } else if (fieldDef.type === TEMPORAL) {
         labelsSpec = extend({
           text: {
-            template: timeFormatTemplate(model, channel, legend.format, legend.shortTimeLabels)
+            template: timeTemplate('datum.data', fieldDef.timeUnit, legend.format, legend.shortTimeLabels, config)
           }
         }, labelsSpec || {});
       }

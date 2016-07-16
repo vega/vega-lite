@@ -48,7 +48,7 @@ export interface Data {
   format?: DataFormat;
 
   /**
-   * A URL from which to load the data set. Use the formatType property
+   * A URL from which to load the data set. Use the format.type property
    * to ensure the loaded data is correctly parsed.
    */
   url?: string;

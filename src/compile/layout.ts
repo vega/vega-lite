@@ -10,7 +10,7 @@ import {FacetModel} from './facet';
 import {LayerModel} from './layer';
 import {TEXT as TEXTMARK} from '../mark';
 import {Model} from './model';
-import {rawDomain} from './time';
+import {rawDomain} from '../timeunit';
 import {UnitModel} from './unit';
 
 // FIXME: for nesting x and y, we need to declare x,y layout separately before joining later

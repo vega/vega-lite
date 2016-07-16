@@ -8,5 +8,5 @@
     "y": {"field": "price", "type": "quantitative"},
     "color": {"field": "symbol", "type": "nominal"}
   },
-  "config": {"overlay": {"point": true}}
+  "config": {"overlay": {"line": true}}
 }

@@ -1,12 +1,37 @@
-import {Model} from './../model';
-import {allSame} from '../../util';
+import {field} from '../../fielddef';
+import {isEqualFilter, isInFilter, isRangeFilter, Filter} from '../../filter';
+import {allSame, isArray} from '../../util';
+import {Model} from '../model';
 
 import {DataComponent} from './data';
 
 
 export namespace filter {
-  function parse(model: Model): string {
-    return model.transform().filter;
+  const s = JSON.stringify;
+
+  export function getFilterExpression(filter: Filter | string) {
+    let filterString = '';
+    if (isEqualFilter(filter)) {
+      // Using field method so we get support for aggregate, timeUnit and bin for free in the future
+      filterString = field(filter, {datum: true}) + '===' + s(filter.equal);
+    } else if (isInFilter(filter)) {
+      filterString = 'indexof(' + s(filter.in) + ', ' + field(filter, {datum: true}) + ') !== -1';
+    } else if (isRangeFilter(filter)) {
+      filterString = 'inrange(' + field(filter, {datum: true}) + ', ' + s(filter.range[0]) + ', ' + s(filter.range[1]) + ')';
+    } else {
+      return filter as string;
+    }
+
+    return filterString;
+  }
+
+  export function parse(model: Model): string {
+    const filter = model.transform().filter;
+    if (isArray(filter)) {
+      return '(' + filter.map((f) => getFilterExpression(f)).join(') && (') + ')';
+    } else {
+      return getFilterExpression(filter);
+    }
   }
 
   export const parseUnit = parse;

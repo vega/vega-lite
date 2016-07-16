@@ -1,28 +1,24 @@
 import {Channel} from '../../channel';
 import {field, FieldDef} from '../../fielddef';
+import {fieldExpr} from '../../timeunit';
 import {TEMPORAL} from '../../type';
 import {extend, vals, Dict} from '../../util';
 import {VgTransform} from '../../vega.schema';
-
-import {FacetModel} from './../facet';
-import {Model} from './../model';
-import {parseExpression} from './../time';
+import {FacetModel} from '../facet';
+import {Model} from '../model';
 
 import {DataComponent} from './data';
 
-
-// should be similar to timeUnitDomain
 export namespace timeUnit {
   function parse(model: Model): Dict<VgTransform> {
     return model.reduce(function(timeUnitComponent, fieldDef: FieldDef, channel: Channel) {
-      const ref = field(fieldDef, { nofn: true, datum: true });
       if (fieldDef.type === TEMPORAL && fieldDef.timeUnit) {
 
         const f = field(fieldDef);
         timeUnitComponent[f] = {
           type: 'formula',
           field: f,
-          expr: parseExpression(fieldDef.timeUnit, ref)
+          expr: fieldExpr(fieldDef.timeUnit, fieldDef.field)
         };
       }
       return timeUnitComponent;
