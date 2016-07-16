@@ -1,54 +1,78 @@
-import {contains, range} from './util';
+import {contains, range, Dict} from './util';
 import {COLUMN, ROW, SHAPE, COLOR, Channel} from './channel';
 import {ScaleType} from './scale';
 
 export enum TimeUnit {
-    YEAR = 'year' as any,
-    MONTH = 'month' as any,
-    DAY = 'day' as any,
-    DATE = 'date' as any,
-    HOURS = 'hours' as any,
-    MINUTES = 'minutes' as any,
-    SECONDS = 'seconds' as any,
-    MILLISECONDS = 'milliseconds' as any,
-    YEARMONTH = 'yearmonth' as any,
-    YEARMONTHDATE = 'yearmonthdate' as any,
-    YEARMONTHDATEHOURS = 'yearmonthdatehours' as any,
-    YEARMONTHDATEHOURSMINUTES = 'yearmonthdatehoursminutes' as any,
-    YEARMONTHDATEHOURSMINUTESSECONDS = 'yearmonthdatehoursminutesseconds' as any,
-    HOURSMINUTES = 'hoursminutes' as any,
-    HOURSMINUTESSECONDS = 'hoursminutesseconds' as any,
-    MINUTESSECONDS = 'minutesseconds' as any,
-    SECONDSMILLISECONDS = 'secondsmilliseconds' as any,
-    QUARTER = 'quarter' as any,
-    YEARQUARTER = 'yearquarter' as any,
-    QUARTERMONTH = 'quartermonth' as any,
-    YEARQUARTERMONTH = 'yearquartermonth' as any,
+  YEAR = 'year' as any,
+  MONTH = 'month' as any,
+  DAY = 'day' as any,
+  DATE = 'date' as any,
+  HOURS = 'hours' as any,
+  MINUTES = 'minutes' as any,
+  SECONDS = 'seconds' as any,
+  MILLISECONDS = 'milliseconds' as any,
+  YEARMONTH = 'yearmonth' as any,
+  YEARMONTHDATE = 'yearmonthdate' as any,
+  YEARMONTHDATEHOURS = 'yearmonthdatehours' as any,
+  YEARMONTHDATEHOURSMINUTES = 'yearmonthdatehoursminutes' as any,
+  YEARMONTHDATEHOURSMINUTESSECONDS = 'yearmonthdatehoursminutesseconds' as any,
+  HOURSMINUTES = 'hoursminutes' as any,
+  HOURSMINUTESSECONDS = 'hoursminutesseconds' as any,
+  MINUTESSECONDS = 'minutesseconds' as any,
+  SECONDSMILLISECONDS = 'secondsmilliseconds' as any,
+  QUARTER = 'quarter' as any,
+  YEARQUARTER = 'yearquarter' as any,
+  QUARTERMONTH = 'quartermonth' as any,
+  YEARQUARTERMONTH = 'yearquartermonth' as any,
 }
 
-export const TIMEUNITS = [
-    TimeUnit.YEAR,
-    TimeUnit.MONTH,
-    TimeUnit.DAY,
-    TimeUnit.DATE,
-    TimeUnit.HOURS,
-    TimeUnit.MINUTES,
-    TimeUnit.SECONDS,
-    TimeUnit.MILLISECONDS,
-    TimeUnit.YEARMONTH,
-    TimeUnit.YEARMONTHDATE,
-    TimeUnit.YEARMONTHDATEHOURS,
-    TimeUnit.YEARMONTHDATEHOURSMINUTES,
-    TimeUnit.YEARMONTHDATEHOURSMINUTESSECONDS,
-    TimeUnit.HOURSMINUTES,
-    TimeUnit.HOURSMINUTESSECONDS,
-    TimeUnit.MINUTESSECONDS,
-    TimeUnit.SECONDSMILLISECONDS,
-    TimeUnit.QUARTER,
-    TimeUnit.YEARQUARTER,
-    TimeUnit.QUARTERMONTH,
-    TimeUnit.YEARQUARTERMONTH,
+/** Time Unit that only corresponds to only one part of Date objects. */
+export const SINGLE_TIMEUNITS = [
+  TimeUnit.YEAR,
+  TimeUnit.QUARTER,
+  TimeUnit.MONTH,
+  TimeUnit.DAY,
+  TimeUnit.DATE,
+  TimeUnit.HOURS,
+  TimeUnit.MINUTES,
+  TimeUnit.SECONDS,
+  TimeUnit.MILLISECONDS,
 ];
+
+const SINGLE_TIMEUNIT_INDEX: Dict<boolean> = SINGLE_TIMEUNITS.reduce((d, timeUnit) => {
+  d[timeUnit] = true;
+  return d;
+}, {} as Dict<boolean>);
+
+export function isSingleTimeUnit(timeUnit: TimeUnit) {
+  return !!SINGLE_TIMEUNIT_INDEX[timeUnit];
+}
+
+export const MULTI_TIMEUNITS = [
+  TimeUnit.YEARQUARTER,
+  TimeUnit.YEARQUARTERMONTH,
+  TimeUnit.YEARMONTH,
+  TimeUnit.YEARMONTHDATE,
+  TimeUnit.YEARMONTHDATEHOURS,
+  TimeUnit.YEARMONTHDATEHOURSMINUTES,
+  TimeUnit.YEARMONTHDATEHOURSMINUTESSECONDS,
+  TimeUnit.QUARTERMONTH,
+  TimeUnit.HOURSMINUTES,
+  TimeUnit.HOURSMINUTESSECONDS,
+  TimeUnit.MINUTESSECONDS,
+  TimeUnit.SECONDSMILLISECONDS,
+];
+
+const MULTI_TIMEUNIT_INDEX: Dict<boolean> = MULTI_TIMEUNITS.reduce((d, timeUnit) => {
+  d[timeUnit] = true;
+  return d;
+}, {} as Dict<boolean>);
+
+export function isMultiTimeUnit(timeUnit: TimeUnit) {
+  return !!MULTI_TIMEUNIT_INDEX[timeUnit];
+}
+
+export const TIMEUNITS = SINGLE_TIMEUNITS.concat(MULTI_TIMEUNITS);
 
 /** Returns true if fullTimeUnit contains the timeUnit, false otherwise. */
 export function containsTimeUnit(fullTimeUnit: TimeUnit, timeUnit: TimeUnit) {
