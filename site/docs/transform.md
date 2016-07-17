@@ -51,25 +51,43 @@ This example use `calculate` to derive a new field, then `filter` data based on 
 
 ### Filter
 
-Vega-Lite's `transform.filter` property can be (1) a filter predicate object, (2) [Vega Expression](https://github.com/vega/vega/wiki/Expressions) string or (3) an array of filter predicates (either predicate object or expression string) that must be all true for a datum to be include.  
+Vega-Lite's `transform.filter` property can be (1) a filter predicate object, (2) [Vega Expression](https://github.com/vega/vega/wiki/Expressions) string or (3) an array of filter predicates (either predicate object or expression string) that must be all true for a datum to be include.
 
 #### Filter Object
 
-For a filter object, a `field` must be provided with one of the filter operators (`equal`, `in`, `range`).  The following table describes each of these properties.
+For a filter object, a `field` must be provided with one of the filter operators (`equal`, `in`, `range`).  Values of these operators can be primitive types (string, number, boolean) or a [DateTime definition object](#date-time-definition-object) for describiing time. In addition, `timeUnit` can be provided to further transform a temporal `field`.
+
+The following table describes properties of a filter object.
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | field         | String        | Field to be filtered. |
-| equal         | String | Number | Boolean | Value that the `field`'s value should be equal to. |
-| range          | Number[]      | Array of length describing (inclusive) minimum and maximum values for the `field`'s value to be included in the filtered data. |
-| in         | Array         | A set of values that the `field`'s value should be a member of, for a data item included in the filtered data. |
+| equal         | String | Number | DateTime | Boolean | Value that the `field`'s value should be equal to. |
+| range          | Number[] | DateTime[] | Array of length describing (inclusive) minimum and maximum values for the `field`'s value to be included in the filtered data. |
+| in         | String[] | Number[] | DateTime[] | A set of values that the `field`'s value should be a member of, for a data item included in the filtered data. |
 
+##### Date Time Definition Object
 
+A DateTime object must have at least of the following properties:
+
+| Property      | Type          | Description    |
+| :------------ |:-------------:| :------------- |
+| year          | Number        | Integer value representing the year. |
+| quarter       | Number        | Integer value representing the quarter of the year (from 1-4). |
+| month         | Number | string | One of: (1) integer value representing the month from `1`-`12`. `1` represents January;  (2) case-insensitive month name (e.g., `"January"`);  (3) case-insensitive, 3-character short month name (e.g., `"Jan"`). |
+| date          | Number        | Integer value representing the date from 1-31. |
+| day           | Number | string         | Value representing the day of week.  This can be one of: (1) integer value -- `1` represents Monday; (2) (2) case-insensitive day name (e.g., `"Monday"`);  (3) case-insensitive, 3-character short day name (e.g., `"Mon"`).   <br/> **Warning:** A DateTime definition object with `day`** should not be combined with `year`, `quarter`, `month`, or `date`. |
+| hours         | Number        | Integer value representing the hour of day from 0-23. |
+| minutes       | Number        | Integer value representing minute segment of a time from 0-59. |
+| seconds       | Number        | Integer value representing  second segment of a time from 0-59. |
+| milliseconds  | Number        | Integer value representing  millsecond segment of a time. |
 **Examples**
 
 - `{"field": "car_color", "equal": "red"}` checks if the `car_color` field's value is equal to `"red"`.
 - `{"field": "car_color", "in":["red", "yellow"]}` checks if the `car_color` field's value is `"red"` or `"yellow"`.
 - `{"field": "x", "range": [0, 5]}` checks if the `x` field's value is in range `[0,5]` (0 ≤ x ≤ 5).
+- `{"timeUnit": "year", "field": "date", "range": [2006, 2008] }` checks if the `date`'s value is between year 2006 and 2008.
+- `{"field": "date", "range": [{"year": 2006, "month": "jan", "date": 1}, {"year": 2008, "month": "feb", "date": 20}] }` checks if the `date`'s value is between year Jan 1, 2006  and Feb 20, 2008.
 
 #### Filter Expresssion
 

@@ -1,9 +1,18 @@
+import {DateTime} from './datetime';
+import {TimeUnit} from './timeunit';
 import {isArray} from './util';
 
 export type Filter = EqualFilter | RangeFilter | InFilter ;
 
+
 export interface EqualFilter {
-  // TODO: support timeUnit, aggregate, bin
+  // TODO: support aggregate
+
+  /**
+   * Time unit for the field to be filtered.
+   */
+  timeUnit?: TimeUnit;
+
   /**
    * Field to be filtered.
    */
@@ -12,7 +21,7 @@ export interface EqualFilter {
   /**
    * Value that the field should be equal to.
    */
-  equal: string | number | boolean;
+  equal: string | number | boolean | DateTime;
 
 }
 
@@ -21,7 +30,13 @@ export function isEqualFilter(filter: any): filter is EqualFilter {
 }
 
 export interface RangeFilter {
-  // TODO: support timeUnit, aggregate, bin
+  // TODO: support aggregate
+
+  /**
+   * time unit for the field to be filtered.
+   */
+  timeUnit?: TimeUnit;
+
   /**
    * Field to be filtered
    */
@@ -33,7 +48,7 @@ export interface RangeFilter {
    * @maxItems 2
    * @minItems 2
    */
-  range: any;
+  range: Array<number|DateTime>;
 
 }
 
@@ -46,9 +61,14 @@ export function isRangeFilter(filter: any): filter is RangeFilter {
   return false;
 }
 
-
 export interface InFilter {
-  // TODO: support timeUnit, aggregate, bin
+  // TODO: support aggregate
+
+  /**
+   * time unit for the field to be filtered.
+   */
+  timeUnit?: TimeUnit;
+
   /**
    * Field to be filtered
    */
@@ -58,7 +78,7 @@ export interface InFilter {
    * A set of values that the `field`'s value should be a member of,
    * for a data item included in the filtered data.
    */
-  in: any[];
+  in: Array<string|number|boolean|DateTime>;
 
 }
 

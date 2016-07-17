@@ -1,6 +1,7 @@
-import {contains, range, Dict} from './util';
 import {COLUMN, ROW, SHAPE, COLOR, Channel} from './channel';
+import {DateTimeExpr, dateTimeExpr} from './datetime';
 import {ScaleType} from './scale';
+import {Dict, contains, keys, range} from './util';
 
 export enum TimeUnit {
   YEAR = 'year' as any,
@@ -102,77 +103,34 @@ export function defaultScaleType(timeUnit: TimeUnit) {
 /**
  * Returns Vega expresssion for a given timeUnit and fieldRef
  */
-export function fieldExpr(timeUnit: TimeUnit, field: string, onlyRef = false): string {
-  let out = 'datetime(';
+export function fieldExpr(fullTimeUnit: TimeUnit, field: string): string {
   const fieldRef = 'datum.' + field;
 
-  function func(fun: string, addComma = true) {
-    if (onlyRef) {
-      return fieldRef + (addComma ? ', ' : '');
+  function func(timeUnit: TimeUnit) {
+    if (timeUnit === TimeUnit.QUARTER) {
+      // Divide by 3 to get the corresponding quarter number, multiply by 3
+      // to scale to the first month of the corresponding quarter(0,3,6,9).
+      return 'floor(month(' + fieldRef + ')' + '/3)';
     } else {
-      let res = '';
-      if (fun === 'quarter') {
-        // Divide by 3 to get the corresponding quarter number, multiply by 3
-        // to scale to the first month of the corresponding quarter(0,3,6,9).
-        res = 'floor(month(' + fieldRef + ')' + '/3)*3';
-      } else {
-        res = fun + '(' + fieldRef + ')' ;
-      }
-      return res + (addComma ? ', ' : '');
+      return timeUnit + '(' + fieldRef + ')' ;
     }
   }
 
-  if (containsTimeUnit(timeUnit, TimeUnit.YEAR)) {
-    out += func('year');
-  } else if (timeUnit === TimeUnit.DAY) {
-    out += '2006, '; // January 1 2006 is a Sunday
-  } else {
-    out += '0, ';
+  let d: DateTimeExpr = SINGLE_TIMEUNITS.reduce((_d, tu: TimeUnit) => {
+    if (containsTimeUnit(fullTimeUnit, tu)) {
+      _d[tu] = func(tu);
+    }
+    return _d;
+  }, {});
+
+  if (d.day && keys(d).length > 1) {
+    console.warn('Time unit "'+ fullTimeUnit +'" is not supported. We are replacing it with ',
+      (fullTimeUnit+'').replace('day', 'date')+'.');
+    delete d.day;
+    d.date = func(TimeUnit.DATE);
   }
 
-  if (containsTimeUnit(timeUnit, TimeUnit.MONTH)) {
-    out += func('month');
-  } else if (containsTimeUnit(timeUnit, TimeUnit.QUARTER)) {
-    out += func('quarter');
-  } else {
-    // month starts at 0 in javascript
-    out += '0, ';
-  }
-
-  // need to add 1 because days start at 1
-  if (containsTimeUnit(timeUnit, TimeUnit.DAY)) {
-    out += func('day', false) + '+1, ';
-  } else if (containsTimeUnit(timeUnit, TimeUnit.DATE)) {
-    out += func('date');
-  } else {
-    out += '1, ';
-  }
-
-  if (containsTimeUnit(timeUnit, TimeUnit.HOURS)) {
-    out += func('hours');
-  } else {
-    out += '0, ';
-  }
-
-  if (containsTimeUnit(timeUnit, TimeUnit.MINUTES)) {
-    out += func('minutes');
-  } else {
-    out += '0, ';
-  }
-
-  if (containsTimeUnit(timeUnit, TimeUnit.SECONDS)) {
-    out += func('seconds');
-  } else {
-    out += '0, ';
-  }
-
-  if (containsTimeUnit(timeUnit, TimeUnit.MILLISECONDS)) {
-    out += func('milliseconds', false);
-  } else {
-    out += '0';
-  }
-
-  return out + ')';
+  return dateTimeExpr(d);
 }
 
 /** Generate the complete raw domain. */

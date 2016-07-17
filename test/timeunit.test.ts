@@ -18,11 +18,30 @@ describe('timeUnit', () => {
       assert.equal(containsTimeUnit(fullTimeUnit, timeUnit), true);
     });
 
+    it('should return true for SECONDS and MILLISECONDS given SECONDSMILLISECONDS', function() {
+      const fullTimeUnit = TimeUnit.SECONDSMILLISECONDS;
+      const timeUnit = TimeUnit.SECONDS;
+      assert.equal(containsTimeUnit(fullTimeUnit, timeUnit), true);
+    });
+
+    it('should return true for MILLISECONDS given SECONDSMILLISECONDS', function() {
+      const fullTimeUnit = TimeUnit.SECONDSMILLISECONDS;
+      const timeUnit = TimeUnit.MILLISECONDS;
+      assert.equal(containsTimeUnit(fullTimeUnit, timeUnit), true);
+    });
+
     it('should return false for quarter given year', function() {
       const fullTimeUnit = TimeUnit.YEAR;
       const timeUnit = TimeUnit.QUARTER;
       assert.equal(containsTimeUnit(fullTimeUnit, timeUnit), false);
     });
+
+    it('should return false for SECONDS given MILLISECONDS', function() {
+      const fullTimeUnit = TimeUnit.MILLISECONDS;
+      const timeUnit = TimeUnit.SECONDS;
+      assert.equal(containsTimeUnit(fullTimeUnit, timeUnit), false);
+    });
+
   });
 
   describe('defaultScaleType', () => {
@@ -64,6 +83,14 @@ describe('timeUnit', () => {
       assert.equal(
         fieldExpr(TimeUnit.YEARMONTHDATEHOURSMINUTESSECONDS, 'x'),
         'datetime(year(datum.x), month(datum.x), date(datum.x), hours(datum.x), minutes(datum.x), seconds(datum.x), 0)'
+      );
+    });
+
+
+    it('should automatically correct YEARMONTHDAY to be YEARMONTHDATE', () => {
+      assert.equal(
+        fieldExpr('yearmonthday' as any, 'x'),
+        'datetime(year(datum.x), month(datum.x), date(datum.x), 0, 0, 0, 0)'
       );
     });
 
