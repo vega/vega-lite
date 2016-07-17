@@ -46,11 +46,6 @@ export function applyColorAndOpacity(p, model: UnitModel) {
   const colorFieldDef = model.fieldDef(COLOR);
   const opacityFieldDef = model.fieldDef(OPACITY);
 
-  // Always fill symbols with transparent fills https://github.com/vega/vega-lite/issues/1316
-  if (contains([BAR, POINT, CIRCLE, SQUARE], model.mark())) {
-    p.fill = {value: 'transparent'};
-  }
-
   // Apply fill stroke config first so that color field / value can override
   // fill / stroke
   if (filled) {
@@ -89,6 +84,12 @@ export function applyColorAndOpacity(p, model: UnitModel) {
     // apply color config if there is no fill / stroke config
     p[filled ? 'fill' : 'stroke'] = p[filled ? 'fill' : 'stroke'] ||
       {value: model.config().mark.color};
+  }
+
+  // If there is no fill, always fill symbols
+  // with transparent fills https://github.com/vega/vega-lite/issues/1316
+  if (!p.fill && contains([BAR, POINT, CIRCLE, SQUARE], model.mark())) {
+    p.fill = {value: 'transparent'};
   }
 
   if (opacityValue !== undefined) {
