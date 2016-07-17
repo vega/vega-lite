@@ -14,13 +14,21 @@ const DEFAULT_NULL_FILTERS = {
   temporal: true
 };
 
+// TODO: rename to invalidFilter
 export namespace nullFilter {
   /** Return Hashset of fields for null filtering (key=field, value = true). */
   function parse(model: Model): Dict<boolean> {
-    const filterNull = model.transform().filterNull;
+    const transform = model.transform();
+    let filterInvalid = transform.filterInvalid;
+
+    if (filterInvalid === undefined && transform['filterNull'] !== undefined) {
+      filterInvalid = transform['filterNull'];
+      console.warn('filterNull is deprecated. Please use filterInvalid instead.');
+    }
+
     return model.reduce(function(aggregator, fieldDef: FieldDef) {
-      if (filterNull ||
-        (filterNull === undefined && fieldDef.field && fieldDef.field !== '*' && DEFAULT_NULL_FILTERS[fieldDef.type])) {
+      if (filterInvalid ||
+        (filterInvalid === undefined && fieldDef.field && fieldDef.field !== '*' && DEFAULT_NULL_FILTERS[fieldDef.type])) {
         aggregator[fieldDef.field] = true;
       } else {
         // define this so we know that we don't filter nulls for this field
