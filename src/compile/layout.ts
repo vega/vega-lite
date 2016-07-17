@@ -74,6 +74,8 @@ export function parseUnitLayout(model: UnitModel): LayoutComponent {
 function parseUnitSizeLayout(model: UnitModel, channel: Channel): SizeComponent {
   // TODO: think about whether this config has to be the cell or facet cell config
   const cellConfig = model.config().cell;
+
+  // TODO: read top-level width / height
   const staticCellSize = channel === X ? cellConfig.width : cellConfig.height;
 
   return {
@@ -85,11 +87,11 @@ function parseUnitSizeLayout(model: UnitModel, channel: Channel): SizeComponent 
   };
 }
 
-function unitSizeExpr(model: UnitModel, channel: Channel, staticCellSize: number): string {
-  if (model.scale(channel)) {
-    if (model.isOrdinalScale(channel) && model.scale(channel).bandSize !== BANDSIZE_FIT) {
-      const scale = model.scale(channel);
-      return '(' + cardinalityFormula(model, channel) +
+export function unitSizeExpr(model: UnitModel, channel: Channel, staticCellSize: number): string {
+  const scale = model.scale(channel);
+  if (scale) {
+    if (scale.type === ScaleType.ORDINAL && scale.bandSize !== BANDSIZE_FIT) {
+      return '(' + cardinalityExpr(model, channel) +
         ' + ' + 1 +
         ') * ' + scale.bandSize;
     } else {
@@ -139,7 +141,7 @@ function parseFacetSizeLayout(model: FacetModel, channel: Channel): SizeComponen
 function facetSizeFormula(model: Model, channel: Channel, innerSize: string) {
   const scale = model.scale(channel);
   if (model.has(channel)) {
-    return '(datum["' + innerSize + '"] + ' + scale.padding + ')' + ' * ' + cardinalityFormula(model, channel);
+    return '(datum["' + innerSize + '"] + ' + scale.padding + ')' + ' * ' + cardinalityExpr(model, channel);
   } else {
     return 'datum["' + innerSize + '"] + ' + model.config().facet.scale.padding; // need to add outer padding for facet
   }
@@ -192,8 +194,7 @@ function getDistinct(model: Model, channel: Channel): StringSet {
   return {};
 }
 
-// TODO: rename to cardinalityExpr
-function cardinalityFormula(model: Model, channel: Channel) {
+export function cardinalityExpr(model: Model, channel: Channel) {
   const scale = model.scale(channel);
   if (scale.domain instanceof Array) {
     return scale.domain.length;
@@ -202,6 +203,7 @@ function cardinalityFormula(model: Model, channel: Channel) {
   const timeUnit = model.fieldDef(channel).timeUnit;
   const timeUnitDomain = timeUnit ? rawDomain(timeUnit, channel) : null;
 
+  // FIXME: production rule will break here!
   return timeUnitDomain !== null ? timeUnitDomain.length :
         model.field(channel, {datum: true, prefix: 'distinct'});
 }
