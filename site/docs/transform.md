@@ -32,7 +32,7 @@ The top-level `transform` object supports the following transformation propertie
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| filterNull    | Boolean       | Whether to filter null values from the data. By default (`undefined`), only quantitative and temporal fields are filtered. If set to `true`, all data items with null values are filtered. If `false`, all data items are included. |
+| filterInvalid    | Boolean       | Whether to filter invalid values (`null` and `NaN`) from the data. By default (`undefined`), only quantitative and temporal fields are filtered. If set to `true`, all data items with null values are filtered. If `false`, all data items are included. |
 | calculate     | Formula[]      | An array of formula objects for deriving new fields. Each formula object has two properties: <br/>     • `field` _(String)_ – The field name in which to store the computed value. <br/>    • `expr` _(String)_  – A string containing an expression for the formula. Use the variable `datum` to refer to the current data object.|
 | [filter](#filter) | String | FilterObject | (String|FilterObject)[]  | A filter object or a [Vega Expression](https://github.com/vega/vega/wiki/Expressions) string for filtering data items (or rows) or an array of either filter objects or expression strings. |
 
