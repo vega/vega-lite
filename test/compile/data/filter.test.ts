@@ -53,6 +53,22 @@ describe('compile/data/filter', () => {
       assert.equal(expr, 'inrange(datum.x, 0, 5)');
     });
 
+    it('should return a correct expression for a RangeFilter with no lower bound', () => {
+      const expr = filter.getFilterExpression({field: 'x', range: [null, 5]});
+      assert.equal(expr, 'datum.x <= 5');
+    });
+
+    it('should return a correct expression for a RangeFilter with no upper bound', () => {
+      const expr = filter.getFilterExpression({field: 'x', range: [0, null]});
+      assert.equal(expr, 'datum.x >= 0');
+    });
+
+
+    it('should return undefined for a RangeFilter with no bound', () => {
+      const expr = filter.getFilterExpression({field: 'x', range: [null, null]});
+      assert.equal(expr, undefined);
+    });
+
     it('should return a correct expression for an expression filter', () => {
       const expr = filter.getFilterExpression('datum.x===5');
       assert.equal(expr, 'datum.x===5');
@@ -68,7 +84,8 @@ describe('compile/data/filter', () => {
             {field: 'color', equal: 'red'},
             {field: 'color', in: ['red', 'yellow']},
             {field: 'x', range: [0, 5]},
-            'datum.x===5'
+            'datum.x===5',
+            {field: 'x', range: [null, null]},
           ]
         }
       });

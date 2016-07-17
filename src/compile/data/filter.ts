@@ -34,7 +34,6 @@ export namespace filter {
   }
 
   export function getFilterExpression(filter: Filter | string) {
-    let filterString = '';
     if (isString(filter)) {
       return filter as string;
     } else { // Filter Object
@@ -46,24 +45,37 @@ export namespace filter {
         field(filter, {datum: true});
 
       if (isEqualFilter(filter)) {
-        filterString = fieldExpr + '===' + valueExpr(filter.equal, filter.timeUnit);
+        return fieldExpr + '===' + valueExpr(filter.equal, filter.timeUnit);
       } else if (isInFilter(filter)) {
-        filterString = 'indexof([' +
+        return 'indexof([' +
           filter.in.map((v) => valueExpr(v, filter.timeUnit)).join(',') +
           '], ' + fieldExpr + ') !== -1';
       } else if (isRangeFilter(filter)) {
-        filterString = 'inrange(' + fieldExpr + ', ' +
-          valueExpr(filter.range[0], filter.timeUnit) + ', ' +
-          valueExpr(filter.range[1], filter.timeUnit) + ')';
+        const lower = filter.range[0];
+        const upper = filter.range[1];
+
+        if (lower !== null &&  upper !== null) {
+          return 'inrange(' + fieldExpr + ', ' +
+            valueExpr(lower, filter.timeUnit) + ', ' +
+            valueExpr(upper, filter.timeUnit) + ')';
+        } else if (lower !== null) {
+          return fieldExpr + ' >= ' + lower;
+        } else if (upper !== null) {
+          return fieldExpr + ' <= ' + upper;
+        }
       }
     }
-    return filterString;
+    return undefined;
   }
 
   export function parse(model: Model): string {
     const filter = model.transform().filter;
     if (isArray(filter)) {
-      return '(' + filter.map((f) => getFilterExpression(f)).join(') && (') + ')';
+      return '(' +
+        filter.map((f) => getFilterExpression(f))
+          .filter((f) => f !==undefined)
+          .join(') && (') +
+        ')';
     } else if (filter) {
       return getFilterExpression(filter);
     }
