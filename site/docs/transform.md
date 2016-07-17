@@ -55,7 +55,7 @@ Vega-Lite's `transform.filter` property can be (1) a filter predicate object, (2
 
 #### Filter Object
 
-For a filter object, a `field` must be provided with one of the filter operators (`equal`, `in`, `range`).  Values of these operators can be primitive types (string, number, boolean) or a [DateTime definition object](#datetime) for describiing time. In addition, `timeUnit` can be provided to further transform a temporal `field`.
+For a filter object, a `field` must be provided with one of the filter operators (`equal`, `in`, `range`).  Values of these operators can be primitive types (string, number, boolean) or a [DateTime definition object](#date-time-definition-object) for describiing time. In addition, `timeUnit` can be provided to further transform a temporal `field`.
 
 The following table describes properties of a filter object.
 
@@ -66,7 +66,6 @@ The following table describes properties of a filter object.
 | range          | Number[] | DateTime[] | Array of length describing (inclusive) minimum and maximum values for the `field`'s value to be included in the filtered data. |
 | in         | String[] | Number[] | DateTime[] | A set of values that the `field`'s value should be a member of, for a data item included in the filtered data. |
 
-{:#datetime}
 ##### Date Time Definition Object
 
 A DateTime object must have at least of the following properties:
