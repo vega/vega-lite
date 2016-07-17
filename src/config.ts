@@ -93,6 +93,11 @@ export enum Shape {
     TRIANGLEDOWN = 'triangle-down' as any,
 }
 
+export enum Orient {
+  HORIZONTAL = 'horizontal' as any,
+  VERTICAL = 'vertical' as any
+}
+
 export enum HorizontalAlign {
     LEFT = 'left' as any,
     RIGHT = 'right' as any,
@@ -109,8 +114,6 @@ export enum FontStyle {
     NORMAL = 'normal' as any,
     ITALIC = 'italic' as any,
 }
-
-
 
 export enum Interpolate {
     /** piecewise linear segments, as in a polyline */
@@ -255,7 +258,7 @@ export interface MarkConfig {
    * For stacked charts, this is always determined by the orientation of the stack;
    * therefore explicitly specified value will be ignored.
    */
-  orient?: string;
+  orient?: Orient;
 
   // ---------- Interpolation: Line / area ----------
   /**

@@ -3,6 +3,7 @@ declare var exports;
 
 import {SHARED_DOMAIN_OPS} from '../aggregate';
 import {COLUMN, ROW, X, Y, X2, Y2, SHAPE, SIZE, COLOR, OPACITY, TEXT, hasScale, Channel} from '../channel';
+import {Orient} from '../config';
 import {SOURCE, STACKED_SCALE} from '../data';
 import {FieldDef, field, isMeasure} from '../fielddef';
 import {Mark, BAR, TEXT as TEXTMARK, RULE, TICK} from '../mark';
@@ -391,7 +392,7 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel): any {
         if (scaleConfig.barSizeRange !== undefined) {
           return {range: scaleConfig.barSizeRange};
         }
-        const dimension = model.config().mark.orient === 'horizontal' ? Y : X;
+        const dimension = model.config().mark.orient === Orient.HORIZONTAL ? Y : X;
         return {range: [model.config().mark.barThinSize, model.scale(dimension).bandSize]};
       } else if (unitModel.mark() === TEXTMARK) {
         return {range: scaleConfig.fontSizeRange };
