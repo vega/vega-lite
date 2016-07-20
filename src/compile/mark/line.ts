@@ -1,6 +1,7 @@
 import {X, Y} from '../../channel';
 import {Config} from '../../config';
 import {FieldDef, field} from '../../fielddef';
+import {Scale} from '../../scale';
 import {VgValueRef} from '../../vega.schema';
 
 import {applyColorAndOpacity, applyMarkConfig} from '../common';
@@ -16,9 +17,9 @@ export namespace line {
     let p: any = {};
     const config = model.config();
 
-    p.x = x(model.encoding().x, model.scaleName(X), config);
+    p.x = x(model.encoding().x, model.scaleName(X), model.scale(X), config);
 
-    p.y = y(model.encoding().y, model.scaleName(Y), config);
+    p.y = y(model.encoding().y, model.scaleName(Y), model.scale(Y), config);
 
     const _size = size(model.encoding().size, config);
     if (_size) { p.strokeWidth = _size; }
@@ -28,28 +29,30 @@ export namespace line {
     return p;
   }
 
-  function x(fieldDef: FieldDef, scaleName: string, config: Config): VgValueRef {
+  function x(fieldDef: FieldDef, scaleName: string, scale: Scale, config: Config): VgValueRef {
     // x
     if (fieldDef) {
       if (fieldDef.field) {
-        return {
-          scale: scaleName,
-          field: field(fieldDef, { binSuffix: '_mid' })
-        };
+        let fieldRef: VgValueRef = {field: field(fieldDef, { binSuffix: '_mid' })};
+        if (scale) {
+          fieldRef.scale = scaleName;
+        }
+        return fieldRef;
       }
       // TODO: fieldDef.value (for layering)
     }
     return { value: 0 };
   }
 
-  function y(fieldDef: FieldDef, scaleName: string, config: Config): VgValueRef {
+  function y(fieldDef: FieldDef, scaleName: string, scale: Scale, config: Config): VgValueRef {
     // y
     if (fieldDef) {
       if (fieldDef.field) {
-        return {
-          scale: scaleName,
-          field: field(fieldDef, { binSuffix: '_mid' })
-        };
+        let fieldRef: VgValueRef = {field: field(fieldDef, { binSuffix: '_mid' })};
+        if (scale) {
+          fieldRef.scale = scaleName;
+        }
+        return fieldRef;
       }
       // TODO: fieldDef.value (for layering)
     }

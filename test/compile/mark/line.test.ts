@@ -49,4 +49,34 @@ describe('Mark: Line', function() {
       assert.deepEqual(props.stroke, {scale: COLOR, field: 'Acceleration'});
     });
   });
+
+  describe('with x of type longitude', function() {
+    const model = parseUnitModel({
+      "mark": "line",
+      "encoding": {
+        "x": {"field": "year", "type": "longitude"}
+      },
+      "data": {"url": "data/barley.json"}
+    });
+
+    const props = line.properties(model);
+    it('should not have scale on x', function() {
+      assert.deepEqual(props.x.scale, undefined);
+    });
+  });
+
+  describe('with y of type latitude', function() {
+    const model = parseUnitModel({
+      "mark": "line",
+      "encoding": {
+        "y": {"field": "year", "type": "latitude"}
+      },
+      "data": {"url": "data/barley.json"}
+    });
+
+    const props = line.properties(model);
+    it('should not have scale on y', function() {
+      assert.deepEqual(props.y.scale, undefined);
+    });
+  });
 });

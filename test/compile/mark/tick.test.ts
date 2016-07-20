@@ -120,4 +120,34 @@ describe('Mark: Tick', function() {
       assert.deepEqual(props.width, {'field': 'Acceleration', 'scale': SIZE});
     });
   });
+
+  describe('with x of type longitude', function() {
+    const model = parseUnitModel({
+      "mark": "tick",
+      "encoding": {
+        "x": {"field": "year", "type": "longitude"}
+      },
+      "data": {"url": "data/barley.json"}
+    });
+
+    const props = tick.properties(model);
+    it('should not have scale on x', function() {
+      assert.deepEqual(props.xc.scale, undefined);
+    });
+  });
+
+  describe('with y of type latitude', function() {
+    const model = parseUnitModel({
+      "mark": "tick",
+      "encoding": {
+        "y": {"field": "year", "type": "latitude"}
+      },
+      "data": {"url": "data/barley.json"}
+    });
+
+    const props = tick.properties(model);
+    it('should not have scale on y', function() {
+      assert.deepEqual(props.yc.scale, undefined);
+    });
+  });
 });

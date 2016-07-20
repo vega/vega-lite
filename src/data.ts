@@ -5,7 +5,7 @@ import {Type} from './type';
 
 export interface DataFormat {
   /**
-   * Type of input data: `"json"`, `"csv"`, `"tsv"`.
+   * Type of input data: `"json"`, `"csv"`, `"tsv"`, `"topojson"`.
    * The default format type is determined by the extension of the file url.
    * If no extension is detected, `"json"` will be used by default.
    */

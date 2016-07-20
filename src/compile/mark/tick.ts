@@ -1,6 +1,7 @@
 import {X, Y, SIZE} from '../../channel';
-import {FieldDef, field} from '../../fielddef';
 import {Config} from '../../config';
+import {FieldDef, field} from '../../fielddef';
+import {Scale} from '../../scale';
 import {VgValueRef} from '../../vega.schema';
 
 import {UnitModel} from '../unit';
@@ -17,9 +18,9 @@ export namespace tick {
 
     // TODO: support explicit value
 
-    p.xc = x(model.encoding().x, model.scaleName(X), config);
+    p.xc = x(model.encoding().x, model.scaleName(X), model.scale(X), config);
 
-    p.yc = y(model.encoding().y, model.scaleName(Y), config);
+    p.yc = y(model.encoding().y, model.scaleName(Y), model.scale(Y), config);
 
     if (config.mark.orient === 'horizontal') {
       p.width = size(model.encoding().size, model.scaleName(SIZE), config, (model.scale(X) || {}).bandSize);
@@ -33,14 +34,15 @@ export namespace tick {
     return p;
   }
 
-  function x(fieldDef: FieldDef, scaleName: string, config: Config): VgValueRef {
+  function x(fieldDef: FieldDef, scaleName: string, scale: Scale, config: Config): VgValueRef {
     // x
     if (fieldDef) {
       if (fieldDef.field) {
-        return {
-          scale: scaleName,
-          field: field(fieldDef, { binSuffix: '_mid' })
-        };
+        let fieldRef: VgValueRef = {field: field(fieldDef, { binSuffix: '_mid' })};
+        if (scale) {
+          fieldRef.scale = scaleName;
+        }
+        return fieldRef;
       } else if (fieldDef.value) {
         return {value: fieldDef.value};
       }
@@ -48,14 +50,15 @@ export namespace tick {
     return { value: config.scale.bandSize / 2 };
   }
 
-  function y(fieldDef: FieldDef, scaleName: string, config: Config): VgValueRef {
+  function y(fieldDef: FieldDef, scaleName: string, scale: Scale, config: Config): VgValueRef {
     // y
     if (fieldDef) {
       if (fieldDef.field) {
-        return {
-          scale: scaleName,
-          field: field(fieldDef, { binSuffix: '_mid' })
-        };
+        let fieldRef: VgValueRef = {field: field(fieldDef, { binSuffix: '_mid' })};
+        if (scale) {
+          fieldRef.scale = scaleName;
+        }
+        return fieldRef;
       } else if (fieldDef.value) {
         return {value: fieldDef.value};
       }
