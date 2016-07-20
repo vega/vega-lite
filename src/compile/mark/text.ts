@@ -2,6 +2,7 @@ import {X, Y, COLOR, TEXT, SIZE} from '../../channel';
 import {applyMarkConfig, applyColorAndOpacity, numberFormat, timeTemplate} from '../common';
 import {Config} from '../../config';
 import {FieldDef, field} from '../../fielddef';
+import {Scale} from '../../scale';
 import {QUANTITATIVE, ORDINAL, TEMPORAL} from '../../type';
 import {VgValueRef} from '../../vega.schema';
 
@@ -37,13 +38,13 @@ export namespace text {
     const config = model.config();
     const textFieldDef = model.fieldDef(TEXT);
 
-    p.x = x(model.encoding().x, model.scaleName(X), config, textFieldDef);
+    p.x = x(model.encoding().x, model.scaleName(X), model.scale(X), config, textFieldDef);
 
-    p.y = y(model.encoding().y, model.scaleName(Y), config);
+    p.y = y(model.encoding().y, model.scaleName(Y), model.scale(Y), config);
 
-    p.fontSize = size(model.encoding().size, model.scaleName(SIZE), config);
+    p.fontSize = size(model.encoding().size, model.scaleName(SIZE), model.scale(SIZE), config);
 
-    p.text = text(model.encoding().text, model.scaleName(TEXT), config);
+    p.text = text(model.encoding().text, model.scaleName(TEXT), model.scale(TEXT), config);
 
     if (model.config().mark.applyColorToBackground && !model.has(X) && !model.has(Y)) {
       p.fill = {value: 'black'}; // TODO: add rules for swapping between black and white
@@ -57,14 +58,15 @@ export namespace text {
     return p;
   }
 
-  function x(xFieldDef: FieldDef, scaleName: string, config: Config, textFieldDef:FieldDef): VgValueRef {
+  function x(xFieldDef: FieldDef, scaleName: string, scale: Scale, config: Config, textFieldDef:FieldDef): VgValueRef {
     // x
     if (xFieldDef) {
       if (xFieldDef.field) {
-        return {
-          scale: scaleName,
-          field: field(xFieldDef, { binSuffix: '_mid' })
-        };
+        let fieldRef: VgValueRef = {field: field(xFieldDef, { binSuffix: '_mid' })};
+        if (scale) {
+          fieldRef.scale = scaleName;
+        }
+        return fieldRef;
       }
     }
     // TODO: support x.value, x.datum
@@ -75,21 +77,22 @@ export namespace text {
     }
   }
 
-  function y(yFieldDef: FieldDef, scaleName: string, config: Config): VgValueRef {
+  function y(yFieldDef: FieldDef, scaleName: string, scale: Scale, config: Config): VgValueRef {
     // y
     if (yFieldDef) {
       if (yFieldDef.field) {
-        return {
-          scale: scaleName,
-          field: field(yFieldDef, { binSuffix: '_mid' })
-        };
+        let fieldRef: VgValueRef = {field: field(yFieldDef, { binSuffix: '_mid' })};
+        if (scale) {
+          fieldRef.scale = scaleName;
+        }
+        return fieldRef;
       }
     }
     // TODO consider if this should support group: height case too.
     return { value: config.scale.bandSize / 2 };
   }
 
-  function size(sizeFieldDef: FieldDef, scaleName: string, config: Config): VgValueRef {
+  function size(sizeFieldDef: FieldDef, scaleName: string, scale: Scale, config: Config): VgValueRef {
     // size
     if (sizeFieldDef) {
       if (sizeFieldDef.field) {
@@ -105,7 +108,7 @@ export namespace text {
     return { value: config.mark.fontSize };
   }
 
-  function text(textFieldDef: FieldDef, scaleName: string, config: Config): VgValueRef {
+  function text(textFieldDef: FieldDef, scaleName: string, scale: Scale, config: Config): VgValueRef {
     // text
     if (textFieldDef) {
       if (textFieldDef.field) {

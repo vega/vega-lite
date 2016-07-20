@@ -166,4 +166,36 @@ describe('Mark: Text', function() {
     });
 
   });
+
+  describe('with x of type longitude', function() {
+    const model = parseUnitModel({
+      "mark": "text",
+      "encoding": {
+        "x": {"field": "year", "type": "longitude"},
+        "text": {"field": "year", "type": "quantitative"}
+      },
+      "data": {"url": "data/barley.json"}
+    });
+
+    const props = text.properties(model);
+    it('should not have scale on x', function() {
+      assert.deepEqual(props.x.scale, undefined);
+    });
+  });
+
+  describe('with y of type latitude', function() {
+    const model = parseUnitModel({
+      "mark": "text",
+      "encoding": {
+        "y": {"field": "year", "type": "latitude"},
+        "text": {"field": "year", "type": "quantitative"}
+      },
+      "data": {"url": "data/barley.json"}
+    });
+
+    const props = text.properties(model);
+    it('should not have scale on y', function() {
+      assert.deepEqual(props.y.scale, undefined);
+    });
+  });
 });
