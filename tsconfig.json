@@ -91,6 +91,7 @@
     "test/compile/axis.test.ts",
     "test/compile/common.test.ts",
     "test/compile/compile.test.ts",
+    "test/compile/config.test.ts",
     "test/compile/data.test.ts",
     "test/compile/data/datatestutil.ts",
     "test/compile/data/filter.test.ts",
