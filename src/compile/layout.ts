@@ -8,7 +8,6 @@ import {VgData} from '../vega.schema';
 
 import {FacetModel} from './facet';
 import {LayerModel} from './layer';
-import {TEXT as TEXTMARK} from '../mark';
 import {Model} from './model';
 import {rawDomain} from '../timeunit';
 import {UnitModel} from './unit';
@@ -46,11 +45,11 @@ export function assembleLayout(model: Model, layoutData: VgData[]): VgData[] {
         name: model.dataName(LAYOUT),
         source: model.dataTable(),
         transform: [{
-            type: 'aggregate',
-            summarize: distinctFields.map(function(field) {
-              return { field: field, ops: ['distinct'] };
-            })
-          }].concat(formula)
+          type: 'aggregate',
+          summarize: distinctFields.map(function(field) {
+            return { field: field, ops: ['distinct'] };
+          })
+        }].concat(formula)
       } : {
         name: model.dataName(LAYOUT),
         values: [{}],
@@ -72,39 +71,25 @@ export function parseUnitLayout(model: UnitModel): LayoutComponent {
 }
 
 function parseUnitSizeLayout(model: UnitModel, channel: Channel): SizeComponent {
-  // TODO: think about whether this config has to be the cell or facet cell config
-  const cellConfig = model.config().cell;
-
-  // TODO: read top-level width / height
-  const staticCellSize = channel === X ? cellConfig.width : cellConfig.height;
-
   return {
     distinct: getDistinct(model, channel),
     formula: [{
       field: model.channelSizeName(channel),
-      expr: unitSizeExpr(model, channel, staticCellSize)
+      expr: unitSizeExpr(model, channel)
     }]
   };
 }
 
-export function unitSizeExpr(model: UnitModel, channel: Channel, staticCellSize: number): string {
+export function unitSizeExpr(model: UnitModel, channel: Channel): string {
   const scale = model.scale(channel);
   if (scale) {
     if (scale.type === ScaleType.ORDINAL && scale.bandSize !== BANDSIZE_FIT) {
       return '(' + cardinalityExpr(model, channel) +
         ' + ' + 1 +
         ') * ' + scale.bandSize;
-    } else {
-      return staticCellSize + '';
     }
-  } else {
-    // TODO: need a way to set this to fit when using with layering.
-    if (model.mark() === TEXTMARK && channel === X) {
-      // for text table without x/y scale we need wider bandSize
-      return model.config().scale.textBandWidth + '';
-    }
-    return model.config().scale.bandSize + '';
   }
+  return (channel === X ? model.width : model.height) + '';
 }
 
 export function parseFacetLayout(model: FacetModel): LayoutComponent {
@@ -205,5 +190,5 @@ export function cardinalityExpr(model: Model, channel: Channel) {
 
   // FIXME: production rule will break here!
   return timeUnitDomain !== null ? timeUnitDomain.length :
-        model.field(channel, {datum: true, prefix: 'distinct'});
+    model.field(channel, {datum: true, prefix: 'distinct'});
 }

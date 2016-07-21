@@ -15,18 +15,44 @@ import {VgData, VgAxis, VgLegend, isUnionedDomain, isDataRefDomain, VgDataRef} f
 export class LayerModel extends Model {
   private _children: UnitModel[];
 
+  /**
+   * Fixed width for the unit visualization.
+   * If undefined (e.g., for ordinal scale), the width of the
+   * visualization will be calculated dynamically.
+   */
+  private _width: number;
+
+  /**
+   * Fixed height for the unit visualization.
+   * If undefined (e.g., for ordinal scale), the height of the
+   * visualization will be calculated dynamically.
+   */
+  private _height: number;
+
+
   constructor(spec: LayerSpec, parent: Model, parentGivenName: string) {
     super(spec, parent, parentGivenName);
 
+    this._width = spec.width;
+    this._height = spec.height;
+
     this._config = this._initConfig(spec.config, parent);
     this._children = spec.layers.map((layer, i) => {
-      // we know that the model has to be a unit model beacuse we pass in a unit spec
+      // we know that the model has to be a unit model because we pass in a unit spec
       return buildModel(layer, this, this.name('layer_' + i)) as UnitModel;
     });
   }
 
   private _initConfig(specConfig: Config, parent: Model) {
     return mergeDeep(duplicate(defaultConfig), specConfig, parent ? parent.config() : {});
+  }
+
+  public get width(): number {
+    return this._width;
+  }
+
+  public get height(): number {
+    return this._height;
   }
 
   public has(channel: Channel): boolean {

@@ -7,7 +7,7 @@ import {Orient} from '../config';
 import {SOURCE, STACKED_SCALE} from '../data';
 import {FieldDef, field, isMeasure} from '../fielddef';
 import {Mark, BAR, TEXT as TEXTMARK, RULE, TICK} from '../mark';
-import {Scale, ScaleType, NiceTime, BANDSIZE_FIT} from '../scale';
+import {Scale, ScaleConfig, ScaleType, NiceTime, BANDSIZE_FIT, BandSize} from '../scale';
 import {isSortField, SortOrder} from '../sort';
 import {StackOffset} from '../stack';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
@@ -209,6 +209,34 @@ export function scaleType(scale: Scale, fieldDef: FieldDef, channel: Channel, ma
   return null;
 }
 
+export function scaleBandSize(scaleType: ScaleType, bandSize: number | BandSize, scaleConfig: ScaleConfig, topLevelSize: number, mark: Mark, channel: Channel): number | BandSize {
+  if (scaleType === ScaleType.ORDINAL) {
+    if (topLevelSize === undefined) {
+
+      if (bandSize) {
+        // Use manually specified bandSize
+        return bandSize;
+      } else if (channel === X && mark === TEXTMARK) {
+        return scaleConfig.textBandWidth;
+      } else {
+        return scaleConfig.bandSize;
+      }
+    } else {
+      // If top-level is specified, use bandSize fit
+      if (bandSize) {
+        // If top-level size is specified, we override specified bandSize with "fit"
+        console.warn('bandSize for', channel, 'overridden as top-level',
+          channel === X ? 'width' : 'height', 'is provided.');
+      }
+      return BANDSIZE_FIT;
+    }
+  } else {
+    // bandSize is not applicable for non-ordinal scale.
+    return undefined;
+
+  }
+}
+
 export function domain(scale: Scale, model: Model, channel:Channel): any {
   const fieldDef = model.fieldDef(channel);
 
@@ -380,11 +408,13 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel): any {
 
       return {
         rangeMin: 0,
-        rangeMax: unitModel.config().cell.width // Fixed cell width for non-ordinal
+        // TODO: replace
+        rangeMax: unitModel.width // Fixed cell width for non-ordinal
       };
     case Y:
       return {
-        rangeMin: unitModel.config().cell.height, // Fixed cell height for non-ordinal
+        // TODO: replace
+        rangeMin: unitModel.height, // Fixed cell height for non-ordinal
         rangeMax: 0
       };
     case SIZE:

@@ -250,11 +250,11 @@ describe('Axis', function() {
   describe('title()', function () {
     it('should add explicitly specified title', function () {
       const title = axis.title(parseUnitModel({
-          mark: "point",
-          encoding: {
-            x: {field: 'a', axis: {title: 'Custom'}}
-          }
-        }), X);
+        mark: "point",
+        encoding: {
+          x: {field: 'a', axis: {title: 'Custom'}}
+        }
+      }), X);
       assert.deepEqual(title, 'Custom');
     });
 
@@ -288,7 +288,6 @@ describe('Axis', function() {
       assert.deepEqual(title, 'SU…');
     });
 
-
     it('should add return fieldTitle by default and truncate', function () {
       const title = axis.title(parseUnitModel({
           mark: "point",
@@ -299,6 +298,18 @@ describe('Axis', function() {
             cell: {width: 60}
           }
         }), X);
+      assert.deepEqual(title, 'abcdefghi…');
+    });
+
+
+    it('should add return fieldTitle by default and truncate', function () {
+      const title = axis.title(parseUnitModel({
+        height: 60,
+        mark: "point",
+        encoding: {
+          y: {field: 'abcdefghijkl'}
+        }
+      }), Y);
       assert.deepEqual(title, 'abcdefghi…');
     });
   });

@@ -41,6 +41,12 @@ export interface BaseSpec {
 }
 
 export interface UnitSpec extends BaseSpec {
+  // FIXME description for top-level width
+  width?: number;
+
+  // FIXME description for top-level width
+  height?: number;
+
   /**
    * The mark type.
    * One of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
@@ -64,6 +70,12 @@ export interface UnitSpec extends BaseSpec {
  * @required ["mark", "encoding"]
  */
 export interface ExtendedUnitSpec extends BaseSpec {
+  // FIXME description for top-level width
+  width?: number;
+
+  // FIXME description for top-level width
+  height?: number;
+
   /**
    * The mark type.
    * One of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
@@ -83,6 +95,12 @@ export interface FacetSpec extends BaseSpec {
 }
 
 export interface LayerSpec extends BaseSpec {
+  // FIXME description for top-level width
+  width?: number;
+
+  // FIXME description for top-level width
+  height?: number;
+
   /**
    * Unit specs that will be layered.
    */

@@ -3,7 +3,7 @@
 import {assert} from 'chai';
 import {parseUnitModel} from '../util';
 
-import {X} from '../../src/channel';
+import {X, Y} from '../../src/channel';
 import {cardinalityExpr, unitSizeExpr} from '../../src/compile/layout';
 
 describe('compile/layout', () => {
@@ -52,11 +52,11 @@ describe('compile/layout', () => {
         }
       });
 
-      const sizeExpr = unitSizeExpr(model, X, 200);
+      const sizeExpr = unitSizeExpr(model, X);
       assert.equal(sizeExpr, '(datum["distinct_a"] + 1) * 21');
     });
 
-    it('should return static cell size for ordinal scale with fit', () => {
+    it('should return static cell size for ordinal x-scale with fit', () => {
       const model = parseUnitModel({
         mark: 'point',
         encoding: {
@@ -64,11 +64,50 @@ describe('compile/layout', () => {
         }
       });
 
-      const sizeExpr = unitSizeExpr(model, X, 200);
+      const sizeExpr = unitSizeExpr(model, X);
       assert.equal(sizeExpr, '200');
     });
 
-    it('should return static cell size for non-ordinal scale', () => {
+
+    it('should return static cell size for ordinal y-scale with fit', () => {
+      const model = parseUnitModel({
+        mark: 'point',
+        encoding: {
+          y: {field: 'a', type: 'ordinal', scale: {bandSize: 'fit'}}
+        }
+      });
+
+      const sizeExpr = unitSizeExpr(model, Y);
+      assert.equal(sizeExpr, '200');
+    });
+
+    it('should return static cell size for ordinal scale with top-level width', () => {
+      const model = parseUnitModel({
+        width: 205,
+        mark: 'point',
+        encoding: {
+          x: {field: 'a', type: 'ordinal'}
+        }
+      });
+
+      const sizeExpr = unitSizeExpr(model, X);
+      assert.equal(sizeExpr, '205');
+    });
+
+    it('should return static cell size for ordinal scale with top-level width even if there is numeric bandSize', () => {
+      const model = parseUnitModel({
+        width: 205,
+        mark: 'point',
+        encoding: {
+          x: {field: 'a', type: 'ordinal', scale: {bandSize: 21}}
+        }
+      });
+
+      const sizeExpr = unitSizeExpr(model, X);
+      assert.equal(sizeExpr, '205');
+    });
+
+    it('should return static cell width for non-ordinal x-scale', () => {
       const model = parseUnitModel({
         mark: 'point',
         encoding: {
@@ -76,7 +115,20 @@ describe('compile/layout', () => {
         }
       });
 
-      const sizeExpr = unitSizeExpr(model, X, 200);
+      const sizeExpr = unitSizeExpr(model, X);
+      assert.equal(sizeExpr, '200');
+    });
+
+
+    it('should return static cell size for non-ordinal y-scale', () => {
+      const model = parseUnitModel({
+        mark: 'point',
+        encoding: {
+          y: {field: 'a', type: 'quantitative'}
+        }
+      });
+
+      const sizeExpr = unitSizeExpr(model, Y);
       assert.equal(sizeExpr, '200');
     });
 
@@ -86,7 +138,7 @@ describe('compile/layout', () => {
         encoding: {},
         config: {scale: {bandSize: 17}}
       });
-      const sizeExpr = unitSizeExpr(model, X, 200);
+      const sizeExpr = unitSizeExpr(model, X);
       assert.equal(sizeExpr, '17');
     });
 
@@ -96,10 +148,9 @@ describe('compile/layout', () => {
         encoding: {},
         config: {scale: {textBandWidth: 91}}
       });
-      const sizeExpr = unitSizeExpr(model, X, 200);
+      const sizeExpr = unitSizeExpr(model, X);
       assert.equal(sizeExpr, '91');
     });
 
-    // TODO: top-level width / height
   });
 });
