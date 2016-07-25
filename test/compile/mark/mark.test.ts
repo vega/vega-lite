@@ -49,4 +49,53 @@ describe('Mark (Non-path based Mark)', function() {
       });
     });
   });
+
+  describe('Projection', function() {
+    describe('Projection with geopath', function () {
+      const model = parseUnitModel({
+        "mark": "path",
+        "encoding": {
+          "geopath":{
+              "type":"geojson"
+          }
+        },
+        "projection": {
+          "type": "albersUsa",
+          "scale": 1,
+          "translate": [1, 2],
+          "center": [0, 0]
+        }
+      });
+
+      it('should add transform in from with correct projection properties', function() {
+        const markGroup = parseMark(model);
+        // Get the marks from the wrapper
+        const marks = markGroup[0].marks;
+        const geoTransform = marks[0].from.transform[0];
+        assert.equal(geoTransform.type, 'geopath');
+        assert.equal(geoTransform.projection, 'albersUsa');
+        assert.equal(geoTransform.scale, 1);
+        assert.deepEqual(geoTransform.translate, [1, 2]);
+        assert.deepEqual(geoTransform.center, [0, 0]);
+      });
+    });
+
+    describe('Projection with geo', function () {
+      const model = parseUnitModel({
+        "mark": "point",
+        "encoding": {
+          "y": {"type": "latitude", "field": "foo"},
+        }
+      });
+
+      it('should stack data correctly', function() {
+        const markGroup = parseMark(model);
+        // Get the marks from the wrapper
+        const marks = markGroup[0].marks;
+        const geoTransform = marks[0].from.transform[0];
+        assert.equal(geoTransform.type, 'geo');
+        assert.equal(geoTransform.lat, 'foo');
+      });
+    });
+  });
 });
