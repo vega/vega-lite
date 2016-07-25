@@ -210,6 +210,11 @@ export interface MarkConfig {
    */
   stroke?: string;
 
+/**
+ * Default Path Stroke Color. This is for the geopath transform.
+ */
+  pathStroke?: string;
+
   // ---------- Opacity ----------
   /**
    * @minimum 0
@@ -384,6 +389,7 @@ export const defaultMarkConfig: MarkConfig = {
   color: '#4682b4',
   shape: Shape.CIRCLE,
   strokeWidth: 2,
+  pathStroke: 'white',
   size: 30,
   barThinSize: 2,
   // lineSize is undefined by default, and refer to value from strokeWidth

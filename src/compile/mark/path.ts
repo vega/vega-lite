@@ -1,10 +1,10 @@
 import {Config} from '../../config';
 import {FieldDef} from '../../fielddef';
 import {GEOJSON} from '../../type';
+import {VgValueRef} from '../../vega.schema';
 
 import {applyColorAndOpacity} from '../common';
 import {UnitModel} from '../unit';
-
 
 export namespace path {
   export function markType() {
@@ -22,15 +22,14 @@ export namespace path {
     return p;
   }
 
-  function stroke(config: Config) {
+  function stroke(config: Config): VgValueRef {
     if (config && config.mark && config.mark.stroke) {
-      return { value: config.mark.stroke};
+      return { value: config.mark.stroke };
     }
-    // TODO: Default stroke is white ?
-    return { value: 'white'};
+    return { value: config.mark.pathStroke };
   }
 
-  function path(fieldDef: FieldDef) {
+  function path(fieldDef: FieldDef): VgValueRef {
     if (fieldDef && fieldDef.type === GEOJSON) {
       return { field: 'layout_path' };
     }
