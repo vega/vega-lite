@@ -180,11 +180,13 @@ export function geoTransform(model: UnitModel) {
   transform = extend(transform, { projection : model.projection().type});
 
   // Set all the projection properties if specified.
-  ['translate', 'scale', 'center', 'rotate', 'precision', 'clipAngle']
-      .forEach((prop) => {
-        if (projection[prop] !== undefined) {
-          transform[prop] = projection[prop];
-        }
-      });
+  if (projection !== undefined) {
+    ['translate', 'scale', 'center', 'rotate', 'precision', 'clipAngle']
+        .forEach((prop) => {
+          if (projection[prop] !== undefined) {
+            transform[prop] = projection[prop];
+          }
+        });
+  }
   return transform;
 }

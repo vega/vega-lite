@@ -39,10 +39,9 @@ export function parseMark(model: UnitModel): any[] {
     marks = parseNonLineOrArea(model);
   }
 
-  // Check if there is a projection
+  // If there is a projection, wrap the mark for better output.
   if (hasGeoTransform(model)) {
     return [{
-      // TODO(ylin): Give it a better name
       name: model.name('marks-wrapper-geo'),
       type: 'group',
       properties: {
@@ -162,7 +161,7 @@ function parseNonLineOrArea(model: UnitModel) {
         model.has(ORDER) ?
           // if non-stacked, detail field determines the layer order of each mark
           { transform: [{type:'sort', by: sortBy(model)}] } : {},
-        (model.projection() && hasGeoTransform(model)) ?
+        (hasGeoTransform(model)) ?
           // If geo projected, add transform
           { transform: [geoTransform(model)] } :
         {}
