@@ -6,6 +6,7 @@ import {channelMappingReduce, channelMappingForEach} from '../encoding';
 import {FieldDef, FieldRefOption, field} from '../fielddef';
 import {Legend} from '../legend';
 import {Scale, ScaleType} from '../scale';
+import {SortField, SortOrder} from '../sort';
 import {BaseSpec} from '../spec';
 import {Transform} from '../transform';
 import {extend, flatten, vals, warning, Dict} from '../util';
@@ -298,7 +299,7 @@ export abstract class Model {
     return this._scaleNameMap.get(this.name(channel + ''));
   }
 
-  public sort(channel: Channel) {
+  public sort(channel: Channel): SortField | SortOrder {
     return (this.mapping()[channel] || {}).sort;
   }
 

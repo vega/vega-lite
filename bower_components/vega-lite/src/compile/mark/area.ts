@@ -1,6 +1,7 @@
 import {VgValueRef} from '../../vega.schema';
 
 import {X, Y} from '../../channel';
+import {Orient} from '../../config';
 import {isDimension, isMeasure, FieldDef, field} from '../../fielddef';
 import {StackProperties} from '../../stack';
 
@@ -48,14 +49,14 @@ export namespace area {
     return p;
   }
 
-  export function x(fieldDef: FieldDef, scaleName: string, orient: string, stack: StackProperties): VgValueRef {
+  export function x(fieldDef: FieldDef, scaleName: string, orient: Orient, stack: StackProperties): VgValueRef {
     if (stack && X === stack.fieldChannel) { // Stacked Measure
       return {
         scale: scaleName,
         field: field(fieldDef, { suffix: '_start' })
       };
     } else if (isMeasure(fieldDef)) { // Measure
-      if (orient === 'horizontal') {
+      if (orient === Orient.HORIZONTAL) {
         // x
         if (fieldDef && fieldDef.field) {
           return {
@@ -83,17 +84,17 @@ export namespace area {
     return undefined;
   }
 
-  export function x2(xFieldDef: FieldDef, x2FieldDef: FieldDef, scaleName: string, orient: string, stack: StackProperties): VgValueRef {
+  export function x2(xFieldDef: FieldDef, x2FieldDef: FieldDef, scaleName: string, orient: Orient, stack: StackProperties): VgValueRef {
     // x
     if (stack && X === stack.fieldChannel) { // Stacked Measure
-      if (orient === 'horizontal') {
+      if (orient === Orient.HORIZONTAL) {
         return {
           scale: scaleName,
           field: field(xFieldDef, { suffix: '_end' })
         };
       }
     } else if (isMeasure(x2FieldDef)) { // Measure
-      if (orient === 'horizontal') {
+      if (orient === Orient.HORIZONTAL) {
         if (x2FieldDef && x2FieldDef.field) {
           return {
             scale: scaleName,
@@ -110,14 +111,14 @@ export namespace area {
     return undefined;
   }
 
-  export function y(fieldDef: FieldDef, scaleName: string, orient: string, stack: StackProperties): VgValueRef {
+  export function y(fieldDef: FieldDef, scaleName: string, orient: Orient, stack: StackProperties): VgValueRef {
     if (stack && Y === stack.fieldChannel) { // Stacked Measure
       return {
         scale: scaleName,
         field: field(fieldDef, { suffix: '_start' })
       };
     } else if (isMeasure(fieldDef)) {
-      if (orient !== 'horizontal') {
+      if (orient !== Orient.HORIZONTAL) {
         // y
         if (fieldDef && fieldDef.field) {
           return {
@@ -142,16 +143,16 @@ export namespace area {
     return undefined;
   }
 
-  export function y2(yFieldDef: FieldDef, y2FieldDef: FieldDef, scaleName: string, orient: string, stack: StackProperties): VgValueRef {
+  export function y2(yFieldDef: FieldDef, y2FieldDef: FieldDef, scaleName: string, orient: Orient, stack: StackProperties): VgValueRef {
     if (stack && Y === stack.fieldChannel) { // Stacked Measure
-      if (orient !== 'horizontal') {
+      if (orient !== Orient.HORIZONTAL) {
         return {
           scale: scaleName,
           field: field(yFieldDef, { suffix: '_end' })
         };
       }
     } else if (isMeasure(yFieldDef)) {
-      if (orient !== 'horizontal') {
+      if (orient !== Orient.HORIZONTAL) {
         // y2
         if (y2FieldDef && y2FieldDef.field) {
           return {

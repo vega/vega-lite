@@ -1,15 +1,16 @@
 "use strict";
 var aggregate_1 = require('../aggregate');
 var channel_1 = require('../channel');
+var config_1 = require('../config');
 var data_1 = require('../data');
 var fielddef_1 = require('../fielddef');
 var mark_1 = require('../mark');
 var scale_1 = require('../scale');
+var sort_1 = require('../sort');
 var stack_1 = require('../stack');
-var timeunit_1 = require('../timeunit');
 var type_1 = require('../type');
 var util_1 = require('../util');
-var time_1 = require('./time');
+var timeunit_1 = require('../timeunit');
 exports.COLOR_LEGEND = 'color_legend';
 exports.COLOR_LEGEND_LABEL = 'color_legend_label';
 function parseScaleComponent(model) {
@@ -58,7 +59,7 @@ function parseMainScale(model, fieldDef, channel) {
         scaleDef.domain = domain(scale, model, channel);
     }
     util_1.extend(scaleDef, rangeMixins(scale, model, channel));
-    if (sort && (typeof sort === 'string' ? sort : sort.order) === 'descending') {
+    if (sort && (sort_1.isSortField(sort) ? sort.order : sort) === sort_1.SortOrder.DESCENDING) {
         scaleDef.reverse = true;
     }
     [
@@ -110,6 +111,9 @@ function scaleType(scale, fieldDef, channel, mark) {
         return null;
     }
     if (util_1.contains([channel_1.ROW, channel_1.COLUMN, channel_1.SHAPE], channel)) {
+        if (scale && scale.type !== undefined && scale.type !== scale_1.ScaleType.ORDINAL) {
+            console.warn('Channel', channel, 'does not work with scale type =', scale.type);
+        }
         return scale_1.ScaleType.ORDINAL;
     }
     if (scale.type !== undefined) {
@@ -128,15 +132,7 @@ function scaleType(scale, fieldDef, channel, mark) {
                 return scale_1.ScaleType.TIME;
             }
             if (fieldDef.timeUnit) {
-                switch (fieldDef.timeUnit) {
-                    case timeunit_1.TimeUnit.HOURS:
-                    case timeunit_1.TimeUnit.DAY:
-                    case timeunit_1.TimeUnit.MONTH:
-                    case timeunit_1.TimeUnit.QUARTER:
-                        return scale_1.ScaleType.ORDINAL;
-                    default:
-                        return scale_1.ScaleType.TIME;
-                }
+                return timeunit_1.defaultScaleType(fieldDef.timeUnit);
             }
             return scale_1.ScaleType.TIME;
         case type_1.QUANTITATIVE:
@@ -154,7 +150,7 @@ function domain(scale, model, channel) {
         return scale.domain;
     }
     if (fieldDef.type === type_1.TEMPORAL) {
-        if (time_1.rawDomain(fieldDef.timeUnit, channel)) {
+        if (timeunit_1.rawDomain(fieldDef.timeUnit, channel)) {
             return {
                 data: fieldDef.timeUnit,
                 field: 'date'
@@ -233,14 +229,14 @@ function domainSort(model, channel, scaleType) {
         return undefined;
     }
     var sort = model.sort(channel);
-    if (util_1.contains(['ascending', 'descending', undefined], sort)) {
-        return true;
-    }
-    if (typeof sort !== 'string') {
+    if (sort_1.isSortField(sort)) {
         return {
             op: sort.op,
             field: sort.field
         };
+    }
+    if (util_1.contains([sort_1.SortOrder.ASCENDING, sort_1.SortOrder.DESCENDING, undefined], sort)) {
+        return true;
     }
     return undefined;
 }
@@ -285,7 +281,7 @@ function rangeMixins(scale, model, channel) {
                 if (scaleConfig.barSizeRange !== undefined) {
                     return { range: scaleConfig.barSizeRange };
                 }
-                var dimension = model.config().mark.orient === 'horizontal' ? channel_1.Y : channel_1.X;
+                var dimension = model.config().mark.orient === config_1.Orient.HORIZONTAL ? channel_1.Y : channel_1.X;
                 return { range: [model.config().mark.barThinSize, model.scale(dimension).bandSize] };
             }
             else if (unitModel.mark() === mark_1.TEXT) {
@@ -356,7 +352,7 @@ function nice(scale, channel, fieldDef) {
             return scale.nice;
         }
         if (util_1.contains([scale_1.ScaleType.TIME, scale_1.ScaleType.UTC], scale.type)) {
-            return time_1.smallestUnit(fieldDef.timeUnit);
+            return timeunit_1.smallestUnit(fieldDef.timeUnit);
         }
         return util_1.contains([channel_1.X, channel_1.Y], channel);
     }
@@ -389,7 +385,7 @@ function zero(scale, channel, fieldDef) {
         if (scale.zero !== undefined) {
             return scale.zero;
         }
-        return !fieldDef.bin && util_1.contains([channel_1.X, channel_1.Y], channel);
+        return !scale.domain && !fieldDef.bin && util_1.contains([channel_1.X, channel_1.Y], channel);
     }
     return undefined;
 }

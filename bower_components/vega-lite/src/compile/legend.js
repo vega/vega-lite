@@ -7,7 +7,7 @@ var util_1 = require('../util');
 var common_1 = require('./common');
 var scale_1 = require('./scale');
 function parseLegendComponent(model) {
-    return [channel_1.COLOR, channel_1.SIZE, channel_1.SHAPE].reduce(function (legendComponent, channel) {
+    return [channel_1.COLOR, channel_1.SIZE, channel_1.SHAPE, channel_1.OPACITY].reduce(function (legendComponent, channel) {
         if (model.legend(channel)) {
             legendComponent[channel] = parseLegend(model, channel);
         }
@@ -27,6 +27,8 @@ function getLegendDefWithScale(model, channel) {
             return { size: model.scaleName(channel_1.SIZE) };
         case channel_1.SHAPE:
             return { shape: model.scaleName(channel_1.SHAPE) };
+        case channel_1.OPACITY:
+            return { opacity: model.scaleName(channel_1.OPACITY) };
     }
     return null;
 }
@@ -99,6 +101,9 @@ var properties;
         common_1.applyMarkConfig(symbols, model, config);
         if (filled) {
             symbols.strokeWidth = { value: 0 };
+        }
+        if (channel === channel_1.OPACITY) {
+            delete symbols.opacity;
         }
         var value;
         if (model.has(channel_1.COLOR) && channel === channel_1.COLOR) {

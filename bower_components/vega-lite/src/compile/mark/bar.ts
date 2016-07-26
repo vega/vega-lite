@@ -1,5 +1,7 @@
 import {X, Y, X2, Y2, SIZE, Channel} from '../../channel';
+import {Orient} from '../../config';
 import {isMeasure} from '../../fielddef';
+import {ScaleType} from '../../scale';
 
 import {UnitModel} from '../unit';
 import {applyColorAndOpacity} from '../common';
@@ -33,7 +35,7 @@ export namespace bar {
         field: model.field(X, { suffix: '_end' })
       };
     } else if (xIsMeasure) {
-      if (orient === 'horizontal') {
+      if (orient === Orient.HORIZONTAL) {
         if (model.has(X)) {
           p.x = {
             scale: model.scaleName(X),
@@ -52,10 +54,15 @@ export namespace bar {
             field: model.field(X2)
           };
         } else {
-          p.x2 = {
-            scale: model.scaleName(X),
-            value: 0
-          };
+          if (model.scale(X).type === ScaleType.LOG) {
+            p.x2 = { value: 0 };
+          } else {
+            p.x2 = {
+              scale: model.scaleName(X),
+              value: 0
+            };
+          }
+
         }
       } else { // vertical
         p.xc = {
@@ -65,7 +72,7 @@ export namespace bar {
         p.width = {value: sizeValue(model, X)};
       }
     } else if (model.fieldDef(X).bin) {
-      if (model.has(SIZE) && orient !== 'horizontal') {
+      if (model.has(SIZE) && orient !== Orient.HORIZONTAL) {
         // For vertical chart that has binned X and size,
         // center bar and apply size to width.
         p.xc = {
@@ -97,7 +104,7 @@ export namespace bar {
         p.x = { value: 0, offset: 2 };
       }
 
-      p.width = model.has(SIZE) && orient !== 'horizontal' ? {
+      p.width = model.has(SIZE) && orient !== Orient.HORIZONTAL ? {
           // apply size scale if has size and is vertical (explicit "vertical" or undefined)
           scale: model.scaleName(SIZE),
           field: model.field(SIZE)
@@ -122,7 +129,7 @@ export namespace bar {
         field: model.field(Y, { suffix: '_end' })
       };
     } else if (yIsMeasure) {
-      if (orient !== 'horizontal') { // vertical (explicit 'vertical' or undefined)
+      if (orient !== Orient.HORIZONTAL) { // vertical (explicit 'vertical' or undefined)
         if (model.has(Y)) {
           p.y = {
             scale: model.scaleName(Y),
@@ -141,10 +148,17 @@ export namespace bar {
             field: model.field(Y2)
           };
         } else {
-          p.y2 = {
-            scale: model.scaleName(Y),
-            value: 0
-          };
+          if (model.scale(Y).type === ScaleType.LOG) {
+            // end on axis
+            p.y2 = {
+              field: {group: 'height'}
+            };
+          } else {
+            p.y2 = {
+              scale: model.scaleName(Y),
+              value: 0
+            };
+          }
         }
       } else {
         p.yc = {
@@ -154,7 +168,7 @@ export namespace bar {
         p.height = { value: sizeValue(model, Y) };
       }
     } else if (model.fieldDef(Y).bin) {
-      if (model.has(SIZE) && orient === 'horizontal') {
+      if (model.has(SIZE) && orient === Orient.HORIZONTAL) {
         // For horizontal chart that has binned Y and size,
         // center bar and apply size to height.
         p.yc = {
@@ -191,7 +205,7 @@ export namespace bar {
         };
       }
 
-      p.height = model.has(SIZE)  && orient === 'horizontal' ? {
+      p.height = model.has(SIZE)  && orient === Orient.HORIZONTAL ? {
           // apply size scale if has size and is horizontal
           scale: model.scaleName(SIZE),
           field: model.field(SIZE)

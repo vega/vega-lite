@@ -1,4 +1,5 @@
 "use strict";
+var mark_1 = require('../mark');
 var channel_1 = require('../channel');
 var fielddef_1 = require('../fielddef');
 var sort_1 = require('../sort');
@@ -69,6 +70,9 @@ function applyColorAndOpacity(p, model) {
     else {
         p[filled ? 'fill' : 'stroke'] = p[filled ? 'fill' : 'stroke'] ||
             { value: model.config().mark.color };
+    }
+    if (!p.fill && util_1.contains([mark_1.BAR, mark_1.POINT, mark_1.CIRCLE, mark_1.SQUARE], model.mark())) {
+        p.fill = { value: 'transparent' };
     }
     if (opacityValue !== undefined) {
         p.opacity = opacityValue;

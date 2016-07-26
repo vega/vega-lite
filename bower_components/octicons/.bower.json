@@ -1,12 +1,12 @@
 {
   "name": "octicons",
   "homepage": "https://github.com/github/octicons",
-  "version": "4.2.0",
-  "_release": "4.2.0",
+  "version": "4.3.0",
+  "_release": "4.3.0",
   "_resolution": {
     "type": "version",
-    "tag": "v4.2.0",
-    "commit": "07c346447c84fbfd66c2d63b940bd1c2a33ee373"
+    "tag": "v4.3.0",
+    "commit": "702dd601e1b0046e965ef321bc70c9aced6fd470"
   },
   "_source": "https://github.com/github/octicons.git",
   "_target": "^4.2.0",

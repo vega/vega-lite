@@ -1,4 +1,5 @@
 import {X, Y, SIZE} from '../../channel';
+import {Orient} from '../../config';
 import {FieldDef, field} from '../../fielddef';
 import {Config} from '../../config';
 import {VgValueRef} from '../../vega.schema';
@@ -21,7 +22,7 @@ export namespace tick {
 
     p.yc = y(model.encoding().y, model.scaleName(Y), config);
 
-    if (config.mark.orient === 'horizontal') {
+    if (config.mark.orient === Orient.HORIZONTAL) {
       p.width = size(model.encoding().size, model.scaleName(SIZE), config, (model.scale(X) || {}).bandSize);
       p.height = { value: config.mark.tickThickness };
     } else {

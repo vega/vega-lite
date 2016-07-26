@@ -4,7 +4,7 @@ var data_1 = require('../data');
 var scale_1 = require('../scale');
 var util_1 = require('../util');
 var mark_1 = require('../mark');
-var time_1 = require('./time');
+var timeunit_1 = require('../timeunit');
 function assembleLayout(model, layoutData) {
     var layoutComponent = model.component.layout;
     if (!layoutComponent.width && !layoutComponent.height) {
@@ -149,7 +149,7 @@ function cardinalityFormula(model, channel) {
         return scale.domain.length;
     }
     var timeUnit = model.fieldDef(channel).timeUnit;
-    var timeUnitDomain = timeUnit ? time_1.rawDomain(timeUnit, channel) : null;
+    var timeUnitDomain = timeUnit ? timeunit_1.rawDomain(timeUnit, channel) : null;
     return timeUnitDomain !== null ? timeUnitDomain.length :
         model.field(channel, { datum: true, prefn: 'distinct_' });
 }

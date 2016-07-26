@@ -1,4 +1,21 @@
-### HEAD
+### 4.3.0
+
+Fixes:
+
+- Vertical alignment on `italic`
+
+Modifies:
+
+- `person`
+- `organization`
+
+### 4.2.1
+
+Fixes:
+
+- Removing inline sourcemap from `min` versions of css.
+
+### 4.2.0
 
 Adds:
 
