@@ -34,7 +34,7 @@ The top-level `transform` object supports the following transformation propertie
 | :------------ |:-------------:| :------------- |
 | filterInvalid    | Boolean       | Whether to filter invalid values (`null` and `NaN`) from the data. By default (`undefined`), only quantitative and temporal fields are filtered. If set to `true`, all data items with null values are filtered. If `false`, all data items are included. |
 | calculate     | Formula[]      | An array of formula objects for deriving new fields. Each formula object has two properties: <br/>     • `field` _(String)_ – The field name in which to store the computed value. <br/>    • `expr` _(String)_  – A string containing an expression for the formula. Use the variable `datum` to refer to the current data object.|
-| [filter](#filter) | String | FilterObject | (String|FilterObject)[]  | A filter object or a [Vega Expression](https://github.com/vega/vega/wiki/Expressions) string for filtering data items (or rows) or an array of either filter objects or expression strings. |
+| [filter](#filter) | String &#124; FilterObject &#124; Array<String &#124; FilterObject>  | A filter object or a [Vega Expression](https://github.com/vega/vega/wiki/Expressions) string for filtering data items (or rows) or an array of either filter objects or expression strings. |
 
 These transforms are executed in this order: `filterInvalid`, `calculate`, and then `filter`.
 Since `calculate` is before `filter`, derived fields can be used in `filter`'s expression.
@@ -62,9 +62,9 @@ The following table describes properties of a filter object.
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | field         | String        | Field to be filtered. |
-| equal         | String | Number | DateTime | Boolean | Value that the `field`'s value should be equal to. |
-| range          | Number[] | DateTime[] | Array of length describing (inclusive) minimum and maximum values for the `field`'s value to be included in the filtered data. |
-| in         | String[] | Number[] | DateTime[] | A set of values that the `field`'s value should be a member of, for a data item included in the filtered data. |
+| equal         | String &#124; Number | DateTime | Boolean | Value that the `field`'s value should be equal to. |
+| range         | Number[] &#124; DateTime[] | Array of length describing (inclusive) minimum and maximum values for the `field`'s value to be included in the filtered data. |
+| in            | String[] &#124; Number[] &#124; DateTime[] | A set of values that the `field`'s value should be a member of, for a data item included in the filtered data. |
 
 ##### Date Time Definition Object
 
@@ -74,13 +74,14 @@ A DateTime object must have at least of the following properties:
 | :------------ |:-------------:| :------------- |
 | year          | Number        | Integer value representing the year. |
 | quarter       | Number        | Integer value representing the quarter of the year (from 1-4). |
-| month         | Number | string | One of: (1) integer value representing the month from `1`-`12`. `1` represents January;  (2) case-insensitive month name (e.g., `"January"`);  (3) case-insensitive, 3-character short month name (e.g., `"Jan"`). |
+| month         | Number &#124; string | One of: (1) integer value representing the month from `1`-`12`. `1` represents January;  (2) case-insensitive month name (e.g., `"January"`);  (3) case-insensitive, 3-character short month name (e.g., `"Jan"`). |
 | date          | Number        | Integer value representing the date from 1-31. |
-| day           | Number | string         | Value representing the day of week.  This can be one of: (1) integer value -- `1` represents Monday; (2) (2) case-insensitive day name (e.g., `"Monday"`);  (3) case-insensitive, 3-character short day name (e.g., `"Mon"`).   <br/> **Warning:** A DateTime definition object with `day`** should not be combined with `year`, `quarter`, `month`, or `date`. |
+| day           | Number &#124; string | Value representing the day of week.  This can be one of: (1) integer value -- `1` represents Monday; (2) (2) case-insensitive day name (e.g., `"Monday"`);  (3) case-insensitive, 3-character short day name (e.g., `"Mon"`).   <br/> **Warning:** A DateTime definition object with `day`** should not be combined with `year`, `quarter`, `month`, or `date`. |
 | hours         | Number        | Integer value representing the hour of day from 0-23. |
 | minutes       | Number        | Integer value representing minute segment of a time from 0-59. |
 | seconds       | Number        | Integer value representing  second segment of a time from 0-59. |
 | milliseconds  | Number        | Integer value representing  millsecond segment of a time. |
+
 **Examples**
 
 - `{"field": "car_color", "equal": "red"}` checks if the `car_color` field's value is equal to `"red"`.
