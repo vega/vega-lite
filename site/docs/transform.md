@@ -34,7 +34,7 @@ The top-level `transform` object supports the following transformation propertie
 | :------------ |:-------------:| :------------- |
 | filterInvalid    | Boolean       | Whether to filter invalid values (`null` and `NaN`) from the data. By default (`undefined`), only quantitative and temporal fields are filtered. If set to `true`, all data items with null values are filtered. If `false`, all data items are included. |
 | calculate     | Formula[]      | An array of formula objects for deriving new fields. Each formula object has two properties: <br/>     • `field` _(String)_ – The field name in which to store the computed value. <br/>    • `expr` _(String)_  – A string containing an expression for the formula. Use the variable `datum` to refer to the current data object.|
-| [filter](#filter) | String &#124; FilterObject &#124; Array<String &#124; FilterObject>  | A filter object or a [Vega Expression](https://github.com/vega/vega/wiki/Expressions) string for filtering data items (or rows) or an array of either filter objects or expression strings. |
+| [filter](#filter) | String &#124; FilterObject &#124; String[] &#124; FilterObject[]  | A filter object or a [Vega Expression](https://github.com/vega/vega/wiki/Expressions) string for filtering data items (or rows) or an array of either filter objects or expression strings. |
 
 These transforms are executed in this order: `filterInvalid`, `calculate`, and then `filter`.
 Since `calculate` is before `filter`, derived fields can be used in `filter`'s expression.
@@ -62,8 +62,8 @@ The following table describes properties of a filter object.
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | field         | String        | Field to be filtered. |
-| equal         | String &#124; Number | DateTime | Boolean | Value that the `field`'s value should be equal to. |
-| range         | Number[] &#124; DateTime[] | Array of length describing (inclusive) minimum and maximum values for the `field`'s value to be included in the filtered data. |
+| equal         | String &#124; Number &#124; DateTime &#124; Boolean | Value that the `field`'s value should be equal to. |
+| range         | Number[] &#124; DateTime[] | Array of length describing (inclusive) minimum and maximum values for the `field`'s value to be included in the filtered data.  If the minimum / maximum is `null`, then the ranged has unbounded minimum / maximum.  |
 | in            | String[] &#124; Number[] &#124; DateTime[] | A set of values that the `field`'s value should be a member of, for a data item included in the filtered data. |
 
 ##### Date Time Definition Object
@@ -86,9 +86,10 @@ A DateTime object must have at least of the following properties:
 
 - `{"field": "car_color", "equal": "red"}` checks if the `car_color` field's value is equal to `"red"`.
 - `{"field": "car_color", "in":["red", "yellow"]}` checks if the `car_color` field's value is `"red"` or `"yellow"`.
-- `{"field": "x", "range": [0, 5]}` checks if the `x` field's value is in range `[0,5]` (0 ≤ x ≤ 5).
+- `{"field": "x", "range": [0, 5]}` checks if the `x` field's value is in range [0,5] (0 ≤ x ≤ 5).
+- `{"field": "x", "range": [null, 5]}` checks if the `x` field's value is in range [-Infinity,5] (x ≤ 5).
 - `{"timeUnit": "year", "field": "date", "range": [2006, 2008] }` checks if the `date`'s value is between year 2006 and 2008.
-- `{"field": "date", "range": [{"year": 2006, "month": "jan", "date": 1}, {"year": 2008, "month": "feb", "date": 20}] }` checks if the `date`'s value is between year Jan 1, 2006  and Feb 20, 2008.
+- `{"field": "date", "range": [{"year": 2006, "month": "jan", "date": 1}, {"year": 2008, "month": "feb", "date": 20}] }` checks if the `date`'s value is between Jan 1, 2006  and Feb 20, 2008.
 
 #### Filter Expresssion
 
