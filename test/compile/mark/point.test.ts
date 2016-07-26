@@ -179,7 +179,7 @@ describe('Mark: Square', function() {
     assert.equal(props.fill.value, 'blue');
   });
 
-  it('should support config.mark.filled:false', function() {
+  it('with config.mark.filled:false should have transparent fill', function() {
     const model = parseUnitModel({
       "mark": "square",
       "encoding": {
@@ -195,7 +195,7 @@ describe('Mark: Square', function() {
     const props = square.properties(model);
 
     assert.equal(props.stroke.value, 'blue');
-    assert.isUndefined(props.fill, 'no fill was defined');
+    assert.equal(props.fill.value, 'transparent');
   });
 });
 
@@ -220,7 +220,7 @@ describe('Mark: Circle', function() {
     assert.equal(props.fill.value, 'blue');
   });
 
-  it('should support config.mark.filled:false', function() {
+  it('with config.mark.filled:false should have transparent fill', function() {
     const model = parseUnitModel({
       "mark": "circle",
       "encoding": {
@@ -236,6 +236,6 @@ describe('Mark: Circle', function() {
     const props = circle.properties(model);
 
     assert.equal(props.stroke.value, 'blue');
-    assert.isUndefined(props.fill);
+    assert.equal(props.fill.value, 'transparent');
   });
 });

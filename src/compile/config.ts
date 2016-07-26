@@ -1,9 +1,9 @@
 import {X, DETAIL} from '../channel';
-import {Config} from '../config';
+import {Config, Orient, MarkConfig} from '../config';
 import {Encoding} from '../encoding';
 import {isAggregate, has} from '../encoding';
 import {isMeasure} from '../fielddef';
-import {AREA, POINT, LINE, TICK, CIRCLE, SQUARE, RULE, Mark} from '../mark';
+import {BAR, AREA, POINT, LINE, TICK, CIRCLE, SQUARE, RULE, TEXT, Mark} from '../mark';
 import {contains, extend} from '../util';
 
 /**
@@ -34,26 +34,7 @@ export function initMarkConfig(mark: Mark, encoding: Encoding, config: Config) {
            }
            break;
          case 'orient':
-           const xIsMeasure = isMeasure(encoding.x) || isMeasure(encoding.x2);
-           const yIsMeasure = isMeasure(encoding.y) || isMeasure(encoding.y2);
-
-           // When unambiguous, do not allow overriding
-           if (xIsMeasure && !yIsMeasure) {
-             if (mark === TICK) {
-               cfg[property] = 'vertical';
-             } else {
-               cfg[property] = 'horizontal';
-             }
-           } else if (!xIsMeasure && yIsMeasure) {
-             if (mark === TICK) {
-               cfg[property] = 'horizontal';
-             } else {
-               cfg[property] = 'vertical';
-             }
-           }
-
-           // In ambiguous cases (QxQ or OxO) use specified value
-           // (and implicitly vertical by default.)
+           cfg[property] = orient(mark, encoding, config.mark);
            break;
          // text-only
          case 'align':
@@ -65,4 +46,68 @@ export function initMarkConfig(mark: Mark, encoding: Encoding, config: Config) {
      }, {}),
      config.mark
    );
+}
+
+export function orient(mark: Mark, encoding: Encoding, markConfig: MarkConfig = {}): Orient {
+  switch (mark) {
+    case POINT:
+    case CIRCLE:
+    case SQUARE:
+    case TEXT:
+      // orient is meaningless for these marks.
+      return undefined;
+  }
+
+  const xIsMeasure = isMeasure(encoding.x) || isMeasure(encoding.x2);
+  const yIsMeasure = isMeasure(encoding.y) || isMeasure(encoding.y2);
+  const yIsRange = encoding.y && encoding.y2;
+  const xIsRange = encoding.x && encoding.x2;
+
+  switch (mark) {
+    case TICK:
+      // Tick is opposite to bar, line, area and never have ranged mark.
+      if (xIsMeasure && !yIsMeasure) {
+        return Orient.VERTICAL;
+      }
+      // y:Q or Ambiguous case, return horizontal
+      return Orient.HORIZONTAL;
+    case RULE:
+      if (xIsRange) {
+        return Orient.HORIZONTAL;
+      }
+      if (yIsRange) {
+        return Orient.VERTICAL;
+      }
+      if (encoding.y) {
+        return Orient.HORIZONTAL;
+      }
+      if (encoding.x) {
+        return Orient.VERTICAL;
+      }
+      // no x/y -- so it's undefined
+      return undefined;
+    case BAR:
+    case AREA:
+      // If there are range for both x and y, y (vertical) has higher precedence.
+
+      if (yIsRange) {
+        return Orient.VERTICAL;
+      }
+
+      if (xIsRange) {
+        return Orient.HORIZONTAL;
+      }
+      /* tslint:disable */
+    case LINE: // intentional fall through
+      /* tslint:enable */
+
+      if (xIsMeasure && !yIsMeasure) {
+        return Orient.HORIZONTAL;
+      }
+      // y:Q or Ambiguous case, return vertical
+      return Orient.VERTICAL;
+  }
+  /* istanbul ignore:next */
+  console.warn('orient unimplemented for mark', mark);
+  return Orient.VERTICAL;
 }

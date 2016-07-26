@@ -1,4 +1,5 @@
 import {X, Y, X2, Y2, SIZE} from '../../channel';
+import {Orient} from '../../config';
 
 import {UnitModel} from '../unit';
 import {applyColorAndOpacity} from '../common';
@@ -12,7 +13,7 @@ export namespace rule {
     let p: any = {};
 
     // TODO: support explicit value
-    if(model.config().mark.orient === 'vertical') {
+    if(model.config().mark.orient === Orient.VERTICAL) {
       if (model.has(X)) {
         p.x = {
           scale: model.scaleName(X),
