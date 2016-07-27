@@ -4,7 +4,7 @@ root = true
 # Unix-style newlines with a newline ending every file
 [*]
 indent_style = space
-tab_width = 1
+indent_size = 2
 end_of_line = lf
 charset = utf-8
 trim_trailing_whitespace = true
