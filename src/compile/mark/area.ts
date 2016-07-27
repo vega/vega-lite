@@ -1,6 +1,7 @@
 import {VgValueRef} from '../../vega.schema';
 
 import {X, Y} from '../../channel';
+import {Orient} from '../../config';
 import {isDimension, isMeasure, FieldDef, field} from '../../fielddef';
 import {StackProperties} from '../../stack';
 
@@ -17,22 +18,16 @@ export namespace area {
     let p: any = {};
     const config = model.config();
 
+    // We should always have orient as we augment it in config.ts
     const orient = config.mark.orient;
-    if (orient) {
-      p.orient = { value: orient} ;
-    }
+    p.orient = { value: orient} ;
 
     const stack = model.stack();
-    const _x = x(model.encoding().x, model.scaleName(X), orient, stack);
-    if (_x) {
-      p.x = _x;
-    }
 
-    const _y = y(model.encoding().y, model.scaleName(Y), orient, stack);
-    if (_y) {
-      p.y = _y;
-    }
+    p.x = x(model.encoding().x, model.scaleName(X), orient, stack);
+    p.y = y(model.encoding().y, model.scaleName(Y), orient, stack);
 
+    // Have only x2 or y2
     const _x2 = x2(model.encoding().x, model.encoding().x2, model.scaleName(X), orient, stack);
     if (_x2) {
       p.x2 = _x2;
@@ -48,14 +43,14 @@ export namespace area {
     return p;
   }
 
-  export function x(fieldDef: FieldDef, scaleName: string, orient: string, stack: StackProperties): VgValueRef {
+  export function x(fieldDef: FieldDef, scaleName: string, orient: Orient, stack: StackProperties): VgValueRef {
     if (stack && X === stack.fieldChannel) { // Stacked Measure
       return {
         scale: scaleName,
         field: field(fieldDef, { suffix: '_start' })
       };
     } else if (isMeasure(fieldDef)) { // Measure
-      if (orient === 'horizontal') {
+      if (orient === Orient.HORIZONTAL) {
         // x
         if (fieldDef && fieldDef.field) {
           return {
@@ -83,41 +78,46 @@ export namespace area {
     return undefined;
   }
 
-  export function x2(xFieldDef: FieldDef, x2FieldDef: FieldDef, scaleName: string, orient: string, stack: StackProperties): VgValueRef {
+  export function x2(xFieldDef: FieldDef, x2FieldDef: FieldDef, scaleName: string, orient: Orient, stack: StackProperties): VgValueRef {
     // x
-    if (stack && X === stack.fieldChannel) { // Stacked Measure
-      if (orient === 'horizontal') {
+    if (orient === Orient.HORIZONTAL) {
+      if (stack && X === stack.fieldChannel) { // Stacked Measure
         return {
           scale: scaleName,
           field: field(xFieldDef, { suffix: '_end' })
         };
-      }
-    } else if (isMeasure(x2FieldDef)) { // Measure
-      if (orient === 'horizontal') {
-        if (x2FieldDef && x2FieldDef.field) {
+      } else if (x2FieldDef) {
+        if (x2FieldDef.field) {
           return {
             scale: scaleName,
             field: field(x2FieldDef)
           };
-        } else {
+        } else if (x2FieldDef.value) {
           return {
             scale: scaleName,
-            value: 0
+            value: x2FieldDef.value
           };
         }
       }
+
+      // TODO: make this work for log scale
+
+      return {
+        scale: scaleName,
+        value: 0
+      };
     }
     return undefined;
   }
 
-  export function y(fieldDef: FieldDef, scaleName: string, orient: string, stack: StackProperties): VgValueRef {
+  export function y(fieldDef: FieldDef, scaleName: string, orient: Orient, stack: StackProperties): VgValueRef {
     if (stack && Y === stack.fieldChannel) { // Stacked Measure
       return {
         scale: scaleName,
         field: field(fieldDef, { suffix: '_start' })
       };
     } else if (isMeasure(fieldDef)) {
-      if (orient !== 'horizontal') {
+      if (orient !== Orient.HORIZONTAL) {
         // y
         if (fieldDef && fieldDef.field) {
           return {
@@ -142,29 +142,34 @@ export namespace area {
     return undefined;
   }
 
-  export function y2(yFieldDef: FieldDef, y2FieldDef: FieldDef, scaleName: string, orient: string, stack: StackProperties): VgValueRef {
-    if (stack && Y === stack.fieldChannel) { // Stacked Measure
-      if (orient !== 'horizontal') {
+  export function y2(yFieldDef: FieldDef, y2FieldDef: FieldDef, scaleName: string, orient: Orient, stack: StackProperties): VgValueRef {
+    if (orient !== Orient.HORIZONTAL) {
+      if (stack && Y === stack.fieldChannel) { // Stacked Measure
         return {
           scale: scaleName,
           field: field(yFieldDef, { suffix: '_end' })
         };
-      }
-    } else if (isMeasure(yFieldDef)) {
-      if (orient !== 'horizontal') {
+      } else if (y2FieldDef) {
         // y2
-        if (y2FieldDef && y2FieldDef.field) {
+        if (y2FieldDef.field) {
           return {
             scale: scaleName,
             field: field(y2FieldDef)
           };
-        } else {
+        } else if (y2FieldDef.value) {
           return {
             scale: scaleName,
-            value: 0
+            value: y2FieldDef.value
           };
         }
       }
+
+      // TODO: make this work for log scale
+
+      return {
+        scale: scaleName,
+        value: 0
+      };
     }
     return undefined;
   }

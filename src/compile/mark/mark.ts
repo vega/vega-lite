@@ -1,4 +1,5 @@
 import {X, Y, COLOR, TEXT, SHAPE, PATH, ORDER, OPACITY, DETAIL, LABEL, STACK_GROUP_CHANNELS} from '../../channel';
+import {Orient} from '../../config';
 import {has} from '../../encoding';
 import {OrderChannelDef, FieldDef, field} from '../../fielddef';
 import {AREA, LINE, TEXT as TEXTMARK} from '../../mark';
@@ -196,7 +197,7 @@ function sortPathBy(model: UnitModel): string | string[] {
     }
   } else {
     // For both line and area, we sort values based on dimension by default
-    return '-' + model.field(model.config().mark.orient === 'horizontal' ? Y : X, {binSuffix: '_mid'});
+    return '-' + model.field(model.config().mark.orient === Orient.HORIZONTAL ? Y : X, {binSuffix: '_mid'});
   }
 }
 

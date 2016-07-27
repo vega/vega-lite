@@ -1,12 +1,13 @@
 /* tslint:disable quote */
 
 import {assert} from 'chai';
-import {isVertical} from '../../src/compile/config';
+import {orient} from '../../src/compile/config';
+import {Orient} from '../../src/config';
 import {BAR} from '../../src/mark';
 import {parseUnitModel} from '../util';
 
 describe('Config', function() {
-  describe('isVertical', function() {
+  describe('orient', function() {
     it('should return correct default', function() {
       const model = parseUnitModel({
         "mark": "bar",
@@ -15,12 +16,12 @@ describe('Config', function() {
           "x": {"type": "quantitative", "field": "bar"}
         },
       });
-      assert(isVertical(model.mark(), model.encoding()));
+      assert.equal(orient(model.mark(), model.encoding()), Orient.VERTICAL);
 
       const model2 = parseUnitModel({
         "mark": "bar",
       });
-      assert(isVertical(model2.mark(), model2.encoding()));
+      assert.equal(orient(model2.mark(), model2.encoding()), Orient.VERTICAL);
     });
 
     it('should return correct orient for vertical bar', function() {
@@ -31,7 +32,7 @@ describe('Config', function() {
           "x": {"type": "ordinal", "field": "bar"}
         },
       });
-      assert(isVertical(model.mark(), model.encoding()));
+      assert.equal(orient(model.mark(), model.encoding()), Orient.VERTICAL);
     });
 
     it('should return correct orient for horizontal bar', function() {
@@ -42,7 +43,7 @@ describe('Config', function() {
           "y": {"type": "ordinal", "field": "bar"}
         },
       });
-      assert(!isVertical(model.mark(), model.encoding()));
+      assert.equal(orient(model.mark(), model.encoding()), Orient.HORIZONTAL);
     });
 
     it('should return correct orient for vertical tick', function() {
@@ -53,7 +54,7 @@ describe('Config', function() {
           "y": {"type": "ordinal", "field": "bar"}
         },
       });
-      assert(isVertical(model.mark(), model.encoding()));
+      assert.equal(orient(model.mark(), model.encoding()), Orient.VERTICAL);
     });
 
     it('should return correct orient for horizontal tick', function() {
@@ -64,7 +65,7 @@ describe('Config', function() {
           "x": {"type": "ordinal", "field": "bar"}
         },
       });
-      assert(!isVertical(model.mark(), model.encoding()));
+      assert.equal(orient(model.mark(), model.encoding()), Orient.HORIZONTAL);
     });
 
     it('should return correct orient for vertical rule', function() {
@@ -74,7 +75,7 @@ describe('Config', function() {
           "x": {"type": "quantitative", "field": "foo"},
         },
       });
-      assert(isVertical(model.mark(), model.encoding()));
+      assert.equal(orient(model.mark(), model.encoding()), Orient.VERTICAL);
     });
 
     it('should return correct orient for horizontal rule', function() {
@@ -84,10 +85,8 @@ describe('Config', function() {
           "y": {"type": "quantitative", "field": "foo"},
         },
       });
-      assert(!isVertical(model.mark(), model.encoding()));
+      assert.equal(orient(model.mark(), model.encoding(), {}), Orient.HORIZONTAL);
     });
-
-
 
     it('should return correct orient for vertical rule with range', function() {
       const model = parseUnitModel({
@@ -98,7 +97,7 @@ describe('Config', function() {
           "y2": {"type": "quanitative", "field": "baz"}
         },
       });
-      assert(isVertical(model.mark(), model.encoding()));
+      assert.equal(orient(model.mark(), model.encoding(), {}), Orient.VERTICAL);
     });
 
     it('should return correct orient for horizontal rule with range', function() {
@@ -110,7 +109,7 @@ describe('Config', function() {
           "x2": {"type": "quanitative", "field": "baz"}
         },
       });
-      assert(!isVertical(model.mark(), model.encoding()));
+      assert.equal(orient(model.mark(), model.encoding(), {}), Orient.HORIZONTAL);
     });
 
     it('should return correct orient for horizontal rule with range and no ordinal', function() {
@@ -121,7 +120,7 @@ describe('Config', function() {
           "x2": {"type": "quanitative", "field": "baz"}
         },
       });
-      assert(!isVertical(model.mark(), model.encoding()));
+      assert.equal(orient(model.mark(), model.encoding()), Orient.HORIZONTAL);
     });
 
     it('should return correct orient for vertical rule with range and no ordinal', function() {
@@ -132,7 +131,7 @@ describe('Config', function() {
           "y2": {"type": "quanitative", "field": "baz"}
         },
       });
-      assert(isVertical(model.mark(), model.encoding()));
+      assert.equal(orient(model.mark(), model.encoding()), Orient.VERTICAL);
     });
   });
 });
