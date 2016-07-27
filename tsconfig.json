@@ -99,6 +99,7 @@
     "test/compile/mark/bar.test.ts",
     "test/compile/mark/line.test.ts",
     "test/compile/mark/mark.test.ts",
+    "test/compile/mark/path.test.ts",
     "test/compile/mark/point.test.ts",
     "test/compile/mark/text.test.ts",
     "test/compile/mark/tick.test.ts",
