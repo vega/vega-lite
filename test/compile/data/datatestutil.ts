@@ -14,7 +14,7 @@ export function mockDataComponent(): DataComponent {
     calculate: null,
     timeUnit: null,
     timeUnitDomain: null,
-    summary: null,
+    aggregate: null,
     stackScale: null,
     colorRank: null
   };

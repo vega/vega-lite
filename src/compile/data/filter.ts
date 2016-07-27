@@ -4,8 +4,6 @@ import {isEqualFilter, isInFilter, isRangeFilter, Filter} from '../../filter';
 import {TimeUnit, fieldExpr as timeUnitFieldExpr, isSingleTimeUnit} from '../../timeunit';
 import {isArray, isString, allSame} from '../../util';
 
-import {FacetModel} from '../facet';
-import {LayerModel} from '../layer';
 import {Model} from '../model';
 
 import {DataComponent} from './data';
