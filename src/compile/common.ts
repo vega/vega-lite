@@ -13,11 +13,11 @@ import {LayerModel} from './layer';
 import {Model} from './model';
 import {template as timeUnitTemplate} from '../timeunit';
 import {UnitModel} from './unit';
-import {Spec, isUnitSpec, isFacetSpec, isLayerSpec} from '../spec';
+import {Spec, isUnitSpec, isSomeFacetSpec, isLayerSpec} from '../spec';
 
 
 export function buildModel(spec: Spec, parent: Model, parentGivenName: string): Model {
-  if (isFacetSpec(spec)) {
+  if (isSomeFacetSpec(spec)) {
     return new FacetModel(spec, parent, parentGivenName);
   }
 
