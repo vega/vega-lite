@@ -2,7 +2,7 @@
 
 import {assert} from 'chai';
 
-import {normalize} from '../src/spec';
+import {normalize, fieldDefs} from '../src/spec';
 
 // describe('isStacked()') -- tested as part of stackOffset in stack.test.ts
 
@@ -234,5 +234,76 @@ describe('normalize()', function () {
         "y2": { "aggregate": "max", "field": "people", "type": "quantitative" }
       }
     });
+  });
+});
+
+describe('fieldDefs()', function() {
+  it('should get all non-duplicate fieldDefs from an encoding', function() {
+    const spec: any = {
+      "data": {"url": "data/cars.json"},
+      "mark": "point",
+      "encoding": {
+        "x": {"field": "Horsepower","type": "quantitative"},
+        "y": {"field": "Miles_per_Gallon","type": "quantitative"}
+      }
+    };
+
+    assert.deepEqual(fieldDefs(spec), [
+      {"field": "Horsepower","type": "quantitative"},
+      {"field": "Miles_per_Gallon","type": "quantitative"}
+    ]);
+  });
+
+  it('should get all non-duplicate fieldDefs from all layers in a LayerSpec', function() {
+    const layerSpec: any = {
+      "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
+      "transform": {"filter": "datum.symbol==='GOOG'"},
+      "layers": [
+        {
+          "description": "Google's stock price over time.",
+          "mark": "line",
+          "encoding": {
+            "x": {"field": "date","type": "temporal"},
+            "y": {"field": "price","type": "quantitative"}
+          }
+        },
+        {
+          "description": "Google's stock price over time.",
+          "mark": "point",
+          "encoding": {
+            "x": {"field": "date","type": "temporal"},
+            "y": {"field": "price","type": "quantitative"},
+            "color": {"field": "symbol", "type": "nominal"}
+          },
+          "config": {"mark": {"filled": true}}
+        }
+      ]
+    };
+
+    assert.deepEqual(fieldDefs(layerSpec), [
+      {"field": "date","type": "temporal"},
+      {"field": "price","type": "quantitative"},
+      {"field": "symbol", "type": "nominal"}
+    ]);
+  });
+
+  it('should get all non-duplicate fieldDefs from facet and layers in a FacetSpec', function() {
+    const facetSpec: any = {
+      "data": {"url": "data/movies.json"},
+      "facet": {"row": {"field": "MPAA_Rating","type": "ordinal"}},
+      "spec": {
+        "mark": "point",
+        "encoding": {
+          "x": {"field": "Worldwide_Gross","type": "quantitative"},
+          "y": {"field": "US_DVD_Sales","type": "quantitative"}
+        }
+      }
+    };
+
+    assert.deepEqual(fieldDefs(facetSpec), [
+      {"field": "MPAA_Rating","type": "ordinal"},
+      {"field": "Worldwide_Gross","type": "quantitative"},
+      {"field": "US_DVD_Sales","type": "quantitative"}
+    ]);
   });
 });
