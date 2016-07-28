@@ -50,7 +50,7 @@ describe('data', function () {
         });
 
       const data = compileAssembleData(model);
-      it('should contains 1 table', function() {
+      it('should contain 1 table', function() {
         assert.equal(data.length, 1);
       });
       it('should have filter non-positive in source', function() {
@@ -64,7 +64,7 @@ describe('data', function () {
   });
 
   describe('assemble', function () {
-    it('should have correct order of transforms (formulat, filter, null filter, bin, timeUnit)', function () {
+    it('should have correct order of transforms', function () {
       const model = parseUnitModel({
         data: {values: []},
         transform: {
@@ -98,109 +98,6 @@ describe('data', function () {
     });
   });
 });
-
-describe('data: source', function() {
-  describe('compileUnit', function() {
-    describe('with explicit values', function() {
-      const model = parseUnitModel({
-        "data": {
-          "values": [{"a": 1,"b": 2,"c": 3},{"a": 4,"b": 5,"c": 6}]
-        },
-        "mark": "point"
-      });
-
-      const sourceComponent = source.parseUnit(model);
-
-      it('should have values', function() {
-        assert.deepEqual(sourceComponent.values, [{a: 1, b:2, c:3}, {a: 4, b:5, c:6}]);
-      });
-
-      it('should have source.format.type', function(){
-        assert.deepEqual(sourceComponent.format.type, 'json');
-      });
-    });
-
-    describe('with link to url', function() {
-      const model = parseUnitModel({
-          data: {
-            url: 'http://foo.bar',
-          }
-        });
-
-      const sourceComponent = source.parseUnit(model);
-
-      it('should have format.type json', function() {
-        assert.equal(sourceComponent.format.type, 'json');
-      });
-      it('should have correct url', function() {
-        assert.equal(sourceComponent.url, 'http://foo.bar');
-      });
-    });
-
-    describe('with no data specified', function() {
-      const model = parseUnitModel({mark: "point"});
-      const sourceComponent = source.parseUnit(model);
-      it('should be undefined', function() {
-        assert.deepEqual(sourceComponent, undefined);
-      });
-    });
-
-    describe('data format', function() {
-      describe('json', () => {
-        it('should include property if specified', function() {
-          const model = parseUnitModel({
-            data: {
-              url: 'http://foo.bar',
-              format: {type: 'json', property: 'baz'}
-            }
-          });
-          const sourceComponent = source.parseUnit(model);
-          assert.equal(sourceComponent.format.property, 'baz');
-        });
-      });
-
-      describe('topojson', () => {
-        describe('feature property is specified', function() {
-          const model = parseUnitModel({
-              data: {
-                url: 'http://foo.bar',
-                format: {type: 'topojson', feature: 'baz'}
-              }
-            });
-
-          const sourceComponent = source.parseUnit(model);
-
-          it('should have format.type topojson', function() {
-            assert.equal(sourceComponent.format.type, 'topojson');
-          });
-          it('should have format.feature baz', function() {
-            assert.equal(sourceComponent.format.feature, 'baz');
-          });
-        });
-
-        describe('mesh property is specified', function() {
-          const model = parseUnitModel({
-              data: {
-                url: 'http://foo.bar',
-                format: {type: 'topojson', mesh: 'baz'}
-              }
-            });
-
-          const sourceComponent = source.parseUnit(model);
-
-          it('should have format.type topojson', function() {
-            assert.equal(sourceComponent.format.type, 'topojson');
-          });
-          it('should have format.mesh baz', function() {
-            assert.equal(sourceComponent.format.mesh, 'baz');
-          });
-        });
-      });
-    });
-
-  });
-});
-
 
 describe('data: formatParse', function () {
   describe('compileUnit', function() {

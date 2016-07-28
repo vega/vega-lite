@@ -95,6 +95,7 @@
     "test/compile/data.test.ts",
     "test/compile/data/datatestutil.ts",
     "test/compile/data/filter.test.ts",
+    "test/compile/data/source.test.ts",
     "test/compile/data/timeunit.test.ts",
     "test/compile/data/timeunitdomain.test.ts",
     "test/compile/facet.test.ts",

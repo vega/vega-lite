@@ -53,13 +53,13 @@ export interface DataComponent {
   /** Data transform for stacked scale. */
   stackScale: {type: string, groupby: string[], summarize: any[]};
 
-  /** Dictionary mapping an output field name (hash) to the sort and rank transforms  */
+  /** Dictionary mapping an output field name (hash) to the sort and rank transforms */
   colorRank: Dict<VgTransform[]>;
 
   /** String set of time units that need their own data sources for scale domain */
   timeUnitDomain: StringSet;
 
-  /** Array of summary component object for producing aggregates */
+  /** Conponent that produces aggregates */
   aggregate: AggregateComponent;
 }
 
@@ -86,9 +86,6 @@ export interface SourceComponent {
   format?: any;
   url?: any;
 }
-
-// TODO: split this file into multiple files and remove this linter flag
-/* tslint:disable:no-use-before-declare */
 
 /**
  * Parses a model with data.
@@ -253,11 +250,8 @@ export function parseLayerData(model: LayerModel): DataComponent {
   }
 }
 
-
-/* tslint:enable:no-use-before-declare */
-
 /**
- * Creates Vega Data array from a given compiled model and append all of them to the given array
+ * Creates Vega Data array from a given compiled model and append all of them to the given array.
  *
  * @param  model
  * @param  data array
