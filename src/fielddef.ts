@@ -3,7 +3,7 @@
 import {AggregateOp, AGGREGATE_OPS} from './aggregate';
 import {Axis} from './axis';
 import {Bin} from './bin';
-import {Config} from './config';
+import {Config, defaultConfig} from './config';
 import {Legend} from './legend';
 import {Scale, ScaleType} from './scale';
 import {SortField, SortOrder} from './sort';
@@ -217,7 +217,7 @@ export function title(fieldDef: FieldDef, config: Config) {
     return fieldDef.title;
   }
   if (isCount(fieldDef)) {
-    return config.countTitle;
+    return (config && config.countTitle) ? config.countTitle : defaultConfig.countTitle;
   }
   const fn = fieldDef.aggregate || fieldDef.timeUnit || (fieldDef.bin && 'bin');
   if (fn) {
