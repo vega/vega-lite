@@ -13,6 +13,9 @@ export enum TimeUnit {
   SECONDS = 'seconds' as any,
   MILLISECONDS = 'milliseconds' as any,
   YEARMONTH = 'yearmonth' as any,
+  // Note: don't add MONTH DATE because it will be incorrect
+  // since days on a leap year will be shifted by one if
+  // we only add
   YEARMONTHDATE = 'yearmonthdate' as any,
   YEARMONTHDATEHOURS = 'yearmonthdatehours' as any,
   YEARMONTHDATEHOURSMINUTES = 'yearmonthdatehoursminutes' as any,
