@@ -4,14 +4,14 @@ import {ScaleType} from './scale';
 import {Dict, contains, keys, range} from './util';
 
 export enum TimeUnit {
-  YEAR = 'year' as any, // ???
-  MONTH = 'month' as any, // done
-  DAY = 'day' as any, // done
-  DATE = 'date' as any, // done
-  HOURS = 'hours' as any, // done
-  MINUTES = 'minutes' as any, // done
-  SECONDS = 'seconds' as any, // done
-  MILLISECONDS = 'milliseconds' as any, // ???
+  YEAR = 'year' as any,
+  MONTH = 'month' as any,
+  DAY = 'day' as any,
+  DATE = 'date' as any,
+  HOURS = 'hours' as any,
+  MINUTES = 'minutes' as any,
+  SECONDS = 'seconds' as any,
+  MILLISECONDS = 'milliseconds' as any,
   YEARMONTH = 'yearmonth' as any,
   // Note: don't add MONTH DATE because it will be incorrect
   // since days on a leap year will be shifted by one if
@@ -24,7 +24,7 @@ export enum TimeUnit {
   HOURSMINUTESSECONDS = 'hoursminutesseconds' as any,
   MINUTESSECONDS = 'minutesseconds' as any,
   SECONDSMILLISECONDS = 'secondsmilliseconds' as any,
-  QUARTER = 'quarter' as any, // done
+  QUARTER = 'quarter' as any,
   YEARQUARTER = 'yearquarter' as any,
   QUARTERMONTH = 'quartermonth' as any,
   YEARQUARTERMONTH = 'yearquartermonth' as any,
@@ -57,46 +57,47 @@ export function isSingleTimeUnit(timeUnit: TimeUnit) {
  * i.e. ('yearmonth', '2000-12-04 07:58:14') -> '2000-12-00 00:00:00'
  */
 export function convert(unit: TimeUnit, date: Date, utc: boolean): Date {
-  const result: Date = new Date(0, 0, 0, 0, 0, 0, 0); // start with uniform date
-  // handle some units individually
-  if (unit === TimeUnit.QUARTERMONTH) {
-    // not sure how to handle this unit. Just put month (since you can infer quarter from month)?
-  } else {
-    SINGLE_TIMEUNITS.forEach(function(singleUnit) {
-      if (containsTimeUnit(unit, singleUnit)) {
-        // can ignore TimeUnit.DAY
-        switch (singleUnit) {
-          case TimeUnit.YEAR:
-            result.setFullYear(date.getFullYear());
-            break;
-          case TimeUnit.MONTH:
-            if (containsTimeUnit(unit, TimeUnit.DATE)) {
-              result.setMonth(date.getMonth(), date.getDate());
-            } else {
-              result.setMonth(date.getMonth(), 1);
-            }
-            break;
-          case TimeUnit.DATE:
-            result.setDate(date.getDate());
-            break;
-          case TimeUnit.HOURS:
-            result.setHours(date.getHours());
-            break;
-          case TimeUnit.MINUTES:
-            result.setMinutes(date.getMinutes());
-            break;
-          case TimeUnit.SECONDS:
-            result.setSeconds(date.getSeconds());
-            break;
-          case TimeUnit.MILLISECONDS:
-            result.setMilliseconds(date.getMilliseconds());
-            break;
-          case TimeUnit.QUARTER:
-            result.setMonth(Math.floor(date.getMonth() / 3));
-        }
+  const result: Date = new Date(0, 0, 1, 0, 0, 0, 0); // start with uniform date
+  SINGLE_TIMEUNITS.forEach(function(singleUnit) {
+    if (containsTimeUnit(unit, singleUnit)) {
+      // can ignore TimeUnit.DAY
+      switch (singleUnit) {
+        case TimeUnit.DAY:
+          throw 'Cannot convert to TimeUnits containing \'day\'';
+        case TimeUnit.YEAR:
+          result.setFullYear(date.getFullYear());
+          break;
+        case TimeUnit.MONTH:
+          result.setMonth(date.getMonth());
+          break;
+        case TimeUnit.DATE:
+          result.setDate(date.getDate());
+          break;
+        case TimeUnit.HOURS:
+          result.setHours(date.getHours());
+          break;
+        case TimeUnit.MINUTES:
+          result.setMinutes(date.getMinutes());
+          break;
+        case TimeUnit.SECONDS:
+          result.setSeconds(date.getSeconds());
+          break;
+        case TimeUnit.MILLISECONDS:
+          result.setMilliseconds(date.getMilliseconds());
+          break;
+        case TimeUnit.QUARTER:
+          result.setMonth((Math.floor(date.getMonth() / 3)) * 3);
+          break;
       }
-    });
+    }
+  });
+
+  // handle weird 'quartermonth' and 'yearquartermonth' cases (should just keep month, ignore quarter)
+  // TODO: remove this code once timeunits with both 'quarter' and 'month' are no longer supported
+  if (containsTimeUnit(unit, TimeUnit.QUARTER) && containsTimeUnit(unit, TimeUnit.MONTH)) {
+    result.setMonth(date.getMonth());
   }
+
   return result;
 }
 
