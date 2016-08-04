@@ -54,13 +54,13 @@ export function isSingleTimeUnit(timeUnit: TimeUnit) {
 
 /**
  * Converts a date to only have the measurements relevant to the specified unit
- * i.e. ('yearmonth', '2000-12-04 07:58:14') -> '2000-12-00 00:00:00'
+ * i.e. ('yearmonth', '2000-12-04 07:58:14') -> '2000-12-01 00:00:00'
+ * Note: the base date is Jan 01 1900 00:00:00
  */
 export function convert(unit: TimeUnit, date: Date, utc: boolean): Date {
   const result: Date = new Date(0, 0, 1, 0, 0, 0, 0); // start with uniform date
   SINGLE_TIMEUNITS.forEach(function(singleUnit) {
     if (containsTimeUnit(unit, singleUnit)) {
-      // can ignore TimeUnit.DAY
       switch (singleUnit) {
         case TimeUnit.DAY:
           throw 'Cannot convert to TimeUnits containing \'day\'';
