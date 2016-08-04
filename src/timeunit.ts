@@ -4,14 +4,14 @@ import {ScaleType} from './scale';
 import {Dict, contains, keys, range} from './util';
 
 export enum TimeUnit {
-  YEAR = 'year' as any,
-  MONTH = 'month' as any,
-  DAY = 'day' as any,
-  DATE = 'date' as any,
-  HOURS = 'hours' as any,
-  MINUTES = 'minutes' as any,
-  SECONDS = 'seconds' as any,
-  MILLISECONDS = 'milliseconds' as any,
+  YEAR = 'year' as any, // ???
+  MONTH = 'month' as any, // done
+  DAY = 'day' as any, // done
+  DATE = 'date' as any, // done
+  HOURS = 'hours' as any, // done
+  MINUTES = 'minutes' as any, // done
+  SECONDS = 'seconds' as any, // done
+  MILLISECONDS = 'milliseconds' as any, // ???
   YEARMONTH = 'yearmonth' as any,
   YEARMONTHDATE = 'yearmonthdate' as any,
   YEARMONTHDATEHOURS = 'yearmonthdatehours' as any,
@@ -21,7 +21,7 @@ export enum TimeUnit {
   HOURSMINUTESSECONDS = 'hoursminutesseconds' as any,
   MINUTESSECONDS = 'minutesseconds' as any,
   SECONDSMILLISECONDS = 'secondsmilliseconds' as any,
-  QUARTER = 'quarter' as any,
+  QUARTER = 'quarter' as any, // done
   YEARQUARTER = 'yearquarter' as any,
   QUARTERMONTH = 'quartermonth' as any,
   YEARQUARTERMONTH = 'yearquartermonth' as any,
@@ -47,6 +47,54 @@ const SINGLE_TIMEUNIT_INDEX: Dict<boolean> = SINGLE_TIMEUNITS.reduce((d, timeUni
 
 export function isSingleTimeUnit(timeUnit: TimeUnit) {
   return !!SINGLE_TIMEUNIT_INDEX[timeUnit];
+}
+
+/**
+ * Converts a date to only have the measurements relevant to the specified unit
+ * i.e. ('yearmonth', '2000-12-04 07:58:14') -> '2000-12-00 00:00:00'
+ */
+export function convert(unit: TimeUnit, date: Date, utc: boolean): Date {
+  const result: Date = new Date(0, 0, 0, 0, 0, 0, 0); // start with uniform date
+  // handle some units individually
+  if (unit === TimeUnit.QUARTERMONTH) {
+    // not sure how to handle this unit. Just put month (since you can infer quarter from month)?
+  } else {
+    SINGLE_TIMEUNITS.forEach(function(singleUnit) {
+      if (containsTimeUnit(unit, singleUnit)) {
+        // can ignore TimeUnit.DAY
+        switch (singleUnit) {
+          case TimeUnit.YEAR:
+            result.setFullYear(date.getFullYear());
+            break;
+          case TimeUnit.MONTH:
+            if (containsTimeUnit(unit, TimeUnit.DATE)) {
+              result.setMonth(date.getMonth(), date.getDate());
+            } else {
+              result.setMonth(date.getMonth(), 1);
+            }
+            break;
+          case TimeUnit.DATE:
+            result.setDate(date.getDate());
+            break;
+          case TimeUnit.HOURS:
+            result.setHours(date.getHours());
+            break;
+          case TimeUnit.MINUTES:
+            result.setMinutes(date.getMinutes());
+            break;
+          case TimeUnit.SECONDS:
+            result.setSeconds(date.getSeconds());
+            break;
+          case TimeUnit.MILLISECONDS:
+            result.setMilliseconds(date.getMilliseconds());
+            break;
+          case TimeUnit.QUARTER:
+            result.setMonth(Math.floor(date.getMonth() / 3));
+        }
+      }
+    });
+  }
+  return result;
 }
 
 export const MULTI_TIMEUNITS = [
