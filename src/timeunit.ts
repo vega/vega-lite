@@ -52,6 +52,50 @@ export function isSingleTimeUnit(timeUnit: TimeUnit) {
   return !!SINGLE_TIMEUNIT_INDEX[timeUnit];
 }
 
+/**
+ * Converts a date to only have the measurements relevant to the specified unit
+ * i.e. ('yearmonth', '2000-12-04 07:58:14') -> '2000-12-01 00:00:00'
+ * Note: the base date is Jan 01 1900 00:00:00
+ */
+export function convert(unit: TimeUnit, date: Date): Date {
+  const result: Date = new Date(0, 0, 1, 0, 0, 0, 0); // start with uniform date
+  SINGLE_TIMEUNITS.forEach(function(singleUnit) {
+    if (containsTimeUnit(unit, singleUnit)) {
+      switch (singleUnit) {
+        case TimeUnit.DAY:
+          throw new Error('Cannot convert to TimeUnits containing \'day\'');
+        case TimeUnit.YEAR:
+          result.setFullYear(date.getFullYear());
+          break;
+        case TimeUnit.QUARTER:
+          // indicate quarter by setting month to be the first of the quarter i.e. may (4) -> april (3)
+          result.setMonth((Math.floor(date.getMonth() / 3)) * 3);
+          break;
+        case TimeUnit.MONTH:
+          result.setMonth(date.getMonth());
+          break;
+        case TimeUnit.DATE:
+          result.setDate(date.getDate());
+          break;
+        case TimeUnit.HOURS:
+          result.setHours(date.getHours());
+          break;
+        case TimeUnit.MINUTES:
+          result.setMinutes(date.getMinutes());
+          break;
+        case TimeUnit.SECONDS:
+          result.setSeconds(date.getSeconds());
+          break;
+        case TimeUnit.MILLISECONDS:
+          result.setMilliseconds(date.getMilliseconds());
+          break;
+      }
+    }
+  });
+
+  return result;
+}
+
 export const MULTI_TIMEUNITS = [
   TimeUnit.YEARQUARTER,
   TimeUnit.YEARQUARTERMONTH,
