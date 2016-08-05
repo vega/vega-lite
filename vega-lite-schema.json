@@ -421,11 +421,8 @@
                     "$ref": "#/definitions/ScaleType"
                 },
                 "domain": {
-                    "description": "The domain of the scale, representing the set of data values. For quantitative data, this can take the form of a two-element array with minimum and maximum values. For ordinal/categorical data, this may be an array of valid input values. The domain may also be specified by a reference to a data source.",
+                    "description": "The domain of the scale, representing the set of data values. For quantitative data, this can take the form of a two-element array with minimum and maximum values. For ordinal/categorical data, this may be an array of valid input values.",
                     "oneOf": [
-                        {
-                            "type": "string"
-                        },
                         {
                             "type": "array",
                             "items": {
