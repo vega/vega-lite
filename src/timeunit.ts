@@ -63,9 +63,13 @@ export function convert(unit: TimeUnit, date: Date): Date {
     if (containsTimeUnit(unit, singleUnit)) {
       switch (singleUnit) {
         case TimeUnit.DAY:
-          throw 'Cannot convert to TimeUnits containing \'day\'';
+          throw new Error('Cannot convert to TimeUnits containing \'day\'');
         case TimeUnit.YEAR:
           result.setFullYear(date.getFullYear());
+          break;
+        case TimeUnit.QUARTER:
+          // indicate quarter by setting month to be the first of the quarter i.e. may (4) -> april (3)
+          result.setMonth((Math.floor(date.getMonth() / 3)) * 3);
           break;
         case TimeUnit.MONTH:
           result.setMonth(date.getMonth());
@@ -85,18 +89,9 @@ export function convert(unit: TimeUnit, date: Date): Date {
         case TimeUnit.MILLISECONDS:
           result.setMilliseconds(date.getMilliseconds());
           break;
-        case TimeUnit.QUARTER:
-          result.setMonth((Math.floor(date.getMonth() / 3)) * 3);
-          break;
       }
     }
   });
-
-  // handle weird 'quartermonth' and 'yearquartermonth' cases (should just keep month, ignore quarter)
-  // TODO: remove this code once timeunits with both 'quarter' and 'month' are no longer supported
-  if (containsTimeUnit(unit, TimeUnit.QUARTER) && containsTimeUnit(unit, TimeUnit.MONTH)) {
-    result.setMonth(date.getMonth());
-  }
 
   return result;
 }
