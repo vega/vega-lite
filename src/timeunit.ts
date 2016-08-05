@@ -57,7 +57,7 @@ export function isSingleTimeUnit(timeUnit: TimeUnit) {
  * i.e. ('yearmonth', '2000-12-04 07:58:14') -> '2000-12-01 00:00:00'
  * Note: the base date is Jan 01 1900 00:00:00
  */
-export function convert(unit: TimeUnit, date: Date, utc: boolean): Date {
+export function convert(unit: TimeUnit, date: Date): Date {
   const result: Date = new Date(0, 0, 1, 0, 0, 0, 0); // start with uniform date
   SINGLE_TIMEUNITS.forEach(function(singleUnit) {
     if (containsTimeUnit(unit, singleUnit)) {
