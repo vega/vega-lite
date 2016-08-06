@@ -95,8 +95,6 @@ export interface OrderChannelDef extends FieldDef {
 // TODO: consider if we want to distinguish ordinalOnlyScale from scale
 export type FacetChannelDef = PositionChannelDef;
 
-
-
 export interface FieldRefOption {
   /** exclude bin, aggregate, timeUnit */
   nofn?: boolean;
@@ -117,30 +115,56 @@ export interface FieldRefOption {
 }
 
 export function field(fieldDef: FieldDef, opt: FieldRefOption = {}) {
-  const prefix = (opt.datum ? 'datum.' : '') + (opt.prefn || '');
-  const suffix = opt.suffix || '';
-  const field = fieldDef.field;
+  let f = fieldDef.field
+  let suffix = ''
+  let prefn = ''
+
+  if (opt.suffix) {
+    suffix = opt.suffix
+  }
+
+  if (opt.prefn) {
+    prefn = opt.prefn
+  }
 
   if (isCount(fieldDef)) {
-    return prefix + 'count' + suffix;
-  } else if (opt.fn) {
-    return prefix + opt.fn + '_' + field + suffix;
-  } else if (!opt.nofn && fieldDef.bin) {
-    const binSuffix = opt.binSuffix || (
-      opt.scaleType === ScaleType.ORDINAL ?
-        // For ordinal scale type, use `_range` as suffix.
-        '_range' :
-        // For non-ordinal scale or unknown, use `_start` as suffix.
-        '_start'
-    );
-    return prefix + 'bin_' + field + binSuffix;
-  } else if (!opt.nofn && !opt.noAggregate && fieldDef.aggregate) {
-    return prefix + fieldDef.aggregate + '_' + field + suffix;
-  } else if (!opt.nofn && fieldDef.timeUnit) {
-    return prefix + fieldDef.timeUnit + '_' + field + suffix;
-  } else {
-    return prefix + field;
+    f = 'count'
+  } else {  
+    let underscore_prefix
+    
+    if (opt.fn) {
+      underscore_prefix = opt.fn
+    } else if (!opt.nofn && fieldDef.bin) {
+      underscore_prefix = 'bin'
+
+      suffix = opt.binSuffix || (
+        opt.scaleType === ScaleType.ORDINAL ?
+          // For ordinal scale type, use `_range` as suffix.
+          '_range' :
+          // For non-ordinal scale or unknown, use `_start` as suffix.
+          '_start'
+      )
+    } else if (!opt.nofn) {
+      if (!opt.noAggregate && fieldDef.aggregate) {
+        underscore_prefix = fieldDef.aggregate
+      } 
+      else if (fieldDef.timeUnit) {
+        underscore_prefix = fieldDef.timeUnit
+      }
+    }
+
+    if (!!underscore_prefix) {
+      f = `${underscore_prefix}_${f}`
+    }
   }
+
+  f = `${prefn}${f}${suffix}`
+
+  if (opt.datum) {
+    f = `datum["${f}"]`
+  }
+
+  return f
 }
 
 function _isFieldDimension(fieldDef: FieldDef) {
