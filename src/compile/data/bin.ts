@@ -19,9 +19,9 @@ export namespace bin {
           type: 'bin',
           field: fieldDef.field,
           output: {
-            start: field(fieldDef, { binSuffix: '_start' }),
-            mid: field(fieldDef, { binSuffix: '_mid' }),
-            end: field(fieldDef, { binSuffix: '_end' })
+            start: field(fieldDef, { binSuffix: 'start' }),
+            mid: field(fieldDef, { binSuffix: 'mid' }),
+            end: field(fieldDef, { binSuffix: 'end' })
           }
         },
           // if bin is an object, load parameter here!
@@ -39,10 +39,10 @@ export namespace bin {
         if (isOrdinalColor) {
           transform.push({
             type: 'formula',
-            field: field(fieldDef, { binSuffix: '_range' }),
-            expr: field(fieldDef, { datum: true, binSuffix: '_start' }) +
+            field: field(fieldDef, { binSuffix: 'range' }),
+            expr: field(fieldDef, { datum: true, binSuffix: 'start' }) +
             ' + \'-\' + ' +
-            field(fieldDef, { datum: true, binSuffix: '_end' })
+            field(fieldDef, { datum: true, binSuffix: 'end' })
           });
         }
         // FIXME: current merging logic can produce redundant transforms when a field is binned for color and for non-color

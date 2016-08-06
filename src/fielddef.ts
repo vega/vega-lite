@@ -105,10 +105,10 @@ export interface FieldRefOption {
   /** replace fn with custom function prefix */
   fn?: string;
   /** prepend fn with custom function prefix */
-  prefn?: string;
+  prefix?: string;
   /** scaleType */
   scaleType?: ScaleType;
-  /** append suffix to the field ref for bin (default='_start') */
+  /** append suffix to the field ref for bin (default='start') */
   binSuffix?: string;
   /** append suffix to the field ref (general) */
   suffix?: string;
@@ -116,16 +116,8 @@ export interface FieldRefOption {
 
 export function field(fieldDef: FieldDef, opt: FieldRefOption = {}) {
   let f = fieldDef.field;
-  let suffix = '';
-  let prefn = '';
-
-  if (opt.suffix) {
-    suffix = opt.suffix;
-  }
-
-  if (opt.prefn) {
-    prefn = opt.prefn;
-  }
+  let prefix = opt.prefix;
+  let suffix = opt.suffix;
 
   if (isCount(fieldDef)) {
     f = 'count';
@@ -139,10 +131,10 @@ export function field(fieldDef: FieldDef, opt: FieldRefOption = {}) {
 
       suffix = opt.binSuffix || (
         opt.scaleType === ScaleType.ORDINAL ?
-          // For ordinal scale type, use `_range` as suffix.
-          '_range' :
-          // For non-ordinal scale or unknown, use `_start` as suffix.
-          '_start'
+          // For ordinal scale type, use `range` as suffix.
+          'range' :
+          // For non-ordinal scale or unknown, use `start` as suffix.
+          'start'
       );
     } else if (!opt.nofn) {
       if (!opt.noAggregate && fieldDef.aggregate) {
@@ -157,7 +149,13 @@ export function field(fieldDef: FieldDef, opt: FieldRefOption = {}) {
     }
   }
 
-  f = `${prefn}${f}${suffix}`;
+  if (!!suffix) {
+    f = `${f}_${suffix}`;
+  }
+
+  if (!!prefix) {
+    f = `${prefix}_${f}`;
+  }
 
   if (opt.datum) {
     f = `datum["${f}"]`;

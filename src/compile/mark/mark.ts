@@ -197,7 +197,7 @@ function sortPathBy(model: UnitModel): string | string[] {
     }
   } else {
     // For both line and area, we sort values based on dimension by default
-    return '-' + model.field(model.config().mark.orient === Orient.HORIZONTAL ? Y : X, {binSuffix: '_mid'});
+    return '-' + model.field(model.config().mark.orient === Orient.HORIZONTAL ? Y : X, {binSuffix: 'mid'});
   }
 }
 
@@ -239,8 +239,8 @@ function getStackByFields(model: UnitModel) {
         const fieldDef: FieldDef = channelEncoding;
         const scale = model.scale(channel);
         fields.push(field(fieldDef, {
-          binSuffix: scale && scale.type === ScaleType.ORDINAL ? '_range' : '_start'
-        }));
+          binSuffix: scale && scale.type === ScaleType.ORDINAL ? 'range' : 'start'
+        }) || 'undefined');
       }
     }
     return fields;
@@ -254,7 +254,7 @@ function imputeTransform(model: UnitModel, stackFields: string[]) {
     type: 'impute',
     field: model.field(stack.fieldChannel),
     groupby: stackFields,
-    orderby: [model.field(stack.groupbyChannel, {binSuffix: '_mid'})],
+    orderby: [model.field(stack.groupbyChannel, {binSuffix: 'mid'})],
     method: 'value',
     value: 0
   };
@@ -275,7 +275,7 @@ function stackTransform(model: UnitModel, stackFields: string[]) {
   // add stack transform to mark
   let transform: VgStackTransform = {
     type: 'stack',
-    groupby: [model.field(stack.groupbyChannel, {binSuffix: '_mid'})],
+    groupby: [model.field(stack.groupbyChannel, {binSuffix: 'mid'}) || 'undefined'],
     field: model.field(stack.fieldChannel),
     sortby: sortby,
     output: {

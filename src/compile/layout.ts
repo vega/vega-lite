@@ -202,5 +202,5 @@ function cardinalityFormula(model: Model, channel: Channel) {
   const timeUnitDomain = timeUnit ? rawDomain(timeUnit, channel) : null;
 
   return timeUnitDomain !== null ? timeUnitDomain.length :
-        model.field(channel, {datum: true, prefn: 'distinct_'});
+        model.field(channel, {datum: true, prefix: 'distinct'});
 }

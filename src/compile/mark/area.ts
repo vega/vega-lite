@@ -47,7 +47,7 @@ export namespace area {
     if (stack && X === stack.fieldChannel) { // Stacked Measure
       return {
         scale: scaleName,
-        field: field(fieldDef, { suffix: '_start' })
+        field: field(fieldDef, { suffix: 'start' })
       };
     } else if (isMeasure(fieldDef)) { // Measure
       if (orient === Orient.HORIZONTAL) {
@@ -72,7 +72,7 @@ export namespace area {
     } else if (isDimension(fieldDef)) {
       return {
         scale: scaleName,
-        field: field(fieldDef, { binSuffix: '_mid' })
+        field: field(fieldDef, { binSuffix: 'mid' })
       };
     }
     return undefined;
@@ -84,7 +84,7 @@ export namespace area {
       if (stack && X === stack.fieldChannel) { // Stacked Measure
         return {
           scale: scaleName,
-          field: field(xFieldDef, { suffix: '_end' })
+          field: field(xFieldDef, { suffix: 'end' })
         };
       } else if (x2FieldDef) {
         if (x2FieldDef.field) {
@@ -114,7 +114,7 @@ export namespace area {
     if (stack && Y === stack.fieldChannel) { // Stacked Measure
       return {
         scale: scaleName,
-        field: field(fieldDef, { suffix: '_start' })
+        field: field(fieldDef, { suffix: 'start' })
       };
     } else if (isMeasure(fieldDef)) {
       if (orient !== Orient.HORIZONTAL) {
@@ -136,7 +136,7 @@ export namespace area {
     } else if (isDimension(fieldDef)) {
       return {
         scale: scaleName,
-        field: field(fieldDef, { binSuffix: '_mid' })
+        field: field(fieldDef, { binSuffix: 'mid' })
       };
     }
     return undefined;
@@ -147,7 +147,7 @@ export namespace area {
       if (stack && Y === stack.fieldChannel) { // Stacked Measure
         return {
           scale: scaleName,
-          field: field(yFieldDef, { suffix: '_end' })
+          field: field(yFieldDef, { suffix: 'end' })
         };
       } else if (y2FieldDef) {
         // y2
