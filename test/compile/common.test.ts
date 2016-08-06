@@ -13,30 +13,30 @@ describe('Common', function() {
     it('should get the right time template for month with shortTimeLabels=true', function() {
       const fieldDef: FieldDef = {timeUnit: TimeUnit.MONTH, field: 'a', type: TEMPORAL};
       const template = timeTemplate(field(fieldDef, {datum: true}), TimeUnit.MONTH, undefined, true, defaultConfig);
-      assert.equal(template,'{{datum.month_a | time:\'%b\'}}');
+      assert.equal(template,'{{datum["month_a"] | time:\'%b\'}}');
     });
 
     it('should get the right time template for month with shortTimeLabels=false', function() {
       const fieldDef: FieldDef = {timeUnit: TimeUnit.MONTH, field: 'a', type: TEMPORAL};
       const template = timeTemplate(field(fieldDef, {datum: true}), TimeUnit.MONTH, undefined, false, defaultConfig);
-      assert.equal(template,'{{datum.month_a | time:\'%B\'}}');
+      assert.equal(template,'{{datum["month_a"] | time:\'%B\'}}');
     });
 
     it('should get the right time template for yearmonth with custom format', function() {
       const fieldDef: FieldDef = {timeUnit: TimeUnit.YEARMONTH, field: 'a', type: TEMPORAL};
       const template = timeTemplate(field(fieldDef, {datum: true}), TimeUnit.MONTH, '%Y', true, defaultConfig);
-      assert.equal(template,'{{datum.yearmonth_a | time:\'%Y\'}}');
+      assert.equal(template,'{{datum["yearmonth_a"] | time:\'%Y\'}}');
     });
 
     it('should get the right time template for quarter', function() {
       const fieldDef: FieldDef = {timeUnit: TimeUnit.QUARTER, field: 'a', type: TEMPORAL};
       const template = timeTemplate(field(fieldDef, {datum: true}), TimeUnit.QUARTER, undefined, true, defaultConfig);
-      assert.equal(template, 'Q{{datum.quarter_a | quarter}}');
+      assert.equal(template, 'Q{{datum["quarter_a"] | quarter}}');
     });
 
     it('should get the right time template for yearquarter', function() {
-      const template = timeTemplate('datum.data', TimeUnit.YEARQUARTER, undefined, true, defaultConfig);
-      assert.equal(template, '{{datum.data | time:\'%y-\'}}Q{{datum.data | quarter}}');
+      const template = timeTemplate('datum["data"]', TimeUnit.YEARQUARTER, undefined, true, defaultConfig);
+      assert.equal(template, '{{datum["data"] | time:\'%y-\'}}Q{{datum["data"] | quarter}}');
     });
   });
 

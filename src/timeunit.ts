@@ -151,7 +151,7 @@ export function defaultScaleType(timeUnit: TimeUnit) {
  * Returns Vega expresssion for a given timeUnit and fieldRef
  */
 export function fieldExpr(fullTimeUnit: TimeUnit, field: string): string {
-  const fieldRef = 'datum.' + field;
+  const fieldRef = 'datum["' + field + '"]';
 
   function func(timeUnit: TimeUnit) {
     if (timeUnit === TimeUnit.QUARTER) {
@@ -294,7 +294,8 @@ export function template(timeUnit: TimeUnit, field: string, shortTimeLabels: boo
    const template = '{{' + field + ' | time:\'' + out.join(' ') + '\'}}';
 
    // FIXME: Remove this RegExp Hack!!!
-   return template.replace(new RegExp('{{' + field + ' \\| time:\'\'}}', 'g'), '');
+   const escapedField = field.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, '\\$1');
+   return template.replace(new RegExp('{{' + escapedField + ' \\| time:\'\'}}', 'g'), '');
   } else {
    return undefined;
   }

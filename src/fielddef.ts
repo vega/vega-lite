@@ -100,7 +100,7 @@ export interface FieldRefOption {
   nofn?: boolean;
   /** exclude aggregation function */
   noAggregate?: boolean;
-  /** include 'datum.' */
+  /** include 'datum["$1"]' */
   datum?: boolean;
   /** replace fn with custom function prefix */
   fn?: string;
@@ -115,27 +115,27 @@ export interface FieldRefOption {
 }
 
 export function field(fieldDef: FieldDef, opt: FieldRefOption = {}) {
-  let f = fieldDef.field
-  let suffix = ''
-  let prefn = ''
+  let f = fieldDef.field;
+  let suffix = '';
+  let prefn = '';
 
   if (opt.suffix) {
-    suffix = opt.suffix
+    suffix = opt.suffix;
   }
 
   if (opt.prefn) {
-    prefn = opt.prefn
+    prefn = opt.prefn;
   }
 
   if (isCount(fieldDef)) {
-    f = 'count'
-  } else {  
-    let underscore_prefix
-    
+    f = 'count';
+  } else {
+    let underscorePrefix;
+
     if (opt.fn) {
-      underscore_prefix = opt.fn
+      underscorePrefix = opt.fn;
     } else if (!opt.nofn && fieldDef.bin) {
-      underscore_prefix = 'bin'
+      underscorePrefix = 'bin';
 
       suffix = opt.binSuffix || (
         opt.scaleType === ScaleType.ORDINAL ?
@@ -143,28 +143,27 @@ export function field(fieldDef: FieldDef, opt: FieldRefOption = {}) {
           '_range' :
           // For non-ordinal scale or unknown, use `_start` as suffix.
           '_start'
-      )
+      );
     } else if (!opt.nofn) {
       if (!opt.noAggregate && fieldDef.aggregate) {
-        underscore_prefix = fieldDef.aggregate
-      } 
-      else if (fieldDef.timeUnit) {
-        underscore_prefix = fieldDef.timeUnit
+        underscorePrefix = fieldDef.aggregate;
+      } else if (fieldDef.timeUnit) {
+        underscorePrefix = fieldDef.timeUnit;
       }
     }
 
-    if (!!underscore_prefix) {
-      f = `${underscore_prefix}_${f}`
+    if (!!underscorePrefix) {
+      f = `${underscorePrefix}_${f}`;
     }
   }
 
-  f = `${prefn}${f}${suffix}`
+  f = `${prefn}${f}${suffix}`;
 
   if (opt.datum) {
-    f = `datum["${f}"]`
+    f = `datum["${f}"]`;
   }
 
-  return f
+  return f;
 }
 
 function _isFieldDimension(fieldDef: FieldDef) {
