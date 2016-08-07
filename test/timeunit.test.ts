@@ -82,7 +82,7 @@ describe('timeUnit', () => {
     it('should return correct field expression for YEARMONTHDATEHOURSMINUTESSECONDS', () => {
       assert.equal(
         fieldExpr(TimeUnit.YEARMONTHDATEHOURSMINUTESSECONDS, 'x'),
-        'datetime(year(datum.x), month(datum.x), date(datum.x), hours(datum.x), minutes(datum.x), seconds(datum.x), 0)'
+        'datetime(year(datum["x"]), month(datum["x"]), date(datum["x"]), hours(datum["x"]), minutes(datum["x"]), seconds(datum["x"]), 0)'
       );
     });
 
@@ -90,28 +90,28 @@ describe('timeUnit', () => {
     it('should automatically correct YEARMONTHDAY to be YEARMONTHDATE', () => {
       assert.equal(
         fieldExpr('yearmonthday' as any, 'x'),
-        'datetime(year(datum.x), month(datum.x), date(datum.x), 0, 0, 0, 0)'
+        'datetime(year(datum["x"]), month(datum["x"]), date(datum["x"]), 0, 0, 0, 0)'
       );
     });
 
     it('should return correct field expression for QUARTER', () => {
       assert.equal(
         fieldExpr(TimeUnit.QUARTER, 'x'),
-        'datetime(0, floor(month(datum.x)/3)*3, 1, 0, 0, 0, 0)'
+        'datetime(0, floor(month(datum["x"])/3)*3, 1, 0, 0, 0, 0)'
       );
     });
 
     it('should return correct field expression for DAY', () => {
       assert.equal(
         fieldExpr(TimeUnit.DAY, 'x'),
-        'datetime(2006, 0, day(datum.x)+1, 0, 0, 0, 0)'
+        'datetime(2006, 0, day(datum["x"])+1, 0, 0, 0, 0)'
       );
     });
 
     it('should return correct field expression for MILLISECONDS', () => {
       assert.equal(
         fieldExpr(TimeUnit.MILLISECONDS, 'x'),
-        'datetime(0, 0, 1, 0, 0, 0, milliseconds(datum.x))'
+        'datetime(0, 0, 1, 0, 0, 0, milliseconds(datum["x"]))'
       );
     });
   });

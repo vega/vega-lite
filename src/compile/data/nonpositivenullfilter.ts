@@ -58,7 +58,7 @@ export namespace nonPositiveFilter {
     }).map(function(field) {
       return {
         type: 'filter',
-        test: 'datum.' + field + ' > 0'
+        test: 'datum["' + field + '"] > 0'
       };
     });
   }

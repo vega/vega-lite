@@ -45,7 +45,7 @@ export namespace timeUnitDomain {
       const domain = rawDomain(timeUnit, null); // FIXME fix rawDomain signature
       if (domain) {
         let datetime: DateTimeExpr = {};
-        datetime[timeUnit] = 'datum.data';
+        datetime[timeUnit] = 'datum["data"]';
 
         timeUnitData.push({
           name: timeUnit,

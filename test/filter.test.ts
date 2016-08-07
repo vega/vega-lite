@@ -5,7 +5,7 @@ describe('filter', () => {
   const equalFilter = {field: 'color', equal: 'red'};
   const inFilter = {field: 'color', in: ['red', 'yellow']};
   const rangeFilter = {field: 'x', range: [0, 5]};
-  const exprFilter = 'datum.x===5';
+  const exprFilter = 'datum["x"]===5';
 
   describe('isEqualFilter', () => {
     it('should return true for an equal filter', () => {

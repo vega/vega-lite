@@ -21,7 +21,7 @@ export namespace text {
       height: { field: { group: 'height' } },
       fill: {
         scale: model.scaleName(COLOR),
-        field: model.field(COLOR, model.fieldDef(COLOR).type === ORDINAL ? {prefn: 'rank_'} : {})
+        field: model.field(COLOR, model.fieldDef(COLOR).type === ORDINAL ? {prefix: 'rank'} : {})
       }
     };
   }
@@ -63,7 +63,7 @@ export namespace text {
       if (xFieldDef.field) {
         return {
           scale: scaleName,
-          field: field(xFieldDef, { binSuffix: '_mid' })
+          field: field(xFieldDef, { binSuffix: 'mid' })
         };
       }
     }
@@ -81,7 +81,7 @@ export namespace text {
       if (yFieldDef.field) {
         return {
           scale: scaleName,
-          field: field(yFieldDef, { binSuffix: '_mid' })
+          field: field(yFieldDef, { binSuffix: 'mid' })
         };
       }
     }

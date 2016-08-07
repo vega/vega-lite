@@ -59,7 +59,7 @@ export function applyColorAndOpacity(p, model: UnitModel) {
   if (model.has(COLOR)) {
     colorValue = {
       scale: model.scaleName(COLOR),
-      field: model.field(COLOR, colorFieldDef.type === ORDINAL ? {prefn: 'rank_'} : {})
+      field: model.field(COLOR, colorFieldDef.type === ORDINAL ? {prefix: 'rank'} : {})
     };
   } else if (colorFieldDef && colorFieldDef.value) {
     colorValue = { value: colorFieldDef.value };
@@ -68,7 +68,7 @@ export function applyColorAndOpacity(p, model: UnitModel) {
   if (model.has(OPACITY)) {
     opacityValue = {
       scale: model.scaleName(OPACITY),
-      field: model.field(OPACITY, opacityFieldDef.type === ORDINAL ? {prefn: 'rank_'} : {})
+      field: model.field(OPACITY, opacityFieldDef.type === ORDINAL ? {prefix: 'rank'} : {})
     };
   } else if (opacityFieldDef && opacityFieldDef.value) {
     opacityValue = { value: opacityFieldDef.value };
@@ -128,7 +128,7 @@ export function numberFormat(fieldDef: FieldDef, format: string, config: Config)
 /** Return field reference with potential "-" prefix for descending sort */
 export function sortField(orderChannelDef: OrderChannelDef) {
   return (orderChannelDef.sort === SortOrder.DESCENDING ? '-' : '') +
-    field(orderChannelDef, {binSuffix: '_mid'});
+    field(orderChannelDef, {binSuffix: 'mid'});
 }
 
 /**

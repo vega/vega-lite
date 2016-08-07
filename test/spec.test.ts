@@ -71,7 +71,7 @@ describe('normalize()', function () {
         const spec: any = {
           "description": "Google's stock price over time.",
           "data": {"url": "data/stocks.csv", "format": {"type": "csv"}},
-          "transform": {"filter": "datum.symbol==='GOOG'"},
+          "transform": {"filter": "datum[\"symbol\"]==='GOOG'"},
           "mark": "line",
           "encoding": {
             "x": {"field": "date", "type": "temporal"},
@@ -83,7 +83,7 @@ describe('normalize()', function () {
         assert.deepEqual(normalizedSpec, {
           "description": "Google's stock price over time.",
           "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
-          "transform": {"filter": "datum.symbol==='GOOG'"},
+          "transform": {"filter": "datum[\"symbol\"]==='GOOG'"},
           "layers": [
             {
               "mark": "line",
@@ -110,7 +110,7 @@ describe('normalize()', function () {
         const spec: any = {
           "description": "Google's stock price over time.",
           "data": {"url": "data/stocks.csv", "format": {"type": "csv"}},
-          "transform": {"filter": "datum.symbol==='GOOG'"},
+          "transform": {"filter": "datum[\"symbol\"]==='GOOG'"},
           "mark": "area",
           "encoding": {
             "x": {"field": "date", "type": "temporal"},
@@ -122,7 +122,7 @@ describe('normalize()', function () {
         assert.deepEqual(normalizedSpec, {
           "description": "Google's stock price over time.",
           "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
-          "transform": {"filter": "datum.symbol==='GOOG'"},
+          "transform": {"filter": "datum[\"symbol\"]==='GOOG'"},
           "layers": [
             {
               "mark": "area",
@@ -154,7 +154,7 @@ describe('normalize()', function () {
         const spec: any = {
           "description": "Google's stock price over time.",
           "data": {"url": "data/stocks.csv", "format": {"type": "csv"}},
-          "transform": {"filter": "datum.symbol==='GOOG'"},
+          "transform": {"filter": "datum[\"symbol\"]==='GOOG'"},
           "mark": "area",
           "encoding": {
             "x": {"field": "date", "type": "temporal"},
@@ -166,7 +166,7 @@ describe('normalize()', function () {
         assert.deepEqual(normalizedSpec, {
           "description": "Google's stock price over time.",
           "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
-          "transform": {"filter": "datum.symbol==='GOOG'"},
+          "transform": {"filter": "datum[\"symbol\"]==='GOOG'"},
           "layers": [
             {
               "mark": "area",
