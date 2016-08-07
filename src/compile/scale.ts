@@ -4,19 +4,20 @@ declare var exports;
 import {SHARED_DOMAIN_OPS} from '../aggregate';
 import {COLUMN, ROW, X, Y, X2, Y2, SHAPE, SIZE, COLOR, OPACITY, TEXT, hasScale, Channel} from '../channel';
 import {Orient} from '../config';
-import {SOURCE, STACKED_SCALE} from '../data';
+import {RAW, SOURCE, STACKED_SCALE} from '../data';
 import {FieldDef, field, isMeasure} from '../fielddef';
 import {Mark, BAR, TEXT as TEXTMARK, RULE, TICK} from '../mark';
 import {Scale, ScaleType, NiceTime} from '../scale';
-import {isSortField, SortOrder} from '../sort';
+import {isSortField, SortOrder, SortField} from '../sort';
 import {StackOffset} from '../stack';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
-import {contains, extend, Dict} from '../util';
-import {VgScale} from '../vega.schema';
+import {contains, extend, Dict, stableStringify, vals, isBoolean} from '../util';
+import {VgScale, isUnionedDomain, isDataRefDomain} from '../vega.schema';
 
 import {Model} from './model';
 import {defaultScaleType, rawDomain, smallestUnit} from '../timeunit';
 import {UnitModel} from './unit';
+import {LayerModel} from './layer';
 
 /**
  * Color Ramp's scale for legends.  This scale has to be ordinal so that its
@@ -38,6 +39,18 @@ export type ScaleComponents = {
   main: ScaleComponent;
   colorLegend?: ScaleComponent,
   binColorLegend?: ScaleComponent
+}
+
+export function renameScaleData(model: Model, scale: ScaleComponent): ScaleComponent {
+  const domain = scale.domain;
+  if (isUnionedDomain(domain)) {
+    domain.fields.forEach((field) => {
+      field.data = model.renamedDataName(field.data);
+    });
+  } else if (isDataRefDomain(domain)) {
+    domain.data = model.renamedDataName(domain.data);
+  }
+  return scale;
 }
 
 export function parseScaleComponent(model: Model): Dict<ScaleComponents> {
@@ -128,12 +141,12 @@ function parseColorLegendScale(model: Model, fieldDef: FieldDef): ScaleComponent
     name: model.scaleName(COLOR_LEGEND),
     type: ScaleType.ORDINAL,
     domain: {
-      data: model.dataTable(),
+      data: model.dataName(SOURCE),
       // use rank_<field> for ordinal type, for bin and timeUnit use default field
       field: model.field(COLOR, (fieldDef.bin || fieldDef.timeUnit) ? {} : {prefn: 'rank_'}),
       sort: true
     },
-    range: {data: model.dataTable(), field: model.field(COLOR), sort: true}
+    range: {data: model.dataName(SOURCE), field: model.field(COLOR), sort: true}
   };
 }
 
@@ -145,12 +158,12 @@ function parseBinColorLegendLabel(model: Model, fieldDef: FieldDef): ScaleCompon
     name: model.scaleName(COLOR_LEGEND_LABEL),
     type: ScaleType.ORDINAL,
     domain: {
-      data: model.dataTable(),
+      data: model.dataName(SOURCE),
       field: model.field(COLOR),
       sort: true
     },
     range: {
-      data: model.dataTable(),
+      data: model.dataName(SOURCE),
       field: field(fieldDef, {binSuffix: '_range'}),
       sort: {
         field: model.field(COLOR, { binSuffix: '_start' }),
@@ -225,7 +238,7 @@ export function domain(scale: Scale, model: Model, channel:Channel): any {
     }
 
     return {
-      data: model.dataTable(),
+      data: model.dataName(SOURCE),
       field: model.field(channel),
       sort: {
         field: model.field(channel),
@@ -251,54 +264,54 @@ export function domain(scale: Scale, model: Model, channel:Channel): any {
   sort = domainSort(model, channel, scale.type);
 
   if (useRawDomain) { // useRawDomain - only Q/T
+    // FIXME: might have already been merged up
+    model.setAssembleRaw();
     return {
-      data: SOURCE,
+      data: model.dataName(RAW),
       field: model.field(channel, {noAggregate: true})
     };
   } else if (fieldDef.bin) { // bin
-    if (scale.type === ScaleType.ORDINAL) {
+    return scale.type === ScaleType.ORDINAL ? {
       // ordinal bin scale takes domain from bin_range, ordered by bin_start
-      return {
-        data: model.dataTable(),
-        field: model.field(channel, { binSuffix: '_range' }),
-        sort: {
-          field: model.field(channel, { binSuffix: '_start' }),
-          op: 'min' // min or max doesn't matter since same _range would have the same _start
-        }
-      };
-    } else if (channel === COLOR) {
+      data: model.dataName(SOURCE),
+      field: model.field(channel, { binSuffix: '_range' }),
+      sort: {
+        field: model.field(channel, { binSuffix: '_start' }),
+        op: 'min' // min or max doesn't matter since same _range would have the same _start
+      }
+    } : channel === COLOR ? {
       // Currently, binned on color uses linear scale and thus use _start point
-      return {
-        data: model.dataTable(),
-        field: model.field(channel, { binSuffix: '_start' })
-      };
-    } else {
+      data: model.dataName(SOURCE),
+      field: model.field(channel, { binSuffix: '_start' })
+    } : {
       // other linear bin scale merges both bin_start and bin_end for non-ordinal scale
-      return {
-        data: model.dataTable(),
-        field: [
-          model.field(channel, { binSuffix: '_start' }),
-          model.field(channel, { binSuffix: '_end' })
-        ]
-      };
-    }
+      data: model.dataName(SOURCE),
+      field: [
+        model.field(channel, { binSuffix: '_start' }),
+        model.field(channel, { binSuffix: '_end' })
+      ]
+    };
   } else if (sort) { // have sort -- only for ordinal
+    // If sort by aggregation of a specified sort field, we need to use raw data,
+    // so we can aggregate values for the scale independently from the main aggregation.
+    const aggSort = !isBoolean(sort);
+    if (aggSort) {
+      model.setAssembleRaw();
+    }
     return {
-      // If sort by aggregation of a specified sort field, we need to use SOURCE table,
-      // so we can aggregate values for the scale independently from the main aggregation.
-      data: sort.op ? SOURCE : model.dataTable(),
+      data: aggSort ? model.dataName(RAW) : model.dataName(SOURCE),
       field: (fieldDef.type === ORDINAL && channel === COLOR) ? model.field(channel, {prefn: 'rank_'}) : model.field(channel),
       sort: sort
     };
   } else {
     return {
-      data: model.dataTable(),
+      data: model.dataName(SOURCE),
       field: (fieldDef.type === ORDINAL && channel === COLOR) ? model.field(channel, {prefn: 'rank_'}) : model.field(channel),
     };
   }
 }
 
-export function domainSort(model: Model, channel: Channel, scaleType: ScaleType): any {
+export function domainSort(model: Model, channel: Channel, scaleType: ScaleType): boolean | SortField {
   if (scaleType !== ScaleType.ORDINAL) {
     return undefined;
   }
@@ -335,11 +348,11 @@ function _useRawDomain (scale: Scale, model: Model, channel: Channel) {
   return scale.useRawDomain && //  if useRawDomain is enabled
     // only applied to aggregate table
     fieldDef.aggregate &&
-    // only activated if used with aggregate functions that produces values ranging in the domain of the source data
+    // only activated if used with aggregate functions that produces values ranging in the domain of the SCALE data
     SHARED_DOMAIN_OPS.indexOf(fieldDef.aggregate) >= 0 &&
     (
       // Q always uses quantitative scale except when it's binned.
-      // Binned field has similar values in both the source table and the summary table
+      // Binned field has similar values in both the SCALE table and the summary table
       // but the summary table has fewer values, therefore binned fields draw
       // domain values from the summary table.
       (fieldDef.type === QUANTITATIVE && !fieldDef.bin) ||
@@ -387,7 +400,6 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel): any {
         rangeMax: 0
       };
     case SIZE:
-
       if (unitModel.mark() === BAR) {
         if (scaleConfig.barSizeRange !== undefined) {
           return {range: scaleConfig.barSizeRange};
@@ -523,4 +535,79 @@ export function zero(scale: Scale, channel: Channel, fieldDef: FieldDef) {
     return !scale.domain && !fieldDef.bin && contains([X, Y], channel);
   }
   return undefined;
+}
+
+/**
+ * Merge scales from children by unioning their domains
+ */
+export function mergeScales(model: LayerModel, channel: string) {
+  let scaleComp: ScaleComponents = null;
+
+  let domains = {};
+
+  model.children().forEach((child) => {
+    const childScales = child.component.scale[channel];
+    if (!childScales) {
+      return;
+    }
+
+    // range and other things will just be defined by the first scale
+    if (!scaleComp) {
+      scaleComp = childScales;
+    }
+
+    // the child domain may itself be a union of domains
+    const childDomain = childScales.main.domain;
+    if (isUnionedDomain(childDomain)) {
+      // if the domain is itself a union domain, concat
+      childDomain.fields.forEach((domain) => {
+        domains[stableStringify(domain)] = domain;
+      });
+    } else {
+      domains[stableStringify(childDomain)] = childDomain;
+    }
+
+    // add color legend and color legend bin scales if we don't have them yet
+    if (childScales.colorLegend) {
+      scaleComp.colorLegend = scaleComp.colorLegend || childScales.colorLegend;
+    }
+    if (childScales.binColorLegend) {
+      scaleComp.binColorLegend = scaleComp.binColorLegend || childScales.binColorLegend;
+    }
+
+    // rename scale references to merged scales
+    [childScales.main, childScales.colorLegend, childScales.binColorLegend]
+      .filter((x) => !!x)
+      .forEach((scale) => {
+        const scaleNameWithoutPrefix = scale.name.substr(child.name('').length);
+        const newName = model.scaleName(scaleNameWithoutPrefix);
+        child.renameScale(scale.name, newName);
+        scale.name = newName;
+      });
+
+    delete child.component.scale[channel];
+  });
+
+  // construct the domain that will be used for all scales
+  const domainArr = vals(domains);
+  let domain;
+  if (domainArr.length ===  1) {
+    domain = domainArr[0];
+  } else {
+    // FIXME: we have to ignore explicit data domains for now because vega does not support unioning them
+    domain = {
+      fields: domainArr
+    };
+  }
+
+  // set domains for all scales
+  scaleComp.main.domain = domain;
+  if (scaleComp.colorLegend) {
+    scaleComp.colorLegend.domain = domain;
+  }
+  if (scaleComp.binColorLegend) {
+    scaleComp.binColorLegend.domain = domain;
+  }
+
+  return scaleComp;
 }

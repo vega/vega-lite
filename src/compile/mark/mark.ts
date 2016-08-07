@@ -6,16 +6,17 @@ import {AREA, LINE, TEXT as TEXTMARK} from '../../mark';
 import {ScaleType} from '../../scale';
 import {contains, extend, isArray} from '../../util';
 import {VgStackTransform} from '../../vega.schema';
+import {UnitModel} from '../unit';
 
 import {area} from './area';
 import {bar} from './bar';
-import {sortField} from '../common';
 import {line} from './line';
 import {point, circle, square} from './point';
-import {rule} from './rule';
 import {text} from './text';
 import {tick} from './tick';
-import {UnitModel} from '../unit';
+import {rule} from './rule';
+import {sortField} from '../common';
+import {SOURCE} from '../../data';
 
 const markCompiler = {
   area: area,
@@ -39,9 +40,8 @@ export function parseMark(model: UnitModel): any[] {
 
 function parsePathMark(model: UnitModel) { // TODO: extract this into compilePathMark
   const mark = model.mark();
-  // TODO: replace this with more general case for composition
-  const isFaceted = model.parent() && model.parent().isFacet();
-  const dataFrom = {data: model.dataTable()};
+  const isFaceted = model.isFaceted();
+  const dataFrom = {data: model.dataName(SOURCE)};
   const details = detailFields(model);
 
   let pathMarks: any = [
@@ -98,8 +98,8 @@ function parsePathMark(model: UnitModel) { // TODO: extract this into compilePat
 
 function parseNonPathMark(model: UnitModel) {
   const mark = model.mark();
-  const isFaceted = model.parent() && model.parent().isFacet();
-  const dataFrom = {data: model.dataTable()};
+  const isFaceted = model.isFaceted();
+  const dataFrom = {data: model.dataName(SOURCE)};
 
   let marks = []; // TODO: vgMarks
   if (mark === TEXTMARK &&

@@ -2,20 +2,20 @@ import {Channel} from '../../channel';
 import {dateTimeExpr, DateTimeExpr} from '../../datetime';
 import {FieldDef} from '../../fielddef';
 import {TimeUnit, rawDomain} from '../../timeunit';
+import {TEMPORAL} from '../../type';
 import {extend, keys, StringSet} from '../../util';
 import {VgData} from '../../vega.schema';
 
 import {FacetModel} from './../facet';
-import {LayerModel} from './../layer';
 import {Model} from './../model';
 
 import {DataComponent} from './data';
 
-
+// should be similar to timeUnit
 export namespace timeUnitDomain {
   function parse(model: Model): StringSet {
     return model.reduce(function(timeUnitDomainMap, fieldDef: FieldDef, channel: Channel) {
-      if (fieldDef.timeUnit) {
+      if (fieldDef.type === TEMPORAL && fieldDef.timeUnit) {
         const domain = rawDomain(fieldDef.timeUnit, channel);
         if (domain) {
           timeUnitDomainMap[fieldDef.timeUnit] = true;
@@ -28,15 +28,22 @@ export namespace timeUnitDomain {
   export const parseUnit = parse;
 
   export function parseFacet(model: FacetModel) {
-    // always merge with child
-    return extend(parse(model), model.child().component.data.timeUnitDomain);
+    // merge since both child and facet can define time unit
+
+    const tuDomainComponent = parse(model);
+    const childDataComponent = model.child().component.data;
+
+    extend(tuDomainComponent, childDataComponent.timeUnitDomain);
+    delete childDataComponent.timeUnitDomain;
+
+    return tuDomainComponent;
   }
 
-  export function parseLayer(model: LayerModel) {
-    // always merge with children
-    return extend(parse(model), model.children().forEach((child) => {
-      return child.component.data.timeUnitDomain;
-    }));
+  export function merge(dataComponent: DataComponent, children: Model[]) {
+    children.forEach((child) => {
+      extend(dataComponent.timeUnitDomain, child.component.data.timeUnitDomain);
+      delete child.component.data.timeUnitDomain;
+    });
   }
 
   export function assemble(component: DataComponent): VgData[] {

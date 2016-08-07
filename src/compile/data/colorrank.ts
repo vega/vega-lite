@@ -4,7 +4,6 @@ import {extend, vals, flatten, Dict} from '../../util';
 import {VgTransform} from '../../vega.schema';
 
 import {FacetModel} from './../facet';
-import {LayerModel} from './../layer';
 import {Model} from './../model';
 
 import {DataComponent} from './data';
@@ -36,34 +35,18 @@ export namespace colorRank {
   }
 
   export function parseFacet(model: FacetModel) {
+    // facet cannot have color channel so always merge up
+
     const childDataComponent = model.child().component.data;
-
-    // If child doesn't have its own data source, then consider merging
-    if (!childDataComponent.source) {
-      // TODO: we have to see if color has union scale here
-
-      // For now, let's assume it always has union scale
-      const colorRankComponent = childDataComponent.colorRank;
-      delete childDataComponent.colorRank;
-      return colorRankComponent;
-    }
-    return {} as Dict<VgTransform[]>;
+    delete childDataComponent.colorRank;
+    return childDataComponent.colorRank;
   }
 
-  export function parseLayer(model: LayerModel) {
-    let colorRankComponent = {} as Dict<VgTransform[]>;
-
-    model.children().forEach((child) => {
-      const childDataComponent = child.component.data;
-
-      // If child doesn't have its own data source, then merge
-      if (!childDataComponent.source) {
-        extend(colorRankComponent, childDataComponent.colorRank);
-        delete childDataComponent.colorRank;
-      }
+  export function merge(dataComponent: DataComponent, childDataComponents: DataComponent[]) {
+    childDataComponents.forEach((childData) => {
+      extend(dataComponent.colorRank, childData.colorRank);
+      delete childData.colorRank;
     });
-
-    return colorRankComponent;
   }
 
   export function assemble(component: DataComponent) {

@@ -2,10 +2,8 @@ import {DateTime, dateTimeExpr, isDateTime} from '../../datetime';
 import {field} from '../../fielddef';
 import {isEqualFilter, isInFilter, isRangeFilter, Filter} from '../../filter';
 import {TimeUnit, fieldExpr as timeUnitFieldExpr, isSingleTimeUnit} from '../../timeunit';
-import {isArray, isString} from '../../util';
+import {isArray, isString, allSame} from '../../util';
 
-import {FacetModel} from '../facet';
-import {LayerModel} from '../layer';
 import {Model} from '../model';
 
 import {DataComponent} from './data';
@@ -84,33 +82,31 @@ export namespace filter {
 
   export const parseUnit = parse;
 
-  export function parseFacet(model: FacetModel) {
-    let filterComponent = parse(model);
+  // children have no transform so nothing to merge up
+  export const parseFacet = parse;
 
-    const childDataComponent = model.child().component.data;
+  /**
+   * Combines the filter in the data component if all child data components define the same filter.
+   */
+  export function mergeIfEqual(dataComponent: DataComponent, childDataComponents: DataComponent[]) {
+    const sameFilter = allSame(childDataComponents, (childData) => childData.filter);
 
-    // If child doesn't have its own data source but has filter, then merge
-    if (!childDataComponent.source && childDataComponent.filter) {
-      // merge by adding &&
-      filterComponent =
-        (filterComponent ? filterComponent + ' && ' : '') +
-        childDataComponent.filter;
-      delete childDataComponent.filter;
-    }
-    return filterComponent;
-  }
-
-  export function parseLayer(model: LayerModel) {
-    // Note that this `filter.parseLayer` method is called before `source.parseLayer`
-    let filterComponent = parse(model);
-    model.children().forEach((child) => {
-      const childDataComponent = child.component.data;
-      if (model.compatibleSource(child) && childDataComponent.filter && childDataComponent.filter === filterComponent) {
-        // same filter in child so we can just delete it
-        delete childDataComponent.filter;
+    if (sameFilter) {
+      // combine filter at parent
+      let filters = [];
+      if (dataComponent.filter) {
+        filters.push(dataComponent.filter);
       }
-    });
-    return filterComponent;
+      if (childDataComponents[0].filter) {
+        filters.push(childDataComponents[0].filter);
+      }
+      dataComponent.filter = filters.join('&&');
+      childDataComponents.forEach((childData) => {
+        delete childData.filter;
+      });
+    }
+
+    return sameFilter;
   }
 
   export function assemble(component: DataComponent) {

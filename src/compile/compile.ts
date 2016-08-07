@@ -38,8 +38,8 @@ function assemble(model: Model) {
       height: 1,
       padding: 'auto'
     },
-    config.viewport ? { viewport: config.viewport } : {},
-    config.background ? { background: config.background } : {},
+    config && config.viewport ? { viewport: config.viewport } : {},
+    config && config.background ? { background: config.background } : {},
     {
       // TODO: signal: model.assembleSelectionSignal
       data: [].concat(
@@ -70,7 +70,8 @@ export function assembleRootGroup(model: Model) {
             width: {field: 'width'},
             height: {field: 'height'}
           },
-          model.assembleParentGroupProperties(model.config().cell)
+          // TODO: revise if this is always correct to be here
+          model.config() ? model.assembleParentGroupProperties(model.config().cell) : {}
         )
       }
     });

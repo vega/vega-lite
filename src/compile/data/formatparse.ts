@@ -1,9 +1,9 @@
 import {FieldDef, isCount} from '../../fielddef';
 import {QUANTITATIVE, TEMPORAL} from '../../type';
-import {extend, differ, Dict} from '../../util';
+import {extend, Dict, forEach} from '../../util';
+import {DataComponent} from './data';
 
 import {FacetModel} from './../facet';
-import {LayerModel} from './../layer';
 import {Model} from './../model';
 
 export namespace formatParse {
@@ -25,6 +25,9 @@ export namespace formatParse {
           return;
         }
         parseComponent[fieldDef.field] = 'number';
+      } else {
+        // the field should not be parsed
+        parseComponent[fieldDef.field] = null;
       }
     });
     return parseComponent;
@@ -33,30 +36,50 @@ export namespace formatParse {
   export const parseUnit = parse;
 
   export function parseFacet(model: FacetModel) {
-    let parseComponent = parse(model);
-
-    // If child doesn't have its own data source, but has its own parse, then merge
+    const formatComponent = parse(model);
     const childDataComponent = model.child().component.data;
-    if (!childDataComponent.source && childDataComponent.formatParse) {
-      extend(parseComponent, childDataComponent.formatParse);
-      delete childDataComponent.formatParse;
-    }
-    return parseComponent;
+
+    extend(formatComponent, childDataComponent.formatParse);
+    delete childDataComponent.formatParse;
+
+    return formatComponent;
   }
 
-  export function parseLayer(model: LayerModel) {
-    // note that we run this before source.parseLayer
-    let parseComponent = parse(model);
-    model.children().forEach((child) => {
-      const childDataComponent = child.component.data;
-      if (model.compatibleSource(child) && !differ(childDataComponent.formatParse, parseComponent)) {
-        // merge parse up if the child does not have an incompatible parse
-        extend(parseComponent, childDataComponent.formatParse);
-        delete childDataComponent.formatParse;
+  /**
+   * Merge the format parse from the parent and all components into parent.
+   * Returns whether parse is compatible. It is defined to be compatible if no
+   * child defines a parse that differens from any other.
+   *
+   * Format parse is only merged up if the parent either does not define a parse or the same parse.
+   */
+  export function merge(dataComponent: DataComponent, childDataComponents: DataComponent[]) {
+    let compatible = true;
+    childDataComponents.reduce((collector, childData) => {
+      if (childData.formatParse) {
+        forEach(childData.formatParse, (parse, field) => {
+          if (parse === collector[field] || collector[field] === undefined) {
+            collector[field] = parse;
+            delete childData.formatParse[field];
+          } else {
+            compatible = false;
+          }
+        });
+      }
+      return collector;
+    }, dataComponent.formatParse);
+    return compatible;
+  }
+
+  /**
+   * Assemble only removes null because we only used it to indicate that a field should not be parsed.
+   */
+  export function assemble(component: DataComponent) {
+    const parse = component.formatParse;
+    forEach(parse, (type, field) => {
+      if (type === null) {
+        delete parse[field];
       }
     });
-    return parseComponent;
+    return parse;
   }
-
-  // Assemble for formatParse is an identity function, no need to declare
 }

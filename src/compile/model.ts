@@ -9,12 +9,12 @@ import {Scale, ScaleType} from '../scale';
 import {SortField, SortOrder} from '../sort';
 import {BaseSpec} from '../spec';
 import {Transform} from '../transform';
-import {extend, flatten, vals, warning, Dict} from '../util';
+import {extend, flatten, vals, warning, Dict, forEach} from '../util';
 import {VgData, VgMarkGroup, VgScale, VgAxis, VgLegend} from '../vega.schema';
 
 import {DataComponent} from './data/data';
 import {LayoutComponent} from './layout';
-import {ScaleComponents} from './scale';
+import {ScaleComponents, renameScaleData} from './scale';
 
 /**
  * Composable Components that are intermediate results of the parsing phase of the
@@ -42,7 +42,7 @@ export interface Component {
   mark: VgMarkGroup[];
 }
 
-class NameMap {
+export class NameMap {
   private _nameMap: Dict<string>;
 
   constructor() {
@@ -50,16 +50,31 @@ class NameMap {
   }
 
   public rename(oldName: string, newName: string) {
+    if (this._nameMap[newName] === oldName) {
+      console.error('Cannot rename ' + oldName + ' to ' + newName);
+      return;
+    }
+
+    if (newName in this._nameMap) {
+      // since we already have a new name for the target, we need to change it
+      newName = this._nameMap[newName];
+    } else {
+      // update existing renames
+      forEach(this._nameMap, (existingNewName, existingOldName) => {
+        if (existingNewName === oldName) {
+          this._nameMap[existingOldName] = newName;
+        }
+      });
+    }
+
     this._nameMap[oldName] = newName;
   }
 
   public get(name: string): string {
-    // If the name appears in the _nameMap, we need to read its new name.
-    // We have to loop over the dict just in case, the new name also gets renamed.
-    while (this._nameMap[name]) {
-      name = this._nameMap[name];
+    if (name in this._nameMap) {
+      return this._nameMap[name];
     }
-
+    // no rename
     return name;
   }
 }
@@ -117,12 +132,12 @@ export abstract class Model {
     this.parseData();
     this.parseSelectionData();
     this.parseLayoutData();
-    this.parseScale(); // depends on data name
-    this.parseAxis(); // depends on scale name
-    this.parseLegend(); // depends on scale name
-    this.parseAxisGroup(); // depends on child axis
+    this.parseScale();
+    this.parseAxis();
+    this.parseLegend();
+    this.parseAxisGroup();
     this.parseGridGroup();
-    this.parseMark(); // depends on data name and scale name, axisGroup, gridGroup and children's scale, axis, legend and mark.
+    this.parseMark();
   }
 
   public abstract parseData();
@@ -143,6 +158,19 @@ export abstract class Model {
   public abstract parseAxisGroup();
   public abstract parseGridGroup();
 
+  /**
+   * Set the flag to assemble a raw data source to true.
+   *
+   * We need a raw data source for example when we want to sort the domain of a
+   * scale by an aggregated value.
+   */
+  public setAssembleRaw() {
+    if (this.component.data && this.component.data.aggregate) {
+      this.component.data.aggregate.assembleRaw = true;
+    } else if (this.parent()) {
+      this.parent().setAssembleRaw();
+    }
+  }
 
   public abstract assembleData(data: VgData[]): VgData[];
 
@@ -156,13 +184,14 @@ export abstract class Model {
     // FIXME: write assembleScales() in scale.ts that
     // help assemble scale domains with scale signature as well
     return flatten(vals(this.component.scale).map((scales: ScaleComponents) => {
-      let arr = [scales.main];
+      let arr = [renameScaleData(this, scales.main)];
       if (scales.colorLegend) {
-        arr.push(scales.colorLegend);
+        arr.push(renameScaleData(this, scales.colorLegend));
       }
       if (scales.binColorLegend) {
-        arr.push(scales.binColorLegend);
+        arr.push(renameScaleData(this, scales.binColorLegend));
       }
+
       return arr;
     }));
   }
@@ -215,6 +244,7 @@ export abstract class Model {
     channelMappingForEach(this.channels(), this.mapping(), f, t);
   }
 
+  // FIXME: eliminate this method
   public abstract has(channel: Channel): boolean;
 
   public parent(): Model {
@@ -234,17 +264,28 @@ export abstract class Model {
   }
 
   public renameData(oldName: string, newName: string) {
-     this._dataNameMap.rename(oldName, newName);
+    if (oldName === newName) {
+      console.error('Cannot rename ' + oldName + ' to itself.');
+      return;
+    }
+    this._dataNameMap.rename(oldName, newName);
   }
 
   /**
    * Return the data source name for the given data source type.
    *
    * For unit spec, this is always simply the spec.name + '-' + dataSourceType.
-   * We already use the name map so that marks and scales use the correct data.
+   * The data name has not been renamed yet. Call `dataName` to get the final name.
    */
   public dataName(dataSourceType: DataTable): string {
-    return this._dataNameMap.get(this.name(String(dataSourceType)));
+    return this.name(String(dataSourceType));
+  }
+
+  /**
+   * Returns the renamed data name after renaming.
+   */
+  public renamedDataName(dataName: string) {
+    return this._dataNameMap.get(dataName);
   }
 
   public renameSize(oldName: string, newName: string) {
@@ -258,8 +299,6 @@ export abstract class Model {
   public sizeName(size: string): string {
      return this._sizeNameMap.get(this.name(size, '_'));
   }
-
-  public abstract dataTable(): string;
 
   public transform(): Transform {
     return this._transform || {};
@@ -278,13 +317,17 @@ export abstract class Model {
     return field(fieldDef, opt);
   }
 
+  // FIXME: eliminate this method
   public abstract fieldDef(channel: Channel): FieldDef;
 
   public scale(channel: Channel): Scale {
-    return this._scale[channel];
+    return this._scale && this._scale[channel];
   }
 
-  // TODO: rename to hasOrdinalScale
+  public abstract hasScale(channel: Channel): boolean;
+  public abstract hasAxis(channel: Channel): boolean;
+
+  // FIXME: eliminate this method
   public isOrdinalScale(channel: Channel) {
     const scale = this.scale(channel);
     return scale && scale.type === ScaleType.ORDINAL;
@@ -306,7 +349,7 @@ export abstract class Model {
   public abstract stack();
 
   public axis(channel: Channel): Axis {
-    return this._axis[channel];
+    return this._axis && this._axis[channel];
   }
 
   public legend(channel: Channel): Legend {
@@ -327,6 +370,18 @@ export abstract class Model {
 
   public warnings(): string[] {
     return this._warnings;
+  }
+
+  // Determined whether the model is faceted by going up until either
+  // the model defines a data source or is a facet model.
+  public isFaceted() {
+    if (this.isFacet()) {
+      return true;
+    }
+    if (this.data()) {
+      return false;
+    }
+    return this.parent() && this.parent().isFaceted();
   }
 
   /**

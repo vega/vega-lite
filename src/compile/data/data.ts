@@ -1,6 +1,7 @@
 import {Formula} from '../../transform';
-import {keys, Dict, StringSet} from '../../util';
+import {Dict, StringSet, stableStringify, allSame, duplicate, keys} from '../../util';
 import {VgData, VgTransform} from '../../vega.schema';
+import {SOURCE, RAW, STACKED_SCALE} from '../../data';
 
 import {FacetModel} from './../facet';
 import {LayerModel} from './../layer';
@@ -12,9 +13,9 @@ import {formatParse} from './formatparse';
 import {nullFilter} from './nullfilter';
 import {filter} from './filter';
 import {bin} from './bin';
-import {formula} from './formula';
+import {calculate} from './calculate';
 import {nonPositiveFilter} from './nonpositivenullfilter';
-import {summary} from './summary';
+import {aggregate} from './aggregate';
 import {stackScale} from './stackscale';
 import {timeUnit} from './timeunit';
 import {timeUnitDomain} from './timeunitdomain';
@@ -25,7 +26,8 @@ import {colorRank} from './colorrank';
  * Composable component instance of a model's data.
  */
 export interface DataComponent {
-  source: VgData;
+  // data source or reference to data source
+  source: SourceComponent;
 
   /** Mapping from field name to primitive data type.  */
   formatParse: Dict<string>;
@@ -48,99 +50,208 @@ export interface DataComponent {
   /** String set of fields to be filtered */
   nonPositiveFilter: Dict<boolean>;
 
-  /** Data source for feeding stacked scale. */
-  // TODO: need to revise if single VgData is sufficient with layer / concat
-  stackScale: VgData;
+  /** Data transform for stacked scale. */
+  stackScale: {type: string, groupby: string[], summarize: any[]};
 
-  /** Dictionary mapping an output field name (hash) to the sort and rank transforms  */
+  /** Dictionary mapping an output field name (hash) to the sort and rank transforms */
   colorRank: Dict<VgTransform[]>;
 
   /** String set of time units that need their own data sources for scale domain */
   timeUnitDomain: StringSet;
 
-  /** Array of summary component object for producing summary (aggregate) data source */
-  summary: SummaryComponent[];
+  /** Conponent that produces aggregates */
+  aggregate: AggregateComponent;
 }
 
 /**
- * Composable component for a model's summary data
+ * Component for aggregations.
  */
-export interface SummaryComponent {
-  /** Name of the summary data source */
-  name: string;
-
+export interface AggregateComponent {
   /** String set for all dimension fields  */
   dimensions: StringSet;
 
   /** dictionary mapping field name to string set of aggregate ops */
   measures: Dict<StringSet>;
+
+  /**
+   * Whether we need the unaggrgeated data source.
+   * Should be set when we parse the scales.
+   */
+  assembleRaw?: boolean;
 }
 
-// TODO: split this file into multiple files and remove this linter flag
-/* tslint:disable:no-use-before-declare */
-
-export function parseUnitData(model: UnitModel): DataComponent {
-  return {
-    formatParse: formatParse.parseUnit(model),
-    nullFilter: nullFilter.parseUnit(model),
-    filter: filter.parseUnit(model),
-    nonPositiveFilter: nonPositiveFilter.parseUnit(model),
-
-    source: source.parseUnit(model),
-    bin: bin.parseUnit(model),
-    calculate: formula.parseUnit(model),
-    timeUnit: timeUnit.parseUnit(model),
-    timeUnitDomain: timeUnitDomain.parseUnit(model),
-    summary: summary.parseUnit(model),
-    stackScale: stackScale.parseUnit(model),
-    colorRank: colorRank.parseUnit(model)
-  };
+export interface SourceComponent {
+  source?: string;
+  values?: any;
+  format?: any;
+  url?: any;
 }
-
-export function parseFacetData(model: FacetModel): DataComponent {
-  return {
-    formatParse: formatParse.parseFacet(model),
-    nullFilter: nullFilter.parseFacet(model),
-    filter: filter.parseFacet(model),
-    nonPositiveFilter: nonPositiveFilter.parseFacet(model),
-
-    source: source.parseFacet(model),
-    bin: bin.parseFacet(model),
-    calculate: formula.parseFacet(model),
-    timeUnit: timeUnit.parseFacet(model),
-    timeUnitDomain: timeUnitDomain.parseFacet(model),
-    summary: summary.parseFacet(model),
-    stackScale: stackScale.parseFacet(model),
-    colorRank: colorRank.parseFacet(model)
-  };
-}
-
-export function parseLayerData(model: LayerModel): DataComponent {
-  return {
-    // filter and formatParse could cause us to not be able to merge into parent
-    // so let's parse them first
-    filter: filter.parseLayer(model),
-    formatParse: formatParse.parseLayer(model),
-    nullFilter: nullFilter.parseLayer(model),
-    nonPositiveFilter: nonPositiveFilter.parseLayer(model),
-
-    // everything after here does not affect whether we can merge child data into parent or not
-    source: source.parseLayer(model),
-    bin: bin.parseLayer(model),
-    calculate: formula.parseLayer(model),
-    timeUnit: timeUnit.parseLayer(model),
-    timeUnitDomain: timeUnitDomain.parseLayer(model),
-    summary: summary.parseLayer(model),
-    stackScale: stackScale.parseLayer(model),
-    colorRank: colorRank.parseLayer(model)
-  };
-}
-
-
-/* tslint:enable:no-use-before-declare */
 
 /**
- * Creates Vega Data array from a given compiled model and append all of them to the given array
+ * Parses a model with data.
+ */
+function parseData(model: Model): DataComponent {
+  return {
+    source: source.parseUnit(model),
+    formatParse: formatParse.parseUnit(model),
+    calculate: calculate.parseUnit(model),
+    filter: filter.parseUnit(model),
+    bin: bin.parseUnit(model),
+    timeUnit: timeUnit.parseUnit(model),
+    aggregate: aggregate.parseUnit(model),
+    colorRank: colorRank.parseUnit(model),
+    stackScale: stackScale.parseUnit(model),
+    nonPositiveFilter: nonPositiveFilter.parseUnit(model),
+    nullFilter: nullFilter.parseUnit(model),
+    timeUnitDomain: timeUnitDomain.parseUnit(model)
+  };
+}
+
+/**
+ * Create components for data source and transforms/ aggregates.
+ */
+export function parseUnitData(model: UnitModel): DataComponent {
+  return parseData(model);
+}
+
+/**
+ * Add the facet fields as dimensions to the summary component.
+ */
+export function parseFacetData(model: FacetModel): DataComponent {
+  const child = model.child();
+
+  // TODO: enforce this in the schema
+  if (child.data() || keys(child.transform()).length !== 0) {
+    model.addWarning('Facet child should not define data source or transform.');
+  }
+
+  // rename all references to child data, everything should have been merged up
+  [RAW, SOURCE, STACKED_SCALE].forEach((data) => {
+    model.renameData(child.dataName(data), model.dataName(data));
+  });
+
+  // we should completely move the data component to the facet because
+  // the child does not need its own data
+
+  return {
+    source: source.parseFacet(model),
+    formatParse: formatParse.parseFacet(model),
+    calculate: calculate.parseFacet(model),
+    filter: filter.parseFacet(model),
+    bin: bin.parseFacet(model),
+    timeUnit: timeUnit.parseFacet(model),
+    aggregate: aggregate.parseFacet(model),
+    colorRank: colorRank.parseFacet(model),
+    stackScale: stackScale.parseFacet(model),
+    nonPositiveFilter: nonPositiveFilter.parseFacet(model),
+    nullFilter: nullFilter.parseFacet(model),
+    timeUnitDomain: timeUnitDomain.parseFacet(model)
+  };
+}
+
+/**
+ * Merge data components from children into data component.
+ * Expects that a single source is either defined in the parent or in all
+ * sources (has to be the same source).
+ */
+function mergeChildren(model: Model, dataComponent: DataComponent, children: UnitModel[]): DataComponent {
+  if (children.length === 0) {
+    return dataComponent;
+  }
+
+  const childDataComponents = children.map((child: UnitModel) => child.component.data);
+
+  // set the parent source as child source
+  childDataComponents.forEach((childData) => {
+    childData.source = {
+      source: model.dataName(SOURCE)
+    };
+  });
+
+  const compatibleParse = formatParse.merge(dataComponent, childDataComponents);
+  if (!compatibleParse) {
+    // if the parse is incompatible, we have to abort merging
+    return dataComponent;
+  }
+
+  const mergedAllFormulas = calculate.merge(dataComponent, childDataComponents);
+
+  if (!mergedAllFormulas) {
+    // we could not merge all formula up so we have to stop merging because other
+    // transforms depend on this
+    return dataComponent;
+  }
+
+  timeUnit.merge(dataComponent, childDataComponents);
+
+  const sameFilter = filter.mergeIfEqual(dataComponent, childDataComponents);
+  const compatibleNullFilter = nullFilter.mergeIfCompatible(dataComponent, childDataComponents);
+
+  if (!sameFilter || !compatibleNullFilter) {
+    return dataComponent;
+  }
+
+  // merge up bin if the children have no nullfilter or filter defined
+  // and the binning is the same
+  bin.merge(dataComponent, childDataComponents);
+
+  // TODO: selectionfilter
+
+  aggregate.merge(dataComponent, childDataComponents);
+  colorRank.merge(dataComponent, childDataComponents);
+
+  nonPositiveFilter.mergeIfCompatible(dataComponent, childDataComponents);
+
+  return dataComponent;
+}
+
+/**
+ * Merges data from children up if possible.
+ */
+export function parseLayerData(model: LayerModel): DataComponent {
+  const dataComponent = parseData(model);
+
+  /** function to compare the data sources */
+  function dataHash(component: DataComponent): string {
+    const source = component.source;
+    if (!source) {
+      return null;
+    }
+    if (source.values) {
+      return stableStringify(source.values);
+    }
+    return stableStringify(source.url + source.format);
+  }
+
+  // merge time unit domains by moving them up
+  timeUnitDomain.merge(dataComponent, model.children());
+
+  if (dataComponent.source) {
+    // merge up what we can from the children that have the same source as the layer data
+    const parentHash = dataHash(dataComponent);
+    return mergeChildren(model, dataComponent, model.children().filter((child) => {
+      return child.component.data.source === undefined || parentHash === dataHash(child.component.data);
+    }));
+  } else {
+    const sameSources = allSame(model.children().map((child: UnitModel) => {
+      return dataHash(child.component.data);
+    }));
+    if (sameSources) {
+      const source = model.children()[0].component.data.source;
+      dataComponent.source = source ? duplicate(source) : source;
+
+      return mergeChildren(model, dataComponent, model.children());
+    }
+
+    // Children have different sources but they could be undefined and thus need to be linked up.
+    // The specific case is a layer inside a facet where one layer has a data source.
+    const noSourceChildren = model.children().filter((child) => !child.component.data.source);
+    return mergeChildren(model, dataComponent, noSourceChildren);
+  }
+}
+
+/**
+ * Creates Vega Data array from a given compiled model and append all of them to the given array.
  *
  * @param  model
  * @param  data array
@@ -149,46 +260,100 @@ export function parseLayerData(model: LayerModel): DataComponent {
 export function assembleData(model: Model, data: VgData[]) {
   const component = model.component.data;
 
-  const sourceData = source.assemble(model, component);
-  if (sourceData) {
-    data.push(sourceData);
+  if (!component || !component.source) {
+    return data;
   }
 
-  summary.assemble(component, model).forEach(function(summaryData) {
-    data.push(summaryData);
-  });
+  let dataSource = source.assemble(model, component);
+  data.push(dataSource);
 
-  if (data.length > 0) {
-    const dataTable = data[data.length - 1];
+  dataSource.transform = [].concat(
+    calculate.assemble(component),
+    filter.assemble(component),
+    nullFilter.assemble(component),
+    bin.assemble(component),
+    timeUnit.assemble(component)
+  );
 
-    // color rank
-    const colorRankTransform = colorRank.assemble(component);
-    if (colorRankTransform.length > 0) {
-      dataTable.transform = (dataTable.transform || []).concat(colorRankTransform);
-    }
+  let rawSource;
+  const assembleRaw = component.aggregate && component.aggregate.assembleRaw;
+  if (assembleRaw) {
+    // create an intermediate data source for raw data
+    const sourceName = dataSource.name;
+    const rawName = model.dataName(RAW);
+    rawSource = dataSource;
+    dataSource.name = rawName;
 
-    // nonPositiveFilter
-    const nonPositiveFilterTransform = nonPositiveFilter.assemble(component);
-    if (nonPositiveFilterTransform.length > 0) {
-      dataTable.transform = (dataTable.transform || []).concat(nonPositiveFilterTransform);
-    }
-  } else {
-    if (keys(component.colorRank).length > 0) {
-      throw new Error('Invalid colorRank not merged');
-    } else if (keys(component.nonPositiveFilter).length > 0) {
-      throw new Error('Invalid nonPositiveFilter not merged');
-    }
+    dataSource = {
+      source: rawName,
+      name: sourceName
+    };
+    data.push(dataSource);
+  }
+
+  const aggregates = aggregate.assemble(component);
+  if (aggregates.length > 0) {
+    dataSource.transform = (dataSource.transform || []).concat(aggregates);
+  }
+
+  // add rank transform
+  const rank = colorRank.assemble(component);
+  if (rank.length > 0) {
+    dataSource.transform = (dataSource.transform || []).concat(rank);
+  }
+
+  if (keys(dataSource.transform).length === 0) {
+    delete dataSource.transform;
   }
 
   // stack
-  // TODO: revise if this actually should be an array
-  const stackData = stackScale.assemble(component);
-  if (stackData) {
-    data.push(stackData);
+  const stackTransform = stackScale.assemble(component);
+  if (stackTransform) {
+    data.push({
+      name: model.dataName(STACKED_SCALE),
+      source: dataSource.name,
+      transform: [stackTransform]
+    });
   }
 
-  timeUnitDomain.assemble(component).forEach(function(timeUnitDomainData) {
-    data.push(timeUnitDomainData);
-  });
+  // scale
+  const posFilter = nonPositiveFilter.assemble(component);
+  if (posFilter) {
+    if (assembleRaw) {
+      rawSource.transform = (rawSource.transform || []).concat(posFilter);
+    } else {
+      dataSource.transform = (dataSource.transform || []).concat(posFilter);
+    }
+  }
+
+  // time unit domain
+  const tuDomain = timeUnitDomain.assemble(component);
+  if (tuDomain) {
+    data.push.apply(data, tuDomain);
+  }
+
+  // remove data sources that are not needed
+  let index = data.length - 1;
+  while (index >= 0) {
+    const ds = data[index];
+
+    // delete empty transforms
+    if (keys(ds.transform).length === 0) {
+      delete ds.transform;
+    }
+
+    // rename sources to close gaps
+    if (ds.source) {
+      ds.source = model.renamedDataName(ds.source);
+    }
+
+    // delete data sources that are empty
+    if (!ds.transform && ds.source) {
+      model.renameData(ds.name, ds.source);
+      data.splice(index, 1);
+    }
+    index -= 1;
+  }
+
   return data;
 }

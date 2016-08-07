@@ -1,4 +1,4 @@
-import {isArray} from './util';
+import {isArray, isObject} from './util';
 import {ScaleType, NiceTime} from './scale';
 
 export interface VgData {
@@ -62,6 +62,10 @@ export type VgScale = {
   reverse?: boolean,
   round?: boolean,
   zero?: boolean
+}
+
+export function isVgData(data: string | VgData): data is VgData {
+  return isObject(data);
 }
 
 export function isUnionedDomain(domain: any[] | UnionedDomain | VgDataRef): domain is UnionedDomain {

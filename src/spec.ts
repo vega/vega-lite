@@ -82,11 +82,34 @@ export interface FacetSpec extends BaseSpec {
   spec: LayerSpec | UnitSpec;
 }
 
+export enum ResolveMode {
+  INDEPENDENT = 'independent' as any,
+  SHARED = 'shared' as any
+}
+
+export const INDEPENDENT = ResolveMode.INDEPENDENT;
+export const SHARED = ResolveMode.SHARED;
+
+export interface ChannelResolve {
+  scale: ResolveMode;
+  axis?: ResolveMode;
+  legend?: ResolveMode;
+}
+
+export type ResolveMapping = {
+  x?: ChannelResolve;
+  y?: ChannelResolve;
+  shape?: ChannelResolve;
+  size?: ChannelResolve;
+  color?: ChannelResolve;
+}
+
 export interface LayerSpec extends BaseSpec {
   /**
    * Unit specs that will be layered.
    */
   layers: UnitSpec[];
+  resolve?: ResolveMapping;
 }
 
 /** This is for the future schema */
@@ -125,7 +148,7 @@ export function isUnitSpec(spec: ExtendedSpec): spec is UnitSpec {
 }
 
 export function isSomeUnitSpec(spec: ExtendedSpec): spec is ExtendedUnitSpec | UnitSpec {
-  return spec['mark'] !== undefined;
+  return spec['layer'] === undefined && spec['facet'] === undefined;
 }
 
 export function isLayerSpec(spec: ExtendedSpec): spec is LayerSpec {

@@ -1,11 +1,10 @@
 import {autoMaxBins} from '../../bin';
 import {Channel, COLOR} from '../../channel';
 import {field, FieldDef} from '../../fielddef';
-import {extend, vals, flatten, hash, Dict} from '../../util';
+import {extend, vals, flatten, stableStringify, Dict, isObject} from '../../util';
 import {VgTransform} from '../../vega.schema';
 
 import {FacetModel} from './../facet';
-import {LayerModel} from './../layer';
 import {Model} from './../model';
 
 import {DataComponent} from './data';
@@ -25,7 +24,7 @@ export namespace bin {
           }
         },
           // if bin is an object, load parameter here!
-          typeof bin === 'boolean' ? {} : bin
+          isObject(bin) ? bin : {}
         );
 
         if (!binTrans.maxbins && !binTrans.step) {
@@ -46,44 +45,29 @@ export namespace bin {
           });
         }
         // FIXME: current merging logic can produce redundant transforms when a field is binned for color and for non-color
-        const key = hash(bin) + '_' + fieldDef.field + 'oc:' + isOrdinalColor;
+        const key = (isObject(bin) ? stableStringify(bin) + '_' : '') + fieldDef.field + 'oc:' + isOrdinalColor;
         binComponent[key] = transform;
       }
       return binComponent;
     }, {});
   }
 
-  export const parseUnit = parse;
-
   export function parseFacet(model: FacetModel) {
-    let binComponent = parse(model);
-
+    const binComponent = parse(model);
     const childDataComponent = model.child().component.data;
 
-    // If child doesn't have its own data source, then merge
-    if (!childDataComponent.source) {
-      // FIXME: current merging logic can produce redundant transforms when a field is binned for color and for non-color
-      extend(binComponent, childDataComponent.bin);
-      delete childDataComponent.bin;
-    }
+    extend(binComponent, childDataComponent.bin);
     return binComponent;
   }
 
-  export function parseLayer(model: LayerModel) {
-    let binComponent = parse(model);
-
-    model.children().forEach((child) => {
-      const childDataComponent = child.component.data;
-
-      // If child doesn't have its own data source, then merge
-      if (!childDataComponent.source) {
-        extend(binComponent, childDataComponent.bin);
-        delete childDataComponent.bin;
-      }
+  export function merge(dataComponent: DataComponent, childDataComponents: DataComponent[]) {
+    childDataComponents.forEach((childData) => {
+      extend(dataComponent.bin, childData.bin);
+      delete childData.bin;
     });
-
-    return binComponent;
   }
+
+  export const parseUnit = parse;
 
   export function assemble(component: DataComponent) {
     return flatten(vals(component.bin));

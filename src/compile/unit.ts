@@ -2,7 +2,6 @@ import {AggregateOp} from '../aggregate';
 import {Axis} from '../axis';
 import {X, Y, X2, Y2, TEXT, PATH, ORDER, Channel, UNIT_CHANNELS,  UNIT_SCALE_CHANNELS, NONSPATIAL_SCALE_CHANNELS, supportMark} from '../channel';
 import {defaultConfig, Config, CellConfig} from '../config';
-import {SOURCE, SUMMARY} from '../data';
 import {Encoding} from '../encoding';
 import * as vlEncoding from '../encoding'; // TODO: remove
 import {FieldDef, FieldRefOption, field} from '../fielddef';
@@ -138,6 +137,14 @@ export class UnitModel extends Model {
     }, {} as Dict<Legend>);
   }
 
+  public hasScale(channel: Channel): boolean {
+    return !!this.scale(channel);
+  }
+
+  public hasAxis(channel: Channel): boolean {
+    return !!this.axis(channel);
+  }
+
   public parseData() {
     this.component.data = parseUnitData(this);
   }
@@ -184,7 +191,15 @@ export class UnitModel extends Model {
   }
 
   public assembleMarks() {
-    return this.component.mark;
+    const marks = this.component.mark;
+    if (marks) {
+      marks.forEach((mark) => {
+        if (mark.from && mark.from.data) {
+          mark.from.data = this.renamedDataName(mark.from.data);
+        }
+      });
+    }
+    return marks;
   }
 
   public assembleParentGroupProperties(cellConfig: CellConfig) {
@@ -253,10 +268,6 @@ export class UnitModel extends Model {
     }
 
     return field(fieldDef, opt);
-  }
-
-  public dataTable() {
-    return this.dataName(vlEncoding.isAggregate(this._encoding) ? SUMMARY : SOURCE);
   }
 
   public isUnit() {

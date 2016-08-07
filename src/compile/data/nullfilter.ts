@@ -1,8 +1,7 @@
 import {FieldDef} from '../../fielddef';
-import {extend, keys, differ, Dict} from '../../util';
+import {extend, keys, differ, Dict, every, duplicate} from '../../util';
 
 import {FacetModel} from './../facet';
-import {LayerModel} from './../layer';
 import {Model} from './../model';
 
 import {DataComponent} from './data';
@@ -42,33 +41,31 @@ export namespace nullFilter {
   export const parseUnit = parse;
 
   export function parseFacet(model: FacetModel) {
-    let nullFilterComponent = parse(model);
-
+    const nullFilterComponent = parse(model);
     const childDataComponent = model.child().component.data;
 
-    // If child doesn't have its own data source, then merge
-    if (!childDataComponent.source) {
-      extend(nullFilterComponent, childDataComponent.nullFilter);
-      delete childDataComponent.nullFilter;
-    }
+    extend(nullFilterComponent, childDataComponent.nullFilter);
     return nullFilterComponent;
   }
 
-  export function parseLayer(model: LayerModel) {
-    // note that we run this before source.parseLayer
+  export function mergeIfCompatible(dataComponent: DataComponent, childDataComponents: DataComponent[]) {
+    const nullFilterComponent = childDataComponents.reduce((collector, childData) => {
+      extend(collector, childData.nullFilter);
+      return collector;
+    }, duplicate(dataComponent.nullFilter));
 
-    // FIXME: null filters are not properly propagated right now
-    let nullFilterComponent = parse(model);
-
-    model.children().forEach((child) => {
-      const childDataComponent = child.component.data;
-      if (model.compatibleSource(child) && !differ(childDataComponent.nullFilter, nullFilterComponent)) {
-        extend(nullFilterComponent, childDataComponent.nullFilter);
-        delete childDataComponent.nullFilter;
-      }
+    const compatibleNullfilter = every(childDataComponents, (childData) => {
+      return !differ(childData.nullFilter, nullFilterComponent);
     });
 
-    return nullFilterComponent;
+    if (compatibleNullfilter) {
+      dataComponent.nullFilter = nullFilterComponent;
+      childDataComponents.forEach((childData) => {
+        delete childData.nullFilter;
+      });
+    }
+
+    return compatibleNullfilter;
   }
 
   /** Convert the hashset of fields to a filter transform.  */

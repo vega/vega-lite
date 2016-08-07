@@ -29,7 +29,6 @@ function validateVega(spec) {
   const valid = validator.validate(vegaSpec, vgSchema);
   const errors = validator.getLastErrors();
   if (!valid) {
-    console.log(vegaSpec.marks[0].marks[0].properties);
     console.log(inspect(errors, { depth: 10, colors: true }));
   }
   assert(valid, errors && errors.map((err) => {return err.message; }).join(', '));

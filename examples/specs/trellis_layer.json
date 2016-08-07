@@ -1,0 +1,47 @@
+{
+  "description": "Faceted layers that show histogram of distances with highlight of distances for short delays.",
+  "data": {"url": "data/flights-2k.json"},
+  "facet": {
+    "row": {
+      "field": "date",
+      "type": "temporal",
+      "timeUnit": "month"
+    }
+  },
+  "spec": {
+    "layers": [
+      {
+        "mark": "bar",
+        "encoding": {
+          "x": {
+            "field": "distance",
+            "type": "quantitative",
+            "bin": true
+          },
+          "y": {
+            "aggregate": "count",
+            "field": "*",
+            "type": "quantitative"
+          }
+        }
+      },
+      {
+        "transform": {"filter": "datum.delay < 5"},
+        "mark": "bar",
+        "encoding": {
+          "x": {
+            "field": "distance",
+            "type": "quantitative",
+            "bin": true
+          },
+          "y": {
+            "aggregate": "count",
+            "field": "*",
+            "type": "quantitative"
+          },
+          "color": {"value": "goldenrod"}
+        }
+      }
+    ]
+  }
+}

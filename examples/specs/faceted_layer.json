@@ -1,0 +1,29 @@
+{
+  "description": "A faceted line chart with a global mean reference line",
+  "data": {"url": "data/stocks.csv","formatType": "csv"},
+  "facet": {"column": {"field": "symbol","type": "nominal"}},
+  "spec": {
+    "layers": [
+      {
+        "mark": "line",
+        "encoding": {
+          "x": {"field": "date","type": "temporal"},
+          "y": {"field": "price","type": "quantitative"}
+        }
+      },
+      {
+        "data": {"url": "data/stocks.csv","formatType": "csv"},
+        "mark": "rule",
+        "encoding": {
+          "y": {
+            "field": "price",
+            "type": "quantitative",
+            "aggregate": "mean"
+          },
+          "size": {"value": 2}
+        },
+        "config": {"mark": {"opacity": 0.5}}
+      }
+    ]
+  }
+}

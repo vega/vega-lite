@@ -4,9 +4,7 @@ import {fieldExpr} from '../../timeunit';
 import {TEMPORAL} from '../../type';
 import {extend, vals, Dict} from '../../util';
 import {VgTransform} from '../../vega.schema';
-
 import {FacetModel} from '../facet';
-import {LayerModel} from '../layer';
 import {Model} from '../model';
 
 import {DataComponent} from './data';
@@ -16,11 +14,10 @@ export namespace timeUnit {
     return model.reduce(function(timeUnitComponent, fieldDef: FieldDef, channel: Channel) {
       if (fieldDef.type === TEMPORAL && fieldDef.timeUnit) {
 
-        const hash = field(fieldDef);
-
-        timeUnitComponent[hash] = {
+        const f = field(fieldDef);
+        timeUnitComponent[f] = {
           type: 'formula',
-          field: field(fieldDef),
+          field: f,
           expr: fieldExpr(fieldDef.timeUnit, fieldDef.field)
         };
       }
@@ -31,28 +28,24 @@ export namespace timeUnit {
   export const parseUnit = parse;
 
   export function parseFacet(model: FacetModel) {
+    // merge since both child an facet can define time unit
     let timeUnitComponent = parse(model);
 
     const childDataComponent = model.child().component.data;
+    extend(timeUnitComponent, childDataComponent.timeUnit);
+    delete childDataComponent.timeUnit;
 
-    // If child doesn't have its own data source, then merge
-    if (!childDataComponent.source) {
-      extend(timeUnitComponent, childDataComponent.timeUnit);
-      delete childDataComponent.timeUnit;
-    }
     return timeUnitComponent;
   }
 
-  export function parseLayer(model: LayerModel) {
-    let timeUnitComponent = parse(model);
-    model.children().forEach((child) => {
-      const childDataComponent = child.component.data;
-      if (!childDataComponent.source) {
-        extend(timeUnitComponent, childDataComponent.timeUnit);
-        delete childDataComponent.timeUnit;
-      }
+  /**
+   * Merge up time unit. Since the map keys describes the field and the expression, we can just extend.
+   */
+  export function merge(dataComponent: DataComponent, childDataComponents: DataComponent[]) {
+    childDataComponents.forEach((childData) => {
+      extend(dataComponent.timeUnit, childData.timeUnit);
+      delete childData.timeUnit;
     });
-    return timeUnitComponent;
   }
 
   export function assemble(component: DataComponent) {

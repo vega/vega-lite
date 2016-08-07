@@ -59,13 +59,13 @@ export interface Data {
 }
 
 export enum DataTable {
+  RAW = 'raw' as any,
   SOURCE = 'source' as any,
-  SUMMARY = 'summary' as any,
   STACKED_SCALE = 'stacked_scale' as any,
   LAYOUT = 'layout' as any
 }
 
-export const SUMMARY = DataTable.SUMMARY;
+export const RAW = DataTable.RAW;
 export const SOURCE = DataTable.SOURCE;
 export const STACKED_SCALE = DataTable.STACKED_SCALE;
 export const LAYOUT = DataTable.LAYOUT;

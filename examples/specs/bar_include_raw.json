@@ -1,0 +1,13 @@
+{
+  "data": {"url": "data/cars.json"},
+  "mark": "bar",
+  "encoding": {
+    "y": {
+      "field": "Horsepower",
+      "type": "quantitative",
+      "aggregate": "mean",
+      "scale": {"includeRawDomain": true}
+    },
+    "x": {"field": "Origin","type": "nominal"}
+  }
+}

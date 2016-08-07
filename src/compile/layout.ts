@@ -1,6 +1,6 @@
 
 import {Channel, X, Y, ROW, COLUMN} from '../channel';
-import {LAYOUT} from '../data';
+import {LAYOUT, SOURCE} from '../data';
 import {ScaleType} from '../scale';
 import {Formula} from '../transform';
 import {extend, keys, StringSet} from '../util';
@@ -44,7 +44,7 @@ export function assembleLayout(model: Model, layoutData: VgData[]): VgData[] {
     return [
       distinctFields.length > 0 ? {
         name: model.dataName(LAYOUT),
-        source: model.dataTable(),
+        source: model.dataName(SOURCE),
         transform: [{
             type: 'aggregate',
             summarize: distinctFields.map(function(field) {
