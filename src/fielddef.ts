@@ -115,53 +115,51 @@ export interface FieldRefOption {
 }
 
 export function field(fieldDef: FieldDef, opt: FieldRefOption = {}) {
-  let f = fieldDef.field;
+  let field = fieldDef.field;
   let prefix = opt.prefix;
   let suffix = opt.suffix;
 
   if (isCount(fieldDef)) {
-    f = 'count';
+    field = 'count';
   } else {
-    let underscorePrefix;
+    let fn = opt.fn;
 
-    if (opt.fn) {
-      underscorePrefix = opt.fn;
-    } else if (!opt.nofn && fieldDef.bin) {
-      underscorePrefix = 'bin';
+    if (!opt.nofn) {
+      if (fieldDef.bin) {
+        fn = 'bin';
 
-      suffix = opt.binSuffix || (
-        opt.scaleType === ScaleType.ORDINAL ?
-          // For ordinal scale type, use `range` as suffix.
-          'range' :
-          // For non-ordinal scale or unknown, use `start` as suffix.
-          'start'
-      );
-    } else if (!opt.nofn) {
-      if (!opt.noAggregate && fieldDef.aggregate) {
-        underscorePrefix = fieldDef.aggregate;
+        suffix = opt.binSuffix || (
+          opt.scaleType === ScaleType.ORDINAL ?
+            // For ordinal scale type, use `range` as suffix.
+            'range' :
+            // For non-ordinal scale or unknown, use `start` as suffix.
+            'start'
+        );
+      } else if (!opt.noAggregate && fieldDef.aggregate) {
+        fn = String(fieldDef.aggregate);
       } else if (fieldDef.timeUnit) {
-        underscorePrefix = fieldDef.timeUnit;
+        fn = String(fieldDef.timeUnit);
       }
     }
 
-    if (!!underscorePrefix) {
-      f = `${underscorePrefix}_${f}`;
+    if (!!fn) {
+      field = `${fn}_${field}`;
     }
   }
 
   if (!!suffix) {
-    f = `${f}_${suffix}`;
+    field = `${field}_${suffix}`;
   }
 
   if (!!prefix) {
-    f = `${prefix}_${f}`;
+    field = `${prefix}_${field}`;
   }
 
   if (opt.datum) {
-    f = `datum["${f}"]`;
+    field = `datum["${field}"]`;
   }
 
-  return f;
+  return field;
 }
 
 function _isFieldDimension(fieldDef: FieldDef) {
