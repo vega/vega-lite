@@ -238,9 +238,12 @@ function getStackByFields(model: UnitModel) {
       } else {
         const fieldDef: FieldDef = channelEncoding;
         const scale = model.scale(channel);
-        fields.push(field(fieldDef, {
+        const _field = field(fieldDef, {
           binSuffix: scale && scale.type === ScaleType.ORDINAL ? 'range' : 'start'
-        }) || 'undefined');
+        });
+        if (!!_field) {
+          fields.push(_field);
+        }
       }
     }
     return fields;
