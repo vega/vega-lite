@@ -100,7 +100,7 @@ export interface FieldRefOption {
   nofn?: boolean;
   /** exclude aggregation function */
   noAggregate?: boolean;
-  /** include 'datum["$1"]' */
+  /** Wrap the field inside datum[...] per Vega convention */
   datum?: boolean;
   /** replace fn with custom function prefix */
   fn?: string;
