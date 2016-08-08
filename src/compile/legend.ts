@@ -175,7 +175,7 @@ export namespace properties {
       } else if (cfg.mark.fill !== undefined) {
         symbols.fill = {value: cfg.mark.fill};
       } else if (cfg.mark.stroke !== undefined) {
-        symbols.fill = {value: cfg.mark.stroke};
+        symbols.stroke = {value: cfg.mark.stroke};
       }
     }
 
