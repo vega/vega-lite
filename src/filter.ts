@@ -1,6 +1,5 @@
 import {DateTime, dateTimeExpr, isDateTime} from './datetime';
 import {field} from './fielddef';
-
 import {TimeUnit, fieldExpr as timeUnitFieldExpr, isSingleTimeUnit} from './timeunit';
 import {isArray, isString} from './util';
 
