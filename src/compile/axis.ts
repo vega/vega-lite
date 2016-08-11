@@ -295,13 +295,13 @@ export namespace properties {
       // TODO replace this with Vega's labelMaxLength once it is introduced
       labelsSpec = extend({
         text: {
-          template: '{{ datum.data | truncate:' + axis.labelMaxLength + ' }}'
+          template: '{{ datum["data"] | truncate:' + axis.labelMaxLength + ' }}'
         }
       }, labelsSpec || {});
     } else if (fieldDef.type === TEMPORAL) {
       labelsSpec = extend({
         text: {
-          template: timeTemplate('datum.data', fieldDef.timeUnit, axis.format, axis.shortTimeLabels, config)
+          template: timeTemplate('datum["data"]', fieldDef.timeUnit, axis.format, axis.shortTimeLabels, config)
         }
       }, labelsSpec);
     }

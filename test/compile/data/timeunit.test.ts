@@ -22,7 +22,7 @@ describe('compile/data/timeunitdomain', () => {
           month_a: {
             type: 'formula',
             field: 'month_a',
-            expr: 'datetime(0, month(datum.a), 1, 0, 0, 0, 0)'
+            expr: 'datetime(0, month(datum["a"]), 1, 0, 0, 0, 0)'
           }
         }
       );

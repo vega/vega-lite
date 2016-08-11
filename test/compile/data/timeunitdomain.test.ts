@@ -23,7 +23,7 @@ describe('compile/data/timeunitdomain', () => {
             transform: [{
               type: 'formula',
               field: 'date',
-              expr: 'datetime(0, datum.data, 1, 0, 0, 0, 0)'
+              expr: 'datetime(0, datum["data"], 1, 0, 0, 0, 0)'
             }]
           }
         ]

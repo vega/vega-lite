@@ -56,7 +56,7 @@ describe('data', function () {
         const sourceTransform = data[0].transform;
         assert.deepEqual(sourceTransform[sourceTransform.length - 1], {
           type: 'filter',
-          test: 'datum.b > 0'
+          test: 'datum["b"] > 0'
         });
       });
     });
@@ -68,9 +68,9 @@ describe('data', function () {
         transform: {
           calculate: [{
             field: 'b2',
-            expr: '2 * datum.b'
+            expr: '2 * datum["b"]'
           }],
-          filter: 'datum.a > datum.b && datum.c === datum.d'
+          filter: 'datum["a"] > datum["b"] && datum["c"] === datum["d"]'
         },
         mark: "point",
         encoding: {
@@ -208,7 +208,7 @@ describe('data: formatParse', function () {
       const model = parseUnitModel({
         transform: {
           calculate: [
-            {field: 'b2', expr: 'datum.b * 2'}
+            {field: 'b2', expr: 'datum["b"] * 2'}
           ]
         },
         mark: "point",
@@ -335,11 +335,11 @@ describe('data: filter', function () {
   describe('compileUnit', function () {
     const model = parseUnitModel({
       transform: {
-        filter: 'datum.a > datum.b && datum.c === datum.d'
+        filter: 'datum["a"] > datum["b"] && datum["c"] === datum["d"]'
       }
     });
     it('should return array that contains a filter transform', function () {
-      assert.deepEqual(filter.parseUnit(model), 'datum.a > datum.b && datum.c === datum.d');
+      assert.deepEqual(filter.parseUnit(model), 'datum["a"] > datum["b"] && datum["c"] === datum["d"]');
     });
   });
 
@@ -371,7 +371,7 @@ describe('data: timeUnit', function () {
       assert.deepEqual(transform[0], {
         type: 'formula',
         field: 'year_a',
-        expr: 'datetime(year(datum.a), 0, 1, 0, 0, 0, 0)'
+        expr: 'datetime(year(datum["a"]), 0, 1, 0, 0, 0, 0)'
       });
     });
   });
@@ -417,7 +417,7 @@ describe('data: timeUnitDomain', function() {
         name: 'day',
         transform: [
           {
-            expr: 'datetime(2006, 0, datum.data+1, 0, 0, 0, 0)',
+            expr: 'datetime(2006, 0, datum["data"]+1, 0, 0, 0, 0)',
             field: 'date',
             type: 'formula'
           }
@@ -463,7 +463,7 @@ describe('data: nonPositiveFilter', function () {
       const filterTransform = nonPositiveFilter.assemble(model.component.data)[0];
       assert.deepEqual(filterTransform, {
         type: 'filter',
-        test: 'datum.b > 0'
+        test: 'datum["b"] > 0'
       });
     });
   });

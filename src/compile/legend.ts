@@ -210,7 +210,7 @@ export namespace properties {
       } else if (fieldDef.type === TEMPORAL) {
         labelsSpec = extend({
           text: {
-            template: timeTemplate('datum.data', fieldDef.timeUnit, legend.format, legend.shortTimeLabels, config)
+            template: timeTemplate('datum["data"]', fieldDef.timeUnit, legend.format, legend.shortTimeLabels, config)
           }
         }, labelsSpec || {});
       }

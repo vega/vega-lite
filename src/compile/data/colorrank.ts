@@ -28,7 +28,7 @@ export namespace colorRank {
         type: 'rank',
         field: model.field(COLOR),
         output: {
-          rank: model.field(COLOR, { prefn: 'rank_' })
+          rank: model.field(COLOR, { prefix: 'rank' })
         }
       }];
     }
