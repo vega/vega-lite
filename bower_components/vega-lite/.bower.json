@@ -37,12 +37,12 @@
     "highlightjs": "~9.4.0",
     "octicons": "^4.2.0"
   },
-  "version": "1.1.2",
-  "_release": "1.1.2",
+  "version": "1.1.3",
+  "_release": "1.1.3",
   "_resolution": {
     "type": "version",
-    "tag": "v1.1.2",
-    "commit": "6be1de3b7d45e8332c8ed7c6f2139fc902e33da0"
+    "tag": "v1.1.3",
+    "commit": "9d4489c4f56091ecd2b3b8cbbabf2fe51ad1ddf8"
   },
   "_source": "https://github.com/uwdata/vega-lite.git",
   "_target": "^1.0.7",

@@ -248,7 +248,7 @@ export class UnitModel extends Model {
 
     if (fieldDef.bin) { // bin has default suffix that depends on scaleType
       opt = extend({
-        binSuffix: this.scale(channel).type === ScaleType.ORDINAL ? '_range' : '_start'
+        binSuffix: this.scale(channel).type === ScaleType.ORDINAL ? 'range' : 'start'
       }, opt);
     }
 

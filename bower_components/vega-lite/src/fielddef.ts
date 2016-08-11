@@ -95,52 +95,71 @@ export interface OrderChannelDef extends FieldDef {
 // TODO: consider if we want to distinguish ordinalOnlyScale from scale
 export type FacetChannelDef = PositionChannelDef;
 
-
-
 export interface FieldRefOption {
   /** exclude bin, aggregate, timeUnit */
   nofn?: boolean;
   /** exclude aggregation function */
   noAggregate?: boolean;
-  /** include 'datum.' */
+  /** Wrap the field inside datum[...] per Vega convention */
   datum?: boolean;
   /** replace fn with custom function prefix */
   fn?: string;
   /** prepend fn with custom function prefix */
-  prefn?: string;
+  prefix?: string;
   /** scaleType */
   scaleType?: ScaleType;
-  /** append suffix to the field ref for bin (default='_start') */
+  /** append suffix to the field ref for bin (default='start') */
   binSuffix?: string;
   /** append suffix to the field ref (general) */
   suffix?: string;
 }
 
 export function field(fieldDef: FieldDef, opt: FieldRefOption = {}) {
-  const prefix = (opt.datum ? 'datum.' : '') + (opt.prefn || '');
-  const suffix = opt.suffix || '';
-  const field = fieldDef.field;
+  let field = fieldDef.field;
+  let prefix = opt.prefix;
+  let suffix = opt.suffix;
 
   if (isCount(fieldDef)) {
-    return prefix + 'count' + suffix;
-  } else if (opt.fn) {
-    return prefix + opt.fn + '_' + field + suffix;
-  } else if (!opt.nofn && fieldDef.bin) {
-    const binSuffix = opt.binSuffix || (
-      opt.scaleType === ScaleType.ORDINAL ?
-        // For ordinal scale type, use `_range` as suffix.
-        '_range' :
-        // For non-ordinal scale or unknown, use `_start` as suffix.
-        '_start'
-    );
-    return prefix + 'bin_' + field + binSuffix;
-  } else if (!opt.nofn && !opt.noAggregate && fieldDef.aggregate) {
-    return prefix + fieldDef.aggregate + '_' + field + suffix;
-  } else if (!opt.nofn && fieldDef.timeUnit) {
-    return prefix + fieldDef.timeUnit + '_' + field + suffix;
+    field = 'count';
   } else {
-    return prefix + field;
+    let fn = opt.fn;
+
+    if (!opt.nofn) {
+      if (fieldDef.bin) {
+        fn = 'bin';
+
+        suffix = opt.binSuffix || (
+          opt.scaleType === ScaleType.ORDINAL ?
+            // For ordinal scale type, use `range` as suffix.
+            'range' :
+            // For non-ordinal scale or unknown, use `start` as suffix.
+            'start'
+        );
+      } else if (!opt.noAggregate && fieldDef.aggregate) {
+        fn = String(fieldDef.aggregate);
+      } else if (fieldDef.timeUnit) {
+        fn = String(fieldDef.timeUnit);
+      }
+    }
+
+    if (!!fn) {
+      field = `${fn}_${field}`;
+    }
   }
+
+  if (!!suffix) {
+    field = `${field}_${suffix}`;
+  }
+
+  if (!!prefix) {
+    field = `${prefix}_${field}`;
+  }
+
+  if (opt.datum) {
+    field = `datum["${field}"]`;
+  }
+
+  return field;
 }
 
 function _isFieldDimension(fieldDef: FieldDef) {

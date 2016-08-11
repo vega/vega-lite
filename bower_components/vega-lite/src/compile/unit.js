@@ -181,7 +181,7 @@ var UnitModel = (function (_super) {
         var fieldDef = this.fieldDef(channel);
         if (fieldDef.bin) {
             opt = util_1.extend({
-                binSuffix: this.scale(channel).type === scale_1.ScaleType.ORDINAL ? '_range' : '_start'
+                binSuffix: this.scale(channel).type === scale_1.ScaleType.ORDINAL ? 'range' : 'start'
             }, opt);
         }
         return fielddef_1.field(fieldDef, opt);

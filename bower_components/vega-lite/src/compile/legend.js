@@ -166,7 +166,7 @@ var properties;
             else if (fieldDef.type === type_1.TEMPORAL) {
                 labelsSpec = util_1.extend({
                     text: {
-                        template: common_1.timeTemplate('datum.data', fieldDef.timeUnit, legend.format, legend.shortTimeLabels, config)
+                        template: common_1.timeTemplate('datum["data"]', fieldDef.timeUnit, legend.format, legend.shortTimeLabels, config)
                     }
                 }, labelsSpec || {});
             }

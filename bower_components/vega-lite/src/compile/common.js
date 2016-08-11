@@ -44,7 +44,7 @@ function applyColorAndOpacity(p, model) {
     if (model.has(channel_1.COLOR)) {
         colorValue = {
             scale: model.scaleName(channel_1.COLOR),
-            field: model.field(channel_1.COLOR, colorFieldDef.type === type_1.ORDINAL ? { prefn: 'rank_' } : {})
+            field: model.field(channel_1.COLOR, colorFieldDef.type === type_1.ORDINAL ? { prefix: 'rank' } : {})
         };
     }
     else if (colorFieldDef && colorFieldDef.value) {
@@ -53,7 +53,7 @@ function applyColorAndOpacity(p, model) {
     if (model.has(channel_1.OPACITY)) {
         opacityValue = {
             scale: model.scaleName(channel_1.OPACITY),
-            field: model.field(channel_1.OPACITY, opacityFieldDef.type === type_1.ORDINAL ? { prefn: 'rank_' } : {})
+            field: model.field(channel_1.OPACITY, opacityFieldDef.type === type_1.ORDINAL ? { prefix: 'rank' } : {})
         };
     }
     else if (opacityFieldDef && opacityFieldDef.value) {
@@ -102,7 +102,7 @@ function numberFormat(fieldDef, format, config) {
 exports.numberFormat = numberFormat;
 function sortField(orderChannelDef) {
     return (orderChannelDef.sort === sort_1.SortOrder.DESCENDING ? '-' : '') +
-        fielddef_1.field(orderChannelDef, { binSuffix: '_mid' });
+        fielddef_1.field(orderChannelDef, { binSuffix: 'mid' });
 }
 exports.sortField = sortField;
 function timeTemplate(templateField, timeUnit, format, shortTimeLabels, config) {

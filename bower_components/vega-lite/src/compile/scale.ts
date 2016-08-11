@@ -130,7 +130,7 @@ function parseColorLegendScale(model: Model, fieldDef: FieldDef): ScaleComponent
     domain: {
       data: model.dataTable(),
       // use rank_<field> for ordinal type, for bin and timeUnit use default field
-      field: model.field(COLOR, (fieldDef.bin || fieldDef.timeUnit) ? {} : {prefn: 'rank_'}),
+      field: model.field(COLOR, (fieldDef.bin || fieldDef.timeUnit) ? {} : {prefix: 'rank'}),
       sort: true
     },
     range: {data: model.dataTable(), field: model.field(COLOR), sort: true}
@@ -151,9 +151,9 @@ function parseBinColorLegendLabel(model: Model, fieldDef: FieldDef): ScaleCompon
     },
     range: {
       data: model.dataTable(),
-      field: field(fieldDef, {binSuffix: '_range'}),
+      field: field(fieldDef, {binSuffix: 'range'}),
       sort: {
-        field: model.field(COLOR, { binSuffix: '_start' }),
+        field: model.field(COLOR, { binSuffix: 'start' }),
         op: 'min' // min or max doesn't matter since same _range would have the same _start
       }
     }
@@ -243,7 +243,7 @@ export function domain(scale: Scale, model: Model, channel:Channel): any {
     return {
       data: model.dataName(STACKED_SCALE),
       // STACKED_SCALE produces sum of the field's value e.g., sum of sum, sum of distinct
-      field: model.field(channel, {prefn: 'sum_'})
+      field: model.field(channel, {prefix: 'sum'})
     };
   }
 
@@ -260,9 +260,9 @@ export function domain(scale: Scale, model: Model, channel:Channel): any {
       // ordinal bin scale takes domain from bin_range, ordered by bin_start
       return {
         data: model.dataTable(),
-        field: model.field(channel, { binSuffix: '_range' }),
+        field: model.field(channel, { binSuffix: 'range' }),
         sort: {
-          field: model.field(channel, { binSuffix: '_start' }),
+          field: model.field(channel, { binSuffix: 'start' }),
           op: 'min' // min or max doesn't matter since same _range would have the same _start
         }
       };
@@ -270,15 +270,15 @@ export function domain(scale: Scale, model: Model, channel:Channel): any {
       // Currently, binned on color uses linear scale and thus use _start point
       return {
         data: model.dataTable(),
-        field: model.field(channel, { binSuffix: '_start' })
+        field: model.field(channel, { binSuffix: 'start' })
       };
     } else {
       // other linear bin scale merges both bin_start and bin_end for non-ordinal scale
       return {
         data: model.dataTable(),
         field: [
-          model.field(channel, { binSuffix: '_start' }),
-          model.field(channel, { binSuffix: '_end' })
+          model.field(channel, { binSuffix: 'start' }),
+          model.field(channel, { binSuffix: 'end' })
         ]
       };
     }
@@ -287,13 +287,13 @@ export function domain(scale: Scale, model: Model, channel:Channel): any {
       // If sort by aggregation of a specified sort field, we need to use SOURCE table,
       // so we can aggregate values for the scale independently from the main aggregation.
       data: sort.op ? SOURCE : model.dataTable(),
-      field: (fieldDef.type === ORDINAL && channel === COLOR) ? model.field(channel, {prefn: 'rank_'}) : model.field(channel),
+      field: (fieldDef.type === ORDINAL && channel === COLOR) ? model.field(channel, {prefix: 'rank'}) : model.field(channel),
       sort: sort
     };
   } else {
     return {
       data: model.dataTable(),
-      field: (fieldDef.type === ORDINAL && channel === COLOR) ? model.field(channel, {prefn: 'rank_'}) : model.field(channel),
+      field: (fieldDef.type === ORDINAL && channel === COLOR) ? model.field(channel, {prefix: 'rank'}) : model.field(channel),
     };
   }
 }

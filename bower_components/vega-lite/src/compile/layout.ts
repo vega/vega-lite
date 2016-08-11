@@ -138,9 +138,9 @@ function parseFacetSizeLayout(model: FacetModel, channel: Channel): SizeComponen
 function facetSizeFormula(model: Model, channel: Channel, innerSize: string) {
   const scale = model.scale(channel);
   if (model.has(channel)) {
-    return '(datum.' + innerSize + ' + ' + scale.padding + ')' + ' * ' + cardinalityFormula(model, channel);
+    return '(datum["' + innerSize + '"] + ' + scale.padding + ')' + ' * ' + cardinalityFormula(model, channel);
   } else {
-    return 'datum.' + innerSize + ' + ' + model.config().facet.scale.padding; // need to add outer padding for facet
+    return 'datum["' + innerSize + '"] + ' + model.config().facet.scale.padding; // need to add outer padding for facet
   }
 }
 
@@ -202,5 +202,5 @@ function cardinalityFormula(model: Model, channel: Channel) {
   const timeUnitDomain = timeUnit ? rawDomain(timeUnit, channel) : null;
 
   return timeUnitDomain !== null ? timeUnitDomain.length :
-        model.field(channel, {datum: true, prefn: 'distinct_'});
+        model.field(channel, {datum: true, prefix: 'distinct'});
 }

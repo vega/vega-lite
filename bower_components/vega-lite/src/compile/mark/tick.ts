@@ -40,7 +40,7 @@ export namespace tick {
       if (fieldDef.field) {
         return {
           scale: scaleName,
-          field: field(fieldDef, { binSuffix: '_mid' })
+          field: field(fieldDef, { binSuffix: 'mid' })
         };
       } else if (fieldDef.value) {
         return {value: fieldDef.value};
@@ -55,7 +55,7 @@ export namespace tick {
       if (fieldDef.field) {
         return {
           scale: scaleName,
-          field: field(fieldDef, { binSuffix: '_mid' })
+          field: field(fieldDef, { binSuffix: 'mid' })
         };
       } else if (fieldDef.value) {
         return {value: fieldDef.value};

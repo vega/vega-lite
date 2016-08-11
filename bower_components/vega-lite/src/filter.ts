@@ -1,6 +1,7 @@
-import {DateTime} from './datetime';
-import {TimeUnit} from './timeunit';
-import {isArray} from './util';
+import {DateTime, dateTimeExpr, isDateTime} from './datetime';
+import {field} from './fielddef';
+import {TimeUnit, fieldExpr as timeUnitFieldExpr, isSingleTimeUnit} from './timeunit';
+import {isArray, isString} from './util';
 
 export type Filter = EqualFilter | RangeFilter | InFilter ;
 
@@ -84,4 +85,53 @@ export interface InFilter {
 
 export function isInFilter(filter: any): filter is InFilter {
   return filter && !!filter.field && isArray(filter.in);
+}
+
+export function expression(filter: Filter | string) {
+  if (isString(filter)) {
+    return filter as string;
+  } else { // Filter Object
+    const fieldExpr = filter.timeUnit ?
+      // For timeUnit, cast into integer with time() so we can use ===, inrange, indexOf to compare values directly.
+        // TODO: We calculate timeUnit on the fly here. Consider if we would like to consolidate this with timeUnit pipeline
+        // TODO: support utc
+      ('time(' + timeUnitFieldExpr(filter.timeUnit, filter.field) + ')') :
+      field(filter, {datum: true});
+
+    if (isEqualFilter(filter)) {
+      return fieldExpr + '===' + valueExpr(filter.equal, filter.timeUnit);
+    } else if (isInFilter(filter)) {
+      return 'indexof([' +
+        filter.in.map((v) => valueExpr(v, filter.timeUnit)).join(',') +
+        '], ' + fieldExpr + ') !== -1';
+    } else if (isRangeFilter(filter)) {
+      const lower = filter.range[0];
+      const upper = filter.range[1];
+
+      if (lower !== null &&  upper !== null) {
+        return 'inrange(' + fieldExpr + ', ' +
+          valueExpr(lower, filter.timeUnit) + ', ' +
+          valueExpr(upper, filter.timeUnit) + ')';
+      } else if (lower !== null) {
+        return fieldExpr + ' >= ' + lower;
+      } else if (upper !== null) {
+        return fieldExpr + ' <= ' + upper;
+      }
+    }
+  }
+  return undefined;
+}
+
+function valueExpr(v: any, timeUnit: TimeUnit) {
+  if (isDateTime(v)) {
+    const expr = dateTimeExpr(v, true);
+    return 'time(' + expr + ')';
+  }
+  if (isSingleTimeUnit(timeUnit)) {
+    const datetime: DateTime = {};
+    datetime[timeUnit] = v;
+    const expr = dateTimeExpr(datetime, true);
+    return 'time(' + expr + ')';
+  }
+  return JSON.stringify(v);
 }

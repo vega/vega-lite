@@ -218,14 +218,14 @@ var properties;
         if (util_1.contains([type_1.NOMINAL, type_1.ORDINAL], fieldDef.type) && axis.labelMaxLength) {
             labelsSpec = util_1.extend({
                 text: {
-                    template: '{{ datum.data | truncate:' + axis.labelMaxLength + ' }}'
+                    template: '{{ datum["data"] | truncate:' + axis.labelMaxLength + ' }}'
                 }
             }, labelsSpec || {});
         }
         else if (fieldDef.type === type_1.TEMPORAL) {
             labelsSpec = util_1.extend({
                 text: {
-                    template: common_1.timeTemplate('datum.data', fieldDef.timeUnit, axis.format, axis.shortTimeLabels, config)
+                    template: common_1.timeTemplate('datum["data"]', fieldDef.timeUnit, axis.format, axis.shortTimeLabels, config)
                 }
             }, labelsSpec);
         }

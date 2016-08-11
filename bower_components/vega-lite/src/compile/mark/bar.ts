@@ -28,11 +28,11 @@ export namespace bar {
       // 'x' is a stacked measure, thus use <field>_start and <field>_end for x, x2.
       p.x = {
         scale: model.scaleName(X),
-        field: model.field(X, { suffix: '_start' })
+        field: model.field(X, { suffix: 'start' })
       };
       p.x2 = {
         scale: model.scaleName(X),
-        field: model.field(X, { suffix: '_end' })
+        field: model.field(X, { suffix: 'end' })
       };
     } else if (xIsMeasure) {
       if (orient === Orient.HORIZONTAL) {
@@ -77,7 +77,7 @@ export namespace bar {
         // center bar and apply size to width.
         p.xc = {
           scale: model.scaleName(X),
-          field: model.field(X, { binSuffix: '_mid' })
+          field: model.field(X, { binSuffix: 'mid' })
         };
         p.width = {
           scale: model.scaleName(SIZE),
@@ -86,12 +86,12 @@ export namespace bar {
       } else {
         p.x = {
           scale: model.scaleName(X),
-          field: model.field(X, { binSuffix: '_start' }),
+          field: model.field(X, { binSuffix: 'start' }),
           offset: 1
         };
         p.x2 = {
           scale: model.scaleName(X),
-          field: model.field(X, { binSuffix: '_end' })
+          field: model.field(X, { binSuffix: 'end' })
         };
       }
     } else { // x is dimension or unspecified
@@ -122,11 +122,11 @@ export namespace bar {
     if (stack && Y === stack.fieldChannel) { // y is stacked measure
       p.y = {
         scale: model.scaleName(Y),
-        field: model.field(Y, { suffix: '_start' })
+        field: model.field(Y, { suffix: 'start' })
       };
       p.y2 = {
         scale: model.scaleName(Y),
-        field: model.field(Y, { suffix: '_end' })
+        field: model.field(Y, { suffix: 'end' })
       };
     } else if (yIsMeasure) {
       if (orient !== Orient.HORIZONTAL) { // vertical (explicit 'vertical' or undefined)
@@ -173,7 +173,7 @@ export namespace bar {
         // center bar and apply size to height.
         p.yc = {
           scale: model.scaleName(Y),
-          field: model.field(Y, { binSuffix: '_mid' })
+          field: model.field(Y, { binSuffix: 'mid' })
         };
         p.height = {
           scale: model.scaleName(SIZE),
@@ -183,11 +183,11 @@ export namespace bar {
         // Otherwise, simply use <field>_start, <field>_end
         p.y = {
           scale: model.scaleName(Y),
-          field: model.field(Y, { binSuffix: '_start' })
+          field: model.field(Y, { binSuffix: 'start' })
         };
         p.y2 = {
           scale: model.scaleName(Y),
-          field: model.field(Y, { binSuffix: '_end' }),
+          field: model.field(Y, { binSuffix: 'end' }),
           offset: 1
         };
       }

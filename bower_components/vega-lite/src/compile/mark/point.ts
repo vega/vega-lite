@@ -35,7 +35,7 @@ export namespace point {
       if (fieldDef.field) {
         return {
           scale: scaleName,
-          field: field(fieldDef, { binSuffix: '_mid' })
+          field: field(fieldDef, { binSuffix: 'mid' })
         };
       }
       // TODO: fieldDef.value (for layering)
@@ -49,7 +49,7 @@ export namespace point {
       if (fieldDef.field) {
         return {
           scale: scaleName,
-          field: field(fieldDef, { binSuffix: '_mid' })
+          field: field(fieldDef, { binSuffix: 'mid' })
         };
       }
       // TODO: fieldDef.value (for layering)

@@ -81,7 +81,7 @@ function parseColorLegendScale(model, fieldDef) {
         type: scale_1.ScaleType.ORDINAL,
         domain: {
             data: model.dataTable(),
-            field: model.field(channel_1.COLOR, (fieldDef.bin || fieldDef.timeUnit) ? {} : { prefn: 'rank_' }),
+            field: model.field(channel_1.COLOR, (fieldDef.bin || fieldDef.timeUnit) ? {} : { prefix: 'rank' }),
             sort: true
         },
         range: { data: model.dataTable(), field: model.field(channel_1.COLOR), sort: true }
@@ -98,9 +98,9 @@ function parseBinColorLegendLabel(model, fieldDef) {
         },
         range: {
             data: model.dataTable(),
-            field: fielddef_1.field(fieldDef, { binSuffix: '_range' }),
+            field: fielddef_1.field(fieldDef, { binSuffix: 'range' }),
             sort: {
-                field: model.field(channel_1.COLOR, { binSuffix: '_start' }),
+                field: model.field(channel_1.COLOR, { binSuffix: 'start' }),
                 op: 'min'
             }
         }
@@ -172,7 +172,7 @@ function domain(scale, model, channel) {
         }
         return {
             data: model.dataName(data_1.STACKED_SCALE),
-            field: model.field(channel, { prefn: 'sum_' })
+            field: model.field(channel, { prefix: 'sum' })
         };
     }
     var useRawDomain = _useRawDomain(scale, model, channel), sort = domainSort(model, channel, scale.type);
@@ -186,9 +186,9 @@ function domain(scale, model, channel) {
         if (scale.type === scale_1.ScaleType.ORDINAL) {
             return {
                 data: model.dataTable(),
-                field: model.field(channel, { binSuffix: '_range' }),
+                field: model.field(channel, { binSuffix: 'range' }),
                 sort: {
-                    field: model.field(channel, { binSuffix: '_start' }),
+                    field: model.field(channel, { binSuffix: 'start' }),
                     op: 'min'
                 }
             };
@@ -196,15 +196,15 @@ function domain(scale, model, channel) {
         else if (channel === channel_1.COLOR) {
             return {
                 data: model.dataTable(),
-                field: model.field(channel, { binSuffix: '_start' })
+                field: model.field(channel, { binSuffix: 'start' })
             };
         }
         else {
             return {
                 data: model.dataTable(),
                 field: [
-                    model.field(channel, { binSuffix: '_start' }),
-                    model.field(channel, { binSuffix: '_end' })
+                    model.field(channel, { binSuffix: 'start' }),
+                    model.field(channel, { binSuffix: 'end' })
                 ]
             };
         }
@@ -212,14 +212,14 @@ function domain(scale, model, channel) {
     else if (sort) {
         return {
             data: sort.op ? data_1.SOURCE : model.dataTable(),
-            field: (fieldDef.type === type_1.ORDINAL && channel === channel_1.COLOR) ? model.field(channel, { prefn: 'rank_' }) : model.field(channel),
+            field: (fieldDef.type === type_1.ORDINAL && channel === channel_1.COLOR) ? model.field(channel, { prefix: 'rank' }) : model.field(channel),
             sort: sort
         };
     }
     else {
         return {
             data: model.dataTable(),
-            field: (fieldDef.type === type_1.ORDINAL && channel === channel_1.COLOR) ? model.field(channel, { prefn: 'rank_' }) : model.field(channel),
+            field: (fieldDef.type === type_1.ORDINAL && channel === channel_1.COLOR) ? model.field(channel, { prefix: 'rank' }) : model.field(channel),
         };
     }
 }

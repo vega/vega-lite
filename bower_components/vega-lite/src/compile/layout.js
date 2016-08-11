@@ -99,10 +99,10 @@ function parseFacetSizeLayout(model, channel) {
 function facetSizeFormula(model, channel, innerSize) {
     var scale = model.scale(channel);
     if (model.has(channel)) {
-        return '(datum.' + innerSize + ' + ' + scale.padding + ')' + ' * ' + cardinalityFormula(model, channel);
+        return '(datum["' + innerSize + '"] + ' + scale.padding + ')' + ' * ' + cardinalityFormula(model, channel);
     }
     else {
-        return 'datum.' + innerSize + ' + ' + model.config().facet.scale.padding;
+        return 'datum["' + innerSize + '"] + ' + model.config().facet.scale.padding;
     }
 }
 function parseLayerLayout(model) {
@@ -151,6 +151,6 @@ function cardinalityFormula(model, channel) {
     var timeUnit = model.fieldDef(channel).timeUnit;
     var timeUnitDomain = timeUnit ? timeunit_1.rawDomain(timeUnit, channel) : null;
     return timeUnitDomain !== null ? timeUnitDomain.length :
-        model.field(channel, { datum: true, prefn: 'distinct_' });
+        model.field(channel, { datum: true, prefix: 'distinct' });
 }
 //# sourceMappingURL=layout.js.map
