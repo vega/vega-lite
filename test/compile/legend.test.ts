@@ -103,6 +103,23 @@ describe('Legend', function() {
         }), COLOR);
         assert.deepEqual(symbol.strokeWidth.value, 20);
     });
+
+    it('should create legend for SVG path', function() {
+      const symbol = legend.properties.symbols({field: 'a'}, {}, parseUnitModel({
+          mark: "point",
+          encoding: {
+            x: {field: "a", type: "nominal"},
+            color: {field: "a", type: "nominal"}
+          },
+          config: {
+            mark: {
+              shape: "M0,0.2L0.2351,0.3236 0.1902,0.0618 0.3804,-0.1236 0.1175,-0.1618 0,-0.4 -0.1175,-0.1618 -0.3804,-0.1236 -0.1902,0.0618 -0.2351,0.3236 0,0.2Z"
+            }
+          }
+        }), COLOR);
+
+        assert.deepEqual(symbol.shape.value, "M0,0.2L0.2351,0.3236 0.1902,0.0618 0.3804,-0.1236 0.1175,-0.1618 0,-0.4 -0.1175,-0.1618 -0.3804,-0.1236 -0.1902,0.0618 -0.2351,0.3236 0,0.2Z");
+    });
   });
 
   describe('properties.labels', function() {

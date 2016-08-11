@@ -119,7 +119,8 @@ export namespace properties {
         break;
     }
 
-    const filled = model.config().mark.filled;
+    const cfg = model.config();
+    const filled = cfg.mark.filled;
 
 
     let config = channel === COLOR ?
@@ -162,15 +163,26 @@ export namespace properties {
       // For non-color legend, apply color config if there is no fill / stroke config.
       // (For color, do not override scale specified!)
       symbols[filled ? 'fill' : 'stroke'] = symbols[filled ? 'fill' : 'stroke'] ||
-        {value: model.config().mark.color};
+        {value: cfg.mark.color};
     }
 
     if (legend.symbolColor !== undefined) {
       symbols.fill = {value: legend.symbolColor};
+    } else if (symbols.fill === undefined) {
+      // fall back to mark config colors for legend fill
+      if (cfg.mark.color !== undefined) {
+        symbols.fill = {value: cfg.mark.color};
+      } else if (cfg.mark.fill !== undefined) {
+        symbols.fill = {value: cfg.mark.fill};
+      } else if (cfg.mark.stroke !== undefined) {
+        symbols.stroke = {value: cfg.mark.stroke};
+      }
     }
 
     if (legend.symbolShape !== undefined) {
       symbols.shape = {value: legend.symbolShape};
+    } else if (cfg.mark.shape !== undefined) {
+      symbols.shape = {value: cfg.mark.shape};
     }
 
     if (legend.symbolSize !== undefined) {
