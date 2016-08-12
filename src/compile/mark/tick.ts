@@ -23,11 +23,11 @@ export namespace tick {
     p.yc = y(model.encoding().y, model.scaleName(Y), model.scale(Y), config);
 
     if (config.mark.orient === 'horizontal') {
-      p.width = size(model.encoding().size, model.scaleName(SIZE), config, (model.scale(X) || {}).bandSize);
+      p.width = size(model.encoding().size, model.scaleName(SIZE), model.scale(SIZE), config, (model.scale(X) || {}).bandSize);
       p.height = { value: config.mark.tickThickness };
     } else {
       p.width = { value: config.mark.tickThickness };
-      p.height = size(model.encoding().size, model.scaleName(SIZE), config, (model.scale(Y) || {}).bandSize);
+      p.height = size(model.encoding().size, model.scaleName(SIZE), model.scale(SIZE), config, (model.scale(Y) || {}).bandSize);
     }
 
     applyColorAndOpacity(p, model);
@@ -66,7 +66,7 @@ export namespace tick {
     return { value: config.scale.bandSize / 2 };
   }
 
-  function size(fieldDef: FieldDef, scaleName: string, config: Config, scaleBandSize: number): VgValueRef {
+  function size(fieldDef: FieldDef, scaleName: string, scale: Scale, config: Config, scaleBandSize: number): VgValueRef {
     if (fieldDef) {
       if (fieldDef.field) {
         return {

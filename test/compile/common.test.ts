@@ -68,12 +68,12 @@ describe('Common', function() {
   describe('applyColorAndOpacity()', function() {
     it('opacity should be mapped to a field if specified', function() {
       const model = parseUnitModel({
+        "data": {"url": "data/movies.json"},
         "mark": "bar",
         "encoding": {
           "y": {"type": "quantitative", "field": 'US_Gross', "aggregate": "sum", "axis": true},
           "opacity": {"field": "US_Gross", "type": "quantitative"}
-        },
-        "data": {"url": "data/movies.json"}
+        }
       });
 
       let p: any = {};
@@ -83,12 +83,12 @@ describe('Common', function() {
 
     it('opacity should be mapped to a value if specified', function() {
       const model = parseUnitModel({
+        "data": {"url": "data/movies.json"},
         "mark": "bar",
         "encoding": {
           "y": {"type": "quantitative", "field": 'US_Gross', "aggregate": "sum", "axis": true},
           "opacity": {"value": 0.5}
-        },
-        "data": {"url": "data/movies.json"}
+        }
       });
 
       let p: any = {};
@@ -98,84 +98,84 @@ describe('Common', function() {
   });
 
   describe('hasGeoTransform()', function() {
-    describe('should return true iff path mark is specified and encoding.geopath.type is geojson', function() {
-      it('both conditions are satisfied', function() {
+    describe('geopath transform', function() {
+      it('satisfy both condition', function() {
         const model = parseUnitModel({
-          "mark": "path",
-          "encoding": {"geopath": {"type": "geojson"}},
           "data": {
             "url": "data/us-10m.json",
             "format": {"type": "topojson", "feature": "states"}
-          }
+          },
+          "mark": "path",
+          "encoding": {"geopath": {"type": "geojson"}},
         });
         assert.deepEqual(hasGeoTransform(model), true);
       });
 
       it('only path mark condition is satisfied', function() {
         const model = parseUnitModel({
-          "mark": "path",
           "data": {
             "url": "data/us-10m.json",
             "format": {"type": "topojson", "feature": "states"}
-          }
+          },
+          "mark": "path"
         });
         assert.deepEqual(hasGeoTransform(model), false);
       });
     });
 
-    describe('should return true iff x/y is of type longitude/latitude', function() {
+    describe('geo transform', function() {
       it('x is of type longitude', function() {
         const model = parseUnitModel({
+          "data": {"url": "data/airports.csv"},
           "mark": "point",
           "encoding": {
             "x": {"field": "longitude","type": "longitude"}
-          },
-          "data": {"url": "data/airports.csv"}
+          }
         });
         assert.deepEqual(hasGeoTransform(model), true);
       });
 
       it('x is of type latitude', function() {
         const model = parseUnitModel({
+          "data": {"url": "data/airports.csv"},
           "mark": "point",
           "encoding": {
             "x": {"field": "longitude","type": "latitude"}
-          },
-          "data": {"url": "data/airports.csv"}
+          }
         });
         assert.deepEqual(hasGeoTransform(model), true);
       });
 
       it('y is of type longitude', function() {
         const model = parseUnitModel({
+          "data": {"url": "data/airports.csv"},
           "mark": "point",
           "encoding": {
             "y": {"field": "latitude","type": "longitude"}
-          },
-          "data": {"url": "data/airports.csv"}
+          }
         });
         assert.deepEqual(hasGeoTransform(model), true);
       });
 
       it('y is of type latitude', function() {
         const model = parseUnitModel({
+          "data": {"url": "data/airports.csv"},
           "mark": "point",
           "encoding": {
             "y": {"field": "latitude","type": "latitude"}
-          },
-          "data": {"url": "data/airports.csv"}
+          }
         });
         assert.deepEqual(hasGeoTransform(model), true);
       });
 
       it('Both x and y are specified to be latitude/longitude', function() {
         const model = parseUnitModel({
+          "data": {"url": "data/airports.csv"},
           "mark": "point",
           "encoding": {
             "x": {"field": "longitude","type": "longitude"},
             "y": {"field": "latitude","type": "latitude"}
-          },
-          "data": {"url": "data/airports.csv"}
+          }
         });
 
         assert.deepEqual(hasGeoTransform(model), true);
@@ -183,12 +183,12 @@ describe('Common', function() {
 
       it('Both x and y are specified to be not latitude/longitude', function() {
         const model = parseUnitModel({
+          "data": {"url": "data/airports.csv"},
           "mark": "point",
           "encoding": {
             "x": {"field": "longitude","type": "quantitative"},
             "y": {"field": "latitude","type": "quantitative"}
-          },
-          "data": {"url": "data/airports.csv"}
+          }
         });
         assert.deepEqual(hasGeoTransform(model), false);
       });
@@ -198,8 +198,6 @@ describe('Common', function() {
   describe('geoTransform()', function() {
     it('should have tranform type geopath ', function() {
       const model = parseUnitModel({
-        "mark": "path",
-        "encoding": {"geopath": {"type": "geojson"}},
         "data": {
           "url": "data/us-10m.json",
           "format": {"type": "topojson", "feature": "states"}
@@ -209,7 +207,9 @@ describe('Common', function() {
           "scale":1000,
           "translate":[400, 250],
           "center":[0, 0]
-        }
+        },
+        "mark": "path",
+        "encoding": {"geopath": {"type": "geojson"}},
       });
 
       let transform = geoTransform(model);
@@ -222,16 +222,16 @@ describe('Common', function() {
 
     it('should have tranform type geo ', function() {
         const model = parseUnitModel({
-          "mark": "point",
-          "encoding": {
-            "x": {"field": "longitude","type": "longitude"}
-          },
           "data": {"url": "data/airports.csv"},
           "projection": {
             "type": "albersUsa",
             "scale": 1000,
             "translate": [400, 250],
             "center": [0, 0]
+          },
+          "mark": "point",
+          "encoding": {
+            "x": {"field": "longitude","type": "longitude"}
           }
         });
 

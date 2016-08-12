@@ -31,6 +31,8 @@ export namespace path {
 
   function path(fieldDef: FieldDef): VgValueRef {
     if (fieldDef && fieldDef.type === GEOJSON) {
+      // Return the default output from geopath transform because we never
+      // change the output.
       return { field: 'layout_path' };
     }
     return undefined;
