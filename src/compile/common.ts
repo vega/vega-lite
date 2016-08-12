@@ -60,18 +60,22 @@ export function applyColorAndOpacity(p, model: UnitModel) {
   let opacityValue;
   if (model.has(COLOR)) {
     colorValue = {
-      scale: model.scaleName(COLOR),
       field: model.field(COLOR, colorFieldDef.type === ORDINAL ? {prefn: 'rank_'} : {})
     };
+    if (model.scale(COLOR)) {
+      colorValue.scale = model.scaleName(COLOR);
+    }
   } else if (colorFieldDef && colorFieldDef.value) {
     colorValue = { value: colorFieldDef.value };
   }
 
   if (model.has(OPACITY)) {
     opacityValue = {
-      scale: model.scaleName(OPACITY),
       field: model.field(OPACITY, opacityFieldDef.type === ORDINAL ? {prefn: 'rank_'} : {})
     };
+    if (model.scale(OPACITY)) {
+      opacityValue.scale = model.scaleName(OPACITY);
+    }
   } else if (opacityFieldDef && opacityFieldDef.value) {
     opacityValue = { value: opacityFieldDef.value };
   }
