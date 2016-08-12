@@ -69,10 +69,11 @@ export namespace tick {
   function size(fieldDef: FieldDef, scaleName: string, scale: Scale, config: Config, scaleBandSize: number): VgValueRef {
     if (fieldDef) {
       if (fieldDef.field) {
-        return {
-          scale: scaleName,
-          field: fieldDef.field
-        };
+        let fieldRef: VgValueRef = {field: field(fieldDef)};
+        if (scale) {
+          fieldRef.scale = scaleName;
+        }
+        return fieldRef;
       } else if (fieldDef.value !== undefined) {
         return { value: fieldDef.value };
       }

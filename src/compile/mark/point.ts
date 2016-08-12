@@ -62,10 +62,11 @@ export namespace point {
   function size(fieldDef: ChannelDefWithLegend, scaleName: string, scale: Scale, config: Config): VgValueRef {
     if (fieldDef) {
       if (fieldDef.field) {
-        return {
-          scale: scaleName,
-          field: field(fieldDef, { binSuffix: '_mid' })
-        };
+        let fieldRef: VgValueRef = {field: field(fieldDef, { binSuffix: '_mid' })};
+        if (scale) {
+          fieldRef.scale = scaleName;
+        }
+        return fieldRef;
       } else if (fieldDef.value !== undefined) {
         return { value: fieldDef.value };
       }

@@ -96,10 +96,11 @@ export namespace text {
     // size
     if (sizeFieldDef) {
       if (sizeFieldDef.field) {
-        return {
-          scale: scaleName,
-          field: field(sizeFieldDef)
-        };
+        let fieldRef: VgValueRef = {field: field(sizeFieldDef)};
+        if (scale) {
+          fieldRef.scale = scaleName;
+        }
+        return fieldRef;
       }
       if (sizeFieldDef.value) {
         return {value: sizeFieldDef.value};
