@@ -53,7 +53,7 @@ export interface UnitEncoding {
   /**
    * The symbol's shape (only for `point` marks). The supported values are
    * `"circle"` (default), `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`,
-   * or `"triangle-down"`.
+   * or `"triangle-down"`, or else a custom SVG path string.
    */
   shape?: ChannelDefWithLegend; // TODO: maybe distinguish ordinal-only
 

@@ -104,7 +104,7 @@
                 },
                 "shape": {
                     "$ref": "#/definitions/ChannelDefWithLegend",
-                    "description": "The symbol's shape (only for `point` marks). The supported values are\n\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\n\nor `\"triangle-down\"`."
+                    "description": "The symbol's shape (only for `point` marks). The supported values are\n\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\n\nor `\"triangle-down\"`, or else a custom SVG path string."
                 },
                 "detail": {
                     "description": "Additional levels of detail for grouping data in aggregate views and\n\nin line and area marks without mapping data to a specific visual channel.",
@@ -804,7 +804,7 @@
                     "type": "string"
                 },
                 "symbolShape": {
-                    "description": "The shape of the legend symbol, can be the 'circle', 'square', 'cross', 'diamond',\n\n'triangle-up', 'triangle-down'.",
+                    "description": "The shape of the legend symbol, can be the 'circle', 'square', 'cross', 'diamond',\n\n'triangle-up', 'triangle-down', or else a custom SVG path string.",
                     "type": "string"
                 },
                 "symbolSize": {
@@ -1404,8 +1404,15 @@
                     "type": "number"
                 },
                 "shape": {
-                    "$ref": "#/definitions/Shape",
-                    "description": "The symbol shape to use. One of circle (default), square, cross, diamond, triangle-up, or triangle-down."
+                    "description": "The symbol shape to use. One of circle (default), square, cross, diamond, triangle-up, or triangle-down, or a custom SVG path.",
+                    "oneOf": [
+                        {
+                            "$ref": "#/definitions/Shape"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ]
                 },
                 "size": {
                     "description": "The pixel area each the point. For example: in the case of circles, the radius is determined in part by the square root of the size value.",
@@ -1918,7 +1925,7 @@
                     "type": "string"
                 },
                 "symbolShape": {
-                    "description": "The shape of the legend symbol, can be the 'circle', 'square', 'cross', 'diamond',\n\n'triangle-up', 'triangle-down'.",
+                    "description": "The shape of the legend symbol, can be the 'circle', 'square', 'cross', 'diamond',\n\n'triangle-up', 'triangle-down', or else a custom SVG path string.",
                     "type": "string"
                 },
                 "symbolSize": {
@@ -2154,7 +2161,7 @@
                 },
                 "shape": {
                     "$ref": "#/definitions/ChannelDefWithLegend",
-                    "description": "The symbol's shape (only for `point` marks). The supported values are\n\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\n\nor `\"triangle-down\"`."
+                    "description": "The symbol's shape (only for `point` marks). The supported values are\n\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\n\nor `\"triangle-down\"`, or else a custom SVG path string."
                 },
                 "detail": {
                     "description": "Additional levels of detail for grouping data in aggregate views and\n\nin line and area marks without mapping data to a specific visual channel.",

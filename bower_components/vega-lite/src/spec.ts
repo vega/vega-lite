@@ -332,15 +332,3 @@ export function getCleanSpec(spec: ExtendedUnitSpec): ExtendedUnitSpec {
 export function isStacked(spec: ExtendedUnitSpec): boolean {
   return stack(spec.mark, spec.encoding, spec.config) !== null;
 }
-
-// TODO revise
-export function transpose(spec: ExtendedUnitSpec): ExtendedUnitSpec {
-  const oldenc = spec.encoding;
-  let encoding = duplicate(spec.encoding);
-  encoding.x = oldenc.y;
-  encoding.y = oldenc.x;
-  encoding.row = oldenc.column;
-  encoding.column = oldenc.row;
-  spec.encoding = encoding;
-  return spec;
-}

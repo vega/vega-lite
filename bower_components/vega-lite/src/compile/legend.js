@@ -93,7 +93,8 @@ var properties;
             case mark_1.AREA:
                 break;
         }
-        var filled = model.config().mark.filled;
+        var cfg = model.config();
+        var filled = cfg.mark.filled;
         var config = channel === channel_1.COLOR ?
             util_1.without(common_1.FILL_STROKE_CONFIG, [filled ? 'fill' : 'stroke', 'strokeDash', 'strokeDashOffset']) :
             util_1.without(common_1.FILL_STROKE_CONFIG, ['strokeDash', 'strokeDashOffset']);
@@ -124,13 +125,24 @@ var properties;
         }
         else if (channel !== channel_1.COLOR) {
             symbols[filled ? 'fill' : 'stroke'] = symbols[filled ? 'fill' : 'stroke'] ||
-                { value: model.config().mark.color };
+                { value: cfg.mark.color };
         }
         if (legend.symbolColor !== undefined) {
             symbols.fill = { value: legend.symbolColor };
         }
+        else if (symbols.fill === undefined) {
+            if (cfg.mark.fill !== undefined) {
+                symbols.fill = { value: cfg.mark.fill };
+            }
+            else if (cfg.mark.stroke !== undefined) {
+                symbols.stroke = { value: cfg.mark.stroke };
+            }
+        }
         if (legend.symbolShape !== undefined) {
             symbols.shape = { value: legend.symbolShape };
+        }
+        else if (cfg.mark.shape !== undefined) {
+            symbols.shape = { value: cfg.mark.shape };
         }
         if (legend.symbolSize !== undefined) {
             symbols.size = { value: legend.symbolSize };
