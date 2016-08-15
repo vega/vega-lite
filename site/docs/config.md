@@ -208,7 +208,7 @@ vg.embed('#horizontal_line', {
 
 | Property            | Type                | Description  |
 | :------------------ |:-------------------:| :------------|
-| shape               | Number              | The symbol shape to use. One of `"circle"`, `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`, or `"triangle-down"`<span class="note-line">__Default value:__ `"circle"` </span> |
+| shape               | Number              | The symbol shape to use. One of `"circle"`, `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`, or `"triangle-down"`, or else a custom SVG path string.<span class="note-line">__Default value:__ `"circle"` </span> |
 
 
 ### Point Size Config (for Point, Circle, and Square Marks)

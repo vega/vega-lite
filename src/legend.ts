@@ -65,7 +65,7 @@ export interface LegendConfig {
   symbolColor?: string;
   /**
    * The shape of the legend symbol, can be the 'circle', 'square', 'cross', 'diamond',
-   * 'triangle-up', 'triangle-down'.
+   * 'triangle-up', 'triangle-down', or else a custom SVG path string.
    */
   symbolShape?: string;
   /**

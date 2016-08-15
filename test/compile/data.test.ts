@@ -283,9 +283,9 @@ describe('data: nullFilter', function() {
     it('should add filterNull for Q and T by default', function () {
       const model = parseUnitModel(spec);
       assert.deepEqual(nullFilter.parseUnit(model), {
-        qq: true,
-        tt: true,
-        oo: false
+        qq: {field: 'qq', type: "quantitative"},
+        tt: {field: 'tt', type: "temporal"},
+        oo: null
       });
     });
 
@@ -296,9 +296,9 @@ describe('data: nullFilter', function() {
         }
       }));
       assert.deepEqual(nullFilter.parseUnit(model), {
-        qq: true,
-        tt: true,
-        oo: true
+        qq: {field: 'qq', type: "quantitative"},
+        tt: {field: 'tt', type: "temporal"},
+        oo: {field: 'oo', type: "ordinal"}
       });
     });
 
@@ -309,10 +309,28 @@ describe('data: nullFilter', function() {
         }
       }));
       assert.deepEqual(nullFilter.parseUnit(model), {
-        qq: false,
-        tt: false,
-        oo: false
+        qq: null,
+        tt: null,
+        oo: null
       });
+    });
+
+    it ('should add no null filter for count field', () => {
+      const model = parseUnitModel({
+        transform: {
+          filterNull: true
+        },
+        mark: "point",
+        encoding: {
+          y: {aggregate: 'count', field: '*', type: "quantitative"}
+        }
+      });
+
+      assert.deepEqual(nullFilter.parseUnit(model), {});
+    });
+
+    describe('assemble', () => {
+      // TODO:
     });
   });
 
