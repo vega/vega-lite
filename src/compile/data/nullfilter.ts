@@ -79,12 +79,12 @@ export namespace nullFilter {
     const filters = keys(component.nullFilter).reduce((_filters, field) => {
       const fieldDef = component.nullFilter[field];
       if (fieldDef !== null) {
-        _filters.push('datum["' + fieldDef.field + '"] !==null');
+        _filters.push('datum["' + fieldDef.field + '"] !== null');
         if (contains([QUANTITATIVE, TEMPORAL], fieldDef.type)) {
           // TODO(https://github.com/vega/vega-lite/issues/1436):
           // We can be even smarter and add NaN filter for N,O that are numbers
           // based on the `parse` property once we have it.
-          _filters.push('!isNaN(datum["'+ fieldDef.field + '"]');
+          _filters.push('!isNaN(datum["'+ fieldDef.field + '"])');
         }
       }
       return _filters;
@@ -93,7 +93,7 @@ export namespace nullFilter {
     return filters.length > 0 ?
       [{
         type: 'filter',
-        test: '(' + filters.join(') && (')  + ')'
+        test: filters.join(' && ')
       }] : [];
   }
 }
