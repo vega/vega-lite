@@ -122,12 +122,11 @@ export namespace properties {
     const cfg = model.config();
     const filled = cfg.mark.filled;
 
-
     let config = channel === COLOR ?
         /* For color's legend, do not set fill (when filled) or stroke (when unfilled) property from config because the the legend's `fill` or `stroke` scale should have precedence */
         without(FILL_STROKE_CONFIG, [ filled ? 'fill' : 'stroke', 'strokeDash', 'strokeDashOffset']) :
         /* For other legend, no need to omit. */
-         without(FILL_STROKE_CONFIG, ['strokeDash', 'strokeDashOffset']);
+        without(FILL_STROKE_CONFIG, ['strokeDash', 'strokeDashOffset']);
 
     config = without(config, ['strokeDash', 'strokeDashOffset']);
 
@@ -170,9 +169,7 @@ export namespace properties {
       symbols.fill = {value: legend.symbolColor};
     } else if (symbols.fill === undefined) {
       // fall back to mark config colors for legend fill
-      if (cfg.mark.color !== undefined) {
-        symbols.fill = {value: cfg.mark.color};
-      } else if (cfg.mark.fill !== undefined) {
+      if (cfg.mark.fill !== undefined) {
         symbols.fill = {value: cfg.mark.fill};
       } else if (cfg.mark.stroke !== undefined) {
         symbols.stroke = {value: cfg.mark.stroke};
