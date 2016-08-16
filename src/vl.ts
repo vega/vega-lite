@@ -12,7 +12,6 @@ export import fieldDef = require('./fielddef');
 export import legend = require('./legend');
 export import mark = require('./mark');
 export import scale = require('./scale');
-export import shorthand = require('./shorthand');
 export import sort = require('./sort');
 export import spec = require('./spec');
 export import stack = require('./stack');
