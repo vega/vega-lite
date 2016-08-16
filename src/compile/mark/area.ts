@@ -3,6 +3,7 @@ import {VgValueRef} from '../../vega.schema';
 import {X, Y} from '../../channel';
 import {Orient} from '../../config';
 import {isDimension, isMeasure, FieldDef, field} from '../../fielddef';
+import {Scale, ScaleType} from '../../scale';
 import {StackProperties} from '../../stack';
 
 import {applyColorAndOpacity, applyMarkConfig} from '../common';
@@ -24,16 +25,16 @@ export namespace area {
 
     const stack = model.stack();
 
-    p.x = x(model.encoding().x, model.scaleName(X), orient, stack);
-    p.y = y(model.encoding().y, model.scaleName(Y), orient, stack);
+    p.x = x(model.encoding().x, model.scaleName(X), model.scale(X), orient, stack);
+    p.y = y(model.encoding().y, model.scaleName(Y), model.scale(Y), orient, stack);
 
     // Have only x2 or y2
-    const _x2 = x2(model.encoding().x, model.encoding().x2, model.scaleName(X), orient, stack);
+    const _x2 = x2(model.encoding().x, model.encoding().x2, model.scaleName(X), model.scale(X), orient, stack);
     if (_x2) {
       p.x2 = _x2;
     }
 
-    const _y2 = y2(model.encoding().y, model.encoding().y2, model.scaleName(Y), orient, stack);
+    const _y2 = y2(model.encoding().y, model.encoding().y2, model.scaleName(Y), model.scale(Y), orient, stack);
     if (_y2) {
       p.y2 = _y2;
     }
@@ -43,7 +44,7 @@ export namespace area {
     return p;
   }
 
-  export function x(fieldDef: FieldDef, scaleName: string, orient: Orient, stack: StackProperties): VgValueRef {
+  export function x(fieldDef: FieldDef, scaleName: string, scale: Scale, orient: Orient, stack: StackProperties): VgValueRef {
     if (stack && X === stack.fieldChannel) { // Stacked Measure
       return {
         scale: scaleName,
@@ -78,7 +79,7 @@ export namespace area {
     return undefined;
   }
 
-  export function x2(xFieldDef: FieldDef, x2FieldDef: FieldDef, scaleName: string, orient: Orient, stack: StackProperties): VgValueRef {
+  export function x2(xFieldDef: FieldDef, x2FieldDef: FieldDef, scaleName: string, scale: Scale, orient: Orient, stack: StackProperties): VgValueRef {
     // x
     if (orient === Orient.HORIZONTAL) {
       if (stack && X === stack.fieldChannel) { // Stacked Measure
@@ -100,7 +101,11 @@ export namespace area {
         }
       }
 
-      // TODO: make this work for log scale
+      if (scale.type === ScaleType.LOG || scale.zero === false) {
+        return {
+          value: 0
+        };
+      }
 
       return {
         scale: scaleName,
@@ -110,7 +115,7 @@ export namespace area {
     return undefined;
   }
 
-  export function y(fieldDef: FieldDef, scaleName: string, orient: Orient, stack: StackProperties): VgValueRef {
+  export function y(fieldDef: FieldDef, scaleName: string, scale: Scale, orient: Orient, stack: StackProperties): VgValueRef {
     if (stack && Y === stack.fieldChannel) { // Stacked Measure
       return {
         scale: scaleName,
@@ -142,7 +147,9 @@ export namespace area {
     return undefined;
   }
 
-  export function y2(yFieldDef: FieldDef, y2FieldDef: FieldDef, scaleName: string, orient: Orient, stack: StackProperties): VgValueRef {
+  export function y2(yFieldDef: FieldDef, y2FieldDef: FieldDef,
+      scaleName: string, scale: Scale, orient: Orient, stack: StackProperties): VgValueRef {
+
     if (orient !== Orient.HORIZONTAL) {
       if (stack && Y === stack.fieldChannel) { // Stacked Measure
         return {
@@ -164,7 +171,11 @@ export namespace area {
         }
       }
 
-      // TODO: make this work for log scale
+      if (scale.type === ScaleType.LOG || scale.zero === false) {
+        return {
+          field: {group: 'height'}
+        };
+      }
 
       return {
         scale: scaleName,

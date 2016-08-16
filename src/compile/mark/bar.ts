@@ -53,7 +53,7 @@ export namespace bar {
             field: model.field(X2)
           };
         } else {
-          if (model.scale(X).type === ScaleType.LOG) {
+          if (model.scale(X).type === ScaleType.LOG || model.scale(X).zero === false) {
             p.x2 = { value: 0 };
           } else {
             p.x2 = {
@@ -159,7 +159,7 @@ export namespace bar {
             field: model.field(Y2)
           };
         } else {
-          if (model.scale(Y).type === ScaleType.LOG) {
+          if (model.scale(Y).type === ScaleType.LOG || model.scale(Y).zero === false) {
             // end on axis
             p.y2 = {
               field: {group: 'height'}

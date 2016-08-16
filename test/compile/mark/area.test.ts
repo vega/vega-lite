@@ -25,6 +25,46 @@ describe('Mark: Area', function() {
     };
   }
 
+  describe('vertical area, with log', function() {
+    const model = parseUnitModel({
+      "mark": "area",
+      "encoding": {
+        "x": {"bin": true, "type": "quantitative", "field": "IMDB_Rating"},
+        "y": {"scale": {"type": 'log'}, "type": "quantitative", "field": 'US_Gross', "aggregate": "mean"}
+      },
+      "data": {"url": 'data/movies.json'}
+    });
+    const props = area.properties(model);
+
+    it('should end on axis', function() {
+      assert.deepEqual(props.y2, {field: {group: 'height'}});
+    });
+
+    it('should has no height', function(){
+      assert.isUndefined(props.height);
+    });
+  });
+
+  describe('vertical area, with zero=false', function() {
+    const model = parseUnitModel({
+      "mark": "area",
+      "encoding": {
+        "x": {"bin": true, "type": "quantitative", "field": "IMDB_Rating"},
+        "y": {"scale": {"zero": false}, "type": "quantitative", "field": 'US_Gross', "aggregate": "mean"}
+      },
+      "data": {"url": 'data/movies.json'}
+    });
+    const props = area.properties(model);
+
+    it('should end on axis', function() {
+      assert.deepEqual(props.y2, {field: {group: 'height'}});
+    });
+
+    it('should has no height', function(){
+      assert.isUndefined(props.height);
+    });
+  });
+
   describe('vertical area', function() {
     const model = parseUnitModel(verticalArea());
     const props = area.properties(model);
@@ -94,6 +134,48 @@ describe('Mark: Area', function() {
 
     it('should have the correct value for x2', () => {
       assert.deepEqual(props.x2, {scale: 'x' , value: 0});
+    });
+  });
+
+  describe('horizontal area, with log', function() {
+    const model = parseUnitModel({
+      "mark": "area",
+      "encoding": {
+        "y": {"bin": true, "type": "quantitative", "field": "IMDB_Rating"},
+        "x": {"scale": {"type": 'log'}, "type": "quantitative", "field": 'US_Gross', "aggregate": "mean"}
+      },
+      "data": {"url": 'data/movies.json'}
+    });
+
+    const props = area.properties(model);
+
+    it('should end on axis', function() {
+      assert.deepEqual(props.x2, {value: 0});
+    });
+
+    it('should have no width', function(){
+      assert.isUndefined(props.width);
+    });
+  });
+
+  describe('horizontal area, with zero=false', function() {
+    const model = parseUnitModel({
+      "mark": "area",
+      "encoding": {
+        "y": {"bin": true, "type": "quantitative", "field": "IMDB_Rating"},
+        "x": {"scale": {"zero": false}, "type": "quantitative", "field": 'US_Gross', "aggregate": "mean"}
+      },
+      "data": {"url": 'data/movies.json'}
+    });
+
+    const props = area.properties(model);
+
+    it('should end on axis', function() {
+      assert.deepEqual(props.x2, {value: 0});
+    });
+
+    it('should have no width', function(){
+      assert.isUndefined(props.width);
     });
   });
 
