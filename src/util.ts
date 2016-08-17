@@ -4,8 +4,6 @@
 import * as stringify from 'json-stable-stringify';
 export {keys, extend, duplicate, isArray, vals, truncate, toMap, isObject, isString, isNumber, isBoolean} from 'datalib/src/util';
 import {duplicate as _duplicate} from 'datalib/src/util';
-export {range} from 'datalib/src/generate';
-
 import {isString, isNumber, isBoolean} from 'datalib/src/util';
 
 /**
@@ -27,6 +25,33 @@ export function pick(obj: any, props: string[]) {
   });
   return copy;
 }
+
+// Copied from datalib
+export function range(start: number, stop?: number, step?: number): Array<number> {
+  if (arguments.length < 3) {
+    step = 1;
+    if (arguments.length < 2) {
+      stop = start;
+      start = 0;
+    }
+  }
+  if ((stop - start) / step === Infinity) {
+    throw new Error('Infinite range');
+  }
+  var range = [], i = -1, j;
+  if (step < 0) {
+    /* tslint:disable */
+    while ((j = start + step * ++i) > stop) {
+      range.push(j);
+    }
+  } else {
+    while ((j = start + step * ++i) < stop) {
+      range.push(j);
+    }
+    /* tslint:enable */
+  }
+  return range;
+};
 
 /**
  * The opposite of _.pick; this method creates an object composed of the own
