@@ -1,6 +1,6 @@
 // utility for a field definition object
 
-import {AggregateOp, AGGREGATE_OPS} from './aggregate';
+import {AggregateOp} from './aggregate';
 import {Axis} from './axis';
 import {Bin} from './bin';
 import {Config} from './config';
@@ -9,7 +9,7 @@ import {Scale, ScaleType} from './scale';
 import {SortField, SortOrder} from './sort';
 import {TimeUnit} from './timeunit';
 import {Type, NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from './type';
-import {contains, toMap} from './util';
+import {contains} from './util';
 
 /**
  *  Interface for any kind of FieldDef;
@@ -60,18 +60,6 @@ export interface FieldDef {
   title?: string;
 }
 
-export const aggregate = {
-  type: 'string',
-  enum: AGGREGATE_OPS,
-  supportedEnums: {
-    quantitative: AGGREGATE_OPS,
-    ordinal: ['median','min','max'],
-    nominal: [],
-    temporal: ['mean', 'median', 'min', 'max'], // TODO: revise what should time support
-    '': ['count']
-  },
-  supportedTypes: toMap([QUANTITATIVE, NOMINAL, ORDINAL, TEMPORAL, ''])
-};
 export interface ChannelDefWithScale extends FieldDef {
   scale?: Scale;
   sort?: SortField | SortOrder;
