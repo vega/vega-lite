@@ -12,6 +12,18 @@ if ! [ -f vega-lite.js ]; then
   echo "${RED} vega-lite.js not found ${NC}"
   exit 1;
 fi
+if ! [ -f vega-lite.js.map ]; then
+  echo "${RED} vega-lite.js.map not found ${NC}"
+  exit 1;
+fi
+if ! [ -f vega-lite.min.js ]; then
+  echo "${RED} vega-lite.min.js not found ${NC}"
+  exit 1;
+fi
+if ! [ -f vega-lite.min.js.map ]; then
+  echo "${RED} vega-lite.min.js.map not found ${NC}"
+  exit 1;
+fi
 if ! [ -f vega-lite-schema.json ]; then
   echo "${RED} vega-lite-schema.json not found${NC}"
   exit 1;
