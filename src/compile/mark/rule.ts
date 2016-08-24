@@ -85,7 +85,7 @@ export namespace rule {
   }
 
   function sizeValue(model: UnitModel) {
-    const fieldDef = model.fieldDef(SIZE);
+    const fieldDef = model.encoding().size;
     if (fieldDef && fieldDef.value !== undefined) {
        return fieldDef.value;
     }

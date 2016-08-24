@@ -43,8 +43,8 @@ export const FILL_STROKE_CONFIG = union(STROKE_CONFIG, FILL_CONFIG);
 
 export function applyColorAndOpacity(p, model: UnitModel) {
   const filled = model.config().mark.filled;
-  const colorFieldDef = model.fieldDef(COLOR);
-  const opacityFieldDef = model.fieldDef(OPACITY);
+  const colorFieldDef = model.encoding().color;
+  const opacityFieldDef = model.encoding().opacity;
 
   // Apply fill stroke config first so that color field / value can override
   // fill / stroke

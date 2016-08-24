@@ -25,7 +25,7 @@ export function parseLegendComponent(model: UnitModel): Dict<VgLegend> {
 function getLegendDefWithScale(model: UnitModel, channel: Channel): VgLegend {
   switch (channel) {
     case COLOR:
-      const fieldDef = model.fieldDef(COLOR);
+      const fieldDef = model.encoding().color;
       const scale = model.scaleName(useColorLegendScale(fieldDef) ?
         // To produce ordinal legend (list, rather than linear range) with correct labels:
         // - For an ordinal field, provide an ordinal scale that maps rank values to field values
@@ -147,8 +147,8 @@ export namespace properties {
         // for color legend scale, we need to override
         value = { scale: model.scaleName(COLOR), field: 'data' };
       }
-    } else if (model.fieldDef(COLOR).value) {
-      value = { value: model.fieldDef(COLOR).value };
+    } else if (model.encoding().color && model.encoding().color.value) {
+      value = { value: model.encoding().color.value };
     }
 
     if (value !== undefined) {

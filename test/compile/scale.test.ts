@@ -23,7 +23,7 @@ describe('Scale', function() {
           }
         }
       });
-      const fieldDef = model.fieldDef(DETAIL);
+      const fieldDef = model.encoding().detail;
       assert.deepEqual(scaleType(null, fieldDef, DETAIL, model.mark()), null);
     });
 
@@ -38,7 +38,7 @@ describe('Scale', function() {
           }
         }
       });
-      const fieldDef = model.fieldDef(Y);
+      const fieldDef = model.encoding().y;
       const scale = model.scale(Y);
       assert.deepEqual(scaleType(scale, fieldDef, Y, model.mark()), ScaleType.TIME);
     });
@@ -54,7 +54,7 @@ describe('Scale', function() {
           }
         }
       });
-      const fieldDef = model.fieldDef(Y);
+      const fieldDef = model.encoding().y;
       const scale = model.scale(Y);
       assert.deepEqual(scaleType(scale, fieldDef, Y, model.mark()), ScaleType.ORDINAL);
     });
@@ -70,7 +70,7 @@ describe('Scale', function() {
           }
         }
       });
-      const fieldDef = model.fieldDef(ROW);
+      const fieldDef = model.encoding().row;
       const scale = model.scale(ROW);
       assert.deepEqual(scaleType(scale, fieldDef, ROW, model.mark()), ScaleType.ORDINAL);
     });

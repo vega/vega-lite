@@ -70,32 +70,32 @@ export namespace bar {
         };
         p.width = {value: sizeValue(model, X)};
       }
-    } else if (model.fieldDef(X).bin) {
-      if (model.has(SIZE) && orient !== Orient.HORIZONTAL) {
-        // For vertical chart that has binned X and size,
-        // center bar and apply size to width.
-        p.xc = {
-          scale: model.scaleName(X),
-          field: model.field(X, { binSuffix: 'mid' })
-        };
-        p.width = {
-          scale: model.scaleName(SIZE),
-          field: model.field(SIZE)
-        };
-      } else {
-        p.x = {
-          scale: model.scaleName(X),
-          field: model.field(X, { binSuffix: 'start' }),
-          offset: 1
-        };
-        p.x2 = {
-          scale: model.scaleName(X),
-          field: model.field(X, { binSuffix: 'end' })
-        };
-      }
     } else { // x is dimension or unspecified
       if (model.has(X)) { // is ordinal
-        if (model.scale(X).bandSize === BANDSIZE_FIT) {
+        if (model.encoding().x.bin) {
+          if (model.has(SIZE) && orient !== Orient.HORIZONTAL) {
+            // For vertical chart that has binned X and size,
+            // center bar and apply size to width.
+            p.xc = {
+              scale: model.scaleName(X),
+              field: model.field(X, { binSuffix: 'mid' })
+            };
+            p.width = {
+              scale: model.scaleName(SIZE),
+              field: model.field(SIZE)
+            };
+          } else {
+            p.x = {
+              scale: model.scaleName(X),
+              field: model.field(X, { binSuffix: 'start' }),
+              offset: 1
+            };
+            p.x2 = {
+              scale: model.scaleName(X),
+              field: model.field(X, { binSuffix: 'end' })
+            };
+          }
+        } else if (model.scale(X).bandSize === BANDSIZE_FIT) {
           p.x = {
             scale: model.scaleName(X),
             field: model.field(X),
@@ -178,34 +178,34 @@ export namespace bar {
         };
         p.height = { value: sizeValue(model, Y) };
       }
-    } else if (model.fieldDef(Y).bin) {
-      if (model.has(SIZE) && orient === Orient.HORIZONTAL) {
-        // For horizontal chart that has binned Y and size,
-        // center bar and apply size to height.
-        p.yc = {
-          scale: model.scaleName(Y),
-          field: model.field(Y, { binSuffix: 'mid' })
-        };
-        p.height = {
-          scale: model.scaleName(SIZE),
-          field: model.field(SIZE)
-        };
-      } else {
-        // Otherwise, simply use <field>_start, <field>_end
-        p.y = {
-          scale: model.scaleName(Y),
-          field: model.field(Y, { binSuffix: 'start' })
-        };
-        p.y2 = {
-          scale: model.scaleName(Y),
-          field: model.field(Y, { binSuffix: 'end' }),
-          offset: 1
-        };
-      }
     } else { // y is ordinal or unspecified
 
       if (model.has(Y)) { // is ordinal
-         if (model.scale(Y).bandSize === BANDSIZE_FIT) {
+        if (model.encoding().y.bin) {
+          if (model.has(SIZE) && orient === Orient.HORIZONTAL) {
+            // For horizontal chart that has binned Y and size,
+            // center bar and apply size to height.
+            p.yc = {
+              scale: model.scaleName(Y),
+              field: model.field(Y, { binSuffix: 'mid' })
+            };
+            p.height = {
+              scale: model.scaleName(SIZE),
+              field: model.field(SIZE)
+            };
+          } else {
+            // Otherwise, simply use <field>_start, <field>_end
+            p.y = {
+              scale: model.scaleName(Y),
+              field: model.field(Y, { binSuffix: 'start' })
+            };
+            p.y2 = {
+              scale: model.scaleName(Y),
+              field: model.field(Y, { binSuffix: 'end' }),
+              offset: 1
+            };
+          }
+        } else if (model.scale(Y).bandSize === BANDSIZE_FIT) {
           p.y = {
             scale: model.scaleName(Y),
             field: model.field(Y),
@@ -243,7 +243,7 @@ export namespace bar {
 
   // TODO: make this a mixins
   function sizeValue(model: UnitModel, channel: Channel) {
-    const fieldDef = model.fieldDef(SIZE);
+    const fieldDef = model.encoding().size;
     if (fieldDef && fieldDef.value !== undefined) {
        return fieldDef.value;
     }
