@@ -1,9 +1,10 @@
 import {X, Y, COLOR, TEXT, SHAPE, PATH, ORDER, OPACITY, DETAIL, LABEL, STACK_GROUP_CHANNELS} from '../../channel';
 import {Orient} from '../../config';
-import {has} from '../../encoding';
+import {has, isAggregate} from '../../encoding';
 import {OrderChannelDef, FieldDef, field} from '../../fielddef';
 import {AREA, LINE, TEXT as TEXTMARK} from '../../mark';
 import {ScaleType} from '../../scale';
+import {isSortField} from '../../sort';
 import {contains, extend, isArray} from '../../util';
 import {VgStackTransform} from '../../vega.schema';
 
@@ -197,7 +198,16 @@ function sortPathBy(model: UnitModel): string | string[] {
     }
   } else {
     // For both line and area, we sort values based on dimension by default
-    return '-' + model.field(model.config().mark.orient === Orient.HORIZONTAL ? Y : X, {binSuffix: 'mid'});
+    const dimensionChannel = model.config().mark.orient === Orient.HORIZONTAL ? Y : X;
+    const sort = model.sort(dimensionChannel);
+    if (isSortField(sort)) {
+      return '-' + field({
+        aggregate: isAggregate(model.encoding()) ? sort.op : undefined,
+        field: sort.field
+      });
+    } else {
+      return '-' + model.field(dimensionChannel, {binSuffix: 'mid'});
+    }
   }
 }
 
