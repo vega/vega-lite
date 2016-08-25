@@ -176,14 +176,18 @@ export namespace properties {
       }
     }
 
-    if (legend.symbolShape !== undefined) {
-      symbols.shape = {value: legend.symbolShape};
-    } else if (cfg.mark.shape !== undefined) {
-      symbols.shape = {value: cfg.mark.shape};
+    if (channel !== SHAPE) {
+      if (legend.symbolShape !== undefined) {
+        symbols.shape = {value: legend.symbolShape};
+      } else if (cfg.mark.shape !== undefined) {
+        symbols.shape = {value: cfg.mark.shape};
+      }
     }
 
-    if (legend.symbolSize !== undefined) {
-      symbols.size = {value: legend.symbolSize};
+    if (channel !== SIZE) {
+      if (legend.symbolSize !== undefined) {
+        symbols.size = {value: legend.symbolSize};
+      }
     }
 
     if (legend.symbolStrokeWidth !== undefined) {

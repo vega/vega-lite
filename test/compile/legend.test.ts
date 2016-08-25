@@ -2,7 +2,7 @@
 
 import {assert} from 'chai';
 import {parseUnitModel} from '../util';
-import {COLOR, X} from '../../src/channel';
+import {COLOR, X, SHAPE, SIZE} from '../../src/channel';
 import {defaultConfig} from '../../src/config';
 import * as legend from '../../src/compile/legend';
 import {TimeUnit} from '../../src/timeunit';
@@ -92,6 +92,26 @@ describe('Legend', function() {
             color: {field: "a", type: "nominal", legend: {"symbolSize": 20}}}
         }), COLOR);
         assert.deepEqual(symbol.size.value, 20);
+    });
+
+    it('should return not override size of the symbol for size channel', function() {
+      const symbol = legend.properties.symbols({field: 'a'}, {}, parseUnitModel({
+          mark: "point",
+          encoding: {
+            x: {field: "a", type: "nominal"},
+            size: {field: "b", type: "quantitative", legend: {"symbolSize": 20}}}
+        }), SIZE);
+        assert.isUndefined(symbol.size);
+    });
+
+    it('should return not override size of the symbol for shape channel', function() {
+      const symbol = legend.properties.symbols({field: 'a'}, {}, parseUnitModel({
+          mark: "point",
+          encoding: {
+            x: {field: "a", type: "nominal"},
+            shape: {field: "b", type: "nominal", legend: {"shape": "circle"}}}
+        }), SHAPE);
+        assert.isUndefined(symbol.size);
     });
 
     it('should return specific width of the symbol', function() {
