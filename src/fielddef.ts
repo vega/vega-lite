@@ -151,8 +151,14 @@ export function field(fieldDef: FieldDef, opt: FieldRefOption = {}) {
 }
 
 function _isFieldDimension(fieldDef: FieldDef) {
-  return contains([NOMINAL, ORDINAL], fieldDef.type) || !!fieldDef.bin ||
-    (fieldDef.type === TEMPORAL && !!fieldDef.timeUnit);
+  if (contains([NOMINAL, ORDINAL], fieldDef.type)) {
+    return true;
+  } else if(!!fieldDef.bin) {
+    return true;
+  } else if (fieldDef.type === TEMPORAL) {
+    return !!fieldDef.timeUnit;
+  }
+  return false;
 }
 
 export function isDimension(fieldDef: FieldDef) {
