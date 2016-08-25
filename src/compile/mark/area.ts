@@ -2,7 +2,7 @@ import {VgValueRef} from '../../vega.schema';
 
 import {X, Y} from '../../channel';
 import {Orient} from '../../config';
-import {isDimension, isMeasure, FieldDef, field} from '../../fielddef';
+import {FieldDef, field} from '../../fielddef';
 import {Scale, ScaleType} from '../../scale';
 import {StackProperties} from '../../stack';
 
@@ -50,33 +50,21 @@ export namespace area {
         scale: scaleName,
         field: field(fieldDef, { suffix: 'start' })
       };
-    } else if (isMeasure(fieldDef)) { // Measure
-      if (orient === Orient.HORIZONTAL) {
-        // x
-        if (fieldDef && fieldDef.field) {
-          return {
-            scale: scaleName,
-            field: field(fieldDef)
-          };
-        } else {
-          return {
-            scale: scaleName,
-            value: 0
-          };
-        }
-      } else {
+    } else if (fieldDef) {
+      if (fieldDef.field) {
         return {
           scale: scaleName,
-          field: field(fieldDef)
+          field: field(fieldDef, { binSuffix: 'mid' })
+        };
+      } else if (fieldDef.value) {
+        return {
+          scale: scaleName,
+          value: fieldDef.value
         };
       }
-    } else if (isDimension(fieldDef)) {
-      return {
-        scale: scaleName,
-        field: field(fieldDef, { binSuffix: 'mid' })
-      };
     }
-    return undefined;
+
+    return { value: 0 };
   }
 
   export function x2(xFieldDef: FieldDef, x2FieldDef: FieldDef, scaleName: string, scale: Scale, orient: Orient, stack: StackProperties): VgValueRef {
@@ -121,30 +109,20 @@ export namespace area {
         scale: scaleName,
         field: field(fieldDef, { suffix: 'start' })
       };
-    } else if (isMeasure(fieldDef)) {
-      if (orient !== Orient.HORIZONTAL) {
-        // y
-        if (fieldDef && fieldDef.field) {
-          return {
-            scale: scaleName,
-            field: field(fieldDef)
-          };
-        } else {
-          return { field: { group: 'height' } };
-        }
-      } else {
+    } else if (fieldDef) {
+      if (fieldDef.field) {
         return {
           scale: scaleName,
-          field: field(fieldDef)
+          field: field(fieldDef, { binSuffix: 'mid' })
+        };
+      } else if (fieldDef.value) {
+        return {
+          scale: scaleName,
+          value: fieldDef.value
         };
       }
-    } else if (isDimension(fieldDef)) {
-      return {
-        scale: scaleName,
-        field: field(fieldDef, { binSuffix: 'mid' })
-      };
     }
-    return undefined;
+    return { value: 0 };
   }
 
   export function y2(yFieldDef: FieldDef, y2FieldDef: FieldDef,
