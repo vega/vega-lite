@@ -12,7 +12,7 @@ describe('compile/data/filter', () => {
         "transform": {
           "filter": [
             {field: 'color', equal: 'red'},
-            {field: 'color', in: ['red', 'yellow']},
+            {field: 'color', oneOf: ['red', 'yellow']},
             {field: 'x', range: [0, 5]},
             'datum["x"]===5',
             {field: 'x', range: [null, null]},

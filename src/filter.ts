@@ -3,7 +3,7 @@ import {field} from './fielddef';
 import {TimeUnit, fieldExpr as timeUnitFieldExpr, isSingleTimeUnit} from './timeunit';
 import {isArray, isString} from './util';
 
-export type Filter = EqualFilter | RangeFilter | InFilter ;
+export type Filter = EqualFilter | RangeFilter | OneOfFilter ;
 
 
 export interface EqualFilter {
@@ -62,7 +62,7 @@ export function isRangeFilter(filter: any): filter is RangeFilter {
   return false;
 }
 
-export interface InFilter {
+export interface OneOfFilter {
   // TODO: support aggregate
 
   /**
@@ -79,12 +79,15 @@ export interface InFilter {
    * A set of values that the `field`'s value should be a member of,
    * for a data item included in the filtered data.
    */
-  in: Array<string|number|boolean|DateTime>;
+  oneOf: Array<string|number|boolean|DateTime>;
 
 }
 
-export function isInFilter(filter: any): filter is InFilter {
-  return filter && !!filter.field && isArray(filter.in);
+export function isOneOfFilter(filter: any): filter is OneOfFilter {
+  return filter && !!filter.field && (
+    isArray(filter.oneOf) ||
+    isArray(filter.in) // backward compatability
+  );
 }
 
 export function expression(filter: Filter | string) {
@@ -100,9 +103,11 @@ export function expression(filter: Filter | string) {
 
     if (isEqualFilter(filter)) {
       return fieldExpr + '===' + valueExpr(filter.equal, filter.timeUnit);
-    } else if (isInFilter(filter)) {
+    } else if (isOneOfFilter(filter)) {
+      // "oneOf" was formerly "in" -- so we need to add backward compatability
+      const oneOf = filter.oneOf || filter['in'];
       return 'indexof([' +
-        filter.in.map((v) => valueExpr(v, filter.timeUnit)).join(',') +
+        oneOf.map((v) => valueExpr(v, filter.timeUnit)).join(',') +
         '], ' + fieldExpr + ') !== -1';
     } else if (isRangeFilter(filter)) {
       const lower = filter.range[0];

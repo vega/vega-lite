@@ -1,10 +1,10 @@
 import {assert} from 'chai';
-import {expression, isEqualFilter, isInFilter, isRangeFilter} from '../src/filter';
+import {expression, isEqualFilter, isOneOfFilter, isRangeFilter} from '../src/filter';
 import {TimeUnit} from '../src/timeunit';
 
 describe('filter', () => {
   const equalFilter = {field: 'color', equal: 'red'};
-  const inFilter = {field: 'color', in: ['red', 'yellow']};
+  const oneOfFilter = {field: 'color', oneOf: ['red', 'yellow']};
   const rangeFilter = {field: 'x', range: [0, 5]};
   const exprFilter = 'datum["x"]===5';
 
@@ -14,20 +14,20 @@ describe('filter', () => {
     });
 
     it('should return false for other filters', () => {
-      [inFilter, rangeFilter, exprFilter].forEach((filter) => {
+      [oneOfFilter, rangeFilter, exprFilter].forEach((filter) => {
         assert.isFalse(isEqualFilter(filter));
       });
     });
   });
 
-  describe('isInFilter', () => {
+  describe('isOneOfFilter', () => {
     it('should return true for an in filter', () => {
-      assert.isTrue(isInFilter(inFilter));
+      assert.isTrue(isOneOfFilter(oneOfFilter));
     });
 
     it('should return false for other filters', () => {
       [equalFilter, rangeFilter, exprFilter].forEach((filter) => {
-        assert.isFalse(isInFilter(filter));
+        assert.isFalse(isOneOfFilter(filter));
       });
     });
   });
@@ -38,7 +38,7 @@ describe('filter', () => {
     });
 
     it('should return false for other filters', () => {
-      [inFilter, equalFilter, exprFilter].forEach((filter) => {
+      [oneOfFilter, equalFilter, exprFilter].forEach((filter) => {
         assert.isFalse(isRangeFilter(filter));
       });
     });
@@ -81,7 +81,7 @@ describe('filter', () => {
     });
 
     it('should return a correct expression for an InFilter', () => {
-      const expr = expression({field: 'color', in: ['red', 'yellow']});
+      const expr = expression({field: 'color', oneOf: ['red', 'yellow']});
       assert.equal(expr, 'indexof(["red","yellow"], datum["color"]) !== -1');
     });
 
