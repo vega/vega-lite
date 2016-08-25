@@ -62,9 +62,4 @@ export namespace line {
     }
     return { value: config.mark.lineSize };
   }
-
-  export function labels(model: UnitModel) {
-    // TODO(#240): fill this method
-    return undefined;
-  }
 }

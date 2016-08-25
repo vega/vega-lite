@@ -263,9 +263,4 @@ export namespace bar {
         // otherwise, set to thinBarWidth by default
         markConfig.barThinSize;
   }
-
-  export function labels(model: UnitModel) {
-    // TODO(#64): fill this method
-    return undefined;
-  }
 }

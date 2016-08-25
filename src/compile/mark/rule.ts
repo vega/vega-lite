@@ -92,9 +92,4 @@ export namespace rule {
 
     return model.config().mark.ruleSize;
   }
-
-  export function labels(model: UnitModel) {
-    // TODO(#240): fill this method
-    return undefined;
-  }
 }

@@ -184,10 +184,4 @@ export namespace area {
     }
     return undefined;
   }
-
-
-  export function labels(model: UnitModel) {
-    // TODO(#240): fill this method
-    return undefined;
-  }
 }

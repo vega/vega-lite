@@ -1,4 +1,4 @@
-import {X, Y, COLOR, TEXT, SHAPE, PATH, ORDER, OPACITY, DETAIL, LABEL, STACK_GROUP_CHANNELS} from '../../channel';
+import {X, Y, COLOR, TEXT, SHAPE, PATH, ORDER, OPACITY, DETAIL, STACK_GROUP_CHANNELS} from '../../channel';
 import {Orient} from '../../config';
 import {has, isAggregate} from '../../encoding';
 import {OrderChannelDef, FieldDef, field} from '../../fielddef';
@@ -144,26 +144,6 @@ function parseNonPathMark(model: UnitModel) {
     // properties groups
     { properties: { update: markCompiler[mark].properties(model) } }
   ));
-
-  if (model.has(LABEL) && markCompiler[mark].labels) {
-    const labelProperties = markCompiler[mark].labels(model);
-
-    // check if we have label method for current mark type.
-    if (labelProperties !== undefined) { // If label is supported
-      // add label group
-      marks.push(extend(
-        {
-          name: model.name('label'),
-          type: 'text'
-        },
-        // If has facet, `from.data` will be added in the cell group.
-        // Otherwise, add it here.
-        isFaceted ? {} : {from: dataFrom},
-        // Properties
-        { properties: { update: labelProperties } }
-      ));
-    }
-  }
 
   return marks;
 }
