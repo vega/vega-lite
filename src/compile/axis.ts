@@ -1,6 +1,6 @@
 import {AxisOrient} from '../axis';
 import {COLUMN, ROW, X, Y, Channel} from '../channel';
-import {title as fieldDefTitle, isDimension} from '../fielddef';
+import {title as fieldDefTitle} from '../fielddef';
 import {NOMINAL, ORDINAL, TEMPORAL} from '../type';
 import {contains, keys, extend, truncate, Dict} from '../util';
 import {VgAxis} from '../vega.schema';
@@ -311,7 +311,7 @@ export namespace properties {
       labelsSpec.angle = {value: axis.labelAngle};
     } else {
       // auto rotate for X and Row
-      if (channel === X && (isDimension(fieldDef) || fieldDef.type === TEMPORAL)) {
+      if (channel === X && (contains([NOMINAL, ORDINAL], fieldDef.type) || !!fieldDef.bin || fieldDef.type === TEMPORAL)) {
         labelsSpec.angle = {value: 270};
       }
     }
