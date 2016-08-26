@@ -1,4 +1,5 @@
 import {BAR, POINT, CIRCLE, SQUARE} from '../mark';
+import {AggregateOp} from '../aggregate';
 import {COLOR, OPACITY} from '../channel';
 import {Config} from '../config';
 import {FieldDef, field, OrderChannelDef} from '../fielddef';
@@ -119,8 +120,15 @@ export function applyMarkConfig(marksProperties, model: UnitModel, propsList: st
 export function numberFormat(fieldDef: FieldDef, format: string, config: Config) {
   if (fieldDef.type === QUANTITATIVE && !fieldDef.bin) {
     // add number format for quantitative type only
+
+    if (format) {
+      return format;
+    } else if (fieldDef.aggregate === AggregateOp.COUNT) {
+      // FIXME: need a more holistic way to deal with this.
+      return 'd';
+    }
     // TODO: need to make this work correctly for numeric ordinal / nominal type
-    return format || config.numberFormat;
+    return config.numberFormat;
   }
   return undefined;
 }
