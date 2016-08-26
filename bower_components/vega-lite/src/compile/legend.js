@@ -18,7 +18,7 @@ exports.parseLegendComponent = parseLegendComponent;
 function getLegendDefWithScale(model, channel) {
     switch (channel) {
         case channel_1.COLOR:
-            var fieldDef = model.fieldDef(channel_1.COLOR);
+            var fieldDef = model.encoding().color;
             var scale = model.scaleName(useColorLegendScale(fieldDef) ?
                 scale_1.COLOR_LEGEND :
                 channel_1.COLOR);
@@ -112,8 +112,8 @@ var properties;
                 value = { scale: model.scaleName(channel_1.COLOR), field: 'data' };
             }
         }
-        else if (model.fieldDef(channel_1.COLOR).value) {
-            value = { value: model.fieldDef(channel_1.COLOR).value };
+        else if (model.encoding().color && model.encoding().color.value) {
+            value = { value: model.encoding().color.value };
         }
         if (value !== undefined) {
             if (filled) {
@@ -138,14 +138,18 @@ var properties;
                 symbols.stroke = { value: cfg.mark.stroke };
             }
         }
-        if (legend.symbolShape !== undefined) {
-            symbols.shape = { value: legend.symbolShape };
+        if (channel !== channel_1.SHAPE) {
+            if (legend.symbolShape !== undefined) {
+                symbols.shape = { value: legend.symbolShape };
+            }
+            else if (cfg.mark.shape !== undefined) {
+                symbols.shape = { value: cfg.mark.shape };
+            }
         }
-        else if (cfg.mark.shape !== undefined) {
-            symbols.shape = { value: cfg.mark.shape };
-        }
-        if (legend.symbolSize !== undefined) {
-            symbols.size = { value: legend.symbolSize };
+        if (channel !== channel_1.SIZE) {
+            if (legend.symbolSize !== undefined) {
+                symbols.size = { value: legend.symbolSize };
+            }
         }
         if (legend.symbolStrokeWidth !== undefined) {
             symbols.strokeWidth = { value: legend.symbolStrokeWidth };

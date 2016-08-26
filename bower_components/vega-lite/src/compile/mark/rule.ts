@@ -85,16 +85,11 @@ export namespace rule {
   }
 
   function sizeValue(model: UnitModel) {
-    const fieldDef = model.fieldDef(SIZE);
+    const fieldDef = model.encoding().size;
     if (fieldDef && fieldDef.value !== undefined) {
        return fieldDef.value;
     }
 
     return model.config().mark.ruleSize;
-  }
-
-  export function labels(model: UnitModel) {
-    // TODO(#240): fill this method
-    return undefined;
   }
 }

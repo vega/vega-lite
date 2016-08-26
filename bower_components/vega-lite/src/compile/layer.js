@@ -16,6 +16,8 @@ var LayerModel = (function (_super) {
     function LayerModel(spec, parent, parentGivenName) {
         var _this = this;
         _super.call(this, spec, parent, parentGivenName);
+        this._width = spec.width;
+        this._height = spec.height;
         this._config = this._initConfig(spec.config, parent);
         this._children = spec.layers.map(function (layer, i) {
             return common_1.buildModel(layer, _this, _this.name('layer_' + i));
@@ -24,6 +26,20 @@ var LayerModel = (function (_super) {
     LayerModel.prototype._initConfig = function (specConfig, parent) {
         return util_1.mergeDeep(util_1.duplicate(config_1.defaultConfig), specConfig, parent ? parent.config() : {});
     };
+    Object.defineProperty(LayerModel.prototype, "width", {
+        get: function () {
+            return this._width;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(LayerModel.prototype, "height", {
+        get: function () {
+            return this._height;
+        },
+        enumerable: true,
+        configurable: true
+    });
     LayerModel.prototype.has = function (channel) {
         return false;
     };

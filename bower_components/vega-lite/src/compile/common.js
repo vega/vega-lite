@@ -1,5 +1,6 @@
 "use strict";
 var mark_1 = require('../mark');
+var aggregate_1 = require('../aggregate');
 var channel_1 = require('../channel');
 var fielddef_1 = require('../fielddef');
 var sort_1 = require('../sort');
@@ -31,8 +32,8 @@ exports.FILL_CONFIG = ['fill', 'fillOpacity',
 exports.FILL_STROKE_CONFIG = util_1.union(exports.STROKE_CONFIG, exports.FILL_CONFIG);
 function applyColorAndOpacity(p, model) {
     var filled = model.config().mark.filled;
-    var colorFieldDef = model.fieldDef(channel_1.COLOR);
-    var opacityFieldDef = model.fieldDef(channel_1.OPACITY);
+    var colorFieldDef = model.encoding().color;
+    var opacityFieldDef = model.encoding().opacity;
     if (filled) {
         applyMarkConfig(p, model, exports.FILL_CONFIG);
     }
@@ -95,7 +96,13 @@ function applyMarkConfig(marksProperties, model, propsList) {
 exports.applyMarkConfig = applyMarkConfig;
 function numberFormat(fieldDef, format, config) {
     if (fieldDef.type === type_1.QUANTITATIVE && !fieldDef.bin) {
-        return format || config.numberFormat;
+        if (format) {
+            return format;
+        }
+        else if (fieldDef.aggregate === aggregate_1.AggregateOp.COUNT) {
+            return 'd';
+        }
+        return config.numberFormat;
     }
     return undefined;
 }

@@ -63,5 +63,3 @@ export const SHARED_DOMAIN_OPS = [
     AggregateOp.MIN,
     AggregateOp.MAX,
 ];
-
-// TODO: move supportedTypes, supportedEnums from schema to here

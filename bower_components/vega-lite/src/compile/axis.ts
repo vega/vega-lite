@@ -1,6 +1,6 @@
 import {AxisOrient} from '../axis';
 import {COLUMN, ROW, X, Y, Channel} from '../channel';
-import {title as fieldDefTitle, isDimension} from '../fielddef';
+import {title as fieldDefTitle} from '../fielddef';
 import {NOMINAL, ORDINAL, TEMPORAL} from '../type';
 import {contains, keys, extend, truncate, Dict} from '../util';
 import {VgAxis} from '../vega.schema';
@@ -233,11 +233,11 @@ export function title(model: Model, channel: Channel) {
   } else if (channel === X && !model.isOrdinalScale(X)) {
     const unitModel: UnitModel = model as any; // only unit model has channel x
     // For non-ordinal scale, we know cell size at compile time, we can guess max length
-    maxLength = unitModel.config().cell.width / model.axis(X).characterWidth;
+    maxLength = unitModel.width / model.axis(X).characterWidth;
   } else if (channel === Y && !model.isOrdinalScale(Y)) {
     const unitModel: UnitModel = model as any; // only unit model has channel y
     // For non-ordinal scale, we know cell size at compile time, we can guess max length
-    maxLength = unitModel.config().cell.height / model.axis(Y).characterWidth;
+    maxLength = unitModel.height / model.axis(Y).characterWidth;
   }
 
   // FIXME: we should use template to truncate instead
@@ -311,7 +311,7 @@ export namespace properties {
       labelsSpec.angle = {value: axis.labelAngle};
     } else {
       // auto rotate for X and Row
-      if (channel === X && (isDimension(fieldDef) || fieldDef.type === TEMPORAL)) {
+      if (channel === X && (contains([NOMINAL, ORDINAL], fieldDef.type) || !!fieldDef.bin || fieldDef.type === TEMPORAL)) {
         labelsSpec.angle = {value: 270};
       }
     }

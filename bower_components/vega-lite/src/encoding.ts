@@ -22,12 +22,12 @@ export interface UnitEncoding {
   /**
    * X2 coordinates for ranged `bar`, `rule`, `area`
    */
-  x2?: PositionChannelDef;
+  x2?: FieldDef;
 
   /**
    * Y2 coordinates for ranged `bar`, `rule`, `area`
    */
-  y2?: PositionChannelDef;
+  y2?: FieldDef;
 
   /**
    * Color of the marks – either fill or stroke color based on mark type.

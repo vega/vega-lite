@@ -3,7 +3,6 @@ var channel_1 = require('../channel');
 var data_1 = require('../data');
 var scale_1 = require('../scale');
 var util_1 = require('../util');
-var mark_1 = require('../mark');
 var timeunit_1 = require('../timeunit');
 function assembleLayout(model, layoutData) {
     var layoutComponent = model.component.layout;
@@ -43,35 +42,26 @@ function parseUnitLayout(model) {
 }
 exports.parseUnitLayout = parseUnitLayout;
 function parseUnitSizeLayout(model, channel) {
-    var cellConfig = model.config().cell;
-    var nonOrdinalSize = channel === channel_1.X ? cellConfig.width : cellConfig.height;
     return {
         distinct: getDistinct(model, channel),
         formula: [{
                 field: model.channelSizeName(channel),
-                expr: unitSizeExpr(model, channel, nonOrdinalSize)
+                expr: unitSizeExpr(model, channel)
             }]
     };
 }
-function unitSizeExpr(model, channel, nonOrdinalSize) {
-    if (model.scale(channel)) {
-        if (model.isOrdinalScale(channel)) {
-            var scale = model.scale(channel);
-            return '(' + cardinalityFormula(model, channel) +
-                ' + ' + scale.padding +
+function unitSizeExpr(model, channel) {
+    var scale = model.scale(channel);
+    if (scale) {
+        if (scale.type === scale_1.ScaleType.ORDINAL && scale.bandSize !== scale_1.BANDSIZE_FIT) {
+            return '(' + cardinalityExpr(model, channel) +
+                ' + ' + 1 +
                 ') * ' + scale.bandSize;
         }
-        else {
-            return nonOrdinalSize + '';
-        }
     }
-    else {
-        if (model.mark() === mark_1.TEXT && channel === channel_1.X) {
-            return model.config().scale.textBandWidth + '';
-        }
-        return model.config().scale.bandSize + '';
-    }
+    return (channel === channel_1.X ? model.width : model.height) + '';
 }
+exports.unitSizeExpr = unitSizeExpr;
 function parseFacetLayout(model) {
     return {
         width: parseFacetSizeLayout(model, channel_1.COLUMN),
@@ -99,7 +89,7 @@ function parseFacetSizeLayout(model, channel) {
 function facetSizeFormula(model, channel, innerSize) {
     var scale = model.scale(channel);
     if (model.has(channel)) {
-        return '(datum["' + innerSize + '"] + ' + scale.padding + ')' + ' * ' + cardinalityFormula(model, channel);
+        return '(datum["' + innerSize + '"] + ' + scale.padding + ')' + ' * ' + cardinalityExpr(model, channel);
     }
     else {
         return 'datum["' + innerSize + '"] + ' + model.config().facet.scale.padding;
@@ -143,7 +133,7 @@ function getDistinct(model, channel) {
     }
     return {};
 }
-function cardinalityFormula(model, channel) {
+function cardinalityExpr(model, channel) {
     var scale = model.scale(channel);
     if (scale.domain instanceof Array) {
         return scale.domain.length;
@@ -153,4 +143,5 @@ function cardinalityFormula(model, channel) {
     return timeUnitDomain !== null ? timeUnitDomain.length :
         model.field(channel, { datum: true, prefix: 'distinct' });
 }
+exports.cardinalityExpr = cardinalityExpr;
 //# sourceMappingURL=layout.js.map

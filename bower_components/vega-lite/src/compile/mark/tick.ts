@@ -83,9 +83,4 @@ export namespace tick {
       config.scale.bandSize;
     return { value: bandSize / 1.5 };
   }
-
-  export function labels(model: UnitModel) {
-    // TODO(#240): fill this method
-    return undefined;
-  }
 }

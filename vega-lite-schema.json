@@ -15,6 +15,12 @@
         "ExtendedUnitSpec": {
             "type": "object",
             "properties": {
+                "width": {
+                    "type": "number"
+                },
+                "height": {
+                    "type": "number"
+                },
                 "mark": {
                     "$ref": "#/definitions/Mark",
                     "description": "The mark type.\n\nOne of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n\n`\"area\"`, `\"point\"`, `\"rule\"`, and `\"text\"`."
@@ -83,11 +89,11 @@
                     "description": "Y coordinates for `point`, `circle`, `square`,\n\n`line`, `rule`, `text`, and `tick`\n\n(or to width and height for `bar` and `area` marks)."
                 },
                 "x2": {
-                    "$ref": "#/definitions/PositionChannelDef",
+                    "$ref": "#/definitions/FieldDef",
                     "description": "X2 coordinates for ranged `bar`, `rule`, `area`"
                 },
                 "y2": {
-                    "$ref": "#/definitions/PositionChannelDef",
+                    "$ref": "#/definitions/FieldDef",
                     "description": "Y2 coordinates for ranged `bar`, `rule`, `area`"
                 },
                 "color": {
@@ -463,7 +469,14 @@
                 },
                 "bandSize": {
                     "minimum": 0,
-                    "type": "number"
+                    "oneOf": [
+                        {
+                            "type": "number"
+                        },
+                        {
+                            "$ref": "#/definitions/BandSize"
+                        }
+                    ]
                 },
                 "padding": {
                     "description": "Applies spacing among ordinal elements in the scale range. The actual effect depends on how the scale is configured. If the __points__ parameter is `true`, the padding value is interpreted as a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. Otherwise, padding is typically in the range [0, 1] and corresponds to the fraction of space in the range interval to allocate to padding. A value of 0.5 means that the range band width will be equal to the padding width. For more, see the [D3 ordinal scale documentation](https://github.com/mbostock/d3/wiki/Ordinal-Scales).",
@@ -510,6 +523,12 @@
                 "ordinal",
                 "time",
                 "utc"
+            ]
+        },
+        "BandSize": {
+            "type": "string",
+            "enum": [
+                "fit"
             ]
         },
         "NiceTime": {
@@ -653,6 +672,57 @@
                     "description": "Maximum number of bins.",
                     "minimum": 2,
                     "type": "number"
+                }
+            }
+        },
+        "FieldDef": {
+            "type": "object",
+            "properties": {
+                "field": {
+                    "description": "Name of the field from which to pull a data value.",
+                    "type": "string"
+                },
+                "type": {
+                    "$ref": "#/definitions/Type",
+                    "description": "The encoded field's type of measurement. This can be either a full type\n\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\n\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\n\nThis property is case insensitive."
+                },
+                "value": {
+                    "description": "A constant value in visual domain.",
+                    "oneOf": [
+                        {
+                            "type": "number"
+                        },
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "boolean"
+                        }
+                    ]
+                },
+                "timeUnit": {
+                    "$ref": "#/definitions/TimeUnit",
+                    "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`)."
+                },
+                "bin": {
+                    "description": "Flag for binning a `quantitative` field, or a bin property object\n\nfor binning parameters.",
+                    "oneOf": [
+                        {
+                            "type": "boolean"
+                        },
+                        {
+                            "$ref": "#/definitions/Bin",
+                            "description": "Binning properties or boolean flag for determining whether to bin data or not."
+                        }
+                    ]
+                },
+                "aggregate": {
+                    "$ref": "#/definitions/AggregateOp",
+                    "description": "Aggregation function for the field\n\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`)."
+                },
+                "title": {
+                    "description": "Title for axis or legend.",
+                    "type": "string"
                 }
             }
         },
@@ -836,57 +906,6 @@
                 }
             }
         },
-        "FieldDef": {
-            "type": "object",
-            "properties": {
-                "field": {
-                    "description": "Name of the field from which to pull a data value.",
-                    "type": "string"
-                },
-                "type": {
-                    "$ref": "#/definitions/Type",
-                    "description": "The encoded field's type of measurement. This can be either a full type\n\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\n\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\n\nThis property is case insensitive."
-                },
-                "value": {
-                    "description": "A constant value in visual domain.",
-                    "oneOf": [
-                        {
-                            "type": "number"
-                        },
-                        {
-                            "type": "string"
-                        },
-                        {
-                            "type": "boolean"
-                        }
-                    ]
-                },
-                "timeUnit": {
-                    "$ref": "#/definitions/TimeUnit",
-                    "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`)."
-                },
-                "bin": {
-                    "description": "Flag for binning a `quantitative` field, or a bin property object\n\nfor binning parameters.",
-                    "oneOf": [
-                        {
-                            "type": "boolean"
-                        },
-                        {
-                            "$ref": "#/definitions/Bin",
-                            "description": "Binning properties or boolean flag for determining whether to bin data or not."
-                        }
-                    ]
-                },
-                "aggregate": {
-                    "$ref": "#/definitions/AggregateOp",
-                    "description": "Aggregation function for the field\n\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`)."
-                },
-                "title": {
-                    "description": "Title for axis or legend.",
-                    "type": "string"
-                }
-            }
-        },
         "OrderChannelDef": {
             "type": "object",
             "properties": {
@@ -1005,7 +1024,7 @@
                             "$ref": "#/definitions/RangeFilter"
                         },
                         {
-                            "$ref": "#/definitions/InFilter"
+                            "$ref": "#/definitions/OneOfFilter"
                         },
                         {
                             "type": "array",
@@ -1021,7 +1040,7 @@
                                         "$ref": "#/definitions/RangeFilter"
                                     },
                                     {
-                                        "$ref": "#/definitions/InFilter"
+                                        "$ref": "#/definitions/OneOfFilter"
                                     }
                                 ]
                             }
@@ -1166,7 +1185,7 @@
                 "range"
             ]
         },
-        "InFilter": {
+        "OneOfFilter": {
             "type": "object",
             "properties": {
                 "timeUnit": {
@@ -1177,7 +1196,7 @@
                     "description": "Field to be filtered",
                     "type": "string"
                 },
-                "in": {
+                "oneOf": {
                     "description": "A set of values that the `field`'s value should be a member of,\n\nfor a data item included in the filtered data.",
                     "type": "array",
                     "items": {
@@ -1201,7 +1220,7 @@
             },
             "required": [
                 "field",
-                "in"
+                "oneOf"
             ]
         },
         "Formula": {
@@ -1607,7 +1626,14 @@
                 "bandSize": {
                     "description": "Default band size for (1) `y` ordinal scale,\n\nand (2) `x` ordinal scale when the mark is not `text`.",
                     "minimum": 0,
-                    "type": "number"
+                    "oneOf": [
+                        {
+                            "type": "number"
+                        },
+                        {
+                            "$ref": "#/definitions/BandSize"
+                        }
+                    ]
                 },
                 "opacity": {
                     "description": "Default range for opacity.",
@@ -2060,6 +2086,12 @@
         "LayerSpec": {
             "type": "object",
             "properties": {
+                "width": {
+                    "type": "number"
+                },
+                "height": {
+                    "type": "number"
+                },
                 "layers": {
                     "description": "Unit specs that will be layered.",
                     "type": "array",
@@ -2095,6 +2127,12 @@
         "UnitSpec": {
             "type": "object",
             "properties": {
+                "width": {
+                    "type": "number"
+                },
+                "height": {
+                    "type": "number"
+                },
                 "mark": {
                     "$ref": "#/definitions/Mark",
                     "description": "The mark type.\n\nOne of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n\n`\"area\"`, `\"point\"`, `\"rule\"`, and `\"text\"`."
@@ -2140,11 +2178,11 @@
                     "description": "Y coordinates for `point`, `circle`, `square`,\n\n`line`, `rule`, `text`, and `tick`\n\n(or to width and height for `bar` and `area` marks)."
                 },
                 "x2": {
-                    "$ref": "#/definitions/PositionChannelDef",
+                    "$ref": "#/definitions/FieldDef",
                     "description": "X2 coordinates for ranged `bar`, `rule`, `area`"
                 },
                 "y2": {
-                    "$ref": "#/definitions/PositionChannelDef",
+                    "$ref": "#/definitions/FieldDef",
                     "description": "Y2 coordinates for ranged `bar`, `rule`, `area`"
                 },
                 "color": {

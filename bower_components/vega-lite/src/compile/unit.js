@@ -28,12 +28,17 @@ var UnitModel = (function (_super) {
     __extends(UnitModel, _super);
     function UnitModel(spec, parent, parentGivenName) {
         _super.call(this, spec, parent, parentGivenName);
+        var providedWidth = spec.width !== undefined ? spec.width :
+            parent ? parent['width'] : undefined;
+        var providedHeight = spec.height !== undefined ? spec.height :
+            parent ? parent['height'] : undefined;
         var mark = this._mark = spec.mark;
         var encoding = this._encoding = this._initEncoding(mark, spec.encoding || {});
         var config = this._config = this._initConfig(spec.config, parent, mark, encoding);
-        this._scale = this._initScale(mark, encoding, config);
+        this._scale = this._initScale(mark, encoding, config, providedWidth, providedHeight);
         this._axis = this._initAxis(encoding, config);
         this._legend = this._initLegend(encoding, config);
+        this._initSize(mark, this._scale, providedWidth, providedHeight, config.cell, config.scale);
         this._stack = stack_1.stack(mark, encoding, config);
     }
     UnitModel.prototype._initEncoding = function (mark, encoding) {
@@ -58,7 +63,7 @@ var UnitModel = (function (_super) {
         config.mark = config_2.initMarkConfig(mark, encoding, config);
         return config;
     };
-    UnitModel.prototype._initScale = function (mark, encoding, config) {
+    UnitModel.prototype._initScale = function (mark, encoding, config, topLevelWidth, topLevelHeight) {
         return channel_1.UNIT_SCALE_CHANNELS.reduce(function (_scale, channel) {
             if (vlEncoding.has(encoding, channel) ||
                 (channel === channel_1.X && vlEncoding.has(encoding, channel_1.X2)) ||
@@ -66,17 +71,45 @@ var UnitModel = (function (_super) {
                 var channelDef = encoding[channel];
                 var scaleSpec = (channelDef || {}).scale || {};
                 var _scaleType = scale_2.scaleType(scaleSpec, channelDef, channel, mark);
-                _scale[channel] = util_1.extend({
+                var scale = _scale[channel] = util_1.extend({
                     type: _scaleType,
                     round: config.scale.round,
                     padding: config.scale.padding,
-                    useRawDomain: config.scale.useRawDomain,
-                    bandSize: channel === channel_1.X && _scaleType === scale_1.ScaleType.ORDINAL && mark === mark_1.TEXT ?
-                        config.scale.textBandWidth : config.scale.bandSize
+                    useRawDomain: config.scale.useRawDomain
                 }, scaleSpec);
+                scale.bandSize = scale_2.scaleBandSize(scale.type, scale.bandSize, config.scale, channel === channel_1.X ? topLevelWidth : topLevelHeight, mark, channel);
             }
             return _scale;
         }, {});
+    };
+    UnitModel.prototype._initSize = function (mark, scale, width, height, cellConfig, scaleConfig) {
+        if (width !== undefined) {
+            this._width = width;
+        }
+        else if (scale[channel_1.X]) {
+            if (scale[channel_1.X].type !== scale_1.ScaleType.ORDINAL || scale[channel_1.X].bandSize === scale_1.BANDSIZE_FIT) {
+                this._width = cellConfig.width;
+            }
+        }
+        else {
+            if (mark === mark_1.TEXT) {
+                this._width = scaleConfig.textBandWidth;
+            }
+            else {
+                this._width = scaleConfig.bandSize;
+            }
+        }
+        if (height !== undefined) {
+            this._height = height;
+        }
+        else if (scale[channel_1.Y]) {
+            if (scale[channel_1.Y].type !== scale_1.ScaleType.ORDINAL || scale[channel_1.Y].bandSize === scale_1.BANDSIZE_FIT) {
+                this._height = cellConfig.height;
+            }
+        }
+        else {
+            this._height = scaleConfig.bandSize;
+        }
     };
     UnitModel.prototype._initAxis = function (encoding, config) {
         return [channel_1.X, channel_1.Y].reduce(function (_axis, channel) {
@@ -102,6 +135,20 @@ var UnitModel = (function (_super) {
             return _legend;
         }, {});
     };
+    Object.defineProperty(UnitModel.prototype, "width", {
+        get: function () {
+            return this._width;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(UnitModel.prototype, "height", {
+        get: function () {
+            return this._height;
+        },
+        enumerable: true,
+        configurable: true
+    });
     UnitModel.prototype.parseData = function () {
         this.component.data = data_2.parseUnitData(this);
     };

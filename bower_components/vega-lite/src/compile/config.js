@@ -4,7 +4,9 @@ var config_1 = require('../config');
 var encoding_1 = require('../encoding');
 var fielddef_1 = require('../fielddef');
 var mark_1 = require('../mark');
+var scale_1 = require('../scale');
 var util_1 = require('../util');
+var scale_2 = require('../compile/scale');
 function initMarkConfig(mark, encoding, config) {
     return util_1.extend(['filled', 'opacity', 'orient', 'align'].reduce(function (cfg, property) {
         var value = config.mark[property];
@@ -47,13 +49,13 @@ function orient(mark, encoding, markConfig) {
         case mark_1.TEXT:
             return undefined;
     }
-    var xIsMeasure = fielddef_1.isMeasure(encoding.x) || fielddef_1.isMeasure(encoding.x2);
-    var yIsMeasure = fielddef_1.isMeasure(encoding.y) || fielddef_1.isMeasure(encoding.y2);
     var yIsRange = encoding.y && encoding.y2;
     var xIsRange = encoding.x && encoding.x2;
     switch (mark) {
         case mark_1.TICK:
-            if (xIsMeasure && !yIsMeasure) {
+            var xScaleType = encoding.x ? scale_2.scaleType(encoding.x.scale || {}, encoding.x, channel_1.X, mark) : null;
+            var yScaleType = encoding.y ? scale_2.scaleType(encoding.y.scale || {}, encoding.y, channel_1.Y, mark) : null;
+            if (xScaleType !== scale_1.ScaleType.ORDINAL && (!encoding.y || yScaleType === scale_1.ScaleType.ORDINAL)) {
                 return config_1.Orient.VERTICAL;
             }
             return config_1.Orient.HORIZONTAL;
@@ -80,6 +82,8 @@ function orient(mark, encoding, markConfig) {
                 return config_1.Orient.HORIZONTAL;
             }
         case mark_1.LINE:
+            var xIsMeasure = fielddef_1.isMeasure(encoding.x) || fielddef_1.isMeasure(encoding.x2);
+            var yIsMeasure = fielddef_1.isMeasure(encoding.y) || fielddef_1.isMeasure(encoding.y2);
             if (xIsMeasure && !yIsMeasure) {
                 return config_1.Orient.HORIZONTAL;
             }

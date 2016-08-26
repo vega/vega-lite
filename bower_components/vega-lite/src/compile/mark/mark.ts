@@ -1,9 +1,10 @@
-import {X, Y, COLOR, TEXT, SHAPE, PATH, ORDER, OPACITY, DETAIL, LABEL, STACK_GROUP_CHANNELS} from '../../channel';
+import {X, Y, COLOR, TEXT, SHAPE, PATH, ORDER, OPACITY, DETAIL, STACK_GROUP_CHANNELS} from '../../channel';
 import {Orient} from '../../config';
-import {has} from '../../encoding';
+import {has, isAggregate} from '../../encoding';
 import {OrderChannelDef, FieldDef, field} from '../../fielddef';
 import {AREA, LINE, TEXT as TEXTMARK} from '../../mark';
 import {ScaleType} from '../../scale';
+import {isSortField} from '../../sort';
 import {contains, extend, isArray} from '../../util';
 import {VgStackTransform} from '../../vega.schema';
 
@@ -144,26 +145,6 @@ function parseNonPathMark(model: UnitModel) {
     { properties: { update: markCompiler[mark].properties(model) } }
   ));
 
-  if (model.has(LABEL) && markCompiler[mark].labels) {
-    const labelProperties = markCompiler[mark].labels(model);
-
-    // check if we have label method for current mark type.
-    if (labelProperties !== undefined) { // If label is supported
-      // add label group
-      marks.push(extend(
-        {
-          name: model.name('label'),
-          type: 'text'
-        },
-        // If has facet, `from.data` will be added in the cell group.
-        // Otherwise, add it here.
-        isFaceted ? {} : {from: dataFrom},
-        // Properties
-        { properties: { update: labelProperties } }
-      ));
-    }
-  }
-
   return marks;
 }
 
@@ -197,7 +178,16 @@ function sortPathBy(model: UnitModel): string | string[] {
     }
   } else {
     // For both line and area, we sort values based on dimension by default
-    return '-' + model.field(model.config().mark.orient === Orient.HORIZONTAL ? Y : X, {binSuffix: 'mid'});
+    const dimensionChannel = model.config().mark.orient === Orient.HORIZONTAL ? Y : X;
+    const sort = model.sort(dimensionChannel);
+    if (isSortField(sort)) {
+      return '-' + field({
+        aggregate: isAggregate(model.encoding()) ? sort.op : undefined,
+        field: sort.field
+      });
+    } else {
+      return '-' + model.field(dimensionChannel, {binSuffix: 'mid'});
+    }
   }
 }
 

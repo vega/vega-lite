@@ -1,6 +1,6 @@
 // utility for a field definition object
 
-import {AggregateOp, AGGREGATE_OPS} from './aggregate';
+import {AggregateOp} from './aggregate';
 import {Axis} from './axis';
 import {Bin} from './bin';
 import {Config} from './config';
@@ -9,7 +9,7 @@ import {Scale, ScaleType} from './scale';
 import {SortField, SortOrder} from './sort';
 import {TimeUnit} from './timeunit';
 import {Type, NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from './type';
-import {contains, getbins, toMap} from './util';
+import {contains} from './util';
 
 /**
  *  Interface for any kind of FieldDef;
@@ -60,18 +60,6 @@ export interface FieldDef {
   title?: string;
 }
 
-export const aggregate = {
-  type: 'string',
-  enum: AGGREGATE_OPS,
-  supportedEnums: {
-    quantitative: AGGREGATE_OPS,
-    ordinal: ['median','min','max'],
-    nominal: [],
-    temporal: ['mean', 'median', 'min', 'max'], // TODO: revise what should time support
-    '': ['count']
-  },
-  supportedTypes: toMap([QUANTITATIVE, NOMINAL, ORDINAL, TEMPORAL, ''])
-};
 export interface ChannelDefWithScale extends FieldDef {
   scale?: Scale;
   sort?: SortField | SortOrder;
@@ -163,8 +151,14 @@ export function field(fieldDef: FieldDef, opt: FieldRefOption = {}) {
 }
 
 function _isFieldDimension(fieldDef: FieldDef) {
-  return contains([NOMINAL, ORDINAL], fieldDef.type) || !!fieldDef.bin ||
-    (fieldDef.type === TEMPORAL && !!fieldDef.timeUnit);
+  if (contains([NOMINAL, ORDINAL], fieldDef.type)) {
+    return true;
+  } else if(!!fieldDef.bin) {
+    return true;
+  } else if (fieldDef.type === TEMPORAL) {
+    return !!fieldDef.timeUnit;
+  }
+  return false;
 }
 
 export function isDimension(fieldDef: FieldDef) {
@@ -181,54 +175,6 @@ export function count(): FieldDef {
 
 export function isCount(fieldDef: FieldDef) {
   return fieldDef.aggregate === AggregateOp.COUNT;
-}
-
-// FIXME remove this, and the getbins method
-// FIXME this depends on channel
-export function cardinality(fieldDef: FieldDef, stats, filterNull = {}) {
-  // FIXME need to take filter into account
-
-  const stat = stats[fieldDef.field],
-  type = fieldDef.type;
-
-  if (fieldDef.bin) {
-    // need to reassign bin, otherwise compilation will fail due to a TS bug.
-    const bin = fieldDef.bin;
-    let maxbins = (typeof bin === 'boolean') ? undefined : bin.maxbins;
-    if (maxbins === undefined) {
-      maxbins = 10;
-    }
-
-    const bins = getbins(stat, maxbins);
-    return (bins.stop - bins.start) / bins.step;
-  }
-  if (type === TEMPORAL) {
-    const timeUnit = fieldDef.timeUnit;
-    switch (timeUnit) {
-      case TimeUnit.SECONDS: return 60;
-      case TimeUnit.MINUTES: return 60;
-      case TimeUnit.HOURS: return 24;
-      case TimeUnit.DAY: return 7;
-      case TimeUnit.DATE: return 31;
-      case TimeUnit.MONTH: return 12;
-      case TimeUnit.QUARTER: return 4;
-      case TimeUnit.YEAR:
-        const yearstat = stats['year_' + fieldDef.field];
-
-        if (!yearstat) { return null; }
-
-        return yearstat.distinct -
-          (stat.missing > 0 && filterNull[type] ? 1 : 0);
-    }
-    // otherwise use calculation below
-  }
-  if (fieldDef.aggregate) {
-    return 1;
-  }
-
-  // remove null
-  return stat.distinct -
-    (stat.missing > 0 && filterNull[type] ? 1 : 0);
 }
 
 export function title(fieldDef: FieldDef, config: Config) {

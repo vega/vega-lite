@@ -173,11 +173,11 @@ function title(model, channel) {
     }
     else if (channel === channel_1.X && !model.isOrdinalScale(channel_1.X)) {
         var unitModel = model;
-        maxLength = unitModel.config().cell.width / model.axis(channel_1.X).characterWidth;
+        maxLength = unitModel.width / model.axis(channel_1.X).characterWidth;
     }
     else if (channel === channel_1.Y && !model.isOrdinalScale(channel_1.Y)) {
         var unitModel = model;
-        maxLength = unitModel.config().cell.height / model.axis(channel_1.Y).characterWidth;
+        maxLength = unitModel.height / model.axis(channel_1.Y).characterWidth;
     }
     return maxLength ? util_1.truncate(fieldTitle, maxLength) : fieldTitle;
 }
@@ -233,7 +233,7 @@ var properties;
             labelsSpec.angle = { value: axis.labelAngle };
         }
         else {
-            if (channel === channel_1.X && (fielddef_1.isDimension(fieldDef) || fieldDef.type === type_1.TEMPORAL)) {
+            if (channel === channel_1.X && (util_1.contains([type_1.NOMINAL, type_1.ORDINAL], fieldDef.type) || !!fieldDef.bin || fieldDef.type === type_1.TEMPORAL)) {
                 labelsSpec.angle = { value: 270 };
             }
         }

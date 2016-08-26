@@ -14,6 +14,7 @@ This is an incomplete list of integrations, applications, and extensions of the 
 * [Vega for Jupyter notebooks](https://github.com/vega/ipyvega) supports Vega and Vega-Lite charts.
 * [Vega-Lite for Julia](https://github.com/fredo-dedup/VegaLite.jl)
 * [vegaliteR](https://github.com/hrbrmstr/vegalite) provides HTML widgets for Vega-Lite in R.
+* [Vegas][https://github.com/aishfenton/Vegas] brings visualizations to Scala and Spark using Vega-Lite. 
 
 ## Tools
 

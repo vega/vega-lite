@@ -14,7 +14,7 @@ d3.json('examples/all-examples.json', function (examples) {
         vizEnter.append('div').attr('class', 'desc');
         vizEnter.append('div').attr('class', 'view');
         examples.forEach(function (example) {
-            d3.json('examples/specs/' + example + '.json', function (error, vlSpec) {
+            d3.json('examples/specs/' + example + '.vl.json', function (error, vlSpec) {
                 var embedSpec = {
                     mode: 'vega-lite',
                     spec: vlSpec,

@@ -218,8 +218,8 @@ For ordinal, quantitative, and time fields, `range` can be a two-element array d
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| bandSize     | Number        | Width for each `x` or `y` ordinal band. <span class="note-line">__Default value:__ for `x` ordinal scale of a `text` mark, derived from [scale config](config.html#scale-config)'s `textBandWidth`; otherwise, derived from [scale config](config.html#scale-config)'s `bandSize`.</span> |
-| padding       | Number        | • For `x` and `y` channels, the padding is a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. (See D3's [`ordinalRangePoints()`](https://github.com/mbostock/d3/wiki/Ordinal-Scales#ordinal_rangePoints) for illustration.) <span class="note-line">__Default value:__ derived from [scale config](config.html#scale-config)'s `padding`</span> <br/> • For `row` and `column`, padding is a pixel value for padding between cells in the trellis plots. <span class="note-line">__Default value:__ derived from  [facet scale config](config.html#facet-scale-config)'s `padding`.</span>  |
+| bandSize      | Integer &#124; String | Width for each `x` or `y` ordinal band.  This can be an integer value or a string `"fit"`.  For `"fit"`, the band size will be automatically adjusted to fit the scale for the specified width (for x-axis) or height (for y-axis). <span class="note-line">__Default value:__ for `x` ordinal scale of a `text` mark, derived from [scale config](config.html#scale-config)'s `textBandWidth`; otherwise, derived from [scale config](config.html#scale-config)'s `bandSize`.</span> <span class="note-line">__Warning__: <br/> 1) Numeric `bandSize` will be applied only if the top-level `width` (for x-scale) or `height` (for y-scale) is not specified.  If `width` (for x-scale) or `height` (for y-scale) is specified, `bandWidth` will always be `"fit"`. <br/> 2) If the cardinality of the scale domain is too high, the bandSize might become less than one pixel and the mark might not appear correctly. </span>|
+| padding       | Number        | • For `x` and `y` channels, the padding is a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. (See D3's [`ordinalRangePoints()`](https://github.com/mbostock/d3/wiki/Ordinal-Scales#ordinal_rangePoints) for illustration.) <span class="note-line">&nbsp;&nbsp; • __Default value:__ derived from [scale config](config.html#scale-config)'s `padding`</span> <br/> • For `row` and `column`, padding is a pixel value for padding between cells in the trellis plots. <span class="note-line">&nbsp;&nbsp; •__Default value:__ derived from  [facet scale config](config.html#facet-scale-config)'s `padding`.</span>  |
 
 {:#ex-bandwidth}
 #### Example: Custom Band Width
@@ -230,23 +230,6 @@ Given a bar chart:
 
 We can make the band for each bar smaller by providing `scale`'s `bandSize`.
 
-<div class="vl-example">
-{
-  "description": "A simple bar chart with embedded data.",
-  "data": {
-    "values": [
-      {"a": "A","b": 28}, {"a": "B","b": 55}, {"a": "C","b": 43},
-      {"a": "D","b": 91}, {"a": "E","b": 81}, {"a": "F","b": 53},
-      {"a": "G","b": 19}, {"a": "H","b": 87}, {"a": "I","b": 52}
-    ]
-  },
-  "mark": "bar",
-  "encoding": {
-    "x": {
-      "field": "a", "type": "ordinal",
-      "scale": {"bandSize": 11}
-    },
-    "y": {"field": "b", "type": "quantitative"}
-  }
-}
-</div>
+<span class="vl-example" data-name="bar_size_bandsize_small"></span>
+
+For more information about adjusting size of a visualization, please see [this page](size.html).

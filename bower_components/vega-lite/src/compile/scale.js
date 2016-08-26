@@ -66,9 +66,10 @@ function parseMainScale(model, fieldDef, channel) {
         'round',
         'clamp', 'nice',
         'exponent', 'zero',
-        'padding', 'points'
+        'points',
+        'padding'
     ].forEach(function (property) {
-        var value = exports[property](scale, channel, fieldDef, model);
+        var value = exports[property](scale, channel, fieldDef, model, scaleDef);
         if (value !== undefined) {
             scaleDef[property] = value;
         }
@@ -144,6 +145,31 @@ function scaleType(scale, fieldDef, channel, mark) {
     return null;
 }
 exports.scaleType = scaleType;
+function scaleBandSize(scaleType, bandSize, scaleConfig, topLevelSize, mark, channel) {
+    if (scaleType === scale_1.ScaleType.ORDINAL) {
+        if (topLevelSize === undefined) {
+            if (bandSize) {
+                return bandSize;
+            }
+            else if (channel === channel_1.X && mark === mark_1.TEXT) {
+                return scaleConfig.textBandWidth;
+            }
+            else {
+                return scaleConfig.bandSize;
+            }
+        }
+        else {
+            if (bandSize) {
+                console.warn('bandSize for', channel, 'overridden as top-level', channel === channel_1.X ? 'width' : 'height', 'is provided.');
+            }
+            return scale_1.BANDSIZE_FIT;
+        }
+    }
+    else {
+        return undefined;
+    }
+}
+exports.scaleBandSize = scaleBandSize;
 function domain(scale, model, channel) {
     var fieldDef = model.fieldDef(channel);
     if (scale.domain) {
@@ -252,7 +278,7 @@ function _useRawDomain(scale, model, channel) {
 function rangeMixins(scale, model, channel) {
     var fieldDef = model.fieldDef(channel);
     var scaleConfig = model.config().scale;
-    if (scale.type === scale_1.ScaleType.ORDINAL && scale.bandSize && util_1.contains([channel_1.X, channel_1.Y], channel)) {
+    if (scale.type === scale_1.ScaleType.ORDINAL && scale.bandSize && scale.bandSize !== scale_1.BANDSIZE_FIT && util_1.contains([channel_1.X, channel_1.Y], channel)) {
         return { bandSize: scale.bandSize };
     }
     if (scale.range && !util_1.contains([channel_1.X, channel_1.Y, channel_1.ROW, channel_1.COLUMN], channel)) {
@@ -269,11 +295,11 @@ function rangeMixins(scale, model, channel) {
         case channel_1.X:
             return {
                 rangeMin: 0,
-                rangeMax: unitModel.config().cell.width
+                rangeMax: unitModel.width
             };
         case channel_1.Y:
             return {
-                rangeMin: unitModel.config().cell.height,
+                rangeMin: unitModel.height,
                 rangeMax: 0
             };
         case channel_1.SIZE:
@@ -359,16 +385,16 @@ function nice(scale, channel, fieldDef) {
     return undefined;
 }
 exports.nice = nice;
-function padding(scale, channel) {
+function padding(scale, channel, __, ___, scaleDef) {
     if (scale.type === scale_1.ScaleType.ORDINAL && util_1.contains([channel_1.X, channel_1.Y], channel)) {
-        return scale.padding;
+        return scaleDef.points ? 1 : scale.padding;
     }
     return undefined;
 }
 exports.padding = padding;
 function points(scale, channel, __, model) {
     if (scale.type === scale_1.ScaleType.ORDINAL && util_1.contains([channel_1.X, channel_1.Y], channel)) {
-        return true;
+        return model.mark() === mark_1.BAR && scale.bandSize === scale_1.BANDSIZE_FIT ? undefined : true;
     }
     return undefined;
 }

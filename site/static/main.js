@@ -34,7 +34,7 @@ d3.selectAll('.vl-example').each(function () {
     var name = sel.attr('data-name');
     if (name) {
         var dir = sel.attr('data-dir');
-        var fullUrl = BASEURL + '/examples/specs/' + (dir ? (dir + '/') : '') + name + '.json';
+        var fullUrl = BASEURL + '/examples/specs/' + (dir ? (dir + '/') : '') + name + '.vl.json';
         d3.text(fullUrl, function (error, spec) {
             if (error) {
                 console.error(error);
