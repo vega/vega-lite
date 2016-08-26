@@ -21,7 +21,7 @@ export namespace text {
       height: { field: { group: 'height' } },
       fill: {
         scale: model.scaleName(COLOR),
-        field: model.field(COLOR, model.fieldDef(COLOR).type === ORDINAL ? {prefix: 'rank'} : {})
+        field: model.field(COLOR, model.encoding().color.type === ORDINAL ? {prefix: 'rank'} : {})
       }
     };
   }
@@ -35,7 +35,7 @@ export namespace text {
         'fontStyle', 'radius', 'theta', 'text']);
 
     const config = model.config();
-    const textFieldDef = model.fieldDef(TEXT);
+    const textFieldDef = model.encoding().text;
 
     p.x = x(model.encoding().x, model.scaleName(X), config, textFieldDef);
 
@@ -43,7 +43,7 @@ export namespace text {
 
     p.fontSize = size(model.encoding().size, model.scaleName(SIZE), config);
 
-    p.text = text(model.encoding().text, model.scaleName(TEXT), config);
+    p.text = text(textFieldDef, model.scaleName(TEXT), config);
 
     if (model.config().mark.applyColorToBackground && !model.has(X) && !model.has(Y)) {
       p.fill = {value: 'black'}; // TODO: add rules for swapping between black and white
@@ -71,6 +71,7 @@ export namespace text {
     if (textFieldDef && textFieldDef.type === QUANTITATIVE) {
       return { field: { group: 'width' }, offset: -5 };
     } else {
+      // TODO: allow this to fit
       return { value: config.scale.textBandWidth / 2 };
     }
   }
@@ -85,6 +86,7 @@ export namespace text {
         };
       }
     }
+    // TODO: allow this to fit
     // TODO consider if this should support group: height case too.
     return { value: config.scale.bandSize / 2 };
   }

@@ -10,4 +10,4 @@ mkdir -p examples/images
 export NODE_PATH=.
 
 echo "Generating SVGs..."
-ls examples/specs/*.json | parallel --eta --halt 1 "bin/vl2svg {} examples/images/{/.}.svg"
+ls examples/specs/*.vl.json | parallel --eta --halt 1 "bin/vl2svg {} examples/images/{/.}.svg"

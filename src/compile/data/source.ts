@@ -106,8 +106,8 @@ export namespace source {
       // null filter comes first so transforms are not performed on null values
       // time and bin should come before filter so we can filter by time and bin
       sourceData.transform = [].concat(
-        nullFilter.assemble(component),
         formula.assemble(component),
+        nullFilter.assemble(component),
         filter.assemble(component),
         bin.assemble(component),
         timeUnit.assemble(component)

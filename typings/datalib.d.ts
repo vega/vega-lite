@@ -12,10 +12,6 @@ declare module 'datalib/src/util' {
   export function isBoolean(a): a is boolean;
 }
 
-declare module 'datalib/src/generate' {
-  export function range(a: number, b?: number, step?: number): Array<number>;
-}
-
 interface BinFunc {
   (o: any): {
     stop: number;

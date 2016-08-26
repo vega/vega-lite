@@ -56,6 +56,47 @@ describe('Mark: Bar', function() {
     });
   });
 
+  describe('vertical, with zero=false', function() {
+    const model = parseUnitModel({
+      "mark": "bar",
+      "encoding": {
+        "x": {"bin": true, "type": "quantitative", "field": "IMDB_Rating"},
+        "y": {"scale": {"zero": false}, "type": "quantitative", "field": 'US_Gross', "aggregate": "mean"}
+      },
+      "data": {"url": 'data/movies.json'}
+    });
+    const props = bar.properties(model);
+
+    it('should end on axis', function() {
+      assert.deepEqual(props.y2, {field: {group: 'height'}});
+    });
+
+    it('should has no height', function(){
+      assert.isUndefined(props.height);
+    });
+  });
+
+  describe('horizontal, with zero=false', function() {
+    const model = parseUnitModel({
+      "mark": "bar",
+      "encoding": {
+        "y": {"bin": true, "type": "quantitative", "field": "IMDB_Rating"},
+        "x": {"scale": {"zero": false}, "type": "quantitative", "field": 'US_Gross', "aggregate": "mean"}
+      },
+      "data": {"url": 'data/movies.json'}
+    });
+
+    const props = bar.properties(model);
+
+    it('should end on axis', function() {
+      assert.deepEqual(props.x2, {value: 0});
+    });
+
+    it('should have no width', function(){
+      assert.isUndefined(props.width);
+    });
+  });
+
   describe('vertical', function() {
     const model = parseUnitModel({
         "mark": "bar",

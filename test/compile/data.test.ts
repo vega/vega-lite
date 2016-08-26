@@ -87,8 +87,8 @@ describe('data', function () {
         }
       });
       const transform = compileAssembleData(model)[0].transform;
-      assert.deepEqual(transform[0].type, 'filter');
-      assert.deepEqual(transform[1].type, 'formula');
+      assert.deepEqual(transform[0].type, 'formula');
+      assert.deepEqual(transform[1].type, 'filter');
       assert.deepEqual(transform[2].type, 'filter');
       assert.deepEqual(transform[3].type, 'bin');
       assert.deepEqual(transform[4].type, 'formula');

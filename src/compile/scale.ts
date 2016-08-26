@@ -7,7 +7,7 @@ import {Orient} from '../config';
 import {SOURCE, STACKED_SCALE} from '../data';
 import {FieldDef, field, isMeasure} from '../fielddef';
 import {Mark, BAR, TEXT as TEXTMARK, RULE, TICK} from '../mark';
-import {Scale, ScaleType, NiceTime} from '../scale';
+import {Scale, ScaleConfig, ScaleType, NiceTime, BANDSIZE_FIT, BandSize} from '../scale';
 import {isSortField, SortOrder} from '../sort';
 import {StackOffset} from '../stack';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
@@ -106,9 +106,10 @@ function parseMainScale(model: Model, fieldDef: FieldDef, channel: Channel) {
     // quantitative
     'exponent', 'zero',
     // ordinal
-    'padding', 'points'
+    'points',
+    'padding' // padding depends on points
   ].forEach(function(property) {
-    const value = exports[property](scale, channel, fieldDef, model);
+    const value = exports[property](scale, channel, fieldDef, model, scaleDef);
     if (value !== undefined) {
       scaleDef[property] = value;
     }
@@ -206,6 +207,34 @@ export function scaleType(scale: Scale, fieldDef: FieldDef, channel: Channel, ma
 
   // should never reach this
   return null;
+}
+
+export function scaleBandSize(scaleType: ScaleType, bandSize: number | BandSize, scaleConfig: ScaleConfig, topLevelSize: number, mark: Mark, channel: Channel): number | BandSize {
+  if (scaleType === ScaleType.ORDINAL) {
+    if (topLevelSize === undefined) {
+
+      if (bandSize) {
+        // Use manually specified bandSize
+        return bandSize;
+      } else if (channel === X && mark === TEXTMARK) {
+        return scaleConfig.textBandWidth;
+      } else {
+        return scaleConfig.bandSize;
+      }
+    } else {
+      // If top-level is specified, use bandSize fit
+      if (bandSize) {
+        // If top-level size is specified, we override specified bandSize with "fit"
+        console.warn('bandSize for', channel, 'overridden as top-level',
+          channel === X ? 'width' : 'height', 'is provided.');
+      }
+      return BANDSIZE_FIT;
+    }
+  } else {
+    // bandSize is not applicable for non-ordinal scale.
+    return undefined;
+
+  }
 }
 
 export function domain(scale: Scale, model: Model, channel:Channel): any {
@@ -355,7 +384,7 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel): any {
   const fieldDef = model.fieldDef(channel);
   const scaleConfig = model.config().scale;
 
-  if (scale.type === ScaleType.ORDINAL && scale.bandSize && contains([X, Y], channel)) {
+  if (scale.type === ScaleType.ORDINAL && scale.bandSize && scale.bandSize !== BANDSIZE_FIT && contains([X, Y], channel)) {
     return {bandSize: scale.bandSize};
   }
 
@@ -379,11 +408,13 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel): any {
 
       return {
         rangeMin: 0,
-        rangeMax: unitModel.config().cell.width // Fixed cell width for non-ordinal
+        // TODO: replace
+        rangeMax: unitModel.width // Fixed cell width for non-ordinal
       };
     case Y:
       return {
-        rangeMin: unitModel.config().cell.height, // Fixed cell height for non-ordinal
+        // TODO: replace
+        rangeMin: unitModel.height, // Fixed cell height for non-ordinal
         rangeMax: 0
       };
     case SIZE:
@@ -480,7 +511,7 @@ export function nice(scale: Scale, channel: Channel, fieldDef: FieldDef): boolea
 }
 
 
-export function padding(scale: Scale, channel: Channel) {
+export function padding(scale: Scale, channel: Channel, __, ___, scaleDef) {
   /* Padding is only allowed for X and Y.
    *
    * Basically it doesn't make sense to add padding for color and size.
@@ -490,16 +521,17 @@ export function padding(scale: Scale, channel: Channel) {
    * Therefore, we manually calculate padding in the layout by ourselves.
    */
   if (scale.type === ScaleType.ORDINAL && contains([X, Y], channel)) {
-    return scale.padding;
+    // TODO: design config for this
+    return scaleDef.points ? 1 : scale.padding;
   }
   return undefined;
 }
 
 export function points(scale: Scale, channel: Channel, __, model: Model) {
   if (scale.type === ScaleType.ORDINAL && contains([X, Y], channel)) {
-    // We always use ordinal point scale for x and y.
+    // We always use ordinal point scale for x and y except when the mark is bar and the scale's bandWidth is 'fit'
     // Thus `points` isn't included in the scale's schema.
-    return true;
+    return (model as UnitModel).mark() === BAR && scale.bandSize === BANDSIZE_FIT ? undefined : true;
   }
   return undefined;
 }
