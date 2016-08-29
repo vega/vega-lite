@@ -103,6 +103,19 @@ export class UnitModel extends Model {
 
   private _initConfig(specConfig: Config, parent: Model, mark: Mark, encoding: Encoding) {
     let config = mergeDeep(duplicate(defaultConfig), parent ? parent.config() : {}, specConfig);
+    let hasFacetParent = false;
+    while (parent !== null) {
+      if (parent.isFacet()) {
+        hasFacetParent = true;
+        break;
+      }
+      parent = parent.parent();
+    }
+
+    if (hasFacetParent) {
+      config.cell = extend({}, config.cell, config.facet.cell);
+    }
+
     config.mark = initMarkConfig(mark, encoding, config);
     return config;
   }
