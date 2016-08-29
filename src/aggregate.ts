@@ -1,3 +1,4 @@
+import {Dict} from './util';
 
 export enum AggregateOp {
     VALUES = 'values' as any,
@@ -44,6 +45,12 @@ export const AGGREGATE_OPS = [
     AggregateOp.ARGMIN,
     AggregateOp.ARGMAX,
 ];
+
+export const AGGREGATE_OPS_INDEX: Dict<boolean> =
+    AGGREGATE_OPS.reduce((d, aggregateOp) => {
+        d[aggregateOp] = true;
+        return d;
+    }, {} as Dict<boolean>);
 
 /** Additive-based aggregation operations.  These can be applied to stack. */
 export const SUM_OPS = [
