@@ -37,7 +37,7 @@ export class FacetModel extends Model {
   }
 
   private _initConfig(specConfig: Config, parent: Model) {
-    return mergeDeep(duplicate(defaultConfig), specConfig, parent ? parent.config() : {});
+    return mergeDeep(duplicate(defaultConfig), parent ? parent.config() : {}, specConfig);
   }
 
   private _initFacet(facet: Facet) {
