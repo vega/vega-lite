@@ -46,7 +46,7 @@ export const AGGREGATE_OPS = [
     AggregateOp.ARGMAX,
 ];
 
-export const AGGREGATE_OPS_INDEX: Dict<boolean> =
+export const AGGREGATE_OP_INDEX: Dict<boolean> =
     AGGREGATE_OPS.reduce((d, aggregateOp) => {
         d[aggregateOp] = true;
         return d;
