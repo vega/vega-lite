@@ -59,8 +59,8 @@ export interface DateTimeExpr {
 }
 
 export function isDateTime(o: any): o is DateTime {
-  return !!o.year || !!o.quarter || !!o.month || !!o.date || !!o.day ||
-    !!o.hours || !!o.minutes || !!o.seconds || !!o.milliseconds;
+  return !!o && (!!o.year || !!o.quarter || !!o.month || !!o.date || !!o.day ||
+    !!o.hours || !!o.minutes || !!o.seconds || !!o.milliseconds);
 }
 
 export const MONTHS = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
