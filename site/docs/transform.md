@@ -69,7 +69,7 @@ The following table describes properties of a filter object.
 {:#datetime}
 ##### Date Time Definition Object
 
-A DateTime object must have at least of the following properties:
+A DateTime object must have at least one of the following properties:
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
