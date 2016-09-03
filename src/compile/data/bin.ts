@@ -11,6 +11,10 @@ import {Model} from './../model';
 import {DataComponent} from './data';
 
 export namespace bin {
+  function numberFormatExpr(format, expr) {
+    return `format('${format}', ${expr})`;
+  }
+
   function parse(model: Model): Dict<VgTransform[]> {
     return model.reduce(function(binComponent, fieldDef: FieldDef, channel: Channel) {
       const bin = model.fieldDef(channel).bin;
@@ -35,14 +39,22 @@ export namespace bin {
 
         const transform = [binTrans];
         const isOrdinalColor = model.isOrdinalScale(channel) || channel === COLOR;
-        // color ramp has type linear or time
+        // color ramp has type linear or time, we have to create new bin_range field
+        // with correct number format
         if (isOrdinalColor) {
+          // read format from axis or legend, if there is not format there then use config.numberFormat
+          const format = (model.axis(channel) || model.legend(channel) || {}).format ||
+            model.config().numberFormat;
+
+          const startField = field(fieldDef, { datum: true, binSuffix: 'start' });
+          const endField = field(fieldDef, { datum: true, binSuffix: 'end' });
+
           transform.push({
             type: 'formula',
             field: field(fieldDef, { binSuffix: 'range' }),
-            expr: field(fieldDef, { datum: true, binSuffix: 'start' }) +
-            ' + \'-\' + ' +
-            field(fieldDef, { datum: true, binSuffix: 'end' })
+            expr: numberFormatExpr(format, startField) +
+              ' + \'-\' + ' +
+              numberFormatExpr(format, endField)
           });
         }
         // FIXME: current merging logic can produce redundant transforms when a field is binned for color and for non-color
