@@ -129,7 +129,7 @@ export function parseAxis(channel: Channel, model: Model): VgAxis {
 }
 
 export function format(model: Model, channel: Channel) {
-  return numberFormat(model.fieldDef(channel), model.axis(channel).format, model.config());
+  return numberFormat(model.fieldDef(channel), model.axis(channel).format, model.config(), channel);
 }
 
 export function offset(model: Model, channel: Channel) {

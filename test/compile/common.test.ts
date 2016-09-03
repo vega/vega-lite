@@ -2,6 +2,7 @@
 
 import {assert} from 'chai';
 import {parseUnitModel} from '../util';
+import {X} from '../../src/channel';
 import {defaultConfig} from '../../src/config';
 import {TimeUnit} from '../../src/timeunit';
 import {field, FieldDef} from '../../src/fielddef';
@@ -42,24 +43,24 @@ describe('Common', function() {
 
   describe('numberFormat()', function() {
     it('should use number format for quantitative scale', function() {
-      assert.equal(numberFormat({field: 'a', type: QUANTITATIVE}, undefined, {numberFormat: 'd'}), 'd');
+      assert.equal(numberFormat({field: 'a', type: QUANTITATIVE}, undefined, {numberFormat: 'd'}, X), 'd');
     });
 
     it('should support empty number format', function() {
-      assert.equal(numberFormat({field: 'a', type: QUANTITATIVE}, undefined, {numberFormat: ''}), '');
+      assert.equal(numberFormat({field: 'a', type: QUANTITATIVE}, undefined, {numberFormat: ''}, X), '');
     });
 
     it('should use format if provided', function() {
-      assert.equal(numberFormat({field: 'a', type: QUANTITATIVE}, 'a', 'd'), 'a');
+      assert.equal(numberFormat({field: 'a', type: QUANTITATIVE}, 'a', 'd', X), 'a');
     });
 
     it('should not use number format for binned quantitative scale', function() {
-      assert.equal(numberFormat({bin: true, field: 'a', type: QUANTITATIVE}, undefined, 'd'), undefined);
+      assert.equal(numberFormat({bin: true, field: 'a', type: QUANTITATIVE}, undefined, 'd', X), undefined);
     });
 
     it('should not use number format for non-quantitative scale', function() {
       for (let type of [TEMPORAL, NOMINAL, ORDINAL]) {
-        assert.equal(numberFormat({bin: true, field: 'a', type: type}, undefined, 'd'), undefined);
+        assert.equal(numberFormat({bin: true, field: 'a', type: type}, undefined, 'd', X), undefined);
       }
     });
   });

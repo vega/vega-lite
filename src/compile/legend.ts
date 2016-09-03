@@ -55,7 +55,7 @@ export function parseLegend(model: UnitModel, channel: Channel): VgLegend {
 
   // 1.1 Add properties with special rules
   def.title = title(legend, fieldDef, config);
-  const format = numberFormat(fieldDef, legend.format, config);
+  const format = numberFormat(fieldDef, legend.format, config, channel);
   if (format) {
     def.format = format;
   }

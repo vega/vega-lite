@@ -112,7 +112,7 @@ export namespace text {
     if (textFieldDef) {
       if (textFieldDef.field) {
         if (QUANTITATIVE === textFieldDef.type) {
-          const format = numberFormat(textFieldDef, config.mark.format, config);
+          const format = numberFormat(textFieldDef, config.mark.format, config, TEXT);
 
           const filter = 'number' + ( format ? ':\'' + format + '\'' : '');
           return {
