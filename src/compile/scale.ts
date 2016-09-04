@@ -371,7 +371,11 @@ function _useRawDomain (scale: Scale, model: Model, channel: Channel) {
       // Binned field has similar values in both the source table and the summary table
       // but the summary table has fewer values, therefore binned fields draw
       // domain values from the summary table.
-      (fieldDef.type === QUANTITATIVE && !fieldDef.bin) ||
+      // Meanwhile, we rely on non-positive filter inside summary data source, thus
+      // we can't use raw domain to feed into log scale
+      // FIXME(https://github.com/vega/vega-lite/issues/1537):
+      // consider allowing useRawDomain for log scale once we reimplement data sources
+      (fieldDef.type === QUANTITATIVE && !fieldDef.bin && scale.type !== ScaleType.LOG) ||
       // T uses non-ordinal scale when there's no unit or when the unit is not ordinal.
       (fieldDef.type === TEMPORAL && contains([ScaleType.TIME, ScaleType.UTC], scale.type))
     );
