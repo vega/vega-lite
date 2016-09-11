@@ -210,9 +210,9 @@ export interface MarkConfig {
    */
   stroke?: string;
 
-/**
- * Default Path Stroke Color. This is for the geopath transform.
- */
+  /**
+   * Default Path Stroke Color. This is for the geopath transform.
+   */
   pathStroke?: string;
 
   // ---------- Opacity ----------

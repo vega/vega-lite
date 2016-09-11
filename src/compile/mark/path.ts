@@ -16,7 +16,7 @@ export namespace path {
     let p: any = {};
     const config = model.config();
 
-    p.path = path(model.encoding().geopath);
+    p.path = path(model.encoding().path);
     p.stroke = stroke(config);
     applyColorAndOpacity(p, model);
     return p;

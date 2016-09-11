@@ -70,12 +70,12 @@ export interface UnitEncoding {
   text?: FieldDef;
 
   label?: FieldDef;
-  geopath?: FieldDef;
 
   /**
    * Order of data points in line marks.
+   * Geographic regions for path marks.
    */
-  path?: OrderChannelDef | OrderChannelDef[];
+  path?: OrderChannelDef | OrderChannelDef[] | FieldDef;
 
   /**
    * Layer order for non-stacked marks, or stack order for stacked marks.

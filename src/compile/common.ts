@@ -143,11 +143,10 @@ export function timeTemplate(templateField: string, timeUnit: TimeUnit, format: 
 }
 
 export function hasGeoTransform(model: UnitModel): boolean {
-  const geoPathFieldDef = model.encoding().geopath;
+  const pathFieldDef = model.encoding().path;
   if (model.mark() === PATHMARK) {
-    if (geoPathFieldDef && geoPathFieldDef.type === GEOJSON) {
-      // If the mark is path and geopath encoding is defined with geojson type,
-      // it means the user wants to have geopath transform.
+    if (pathFieldDef && !(pathFieldDef instanceof Array) && pathFieldDef.type === GEOJSON) {
+      // Geopath transform.
       return true;
     }
   }
@@ -162,8 +161,8 @@ export function geoTransform(model: UnitModel) {
 
   if (model.mark() === PATHMARK) {
     // return geoPath transform
-    const geoPathFieldDef = model.encoding().geopath;
-    transform = { type: 'geopath', field: geoPathFieldDef.field };
+    const pathFieldDef: FieldDef = model.encoding().path;
+    transform = { type: 'geopath', field: pathFieldDef.field };
   } else {
     transform = { type: 'geo' };
     const xFieldDef = model.encoding().x;
