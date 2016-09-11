@@ -106,7 +106,7 @@ describe('Common', function() {
             "format": {"type": "topojson", "feature": "states"}
           },
           "mark": "path",
-          "encoding": {"geopath": {"type": "geojson"}},
+          "encoding": {"path": {"type": "geojson"}},
         });
         assert.deepEqual(hasGeoTransform(model), true);
       });
@@ -209,7 +209,7 @@ describe('Common', function() {
           "center":[0, 0]
         },
         "mark": "path",
-        "encoding": {"geopath": {"type": "geojson"}},
+        "encoding": {"path": {"type": "geojson"}},
       });
 
       let transform = geoTransform(model);

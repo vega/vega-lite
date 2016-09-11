@@ -13,16 +13,16 @@ describe('Mark: path', function() {
 
   function lineXY(moreEncoding = {}) {
     const spec = {
-      "mark": "path",
-      "encoding": {
-        "geopath":{
-            "type":"geojson"
-        },
-        "color": { "value": "#dedede"}
-      },
       "data": {
         "url":"data/us-10m.json",
         "format": {"type": "topojson", "feature": "states"}
+      },
+      "mark": "path",
+      "encoding": {
+        "path":{
+            "type":"geojson"
+        },
+        "color": { "value": "#dedede"}
       }
     };
     return spec;
@@ -44,6 +44,5 @@ describe('Mark: path', function() {
       assert.deepEqual(props.path.field, "layout_path");
     });
   });
-
 
 });

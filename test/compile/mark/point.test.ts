@@ -151,9 +151,9 @@ describe('Mark: Point', function() {
 
   describe('with x of type longitude', function() {
     const model = parseUnitModel({
+      "data": {"url": "data/barley.json"},
       "mark": "point",
-      "encoding": {"x": {"field": "year", "type": "longitude"}},
-      "data": {"url": "data/barley.json"}
+      "encoding": {"x": {"field": "year", "type": "longitude"}}
     });
 
     const props = point.properties(model);
@@ -164,9 +164,9 @@ describe('Mark: Point', function() {
 
   describe('with y of type latitude', function() {
     const model = parseUnitModel({
+      "data": {"url": "data/barley.json"},
       "mark": "point",
-      "encoding": {"x": {"field": "year", "type": "latitude"}},
-      "data": {"url": "data/barley.json"}
+      "encoding": {"x": {"field": "year", "type": "latitude"}}
     });
 
     const props = point.properties(model);

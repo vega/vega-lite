@@ -13,9 +13,9 @@ describe('Mark: Text', function() {
 
   describe('with nothing', function() {
     const spec = {
+      "data": {"url": "data/cars.json"},
       "mark": "text",
-      "encoding": {},
-      "data": {"url": "data/cars.json"}
+      "encoding": {}
     };
     const model = parseUnitModel(spec);
     const props = text.properties(model);
@@ -62,13 +62,13 @@ describe('Mark: Text', function() {
 
   describe('with x, y, text (ordinal)', function() {
     const spec = {
+      "data": {"url": "data/cars.json"},
       "mark": "text",
       "encoding": {
         "x": {"field": "Acceleration", "type": "ordinal"},
         "y": {"field": "Displacement", "type": "quantitative"},
         "text": {"field": "Origin", "type": "ordinal"},
-      },
-      "data": {"url": "data/cars.json"}
+      }
     };
     const model = parseUnitModel(spec);
     const props = text.properties(model);
@@ -91,6 +91,7 @@ describe('Mark: Text', function() {
 
   describe('with row, column, text, and color', function() {
     const spec = {
+        "data": {"url": "data/cars.json"},
         "mark": "text",
         "encoding": {
           "row": {"field": "Origin", "type": "ordinal"},
@@ -98,8 +99,7 @@ describe('Mark: Text', function() {
           "text": {"field": "Acceleration", "type": "quantitative", "aggregate": "mean"},
           "color": {"field": "Acceleration", "type": "quantitative", "aggregate": "mean"},
           "size": {"field": "Acceleration", "type": "quantitative", "aggregate": "mean"}
-        },
-        "data": {"url": "data/cars.json"}
+        }
       };
     const model = parseUnitModel(spec);
     const props = text.properties(model);
@@ -135,6 +135,7 @@ describe('Mark: Text', function() {
 
   describe('with row, column, text, and color and mark configs(applyColorToBackground, opacity)', function() {
     const spec = {
+        "data": {"url": "data/cars.json"},
         "mark": "text",
         "encoding": {
           "row": {"field": "Origin", "type": "ordinal"},
@@ -148,8 +149,7 @@ describe('Mark: Text', function() {
             "applyColorToBackground": true,
             "opacity": 0.8
           }
-        },
-        "data": {"url": "data/cars.json"}
+        }
       };
     const model = parseUnitModel(spec);
     const props = text.properties(model);
@@ -169,12 +169,12 @@ describe('Mark: Text', function() {
 
   describe('with x of type longitude', function() {
     const model = parseUnitModel({
+      "data": {"url": "data/barley.json"},
       "mark": "text",
       "encoding": {
         "x": {"field": "year", "type": "longitude"},
         "text": {"field": "year", "type": "quantitative"}
-      },
-      "data": {"url": "data/barley.json"}
+      }
     });
 
     const props = text.properties(model);
@@ -185,12 +185,12 @@ describe('Mark: Text', function() {
 
   describe('with y of type latitude', function() {
     const model = parseUnitModel({
+      "data": {"url": "data/barley.json"},
       "mark": "text",
       "encoding": {
         "y": {"field": "year", "type": "latitude"},
         "text": {"field": "year", "type": "quantitative"}
-      },
-      "data": {"url": "data/barley.json"}
+      }
     });
 
     const props = text.properties(model);

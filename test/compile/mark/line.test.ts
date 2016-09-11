@@ -13,6 +13,7 @@ describe('Mark: Line', function() {
 
   function lineXY(moreEncoding = {}) {
     const spec = {
+      "data": {"url": "data/barley.json"},
       "mark": "line",
       "encoding": extend(
         {
@@ -20,8 +21,7 @@ describe('Mark: Line', function() {
           "y": {"field": "yield", "type": "quantitative"}
         },
         moreEncoding
-      ),
-      "data": {"url": "data/barley.json"}
+      )
     };
     return spec;
   }
@@ -52,11 +52,11 @@ describe('Mark: Line', function() {
 
   describe('with x of type longitude', function() {
     const model = parseUnitModel({
+      "data": {"url": "data/barley.json"},
       "mark": "line",
       "encoding": {
         "x": {"field": "year", "type": "longitude"}
-      },
-      "data": {"url": "data/barley.json"}
+      }
     });
 
     const props = line.properties(model);
@@ -67,11 +67,11 @@ describe('Mark: Line', function() {
 
   describe('with y of type latitude', function() {
     const model = parseUnitModel({
+      "data": {"url": "data/barley.json"},
       "mark": "line",
       "encoding": {
         "y": {"field": "year", "type": "latitude"}
-      },
-      "data": {"url": "data/barley.json"}
+      }
     });
 
     const props = line.properties(model);

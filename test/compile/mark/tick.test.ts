@@ -16,9 +16,9 @@ describe('Mark: Tick', function() {
 
   describe('with quantitative x', function() {
     const model = parseUnitModel({
+      'data': {'url': 'data/cars.json'},
       'mark': 'tick',
-      'encoding': {'x': {'field': 'Horsepower', 'type': 'quantitative'}},
-      'data': {'url': 'data/cars.json'}
+      'encoding': {'x': {'field': 'Horsepower', 'type': 'quantitative'}}
     });
 
     const props = tick.properties(model);
@@ -37,9 +37,9 @@ describe('Mark: Tick', function() {
 
   describe('with quantitative y', function() {
     const model = parseUnitModel({
+      'data': {'url': 'data/cars.json'},
       'mark': 'tick',
-      'encoding': {'y': {'field': 'Cylinders','type': 'quantitative'}},
-      'data': {'url': 'data/cars.json'}
+      'encoding': {'y': {'field': 'Cylinders','type': 'quantitative'}}
     });
 
     const props = tick.properties(model);
@@ -58,13 +58,13 @@ describe('Mark: Tick', function() {
 
   describe('with quantitative x and ordinal y', function() {
     const model = parseUnitModel({
+      'data': {'url': 'data/cars.json'},
       'mark': 'tick',
       'encoding':
         {
           'x': {'field': 'Horsepower', 'type': 'quantitative'},
           'y': {'field': 'Cylinders','type': 'ordinal'}
-        },
-      'data': {'url': 'data/cars.json'}
+        }
     });
     const props = tick.properties(model);
 
@@ -87,6 +87,7 @@ describe('Mark: Tick', function() {
 
   describe('width should be mapped to size', function() {
     const model = parseUnitModel({
+      'data': {'url': 'data/cars.json'},
       'mark': 'tick',
       'config': {'mark': {'orient': 'vertical'}},
       'encoding':
@@ -94,8 +95,7 @@ describe('Mark: Tick', function() {
           'x': {'field': 'Horsepower', 'type': 'quantitative'},
           'y': {'field': 'Cylinders', 'type': 'ordinal'},
           'size': {'field': 'Acceleration'}
-        },
-      'data': {'url': 'data/cars.json'},
+        }
     });
     const props = tick.properties(model);
     it('width should change with size field', function() {
@@ -105,6 +105,7 @@ describe('Mark: Tick', function() {
 
   describe('height should be mapped to size', function() {
     const model = parseUnitModel({
+      'data': {'url': 'data/cars.json'},
       'mark': 'tick',
       'config': {'mark': {'orient': 'horizontal'}},
       'encoding':
@@ -112,8 +113,7 @@ describe('Mark: Tick', function() {
           'x': {'field': 'Horsepower', 'type': 'quantitative'},
           'y': {'field': 'Cylinders', 'type': 'ordinal'},
           'size': {'field': 'Acceleration'}
-        },
-      'data': {'url': 'data/cars.json'},
+        }
     });
     const props = tick.properties(model);
     it('height should change with size field', function() {
@@ -123,11 +123,11 @@ describe('Mark: Tick', function() {
 
   describe('with x of type longitude', function() {
     const model = parseUnitModel({
-      "mark": "tick",
-      "encoding": {
-        "x": {"field": "year", "type": "longitude"}
-      },
-      "data": {"url": "data/barley.json"}
+      'data': {'url': 'data/barley.json'},
+      'mark': 'tick',
+      'encoding': {
+        'x': {'field': 'year', 'type': 'longitude'}
+      }
     });
 
     const props = tick.properties(model);
@@ -138,11 +138,11 @@ describe('Mark: Tick', function() {
 
   describe('with y of type latitude', function() {
     const model = parseUnitModel({
-      "mark": "tick",
-      "encoding": {
-        "y": {"field": "year", "type": "latitude"}
-      },
-      "data": {"url": "data/barley.json"}
+      'data': {'url': 'data/barley.json'},
+      'mark': 'tick',
+      'encoding': {
+        'y': {'field': 'year', 'type': 'latitude'}
+      }
     });
 
     const props = tick.properties(model);

@@ -55,7 +55,7 @@ describe('Mark (Non-path based Mark)', function() {
       const model = parseUnitModel({
         "mark": "path",
         "encoding": {
-          "geopath":{
+          "path":{
               "type":"geojson"
           }
         },
