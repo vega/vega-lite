@@ -1,9 +1,8 @@
-/* tslint:disable quote */
+/* tslint:disable quotemark */
 
 import {assert} from 'chai';
 import {orient} from '../../src/compile/config';
 import {Orient} from '../../src/config';
-import {BAR} from '../../src/mark';
 import {parseUnitModel} from '../util';
 
 describe('Config', function() {

@@ -1,9 +1,7 @@
-/* tslint:disable quote */
+/* tslint:disable quotemark */
 
 import {assert} from 'chai';
 import {parseUnitModel} from '../../util';
-import {extend} from '../../../src/util'
-import {X, Y, SIZE, COLOR, SHAPE} from '../../../src/channel';
 import {bar} from '../../../src/compile/mark/bar';
 
 describe('Mark: Bar', function() {
@@ -176,5 +174,5 @@ describe('Mark: Bar', function() {
       assert.deepEqual(props.x, { scale: 'x', field: 'q1_people' });
       assert.deepEqual(props.x2, { scale: 'x', field: 'q3_people' });
     });
-  })
+  });
 });

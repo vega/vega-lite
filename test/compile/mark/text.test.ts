@@ -1,8 +1,7 @@
-/* tslint:disable quote */
+/* tslint:disable quotemark */
 
 import {assert} from 'chai';
 import {parseUnitModel} from '../../util';
-import {extend} from '../../../src/util';
 import {text} from '../../../src/compile/mark/text';
 import {X, Y} from '../../../src/channel';
 
