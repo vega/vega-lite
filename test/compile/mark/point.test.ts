@@ -1,8 +1,8 @@
-/* tslint:disable quote */
+/* tslint:disable quotemark */
 
 import {assert} from 'chai';
 import {parseUnitModel} from '../../util';
-import {extend} from '../../../src/util'
+import {extend} from '../../../src/util';
 import {X, Y, SIZE, COLOR, SHAPE} from '../../../src/channel';
 import {point, square, circle} from '../../../src/compile/mark/point';
 
@@ -221,7 +221,7 @@ describe('Mark: Circle', function() {
   });
 
   it('with config.mark.filled:false should have transparent fill', function() {
-    const model = parseUnitModel({
+    const filledCircleModel = parseUnitModel({
       "mark": "circle",
       "encoding": {
         "color": {"value": "blue"}
@@ -233,9 +233,9 @@ describe('Mark: Circle', function() {
       }
     });
 
-    const props = circle.properties(model);
+    const filledCircleProps = circle.properties(filledCircleModel);
 
-    assert.equal(props.stroke.value, 'blue');
-    assert.equal(props.fill.value, 'transparent');
+    assert.equal(filledCircleProps.stroke.value, 'blue');
+    assert.equal(filledCircleProps.fill.value, 'transparent');
   });
 });
