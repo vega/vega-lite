@@ -28,7 +28,7 @@ export interface DataFormat {
   /**
    * The name of the TopoJSON object set to convert to a mesh.
    * Similar to the `feature` option, `mesh` extracts a named TopoJSON object set.
-   *  Unlike the `feature` option, the corresponding geo data is returned as a single, unified mesh instance, not as inidividual GeoJSON features.
+   *  Unlike the `feature` option, the corresponding geo data is returned as a single, unified mesh instance, not as individual GeoJSON features.
    * Extracting a mesh is useful for more efficiently drawing borders or other geographic elements that you do not need to associate with specific regions such as individual countries, states or counties.
    */
   mesh?: string;

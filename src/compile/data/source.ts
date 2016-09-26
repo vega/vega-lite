@@ -35,7 +35,7 @@ export namespace source {
         }
         const dataFormat: DataFormat = data.format || {};
 
-        // For backward compatability for former `data.formatType` property
+        // For backward compatibility for former `data.formatType` property
         const formatType: DataFormat = dataFormat.type || data['formatType'];
         sourceData.format =
           extend(

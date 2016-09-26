@@ -210,7 +210,7 @@ export interface Dict<T> {
 export type StringSet = Dict<boolean>;
 
 /**
- * Returns true if the two dicitonaries disagree. Applies only to defioned values.
+ * Returns true if the two dictionaries disagree. Applies only to defined values.
  */
 export function differ<T>(dict: Dict<T>, other: Dict<T>) {
   for (let key in dict) {

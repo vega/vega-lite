@@ -8,7 +8,7 @@ export interface LegendConfig {
    */
   offset?: number;
   /**
-   * The padding, in pixels, between the lengend and axis.
+   * The padding, in pixels, between the legend and axis.
    */
   padding?: number;
   /**
@@ -44,11 +44,11 @@ export interface LegendConfig {
    */
   labelColor?: string;
   /**
-   * The font of the lengend label.
+   * The font of the legend label.
    */
   labelFont?: string;
   /**
-   * The font size of lengend lable.
+   * The font size of legend label.
    */
   labelFontSize?: number;
   /**
@@ -69,7 +69,7 @@ export interface LegendConfig {
    */
   symbolShape?: string;
   /**
-   * The size of the lengend symbol, in pixels.
+   * The size of the legend symbol, in pixels.
    */
   symbolSize?: number;
   /**
