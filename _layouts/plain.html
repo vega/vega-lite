@@ -29,7 +29,8 @@ layout: base
 <footer>
   <div class="page-centered">
     <span>
-      <a href="https://github.com/vega/vega-lite/edit/master/{{page.path}}">Edit this page</a> and submit a pull request!
+      {% assign path = page.path | remove: 'bower_components/vega-lite/' %}
+      <a href="https://github.com/vega/vega-lite/edit/master/{{path}}">Edit this page</a> and submit a pull request!
     </span>
     <span class="fill"></span>
     <a href="http://idl.cs.washington.edu" title="UW Interactive Data Lab" class="idl-logo"><img src="{{site.baseurl}}/site/static/idl-logo.png"/></a>
