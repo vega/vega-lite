@@ -62,7 +62,7 @@ The [`data`]({{site.baseurl}}/docs/data.html) property defines the data source o
 
 ## Encoding Data with Marks
 
-Now we have a data source but we haven't defined yet how the the data should be visualized.
+Now we have a data source but we haven't defined yet how the data should be visualized.
 
 Basic graphical elements in Vega-Lite are [*marks*]({{site.baseurl}}/docs/mark.html). Marks provide basic shapes whose properties (such as position, size, and color) can be used to visually encode data, either from a data field (or a variable), or a constant value.
 

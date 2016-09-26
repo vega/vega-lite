@@ -86,7 +86,7 @@ export interface OneOfFilter {
 export function isOneOfFilter(filter: any): filter is OneOfFilter {
   return filter && !!filter.field && (
     isArray(filter.oneOf) ||
-    isArray(filter.in) // backward compatability
+    isArray(filter.in) // backward compatibility
   );
 }
 
@@ -104,7 +104,7 @@ export function expression(filter: Filter | string) {
     if (isEqualFilter(filter)) {
       return fieldExpr + '===' + valueExpr(filter.equal, filter.timeUnit);
     } else if (isOneOfFilter(filter)) {
-      // "oneOf" was formerly "in" -- so we need to add backward compatability
+      // "oneOf" was formerly "in" -- so we need to add backward compatibility
       const oneOf = filter.oneOf || filter['in'];
       return 'indexof([' +
         oneOf.map((v) => valueExpr(v, filter.timeUnit)).join(',') +
