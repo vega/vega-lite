@@ -17,7 +17,7 @@ baseurl: "/vega-lite" # the subpath of your site, e.g. /blog/
 url: "http://vega.github.io" # the base hostname & protocol for your site
 exclude: [bin, coverage, examples/_original, examples/_output, examples/_diff, Gemfile, Gemfile.lock, gulp,
   lib/schema.json, node_modules, scripts, test, typings, package.json, bower.json, src, tsconfig.json, tslint.json,
-  nodemon.json, CONTRIBUTING.md, README.md, LICENSE, bower_components/vega/node_modules, bower_components/vega-embed/node_modules]
+  nodemon.json, CONTRIBUTING.md, README.md, LICENSE, bower_components/vega-lite, bower_components/vega/node_modules, bower_components/vega-embed/node_modules]
 
 markdown: kramdown
 highlighter: rouge
