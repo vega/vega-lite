@@ -69,7 +69,7 @@ export interface PositionChannelDef extends ChannelDefWithScale {
   axis?: boolean | Axis;
 }
 export interface ChannelDefWithLegend extends ChannelDefWithScale {
-  legend?: Legend;
+  legend?: boolean | Legend;
 }
 
 // Detail
