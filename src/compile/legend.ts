@@ -72,7 +72,7 @@ export function parseLegend(model: UnitModel, channel: Channel): VgLegend {
   const props = (typeof legend !== 'boolean' && legend.properties) || {};
   ['title', 'symbols', 'legend', 'labels'].forEach(function(group) {
     let value = properties[group] ?
-      properties[group](fieldDef, props[group], model, channel) : // apply rule
+      properties[group](fieldDef, props[group], model, channel) || props[group] : // apply rule
       props[group]; // no rule -- just default values
     if (value !== undefined && keys(value).length > 0) {
       def.properties = def.properties || {};
