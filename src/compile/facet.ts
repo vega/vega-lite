@@ -48,14 +48,13 @@ export class FacetModel extends Model {
 
     channelMappingForEach(this.channels(), facet, function(fieldDef: FieldDef, channel: Channel) {
       // TODO: if has no field / datum, then drop the field
-
-      if (!isDimension(fieldDef)) {
-        model.addWarning(channel + ' encoding should be ordinal.');
-      }
-
       if (fieldDef.type) {
         // convert short type to full type
         fieldDef.type = getFullName(fieldDef.type);
+      }
+
+      if (!isDimension(fieldDef)) {
+        model.addWarning(channel + ' encoding should be ordinal.');
       }
     });
     return facet;
