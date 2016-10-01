@@ -1,0 +1,31 @@
+{
+  "data": {
+    "url": "data/movies.json"
+  },
+  "mark": "line",
+  "encoding": {
+    "row": {
+      "field": "Major_Genre",
+      "type": "nominal"
+    },
+    "y": {
+      "aggregate": "mean",
+      "field": "IMDB_Rating",
+      "type": "quantitative"
+    },
+    "x": {
+      "timeUnit": "year",
+      "field": "Release_Date",
+      "type": "temporal",
+      "scale": {}
+    }
+  },
+  "config": {
+    "overlay": {
+      "line": true
+    },
+    "scale": {
+      "useRawDomain": true
+    }
+  }
+}
