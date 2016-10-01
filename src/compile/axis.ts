@@ -349,7 +349,7 @@ export namespace properties {
     }
 
     if (axis.tickLabelColor !== undefined) {
-        labelsSpec.stroke = {value: axis.tickLabelColor};
+        labelsSpec.fill = {value: axis.tickLabelColor};
     }
 
     if (axis.tickLabelFont !== undefined) {
