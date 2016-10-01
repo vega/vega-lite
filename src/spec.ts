@@ -184,10 +184,15 @@ export function normalizeExtendedUnitSpec(spec: ExtendedUnitSpec): Spec {
           hasRow ? { row: spec.encoding.row } : {},
           hasColumn ? { column: spec.encoding.column } : {}
         ),
-        spec: normalizeUnitSpec({
-          mark: spec.mark,
-          encoding: encoding
-        })
+        spec: normalizeUnitSpec(extend(
+          spec.width ? { width: spec.width } : {},
+          spec.height ? { height: spec.height } : {},
+          {
+            mark: spec.mark,
+            encoding: encoding
+          },
+          spec.config ? { config: spec.config } : {}
+        ))
       },
       spec.config ? { config: spec.config } : {}
     );

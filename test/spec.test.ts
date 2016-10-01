@@ -11,6 +11,8 @@ describe('normalize()', function () {
     it('should convert single extended spec with column into a composite spec', function() {
       const spec: any = {
         "name": "faceted",
+        "width": 123,
+        "height": 234,
         "description": "faceted spec",
         "data": {"url": "data/movies.json"},
         "mark": "point",
@@ -29,6 +31,8 @@ describe('normalize()', function () {
           "column": {"field": "MPAA_Rating","type": "ordinal"}
         },
         "spec": {
+          "width": 123,
+          "height": 234,
           "mark": "point",
           "encoding": {
             "x": {"field": "Worldwide_Gross","type": "quantitative"},
