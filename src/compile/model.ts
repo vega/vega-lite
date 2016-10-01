@@ -306,7 +306,7 @@ export abstract class Model {
   public abstract stack();
 
   public axis(channel: Channel): Axis {
-    return this._axis[channel];
+    return this._axis ? this._axis[channel] : null;
   }
 
   public legend(channel: Channel): Legend {
