@@ -35,12 +35,15 @@ export namespace summary {
     let dims: StringSet = {};
 
     /* dictionary mapping field name => dict set of aggregation functions */
-    let meas: Dict<StringSet> = {'*': {count: true}};
+    let meas: Dict<StringSet> = {};
 
     model.forEach(function(fieldDef: FieldDef, channel: Channel) {
       if (fieldDef.aggregate) {
         if (fieldDef.aggregate === AggregateOp.COUNT) {
-          // Do nothing since we always include count
+          meas['*'] = meas['*'] || {};
+          /* tslint:disable:no-string-literal */
+          meas['*']['count'] = true;
+          /* tslint:enable:no-string-literal */
         } else {
           meas[fieldDef.field] = meas[fieldDef.field] || {};
           meas[fieldDef.field][fieldDef.aggregate] = true;
