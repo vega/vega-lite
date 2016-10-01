@@ -84,7 +84,7 @@ export function parseLegend(model: UnitModel, channel: Channel): VgLegend {
 }
 
 export function title(legend: Legend, fieldDef: FieldDef, config: Config) {
-  if (typeof legend !== 'boolean' && legend.title) {
+  if (legend.title !== undefined) {
     return legend.title;
   }
 
