@@ -484,7 +484,7 @@ describe('Axis', function() {
         }
       });
       const labels = axis.properties.labels(model, X, {}, {});
-      assert.equal(labels.stroke.value, "blue");
+      assert.equal(labels.fill.value, "blue");
     });
 
     it('tickLabelFont should change with axis\'s label\'s font', function() {
