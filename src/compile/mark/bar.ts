@@ -2,8 +2,10 @@ import {X, Y, X2, Y2, SIZE, Channel} from '../../channel';
 import {Orient} from '../../config';
 import {isMeasure} from '../../fielddef';
 import {BANDSIZE_FIT, ScaleType} from '../../scale';
-import {UnitModel} from '../unit';
+import {contains} from '../../util';
+
 import {applyColorAndOpacity} from '../common';
+import {UnitModel} from '../unit';
 
 export namespace bar {
   export function markType() {
@@ -53,7 +55,9 @@ export namespace bar {
             field: model.field(X2)
           };
         } else {
-          if (model.scale(X).type === ScaleType.LOG || model.scale(X).zero === false) {
+          // Log / Time / UTC scale do not support zero
+          if (contains([ScaleType.LOG, ScaleType.TIME, ScaleType.UTC], model.scale(X).type) ||
+              model.scale(X).zero === false) {
             p.x2 = { value: 0 };
           } else {
             p.x2 = {
@@ -159,7 +163,9 @@ export namespace bar {
             field: model.field(Y2)
           };
         } else {
-          if (model.scale(Y).type === ScaleType.LOG || model.scale(Y).zero === false) {
+          // Log / Time / UTC scale do not support zero
+          if (contains([ScaleType.LOG, ScaleType.TIME, ScaleType.UTC], model.scale(Y).type) ||
+              model.scale(Y).zero === false) {
             // end on axis
             p.y2 = {
               field: {group: 'height'}

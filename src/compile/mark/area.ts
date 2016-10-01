@@ -5,6 +5,7 @@ import {Orient} from '../../config';
 import {FieldDef, field} from '../../fielddef';
 import {Scale, ScaleType} from '../../scale';
 import {StackProperties} from '../../stack';
+import {contains} from '../../util';
 
 import {applyColorAndOpacity, applyMarkConfig} from '../common';
 import {UnitModel} from '../unit';
@@ -89,7 +90,8 @@ export namespace area {
         }
       }
 
-      if (scale.type === ScaleType.LOG || scale.zero === false) {
+      // Log / Time / UTC scale do not support zero
+      if (contains([ScaleType.LOG, ScaleType.TIME, ScaleType.UTC], scale.type) || scale.zero === false) {
         return {
           value: 0
         };
@@ -149,7 +151,8 @@ export namespace area {
         }
       }
 
-      if (scale.type === ScaleType.LOG || scale.zero === false) {
+      // Log / Time / UTC scale do not support zero
+      if (contains([ScaleType.LOG, ScaleType.TIME, ScaleType.UTC], scale.type) || scale.zero === false) {
         return {
           field: {group: 'height'}
         };
