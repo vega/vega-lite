@@ -9,7 +9,7 @@ import {Model} from './../model';
 export namespace formatParse {
   // TODO: need to take calculate into account across levels when merging
   function parse(model: Model): Dict<string> {
-    const calcFieldMap = (model.transform().calculate || []).reduce(function(fieldMap, formula) {
+    const calcFieldMap = (model.calculate() || []).reduce(function(fieldMap, formula) {
       fieldMap[formula.field] = true;
       return fieldMap;
     }, {});
