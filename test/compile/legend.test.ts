@@ -202,7 +202,7 @@ describe('Legend', function() {
       });
       const fieldDef = {field: 'a', type: TEMPORAL, timeUnit: TimeUnit.MONTH};
       const label = legend.properties.labels(fieldDef, {}, model, COLOR);
-      let expected = "{{datum[\"data\"] | time:'%B'}}";
+      let expected = "{{datum[\"data\"] | time:'%b'}}";
       assert.deepEqual(label.text.template, expected);
     });
 

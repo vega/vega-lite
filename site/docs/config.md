@@ -261,9 +261,8 @@ vg.embed('#horizontal_line', {
 | Property            | Type                | Description  |
 | :------------------ |:-------------------:| :------------|
 | text                | String |  Placeholder text if the `text` channel is not specified (`"Abc"` by default). |
-| format              | String  | The formatting pattern for text value. If not defined, this will be determined automatically. |
-| shortTimeLabels     | Boolean | Whether month names and weekday names should be abbreviated. |
-
+| format              | String  | The formatting pattern for text value. If not defined, this will be determined automatically |
+| shortTimeLabels     | Boolean | Whether year, month names, and weekday names should be abbreviated.  <span class="note-line">__Default Behavior:__ Only month is shortened by default.</span>  |
 
 <!-- TODO: expand format detail -->
 <!-- TODO: example of customized text -->

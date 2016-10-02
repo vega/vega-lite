@@ -392,7 +392,6 @@ export const defaultMarkConfig: MarkConfig = {
   baseline: VerticalAlign.MIDDLE,
   text: 'Abc',
 
-  shortTimeLabels: false,
   applyColorToBackground: false
 };
 
