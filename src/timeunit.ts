@@ -200,7 +200,7 @@ export function rawDomain(timeUnit: TimeUnit, channel: Channel) {
     case TimeUnit.MONTH:
       return range(0, 12);
     case TimeUnit.QUARTER:
-      return [0,3,6,9];
+      return [0,1,2,3]; // Q1-Q4 (0th-index)
   }
 
   return null;
