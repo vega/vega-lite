@@ -56,6 +56,16 @@ describe('Config', function() {
       assert.equal(orient(model.mark(), model.encoding()), Orient.VERTICAL);
     });
 
+    it('should return correct orient for vertical tick with bin', function() {
+      const model = parseUnitModel({
+        "mark": "tick",
+        "encoding": {
+          "x": {"type": "quantitative", "field": "foo"},
+          "y": {"type": "quantitative", "field": "bar", "bin": true}
+        },
+      });
+      assert.equal(orient(model.mark(), model.encoding()), Orient.VERTICAL);
+    });
 
     it('should return correct orient for vertical tick of continuous timeUnit dotplot', function() {
       const model = parseUnitModel({

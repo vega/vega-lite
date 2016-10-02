@@ -68,7 +68,11 @@ export function orient(mark: Mark, encoding: Encoding, markConfig: MarkConfig = 
       const yScaleType = encoding.y ? scaleType(encoding.y.scale || {}, encoding.y, Y, mark) : null;
 
       // Tick is opposite to bar, line, area and never have ranged mark.
-      if (xScaleType !== ScaleType.ORDINAL && (!encoding.y || yScaleType === ScaleType.ORDINAL)) {
+      if (xScaleType !== ScaleType.ORDINAL && (
+            !encoding.y ||
+            yScaleType === ScaleType.ORDINAL) ||
+            encoding.y.bin
+          ) {
         return Orient.VERTICAL;
       }
       // y:Q or Ambiguous case, return horizontal
