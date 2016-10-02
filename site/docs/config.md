@@ -47,7 +47,7 @@ A Vega-Lite `config` object can have the following top-level properties:
 | background    | String        | CSS color property to use as background of visualization. <span class="note-line">__Default value:__ (none)</span> |
 | countTitle    | String      | The default title for count field (`{field:'*', aggregate:'count', type: 'QUANTITATIVE'}`). <span class="note-line">__Default value:__ `'Number of Records'`.</span>|
 | numberFormat  | String      | The default number format pattern for text and labels of axes and legends (in the form of [D3 number format pattern](https://github.com/mbostock/d3/wiki/Formatting)). <span class="note-line">__Default value:__ `'s'`.</span>|
-| timeFormat    | String     | The default time format pattern for temporal field without time unit in the text mark and labels of axes and legends (in the form of [D3 time format pattern](https://github.com/mbostock/d3/wiki/Time-Formatting)). <span class="note-line">__Default value:__ `'%Y-%m-%d'`.</span>|
+| timeFormat    | String     | The default time format pattern for temporal field without time unit in the text mark and labels of axes and legends (in the form of [D3 time format pattern](https://github.com/mbostock/d3/wiki/Time-Formatting)). <span class="note-line">__Default value:__ `'%b %d, %Y'`.</span>|
 
 <!-- TODO: consider adding width, height, numberFormat, timeFormat  -->
 
