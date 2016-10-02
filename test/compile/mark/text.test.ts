@@ -55,7 +55,7 @@ describe('Mark: Text', function() {
     const props = text.properties(model);
 
     it('should use date template', function() {
-      assert.deepEqual(props.text, {template: '{{datum["foo"] | time:\'%Y-%m-%d\'}}'});
+      assert.deepEqual(props.text, {template: '{{datum["foo"] | time:\'%b %d, %Y\'}}'});
     });
   });
 

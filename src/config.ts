@@ -451,7 +451,7 @@ export interface Config {
 
 export const defaultConfig: Config = {
   numberFormat: 's',
-  timeFormat: '%Y-%m-%d',
+  timeFormat: '%b %d, %Y',
   countTitle: 'Number of Records',
 
   cell: defaultCellConfig,
