@@ -180,8 +180,8 @@ export function fieldExpr(fullTimeUnit: TimeUnit, field: string): string {
   return dateTimeExpr(d);
 }
 
-/** Generate the complete raw domain. */
-export function rawDomain(timeUnit: TimeUnit, channel: Channel) {
+/** Generate the complete domain. */
+export function completeDomain(timeUnit: TimeUnit, channel: Channel) {
   if (contains([ROW, COLUMN, SHAPE, COLOR], channel)) {
     return null;
   }

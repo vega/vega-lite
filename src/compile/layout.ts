@@ -9,7 +9,7 @@ import {VgData} from '../vega.schema';
 import {FacetModel} from './facet';
 import {LayerModel} from './layer';
 import {Model} from './model';
-import {rawDomain} from '../timeunit';
+import {completeDomain} from '../timeunit';
 import {UnitModel} from './unit';
 
 // FIXME: for nesting x and y, we need to declare x,y layout separately before joining later
@@ -186,7 +186,7 @@ export function cardinalityExpr(model: Model, channel: Channel) {
   }
 
   const timeUnit = model.fieldDef(channel).timeUnit;
-  const timeUnitDomain = timeUnit ? rawDomain(timeUnit, channel) : null;
+  const timeUnitDomain = timeUnit ? completeDomain(timeUnit, channel) : null;
 
   // FIXME: production rule will break here!
   return timeUnitDomain !== null ? timeUnitDomain.length :
