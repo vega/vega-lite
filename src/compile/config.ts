@@ -4,6 +4,7 @@ import {Encoding, isAggregate, has} from '../encoding';
 import {isMeasure} from '../fielddef';
 import {BAR, AREA, POINT, LINE, TICK, CIRCLE, SQUARE, RULE, TEXT, Mark} from '../mark';
 import {ScaleType} from '../scale';
+import {TEMPORAL} from '../type';
 import {contains, extend} from '../util';
 import {scaleType} from '../compile/scale';
 
@@ -110,8 +111,17 @@ export function orient(mark: Mark, encoding: Encoding, markConfig: MarkConfig = 
       const yIsMeasure = isMeasure(encoding.y) || isMeasure(encoding.y2);
       if (xIsMeasure && !yIsMeasure) {
         return Orient.HORIZONTAL;
+      } else if (!xIsMeasure && yIsMeasure) {
+        return Orient.VERTICAL;
+      } else if (xIsMeasure && yIsMeasure) {
+        // temporal without timeUnit is considered continuous, but better serves as dimension
+        if (encoding.x.type === TEMPORAL) {
+          return Orient.VERTICAL;
+        } else if (encoding.y.type === TEMPORAL) {
+          return Orient.HORIZONTAL;
+        }
       }
-      // y:Q or Ambiguous case, return vertical
+      // Ambiguous case, return vertical
       return Orient.VERTICAL;
   }
   /* istanbul ignore:next */
