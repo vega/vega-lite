@@ -22,4 +22,4 @@ export import type = require('./type');
 export import util = require('./util');
 export import validate = require('./validate');
 
-export const version = '__VERSION__';
+export const version = require('../package.json').version;
