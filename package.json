@@ -56,7 +56,6 @@
   "devDependencies": {
     "browser-sync": "~2.16.0",
     "browserify": "~13.1.0",
-    "browserify-versionify": "~1.0.6",
     "chai": "~3.5.0",
     "cheerio": "~0.22.0",
     "exorcist": "~0.4.0",
@@ -80,10 +79,5 @@
     "datalib": "~1.7.2",
     "json-stable-stringify": "~1.0.1",
     "yargs": "~5.0.0"
-  },
-  "browserify": {
-    "transform": [
-      "browserify-versionify"
-    ]
   }
 }
