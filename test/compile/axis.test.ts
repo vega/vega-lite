@@ -472,7 +472,7 @@ describe('Axis', function() {
       });
       const labels = axis.properties.labels(model, X, {}, {type: 'x'});
       let quarterPrefix = 'Q';
-      let expected = '{{datum["data"] | time:\'%Y-\'}}' + quarterPrefix + '{{datum["data"] | quarter}}{{datum["data"] | time:\'-%B\'}}';
+      let expected = quarterPrefix + '{{datum["data"] | quarter}} {{datum["data"] | time:\'%b %Y\'}}';
       assert.deepEqual(labels.text.template, expected);
     });
 

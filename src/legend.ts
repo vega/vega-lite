@@ -121,5 +121,4 @@ export interface Legend extends LegendConfig {
 
 export const defaultLegendConfig: LegendConfig = {
   orient: undefined, // implicitly "right"
-  shortTimeLabels: false
 };

@@ -37,7 +37,7 @@ describe('Common', function() {
 
     it('should get the right time template for yearquarter', function() {
       const template = timeTemplate('datum["data"]', TimeUnit.YEARQUARTER, undefined, true, defaultConfig);
-      assert.equal(template, '{{datum["data"] | time:\'%y-\'}}Q{{datum["data"] | quarter}}');
+      assert.equal(template, 'Q{{datum["data"] | quarter}} {{datum["data"] | time:\'%y\'}}');
     });
   });
 

@@ -24,6 +24,16 @@ describe('TimeUnit', function() {
           x: {timeUnit: 'month', field:'a', type: "temporal"}
         }
       });
+      assert.equal(template(model.encoding().x.timeUnit, 'datum["data"]', model.axis(X).shortTimeLabels), '{{datum["data"] | time:\'%b\'}}');
+    });
+
+    it('should get the right time template when shortTimeLabels is false', function() {
+      const model = parseUnitModel({
+        mark: "point",
+        encoding: {
+          x: {timeUnit: 'month', field:'a', type: "temporal", axis: {shortTimeLabels: false}}
+        }
+      });
       assert.equal(template(model.encoding().x.timeUnit, 'datum["data"]', model.axis(X).shortTimeLabels), '{{datum["data"] | time:\'%B\'}}');
     });
 
