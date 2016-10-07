@@ -19,13 +19,7 @@ const DEFAULT_NULL_FILTERS = {
 export namespace nullFilter {
   /** Return Hashset of fields for null filtering (key=field, value = true). */
   function parse(model: Model): Dict<boolean> {
-    const transform = model.transform();
-    let filterInvalid = transform.filterInvalid;
-
-    if (filterInvalid === undefined && transform['filterNull'] !== undefined) {
-      filterInvalid = transform['filterNull'];
-      console.warn('filterNull is deprecated. Please use filterInvalid instead.');
-    }
+    const filterInvalid = model.filterInvalid();
 
     return model.reduce(function(aggregator, fieldDef: FieldDef) {
       if (fieldDef.field !== '*') { // Ignore * for count(*) fields.

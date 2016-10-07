@@ -10,7 +10,7 @@ import {DataComponent} from './data';
 
 export namespace formula {
   function parse(model: Model): Dict<Formula> {
-    return (model.transform().calculate || []).reduce(function(formulaComponent, formula) {
+    return (model.calculate() || []).reduce(function(formulaComponent, formula) {
       formulaComponent[hash(formula)] = formula;
       return formulaComponent;
     }, {} as Dict<Formula>);

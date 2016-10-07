@@ -302,6 +302,19 @@ describe('data: nullFilter', function() {
       });
     });
 
+    it('should add no null filter if filterInvalid is false', function () {
+      const model = parseUnitModel(mergeDeep(spec, {
+        transform: {
+          filterInvalid: false
+        }
+      }));
+      assert.deepEqual(nullFilter.parseUnit(model), {
+        qq: null,
+        tt: null,
+        oo: null
+      });
+    });
+
     it('should add no null filter if filterNull is false', function () {
       const model = parseUnitModel(mergeDeep(spec, {
         transform: {

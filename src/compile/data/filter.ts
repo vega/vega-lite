@@ -18,7 +18,7 @@ export namespace filter {
    */
 
   export function parse(model: Model): string {
-    const filter = model.transform().filter;
+    const filter = model.filter();
     if (isArray(filter)) {
       return '(' +
         filter.map((f) => expression(f))
