@@ -123,6 +123,48 @@ function normalizeDay(d: string | number) {
   }
 }
 
+export function timestamp(d: DateTime, normalize) {
+  const date = new Date(0, 0, 1, 0, 0, 0, 0); // start with uniform date
+
+  // FIXME support UTC
+  // FIXME what about day
+
+  if (d.year !== undefined) {
+    date.setFullYear(d.year);
+  }
+  if (d.quarter !== undefined) {
+    const quarter = normalize ? normalizeQuarter(d.quarter) : d.quarter;
+    date.setMonth(+quarter * 3);
+  }
+
+  if (d.month !== undefined) {
+    const month = normalize ? normalizeMonth(d.month) : d.month;
+    date.setMonth(+month);
+  }
+
+  if (d.date !== undefined) {
+    date.setDate(d.date);
+  }
+
+  if (d.hours !== undefined) {
+    date.setHours(d.hours);
+  }
+
+  if (d.minutes !== undefined) {
+    date.setMinutes(d.minutes);
+  }
+
+  if (d.seconds !== undefined) {
+    date.setSeconds(d.seconds);
+  }
+
+  if (d.milliseconds !== undefined) {
+    date.setMilliseconds(d.milliseconds);
+  }
+
+  return date.getTime();
+}
+
 /**
  * Return Vega Expression for a particular date time.
  * @param d

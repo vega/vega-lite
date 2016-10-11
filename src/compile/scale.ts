@@ -5,6 +5,7 @@ import {SHARED_DOMAIN_OPS} from '../aggregate';
 import {COLUMN, ROW, X, Y, X2, Y2, SHAPE, SIZE, COLOR, OPACITY, TEXT, hasScale, Channel} from '../channel';
 import {Orient} from '../config';
 import {SOURCE, STACKED_SCALE} from '../data';
+import {DateTime, isDateTime, timestamp} from '../datetime';
 import {FieldDef, field, isMeasure} from '../fielddef';
 import {Mark, BAR, TEXT as TEXTMARK, RULE, TICK} from '../mark';
 import {Scale, ScaleConfig, ScaleType, NiceTime, BANDSIZE_FIT, BandSize} from '../scale';
@@ -241,6 +242,11 @@ export function domain(scale: Scale, model: Model, channel:Channel): any {
   const fieldDef = model.fieldDef(channel);
 
   if (scale.domain) { // explicit value
+    if (isDateTime(scale.domain[0])) {
+      return (scale.domain as DateTime[]).map((dt) => {
+        return timestamp(dt, true);
+      });
+    }
     return scale.domain;
   }
 
