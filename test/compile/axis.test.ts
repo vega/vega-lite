@@ -336,6 +336,38 @@ describe('Axis', function() {
     });
   });
 
+  describe('values', () => {
+    it('should return correct timestamp values for DateTimes', () => {
+      const values = axis.values(parseModel({
+        mark: "point",
+        encoding: {
+          y: {field: 'a', type: 'temporal', axis: {values: [{year: 1970}, {year: 1980}]}}
+        }
+      }), Y);
+
+      // Timezone offset in milliseconds
+      const timeZoneOffsetMs = new Date().getTimezoneOffset() * 60000;
+
+      assert.deepEqual(values, [
+        // 0 = new Date(1970, 0).getTime() - new Date().getTimezoneOffset() * 60000
+        0 + timeZoneOffsetMs,
+        // 315532800000 = new Date(1980, 0).getTime() - new Date().getTimezoneOffset() * 60000
+        315532800000 + timeZoneOffsetMs
+      ]);
+    });
+
+    it('should simply return values for non-DateTime', () => {
+      const values = axis.values(parseModel({
+        mark: "point",
+        encoding: {
+          y: {field: 'a', type: 'quantitative', axis: {values: [1,2,3,4]}}
+        }
+      }), Y);
+
+      assert.deepEqual(values, [1,2,3,4]);
+    });
+  });
+
   describe('properties.axis()', function() {
     it('axisColor should change axis\'s color', function() {
         const model = parseModel({

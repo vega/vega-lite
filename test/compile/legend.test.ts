@@ -38,6 +38,29 @@ describe('Legend', function() {
     });
   });
 
+  describe('values()', () => {
+    it('should return correct timestamp values for DateTimes', () => {
+      const values = legend.values({values: [{year: 1970}, {year: 1980}]});
+
+      // Timezone offset in milliseconds
+      const timeZoneOffsetMs = new Date().getTimezoneOffset() * 60000;
+
+      assert.deepEqual(values, [
+        // 0 = new Date(1970, 0).getTime() - new Date().getTimezoneOffset() * 60000
+        0 + timeZoneOffsetMs,
+        // 315532800000 = new Date(1980, 0).getTime() - new Date().getTimezoneOffset() * 60000
+        315532800000 + timeZoneOffsetMs
+      ]);
+    });
+
+    it('should simply return values for non-DateTime', () => {
+      const values = legend.values({values: [1,2,3,4]});
+
+      assert.deepEqual(values, [1,2,3,4]);
+    });
+
+  });
+
   describe('properties.symbols', function() {
     it('should initialize if filled', function() {
       const symbol = legend.properties.symbols({field: 'a'}, {}, parseUnitModel({

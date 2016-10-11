@@ -1,3 +1,5 @@
+import {DateTime} from './datetime';
+
 export interface LegendConfig {
   /**
    * The orientation of the legend. One of "left" or "right". This determines how the legend is positioned within the scene. The default is "right".
@@ -116,7 +118,7 @@ export interface Legend extends LegendConfig {
   /**
    * Explicitly set the visible legend values.
    */
-  values?: Array<any>;
+  values?: Array<any> | Array<DateTime>;
 }
 
 export const defaultLegendConfig: LegendConfig = {
