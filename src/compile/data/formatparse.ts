@@ -1,6 +1,6 @@
 import {FieldDef, isCount} from '../../fielddef';
 import {QUANTITATIVE, TEMPORAL} from '../../type';
-import {extend, differ, Dict} from '../../util';
+import {extend, differ, keys, Dict} from '../../util';
 
 import {FacetModel} from './../facet';
 import {LayerModel} from './../layer';
@@ -27,6 +27,16 @@ export namespace formatParse {
         parseComponent[fieldDef.field] = 'number';
       }
     });
+
+    // Custom parse should override inferred parse
+    const data = model.data();
+    if (data && data.format && data.format.parse) {
+      const parse = data.format.parse;
+      keys(parse).forEach((field) => {
+        parseComponent[field] = parse[field];
+      });
+    }
+
     return parseComponent;
   }
 

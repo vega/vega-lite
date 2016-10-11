@@ -24,4 +24,24 @@ describe('compile/data/formatparse', () => {
       });
     });
   });
+
+  it('should return a correct customized parse.', () => {
+    const model = parseUnitModel({
+      "data": {"url": "a.json", "format": {"parse": {"c": "number", "d": "date"}}},
+      "mark": "point",
+      "encoding": {
+        "x": {"field": "a", "type": "quantitative"},
+        "y": {"field": "b", "type": "temporal"},
+        "color": {"field": "c", "type": "ordinal"},
+        "shape": {"field": "c", "type": "nominal"}
+      }
+    });
+    const parseComponent = formatParse.parseUnit(model);
+    assert.deepEqual(parseComponent,{
+      a: 'number',
+      b: 'date',
+      c: 'number',
+      d: 'date'
+    });
+  });
 });
