@@ -91,5 +91,13 @@ describe('datetime', () => {
         quarter: 3,
       }, true), -23210236800000 + new Date().getTimezoneOffset() * 60000);
     });
+
+    it('should produce correct timestamp for day', () => {
+      // new Date(2006, 0, 2).getTime() - new Date().getTimezoneOffset() * 60000
+      // = 1136160000000
+      assert.equal(timestamp({
+        day: 'monday'
+      }, true), 1136160000000 + new Date().getTimezoneOffset() * 60000);
+    });
   });
 });
