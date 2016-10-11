@@ -1,6 +1,8 @@
+import {isDateTime} from '../../datetime';
 import {FieldDef, isCount} from '../../fielddef';
+import {isOneOfFilter, isEqualFilter, isRangeFilter} from '../../filter';
 import {QUANTITATIVE, TEMPORAL} from '../../type';
-import {extend, differ, keys, Dict} from '../../util';
+import {extend, differ, keys, isArray, isNumber, isString, Dict} from '../../util';
 
 import {FacetModel} from './../facet';
 import {LayerModel} from './../layer';
@@ -15,8 +17,37 @@ export namespace formatParse {
     }, {});
 
     let parseComponent: Dict<string> = {};
-    // use forEach rather than reduce so that it can return undefined
-    // if there is no parse needed
+
+    // Parse filter fields
+    let filter = model.filter();
+    if (!isArray(filter)) {
+      filter = [filter];
+    }
+    filter.forEach((f) => {
+      let val = null;
+      // For EqualFilter, just use the equal property.
+      // For RangeFilter and OneOfFilter, all array members should have
+      // the same type, so we only use the first one.
+      if (isEqualFilter(f)) {
+        val = f.equal;
+      } else if (isRangeFilter(f)) {
+        val = f.range[0];
+      } else if (isOneOfFilter(f)) {
+        val = f.oneOf[0];
+      } // else -- for filter expression, we can't infer anything
+
+      if (!!val) {
+        if (isDateTime(val)) {
+          parseComponent[f['field']] = 'date';
+        } else if (isNumber(val)) {
+          parseComponent[f['field']] = 'number';
+        } else if (isString(val)) {
+          parseComponent[f['field']] = 'string';
+        }
+      }
+    });
+
+    // Parse encoded fields
     model.forEach(function(fieldDef: FieldDef) {
       if (fieldDef.type === TEMPORAL) {
         parseComponent[fieldDef.field] = 'date';
