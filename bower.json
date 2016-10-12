@@ -32,9 +32,9 @@
     "vega": "^2.6.0"
   },
   "devDependencies": {
-    "vega-embed": "~2.2.0",
     "d3": "~3.5.16",
     "highlightjs": "~9.4.0",
-    "octicons": "^4.2.0"
+    "octicons": "^4.2.0",
+    "vega-embed": "~2.2.0"
   }
 }
