@@ -54,7 +54,6 @@
   },
   "homepage": "https://github.com/vega/vega-lite",
   "devDependencies": {
-    "@types/assertion-error": "^1.0.30",
     "@types/chai": "^3.4.34",
     "@types/d3": "^3.5.36",
     "@types/json-stable-stringify": "^1.0.29",
