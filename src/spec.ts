@@ -340,7 +340,14 @@ export function normalizeOverlay(spec: UnitSpec, overlayWithPoint: boolean, over
 /* Accumulate non-duplicate fieldDefs in a dictionary */
 function accumulate(dict: any, fieldDefs: FieldDef[]): any {
   fieldDefs.forEach(function(fieldDef) {
-    let key = hash(fieldDef);
+    // Consider only pure fieldDef properties (ignoring scale, axis, legend)
+    var pureFieldDef = ['field', 'type', 'value', 'timeUnit', 'bin', 'aggregate'].reduce((f, key) => {
+      if (fieldDef[key] !== undefined) {
+        f[key] = fieldDef[key];
+      }
+      return f;
+    }, {});
+    let key = hash(pureFieldDef);
     dict[key] = dict[key] || fieldDef;
   });
   return dict;
