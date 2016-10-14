@@ -1,17 +1,17 @@
-import {X, Y, DETAIL} from '../channel';
+import {X, Y, COLOR, SIZE, DETAIL} from '../channel';
 import {Config, Orient, MarkConfig} from '../config';
 import {Encoding, isAggregate, has} from '../encoding';
 import {isMeasure} from '../fielddef';
 import {BAR, AREA, POINT, LINE, TICK, CIRCLE, SQUARE, RULE, TEXT, Mark} from '../mark';
 import {ScaleType} from '../scale';
+import {StackProperties} from '../stack';
 import {TEMPORAL} from '../type';
 import {contains, extend} from '../util';
 import {scaleType} from '../compile/scale';
-
 /**
  * Augment config.mark with rule-based default values.
  */
-export function initMarkConfig(mark: Mark, encoding: Encoding, config: Config) {
+export function initMarkConfig(mark: Mark, encoding: Encoding, stacked: StackProperties, config: Config) {
    return extend(
      ['filled', 'opacity', 'orient', 'align'].reduce(function(cfg, property: string) {
        const value = config.mark[property];
@@ -25,8 +25,13 @@ export function initMarkConfig(mark: Mark, encoding: Encoding, config: Config) {
          case 'opacity':
            if (value === undefined) {
             if (contains([POINT, TICK, CIRCLE, SQUARE], mark)) {
-              // point-based marks and bar
+              // point-based marks
               if (!isAggregate(encoding) || has(encoding, DETAIL)) {
+                cfg[property] = 0.7;
+              }
+            }
+            if (mark === BAR && !stacked) {
+              if (has(encoding, COLOR) || has(encoding, DETAIL) || has(encoding, SIZE)) {
                 cfg[property] = 0.7;
               }
             }

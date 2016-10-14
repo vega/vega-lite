@@ -1,8 +1,10 @@
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
+import {AggregateOp} from '../src/aggregate';
 import {X, Y, DETAIL} from '../src/channel';
 import {BAR, AREA, PRIMITIVE_MARKS} from '../src/mark';
+import {ScaleType} from '../src/scale';
 import {stack, StackOffset} from '../src/stack';
 import {isStacked} from '../src/spec';
 import {without} from '../src/util';
@@ -26,7 +28,7 @@ describe('stack', () => {
             "mark": {"stacked": stacked}
           }
         };
-        assert.isNull(stack(spec.mark, spec.encoding as any, spec.config));
+        assert.isNull(stack(spec.mark, spec.encoding as any, spec.config.mark.stacked));
         assert.isFalse(isStacked(spec as any));
       });
     });
@@ -47,7 +49,7 @@ describe('stack', () => {
             "mark": {"stacked": stacked}
           }
         };
-        assert.isNull(stack(spec.mark, spec.encoding as any, spec.config));
+        assert.isNull(stack(spec.mark, spec.encoding as any, spec.config.mark.stacked));
         assert.isFalse(isStacked(spec as any));
       });
     });
@@ -67,7 +69,7 @@ describe('stack', () => {
             "mark": {"stacked": stacked}
           }
         };
-        assert.isNull(stack(spec.mark, spec.encoding as any, spec.config));
+        assert.isNull(stack(spec.mark, spec.encoding as any, spec.config.mark.stacked));
         assert.isFalse(isStacked(spec as any));
       });
     });
@@ -88,7 +90,7 @@ describe('stack', () => {
             "mark": {"stacked": stacked}
           }
         };
-        assert.isNull(stack(spec.mark, spec.encoding as any, spec.config));
+        assert.isNull(stack(spec.mark, spec.encoding as any, spec.config.mark.stacked));
         assert.isFalse(isStacked(spec as any));
       });
     });
@@ -110,7 +112,7 @@ describe('stack', () => {
             "mark": {"stacked": stacked}
           }
         };
-        const _stack = stack(spec.mark, spec.encoding as any, spec.config);
+        const _stack = stack(spec.mark, spec.encoding as any, spec.config.mark.stacked);
         assert.isOk(_stack);
         assert.isTrue(isStacked(spec as any));
         assert.equal(_stack.stackByChannels[0], DETAIL);
@@ -133,7 +135,7 @@ describe('stack', () => {
             "mark": {"stacked": stacked}
           }
         };
-        assert.isNull(stack(spec.mark, spec.encoding as any, spec.config));
+        assert.isNull(stack(spec.mark, spec.encoding as any, spec.config.mark.stacked));
         assert.isFalse(isStacked(spec as any));
       });
     });
@@ -154,8 +156,54 @@ describe('stack', () => {
             "mark": {"stacked": stacked}
           }
         };
-        assert.isNull(stack(spec.mark, spec.encoding as any, spec.config));
+        assert.isNull(stack(spec.mark, spec.encoding as any, spec.config.mark.stacked));
         assert.isFalse(isStacked(spec as any));
+      });
+    });
+  });
+
+  it('should always be disabled if the aggregated axis has non-linear scale', () => {
+    [undefined, StackOffset.CENTER, StackOffset.NONE, StackOffset.ZERO, StackOffset.NORMALIZE].forEach((stacked) => {
+      [ScaleType.LOG, ScaleType.POW, ScaleType.SQRT].forEach((scaleType) => {
+        PRIMITIVE_MARKS.forEach((mark) => {
+          const spec = {
+            "data": {"url": "data/barley.json"},
+            "mark": mark,
+            "encoding": {
+              "x": {"field": "a", "type": "quantitative", "aggregate": "sum", "scale": {"type": scaleType}},
+              "y": {"field": "variety", "type": "nominal"},
+              "color": {"field": "site", "type": "nominal"}
+            },
+            "config": {
+              "mark": {"stacked": stacked}
+            }
+          };
+          assert.isNull(stack(spec.mark, spec.encoding as any, spec.config.mark.stacked));
+          assert.isFalse(isStacked(spec as any));
+        });
+      });
+    });
+  });
+
+  it('should always be disabled if the aggregated axis has non-summative aggregate', () => {
+    [undefined, StackOffset.CENTER, StackOffset.NONE, StackOffset.ZERO, StackOffset.NORMALIZE].forEach((stacked) => {
+      [AggregateOp.AVERAGE, AggregateOp.VARIANCE, AggregateOp.Q3].forEach((aggregate) => {
+        PRIMITIVE_MARKS.forEach((mark) => {
+          const spec = {
+            "data": {"url": "data/barley.json"},
+            "mark": mark,
+            "encoding": {
+              "x": {"field": "a", "type": "quantitative", "aggregate": aggregate},
+              "y": {"field": "variety", "type": "nominal"},
+              "color": {"field": "site", "type": "nominal"}
+            },
+            "config": {
+              "mark": {"stacked": stacked}
+            }
+          };
+          assert.isNull(stack(spec.mark, spec.encoding as any, spec.config.mark.stacked));
+          assert.isFalse(isStacked(spec as any));
+        });
       });
     });
   });
@@ -172,7 +220,7 @@ describe('stack', () => {
             "color": {"field": "site", "type": "nominal"}
           }
         };
-        const _stack = stack(spec.mark, spec.encoding as any, null);
+        const _stack = stack(spec.mark, spec.encoding as any, undefined);
         assert.equal(_stack.fieldChannel, X);
         assert.equal(_stack.groupbyChannel, Y);
         assert.isTrue(isStacked(spec as any));
@@ -189,7 +237,7 @@ describe('stack', () => {
             "color": {"field": "site", "type": "nominal"}
           }
         };
-        const _stack = stack(spec.mark, spec.encoding as any, null);
+        const _stack = stack(spec.mark, spec.encoding as any, undefined);
         assert.equal(_stack.fieldChannel, X);
         assert.equal(_stack.groupbyChannel, null);
         assert.isTrue(isStacked(spec as any));
@@ -207,7 +255,7 @@ describe('stack', () => {
             "color": {"field": "site", "type": "nominal"}
           }
         };
-        const _stack = stack(spec.mark, spec.encoding as any, null);
+        const _stack = stack(spec.mark, spec.encoding as any, undefined);
         assert.equal(_stack.fieldChannel, Y);
         assert.equal(_stack.groupbyChannel, X);
         assert.isTrue(isStacked(spec as any));
@@ -224,7 +272,7 @@ describe('stack', () => {
             "color": {"field": "site", "type": "nominal"}
           }
         };
-        const _stack = stack(spec.mark, spec.encoding as any, null);
+        const _stack = stack(spec.mark, spec.encoding as any, undefined);
         assert.equal(_stack.fieldChannel, Y);
         assert.equal(_stack.groupbyChannel, null);
         assert.isTrue(isStacked(spec as any));
@@ -244,7 +292,7 @@ describe('stack', () => {
             "color": {"field": "site", "type": "nominal"}
           }
         };
-        assert.equal(stack(spec.mark, spec.encoding as any, null).offset, StackOffset.ZERO);
+        assert.equal(stack(spec.mark, spec.encoding as any, undefined).offset, StackOffset.ZERO);
         assert.isTrue(isStacked(spec as any));
       });
     });
@@ -264,7 +312,7 @@ describe('stack', () => {
               "mark": {"stacked": stacked}
             }
           };
-          assert.equal(stack(spec.mark, spec.encoding as any, spec.config).offset, stacked);
+          assert.equal(stack(spec.mark, spec.encoding as any, spec.config.mark.stacked).offset, stacked);
           assert.equal(isStacked(spec as any), StackOffset.NONE !== stacked);
         });
       });

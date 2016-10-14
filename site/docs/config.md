@@ -112,7 +112,7 @@ By default, `point` marks have filled borders and are transparent inside. Settin
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| opacity       | Number        | The overall opacity (value between [0,1]). <span class="note-line">__Default value:__ `0.7` for non-aggregate plots with `point`, `tick`, `circle`, or `square` marks and `1` otherwise. </span>|
+| opacity       | Number        | The overall opacity (value between [0,1]). <span class="note-line">__Default value:__ `0.7` for non-aggregate plots with `point`, `tick`, `circle`, or `square` marks or [layered `bar` charts](http://vega.github.io/vega-editor/?mode=vega-lite&spec=bar_layered_transparent&showEditor=1) and `1` otherwise. </span>|
 | fillOpacity   | Number        | The fill opacity (value between [0,1]). <span class="note-line">__Default value:__ `1` </span>|
 | strokeOpacity | Number        | The stroke opacity (value between [0,1]). <span class="note-line">__Default value:__ `1` </span> |
 
@@ -133,7 +133,7 @@ By default, `point` marks have filled borders and are transparent inside. Settin
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| stacked       | string        | Stacking modes for `bar` and `area` marks. <br/> • `zero` - stacking with baseline offset at zero value of the scale (for creating typical stacked [bar](mark.html#stacked-bar-chart) and [area](mark.html#stacked-area-chart) chart). <br/> • `normalize` - stacking with normalized domain (for creating normalized stacked [bar](mark.html#normalized-stacked-bar-chart) and [area](mark.html#normalized-stacked-area-chart) chart). <br/> • `center` - stacking with center baseline (for [streamgraph](mark.html#streamgraph)). <br/> • `none` - No-stacking. This will produces layered [bar](mark.html#layered-bar-chart) and area chart. <span class="note-line">__Default value:__ `zero` if applicable (`bar` or `area` marks with `color`, `opacity`, `size`, or `detail` channel mapped to a group-by field).</span>|
+| stacked       | string        | Stacking modes for `bar` and `area` marks. <br/> • `zero` - stacking with baseline offset at zero value of the scale (for creating typical stacked [bar](mark.html#stacked-bar-chart) and [area](mark.html#stacked-area-chart) chart). <br/> • `normalize` - stacking with normalized domain (for creating normalized stacked [bar](mark.html#normalized-stacked-bar-chart) and [area](mark.html#normalized-stacked-area-chart) chart). <br/> • `center` - stacking with center baseline (for [streamgraph](mark.html#streamgraph)). <br/> • `none` - No-stacking. This will produce layered [bar](mark.html#layered-bar-chart) and area chart. <span class="note-line">__Default value:__ `zero` for plots with all of the following conditions: (1) `bar` or `area` marks (2) `color`, `opacity`, `size`, or `detail` channel mapped to a group-by field (3) One ordinal or nominal axis, and (4) one quantitative axis with linear scale and summative aggregation function (e.g., `sum`, `count`).</span>|
 
 {:#interpolate}
 ### Interpolation (for Line and Area Marks)
