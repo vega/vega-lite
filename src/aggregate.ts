@@ -49,7 +49,9 @@ export const AGGREGATE_OPS = [
 export const SUM_OPS = [
     AggregateOp.COUNT,
     AggregateOp.SUM,
-    AggregateOp.DISTINCT
+    AggregateOp.DISTINCT,
+    AggregateOp.VALID,
+    AggregateOp.MISSING
 ];
 
 export const SHARED_DOMAIN_OPS = [

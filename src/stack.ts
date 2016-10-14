@@ -1,3 +1,4 @@
+import {SUM_OPS} from './aggregate';
 import {Channel, STACK_GROUP_CHANNELS, X, Y} from './channel';
 import {Encoding, has, isAggregate} from './encoding';
 import {Mark, BAR, AREA} from './mark';
@@ -61,6 +62,7 @@ export function stack(mark: Mark, encoding: Encoding, stacked: StackOffset): Sta
 
   if (xIsAggregate !== yIsAggregate) {
     const fieldChannel = xIsAggregate ? X : Y;
+    const fieldChannelAggregate = encoding[fieldChannel].aggregate;
     const fieldChannelScale = encoding[fieldChannel].scale;
 
     if (fieldChannelScale && fieldChannelScale.type && fieldChannelScale.type !== ScaleType.LINEAR) {
@@ -68,11 +70,25 @@ export function stack(mark: Mark, encoding: Encoding, stacked: StackOffset): Sta
       return null;
     }
 
+    if (contains(SUM_OPS, fieldChannelAggregate)) {
+      if (contains([BAR, AREA], mark)) {
+        // Bar and Area with sum ops are automatically stacked by default
+        stacked = stacked === undefined ? StackOffset.ZERO : stacked;
+      }
+    } else {
+      console.warn('Cannot stack when the aggregate function is ' + fieldChannelAggregate + '(non-summative).');
+      return null;
+    }
+
+    if (stacked === null || stacked as any === false) {
+      return null;
+    }
+
     return {
       groupbyChannel: xIsAggregate ? (hasYField ? Y : null) : (hasXField ? X : null),
       fieldChannel: fieldChannel,
       stackByChannels: stackByChannels,
-      offset: stacked || StackOffset.ZERO
+      offset: stacked
     };
   }
   return null;
