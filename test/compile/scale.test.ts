@@ -300,14 +300,9 @@ describe('Scale', function() {
         });
         const _domain = domain(model.scale(Y), model, Y);
 
-        // Timezone offset in milliseconds
-        const timeZoneOffsetMs = new Date().getTimezoneOffset() * 60000;
-
         assert.deepEqual(_domain, [
-          // 0 = new Date(1970, 0).getTime() - new Date().getTimezoneOffset() * 60000
-          0 + timeZoneOffsetMs,
-          // 315532800000 = new Date(1980, 0).getTime() - new Date().getTimezoneOffset() * 60000
-          315532800000 + timeZoneOffsetMs
+          new Date(1970, 0, 1).getTime(),
+          new Date(1980, 0, 1).getTime()
         ]);
       });
     });
