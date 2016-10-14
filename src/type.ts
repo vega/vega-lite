@@ -1,16 +1,18 @@
 /** Constants and utilities for data type */
 
-export enum Type {
-  QUANTITATIVE = 'quantitative' as any,
-  ORDINAL = 'ordinal' as any,
-  TEMPORAL = 'temporal' as any,
-  NOMINAL = 'nominal' as any
+export namespace Types {
+  export const QUANTITATIVE: 'quantitative' = 'quantitative';
+  export const ORDINAL: 'ordinal' = 'ordinal';
+  export const TEMPORAL: 'temporal' = 'temporal';
+  export const NOMINAL: 'nominal' = 'nominal';
 }
 
-export const QUANTITATIVE = Type.QUANTITATIVE;
-export const ORDINAL = Type.ORDINAL;
-export const TEMPORAL = Type.TEMPORAL;
-export const NOMINAL = Type.NOMINAL;
+export type Type = typeof Types.NOMINAL | typeof Types.ORDINAL | typeof Types.QUANTITATIVE | typeof Types.TEMPORAL;
+
+export const QUANTITATIVE = Types.QUANTITATIVE;
+export const ORDINAL = Types.ORDINAL;
+export const TEMPORAL = Types.TEMPORAL;
+export const NOMINAL = Types.NOMINAL;
 
 /**
  * Mapping from full type names to short type names.
