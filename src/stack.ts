@@ -1,5 +1,4 @@
 import {Channel, STACK_GROUP_CHANNELS, X, Y} from './channel';
-import {Config} from './config';
 import {Encoding, has, isAggregate} from './encoding';
 import {Mark, BAR, AREA} from './mark';
 import {ScaleType} from './scale';
@@ -26,9 +25,7 @@ export interface StackProperties {
   offset: StackOffset;
 }
 
-export function stack(mark: Mark, encoding: Encoding, config: Config): StackProperties {
-  const stacked = (config && config.mark) ? config.mark.stacked : undefined;
-
+export function stack(mark: Mark, encoding: Encoding, stacked: StackOffset): StackProperties {
   // Should not have stack explicitly disabled
   if (contains([StackOffset.NONE, null, false], stacked)) {
     return null;
@@ -68,7 +65,6 @@ export function stack(mark: Mark, encoding: Encoding, config: Config): StackProp
 
     if (fieldChannelScale && fieldChannelScale.type && fieldChannelScale.type !== ScaleType.LINEAR) {
       console.warn('Cannot stack non-linear (' + fieldChannelScale.type + ') scale');
-      return null;
       return null;
     }
 

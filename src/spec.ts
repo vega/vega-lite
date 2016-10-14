@@ -343,5 +343,7 @@ export function fieldDefs(spec: ExtendedUnitSpec): FieldDef[] {
 };
 
 export function isStacked(spec: ExtendedUnitSpec): boolean {
-  return stack(spec.mark, spec.encoding, spec.config) !== null;
+  return stack(spec.mark, spec.encoding,
+           (spec.config && spec.config.mark) ? spec.config.mark.stacked : undefined
+         ) !== null;
 }

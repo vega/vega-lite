@@ -27,7 +27,7 @@ describe('stack', () => {
             "mark": {"stacked": stacked}
           }
         };
-        assert.isNull(stack(spec.mark, spec.encoding as any, spec.config));
+        assert.isNull(stack(spec.mark, spec.encoding as any, spec.config.mark.stacked));
         assert.isFalse(isStacked(spec as any));
       });
     });
@@ -48,7 +48,7 @@ describe('stack', () => {
             "mark": {"stacked": stacked}
           }
         };
-        assert.isNull(stack(spec.mark, spec.encoding as any, spec.config));
+        assert.isNull(stack(spec.mark, spec.encoding as any, spec.config.mark.stacked));
         assert.isFalse(isStacked(spec as any));
       });
     });
@@ -68,7 +68,7 @@ describe('stack', () => {
             "mark": {"stacked": stacked}
           }
         };
-        assert.isNull(stack(spec.mark, spec.encoding as any, spec.config));
+        assert.isNull(stack(spec.mark, spec.encoding as any, spec.config.mark.stacked));
         assert.isFalse(isStacked(spec as any));
       });
     });
@@ -89,7 +89,7 @@ describe('stack', () => {
             "mark": {"stacked": stacked}
           }
         };
-        assert.isNull(stack(spec.mark, spec.encoding as any, spec.config));
+        assert.isNull(stack(spec.mark, spec.encoding as any, spec.config.mark.stacked));
         assert.isFalse(isStacked(spec as any));
       });
     });
@@ -111,7 +111,7 @@ describe('stack', () => {
             "mark": {"stacked": stacked}
           }
         };
-        const _stack = stack(spec.mark, spec.encoding as any, spec.config);
+        const _stack = stack(spec.mark, spec.encoding as any, spec.config.mark.stacked);
         assert.isOk(_stack);
         assert.isTrue(isStacked(spec as any));
         assert.equal(_stack.stackByChannels[0], DETAIL);
@@ -134,7 +134,7 @@ describe('stack', () => {
             "mark": {"stacked": stacked}
           }
         };
-        assert.isNull(stack(spec.mark, spec.encoding as any, spec.config));
+        assert.isNull(stack(spec.mark, spec.encoding as any, spec.config.mark.stacked));
         assert.isFalse(isStacked(spec as any));
       });
     });
@@ -155,7 +155,7 @@ describe('stack', () => {
             "mark": {"stacked": stacked}
           }
         };
-        assert.isNull(stack(spec.mark, spec.encoding as any, spec.config));
+        assert.isNull(stack(spec.mark, spec.encoding as any, spec.config.mark.stacked));
         assert.isFalse(isStacked(spec as any));
       });
     });
@@ -196,7 +196,7 @@ describe('stack', () => {
             "color": {"field": "site", "type": "nominal"}
           }
         };
-        const _stack = stack(spec.mark, spec.encoding as any, null);
+        const _stack = stack(spec.mark, spec.encoding as any, undefined);
         assert.equal(_stack.fieldChannel, X);
         assert.equal(_stack.groupbyChannel, Y);
         assert.isTrue(isStacked(spec as any));
@@ -213,7 +213,7 @@ describe('stack', () => {
             "color": {"field": "site", "type": "nominal"}
           }
         };
-        const _stack = stack(spec.mark, spec.encoding as any, null);
+        const _stack = stack(spec.mark, spec.encoding as any, undefined);
         assert.equal(_stack.fieldChannel, X);
         assert.equal(_stack.groupbyChannel, null);
         assert.isTrue(isStacked(spec as any));
@@ -231,7 +231,7 @@ describe('stack', () => {
             "color": {"field": "site", "type": "nominal"}
           }
         };
-        const _stack = stack(spec.mark, spec.encoding as any, null);
+        const _stack = stack(spec.mark, spec.encoding as any, undefined);
         assert.equal(_stack.fieldChannel, Y);
         assert.equal(_stack.groupbyChannel, X);
         assert.isTrue(isStacked(spec as any));
@@ -248,7 +248,7 @@ describe('stack', () => {
             "color": {"field": "site", "type": "nominal"}
           }
         };
-        const _stack = stack(spec.mark, spec.encoding as any, null);
+        const _stack = stack(spec.mark, spec.encoding as any, undefined);
         assert.equal(_stack.fieldChannel, Y);
         assert.equal(_stack.groupbyChannel, null);
         assert.isTrue(isStacked(spec as any));
@@ -268,7 +268,7 @@ describe('stack', () => {
             "color": {"field": "site", "type": "nominal"}
           }
         };
-        assert.equal(stack(spec.mark, spec.encoding as any, null).offset, StackOffset.ZERO);
+        assert.equal(stack(spec.mark, spec.encoding as any, undefined).offset, StackOffset.ZERO);
         assert.isTrue(isStacked(spec as any));
       });
     });
@@ -288,7 +288,7 @@ describe('stack', () => {
               "mark": {"stacked": stacked}
             }
           };
-          assert.equal(stack(spec.mark, spec.encoding as any, spec.config).offset, stacked);
+          assert.equal(stack(spec.mark, spec.encoding as any, spec.config.mark.stacked).offset, stacked);
           assert.equal(isStacked(spec as any), StackOffset.NONE !== stacked);
         });
       });

@@ -58,7 +58,9 @@ export class UnitModel extends Model {
 
     const mark = this._mark = spec.mark;
     const encoding = this._encoding = this._initEncoding(mark, spec.encoding || {});
-    const config = this._config = this._initConfig(spec.config, parent, mark, encoding);
+
+    this._stack = stack(mark, encoding, ((spec.config || {}).mark || {}).stacked);
+    const config = this._config = this._initConfig(spec.config, parent, mark, encoding, this._stack);
 
     this._scale =  this._initScale(mark, encoding, config, providedWidth, providedHeight);
     this._axis = this._initAxis(encoding, config);
@@ -72,7 +74,7 @@ export class UnitModel extends Model {
     );
 
     // calculate stack properties
-    this._stack = stack(mark, encoding, config);
+
   }
 
   private _initEncoding(mark: Mark, encoding: Encoding) {
@@ -101,7 +103,7 @@ export class UnitModel extends Model {
     return encoding;
   }
 
-  private _initConfig(specConfig: Config, parent: Model, mark: Mark, encoding: Encoding) {
+  private _initConfig(specConfig: Config, parent: Model, mark: Mark, encoding: Encoding, stack: StackProperties) {
     let config = mergeDeep(duplicate(defaultConfig), parent ? parent.config() : {}, specConfig);
     let hasFacetParent = false;
     while (parent !== null) {
@@ -116,7 +118,7 @@ export class UnitModel extends Model {
       config.cell = extend({}, config.cell, config.facet.cell);
     }
 
-    config.mark = initMarkConfig(mark, encoding, config);
+    config.mark = initMarkConfig(mark, encoding, stack, config);
     return config;
   }
 
