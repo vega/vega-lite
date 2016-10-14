@@ -2,6 +2,7 @@ import {Channel, STACK_GROUP_CHANNELS, X, Y} from './channel';
 import {Config} from './config';
 import {Encoding, has, isAggregate} from './encoding';
 import {Mark, BAR, AREA} from './mark';
+import {ScaleType} from './scale';
 import {contains} from './util';
 
 export enum StackOffset {
@@ -62,9 +63,18 @@ export function stack(mark: Mark, encoding: Encoding, config: Config): StackProp
   const yIsAggregate = hasYField && !!encoding.y.aggregate;
 
   if (xIsAggregate !== yIsAggregate) {
+    const fieldChannel = xIsAggregate ? X : Y;
+    const fieldChannelScale = encoding[fieldChannel].scale;
+
+    if (fieldChannelScale && fieldChannelScale.type && fieldChannelScale.type !== ScaleType.LINEAR) {
+      console.warn('Cannot stack non-linear (' + fieldChannelScale.type + ') scale');
+      return null;
+      return null;
+    }
+
     return {
       groupbyChannel: xIsAggregate ? (hasYField ? Y : null) : (hasXField ? X : null),
-      fieldChannel: xIsAggregate ? X : Y,
+      fieldChannel: fieldChannel,
       stackByChannels: stackByChannels,
       offset: stacked || StackOffset.ZERO
     };

@@ -3,6 +3,7 @@
 import {assert} from 'chai';
 import {X, Y, DETAIL} from '../src/channel';
 import {BAR, AREA, PRIMITIVE_MARKS} from '../src/mark';
+import {ScaleType} from '../src/scale';
 import {stack, StackOffset} from '../src/stack';
 import {isStacked} from '../src/spec';
 import {without} from '../src/util';
@@ -156,6 +157,29 @@ describe('stack', () => {
         };
         assert.isNull(stack(spec.mark, spec.encoding as any, spec.config));
         assert.isFalse(isStacked(spec as any));
+      });
+    });
+  });
+
+  it('should always be disabled if the aggregated axis has non-linear scale', () => {
+    [undefined, StackOffset.CENTER, StackOffset.NONE, StackOffset.ZERO, StackOffset.NORMALIZE].forEach((stacked) => {
+      [ScaleType.LOG, ScaleType.POW, ScaleType.SQRT].forEach((scaleType) => {
+        PRIMITIVE_MARKS.forEach((mark) => {
+          const spec = {
+            "data": {"url": "data/barley.json"},
+            "mark": mark,
+            "encoding": {
+              "x": {"field": "a", "type": "quantitative", "aggregate": "sum", "scale": {"type": scaleType}},
+              "y": {"field": "variety", "type": "nominal"},
+              "color": {"field": "site", "type": "nominal"}
+            },
+            "config": {
+              "mark": {"stacked": stacked}
+            }
+          };
+          assert.isNull(stack(spec.mark, spec.encoding as any, spec.config.mark.stacked));
+          assert.isFalse(isStacked(spec as any));
+        });
       });
     });
   });
