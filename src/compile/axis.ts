@@ -1,5 +1,6 @@
 import {AxisOrient} from '../axis';
 import {COLUMN, ROW, X, Y, Channel} from '../channel';
+import {DateTime, isDateTime, timestamp} from '../datetime';
 import {title as fieldDefTitle} from '../fielddef';
 import {NOMINAL, ORDINAL, TEMPORAL} from '../type';
 import {contains, keys, extend, truncate, Dict} from '../util';
@@ -94,9 +95,9 @@ export function parseAxis(channel: Channel, model: Model): VgAxis {
   // 1.2. Add properties
   [
     // a) properties with special rules (so it has axis[property] methods) -- call rule functions
-    'format', 'grid', 'layer', 'offset', 'orient', 'tickSize', 'ticks', 'tickSizeEnd', 'title', 'titleOffset',
+    'format', 'grid', 'layer', 'offset', 'orient', 'tickSize', 'ticks', 'tickSizeEnd', 'title', 'titleOffset', 'values',
     // b) properties without rules, only produce default values in the schema, or explicit value if specified
-    'tickPadding', 'tickSize', 'tickSizeMajor', 'tickSizeMinor', 'values', 'subdivide'
+    'tickPadding', 'tickSize', 'tickSizeMajor', 'tickSizeMinor','subdivide'
   ].forEach(function(property) {
     let method: (model: Model, channel: Channel, def:any)=>any;
 
@@ -217,7 +218,6 @@ export function tickSizeEnd(model: Model, channel: Channel) {
   return undefined;
 }
 
-
 export function title(model: Model, channel: Channel) {
   const axis = model.axis(channel);
   if (axis.title !== undefined) {
@@ -250,6 +250,17 @@ export function titleOffset(model: Model, channel: Channel) {
       return titleOffset;
   }
   return undefined;
+}
+
+export function values(model: Model, channel: Channel) {
+  const vals = model.axis(channel).values;
+  if (vals && isDateTime(vals[0])) {
+    return (vals as DateTime[]).map((dt) => {
+      // normalize = true as end user won't put 0 = January
+      return timestamp(dt, true);
+    });
+  }
+  return vals;
 }
 
 export namespace properties {

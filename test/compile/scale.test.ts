@@ -177,6 +177,21 @@ describe('Scale', function() {
           assert.deepEqual(_domain.data, SUMMARY);
         });
 
+      it('should return the right custom domain', () => {
+        const model = parseUnitModel({
+          mark: "point",
+          encoding: {
+            y: {
+              field: 'horsepower',
+              type: "quantitative",
+              scale: {domain: [0,200]}
+            }
+          }
+        });
+        const _domain = domain(model.scale(Y), model, Y);
+
+        assert.deepEqual(_domain, [0, 200]);
+      });
 
       it('should return the aggregated domain if useRawDomain is false', function() {
           const model = parseUnitModel({
@@ -271,6 +286,30 @@ describe('Scale', function() {
               sort: {field: 'yearmonth_origin', op: 'min'}
             });
           });
+
+      it('should return the right custom domain with DateTime objects', () => {
+        const model = parseUnitModel({
+          mark: "point",
+          encoding: {
+            y: {
+              field: 'year',
+              type: "temporal",
+              scale: {domain: [{year: 1970}, {year: 1980}]}
+            }
+          }
+        });
+        const _domain = domain(model.scale(Y), model, Y);
+
+        // Timezone offset in milliseconds
+        const timeZoneOffsetMs = new Date().getTimezoneOffset() * 60000;
+
+        assert.deepEqual(_domain, [
+          // 0 = new Date(1970, 0).getTime() - new Date().getTimezoneOffset() * 60000
+          0 + timeZoneOffsetMs,
+          // 315532800000 = new Date(1980, 0).getTime() - new Date().getTimezoneOffset() * 60000
+          315532800000 + timeZoneOffsetMs
+        ]);
+      });
     });
 
     describe('for ordinal', function() {

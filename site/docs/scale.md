@@ -91,7 +91,7 @@ Custom domain values can be specified via the scale's `domain` property.
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| domain        | Array         | Custom domain values. For quantitative data, this can take the form of a two-element array with minimum and maximum values.  For ordinal data, this is an array representing all values and their orders. |
+| domain        | Array         | Custom domain values. <br/> • For _quantitative_ data, this can take the form of a two-element array with minimum and maximum values. <br/> • For _temporal_ data, this can, this can be a two-element array with minimum and maximum values in the form of either timestamp numbers or the [DateTime](transform.html#datetime) definition object.  <br/> • For _ordinal_ or _nominal_ data, this is an array representing all values and their orders.   |
 
 <!-- TODO:
 - Decide if we should write about custom domain for ordinal scale.

@@ -1,6 +1,11 @@
 // DateTime definition object
 
-import {duplicate, isNumber} from './util';
+import {duplicate, keys, isNumber} from './util';
+
+/*
+ * A designated year that starts on Sunday.
+ */
+const SUNDAY_YEAR = 2006;
 
 /**
  * Object for defining datetime in Vega-Lite Filter.
@@ -123,6 +128,63 @@ function normalizeDay(d: string | number) {
   }
 }
 
+export function timestamp(d: DateTime, normalize) {
+  const date = new Date(0, 0, 1, 0, 0, 0, 0); // start with uniform date
+
+  // FIXME support UTC
+
+  if (d.day !== undefined) {
+    if (keys(d).length > 1) {
+      console.warn('Dropping day from datetime', JSON.stringify(d),
+          'as day cannot be combined with other units.');
+      d = duplicate(d);
+      delete d.day;
+    } else {
+      // Use a year that has 1/1 as Sunday so we can setDate below
+      date.setFullYear(SUNDAY_YEAR);
+
+      const day = normalize ? normalizeDay(d.day) : d.day;
+      date.setDate(+day + 1); // +1 since date start at 1 in JS
+    }
+  }
+
+  if (d.year !== undefined) {
+    date.setFullYear(d.year);
+  }
+
+  if (d.quarter !== undefined) {
+    const quarter = normalize ? normalizeQuarter(d.quarter) : d.quarter;
+    date.setMonth(+quarter * 3);
+  }
+
+  if (d.month !== undefined) {
+    const month = normalize ? normalizeMonth(d.month) : d.month;
+    date.setMonth(+month);
+  }
+
+  if (d.date !== undefined) {
+    date.setDate(d.date);
+  }
+
+  if (d.hours !== undefined) {
+    date.setHours(d.hours);
+  }
+
+  if (d.minutes !== undefined) {
+    date.setMinutes(d.minutes);
+  }
+
+  if (d.seconds !== undefined) {
+    date.setSeconds(d.seconds);
+  }
+
+  if (d.milliseconds !== undefined) {
+    date.setMilliseconds(d.milliseconds);
+  }
+
+  return date.getTime();
+}
+
 /**
  * Return Vega Expression for a particular date time.
  * @param d
@@ -132,14 +194,11 @@ export function dateTimeExpr(d: DateTime | DateTimeExpr, normalize = false) {
   const units = [];
 
   if (normalize && d.day !== undefined) {
-    for (let unit of ['year', 'quarter', 'month', 'date']) {
-      if (d[unit] !== undefined) {
-        console.warn('Dropping day from datetime', JSON.stringify(d),
-          'as day cannot be combined with', unit);
-        d = duplicate(d);
-        delete d.day;
-        break;
-      }
+    if (keys(d).length > 1) {
+      console.warn('Dropping day from datetime', JSON.stringify(d),
+          'as day cannot be combined with other units.');
+      d = duplicate(d);
+      delete d.day;
     }
   }
 
@@ -147,7 +206,7 @@ export function dateTimeExpr(d: DateTime | DateTimeExpr, normalize = false) {
     units.push(d.year);
   } else if (d.day !== undefined) {
     // Set year to 2006 for working with day since January 1 2006 is a Sunday
-    units.push(2006);
+    units.push(SUNDAY_YEAR);
   } else {
     units.push(0);
   }
