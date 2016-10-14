@@ -287,6 +287,38 @@ describe('fieldDefs()', function() {
     ]);
   });
 
+  it('should get all non-duplicate fieldDefs from all layers in a LayerSpec (merging duplicate fields with different scale types)', function() {
+    const layerSpec: any = {
+      "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
+      "transform": {"filter": "datum.symbol==='GOOG'"},
+      "layers": [
+        {
+          "description": "Google's stock price over time.",
+          "mark": "line",
+          "encoding": {
+            "x": {"field": "date","type": "temporal"},
+            "y": {"field": "price","type": "quantitative"}
+          }
+        },
+        {
+          "description": "Google's stock price over time.",
+          "mark": "point",
+          "encoding": {
+            "x": {"field": "date","type": "temporal"},
+            "y": {"field": "price","type": "quantitative"},
+            "color": {"field": "date","type": "temporal", "scale": {"type": "pow"}}
+          },
+          "config": {"mark": {"filled": true}}
+        }
+      ]
+    };
+
+    assert.deepEqual(fieldDefs(layerSpec), [
+      {"field": "date","type": "temporal"},
+      {"field": "price","type": "quantitative"}
+    ]);
+  });
+
   it('should get all non-duplicate fieldDefs from facet and layers in a FacetSpec', function() {
     const facetSpec: any = {
       "data": {"url": "data/movies.json"},
