@@ -70,8 +70,6 @@ describe('datetime', () => {
 
   describe('timestamp', () => {
     it('should produce correct timestamp', () => {
-      // new Date(1234, 5, 6, 7, 8, 9, 123).getTime() - new Date().getTimezoneOffset() * 60000
-      // = -23212371110877
       assert.equal(timestamp({
         year: 1234,
         month: 'June', // 5 = June
@@ -80,24 +78,20 @@ describe('datetime', () => {
         minutes: 8,
         seconds: 9,
         milliseconds: 123
-      }, true), -23212371110877 + new Date().getTimezoneOffset() * 60000);
+      }, true), new Date(1234, 5, 6, 7, 8, 9, 123).getTime());
     });
 
     it('should produce correct timestamp for quarter', () => {
-      // new Date(1234, 6).getTime() - new Date().getTimezoneOffset() * 60000
-      // = -23212371110877
       assert.equal(timestamp({
         year: 1234,
         quarter: 3,
-      }, true), -23210236800000 + new Date().getTimezoneOffset() * 60000);
+      }, true), new Date(1234, 6, 1).getTime());
     });
 
     it('should produce correct timestamp for day', () => {
-      // new Date(2006, 0, 2).getTime() - new Date().getTimezoneOffset() * 60000
-      // = 1136160000000
       assert.equal(timestamp({
         day: 'monday'
-      }, true), 1136160000000 + new Date().getTimezoneOffset() * 60000);
+      }, true), new Date(2006, 0, 2).getTime());
     });
   });
 });
