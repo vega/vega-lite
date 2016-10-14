@@ -24,6 +24,46 @@ describe('Mark: Text', function() {
     });
   });
 
+  describe('with stacked x', function() {
+    // This is a simplified example for stacked text.
+    // In reality this will be used as stacked's overlayed marker
+    const model = parseUnitModel({
+      "mark": "text",
+      "encoding": {
+        "x": {"aggregate": "sum", "field": "a", "type": "quantitative"},
+        "color": {"field": "b", "type": "ordinal"}
+      },
+      "data": {"url": "data/barley.json"},
+      "config": {"mark": {"stacked": "zero"}}
+    });
+
+    const props = text.properties(model);
+
+    it('should use stack_end on x', function() {
+      assert.deepEqual(props.x, {scale: X, field: 'sum_a_end'});
+    });
+  });
+
+  describe('with stacked y', function() {
+    // This is a simplified example for stacked text.
+    // In reality this will be used as stacked's overlayed marker
+    const model = parseUnitModel({
+      "mark": "text",
+      "encoding": {
+        "y": {"aggregate": "sum", "field": "a", "type": "quantitative"},
+        "color": {"field": "b", "type": "ordinal"}
+      },
+      "data": {"url": "data/barley.json"},
+      "config": {"mark": {"stacked": "zero"}}
+    });
+
+    const props = text.properties(model);
+
+    it('should use stack_end on y', function() {
+      assert.deepEqual(props.y, {scale: Y, field: 'sum_a_end'});
+    });
+  });
+
   describe('with quantitative and format', function() {
     const spec = {
       "mark": "text",

@@ -1,7 +1,7 @@
 import {SUM_OPS} from './aggregate';
 import {Channel, STACK_GROUP_CHANNELS, X, Y} from './channel';
 import {Encoding, has, isAggregate} from './encoding';
-import {Mark, BAR, AREA} from './mark';
+import {Mark, BAR, AREA, POINT, CIRCLE, SQUARE, LINE, TEXT, TICK} from './mark';
 import {ScaleType} from './scale';
 import {contains} from './util';
 
@@ -33,7 +33,7 @@ export function stack(mark: Mark, encoding: Encoding, stacked: StackOffset): Sta
   }
 
   // Should have stackable mark
-  if (!contains([BAR, AREA], mark)) {
+  if (!contains([BAR, AREA, POINT, CIRCLE, SQUARE, LINE, TEXT, TICK], mark)) {
     return null;
   }
 
@@ -80,7 +80,7 @@ export function stack(mark: Mark, encoding: Encoding, stacked: StackOffset): Sta
       return null;
     }
 
-    if (stacked === null || stacked as any === false) {
+    if (!stacked) {
       return null;
     }
 

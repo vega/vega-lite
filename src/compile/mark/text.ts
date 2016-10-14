@@ -2,6 +2,7 @@ import {X, Y, COLOR, TEXT, SIZE} from '../../channel';
 import {applyMarkConfig, applyColorAndOpacity, numberFormat, timeTemplate} from '../common';
 import {Config} from '../../config';
 import {FieldDef, field} from '../../fielddef';
+import {StackProperties} from '../../stack';
 import {QUANTITATIVE, ORDINAL, TEMPORAL} from '../../type';
 import {VgValueRef} from '../../vega.schema';
 
@@ -35,11 +36,12 @@ export namespace text {
         'fontStyle', 'radius', 'theta', 'text']);
 
     const config = model.config();
+    const stack = model.stack();
     const textFieldDef = model.encoding().text;
 
-    p.x = x(model.encoding().x, model.scaleName(X), config, textFieldDef);
+    p.x = x(model.encoding().x, model.scaleName(X), stack, config, textFieldDef);
 
-    p.y = y(model.encoding().y, model.scaleName(Y), config);
+    p.y = y(model.encoding().y, model.scaleName(Y), stack, config);
 
     p.fontSize = size(model.encoding().size, model.scaleName(SIZE), config);
 
@@ -57,13 +59,18 @@ export namespace text {
     return p;
   }
 
-  function x(xFieldDef: FieldDef, scaleName: string, config: Config, textFieldDef:FieldDef): VgValueRef {
+  function x(fieldDef: FieldDef, scaleName: string, stack: StackProperties, config: Config, textFieldDef:FieldDef): VgValueRef {
     // x
-    if (xFieldDef) {
-      if (xFieldDef.field) {
+    if (fieldDef) {
+      if (stack && X === stack.fieldChannel) {
         return {
           scale: scaleName,
-          field: field(xFieldDef, { binSuffix: 'mid' })
+          field: field(fieldDef, { suffix: 'end' })
+        };
+      } else if (fieldDef.field) {
+        return {
+          scale: scaleName,
+          field: field(fieldDef, { binSuffix: 'mid' })
         };
       }
     }
@@ -76,13 +83,18 @@ export namespace text {
     }
   }
 
-  function y(yFieldDef: FieldDef, scaleName: string, config: Config): VgValueRef {
+  function y(fieldDef: FieldDef, scaleName: string, stack: StackProperties, config: Config): VgValueRef {
     // y
-    if (yFieldDef) {
-      if (yFieldDef.field) {
+    if (fieldDef) {
+      if (stack && Y === stack.fieldChannel) {
         return {
           scale: scaleName,
-          field: field(yFieldDef, { binSuffix: 'mid' })
+          field: field(fieldDef, { suffix: 'end' })
+        };
+      } else if (fieldDef.field) {
+        return {
+          scale: scaleName,
+          field: field(fieldDef, { binSuffix: 'mid' })
         };
       }
     }
