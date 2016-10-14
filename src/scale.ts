@@ -66,7 +66,7 @@ export interface ScaleConfig {
   /** Default range for ordinal / continuous color scale */
   sequentialColorRange?: string | string[];
   /** Default range for shape */
-  shapeRange?: string|string[];
+  shapeRange?: string | string[];
 
   /** Default range for bar size scale */
   barSizeRange?: number[];

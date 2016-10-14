@@ -23,14 +23,17 @@ export interface LegendConfig {
   gradientStrokeColor?: string;
   /**
    * The width of the gradient stroke, in pixels.
+   * @mimimum 0
    */
   gradientStrokeWidth?: number;
   /**
    * The height of the gradient, in pixels.
+   * @mimimum 0
    */
   gradientHeight?: number;
   /**
    * The width of the gradient, in pixels.
+   * @mimimum 0
    */
   gradientWidth?: number;
   /**
@@ -51,10 +54,12 @@ export interface LegendConfig {
   labelFont?: string;
   /**
    * The font size of legend label.
+   * @mimimum 0
    */
   labelFontSize?: number;
   /**
    * The offset of the legend label.
+   * @mimimum 0
    */
   labelOffset?: number;
   /**
@@ -72,10 +77,12 @@ export interface LegendConfig {
   symbolShape?: string;
   /**
    * The size of the legend symbol, in pixels.
+   * @mimimum 0
    */
   symbolSize?: number;
   /**
    * The width of the symbol's stroke.
+   * @minimum 0
    */
   symbolStrokeWidth?: number;
   /**
@@ -118,7 +125,7 @@ export interface Legend extends LegendConfig {
   /**
    * Explicitly set the visible legend values.
    */
-  values?: Array<any> | Array<DateTime>;
+  values?: number[] | string[] | DateTime[];
 }
 
 export const defaultLegendConfig: LegendConfig = {
