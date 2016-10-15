@@ -53,6 +53,10 @@ images:
 
 Read our [introduction article on Medium](https://medium.com/p/438f9215f09e), check out the [documentation]({{site.baseurl}}/docs/) and take a look at our [example gallery]({{site.baseurl}}/examples/).
 
+**Announcement:** We are working on extending our grammar with interaction for the 2.0 release.
+For a sneak peek, you can read our
+[award-winning research paper](http://idl.cs.washington.edu/papers/vega-lite) at VIS 2016.
+
 ## Example
 
 This is a Vega-Lite specification to create a bar chart that shows the average temperature in Seattle for each month.
