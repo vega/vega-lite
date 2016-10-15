@@ -3,7 +3,7 @@
 
 import * as stringify from 'json-stable-stringify';
 export {keys, extend, duplicate, isArray, vals, truncate, toMap, isObject, isString, isNumber, isBoolean} from 'datalib/src/util';
-import {duplicate as _duplicate} from 'datalib/src/util';
+import {duplicate as _duplicate, keys} from 'datalib/src/util';
 import {isString, isNumber, isBoolean} from 'datalib/src/util';
 
 /**
@@ -221,4 +221,12 @@ export function differ<T>(dict: Dict<T>, other: Dict<T>) {
     }
   }
   return false;
+}
+
+export function prosSpecMapping(prosSpec) {
+  var newSpec = keys(prosSpec).reduce(function(a, k) {
+      a[k] = {value: prosSpec[k]};
+      return a;
+    }, {});
+  return newSpec;
 }

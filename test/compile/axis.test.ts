@@ -390,6 +390,17 @@ describe('Axis', function() {
         const axes = axis.properties.axis(model, X, {});
         assert.equal(axes.strokeWidth.value, 2);
     });
+
+    it('axis\'s strokeWidth should change axis\'s width', function() {
+        const model = parseModel({
+        mark: "point",
+        encoding: {
+          x: {field: "a", type: "quantitative"}
+        }
+      });
+        const axes = axis.properties.axis(model, X, {strokeWidth: 2});
+        assert.equal(axes.strokeWidth.value, 2);
+    });
   });
 
   describe('properties.grid()', function(){
@@ -424,6 +435,17 @@ describe('Axis', function() {
       });
         const axes = axis.properties.grid(model, X, {});
         assert.equal(axes.strokeWidth.value, 2);
+    });
+
+    it('grid\'s strokeDashOffset should change grid\'s dash offset', function(){
+        const model = parseModel({
+        mark: "point",
+        encoding: {
+          x: {field: "a", type: "quantitative", axis: {grid: true}}
+        }
+      });
+        const axes = axis.properties.grid(model, X, {strokeDashOffset: [2]});
+        assert.deepEqual(axes.strokeDashOffset.value, [2]);
     });
 
     it('gridDash should change grid\'s dash offset', function(){
@@ -540,6 +562,17 @@ describe('Axis', function() {
       const labels = axis.properties.labels(model, X, {}, {});
       assert.equal(labels.fontSize.value, 20);
     });
+
+    it('tick\'s label\'s fontSize should change with axis\'s label\'s font size', function() {
+      const model = parseModel({
+        mark: "point",
+        encoding: {
+          x: {field: "a"}
+        }
+      });
+      const labels = axis.properties.labels(model, X, {fontSize: 20}, {});
+      assert.equal(labels.fontSize.value, 20);
+    });
   });
 
   describe('properties.ticks()', function() {
@@ -554,7 +587,7 @@ describe('Axis', function() {
         assert.equal(axes.stroke.value, '#123');
     });
 
-    it('tickWidth should change axis\'s ticks\'s color', function() {
+    it('tickWidth should change axis\'s ticks\'s width', function() {
         const model = parseModel({
         mark: "point",
         encoding: {
@@ -562,6 +595,17 @@ describe('Axis', function() {
         }
       });
         const axes = axis.properties.ticks(model, X, {});
+        assert.equal(axes.strokeWidth.value, 13);
+    });
+
+    it('tick\'s strokeWidth should change axis\'s ticks\'s width', function() {
+        const model = parseModel({
+        mark: "point",
+        encoding: {
+          x: {field: "a", type: "quantitative"}
+        }
+      });
+        const axes = axis.properties.ticks(model, X, {strokeWidth: 13});
         assert.equal(axes.strokeWidth.value, 13);
     });
   });
@@ -608,6 +652,17 @@ describe('Axis', function() {
         }
       });
         const axes = axis.properties.title(model, X, {});
+        assert.equal(axes.fontWeight.value, 'bold');
+    });
+
+    it('title\'s fontWeight should change axis\'s title\'s font weight', function() {
+        const model = parseModel({
+        mark: "point",
+        encoding: {
+          x: {field: "a", type: "quantitative"}
+        }
+      });
+        const axes = axis.properties.title(model, X, {fontWeight: 'bold'});
         assert.equal(axes.fontWeight.value, 'bold');
     });
   });

@@ -3,7 +3,7 @@ import {COLUMN, ROW, X, Y, Channel} from '../channel';
 import {DateTime, isDateTime, timestamp} from '../datetime';
 import {title as fieldDefTitle} from '../fielddef';
 import {NOMINAL, ORDINAL, TEMPORAL} from '../type';
-import {contains, keys, extend, truncate, Dict} from '../util';
+import {contains, keys, extend, truncate, Dict, prosSpecMapping} from '../util';
 import {VgAxis} from '../vega.schema';
 
 import {numberFormat, timeTemplate} from './common';
@@ -266,6 +266,7 @@ export function values(model: Model, channel: Channel) {
 export namespace properties {
   export function axis(model: Model, channel: Channel, axisPropsSpec) {
     const axis = model.axis(channel);
+    axisPropsSpec = prosSpecMapping(axisPropsSpec);
 
     return extend(
       axis.axisColor !== undefined ?
@@ -280,6 +281,7 @@ export namespace properties {
 
   export function grid(model: Model, channel: Channel, gridPropsSpec) {
     const axis = model.axis(channel);
+    gridPropsSpec = prosSpecMapping(gridPropsSpec);
 
     return extend(
       axis.gridColor !== undefined ? { stroke: {value: axis.gridColor}} : {},
@@ -294,6 +296,7 @@ export namespace properties {
     const fieldDef = model.fieldDef(channel);
     const axis = model.axis(channel);
     const config = model.config();
+    labelsSpec = prosSpecMapping(labelsSpec);
 
     if (!axis.labels) {
       return extend({
@@ -376,7 +379,12 @@ export namespace properties {
 
   export function ticks(model: Model, channel: Channel, ticksPropsSpec) {
     const axis = model.axis(channel);
-
+    ticksPropsSpec = prosSpecMapping(ticksPropsSpec);
+    console.log(extend(
+      axis.tickColor !== undefined ? {stroke : {value: axis.tickColor} } : {},
+      axis.tickWidth !== undefined ? {strokeWidth: {value: axis.tickWidth} } : {},
+      ticksPropsSpec || {}
+    ));
     return extend(
       axis.tickColor !== undefined ? {stroke : {value: axis.tickColor} } : {},
       axis.tickWidth !== undefined ? {strokeWidth: {value: axis.tickWidth} } : {},
@@ -386,6 +394,7 @@ export namespace properties {
 
   export function title(model: Model, channel: Channel, titlePropsSpec) {
     const axis = model.axis(channel);
+    titlePropsSpec = prosSpecMapping(titlePropsSpec);
 
     return extend(
       axis.titleColor !== undefined ? {stroke : {value: axis.titleColor} } : {},

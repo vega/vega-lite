@@ -147,6 +147,16 @@ describe('Legend', function() {
         assert.deepEqual(symbol.strokeWidth.value, 20);
     });
 
+    it('should return specific width of the symbol', function() {
+      const symbol = legend.properties.symbols({field: 'a'}, {strokeWidth: 20}, parseUnitModel({
+          mark: "point",
+          encoding: {
+            x: {field: "a", type: "nominal"},
+            color: {field: "a", type: "nominal"}}
+        }), COLOR);
+        assert.deepEqual(symbol.strokeWidth.value, 20);
+    });
+
     it('should create legend for SVG path', function() {
       const symbol = legend.properties.symbols({field: 'a'}, {}, parseUnitModel({
           mark: "point",
@@ -172,6 +182,16 @@ describe('Legend', function() {
           encoding: {
             x: {field: "a", type: "nominal"},
             color: {field: "a", type: "nominal", legend: {"labelAlign": "left"}}}
+        }), COLOR);
+        assert.deepEqual(label.align.value, "left");
+    });
+
+    it('should return alignment value of the label', function() {
+      const label = legend.properties.labels({field: 'a'}, {align: "left"}, parseUnitModel({
+          mark: "point",
+          encoding: {
+            x: {field: "a", type: "nominal"},
+            color: {field: "a", type: "nominal"}}
         }), COLOR);
         assert.deepEqual(label.align.value, "left");
     });
@@ -254,6 +274,17 @@ describe('Legend', function() {
         }), COLOR);
         assert.deepEqual(title.stroke.value, "black");
     });
+
+    it('should return color of the title', function() {
+      const title = legend.properties.title({field: 'a'}, {stroke: "black"}, parseUnitModel({
+          mark: "point",
+          encoding: {
+            x: {field: "a", type: "nominal"},
+            color: {field: "a", type: "nominal"}}
+        }), COLOR);
+        assert.deepEqual(title.stroke.value, "black");
+    });
+
 
     it('should return font of the title', function() {
       const title = legend.properties.title({field: 'a'}, {}, parseUnitModel({
