@@ -380,11 +380,6 @@ export namespace properties {
   export function ticks(model: Model, channel: Channel, ticksPropsSpec) {
     const axis = model.axis(channel);
     ticksPropsSpec = prosSpecMapping(ticksPropsSpec);
-    console.log(extend(
-      axis.tickColor !== undefined ? {stroke : {value: axis.tickColor} } : {},
-      axis.tickWidth !== undefined ? {strokeWidth: {value: axis.tickWidth} } : {},
-      ticksPropsSpec || {}
-    ));
     return extend(
       axis.tickColor !== undefined ? {stroke : {value: axis.tickColor} } : {},
       axis.tickWidth !== undefined ? {strokeWidth: {value: axis.tickWidth} } : {},
