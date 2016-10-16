@@ -1,3 +1,6 @@
+/* tslint:disable quotemark */
+
+
 // TODO:
 // test mark-tick with the following test cases,
 // looking at mark-point.test.ts as inspiration
@@ -12,6 +15,47 @@ import {tick} from '../../../src/compile/mark/tick';
 describe('Mark: Tick', function() {
   it('should return the correct mark type', function() {
     assert.equal(tick.markType(), 'rect');
+  });
+
+  describe('with stacked x', function() {
+    // This is a simplified example for stacked tick.
+    // In reality this will be used as stacked's overlayed marker
+    const model = parseUnitModel({
+      "mark": "tick",
+      "encoding": {
+        "x": {"aggregate": "sum", "field": "a", "type": "quantitative"},
+        "color": {"field": "b", "type": "ordinal"}
+      },
+      "data": {"url": "data/barley.json"},
+      "config": {"mark": {"stacked": "zero"}}
+    });
+
+    const props = tick.properties(model);
+
+    it('should use stack_end on x', function() {
+      assert.deepEqual(props.xc, {scale: X, field: 'sum_a_end'});
+    });
+  });
+
+
+  describe('with stacked y', function() {
+    // This is a simplified example for stacked tick.
+    // In reality this will be used as stacked's overlayed marker
+    const model = parseUnitModel({
+      "mark": "tick",
+      "encoding": {
+        "y": {"aggregate": "sum", "field": "a", "type": "quantitative"},
+        "color": {"field": "b", "type": "ordinal"}
+      },
+      "data": {"url": "data/barley.json"},
+      "config": {"mark": {"stacked": "zero"}}
+    });
+
+    const props = tick.properties(model);
+
+    it('should use stack_end on y', function() {
+      assert.deepEqual(props.yc, {scale: Y, field: 'sum_a_end'});
+    });
   });
 
   describe('with quantitative x', function() {

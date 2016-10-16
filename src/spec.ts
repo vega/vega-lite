@@ -217,11 +217,6 @@ export function normalizeUnitSpec(spec: UnitSpec): Spec {
     return normalizeRangedUnitSpec(spec);
   }
 
-  if (isStacked(spec)) {
-    // We can't overlay stacked area yet!
-    return spec;
-  }
-
   if (overlayWithPoint || overlayWithLine) {
     return normalizeOverlay(spec, overlayWithPoint, overlayWithLine);
   }
@@ -303,6 +298,12 @@ export function normalizeOverlay(spec: UnitSpec, overlayWithPoint: boolean, over
   delete baseConfig.overlay;
   // TODO: remove shape, size
 
+  // Need to copy stack config to overlayed layer
+  const stacked = stack(spec.mark,
+    spec.encoding,
+    spec.config && spec.config.mark ? spec.config.mark.stacked : undefined
+  );
+
   const layerSpec = extend(
     pick(spec, outerProps),
     { layers: [baseSpec] },
@@ -314,7 +315,11 @@ export function normalizeOverlay(spec: UnitSpec, overlayWithPoint: boolean, over
     let lineSpec = duplicate(baseSpec);
     lineSpec.mark = LINE;
     // TODO: remove shape, size
-    let markConfig = extend({}, defaultOverlayConfig.lineStyle, spec.config.overlay.lineStyle);
+    let markConfig = extend({},
+      defaultOverlayConfig.lineStyle,
+      spec.config.overlay.lineStyle,
+      stacked ? {stacked: stacked.offset} : null
+    );
     if (keys(markConfig).length > 0) {
       lineSpec.config = {mark: markConfig};
     }
@@ -326,7 +331,11 @@ export function normalizeOverlay(spec: UnitSpec, overlayWithPoint: boolean, over
     // TODO: add name with suffix
     let pointSpec = duplicate(baseSpec);
     pointSpec.mark = POINT;
-    let markConfig = extend({}, defaultOverlayConfig.pointStyle, spec.config.overlay.pointStyle);;
+    let markConfig = extend({},
+      defaultOverlayConfig.pointStyle,
+      spec.config.overlay.pointStyle,
+      stacked ? {stacked: stacked.offset} : null
+    );
     if (keys(markConfig).length > 0) {
       pointSpec.config = {mark: markConfig};
     }

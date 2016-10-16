@@ -44,6 +44,26 @@ describe('Mark: Point', function() {
     });
   });
 
+  describe('with stacked x', function() {
+    // This is a simplified example for stacked point.
+    // In reality this will be used as stacked's overlayed marker
+    const model = parseUnitModel({
+      "mark": "point",
+      "encoding": {
+        "x": {"aggregate": "sum", "field": "a", "type": "quantitative"},
+        "color": {"field": "b", "type": "ordinal"}
+      },
+      "data": {"url": "data/barley.json"},
+      "config": {"mark": {"stacked": "zero"}}
+    });
+
+    const props = point.properties(model);
+
+    it('should use stack_end on x', function() {
+      assert.deepEqual(props.x, {scale: X, field: 'sum_a_end'});
+    });
+  });
+
   describe('with y', function() {
     const model = parseUnitModel({
       "mark": "point",
@@ -59,6 +79,26 @@ describe('Mark: Point', function() {
 
     it('should scale on y', function() {
       assert.deepEqual(props.y, {scale: Y, field: 'year'});
+    });
+  });
+
+  describe('with stacked y', function() {
+    // This is a simplified example for stacked point.
+    // In reality this will be used as stacked's overlayed marker
+    const model = parseUnitModel({
+      "mark": "point",
+      "encoding": {
+        "y": {"aggregate": "sum", "field": "a", "type": "quantitative"},
+        "color": {"field": "b", "type": "ordinal"}
+      },
+      "data": {"url": "data/barley.json"},
+      "config": {"mark": {"stacked": "zero"}}
+    });
+
+    const props = point.properties(model);
+
+    it('should use stack_end on y', function() {
+      assert.deepEqual(props.y, {scale: Y, field: 'sum_a_end'});
     });
   });
 

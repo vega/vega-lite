@@ -64,8 +64,8 @@ function parsePathMark(model: UnitModel) { // TODO: extract this into compilePat
 
   if (details.length > 0) { // have level of details - need to facet line into subgroups
     const facetTransform = { type: 'facet', groupby: details };
-    const transform: any[] = mark === AREA && model.stack() ?
-      // For stacked area, we need to impute missing tuples and stack values
+    const transform: any[] = model.stack() ?
+      // For stacked area / line, we need to impute missing tuples and stack values
       // (Mark layer order does not matter for stacked charts)
       stackTransforms(model, true).concat(facetTransform) :
       // For non-stacked path (line/area), we need to facet and possibly sort
