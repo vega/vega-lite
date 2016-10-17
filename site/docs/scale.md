@@ -186,6 +186,10 @@ For ordinal, quantitative, and time fields, `range` can be a two-element array d
 
 <div class="vl-example" data-name="scatter_color_ordinal_custom"></div>
 
+We can also create diverging color graph by specify `range` with multipe elements.
+<div class="vl-example" data-name="diverging_color_points"></div>
+
+
 ## Other Scale Properties
 
 ### General Scale Properties
