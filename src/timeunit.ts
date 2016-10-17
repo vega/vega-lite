@@ -181,7 +181,7 @@ export function fieldExpr(fullTimeUnit: TimeUnit, field: string): string {
 }
 
 /** Generate the complete domain. */
-export function completeDomain(timeUnit: TimeUnit, channel: Channel) {
+export function imputedDomain(timeUnit: TimeUnit, channel: Channel) {
   if (contains([ROW, COLUMN, SHAPE, COLOR], channel)) {
     return null;
   }
