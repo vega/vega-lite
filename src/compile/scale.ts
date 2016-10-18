@@ -241,6 +241,10 @@ export function scaleBandSize(scaleType: ScaleType, bandSize: number | BandSize,
 export function domain(scale: Scale, model: Model, channel:Channel): any {
   const fieldDef = model.fieldDef(channel);
 
+  if (scale.imputeTimeUnit) {
+    
+  }
+
   if (scale.domain) { // explicit value
     if (isDateTime(scale.domain[0])) {
       return (scale.domain as DateTime[]).map((dt) => {
