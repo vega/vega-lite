@@ -186,7 +186,9 @@ For ordinal, quantitative, and time fields, `range` can be a two-element array d
 
 <div class="vl-example" data-name="scatter_color_ordinal_custom"></div>
 
-We can also create diverging color graph by specify `range` with multipe elements.
+### Piecewise Scale Example: Diverging Color Scale
+
+We can also create diverging color graph by specify `range` with multiple elements. Number of elements of `range` should match with the number of elements in `domain`. Though continuous scale normally contains 2 elements in both `domain` and `range`, having 3 or more elements will create a diverging color graph.
 <div class="vl-example" data-name="diverging_color_points"></div>
 
 
