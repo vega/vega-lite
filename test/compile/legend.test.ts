@@ -178,7 +178,7 @@ describe('Legend', function() {
             x: {field: "a", type: "nominal"},
             color: {field: "a", type: "nominal", legend: {"labelColor": "blue"}}}
         }), COLOR);
-        assert.deepEqual(label.stroke.value, "blue");
+        assert.deepEqual(label.fill.value, "blue");
     });
 
     it('should return font of the label', function() {
@@ -247,7 +247,7 @@ describe('Legend', function() {
             x: {field: "a", type: "nominal"},
             color: {field: "a", type: "nominal", legend: {"titleColor": "black"}}}
         }), COLOR);
-        assert.deepEqual(title.stroke.value, "black");
+        assert.deepEqual(title.fill.value, "black");
     });
 
     it('should return font of the title', function() {
