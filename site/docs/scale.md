@@ -186,6 +186,13 @@ For ordinal, quantitative, and time fields, `range` can be a two-element array d
 
 <div class="vl-example" data-name="scatter_color_ordinal_custom"></div>
 
+### Piecewise Scale Example: Diverging Color Scale
+
+We can also create diverging color graph by specify `range` with multiple elements. Number of elements of `range` should match with the number of elements in `domain`. Though continuous scale normally contains 2 elements in both `domain` and `range`, having 3 or more elements will create a piecewise scale. For more detail about a piecewise scale, please refer to [D3 documentation](https://github.com/d3/d3-scale#continuous_domain).
+
+<div class="vl-example" data-name="diverging_color_points"></div>
+
+
 ## Other Scale Properties
 
 ### General Scale Properties

@@ -183,7 +183,9 @@ export class UnitModel extends Model {
           (channel === Y && vlEncoding.has(encoding, Y2))) {
 
         const axisSpec = (encoding[channel] || {}).axis;
-        if (axisSpec !== false) {
+
+        // We no longer support false in the schema, but we keep false here for backward compatability.
+        if (axisSpec !== null && axisSpec !== false) {
           _axis[channel] = extend({},
             config.axis,
             axisSpec === true ? {} : axisSpec ||  {}
@@ -198,7 +200,8 @@ export class UnitModel extends Model {
     return NONSPATIAL_SCALE_CHANNELS.reduce(function(_legend, channel) {
       if (vlEncoding.has(encoding, channel)) {
         const legendSpec = encoding[channel].legend;
-        if (legendSpec !== false) {
+        // We no longer support false in the schema, but we keep false here for backward compatability.
+        if (legendSpec !== null && legendSpec !== false) {
           _legend[channel] = extend({}, config.legend,
             legendSpec === true ? {} : legendSpec ||  {}
           );
