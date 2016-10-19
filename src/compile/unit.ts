@@ -183,6 +183,7 @@ export class UnitModel extends Model {
           (channel === Y && vlEncoding.has(encoding, Y2))) {
 
         const axisSpec = (encoding[channel] || {}).axis;
+
         // We no longer support false in the schema, but we keep false here for backward compatability.
         if (axisSpec !== null && axisSpec !== false) {
           _axis[channel] = extend({},

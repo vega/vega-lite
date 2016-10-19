@@ -66,10 +66,10 @@ export interface ChannelDefWithScale extends FieldDef {
 }
 
 export interface PositionChannelDef extends ChannelDefWithScale {
-  axis?: Axis;
+  axis?: Axis | null;
 }
 export interface ChannelDefWithLegend extends ChannelDefWithScale {
-  legend?: Legend;
+  legend?: Legend | null;
 }
 
 // Detail
