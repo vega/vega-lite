@@ -1,5 +1,5 @@
 {
-  "description": "A bubbleplot showing horsepower on x, miles per gallons on y, and binned weight of diverging color.",
+  "description": "A bubbleplot showing horsepower on x, miles per gallons on y, and weight with a diverging color scale.",
   "data": {"url": "data/cars.json"},
   "mark": "point",
   "encoding": {
