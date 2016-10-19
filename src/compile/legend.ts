@@ -250,7 +250,7 @@ export namespace properties {
     }
 
     if (legend.labelColor !== undefined) {
-      labels.stroke = {value: legend.labelColor};
+      labels.fill = {value: legend.labelColor};
     }
 
     if (legend.labelFont !== undefined) {
@@ -276,7 +276,7 @@ export namespace properties {
     let titles:any = {};
 
     if (legend.titleColor !== undefined) {
-      titles.stroke = {value: legend.titleColor};
+      titles.fill = {value: legend.titleColor};
     }
 
     if (legend.titleFont !== undefined) {

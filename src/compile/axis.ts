@@ -388,7 +388,7 @@ export namespace properties {
     const axis = model.axis(channel);
 
     return extend(
-      axis.titleColor !== undefined ? {stroke : {value: axis.titleColor} } : {},
+      axis.titleColor !== undefined ? {fill : {value: axis.titleColor} } : {},
       axis.titleFont !== undefined ? {font: {value: axis.titleFont}} : {},
       axis.titleFontSize !== undefined ? {fontSize: {value: axis.titleFontSize}} : {},
       axis.titleFontWeight !== undefined ? {fontWeight: {value: axis.titleFontWeight}} : {},
