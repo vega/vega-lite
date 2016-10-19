@@ -9,7 +9,6 @@ import {source} from '../../src/compile/data/source';
 import {stackScale} from '../../src/compile/data/stackscale';
 import {summary} from '../../src/compile/data/summary';
 import {timeUnit} from '../../src/compile/data/timeunit';
-import {timeUnitDomain} from '../../src/compile/data/timeunitdomain';
 import {formatParse} from '../../src/compile/data/formatparse';
 import {nonPositiveFilter} from '../../src/compile/data/nonpositivenullfilter';
 import {DataComponent} from '../../src/compile/data/data';
@@ -418,45 +417,6 @@ describe('data: timeUnit', function () {
 
 
 describe('data: timeUnitDomain', function() {
-  describe('unit: day', function() {
-    const model = parseUnitModel({
-      mark: "point",
-      encoding: {
-        'y': {
-          'aggregate': 'sum',
-          'field': 'Acceleration',
-          'type': "quantitative"
-        },
-        'x': {
-          'field': 'date',
-          'type': "temporal",
-          'timeUnit': 'day'
-        }
-      }
-    });
-
-    it('should be compiled into correct string set', function() {
-      model.component.data = {} as DataComponent;
-      model.component.data.timeUnitDomain = timeUnitDomain.parseUnit(model);
-      assert.deepEqual(model.component.data.timeUnitDomain, {day: true});
-    });
-
-    it('should assemble data source with raw domain data', function() {
-      const defs = timeUnitDomain.assemble(model.component.data);
-
-      assert.deepEqual(defs, [{
-        name: 'day',
-        transform: [
-          {
-            expr: 'datetime(2006, 0, datum["data"]+1, 0, 0, 0, 0)',
-            field: 'date',
-            type: 'formula'
-          }
-        ],
-        values: [0,1,2,3,4,5,6]
-      }]);
-    });
-  });
 
   describe('unit: day', function() {
     // TODO: write more unit test for other timeUnit domain, for both ones that produces

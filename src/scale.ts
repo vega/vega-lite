@@ -164,9 +164,4 @@ export interface Scale {
    * This property only works with aggregate functions that produce values within the raw data domain (`"mean"`, `"average"`, `"stdev"`, `"stdevp"`, `"median"`, `"q1"`, `"q3"`, `"min"`, `"max"`). For other aggregations that produce values outside of the raw data domain (e.g. `"count"`, `"sum"`), this property is ignored.
    */
   useRawDomain?: boolean;
-
-  /**
-   * 
-   */
-  imputeTimeUnit: boolean;
 }
