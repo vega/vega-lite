@@ -206,6 +206,8 @@ export const defaultFacetAxisConfig: AxisConfig = {
 export interface Axis extends AxisConfig {
   /**
    * The rotation angle of the axis labels.
+   * @minimum 0
+   * @maximum 360
    */
   labelAngle?: number;
   /**
