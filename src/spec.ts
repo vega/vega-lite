@@ -232,11 +232,11 @@ export function normalizeRangedUnitSpec(spec: UnitSpec): Spec {
     if ((hasX2 && !hasX) || (hasY2 && !hasY)) {
       let normalizedSpec = duplicate(spec);
       if (hasX2 && !hasX) {
-        normalizedSpec.encoding.x = normalizedSpec.encoding.x2 as any;
+        normalizedSpec.encoding.x = normalizedSpec.encoding.x2;
         delete normalizedSpec.encoding.x2;
       }
       if (hasY2 && !hasY) {
-        normalizedSpec.encoding.y = normalizedSpec.encoding.y2 as any;
+        normalizedSpec.encoding.y = normalizedSpec.encoding.y2;
         delete normalizedSpec.encoding.y2;
       }
 
