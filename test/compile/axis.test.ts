@@ -570,7 +570,7 @@ describe('Axis', function() {
         }
       });
         const axes = axis.properties.title(model, X, {});
-        assert.equal(axes.stroke.value, '#abc');
+        assert.equal(axes.fill.value, '#abc');
     });
 
     it('titleFont should change axis\'s title\'s font', function() {
