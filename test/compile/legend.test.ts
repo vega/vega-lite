@@ -2,8 +2,11 @@
 
 import {assert} from 'chai';
 import {parseUnitModel} from '../util';
-import {COLOR, X} from '../../src/channel';
+import {COLOR, X, SHAPE, SIZE} from '../../src/channel';
+import {defaultConfig} from '../../src/config';
 import * as legend from '../../src/compile/legend';
+import {TimeUnit} from '../../src/timeunit';
+import {TEMPORAL} from '../../src/type';
 
 describe('Legend', function() {
   describe('parseLegend()', function() {
@@ -23,51 +26,34 @@ describe('Legend', function() {
     });
   });
 
-  describe('offset()', function () {
-    it('should add explicitly specified offset', function () {
-      const offset = legend.offset({offset: 10}, {field: 'a'});
-      assert.deepEqual(offset, 10);
-    });
-
-    it('should return 0 by default', function () {
-      const offset = legend.offset({}, {field: 'a'});
-      assert.deepEqual(offset, 0);
-    });
-  });
-
-  describe('orient()', function () {
-    it('should add explicitly specified orient', function () {
-      const orient = legend.orient({orient: "horizontal"}, {field: 'a'});
-      assert.deepEqual(orient, "horizontal");
-    });
-
-    it('should return vertical by default', function () {
-      const orient = legend.orient({}, {field: 'a'});
-      assert.deepEqual(orient, "vertical");
-    });
-  });
-
   describe('title()', function () {
     it('should add explicitly specified title', function () {
-      const title = legend.title({title: 'Custom'}, {field: 'a'});
+      const title = legend.title({title: 'Custom'}, {field: 'a'}, defaultConfig);
       assert.deepEqual(title, 'Custom');
     });
 
     it('should add return fieldTitle by default', function () {
-      const title = legend.title({}, {field: 'a'});
+      const title = legend.title({}, {field: 'a'}, defaultConfig);
       assert.deepEqual(title, 'a');
     });
   });
 
-  describe('formatMixins()', function() {
-    it('should not be added for bin', function() {
-      assert.deepEqual(legend.formatMixins({}, parseUnitModel({
-        mark: "point",
-        encoding: {
-          x: {field:'a', bin: true}
-        }
-      }), X), {});
+  describe('values()', () => {
+    it('should return correct timestamp values for DateTimes', () => {
+      const values = legend.values({values: [{year: 1970}, {year: 1980}]});
+
+      assert.deepEqual(values, [
+        new Date(1970, 0, 1).getTime(),
+        new Date(1980, 0, 1).getTime()
+      ]);
     });
+
+    it('should simply return values for non-DateTime', () => {
+      const values = legend.values({values: [1,2,3,4]});
+
+      assert.deepEqual(values, [1,2,3,4]);
+    });
+
   });
 
   describe('properties.symbols', function() {
@@ -126,6 +112,26 @@ describe('Legend', function() {
         assert.deepEqual(symbol.size.value, 20);
     });
 
+    it('should return not override size of the symbol for size channel', function() {
+      const symbol = legend.properties.symbols({field: 'a'}, {}, parseUnitModel({
+          mark: "point",
+          encoding: {
+            x: {field: "a", type: "nominal"},
+            size: {field: "b", type: "quantitative", legend: {"symbolSize": 20}}}
+        }), SIZE);
+        assert.isUndefined(symbol.size);
+    });
+
+    it('should return not override size of the symbol for shape channel', function() {
+      const symbol = legend.properties.symbols({field: 'a'}, {}, parseUnitModel({
+          mark: "point",
+          encoding: {
+            x: {field: "a", type: "nominal"},
+            shape: {field: "b", type: "nominal", legend: {"shape": "circle"}}}
+        }), SHAPE);
+        assert.isUndefined(symbol.size);
+    });
+
     it('should return specific width of the symbol', function() {
       const symbol = legend.properties.symbols({field: 'a'}, {}, parseUnitModel({
           mark: "point",
@@ -134,6 +140,23 @@ describe('Legend', function() {
             color: {field: "a", type: "nominal", legend: {"symbolStrokeWidth": 20}}}
         }), COLOR);
         assert.deepEqual(symbol.strokeWidth.value, 20);
+    });
+
+    it('should create legend for SVG path', function() {
+      const symbol = legend.properties.symbols({field: 'a'}, {}, parseUnitModel({
+          mark: "point",
+          encoding: {
+            x: {field: "a", type: "nominal"},
+            color: {field: "a", type: "nominal"}
+          },
+          config: {
+            mark: {
+              shape: "M0,0.2L0.2351,0.3236 0.1902,0.0618 0.3804,-0.1236 0.1175,-0.1618 0,-0.4 -0.1175,-0.1618 -0.3804,-0.1236 -0.1902,0.0618 -0.2351,0.3236 0,0.2Z"
+            }
+          }
+        }), COLOR);
+
+        assert.deepEqual(symbol.shape.value, "M0,0.2L0.2351,0.3236 0.1902,0.0618 0.3804,-0.1236 0.1175,-0.1618 0,-0.4 -0.1175,-0.1618 -0.3804,-0.1236 -0.1902,0.0618 -0.2351,0.3236 0,0.2Z");
     });
   });
 
@@ -186,6 +209,33 @@ describe('Legend', function() {
             color: {field: "a", type: "nominal", legend: {"labelBaseline": "middle"}}}
         }), COLOR);
         assert.deepEqual(label.baseline.value, "middle");
+    });
+
+    it('should return correct template for the timeUnit: TimeUnit.MONTH', function() {
+      const model = parseUnitModel({
+        mark: "point",
+        encoding: {
+          x: {field: "a", type: "temporal"},
+          color: {field: "a", type: "temporal", timeUnit: "month"}}
+      });
+      const fieldDef = {field: 'a', type: TEMPORAL, timeUnit: TimeUnit.MONTH};
+      const label = legend.properties.labels(fieldDef, {}, model, COLOR);
+      let expected = "{{datum[\"data\"] | time:'%b'}}";
+      assert.deepEqual(label.text.template, expected);
+    });
+
+    it('should return correct template for the timeUnit: TimeUnit.QUARTER', function() {
+      const model = parseUnitModel({
+        mark: "point",
+        encoding: {
+          x: {field: "a", type: "temporal"},
+          color: {field: "a", type: "temporal", timeUnit: "quarter"}}
+      });
+      const fieldDef = {field: 'a', type: TEMPORAL, timeUnit: TimeUnit.QUARTER};
+      const label = legend.properties.labels(fieldDef, {}, model, COLOR);
+      let quarterPrefix = 'Q';
+      let expected = quarterPrefix + "{{datum[\"data\"] | quarter}}";
+      assert.deepEqual(label.text.template, expected);
     });
   });
 

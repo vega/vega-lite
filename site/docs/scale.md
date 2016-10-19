@@ -91,7 +91,7 @@ Custom domain values can be specified via the scale's `domain` property.
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| domain        | Array         | Custom domain values. For quantitative data, this can take the form of a two-element array with minimum and maximum values. |
+| domain        | Array         | Custom domain values. <br/> • For _quantitative_ data, this can take the form of a two-element array with minimum and maximum values. <br/> • For _temporal_ data, this can, this can be a two-element array with minimum and maximum values in the form of either timestamp numbers or the [DateTime](transform.html#datetime) definition object.  <br/> • For _ordinal_ or _nominal_ data, this is an array representing all values and their orders.   |
 
 <!-- TODO:
 - Decide if we should write about custom domain for ordinal scale.
@@ -203,8 +203,8 @@ For ordinal, quantitative, and time fields, `range` can be a two-element array d
 | clamp         | Boolean       | If `true`, values that exceed the data domain are clamped to either the minimum or maximum range value. <span class="note-line">__Default value:__ derived from [scale config](config.html#scale-config) (`true` by default)<br/>__Supported types:__ only `linear`, `pow`, `sqrt`, and `log`</span> |
 | exponent      | Number        | Sets the exponent of the scale transformation. (For `pow` scale types only, otherwise ignored.) |
 | nice          | Boolean       | If `true`, modifies the scale domain to use a more human-friendly number range (e.g., 7 instead of 6.96). <span class="note-line">__Default value:__ `true` only for quantitative x and y scales and `false` otherwise.</span> |
-| zero          | Boolean       | If `true`, ensures that a zero baseline value is included in the scale domain. <span class="note-line">__Default value:__ `true` if the quantitative field is not binned.</span> |
-| useRawDomain  | Boolean       | If `true`, set scale domain to the raw data domain. If `false`, use the aggregated data domain for scale. <span class="note-line">__Default value:__ `true`<br/>__Only valid for certain aggregations:__ This property only works with aggregate functions that produce values within the raw data domain (`"mean"`, `"average"`, `"stdev"`, `"stdevp"`, `"median"`, `"q1"`, `"q3"`, `"min"`, `"max"`). For other aggregations that produce values outside of the raw data domain (e.g. `"count"`, `"sum"`), this property is ignored. <br/>__Note:__ This property is ignored when the scale's `domain` is specified.</span>|
+| zero          | Boolean       | If `true`, ensures that a zero baseline value is included in the scale domain. <span class="note-line">__Default value:__ `true` for `x` and `y` channel if the quantitative field is not binned and no custom `domain` is provided; `false` otherwise.</span><span class="note-line">__Note:__  This property is always `false` for log scale.</span> |
+| useRawDomain  | Boolean       | If `true`, set scale domain to the raw data domain. If `false`, use the aggregated data domain for scale. <span class="note-line">__Default value:__ `false`<br/>__Only valid for certain aggregations:__ This property only works with aggregate functions that produce values within the raw data domain (`"mean"`, `"average"`, `"stdev"`, `"stdevp"`, `"median"`, `"q1"`, `"q3"`, `"min"`, `"max"`). For other aggregations that produce values outside of the raw data domain (e.g. `"count"`, `"sum"`), this property is ignored. <br/>__Note:__ This property is ignored when the scale's `domain` is specified.</span>|
 
 ### Time Scale Properties
 
@@ -218,8 +218,8 @@ For ordinal, quantitative, and time fields, `range` can be a two-element array d
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| bandSize     | Number        | Width for each `x` or `y` ordinal band. <span class="note-line">__Default value:__ for `x` ordinal scale of a `text` mark, derived from [scale config](config.html#scale-config)'s `textBandWidth`; otherwise, derived from [scale config](config.html#scale-config)'s `bandSize`.</span> |
-| padding       | Number        | • For `x` and `y` channels, the padding is a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. (See D3's [`ordinalRangePoints()`](https://github.com/mbostock/d3/wiki/Ordinal-Scales#ordinal_rangePoints) for illustration.) <span class="note-line">__Default value:__ derived from [scale config](config.html#scale-config)'s `padding`</span> <br/> • For `row` and `column`, padding is a pixel value for padding between cells in the trellis plots. <span class="note-line">__Default value:__ derived from  [facet scale config](config.html#facet-scale-config)'s `padding`.</span>  |
+| bandSize      | Integer &#124; String | Width for each `x` or `y` ordinal band.  This can be an integer value or a string `"fit"`.  For `"fit"`, the band size will be automatically adjusted to fit the scale for the specified width (for x-axis) or height (for y-axis). <span class="note-line">__Default value:__ for `x` ordinal scale of a `text` mark, derived from [scale config](config.html#scale-config)'s `textBandWidth`; otherwise, derived from [scale config](config.html#scale-config)'s `bandSize`.</span> <span class="note-line">__Warning__: <br/> 1) Numeric `bandSize` will be applied only if the top-level `width` (for x-scale) or `height` (for y-scale) is not specified.  If `width` (for x-scale) or `height` (for y-scale) is specified, `bandWidth` will always be `"fit"`. <br/> 2) If the cardinality of the scale domain is too high, the bandSize might become less than one pixel and the mark might not appear correctly. </span>|
+| padding       | Number        | • For `x` and `y` channels, the padding is a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. (See D3's [`ordinalRangePoints()`](https://github.com/mbostock/d3/wiki/Ordinal-Scales#ordinal_rangePoints) for illustration.) <span class="note-line">&nbsp;&nbsp; • __Default value:__ derived from [scale config](config.html#scale-config)'s `padding`</span> <br/> • For `row` and `column`, padding is a pixel value for padding between cells in the trellis plots. <span class="note-line">&nbsp;&nbsp; •__Default value:__ derived from  [facet scale config](config.html#facet-scale-config)'s `padding`.</span>  |
 
 {:#ex-bandwidth}
 #### Example: Custom Band Width
@@ -230,23 +230,6 @@ Given a bar chart:
 
 We can make the band for each bar smaller by providing `scale`'s `bandSize`.
 
-<div class="vl-example">
-{
-  "description": "A simple bar chart with embedded data.",
-  "data": {
-    "values": [
-      {"a": "A","b": 28}, {"a": "B","b": 55}, {"a": "C","b": 43},
-      {"a": "D","b": 91}, {"a": "E","b": 81}, {"a": "F","b": 53},
-      {"a": "G","b": 19}, {"a": "H","b": 87}, {"a": "I","b": 52}
-    ]
-  },
-  "mark": "bar",
-  "encoding": {
-    "x": {
-      "field": "a", "type": "ordinal",
-      "scale": {"bandSize": 11}
-    },
-    "y": {"field": "b", "type": "quantitative"}
-  }
-}
-</div>
+<span class="vl-example" data-name="bar_size_bandsize_small"></span>
+
+For more information about adjusting size of a visualization, please see [this page](size.html).

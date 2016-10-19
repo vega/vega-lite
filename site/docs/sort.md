@@ -77,6 +77,8 @@ example: sorting color mapping
 
 <span class="note-line">__Default value:__ `"ascending"`.</span>
 
+4) Specify custom order by providing custom `scale`'s [`domain`](scale.html#domain).  (In this case, you don't need to use `sort` property.)
+
 #### Example: Sorting Ordinal Scale by Another Field
 
 The following example sorts x by mean of Horsepower.

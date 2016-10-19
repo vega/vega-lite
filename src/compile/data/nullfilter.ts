@@ -1,5 +1,6 @@
 import {FieldDef} from '../../fielddef';
-import {extend, keys, differ, Dict} from '../../util';
+import {QUANTITATIVE, TEMPORAL} from '../../type';
+import {contains, extend, keys, differ, Dict} from '../../util';
 
 import {FacetModel} from './../facet';
 import {LayerModel} from './../layer';
@@ -14,18 +15,22 @@ const DEFAULT_NULL_FILTERS = {
   temporal: true
 };
 
+// TODO: rename to invalidFilter
 export namespace nullFilter {
   /** Return Hashset of fields for null filtering (key=field, value = true). */
   function parse(model: Model): Dict<boolean> {
-    const filterNull = model.transform().filterNull;
+    const filterInvalid = model.filterInvalid();
+
     return model.reduce(function(aggregator, fieldDef: FieldDef) {
-      if (filterNull ||
-        (filterNull === undefined && fieldDef.field && fieldDef.field !== '*' && DEFAULT_NULL_FILTERS[fieldDef.type])) {
-        aggregator[fieldDef.field] = true;
-      } else {
-        // define this so we know that we don't filter nulls for this field
-        // this makes it easier to merge into parents
-        aggregator[fieldDef.field] = false;
+      if (fieldDef.field !== '*') { // Ignore * for count(*) fields.
+        if (filterInvalid ||
+          (filterInvalid === undefined && fieldDef.field && DEFAULT_NULL_FILTERS[fieldDef.type])) {
+          aggregator[fieldDef.field] = fieldDef;
+        } else {
+          // define this so we know that we don't filter nulls for this field
+          // this makes it easier to merge into parents
+          aggregator[fieldDef.field] = null;
+        }
       }
       return aggregator;
     }, {});
@@ -54,7 +59,7 @@ export namespace nullFilter {
 
     model.children().forEach((child) => {
       const childDataComponent = child.component.data;
-      if (model.compatibleSource(child) && !differ(childDataComponent.nullFilter, nullFilterComponent)) {
+      if (model.compatibleSource(child) && !differ<FieldDef>(childDataComponent.nullFilter, nullFilterComponent)) {
         extend(nullFilterComponent, childDataComponent.nullFilter);
         delete childDataComponent.nullFilter;
       }
@@ -65,16 +70,24 @@ export namespace nullFilter {
 
   /** Convert the hashset of fields to a filter transform.  */
   export function assemble(component: DataComponent) {
-    const filteredFields = keys(component.nullFilter).filter((field) => {
-      // only include fields that has value = true
-      return component.nullFilter[field];
-    });
-    return filteredFields.length > 0 ?
+    const filters = keys(component.nullFilter).reduce((_filters, field) => {
+      const fieldDef = component.nullFilter[field];
+      if (fieldDef !== null) {
+        _filters.push('datum["' + fieldDef.field + '"] !== null');
+        if (contains([QUANTITATIVE, TEMPORAL], fieldDef.type)) {
+          // TODO(https://github.com/vega/vega-lite/issues/1436):
+          // We can be even smarter and add NaN filter for N,O that are numbers
+          // based on the `parse` property once we have it.
+          _filters.push('!isNaN(datum["'+ fieldDef.field + '"])');
+        }
+      }
+      return _filters;
+    }, []);
+
+    return filters.length > 0 ?
       [{
         type: 'filter',
-        test: filteredFields.map(function(fieldName) {
-          return 'datum.' + fieldName + '!==null';
-        }).join(' && ')
+        test: filters.join(' && ')
       }] : [];
   }
 }

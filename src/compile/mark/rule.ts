@@ -1,4 +1,5 @@
-import {X, Y, SIZE, Channel} from '../../channel';
+import {X, Y, X2, Y2, SIZE} from '../../channel';
+import {Orient} from '../../config';
 
 import {UnitModel} from '../unit';
 import {applyColorAndOpacity} from '../common';
@@ -12,25 +13,60 @@ export namespace rule {
     let p: any = {};
 
     // TODO: support explicit value
-
-    // vertical
-    if (model.has(X)) {
-      p.x = position(model, X);
-
-      p.y = { value: 0 };
-      p.y2 = {
-          field: {group: 'height'}
+    if(model.config().mark.orient === Orient.VERTICAL) {
+      if (model.has(X)) {
+        p.x = {
+          scale: model.scaleName(X),
+          field: model.field(X, { binSuffix: 'mid' })
         };
-    }
+      } else {
+        p.x = { value : 0 };
+      }
 
-    // horizontal
-    if (model.has(Y)) {
-      p.y = position(model, Y);
-
-      p.x = { value: 0 };
-      p.x2 = {
-          field: {group: 'width'}
+      if (model.has(Y)) {
+        p.y = {
+          scale: model.scaleName(Y),
+          field: model.field(Y, { binSuffix: 'mid' })
         };
+      } else {
+        p.y = { field: { group: 'height' } };
+      }
+
+      if (model.has(Y2)) {
+        p.y2 = {
+          scale: model.scaleName(Y),
+          field: model.field(Y2, { binSuffix: 'mid' })
+        };
+      } else {
+        p.y2 = { value: 0 };
+      }
+    } else {
+      if (model.has(Y)) {
+        p.y = {
+          scale: model.scaleName(Y),
+          field: model.field(Y, { binSuffix: 'mid' })
+        };
+      } else {
+        p.y = { value: 0 };
+      }
+
+      if (model.has(X)) {
+        p.x = {
+          scale: model.scaleName(X),
+          field: model.field(X, { binSuffix: 'mid' })
+        };
+      } else {
+        p.x = { value: 0 };
+      }
+
+      if (model.has(X2)) {
+        p.x2 = {
+          scale: model.scaleName(X),
+          field: model.field(X2, { binSuffix: 'mid' })
+        };
+      } else {
+        p.x2 = { field: { group: 'width' } };
+      }
     }
 
     // FIXME: this function would overwrite strokeWidth but shouldn't
@@ -45,28 +81,15 @@ export namespace rule {
     } else {
       p.strokeWidth = { value: sizeValue(model) };
     }
-
     return p;
   }
 
-  function position(model: UnitModel, channel: Channel) {
-    return {
-        scale: model.scaleName(channel),
-        field: model.field(channel, { binSuffix: '_mid' })
-      };
-  }
-
   function sizeValue(model: UnitModel) {
-    const fieldDef = model.fieldDef(SIZE);
+    const fieldDef = model.encoding().size;
     if (fieldDef && fieldDef.value !== undefined) {
        return fieldDef.value;
     }
 
     return model.config().mark.ruleSize;
-  }
-
-  export function labels(model: UnitModel) {
-    // TODO(#240): fill this method
-    return undefined;
   }
 }

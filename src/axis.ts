@@ -1,3 +1,4 @@
+import {DateTime} from './datetime';
 
 export enum AxisOrient {
     TOP = 'top' as any,
@@ -219,5 +220,5 @@ export interface Axis extends AxisConfig {
    * A title for the axis. Shows field name and its function by default.
    */
   title?: string;
-  values?: number[];
+  values?: number[] | DateTime[];
 }

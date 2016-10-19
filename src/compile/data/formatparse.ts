@@ -1,6 +1,8 @@
+import {isDateTime} from '../../datetime';
 import {FieldDef, isCount} from '../../fielddef';
+import {isOneOfFilter, isEqualFilter, isRangeFilter} from '../../filter';
 import {QUANTITATIVE, TEMPORAL} from '../../type';
-import {extend, differ, Dict} from '../../util';
+import {extend, differ, keys, isArray, isNumber, isString, Dict} from '../../util';
 
 import {FacetModel} from './../facet';
 import {LayerModel} from './../layer';
@@ -9,14 +11,43 @@ import {Model} from './../model';
 export namespace formatParse {
   // TODO: need to take calculate into account across levels when merging
   function parse(model: Model): Dict<string> {
-    const calcFieldMap = (model.transform().calculate || []).reduce(function(fieldMap, formula) {
+    const calcFieldMap = (model.calculate() || []).reduce(function(fieldMap, formula) {
       fieldMap[formula.field] = true;
       return fieldMap;
     }, {});
 
     let parseComponent: Dict<string> = {};
-    // use forEach rather than reduce so that it can return undefined
-    // if there is no parse needed
+
+    // Parse filter fields
+    let filter = model.filter();
+    if (!isArray(filter)) {
+      filter = [filter];
+    }
+    filter.forEach((f) => {
+      let val = null;
+      // For EqualFilter, just use the equal property.
+      // For RangeFilter and OneOfFilter, all array members should have
+      // the same type, so we only use the first one.
+      if (isEqualFilter(f)) {
+        val = f.equal;
+      } else if (isRangeFilter(f)) {
+        val = f.range[0];
+      } else if (isOneOfFilter(f)) {
+        val = f.oneOf[0];
+      } // else -- for filter expression, we can't infer anything
+
+      if (!!val) {
+        if (isDateTime(val)) {
+          parseComponent[f['field']] = 'date';
+        } else if (isNumber(val)) {
+          parseComponent[f['field']] = 'number';
+        } else if (isString(val)) {
+          parseComponent[f['field']] = 'string';
+        }
+      }
+    });
+
+    // Parse encoded fields
     model.forEach(function(fieldDef: FieldDef) {
       if (fieldDef.type === TEMPORAL) {
         parseComponent[fieldDef.field] = 'date';
@@ -27,6 +58,16 @@ export namespace formatParse {
         parseComponent[fieldDef.field] = 'number';
       }
     });
+
+    // Custom parse should override inferred parse
+    const data = model.data();
+    if (data && data.format && data.format.parse) {
+      const parse = data.format.parse;
+      keys(parse).forEach((field) => {
+        parseComponent[field] = parse[field];
+      });
+    }
+
     return parseComponent;
   }
 

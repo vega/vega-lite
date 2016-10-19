@@ -1,16 +1,15 @@
 
 import {Channel, X, Y, ROW, COLUMN} from '../channel';
 import {LAYOUT} from '../data';
-import {ScaleType} from '../scale';
+import {ScaleType, BANDSIZE_FIT} from '../scale';
 import {Formula} from '../transform';
 import {extend, keys, StringSet} from '../util';
 import {VgData} from '../vega.schema';
 
 import {FacetModel} from './facet';
 import {LayerModel} from './layer';
-import {TEXT as TEXT_MARK} from '../mark';
 import {Model} from './model';
-import {rawDomain} from './time';
+import {imputedDomain} from '../timeunit';
 import {UnitModel} from './unit';
 
 // FIXME: for nesting x and y, we need to declare x,y layout separately before joining later
@@ -46,11 +45,11 @@ export function assembleLayout(model: Model, layoutData: VgData[]): VgData[] {
         name: model.dataName(LAYOUT),
         source: model.dataTable(),
         transform: [{
-            type: 'aggregate',
-            summarize: distinctFields.map(function(field) {
-              return { field: field, ops: ['distinct'] };
-            })
-          }].concat(formula)
+          type: 'aggregate',
+          summarize: distinctFields.map(function(field) {
+            return { field: field, ops: ['distinct'] };
+          })
+        }].concat(formula)
       } : {
         name: model.dataName(LAYOUT),
         values: [{}],
@@ -72,36 +71,25 @@ export function parseUnitLayout(model: UnitModel): LayoutComponent {
 }
 
 function parseUnitSizeLayout(model: UnitModel, channel: Channel): SizeComponent {
-  // TODO: think about whether this config has to be the cell or facet cell config
-  const cellConfig = model.config().cell;
-  const nonOrdinalSize = channel === X ? cellConfig.width : cellConfig.height;
-
   return {
     distinct: getDistinct(model, channel),
     formula: [{
       field: model.channelSizeName(channel),
-      expr: unitSizeExpr(model, channel, nonOrdinalSize)
+      expr: unitSizeExpr(model, channel)
     }]
   };
 }
 
-function unitSizeExpr(model: UnitModel, channel: Channel, nonOrdinalSize: number): string {
-  if (model.has(channel)) {
-    if (model.isOrdinalScale(channel)) {
-      const scale = model.scale(channel);
-      return '(' + cardinalityFormula(model, channel) +
-        ' + ' + scale.padding +
+export function unitSizeExpr(model: UnitModel, channel: Channel): string {
+  const scale = model.scale(channel);
+  if (scale) {
+    if (scale.type === ScaleType.ORDINAL && scale.bandSize !== BANDSIZE_FIT) {
+      return '(' + cardinalityExpr(model, channel) +
+        ' + ' + 1 +
         ') * ' + scale.bandSize;
-    } else {
-      return nonOrdinalSize + '';
     }
-  } else {
-    if (model.mark() === TEXT_MARK && channel === X) {
-      // for text table without x/y scale we need wider bandSize
-      return model.config().scale.textBandWidth + '';
-    }
-    return model.config().scale.bandSize + '';
   }
+  return (channel === X ? model.width : model.height) + '';
 }
 
 export function parseFacetLayout(model: FacetModel): LayoutComponent {
@@ -138,9 +126,9 @@ function parseFacetSizeLayout(model: FacetModel, channel: Channel): SizeComponen
 function facetSizeFormula(model: Model, channel: Channel, innerSize: string) {
   const scale = model.scale(channel);
   if (model.has(channel)) {
-    return '(datum.' + innerSize + ' + ' + scale.padding + ')' + ' * ' + cardinalityFormula(model, channel);
+    return '(datum["' + innerSize + '"] + ' + scale.padding + ')' + ' * ' + cardinalityExpr(model, channel);
   } else {
-    return 'datum.' + innerSize + ' + ' + model.config().facet.scale.padding; // need to add outer padding for facet
+    return 'datum["' + innerSize + '"] + ' + model.config().facet.scale.padding; // need to add outer padding for facet
   }
 }
 
@@ -191,16 +179,16 @@ function getDistinct(model: Model, channel: Channel): StringSet {
   return {};
 }
 
-// TODO: rename to cardinalityExpr
-function cardinalityFormula(model: Model, channel: Channel) {
+export function cardinalityExpr(model: Model, channel: Channel) {
   const scale = model.scale(channel);
   if (scale.domain instanceof Array) {
     return scale.domain.length;
   }
 
   const timeUnit = model.fieldDef(channel).timeUnit;
-  const timeUnitDomain = timeUnit ? rawDomain(timeUnit, channel) : null;
+  const timeUnitDomain = timeUnit ? imputedDomain(timeUnit, channel) : null;
 
+  // FIXME: production rule will break here!
   return timeUnitDomain !== null ? timeUnitDomain.length :
-        model.field(channel, {datum: true, prefn: 'distinct_'});
+    model.field(channel, {datum: true, prefix: 'distinct'});
 }

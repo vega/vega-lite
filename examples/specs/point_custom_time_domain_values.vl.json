@@ -1,0 +1,22 @@
+{
+  "description": "Google's stock price over time.",
+  "data": {"url": "data/stocks.csv", "format": {"type": "csv"}},
+  "transform": {"filter": "datum.symbol==='GOOG'"},
+  "mark": "point",
+  "encoding": {
+    "x": {
+      "field": "date", "type": "temporal",
+      "scale": {"domain": [{"year": 2005, "month": 1}, {"year": 2009}]},
+      "axis": {"values": [{"year": 2005}, {"year": 2007}, {"year": 2009}]}
+    },
+    "y": {"field": "price", "type": "quantitative"},
+    "color": {
+      "field": "date", "type": "temporal",
+      "scale": {"domain": [{"year": 2004}, {"year": 2010}]},
+      "legend": {
+        "values": [{"year": 2004}, {"year": 2007}, {"year": 2010}],
+        "format": "%y"
+      }
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "data": {"url": "data/seattle-temps.csv","format": {"type": "csv"}},
+  "mark": "point",
+  "encoding": {
+    "color": {
+      "timeUnit": "yearmonth", "field": "date", "type": "temporal"
+    },
+    "x": {"aggregate": "mean", "field": "temp", "type": "quantitative"}
+  }
+}

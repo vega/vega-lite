@@ -1,8 +1,7 @@
-/* tslint:disable quote */
+/* tslint:disable quotemark */
 
 import {assert} from 'chai';
 import {parseUnitModel} from '../../util';
-import {extend} from '../../../src/util';
 import {text} from '../../../src/compile/mark/text';
 import {X, Y} from '../../../src/channel';
 
@@ -25,6 +24,46 @@ describe('Mark: Text', function() {
     });
   });
 
+  describe('with stacked x', function() {
+    // This is a simplified example for stacked text.
+    // In reality this will be used as stacked's overlayed marker
+    const model = parseUnitModel({
+      "mark": "text",
+      "encoding": {
+        "x": {"aggregate": "sum", "field": "a", "type": "quantitative"},
+        "color": {"field": "b", "type": "ordinal"}
+      },
+      "data": {"url": "data/barley.json"},
+      "config": {"mark": {"stacked": "zero"}}
+    });
+
+    const props = text.properties(model);
+
+    it('should use stack_end on x', function() {
+      assert.deepEqual(props.x, {scale: X, field: 'sum_a_end'});
+    });
+  });
+
+  describe('with stacked y', function() {
+    // This is a simplified example for stacked text.
+    // In reality this will be used as stacked's overlayed marker
+    const model = parseUnitModel({
+      "mark": "text",
+      "encoding": {
+        "y": {"aggregate": "sum", "field": "a", "type": "quantitative"},
+        "color": {"field": "b", "type": "ordinal"}
+      },
+      "data": {"url": "data/barley.json"},
+      "config": {"mark": {"stacked": "zero"}}
+    });
+
+    const props = text.properties(model);
+
+    it('should use stack_end on y', function() {
+      assert.deepEqual(props.y, {scale: Y, field: 'sum_a_end'});
+    });
+  });
+
   describe('with quantitative and format', function() {
     const spec = {
       "mark": "text",
@@ -41,7 +80,7 @@ describe('Mark: Text', function() {
     const props = text.properties(model);
 
     it('should use number template', function() {
-      assert.deepEqual(props.text, {template: '{{datum.foo | number:\'d\'}}'});
+      assert.deepEqual(props.text, {template: '{{datum["foo"] | number:\'d\'}}'});
     });
   });
 
@@ -56,7 +95,7 @@ describe('Mark: Text', function() {
     const props = text.properties(model);
 
     it('should use date template', function() {
-      assert.deepEqual(props.text, {template: '{{datum.foo | time:\'%Y-%m-%d\'}}'});
+      assert.deepEqual(props.text, {template: '{{datum["foo"] | time:\'%b %d, %Y\'}}'});
     });
   });
 
@@ -84,7 +123,7 @@ describe('Mark: Text', function() {
       assert.deepEqual(props.align, {value: "center"});
     });
 
-    it('should map text with template', function() {
+    it('should map text without template', function() {
       assert.deepEqual(props.text, {field: "Origin"});
     });
   });
@@ -114,7 +153,7 @@ describe('Mark: Text', function() {
 
     it('should map text to template', function() {
       assert.deepEqual(props.text, {
-        template: "{{datum.mean_Acceleration | number:'s'}}"
+        template: "{{datum[\"mean_Acceleration\"] | number:'s'}}"
       });
     });
 

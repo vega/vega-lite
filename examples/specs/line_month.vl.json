@@ -1,0 +1,12 @@
+{
+  "data": {"url": "data/seattle-temps.csv","format": {"type": "csv"}},
+  "mark": "line",
+  "encoding": {
+    "x": {
+      "timeUnit": "month", "field": "date", "type": "temporal",
+      "axis": {"shortTimeLabels": true}
+    },
+    "y": {"aggregate": "mean", "field": "temp", "type": "quantitative"}
+  },
+  "config": {"mark": {"interpolate": "monotone"}}
+}

@@ -11,9 +11,9 @@ rm -f $diffdir/*
 # 2. Diff all examples
 changed=() # array for collecting changed examples
 
-for file in examples/specs/*.json; do
+for file in examples/specs/*.vl.json; do
   name=${file##*/} # filename only (no dir path)
-  base=${name%.json} # exclude extension
+  base=${name%.vl.json} # exclude extension
   ext="${file##*.}"
 
   diff=$(json-diff --color examples/_original/$name examples/_output/$name)
@@ -23,8 +23,8 @@ for file in examples/specs/*.json; do
     changed+=("$base")
     # compile each vega output to svg in examples/_diff
     # and use "xmllint --format -" to format
-    ./node_modules/vega/bin/vg2svg examples/_original/$base.json | xmllint --format - > $diffdir/${base}-base.svg
-    ./node_modules/vega/bin/vg2svg examples/_output/$base.json | xmllint --format - > $diffdir/${base}.svg
+    ./node_modules/vega/bin/vg2svg examples/_original/$base.vl.json | xmllint --format - > $diffdir/${base}-base.svg
+    ./node_modules/vega/bin/vg2svg examples/_output/$base.vl.json | xmllint --format - > $diffdir/${base}.svg
   fi
 done
 

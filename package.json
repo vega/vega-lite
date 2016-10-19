@@ -1,7 +1,7 @@
 {
   "name": "vega-lite",
   "author": "Jeffrey Heer, Dominik Moritz, Kanit \"Ham\" Wongsuphasawat",
-  "version": "1.0.9",
+  "version": "1.2.1",
   "collaborators": [
     "Kanit Wongsuphasawat <kanitw@gmail.com> (http://kanitw.yellowpigz.com)",
     "Dominik Moritz <domoritz@cs.washington.edu> (http://www.domoritz.de)",
@@ -18,7 +18,7 @@
     "test": "test"
   },
   "scripts": {
-    "build": "browserify src/vl.ts -p tsify -d -s vl > vega-lite.js",
+    "build": "browserify src/vl.ts -p tsify -d -s vl | exorcist vega-lite.js.map > vega-lite.js ",
     "postbuild": "uglifyjs vega-lite.js -cm --source-map vega-lite.min.js.map > vega-lite.min.js && npm run schema",
     "build:all": "npm run clean && npm run data && npm run build && npm test && npm run lint && npm run build:images",
     "build:images": "npm run data && scripts/generate-images.sh",
@@ -54,39 +54,35 @@
   },
   "homepage": "https://github.com/vega/vega-lite",
   "devDependencies": {
-    "browser-sync": "^2.12.8",
-    "browserify": "^13.0.1",
-    "browserify-shim": "^3.8.12",
-    "browserify-versionify": "^1.0.6",
-    "chai": "^3.5.0",
-    "cheerio": "^0.20.0",
-    "exorcist": "^0.4.0",
-    "istanbul": "^0.4.3",
+    "@types/chai": "^3.4.34",
+    "@types/d3": "^3.5.36",
+    "@types/json-stable-stringify": "^1.0.29",
+    "@types/mocha": "^2.2.32",
+    "@types/node": "^6.0.45",
+    "browser-sync": "~2.17.3",
+    "browserify": "~13.1.0",
+    "chai": "~3.5.0",
+    "cheerio": "~0.22.0",
+    "exorcist": "~0.4.0",
+    "istanbul": "~0.4.5",
     "json-diff": "^0.3.1",
-    "mocha": "^2.4.5",
-    "nodemon": "^1.9.2",
-    "source-map-support": "^0.4.0",
-    "tsify": "^0.15.5",
-    "tslint": "^3.10.2",
-    "typescript": "^1.8.10",
-    "typescript-json-schema": "^0.1.1",
-    "uglify-js": "^2.6.2",
-    "vega": "^2.5.2",
+    "mocha": "~3.1.2",
+    "nodemon": "~1.11.0",
+    "source-map-support": "~0.4.2",
+    "tsify": "~2.0.2",
+    "tslint": "~3.15.1",
+    "typescript": "^2.0.3",
+    "typescript-json-schema": "~0.1.1",
+    "uglify-js": "~2.7.3",
+    "vega": "~2.6.3",
     "vega-datasets": "vega/vega-datasets#gh-pages",
-    "watchify": "^3.7.0",
-    "yaml-front-matter": "^3.4.0",
-    "z-schema": "^3.17.0"
+    "watchify": "~3.7.0",
+    "yaml-front-matter": "~3.4.0",
+    "z-schema": "~3.18.0"
   },
   "dependencies": {
-    "datalib": "^1.6.3",
-    "json-stable-stringify": "^1.0.1",
-    "yargs": "^4.7.1"
-  },
-  "browserify": {
-    "transform": [
-      "browserify-shim",
-      "browserify-versionify"
-    ]
-  },
-  "browserify-shim": {}
+    "datalib": "~1.7.2",
+    "json-stable-stringify": "~1.0.1",
+    "yargs": "~6.0.0"
+  }
 }

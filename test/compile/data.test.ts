@@ -56,7 +56,7 @@ describe('data', function () {
         const sourceTransform = data[0].transform;
         assert.deepEqual(sourceTransform[sourceTransform.length - 1], {
           type: 'filter',
-          test: 'datum.b > 0'
+          test: 'datum["b"] > 0'
         });
       });
     });
@@ -68,9 +68,9 @@ describe('data', function () {
         transform: {
           calculate: [{
             field: 'b2',
-            expr: '2 * datum.b'
+            expr: '2 * datum["b"]'
           }],
-          filter: 'datum.a > datum.b && datum.c === datum.d'
+          filter: 'datum["a"] > datum["b"] && datum["c"] === datum["d"]'
         },
         mark: "point",
         encoding: {
@@ -87,8 +87,8 @@ describe('data', function () {
         }
       });
       const transform = compileAssembleData(model)[0].transform;
-      assert.deepEqual(transform[0].type, 'filter');
-      assert.deepEqual(transform[1].type, 'formula');
+      assert.deepEqual(transform[0].type, 'formula');
+      assert.deepEqual(transform[1].type, 'filter');
       assert.deepEqual(transform[2].type, 'filter');
       assert.deepEqual(transform[3].type, 'bin');
       assert.deepEqual(transform[4].type, 'formula');
@@ -112,21 +112,21 @@ describe('data: source', function() {
         assert.deepEqual(sourceComponent.values, [{a: 1, b:2, c:3}, {a: 4, b:5, c:6}]);
       });
 
-      it('should have source.format', function(){
-        assert.deepEqual(sourceComponent.format, {type: 'json'});
+      it('should have source.format.type', function(){
+        assert.deepEqual(sourceComponent.format.type, 'json');
       });
     });
 
     describe('with link to url', function() {
       const model = parseUnitModel({
           data: {
-            url: 'http://foo.bar'
+            url: 'http://foo.bar',
           }
         });
 
       const sourceComponent = source.parseUnit(model);
 
-      it('should have format json', function() {
+      it('should have format.type json', function() {
         assert.equal(sourceComponent.name, 'source');
         assert.equal(sourceComponent.format.type, 'json');
       });
@@ -142,6 +142,62 @@ describe('data: source', function() {
         assert.deepEqual(sourceComponent, {name: 'source'});
       });
     });
+
+    describe('data format', function() {
+      describe('json', () => {
+        it('should include property if specified', function() {
+          const model = parseUnitModel({
+            data: {
+              url: 'http://foo.bar',
+              format: {type: 'json', property: 'baz'}
+            }
+          });
+          const sourceComponent = source.parseUnit(model);
+          assert.equal(sourceComponent.format.property, 'baz');
+        });
+      });
+
+      describe('topojson', () => {
+        describe('feature property is specified', function() {
+          const model = parseUnitModel({
+              data: {
+                url: 'http://foo.bar',
+                format: {type: 'topojson', feature: 'baz'}
+              }
+            });
+
+          const sourceComponent = source.parseUnit(model);
+
+          it('should have format.type topojson', function() {
+            assert.equal(sourceComponent.name, 'source');
+            assert.equal(sourceComponent.format.type, 'topojson');
+          });
+          it('should have format.feature baz', function() {
+            assert.equal(sourceComponent.format.feature, 'baz');
+          });
+        });
+
+        describe('mesh property is specified', function() {
+          const model = parseUnitModel({
+              data: {
+                url: 'http://foo.bar',
+                format: {type: 'topojson', mesh: 'baz'}
+              }
+            });
+
+          const sourceComponent = source.parseUnit(model);
+
+          it('should have format.type topojson', function() {
+            assert.equal(sourceComponent.name, 'source');
+            assert.equal(sourceComponent.format.type, 'topojson');
+          });
+          it('should have format.mesh baz', function() {
+            assert.equal(sourceComponent.format.mesh, 'baz');
+          });
+        });
+      });
+    });
+
   });
 });
 
@@ -152,7 +208,7 @@ describe('data: formatParse', function () {
       const model = parseUnitModel({
         transform: {
           calculate: [
-            {field: 'b2', expr: 'datum.b * 2'}
+            {field: 'b2', expr: 'datum["b"] * 2'}
           ]
         },
         mark: "point",
@@ -227,9 +283,9 @@ describe('data: nullFilter', function() {
     it('should add filterNull for Q and T by default', function () {
       const model = parseUnitModel(spec);
       assert.deepEqual(nullFilter.parseUnit(model), {
-        qq: true,
-        tt: true,
-        oo: false
+        qq: {field: 'qq', type: "quantitative"},
+        tt: {field: 'tt', type: "temporal"},
+        oo: null
       });
     });
 
@@ -240,9 +296,22 @@ describe('data: nullFilter', function() {
         }
       }));
       assert.deepEqual(nullFilter.parseUnit(model), {
-        qq: true,
-        tt: true,
-        oo: true
+        qq: {field: 'qq', type: "quantitative"},
+        tt: {field: 'tt', type: "temporal"},
+        oo: {field: 'oo', type: "ordinal"}
+      });
+    });
+
+    it('should add no null filter if filterInvalid is false', function () {
+      const model = parseUnitModel(mergeDeep(spec, {
+        transform: {
+          filterInvalid: false
+        }
+      }));
+      assert.deepEqual(nullFilter.parseUnit(model), {
+        qq: null,
+        tt: null,
+        oo: null
       });
     });
 
@@ -253,10 +322,28 @@ describe('data: nullFilter', function() {
         }
       }));
       assert.deepEqual(nullFilter.parseUnit(model), {
-        qq: false,
-        tt: false,
-        oo: false
+        qq: null,
+        tt: null,
+        oo: null
       });
+    });
+
+    it ('should add no null filter for count field', () => {
+      const model = parseUnitModel({
+        transform: {
+          filterNull: true
+        },
+        mark: "point",
+        encoding: {
+          y: {aggregate: 'count', field: '*', type: "quantitative"}
+        }
+      });
+
+      assert.deepEqual(nullFilter.parseUnit(model), {});
+    });
+
+    describe('assemble', () => {
+      // TODO:
     });
   });
 
@@ -279,11 +366,11 @@ describe('data: filter', function () {
   describe('compileUnit', function () {
     const model = parseUnitModel({
       transform: {
-        filter: 'datum.a > datum.b && datum.c === datum.d'
+        filter: 'datum["a"] > datum["b"] && datum["c"] === datum["d"]'
       }
     });
     it('should return array that contains a filter transform', function () {
-      assert.deepEqual(filter.parseUnit(model), 'datum.a > datum.b && datum.c === datum.d');
+      assert.deepEqual(filter.parseUnit(model), 'datum["a"] > datum["b"] && datum["c"] === datum["d"]');
     });
   });
 
@@ -315,7 +402,7 @@ describe('data: timeUnit', function () {
       assert.deepEqual(transform[0], {
         type: 'formula',
         field: 'year_a',
-        expr: 'datetime(year(datum.a), 0, 1, 0, 0, 0, 0)'
+        expr: 'datetime(year(datum["a"]), 0, 1, 0, 0, 0, 0)'
       });
     });
   });
@@ -361,7 +448,7 @@ describe('data: timeUnitDomain', function() {
         name: 'day',
         transform: [
           {
-            expr: 'datetime(2006, 0, datum.data+1, 0, 0, 0, 0)',
+            expr: 'datetime(2006, 0, datum["data"]+1, 0, 0, 0, 0)',
             field: 'date',
             type: 'formula'
           }
@@ -407,7 +494,7 @@ describe('data: nonPositiveFilter', function () {
       const filterTransform = nonPositiveFilter.assemble(model.component.data)[0];
       assert.deepEqual(filterTransform, {
         type: 'filter',
-        test: 'datum.b > 0'
+        test: 'datum["b"] > 0'
       });
     });
   });

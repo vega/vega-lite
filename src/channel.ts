@@ -9,6 +9,8 @@ import {contains, without} from './util';
 export enum Channel {
   X = 'x' as any,
   Y = 'y' as any,
+  X2 = 'x2' as any,
+  Y2 = 'y2' as any,
   ROW = 'row' as any,
   COLUMN = 'column' as any,
   SHAPE = 'shape' as any,
@@ -24,6 +26,8 @@ export enum Channel {
 
 export const X = Channel.X;
 export const Y = Channel.Y;
+export const X2 = Channel.X2;
+export const Y2 = Channel.Y2;
 export const ROW = Channel.ROW;
 export const COLUMN = Channel.COLUMN;
 export const SHAPE = Channel.SHAPE;
@@ -36,12 +40,15 @@ export const PATH = Channel.PATH;
 export const ORDER = Channel.ORDER;
 export const OPACITY = Channel.OPACITY;
 
-export const CHANNELS = [X, Y, ROW, COLUMN, SIZE, SHAPE, COLOR, PATH, ORDER, OPACITY, TEXT, DETAIL, LABEL];
+export const CHANNELS = [X, Y, X2, Y2, ROW, COLUMN, SIZE, SHAPE, COLOR, PATH, ORDER, OPACITY, TEXT, DETAIL, LABEL];
 
 export const UNIT_CHANNELS = without(CHANNELS, [ROW, COLUMN]);
-export const UNIT_SCALE_CHANNELS = without(UNIT_CHANNELS, [PATH, ORDER, DETAIL, TEXT, LABEL]);
-export const NONSPATIAL_CHANNELS = without(UNIT_CHANNELS, [X, Y]);
-export const NONSPATIAL_SCALE_CHANNELS = without(UNIT_SCALE_CHANNELS, [X, Y]);
+export const UNIT_SCALE_CHANNELS = without(UNIT_CHANNELS, [PATH, ORDER, DETAIL, TEXT, LABEL, X2, Y2]);
+export const NONSPATIAL_CHANNELS = without(UNIT_CHANNELS, [X, Y, X2, Y2]);
+export const NONSPATIAL_SCALE_CHANNELS = without(UNIT_SCALE_CHANNELS, [X, Y, X2, Y2]);
+
+/** Channels that can serve as groupings for stacked charts. */
+export const STACK_GROUP_CHANNELS = [COLOR, DETAIL, ORDER, OPACITY, SIZE];
 
 export interface SupportedMark {
   point?: boolean;
@@ -84,6 +91,11 @@ export function getSupportedMark(channel: Channel): SupportedMark {
         point: true, tick: true, rule: true, circle: true, square: true,
         bar: true, line: true, area: true, text: true
       };
+    case X2:
+    case Y2:
+      return {
+        rule: true, bar: true, area: true
+      };
     case SIZE:
       return {
         point: true, tick: true, rule: true, circle: true, square: true,
@@ -116,6 +128,7 @@ export function getSupportedRole(channel: Channel): SupportedRole {
     case COLOR:
     case OPACITY:
     case LABEL:
+    case DETAIL:
       return {
         measure: true,
         dimension: true
@@ -123,11 +136,12 @@ export function getSupportedRole(channel: Channel): SupportedRole {
     case ROW:
     case COLUMN:
     case SHAPE:
-    case DETAIL:
       return {
         measure: false,
         dimension: true
       };
+    case X2:
+    case Y2:
     case SIZE:
     case TEXT:
       return {

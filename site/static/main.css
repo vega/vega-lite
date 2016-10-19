@@ -177,6 +177,7 @@ nav {
 nav a {
   color: #666;
   padding-right: 2em;
+  display:inline-block;
 }
 nav a:last-child {
   padding-right: 0px;

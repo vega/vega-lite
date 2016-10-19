@@ -1,4 +1,9 @@
-import {X, Y, SIZE, Channel} from '../../channel';
+import {X, Y, SIZE} from '../../channel';
+import {Orient} from '../../config';
+import {FieldDef, field} from '../../fielddef';
+import {StackProperties} from '../../stack';
+import {Config} from '../../config';
+import {VgValueRef} from '../../vega.schema';
 
 import {UnitModel} from '../unit';
 import {applyColorAndOpacity} from '../common';
@@ -10,72 +15,84 @@ export namespace tick {
 
   export function properties(model: UnitModel) {
     let p: any = {};
+    const config = model.config();
+    const stack = model.stack();
 
     // TODO: support explicit value
 
-    // x
-    if (model.has(X)) {
-      p.xc = {
-        scale: model.scaleName(X),
-        field: model.field(X, { binSuffix: '_mid' })
-      };
-    } else {
-      p.xc = { value: model.config().scale.bandSize / 2 };
-    }
+    p.xc = x(model.encoding().x, model.scaleName(X), stack, config);
 
-    // y
-    if (model.has(Y)) {
-      p.yc = {
-        scale: model.scaleName(Y),
-        field: model.field(Y, { binSuffix: '_mid' })
-      };
-    } else {
-      p.yc = { value: model.config().scale.bandSize / 2 };
-    }
+    p.yc = y(model.encoding().y, model.scaleName(Y), stack, config);
 
-    if (model.config().mark.orient === 'horizontal') {
-       p.width = model.has(SIZE)? {
-          scale: model.scaleName(SIZE),
-          field: model.field(SIZE)
-        } : {
-          value: sizeValue(model, X)
-        };
-      p.height = { value: model.config().mark.tickThickness };
-
+    if (config.mark.orient === Orient.HORIZONTAL) {
+      p.width = size(model.encoding().size, model.scaleName(SIZE), config, (model.scale(X) || {}).bandSize);
+      p.height = { value: config.mark.tickThickness };
     } else {
-      p.width = { value: model.config().mark.tickThickness };
-      p.height = model.has(SIZE)? {
-            scale: model.scaleName(SIZE),
-            field: model.field(SIZE)
-        } : {
-            value: sizeValue(model, Y)
-        };
+      p.width = { value: config.mark.tickThickness };
+      p.height = size(model.encoding().size, model.scaleName(SIZE), config, (model.scale(Y) || {}).bandSize);
     }
 
     applyColorAndOpacity(p, model);
     return p;
   }
 
-  function sizeValue(model: UnitModel, channel: Channel) {
-    const fieldDef = model.fieldDef(SIZE);
-    if (fieldDef && fieldDef.value !== undefined) {
-       return fieldDef.value;
+  function x(fieldDef: FieldDef, scaleName: string, stack: StackProperties, config: Config): VgValueRef {
+    // x
+    if (fieldDef) {
+      if (stack && X === stack.fieldChannel) {
+        return {
+          scale: scaleName,
+          field: field(fieldDef, { suffix: 'end' })
+        };
+      } else if (fieldDef.field) {
+        return {
+          scale: scaleName,
+          field: field(fieldDef, { binSuffix: 'mid' })
+        };
+      } else if (fieldDef.value) {
+        return {value: fieldDef.value};
+      }
     }
-
-    const scaleConfig = model.config().scale;
-    const markConfig = model.config().mark;
-
-    if (markConfig.tickSize) {
-      return markConfig.tickSize;
-    }
-    const bandSize = model.has(channel) ?
-      model.scale(channel).bandSize :
-      scaleConfig.bandSize;
-    return bandSize / 1.5;
+    return { value: config.scale.bandSize / 2 };
   }
 
-  export function labels(model: UnitModel) {
-    // TODO(#240): fill this method
-    return undefined;
+  function y(fieldDef: FieldDef, scaleName: string, stack: StackProperties, config: Config): VgValueRef {
+    // y
+    if (fieldDef) {
+      if (stack && Y === stack.fieldChannel) {
+        return {
+          scale: scaleName,
+          field: field(fieldDef, { suffix: 'end' })
+        };
+      } else if (fieldDef.field) {
+        return {
+          scale: scaleName,
+          field: field(fieldDef, { binSuffix: 'mid' })
+        };
+      } else if (fieldDef.value) {
+        return {value: fieldDef.value};
+      }
+    }
+    return { value: config.scale.bandSize / 2 };
+  }
+
+  function size(fieldDef: FieldDef, scaleName: string, config: Config, scaleBandSize: number): VgValueRef {
+    if (fieldDef) {
+      if (fieldDef.field) {
+        return {
+          scale: scaleName,
+          field: fieldDef.field
+        };
+      } else if (fieldDef.value !== undefined) {
+        return { value: fieldDef.value };
+      }
+    }
+    if (config.mark.tickSize) {
+      return { value: config.mark.tickSize };
+    }
+    const bandSize = scaleBandSize !== undefined ?
+      scaleBandSize :
+      config.scale.bandSize;
+    return { value: bandSize / 1.5 };
   }
 }

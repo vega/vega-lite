@@ -6,6 +6,7 @@ import {channelMappingReduce, channelMappingForEach} from '../encoding';
 import {FieldDef, FieldRefOption, field} from '../fielddef';
 import {Legend} from '../legend';
 import {Scale, ScaleType} from '../scale';
+import {SortField, SortOrder} from '../sort';
 import {BaseSpec} from '../spec';
 import {Transform} from '../transform';
 import {extend, flatten, vals, warning, Dict} from '../util';
@@ -107,6 +108,14 @@ export abstract class Model {
 
     this._description = spec.description;
     this._transform = spec.transform;
+
+    if (spec.transform) {
+      if (spec.transform.filterInvalid === undefined &&
+          spec.transform['filterNull'] !== undefined) {
+        spec.transform.filterInvalid = spec.transform['filterNull'];
+        console.warn('filterNull is deprecated. Please use filterInvalid instead.');
+      }
+    }
 
     this.component = {data: null, layout: null, mark: null, scale: null, axis: null, axisGroup: null, gridGroup: null, legend: null};
   }
@@ -260,8 +269,21 @@ export abstract class Model {
 
   public abstract dataTable(): string;
 
-  public transform(): Transform {
-    return this._transform || {};
+  // TRANSFORMS
+  public calculate() {
+    return this._transform ? this._transform.calculate : undefined;
+  }
+
+  public filterInvalid() {
+    const transform = this._transform || {};
+    if (transform.filterInvalid === undefined) {
+      return this.parent() ? this.parent().filterInvalid() : undefined;
+    }
+    return transform.filterInvalid;
+  }
+
+  public filter() {
+    return this._transform ? this._transform.filter : undefined;
   }
 
   /** Get "field" reference for vega */
@@ -270,7 +292,7 @@ export abstract class Model {
 
     if (fieldDef.bin) { // bin has default suffix that depends on scaleType
       opt = extend({
-        binSuffix: this.scale(channel).type === ScaleType.ORDINAL ? '_range' : '_start'
+        binSuffix: this.scale(channel).type === ScaleType.ORDINAL ? 'range' : 'start'
       }, opt);
     }
 
@@ -298,7 +320,7 @@ export abstract class Model {
     return this._scaleNameMap.get(this.name(channel + ''));
   }
 
-  public sort(channel: Channel) {
+  public sort(channel: Channel): SortField | SortOrder {
     return (this.mapping()[channel] || {}).sort;
   }
 

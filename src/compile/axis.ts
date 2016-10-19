@@ -1,11 +1,12 @@
 import {AxisOrient} from '../axis';
 import {COLUMN, ROW, X, Y, Channel} from '../channel';
-import {title as fieldDefTitle, isDimension} from '../fielddef';
+import {DateTime, isDateTime, timestamp} from '../datetime';
+import {title as fieldDefTitle} from '../fielddef';
 import {NOMINAL, ORDINAL, TEMPORAL} from '../type';
 import {contains, keys, extend, truncate, Dict} from '../util';
 import {VgAxis} from '../vega.schema';
 
-import {formatMixins} from './common';
+import {numberFormat, timeTemplate} from './common';
 import {Model} from './model';
 import {UnitModel} from './unit';
 
@@ -91,15 +92,12 @@ export function parseAxis(channel: Channel, model: Model): VgAxis {
     scale: model.scaleName(channel)
   };
 
-  // format mixins (add format and formatType)
-  extend(def, formatMixins(model, channel, model.axis(channel).format));
-
   // 1.2. Add properties
   [
     // a) properties with special rules (so it has axis[property] methods) -- call rule functions
-    'grid', 'layer', 'offset', 'orient', 'tickSize', 'ticks', 'tickSizeEnd', 'title', 'titleOffset',
+    'format', 'grid', 'layer', 'offset', 'orient', 'tickSize', 'ticks', 'tickSizeEnd', 'title', 'titleOffset', 'values',
     // b) properties without rules, only produce default values in the schema, or explicit value if specified
-    'tickPadding', 'tickSize', 'tickSizeMajor', 'tickSizeMinor', 'values', 'subdivide'
+    'tickPadding', 'tickSize', 'tickSizeMajor', 'tickSizeMinor','subdivide'
   ].forEach(function(property) {
     let method: (model: Model, channel: Channel, def:any)=>any;
 
@@ -129,6 +127,10 @@ export function parseAxis(channel: Channel, model: Model): VgAxis {
   });
 
   return def;
+}
+
+export function format(model: Model, channel: Channel) {
+  return numberFormat(model.fieldDef(channel), model.axis(channel).format, model.config(), channel);
 }
 
 export function offset(model: Model, channel: Channel) {
@@ -216,7 +218,6 @@ export function tickSizeEnd(model: Model, channel: Channel) {
   return undefined;
 }
 
-
 export function title(model: Model, channel: Channel) {
   const axis = model.axis(channel);
   if (axis.title !== undefined) {
@@ -224,7 +225,7 @@ export function title(model: Model, channel: Channel) {
   }
 
   // if not defined, automatically determine axis title from field def
-  const fieldTitle = fieldDefTitle(model.fieldDef(channel));
+  const fieldTitle = fieldDefTitle(model.fieldDef(channel), model.config());
 
   let maxLength;
   if (axis.titleMaxLength) {
@@ -232,11 +233,11 @@ export function title(model: Model, channel: Channel) {
   } else if (channel === X && !model.isOrdinalScale(X)) {
     const unitModel: UnitModel = model as any; // only unit model has channel x
     // For non-ordinal scale, we know cell size at compile time, we can guess max length
-    maxLength = unitModel.config().cell.width / model.axis(X).characterWidth;
+    maxLength = unitModel.width / model.axis(X).characterWidth;
   } else if (channel === Y && !model.isOrdinalScale(Y)) {
     const unitModel: UnitModel = model as any; // only unit model has channel y
     // For non-ordinal scale, we know cell size at compile time, we can guess max length
-    maxLength = unitModel.config().cell.height / model.axis(Y).characterWidth;
+    maxLength = unitModel.height / model.axis(Y).characterWidth;
   }
 
   // FIXME: we should use template to truncate instead
@@ -249,6 +250,17 @@ export function titleOffset(model: Model, channel: Channel) {
       return titleOffset;
   }
   return undefined;
+}
+
+export function values(model: Model, channel: Channel) {
+  const vals = model.axis(channel).values;
+  if (vals && isDateTime(vals[0])) {
+    return (vals as DateTime[]).map((dt) => {
+      // normalize = true as end user won't put 0 = January
+      return timestamp(dt, true);
+    });
+  }
+  return vals;
 }
 
 export namespace properties {
@@ -281,6 +293,7 @@ export namespace properties {
   export function labels(model: Model, channel: Channel, labelsSpec, def) {
     const fieldDef = model.fieldDef(channel);
     const axis = model.axis(channel);
+    const config = model.config();
 
     if (!axis.labels) {
       return extend({
@@ -288,13 +301,20 @@ export namespace properties {
       }, labelsSpec);
     }
 
+    // Text
     if (contains([NOMINAL, ORDINAL], fieldDef.type) && axis.labelMaxLength) {
       // TODO replace this with Vega's labelMaxLength once it is introduced
       labelsSpec = extend({
         text: {
-          template: '{{ datum.data | truncate:' + axis.labelMaxLength + '}}'
+          template: '{{ datum["data"] | truncate:' + axis.labelMaxLength + ' }}'
         }
       }, labelsSpec || {});
+    } else if (fieldDef.type === TEMPORAL) {
+      labelsSpec = extend({
+        text: {
+          template: timeTemplate('datum["data"]', fieldDef.timeUnit, axis.format, axis.shortTimeLabels, config)
+        }
+      }, labelsSpec);
     }
 
     // Label Angle
@@ -302,7 +322,7 @@ export namespace properties {
       labelsSpec.angle = {value: axis.labelAngle};
     } else {
       // auto rotate for X and Row
-      if (channel === X && (isDimension(fieldDef) || fieldDef.type === TEMPORAL)) {
+      if (channel === X && (contains([NOMINAL, ORDINAL], fieldDef.type) || !!fieldDef.bin || fieldDef.type === TEMPORAL)) {
         labelsSpec.angle = {value: 270};
       }
     }
@@ -340,7 +360,7 @@ export namespace properties {
     }
 
     if (axis.tickLabelColor !== undefined) {
-        labelsSpec.stroke = {value: axis.tickLabelColor};
+        labelsSpec.fill = {value: axis.tickLabelColor};
     }
 
     if (axis.tickLabelFont !== undefined) {

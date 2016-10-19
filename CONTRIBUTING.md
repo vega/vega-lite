@@ -13,7 +13,7 @@ and help you to craft the change so that it is successfully accepted into the pr
 - Generally we name a branch using this pattern `<your 2-3 letters initial>/<topic>`.
 For example, @kanitw's branch regarding scale type might be called `kw/scale-type`.
 
-See our [issue](.github/ISSUE_TEMPLATE.md) and [pull request](.github/PULL_REQUEST_TEMPLATE.md) templates for more information. 
+See our [issue](.github/ISSUE_TEMPLATE.md) and [pull request](.github/PULL_REQUEST_TEMPLATE.md) templates for more information.
 
 ### Looking for a Task to Contribute
 
@@ -55,22 +55,22 @@ you can run `npm run site` to serve the github page locally at [http://localhost
   ```
 
   Now you should be able to build and test the code.
-  
+
 3. To make the gallery work, you need to install [bower](http://bower.io/) and its dependencies:
 
   ```sh
   npm install -g bower
   bower install
   ```
-  
-4. To serve the website and documentation, you will need [ruby](https://www.ruby-lang.org/en/), [bundler](http://bundler.io/) and [Jekyll](https://help.github.com/articles/using-jekyll-as-a-static-site-generator-with-github-pages/). 
+
+4. To serve the website and documentation, you will need [ruby](https://www.ruby-lang.org/en/), [bundler](http://bundler.io/) and [Jekyll](https://help.github.com/articles/using-jekyll-as-a-static-site-generator-with-github-pages/).
 
   For ruby, Mac users can use [homebrew](http://brew.sh) to add it:
   ```sh
   brew install ruby
   ```
 
-  For bundler: 
+  For bundler:
   ```sh
   gem install bundler
   ```
@@ -87,7 +87,6 @@ you can run `npm run site` to serve the github page locally at [http://localhost
 - `data/` – Example data.
 - `site/` – Vega-Lite website including documentation.
 - `examples/` – Example Vega-Lite specifications.
-  - `examples/docs/` contains examples that are used in the documetnation, but should not be shown in the gallery.
   - `examples/vl-examples.json` lists all examples under `examples/`. Similarly, `examples/docs/vl-docs-examples.json` lists all examples under `examples/docs`.
 
 - `lib/` contains JSON schema's `schema.json`
@@ -99,8 +98,7 @@ you can run `npm run site` to serve the github page locally at [http://localhost
   All methods for `vl.xxx` will be in either `src/xxx.ts` or `src/xxx/xxx.ts`.
   For example, `vl.channel.*` methods are in `src/channel.ts`.
   `vl.compile` is in `src/compile/compile.ts`.
-  - `src/schema/` contains JSON schema and TypeScript interface declaration.
-  We compile `schema` variable inside `src/schema/schema.ts` to generate the JSON schema.
+  - All interface for Vega-Lite syntax should be declared at the top-level of the `src/` folder.
 
 - `test/` - Code for unit testing. `test`'s structure reflects `src`'s' directory structure.
 For example, `test/compile/` test files inside `src/compile/`.

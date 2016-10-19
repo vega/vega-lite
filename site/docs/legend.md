@@ -45,7 +45,8 @@ The `legend` property object supports the following properties:
 | :------------ |:-------------:| :------------- |
 | orient        | String        | The orientation of the legend. One of `"left"` or `"right"`. This determines how the legend is positioned within the scene. <span class="note-line">__Default value:__  derived from [legend config](config.html#legend-config)'s `orient` (`"right"` by default).</span>|
 | offset        | Number        | The offset, in pixels, by which to displace the legend from the edge of the enclosing group or data rectangle. <span class="note-line">__Default value:__  derived from [legend config](config.html#legend-config)'s `offset` (`0` by default).</span> |
-| values        | Array         | Explicitly set the visible legend values.|
+| values        | Array &#124; [DateTime[]](transform.html#datetime) | Explicitly set the visible legend values. |
+
 
 ### Labels
 
@@ -64,7 +65,7 @@ The `legend` property object supports the following properties:
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | symbolColor   | String        | The color of the symbol. |
-| symbolShape   | String        | The shape of the legend symbol. One of `"circle"`, `"square"`, `"cross"`, `"diamond"`, `"triangle-up"` or `"triangle-down"` |
+| symbolShape   | String        | The shape of the legend symbol. One of `"circle"`, `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`, `"triangle-down"`, or else a custom SVG path string |
 | symbolSize    | Number        | The size of the symbol, in pixels.  |
 | symbolStrokeWidth   | Number      | The width of the symbol's stroke. |
 

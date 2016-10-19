@@ -1,0 +1,19 @@
+{
+  "data": {"url": "data/cars.json"},
+  "mark": "bar",
+  "encoding": {
+    "x": {
+      "field": "Origin",
+      "type": "nominal",
+      "scale": {"bandSize": 25}
+    },
+    "y": {
+      "aggregate": "count",
+      "field": "*",
+      "type": "quantitative"
+    }
+  },
+  "config": {
+    "cell": {"width": 200, "height": 200}
+  }
+}

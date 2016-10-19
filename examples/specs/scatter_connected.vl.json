@@ -1,0 +1,10 @@
+{
+  "data": {"url": "data/driving.json"},
+  "mark": "line",
+  "encoding": {
+    "x": {"field": "miles","type": "quantitative", "scale": {"zero": false}},
+    "y": {"field": "gas","type": "quantitative", "scale": {"zero": false}},
+    "path": {"field": "year","type": "temporal"}
+  },
+  "config": {"overlay": {"line": true}}
+}

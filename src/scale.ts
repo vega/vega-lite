@@ -1,3 +1,5 @@
+import {DateTime} from './datetime';
+
 export enum ScaleType {
     LINEAR = 'linear' as any,
     LOG = 'log' as any,
@@ -20,6 +22,12 @@ export enum NiceTime {
     YEAR = 'year' as any,
 }
 
+export enum BandSize {
+  FIT = 'fit' as any
+}
+
+export const BANDSIZE_FIT = BandSize.FIT;
+
 export interface ScaleConfig {
   /**
    * If true, rounds numeric output values to integers.
@@ -37,7 +45,7 @@ export interface ScaleConfig {
    * and (2) `x` ordinal scale when the mark is not `text`.
    * @minimum 0
    */
-  bandSize?: number;
+  bandSize?: number | BandSize;
   /**
    * Default range for opacity.
    */
@@ -58,7 +66,7 @@ export interface ScaleConfig {
   /** Default range for ordinal / continuous color scale */
   sequentialColorRange?: string | string[];
   /** Default range for shape */
-  shapeRange?: string|string[];
+  shapeRange?: string | string[];
 
   /** Default range for bar size scale */
   barSizeRange?: number[];
@@ -83,7 +91,7 @@ export const defaultScaleConfig: ScaleConfig = {
   round: true,
   textBandWidth: 90,
   bandSize: 21,
-  padding: 1,
+  padding: 0.1,
   useRawDomain: false,
   opacity: [0.3, 0.8],
 
@@ -108,9 +116,9 @@ export const defaultFacetScaleConfig: FacetScaleConfig = {
 export interface Scale {
   type?: ScaleType;
   /**
-   * The domain of the scale, representing the set of data values. For quantitative data, this can take the form of a two-element array with minimum and maximum values. For ordinal/categorical data, this may be an array of valid input values. The domain may also be specified by a reference to a data source.
+   * The domain of the scale, representing the set of data values. For quantitative data, this can take the form of a two-element array with minimum and maximum values. For ordinal/categorical data, this may be an array of valid input values.
    */
-  domain?: string | number[] | string[]; // TODO: declare vgDataDomain
+  domain?: number[] | string[] | DateTime[];
   /**
    * The range of the scale, representing the set of visual values. For numeric values, the range can take the form of a two-element array with minimum and maximum values. For ordinal or quantized data, the range may by an array of desired output values, which are mapped to elements in the specified domain. For ordinal scales only, the range can be defined using a DataRef: the range values are then drawn dynamically from a backing data set.
    */
@@ -124,7 +132,7 @@ export interface Scale {
   /**
    * @minimum 0
    */
-  bandSize?: number;
+  bandSize?: number | BandSize;
   /**
    * Applies spacing among ordinal elements in the scale range. The actual effect depends on how the scale is configured. If the __points__ parameter is `true`, the padding value is interpreted as a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. Otherwise, padding is typically in the range [0, 1] and corresponds to the fraction of space in the range interval to allocate to padding. A value of 0.5 means that the range band width will be equal to the padding width. For more, see the [D3 ordinal scale documentation](https://github.com/mbostock/d3/wiki/Ordinal-Scales).
    */
@@ -144,7 +152,9 @@ export interface Scale {
    */
   exponent?: number;
   /**
-   * If true, ensures that a zero baseline value is included in the scale domain. This option is ignored for non-quantitative scales.
+   * If `true`, ensures that a zero baseline value is included in the scale domain.
+   * Default value: `true` for `x` and `y` channel if the quantitative field is not binned
+   * and no custom `domain` is provided; `false` otherwise.
    */
   zero?: boolean;
 

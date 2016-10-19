@@ -3,96 +3,65 @@
 import {assert} from 'chai';
 import {parseUnitModel} from '../util';
 import {X} from '../../src/channel';
-import {timeFormat, formatMixins, applyColorAndOpacity} from '../../src/compile/common';
+import {defaultConfig} from '../../src/config';
+import {TimeUnit} from '../../src/timeunit';
+import {field, FieldDef} from '../../src/fielddef';
+import {TEMPORAL, QUANTITATIVE, ORDINAL, NOMINAL} from '../../src/type';
+import {numberFormat, timeTemplate, applyColorAndOpacity} from '../../src/compile/common';
 
-describe('Model', function() {
+describe('Common', function() {
   describe('timeFormat()', function() {
-    it('should get the right time template', function() {
-      assert.equal(timeFormat(parseUnitModel({
-        mark: "point",
-        encoding: {
-          x: {timeUnit: 'month', field:'a', type: "temporal", axis: {shortTimeLabels: true}}
-        }
-      }), X), '%b');
+    it('should get the right time template for month with shortTimeLabels=true', function() {
+      const fieldDef: FieldDef = {timeUnit: TimeUnit.MONTH, field: 'a', type: TEMPORAL};
+      const template = timeTemplate(field(fieldDef, {datum: true}), TimeUnit.MONTH, undefined, true, defaultConfig);
+      assert.equal(template,'{{datum["month_a"] | time:\'%b\'}}');
+    });
 
-      assert.equal(timeFormat(parseUnitModel({
-        mark: "point",
-        encoding: {
-          x: {timeUnit: 'month', field:'a', type: "temporal"}
-        }
-      }), X), '%B');
+    it('should get the right time template for month with shortTimeLabels=false', function() {
+      const fieldDef: FieldDef = {timeUnit: TimeUnit.MONTH, field: 'a', type: TEMPORAL};
+      const template = timeTemplate(field(fieldDef, {datum: true}), TimeUnit.MONTH, undefined, false, defaultConfig);
+      assert.equal(template,'{{datum["month_a"] | time:\'%B\'}}');
+    });
 
-      assert.equal(timeFormat(parseUnitModel({
-        mark: "point",
-        encoding: {
-          x: {timeUnit: 'week', field:'a', type: "temporal", axis: {shortTimeLabels: true}}
-        }
-      }), X), undefined);
+    it('should get the right time template for yearmonth with custom format', function() {
+      const fieldDef: FieldDef = {timeUnit: TimeUnit.YEARMONTH, field: 'a', type: TEMPORAL};
+      const template = timeTemplate(field(fieldDef, {datum: true}), TimeUnit.MONTH, '%Y', true, defaultConfig);
+      assert.equal(template,'{{datum["yearmonth_a"] | time:\'%Y\'}}');
+    });
+
+    it('should get the right time template for quarter', function() {
+      const fieldDef: FieldDef = {timeUnit: TimeUnit.QUARTER, field: 'a', type: TEMPORAL};
+      const template = timeTemplate(field(fieldDef, {datum: true}), TimeUnit.QUARTER, undefined, true, defaultConfig);
+      assert.equal(template, 'Q{{datum["quarter_a"] | quarter}}');
+    });
+
+    it('should get the right time template for yearquarter', function() {
+      const template = timeTemplate('datum["data"]', TimeUnit.YEARQUARTER, undefined, true, defaultConfig);
+      assert.equal(template, 'Q{{datum["data"] | quarter}} {{datum["data"] | time:\'%y\'}}');
     });
   });
 
-  describe('format()', function() {
-    it('should use time format type for time scale', function() {
-      assert.deepEqual(formatMixins(parseUnitModel({
-        mark: "point",
-        encoding: {
-          x: {timeUnit: 'month', field:'a', type: "temporal"}
-        }
-      }), X, undefined), {
-        formatType: 'time',
-        format: '%B'
-      });
-    });
-
-    it('should use default time format if we don\'t have a good format', function() {
-      assert.deepEqual(formatMixins(parseUnitModel({
-        mark: "point",
-        encoding: {
-          x: {timeUnit: 'week', field:'a', type: "temporal"}
-        }
-      }), X, undefined), {
-        formatType: 'time',
-        format: '%Y-%m-%d'
-      });
-    });
-
+  describe('numberFormat()', function() {
     it('should use number format for quantitative scale', function() {
-      assert.deepEqual(formatMixins(parseUnitModel({
-        mark: "point",
-        encoding: {
-          x: {field:'a', type: "quantitative"}
-        },
-        config: {
-          numberFormat: 'd'
-        }
-      }), X, undefined), {
-        format: 'd'
-      });
+      assert.equal(numberFormat({field: 'a', type: QUANTITATIVE}, undefined, {numberFormat: 'd'}, X), 'd');
     });
 
     it('should support empty number format', function() {
-      assert.deepEqual(formatMixins(parseUnitModel({
-        mark: "point",
-        encoding: {
-          x: {field:'a', type: "quantitative"}
-        },
-        config: {
-          numberFormat: ''
-        }
-      }), X, undefined), {
-        format: ''
-      });
+      assert.equal(numberFormat({field: 'a', type: QUANTITATIVE}, undefined, {numberFormat: ''}, X), '');
     });
 
     it('should use format if provided', function() {
-      assert.deepEqual(formatMixins(parseUnitModel({
-        mark: "point",
-        encoding: {
-          x: {field:'a', type: "quantitative"}
-        }
-      }), X, 'foo'), {
-        format: 'foo'
-      });
+      assert.equal(numberFormat({field: 'a', type: QUANTITATIVE}, 'a', 'd', X), 'a');
+    });
+
+    it('should not use number format for binned quantitative scale', function() {
+      assert.equal(numberFormat({bin: true, field: 'a', type: QUANTITATIVE}, undefined, 'd', X), undefined);
+    });
+
+    it('should not use number format for non-quantitative scale', function() {
+      for (let type of [TEMPORAL, NOMINAL, ORDINAL]) {
+        assert.equal(numberFormat({bin: true, field: 'a', type: type}, undefined, 'd', X), undefined);
+      }
     });
   });
 

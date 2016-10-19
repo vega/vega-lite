@@ -1,0 +1,12 @@
+{
+  "data": {"url": "data/stocks.csv", "format": {"type": "csv"}},
+  "transform": {"filter": "datum.symbol==='GOOG'"},
+  "mark": "line",
+  "encoding": {
+    "x": {"field": "date", "type": "temporal"},
+    "y": {"field": "price", "type": "quantitative"}
+  },
+  "config":{
+    "mark": {"interpolate": "monotone"}
+  }
+}

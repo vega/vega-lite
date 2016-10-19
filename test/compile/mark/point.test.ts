@@ -1,8 +1,8 @@
-/* tslint:disable quote */
+/* tslint:disable quotemark */
 
 import {assert} from 'chai';
 import {parseUnitModel} from '../../util';
-import {extend} from '../../../src/util'
+import {extend} from '../../../src/util';
 import {X, Y, SIZE, COLOR, SHAPE} from '../../../src/channel';
 import {point, square, circle} from '../../../src/compile/mark/point';
 
@@ -44,6 +44,26 @@ describe('Mark: Point', function() {
     });
   });
 
+  describe('with stacked x', function() {
+    // This is a simplified example for stacked point.
+    // In reality this will be used as stacked's overlayed marker
+    const model = parseUnitModel({
+      "mark": "point",
+      "encoding": {
+        "x": {"aggregate": "sum", "field": "a", "type": "quantitative"},
+        "color": {"field": "b", "type": "ordinal"}
+      },
+      "data": {"url": "data/barley.json"},
+      "config": {"mark": {"stacked": "zero"}}
+    });
+
+    const props = point.properties(model);
+
+    it('should use stack_end on x', function() {
+      assert.deepEqual(props.x, {scale: X, field: 'sum_a_end'});
+    });
+  });
+
   describe('with y', function() {
     const model = parseUnitModel({
       "mark": "point",
@@ -59,6 +79,26 @@ describe('Mark: Point', function() {
 
     it('should scale on y', function() {
       assert.deepEqual(props.y, {scale: Y, field: 'year'});
+    });
+  });
+
+  describe('with stacked y', function() {
+    // This is a simplified example for stacked point.
+    // In reality this will be used as stacked's overlayed marker
+    const model = parseUnitModel({
+      "mark": "point",
+      "encoding": {
+        "y": {"aggregate": "sum", "field": "a", "type": "quantitative"},
+        "color": {"field": "b", "type": "ordinal"}
+      },
+      "data": {"url": "data/barley.json"},
+      "config": {"mark": {"stacked": "zero"}}
+    });
+
+    const props = point.properties(model);
+
+    it('should use stack_end on y', function() {
+      assert.deepEqual(props.y, {scale: Y, field: 'sum_a_end'});
     });
   });
 
@@ -179,7 +219,7 @@ describe('Mark: Square', function() {
     assert.equal(props.fill.value, 'blue');
   });
 
-  it('should support config.mark.filled:false', function() {
+  it('with config.mark.filled:false should have transparent fill', function() {
     const model = parseUnitModel({
       "mark": "square",
       "encoding": {
@@ -195,7 +235,7 @@ describe('Mark: Square', function() {
     const props = square.properties(model);
 
     assert.equal(props.stroke.value, 'blue');
-    assert.isUndefined(props.fill, 'no fill was defined');
+    assert.equal(props.fill.value, 'transparent');
   });
 });
 
@@ -220,8 +260,8 @@ describe('Mark: Circle', function() {
     assert.equal(props.fill.value, 'blue');
   });
 
-  it('should support config.mark.filled:false', function() {
-    const model = parseUnitModel({
+  it('with config.mark.filled:false should have transparent fill', function() {
+    const filledCircleModel = parseUnitModel({
       "mark": "circle",
       "encoding": {
         "color": {"value": "blue"}
@@ -233,9 +273,9 @@ describe('Mark: Circle', function() {
       }
     });
 
-    const props = circle.properties(model);
+    const filledCircleProps = circle.properties(filledCircleModel);
 
-    assert.equal(props.stroke.value, 'blue');
-    assert.isUndefined(props.fill);
+    assert.equal(filledCircleProps.stroke.value, 'blue');
+    assert.equal(filledCircleProps.fill.value, 'transparent');
   });
 });

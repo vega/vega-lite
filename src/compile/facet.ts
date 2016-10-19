@@ -37,7 +37,7 @@ export class FacetModel extends Model {
   }
 
   private _initConfig(specConfig: Config, parent: Model) {
-    return mergeDeep(duplicate(defaultConfig), specConfig, parent ? parent.config() : {});
+    return mergeDeep(duplicate(defaultConfig), parent ? parent.config() : {}, specConfig);
   }
 
   private _initFacet(facet: Facet) {
@@ -48,14 +48,13 @@ export class FacetModel extends Model {
 
     channelMappingForEach(this.channels(), facet, function(fieldDef: FieldDef, channel: Channel) {
       // TODO: if has no field / datum, then drop the field
-
-      if (!isDimension(fieldDef)) {
-        model.addWarning(channel + ' encoding should be ordinal.');
-      }
-
       if (fieldDef.type) {
         // convert short type to full type
         fieldDef.type = getFullName(fieldDef.type);
+      }
+
+      if (!isDimension(fieldDef)) {
+        model.addWarning(channel + ' encoding should be ordinal.');
       }
     });
     return facet;

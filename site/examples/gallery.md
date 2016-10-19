@@ -5,6 +5,9 @@ title: Example Gallery
 permalink: /examples/
 ---
 
+This page shows example specifications for different types of graphics.
+To see example code for embedding visualization in a webpage, please refer to [this page](../usage/embed.html).
+
 * TOC
 {:toc}
 

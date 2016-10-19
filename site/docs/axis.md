@@ -85,7 +85,7 @@ Axis properties can be customized by setting `axis` to an axis property object. 
 | tickSizeMinor | Number        | The size, in pixels, of minor ticks.|
 | tickSizeEnd   | Number        | The size, in pixels, of end ticks.|
 | tickWidth   	| Number        | The width, in pixels, of ticks.|
-| values        | Array         | Explicitly set the visible axis tick values.|
+| values        | Number[] &#124; [DateTime[]](transform.html#datetime) | Explicitly set the visible axis tick values. |
 
 ### Title
 
@@ -94,7 +94,7 @@ Axis properties can be customized by setting `axis` to an axis property object. 
 | title         | String        | A title for the axis. <span class="note-line">__Default value:__  derived from the field's name and transformation function applied e.g, "field_name", "SUM(field_name)", "BIN(field_name)", "YEAR(field_name)".</span> |
 | titleColor	| String 		| The color of the title. |
 | titleFont		| String 		| The font of title (e.g., `Helvetica Neue`). |
-| titleFontWeight	| Number 	 	|  The font weight of title (e.g., `bold`). | 
+| titleFontWeight	| Number 	 	|  The font weight of title (e.g., `bold`). |
 | titleFontSize	| Number 		| The font size of title, in pixels. <span class="note-line">__Default value:__ 10. </span> |
 | titleOffset   | Number        | The offset (in pixels) from the axis at which to place the title.|
 | titleMaxLength  | Integer     | Max length for axis title when the title is automatically generated from the field\'s description. <span class="note-line">__Default value:__  automatically determined based on the cell size (`config.cell.width`, `config.cell.height`) and `characterWidth` property.</span> |

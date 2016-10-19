@@ -1,13 +1,34 @@
-import {FacetModel} from './../facet';
-import {LayerModel} from './../layer';
-import {Model} from './../model';
+import {expression} from '../../filter';
+import {isArray} from '../../util';
+
+import {FacetModel} from '../facet';
+import {LayerModel} from '../layer';
+import {Model} from '../model';
 
 import {DataComponent} from './data';
 
-
 export namespace filter {
-  function parse(model: Model): string {
-    return model.transform().filter;
+  /**
+   * @param v value to be converted into Vega Expression
+   * @param timeUnit
+   * @return Vega Expression of the value v. This could be one of:
+   * - a timestamp value of datetime object
+   * - a timestamp value of casted single time unit value
+   * - stringified value
+   */
+
+  export function parse(model: Model): string {
+    const filter = model.filter();
+    if (isArray(filter)) {
+      return '(' +
+        filter.map((f) => expression(f))
+          .filter((f) => f !==undefined)
+          .join(') && (') +
+        ')';
+    } else if (filter) {
+      return expression(filter);
+    }
+    return undefined;
   }
 
   export const parseUnit = parse;

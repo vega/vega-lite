@@ -115,7 +115,7 @@
     },
     {
       "name": "text_table_heatmap",
-      "title": "Table Heatmap",
+      "title": "Text Table Heatmap",
       "galleryParameters": {
         "backgroundSize": "250%",
         "backgroundPosition": "35% 40%"
@@ -164,6 +164,21 @@
       "galleryParameters": {
         "backgroundSize": "310%",
         "backgroundPosition": "6% 0%"
+      }
+    }
+  ],
+  "Statistical": [
+    {
+      "name": "errorbar_aggregate",
+      "title": "Error Bars",
+      "galleryParameters": {
+        "backgroundSize": "150%"
+      }
+    }, {
+      "name": "errorbar_horizontal_aggregate",
+      "title": "Horizontal Error Bars",
+      "galleryParameters": {
+        "backgroundSize": "150%"
       }
     }
   ],

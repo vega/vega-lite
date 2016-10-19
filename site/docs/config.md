@@ -45,8 +45,9 @@ A Vega-Lite `config` object can have the following top-level properties:
 | :------------ |:-------------:| :------------- |
 | viewport      | Integer[]     | The width and height of the on-screen viewport, in pixels. If necessary, clipping and scrolling will be applied. <span class="note-line">__Default value:__ (none)</span> |
 | background    | String        | CSS color property to use as background of visualization. <span class="note-line">__Default value:__ (none)</span> |
-| timeFormat    | String     | The default time format pattern for text and labels of axes and legends (in the form of [D3 time format pattern](https://github.com/mbostock/d3/wiki/Time-Formatting)). <span class="note-line">__Default value:__ `'%Y-%m-%d'`.</span>|
-| numberFormat  | String      | The default number format pattern for text and labels of axes and legends (in the form of [D3 number format pattern](https://github.com/mbostock/d3/wiki/Formatting)). <span class="note-line">__Default value:__ `'s'`.</span>|
+| countTitle    | String      | The default title for count field (`{field:'*', aggregate:'count', type: 'QUANTITATIVE'}`). <span class="note-line">__Default value:__ `'Number of Records'`.</span>|
+| numberFormat  | String      | The default number format pattern for text and labels of axes and legends (in the form of [D3 number format pattern](https://github.com/mbostock/d3/wiki/Formatting)). <span class="note-line">__Default value:__ `"s"` (except for text marks that encode a count field, the default value is `"d"`).</span>|
+| timeFormat    | String     | The default time format pattern for temporal field without time unit in the text mark and labels of axes and legends (in the form of [D3 time format pattern](https://github.com/mbostock/d3/wiki/Time-Formatting)). <span class="note-line">__Default value:__ `'%b %d, %Y'`.</span>|
 
 <!-- TODO: consider adding width, height, numberFormat, timeFormat  -->
 
@@ -62,8 +63,8 @@ Each plot in either a single plot or a trellis plot is called a _cell_. Cell con
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| width         | Integer       | The width of the single plot or each plot in a trellis plot when the visualization has continuous x-scale. (If the plot has ordinal x-scale, the width is determined by the x-scale's [`bandSize`](scale.html#ordinal) and the cardinality of the x-scale. If the plot does not have a field on `x`, the width is derived from [scale config](#scale-config)'s  `bandSize` for all marks except `text` and from [scale config](#scale-config)'s `textBandWidth` for `text` mark.) <span class="note-line">__Default value:__ `200`</span> |
-| height        | Integer       | The height of the single plot or each plot in a trellis plot when the visualization has continuous y-scale. (If the visualization has ordinal y-scale, the height is determined by the `bandSize` and the cardinality of the y-scale. If the plot does not have a field on `y`, the height is [scale config](#scale-config)'s `bandSize`.) <span class="note-line">__Default value:__ `200`</span> |
+| width         | Integer       | The default width of the single plot or each plot in a trellis plot when the visualization has a continuous (non-ordinal) x-scale or ordinal x-scale with `bandSize` = `"fit"`. <span class="note-line">__Default value:__ `200`</span> |
+| height        | Integer       | The default height of the single plot or each plot in a trellis plot when the visualization has a continuous (non-ordinal) y-scale with `bandSize` = `"fit"`. <span class="note-line">__Default value:__ `200`</span> |
 
 **For more information about visualization's size, please see [Customizing Size](size.html) page.**
 
@@ -71,6 +72,7 @@ Each plot in either a single plot or a trellis plot is called a _cell_. Cell con
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
+| clip          | boolean       | Whether the view should be clipped. |
 | fill          | Color         | The fill color. <span class="note-line">__Default value:__ (none)</span> |
 | fillOpacity   | Number        | The fill opacity (value between [0,1]). <span class="note-line">__Default value:__ (none)</span>|
 | stroke        | Color         | The stroke color. <span class="note-line">__Default value:__ (none)</span>|
@@ -110,7 +112,7 @@ By default, `point` marks have filled borders and are transparent inside. Settin
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| opacity       | Number        | The overall opacity (value between [0,1]). <span class="note-line">__Default value:__ `0.7` for non-aggregate plots with `point`, `tick`, `circle`, or `square` marks and `1` otherwise. </span>|
+| opacity       | Number        | The overall opacity (value between [0,1]). <span class="note-line">__Default value:__ `0.7` for non-aggregate plots with `point`, `tick`, `circle`, or `square` marks or [layered `bar` charts](http://vega.github.io/vega-editor/?mode=vega-lite&spec=bar_layered_transparent&showEditor=1) and `1` otherwise. </span>|
 | fillOpacity   | Number        | The fill opacity (value between [0,1]). <span class="note-line">__Default value:__ `1` </span>|
 | strokeOpacity | Number        | The stroke opacity (value between [0,1]). <span class="note-line">__Default value:__ `1` </span> |
 
@@ -131,7 +133,7 @@ By default, `point` marks have filled borders and are transparent inside. Settin
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| stacked       | string        | Stacking modes for `bar` and `area` marks. <br/> • `zero` - stacking with baseline offset at zero value of the scale (for creating typical stacked [bar](mark.html#stacked-bar-chart) and [area](mark.html#stacked-area-chart) chart). <br/> • `normalize` - stacking with normalized domain (for creating normalized stacked [bar](mark.html#normalized-stacked-bar-chart) and [area](mark.html#normalized-stacked-area-chart) chart). <br/> • `center` - stacking with center baseline (for [streamgraph](mark.html#streamgraph)). <br/> • `none` - No-stacking. This will produces layered [bar](mark.html#layered-bar-chart) and area chart. <span class="note-line">__Default value:__ `zero` if applicable.</span>|
+| stacked       | string        | Modes for stacking marks. <br/> • `zero` - stacking with baseline offset at zero value of the scale (for creating typical stacked [bar](mark.html#stacked-bar-chart) and [area](mark.html#stacked-area-chart) chart). <br/> • `normalize` - stacking with normalized domain (for creating normalized stacked [bar](mark.html#normalized-stacked-bar-chart) and [area](mark.html#normalized-stacked-area-chart) chart). <br/> • `center` - stacking with center baseline (for [streamgraph](mark.html#streamgraph)). <br/> • `none` - No-stacking. This will produce layered [bar](mark.html#layered-bar-chart) and area chart. <span class="note-line">__Default value:__ `zero` for plots with all of the following conditions: (1) `bar` or `area` marks (2) `color`, `opacity`, `size`, or `detail` channel mapped to a group-by field (3) One ordinal or nominal axis, and (4) one quantitative axis with linear scale and summative aggregation function (e.g., `sum`, `count`).</span>|
 
 {:#interpolate}
 ### Interpolation (for Line and Area Marks)
@@ -206,7 +208,7 @@ vg.embed('#horizontal_line', {
 
 | Property            | Type                | Description  |
 | :------------------ |:-------------------:| :------------|
-| shape               | Number              | The symbol shape to use. One of `"circle"`, `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`, or `"triangle-down"`<span class="note-line">__Default value:__ `"circle"` </span> |
+| shape               | Number              | The symbol shape to use. One of `"circle"`, `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`, or `"triangle-down"`, or else a custom SVG path string.<span class="note-line">__Default value:__ `"circle"` </span> |
 
 
 ### Point Size Config (for Point, Circle, and Square Marks)
@@ -260,8 +262,7 @@ vg.embed('#horizontal_line', {
 | :------------------ |:-------------------:| :------------|
 | text                | String |  Placeholder text if the `text` channel is not specified (`"Abc"` by default). |
 | format              | String  | The formatting pattern for text value. If not defined, this will be determined automatically |
-| shortTimeLabels     | Boolean | Whether month names and weekday names should be abbreviated. |
-
+| shortTimeLabels     | Boolean | Whether year, month names, and weekday names should be abbreviated.  <span class="note-line">__Default Behavior:__ Only month is shortened by default.</span>  |
 
 <!-- TODO: expand format detail -->
 <!-- TODO: example of customized text -->

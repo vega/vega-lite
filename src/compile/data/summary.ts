@@ -15,14 +15,14 @@ import {DataComponent, SummaryComponent} from './data';
 export namespace summary {
   function addDimension(dims: { [field: string]: boolean }, fieldDef: FieldDef) {
     if (fieldDef.bin) {
-      dims[field(fieldDef, { binSuffix: '_start' })] = true;
-      dims[field(fieldDef, { binSuffix: '_mid' })] = true;
-      dims[field(fieldDef, { binSuffix: '_end' })] = true;
+      dims[field(fieldDef, { binSuffix: 'start' })] = true;
+      dims[field(fieldDef, { binSuffix: 'mid' })] = true;
+      dims[field(fieldDef, { binSuffix: 'end' })] = true;
 
       // const scale = model.scale(channel);
       // if (scaleType(scale, fieldDef, channel, model.mark()) === ScaleType.ORDINAL) {
       // also produce bin_range if the binned field use ordinal scale
-      dims[field(fieldDef, { binSuffix: '_range' })] = true;
+      dims[field(fieldDef, { binSuffix: 'range' })] = true;
       // }
     } else {
       dims[field(fieldDef)] = true;

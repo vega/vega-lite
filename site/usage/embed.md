@@ -5,6 +5,8 @@ title: Embedding Vega-Lite
 permalink: /usage/embed.html
 ---
 
+See [this repository](https://github.com/vega/vega-lite-demo) for full code of this page.
+
 The easiest way to use Vega-Lite on your own web page is with [vega-embed](https://github.com/vega/vega-embed), a library we built to make the process as painless as possible.
 
 To embed a Vega-Lite specification on your web page first load the required libraries (D3, Vega, Vega-Lite, **Vega-Embed**).
@@ -22,7 +24,7 @@ We suggest that you install Vega-Lite with [npm](https://www.npmjs.com/package/v
 npm install vega-lite
 ```
 
-Alternatively you can [download the latest Vega-Lite release](https://github.com/vega/vega-lite/releases/latest) and add it to your project manually.
+Alternatively you can [download the latest Vega-Lite release](https://github.com/vega/vega-lite/releases/latest) and add it to your project manually.  In this case, you will also have to download [Vega](https://github.com/vega/vega/releases/latest), [D3](http://d3js.org), and [Vega-Embed](https://github.com/vega/vega-embed/releases/latest).
 
 The next step is to create a DOM element that the visualization will be attached to.
 

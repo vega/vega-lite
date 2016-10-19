@@ -250,11 +250,11 @@ describe('Axis', function() {
   describe('title()', function () {
     it('should add explicitly specified title', function () {
       const title = axis.title(parseUnitModel({
-          mark: "point",
-          encoding: {
-            x: {field: 'a', axis: {title: 'Custom'}}
-          }
-        }), X);
+        mark: "point",
+        encoding: {
+          x: {field: 'a', axis: {title: 'Custom'}}
+        }
+      }), X);
       assert.deepEqual(title, 'Custom');
     });
 
@@ -288,7 +288,6 @@ describe('Axis', function() {
       assert.deepEqual(title, 'SU…');
     });
 
-
     it('should add return fieldTitle by default and truncate', function () {
       const title = axis.title(parseUnitModel({
           mark: "point",
@@ -299,6 +298,18 @@ describe('Axis', function() {
             cell: {width: 60}
           }
         }), X);
+      assert.deepEqual(title, 'abcdefghi…');
+    });
+
+
+    it('should add return fieldTitle by default and truncate', function () {
+      const title = axis.title(parseUnitModel({
+        height: 60,
+        mark: "point",
+        encoding: {
+          y: {field: 'abcdefghijkl'}
+        }
+      }), Y);
       assert.deepEqual(title, 'abcdefghi…');
     });
   });
@@ -322,6 +333,33 @@ describe('Axis', function() {
           }
         }), Y);
       assert.deepEqual(titleOffset, 15);
+    });
+  });
+
+  describe('values', () => {
+    it('should return correct timestamp values for DateTimes', () => {
+      const values = axis.values(parseModel({
+        mark: "point",
+        encoding: {
+          y: {field: 'a', type: 'temporal', axis: {values: [{year: 1970}, {year: 1980}]}}
+        }
+      }), Y);
+
+      assert.deepEqual(values, [
+        new Date(1970, 0, 1).getTime(),
+        new Date(1980, 0, 1).getTime()
+      ]);
+    });
+
+    it('should simply return values for non-DateTime', () => {
+      const values = axis.values(parseModel({
+        mark: "point",
+        encoding: {
+          y: {field: 'a', type: 'quantitative', axis: {values: [1,2,3,4]}}
+        }
+      }), Y);
+
+      assert.deepEqual(values, [1,2,3,4]);
     });
   });
 
@@ -403,7 +441,7 @@ describe('Axis', function() {
             x: {field: 'a', type: "ordinal"}
           }
         }), X, {}, {orient: 'top'});
-      assert.deepEqual(labels.text.template, '{{ datum.data | truncate:25}}');
+      assert.deepEqual(labels.text.template, '{{ datum["data"] | truncate:25 }}');
     });
 
     it('should hide labels if labels are set to false', function () {
@@ -439,6 +477,32 @@ describe('Axis', function() {
       assert.equal(labels.baseline.value, 'middle');
     });
 
+    it('should have correct text.template for quarter timeUnits', function () {
+      const model = parseUnitModel({
+        mark: "point",
+        encoding: {
+          x: {field: "a", type: "temporal", timeUnit: "quarter"}
+        }
+      });
+      const labels = axis.properties.labels(model, X, {}, {type: 'x'});
+      let quarterPrefix = 'Q';
+      let expected = quarterPrefix + '{{datum["data"] | quarter}}';
+      assert.deepEqual(labels.text.template, expected);
+    });
+
+    it('should have correct text.template for yearquartermonth timeUnits', function () {
+      const model = parseUnitModel({
+        mark: "point",
+        encoding: {
+          x: {field: "a", type: "temporal", timeUnit: "yearquartermonth"}
+        }
+      });
+      const labels = axis.properties.labels(model, X, {}, {type: 'x'});
+      let quarterPrefix = 'Q';
+      let expected = quarterPrefix + '{{datum["data"] | quarter}} {{datum["data"] | time:\'%b %Y\'}}';
+      assert.deepEqual(labels.text.template, expected);
+    });
+
     it('tickLabelColor should change with axis\'s label\' color', function() {
       const model = parseModel({
         mark: "point",
@@ -447,7 +511,7 @@ describe('Axis', function() {
         }
       });
       const labels = axis.properties.labels(model, X, {}, {});
-      assert.equal(labels.stroke.value, "blue");
+      assert.equal(labels.fill.value, "blue");
     });
 
     it('tickLabelFont should change with axis\'s label\'s font', function() {

@@ -2,15 +2,31 @@
 
 import {assert} from 'chai';
 
-import * as vlscale from '../../src/compile/scale';
+import {scaleBandSize, scaleType, domain, parseScaleComponent} from '../../src/compile/scale';
 import {SOURCE, SUMMARY} from '../../src/data';
 import {parseUnitModel} from '../util';
-import {Y, ROW} from '../../src/channel';
-import {ScaleType} from '../../src/scale';
 
+import {X, Y, ROW, DETAIL} from '../../src/channel';
+import {BANDSIZE_FIT, ScaleType, defaultScaleConfig} from '../../src/scale';
+import {POINT} from '../../src/mark';
 
 describe('Scale', function() {
   describe('scaleType()', function() {
+    it('should return null for channel without scale', function() {
+      const model = parseUnitModel({
+        mark: 'point',
+        encoding: {
+          detail: {
+            field: 'a',
+            type: 'temporal',
+            timeUnit: 'yearMonth'
+          }
+        }
+      });
+      const fieldDef = model.encoding().detail;
+      assert.deepEqual(scaleType(null, fieldDef, DETAIL, model.mark()), null);
+    });
+
     it('should return time for yearmonth', function() {
       const model = parseUnitModel({
         mark: 'point',
@@ -22,9 +38,9 @@ describe('Scale', function() {
           }
         }
       });
-      const fieldDef = model.fieldDef(Y);
+      const fieldDef = model.encoding().y;
       const scale = model.scale(Y);
-      assert.deepEqual(vlscale.scaleType(scale, fieldDef, Y, model.mark()), ScaleType.TIME);
+      assert.deepEqual(scaleType(scale, fieldDef, Y, model.mark()), ScaleType.TIME);
     });
 
     it('should return ordinal for month', function() {
@@ -38,9 +54,9 @@ describe('Scale', function() {
           }
         }
       });
-      const fieldDef = model.fieldDef(Y);
+      const fieldDef = model.encoding().y;
       const scale = model.scale(Y);
-      assert.deepEqual(vlscale.scaleType(scale, fieldDef, Y, model.mark()), ScaleType.ORDINAL);
+      assert.deepEqual(scaleType(scale, fieldDef, Y, model.mark()), ScaleType.ORDINAL);
     });
 
     it('should return ordinal for row', function() {
@@ -54,9 +70,26 @@ describe('Scale', function() {
           }
         }
       });
-      const fieldDef = model.fieldDef(ROW);
+      const fieldDef = model.encoding().row;
       const scale = model.scale(ROW);
-      assert.deepEqual(vlscale.scaleType(scale, fieldDef, ROW, model.mark()), ScaleType.ORDINAL);
+      assert.deepEqual(scaleType(scale, fieldDef, ROW, model.mark()), ScaleType.ORDINAL);
+    });
+  });
+
+  describe('scaleBandSize()', () => {
+    it('should return undefined for non-ordinal scale.', () => {
+      assert.equal(scaleBandSize(ScaleType.LINEAR, undefined, defaultScaleConfig, 180, POINT, X), undefined);
+      assert.equal(scaleBandSize(ScaleType.LINEAR, 21, defaultScaleConfig, undefined, POINT, X), undefined);
+    });
+
+    it('should return "fit" if top-level size is provided for ordinal scale', () => {
+      const bandSize = scaleBandSize(ScaleType.ORDINAL, undefined, defaultScaleConfig, 180, POINT, X);
+      assert.deepEqual(bandSize, BANDSIZE_FIT);
+    });
+
+    it('should return provided bandSize for ordinal scale', () => {
+      const bandSize = scaleBandSize(ScaleType.ORDINAL, 21, defaultScaleConfig, undefined, POINT, X);
+      assert.deepEqual(bandSize, 21);
     });
   });
 
@@ -75,9 +108,9 @@ describe('Scale', function() {
         }
       });
 
-      const domain = vlscale.domain(model.scale(Y), model, Y);
+      const _domain = domain(model.scale(Y), model, Y);
 
-      assert.deepEqual(domain, {
+      assert.deepEqual(_domain, {
         data: 'stacked_scale',
         field: 'sum_sum_origin'
       });
@@ -97,9 +130,9 @@ describe('Scale', function() {
               }
             }
           });
-          const domain = vlscale.domain(model.scale(Y), model, Y);
+          const _domain = domain(model.scale(Y), model, Y);
 
-          assert.deepEqual(domain, {
+          assert.deepEqual(_domain, {
             data: SOURCE,
             field: [
               'bin_origin_start',
@@ -121,9 +154,9 @@ describe('Scale', function() {
               }
             }
           });
-          const domain = vlscale.domain(model.scale(Y), model, Y);
+          const _domain = domain(model.scale(Y), model, Y);
 
-          assert.deepEqual(domain.data, SOURCE);
+          assert.deepEqual(_domain.data, SOURCE);
         });
 
       it('should return the aggregate domain for sum Q',
@@ -139,11 +172,26 @@ describe('Scale', function() {
               }
             }
           });
-          const domain = vlscale.domain(model.scale(Y), model, Y);
+          const _domain = domain(model.scale(Y), model, Y);
 
-          assert.deepEqual(domain.data, SUMMARY);
+          assert.deepEqual(_domain.data, SUMMARY);
         });
 
+      it('should return the right custom domain', () => {
+        const model = parseUnitModel({
+          mark: "point",
+          encoding: {
+            y: {
+              field: 'horsepower',
+              type: "quantitative",
+              scale: {domain: [0,200]}
+            }
+          }
+        });
+        const _domain = domain(model.scale(Y), model, Y);
+
+        assert.deepEqual(_domain, [0, 200]);
+      });
 
       it('should return the aggregated domain if useRawDomain is false', function() {
           const model = parseUnitModel({
@@ -157,9 +205,9 @@ describe('Scale', function() {
               }
             }
           });
-          const domain = vlscale.domain(model.scale(Y), model, Y);
+          const _domain = domain(model.scale(Y), model, Y);
 
-          assert.deepEqual(domain.data, SUMMARY);
+          assert.deepEqual(_domain.data, SUMMARY);
         });
     });
 
@@ -176,9 +224,9 @@ describe('Scale', function() {
               }
             }
           });
-          const domain = vlscale.domain(model.scale(Y), model, Y);
+          const _domain = domain(model.scale(Y), model, Y);
 
-          assert.deepEqual(domain.data, SOURCE);
+          assert.deepEqual(_domain.data, SOURCE);
         });
 
       it('should return the raw domain if useRawDomain is true for year T',
@@ -194,10 +242,10 @@ describe('Scale', function() {
               }
             }
           });
-          const domain = vlscale.domain(model.scale(Y), model, Y);
+          const _domain = domain(model.scale(Y), model, Y);
 
-          assert.deepEqual(domain.data, SOURCE);
-          assert.operator(domain.field.indexOf('year'), '>', -1);
+          assert.deepEqual(_domain.data, SOURCE);
+          assert.operator(_domain.field.indexOf('year'), '>', -1);
         });
 
       it('should return the correct domain for month T',
@@ -213,9 +261,9 @@ describe('Scale', function() {
               }
             }
           });
-          const domain = vlscale.domain(model.scale(Y), model, Y);
+          const _domain = domain(model.scale(Y), model, Y);
 
-          assert.deepEqual(domain, { data: 'month', field: 'date' });
+          assert.deepEqual(_domain, { data: 'month', field: 'date' });
         });
 
         it('should return the correct domain for yearmonth T',
@@ -231,13 +279,32 @@ describe('Scale', function() {
                 }
               }
             });
-            const domain = vlscale.domain(model.scale(Y), model, Y);
+            const _domain = domain(model.scale(Y), model, Y);
 
-            assert.deepEqual(domain, {
+            assert.deepEqual(_domain, {
               data: 'source', field: 'yearmonth_origin',
               sort: {field: 'yearmonth_origin', op: 'min'}
             });
           });
+
+      it('should return the right custom domain with DateTime objects', () => {
+        const model = parseUnitModel({
+          mark: "point",
+          encoding: {
+            y: {
+              field: 'year',
+              type: "temporal",
+              scale: {domain: [{year: 1970}, {year: 1980}]}
+            }
+          }
+        });
+        const _domain = domain(model.scale(Y), model, Y);
+
+        assert.deepEqual(_domain, [
+          new Date(1970, 0, 1).getTime(),
+          new Date(1980, 0, 1).getTime()
+        ]);
+      });
     });
 
     describe('for ordinal', function() {
@@ -250,7 +317,7 @@ describe('Scale', function() {
             }
           });
 
-        assert.deepEqual(vlscale.domain(model.scale(Y), model, Y), {
+        assert.deepEqual(domain(model.scale(Y), model, Y), {
             data: "source",
             field: 'origin',
             sort: sortDef
@@ -265,7 +332,7 @@ describe('Scale', function() {
             }
           });
 
-        assert.deepEqual(vlscale.domain(model.scale(Y), model, Y), {
+        assert.deepEqual(domain(model.scale(Y), model, Y), {
             data: "source",
             field: 'origin',
             sort: true
@@ -282,7 +349,7 @@ describe('Scale', function() {
       }
     });
 
-    const scales = vlscale.parseScaleComponent(model)['color'];
+    const scales = parseScaleComponent(model)['color'];
 
     it('should create color and inverse scales', function() {
       assert.equal(scales.main.name, 'color');
@@ -321,7 +388,7 @@ describe('Scale', function() {
         }
       });
 
-    const scales = vlscale.parseScaleComponent(model)['color'];
+    const scales = parseScaleComponent(model)['color'];
 
     it('should add correct scales', function() {
       assert.equal(scales.main.name, 'color');
@@ -365,7 +432,7 @@ describe('Scale', function() {
         }
       });
 
-    const scales = vlscale.parseScaleComponent(model)['color'];
+    const scales = parseScaleComponent(model)['color'];
 
     it('should add correct scales', function() {
       assert.equal(scales.main.name, 'color');

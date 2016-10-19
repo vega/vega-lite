@@ -1,0 +1,23 @@
+{
+  "data": {
+    "url": "data/cars.json"
+  },
+  "mark": "area",
+  "encoding": {
+    "color": {
+      "field": "Cylinders",
+      "type": "nominal"
+    },
+    "y": {
+      "aggregate": "mean",
+      "bin": false,
+      "field": "Horsepower",
+      "type": "quantitative"
+    },
+    "x": {
+      "bin": {},
+      "field": "Acceleration",
+      "type": "quantitative"
+    }
+  }
+}
