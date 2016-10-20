@@ -14,7 +14,7 @@ import {formula} from './formula';
 import {timeUnit} from './timeunit';
 
 export namespace source {
-  function parse(model: Model): VgData {
+  export function parseUnit(model: Model): VgData {
     let data = model.data();
 
     if (data) {
@@ -58,10 +58,8 @@ export namespace source {
     return undefined;
   }
 
-  export const parseUnit = parse;
-
   export function parseFacet(model: FacetModel) {
-    let sourceData = parse(model);
+    let sourceData = parseUnit(model);
     if (!model.child().component.data.source) {
       // If the child does not have its own source, have to rename its source.
       model.child().renameData(model.child().dataName(SOURCE), model.dataName(SOURCE));
@@ -71,7 +69,7 @@ export namespace source {
   }
 
   export function parseLayer(model: LayerModel) {
-    let sourceData = parse(model);
+    let sourceData = parseUnit(model);
     model.children().forEach((child) => {
       const childData = child.component.data;
 

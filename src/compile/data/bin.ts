@@ -15,7 +15,7 @@ export namespace bin {
     return `format('${format}', ${expr})`;
   }
 
-  function parse(model: Model): Dict<VgTransform[]> {
+  export function parseUnit(model: Model): Dict<VgTransform[]> {
     return model.reduce(function(binComponent, fieldDef: FieldDef, channel: Channel) {
       const bin = model.fieldDef(channel).bin;
       if (bin) {
@@ -65,10 +65,8 @@ export namespace bin {
     }, {});
   }
 
-  export const parseUnit = parse;
-
   export function parseFacet(model: FacetModel) {
-    let binComponent = parse(model);
+    let binComponent = parseUnit(model);
 
     const childDataComponent = model.child().component.data;
 
@@ -82,7 +80,7 @@ export namespace bin {
   }
 
   export function parseLayer(model: LayerModel) {
-    let binComponent = parse(model);
+    let binComponent = parseUnit(model);
 
     model.children().forEach((child) => {
       const childDataComponent = child.component.data;

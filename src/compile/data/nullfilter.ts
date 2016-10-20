@@ -18,7 +18,7 @@ const DEFAULT_NULL_FILTERS = {
 // TODO: rename to invalidFilter
 export namespace nullFilter {
   /** Return Hashset of fields for null filtering (key=field, value = true). */
-  function parse(model: Model): Dict<boolean> {
+  export function parseUnit(model: Model): Dict<boolean> {
     const filterInvalid = model.filterInvalid();
 
     return model.reduce(function(aggregator, fieldDef: FieldDef) {
@@ -36,10 +36,8 @@ export namespace nullFilter {
     }, {});
   }
 
-  export const parseUnit = parse;
-
   export function parseFacet(model: FacetModel) {
-    let nullFilterComponent = parse(model);
+    let nullFilterComponent = parseUnit(model);
 
     const childDataComponent = model.child().component.data;
 
@@ -55,7 +53,7 @@ export namespace nullFilter {
     // note that we run this before source.parseLayer
 
     // FIXME: null filters are not properly propagated right now
-    let nullFilterComponent = parse(model);
+    let nullFilterComponent = parseUnit(model);
 
     model.children().forEach((child) => {
       const childDataComponent = child.component.data;

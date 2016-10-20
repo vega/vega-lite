@@ -2,9 +2,10 @@ import {buildModel} from '../src/compile/common';
 import {UnitModel} from '../src/compile/unit';
 import {ExtendedUnitSpec, normalize} from '../src/spec';
 import {contains} from '../src/util';
+import {Model} from '../src/compile/model';
 
 // TODO: rename to parseModel
-export function parseModel(inputSpec) {
+export function parseModel(inputSpec): Model {
   const spec = normalize(inputSpec);
   return buildModel(spec, null, '');
 }

@@ -21,4 +21,7 @@ examples/images/*
 examples/all-examples.json
 **/*.js.map
 **/*.js
+src/**/*.d.ts
+test/**/*.d.ts
+site/**/*.d.ts
 .jekyll-metadata

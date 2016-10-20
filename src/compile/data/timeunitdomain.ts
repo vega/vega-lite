@@ -13,7 +13,7 @@ import {DataComponent} from './data';
 
 
 export namespace timeUnitDomain {
-  function parse(model: Model): StringSet {
+  export function parseUnit(model: Model): StringSet {
     return model.reduce(function(timeUnitDomainMap, fieldDef: FieldDef, channel: Channel) {
       if (fieldDef.timeUnit) {
         const domain = imputedDomain(fieldDef.timeUnit, channel);
@@ -25,16 +25,14 @@ export namespace timeUnitDomain {
     }, {});
   }
 
-  export const parseUnit = parse;
-
   export function parseFacet(model: FacetModel) {
     // always merge with child
-    return extend(parse(model), model.child().component.data.timeUnitDomain);
+    return extend(parseUnit(model), model.child().component.data.timeUnitDomain);
   }
 
   export function parseLayer(model: LayerModel) {
     // always merge with children
-    return extend(parse(model), model.children().forEach((child) => {
+    return extend(parseUnit(model), model.children().forEach((child) => {
       return child.component.data.timeUnitDomain;
     }));
   }

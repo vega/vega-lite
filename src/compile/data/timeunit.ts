@@ -12,7 +12,7 @@ import {Model} from '../model';
 import {DataComponent} from './data';
 
 export namespace timeUnit {
-  function parse(model: Model): Dict<VgTransform> {
+  export function parseUnit(model: Model): Dict<VgTransform> {
     return model.reduce(function(timeUnitComponent, fieldDef: FieldDef, channel: Channel) {
       if (fieldDef.type === TEMPORAL && fieldDef.timeUnit) {
 
@@ -28,10 +28,8 @@ export namespace timeUnit {
     }, {});
   }
 
-  export const parseUnit = parse;
-
   export function parseFacet(model: FacetModel) {
-    let timeUnitComponent = parse(model);
+    let timeUnitComponent = parseUnit(model);
 
     const childDataComponent = model.child().component.data;
 
@@ -44,7 +42,7 @@ export namespace timeUnit {
   }
 
   export function parseLayer(model: LayerModel) {
-    let timeUnitComponent = parse(model);
+    let timeUnitComponent = parseUnit(model);
     model.children().forEach((child) => {
       const childDataComponent = child.component.data;
       if (!childDataComponent.source) {
