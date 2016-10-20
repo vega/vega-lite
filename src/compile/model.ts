@@ -48,7 +48,7 @@ export interface Component {
   mark: VgMarkGroup[];
 }
 
-class NameMap implements NameMapShape {
+class NameMap implements NameMapInterface {
   private _nameMap: Dict<string>;
 
   constructor() {
@@ -70,7 +70,7 @@ class NameMap implements NameMapShape {
   }
 }
 
-export interface NameMapShape {
+export interface NameMapInterface {
   rename(oldname: string, newName: string): void;
   get(name: string): string;
 }
@@ -83,13 +83,13 @@ export abstract class Model {
   protected _data: Data;
 
   /** Name map for data sources, which can be renamed by a model's parent. */
-  protected _dataNameMap: NameMapShape;
+  protected _dataNameMap: NameMapInterface;
 
   /** Name map for scales, which can be renamed by a model's parent. */
-  protected _scaleNameMap: NameMapShape;
+  protected _scaleNameMap: NameMapInterface;
 
   /** Name map for size, which can be renamed by a model's parent. */
-  protected _sizeNameMap: NameMapShape;
+  protected _sizeNameMap: NameMapInterface;
 
   protected _transform: Transform;
   protected _scale: Dict<Scale>;
