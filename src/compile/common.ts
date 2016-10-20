@@ -6,7 +6,9 @@ import {FieldDef, field, OrderChannelDef} from '../fielddef';
 import {SortOrder} from '../sort';
 import {TimeUnit} from '../timeunit';
 import {QUANTITATIVE, ORDINAL} from '../type';
-import {contains, union} from '../util';
+import {contains, extend, union} from '../util';
+
+import {VgValueRef} from '../vega.schema';
 
 import {FacetModel} from './facet';
 import {LayerModel} from './layer';
@@ -42,6 +44,13 @@ export const FILL_CONFIG = ['fill', 'fillOpacity',
 
 export const FILL_STROKE_CONFIG = union(STROKE_CONFIG, FILL_CONFIG);
 
+export function scaleValueRef(scaleName: string, valueRef): VgValueRef {
+  return extend(
+      scaleName ? {scale: scaleName} : {},
+      valueRef
+  );
+}
+
 export function applyColorAndOpacity(p, model: UnitModel) {
   const filled = model.config().mark.filled;
   const colorFieldDef = model.encoding().color;
@@ -56,21 +65,19 @@ export function applyColorAndOpacity(p, model: UnitModel) {
   }
 
   let colorValue;
-  let opacityValue;
   if (model.has(COLOR)) {
-    colorValue = {
-      scale: model.scaleName(COLOR),
+    colorValue = scaleValueRef(model.scaleName(COLOR), {
       field: model.field(COLOR, colorFieldDef.type === ORDINAL ? {prefix: 'rank'} : {})
-    };
+    });
   } else if (colorFieldDef && colorFieldDef.value) {
     colorValue = { value: colorFieldDef.value };
   }
 
+  let opacityValue;
   if (model.has(OPACITY)) {
-    opacityValue = {
-      scale: model.scaleName(OPACITY),
+    opacityValue = scaleValueRef(model.scaleName(OPACITY), {
       field: model.field(OPACITY, opacityFieldDef.type === ORDINAL ? {prefix: 'rank'} : {})
-    };
+    });
   } else if (opacityFieldDef && opacityFieldDef.value) {
     opacityValue = { value: opacityFieldDef.value };
   }
@@ -133,6 +140,7 @@ export function numberFormat(fieldDef: FieldDef, format: string, config: Config,
   return undefined;
 }
 
+// TODO: move this to compile/mark/mark.ts
 /** Return field reference with potential "-" prefix for descending sort */
 export function sortField(orderChannelDef: OrderChannelDef) {
   return (orderChannelDef.sort === SortOrder.DESCENDING ? '-' : '') +

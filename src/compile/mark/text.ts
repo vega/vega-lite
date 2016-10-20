@@ -1,5 +1,5 @@
 import {X, Y, COLOR, TEXT, SIZE} from '../../channel';
-import {applyMarkConfig, applyColorAndOpacity, numberFormat, timeTemplate} from '../common';
+import {applyMarkConfig, applyColorAndOpacity, numberFormat, scaleValueRef, timeTemplate} from '../common';
 import {Config} from '../../config';
 import {FieldDef, field} from '../../fielddef';
 import {StackProperties} from '../../stack';
@@ -15,15 +15,16 @@ export namespace text {
   }
 
   export function background(model: UnitModel) {
+    const colorScaleName = model.scaleName(COLOR);
+
     return {
       x: { value: 0 },
       y: { value: 0 },
       width: { field: { group: 'width' } },
       height: { field: { group: 'height' } },
-      fill: {
-        scale: model.scaleName(COLOR),
+      fill: scaleValueRef(colorScaleName, {
         field: model.field(COLOR, model.encoding().color.type === ORDINAL ? {prefix: 'rank'} : {})
-      }
+      })
     };
   }
 
@@ -63,15 +64,13 @@ export namespace text {
     // x
     if (fieldDef) {
       if (stack && X === stack.fieldChannel) {
-        return {
-          scale: scaleName,
+        return scaleValueRef(scaleName, {
           field: field(fieldDef, { suffix: 'end' })
-        };
+        });
       } else if (fieldDef.field) {
-        return {
-          scale: scaleName,
+        return scaleValueRef(scaleName, {
           field: field(fieldDef, { binSuffix: 'mid' })
-        };
+        });
       }
     }
     // TODO: support x.value, x.datum
@@ -87,15 +86,13 @@ export namespace text {
     // y
     if (fieldDef) {
       if (stack && Y === stack.fieldChannel) {
-        return {
-          scale: scaleName,
+        return scaleValueRef(scaleName, {
           field: field(fieldDef, { suffix: 'end' })
-        };
+        });
       } else if (fieldDef.field) {
-        return {
-          scale: scaleName,
+        return scaleValueRef(scaleName, {
           field: field(fieldDef, { binSuffix: 'mid' })
-        };
+        });
       }
     }
     // TODO: allow this to fit
@@ -107,10 +104,9 @@ export namespace text {
     // size
     if (sizeFieldDef) {
       if (sizeFieldDef.field) {
-        return {
-          scale: scaleName,
+        return scaleValueRef(scaleName, {
           field: field(sizeFieldDef)
-        };
+        });
       }
       if (sizeFieldDef.value) {
         return {value: sizeFieldDef.value};

@@ -9,12 +9,12 @@ import {Scale, ScaleType} from '../scale';
 import {SortField, SortOrder} from '../sort';
 import {BaseSpec} from '../spec';
 import {Transform} from '../transform';
-import {extend, flatten, vals, warning, Dict} from '../util';
+import {contains, extend, flatten, vals, warning, Dict} from '../util';
 import {VgData, VgMarkGroup, VgScale, VgAxis, VgLegend} from '../vega.schema';
 
 import {DataComponent} from './data/data';
 import {LayoutComponent} from './layout';
-import {ScaleComponents} from './scale';
+import {ScaleComponents, COLOR_LEGEND, COLOR_LEGEND_LABEL} from './scale';
 
 /**
  * Composable Components that are intermediate results of the parsing phase of the
@@ -53,9 +53,14 @@ class NameMap {
     this._nameMap[oldName] = newName;
   }
 
+
+  public has(name: string): boolean {
+    return this._nameMap[name] !== undefined;
+  }
+
   public get(name: string): string {
     // If the name appears in the _nameMap, we need to read its new name.
-    // We have to loop over the dict just in case, the new name also gets renamed.
+    // We have to loop over the dict just in case the new name also gets renamed.
     while (this._nameMap[name]) {
       name = this._nameMap[name];
     }
@@ -315,9 +320,26 @@ export abstract class Model {
     this._scaleNameMap.rename(oldName, newName);
   }
 
-  /** returns scale name for a given channel */
-  public scaleName(channel: Channel|string): string {
-    return this._scaleNameMap.get(this.name(channel + ''));
+
+  /**
+   * @return scale name for a given channel after the scale has been parsed.
+   * (DO NOT USE THIS METHOD DURING SCALE PARSING, use initScaleName instead)
+   */
+  public scaleName(originalScaleName: Channel|string): string {
+    const channel = contains([COLOR_LEGEND, COLOR_LEGEND_LABEL], originalScaleName) ? 'color' : originalScaleName;
+    // If there is a scale for the channel, it should either
+    // be in the _scale mapping, the scale component or exist in the name map
+    if (
+        // a) be in the scale map (for unit's spec channel and facet spec's row / column)
+        (this._scale && this._scale[channel]) ||
+        // b) be in the scale component for parent model that merge child specs.
+        (this.component.scale && this.component.scale[channel]) ||
+        // c) be in the scale map, if the the scale get merged by its parent
+        this._scaleNameMap.has(this.name(originalScaleName + ''))
+      ) {
+      return this._scaleNameMap.get(this.name(originalScaleName + ''));
+    }
+    return undefined;
   }
 
   public sort(channel: Channel): SortField | SortOrder {

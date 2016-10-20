@@ -72,7 +72,7 @@ function parseMainScale(model: Model, fieldDef: FieldDef, channel: Channel) {
   const scale = model.scale(channel);
   const sort = model.sort(channel);
   let scaleDef: any = {
-    name: model.scaleName(channel),
+    name: model.name(channel + ''),
     type: scale.type,
   };
 
@@ -127,7 +127,7 @@ function parseMainScale(model: Model, fieldDef: FieldDef, channel: Channel) {
  */
 function parseColorLegendScale(model: Model, fieldDef: FieldDef): ScaleComponent {
   return {
-    name: model.scaleName(COLOR_LEGEND),
+    name: model.name(COLOR_LEGEND),
     type: ScaleType.ORDINAL,
     domain: {
       data: model.dataTable(),
@@ -144,7 +144,7 @@ function parseColorLegendScale(model: Model, fieldDef: FieldDef): ScaleComponent
  */
 function parseBinColorLegendLabel(model: Model, fieldDef: FieldDef): ScaleComponent {
   return {
-    name: model.scaleName(COLOR_LEGEND_LABEL),
+    name: model.name(COLOR_LEGEND_LABEL),
     type: ScaleType.ORDINAL,
     domain: {
       data: model.dataTable(),
@@ -477,8 +477,8 @@ function pointBandSize(model: UnitModel) {
     return xIsMeasure !== yIsMeasure ?
       model.scale(xIsMeasure ? Y : X).bandSize :
       Math.min(
-        model.scale(X).bandSize || scaleConfig.bandSize,
-        model.scale(Y).bandSize || scaleConfig.bandSize
+        (model.scale(X) || {}).bandSize || scaleConfig.bandSize,
+        (model.scale(Y) || {}).bandSize || scaleConfig.bandSize
       );
   } else if (hasY) {
     return yIsMeasure ? model.config().scale.bandSize : model.scale(Y).bandSize;
