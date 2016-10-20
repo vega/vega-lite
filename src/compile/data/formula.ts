@@ -19,7 +19,7 @@ export namespace formula {
   export const parseUnit: (model: Model) => Dict<Formula> = parse;
 
   export function parseFacet(model: FacetModel) {
-    let formulaComponent = parseUnit(model);
+    let formulaComponent = parse(model);
 
     const childDataComponent = model.child().component.data;
 
