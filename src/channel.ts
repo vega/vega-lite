@@ -6,39 +6,41 @@
 import {Mark} from './mark';
 import {contains, without} from './util';
 
-export enum Channel {
-  X = 'x' as any,
-  Y = 'y' as any,
-  X2 = 'x2' as any,
-  Y2 = 'y2' as any,
-  ROW = 'row' as any,
-  COLUMN = 'column' as any,
-  SHAPE = 'shape' as any,
-  SIZE = 'size' as any,
-  COLOR = 'color' as any,
-  TEXT = 'text' as any,
-  DETAIL = 'detail' as any,
-  LABEL = 'label' as any,
-  PATH = 'path' as any,
-  ORDER = 'order' as any,
-  OPACITY = 'opacity' as any
+export namespace Channels {
+  export const X: 'x' = 'x';
+  export const Y: 'y' = 'y';
+  export const X2: 'x2' = 'x2';
+  export const Y2: 'y2' = 'y2';
+  export const ROW: 'row' = 'row';
+  export const COLUMN: 'column' = 'column';
+  export const SHAPE: 'shape' = 'shape';
+  export const SIZE: 'size' = 'size';
+  export const COLOR: 'color' = 'color';
+  export const TEXT: 'text' = 'text';
+  export const DETAIL: 'detail' = 'detail';
+  export const LABEL: 'label' = 'label';
+  export const PATH: 'path' = 'path';
+  export const ORDER: 'order' = 'order';
+  export const OPACITY: 'opacity' = 'opacity';
 }
 
-export const X = Channel.X;
-export const Y = Channel.Y;
-export const X2 = Channel.X2;
-export const Y2 = Channel.Y2;
-export const ROW = Channel.ROW;
-export const COLUMN = Channel.COLUMN;
-export const SHAPE = Channel.SHAPE;
-export const SIZE = Channel.SIZE;
-export const COLOR = Channel.COLOR;
-export const TEXT = Channel.TEXT;
-export const DETAIL = Channel.DETAIL;
-export const LABEL = Channel.LABEL;
-export const PATH = Channel.PATH;
-export const ORDER = Channel.ORDER;
-export const OPACITY = Channel.OPACITY;
+export type Channel = typeof Channels.X | typeof Channels.Y | typeof Channels.X2 | typeof Channels.Y2 | typeof Channels.ROW | typeof Channels.COLUMN | typeof Channels.SHAPE | typeof Channels.SIZE | typeof Channels.COLOR | typeof Channels.TEXT | typeof Channels.DETAIL | typeof Channels.LABEL | typeof Channels.PATH | typeof Channels.ORDER | typeof Channels.OPACITY;
+
+export const X = Channels.X;
+export const Y = Channels.Y;
+export const X2 = Channels.X2;
+export const Y2 = Channels.Y2;
+export const ROW = Channels.ROW;
+export const COLUMN = Channels.COLUMN;
+export const SHAPE = Channels.SHAPE;
+export const SIZE = Channels.SIZE;
+export const COLOR = Channels.COLOR;
+export const TEXT = Channels.TEXT;
+export const DETAIL = Channels.DETAIL;
+export const LABEL = Channels.LABEL;
+export const PATH = Channels.PATH;
+export const ORDER = Channels.ORDER;
+export const OPACITY = Channels.OPACITY;
 
 export const CHANNELS = [X, Y, X2, Y2, ROW, COLUMN, SIZE, SHAPE, COLOR, PATH, ORDER, OPACITY, TEXT, DETAIL, LABEL];
 
