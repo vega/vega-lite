@@ -4,7 +4,7 @@ import {FieldDef, field} from '../../fielddef';
 import {StackProperties} from '../../stack';
 import {VgValueRef} from '../../vega.schema';
 
-import {applyColorAndOpacity, applyMarkConfig} from '../common';
+import {applyColorAndOpacity, applyMarkConfig, scaleValueRef} from '../common';
 import {UnitModel} from '../unit';
 
 export namespace line {
@@ -34,15 +34,13 @@ export namespace line {
     // x
     if (fieldDef) {
       if (stack && X === stack.fieldChannel) {
-        return {
-          scale: scaleName,
+        return scaleValueRef(scaleName, {
           field: field(fieldDef, { suffix: 'end' })
-        };
+        });
       } else if (fieldDef.field) {
-        return {
-          scale: scaleName,
+        return scaleValueRef(scaleName, {
           field: field(fieldDef, { binSuffix: 'mid' })
-        };
+        });
       }
       // TODO: fieldDef.value (for layering)
     }
@@ -53,15 +51,14 @@ export namespace line {
     // y
     if (fieldDef) {
       if (stack && Y === stack.fieldChannel) {
-        return {
-          scale: scaleName,
+        return scaleValueRef(scaleName, {
           field: field(fieldDef, { suffix: 'end' })
-        };
+        });
       } else if (fieldDef.field) {
-        return {
+        return scaleValueRef(scaleName, {
           scale: scaleName,
           field: field(fieldDef, { binSuffix: 'mid' })
-        };
+        });
       }
       // TODO: fieldDef.value (for layering)
     }

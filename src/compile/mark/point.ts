@@ -5,7 +5,7 @@ import {Scale} from '../../scale';
 import {StackProperties} from '../../stack';
 import {VgValueRef} from '../../vega.schema';
 
-import {applyColorAndOpacity} from '../common';
+import {applyColorAndOpacity, scaleValueRef} from '../common';
 import {UnitModel} from '../unit';
 
 export namespace point {
@@ -35,15 +35,13 @@ export namespace point {
     // x
     if (fieldDef) {
       if (stack && X === stack.fieldChannel) {
-        return {
-          scale: scaleName,
+        return scaleValueRef(scaleName, {
           field: field(fieldDef, { suffix: 'end' })
-        };
+        });
       } else if (fieldDef.field) {
-        return {
-          scale: scaleName,
+        return scaleValueRef(scaleName, {
           field: field(fieldDef, { binSuffix: 'mid' })
-        };
+        });
       }
       // TODO: fieldDef.value (for layering)
     }
@@ -55,15 +53,13 @@ export namespace point {
     // y
     if (fieldDef) {
       if (stack && Y === stack.fieldChannel) {
-        return {
-          scale: scaleName,
+        return scaleValueRef(scaleName, {
           field: field(fieldDef, { suffix: 'end' })
-        };
+        });
       } else if (fieldDef.field) {
-        return {
-          scale: scaleName,
+        return scaleValueRef(scaleName, {
           field: field(fieldDef, { binSuffix: 'mid' })
-        };
+        });
       }
       // TODO: fieldDef.value (for layering)
     }
@@ -74,10 +70,9 @@ export namespace point {
   function size(fieldDef: ChannelDefWithLegend, scaleName: string, scale: Scale, config: Config): VgValueRef {
     if (fieldDef) {
       if (fieldDef.field) {
-        return {
-          scale: scaleName,
+        return scaleValueRef(scaleName, {
           field: field(fieldDef, {scaleType: scale.type})
-        };
+        });
       } else if (fieldDef.value !== undefined) {
         return { value: fieldDef.value };
       }
@@ -91,10 +86,9 @@ export namespace point {
       return { value: fixedShape };
     } else if (fieldDef) {
       if (fieldDef.field) {
-        return {
-          scale: scaleName,
+        return scaleValueRef(scaleName, {
           field: field(fieldDef, {scaleType: scale.type})
-        };
+        });
       } else if (fieldDef.value) {
         return { value: fieldDef.value };
       }

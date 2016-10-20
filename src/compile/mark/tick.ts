@@ -6,7 +6,7 @@ import {Config} from '../../config';
 import {VgValueRef} from '../../vega.schema';
 
 import {UnitModel} from '../unit';
-import {applyColorAndOpacity} from '../common';
+import {applyColorAndOpacity, scaleValueRef} from '../common';
 
 export namespace tick {
   export function markType() {
@@ -40,15 +40,13 @@ export namespace tick {
     // x
     if (fieldDef) {
       if (stack && X === stack.fieldChannel) {
-        return {
-          scale: scaleName,
+        return scaleValueRef(scaleName, {
           field: field(fieldDef, { suffix: 'end' })
-        };
+        });
       } else if (fieldDef.field) {
-        return {
-          scale: scaleName,
+        return scaleValueRef(scaleName, {
           field: field(fieldDef, { binSuffix: 'mid' })
-        };
+        });
       } else if (fieldDef.value) {
         return {value: fieldDef.value};
       }
@@ -60,15 +58,13 @@ export namespace tick {
     // y
     if (fieldDef) {
       if (stack && Y === stack.fieldChannel) {
-        return {
-          scale: scaleName,
+        return scaleValueRef(scaleName, {
           field: field(fieldDef, { suffix: 'end' })
-        };
+        });
       } else if (fieldDef.field) {
-        return {
-          scale: scaleName,
+        return scaleValueRef(scaleName, {
           field: field(fieldDef, { binSuffix: 'mid' })
-        };
+        });
       } else if (fieldDef.value) {
         return {value: fieldDef.value};
       }
@@ -79,10 +75,9 @@ export namespace tick {
   function size(fieldDef: FieldDef, scaleName: string, config: Config, scaleBandSize: number): VgValueRef {
     if (fieldDef) {
       if (fieldDef.field) {
-        return {
-          scale: scaleName,
+        return scaleValueRef(scaleName, {
           field: fieldDef.field
-        };
+        });
       } else if (fieldDef.value !== undefined) {
         return { value: fieldDef.value };
       }

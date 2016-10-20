@@ -477,8 +477,8 @@ function pointBandSize(model: UnitModel) {
     return xIsMeasure !== yIsMeasure ?
       model.scale(xIsMeasure ? Y : X).bandSize :
       Math.min(
-        model.scale(X).bandSize || scaleConfig.bandSize,
-        model.scale(Y).bandSize || scaleConfig.bandSize
+        (model.scale(X) || {}).bandSize || scaleConfig.bandSize,
+        (model.scale(Y) || {}).bandSize || scaleConfig.bandSize
       );
   } else if (hasY) {
     return yIsMeasure ? model.config().scale.bandSize : model.scale(Y).bandSize;

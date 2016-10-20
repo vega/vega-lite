@@ -7,7 +7,7 @@ import {Scale, ScaleType} from '../../scale';
 import {StackProperties} from '../../stack';
 import {contains} from '../../util';
 
-import {applyColorAndOpacity, applyMarkConfig} from '../common';
+import {applyColorAndOpacity, applyMarkConfig, scaleValueRef} from '../common';
 import {UnitModel} from '../unit';
 
 export namespace area {
@@ -47,10 +47,9 @@ export namespace area {
 
   export function x(fieldDef: FieldDef, scaleName: string, scale: Scale, orient: Orient, stack: StackProperties): VgValueRef {
     if (stack && X === stack.fieldChannel) { // Stacked Measure
-      return {
-        scale: scaleName,
+      return scaleValueRef(scaleName, {
         field: field(fieldDef, { suffix: 'start' })
-      };
+      });
     } else if (fieldDef) {
       if (fieldDef.field) {
         return {
@@ -59,7 +58,6 @@ export namespace area {
         };
       } else if (fieldDef.value) {
         return {
-          scale: scaleName,
           value: fieldDef.value
         };
       }
@@ -72,19 +70,16 @@ export namespace area {
     // x
     if (orient === Orient.HORIZONTAL) {
       if (stack && X === stack.fieldChannel) { // Stacked Measure
-        return {
-          scale: scaleName,
+        return scaleValueRef(scaleName, {
           field: field(xFieldDef, { suffix: 'end' })
-        };
+        });
       } else if (x2FieldDef) {
         if (x2FieldDef.field) {
-          return {
-            scale: scaleName,
+          return scaleValueRef(scaleName, {
             field: field(x2FieldDef)
-          };
+          });
         } else if (x2FieldDef.value) {
           return {
-            scale: scaleName,
             value: x2FieldDef.value
           };
         }
@@ -107,21 +102,16 @@ export namespace area {
 
   export function y(fieldDef: FieldDef, scaleName: string, scale: Scale, orient: Orient, stack: StackProperties): VgValueRef {
     if (stack && Y === stack.fieldChannel) { // Stacked Measure
-      return {
-        scale: scaleName,
+      return scaleValueRef(scaleName, {
         field: field(fieldDef, { suffix: 'start' })
-      };
+      });
     } else if (fieldDef) {
       if (fieldDef.field) {
-        return {
-          scale: scaleName,
+        return scaleValueRef(scaleName, {
           field: field(fieldDef, { binSuffix: 'mid' })
-        };
+        });
       } else if (fieldDef.value) {
-        return {
-          scale: scaleName,
-          value: fieldDef.value
-        };
+        return {value: fieldDef.value};
       }
     }
     return { value: 0 };
@@ -132,22 +122,17 @@ export namespace area {
 
     if (orient !== Orient.HORIZONTAL) {
       if (stack && Y === stack.fieldChannel) { // Stacked Measure
-        return {
-          scale: scaleName,
+        return scaleValueRef(scaleName, {
           field: field(yFieldDef, { suffix: 'end' })
-        };
+        });
       } else if (y2FieldDef) {
         // y2
         if (y2FieldDef.field) {
-          return {
-            scale: scaleName,
+          return scaleValueRef(scaleName, {
             field: field(y2FieldDef)
-          };
+          });
         } else if (y2FieldDef.value) {
-          return {
-            scale: scaleName,
-            value: y2FieldDef.value
-          };
+          return {value: y2FieldDef.value};
         }
       }
 
@@ -158,10 +143,9 @@ export namespace area {
         };
       }
 
-      return {
-        scale: scaleName,
+      return scaleValueRef(scaleName, {
         value: 0
-      };
+      });
     }
     return undefined;
   }

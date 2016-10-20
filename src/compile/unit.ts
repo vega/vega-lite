@@ -124,7 +124,8 @@ export class UnitModel extends Model {
 
   private _initScale(mark: Mark, encoding: Encoding, config: Config, topLevelWidth:number, topLevelHeight: number): Dict<Scale> {
     return UNIT_SCALE_CHANNELS.reduce(function(_scale, channel) {
-      if (vlEncoding.has(encoding, channel) ||
+      // TODO: refactor this to support production rule
+      if (vlEncoding.has(encoding, channel) && encoding[channel].scale !== null ||
           (channel === X && vlEncoding.has(encoding, X2)) ||
           (channel === Y && vlEncoding.has(encoding, Y2))
         ) {
