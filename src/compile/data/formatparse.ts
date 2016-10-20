@@ -10,7 +10,7 @@ import {Model} from './../model';
 
 export namespace formatParse {
   // TODO: need to take calculate into account across levels when merging
-  export function parseUnit(model: Model): Dict<string> {
+  function parse(model: Model): Dict<string> {
     const calcFieldMap = (model.calculate() || []).reduce(function(fieldMap, formula) {
       fieldMap[formula.field] = true;
       return fieldMap;
@@ -71,8 +71,10 @@ export namespace formatParse {
     return parseComponent;
   }
 
+  export const parseUnit: (model: Model) => Dict<string> = parse;
+
   export function parseFacet(model: FacetModel) {
-    let parseComponent = parseUnit(model);
+    let parseComponent = parse(model);
 
     // If child doesn't have its own data source, but has its own parse, then merge
     const childDataComponent = model.child().component.data;
@@ -85,7 +87,7 @@ export namespace formatParse {
 
   export function parseLayer(model: LayerModel) {
     // note that we run this before source.parseLayer
-    let parseComponent = parseUnit(model);
+    let parseComponent = parse(model);
     model.children().forEach((child) => {
       const childDataComponent = child.component.data;
       if (model.compatibleSource(child) && !differ(childDataComponent.formatParse, parseComponent)) {

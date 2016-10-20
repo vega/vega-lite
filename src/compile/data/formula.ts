@@ -9,12 +9,14 @@ import {DataComponent} from './data';
 
 
 export namespace formula {
-  export function parseUnit(model: Model): Dict<Formula> {
+  function parse(model: Model): Dict<Formula> {
     return (model.calculate() || []).reduce(function(formulaComponent, formula) {
       formulaComponent[hash(formula)] = formula;
       return formulaComponent;
     }, {} as Dict<Formula>);
   }
+
+  export const parseUnit: (model: Model) => Dict<Formula> = parse;
 
   export function parseFacet(model: FacetModel) {
     let formulaComponent = parseUnit(model);
@@ -30,7 +32,7 @@ export namespace formula {
   }
 
   export function parseLayer(model: LayerModel) {
-    let formulaComponent = parseUnit(model);
+    let formulaComponent = parse(model);
     model.children().forEach((child) => {
       const childDataComponent = child.component.data;
       if (!childDataComponent.source && childDataComponent.calculate) {
