@@ -65,7 +65,6 @@
     "cheerio": "~0.22.0",
     "exorcist": "~0.4.0",
     "istanbul": "~0.4.5",
-    "json-diff": "^0.3.1",
     "mocha": "~3.1.2",
     "nodemon": "~1.11.0",
     "source-map-support": "~0.4.2",

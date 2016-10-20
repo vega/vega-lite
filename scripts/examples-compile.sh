@@ -10,5 +10,5 @@ rm -f $dir/*
 
 for file in examples/specs/*.vl.json; do
   name=${file##*/}
-  bin/vl2vg $file > $dir/$name
+  bin/vl2vg -p $file > $dir/$name
 done
