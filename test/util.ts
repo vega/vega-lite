@@ -10,8 +10,6 @@ export function parseModel(inputSpec): Model {
   return buildModel(spec, null, '');
 }
 
-
-// TODO: rename to parseUnitModel
 /**
  * Call new Model without worrying about types.
  * We use this in tests to allow using raw JSON.
