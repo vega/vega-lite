@@ -25,7 +25,7 @@ export namespace timeUnitDomain {
     }, {});
   }
 
-  export const parseUnit = parse;
+  export const parseUnit: (model: Model) => StringSet = parse;
 
   export function parseFacet(model: FacetModel) {
     // always merge with child

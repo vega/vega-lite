@@ -15,6 +15,12 @@ import {VgData, VgMarkGroup, VgScale, VgAxis, VgLegend} from '../vega.schema';
 import {DataComponent} from './data/data';
 import {LayoutComponent} from './layout';
 import {ScaleComponents} from './scale';
+/* tslint:disable:no-unused-variable */
+// These imports exist so the TS compiler can name publicly exported members in
+// The automatically created .d.ts correctly
+import {Formula} from '../transform';
+import {OneOfFilter, EqualFilter, RangeFilter} from '../filter';
+/* tslint:enable:no-unused-variable */
 
 /**
  * Composable Components that are intermediate results of the parsing phase of the
@@ -42,7 +48,7 @@ export interface Component {
   mark: VgMarkGroup[];
 }
 
-class NameMap {
+class NameMap implements NameMapInterface {
   private _nameMap: Dict<string>;
 
   constructor() {
@@ -64,6 +70,11 @@ class NameMap {
   }
 }
 
+export interface NameMapInterface {
+  rename(oldname: string, newName: string): void;
+  get(name: string): string;
+}
+
 export abstract class Model {
   protected _parent: Model;
   protected _name: string;
@@ -72,13 +83,13 @@ export abstract class Model {
   protected _data: Data;
 
   /** Name map for data sources, which can be renamed by a model's parent. */
-  protected _dataNameMap: NameMap;
+  protected _dataNameMap: NameMapInterface;
 
   /** Name map for scales, which can be renamed by a model's parent. */
-  protected _scaleNameMap: NameMap;
+  protected _scaleNameMap: NameMapInterface;
 
   /** Name map for size, which can be renamed by a model's parent. */
-  protected _sizeNameMap: NameMap;
+  protected _sizeNameMap: NameMapInterface;
 
   protected _transform: Transform;
   protected _scale: Dict<Scale>;

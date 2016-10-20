@@ -58,7 +58,7 @@ export namespace source {
     return undefined;
   }
 
-  export const parseUnit = parse;
+  export const parseUnit: (model: Model) => VgData = parse;
 
   export function parseFacet(model: FacetModel) {
     let sourceData = parse(model);

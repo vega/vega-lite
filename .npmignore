@@ -29,3 +29,5 @@ _config.yml
 .vscode
 .editorconfig
 vl.sublime-project
+**/*.ts
+!**/*.d.ts

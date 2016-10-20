@@ -11,13 +11,13 @@ const SUNDAY_YEAR = 2006;
  * @minimum 1
  * @maximum 12
  */
-type Month = number;
+export type Month = number;
 
 /**
  * @minimum 1
  * @maximum 7
  */
-type Day = number;
+export type Day = number;
 
 /**
  * Object for defining datetime in Vega-Lite Filter.

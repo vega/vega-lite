@@ -9,6 +9,7 @@
   ],
   "description": "Vega-lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications.",
   "main": "src/vl.js",
+  "types": "src/vl.d.ts",
   "bin": {
     "vl2png": "./bin/vl2png",
     "vl2svg": "./bin/vl2svg",
@@ -24,7 +25,7 @@
     "build:images": "npm run data && scripts/generate-images.sh",
     "build:toc": "bundle exec jekyll build --incremental -q && scripts/generate-toc",
     "cover": "npm run pretest && istanbul cover node_modules/.bin/_mocha -- --recursive",
-    "clean": "rm -f vega-lite.* vega-lite-schema.json & find src -name '*.js*' -type f -delete & find test -name '*.js*' -type f -delete & find site -name '*.js*' -type f -delete & rm -rf examples/_diff examples/_original examples/_output examples/images && rm -rf data",
+    "clean": "rm -f vega-lite.* vega-lite-schema.json & find src -name '*.js*' -type f -delete & find test -name '*.js*' -type f -delete & find test -name '*.d.ts' -type f -delete & find site -name '*.js*' -type f -delete & rm -rf examples/_diff examples/_original examples/_output examples/images && rm -rf data",
     "data": "rsync -r node_modules/vega-datasets/data/* data",
     "deploy": "scripts/deploy.sh",
     "deploy:gh": "scripts/deploy-gh.sh",

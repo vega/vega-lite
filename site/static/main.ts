@@ -2,6 +2,9 @@
 
 declare const BASEURL, hljs;
 
+// IIFE to prevent function declarations from moving into the global scope
+(() => {
+
 function trim(str: string) {
   return str.replace(/^\s+|\s+$/g, '');
 }
@@ -85,7 +88,7 @@ function renderGallery() {
       // try to retrieve specs for a gallery group from in vl-examples.json
       try {
         galleryGroupSpecs = VL_SPECS[galleryGroupName];
-      } catch (error){
+      } catch (error) {
         console.log(error.message);
         return;
       }
@@ -124,3 +127,5 @@ function renderGallery() {
     }
   });
 }
+
+})();

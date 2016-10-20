@@ -71,7 +71,7 @@ export namespace formatParse {
     return parseComponent;
   }
 
-  export const parseUnit = parse;
+  export const parseUnit: (model: Model) => Dict<string> = parse;
 
   export function parseFacet(model: FacetModel) {
     let parseComponent = parse(model);

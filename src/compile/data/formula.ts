@@ -16,7 +16,7 @@ export namespace formula {
     }, {} as Dict<Formula>);
   }
 
-  export const parseUnit = parse;
+  export const parseUnit: (model: Model) => Dict<Formula> = parse;
 
   export function parseFacet(model: FacetModel) {
     let formulaComponent = parse(model);
