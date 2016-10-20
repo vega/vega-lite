@@ -55,8 +55,6 @@ export interface DataComponent {
   /** Dictionary mapping an output field name (hash) to the sort and rank transforms  */
   colorRank: Dict<VgTransform[]>;
 
-
-
   /** Array of summary component object for producing summary (aggregate) data source */
   summary: SummaryComponent[];
 }
