@@ -16,8 +16,8 @@ for file in examples/specs/*.vl.json; do
   base=${name%.vl.json} # exclude extension
   ext="${file##*.}"
 
-  diff=$(json-diff --color examples/_original/$name examples/_output/$name)
-  if [ "$diff" != " undefined" ]; then
+  diff=$(diff examples/_original/$name examples/_output/$name)
+  if [[ "$diff" != "" ]]; then
     echo "Diff for $name"
     echo -e "$diff"
     changed+=("$base")
