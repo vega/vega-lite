@@ -29,7 +29,7 @@
     "data": "rsync -r node_modules/vega-datasets/data/* data",
     "deploy": "scripts/deploy.sh",
     "deploy:gh": "scripts/deploy-gh.sh",
-    "lint": "tslint -c tslint.json 'src/**/*.ts' 'test/**/*.ts'",
+    "lint": "tslint -c tslint.json 'src/**/*.ts' 'test/**/*.ts' --exclude '**/*.d.ts'",
     "prestart": "npm run build && npm run data && scripts/index-examples",
     "start": "npm run watch & browser-sync start --server --files 'vega-lite.js' --index 'test-gallery.html'",
     "poststart": "rm examples/all-examples.json",
