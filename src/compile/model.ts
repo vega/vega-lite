@@ -78,6 +78,7 @@ class NameMap implements NameMapInterface {
 
 export interface NameMapInterface {
   rename(oldname: string, newName: string): void;
+  has(name: string): boolean;
   get(name: string): string;
 }
 
