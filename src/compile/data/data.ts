@@ -18,7 +18,6 @@ import {nonPositiveFilter} from './nonpositivenullfilter';
 import {summary} from './summary';
 import {stackScale} from './stackscale';
 import {timeUnit} from './timeunit';
-import {timeUnitDomain} from './timeunitdomain';
 import {colorRank} from './colorrank';
 
 
@@ -56,9 +55,6 @@ export interface DataComponent {
   /** Dictionary mapping an output field name (hash) to the sort and rank transforms  */
   colorRank: Dict<VgTransform[]>;
 
-  /** String set of time units that need their own data sources for scale domain */
-  timeUnitDomain: StringSet;
-
   /** Array of summary component object for producing summary (aggregate) data source */
   summary: SummaryComponent[];
 }
@@ -91,7 +87,6 @@ export function parseUnitData(model: UnitModel): DataComponent {
     bin: bin.parseUnit(model),
     calculate: formula.parseUnit(model),
     timeUnit: timeUnit.parseUnit(model),
-    timeUnitDomain: timeUnitDomain.parseUnit(model),
     summary: summary.parseUnit(model),
     stackScale: stackScale.parseUnit(model),
     colorRank: colorRank.parseUnit(model)
@@ -109,7 +104,6 @@ export function parseFacetData(model: FacetModel): DataComponent {
     bin: bin.parseFacet(model),
     calculate: formula.parseFacet(model),
     timeUnit: timeUnit.parseFacet(model),
-    timeUnitDomain: timeUnitDomain.parseFacet(model),
     summary: summary.parseFacet(model),
     stackScale: stackScale.parseFacet(model),
     colorRank: colorRank.parseFacet(model)
@@ -130,7 +124,6 @@ export function parseLayerData(model: LayerModel): DataComponent {
     bin: bin.parseLayer(model),
     calculate: formula.parseLayer(model),
     timeUnit: timeUnit.parseLayer(model),
-    timeUnitDomain: timeUnitDomain.parseLayer(model),
     summary: summary.parseLayer(model),
     stackScale: stackScale.parseLayer(model),
     colorRank: colorRank.parseLayer(model)
@@ -187,9 +180,5 @@ export function assembleData(model: Model, data: VgData[]) {
   if (stackData) {
     data.push(stackData);
   }
-
-  timeUnitDomain.assemble(component).forEach(function(timeUnitDomainData) {
-    data.push(timeUnitDomainData);
-  });
   return data;
 }

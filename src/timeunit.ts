@@ -1,7 +1,6 @@
-import {COLUMN, ROW, SHAPE, COLOR, Channel} from './channel';
 import {DateTimeExpr, dateTimeExpr} from './datetime';
 import {ScaleType} from './scale';
-import {Dict, contains, keys, range} from './util';
+import {Dict, keys} from './util';
 
 export enum TimeUnit {
   YEAR = 'year' as any,
@@ -178,32 +177,6 @@ export function fieldExpr(fullTimeUnit: TimeUnit, field: string): string {
   }
 
   return dateTimeExpr(d);
-}
-
-/** Generate the complete domain. */
-export function imputedDomain(timeUnit: TimeUnit, channel: Channel) {
-  if (contains([ROW, COLUMN, SHAPE, COLOR], channel)) {
-    return null;
-  }
-
-  switch (timeUnit) {
-    case TimeUnit.SECONDS:
-      return range(0, 60);
-    case TimeUnit.MINUTES:
-      return range(0, 60);
-    case TimeUnit.HOURS:
-      return range(0, 24);
-    case TimeUnit.DAY:
-      return range(0, 7);
-    case TimeUnit.DATE:
-      return range(1, 32);
-    case TimeUnit.MONTH:
-      return range(0, 12);
-    case TimeUnit.QUARTER:
-      return [0,1,2,3]; // Q1-Q4 (0th-index)
-  }
-
-  return null;
 }
 
 /** returns the smallest nice unit for scale.nice */

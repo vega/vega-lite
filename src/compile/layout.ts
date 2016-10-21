@@ -9,7 +9,6 @@ import {VgData} from '../vega.schema';
 import {FacetModel} from './facet';
 import {LayerModel} from './layer';
 import {Model} from './model';
-import {imputedDomain} from '../timeunit';
 import {UnitModel} from './unit';
 
 // FIXME: for nesting x and y, we need to declare x,y layout separately before joining later
@@ -179,16 +178,11 @@ function getDistinct(model: Model, channel: Channel): StringSet {
   return {};
 }
 
-export function cardinalityExpr(model: Model, channel: Channel) {
+export function cardinalityExpr(model: Model, channel: Channel):string {
   const scale = model.scale(channel);
   if (scale.domain instanceof Array) {
-    return scale.domain.length;
+    return scale.domain.length + '';
   }
 
-  const timeUnit = model.fieldDef(channel).timeUnit;
-  const timeUnitDomain = timeUnit ? imputedDomain(timeUnit, channel) : null;
-
-  // FIXME: production rule will break here!
-  return timeUnitDomain !== null ? timeUnitDomain.length :
-    model.field(channel, {datum: true, prefix: 'distinct'});
+  return model.field(channel, {datum: true, prefix: 'distinct'});
 }

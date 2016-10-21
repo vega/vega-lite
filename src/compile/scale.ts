@@ -16,7 +16,7 @@ import {contains, extend, Dict} from '../util';
 import {VgScale} from '../vega.schema';
 
 import {Model} from './model';
-import {defaultScaleType, imputedDomain, smallestUnit} from '../timeunit';
+import {defaultScaleType, smallestUnit} from '../timeunit';
 import {UnitModel} from './unit';
 
 /**
@@ -252,13 +252,6 @@ export function domain(scale: Scale, model: Model, channel:Channel): any {
 
   // special case for temporal scale
   if (fieldDef.type === TEMPORAL) {
-    if (imputedDomain(fieldDef.timeUnit, channel)) {
-      return {
-        data: fieldDef.timeUnit,
-        field: 'date'
-      };
-    }
-
     return {
       data: model.dataTable(),
       field: model.field(channel),
