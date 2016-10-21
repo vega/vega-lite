@@ -337,8 +337,16 @@ export abstract class Model {
    * @return scale name for a given channel after the scale has been parsed and named.
    * (DO NOT USE THIS METHOD DURING SCALE PARSING, use model.name() instead)
    */
-  public scaleName(originalScaleName: Channel|string): string {
+  public scaleName(originalScaleName: Channel|string, parse?: boolean): string {
     const channel = contains([COLOR_LEGEND, COLOR_LEGEND_LABEL], originalScaleName) ? 'color' : originalScaleName;
+
+    if (parse) {
+      // During the parse phase always return a value
+      // No need to refer to rename map because a scale can't be renamed
+      // before it has the original name.
+      return this.name(originalScaleName + '');
+    }
+
     // If there is a scale for the channel, it should either
     // be in the _scale mapping or exist in the name map
     if (
