@@ -30,17 +30,6 @@ describe('compile/layout', () => {
       const expr = cardinalityExpr(model, X);
       assert.equal(expr, '2');
     });
-
-    it('should return complete domain of timeUnit if applicable', () => {
-      const model = parseUnitModel({
-        mark: 'point',
-        encoding: {
-          x: {field: 'a', type: 'temporal', timeUnit: 'month'}
-        }
-      });
-      const expr = cardinalityExpr(model, X);
-      assert.equal(expr, '12');
-    });
   });
 
   describe('unitSizeExpr', () => {
