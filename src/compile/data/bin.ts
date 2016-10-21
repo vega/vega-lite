@@ -65,7 +65,7 @@ export namespace bin {
     }, {});
   }
 
-  export const parseUnit = parse;
+  export const parseUnit: (model: Model) => Dict<VgTransform[]> = parse;
 
   export function parseFacet(model: FacetModel) {
     let binComponent = parse(model);

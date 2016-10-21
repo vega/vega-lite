@@ -36,7 +36,7 @@ export namespace nullFilter {
     }, {});
   }
 
-  export const parseUnit = parse;
+  export const parseUnit: (model: Model) => Dict<boolean> = parse;
 
   export function parseFacet(model: FacetModel) {
     let nullFilterComponent = parse(model);

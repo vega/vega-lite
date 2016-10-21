@@ -2,7 +2,7 @@ language: node_js
 node_js:
   - "0.12"
   - "4"
-  - "5"
+  - "6"
 install: npm install
 script:
   - npm run clean && npm run build

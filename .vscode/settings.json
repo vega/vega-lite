@@ -3,6 +3,7 @@
   "editor.tabSize": 2,
   "files.exclude": {
     "**/*.js": {"when": "$(basename).ts"},
+    "**/*.d.ts": {"when": "$(basename).ts"},
     "**/*.js.map": true,
     "coverage/**/*": true,
     "_site/**/*": true

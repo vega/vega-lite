@@ -32,6 +32,10 @@ if ! [ -f src/vl.js ]; then
   echo "${RED} src/vl.js not found.  Typescripts may be not compiled.${NC}"
   exit 1;
 fi
+if ! [ -f src/vl.d.ts ]; then
+  echo "${RED} src/vl.d.ts not found.  Typescript declarations may be not compiled.${NC}"
+  exit 1;
+fi
 
 npm publish
 # exit if npm publish failed

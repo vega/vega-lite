@@ -28,7 +28,7 @@ export namespace timeUnit {
     }, {});
   }
 
-  export const parseUnit = parse;
+  export const parseUnit: (model: Model) => Dict<VgTransform> = parse;
 
   export function parseFacet(model: FacetModel) {
     let timeUnitComponent = parse(model);
