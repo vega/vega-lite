@@ -83,6 +83,6 @@
   "dependencies": {
     "datalib": "~1.7.2",
     "json-stable-stringify": "~1.0.1",
-    "yargs": "~6.0.0"
+    "yargs": "~6.3.0"
   }
 }
