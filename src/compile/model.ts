@@ -9,12 +9,13 @@ import {Scale, ScaleType} from '../scale';
 import {SortField, SortOrder} from '../sort';
 import {BaseSpec} from '../spec';
 import {Transform} from '../transform';
-import {extend, flatten, vals, warning, Dict} from '../util';
+import {contains, extend, flatten, vals, warning, Dict} from '../util';
 import {VgData, VgMarkGroup, VgScale, VgAxis, VgLegend} from '../vega.schema';
 
 import {DataComponent} from './data/data';
 import {LayoutComponent} from './layout';
-import {ScaleComponents} from './scale';
+import {ScaleComponents, COLOR_LEGEND, COLOR_LEGEND_LABEL} from './scale';
+
 /* tslint:disable:no-unused-variable */
 // These imports exist so the TS compiler can name publicly exported members in
 // The automatically created .d.ts correctly
@@ -59,9 +60,14 @@ class NameMap implements NameMapInterface {
     this._nameMap[oldName] = newName;
   }
 
+
+  public has(name: string): boolean {
+    return this._nameMap[name] !== undefined;
+  }
+
   public get(name: string): string {
     // If the name appears in the _nameMap, we need to read its new name.
-    // We have to loop over the dict just in case, the new name also gets renamed.
+    // We have to loop over the dict just in case the new name also gets renamed.
     while (this._nameMap[name]) {
       name = this._nameMap[name];
     }
@@ -72,6 +78,7 @@ class NameMap implements NameMapInterface {
 
 export interface NameMapInterface {
   rename(oldname: string, newName: string): void;
+  has(name: string): boolean;
   get(name: string): string;
 }
 
@@ -326,9 +333,32 @@ export abstract class Model {
     this._scaleNameMap.rename(oldName, newName);
   }
 
-  /** returns scale name for a given channel */
-  public scaleName(channel: Channel|string): string {
-    return this._scaleNameMap.get(this.name(channel + ''));
+
+  /**
+   * @return scale name for a given channel after the scale has been parsed and named.
+   * (DO NOT USE THIS METHOD DURING SCALE PARSING, use model.name() instead)
+   */
+  public scaleName(originalScaleName: Channel|string, parse?: boolean): string {
+    const channel = contains([COLOR_LEGEND, COLOR_LEGEND_LABEL], originalScaleName) ? 'color' : originalScaleName;
+
+    if (parse) {
+      // During the parse phase always return a value
+      // No need to refer to rename map because a scale can't be renamed
+      // before it has the original name.
+      return this.name(originalScaleName + '');
+    }
+
+    // If there is a scale for the channel, it should either
+    // be in the _scale mapping or exist in the name map
+    if (
+        // in the scale map (the scale is not merged by its parent)
+        (this._scale && this._scale[channel]) ||
+        // in the scale name map (the the scale get merged by its parent)
+        this._scaleNameMap.has(this.name(originalScaleName + ''))
+      ) {
+      return this._scaleNameMap.get(this.name(originalScaleName + ''));
+    }
+    return undefined;
   }
 
   public sort(channel: Channel): SortField | SortOrder {

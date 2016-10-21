@@ -163,7 +163,7 @@ export class LayerModel extends Model {
           // rename child scales to parent scales
           vals(childScales).forEach(function(scale) {
             const scaleNameWithoutPrefix = scale.name.substr(child.name('').length);
-            const newName = model.scaleName(scaleNameWithoutPrefix);
+            const newName = model.scaleName(scaleNameWithoutPrefix, true);
             child.renameScale(scale.name, newName);
             scale.name = newName;
           });
