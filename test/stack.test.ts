@@ -161,6 +161,48 @@ describe('stack', () => {
     });
   });
 
+  it('should always be disabled if there is both x and x2  ', () => {
+    [undefined, StackOffset.CENTER, StackOffset.NONE, StackOffset.ZERO, StackOffset.NORMALIZE].forEach((stacked) => {
+      PRIMITIVE_MARKS.forEach((mark) => {
+        const spec = {
+          "mark": mark,
+          "encoding": {
+            "x": {"field": "a", "type": "quantitative", "aggregate": "sum"},
+            "x2": {"field": "a", "type": "quantitative", "aggregate": "sum"},
+            "y": {"field": "variety", "type": "nominal"},
+            "color": {"field": "site", "type": "nominal"}
+          },
+          "config": {
+            "mark": {"stacked": stacked}
+          }
+        };
+        assert.isNull(stack(spec.mark, spec.encoding as any, spec.config.mark.stacked));
+        assert.isFalse(isStacked(spec as any));
+      });
+    });
+  });
+
+  it('should always be disabled if there is both y and y2  ', () => {
+    [undefined, StackOffset.CENTER, StackOffset.NONE, StackOffset.ZERO, StackOffset.NORMALIZE].forEach((stacked) => {
+      PRIMITIVE_MARKS.forEach((mark) => {
+        const spec = {
+          "mark": mark,
+          "encoding": {
+            "y": {"field": "a", "type": "quantitative", "aggregate": "sum"},
+            "y2": {"field": "a", "type": "quantitative", "aggregate": "sum"},
+            "x": {"field": "variety", "type": "nominal"},
+            "color": {"field": "site", "type": "nominal"}
+          },
+          "config": {
+            "mark": {"stacked": stacked}
+          }
+        };
+        assert.isNull(stack(spec.mark, spec.encoding as any, spec.config.mark.stacked));
+        assert.isFalse(isStacked(spec as any));
+      });
+    });
+  });
+
   it('should always be disabled if the aggregated axis has non-linear scale', () => {
     [undefined, StackOffset.CENTER, StackOffset.NONE, StackOffset.ZERO, StackOffset.NORMALIZE].forEach((stacked) => {
       [ScaleType.LOG, ScaleType.POW, ScaleType.SQRT].forEach((scaleType) => {

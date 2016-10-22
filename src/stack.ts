@@ -1,5 +1,5 @@
 import {SUM_OPS} from './aggregate';
-import {Channel, STACK_GROUP_CHANNELS, X, Y} from './channel';
+import {Channel, STACK_GROUP_CHANNELS, X, Y, X2, Y2} from './channel';
 import {Encoding, has, isAggregate} from './encoding';
 import {Mark, BAR, AREA, POINT, CIRCLE, SQUARE, LINE, TEXT, TICK} from './mark';
 import {ScaleType} from './scale';
@@ -67,6 +67,11 @@ export function stack(mark: Mark, encoding: Encoding, stacked: StackOffset): Sta
 
     if (fieldChannelScale && fieldChannelScale.type && fieldChannelScale.type !== ScaleType.LINEAR) {
       console.warn('Cannot stack non-linear (' + fieldChannelScale.type + ') scale');
+      return null;
+    }
+
+    if (has(encoding, fieldChannel === X ? X2 : Y2)) {
+      console.warn('Cannot stack ' + fieldChannel + ' if there is already ' + fieldChannel);
       return null;
     }
 
