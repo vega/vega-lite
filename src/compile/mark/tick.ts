@@ -81,7 +81,7 @@ export namespace tick {
       if (fieldDef.field) {
         return {
           scale: scaleName,
-          field: fieldDef.field
+          field: field(fieldDef) // TODO: what's the missing suffix
         };
       } else if (fieldDef.value !== undefined) {
         return { value: fieldDef.value };
