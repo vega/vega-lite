@@ -1,5 +1,8 @@
 import {X, Y, X2, Y2, SIZE} from '../../channel';
-import {Orient} from '../../config';
+import {Config, Orient} from '../../config';
+import {FieldDef, field} from '../../fielddef';
+
+import {VgValueRef} from '../../vega.schema';
 
 import {UnitModel} from '../unit';
 import {applyColorAndOpacity} from '../common';
@@ -11,85 +14,86 @@ export namespace rule {
 
   export function properties(model: UnitModel) {
     let p: any = {};
+    const orient = model.config().mark.orient;
+    const config = model.config();
 
-    // TODO: support explicit value
-    if(model.config().mark.orient === Orient.VERTICAL) {
-      if (model.has(X)) {
-        p.x = {
-          scale: model.scaleName(X),
-          field: model.field(X, { binSuffix: 'mid' })
-        };
-      } else {
-        p.x = { value : 0 };
-      }
+    p.x = x(model.encoding().x, model.scaleName(X));
+    p.y = y(model.encoding().y, model.scaleName(Y), orient);
 
-      if (model.has(Y)) {
-        p.y = {
-          scale: model.scaleName(Y),
-          field: model.field(Y, { binSuffix: 'mid' })
-        };
-      } else {
-        p.y = { field: { group: 'height' } };
-      }
-
-      if (model.has(Y2)) {
-        p.y2 = {
-          scale: model.scaleName(Y),
-          field: model.field(Y2, { binSuffix: 'mid' })
-        };
-      } else {
-        p.y2 = { value: 0 };
-      }
+    if(orient === Orient.VERTICAL) {
+      p.y2 = y2(model.encoding().y2, model.scaleName(Y));
     } else {
-      if (model.has(Y)) {
-        p.y = {
-          scale: model.scaleName(Y),
-          field: model.field(Y, { binSuffix: 'mid' })
-        };
-      } else {
-        p.y = { value: 0 };
-      }
-
-      if (model.has(X)) {
-        p.x = {
-          scale: model.scaleName(X),
-          field: model.field(X, { binSuffix: 'mid' })
-        };
-      } else {
-        p.x = { value: 0 };
-      }
-
-      if (model.has(X2)) {
-        p.x2 = {
-          scale: model.scaleName(X),
-          field: model.field(X2, { binSuffix: 'mid' })
-        };
-      } else {
-        p.x2 = { field: { group: 'width' } };
-      }
+      p.x2 = x2(model.encoding().x2, model.scaleName(X));
     }
 
     // FIXME: this function would overwrite strokeWidth but shouldn't
     applyColorAndOpacity(p, model);
 
-    // size
-    if (model.has(SIZE)) {
-      p.strokeWidth = {
-        scale: model.scaleName(SIZE),
-        field: model.field(SIZE)
-      };
-    } else {
-      p.strokeWidth = { value: sizeValue(model) };
-    }
+    p.strokeWidth = size(model.encoding().size, model.scaleName(SIZE), config);
+
     return p;
   }
 
-  function sizeValue(model: UnitModel) {
-    const fieldDef = model.encoding().size;
-    if (fieldDef && fieldDef.value !== undefined) {
-       return fieldDef.value;
+  function x(fieldDef: FieldDef, scaleName: string): VgValueRef {
+    if (fieldDef) {
+      return {
+        scale: scaleName,
+        field: field(fieldDef, { binSuffix: 'mid' })
+      };
+    } else {
+      return { value: 0 };
+    }
+  }
+
+  function y(fieldDef: FieldDef, scaleName: string, orient): VgValueRef {
+    if (fieldDef) {
+      return {
+        scale: scaleName,
+        field: field(fieldDef, { binSuffix: 'mid' })
+      };
+    } else {
+      if (orient === Orient.VERTICAL) {
+        return { field: { group: 'height' } };
+      } else {
+        return { value: 0 };
+      }
+    }
+  }
+
+  function y2(fieldDef: FieldDef, scaleName: string): VgValueRef {
+    if (fieldDef) {
+      return {
+        scale: scaleName,
+        field: field(fieldDef, { binSuffix: 'mid' })
+      };
+    } else {
+      return {value: 0};
+    }
+  }
+
+  function x2(fieldDef: FieldDef, scaleName: string): VgValueRef {
+    if (fieldDef) {
+      return {
+        scale: scaleName,
+        field: field(fieldDef, { binSuffix: 'mid' })
+      };
+    } else {
+      return { field: { group: 'width' } };
+    }
+  }
+
+  function size(fieldDef: FieldDef, scaleName: string, config: Config): VgValueRef {
+    if (fieldDef) {
+      if (fieldDef.field) {
+        return {
+          scale: scaleName,
+          field: field(fieldDef) // TODO: what's the missing suffix
+        };
+      } else if (fieldDef.value) {
+        return {value: fieldDef.value};
+      }
     }
 
-    return model.config().mark.ruleSize;
+    return {value: config.mark.ruleSize};
   }
 }
