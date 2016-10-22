@@ -83,32 +83,23 @@ export function orient(mark: Mark, encoding: Encoding, markConfig: MarkConfig = 
       }
       // y:Q or Ambiguous case, return horizontal
       return Orient.HORIZONTAL;
+
     case RULE:
-      if (xIsRange) {
-        return Orient.HORIZONTAL;
-      }
-      if (yIsRange) {
-        return Orient.VERTICAL;
-      }
-      if (encoding.y) {
-        return Orient.HORIZONTAL;
-      }
-      if (encoding.x) {
-        return Orient.VERTICAL;
-      }
-      // no x/y -- so it's undefined
-      return undefined;
     case BAR:
     case AREA:
       // If there are range for both x and y, y (vertical) has higher precedence.
-
       if (yIsRange) {
         return Orient.VERTICAL;
+      } else if (xIsRange) {
+        return Orient.HORIZONTAL;
+      } else if (mark === RULE) {
+        if (encoding.x && !encoding.y) {
+          return Orient.VERTICAL;
+        } else if (encoding.y && !encoding.x) {
+          return Orient.HORIZONTAL;
+        }
       }
 
-      if (xIsRange) {
-        return Orient.HORIZONTAL;
-      }
       /* tslint:disable */
     case LINE: // intentional fall through
       /* tslint:enable */

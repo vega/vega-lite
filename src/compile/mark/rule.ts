@@ -1,4 +1,4 @@
-import {X, Y, X2, Y2, SIZE} from '../../channel';
+import {X, Y, SIZE} from '../../channel';
 import {Config, Orient} from '../../config';
 import {FieldDef, field} from '../../fielddef';
 
@@ -18,7 +18,7 @@ export namespace rule {
     const config = model.config();
 
     p.x = x(model.encoding().x, model.scaleName(X));
-    p.y = y(model.encoding().y, model.scaleName(Y), orient);
+    p.y = y(model.encoding().y, model.scaleName(Y));
 
     if(orient === Orient.VERTICAL) {
       p.y2 = y2(model.encoding().y2, model.scaleName(Y));
@@ -45,18 +45,14 @@ export namespace rule {
     }
   }
 
-  function y(fieldDef: FieldDef, scaleName: string, orient): VgValueRef {
+  function y(fieldDef: FieldDef, scaleName: string): VgValueRef {
     if (fieldDef) {
       return {
         scale: scaleName,
         field: field(fieldDef, { binSuffix: 'mid' })
       };
     } else {
-      if (orient === Orient.VERTICAL) {
-        return { field: { group: 'height' } };
-      } else {
-        return { value: 0 };
-      }
+      return {field: {group: 'height'}};
     }
   }
 
@@ -66,7 +62,16 @@ export namespace rule {
         scale: scaleName,
         field: field(fieldDef, { binSuffix: 'mid' })
       };
-    } else {
+    } else { // Default
+      // TODO: log scale / zero = false?
+      if (scaleName) {
+        // If there is a scale, put y2 on the axis
+        return {
+          scale: scaleName,
+          value: 0
+        };
+      }
+      // Otherwise, put it on the axis
       return {value: 0};
     }
   }
@@ -77,7 +82,15 @@ export namespace rule {
         scale: scaleName,
         field: field(fieldDef, { binSuffix: 'mid' })
       };
-    } else {
+    } else { // Default
+      // TODO: log scale / zero = false?
+      if (scaleName) {
+        // If there is a scale, put x2 on the axis
+        return {
+          scale: scaleName,
+          value: 0
+        };
+      }
       return { field: { group: 'width' } };
     }
   }
