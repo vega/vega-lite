@@ -37,17 +37,10 @@ export namespace bar {
       };
     } else if (xIsMeasure) {
       if (orient === Orient.HORIZONTAL) {
-        if (model.has(X)) {
-          p.x = {
-            scale: model.scaleName(X),
-            field: model.field(X)
-          };
-        } else {
-          p.x = {
-            scale: model.scaleName(X),
-            value: 0
-          };
-        }
+        p.x = {
+          scale: model.scaleName(X),
+          field: model.field(X)
+        };
 
         if (model.has(X2)) {
           p.x2 = {
@@ -145,17 +138,10 @@ export namespace bar {
       };
     } else if (yIsMeasure) {
       if (orient !== Orient.HORIZONTAL) { // vertical (explicit 'vertical' or undefined)
-        if (model.has(Y)) {
-          p.y = {
-            scale: model.scaleName(Y),
-            field: model.field(Y)
-          };
-        } else {
-          p.y = {
-            scale: model.scaleName(Y),
-            value: 0
-          };
-        }
+        p.y = {
+          scale: model.scaleName(Y),
+          field: model.field(Y)
+        };
 
         if (model.has(Y2)) {
           p.y2 = {
