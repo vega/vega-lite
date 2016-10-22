@@ -115,7 +115,7 @@ describe('Config', function() {
       const model = parseUnitModel({
         "mark": "rule",
         "encoding": {
-          "x": {"type": "quantitative", "field": "foo"},
+          "x": {"value": 0},
         },
       });
       assert.equal(orient(model.mark(), model.encoding()), Orient.VERTICAL);
@@ -125,10 +125,34 @@ describe('Config', function() {
       const model = parseUnitModel({
         "mark": "rule",
         "encoding": {
-          "y": {"type": "quantitative", "field": "foo"},
+          "y": {"value": 0},
         },
       });
       assert.equal(orient(model.mark(), model.encoding(), {}), Orient.HORIZONTAL);
+    });
+
+    it('should return correct orient for horizontal rules without x2 ', function() {
+      const model = parseUnitModel({
+        "mark": "rule",
+        "encoding": {
+          "x": {"field": "b", "type": "quantitative"},
+          "y": {"field": "a", "type": "ordinal"},
+        },
+      });
+
+      assert.equal(orient(model.mark(), model.encoding(), {}), Orient.HORIZONTAL);
+    });
+
+    it('should return correct orient for vertical rules without y2 ', function() {
+      const model = parseUnitModel({
+        "mark": "rule",
+        "encoding": {
+          "y": {"field": "b", "type": "quantitative"},
+          "x": {"field": "a", "type": "ordinal"},
+        },
+      });
+
+      assert.equal(orient(model.mark(), model.encoding(), {}), Orient.VERTICAL);
     });
 
     it('should return correct orient for vertical rule with range', function() {
