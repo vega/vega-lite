@@ -89,12 +89,9 @@ describe('Mark: Area', function() {
 
     const props = area.properties(model);
 
-    it('should have the correct value for y', () => {
-      assert.deepEqual(props.y, {scale: 'y', field: 'count_start'});
-    });
-
-    it('should have the correct value for y2', () => {
-      assert.deepEqual(props.y2, {scale: 'y', field: 'count_end'});
+    it('should have the correct value for y and y2', () => {
+      assert.deepEqual(props.y, {scale: 'y', field: 'count_end'});
+      assert.deepEqual(props.y2, {scale: 'y', field: 'count_start'});
     });
 
     it('should have correct orient', () => {
@@ -186,12 +183,9 @@ describe('Mark: Area', function() {
 
     const props = area.properties(model);
 
-    it('should have the correct value for x', () => {
-      assert.deepEqual(props.x, {scale: 'x', field: 'count_start'});
-    });
-
-    it('should have the correct value for x2', () => {
-      assert.deepEqual(props.x2, {scale: 'x', field: 'count_end'});
+    it('should have the correct value for x and x2', () => {
+      assert.deepEqual(props.x, {scale: 'x', field: 'count_end'});
+      assert.deepEqual(props.x2, {scale: 'x', field: 'count_start'});
     });
 
     it('should have correct orient', () => {

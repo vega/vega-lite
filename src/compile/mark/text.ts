@@ -2,12 +2,10 @@ import {X, Y, COLOR, TEXT, SIZE} from '../../channel';
 import {applyMarkConfig, applyColorAndOpacity, numberFormat, timeTemplate} from '../common';
 import {Config} from '../../config';
 import {FieldDef, field} from '../../fielddef';
-import {StackProperties} from '../../stack';
 import {QUANTITATIVE, ORDINAL, TEMPORAL} from '../../type';
-import {VgValueRef} from '../../vega.schema';
-
-
 import {UnitModel} from '../unit';
+import * as ref from './valueref';
+import {VgValueRef} from '../../vega.schema';
 
 export namespace text {
   export function markType() {
@@ -39,11 +37,14 @@ export namespace text {
     const stack = model.stack();
     const textFieldDef = model.encoding().text;
 
-    p.x = x(model.encoding().x, model.scaleName(X), stack, config, textFieldDef);
+    // TODO: refactor how refer to scale as discussed in https://github.com/vega/vega-lite/pull/1613
 
-    p.y = y(model.encoding().y, model.scaleName(Y), stack, config);
+    p.x = ref.stackableX(model.encoding().x, model.scaleName(X), model.scale(X), stack, xDefault(config, textFieldDef));
+    p.y = ref.stackableY(model.encoding().y, model.scaleName(Y), model.scale(Y), stack, ref.midY(config));
 
-    p.fontSize = size(model.encoding().size, model.scaleName(SIZE), config);
+    p.fontSize = ref.normal(model.encoding().size, model.scaleName(SIZE), model.scale(SIZE),
+       {value: config.mark.fontSize}
+    );
 
     p.text = text(textFieldDef, model.scaleName(TEXT), config);
 
@@ -59,64 +60,12 @@ export namespace text {
     return p;
   }
 
-  function x(fieldDef: FieldDef, scaleName: string, stack: StackProperties, config: Config, textFieldDef:FieldDef): VgValueRef {
-    // x
-    if (fieldDef) {
-      if (stack && X === stack.fieldChannel) {
-        return {
-          scale: scaleName,
-          field: field(fieldDef, { suffix: 'end' })
-        };
-      } else if (fieldDef.field) {
-        return {
-          scale: scaleName,
-          field: field(fieldDef, { binSuffix: 'mid' })
-        };
-      }
-    }
-    // TODO: support x.value, x.datum
+  function xDefault(config: Config, textFieldDef:FieldDef): VgValueRef {
     if (textFieldDef && textFieldDef.type === QUANTITATIVE) {
       return { field: { group: 'width' }, offset: -5 };
-    } else {
-      // TODO: allow this to fit
-      return { value: config.scale.textBandWidth / 2 };
     }
-  }
-
-  function y(fieldDef: FieldDef, scaleName: string, stack: StackProperties, config: Config): VgValueRef {
-    // y
-    if (fieldDef) {
-      if (stack && Y === stack.fieldChannel) {
-        return {
-          scale: scaleName,
-          field: field(fieldDef, { suffix: 'end' })
-        };
-      } else if (fieldDef.field) {
-        return {
-          scale: scaleName,
-          field: field(fieldDef, { binSuffix: 'mid' })
-        };
-      }
-    }
-    // TODO: allow this to fit
-    // TODO consider if this should support group: height case too.
-    return { value: config.scale.bandSize / 2 };
-  }
-
-  function size(sizeFieldDef: FieldDef, scaleName: string, config: Config): VgValueRef {
-    // size
-    if (sizeFieldDef) {
-      if (sizeFieldDef.field) {
-        return {
-          scale: scaleName,
-          field: field(sizeFieldDef)
-        };
-      }
-      if (sizeFieldDef.value) {
-        return {value: sizeFieldDef.value};
-      }
-    }
-    return { value: config.mark.fontSize };
+    // TODO: allow this to fit (Be consistent with ref.midX())
+    return { value: config.scale.textBandWidth / 2 };
   }
 
   function text(textFieldDef: FieldDef, scaleName: string, config: Config): VgValueRef {
