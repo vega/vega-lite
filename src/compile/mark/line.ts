@@ -1,11 +1,10 @@
 import {X, Y} from '../../channel';
 import {Config} from '../../config';
-import {FieldDef, field} from '../../fielddef';
-import {StackProperties} from '../../stack';
-import {VgValueRef} from '../../vega.schema';
+import {FieldDef} from '../../fielddef';
 
 import {applyColorAndOpacity, applyMarkConfig} from '../common';
 import {UnitModel} from '../unit';
+import * as ref from './valueref';
 
 export namespace line {
   export function markType() {
@@ -18,9 +17,10 @@ export namespace line {
     const config = model.config();
     const stack = model.stack();
 
-    p.x = x(model.encoding().x, model.scaleName(X), stack, config);
+    // TODO: refactor how refer to scale as discussed in https://github.com/vega/vega-lite/pull/1613
 
-    p.y = y(model.encoding().y, model.scaleName(Y), stack, config);
+    p.x = ref.stackableX(model.encoding().x, model.scaleName(X), model.scale(X), stack, 'baseX');
+    p.y = ref.stackableY(model.encoding().y, model.scaleName(Y), model.scale(Y), stack, 'baseY');
 
     const _size = size(model.encoding().size, config);
     if (_size) { p.strokeWidth = _size; }
@@ -30,44 +30,9 @@ export namespace line {
     return p;
   }
 
-  function x(fieldDef: FieldDef, scaleName: string, stack: StackProperties, config: Config): VgValueRef {
-    // x
-    if (fieldDef) {
-      if (stack && X === stack.fieldChannel) {
-        return {
-          scale: scaleName,
-          field: field(fieldDef, { suffix: 'end' })
-        };
-      } else if (fieldDef.field) {
-        return {
-          scale: scaleName,
-          field: field(fieldDef, { binSuffix: 'mid' })
-        };
-      }
-      // TODO: fieldDef.value (for layering)
-    }
-    return { value: 0 };
-  }
-
-  function y(fieldDef: FieldDef, scaleName: string, stack: StackProperties, config: Config): VgValueRef {
-    // y
-    if (fieldDef) {
-      if (stack && Y === stack.fieldChannel) {
-        return {
-          scale: scaleName,
-          field: field(fieldDef, { suffix: 'end' })
-        };
-      } else if (fieldDef.field) {
-        return {
-          scale: scaleName,
-          field: field(fieldDef, { binSuffix: 'mid' })
-        };
-      }
-      // TODO: fieldDef.value (for layering)
-    }
-    return { field: { group: 'height' } };
-  }
-
+  // TODO: drop line's size earlier in the process
+  // NOTE: this is different from other size because
+  // Vega does not support variable line size
   function size(fieldDef: FieldDef, config: Config) {
     if (fieldDef && fieldDef.value !== undefined) {
        return { value: fieldDef.value};

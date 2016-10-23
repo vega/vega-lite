@@ -1,12 +1,12 @@
 import {X, Y, SIZE} from '../../channel';
-import {Orient} from '../../config';
-import {FieldDef, field} from '../../fielddef';
-import {StackProperties} from '../../stack';
-import {Config} from '../../config';
+import {Config, Orient} from '../../config';
+import {FieldDef} from '../../fielddef';
+import {Scale} from '../../scale';
 import {VgValueRef} from '../../vega.schema';
 
-import {UnitModel} from '../unit';
 import {applyColorAndOpacity} from '../common';
+import {UnitModel} from '../unit';
+import * as ref from './valueref';
 
 export namespace tick {
   export function markType() {
@@ -18,81 +18,34 @@ export namespace tick {
     const config = model.config();
     const stack = model.stack();
 
-    // TODO: support explicit value
+    // TODO: refactor how refer to scale as discussed in https://github.com/vega/vega-lite/pull/1613
 
-    p.xc = x(model.encoding().x, model.scaleName(X), stack, config);
-
-    p.yc = y(model.encoding().y, model.scaleName(Y), stack, config);
+    p.xc = ref.stackableX(model.encoding().x, model.scaleName(X), model.scale(X), stack, ref.midX(config));
+    p.yc = ref.stackableY(model.encoding().y, model.scaleName(Y), model.scale(Y), stack, ref.midY(config));
 
     if (config.mark.orient === Orient.HORIZONTAL) {
-      p.width = size(model.encoding().size, model.scaleName(SIZE), config, (model.scale(X) || {}).bandSize);
+      p.width = size(model.encoding().size, model.scaleName(SIZE), model.scale(SIZE), config, (model.scale(X) || {}).bandSize);
       p.height = { value: config.mark.tickThickness };
     } else {
       p.width = { value: config.mark.tickThickness };
-      p.height = size(model.encoding().size, model.scaleName(SIZE), config, (model.scale(Y) || {}).bandSize);
+      p.height = size(model.encoding().size, model.scaleName(SIZE), model.scale(SIZE), config, (model.scale(Y) || {}).bandSize);
     }
 
     applyColorAndOpacity(p, model);
     return p;
   }
 
-  function x(fieldDef: FieldDef, scaleName: string, stack: StackProperties, config: Config): VgValueRef {
-    // x
-    if (fieldDef) {
-      if (stack && X === stack.fieldChannel) {
-        return {
-          scale: scaleName,
-          field: field(fieldDef, { suffix: 'end' })
-        };
-      } else if (fieldDef.field) {
-        return {
-          scale: scaleName,
-          field: field(fieldDef, { binSuffix: 'mid' })
-        };
-      } else if (fieldDef.value) {
-        return {value: fieldDef.value};
-      }
-    }
-    return { value: config.scale.bandSize / 2 };
-  }
-
-  function y(fieldDef: FieldDef, scaleName: string, stack: StackProperties, config: Config): VgValueRef {
-    // y
-    if (fieldDef) {
-      if (stack && Y === stack.fieldChannel) {
-        return {
-          scale: scaleName,
-          field: field(fieldDef, { suffix: 'end' })
-        };
-      } else if (fieldDef.field) {
-        return {
-          scale: scaleName,
-          field: field(fieldDef, { binSuffix: 'mid' })
-        };
-      } else if (fieldDef.value) {
-        return {value: fieldDef.value};
-      }
-    }
-    return { value: config.scale.bandSize / 2 };
-  }
-
-  function size(fieldDef: FieldDef, scaleName: string, config: Config, scaleBandSize: number): VgValueRef {
-    if (fieldDef) {
-      if (fieldDef.field) {
-        return {
-          scale: scaleName,
-          field: field(fieldDef) // TODO: what's the missing suffix
-        };
-      } else if (fieldDef.value !== undefined) {
-        return { value: fieldDef.value };
-      }
-    }
+  function size(fieldDef: FieldDef, scaleName: string, scale: Scale, config: Config, scaleBandSize: number): VgValueRef {
+    let defaultSize;
     if (config.mark.tickSize) {
-      return { value: config.mark.tickSize };
+      defaultSize = config.mark.tickSize;
+    } else {
+      const bandSize = scaleBandSize !== undefined ?
+        scaleBandSize :
+        config.scale.bandSize;
+      defaultSize = bandSize / 1.5;
     }
-    const bandSize = scaleBandSize !== undefined ?
-      scaleBandSize :
-      config.scale.bandSize;
-    return { value: bandSize / 1.5 };
+
+    return ref.normal(fieldDef, scaleName, scale, {value: defaultSize});
   }
 }
