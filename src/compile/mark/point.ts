@@ -1,12 +1,14 @@
 import {X, Y, SHAPE, SIZE} from '../../channel';
 import {Config} from '../../config';
 import {ChannelDefWithLegend, FieldDef, field} from '../../fielddef';
-import {Scale} from '../../scale';
 import {StackProperties} from '../../stack';
 import {VgValueRef} from '../../vega.schema';
 
 import {applyColorAndOpacity} from '../common';
+import {ScaleComponent} from '../scale';
 import {UnitModel} from '../unit';
+
+import {normalFieldRef, stackEndRef} from './mark-common';
 
 export namespace point {
   export function markType() {
@@ -19,87 +21,51 @@ export namespace point {
     const config = model.config();
     const stack = model.stack();
 
-    p.x = x(model.encoding().x, model.scaleName(X), stack, config);
+    p.x = x(model.encoding().x, model.parsedScale(X), stack, config);
 
-    p.y = y(model.encoding().y, model.scaleName(Y), stack, config);
+    p.y = y(model.encoding().y, model.parsedScale(Y), stack, config);
 
-    p.size = size(model.encoding().size, model.scaleName(SIZE), model.scale(SIZE), config);
+    p.size = size(model.encoding().size, model.parsedScale(SIZE), config);
 
-    p.shape = shape(model.encoding().shape, model.scaleName(SHAPE), model.scale(SHAPE), config, fixedShape);
+    p.shape = shape(model.encoding().shape, model.parsedScale(SHAPE), config, fixedShape);
 
     applyColorAndOpacity(p, model);
     return p;
   }
 
-  function x(fieldDef: FieldDef, scaleName: string, stack: StackProperties, config: Config): VgValueRef {
+  function x(fieldDef: FieldDef, scale: ScaleComponent, stack: StackProperties, config: Config): VgValueRef {
     // x
-    if (fieldDef) {
-      if (stack && X === stack.fieldChannel) {
-        return {
-          scale: scaleName,
-          field: field(fieldDef, { suffix: 'end' })
-        };
-      } else if (fieldDef.field) {
-        return {
-          scale: scaleName,
-          field: field(fieldDef, { binSuffix: 'mid' })
-        };
-      }
-      // TODO: fieldDef.value (for layering)
+    if (fieldDef && stack && X === stack.fieldChannel) {
+      return stackEndRef(fieldDef, scale);
     }
-    // TODO: allow this to fit
-    return { value: config.scale.bandSize / 2 };
+    return normalFieldRef(fieldDef, scale, X,
+      // TODO: For fit-mode, use middle of the width
+      config.scale.bandSize / 2
+    );
   }
 
-  function y(fieldDef: FieldDef, scaleName: string, stack: StackProperties, config: Config): VgValueRef {
+  function y(fieldDef: FieldDef, scale: ScaleComponent, stack: StackProperties, config: Config): VgValueRef {
     // y
-    if (fieldDef) {
-      if (stack && Y === stack.fieldChannel) {
-        return {
-          scale: scaleName,
-          field: field(fieldDef, { suffix: 'end' })
-        };
-      } else if (fieldDef.field) {
-        return {
-          scale: scaleName,
-          field: field(fieldDef, { binSuffix: 'mid' })
-        };
-      }
-      // TODO: fieldDef.value (for layering)
+    if (fieldDef && stack && Y === stack.fieldChannel) {
+      return stackEndRef(fieldDef, scale);
     }
-    // TODO: allow this to fit
-    return { value: config.scale.bandSize / 2 };
+
+    return normalFieldRef(fieldDef, scale, Y,
+      // TODO: For fit-mode, use middle of the width
+      config.scale.bandSize / 2
+    );
   }
 
-  function size(fieldDef: ChannelDefWithLegend, scaleName: string, scale: Scale, config: Config): VgValueRef {
-    if (fieldDef) {
-      if (fieldDef.field) {
-        return {
-          scale: scaleName,
-          field: field(fieldDef, {scaleType: scale.type})
-        };
-      } else if (fieldDef.value !== undefined) {
-        return { value: fieldDef.value };
-      }
-    }
-    return { value: config.mark.size };
+  function size(fieldDef: ChannelDefWithLegend, scale: ScaleComponent, config: Config): VgValueRef {
+    return normalFieldRef(fieldDef, scale, SIZE, config.mark.size);
   }
 
-  function shape(fieldDef: ChannelDefWithLegend, scaleName: string, scale: Scale, config: Config, fixedShape?: string): VgValueRef {
+  function shape(fieldDef: ChannelDefWithLegend, scale: ScaleComponent, config: Config, fixedShape?: string): VgValueRef {
     // shape
     if (fixedShape) { // square and circle marks
       return { value: fixedShape };
-    } else if (fieldDef) {
-      if (fieldDef.field) {
-        return {
-          scale: scaleName,
-          field: field(fieldDef, {scaleType: scale.type})
-        };
-      } else if (fieldDef.value) {
-        return { value: fieldDef.value };
-      }
     }
-    return { value: config.mark.shape };
+    return normalFieldRef(fieldDef, scale, SHAPE, config.mark.shape);
   }
 }
 
