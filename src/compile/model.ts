@@ -323,6 +323,28 @@ export abstract class Model {
     return this._scale[channel];
   }
 
+  /**
+   * Return parsed (Vega) scale for a particular channel
+   */
+  public parsedScale(channel: Channel): VgScale {
+    return this._parsedScale(this.scaleName(channel));
+  }
+  protected _parsedScale(name: string): VgScale {
+    if (name) {
+      if (this.component.scale) {
+        const scaleComponents = this.component.scale[name];
+        if (scaleComponents.main) {
+          return scaleComponents.main;
+        }
+      }
+
+      if (this._parent) {
+        return this._parent._parsedScale(name);
+      }
+    }
+    return undefined;
+  }
+
   // TODO: rename to hasOrdinalScale
   public isOrdinalScale(channel: Channel) {
     const scale = this.scale(channel);
@@ -332,7 +354,6 @@ export abstract class Model {
   public renameScale(oldName: string, newName: string) {
     this._scaleNameMap.rename(oldName, newName);
   }
-
 
   /**
    * @return scale name for a given channel after the scale has been parsed and named.
