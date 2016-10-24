@@ -52,7 +52,7 @@ describe('Mark: Bar', function() {
     });
   });
 
-  describe('simple horizontal binned', function() {
+  describe('horizontal binned', function() {
     const model = parseUnitModel({
       "data": {"url": 'data/cars.json'},
       "mark": "bar",
@@ -64,13 +64,13 @@ describe('Mark: Bar', function() {
     const props = bar.properties(model);
 
     it('should draw bar with y and y2', function() {
-      assert.deepEqual(props.y, {scale: 'y', field: 'bin_Horsepower_start'});
-      assert.deepEqual(props.y2, {scale: 'y', field: 'bin_Horsepower_end', offset: 1}); // TODO: markConfig.binnedBarOffset
-      assert.isUndefined(props.width);
+      assert.deepEqual(props.y2, {scale: 'y', field: 'bin_Horsepower_start'});
+      assert.deepEqual(props.y, {scale: 'y', field: 'bin_Horsepower_end', offset: 1}); // TODO: markConfig.binnedBarOffset
+      assert.isUndefined(props.height);
     });
   });
 
-  describe('simple vertical binned', function() {
+  describe('vertical binned', function() {
     const model = parseUnitModel({
       "data": {"url": 'data/cars.json'},
       "mark": "bar",
@@ -82,10 +82,9 @@ describe('Mark: Bar', function() {
     const props = bar.properties(model);
 
     it('should draw bar with x and x2', function() {
-      assert.deepEqual(props.x, {scale: 'x', field: 'bin_Horsepower_start', offset: 1}); // TODO: markConfig.binnedBarOffset
-      assert.deepEqual(props.x2, {scale: 'x', field: 'bin_Horsepower_end'});
-      // FIXME this line should be brought back when I refactor Bar
-      // assert.isUndefined(props.width);
+      assert.deepEqual(props.x2, {scale: 'x', field: 'bin_Horsepower_start', offset: 1}); // TODO: markConfig.binnedBarOffset
+      assert.deepEqual(props.x, {scale: 'x', field: 'bin_Horsepower_end'});
+      assert.isUndefined(props.width);
     });
   });
 
@@ -107,7 +106,7 @@ describe('Mark: Bar', function() {
     });
   });
 
-  describe('simple vertical binned with size', function() {
+  describe('vertical binned with size', function() {
     const model = parseUnitModel({
       "data": {"url": 'data/cars.json'},
       "mark": "bar",
@@ -260,9 +259,9 @@ describe('Mark: Bar', function() {
       assert.deepEqual(props.y, {scale: 'y', field: 'sum_US_Gross'});
       assert.deepEqual(props.y2, {scale: 'y', value: 0});
       assert.isUndefined(props.height);
-      assert.deepEqual(props.x, {
-        value: 0,
-        offset: 2
+      assert.deepEqual(props.xc, {
+        value: 10.5,
+        offset: 1
       });
     });
   });
@@ -313,10 +312,7 @@ describe('Mark: Bar', function() {
       assert.deepEqual(props.x, {scale: 'x', field: 'sum_US_Gross'});
       assert.deepEqual(props.x2, {scale: 'x', value: 0});
       assert.isUndefined(props.width);
-      assert.deepEqual(props.y2, {
-        field: {group: 'height'},
-        offset: -1
-      });
+      assert.deepEqual(props.yc, {value: 10.5});
     });
   });
 
