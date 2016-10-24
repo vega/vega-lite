@@ -44,7 +44,7 @@ export namespace bar {
           p.x2 = {
             scale: model.scaleName(X),
             field: field(xFieldDef, { binSuffix: 'start' }),
-            offset: 1
+            offset: config.mark.binnedBarSpacing
           };
           p.x = {
             scale: model.scaleName(X),
@@ -100,7 +100,7 @@ export namespace bar {
           p.y = {
             scale: model.scaleName(Y),
             field: field(yFieldDef, { binSuffix: 'end' }),
-            offset: 1
+            offset: config.mark.binnedBarSpacing
           };
           return p;
         } else if (model.scale(Y).bandSize === BANDSIZE_FIT) {

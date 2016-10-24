@@ -88,6 +88,45 @@ describe('Mark: Bar', function() {
     });
   });
 
+
+  describe('horizontal binned with no spacing', function() {
+    const model = parseUnitModel({
+      "data": {"url": 'data/cars.json'},
+      "mark": "bar",
+      "encoding": {
+        "y": {"bin": true, "field": 'Horsepower', "type": "quantitative"},
+        "x": {"aggregate": "mean", "field": 'Acceleration', "type": "quantitative"}
+      },
+      "config": {"mark": {"binnedBarSpacing": 0}}
+    });
+    const props = bar.properties(model);
+
+    it('should draw bar with y and y2', function() {
+      assert.deepEqual(props.y2, {scale: 'y', field: 'bin_Horsepower_start'});
+      assert.deepEqual(props.y, {scale: 'y', field: 'bin_Horsepower_end', offset: 0});
+      assert.isUndefined(props.height);
+    });
+  });
+
+  describe('vertical binned with no spacing', function() {
+    const model = parseUnitModel({
+      "data": {"url": 'data/cars.json'},
+      "mark": "bar",
+      "encoding": {
+        "x": {"bin": true, "field": 'Horsepower', "type": "quantitative"},
+        "y": {"aggregate": "mean", "field": 'Acceleration', "type": "quantitative"}
+      },
+      "config": {"mark": {"binnedBarSpacing": 0}}
+    });
+    const props = bar.properties(model);
+
+    it('should draw bar with x and x2', function() {
+      assert.deepEqual(props.x2, {scale: 'x', field: 'bin_Horsepower_start', offset: 0});
+      assert.deepEqual(props.x, {scale: 'x', field: 'bin_Horsepower_end'});
+      assert.isUndefined(props.width);
+    });
+  });
+
   describe('simple horizontal binned with size', function() {
     const model = parseUnitModel({
       "data": {"url": 'data/cars.json'},
