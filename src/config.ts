@@ -373,6 +373,12 @@ export interface MarkConfig {
   text?: string;
 
   /**
+   * Offset between bar for binned field
+   * @minimum 0
+   */
+  binnedBarSpacing?: number;
+
+  /**
    * Apply color field to background color instead of the text.
    */
   applyColorToBackground?: boolean;
@@ -391,6 +397,8 @@ export const defaultMarkConfig: MarkConfig = {
   fontSize: 10,
   baseline: VerticalAlign.MIDDLE,
   text: 'Abc',
+
+  binnedBarSpacing: 1,
 
   applyColorToBackground: false
 };

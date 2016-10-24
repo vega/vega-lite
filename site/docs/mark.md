@@ -173,6 +173,8 @@ mapping a binned quantitative field to `x` and aggregate `count` to `y` produces
 
 <span class="vl-example" data-name="histogram"></span>
 
+If you prefer to have histogram without gaps between bars, you can set the [`binnedBarSpacing` mark config](config.html#bar-config) to `0`.
+
 ## Line
 
 The `line` mark represents the data points stored in a field with a line connecting all of these points. Unlike other marks except `area` that represents one data element per mark, one line mark represent multiple data element as a single line.
