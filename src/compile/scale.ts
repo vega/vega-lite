@@ -281,7 +281,10 @@ export function domain(scale: Scale, model: Model, channel:Channel): any {
   if (useRawDomain) { // useRawDomain - only Q/T
     return {
       data: SOURCE,
-      field: model.field(channel, {noAggregate: true})
+      field: model.field(channel, {
+        // no aggregate rather than nofn as bin and timeUnit is fine
+        noAggregate: true
+      })
     };
   } else if (fieldDef.bin) { // bin
     if (scale.type === ScaleType.ORDINAL) {
