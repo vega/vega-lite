@@ -47,6 +47,25 @@ describe('Mark: Line', function() {
     });
   });
 
+
+  describe('with x, y, size', function () {
+    const model = parseUnitModel({
+      "data": {"url": "data/barley.json"},
+      "mark": "line",
+      "encoding": {
+        "x": {"field": "year", "type": "ordinal"},
+        "y": {"field": "yield", "type": "quantitative", "aggregate": "mean"},
+        "size": {"field": "Acceleration", "type": "quantitative", "aggregate": "mean"}
+      }
+    });
+    const props = line.properties(model);
+
+    it('should drop size field', function () {
+      // If size field is dropped, then strokeWidth only have value
+      assert.deepEqual(props.strokeWidth, {value: 2});
+    });
+  });
+
   describe('with stacked y', function() {
     const model = parseUnitModel({
       "data": {"url": "data/barley.json"},
