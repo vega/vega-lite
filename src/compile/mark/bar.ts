@@ -1,11 +1,13 @@
-import {X, Y, X2, Y2, SIZE, Channel} from '../../channel';
-import {Orient} from '../../config';
-import {isMeasure} from '../../fielddef';
-import {BANDSIZE_FIT, ScaleType} from '../../scale';
-import {contains} from '../../util';
+import {X, Y, SIZE} from '../../channel';
+import {Config, Orient} from '../../config';
+import {field} from '../../fielddef';
+import {Scale, ScaleType, BANDSIZE_FIT} from '../../scale';
+import {StackProperties} from '../../stack';
+import {extend} from '../../util';
 
 import {applyColorAndOpacity} from '../common';
 import {UnitModel} from '../unit';
+import * as ref from './valueref';
 
 export namespace bar {
   export function markType() {
@@ -14,245 +16,135 @@ export namespace bar {
 
   export function properties(model: UnitModel) {
     // TODO Use Vega's marks properties interface
-    let p: any = {};
-
-    const orient = model.config().mark.orient;
-
     const stack = model.stack();
-    const xFieldDef = model.encoding().x;
-    const x2FieldDef = model.encoding().x2;
-
-    const xIsMeasure = isMeasure(xFieldDef) || isMeasure(x2FieldDef);
-
-    // x, x2, and width -- we must specify two of these in all conditions
-    if (stack && X === stack.fieldChannel) {
-      // 'x' is a stacked measure, thus use <field>_start and <field>_end for x, x2.
-      p.x = {
-        scale: model.scaleName(X),
-        field: model.field(X, { suffix: 'start' })
-      };
-      p.x2 = {
-        scale: model.scaleName(X),
-        field: model.field(X, { suffix: 'end' })
-      };
-    } else if (xIsMeasure) {
-      if (orient === Orient.HORIZONTAL) {
-        p.x = {
-          scale: model.scaleName(X),
-          field: model.field(X)
-        };
-
-        if (model.has(X2)) {
-          p.x2 = {
-            scale: model.scaleName(X),
-            field: model.field(X2)
-          };
-        } else {
-          // Log / Time / UTC scale do not support zero
-          if (contains([ScaleType.LOG, ScaleType.TIME, ScaleType.UTC], model.scale(X).type) ||
-              model.scale(X).zero === false) {
-            p.x2 = { value: 0 };
-          } else {
-            p.x2 = {
-              scale: model.scaleName(X),
-              value: 0
-            };
-          }
-
-        }
-      } else { // vertical
-        p.xc = {
-          scale: model.scaleName(X),
-          field: model.field(X)
-        };
-        p.width = {value: sizeValue(model, X)};
-      }
-    } else { // x is dimension or unspecified
-      if (model.has(X)) { // is ordinal
-        if (model.encoding().x.bin) {
-          if (model.has(SIZE) && orient !== Orient.HORIZONTAL) {
-            // For vertical chart that has binned X and size,
-            // center bar and apply size to width.
-            p.xc = {
-              scale: model.scaleName(X),
-              field: model.field(X, { binSuffix: 'mid' })
-            };
-            p.width = {
-              scale: model.scaleName(SIZE),
-              field: model.field(SIZE)
-            };
-          } else {
-            p.x = {
-              scale: model.scaleName(X),
-              field: model.field(X, { binSuffix: 'start' }),
-              offset: 1
-            };
-            p.x2 = {
-              scale: model.scaleName(X),
-              field: model.field(X, { binSuffix: 'end' })
-            };
-          }
-        } else if (model.scale(X).bandSize === BANDSIZE_FIT) {
-          p.x = {
-            scale: model.scaleName(X),
-            field: model.field(X),
-            offset: 0.5 // TODO offset or padding
-          };
-        } else {
-          p.xc = {
-            scale: model.scaleName(X),
-            field: model.field(X)
-          };
-        }
-     } else { // no x
-        p.x = { value: 0, offset: 2 };
-      }
-
-      p.width = model.has(X) && model.scale(X).bandSize === BANDSIZE_FIT ? {
-          scale: model.scaleName(X),
-          band: true,
-          offset: -0.5 // TODO offset or padding
-        } : model.has(SIZE) && orient !== Orient.HORIZONTAL ? {
-          // apply size scale if has size and is vertical (explicit "vertical" or undefined)
-          scale: model.scaleName(SIZE),
-          field: model.field(SIZE)
-        } : {
-          // otherwise, use fixed size
-          value: sizeValue(model, (X))
-        };
-    }
-
-    const yFieldDef = model.encoding().y;
-    const y2FieldDef = model.encoding().y2;
-
-    const yIsMeasure = isMeasure(yFieldDef) || isMeasure(y2FieldDef);
-    // y, y2 & height -- we must specify two of these in all conditions
-    if (stack && Y === stack.fieldChannel) { // y is stacked measure
-      p.y = {
-        scale: model.scaleName(Y),
-        field: model.field(Y, { suffix: 'start' })
-      };
-      p.y2 = {
-        scale: model.scaleName(Y),
-        field: model.field(Y, { suffix: 'end' })
-      };
-    } else if (yIsMeasure) {
-      if (orient !== Orient.HORIZONTAL) { // vertical (explicit 'vertical' or undefined)
-        p.y = {
-          scale: model.scaleName(Y),
-          field: model.field(Y)
-        };
-
-        if (model.has(Y2)) {
-          p.y2 = {
-            scale: model.scaleName(Y),
-            field: model.field(Y2)
-          };
-        } else {
-          // Log / Time / UTC scale do not support zero
-          if (contains([ScaleType.LOG, ScaleType.TIME, ScaleType.UTC], model.scale(Y).type) ||
-              model.scale(Y).zero === false) {
-            // end on axis
-            p.y2 = {
-              field: {group: 'height'}
-            };
-          } else {
-            p.y2 = {
-              scale: model.scaleName(Y),
-              value: 0
-            };
-          }
-        }
-      } else {
-        p.yc = {
-          scale: model.scaleName(Y),
-          field: model.field(Y)
-        };
-        p.height = { value: sizeValue(model, Y) };
-      }
-    } else { // y is ordinal or unspecified
-
-      if (model.has(Y)) { // is ordinal
-        if (model.encoding().y.bin) {
-          if (model.has(SIZE) && orient === Orient.HORIZONTAL) {
-            // For horizontal chart that has binned Y and size,
-            // center bar and apply size to height.
-            p.yc = {
-              scale: model.scaleName(Y),
-              field: model.field(Y, { binSuffix: 'mid' })
-            };
-            p.height = {
-              scale: model.scaleName(SIZE),
-              field: model.field(SIZE)
-            };
-          } else {
-            // Otherwise, simply use <field>_start, <field>_end
-            p.y = {
-              scale: model.scaleName(Y),
-              field: model.field(Y, { binSuffix: 'start' })
-            };
-            p.y2 = {
-              scale: model.scaleName(Y),
-              field: model.field(Y, { binSuffix: 'end' }),
-              offset: 1
-            };
-          }
-        } else if (model.scale(Y).bandSize === BANDSIZE_FIT) {
-          p.y = {
-            scale: model.scaleName(Y),
-            field: model.field(Y),
-            offset: 0.5 // TODO offset or padding
-          };
-        } else {
-          p.yc = {
-            scale: model.scaleName(Y),
-            field: model.field(Y)
-          };
-        }
-      } else { // No Y
-        p.y2 = {
-          field: { group: 'height' },
-          offset: -1
-        };
-      }
-
-      p.height = model.has(Y) && model.scale(Y).bandSize === BANDSIZE_FIT ? {
-          scale: model.scaleName(Y),
-          band: true,
-          offset: -0.5 // TODO offset or padding
-        } : model.has(SIZE)  && orient === Orient.HORIZONTAL ? {
-          // apply size scale if has size and is horizontal
-          scale: model.scaleName(SIZE),
-          field: model.field(SIZE)
-        } : {
-          value: sizeValue(model, Y)
-        };
-    }
-
+    let p: any = extend(
+      x(model, stack),
+      y(model, stack)
+    );
     applyColorAndOpacity(p, model);
     return p;
   }
 
-  // TODO: make this a mixins
-  function sizeValue(model: UnitModel, channel: Channel) {
-    const fieldDef = model.encoding().size;
-    if (fieldDef && fieldDef.value !== undefined) {
-       return fieldDef.value;
-    }
+  export function x(model: UnitModel, stack: StackProperties) {
+    let p: any = {};
+    const config = model.config();
+    const orient = model.config().mark.orient;
+    const sizeFieldDef = model.encoding().size;
 
-    const markConfig = model.config().mark;
+    const xFieldDef = model.encoding().x;
+    // x, x2, and width -- we must specify two of these in all conditions
+    if (orient === Orient.HORIZONTAL) {
+      p.x = ref.stackableX(xFieldDef, model.scaleName(X), model.scale(X), stack, 'baseX');
+      p.x2 = ref.stackableX2(xFieldDef, model.encoding().x2, model.scaleName(X), model.scale(X), stack, 'baseX');
+      return p;
+    } else { // vertical
+      if (xFieldDef && xFieldDef.field) {
+        if (xFieldDef.bin && !sizeFieldDef) {
+          // TODO: check scale type = linear
+          p.x2 = {
+            scale: model.scaleName(X),
+            field: field(xFieldDef, { binSuffix: 'start' }),
+            offset: 1
+          };
+          p.x = {
+            scale: model.scaleName(X),
+            field: field(xFieldDef, { binSuffix: 'end' })
+          };
+          return p;
+        } else if (model.scale(X).bandSize === BANDSIZE_FIT) {
+          // TODO check if scale.type === band (points === false in Vg2) instead if we have the compiled size
+          // TODO: bandSize fit doesn't support size yet
+          p.x = {
+            scale: model.scaleName(X),
+            field: field(xFieldDef),
+            offset: 0.5 // TODO offset or padding
+          };
+          p.width = {
+            scale: model.scaleName(X),
+            band: true,
+            offset: -0.5 // TODO offset or padding
+          };
+          return p;
+        }
+      }
+      // sized bin, normal point-ordinal axis, or no x
+      p.xc = ref.normal(xFieldDef, model.scaleName(X), model.scale(X),
+        extend(ref.midX(config), {offset: 1}) // TODO: config.singleBarOffset
+      );
+      p.width = ref.normal(model.encoding().size, model.scaleName(SIZE), model.scale(SIZE),
+        {value: defaultSize(model.scaleName(X), model.scale(X), config)}
+      );
+      return p;
+    }
+  }
+
+export function y(model: UnitModel, stack: StackProperties) {
+    let p: any = {};
+    const config = model.config();
+    const orient = model.config().mark.orient;
+    const sizeFieldDef = model.encoding().size;
+
+    const yFieldDef = model.encoding().y;
+    // y, y2 & height -- we must specify two of these in all conditions
+    if (orient !== Orient.HORIZONTAL) {
+      p.y = ref.stackableY(model.encoding().y, model.scaleName(Y), model.scale(Y), stack, 'baseY');
+      p.y2 = ref.stackableY2(model.encoding().y, model.encoding().y2, model.scaleName(Y), model.scale(Y), stack, 'baseY');
+      return p;
+    } else {
+      if (yFieldDef && yFieldDef.field) {
+        if (yFieldDef.bin && !sizeFieldDef) {
+          p.y2 = {
+            scale: model.scaleName(Y),
+            field: field(yFieldDef, { binSuffix: 'start' })
+          };
+          p.y = {
+            scale: model.scaleName(Y),
+            field: field(yFieldDef, { binSuffix: 'end' }),
+            offset: 1
+          };
+          return p;
+        } else if (model.scale(Y).bandSize === BANDSIZE_FIT) {
+          // TODO: bandSize fit doesn't support size yet
+          p.y = {
+            scale: model.scaleName(Y),
+            field: field(yFieldDef),
+            offset: 0.5 // TODO offset or padding
+          };
+          p.height = {
+            scale: model.scaleName(Y),
+            band: true,
+            offset: -0.5 // TODO offset or padding
+          };
+          return p;
+        }
+      }
+      p.yc = ref.normal(yFieldDef, model.scaleName(Y), model.scale(Y),
+        ref.midY(config) // TODO: config.singleBarOffset
+      );
+      p.height = ref.normal(model.encoding().size, model.scaleName(SIZE), model.scale(SIZE),
+        {value: defaultSize(model.scaleName(Y), model.scale(Y), config)}
+      );
+      return p;
+    }
+  }
+
+  // TODO: make this a mixins
+  function defaultSize(scaleName: string, scale: Scale, config: Config) {
+    const markConfig = config.mark;
     if (markConfig.barSize) {
       return markConfig.barSize;
     }
     // BAR's size is applied on either X or Y
-    return model.isOrdinalScale(channel) ?
+    return scale && scale.type === ScaleType.ORDINAL ?
         // For ordinal scale or single bar, we can use bandSize - 1
         // (-1 so that the border of the bar falls on exact pixel)
-        model.scale(channel).bandSize - 1 :
-        // TODO: {band: true}
-      !model.has(channel) ?
-        model.config().scale.bandSize - 1 :
-        // otherwise, set to thinBarWidth by default
-        markConfig.barThinSize;
+        scale.bandSize - 1 :
+        // TODO: {band: true} ?
+      scaleName ?
+        // set to thinBarWidth by default for non-ordinal scale
+        markConfig.barThinSize :
+        // if there is no size (x or y) axis, just use bandSize -1
+        // TODO: revise if we really need the -1
+        config.scale.bandSize - 1;
   }
 }
