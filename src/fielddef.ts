@@ -5,7 +5,7 @@ import {Axis} from './axis';
 import {Bin} from './bin';
 import {Config} from './config';
 import {Legend} from './legend';
-import {Scale, ScaleType} from './scale';
+import {Scale} from './scale';
 import {SortField, SortOrder} from './sort';
 import {TimeUnit} from './timeunit';
 import {Type, NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from './type';
@@ -96,12 +96,8 @@ export interface FieldRefOption {
   noAggregate?: boolean;
   /** Wrap the field inside datum[...] per Vega convention */
   datum?: boolean;
-  /** replace fn with custom function prefix */
-  fn?: string;
   /** prepend fn with custom function prefix */
   prefix?: string;
-  /** scaleType */
-  scaleType?: ScaleType;
   /** append suffix to the field ref for bin (default='start') */
   binSuffix?: string;
   /** append suffix to the field ref (general) */
@@ -116,19 +112,12 @@ export function field(fieldDef: FieldDef, opt: FieldRefOption = {}) {
   if (isCount(fieldDef)) {
     field = 'count';
   } else {
-    let fn = opt.fn;
+    let fn = undefined;
 
     if (!opt.nofn) {
       if (fieldDef.bin) {
         fn = 'bin';
-
-        suffix = opt.binSuffix || (
-          opt.scaleType === ScaleType.ORDINAL ?
-            // For ordinal scale type, use `range` as suffix.
-            'range' :
-            // For non-ordinal scale or unknown, use `start` as suffix.
-            'start'
-        );
+        suffix = opt.binSuffix;
       } else if (!opt.noAggregate && fieldDef.aggregate) {
         fn = String(fieldDef.aggregate);
       } else if (fieldDef.timeUnit) {
