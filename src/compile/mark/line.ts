@@ -30,9 +30,8 @@ export namespace line {
     return p;
   }
 
-  // TODO: drop line's size earlier in the process
-  // NOTE: this is different from other size because
-  // Vega does not support variable line size
+  // NOTE: This is different from other size because
+  // Vega does not support variable line size.
   function size(fieldDef: FieldDef, config: Config) {
     if (fieldDef && fieldDef.value !== undefined) {
        return { value: fieldDef.value};
