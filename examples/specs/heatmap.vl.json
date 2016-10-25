@@ -1,0 +1,20 @@
+{
+  "data": {"url": "data/movies.json"},
+  "mark": "bar",
+  "encoding": {
+    "x": {
+      "bin": true,
+      "field": "IMDB_Rating",
+      "type": "quantitative"
+    },
+    "y": {
+      "bin": true,
+      "field": "Rotten_Tomatoes_Rating",
+      "type": "quantitative"
+    },
+    "color": {
+      "aggregate": "count",
+      "field": "*", "type": "quantitative"
+    }
+  }
+}
