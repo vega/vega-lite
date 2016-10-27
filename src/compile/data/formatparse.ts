@@ -33,7 +33,8 @@ export namespace formatParse {
       } else if (isRangeFilter(f)) {
         val = f.range[0];
       } else if (isOneOfFilter(f)) {
-        val = f.oneOf[0];
+        // in = old name (this is for backward compatability)
+        val = (f.oneOf || f['in'])[0];
       } // else -- for filter expression, we can't infer anything
 
       if (!!val) {
