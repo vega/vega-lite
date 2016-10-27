@@ -64,7 +64,7 @@ The following table describes properties of a filter object.
 | field         | String        | Field to be filtered. |
 | equal         | String &#124; Number &#124; [DateTime](#datetime) &#124; Boolean | Value that the `field`'s value should be equal to. |
 | range         | Number[] &#124; [DateTime](#datetime)[] | Array of length 2 describing (inclusive) minimum and maximum values for the `field`'s value to be included in the filtered data.  If the minimum / maximum is `null`, then the ranged has unbounded minimum / maximum.  |
-| in            | String[] &#124; Number[] &#124; [DateTime](#datetime)[] | A set of values that the `field`'s value should be a member of, for a data item included in the filtered data. |
+| oneOf         | String[] &#124; Number[] &#124; [DateTime](#datetime)[] | A set of values that the `field`'s value should be a member of, for a data item included in the filtered data. |
 
 {:#datetime}
 ##### Date Time Definition Object
