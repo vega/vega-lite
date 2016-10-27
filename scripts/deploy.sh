@@ -64,7 +64,7 @@ set -e
 git tag -am "Release v$version." "v$version"
 
 # swap back to the clean master and push the new tag
-git checkout master
+git checkout 1.x
 git push --tags
 # now the published tag contains build files which work great with bower.
 

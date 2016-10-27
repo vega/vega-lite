@@ -4,7 +4,7 @@
 
 git checkout gh-pages
 git pull
-git merge master --no-edit
+git merge 1.x --no-edit
 
 # update bower_components
 git rm -rf bower_components
@@ -26,4 +26,4 @@ fi
 
 # push and return to master!
 git push
-git checkout master
+git checkout 1.x
