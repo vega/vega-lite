@@ -67,7 +67,7 @@ export namespace bar {
           return p;
         }
       }
-      // sized bin, normal point-ordinal axis, or no x
+      // sized bin, normal point-ordinal axis, quantitative x-axis, or no x
       p.xc = ref.normal(xFieldDef, model.scaleName(X), model.scale(X),
         extend(ref.midX(config), {offset: 1}) // TODO: config.singleBarOffset
       );
@@ -78,7 +78,7 @@ export namespace bar {
     }
   }
 
-export function y(model: UnitModel, stack: StackProperties) {
+  export function y(model: UnitModel, stack: StackProperties) {
     let p: any = {};
     const config = model.config();
     const orient = model.config().mark.orient;

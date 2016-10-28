@@ -43,7 +43,7 @@ Mark properties channels map data fields directly to visual properties of the ma
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| x, y          | [ChannelDef](#def)| X and Y coordinates for `point`, `circle`, `square`, `line`, `text`, and `tick`. (or to width and height for `bar` and `area` marks). |
+| x, x2, y, y2  | [ChannelDef](#def)| X and Y coordinates for marks.  For ranged marks such as `bar` and `area`, `x2` and `y2` will be set to zeroes for applicable scales and to snap the axes if zeroes is not applicable (e.g., if the scale domain does not include zeroes).  |
 | color         | [ChannelDef](#def)| Color of the marks – either fill or stroke color based on mark type. By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /   stroke color for `line` and `point`.  Supported color values include hex-color (e.g., `#0099ff`) and [standard HTML/CSS color names](http://www.w3schools.com/colors/colors_names.asp) (e.g., `"goldenrod"`).  Please see [scale range](scale.html#range) for more detail about color palettes.  |
 | opacity         | [ChannelDef](#def)| Opacity of the marks – either can be a value or in a range. <span class="note-line"> __Default value:__ `[0.3, 0.8]` </span>.)  |
 | shape  | [ChannelDef](#def)| The symbol's shape (only for `point` marks). The supported values are `"circle"` (default), `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`, `"triangle-down"`, or else a custom SVG path string. |
