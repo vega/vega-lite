@@ -99,7 +99,7 @@ export interface FieldRefOption {
   /** prepend fn with custom function prefix */
   prefix?: string;
   /** append suffix to the field ref for bin (default='start') */
-  binSuffix?: string;
+  binSuffix?: 'start' | 'end' | 'mid' | 'range';
   /** append suffix to the field ref (general) */
   suffix?: string;
 }

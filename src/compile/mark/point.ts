@@ -21,10 +21,10 @@ export namespace point {
 
     // TODO: refactor how refer to scale as discussed in https://github.com/vega/vega-lite/pull/1613
 
-    p.x = ref.stackableX(model.encoding().x, model.scaleName(X), model.scale(X), stack, ref.midX(config));
-    p.y = ref.stackableY(model.encoding().y, model.scaleName(Y), model.scale(Y), stack, ref.midY(config));
+    p.x = ref.stackable(X, model.encoding().x, model.scaleName(X), model.scale(X), stack, ref.midX(config));
+    p.y = ref.stackable(Y, model.encoding().y, model.scaleName(Y), model.scale(Y), stack, ref.midY(config));
 
-    p.size = ref.normal(model.encoding().size, model.scaleName(SIZE), model.scale(SIZE),
+    p.size = ref.normal(SIZE, model.encoding().size, model.scaleName(SIZE), model.scale(SIZE),
        {value: config.mark.size}
     );
 
@@ -39,7 +39,7 @@ export namespace point {
     if (fixedShape) { // square and circle marks
       return { value: fixedShape };
     }
-    return ref.normal(fieldDef, scaleName, scale, {value: config.mark.shape});
+    return ref.normal(SHAPE, fieldDef, scaleName, scale, {value: config.mark.shape});
   }
 }
 

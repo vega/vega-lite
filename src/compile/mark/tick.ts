@@ -20,8 +20,8 @@ export namespace tick {
 
     // TODO: refactor how refer to scale as discussed in https://github.com/vega/vega-lite/pull/1613
 
-    p.xc = ref.stackableX(model.encoding().x, model.scaleName(X), model.scale(X), stack, ref.midX(config));
-    p.yc = ref.stackableY(model.encoding().y, model.scaleName(Y), model.scale(Y), stack, ref.midY(config));
+    p.xc = ref.stackable(X, model.encoding().x, model.scaleName(X), model.scale(X), stack, ref.midX(config));
+    p.yc = ref.stackable(Y, model.encoding().y, model.scaleName(Y), model.scale(Y), stack, ref.midY(config));
 
     if (config.mark.orient === Orient.HORIZONTAL) {
       p.width = size(model.encoding().size, model.scaleName(SIZE), model.scale(SIZE), config, (model.scale(X) || {}).bandSize);
@@ -46,6 +46,6 @@ export namespace tick {
       defaultSize = bandSize / 1.5;
     }
 
-    return ref.normal(fieldDef, scaleName, scale, {value: defaultSize});
+    return ref.normal(SIZE, fieldDef, scaleName, scale, {value: defaultSize});
   }
 }

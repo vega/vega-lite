@@ -1,4 +1,8 @@
-import {X, Y} from '../../channel';
+/**
+ * Utility files for producing Vega ValueRef for marks
+ */
+
+import {Channel, X, X2, Y, Y2} from '../../channel';
 import {Config} from '../../config';
 import {FieldDef, FieldRefOption, field} from '../../fielddef';
 import {Scale, ScaleType} from '../../scale';
@@ -9,56 +13,73 @@ import {VgValueRef} from '../../vega.schema';
 // TODO: we need to find a way to refactor these so that scaleName is a part of scale
 // but that's complicated.  For now, this is a huge step moving forward.
 
-export function stackableX(fieldDef: FieldDef, scaleName: string, scale: Scale,
+/**
+ * @return Vega ValueRef for stackable x or y
+ */
+export function stackable(channel: Channel, fieldDef: FieldDef, scaleName: string, scale: Scale,
     stack: StackProperties, defaultRef: VgValueRef): VgValueRef {
-  if (fieldDef && stack && X === stack.fieldChannel) {
-    // x use stack_end so that stacked line's point mark use stack_end too.
-    return stackRef(fieldDef, scaleName, 'end');
+  if (fieldDef && stack && channel === stack.fieldChannel) {
+    // x or y use stack_end so that stacked line's point mark use stack_end too.
+    return fieldRef(fieldDef, scaleName, {suffix: 'end'});
   }
-  return normal(fieldDef, scaleName, scale, defaultRef);
+  return normal(channel, fieldDef, scaleName, scale, defaultRef);
 }
 
-export function stackableY(fieldDef: FieldDef, scaleName: string, scale: Scale,
+/**
+ * @return Vega ValueRef for stackable x2 or y2
+ */
+export function stackable2(channel: Channel, aFieldDef: FieldDef, a2fieldDef: FieldDef, scaleName: string, scale: Scale,
     stack: StackProperties, defaultRef: VgValueRef): VgValueRef {
-  if (fieldDef && stack && Y === stack.fieldChannel) {
-    // y use stack_end so that stacked line's point mark use stack_end too.
-    return stackRef(fieldDef, scaleName, 'end');
+  if (aFieldDef && stack &&
+      // If fieldChannel is X and channel is X2 (or Y and Y2)
+      (channel as any as string).charAt(0) === (stack.fieldChannel as any as string).charAt(0)
+      ) {
+    return fieldRef(aFieldDef, scaleName, {suffix: 'start'});
   }
-  return normal(fieldDef, scaleName, scale, defaultRef);
+  return normal(channel, a2fieldDef, scaleName, scale, defaultRef);
 }
 
-export function stackableX2(xFieldDef: FieldDef, x2FieldDef: FieldDef, scaleName: string, scale: Scale,
-    stack: StackProperties, defaultRef: VgValueRef): VgValueRef {
-  if (xFieldDef && stack && X === stack.fieldChannel) {
-    return stackRef(xFieldDef, scaleName, 'start');
-  }
-  return normal(x2FieldDef, scaleName, scale, defaultRef);
+/**
+ * Value Ref for binned fields
+ */
+export function bin(fieldDef: FieldDef, scaleName: string, side: 'start' | 'end',  offset?: number) {
+  return fieldRef(fieldDef, scaleName, {binSuffix: side}, offset);
 }
 
-export function stackableY2(yFieldDef: FieldDef, y2FieldDef: FieldDef, scaleName: string, scale: Scale,
-    stack: StackProperties, defaultRef: VgValueRef): VgValueRef {
-  if (yFieldDef && stack && Y === stack.fieldChannel) {
-    return stackRef(yFieldDef, scaleName, 'start');
+export function fieldRef(fieldDef: FieldDef, scaleName: string, opt: FieldRefOption, offset?: number): VgValueRef {
+  let ref: VgValueRef = {
+    scale: scaleName,
+    field: field(fieldDef, opt),
+  };
+  if (offset) {
+    ref.offset = offset;
   }
-  return normal(y2FieldDef, scaleName, scale, defaultRef);
+  return ref;
 }
 
-export function normal(fieldDef: FieldDef, scaleName: string, scale: Scale,
-defaultRef: VgValueRef | 'baseX' | 'baseY' | 'baseOrMaxX' | 'baseOrMaxY'): VgValueRef {
+export function band(scaleName: string, offset?: number) {
+  let ref: VgValueRef = {
+    scale: scaleName,
+    band: true
+  };
+  if (offset) {
+    ref.offset = offset;
+  }
+  return ref;
+}
+
+
+export function normal(channel: Channel, fieldDef: FieldDef, scaleName: string, scale: Scale,
+defaultRef: VgValueRef | 'base' | 'baseOrMax'): VgValueRef {
   // TODO: datum support
 
   if (fieldDef) {
     if (fieldDef.field) {
-      let opt: FieldRefOption = {};
       if (scale.type === ScaleType.ORDINAL) {
-        opt = {binSuffix: 'range'};
+        return fieldRef(fieldDef, scaleName, {binSuffix: 'range'});
       } else {
-        opt = {binSuffix: 'mid'};
+        return fieldRef(fieldDef, scaleName, {binSuffix: 'mid'});
       }
-      return {
-        scale: scaleName,
-        field: field(fieldDef, opt)
-      };
     } else if (fieldDef.value) {
       return {
         value: fieldDef.value
@@ -67,31 +88,25 @@ defaultRef: VgValueRef | 'baseX' | 'baseY' | 'baseOrMaxX' | 'baseOrMaxY'): VgVal
   }
 
   if (defaultRef) {
-    switch (defaultRef) {
-      case 'baseX':
+    if (defaultRef === 'base') {
+      if (channel === X || channel === X2) {
         return baseX(scaleName, scale);
-      case 'baseY':
+      } else if (channel === Y || channel === Y2) {
         return baseY(scaleName, scale);
-      case 'baseOrMaxX':
+      }
+    } else if (defaultRef === 'baseOrMax') {
+      if (channel === X || channel === X2) {
         return baseOrMaxX(scaleName, scale);
-      case 'baseOrMaxY':
+      } else if (channel === Y || channel === Y2) {
         return baseOrMaxY(scaleName, scale);
+      }
+    } else {
+      return defaultRef;
     }
-    return defaultRef;
   }
   return undefined;
 }
 
-export function stackRef(fieldDef: FieldDef, scaleName: string, suffix: string): VgValueRef {
-  return {
-    scale: scaleName,
-    field: field(fieldDef, {suffix: suffix})
-  };
-}
-
-export function zeroOrXAxis(): VgValueRef {
-  return {};
-}
 
 export function midX(config: Config): VgValueRef {
   // TODO: For fit-mode, use middle of the width

@@ -19,8 +19,8 @@ export namespace line {
 
     // TODO: refactor how refer to scale as discussed in https://github.com/vega/vega-lite/pull/1613
 
-    p.x = ref.stackableX(model.encoding().x, model.scaleName(X), model.scale(X), stack, 'baseX');
-    p.y = ref.stackableY(model.encoding().y, model.scaleName(Y), model.scale(Y), stack, 'baseY');
+    p.x = ref.stackable(X, model.encoding().x, model.scaleName(X), model.scale(X), stack, 'base');
+    p.y = ref.stackable(Y, model.encoding().y, model.scaleName(Y), model.scale(Y), stack, 'base');
 
     const _size = size(model.encoding().size, config);
     if (_size) { p.strokeWidth = _size; }

@@ -1,4 +1,4 @@
-import {X, Y, SIZE} from '../../channel';
+import {X, Y, X2, Y2, SIZE} from '../../channel';
 import {Config, Orient} from '../../config';
 import {field} from '../../fielddef';
 import {Scale, ScaleType, BANDSIZE_FIT} from '../../scale';
@@ -32,47 +32,40 @@ export namespace bar {
     const sizeFieldDef = model.encoding().size;
 
     const xFieldDef = model.encoding().x;
+    const xScaleName = model.scaleName(X);
     // x, x2, and width -- we must specify two of these in all conditions
     if (orient === Orient.HORIZONTAL) {
-      p.x = ref.stackableX(xFieldDef, model.scaleName(X), model.scale(X), stack, 'baseX');
-      p.x2 = ref.stackableX2(xFieldDef, model.encoding().x2, model.scaleName(X), model.scale(X), stack, 'baseX');
+      p.x = ref.stackable(X, xFieldDef, xScaleName, model.scale(X), stack, 'base');
+      p.x2 = ref.stackable2(X2, xFieldDef, model.encoding().x2, xScaleName, model.scale(X), stack, 'base');
       return p;
     } else { // vertical
       if (xFieldDef && xFieldDef.field) {
         if (xFieldDef.bin && !sizeFieldDef) {
           // TODO: check scale type = linear
-          p.x2 = {
-            scale: model.scaleName(X),
-            field: field(xFieldDef, { binSuffix: 'start' }),
-            offset: config.mark.binnedBarSpacing
-          };
-          p.x = {
-            scale: model.scaleName(X),
-            field: field(xFieldDef, { binSuffix: 'end' })
-          };
+
+          p.x2 = ref.bin(xFieldDef, xScaleName, 'start', config.mark.binnedBarSpacing);
+          p.x = ref.bin(xFieldDef, xScaleName, 'end');
           return p;
         } else if (model.scale(X).bandSize === BANDSIZE_FIT) {
           // TODO check if scale.type === band (points === false in Vg2) instead if we have the compiled size
           // TODO: bandSize fit doesn't support size yet
           p.x = {
-            scale: model.scaleName(X),
+            scale: xScaleName,
             field: field(xFieldDef)
           };
           p.width = {
-            scale: model.scaleName(X),
+            scale: xScaleName,
             band: true
           };
           return p;
         }
       }
-      // TODO: do we really need an xc case?
-
       // sized bin, normal point-ordinal axis, quantitative x-axis, or no x
-      p.xc = ref.normal(xFieldDef, model.scaleName(X), model.scale(X),
+      p.xc = ref.normal(X, xFieldDef, xScaleName, model.scale(X),
         extend(ref.midX(config), {offset: 1}) // TODO: config.singleBarOffset
       );
-      p.width = ref.normal(model.encoding().size, model.scaleName(SIZE), model.scale(SIZE),
-        {value: defaultSize(model.scaleName(X), model.scale(X), config)}
+      p.width = ref.normal(SIZE, model.encoding().size, model.scaleName(SIZE), model.scale(SIZE),
+        {value: defaultSize(xScaleName, model.scale(X), config)}
       );
       return p;
     }
@@ -85,42 +78,33 @@ export namespace bar {
     const sizeFieldDef = model.encoding().size;
 
     const yFieldDef = model.encoding().y;
+    const yScaleName = model.scaleName(Y);
     // y, y2 & height -- we must specify two of these in all conditions
     if (orient !== Orient.HORIZONTAL) {
-      p.y = ref.stackableY(model.encoding().y, model.scaleName(Y), model.scale(Y), stack, 'baseY');
-      p.y2 = ref.stackableY2(model.encoding().y, model.encoding().y2, model.scaleName(Y), model.scale(Y), stack, 'baseY');
+      p.y = ref.stackable(Y, model.encoding().y, yScaleName, model.scale(Y), stack, 'base');
+      p.y2 = ref.stackable2(Y2, model.encoding().y, model.encoding().y2, yScaleName, model.scale(Y), stack, 'base');
       return p;
     } else {
       if (yFieldDef && yFieldDef.field) {
         if (yFieldDef.bin && !sizeFieldDef) {
-          p.y2 = {
-            scale: model.scaleName(Y),
-            field: field(yFieldDef, { binSuffix: 'start' })
-          };
-          p.y = {
-            scale: model.scaleName(Y),
-            field: field(yFieldDef, { binSuffix: 'end' }),
-            offset: config.mark.binnedBarSpacing
-          };
+          p.y2 = ref.bin(yFieldDef, yScaleName, 'start');
+          p.y = ref.bin(yFieldDef, yScaleName, 'end', config.mark.binnedBarSpacing);
           return p;
         } else if (model.scale(Y).bandSize === BANDSIZE_FIT) {
           // TODO: bandSize fit doesn't support size yet
           p.y = {
-            scale: model.scaleName(Y),
+            scale: yScaleName,
             field: field(yFieldDef)
           };
-          p.height = {
-            scale: model.scaleName(Y),
-            band: true
-          };
+          p.height = ref.band(yScaleName);
           return p;
         }
       }
-      p.yc = ref.normal(yFieldDef, model.scaleName(Y), model.scale(Y),
-        ref.midY(config) // TODO: config.singleBarOffset
+      p.yc = ref.normal(Y, yFieldDef, yScaleName, model.scale(Y),
+        ref.midY(config)
       );
-      p.height = ref.normal(model.encoding().size, model.scaleName(SIZE), model.scale(SIZE),
-        {value: defaultSize(model.scaleName(Y), model.scale(Y), config)}
+      p.height = ref.normal(SIZE, model.encoding().size, model.scaleName(SIZE), model.scale(SIZE),
+        {value: defaultSize(yScaleName, model.scale(Y), config)}
       );
       return p;
     }
