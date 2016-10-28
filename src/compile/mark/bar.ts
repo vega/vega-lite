@@ -56,17 +56,17 @@ export namespace bar {
           // TODO: bandSize fit doesn't support size yet
           p.x = {
             scale: model.scaleName(X),
-            field: field(xFieldDef),
-            offset: 0.5 // TODO offset or padding
+            field: field(xFieldDef)
           };
           p.width = {
             scale: model.scaleName(X),
-            band: true,
-            offset: -0.5 // TODO offset or padding
+            band: true
           };
           return p;
         }
       }
+      // TODO: do we really need an xc case?
+
       // sized bin, normal point-ordinal axis, quantitative x-axis, or no x
       p.xc = ref.normal(xFieldDef, model.scaleName(X), model.scale(X),
         extend(ref.midX(config), {offset: 1}) // TODO: config.singleBarOffset
@@ -107,13 +107,11 @@ export namespace bar {
           // TODO: bandSize fit doesn't support size yet
           p.y = {
             scale: model.scaleName(Y),
-            field: field(yFieldDef),
-            offset: 0.5 // TODO offset or padding
+            field: field(yFieldDef)
           };
           p.height = {
             scale: model.scaleName(Y),
-            band: true,
-            offset: -0.5 // TODO offset or padding
+            band: true
           };
           return p;
         }
