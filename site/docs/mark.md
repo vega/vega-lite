@@ -112,8 +112,7 @@ The following strip-plot use `tick` mark to represent its data.
 
 ## Bar
 
-The `bar` mark represents each data point as a rectangle, where the length is mapped to a quantitative scale.
-
+The `bar` mark encodes x and y channels with a pair of discrete and continuous fields.
 
 ### Single Bar Chart
 
@@ -165,8 +164,6 @@ You can also create a normalized stacked bar chart by setting `config.mark.stack
 
 <!-- ### Table Heat Map -->
 
-
-
 ### Histogram
 If the data is not pre-aggregated (i.e. each record in the data field represents one item),
 mapping a binned quantitative field to `x` and aggregate `count` to `y` produces a histogram.
@@ -174,6 +171,17 @@ mapping a binned quantitative field to `x` and aggregate `count` to `y` produces
 <span class="vl-example" data-name="histogram"></span>
 
 If you prefer to have histogram without gaps between bars, you can set the [`binnedBarSpacing` mark config](config.html#bar-config) to `0`.
+
+## Rect
+
+The `rect` mark represents arbitrary rectangle marks.
+
+### Table Heatmap
+
+The `rect` mark is useful for creating table heatmap.
+
+<span class="vl-example" data-name="rect_heatmap"></span>
+
 
 ## Line
 
