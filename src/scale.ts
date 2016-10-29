@@ -138,6 +138,9 @@ export interface Scale {
    */
   padding?: number;
 
+  // FIXME: integrated to type when migrate to Vega 3
+  points?: boolean;
+
   // typical
   /**
    * If true, values that exceed the data domain are clamped to either the minimum or maximum range value

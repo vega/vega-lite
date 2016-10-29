@@ -75,8 +75,13 @@ function parseMainScale(model: Model, fieldDef: FieldDef, channel: Channel) {
   const sort = model.sort(channel);
   let scaleDef: any = {
     name: model.scaleName(channel + '', true),
-    type: scale.type,
+    type: scale.type
   };
+
+  if (scale.points) {
+    // FIXME this should become a part of type with Vega 3
+    scaleDef.points = scale.points;
+  }
 
   // If channel is either X or Y then union them with X2 & Y2 if they exist
   if (channel === X && model.has(X2)) {
@@ -109,8 +114,7 @@ function parseMainScale(model: Model, fieldDef: FieldDef, channel: Channel) {
     // quantitative
     'exponent', 'zero',
     // ordinal
-    'points',
-    'padding' // padding depends on points
+    'padding' // padding
   ].forEach(function(property) {
     const value = exports[property](scale, channel, fieldDef, model, scaleDef);
     if (value !== undefined) {
@@ -211,6 +215,26 @@ export function scaleType(scale: Scale, fieldDef: FieldDef, channel: Channel, ma
   return null;
 }
 
+// TODO: integrate this into type once we migrate to Vega 3
+export function scalePoints(scaleType: ScaleType, bandSize: number | BandSize, channel: Channel, mark: Mark) {
+  if (scaleType === ScaleType.ORDINAL && contains([X, Y], channel)) {
+
+    // Use band ordinal scale in one of the following cases:
+    if (
+      // 1) the mark is bar and the scale's bandWidth is 'fit',
+      (mark === BAR && bandSize === BANDSIZE_FIT) ||
+      // 2) the mark is rect
+      mark === RECT
+    ) {
+      return undefined;
+    }
+
+    // Otherwise use ordinal point scale
+    return true;
+  }
+  return undefined;
+}
+
 export function scaleBandSize(scaleType: ScaleType, bandSize: number | BandSize, scaleConfig: ScaleConfig, topLevelSize: number, mark: Mark, channel: Channel): number | BandSize {
   if (scaleType === ScaleType.ORDINAL) {
     if (topLevelSize === undefined) {
@@ -234,7 +258,6 @@ export function scaleBandSize(scaleType: ScaleType, bandSize: number | BandSize,
   } else {
     // bandSize is not applicable for non-ordinal scale.
     return undefined;
-
   }
 }
 
@@ -532,28 +555,6 @@ export function padding(scale: Scale, channel: Channel, __, ___, scaleDef) {
   }
   return undefined;
 }
-
-// TODO: integrate this into type once we migrate to Vega 3
-export function points(scale: Scale, channel: Channel, __, model: Model) {
-  if (scale.type === ScaleType.ORDINAL && contains([X, Y], channel)) {
-    const mark = (model as UnitModel).mark();
-
-    // Use band ordinal scale in one of the following cases:
-    if (
-      // 1) the mark is bar and the scale's bandWidth is 'fit',
-      (mark === BAR && scale.bandSize === BANDSIZE_FIT) ||
-      // 2) the mark is rect
-      mark === RECT
-    ) {
-      return undefined;
-    }
-
-    // Otherwise use ordinal point scale
-    return true;
-  }
-  return undefined;
-}
-
 export function round(scale: Scale, channel: Channel) {
   if (contains([X, Y, ROW, COLUMN, SIZE], channel) && scale.round !== undefined) {
     return scale.round;

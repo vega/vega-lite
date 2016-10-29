@@ -24,7 +24,7 @@ import {parseLegendComponent} from './legend';
 import {assembleLayout, parseUnitLayout} from './layout';
 import {Model} from './model';
 import {parseMark} from './mark/mark';
-import {parseScaleComponent, scaleBandSize, scaleType} from './scale';
+import {parseScaleComponent, scaleBandSize, scalePoints, scaleType} from './scale';
 import {stack, StackProperties} from '../stack';
 
 function normalizeFieldDef(fieldDef: FieldDef, channel: Channel) {
@@ -73,10 +73,11 @@ export class UnitModel extends Model {
     const mark = this._mark = spec.mark;
     const encoding = this._encoding = this._initEncoding(mark, spec.encoding || {});
 
+    // FIXME revise if stack should come before scale
     this._stack = stack(mark, encoding, ((spec.config || {}).mark || {}).stacked);
     const config = this._config = this._initConfig(spec.config, parent, mark, encoding, this._stack);
 
-    this._scale =  this._initScale(mark, encoding, config, providedWidth, providedHeight);
+    this._scale =  this._initScale(mark, encoding, config.scale, providedWidth, providedHeight);
     this._axis = this._initAxis(encoding, config);
     this._legend = this._initLegend(encoding, config);
 
@@ -146,7 +147,7 @@ export class UnitModel extends Model {
     return config;
   }
 
-  private _initScale(mark: Mark, encoding: Encoding, config: Config, topLevelWidth:number, topLevelHeight: number): Dict<Scale> {
+  private _initScale(mark: Mark, encoding: Encoding, scaleConfig: ScaleConfig, topLevelWidth:number, topLevelHeight: number): Dict<Scale> {
     return UNIT_SCALE_CHANNELS.reduce(function(_scale, channel) {
       if (vlEncoding.has(encoding, channel) ||
           (channel === X && vlEncoding.has(encoding, X2)) ||
@@ -157,16 +158,19 @@ export class UnitModel extends Model {
         const scaleSpec = (channelDef || {}).scale || {};
         const _scaleType = scaleType(scaleSpec, channelDef, channel, mark);
 
+        // TODO: extract this method to be initScale inside scale.ts
         var scale = _scale[channel] = extend({
           type: _scaleType,
-          round: config.scale.round,
-          padding: config.scale.padding,
-          useRawDomain: config.scale.useRawDomain
+          round: scaleConfig.round,
+          padding: scaleConfig.padding,
+          useRawDomain: scaleConfig.useRawDomain
         }, scaleSpec);
 
         // bandSize depends on top-level size (width/height) and scale type
         // If top-level size is specified, we override specified bandSize with "fit".
-        scale.bandSize = scaleBandSize(scale.type, scale.bandSize, config.scale, channel === X ? topLevelWidth : topLevelHeight, mark, channel);
+        scale.bandSize = scaleBandSize(scale.type, scale.bandSize, scaleConfig,
+          channel === X ? topLevelWidth : topLevelHeight, mark, channel);
+        scale.points = scalePoints(_scaleType, scale.bandSize, channel, mark);
       }
       return _scale;
     }, {} as Dict<Scale>);
