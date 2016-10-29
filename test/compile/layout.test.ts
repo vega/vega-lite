@@ -35,9 +35,9 @@ describe('compile/layout', () => {
   });
 
   describe('unitSizeExpr', () => {
-    it('should return correct formula for ordinal scale', () => {
+    it('should return correct formula for ordinal-point scale', () => {
       const model = parseUnitModel({
-        mark: 'point',
+        mark: 'point', // point mark produce ordinal-point scale by default
         encoding: {
           x: {field: 'a', type: 'ordinal'}
         }
@@ -45,6 +45,18 @@ describe('compile/layout', () => {
 
       const sizeExpr = unitSizeExpr(model, X);
       assert.equal(sizeExpr, '(datum["distinct_a"] + 1) * 21');
+    });
+
+    it('should return correct formula for ordinal-band scale', () => {
+      const model = parseUnitModel({
+        mark: 'rect', // rect produces ordinal-band by default
+        encoding: {
+          x: {field: 'a', type: 'ordinal', scale: {padding: 0.3}},
+        }
+      });
+
+      const sizeExpr = unitSizeExpr(model, X);
+      assert.equal(sizeExpr, '(datum["distinct_a"] + 0.6) * 21');
     });
 
     it('should return static cell size for ordinal x-scale with fit', () => {

@@ -83,8 +83,9 @@ export function unitSizeExpr(model: UnitModel, channel: Channel): string {
   const scale = model.scale(channel);
   if (scale) {
     if (scale.type === ScaleType.ORDINAL && scale.bandSize !== BANDSIZE_FIT) {
+      let layoutOffset = scale.points ? 1 : 2 * scale.padding;
       return '(' + cardinalityExpr(model, channel) +
-        ' + ' + 1 +
+        ' + ' + layoutOffset +
         ') * ' + scale.bandSize;
     }
   }
