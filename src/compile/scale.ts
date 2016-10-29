@@ -9,7 +9,7 @@ import {Orient} from '../config';
 import {SOURCE, STACKED_SCALE} from '../data';
 import {DateTime, isDateTime, timestamp} from '../datetime';
 import {FieldDef, field, isMeasure} from '../fielddef';
-import {Mark, BAR, TEXT as TEXTMARK, RULE, TICK} from '../mark';
+import {Mark, BAR, TEXT as TEXTMARK, RECT, RULE, TICK} from '../mark';
 import {Scale, ScaleConfig, ScaleType, NiceTime, BANDSIZE_FIT, BandSize} from '../scale';
 import {isSortField, SortOrder} from '../sort';
 import {StackOffset} from '../stack';
@@ -533,11 +533,23 @@ export function padding(scale: Scale, channel: Channel, __, ___, scaleDef) {
   return undefined;
 }
 
+// TODO: integrate this into type once we migrate to Vega 3
 export function points(scale: Scale, channel: Channel, __, model: Model) {
   if (scale.type === ScaleType.ORDINAL && contains([X, Y], channel)) {
-    // We always use ordinal point scale for x and y except when the mark is bar and the scale's bandWidth is 'fit'
-    // Thus `points` isn't included in the scale's schema.
-    return (model as UnitModel).mark() === BAR && scale.bandSize === BANDSIZE_FIT ? undefined : true;
+    const mark = (model as UnitModel).mark();
+
+    // Use band ordinal scale in one of the following cases:
+    if (
+      // 1) the mark is bar and the scale's bandWidth is 'fit',
+      (mark === BAR && scale.bandSize === BANDSIZE_FIT) ||
+      // 2) the mark is rect
+      mark === RECT
+    ) {
+      return undefined;
+    }
+
+    // Otherwise use ordinal point scale
+    return true;
   }
   return undefined;
 }

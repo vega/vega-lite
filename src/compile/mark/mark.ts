@@ -13,6 +13,7 @@ import {bar} from './bar';
 import {sortField} from '../common';
 import {line} from './line';
 import {point, circle, square} from './point';
+import {rect} from './rect';
 import {rule} from './rule';
 import {text} from './text';
 import {tick} from './tick';
@@ -25,6 +26,7 @@ const markCompiler = {
   point: point,
   text: text,
   tick: tick,
+  rect: rect,
   rule: rule,
   circle: circle,
   square: square
