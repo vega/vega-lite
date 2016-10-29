@@ -2,7 +2,7 @@ import {Axis} from '../axis';
 import {Channel, X, COLUMN} from '../channel';
 import {Config, CellConfig} from '../config';
 import {Data, DataTable} from '../data';
-import {channelMappingReduce, channelMappingForEach} from '../encoding';
+import {reduce, forEach} from '../encoding';
 import {FieldDef, FieldRefOption, field} from '../fielddef';
 import {Legend} from '../legend';
 import {Scale, ScaleType} from '../scale';
@@ -234,11 +234,11 @@ export abstract class Model {
   protected abstract mapping();
 
   public reduce(f: (acc: any, fd: FieldDef, c: Channel) => any, init, t?: any) {
-    return channelMappingReduce(this.channels(), this.mapping(), f, init, t);
+    return reduce(this.mapping(), f, init, t);
   }
 
-  public forEach(f: (fd: FieldDef, c: Channel, i:number) => void, t?: any) {
-    channelMappingForEach(this.channels(), this.mapping(), f, t);
+  public forEach(f: (fd: FieldDef, c: Channel) => void, t?: any) {
+    forEach(this.mapping(), f, t);
   }
 
   public abstract has(channel: Channel): boolean;

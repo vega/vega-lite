@@ -3,7 +3,7 @@ import {COLUMN, ROW, X, Y, Channel} from '../channel';
 import {defaultConfig, Config} from '../config';
 import {SOURCE, SUMMARY} from '../data';
 import {Facet} from '../facet';
-import {channelMappingForEach} from '../encoding';
+import {forEach} from '../encoding';
 import {FieldDef, isDimension} from '../fielddef';
 import {Scale, ScaleType} from '../scale';
 import {FacetSpec} from '../spec';
@@ -46,7 +46,7 @@ export class FacetModel extends Model {
 
     const model = this;
 
-    channelMappingForEach(this.channels(), facet, function(fieldDef: FieldDef, channel: Channel) {
+    forEach(facet, function(fieldDef: FieldDef, channel: Channel) {
       // TODO: if has no field / datum, then drop the field
       if (fieldDef.type) {
         // convert short type to full type

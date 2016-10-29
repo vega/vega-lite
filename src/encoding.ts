@@ -148,74 +148,40 @@ export function fieldDefs(encoding: Encoding): FieldDef[] {
   return arr;
 };
 
-export function forEach(encoding: Encoding,
-    f: (fd: FieldDef, c: Channel, i: number) => void,
+export function forEach(mapping: any,
+    f: (fd: FieldDef, c: Channel) => void,
     thisArg?: any) {
-  channelMappingForEach(CHANNELS, encoding, f, thisArg);
-}
+  if (!mapping) {
+    return;
+  }
 
-export function channelMappingForEach(channels: Channel[], mapping: any,
-    f: (fd: FieldDef, c: Channel, i: number) => void,
-    thisArg?: any) {
-  let i = 0;
-  channels.forEach(function(channel) {
-    if (has(mapping, channel)) {
-      if (isArray(mapping[channel])) {
-        mapping[channel].forEach(function(fieldDef) {
-            f.call(thisArg, fieldDef, channel, i++);
-        });
-      } else {
-        f.call(thisArg, mapping[channel], channel, i++);
-      }
+  Object.keys(mapping).forEach((c: any) => {
+    const channel: Channel = c;
+    if (isArray(mapping[channel])) {
+      mapping[channel].forEach(function(fieldDef) {
+        f.call(thisArg, fieldDef, channel);
+      });
+    } else {
+      f.call(thisArg, mapping[channel], channel);
     }
   });
 }
 
-export function map(encoding: Encoding,
-    f: (fd: FieldDef, c: Channel, i: number) => any,
-    thisArg?: any) {
-  return channelMappingMap(CHANNELS, encoding, f , thisArg);
-}
-
-export function channelMappingMap(channels: Channel[], mapping: any,
-    f: (fd: FieldDef, c: Channel, i: number) => any,
-    thisArg?: any) {
-  let arr = [];
-  channels.forEach(function(channel) {
-    if (has(mapping, channel)) {
-      if (isArray(mapping[channel])) {
-        mapping[channel].forEach(function(fieldDef) {
-          arr.push(f.call(thisArg, fieldDef, channel));
-        });
-      } else {
-        arr.push(f.call(thisArg, mapping[channel], channel));
-      }
-    }
-  });
-  return arr;
-}
-export function reduce(encoding: Encoding,
+export function reduce(mapping: any,
     f: (acc: any, fd: FieldDef, c: Channel) => any,
-    init,
-    thisArg?: any) {
-  return channelMappingReduce(CHANNELS, encoding, f, init, thisArg);
-}
+    init, thisArg?: any) {
+  if (!mapping) {
+    return init;
+  }
 
-export function channelMappingReduce(channels: Channel[], mapping: any,
-    f: (acc: any, fd: FieldDef, c: Channel) => any,
-    init,
-    thisArg?: any) {
-  let r = init;
-  CHANNELS.forEach(function(channel) {
-    if (has(mapping, channel)) {
-      if (isArray(mapping[channel])) {
-        mapping[channel].forEach(function(fieldDef) {
-            r = f.call(thisArg, r, fieldDef, channel);
-        });
-      } else {
-        r = f.call(thisArg, r, mapping[channel], channel);
-      }
+  return Object.keys(mapping).reduce((r, c: any) => {
+    const channel: Channel = c;
+    if (isArray(mapping[channel])) {
+      return mapping[channel].reduce(function(r1, fieldDef) {
+        return f.call(thisArg, r1, fieldDef, channel);
+      }, r);
+    } else {
+      return f.call(thisArg, r, mapping[channel], channel);
     }
-  });
-  return r;
+  }, init);
 }
