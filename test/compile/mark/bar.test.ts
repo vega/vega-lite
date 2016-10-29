@@ -401,6 +401,28 @@ describe('Mark: Bar', function() {
     });
   });
 
+  describe('OxN', function() {
+    // This is generally a terrible idea, but we should still test
+    // if the output show expected results
+
+    const model = parseUnitModel({
+      "data": {"url": 'data/cars.json'},
+      "mark": "bar",
+      "encoding": {
+        "x": {"field": 'Origin', "type": "nominal"},
+        "y": {"field": 'Cylinders', "type": "ordinal"}
+      }
+    });
+    const props = bar.properties(model);
+
+    it('should produce vertical bar using x, x2', function() {
+      assert.deepEqual(props.xc, {scale: 'x', field: 'Origin'});
+      assert.deepEqual(props.width, {value: 20 });
+      assert.deepEqual(props.yc, {scale: 'y', field: 'Cylinders'});
+      assert.deepEqual(props.height, {value: 20});
+    });
+  });
+
   describe('ranged bar', function() {
     // TODO: gantt chart with temporal
 

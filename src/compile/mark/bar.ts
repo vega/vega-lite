@@ -80,7 +80,7 @@ export namespace bar {
     const yFieldDef = model.encoding().y;
     const yScaleName = model.scaleName(Y);
     // y, y2 & height -- we must specify two of these in all conditions
-    if (orient !== Orient.HORIZONTAL) {
+    if (orient === Orient.VERTICAL) {
       p.y = ref.stackable(Y, model.encoding().y, yScaleName, model.scale(Y), stack, 'base');
       p.y2 = ref.stackable2(Y2, model.encoding().y, model.encoding().y2, yScaleName, model.scale(Y), stack, 'base');
       return p;
