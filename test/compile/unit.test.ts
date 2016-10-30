@@ -4,12 +4,55 @@ import {UnitModel} from '../../src/compile/unit';
 import {ExtendedUnitSpec} from '../../src/spec';
 import {parseUnitModel} from '../util';
 
-describe('Unit', function() {
+describe('UnitModel', function() {
   it('should say it is unit', function() {
     const model = new UnitModel({} as ExtendedUnitSpec, null, null);
     assert(model.isUnit());
     assert(!model.isFacet());
     assert(!model.isLayer());
+  });
+
+  describe('initEncoding', () => {
+    it('should drop unsupported channel and throws warning', () => {
+      const model = parseUnitModel({
+        mark: 'bar',
+        encoding: {
+          shape: {field: 'a', type: 'quantitative'}
+        }
+      });
+      assert.equal(model.encoding().shape, undefined);
+      // TODO: test that it throws warning
+    });
+
+    it('should drop channel without field and value and throws warning', () => {
+      const model = parseUnitModel({
+        mark: 'bar',
+        encoding: {
+          x: {type: 'quantitative'}
+        }
+      });
+      assert.equal(model.encoding().x, undefined);
+      // TODO: test that it throws warning
+    });
+
+    it('should drop a fieldDef without field and value from the channel def list  and throws warning', () => {
+      const model = parseUnitModel({
+        mark: 'bar',
+        encoding: {
+          detail: [
+            {field: 'a', type: 'ordinal'},
+            {value: 'b'},
+            {type: 'quantitative'}
+          ]
+        }
+      });
+      assert.deepEqual(model.encoding().detail, [
+        {field: 'a', type: 'ordinal'},
+        {value: 'b'}
+      ]);
+      // TODO: test that it throws warning
+    });
+
   });
 
   describe('initSize', () => {

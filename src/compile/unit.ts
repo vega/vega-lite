@@ -11,7 +11,7 @@ import {Mark, TEXT as TEXTMARK} from '../mark';
 import {BANDSIZE_FIT, Scale, ScaleConfig, ScaleType} from '../scale';
 import {ExtendedUnitSpec} from '../spec';
 import {getFullName, QUANTITATIVE} from '../type';
-import {duplicate, extend, mergeDeep, Dict} from '../util';
+import {duplicate, extend, isArray, mergeDeep, Dict} from '../util';
 import {VgData} from '../vega.schema';
 
 import {parseAxisComponent} from './axis';
@@ -24,6 +24,18 @@ import {Model} from './model';
 import {parseMark} from './mark/mark';
 import {parseScaleComponent, scaleBandSize, scaleType} from './scale';
 import {stack, StackProperties} from '../stack';
+
+function normalizeFieldDef(fieldDef: FieldDef, channel: Channel) {
+  if (fieldDef.type) {
+    // convert short type to full type
+    fieldDef.type = getFullName(fieldDef.type);
+  }
+
+  if ((channel === PATH || channel === ORDER) && !fieldDef.aggregate && fieldDef.type === QUANTITATIVE) {
+    fieldDef.aggregate = AggregateOp.MIN;
+  }
+  return fieldDef;
+}
 
 /**
  * Internal model of Vega-Lite specification for the compiler.
@@ -81,23 +93,36 @@ export class UnitModel extends Model {
     // clone to prevent side effect to the original spec
     encoding = duplicate(encoding);
 
-    vlEncoding.forEach(encoding, function(fieldDef: FieldDef, channel: Channel) {
+    Object.keys(encoding).forEach((channel: any) => {
       if (!supportMark(channel, mark)) {
         // Drop unsupported channel
 
         // FIXME consolidate warning method
         console.warn(channel, 'dropped as it is incompatible with', mark);
-        delete fieldDef.field;
+        delete encoding[channel];
         return;
       }
 
-      if (fieldDef.type) {
-        // convert short type to full type
-        fieldDef.type = getFullName(fieldDef.type);
-      }
-
-      if ((channel === PATH || channel === ORDER) && !fieldDef.aggregate && fieldDef.type === QUANTITATIVE) {
-        fieldDef.aggregate = AggregateOp.MIN;
+      if (isArray(encoding[channel])) {
+        // Array of fieldDefs for detail channel (or production rule)
+        encoding[channel] = encoding[channel].reduce((fieldDefs, fieldDef) => {
+          if (fieldDef.field === undefined && fieldDef.value === undefined) { // TODO: datum
+            // FIXME consolidate warning method
+            console.warn(`Dropping ${JSON.stringify(fieldDef)} from channel ${channel} since it does not contain data field or value.`);
+          } else {
+            fieldDefs.push(normalizeFieldDef(fieldDef, channel));
+          }
+          return fieldDefs;
+        }, []);
+      } else {
+        const fieldDef = encoding[channel];
+        if (fieldDef.field === undefined && fieldDef.value === undefined) { // TODO: datum
+          // FIXME consolidate warning method
+          console.warn(`Dropping ${JSON.stringify(fieldDef)} from channel ${channel} since it does not contain data field or value.`);
+          delete encoding[channel];
+          return;
+        }
+        normalizeFieldDef(fieldDef, channel);
       }
     });
     return encoding;

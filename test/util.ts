@@ -1,21 +1,36 @@
 import {buildModel} from '../src/compile/common';
 import {UnitModel} from '../src/compile/unit';
-import {ExtendedUnitSpec, normalize} from '../src/spec';
+import {FacetModel} from '../src/compile/facet';
+import {ExtendedUnitSpec, FacetSpec, normalize} from '../src/spec';
 import {contains} from '../src/util';
 import {Model} from '../src/compile/model';
 
+/**
+ * Call new Model without worrying about types.
+ * We use this in tests to allow using raw JSON.
+ */
 export function parseModel(inputSpec): Model {
   const spec = normalize(inputSpec);
   return buildModel(spec, null, '');
 }
 
 /**
- * Call new Model without worrying about types.
+ * Call new UnitModel without worrying about types.
  * We use this in tests to allow using raw JSON.
  */
 export function parseUnitModel(spec) {
   // TODO: support other type of model as well
   return new UnitModel(spec as ExtendedUnitSpec, null, '');
+}
+
+
+/**
+ * Call new FacetModel without worrying about types.
+ * We use this in tests to allow using raw JSON.
+ */
+export function parseFacetModel(spec) {
+  // TODO: support other type of model as well
+  return new FacetModel(spec as FacetSpec, null, '');
 }
 
 export const zSchema = require('z-schema');

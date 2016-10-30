@@ -8,7 +8,7 @@ import {FieldDef, isDimension} from '../fielddef';
 import {Scale, ScaleType} from '../scale';
 import {FacetSpec} from '../spec';
 import {getFullName} from '../type';
-import {extend, keys, vals, flatten, duplicate, mergeDeep, Dict} from '../util';
+import {contains, extend, keys, vals, flatten, duplicate, mergeDeep, Dict} from '../util';
 import {VgData, VgMarkGroup} from '../vega.schema';
 
 import {parseAxis, parseInnerAxis, gridShow, parseAxisComponent} from './axis';
@@ -47,6 +47,24 @@ export class FacetModel extends Model {
     const model = this;
 
     forEach(facet, function(fieldDef: FieldDef, channel: Channel) {
+
+      if (!contains([ROW, COLUMN], channel)) {
+        // Drop unsupported channel
+
+        // FIXME consolidate warning method
+        console.warn(channel, 'dropped as it is incompatible with facets.');
+        delete facet[channel];
+        return;
+      }
+
+      // TODO: array of row / column ?
+      if (fieldDef.field === undefined && fieldDef.value === undefined) { // TODO: datum
+        // FIXME consolidate warning method
+        console.warn(`Dropping ${JSON.stringify(fieldDef)} from channel ${channel} since it does not contain data field or value.`);
+        delete facet[channel];
+        return;
+      }
+
       // TODO: if has no field / datum, then drop the field
       if (fieldDef.type) {
         // convert short type to full type
