@@ -1,3 +1,5 @@
+import * as log from './log';
+
 import {SUM_OPS} from './aggregate';
 import {Channel, STACK_GROUP_CHANNELS, X, Y, X2, Y2} from './channel';
 import {Encoding, has, isAggregate} from './encoding';
@@ -66,12 +68,12 @@ export function stack(mark: Mark, encoding: Encoding, stacked: StackOffset): Sta
     const fieldChannelScale = encoding[fieldChannel].scale;
 
     if (fieldChannelScale && fieldChannelScale.type && fieldChannelScale.type !== ScaleType.LINEAR) {
-      console.warn('Cannot stack non-linear (' + fieldChannelScale.type + ') scale');
+      log.warn(log.message.cannotStackNonLinearScale(fieldChannelScale.type));
       return null;
     }
 
     if (has(encoding, fieldChannel === X ? X2 : Y2)) {
-      console.warn('Cannot stack ' + fieldChannel + ' if there is already ' + fieldChannel);
+      log.warn(log.message.cannotStackRangedMark(fieldChannel));
       return null;
     }
 
@@ -81,7 +83,7 @@ export function stack(mark: Mark, encoding: Encoding, stacked: StackOffset): Sta
         stacked = stacked === undefined ? StackOffset.ZERO : stacked;
       }
     } else {
-      console.warn('Cannot stack when the aggregate function is ' + fieldChannelAggregate + '(non-summative).');
+      log.warn(log.message.cannotStackNonSummativeAggregate(fieldChannelAggregate));
       return null;
     }
 

@@ -1,3 +1,5 @@
+import * as log from '../log';
+
 import {Channel} from '../channel';
 import {keys, duplicate, mergeDeep, flatten, unique, isArray, vals, hash, Dict} from '../util';
 import {defaultConfig, Config} from '../config';
@@ -130,13 +132,13 @@ export class LayerModel extends Model {
               if (isArray(childScales.main.domain)) {
                 modelScales.main.domain = modelDomain.concat(childDomain);
               } else {
-                model.addWarning('custom domain scale cannot be unioned with default field-based domain');
+                log.warn(log.message.CANNOT_UNION_CUSTOM_DOMAIN_WITH_FIELD_DOMAIN);
               }
             } else {
               const unionedFields = isUnionedDomain(modelDomain) ? modelDomain.fields : [modelDomain] as VgDataRef[];
 
               if (isArray(childDomain)) {
-                model.addWarning('custom domain scale cannot be unioned with default field-based domain');
+                log.warn(log.message.CANNOT_UNION_CUSTOM_DOMAIN_WITH_FIELD_DOMAIN);
               }
 
               let fields = isDataRefDomain(childDomain) ? unionedFields.concat([childDomain]) :

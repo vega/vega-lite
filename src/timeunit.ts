@@ -1,6 +1,7 @@
 import {DateTimeExpr, dateTimeExpr} from './datetime';
 import {ScaleType} from './scale';
 import {Dict, keys} from './util';
+import * as log from './log';
 
 export enum TimeUnit {
   YEAR = 'year' as any,
@@ -170,8 +171,7 @@ export function fieldExpr(fullTimeUnit: TimeUnit, field: string): string {
   }, {});
 
   if (d.day && keys(d).length > 1) {
-    console.warn('Time unit "'+ fullTimeUnit +'" is not supported. We are replacing it with ',
-      (fullTimeUnit+'').replace('day', 'date')+'.');
+    log.warn(log.message.dayReplacedWithDate(fullTimeUnit));
     delete d.day;
     d.date = func(TimeUnit.DATE);
   }

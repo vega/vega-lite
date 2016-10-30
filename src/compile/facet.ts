@@ -1,3 +1,5 @@
+import * as log from '../log';
+
 import {AxisOrient, Axis} from '../axis';
 import {COLUMN, ROW, X, Y, Channel} from '../channel';
 import {defaultConfig, Config} from '../config';
@@ -44,23 +46,17 @@ export class FacetModel extends Model {
     // clone to prevent side effect to the original spec
     facet = duplicate(facet);
 
-    const model = this;
-
     forEach(facet, function(fieldDef: FieldDef, channel: Channel) {
-
       if (!contains([ROW, COLUMN], channel)) {
         // Drop unsupported channel
-
-        // FIXME consolidate warning method
-        console.warn(channel, 'dropped as it is incompatible with facets.');
+        log.warn(log.message.incompatibleChannel(channel, 'facet'));
         delete facet[channel];
         return;
       }
 
       // TODO: array of row / column ?
       if (fieldDef.field === undefined && fieldDef.value === undefined) { // TODO: datum
-        // FIXME consolidate warning method
-        console.warn(`Dropping ${JSON.stringify(fieldDef)} from channel ${channel} since it does not contain data field or value.`);
+        log.warn(log.message.emptyFieldDef(fieldDef, channel));
         delete facet[channel];
         return;
       }
@@ -72,7 +68,7 @@ export class FacetModel extends Model {
       }
 
       if (!isDimension(fieldDef)) {
-        model.addWarning(channel + ' encoding should be ordinal.');
+        log.warn(log.message.facetChannelShouldBeDiscrete(channel));
       }
     });
     return facet;

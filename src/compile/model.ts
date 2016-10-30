@@ -1,3 +1,5 @@
+import * as log from '../log';
+
 import {Axis} from '../axis';
 import {Channel, X, COLUMN} from '../channel';
 import {Config, CellConfig} from '../config';
@@ -9,7 +11,7 @@ import {Scale, ScaleType} from '../scale';
 import {SortField, SortOrder} from '../sort';
 import {BaseSpec} from '../spec';
 import {Transform} from '../transform';
-import {contains, extend, flatten, vals, warning, Dict} from '../util';
+import {contains, extend, flatten, vals, Dict} from '../util';
 import {VgData, VgMarkGroup, VgScale, VgAxis, VgLegend} from '../vega.schema';
 
 import {DataComponent} from './data/data';
@@ -107,8 +109,6 @@ export abstract class Model {
 
   protected _config: Config;
 
-  protected _warnings: string[] = [];
-
   public component: Component;
 
   constructor(spec: BaseSpec, parent: Model, parentGivenName: string) {
@@ -131,7 +131,7 @@ export abstract class Model {
       if (spec.transform.filterInvalid === undefined &&
           spec.transform['filterNull'] !== undefined) {
         spec.transform.filterInvalid = spec.transform['filterNull'];
-        console.warn('filterNull is deprecated. Please use filterInvalid instead.');
+        log.warn(log.message.DEPRECATED_FILTER_NULL);
       }
     }
 
@@ -380,15 +380,6 @@ export abstract class Model {
    */
   public config(): Config {
     return this._config;
-  }
-
-  public addWarning(message: string) {
-    warning(message);
-    this._warnings.push(message);
-  }
-
-  public warnings(): string[] {
-    return this._warnings;
   }
 
   /**

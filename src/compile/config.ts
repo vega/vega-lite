@@ -121,6 +121,5 @@ export function orient(mark: Mark, encoding: Encoding, markConfig: MarkConfig = 
       return Orient.VERTICAL;
   }
   /* istanbul ignore:next */
-  console.warn('orient unimplemented for mark', mark);
   return Orient.VERTICAL;
 }

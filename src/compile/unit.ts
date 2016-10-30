@@ -1,3 +1,5 @@
+import * as log from '../log';
+
 import {AggregateOp} from '../aggregate';
 import {Axis} from '../axis';
 import {X, Y, X2, Y2, TEXT, PATH, ORDER, Channel, UNIT_CHANNELS,  UNIT_SCALE_CHANNELS, NONSPATIAL_SCALE_CHANNELS, supportMark} from '../channel';
@@ -97,8 +99,7 @@ export class UnitModel extends Model {
       if (!supportMark(channel, mark)) {
         // Drop unsupported channel
 
-        // FIXME consolidate warning method
-        console.warn(channel, 'dropped as it is incompatible with', mark);
+        log.warn(log.message.incompatibleChannel(channel, mark));
         delete encoding[channel];
         return;
       }
@@ -107,8 +108,7 @@ export class UnitModel extends Model {
         // Array of fieldDefs for detail channel (or production rule)
         encoding[channel] = encoding[channel].reduce((fieldDefs, fieldDef) => {
           if (fieldDef.field === undefined && fieldDef.value === undefined) { // TODO: datum
-            // FIXME consolidate warning method
-            console.warn(`Dropping ${JSON.stringify(fieldDef)} from channel ${channel} since it does not contain data field or value.`);
+            log.warn(log.message.emptyFieldDef(fieldDef, channel));
           } else {
             fieldDefs.push(normalizeFieldDef(fieldDef, channel));
           }
@@ -117,8 +117,7 @@ export class UnitModel extends Model {
       } else {
         const fieldDef = encoding[channel];
         if (fieldDef.field === undefined && fieldDef.value === undefined) { // TODO: datum
-          // FIXME consolidate warning method
-          console.warn(`Dropping ${JSON.stringify(fieldDef)} from channel ${channel} since it does not contain data field or value.`);
+          log.warn(log.message.emptyFieldDef(fieldDef, channel));
           delete encoding[channel];
           return;
         }
