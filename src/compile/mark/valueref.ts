@@ -57,14 +57,11 @@ export function fieldRef(fieldDef: FieldDef, scaleName: string, opt: FieldRefOpt
   return ref;
 }
 
-export function band(scaleName: string, offset?: number) {
+export function band(scaleName: string) {
   let ref: VgValueRef = {
     scale: scaleName,
     band: true
   };
-  if (offset) {
-    ref.offset = offset;
-  }
   return ref;
 }
 
@@ -74,6 +71,7 @@ defaultRef: VgValueRef | 'base' | 'baseOrMax'): VgValueRef {
   // TODO: datum support
 
   if (fieldDef) {
+    /* istanbul ignore else */
     if (fieldDef.field) {
       if (scale.type === ScaleType.ORDINAL) {
         return fieldRef(fieldDef, scaleName, {binSuffix: 'range'});
@@ -84,27 +82,31 @@ defaultRef: VgValueRef | 'base' | 'baseOrMax'): VgValueRef {
       return {
         value: fieldDef.value
       };
+    } else {
+      throw new Error('FieldDef without field or value.'); // FIXME add this to log.message
     }
   }
 
-  if (defaultRef) {
-    if (defaultRef === 'base') {
-      if (channel === X || channel === X2) {
-        return baseX(scaleName, scale);
-      } else if (channel === Y || channel === Y2) {
-        return baseY(scaleName, scale);
-      }
-    } else if (defaultRef === 'baseOrMax') {
-      if (channel === X || channel === X2) {
-        return baseOrMaxX(scaleName, scale);
-      } else if (channel === Y || channel === Y2) {
-        return baseOrMaxY(scaleName, scale);
-      }
+  if (defaultRef === 'base') {
+    /* istanbul ignore else */
+    if (channel === X || channel === X2) {
+      return baseX(scaleName, scale);
+    } else if (channel === Y || channel === Y2) {
+      return baseY(scaleName, scale);
     } else {
-      return defaultRef;
+      throw new Error(`Unsupported channel ${channel} for base function`); // FIXME add this to log.message
+    }
+  } else if (defaultRef === 'baseOrMax') {
+    /* istanbul ignore else */
+    if (channel === X || channel === X2) {
+      return baseOrMaxX(scaleName, scale);
+    } else if (channel === Y || channel === Y2) {
+      return baseOrMaxY(scaleName, scale);
+    } else {
+      throw new Error(`Unsupported channel ${channel} for base function`); // FIXME add this to log.message
     }
   }
-  return undefined;
+  return defaultRef;
 }
 
 
@@ -134,6 +136,9 @@ function baseX(scaleName: string, scale: Scale): VgValueRef {
   return {value: 0};
 }
 
+/**
+ * @returns {VgValueRef} base value if scale exists and return max value if scale does not exist
+ */
 function baseOrMaxX(scaleName: string, scale: Scale): VgValueRef {
   if (scaleName) {
     // Log / Time / UTC scale do not support zero
@@ -165,6 +170,9 @@ function baseY(scaleName: string, scale: Scale): VgValueRef {
   return {field: {group: 'height'}};
 }
 
+/**
+ * @returns {VgValueRef} base value if scale exists and return max value if scale does not exist
+ */
 function baseOrMaxY(scaleName: string, scale: Scale): VgValueRef {
   if (scaleName) {
     // Log / Time / UTC scale do not support zero
