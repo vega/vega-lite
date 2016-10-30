@@ -63,10 +63,45 @@ const main = Logger(Warn);
 let current: LoggerInterface = main;
 
 /**
+ * Logger tool for checking if the code throws correct warning
+ */
+export class LocalLogger implements LoggerInterface {
+  public warns = [];
+  public infos = [];
+  public debugs = [];
+
+  public level() {
+    return this;
+  }
+
+  public warn(...args) {
+    this.warns.push(...args);
+    return this;
+  }
+
+  public info(...args) {
+    this.infos.push(...args);
+    return this;
+  }
+
+  public debug(...args) {
+    this.debugs.push(...args);
+    return this;
+  }
+}
+
+export function runLocalLogger(f: (localLogger: LocalLogger) => void) {
+  const localLogger = current = new LocalLogger();
+  f(localLogger);
+  reset();
+}
+
+/**
  * Set the singleton logger to be a custom logger
  */
 export function set(logger: LoggerInterface) {
   current = logger;
+  return current;
 }
 
 /**
@@ -74,6 +109,7 @@ export function set(logger: LoggerInterface) {
  */
 export function reset() {
   current = main;
+  return current;
 }
 
 export function warn(...args) {

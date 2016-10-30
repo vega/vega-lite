@@ -1,6 +1,9 @@
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
+
+import * as log from '../../src/log';
+
 import {assembleData} from '../../src/compile/data/data';
 import {bin} from '../../src/compile/data/bin';
 import {filter} from '../../src/compile/data/filter';
@@ -289,15 +292,18 @@ describe('data: nullFilter', function() {
     });
 
     it('should add filterNull for O when specified', function () {
-      const model = parseUnitModel(mergeDeep(spec, {
-        transform: {
-          filterNull: true
-        }
-      }));
-      assert.deepEqual(nullFilter.parseUnit(model), {
-        qq: {field: 'qq', type: "quantitative"},
-        tt: {field: 'tt', type: "temporal"},
-        oo: {field: 'oo', type: "ordinal"}
+      log.runLocalLogger((localLogger) => {
+        const model = parseUnitModel(mergeDeep(spec, {
+          transform: {
+            filterNull: true
+          }
+        }));
+        assert.deepEqual(nullFilter.parseUnit(model), {
+          qq: {field: 'qq', type: "quantitative"},
+          tt: {field: 'tt', type: "temporal"},
+          oo: {field: 'oo', type: "ordinal"}
+        });
+        assert.equal(localLogger.warns[0], log.message.DEPRECATED_FILTER_NULL);
       });
     });
 
@@ -314,31 +320,21 @@ describe('data: nullFilter', function() {
       });
     });
 
-    it('should add no null filter if filterNull is false', function () {
-      const model = parseUnitModel(mergeDeep(spec, {
-        transform: {
-          filterNull: false
-        }
-      }));
-      assert.deepEqual(nullFilter.parseUnit(model), {
-        qq: null,
-        tt: null,
-        oo: null
-      });
-    });
-
     it ('should add no null filter for count field', () => {
-      const model = parseUnitModel({
-        transform: {
-          filterNull: true
-        },
-        mark: "point",
-        encoding: {
-          y: {aggregate: 'count', field: '*', type: "quantitative"}
-        }
-      });
+      log.runLocalLogger((localLogger) => {
+        const model = parseUnitModel({
+          transform: {
+            filterNull: true
+          },
+          mark: "point",
+          encoding: {
+            y: {aggregate: 'count', field: '*', type: "quantitative"}
+          }
+        });
 
-      assert.deepEqual(nullFilter.parseUnit(model), {});
+        assert.deepEqual(nullFilter.parseUnit(model), {});
+        assert.equal(localLogger.warns[0], log.message.DEPRECATED_FILTER_NULL);
+      });
     });
 
     describe('assemble', () => {

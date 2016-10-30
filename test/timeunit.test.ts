@@ -1,5 +1,7 @@
 import {assert} from 'chai';
 
+import * as log from '../src/log';
+
 import {ScaleType} from '../src/scale';
 import {TimeUnit, containsTimeUnit, defaultScaleType, fieldExpr, convert, template} from '../src/timeunit';
 
@@ -88,10 +90,13 @@ describe('timeUnit', () => {
 
 
     it('should automatically correct YEARMONTHDAY to be YEARMONTHDATE', () => {
-      assert.equal(
-        fieldExpr('yearmonthday' as any, 'x'),
-        'datetime(year(datum["x"]), month(datum["x"]), date(datum["x"]), 0, 0, 0, 0)'
-      );
+      log.runLocalLogger((localLogger) => {
+        assert.equal(
+          fieldExpr('yearmonthday' as any, 'x'),
+          'datetime(year(datum["x"]), month(datum["x"]), date(datum["x"]), 0, 0, 0, 0)'
+        );
+        assert.equal(localLogger.warns[0], log.message.dayReplacedWithDate('yearmonthday' as any));
+      });
     });
 
     it('should return correct field expression for QUARTER', () => {

@@ -331,6 +331,12 @@ export function normalizeOverlay(spec: UnitSpec, overlayWithPoint: boolean, over
     // TODO: add name with suffix
     let pointSpec = duplicate(baseSpec);
     pointSpec.mark = POINT;
+
+    // Do not include path for point
+    if (pointSpec.encoding.path) {
+      delete pointSpec.encoding.path;
+    }
+
     let markConfig = extend({},
       defaultOverlayConfig.pointStyle,
       spec.config.overlay.pointStyle,

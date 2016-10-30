@@ -9,7 +9,7 @@
       "type": "nominal"
     },
     "y": {
-      "aggregate": "mean",
+      "aggregate": "sum",
       "bin": false,
       "field": "Horsepower",
       "type": "quantitative"

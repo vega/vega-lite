@@ -225,7 +225,7 @@ export function scaleBandSize(scaleType: ScaleType, bandSize: number | BandSize,
       }
     } else {
       // If top-level is specified, use bandSize fit
-      if (bandSize) {
+      if (bandSize && bandSize !== BANDSIZE_FIT) {
         // If top-level size is specified, we override specified bandSize with "fit"
         log.warn(log.message.bandSizeOverridden(channel));
       }
