@@ -26,3 +26,4 @@ test/**/*.d.ts
 site/**/*.d.ts
 examples/**/*.d.ts
 .jekyll-metadata
+.nyc_output/*

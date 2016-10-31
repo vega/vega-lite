@@ -1,1 +1,1 @@
---reporter dot
+--reporter dot --recursive --require source-map-support/register

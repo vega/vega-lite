@@ -116,14 +116,12 @@ This section lists commands that are commonly used during development. See `pack
 
 You can run `npm run build` to compile Vega-Lite and regenerate `vega-lite-schema.json`.
 
-### Basic Lint & Test
+### Basic Lint & Test & Test Coverage
 
 `npm run lint` and `npm run test` run ts-lint and all unit-tests respectively. These two commands are automatically run by `npm start` and `npm run watch`.
 
-### Test Coverage
-
-Use `npm run cover` to see test coverage summary and generate a report inside `coverage/lcov-report`.
-You can see if specific lines are covered in the unit test by running `open coverage/lcov-report/index.html`
+Running `npm run test` automatically includes test coverage summary and generates a report inside `coverage/index.html`.
+You can see if specific lines are covered in the unit test by running `open coverage/index.html`
 and browse through the report.
 
 ### Watch tasks

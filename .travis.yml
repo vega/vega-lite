@@ -7,7 +7,8 @@ install: npm install
 script:
   - npm run clean && npm run build
   - npm run lint
-  - npm run cover
+  - npm run test
+  - npm run codecov
 notifications:
   email:
     on_success: never
