@@ -1,4 +1,4 @@
-declare module 'vega-util/src/logger' {
+declare module 'vega-util' {
   export interface LoggerInterface {
     level: (_: number) => number | LoggerInterface;
     warn(...args): LoggerInterface;
@@ -12,5 +12,5 @@ declare module 'vega-util/src/logger' {
   export const Debug: number;
 
   export function log(...args);
-  export default function(_: number): LoggerInterface;
+  export function logger(_: number): LoggerInterface;
 }
