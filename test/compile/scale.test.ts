@@ -6,7 +6,8 @@ import {scaleBandSize, scaleType, domain, parseScaleComponent} from '../../src/c
 import {SOURCE, SUMMARY} from '../../src/data';
 import {parseUnitModel} from '../util';
 
-import {X, Y, ROW, DETAIL} from '../../src/channel';
+import * as log from '../../src/log';
+import {X, Y, SHAPE, DETAIL} from '../../src/channel';
 import {BANDSIZE_FIT, ScaleType, defaultScaleConfig} from '../../src/scale';
 import {POINT} from '../../src/mark';
 
@@ -59,20 +60,41 @@ describe('Scale', function() {
       assert.deepEqual(scaleType(scale, fieldDef, Y, model.mark()), ScaleType.ORDINAL);
     });
 
-    it('should return ordinal for row', function() {
+    it('should return ordinal for shape', function() {
       const model = parseUnitModel({
         mark: 'point',
         encoding: {
-          row: {
+          shape: {
             field: 'a',
             type: 'temporal',
             timeUnit: 'yearMonth'
           }
         }
       });
-      const fieldDef = model.encoding().row;
-      const scale = model.scale(ROW);
-      assert.deepEqual(scaleType(scale, fieldDef, ROW, model.mark()), ScaleType.ORDINAL);
+      const fieldDef = model.encoding().shape;
+      const scale = model.scale(SHAPE);
+      assert.deepEqual(scaleType(scale, fieldDef, SHAPE, model.mark()), ScaleType.ORDINAL);
+    });
+
+
+    it('should return ordinal for shape even if non-ordinal is specified', function() {
+      log.runLocalLogger((localLogger) => {
+        const model = parseUnitModel({
+          mark: 'point',
+          encoding: {
+            shape: {
+              field: 'a',
+              type: 'temporal',
+              timeUnit: 'yearMonth',
+              scale: {type: 'linear'}
+            }
+          }
+        });
+        const fieldDef = model.encoding().shape;
+        const scale = model.scale(SHAPE);
+        assert.deepEqual(scaleType(scale, fieldDef, SHAPE, model.mark()), ScaleType.ORDINAL);
+        assert.equal(localLogger.warns[0], log.message.scaleTypeNotWorkWithChannel(SHAPE, ScaleType.LINEAR));
+      });
     });
   });
 

@@ -1,6 +1,7 @@
 // DateTime definition object
 
 import {duplicate, keys, isNumber} from './util';
+import * as log from './log';
 
 /*
  * A designated year that starts on Sunday.
@@ -112,12 +113,14 @@ export const SHORT_DAYS = DAYS.map((d) => d.substr(0,3));
 
 function normalizeQuarter(q: number | string) {
   if (isNumber(q)) {
+    if (q > 4) {
+      log.warn(log.message.invalidTimeUnit('quarter', q));
+    }
     // We accept 1-based quarter, so need to readjust to 0-based quarter
     return (q - 1) + '';
   } else {
-    // Simply an expression string, but normalize should not be called in this case.
-    console.warn('Potentially invalid quarter', q);
-    return q;
+    // Invalid quarter
+    throw new Error(log.message.invalidTimeUnit('quarter', q));
   }
 }
 
@@ -136,9 +139,8 @@ function normalizeMonth(m: string | number) {
     if (shortMonthIndex !== -1) {
       return shortMonthIndex + '';
     }
-    // Simply an expression string, but normalize should not be called in this case.
-    console.warn('Potentially invalid month', m);
-    return m;
+    // Invalid month
+    throw new Error(log.message.invalidTimeUnit('month', m));
   }
 }
 
@@ -158,9 +160,8 @@ function normalizeDay(d: string | number) {
     if (shortDayIndex !== -1) {
       return shortDayIndex + '';
     }
-    // Simply an expression string, but normalize should not be called in this case.
-    console.warn('Potentially invalid day', d);
-    return d;
+    // Invalid day
+    throw new Error(log.message.invalidTimeUnit('day', d));
   }
 }
 
@@ -171,8 +172,7 @@ export function timestamp(d: DateTime, normalize) {
 
   if (d.day !== undefined) {
     if (keys(d).length > 1) {
-      console.warn('Dropping day from datetime', JSON.stringify(d),
-          'as day cannot be combined with other units.');
+      log.warn(log.message.droppedDay(d));
       d = duplicate(d);
       delete d.day;
     } else {
@@ -231,8 +231,7 @@ export function dateTimeExpr(d: DateTime | DateTimeExpr, normalize = false) {
 
   if (normalize && d.day !== undefined) {
     if (keys(d).length > 1) {
-      console.warn('Dropping day from datetime', JSON.stringify(d),
-          'as day cannot be combined with other units.');
+      log.warn(log.message.droppedDay(d));
       d = duplicate(d);
       delete d.day;
     }

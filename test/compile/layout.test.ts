@@ -3,6 +3,8 @@
 import {assert} from 'chai';
 import {parseUnitModel} from '../util';
 
+
+import * as log from '../../src/log';
 import {X, Y} from '../../src/channel';
 import {cardinalityExpr, unitSizeExpr} from '../../src/compile/layout';
 
@@ -84,16 +86,19 @@ describe('compile/layout', () => {
     });
 
     it('should return static cell size for ordinal scale with top-level width even if there is numeric bandSize', () => {
-      const model = parseUnitModel({
-        width: 205,
-        mark: 'point',
-        encoding: {
-          x: {field: 'a', type: 'ordinal', scale: {bandSize: 21}}
-        }
-      });
+      log.runLocalLogger((localLogger) => {
+        const model = parseUnitModel({
+          width: 205,
+          mark: 'point',
+          encoding: {
+            x: {field: 'a', type: 'ordinal', scale: {bandSize: 21}}
+          }
+        });
 
-      const sizeExpr = unitSizeExpr(model, X);
-      assert.equal(sizeExpr, '205');
+        const sizeExpr = unitSizeExpr(model, X);
+        assert.equal(sizeExpr, '205');
+        assert.equal(localLogger.warns[0], log.message.bandSizeOverridden(X));
+      });
     });
 
     it('should return static cell width for non-ordinal x-scale', () => {

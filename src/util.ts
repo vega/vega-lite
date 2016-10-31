@@ -194,14 +194,6 @@ export function unique<T>(values: T[], f?: (item: T) => string) {
   return results;
 };
 
-export function warning(message: any) {
-  console.warn('[VL Warning]', message);
-}
-
-export function error(message: any) {
-  console.error('[VL Error]', message);
-}
-
 export interface Dict<T> {
   [key: string]: T;
 }

@@ -2,9 +2,18 @@
 
 import {assert} from 'chai';
 import {parseUnitModel} from '../util';
-import {assembleRootGroup} from '../../src/compile/compile';
+
+import * as log from '../../src/log';
+
+import {compile, assembleRootGroup} from '../../src/compile/compile';
+
 
 describe('Compile', function() {
+  it('should throw error for invalid spec', () => {
+    assert.throws(() => {
+      compile({} as any);
+    }, Error, log.message.INVALID_SPEC);
+  });
 
   describe('assembleRootGroup()', function() {
     it('produce correct from and size.', function() {

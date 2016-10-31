@@ -1,3 +1,5 @@
+import * as log from './log';
+
 import {SUM_OPS} from './aggregate';
 import {Channel, STACK_GROUP_CHANNELS, X, Y, X2, Y2} from './channel';
 import {Encoding, has, isAggregate} from './encoding';
@@ -26,6 +28,9 @@ export interface StackProperties {
   offset: StackOffset;
 }
 
+export const STACKABLE_MARKS = [BAR, AREA, POINT, CIRCLE, SQUARE, LINE, TEXT, TICK];
+export const STACK_BY_DEFAULT_MARKS = [BAR, AREA];
+
 export function stack(mark: Mark, encoding: Encoding, stacked: StackOffset): StackProperties {
   // Should not have stack explicitly disabled
   if (contains([StackOffset.NONE, null, false], stacked)) {
@@ -33,7 +38,7 @@ export function stack(mark: Mark, encoding: Encoding, stacked: StackOffset): Sta
   }
 
   // Should have stackable mark
-  if (!contains([BAR, AREA, POINT, CIRCLE, SQUARE, LINE, TEXT, TICK], mark)) {
+  if (!contains(STACKABLE_MARKS, mark)) {
     return null;
   }
 
@@ -65,27 +70,28 @@ export function stack(mark: Mark, encoding: Encoding, stacked: StackOffset): Sta
     const fieldChannelAggregate = encoding[fieldChannel].aggregate;
     const fieldChannelScale = encoding[fieldChannel].scale;
 
+    if (contains(STACK_BY_DEFAULT_MARKS, mark)) {
+      // Bar and Area with sum ops are automatically stacked by default
+      stacked = stacked === undefined ? StackOffset.ZERO : stacked;
+    }
+
+    if (!stacked) {
+      return null;
+    }
+
+    // If stacked, check if it qualifies for stacking (and log warning if not qualified.)
     if (fieldChannelScale && fieldChannelScale.type && fieldChannelScale.type !== ScaleType.LINEAR) {
-      console.warn('Cannot stack non-linear (' + fieldChannelScale.type + ') scale');
+      log.warn(log.message.cannotStackNonLinearScale(fieldChannelScale.type));
       return null;
     }
 
     if (has(encoding, fieldChannel === X ? X2 : Y2)) {
-      console.warn('Cannot stack ' + fieldChannel + ' if there is already ' + fieldChannel);
+      log.warn(log.message.cannotStackRangedMark(fieldChannel));
       return null;
     }
 
-    if (contains(SUM_OPS, fieldChannelAggregate)) {
-      if (contains([BAR, AREA], mark)) {
-        // Bar and Area with sum ops are automatically stacked by default
-        stacked = stacked === undefined ? StackOffset.ZERO : stacked;
-      }
-    } else {
-      console.warn('Cannot stack when the aggregate function is ' + fieldChannelAggregate + '(non-summative).');
-      return null;
-    }
-
-    if (!stacked) {
+    if (!contains(SUM_OPS, fieldChannelAggregate)) {
+      log.warn(log.message.cannotStackNonSummativeAggregate(fieldChannelAggregate));
       return null;
     }
 

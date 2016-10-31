@@ -164,7 +164,7 @@ describe('Axis', function() {
           mark: "point",
           encoding: {
             x: {field: 'a'},
-            column: {field: 'a'}
+            column: {field: 'a', type: 'nominal'}
           }
         }), COLUMN);
       assert.deepEqual(orient, 'top');

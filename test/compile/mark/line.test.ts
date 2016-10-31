@@ -2,7 +2,11 @@
 
 import {assert} from 'chai';
 import {parseUnitModel} from '../../util';
-import {X, Y, COLOR} from '../../../src/channel';
+
+import * as log from '../../../src/log';
+
+import {X, Y, COLOR, SIZE} from '../../../src/channel';
+import {LINE} from '../../../src/mark';
 import {line} from '../../../src/compile/mark/line';
 
 describe('Mark: Line', function() {
@@ -49,20 +53,23 @@ describe('Mark: Line', function() {
 
 
   describe('with x, y, size', function () {
-    const model = parseUnitModel({
-      "data": {"url": "data/barley.json"},
-      "mark": "line",
-      "encoding": {
-        "x": {"field": "year", "type": "ordinal"},
-        "y": {"field": "yield", "type": "quantitative", "aggregate": "mean"},
-        "size": {"field": "Acceleration", "type": "quantitative", "aggregate": "mean"}
-      }
-    });
-    const props = line.properties(model);
-
     it('should drop size field', function () {
-      // If size field is dropped, then strokeWidth only have value
-      assert.deepEqual(props.strokeWidth, {value: 2});
+      log.runLocalLogger((localLogger) => {
+        const model = parseUnitModel({
+          "data": {"url": "data/barley.json"},
+          "mark": "line",
+          "encoding": {
+            "x": {"field": "year", "type": "ordinal"},
+            "y": {"field": "yield", "type": "quantitative", "aggregate": "mean"},
+            "size": {"field": "Acceleration", "type": "quantitative", "aggregate": "mean"}
+          }
+        });
+        const props = line.properties(model);
+
+        // If size field is dropped, then strokeWidth only have value
+        assert.deepEqual(props.strokeWidth, {value: 2});
+        assert.equal(localLogger.warns[0], log.message.incompatibleChannel(SIZE, LINE));
+      });
     });
   });
 

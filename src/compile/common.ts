@@ -1,3 +1,5 @@
+import * as log from '../log';
+
 import {BAR, POINT, CIRCLE, SQUARE} from '../mark';
 import {AggregateOp} from '../aggregate';
 import {COLOR, OPACITY, TEXT, Channel} from '../channel';
@@ -29,8 +31,7 @@ export function buildModel(spec: Spec, parent: Model, parentGivenName: string): 
     return new UnitModel(spec, parent, parentGivenName);
   }
 
-  console.error('Invalid spec.');
-  return null;
+  throw new Error(log.message.INVALID_SPEC);
 }
 
 // TODO: figure if we really need opacity in both

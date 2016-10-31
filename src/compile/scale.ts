@@ -1,6 +1,8 @@
 // https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations
 declare var exports;
 
+import * as log from '../log';
+
 import {SHARED_DOMAIN_OPS} from '../aggregate';
 import {COLUMN, ROW, X, Y, X2, Y2, SHAPE, SIZE, COLOR, OPACITY, TEXT, hasScale, Channel} from '../channel';
 import {Orient} from '../config';
@@ -171,8 +173,7 @@ export function scaleType(scale: Scale, fieldDef: FieldDef, channel: Channel, ma
   // We can't use linear/time for row, column or shape
   if (contains([ROW, COLUMN, SHAPE], channel)) {
     if (scale && scale.type !== undefined && scale.type !== ScaleType.ORDINAL) {
-      // TODO: consolidate warning
-      console.warn('Channel', channel, 'does not work with scale type =', scale.type);
+      log.warn(log.message.scaleTypeNotWorkWithChannel(channel, scale.type));
     }
     return ScaleType.ORDINAL;
   }
@@ -224,10 +225,9 @@ export function scaleBandSize(scaleType: ScaleType, bandSize: number | BandSize,
       }
     } else {
       // If top-level is specified, use bandSize fit
-      if (bandSize) {
+      if (bandSize && bandSize !== BANDSIZE_FIT) {
         // If top-level size is specified, we override specified bandSize with "fit"
-        console.warn('bandSize for', channel, 'overridden as top-level',
-          channel === X ? 'width' : 'height', 'is provided.');
+        log.warn(log.message.bandSizeOverridden(channel));
       }
       return BANDSIZE_FIT;
     }
