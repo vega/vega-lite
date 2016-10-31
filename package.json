@@ -36,7 +36,7 @@
     "presite": "tsc && npm run build && bower install && npm run data && npm run build:toc",
     "site": "bundle exec jekyll serve --incremental",
     "pretest": "tsc && npm run data",
-    "test": "nyc --reporter=html --reporter=text-summary mocha test && npm run schema && mocha examples",
+    "test": "npm run schema && nyc --reporter=html --reporter=text-summary mocha test && mocha examples",
     "codecov": "nyc report --reporter=json && codecov -f coverage/*.json",
     "test:debug": "npm run schema && mocha --debug-brk test examples",
     "watch:build": "watchify src/vl.ts -p tsify -v -d -s vl -o 'exorcist vega-lite.js.map > vega-lite.js'",
