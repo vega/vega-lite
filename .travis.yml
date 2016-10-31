@@ -9,6 +9,8 @@ script:
   - npm run lint
   - npm run test
   - npm run codecov
+after_success:
+- bash <(curl -s https://codecov.io/bash)
 notifications:
   email:
     on_success: never
