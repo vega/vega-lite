@@ -1,19 +1,18 @@
 import * as log from '../log';
 
-import {X, Y, COLOR, SIZE, DETAIL} from '../channel';
+import {X, COLOR, SIZE, DETAIL} from '../channel';
 import {Config, Orient, MarkConfig, HorizontalAlign} from '../config';
 import {Encoding, isAggregate, has} from '../encoding';
 import {isMeasure} from '../fielddef';
 import {BAR, AREA, POINT, LINE, TICK, CIRCLE, SQUARE, RECT, RULE, TEXT, Mark} from '../mark';
-import {ScaleType} from '../scale';
+import {ScaleType, Scale} from '../scale';
 import {StackProperties} from '../stack';
 import {TEMPORAL} from '../type';
-import {contains, duplicate} from '../util';
-import {scaleType} from '../compile/scale';
+import {contains, duplicate, Dict} from '../util';
 /**
  * Augment config.mark with rule-based default values.
  */
-export function initMarkConfig(mark: Mark, encoding: Encoding, stacked: StackProperties, config: Config) {
+export function initMarkConfig(mark: Mark, encoding: Encoding, scale: Dict<Scale>, stacked: StackProperties, config: Config) {
   const markConfig = duplicate(config.mark);
 
   if (markConfig.filled === undefined) {
@@ -28,7 +27,7 @@ export function initMarkConfig(mark: Mark, encoding: Encoding, stacked: StackPro
   }
 
   // For orient, users can only specify for ambiguous cases.
-  markConfig.orient = orient(mark, encoding, config.mark);
+  markConfig.orient = orient(mark, encoding, scale, config.mark);
   if (config.mark.orient !== undefined && markConfig.orient !== config.mark.orient) {
     log.warn(log.message.orientOverridden(config.mark.orient, markConfig.orient));
   }
@@ -58,7 +57,7 @@ export function opacity(mark: Mark, encoding: Encoding, stacked: StackProperties
   return undefined;
 }
 
-export function orient(mark: Mark, encoding: Encoding, markConfig: MarkConfig = {}): Orient {
+export function orient(mark: Mark, encoding: Encoding, scale: Dict<Scale>, markConfig: MarkConfig = {}): Orient {
   switch (mark) {
     case POINT:
     case CIRCLE:
@@ -74,8 +73,8 @@ export function orient(mark: Mark, encoding: Encoding, markConfig: MarkConfig = 
 
   switch (mark) {
     case TICK:
-      const xScaleType = encoding.x ? scaleType(encoding.x.scale || {}, encoding.x, X, mark) : null;
-      const yScaleType = encoding.y ? scaleType(encoding.y.scale || {}, encoding.y, Y, mark) : null;
+      const xScaleType = scale['x'] ? scale['x'].type : null;
+      const yScaleType = scale['y'] ? scale['y'].type : null;
 
       // Tick is opposite to bar, line, area and never have ranged mark.
       if (xScaleType !== ScaleType.ORDINAL && (

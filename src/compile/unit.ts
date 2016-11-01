@@ -73,11 +73,17 @@ export class UnitModel extends Model {
     const mark = this._mark = spec.mark;
     const encoding = this._encoding = this._initEncoding(mark, spec.encoding || {});
 
-    // FIXME revise if stack should come before scale
-    this._stack = stack(mark, encoding, ((spec.config || {}).mark || {}).stacked);
-    const config = this._config = this._initConfig(spec.config, parent, mark, encoding, this._stack);
+    // TODO?: ideally we should use config only inside this constructor
+    const config = this._config = this._initConfig(spec.config, parent);
 
+    // FIXME move stacked out of config as it's not really a theme.
+    this._stack = stack(mark, encoding, config.mark.stacked);
     this._scale =  this._initScale(mark, encoding, config.scale, providedWidth, providedHeight);
+
+    // TODO?: refactor these to be a part of the model as they are not really just config
+    // (Maybe they should become a part of encoding?)
+    config.mark = initMarkConfig(mark, encoding, this._scale, this._stack, config);
+
     this._axis = this._initAxis(encoding, config);
     this._legend = this._initLegend(encoding, config);
 
@@ -128,7 +134,10 @@ export class UnitModel extends Model {
     return encoding;
   }
 
-  private _initConfig(specConfig: Config, parent: Model, mark: Mark, encoding: Encoding, stack: StackProperties) {
+  /**
+   * Init config by merging config from parent and, if applicable, from facet config
+   */
+  private _initConfig(specConfig: Config, parent: Model) {
     let config = mergeDeep(duplicate(defaultConfig), parent ? parent.config() : {}, specConfig);
     let hasFacetParent = false;
     while (parent !== null) {
@@ -142,8 +151,6 @@ export class UnitModel extends Model {
     if (hasFacetParent) {
       config.cell = extend({}, config.cell, config.facet.cell);
     }
-
-    config.mark = initMarkConfig(mark, encoding, stack, config);
     return config;
   }
 
