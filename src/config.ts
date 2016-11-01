@@ -79,76 +79,121 @@ export const defaultFacetConfig: FacetConfig = {
   cell: defaultFacetCellConfig
 };
 
-export enum FontWeight {
-    NORMAL = 'normal' as any,
-    BOLD = 'bold' as any
+export namespace FontWeight {
+    export const NORMAL: 'normal' = 'normal';
+    export type NORMAL = typeof NORMAL;
+    export const BOLD: 'bold' = 'bold';
+    export type BOLD = typeof BOLD;
 }
+export type FontWeight = FontWeight.NORMAL | FontWeight.BOLD;
 
-export enum Shape {
-    CIRCLE = 'circle' as any,
-    SQUARE = 'square' as any,
-    CROSS = 'cross' as any,
-    DIAMOND = 'diamond' as any,
-    TRIANGLEUP = 'triangle-up' as any,
-    TRIANGLEDOWN = 'triangle-down' as any,
+export namespace Shape {
+    export const CIRCLE: 'circle' = 'circle';
+    export type CIRCLE = typeof CIRCLE;
+    export const SQUARE: 'square' = 'square';
+    export type SQUARE = typeof SQUARE;
+    export const CROSS: 'cross' = 'cross';
+    export type CROSS = typeof CROSS;
+    export const DIAMOND: 'diamond' = 'diamond';
+    export type DIAMOND = typeof DIAMOND;
+    export const TRIANGLEUP: 'triangle-up' = 'triangle-up';
+    export type TRIANGLEUP = typeof TRIANGLEUP;
+    export const TRIANGLEDOWN: 'triangle-down' = 'triangle-down';
+    export type TRIANGLEDOWN = typeof TRIANGLEDOWN;
 }
+export type Shape = Shape.CIRCLE | Shape.SQUARE | Shape.CROSS | Shape.DIAMOND | Shape.TRIANGLEUP | Shape.TRIANGLEDOWN;
 
-export enum Orient {
-  HORIZONTAL = 'horizontal' as any,
-  VERTICAL = 'vertical' as any
+export namespace Orient {
+    export const HORIZONTAL: 'horizontal' = 'horizontal';
+    export type HORIZONTAL = typeof HORIZONTAL;
+    export const VERTICAL: 'vertical' = 'vertical';
+    export type VERTICAL = typeof VERTICAL;
 }
+export type Orient = Orient.HORIZONTAL | Orient.VERTICAL;
 
-export enum HorizontalAlign {
-    LEFT = 'left' as any,
-    RIGHT = 'right' as any,
-    CENTER = 'center' as any,
+export namespace HorizontalAlign {
+    export const LEFT: 'left' = 'left';
+    export type LEFT = typeof LEFT;
+    export const RIGHT: 'right' = 'right';
+    export type RIGHT = typeof RIGHT;
+    export const CENTER: 'center' = 'center';
+    export type CENTER = typeof CENTER;
 }
+export type HorizontalAlign = HorizontalAlign.LEFT | HorizontalAlign.RIGHT | HorizontalAlign.CENTER;
 
-export enum VerticalAlign {
-    TOP = 'top' as any,
-    MIDDLE = 'middle' as any,
-    BOTTOM = 'bottom' as any,
+export namespace VerticalAlign {
+    export const TOP: 'top' = 'top';
+    export type TOP = typeof TOP;
+    export const MIDDLE: 'middle' = 'middle';
+    export type MIDDLE = typeof MIDDLE;
+    export const BOTTOM: 'bottom' = 'bottom';
+    export type BOTTOM = typeof BOTTOM;
 }
+export type VerticalAlign = VerticalAlign.TOP | VerticalAlign.MIDDLE | VerticalAlign.BOTTOM;
 
-export enum FontStyle {
-    NORMAL = 'normal' as any,
-    ITALIC = 'italic' as any,
+export namespace FontStyle {
+    export const NORMAL: 'normal' = 'normal';
+    export type NORMAL = typeof NORMAL;
+    export const ITALIC: 'italic' = 'italic';
+    export type ITALIC = typeof ITALIC;
 }
+export type FontStyle = FontStyle.NORMAL | FontStyle.ITALIC;
 
-export enum Interpolate {
+export namespace Interpolate {
     /** piecewise linear segments, as in a polyline */
-    LINEAR = 'linear' as any,
+    export const LINEAR: 'linear' = 'linear';
+    export type LINEAR = typeof LINEAR;
     /** close the linear segments to form a polygon */
-    LINEAR_CLOSED = 'linear-closed' as any,
+    export const LINEAR_CLOSED: 'linear-closed' = 'linear-closed';
+    export type LINEAR_CLOSED = typeof LINEAR_CLOSED;
     /** alternate between horizontal and vertical segments, as in a step function */
-    STEP = 'step' as any,
+    export const STEP: 'step' = 'step';
+    export type STEP = typeof STEP;
     /** alternate between vertical and horizontal segments, as in a step function */
-    STEP_BEFORE = 'step-before' as any,
+    export const STEP_BEFORE: 'step-before' = 'step-before';
+    export type STEP_BEFORE = typeof STEP_BEFORE;
     /** alternate between horizontal and vertical segments, as in a step function */
-    STEP_AFTER = 'step-after' as any,
+    export const STEP_AFTER: 'step-after' = 'step-after';
+    export type STEP_AFTER = typeof STEP_AFTER;
     /** a B-spline, with control point duplication on the ends */
-    BASIS = 'basis' as any,
+    export const BASIS: 'basis' = 'basis';
+    export type BASIS = typeof BASIS;
     /** an open B-spline; may not intersect the start or end */
-    BASIS_OPEN = 'basis-open' as any,
+    export const BASIS_OPEN: 'basis-open' = 'basis-open';
+    export type BASIS_OPEN = typeof BASIS_OPEN;
     /** a closed B-spline, as in a loop */
-    BASIS_CLOSED = 'basis-closed' as any,
+    export const BASIS_CLOSED: 'basis-closed' = 'basis-closed';
+    export type BASIS_CLOSED = typeof BASIS_CLOSED;
     /** a Cardinal spline, with control point duplication on the ends */
-    CARDINAL = 'cardinal' as any,
+    export const CARDINAL: 'cardinal' = 'cardinal';
+    export type CARDINAL = typeof CARDINAL;
     /** an open Cardinal spline; may not intersect the start or end, but will intersect other control points */
-    CARDINAL_OPEN = 'cardinal-open' as any,
+    export const CARDINAL_OPEN: 'cardinal-open' = 'cardinal-open';
+    export type CARDINAL_OPEN = typeof CARDINAL_OPEN;
     /** a closed Cardinal spline, as in a loop */
-    CARDINAL_CLOSED = 'cardinal-closed' as any,
+    export const CARDINAL_CLOSED: 'cardinal-closed' = 'cardinal-closed';
+    export type CARDINAL_CLOSED = typeof CARDINAL_CLOSED;
     /** equivalent to basis, except the tension parameter is used to straighten the spline */
-    BUNDLE = 'bundle' as any,
+    export const BUNDLE: 'bundle' = 'bundle';
+    export type BUNDLE = typeof BUNDLE;
     /** cubic interpolation that preserves monotonicity in y */
-    MONOTONE = 'monotone' as any,
+    export const MONOTONE: 'monotone' = 'monotone';
+    export type MONOTONE = typeof MONOTONE;
 }
+export type Interpolate = Interpolate.BASIS | Interpolate.BASIS_CLOSED | Interpolate.BASIS_OPEN
+  | Interpolate.BUNDLE | Interpolate.CARDINAL | Interpolate.CARDINAL_CLOSED | Interpolate.CARDINAL_OPEN
+  | Interpolate.LINEAR | Interpolate.LINEAR_CLOSED | Interpolate.MONOTONE | Interpolate.STEP
+  | Interpolate.STEP_AFTER | Interpolate.STEP_BEFORE;
 
-export enum AreaOverlay {
-  LINE = 'line' as any,
-  LINEPOINT = 'linepoint' as any,
-  NONE = 'none' as any
+export namespace AreaOverlay {
+  export const LINE: 'line' = 'line';
+  export type LINE = typeof LINE;
+  export const LINEPOINT: 'linepoint' = 'linepoint';
+  export type LINEPOINT = typeof LINEPOINT;
+  export const NONE: 'none' = 'none';
+  export type NONE = typeof NONE;
 }
+export type AreaOverlay = AreaOverlay.LINE | AreaOverlay.LINEPOINT | AreaOverlay.NONE;
 
 export interface OverlayConfig {
   /**

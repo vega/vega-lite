@@ -39,12 +39,17 @@ export interface DataFormat {
   mesh?: string;
 }
 
-export enum DataFormatType {
-    JSON = 'json' as any,
-    CSV = 'csv' as any,
-    TSV = 'tsv' as any,
-    TOPOJSON = 'topojson' as any
+export namespace DataFormatType {
+    export const JSON: 'json' = 'json';
+    export type JSON = typeof JSON;
+    export const CSV: 'csv' = 'csv';
+    export type CSV = typeof CSV;
+    export const TSV: 'tsv' = 'tsv';
+    export type TSV = typeof TSV;
+    export const TOPOJSON: 'topojson' = 'topojson';
+    export type TOPOJSON = typeof TOPOJSON;
 }
+export type DataFormatType = DataFormatType.JSON | DataFormatType.CSV | DataFormatType.TSV | DataFormatType.TOPOJSON;
 
 export interface Data {
   /**
@@ -63,12 +68,17 @@ export interface Data {
   values?: any[];
 }
 
-export enum DataTable {
-  SOURCE = 'source' as any,
-  SUMMARY = 'summary' as any,
-  STACKED_SCALE = 'stacked_scale' as any,
-  LAYOUT = 'layout' as any
+export namespace DataTable {
+  export const SOURCE: 'source' = 'source';
+  export type SOURCE = typeof SOURCE;
+  export const SUMMARY: 'summary' = 'summary';
+  export type SUMMARY = typeof SUMMARY;
+  export const STACKED_SCALE: 'stacked_scale' = 'stacked_scale';
+  export type STACKED_SCALE = typeof STACKED_SCALE;
+  export const LAYOUT: 'layout' = 'layout';
+  export type LAYOUT = typeof LAYOUT;
 }
+export type DataTable = DataTable.SOURCE | DataTable.SUMMARY | DataTable.STACKED_SCALE | DataTable.LAYOUT;
 
 export const SUMMARY = DataTable.SUMMARY;
 export const SOURCE = DataTable.SOURCE;
