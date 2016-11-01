@@ -116,23 +116,23 @@ export namespace bar {
     if (markConfig.barSize) {
       return markConfig.barSize;
     }
-    if (typeof scale.bandSize === 'string') {
+    if (scale && typeof scale.bandSize === 'string') {
       throw new Error('Default size is not able to handle non-numeric sizes');
     }
-    if (typeof config.scale.bandSize === 'string') {
+    if (config && config.scale && typeof config.scale.bandSize === 'string') {
       throw new Error('Default size is not able to handle non-numeric sizes');
     }
     // BAR's size is applied on either X or Y
     return scale && scale.type === ScaleType.ORDINAL ?
         // For ordinal scale or single bar, we can use bandSize - 1
         // (-1 so that the border of the bar falls on exact pixel)
-        scale.bandSize - 1 :
+        (scale.bandSize as number) - 1 :
         // TODO: {band: true} ?
       scaleName ?
         // set to thinBarWidth by default for non-ordinal scale
         markConfig.barThinSize :
         // if there is no size (x or y) axis, just use bandSize -1
         // TODO: revise if we really need the -1
-        config.scale.bandSize - 1;
+        (config.scale.bandSize as number) - 1;
   }
 }
