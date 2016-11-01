@@ -174,11 +174,11 @@ If you prefer to have histogram without gaps between bars, you can set the [`bin
 
 ## Rect
 
-The `rect` mark represents arbitrary rectangle marks.
+The `rect` mark represents an arbitrary rectangle.
 
-### Table Heatmap
+### Heatmap
 
-The `rect` mark is useful for creating table heatmap.
+Use the `rect` mark to create a heatmap.
 
 <span class="vl-example" data-name="rect_heatmap"></span>
 
