@@ -6,7 +6,6 @@ data/*
 
 vega-lite*.js
 vega-lite*.map
-vega-lite-schema.json
 npm-debug.log
 instance.json
 coverage
