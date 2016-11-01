@@ -35,6 +35,11 @@ export interface ScaleConfig {
    * (Only available for `x`, `y`, `size`, `row`, and `column` scales.)
    */
   round?: boolean;
+
+  /**
+   * If true, values that exceed the data domain are clamped to either the minimum or maximum range value
+   */
+  clamp?: boolean;
   /**
    *  Default band width for `x` ordinal scale when is mark is `text`.
    *  @minimum 0
@@ -51,9 +56,13 @@ export interface ScaleConfig {
    */
   opacity?: number[];
   /**
-   * Default padding for `x` and `y` ordinal scales.
+   * Default padding for `x` and `y` band-ordinal scales.
    */
-  padding?: number;
+  bandPadding?: number;
+  /**
+   * Default padding for `x` and `y` point-ordinal scales.
+   */
+  pointPadding?: number;
 
   /**
    * Uses the source data range as scale domain instead of aggregated data for aggregate axis.
@@ -91,7 +100,8 @@ export const defaultScaleConfig: ScaleConfig = {
   round: true,
   textBandWidth: 90,
   bandSize: 21,
-  padding: 0.1,
+  pointPadding: 1,
+  bandPadding: 0.1,
   useRawDomain: false,
   opacity: [0.3, 0.8],
 
