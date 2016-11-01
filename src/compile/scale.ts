@@ -44,11 +44,7 @@ export type ScaleComponents = {
 }
 
 export function initScale(topLevelSize: number, mark: Mark, channel: Channel, fieldDef: ChannelDefWithScale, scaleConfig: ScaleConfig): Scale {
-  let scale: Scale = extend({
-    round: scaleConfig.round,
-    useRawDomain: scaleConfig.useRawDomain, // TODO determine if we should keep this
-    padding: scaleConfig.padding // TODO determine if we should keep this
-  }, (fieldDef || {}).scale);
+  let scale: Scale = extend({}, (fieldDef || {}).scale);
 
   scale.type = initType(scale.type, fieldDef, channel, mark);
   if (scale.type === ScaleType.ORDINAL) {
@@ -56,6 +52,22 @@ export function initScale(topLevelSize: number, mark: Mark, channel: Channel, fi
     scale.bandSize = initBandSize(scale.bandSize, topLevelSize, mark, channel, scaleConfig);
     scale.points = points(channel, mark, scale.bandSize);
   }
+
+  [
+    // general properties
+    'round',
+    // quantitative / time
+    'clamp', 'nice',
+    // quantitative
+    'exponent', 'zero',
+    // ordinal
+    'padding' // padding
+  ].forEach(function(property) {
+    const value = exports[property](scale, scaleConfig, channel, fieldDef);
+    if (value !== undefined) {
+      scale[property] = value;
+    }
+  });
 
   return scale;
 }
@@ -84,21 +96,17 @@ export function parseScaleComponent(model: Model): Dict<ScaleComponents> {
     }, {} as Dict<ScaleComponents>);
 }
 
+// TODO: consider return type of this method
+// maybe we should just return domain as we can have the rest of scale (ScaleSignature constant)
 /**
  * Return the main scale for each channel.  (Only color can have multiple scales.)
  */
 function parseMainScale(model: Model, fieldDef: FieldDef, channel: Channel) {
   const scale = model.scale(channel);
   const sort = model.sort(channel);
-  let scaleDef: any = {
+  let scaleDef: any = extend({
     name: model.scaleName(channel + '', true),
-    type: scale.type
-  };
-
-  if (scale.points) {
-    // FIXME this should become a part of type with Vega 3
-    scaleDef.points = scale.points;
-  }
+  }, scale);
 
   // If channel is either X or Y then union them with X2 & Y2 if they exist
   if (channel === X && model.has(X2)) {
@@ -117,27 +125,16 @@ function parseMainScale(model: Model, fieldDef: FieldDef, channel: Channel) {
     scaleDef.domain = domain(scale, model, channel);
   }
 
+  if (scaleDef.bandSize === BANDSIZE_FIT) {
+    // For BandSizeFit, we should remove it and output range instead!
+    delete scaleDef.bandSize;
+  }
+  // TODO: move range to init
   extend(scaleDef, rangeMixins(scale, model, channel));
+
   if (sort && (isSortField(sort) ? sort.order : sort) === SortOrder.DESCENDING) {
     scaleDef.reverse = true;
   }
-
-  // Add optional properties
-  [
-    // general properties
-    'round',
-    // quantitative / time
-    'clamp', 'nice',
-    // quantitative
-    'exponent', 'zero',
-    // ordinal
-    'padding' // padding
-  ].forEach(function(property) {
-    const value = exports[property](scale, channel, fieldDef, model, scaleDef);
-    if (value !== undefined) {
-      scaleDef[property] = value;
-    }
-  });
 
   return scaleDef;
 }
@@ -517,7 +514,7 @@ function pointBandSize(model: UnitModel) {
   return model.config().scale.bandSize;
 }
 
-export function clamp(scale: Scale) {
+export function clamp(scale: Scale, scaleConfig: ScaleConfig) {
   // Only works for scale with both continuous domain continuous range
   // (Doesn't work for quantize, quantile, threshold, ordinal)
   if (contains([ScaleType.LINEAR, ScaleType.POW, ScaleType.SQRT,
@@ -534,7 +531,7 @@ export function exponent(scale: Scale) {
   return undefined;
 }
 
-export function nice(scale: Scale, channel: Channel, fieldDef: FieldDef): boolean | NiceTime {
+export function nice(scale: Scale, scaleConfig: ScaleConfig, channel: Channel, fieldDef: FieldDef): boolean | NiceTime {
   if (contains([ScaleType.LINEAR, ScaleType.POW, ScaleType.SQRT, ScaleType.LOG,
         ScaleType.TIME, ScaleType.UTC, ScaleType.QUANTIZE], scale.type)) {
 
@@ -550,7 +547,7 @@ export function nice(scale: Scale, channel: Channel, fieldDef: FieldDef): boolea
 }
 
 
-export function padding(scale: Scale, channel: Channel, __, ___, scaleDef) {
+export function padding(scale: Scale, scaleConfig: ScaleConfig, channel: Channel) {
   /* Padding is only allowed for X and Y.
    *
    * Basically it doesn't make sense to add padding for color and size.
@@ -565,17 +562,20 @@ export function padding(scale: Scale, channel: Channel, __, ___, scaleDef) {
   }
   return undefined;
 }
-export function round(scale: Scale, channel: Channel) {
-  if (contains([X, Y, ROW, COLUMN, SIZE], channel) && scale.round !== undefined) {
-    return scale.round;
+export function round(scale: Scale, scaleConfig: ScaleConfig, channel: Channel) {
+  if (contains([X, Y, ROW, COLUMN, SIZE], channel)) {
+    if (scale.round !== undefined) {
+      return scale.round;
+    }
+    return scaleConfig.round;
   }
 
   return undefined;
 }
 
-export function zero(scale: Scale, channel: Channel, fieldDef: FieldDef) {
+export function zero(scale: Scale, _: ScaleConfig, channel: Channel, fieldDef: FieldDef) {
   // only applicable for non-ordinal scale
-  if (!contains([ScaleType.TIME, ScaleType.UTC, ScaleType.ORDINAL], scale.type)) {
+  if (!contains([ScaleType.LOG, ScaleType.TIME, ScaleType.UTC, ScaleType.ORDINAL], scale.type)) {
     if (scale.zero !== undefined) {
       return scale.zero;
     }
