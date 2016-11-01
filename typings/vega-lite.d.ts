@@ -1,3 +1,3 @@
 declare module vl {
-  export var version;
+  export var version: string;
 }

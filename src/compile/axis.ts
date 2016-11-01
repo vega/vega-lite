@@ -11,7 +11,7 @@ import {Model} from './model';
 import {UnitModel} from './unit';
 
 // https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations
-declare let exports;
+declare let exports: any;
 
 export function parseAxisComponent(model: Model, axisChannels: Channel[]): Dict<VgAxis> {
   return axisChannels.reduce(function(axis, channel) {
@@ -164,7 +164,7 @@ export function grid(model: Model, channel: Channel) {
   );
 }
 
-export function layer(model: Model, channel: Channel, def) {
+export function layer(model: Model, channel: Channel, def: {grid?: boolean}) {
   const layer = model.axis(channel).layer;
   if (layer !== undefined) {
     return layer;
@@ -227,7 +227,7 @@ export function title(model: Model, channel: Channel) {
   // if not defined, automatically determine axis title from field def
   const fieldTitle = fieldDefTitle(model.fieldDef(channel), model.config());
 
-  let maxLength;
+  let maxLength: number;
   if (axis.titleMaxLength) {
     maxLength = axis.titleMaxLength;
   } else if (channel === X && !model.isOrdinalScale(X)) {
@@ -264,7 +264,7 @@ export function values(model: Model, channel: Channel) {
 }
 
 export namespace properties {
-  export function axis(model: Model, channel: Channel, axisPropsSpec) {
+  export function axis(model: Model, channel: Channel, axisPropsSpec: any) {
     const axis = model.axis(channel);
 
     return extend(
@@ -278,7 +278,7 @@ export namespace properties {
     );
   }
 
-  export function grid(model: Model, channel: Channel, gridPropsSpec) {
+  export function grid(model: Model, channel: Channel, gridPropsSpec: any) {
     const axis = model.axis(channel);
 
     return extend(
@@ -290,7 +290,7 @@ export namespace properties {
     );
   }
 
-  export function labels(model: Model, channel: Channel, labelsSpec, def) {
+  export function labels(model: Model, channel: Channel, labelsSpec: any, def: {orient?: string, type?: string}) {
     const fieldDef = model.fieldDef(channel);
     const axis = model.axis(channel);
     const config = model.config();
@@ -374,7 +374,7 @@ export namespace properties {
     return keys(labelsSpec).length === 0 ? undefined : labelsSpec;
   }
 
-  export function ticks(model: Model, channel: Channel, ticksPropsSpec) {
+  export function ticks(model: Model, channel: Channel, ticksPropsSpec: any) {
     const axis = model.axis(channel);
 
     return extend(
@@ -384,7 +384,7 @@ export namespace properties {
     );
   }
 
-  export function title(model: Model, channel: Channel, titlePropsSpec) {
+  export function title(model: Model, channel: Channel, titlePropsSpec: any) {
     const axis = model.axis(channel);
 
     return extend(

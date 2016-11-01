@@ -2,7 +2,7 @@ import {X, Y, COLOR, TEXT, SHAPE, PATH, ORDER, OPACITY, DETAIL, STACK_GROUP_CHAN
 import {Orient} from '../../config';
 import {has, isAggregate} from '../../encoding';
 import {OrderChannelDef, FieldDef, field} from '../../fielddef';
-import {AREA, LINE, TEXT as TEXTMARK, Mark} from '../../mark';
+import {AREA, LINE, TEXT as TEXTMARK} from '../../mark';
 import {ScaleType} from '../../scale';
 import {isSortField} from '../../sort';
 import {contains, extend, isArray} from '../../util';
@@ -104,7 +104,7 @@ function parseNonPathMark(model: UnitModel) {
   const isFaceted = model.parent() && model.parent().isFacet();
   const dataFrom = {data: model.dataTable()};
 
-  let marks: Mark[] = []; // TODO: vgMarks
+  let marks: any[] = []; // TODO: vgMarks
   if (mark === TEXTMARK &&
     model.has(COLOR) &&
     model.config().mark.applyColorToBackground && !model.has(X) && !model.has(Y)

@@ -1,5 +1,5 @@
 // https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations
-declare var exports;
+declare var exports: any;
 
 import * as log from '../log';
 
@@ -390,7 +390,7 @@ function _useRawDomain (scale: Scale, model: Model, channel: Channel) {
     // only applied to aggregate table
     fieldDef.aggregate &&
     // only activated if used with aggregate functions that produces values ranging in the domain of the source data
-    SHARED_DOMAIN_OPS.indexOf(fieldDef.aggregate) >= 0 &&
+    SHARED_DOMAIN_OPS.indexOf(fieldDef.aggregate as any) >= 0 &&
     (
       // Q always uses quantitative scale except when it's binned.
       // Binned field has similar values in both the source table and the summary table
@@ -467,6 +467,9 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel): any {
       }
 
       const bandSize = pointBandSize(unitModel);
+      if (typeof bandSize === 'string') {
+        throw new Error('rangeMixins does not handle string bandSizes');
+      }
 
       return {range: [9, (bandSize - 2) * (bandSize - 2)]};
     case SHAPE:
@@ -495,9 +498,10 @@ function pointBandSize(model: UnitModel) {
   if (hasX && hasY) {
     return xIsMeasure !== yIsMeasure ?
       model.scale(xIsMeasure ? Y : X).bandSize :
+      // TODO: Remove casts and hande string bandSizes
       Math.min(
-        model.scale(X).bandSize || scaleConfig.bandSize,
-        model.scale(Y).bandSize || scaleConfig.bandSize
+        (model.scale(X).bandSize || scaleConfig.bandSize) as number,
+        (model.scale(Y).bandSize || scaleConfig.bandSize) as number
       );
   } else if (hasY) {
     return yIsMeasure ? model.config().scale.bandSize : model.scale(Y).bandSize;
@@ -540,7 +544,7 @@ export function nice(scale: Scale, channel: Channel, fieldDef: FieldDef): boolea
 }
 
 
-export function padding(scale: Scale, channel: Channel, __, ___, scaleDef) {
+export function padding(scale: Scale, channel: Channel, __: any, ___: any, scaleDef: any) {
   /* Padding is only allowed for X and Y.
    *
    * Basically it doesn't make sense to add padding for color and size.

@@ -81,7 +81,7 @@ export interface ExtendedUnitSpec extends BaseSpec {
    * One of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
    * `"area"`, `"point"`, `"rule"`, and `"text"`.
    */
-  mark: Mark;
+  mark?: Mark;
 
   /**
    * A key-value mapping between encoding channels and definition of fields.

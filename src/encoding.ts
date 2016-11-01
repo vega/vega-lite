@@ -118,11 +118,11 @@ export function isRanged(encoding: Encoding) {
 }
 
 export function fieldDefs(encoding: Encoding): FieldDef[] {
-  let arr = [];
+  let arr: FieldDef[] = [];
   CHANNELS.forEach(function(channel) {
     if (has(encoding, channel)) {
       if (isArray(encoding[channel])) {
-        encoding[channel].forEach(function(fieldDef) {
+        encoding[channel].forEach(function(fieldDef: FieldDef) {
           arr.push(fieldDef);
         });
       } else {
@@ -143,7 +143,7 @@ export function forEach(mapping: any,
   Object.keys(mapping).forEach((c: any) => {
     const channel: Channel = c;
     if (isArray(mapping[channel])) {
-      mapping[channel].forEach(function(fieldDef) {
+      mapping[channel].forEach(function(fieldDef: FieldDef) {
         f.call(thisArg, fieldDef, channel);
       });
     } else {
@@ -152,17 +152,17 @@ export function forEach(mapping: any,
   });
 }
 
-export function reduce(mapping: any,
+export function reduce<T>(mapping: any,
     f: (acc: any, fd: FieldDef, c: Channel) => any,
-    init, thisArg?: any) {
+    init: T, thisArg?: any) {
   if (!mapping) {
     return init;
   }
 
-  return Object.keys(mapping).reduce((r, c: any) => {
+  return Object.keys(mapping).reduce((r: T, c: any) => {
     const channel: Channel = c;
     if (isArray(mapping[channel])) {
-      return mapping[channel].reduce(function(r1, fieldDef) {
+      return mapping[channel].reduce(function(r1: T, fieldDef: FieldDef) {
         return f.call(thisArg, r1, fieldDef, channel);
       }, r);
     } else {

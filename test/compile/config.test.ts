@@ -186,8 +186,8 @@ describe('Config', function() {
         "mark": "rule",
         "encoding": {
           "x": {"type": "ordinal", "field": "foo"},
-          "y": {"type": "quanitative", "field": "bar"},
-          "y2": {"type": "quanitative", "field": "baz"}
+          "y": {"type": "quantitative", "field": "bar"},
+          "y2": {"type": "quantitative", "field": "baz"}
         },
       });
       assert.equal(orient(model.mark(), model.encoding(), {}), Orient.VERTICAL);
@@ -198,8 +198,8 @@ describe('Config', function() {
         "mark": "rule",
         "encoding": {
           "y": {"type": "ordinal", "field": "foo"},
-          "x": {"type": "quanitative", "field": "bar"},
-          "x2": {"type": "quanitative", "field": "baz"}
+          "x": {"type": "quantitative", "field": "bar"},
+          "x2": {"type": "quantitative", "field": "baz"}
         },
       });
       assert.equal(orient(model.mark(), model.encoding(), {}), Orient.HORIZONTAL);
@@ -209,8 +209,8 @@ describe('Config', function() {
       const model = parseUnitModel({
         "mark": "rule",
         "encoding": {
-          "x": {"type": "quanitative", "field": "bar"},
-          "x2": {"type": "quanitative", "field": "baz"}
+          "x": {"type": "quantitative", "field": "bar"},
+          "x2": {"type": "quantitative", "field": "baz"}
         },
       });
       assert.equal(orient(model.mark(), model.encoding()), Orient.HORIZONTAL);
@@ -220,8 +220,8 @@ describe('Config', function() {
       const model = parseUnitModel({
         "mark": "rule",
         "encoding": {
-          "y": {"type": "quanitative", "field": "bar"},
-          "y2": {"type": "quanitative", "field": "baz"}
+          "y": {"type": "quantitative", "field": "bar"},
+          "y2": {"type": "quantitative", "field": "baz"}
         },
       });
       assert.equal(orient(model.mark(), model.encoding()), Orient.VERTICAL);

@@ -8,6 +8,8 @@ export namespace TimeUnit {
   export type YEAR = typeof YEAR;
   export const MONTH: 'month' = 'month';
   export type MONTH = typeof MONTH;
+  export const WEEK: 'week' =  'week';
+  export type WEEK = typeof WEEK;
   export const DAY: 'day' = 'day';
   export type DAY = typeof DAY;
   export const DATE: 'date' = 'date';
@@ -51,7 +53,7 @@ export namespace TimeUnit {
   export const YEARQUARTERMONTH: 'yearquartermonth' = 'yearquartermonth';
   export type YEARQUARTERMONTH = typeof YEARQUARTERMONTH;
 }
-export type TimeUnit = TimeUnit.YEAR | TimeUnit.MONTH | TimeUnit.DAY | TimeUnit.DATE | TimeUnit.HOURS
+export type TimeUnit = TimeUnit.YEAR | TimeUnit.MONTH | TimeUnit.WEEK | TimeUnit.DAY | TimeUnit.DATE | TimeUnit.HOURS
   | TimeUnit.MINUTES | TimeUnit.SECONDS | TimeUnit.MILLISECONDS | TimeUnit.YEARMONTH
   | TimeUnit.YEARMONTHDATE | TimeUnit.YEARMONTHDATEHOURS | TimeUnit.YEARMONTHDATEHOURSMINUTES
   | TimeUnit.YEARMONTHDATEHOURSMINUTESSECONDS | TimeUnit.MONTHDATE | TimeUnit.HOURSMINUTES
@@ -63,6 +65,7 @@ export const SINGLE_TIMEUNITS = [
   TimeUnit.YEAR,
   TimeUnit.QUARTER,
   TimeUnit.MONTH,
+  TimeUnit.WEEK,
   TimeUnit.DAY,
   TimeUnit.DATE,
   TimeUnit.HOURS,
@@ -152,6 +155,7 @@ export const TIMEUNITS = [
   TimeUnit.YEAR,
   TimeUnit.QUARTER,
   TimeUnit.MONTH,
+  TimeUnit.WEEK,
   TimeUnit.DAY,
   TimeUnit.DATE,
   TimeUnit.HOURS,

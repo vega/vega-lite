@@ -12,6 +12,7 @@ import {FacetSpec} from '../spec';
 import {getFullName} from '../type';
 import {contains, extend, keys, vals, flatten, duplicate, mergeDeep, Dict} from '../util';
 import {VgData, VgMarkGroup} from '../vega.schema';
+import {StackProperties} from '../stack';
 
 import {parseAxis, parseInnerAxis, gridShow, parseAxisComponent} from './axis';
 import {buildModel} from './common';
@@ -147,7 +148,7 @@ export class FacetModel extends Model {
     return this.facet()[channel];
   }
 
-  public stack() {
+  public stack(): StackProperties {
     return null; // this is only a property for UnitModel
   }
 
@@ -184,7 +185,7 @@ export class FacetModel extends Model {
         scaleComponent[channel] = child.component.scale[channel];
 
         // for each scale, need to rename
-        vals(scaleComponent[channel]).forEach(function(scale) {
+        vals(scaleComponent[channel]).forEach(function(scale: any) {
           const scaleNameWithoutPrefix = scale.name.substr(child.name('').length);
           const newName = model.scaleName(scaleNameWithoutPrefix, true);
           child.renameScale(scale.name, newName);
@@ -270,7 +271,7 @@ export class FacetModel extends Model {
     this._child.component.legend = {};
   }
 
-  public assembleParentGroupProperties() {
+  public assembleParentGroupProperties(): any {
     return null;
   }
 
@@ -338,7 +339,7 @@ function getFacetGroupProperties(model: FacetModel) {
 
 function parseAxisGroup(model: FacetModel, channel: Channel) {
   // TODO: add a case where inner spec is not a unit (facet/layer/concat)
-  let axisGroup = null;
+  let axisGroup: any = null;
 
   const child = model.child();
   if (child.has(channel)) {

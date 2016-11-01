@@ -37,7 +37,7 @@ export function range(start: number, stop?: number, step?: number): Array<number
   if ((stop - start) / step === Infinity) {
     throw new Error('Infinite range');
   }
-  var range = [], i = -1, j;
+  var range: number[] = [], i = -1, j: number;
   if (step < 0) {
     /* tslint:disable */
     while ((j = start + step * ++i) > stop) {
@@ -86,7 +86,7 @@ export function union<T>(array: Array<T>, other: Array<T>) {
   return array.concat(without(other, array));
 }
 
-export function forEach(obj, f: (a, d, k, o) => any, thisArg?) {
+export function forEach(obj: any, f: (a: any, d: string, k: any, o: any) => any, thisArg?: any) {
   if (obj.forEach) {
     obj.forEach.call(thisArg, f);
   } else {
@@ -98,7 +98,7 @@ export function forEach(obj, f: (a, d, k, o) => any, thisArg?) {
   }
 }
 
-export function reduce(obj, f: (a, i, d, k, o) => any, init, thisArg?) {
+export function reduce(obj: any, f: (a: any, i: any, d: any, k: any, o: any) => any, init: any, thisArg?: any) {
   if (obj.reduce) {
     return obj.reduce.call(thisArg, f, init);
   } else {
@@ -111,11 +111,11 @@ export function reduce(obj, f: (a, i, d, k, o) => any, init, thisArg?) {
   }
 }
 
-export function map(obj, f: (a, d, k, o) => any, thisArg?) {
+export function map(obj: any, f: (a: any, d: any, k: any, o: any) => any, thisArg?: any) {
   if (obj.map) {
     return obj.map.call(thisArg, f);
   } else {
-    let output = [];
+    let output: any[] = [];
     for (let k in obj) {
       if (obj.hasOwnProperty(k)) {
         output.push(f.call(thisArg, obj[k], k, obj));
@@ -125,7 +125,7 @@ export function map(obj, f: (a, d, k, o) => any, thisArg?) {
   }
 }
 
-export function some<T>(arr: Array<T>, f: (d: T, k?, i?) => boolean) {
+export function some<T>(arr: Array<T>, f: (d: T, k?: any, i?: any) => boolean) {
   let i = 0;
   for (let k = 0; k<arr.length; k++) {
     if (f(arr[k], k, i++)) {
@@ -135,7 +135,7 @@ export function some<T>(arr: Array<T>, f: (d: T, k?, i?) => boolean) {
   return false;
 }
 
-export function every<T>(arr: Array<T>, f: (d: T, k?, i?) => boolean) {
+export function every<T>(arr: Array<T>, f: (d: T, k?: any, i?: any) => boolean) {
   let i = 0;
   for (let k = 0; k<arr.length; k++) {
     if (!f(arr[k], k, i++)) {
@@ -149,7 +149,7 @@ export function flatten(arrays: any[]) {
   return [].concat.apply([], arrays);
 }
 
-export function mergeDeep(dest, ...src: any[]) {
+export function mergeDeep(dest: any, ...src: any[]) {
   for (let i = 0; i < src.length; i++) {
     dest = deepMerge_(dest, src[i]);
   }
@@ -157,7 +157,7 @@ export function mergeDeep(dest, ...src: any[]) {
 };
 
 // recursively merges src into dest
-function deepMerge_(dest, src) {
+function deepMerge_(dest: any, src: any) {
   if (typeof src !== 'object' || src === null) {
     return dest;
   }
@@ -180,11 +180,11 @@ function deepMerge_(dest, src) {
   return dest;
 }
 
-export function unique<T>(values: T[], f?: (item: T) => string) {
-  let results = [];
-  var u = {}, v, i, n;
+export function unique<T>(values: T[], f: (item: T) => string) {
+  let results: any[] = [];
+  var u = {}, v: string, i: number, n: number;
   for (i = 0, n = values.length; i < n; ++i) {
-    v = f ? f(values[i]) : values[i];
+    v = f(values[i]);
     if (v in u) {
       continue;
     }

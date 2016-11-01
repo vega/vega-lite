@@ -110,7 +110,7 @@ export interface ScaleConfig {
   // let's not make a config.
 }
 
-export const defaultScaleConfig: ScaleConfig = {
+export const defaultScaleConfig = {
   round: true,
   textBandWidth: 90,
   bandSize: 21,

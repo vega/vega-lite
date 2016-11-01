@@ -9,7 +9,7 @@ import {X, Y, DETAIL} from '../src/channel';
 import {BAR, AREA, RECT, PRIMITIVE_MARKS} from '../src/mark';
 import {ScaleType} from '../src/scale';
 import {stack, StackOffset, STACK_BY_DEFAULT_MARKS, STACKABLE_MARKS} from '../src/stack';
-import {isStacked} from '../src/spec';
+import {isStacked, ExtendedUnitSpec} from '../src/spec';
 
 describe('stack', () => {
   const NON_STACKABLE_MARKS = [RECT];
@@ -17,7 +17,7 @@ describe('stack', () => {
   it('should be disabled for non-stackable marks with at least of of the stack channel', () => {
     [undefined, StackOffset.CENTER, StackOffset.NONE, StackOffset.ZERO, StackOffset.NORMALIZE].forEach((stacked) => {
       NON_STACKABLE_MARKS.forEach((nonStackableMark) => {
-        const spec = {
+        const spec: ExtendedUnitSpec = {
           "data": {"url": "data/barley.json"},
           "mark": nonStackableMark,
           "encoding": {
@@ -29,8 +29,8 @@ describe('stack', () => {
             "mark": {"stacked": stacked}
           }
         };
-        assert.isNull(stack(spec.mark, spec.encoding as any, spec.config.mark.stacked));
-        assert.isFalse(isStacked(spec as any));
+        assert.isNull(stack(spec.mark, spec.encoding, spec.config.mark.stacked));
+        assert.isFalse(isStacked(spec));
       });
     });
   });
@@ -38,7 +38,7 @@ describe('stack', () => {
   it('should always be disabled for raw plot', () => {
     [undefined, StackOffset.CENTER, StackOffset.NONE, StackOffset.ZERO, StackOffset.NORMALIZE].forEach((stacked) => {
       PRIMITIVE_MARKS.forEach((mark) => {
-        const spec = {
+        const spec: ExtendedUnitSpec = {
           "data": {"url": "data/barley.json"},
           "mark": mark,
           "encoding": {
@@ -50,8 +50,8 @@ describe('stack', () => {
             "mark": {"stacked": stacked}
           }
         };
-        assert.isNull(stack(spec.mark, spec.encoding as any, spec.config.mark.stacked));
-        assert.isFalse(isStacked(spec as any));
+        assert.isNull(stack(spec.mark, spec.encoding, spec.config.mark.stacked));
+        assert.isFalse(isStacked(spec));
       });
     });
   });
@@ -59,7 +59,7 @@ describe('stack', () => {
   it('should always be disabled if there is no stackby channel', () => {
     [undefined, StackOffset.CENTER, StackOffset.NONE, StackOffset.ZERO, StackOffset.NORMALIZE].forEach((stacked) => {
       PRIMITIVE_MARKS.forEach((mark) => {
-        const spec = {
+        const spec: ExtendedUnitSpec = {
           "data": {"url": "data/barley.json"},
           "mark": mark,
           "encoding": {
@@ -70,8 +70,8 @@ describe('stack', () => {
             "mark": {"stacked": stacked}
           }
         };
-        assert.isNull(stack(spec.mark, spec.encoding as any, spec.config.mark.stacked));
-        assert.isFalse(isStacked(spec as any));
+        assert.isNull(stack(spec.mark, spec.encoding, spec.config.mark.stacked));
+        assert.isFalse(isStacked(spec));
       });
     });
   });
@@ -79,7 +79,7 @@ describe('stack', () => {
   it('should always be disabled if the stackby channel is aggregated', () => {
     [undefined, StackOffset.CENTER, StackOffset.NONE, StackOffset.ZERO, StackOffset.NORMALIZE].forEach((stacked) => {
       PRIMITIVE_MARKS.forEach((mark) => {
-        const spec = {
+        const spec: ExtendedUnitSpec = {
           "data": {"url": "data/barley.json"},
           "mark": mark,
           "encoding": {
@@ -91,8 +91,8 @@ describe('stack', () => {
             "mark": {"stacked": stacked}
           }
         };
-        assert.isNull(stack(spec.mark, spec.encoding as any, spec.config.mark.stacked));
-        assert.isFalse(isStacked(spec as any));
+        assert.isNull(stack(spec.mark, spec.encoding, spec.config.mark.stacked));
+        assert.isFalse(isStacked(spec));
       });
     });
   });
@@ -101,7 +101,7 @@ describe('stack', () => {
     [undefined, StackOffset.CENTER, StackOffset.ZERO, StackOffset.NORMALIZE].forEach((stacked) => {
       const marks = stacked === undefined ? STACK_BY_DEFAULT_MARKS : STACKABLE_MARKS;
       marks.forEach((mark) => {
-        const spec = {
+        const spec: ExtendedUnitSpec = {
           "data": {"url": "data/barley.json"},
           "mark": mark,
           "encoding": {
@@ -114,9 +114,9 @@ describe('stack', () => {
             "mark": {"stacked": stacked}
           }
         };
-        const _stack = stack(spec.mark, spec.encoding as any, spec.config.mark.stacked);
+        const _stack = stack(spec.mark, spec.encoding, spec.config.mark.stacked);
         assert.isOk(_stack);
-        assert.isTrue(isStacked(spec as any));
+        assert.isTrue(isStacked(spec));
         assert.equal(_stack.stackByChannels[0], DETAIL);
       });
     });
@@ -125,7 +125,7 @@ describe('stack', () => {
   it('should always be disabled if both x and y are aggregate', () => {
     [undefined, StackOffset.CENTER, StackOffset.NONE, StackOffset.ZERO, StackOffset.NORMALIZE].forEach((stacked) => {
       PRIMITIVE_MARKS.forEach((mark) => {
-        const spec = {
+        const spec: ExtendedUnitSpec = {
           "data": {"url": "data/barley.json"},
           "mark": mark,
           "encoding": {
@@ -137,8 +137,8 @@ describe('stack', () => {
             "mark": {"stacked": stacked}
           }
         };
-        assert.isNull(stack(spec.mark, spec.encoding as any, spec.config.mark.stacked));
-        assert.isFalse(isStacked(spec as any));
+        assert.isNull(stack(spec.mark, spec.encoding, spec.config.mark.stacked));
+        assert.isFalse(isStacked(spec));
       });
     });
   });
@@ -146,7 +146,7 @@ describe('stack', () => {
   it('should always be disabled if neither x nor y is aggregate', () => {
     [undefined, StackOffset.CENTER, StackOffset.NONE, StackOffset.ZERO, StackOffset.NORMALIZE].forEach((stacked) => {
       PRIMITIVE_MARKS.forEach((mark) => {
-        const spec = {
+        const spec: ExtendedUnitSpec = {
           "data": {"url": "data/barley.json"},
           "mark": mark,
           "encoding": {
@@ -158,8 +158,8 @@ describe('stack', () => {
             "mark": {"stacked": stacked}
           }
         };
-        assert.isNull(stack(spec.mark, spec.encoding as any, spec.config.mark.stacked));
-        assert.isFalse(isStacked(spec as any));
+        assert.isNull(stack(spec.mark, spec.encoding, spec.config.mark.stacked));
+        assert.isFalse(isStacked(spec));
       });
     });
   });
@@ -169,7 +169,7 @@ describe('stack', () => {
       const marks = stacked === undefined ? STACK_BY_DEFAULT_MARKS : STACKABLE_MARKS;
       marks.forEach((mark) => {
         log.runLocalLogger((localLogger) => {
-          const spec = {
+          const spec: ExtendedUnitSpec = {
             "mark": mark,
             "encoding": {
               "x": {"field": "a", "type": "quantitative", "aggregate": "sum"},
@@ -181,8 +181,8 @@ describe('stack', () => {
               "mark": {"stacked": stacked}
             }
           };
-          assert.isNull(stack(spec.mark, spec.encoding as any, spec.config.mark.stacked));
-          assert.isFalse(isStacked(spec as any));
+          assert.isNull(stack(spec.mark, spec.encoding, spec.config.mark.stacked));
+          assert.isFalse(isStacked(spec));
           assert.equal(localLogger.warns[0], log.message.cannotStackRangedMark(X),
             JSON.stringify({stacked: stacked, mark: mark})
           );
@@ -196,7 +196,7 @@ describe('stack', () => {
       const marks = stacked === undefined ? STACK_BY_DEFAULT_MARKS : STACKABLE_MARKS;
       marks.forEach((mark) => {
         log.runLocalLogger((localLogger) => {
-          const spec = {
+          const spec: ExtendedUnitSpec = {
             "mark": mark,
             "encoding": {
               "y": {"field": "a", "type": "quantitative", "aggregate": "sum"},
@@ -208,8 +208,8 @@ describe('stack', () => {
               "mark": {"stacked": stacked}
             }
           };
-          assert.isNull(stack(spec.mark, spec.encoding as any, spec.config.mark.stacked));
-          assert.isFalse(isStacked(spec as any));
+          assert.isNull(stack(spec.mark, spec.encoding, spec.config.mark.stacked));
+          assert.isFalse(isStacked(spec));
           assert.equal(localLogger.warns[0], log.message.cannotStackRangedMark(Y),
             JSON.stringify({stacked: stacked, mark: mark})
           );
@@ -224,7 +224,7 @@ describe('stack', () => {
         const marks = stacked === undefined ? STACK_BY_DEFAULT_MARKS : STACKABLE_MARKS;
         marks.forEach((mark) => {
           log.runLocalLogger((localLogger) => {
-            const spec = {
+            const spec: ExtendedUnitSpec = {
               "data": {"url": "data/barley.json"},
               "mark": mark,
               "encoding": {
@@ -236,8 +236,8 @@ describe('stack', () => {
                 "mark": {"stacked": stacked}
               }
             };
-            assert.isNull(stack(spec.mark, spec.encoding as any, spec.config.mark.stacked));
-            assert.isFalse(isStacked(spec as any));
+            assert.isNull(stack(spec.mark, spec.encoding, spec.config.mark.stacked));
+            assert.isFalse(isStacked(spec));
             assert.equal(localLogger.warns[0], log.message.cannotStackNonLinearScale(scaleType));
           });
         });
@@ -251,7 +251,7 @@ describe('stack', () => {
         const marks = stacked === undefined ? STACK_BY_DEFAULT_MARKS : STACKABLE_MARKS;
         marks.forEach((mark) => {
           log.runLocalLogger((localLogger) => {
-            const spec = {
+            const spec: ExtendedUnitSpec = {
               "data": {"url": "data/barley.json"},
               "mark": mark,
               "encoding": {
@@ -263,8 +263,8 @@ describe('stack', () => {
                 "mark": {"stacked": stacked}
               }
             };
-            assert.isNull(stack(spec.mark, spec.encoding as any, spec.config.mark.stacked));
-            assert.isFalse(isStacked(spec as any));
+            assert.isNull(stack(spec.mark, spec.encoding, spec.config.mark.stacked));
+            assert.isFalse(isStacked(spec));
             assert.equal(localLogger.warns[0], log.message.cannotStackNonSummativeAggregate(aggregate));
           });
         });
@@ -275,7 +275,7 @@ describe('stack', () => {
   describe('stack().groupbyChannel, .fieldChannel', () => {
     it('should be correct for horizontal', () => {
       [BAR, AREA].forEach((stackableMark) => {
-        const spec = {
+        const spec: ExtendedUnitSpec = {
           "data": {"url": "data/barley.json"},
           "mark": stackableMark,
           "encoding": {
@@ -284,16 +284,16 @@ describe('stack', () => {
             "color": {"field": "site", "type": "nominal"}
           }
         };
-        const _stack = stack(spec.mark, spec.encoding as any, undefined);
+        const _stack = stack(spec.mark, spec.encoding, undefined);
         assert.equal(_stack.fieldChannel, X);
         assert.equal(_stack.groupbyChannel, Y);
-        assert.isTrue(isStacked(spec as any));
+        assert.isTrue(isStacked(spec));
       });
     });
 
     it('should be correct for horizontal (single)', () => {
       [BAR, AREA].forEach((stackableMark) => {
-        const spec = {
+        const spec: ExtendedUnitSpec = {
           "data": {"url": "data/barley.json"},
           "mark": stackableMark,
           "encoding": {
@@ -301,16 +301,16 @@ describe('stack', () => {
             "color": {"field": "site", "type": "nominal"}
           }
         };
-        const _stack = stack(spec.mark, spec.encoding as any, undefined);
+        const _stack = stack(spec.mark, spec.encoding, undefined);
         assert.equal(_stack.fieldChannel, X);
         assert.equal(_stack.groupbyChannel, null);
-        assert.isTrue(isStacked(spec as any));
+        assert.isTrue(isStacked(spec));
       });
     });
 
     it('should be correct for vertical', () => {
       [BAR, AREA].forEach((stackableMark) => {
-        const spec = {
+        const spec: ExtendedUnitSpec = {
           "data": {"url": "data/barley.json"},
           "mark": stackableMark,
           "encoding": {
@@ -319,16 +319,16 @@ describe('stack', () => {
             "color": {"field": "site", "type": "nominal"}
           }
         };
-        const _stack = stack(spec.mark, spec.encoding as any, undefined);
+        const _stack = stack(spec.mark, spec.encoding, undefined);
         assert.equal(_stack.fieldChannel, Y);
         assert.equal(_stack.groupbyChannel, X);
-        assert.isTrue(isStacked(spec as any));
+        assert.isTrue(isStacked(spec));
       });
     });
 
     it('should be correct for vertical (single)', () => {
       [BAR, AREA].forEach((stackableMark) => {
-        const spec = {
+        const spec: ExtendedUnitSpec = {
           "data": {"url": "data/barley.json"},
           "mark": stackableMark,
           "encoding": {
@@ -336,10 +336,10 @@ describe('stack', () => {
             "color": {"field": "site", "type": "nominal"}
           }
         };
-        const _stack = stack(spec.mark, spec.encoding as any, undefined);
+        const _stack = stack(spec.mark, spec.encoding, undefined);
         assert.equal(_stack.fieldChannel, Y);
         assert.equal(_stack.groupbyChannel, null);
-        assert.isTrue(isStacked(spec as any));
+        assert.isTrue(isStacked(spec));
       });
     });
   });
@@ -347,7 +347,7 @@ describe('stack', () => {
   describe('stack().offset', () => {
     it('should be zero for stackable marks with at least of of the stack channel if stacked is unspecified', () => {
       [BAR, AREA].forEach((stackableMark) => {
-        const spec = {
+        const spec: ExtendedUnitSpec = {
           "data": {"url": "data/barley.json"},
           "mark": stackableMark,
           "encoding": {
@@ -356,15 +356,15 @@ describe('stack', () => {
             "color": {"field": "site", "type": "nominal"}
           }
         };
-        assert.equal(stack(spec.mark, spec.encoding as any, undefined).offset, StackOffset.ZERO);
-        assert.isTrue(isStacked(spec as any));
+        assert.equal(stack(spec.mark, spec.encoding, undefined).offset, StackOffset.ZERO);
+        assert.isTrue(isStacked(spec));
       });
     });
 
     it('should be the specified stacked for stackable marks with at least one of the stack channel', () => {
       [StackOffset.CENTER, StackOffset.ZERO, StackOffset.NORMALIZE].forEach((stacked) => {
         [BAR, AREA].forEach((stackableMark) => {
-          const spec = {
+          const spec: ExtendedUnitSpec = {
             "data": {"url": "data/barley.json"},
             "mark": stackableMark,
             "encoding": {
@@ -376,8 +376,8 @@ describe('stack', () => {
               "mark": {"stacked": stacked}
             }
           };
-          assert.equal(stack(spec.mark, spec.encoding as any, spec.config.mark.stacked).offset, stacked);
-          assert.equal(isStacked(spec as any), StackOffset.NONE !== stacked);
+          assert.equal(stack(spec.mark, spec.encoding, spec.config.mark.stacked).offset, stacked);
+          assert.equal(isStacked(spec), true);
         });
       });
     });

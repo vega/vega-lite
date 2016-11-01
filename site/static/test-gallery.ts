@@ -1,7 +1,7 @@
 d3.select('#vl-version').text(vl.version);
 d3.select('#vg-version').text(vg.version);
 
-d3.json('examples/all-examples.json', function(examples) {
+d3.json('examples/all-examples.json', function(examples: string[]) {
   render();
 
   function render() {
@@ -28,7 +28,7 @@ d3.json('examples/all-examples.json', function(examples) {
             export: false
           }
         };
-        vg.embed('.viz#'+ example + '> div.view', embedSpec, function(err) {
+        vg.embed('.viz#'+ example + '> div.view', embedSpec, function(err: any) {
           if (err) {
             console.error(err);
           }

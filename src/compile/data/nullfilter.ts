@@ -21,7 +21,7 @@ export namespace nullFilter {
   function parse(model: Model): Dict<boolean> {
     const filterInvalid = model.filterInvalid();
 
-    return model.reduce(function(aggregator, fieldDef: FieldDef) {
+    return model.reduce(function(aggregator: Dict<FieldDef>, fieldDef: FieldDef) {
       if (fieldDef.field !== '*') { // Ignore * for count(*) fields.
         if (filterInvalid ||
           (filterInvalid === undefined && fieldDef.field && DEFAULT_NULL_FILTERS[fieldDef.type])) {

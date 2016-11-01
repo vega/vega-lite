@@ -43,7 +43,7 @@ export const FILL_CONFIG = ['fill', 'fillOpacity',
 
 export const FILL_STROKE_CONFIG = union(STROKE_CONFIG, FILL_CONFIG);
 
-export function applyColorAndOpacity(p, model: UnitModel) {
+export function applyColorAndOpacity(p: any, model: UnitModel) {
   const filled = model.config().mark.filled;
   const colorFieldDef = model.encoding().color;
   const opacityFieldDef = model.encoding().opacity;
@@ -56,8 +56,8 @@ export function applyColorAndOpacity(p, model: UnitModel) {
     applyMarkConfig(p, model, STROKE_CONFIG);
   }
 
-  let colorValue;
-  let opacityValue;
+  let colorValue: {scale: string, field: {prefix?: 'rank'}} | {value: string | number | true};
+  let opacityValue: {scale: string, field: {prefix?: 'rank'}} | {value: string | number | true};;
   if (model.has(COLOR)) {
     colorValue = {
       scale: model.scaleName(COLOR),
@@ -99,7 +99,7 @@ export function applyColorAndOpacity(p, model: UnitModel) {
   }
 }
 
-export function applyConfig(properties, config, propsList: string[]) {
+export function applyConfig(properties: {[index: string]: {value: any}}, config: any, propsList: string[]) {
   propsList.forEach(function(property) {
     const value = config[property];
     if (value !== undefined) {
@@ -109,7 +109,7 @@ export function applyConfig(properties, config, propsList: string[]) {
   return properties;
 }
 
-export function applyMarkConfig(marksProperties, model: UnitModel, propsList: string[]) {
+export function applyMarkConfig(marksProperties: any, model: UnitModel, propsList: string[]) {
   return applyConfig(marksProperties, model.config().mark, propsList);
 }
 

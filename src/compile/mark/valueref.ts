@@ -112,11 +112,17 @@ defaultRef: VgValueRef | 'base' | 'baseOrMax'): VgValueRef {
 
 export function midX(config: Config): VgValueRef {
   // TODO: For fit-mode, use middle of the width
+  if (typeof config.scale.bandSize === 'string') {
+    throw new Error('midX can not handle string bandSizes');
+  }
   return {value: config.scale.bandSize / 2};
 }
 
 export function midY(config: Config): VgValueRef {
   // TODO: For fit-mode, use middle of the width
+  if (typeof config.scale.bandSize === 'string') {
+    throw new Error('midX can not handle string bandSizes');
+  }
   return {value: config.scale.bandSize / 2};
 }
 

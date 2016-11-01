@@ -116,6 +116,12 @@ export namespace bar {
     if (markConfig.barSize) {
       return markConfig.barSize;
     }
+    if (typeof scale.bandSize === 'string') {
+      throw new Error('Default size is not able to handle non-numeric sizes');
+    }
+    if (typeof config.scale.bandSize === 'string') {
+      throw new Error('Default size is not able to handle non-numeric sizes');
+    }
     // BAR's size is applied on either X or Y
     return scale && scale.type === ScaleType.ORDINAL ?
         // For ordinal scale or single bar, we can use bandSize - 1

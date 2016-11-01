@@ -105,7 +105,7 @@ export function expression(filter: Filter | string) {
       return fieldExpr + '===' + valueExpr(filter.equal, filter.timeUnit);
     } else if (isOneOfFilter(filter)) {
       // "oneOf" was formerly "in" -- so we need to add backward compatibility
-      const oneOf = filter.oneOf || filter['in'];
+      const oneOf: typeof filter.oneOf = filter.oneOf || filter['in'];
       return 'indexof([' +
         oneOf.map((v) => valueExpr(v, filter.timeUnit)).join(',') +
         '], ' + fieldExpr + ') !== -1';

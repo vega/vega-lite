@@ -20,7 +20,7 @@ describe('Scale', function() {
           detail: {
             field: 'a',
             type: 'temporal',
-            timeUnit: 'yearMonth'
+            timeUnit: 'yearmonth'
           }
         }
       });
@@ -35,7 +35,7 @@ describe('Scale', function() {
           y: {
             field: 'a',
             type: 'temporal',
-            timeUnit: 'yearMonth'
+            timeUnit: 'yearmonth'
           }
         }
       });
@@ -67,7 +67,7 @@ describe('Scale', function() {
           shape: {
             field: 'a',
             type: 'temporal',
-            timeUnit: 'yearMonth'
+            timeUnit: 'yearmonth'
           }
         }
       });
@@ -85,7 +85,7 @@ describe('Scale', function() {
             shape: {
               field: 'a',
               type: 'temporal',
-              timeUnit: 'yearMonth',
+              timeUnit: 'yearmonth',
               scale: {type: 'linear'}
             }
           }
@@ -331,7 +331,7 @@ describe('Scale', function() {
 
     describe('for ordinal', function() {
       it('should return correct domain with the provided sort property', function() {
-        const sortDef = {op: 'min', field:'Acceleration'};
+        const sortDef = {op: 'min' as 'min', field:'Acceleration'};
         const model = parseUnitModel({
             mark: "point",
             encoding: {
