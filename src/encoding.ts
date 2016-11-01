@@ -94,21 +94,6 @@ export interface Encoding extends UnitEncoding {
   column?: FacetChannelDef;
 }
 
-export function countRetinal(encoding: Encoding) {
-  let count = 0;
-  if (encoding.color) { count++; }
-  if (encoding.opacity) { count++; }
-  if (encoding.size) { count++; }
-  if (encoding.shape) { count++; }
-  return count;
-}
-
-export function channels(encoding: Encoding) {
-  return CHANNELS.filter(function(channel) {
-    return has(encoding, channel);
-  });
-}
-
 // TOD: rename this to hasChannelField and only use we really want it.
 export function has(encoding: Encoding, channel: Channel): boolean {
   const channelEncoding = encoding && encoding[channel];
