@@ -56,6 +56,14 @@ export function runLocalLogger(f: (localLogger: LocalLogger) => void) {
   reset();
 }
 
+export function wrap(f: (logger: LocalLogger) => void) {
+  return () => {
+    const logger = current = new LocalLogger();
+    f(logger);
+    reset();
+  };
+}
+
 /**
  * Set the singleton logger to be a custom logger
  */

@@ -24,7 +24,7 @@ import {parseLegendComponent} from './legend';
 import {assembleLayout, parseUnitLayout} from './layout';
 import {Model} from './model';
 import {parseMark} from './mark/mark';
-import {parseScaleComponent, scaleBandSize, scalePoints, initType} from './scale';
+import {parseScaleComponent, initScale} from './scale';
 import {stack, StackProperties} from '../stack';
 
 function normalizeFieldDef(fieldDef: FieldDef, channel: Channel) {
@@ -160,24 +160,10 @@ export class UnitModel extends Model {
           (channel === X && vlEncoding.has(encoding, X2)) ||
           (channel === Y && vlEncoding.has(encoding, Y2))
         ) {
-
-        const channelDef = encoding[channel];
-        const scaleSpec = (channelDef || {}).scale || {};
-        const _scaleType = initType(scaleSpec.type, channelDef, channel, mark);
-
-        // TODO: extract this method to be initScale inside scale.ts
-        var scale = _scale[channel] = extend({
-          type: _scaleType,
-          round: scaleConfig.round,
-          padding: scaleConfig.padding,
-          useRawDomain: scaleConfig.useRawDomain
-        }, scaleSpec);
-
-        // bandSize depends on top-level size (width/height) and scale type
-        // If top-level size is specified, we override specified bandSize with "fit".
-        scale.bandSize = scaleBandSize(scale.type, scale.bandSize, scaleConfig,
-          channel === X ? topLevelWidth : topLevelHeight, mark, channel);
-        scale.points = scalePoints(_scaleType, scale.bandSize, channel, mark);
+        _scale[channel] = initScale(
+          channel === X ? topLevelWidth : channel === Y ? topLevelHeight : undefined,
+          mark, channel, encoding[channel], scaleConfig
+        );
       }
       return _scale;
     }, {} as Dict<Scale>);

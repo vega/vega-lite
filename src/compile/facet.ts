@@ -80,7 +80,7 @@ export class FacetModel extends Model {
 
         const scaleSpec = facet[channel].scale || {};
         _scale[channel] = extend({
-          type: ScaleType.ORDINAL,
+          type: ScaleType.ORDINAL, // call scale.ordinalType
           round: config.facet.scale.round,
 
           // TODO: revise this rule for multiple level of nesting
