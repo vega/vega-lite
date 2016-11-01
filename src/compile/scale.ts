@@ -424,16 +424,22 @@ function _useRawDomain (scale: Scale, model: Model, channel: Channel) {
     );
 }
 
-
+/**
+ * @returns {*} mix-in of bandSize, range, scheme, or rangeMin and rangeMax
+ */
 export function rangeMixins(scale: Scale, model: Model, channel: Channel): any {
+  const markConfig = model.config().mark;
+  const scaleConfig = model.config().scale;
+
   // TODO: need to add rule for quantile, quantize, threshold scale
 
   const fieldDef = model.fieldDef(channel);
-  const scaleConfig = model.config().scale;
 
   if (scale.type === ScaleType.ORDINAL && scale.bandSize && contains([X, Y], channel)) {
     return {bandSize: scale.bandSize};
   }
+
+  // FIXME: check for scheme (Vega 3)
 
   if (scale.range && !contains([X, Y, ROW, COLUMN], channel)) {
     // explicit value (Do not allow explicit values for X, Y, ROW, COLUMN)
@@ -448,6 +454,9 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel): any {
 
   // If not ROW / COLUMN, we can assume that this is a unit spec.
   const unitModel = model as UnitModel;
+  const topLevelSize = channel === X ? unitModel.width : unitModel.height;
+  const mark = unitModel.mark();
+
   switch (channel) {
     case X:
       // we can't use {range: "width"} here since we put scale in the root group
@@ -455,43 +464,45 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel): any {
 
       return {
         rangeMin: 0,
-        // TODO: replace
-        rangeMax: unitModel.width // Fixed cell width for non-ordinal
+        // FIXME: what if size is not specified
+        rangeMax: topLevelSize // Fixed cell width for non-ordinal
       };
     case Y:
       return {
-        // TODO: replace
-        rangeMin: unitModel.height, // Fixed cell height for non-ordinal
+        // FIXME: what if size is not specified
+        rangeMin: topLevelSize, // Fixed cell height for non-ordinal
         rangeMax: 0
       };
     case SIZE:
 
-      if (unitModel.mark() === BAR) {
+      if (mark === BAR) {
         if (scaleConfig.barSizeRange !== undefined) {
           return {range: scaleConfig.barSizeRange};
         }
-        const dimension = model.config().mark.orient === Orient.HORIZONTAL ? Y : X;
-        return {range: [model.config().mark.barThinSize, model.scale(dimension).bandSize]};
-      } else if (unitModel.mark() === TEXTMARK) {
+        const dimension = markConfig.orient === Orient.HORIZONTAL ? Y : X;
+        return {range: [markConfig.barThinSize, model.scale(dimension).bandSize]};
+      } else if (mark === TEXTMARK) {
         return {range: scaleConfig.fontSizeRange };
-      } else if (unitModel.mark() === RULE) {
+      } else if (mark === RULE) {
         return {range: scaleConfig.ruleSizeRange };
-      } else if (unitModel.mark() === TICK) {
+      } else if (mark === TICK) {
         return {range: scaleConfig.tickSizeRange };
+        // FIXME similar to bar?
       }
       // else -- point, square, circle
       if (scaleConfig.pointSizeRange !== undefined) {
         return {range: scaleConfig.pointSizeRange};
       }
 
-      const bandSize = pointBandSize(unitModel);
+      // If not ROW / COLUMN, we can assume that this is a unit spec.
+      const bandSize = pointBandSize(model as UnitModel, scaleConfig);
 
       return {range: [9, (bandSize - 2) * (bandSize - 2)]};
     case SHAPE:
-      return {range: scaleConfig.shapeRange};
+      return {range: scaleConfig.shapeRange}; // FIXME: check for scheme (Vega 3)
     case COLOR:
-      if (fieldDef.type === NOMINAL) {
-        return {range: scaleConfig.nominalColorRange};
+      if (fieldDef.type === NOMINAL) { // TODO: check if scale type lookup-ordinal ("ordinal")
+        return {range: scaleConfig.nominalColorRange}; // FIXME: check for scheme (Vega 3)
       }
       // else -- ordinal, time, or quantitative
       return {range: scaleConfig.sequentialColorRange};
@@ -501,12 +512,12 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel): any {
   return {};
 }
 
-function pointBandSize(model: UnitModel) {
-  const scaleConfig = model.config().scale;
+function pointBandSize(model: UnitModel, scaleConfig: ScaleConfig) {
 
   const hasX = model.has(X);
   const hasY = model.has(Y);
 
+  // FIXME: remove all these isMeasureCheck
   const xIsMeasure = isMeasure(model.encoding().x);
   const yIsMeasure = isMeasure(model.encoding().y);
 
@@ -518,11 +529,11 @@ function pointBandSize(model: UnitModel) {
         model.scale(Y).bandSize || scaleConfig.bandSize
       );
   } else if (hasY) {
-    return yIsMeasure ? model.config().scale.bandSize : model.scale(Y).bandSize;
+    return yIsMeasure ? scaleConfig.bandSize : model.scale(Y).bandSize;
   } else if (hasX) {
-    return xIsMeasure ? model.config().scale.bandSize : model.scale(X).bandSize;
+    return xIsMeasure ? scaleConfig.bandSize : model.scale(X).bandSize;
   }
-  return model.config().scale.bandSize;
+  return scaleConfig.bandSize;
 }
 
 export function clamp(scale: Scale, scaleConfig: ScaleConfig) {

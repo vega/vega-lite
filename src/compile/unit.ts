@@ -169,6 +169,9 @@ export class UnitModel extends Model {
     }, {} as Dict<Scale>);
   }
 
+  // TODO: consolidate this with scale?  Current scale range is in parseScale (later),
+  // but not in initScale because scale range depends on size,
+  // but size depends on scale type and bandWidth
   private _initSize(mark: Mark, scale: Dict<Scale>, width: number, height: number, cellConfig: CellConfig, scaleConfig: ScaleConfig) {
     if (width !== undefined) {
       this._width = width;
