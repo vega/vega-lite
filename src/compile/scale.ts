@@ -55,8 +55,7 @@ export function initScale(topLevelSize: number, mark: Mark, channel: Channel, fi
     } else {
       delete scale.bandSize; // make sure it really become undefined
     }
-
-    scale.points = points(channel, mark, scale.bandSize);
+    scale.points = points(channel, mark, bandSize);
   }
 
   [
@@ -131,10 +130,6 @@ function parseMainScale(model: Model, fieldDef: FieldDef, channel: Channel) {
     scaleDef.domain = domain(scale, model, channel);
   }
 
-  if (scaleDef.bandSize === BANDSIZE_FIT) {
-    // For BandSizeFit, we should remove it and output range instead!
-    delete scaleDef.bandSize;
-  }
   // TODO: move range to init
   extend(scaleDef, rangeMixins(scale, model, channel));
 
@@ -236,7 +231,7 @@ export function initType(type: ScaleType, fieldDef: FieldDef, channel: Channel, 
 }
 
 // TODO: when migrate to Vega3 rename this to ordinalType()
-export function points(channel: Channel, mark: Mark, bandSize: number | BandSize, ) {
+export function points(channel: Channel, mark: Mark, bandSize: number) {
   if (contains([ROW, COLUMN], channel)) {
     // Use band scale for facet
     return false;
@@ -246,7 +241,7 @@ export function points(channel: Channel, mark: Mark, bandSize: number | BandSize
     // Use band ordinal scale for x/y scale in one of the following cases:
     if (
       // 1) the mark is bar and the scale's bandWidth is 'fit',
-      (mark === BAR && bandSize === BANDSIZE_FIT) ||
+      (mark === BAR && !bandSize) ||
       // 2) the mark is rect
       mark === RECT
     ) {
@@ -259,28 +254,29 @@ export function points(channel: Channel, mark: Mark, bandSize: number | BandSize
   return true; // TODO: point
 }
 
-export function initBandSize(bandSize: number | BandSize, topLevelSize: number, mark: Mark, channel: Channel, scaleConfig: ScaleConfig): number | BandSize {
-  if (!contains([X, Y], channel)) {
-    return undefined;
-  }
-
+export function initBandSize(bandSize: number | BandSize, topLevelSize: number, mark: Mark, channel: Channel, scaleConfig: ScaleConfig): number {
   if (topLevelSize === undefined) {
-    if (bandSize) {
+    if (bandSize === BANDSIZE_FIT || bandSize === null) {
+      return undefined; // no bandSize
+    } else if (bandSize !== undefined) {
       // Use manually specified bandSize
       return bandSize;
-    } else if (channel === X && mark === TEXTMARK) {
-      return scaleConfig.textBandWidth;
-    } else {
-      return scaleConfig.bandSize;
+    } else if (contains([X, Y], channel)) {
+      // only use config by default for X and Y
+      if (channel === X && mark === TEXTMARK) {
+        return scaleConfig.textBandWidth;
+      } else {
+        return scaleConfig.bandSize;
+      }
     }
-  } else {
-    // If top-level is specified, use bandSize fit
-    if (bandSize && bandSize !== BANDSIZE_FIT) {
-      // If top-level size is specified, we override specified bandSize with "fit"
-      log.warn(log.message.bandSizeOverridden(channel));
-    }
-    return BANDSIZE_FIT;
   }
+
+  // If top-level is specified, use bandSize fit
+  if (bandSize && bandSize !== BANDSIZE_FIT) {
+    // If top-level size is specified, we override specified bandSize with "fit"
+    log.warn(log.message.bandSizeOverridden(channel));
+  }
+  return undefined;
 }
 
 export function domain(scale: Scale, model: Model, channel:Channel): any {
@@ -435,7 +431,7 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel): any {
   const fieldDef = model.fieldDef(channel);
   const scaleConfig = model.config().scale;
 
-  if (scale.type === ScaleType.ORDINAL && scale.bandSize && scale.bandSize !== BANDSIZE_FIT && contains([X, Y], channel)) {
+  if (scale.type === ScaleType.ORDINAL && scale.bandSize && contains([X, Y], channel)) {
     return {bandSize: scale.bandSize};
   }
 
@@ -596,6 +592,7 @@ export function padding(scale: Scale, scaleConfig: ScaleConfig, channel: Channel
   }
   return undefined;
 }
+
 export function round(scale: Scale, scaleConfig: ScaleConfig, channel: Channel) {
   if (contains([X, Y, ROW, COLUMN, SIZE], channel)) {
     if (scale.round !== undefined) {

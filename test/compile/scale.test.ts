@@ -81,22 +81,28 @@ describe('Scale', function() {
       });
     });
 
-    it('should return band scale for X,Y when mark is bar and bandSize is fit', () => {
+    it('should return band scale for X,Y when mark is bar and bandSize is undefined (fit)', () => {
       [X, Y].forEach((channel) => {
-        assert.equal(points(channel, BAR, BANDSIZE_FIT), false);
+        assert.equal(points(channel, BAR, undefined), false);
       });
     });
   });
 
   describe('initBandSize()', () => {
-    it('should return "fit" if top-level size is provided for ordinal scale', () => {
-      const bandSize = initBandSize(undefined, 180, POINT, X, defaultScaleConfig);
-      assert.deepEqual(bandSize, BANDSIZE_FIT);
+
+    it('should return undefined if bandSize spec is fit', () => {
+      const bandSize = initBandSize(BANDSIZE_FIT, 180, POINT, X, defaultScaleConfig);
+      assert.deepEqual(bandSize, undefined);
     });
 
-    it('should return "fit" if top-level size is provided for ordinal scale and throw warning if bandSize is specified', log.wrap((logger) => {
+    it('should return undefined if top-level size is provided for ordinal scale', () => {
+      const bandSize = initBandSize(undefined, 180, POINT, X, defaultScaleConfig);
+      assert.deepEqual(bandSize, undefined);
+    });
+
+    it('should return undefined if top-level size is provided for ordinal scale and throw warning if bandSize is specified', log.wrap((logger) => {
       const bandSize = initBandSize(21, 180, POINT, X, defaultScaleConfig);
-      assert.deepEqual(bandSize, BANDSIZE_FIT);
+      assert.deepEqual(bandSize, undefined);
       assert.equal(logger.warns[0], log.message.bandSizeOverridden(X));
     }));
 

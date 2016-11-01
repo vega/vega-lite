@@ -10,7 +10,7 @@ import * as vlEncoding from '../encoding'; // TODO: remove
 import {FieldDef, FieldRefOption, field} from '../fielddef';
 import {Legend} from '../legend';
 import {Mark, TEXT as TEXTMARK} from '../mark';
-import {BANDSIZE_FIT, Scale, ScaleConfig, ScaleType} from '../scale';
+import {Scale, ScaleConfig, ScaleType} from '../scale';
 import {ExtendedUnitSpec} from '../spec';
 import {getFullName, QUANTITATIVE} from '../type';
 import {duplicate, extend, isArray, mergeDeep, Dict} from '../util';
@@ -173,7 +173,7 @@ export class UnitModel extends Model {
     if (width !== undefined) {
       this._width = width;
     } else if (scale[X]) {
-      if (scale[X].type !== ScaleType.ORDINAL || scale[X].bandSize === BANDSIZE_FIT) {
+      if (scale[X].type !== ScaleType.ORDINAL || !scale[X].bandSize) {
         this._width = cellConfig.width;
       } // else: Do nothing, use dynamic width.
     } else { // No scale X
@@ -188,7 +188,7 @@ export class UnitModel extends Model {
     if (height !== undefined) {
       this._height = height;
     } else if (scale[Y]) {
-      if (scale[Y].type !== ScaleType.ORDINAL || scale[Y].bandSize === BANDSIZE_FIT) {
+      if (scale[Y].type !== ScaleType.ORDINAL || !scale[Y].bandSize) {
         this._height = cellConfig.height;
       } // else: Do nothing, use dynamic height .
     } else {
