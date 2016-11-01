@@ -106,6 +106,19 @@ export namespace message {
     return `${channel} encoding should be discrete (ordinal / nominal / binned).`;
   }
 
+  // Mark
+  export function unclearOrientContinuous(mark: Mark) {
+    return 'Cannot clearly determine orientation for ' + mark + ' since both x and y channel encode continous fields. In this case, we use vertical by default';
+  }
+
+  export function unclearOrientDiscreteOrEmpty(mark: Mark) {
+    return 'Cannot clearly determine orientation for ' + mark + ' since both x and y channel encode discrete or empty fields.';
+  }
+
+  export function orientOverridden(original, actual) {
+    return `Specified orient ${original} overridden with ${actual}`;
+  }
+
   // SCALE
   export const CANNOT_UNION_CUSTOM_DOMAIN_WITH_FIELD_DOMAIN = 'custom domain scale cannot be unioned with default field-based domain';
 

@@ -1,39 +1,51 @@
 /* tslint:disable quotemark */
 
+import * as log from '../../src/log';
+
 import {assert} from 'chai';
 import {orient} from '../../src/compile/config';
 import {Orient} from '../../src/config';
+import {BAR} from '../../src/mark';
 import {parseUnitModel} from '../util';
 
 describe('Config', function() {
   describe('orient', function() {
     it('should return correct default for QxQ', function() {
-      const model = parseUnitModel({
-        "mark": "bar",
-        "encoding": {
-          "y": {"type": "quantitative", "field": "foo"},
-          "x": {"type": "quantitative", "field": "bar"}
-        },
+      log.runLocalLogger((localLogger) => {
+        const model = parseUnitModel({
+          "mark": "bar",
+          "encoding": {
+            "y": {"type": "quantitative", "field": "foo"},
+            "x": {"type": "quantitative", "field": "bar"}
+          },
+        });
+        assert.equal(orient(model.mark(), model.encoding()), Orient.VERTICAL);
+        assert.equal(localLogger.warns[0], log.message.unclearOrientContinuous(BAR));
       });
-      assert.equal(orient(model.mark(), model.encoding()), Orient.VERTICAL);
     });
 
     it('should return correct default for empty plot', () => {
-      const model2 = parseUnitModel({
-        "mark": "bar",
+      log.runLocalLogger((localLogger) => {
+        const model2 = parseUnitModel({
+          "mark": "bar",
+        });
+        assert.equal(orient(model2.mark(), model2.encoding()), undefined);
+        assert.equal(localLogger.warns[0], log.message.unclearOrientDiscreteOrEmpty(BAR));
       });
-      assert.equal(orient(model2.mark(), model2.encoding()), undefined);
     });
 
     it('should return correct orient for bar with both axes discrete', function() {
-      const model = parseUnitModel({
-        "mark": "bar",
-        "encoding": {
-          "x": {"type": "ordinal", "field": "foo"},
-          "y": {"type": "ordinal", "field": "bar"}
-        },
+      log.runLocalLogger((localLogger) => {
+        const model = parseUnitModel({
+          "mark": "bar",
+          "encoding": {
+            "x": {"type": "ordinal", "field": "foo"},
+            "y": {"type": "ordinal", "field": "bar"}
+          },
+        });
+        assert.equal(orient(model.mark(), model.encoding()), undefined);
+        assert.equal(localLogger.warns[0], log.message.unclearOrientDiscreteOrEmpty(BAR));
       });
-      assert.equal(orient(model.mark(), model.encoding()), undefined);
     });
 
 

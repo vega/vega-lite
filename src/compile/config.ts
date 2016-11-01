@@ -1,58 +1,61 @@
+import * as log from '../log';
+
 import {X, Y, COLOR, SIZE, DETAIL} from '../channel';
-import {Config, Orient, MarkConfig} from '../config';
+import {Config, Orient, MarkConfig, HorizontalAlign} from '../config';
 import {Encoding, isAggregate, has} from '../encoding';
 import {isMeasure} from '../fielddef';
 import {BAR, AREA, POINT, LINE, TICK, CIRCLE, SQUARE, RECT, RULE, TEXT, Mark} from '../mark';
 import {ScaleType} from '../scale';
 import {StackProperties} from '../stack';
 import {TEMPORAL} from '../type';
-import {contains, extend} from '../util';
+import {contains, duplicate} from '../util';
 import {scaleType} from '../compile/scale';
 /**
  * Augment config.mark with rule-based default values.
  */
 export function initMarkConfig(mark: Mark, encoding: Encoding, stacked: StackProperties, config: Config) {
-   return extend(
-     ['filled', 'opacity', 'orient', 'align'].reduce(function(cfg, property: string) {
-       const value = config.mark[property];
-       switch (property) {
-         case 'filled':
-           if (value === undefined) {
-             // Point, line, and rule are not filled by default
-             cfg[property] = mark !== POINT && mark !== LINE && mark !== RULE;
-           }
-           break;
-         case 'opacity':
-           if (value === undefined) {
-            if (contains([POINT, TICK, CIRCLE, SQUARE], mark)) {
-              // point-based marks
-              if (!isAggregate(encoding) || has(encoding, DETAIL)) {
-                cfg[property] = 0.7;
-              }
-            }
-            if (mark === BAR && !stacked) {
-              if (has(encoding, COLOR) || has(encoding, DETAIL) || has(encoding, SIZE)) {
-                cfg[property] = 0.7;
-              }
-            }
-            if (mark === AREA) {
-              cfg[property] = 0.7; // inspired by Tableau
-            }
-           }
-           break;
-         case 'orient':
-           cfg[property] = orient(mark, encoding, config.mark);
-           break;
-         // text-only
-         case 'align':
-          if (value === undefined) {
-            cfg[property] = has(encoding, X) ? 'center' : 'right';
-          }
-       }
-       return cfg;
-     }, {}),
-     config.mark
-   );
+  const markConfig = duplicate(config.mark);
+
+  if (markConfig.filled === undefined) {
+    markConfig.filled = mark !== POINT && mark !== LINE && mark !== RULE;
+  }
+
+  if (markConfig.opacity === undefined) {
+    const o = opacity(mark, encoding, stacked);
+    if (o) {
+      markConfig.opacity = o;
+    }
+  }
+
+  // For orient, users can only specify for ambiguous cases.
+  markConfig.orient = orient(mark, encoding, config.mark);
+  if (config.mark.orient !== undefined && markConfig.orient !== config.mark.orient) {
+    log.warn(log.message.orientOverridden(config.mark.orient, markConfig.orient));
+  }
+
+  if (markConfig.align === undefined) {
+    markConfig.align = has(encoding, X) ? HorizontalAlign.CENTER : HorizontalAlign.RIGHT;
+  }
+
+  return markConfig;
+}
+
+export function opacity(mark: Mark, encoding: Encoding, stacked: StackProperties) {
+  if (contains([POINT, TICK, CIRCLE, SQUARE], mark)) {
+    // point-based marks
+    if (!isAggregate(encoding) || has(encoding, DETAIL)) {
+      return 0.7;
+    }
+  }
+  if (mark === BAR && !stacked) {
+    if (has(encoding, COLOR) || has(encoding, DETAIL) || has(encoding, SIZE)) {
+      return 0.7;
+    }
+  }
+  if (mark === AREA) {
+    return 0.7; // inspired by Tableau
+  }
+  return undefined;
 }
 
 export function orient(mark: Mark, encoding: Encoding, markConfig: MarkConfig = {}): Orient {
@@ -117,14 +120,22 @@ export function orient(mark: Mark, encoding: Encoding, markConfig: MarkConfig = 
         } else if (encoding.y.type === TEMPORAL) {
           return Orient.HORIZONTAL;
         }
-        console.warn('Cannot clearly determine orientation for ' + mark + ' since there are continuous fields in both x and y channel. In this case, we use vertical by default');
+
+        if (markConfig.orient) {
+          // When ambiguous, use user specified one.
+          return markConfig.orient;
+        }
+
+        if (!(mark === LINE &&  encoding.path)) {
+          // Except for connected scatterplot, we should log warning for unclear orientation of QxQ plots.
+          log.warn(log.message.unclearOrientContinuous(mark));
+        }
         return Orient.VERTICAL;
       } else {
         // For Discrete x Discrete case, return undefined.
-        console.warn('Cannot clearly determine orientation for ' + mark + ' since there are discrete fields in both x and y channel.');
+        log.warn(log.message.unclearOrientDiscreteOrEmpty(mark));
         return undefined;
       }
   }
-  /* istanbul ignore:next */
   return Orient.VERTICAL;
 }

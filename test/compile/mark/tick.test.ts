@@ -150,18 +150,17 @@ describe('Mark: Tick', function() {
   describe('height should be mapped to size', function() {
     const model = parseUnitModel({
       'mark': 'tick',
-      'config': {'mark': {'orient': 'horizontal'}},
       'encoding':
         {
           'x': {'field': 'Horsepower', 'type': 'quantitative'},
           'y': {'field': 'Cylinders', 'type': 'ordinal'},
-          'size': {'field': 'Acceleration'}
+          'size': {'field': 'Acceleration', 'type': 'quantitative'}
         },
       'data': {'url': 'data/cars.json'},
     });
     const props = tick.properties(model);
     it('height should change with size field', function() {
-      assert.deepEqual(props.width, {'field': 'Acceleration', 'scale': SIZE});
+      assert.deepEqual(props.height, {'field': 'Acceleration', 'scale': SIZE});
     });
   });
 });
