@@ -6,13 +6,13 @@ import * as log from '../src/log';
 
 import {AggregateOp} from '../src/aggregate';
 import {X, Y, DETAIL} from '../src/channel';
-import {BAR, AREA, RULE, PRIMITIVE_MARKS} from '../src/mark';
+import {BAR, AREA, PRIMITIVE_MARKS} from '../src/mark';
 import {ScaleType} from '../src/scale';
 import {stack, StackOffset, STACK_BY_DEFAULT_MARKS, STACKABLE_MARKS} from '../src/stack';
 import {isStacked} from '../src/spec';
 
 describe('stack', () => {
-  const NON_STACKABLE_MARKS = [RULE];
+  const NON_STACKABLE_MARKS = [];
 
   it('should be disabled for non-stackable marks with at least of of the stack channel', () => {
     [undefined, StackOffset.CENTER, StackOffset.NONE, StackOffset.ZERO, StackOffset.NORMALIZE].forEach((stacked) => {
