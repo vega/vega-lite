@@ -16,12 +16,6 @@ export interface Transform {
    * Calculate new field(s) using the provided expresssion(s). Calculation are applied before filter.
    */
   calculate?: Formula[];
-
-  /**
-   * DEPRECATED
-   * Whether to filter `null` from the data.
-   */
-  filterNull?: boolean;
 }
 
 /**

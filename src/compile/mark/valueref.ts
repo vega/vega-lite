@@ -113,6 +113,7 @@ defaultRef: VgValueRef | 'base' | 'baseOrMax'): VgValueRef {
 export function midX(config: Config): VgValueRef {
   // TODO: For fit-mode, use middle of the width
   if (typeof config.scale.bandSize === 'string') {
+    // TODO: use band: 0.5 when we migrate to Vega 3
     throw new Error('midX can not handle string bandSizes');
   }
   return {value: config.scale.bandSize / 2};
@@ -121,6 +122,7 @@ export function midX(config: Config): VgValueRef {
 export function midY(config: Config): VgValueRef {
   // TODO: For fit-mode, use middle of the width
   if (typeof config.scale.bandSize === 'string') {
+    // TODO: use band: 0.5 when we migrate to Vega 3
     throw new Error('midX can not handle string bandSizes');
   }
   return {value: config.scale.bandSize / 2};

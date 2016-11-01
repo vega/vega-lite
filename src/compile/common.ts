@@ -8,7 +8,7 @@ import {FieldDef, field, OrderChannelDef} from '../fielddef';
 import {SortOrder} from '../sort';
 import {TimeUnit} from '../timeunit';
 import {QUANTITATIVE, ORDINAL} from '../type';
-import {contains, union} from '../util';
+import {contains, union, Dict} from '../util';
 
 import {FacetModel} from './facet';
 import {LayerModel} from './layer';
@@ -16,7 +16,7 @@ import {Model} from './model';
 import {template as timeUnitTemplate} from '../timeunit';
 import {UnitModel} from './unit';
 import {Spec, isUnitSpec, isSomeFacetSpec, isLayerSpec} from '../spec';
-
+import {VgValueRef} from '../vega.schema';
 
 export function buildModel(spec: Spec, parent: Model, parentGivenName: string): Model {
   if (isSomeFacetSpec(spec)) {
@@ -56,8 +56,8 @@ export function applyColorAndOpacity(p: any, model: UnitModel) {
     applyMarkConfig(p, model, STROKE_CONFIG);
   }
 
-  let colorValue: {scale: string, field: {prefix?: 'rank'}} | {value: string | number | true};
-  let opacityValue: {scale: string, field: {prefix?: 'rank'}} | {value: string | number | true};;
+  let colorValue: VgValueRef;
+  let opacityValue: VgValueRef;
   if (model.has(COLOR)) {
     colorValue = {
       scale: model.scaleName(COLOR),
@@ -99,7 +99,7 @@ export function applyColorAndOpacity(p: any, model: UnitModel) {
   }
 }
 
-export function applyConfig(properties: {[index: string]: {value: any}}, config: any, propsList: string[]) {
+export function applyConfig(properties: Dict<any>, config: any, propsList: string[]) {
   propsList.forEach(function(property) {
     const value = config[property];
     if (value !== undefined) {

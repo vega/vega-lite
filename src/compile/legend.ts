@@ -11,7 +11,7 @@ import {extend, keys, without, Dict} from '../util';
 import {applyMarkConfig, FILL_STROKE_CONFIG, numberFormat, timeTemplate} from './common';
 import {COLOR_LEGEND, COLOR_LEGEND_LABEL} from './scale';
 import {UnitModel} from './unit';
-import {VgLegend} from '../vega.schema';
+import {VgLegend, VgValueRef} from '../vega.schema';
 
 /* tslint:disable:no-unused-variable */
 // These imports exist so the TS compiler can name publicly exported members in
@@ -162,7 +162,7 @@ export namespace properties {
       delete symbols.opacity;
     }
 
-    let value: {scale: string, field: {prefix?: 'rank'}} | {value: string | number | boolean};;
+    let value: VgValueRef;
     if (model.has(COLOR) && channel === COLOR) {
       if (useColorLegendScale(fieldDef)) {
         // for color legend scale, we need to override
