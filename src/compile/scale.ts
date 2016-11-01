@@ -168,7 +168,7 @@ function parseBinColorLegendLabel(model: Model, fieldDef: FieldDef): ScaleCompon
   };
 }
 
-export function scaleType(scale: Scale, fieldDef: FieldDef, channel: Channel, mark: Mark): ScaleType {
+export function initType(type: ScaleType, fieldDef: FieldDef, channel: Channel, mark: Mark): ScaleType {
   if (!hasScale(channel)) {
     // There is no scale for these channels
     return null;
@@ -176,14 +176,14 @@ export function scaleType(scale: Scale, fieldDef: FieldDef, channel: Channel, ma
 
   // We can't use linear/time for row, column or shape
   if (contains([ROW, COLUMN, SHAPE], channel)) {
-    if (scale && scale.type !== undefined && scale.type !== ScaleType.ORDINAL) {
-      log.warn(log.message.scaleTypeNotWorkWithChannel(channel, scale.type));
+    if (type !== undefined && type !== ScaleType.ORDINAL) {
+      log.warn(log.message.scaleTypeNotWorkWithChannel(channel, type));
     }
     return ScaleType.ORDINAL;
   }
 
-  if (scale.type !== undefined) {
-    return scale.type;
+  if (type !== undefined) {
+    return type;
   }
 
   switch (fieldDef.type) {
