@@ -1,13 +1,13 @@
 import {X, Y, X2, Y2, SIZE} from '../../channel';
 import {Config, Orient} from '../../config';
-import {field} from '../../fielddef';
-import {Scale, ScaleType, BANDSIZE_FIT} from '../../scale';
+import {Scale, ScaleType} from '../../scale';
 import {StackProperties} from '../../stack';
 import {extend} from '../../util';
 
 import {applyColorAndOpacity} from '../common';
 import {UnitModel} from '../unit';
 import * as ref from './valueref';
+import {VgValueRef} from '../../vega.schema';
 
 export namespace bar {
   export function markType() {
@@ -33,6 +33,7 @@ export namespace bar {
 
     const xFieldDef = model.encoding().x;
     const xScaleName = model.scaleName(X);
+    const xScale = model.scale(X);
     // x, x2, and width -- we must specify two of these in all conditions
     if (orient === Orient.HORIZONTAL) {
       p.x = ref.stackable(X, xFieldDef, xScaleName, model.scale(X), stack, 'base');
@@ -46,17 +47,14 @@ export namespace bar {
           p.x2 = ref.bin(xFieldDef, xScaleName, 'start', config.mark.barBinSpacing);
           p.x = ref.bin(xFieldDef, xScaleName, 'end');
           return p;
-        } else if (model.scale(X).bandSize === BANDSIZE_FIT) {
-          // TODO check if scale.type === band (points === false in Vg2) instead if we have the compiled size
+        } else if (
+          // TODO: scale.type === band
+          xScale.type === ScaleType.ORDINAL && xScale.points === false &&
+          !xScale.bandSize
+        ) {
           // TODO: bandSize fit doesn't support size yet
-          p.x = {
-            scale: xScaleName,
-            field: field(xFieldDef)
-          };
-          p.width = {
-            scale: xScaleName,
-            band: true
-          };
+          p.x = ref.fieldRef(xFieldDef, xScaleName, {});
+          p.width = ref.band(xScaleName);
           return p;
         }
       }
@@ -65,7 +63,7 @@ export namespace bar {
         extend(ref.midX(config), {offset: 1}) // TODO: config.singleBarOffset
       );
       p.width = ref.normal(SIZE, model.encoding().size, model.scaleName(SIZE), model.scale(SIZE),
-        {value: defaultSize(xScaleName, model.scale(X), config)}
+        defaultSizeRef(xScaleName, model.scale(X), config)
       );
       return p;
     }
@@ -79,6 +77,7 @@ export namespace bar {
 
     const yFieldDef = model.encoding().y;
     const yScaleName = model.scaleName(Y);
+    const yScale = model.scale(Y);
     // y, y2 & height -- we must specify two of these in all conditions
     if (orient === Orient.VERTICAL) {
       p.y = ref.stackable(Y, model.encoding().y, yScaleName, model.scale(Y), stack, 'base');
@@ -90,12 +89,13 @@ export namespace bar {
           p.y2 = ref.bin(yFieldDef, yScaleName, 'start');
           p.y = ref.bin(yFieldDef, yScaleName, 'end', config.mark.barBinSpacing);
           return p;
-        } else if (model.scale(Y).bandSize === BANDSIZE_FIT) {
+        } else if (
+            // TODO: scale.type === band
+            yScale.type === ScaleType.ORDINAL && yScale.points === false &&
+            !yScale.bandSize
+          ) {
           // TODO: bandSize fit doesn't support size yet
-          p.y = {
-            scale: yScaleName,
-            field: field(yFieldDef)
-          };
+          p.y = ref.fieldRef(yFieldDef, yScaleName, {});
           p.height = ref.band(yScaleName);
           return p;
         }
@@ -104,29 +104,27 @@ export namespace bar {
         ref.midY(config)
       );
       p.height = ref.normal(SIZE, model.encoding().size, model.scaleName(SIZE), model.scale(SIZE),
-        {value: defaultSize(yScaleName, model.scale(Y), config)}
+        defaultSizeRef(yScaleName, model.scale(Y), config)
       );
       return p;
     }
   }
 
   // TODO: make this a mixins
-  function defaultSize(scaleName: string, scale: Scale, config: Config) {
+  function defaultSizeRef(scaleName: string, scale: Scale, config: Config): VgValueRef {
     const markConfig = config.mark;
     if (markConfig.barSize) {
-      return markConfig.barSize;
+      return {value: markConfig.barSize};
     }
-    // BAR's size is applied on either X or Y
-    return scale && scale.type === ScaleType.ORDINAL ?
-        // For ordinal scale or single bar, we can use bandSize - 1
-        // (-1 so that the border of the bar falls on exact pixel)
-        scale.bandSize - 1 :
-        // TODO: {band: true} ?
-      scaleName ?
-        // set to thinBarWidth by default for non-ordinal scale
-        markConfig.barThinSize :
-        // if there is no size (x or y) axis, just use bandSize -1
-        // TODO: revise if we really need the -1
-        config.scale.bandSize - 1;
+
+    if (scale && scale.type === ScaleType.ORDINAL) {
+      if (scale.bandSize) {
+        return {value: scale.bandSize - 1};
+      }
+      return ref.band(scaleName);
+    } else if (scaleName) { // non-ordinal scale
+      return {value: markConfig.barThinSize};
+    }
+    return {value: config.scale.bandSize - 1};
   }
 }

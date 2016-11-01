@@ -1,7 +1,7 @@
 
 import {Channel, X, Y, ROW, COLUMN} from '../channel';
 import {LAYOUT} from '../data';
-import {ScaleType, BANDSIZE_FIT} from '../scale';
+import {ScaleType} from '../scale';
 import {Formula} from '../transform';
 import {extend, keys, StringSet} from '../util';
 import {VgData} from '../vega.schema';
@@ -82,7 +82,10 @@ function parseUnitSizeLayout(model: UnitModel, channel: Channel): SizeComponent 
 export function unitSizeExpr(model: UnitModel, channel: Channel): string {
   const scale = model.scale(channel);
   if (scale) {
-    if (scale.type === ScaleType.ORDINAL && scale.bandSize !== BANDSIZE_FIT) {
+
+    if (scale.type === ScaleType.ORDINAL && scale.bandSize) {
+      // If the spec has top level size or specified bandSize = fit, it will be undefined here.
+
       let layoutOffset = scale.points ? 1 : 2 * scale.padding;
       return '(' + cardinalityExpr(model, channel) +
         ' + ' + layoutOffset +
