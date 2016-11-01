@@ -2,7 +2,7 @@
 
 import {assert} from 'chai';
 
-import {scaleBandSize, scaleType, domain, parseScaleComponent} from '../../src/compile/scale';
+import {scaleBandSize, initType, domain, parseScaleComponent} from '../../src/compile/scale';
 import {SOURCE, SUMMARY} from '../../src/data';
 import {parseUnitModel} from '../util';
 
@@ -10,89 +10,65 @@ import * as log from '../../src/log';
 import {X, Y, SHAPE, DETAIL} from '../../src/channel';
 import {BANDSIZE_FIT, ScaleType, defaultScaleConfig} from '../../src/scale';
 import {POINT} from '../../src/mark';
+import {TimeUnit} from '../../src/timeunit';
+import {TEMPORAL} from '../../src/type';
 
 describe('Scale', function() {
-  describe('scaleType()', function() {
+  describe('initType()', function() {
     it('should return null for channel without scale', function() {
-      const model = parseUnitModel({
-        mark: 'point',
-        encoding: {
-          detail: {
-            field: 'a',
-            type: 'temporal',
-            timeUnit: 'yearMonth'
-          }
-        }
-      });
-      const fieldDef = model.encoding().detail;
-      assert.deepEqual(scaleType(null, fieldDef, DETAIL, model.mark()), null);
+      assert.deepEqual(
+        initType(undefined, {
+          field: 'a',
+          type: TEMPORAL,
+          timeUnit: TimeUnit.YEARMONTH
+        }, DETAIL, POINT),
+        null
+      );
     });
 
     it('should return time for yearmonth', function() {
-      const model = parseUnitModel({
-        mark: 'point',
-        encoding: {
-          y: {
-            field: 'a',
-            type: 'temporal',
-            timeUnit: 'yearMonth'
-          }
-        }
-      });
-      const fieldDef = model.encoding().y;
-      const scale = model.scale(Y);
-      assert.deepEqual(scaleType(scale, fieldDef, Y, model.mark()), ScaleType.TIME);
+      assert.deepEqual(
+        initType(undefined, {
+          field: 'a',
+          type: TEMPORAL,
+          timeUnit: TimeUnit.YEARMONTH
+        }, Y, POINT),
+        ScaleType.TIME
+      );
     });
 
     it('should return ordinal for month', function() {
-      const model = parseUnitModel({
-        mark: 'point',
-        encoding: {
-          y: {
-            field: 'a',
-            type: 'temporal',
-            timeUnit: 'month'
-          }
-        }
-      });
-      const fieldDef = model.encoding().y;
-      const scale = model.scale(Y);
-      assert.deepEqual(scaleType(scale, fieldDef, Y, model.mark()), ScaleType.ORDINAL);
+      assert.deepEqual(
+        initType(undefined, {
+          field: 'a',
+          type: TEMPORAL,
+          timeUnit: TimeUnit.MONTH
+        }, Y, POINT),
+        ScaleType.ORDINAL // TODO: ordinal-point
+      );
     });
 
     it('should return ordinal for shape', function() {
-      const model = parseUnitModel({
-        mark: 'point',
-        encoding: {
-          shape: {
-            field: 'a',
-            type: 'temporal',
-            timeUnit: 'yearMonth'
-          }
-        }
-      });
-      const fieldDef = model.encoding().shape;
-      const scale = model.scale(SHAPE);
-      assert.deepEqual(scaleType(scale, fieldDef, SHAPE, model.mark()), ScaleType.ORDINAL);
+      assert.deepEqual(
+        initType(undefined, {
+          field: 'a',
+          type: TEMPORAL,
+          timeUnit: TimeUnit.YEARMONTH
+        }, SHAPE, POINT),
+        ScaleType.ORDINAL // TODO: ordinal-point
+      );
     });
-
 
     it('should return ordinal for shape even if non-ordinal is specified', function() {
       log.runLocalLogger((localLogger) => {
-        const model = parseUnitModel({
-          mark: 'point',
-          encoding: {
-            shape: {
-              field: 'a',
-              type: 'temporal',
-              timeUnit: 'yearMonth',
-              scale: {type: 'linear'}
-            }
-          }
-        });
-        const fieldDef = model.encoding().shape;
-        const scale = model.scale(SHAPE);
-        assert.deepEqual(scaleType(scale, fieldDef, SHAPE, model.mark()), ScaleType.ORDINAL);
+        assert.deepEqual(
+          initType(ScaleType.LINEAR, {
+            field: 'a',
+            type: TEMPORAL,
+            timeUnit: TimeUnit.YEARMONTH
+          }, SHAPE, POINT),
+          ScaleType.ORDINAL // TODO: ordinal-point
+        );
         assert.equal(localLogger.warns[0], log.message.scaleTypeNotWorkWithChannel(SHAPE, ScaleType.LINEAR));
       });
     });

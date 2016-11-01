@@ -24,7 +24,7 @@ import {parseLegendComponent} from './legend';
 import {assembleLayout, parseUnitLayout} from './layout';
 import {Model} from './model';
 import {parseMark} from './mark/mark';
-import {parseScaleComponent, scaleBandSize, scalePoints, scaleType} from './scale';
+import {parseScaleComponent, scaleBandSize, scalePoints, initType} from './scale';
 import {stack, StackProperties} from '../stack';
 
 function normalizeFieldDef(fieldDef: FieldDef, channel: Channel) {
@@ -163,7 +163,7 @@ export class UnitModel extends Model {
 
         const channelDef = encoding[channel];
         const scaleSpec = (channelDef || {}).scale || {};
-        const _scaleType = scaleType(scaleSpec, channelDef, channel, mark);
+        const _scaleType = initType(scaleSpec.type, channelDef, channel, mark);
 
         // TODO: extract this method to be initScale inside scale.ts
         var scale = _scale[channel] = extend({
