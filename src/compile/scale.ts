@@ -516,7 +516,10 @@ export function clamp(scale: Scale, scaleConfig: ScaleConfig) {
   // (Doesn't work for quantize, quantile, threshold, ordinal)
   if (contains([ScaleType.LINEAR, ScaleType.POW, ScaleType.SQRT,
         ScaleType.LOG, ScaleType.TIME, ScaleType.UTC], scale.type)) {
-    return scale.clamp;
+    if (scale.clamp !== undefined) {
+      return scale.clamp;
+    }
+    return scaleConfig.clamp;
   }
   return undefined;
 }
@@ -554,8 +557,14 @@ export function padding(scale: Scale, scaleConfig: ScaleConfig, channel: Channel
    * Therefore, we manually calculate padding in the layout by ourselves.
    */
   if (scale.type === ScaleType.ORDINAL && contains([X, Y], channel)) {
-    // TODO: design config for this
-    return scaleDef.points ? 1 : scale.padding;
+    if (scale.padding !== undefined) {
+      return scale.padding;
+    }
+    if (scale.points) {
+      return scaleConfig.pointPadding;
+    } else {
+      return scaleConfig.bandPadding;
+    }
   }
   return undefined;
 }
