@@ -43,12 +43,12 @@ describe('data', function () {
 
     describe('when contains log in non-aggregate', function () {
       const model = parseUnitModel({
-          mark: "point",
-          encoding: {
-            x: {field: 'a', type: "temporal"},
-            y: {field: 'b', type: "quantitative", scale: {type: 'log'}}
-          }
-        });
+        mark: "point",
+        encoding: {
+          x: {field: 'a', type: "temporal"},
+          y: {field: 'b', type: "quantitative", scale: {type: 'log'}}
+        }
+      });
 
       const data = compileAssembleData(model);
       it('should contains 1 table', function() {
