@@ -5,7 +5,7 @@ import {COLUMN, ROW, X, Y, X2, Y2, SHAPE, SIZE, COLOR, OPACITY, TEXT, hasScale, 
 import {Orient} from '../config';
 import {SOURCE, STACKED_SCALE} from '../data';
 import {DateTime, isDateTime, timestamp} from '../datetime';
-import {FieldDef, field, isMeasure} from '../fielddef';
+import {ChannelDefWithScale, FieldDef, field, isMeasure} from '../fielddef';
 import {Mark, BAR, TEXT as TEXTMARK, RECT, RULE, TICK} from '../mark';
 import {Scale, ScaleConfig, ScaleType, NiceTime, BANDSIZE_FIT, BandSize} from '../scale';
 import {isSortField, SortOrder} from '../sort';
@@ -38,6 +38,23 @@ export type ScaleComponents = {
   main: ScaleComponent;
   colorLegend?: ScaleComponent,
   binColorLegend?: ScaleComponent
+}
+
+export function initScale(topLevelSize: number, mark: Mark, channel: Channel, fieldDef: ChannelDefWithScale, scaleConfig: ScaleConfig): Scale {
+  let scale: Scale = extend({
+    round: scaleConfig.round,
+    useRawDomain: scaleConfig.useRawDomain, // TODO determine if we should keep this
+    padding: scaleConfig.padding // TODO determine if we should keep this
+  }, (fieldDef || {}).scale);
+
+  scale.type = initType(scale.type, fieldDef, channel, mark);
+  if (scale.type === ScaleType.ORDINAL) {
+    // TODO: if possible, make points (ordinalType) not dependent on bandSize
+    scale.bandSize = initBandSize(scale.bandSize, topLevelSize, mark, channel, scaleConfig);
+    scale.points = points(channel, mark, scale.bandSize);
+  }
+
+  return scale;
 }
 
 export function parseScaleComponent(model: Model): Dict<ScaleComponents> {
@@ -176,7 +193,7 @@ export function initType(type: ScaleType, fieldDef: FieldDef, channel: Channel, 
     if (type !== undefined && type !== ScaleType.ORDINAL) {
       log.warn(log.message.scaleTypeNotWorkWithChannel(channel, type));
     }
-    return ScaleType.ORDINAL;
+    return ScaleType.ORDINAL; // TODO: call ordinalType()
   }
 
   if (type !== undefined) {
@@ -185,12 +202,12 @@ export function initType(type: ScaleType, fieldDef: FieldDef, channel: Channel, 
 
   switch (fieldDef.type) {
     case NOMINAL:
-      return ScaleType.ORDINAL;
+      return ScaleType.ORDINAL; // TODO: call ordinalType()
     case ORDINAL:
       if (channel === COLOR) {
         return ScaleType.LINEAR; // time has order, so use interpolated ordinal color scale.
       }
-      return ScaleType.ORDINAL;
+      return ScaleType.ORDINAL; // TODO: call ordinalType()
     case TEMPORAL:
       if (channel === COLOR) {
         return ScaleType.TIME; // time has order, so use interpolated ordinal color scale.
@@ -203,7 +220,7 @@ export function initType(type: ScaleType, fieldDef: FieldDef, channel: Channel, 
 
     case QUANTITATIVE:
       if (fieldDef.bin) {
-        return contains([X, Y, COLOR], channel) ? ScaleType.LINEAR : ScaleType.ORDINAL;
+        return contains([X, Y, COLOR], channel) ? ScaleType.LINEAR : ScaleType.ORDINAL; // TODO: call ordinalType()
       }
       return ScaleType.LINEAR;
   }
@@ -212,49 +229,42 @@ export function initType(type: ScaleType, fieldDef: FieldDef, channel: Channel, 
   return null;
 }
 
-// TODO: integrate this into type once we migrate to Vega 3
-export function scalePoints(scaleType: ScaleType, bandSize: number | BandSize, channel: Channel, mark: Mark) {
-  if (scaleType === ScaleType.ORDINAL && contains([X, Y], channel)) {
-
-    // Use band ordinal scale in one of the following cases:
+// TODO: when migrate to Vega3 rename this to ordinalType()
+export function points(channel: Channel, mark: Mark, bandSize: number | BandSize, ) {
+  if (contains([X, Y], channel)) {
+    // Use band ordinal scale for x/y scale in one of the following cases:
     if (
       // 1) the mark is bar and the scale's bandWidth is 'fit',
       (mark === BAR && bandSize === BANDSIZE_FIT) ||
       // 2) the mark is rect
       mark === RECT
     ) {
-      return undefined;
+      return false; // TODO: band
     }
-
-    // Otherwise use ordinal point scale
-    return true;
   }
-  return undefined;
+  // TODO: for lookup table e.g., nominal color / shape use classic ordinal
+
+  // Otherwise use ordinal point scale
+  return true; // TODO: point
 }
 
-export function scaleBandSize(scaleType: ScaleType, bandSize: number | BandSize, scaleConfig: ScaleConfig, topLevelSize: number, mark: Mark, channel: Channel): number | BandSize {
-  if (scaleType === ScaleType.ORDINAL) {
-    if (topLevelSize === undefined) {
-
-      if (bandSize) {
-        // Use manually specified bandSize
-        return bandSize;
-      } else if (channel === X && mark === TEXTMARK) {
-        return scaleConfig.textBandWidth;
-      } else {
-        return scaleConfig.bandSize;
-      }
+export function initBandSize(bandSize: number | BandSize, topLevelSize: number, mark: Mark, channel: Channel, scaleConfig: ScaleConfig): number | BandSize {
+  if (topLevelSize === undefined) {
+    if (bandSize) {
+      // Use manually specified bandSize
+      return bandSize;
+    } else if (channel === X && mark === TEXTMARK) {
+      return scaleConfig.textBandWidth;
     } else {
-      // If top-level is specified, use bandSize fit
-      if (bandSize && bandSize !== BANDSIZE_FIT) {
-        // If top-level size is specified, we override specified bandSize with "fit"
-        log.warn(log.message.bandSizeOverridden(channel));
-      }
-      return BANDSIZE_FIT;
+      return scaleConfig.bandSize;
     }
   } else {
-    // bandSize is not applicable for non-ordinal scale.
-    return undefined;
+    // If top-level is specified, use bandSize fit
+    if (bandSize && bandSize !== BANDSIZE_FIT) {
+      // If top-level size is specified, we override specified bandSize with "fit"
+      log.warn(log.message.bandSizeOverridden(channel));
+    }
+    return BANDSIZE_FIT;
   }
 }
 

@@ -2,14 +2,14 @@
 
 import {assert} from 'chai';
 
-import {scaleBandSize, initType, domain, parseScaleComponent} from '../../src/compile/scale';
+import {initBandSize, initType, points, domain, parseScaleComponent} from '../../src/compile/scale';
 import {SOURCE, SUMMARY} from '../../src/data';
 import {parseUnitModel} from '../util';
 
 import * as log from '../../src/log';
 import {X, Y, SHAPE, DETAIL} from '../../src/channel';
 import {BANDSIZE_FIT, ScaleType, defaultScaleConfig} from '../../src/scale';
-import {POINT} from '../../src/mark';
+import {POINT, RECT, BAR, TEXT} from '../../src/mark';
 import {TimeUnit} from '../../src/timeunit';
 import {TEMPORAL} from '../../src/type';
 
@@ -74,20 +74,45 @@ describe('Scale', function() {
     });
   });
 
-  describe('scaleBandSize()', () => {
-    it('should return undefined for non-ordinal scale.', () => {
-      assert.equal(scaleBandSize(ScaleType.LINEAR, undefined, defaultScaleConfig, 180, POINT, X), undefined);
-      assert.equal(scaleBandSize(ScaleType.LINEAR, 21, defaultScaleConfig, undefined, POINT, X), undefined);
+  describe('points()', function() {
+    it('should return band scale for X,Y when mark is rect', () => {
+      [X, Y].forEach((channel) => {
+        assert.equal(points(channel, RECT, 21), false);
+      });
     });
 
+    it('should return band scale for X,Y when mark is bar and bandSize is fit', () => {
+      [X, Y].forEach((channel) => {
+        assert.equal(points(channel, BAR, BANDSIZE_FIT), false);
+      });
+    });
+  });
+
+  describe('initBandSize()', () => {
     it('should return "fit" if top-level size is provided for ordinal scale', () => {
-      const bandSize = scaleBandSize(ScaleType.ORDINAL, undefined, defaultScaleConfig, 180, POINT, X);
+      const bandSize = initBandSize(undefined, 180, POINT, X, defaultScaleConfig);
       assert.deepEqual(bandSize, BANDSIZE_FIT);
     });
 
+    it('should return "fit" if top-level size is provided for ordinal scale and throw warning if bandSize is specified', log.wrap((logger) => {
+      const bandSize = initBandSize(21, 180, POINT, X, defaultScaleConfig);
+      assert.deepEqual(bandSize, BANDSIZE_FIT);
+      assert.equal(logger.warns[0], log.message.bandSizeOverridden(X));
+    }));
+
     it('should return provided bandSize for ordinal scale', () => {
-      const bandSize = scaleBandSize(ScaleType.ORDINAL, 21, defaultScaleConfig, undefined, POINT, X);
+      const bandSize = initBandSize(21, undefined, POINT, X, defaultScaleConfig);
       assert.deepEqual(bandSize, 21);
+    });
+
+    it('should return provided textBandWidth for x-ordinal scale', () => {
+      const bandSize = initBandSize(undefined, undefined, TEXT, X, defaultScaleConfig);
+      assert.deepEqual(bandSize, defaultScaleConfig.textBandWidth);
+    });
+
+    it('should return provided bandSize for other ordinal scale', () => {
+      const bandSize = initBandSize(undefined, undefined, POINT, X, defaultScaleConfig);
+      assert.deepEqual(bandSize, defaultScaleConfig.bandSize);
     });
   });
 
@@ -506,10 +531,6 @@ describe('Scale', function() {
   });
 
   describe('outerPadding()', function() {
-    // FIXME
-  });
-
-  describe('points()', function() {
     // FIXME
   });
 
