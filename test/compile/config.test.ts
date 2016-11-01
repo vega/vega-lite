@@ -7,7 +7,7 @@ import {parseUnitModel} from '../util';
 
 describe('Config', function() {
   describe('orient', function() {
-    it('should return correct default', function() {
+    it('should return correct default for QxQ', function() {
       const model = parseUnitModel({
         "mark": "bar",
         "encoding": {
@@ -16,12 +16,26 @@ describe('Config', function() {
         },
       });
       assert.equal(orient(model.mark(), model.encoding()), Orient.VERTICAL);
+    });
 
+    it('should return correct default for empty plot', () => {
       const model2 = parseUnitModel({
         "mark": "bar",
       });
-      assert.equal(orient(model2.mark(), model2.encoding()), Orient.VERTICAL);
+      assert.equal(orient(model2.mark(), model2.encoding()), undefined);
     });
+
+    it('should return correct orient for bar with both axes discrete', function() {
+      const model = parseUnitModel({
+        "mark": "bar",
+        "encoding": {
+          "x": {"type": "ordinal", "field": "foo"},
+          "y": {"type": "ordinal", "field": "bar"}
+        },
+      });
+      assert.equal(orient(model.mark(), model.encoding()), undefined);
+    });
+
 
     it('should return correct orient for vertical bar', function() {
       const model = parseUnitModel({

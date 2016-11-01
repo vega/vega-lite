@@ -116,9 +116,13 @@ export function orient(mark: Mark, encoding: Encoding, markConfig: MarkConfig = 
         } else if (encoding.y.type === TEMPORAL) {
           return Orient.HORIZONTAL;
         }
+        console.warn('Cannot clearly determine orientation for ' + mark + ' since there are continuous fields in both x and y channel. In this case, we use vertical by default');
+        return Orient.VERTICAL;
+      } else {
+        // For Discrete x Discrete case, return undefined.
+        console.warn('Cannot clearly determine orientation for ' + mark + ' since there are discrete fields in both x and y channel.');
+        return undefined;
       }
-      // Ambiguous case, return vertical
-      return Orient.VERTICAL;
   }
   /* istanbul ignore:next */
   return Orient.VERTICAL;

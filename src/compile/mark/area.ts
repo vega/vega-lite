@@ -1,4 +1,4 @@
-import {X, Y} from '../../channel';
+import {X, X2, Y, Y2} from '../../channel';
 import {Orient} from '../../config';
 
 import {applyColorAndOpacity, applyMarkConfig} from '../common';
@@ -23,14 +23,14 @@ export namespace area {
 
     // TODO: refactor how refer to scale as discussed in https://github.com/vega/vega-lite/pull/1613
 
-    p.x = ref.stackableX(model.encoding().x, model.scaleName(X), model.scale(X), stack, 'baseX');
-    p.y = ref.stackableY(model.encoding().y, model.scaleName(Y), model.scale(Y), stack, 'baseY');
+    p.x = ref.stackable(X, model.encoding().x, model.scaleName(X), model.scale(X), stack, 'base');
+    p.y = ref.stackable(Y, model.encoding().y, model.scaleName(Y), model.scale(Y), stack, 'base');
 
     // Have only x2 or y2 based on orientation
     if (orient === Orient.HORIZONTAL) {
-      p.x2 = ref.stackableX2(model.encoding().x, model.encoding().x2, model.scaleName(X), model.scale(X), stack, 'baseX');
+      p.x2 = ref.stackable2(X2, model.encoding().x, model.encoding().x2, model.scaleName(X), model.scale(X), stack, 'base');
     } else {
-      p.y2 = ref.stackableY2(model.encoding().y, model.encoding().y2, model.scaleName(Y), model.scale(Y), stack, 'baseY');
+      p.y2 = ref.stackable2(Y2, model.encoding().y, model.encoding().y2, model.scaleName(Y), model.scale(Y), stack, 'base');
     }
 
     applyColorAndOpacity(p, model);

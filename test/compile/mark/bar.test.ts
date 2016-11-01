@@ -103,7 +103,7 @@ describe('Mark: Bar', function() {
 
     it('should draw bar with y and y2', function() {
       assert.deepEqual(props.y2, {scale: 'y', field: 'bin_Horsepower_start'});
-      assert.deepEqual(props.y, {scale: 'y', field: 'bin_Horsepower_end', offset: 0});
+      assert.deepEqual(props.y, {scale: 'y', field: 'bin_Horsepower_end'});
       assert.isUndefined(props.height);
     });
   });
@@ -121,7 +121,7 @@ describe('Mark: Bar', function() {
     const props = bar.properties(model);
 
     it('should draw bar with x and x2', function() {
-      assert.deepEqual(props.x2, {scale: 'x', field: 'bin_Horsepower_start', offset: 0});
+      assert.deepEqual(props.x2, {scale: 'x', field: 'bin_Horsepower_start'});
       assert.deepEqual(props.x, {scale: 'x', field: 'bin_Horsepower_end'});
       assert.isUndefined(props.width);
     });
@@ -215,12 +215,10 @@ describe('Mark: Bar', function() {
       assert.deepEqual(props.x, {
         scale: 'x',
         field: 'Origin',
-        offset: 0.5
       });
       assert.deepEqual(props.width, {
         scale: 'x',
         band: true,
-        offset: -0.5
       });
     });
   });
@@ -242,12 +240,10 @@ describe('Mark: Bar', function() {
       assert.deepEqual(props.y, {
         scale: 'y',
         field: 'Origin',
-        offset: 0.5
       });
       assert.deepEqual(props.height, {
         scale: 'y',
         band: true,
-        offset: -0.5
       });
     });
   });
@@ -402,6 +398,28 @@ describe('Mark: Bar', function() {
       assert.deepEqual(props.width, {value: defaultMarkConfig.barThinSize });
       assert.deepEqual(props.y, {scale: 'y', field: 'Horsepower'});
       assert.deepEqual(props.y2, {scale: 'y', value: 0});
+    });
+  });
+
+  describe('OxN', function() {
+    // This is generally a terrible idea, but we should still test
+    // if the output show expected results
+
+    const model = parseUnitModel({
+      "data": {"url": 'data/cars.json'},
+      "mark": "bar",
+      "encoding": {
+        "x": {"field": 'Origin', "type": "nominal"},
+        "y": {"field": 'Cylinders', "type": "ordinal"}
+      }
+    });
+    const props = bar.properties(model);
+
+    it('should produce vertical bar using x, x2', function() {
+      assert.deepEqual(props.xc, {scale: 'x', field: 'Origin'});
+      assert.deepEqual(props.width, {value: 20 });
+      assert.deepEqual(props.yc, {scale: 'y', field: 'Cylinders'});
+      assert.deepEqual(props.height, {value: 20});
     });
   });
 
