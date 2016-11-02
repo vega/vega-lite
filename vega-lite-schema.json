@@ -1522,7 +1522,7 @@
                     "description": "Placeholder Text",
                     "type": "string"
                 },
-                "binnedBarSpacing": {
+                "barBinSpacing": {
                     "description": "Offset between bar for binned field",
                     "minimum": 0,
                     "type": "number"

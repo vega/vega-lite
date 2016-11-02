@@ -43,7 +43,7 @@ export namespace bar {
         if (xFieldDef.bin && !sizeFieldDef) {
           // TODO: check scale type = linear
 
-          p.x2 = ref.bin(xFieldDef, xScaleName, 'start', config.mark.binnedBarSpacing);
+          p.x2 = ref.bin(xFieldDef, xScaleName, 'start', config.mark.barBinSpacing);
           p.x = ref.bin(xFieldDef, xScaleName, 'end');
           return p;
         } else if (model.scale(X).bandSize === BANDSIZE_FIT) {
@@ -88,7 +88,7 @@ export namespace bar {
       if (yFieldDef && yFieldDef.field) {
         if (yFieldDef.bin && !sizeFieldDef) {
           p.y2 = ref.bin(yFieldDef, yScaleName, 'start');
-          p.y = ref.bin(yFieldDef, yScaleName, 'end', config.mark.binnedBarSpacing);
+          p.y = ref.bin(yFieldDef, yScaleName, 'end', config.mark.barBinSpacing);
           return p;
         } else if (model.scale(Y).bandSize === BANDSIZE_FIT) {
           // TODO: bandSize fit doesn't support size yet

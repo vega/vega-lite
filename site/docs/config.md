@@ -201,8 +201,8 @@ vg.embed('#horizontal_line', {
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| binnedBarSpacing | Number        | Spacing between bars of binned quantitative fields.  <span class="note-line">__Default value:__  `1`. </span> |
-| barSize      | Number        | The size of the bars (width for vertical bar charts and height for horizontal bar chart). <span class="note-line">__Default value:__  `bandSize-1` if  the bar's x or y axis is an ordinal scale. (This provides 1 pixel offset between bars.) and `2` for if both x and y scales have linear scales. </span>  |
+| barBinSpacing | Number        | Spacing between bars of binned quantitative fields.  <span class="note-line">__Default value:__  `1`. </span> |
+| barSize       | Number        | The size of the bars (width for vertical bar charts and height for horizontal bar chart). <span class="note-line">__Default value:__  `bandSize-1` if  the bar's x or y axis is an ordinal scale. (This provides 1 pixel offset between bars.) and `2` for if both x and y scales have linear scales. </span>  |
 
 #### Example: Histogram without Spacing between bars
 
