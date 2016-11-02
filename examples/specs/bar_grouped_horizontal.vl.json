@@ -8,7 +8,7 @@
   "encoding": {
     "row": {
       "field": "age", "type": "ordinal",
-      "scale": {"padding": 4},
+      "scale": {"spacing": 4},
       "axis": {"orient": "left", "axisWidth": 1, "offset": -8}
     },
     "x": {

@@ -130,6 +130,8 @@ export namespace message {
   // SCALE
   export const CANNOT_UNION_CUSTOM_DOMAIN_WITH_FIELD_DOMAIN = 'custom domain scale cannot be unioned with default field-based domain';
 
+  export const CANNOT_USE_PADDING_WITH_FACET = 'Cannot use padding with facet\'s scale.  Please use spacing instead.';
+
   export function bandSizeOverridden(channel: Channel) {
     return `bandSize for ${channel} overridden as top-level ${
       channel === X ? 'width' : 'height'} is provided.`;

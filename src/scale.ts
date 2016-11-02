@@ -57,12 +57,24 @@ export interface ScaleConfig {
   opacity?: number[];
   /**
    * Default padding for `x` and `y` band-ordinal scales.
+   * @minimum 0
+   * @maximum 1
    */
   bandPadding?: number;
   /**
    * Default padding for `x` and `y` point-ordinal scales.
+   * @minimum 0
+   * @maximum 1
    */
   pointPadding?: number;
+
+  /**
+   * Default spacing between faceted plots.
+   * @type {integer}
+   * @minimum 0
+   * @maximum 1
+   */
+  facetSpacing?: number;
 
   /**
    * Uses the source data range as scale domain instead of aggregated data for aggregate axis.
@@ -102,6 +114,7 @@ export const defaultScaleConfig: ScaleConfig = {
   bandSize: 21,
   pointPadding: 1,
   bandPadding: 0.1,
+  facetSpacing: 16,
   useRawDomain: false,
   opacity: [0.3, 0.8],
 
@@ -111,16 +124,6 @@ export const defaultScaleConfig: ScaleConfig = {
   fontSizeRange: [8, 40],
   ruleSizeRange: [1, 5],
   tickSizeRange: [1, 20]
-};
-
-export interface FacetScaleConfig {
-  round?: boolean;
-  padding?: number;
-}
-
-export const defaultFacetScaleConfig: FacetScaleConfig = {
-  round: true,
-  padding: 16
 };
 
 export interface Scale {

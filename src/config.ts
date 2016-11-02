@@ -1,4 +1,4 @@
-import {ScaleConfig, FacetScaleConfig, defaultScaleConfig, defaultFacetScaleConfig} from './scale';
+import {ScaleConfig, defaultScaleConfig} from './scale';
 import {AxisConfig, defaultAxisConfig, defaultFacetAxisConfig} from './axis';
 import {LegendConfig, defaultLegendConfig} from './legend';
 import {StackOffset} from './stack';
@@ -46,9 +46,6 @@ export const defaultFacetCellConfig: CellConfig = {
 };
 
 export interface FacetConfig {
-  /** Facet Scale Config */
-  scale?: FacetScaleConfig;
-
   /** Facet Axis Config */
   axis?: AxisConfig;
 
@@ -73,7 +70,6 @@ const defaultFacetGridConfig: FacetGridConfig = {
 };
 
 export const defaultFacetConfig: FacetConfig = {
-  scale: defaultFacetScaleConfig,
   axis: defaultFacetAxisConfig,
   grid: defaultFacetGridConfig,
   cell: defaultFacetCellConfig

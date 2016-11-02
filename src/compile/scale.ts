@@ -228,6 +228,11 @@ export function initType(type: ScaleType, fieldDef: FieldDef, channel: Channel, 
 
 // TODO: when migrate to Vega3 rename this to ordinalType()
 export function points(channel: Channel, mark: Mark, bandSize: number | BandSize, ) {
+  if (contains([ROW, COLUMN], channel)) {
+    // Use band scale for facet
+    return false;
+  }
+
   if (contains([X, Y], channel)) {
     // Use band ordinal scale for x/y scale in one of the following cases:
     if (
@@ -548,22 +553,32 @@ export function nice(scale: Scale, scaleConfig: ScaleConfig, channel: Channel, f
 
 
 export function padding(scale: Scale, scaleConfig: ScaleConfig, channel: Channel) {
-  /* Padding is only allowed for X and Y.
-   *
-   * Basically it doesn't make sense to add padding for color and size.
-   *
+  /*
    * We do not use d3 scale's padding for row/column because padding there
    * is a ratio ([0, 1]) and it causes the padding to be decimals.
-   * Therefore, we manually calculate padding in the layout by ourselves.
+   * Therefore, we manually calculate "spacing" in the layout by ourselves.
    */
-  if (scale.type === ScaleType.ORDINAL && contains([X, Y], channel)) {
+  if (contains([ROW, COLUMN], channel)) {
+    if (scale.padding !== undefined) {
+      log.warn(log.message.CANNOT_USE_PADDING_WITH_FACET);
+    }
+    return 0;
+  }
+
+  if (scale.type === ScaleType.ORDINAL) {
     if (scale.padding !== undefined) {
       return scale.padding;
     }
-    if (scale.points) {
-      return scaleConfig.pointPadding;
-    } else {
-      return scaleConfig.bandPadding;
+    /*
+     * Padding is only set for X and Y by default.
+     * Basically it doesn't make sense to add padding for color and size.
+    */
+    if (contains([X, Y], channel)) {
+      if (scale.points) {
+        return scaleConfig.pointPadding;
+      } else {
+        return scaleConfig.bandPadding;
+      }
     }
   }
   return undefined;
