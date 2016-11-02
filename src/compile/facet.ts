@@ -7,7 +7,7 @@ import {SOURCE, SUMMARY} from '../data';
 import {Facet} from '../facet';
 import {forEach} from '../encoding';
 import {FieldDef, isDimension} from '../fielddef';
-import {Scale, ScaleType} from '../scale';
+import {Scale} from '../scale';
 import {FacetSpec} from '../spec';
 import {getFullName} from '../type';
 import {contains, extend, keys, vals, flatten, duplicate, mergeDeep, Dict} from '../util';
@@ -18,12 +18,17 @@ import {buildModel} from './common';
 import {assembleData, parseFacetData} from './data/data';
 import {assembleLayout, parseFacetLayout} from './layout';
 import {Model} from './model';
-import {parseScaleComponent} from './scale';
+import {initScale, parseScaleComponent} from './scale';
 
 export class FacetModel extends Model {
   private _facet: Facet;
 
   private _child: Model;
+
+  private _spacing: {
+    row?: number;
+    column?: number;
+  } = {};
 
   constructor(spec: FacetSpec, parent: Model, parentGivenName: string) {
     super(spec, parent, parentGivenName);
@@ -34,7 +39,7 @@ export class FacetModel extends Model {
     const child  = this._child = buildModel(spec.spec, this, this.name('child'));
 
     const facet  = this._facet = this._initFacet(spec.facet);
-    this._scale  = this._initScale(facet, config, child);
+    this._scale  = this._initScaleAndSpacing(facet, config, child);
     this._axis   = this._initAxis(facet, config, child);
   }
 
@@ -74,19 +79,17 @@ export class FacetModel extends Model {
     return facet;
   }
 
-  private _initScale(facet: Facet, config: Config, child: Model): Dict<Scale> {
+  private _initScaleAndSpacing(facet: Facet, config: Config, child: Model): Dict<Scale> {
+    const model = this;
     return [ROW, COLUMN].reduce(function(_scale, channel) {
       if (facet[channel]) {
-
-        const scaleSpec = facet[channel].scale || {};
-        _scale[channel] = extend({
-          type: ScaleType.ORDINAL, // call scale.ordinalType
-          round: config.facet.scale.round,
-
-          // TODO: revise this rule for multiple level of nesting
-          padding: (channel === ROW && child.has(Y)) || (channel === COLUMN && child.has(X)) ?
-                   config.facet.scale.padding : 0
-        }, scaleSpec);
+        _scale[channel] = initScale(
+          undefined, // TODO(#1647): support width / height here
+          undefined, // Facet doesn't have one single mark
+          channel, facet[channel], config.scale
+        );
+        model._spacing[channel] = (facet[channel].scale || {}).spacing !== undefined ?
+          (facet[channel].scale || {}).spacing : config.scale.facetSpacing;
       }
       return _scale;
     }, {} as Dict<Scale>);
@@ -303,6 +306,10 @@ export class FacetModel extends Model {
     return this.facet();
   }
 
+  public spacing(channel) {
+    return this._spacing[channel];
+  }
+
   public isFacet() {
     return true;
   }
@@ -318,16 +325,16 @@ function getFacetGroupProperties(model: FacetModel) {
       x: model.has(COLUMN) ? {
           scale: model.scaleName(COLUMN),
           field: model.field(COLUMN),
-          // offset by the padding
-          offset: model.scale(COLUMN).padding / 2
-        } : {value: model.config().facet.scale.padding / 2},
+          // offset by the spacing / 2
+          offset: model.spacing(COLUMN) / 2
+        } : {value: model.config().scale.facetSpacing / 2},
 
       y: model.has(ROW) ? {
         scale: model.scaleName(ROW),
         field: model.field(ROW),
-        // offset by the padding
-        offset: model.scale(ROW).padding / 2
-      } : {value: model.config().facet.scale.padding / 2},
+        // offset by the spacing / 2
+        offset: model.spacing(ROW) / 2
+      } : {value: model.config().scale.facetSpacing / 2},
 
       width: {field: {parent: model.child().sizeName('width')}},
       height: {field: {parent: model.child().sizeName('height')}}
@@ -390,11 +397,11 @@ function getXAxesGroup(model: FacetModel): VgMarkGroup {
           x: hasCol ? {
             scale: model.scaleName(COLUMN),
             field: model.field(COLUMN),
-            // offset by the padding
-            offset: model.scale(COLUMN).padding / 2
+            // offset by the spacing
+            offset: model.spacing(COLUMN) / 2
           } : {
-            // offset by the padding
-            value: model.config().facet.scale.padding / 2
+            // offset by the spacing
+            value: model.config().scale.facetSpacing / 2
           }
         }
       },
@@ -430,11 +437,11 @@ function getYAxesGroup(model: FacetModel): VgMarkGroup {
           y: hasRow ? {
             scale: model.scaleName(ROW),
             field: model.field(ROW),
-            // offset by the padding
-            offset: model.scale(ROW).padding / 2
+            // offset by the spacing
+            offset: model.spacing(ROW) / 2
           } : {
-            // offset by the padding
-            value: model.config().facet.scale.padding / 2
+            // offset by the spacing
+            value: model.config().scale.facetSpacing / 2
           }
         }
       },

@@ -123,12 +123,11 @@ function parseFacetSizeLayout(model: FacetModel, channel: Channel): SizeComponen
   // TODO: - also consider when children have different data source
 }
 
-function facetSizeFormula(model: Model, channel: Channel, innerSize: string) {
-  const scale = model.scale(channel);
+function facetSizeFormula(model: FacetModel, channel: Channel, innerSize: string) {
   if (model.has(channel)) {
-    return '(datum["' + innerSize + '"] + ' + scale.padding + ')' + ' * ' + cardinalityExpr(model, channel);
+    return '(datum["' + innerSize + '"] + ' + model.spacing(channel) + ')' + ' * ' + cardinalityExpr(model, channel);
   } else {
-    return 'datum["' + innerSize + '"] + ' + model.config().facet.scale.padding; // need to add outer padding for facet
+    return 'datum["' + innerSize + '"] + ' + model.config().scale.facetSpacing; // need to add outer padding for facet
   }
 }
 
