@@ -2,7 +2,7 @@
 
 import {assert} from 'chai';
 
-import {bandSize, initType, points, domain, parseScaleComponent} from '../../src/compile/scale';
+import {bandSize, type, points, domain, parseScaleComponent} from '../../src/compile/scale';
 import {SOURCE, SUMMARY} from '../../src/data';
 import {parseUnitModel} from '../util';
 
@@ -14,10 +14,10 @@ import {TimeUnit} from '../../src/timeunit';
 import {TEMPORAL} from '../../src/type';
 
 describe('Scale', function() {
-  describe('initType()', function() {
+  describe('type()', function() {
     it('should return null for channel without scale', function() {
       assert.deepEqual(
-        initType(undefined, {
+        type(undefined, {
           field: 'a',
           type: TEMPORAL,
           timeUnit: TimeUnit.YEARMONTH
@@ -28,7 +28,7 @@ describe('Scale', function() {
 
     it('should return time for yearmonth', function() {
       assert.deepEqual(
-        initType(undefined, {
+        type(undefined, {
           field: 'a',
           type: TEMPORAL,
           timeUnit: TimeUnit.YEARMONTH
@@ -39,7 +39,7 @@ describe('Scale', function() {
 
     it('should return ordinal for month', function() {
       assert.deepEqual(
-        initType(undefined, {
+        type(undefined, {
           field: 'a',
           type: TEMPORAL,
           timeUnit: TimeUnit.MONTH
@@ -50,7 +50,7 @@ describe('Scale', function() {
 
     it('should return ordinal for shape', function() {
       assert.deepEqual(
-        initType(undefined, {
+        type(undefined, {
           field: 'a',
           type: TEMPORAL,
           timeUnit: TimeUnit.YEARMONTH
@@ -62,7 +62,7 @@ describe('Scale', function() {
     it('should return ordinal for shape even if non-ordinal is specified', function() {
       log.runLocalLogger((localLogger) => {
         assert.deepEqual(
-          initType(ScaleType.LINEAR, {
+          type(ScaleType.LINEAR, {
             field: 'a',
             type: TEMPORAL,
             timeUnit: TimeUnit.YEARMONTH

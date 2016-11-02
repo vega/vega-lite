@@ -46,7 +46,7 @@ export type ScaleComponents = {
 export function initScale(topLevelSize: number, mark: Mark, channel: Channel, fieldDef: ChannelDefWithScale, scaleConfig: ScaleConfig): Scale {
   let scale: Scale = extend({}, (fieldDef || {}).scale);
 
-  scale.type = initType(scale.type, fieldDef, channel, mark);
+  scale.type = type(scale.type, fieldDef, channel, mark);
   if (scale.type === ScaleType.ORDINAL) {
     // TODO: if possible, make points (ordinalType) not dependent on bandSize
     const _bandSize = bandSize(scale.bandSize, topLevelSize, mark, channel, scaleConfig);
@@ -183,7 +183,7 @@ function parseBinColorLegendLabel(model: Model, fieldDef: FieldDef): ScaleCompon
   };
 }
 
-export function initType(type: ScaleType, fieldDef: FieldDef, channel: Channel, mark: Mark): ScaleType {
+export function type(scaleType: ScaleType, fieldDef: FieldDef, channel: Channel, mark: Mark): ScaleType {
   if (!hasScale(channel)) {
     // There is no scale for these channels
     return null;
@@ -191,14 +191,14 @@ export function initType(type: ScaleType, fieldDef: FieldDef, channel: Channel, 
 
   // We can't use linear/time for row, column or shape
   if (contains([ROW, COLUMN, SHAPE], channel)) {
-    if (type !== undefined && type !== ScaleType.ORDINAL) {
-      log.warn(log.message.scaleTypeNotWorkWithChannel(channel, type));
+    if (scaleType !== undefined && scaleType !== ScaleType.ORDINAL) {
+      log.warn(log.message.scaleTypeNotWorkWithChannel(channel, scaleType));
     }
     return ScaleType.ORDINAL; // TODO: call ordinalType()
   }
 
-  if (type !== undefined) {
-    return type;
+  if (scaleType !== undefined) {
+    return scaleType;
   }
 
   switch (fieldDef.type) {
