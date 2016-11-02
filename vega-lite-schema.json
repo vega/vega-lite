@@ -1644,6 +1644,10 @@
                     "description": "If true, rounds numeric output values to integers.\n\nThis can be helpful for snapping to the pixel grid.\n\n(Only available for `x`, `y`, `size`, `row`, and `column` scales.)",
                     "type": "boolean"
                 },
+                "clamp": {
+                    "description": "If true, values that exceed the data domain are clamped to either the minimum or maximum range value",
+                    "type": "boolean"
+                },
                 "textBandWidth": {
                     "description": "Default band width for `x` ordinal scale when is mark is `text`.",
                     "minimum": 0,
@@ -1668,9 +1672,23 @@
                         "type": "number"
                     }
                 },
-                "padding": {
-                    "description": "Default padding for `x` and `y` ordinal scales.",
+                "bandPadding": {
+                    "description": "Default padding for `x` and `y` band-ordinal scales.",
+                    "minimum": 0,
+                    "maximum": 1,
                     "type": "number"
+                },
+                "pointPadding": {
+                    "description": "Default padding for `x` and `y` point-ordinal scales.",
+                    "minimum": 0,
+                    "maximum": 1,
+                    "type": "number"
+                },
+                "facetSpacing": {
+                    "description": "Default spacing between faceted plots.",
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
                 },
                 "useRawDomain": {
                     "description": "Uses the source data range as scale domain instead of aggregated data for aggregate axis.\n\nThis property only works with aggregate functions that produce values within the raw data domain (`\"mean\"`, `\"average\"`, `\"stdev\"`, `\"stdevp\"`, `\"median\"`, `\"q1\"`, `\"q3\"`, `\"min\"`, `\"max\"`). For other aggregations that produce values outside of the raw data domain (e.g. `\"count\"`, `\"sum\"`), this property is ignored.",
@@ -2013,10 +2031,6 @@
         "FacetConfig": {
             "type": "object",
             "properties": {
-                "scale": {
-                    "$ref": "#/definitions/FacetScaleConfig",
-                    "description": "Facet Scale Config"
-                },
                 "axis": {
                     "$ref": "#/definitions/AxisConfig",
                     "description": "Facet Axis Config"
@@ -2028,17 +2042,6 @@
                 "cell": {
                     "$ref": "#/definitions/CellConfig",
                     "description": "Facet Cell Config"
-                }
-            }
-        },
-        "FacetScaleConfig": {
-            "type": "object",
-            "properties": {
-                "round": {
-                    "type": "boolean"
-                },
-                "padding": {
-                    "type": "number"
                 }
             }
         },
