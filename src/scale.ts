@@ -72,7 +72,6 @@ export interface ScaleConfig {
    * Default spacing between faceted plots.
    * @type {integer}
    * @minimum 0
-   * @maximum 1
    */
   facetSpacing?: number;
 
