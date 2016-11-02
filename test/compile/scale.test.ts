@@ -364,119 +364,145 @@ describe('Scale', function() {
     });
   });
 
-  describe('ordinal with color', function() {
-    const model = parseUnitModel({
-      mark: "point",
-      encoding: {
-        color: { field: 'origin', type: "ordinal"}
-      }
-    });
-
-    const scales = parseScaleComponent(model)['color'];
-
-    it('should create color and inverse scales', function() {
-      assert.equal(scales.main.name, 'color');
-      assert.equal(scales.colorLegend.name, 'color_legend');
-      assert.equal(scales.binColorLegend, undefined);
-    });
-
-    it('should create correct inverse scale', function() {
-      assert.equal(scales.colorLegend.type, 'ordinal');
-      assert.deepEqual(scales.colorLegend.domain, {
-        data: 'source',
-        field: 'rank_origin',
-        sort: true
-      });
-      assert.deepEqual(scales.colorLegend.range, {
-        data: 'source',
-        field: 'origin',
-        sort: true
-      });
-    });
-
-    it('should create correct color scale', function() {
-      assert.equal(scales.main.type, 'linear');
-      assert.deepEqual(scales.main.domain, {
-        data: 'source',
-        field: 'rank_origin'
-      });
-    });
-  });
-
-  describe('color with bin', function() {
-    const model = parseUnitModel({
+  describe('parseScaleComponent', () => {
+    describe('nominal with color', function() {
+      const model = parseUnitModel({
         mark: "point",
         encoding: {
-          color: { field: 'origin', type: "quantitative", bin: true}
+          color: { field: 'origin', type: "nominal"}
         }
       });
 
-    const scales = parseScaleComponent(model)['color'];
+      const scales = parseScaleComponent(model)['color'];
 
-    it('should add correct scales', function() {
-      assert.equal(scales.main.name, 'color');
-      assert.equal(scales.colorLegend.name, 'color_legend');
-      assert.equal(scales.binColorLegend.name, 'color_legend_label');
-    });
-
-    it('should create correct identity scale', function() {
-      assert.equal(scales.colorLegend.type, 'ordinal');
-      assert.deepEqual(scales.colorLegend.domain, {
-        data: 'source',
-        field: 'bin_origin_start',
-        sort: true
-      });
-      assert.deepEqual(scales.colorLegend.range, {
-        data: 'source',
-        field: 'bin_origin_start',
-        sort: true
+      it('should create correct main color scale', function() {
+        assert.equal(scales.main.name, 'color');
+        assert.equal(scales.main.type, 'ordinal');
+        assert.deepEqual(scales.main.domain, {
+          data: 'source',
+          field: 'origin',
+          sort: true
+        });
+        assert.deepEqual(scales.main.range, 'category10'); // TODO scheme in Vega 3
+        assert.deepEqual(scales.main.bandSize, undefined);
       });
     });
 
-    it('should sort range of color labels', function() {
-      assert.deepEqual(scales.binColorLegend.domain, {
-        data: 'source',
-        field: 'bin_origin_start',
-        sort: true
-      });
-      assert.deepEqual(scales.binColorLegend.range, {
-        data: 'source',
-        field: 'bin_origin_range',
-        sort: {"field": "bin_origin_start","op": "min"}
-      });
-    });
-  });
-
-  describe('color with time unit', function() {
-    const model = parseUnitModel({
+    describe('ordinal with color', function() {
+      const model = parseUnitModel({
         mark: "point",
         encoding: {
-          color: {field: 'origin', type: "temporal", timeUnit: "year"}
+          color: { field: 'origin', type: "ordinal"}
         }
       });
 
-    const scales = parseScaleComponent(model)['color'];
+      const scales = parseScaleComponent(model)['color'];
 
-    it('should add correct scales', function() {
-      assert.equal(scales.main.name, 'color');
-      assert.equal(scales.colorLegend.name, 'color_legend');
-      assert.equal(scales.binColorLegend, undefined);
+      it('should create color and inverse scales', function() {
+        assert.equal(scales.main.name, 'color');
+        assert.equal(scales.colorLegend.name, 'color_legend');
+        assert.equal(scales.binColorLegend, undefined);
+      });
+
+      it('should create correct inverse scale', function() {
+        assert.equal(scales.colorLegend.type, 'ordinal');
+        assert.deepEqual(scales.colorLegend.domain, {
+          data: 'source',
+          field: 'rank_origin',
+          sort: true
+        });
+        assert.deepEqual(scales.colorLegend.range, {
+          data: 'source',
+          field: 'origin',
+          sort: true
+        });
+      });
+
+      it('should create correct color scale', function() {
+        assert.equal(scales.main.type, 'linear');
+        assert.deepEqual(scales.main.domain, {
+          data: 'source',
+          field: 'rank_origin'
+        });
+      });
     });
 
-    it('should create correct identity scale', function() {
-      assert.equal(scales.colorLegend.type, 'ordinal');
-      assert.deepEqual(scales.colorLegend.domain, {
-        data: 'source',
-        field: 'year_origin',
-        sort: true
+    describe('color with bin', function() {
+      const model = parseUnitModel({
+          mark: "point",
+          encoding: {
+            color: { field: 'origin', type: "quantitative", bin: true}
+          }
+        });
+
+      const scales = parseScaleComponent(model)['color'];
+
+      it('should add correct scales', function() {
+        assert.equal(scales.main.name, 'color');
+        assert.equal(scales.colorLegend.name, 'color_legend');
+        assert.equal(scales.binColorLegend.name, 'color_legend_label');
       });
-      assert.deepEqual(scales.colorLegend.range, {
-        data: 'source',
-        field: 'year_origin',
-        sort: true
+
+      it('should create correct identity scale', function() {
+        assert.equal(scales.colorLegend.type, 'ordinal');
+        assert.deepEqual(scales.colorLegend.domain, {
+          data: 'source',
+          field: 'bin_origin_start',
+          sort: true
+        });
+        assert.deepEqual(scales.colorLegend.range, {
+          data: 'source',
+          field: 'bin_origin_start',
+          sort: true
+        });
+      });
+
+      it('should sort range of color labels', function() {
+        assert.deepEqual(scales.binColorLegend.domain, {
+          data: 'source',
+          field: 'bin_origin_start',
+          sort: true
+        });
+        assert.deepEqual(scales.binColorLegend.range, {
+          data: 'source',
+          field: 'bin_origin_range',
+          sort: {"field": "bin_origin_start","op": "min"}
+        });
+      });
+    });
+
+    describe('color with time unit', function() {
+      const model = parseUnitModel({
+          mark: "point",
+          encoding: {
+            color: {field: 'origin', type: "temporal", timeUnit: "year"}
+          }
+        });
+
+      const scales = parseScaleComponent(model)['color'];
+
+      it('should add correct scales', function() {
+        assert.equal(scales.main.name, 'color');
+        assert.equal(scales.colorLegend.name, 'color_legend');
+        assert.equal(scales.binColorLegend, undefined);
+      });
+
+      it('should create correct identity scale', function() {
+        assert.equal(scales.colorLegend.type, 'ordinal');
+        assert.deepEqual(scales.colorLegend.domain, {
+          data: 'source',
+          field: 'year_origin',
+          sort: true
+        });
+        assert.deepEqual(scales.colorLegend.range, {
+          data: 'source',
+          field: 'year_origin',
+          sort: true
+        });
       });
     });
   });
+
 
   describe('rangeMixins()', function() {
     describe('row', function() {

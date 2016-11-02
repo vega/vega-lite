@@ -46,7 +46,13 @@ export function initScale(topLevelSize: number, mark: Mark, channel: Channel, fi
   scale.type = initType(scale.type, fieldDef, channel, mark);
   if (scale.type === ScaleType.ORDINAL) {
     // TODO: if possible, make points (ordinalType) not dependent on bandSize
-    scale.bandSize = initBandSize(scale.bandSize, topLevelSize, mark, channel, scaleConfig);
+    const bandSize = initBandSize(scale.bandSize, topLevelSize, mark, channel, scaleConfig);
+    if (bandSize !== undefined) {
+      scale.bandSize = bandSize;
+    } else {
+      delete scale.bandSize; // make sure it really become undefined
+    }
+
     scale.points = points(channel, mark, scale.bandSize);
   }
 
@@ -251,6 +257,10 @@ export function points(channel: Channel, mark: Mark, bandSize: number | BandSize
 }
 
 export function initBandSize(bandSize: number | BandSize, topLevelSize: number, mark: Mark, channel: Channel, scaleConfig: ScaleConfig): number | BandSize {
+  if (!contains([X, Y], channel)) {
+    return undefined;
+  }
+
   if (topLevelSize === undefined) {
     if (bandSize) {
       // Use manually specified bandSize
